@@ -14,12 +14,12 @@ FROM
    UNION SELECT *
    FROM compound_v2."cEther_evt_Borrow"
    UNION SELECT *
-   FROM compound_v2."CErc20Delegator_evt_Borrow") EVENTS
+   FROM compound_v2."CErc20Delegator_evt_Borrow") events
 LEFT JOIN compound_v2.view_ctokens c ON events.contract_address = c.contract_address
 LEFT JOIN ethereum.transactions tx ON events.evt_tx_hash = tx.hash
 LEFT JOIN erc20.tokens t ON c.underlying_token_address = t.contract_address
 LEFT JOIN
-  (SELECT MINUTE,
+  (SELECT minute,
           contract_address,
           symbol,
           price
@@ -28,4 +28,5 @@ LEFT JOIN
                 '\x6B175474E89094C44Da98b954EedeAC495271d0F'::bytea AS contract_address,
                 'DAI' AS symbol,
                 1 AS price) p ON p.minute = date_trunc('minute', tx.block_time)
-AND p.contract_address = c.underlying_token_address ;
+AND p.contract_address = c.underlying_token_address
+;
