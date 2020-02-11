@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW dune_user_generated.compound_view_borrow AS
+CREATE OR REPLACE VIEW compound_v2.compound_view_borrow AS
 SELECT t.symbol AS symbol,
        "borrowAmount"/10^t.decimals AS borrow_amount,
        "borrowAmount"/10^t.decimals*p.price AS borrow_amount_usd,
