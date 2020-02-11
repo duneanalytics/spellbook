@@ -1,11 +1,11 @@
 CREATE OR REPLACE VIEW dune_user_generated.compound_view_borrow AS
-SELECT t.symbol AS "symbol",
-       "borrowAmount"/10^t.decimals AS "borrowAmount",
-       "borrowAmount"/10^t.decimals*p.price AS "borrowAmountUSD",
-       "accountBorrows"/10^t.decimals AS "accountBorrows",
-       "totalBorrows"/10^t.decimals AS "totalBorrows",
-       events.contract_address AS "cToken",
-       c."underlying_token_address" AS "underlyingToken",
+SELECT t.symbol AS symbol,
+       "borrowAmount"/10^t.decimals AS borrow_amount,
+       "borrowAmount"/10^t.decimals*p.price AS borrow_amount_usd,
+       "accountBorrows"/10^t.decimals AS account_borrows,
+       "totalBorrows"/10^t.decimals AS total_borrows,
+       events.contract_address AS ctoken,
+       c."underlying_token_address" AS underlying_token,
        evt_tx_hash AS tx_hash,
        tx.block_time AS block_time
 FROM
