@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW compound_v2.compound_view_repay_borrow AS
+CREATE OR REPLACE VIEW compound_v2.view_repay_borrow AS
 SELECT t.symbol AS "symbol",
        "repayAmount"/10^t.decimals AS repay_amount,
        "repayAmount"/10^t.decimals*p.price AS repay_amount_usd,
