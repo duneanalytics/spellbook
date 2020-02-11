@@ -1,9 +1,10 @@
-CREATE OR REPLACE VIEW compound_v2.compound_view_borrow AS
+CREATE OR REPLACE VIEW compound_v2.view_borrow AS
 SELECT t.symbol AS symbol,
        "borrowAmount"/10^t.decimals AS borrow_amount,
        "borrowAmount"/10^t.decimals*p.price AS borrow_amount_usd,
        "accountBorrows"/10^t.decimals AS account_borrows,
        "totalBorrows"/10^t.decimals AS total_borrows,
+       "totalBorrows"/10^t.decimals*p.price AS total_borrows_usd,
        events.contract_address AS ctoken,
        c."underlying_token_address" AS underlying_token,
        evt_tx_hash AS tx_hash,
