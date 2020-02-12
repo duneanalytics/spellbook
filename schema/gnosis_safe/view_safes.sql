@@ -51,7 +51,7 @@ create materialized view gnosis_safe.view_safes as
                 then 'team'
                 else 'unknown'
                 end
-             as "type"
+             as safe_type
         from ethereum.traces et -- for the setup calls
         left outer join safe_setups ss
             on et.tx_hash = ss.tx_hash
@@ -62,5 +62,5 @@ create materialized view gnosis_safe.view_safes as
             AND et.call_type = 'delegatecall' -- the delegate call to the master copy is the Safe address
             AND et.to in ('\x8942595A2dC5181Df0465AF0D7be08c8f23C93af', '\xb6029ea3b2c51d09a50b53ca8012feeb05bda35a', '\xae32496491b53841efb51829d6f886387708f99b', '\x34cfac646f301356faa8b21e94227e3583fe3f5f') -- mastercopy address v0.1.0, v1.0.0, v1.1.0, v1.1.1
     )
-    select creation_block_number, creation_time, address, "type"
+    select creation_block_number, creation_time, address, safe_type
     from safes;
