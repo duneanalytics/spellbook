@@ -39,7 +39,7 @@ create materialized view gnosis_safe.view_safes as
                         or (et.to in ('\xb6029ea3b2c51d09a50b53ca8012feeb05bda35a', '\xae32496491b53841efb51829d6f886387708f99b', '\x34cfac646f301356faa8b21e94227e3583fe3f5f') -- mastercopy address v1.0.0, v1.1.0, v1.1.0, v1.1.1
                             and et2.from = '\x07f455f30e862e13e3e3d960762cb11c4f744d52'  -- relay service
                             and et2.to in ('\x12302fe9c02ff50939baaaaf415fc226c078613c', '\x76e2cfc1f5fa8f6a5b3fc4c8f4788f0116861f9b')  -- ProxyFactory v1.0.0, v1.1.1
-                            and left(text(et2."input"),10) = '\x1688f0b9' -- createProxyWithNonce method
+                            and substring(et2."input" for 4) = '\x1688f0b9' -- createProxyWithNonce method
                         )
                     )
                 then 'personal'
@@ -47,7 +47,7 @@ create materialized view gnosis_safe.view_safes as
                     et.to in ('\xb6029ea3b2c51d09a50b53ca8012feeb05bda35a', '\xae32496491b53841efb51829d6f886387708f99b', '\x34cfac646f301356faa8b21e94227e3583fe3f5f') -- mastercopy address v1.0.0, v1.1.0, v1.1.1
                     and et2.from <> '\x07f455f30e862e13e3e3d960762cb11c4f744d52'  -- relay service
                     and et2.to in ('\x12302fe9c02ff50939baaaaf415fc226c078613c', '\x76e2cfc1f5fa8f6a5b3fc4c8f4788f0116861f9b')  -- ProxyFactory v1.0.0, v1.1.1
-                    and left(text(et2."input"),10) in ('\x61b69abd', '\x1688f0') -- createProxy method
+                    and substring(et2."input" for 4) in ('\x61b69abd', '\x1688f0') -- createProxy method
                 then 'team'
                 else 'unknown'
                 end
@@ -58,7 +58,7 @@ create materialized view gnosis_safe.view_safes as
         left outer join ethereum.traces et2  -- for the potential proxy calls
             on et.tx_hash = et2.tx_hash and et2.call_type = 'call' and left(text(et2."input"),10) in ('\x1688f0b9', '\x61b69abd') -- createProxyWithNonce or createProxy method call
         where et.tx_success = True
-            AND left(text(et."input"),10) in ('\x0ec78d9e', '\xa97ab18a', '\xb63e800d') -- setup methods of v0.1.0, v1.0.0, v1.1.0=v.1.1.1
+            AND substring(et."input" for 4) in ('\x0ec78d9e', '\xa97ab18a', '\xb63e800d') -- setup methods of v0.1.0, v1.0.0, v1.1.0=v.1.1.1
             AND et.call_type = 'delegatecall' -- the delegate call to the master copy is the Safe address
             AND et.to in ('\x8942595A2dC5181Df0465AF0D7be08c8f23C93af', '\xb6029ea3b2c51d09a50b53ca8012feeb05bda35a', '\xae32496491b53841efb51829d6f886387708f99b', '\x34cfac646f301356faa8b21e94227e3583fe3f5f') -- mastercopy address v0.1.0, v1.0.0, v1.1.0, v1.1.1
     )
