@@ -1,15 +1,15 @@
 create materialized view gnosis_safe.view_safes as
     with safe_setups as (
-        select call_tx_hash as tx_hash, _threshold as threshold, LENGTH(REPLACE(text(_owners),'\\x','~'))-LENGTH(REPLACE(text(_owners),'\\x','')) as owners
+        select call_tx_hash as tx_hash, _threshold as threshold, array_length(_owners, 1) as owners
         from gnosis_safe."Safev0.1.0_call_setup"
         union all
-        select call_tx_hash as tx_hash, _threshold as threshold, LENGTH(REPLACE(text(_owners),'\\x','~'))-LENGTH(REPLACE(text(_owners),'\\x','')) as owners
+        select call_tx_hash as tx_hash, _threshold as threshold, array_length(_owners, 1) as owners
         from gnosis_safe."Safev1.0.0_call_setup"
         union ALL
-        select call_tx_hash as tx_hash, _threshold as threshold, LENGTH(REPLACE(text(_owners),'\\x','~'))-LENGTH(REPLACE(text(_owners),'\\x','')) as owners
+        select call_tx_hash as tx_hash, _threshold as threshold, array_length(_owners, 1) as owners
         from gnosis_safe."Safev1.1.0_call_setup"
         union ALL
-        select call_tx_hash as tx_hash, _threshold as threshold, LENGTH(REPLACE(text(_owners),'\\x','~'))-LENGTH(REPLACE(text(_owners),'\\x','')) as owners
+        select call_tx_hash as tx_hash, _threshold as threshold, array_length(_owners, 1) as owners
         from gnosis_safe."Safev1.1.1_call_setup"
     ),
     safes as (
