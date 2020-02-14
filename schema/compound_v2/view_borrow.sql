@@ -25,9 +25,11 @@ LEFT JOIN
           symbol,
           price
    FROM prices.usd
+   WHERE minute >= '2019-05-07' -- first cErc20
+   AND symbol IN (SELECT symbol FROM compound_v2.view_ctokens)
    UNION SELECT generate_series('2019-11-18', now(), '1 minute'),
                 '\x6B175474E89094C44Da98b954EedeAC495271d0F'::bytea AS contract_address,
                 'DAI' AS symbol,
-                1 AS price) p ON p.minute = date_trunc('minute', tx.block_time)
-AND p.contract_address = c.underlying_token_address
+                1 AS price) p ON p.minute = date_trunc('minute', tx.block_time) AND p.contract_address = c.underlying_token_address
+WHERE tx.block_number >= 7710733 -- first cErc20
 ;
