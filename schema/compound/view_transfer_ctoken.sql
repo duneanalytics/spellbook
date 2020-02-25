@@ -14,5 +14,5 @@ FROM
    UNION SELECT *
    FROM compound_v2."CErc20Delegator_evt_Transfer") events
 LEFT JOIN compound_v2.view_ctokens c ON events."contract_address" = c.contract_address
-LEFT JOIN ethereum.transactions tx ON events.evt_tx_hash = tx.hash
+LEFT JOIN ethereum.transactions tx ON events.evt_tx_hash = tx.hash AND block_number >= 7710671
 ;
