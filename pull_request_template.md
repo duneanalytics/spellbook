@@ -5,3 +5,4 @@ I've checked that:
 * [ ] the view name starts with `view_`
 * [ ] each file has only one view defined  
 * [ ] column names are `lowercase_snake_cased`
+* [ ] all column names end with `.sql` 
