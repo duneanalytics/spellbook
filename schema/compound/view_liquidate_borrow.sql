@@ -71,17 +71,20 @@ LEFT JOIN (
            "CErc20Delegator_evt_RepayBorrow".evt_index
     FROM compound_v2."CErc20Delegator_evt_RepayBorrow"
 ) repay ON events.evt_tx_hash = repay.evt_tx_hash
-    LEFT JOIN compound_v2.view_ctokens c ON events."cTokenCollateral" = c.contract_address
-    LEFT JOIN compound_v2.view_ctokens c_repay ON repay.contract_address = c_repay.contract_address
-    LEFT JOIN ethereum.transactions tx ON events.evt_tx_hash = tx.hash
-    LEFT JOIN erc20.tokens t ON c_repay.underlying_token_address = t.contract_address
-    LEFT JOIN ( SELECT usd.minute,
-           usd.contract_address,
-           usd.symbol,
-           usd.price
-          FROM prices.usd
-       UNION
-        SELECT generate_series('2019-11-18 00:00:00+00'::timestamp with time zonenow()'00:01:00'::interval) AS generate_series,
-           '\x6b175474e89094c44da98b954eedeac495271d0f'::bytea AS contract_address,
-           'DAI'::text AS symbol,
-           1 AS price) p ON p.minute = date_trunc('minute'::texttx.block_time) AND p.contract_address = c_repay.underlying_token_address;
+LEFT JOIN compound_v2.view_ctokens c ON events."cTokenCollateral" = c.contract_address
+LEFT JOIN compound_v2.view_ctokens c_repay ON repay.contract_address = c_repay.contract_address
+LEFT JOIN ethereum.transactions tx ON events.evt_tx_hash = tx.hash AND block_number >= 7710671
+LEFT JOIN erc20.tokens t ON c_repay.underlying_token_address = t.contract_address
+LEFT JOIN
+  (SELECT minute,
+          contract_address,
+          symbol,
+          price
+   FROM prices.usd
+   WHERE symbol IN ('BAT', 'SAI', 'WETH', 'REP', 'USDC', 'WBTC', 'ZRX')
+   UNION SELECT generate_series('2019-11-18', now(), '1 minute'),
+                '\x6B175474E89094C44Da98b954EedeAC495271d0F'::bytea AS contract_address,
+                'DAI' AS symbol,
+                1 AS price) p ON p.minute = date_trunc('minute', tx.block_time)
+AND p.contract_address = c.underlying_token_address
+;
