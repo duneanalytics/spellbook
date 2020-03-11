@@ -1,5 +1,8 @@
 CREATE OR REPLACE VIEW compound.view_accrue_interest AS
-SELECT t.symbol AS token_symbol,
+SELECT  CASE
+           WHEN t.symbol = 'WETH' THEN 'ETH'
+           ELSE t.symbol
+       END AS token_symbol,
        "interestAccumulated"/10^t.decimals AS interest_accumulated,
        "interestAccumulated"/10^t.decimals*p.price AS interest_accumulated_usd,
        "totalBorrows"/10^t.decimals AS total_borrows,
