@@ -5,6 +5,7 @@ SELECT CASE
        END AS token_symbol,
        "borrowAmount"/10^t.decimals AS borrow_amount,
        "borrowAmount"/10^t.decimals*p.price AS borrow_amount_usd,
+       borrower,
        "accountBorrows"/10^t.decimals AS account_borrows,
        "totalBorrows"/10^t.decimals AS total_borrows,
        "totalBorrows"/10^t.decimals*p.price AS total_borrows_usd,
