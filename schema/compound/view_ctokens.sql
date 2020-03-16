@@ -1,4 +1,4 @@
-CREATE VIEW compound.view_ctokens (symbol, contract_address, decimals, underlying_token_address) AS VALUES                 
+CREATE OR REPLACE VIEW compound.view_ctokens (symbol, contract_address, decimals, underlying_token_address) AS VALUES
    ('cBAT'::text, '\x6c8c6b02e7b2be14d4fa6022dfd6d75921d90e4e'::bytea, 8::numeric, '\x0d8775f648430679a709e98d2b0cb6250d2887ef'::bytea),
    ('cSAI'::text, '\xf5dce57282a584d2746faf1593d3121fcac444dc'::bytea, 8::numeric, '\x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'::bytea),
    ('cETH'::text, '\x4ddc2d193948926d02f9b1fe9e1daa0718270ed5'::bytea, 8::numeric, '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea),
