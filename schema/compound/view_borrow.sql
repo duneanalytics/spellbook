@@ -1,7 +1,11 @@
 CREATE OR REPLACE VIEW compound.view_borrow AS
-SELECT t.symbol AS token_symbol,
+SELECT CASE
+           WHEN t.symbol = 'WETH' THEN 'ETH'
+           ELSE t.symbol
+       END AS token_symbol,
        "borrowAmount"/10^t.decimals AS borrow_amount,
        "borrowAmount"/10^t.decimals*p.price AS borrow_amount_usd,
+       borrower,
        "accountBorrows"/10^t.decimals AS account_borrows,
        "totalBorrows"/10^t.decimals AS total_borrows,
        "totalBorrows"/10^t.decimals*p.price AS total_borrows_usd,

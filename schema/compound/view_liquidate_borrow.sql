@@ -1,5 +1,8 @@
 CREATE OR REPLACE VIEW compound.view_liquidate_borrow AS
-SELECT t.symbol
+SELECT CASE
+           WHEN t.symbol = 'WETH' THEN 'ETH'
+           ELSE t.symbol
+       END AS token_symbol,
        repay."repayAmount"::double precision / (10::double precision ^ t.decimals::double precision) AS repay_amount
        repay."repayAmount"::double precision / (10::double precision ^ t.decimals::double precision) * p.price AS repay_amount_usd
        c.symbol AS ctoken_symbol

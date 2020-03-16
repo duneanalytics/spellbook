@@ -1,5 +1,8 @@
 CREATE OR REPLACE VIEW compound.view_mint AS
-SELECT t.symbol AS token_symbol,
+SELECT CASE
+           WHEN t.symbol = 'WETH' THEN 'ETH'
+           ELSE t.symbol
+       END AS token_symbol,
        "mintAmount"/10^t.decimals AS mint_amount,
        "mintAmount"/10^t.decimals*p.price AS mint_amount_usd,
        "mintTokens"/10^c.decimals AS mint_ctokens,

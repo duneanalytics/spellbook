@@ -1,5 +1,8 @@
 CREATE OR REPLACE VIEW compound.view_redeem AS
-SELECT t.symbol AS token_symbol,
+SELECT CASE
+           WHEN t.symbol = 'WETH' THEN 'ETH'
+           ELSE t.symbol
+       END AS token_symbol,
        "redeemAmount"/10^t.decimals AS redeem_amount,
        "redeemAmount"/10^t.decimals*p.price AS redeem_amount_usd,
        "redeemTokens"/10^c.decimals AS redeem_ctokens,
