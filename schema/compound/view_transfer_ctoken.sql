@@ -1,5 +1,8 @@
 CREATE OR REPLACE VIEW compound.view_transfer_ctoken AS
-SELECT c.symbol AS ctoken_symbol,
+SELECT CASE
+           WHEN t.symbol = 'WETH' THEN 'ETH'
+           ELSE t.symbol
+       END AS token_symbol,
        "amount"/10^c.decimals AS amount,
        events."to",
        events."from",
