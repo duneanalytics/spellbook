@@ -11,7 +11,7 @@ SELECT CASE
        events.borrower,
        c_repay.underlying_token_address AS underlying_token,
        events.evt_tx_hash AS tx_hash,
-       tx.block_time 
+       repay.evt_block_time  AS block_time
 FROM (
     SELECT "cErc20_evt_LiquidateBorrow".liquidator,
                "cErc20_evt_LiquidateBorrow".borrower,
@@ -20,7 +20,7 @@ FROM (
                "cErc20_evt_LiquidateBorrow"."seizeTokens",
                "cErc20_evt_LiquidateBorrow".contract_address,
                "cErc20_evt_LiquidateBorrow".evt_tx_hash,
-               "cErc20_evt_LiquidateBorrow".evt_index
+               "cErc20_evt_LiquidateBorrow".evt_block_time
         FROM compound_v2."cErc20_evt_LiquidateBorrow"
         UNION 
         SELECT "cEther_evt_LiquidateBorrow".liquidator,
@@ -30,7 +30,7 @@ FROM (
                "cEther_evt_LiquidateBorrow"."seizeTokens",
                "cEther_evt_LiquidateBorrow".contract_address,
                "cEther_evt_LiquidateBorrow".evt_tx_hash,
-               "cEther_evt_LiquidateBorrow".evt_index 
+               "cEther_evt_LiquidateBorrow".evt_block_time 
         FROM compound_v2."cEther_evt_LiquidateBorrow" 
         UNION 
         SELECT "CErc20Delegator_evt_LiquidateBorrow".liquidator,
@@ -40,7 +40,7 @@ FROM (
                "CErc20Delegator_evt_LiquidateBorrow"."seizeTokens",
                "CErc20Delegator_evt_LiquidateBorrow".contract_address,
                "CErc20Delegator_evt_LiquidateBorrow".evt_tx_hash,
-               "CErc20Delegator_evt_LiquidateBorrow".evt_index 
+               "CErc20Delegator_evt_LiquidateBorrow".evt_block_time 
         FROM compound_v2."CErc20Delegator_evt_LiquidateBorrow"
 ) events
 LEFT JOIN (
@@ -51,7 +51,7 @@ LEFT JOIN (
            "cErc20_evt_RepayBorrow"."totalBorrows",
            "cErc20_evt_RepayBorrow".contract_address,
            "cErc20_evt_RepayBorrow".evt_tx_hash,
-           "cErc20_evt_RepayBorrow".evt_index
+           "cErc20_evt_RepayBorrow".evt_block_time
     FROM compound_v2."cErc20_evt_RepayBorrow"
     UNION
     SELECT "cEther_evt_RepayBorrow".payer,
@@ -61,7 +61,7 @@ LEFT JOIN (
            "cEther_evt_RepayBorrow"."totalBorrows",
            "cEther_evt_RepayBorrow".contract_address,
            "cEther_evt_RepayBorrow".evt_tx_hash,
-           "cEther_evt_RepayBorrow".evt_index
+           "cEther_evt_RepayBorrow".evt_block_time
     FROM compound_v2."cEther_evt_RepayBorrow"
     UNION
     SELECT "CErc20Delegator_evt_RepayBorrow".payer,
@@ -71,12 +71,11 @@ LEFT JOIN (
            "CErc20Delegator_evt_RepayBorrow"."totalBorrows",
            "CErc20Delegator_evt_RepayBorrow".contract_address,
            "CErc20Delegator_evt_RepayBorrow".evt_tx_hash,
-           "CErc20Delegator_evt_RepayBorrow".evt_index
+           "CErc20Delegator_evt_RepayBorrow".evt_block_time
     FROM compound_v2."CErc20Delegator_evt_RepayBorrow"
 ) repay ON events.evt_tx_hash = repay.evt_tx_hash
-LEFT JOIN compound_v2.view_ctokens c ON events."cTokenCollateral" = c.contract_address
-LEFT JOIN compound_v2.view_ctokens c_repay ON repay.contract_address = c_repay.contract_address
-LEFT JOIN ethereum.transactions tx ON events.evt_tx_hash = tx.hash AND block_number >= 7710671
+LEFT JOIN compound.view_ctokens c ON events."cTokenCollateral" = c.contract_address
+LEFT JOIN compound.view_ctokens c_repay ON repay.contract_address = c_repay.contract_address
 LEFT JOIN erc20.tokens t ON c_repay.underlying_token_address = t.contract_address
 LEFT JOIN
   (SELECT minute,
@@ -88,6 +87,6 @@ LEFT JOIN
    UNION SELECT generate_series('2019-11-18', now(), '1 minute'),
                 '\x6B175474E89094C44Da98b954EedeAC495271d0F'::bytea AS contract_address,
                 'DAI' AS symbol,
-                1 AS price) p ON p.minute = date_trunc('minute', tx.block_time)
+                1 AS price) p ON p.minute = date_trunc('minute', repay.evt_block_time)
 AND p.contract_address = c.underlying_token_address
 ;
