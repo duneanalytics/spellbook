@@ -87,6 +87,7 @@ LEFT JOIN
    UNION SELECT generate_series('2019-11-18', now(), '1 minute'),
                 '\x6B175474E89094C44Da98b954EedeAC495271d0F'::bytea AS contract_address,
                 'DAI' AS symbol,
+
                 1 AS price) p ON p.minute = date_trunc('minute', events.evt_block_time)
 AND p.contract_address = c_repay.underlying_token_address
 ;
