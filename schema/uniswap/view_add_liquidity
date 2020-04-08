@@ -8,7 +8,6 @@ token_amount/10^decimals AS token_amount,
 ((token_amount/10^decimals) * tp.price) AS usd_value_of_token,
 token_amount AS token_amount_raw,
 e.token AS token_address,
-exchange AS exchange_address,
 a.contract_address AS exchange_address,
 a.evt_tx_hash AS tx_hash,
 a.evt_block_time AS block_time
