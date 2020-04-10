@@ -28,6 +28,6 @@ LEFT JOIN
           symbol,
           price
    FROM prices.usd
-   WHERE symbol IN ('BAT', 'SAI', 'WETH', 'REP', 'USDC', 'WBTC', 'ZRX')) p ON p.minute = date_trunc('minute', evt_block_time)
+   WHERE symbol IN ('BAT', 'SAI', 'WETH', 'REP', 'USDC', 'WBTC', 'ZRX', 'DAI')) p ON p.minute = date_trunc('minute', evt_block_time)
 AND p.contract_address = c.underlying_token_address
 ;
