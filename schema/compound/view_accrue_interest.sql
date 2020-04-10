@@ -28,10 +28,6 @@ LEFT JOIN
           symbol,
           price
    FROM prices.usd
-   WHERE symbol IN ('BAT', 'SAI', 'WETH', 'REP', 'USDC', 'WBTC', 'ZRX')
-   UNION SELECT generate_series('2019-11-18', now(), '1 minute'),
-                '\x6B175474E89094C44Da98b954EedeAC495271d0F'::bytea AS contract_address,
-                'DAI' AS symbol,
-                1 AS price) p ON p.minute = date_trunc('minute', evt_block_time)
+   WHERE symbol IN ('BAT', 'SAI', 'WETH', 'REP', 'USDC', 'WBTC', 'ZRX')) p ON p.minute = date_trunc('minute', evt_block_time)
 AND p.contract_address = c.underlying_token_address
 ;
