@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW numerai.view_register_user AS
+CREATE OR REPLACE VIEW numerai.view_user_register AS
 SELECT "user",
        "data",
        contract_address,

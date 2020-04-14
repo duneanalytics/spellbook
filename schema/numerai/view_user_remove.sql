@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW numerai.view_remove_user AS
+CREATE OR REPLACE VIEW numerai.view_user_remove AS
 SELECT "user",
        contract_address,
        "evt_tx_hash" AS tx_hash,
