@@ -1,8 +1,11 @@
-CREATE TABLE erc20.tokens (
-    contract_address bytea,
+CREATE TABLE IF NOT EXISTS erc20.tokens (
+    contract_address bytea UNIQUE,
     symbol text,
     decimals integer
 );
+
+BEGIN;
+DELETE FROM erc20.tokens *;
 
 COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\x309627af60f0926daa6041b8279484312f2bf060	USDB	18
@@ -282,11 +285,13 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\x175666d12fc722abd9e4a8ebf5d9b2d17b36b268	WSKR	18
 \\x55296f69f40ea6d20e478533c15a6b08b654e758	XYO	18
 \\x42382f39e7c9f1add5fa5f0c6e24aa62f50be3b3	ZOM	18
-\\x0327112423f3a68efdf1fcf402f6c5cb9f7c33fd	BTC++   18
-\\x3212b29E33587A00FB1C83346f5dBFA69A458923	imBTC   8
-\\x5228a22e72ccc52d415ecfd199f99d0665e7733b	pBTC    18
+\\x0327112423f3a68efdf1fcf402f6c5cb9f7c33fd	BTC++	18
+\\x3212b29E33587A00FB1C83346f5dBFA69A458923	imBTC	8
+\\x5228a22e72ccc52d415ecfd199f99d0665e7733b	pBTC	18
 \.
 
-ALTER TABLE ONLY erc20.tokens ADD CONSTRAINT tokens_contract_address_key UNIQUE (contract_address);
-CREATE INDEX tokens_contract_address_decimals_idx ON erc20.tokens USING btree (contract_address) INCLUDE (decimals);
-CREATE INDEX tokens_symbol_decimals_idx ON erc20.tokens USING btree (symbol) INCLUDE (decimals);
+
+COMMIT;
+
+CREATE INDEX IF NOT EXISTS tokens_contract_address_decimals_idx ON erc20.tokens USING btree (contract_address) INCLUDE (decimals);
+CREATE INDEX IF NOT EXISTS tokens_symbol_decimals_idx ON erc20.tokens USING btree (symbol) INCLUDE (decimals);
