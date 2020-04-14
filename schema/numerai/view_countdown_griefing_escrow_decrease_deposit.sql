@@ -1,6 +1,6 @@
 CREATE OR REPLACE VIEW numerai.view_countdown_griefing_escrow_decrease_deposit AS
 SELECT "user",
-       amount / 10^t.decimals,
+       amount / 10^t.decimals AS amount,
        "newDeposit" / 10^t.decimals AS new_deposit,
        "tokenID" AS token_id,
        t.symbol,
