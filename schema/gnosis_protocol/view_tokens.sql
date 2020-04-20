@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW gnosis_dfusion.view_tokens AS
+CREATE MATERIALIZED VIEW gnosis_dfusion.view_tokens AS
 WITH 
 token_names as (
     SELECT * FROM (VALUES
@@ -37,3 +37,7 @@ UNION all (
         18 as decimals,
         '2020-01-23 20:30:00.000' as add_date
 );
+
+CREATE INDEX view_tokens_1 ON gnosis_dfusion.view_tokens (token_id);
+CREATE INDEX view_tokens_2 ON gnosis_dfusion.view_tokens (symbol);
+CREATE INDEX view_tokens_3 ON gnosis_dfusion.view_tokens (token);
