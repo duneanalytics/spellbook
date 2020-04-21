@@ -1,4 +1,4 @@
-CREATE MATERIALIZED VIEW gnosis_protocol.trades AS
+CREATE MATERIALIZED VIEW gnosis_protocol.view_trades AS
 WITH reverts as (
 SELECT
     reversion.owner,
@@ -36,10 +36,11 @@ JOIN gnosis_protocol."BatchExchange_call_submitSolution" solution
 )
 SELECT
     trades.batch_id,
+    trades.owner as trader_hex,
+    trades.order_id,
     trades.block_time,
     trades.block_number,
     reverts.block_time as revert_time,
-    trades.order_id,
     sell_token."token" as sell_token,
     sell_token."token" as sell_token,
     sell_token."symbol" as sell_token_symbol,
@@ -53,8 +54,7 @@ SELECT
     trades.executed_buy_amount / 10^(buy_token.decimals) as buy_amount,
     ((trades.executed_buy_amount / 10^(buy_token.decimals)) / (trades.executed_sell_amount / 10^(sell_token.decimals))) as price,
     trades.tx_hash,
-    CONCAT('https://etherscan.io/tx/','0x', ENCODE(trades.tx_hash, 'hex')) as solution_tx_link,
-    trades.owner as trader_hex,
+    CONCAT('https://etherscan.io/tx/','0x', ENCODE(trades.tx_hash, 'hex')) as solution_tx_link,    
     CONCAT('0x', ENCODE(trades."owner", 'hex')) as trader
 FROM trades
 LEFT OUTER JOIN reverts
@@ -72,11 +72,13 @@ ORDER BY
     trades.order_id
 
 
-CREATE INDEX trades_1 ON gnosis_protocol.trades (batch_id);
-CREATE INDEX trades_2 ON gnosis_protocol.trades (sell_token_symbol);
-CREATE INDEX trades_3 ON gnosis_protocol.trades (sell_token);
-CREATE INDEX trades_4 ON gnosis_protocol.trades (buy_token_symbol);
-CREATE INDEX trades_5 ON gnosis_protocol.trades (buy_token);
-CREATE INDEX trades_6 ON gnosis_protocol.trades (trader_hex);
-CREATE INDEX trades_7 ON gnosis_protocol.trades (trader_hex, order_id);
+CREATE UNIQUE INDEX IF NOT EXISTS trades_id ON gnosis_protocol.view_trades (batch_id, trader_hex, order_id) ;
+CREATE INDEX trades_1 ON gnosis_protocol.view_trades (batch_id);
+CREATE INDEX trades_2 ON gnosis_protocol.view_trades (sell_token_symbol);
+CREATE INDEX trades_3 ON gnosis_protocol.view_trades (sell_token);
+CREATE INDEX trades_4 ON gnosis_protocol.view_trades (buy_token_symbol);
+CREATE INDEX trades_5 ON gnosis_protocol.view_trades (buy_token);
+CREATE INDEX trades_6 ON gnosis_protocol.view_trades (trader_hex);
+CREATE INDEX trades_7 ON gnosis_protocol.view_trades (trader_hex, order_id);
+
 
