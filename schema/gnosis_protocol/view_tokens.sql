@@ -1,4 +1,4 @@
-CREATE MATERIALIZED VIEW gnosis_dfusion.view_tokens AS
+CREATE MATERIALIZED VIEW gnosis_protocol.view_tokens AS
 WITH 
 token_names as (
     SELECT * FROM (VALUES
@@ -13,7 +13,7 @@ tokens as (
         erc20.symbol,
         erc20.decimals,
         transactions.block_time as add_date
-    FROM gnosis_dfusion."BatchExchange_call_addToken" tokens
+    FROM gnosis_protocol."BatchExchange_call_addToken" tokens
     JOIN ethereum."transactions" transactions
       ON transactions.hash=tokens.call_tx_hash
       AND transactions.success=true
@@ -38,6 +38,6 @@ UNION all (
         '2020-01-23 20:30:00.000' as add_date
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS trades_id ON gnosis_protocol.view_tokens (token_id) ;
-CREATE INDEX view_tokens_1 ON gnosis_dfusion.view_tokens (symbol);
-CREATE INDEX view_tokens_2 ON gnosis_dfusion.view_tokens (token);
+CREATE UNIQUE INDEX IF NOT EXISTS view_tokens_id ON gnosis_protocol.view_tokens (token_id) ;
+CREATE INDEX view_tokens_1 ON gnosis_protocol.view_tokens (symbol);
+CREATE INDEX view_tokens_2 ON gnosis_protocol.view_tokens (token);

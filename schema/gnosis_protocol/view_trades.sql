@@ -69,16 +69,16 @@ JOIN gnosis_protocol.view_tokens sell_token
 ORDER BY 
     trades.batch_id,
     trades.owner,
-    trades.order_id
+    trades.order_id;
 
 
-CREATE UNIQUE INDEX IF NOT EXISTS trades_id ON gnosis_protocol.view_trades (batch_id, trader_hex, order_id) ;
-CREATE INDEX trades_1 ON gnosis_protocol.view_trades (batch_id);
-CREATE INDEX trades_2 ON gnosis_protocol.view_trades (sell_token_symbol);
-CREATE INDEX trades_3 ON gnosis_protocol.view_trades (sell_token);
-CREATE INDEX trades_4 ON gnosis_protocol.view_trades (buy_token_symbol);
-CREATE INDEX trades_5 ON gnosis_protocol.view_trades (buy_token);
-CREATE INDEX trades_6 ON gnosis_protocol.view_trades (trader_hex);
-CREATE INDEX trades_7 ON gnosis_protocol.view_trades (trader_hex, order_id);
+CREATE UNIQUE INDEX IF NOT EXISTS view_trades_id ON gnosis_protocol.view_trades (batch_id, trader_hex, order_id) ;
+CREATE INDEX view_trades_1 ON gnosis_protocol.view_trades (batch_id);
+CREATE INDEX view_trades_2 ON gnosis_protocol.view_trades (sell_token_symbol);
+CREATE INDEX view_trades_3 ON gnosis_protocol.view_trades (sell_token);
+CREATE INDEX view_trades_4 ON gnosis_protocol.view_trades (buy_token_symbol);
+CREATE INDEX view_trades_5 ON gnosis_protocol.view_trades (buy_token);
+CREATE INDEX view_trades_6 ON gnosis_protocol.view_trades (trader_hex);
+CREATE INDEX view_trades_7 ON gnosis_protocol.view_trades (trader_hex, order_id);
 
 
