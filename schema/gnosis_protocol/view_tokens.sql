@@ -41,3 +41,5 @@ UNION all (
 CREATE UNIQUE INDEX IF NOT EXISTS view_tokens_id ON gnosis_protocol.view_tokens (token_id) ;
 CREATE INDEX view_tokens_1 ON gnosis_protocol.view_tokens (symbol);
 CREATE INDEX view_tokens_2 ON gnosis_protocol.view_tokens (token);
+
+SELECT cron.schedule('0/5 0 * * *', 'REFRESH MATERIALIZED VIEW gnosis_protocol.view_trades');

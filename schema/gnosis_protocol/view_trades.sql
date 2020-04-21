@@ -82,3 +82,4 @@ CREATE INDEX view_trades_6 ON gnosis_protocol.view_trades (trader_hex);
 CREATE INDEX view_trades_7 ON gnosis_protocol.view_trades (trader_hex, order_id);
 
 
+SELECT cron.schedule('0/1 0 * * *', 'REFRESH MATERIALIZED VIEW gnosis_protocol.view_trades');
