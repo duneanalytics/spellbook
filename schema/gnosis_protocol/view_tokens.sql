@@ -38,6 +38,6 @@ UNION all (
         '2020-01-23 20:30:00.000' as add_date
 );
 
-CREATE INDEX view_tokens_1 ON gnosis_dfusion.view_tokens (token_id);
-CREATE INDEX view_tokens_2 ON gnosis_dfusion.view_tokens (symbol);
-CREATE INDEX view_tokens_3 ON gnosis_dfusion.view_tokens (token);
+CREATE UNIQUE INDEX IF NOT EXISTS trades_id ON gnosis_protocol.view_tokens (token_id) ;
+CREATE INDEX view_tokens_1 ON gnosis_dfusion.view_tokens (symbol);
+CREATE INDEX view_tokens_2 ON gnosis_dfusion.view_tokens (token);
