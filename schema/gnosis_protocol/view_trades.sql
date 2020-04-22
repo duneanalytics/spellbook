@@ -38,6 +38,7 @@ SELECT
     trades.batch_id,
     trades.owner as trader_hex,
     trades.order_id,
+    trades.trade_sub_id,
     trades.block_time,
     trades.block_number,
     reverts.block_time as revert_time,
@@ -68,10 +69,11 @@ JOIN gnosis_protocol.view_tokens sell_token
 ORDER BY 
     trades.batch_id,
     trades.owner,
-    trades.order_id;
+    trades.order_id,
+    trade_sub_id;
 
 
-CREATE UNIQUE INDEX IF NOT EXISTS view_trades_id ON gnosis_protocol.view_trades (batch_id, trader_hex, order_id) ;
+CREATE UNIQUE INDEX IF NOT EXISTS view_trades_id ON gnosis_protocol.view_trades (batch_id, trader_hex, order_id, trade_sub_id);
 CREATE INDEX view_trades_1 ON gnosis_protocol.view_trades (batch_id);
 CREATE INDEX view_trades_2 ON gnosis_protocol.view_trades (sell_token_symbol);
 CREATE INDEX view_trades_3 ON gnosis_protocol.view_trades (sell_token);
