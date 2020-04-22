@@ -42,14 +42,13 @@ SELECT
     trades.block_number,
     reverts.block_time as revert_time,
     sell_token."token" as sell_token,
-    sell_token."token" as sell_token,
     sell_token."symbol" as sell_token_symbol,
     sell_token."decimals" as sell_token_decimals,
     trades.executed_sell_amount as sell_amount_atoms,
     trades.executed_sell_amount / 10^(sell_token.decimals) as sell_amount,
     buy_token.token as buy_token,
     buy_token.symbol as buy_token_symbol,
-    buy_token.decimals as sell_token_decimals,
+    buy_token.decimals as buy_token_decimals,
     trades.executed_buy_amount as buy_amount_atoms,
     trades.executed_buy_amount / 10^(buy_token.decimals) as buy_amount,
     ((trades.executed_buy_amount / 10^(buy_token.decimals)) / (trades.executed_sell_amount / 10^(sell_token.decimals))) as price,
@@ -78,8 +77,7 @@ CREATE INDEX view_trades_2 ON gnosis_protocol.view_trades (sell_token_symbol);
 CREATE INDEX view_trades_3 ON gnosis_protocol.view_trades (sell_token);
 CREATE INDEX view_trades_4 ON gnosis_protocol.view_trades (buy_token_symbol);
 CREATE INDEX view_trades_5 ON gnosis_protocol.view_trades (buy_token);
-CREATE INDEX view_trades_6 ON gnosis_protocol.view_trades (trader_hex);
-CREATE INDEX view_trades_7 ON gnosis_protocol.view_trades (trader_hex, order_id);
+CREATE INDEX view_trades_6 ON gnosis_protocol.view_trades (trader_hex, order_id);
 
 
 SELECT cron.schedule('0-59 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol.view_trades');
