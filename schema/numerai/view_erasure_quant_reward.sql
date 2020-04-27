@@ -16,5 +16,4 @@ WHERE "from" IN ('\x0000000000377D181A0ebd08590c6B399b272000',
   AND "to" IN
     (SELECT DISTINCT staker
      FROM erasure_v100."OneWayGriefing_evt_StakeAdded")
-ORDER BY "from"
 ;
