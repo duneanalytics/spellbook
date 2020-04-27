@@ -12,6 +12,7 @@ SELECT
 FROM gnosis_protocol."BatchExchange_evt_TradeReversion" reversion
 JOIN gnosis_protocol."BatchExchange_call_submitSolution" solution
     ON solution.call_tx_hash=reversion.evt_tx_hash
+    AND solution.call_success = true
 ),
 trades as (
 SELECT
@@ -33,6 +34,7 @@ SELECT
 FROM gnosis_protocol."BatchExchange_evt_Trade" trades
 JOIN gnosis_protocol."BatchExchange_call_submitSolution" solution
     ON solution.call_tx_hash=trades.evt_tx_hash
+    AND solution.call_success = true
 )
 SELECT
     trades.batch_id,
