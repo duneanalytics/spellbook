@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW erasure_v110.view_tournament_grief AS
+CREATE OR REPLACE VIEW erasure_numerai.view_burn AS
 SELECT punisher,
        staker,
        punishment / 10^t.decimals AS nmr_punishment,

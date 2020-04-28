@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW erasure_v130.view_erasure_bay_deposit_reward AS
+CREATE OR REPLACE VIEW erasure_bay.view_deposit_reward AS
 SELECT buyer AS requester,
        "amount" / 10^t.decimals AS dai_reward,
        "amount" / 10^t.decimals * p.price AS usd_reward,

@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW erasure_v130.view_erasure_bay_deposit_stake AS
+CREATE OR REPLACE VIEW erasure_bay.view_deposit_stake AS
 SELECT seller AS fulfiller,
        "amount" / 10^t.decimals AS dai_stake,
        "amount" / 10^t.decimals * p.price AS usd_stake,

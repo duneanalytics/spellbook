@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW erasure_v130.view_erasure_bay_submit_data AS
+CREATE OR REPLACE VIEW erasure_bay.view_submit_data AS
 SELECT "data" ->> 'nonce' AS nonce,
        "data" ->> 'esp_version' AS esp_version,
        "data" ->> 'filename' AS filename,

@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW erasure_v110.view_tournament_stake AS
+CREATE OR REPLACE VIEW erasure_quant.view_stake AS
 SELECT staker,
        funder,
        amount / 10^t.decimals AS nmr_stake,
@@ -11,7 +11,7 @@ SELECT staker,
 FROM
   (SELECT *,
           'NMR' AS symbol
-  FROM erasure_v110."SimpleGriefing_evt_StakeAdded") s
+  FROM erasure_v100."OneWayGriefing_evt_StakeAdded") s
 LEFT JOIN erc20.tokens t ON s.symbol = t.symbol
 LEFT JOIN prices.usd p ON p.minute = date_trunc('minute', s.evt_block_time)
 AND p.symbol = t.symbol

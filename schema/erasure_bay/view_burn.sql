@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW erasure_v130.view_erasure_bay_grief AS
+CREATE OR REPLACE VIEW erasure_bay.view_burn AS
 SELECT "tokenID" AS token_id,
        staker,
        amount / 10^t.decimals AS dai_amount,

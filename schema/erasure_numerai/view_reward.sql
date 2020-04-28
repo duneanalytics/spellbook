@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW erasure_v110.view_tournament_reward AS
+CREATE OR REPLACE VIEW erasure_numerai.view_reward AS
 SELECT "currentStake" / 10^t.decimals AS nmr_stake,
        "amountToAdd" / 10^t.decimals AS nmr_reward,
        "currentStake" / 10^t.decimals * p.price AS usd_stake,

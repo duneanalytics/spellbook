@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW erasure_v100.view_erasure_quant_reward
+CREATE OR REPLACE VIEW erasure_quant.view_reward
 SELECT "from" AS treasury,
        "to" AS staker,
        value / 10^t.decimals AS nmr_reward,

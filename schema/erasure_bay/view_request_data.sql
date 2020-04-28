@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW erasure_v130.view_erasure_bay_request_data AS
+CREATE OR REPLACE VIEW erasure_bay.view_request_data AS
 SELECT operator,
        buyer AS requester,
        seller AS fullfiller,
