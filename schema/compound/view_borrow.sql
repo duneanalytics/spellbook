@@ -22,13 +22,6 @@ FROM
    FROM compound_v2."CErc20Delegator_evt_Borrow") events
 LEFT JOIN compound.view_ctokens c ON events.contract_address = c.contract_address
 LEFT JOIN erc20.tokens t ON c.underlying_token_address = t.contract_address
-LEFT JOIN
-  (SELECT minute,
-          contract_address,
-          symbol,
-          price
-   FROM prices.usd
-   WHERE symbol IN ('BAT', 'SAI', 'WETH', 'REP', 'USDC', 'WBTC', 'ZRX', 'DAI')
-) p ON p.minute = date_trunc('minute', evt_block_time)
-AND p.contract_address = c.underlying_token_address
+LEFT JOIN prices.usd p ON p.minute = date_trunc('minute', evt_block_time)
+           AND p.contract_address = c.underlying_token_address
 ;
