@@ -77,6 +77,6 @@ LEFT JOIN (
 LEFT JOIN compound.view_ctokens c ON events."cTokenCollateral" = c.contract_address
 LEFT JOIN compound.view_ctokens c_repay ON repay.contract_address = c_repay.contract_address
 LEFT JOIN erc20.tokens t ON c_repay.underlying_token_address = t.contract_address
-LEFT JOIN prices.usd p ON p.minute = date_trunc('minute', evt_block_time)
+LEFT JOIN prices.usd p ON p.minute = date_trunc('minute', events.evt_block_time)
            AND p.contract_address = c.underlying_token_address
 ;
