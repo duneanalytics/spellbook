@@ -16,63 +16,66 @@ JOIN gnosis_protocol."BatchExchange_call_submitSolution" solution
 ),
 trades as (
 SELECT
-    solution."batchId" as batch_id,
-    trades.evt_block_time as block_time,
+	-- id
+    --solution."batchId" as batch_id,
+    floor(extract(epoch from solution.evt_block_time) / 300) - 1 AS batch_id, -- The event time tells us the batch. Between minute 0-4 is resolved batch N-1
+    trades."owner" AS trader_hex,    
     trades."orderId" as order_id,
-    trades."owner",
-    trades.evt_block_number as block_number,
-    trades.evt_index,
-    trades."buyToken" as buy_token_id,
-    trades."sellToken" as sell_token_id,
-    trades."executedBuyAmount" as executed_buy_amount,
-    trades."executedSellAmount" as executed_sell_amount,
-    trades.evt_tx_hash as tx_hash,
     RANK() OVER (
-        PARTITION BY solution."batchId", trades.owner, trades."orderId"
+        PARTITION BY solution.evt_block_time, trades.owner, trades."orderId"
         ORDER BY trades.evt_block_number, trades.evt_index
-    ) as trade_sub_id
-FROM gnosis_protocol."BatchExchange_evt_Trade" trades
-JOIN gnosis_protocol."BatchExchange_call_submitSolution" solution
-    ON solution.call_tx_hash=trades.evt_tx_hash
-    AND solution.call_success = true
-)
-SELECT
-    trades.batch_id,
-    trades.owner as trader_hex,
-    trades.order_id,
-    trades.trade_sub_id,
-    trades.block_time,
-    trades.block_number,
-    reverts.block_time as revert_time,
+    ) as trade_sub_id,
+    -- Event index
+    trades.evt_index AS evt_index_trades,
+    solution.evt_index AS evt_index_solution,
+    -- dates & block info
+    solution.evt_block_number,
+    solution.evt_block_time as block_time,
+    to_timestamp((floor(extract(epoch from solution.evt_block_time) / 300)) * 300) AS trade_date,
+    -- sell token
+    trades."sellToken" as sell_token_id,
     sell_token."token" as sell_token,
     sell_token."symbol" as sell_token_symbol,
     sell_token."decimals" as sell_token_decimals,
-    trades.executed_sell_amount as sell_amount_atoms,
-    trades.executed_sell_amount / 10^(sell_token.decimals) as sell_amount,
-    buy_token.token as buy_token,
+    -- sell amounts
+    trades."executedSellAmount" as sell_amount_atoms,
+    trades."executedSellAmount" / 10^(sell_token.decimals) as sell_amount,
+    -- buy token
+    trades."buyToken" as buy_token_id,
+    buy_token.token as buy_token,    
     buy_token.symbol as buy_token_symbol,
     buy_token.decimals as buy_token_decimals,
-    trades.executed_buy_amount as buy_amount_atoms,
-    trades.executed_buy_amount / 10^(buy_token.decimals) as buy_amount,
-    ((trades.executed_buy_amount / 10^(buy_token.decimals)) / (trades.executed_sell_amount / 10^(sell_token.decimals))) as price,
-    trades.tx_hash,
-    CONCAT('https://etherscan.io/tx/','0x', ENCODE(trades.tx_hash, 'hex')) as solution_tx_link,    
-    CONCAT('0x', ENCODE(trades."owner", 'hex')) as trader
+    -- buy amounts
+    trades."executedBuyAmount" as buy_amount_atoms,
+    trades."executedBuyAmount" / 10^(buy_token.decimals) as buy_amount,
+    -- Tx and block info
+    trades.evt_block_number as block_number,
+    trades.evt_tx_hash as tx_hash
+FROM gnosis_protocol."BatchExchange_evt_Trade" trades
+JOIN gnosis_protocol."BatchExchange_evt_SolutionSubmission" solution
+    ON solution.evt_tx_hash=trades.evt_tx_hash
+JOIN gnosis_protocol.view_tokens buy_token
+    ON trades."buyToken" = buy_token.token_id
+JOIN gnosis_protocol.view_tokens sell_token
+    ON trades."sellToken" = sell_token.token_id    
+)
+SELECT
+	trades.*,
+	reverts.block_time as revert_time
 FROM trades
 LEFT OUTER JOIN reverts
-    ON trades.owner = reverts.owner
+    ON trades.trader_hex = reverts.owner
     AND trades.order_id = reverts.order_id
     AND trades.trade_sub_id = reverts.trade_sub_id
     AND trades.batch_id = reverts.batch_id
-JOIN gnosis_protocol.view_tokens buy_token
-    ON trades.buy_token_id = buy_token.token_id
-JOIN gnosis_protocol.view_tokens sell_token
-    ON trades.sell_token_id = sell_token.token_id
+-- WHERE trades.batch_id = 5267142
 ORDER BY 
     trades.batch_id,
-    trades.owner,
+    trades.trader_hex,
     trades.order_id,
     trade_sub_id;
+
+
 
 
 CREATE UNIQUE INDEX IF NOT EXISTS view_trades_id ON gnosis_protocol.view_trades (batch_id, trader_hex, order_id, trade_sub_id);
