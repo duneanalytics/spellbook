@@ -288,6 +288,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\x0327112423f3a68efdf1fcf402f6c5cb9f7c33fd	BTC++	18
 \\x3212b29E33587A00FB1C83346f5dBFA69A458923	imBTC	8
 \\x5228a22e72ccc52d415ecfd199f99d0665e7733b	pBTC	18
+\\xa3d58c4E56fedCae3a7c43A725aeE9A71F0ece4e MET 18
 \.
 
 
