@@ -16,8 +16,7 @@ JOIN gnosis_protocol."BatchExchange_call_submitSolution" solution
 ),
 trades as (
 SELECT
-	-- id
-    --solution."batchId" as batch_id,
+	  -- id
     floor(extract(epoch from solution.evt_block_time) / 300) - 1 AS batch_id, -- The event time tells us the batch. Between minute 0-4 is resolved batch N-1
     trades."owner" AS trader_hex,    
     trades."orderId" as order_id,
