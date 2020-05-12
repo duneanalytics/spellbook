@@ -78,12 +78,12 @@ ORDER BY
 
 
 CREATE UNIQUE INDEX IF NOT EXISTS view_trades_id ON gnosis_protocol.view_trades (batch_id, trader_hex, order_id, trade_sub_id);
-CREATE INDEX view_trades_1 ON gnosis_protocol.view_trades (trade_date);
-CREATE INDEX view_trades_2 ON gnosis_protocol.view_trades (sell_token_symbol);
-CREATE INDEX view_trades_3 ON gnosis_protocol.view_trades (sell_token);
-CREATE INDEX view_trades_4 ON gnosis_protocol.view_trades (buy_token_symbol);
-CREATE INDEX view_trades_5 ON gnosis_protocol.view_trades (buy_token);
-CREATE INDEX view_trades_6 ON gnosis_protocol.view_trades (trader_hex, order_id);
+CREATE INDEX view_trades_idx_1 ON gnosis_protocol.view_trades (trade_date);
+CREATE INDEX view_trades_idx_2 ON gnosis_protocol.view_trades (sell_token_symbol);
+CREATE INDEX view_trades_idx_3 ON gnosis_protocol.view_trades (sell_token);
+CREATE INDEX view_trades_idx_4 ON gnosis_protocol.view_trades (buy_token_symbol);
+CREATE INDEX view_trades_idx_5 ON gnosis_protocol.view_trades (buy_token);
+CREATE INDEX view_trades_idx_6 ON gnosis_protocol.view_trades (trader_hex, order_id);
 
 
 
