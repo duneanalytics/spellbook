@@ -17,7 +17,7 @@ JOIN gnosis_protocol."BatchExchange_call_submitSolution" solution
 trades AS (
 SELECT
 	  -- id
-    floor(extract(epoch from solution.evt_block_time) / 300) - 1 AS batch_id, -- The event time tells us the batch. Between minute 0-4 is resolved batch N-1
+    FLOOR(EXTRACT(epoch from solution.evt_block_time) / 300) - 1 AS batch_id, -- The event time tells us the batch. Between minute 0-4 is resolved batch N-1
     trades."owner" AS trader_hex,    
     trades."orderId" AS order_id,
     RANK() OVER (
@@ -30,7 +30,7 @@ SELECT
     -- dates & block info
     solution.evt_block_number,
     solution.evt_block_time AS block_time,
-    to_timestamp((floor(extract(epoch from solution.evt_block_time) / 300)) * 300) AS trade_date,
+    TO_TIMESTAMP((FLOOR(EXTRACT(epoch from solution.evt_block_time) / 300)) * 300) AS trade_date,
     -- sell token
     trades."sellToken" AS sell_token_id,
     sell_token."token" AS sell_token,
