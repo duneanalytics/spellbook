@@ -7,5 +7,5 @@ SELECT "_convertibleToken" AS convertible_token,
        evt_tx_hash AS tx_hash,
        evt_block_time AS block_time
 FROM bancor."BancorConverterRegistry_evt_ConvertibleTokenAdded" s
-LEFT JOIN erc20.tokens t ON s."_convertibleToken" = t.contract_address;
+LEFT JOIN erc20.tokens t ON s."_convertibleToken" = t.contract_address
 ;
