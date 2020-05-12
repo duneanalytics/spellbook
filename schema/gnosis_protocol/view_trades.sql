@@ -15,49 +15,52 @@ JOIN gnosis_protocol."BatchExchange_call_submitSolution" solution
     AND solution.call_success = true
 ),
 trades AS (
-SELECT
-	  -- id
-    FLOOR(EXTRACT(epoch from solution.evt_block_time) / 300) - 1 AS batch_id, -- The event time tells us the batch. Between minute 0-4 is resolved batch N-1
-    trades."owner" AS trader_hex,    
-    trades."orderId" AS order_id,
-    RANK() OVER (
-        PARTITION BY solution.evt_block_time, trades.owner, trades."orderId"
-        ORDER BY trades.evt_block_number, trades.evt_index
-    ) AS trade_sub_id,
-    -- Event index
-    trades.evt_index AS evt_index_trades,
-    solution.evt_index AS evt_index_solution,
-    -- dates & block info
-    solution.evt_block_number,
-    solution.evt_block_time AS block_time,
-    TO_TIMESTAMP((FLOOR(EXTRACT(epoch from solution.evt_block_time) / 300)) * 300) AS trade_date,
-    -- sell token
-    trades."sellToken" AS sell_token_id,
-    sell_token."token" AS sell_token,
-    sell_token."symbol" AS sell_token_symbol,
-    sell_token."decimals" AS sell_token_decimals,
-    -- sell amounts
-    trades."executedSellAmount" AS sell_amount_atoms,
-    trades."executedSellAmount" / 10^(sell_token.decimals) AS sell_amount,
-    -- buy token
-    trades."buyToken" AS buy_token_id,
-    buy_token.token AS buy_token,    
-    buy_token.symbol AS buy_token_symbol,
-    buy_token.decimals AS buy_token_decimals,
-    -- buy amounts
-    trades."executedBuyAmount" AS buy_amount_atoms,
-    trades."executedBuyAmount" / 10^(buy_token.decimals) AS buy_amount,
-    -- Tx and block info
-    trades.evt_block_number AS block_number,
-    trades.evt_tx_hash AS tx_hash
-FROM gnosis_protocol."BatchExchange_evt_Trade" trades
-JOIN gnosis_protocol."BatchExchange_evt_SolutionSubmission" solution
-    ON solution.evt_tx_hash=trades.evt_tx_hash
-JOIN gnosis_protocol.view_tokens buy_token
-    ON trades."buyToken" = buy_token.token_id
-JOIN gnosis_protocol.view_tokens sell_token
-    ON trades."sellToken" = sell_token.token_id    
-)
+SELECT	
+	TO_TIMESTAMP((trades_aux.batch_id + 1) * 300) AS trade_date,
+	RANK() OVER (
+	    PARTITION BY trades_aux.batch_id, trades_aux.trader_hex, trades_aux.order_id
+	    ORDER BY trades_aux.evt_block_number, trades_aux.evt_index_trades
+	) AS trade_sub_id,
+	trades_aux.*
+FROM (
+	SELECT
+		-- id
+	    FLOOR(EXTRACT(epoch from solution.evt_block_time) / 300) - 1 AS batch_id, -- The event time tells us the batch. Between minute 0-4 is resolved batch N-1
+	    trades."owner" AS trader_hex,    
+	    trades."orderId" AS order_id,	    
+	    -- Event index
+	    trades.evt_index AS evt_index_trades,
+	    solution.evt_index AS evt_index_solution,
+	    -- dates & block info
+	    solution.evt_block_number,
+	    solution.evt_block_time AS block_time,	    
+	    -- sell token
+	    trades."sellToken" AS sell_token_id,
+	    sell_token."token" AS sell_token,
+	    sell_token."symbol" AS sell_token_symbol,
+	    sell_token."decimals" AS sell_token_decimals,
+	    -- sell amounts
+	    trades."executedSellAmount" AS sell_amount_atoms,
+	    trades."executedSellAmount" / 10^(sell_token.decimals) AS sell_amount,
+	    -- buy token
+	    trades."buyToken" AS buy_token_id,
+	    buy_token.token AS buy_token,    
+	    buy_token.symbol AS buy_token_symbol,
+	    buy_token.decimals AS buy_token_decimals,
+	    -- buy amounts
+	    trades."executedBuyAmount" AS buy_amount_atoms,
+	    trades."executedBuyAmount" / 10^(buy_token.decimals) AS buy_amount,
+	    -- Tx and block info
+	    trades.evt_block_number AS block_number,
+	    trades.evt_tx_hash AS tx_hash
+	FROM gnosis_protocol."BatchExchange_evt_Trade" trades
+	JOIN gnosis_protocol."BatchExchange_evt_SolutionSubmission" solution
+	    ON solution.evt_tx_hash=trades.evt_tx_hash
+	JOIN gnosis_protocol.view_tokens buy_token
+	    ON trades."buyToken" = buy_token.token_id
+	JOIN gnosis_protocol.view_tokens sell_token
+	    ON trades."sellToken" = sell_token.token_id        
+) AS trades_aux)
 SELECT
 	trades.*,
 	reverts.block_time AS revert_time
@@ -67,7 +70,6 @@ LEFT OUTER JOIN reverts
     AND trades.order_id = reverts.order_id
     AND trades.trade_sub_id = reverts.trade_sub_id
     AND trades.batch_id = reverts.batch_id
--- WHERE trades.batch_id = 5267142
 ORDER BY 
     trades.batch_id,
     trades.trader_hex,
