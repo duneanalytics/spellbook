@@ -20,8 +20,31 @@ WITH token_priorities AS (
         (86, 10), -- sBTC
         (85, 49), -- sEUR
         (84, 18)  -- GNO
-    ) as t (priority, token_id)
+    ) AS t (priority, token_id)
     -- ALL TOKENS: 	SELECT token_id, symbol FROM gnosis_protocol.view_tokens
+),
+solution AS (
+  SELECT
+  	FLOOR(EXTRACT(epoch FROM evt_block_time) / 300) - 1 AS batch_id,
+    -- The event time tells us the batch. Between minute 0-4 is resolved batch N-1
+    evt_block_time,
+    evt_index,
+    UNNEST(solution."tokenIdsForPrice") AS token_id,
+    UNNEST(solution.prices) AS token_owl_price,
+    evt_block_number,
+    evt_tx_hash
+  FROM gnosis_protocol. "BatchExchange_evt_SolutionSubmission" solution
+),
+solution_owl AS (
+	SELECT DISTINCT
+		batch_id,
+		evt_block_time,
+		evt_index,
+		0::NUMERIC AS token_id,
+		1000000000000000000::NUMERIC AS token_owl_price,
+		evt_block_number,
+		evt_tx_hash 
+	FROM solution
 ),
 prices_in_owl AS (
   SELECT
@@ -40,20 +63,11 @@ prices_in_owl AS (
     -- price in OWL
     solution.token_owl_price / 10 ^(36 - tokens.decimals) AS token_owl_price
   FROM (
-      SELECT
-        floor(extract(epoch
-      from evt_block_time) / 300) - 1 AS batch_id,
-        -- The event time tells us the batch. Between minute 0-4 is resolved batch N-1
-        evt_block_time,
-        evt_index,
-        UNNEST(solution."tokenIdsForPrice") AS token_id,
-        UNNEST(solution.prices) AS token_owl_price,
-        evt_block_number,
-        evt_tx_hash
-      FROM gnosis_protocol. "BatchExchange_evt_SolutionSubmission" solution
-    ) solution
-  JOIN gnosis_protocol.view_tokens tokens ON solution.token_id = tokens.token_id 
-  -- WHERE solution.batch_id BETWEEN 5267142 AND 5269500
+  	SELECT * FROM solution 
+  	UNION
+  	SELECT * FROM solution_owl
+  ) AS solution
+  JOIN gnosis_protocol.view_tokens tokens ON solution.token_id = tokens.token_id  
 ),
 prices_in_usd AS (
   SELECT
@@ -77,7 +91,7 @@ prices_in_usd AS (
     prices_in_owl.decimals
   FROM prices_in_owl
   LEFT OUTER JOIN prices.usd usd_price ON usd_price.contract_address = token
-    AND usd_price.minute = date_trunc('minute', block_time) -- TODO: It can be slighly improved if we use the time of the "official" trade (end of the batch) instead of submission, but also more costly query
+    AND usd_price.minute = DATE_TRUNC('minute', block_time) -- TODO: It can be slighly improved if we use the time of the "official" trade (end of the batch) instead of submission, but also more costly query
 ),
 best_owl_price AS (
   SELECT
@@ -110,7 +124,7 @@ SELECT
   prices_in_usd.evt_index,
   prices_in_usd.token_id,
   -- price date
-  to_timestamp((prices_in_usd.batch_id + 1) * 300) AS price_date,
+  TO_TIMESTAMP((prices_in_usd.batch_id + 1) * 300) AS price_date,
   -- Block / tx
   prices_in_usd.block_number AS block_number_solution,
   prices_in_usd.block_time AS block_time_solution,
@@ -138,7 +152,7 @@ SELECT
   --		"token_usd_price": OWL-USD
   --				* Is the best estimation we can give for the price in USD for the token
   --				* All the other prices are nice to know, but this one is the one we are really interested in. The other prices help us calculate this one
-  --				* Calculates it using the price in OWL that reports the solver ) and our best estimate of OWL price in USD (owl_usd_price)
+  --				* Calculates it using the price in OWL that reports the solver and our best estimate of OWL price in USD (owl_usd_price)
   --				* token_usd_price = token_owl_price * owl_usd_price
   --				* NOTE: Alternativelly, it could have been used the external token price if available, but it was prefered to use uniform OWL prices sol USD price are coherent with OWL prices (they keep the same proportion within the batch)
   prices_in_usd.token_owl_price,
@@ -157,9 +171,9 @@ LEFT OUTER JOIN best_owl_price ON best_owl_price.batch_id = prices_in_usd.batch_
 
 
 CREATE UNIQUE INDEX IF NOT EXISTS view_price_batch_id ON gnosis_protocol.view_price_batch (batch_id, token_id, evt_index);
-CREATE INDEX view_price_batch_1 ON gnosis_protocol.view_price_batch (token_id);
-CREATE INDEX view_price_batch_2 ON gnosis_protocol.view_price_batch (symbol);
-CREATE INDEX view_price_batch_3 ON gnosis_protocol.view_price_batch (price_date);
+CREATE INDEX view_price_batch_idx_1 ON gnosis_protocol.view_price_batch (token_id);
+CREATE INDEX view_price_batch_idx_2 ON gnosis_protocol.view_price_batch (symbol);
+CREATE INDEX view_price_batch_idx_3 ON gnosis_protocol.view_price_batch (price_date);
 
 SELECT cron.schedule('0,5,10,15,20,25,30,35,40,45,50,55 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol.view_price_batch');
 COMMIT;
