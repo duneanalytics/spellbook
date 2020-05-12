@@ -1,3 +1,5 @@
+BEGIN;
+DROP MATERIALIZED VIEW IF EXISTS gnosis_protocol.view_tokens;
 CREATE MATERIALIZED VIEW gnosis_protocol.view_tokens AS
 WITH 
 token_names as (
@@ -43,3 +45,4 @@ CREATE INDEX view_tokens_1 ON gnosis_protocol.view_tokens (symbol);
 CREATE INDEX view_tokens_2 ON gnosis_protocol.view_tokens (token);
 
 SELECT cron.schedule('0,5,10,15,20,25,30,35,40,45,50,55 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol.view_tokens');
+COMMIT;

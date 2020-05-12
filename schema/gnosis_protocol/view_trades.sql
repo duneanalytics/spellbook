@@ -1,3 +1,6 @@
+BEGIN;
+DROP MATERIALIZED VIEW IF EXISTS gnosis_protocol.view_trades;
+
 CREATE MATERIALIZED VIEW gnosis_protocol.view_trades AS
 WITH reverts AS (
 SELECT
@@ -90,3 +93,4 @@ CREATE INDEX view_trades_idx_6 ON gnosis_protocol.view_trades (trader_hex, order
 
 
 SELECT cron.schedule('0-59 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol.view_trades');
+COMMIT;

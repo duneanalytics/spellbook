@@ -1,3 +1,5 @@
+BEGIN;
+DROP MATERIALIZED VIEW IF EXISTS gnosis_safe.view_safes;
 create materialized view gnosis_safe.view_safes as
     with safe_setups as (
         select call_tx_hash as tx_hash, _threshold as threshold, array_length(_owners, 1) as owners
@@ -64,3 +66,6 @@ create materialized view gnosis_safe.view_safes as
     )
     select creation_block_number, creation_time, address, safe_type
     from safes;
+
+SELECT cron.schedule('0 0 * * *', 'REFRESH MATERIALIZED VIEW gnosis_safe.view_safes');
+COMMIT;
