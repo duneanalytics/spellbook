@@ -25,15 +25,30 @@ WITH token_priorities AS (
 ),
 solution AS (
   SELECT
-  	FLOOR(EXTRACT(epoch FROM evt_block_time) / 300) - 1 AS batch_id,
-    -- The event time tells us the batch. Between minute 0-4 is resolved batch N-1
-    evt_block_time,
-    evt_index,
-    UNNEST(solution."tokenIdsForPrice") AS token_id,
-    UNNEST(solution.prices) AS token_owl_price,
-    evt_block_number,
-    evt_tx_hash
-  FROM gnosis_protocol. "BatchExchange_evt_SolutionSubmission" solution
+  	batch_id,
+  	evt_block_time,
+  	evt_index,
+  	token_id,
+  	token_owl_price,
+  	evt_block_number,
+  	evt_tx_hash
+  FROM (
+  	SELECT
+	  	FLOOR(EXTRACT(epoch FROM evt_block_time) / 300) - 1 AS batch_id,
+	    -- The event time tells us the batch. Between minute 0-4 is resolved batch N-1
+	    evt_block_time,
+	    evt_index,
+	    UNNEST(solution."tokenIdsForPrice") AS token_id,
+	    UNNEST(solution.prices) AS token_owl_price,
+	    evt_block_number,
+	    evt_tx_hash,
+	    RANK() OVER (
+	      PARTITION BY FLOOR(EXTRACT(epoch FROM evt_block_time) / 300)
+	      ORDER BY evt_block_time DESC, evt_index DESC
+	    ) AS solution_rank
+	  FROM gnosis_protocol. "BatchExchange_evt_SolutionSubmission" solution
+  ) AS unique_solutions
+  WHERE solution_rank = 1
 ),
 solution_owl AS (
 	SELECT DISTINCT
@@ -43,7 +58,7 @@ solution_owl AS (
 		0::NUMERIC AS token_id,
 		1000000000000000000::NUMERIC AS token_owl_price,
 		evt_block_number,
-		evt_tx_hash 
+		evt_tx_hash
 	FROM solution
 ),
 prices_in_owl AS (
@@ -67,7 +82,7 @@ prices_in_owl AS (
   	UNION
   	SELECT * FROM solution_owl
   ) AS solution
-  JOIN gnosis_protocol.view_tokens tokens ON solution.token_id = tokens.token_id  
+  JOIN gnosis_protocol.view_tokens tokens ON solution.token_id = tokens.token_id
 ),
 prices_in_usd AS (
   SELECT
@@ -111,9 +126,7 @@ best_owl_price AS (
         ) AS price_rank
       FROM prices_in_usd
       LEFT OUTER JOIN token_priorities ON prices_in_usd.token_id = token_priorities.token_id
-      WHERE
-        0 = 0
-        AND token_usd_price IS NOT NULL
+      WHERE token_usd_price IS NOT NULL
     ) AS ranked_owl_prices
   WHERE
     price_rank = 1
