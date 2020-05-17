@@ -32,17 +32,6 @@ WITH tmp AS
           evt_tx_hash AS tx_hash,
           evt_block_time AS block_time
    FROM bancor."BancorChange_evt_Change"
-   UNION ALL
-   SELECT "_fromToken" AS source_token_address,
-          "_toToken" AS target_token_address,
-          "_trader" AS trader,
-          "_fromAmount" AS source_token_amount,
-          "_toAmount" AS target_token_amount,
-          NULL AS conversion_fee,
-          contract_address,
-          evt_tx_hash AS tx_hash,
-          evt_block_time AS block_time
-   FROM bancor."BancorNetwork_v1_evt_Conversion"
 ),
 conversions AS
   (SELECT *
@@ -63,15 +52,29 @@ SELECT source_token_address,
        source_token_amount / 10^t1.decimals * p1.price AS source_usd_amount,
        target_token_amount / 10^t2.decimals AS target_token_amount,
        target_token_amount / 10^t2.decimals * p2.price AS target_usd_amount,
-       conversion_fee / 10^t2.decimals AS conversion_fee,
+       conversion_fee / 10^t2.decimals AS conversion_token_fee,
+       conversion_fee / 10^t2.decimals * p2.price AS conversion_usd_fee,
        s.contract_address,
        tx_hash,
        block_time
 FROM conversions s
-LEFT JOIN erc20.tokens t1 ON s.source_token_address = t1.contract_address
+LEFT JOIN
+  (SELECT *
+   FROM erc20.tokens
+   UNION
+   SELECT *
+   FROM bancor.view_smart_tokens) t1 ON s.source_token_address = t1.contract_address
 LEFT JOIN prices.usd p1 ON p1.minute = date_trunc('minute', s.block_time)
     AND p1.symbol = t1.symbol
-LEFT JOIN erc20.tokens t2 ON s.target_token_address = t2.contract_address
+LEFT JOIN
+  (SELECT *
+   FROM erc20.tokens
+   UNION SELECT *
+   FROM bancor.view_smart_tokens) t2 ON s.target_token_address = t2.contract_address
 LEFT JOIN prices.usd p2 ON p2.minute = date_trunc('minute', s.block_time)
     AND p2.symbol = t2.symbol
 ;
+
+CREATE INDEX IF NOT EXISTS view_convert_idx_1 ON bancor.view_convert (source_token_address) INCLUDE (source_token_amount);
+CREATE INDEX IF NOT EXISTS view_convert_idx_2 ON bancor.view_convert (target_token_address) INCLUDE (target_token_amount);
+CREATE INDEX IF NOT EXISTS view_convert_idx_3 ON bancor.view_convert (block_time);
