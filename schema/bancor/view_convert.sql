@@ -74,7 +74,3 @@ LEFT JOIN
 LEFT JOIN prices.usd p2 ON p2.minute = date_trunc('minute', s.block_time)
     AND p2.symbol = t2.symbol
 ;
-
-CREATE INDEX IF NOT EXISTS view_convert_idx_1 ON bancor.view_convert (source_token_address) INCLUDE (source_token_amount);
-CREATE INDEX IF NOT EXISTS view_convert_idx_2 ON bancor.view_convert (target_token_address) INCLUDE (target_token_amount);
-CREATE INDEX IF NOT EXISTS view_convert_idx_3 ON bancor.view_convert (block_time);

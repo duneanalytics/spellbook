@@ -269,6 +269,3 @@ CREATE OR REPLACE VIEW bancor.view_smart_tokens (symbol, contract_address, decim
     ('ZIPTBNT'::text, '\xc4a01182ab1e502a1c1d17024e4924573ce001cc'::bytea, 18::numeric),
     ('ZRXUSDB'::text, '\x1a3c6768e200482f5f47d1be77b7255abcae4fe2'::bytea, 18::numeric)
 ;
-
-CREATE UNIQUE INDEX IF NOT EXISTS view_smart_tokens_id ON bancor.view_smart_tokens (contract_address);
-CREATE INDEX view_tokens_1 ON bancor.view_smart_tokens (symbol);
