@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW dex.trades AS
+CREATE OR REPLACE VIEW dex.view_trades_alpha AS
 
 SELECT 
 block_time,
