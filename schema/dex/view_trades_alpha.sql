@@ -50,7 +50,7 @@ FROM (
         '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea AS token_b_address, --Using WETH for easier joining with USD price table
         t.contract_address exchange_contract_address,
         t.evt_tx_hash AS tx_hash,
-        NULL::integer AS trace_address,
+        NULL::integer[] AS trace_address,
         t.evt_index
     FROM
         uniswap. "Exchange_evt_TokenPurchase" t
@@ -70,7 +70,7 @@ FROM (
         f.token AS token_b_address,
         t.contract_address exchange_contract_address,
         t.evt_tx_hash AS tx_hash,
-        NULL::integer AS trace_address,
+        NULL::integer[] AS trace_address,
         t.evt_index
     FROM
         uniswap. "Exchange_evt_EthPurchase" t
@@ -99,7 +99,7 @@ UNION
         END AS token_b_address,
         t.contract_address exchange_contract_address,
         t.evt_tx_hash AS tx_hash,
-        NULL::integer AS trace_address,
+        NULL::integer[] AS trace_address,
         t.evt_index
     FROM
         kyber. "Network_evt_KyberTrade" t
@@ -121,7 +121,7 @@ UNION
         t.pay_gem AS token_b_address,
         t.contract_address AS exchange_contract_address,
         t.evt_tx_hash AS tx_hash,
-        NULL::integer AS trace_address,
+        NULL::integer[] AS trace_address,
         t.evt_index
     FROM oasisdex."eth2dai_evt_LogTrade" t
     INNER JOIN oasisdex."eth2dai_evt_LogTake" take 
@@ -146,7 +146,7 @@ UNION
         t.pay_gem AS token_b_address,
         t.contract_address AS exchange_contract_address,
         t.evt_tx_hash AS tx_hash,
-        NULL::integer AS trace_address,
+        NULL::integer[] AS trace_address,
         t.evt_index
      FROM oasisdex."MatchingMarket_evt_LogTrade" t
      INNER JOIN oasisdex."MatchingMarket_evt_LogTake" take 
