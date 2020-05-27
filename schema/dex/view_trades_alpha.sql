@@ -55,7 +55,9 @@ FROM (
     FROM
         uniswap. "Exchange_evt_TokenPurchase" t
     INNER JOIN uniswap. "Factory_evt_NewExchange" f ON f.exchange = t.contract_address
+    
     UNION
+    
     SELECT
         t.evt_block_time AS block_time,
         'Uniswap' AS "project",
@@ -73,7 +75,9 @@ FROM (
     FROM
         uniswap. "Exchange_evt_EthPurchase" t
     INNER JOIN uniswap. "Factory_evt_NewExchange" f ON f.exchange = t.contract_address
+    
 UNION
+
 -- Kyber
     SELECT
         t.evt_block_time AS block_time,
