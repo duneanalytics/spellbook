@@ -50,11 +50,11 @@ FROM (
         '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea AS token_b_address, --Using WETH for easier joining with USD price table
         t.contract_address exchange_contract_address,
         t.evt_tx_hash AS tx_hash,
-        NULL::bytea AS trace_address,
+        NULL::integer AS trace_address,
         t.evt_index
     FROM
         uniswap. "Exchange_evt_TokenPurchase" t
-        INNER JOIN uniswap. "Factory_evt_NewExchange" f ON f.exchange = t.contract_address
+    INNER JOIN uniswap. "Factory_evt_NewExchange" f ON f.exchange = t.contract_address
     UNION
     SELECT
         t.evt_block_time AS block_time,
@@ -68,11 +68,11 @@ FROM (
         f.token AS token_b_address,
         t.contract_address exchange_contract_address,
         t.evt_tx_hash AS tx_hash,
-        NULL::bytea AS trace_address,
+        NULL::integer AS trace_address,
         t.evt_index
     FROM
         uniswap. "Exchange_evt_EthPurchase" t
-        INNER JOIN uniswap. "Factory_evt_NewExchange" f ON f.exchange = t.contract_address
+    INNER JOIN uniswap. "Factory_evt_NewExchange" f ON f.exchange = t.contract_address
 UNION
 -- Kyber
     SELECT
@@ -95,7 +95,7 @@ UNION
         END AS token_b_address,
         t.contract_address exchange_contract_address,
         t.evt_tx_hash AS tx_hash,
-        NULL::bytea AS trace_address,
+        NULL::integer AS trace_address,
         t.evt_index
     FROM
         kyber. "Network_evt_KyberTrade" t
@@ -117,10 +117,14 @@ UNION
         t.pay_gem AS token_b_address,
         t.contract_address AS exchange_contract_address,
         t.evt_tx_hash AS tx_hash,
-        NULL::bytea AS trace_address,
+        NULL::integer AS trace_address,
         t.evt_index
-        FROM oasisdex."eth2dai_evt_LogTrade" t
-        INNER JOIN oasisdex."eth2dai_evt_LogTake" take ON t.evt_tx_hash = take.evt_tx_hash
+    FROM oasisdex."eth2dai_evt_LogTrade" t
+    INNER JOIN oasisdex."eth2dai_evt_LogTake" take 
+    ON 
+        t.evt_tx_hash = take.evt_tx_hash 
+    AND 
+        take.evt_index = (SELECT MIN(evt_index) FROM oasisdex."eth2dai_evt_LogTake" WHERE evt_tx_hash = t.evt_tx_hash AND evt_index > t.evt_index)
     
     UNION 
     
@@ -138,11 +142,14 @@ UNION
         t.pay_gem AS token_b_address,
         t.contract_address AS exchange_contract_address,
         t.evt_tx_hash AS tx_hash,
-        NULL::bytea AS trace_address,
+        NULL::integer AS trace_address,
         t.evt_index
-        FROM oasisdex."MatchingMarket_evt_LogTrade" t
-        INNER JOIN oasisdex."MatchingMarket_evt_LogTake" take ON t.evt_tx_hash = take.evt_tx_hash
-
+     FROM oasisdex."MatchingMarket_evt_LogTrade" t
+     INNER JOIN oasisdex."MatchingMarket_evt_LogTake" take 
+     ON 
+        t.evt_tx_hash = take.evt_tx_hash 
+     AND 
+        take.evt_index = (SELECT MIN(evt_index) FROM oasisdex."MatchingMarket_evt_LogTake" WHERE evt_tx_hash = t.evt_tx_hash AND evt_index > t.evt_index)
 
 ) dexs
 LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
