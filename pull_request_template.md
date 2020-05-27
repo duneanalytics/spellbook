@@ -1,6 +1,6 @@
 I've checked that:
 
-* [ ] the query produce the intened results
+* [ ] the query produces the intened results
 * [ ] the folder name matches the schema name
 * [ ] the schema name exists in Dune
 * [ ] the view name starts with `view_`
