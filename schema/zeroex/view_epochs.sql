@@ -19,14 +19,15 @@ CREATE OR REPLACE VIEW zeroex.zrx_current_epoch AS (
     LIMIT 1
 );
 
-DROP VIEW IF EXISTS zeroex.zrx_epochs CASCADE;
-CREATE OR REPLACE VIEW zeroex.zrx_epochs AS (
+DROP VIEW IF EXISTS zeroex.epochs CASCADE;
+CREATE OR REPLACE VIEW zeroex.epochs AS (
 WITH
     past_epochs AS (
         SELECT
             ee.epoch AS epoch_id
             , ee."rewardsAvailable"::NUMERIC / 1e18 AS rewards_available_in_eth
             , ee."totalFeesCollected"::NUMERIC / 1e18 AS total_fees_collected_by_pools_in_eth
+            -- fill in epoch 1 starting values with the staking proxy deployment tx
             , CASE
                     WHEN ee.epoch = 1 THEN '4680e9d59bae9bbde1b0bae0fa5157ceea64ea923f2be434e5da6f5df2bdb907'::bytea
                     ELSE LAG(ee.evt_tx_hash) OVER (ORDER BY ee.epoch)
@@ -56,5 +57,5 @@ WITH
 
     UNION ALL
 
-    SELECT * FROM dune_user_generated.zrx_current_epoch
+    SELECT * FROM zeroex.current_epoch
 );
