@@ -1,6 +1,5 @@
-CREATE OR REPLACE VIEW dex.view_trades_alpha
-
-    (block_time, 
+CREATE OR REPLACE VIEW dex.view_trades_alpha (
+    block_time, 
     token_a_symbol,
     token_b_symbol,
     token_a_amount,
@@ -16,8 +15,8 @@ CREATE OR REPLACE VIEW dex.view_trades_alpha
     exchange_contract_address,
     tx_hash,
     trace_address,
-    evt_index) AS
-
+    evt_index
+) AS
 SELECT
     block_time,
     erc20a.symbol AS token_a_symbol,
@@ -37,7 +36,7 @@ SELECT
     trace_address,
     evt_index
 FROM (
--- Uniswap v1
+    -- Uniswap v1 TokenPurchase
     SELECT
         t.evt_block_time AS block_time,
         'Uniswap' AS "project",
@@ -58,6 +57,7 @@ FROM (
     
     UNION
     
+    -- Uniswap v1 EthPurchase
     SELECT
         t.evt_block_time AS block_time,
         'Uniswap' AS "project",
@@ -76,9 +76,30 @@ FROM (
         uniswap. "Exchange_evt_EthPurchase" t
     INNER JOIN uniswap. "Factory_evt_NewExchange" f ON f.exchange = t.contract_address
     
-UNION
+    UNION
 
--- Kyber
+    -- Uniswap v2
+    SELECT
+        t.evt_block_time AS block_time,
+        'Uniswap' AS "project",
+        '2' AS version,
+        sender AS trader_a,
+        NULL::bytea AS trader_b,
+        CASE WHEN "amount0Out" = '0' THEN "amount1Out" ELSE "amount0Out" END AS token_a_amount_raw,
+        CASE WHEN "amount0In" = '0' THEN "amount1In" ELSE "amount0In" END AS token_b_amount_raw,
+        CASE WHEN "amount0Out" = '0' THEN "token1" ELSE "token0" END AS token_a_address,
+        CASE WHEN "amount0In" = '0' THEN "token1" ELSE "token0" END AS token_b_address,
+        t.contract_address exchange_contract_address,
+        t.evt_tx_hash AS tx_hash,
+        NULL::integer[] AS trace_address,
+        t.evt_index
+    FROM
+        uniswap_v2."Pair_evt_Swap" t
+    INNER JOIN uniswap_v2."Factory_evt_PairCreated" f ON f.pair = t.contract_address
+    
+    UNION
+
+    -- Kyber
     SELECT
         t.evt_block_time AS block_time,
         'Kyber' AS "project",
@@ -104,11 +125,9 @@ UNION
     FROM
         kyber. "Network_evt_KyberTrade" t
 
-UNION
--- Oasis
+    UNION
 
-     -- Old Oasis (eth2dai) contract
-     
+    -- Old Oasis (eth2dai) contract
     SELECT 
         t.evt_block_time AS block_time,
         'Oasis' AS "project",
@@ -132,8 +151,7 @@ UNION
     
     UNION 
     
-    -- New Oasis contract
-    
+    -- Oasis contract
     SELECT 
         t.evt_block_time AS block_time,
         'Oasis' AS "project",
