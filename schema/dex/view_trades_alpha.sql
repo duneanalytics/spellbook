@@ -155,6 +155,44 @@ UNION
      AND 
         take.evt_index = (SELECT MIN(evt_index) FROM oasisdex."MatchingMarket_evt_LogTake" WHERE evt_tx_hash = t.evt_tx_hash AND evt_index > t.evt_index)
 
+    UNION
+
+    -- 0x v2.1
+    SELECT 
+        evt_block_time AS block_time,
+        '0x' AS project,
+        '2.1' AS version,
+        "takerAddress" AS trader_a,
+        "makerAddress" AS trader_b,
+        "takerAssetFilledAmount" AS token_a_amount_raw,
+        "makerAssetFilledAmount" AS token_b_amount_raw,
+        substring("takerAssetData" for 20 from 17) as token_a_address,
+        substring("makerAssetData" for 20 from 17) as token_b_address,
+        contract_address AS exchange_contract_address,
+        evt_tx_hash AS tx_hash,
+        NULL::integer[] AS trace_address,
+        evt_index
+     FROM zeroex_v2."Exchange2.1_evt_Fill" fills
+
+    UNION
+
+    -- 0x v3
+    SELECT 
+        evt_block_time AS block_time,
+        '0x' AS project,
+        '3' AS version,
+        "takerAddress" AS trader_a,
+        "makerAddress" AS trader_b,
+        "takerAssetFilledAmount" AS token_a_amount_rawr,
+        "makerAssetFilledAmount" AS token_b_amount_raw,
+        substring("takerAssetData" for 20 from 17) as token_a_address,
+        substring("makerAssetData" for 20 from 17) as token_b_address,
+        contract_address AS exchange_contract_address,
+        evt_tx_hash AS tx_hash,
+        NULL::integer[] AS trace_address,
+        evt_index
+     FROM zeroex_v3."Exchange_evt_Fill" fills
+
 ) dexs
 LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
 LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
