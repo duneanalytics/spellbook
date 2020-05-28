@@ -37,7 +37,10 @@ SELECT
     trace_address,
     evt_index
 FROM (
--- Uniswap v1
+-- Uniswap
+
+    -- Uniswap v1
+    
     SELECT
         t.evt_block_time AS block_time,
         'Uniswap' AS "project",
@@ -75,6 +78,28 @@ FROM (
     FROM
         uniswap. "Exchange_evt_EthPurchase" t
     INNER JOIN uniswap. "Factory_evt_NewExchange" f ON f.exchange = t.contract_address
+    
+    UNION
+
+    -- Uniswap v2
+
+    SELECT
+        t.evt_block_time AS block_time,
+        'Uniswap' AS "project",
+        '2' AS version,
+        sender AS trader_a,
+        NULL::bytea AS trader_b,
+        CASE WHEN "amount0Out" = '0' THEN "amount1Out" ELSE "amount0Out" END AS token_a_amount_raw,
+        CASE WHEN "amount0In" = '0' THEN "amount1In" ELSE "amount0In" END AS token_b_amount_raw,
+        CASE WHEN "amount0Out" = '0' THEN "token1" ELSE "token0" END AS token_a_address,
+        CASE WHEN "amount0In" = '0' THEN "token1" ELSE "token0" END AS token_b_address,
+        t.contract_address exchange_contract_address,
+        t.evt_tx_hash AS tx_hash,
+        NULL::integer[] AS trace_address,
+        t.evt_index
+    FROM
+        uniswap_v2."Pair_evt_Swap" t
+    INNER JOIN uniswap_v2."Factory_evt_PairCreated" f ON f.pair = t.contract_address
     
 UNION
 
