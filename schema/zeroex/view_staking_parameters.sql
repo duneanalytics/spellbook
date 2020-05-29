@@ -1,5 +1,4 @@
-DROP VIEW IF EXISTS zeroex.current_staking_params CASCADE;
-CREATE OR REPLACE VIEW zeroex.current_staking_params AS (
+CREATE OR REPLACE VIEW zeroex.view_current_staking_params AS (
     SELECT
         evt_block_number AS block_number_set
         , "epochDurationInSeconds" AS epoch_duraction_in_seconds

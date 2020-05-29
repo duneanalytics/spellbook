@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW zeroex.zrx_staking_changes AS (
+CREATE OR REPLACE VIEW zeroex.view_zrx_staking_changes AS (
 WITH
     additions AS (
         SELECT

@@ -1,5 +1,4 @@
-DROP VIEW IF EXISTS zeroex.rewards_paid;
-CREATE OR REPLACE VIEW zeroex.rewards_paid AS (
+CREATE OR REPLACE VIEW zeroex.view_rewards_paid AS (
     SELECT
         HEX_TO_INT(RIGHT(rp."poolId"::VARCHAR,5)) AS pool_id
         , epoch - 1 AS epoch_id

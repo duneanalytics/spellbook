@@ -1,5 +1,4 @@
-DROP VIEW IF EXISTS zerox.staking_pools;
-CREATE OR REPLACE VIEW zerox.staking_pools AS (
+CREATE OR REPLACE VIEW zeroex.view_staking_pools AS (
     SELECT
         HEX_TO_INT(RIGHT(spc."poolId"::VARCHAR,5)) AS pool_id
         , spc.operator

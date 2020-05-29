@@ -1,6 +1,6 @@
 BEGIN;
-DROP MATERIALIZED VIEW IF EXISTS zeroex.fills;
-CREATE MATERIALIZED VIEW zeroex.fills AS (
+DROP MATERIALIZED VIEW IF EXISTS zeroex.view_fills;
+CREATE MATERIALIZED VIEW zeroex.view_fills AS (
 WITH
     v3_fills AS (
         SELECT
@@ -109,7 +109,7 @@ WITH
     SELECT * FROM v2_1_fills
 );
 
-CREATE INDEX IF NOT EXISTS zeroex_fills_time_index ON zeroex.fills (timestamp);
+CREATE INDEX IF NOT EXISTS zeroex_fills_time_index ON zeroex.view_fills (timestamp);
 
-SELECT cron.schedule('0 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY zeroex.fills');
+SELECT cron.schedule('0 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY zeroex.view_fills');
 COMMIT;
