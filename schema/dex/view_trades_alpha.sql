@@ -106,8 +106,14 @@ FROM (
         NULL AS version,
         trader AS trader_a,
         NULL::bytea AS trader_b,
-        "dstAmount" AS token_a_amount_raw,
-        "srcAmount" token_b_amount_raw,
+        CASE WHEN reserve2 IN ('\x2295fc6BC32cD12fdBb852cFf4014cEAc6d79C10', '\x57f8160e1c59D16C01BbE181fD94db4E56b60495') THEN 0
+        ELSE
+         "dstAmount"
+        END AS token_a_amount_raw,
+        CASE WHEN reserve1 IN ('\x2295fc6BC32cD12fdBb852cFf4014cEAc6d79C10', '\x57f8160e1c59D16C01BbE181fD94db4E56b60495') THEN 0
+        ELSE
+         "srcAmount"
+        END AS token_b_amount_raw,
         CASE WHEN t.dest = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN
             '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
         ELSE
