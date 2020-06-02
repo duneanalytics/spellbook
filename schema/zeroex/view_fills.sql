@@ -7,6 +7,7 @@ WITH
             evt_block_time AS timestamp
             , 'v3' AS protocol_version
             , fills.evt_tx_hash AS transaction_hash
+            , fills.evt_index
             , fills."makerAddress" AS maker_address
             , fills."takerAddress" AS taker_address
             , ('\x' || SUBSTRING(fills."makerAssetData"::VARCHAR,35,40))::BYTEA AS maker_token
@@ -57,6 +58,7 @@ WITH
             evt_block_time AS timestamp
             , 'v2' AS protocol_version
             , fills.evt_tx_hash AS transaction_hash
+            , fills.evt_index
             , fills."makerAddress" AS maker_address
             , fills."takerAddress" AS taker_address
             , ('\x' || SUBSTRING(fills."makerAssetData"::VARCHAR,35,40))::BYTEA AS maker_token
@@ -109,6 +111,7 @@ WITH
     SELECT * FROM v2_1_fills
 );
 
+CREATE UNIQUE INDEX IF NOT EXISTS zeroex_fills_unique ON zeroex.view_fills (transaction_hash, evt_index);
 CREATE INDEX IF NOT EXISTS zeroex_fills_time_index ON zeroex.view_fills (timestamp);
 
 SELECT cron.schedule('0 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY zeroex.view_fills');
