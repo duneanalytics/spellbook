@@ -99,31 +99,47 @@ FROM (
     
     UNION
 
-    -- Kyber
+    -- Kyber: trade from Token - ETH
+    SELECT 
+        t.evt_block_time AS block_time,
+        'Kyber' AS "project",
+        NULL AS version,
+        trader AS trader_a,
+        NULL::bytea AS trader_b,
+        CASE WHEN t.src IN ('\x5228a22e72ccc52d415ecfd199f99d0665e7733b') THEN 0 -- ignore volume of token PT
+        ELSE t."srcAmount" END AS token_a_amount_raw,
+        "ethWeiValue" AS token_b_amount_raw,
+        t.src AS token_a_address,
+        '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS token_b_address,
+        t.contract_address exchange_contract_address,
+        t.evt_tx_hash AS tx_hash,
+        NULL::integer[] AS trace_address,
+        t.evt_index AS evt_index
+    FROM
+        kyber."Network_evt_KyberTrade" t
+    WHERE t.src NOT IN ('\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee','\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2')
+
+    UNION
+
+    -- Kyber: trade from ETH - Token
     SELECT
         t.evt_block_time AS block_time,
         'Kyber' AS "project",
         NULL AS version,
         trader AS trader_a,
         NULL::bytea AS trader_b,
-        "dstAmount" AS token_a_amount_raw,
-        "srcAmount" token_b_amount_raw,
-        CASE WHEN t.dest = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN
-            '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-        ELSE
-            t.dest
-        END AS token_a_address,
-        CASE WHEN t.src = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN
-            '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-        ELSE
-            t.src
-        END AS token_b_address,
+        t."ethWeiValue" AS token_a_amount_raw,
+        CASE WHEN t.dest IN ('\x5228a22e72ccc52d415ecfd199f99d0665e7733b') THEN 0 -- ignore volume of token PT
+        ELSE t."dstAmount" END AS token_b_amount_raw,
+        '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS token_a_address,
+        t.dest AS token_b_address,
         t.contract_address exchange_contract_address,
         t.evt_tx_hash AS tx_hash,
         NULL::integer[] AS trace_address,
-        t.evt_index
+        t.evt_index AS evt_index
     FROM
-        kyber. "Network_evt_KyberTrade" t
+        kyber."Network_evt_KyberTrade" t
+    WHERE t.dest NOT IN ('\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee','\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2') 
 
     UNION
 
