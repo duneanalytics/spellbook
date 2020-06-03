@@ -54,11 +54,34 @@ buy AS (
     FROM gnosis_protocol."view_trades"
     WHERE revert_time is NULL
 ),
+rewards as (
+    SELECT
+        'solver reward' as operation,
+        batch_id,
+        submitter as trader,
+        decode('1a5f9352af8af974bfc03399e3767df6370d82e4', 'hex') as token, -- OWL
+        amount -- received owl
+    FROM (
+        SELECT
+            FLOOR(EXTRACT(epoch from evt_block_time) / 300) - 1 AS batch_id,
+            "burntFees" as amount, -- OWL
+            submitter,
+            evt_block_number as block_number,
+            evt_index,
+            RANK() OVER(
+                PARTITION BY FLOOR(EXTRACT(epoch from evt_block_time) / 300) - 1
+                ORDER BY evt_block_number DESC, evt_index DESC
+            ) as rank
+        FROM gnosis_protocol."BatchExchange_evt_SolutionSubmission"
+    ) s
+    WHERE rank = 1
+),
 operations AS (
     SELECT * FROM deposits
     UNION SELECT * FROM withdraw_request
     UNION SELECT * FROM buy
     UNION SELECT * FROM sell
+    UNION SELECT * FROM rewards
 ),
 operation_details AS (
     SELECT
