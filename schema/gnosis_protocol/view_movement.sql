@@ -5,7 +5,7 @@ WITH
 deposits as (
     SELECT
         'deposit' as operation,
-        "batchId" + 1 as batch_id, -- batch id when it's credited
+        "batchId"as batch_id,
         "user" AS trader,
         token,
         amount
@@ -21,7 +21,7 @@ withdraw_request AS (
     FROM (
         SELECT
             'withdraw-request' as operation,
-            "batchId" + 1 as batch_id, -- batch id when it's credited
+            "batchId" as batch_id,
             "user" as trader,
             token,
             -amount as amount,
@@ -37,7 +37,7 @@ withdraw_request AS (
 sell AS (
     SELECT
         'sell' as operation,
-        batch_id, -- sells are available right away
+        batch_id, 
         "trader_hex" as trader,
         sell_token as token,
         -sell_amount_atoms as amount
@@ -47,7 +47,7 @@ sell AS (
 buy AS (
     SELECT
         'buy' as operation,
-        batch_id, -- sells are available right away
+        batch_id,
         "trader_hex" as trader,
         buy_token as token,
         buy_amount_atoms as amount
