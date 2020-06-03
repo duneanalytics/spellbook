@@ -1,5 +1,5 @@
 CREATE OR REPLACE VIEW dex.view_trades_alpha (
-    block_time, 
+    block_time,
     token_a_symbol,
     token_b_symbol,
     token_a_amount,
@@ -54,9 +54,9 @@ FROM (
     FROM
         uniswap. "Exchange_evt_TokenPurchase" t
     INNER JOIN uniswap. "Factory_evt_NewExchange" f ON f.exchange = t.contract_address
-    
+
     UNION
-    
+
     -- Uniswap v1 EthPurchase
     SELECT
         t.evt_block_time AS block_time,
@@ -75,7 +75,7 @@ FROM (
     FROM
         uniswap. "Exchange_evt_EthPurchase" t
     INNER JOIN uniswap. "Factory_evt_NewExchange" f ON f.exchange = t.contract_address
-    
+
     UNION
 
     -- Uniswap v2
@@ -96,45 +96,52 @@ FROM (
     FROM
         uniswap_v2."Pair_evt_Swap" t
     INNER JOIN uniswap_v2."Factory_evt_PairCreated" f ON f.pair = t.contract_address
-    
+
     UNION
 
     -- Kyber
-    SELECT
+    SELECT -- trade from Token - ETH
         t.evt_block_time AS block_time,
         'Kyber' AS "project",
         NULL AS version,
         trader AS trader_a,
         NULL::bytea AS trader_b,
-        CASE WHEN reserve2 IN ('\x2295fc6BC32cD12fdBb852cFf4014cEAc6d79C10', '\x57f8160e1c59D16C01BbE181fD94db4E56b60495') THEN 0
-        ELSE
-         "dstAmount"
-        END AS token_a_amount_raw,
-        CASE WHEN reserve1 IN ('\x2295fc6BC32cD12fdBb852cFf4014cEAc6d79C10', '\x57f8160e1c59D16C01BbE181fD94db4E56b60495') THEN 0
-        ELSE
-         "srcAmount"
-        END AS token_b_amount_raw,
-        CASE WHEN t.dest = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN
-            '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-        ELSE
-            t.dest
-        END AS token_a_address,
-        CASE WHEN t.src = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN
-            '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-        ELSE
-            t.src
-        END AS token_b_address,
+        CASE WHEN t.src IN ('\x5228a22e72ccc52d415ecfd199f99d0665e7733b') THEN 0 -- ignore volume of token PT
+        ELSE t."srcAmount" END AS token_a_amount_raw,
+        "ethWeiValue" as token_b_amount_raw,
+        t.src AS token_a_address,
+        '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS token_b_address,
         t.contract_address exchange_contract_address,
         t.evt_tx_hash AS tx_hash,
         NULL::integer[] AS trace_address,
         t.evt_index
     FROM
-        kyber. "Network_evt_KyberTrade" t
+        kyber."Network_evt_KyberTrade" t
+    WHERE t.src NOT IN ('\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee','\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2')
+    UNION ALL
+    SELECT -- trade from ETH - Token
+        t.evt_block_time AS block_time,
+        'Kyber' AS "project",
+        NULL AS version,
+        trader AS trader_a,
+        NULL::bytea AS trader_b,
+        t."ethWeiValue" as token_a_amount_raw,
+        CASE WHEN t.dest IN ('\x5228a22e72ccc52d415ecfd199f99d0665e7733b') THEN 0 --ignore volume of token PT
+        ELSE t."dstAmount" END AS token_b_amount_raw,
+        '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS token_a_address,
+        t.dest AS token_b_address,
+        t.contract_address exchange_contract_address,
+        t.evt_tx_hash AS tx_hash,
+        NULL::integer[] AS trace_address,
+        t.evt_index+1
+    FROM
+        kyber."Network_evt_KyberTrade" t
+    WHERE t.dest NOT IN ('\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee','\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2')
 
     UNION
 
     -- Old Oasis (eth2dai) contract
-    SELECT 
+    SELECT
         t.evt_block_time AS block_time,
         'Oasis' AS "project",
         '1' AS version,
@@ -149,16 +156,16 @@ FROM (
         NULL::integer[] AS trace_address,
         t.evt_index
     FROM oasisdex."eth2dai_evt_LogTrade" t
-    INNER JOIN oasisdex."eth2dai_evt_LogTake" take 
-    ON 
-        t.evt_tx_hash = take.evt_tx_hash 
-    AND 
+    INNER JOIN oasisdex."eth2dai_evt_LogTake" take
+    ON
+        t.evt_tx_hash = take.evt_tx_hash
+    AND
         take.evt_index = (SELECT MIN(evt_index) FROM oasisdex."eth2dai_evt_LogTake" WHERE evt_tx_hash = t.evt_tx_hash AND evt_index > t.evt_index)
-    
-    UNION 
-    
+
+    UNION
+
     -- Oasis contract
-    SELECT 
+    SELECT
         t.evt_block_time AS block_time,
         'Oasis' AS "project",
         '2' AS version,
@@ -173,16 +180,16 @@ FROM (
         NULL::integer[] AS trace_address,
         t.evt_index
      FROM oasisdex."MatchingMarket_evt_LogTrade" t
-     INNER JOIN oasisdex."MatchingMarket_evt_LogTake" take 
-     ON 
-        t.evt_tx_hash = take.evt_tx_hash 
-     AND 
+     INNER JOIN oasisdex."MatchingMarket_evt_LogTake" take
+     ON
+        t.evt_tx_hash = take.evt_tx_hash
+     AND
         take.evt_index = (SELECT MIN(evt_index) FROM oasisdex."MatchingMarket_evt_LogTake" WHERE evt_tx_hash = t.evt_tx_hash AND evt_index > t.evt_index)
 
     UNION
 
     -- 0x v2.1
-    SELECT 
+    SELECT
         evt_block_time AS block_time,
         '0x' AS project,
         '2.1' AS version,
@@ -201,7 +208,7 @@ FROM (
     UNION
 
     -- 0x v3
-    SELECT 
+    SELECT
         evt_block_time AS block_time,
         '0x' AS project,
         '3' AS version,
