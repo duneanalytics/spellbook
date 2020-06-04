@@ -101,45 +101,49 @@ FROM (
 
     -- Kyber: trade from Token - ETH
     SELECT 
-        t.evt_block_time AS block_time,
+        evt_block_time AS block_time,
         'Kyber' AS project,
         NULL AS version,
         trader AS trader_a,
         NULL::bytea AS trader_b,
-        CASE WHEN t.src IN ('\x5228a22e72ccc52d415ecfd199f99d0665e7733b') THEN 0 -- ignore volume of token PT
-        ELSE t."srcAmount" END AS token_a_amount_raw,
+        CASE 
+            WHEN src IN ('\x5228a22e72ccc52d415ecfd199f99d0665e7733b') THEN 0 -- ignore volume of token PT
+            ELSE "srcAmount" 
+        END AS token_a_amount_raw,
         "ethWeiValue" AS token_b_amount_raw,
-        t.src AS token_a_address,
+        src AS token_a_address,
         '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS token_b_address,
-        t.contract_address exchange_contract_address,
-        t.evt_tx_hash AS tx_hash,
+        contract_address exchange_contract_address,
+        evt_tx_hash AS tx_hash,
         NULL::integer[] AS trace_address,
-        t.evt_index AS evt_index
+        evt_index AS evt_index
     FROM
-        kyber."Network_evt_KyberTrade" t
-    WHERE t.src NOT IN ('\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee','\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2')
+        kyber."Network_evt_KyberTrade"
+    WHERE src NOT IN ('\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee','\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2')
 
     UNION
 
     -- Kyber: trade from ETH - Token
     SELECT
-        t.evt_block_time AS block_time,
+        evt_block_time AS block_time,
         'Kyber' AS project,
         NULL AS version,
         trader AS trader_a,
         NULL::bytea AS trader_b,
-        t."ethWeiValue" AS token_a_amount_raw,
-        CASE WHEN t.dest IN ('\x5228a22e72ccc52d415ecfd199f99d0665e7733b') THEN 0 -- ignore volume of token PT
-        ELSE t."dstAmount" END AS token_b_amount_raw,
+        "ethWeiValue" AS token_a_amount_raw,
+        CASE 
+            WHEN dest IN ('\x5228a22e72ccc52d415ecfd199f99d0665e7733b') THEN 0 -- ignore volume of token PT
+            ELSE "dstAmount" 
+        END AS token_b_amount_raw,
         '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS token_a_address,
-        t.dest AS token_b_address,
-        t.contract_address exchange_contract_address,
-        t.evt_tx_hash AS tx_hash,
+        dest AS token_b_address,
+        contract_address exchange_contract_address,
+        evt_tx_hash AS tx_hash,
         NULL::integer[] AS trace_address,
-        t.evt_index AS evt_index
+        evt_index AS evt_index
     FROM
-        kyber."Network_evt_KyberTrade" t
-    WHERE t.dest NOT IN ('\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee','\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2') 
+        kyber."Network_evt_KyberTrade"
+    WHERE dest NOT IN ('\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee','\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2') 
 
     UNION
 
@@ -206,7 +210,7 @@ FROM (
         evt_tx_hash AS tx_hash,
         NULL::integer[] AS trace_address,
         evt_index
-     FROM zeroex_v2."Exchange2.1_evt_Fill" fills
+     FROM zeroex_v2."Exchange2.1_evt_Fill"
 
     UNION
 
@@ -225,8 +229,58 @@ FROM (
         evt_tx_hash AS tx_hash,
         NULL::integer[] AS trace_address,
         evt_index
-     FROM zeroex_v3."Exchange_evt_Fill" fills
+     FROM zeroex_v3."Exchange_evt_Fill"
 
+    UNION
+
+    -- dYdX Solo Margin v2
+    SELECT
+        evt_block_time AS block_time,
+        'dYdX' AS project,
+        'Solo Margin v2' AS version,
+        "takerAccountOwner" AS trader_a,
+        "makerAccountOwner" AS trader_b,
+        abs(("takerOutputUpdate"->'deltaWei'->'value')::numeric)/2 AS token_a_amount_raw, --"takerOutputNumber"
+        abs(("takerInputUpdate"->'deltaWei'->'value')::numeric)/2 AS token_b_amount_raw, --"takerInputNumber"
+        CASE
+            WHEN "outputMarket" = 0 THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
+            WHEN "outputMarket" = 1 THEN '\x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'::bytea
+            WHEN "outputMarket" = 2 THEN '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'::bytea
+            WHEN "outputMarket" = 3 THEN '\x6b175474e89094c44da98b954eedeac495271d0f'::bytea
+        END AS token_a_address,
+        CASE
+            WHEN "inputMarket" = 0 THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
+            WHEN "inputMarket" = 1 THEN '\x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'::bytea
+            WHEN "inputMarket" = 2 THEN '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'::bytea
+            WHEN "inputMarket" = 3 THEN '\x6b175474e89094c44da98b954eedeac495271d0f'::bytea
+        END AS token_b_address,
+        contract_address AS exchange_contract_address,
+        evt_tx_hash AS tx_hash,
+        NULL::integer[] AS trace_address,
+        evt_index
+    FROM dydx."SoloMargin_evt_LogTrade"
+    
+    UNION
+    
+    -- dYdX BTC-USDC Perpetual
+    SELECT 
+        evt_block_time AS block_time,
+        'dYdX' AS project,
+        'BTC-USDC Perpetual' AS version,
+        maker AS trader_a,
+        taker AS trader_b,
+        "positionAmount" AS token_a_amount_raw,
+        "marginAmount" AS token_b_amount_raw,
+        '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599' AS token_a_address,
+        '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48' AS token_b_address, 
+        contract_address AS exchange_contract_address,
+        evt_tx_hash AS tx_hash,
+        NULL::integer[] AS trace_address,
+        evt_index
+    FROM
+        dydx_perpetual."PerpetualV1_evt_LogTrade"
+    WHERE "isBuy" = 'True'
+    
 ) dexs
 LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
 LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
