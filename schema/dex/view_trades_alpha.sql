@@ -280,7 +280,46 @@ FROM (
     FROM
         dydx_perpetual."PerpetualV1_evt_LogTrade"
     WHERE "isBuy" = 'True'
-    
+
+    UNION
+
+    -- Loopring v3.1
+    (
+        WITH trades AS (
+            SELECT unnest(loopring.fn_process_trade_block(CAST(b."blockSize" AS INT), b._3, b.call_block_time)) as trade,
+                b."contract_address" as exchange_contract_address,
+                b.call_tx_hash as tx_hash,
+                b.call_trace_address as trace_address,
+                NULL as evt_index
+            FROM loopring."DEXBetaV1_call_commitBlock" b
+            WHERE b."blockType" = '0'
+        ), token_table AS (
+            SELECT 0 AS "token_id", '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea AS token
+            UNION
+            SELECT "token_id", "token"
+            FROM loopring."DEXBetaV1_evt_TokenRegistered" e
+            WHERE token != '\x0000000000000000000000000000000000000000'
+        ), account_table AS (
+            SELECT id, owner
+            FROM loopring."DEXBetaV1_evt_AccountCreated" e
+        )
+
+        SELECT (t.trade).block_timestamp as block_time,
+            'Loopring' AS "project",
+            '3.1' AS version,
+            (SELECT "owner" FROM account_table WHERE "id" = (t.trade).accountA) as trader_a,
+            (SELECT "owner" FROM account_table WHERE "id" = (t.trade).accountB) as trader_B,
+            (t.trade).fillA as token_a_amount_raw,
+            (t.trade).fillB as token_b_amount_raw,
+            (SELECT "token" FROM token_table WHERE "token_id" = (t.trade).tokenA) as token_a_address,
+            (SELECT "token" FROM token_table WHERE "token_id" = (t.trade).tokenB) as token_b_address,
+            exchange_contract_address,
+            tx_hash,
+            trace_address,
+            evt_index
+        FROM trades t
+    )
+
 ) dexs
 LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
 LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
