@@ -130,7 +130,14 @@ operations AS (
     -- Special Case Withdraw:
     --      Handle a withdraw as a counter-movement of the request. 
     --      It can be seen as a counter movement of the difference between what was withdrawn and what was requested
-    UNION SELECT operation, batch_id, trader, token, amount, amount-pending_withdraw FROM actual_withdraws
+    UNION SELECT 
+        operation, 
+        batch_id, 
+        trader, 
+        token, 
+        amount as amount_deposited, -- Deduct the amount from the deposited amount
+        amount - pending_withdraw as amount -- Revert the discounted amount from the request, update with the actual
+    FROM actual_withdraws
 ),
 operation_details AS (
     SELECT
@@ -194,12 +201,12 @@ SELECT
         WHEN balances.balance_atoms > 0 THEN balances.balance_atoms/10^(balances.decimals)
         ELSE 0
     END as balance,
-    -- Balance deposited: Balance in the contract (can be available or not)
-    balances.balance_deposited_atoms/10^(balances.decimals) as balance_deposited,
-    balances.balance_deposited_atoms,
     -- Actual balance: Can be negative
     balances.balance_atoms/10^(balances.decimals) as balance_actual,
-    balance_atoms as balance_actual_atoms
+    balance_atoms as balance_actual_atoms,
+    -- Balance deposited: Balance in the contract (can be available or not)
+    balances.balance_deposited_atoms/10^(balances.decimals) as balance_deposited,
+    balances.balance_deposited_atoms    
 FROM balances;
 
 
