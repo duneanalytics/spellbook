@@ -12,10 +12,14 @@ last_movement as (
 )
 SELECT
     movement.trader,
-    movement.balance,
     movement.token_symbol,
     movement.token,
-    movement.decimals
+    movement.decimals,
+    movement.balance,
+    movement.balance_deposited,
+    movement.balance_deposited_atoms,
+    movement.balance_actual,
+    movement.balance_actual_atoms
 FROM last_movement
 JOIN gnosis_protocol.view_movement movement
     ON movement.batch_id = last_movement.batch_id

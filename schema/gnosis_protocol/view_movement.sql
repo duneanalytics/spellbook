@@ -184,18 +184,21 @@ SELECT
     trader,
     operations,
     balances.amount_atoms/10^(balances.decimals) as amount,
-    token_symbol,
+    amount_atoms,
+    token_symbol,    
+    token,
+    decimals,
+    -- Balance: Available balance from user perspective (cannot be negative, and accounts for locked balance)
     CASE 
         WHEN balances.balance_atoms > 0 THEN balances.balance_atoms/10^(balances.decimals)
         ELSE 0
     END as balance,
+    -- Balance deposited: Balance in the contract (can be available or not)
     balances.balance_deposited_atoms/10^(balances.decimals) as balance_deposited,
-    token,
-    decimals,
-    amount_atoms,
-    balance_atoms,
-    amount_deposited_atoms,
-    balances.balance_atoms/10^(balances.decimals) as balance_actual
+    balances.balance_deposited_atoms,
+    -- Actual balance: Can be negative
+    balances.balance_atoms/10^(balances.decimals) as balance_actual,
+    balance_atoms as balance_actual_atoms
 FROM balances;
 
 
