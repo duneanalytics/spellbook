@@ -296,7 +296,7 @@ FROM (
         ), token_table AS (
             SELECT 0 AS "token_id", '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea AS token
             UNION
-            SELECT "token_id", "token"
+            SELECT "tokenId" AS "token_id", "token"
             FROM loopring."DEXBetaV1_evt_TokenRegistered" e
             WHERE token != '\x0000000000000000000000000000000000000000'
         ), account_table AS (
