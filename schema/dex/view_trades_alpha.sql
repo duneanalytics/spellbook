@@ -39,7 +39,7 @@ FROM (
     -- Uniswap v1 TokenPurchase
     SELECT
         t.evt_block_time AS block_time,
-        'Uniswap' AS "project",
+        'Uniswap' AS project,
         '1' AS version,
         buyer AS trader_a,
         NULL::bytea AS trader_b,
@@ -60,7 +60,7 @@ FROM (
     -- Uniswap v1 EthPurchase
     SELECT
         t.evt_block_time AS block_time,
-        'Uniswap' AS "project",
+        'Uniswap' AS project,
         '1' AS version,
         buyer AS trader_a,
         NULL::bytea AS trader_b,
@@ -81,14 +81,14 @@ FROM (
     -- Uniswap v2
     SELECT
         t.evt_block_time AS block_time,
-        'Uniswap' AS "project",
+        'Uniswap' AS project,
         '2' AS version,
         sender AS trader_a,
         NULL::bytea AS trader_b,
-        CASE WHEN "amount0Out" = '0' THEN "amount1Out" ELSE "amount0Out" END AS token_a_amount_raw,
-        CASE WHEN "amount0In" = '0' THEN "amount1In" ELSE "amount0In" END AS token_b_amount_raw,
-        CASE WHEN "amount0Out" = '0' THEN "token1" ELSE "token0" END AS token_a_address,
-        CASE WHEN "amount0In" = '0' THEN "token1" ELSE "token0" END AS token_b_address,
+        CASE WHEN "amount0Out" = 0 THEN "amount1Out" ELSE "amount0Out" END AS token_a_amount_raw,
+        CASE WHEN "amount0In" = 0 THEN "amount1In" ELSE "amount0In" END AS token_b_amount_raw,
+        CASE WHEN "amount0Out" = 0 THEN "token1" ELSE "token0" END AS token_a_address,
+        CASE WHEN "amount0In" = 0 THEN "token1" ELSE "token0" END AS token_b_address,
         t.contract_address exchange_contract_address,
         t.evt_tx_hash AS tx_hash,
         NULL::integer[] AS trace_address,
@@ -102,7 +102,7 @@ FROM (
     -- Kyber: trade from Token - ETH
     SELECT 
         t.evt_block_time AS block_time,
-        'Kyber' AS "project",
+        'Kyber' AS project,
         NULL AS version,
         trader AS trader_a,
         NULL::bytea AS trader_b,
@@ -124,7 +124,7 @@ FROM (
     -- Kyber: trade from ETH - Token
     SELECT
         t.evt_block_time AS block_time,
-        'Kyber' AS "project",
+        'Kyber' AS project,
         NULL AS version,
         trader AS trader_a,
         NULL::bytea AS trader_b,
@@ -146,7 +146,7 @@ FROM (
     -- Old Oasis (eth2dai) contract
     SELECT 
         t.evt_block_time AS block_time,
-        'Oasis' AS "project",
+        'Oasis' AS project,
         '1' AS version,
         take.taker AS trader_a,
         take.maker AS trader_b,
@@ -170,7 +170,7 @@ FROM (
     -- Oasis contract
     SELECT 
         t.evt_block_time AS block_time,
-        'Oasis' AS "project",
+        'Oasis' AS project,
         '2' AS version,
         take.taker AS trader_a,
         take.maker AS trader_b,
