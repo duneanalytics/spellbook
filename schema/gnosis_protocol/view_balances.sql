@@ -5,6 +5,7 @@ WITH
 last_movement as (
     SELECT 
         MAX(batch_id) as batch_id,
+        MAX(movement_date) as movement_date,
         trader,
         token
     FROM gnosis_protocol.view_movement
@@ -19,7 +20,9 @@ SELECT
     movement.balance_deposited,
     movement.balance_deposited_atoms,
     movement.balance_actual,
-    movement.balance_actual_atoms
+    movement.balance_actual_atoms,
+    last_movement.movement_date as last_movement_date,
+    last_movement.batch_id as last_movement_batch_id
 FROM last_movement
 JOIN gnosis_protocol.view_movement movement
     ON movement.batch_id = last_movement.batch_id
