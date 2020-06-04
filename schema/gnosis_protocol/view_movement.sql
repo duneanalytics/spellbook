@@ -180,6 +180,7 @@ balances AS (
     ) b
 )
 SELECT
+    TO_TIMESTAMP((batch_id + 1) * 300) AS movement_date,
     batch_id,
     trader,
     operations,
