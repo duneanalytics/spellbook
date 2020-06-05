@@ -188,5 +188,5 @@ CREATE INDEX view_price_batch_idx_1 ON gnosis_protocol.view_price_batch (token_i
 CREATE INDEX view_price_batch_idx_2 ON gnosis_protocol.view_price_batch (symbol);
 CREATE INDEX view_price_batch_idx_3 ON gnosis_protocol.view_price_batch (price_date);
 
-SELECT cron.schedule('0,5,10,15,20,25,30,35,40,45,50,55 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol.view_price_batch', NULL);
+SELECT cron.schedule('0,5,10,15,20,25,30,35,40,45,50,55 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol.view_price_batch');
 COMMIT;
