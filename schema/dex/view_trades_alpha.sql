@@ -87,8 +87,8 @@ FROM (
         NULL::bytea AS trader_b,
         CASE WHEN "amount0Out" = 0 THEN "amount1Out" ELSE "amount0Out" END AS token_a_amount_raw,
         CASE WHEN "amount0In" = 0 THEN "amount1In" ELSE "amount0In" END AS token_b_amount_raw,
-        CASE WHEN "amount0Out" = 0 THEN "token1" ELSE "token0" END AS token_a_address,
-        CASE WHEN "amount0In" = 0 THEN "token1" ELSE "token0" END AS token_b_address,
+        CASE WHEN "amount0Out" = 0 THEN f.token1 ELSE f.token0 END AS token_a_address,
+        CASE WHEN "amount0In" = 0 THEN f.token1 ELSE f.token0 END AS token_b_address,
         t.contract_address exchange_contract_address,
         t.evt_tx_hash AS tx_hash,
         NULL::integer[] AS trace_address,
@@ -286,7 +286,7 @@ FROM (
     -- Loopring v3.1
     (
         WITH trades AS (
-            SELECT unnest(loopring.fn_process_trade_block(CAST(b."blockSize" AS INT), b._3, b.call_block_time)) as trade,
+            SELECT loopring.fn_process_trade_block(CAST(b."blockSize" AS INT), b._3, b.call_block_time) as trade,
                 b."contract_address" as exchange_contract_address,
                 b.call_tx_hash as tx_hash,
                 b.call_trace_address as trace_address,
@@ -299,16 +299,12 @@ FROM (
             SELECT "tokenId" AS "token_id", "token"
             FROM loopring."DEXBetaV1_evt_TokenRegistered" e
             WHERE token != '\x0000000000000000000000000000000000000000'
-        ), account_table AS (
-            SELECT id, owner
-            FROM loopring."DEXBetaV1_evt_AccountCreated" e
         )
-
         SELECT (t.trade).block_timestamp as block_time,
             'Loopring' AS project,
             '3.1' AS version,
-            (SELECT "owner" FROM account_table WHERE "id" = (t.trade).accountA) as trader_a,
-            (SELECT "owner" FROM account_table WHERE "id" = (t.trade).accountB) as trader_B,
+            (SELECT "owner" FROM loopring."DEXBetaV1_evt_AccountCreated" WHERE "id" = (t.trade).accountA) as trader_a,
+            (SELECT "owner" FROM loopring."DEXBetaV1_evt_AccountCreated" WHERE "id" = (t.trade).accountB) as trader_B,
             (t.trade).fillA::numeric as token_a_amount_raw,
             (t.trade).fillB::numeric as token_b_amount_raw,
             (SELECT "token" FROM token_table WHERE "token_id" = (t.trade).tokenA) as token_a_address,
