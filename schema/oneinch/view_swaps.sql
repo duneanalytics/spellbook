@@ -16,5 +16,5 @@ CREATE INDEX IF NOT EXISTS oneinch_swaps_idx_1 ON oneinch.view_swaps (from_token
 CREATE INDEX IF NOT EXISTS oneinch_swaps_idx_2 ON oneinch.view_swaps (to_token) INCLUDE (to_amount);
 CREATE INDEX IF NOT EXISTS oneinch_swaps_idx_3 ON oneinch.view_swaps (block_time);
 
-SELECT cron.schedule('0-59 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY oneinch.view_swaps', NULL);
+SELECT cron.schedule('0-59 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY oneinch.view_swaps');
 COMMIT;

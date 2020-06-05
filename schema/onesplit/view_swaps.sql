@@ -11,5 +11,5 @@ CREATE INDEX IF NOT EXISTS onesplit_swaps_idx_1 ON onesplit.view_swaps (from_tok
 CREATE INDEX IF NOT EXISTS onesplit_swaps_idx_2 ON onesplit.view_swaps (to_token) INCLUDE (to_amount);
 CREATE INDEX IF NOT EXISTS onesplit_swaps_idx_3 ON onesplit.view_swaps (block_time);
 
-SELECT cron.schedule('0-59 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY onesplit.view_swaps', NULL);
+SELECT cron.schedule('0-59 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY onesplit.view_swaps');
 COMMIT;

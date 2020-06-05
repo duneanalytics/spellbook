@@ -67,5 +67,5 @@ create materialized view gnosis_safe.view_safes as
     select creation_block_number, creation_time, address, safe_type
     from safes;
 
-SELECT cron.schedule('0 0 * * *', 'REFRESH MATERIALIZED VIEW gnosis_safe.view_safes', NULL);
+SELECT cron.schedule('0 0 * * *', 'REFRESH MATERIALIZED VIEW gnosis_safe.view_safes');
 COMMIT;
