@@ -163,11 +163,15 @@ FROM (
         NULL::integer[] AS trace_address,
         t.evt_index
     FROM oasisdex."eth2dai_evt_LogTrade" t
-    INNER JOIN oasisdex."eth2dai_evt_LogTake" take 
-    ON 
-        t.evt_tx_hash = take.evt_tx_hash 
-    AND 
-        take.evt_index = (SELECT MIN(evt_index) FROM oasisdex."eth2dai_evt_LogTake" WHERE evt_tx_hash = t.evt_tx_hash AND evt_index > t.evt_index)
+    LEFT JOIN LATERAL (
+        SELECT taker, maker
+        FROM oasisdex."eth2dai_evt_LogTake" take
+        WHERE t.evt_tx_hash = take.evt_tx_hash
+        AND take.evt_index > t.evt_index
+        ORDER BY take.evt_index ASC
+        LIMIT 1
+    ) take
+    ON TRUE
     
     UNION 
     
@@ -186,12 +190,16 @@ FROM (
         t.evt_tx_hash AS tx_hash,
         NULL::integer[] AS trace_address,
         t.evt_index
-     FROM oasisdex."MatchingMarket_evt_LogTrade" t
-     INNER JOIN oasisdex."MatchingMarket_evt_LogTake" take 
-     ON 
-        t.evt_tx_hash = take.evt_tx_hash 
-     AND 
-        take.evt_index = (SELECT MIN(evt_index) FROM oasisdex."MatchingMarket_evt_LogTake" WHERE evt_tx_hash = t.evt_tx_hash AND evt_index > t.evt_index)
+    FROM oasisdex."MatchingMarket_evt_LogTrade" t
+    LEFT JOIN LATERAL (
+        SELECT taker, maker
+        FROM oasisdex."MatchingMarket_evt_LogTake" take
+        WHERE t.evt_tx_hash = take.evt_tx_hash
+        AND take.evt_index > t.evt_index
+        ORDER BY take.evt_index ASC
+        LIMIT 1
+    ) take
+    ON TRUE
 
     UNION
 
