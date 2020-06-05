@@ -112,5 +112,5 @@ CREATE INDEX view_movement_1 ON gnosis_protocol.view_movement (token_symbol);
 CREATE INDEX view_movement_2 ON gnosis_protocol.view_movement (token);
 CREATE INDEX view_movement_3 ON gnosis_protocol.view_movement (batch_id);
 
-SELECT cron.schedule('0,5,10,15,20,25,30,35,40,45,50,55 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol.view_movement');
+SELECT cron.schedule('0,5,10,15,20,25,30,35,40,45,50,55 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol.view_movement', NULL);
 COMMIT;
