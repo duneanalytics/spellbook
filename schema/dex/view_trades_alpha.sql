@@ -324,6 +324,32 @@ FROM (
         FROM trades t
     )
 
+    UNION
+
+    -- IDEX v1
+    SELECT
+        call_block_time AS block_time,
+        'IDEX' AS project,
+        '1' AS version,
+        "tradeAddresses"[3] AS trader_a,
+        "tradeAddresses"[4] AS trader_b,
+        "tradeValues"[1] AS token_a_amount_raw,
+        "tradeValues"[2] AS token_b_amount_raw,
+        CASE WHEN "tradeAddresses"[1] = '\x0000000000000000000000000000000000000000' THEN
+            '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
+        ELSE "tradeAddresses"[1]
+        END AS token_a_address,
+        CASE WHEN "tradeAddresses"[2] = '\x0000000000000000000000000000000000000000' THEN
+            '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
+        ELSE "tradeAddresses"[2]
+        END AS token_b_address,
+        contract_address AS exchange_contract_address,
+        call_tx_hash AS tx_hash,
+        call_trace_address AS trace_address,
+        NULL::integer AS evt_index
+    FROM idex."IDEX1_call_trade"
+    WHERE call_success
+
 ) dexs
 LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
 LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
