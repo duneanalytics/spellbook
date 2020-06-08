@@ -1,5 +1,5 @@
 CREATE OR REPLACE VIEW curvefi.view_trades (
-    block_time, 
+    block_time,
     project,
     version,
     trader_a,
