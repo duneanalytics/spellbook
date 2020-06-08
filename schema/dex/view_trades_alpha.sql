@@ -350,6 +350,24 @@ FROM (
     FROM idex."IDEX1_call_trade"
     WHERE call_success
 
+    UNION
+
+    --Curve
+    SELECT
+        block_time,
+        project,
+        version,
+        trader_a,
+        trader_b,
+        token_a_amount_raw,
+        token_b_amount_raw,
+        token_a_address,
+        token_b_address,
+        exchange_contract_address,
+        tx_hash,
+        trace_address,
+        evt_index
+    FROM curvefi.view_trades
 ) dexs
 LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
 LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
