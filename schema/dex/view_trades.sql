@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW dex.view_trades_alpha (
+CREATE OR REPLACE VIEW dex.view_trades (
     block_time, 
     token_a_symbol,
     token_b_symbol,
