@@ -382,5 +382,5 @@ CREATE INDEX dex_trades_token_a ON dex.view_trades (token_a_address, token_a_amo
 CREATE INDEX dex_trades_token_b ON dex.view_trades (token_b_address, token_b_amount);
 
 
-INSERT INTO cron.job (schedule, command) VALUES ('0,10,20,30,40,50 * * * *', 'REFRESH MATERIALIZED VIEW dex.view_trades') 
+INSERT INTO cron.job (schedule, command) VALUES ('0,10,20,30,40,50 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY dex.view_trades')
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
