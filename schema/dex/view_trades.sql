@@ -1,4 +1,6 @@
-CREATE OR REPLACE VIEW dex.view_trades (
+BEGIN;
+DROP MATERIALIZED VIEW IF EXISTS dex.view_trades;
+CREATE MATERIALIZED VIEW dex.view_trades (
     block_time, 
     token_a_symbol,
     token_b_symbol,
@@ -372,3 +374,14 @@ FROM (
 LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
 LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
 ;
+
+CREATE UNIQUE INDEX dex_trades_unique ON dex.view_trades (tx_hash, trace_address, evt_index);
+CREATE INDEX dex_trades_project ON dex.view_trades (project);
+CREATE INDEX dex_trades_block_time ON dex.view_trades (block_time);
+CREATE INDEX dex_trades_token_a ON dex.view_trades (token_a_address, token_a_amount);
+CREATE INDEX dex_trades_token_b ON dex.view_trades (token_b_address, token_b_amount);
+
+
+INSERT INTO cron.job (schedule, command) VALUES ('0,10,20,30,40,50 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY dex.view_trades')
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+COMMIT;
