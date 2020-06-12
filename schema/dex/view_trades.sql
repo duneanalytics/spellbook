@@ -424,7 +424,7 @@ FROM (
 
     -- Gnosis Protocol
     SELECT
-        evt_block_number as block_time,
+        block_time,
         'Gnosis Protocol' as project,
         '1' as version,
         trader_hex as trader_a,
