@@ -420,6 +420,25 @@ FROM (
         NULL::integer[] AS trace_address,
         evt_index AS evt_index
     FROM hydroprotocol."Margin_evt_Match"
+
+    UNION
+
+    -- Gnosis Protocol
+    SELECT
+        block_time,
+        'Gnosis Protocol' as project,
+        '1' as version,
+        trader_hex as trader_a,
+        NULL::bytea AS trader_b,
+        sell_amount_atoms as token_a_amount_raw,
+        buy_amount_atoms as token_b_amount_raw,
+        sell_token as token_a_address,
+        buy_token as token_b_address,
+        '\x6F400810b62df8E13fded51bE75fF5393eaa841F' as exchange_contract_address,
+        tx_hash,
+        NULL::integer[] AS trace_address,
+        evt_index_trades
+    FROM gnosis_protocol."view_trades"
 ) dexs
 LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
 LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
