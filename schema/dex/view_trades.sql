@@ -373,6 +373,27 @@ FROM (
 
     UNION
 
+    -- Balancer
+    SELECT
+        t.evt_block_time AS block_time,
+        'Balancer' AS project,
+        '1' AS version,
+        t.caller AS trader_a,
+        NULL::bytea AS trader_b,
+        t."tokenAmountIn" AS token_a_amount_raw,
+        t."tokenAmountOut" AS token_b_amount_raw,
+        t."tokenIn" token_a_address,
+        t."tokenOut" token_b_address,
+        t.contract_address exchange_contract_address,
+        t.evt_tx_hash AS tx_hash,
+        NULL::integer[] AS trace_address,
+        t.evt_index
+    FROM
+        balancer."BPool_evt_LOG_SWAP" t
+    INNER JOIN balancer."BFactory_evt_LOG_NEW_POOL" f ON f.pool = t.contract_address
+
+    UNION
+
     --DDEX
     SELECT
         evt_block_time AS block_time,
