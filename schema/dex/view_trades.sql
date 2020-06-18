@@ -433,6 +433,7 @@ FROM (
         buy_amount_atoms as token_b_amount_raw,
         sell_token as token_a_address,
         buy_token as token_b_address,
+        '0x6F400810b62df8E13fded51bE75fF5393eaa841F' as exchange_contract_address,
         tx_hash,
         NULL::integer[] AS trace_address,
         evt_index_trades
