@@ -98,6 +98,7 @@ FROM (
     FROM
         uniswap_v2."Pair_evt_Swap" t
     INNER JOIN uniswap_v2."Factory_evt_PairCreated" f ON f.pair = t.contract_address
+    WHERE t.contract_address != '\xed9c854cb02de75ce4c9bba992828d6cb7fd5c71' --Remove WETH-UBOMB wash trading pair
     
     UNION
 
