@@ -450,6 +450,8 @@ WITH rows AS (
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
     WHERE block_time >= start_ts
     AND block_time < end_ts
+    ON CONFLICT DO NOTHING
+    RETURNING 1
 )
 SELECT count(*) INTO r from rows;
 RETURN r;
@@ -458,12 +460,13 @@ $function$;
 ;
 
 
-CREATE UNIQUE INDEX dex_trades_unique_2 ON dex.trades (tx_hash, trace_address, evt_index);
-CREATE INDEX dex_trades_project_2 ON dex.trades (project);
-CREATE INDEX dex_trades_block_time_2 ON dex.trades (block_time);
-CREATE INDEX dex_trades_token_a_2 ON dex.trades (token_a_address, token_a_amount);
-CREATE INDEX dex_trades_token_b_2 ON dex.trades (token_b_address, token_b_amount);
---
---
---INSERT INTO cron.job (schedule, command) VALUES ('0,10,20,30,40,50 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY dex.view_trades')
---ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+CREATE UNIQUE INDEX dex_trades_unique_idx ON dex.trades (tx_hash, trace_address, evt_index);
+CREATE INDEX dex_trades_project_idx ON dex.trades (project);
+CREATE INDEX dex_trades_block_time_idx ON dex.trades (block_time);
+CREATE INDEX dex_trades_token_a_idx ON dex.trades (token_a_address, token_a_amount);
+CREATE INDEX dex_trades_token_b_idx ON dex.trades (token_b_address, token_b_amount);
+
+
+INSERT INTO cron.job (schedule, command)
+VALUES ('0,10,20,30,40,50 * * * *', 'SELECT dex.insert_trades((SELECT max(block_time) FROM dex.trades));')
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
