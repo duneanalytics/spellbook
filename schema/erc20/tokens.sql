@@ -171,6 +171,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\xa0158a5b778e792e861bb44ae663ff9dba1eb427	ETH	18
 \\xc0829421c1d260bd3cb3e0f06cfe2d52db2ce315	ETH	18
 \\xd76b5c2a23ef78368d8e34288b5b65d616b746ae	ETH	18
+\\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE	ETH	18
 \\xe0c6ce3e73029f201e5c0bedb97f67572a93711c	ETHPLO	6
 \\xa2dca1505b07e39f96ce41e875b447f46d50c6fc	ETHS	18
 \\xdb25f211ab05b1c97d595516f45794528a807ad8	EURS	2
