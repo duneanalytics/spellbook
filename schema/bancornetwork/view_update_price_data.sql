@@ -36,6 +36,10 @@ FROM
    FROM bancornetwork."BancorConverter_v0.23_evt_PriceDataUpdate"
    UNION ALL
    SELECT *
-   FROM bancornetwork."BancorConverter_v0.9_evt_PriceDataUpdate") s
+   FROM bancornetwork."BancorConverter_v0.9_evt_PriceDataUpdate"
+   UNION ALL
+   SELECT *
+   FROM bancornetwork."LiquidityPoolV1Converter_v0.28_evt_PriceDataUpdate") s
 LEFT JOIN erc20.tokens t ON s."_connectorToken" = t.contract_address
 ;
+

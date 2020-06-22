@@ -203,6 +203,18 @@ WITH conversions AS
           evt_block_time AS block_time,
           evt_index
    FROM bancornetwork."BancorConverter_v0.9_evt_Conversion"
+   UNION ALL
+   SELECT "_fromToken" AS source_token_address,
+          "_toToken" AS target_token_address,
+          "_trader" AS trader,
+          "_amount" AS source_token_amount,
+          "_return" AS target_token_amount,
+          "_conversionFee" AS conversion_fee,
+          contract_address,
+          evt_tx_hash AS tx_hash,
+          evt_block_time AS block_time,
+          evt_index
+   FROM bancornetwork."LiquidityPoolV1Converter_v0.28_evt_Conversion"
 ),
 tokens AS
   (SELECT *
