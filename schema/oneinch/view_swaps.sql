@@ -1,7 +1,8 @@
 BEGIN;
 DROP MATERIALIZED VIEW IF EXISTS oneinch.view_swaps;
 CREATE MATERIALIZED VIEW oneinch.view_swaps AS SELECT * FROM (
-    ELECT
+    SELECT
+        tx."from" as tx_from,
         from_token,
         to_token,
         from_amount,
@@ -92,6 +93,7 @@ CREATE MATERIALIZED VIEW oneinch.view_swaps AS SELECT * FROM (
         SELECT "fromToken" as from_token, "toToken" as to_token, "fromTokenAmount" as from_amount, "minReturnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address   FROM oneinch."exchange_v7_call_swap"      WHERE call_success UNION ALL
         SELECT "fromToken" as from_token, "toToken" as to_token, "fromTokenAmount" as from_amount, "minReturnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address   FROM oneinch."OneInchExchange_call_swap"  WHERE call_success -- UNION ALL
     ) tmp
+    LEFT JOIN ethereum.transaction txs ON txs.hash = tx_hash
     LEFT JOIN erc20.tokens t1 ON t1.contract_address = from_token
     LEFT JOIN erc20.tokens t2 ON t2.contract_address = to_token
 ) tt;

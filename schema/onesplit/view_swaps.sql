@@ -3,6 +3,7 @@ DROP MATERIALIZED VIEW IF EXISTS onesplit.view_swaps;
 CREATE MATERIALIZED VIEW onesplit.view_swaps AS
 SELECT * FROM (
     SELECT
+        tx."from" as tx_from,
         from_token,
         to_token,
         from_amount,
@@ -87,6 +88,7 @@ SELECT * FROM (
         SELECT "fromToken" as from_token, "toToken" as to_token, "amount" as from_amount, "minReturn" as to_amount, call_tx_hash as tx_hash, call_trace_address, call_block_time as block_time FROM onesplit."OneSplit_call_swap"     WHERE call_success UNION ALL
         SELECT "fromToken" as from_token, "toToken" as to_token, "amount" as from_amount, "minReturn" as to_amount, call_tx_hash as tx_hash, call_trace_address, call_block_time as block_time FROM onesplit."OneSplit_call_goodSwap" WHERE call_success
     ) tmp
+    LEFT JOIN ethereum.transaction txs ON txs.hash = tx_hash
     LEFT JOIN erc20.tokens t1 ON t1.contract_address = from_token
     LEFT JOIN erc20.tokens t2 ON t2.contract_address = to_token
 ) tt;
