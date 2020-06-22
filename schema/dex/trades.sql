@@ -16,7 +16,8 @@ CREATE TABLE dex.trades (
     exchange_contract_address bytea NOT NULL,
     tx_hash bytea NOT NULL,
     trace_address integer[],
-    evt_index integer
+    evt_index integer,
+    trade_id integer
 ); 
 
 CREATE OR REPLACE FUNCTION dex.insert_trades(start_ts timestamptz, end_ts timestamptz=now()) RETURNS integer
@@ -42,7 +43,8 @@ WITH rows AS (
         exchange_contract_address,
         tx_hash,
         trace_address,
-        evt_index
+        evt_index,
+        row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
     FROM (
         -- Uniswap v1 TokenPurchase
         SELECT
@@ -457,12 +459,14 @@ SELECT count(*) INTO r from rows;
 RETURN r;
 END
 $function$;
-;
 
 
-CREATE UNIQUE INDEX dex_trades_unique_idx ON dex.trades (tx_hash, trace_address, evt_index);
+CREATE UNIQUE INDEX dex_trades_tr_addr_uniq_idx ON dex.trades (tx_hash, trace_address, trade_id);
+CREATE UNIQUE INDEX dex_trades_evt_index_uniq_idx ON dex.trades (tx_hash, evt_index, trade_id);
+CREATE INDEX dex_trades_tr_addr_idx ON dex.trades (tx_hash, trace_address);
+CREATE INDEX dex_trades_evt_index_idx ON dex.trades (tx_hash, evt_index);
 CREATE INDEX dex_trades_project_idx ON dex.trades (project);
-CREATE INDEX dex_trades_block_time_idx ON dex.trades (block_time);
+CREATE INDEX dex_trades_block_time_idx ON dex.trades USING BRIN (block_time);
 CREATE INDEX dex_trades_token_a_idx ON dex.trades (token_a_address, token_a_amount);
 CREATE INDEX dex_trades_token_b_idx ON dex.trades (token_b_address, token_b_amount);
 
