@@ -1,7 +1,7 @@
 BEGIN;
 DROP MATERIALIZED VIEW IF EXISTS dex.view_trades;
 CREATE MATERIALIZED VIEW dex.view_trades (
-    block_time, 
+    block_time,
     token_a_symbol,
     token_b_symbol,
     token_a_amount,
@@ -56,9 +56,9 @@ FROM (
     FROM
         uniswap. "Exchange_evt_TokenPurchase" t
     INNER JOIN uniswap. "Factory_evt_NewExchange" f ON f.exchange = t.contract_address
-    
+
     UNION
-    
+
     -- Uniswap v1 EthPurchase
     SELECT
         t.evt_block_time AS block_time,
@@ -77,7 +77,7 @@ FROM (
     FROM
         uniswap. "Exchange_evt_EthPurchase" t
     INNER JOIN uniswap. "Factory_evt_NewExchange" f ON f.exchange = t.contract_address
-    
+
     UNION
 
     -- Uniswap v2
@@ -99,19 +99,19 @@ FROM (
         uniswap_v2."Pair_evt_Swap" t
     INNER JOIN uniswap_v2."Factory_evt_PairCreated" f ON f.pair = t.contract_address
     WHERE t.contract_address != '\xed9c854cb02de75ce4c9bba992828d6cb7fd5c71' --Remove WETH-UBOMB wash trading pair
-    
+
     UNION
 
     -- Kyber: trade from Token - ETH
-    SELECT 
+    SELECT
         evt_block_time AS block_time,
         'Kyber' AS project,
         NULL AS version,
         trader AS trader_a,
         NULL::bytea AS trader_b,
-        CASE 
+        CASE
             WHEN src IN ('\x5228a22e72ccc52d415ecfd199f99d0665e7733b') THEN 0 -- ignore volume of token PT
-            ELSE "srcAmount" 
+            ELSE "srcAmount"
         END AS token_a_amount_raw,
         "ethWeiValue" AS token_b_amount_raw,
         src AS token_a_address,
@@ -134,9 +134,9 @@ FROM (
         trader AS trader_a,
         NULL::bytea AS trader_b,
         "ethWeiValue" AS token_a_amount_raw,
-        CASE 
+        CASE
             WHEN dest IN ('\x5228a22e72ccc52d415ecfd199f99d0665e7733b') THEN 0 -- ignore volume of token PT
-            ELSE "dstAmount" 
+            ELSE "dstAmount"
         END AS token_b_amount_raw,
         '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS token_a_address,
         dest AS token_b_address,
@@ -146,12 +146,12 @@ FROM (
         evt_index AS evt_index
     FROM
         kyber."Network_evt_KyberTrade"
-    WHERE dest NOT IN ('\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee','\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2') 
+    WHERE dest NOT IN ('\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee','\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2')
 
     UNION
 
     -- Old Oasis (eth2dai) contract
-    SELECT 
+    SELECT
         t.evt_block_time AS block_time,
         'Oasis' AS project,
         '1' AS version,
@@ -175,11 +175,11 @@ FROM (
         LIMIT 1
     ) take
     ON TRUE
-    
-    UNION 
-    
+
+    UNION
+
     -- Oasis contract
-    SELECT 
+    SELECT
         t.evt_block_time AS block_time,
         'Oasis' AS project,
         '2' AS version,
@@ -207,7 +207,7 @@ FROM (
     UNION
 
     -- 0x v2.1
-    SELECT 
+    SELECT
         evt_block_time AS block_time,
         '0x' AS project,
         '2.1' AS version,
@@ -226,13 +226,13 @@ FROM (
     UNION
 
     -- 0x v3
-    SELECT 
+    SELECT
         evt_block_time AS block_time,
         '0x' AS project,
         '3' AS version,
         "takerAddress" AS trader_a,
         "makerAddress" AS trader_b,
-        "takerAssetFilledAmount" AS token_a_amount_rawr,
+        "takerAssetFilledAmount" AS token_a_amount_raw,
         "makerAssetFilledAmount" AS token_b_amount_raw,
         substring("takerAssetData" for 20 from 17) as token_a_address,
         substring("makerAssetData" for 20 from 17) as token_b_address,
@@ -270,11 +270,11 @@ FROM (
         NULL::integer[] AS trace_address,
         evt_index
     FROM dydx."SoloMargin_evt_LogTrade"
-    
+
     UNION
-    
+
     -- dYdX BTC-USDC Perpetual
-    SELECT 
+    SELECT
         evt_block_time AS block_time,
         'dYdX' AS project,
         'BTC-USDC Perpetual' AS version,
@@ -283,7 +283,7 @@ FROM (
         "positionAmount" AS token_a_amount_raw,
         "marginAmount" AS token_b_amount_raw,
         '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599' AS token_a_address,
-        '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48' AS token_b_address, 
+        '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48' AS token_b_address,
         contract_address AS exchange_contract_address,
         evt_tx_hash AS tx_hash,
         NULL::integer[] AS trace_address,
@@ -439,6 +439,212 @@ FROM (
         NULL::integer[] AS trace_address,
         evt_index_trades
     FROM gnosis_protocol."view_trades"
+
+    UNION
+
+    -- Bancor Network
+    SELECT
+        evt_block_time AS block_time,
+        'Bancor Network' AS project,
+        '0.6' AS version,
+        trader AS trader_a,
+        NULL::bytea AS trader_b,
+        token_a_amount_raw,
+        token_b_amount_raw,
+        token_a_address,
+        token_b_address,
+        contract_address AS exchange_contract_address,
+        evt_tx_hash AS tx_hash,
+        NULL::integer[] AS trace_address,
+        evt_index
+    FROM
+        (SELECT "_fromToken" AS token_a_address,
+                "_toToken" AS token_b_address,
+                "_trader" AS trader,
+                "_amount" AS token_a_amount_raw,
+                "_return" AS token_b_amount_raw,
+                contract_address,
+                evt_tx_hash,
+                evt_block_time,
+                evt_index
+        FROM bancornetwork."BancorChanger_v0.1_evt_Change"
+        UNION ALL
+        SELECT "_fromToken" AS token_a_address,
+                "_toToken" AS token_b_address,
+                "_trader" AS trader,
+                "_amount" AS token_a_amount_raw,
+                "_return" AS token_b_amount_raw,
+                contract_address,
+                evt_tx_hash,
+                evt_block_time,
+                evt_index
+        FROM bancornetwork."BancorChanger_v0.2_evt_Change"
+        UNION ALL
+        SELECT "_fromToken" AS token_a_address,
+                "_toToken" AS token_b_address,
+                "_trader" AS trader,
+                "_amount" AS token_a_amount_raw,
+                "_return" AS token_b_amount_raw,
+                contract_address,
+                evt_tx_hash,
+                evt_block_time,
+                evt_index
+        FROM bancornetwork."BancorConverter_v0.10a_evt_Conversion"
+        UNION ALL
+        SELECT "_fromToken" AS token_a_address,
+                "_toToken" AS token_b_address,
+                "_trader" AS trader,
+                "_amount" AS token_a_amount_raw,
+                "_return" AS token_b_amount_raw,
+                contract_address,
+                evt_tx_hash,
+                evt_block_time,
+                evt_index
+        FROM bancornetwork."BancorConverter_v0.10b_evt_Conversion"
+        UNION ALL
+        SELECT "_fromToken" AS token_a_address,
+                "_toToken" AS token_b_address,
+                "_trader" AS trader,
+                "_amount" AS token_a_amount_raw,
+                "_return" AS token_b_amount_raw,
+                contract_address,
+                evt_tx_hash,
+                evt_block_time,
+                evt_index
+        FROM bancornetwork."BancorConverter_v0.11_evt_Conversion"
+        UNION ALL
+        SELECT "_fromToken" AS token_a_address,
+                "_toToken" AS token_b_address,
+                "_trader" AS trader,
+                "_amount" AS token_a_amount_raw,
+                "_return" AS token_b_amount_raw,
+                contract_address,
+                evt_tx_hash,
+                evt_block_time,
+                evt_index
+        FROM bancornetwork."BancorConverter_v0.13_evt_Conversion"
+        UNION ALL
+        SELECT "_fromToken" AS token_a_address,
+                "_toToken" AS token_b_address,
+                "_trader" AS trader,
+                "_amount" AS token_a_amount_raw,
+                "_return" AS token_b_amount_raw,
+                contract_address,
+                evt_tx_hash,
+                evt_block_time,
+                evt_index
+        FROM bancornetwork."BancorConverter_v0.14a_evt_Conversion"
+        UNION ALL
+        SELECT "_fromToken" AS token_a_address,
+                "_toToken" AS token_b_address,
+                "_trader" AS trader,
+                "_amount" AS token_a_amount_raw,
+                "_return" AS token_b_amount_raw,
+                contract_address,
+                evt_tx_hash,
+                evt_block_time,
+                evt_index
+        FROM bancornetwork."BancorConverter_v0.14b_evt_Conversion"
+        UNION ALL
+        SELECT "_fromToken" AS token_a_address,
+                "_toToken" AS token_b_address,
+                "_trader" AS trader,
+                "_amount" AS token_a_amount_raw,
+                "_return" AS token_b_amount_raw,
+                contract_address,
+                evt_tx_hash,
+                evt_block_time,
+                evt_index
+        FROM bancornetwork."BancorConverter_v0.19_evt_Conversion"
+        UNION ALL
+        SELECT "_fromToken" AS token_a_address,
+                "_toToken" AS token_b_address,
+                "_trader" AS trader,
+                "_amount" AS token_a_amount_raw,
+                "_return" AS token_b_amount_raw,
+                contract_address,
+                evt_tx_hash,
+                evt_block_time,
+                evt_index
+        FROM bancornetwork."BancorConverter_v0.20_evt_Conversion"
+        UNION ALL
+        SELECT "_fromToken" AS token_a_address,
+                "_toToken" AS token_b_address,
+                "_trader" AS trader,
+                "_amount" AS token_a_amount_raw,
+                "_return" AS token_b_amount_raw,
+                contract_address,
+                evt_tx_hash,
+                evt_block_time,
+                evt_index
+        FROM bancornetwork."BancorConverter_v0.23_evt_Conversion"
+        UNION ALL
+        SELECT "_fromToken" AS token_a_address,
+                "_toToken" AS token_b_address,
+                "_trader" AS trader,
+                "_amount" AS token_a_amount_raw,
+                "_return" AS token_b_amount_raw,
+                contract_address,
+                evt_tx_hash,
+                evt_block_time,
+                evt_index
+        FROM bancornetwork."BancorConverter_v0.4_evt_Conversion"
+        UNION ALL
+        SELECT "_fromToken" AS token_a_address,
+                "_toToken" AS token_b_address,
+                "_trader" AS trader,
+                "_amount" AS token_a_amount_raw,
+                "_return" AS token_b_amount_raw,
+                contract_address,
+                evt_tx_hash,
+                evt_block_time,
+                evt_index
+        FROM bancornetwork."BancorConverter_v0.5_evt_Conversion"
+        UNION ALL
+        SELECT "_fromToken" AS token_a_address,
+                "_toToken" AS token_b_address,
+                "_trader" AS trader,
+                "_amount" AS token_a_amount_raw,
+                "_return" AS token_b_amount_raw,
+                contract_address,
+                evt_tx_hash,
+                evt_block_time,
+                evt_index
+        FROM bancornetwork."BancorConverter_v0.6_evt_Conversion"
+        UNION ALL
+        SELECT "_fromToken" AS token_a_address,
+                "_toToken" AS token_b_address,
+                "_trader" AS trader,
+                "_amount" AS token_a_amount_raw,
+                "_return" AS token_b_amount_raw,
+                contract_address,
+                evt_tx_hash,
+                evt_block_time,
+                evt_index
+        FROM bancornetwork."BancorConverter_v0.7_evt_Conversion"
+        UNION ALL
+        SELECT "_fromToken" AS token_a_address,
+                "_toToken" AS token_b_address,
+                "_trader" AS trader,
+                "_amount" AS token_a_amount_raw,
+                "_return" AS token_b_amount_raw,
+                contract_address,
+                evt_tx_hash,
+                evt_block_time,
+                evt_index
+        FROM bancornetwork."BancorConverter_v0.8_evt_Conversion"
+        UNION ALL
+        SELECT "_fromToken" AS token_a_address,
+                "_toToken" AS token_b_address,
+                "_trader" AS trader,
+                "_amount" AS token_a_amount_raw,
+                "_return" AS token_b_amount_raw,
+                contract_address,
+                evt_tx_hash,
+                evt_block_time,
+                evt_index
+        FROM bancornetwork."BancorConverter_v0.9_evt_Conversion"
+    ) bc
 ) dexs
 LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
 LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
