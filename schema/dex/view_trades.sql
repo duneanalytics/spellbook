@@ -644,6 +644,17 @@ FROM (
                 evt_block_time,
                 evt_index
         FROM bancornetwork."BancorConverter_v0.9_evt_Conversion"
+        UNION ALL
+        SELECT "_fromToken" AS token_a_address,
+                "_toToken" AS token_b_address,
+                "_trader" AS trader,
+                "_amount" AS token_a_amount_raw,
+                "_return" AS token_b_amount_raw,
+                contract_address,
+                evt_tx_hash,
+                evt_block_time,
+                evt_index
+        FROM bancornetwork."LiquidityPoolV1Converter_v0.28_evt_Conversion"
     ) bc
 ) dexs
 LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
