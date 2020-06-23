@@ -446,7 +446,26 @@ WITH rows AS (
             tx_hash,
             NULL::integer[] AS trace_address,
             evt_index_trades
-        FROM gnosis_protocol."view_trades"
+        FROM gnosis_protocol.view_trades
+
+        UNION
+
+        -- Bancor Network
+        SELECT
+			block_time,
+			'Bancor Network' AS project,
+			NULL AS version,
+			trader AS trader_a,
+			NULL::bytea AS trader_b,
+			source_token_amount_raw AS token_a_amount_raw,
+			target_token_amount_raw AS token_b_amount_raw,
+			source_token_address AS token_a_address,
+			target_token_address AS token_b_address,
+			contract_address AS exchange_contract_address,
+			tx_hash,
+			NULL::integer[] AS trace_address,
+			evt_index 
+		FROM bancornetwork.view_convert
     ) dexs
     LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
