@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW bancor.view_add_smart_token AS
+CREATE OR REPLACE VIEW bancornetwork.view_add_smart_token AS
 SELECT r."exchange_token",
        r."exchange_token_symbol",
        r."exchange_token_decimals",
@@ -9,7 +9,7 @@ SELECT r."exchange_token",
        q.contract_address,
        q.evt_tx_hash AS tx_hash,
        q.evt_block_time AS block_time
-FROM bancor."BancorConverterRegistry_evt_SmartTokenAdded" q
+FROM bancornetwork."ConverterRegistry_evt_SmartTokenRemoved" q
 LEFT JOIN
   (SELECT DISTINCT ON (s."_smartToken") s."_convertibleToken" AS "exchange_token",
                       t2.symbol AS "exchange_token_symbol",
@@ -18,10 +18,10 @@ LEFT JOIN
                       p.symbol AS "base_token_symbol",
                       p.decimals AS "base_token_decimals",
                       s."_smartToken" AS smart_token
-   FROM bancor."BancorConverterRegistry_evt_ConvertibleTokenAdded" s
+   FROM bancornetwork."ConverterRegistry_evt_ConvertibleTokenRemoved" s
    INNER JOIN
      (SELECT *
-      FROM bancor."BancorConverterRegistry_evt_ConvertibleTokenAdded"
+      FROM bancornetwork."ConverterRegistry_evt_ConvertibleTokenRemoved"
       LEFT JOIN erc20.tokens t1 ON "_convertibleToken" = t1.contract_address) p ON s."_smartToken" = p."_smartToken"
    AND s."_convertibleToken" != p."_convertibleToken"
    AND (s."_convertibleToken" NOT IN ('\x1f573d6fb3f13d689ff844b4ce37794d79a7ff1c',
