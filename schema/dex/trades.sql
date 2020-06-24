@@ -1,4 +1,3 @@
-DROP TABLE dex.trades;
 CREATE TABLE dex.trades (
     block_time timestamptz NOT NULL, 
     token_a_symbol text,
@@ -461,15 +460,14 @@ END
 $function$;
 
 
-CREATE UNIQUE INDEX dex_trades_tr_addr_uniq_idx ON dex.trades (tx_hash, trace_address, trade_id);
-CREATE UNIQUE INDEX dex_trades_evt_index_uniq_idx ON dex.trades (tx_hash, evt_index, trade_id);
-CREATE INDEX dex_trades_tr_addr_idx ON dex.trades (tx_hash, trace_address);
-CREATE INDEX dex_trades_evt_index_idx ON dex.trades (tx_hash, evt_index);
-CREATE INDEX dex_trades_project_idx ON dex.trades (project);
-CREATE INDEX dex_trades_block_time_idx ON dex.trades USING BRIN (block_time);
-CREATE INDEX dex_trades_token_a_idx ON dex.trades (token_a_address, token_a_amount);
-CREATE INDEX dex_trades_token_b_idx ON dex.trades (token_b_address, token_b_amount);
-
+CREATE UNIQUE INDEX IF NOT EXISTS dex_trades_tr_addr_uniq_idx ON dex.trades (tx_hash, trace_address, trade_id);
+CREATE UNIQUE INDEX IF NOT EXISTS dex_trades_evt_index_uniq_idx ON dex.trades (tx_hash, evt_index, trade_id);
+CREATE INDEX IF NOT EXISTS dex_trades_tr_addr_idx ON dex.trades (tx_hash, trace_address);
+CREATE INDEX IF NOT EXISTS dex_trades_evt_index_idx ON dex.trades (tx_hash, evt_index);
+CREATE INDEX IF NOT EXISTS dex_trades_project_idx ON dex.trades (project);
+CREATE INDEX IF NOT EXISTS dex_trades_block_time_idx ON dex.trades USING BRIN (block_time);
+CREATE INDEX IF NOT EXISTS dex_trades_token_a_idx ON dex.trades (token_a_address, token_a_amount);
+CREATE INDEX IF NOT EXISTS dex_trades_token_b_idx ON dex.trades (token_b_address, token_b_amount);
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('0,10,20,30,40,50 * * * *', 'SELECT dex.insert_trades((SELECT max(block_time) FROM dex.trades));')
