@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW bancor.view_smart_tokens (contract_address, symbol, decimals) AS VALUES
+CREATE OR REPLACE VIEW bancornetwork.view_smart_tokens (contract_address, symbol, decimals) AS VALUES
     ('\xd8ab826b6d69f5e4fa1325a5236491a309fbff4f'::bytea, '4XBBNT'::text, 8::numeric),
     ('\x275a1a2dad3075beb96af4f7fd93ade99bb0151f'::bytea, 'ABXBNT'::text, 18::numeric),
     ('\x075561230db23aa3b86abe8afe8bbc4ecddf1c5a'::bytea, 'ACDBNT'::text, 18::numeric),
