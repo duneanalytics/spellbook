@@ -5,3 +5,4 @@ SELECT label, TO_TIMESTAMP(min(expires)) AS min_expires, min(evt_block_time) AS 
     UNION
     SELECT numeric2bytea(id) AS label, expires, evt_block_time FROM ethereumnameservice."BaseRegistrarImplementation_evt_NameRenewed"
 ) AS r  GROUP BY label
+
