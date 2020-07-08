@@ -38,7 +38,7 @@ WITH
                     -- Set Deversifi ETHWrapper to WETH
                     WHEN SUBSTRING(fills."takerAssetData",17,20) IN ('\x50cb61afa3f023d17276dcfb35abf85c710d1cff'::BYTEA,'\xaa7427d8f17d87a28f5e1ba3adbb270badbe1011'::BYTEA) THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::BYTEA
                     -- Set Deversifi USDCWrapper to USDC
-                    WHEN SUBSTRING(fills."takerAssetData",17,20) IN ('\x69391cca2e38b845720c7deb694ec837877a8e53') THEN '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'::BYTEA
+                    WHEN SUBSTRING(fills."takerAssetData",17,20) IN ('\x69391cca2e38b845720c7deb694ec837877a8e53'::BYTEA) THEN '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'::BYTEA
                     ELSE SUBSTRING(fills."takerAssetData",17,20)
                 END = tp.contract_address
         LEFT JOIN prices.usd mp ON
@@ -89,7 +89,7 @@ WITH
                     -- Set Deversifi ETHWrapper to WETH
                     WHEN SUBSTRING(fills."takerAssetData",17,20) IN ('\x50cb61afa3f023d17276dcfb35abf85c710d1cff'::BYTEA,'\xaa7427d8f17d87a28f5e1ba3adbb270badbe1011'::BYTEA) THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::BYTEA
                     -- Set Deversifi USDCWrapper to USDC
-                    WHEN SUBSTRING(fills."takerAssetData",17,20) IN ('\x69391cca2e38b845720c7deb694ec837877a8e53') THEN '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'::BYTEA
+                    WHEN SUBSTRING(fills."takerAssetData",17,20) IN ('\x69391cca2e38b845720c7deb694ec837877a8e53'::BYTEA) THEN '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'::BYTEA
                     ELSE SUBSTRING(fills."takerAssetData",17,20)
                 END = tp.contract_address
         LEFT JOIN prices.usd mp ON

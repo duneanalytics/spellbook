@@ -22,8 +22,14 @@ SELECT cron.schedule('*/10 * * * *', $$
             , tr.block_time
             , "from" AS caller
             , "to" AS callee
-            , substring(input from (position('\x869584cd'::BYTEA IN input) + 16) for 20) AS affiliate_address
-            , HEX_TO_INT(RIGHT(substring(input from (position('\x869584cd'::BYTEA IN input) + 36) for 32)::VARCHAR,8)) AS quote_timestamp
+            , CASE
+                    WHEN POSITION('\x869584cd'::BYTEA IN input) <> 0 THEN SUBSTRING(input from (position('\x869584cd'::BYTEA IN input) + 16) for 20)
+                    WHEN POSITION('\xfbc019a7'::BYTEA IN input) <> 0 THEN SUBSTRING(input from (position('\xfbc019a7'::BYTEA IN input) + 16) for 20)
+                END AS affiliate_address
+            , CASE
+                    WHEN POSITION('\x869584cd'::BYTEA IN input) <> 0 THEN HEX_TO_INT(RIGHT(substring(input from (position('\x869584cd'::BYTEA IN input) + 36 + 28) for 4)::VARCHAR,8))
+                    WHEN POSITION('\xfbc019a7'::BYTEA IN input) <> 0 THEN NULL
+                END AS quote_timestamp
         FROM ethereum."traces" tr
         WHERE
             tr."to" IN (
@@ -34,9 +40,12 @@ SELECT cron.schedule('*/10 * * * *', $$
                 , '\x4aa817c6f383c8e8ae77301d18ce48efb16fd2be'::BYTEA
                 , '\x4ef40d1bf0983899892946830abf99eca2dbc5ce'::BYTEA
             )
-            AND position('\x869584cd'::BYTEA IN input) <> 0
-            AND tr.block_time > (SELECT COALESCE(MAX(block_time), '2020-02-25'::TIMESTAMP) FROM zeroex.view_api_affiliate_data)
-            AND tr.block_time < ((SELECT COALESCE(MAX(block_time), '2020-02-25'::TIMESTAMP) FROM zeroex.view_api_affiliate_data) + '7 days'::INTERVAL)
+            AND (
+                POSITION('\x869584cd'::BYTEA IN input) <> 0
+                OR POSITION('\xfbc019a7'::BYTEA IN input) <> 0
+            )
+            AND tr.block_time > (SELECT COALESCE(MAX(block_time), '2020-02-12'::TIMESTAMP) FROM zeroex.view_api_affiliate_data)
+            AND tr.block_time < ((SELECT COALESCE(MAX(block_time), '2020-02-12'::TIMESTAMP) FROM zeroex.view_api_affiliate_data) + '7 days'::INTERVAL)
             AND tr.block_time < (CURRENT_TIMESTAMP - '3 minutes'::INTERVAL)
     );
 $$);
