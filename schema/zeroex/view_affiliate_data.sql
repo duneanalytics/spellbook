@@ -1,4 +1,5 @@
 BEGIN;
+DROP TABLE IF EXISTS zeroex.view_api_affiliate_data;
 CREATE TABLE IF NOT EXISTS zeroex.view_api_affiliate_data (
     tx_hash BYTEA
     , block_number BIGINT
