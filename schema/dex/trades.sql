@@ -1,5 +1,5 @@
 CREATE TABLE dex.trades (
-    block_time timestamptz NOT NULL, 
+    block_time timestamptz NOT NULL,
     token_a_symbol text,
     token_b_symbol text,
     token_a_amount numeric,
@@ -17,7 +17,7 @@ CREATE TABLE dex.trades (
     trace_address integer[],
     evt_index integer,
     trade_id integer
-); 
+);
 
 CREATE OR REPLACE FUNCTION dex.insert_trades(start_ts timestamptz, end_ts timestamptz=now()) RETURNS integer
 LANGUAGE plpgsql AS $function$
@@ -63,9 +63,9 @@ WITH rows AS (
         FROM
             uniswap. "Exchange_evt_TokenPurchase" t
         INNER JOIN uniswap. "Factory_evt_NewExchange" f ON f.exchange = t.contract_address
-        
+
         UNION
-        
+
         -- Uniswap v1 EthPurchase
         SELECT
             t.evt_block_time AS block_time,
@@ -84,7 +84,7 @@ WITH rows AS (
         FROM
             uniswap. "Exchange_evt_EthPurchase" t
         INNER JOIN uniswap. "Factory_evt_NewExchange" f ON f.exchange = t.contract_address
-        
+
         UNION
 
         -- Uniswap v2
@@ -106,19 +106,19 @@ WITH rows AS (
             uniswap_v2."Pair_evt_Swap" t
         INNER JOIN uniswap_v2."Factory_evt_PairCreated" f ON f.pair = t.contract_address
         WHERE t.contract_address != '\xed9c854cb02de75ce4c9bba992828d6cb7fd5c71' --Remove WETH-UBOMB wash trading pair
-        
+
         UNION
 
         -- Kyber: trade from Token - ETH
-        SELECT 
+        SELECT
             evt_block_time AS block_time,
             'Kyber' AS project,
             NULL AS version,
             trader AS trader_a,
             NULL::bytea AS trader_b,
-            CASE 
+            CASE
                 WHEN src IN ('\x5228a22e72ccc52d415ecfd199f99d0665e7733b') THEN 0 -- ignore volume of token PT
-                ELSE "srcAmount" 
+                ELSE "srcAmount"
             END AS token_a_amount_raw,
             "ethWeiValue" AS token_b_amount_raw,
             src AS token_a_address,
@@ -141,9 +141,9 @@ WITH rows AS (
             trader AS trader_a,
             NULL::bytea AS trader_b,
             "ethWeiValue" AS token_a_amount_raw,
-            CASE 
+            CASE
                 WHEN dest IN ('\x5228a22e72ccc52d415ecfd199f99d0665e7733b') THEN 0 -- ignore volume of token PT
-                ELSE "dstAmount" 
+                ELSE "dstAmount"
             END AS token_b_amount_raw,
             '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS token_a_address,
             dest AS token_b_address,
@@ -153,12 +153,12 @@ WITH rows AS (
             evt_index AS evt_index
         FROM
             kyber."Network_evt_KyberTrade"
-        WHERE dest NOT IN ('\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee','\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2') 
+        WHERE dest NOT IN ('\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee','\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2')
 
         UNION
 
         -- Old Oasis (eth2dai) contract
-        SELECT 
+        SELECT
             t.evt_block_time AS block_time,
             'Oasis' AS project,
             '1' AS version,
@@ -182,11 +182,11 @@ WITH rows AS (
             LIMIT 1
         ) take
         ON TRUE
-        
-        UNION 
-        
+
+        UNION
+
         -- Oasis contract
-        SELECT 
+        SELECT
             t.evt_block_time AS block_time,
             'Oasis' AS project,
             '2' AS version,
@@ -214,7 +214,7 @@ WITH rows AS (
         UNION
 
         -- 0x v2.1
-        SELECT 
+        SELECT
             evt_block_time AS block_time,
             '0x' AS project,
             '2.1' AS version,
@@ -233,7 +233,7 @@ WITH rows AS (
         UNION
 
         -- 0x v3
-        SELECT 
+        SELECT
             evt_block_time AS block_time,
             '0x' AS project,
             '3' AS version,
@@ -277,11 +277,11 @@ WITH rows AS (
             NULL::integer[] AS trace_address,
             evt_index
         FROM dydx."SoloMargin_evt_LogTrade"
-        
+
         UNION
-        
+
         -- dYdX BTC-USDC Perpetual
-        SELECT 
+        SELECT
             evt_block_time AS block_time,
             'dYdX' AS project,
             'BTC-USDC Perpetual' AS version,
@@ -290,7 +290,7 @@ WITH rows AS (
             "positionAmount" AS token_a_amount_raw,
             "marginAmount" AS token_b_amount_raw,
             '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599' AS token_a_address,
-            '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48' AS token_b_address, 
+            '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48' AS token_b_address,
             contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
@@ -458,13 +458,19 @@ WITH rows AS (
             NULL::bytea AS trader_b,
             target_token_amount_raw AS token_a_amount_raw,
             source_token_amount_raw AS token_b_amount_raw,
-            target_token_address AS token_a_address,
-            source_token_address AS token_b_address,
+            CASE WHEN target_token_address = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN
+                '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
+            ELSE target_token_address
+            END AS token_a_address,
+            CASE WHEN source_token_address = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN
+                '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
+            ELSE source_token_address
+            END AS token_b_address,
             contract_address AS exchange_contract_address,
             tx_hash,
             NULL::integer[] AS trace_address,
             evt_index
-            FROM bancornetwork.view_convert
+        FROM bancornetwork.view_convert
     ) dexs
     LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
