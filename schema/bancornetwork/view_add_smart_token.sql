@@ -37,7 +37,7 @@ LEFT JOIN
    FROM bancornetwork.view_add_convertible_token s
    INNER JOIN
      (SELECT *
-      FROM bancornetwork."ConverterRegistry_evt_ConvertibleTokenAdded"
+      FROM bancornetwork.view_add_convertible_token
      ) p ON s.smart_token = p.smart_token
    AND s.convertible_token != p.convertible_token
    AND (s.convertible_token NOT IN ('\x1f573d6fb3f13d689ff844b4ce37794d79a7ff1c',
