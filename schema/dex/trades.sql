@@ -536,6 +536,25 @@ WITH rows AS (
             NULL::integer[] AS trace_address,
             evt_index
         FROM bancornetwork.view_convert
+
+        UNION
+
+        -- Synthetix
+        SELECT
+            block_time,
+            project,
+            version,
+            trader_a,
+            trader_b,
+            token_a_amount_raw,
+            token_b_amount_raw,
+            token_a_address,
+            token_b_address,
+            exchange_contract_address,
+            tx_hash,
+            trace_address,
+            evt_index
+        FROM synthetix."view_trades"
     ) dexs
     LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
