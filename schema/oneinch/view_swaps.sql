@@ -48,7 +48,8 @@ CREATE MATERIALIZED VIEW oneinch.view_swaps AS SELECT * FROM (
                     '\x0000000000085d4780B73119b644AE5ecd22b376', -- TUSD
                     '\x309627af60f0926daa6041b8279484312f2bf060', -- USDB
                     '\x8E870D67F660D95d5be530380D0eC0bd388289E1', -- PAX
-                    '\x57ab1e02fee23774580c119740129eac7081e9d3'  -- sUSD
+                    '\x57ab1e02fee23774580c119740129eac7081e9d3', -- sUSD 1
+                    '\x57Ab1ec28D129707052df4dF418D58a2D46d5f51'  -- sUSD 2
                 ) THEN (1/1e18)
                 ELSE (
                     SELECT p.price
@@ -97,7 +98,8 @@ CREATE MATERIALIZED VIEW oneinch.view_swaps AS SELECT * FROM (
                     '\x0000000000085d4780B73119b644AE5ecd22b376', -- TUSD
                     '\x309627af60f0926daa6041b8279484312f2bf060', -- USDB
                     '\x8E870D67F660D95d5be530380D0eC0bd388289E1', -- PAX
-                    '\x57ab1e02fee23774580c119740129eac7081e9d3'  -- sUSD
+                    '\x57ab1e02fee23774580c119740129eac7081e9d3', -- sUSD 1
+                    '\x57Ab1ec28D129707052df4dF418D58a2D46d5f51'  -- sUSD 2
                 ) THEN (1/1e18)
                 ELSE (
                     SELECT p.price
