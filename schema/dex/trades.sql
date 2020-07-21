@@ -180,7 +180,7 @@ WITH rows AS (
 
             (SELECT SUM(s)
             FROM UNNEST(ARRAY
-                            (SELECT CASE
+                            (SELECT CASE -- the formula to calculate dst amount: https://github.com/KyberNetwork/smart-contracts/blob/Katalyst/contracts/sol6/utils/Utils5.sol#L88
                                         WHEN dst_token.contract_address = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN -- trade from token - eth, then dst_amount should be eth
                                                 (SELECT CASE
                                                             WHEN dst_token.decimals >= src_token.decimals
