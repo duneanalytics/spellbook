@@ -35,7 +35,7 @@ SELECT * FROM (
                     FROM prices."usd" p
                     WHERE p.contract_address is NULL
                     ANd p.symbol = 'BTC'
-                    AND p.minute = date_trunc('minute', block_time)
+                    AND p.minute = date_trunc('minute', tmp.block_time)
                     LIMIT 1
                 )
                 WHEN from_token IN (
@@ -94,7 +94,7 @@ SELECT * FROM (
                     FROM prices."usd" p
                     WHERE p.contract_address is NULL
                     ANd p.symbol = 'BTC'
-                    AND p.minute = date_trunc('minute', block_time)
+                    AND p.minute = date_trunc('minute', tmp.block_time)
                     LIMIT 1
                 )
                 WHEN to_token IN (
