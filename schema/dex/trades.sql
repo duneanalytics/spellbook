@@ -133,6 +133,7 @@ WITH rows AS (
 
         UNION
 
+
         -- Kyber: trade from ETH - Token
         SELECT
             evt_block_time AS block_time,
@@ -154,6 +155,51 @@ WITH rows AS (
         FROM
             kyber."Network_evt_KyberTrade"
         WHERE dest NOT IN ('\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee','\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2')
+
+        UNION
+
+        --- Kyber_V2
+        SELECT
+            evt_block_time AS block_time,
+            'Kyber' AS project,
+            NULL AS VERSION,
+            src AS token_a_address,
+            dest AS token_b_address,
+            kyber_v2."Network_evt_KyberTrade".contract_address exchange_contract_address,
+            evt_tx_hash AS tx_hash,
+            ethereum.transactions.from AS trader_a,
+            NULL::bytea AS trader_b,
+            NULL::integer[] AS trace_address,
+            evt_index AS evt_index,
+
+            (SELECT SUM(a)
+                    FROM UNNEST(CASE
+                                    WHEN src_token.contract_address = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN "e2tSrcAmounts"
+                                    ELSE "t2eSrcAmounts"
+                                END) AS a) AS token_a_amount_raw,
+
+            (SELECT SUM(s)
+            FROM UNNEST(ARRAY
+                            (SELECT CASE
+                                        WHEN dst_token.contract_address = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN -- trade from token - eth, then dst_amount should be eth
+                                                (SELECT CASE
+                                                            WHEN dst_token.decimals >= src_token.decimals
+                                                            THEN a*b*power(10, (dst_token.decimals-src_token.decimals))/1e18
+                                                            ELSE (a*b) / (1e18 * power(10, (src_token.decimals - dst_token.decimals)))
+                                                        END
+                                                FROM unnest("t2eSrcAmounts", "t2eRates") AS t(a,b))
+                                        ELSE -- trade from eth - token or token - token, dst_amount should be token
+                                                (SELECT CASE
+                                                            WHEN dst_token.decimals >= src_token.decimals
+                                                            THEN a*b*power(10, (dst_token.decimals-src_token.decimals))/1e18
+                                                            ELSE (a*b) / (1e18 * power(10, (src_token.decimals - dst_token.decimals)))
+                                                        END
+                                                FROM unnest("e2tSrcAmounts", "e2tRates") AS t(a,b))
+                                    END)) s) AS token_b_amount_raw
+        FROM kyber_v2."Network_evt_KyberTrade"
+        JOIN erc20."tokens" src_token ON kyber_v2."Network_evt_KyberTrade".src = src_token.contract_address
+        JOIN erc20."tokens" dst_token ON kyber_v2."Network_evt_KyberTrade".dest = dst_token.contract_address
+        JOIN ethereum.transactions ON ethereum.transactions.hash = kyber_v2."Network_evt_KyberTrade".evt_tx_hash;
 
         UNION
 
