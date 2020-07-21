@@ -29,7 +29,16 @@ SELECT * FROM (
                 )
                 WHEN from_token IN (
                     '\xeb4c2781e4eba804ce9a9803c67d0893436bb27d', -- renBTC
-                    '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599', -- WBTC
+                    '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599'  -- WBTC
+                ) THEN (
+                    SELECT p.price/1e8
+                    FROM prices."usd" p
+                    WHERE p.contract_address is NULL
+                    ANd p.symbol = 'BTC'
+                    AND p.minute = date_trunc('minute', tmp.block_time)
+                    LIMIT 1
+                )
+                WHEN from_token IN (
                     '\xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6'  -- sBTC
                 ) THEN (
                     SELECT p.price/1e18
@@ -77,9 +86,18 @@ SELECT * FROM (
                     AND p.minute = date_trunc('minute', tmp.block_time)
                     LIMIT 1
                 )
-                WHEN from_token IN (
+                WHEN to_token IN (
                     '\xeb4c2781e4eba804ce9a9803c67d0893436bb27d', -- renBTC
-                    '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599', -- WBTC
+                    '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599'  -- WBTC
+                ) THEN (
+                    SELECT p.price/1e8
+                    FROM prices."usd" p
+                    WHERE p.contract_address is NULL
+                    ANd p.symbol = 'BTC'
+                    AND p.minute = date_trunc('minute', tmp.block_time)
+                    LIMIT 1
+                )
+                WHEN to_token IN (
                     '\xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6'  -- sBTC
                 ) THEN (
                     SELECT p.price/1e18
