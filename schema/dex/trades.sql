@@ -113,7 +113,7 @@ WITH rows AS (
         SELECT
             evt_block_time AS block_time,
             'Kyber' AS project,
-            NULL AS version,
+            '1' AS version,
             trader AS trader_a,
             NULL::bytea AS trader_b,
             CASE
@@ -137,7 +137,7 @@ WITH rows AS (
         SELECT
             evt_block_time AS block_time,
             'Kyber' AS project,
-            NULL AS version,
+            '1' AS version,
             trader AS trader_a,
             NULL::bytea AS trader_b,
             "ethWeiValue" AS token_a_amount_raw,
@@ -155,6 +155,71 @@ WITH rows AS (
             kyber."Network_evt_KyberTrade"
         WHERE dest NOT IN ('\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee','\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2')
 
+        UNION
+
+        --- Kyber_V2
+        -- trade from token -eth
+        SELECT
+            evt_block_time AS block_time,
+            'Kyber' AS project,
+            '2' AS version,
+            tx.from AS trader_a,
+            NULL::bytea AS trader_b,
+            (SELECT SUM(s) FROM UNNEST(ARRAY((
+                -- formula: https://github.com/KyberNetwork/smart-contracts/blob/Katalyst/contracts/sol6/utils/Utils5.sol#L88
+                SELECT
+                    CASE WHEN 18 >= src_token.decimals -- eth decimal
+                        THEN a*b*power(10, (18-src_token.decimals))/1e18
+                        ELSE (a*b) / (1e18 * power(10, (src_token.decimals - 18)))
+                    END
+                FROM unnest("t2eSrcAmounts", "t2eRates") AS t(a,b)
+                ))) s
+            ) AS token_a_amount_raw,
+            (SELECT SUM(a) FROM UNNEST("t2eSrcAmounts") AS a) AS token_b_amount_raw,
+            '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS token_a_address, -- trade from token - eth, dest should be weth
+            src AS token_b_address,
+            kyber_v2."Network_evt_KyberTrade".contract_address exchange_contract_address,
+            evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index AS evt_index
+        FROM kyber_v2."Network_evt_KyberTrade"
+        INNER JOIN erc20."tokens" src_token ON kyber_v2."Network_evt_KyberTrade".src = src_token.contract_address
+        INNER JOIN ethereum.transactions tx ON tx.hash = kyber_v2."Network_evt_KyberTrade".evt_tx_hash
+        WHERE tx.block_number > 10000000
+        AND src_token.contract_address != '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+
+        UNION
+
+        -- trade from eth - token
+        SELECT
+            evt_block_time AS block_time,
+            'Kyber' AS project,
+            '2' AS version,
+            tx.from AS trader_a,
+            NULL::bytea AS trader_b,
+            (SELECT SUM(s) FROM UNNEST(ARRAY((
+                -- formula: https://github.com/KyberNetwork/smart-contracts/blob/Katalyst/contracts/sol6/utils/Utils5.sol#L88
+                SELECT
+                    CASE WHEN dst_token.decimals >= 18 -- eth decimal
+                        THEN a*b*power(10, (dst_token.decimals-18))/1e18
+                        ELSE (a*b) / (1e18 * power(10, (18- dst_token.decimals)))
+                    END
+                FROM unnest("e2tSrcAmounts", "e2tRates") AS t(a,b)
+                ))) s
+            ) AS token_a_amount_raw,
+            (SELECT SUM(a) FROM UNNEST("e2tSrcAmounts") AS a) AS token_b_amount_raw,
+            dest AS token_a_address,
+            '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS token_b_address, -- trade from eth - token, src should be weth
+            kyber_v2."Network_evt_KyberTrade".contract_address exchange_contract_address,
+            evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index AS evt_index
+        FROM kyber_v2."Network_evt_KyberTrade"
+        INNER JOIN erc20."tokens" dst_token ON kyber_v2."Network_evt_KyberTrade".dest = dst_token.contract_address
+        INNER JOIN ethereum.transactions tx ON tx.hash = kyber_v2."Network_evt_KyberTrade".evt_tx_hash
+        WHERE tx.block_number > 10000000
+        AND dst_token.contract_address != '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+        
         UNION
 
         -- Old Oasis (eth2dai) contract
