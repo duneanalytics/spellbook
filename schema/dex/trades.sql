@@ -113,7 +113,7 @@ WITH rows AS (
         SELECT
             evt_block_time AS block_time,
             'Kyber' AS project,
-            NULL AS version,
+            '1' AS version,
             trader AS trader_a,
             NULL::bytea AS trader_b,
             CASE
@@ -137,7 +137,7 @@ WITH rows AS (
         SELECT
             evt_block_time AS block_time,
             'Kyber' AS project,
-            NULL AS version,
+            '1' AS version,
             trader AS trader_a,
             NULL::bytea AS trader_b,
             "ethWeiValue" AS token_a_amount_raw,
@@ -202,7 +202,7 @@ WITH rows AS (
             '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS token_b_address, -- trade from eth - token, src should be weth
             kyber_v2."Network_evt_KyberTrade".contract_address exchange_contract_address,
             evt_tx_hash AS tx_hash,
-            ethereum.transations.from AS trader_a,
+            ethereum.transactions.from AS trader_a,
             NULL::bytea AS trader_b,
             NULL::integer[] AS trace_address,
             evt_index AS evt_index,
@@ -223,7 +223,7 @@ WITH rows AS (
                         ) s) AS token_a_amount_raw
         FROM kyber_v2."Network_evt_KyberTrade"
         JOIN erc20."tokens" dst_token ON kyber_v2."Network_evt_KyberTrade".dest = dst_token.contract_address
-        JOIN ethereum.transactions ON ethereum.transactions.tx_hash = kyber_v2."Network_evt_KyberTrade".evt_tx_hash
+        JOIN ethereum.transactions ON ethereum.transactions.hash = kyber_v2."Network_evt_KyberTrade".evt_tx_hash
         WHERE dst_token.contract_address != '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
         
         UNION
