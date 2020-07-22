@@ -133,7 +133,6 @@ WITH rows AS (
 
         UNION
 
-
         -- Kyber: trade from ETH - Token
         SELECT
             evt_block_time AS block_time,
