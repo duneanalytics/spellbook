@@ -39,13 +39,15 @@ SELECT cron.schedule('*/10 * * * *', $$
                 , '\x6958f5e95332d93d21af0d7b9ca85b8212fee0a5'::BYTEA
                 , '\x4aa817c6f383c8e8ae77301d18ce48efb16fd2be'::BYTEA
                 , '\x4ef40d1bf0983899892946830abf99eca2dbc5ce'::BYTEA
+                -- exchange proxy
+                , '\xdef1c0ded9bec7f1a1670819833240f027b25eff'::BYTEA
             )
             AND (
                 POSITION('\x869584cd'::BYTEA IN input) <> 0
                 OR POSITION('\xfbc019a7'::BYTEA IN input) <> 0
             )
             AND tr.block_time > (SELECT COALESCE(MAX(block_time), '2020-02-12'::TIMESTAMP) FROM zeroex.view_api_affiliate_data)
-            AND tr.block_time < ((SELECT COALESCE(MAX(block_time), '2020-02-12'::TIMESTAMP) FROM zeroex.view_api_affiliate_data) + '7 days'::INTERVAL)
+            AND tr.block_time < ((SELECT COALESCE(MAX(block_time), '2020-02-12'::TIMESTAMP) FROM zeroex.view_api_affiliate_data) + '90 days'::INTERVAL)
             AND tr.block_time < (CURRENT_TIMESTAMP - '3 minutes'::INTERVAL)
     );
 $$);
