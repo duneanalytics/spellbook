@@ -25,6 +25,8 @@ WITH rows AS (
     INSERT INTO synthetix.view_trades
     SELECT
         trade.evt_block_time AS block_time,
+        trade."fromAmount"/1e18 * (SELECT currency_rate FROM synthetix.view_rates WHERE trade."fromCurrencyKey" = currency_key AND evt_block_time <= trade.evt_block_time ORDER BY evt_block_time DESC LIMIT 1)/1e18 as token_a_amount,
+        trade."toAmount"/1e18 * (SELECT currency_rate FROM synthetix.view_rates WHERE trade."toCurrencyKey" = currency_key AND evt_block_time <= trade.evt_block_time ORDER BY evt_block_time DESC LIMIT 1)/1e18 as token_b_amount,
         'Synthetix' AS project,
         '1' AS version,
         trade.account AS trader_a,
@@ -37,9 +39,7 @@ WITH rows AS (
         trade.evt_tx_hash AS tx_hash,
         NULL::integer[] AS trace_address,
         trade.evt_index AS evt_index,
-        trade."fromAmount"/1e18 * (SELECT currency_rate FROM synthetix.view_rates WHERE trade."fromCurrencyKey" = currency_key AND evt_block_time <= trade.evt_block_time ORDER BY evt_block_time DESC LIMIT 1)/1e18 as token_a_amount,
-        trade."toAmount"/1e18 * (SELECT currency_rate FROM synthetix.view_rates WHERE trade."toCurrencyKey" = currency_key AND evt_block_time <= trade.evt_block_time ORDER BY evt_block_time DESC LIMIT 1)/1e18 as token_b_amount,
-        row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
+        row_number() OVER (PARTITION BY tx_hash, evt_index) AS trade_id
     FROM
         synthetix."Synthetix_evt_SynthExchange" trade;
     WHERE block_time >= start_ts
@@ -52,10 +52,10 @@ RETURN r;
 END
 $function$;
 
-CREATE UNIQUE INDEX IF NOT EXISTS view_trades_id ON synthetix.view_trades (tx_hash,evt_index);
-CREATE INDEX view_trades_block_time ON synthetix.view_trades (block_time);
-CREATE INDEX view_trades_token_a_address ON synthetix.view_trades (token_a_address);
-CREATE INDEX view_trades_token_b_address ON synthetix.view_trades (token_b_address);
+CREATE UNIQUE INDEX IF NOT EXISTS synthetix_view_trades_id ON synthetix.view_trades (tx_hash,evt_index);
+CREATE INDEX synthetix_view_trades_block_time ON synthetix.view_trades (block_time);
+CREATE INDEX synthetix_view_trades_token_a_address ON synthetix.view_trades (token_a_address);
+CREATE INDEX synthetix_view_trades_token_b_address ON synthetix.view_trades (token_b_address);
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('0,10,20,30,40,50 * * * *', 'SELECT synthetix.insert_trades((SELECT max(block_time) FROM synthetix.view_trades));')
