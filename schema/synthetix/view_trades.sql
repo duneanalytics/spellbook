@@ -41,7 +41,7 @@ WITH rows AS (
         trade.evt_index AS evt_index,
         row_number() OVER (PARTITION BY tx_hash, evt_index) AS trade_id
     FROM
-        synthetix."Synthetix_evt_SynthExchange" trade;
+        synthetix."Synthetix_evt_SynthExchange" trade
     WHERE block_time >= start_ts
     AND block_time < end_ts
     ON CONFLICT DO NOTHING
