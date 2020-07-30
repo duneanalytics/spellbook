@@ -171,12 +171,12 @@ SELECT
   prices_in_usd.token_owl_price,
   COALESCE(
     best_owl_price.owl_usd_price,
-    prices_in_usd.token_owl_price * 0.8
+    0.95
   ) AS owl_usd_price,
   prices_in_usd.token_usd_price AS token_usd_price_external,
   prices_in_usd.token_owl_price * COALESCE(
     best_owl_price.owl_usd_price,
-    prices_in_usd.token_owl_price * 0.8
+    0.95
   ) AS token_usd_price
 FROM prices_in_usd
 LEFT OUTER JOIN best_owl_price ON best_owl_price.batch_id = prices_in_usd.batch_id
