@@ -4,6 +4,7 @@ CREATE MATERIALIZED VIEW onesplit.view_swaps AS
 SELECT * FROM (
     SELECT
         tx."from" as tx_from,
+        tx."to" as tx_to,
         from_token,
         to_token,
         from_amount,

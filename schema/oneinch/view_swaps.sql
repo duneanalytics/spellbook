@@ -3,6 +3,7 @@ DROP MATERIALIZED VIEW IF EXISTS oneinch.view_swaps;
 CREATE MATERIALIZED VIEW oneinch.view_swaps AS SELECT * FROM (
     SELECT
         tx."from" as tx_from,
+        tx."to" as tx_to,
         from_token,
         to_token,
         from_amount,
