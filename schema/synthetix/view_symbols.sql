@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW synthetix.symbols (symbol, address) AS VALUES
+CREATE OR REPLACE VIEW synthetix.view_symbols (symbol, address) AS VALUES
 ('sAUD'::text, '\xB03dFc4b9C9756B6D4Fbc12DAde7732149Fcf00d'::bytea),
 ('sAUD'::text, '\x710882750DDe5DBc64e5a7df23a8cF068dF74910'::bytea),
 ('sAUD'::text, '\xa6FE80c4c4AADb4B33dB7f22dc9AE2C4697cC406'::bytea),
