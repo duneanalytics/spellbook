@@ -56,8 +56,8 @@ END
 $function$;
 
 
---INSERT INTO cron.job (schedule, command)
---VALUES ('*/10 * * * *', 'SELECT synthetix.insert_trades((SELECT max(block_time) FROM synthetix.trades));')
---ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+INSERT INTO cron.job (schedule, command)
+VALUES ('*/10 * * * *', 'SELECT synthetix.insert_trades((SELECT max(block_time) FROM synthetix.trades));')
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 
 
