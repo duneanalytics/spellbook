@@ -541,6 +541,33 @@ WITH rows AS (
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
     WHERE block_time >= start_ts
     AND block_time < end_ts
+
+    UNION
+
+    -- synthetix has their own usd-prices
+    SELECT
+        block_time,
+        NULL AS token_a_symbol,
+        NULL AS token_b_symbol,
+        token_a_amount,
+        token_b_amount,
+        'Synthetix' AS project,
+        NULL AS version,
+        trader_a,
+        trader_b,
+        token_a_amount_raw,
+        token_b_amount_raw,
+        token_a_address,
+        token_b_address,
+        exchange_contract_address,
+        tx_hash,
+        NULL AS trace_address,
+        evt_index,
+        trade_id
+    FROM synthetix.trades
+    WHERE block_time >= start_ts
+    AND block_time < end_ts
+
     ON CONFLICT DO NOTHING
     RETURNING 1
 )
