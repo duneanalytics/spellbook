@@ -568,8 +568,8 @@ WITH rows AS (
     -- synthetix has their own usd-prices
     SELECT
         block_time,
-        NULL AS token_a_symbol,
-        NULL AS token_b_symbol,
+        a.symbol AS token_a_symbol,
+        b.symbol AS token_b_symbol,
         token_a_amount,
         token_b_amount,
         'Synthetix' AS project,
@@ -586,7 +586,9 @@ WITH rows AS (
         NULL AS trace_address,
         evt_index,
         trade_id
-    FROM synthetix.trades
+    FROM synthetix.trades tr
+    LEFT JOIN synthetix.view_symbols a ON tr.token_a_address = a.address
+    LEFT JOIN synthetix.view_symbols b ON tr.token_b_address = b.address
     WHERE block_time >= start_ts
     AND block_time < end_ts
 
