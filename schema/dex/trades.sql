@@ -10,6 +10,7 @@ CREATE TABLE dex.trades (
     trader_b bytea,
     token_a_amount_raw numeric,
     token_b_amount_raw numeric,
+    usd_amount numeric,
     token_a_address bytea,
     token_b_address bytea,
     exchange_contract_address bytea NOT NULL,
@@ -37,6 +38,7 @@ WITH rows AS (
         trader_b,
         token_a_amount_raw,
         token_b_amount_raw,
+        usd_amount,
         token_a_address,
         token_b_address,
         exchange_contract_address,
@@ -54,6 +56,7 @@ WITH rows AS (
             NULL::bytea AS trader_b,
             tokens_bought token_a_amount_raw,
             eth_sold token_b_amount_raw,
+            NULL AS usd_amount,
             f.token token_a_address,
             '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea AS token_b_address, --Using WETH for easier joining with USD price table
             t.contract_address exchange_contract_address,
@@ -75,6 +78,7 @@ WITH rows AS (
             NULL::bytea AS trader_b,
             eth_bought token_a_amount_raw,
             tokens_sold token_b_amount_raw,
+            NULL AS usd_amount,
             '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea token_a_address, --Using WETH for easier joining with USD price table
             f.token AS token_b_address,
             t.contract_address exchange_contract_address,
@@ -121,6 +125,7 @@ WITH rows AS (
                 ELSE "srcAmount"
             END AS token_a_amount_raw,
             "ethWeiValue" AS token_b_amount_raw,
+            NULL AS usd_amount,
             src AS token_a_address,
             '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS token_b_address,
             contract_address exchange_contract_address,
@@ -145,6 +150,7 @@ WITH rows AS (
                 WHEN dest IN ('\x5228a22e72ccc52d415ecfd199f99d0665e7733b') THEN 0 -- ignore volume of token PT
                 ELSE "dstAmount"
             END AS token_b_amount_raw,
+            NULL AS usd_amount,
             '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS token_a_address,
             dest AS token_b_address,
             contract_address exchange_contract_address,
@@ -176,6 +182,7 @@ WITH rows AS (
                 ))) s
             ) AS token_a_amount_raw,
             (SELECT SUM(a) FROM UNNEST("t2eSrcAmounts") AS a) AS token_b_amount_raw,
+            NULL AS usd_amount,
             '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS token_a_address, -- trade from token - eth, dest should be weth
             src AS token_b_address,
             kyber_v2."Network_evt_KyberTrade".contract_address exchange_contract_address,
@@ -208,6 +215,7 @@ WITH rows AS (
                 ))) s
             ) AS token_a_amount_raw,
             (SELECT SUM(a) FROM UNNEST("e2tSrcAmounts") AS a) AS token_b_amount_raw,
+            NULL AS usd_amount,
             dest AS token_a_address,
             '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS token_b_address, -- trade from eth - token, src should be weth
             kyber_v2."Network_evt_KyberTrade".contract_address exchange_contract_address,
@@ -231,6 +239,7 @@ WITH rows AS (
             take.maker AS trader_b,
             t.buy_amt AS token_a_amount_raw,
             t.pay_amt AS token_b_amount_raw,
+            NULL AS usd_amount,
             t.buy_gem AS token_a_address,
             t.pay_gem AS token_b_address,
             t.contract_address AS exchange_contract_address,
@@ -259,6 +268,7 @@ WITH rows AS (
             take.maker AS trader_b,
             t.buy_amt AS token_a_amount_raw,
             t.pay_amt AS token_b_amount_raw,
+            NULL AS usd_amount,
             t.buy_gem AS token_a_address,
             t.pay_gem AS token_b_address,
             t.contract_address AS exchange_contract_address,
@@ -287,6 +297,7 @@ WITH rows AS (
             "makerAddress" AS trader_b,
             "takerAssetFilledAmount" AS token_a_amount_raw,
             "makerAssetFilledAmount" AS token_b_amount_raw,
+            NULL AS usd_amount,
             substring("takerAssetData" for 20 from 17) as token_a_address,
             substring("makerAssetData" for 20 from 17) as token_b_address,
             contract_address AS exchange_contract_address,
@@ -306,6 +317,7 @@ WITH rows AS (
             "makerAddress" AS trader_b,
             "takerAssetFilledAmount" AS token_a_amount_rawr,
             "makerAssetFilledAmount" AS token_b_amount_raw,
+            NULL AS usd_amount,
             substring("takerAssetData" for 20 from 17) as token_a_address,
             substring("makerAssetData" for 20 from 17) as token_b_address,
             contract_address AS exchange_contract_address,
@@ -325,6 +337,7 @@ WITH rows AS (
             "makerAccountOwner" AS trader_b,
             abs(("takerOutputUpdate"->'deltaWei'->'value')::numeric)/2 AS token_a_amount_raw, --"takerOutputNumber"
             abs(("takerInputUpdate"->'deltaWei'->'value')::numeric)/2 AS token_b_amount_raw, --"takerInputNumber"
+            NULL AS usd_amount,
             CASE
                 WHEN "outputMarket" = 0 THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
                 WHEN "outputMarket" = 1 THEN '\x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'::bytea
@@ -354,6 +367,7 @@ WITH rows AS (
             taker AS trader_b,
             "positionAmount" AS token_a_amount_raw,
             "marginAmount" AS token_b_amount_raw,
+            NULL AS usd_amount,
             '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599' AS token_a_address,
             '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48' AS token_b_address,
             contract_address AS exchange_contract_address,
@@ -390,6 +404,7 @@ WITH rows AS (
                 (SELECT "owner" FROM loopring."DEXBetaV1_evt_AccountCreated" WHERE "id" = (t.trade).accountB) as trader_B,
                 (t.trade).fillA::numeric as token_a_amount_raw,
                 (t.trade).fillB::numeric as token_b_amount_raw,
+                NULL AS usd_amount,
                 (SELECT "token" FROM token_table WHERE "token_id" = (t.trade).tokenA) as token_a_address,
                 (SELECT "token" FROM token_table WHERE "token_id" = (t.trade).tokenB) as token_b_address,
                 exchange_contract_address,
@@ -410,6 +425,7 @@ WITH rows AS (
             "tradeAddresses"[4] AS trader_b,
             "tradeValues"[1] AS token_a_amount_raw,
             "tradeValues"[2] AS token_b_amount_raw,
+            NULL AS usd_amount,
             CASE WHEN "tradeAddresses"[1] = '\x0000000000000000000000000000000000000000' THEN
                 '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
             ELSE "tradeAddresses"[1]
@@ -436,6 +452,7 @@ WITH rows AS (
             trader_b,
             token_a_amount_raw,
             token_b_amount_raw,
+            NULL AS usd_amount,
             token_a_address,
             token_b_address,
             exchange_contract_address,
@@ -455,6 +472,7 @@ WITH rows AS (
             NULL::bytea AS trader_b,
             t."tokenAmountIn" AS token_a_amount_raw,
             t."tokenAmountOut" AS token_b_amount_raw,
+            NULL AS usd_amount,
             t."tokenIn" token_a_address,
             t."tokenOut" token_b_address,
             t.contract_address exchange_contract_address,
@@ -479,6 +497,7 @@ WITH rows AS (
             END AS trader_b,
             "quoteAssetFilledAmount" AS token_a_amount_raw,
             "baseAssetFilledAmount" AS token_b_amount_raw,
+            NULL AS usd_amount,
             CASE
                 WHEN "addressSet"->>'quoteAsset' = '0x000000000000000000000000000000000000000e' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                 ELSE decode(substring(("addressSet"->'quoteAsset')::TEXT, 4,40), 'hex')
@@ -504,6 +523,7 @@ WITH rows AS (
             NULL::bytea AS trader_b,
             sell_amount_atoms / 2 as token_a_amount_raw,
             buy_amount_atoms / 2 as token_b_amount_raw,
+            NULL AS usd_amount,
             sell_token as token_a_address,
             buy_token as token_b_address,
             '\x6F400810b62df8E13fded51bE75fF5393eaa841F' as exchange_contract_address,
@@ -523,6 +543,7 @@ WITH rows AS (
             NULL::bytea AS trader_b,
             target_token_amount_raw AS token_a_amount_raw,
             source_token_amount_raw AS token_b_amount_raw,
+            NULL AS usd_amount,
             CASE WHEN target_token_address = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN
                 '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
             ELSE target_token_address
@@ -541,6 +562,36 @@ WITH rows AS (
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
     WHERE block_time >= start_ts
     AND block_time < end_ts
+
+    UNION
+
+    -- synthetix has their own usd-prices
+    SELECT
+        block_time,
+        a.symbol AS token_a_symbol,
+        b.symbol AS token_b_symbol,
+        token_a_amount,
+        token_b_amount,
+        'Synthetix' AS project,
+        NULL AS version,
+        trader_a,
+        trader_b,
+        token_a_amount_raw,
+        token_b_amount_raw,
+        token_a_amount_usd AS usd_amount,
+        token_a_address,
+        token_b_address,
+        exchange_contract_address,
+        tx_hash,
+        NULL AS trace_address,
+        evt_index,
+        trade_id
+    FROM synthetix.trades tr
+    LEFT JOIN synthetix.view_symbols a ON tr.token_a_address = a.address
+    LEFT JOIN synthetix.view_symbols b ON tr.token_b_address = b.address
+    WHERE block_time >= start_ts
+    AND block_time < end_ts
+
     ON CONFLICT DO NOTHING
     RETURNING 1
 )
