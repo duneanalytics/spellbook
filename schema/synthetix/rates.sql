@@ -19,8 +19,19 @@ DECLARE r integer;
 BEGIN
 WITH rows AS (
     INSERT INTO synthetix.rates
-    SELECT currency_key, currency_rate, evt_block_time as block_time
-    FROM synthetix."ExchangeRates_evt_RatesUpdated" r, unnest("currencyKeys", "newRates") as u(currency_key, currency_rate)
+    SELECT currency_key, currency_rate, evt_block_time AS block_time
+    FROM synthetix."ExchangeRates_evt_RatesUpdated" r, unnest("currencyKeys", "newRates") AS u(currency_key, currency_rate)
+    WHERE evt_block_time >= start_ts
+    AND evt_block_time < end_ts
+
+    UNION
+    
+    SELECT
+        cl.current * 1e10 AS currency_rate,
+        agg."currencyKey" AS currency_key,
+        cl.evt_block_time AS block_time
+    FROM chainlink."Aggregator_evt_AnswerUpdated" cl
+    INNER JOIN synthetix."ExchangeRates_evt_AggregatorAdded" agg ON agg.aggregator = cl.contract_address;
     WHERE evt_block_time >= start_ts
     AND evt_block_time < end_ts
     ON CONFLICT DO NOTHING
@@ -34,4 +45,3 @@ $function$;
 INSERT INTO cron.job (schedule, command)
 VALUES ('1/5 * * * *', 'SELECT synthetix.insert_rates((SELECT max(block_time) FROM synthetix.rates));')
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
-
