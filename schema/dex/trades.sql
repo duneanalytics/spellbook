@@ -100,6 +100,7 @@ WITH rows AS (
             NULL::bytea AS trader_b,
             CASE WHEN "amount0Out" = 0 THEN "amount1Out" ELSE "amount0Out" END AS token_a_amount_raw,
             CASE WHEN "amount0In" = 0 THEN "amount1In" ELSE "amount0In" END AS token_b_amount_raw,
+            NULL AS usd_amount,
             CASE WHEN "amount0Out" = 0 THEN f.token1 ELSE f.token0 END AS token_a_address,
             CASE WHEN "amount0In" = 0 THEN f.token1 ELSE f.token0 END AS token_b_address,
             t.contract_address exchange_contract_address,
