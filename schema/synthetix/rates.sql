@@ -31,7 +31,7 @@ WITH rows AS (
         agg."currencyKey" AS currency_key,
         cl.evt_block_time AS block_time
     FROM chainlink."Aggregator_evt_AnswerUpdated" cl
-    INNER JOIN synthetix."ExchangeRates_evt_AggregatorAdded" agg ON agg.aggregator = cl.contract_address;
+    INNER JOIN synthetix."ExchangeRates_evt_AggregatorAdded" agg ON agg.aggregator = cl.contract_address
     WHERE evt_block_time >= start_ts
     AND evt_block_time < end_ts
     ON CONFLICT DO NOTHING
