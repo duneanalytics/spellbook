@@ -27,13 +27,13 @@ WITH rows AS (
     UNION
     
     SELECT
-        cl.current * 1e10 AS currency_rate,
         agg."currencyKey" AS currency_key,
+        cl.current * 1e10 AS currency_rate,
         cl.evt_block_time AS block_time
     FROM chainlink."Aggregator_evt_AnswerUpdated" cl
     INNER JOIN synthetix."ExchangeRates_evt_AggregatorAdded" agg ON agg.aggregator = cl.contract_address
-    WHERE evt_block_time >= start_ts
-    AND evt_block_time < end_ts
+    WHERE cl.evt_block_time >= start_ts
+    AND cl.evt_block_time < end_ts
     ON CONFLICT DO NOTHING
     RETURNING 1
 )
