@@ -611,5 +611,5 @@ CREATE INDEX IF NOT EXISTS dex_trades_token_a_idx ON dex.trades (token_a_address
 CREATE INDEX IF NOT EXISTS dex_trades_token_b_idx ON dex.trades (token_b_address, token_b_amount);
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('0,10,20,30,40,50 * * * *', 'SELECT dex.insert_trades((SELECT max(block_time) FROM dex.trades));')
+VALUES ('*/10 * * * *', $$SELECT dex.insert_trades((SELECT max(block_time) - interval '1 days' FROM dex.trades));$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
