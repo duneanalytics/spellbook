@@ -379,11 +379,11 @@ WITH rows AS (
 
         UNION
 
-        -- dYdX BTC-USDC Perpetual
+        -- dYdX PBTC-USDC Perpetual
         SELECT
             evt_block_time AS block_time,
             'dYdX' AS project,
-            'BTC-USDC Perpetual' AS version,
+            'PBTC-USDC Perpetual' AS version,
             maker AS trader_a,
             taker AS trader_b,
             "positionAmount" AS token_a_amount_raw,
@@ -398,6 +398,30 @@ WITH rows AS (
         FROM
             dydx_perpetual."PerpetualV1_evt_LogTrade"
         WHERE "isBuy" = 'True'
+        AND contract_address = '\x07aBe965500A49370D331eCD613c7AC47dD6e547'
+                                       
+        UNION
+                                       
+        -- dYdX WETH-PUSD Perpetual
+        SELECT
+            evt_block_time AS block_time,
+            'dYdX' AS project,
+            'WETH-PUSD Perpetual' AS version,
+            maker AS trader_a,
+            taker AS trader_b,
+            "marginAmount" AS token_a_amount_raw,
+            NULL::numeric AS token_b_amount_raw,
+            "positionAmount"/1e6 AS usd_amount,
+            '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea AS token_a_address,
+            NULL::bytea AS token_b_address,
+            contract_address AS exchange_contract_address,
+            evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index
+        FROM
+            dydx_perpetual."PerpetualV1_evt_LogTrade"
+        WHERE "isBuy" = 'True'
+        AND contract_address = '\x09403FD14510F8196F7879eF514827CD76960B5d'
 
         UNION
 
