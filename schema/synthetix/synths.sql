@@ -200,6 +200,6 @@ END
 $function$;
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('3 0 * * *', 'SELECT synthetix.insert_synths((SELECT max(block_time) FROM synthetix.rates));')
+VALUES ('3 0 * * *', 'SELECT synthetix.insert_synths((SELECT max(block_time) FROM synthetix.synths));')
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 
