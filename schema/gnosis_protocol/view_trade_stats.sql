@@ -20,10 +20,7 @@ WITH trades as (
     JOIN gnosis_protocol.view_price_batch price
         ON trades.batch_id = price.batch_id
         AND trades.sell_token = price.token
-    WHERE
-        0=0
-        AND trade_date >= CURRENT_TIMESTAMP - interval '1 day'
-        AND trades.revert_time IS NULL
+    WHERE trades.revert_time IS NULL
 )
 SELECT
     trades.*,
