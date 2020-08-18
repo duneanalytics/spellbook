@@ -43,5 +43,5 @@ END
 $function$;
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('1/5 * * * *', 'SELECT synthetix.insert_rates((SELECT max(block_time) FROM synthetix.rates));')
+VALUES ('*/5 * * * *', 'SELECT synthetix.insert_rates((SELECT max(block_time) FROM synthetix.rates));')
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
