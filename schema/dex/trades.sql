@@ -116,7 +116,7 @@ WITH rows AS (
             t.evt_block_time AS block_time,
             'Uniswap' AS project,
             '2' AS version,
-            sender AS trader_a,
+            t."to" AS trader_a,
             NULL::bytea AS trader_b,
             CASE WHEN "amount0Out" = 0 THEN "amount1Out" ELSE "amount0Out" END AS token_a_amount_raw,
             CASE WHEN "amount0In" = 0 THEN "amount1In" ELSE "amount0In" END AS token_b_amount_raw,
