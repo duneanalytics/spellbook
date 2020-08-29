@@ -21,9 +21,8 @@ SELECT * FROM (
                     '\xc0829421c1d260bd3cb3e0f06cfe2d52db2ce315'  -- BETH
                 ) THEN (
                     SELECT p.price/1e18
-                    FROM prices."usd" p
-                    WHERE p.contract_address is NULL
-                    ANd p.symbol = 'ETH'
+                    FROM prices.layer1_usd p
+                    WHERE p.symbol = 'ETH'
                     AND p.minute = date_trunc('minute', tmp.block_time)
                     LIMIT 1
                 )
@@ -32,9 +31,8 @@ SELECT * FROM (
                     '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599'  -- WBTC
                 ) THEN (
                     SELECT p.price/1e8
-                    FROM prices."usd" p
-                    WHERE p.contract_address is NULL
-                    ANd p.symbol = 'BTC'
+                    FROM prices.layer1_usd p
+                    WHERE p.symbol = 'BTC'
                     AND p.minute = date_trunc('minute', tmp.block_time)
                     LIMIT 1
                 )
@@ -42,9 +40,8 @@ SELECT * FROM (
                     '\xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6'  -- sBTC
                 ) THEN (
                     SELECT p.price/1e18
-                    FROM prices."usd" p
-                    WHERE p.contract_address is NULL
-                    ANd p.symbol = 'BTC'
+                    FROM prices.layer1_usd p
+                    WHERE p.symbol = 'BTC'
                     AND p.minute = date_trunc('minute', tmp.block_time)
                     LIMIT 1
                 )
@@ -80,9 +77,8 @@ SELECT * FROM (
                     '\xc0829421c1d260bd3cb3e0f06cfe2d52db2ce315'  -- BETH
                 ) THEN (
                     SELECT p.price/1e18
-                    FROM prices."usd" p
-                    WHERE p.contract_address is NULL
-                    ANd p.symbol = 'ETH'
+                    FROM prices.layer1_usd p
+                    WHERE p.symbol = 'ETH'
                     AND p.minute = date_trunc('minute', tmp.block_time)
                     LIMIT 1
                 )
@@ -91,9 +87,8 @@ SELECT * FROM (
                     '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599'  -- WBTC
                 ) THEN (
                     SELECT p.price/1e8
-                    FROM prices."usd" p
-                    WHERE p.contract_address is NULL
-                    ANd p.symbol = 'BTC'
+                    FROM prices.layer1_usd p
+                    WHERE p.symbol = 'BTC'
                     AND p.minute = date_trunc('minute', tmp.block_time)
                     LIMIT 1
                 )
@@ -101,9 +96,8 @@ SELECT * FROM (
                     '\xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6'  -- sBTC
                 ) THEN (
                     SELECT p.price/1e18
-                    FROM prices."usd" p
-                    WHERE p.contract_address is NULL
-                    ANd p.symbol = 'BTC'
+                    FROM prices.layer1_usd p
+                    WHERE p.symbol = 'BTC'
                     AND p.minute = date_trunc('minute', tmp.block_time)
                     LIMIT 1
                 )
