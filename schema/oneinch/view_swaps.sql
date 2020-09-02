@@ -144,6 +144,6 @@ CREATE INDEX IF NOT EXISTS oneinch_swaps_idx_2 ON oneinch.view_swaps (to_token) 
 CREATE INDEX IF NOT EXISTS oneinch_swaps_idx_3 ON oneinch.view_swaps (block_time);
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('0,10,20,30,40,50 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY oneinch.view_swaps')
+VALUES ('*/10 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY oneinch.view_swaps')
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;
