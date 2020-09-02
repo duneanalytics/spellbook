@@ -14,7 +14,8 @@ CREATE INDEX IF NOT EXISTS api_affiliate_tx_index ON zeroex.view_api_affiliate_d
 CREATE INDEX IF NOT EXISTS api_affiliate_timestamp_index ON zeroex.view_api_affiliate_data (block_time);
 CREATE INDEX IF NOT EXISTS api_affiliate_affiliate_index ON zeroex.view_api_affiliate_data (affiliate_address);
 
-SELECT cron.schedule('*/10 * * * *', $$
+INSERT INTO cron.job (schedule, command)
+VALUES ('*/10 * * * *',  $$
     INSERT INTO zeroex.view_api_affiliate_data (
         SELECT
             tr.tx_hash
@@ -50,5 +51,6 @@ SELECT cron.schedule('*/10 * * * *', $$
             AND tr.block_time < ((SELECT COALESCE(MAX(block_time), '2020-02-12'::TIMESTAMP) FROM zeroex.view_api_affiliate_data) + '90 days'::INTERVAL)
             AND tr.block_time < (CURRENT_TIMESTAMP - '3 minutes'::INTERVAL)
     );
-$$);
+$$)
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;
