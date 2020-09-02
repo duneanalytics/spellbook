@@ -1,4 +1,4 @@
-[![Dune Analytics](https://drive.google.com/uc?id=1EXOU7PBL9SUApPb4-MNY0SlbtnZgEAfq | width=380)](https://duneanalytics.com)
+<img src="https://drive.google.com/uc?id=1EXOU7PBL9SUApPb4-MNY0SlbtnZgEAfq" width="380px">
 # Abstractions
 
 This repository tracks user-created abstractions to the Dune Analytics data platform. Contributions in the form of issues and pull requests are very much welcome here.
