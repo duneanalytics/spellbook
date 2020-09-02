@@ -24,7 +24,7 @@ ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 ```
 Note that the preferred way to refresh a materialized view is using the `CONCURRENTLY` keyword, and that this mandates the existence of a `UNIQUE` index on the materialized view. See more info [here](https://www.postgresql.org/docs/12/sql-refreshmaterializedview.html).
 
-###Tables
+### Tables
 Tables are declared without any prefix in the name. If the table `x.y` needs to be periodically updated, the convention is to create a companion function `x.insert_y(from timestamptz, to timestamptz=now())`. It is then customary to do
 ```sql
 INSERT INTO cron.job (schedule, command)
