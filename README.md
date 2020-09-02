@@ -9,10 +9,12 @@ This repository tracks user-created abstractions to the Dune Analytics data plat
 - Each file should be run in a transaction. I.e. either have one statement or be wrapped in `BEGIN;` and `COMMIT;`
 
 
+## Objects
 
-## Views
+### Views
 View names should be prefixed by `view_`. If the view is defined as `CREATE VIEW view_ctokens AS`, then the file should be called `view_ctokens.sql`. 
-## Materialized Views
+
+### Materialized Views
 Materialized view names should be prefxied by `view_`, same as normal views.
 Additionally, a materialized view must specify at what interval it should be refreshed. This is done by adding the following block to the end of the declaration:
 ```sql
@@ -22,7 +24,7 @@ ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 ```
 Note that the preferred way to refresh a materialized view is using the `CONCURRENTLY` keyword, and that this mandates the existence of a `UNIQUE` index on the materialized view. See more info [here](https://www.postgresql.org/docs/12/sql-refreshmaterializedview.html).
 
-## Tables
+###Tables
 Tables are declared without any prefix in the name. If the table `x.y` needs to be periodically updated, the convention is to create a companion function `x.insert_y(from timestamptz, to timestamptz=now())`. It is then customary to do
 ```sql
 INSERT INTO cron.job (schedule, command)
@@ -30,7 +32,7 @@ VALUES ('* 1 * * *', $$SELECT x.insert_y((SELECT max(block_time) - interval '1 d
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 ```
 
-## Functions
+### Functions
 Functions that are not companion functions to tables, should be prefixed by `fn_`.
 
 
