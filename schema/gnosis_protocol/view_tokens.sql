@@ -44,5 +44,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS view_tokens_id ON gnosis_protocol.view_tokens 
 CREATE INDEX view_tokens_1 ON gnosis_protocol.view_tokens (symbol);
 CREATE INDEX view_tokens_2 ON gnosis_protocol.view_tokens (token);
 
-SELECT cron.schedule('0,5,10,15,20,25,30,35,40,45,50,55 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol.view_tokens');
+INSERT INTO cron.job (schedule, command)
+VALUES ('*/5 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol.view_tokens')
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;

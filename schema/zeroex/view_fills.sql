@@ -114,5 +114,8 @@ WITH
 CREATE UNIQUE INDEX IF NOT EXISTS zeroex_fills_unique ON zeroex.view_fills (transaction_hash, evt_index);
 CREATE INDEX IF NOT EXISTS zeroex_fills_time_index ON zeroex.view_fills (timestamp);
 
-SELECT cron.schedule('*/10 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY zeroex.view_fills');
+INSERT INTO cron.job (schedule, command)
+VALUES ('*/10 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY zeroex.view_fills')
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+COMMIT;
 COMMIT;
