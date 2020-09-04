@@ -423,6 +423,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\x12c8b0914e6dee22c7557a0a8b928ae6cacfbcf7	STRX	18
 \\x006bea43baa3f7a6f765f14f10a1a1b08334ef45	STX	18
 \\x12480e24eb5bec1a9d4369cab6a80cad3c0a377a	SUB	2
+\\x6b3595068778dd592e39a122f4f5a5cf09c90fe2	SUSHI	18
 \\xbdeb4b83251fb146687fa19d1c660f99411eefe3	SVD	18
 \\x9e88613418cf03dca54d6a2cf6ad934a78c7a17a	SWM	18
 \\x12b306fa98f4cbb8d4457fdff3a0a0a56f07ccdf	SXDT	18
