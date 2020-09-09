@@ -76,7 +76,7 @@ prices_in_owl AS (
     tokens.symbol,
     tokens.decimals,
     -- price in OWL
-    solution.token_owl_price / 10 ^(36 - tokens.decimals) AS token_owl_price
+    solution.token_owl_price / 10 ^(36 - COALESCE(tokens.decimals, 18)) AS token_owl_price
   FROM (
   	SELECT * FROM solution 
   	UNION
