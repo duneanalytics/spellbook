@@ -1,3 +1,5 @@
+Enjoy working with Dune? We're [hiring developers](https://careers.duneanalytics.com) remotely!
+
 # Abstractions
 
 This repository tracks user-created abstractions to the Dune Analytics data platform. Contributions in the form of issues and pull requests are very much welcome here.
