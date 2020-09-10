@@ -73,5 +73,5 @@ CREATE INDEX view_trade_stats_idx_1 ON gnosis_protocol.view_trade_stats (app_id)
 CREATE INDEX view_trade_stats_idx_2 ON gnosis_protocol.view_trade_stats (trade_date);
 
 
-SELECT cron.schedule('00,10,20,30,40,50 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol.view_trades');
+SELECT cron.schedule('*/10 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol.view_trades');
 COMMIT;
