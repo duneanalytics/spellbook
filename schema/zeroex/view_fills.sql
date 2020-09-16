@@ -79,7 +79,7 @@ WITH
                     WHEN mp.symbol = 'DAI' THEN (fills."makerAssetFilledAmount" / 1e18) * mp.price
                     WHEN tp.symbol = 'WETH' THEN (fills."takerAssetFilledAmount" / 1e18) * tp.price
                     WHEN mp.symbol = 'WETH' THEN (fills."makerAssetFilledAmount" / 1e18) * mp.price
-                    ELSE COALESCE((fills."makerAssetFilledAmount" / 1e18)*mp.price,(fills."takerAssetFilledAmount" / 1e18)*tp.price)
+                    ELSE COALESCE((fills."makerAssetFilledAmount" / (10^mt.decimals))*mp.price,(fills."takerAssetFilledAmount" / (10^tt.decimals))*tp.price)
                 END AS volume_usd
             , NULL::NUMERIC AS protocol_fee_paid_eth
         FROM zeroex_v2."Exchange2.1_evt_Fill" fills
