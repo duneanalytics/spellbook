@@ -16,6 +16,6 @@ FROM
   INNER JOIN ethereum.transactions t ON t.hash = a.evt_tx_hash
   LEFT JOIN erc20.tokens ta ON ta.contract_address = a."tokenIn"
   LEFT JOIN erc20.tokens tb ON tb.contract_address = a."tokenOut"
-  LEFT JOIN prices.usd pa ON date_trunc('minute', a.evt_block_time) = pa.minute AND pa.symbol = ta.symbol
-  LEFT JOIN prices.usd pb ON date_trunc('minute', a.evt_block_time) = pb.minute AND pb.symbol = tb.symbol
+  LEFT JOIN prices.usd pa ON date_trunc('minute', a.evt_block_time) = pa.minute AND pa.contract_address = ta.contract_address
+  LEFT JOIN prices.usd pb ON date_trunc('minute', a.evt_block_time) = pb.minute AND pb.contract_address = tb.contract_address
 WHERE success = 'true'

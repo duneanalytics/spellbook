@@ -10,5 +10,5 @@ SELECT
 FROM
   balancer."BPool_evt_LOG_EXIT" a
   LEFT JOIN erc20.tokens t ON t.contract_address = a."tokenOut"
-  LEFT JOIN prices.usd p ON date_trunc('minute', a.evt_block_time) = p.minute AND p.symbol = t.symbol
+  LEFT JOIN prices.usd p ON date_trunc('minute', a.evt_block_time) = p.minute AND p.contract_address = t.contract_address
   
