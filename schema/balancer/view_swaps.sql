@@ -1,11 +1,10 @@
 CREATE OR REPLACE VIEW balancer.view_swaps AS
 SELECT
   a.evt_block_time AS block_time,
-  t."from" AS "from",
+  t."from" AS "trader",
   ta.symbol AS from_token_symbol,
   a."tokenAmountIn" / 10 ^ ta.decimals AS from_token_amount,
   (a."tokenAmountIn" / 10 ^ ta.decimals) * pa.price AS from_usd_amount,
-  t."to" AS "to",
   tb.symbol AS to_token_symbol,
   a."tokenAmountOut" / 10 ^ tb.decimals AS to_token_amount,
   (a."tokenAmountOut" / 10 ^ tb.decimals) * pb.price AS to_usd_amount,
