@@ -44,7 +44,7 @@ FROM (
 	    sell_token."decimals" AS sell_token_decimals,
 	    -- sell amounts
 	    trades."executedSellAmount" AS sell_amount_atoms,
-	    trades."executedSellAmount" / 10^(sell_token.decimals) AS sell_amount,
+	    trades."executedSellAmount" / 10^(COALESCE(sell_token.decimals, 18)) AS sell_amount,
 	    -- buy token
 	    trades."buyToken" AS buy_token_id,
 	    buy_token.token AS buy_token,    
@@ -52,7 +52,7 @@ FROM (
 	    buy_token.decimals AS buy_token_decimals,
 	    -- buy amounts
 	    trades."executedBuyAmount" AS buy_amount_atoms,
-	    trades."executedBuyAmount" / 10^(buy_token.decimals) AS buy_amount,
+	    trades."executedBuyAmount" / 10^(COALESCE(buy_token.decimals, 18)) AS buy_amount,
 	    -- Tx and block info
 	    trades.evt_block_number AS block_number,
 	    trades.evt_tx_hash AS tx_hash
