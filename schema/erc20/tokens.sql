@@ -406,6 +406,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\x3a9fff453d50d4ac52a6890647b823379ba36b9e	SHUF	18
 \\x6888a16ea9792c15a4dcf2f6c623d055c8ede792	SIG	18
 \\x4af328c52921706dcb739f25786210499169afe6	SKB	8
+\\x37236cd05b34cc79d3715af2383e96dd7443dcf1	SLP 0
 \\xcfd6ae8bf13f42de14867351eaff7a8a3b9fbbe7	SNG	8
 \\xaec2e87e0a235266d9c5adc9deb4b2e29b54d009	SNGLS	0
 \\x744d70fdbe2ba4cf95131626614a1763df805b9e	SNT	18
@@ -610,7 +611,6 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\x71010a9d003445ac60c4e6a7017c1e89a477b438	aREP	18
 \\xfc4b8ed459e00e5400be803a9bb3954234fd50e3	aWBTC	8
 \\x6fb0855c404e09c47c3fbca25f08d4e41f9f062f	aZRX	18
-\\x37236cd05b34cc79d3715af2383e96dd7443dcf1	SLP	    0
 \.
 
 
