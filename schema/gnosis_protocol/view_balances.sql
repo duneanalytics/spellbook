@@ -33,5 +33,7 @@ JOIN gnosis_protocol.view_movement movement
 CREATE UNIQUE INDEX IF NOT EXISTS view_balances_id ON gnosis_protocol.view_balances (trader, token) ;
 CREATE INDEX view_balances_1 ON gnosis_protocol.view_balances (token);
 
-SELECT cron.schedule('0,5,10,15,20,25,30,35,40,45,50,55 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol.view_balances');
+INSERT INTO cron.job (schedule, command)
+VALUES ('*/5 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol.view_balances')
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;

@@ -76,7 +76,7 @@ prices_in_owl AS (
     tokens.symbol,
     tokens.decimals,
     -- price in OWL
-    solution.token_owl_price / 10 ^(36 - tokens.decimals) AS token_owl_price
+    solution.token_owl_price / 10 ^(36 - COALESCE(tokens.decimals, 18)) AS token_owl_price
   FROM (
   	SELECT * FROM solution 
   	UNION
@@ -171,12 +171,12 @@ SELECT
   prices_in_usd.token_owl_price,
   COALESCE(
     best_owl_price.owl_usd_price,
-    prices_in_usd.token_owl_price * 0.8
+    0.95
   ) AS owl_usd_price,
   prices_in_usd.token_usd_price AS token_usd_price_external,
   prices_in_usd.token_owl_price * COALESCE(
     best_owl_price.owl_usd_price,
-    prices_in_usd.token_owl_price * 0.8
+    0.95
   ) AS token_usd_price
 FROM prices_in_usd
 LEFT OUTER JOIN best_owl_price ON best_owl_price.batch_id = prices_in_usd.batch_id
@@ -188,5 +188,7 @@ CREATE INDEX view_price_batch_idx_1 ON gnosis_protocol.view_price_batch (token_i
 CREATE INDEX view_price_batch_idx_2 ON gnosis_protocol.view_price_batch (symbol);
 CREATE INDEX view_price_batch_idx_3 ON gnosis_protocol.view_price_batch (price_date);
 
-SELECT cron.schedule('0,5,10,15,20,25,30,35,40,45,50,55 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol.view_price_batch');
+INSERT INTO cron.job (schedule, command)
+VALUES ('*/5 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol.view_price_batch')
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;

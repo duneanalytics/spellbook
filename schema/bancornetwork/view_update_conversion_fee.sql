@@ -36,5 +36,8 @@ FROM
    FROM bancornetwork."BancorConverter_v0.9_evt_ConversionFeeUpdate"
    UNION ALL
    SELECT *
-   FROM bancornetwork."LiquidityPoolV1Converter_v0.28_evt_ConversionFeeUpdate") s
+   FROM bancornetwork."LiquidityPoolV1Converter_v0.28_evt_ConversionFeeUpdate"
+   UNION ALL
+   SELECT *
+   FROM bancornetwork."LiquidityPoolV1Converter_v0.29_evt_ConversionFeeUpdate") s
 ;

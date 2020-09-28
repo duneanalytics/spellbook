@@ -4,6 +4,7 @@ CREATE MATERIALIZED VIEW onesplit.view_swaps AS
 SELECT * FROM (
     SELECT
         tx."from" as tx_from,
+        tx."to" as tx_to,
         from_token,
         to_token,
         from_amount,
@@ -21,9 +22,27 @@ SELECT * FROM (
                     '\xc0829421c1d260bd3cb3e0f06cfe2d52db2ce315'  -- BETH
                 ) THEN (
                     SELECT p.price/1e18
-                    FROM prices."usd" p
-                    WHERE p.contract_address is NULL
-                    ANd p.symbol = 'ETH'
+                    FROM prices.layer1_usd p
+                    WHERE p.symbol = 'ETH'
+                    AND p.minute = date_trunc('minute', tmp.block_time)
+                    LIMIT 1
+                )
+                WHEN from_token IN (
+                    '\xeb4c2781e4eba804ce9a9803c67d0893436bb27d', -- renBTC
+                    '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599'  -- WBTC
+                ) THEN (
+                    SELECT p.price/1e8
+                    FROM prices.layer1_usd p
+                    WHERE p.symbol = 'BTC'
+                    AND p.minute = date_trunc('minute', tmp.block_time)
+                    LIMIT 1
+                )
+                WHEN from_token IN (
+                    '\xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6'  -- sBTC
+                ) THEN (
+                    SELECT p.price/1e18
+                    FROM prices.layer1_usd p
+                    WHERE p.symbol = 'BTC'
                     AND p.minute = date_trunc('minute', tmp.block_time)
                     LIMIT 1
                 )
@@ -37,7 +56,8 @@ SELECT * FROM (
                     '\x0000000000085d4780B73119b644AE5ecd22b376', -- TUSD
                     '\x309627af60f0926daa6041b8279484312f2bf060', -- USDB
                     '\x8E870D67F660D95d5be530380D0eC0bd388289E1', -- PAX
-                    '\x57ab1e02fee23774580c119740129eac7081e9d3'  -- sUSD
+                    '\x57ab1e02fee23774580c119740129eac7081e9d3', -- sUSD 1
+                    '\x57Ab1ec28D129707052df4dF418D58a2D46d5f51'  -- sUSD 2
                 ) THEN (1/1e18)
                 ELSE (
                     SELECT p.price
@@ -58,9 +78,27 @@ SELECT * FROM (
                     '\xc0829421c1d260bd3cb3e0f06cfe2d52db2ce315'  -- BETH
                 ) THEN (
                     SELECT p.price/1e18
-                    FROM prices."usd" p
-                    WHERE p.contract_address is NULL
-                    ANd p.symbol = 'ETH'
+                    FROM prices.layer1_usd p
+                    WHERE p.symbol = 'ETH'
+                    AND p.minute = date_trunc('minute', tmp.block_time)
+                    LIMIT 1
+                )
+                WHEN to_token IN (
+                    '\xeb4c2781e4eba804ce9a9803c67d0893436bb27d', -- renBTC
+                    '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599'  -- WBTC
+                ) THEN (
+                    SELECT p.price/1e8
+                    FROM prices.layer1_usd p
+                    WHERE p.symbol = 'BTC'
+                    AND p.minute = date_trunc('minute', tmp.block_time)
+                    LIMIT 1
+                )
+                WHEN to_token IN (
+                    '\xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6'  -- sBTC
+                ) THEN (
+                    SELECT p.price/1e18
+                    FROM prices.layer1_usd p
+                    WHERE p.symbol = 'BTC'
                     AND p.minute = date_trunc('minute', tmp.block_time)
                     LIMIT 1
                 )
@@ -74,7 +112,8 @@ SELECT * FROM (
                     '\x0000000000085d4780B73119b644AE5ecd22b376', -- TUSD
                     '\x309627af60f0926daa6041b8279484312f2bf060', -- USDB
                     '\x8E870D67F660D95d5be530380D0eC0bd388289E1', -- PAX
-                    '\x57ab1e02fee23774580c119740129eac7081e9d3'  -- sUSD
+                    '\x57ab1e02fee23774580c119740129eac7081e9d3', -- sUSD 1
+                    '\x57Ab1ec28D129707052df4dF418D58a2D46d5f51'  -- sUSD 2
                 ) THEN (1/1e18)
                 ELSE (
                     SELECT p.price
