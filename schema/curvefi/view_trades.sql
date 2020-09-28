@@ -666,4 +666,4 @@ SELECT
     evt_tx_hash AS tx_hash,
     NULL::integer[] AS trace_address,
     evt_index
-FROM curvefi."dai_usdc_usdt_v2_evt_TokenExchange"
+FROM curvefi."dai_usdc_usdt_evt_TokenExchange"
