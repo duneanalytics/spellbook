@@ -183,7 +183,7 @@ CREATE MATERIALIZED VIEW zeroex.view_0x_api_fills AS (
              COALESCE(bf.maker_token, vf.maker_token) as maker_token,
              COALESCE(bf.taker_token_amount, vf.taker_asset_filled_amount) as taker_token_amount,
              COALESCE(bf.maker_token_amount, vf.maker_asset_filled_amount) as maker_token_amount,
-             COALESCE(bf.type, 'Native Fill') as type,
+             COALESCE(bf.type, concat('Native Fill - ', vf.protocol_version)) as type,
              COALESCE(bf.volume_usd, vf.volume_usd) as volume_usd
          from bridge_fills bf
          full join zeroex."view_fills" vf on vf.transaction_hash=bf.tx_hash
