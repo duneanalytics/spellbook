@@ -846,6 +846,35 @@ WITH rows AS (
 
     UNION
 
+    -- 0x api combined volume: 0x protocols + bridge fills + direct fills into sushi & uniswap
+    SELECT
+        "timestamp" as block_time,
+        erc20a.symbol as token_a_symbol,
+        erc20b.symbol as token_b_symbol,
+        taker_token_amount as token_a_amount,
+        maker_token_amount as token_b_amount,
+        '0x' as project,
+        "type" as version,
+        taker as trader_a,
+        maker as trader_b,
+        null::numeric as token_a_amount_raw,
+        null::numeric as token_b_amount_raw,
+        usd_volume as usd_amount,
+        taker_token as token_a_address,
+        maker_token as token_b_address,
+        null::bytea as exchange_contract_address,
+        tx_hash,
+        null::integer[] as trace_address,
+        evt_index,
+        null::numeric as trade_id
+    FROM zeroex."view_0x_api_fills" view_fill
+    LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = view_fill.taker_token
+    LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = view_fill.maker_token
+    WHERE "timestamp" >= start_ts
+    AND "timestamp" < end_ts
+
+    UNION
+
     -- synthetix has their own usd-prices
     SELECT
         tr.block_time,
