@@ -248,7 +248,7 @@ WITH rows AS (
         INNER JOIN ethereum.transactions tx ON tx.hash = kyber_v2."Network_evt_KyberTrade".evt_tx_hash
         WHERE tx.block_number > 10000000
         AND dst_token.contract_address != '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-        
+
         UNION
 
         -- Old Oasis (eth2dai) contract
@@ -309,46 +309,6 @@ WITH rows AS (
 
         UNION
 
-        -- 0x v2.1
-        SELECT
-            evt_block_time AS block_time,
-            '0x' AS project,
-            '2.1' AS version,
-            "takerAddress" AS trader_a,
-            "makerAddress" AS trader_b,
-            "takerAssetFilledAmount" AS token_a_amount_raw,
-            "makerAssetFilledAmount" AS token_b_amount_raw,
-            NULL::numeric AS usd_amount,
-            substring("takerAssetData" for 20 from 17) AS token_a_address,
-            substring("makerAssetData" for 20 from 17) AS token_b_address,
-            contract_address AS exchange_contract_address,
-            evt_tx_hash AS tx_hash,
-            NULL::integer[] AS trace_address,
-            evt_index
-        FROM zeroex_v2."Exchange2.1_evt_Fill"
-
-        UNION
-
-        -- 0x v3
-        SELECT
-            evt_block_time AS block_time,
-            '0x' AS project,
-            '3' AS version,
-            "takerAddress" AS trader_a,
-            "makerAddress" AS trader_b,
-            "takerAssetFilledAmount" AS token_a_amount_rawr,
-            "makerAssetFilledAmount" AS token_b_amount_raw,
-            NULL::numeric AS usd_amount,
-            substring("takerAssetData" for 20 from 17) AS token_a_address,
-            substring("makerAssetData" for 20 from 17) AS token_b_address,
-            contract_address AS exchange_contract_address,
-            evt_tx_hash AS tx_hash,
-            NULL::integer[] AS trace_address,
-            evt_index
-        FROM zeroex_v3."Exchange_evt_Fill"
-
-        UNION
-
         -- dYdX Solo Margin v2
         SELECT
             evt_block_time AS block_time,
@@ -399,9 +359,9 @@ WITH rows AS (
             dydx_perpetual."PerpetualV1_evt_LogTrade"
         WHERE "isBuy" = 'True'
         AND contract_address = '\x07aBe965500A49370D331eCD613c7AC47dD6e547'
-                                       
+
         UNION
-                                       
+
         -- dYdX WETH-PUSD Perpetual
         SELECT
             evt_block_time AS block_time,
@@ -607,6 +567,35 @@ WITH rows AS (
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
     WHERE block_time >= start_ts
     AND block_time < end_ts
+
+    UNION
+
+    -- 0x api combined volume: 0x protocols + bridge fills + direct fills into sushi & uniswap
+    SELECT
+        "timestamp" as block_time,
+        erc20a.symbol as token_a_symbol,
+        erc20b.symbol as token_b_symbol,
+        taker_token_amount as token_a_amount,
+        maker_token_amount as token_b_amount,
+        '0x' as project,
+        "type" as version,
+        taker as trader_a,
+        maker as trader_b,
+        null::numeric as token_a_amount_raw,
+        null::numeric as token_b_amount_raw,
+        usd_volume as usd_amount,
+        taker_token as token_a_address,
+        maker_token as token_b_address,
+        null::bytea as exchange_contract_address,
+        tx_hash,
+        null::integer[] as trace_address,
+        evt_index,
+        null::numeric as trade_id
+    FROM zeroex."view_0x_api_fills" view_fill
+    LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = view_fill.taker_token
+    LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = view_fill.maker_token
+    WHERE "timestamp" >= start_ts
+    AND "timestamp" < end_ts
 
     UNION
 
