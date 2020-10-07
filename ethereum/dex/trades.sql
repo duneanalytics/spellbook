@@ -846,32 +846,214 @@ WITH rows AS (
 
     UNION
 
-    -- 0x api combined volume: 0x protocols + bridge fills + direct fills into sushi & uniswap
-    SELECT
-        "timestamp" as block_time,
-        erc20a.symbol as token_a_symbol,
-        erc20b.symbol as token_b_symbol,
-        taker_token_amount as token_a_amount,
-        maker_token_amount as token_b_amount,
-        '0x' as project,
-        "type" as version,
-        taker as trader_a,
-        maker as trader_b,
-        null::numeric as token_a_amount_raw,
-        null::numeric as token_b_amount_raw,
-        usd_volume as usd_amount,
-        taker_token as token_a_address,
-        maker_token as token_b_address,
-        null::bytea as exchange_contract_address,
-        tx_hash,
-        null::integer[] as trace_address,
-        evt_index,
-        null::numeric as trade_id
-    FROM zeroex."view_0x_api_fills" view_fill
-    LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = view_fill.taker_token
-    LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = view_fill.maker_token
-    WHERE "timestamp" >= start_ts
-    AND "timestamp" < end_ts
+    -- 0x api combined volume: 0x protocols (including other relayers) + bridge fills + direct fills into sushi & uniswap
+    (
+        WITH v3_fills_no_bridge AS (
+          SELECT fills.evt_tx_hash AS tx_hash
+              , fills.evt_index
+              , evt_block_time AS block_time
+              , fills."makerAddress" AS maker
+              , fills."takerAddress" AS taker
+              , SUBSTRING(fills."takerAssetData",17,20) AS taker_token
+              , SUBSTRING(fills."makerAssetData",17,20) AS maker_token
+              , fills."takerAssetFilledAmount"  AS taker_token_amount_raw
+              , fills."makerAssetFilledAmount"  AS maker_token_amount_raw
+              , CASE
+                WHEN fills."feeRecipientAddress" IN ('\x1000000000000000000000000000000000000011'::BYTEA, '\x86003b044f70dac0abc80ac8957305b6370893ed'::BYTEA) THEN '0x API'
+                WHEN fills."feeRecipientAddress" = '\xa258b39954cef5cb142fd567a46cddb31a670124'::BYTEA THEN 'Radar Relay'
+                WHEN fills."feeRecipientAddress" = '\xc898fbee1cc94c0ff077faa5449915a506eff384'::BYTEA THEN 'Bamboo Relay'
+                WHEN fills."feeRecipientAddress" IN ('\x6f7ae872e995f98fcd2a7d3ba17b7ddfb884305f'::BYTEA,'\xb9e29984fe50602e7a619662ebed4f90d93824c7'::BYTEA) THEN 'Tokenlon'
+                WHEN fills."feeRecipientAddress" IN ('\x68a17b587caf4f9329f0e372e3a78d23a46de6b5'::BYTEA) THEN '1inch Exchange'
+                WHEN fills."feeRecipientAddress" IN ('\x55662e225a3376759c24331a9aed764f8f0c9fbb'::BYTEA,'\x0000000000000000000000000000000000000000'::BYTEA) THEN 'Unknown'
+                ELSE 'Other'
+            END AS relayer
+              , 'v3' as protocol_version
+          FROM zeroex_v3."Exchange_evt_Fill" fills
+          WHERE SUBSTRING("makerAssetData",1,4) != '\xdc1600f3'::BYTEA
+        )
+        , v2_1_fills AS (
+          SELECT  fills.evt_tx_hash AS tx_hash
+              , fills.evt_index
+              , evt_block_time AS block_time
+              , fills."makerAddress" AS maker
+              , fills."takerAddress" AS taker
+              , SUBSTRING(fills."takerAssetData",17,20) AS taker_token
+              , SUBSTRING(fills."makerAssetData",17,20) AS maker_token
+              , fills."takerAssetFilledAmount" AS taker_token_amount_raw
+              , fills."makerAssetFilledAmount" AS maker_token_amount_raw
+              , CASE
+                WHEN fills."feeRecipientAddress" IN ('\x1000000000000000000000000000000000000011'::BYTEA, '\x86003b044f70dac0abc80ac8957305b6370893ed'::BYTEA) THEN '0x API'
+                WHEN fills."feeRecipientAddress" = '\xa258b39954cef5cb142fd567a46cddb31a670124'::BYTEA THEN 'Radar Relay'
+                WHEN fills."feeRecipientAddress" = '\xc898fbee1cc94c0ff077faa5449915a506eff384'::BYTEA THEN 'Bamboo Relay'
+                WHEN fills."feeRecipientAddress" IN ('\x6f7ae872e995f98fcd2a7d3ba17b7ddfb884305f'::BYTEA,'\xb9e29984fe50602e7a619662ebed4f90d93824c7'::BYTEA) THEN 'Tokenlon'
+                WHEN fills."feeRecipientAddress" IN ('\x68a17b587caf4f9329f0e372e3a78d23a46de6b5'::BYTEA) THEN '1inch Exchange'
+                WHEN fills."feeRecipientAddress" IN ('\x55662e225a3376759c24331a9aed764f8f0c9fbb'::BYTEA,'\x0000000000000000000000000000000000000000'::BYTEA) THEN 'Unknown'
+                ELSE 'Other'
+            END AS relayer
+              , 'v2' as protocol_version
+          FROM zeroex_v2."Exchange2.1_evt_Fill" fills
+        )
+        -- bridge fills
+      	, ERC20BridgeTransfer AS (
+      		SELECT 	logs.tx_hash,
+      				INDEX AS evt_index,
+      				block_time AS block_time,
+              substring(DATA,141,20) AS maker,
+              substring(DATA,173,20) AS taker,
+      				substring(DATA,13,20) AS taker_token,
+      				substring(DATA,45,20) AS maker_token,
+      				bytea2numericpy(substring(DATA,77,20)) AS taker_token_amount_raw,
+      				bytea2numericpy(substring(DATA,109,20)) AS maker_token_amount_raw,
+              '0x API' AS relayer,
+              'v3' as protocol_version
+       		FROM ethereum."logs" logs
+      		WHERE topic1 = '\x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9'::bytea
+      	),
+
+      	direct_uniswapv2 AS (
+      		SELECT 	swap.evt_tx_hash AS tx_hash,
+      				swap.evt_index,
+      				swap.evt_block_time AS block_time,
+      				swap.contract_address AS maker,
+      				LAST_VALUE(swap."to") OVER (PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
+      				CASE
+      					WHEN swap."amount0In" > swap."amount1In" THEN pair.token0
+      					ELSE pair.token1
+      					END AS taker_token,
+      				CASE
+      					WHEN swap."amount0In" > swap."amount1In" THEN pair.token1
+      					ELSE pair.token0
+      					END AS maker_token,
+              CASE
+      					WHEN swap."amount0In" > swap."amount1In" THEN swap."amount0In"
+      					ELSE swap."amount1In"
+      					END AS taker_token_amount_raw,
+              CASE
+                WHEN swap."amount0In" > swap."amount1In" THEN swap."amount1Out"
+                ELSE swap."amount0Out"
+                END AS maker_token_amount_raw,
+      			 	'0x API' AS relayer,
+              'v3' as protocol_version
+      		FROM uniswap_v2."Pair_evt_Swap" swap
+      		LEFT JOIN uniswap_v2."Factory_evt_PairCreated" pair ON pair.pair = swap.contract_address
+      		WHERE sender = '\xdef1c0ded9bec7f1a1670819833240f027b25eff'::BYTEA
+      	),
+
+      	direct_sushiswap AS (
+      		SELECT 	swap.evt_tx_hash AS tx_hash,
+      				swap.evt_index,
+      				swap.evt_block_time AS block_time,
+      				swap.contract_address AS maker,
+      				LAST_VALUE(swap."to") OVER (PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
+      				CASE
+      					WHEN swap."amount0In" > swap."amount1In" THEN pair.token0
+      					ELSE pair.token1
+      					END AS taker_token,
+      				CASE
+      					WHEN swap."amount0In" > swap."amount1In" THEN pair.token1
+      					ELSE pair.token0
+      					END AS maker_token,
+              CASE
+                WHEN swap."amount0In" > swap."amount1In" THEN swap."amount0In"
+                ELSE swap."amount1In"
+                END AS taker_token_amount_raw,
+              CASE
+                WHEN swap."amount0In" > swap."amount1In" THEN swap."amount1Out"
+                ELSE swap."amount0Out"
+                END AS maker_token_amount_raw,
+      				'0x API' AS relayer,
+              'v3' as protocol_version
+      		FROM sushi."Pair_evt_Swap" swap
+      		LEFT JOIN sushi."Factory_evt_PairCreated" pair ON pair.pair = swap.contract_address
+      		WHERE sender = '\xdef1c0ded9bec7f1a1670819833240f027b25eff'::BYTEA
+      	),
+      	all_tx AS (
+          	SELECT * FROM direct_uniswapv2
+          	UNION ALL
+          	SELECT * FROM direct_sushiswap
+            UNION ALL
+            SELECT * FROM ERC20BridgeTransfer
+            UNION ALL
+            SELECT * FROM v2_1_fills
+            UNION ALL
+            SELECT * FROM v3_fills_no_bridge
+      	),
+      	total_volume AS (
+      		SELECT 	tx_hash,
+        				evt_index,
+        				block_time,
+        				maker,
+        				taker,
+        				taker_token,
+                tt.symbol as taker_symbol,
+        				maker_token,
+                mt.symbol as maker_symbol,
+        				taker_token_amount_raw / (10^tt.decimals) AS taker_token_amount,
+                taker_token_amount_raw,
+                maker_token_amount_raw / (10^mt.decimals) AS maker_token_amount,
+        				maker_token_amount_raw,
+        				relayer, protocol_version,
+        				CASE
+        					WHEN tp.symbol = 'USDC' THEN (all_tx.taker_token_amount_raw / 1e6)--don't multiply by anything as these assets are USD
+        					WHEN mp.symbol = 'USDC' THEN (all_tx.maker_token_amount_raw / 1e6)--don't multiply by anything as these assets are USD
+        					WHEN tp.symbol = 'TUSD' THEN (all_tx.taker_token_amount_raw / 1e18)--don't multiply by anything as these assets are USD
+        					WHEN mp.symbol = 'TUSD' THEN (all_tx.maker_token_amount_raw / 1e18)--don't multiply by anything as these assets are USD
+        					WHEN tp.symbol = 'USDT' THEN (all_tx.taker_token_amount_raw / 1e6) * tp.price
+        					WHEN mp.symbol = 'USDT' THEN (all_tx.maker_token_amount_raw / 1e6) * mp.price
+        					WHEN tp.symbol = 'DAI' THEN (all_tx.taker_token_amount_raw / 1e18) * tp.price
+        					WHEN mp.symbol = 'DAI' THEN (all_tx.maker_token_amount_raw / 1e18) * mp.price
+        					WHEN tp.symbol = 'WETH' THEN (all_tx.taker_token_amount_raw / 1e18) * tp.price
+        					WHEN mp.symbol = 'WETH' THEN (all_tx.maker_token_amount_raw / 1e18) * mp.price
+        					ELSE COALESCE((all_tx.maker_token_amount_raw / (10^mt.decimals))*mp.price,(all_tx.taker_token_amount_raw / (10^tt.decimals))*tp.price)
+        					END AS volume_usd
+        		FROM all_tx
+        		LEFT JOIN prices.usd tp ON date_trunc('minute', block_time) = tp.minute
+        								AND CASE -- Set Deversifi ETHWrapper to WETH
+        										WHEN all_tx.taker_token IN ('\x50cb61afa3f023d17276dcfb35abf85c710d1cff'::BYTEA,'\xaa7427d8f17d87a28f5e1ba3adbb270badbe1011'::BYTEA) THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::BYTEA -- Set Deversifi USDCWrapper to USDC
+        										WHEN all_tx.taker_token IN ('\x69391cca2e38b845720c7deb694ec837877a8e53'::BYTEA) THEN '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'::BYTEA
+        										ELSE all_tx.taker_token
+        										END = tp.contract_address
+        		LEFT JOIN prices.usd mp ON DATE_TRUNC('minute', block_time) = mp.minute
+        								AND CASE -- Set Deversifi ETHWrapper to WETH
+        										WHEN all_tx.maker_token IN ('\x50cb61afa3f023d17276dcfb35abf85c710d1cff'::BYTEA,'\xaa7427d8f17d87a28f5e1ba3adbb270badbe1011'::BYTEA) THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::BYTEA -- Set Deversifi USDCWrapper to USDC
+        										WHEN all_tx.maker_token IN ('\x69391cca2e38b845720c7deb694ec837877a8e53'::BYTEA) THEN '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'::BYTEA
+        										ELSE all_tx.maker_token
+        										END = mp.contract_address
+        		LEFT JOIN erc20.tokens mt ON mt.contract_address = CASE -- Set Deversifi ETHWrapper to WETH
+                                                                WHEN all_tx.maker_token IN ('\x50cb61afa3f023d17276dcfb35abf85c710d1cff'::BYTEA,'\xaa7427d8f17d87a28f5e1ba3adbb270badbe1011'::BYTEA) THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::BYTEA -- Set Deversifi USDCWrapper to USDC
+                                                                WHEN all_tx.maker_token IN ('\x69391cca2e38b845720c7deb694ec837877a8e53'::BYTEA) THEN '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'::BYTEA
+                                                                ELSE all_tx.maker_token
+                                                                END
+        		LEFT JOIN erc20.tokens tt ON tt.contract_address = CASE -- Set Deversifi ETHWrapper to WETH
+                                                                WHEN all_tx.taker_token IN ('\x50cb61afa3f023d17276dcfb35abf85c710d1cff'::BYTEA,'\xaa7427d8f17d87a28f5e1ba3adbb270badbe1011'::BYTEA) THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::BYTEA -- Set Deversifi USDCWrapper to USDC
+                                                                WHEN all_tx.taker_token IN ('\x69391cca2e38b845720c7deb694ec837877a8e53'::BYTEA) THEN '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'::BYTEA
+                                                                ELSE all_tx.taker_token
+                                                                END
+        	)   SELECT
+                  block_time,
+                  taker_symbol as token_a_symbol,
+                  maker_symbol as token_b_symbol,
+                  taker_token_amount as token_a_amount,
+                  maker_token_amount as token_b_amount,
+                  '0x' as project,
+                  protocol_version as version,
+                  taker as trader_a,
+                  maker as trader_b,
+                  taker_token_amount_raw as token_a_amount_raw,
+                  taker_token_amount_raw as token_b_amount_raw,
+                  volume_usd as usd_amount,
+                  taker_token as token_a_address,
+                  maker_token as token_b_address,
+                  null::bytea as exchange_contract_address,
+                  tx_hash,
+                  null::integer[] as trace_address,
+                  evt_index,
+                  null::numeric as trade_id
+              FROM total_volume
+              WHERE block_time >= start_ts
+              AND block_time < end_ts
+    )
+
 
     UNION
 
