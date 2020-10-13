@@ -60,7 +60,7 @@ ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 DROP MATERIALIZED VIEW IF EXISTS zeroex.view_0x_api_fills;
 CREATE MATERIALIZED VIEW zeroex.view_0x_api_fills AS (
 
-WITH zeroex_tx AS (
+WITH zeroex_tx_raw AS (
             SELECT DISTINCT
                 v3.evt_tx_hash AS tx_hash
                 , case when "takerAddress" = '\x63305728359c088a52b0b0eeec235db4d31a67fc'::BYTEA then "takerAddress"
@@ -79,11 +79,16 @@ WITH zeroex_tx AS (
 
             SELECT
                 tx_hash
-                , MAX(affiliate_address::text)::bytea as affiliate_address
+                , affiliate_address as affiliate_address
             from zeroex.view_api_affiliate_data
-            GROUP BY 1
         ),
-
+        zeroex_tx AS (
+                    SELECT
+                        tx_hash
+                        , MAX(affiliate_address::text)::bytea as affiliate_address
+                    from zeroex_tx_raw
+                    GROUP BY 1
+        ),
         v3_fills_no_bridge AS (
               SELECT fills.evt_tx_hash AS tx_hash
                   , fills.evt_index
@@ -95,9 +100,9 @@ WITH zeroex_tx AS (
                   , fills."takerAssetFilledAmount"  AS taker_token_amount_raw
                   , fills."makerAssetFilledAmount"  AS maker_token_amount_raw
                   , 'Native Fill v3' as type
-                  , zeroex_tx.affiliate_address as affiliate_address
-                  , zeroex_tx.affiliate_address = '\x86003b044f70dac0abc80ac8957305b6370893ed'::bytea AS swap_flag
-                  , fills."feeRecipientAddress" = '\x86003b044f70dac0abc80ac8957305b6370893ed'::bytea AS matcha_limit_order_flag
+                  , COALESCE(zeroex_tx.affiliate_address, fills."feeRecipientAddress") as affiliate_address
+                  , (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag
+                  , (fills."feeRecipientAddress" = '\x86003b044f70dac0abc80ac8957305b6370893ed'::bytea) AS matcha_limit_order_flag
               FROM zeroex_v3."Exchange_evt_Fill" fills
               LEFT join zeroex_tx on zeroex_tx.tx_hash = fills.evt_tx_hash
               WHERE
