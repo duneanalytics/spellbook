@@ -632,8 +632,8 @@ WITH rows AS (
         evt_index,
         trade_id
     FROM synthetix.trades tr
-    LEFT JOIN synthetix.view_symbols a ON tr.token_a_address = a.address
-    LEFT JOIN synthetix.view_symbols b ON tr.token_b_address = b.address
+    LEFT JOIN synthetix.symbols a ON tr.token_a_address = a.address
+    LEFT JOIN synthetix.symbols b ON tr.token_b_address = b.address
     WHERE block_time >= start_ts
     AND block_time < end_ts
 
