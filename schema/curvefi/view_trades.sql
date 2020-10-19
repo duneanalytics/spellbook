@@ -598,72 +598,16 @@ SELECT
         --change address back to renBTC's, right now Dune only tracks WBTC price
         WHEN bought_id = 0 THEN '\x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599'::bytea
         WHEN bought_id = 1 THEN '\x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599'::bytea
-        WHEN bought_id = 2 THEN '\x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599'::bytea
+        WHEN bought_id = 2 THEN '\xfE18be6b3Bd88A2D2A7f928d00292E7a9963CfC6'::bytea
     END as token_a_address,
     CASE
         --change address back to renBTC's, right now Dune only tracks WBTC price
         WHEN sold_id = 0 THEN '\x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599'::bytea
         WHEN sold_id = 1 THEN '\x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599'::bytea
-        WHEN sold_id = 2 THEN '\x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599'::bytea
+        WHEN sold_id = 2 THEN '\xfE18be6b3Bd88A2D2A7f928d00292E7a9963CfC6'::bytea
     END as token_b_address,
     contract_address AS exchange_contract_address,
     evt_tx_hash AS tx_hash,
     NULL::integer[] AS trace_address,
     evt_index
 FROM curvefi."sbtc_evt_TokenExchange"
-
-
-UNION
-
-
-SELECT
-    evt_block_time AS block_time,
-    'Curve' AS project,
-    NULL::text AS version,
-    buyer AS trader_a,
-    NULL::bytea AS trader_b,
-    tokens_bought AS token_a_amount_raw,
-    tokens_sold AS token_b_amount_raw,
-    CASE
-        --change address back to renBTC's, right now Dune only tracks WBTC price
-        WHEN bought_id = 0 THEN '\x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599'::bytea
-        WHEN bought_id = 1 THEN '\x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599'::bytea
-    END as token_a_address,
-    CASE
-        --change address back to renBTC's, right now Dune only tracks WBTC price
-        WHEN sold_id = 0 THEN '\x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599'::bytea
-        WHEN sold_id = 1 THEN '\x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599'::bytea
-    END as token_b_address,
-    contract_address AS exchange_contract_address,
-    evt_tx_hash AS tx_hash,
-    NULL::integer[] AS trace_address,
-    evt_index
-FROM curvefi."hbtc_evt_TokenExchange"
-
-
-UNION
-
-
-SELECT
-    evt_block_time AS block_time,
-    'Curve' AS project,
-    NULL::text AS version,
-    buyer AS trader_a,
-    NULL::bytea AS trader_b,
-    tokens_bought AS token_a_amount_raw,
-    tokens_sold AS token_b_amount_raw,
-    CASE
-        WHEN bought_id = 0 THEN '\x6B175474E89094C44Da98b954EedeAC495271d0F'::bytea
-        WHEN bought_id = 1 THEN '\xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'::bytea
-        WHEN bought_id = 2 THEN '\xdAC17F958D2ee523a2206206994597C13D831ec7'::bytea
-    END as token_a_address,
-    CASE
-        WHEN sold_id = 0 THEN '\x6B175474E89094C44Da98b954EedeAC495271d0F'::bytea
-        WHEN sold_id = 1 THEN '\xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'::bytea
-        WHEN sold_id = 2 THEN '\xdAC17F958D2ee523a2206206994597C13D831ec7'::bytea
-    END as token_b_address,
-    contract_address AS exchange_contract_address,
-    evt_tx_hash AS tx_hash,
-    NULL::integer[] AS trace_address,
-    evt_index
-FROM curvefi."dai_usdc_usdt_evt_TokenExchange"
