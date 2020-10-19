@@ -602,6 +602,29 @@ WITH rows AS (
             NULL::integer[] AS trace_address,
             evt_index
         FROM bancornetwork.view_convert
+                                            
+        UNION
+
+        -- Sushiswap
+        SELECT
+            t.evt_block_time AS block_time,
+            'Sushiswap' AS project,
+            '1' AS version,
+            t."to" AS trader_a,
+            NULL::bytea AS trader_b,
+            CASE WHEN "amount0Out" = 0 THEN "amount1Out" ELSE "amount0Out" END AS token_a_amount_raw,
+            CASE WHEN "amount0In" = 0 THEN "amount1In" ELSE "amount0In" END AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            CASE WHEN "amount0Out" = 0 THEN f.token1 ELSE f.token0 END AS token_a_address,
+            CASE WHEN "amount0In" = 0 THEN f.token1 ELSE f.token0 END AS token_b_address,
+            t.contract_address exchange_contract_address,
+            t.evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            t.evt_index
+        FROM
+            sushi."Pair_evt_Swap" t
+        INNER JOIN sushi."Factory_evt_PairCreated" f ON f.pair = t.contract_address
+                        
     ) dexs
     LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
