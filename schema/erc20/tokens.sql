@@ -44,7 +44,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\x20b2974669e5c70c46962ab7eae34528f9dc83ab	BANus	18
 \\x879e57f3b2d913b4aebb5242abbc6f4ee64a1ab3	BANus	18
 \\x0d8775f648430679a709e98d2b0cb6250d2887ef	BAT	18
-\\x27fbdd15fb0820b50b9c3683ea628bb6ab9b2d70	BAT	18
+\\x27fbdd15fb0820b50b9c3683ea628bb6ab9b2d70	EBATo	18
 \\x9a0242b7a33dacbe40edb927834f96eb39f8fbcb	BAX	18
 \\x84f7c44b6fed1080f647e354d552595be2cc602f	BBO	18
 \\xff3519eeeea3e76f1f699ccce5e23ee0bdda41ac	BCAP	0
