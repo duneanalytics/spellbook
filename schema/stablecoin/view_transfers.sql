@@ -17,9 +17,9 @@ SELECT
     "to",
     (value/10^(decimals)) AS value,
     symbol,
-    evt_block_time AS block_time,
+    evt_block_time,
     coin_name,
-    evt_tx_hash AS tx_hash,
+    evt_tx_hash,
     value AS value_raw
 FROM erc20."ERC20_evt_Transfer" tr 
 INNER JOIN stablecoins st ON tr.contract_address = st.contract_address
