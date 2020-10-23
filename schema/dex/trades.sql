@@ -635,7 +635,7 @@ WITH rows AS (
 
     -- synthetix has their own usd-prices
     SELECT
-        block_time,
+        tr.block_time,
         a.symbol AS token_a_symbol,
         b.symbol AS token_b_symbol,
         token_a_amount,
@@ -657,8 +657,8 @@ WITH rows AS (
     FROM synthetix.trades tr
     LEFT JOIN synthetix.symbols a ON tr.token_a_address = a.address
     LEFT JOIN synthetix.symbols b ON tr.token_b_address = b.address
-    WHERE block_time >= start_ts
-    AND block_time < end_ts
+    WHERE tr.block_time >= start_ts
+    AND tr.block_time < end_ts
 
     ON CONFLICT DO NOTHING
     RETURNING 1
