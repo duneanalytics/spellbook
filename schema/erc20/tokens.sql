@@ -623,6 +623,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\xfc4b8ed459e00e5400be803a9bb3954234fd50e3	aWBTC	8
 \\x12e51e77daaa58aa0e9247db7510ea4b46f9bead	aYFI	18
 \\x6fb0855c404e09c47c3fbca25f08d4e41f9f062f	aZRX	18
+\\xE59064a8185Ed1Fca1D17999621eFedfab4425c9 PRIME   18
 \.
 
 
