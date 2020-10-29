@@ -116,7 +116,7 @@ WITH rows AS (
             t.evt_block_time AS block_time,
             'Uniswap' AS project,
             '2' AS version,
-            t."to" AS trader_a,
+            tx."from" AS trader_a,
             NULL::bytea AS trader_b,
             CASE WHEN "amount0Out" = 0 THEN "amount1Out" ELSE "amount0Out" END AS token_a_amount_raw,
             CASE WHEN "amount0In" = 0 THEN "amount1In" ELSE "amount0In" END AS token_b_amount_raw,
@@ -130,7 +130,10 @@ WITH rows AS (
         FROM
             uniswap_v2."Pair_evt_Swap" t
         INNER JOIN uniswap_v2."Factory_evt_PairCreated" f ON f.pair = t.contract_address
+        INNER JOIN ethereum.transactions tx ON t.evt_tx_hash = tx.hash
         WHERE t.contract_address != '\xed9c854cb02de75ce4c9bba992828d6cb7fd5c71' --Remove WETH-UBOMB wash trading pair
+        AND tx.block_time >= start_ts
+        AND tx.block_time < end_ts
 
         UNION
 
