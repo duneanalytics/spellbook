@@ -377,6 +377,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\x4a220e6096b25eadb88358cb44068a3248254675	QNT	18
 \\x697beac28b09e122c4332d163985e8a73121b97f	QRL	8
 \\x99ea4db9ee77acd40b119bd1dc4e33e1c070b80d	QSP	18
+\\xE59064a8185Ed1Fca1D17999621eFedfab4425c9	PRIME	18
 \\x48f775efbe4f5ece6e0df2f7b5932df56823b990	R	0
 \\x0719046cf7f82f9322479538b69a89c26a70a5bc	RB	18
 \\xfc2c4d8f95002c14ed0a7aa65102cac9e5953b5e	RBLX	18
@@ -623,7 +624,6 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\xfc4b8ed459e00e5400be803a9bb3954234fd50e3	aWBTC	8
 \\x12e51e77daaa58aa0e9247db7510ea4b46f9bead	aYFI	18
 \\x6fb0855c404e09c47c3fbca25f08d4e41f9f062f	aZRX	18
-\\xE59064a8185Ed1Fca1D17999621eFedfab4425c9 PRIME   18
 \.
 
 
