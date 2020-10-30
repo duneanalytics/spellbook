@@ -1,5 +1,7 @@
 CREATE OR REPLACE VIEW makermcd.view_collateral_addresses AS
 
+-- Addresses are JOIN addresses from here https://changelog.makerdao.com/releases/mainnet/1.1.3/contracts.json
+
 WITH maker(adr,project, details) AS (VALUES 
         ('\x2f0b23f53734252bda2277357e97e1517d6b042a'::bytea, 'MakerDAO', 'WETH A address'::text),
         ('\x08638eF1A205bE6762A8b935F5da9b700Cf7322c'::bytea, 'MakerDAO', 'WETH B address'::text),
