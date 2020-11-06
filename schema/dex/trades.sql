@@ -15,12 +15,13 @@ CREATE TABLE dex.trades (
     token_b_address bytea,
     exchange_contract_address bytea NOT NULL,
     tx_hash bytea NOT NULL,
+    tx_from bytea NOT NULL,
     trace_address integer[],
     evt_index integer,
     trade_id integer
 );
 
-CREATE OR REPLACE FUNCTION dex.insert_trades(start_ts timestamptz, end_ts timestamptz=now()) RETURNS integer
+CREATE OR REPLACE FUNCTION dex.insert_trades(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -42,19 +43,20 @@ WITH rows AS (
         token_b_address,
         exchange_contract_address,
         tx_hash,
+        tx_from,
         trace_address,
         evt_index,
         trade_id
     )
     SELECT
-        block_time,
+        dexs.block_time,
         erc20a.symbol AS token_a_symbol,
         erc20b.symbol AS token_b_symbol,
         token_a_amount_raw / 10 ^ erc20a.decimals AS token_a_amount,
         token_b_amount_raw / 10 ^ erc20b.decimals AS token_b_amount,
         project,
         version,
-        trader_a,
+        coalesce(trader_a, tx."from") as trader_a,
         trader_b,
         token_a_amount_raw,
         token_b_amount_raw,
@@ -63,6 +65,7 @@ WITH rows AS (
         token_b_address,
         exchange_contract_address,
         tx_hash,
+        tx."from" as tx_from,
         trace_address,
         evt_index,
         row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
@@ -190,7 +193,7 @@ WITH rows AS (
             evt_block_time AS block_time,
             'Kyber' AS project,
             '2' AS version,
-            tx.from AS trader_a,
+            NULL::bytea AS trader_a,
             NULL::bytea AS trader_b,
             (SELECT SUM(s) FROM UNNEST(ARRAY((
                 -- formula: https://github.com/KyberNetwork/smart-contracts/blob/Katalyst/contracts/sol6/utils/Utils5.sol#L88
@@ -206,14 +209,12 @@ WITH rows AS (
             NULL::numeric AS usd_amount,
             '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS token_a_address, -- trade from token - eth, dest should be weth
             src AS token_b_address,
-            kyber_v2."Network_evt_KyberTrade".contract_address exchange_contract_address,
+            trade.contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             evt_index AS evt_index
-        FROM kyber_v2."Network_evt_KyberTrade"
-        INNER JOIN erc20."tokens" src_token ON kyber_v2."Network_evt_KyberTrade".src = src_token.contract_address
-        INNER JOIN ethereum.transactions tx ON tx.hash = kyber_v2."Network_evt_KyberTrade".evt_tx_hash
-        WHERE tx.block_number > 10000000
+        FROM kyber_v2."Network_evt_KyberTrade" trade
+        INNER JOIN erc20."tokens" src_token ON trade.src = src_token.contract_address
         AND src_token.contract_address != '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
 
         UNION
@@ -223,7 +224,7 @@ WITH rows AS (
             evt_block_time AS block_time,
             'Kyber' AS project,
             '2' AS version,
-            tx.from AS trader_a,
+            NULL::bytea AS trader_a,
             NULL::bytea AS trader_b,
             (SELECT SUM(s) FROM UNNEST(ARRAY((
                 -- formula: https://github.com/KyberNetwork/smart-contracts/blob/Katalyst/contracts/sol6/utils/Utils5.sol#L88
@@ -239,14 +240,12 @@ WITH rows AS (
             NULL::numeric AS usd_amount,
             dest AS token_a_address,
             '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS token_b_address, -- trade from eth - token, src should be weth
-            kyber_v2."Network_evt_KyberTrade".contract_address exchange_contract_address,
+            trade.contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             evt_index AS evt_index
-        FROM kyber_v2."Network_evt_KyberTrade"
-        INNER JOIN erc20."tokens" dst_token ON kyber_v2."Network_evt_KyberTrade".dest = dst_token.contract_address
-        INNER JOIN ethereum.transactions tx ON tx.hash = kyber_v2."Network_evt_KyberTrade".evt_tx_hash
-        WHERE tx.block_number > 10000000
+        FROM kyber_v2."Network_evt_KyberTrade" trade
+        INNER JOIN erc20."tokens" dst_token ON trade.dest = dst_token.contract_address
         AND dst_token.contract_address != '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
         
         UNION
@@ -628,8 +627,14 @@ WITH rows AS (
     ) dexs
     LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
-    WHERE block_time >= start_ts
-    AND block_time < end_ts
+    INNER JOIN ethereum.transactions tx 
+        ON dexs.tx_hash = tx.hash 
+        AND tx.block_time >= start_ts 
+        AND tx.block_time < end_ts
+        AND tx.block_number >= start_block
+        AND tx.block_number < end_block
+    WHERE dexs.block_time >= start_ts
+    AND dexs.block_time < end_ts
 
     UNION
 
@@ -651,12 +656,19 @@ WITH rows AS (
         token_b_address,
         exchange_contract_address,
         tx_hash,
+        tx."from" as tx_from,
         NULL AS trace_address,
         evt_index,
         trade_id
     FROM synthetix.trades tr
     LEFT JOIN synthetix.symbols a ON tr.token_a_address = a.address
     LEFT JOIN synthetix.symbols b ON tr.token_b_address = b.address
+    INNER JOIN ethereum.transactions tx
+        ON tr.tx_hash = tx.hash
+        AND tx.block_time >= start_ts 
+        AND tx.block_time < end_ts
+        AND tx.block_number >= start_block
+        AND tx.block_number < end_block
     WHERE tr.block_time >= start_ts
     AND tr.block_time < end_ts
 
@@ -671,13 +683,12 @@ $function$;
 
 CREATE UNIQUE INDEX IF NOT EXISTS dex_trades_tr_addr_uniq_idx ON dex.trades (tx_hash, trace_address, trade_id);
 CREATE UNIQUE INDEX IF NOT EXISTS dex_trades_evt_index_uniq_idx ON dex.trades (tx_hash, evt_index, trade_id);
-CREATE INDEX IF NOT EXISTS dex_trades_tr_addr_idx ON dex.trades (tx_hash, trace_address);
-CREATE INDEX IF NOT EXISTS dex_trades_evt_index_idx ON dex.trades (tx_hash, evt_index);
+CREATE INDEX IF NOT EXISTS dex_trades_tx_from_idx ON dex.trades (tx_from);
 CREATE INDEX IF NOT EXISTS dex_trades_project_idx ON dex.trades (project);
 CREATE INDEX IF NOT EXISTS dex_trades_block_time_idx ON dex.trades USING BRIN (block_time);
-CREATE INDEX IF NOT EXISTS dex_trades_token_a_idx ON dex.trades (token_a_address, token_a_amount);
-CREATE INDEX IF NOT EXISTS dex_trades_token_b_idx ON dex.trades (token_b_address, token_b_amount);
+CREATE INDEX IF NOT EXISTS dex_trades_token_a_idx ON dex.trades (token_a_address);
+CREATE INDEX IF NOT EXISTS dex_trades_token_b_idx ON dex.trades (token_b_address);
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('*/10 * * * *', $$SELECT dex.insert_trades((SELECT max(block_time) - interval '1 days' FROM dex.trades));$$)
+VALUES ('*/10 * * * *', $$SELECT dex.insert_trades((SELECT max(block_time) - interval '1 days' FROM dex.trades), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades)), (SELECT MAX(number) FROM ethereum.blocks));$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
