@@ -1,4 +1,4 @@
-CREATE TABLE dex.trades (
+CREATE TABLE dex2.trades (
     block_time timestamptz NOT NULL,
     token_a_symbol text,
     token_b_symbol text,
@@ -21,12 +21,12 @@ CREATE TABLE dex.trades (
     trade_id integer
 );
 
-CREATE OR REPLACE FUNCTION dex.insert_trades(start_ts timestamptz, end_ts timestamptz=now()) RETURNS integer
+CREATE OR REPLACE FUNCTION dex2.insert_trades(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
 WITH rows AS (
-    INSERT INTO dex.trades (
+    INSERT INTO dex2.trades (
         block_time,
         token_a_symbol,
         token_b_symbol,
@@ -49,14 +49,14 @@ WITH rows AS (
         trade_id
     )
     SELECT
-        block_time,
+        dexs.block_time,
         erc20a.symbol AS token_a_symbol,
         erc20b.symbol AS token_b_symbol,
         token_a_amount_raw / 10 ^ erc20a.decimals AS token_a_amount,
         token_b_amount_raw / 10 ^ erc20b.decimals AS token_b_amount,
         project,
         version,
-        trader_a,
+        coalesce(trader_a, tx."from") as trader_a,
         trader_b,
         token_a_amount_raw,
         token_b_amount_raw,
@@ -65,7 +65,7 @@ WITH rows AS (
         token_b_address,
         exchange_contract_address,
         tx_hash,
-        tx_from,
+        tx."from" as tx_from,
         trace_address,
         evt_index,
         row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
@@ -84,13 +84,11 @@ WITH rows AS (
             '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea AS token_b_address, --Using WETH for easier joining with USD price table
             t.contract_address exchange_contract_address,
             t.evt_tx_hash AS tx_hash,
-            et."from" as tx_from,
             NULL::integer[] AS trace_address,
             t.evt_index
         FROM
             uniswap. "Exchange_evt_TokenPurchase" t
         INNER JOIN uniswap. "Factory_evt_NewExchange" f ON f.exchange = t.contract_address
-        INNER JOIN ethereum.transactions et ON et.hash = t.evt_tx_hash
 
         UNION
 
@@ -108,13 +106,11 @@ WITH rows AS (
             f.token AS token_b_address,
             t.contract_address exchange_contract_address,
             t.evt_tx_hash AS tx_hash,
-            tx."from" as tx_from,
             NULL::integer[] AS trace_address,
             t.evt_index
         FROM
             uniswap. "Exchange_evt_EthPurchase" t
         INNER JOIN uniswap. "Factory_evt_NewExchange" f ON f.exchange = t.contract_address
-        INNER JOIN ethereum.transactions tx ON et.hash = t.evt_tx_hash
 
         UNION
 
@@ -132,13 +128,11 @@ WITH rows AS (
             CASE WHEN "amount0In" = 0 THEN f.token1 ELSE f.token0 END AS token_b_address,
             t.contract_address exchange_contract_address,
             t.evt_tx_hash AS tx_hash,
-            tx."from" as tx_from,
             NULL::integer[] AS trace_address,
             t.evt_index
         FROM
             uniswap_v2."Pair_evt_Swap" t
         INNER JOIN uniswap_v2."Factory_evt_PairCreated" f ON f.pair = t.contract_address
-        INNER JOIN ethereum.transactions tx ON et.hash = t.evt_tx_hash
         WHERE t.contract_address != '\xed9c854cb02de75ce4c9bba992828d6cb7fd5c71' --Remove WETH-UBOMB wash trading pair
 
         UNION
@@ -160,12 +154,10 @@ WITH rows AS (
             '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS token_b_address,
             contract_address exchange_contract_address,
             evt_tx_hash AS tx_hash,
-            tx."from" as tx_from,
             NULL::integer[] AS trace_address,
             evt_index AS evt_index
         FROM
             kyber."Network_evt_KyberTrade"
-        INNER JOIN ethereum.transactions tx ON et.hash = evt_tx_hash
         WHERE src NOT IN ('\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee','\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2')
 
         UNION
@@ -187,12 +179,10 @@ WITH rows AS (
             dest AS token_b_address,
             contract_address exchange_contract_address,
             evt_tx_hash AS tx_hash,
-            tx."from" as tx_from,
             NULL::integer[] AS trace_address,
             evt_index AS evt_index
         FROM
             kyber."Network_evt_KyberTrade"
-        INNER JOIN ethereum.transactions tx ON et.hash = evt_tx_hash
         WHERE dest NOT IN ('\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee','\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2')
 
         UNION
@@ -203,7 +193,7 @@ WITH rows AS (
             evt_block_time AS block_time,
             'Kyber' AS project,
             '2' AS version,
-            tx.from AS trader_a,
+            NULL::bytea AS trader_a,
             NULL::bytea AS trader_b,
             (SELECT SUM(s) FROM UNNEST(ARRAY((
                 -- formula: https://github.com/KyberNetwork/smart-contracts/blob/Katalyst/contracts/sol6/utils/Utils5.sol#L88
@@ -219,15 +209,12 @@ WITH rows AS (
             NULL::numeric AS usd_amount,
             '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS token_a_address, -- trade from token - eth, dest should be weth
             src AS token_b_address,
-            kyber_v2."Network_evt_KyberTrade".contract_address exchange_contract_address,
+            trade.contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
-            tx."from" as tx_from,
             NULL::integer[] AS trace_address,
             evt_index AS evt_index
-        FROM kyber_v2."Network_evt_KyberTrade"
-        INNER JOIN erc20."tokens" src_token ON kyber_v2."Network_evt_KyberTrade".src = src_token.contract_address
-        INNER JOIN ethereum.transactions tx ON tx.hash = kyber_v2."Network_evt_KyberTrade".evt_tx_hash
-        WHERE tx.block_number > 10000000
+        FROM kyber_v2."Network_evt_KyberTrade" trade
+        INNER JOIN erc20."tokens" src_token ON trade.src = src_token.contract_address
         AND src_token.contract_address != '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
 
         UNION
@@ -237,7 +224,7 @@ WITH rows AS (
             evt_block_time AS block_time,
             'Kyber' AS project,
             '2' AS version,
-            tx.from AS trader_a,
+            NULL::bytea AS trader_a,
             NULL::bytea AS trader_b,
             (SELECT SUM(s) FROM UNNEST(ARRAY((
                 -- formula: https://github.com/KyberNetwork/smart-contracts/blob/Katalyst/contracts/sol6/utils/Utils5.sol#L88
@@ -253,15 +240,12 @@ WITH rows AS (
             NULL::numeric AS usd_amount,
             dest AS token_a_address,
             '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS token_b_address, -- trade from eth - token, src should be weth
-            kyber_v2."Network_evt_KyberTrade".contract_address exchange_contract_address,
+            trade.contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
-            tx."from" as tx_from,
             NULL::integer[] AS trace_address,
             evt_index AS evt_index
-        FROM kyber_v2."Network_evt_KyberTrade"
-        INNER JOIN erc20."tokens" dst_token ON kyber_v2."Network_evt_KyberTrade".dest = dst_token.contract_address
-        INNER JOIN ethereum.transactions tx ON tx.hash = kyber_v2."Network_evt_KyberTrade".evt_tx_hash
-        WHERE tx.block_number > 10000000
+        FROM kyber_v2."Network_evt_KyberTrade" trade
+        INNER JOIN erc20."tokens" dst_token ON trade.dest = dst_token.contract_address
         AND dst_token.contract_address != '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
         
         UNION
@@ -280,11 +264,9 @@ WITH rows AS (
             t.pay_gem AS token_b_address,
             t.contract_address AS exchange_contract_address,
             t.evt_tx_hash AS tx_hash,
-            tx."from" as tx_from,
             NULL::integer[] AS trace_address,
             t.evt_index
         FROM oasisdex."eth2dai_evt_LogTrade" t
-        INNER JOIN ethereum.transactions tx ON tx.hash = t.evt_tx_hash
         LEFT JOIN LATERAL (
             SELECT taker, maker
             FROM oasisdex."eth2dai_evt_LogTake" take
@@ -311,11 +293,9 @@ WITH rows AS (
             t.pay_gem AS token_b_address,
             t.contract_address AS exchange_contract_address,
             t.evt_tx_hash AS tx_hash,
-            tx."from" as tx_from,
             NULL::integer[] AS trace_address,
             t.evt_index
         FROM oasisdex."MatchingMarket_evt_LogTrade" t
-        INNER JOIN ethereum.transactions tx ON tx.hash = t.evt_tx_hash
         LEFT JOIN LATERAL (
             SELECT taker, maker
             FROM oasisdex."MatchingMarket_evt_LogTake" take
@@ -342,11 +322,9 @@ WITH rows AS (
             substring("makerAssetData" for 20 from 17) AS token_b_address,
             contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
-            tx."from" as tx_from,
             NULL::integer[] AS trace_address,
             evt_index
         FROM zeroex_v2."Exchange2.1_evt_Fill"
-        INNER JOIN ethereum.transactions tx ON tx.hash = zeroex_v2."Exchange2.1_evt_Fill".evt_tx_hash
 
         UNION
 
@@ -364,11 +342,9 @@ WITH rows AS (
             substring("makerAssetData" for 20 from 17) AS token_b_address,
             contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
-            tx."from" as tx_from,
             NULL::integer[] AS trace_address,
             evt_index
         FROM zeroex_v3."Exchange_evt_Fill"
-        INNER JOIN ethereum.transactions tx ON tx.hash = zeroex_v3."Exchange_evt_Fill".evt_tx_hash
 
         UNION
 
@@ -396,11 +372,9 @@ WITH rows AS (
             END AS token_b_address,
             contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
-            tx."from" as tx_from,
             NULL::integer[] AS trace_address,
             evt_index
         FROM dydx."SoloMargin_evt_LogTrade"
-        INNER JOIN ethereum.transactions tx ON tx.hash = dydx."SoloMargin_evt_LogTrade".evt_tx_hash
 
         UNION
 
@@ -418,12 +392,10 @@ WITH rows AS (
             '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48' AS token_b_address,
             contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
-            tx."from" as tx_from,
             NULL::integer[] AS trace_address,
             evt_index
         FROM
             dydx_perpetual."PerpetualV1_evt_LogTrade"
-        INNER JOIN ethereum.transactions tx ON tx.hash = dydx_perpetual."PerpetualV1_evt_LogTrade".evt_tx_hash
         WHERE "isBuy" = 'True'
         AND contract_address = '\x07aBe965500A49370D331eCD613c7AC47dD6e547'
                                        
@@ -443,12 +415,10 @@ WITH rows AS (
             NULL::bytea AS token_b_address,
             contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
-            tx."from" as tx_from,
             NULL::integer[] AS trace_address,
             evt_index
         FROM
             dydx_perpetual."PerpetualV1_evt_LogTrade"
-        INNER JOIN ethereum.transactions tx ON tx.hash = dydx_perpetual."PerpetualV1_evt_LogTrade".evt_tx_hash
         WHERE "isBuy" = 'True'
         AND contract_address = '\x09403FD14510F8196F7879eF514827CD76960B5d'
 
@@ -483,11 +453,9 @@ WITH rows AS (
                 (SELECT "token" FROM token_table WHERE "token_id" = (t.trade).tokenB) AS token_b_address,
                 exchange_contract_address,
                 tx_hash,
-                tx."from" AS tx_from,
                 trace_address,
                 evt_index
             FROM trades t
-            INNER JOIN ethereum.transactions tx ON tx.hash = t.tx_hash
         )
 
         UNION
@@ -512,11 +480,9 @@ WITH rows AS (
             END AS token_b_address,
             contract_address AS exchange_contract_address,
             call_tx_hash AS tx_hash,
-            tx."from" AS tx_from,
             call_trace_address AS trace_address,
             NULL::integer AS evt_index
         FROM idex."IDEX1_call_trade"
-        INNER JOIN ethereum.transactions tx ON tx.hash = idex."IDEX1_call_trade".call_tx_hash
         WHERE call_success
 
         UNION
@@ -535,11 +501,9 @@ WITH rows AS (
             token_b_address,
             exchange_contract_address,
             tx_hash,
-            tx."from" AS tx_from,
             trace_address,
             evt_index
         FROM curvefi.view_trades
-        INNER JOIN ethereum.transactions tx ON tx.hash = curvefi.view_trades.tx_hash
 
         UNION
 
@@ -557,13 +521,11 @@ WITH rows AS (
             t."tokenOut" token_b_address,
             t.contract_address exchange_contract_address,
             t.evt_tx_hash AS tx_hash,
-            tx."from" AS tx_from,
             NULL::integer[] AS trace_address,
             t.evt_index
         FROM
             balancer."BPool_evt_LOG_SWAP" t
         INNER JOIN balancer."BFactory_evt_LOG_NEW_POOL" f ON f.pool = t.contract_address
-        INNER JOIN ethereum.transactions tx ON tx.hash = t.evt_tx_hash
 
         UNION
 
@@ -590,11 +552,9 @@ WITH rows AS (
             END AS token_b_address,
             contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
-            tx."from" AS tx_from,
             NULL::integer[] AS trace_address,
             evt_index AS evt_index
         FROM hydroprotocol."Margin_evt_Match"
-        INNER JOIN ethereum.transactions tx ON tx.hash = hydroprotocol."Margin_evt_Match".evt_tx_hash
 
         UNION
 
@@ -612,11 +572,9 @@ WITH rows AS (
             buy_token AS token_b_address,
             '\x6F400810b62df8E13fded51bE75fF5393eaa841F' AS exchange_contract_address,
             tx_hash,
-            tx."from" AS tx_from,
             NULL::integer[] AS trace_address,
             evt_index_trades
         FROM gnosis_protocol.view_trades
-        INNER JOIN ethereum.transactions tx ON tx.hash = gnosis_protocol.view_trades.tx_hash
 
         UNION
 
@@ -640,11 +598,9 @@ WITH rows AS (
             END AS token_b_address,
             contract_address AS exchange_contract_address,
             tx_hash,
-            tx."from" AS tx_from,
             NULL::integer[] AS trace_address,
             evt_index
         FROM bancornetwork.view_convert
-        INNER JOIN ethereum.transactions tx ON tx.hash = bancornetwork.view_convert.tx_hash
                                             
         UNION
 
@@ -667,13 +623,18 @@ WITH rows AS (
         FROM
             sushi."Pair_evt_Swap" t
         INNER JOIN sushi."Factory_evt_PairCreated" f ON f.pair = t.contract_address
-        INNER JOIN ethereum.transactions tx ON tx.hash = t.evt_tx_hash
                         
     ) dexs
     LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
-    WHERE block_time >= start_ts
-    AND block_time < end_ts
+    INNER JOIN ethereum.transactions tx 
+        ON dexs.tx_hash = tx.hash 
+        AND tx.block_time >= start_ts 
+        AND tx.block_time < end_ts
+        AND tx.block_number >= start_block
+        AND tx.block_number < end_block
+    WHERE dexs.block_time >= start_ts
+    AND dexs.block_time < end_ts
 
     UNION
 
@@ -695,14 +656,19 @@ WITH rows AS (
         token_b_address,
         exchange_contract_address,
         tx_hash,
-        tx."from" AS tx_from,
+        tx."from" as tx_from,
         NULL AS trace_address,
         evt_index,
         trade_id
     FROM synthetix.trades tr
     LEFT JOIN synthetix.symbols a ON tr.token_a_address = a.address
     LEFT JOIN synthetix.symbols b ON tr.token_b_address = b.address
-    INNER JOIN ethereum.transactions tx ON tx.hash = tx_hash
+    INNER JOIN ethereum.transactions tx ON tr.tx_hash = tx.hash AND tx.block_time >= start_ts AND tx.block_time < end_ts
+        ON dexs.tx_hash = tx.hash 
+        AND tx.block_time >= start_ts 
+        AND tx.block_time < end_ts
+        AND tx.block_number >= start_block
+        AND tx.block_number < end_block
     WHERE tr.block_time >= start_ts
     AND tr.block_time < end_ts
 
@@ -715,16 +681,16 @@ END
 $function$;
 
 
-CREATE UNIQUE INDEX IF NOT EXISTS dex_trades_tr_addr_uniq_idx ON dex.trades (tx_hash, trace_address, trade_id);
-CREATE UNIQUE INDEX IF NOT EXISTS dex_trades_evt_index_uniq_idx ON dex.trades (tx_hash, evt_index, trade_id);
-CREATE INDEX IF NOT EXISTS dex_trades_tr_addr_idx ON dex.trades (tx_hash, trace_address);
-CREATE INDEX IF NOT EXISTS dex_trades_evt_index_idx ON dex.trades (tx_hash, evt_index);
-CREATE INDEX IF NOT EXISTS dex_trades_tx_from_idx ON dex.trades (tx_from);
-CREATE INDEX IF NOT EXISTS dex_trades_project_idx ON dex.trades (project);
-CREATE INDEX IF NOT EXISTS dex_trades_block_time_idx ON dex.trades USING BRIN (block_time);
-CREATE INDEX IF NOT EXISTS dex_trades_token_a_idx ON dex.trades (token_a_address, token_a_amount);
-CREATE INDEX IF NOT EXISTS dex_trades_token_b_idx ON dex.trades (token_b_address, token_b_amount);
-
-INSERT INTO cron.job (schedule, command)
-VALUES ('*/10 * * * *', $$SELECT dex.insert_trades((SELECT max(block_time) - interval '1 days' FROM dex.trades));$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+--CREATE UNIQUE INDEX IF NOT EXISTS dex_trades_tr_addr_uniq_idx ON dex.trades (tx_hash, trace_address, trade_id);
+--CREATE UNIQUE INDEX IF NOT EXISTS dex_trades_evt_index_uniq_idx ON dex.trades (tx_hash, evt_index, trade_id);
+--CREATE INDEX IF NOT EXISTS dex_trades_evt_index_idx ON dex.trades (tx_hash, evt_index);
+--CREATE INDEX IF NOT EXISTS dex_trades_tx_from_idx ON dex.trades (tx_from);
+--CREATE INDEX IF NOT EXISTS dex_trades_project_idx ON dex.trades (project);
+--CREATE INDEX IF NOT EXISTS dex_trades_block_time_idx ON dex.trades USING BRIN (block_time);
+--CREATE INDEX IF NOT EXISTS dex_trades_tx_from_idx ON dex.trades (tx_from);
+--CREATE INDEX IF NOT EXISTS dex_trades_token_a_idx ON dex.trades (token_a_address);
+--CREATE INDEX IF NOT EXISTS dex_trades_token_b_idx ON dex.trades (token_b_address);
+--
+--INSERT INTO cron.job (schedule, command)
+--VALUES ('*/10 * * * *', $$SELECT dex.insert_trades((SELECT max(block_time) - interval '1 days' FROM dex.trades));$$)
+--ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
