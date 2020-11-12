@@ -1,4 +1,4 @@
--- Addresses are JOIN addresses from here https://changelog.makerdao.com/releases/mainnet/1.1.3/contracts.json
+-- Addresses are JOIN addresses from here https://changelog.makerdao.com/releases/mainnet/1.1.4/contracts.json
 CREATE TABLE IF NOT EXISTS makermcd.collateral_addresses (
     address	bytea,
     project	text,
@@ -25,6 +25,8 @@ COPY makermcd.collateral_addresses(address, project, token_address, details) FRO
 \\x6C186404A7A238D3d6027C0299D1822c1cf5d8f1	MakerDAO	\\xbbbbca6a901c926f240b89eacb641d8aec7aeafd	LRC
 \\xdFccAf8fDbD2F4805C174f856a317765B49E4a50	MakerDAO	\\x514910771af9ca656af840dff83e8264ecf986ca	LINK
 \\xBF72Da2Bd84c5170618Fbe5914B0ECA9638d5eb5	MakerDAO	\\x2260fac5e5542a773aa44fbcfedf7c193bc2c599	WBTC
+\\x4a03Aa7fb3973d8f0221B466EefB53D0aC195f55	MakerDAO	\\xba100000625a3754423978a60c9317c58a424e3d	BAL
+\\x3ff33d9162aD47660083D7DC4bC02Fb231c81677	MakerDAO	\\x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e	YFI
 \.
 
 COMMIT;
