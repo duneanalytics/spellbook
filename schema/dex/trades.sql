@@ -1,4 +1,4 @@
-CREATE TABLE dex2.trades (
+CREATE TABLE dex.trades (
     block_time timestamptz NOT NULL,
     token_a_symbol text,
     token_b_symbol text,
@@ -21,12 +21,12 @@ CREATE TABLE dex2.trades (
     trade_id integer
 );
 
-CREATE OR REPLACE FUNCTION dex2.insert_trades(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+CREATE OR REPLACE FUNCTION dex.insert_trades(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
 WITH rows AS (
-    INSERT INTO dex2.trades (
+    INSERT INTO dex.trades (
         block_time,
         token_a_symbol,
         token_b_symbol,
@@ -663,8 +663,8 @@ WITH rows AS (
     FROM synthetix.trades tr
     LEFT JOIN synthetix.symbols a ON tr.token_a_address = a.address
     LEFT JOIN synthetix.symbols b ON tr.token_b_address = b.address
-    INNER JOIN ethereum.transactions tx ON tr.tx_hash = tx.hash AND tx.block_time >= start_ts AND tx.block_time < end_ts
-        ON dexs.tx_hash = tx.hash 
+    INNER JOIN ethereum.transactions tx
+        ON tr.tx_hash = tx.hash
         AND tx.block_time >= start_ts 
         AND tx.block_time < end_ts
         AND tx.block_number >= start_block
@@ -681,16 +681,15 @@ END
 $function$;
 
 
---CREATE UNIQUE INDEX IF NOT EXISTS dex_trades_tr_addr_uniq_idx ON dex.trades (tx_hash, trace_address, trade_id);
---CREATE UNIQUE INDEX IF NOT EXISTS dex_trades_evt_index_uniq_idx ON dex.trades (tx_hash, evt_index, trade_id);
---CREATE INDEX IF NOT EXISTS dex_trades_evt_index_idx ON dex.trades (tx_hash, evt_index);
---CREATE INDEX IF NOT EXISTS dex_trades_tx_from_idx ON dex.trades (tx_from);
---CREATE INDEX IF NOT EXISTS dex_trades_project_idx ON dex.trades (project);
---CREATE INDEX IF NOT EXISTS dex_trades_block_time_idx ON dex.trades USING BRIN (block_time);
---CREATE INDEX IF NOT EXISTS dex_trades_tx_from_idx ON dex.trades (tx_from);
---CREATE INDEX IF NOT EXISTS dex_trades_token_a_idx ON dex.trades (token_a_address);
---CREATE INDEX IF NOT EXISTS dex_trades_token_b_idx ON dex.trades (token_b_address);
---
---INSERT INTO cron.job (schedule, command)
---VALUES ('*/10 * * * *', $$SELECT dex.insert_trades((SELECT max(block_time) - interval '1 days' FROM dex.trades));$$)
---ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+CREATE UNIQUE INDEX IF NOT EXISTS dex_trades_tr_addr_uniq_idx ON dex.trades (tx_hash, trace_address, trade_id);
+CREATE UNIQUE INDEX IF NOT EXISTS dex_trades_evt_index_uniq_idx ON dex.trades (tx_hash, evt_index, trade_id);
+CREATE INDEX IF NOT EXISTS dex_trades_evt_index_idx ON dex.trades (tx_hash, evt_index);
+CREATE INDEX IF NOT EXISTS dex_trades_tx_from_idx ON dex.trades (tx_from);
+CREATE INDEX IF NOT EXISTS dex_trades_project_idx ON dex.trades (project);
+CREATE INDEX IF NOT EXISTS dex_trades_block_time_idx ON dex.trades USING BRIN (block_time);
+CREATE INDEX IF NOT EXISTS dex_trades_token_a_idx ON dex.trades (token_a_address);
+CREATE INDEX IF NOT EXISTS dex_trades_token_b_idx ON dex.trades (token_b_address);
+
+INSERT INTO cron.job (schedule, command)
+VALUES ('*/10 * * * *', $$SELECT dex.insert_trades((SELECT max(block_time) - interval '1 days' FROM dex.trades), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades), (SELECT MAX(number) FROM ethereum.blocks));$$)
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
