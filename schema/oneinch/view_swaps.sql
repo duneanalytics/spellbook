@@ -9,7 +9,8 @@ CREATE MATERIALIZED VIEW oneinch.view_swaps AS SELECT * FROM (
         from_amount,
         to_amount,
         tx_hash,
-        call_trace_address,
+        trace_address,
+        contract_address,
         tmp.block_time,
         from_amount * (
             CASE
@@ -124,15 +125,15 @@ CREATE MATERIALIZED VIEW oneinch.view_swaps AS SELECT * FROM (
             END
         ) as to_usd
     FROM (
-        SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash,  call_block_time as block_time, call_trace_address     FROM oneinch."exchange_v1_call_aggregate" WHERE call_success UNION ALL
-        SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address      FROM oneinch."exchange_v2_call_aggregate" WHERE call_success UNION ALL
-        SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address      FROM oneinch."exchange_v3_call_aggregate" WHERE call_success UNION ALL
-        SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address      FROM oneinch."exchange_v4_call_aggregate" WHERE call_success UNION ALL
-        SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address      FROM oneinch."exchange_v5_call_aggregate" WHERE call_success UNION ALL
-        SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address      FROM oneinch."exchange_v6_call_aggregate" WHERE call_success UNION ALL
-        SELECT "fromToken" as from_token, "toToken" as to_token, "fromTokenAmount" as from_amount, "minReturnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address   FROM oneinch."exchange_v7_call_swap"      WHERE call_success UNION ALL
-        SELECT "fromToken" as from_token, "toToken" as to_token, "fromTokenAmount" as from_amount, "minReturnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address   FROM oneinch."OneInchExchange_call_swap"  WHERE call_success UNION ALL
-        SELECT "srcToken" as from_token, "dstToken" as to_token, "spentAmount" as from_amount, "returnAmount" as to_amount, evt_tx_hash as tx_hash, evt_block_time as block_time, NULL::integer[] as call_trace_address   FROM oneinch_v2."OneInchExchange_evt_Swapped" -- UNION ALL
+        SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash,  call_block_time as block_time, call_trace_address as trace_address, contract_address     FROM oneinch."exchange_v1_call_aggregate" WHERE call_success UNION ALL
+        SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, contract_address      FROM oneinch."exchange_v2_call_aggregate" WHERE call_success UNION ALL
+        SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, contract_address      FROM oneinch."exchange_v3_call_aggregate" WHERE call_success UNION ALL
+        SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, contract_address      FROM oneinch."exchange_v4_call_aggregate" WHERE call_success UNION ALL
+        SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, contract_address      FROM oneinch."exchange_v5_call_aggregate" WHERE call_success UNION ALL
+        SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, contract_address      FROM oneinch."exchange_v6_call_aggregate" WHERE call_success UNION ALL
+        SELECT "fromToken" as from_token, "toToken" as to_token, "fromTokenAmount" as from_amount, "minReturnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, contract_address   FROM oneinch."exchange_v7_call_swap"      WHERE call_success UNION ALL
+        SELECT "fromToken" as from_token, "toToken" as to_token, "fromTokenAmount" as from_amount, "minReturnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, contract_address   FROM oneinch."OneInchExchange_call_swap"  WHERE call_success UNION ALL
+        SELECT "srcToken" as from_token, "dstToken" as to_token, "spentAmount" as from_amount, "returnAmount" as to_amount, evt_tx_hash as tx_hash, evt_block_time as block_time, NULL::integer[] as call_trace_address as trace_address, contract_address   FROM oneinch_v2."OneInchExchange_evt_Swapped" -- UNION ALL
     ) tmp
     INNER JOIN ethereum.transactions tx ON tx.hash = tx_hash
     LEFT JOIN erc20.tokens t1 ON t1.contract_address = from_token

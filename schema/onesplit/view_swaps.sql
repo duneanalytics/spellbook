@@ -12,6 +12,7 @@ SELECT * FROM (
         tx_hash,
         call_trace_address,
         tmp.block_time,
+        contract_address,
         from_amount * (
             CASE
                 WHEN from_token IN (
@@ -125,8 +126,8 @@ SELECT * FROM (
             END
         ) as to_usd
     FROM (
-        SELECT "fromToken" as from_token, "toToken" as to_token, "amount" as from_amount, "minReturn" as to_amount, call_tx_hash as tx_hash, call_trace_address, call_block_time as block_time FROM onesplit."OneSplit_call_swap"     WHERE call_success UNION ALL
-        SELECT "fromToken" as from_token, "toToken" as to_token, "amount" as from_amount, "minReturn" as to_amount, call_tx_hash as tx_hash, call_trace_address, call_block_time as block_time FROM onesplit."OneSplit_call_goodSwap" WHERE call_success
+        SELECT "fromToken" as from_token, "toToken" as to_token, "amount" as from_amount, "minReturn" as to_amount, call_tx_hash as tx_hash, call_trace_address, call_block_time as block_time, contract_address FROM onesplit."OneSplit_call_swap"     WHERE call_success UNION ALL
+        SELECT "fromToken" as from_token, "toToken" as to_token, "amount" as from_amount, "minReturn" as to_amount, call_tx_hash as tx_hash, call_trace_address, call_block_time as block_time, contract_address FROM onesplit."OneSplit_call_goodSwap" WHERE call_success
     ) tmp
     LEFT JOIN ethereum.transactions tx ON tx.hash = tx_hash
     LEFT JOIN erc20.tokens t1 ON t1.contract_address = from_token

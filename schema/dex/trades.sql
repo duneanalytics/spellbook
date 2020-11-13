@@ -460,6 +460,32 @@ WITH rows AS (
 
         UNION
 
+        -- 1inch
+        SELECT
+            oi.block_time,
+            '1inch' AS project,
+            '1' AS version,
+            tx_from AS trader_a,
+            NULL::bytea AS trader_b,
+            from_amount AS token_a_amount_raw,
+            to_amount AS token_b_amount_raw,
+            GREATEST(from_usd, to_usd) AS usd_amount,
+            from_token AS token_a_address,
+            to_token AS token_b_address,
+            contract_address AS exchange_contract_address,
+            tx_hash,
+            trace_address,
+            NULL::integer AS evt_index
+        FROM (
+            SELECT to_token, from_token, to_amount, from_amount, tx_hash, tx_from, block_time, from_usd, to_usd, contract_address, trace_address FROM oneinch.view_swaps UNION ALL
+            SELECT to_token, from_token, to_amount, from_amount, tx_hash, tx_from, block_time, from_usd, to_usd, contract_address, NULL::bytea AS trace_address FROM onesplit.view_swaps
+            WHERE tx_hash NOT IN (SELECT tx_hash FROM oneinch.view_swaps) UNION ALL
+            SELECT to_token, from_token, to_amount, from_amount, tx_hash, tx_from, block_time, from_usd, to_usd, contract_address, NULL::bytea AS trace_address FROM oneproto.view_swaps
+            WHERE tx_hash NOT IN (SELECT tx_hash FROM oneinch.view_swaps)
+        ) oi
+
+        UNION
+
         -- IDEX v1
         SELECT
             call_block_time AS block_time,
