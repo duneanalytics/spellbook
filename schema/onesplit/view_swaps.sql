@@ -10,9 +10,10 @@ SELECT * FROM (
         from_amount,
         to_amount,
         tx_hash,
-        call_trace_address as trace_address,
+        tmp.call_trace_address as trace_address,
         tmp.block_time,
         tmp.contract_address,
+        tmp.evt_index,
         from_amount * (
             CASE
                 WHEN from_token IN (

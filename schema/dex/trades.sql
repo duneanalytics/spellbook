@@ -475,14 +475,14 @@ WITH rows AS (
             contract_address AS exchange_contract_address,
             tx_hash,
             trace_address,
-            NULL::integer AS evt_index
+            evt_index
         FROM (
-            SELECT to_token, from_token, to_amount, from_amount, tx_hash, tx_from, block_time, from_usd, to_usd, contract_address, trace_address FROM oneinch.view_swaps
+            SELECT to_token, from_token, to_amount, from_amount, tx_hash, tx_from, block_time, from_usd, to_usd, contract_address, trace_address, NULL::integer AS evt_index FROM oneinch.view_swaps
             UNION ALL
-            SELECT to_token, from_token, to_amount, from_amount, tx_hash, tx_from, block_time, from_usd, to_usd, contract_address, NULL::integer[] AS trace_address FROM onesplit.view_swaps
+            SELECT to_token, from_token, to_amount, from_amount, tx_hash, tx_from, block_time, from_usd, to_usd, contract_address, trace_address, NULL::integer AS evt_index FROM onesplit.view_swaps
             WHERE tx_hash NOT IN (SELECT tx_hash FROM oneinch.view_swaps)
             UNION ALL
-            SELECT to_token, from_token, to_amount, from_amount, tx_hash, tx_from, block_time, from_usd, to_usd, contract_address, NULL::integer[] AS trace_address FROM oneproto.view_swaps
+            SELECT to_token, from_token, to_amount, from_amount, tx_hash, tx_from, block_time, from_usd, to_usd, contract_address, NULL::integer[] AS trace_address, evt_index FROM oneproto.view_swaps
             WHERE tx_hash NOT IN (SELECT tx_hash FROM oneinch.view_swaps)
         ) oi
 

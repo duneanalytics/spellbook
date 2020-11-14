@@ -12,6 +12,7 @@ SELECT * FROM (
         tx_hash,
         tmp.block_time,
         tmp.contract_address,
+        tmp.evt_index,
         from_amount * (
             CASE
                 WHEN from_token IN (
@@ -125,7 +126,7 @@ SELECT * FROM (
             END
         ) as to_usd
     FROM (
-        SELECT "fromToken" as from_token, "destToken" as to_token, "fromTokenAmount" as from_amount, "destTokenAmount" as to_amount, evt_tx_hash as tx_hash, evt_block_time as block_time, contract_address FROM oneproto."OneSplitAudit_evt_Swapped"
+        SELECT "fromToken" as from_token, "destToken" as to_token, "fromTokenAmount" as from_amount, "destTokenAmount" as to_amount, evt_tx_hash as tx_hash, evt_block_time as block_time, contract_address, evt_index FROM oneproto."OneSplitAudit_evt_Swapped"
     ) tmp
     LEFT JOIN ethereum.transactions tx ON tx.hash = tx_hash
     LEFT JOIN erc20.tokens t1 ON t1.contract_address = from_token
