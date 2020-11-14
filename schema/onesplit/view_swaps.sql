@@ -10,8 +10,10 @@ SELECT * FROM (
         from_amount,
         to_amount,
         tx_hash,
-        call_trace_address,
+        tmp.call_trace_address as trace_address,
         tmp.block_time,
+        tmp.contract_address,
+        tmp.evt_index,
         from_amount * (
             CASE
                 WHEN from_token IN (
@@ -125,15 +127,15 @@ SELECT * FROM (
             END
         ) as to_usd
     FROM (
-        SELECT "fromToken" as from_token, "toToken" as to_token, "amount" as from_amount, "minReturn" as to_amount, call_tx_hash as tx_hash, call_trace_address, call_block_time as block_time FROM onesplit."OneSplit_call_swap"     WHERE call_success UNION ALL
-        SELECT "fromToken" as from_token, "toToken" as to_token, "amount" as from_amount, "minReturn" as to_amount, call_tx_hash as tx_hash, call_trace_address, call_block_time as block_time FROM onesplit."OneSplit_call_goodSwap" WHERE call_success
+        SELECT "fromToken" as from_token, "toToken" as to_token, "amount" as from_amount, "minReturn" as to_amount, call_tx_hash as tx_hash, call_trace_address, call_block_time as block_time, contract_address FROM onesplit."OneSplit_call_swap"     WHERE call_success UNION ALL
+        SELECT "fromToken" as from_token, "toToken" as to_token, "amount" as from_amount, "minReturn" as to_amount, call_tx_hash as tx_hash, call_trace_address, call_block_time as block_time, contract_address FROM onesplit."OneSplit_call_goodSwap" WHERE call_success
     ) tmp
     LEFT JOIN ethereum.transactions tx ON tx.hash = tx_hash
     LEFT JOIN erc20.tokens t1 ON t1.contract_address = from_token
     LEFT JOIN erc20.tokens t2 ON t2.contract_address = to_token
 ) tt;
 
-CREATE UNIQUE INDEX IF NOT EXISTS onesplit_swaps_unique_idx ON onesplit.view_swaps (tx_hash, call_trace_address);
+CREATE UNIQUE INDEX IF NOT EXISTS onesplit_swaps_unique_idx ON onesplit.view_swaps (tx_hash, trace_address);
 CREATE INDEX IF NOT EXISTS onesplit_swaps_idx_1 ON onesplit.view_swaps (from_token) INCLUDE (from_amount, from_usd);
 CREATE INDEX IF NOT EXISTS onesplit_swaps_idx_2 ON onesplit.view_swaps (to_token) INCLUDE (to_amount, to_usd);
 CREATE INDEX IF NOT EXISTS onesplit_swaps_idx_3 ON onesplit.view_swaps (block_time);
