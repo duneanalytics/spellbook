@@ -477,9 +477,11 @@ WITH rows AS (
             trace_address,
             NULL::integer AS evt_index
         FROM (
-            SELECT to_token, from_token, to_amount, from_amount, tx_hash, tx_from, block_time, from_usd, to_usd, contract_address, trace_address FROM oneinch.view_swaps UNION ALL
+            SELECT to_token, from_token, to_amount, from_amount, tx_hash, tx_from, block_time, from_usd, to_usd, contract_address, trace_address FROM oneinch.view_swaps
+            UNION ALL
             SELECT to_token, from_token, to_amount, from_amount, tx_hash, tx_from, block_time, from_usd, to_usd, contract_address, NULL::bytea AS trace_address FROM onesplit.view_swaps
-            WHERE tx_hash NOT IN (SELECT tx_hash FROM oneinch.view_swaps) UNION ALL
+            WHERE tx_hash NOT IN (SELECT tx_hash FROM oneinch.view_swaps)
+            UNION ALL
             SELECT to_token, from_token, to_amount, from_amount, tx_hash, tx_from, block_time, from_usd, to_usd, contract_address, NULL::bytea AS trace_address FROM oneproto.view_swaps
             WHERE tx_hash NOT IN (SELECT tx_hash FROM oneinch.view_swaps)
         ) oi
