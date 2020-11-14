@@ -11,7 +11,7 @@ SELECT * FROM (
         to_amount,
         tx_hash,
         tmp.block_time,
-        contract_address,
+        tmp.contract_address,
         from_amount * (
             CASE
                 WHEN from_token IN (
