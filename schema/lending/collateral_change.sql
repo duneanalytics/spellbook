@@ -1,4 +1,4 @@
-CREATE TABLE lending.collateral_event (
+CREATE TABLE lending.collateral_change (
     project text NOT NULL,
     version text,
     block_time timestamptz NOT NULL,
@@ -15,11 +15,11 @@ CREATE TABLE lending.collateral_event (
 );
 
 
-CREATE OR REPLACE FUNCTION lending.insert_collateral_events(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+CREATE OR REPLACE FUNCTION lending.insert_collateral_changes(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
-WITH collateral_event AS (
+WITH collateral_change AS (
     SELECT
         project,
         version,
@@ -185,7 +185,7 @@ rows AS (
        asset_symbol,
        token_amount,
        usd_value
-    FROM collateral_event
+    FROM collateral_change
     ON CONFLICT DO NOTHING
     RETURNING 1
 )
@@ -195,10 +195,10 @@ END
 $function$;
 
 
-CREATE UNIQUE INDEX IF NOT EXISTS lending_collateral_event_tr_addr_uniq_idx ON lending.collateral_event (tx_hash, trace_address, trade_id);
-CREATE UNIQUE INDEX IF NOT EXISTS lending_collateral_event_evt_index_uniq_idx ON lending.collateral_event (tx_hash, evt_index, trade_id);
-CREATE INDEX IF NOT EXISTS lending_collateral_event_block_time_idx ON lending.collateral_event USING BRIN (block_time);
+CREATE UNIQUE INDEX IF NOT EXISTS lending_collateral_change_tr_addr_uniq_idx ON lending.collateral_change (tx_hash, trace_address, trade_id);
+CREATE UNIQUE INDEX IF NOT EXISTS lending_collateral_change_evt_index_uniq_idx ON lending.collateral_change (tx_hash, evt_index, trade_id);
+CREATE INDEX IF NOT EXISTS lending_collateral_change_block_time_idx ON lending.collateral_change USING BRIN (block_time);
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('*/14 * * * *', $$SELECT lending.insert_collateral_events((SELECT max(block_time) - interval '1 days' FROM lending.collateral_event), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM lending.collateral_event)), (SELECT MAX(number) FROM ethereum.blocks));$$)
+VALUES ('*/14 * * * *', $$SELECT lending.insert_collateral_changes((SELECT max(block_time) - interval '1 days' FROM lending.collateral_change), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM lending.collateral_change)), (SELECT MAX(number) FROM ethereum.blocks));$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
