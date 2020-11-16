@@ -192,6 +192,34 @@ WITH rows AS (
     FROM synthetix."Issuer_evt_SynthAdded"
     WHERE evt_block_time >= start_ts
     AND evt_block_time < end_ts
+
+    UNION
+
+    SELECT trim('\000' from encode("currencyKey", 'escape')) AS symbol, synth AS address, evt_block_time AS block_time
+    FROM synthetix."Issuer_v2_27_2_evt_SynthAdded"
+    WHERE evt_block_time >= start_ts
+    AND evt_block_time < end_ts
+
+    UNION
+
+    SELECT trim('\000' from encode("currencyKey", 'escape')) AS symbol, synth AS address, evt_block_time AS block_time
+    FROM synthetix."Issuer_v2_28_4_evt_SynthAdded"
+    WHERE evt_block_time >= start_ts
+    AND evt_block_time < end_ts
+
+    UNION
+
+    SELECT trim('\000' from encode("currencyKey", 'escape')) AS symbol, synth AS address, evt_block_time AS block_time
+    FROM synthetix."Issuer_v2_30_0_evt_SynthAdded"
+    WHERE evt_block_time >= start_ts
+    AND evt_block_time < end_ts
+
+    UNION
+
+    SELECT trim('\000' from encode("currencyKey", 'escape')) AS symbol, synth AS address, evt_block_time AS block_time
+    FROM synthetix."Issuer_v2_31_1_evt_SynthAdded"
+    WHERE evt_block_time >= start_ts
+    AND evt_block_time < end_ts
     ON CONFLICT DO NOTHING
     RETURNING 1
 )
@@ -199,6 +227,8 @@ SELECT count(*) INTO r from rows;
 RETURN r;
 END
 $function$;
+
+SELECT synthetix.insert_symbols('2019-01-01', (SELECT max(time) FROM ethereum.blocks));
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('3 0 * * *', 'SELECT synthetix.insert_symbols((SELECT max(block_time) FROM synthetix.symbols));')
