@@ -151,12 +151,17 @@ WITH collateral_change AS (
         FROM erc20."ERC20_evt_Transfer" tr
         WHERE "from" IN (SELECT address FROM makermcd.collateral_addresses)
     ) collateral
-    INNER JOIN ethereum.transactions tx ON collateral.tx_hash = tx.hash AND tx.block_number >= start_block AND tx.block_number < end_block
+    INNER JOIN ethereum.transactions tx
+        ON collateral.tx_hash = tx.hash
+        AND tx.block_number >= start_block
+        AND tx.block_number < end_block
+        AND tx.block_time >= start_ts
+        AND tx.block_time < end_ts
     LEFT JOIN erc20.tokens t ON t.contract_address = collateral.asset_address
     LEFT JOIN prices.usd p ON p.minute = date_trunc('minute', collateral.block_time) AND p.contract_address = collateral.asset_address AND p.minute >= start_ts AND p.minute < end_ts
 ),
 rows AS (
-    INSERT INTO lending.collateral (
+    INSERT INTO lending.collateral_change (
        project,
        version,
        block_time,
@@ -195,10 +200,11 @@ END
 $function$;
 
 
-CREATE UNIQUE INDEX IF NOT EXISTS lending_collateral_change_tr_addr_uniq_idx ON lending.collateral_change (tx_hash, trace_address, trade_id);
-CREATE UNIQUE INDEX IF NOT EXISTS lending_collateral_change_evt_index_uniq_idx ON lending.collateral_change (tx_hash, evt_index, trade_id);
+CREATE UNIQUE INDEX IF NOT EXISTS lending_collateral_change_tr_addr_uniq_idx ON lending.collateral_change (tx_hash, trace_address);
+CREATE UNIQUE INDEX IF NOT EXISTS lending_collateral_change_evt_index_uniq_idx ON lending.collateral_change (tx_hash, evt_index);
 CREATE INDEX IF NOT EXISTS lending_collateral_change_block_time_idx ON lending.collateral_change USING BRIN (block_time);
 
+SELECT lending.insert_collateral_changes('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks)) WHERE NOT EXISTS (SELECT * FROM lending.collateral_change LIMIT 1);
 INSERT INTO cron.job (schedule, command)
-VALUES ('*/14 * * * *', $$SELECT lending.insert_collateral_changes((SELECT max(block_time) - interval '1 days' FROM lending.collateral_change), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM lending.collateral_change)), (SELECT MAX(number) FROM ethereum.blocks));$$)
+VALUES ('14 0 * * *', $$SELECT lending.insert_collateral_changes((SELECT max(block_time) - interval '2 days' FROM lending.collateral_change), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM lending.collateral_change)), (SELECT MAX(number) FROM ethereum.blocks));$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

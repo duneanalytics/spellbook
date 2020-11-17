@@ -111,7 +111,12 @@ WITH repays AS (
             WHERE call_success AND src = '\x197e90f9fad81970ba7976f33cbd77088e5d7cf7' AND rad>0
         ) maker
     ) repay
-    INNER JOIN ethereum.transactions tx ON repay.tx_hash = tx.hash AND tx.block_number >= start_block AND tx.block_number < end_block
+    INNER JOIN ethereum.transactions tx
+        ON repay.tx_hash = tx.hash
+        AND tx.block_number >= start_block
+        AND tx.block_number < end_block
+        AND tx.block_time >= start_ts
+        AND tx.block_time < end_ts
     LEFT JOIN erc20.tokens t ON t.contract_address = repay.asset_address
     LEFT JOIN prices.usd p ON p.minute = date_trunc('minute', repay.block_time) AND p.contract_address = repay.asset_address AND p.minute >= start_ts AND p.minute < end_ts
 ),
@@ -155,10 +160,11 @@ END
 $function$;
 
 
-CREATE UNIQUE INDEX IF NOT EXISTS lending_repays_tr_addr_uniq_idx ON lending.repays (tx_hash, trace_address, trade_id);
-CREATE UNIQUE INDEX IF NOT EXISTS lending_repays_evt_index_uniq_idx ON lending.repays (tx_hash, evt_index, trade_id);
-CREATE INDEX IF NOT EXISTS lending_repays_block_time_idx ON lending.repays USING BRIN (block_time);
+CREATE UNIQUE INDEX IF NOT EXISTS lending_repays_tr_addr_uniq_idx ON lending.repay (tx_hash, trace_address);
+CREATE UNIQUE INDEX IF NOT EXISTS lending_repays_evt_index_uniq_idx ON lending.repay (tx_hash, evt_index);
+CREATE INDEX IF NOT EXISTS lending_repays_block_time_idx ON lending.repay USING BRIN (block_time);
 
+SELECT lending.insert_repays('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks)) WHERE NOT EXISTS (SELECT * FROM lending.repay LIMIT 1);
 INSERT INTO cron.job (schedule, command)
-VALUES ('*/14 * * * *', $$SELECT lending.insert_repays((SELECT max(block_time) - interval '1 days' FROM lending.repays), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM lending.repays)), (SELECT MAX(number) FROM ethereum.blocks));$$)
+VALUES ('14 2 * * *', $$SELECT lending.insert_repays((SELECT max(block_time) - interval '2 days' FROM lending.repays), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM lending.repays)), (SELECT MAX(number) FROM ethereum.blocks));$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

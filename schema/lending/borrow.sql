@@ -15,11 +15,11 @@ CREATE TABLE lending.borrow (
 );
 
 
-CREATE OR REPLACE FUNCTION lending.insert_borrows(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+CREATE OR REPLACE FUNCTION lending.insert_borrow(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
-WITH borrows AS (
+WITH borrow AS (
     SELECT
         project,
         version,
@@ -122,7 +122,12 @@ WITH borrows AS (
             AND call_block_time < end_ts
         ) maker
     ) borrow
-    INNER JOIN ethereum.transactions tx ON borrow.tx_hash = tx.hash AND tx.block_number >= start_block AND tx.block_number < end_block
+    INNER JOIN ethereum.transactions tx
+        ON borrow.tx_hash = tx.hash
+        AND tx.block_number >= start_block
+        AND tx.block_number < end_block
+        AND tx.block_time >= start_ts
+        AND tx.block_time < end_ts
     LEFT JOIN erc20.tokens t ON t.contract_address = borrow.asset_address
     LEFT JOIN prices.usd p ON p.minute = date_trunc('minute', borrow.block_time) AND p.contract_address = borrow.asset_address AND p.minute >= start_ts AND p.minute < end_ts
 ),
@@ -156,7 +161,7 @@ rows AS (
        asset_symbol,
        token_amount,
        usd_value
-    FROM borrows
+    FROM borrow
     ON CONFLICT DO NOTHING
     RETURNING 1
 )
@@ -166,10 +171,11 @@ END
 $function$;
 
 
-CREATE UNIQUE INDEX IF NOT EXISTS lending_borrows_tr_addr_uniq_idx ON lending.borrows (tx_hash, trace_address, trade_id);
-CREATE UNIQUE INDEX IF NOT EXISTS lending_borrows_evt_index_uniq_idx ON lending.borrows (tx_hash, evt_index, trade_id);
-CREATE INDEX IF NOT EXISTS lending_borrows_block_time_idx ON lending.borrows USING BRIN (block_time);
+CREATE UNIQUE INDEX IF NOT EXISTS lending_borrow_tr_addr_uniq_idx ON lending.borrow (tx_hash, trace_address);
+CREATE UNIQUE INDEX IF NOT EXISTS lending_borrow_evt_index_uniq_idx ON lending.borrow (tx_hash, evt_index);
+CREATE INDEX IF NOT EXISTS lending_borrow_block_time_idx ON lending.borrow USING BRIN (block_time);
 
+SELECT lending.insert_borrow('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks)) WHERE NOT EXISTS (SELECT * FROM lending.borrow LIMIT 1);
 INSERT INTO cron.job (schedule, command)
-VALUES ('*/14 * * * *', $$SELECT lending.insert_borrows((SELECT max(block_time) - interval '1 days' FROM lending.borrows), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM lending.borrows)), (SELECT MAX(number) FROM ethereum.blocks));$$)
+VALUES ('14 1 * * *', $$SELECT lending.insert_borrow((SELECT max(block_time) - interval '2 days' FROM lending.borrow), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM lending.borrow)), (SELECT MAX(number) FROM ethereum.blocks));$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
