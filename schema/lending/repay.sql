@@ -54,12 +54,16 @@ WITH repays AS (
             --lending
             SELECT evt_block_number, evt_block_time, evt_tx_hash, evt_index, _reserve, "_amountMinusFees" AS asset_amount, "_user" AS borrower
             FROM aave."LendingPool_evt_Repay"
+            WHERE evt_block_time >= start_ts
+            AND evt_block_time < end_ts
 
             UNION ALL
 
             --flash loan
             SELECT evt_block_number, evt_block_time, evt_tx_hash, evt_index, _reserve, "_amount" AS asset_amount, "_target" AS borrower
             FROM aave."LendingPool_evt_FlashLoan"
+            WHERE evt_block_time >= start_ts
+            AND evt_block_time < end_ts
         ) aave
 
         UNION ALL
@@ -77,11 +81,11 @@ WITH repays AS (
             c."underlying_token_address" AS asset_address,
             "repayAmount" AS asset_amount
         FROM (
-            SELECT * FROM compound_v2."cErc20_evt_RepayBorrow"
+            SELECT * FROM compound_v2."cErc20_evt_RepayBorrow" WHERE evt_block_time >= start_ts AND evt_block_time < end_ts
             UNION ALL
-            SELECT * FROM compound_v2."cEther_evt_RepayBorrow"
+            SELECT * FROM compound_v2."cEther_evt_RepayBorrow" WHERE evt_block_time >= start_ts AND evt_block_time < end_ts
             UNION ALL
-            SELECT * FROM compound_v2."CErc20Delegator_evt_RepayBorrow"
+            SELECT * FROM compound_v2."CErc20Delegator_evt_RepayBorrow" WHERE evt_block_time >= start_ts AND evt_block_time < end_ts
         ) compound
         LEFT JOIN compound.view_ctokens c ON compound.contract_address = c.contract_address
 
@@ -102,13 +106,19 @@ WITH repays AS (
         FROM (
             SELECT call_block_number, call_block_time, call_tx_hash, call_trace_address, "wad" AS asset_amount, "usr" AS borrower
             FROM makermcd."DAI_call_burn"
-            WHERE call_success AND wad > 0
+            WHERE call_success
+            AND wad > 0
+            AND call_block_time >= start_ts
+            AND call_block_time < end_ts
 
             UNION ALL
 
             SELECT call_block_number, call_block_time, call_tx_hash, call_trace_address, "rad" / 1e27 AS asset_amount, "dst" AS borrower
             FROM makermcd."VAT_call_move"
-            WHERE call_success AND src = '\x197e90f9fad81970ba7976f33cbd77088e5d7cf7' AND rad>0
+            WHERE call_success AND src = '\x197e90f9fad81970ba7976f33cbd77088e5d7cf7'
+            AND rad>0
+            AND call_block_time >= start_ts
+            AND call_block_time < end_ts
         ) maker
     ) repay
     INNER JOIN ethereum.transactions tx
@@ -166,5 +176,5 @@ CREATE INDEX IF NOT EXISTS lending_repays_block_time_idx ON lending.repay USING 
 
 SELECT lending.insert_repays('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks)) WHERE NOT EXISTS (SELECT * FROM lending.repay LIMIT 1);
 INSERT INTO cron.job (schedule, command)
-VALUES ('14 2 * * *', $$SELECT lending.insert_repays((SELECT max(block_time) - interval '2 days' FROM lending.repays), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM lending.repays)), (SELECT MAX(number) FROM ethereum.blocks));$$)
+VALUES ('14 2 * * *', $$SELECT lending.insert_repays((SELECT max(block_time) - interval '2 days' FROM lending.repay), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM lending.repay)), (SELECT MAX(number) FROM ethereum.blocks));$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

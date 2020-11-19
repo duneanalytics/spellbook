@@ -52,6 +52,8 @@ WITH collateral_change AS (
             END AS asset_address,
             _amount AS asset_amount
         FROM aave."LendingPool_evt_Deposit"
+        WHERE evt_block_time >= start_ts
+        AND evt_block_time < end_ts
 
         UNION ALL
 
@@ -71,6 +73,8 @@ WITH collateral_change AS (
             END AS asset_address,
             -"_amount" AS asset_amount
         FROM aave."LendingPool_evt_RedeemUnderlying"
+        WHERE evt_block_time >= start_ts
+        AND evt_block_time < end_ts
 
         UNION ALL
 
@@ -87,11 +91,11 @@ WITH collateral_change AS (
             c."underlying_token_address" AS asset_address,
             "mintAmount" AS asset_amount
         FROM (
-            SELECT * FROM compound_v2."cErc20_evt_Mint"
+            SELECT * FROM compound_v2."cErc20_evt_Mint" WHERE evt_block_time >= start_ts AND evt_block_time < end_ts
             UNION ALL
-            SELECT * FROM compound_v2."cEther_evt_Mint"
+            SELECT * FROM compound_v2."cEther_evt_Mint" WHERE evt_block_time >= start_ts AND evt_block_time < end_ts
             UNION ALL
-            SELECT * FROM compound_v2."CErc20Delegator_evt_Mint"
+            SELECT * FROM compound_v2."CErc20Delegator_evt_Mint" WHERE evt_block_time >= start_ts AND evt_block_time < end_ts
         ) compound_add
         LEFT JOIN compound.view_ctokens c ON compound_add.contract_address = c.contract_address
 
@@ -109,11 +113,11 @@ WITH collateral_change AS (
             c."underlying_token_address" AS asset_address,
             -"redeemAmount" AS asset_amount
         FROM (
-            SELECT * FROM compound_v2."cErc20_evt_Redeem"
+            SELECT * FROM compound_v2."cErc20_evt_Redeem" WHERE evt_block_time >= start_ts AND evt_block_time < end_ts
             UNION ALL
-            SELECT * FROM compound_v2."cEther_evt_Redeem"
+            SELECT * FROM compound_v2."cEther_evt_Redeem" WHERE evt_block_time >= start_ts AND evt_block_time < end_ts
             UNION ALL
-            SELECT * FROM compound_v2."CErc20Delegator_evt_Redeem"
+            SELECT * FROM compound_v2."CErc20Delegator_evt_Redeem" WHERE evt_block_time >= start_ts AND evt_block_time < end_ts
         ) compound_redeem
         LEFT JOIN compound.view_ctokens c ON compound_redeem.contract_address = c.contract_address
 
@@ -133,6 +137,8 @@ WITH collateral_change AS (
             value AS assset_amount
         FROM erc20."ERC20_evt_Transfer" tr
         WHERE "to" IN (SELECT address FROM makermcd.collateral_addresses)
+        AND evt_block_time >= start_ts
+        AND evt_block_time < end_ts
 
         UNION ALL
 
@@ -150,6 +156,8 @@ WITH collateral_change AS (
             -value AS assset_amount
         FROM erc20."ERC20_evt_Transfer" tr
         WHERE "from" IN (SELECT address FROM makermcd.collateral_addresses)
+        AND evt_block_time >= start_ts
+        AND evt_block_time < end_ts
     ) collateral
     INNER JOIN ethereum.transactions tx
         ON collateral.tx_hash = tx.hash
