@@ -20,18 +20,18 @@ DECLARE r integer;
 BEGIN
 WITH mint AS (
     SELECT "name" as project,
-       "version",
-       evt_block_time AS block_time,
-       evt_block_number AS block_number,
-       evt_tx_hash AS tx_hash,
-       evt_index,
-       trace_address,
-       "to" AS minter,
-       "from" AS tx_from,
-       st.contract_address AS asset_address,
-       st.symbol AS asset_symbol,
-       value / 10^st.decimals AS token_amount,
-       value / 10^st.decimals * p.price AS usd_value 
+           "version",
+           evt_block_time AS block_time,
+           evt_block_number AS block_number,
+           evt_tx_hash AS tx_hash,
+           evt_index,
+           trace_address,
+           "to" AS minter,
+           "from" AS tx_from,
+           st.contract_address AS asset_address,
+           st.symbol AS asset_symbol,
+           value / 10^st.decimals AS token_amount,
+           value / 10^st.decimals * p.price AS usd_value
     FROM (
         -- all stablecoins that mint from \x0000....
         SELECT '1' as "version",
