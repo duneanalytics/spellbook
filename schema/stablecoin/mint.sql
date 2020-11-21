@@ -62,7 +62,7 @@ WITH mint AS (
                value
         FROM erc20."ERC20_evt_Transfer" 
         WHERE contract_address = '\xdac17f958d2ee523a2206206994597c13d831ec7' 
-        AND "from" = '\xc6cde7c39eb2f0f0095f41570af89efc2c1ea828'  --USDT
+        AND "from" = '\xc6cde7c39eb2f0f0095f41570af89efc2c1ea828'  -- USDT
 
         UNION ALL
 
