@@ -9,6 +9,8 @@ CREATE TABLE stablecoin.mint (
     amount_raw numeric,
     decimals numeric,
     tx_hash bytea,
+    evt_index integer,
+    trace_address integer[]
 );
 
 CREATE OR REPLACE FUNCTION stablecoin.insert_mint(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
@@ -25,7 +27,9 @@ WITH mint AS (
            st.symbol AS symbol,
            st.decimals,
            value / 10^st.decimals AS amount,
-           value AS amount_raw
+           value AS amount_raw,
+           evt_index,
+           trace_address
     FROM (
         -- all stablecoins that mint from \x0000....
         SELECT evt_block_time,
@@ -33,7 +37,9 @@ WITH mint AS (
                "to", -- minter
                "from",
                contract_address,
-               value
+               value,
+               evt_index,
+               NULL::integer[] as trace_address
         FROM erc20."ERC20_evt_Transfer" evt
         WHERE "from" = '\x0000000000000000000000000000000000000000'
        
@@ -45,7 +51,9 @@ WITH mint AS (
                "to", -- minter
                "from", -- USDT
                contract_address,
-               value
+               value,
+               evt_index,
+               NULL::integer[]
         FROM erc20."ERC20_evt_Transfer" 
         WHERE contract_address = '\xdac17f958d2ee523a2206206994597c13d831ec7' 
         AND "from" = '\xc6cde7c39eb2f0f0095f41570af89efc2c1ea828'  -- USDT
@@ -58,7 +66,9 @@ WITH mint AS (
                "src",
                "dst", -- from
                '\x6b175474e89094c44da98b954eedeac495271d0f', -- DAI
-               "rad" / 1e27
+               "rad" / 1e27,
+               NULL::integer,
+               call_trace_address
         FROM makermcd."VAT_call_move" maker
         WHERE call_success = 'true'
         AND dst = '\x197e90f9fad81970ba7976f33cbd77088e5d7cf7'
@@ -82,7 +92,9 @@ rows AS (
        symbol,
        decimals,
        amount,
-       amount_raw
+       amount_raw,
+       evt_index,
+       trace_address
     )
     SELECT
        "name",
@@ -94,7 +106,9 @@ rows AS (
        symbol,
        decimals,
        amount,
-       amount_raw
+       amount_raw,
+       evt_index,
+       trace_address
     FROM mint
     ON CONFLICT DO NOTHING
     RETURNING 1
@@ -104,8 +118,8 @@ RETURN r;
 END
 $function$;
 
--- CREATE UNIQUE INDEX IF NOT EXISTS stablecoin_mint_tr_addr_uniq_idx ON stablecoin.mint (tx_hash, trace_address);
--- CREATE UNIQUE INDEX IF NOT EXISTS stablecoin_mint_evt_index_uniq_idx ON stablecoin.mint (tx_hash, evt_index);
+CREATE UNIQUE INDEX IF NOT EXISTS stablecoin_mint_tr_addr_uniq_idx ON stablecoin.mint (tx_hash, trace_address);
+CREATE UNIQUE INDEX IF NOT EXISTS stablecoin_mint_evt_index_uniq_idx ON stablecoin.mint (tx_hash, evt_index);
 CREATE INDEX IF NOT EXISTS stablecoin_mint_block_time_idx ON stablecoin.mint USING BRIN (block_time);
 
 SELECT stablecoin.insert_mint('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks)) WHERE NOT EXISTS (SELECT * FROM stablecoin.mint LIMIT 1);
