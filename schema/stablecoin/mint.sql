@@ -1,17 +1,14 @@
 CREATE TABLE stablecoin.mint (
-    project text NOT NULL, 
-    version text,
-    block_time timestamptz NOT NULL,
-    block_number numeric NOT NULL,
-    tx_hash bytea,
-    evt_index integer,
-    trace_address integer[],
     minter bytea,
-    tx_from bytea,
-    asset_address bytea,
-    asset_symbol text,
-    token_amount numeric,
-    usd_value numeric
+    amount numeric,
+    symbol text,
+    block_time timestamptz NOT NULL,
+    "name" text NOT NULL,
+    token_address bytea,
+    from_address bytea,
+    amount_raw numeric,
+    decimals numeric,
+    tx_hash bytea,
 );
 
 CREATE OR REPLACE FUNCTION stablecoin.insert_mint(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
@@ -19,27 +16,20 @@ LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
 WITH mint AS (
-    SELECT "name" as project,
-           "version",
+    SELECT "name",
            evt_block_time AS block_time,
-           evt_block_number AS block_number,
            evt_tx_hash AS tx_hash,
-           evt_index,
-           trace_address,
            "to" AS minter,
-           "from" AS tx_from,
-           st.contract_address AS asset_address,
-           st.symbol AS asset_symbol,
-           value / 10^st.decimals AS token_amount,
-           value / 10^st.decimals * p.price AS usd_value
+           "from" AS from_address,
+           st.contract_address AS token_address,
+           st.symbol AS symbol,
+           st.decimals,
+           value / 10^st.decimals AS amount,
+           value AS amount_raw
     FROM (
         -- all stablecoins that mint from \x0000....
-        SELECT '1' as "version",
-               evt_block_time,
-               evt_block_number,
+        SELECT evt_block_time,
                evt_tx_hash,
-               evt_index,
-               NULL::integer[] as trace_address,
                "to", -- minter
                "from",
                contract_address,
@@ -50,12 +40,8 @@ WITH mint AS (
         UNION ALL
   
         -- USDT
-        SELECT '1' as "version",
-               evt_block_time,
-               evt_block_number,
+        SELECT evt_block_time,
                evt_tx_hash,
-               evt_index,
-               NULL::integer[],
                "to", -- minter
                "from", -- USDT
                contract_address,
@@ -67,12 +53,8 @@ WITH mint AS (
         UNION ALL
 
         -- DSR Dai
-        SELECT '2' as "version",
-               call_block_time,
-               call_block_number,
+        SELECT call_block_time,
                call_tx_hash,
-               NULL::integer,
-               call_trace_address,
                "src",
                "dst", -- from
                '\x6b175474e89094c44da98b954eedeac495271d0f', -- DAI
@@ -91,34 +73,28 @@ WITH mint AS (
 ),
 rows AS (
     INSERT INTO stablecoin.mint (
-       project,
-       version,
+       "name",
        block_time,
-       block_number,
        tx_hash,
-       evt_index,
-       trace_address,
        minter,
-       tx_from,
-       asset_address,
-       asset_symbol,
-       token_amount,
-       usd_value
+       from_address,
+       token_address,
+       symbol,
+       decimals,
+       amount,
+       amount_raw
     )
     SELECT
-       project,
-       version,
+       "name",
        block_time,
-       block_number,
        tx_hash,
-       evt_index,
-       trace_address,
        minter,
-       tx_from,
-       asset_address,
-       asset_symbol,
-       token_amount,
-       usd_value
+       from_address,
+       token_address,
+       symbol,
+       decimals,
+       amount,
+       amount_raw
     FROM mint
     ON CONFLICT DO NOTHING
     RETURNING 1
@@ -128,8 +104,8 @@ RETURN r;
 END
 $function$;
 
-CREATE UNIQUE INDEX IF NOT EXISTS stablecoin_mint_tr_addr_uniq_idx ON stablecoin.mint (tx_hash, trace_address);
-CREATE UNIQUE INDEX IF NOT EXISTS stablecoin_mint_evt_index_uniq_idx ON stablecoin.mint (tx_hash, evt_index);
+-- CREATE UNIQUE INDEX IF NOT EXISTS stablecoin_mint_tr_addr_uniq_idx ON stablecoin.mint (tx_hash, trace_address);
+-- CREATE UNIQUE INDEX IF NOT EXISTS stablecoin_mint_evt_index_uniq_idx ON stablecoin.mint (tx_hash, evt_index);
 CREATE INDEX IF NOT EXISTS stablecoin_mint_block_time_idx ON stablecoin.mint USING BRIN (block_time);
 
 SELECT stablecoin.insert_mint('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks)) WHERE NOT EXISTS (SELECT * FROM stablecoin.mint LIMIT 1);
