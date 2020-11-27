@@ -30,11 +30,8 @@ WITH transfers AS (
             evt_index
     FROM erc20."ERC20_evt_Transfer" tr
     INNER JOIN erc20.stablecoins st ON tr.contract_address = st.contract_address
-    LEFT JOIN prices.usd p
-        ON p.minute = date_trunc('minute', tr.evt_block_time)
-        AND p.contract_address = tr.contract_address
-        AND p.minute >= start_ts
-        AND p.minute < end_ts
+    WHERE tr.evt_block_time >= start_ts
+            AND tr.evt_block_time < end_ts
 ),
 rows AS (
     INSERT INTO stablecoin.transfer (
