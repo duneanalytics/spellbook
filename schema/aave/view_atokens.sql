@@ -15,5 +15,9 @@ CREATE OR REPLACE VIEW aave.view_atokens (symbol, contract_address, decimals, un
 ('aREP'::text,  '\x71010a9d003445ac60c4e6a7017c1e89a477b438'::bytea, 18::numeric,   '\x1985365e9f78359a9B6AD760e32412f4a445E862'::bytea),
 ('aSNX'::text,  '\x328c4c80bc7aca0834db37e6600a6c49e12da4de'::bytea, 18::numeric,   '\xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f'::bytea),
 ('aWBTC'::text, '\xfc4b8ed459e00e5400be803a9bb3954234fd50e3'::bytea, 8::numeric,    '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599'::bytea),
-('aZRX'::text,  '\x6Fb0855c404E09c47C3fBCA25f08d4E41f9F062f'::bytea, 18::numeric,   '\xe41d2489571d322189246dafa5ebde1f4699f498'::bytea) 
+('aZRX'::text,  '\x6Fb0855c404E09c47C3fBCA25f08d4E41f9F062f'::bytea, 18::numeric,   '\xe41d2489571d322189246dafa5ebde1f4699f498'::bytea),
+('aAAVE'::text,  '\xba3D9687Cf50fE253cd2e1cFeEdE1d6787344Ed5'::bytea, 18::numeric,   '\x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9'::bytea),
+('aUNI'::text,  '\xB124541127A0A657f056D9Dd06188c4F1b0e5aab'::bytea, 18::numeric,   '\x1f9840a85d5aF5bf1D1762F925BDADdC4201F984'::bytea),
+('aYFI'::text,  '\x12e51E77DAAA58aA0E9247db7510Ea4B46F9bEAd'::bytea, 18::numeric,   '\x0bc529c00c6401aef6d220be8c6ea1667f6ad93e'::bytea),
+('aENJ'::text,  '\x712db54daa836b53ef1ecbb9c6ba3b9efb073f40'::bytea, 18::numeric,   '\xf629cbd94d3791c9250152bd8dfbdf380e2a3b9c'::bytea) 
 ;
