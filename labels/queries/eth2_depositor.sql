@@ -1,8 +1,8 @@
 SELECT DISTINCT
     "from " AS address,
     'eth2 depositor' AS label,
-    'hagaetc' AS author,
-    'eth2 actions' AS type
+    'eth2 actions' AS type,
+    'hagaetc' AS author
 FROM
     ethereum. "traces"
 WHERE

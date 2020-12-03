@@ -17,4 +17,3 @@ FROM
     ethereum.contracts
 WHERE
     address IS NOT NULL;
-

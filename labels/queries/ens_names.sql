@@ -1,8 +1,8 @@
 SELECT
     owner AS address,
     lower(name) AS label,
-    'hagaetc' AS author,
-    'ens name' AS type
+    'ens name' AS type,
+    'hagaetc' AS author
 FROM
     ethereumnameservice."ETHRegistrarController_1_evt_NameRegistered"
 WHERE
