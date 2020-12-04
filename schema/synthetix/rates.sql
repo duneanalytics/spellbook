@@ -60,7 +60,8 @@ WITH rows AS (
         cl.current * 1e10 AS currency_rate,
         cl.evt_block_time AS block_time
     FROM chainlink."Aggregator_evt_AnswerUpdated" cl
-    INNER JOIN synthetix."ExchangeRates_v2_27_2_evt_AggregatorAdded" agg ON agg.aggregator = cl.contract_address
+    INNER JOIN chainlink."view_aggregator_mappings" clam ON clam.aggregator_address = cl.contract_address
+    INNER JOIN synthetix."ExchangeRates_v2_27_2_evt_AggregatorAdded" agg ON agg.aggregator = clam.proxy_address
     WHERE cl.evt_block_time >= start_ts
     AND cl.evt_block_time < end_ts
 
@@ -71,7 +72,8 @@ WITH rows AS (
         cl.current * 1e10 AS currency_rate,
         cl.evt_block_time AS block_time
     FROM chainlink."Aggregator_evt_AnswerUpdated" cl
-    INNER JOIN synthetix."ExchangeRates_v2_28_4_evt_AggregatorAdded" agg ON agg.aggregator = cl.contract_address
+    INNER JOIN chainlink."view_aggregator_mappings" clam ON clam.aggregator_address = cl.contract_address
+    INNER JOIN synthetix."ExchangeRates_v2_28_4_evt_AggregatorAdded" agg ON agg.aggregator = clam.proxy_address
     WHERE cl.evt_block_time >= start_ts
     AND cl.evt_block_time < end_ts
 
@@ -82,7 +84,8 @@ WITH rows AS (
         cl.current * 1e10 AS currency_rate,
         cl.evt_block_time AS block_time
     FROM chainlink."Aggregator_evt_AnswerUpdated" cl
-    INNER JOIN synthetix."ExchangeRates_v2_30_0_evt_AggregatorAdded" agg ON agg.aggregator = cl.contract_address
+    INNER JOIN chainlink."view_aggregator_mappings" clam ON clam.aggregator_address = cl.contract_address
+    INNER JOIN synthetix."ExchangeRates_v2_30_0_evt_AggregatorAdded" agg ON agg.aggregator = clam.proxy_address
     WHERE cl.evt_block_time >= start_ts
     AND cl.evt_block_time < end_ts
 
@@ -93,7 +96,8 @@ WITH rows AS (
         cl.current * 1e10 AS currency_rate,
         cl.evt_block_time AS block_time
     FROM chainlink."Aggregator_evt_AnswerUpdated" cl
-    INNER JOIN synthetix."ExchangeRates_v2_31_1_evt_AggregatorAdded" agg ON agg.aggregator = cl.contract_address
+    INNER JOIN chainlink."view_aggregator_mappings" clam ON clam.aggregator_address = cl.contract_address
+    INNER JOIN synthetix."ExchangeRates_v2_31_1_evt_AggregatorAdded" agg ON agg.aggregator = clam.proxy_address
     WHERE cl.evt_block_time >= start_ts
     AND cl.evt_block_time < end_ts
     ON CONFLICT DO NOTHING
