@@ -74,11 +74,8 @@ WITH burn AS (
     ) burns
     INNER JOIN erc20.stablecoins st 
         ON st.contract_address = burns.contract_address
-    LEFT JOIN prices.usd p 
-        ON p.minute = date_trunc('minute', burns.evt_block_time)
-        AND p.contract_address = burns.contract_address
-        AND p.minute >= start_ts 
-        AND p.minute < end_ts
+    WHERE burns.evt_block_time >= start_ts
+        AND burns.evt_block_time < end_ts
 ),
 rows AS (
     INSERT INTO stablecoin.burn (
