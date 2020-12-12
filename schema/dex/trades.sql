@@ -60,7 +60,11 @@ WITH rows AS (
         trader_b,
         token_a_amount_raw,
         token_b_amount_raw,
-        usd_amount,
+        coalesce(
+            usd_amount,
+            token_a_amount_raw / 10 ^ erc20a.decimals * pa.price,
+            token_b_amount_raw / 10 ^ erc20b.decimals * pb.price
+        ) as usd_amount,
         token_a_address,
         token_b_address,
         exchange_contract_address,
@@ -675,6 +679,14 @@ WITH rows AS (
     ) dexs
     LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
+    LEFT JOIN prices.usd pa ON pa.minute = date_trunc('minute', dexs.block_time)
+        AND pa.contract_address = dexs.token_a_address
+        AND pa.minute >= start_ts
+        AND pa.minute < end_ts
+    LEFT JOIN prices.usd pb ON pb.minute = date_trunc('minute', dexs.block_time)
+        AND pb.contract_address = dexs.token_b_address
+        AND pb.minute >= start_ts
+        AND pb.minute < end_ts
     INNER JOIN ethereum.transactions tx 
         ON dexs.tx_hash = tx.hash 
         AND tx.block_time >= start_ts 
