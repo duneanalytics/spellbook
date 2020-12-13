@@ -196,8 +196,8 @@ RETURN r;
 END
 $function$;
 
-CREATE UNIQUE INDEX IF NOT EXISTS oneproto_swaps_unique_idx ON oneproto.swaps (tx_hash, trace_address);
-CREATE INDEX IF NOT EXISTS oneproto_swaps_idx ON stablecoin.transfer USING BRIN (block_time);
+CREATE UNIQUE INDEX IF NOT EXISTS oneproto_swaps_unique_idx ON oneproto.swaps (tx_hash, evt_index);
+CREATE INDEX IF NOT EXISTS oneproto_swaps_idx ON oneproto.swaps USING BRIN (block_time);
 
 SELECT oneproto.insert_swap('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks)) WHERE NOT EXISTS (SELECT * FROM oneproto.swaps LIMIT 1);
 INSERT INTO cron.job (schedule, command)

@@ -10,8 +10,7 @@ CREATE TABLE onesplit.swaps (
     tx_hash bytea,
     trace_address bytea,
     block_time timestamptz NOT NULL,
-    contract_address bytea,
-    evt_index integer
+    contract_address bytea
 );
 
 CREATE OR REPLACE FUNCTION onesplit.insert_swap(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
@@ -185,8 +184,7 @@ rows AS (
         tx_hash,
         trace_address,
         block_time,
-        contract_address,
-        evt_index
+        contract_address
     )
     SELECT
         tx_from,
@@ -200,8 +198,7 @@ rows AS (
         tx_hash,
         trace_address,
         block_time,
-        contract_address,
-        evt_index
+        contract_address
     FROM swap
     ON CONFLICT DO NOTHING
     RETURNING 1
@@ -212,7 +209,7 @@ END
 $function$;
 
 CREATE UNIQUE INDEX IF NOT EXISTS onesplit_swaps_unique_idx ON onesplit.swaps (tx_hash, trace_address);
-CREATE INDEX IF NOT EXISTS onesplit_swaps_idx ON stablecoin.transfer USING BRIN (block_time);
+CREATE INDEX IF NOT EXISTS onesplit_swaps_idx ON onesplit.swaps USING BRIN (block_time);
 
 SELECT onesplit.insert_swap('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks)) WHERE NOT EXISTS (SELECT * FROM onesplit.swaps LIMIT 1);
 INSERT INTO cron.job (schedule, command)
