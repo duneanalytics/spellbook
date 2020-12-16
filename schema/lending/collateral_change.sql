@@ -36,7 +36,7 @@ WITH collateral_change AS (
         asset_amount / 10^t.decimals*p.price AS usd_value
     FROM (
 
-        -- Aave add collateral
+        -- Aave V1 add collateral
         SELECT
             'Aave' AS project,
             '1' AS version,
@@ -57,7 +57,7 @@ WITH collateral_change AS (
 
         UNION ALL
 
-        -- Aave remove collateral
+        -- Aave V1 remove collateral
         SELECT
             'Aave' AS project,
             '1' AS version,
@@ -73,6 +73,42 @@ WITH collateral_change AS (
             END AS asset_address,
             -"_amount" AS asset_amount
         FROM aave."LendingPool_evt_RedeemUnderlying"
+        WHERE evt_block_time >= start_ts
+        AND evt_block_time < end_ts
+
+        UNION ALL
+        
+        -- Aave V2 add collateral
+        SELECT
+            'Aave' AS project,
+            '2' AS version,
+            evt_block_number AS block_number,
+            evt_block_time AS block_time,
+            evt_tx_hash AS tx_hash,
+            evt_index,
+            NULL::integer[] AS trace_address,
+            "user" AS borrower,
+            reserve AS asset_address,
+            amount AS asset_amount
+        FROM aave_v2."LendingPool_evt_Deposit"
+        WHERE evt_block_time >= start_ts
+        AND evt_block_time < end_ts
+
+        UNION ALL
+
+        -- Aave V2 remove collateral
+        SELECT
+            'Aave' AS project,
+            '2' AS version,
+            evt_block_number AS block_number,
+            evt_block_time AS block_time,
+            evt_tx_hash AS tx_hash,
+            evt_index,
+            NULL::integer[] AS trace_address,
+            "user" AS borrower,
+            reserve AS asset_address,
+            amount AS asset_amount
+        FROM aave_v2."LendingPool_evt_Withdraw"
         WHERE evt_block_time >= start_ts
         AND evt_block_time < end_ts
 
