@@ -35,7 +35,7 @@ WITH borrow AS (
         asset_amount / 10^t.decimals AS token_amount,
         asset_amount / 10^t.decimals*p.price AS usd_value
     FROM (
-        -- Aave
+        -- Aave V1
         SELECT
             'Aave' AS project,
             '1' AS version,
@@ -64,8 +64,38 @@ WITH borrow AS (
             WHERE evt_block_time >= start_ts
             AND evt_block_time < end_ts
         ) aave
+       
 
-        UNION ALL
+        UNION ALL        
+        
+        -- Aave V2
+        SELECT
+            'Aave' AS project,
+            '2' AS version,
+            evt_block_number AS block_number,
+            evt_block_time AS block_time,
+            evt_tx_hash AS tx_hash,
+            evt_index,
+            NULL::integer[] as trace_address,
+            borrower,
+            reserve AS asset_address,
+            amount AS asset_amount
+        FROM (
+            --lending
+            SELECT evt_block_number, evt_block_time, evt_tx_hash, evt_index, reserve, amount, "user" AS borrower
+            FROM aave_v2."LendingPool_evt_Borrow"
+            WHERE evt_block_time >= start_ts
+            AND evt_block_time < end_ts
+
+            UNION ALL
+
+            SELECT evt_block_number, evt_block_time, evt_tx_hash, evt_index, asset AS reserve, amount, target AS borrower
+            FROM aave_v2."LendingPool_evt_FlashLoan"
+            WHERE evt_block_time >= start_ts
+            AND evt_block_time < end_ts
+        ) aave_v2
+
+        UNION ALL        
 
         -- Compound
         SELECT
