@@ -500,13 +500,13 @@ WITH rows AS (
             trace_address,
             evt_index
         FROM (
-            SELECT to_token, from_token, to_amount, from_amount, tx_hash, tx_from, block_time, from_usd, to_usd, contract_address, trace_address, evt_index AS evt_index FROM oneinch.view_swaps
+            SELECT to_token, from_token, to_amount, from_amount, tx_hash, tx_from, block_time, from_usd, to_usd, contract_address, trace_address, evt_index AS evt_index FROM oneinch.swaps
             UNION ALL
-            SELECT to_token, from_token, to_amount, from_amount, tx_hash, tx_from, block_time, from_usd, to_usd, contract_address, trace_address, NULL::integer AS evt_index FROM onesplit.view_swaps
-            WHERE tx_hash NOT IN (SELECT tx_hash FROM oneinch.view_swaps)
+            SELECT to_token, from_token, to_amount, from_amount, tx_hash, tx_from, block_time, from_usd, to_usd, contract_address, trace_address, NULL::integer AS evt_index FROM onesplit.swaps
+            WHERE tx_hash NOT IN (SELECT tx_hash FROM oneinch.swaps)
             UNION ALL
-            SELECT to_token, from_token, to_amount, from_amount, tx_hash, tx_from, block_time, from_usd, to_usd, contract_address, NULL::integer[] AS trace_address, evt_index FROM oneproto.view_swaps
-            WHERE tx_hash NOT IN (SELECT tx_hash FROM oneinch.view_swaps)
+            SELECT to_token, from_token, to_amount, from_amount, tx_hash, tx_from, block_time, from_usd, to_usd, contract_address, NULL::integer[] AS trace_address, evt_index FROM oneproto.swaps
+            WHERE tx_hash NOT IN (SELECT tx_hash FROM oneinch.swaps)
         ) oi
 
         UNION
@@ -704,6 +704,12 @@ WITH rows AS (
         INNER JOIN sushi."Factory_evt_PairCreated" f ON f.pair = t.contract_address
                         
     ) dexs
+    INNER JOIN ethereum.transactions tx
+        ON dexs.tx_hash = tx.hash
+        AND tx.block_time >= start_ts
+        AND tx.block_time < end_ts
+        AND tx.block_number >= start_block
+        AND tx.block_number < end_block
     LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
     LEFT JOIN prices.usd pa ON pa.minute = date_trunc('minute', dexs.block_time)
@@ -714,12 +720,6 @@ WITH rows AS (
         AND pb.contract_address = dexs.token_b_address
         AND pb.minute >= start_ts
         AND pb.minute < end_ts
-    INNER JOIN ethereum.transactions tx 
-        ON dexs.tx_hash = tx.hash 
-        AND tx.block_time >= start_ts 
-        AND tx.block_time < end_ts
-        AND tx.block_number >= start_block
-        AND tx.block_number < end_block
     WHERE dexs.block_time >= start_ts
     AND dexs.block_time < end_ts
 
@@ -777,6 +777,54 @@ CREATE INDEX IF NOT EXISTS dex_trades_block_time_idx ON dex.trades USING BRIN (b
 CREATE INDEX IF NOT EXISTS dex_trades_token_a_idx ON dex.trades (token_a_address);
 CREATE INDEX IF NOT EXISTS dex_trades_token_b_idx ON dex.trades (token_b_address);
 
-INSERT INTO cron.job (schedule, command)
-VALUES ('*/10 * * * *', $$SELECT dex.insert_trades((SELECT max(block_time) - interval '1 days' FROM dex.trades), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades)), (SELECT MAX(number) FROM ethereum.blocks));$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+-- fill 2017
+SELECT dex.insert_trades(
+    '2017-01-01',
+    '2018-01-01',
+    (SELECT max(number) FROM ethereum.blocks WHERE time < '2017-01-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2018-01-01'))
+WHERE NOT EXISTS (SELECT * FROM dex.trades WHERE block_time > '2017-01-01' AND block_time <= '2018-01-01' LIMIT 1);
+
+-- fill 2018
+SELECT dex.insert_trades(
+    '2018-01-01',
+    '2019-01-01',
+    (SELECT max(number) FROM ethereum.blocks WHERE time < '2018-01-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2019-01-01'))
+WHERE NOT EXISTS (SELECT * FROM dex.trades WHERE block_time > '2018-01-01' AND block_time <= '2019-01-01' LIMIT 1);
+
+-- fill 2019 H1
+SELECT dex.insert_trades(
+    '2019-01-01',
+    '2019-07-01',
+    (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2019-07-01'))
+WHERE NOT EXISTS (SELECT * FROM dex.trades WHERE block_time > '2019-01-01' AND block_time <= '2019-07-01' LIMIT 1);
+
+-- fill 2019 H2
+SELECT dex.insert_trades(
+    '2019-07-01',
+    '2020-01-01',
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2019-07-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'))
+WHERE NOT EXISTS (SELECT * FROM dex.trades WHERE block_time > '2019-07-01' AND block_time <= '2020-01-01' LIMIT 1);
+
+-- fill 2020 H1
+SELECT dex.insert_trades(
+    '2020-01-01',
+    '2020-07-01',
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-01-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-07-01'))
+WHERE NOT EXISTS (SELECT * FROM dex.trades WHERE block_time > '2020-01-01' AND block_time <= '2020-07-01' LIMIT 1);
+
+-- fill 2020 H2
+SELECT dex.insert_trades(
+    '2020-07-01',
+    '2021-01-01',
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-07-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2021-01-01'))
+WHERE NOT EXISTS (SELECT * FROM dex.trades WHERE block_time > '2020-07-01' AND block_time <= '2021-01-01' LIMIT 1);
+
+--INSERT INTO cron.job (schedule, command)
+--VALUES ('*/10 * * * *', $$SELECT dex.insert_trades((SELECT max(block_time) - interval '1 days' FROM dex.trades), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades)), (SELECT MAX(number) FROM ethereum.blocks));$$)
+--ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
