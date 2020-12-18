@@ -1,18 +1,33 @@
-BEGIN;
-DROP MATERIALIZED VIEW IF EXISTS oneinch.view_swaps;
-CREATE MATERIALIZED VIEW oneinch.view_swaps AS SELECT * FROM (
-    SELECT
-        tx."from" as tx_from,
-        tx."to" as tx_to,
+CREATE TABLE oneproto.swaps (
+    tx_from bytea,
+    tx_to bytea,
+    from_token bytea,
+    to_token bytea,
+    from_amount numeric,
+    to_amount numeric,
+    from_usd numeric,
+    to_usd numeric,
+    tx_hash bytea,
+    block_time timestamptz NOT NULL,
+    contract_address bytea,
+    evt_index integer
+);
+
+CREATE OR REPLACE FUNCTION oneproto.insert_swap(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+LANGUAGE plpgsql AS $function$
+DECLARE r integer;
+BEGIN
+WITH swap AS (
+    SELECT tx."from" AS tx_from,
+        tx."to" AS tx_to,
         from_token,
         to_token,
         from_amount,
         to_amount,
         tx_hash,
-        trace_address,
-        evt_index,
-        tmp.contract_address,
+        tmp.evt_index,
         tmp.block_time,
+        tmp.contract_address,
         from_amount * (
             CASE
                 WHEN from_token IN (
@@ -126,28 +141,65 @@ CREATE MATERIALIZED VIEW oneinch.view_swaps AS SELECT * FROM (
             END
         ) as to_usd
     FROM (
-        SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address FROM oneinch."exchange_v1_call_aggregate" WHERE call_success UNION ALL
-        SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address FROM oneinch."exchange_v2_call_aggregate" WHERE call_success UNION ALL
-        SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address FROM oneinch."exchange_v3_call_aggregate" WHERE call_success UNION ALL
-        SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address FROM oneinch."exchange_v4_call_aggregate" WHERE call_success UNION ALL
-        SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address FROM oneinch."exchange_v5_call_aggregate" WHERE call_success UNION ALL
-        SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address FROM oneinch."exchange_v6_call_aggregate" WHERE call_success UNION ALL
-        SELECT "fromToken" as from_token, "toToken" as to_token, "fromTokenAmount" as from_amount, "minReturnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address FROM oneinch."exchange_v7_call_swap" WHERE call_success UNION ALL
-        SELECT "fromToken" as from_token, "toToken" as to_token, "fromTokenAmount" as from_amount, "minReturnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address FROM oneinch."OneInchExchange_call_swap" WHERE call_success UNION ALL
-        SELECT "srcToken" as from_token, "dstToken" as to_token, "spentAmount" as from_amount, "returnAmount" as to_amount, evt_tx_hash as tx_hash, evt_block_time as block_time, NULL::integer[] as call_trace_address, evt_index, contract_address FROM oneinch_v2."OneInchExchange_evt_Swapped" -- UNION ALL
+        SELECT "fromToken" as from_token,
+               "destToken" as to_token,
+               "fromTokenAmount" as from_amount,
+               "destTokenAmount" as to_amount,
+               evt_tx_hash as tx_hash,
+               evt_block_time as block_time,
+               contract_address,
+               evt_index
+        FROM oneproto."OneSplitAudit_evt_Swapped"
     ) tmp
     INNER JOIN ethereum.transactions tx ON tx.hash = tx_hash
     LEFT JOIN erc20.tokens t1 ON t1.contract_address = from_token
     LEFT JOIN erc20.tokens t2 ON t2.contract_address = to_token
-) tt;
+    WHERE tmp.block_time >= start_ts
+        AND tmp.block_time < end_ts
+),
+rows AS (
+    INSERT INTO oneproto.swaps (
+        tx_from,
+        tx_to,
+        from_token,
+        to_token,
+        from_amount,
+        to_amount,
+        from_usd,
+        to_usd,
+        tx_hash,
+        block_time,
+        contract_address,
+        evt_index
+    )
+    SELECT
+        tx_from,
+        tx_to,
+        from_token,
+        to_token,
+        from_amount,
+        to_amount,
+        from_usd,
+        to_usd,
+        tx_hash,
+        block_time,
+        contract_address,
+        evt_index
+    FROM swap
+    ON CONFLICT DO NOTHING
+    RETURNING 1
+)
+SELECT count(*) INTO r from rows;
+RETURN r;
+END
+$function$;
 
-CREATE UNIQUE INDEX oneinch_swaps_unique_trace_address_idx ON oneinch.view_swaps (tx_hash, trace_address);
-CREATE UNIQUE INDEX oneinch_swaps_unique_evt_index_idx ON oneinch.view_swaps (tx_hash, evt_index);
-CREATE INDEX IF NOT EXISTS oneinch_swaps_idx_1 ON oneinch.view_swaps (from_token) INCLUDE (from_amount, from_usd);
-CREATE INDEX IF NOT EXISTS oneinch_swaps_idx_2 ON oneinch.view_swaps (to_token) INCLUDE (to_amount, to_usd);
-CREATE INDEX IF NOT EXISTS oneinch_swaps_idx_3 ON oneinch.view_swaps (block_time);
+CREATE UNIQUE INDEX IF NOT EXISTS oneproto_swaps_unique_idx_1 ON oneproto.swaps (tx_hash, evt_index);
+CREATE INDEX IF NOT EXISTS oneproto_swaps_idx_1 ON oneproto.swaps USING BRIN (block_time);
+
+-- backfill
+SELECT oneproto.insert_swap('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks)) WHERE NOT EXISTS (SELECT * FROM oneproto.swaps LIMIT 1);
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('*/10 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY oneinch.view_swaps')
+VALUES ('*/17 * * * *', $$SELECT oneproto.insert_swap((SELECT max(block_time) - interval '2 days' FROM oneproto.swaps), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM oneproto.swaps)), (SELECT MAX(number) FROM ethereum.blocks));$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
-COMMIT;
