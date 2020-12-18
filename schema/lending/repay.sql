@@ -67,7 +67,36 @@ WITH repays AS (
         ) aave
 
         UNION ALL
+        
+        -- AAVE 2
+        SELECT
+            'Aave' AS project,
+            '2' AS version,
+            evt_block_number AS block_number,
+            evt_block_time AS block_time,
+            evt_tx_hash AS tx_hash,
+            evt_index,
+            NULL::integer[] AS trace_address,
+            borrower,
+            reserve AS asset_address,
+            asset_amount
+        FROM (
+            --lending
+            SELECT evt_block_number, evt_block_time, evt_tx_hash, evt_index, reserve, amount AS asset_amount, "user" AS borrower
+            FROM aave_v2."LendingPool_evt_Repay"
+            WHERE evt_block_time >= start_ts
+            AND evt_block_time < end_ts
 
+            UNION ALL
+
+            --flash loan
+            SELECT evt_block_number, evt_block_time, evt_tx_hash, evt_index, asset, amount AS asset_amount, target AS borrower
+            FROM aave_v2."LendingPool_evt_FlashLoan"
+            WHERE evt_block_time >= start_ts
+            AND evt_block_time < end_ts
+        ) aave2
+
+        UNION ALL
         -- Compound 1
         SELECT
             'Compound' AS project,
