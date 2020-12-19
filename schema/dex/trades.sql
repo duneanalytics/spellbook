@@ -396,52 +396,38 @@ WITH rows AS (
         FROM dydx."SoloMargin_evt_LogTrade"
 
         UNION
-
-        -- dYdX PBTC-USDC Perpetual
+                                       
+        -- dYdX Perpetual
         SELECT
             evt_block_time AS block_time,
             'dYdX' AS project,
-            'PBTC-USDC Perpetual' AS version,
+            CASE
+                WHEN contract_address = '\x1c50c582c7066049C560Bca20416b1d9E0dfb003' THEN 'PLINK-USDC Perpetual'
+                WHEN contract_address = '\x07aBe965500A49370D331eCD613c7AC47dD6e547' THEN 'PBTC-USDC Perpetual'
+                WHEN contract_address = '\x09403FD14510F8196F7879eF514827CD76960B5d' THEN 'WETH-PUSD Perpetual'
+            END AS version,
             'DEX' AS category,
             maker AS trader_a,
             taker AS trader_b,
             "positionAmount" AS token_a_amount_raw,
             "marginAmount" AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599' AS token_a_address,
-            '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48' AS token_b_address,
+            CASE
+                WHEN contract_address = '\x1c50c582c7066049C560Bca20416b1d9E0dfb003' THEN '\x514910771af9ca656af840dff83e8264ecf986ca'
+                WHEN contract_address = '\x07aBe965500A49370D331eCD613c7AC47dD6e547' THEN '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599'
+                WHEN contract_address = '\x09403FD14510F8196F7879eF514827CD76960B5d' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            END AS token_a_address,
+            CASE
+                WHEN contract_address = '\x1c50c582c7066049C560Bca20416b1d9E0dfb003' THEN '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+                WHEN contract_address = '\x07aBe965500A49370D331eCD613c7AC47dD6e547' THEN '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+                WHEN contract_address = '\x09403FD14510F8196F7879eF514827CD76960B5d' THEN NULL::bytea
+            END AS token_b_address,
             contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             evt_index
-        FROM
-            dydx_perpetual."PerpetualV1_evt_LogTrade"
+        FROM dydx_perpetual."PerpetualV1_evt_LogTrade"
         WHERE "isBuy" = 'True'
-        AND contract_address = '\x07aBe965500A49370D331eCD613c7AC47dD6e547'
-                                       
-        UNION
-                                       
-        -- dYdX WETH-PUSD Perpetual
-        SELECT
-            evt_block_time AS block_time,
-            'dYdX' AS project,
-            'WETH-PUSD Perpetual' AS version,
-            'DEX' AS category,
-            maker AS trader_a,
-            taker AS trader_b,
-            "marginAmount" AS token_a_amount_raw,
-            NULL::numeric AS token_b_amount_raw,
-            "positionAmount"/1e6 AS usd_amount,
-            '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea AS token_a_address,
-            NULL::bytea AS token_b_address,
-            contract_address AS exchange_contract_address,
-            evt_tx_hash AS tx_hash,
-            NULL::integer[] AS trace_address,
-            evt_index
-        FROM
-            dydx_perpetual."PerpetualV1_evt_LogTrade"
-        WHERE "isBuy" = 'True'
-        AND contract_address = '\x09403FD14510F8196F7879eF514827CD76960B5d'
 
         UNION
 
