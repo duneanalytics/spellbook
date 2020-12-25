@@ -196,6 +196,7 @@ $function$;
 
 CREATE UNIQUE INDEX IF NOT EXISTS oneproto_swaps_unique_idx_1 ON oneproto.swaps (tx_hash, evt_index);
 CREATE INDEX IF NOT EXISTS oneproto_swaps_idx_1 ON oneproto.swaps USING BRIN (block_time);
+CREATE INDEX IF NOT EXISTS oneproto_swaps_idx_tx_from ON oneproto.swaps (tx_from);
 
 -- backfill
 SELECT oneproto.insert_swap('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks)) WHERE NOT EXISTS (SELECT * FROM oneproto.swaps LIMIT 1);
