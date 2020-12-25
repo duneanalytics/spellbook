@@ -208,6 +208,7 @@ $function$;
 
 CREATE UNIQUE INDEX IF NOT EXISTS oonesplit_swaps_unique_idx ON onesplit.swaps (tx_hash, trace_address);
 CREATE INDEX IF NOT EXISTS onesplit_swaps_idx ON onesplit.swaps USING BRIN (block_time);
+CREATE INDEX IF NOT EXISTS onesplit_swaps_idx_tx_from ON onesplit.swaps (tx_from);
 
 --backfill
 SELECT onesplit.insert_swap('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks)) WHERE NOT EXISTS (SELECT * FROM onesplit.swaps LIMIT 1);
