@@ -195,7 +195,7 @@ END
 $function$;
 
 CREATE UNIQUE INDEX IF NOT EXISTS oneproto_swaps_unique_idx_1 ON oneproto.swaps (tx_hash, evt_index);
-CREATE INDEX IF NOT EXISTS oneproto_swaps_idx_1 ON oneproto.swaps USING BRIN (block_time);
+CREATE INDEX IF NOT EXISTS oneproto_swaps_idx_1 ON oneproto.swaps USING BRIN (block_time, tx_from);
 CREATE INDEX IF NOT EXISTS oneproto_swaps_idx_tx_from ON oneproto.swaps USING BRIN (tx_from);
 
 -- backfill

@@ -207,7 +207,7 @@ END
 $function$;
 
 CREATE UNIQUE INDEX IF NOT EXISTS oonesplit_swaps_unique_idx ON onesplit.swaps (tx_hash, trace_address);
-CREATE INDEX IF NOT EXISTS onesplit_swaps_idx ON onesplit.swaps USING BRIN (block_time);
+CREATE INDEX IF NOT EXISTS onesplit_swaps_idx ON onesplit.swaps USING BRIN (block_time, tx_from);
 CREATE INDEX IF NOT EXISTS onesplit_swaps_idx_tx_from ON onesplit.swaps USING BRIN (tx_from);
 
 --backfill

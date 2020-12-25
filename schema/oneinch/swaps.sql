@@ -200,7 +200,7 @@ $function$;
 
 CREATE UNIQUE INDEX IF NOT EXISTS oneinch_sswaps_unique_trace_address_idx ON oneinch.swaps (tx_hash, trace_address);
 CREATE UNIQUE INDEX IF NOT EXISTS oneinch_sswaps_unique_evt_index_idx ON oneinch.swaps (tx_hash, evt_index);
-CREATE INDEX IF NOT EXISTS oneinch_swaps_idx ON oneinch.swaps USING BRIN (block_time);
+CREATE INDEX IF NOT EXISTS oneinch_swaps_idx ON oneinch.swaps USING BRIN (block_time, tx_from);
 CREATE INDEX IF NOT EXISTS oneinch_swaps_idx_tx_from ON oneinch.swaps USING BRIN (tx_from);
 
 -- backfill
