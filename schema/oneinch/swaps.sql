@@ -201,6 +201,7 @@ $function$;
 CREATE UNIQUE INDEX IF NOT EXISTS oneinch_sswaps_unique_trace_address_idx ON oneinch.swaps (tx_hash, trace_address);
 CREATE UNIQUE INDEX IF NOT EXISTS oneinch_sswaps_unique_evt_index_idx ON oneinch.swaps (tx_hash, evt_index);
 CREATE INDEX IF NOT EXISTS oneinch_swaps_idx ON oneinch.swaps USING BRIN (block_time);
+CREATE INDEX IF NOT EXISTS oneinch_swaps_idx_tx_from ON oneinch.swaps USING BRIN (tx_from);
 
 -- backfill
 SELECT oneinch.insert_swap('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks)) WHERE NOT EXISTS (SELECT * FROM oneinch.swaps LIMIT 1);
