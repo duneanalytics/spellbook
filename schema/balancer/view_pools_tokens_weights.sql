@@ -1,30 +1,35 @@
 CREATE OR REPLACE VIEW balancer.view_pools_tokens_weights AS
 with events as (
     -- binds
-    select call_block_number as block_number, 
+    select call_block_number as block_number, index, call_trace_address,
     contract_address as pool, token, denorm
     from balancer."BPool_call_bind"
+    INNER JOIN ethereum.transactions ON call_tx_hash = hash
     where call_success
 
     union all
 
     -- rebinds
-    select call_block_number as block_number, 
+    select call_block_number as block_number, index, call_trace_address, 
     contract_address as pool, token, denorm
     from balancer."BPool_call_rebind"
+    INNER JOIN ethereum.transactions ON call_tx_hash = hash
     where call_success
 
     union all
     
     -- unbinds
-    select call_block_number as block_number, 
+    select call_block_number as block_number,  index, call_trace_address,
     contract_address as pool, token, 0 as denorm
     from balancer."BPool_call_unbind"
+    INNER JOIN ethereum.transactions ON call_tx_hash = hash
     where call_success
 ),
 state_with_gaps as (
     select events.block_number, events.pool, events.token, events.denorm,
-    LEAD(cast(events.block_number as text), '1', '99999999') over (partition by events.pool, events.token order by events.block_number) as next_block_number
+    LEAD(cast(events.block_number as text), '1', '99999999') over (
+        partition by events.pool, events.token 
+        order by events.block_number, index, call_trace_address) as next_block_number
     from events 
 ), 
 settings as (
