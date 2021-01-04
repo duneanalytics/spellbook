@@ -482,6 +482,67 @@ WITH rows AS (
 
         UNION
 
+        -- Loopring v3.6
+        (
+            WITH transactions AS (
+                SELECT unnest(loopring.fn_process_block(
+                    CAST(t.block ->> 'blockSize' AS INT),
+                    decode(substring(t.block ->> 'data', 3, char_length(t.block ->> 'data') - 2), 'hex'),
+                    c.call_block_time,
+                    blockIdx::integer
+                )) as transaction,
+                c."contract_address" AS exchange_contract_address,
+                c.call_tx_hash AS tx_hash,
+                c.call_trace_address AS trace_address,
+                NULL::bigint AS evt_index
+                FROM loopring."ExchangeV3_call_submitBlocks" c,
+                jsonb_array_elements(c."blocks") with ordinality as t(block, blockIdx)
+            ), token_table AS (
+                SELECT 0 AS "token_id", '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea AS token
+                UNION
+                SELECT "tokenId" AS "token_id", "token"
+                FROM loopring."ExchangeV3_evt_TokenRegistered" e
+                WHERE token != '\x0000000000000000000000000000000000000000'
+            ), _account_table AS (
+                SELECT CASE (t.transaction).txType
+                            WHEN 1 THEN ((t.transaction).deposit).toAccount
+                            WHEN 3 THEN ((t.transaction).transfer).toAccount
+                            WHEN 5 THEN ((t.transaction).account_update).ownerAccount
+                            ELSE '0'
+                        END as id,
+                        CASE (t.transaction).txType
+                            WHEN 1 THEN ((t.transaction).deposit).toAddress
+                            WHEN 3 THEN ((t.transaction).transfer).toAddress
+                            WHEN 5 THEN ((t.transaction).account_update).ownerAddress
+                            ELSE '\x0000000000000000000000000000000000000000'::bytea
+                        END as address
+                FROM transactions t
+            ), account_table AS (
+                SELECT DISTINCT id, address
+                FROM _account_table
+                WHERE id != 0 AND address != '\x0000000000000000000000000000000000000000'::bytea
+            )
+            SELECT (t.transaction).block_timestamp AS block_time,
+                'Loopring' AS project,
+                '3.6' AS version,
+                'DEX' AS category,
+                (SELECT "address" FROM account_table WHERE "id" = ((t.transaction).spot_trade).accountA) AS trader_a,
+                (SELECT "address" FROM account_table WHERE "id" = ((t.transaction).spot_trade).accountB) AS trader_B,
+                ((t.transaction).spot_trade).amountA::numeric AS token_a_amount_raw,
+                ((t.transaction).spot_trade).amountB::numeric AS token_b_amount_raw,
+                NULL::numeric AS usd_amount,
+                (SELECT "token" FROM token_table WHERE "token_id" = ((t.transaction).spot_trade).tokenA) AS token_a_address,
+                (SELECT "token" FROM token_table WHERE "token_id" = ((t.transaction).spot_trade).tokenB) AS token_b_address,
+                exchange_contract_address,
+                tx_hash,
+                trace_address,
+                evt_index
+            FROM transactions t
+            WHERE (t.transaction).txType = 4
+        )
+
+        UNION
+
         -- 1inch
         SELECT
             oi.block_time,
