@@ -363,6 +363,7 @@ WITH rows AS (
             NULL::integer[] AS trace_address,
             evt_index
         FROM zeroex."view_0x_api_fills"
+        where swap_flag is TRUE
 
         UNION
 
