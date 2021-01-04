@@ -1,16 +1,33 @@
-BEGIN;
-DROP MATERIALIZED VIEW IF EXISTS oneproto.view_swaps;
-CREATE MATERIALIZED VIEW oneproto.view_swaps AS
-SELECT * FROM (
-    SELECT
-        tx."from" as tx_from,
-        tx."to" as tx_to,
+CREATE TABLE onesplit.swaps (
+    tx_from bytea,
+    tx_to bytea,
+    from_token bytea,
+    to_token bytea,
+    from_amount numeric,
+    to_amount numeric,
+    from_usd numeric,
+    to_usd numeric,
+    tx_hash bytea,
+    trace_address integer[],
+    block_time timestamptz NOT NULL,
+    contract_address bytea
+);
+
+CREATE OR REPLACE FUNCTION onesplit.insert_swap(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+LANGUAGE plpgsql AS $function$
+DECLARE r integer;
+BEGIN
+WITH swap AS (
+    SELECT tx."from" AS tx_from,
+        tx."to" AS tx_to,
         from_token,
         to_token,
         from_amount,
         to_amount,
         tx_hash,
+        tmp.call_trace_address AS trace_address,
         tmp.block_time,
+        tmp.contract_address,
         from_amount * (
             CASE
                 WHEN from_token IN (
@@ -23,7 +40,7 @@ SELECT * FROM (
                     SELECT p.price/1e18
                     FROM prices.layer1_usd p
                     WHERE p.symbol = 'ETH'
-                    AND p.minute = date_trunc('minute', tmp.block_time)
+                        AND p.minute = date_trunc('minute', tmp.block_time)
                     LIMIT 1
                 )
                 WHEN from_token IN (
@@ -33,7 +50,7 @@ SELECT * FROM (
                     SELECT p.price/1e8
                     FROM prices.layer1_usd p
                     WHERE p.symbol = 'BTC'
-                    AND p.minute = date_trunc('minute', tmp.block_time)
+                        AND p.minute = date_trunc('minute', tmp.block_time)
                     LIMIT 1
                 )
                 WHEN from_token IN (
@@ -42,7 +59,7 @@ SELECT * FROM (
                     SELECT p.price/1e18
                     FROM prices.layer1_usd p
                     WHERE p.symbol = 'BTC'
-                    AND p.minute = date_trunc('minute', tmp.block_time)
+                        AND p.minute = date_trunc('minute', tmp.block_time)
                     LIMIT 1
                 )
                 WHEN from_token IN (
@@ -62,7 +79,7 @@ SELECT * FROM (
                     SELECT p.price
                     FROM prices."usd" p
                     WHERE p.contract_address = from_token
-                    AND p.minute = date_trunc('minute', tmp.block_time)
+                        AND p.minute = date_trunc('minute', tmp.block_time)
                     LIMIT 1
                 ) / POWER(10, CASE t1.decimals IS NULL WHEN true THEN 18 else t1.decimals END)
             END
@@ -79,7 +96,7 @@ SELECT * FROM (
                     SELECT p.price/1e18
                     FROM prices.layer1_usd p
                     WHERE p.symbol = 'ETH'
-                    AND p.minute = date_trunc('minute', tmp.block_time)
+                        AND p.minute = date_trunc('minute', tmp.block_time)
                     LIMIT 1
                 )
                 WHEN to_token IN (
@@ -89,7 +106,7 @@ SELECT * FROM (
                     SELECT p.price/1e8
                     FROM prices.layer1_usd p
                     WHERE p.symbol = 'BTC'
-                    AND p.minute = date_trunc('minute', tmp.block_time)
+                        AND p.minute = date_trunc('minute', tmp.block_time)
                     LIMIT 1
                 )
                 WHEN to_token IN (
@@ -98,7 +115,7 @@ SELECT * FROM (
                     SELECT p.price/1e18
                     FROM prices.layer1_usd p
                     WHERE p.symbol = 'BTC'
-                    AND p.minute = date_trunc('minute', tmp.block_time)
+                        AND p.minute = date_trunc('minute', tmp.block_time)
                     LIMIT 1
                 )
                 WHEN to_token IN (
@@ -118,24 +135,84 @@ SELECT * FROM (
                     SELECT p.price
                     FROM prices."usd" p
                     WHERE p.contract_address = to_token
-                    AND p.minute = date_trunc('minute', tmp.block_time)
+                        AND p.minute = date_trunc('minute', tmp.block_time)
                     LIMIT 1
                 ) / POWER(10, CASE t2.decimals IS NULL WHEN true THEN 18 else t2.decimals END)
             END
         ) as to_usd
-    FROM (
-        SELECT "fromToken" as from_token, "destToken" as to_token, "fromTokenAmount" as from_amount, "destTokenAmount" as to_amount, evt_tx_hash as tx_hash, evt_block_time as block_time FROM oneproto."OneSplitAudit_evt_Swapped"
-    ) tmp
-    LEFT JOIN ethereum.transactions tx ON tx.hash = tx_hash
-    LEFT JOIN erc20.tokens t1 ON t1.contract_address = from_token
-    LEFT JOIN erc20.tokens t2 ON t2.contract_address = to_token
-) tt;
+FROM (
+    SELECT "fromToken" AS from_token,
+        "toToken" AS to_token,
+        "amount" AS from_amount,
+        "minReturn" AS to_amount,
+        call_tx_hash AS tx_hash,
+        call_trace_address,
+        call_block_time AS block_time,
+        contract_address
+    FROM onesplit."OneSplit_call_swap"
+    WHERE call_success
+    UNION ALL
+    SELECT "fromToken" AS from_token,
+        "toToken" AS to_token,
+        "amount" AS from_amount,
+        "minReturn" AS to_amount,
+        call_tx_hash AS tx_hash,
+        call_trace_address,
+        call_block_time AS block_time,
+        contract_address
+    FROM onesplit."OneSplit_call_goodSwap"
+    WHERE call_success
+) tmp
+INNER JOIN ethereum.transactions tx ON tx.hash = tx_hash
+LEFT JOIN erc20.tokens t1 ON t1.contract_address = from_token
+LEFT JOIN erc20.tokens t2 ON t2.contract_address = to_token
+WHERE tmp.block_time >= start_ts
+    AND tmp.block_time < end_ts
+),
+rows AS (
+    INSERT INTO onesplit.swaps (
+        tx_from,
+        tx_to,
+        from_token,
+        to_token,
+        from_amount,
+        to_amount,
+        from_usd,
+        to_usd,
+        tx_hash,
+        trace_address,
+        block_time,
+        contract_address
+    )
+    SELECT
+        tx_from,
+        tx_to,
+        from_token,
+        to_token,
+        from_amount,
+        to_amount,
+        from_usd,
+        to_usd,
+        tx_hash,
+        trace_address,
+        block_time,
+        contract_address
+    FROM swap
+    ON CONFLICT DO NOTHING
+    RETURNING 1
+)
+SELECT count(*) INTO r from rows;
+RETURN r;
+END
+$function$;
 
-CREATE INDEX IF NOT EXISTS oneproto_swaps_idx_1 ON oneproto.view_swaps (from_token) INCLUDE (from_amount, from_usd);
-CREATE INDEX IF NOT EXISTS oneproto_swaps_idx_2 ON oneproto.view_swaps (to_token) INCLUDE (to_amount, to_usd);
-CREATE INDEX IF NOT EXISTS oneproto_swaps_idx_3 ON oneproto.view_swaps (block_time);
+CREATE UNIQUE INDEX IF NOT EXISTS oonesplit_swaps_unique_idx ON onesplit.swaps (tx_hash, trace_address);
+CREATE INDEX IF NOT EXISTS onesplit_swaps_idx ON onesplit.swaps USING BRIN (block_time);
+CREATE INDEX IF NOT EXISTS onesplit_swaps_idx_tx_from ON onesplit.swaps (tx_from);
+
+--backfill
+SELECT onesplit.insert_swap('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks)) WHERE NOT EXISTS (SELECT * FROM onesplit.swaps LIMIT 1);
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('*/10 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY oneproto.view_swaps')
+VALUES ('*/14 * * * *', $$SELECT onesplit.insert_swap((SELECT max(block_time) - interval '2 days' FROM onesplit.swaps), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM onesplit.swaps)), (SELECT MAX(number) FROM ethereum.blocks));$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
-COMMIT;

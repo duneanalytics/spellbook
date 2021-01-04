@@ -1,17 +1,33 @@
-BEGIN;
-DROP MATERIALIZED VIEW IF EXISTS onesplit.view_swaps;
-CREATE MATERIALIZED VIEW onesplit.view_swaps AS
-SELECT * FROM (
-    SELECT
-        tx."from" as tx_from,
-        tx."to" as tx_to,
+CREATE TABLE oneproto.swaps (
+    tx_from bytea,
+    tx_to bytea,
+    from_token bytea,
+    to_token bytea,
+    from_amount numeric,
+    to_amount numeric,
+    from_usd numeric,
+    to_usd numeric,
+    tx_hash bytea,
+    block_time timestamptz NOT NULL,
+    contract_address bytea,
+    evt_index integer
+);
+
+CREATE OR REPLACE FUNCTION oneproto.insert_swap(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+LANGUAGE plpgsql AS $function$
+DECLARE r integer;
+BEGIN
+WITH swap AS (
+    SELECT tx."from" AS tx_from,
+        tx."to" AS tx_to,
         from_token,
         to_token,
         from_amount,
         to_amount,
         tx_hash,
-        call_trace_address,
+        tmp.evt_index,
         tmp.block_time,
+        tmp.contract_address,
         from_amount * (
             CASE
                 WHEN from_token IN (
@@ -125,20 +141,66 @@ SELECT * FROM (
             END
         ) as to_usd
     FROM (
-        SELECT "fromToken" as from_token, "toToken" as to_token, "amount" as from_amount, "minReturn" as to_amount, call_tx_hash as tx_hash, call_trace_address, call_block_time as block_time FROM onesplit."OneSplit_call_swap"     WHERE call_success UNION ALL
-        SELECT "fromToken" as from_token, "toToken" as to_token, "amount" as from_amount, "minReturn" as to_amount, call_tx_hash as tx_hash, call_trace_address, call_block_time as block_time FROM onesplit."OneSplit_call_goodSwap" WHERE call_success
+        SELECT "fromToken" as from_token,
+               "destToken" as to_token,
+               "fromTokenAmount" as from_amount,
+               "destTokenAmount" as to_amount,
+               evt_tx_hash as tx_hash,
+               evt_block_time as block_time,
+               contract_address,
+               evt_index
+        FROM oneproto."OneSplitAudit_evt_Swapped"
     ) tmp
-    LEFT JOIN ethereum.transactions tx ON tx.hash = tx_hash
+    INNER JOIN ethereum.transactions tx ON tx.hash = tx_hash
     LEFT JOIN erc20.tokens t1 ON t1.contract_address = from_token
     LEFT JOIN erc20.tokens t2 ON t2.contract_address = to_token
-) tt;
+    WHERE tmp.block_time >= start_ts
+        AND tmp.block_time < end_ts
+),
+rows AS (
+    INSERT INTO oneproto.swaps (
+        tx_from,
+        tx_to,
+        from_token,
+        to_token,
+        from_amount,
+        to_amount,
+        from_usd,
+        to_usd,
+        tx_hash,
+        block_time,
+        contract_address,
+        evt_index
+    )
+    SELECT
+        tx_from,
+        tx_to,
+        from_token,
+        to_token,
+        from_amount,
+        to_amount,
+        from_usd,
+        to_usd,
+        tx_hash,
+        block_time,
+        contract_address,
+        evt_index
+    FROM swap
+    ON CONFLICT DO NOTHING
+    RETURNING 1
+)
+SELECT count(*) INTO r from rows;
+RETURN r;
+END
+$function$;
 
-CREATE UNIQUE INDEX IF NOT EXISTS onesplit_swaps_unique_idx ON onesplit.view_swaps (tx_hash, call_trace_address);
-CREATE INDEX IF NOT EXISTS onesplit_swaps_idx_1 ON onesplit.view_swaps (from_token) INCLUDE (from_amount, from_usd);
-CREATE INDEX IF NOT EXISTS onesplit_swaps_idx_2 ON onesplit.view_swaps (to_token) INCLUDE (to_amount, to_usd);
-CREATE INDEX IF NOT EXISTS onesplit_swaps_idx_3 ON onesplit.view_swaps (block_time);
+CREATE UNIQUE INDEX IF NOT EXISTS oneproto_swaps_unique_idx_1 ON oneproto.swaps (tx_hash, evt_index);
+CREATE INDEX IF NOT EXISTS oneproto_swaps_idx_1 ON oneproto.swaps USING BRIN (block_time);
+CREATE INDEX IF NOT EXISTS oneproto_swaps_idx_tx_from ON oneproto.swaps (tx_from);
+
+-- backfill
+SELECT oneproto.insert_swap('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks)) WHERE NOT EXISTS (SELECT * FROM oneproto.swaps LIMIT 1);
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('0,10,20,30,40,50 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY onesplit.view_swaps')
+VALUES ('*/17 * * * *', $$SELECT oneproto.insert_swap((SELECT max(block_time) - interval '2 days' FROM oneproto.swaps), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM oneproto.swaps)), (SELECT MAX(number) FROM ethereum.blocks));$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
-COMMIT;

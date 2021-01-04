@@ -1,61 +1,4 @@
 BEGIN;
-DROP TABLE IF EXISTS zeroex.view_api_affiliate_data CASCADE;
-CREATE TABLE IF NOT EXISTS zeroex.view_api_affiliate_data (
-    tx_hash BYTEA
-    , block_number BIGINT
-    , block_time TIMESTAMPTZ
-    , caller BYTEA
-    , callee BYTEA
-    , affiliate_address BYTEA
-    , quote_timestamp BIGINT
-);
-
-CREATE INDEX IF NOT EXISTS api_affiliate_tx_index ON zeroex.view_api_affiliate_data (tx_hash);
-CREATE INDEX IF NOT EXISTS api_affiliate_timestamp_index ON zeroex.view_api_affiliate_data (block_time);
-CREATE INDEX IF NOT EXISTS api_affiliate_affiliate_index ON zeroex.view_api_affiliate_data (affiliate_address);
-
-
-INSERT INTO cron.job (schedule, command)
-VALUES ('*/10 * * * *',  $$
-    INSERT INTO zeroex.view_api_affiliate_data (
-        SELECT
-            tr.tx_hash
-            , tr.block_number
-            , tr.block_time
-            , tr."from" AS caller
-            , tr."to" AS callee
-            , CASE
-                    WHEN POSITION('\x869584cd'::BYTEA IN tx.data) <> 0 THEN SUBSTRING(tx.data from (position('\x869584cd'::BYTEA IN tx.data) + 16) for 20)
-                    WHEN POSITION('\xfbc019a7'::BYTEA IN tx.data) <> 0 THEN SUBSTRING(tx.data from (position('\xfbc019a7'::BYTEA IN tx.data) + 16) for 20)
-                END AS affiliate_address
-            , CASE
-                    WHEN POSITION('\x869584cd'::BYTEA IN tx.data) <> 0 THEN HEX_TO_INT(RIGHT(substring(tx.data from (position('\x869584cd'::BYTEA IN tx.data) + 36 + 28) for 4)::VARCHAR,8))
-                    WHEN POSITION('\xfbc019a7'::BYTEA IN tx.data) <> 0 THEN NULL
-                END AS quote_timestamp
-        FROM ethereum."traces" tr
-        JOIN ethereum.transactions tx ON tx.hash = tr.tx_hash
-        WHERE
-            tr."to" IN (
-                -- exchange contract
-                '\x61935cbdd02287b511119ddb11aeb42f1593b7ef'::BYTEA
-                -- forwarder addresses
-                , '\x6958f5e95332d93d21af0d7b9ca85b8212fee0a5'::BYTEA
-                , '\x4aa817c6f383c8e8ae77301d18ce48efb16fd2be'::BYTEA
-                , '\x4ef40d1bf0983899892946830abf99eca2dbc5ce'::BYTEA
-                -- exchange proxy
-                , '\xdef1c0ded9bec7f1a1670819833240f027b25eff'::BYTEA
-            )
-            AND (
-                POSITION('\x869584cd'::BYTEA IN tx.data) <> 0
-                OR POSITION('\xfbc019a7'::BYTEA IN tx.data) <> 0
-            )
-            AND tr.block_time > (SELECT COALESCE(MAX(block_time), '2020-02-12'::TIMESTAMP) FROM zeroex.view_api_affiliate_data)
-            AND tr.block_time < ((SELECT COALESCE(MAX(block_time), '2020-02-12'::TIMESTAMP) FROM zeroex.view_api_affiliate_data) + '90 days'::INTERVAL)
-            AND tr.block_time < (CURRENT_TIMESTAMP - '3 minutes'::INTERVAL)
-    );
-$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
-
 
 DROP MATERIALIZED VIEW IF EXISTS zeroex.view_0x_api_fills;
 CREATE MATERIALIZED VIEW zeroex.view_0x_api_fills AS (
@@ -80,7 +23,7 @@ WITH zeroex_tx_raw AS (
             SELECT
                 tx_hash
                 , affiliate_address as affiliate_address
-            from zeroex.view_api_affiliate_data
+            from zeroex."view_api_affiliate_data"
         ),
         zeroex_tx AS (
                     SELECT
@@ -92,6 +35,7 @@ WITH zeroex_tx_raw AS (
         v3_fills_no_bridge AS (
               SELECT fills.evt_tx_hash AS tx_hash
                   , fills.evt_index
+                  , fills.contract_address
                   , evt_block_time AS block_time
                   , fills."makerAddress" AS maker
                   , fills."takerAddress" AS taker
@@ -116,6 +60,7 @@ WITH zeroex_tx_raw AS (
     	ERC20BridgeTransfer AS (
     		SELECT 	logs.tx_hash,
     				INDEX AS evt_index,
+            logs.contract_address,
     				block_time AS block_time,
             substring(DATA,141,20) AS maker,
             substring(DATA,173,20) AS taker,
@@ -135,6 +80,7 @@ WITH zeroex_tx_raw AS (
     	direct_uniswapv2 AS (
     		SELECT 	swap.evt_tx_hash AS tx_hash,
     				swap.evt_index,
+            swap.contract_address,
     				swap.evt_block_time AS block_time,
     				swap.contract_address AS maker,
     				LAST_VALUE(swap."to") OVER (PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
@@ -167,6 +113,7 @@ WITH zeroex_tx_raw AS (
     	direct_sushiswap AS (
     		SELECT 	swap.evt_tx_hash AS tx_hash,
     				swap.evt_index,
+            swap.contract_address,
     				swap.evt_block_time AS block_time,
     				swap.contract_address AS maker,
     				LAST_VALUE(swap."to") OVER (PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
@@ -207,6 +154,7 @@ WITH zeroex_tx_raw AS (
     	total_volume AS (
     		SELECT 	tx_hash,
       				evt_index,
+              all_tx.contract_address,
       				block_time,
       				maker,
       				taker,
@@ -215,7 +163,7 @@ WITH zeroex_tx_raw AS (
       				taker_token_amount_raw / (10^tt.decimals) AS taker_token_amount,
               taker_token_amount_raw,
               maker_token_amount_raw / (10^mt.decimals) AS maker_token_amount,
-      				maker_token_amount_raw,
+              maker_token_amount_raw,
       				type,
               affiliate_address,
               swap_flag,

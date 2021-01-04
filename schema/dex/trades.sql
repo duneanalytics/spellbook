@@ -6,6 +6,7 @@ CREATE TABLE dex.trades (
     token_b_amount numeric,
     project text NOT NULL,
     version text,
+    category text,
     trader_a bytea,
     trader_b bytea,
     token_a_amount_raw numeric,
@@ -15,12 +16,13 @@ CREATE TABLE dex.trades (
     token_b_address bytea,
     exchange_contract_address bytea NOT NULL,
     tx_hash bytea NOT NULL,
+    tx_from bytea NOT NULL,
     trace_address integer[],
     evt_index integer,
     trade_id integer
 );
 
-CREATE OR REPLACE FUNCTION dex.insert_trades(start_ts timestamptz, end_ts timestamptz=now()) RETURNS integer
+CREATE OR REPLACE FUNCTION dex.insert_trades(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -33,6 +35,7 @@ WITH rows AS (
         token_b_amount,
         project,
         version,
+        category,
         trader_a,
         trader_b,
         token_a_amount_raw,
@@ -42,27 +45,34 @@ WITH rows AS (
         token_b_address,
         exchange_contract_address,
         tx_hash,
+        tx_from,
         trace_address,
         evt_index,
         trade_id
     )
     SELECT
-        block_time,
+        dexs.block_time,
         erc20a.symbol AS token_a_symbol,
         erc20b.symbol AS token_b_symbol,
         token_a_amount_raw / 10 ^ erc20a.decimals AS token_a_amount,
         token_b_amount_raw / 10 ^ erc20b.decimals AS token_b_amount,
         project,
         version,
-        trader_a,
+        category,
+        coalesce(trader_a, tx."from") as trader_a,
         trader_b,
         token_a_amount_raw,
         token_b_amount_raw,
-        usd_amount,
+        coalesce(
+            usd_amount,
+            token_a_amount_raw / 10 ^ erc20a.decimals * pa.price,
+            token_b_amount_raw / 10 ^ erc20b.decimals * pb.price
+        ) as usd_amount,
         token_a_address,
         token_b_address,
         exchange_contract_address,
         tx_hash,
+        tx."from" as tx_from,
         trace_address,
         evt_index,
         row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
@@ -72,6 +82,7 @@ WITH rows AS (
             t.evt_block_time AS block_time,
             'Uniswap' AS project,
             '1' AS version,
+            'DEX' AS category,
             buyer AS trader_a,
             NULL::bytea AS trader_b,
             tokens_bought token_a_amount_raw,
@@ -94,6 +105,7 @@ WITH rows AS (
             t.evt_block_time AS block_time,
             'Uniswap' AS project,
             '1' AS version,
+            'DEX' AS category,
             buyer AS trader_a,
             NULL::bytea AS trader_b,
             eth_bought token_a_amount_raw,
@@ -116,6 +128,7 @@ WITH rows AS (
             t.evt_block_time AS block_time,
             'Uniswap' AS project,
             '2' AS version,
+            'DEX' AS category,
             t."to" AS trader_a,
             NULL::bytea AS trader_b,
             CASE WHEN "amount0Out" = 0 THEN "amount1Out" ELSE "amount0Out" END AS token_a_amount_raw,
@@ -139,6 +152,7 @@ WITH rows AS (
             evt_block_time AS block_time,
             'Kyber' AS project,
             '1' AS version,
+            'DEX' AS category,
             trader AS trader_a,
             NULL::bytea AS trader_b,
             CASE
@@ -164,6 +178,7 @@ WITH rows AS (
             evt_block_time AS block_time,
             'Kyber' AS project,
             '1' AS version,
+            'DEX' AS category,
             trader AS trader_a,
             NULL::bytea AS trader_b,
             "ethWeiValue" AS token_a_amount_raw,
@@ -190,7 +205,8 @@ WITH rows AS (
             evt_block_time AS block_time,
             'Kyber' AS project,
             '2' AS version,
-            tx.from AS trader_a,
+            'DEX' AS category,
+            NULL::bytea AS trader_a,
             NULL::bytea AS trader_b,
             (SELECT SUM(s) FROM UNNEST(ARRAY((
                 -- formula: https://github.com/KyberNetwork/smart-contracts/blob/Katalyst/contracts/sol6/utils/Utils5.sol#L88
@@ -206,14 +222,12 @@ WITH rows AS (
             NULL::numeric AS usd_amount,
             '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS token_a_address, -- trade from token - eth, dest should be weth
             src AS token_b_address,
-            kyber_v2."Network_evt_KyberTrade".contract_address exchange_contract_address,
+            trade.contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             evt_index AS evt_index
-        FROM kyber_v2."Network_evt_KyberTrade"
-        INNER JOIN erc20."tokens" src_token ON kyber_v2."Network_evt_KyberTrade".src = src_token.contract_address
-        INNER JOIN ethereum.transactions tx ON tx.hash = kyber_v2."Network_evt_KyberTrade".evt_tx_hash
-        WHERE tx.block_number > 10000000
+        FROM kyber_v2."Network_evt_KyberTrade" trade
+        INNER JOIN erc20."tokens" src_token ON trade.src = src_token.contract_address
         AND src_token.contract_address != '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
 
         UNION
@@ -223,7 +237,8 @@ WITH rows AS (
             evt_block_time AS block_time,
             'Kyber' AS project,
             '2' AS version,
-            tx.from AS trader_a,
+            'DEX' AS category,
+            NULL::bytea AS trader_a,
             NULL::bytea AS trader_b,
             (SELECT SUM(s) FROM UNNEST(ARRAY((
                 -- formula: https://github.com/KyberNetwork/smart-contracts/blob/Katalyst/contracts/sol6/utils/Utils5.sol#L88
@@ -239,14 +254,12 @@ WITH rows AS (
             NULL::numeric AS usd_amount,
             dest AS token_a_address,
             '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS token_b_address, -- trade from eth - token, src should be weth
-            kyber_v2."Network_evt_KyberTrade".contract_address exchange_contract_address,
+            trade.contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             evt_index AS evt_index
-        FROM kyber_v2."Network_evt_KyberTrade"
-        INNER JOIN erc20."tokens" dst_token ON kyber_v2."Network_evt_KyberTrade".dest = dst_token.contract_address
-        INNER JOIN ethereum.transactions tx ON tx.hash = kyber_v2."Network_evt_KyberTrade".evt_tx_hash
-        WHERE tx.block_number > 10000000
+        FROM kyber_v2."Network_evt_KyberTrade" trade
+        INNER JOIN erc20."tokens" dst_token ON trade.dest = dst_token.contract_address
         AND dst_token.contract_address != '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
 
         UNION
@@ -256,6 +269,7 @@ WITH rows AS (
             t.evt_block_time AS block_time,
             'Oasis' AS project,
             '1' AS version,
+            'DEX' AS category,
             take.taker AS trader_a,
             take.maker AS trader_b,
             t.buy_amt AS token_a_amount_raw,
@@ -285,6 +299,7 @@ WITH rows AS (
             t.evt_block_time AS block_time,
             'Oasis' AS project,
             '2' AS version,
+            'DEX' AS category,
             take.taker AS trader_a,
             take.maker AS trader_b,
             t.buy_amt AS token_a_amount_raw,
@@ -309,11 +324,77 @@ WITH rows AS (
 
         UNION
 
+        -- 0x v2.1
+        SELECT
+            evt_block_time AS block_time,
+            '0x' AS project,
+            '2.1' AS version,
+            'DEX' AS category,
+            "takerAddress" AS trader_a,
+            "makerAddress" AS trader_b,
+            "takerAssetFilledAmount" AS token_a_amount_raw,
+            "makerAssetFilledAmount" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            substring("takerAssetData" for 20 from 17) AS token_a_address,
+            substring("makerAssetData" for 20 from 17) AS token_b_address,
+            contract_address AS exchange_contract_address,
+            evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index
+        FROM zeroex_v2."Exchange2.1_evt_Fill"
+
+        UNION
+
+        -- 0x v3 (0x api volume)
+        SELECT
+            block_time,
+            '0x' AS project,
+            '3' AS version,
+            'DEX' AS category,
+            "taker" AS trader_a,
+            "maker" AS trader_b,
+            "taker_token_amount_raw" AS token_a_amount_raw,
+            "maker_token_amount_raw" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            taker_token AS token_a_address,
+            maker_token AS token_b_address,
+            contract_address AS exchange_contract_address,
+            tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index
+        FROM zeroex."view_0x_api_fills"
+
+        UNION
+
+        -- matcha
+        SELECT
+            block_time,
+            'Matcha' AS project,
+            NULL AS version,
+            'Aggregator' AS category,
+            "taker" AS trader_a,
+            "maker" AS trader_b,
+            "taker_token_amount_raw" AS token_a_amount_raw,
+            "maker_token_amount_raw" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            taker_token AS token_a_address,
+            maker_token AS token_b_address,
+            contract_address AS exchange_contract_address,
+            tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index
+        FROM zeroex."view_0x_api_fills"
+        where affiliate_address ='\x86003b044f70dac0abc80ac8957305b6370893ed'
+
+
+        UNION
+
         -- dYdX Solo Margin v2
         SELECT
             evt_block_time AS block_time,
             'dYdX' AS project,
             'Solo Margin v2' AS version,
+            'DEX' AS category,
             "takerAccountOwner" AS trader_a,
             "makerAccountOwner" AS trader_b,
             abs(("takerOutputUpdate"->'deltaWei'->'value')::numeric)/2 AS token_a_amount_raw, --"takerOutputNumber"
@@ -344,6 +425,7 @@ WITH rows AS (
             evt_block_time AS block_time,
             'dYdX' AS project,
             'PBTC-USDC Perpetual' AS version,
+            'DEX' AS category,
             maker AS trader_a,
             taker AS trader_b,
             "positionAmount" AS token_a_amount_raw,
@@ -367,6 +449,7 @@ WITH rows AS (
             evt_block_time AS block_time,
             'dYdX' AS project,
             'WETH-PUSD Perpetual' AS version,
+            'DEX' AS category,
             maker AS trader_a,
             taker AS trader_b,
             "marginAmount" AS token_a_amount_raw,
@@ -405,6 +488,7 @@ WITH rows AS (
             SELECT (t.trade).block_timestamp AS block_time,
                 'Loopring' AS project,
                 '3.1' AS version,
+                'DEX' AS category,
                 (SELECT "owner" FROM loopring."DEXBetaV1_evt_AccountCreated" WHERE "id" = (t.trade).accountA) AS trader_a,
                 (SELECT "owner" FROM loopring."DEXBetaV1_evt_AccountCreated" WHERE "id" = (t.trade).accountB) AS trader_B,
                 (t.trade).fillA::numeric AS token_a_amount_raw,
@@ -421,11 +505,41 @@ WITH rows AS (
 
         UNION
 
+        -- 1inch
+        SELECT
+            oi.block_time,
+            '1inch' AS project,
+            '1' AS version,
+            'Aggregator' AS category,
+            tx_from AS trader_a,
+            NULL::bytea AS trader_b,
+            to_amount AS token_a_amount_raw,
+            from_amount AS token_b_amount_raw,
+            GREATEST(from_usd, to_usd) AS usd_amount,
+            to_token AS token_a_address,
+            from_token AS token_b_address,
+            contract_address AS exchange_contract_address,
+            tx_hash,
+            trace_address,
+            evt_index
+        FROM (
+            SELECT to_token, from_token, to_amount, from_amount, tx_hash, tx_from, block_time, from_usd, to_usd, contract_address, trace_address, evt_index AS evt_index FROM oneinch.swaps
+            UNION ALL
+            SELECT to_token, from_token, to_amount, from_amount, tx_hash, tx_from, block_time, from_usd, to_usd, contract_address, trace_address, NULL::integer AS evt_index FROM onesplit.swaps
+            WHERE tx_hash NOT IN (SELECT tx_hash FROM oneinch.swaps)
+            UNION ALL
+            SELECT to_token, from_token, to_amount, from_amount, tx_hash, tx_from, block_time, from_usd, to_usd, contract_address, NULL::integer[] AS trace_address, evt_index FROM oneproto.swaps
+            WHERE tx_hash NOT IN (SELECT tx_hash FROM oneinch.swaps)
+        ) oi
+
+        UNION
+
         -- IDEX v1
         SELECT
             call_block_time AS block_time,
             'IDEX' AS project,
             '1' AS version,
+            'DEX' AS category,
             "tradeAddresses"[3] AS trader_a,
             "tradeAddresses"[4] AS trader_b,
             "tradeValues"[1] AS token_a_amount_raw,
@@ -448,11 +562,33 @@ WITH rows AS (
 
         UNION
 
+        -- Mooniswap
+        SELECT
+            evt_block_time,
+            'Mooniswap' AS project,
+            '1' AS version,
+            'DEX' AS category,
+            account AS trader_a,
+            NULL::bytea AS trader_b,
+            result AS token_a_amount_raw,
+            amount AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            dst AS token_a_address,
+            src AS token_b_address,
+            contract_address AS exchange_contract_address,
+            evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index
+        FROM mooniswap."MooniSwap_evt_Swapped"
+
+        UNION
+
         --Curve
         SELECT
             block_time,
             project,
             version,
+            'DEX' AS category,
             trader_a,
             trader_b,
             token_a_amount_raw,
@@ -473,13 +609,14 @@ WITH rows AS (
             t.evt_block_time AS block_time,
             'Balancer' AS project,
             '1' AS version,
+            'DEX' AS category,
             t.caller AS trader_a,
             NULL::bytea AS trader_b,
-            t."tokenAmountIn" AS token_a_amount_raw,
-            t."tokenAmountOut" AS token_b_amount_raw,
+            t."tokenAmountOut" AS token_a_amount_raw,
+            t."tokenAmountIn" AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            t."tokenIn" token_a_address,
-            t."tokenOut" token_b_address,
+            t."tokenOut" token_a_address,
+            t."tokenIn" token_b_address,
             t.contract_address exchange_contract_address,
             t.evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
@@ -495,6 +632,7 @@ WITH rows AS (
             evt_block_time AS block_time,
             'DDEX' AS project,
             NULL AS version,
+            'DEX' AS category,
             buyer AS trader_a,
             CASE
                 WHEN buyer = maker
@@ -524,6 +662,7 @@ WITH rows AS (
             block_time,
             'Gnosis Protocol' AS project,
             '1' AS version,
+            'DEX' AS category,
             trader_hex AS trader_a,
             NULL::bytea AS trader_b,
             sell_amount_atoms / 2 AS token_a_amount_raw,
@@ -544,6 +683,7 @@ WITH rows AS (
             block_time,
             'Bancor Network' AS project,
             NULL AS version,
+            'DEX' AS category,
             trader AS trader_a,
             NULL::bytea AS trader_b,
             target_token_amount_raw AS token_a_amount_raw,
@@ -562,11 +702,49 @@ WITH rows AS (
             NULL::integer[] AS trace_address,
             evt_index
         FROM bancornetwork.view_convert
+
+        UNION
+
+        -- Sushiswap
+        SELECT
+            t.evt_block_time AS block_time,
+            'Sushiswap' AS project,
+            '1' AS version,
+            'DEX' AS category,
+            t."to" AS trader_a,
+            NULL::bytea AS trader_b,
+            CASE WHEN "amount0Out" = 0 THEN "amount1Out" ELSE "amount0Out" END AS token_a_amount_raw,
+            CASE WHEN "amount0In" = 0 THEN "amount1In" ELSE "amount0In" END AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            CASE WHEN "amount0Out" = 0 THEN f.token1 ELSE f.token0 END AS token_a_address,
+            CASE WHEN "amount0In" = 0 THEN f.token1 ELSE f.token0 END AS token_b_address,
+            t.contract_address exchange_contract_address,
+            t.evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            t.evt_index
+        FROM
+            sushi."Pair_evt_Swap" t
+        INNER JOIN sushi."Factory_evt_PairCreated" f ON f.pair = t.contract_address
+
     ) dexs
+    INNER JOIN ethereum.transactions tx
+        ON dexs.tx_hash = tx.hash
+        AND tx.block_time >= start_ts
+        AND tx.block_time < end_ts
+        AND tx.block_number >= start_block
+        AND tx.block_number < end_block
     LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
-    WHERE block_time >= start_ts
-    AND block_time < end_ts
+    LEFT JOIN prices.usd pa ON pa.minute = date_trunc('minute', dexs.block_time)
+        AND pa.contract_address = dexs.token_a_address
+        AND pa.minute >= start_ts
+        AND pa.minute < end_ts
+    LEFT JOIN prices.usd pb ON pb.minute = date_trunc('minute', dexs.block_time)
+        AND pb.contract_address = dexs.token_b_address
+        AND pb.minute >= start_ts
+        AND pb.minute < end_ts
+    WHERE dexs.block_time >= start_ts
+    AND dexs.block_time < end_ts
 
     UNION
 
@@ -783,13 +961,14 @@ WITH rows AS (
 
     -- synthetix has their own usd-prices
     SELECT
-        block_time,
+        tr.block_time,
         a.symbol AS token_a_symbol,
         b.symbol AS token_b_symbol,
         token_a_amount,
         token_b_amount,
         'Synthetix' AS project,
         NULL AS version,
+        'DEX' AS category,
         trader_a,
         trader_b,
         token_a_amount_raw,
@@ -799,14 +978,21 @@ WITH rows AS (
         token_b_address,
         exchange_contract_address,
         tx_hash,
+        tx."from" as tx_from,
         NULL AS trace_address,
         evt_index,
         trade_id
     FROM synthetix.trades tr
-    LEFT JOIN synthetix.view_symbols a ON tr.token_a_address = a.address
-    LEFT JOIN synthetix.view_symbols b ON tr.token_b_address = b.address
-    WHERE block_time >= start_ts
-    AND block_time < end_ts
+    LEFT JOIN synthetix.symbols a ON tr.token_a_address = a.address
+    LEFT JOIN synthetix.symbols b ON tr.token_b_address = b.address
+    INNER JOIN ethereum.transactions tx
+        ON tr.tx_hash = tx.hash
+        AND tx.block_time >= start_ts
+        AND tx.block_time < end_ts
+        AND tx.block_number >= start_block
+        AND tx.block_number < end_block
+    WHERE tr.block_time >= start_ts
+    AND tr.block_time < end_ts
 
     ON CONFLICT DO NOTHING
     RETURNING 1
@@ -819,13 +1005,60 @@ $function$;
 
 CREATE UNIQUE INDEX IF NOT EXISTS dex_trades_tr_addr_uniq_idx ON dex.trades (tx_hash, trace_address, trade_id);
 CREATE UNIQUE INDEX IF NOT EXISTS dex_trades_evt_index_uniq_idx ON dex.trades (tx_hash, evt_index, trade_id);
-CREATE INDEX IF NOT EXISTS dex_trades_tr_addr_idx ON dex.trades (tx_hash, trace_address);
-CREATE INDEX IF NOT EXISTS dex_trades_evt_index_idx ON dex.trades (tx_hash, evt_index);
+CREATE INDEX IF NOT EXISTS dex_trades_tx_from_idx ON dex.trades (tx_from);
 CREATE INDEX IF NOT EXISTS dex_trades_project_idx ON dex.trades (project);
 CREATE INDEX IF NOT EXISTS dex_trades_block_time_idx ON dex.trades USING BRIN (block_time);
-CREATE INDEX IF NOT EXISTS dex_trades_token_a_idx ON dex.trades (token_a_address, token_a_amount);
-CREATE INDEX IF NOT EXISTS dex_trades_token_b_idx ON dex.trades (token_b_address, token_b_amount);
+CREATE INDEX IF NOT EXISTS dex_trades_token_a_idx ON dex.trades (token_a_address);
+CREATE INDEX IF NOT EXISTS dex_trades_token_b_idx ON dex.trades (token_b_address);
 
-INSERT INTO cron.job (schedule, command)
-VALUES ('*/10 * * * *', $$SELECT dex.insert_trades((SELECT max(block_time) - interval '1 days' FROM dex.trades));$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+-- fill 2017
+SELECT dex.insert_trades(
+    '2017-01-01',
+    '2018-01-01',
+    (SELECT max(number) FROM ethereum.blocks WHERE time < '2017-01-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2018-01-01'))
+WHERE NOT EXISTS (SELECT * FROM dex.trades WHERE block_time > '2017-01-01' AND block_time <= '2018-01-01' LIMIT 1);
+
+-- fill 2018
+SELECT dex.insert_trades(
+    '2018-01-01',
+    '2019-01-01',
+    (SELECT max(number) FROM ethereum.blocks WHERE time < '2018-01-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2019-01-01'))
+WHERE NOT EXISTS (SELECT * FROM dex.trades WHERE block_time > '2018-01-01' AND block_time <= '2019-01-01' LIMIT 1);
+
+-- fill 2019 H1
+SELECT dex.insert_trades(
+    '2019-01-01',
+    '2019-07-01',
+    (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2019-07-01'))
+WHERE NOT EXISTS (SELECT * FROM dex.trades WHERE block_time > '2019-01-01' AND block_time <= '2019-07-01' LIMIT 1);
+
+-- fill 2019 H2
+SELECT dex.insert_trades(
+    '2019-07-01',
+    '2020-01-01',
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2019-07-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'))
+WHERE NOT EXISTS (SELECT * FROM dex.trades WHERE block_time > '2019-07-01' AND block_time <= '2020-01-01' LIMIT 1);
+
+-- fill 2020 H1
+SELECT dex.insert_trades(
+    '2020-01-01',
+    '2020-07-01',
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-01-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-07-01'))
+WHERE NOT EXISTS (SELECT * FROM dex.trades WHERE block_time > '2020-01-01' AND block_time <= '2020-07-01' LIMIT 1);
+
+-- fill 2020 H2
+SELECT dex.insert_trades(
+    '2020-07-01',
+    '2021-01-01',
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-07-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2021-01-01'))
+WHERE NOT EXISTS (SELECT * FROM dex.trades WHERE block_time > '2020-07-01' AND block_time <= '2021-01-01' LIMIT 1);
+
+--INSERT INTO cron.job (schedule, command)
+--VALUES ('*/10 * * * *', $$SELECT dex.insert_trades((SELECT max(block_time) - interval '1 days' FROM dex.trades), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades)), (SELECT MAX(number) FROM ethereum.blocks));$$)
+--ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

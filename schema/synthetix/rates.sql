@@ -34,6 +34,72 @@ WITH rows AS (
     INNER JOIN synthetix."ExchangeRates_evt_AggregatorAdded" agg ON agg.aggregator = cl.contract_address
     WHERE cl.evt_block_time >= start_ts
     AND cl.evt_block_time < end_ts
+
+    UNION
+
+    SELECT currency_key, currency_rate, evt_block_time AS block_time
+    FROM synthetix."ExchangeRates_v2_23_3_evt_RatesUpdated" r, unnest("currencyKeys", "newRates") AS u(currency_key, currency_rate)
+    WHERE evt_block_time >= start_ts
+    AND evt_block_time < end_ts
+
+    UNION
+
+    SELECT
+        agg."currencyKey" AS currency_key,
+        cl.current * 1e10 AS currency_rate,
+        cl.evt_block_time AS block_time
+    FROM chainlink."Aggregator_evt_AnswerUpdated" cl
+    INNER JOIN synthetix."ExchangeRates_v2_23_3_evt_AggregatorAdded" agg ON agg.aggregator = cl.contract_address
+    WHERE cl.evt_block_time >= start_ts
+    AND cl.evt_block_time < end_ts
+
+    UNION
+
+    SELECT
+        agg."currencyKey" AS currency_key,
+        cl.current * 1e10 AS currency_rate,
+        cl.evt_block_time AS block_time
+    FROM chainlink."Aggregator_evt_AnswerUpdated" cl
+    INNER JOIN chainlink."view_aggregator_mappings" clam ON clam.aggregator_address = cl.contract_address
+    INNER JOIN synthetix."ExchangeRates_v2_27_2_evt_AggregatorAdded" agg ON agg.aggregator = clam.proxy_address
+    WHERE cl.evt_block_time >= start_ts
+    AND cl.evt_block_time < end_ts
+
+    UNION
+
+    SELECT
+        agg."currencyKey" AS currency_key,
+        cl.current * 1e10 AS currency_rate,
+        cl.evt_block_time AS block_time
+    FROM chainlink."Aggregator_evt_AnswerUpdated" cl
+    INNER JOIN chainlink."view_aggregator_mappings" clam ON clam.aggregator_address = cl.contract_address
+    INNER JOIN synthetix."ExchangeRates_v2_28_4_evt_AggregatorAdded" agg ON agg.aggregator = clam.proxy_address
+    WHERE cl.evt_block_time >= start_ts
+    AND cl.evt_block_time < end_ts
+
+    UNION
+
+    SELECT
+        agg."currencyKey" AS currency_key,
+        cl.current * 1e10 AS currency_rate,
+        cl.evt_block_time AS block_time
+    FROM chainlink."Aggregator_evt_AnswerUpdated" cl
+    INNER JOIN chainlink."view_aggregator_mappings" clam ON clam.aggregator_address = cl.contract_address
+    INNER JOIN synthetix."ExchangeRates_v2_30_0_evt_AggregatorAdded" agg ON agg.aggregator = clam.proxy_address
+    WHERE cl.evt_block_time >= start_ts
+    AND cl.evt_block_time < end_ts
+
+    UNION
+
+    SELECT
+        agg."currencyKey" AS currency_key,
+        cl.current * 1e10 AS currency_rate,
+        cl.evt_block_time AS block_time
+    FROM chainlink."Aggregator_evt_AnswerUpdated" cl
+    INNER JOIN chainlink."view_aggregator_mappings" clam ON clam.aggregator_address = cl.contract_address
+    INNER JOIN synthetix."ExchangeRates_v2_31_1_evt_AggregatorAdded" agg ON agg.aggregator = clam.proxy_address
+    WHERE cl.evt_block_time >= start_ts
+    AND cl.evt_block_time < end_ts
     ON CONFLICT DO NOTHING
     RETURNING 1
 )
@@ -41,6 +107,9 @@ SELECT count(*) INTO r from rows;
 RETURN r;
 END
 $function$;
+
+
+SELECT synthetix.insert_rates('2019-01-01', (SELECT max(time) FROM ethereum.blocks));
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/5 * * * *', 'SELECT synthetix.insert_rates((SELECT max(block_time) FROM synthetix.rates));')
