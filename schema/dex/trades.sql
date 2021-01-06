@@ -98,7 +98,7 @@ WITH rows AS (
             uniswap. "Exchange_evt_TokenPurchase" t
         INNER JOIN uniswap. "Factory_evt_NewExchange" f ON f.exchange = t.contract_address
 
-        UNION
+        UNION ALL
 
         -- Uniswap v1 EthPurchase
         SELECT
@@ -121,7 +121,7 @@ WITH rows AS (
             uniswap. "Exchange_evt_EthPurchase" t
         INNER JOIN uniswap. "Factory_evt_NewExchange" f ON f.exchange = t.contract_address
 
-        UNION
+        UNION ALL
 
         -- Uniswap v2
         SELECT
@@ -145,7 +145,7 @@ WITH rows AS (
         INNER JOIN uniswap_v2."Factory_evt_PairCreated" f ON f.pair = t.contract_address
         WHERE t.contract_address != '\xed9c854cb02de75ce4c9bba992828d6cb7fd5c71' --Remove WETH-UBOMB wash trading pair
 
-        UNION
+        UNION ALL
 
         -- Kyber: trade from Token - ETH
         SELECT
@@ -171,7 +171,7 @@ WITH rows AS (
             kyber."Network_evt_KyberTrade"
         WHERE src NOT IN ('\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee','\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2')
 
-        UNION
+        UNION ALL
 
         -- Kyber: trade from ETH - Token
         SELECT
@@ -197,7 +197,7 @@ WITH rows AS (
             kyber."Network_evt_KyberTrade"
         WHERE dest NOT IN ('\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee','\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2')
 
-        UNION
+        UNION ALL
 
         --- Kyber_V2
         -- trade from token -eth
@@ -230,7 +230,7 @@ WITH rows AS (
         INNER JOIN erc20."tokens" src_token ON trade.src = src_token.contract_address
         AND src_token.contract_address != '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
 
-        UNION
+        UNION ALL
 
         -- trade from eth - token
         SELECT
@@ -262,7 +262,7 @@ WITH rows AS (
         INNER JOIN erc20."tokens" dst_token ON trade.dest = dst_token.contract_address
         AND dst_token.contract_address != '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
         
-        UNION
+        UNION ALL
 
         -- Old Oasis (eth2dai) contract
         SELECT
@@ -292,7 +292,7 @@ WITH rows AS (
         ) take
         ON TRUE
 
-        UNION
+        UNION ALL
 
         -- Oasis contract
         SELECT
@@ -322,7 +322,7 @@ WITH rows AS (
         ) take
         ON TRUE
 
-        UNION
+        UNION ALL
 
         -- 0x v2.1
         SELECT
@@ -343,7 +343,7 @@ WITH rows AS (
             evt_index
         FROM zeroex_v2."Exchange2.1_evt_Fill"
 
-        UNION
+        UNION ALL
 
         -- 0x v3
         SELECT
@@ -364,7 +364,7 @@ WITH rows AS (
             evt_index
         FROM zeroex_v3."Exchange_evt_Fill"
 
-        UNION
+        UNION ALL
 
         -- dYdX Solo Margin v2
         SELECT
@@ -395,7 +395,7 @@ WITH rows AS (
             evt_index
         FROM dydx."SoloMargin_evt_LogTrade"
 
-        UNION
+        UNION ALL
 
         -- dYdX PBTC-USDC Perpetual
         SELECT
@@ -419,7 +419,7 @@ WITH rows AS (
         WHERE "isBuy" = 'True'
         AND contract_address = '\x07aBe965500A49370D331eCD613c7AC47dD6e547'
                                        
-        UNION
+        UNION ALL
                                        
         -- dYdX WETH-PUSD Perpetual
         SELECT
@@ -443,7 +443,7 @@ WITH rows AS (
         WHERE "isBuy" = 'True'
         AND contract_address = '\x09403FD14510F8196F7879eF514827CD76960B5d'
 
-        UNION
+        UNION ALL
 
         -- Loopring v3.1
         (
@@ -480,7 +480,7 @@ WITH rows AS (
             FROM trades t
         )
 
-        UNION
+        UNION ALL
 
         -- 1inch
         SELECT
@@ -509,7 +509,7 @@ WITH rows AS (
             WHERE tx_hash NOT IN (SELECT tx_hash FROM oneinch.swaps)
         ) oi
 
-        UNION
+        UNION ALL
 
         -- IDEX v1
         SELECT
@@ -537,7 +537,7 @@ WITH rows AS (
         FROM idex."IDEX1_call_trade"
         WHERE call_success
 
-        UNION
+        UNION ALL
 
         -- Mooniswap
         SELECT
@@ -558,7 +558,7 @@ WITH rows AS (
             evt_index
         FROM mooniswap."MooniSwap_evt_Swapped"
 
-        UNION
+        UNION ALL
 
         --Curve
         SELECT
@@ -579,7 +579,7 @@ WITH rows AS (
             evt_index
         FROM curvefi.view_trades
 
-        UNION
+        UNION ALL
 
         -- Balancer
         SELECT
@@ -602,7 +602,7 @@ WITH rows AS (
             balancer."BPool_evt_LOG_SWAP" t
         INNER JOIN balancer."BFactory_evt_LOG_NEW_POOL" f ON f.pool = t.contract_address
 
-        UNION
+        UNION ALL
 
         --DDEX
         SELECT
@@ -632,7 +632,7 @@ WITH rows AS (
             evt_index AS evt_index
         FROM hydroprotocol."Margin_evt_Match"
 
-        UNION
+        UNION ALL
 
         -- Gnosis Protocol
         SELECT
@@ -653,7 +653,7 @@ WITH rows AS (
             evt_index_trades
         FROM gnosis_protocol.view_trades
 
-        UNION
+        UNION ALL
 
         -- Bancor Network
         SELECT
@@ -680,7 +680,7 @@ WITH rows AS (
             evt_index
         FROM bancornetwork.view_convert
                                             
-        UNION
+        UNION ALL
 
         -- Sushiswap
         SELECT
