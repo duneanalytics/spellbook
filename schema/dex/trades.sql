@@ -448,7 +448,7 @@ WITH rows AS (
         -- Loopring v3.1
         (
             WITH trades AS (
-                SELECT loopring.fn_process_trade_block(CAST(b."blockSize" AS INT), b._3, b.call_block_time) AS trade,
+                SELECT loopring.fn_process_trade_block_v1(CAST(b."blockSize" AS INT), b._3, b.call_block_time) AS trade,
                     b."contract_address" AS exchange_contract_address,
                     b.call_tx_hash AS tx_hash,
                     b.call_trace_address AS trace_address,
@@ -485,7 +485,7 @@ WITH rows AS (
         -- Loopring v3.6
         (
             WITH transactions AS (
-                SELECT unnest(loopring.fn_process_block(
+                SELECT unnest(loopring.fn_process_block_v2(
                     CAST(t.block ->> 'blockSize' AS INT),
                     decode(substring(t.block ->> 'data', 3, char_length(t.block ->> 'data') - 2), 'hex'),
                     c.call_block_time,

@@ -1,4 +1,4 @@
-DROP FUNCTION loopring.fn_process_trade_block;
+DROP FUNCTION loopring.fn_process_trade_block_v1;
 
 DROP TYPE loopring.trade_struct;
 
@@ -14,7 +14,7 @@ CREATE TYPE loopring.trade_struct AS (
     protocolFeeMakerBips double precision
 );
 
-CREATE OR REPLACE FUNCTION loopring.fn_process_trade_block (blockSize integer, data bytea, block_timestamp timestamptz)
+CREATE OR REPLACE FUNCTION loopring.fn_process_trade_block_v1 (blockSize integer, data bytea, block_timestamp timestamptz)
     RETURNS SETOF loopring.trade_struct
     AS $$
 DECLARE
@@ -33,9 +33,9 @@ BEGIN
     SELECT
         block_timestamp,
         get_byte(substr(data, (offsetTokens + i * 2), 1), 0),
-        loopring.fn_decode_float (substr(data, (offsetFills + i * 6), 3)),
+        loopring.fn_decode_float_24(substr(data, (offsetFills + i * 6), 3)),
         get_byte(substr(data, (offsetTokens + i * 2) + 1, 1), 0),
-        loopring.fn_decode_float (substr(data, (offsetFills + i * 6) + 3, 3)),
+        loopring.fn_decode_float_24(substr(data, (offsetFills + i * 6) + 3, 3)),
         (get_byte(substr(data, offsetAccounts + i * 5, 5), 0) * 65536 + get_byte(substr(data, offsetAccounts + i * 5, 5), 1) * 256 + get_byte(substr(data, offsetAccounts + i * 5, 5), 2)) / 16, (get_byte(substr(data, offsetAccounts + i * 5, 5), 2) * 65536 + get_byte(substr(data, offsetAccounts + i * 5, 5), 3) * 256 + get_byte(substr(data, offsetAccounts + i * 5, 5), 4)) & (1048576 - 1),
         protocolFeeTakerBips,
         protocolFeeMakerBips

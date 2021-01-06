@@ -1,4 +1,4 @@
-DROP FUNCTION loopring.fn_process_block;
+DROP FUNCTION loopring.fn_process_block_v2;
 
 DROP TYPE loopring.transaction_struct;
 DROP TYPE loopring.deposit_struct;
@@ -81,7 +81,7 @@ CREATE TYPE loopring.transaction_struct AS (
 );
 
 
-CREATE OR REPLACE FUNCTION loopring.fn_process_block(blockSize integer, _data bytea, block_timestamp timestamptz, blockIdx integer)
+CREATE OR REPLACE FUNCTION loopring.fn_process_block_v2(blockSize integer, _data bytea, block_timestamp timestamptz, blockIdx integer)
 RETURNS loopring.transaction_struct[]
 AS $$
 DECLARE
