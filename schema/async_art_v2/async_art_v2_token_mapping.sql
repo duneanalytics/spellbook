@@ -104,7 +104,7 @@ order by 1 asc
       custom_id:= CONCAT(r.token_id, '_', c);
     end if;
 
-    insert into token_mapping_test_k (token_ID, token_type, master_id, custom_id, layer_count)
+    insert into async_art_v2.token_mapping (token_ID, token_type, master_id, custom_id, layer_count)
       VALUES
 	  (t_id, type_art,result, custom_id, c)
     ON CONFLICT (token_id) DO UPDATE SET token_id=EXCLUDED.token_id, token_type=EXCLUDED.token_type;
