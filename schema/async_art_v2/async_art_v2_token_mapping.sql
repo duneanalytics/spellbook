@@ -99,7 +99,7 @@ order by 1 asc
       custom_id:= CONCAT(r.token_id, '_', c);
     end if;
 
-    if r.token_type = 'controltoken' then 
+    if r.token_type = 'layer' then 
       c := c + 1;
       custom_id:= CONCAT(r.token_id, '_', c);
     end if;
