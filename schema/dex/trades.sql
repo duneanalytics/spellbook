@@ -485,12 +485,12 @@ WITH rows AS (
         -- Loopring v3.6
         (
             WITH transactions AS (
-                SELECT unnest(loopring.fn_process_block_v2(
+                SELECT loopring.fn_process_block_v2(
                     CAST(t.block ->> 'blockSize' AS INT),
                     decode(substring(t.block ->> 'data', 3, char_length(t.block ->> 'data') - 2), 'hex'),
                     c.call_block_time,
                     blockIdx::integer
-                )) as transaction,
+                ) as transaction,
                 c."contract_address" AS exchange_contract_address,
                 c.call_tx_hash AS tx_hash,
                 c.call_trace_address AS trace_address,
