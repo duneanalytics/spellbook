@@ -712,14 +712,54 @@ WITH rows AS (
         AND tx.block_number < end_block
     LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
-    LEFT JOIN prices.usd pa ON pa.minute = date_trunc('minute', dexs.block_time)
-        AND pa.contract_address = dexs.token_a_address
-        AND pa.minute >= start_ts
-        AND pa.minute < end_ts
-    LEFT JOIN prices.usd pb ON pb.minute = date_trunc('minute', dexs.block_time)
-        AND pb.contract_address = dexs.token_b_address
-        AND pb.minute >= start_ts
-        AND pb.minute < end_ts
+    LEFT JOIN (
+        select symbol, decimals, contract_address, price from prices.usd WHERE minute = date_trunc('minute', dexs.block_time) UNION ALL
+
+        select 'ETH', 18, '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', price from prices.layer1_usd WHERE symbol = "ETH" AND pa.minute = date_trunc('minute', dexs.block_time) UNION ALL
+        select 'WETH', 18, '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', price from prices.layer1_usd WHERE symbol = "ETH" AND pa.minute = date_trunc('minute', dexs.block_time) UNION ALL
+        select 'sETH', 18, '\x5e74c9036fb86bd7ecdcb084a0673efc32ea31cb', price from prices.layer1_usd WHERE symbol = "ETH" AND pa.minute = date_trunc('minute', dexs.block_time) UNION ALL
+        select 'aETH', 18, '\x3a3a65aab0dd2a17e3f1947ba16138cd37d08c04', price from prices.layer1_usd WHERE symbol = "ETH" AND pa.minute = date_trunc('minute', dexs.block_time) UNION ALL
+        select 'BETH', 18, '\xc0829421c1d260bd3cb3e0f06cfe2d52db2ce315', price from prices.layer1_usd WHERE symbol = "ETH" AND pa.minute = date_trunc('minute', dexs.block_time) UNION ALL
+        
+        select 'renBTC', 8, '\xeb4c2781e4eba804ce9a9803c67d0893436bb27d', price from prices.layer1_usd WHERE symbol = "BTC" AND pa.minute = date_trunc('minute', dexs.block_time) UNION ALL
+        select 'WBTC', 8, '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599', price from prices.layer1_usd WHERE symbol = "BTC" AND pa.minute = date_trunc('minute', dexs.block_time) UNION ALL
+        select 'sBTC', 18, '\xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6', price from prices.layer1_usd WHERE symbol = "BTC" AND pa.minute = date_trunc('minute', dexs.block_time) UNION ALL
+
+        select 'USDT', 6, '\xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6', 1 UNION ALL
+        select 'USDC', 6, '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', 1 UNION ALL
+
+        select 'SAI', 18, '\x89d24a6b4ccb1b6faa2625fe562bdd9a23260359', 1 UNION ALL
+        select 'DAI', 18, '\x6b175474e89094c44da98b954eedeac495271d0f', 1 UNION ALL
+        select 'TUSD', 18, '\x0000000000085d4780B73119b644AE5ecd22b376', 1 UNION ALL
+        select 'USDB', 18, '\x309627af60f0926daa6041b8279484312f2bf060', 1 UNION ALL
+        select 'PAX', 18, '\x8E870D67F660D95d5be530380D0eC0bd388289E1', 1 UNION ALL
+        select 'sUSD', 18, '\x57ab1e02fee23774580c119740129eac7081e9d3', 1 UNION ALL
+        select 'sUSD', 18, '\x57Ab1ec28D129707052df4dF418D58a2D46d5f51', 1 -- UNION ALL
+    ) pa ON pa.contract_address = dexs.token_a_address
+    LEFT JOIN (
+        select symbol, decimals, contract_address, price from prices.usd WHERE minute = date_trunc('minute', dexs.block_time) UNION ALL
+
+        select 'ETH', 18, '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', price from prices.layer1_usd WHERE symbol = "ETH" AND pa.minute = date_trunc('minute', dexs.block_time) UNION ALL
+        select 'WETH', 18, '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', price from prices.layer1_usd WHERE symbol = "ETH" AND pa.minute = date_trunc('minute', dexs.block_time) UNION ALL
+        select 'sETH', 18, '\x5e74c9036fb86bd7ecdcb084a0673efc32ea31cb', price from prices.layer1_usd WHERE symbol = "ETH" AND pa.minute = date_trunc('minute', dexs.block_time) UNION ALL
+        select 'aETH', 18, '\x3a3a65aab0dd2a17e3f1947ba16138cd37d08c04', price from prices.layer1_usd WHERE symbol = "ETH" AND pa.minute = date_trunc('minute', dexs.block_time) UNION ALL
+        select 'BETH', 18, '\xc0829421c1d260bd3cb3e0f06cfe2d52db2ce315', price from prices.layer1_usd WHERE symbol = "ETH" AND pa.minute = date_trunc('minute', dexs.block_time) UNION ALL
+        
+        select 'renBTC', 8, '\xeb4c2781e4eba804ce9a9803c67d0893436bb27d', price from prices.layer1_usd WHERE symbol = "BTC" AND pa.minute = date_trunc('minute', dexs.block_time) UNION ALL
+        select 'WBTC', 8, '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599', price from prices.layer1_usd WHERE symbol = "BTC" AND pa.minute = date_trunc('minute', dexs.block_time) UNION ALL
+        select 'sBTC', 18, '\xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6', price from prices.layer1_usd WHERE symbol = "BTC" AND pa.minute = date_trunc('minute', dexs.block_time) UNION ALL
+
+        select 'USDT', 6, '\xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6', 1 UNION ALL
+        select 'USDC', 6, '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', 1 UNION ALL
+
+        select 'SAI', 18, '\x89d24a6b4ccb1b6faa2625fe562bdd9a23260359', 1 UNION ALL
+        select 'DAI', 18, '\x6b175474e89094c44da98b954eedeac495271d0f', 1 UNION ALL
+        select 'TUSD', 18, '\x0000000000085d4780B73119b644AE5ecd22b376', 1 UNION ALL
+        select 'USDB', 18, '\x309627af60f0926daa6041b8279484312f2bf060', 1 UNION ALL
+        select 'PAX', 18, '\x8E870D67F660D95d5be530380D0eC0bd388289E1', 1 UNION ALL
+        select 'sUSD', 18, '\x57ab1e02fee23774580c119740129eac7081e9d3', 1 UNION ALL
+        select 'sUSD', 18, '\x57Ab1ec28D129707052df4dF418D58a2D46d5f51', 1 -- UNION ALL
+    ) pb ON pb.contract_address = dexs.token_b_address
     WHERE dexs.block_time >= start_ts
     AND dexs.block_time < end_ts
 
