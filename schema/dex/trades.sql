@@ -261,7 +261,7 @@ WITH rows AS (
         FROM kyber_v2."Network_evt_KyberTrade" trade
         INNER JOIN erc20."tokens" dst_token ON trade.dest = dst_token.contract_address
         AND dst_token.contract_address != '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-        
+
         UNION ALL
 
         -- Old Oasis (eth2dai) contract
@@ -345,24 +345,47 @@ WITH rows AS (
 
         UNION ALL
 
-        -- 0x v3
+        -- 0x v3 (0x api volume)
         SELECT
-            evt_block_time AS block_time,
+            block_time,
             '0x' AS project,
             '3' AS version,
             'DEX' AS category,
-            "takerAddress" AS trader_a,
-            "makerAddress" AS trader_b,
-            "takerAssetFilledAmount" AS token_a_amount_rawr,
-            "makerAssetFilledAmount" AS token_b_amount_raw,
+            "taker" AS trader_a,
+            "maker" AS trader_b,
+            "taker_token_amount_raw" AS token_a_amount_raw,
+            "maker_token_amount_raw" AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            substring("takerAssetData" for 20 from 17) AS token_a_address,
-            substring("makerAssetData" for 20 from 17) AS token_b_address,
+            taker_token AS token_a_address,
+            maker_token AS token_b_address,
             contract_address AS exchange_contract_address,
-            evt_tx_hash AS tx_hash,
+            tx_hash,
             NULL::integer[] AS trace_address,
             evt_index
-        FROM zeroex_v3."Exchange_evt_Fill"
+        FROM zeroex."view_0x_api_fills"
+        where swap_flag is TRUE
+
+        UNION
+
+        -- Matcha
+        SELECT
+            block_time,
+            'Matcha' AS project,
+            NULL AS version,
+            'Aggregator' AS category,
+            "taker" AS trader_a,
+            "maker" AS trader_b,
+            "taker_token_amount_raw" AS token_a_amount_raw,
+            "maker_token_amount_raw" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            taker_token AS token_a_address,
+            maker_token AS token_b_address,
+            contract_address AS exchange_contract_address,
+            tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index
+        FROM zeroex."view_0x_api_fills"
+        where affiliate_address ='\x86003b044f70dac0abc80ac8957305b6370893ed'
 
         UNION ALL
 
@@ -726,7 +749,7 @@ WITH rows AS (
             NULL::integer[] AS trace_address,
             evt_index
         FROM bancornetwork.view_convert
-                                            
+
         UNION ALL
 
         -- Sushiswap
@@ -749,7 +772,7 @@ WITH rows AS (
         FROM
             sushi."Pair_evt_Swap" t
         INNER JOIN sushi."Factory_evt_PairCreated" f ON f.pair = t.contract_address
-                        
+
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
@@ -800,7 +823,7 @@ WITH rows AS (
     LEFT JOIN synthetix.symbols b ON tr.token_b_address = b.address
     INNER JOIN ethereum.transactions tx
         ON tr.tx_hash = tx.hash
-        AND tx.block_time >= start_ts 
+        AND tx.block_time >= start_ts
         AND tx.block_time < end_ts
         AND tx.block_number >= start_block
         AND tx.block_number < end_block
