@@ -192,10 +192,10 @@ WITH zeroex_tx_raw AS (
 
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS zeroex_api_fills_unique ON zeroex.view_0x_api_fills (transaction_hash, evt_index);
-CREATE INDEX IF NOT EXISTS zeroex_api_fills_time_index ON zeroex.view_0x_api_fills (timestamp);
+CREATE UNIQUE INDEX IF NOT EXISTS zeroex_api_fills_unique ON zeroex.view_0x_api_fills (tx_hash, evt_index);
+CREATE INDEX IF NOT EXISTS zeroex_api_fills_time_index ON zeroex.view_0x_api_fills (block_time);
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('*/10 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY zeroex.view_0x_api_fills')
+VALUES ('*/20 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY zeroex.view_0x_api_fills')
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;
