@@ -1,6 +1,6 @@
-DROP FUNCTION loopring.fn_decode_float;
+DROP FUNCTION loopring.fn_decode_float_24;
 
-CREATE OR REPLACE FUNCTION loopring.fn_decode_float(data bytea) RETURNS double precision AS $$
+CREATE OR REPLACE FUNCTION loopring.fn_decode_float_24(data bytea) RETURNS double precision AS $$
 DECLARE
     exponent integer;
     mantissa integer;
