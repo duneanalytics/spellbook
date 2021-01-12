@@ -657,7 +657,7 @@ WITH rows AS (
             'Balancer' AS project,
             '1' AS version,
             'DEX' AS category,
-            t.caller AS trader_a,
+            NULL::bytea AS trader_a, -- this relies on the outer query coalescing to tx."from"
             NULL::bytea AS trader_b,
             t."tokenAmountOut" AS token_a_amount_raw,
             t."tokenAmountIn" AS token_b_amount_raw,
