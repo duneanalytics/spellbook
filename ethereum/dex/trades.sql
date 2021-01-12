@@ -59,7 +59,7 @@ WITH rows AS (
         project,
         version,
         category,
-        coalesce(trader_a, tx."from") as trader_a,
+        coalesce(trader_a, tx."from") as trader_a, -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
         trader_b,
         token_a_amount_raw,
         token_b_amount_raw,
