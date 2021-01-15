@@ -81,7 +81,7 @@ sell AS (
         "trader_hex" as trader,
         sell_token as token,
         -sell_amount_atoms as amount
-    FROM gnosis_protocol."view_trades"
+    FROM gnosis_protocol.view_trades
     WHERE revert_time is NULL
 ),
 buy AS (
@@ -91,7 +91,7 @@ buy AS (
         "trader_hex" as trader,
         buy_token as token,
         buy_amount_atoms as amount
-    FROM gnosis_protocol."view_trades"
+    FROM gnosis_protocol.view_trades
     WHERE revert_time is NULL
 ),
 rewards as (
@@ -151,7 +151,7 @@ operation_details AS (
         COALESCE(token.symbol, 'TOKEN-' || token.token_id) as token_symbol,
         COALESCE(token.decimals, 18) as decimals
     FROM operations
-    JOIN gnosis_protocol."view_tokens" token
+    JOIN gnosis_protocol.view_tokens token
         ON token.token = operations.token
 ),
 balances AS (
