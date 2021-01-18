@@ -581,6 +581,28 @@ WITH rows AS (
 
         UNION ALL
 
+        -- 1inch Limit Orders (0x)
+        SELECT
+            block_time,
+            '1inch' AS project,
+            '1' AS version,
+            'Aggregator' AS category,
+            "taker" AS trader_a,
+            "maker" AS trader_b,
+            "taker_token_amount_raw" AS token_a_amount_raw,
+            "maker_token_amount_raw" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            taker_token AS token_a_address,
+            maker_token AS token_b_address,
+            contract_address AS exchange_contract_address,
+            tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index
+        FROM zeroex."view_0x_api_fills"
+        where affiliate_address ='\x55662e225a3376759c24331a9aed764f8f0c9fbb'
+
+        UNION ALL
+
         -- IDEX v1
         SELECT
             call_block_time AS block_time,
