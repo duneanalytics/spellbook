@@ -59,7 +59,7 @@ WITH rows AS (
         project,
         version,
         category,
-        coalesce(trader_a, tx."from") as trader_a,
+        coalesce(trader_a, tx."from") as trader_a, -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
         trader_b,
         token_a_amount_raw,
         token_b_amount_raw,
@@ -657,7 +657,7 @@ WITH rows AS (
             'Balancer' AS project,
             '1' AS version,
             'DEX' AS category,
-            t.caller AS trader_a,
+            NULL::bytea AS trader_a, -- this relies on the outer query coalescing to tx."from"
             NULL::bytea AS trader_b,
             t."tokenAmountOut" AS token_a_amount_raw,
             t."tokenAmountIn" AS token_b_amount_raw,
@@ -895,6 +895,6 @@ SELECT dex.insert_trades(
     (SELECT max(number) FROM ethereum.blocks WHERE time <= '2021-01-01'))
 WHERE NOT EXISTS (SELECT * FROM dex.trades WHERE block_time > '2020-07-01' AND block_time <= '2021-01-01' LIMIT 1);
 
---INSERT INTO cron.job (schedule, command)
---VALUES ('*/10 * * * *', $$SELECT dex.insert_trades((SELECT max(block_time) - interval '1 days' FROM dex.trades), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades)), (SELECT MAX(number) FROM ethereum.blocks));$$)
---ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+INSERT INTO cron.job (schedule, command)
+VALUES ('*/10 * * * *', $$SELECT dex.insert_trades((SELECT max(block_time) - interval '1 days' FROM dex.trades), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades)), (SELECT MAX(number) FROM ethereum.blocks));$$)
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
