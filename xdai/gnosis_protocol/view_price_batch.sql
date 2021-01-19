@@ -156,8 +156,8 @@ SELECT
   --				* Best estimation price for OWL
   --				* Considers the external prices for all tokens to calculate the OWL-USD according to that token
   --				* For the tokens that the external price is known, selects the best price according to a defined token priority
-  --				* As a fallback, if no token has an estimation, we assume the OWL cost a constant value --> 0.8$
-  --				* i.e. OWL price according to DAI external source is 0.8$, according to WETH is 0.75$, then since DAI has more priority, we select 0.8$ as the price of OWL
+  --				* AS a fallback, if no token has an estimation, we assume the OWL cost a constant value --> 0.8$
+  --				* i.e. OWL price according to DAI external source is 0.8$, according to WETH is 0.75$, then since DAI has more priority, we select 0.8$ AS the price of OWL
   --		"token_usd_price_external":	TOKEN-USD
   --				* External price of the token in USD
   --				* It can be NULL, meaning, there's no price at that time (or price for the token at all)
