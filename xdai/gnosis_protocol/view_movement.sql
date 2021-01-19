@@ -2,10 +2,10 @@ BEGIN;
 DROP MATERIALIZED VIEW IF EXISTS gnosis_protocol.view_movement;
 CREATE MATERIALIZED VIEW gnosis_protocol.view_movement AS
 WITH
-deposits as (
+deposits AS (
     SELECT
-        'deposit' as operation,
-        "batchId" as batch_id, 
+        'deposit' AS operation,
+        "batchId" AS batch_id,
         "user" AS trader,
         token,
         amount
@@ -18,18 +18,18 @@ withdraw_request AS (
         trader,
         token,
         amount,
-        RANK() OVER (PARTITION BY trader, token ORDER BY batch_id) as rank
+        RANK() OVER (PARTITION BY trader, token ORDER BY batch_id) AS rank
     FROM (
         SELECT
-            'withdraw-request' as operation,
-            "batchId" as batch_id, 
-            "user" as trader,
+            'withdraw-request' AS operation,
+            "batchId" AS batch_id,
+            "user" AS trader,
             token,
-            -amount as amount,
+            -amount AS amount,
             RANK() OVER (
                 PARTITION BY "batchId", "user", token
                 ORDER BY evt_block_number desc, evt_index desc
-           ) as withdraw_sub_id -- Within the same batch/token/use, new requests override the previous one
+           ) AS withdraw_sub_id -- Within the same batch/token/use, new requests override the previous one
         FROM gnosis_protocol."BatchExchange_evt_WithdrawRequest" withdraw
         WHERE 
             "batchId" < (floor(extract(epoch from now()) / 300)::INTEGER) -- discard future withdrawals
@@ -42,15 +42,15 @@ withdraw AS (
         batch_id,
         trader,
         token,
-        SUM(amount) as amount, -- although it's strange, there could be multiple withdraws in a batch (with amount 0), we don't duplicated registries
-        RANK() OVER (PARTITION BY trader, token ORDER BY batch_id) as rank
+        SUM(amount) AS amount, -- although it's strange, there could be multiple withdraws in a batch (with amount 0), we don't duplicated registries
+        RANK() OVER (PARTITION BY trader, token ORDER BY batch_id) AS rank
     FROM (
         SELECT
-            'withdraw' as operation,
-            (floor(extract(epoch from evt_block_time) / 300)::INTEGER) as batch_id,
-            "user" as trader,
+            'withdraw' AS operation,
+            (floor(extract(epoch from evt_block_time) / 300)::INTEGER) AS batch_id,
+            "user" AS trader,
             token,
-            -amount as amount
+            -amount AS amount
         FROM gnosis_protocol."BatchExchange_evt_Withdraw" withdraw
     ) w
     GROUP BY
@@ -59,15 +59,15 @@ withdraw AS (
         trader,
         token
 ),
-actual_withdraws as (
+actual_withdraws AS (
     SELECT
         withdraw.operation,
         withdraw.batch_id,
         withdraw.trader,
         withdraw.token,
         withdraw.amount,
-        withdraw_request.batch_id as batch_id_request,
-        withdraw_request.amount as pending_withdraw
+        withdraw_request.batch_id AS batch_id_request,
+        withdraw_request.amount AS pending_withdraw
     FROM withdraw
     JOIN withdraw_request
         ON withdraw.trader = withdraw_request.trader
@@ -76,42 +76,42 @@ actual_withdraws as (
 ),
 sell AS (
     SELECT
-        'sell' as operation,
+        'sell' AS operation,
         batch_id, 
-        "trader_hex" as trader,
-        sell_token as token,
-        -sell_amount_atoms as amount
+        "trader_hex" AS trader,
+        sell_token AS token,
+        -sell_amount_atoms AS amount
     FROM gnosis_protocol.view_trades
     WHERE revert_time is NULL
 ),
 buy AS (
     SELECT
-        'buy' as operation,
+        'buy' AS operation,
         batch_id,
-        "trader_hex" as trader,
-        buy_token as token,
-        buy_amount_atoms as amount
+        "trader_hex" AS trader,
+        buy_token AS token,
+        buy_amount_atoms AS amount
     FROM gnosis_protocol.view_trades
     WHERE revert_time is NULL
 ),
-rewards as (
+rewards AS (
     SELECT
-        'solver-reward' as operation,
+        'solver-reward' AS operation,
         batch_id,
-        submitter as trader,
-        decode('0905ab807f8fd040255f0cf8fa14756c1d824931', 'hex') as token, -- OWL
+        submitter AS trader,
+        decode('0905ab807f8fd040255f0cf8fa14756c1d824931', 'hex') AS token, -- OWL
         amount -- received owl
     FROM (
         SELECT
             FLOOR(EXTRACT(epoch from evt_block_time) / 300) - 1 AS batch_id,
-            "burntFees" as amount, -- OWL
+            "burntFees" AS amount, -- OWL
             submitter,
-            evt_block_number as block_number,
+            evt_block_number AS block_number,
             evt_index,
             RANK() OVER(
                 PARTITION BY FLOOR(EXTRACT(epoch from evt_block_time) / 300) - 1
                 ORDER BY evt_block_number DESC, evt_index DESC
-            ) as rank
+            ) AS rank
         FROM gnosis_protocol."BatchExchange_evt_SolutionSubmission"
     ) s
     WHERE rank = 1
@@ -120,23 +120,23 @@ operations AS (
     -- Amounts: 
     --      amount_deposited: Takes only add operations, actual withdraws, and trades (but not the requests)
     --      amount:           Amount considered for balance, can be negative, includes the "withdraw request" but not the actual withdraw
-    -- Basic Add operartions:
-    SELECT operation, batch_id, trader, token, amount as amount_deposited, amount as amount FROM deposits
+    -- BASic Add operartions:
+    SELECT operation, batch_id, trader, token, amount AS amount_deposited, amount AS amount FROM deposits
     UNION SELECT operation, batch_id, trader, token, amount, amount FROM buy
     UNION SELECT operation, batch_id, trader, token, amount, amount FROM rewards
-    -- Basic Substract operation:
+    -- BASic Substract operation:
     UNION SELECT operation, batch_id, trader, token, 0, amount FROM withdraw_request
     UNION SELECT operation, batch_id, trader, token, amount, amount FROM sell
-    -- Special Case Withdraw:
-    --      Handle a withdraw as a counter-movement of the request. 
-    --      It can be seen as a counter movement of the difference between what was withdrawn and what was requested
+    -- Special CASe Withdraw:
+    --      Handle a withdraw AS a counter-movement of the request.
+    --      It can be seen AS a counter movement of the difference between what wAS withdrawn and what wAS requested
     UNION SELECT 
         operation, 
         batch_id, 
         trader, 
         token, 
-        amount as amount_deposited, -- Deduct the amount from the deposited amount
-        amount - pending_withdraw as amount -- Revert the discounted amount from the request, update with the actual
+        amount AS amount_deposited, -- Deduct the amount from the deposited amount
+        amount - pending_withdraw AS amount -- Revert the discounted amount from the request, update with the actual
     FROM actual_withdraws
 ),
 operation_details AS (
@@ -148,8 +148,8 @@ operation_details AS (
         operations.amount_deposited,
         operations.amount,
         token.token_id,
-        COALESCE(token.symbol, 'TOKEN-' || token.token_id) as token_symbol,
-        COALESCE(token.decimals, 18) as decimals
+        COALESCE(token.symbol, 'TOKEN-' || token.token_id) AS token_symbol,
+        COALESCE(token.decimals, 18) AS decimals
     FROM operations
     JOIN gnosis_protocol.view_tokens token
         ON token.token = operations.token
@@ -161,19 +161,19 @@ balances AS (
             PARTITION BY trader, token
             ORDER BY batch_id
             ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-        ) as balance_deposited_atoms,
+        ) AS balance_deposited_atoms,
         SUM(amount_atoms) OVER (
             PARTITION BY trader, token
             ORDER BY batch_id
             ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-        ) as balance_atoms
+        ) AS balance_atoms
     FROM (
         SELECT
             batch_id,
             trader,
-            string_agg(operation, ', ') as operations,
-            SUM(amount_deposited) as amount_deposited_atoms,
-            SUM(amount) as amount_atoms,
+            string_agg(operation, ', ') AS operations,
+            SUM(amount_deposited) AS amount_deposited_atoms,
+            SUM(amount) AS amount_atoms,
             token_symbol,
             token,
             decimals
@@ -191,7 +191,7 @@ SELECT
     batch_id,
     trader,
     operations,
-    balances.amount_atoms/10^(balances.decimals) as amount,
+    balances.amount_atoms/10^(balances.decimals) AS amount,
     amount_atoms,
     token_symbol,    
     token,
@@ -200,12 +200,12 @@ SELECT
     CASE 
         WHEN balances.balance_atoms > 0 THEN balances.balance_atoms/10^(balances.decimals)
         ELSE 0
-    END as balance,
+    END AS balance,
     -- Actual balance: Can be negative
-    balances.balance_atoms/10^(balances.decimals) as balance_actual,
-    balance_atoms as balance_actual_atoms,
+    balances.balance_atoms/10^(balances.decimals) AS balance_actual,
+    balance_atoms AS balance_actual_atoms,
     -- Balance deposited: Balance in the contract (can be available or not)
-    balances.balance_deposited_atoms/10^(balances.decimals) as balance_deposited,
+    balances.balance_deposited_atoms/10^(balances.decimals) AS balance_deposited,
     balances.balance_deposited_atoms    
 FROM balances;
 

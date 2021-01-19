@@ -2,7 +2,7 @@ BEGIN;
 DROP MATERIALIZED VIEW IF EXISTS gnosis_protocol.view_trades;
 
 CREATE MATERIALIZED VIEW gnosis_protocol.view_trades AS
-reverts AS (
+WITH reverts AS (
 SELECT
     reversion.owner,
     reversion."orderId" AS order_id,

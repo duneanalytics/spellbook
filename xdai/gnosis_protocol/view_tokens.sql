@@ -3,7 +3,7 @@ DROP MATERIALIZED VIEW IF EXISTS gnosis_protocol.view_tokens;
 CREATE MATERIALIZED VIEW gnosis_protocol.view_tokens AS
 
 -- TODO - Replace all occurences of listed_tokens with erc20.tokens when available. 
-listed_tokens as (
+WITH listed_tokens AS (
     SELECT * FROM (VALUES
         (decode('0905ab807f8fd040255f0cf8fa14756c1d824931', 'hex'), 'OWL', 18),
         (decode('6a023ccd1ff6f2045c3309768ead9e68f978f6e1', 'hex'), 'wETH', 18),
@@ -16,29 +16,29 @@ listed_tokens as (
         (decode('ddafbb505ad214d7b80b1f830fccc89b60fb7a83', 'hex'), 'USDC', 6),
         (decode('8e5bbbb09ed1ebde8674cda39a0c169401db4252', 'hex'), 'wBTC', 8),
         (decode('6293268785399bed001cb68a8ee04d50da9c854d', 'hex'), 'CRC', 18)
-    ) as t (contract_address, symbol, decimals)
+    ) AS t (contract_address, symbol, decimals)
 ),
 
-tokens as (
+tokens AS (
     SELECT
-        ROW_NUMBER() OVER (ORDER BY transactions.block_number, transactions.index) as token_id,
+        ROW_NUMBER() OVER (ORDER BY transactions.block_number, transactions.index) AS token_id,
         tokens.token,
         erc20.symbol,
         erc20.decimals,
-        transactions.block_time as add_date
+        transactions.block_time AS add_date
     FROM gnosis_protocol."BatchExchange_call_addToken" tokens
     JOIN xdai."transactions" transactions
       ON transactions.hash=tokens.call_tx_hash
       AND transactions.success=true
-    LEFT OUTER JOIN listed_tokens as erc20
+    LEFT OUTER JOIN listed_tokens AS erc20
       ON erc20.contract_address = tokens.token
-    UNION all (
+    UNION ALL (
     SELECT
-        0 as token_id,
-        '\x0905ab807f8fd040255f0cf8fa14756c1d824931' as token_address,
-        'OWL' as symbol,
-        18 as decimals,
-        '2020-09-11 12:54:30.000' as add_date
+        0 AS token_id,
+        '\x0905ab807f8fd040255f0cf8fa14756c1d824931' AS token_address,
+        'OWL' AS symbol,
+        18 AS decimals,
+        '2020-09-11 12:54:30.000' AS add_date
     )
 )
 
