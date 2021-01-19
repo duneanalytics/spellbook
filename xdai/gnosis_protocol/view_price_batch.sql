@@ -1,5 +1,5 @@
 BEGIN;
-DROP MATERIALIZED VIEW gnosis_protocol.view_price_batch;
+DROP MATERIALIZED VIEW IF EXISTS gnosis_protocol.view_price_batch;
 CREATE MATERIALIZED VIEW gnosis_protocol.view_price_batch AS
 WITH token_priorities AS (
   SELECT * FROM (VALUES
