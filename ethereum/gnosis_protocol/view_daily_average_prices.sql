@@ -1,6 +1,6 @@
 BEGIN;
-DROP MATERIALIZED VIEW IF EXISTS gnosis_protocol.daily_average_prices;
-CREATE MATERIALIZED VIEW gnosis_protocol.daily_average_prices AS
+DROP MATERIALIZED VIEW IF EXISTS gnosis_protocol.view_daily_average_prices;
+CREATE MATERIALIZED VIEW gnosis_protocol.view_daily_average_prices AS
 
 WITH
 days as (
@@ -40,7 +40,7 @@ SELECT
         PARTITION BY symbol
         ORDER BY day
     ) - average_price) / average_price AS price_change
-FROM daily_prices
+FROM daily_prices;
 
 CREATE UNIQUE INDEX IF NOT EXISTS view_daily_average_prices_id ON gnosis_protocol.view_daily_average_prices (day, symbol) ;
 CREATE INDEX view_daily_average_prices_1 ON gnosis_protocol.view_daily_average_prices (day);
