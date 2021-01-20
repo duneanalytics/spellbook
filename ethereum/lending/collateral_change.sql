@@ -106,7 +106,7 @@ WITH collateral_change AS (
             NULL::integer[] AS trace_address,
             "user" AS borrower,
             reserve AS asset_address,
-            amount AS asset_amount
+            -amount AS asset_amount
         FROM aave_v2."LendingPool_evt_Withdraw"
         WHERE evt_block_time >= start_ts
         AND evt_block_time < end_ts
