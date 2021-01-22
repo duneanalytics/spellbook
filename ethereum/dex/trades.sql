@@ -599,7 +599,7 @@ WITH rows AS (
             NULL::integer[] AS trace_address,
             evt_index
         FROM zeroex."view_0x_api_fills"
-        where affiliate_address ='\x55662e225a3376759c24331a9aed764f8f0c9fbb'
+        WHERE affiliate_address ='\x55662e225a3376759c24331a9aed764f8f0c9fbb'
 
         UNION ALL
 
