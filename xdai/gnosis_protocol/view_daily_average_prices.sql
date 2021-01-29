@@ -20,7 +20,7 @@ daily_prices AS (
         symbol,
         average_price
     FROM (
-        SELECT 
+        SELECT
             d.day,
             p.symbol,
             p.average_price,
@@ -29,12 +29,12 @@ daily_prices AS (
         		ORDER BY p.day desc
         	) AS row
         FROM days d, gp_prices p
-        WHERE 
+        WHERE
             p.day <= d.day
     ) a WHERE row = 1
 )
 
-SELECT 
+SELECT
     *,
     -100 * (LAG(average_price) OVER (
         PARTITION BY symbol

@@ -3,7 +3,7 @@ DROP MATERIALIZED VIEW IF EXISTS gnosis_protocol.view_balances;
 CREATE MATERIALIZED VIEW gnosis_protocol.view_balances AS
 WITH
 last_movement AS (
-    SELECT 
+    SELECT
         MAX(batch_id) AS batch_id,
         MAX(movement_date) AS movement_date,
         trader,
