@@ -800,10 +800,10 @@ WITH rows AS (
 
         UNION ALL
 
-        -- LINKSWAP v1
+        -- Linkswap v1
         SELECT
             t.evt_block_time AS block_time,
-            'LINKSWAP' AS project,
+            'Linkswap' AS project,
             '1' AS version,
             'DEX' AS category,
             t."to" AS trader_a,
