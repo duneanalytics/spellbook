@@ -798,6 +798,29 @@ WITH rows AS (
             sushi."Pair_evt_Swap" t
         INNER JOIN sushi."Factory_evt_PairCreated" f ON f.pair = t.contract_address
 
+        UNION ALL
+
+        -- Linkswap v1
+        SELECT
+            t.evt_block_time AS block_time,
+            'Linkswap' AS project,
+            '1' AS version,
+            'DEX' AS category,
+            t."to" AS trader_a,
+            NULL::bytea AS trader_b,
+            CASE WHEN "amount0Out" = 0 THEN "amount1Out" ELSE "amount0Out" END AS token_a_amount_raw,
+            CASE WHEN "amount0In" = 0 THEN "amount1In" ELSE "amount0In" END AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            CASE WHEN "amount0Out" = 0 THEN f.token1 ELSE f.token0 END AS token_a_address,
+            CASE WHEN "amount0In" = 0 THEN f.token1 ELSE f.token0 END AS token_b_address,
+            t.contract_address exchange_contract_address,
+            t.evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            t.evt_index
+        FROM
+            linkswap_v1."LinkswapPair_evt_Swap" t
+        INNER JOIN linkswap_v1."LinkswapFactory_evt_PairCreated" f ON f.pair = t.contract_address
+
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
