@@ -12,7 +12,7 @@ deposits AS (
     FROM gnosis_protocol."BatchExchange_evt_Deposit" deposit
 ),
 withdraw_request AS (
-    SELECT 
+    SELECT
         operation,
         batch_id,
         trader,
@@ -31,7 +31,7 @@ withdraw_request AS (
                 ORDER BY evt_block_number desc, evt_index desc
            ) AS withdraw_sub_id -- Within the same batch/token/use, new requests override the previous one
         FROM gnosis_protocol."BatchExchange_evt_WithdrawRequest" withdraw
-        WHERE 
+        WHERE
             "batchId" < (floor(extract(epoch from now()) / 300)::INTEGER) -- discard future withdrawals
     ) w WHERE withdraw_sub_id = 1
 ),
@@ -77,7 +77,7 @@ actual_withdraws AS (
 sell AS (
     SELECT
         'sell' AS operation,
-        batch_id, 
+        batch_id,
         "trader_hex" AS trader,
         sell_token AS token,
         -sell_amount_atoms AS amount
@@ -117,7 +117,7 @@ rewards AS (
     WHERE rank = 1
 ),
 operations AS (
-    -- Amounts: 
+    -- Amounts:
     --      amount_deposited: Takes only add operations, actual withdraws, and trades (but not the requests)
     --      amount:           Amount considered for balance, can be negative, includes the "withdraw request" but not the actual withdraw
     -- BASic Add operartions:
@@ -130,11 +130,11 @@ operations AS (
     -- Special CASe Withdraw:
     --      Handle a withdraw AS a counter-movement of the request.
     --      It can be seen AS a counter movement of the difference between what wAS withdrawn and what wAS requested
-    UNION SELECT 
-        operation, 
-        batch_id, 
-        trader, 
-        token, 
+    UNION SELECT
+        operation,
+        batch_id,
+        trader,
+        token,
         amount AS amount_deposited, -- Deduct the amount from the deposited amount
         amount - pending_withdraw AS amount -- Revert the discounted amount from the request, update with the actual
     FROM actual_withdraws
@@ -193,11 +193,11 @@ SELECT
     operations,
     balances.amount_atoms/10^(balances.decimals) AS amount,
     amount_atoms,
-    token_symbol,    
+    token_symbol,
     token,
     decimals,
     -- Balance: Available balance from user perspective (cannot be negative, and accounts for locked balance)
-    CASE 
+    CASE
         WHEN balances.balance_atoms > 0 THEN balances.balance_atoms/10^(balances.decimals)
         ELSE 0
     END AS balance,
@@ -206,7 +206,7 @@ SELECT
     balance_atoms AS balance_actual_atoms,
     -- Balance deposited: Balance in the contract (can be available or not)
     balances.balance_deposited_atoms/10^(balances.decimals) AS balance_deposited,
-    balances.balance_deposited_atoms    
+    balances.balance_deposited_atoms
 FROM balances;
 
 

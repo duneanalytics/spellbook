@@ -2,7 +2,7 @@ BEGIN;
 DROP MATERIALIZED VIEW IF EXISTS gnosis_protocol.view_trade_stats;
 CREATE MATERIALIZED VIEW gnosis_protocol.view_trade_stats AS
 WITH trades AS (
-    SELECT 
+    SELECT
         trades.trade_date,
         trades.batch_id,
         trades.trader_hex AS trader,
@@ -37,7 +37,7 @@ view_trade_stats AS (
         ON orders.evt_tx_hash = tx.hash
 ),
 decoded_analalytics AS (
-    SELECT 
+    SELECT
         trade_date,
         batch_id,
         trader,
@@ -53,7 +53,7 @@ SELECT
     stats.*,
     decoded.analytics[1] AS app_id,
     decoded.analytics[2] AS provider,
-    CASE 
+    CASE
         WHEN decoded.analytics[3] = '0' THEN true
         WHEN decoded.analytics[3] = '1' THEN false
         ELSE NULL
