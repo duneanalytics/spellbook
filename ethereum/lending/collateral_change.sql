@@ -28,7 +28,7 @@ WITH collateral_change AS (
         tx_hash,
         evt_index,
         trace_address,
-        tx."from" as tx_from,
+        tx."from" AS tx_from,
         borrower,
         t.symbol AS asset_symbol,
         asset_address,
@@ -94,7 +94,6 @@ WITH collateral_change AS (
         AND evt_block_time < end_ts
 
         UNION ALL
-
         -- Aave 2 remove collateral
         SELECT
             'Aave' AS project,
@@ -111,24 +110,23 @@ WITH collateral_change AS (
         WHERE evt_block_time >= start_ts
         AND evt_block_time < end_ts
 
-
         UNION ALL
         --Aave 2 liquidation calls
         SELECT    
             'Aave' AS project,
             '2' AS version,
-            evt_block_number as block_number,
-            evt_block_time as block_time,
-            evt_tx_hash as tx_hash,
+            evt_block_number AS block_number,
+            evt_block_time AS block_time,
+            evt_tx_hash AS tx_hash,
             evt_index,
             NULL::integer[] AS trace_address,
-            "user" as borrower,
-            "collateralAsset" as asset_address,
+            "user" AS borrower,
+            "collateralAsset" AS asset_address,
             -"liquidatedCollateralAmount" AS asset_amount
         FROM aave_v2."LendingPool_evt_LiquidationCall"
         WHERE evt_block_time >= start_ts
         AND evt_block_time < end_ts
-        AND "receiveAToken" = 'false'
+        AND "receiveAToken" = FALSE
 
         UNION ALL
         -- Compound add collateral
