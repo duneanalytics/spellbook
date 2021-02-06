@@ -17,7 +17,7 @@ CREATE TABLE dex.trades (
     exchange_contract_address bytea NOT NULL,
     tx_hash bytea NOT NULL,
     tx_from bytea NOT NULL,
-    tx_to bytea NOT NULL,
+    tx_to bytea,
     trace_address integer[],
     evt_index integer,
     trade_id integer
