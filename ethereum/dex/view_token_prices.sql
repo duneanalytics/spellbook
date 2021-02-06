@@ -31,7 +31,7 @@ CREATE MATERIALIZED VIEW dex.view_token_prices AS (
         date_trunc('hour', block_time) as hour,
         contract_address,
         (PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY price)) AS median_price,
-        count(1) AS number_of_trades
+        count(1) AS sample_size
     FROM dex_trades
     GROUP BY 1, 2
     HAVING count(1) >= 2
