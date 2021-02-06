@@ -34,7 +34,6 @@ CREATE MATERIALIZED VIEW dex.view_token_prices AS (
         count(1) AS sample_size
     FROM dex_trades
     GROUP BY 1, 2
-    HAVING count(1) >= 2
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS dex_token_prices_unique ON dex.view_token_prices (hour, contract_address);
