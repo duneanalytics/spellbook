@@ -29,7 +29,7 @@ state_with_gaps as (
 ), 
 settings as (
     select pool, 
-    coalesce(t.symbol,'???') as symbol, 
+    coalesce(t.symbol,'?') as symbol, 
     denorm
     from state_with_gaps s
     left join erc20.tokens t on s.token = t.contract_address
