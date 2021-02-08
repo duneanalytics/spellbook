@@ -3,7 +3,11 @@ BEGIN;
 DROP MATERIALIZED VIEW IF EXISTS dex.view_token_prices;
 
 CREATE MATERIALIZED VIEW dex.view_token_prices AS (
-    WITH dex_trades AS (
+    WITH tokens_in_prices_usd AS (
+        SELECT DISTINCT contract_address 
+        FROM prices.usd
+        WHERE minute > now() - interval '7 days'
+    ), dex_trades AS (
         SELECT 
             token_a_address as contract_address, 
             usd_amount/token_a_amount as price,
@@ -13,7 +17,7 @@ CREATE MATERIALIZED VIEW dex.view_token_prices AS (
         AND usd_amount  > 0
         AND category = 'DEX'
         AND token_a_amount > 0
-        AND token_a_address NOT IN (SELECT DISTINCT contract_address FROM prices.usd)
+        AND token_a_address NOT IN (SELECT contract_address FROM tokens_in_prices_usd)
         
         UNION ALL 
         
@@ -26,7 +30,7 @@ CREATE MATERIALIZED VIEW dex.view_token_prices AS (
         AND usd_amount  > 0
         AND category = 'DEX'
         AND token_b_amount > 0
-        AND token_b_address NOT IN (SELECT DISTINCT contract_address FROM prices.usd)
+        AND token_b_address NOT IN (SELECT contract_address FROM tokens_in_prices_usd)
     ) 
 
     SELECT 
