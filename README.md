@@ -5,7 +5,7 @@ Enjoy working with Dune? We're [hiring developers](https://careers.duneanalytics
 This repository tracks user-created abstractions to the Dune Analytics data platform. Contributions in the form of issues and pull requests are very much welcome here.
 
 ## Guidelines and conventions
-- Folders within the {ethereum/, xdai/} fodler maps to schemanames (project names) in the relevant Dune dataset. Make sure to get the right schema.
+- Folders within the {ethereum/, xdai/} folder maps to schema names (project names) in the relevant Dune dataset. Make sure to get the right schema.
 - Each file should only contain one table, view, materialized view or function declaration.
 - Files should have names matching their declared object. I.e. if a file declares `CREATE VIEW x.view_y`, the file should be `ethereum/x/view_y.sql`
 - Each file should be run in a transaction. I.e. either have one statement or be wrapped in `BEGIN;` and `COMMIT;`
