@@ -41,7 +41,7 @@ SELECT
   pool as address, 
   CONCAT(string_agg(symbol, '/'), ' ', string_agg(cast(norm_weight as text), '/')) AS label,
   'balancer_pool' AS type,
-  'markusbkoch' as author
+  'balancerlabs' as author
 
 FROM   (
     select s1.pool, symbol, cast(100*denorm/total_denorm as integer) as norm_weight from settings s1
