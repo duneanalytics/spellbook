@@ -30,7 +30,7 @@ BEGIN
 WITH rows AS (
     -- Perpetual Protocol (It has its own USD-prices)
     SELECT
-        p.evt_block_time,
+        p.evt_block_time AS block_time,
         CASE
             WHEN p."exchangedPositionSize" >= 0 THEN amm.base_symbol
             ELSE amm.quote_symbol
