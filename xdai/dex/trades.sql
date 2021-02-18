@@ -28,6 +28,30 @@ LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
 WITH rows AS (
+    INSERT INTO dex.trades (
+        block_time,
+        token_a_symbol,
+        token_b_symbol,
+        token_a_amount,
+        token_b_amount,
+        project,
+        version,
+        category,
+        trader_a,
+        trader_b,
+        token_a_amount_raw,
+        token_b_amount_raw,
+        usd_amount,
+        token_a_address,
+        token_b_address,
+        exchange_contract_address,
+        tx_hash,
+        tx_from,
+        tx_to,
+        trace_address,
+        evt_index,
+        trade_id
+    )
     -- Perpetual Protocol (It has its own USD-prices)
     SELECT
         p.evt_block_time AS block_time,
@@ -79,8 +103,8 @@ WITH rows AS (
     FROM perp."ClearingHouse_evt_PositionChanged" p
     INNER JOIN perp.view_amm amm
         ON p.amm = amm.contract_address
-    INNER JOIN ethereum.transactions tx
-        ON tr.tx_hash = tx.hash
+    INNER JOIN xdai.transactions tx
+        ON p.evt_tx_hash = tx.hash
         AND tx.block_time >= start_ts
         AND tx.block_time < end_ts
         AND tx.block_number >= start_block
@@ -110,50 +134,50 @@ CREATE INDEX IF NOT EXISTS dex_trades_token_b_idx ON dex.trades (token_b_address
 SELECT dex.insert_trades(
     '2017-01-01',
     '2018-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2017-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2018-01-01'))
+    (SELECT max(number) FROM xdai.blocks WHERE time < '2017-01-01'),
+    (SELECT max(number) FROM xdai.blocks WHERE time <= '2018-01-01'))
 WHERE NOT EXISTS (SELECT * FROM dex.trades WHERE block_time > '2017-01-01' AND block_time <= '2018-01-01' LIMIT 1);
 
 -- fill 2018
 SELECT dex.insert_trades(
     '2018-01-01',
     '2019-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2018-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2019-01-01'))
+    (SELECT max(number) FROM xdai.blocks WHERE time < '2018-01-01'),
+    (SELECT max(number) FROM xdai.blocks WHERE time <= '2019-01-01'))
 WHERE NOT EXISTS (SELECT * FROM dex.trades WHERE block_time > '2018-01-01' AND block_time <= '2019-01-01' LIMIT 1);
 
 -- fill 2019 H1
 SELECT dex.insert_trades(
     '2019-01-01',
     '2019-07-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2019-07-01'))
+    (SELECT max(number) FROM xdai.blocks WHERE time < '2019-01-01'),
+    (SELECT max(number) FROM xdai.blocks WHERE time <= '2019-07-01'))
 WHERE NOT EXISTS (SELECT * FROM dex.trades WHERE block_time > '2019-01-01' AND block_time <= '2019-07-01' LIMIT 1);
 
 -- fill 2019 H2
 SELECT dex.insert_trades(
     '2019-07-01',
     '2020-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2019-07-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'))
+    (SELECT max(number) FROM xdai.blocks WHERE time <= '2019-07-01'),
+    (SELECT max(number) FROM xdai.blocks WHERE time < '2020-01-01'))
 WHERE NOT EXISTS (SELECT * FROM dex.trades WHERE block_time > '2019-07-01' AND block_time <= '2020-01-01' LIMIT 1);
 
 -- fill 2020 H1
 SELECT dex.insert_trades(
     '2020-01-01',
     '2020-07-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-07-01'))
+    (SELECT max(number) FROM xdai.blocks WHERE time <= '2020-01-01'),
+    (SELECT max(number) FROM xdai.blocks WHERE time <= '2020-07-01'))
 WHERE NOT EXISTS (SELECT * FROM dex.trades WHERE block_time > '2020-01-01' AND block_time <= '2020-07-01' LIMIT 1);
 
 -- fill 2020 H2
 SELECT dex.insert_trades(
     '2020-07-01',
     '2021-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-07-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2021-01-01'))
+    (SELECT max(number) FROM xdai.blocks WHERE time <= '2020-07-01'),
+    (SELECT max(number) FROM xdai.blocks WHERE time <= '2021-01-01'))
 WHERE NOT EXISTS (SELECT * FROM dex.trades WHERE block_time > '2020-07-01' AND block_time <= '2021-01-01' LIMIT 1);
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('*/10 * * * *', $$SELECT dex.insert_trades((SELECT max(block_time) - interval '1 days' FROM dex.trades), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades)), (SELECT MAX(number) FROM ethereum.blocks));$$)
+VALUES ('*/10 * * * *', $$SELECT dex.insert_trades((SELECT max(block_time) - interval '1 days' FROM dex.trades), (SELECT now()), (SELECT max(number) FROM xdai.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades)), (SELECT MAX(number) FROM xdai.blocks));$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
