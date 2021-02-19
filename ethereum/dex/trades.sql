@@ -330,7 +330,7 @@ WITH rows AS (
         -- 0x v2.1
         SELECT
             evt_block_time AS block_time,
-            '0x' AS project,
+            '0x Native' AS project,
             '2.1' AS version,
             'DEX' AS category,
             "takerAddress" AS trader_a,
@@ -348,12 +348,75 @@ WITH rows AS (
 
         UNION ALL
 
-        -- 0x v3 (0x api volume)
+        -- 0x v3
         SELECT
-            block_time,
-            '0x' AS project,
+            evt_block_time AS block_time,
+            '0x Native' AS project,
             '3' AS version,
             'DEX' AS category,
+            "takerAddress" AS trader_a,
+            "makerAddress" AS trader_b,
+            "takerAssetFilledAmount" AS token_a_amount_raw,
+            "makerAssetFilledAmount" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            substring("takerAssetData" for 20 from 17) AS token_a_address,
+            substring("makerAssetData" for 20 from 17) AS token_b_address,
+            contract_address AS exchange_contract_address,
+            evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index
+        FROM zeroex_v3."Exchange_evt_Fill"
+
+        UNION ALL
+
+        -- 0x v4 limit orders
+        SELECT
+            evt_block_time AS block_time,
+            '0x Native' AS project,
+            '4' AS version,
+            'DEX' AS category,
+            taker AS trader_a,
+            maker AS trader_b,
+            "takerTokenFilledAmount" AS token_a_amount_raw,
+            "makerTokenFilledAmount" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            "takerToken" AS token_a_address,
+            "makerToken" AS token_b_address,
+            contract_address AS exchange_contract_address,
+            evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index
+        FROM zeroex."ExchangeProxy_evt_LimitOrderFilled"
+
+        UNION ALL
+
+        -- 0x v4 rfq orders
+        SELECT
+            evt_block_time AS block_time,
+            '0x Native' AS project,
+            '4' AS version,
+            'DEX' AS category,
+            taker AS trader_a,
+            maker AS trader_b,
+            "takerTokenFilledAmount" AS token_a_amount_raw,
+            "makerTokenFilledAmount" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            "takerToken" AS token_a_address,
+            "makerToken" AS token_b_address,
+            contract_address AS exchange_contract_address,
+            evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index
+        FROM zeroex."ExchangeProxy_evt_RfqOrderFilled"
+
+        UNION ALL
+
+        -- 0x api
+        SELECT
+            block_time,
+            '0x API' AS project,
+            NULL AS version,
+            'Aggregator' AS category,
             "taker" AS trader_a,
             "maker" AS trader_b,
             "taker_token_amount_raw" AS token_a_amount_raw,
