@@ -178,6 +178,7 @@ WITH rows AS (
 
         -- Kyber: trade from ETH - Token
         SELECT
+
             evt_block_time AS block_time,
             'Kyber' AS project,
             '1' AS version,
@@ -431,7 +432,7 @@ WITH rows AS (
         FROM zeroex."view_0x_api_fills"
         where swap_flag is TRUE
 
-        UNION
+        UNION ALL
 
         -- Matcha
         SELECT
@@ -907,7 +908,7 @@ WITH rows AS (
     WHERE dexs.block_time >= start_ts
     AND dexs.block_time < end_ts
 
-    UNION
+    UNION ALL
 
     -- synthetix has their own usd-prices
     SELECT
