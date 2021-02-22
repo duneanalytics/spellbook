@@ -56,9 +56,9 @@ CREATE MATERIALIZED VIEW balancer.view_balances AS (
     
 );
 
-CREATE INDEX IF NOT EXISTS balancer_view_balances_day_idx ON balancer.view_balances USING BRIN (day);
-CREATE INDEX IF NOT EXISTS balancer_view_balances_pool_idx ON balancer.view_balances (pool);
-CREATE INDEX IF NOT EXISTS balancer_view_balances_token_idx ON balancer.view_balances (token);
+CREATE UNIQUE INDEX IF NOT EXISTS balancer_view_balances_day_idx ON balancer.view_balances USING BRIN (day);
+CREATE UNIQUE INDEX IF NOT EXISTS balancer_view_balances_pool_idx ON balancer.view_balances (pool);
+CREATE UNIQUE INDEX IF NOT EXISTS balancer_view_balances_token_idx ON balancer.view_balances (token);
 
 INSERT INTO cron.job(schedule, command)
 VALUES ('*/12 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY balancer.view_balances$$)
