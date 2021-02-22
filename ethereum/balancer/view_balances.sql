@@ -9,21 +9,21 @@ CREATE MATERIALIZED VIEW balancer.view_balances AS (
     ),
     
     joins AS (
-        SELECT p.pools as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, SUM(value) as amount
+        SELECT p.pools as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, SUM(value) AS amount
         FROM erc20."ERC20_evt_Transfer" e
         INNER JOIN pools p ON e."to" = p.pools
         GROUP BY 1, 2, 3
     ),
 
     exits AS (
-        SELECT p.pools as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, -SUM(value) as amount
+        SELECT p.pools as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, -SUM(value) AS amount
         FROM erc20."ERC20_evt_Transfer" e
         INNER JOIN pools p ON e."from" = p.pools   
         GROUP BY 1, 2, 3
     ),
     
     daily_delta_balance_by_token AS (
-        SELECT pool, day, token, SUM(COALESCE(amount, 0)) as amount FROM 
+        SELECT pool, day, token, SUM(COALESCE(amount, 0)) AS amount FROM 
         (SELECT *
         FROM joins j 
         UNION ALL
@@ -49,16 +49,14 @@ CREATE MATERIALIZED VIEW balancer.view_balances AS (
     running_cumulative_balance_by_token AS (
         SELECT c.day, pool, token, cumulative_amount 
         FROM cumulative_balance_by_token b
-        JOIN calendar c on b.day <= c.day AND c.day < b.day_of_next_change
+        JOIN calendar c ON b.day <= c.day AND c.day < b.day_of_next_change
     )
     
     SELECT * FROM running_cumulative_balance_by_token
     
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS balancer_view_balances_day_idx ON balancer.view_balances USING BRIN (day);
-CREATE UNIQUE INDEX IF NOT EXISTS balancer_view_balances_pool_idx ON balancer.view_balances (pool);
-CREATE UNIQUE INDEX IF NOT EXISTS balancer_view_balances_token_idx ON balancer.view_balances (token);
+CREATE UNIQUE INDEX IF NOT EXISTS balancer_view_balances_day_idx ON balancer.view_balances (day, token, pool);
 
 INSERT INTO cron.job(schedule, command)
 VALUES ('*/12 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY balancer.view_balances$$)
