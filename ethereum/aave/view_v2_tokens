@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW dune_user_generated.view_v2_atokens (symbol, contract_address, decimals, underlying_token_address) AS VALUES
+CREATE OR REPLACE VIEW aave.view_v2_atokens (symbol, contract_address, decimals, underlying_token_address) AS VALUES
 ('aWETH'::text, '\x030bA81f1c18d280636F32af80b9AAd02Cf0854e'::bytea, 18::numeric,   '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea), 
 ('aDAI'::text,  '\x028171bCA77440897B824Ca71D1c56caC55b68A3'::bytea, 18::numeric,   '\x6b175474e89094c44da98b954eedeac495271d0f'::bytea), 
 ('aUSDC'::text, '\xBcca60bB61934080951369a648Fb03DF4F96263C'::bytea, 6::numeric,    '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'::bytea), 
