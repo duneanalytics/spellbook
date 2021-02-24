@@ -587,19 +587,19 @@ WITH rows AS (
             '1inch' AS project,
             '1' AS version,
             'Aggregator' AS category,
-            "taker" AS trader_a,
-            "maker" AS trader_b,
-            "taker_token_amount_raw" AS token_a_amount_raw,
-            "maker_token_amount_raw" AS token_b_amount_raw,
+            "takerAddress" AS trader_a,
+            "makerAddress" AS trader_b,
+            "takerAssetFilledAmount" AS token_a_amount_raw,
+            "makerAssetFilledAmount" AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            taker_token AS token_a_address,
-            maker_token AS token_b_address,
+            substring("takerAssetData" for 20 from 17) AS token_a_address,
+            substring("makerAssetData" for 20 from 17) AS token_b_address,
             contract_address AS exchange_contract_address,
-            tx_hash,
+            evt_tx_hash,
             NULL::integer[] AS trace_address,
             evt_index
-        FROM zeroex."view_0x_api_fills"
-        WHERE affiliate_address ='\x55662e225a3376759c24331a9aed764f8f0c9fbb'
+        FROM zeroex_v2."Exchange2.1_evt_Fill"
+        where "feeRecipientAddress" = '\x55662e225a3376759c24331a9aed764f8f0c9fbb'
 
         UNION ALL
 
