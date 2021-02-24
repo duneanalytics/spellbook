@@ -7,4 +7,4 @@ The query MUST return `address bytea`, `label text`, `type text`, `author text`.
 You can also optionally add a `{{timestamp}}` template variable which Dune will use to incrementally sync this label query. The timestamp will be replaced with the last timestamp a label was synced using this strategy.
 
 * Read more about labels in our docs [here](https://hackmd.io/k71ZUSTxQVKGqOcvR6OXnw?view#%F0%9F%93%A5-Adding-labels).
-* You can also browse addresses and add new ones at our [lables page](https://duneanalytics.com/labels) 
+* You can also browse addresses and add new ones at our [labels page](https://duneanalytics.com/labels) 

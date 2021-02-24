@@ -17,6 +17,7 @@ CREATE TABLE dex.trades (
     exchange_contract_address bytea NOT NULL,
     tx_hash bytea NOT NULL,
     tx_from bytea NOT NULL,
+    tx_to bytea,
     trace_address integer[],
     evt_index integer,
     trade_id integer
@@ -46,6 +47,7 @@ WITH rows AS (
         exchange_contract_address,
         tx_hash,
         tx_from,
+        tx_to,
         trace_address,
         evt_index,
         trade_id
@@ -73,6 +75,7 @@ WITH rows AS (
         exchange_contract_address,
         tx_hash,
         tx."from" as tx_from,
+        tx."to" as tx_to,
         trace_address,
         evt_index,
         row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
@@ -434,7 +437,10 @@ WITH rows AS (
             taker AS trader_b,
             "positionAmount" AS token_a_amount_raw,
             "marginAmount" AS token_b_amount_raw,
-            NULL::numeric AS usd_amount,
+            CASE
+                WHEN contract_address = '\x09403FD14510F8196F7879eF514827CD76960B5d' THEN "positionAmount"/1e6
+                ELSE NULL::numeric
+            END AS usd_amount,
             CASE
                 WHEN contract_address = '\x1c50c582c7066049C560Bca20416b1d9E0dfb003' THEN '\x514910771af9ca656af840dff83e8264ecf986ca'::bytea
                 WHEN contract_address = '\x07aBe965500A49370D331eCD613c7AC47dD6e547' THEN '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599'::bytea
@@ -599,7 +605,7 @@ WITH rows AS (
             NULL::integer[] AS trace_address,
             evt_index
         FROM zeroex_v2."Exchange2.1_evt_Fill"
-        where "feeRecipientAddress" = '\x55662e225a3376759c24331a9aed764f8f0c9fbb'
+        WHERE "feeRecipientAddress" = '\x55662e225a3376759c24331a9aed764f8f0c9fbb'
 
         UNION ALL
 
@@ -795,6 +801,29 @@ WITH rows AS (
             sushi."Pair_evt_Swap" t
         INNER JOIN sushi."Factory_evt_PairCreated" f ON f.pair = t.contract_address
 
+        UNION ALL
+
+        -- LINKSWAP v1
+        SELECT
+            t.evt_block_time AS block_time,
+            'LINKSWAP' AS project,
+            '1' AS version,
+            'DEX' AS category,
+            t."to" AS trader_a,
+            NULL::bytea AS trader_b,
+            CASE WHEN "amount0Out" = 0 THEN "amount1Out" ELSE "amount0Out" END AS token_a_amount_raw,
+            CASE WHEN "amount0In" = 0 THEN "amount1In" ELSE "amount0In" END AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            CASE WHEN "amount0Out" = 0 THEN f.token1 ELSE f.token0 END AS token_a_address,
+            CASE WHEN "amount0In" = 0 THEN f.token1 ELSE f.token0 END AS token_b_address,
+            t.contract_address exchange_contract_address,
+            t.evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            t.evt_index
+        FROM
+            linkswap_v1."LinkswapPair_evt_Swap" t
+        INNER JOIN linkswap_v1."LinkswapFactory_evt_PairCreated" f ON f.pair = t.contract_address
+
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
@@ -837,6 +866,7 @@ WITH rows AS (
         exchange_contract_address,
         tx_hash,
         tx."from" as tx_from,
+        tx."to" as tx_to,
         NULL AS trace_address,
         evt_index,
         trade_id
@@ -864,6 +894,7 @@ $function$;
 CREATE UNIQUE INDEX IF NOT EXISTS dex_trades_tr_addr_uniq_idx ON dex.trades (tx_hash, trace_address, trade_id);
 CREATE UNIQUE INDEX IF NOT EXISTS dex_trades_evt_index_uniq_idx ON dex.trades (tx_hash, evt_index, trade_id);
 CREATE INDEX IF NOT EXISTS dex_trades_tx_from_idx ON dex.trades (tx_from);
+CREATE INDEX IF NOT EXISTS dex_trades_tx_to_idx ON dex.trades (tx_to);
 CREATE INDEX IF NOT EXISTS dex_trades_project_idx ON dex.trades (project);
 CREATE INDEX IF NOT EXISTS dex_trades_block_time_idx ON dex.trades USING BRIN (block_time);
 CREATE INDEX IF NOT EXISTS dex_trades_token_a_idx ON dex.trades (token_a_address);
