@@ -1,6 +1,4 @@
 CREATE OR REPLACE VIEW index.view_indices_assets (Index, project, asset, asset_address) AS VALUES
-
-
 ('ASSY'     ::text, 'PowerPool' ::text,    'AAVE'	    ::text,   '\x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9'::bytea),
 ('ASSY'     ::text, 'PowerPool' ::text,    'SNX'	    ::text,   '\xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f'::bytea),
 ('ASSY'     ::text, 'PowerPool' ::text,    'SUSHI'	    ::text,   '\x6b3595068778dd592e39a122f4f5a5cf09c90fe2'::bytea),
