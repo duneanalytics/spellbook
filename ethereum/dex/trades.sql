@@ -653,7 +653,7 @@ WITH rows AS (
 
         -- 1inch Limit Orders (0x)
         SELECT
-            block_time,
+            evt_block_time as block_time,
             '1inch' AS project,
             '1' AS version,
             'Aggregator' AS category,
