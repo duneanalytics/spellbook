@@ -219,6 +219,20 @@ WITH rows AS (
     FROM synthetix."Issuer_v2_31_1_evt_SynthAdded"
     WHERE evt_block_time >= start_ts
     AND evt_block_time < end_ts
+
+    UNION
+
+    SELECT synth AS address, "currencyKey" AS currency_key, evt_block_time AS block_time
+    FROM synthetix."Issuer_v2_35_2_evt_SynthAdded"
+    WHERE evt_block_time >= start_ts
+    AND evt_block_time < end_ts
+
+    UNION
+
+    SELECT synth AS address, "currencyKey" AS currency_key, evt_block_time AS block_time
+    FROM synthetix."Issuer_v2_36_0_evt_SynthAdded"
+    WHERE evt_block_time >= start_ts
+    AND evt_block_time < end_ts
     ON CONFLICT DO NOTHING
     RETURNING 1
 )
