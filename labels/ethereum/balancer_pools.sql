@@ -39,7 +39,7 @@ settings as (
 
 SELECT 
   pool as address, 
-  CONCAT(string_agg(symbol, '/'), ' ', string_agg(cast(norm_weight as text), '/')) AS label,
+  lower(CONCAT(string_agg(symbol, '/'), ' ', string_agg(cast(norm_weight as text), '/'))) AS label,
   'balancer_pool' AS type,
   'balancerlabs' as author
 
