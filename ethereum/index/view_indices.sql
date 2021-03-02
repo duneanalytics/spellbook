@@ -14,4 +14,5 @@ CREATE OR REPLACE VIEW index.view_indices (symbol, project, token_address, asset
 ('DEFI5'::text, 'Indexed'   ::text, '\xfa6de2697D59E88Ed7Fc4dFE5A33daC43565ea41'::bytea,    '\xfa6de2697D59E88Ed7Fc4dFE5A33daC43565ea41'::bytea, 'ready'::text),
 ('ORCL5'::text, 'Indexed'   ::text, '\xd6cb2adf47655b1babddc214d79257348cbc39a7'::bytea,    '\xd6cb2adf47655b1babddc214d79257348cbc39a7'::bytea, 'ready'::text),
 ('CC10'::text,  'Indexed'   ::text, '\x17ac188e09a7890a1844e5e65471fe8b0ccfadf3'::bytea,    '\x17ac188e09a7890a1844e5e65471fe8b0ccfadf3'::bytea, 'ready'::text)
+('DEGEN'::text,  'Indexed'   ::text, '\x126c121f99e1E211dF2e5f8De2d96Fa36647c855'::bytea,    '\x126c121f99e1E211dF2e5f8De2d96Fa36647c855'::bytea, 'ready'::text)
 ;
