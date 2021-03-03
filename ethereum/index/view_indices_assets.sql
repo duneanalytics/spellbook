@@ -75,7 +75,6 @@ CREATE OR REPLACE VIEW index.view_indices_assets (Index, project, asset, asset_a
 ('PIPT'     ::text, 'PowerPool' ::text,    'SNX'	    ::text,   '\xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f'::bytea),
 ('PIPT'     ::text, 'PowerPool' ::text,    'YFI'	    ::text,   '\x0bc529c00c6401aef6d220be8c6ea1667f6ad93e'::bytea),
 ('PIPT'     ::text, 'PowerPool' ::text,    'CVP'	    ::text,   '\x38e4adb44ef08f22f5b5b76a8f0c2d0dcbe7dca1'::bytea),
-('PIPT'     ::text, 'PowerPool' ::text,    'PIPT'	    ::text,   '\x26607ac599266b21d13c7acf7942c7701a8b699c'::bytea),
 ('PIPT'     ::text, 'PowerPool' ::text,    'COMP'	    ::text,   '\xc00e94cb662c3520282e6f5717214004a7f26888'::bytea),
 ('PIPT'     ::text, 'PowerPool' ::text,    'AAVE'	    ::text,   '\x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9'::bytea),
 ('PIPT'     ::text, 'PowerPool' ::text,    'MKR'	    ::text,   '\x9f8f72aa9304c8b593d555f12ef6589cc3a579a2'::bytea),
