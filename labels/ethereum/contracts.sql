@@ -18,4 +18,4 @@ FROM
 WHERE
     address IS NOT NULL
 AND
-    updated_at >= '{{ timestamp }}';
+    updated_at >= '{{timestamp}}';
