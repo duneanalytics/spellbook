@@ -47,6 +47,6 @@ FROM   (
     select s1.pool, symbol, cast(100*denorm/total_denorm as integer) as norm_weight from settings s1
     inner join (select pool, sum(denorm) as total_denorm from settings group by pool) s2
     on s1.pool = s2.pool
-    order by 1 asc , 3 desc
+    order by 1 asc , 3 desc, 2 asc
 ) s
 GROUP  BY 1
