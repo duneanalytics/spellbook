@@ -16,4 +16,6 @@ SELECT
 FROM
     ethereum.contracts
 WHERE
-    address IS NOT NULL;
+    address IS NOT NULL
+AND
+    updated_at >= '{{ timestamp }}';
