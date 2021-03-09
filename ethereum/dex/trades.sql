@@ -669,7 +669,7 @@ WITH rows AS (
             NULL::integer[] AS trace_address,
             evt_index
         FROM zeroex_v2."Exchange2.1_evt_Fill"
-        WHERE "feeRecipientAddress" = '\x55662e225a3376759c24331a9aed764f8f0c9fbb'
+        WHERE "feeRecipientAddress" = '\x910bf2d50fa5e014fd06666f456182d4ab7c8bd2'
 
         UNION ALL
 
