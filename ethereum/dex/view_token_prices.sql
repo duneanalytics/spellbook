@@ -6,7 +6,7 @@ CREATE MATERIALIZED VIEW dex.view_token_prices AS (
     WITH tokens_in_prices_usd AS (
         SELECT DISTINCT contract_address 
         FROM prices.usd
-        WHERE minute > now() - interval '7 days'
+        WHERE minute > now() - interval '10 minutes'
     ), dex_trades AS (
         SELECT 
             token_a_address as contract_address, 
