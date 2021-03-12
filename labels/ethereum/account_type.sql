@@ -6,4 +6,5 @@ SELECT
 FROM ethereum.traces
 WHERE "type" = 'create'
 AND success
-AND block_time >= {{timestamp}};
+AND block_time >= '{{timestamp}}';
+
