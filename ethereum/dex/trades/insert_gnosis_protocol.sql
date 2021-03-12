@@ -67,10 +67,10 @@ WITH rows AS (
             NULL::numeric AS usd_amount,
             sell_token AS token_a_address,
             buy_token AS token_b_address,
-            '\x6F400810b62df8E13fded51bE75fF5393eaa841F' AS exchange_contract_address,
+            '\x6F400810b62df8E13fded51bE75fF5393eaa841F'::bytea AS exchange_contract_address,
             tx_hash,
             NULL::integer[] AS trace_address,
-            evt_index_trades
+            evt_index_trades as evt_index
         FROM gnosis_protocol.view_trades
     ) dexs
     INNER JOIN ethereum.transactions tx

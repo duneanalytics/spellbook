@@ -57,7 +57,7 @@ WITH rows AS (
     FROM (
         -- Mooniswap
         SELECT
-            evt_block_time,
+            evt_block_time as block_time,
             'Mooniswap' AS project,
             '1' AS version,
             'DEX' AS category,

@@ -72,8 +72,8 @@ WITH rows AS (
             NULL::integer[] AS trace_address,
             t.evt_index
         FROM
-            linkswap_v1."LINKSWAPPair_evt_Swap" t
-        INNER JOIN linkswap_v1."LINKSWAPFactory_evt_PairCreated" f ON f.pair = t.contract_address
+            linkswap_v1."LinkswapPair_evt_Swap" t
+        INNER JOIN linkswap_v1."LinkswapFactory_evt_PairCreated" f ON f.pair = t.contract_address
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
