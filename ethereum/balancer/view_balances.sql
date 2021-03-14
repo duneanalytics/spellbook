@@ -48,8 +48,8 @@ CREATE MATERIALIZED VIEW balancer.view_balances AS (
     
     running_cumulative_balance_by_token AS (
         SELECT c.day, pool, token, cumulative_amount 
-        FROM cumulative_balance_by_token b
-        JOIN calendar c ON b.day <= c.day AND c.day < b.day_of_next_change
+        FROM calendar c
+        LEFT JOIN cumulative_balance_by_token b ON b.day <= c.day AND c.day < b.day_of_next_change
     )
     
     SELECT * FROM running_cumulative_balance_by_token
