@@ -1,4 +1,4 @@
-SELECT 
+SELECT DISTINCT
     address,
     'contract' AS label,
     'account type' AS type,
@@ -7,4 +7,3 @@ FROM ethereum.traces
 WHERE "type" = 'create'
 AND success
 AND block_time >= '{{timestamp}}';
-
