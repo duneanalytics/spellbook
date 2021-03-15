@@ -119,7 +119,7 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2018-01-01'
     AND block_time <= '2019-01-01'
-    AND project = 'Bancor'
+    AND project = 'Bancor Network'
 );
 
 -- fill 2019
@@ -134,7 +134,7 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2019-01-01'
     AND block_time <= '2020-01-01'
-    AND project = 'Bancor'
+    AND project = 'Bancor Network'
 );
 
 -- fill 2020
@@ -149,7 +149,7 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2020-01-01'
     AND block_time <= '2021-01-01'
-    AND project = 'Bancor'
+    AND project = 'Bancor Network'
 );
 
 -- fill 2021
@@ -164,15 +164,15 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2021-01-01'
     AND block_time <= now()
-    AND project = 'Bancor'
+    AND project = 'Bancor Network'
 );
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
     SELECT dex.insert_bancor(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Bancor'),
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Bancor Network'),
         (SELECT now()),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Bancor')),
+        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Bancor Network')),
         (SELECT MAX(number) FROM ethereum.blocks));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
