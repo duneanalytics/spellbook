@@ -1,4 +1,4 @@
-CREATE TABLE Superrare.superrare_full_activity_list5 (
+CREATE TABLE Superrare.superrare_full_activity_list (
     tx_hash bytea,
     block_time timestamptz NOT NULL,
     token_id VARCHAR,
@@ -11,7 +11,7 @@ CREATE TABLE Superrare.superrare_full_activity_list5 (
     include VARCHAR
 );
 
-CREATE OR REPLACE FUNCTION Superrare.create_full_activity_list(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+CREATE OR REPLACE FUNCTION Superrare.create_full_activity_list(start_ts timestamptz, end_ts timestamptz=now()) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -369,7 +369,7 @@ CAST(bytea2numericpy(topic4) as VARCHAR) AS token_id,
 ),
 
 rows AS (
-    INSERT INTO Superrare.superrare_full_activity_list5 (
+    INSERT INTO Superrare.superrare_full_activity_list (
     tx_hash,
     block_time,
     token_id,
@@ -409,9 +409,9 @@ END
 $function$;
 
 
-SELECT Superrare.create_full_activity_list('2021-03-14', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-03-14'), (SELECT MAX(number) FROM ethereum.blocks)) WHERE NOT EXISTS (SELECT * FROM Superrare.superrare_full_activity_list5 LIMIT 1)
+SELECT Superrare.create_full_activity_list('2019-01-01')
 INSERT INTO cron.job (schedule, command)
-VALUES ('14 1 * * *', $$SELECT Superrare.create_full_activity_list((SELECT max(block_time) - interval '2 days' FROM Superrare.superrare_full_activity_list5), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM Superrare.superrare_full_activity_list5)), (SELECT MAX(number) FROM ethereum.blocks));$$)
+VALUES ('14 1 * * *', $$SELECT Superrare.create_full_activity_list((SELECT max(block_time) - interval '2 days' FROM Superrare.superrare_full_activity_list), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM Superrare.superrare_full_activity_list)), (SELECT MAX(number) FROM ethereum.blocks));$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 
 
