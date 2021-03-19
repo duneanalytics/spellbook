@@ -60,7 +60,7 @@ CREATE MATERIALIZED VIEW balancer.view_pools_liquidity AS (
  
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS balancer_view_pools_liquidity_day_idx ON balancer.view_balances (day, pool);
+CREATE UNIQUE INDEX IF NOT EXISTS balancer_view_pools_liquidity_day_idx ON balancer.view_pools_liquidity (day, pool);
 
 INSERT INTO cron.job(schedule, command)
 VALUES ('*/12 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY balancer.view_pools_liquidity$$)
