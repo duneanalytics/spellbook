@@ -154,7 +154,7 @@ $function$;
 SELECT dex.insert_uniswap(
     '2019-01-01',
     '2020-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2019-01-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'),
     (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-01-01')
 )
 WHERE NOT EXISTS (
@@ -169,7 +169,7 @@ WHERE NOT EXISTS (
 SELECT dex.insert_uniswap(
     '2020-01-01',
     '2021-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-01-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
     (SELECT max(number) FROM ethereum.blocks WHERE time <= '2021-01-01')
 )
 WHERE NOT EXISTS (
@@ -184,7 +184,7 @@ WHERE NOT EXISTS (
 SELECT dex.insert_uniswap(
     '2021-01-01',
     now(),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-07-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
     (SELECT max(number) FROM ethereum.blocks)
 )
 WHERE NOT EXISTS (
