@@ -291,6 +291,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\xee4dc4c5ca843b83035d8e5159ac1bd1b4ebdff5	FCO	18
 \\x94a2aaa374a8f2d52dad24330c8a0ec2934700ae	FCOUSDB	18
 \\x009e864923b49263c7f10d19b7f8ab7a9a5aad33	FKX	18
+\\xaa6e8127831c9de45ae56bb1b0d4d4da6e5665bd	FLI	18
 \\xf04a8ac553fcedb5ba99a64799155826c136b0be	FLIXX	18
 \\x01fb4a9a68dd46852addfa98321def44289b7d8d	FNCD	18
 \\x04b7c9b88c1d33f0293449aa81b143272bcb2a8b	FNCD	18
