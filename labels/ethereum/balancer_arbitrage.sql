@@ -1,8 +1,8 @@
 SELECT
     DISTINCT(t.to) AS address,
-    'abritrary_bot' AS label,
-    'balancer_arbitrary' AS type,
-    'balancer_labs' AS author
+    'abritrage_bot' AS label,
+    'dapp usage' AS type,
+    'balancerlabs' AS author
 FROM dex.trades t1
 INNER JOIN dex.trades t2
 ON t1.tx_hash = t2.tx_hash
@@ -15,9 +15,9 @@ AND date_trunc('day', t2.block_time) >= date_trunc('day', now() - interval '2 mo
 UNION ALL
 SELECT
     DISTINCT(t.to) AS address,
-    'abritrary_bot' AS label,
-    'balancer_arbitrary' AS type,
-    'balancer_labs' AS author
+    'abritrage_bot' AS label,
+    'dapp usage' AS type,
+    'balancerlabs' AS author
 FROM dex.trades t1
 INNER JOIN dex.trades t2
 ON t1.tx_hash = t2.tx_hash
