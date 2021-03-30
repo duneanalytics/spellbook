@@ -255,9 +255,9 @@ WHERE NOT EXISTS (
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
     SELECT dex.insert_zeroex(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='DDEX'),
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project IN ('0x Native', '0x API', 'Matcha')),
         (SELECT now()),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='DDEX')),
+        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project IN ('0x Native', '0x API', 'Matcha')),
         (SELECT MAX(number) FROM ethereum.blocks));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
