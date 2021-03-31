@@ -23,8 +23,8 @@ CREATE TABLE dex.trades (
     trade_id integer
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS dex_trades_tr_addr_uniq_idx ON dex.trades (tx_hash, trace_address, trade_id);
-CREATE UNIQUE INDEX IF NOT EXISTS dex_trades_evt_index_uniq_idx ON dex.trades (tx_hash, evt_index, trade_id);
+CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS dex_trades_proj_tr_addr_uniq_idx ON dex.trades (project, tx_hash, trace_address, trade_id);
+CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS dex_trades_proj_evt_index_uniq_idx ON dex.trades (project, tx_hash, evt_index, trade_id);
 CREATE INDEX IF NOT EXISTS dex_trades_tx_from_idx ON dex.trades (tx_from);
 CREATE INDEX IF NOT EXISTS dex_trades_tx_to_idx ON dex.trades (tx_to);
 CREATE INDEX IF NOT EXISTS dex_trades_project_idx ON dex.trades (project);
