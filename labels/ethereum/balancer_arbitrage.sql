@@ -1,6 +1,6 @@
 SELECT
     DISTINCT(t.to) AS address,
-    'abritrage_bot' AS label,
+    'abritrage bot' AS label,
     'dapp usage' AS type,
     'balancerlabs' AS author
 FROM dex.trades t1
@@ -10,12 +10,12 @@ AND t1.token_a_address = t2.token_b_address
 AND t1.token_b_address = t2.token_a_address 
 AND ((t1.project = 'Balancer' AND t2.project = 'Uniswap') or (t1.project = 'Uniswap' AND t2.project = 'Balancer'))
 INNER JOIN ethereum.transactions t ON t.hash = t1.tx_hash
-WHERE date_trunc('day', t1.block_time) >= date_trunc('day', now() - interval '2 months')
-AND date_trunc('day', t2.block_time) >= date_trunc('day', now() - interval '2 months')
+WHERE t1.block_time >= {{timestamp}}
+AND t2.block_time >= {{timestamp}}
 UNION ALL
 SELECT
     DISTINCT(t.to) AS address,
-    'abritrage_bot' AS label,
+    'abritrage bot' AS label,
     'dapp usage' AS type,
     'balancerlabs' AS author
 FROM dex.trades t1
@@ -25,5 +25,5 @@ AND t1.token_a_address = t2.token_b_address
 AND t1.token_b_address = t2.token_a_address
 AND ((t1.project = 'Balancer' AND t2.project = 'Sushiswap') or (t1.project = 'Sushiswap' AND t2.project = 'Balancer'))
 INNER JOIN ethereum.transactions t ON t.hash = t1.tx_hash
-WHERE date_trunc('day', t1.block_time) >= date_trunc('day', now() - interval '2 months')
-AND date_trunc('day', t2.block_time) >= date_trunc('day', now() - interval '2 months')
+WHERE t1.block_time >= {{timestamp}}
+AND t2.block_time >= {{timestamp}}
