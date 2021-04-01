@@ -1,6 +1,6 @@
 SELECT
     DISTINCT(t.to) AS address,
-    'abritrage bot' AS label,
+    'arbitrage bot' AS label,
     'dapp usage' AS type,
     'balancerlabs' AS author
 FROM dex.trades t1
@@ -15,7 +15,7 @@ AND t2.block_time >= {{timestamp}}
 UNION ALL
 SELECT
     DISTINCT(t.to) AS address,
-    'abritrage bot' AS label,
+    'arbitrage bot' AS label,
     'dapp usage' AS type,
     'balancerlabs' AS author
 FROM dex.trades t1
