@@ -121,7 +121,8 @@ WITH rows AS (
         FROM
             uniswap_v2."Pair_evt_Swap" t
         INNER JOIN uniswap_v2."Factory_evt_PairCreated" f ON f.pair = t.contract_address
-        WHERE t.contract_address != '\xed9c854cb02de75ce4c9bba992828d6cb7fd5c71' --Remove WETH-UBOMB wash trading pair
+        WHERE t.contract_address != '\xed9c854cb02de75ce4c9bba992828d6cb7fd5c71' -- Remove WETH-UBOMB wash trading pair
+        AND t.contract_address != '\xf9c1fA7d41bf44ADe1dd08D37CC68f67Ae75bF92' -- Fake volume https://twitter.com/0xRevert/status/1376881133661478914?s=20
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
