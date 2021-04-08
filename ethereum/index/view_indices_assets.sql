@@ -76,7 +76,7 @@ CREATE OR REPLACE VIEW index.view_indices_assets (Index, project, asset, asset_a
 ('MVI'      ::text, 'IndexCoop' ::text,    'RFOX'	    ::text,   '\xa1d6df714f91debf4e0802a542e13067f31b8262'::bytea),
 ('MVI'      ::text, 'IndexCoop' ::text,    'WAXE'	    ::text,   '\x7a2Bc711E19ba6aff6cE8246C546E8c4B4944DFD'::bytea),
 ('MVI'      ::text, 'IndexCoop' ::text,    'AUDIO'	    ::text,   '\x18aAA7115705e8be94bfFEBDE57Af9BFc265B998'::bytea),
-('MVI'      ::text, 'IndexCoop' ::text,    'DG'	        ::text,   '\xee06a81a695750e71a662b51066f2c74cf4478a0'::bytea),
+('MVI'      ::text, 'IndexCoop' ::text,    'DG'           ::text,   '\xee06a81a695750e71a662b51066f2c74cf4478a0'::bytea),
 ('MVI'      ::text, 'IndexCoop' ::text,    'NFTX'	    ::text,   '\x87d73E916D7057945c9BcD8cdd94e42A6F47f776'::bytea),
 ('MVI'      ::text, 'IndexCoop' ::text,    'TVK'	    ::text,   '\xd084b83c305dafd76ae3e1b4e1f1fe2ecccb3988'::bytea),
 ('MVI'      ::text, 'IndexCoop' ::text,    'MEME'	    ::text,   '\xD5525D397898e5502075Ea5E830d8914f6F0affe'::bytea),
