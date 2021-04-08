@@ -7,6 +7,7 @@ CREATE OR REPLACE VIEW compound.view_ctokens (symbol, contract_address, decimals
    ('cUNI'::text,   '\x35a18000230da775cac24873d00ff85bccded550'::bytea, 8::numeric, '\x1f9840a85d5af5bf1d1762f925bdaddc4201f984'::bytea),
    ('cUSDC'::text,  '\x39aa39c021dfbae8fac545936693ac917d5e7563'::bytea, 8::numeric, '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'::bytea),
    ('cWBTC'::text,  '\xc11b1268c1a384e55c48c2391d8d480264a3a7f4'::bytea, 8::numeric, '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599'::bytea),
+   ('cWBTC2'::text, '\xccF4429DB6322D5C611ee964527D42E5d685DD6a'::bytea, 8::numeric, '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599'::bytea),
    ('cZRX'::text,   '\xb3319f5d18bc0d84dd1b4825dcde5d5f7266d407'::bytea, 8::numeric, '\xe41d2489571d322189246dafa5ebde1f4699f498'::bytea),
    ('cUSDT'::text,  '\xf650C3d88D12dB855b8bf7D11Be6C55A4e07dCC9'::bytea, 8::numeric, '\xdac17f958d2ee523a2206206994597c13d831ec7'::bytea),
    ('cDAI'::text,   '\x5d3a536e4d6dbd6114cc1ead35777bab948e3643'::bytea, 8::numeric, '\x6b175474e89094c44da98b954eedeac495271d0f'::bytea)
