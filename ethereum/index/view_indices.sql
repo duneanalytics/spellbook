@@ -11,6 +11,7 @@ CREATE OR REPLACE VIEW index.view_indices (symbol, project, token_address, asset
 ('YETI'::text,  'PowerPool' ::text, '\xb4bebD34f6DaaFd808f73De0d10235a92Fbb6c3D'::bytea,    '\xb4bebD34f6DaaFd808f73De0d10235a92Fbb6c3D'::bytea, 'ready'::text),
 ('DPI'::text,   'IndexCoop' ::text, '\x1494CA1F11D487c2bBe4543E90080AeBa4BA3C2b'::bytea,    '\x1494CA1F11D487c2bBe4543E90080AeBa4BA3C2b'::bytea, 'ready'::text),
 ('CGI'::text,   'IndexCoop' ::text, '\xada0a1202462085999652dc5310a7a9e2bf3ed42'::bytea,    '\xada0a1202462085999652dc5310a7a9e2bf3ed42'::bytea, 'ready'::text),
+('MVI'::text,   'IndexCoop' ::text, '\x72e364f2abdc788b7e918bc238b21f109cd634d7'::bytea,    '\x72e364f2abdc788b7e918bc238b21f109cd634d7'::bytea, 'ready'::text)
 ('DEFI5'::text, 'Indexed'   ::text, '\xfa6de2697D59E88Ed7Fc4dFE5A33daC43565ea41'::bytea,    '\xfa6de2697D59E88Ed7Fc4dFE5A33daC43565ea41'::bytea, 'ready'::text),
 ('ORCL5'::text, 'Indexed'   ::text, '\xd6cb2adf47655b1babddc214d79257348cbc39a7'::bytea,    '\xd6cb2adf47655b1babddc214d79257348cbc39a7'::bytea, 'ready'::text),
 ('CC10'::text,  'Indexed'   ::text, '\x17ac188e09a7890a1844e5e65471fe8b0ccfadf3'::bytea,    '\x17ac188e09a7890a1844e5e65471fe8b0ccfadf3'::bytea, 'ready'::text),
