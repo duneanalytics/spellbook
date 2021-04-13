@@ -7,6 +7,8 @@ FROM
     ethereum.contracts
 WHERE
     address IS NOT NULL
+AND
+    updated_at >= '{{timestamp}}'
 UNION
 SELECT
     address,
