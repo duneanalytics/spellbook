@@ -3,7 +3,7 @@ WITH lbp_pools AS (
         SELECT name, address AS pool
         FROM labels.labels
         WHERE "type" = 'balancer_lbp'
-        AND author IN ('balancerlabs', 'markusbkoch', 'mangool')
+        AND author IN ('balancerlabs', 'markusbkoch', 'mangool', 'rabmarut')
     ),
 
     token_denorms AS (
