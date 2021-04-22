@@ -134,6 +134,28 @@ WITH zeroex_tx_raw AS (
     		WHERE topic1 = '\xff3bc5e46464411f331d1b093e1587d2d1aa667f5618f98a95afc4132709d3a9'::bytea
     	),
 
+      NewBridgeFill AS (
+        SELECT  logs.tx_hash,
+            INDEX AS evt_index,
+            logs.contract_address,
+            block_time AS block_time,
+           
+            substring(DATA,13,20)::varchar AS maker,
+            '\xdef1c0ded9bec7f1a1670819833240f027b25eff'::bytea AS taker,
+            substring(DATA,45,20) AS taker_token,
+            substring(DATA,77,20) AS maker_token,
+            bytea2numericpy(substring(DATA,109,20)) AS taker_token_amount_raw,
+            bytea2numericpy(substring(DATA,141,20)) AS maker_token_amount_raw,
+           
+            'Bridge Fill' AS type,
+            zeroex_tx.affiliate_address as affiliate_address,
+            TRUE AS swap_flag,
+            FALSE AS matcha_limit_order_flag
+        FROM ethereum."logs" logs
+        join zeroex_tx on zeroex_tx.tx_hash = logs.tx_hash
+        WHERE topic1 = '\xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8'::bytea
+                and contract_address = '\x22f9dcf4647084d6c31b2765f6910cd85c178c18'::bytea
+      ),
       direct_PLP AS (
         SELECT 	plp.evt_tx_hash,
     				plp.evt_index AS evt_index,
