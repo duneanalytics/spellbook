@@ -139,14 +139,12 @@ WITH zeroex_tx_raw AS (
             INDEX AS evt_index,
             logs.contract_address,
             block_time AS block_time,
-           
             substring(DATA,13,20)::varchar AS maker,
             '\xdef1c0ded9bec7f1a1670819833240f027b25eff'::bytea AS taker,
             substring(DATA,45,20) AS taker_token,
             substring(DATA,77,20) AS maker_token,
             bytea2numericpy(substring(DATA,109,20)) AS taker_token_amount_raw,
             bytea2numericpy(substring(DATA,141,20)) AS maker_token_amount_raw,
-           
             'Bridge Fill' AS type,
             zeroex_tx.affiliate_address as affiliate_address,
             TRUE AS swap_flag,
@@ -250,6 +248,8 @@ WITH zeroex_tx_raw AS (
           SELECT * FROM ERC20BridgeTransfer
           UNION ALL
           SELECT * FROM BridgeFill
+          UNION ALL
+          SELECT * FROM NewBridgeFill
           UNION ALL
           SELECT * FROM v3_fills_no_bridge
           UNION ALL
