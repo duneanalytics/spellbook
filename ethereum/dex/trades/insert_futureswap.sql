@@ -31,8 +31,8 @@ WITH rows AS (
       dexs.block_time,
       erc20a.symbol AS token_a_symbol,
       erc20b.symbol AS token_b_symbol,
-      token_a_amount_raw / 10 ^ erc20a.decimals AS token_a_amount,
-      token_b_amount_raw / 10 ^ erc20b.decimals AS token_b_amount,
+      token_a_amount_raw AS token_a_amount,
+      token_b_amount_raw AS token_b_amount,
       project,
       version,
       category,
@@ -42,15 +42,14 @@ WITH rows AS (
       token_b_amount_raw,
       coalesce(
           usd_amount,
-          token_a_amount_raw / 10 ^ erc20a.decimals * pa.price,
-          token_b_amount_raw / 10 ^ erc20b.decimals * pb.price
-      ) as usd_amount,
+          (token_a_amount_raw + token_b_amount_raw)
+      ) AS usd_amount,
       token_a_address,
       token_b_address,
       exchange_contract_address,
       tx_hash,
-      tx."from" as tx_from,
-      tx."to" as tx_to,
+      tx."from" AS tx_from,
+      tx."to" AS tx_to,
       trace_address,
       evt_index,
       row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
