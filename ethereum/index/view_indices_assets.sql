@@ -67,6 +67,8 @@ CREATE OR REPLACE VIEW index.view_indices_assets (Index, project, asset, asset_a
 ('DPI'      ::text, 'IndexCoop' ::text,    'UNI'	    ::text,   '\x1f9840a85d5af5bf1d1762f925bdaddc4201f984'::bytea),
 ('DPI'      ::text, 'IndexCoop' ::text,    'MKR'	    ::text,   '\x9f8f72aa9304c8b593d555f12ef6589cc3a579a2'::bytea),
 ('DPI'      ::text, 'IndexCoop' ::text,    'SUSHI'	    ::text,   '\x6b3595068778dd592e39a122f4f5a5cf09c90fe2'::bytea),
+('DPI'      ::text, 'IndexCoop' ::text,    'FARM'	    ::text,   '\xa0246c9032bC3A600820415aE600c6388619A14D'::bytea),
+('DPI'      ::text, 'IndexCoop' ::text,    'CREAM'	    ::text,   '\x2ba592F78dB6436527729929AAf6c908497cB200'::bytea),
 ('ORCL5'    ::text, 'Indexed'   ::text,    'DIA'	    ::text,   '\x84ca8bc7997272c7cfb4d0cd3d55cd942b3c9419'::bytea),
 ('ORCL5'    ::text, 'Indexed'   ::text,    'ORAI'	    ::text,   '\x4c11249814f11b9346808179cf06e71ac328c1b5'::bytea),
 ('ORCL5'    ::text, 'Indexed'   ::text,    'UMA'	    ::text,   '\x04fa0d235c4abf4bcf4787af4cf447de572ef828'::bytea),

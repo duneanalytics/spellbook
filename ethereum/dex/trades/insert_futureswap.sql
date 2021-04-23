@@ -44,12 +44,13 @@ WITH rows AS (
           usd_amount,
           (token_a_amount_raw + token_b_amount_raw)
       ) AS usd_amount,
+      ) as usd_amount,
       token_a_address,
       token_b_address,
       exchange_contract_address,
       tx_hash,
-      tx."from" AS tx_from,
-      tx."to" AS tx_to,
+      tx."from" as tx_from,
+      tx."to" as tx_to,
       trace_address,
       evt_index,
       row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
