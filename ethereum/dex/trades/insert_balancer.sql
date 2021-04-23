@@ -55,6 +55,7 @@ WITH rows AS (
         evt_index,
         row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
     FROM (
+        -- V1
         SELECT
             t.evt_block_time AS block_time,
             'Balancer' AS project,
@@ -74,6 +75,28 @@ WITH rows AS (
         FROM
             balancer."BPool_evt_LOG_SWAP" t
         INNER JOIN balancer."BFactory_evt_LOG_NEW_POOL" f ON f.pool = t.contract_address
+
+        UNION ALL
+
+        -- V2
+        SELECT
+            t.evt_block_time AS block_time,
+            'Balancer' AS project,
+            '2' AS version,
+            'DEX' AS category,
+            NULL::bytea AS trader_a, -- this relies on the outer query coalescing to tx."from"
+            NULL::bytea AS trader_b,
+            t."amountOut" AS token_a_amount_raw,
+            t."amountIn" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            t."tokenOut" AS token_a_address,
+            t."tokenIn" AS token_b_address,
+            t."poolId" AS exchange_contract_address,
+            t.evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            t.evt_index
+        FROM
+            balancer_v2."Vault_evt_Swap" t
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
