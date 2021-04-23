@@ -64,6 +64,7 @@ WITH rows AS (
     NULL::bytea AS trader_b,
     b.token_a_amount_raw AS token_a_amount_raw,
     a.token_b_amount_raw AS token_b_amount_raw,
+    NULL::numeric AS usd_amount,
     b.contract_address::bytea AS token_a_address,
     a.contract_address::bytea AS token_b_address,
     b.contract_address::bytea AS exchange_contract_address,
