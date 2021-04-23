@@ -100,17 +100,32 @@ RETURN r;
 END
 $function$;
 
--- fill 2020
+-- fill 2020H1
 SELECT dex.insert_mooniswap(
     '2020-01-01',
-    '2021-01-01',
+    '2020-06-01',
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2021-01-01')
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-06-01')
 )
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.trades
     WHERE block_time > '2020-01-01'
+    AND block_time <= '2020-06-01'
+    AND project = 'Mooniswap'
+);
+
+-- fill 2020H2
+SELECT dex.insert_mooniswap(
+    '2020-06-01',
+    '2021-01-01',
+    (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-06-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2021-01-01')
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.trades
+    WHERE block_time > '2020-06-01'
     AND block_time <= '2021-01-01'
     AND project = 'Mooniswap'
 );
