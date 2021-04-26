@@ -13,12 +13,27 @@ CREATE MATERIALIZED VIEW balancer.view_balances AS (
         FROM erc20."ERC20_evt_Transfer" e
         INNER JOIN pools p ON e."to" = p.pools
         GROUP BY 1, 2, 3
+
+        UNION ALL
+
+        SELECT e."to" as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, SUM(value) AS amount
+        FROM erc20."ERC20_evt_Transfer" e
+        WHERE e."to" = '\xBA12222222228d8Ba445958a75a0704d566BF2C8'
+        GROUP BY 1, 2, 3
+
     ),
 
     exits AS (
         SELECT p.pools as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, -SUM(value) AS amount
         FROM erc20."ERC20_evt_Transfer" e
         INNER JOIN pools p ON e."from" = p.pools   
+        GROUP BY 1, 2, 3
+
+        UNION ALL
+
+        SELECT e."from" as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, -SUM(value) AS amount
+        FROM erc20."ERC20_evt_Transfer" e
+        WHERE e."from" = '\xBA12222222228d8Ba445958a75a0704d566BF2C8'
         GROUP BY 1, 2, 3
     ),
     
