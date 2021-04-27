@@ -41,7 +41,7 @@ CREATE MATERIALIZED VIEW balancer.view_pools_liquidity AS (
             b.amount_usd_from_dex / w.normalized_weight AS liquidity_from_dex
         FROM cumulative_usd_balance_by_token b 
         INNER JOIN balancer.view_pools_tokens_weights w
-        ON b.pool = w.pool_address
+        ON b.pool = w.pool_id
         AND b.token = w.token_address
         AND (b.amount_usd_from_api > 0 OR b.amount_usd_from_dex > 0)
         AND w.normalized_weight > 0
