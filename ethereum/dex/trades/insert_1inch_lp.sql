@@ -57,7 +57,7 @@ WITH rows AS (
     FROM (
         -- 1inch LP
         SELECT
-            evt_block_time,
+            evt_block_time AS block_time,
             '1inch LP' AS project,
             '1' AS version,
             'DEX' AS category,
