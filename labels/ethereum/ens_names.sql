@@ -11,8 +11,8 @@ UNION
 SELECT
     owner AS address,
     lower(name) AS label,
-    'ens name' AS type,
-    'hagaetc' AS author
+    'hagaetc' AS author,
+    'ens name' AS type
 
 FROM
     ethereumnameservice."ETHRegistrarController_2_evt_NameRegistered"
@@ -22,8 +22,8 @@ UNION
 SELECT
     owner AS address,
     lower(name) AS label,
-    'ens name' AS type,
-    'hagaetc' AS author
+    'hagaetc' AS author,
+    'ens name' AS type
 
 FROM
     ethereumnameservice."ETHRegistrarController_3_evt_NameRegistered"
