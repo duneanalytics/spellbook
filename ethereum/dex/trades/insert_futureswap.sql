@@ -44,7 +44,6 @@ WITH rows AS (
           usd_amount,
           (token_a_amount_raw + token_b_amount_raw)
       ) AS usd_amount,
-      ) as usd_amount,
       token_a_address,
       token_b_address,
       exchange_contract_address,

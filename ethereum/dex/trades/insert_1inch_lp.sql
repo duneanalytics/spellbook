@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION dex.insert_balancer(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+CREATE OR REPLACE FUNCTION dex.insert_1inch_lp(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -55,48 +55,28 @@ WITH rows AS (
         evt_index,
         row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
     FROM (
-        -- V1
+        -- 1inch LP
         SELECT
-            t.evt_block_time AS block_time,
-            'Balancer' AS project,
+            evt_block_time AS block_time,
+            '1inch LP' AS project,
             '1' AS version,
             'DEX' AS category,
-            NULL::bytea AS trader_a, -- this relies on the outer query coalescing to tx."from"
+            sender AS trader_a,
             NULL::bytea AS trader_b,
-            t."tokenAmountOut" AS token_a_amount_raw,
-            t."tokenAmountIn" AS token_b_amount_raw,
+            result AS token_a_amount_raw,
+            amount AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            t."tokenOut" token_a_address,
-            t."tokenIn" token_b_address,
-            t.contract_address exchange_contract_address,
-            t.evt_tx_hash AS tx_hash,
+            CASE WHEN "dstToken" = '\x0000000000000000000000000000000000000000' THEN 
+                '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'::bytea ELSE "dstToken"
+            END AS token_a_address,
+            CASE WHEN "srcToken" = '\x0000000000000000000000000000000000000000' THEN 
+                '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'::bytea ELSE "srcToken"
+            END AS token_b_address,
+            contract_address AS exchange_contract_address,
+            evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
-            t.evt_index
-        FROM
-            balancer."BPool_evt_LOG_SWAP" t
-        INNER JOIN balancer."BFactory_evt_LOG_NEW_POOL" f ON f.pool = t.contract_address
-
-        UNION ALL
-
-        -- V2
-        SELECT
-            t.evt_block_time AS block_time,
-            'Balancer' AS project,
-            '2' AS version,
-            'DEX' AS category,
-            NULL::bytea AS trader_a, -- this relies on the outer query coalescing to tx."from"
-            NULL::bytea AS trader_b,
-            t."amountOut" AS token_a_amount_raw,
-            t."amountIn" AS token_b_amount_raw,
-            NULL::numeric AS usd_amount,
-            t."tokenOut" AS token_a_address,
-            t."tokenIn" AS token_b_address,
-            t."poolId" AS exchange_contract_address,
-            t.evt_tx_hash AS tx_hash,
-            NULL::integer[] AS trace_address,
-            t.evt_index
-        FROM
-            balancer_v2."Vault_evt_Swap" t
+            evt_index
+        FROM onelp."Mooniswap_evt_Swapped"
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
@@ -125,10 +105,10 @@ END
 $function$;
 
 -- fill 2020
-SELECT dex.insert_balancer(
+SELECT dex.insert_1inch_lp(
     '2020-01-01',
     '2021-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-01-01'),
     (SELECT max(number) FROM ethereum.blocks WHERE time <= '2021-01-01')
 )
 WHERE NOT EXISTS (
@@ -136,14 +116,14 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2020-01-01'
     AND block_time <= '2021-01-01'
-    AND project = 'Balancer'
+    AND project = '1inch LP'
 );
 
 -- fill 2021
-SELECT dex.insert_balancer(
+SELECT dex.insert_1inch_lp(
     '2021-01-01',
     now(),
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-07-01'),
     (SELECT max(number) FROM ethereum.blocks)
 )
 WHERE NOT EXISTS (
@@ -151,15 +131,15 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2021-01-01'
     AND block_time <= now()
-    AND project = 'Balancer'
+    AND project = '1inch LP'
 );
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('*/10 * * * *', $$
-    SELECT dex.insert_balancer(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Balancer'),
+VALUES ('*/12 * * * *', $$
+    SELECT dex.insert_1inch_lp(
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1inch LP'),
         (SELECT now()),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Balancer')),
+        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1inch LP')),
         (SELECT MAX(number) FROM ethereum.blocks));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
