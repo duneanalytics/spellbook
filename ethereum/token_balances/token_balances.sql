@@ -25,7 +25,7 @@ BEGIN
     into arr;
    FOREACH hour_  IN   array arr
    LOOP
-      RAISE NOTICE 'another_func(%)',hour_;
+      RAISE NOTICE 'Executing (%)',hour_;
 
 	insert into sandbox.token_balances_proposal_1
         -- select evt transfer events first and unify them
@@ -80,26 +80,26 @@ BEGIN
 
 		    )
 		    ,
-		    -- make sure that the balance is converted from wei, and add token symbol
-		    -- join is done here to make the query more performant
-		    "asset_balance_readable" as (
-		    select
-		    hour_::timestamptz  as ts
-		    , ab.address
-		    , ab.token_address as contract_address
-		    , tok."symbol" as token
-		    , ab.rawAmount
-		    , ab.rawAmount / 10^tok."decimals" as amount
-		    , 0 as usd_amount
-		    from "asset_balances" ab
-		    left join  erc20."tokens" tok
-		    on tok."contract_address" = ab."token_address"
-		   	)
-            -- filter for empty balances happens here, not sure how relevant is it, need to test when dealing with accuracy
-		   	select * from "asset_balance_readable"
-		    where amount > 0.0001;
-            -- to do -> add usd balance part, and check performance, runs 30s per day for now, but needs load
-            -- prepare views as separate files
+        -- make sure that the balance is converted from wei, and add token symbol
+        -- join is done here to make the query more performant
+        "asset_balance_readable" as (
+        select
+        hour_::timestamptz  as ts
+        , ab.address
+        , ab.token_address as contract_address
+        , tok."symbol" as token
+        , ab.rawAmount
+        , ab.rawAmount / 10^tok."decimals" as amount
+        , 0 as usd_amount
+        from "asset_balances" ab
+        left join  erc20."tokens" tok
+        on tok."contract_address" = ab."token_address"
+        )
+        -- filter for empty balances happens here, not sure how relevant is it, need to test when dealing with accuracy
+        select * from "asset_balance_readable"
+        where amount > 0.0001;
+        -- to do -> add usd balance part, and check performance, runs 30s per day for now, but needs load
+        -- prepare views as separate files
 
    END LOOP;
 END $$;
@@ -119,7 +119,7 @@ BEGIN
     into arr;
    FOREACH hour_  IN   array arr
    LOOP
-      RAISE NOTICE 'another_func(%)',hour_;
+      RAISE NOTICE 'Executing (%)',hour_;
 
 	insert into sandbox.token_balances_proposal_1
 
