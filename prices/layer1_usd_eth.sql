@@ -3,3 +3,7 @@ CREATE OR REPLACE VIEW prices.layer1_usd_eth AS
 SELECT *
 FROM prices.layer1_usd
 WHERE symbol = 'ETH';
+
+
+GRANT SELECT ON prices.layer1_usd_eth TO reader;
+GRANT SELECT, INSERT, UPDATE ON prices.layer1_usd_eth TO dune;
