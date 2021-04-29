@@ -51,4 +51,12 @@ norm_weights as (
     select settings.pool AS pool_address, token AS token_address, denorm/sum_denorm as normalized_weight
     from settings inner join sum_denorm on settings.pool = sum_denorm.pool
 )
-select * from norm_weights
+select pool_address as pool_id, token_address,  normalized_weight
+from norm_weights
+
+union all
+
+select c."poolId" as pool_id, unnest(cc.tokens) as token_address, unnest(cc.weights)/1e18 as normalized_weight
+from balancer_v2."Vault_evt_PoolRegistered" c
+inner join balancer_v2."WeightedPoolFactory_call_create" cc
+on c.evt_tx_hash = cc.call_tx_hash
