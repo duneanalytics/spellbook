@@ -9,46 +9,68 @@ CREATE TABLE sandbox.token_balances_proposal_3(
 
 
 
-
 DO $$
 DECLARE
    hour_   text;
+   token_  text;
    arr varchar[];
 BEGIN
-  select array(select generate_series('2021-03-21', '2021-03-23', '1 hour'::interval)::timestamptz)
+  select array(select generate_series('2017-03-01', '2021-04-28', '1 hour'::interval)::timestamptz)
     into arr;
+
+   for token_ in (select distinct symbol from erc20."tokens" where symbol in (
+																			'BNT'
+																			) )
+   loop
    FOREACH hour_  IN   array arr
    LOOP
-      RAISE NOTICE 'Executing (%)',hour_;
+      RAISE NOTICE 'Executing (% %)',token_, hour_;
 
-	insert into sandbox.token_balances_proposal_3
+
+
+
+	insert into vasa.token_balances_proposal_3
         -- select evt transfer events first and unify them
-		with "transfer_events" as (
+
+			with tkn_ as (select
+		--'\xF4913E2952dA7202991e7c47D5A67A47AfF4C9FE'::bytea as bla,
+		contract_address
+
+		from erc20."tokens" where symbol = token_ )
+
+		,
+		 "transfer_events" as (
 		    select
 		        "to" AS address,
 		        tr.contract_address AS token_address,
 		        value AS rawAmount
-		    FROM
-		        erc20. "ERC20_evt_Transfer" tr
+		    from tkn_
+		    join erc20. "ERC20_evt_Transfer" tr
+		    on tkn_.contract_address = tr.contract_address
 		    WHERE  evt_block_time >= hour_::timestamptz
 		    and evt_block_time < hour_::timestamptz  + interval '1' hour
+		    --and "to" = '\xF4913E2952dA7202991e7c47D5A67A47AfF4C9FE'
 		    UNION ALL
 		    select
 
 		        "from" AS address,
 		        tr.contract_address AS token_address,
 		        - value AS rawAmount
-		    FROM
-		        erc20. "ERC20_evt_Transfer" tr
+		    from tkn_
+		    join erc20. "ERC20_evt_Transfer" tr
+		    on tkn_.contract_address = tr.contract_address
 		    WHERE evt_block_time >= hour_::timestamptz
 		    and evt_block_time < hour_::timestamptz  + interval '1' hour
+		    --and "from" = '\xF4913E2952dA7202991e7c47D5A67A47AfF4C9FE'
 		)
 		-- take historical balance and make sure that it is relevant to the current hour by joining on address and contract
 		, "historical_balances_flattened" as (
-			select address, contract_address , rawAmount from
-			sandbox.token_balances_proposal_3 s,jsonb_to_recordset(s.token_balances) as items(token text, rawAmount numeric, contract_address bytea)
-			where s.ts =
-			hour_::timestamptz - interval '1' hour
+			select * from
+			vasa.token_balances_proposal_3 s,jsonb_to_recordset(s.token_balances) as items(amount numeric, symbol varchar,  "rawAmount" numeric, contract_address bytea)
+		    --where symbol  = token_
+--
+			--			where s.ts =
+--			hour_::timestamptz - interval '1' hour
 
 		)
 		,
@@ -56,18 +78,28 @@ BEGIN
 			select
 				s.address as address
 				, s.contract_address as token_address
-				, s.rawAmount
+				, s."rawAmount"
+				, row_number () over (partition by  s.address, s.contract_address order by s.ts desc ) rn_
 		    from "historical_balances_flattened" s
 		    join "transfer_events" te
 		    on te.address = s.address
 		    and s.contract_address = te.token_address
-		    --where s.ts = hour_::timestamptz - interval '1' hour
+		    where s.ts = hour_::timestamptz - interval '1' hour
 		    )
+
+		   , historical_balances_latest as (
+		    select
+		    address
+			, token_address
+			, "rawAmount" from historical_balances
+		    where rn_ =1
+		    )
+
         -- unify both current hourly balance and historical balance
 		, "asset_union" as (
 			select * from "transfer_events"
 			union all
-			select * from "historical_balances"
+			select * from "historical_balances_latest"
 
 		)
         -- calculate raw balance
@@ -75,7 +107,7 @@ BEGIN
 		    select
 		    	address,
 		        token_address
-		        , sum(rawAmount) AS rawAmount
+		        , sum(te.rawAmount) AS rawAmount
 
 		    FROM "asset_union" te
 		    GROUP BY 1,2
@@ -92,8 +124,6 @@ BEGIN
         , tok."symbol" as token
         , ab.rawAmount
         , ab.rawAmount / 10^tok."decimals" as amount
-        , 0 as usd_amount
-        , hour_::timestamptz  as update_ts
         from "asset_balances" ab
         left join  erc20."tokens" tok
         on tok."contract_address" = ab."token_address"
@@ -103,37 +133,19 @@ BEGIN
         select * from "asset_balance_readable"
         where amount > 0.0001)
 
---        , historical_data_updated as (
---        select hour_::timestamptz  as ts
---        , abr.address
---        , abr.contract_address
---        , abr.token
---        , abr.rawAmount
---        , abr.amount
---        , abr.usd_amount
---        , abr.update_ts
---        from "data_from_that_hour" abr
---        left join "sandbox.token_balances_proposal_3" tbp
---        on abr.address = tbp.address
---        and abr.contract_address = tbp.token_address
---        where abr.address is null and abr.contract_address is null
---        and tbp.ts < hour_::timestamptz
---
---        )
+
         ,unified_copied_and_new as (
         select * from data_from_that_hour
-      --  union all
---        select * from historical_data_updated tt
---        where tt.address is not null
+
         )
 
-        select ts, address,  jsonb_agg ( json_build_object('token', json_build_object('contract_address',  contract_address, 'amount', amount, 'rawAmount',rawAmount, 'symbol', token, 'usd_amount', usd_amount)))
+        select ts, address,  jsonb_agg ( json_build_object('contract_address',  contract_address, 'amount', amount, 'rawAmount',rawAmount, 'symbol', token))
         from unified_copied_and_new
        	group by 1 ,2
         ;
 
         -- to do -> add usd balance part, and check performance, runs 30s per day for now, but needs load
         -- prepare views as separate files
-
+	end loop;
    END LOOP;
 END $$;
