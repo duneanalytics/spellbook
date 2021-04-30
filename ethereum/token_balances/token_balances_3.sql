@@ -144,8 +144,7 @@ BEGIN
        	group by 1 ,2
         ;
 
-        -- to do -> add usd balance part, and check performance, runs 30s per day for now, but needs load
-        -- prepare views as separate files
+
 	end loop;
    END LOOP;
 END $$;
