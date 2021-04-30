@@ -344,6 +344,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\xfc382c9f9f65a66bbd3b35e10e7ac5a7abf11c8f	FNCD	18
 \\xdc5864ede28bd4405aa04d93e05a0531797d9d59	FNT	6
 \\x4946fcea7c692606e8908002e55a582af44ac121	FOAM	18
+\\x2c31b10ca416b82cec4c5e93c615ca851213d48d FORCE DAO 18
 \\xd8b8e1eca89da014e67fdbc2014eaa8e171079bf	FRECNX	18
 \\x44aa95fa2e84d3acdacdeffe16d9b5ed0498cc8b	FREELINK	18
 \\x48df4e0296f908ceab0428a5182d19b31fc037d6	FRV	8
