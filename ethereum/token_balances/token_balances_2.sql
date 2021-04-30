@@ -177,18 +177,3 @@ ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 
 
 
---- version that creates balance for each hour
-
-
-CREATE TABLE sandbox.token_balances_proposal_2(
-   ts timestamptz,
-   address bytea,
-   contract_address bytea,
-   token varchar,
-   rawAmount numeric,
-   amount numeric,
-   usd_amount numeric,
-   update_ts timestamptz,
-   PRIMARY KEY( ts,address,contract_address )
-
-);
