@@ -1,11 +1,17 @@
-CREATE TABLE sandbox.token_balances_proposal_3(
+CREATE TABLE vasa.token_balances_proposal_3(
    ts timestamptz,
    address bytea,
    token_balances jsonb,
    update_ts timestamptz,
-   PRIMARY KEY( ts,address )
+   PRIMARY KEY( ts,address, token_balances )
 
 );
+
+
+CREATE INDEX ON vasa.token_balances_proposal_3 USING btree (address);
+CREATE INDEX ON vasa.token_balances_proposal_3 USING btree ( ts);
+
+CREATE INDEX  ON vasa.token_balances_proposal_3 (((token_balances ->> 'contract_address')::bytea));
 
 
 
@@ -15,11 +21,11 @@ DECLARE
    token_  text;
    arr varchar[];
 BEGIN
-  select array(select generate_series('2017-03-01', '2021-04-28', '1 hour'::interval)::timestamptz)
+  select array(select generate_series('2020-01-01', '2021-04-28', '1 hour'::interval)::timestamptz)
     into arr;
 
    for token_ in (select distinct symbol from erc20."tokens" where symbol in (
-																			'BNT'
+																			'MVI'
 																			) )
    loop
    FOREACH hour_  IN   array arr
@@ -67,11 +73,7 @@ BEGIN
 		, "historical_balances_flattened" as (
 			select * from
 			vasa.token_balances_proposal_3 s,jsonb_to_recordset(s.token_balances) as items(amount numeric, symbol varchar,  "rawAmount" numeric, contract_address bytea)
-		    --where symbol  = token_
---
-			--			where s.ts =
---			hour_::timestamptz - interval '1' hour
-
+		    where symbol  = token_
 		)
 		,
 		"historical_balances" as (
@@ -84,7 +86,7 @@ BEGIN
 		    join "transfer_events" te
 		    on te.address = s.address
 		    and s.contract_address = te.token_address
-		    where s.ts = hour_::timestamptz - interval '1' hour
+
 		    )
 
 		   , historical_balances_latest as (
@@ -128,23 +130,15 @@ BEGIN
         left join  erc20."tokens" tok
         on tok."contract_address" = ab."token_address"
         )
-        -- filter for empty balances happens here, not sure how relevant is it, need to test when dealing with accuracy
-        , data_from_that_hour as (
-        select * from "asset_balance_readable"
-        where amount > 0.0001)
 
-
-        ,unified_copied_and_new as (
-        select * from data_from_that_hour
-
-        )
 
         select ts, address,  jsonb_agg ( json_build_object('contract_address',  contract_address, 'amount', amount, 'rawAmount',rawAmount, 'symbol', token))
-        from unified_copied_and_new
+        from "asset_balance_readable"
        	group by 1 ,2
         ;
 
-
+        -- to do -> add usd balance part, and check performance, runs 30s per day for now, but needs load
+        -- prepare views as separate files
 	end loop;
    END LOOP;
 END $$;

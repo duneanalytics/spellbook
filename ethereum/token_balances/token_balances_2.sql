@@ -1,6 +1,6 @@
 
 
-CREATE TABLE sandbox.token_balances_proposal_2(
+CREATE TABLE vasa.token_balances_proposal_2(
    ts timestamptz,
    address bytea,
    contract_address bytea,
@@ -11,31 +11,25 @@ CREATE TABLE sandbox.token_balances_proposal_2(
 
 );
 
-CREATE INDEX ON sandbox.token_balances_proposal_2 USING btree (address, contract_address);
-CREATE INDEX ON sandbox.token_balances_proposal_2 USING btree ( contract_address);
-CREATE INDEX ON sandbox.token_balances_proposal_2 USING btree ( ts);
+CREATE INDEX ON vasa.token_balances_proposal_2 USING btree (address, contract_address);
+CREATE INDEX ON vasa.token_balances_proposal_2 USING btree ( contract_address);
+CREATE INDEX ON vasa.token_balances_proposal_2 USING btree ( ts);
 
 CREATE OR REPLACE FUNCTION token_balances.insert_hourly(start_ts, end_ts) RETURNS integer
 LANGUAGE plpgsql AS $function$
 --DO $$
+DO $$
 DECLARE
    hour_   text;
    token_  text;
    arr varchar[];
 BEGIN
-  select array(select generate_series('2015-01-01', '2021-04-28', '1 hour'::interval)::timestamptz)
+  select array(select generate_series('2020-09-30 01:00:00', '2021-04-30', '1 hour'::interval)::timestamptz)
     into arr;
 
-   for token_ in (select distinct symbol from erc20."tokens" where symbol in ('$DG',
-																			'0xBTC',
-																			'1INCH',
-																			'1WO',
-																			'4XB',
-																			'AAVE',
-																			'ABX',
-																			'ABYSS',
-																			'ACD',
-																			'ACE') )
+   for token_ in (select distinct symbol from erc20."tokens" where symbol in (
+																			'MVI'
+																			) )
    loop
    FOREACH hour_  IN   array arr
    LOOP
@@ -43,7 +37,8 @@ BEGIN
 
 
 
-	insert into vasa.token_balances_proposal_2
+
+insert into vasa.token_balances_proposal_2
         -- select evt transfer events first and unify them
 		with tkn_ as (select
 		--'\xF4913E2952dA7202991e7c47D5A67A47AfF4C9FE'::bytea as bla,
@@ -64,7 +59,7 @@ BEGIN
 		    WHERE  evt_block_time >= hour_::timestamptz
 		    and evt_block_time < hour_::timestamptz  + interval '1' hour
 		    --and tr.contract_address = '\xEE06A81A695750E71A662B51066F2C74CF4478A0'
-		    --and "to" = '\xF4913E2952dA7202991e7c47D5A67A47AfF4C9FE'
+		    --and "to" in ('\x7FC66500C84A76AD7E9C93437BFC5AC33E2DDAE9')
 		    UNION ALL
 		    select
 
@@ -78,7 +73,7 @@ BEGIN
 		    WHERE evt_block_time >= hour_::timestamptz
 		    and evt_block_time < hour_::timestamptz  + interval '1' hour
 		    --and tr.contract_address = '\xEE06A81A695750E71A662B51066F2C74CF4478A0'
-		    --and "from" = '\xF4913E2952dA7202991e7c47D5A67A47AfF4C9FE'
+		    --and "from" in ( '\x7FC66500C84A76AD7E9C93437BFC5AC33E2DDAE9')
 		)
 		-- take historical balance and make sure that it is relevant to the current hour by joining on address and contract
 		, "historical_balances" as (
@@ -132,8 +127,6 @@ BEGIN
         , tok."symbol" as token
         , ab.rawAmount
         , ab.rawAmount / 10^tok."decimals" as amount
-        --, (ab.rawAmount / 10^tok."decimals")*p.price as usd_amount
-        , hour_::timestamptz  as update_ts
 
         from "asset_balances" ab
         left join  erc20."tokens" tok
@@ -153,16 +146,11 @@ BEGIN
 --            ) p ON hour_::timestamptz = p.hour AND ab.token_address = p.contract_address
         )
         -- filter for empty balances happens here, not sure how relevant is it, need to test when dealing with accuracy
-        , data_from_that_hour as (
-        select * from "asset_balance_readable"
-        where amount > 0.0001)
-
-
-        select * from data_from_that_hour;
+        select * from "asset_balance_readable";
 
 		end loop;
    END LOOP;
-END $$;
+ END $$;
 RETURN hour_;
 END
 $function$;

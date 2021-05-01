@@ -11,22 +11,23 @@ with hours AS (
 	address,
 	contract_address,
 	token,
-	amount,
-	lead(ts, 1, now()) OVER (PARTITION BY contract_address, address ORDER BY ts) AS next_hour
+	amount balance,
+	lead(ts, 1, now()) OVER (PARTITION BY  address ORDER BY ts) AS next_hour
 	from  vasa.token_balances_proposal_2
 )
 , balance_all_days AS (
-    SELECT  d.hour_,
+    SELECT  d.hour_ ts ,
             address,
             b.token::text as symbol,
             b.contract_address,
-            amount AS balance
+             balance
+             , b.next_hour
     FROM token_balances_updated  b
     INNER JOIN hours d ON b.ts <= d.hour_ AND d.hour_ < b.next_hour -- Yields an observation for every day after the first transfer until the next day with transfer
     )
-
-    select * from balance_all_days;
-
+    select * from balance_all_days
+    where balance >   0.0001
+   ;
 
 -- balance per token per hour
 
@@ -42,7 +43,6 @@ with hours AS (
 	contract_address,
 	token,
 	amount,
-
 	lead(ts, 1, now()) OVER (PARTITION BY contract_address, address ORDER BY ts) AS next_hour
 	from  vasa.token_balances_proposal_2
 )
@@ -56,6 +56,7 @@ with hours AS (
     )
 
     select * from balance_all_days
+    where balance >   0.0001
    ;
 
 
@@ -103,6 +104,7 @@ with hours AS (
     )
 
     select * from balance_all_days
+where balance >   0.0001
    ;
 end;
 $$

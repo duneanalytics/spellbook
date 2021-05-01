@@ -9,9 +9,8 @@ with hours AS (
 	contract_address,
 	symbol as token,
 	amount,
-
 	lead(ts, 1, now()) OVER (PARTITION BY contract_address, address ORDER BY ts) AS next_hour
-	from  vasa.token_balances_proposal_3 s, jsonb_to_recordset(s.token_balances) as items(amount numeric, symbol varchar,  "rawAmount" numeric, contract_address bytea)
+	from  vasa.token_balances_proposals_3 s, jsonb_to_recordset(s.token_balances) as items(amount numeric, symbol varchar,  "rawAmount" numeric, contract_address bytea)
 )
 , balance_all_days AS (
     SELECT  d.hour_,
@@ -23,6 +22,7 @@ with hours AS (
     )
 
     select * from balance_all_days
+where balance >   0.0001
    ;
 
 
@@ -42,7 +42,7 @@ with hours AS (
 	symbol as token,
 	amount,
 	lead(ts, 1, now()) OVER (PARTITION BY contract_address, address ORDER BY ts) AS next_hour
-	from  vasa.token_balances_proposal_3 s, jsonb_to_recordset(s.token_balances) as items(amount numeric, symbol varchar,  "rawAmount" numeric, contract_address bytea)
+	from  vasa.token_balances_proposals_3 s, jsonb_to_recordset(s.token_balances) as items(amount numeric, symbol varchar,  "rawAmount" numeric, contract_address bytea)
 )
 , balance_all_days AS (
     SELECT  d.hour_,
@@ -54,4 +54,4 @@ with hours AS (
     INNER JOIN hours d ON b.ts <= d.hour_ AND d.hour_ < b.next_hour -- Yields an observation for every day after the first transfer until the next day with transfer
     )
 
-    select * from balance_all_days;
+    select * from balance_all_days where balance >   0.0001;
