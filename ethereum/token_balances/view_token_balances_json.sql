@@ -10,10 +10,10 @@ with hours AS (
 	symbol as token,
 	amount,
 	lead(ts, 1, now()) OVER (PARTITION BY contract_address, address ORDER BY ts) AS next_hour
-	from  vasa.token_balances_proposals_3 s, jsonb_to_recordset(s.token_balances) as items(amount numeric, symbol varchar,  "rawAmount" numeric, contract_address bytea)
+	from  vasa.token_balances_proposal_3 s, jsonb_to_recordset(s.token_balances) as items(amount numeric, symbol varchar,  "rawAmount" numeric, contract_address bytea)
 )
 , balance_all_days AS (
-    SELECT  d.hour_,
+    SELECT  d.hour_ ts ,
             token,
             sum(amount) AS balance
     FROM token_balances_updated  b
@@ -42,10 +42,10 @@ with hours AS (
 	symbol as token,
 	amount,
 	lead(ts, 1, now()) OVER (PARTITION BY contract_address, address ORDER BY ts) AS next_hour
-	from  vasa.token_balances_proposals_3 s, jsonb_to_recordset(s.token_balances) as items(amount numeric, symbol varchar,  "rawAmount" numeric, contract_address bytea)
+	from  vasa.token_balances_proposal_3 s, jsonb_to_recordset(s.token_balances) as items(amount numeric, symbol varchar,  "rawAmount" numeric, contract_address bytea)
 )
 , balance_all_days AS (
-    SELECT  d.hour_,
+    SELECT  d.hour_ ts ,
             address,
             b.token::text as symbol,
             b.contract_address,

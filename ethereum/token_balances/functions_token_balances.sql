@@ -34,6 +34,7 @@ with hours AS (
     )
 
     select * from balance_all_days
+where balance >   0.0001
    ;
 end;
 $$
@@ -81,6 +82,7 @@ with hours AS (
     )
 
     select * from balance_all_days
+where balance >   0.0001
    ;
 end;
 $$
@@ -127,6 +129,105 @@ with hours AS (
     )
 
     select * from balance_all_days
+where balance >   0.0001
+   ;
+end;
+$$
+   ;
+
+
+
+  create or replace function vasa.token_balance_per_address_json_version(from_ timestamptz,until_ timestamptz,  address_ bytea)
+   	returns table (
+		time_ timestamptz,
+		address__ bytea,
+		token__ varchar,
+		balance__ numeric
+	)
+   language plpgsql
+  as
+$$
+declare
+-- variable declaration
+begin
+RETURN QUERY
+with hours AS (
+    SELECT generate_series(from_::timestamptz, until_::timestamptz, '1 hour') AS hour_
+    )
+, token_balances_updated as (
+	select
+	ts,
+	address,
+	contract_address,
+	symbol as token,
+	amount,
+
+	lead(ts, 1, now()) OVER (PARTITION BY contract_address, address ORDER BY ts) AS next_hour
+	from  vasa.token_balances_proposal_3 s, jsonb_to_recordset(s.token_balances) as items(amount numeric, symbol varchar,  "rawAmount" numeric, contract_address bytea)
+
+	where address = address_
+)
+, balance_all_days AS (
+    SELECT  d.hour_ as time_,
+    address,
+     token
+      ,      sum(amount) AS balance
+    FROM token_balances_updated  b
+    INNER JOIN hours d ON b.ts <= d.hour_ AND d.hour_ < b.next_hour
+    group by 1,2,3
+    )
+
+    select * from balance_all_days
+where balance >   0.0001
+   ;
+end;
+$$
+   ;
+
+
+
+
+  create or replace function vasa.token_balance_per_address_json_version(from_ timestamptz,until_ timestamptz,  address_ bytea)
+   	returns table (
+		time_ timestamptz,
+		address__ bytea,
+		token__ varchar,
+		balance__ numeric
+	)
+   language plpgsql
+  as
+$$
+declare
+-- variable declaration
+begin
+RETURN QUERY
+with hours AS (
+    SELECT generate_series(from_::timestamptz, until_::timestamptz, '1 hour') AS hour_
+    )
+, token_balances_updated as (
+	select
+	ts,
+	address,
+	contract_address,
+	symbol as token,
+	amount,
+
+	lead(ts, 1, now()) OVER (PARTITION BY contract_address, address ORDER BY ts) AS next_hour
+	from  vasa.token_balances_proposal_2
+	where address = address_
+)
+, balance_all_days AS (
+    SELECT  d.hour_ as time_,
+    address,
+     token
+      ,      sum(amount) AS balance
+    FROM token_balances_updated  b
+    INNER JOIN hours d ON b.ts <= d.hour_ AND d.hour_ < b.next_hour
+    group by 1,2,3
+    )
+
+    select * from balance_all_days
+where balance >   0.0001
    ;
 end;
 $$

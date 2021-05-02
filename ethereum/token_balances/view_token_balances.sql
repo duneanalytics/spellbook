@@ -47,7 +47,7 @@ with hours AS (
 	from  vasa.token_balances_proposal_2
 )
 , balance_all_days AS (
-    SELECT  d.hour_,
+    SELECT  d.hour_ ts,
             token,
             sum(amount) AS balance
     FROM token_balances_updated  b
