@@ -13,7 +13,7 @@ def get_random_token_balances_from_db(conn_string_pg):
     :return: Pandas dataframe with the token name, address, contract address and balance
     """
     connection = pg.connect(conn_string_pg )
-    dataframe = psql.read_sql("""SELECT ts, cast(address as varchar) as address, cast(contract_address as varchar) as contract_address, balance  FROM vasa.balances_per_hour order by RANDOM() LIMIT 10; """, connection)
+    dataframe = psql.read_sql("""SELECT ts, cast(address as varchar) as address, cast(contract_address as varchar) as contract_address, balance  FROM vasa.balances_per_hour WHERE TS> '2021-05-01'::timestamptz order by RANDOM() LIMIT 10; """, connection)
     return dataframe
 
 
