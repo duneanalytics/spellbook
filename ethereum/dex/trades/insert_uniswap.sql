@@ -147,7 +147,6 @@ WITH rows AS (
             uniswap_v3."Pair_evt_Swap" t
         INNER JOIN uniswap_v3."Factory_evt_PoolCreated" f ON f.pool = t.contract_address
 
-        )
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
