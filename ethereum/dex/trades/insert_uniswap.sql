@@ -100,7 +100,6 @@ WITH rows AS (
         INNER JOIN uniswap. "Factory_evt_NewExchange" f ON f.exchange = t.contract_address
 
         UNION ALL
-
         -- Uniswap v2
         SELECT
             t.evt_block_time AS block_time,
@@ -114,7 +113,7 @@ WITH rows AS (
             NULL::numeric AS usd_amount,
             CASE WHEN "amount0Out" = 0 THEN f.token1 ELSE f.token0 END AS token_a_address,
             CASE WHEN "amount0In" = 0 THEN f.token1 ELSE f.token0 END AS token_b_address,
-            t.contract_address exchange_contract_address,
+            t.contract_address as exchange_contract_address,
             t.evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             t.evt_index
@@ -123,7 +122,31 @@ WITH rows AS (
         INNER JOIN uniswap_v2."Factory_evt_PairCreated" f ON f.pair = t.contract_address
         WHERE t.contract_address NOT IN (
             '\xed9c854cb02de75ce4c9bba992828d6cb7fd5c71', -- remove WETH-UBOMB wash trading pair
-            '\x854373387e41371ac6e307a1f29603c6fa10d872'  -- remove FEG/ETH token pair
+            '\x854373387e41371ac6e307a1f29603c6fa10d872' ) -- remove FEG/ETH token pair
+
+        
+        UNION ALL
+        --Uniswap v3
+        SELECT
+            t.evt_block_time AS block_time,
+            'Uniswap' AS project,
+            '3' AS version,
+            'DEX' AS category,
+            t."recipient" AS trader_a,
+            NULL::bytea AS trader_b,
+            abs(amount0) AS token_a_amount_raw,
+            abs(amount1) AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            f.token0,
+            f.token1,
+            t.contract_address as exchange_contract_address,
+            t.evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            t.evt_index
+        FROM
+            uniswap_v3."Pair_evt_Swap"
+        INNER JOIN uniswap_v3."Factory_evt_PoolCreated" f ON f.pool = t.contract_address
+
         )
     ) dexs
     INNER JOIN ethereum.transactions tx
