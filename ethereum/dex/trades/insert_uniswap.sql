@@ -113,7 +113,7 @@ WITH rows AS (
             NULL::numeric AS usd_amount,
             CASE WHEN "amount0Out" = 0 THEN f.token1 ELSE f.token0 END AS token_a_address,
             CASE WHEN "amount0In" = 0 THEN f.token1 ELSE f.token0 END AS token_b_address,
-            t.contract_address as exchange_contract_address,
+            t.contract_address AS exchange_contract_address,
             t.evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             t.evt_index
