@@ -137,14 +137,14 @@ WITH rows AS (
             abs(amount0) AS token_a_amount_raw,
             abs(amount1) AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            f.token0,
-            f.token1,
+            f.token0 AS token_a_address,
+            f.token1 END AS token_b_address,
             t.contract_address as exchange_contract_address,
             t.evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             t.evt_index
         FROM
-            uniswap_v3."Pair_evt_Swap"
+            uniswap_v3."Pair_evt_Swap" t
         INNER JOIN uniswap_v3."Factory_evt_PoolCreated" f ON f.pool = t.contract_address
 
         )
