@@ -108,3 +108,22 @@ CREATE OR replace FUNCTION load_token_balances_batch_excluding_usdt(limit_ int) 
    order by symbol, contract_address 
    limit limit_;
 END $$;
+
+-- these are too big to do in one go, must be handled separately
+select load_token_balances('\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'::bytea, date_trunc('hour', now() - interval '1 hour')); -- usdc
+select load_token_balances('\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea, date_trunc('hour', now() - interval '1 hour')); -- weth
+select load_token_balances('\xdac17f958d2ee523a2206206994597c13d831ec7'::bytea, date_trunc('hour', now() - interval '1 hour')); -- usdt
+
+-- For everything else do in batches of 100
+-- There are 800~ erc20.tokens 
+select load_token_balances_batch_excluding_usdt(100); -- 1
+select load_token_balances_batch_excluding_usdt(100); -- 2
+select load_token_balances_batch_excluding_usdt(100); -- 3
+select load_token_balances_batch_excluding_usdt(100); -- 4
+select load_token_balances_batch_excluding_usdt(100); -- 5
+select load_token_balances_batch_excluding_usdt(100); -- 6
+select load_token_balances_batch_excluding_usdt(100); -- 7
+select load_token_balances_batch_excluding_usdt(100); -- 8
+select load_token_balances_batch_excluding_usdt(100); -- 9
+
+
