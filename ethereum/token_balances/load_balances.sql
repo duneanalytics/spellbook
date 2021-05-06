@@ -101,3 +101,10 @@ GET DIAGNOSTICS _row_count = ROW_COUNT;
   RAISE NOTICE 'INSERTED %', _row_count;
 END $$;
 
+CREATE OR replace FUNCTION load_token_balances_batch_excluding_usdt(limit_ int) RETURNS void language plpgsql AS $$ DECLARE BEGIN
+   perform load_token_balances(contract_address, date_trunc('hour', now() - interval '1 hour')) 
+   from erc20.tokens 
+   where symbol not in ('USDC', 'WETH', 'USDT') and contract_address not in (select distinct token_address from token_balances)
+   order by symbol, contract_address 
+   limit limit_;
+END $$;
