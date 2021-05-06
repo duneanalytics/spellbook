@@ -182,7 +182,7 @@ WHERE NOT EXISTS (
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
-    SELECT dex.insert_uniswap(
+    SELECT dex.insert_airswap(
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='airswap'),
         (SELECT now()),
         (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='airswap')),
