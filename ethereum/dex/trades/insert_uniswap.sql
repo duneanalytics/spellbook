@@ -53,7 +53,7 @@ WITH rows AS (
         tx."to" as tx_to,
         trace_address,
         evt_index,
-        row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
+        row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
         -- Uniswap v1 TokenPurchase
         SELECT
@@ -124,7 +124,7 @@ WITH rows AS (
             '\xed9c854cb02de75ce4c9bba992828d6cb7fd5c71', -- remove WETH-UBOMB wash trading pair
             '\x854373387e41371ac6e307a1f29603c6fa10d872' ) -- remove FEG/ETH token pair
 
-        
+
         UNION ALL
         --Uniswap v3
         SELECT

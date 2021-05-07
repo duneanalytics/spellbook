@@ -53,7 +53,7 @@ WITH rows AS (
         tx."to" as tx_to,
         trace_address,
         evt_index,
-        row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
+        row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
         SELECT
             oi.block_time,
@@ -170,7 +170,7 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2017-01-01'
     AND block_time <= '2018-01-01'
-    AND project = '1inch' 
+    AND project = '1inch'
 );
 
 -- fill 2018
