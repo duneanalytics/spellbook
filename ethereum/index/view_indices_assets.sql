@@ -148,6 +148,5 @@ CREATE OR REPLACE VIEW index.view_indices_assets (Index, project, asset, asset_a
 ('YPIE'     ::text, 'pieDAO'    ::text,    'PICKLE'     ::text,   '\x429881672b9ae42b8eba0e26cd9c73711b891ca5'::bytea),
 ('YPIE'     ::text, 'pieDAO'    ::text,    'AKRO'	    ::text,   '\x8ab7404063ec4dbcfd4598215992dc3f8ec853d7'::bytea),
 ('YPIE'     ::text, 'pieDAO'    ::text,    'YFI'	    ::text,   '\x0bc529c00c6401aef6d220be8c6ea1667f6ad93e'::bytea),
-('YPIE'     ::text, 'pieDAO'    ::text,    'SUSHI'	    ::text,   '\x6b3595068778dd592e39a122f4f5a5cf09c90fe2'::bytea),
-
+('YPIE'     ::text, 'pieDAO'    ::text,    'SUSHI'	    ::text,   '\x6b3595068778dd592e39a122f4f5a5cf09c90fe2'::bytea)
 ;
