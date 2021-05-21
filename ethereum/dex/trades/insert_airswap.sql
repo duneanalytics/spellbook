@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION dex.insert_balancer(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+CREATE OR REPLACE FUNCTION dex.insert_airswap(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -55,48 +55,43 @@ WITH rows AS (
         evt_index,
         row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
     FROM (
-        -- V1
         SELECT
-            t.evt_block_time AS block_time,
-            'Balancer' AS project,
-            '1' AS version,
-            'DEX' AS category,
-            NULL::bytea AS trader_a, -- this relies on the outer query coalescing to tx."from"
-            NULL::bytea AS trader_b,
-            t."tokenAmountOut" AS token_a_amount_raw,
-            t."tokenAmountIn" AS token_b_amount_raw,
-            NULL::numeric AS usd_amount,
-            t."tokenOut" token_a_address,
-            t."tokenIn" token_b_address,
-            t.contract_address exchange_contract_address,
-            t.evt_tx_hash AS tx_hash,
-            NULL::integer[] AS trace_address,
-            t.evt_index
-        FROM
-            balancer."BPool_evt_LOG_SWAP" t
-        INNER JOIN balancer."BFactory_evt_LOG_NEW_POOL" f ON f.pool = t.contract_address
-
+            evt_block_time as block_time,
+            'airswap' as project,
+            'light' as version,
+            'DEX' as category,
+            "senderWallet" as trader_a, --define taker as trader a
+            "signerWallet" as trader_b, --define maker as trader b
+            "senderAmount" as token_a_amount_raw,
+            "signerAmount" as token_b_amount_raw,
+            "senderToken" as token_a_address,
+            "signerToken" as token_b_address,
+            contract_address as exchange_contract_address,
+            evt_tx_hash as tx_hash,
+            NULL::integer[] as trace_address,
+            NULL::numeric as usd_amount,
+            evt_index
+        FROM airswap."Light_evt_Swap"
+        
         UNION ALL
-
-        -- V2
+        
         SELECT
-            t.evt_block_time AS block_time,
-            'Balancer' AS project,
-            '2' AS version,
-            'DEX' AS category,
-            NULL::bytea AS trader_a, -- this relies on the outer query coalescing to tx."from"
-            NULL::bytea AS trader_b,
-            t."amountOut" AS token_a_amount_raw,
-            t."amountIn" AS token_b_amount_raw,
-            NULL::numeric AS usd_amount,
-            t."tokenOut" AS token_a_address,
-            t."tokenIn" AS token_b_address,
-            t."poolId" AS exchange_contract_address,
-            t.evt_tx_hash AS tx_hash,
-            NULL::integer[] AS trace_address,
-            t.evt_index
-        FROM
-            balancer_v2."Vault_evt_Swap" t
+            evt_block_time as block_time,
+            'airswap' as project,
+            'swap' as version,
+            'DEX' as category,
+            "senderWallet" as trader_a, --define taker as trader a
+            "signerWallet" as trader_b, --define maker as trader b
+            "senderAmount" as token_a_amount_raw,
+            "signerAmount" as token_b_amount_raw,
+            "senderToken" as token_a_address,
+            "signerToken" as token_b_address,
+            contract_address as exchange_contract_address,
+            evt_tx_hash as tx_hash,
+            NULL::integer[] as trace_address,
+            NULL::numeric as usd_amount,
+            evt_index
+        FROM airswap."swap_evt_Swap"
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
@@ -116,6 +111,7 @@ WITH rows AS (
         AND pb.minute < end_ts
     WHERE dexs.block_time >= start_ts
     AND dexs.block_time < end_ts
+
     ON CONFLICT DO NOTHING
     RETURNING 1
 )
@@ -124,8 +120,38 @@ RETURN r;
 END
 $function$;
 
+--fill 2018
+SELECT dex.insert_airswap(
+    '2018-01-01',
+    '2019-01-01',
+    (SELECT max(number) FROM ethereum.blocks WHERE time < '2018-01-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2019-01-01')
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.trades
+    WHERE block_time > '2018-01-01'
+    AND block_time <= '2019-01-01'
+    AND project = 'airswap'
+);
+
+--fill 2019
+SELECT dex.insert_airswap(
+    '2019-01-01',
+    '2020-01-01',
+    (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-01-01')
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.trades
+    WHERE block_time > '2019-01-01'
+    AND block_time <= '2020-01-01'
+    AND project = 'airswap'
+);
+
 -- fill 2020
-SELECT dex.insert_balancer(
+SELECT dex.insert_airswap(
     '2020-01-01',
     '2021-01-01',
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
@@ -136,11 +162,11 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2020-01-01'
     AND block_time <= '2021-01-01'
-    AND project = 'Balancer'
+    AND project = 'airswap'
 );
 
 -- fill 2021
-SELECT dex.insert_balancer(
+SELECT dex.insert_airswap(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
@@ -151,15 +177,15 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2021-01-01'
     AND block_time <= now()
-    AND project = 'Balancer'
+    AND project = 'airswap'
 );
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
-    SELECT dex.insert_balancer(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Balancer'),
+    SELECT dex.insert_airswap(
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='airswap'),
         (SELECT now()),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Balancer')),
+        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='airswap')),
         (SELECT MAX(number) FROM ethereum.blocks));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

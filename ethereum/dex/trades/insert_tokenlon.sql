@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION dex.insert_uniswap(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+CREATE OR REPLACE FUNCTION dex.insert_tokenlon_dex(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -55,98 +55,68 @@ WITH rows AS (
         evt_index,
         row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
     FROM (
-        -- Uniswap v1 TokenPurchase
+        -- Tokenlon V4
         SELECT
-            t.evt_block_time AS block_time,
-            'Uniswap' AS project,
-            '1' AS version,
+            evt_block_time AS block_time,
+            'Tokenlon' AS project,
+            '4' AS version,
             'DEX' AS category,
-            buyer AS trader_a,
-            NULL::bytea AS trader_b,
-            tokens_bought token_a_amount_raw,
-            eth_sold token_b_amount_raw,
+            "takerAddress" AS trader_a,
+            "makerAddress" AS trader_b,
+            "takerAssetFilledAmount" AS token_a_amount_raw,
+            "makerAssetFilledAmount" AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            f.token AS token_a_address,
-            '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea AS token_b_address, --Using WETH for easier joining with USD price table
-            t.contract_address exchange_contract_address,
-            t.evt_tx_hash AS tx_hash,
+            substring("takerAssetData" for 20 from 17) AS token_a_address,
+            substring("makerAssetData" for 20 from 17) AS token_b_address,
+            contract_address AS exchange_contract_address,
+            evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
-            t.evt_index
-        FROM
-            uniswap. "Exchange_evt_TokenPurchase" t
-        INNER JOIN uniswap. "Factory_evt_NewExchange" f ON f.exchange = t.contract_address
+            evt_index
+        FROM zeroex_v2."Exchange2.1_evt_Fill" 
+        WHERE "feeRecipientAddress" IN ('\x6f7ae872e995f98fcd2a7d3ba17b7ddfb884305f'::BYTEA,'\xb9e29984fe50602e7a619662ebed4f90d93824c7'::BYTEA)
 
         UNION ALL
 
-        -- Uniswap v1 EthPurchase
+        -- Tokenlon V5
         SELECT
-            t.evt_block_time AS block_time,
-            'Uniswap' AS project,
-            '1' AS version,
+            evt_block_time AS block_time,
+            'Tokenlon' AS project,
+            '5' AS version,
             'DEX' AS category,
-            buyer AS trader_a,
-            NULL::bytea AS trader_b,
-            eth_bought token_a_amount_raw,
-            tokens_sold token_b_amount_raw,
+            "takerAddress" AS trader_a,
+            "makerAddress" AS trader_b,
+            "takerAssetFilledAmount" AS token_a_amount_raw,
+            "makerAssetFilledAmount" AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea token_a_address, --Using WETH for easier joining with USD price table
-            f.token AS token_b_address,
-            t.contract_address exchange_contract_address,
-            t.evt_tx_hash AS tx_hash,
+            substring("takerAssetData" for 20 from 17) AS token_a_address,
+            substring("makerAssetData" for 20 from 17) AS token_b_address,
+            contract_address AS exchange_contract_address,
+            evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
-            t.evt_index
-        FROM
-            uniswap. "Exchange_evt_EthPurchase" t
-        INNER JOIN uniswap. "Factory_evt_NewExchange" f ON f.exchange = t.contract_address
+            evt_index
+        FROM zeroex_v2."Exchange2.1_evt_Fill" 
+        WHERE "takerAddress" IN ('\x8d90113a1e286a5ab3e496fbd1853f265e5913c6'::BYTEA)
 
         UNION ALL
-        -- Uniswap v2
-        SELECT
-            t.evt_block_time AS block_time,
-            'Uniswap' AS project,
-            '2' AS version,
-            'DEX' AS category,
-            t."to" AS trader_a,
-            NULL::bytea AS trader_b,
-            CASE WHEN "amount0Out" = 0 THEN "amount1Out" ELSE "amount0Out" END AS token_a_amount_raw,
-            CASE WHEN "amount0In" = 0 THEN "amount1In" ELSE "amount0In" END AS token_b_amount_raw,
-            NULL::numeric AS usd_amount,
-            CASE WHEN "amount0Out" = 0 THEN f.token1 ELSE f.token0 END AS token_a_address,
-            CASE WHEN "amount0In" = 0 THEN f.token1 ELSE f.token0 END AS token_b_address,
-            t.contract_address AS exchange_contract_address,
-            t.evt_tx_hash AS tx_hash,
-            NULL::integer[] AS trace_address,
-            t.evt_index
-        FROM
-            uniswap_v2."Pair_evt_Swap" t
-        INNER JOIN uniswap_v2."Factory_evt_PairCreated" f ON f.pair = t.contract_address
-        WHERE t.contract_address NOT IN (
-            '\xed9c854cb02de75ce4c9bba992828d6cb7fd5c71', -- remove WETH-UBOMB wash trading pair
-            '\x854373387e41371ac6e307a1f29603c6fa10d872' ) -- remove FEG/ETH token pair
 
-        
-        UNION ALL
-        --Uniswap v3
+        -- Tokenlon V5
         SELECT
-            t.evt_block_time AS block_time,
-            'Uniswap' AS project,
-            '3' AS version,
+            evt_block_time AS block_time,
+            'Tokenlon' AS project,
+            '5' AS version,
             'DEX' AS category,
-            t."recipient" AS trader_a,
-            NULL::bytea AS trader_b,
-            abs(amount0) AS token_a_amount_raw,
-            abs(amount1) AS token_b_amount_raw,
+            "userAddr" AS trader_a,
+            "makerAddr" AS trader_b,
+            "takerAssetAmount" AS token_a_amount_raw,
+            "makerAssetAmount" AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            f.token0 AS token_a_address,
-            f.token1 AS token_b_address,
-            t.contract_address as exchange_contract_address,
-            t.evt_tx_hash AS tx_hash,
+            "takerAssetAddr" AS token_a_address,
+            "makerAssetAddr" AS token_b_address,
+            contract_address AS exchange_contract_address,
+            evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
-            t.evt_index
-        FROM
-            uniswap_v3."Pair_evt_Swap" t
-        INNER JOIN uniswap_v3."Factory_evt_PoolCreated" f ON f.pool = t.contract_address
-
+            evt_index
+        FROM tokenlon_v2."AMMWrapper_evt_Swapped"
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
@@ -166,7 +136,6 @@ WITH rows AS (
         AND pb.minute < end_ts
     WHERE dexs.block_time >= start_ts
     AND dexs.block_time < end_ts
-
     ON CONFLICT DO NOTHING
     RETURNING 1
 )
@@ -176,7 +145,7 @@ END
 $function$;
 
 -- fill 2019
-SELECT dex.insert_uniswap(
+SELECT dex.insert_tokenlon_dex(
     '2019-01-01',
     '2020-01-01',
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'),
@@ -187,11 +156,11 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2019-01-01'
     AND block_time <= '2020-01-01'
-    AND project = 'Uniswap'
+    AND project = 'Tokenlon'
 );
 
 -- fill 2020
-SELECT dex.insert_uniswap(
+SELECT dex.insert_tokenlon_dex(
     '2020-01-01',
     '2021-01-01',
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
@@ -202,11 +171,11 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2020-01-01'
     AND block_time <= '2021-01-01'
-    AND project = 'Uniswap'
+    AND project = 'Tokenlon'
 );
 
 -- fill 2021
-SELECT dex.insert_uniswap(
+SELECT dex.insert_tokenlon_dex(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
@@ -217,15 +186,15 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2021-01-01'
     AND block_time <= now()
-    AND project = 'Uniswap'
+    AND project = 'Tokenlon'
 );
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
-    SELECT dex.insert_uniswap(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Uniswap'),
+    SELECT dex.insert_tokenlon_dex(
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project = 'Tokenlon'),
         (SELECT now()),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Uniswap')),
+        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project = 'Tokenlon')),
         (SELECT MAX(number) FROM ethereum.blocks));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
