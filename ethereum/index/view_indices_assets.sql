@@ -20,6 +20,10 @@ CREATE OR REPLACE VIEW index.view_indices_assets (Index, project, asset, asset_a
 ('CC10'     ::text, 'Indexed'   ::text,    'AAVE'	    ::text,   '\x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9'::bytea),
 ('CC10'     ::text, 'Indexed'   ::text,    'UNI'	    ::text,   '\x1f9840a85d5af5bf1d1762f925bdaddc4201f984'::bytea),
 ('CC10'     ::text, 'Indexed'   ::text,    'OMG'	    ::text,   '\xd26114cd6ee289accf82350c8d8487fedb8a0c07'::bytea),
+('CC10'     ::text, 'Indexed'   ::text,    'BAT'	    ::text,   '\x0d8775f648430679a709e98d2b0cb6250d2887ef'::bytea),
+('CC10'     ::text, 'Indexed'   ::text,    'REN'	    ::text,   '\x408e41876cccdc0f92210600ef50372656052a38'::bytea),
+('CC10'     ::text, 'Indexed'   ::text,    'KNC'	    ::text,   '\xdd974d5c2e2928dea5f71b9825b8b646686bd200'::bytea),
+('CC10'     ::text, 'Indexed'   ::text,    'ZRX'	    ::text,   '\xe41d2489571d322189246dafa5ebde1f4699f498'::bytea),
 ('CGI'      ::text, 'IndexCoop' ::text,    'WETH'	    ::text,   '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea),
 ('CGI'      ::text, 'IndexCoop' ::text,    'WBTC'	    ::text,   '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599'::bytea),
 ('CGI'      ::text, 'IndexCoop' ::text,    'wDGLD'	    ::text,   '\x123151402076fc819B7564510989e475c9cD93CA'::bytea),
@@ -43,6 +47,10 @@ CREATE OR REPLACE VIEW index.view_indices_assets (Index, project, asset, asset_a
 ('DEFI5'    ::text, 'Indexed'   ::text,    'SNX'	    ::text,   '\xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f'::bytea),
 ('DEFI5'    ::text, 'Indexed'   ::text,    'COMP'	    ::text,   '\xc00e94cb662c3520282e6f5717214004a7f26888'::bytea),
 ('DEFI5'    ::text, 'Indexed'   ::text,    'CRV'	    ::text,   '\xd533a949740bb3306d119cc777fa900ba034cd52'::bytea),
+('DEFI5'    ::text, 'Indexed'   ::text,    'YFI'	    ::text,   '\x0bc529c00c6401aef6d220be8c6ea1667f6ad93e'::bytea),
+('DEFI5'    ::text, 'Indexed'   ::text,    'MKR'	    ::text,   '\x9f8f72aa9304c8b593d555f12ef6589cc3a579a2'::bytea),
+('DEFI5'    ::text, 'Indexed'   ::text,    'KNC'	    ::text,   '\xdd974d5c2e2928dea5f71b9825b8b646686bd200'::bytea),
+('DEFI5'    ::text, 'Indexed'   ::text,    'ZRX'	    ::text,   '\xe41d2489571d322189246dafa5ebde1f4699f498'::bytea),
 ('DEGEN'    ::text, 'Indexed'   ::text,    'RUNE'	    ::text,   '\x3155ba85d5f96b2d030a4966af206230e46849cb'::bytea),
 ('DEGEN'    ::text, 'Indexed'   ::text,    'REN'	    ::text,   '\x408e41876cccdc0f92210600ef50372656052a38'::bytea),
 ('DEGEN'    ::text, 'Indexed'   ::text,    'RSR'	    ::text,   '\x8762db106b2c2a0bccb3a80d1ed41273552616e8'::bytea),
@@ -148,5 +156,10 @@ CREATE OR REPLACE VIEW index.view_indices_assets (Index, project, asset, asset_a
 ('YPIE'     ::text, 'pieDAO'    ::text,    'PICKLE'     ::text,   '\x429881672b9ae42b8eba0e26cd9c73711b891ca5'::bytea),
 ('YPIE'     ::text, 'pieDAO'    ::text,    'AKRO'	    ::text,   '\x8ab7404063ec4dbcfd4598215992dc3f8ec853d7'::bytea),
 ('YPIE'     ::text, 'pieDAO'    ::text,    'YFI'	    ::text,   '\x0bc529c00c6401aef6d220be8c6ea1667f6ad93e'::bytea),
-('YPIE'     ::text, 'pieDAO'    ::text,    'SUSHI'	    ::text,   '\x6b3595068778dd592e39a122f4f5a5cf09c90fe2'::bytea)
+('YPIE'     ::text, 'pieDAO'    ::text,    'SUSHI'	    ::text,   '\x6b3595068778dd592e39a122f4f5a5cf09c90fe2'::bytea),
+('FFF'      ::text, 'Indexed'   ::text,    'WETH'	    ::text,   '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea),
+('FFF'      ::text, 'Indexed'   ::text,    'WBTC'	    ::text,   '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599'::bytea),
+('FFF'      ::text, 'Indexed'   ::text,    'DEFI5'	    ::text,   '\xfa6de2697d59e88ed7fc4dfe5a33dac43565ea41'::bytea),
+('FFF'      ::text, 'Indexed'   ::text,    'CC10'	    ::text,   '\x17ac188e09a7890a1844e5e65471fe8b0ccfadf3'::bytea),
+('FFF'      ::text, 'Indexed'   ::text,    'DEGEN'	    ::text,   '\x126c121f99e1e211df2e5f8de2d96fa36647c855'::bytea)
 ;
