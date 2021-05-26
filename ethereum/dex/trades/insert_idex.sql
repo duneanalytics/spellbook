@@ -107,6 +107,36 @@ RETURN r;
 END
 $function$;
 
+-- fill 2017
+SELECT dex.insert_idex(
+    '2017-01-01',
+    '2018-01-01',
+    (SELECT max(number) FROM ethereum.blocks WHERE time < '2017-01-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2018-01-01')
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.trades
+    WHERE block_time > '2017-01-01'
+    AND block_time <= '2018-01-01'
+    AND project = 'IDEX'
+);
+
+-- fill 2018
+SELECT dex.insert_idex(
+    '2018-01-01',
+    '2019-01-01',
+    (SELECT max(number) FROM ethereum.blocks WHERE time < '2018-01-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2019-01-01')
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.trades
+    WHERE block_time > '2018-01-01'
+    AND block_time <= '2019-01-01'
+    AND project = 'IDEX'
+);
+
 -- fill 2019
 SELECT dex.insert_idex(
     '2019-01-01',
