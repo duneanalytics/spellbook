@@ -199,6 +199,7 @@ WITH rows AS (
         AND pb.minute < end_ts
     WHERE dexs.block_time >= start_ts
     AND dexs.block_time < end_ts
+    ORDER BY project
     ON CONFLICT DO NOTHING
     RETURNING 1
 )
