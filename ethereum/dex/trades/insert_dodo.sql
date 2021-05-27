@@ -213,6 +213,27 @@ WITH rows AS (
         FROM
             dodo."DPP_evt_DODOSwap"
         WHERE trader <> '\xa356867fdcea8e71aeaf87805808803806231fdc'
+
+        -- dodov2 dsp
+        SELECT
+            evt_block_time AS block_time,
+            'dodo' AS project,
+            '2' AS version,
+            'DEX' AS category,
+            trader AS trader_a,
+            receiver AS trader_b,
+            "fromAmount" AS token_a_amount_raw,
+            "toAmount" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            "fromToken" AS token_a_address,
+            "toToken" AS token_b_address,
+            contract_address AS exchange_contract_address,
+            evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index
+        FROM
+            dodo."DSP_evt_DODOSwap"
+        WHERE trader <> '\xa356867fdcea8e71aeaf87805808803806231fdc'
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
