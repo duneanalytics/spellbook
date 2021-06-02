@@ -1,4 +1,4 @@
-CREATE TABLE lending.repay (
+CREATE TABLE IF NOT EXISTS lending.repay (
     project text NOT NULL,
     version text,
     block_time timestamptz NOT NULL,
@@ -67,7 +67,7 @@ WITH repays AS (
         ) aave
 
         UNION ALL
-        
+
         -- AAVE 2
         SELECT
             'Aave' AS project,
