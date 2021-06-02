@@ -1,4 +1,4 @@
-CREATE TABLE lending.borrow (
+CREATE TABLE IF NOT EXISTS lending.borrow (
     project text NOT NULL,
     version text,
     block_time timestamptz NOT NULL,
@@ -64,10 +64,10 @@ WITH borrow AS (
             WHERE evt_block_time >= start_ts
             AND evt_block_time < end_ts
         ) aave
-       
 
-        UNION ALL        
-        
+
+        UNION ALL
+
         -- Aave V2
         SELECT
             'Aave' AS project,
@@ -95,7 +95,7 @@ WITH borrow AS (
             AND evt_block_time < end_ts
         ) aave_v2
 
-        UNION ALL        
+        UNION ALL
 
         -- Compound
         SELECT

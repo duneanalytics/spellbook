@@ -1,4 +1,4 @@
-CREATE TABLE lending.collateral_change (
+CREATE TABLE IF NOT EXISTS lending.collateral_change (
     project text NOT NULL,
     version text,
     block_time timestamptz NOT NULL,
@@ -112,7 +112,7 @@ WITH collateral_change AS (
 
         UNION ALL
         --Aave 2 liquidation calls
-        SELECT    
+        SELECT
             'Aave' AS project,
             '2' AS version,
             evt_block_number AS block_number,
