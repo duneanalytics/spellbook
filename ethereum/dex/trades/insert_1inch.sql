@@ -137,13 +137,125 @@ WITH rows AS (
         AND tx.block_time < end_ts
         AND tx.block_number >= start_block
         AND tx.block_number < end_block
-    LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
-    LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
-    LEFT JOIN prices.usd pa ON pa.minute = date_trunc('minute', dexs.block_time)
+    LEFT JOIN (
+        SELECT contract_address, decimals FROM erc20.tokens UNION
+
+        SELECT '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', 18 UNION -- ETH
+        SELECT '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', 18 UNION -- WETH
+        SELECT '\x5e74c9036fb86bd7ecdcb084a0673efc32ea31cb', 18 UNION -- sETH
+        SELECT '\x3a3a65aab0dd2a17e3f1947ba16138cd37d08c04', 18 UNION -- aETH
+        SELECT '\xc0829421c1d260bd3cb3e0f06cfe2d52db2ce315', 18 UNION -- BETH
+
+        SELECT '\xeb4c2781e4eba804ce9a9803c67d0893436bb27d', 8 UNION -- renBTC
+        SELECT '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599', 8 UNION -- WBTC
+        SELECT '\xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6', 18 UNION -- sBTC
+
+        SELECT '\xdac17f958d2ee523a2206206994597c13d831ec7', 6 UNION -- USDT
+        SELECT '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', 6 UNION -- USDC
+        SELECT '\x89d24a6b4ccb1b6faa2625fe562bdd9a23260359', 18 UNION -- SAI
+        SELECT '\x6b175474e89094c44da98b954eedeac495271d0f', 18 UNION -- DAI
+        SELECT '\x0000000000085d4780B73119b644AE5ecd22b376', 18 UNION -- TUSD
+        SELECT '\x309627af60f0926daa6041b8279484312f2bf060', 18 UNION -- USDB
+        SELECT '\x8E870D67F660D95d5be530380D0eC0bd388289E1', 18 UNION -- PAX
+        SELECT '\x57ab1e02fee23774580c119740129eac7081e9d3', 18 UNION -- sUSD
+        SELECT '\x57Ab1ec28D129707052df4dF418D58a2D46d5f51', 18 -- sUSD
+    ) erc20a ON erc20a.contract_address = dexs.token_a_address
+    LEFT JOIN (
+        SELECT contract_address, decimals FROM erc20.tokens UNION
+
+        SELECT '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', 18 UNION -- ETH
+        SELECT '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', 18 UNION -- WETH
+        SELECT '\x5e74c9036fb86bd7ecdcb084a0673efc32ea31cb', 18 UNION -- sETH
+        SELECT '\x3a3a65aab0dd2a17e3f1947ba16138cd37d08c04', 18 UNION -- aETH
+        SELECT '\xc0829421c1d260bd3cb3e0f06cfe2d52db2ce315', 18 UNION -- BETH
+
+        SELECT '\xeb4c2781e4eba804ce9a9803c67d0893436bb27d', 8 UNION -- renBTC
+        SELECT '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599', 8 UNION -- WBTC
+        SELECT '\xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6', 18 UNION -- sBTC
+
+        SELECT '\xdac17f958d2ee523a2206206994597c13d831ec7', 6 UNION -- USDT
+        SELECT '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', 6 UNION -- USDC
+        SELECT '\x89d24a6b4ccb1b6faa2625fe562bdd9a23260359', 18 UNION -- SAI
+        SELECT '\x6b175474e89094c44da98b954eedeac495271d0f', 18 UNION -- DAI
+        SELECT '\x0000000000085d4780B73119b644AE5ecd22b376', 18 UNION -- TUSD
+        SELECT '\x309627af60f0926daa6041b8279484312f2bf060', 18 UNION -- USDB
+        SELECT '\x8E870D67F660D95d5be530380D0eC0bd388289E1', 18 UNION -- PAX
+        SELECT '\x57ab1e02fee23774580c119740129eac7081e9d3', 18 UNION -- sUSD
+        SELECT '\x57Ab1ec28D129707052df4dF418D58a2D46d5f51', 18 -- sUSD
+    ) erc20b ON erc20b.contract_address = dexs.token_b_address
+    LEFT JOIN (
+        SELECT symbol, decimals, contract_address, price from prices.usd WHERE minute = date_trunc('minute', dexs.block_time)
+        
+        UNION
+
+        SELECT eth_table.symbol, eth_table.decimals, eth_table.contract_address, price from prices.layer1_usd p
+        LEFT JOIN (
+            SELECT 'ETH' as symbol, 18 as decimals, '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' as contract_address union all
+            SELECT 'WETH', 18, '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' UNION ALL
+            SELECT 'sETH', 18, '\x5e74c9036fb86bd7ecdcb084a0673efc32ea31cb' UNION ALL
+            SELECT 'aETH', 18, '\x3a3a65aab0dd2a17e3f1947ba16138cd37d08c04' UNION ALL
+            SELECT 'BETH', 18, '\xc0829421c1d260bd3cb3e0f06cfe2d52db2ce315'
+        ) eth_table ON true WHERE p.symbol = 'ETH' AND p.minute = date_trunc('minute', dexs.block_time)
+        
+        UNION 
+        
+        SELECT eth_table.symbol, eth_table.decimals, eth_table.contract_address, price from prices.layer1_usd p
+        LEFT JOIN (
+            SELECT 'renBTC' as symbol, 8 as decimals, '\xeb4c2781e4eba804ce9a9803c67d0893436bb27d' as contract_address union all
+            SELECT 'WBTC', 8, '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599' UNION ALL
+            SELECT 'sBTC', 18, '\xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6'
+        ) eth_table ON true WHERE p.symbol = 'BTC' AND p.minute = date_trunc('minute', dexs.block_time)
+
+        UNION
+
+        select 'USDT', 6, '\xdac17f958d2ee523a2206206994597c13d831ec7', 1 UNION
+        select 'USDC', 6, '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', 1 UNION
+        -- select 'SAI', 18, '\x89d24a6b4ccb1b6faa2625fe562bdd9a23260359', 1 UNION
+        select 'DAI', 18, '\x6b175474e89094c44da98b954eedeac495271d0f', 1 UNION
+        select 'TUSD', 18, '\x0000000000085d4780B73119b644AE5ecd22b376', 1 UNION
+        select 'USDB', 18, '\x309627af60f0926daa6041b8279484312f2bf060', 1 UNION
+        select 'PAX', 18, '\x8E870D67F660D95d5be530380D0eC0bd388289E1', 1 UNION
+        select 'sUSD', 18, '\x57ab1e02fee23774580c119740129eac7081e9d3', 1 UNION
+        select 'sUSD', 18, '\x57Ab1ec28D129707052df4dF418D58a2D46d5f51', 1
+    ) pa ON pa.minute = date_trunc('minute', dexs.block_time)
         AND pa.contract_address = dexs.token_a_address
         AND pa.minute >= start_ts
         AND pa.minute < end_ts
-    LEFT JOIN prices.usd pb ON pb.minute = date_trunc('minute', dexs.block_time)
+    LEFT JOIN (
+        SELECT symbol, decimals, contract_address, price from prices.usd WHERE minute = date_trunc('minute', dexs.block_time)
+        
+        UNION
+
+        SELECT eth_table.symbol, eth_table.decimals, eth_table.contract_address, price from prices.layer1_usd p
+        LEFT JOIN (
+            SELECT 'ETH' as symbol, 18 as decimals, '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' as contract_address union all
+            SELECT 'WETH', 18, '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' UNION ALL
+            SELECT 'sETH', 18, '\x5e74c9036fb86bd7ecdcb084a0673efc32ea31cb' UNION ALL
+            SELECT 'aETH', 18, '\x3a3a65aab0dd2a17e3f1947ba16138cd37d08c04' UNION ALL
+            SELECT 'BETH', 18, '\xc0829421c1d260bd3cb3e0f06cfe2d52db2ce315'
+        ) eth_table ON true WHERE p.symbol = 'ETH' AND p.minute = date_trunc('minute', dexs.block_time)
+        
+        UNION
+        
+        SELECT eth_table.symbol, eth_table.decimals, eth_table.contract_address, price from prices.layer1_usd p
+        LEFT JOIN (
+            SELECT 'renBTC' as symbol, 8 as decimals, '\xeb4c2781e4eba804ce9a9803c67d0893436bb27d' as contract_address union all
+            SELECT 'WBTC', 8, '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599' UNION ALL
+            SELECT 'sBTC', 18, '\xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6'
+        ) eth_table ON true WHERE p.symbol = 'BTC' AND p.minute = date_trunc('minute', dexs.block_time)
+
+        UNION
+
+        select 'USDT', 6, '\xdac17f958d2ee523a2206206994597c13d831ec7', 1 UNION
+        select 'USDC', 6, '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', 1 UNION
+        -- select 'SAI', 18, '\x89d24a6b4ccb1b6faa2625fe562bdd9a23260359', 1 UNION
+        select 'DAI', 18, '\x6b175474e89094c44da98b954eedeac495271d0f', 1 UNION
+        select 'TUSD', 18, '\x0000000000085d4780B73119b644AE5ecd22b376', 1 UNION
+        select 'USDB', 18, '\x309627af60f0926daa6041b8279484312f2bf060', 1 UNION
+        select 'PAX', 18, '\x8E870D67F660D95d5be530380D0eC0bd388289E1', 1 UNION
+        select 'sUSD', 18, '\x57ab1e02fee23774580c119740129eac7081e9d3', 1 UNION
+        select 'sUSD', 18, '\x57Ab1ec28D129707052df4dF418D58a2D46d5f51', 1
+    ) pb ON pb.minute = date_trunc('minute', dexs.block_time)
         AND pb.contract_address = dexs.token_b_address
         AND pb.minute >= start_ts
         AND pb.minute < end_ts
