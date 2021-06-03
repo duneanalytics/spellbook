@@ -238,8 +238,32 @@ WITH zeroex_tx_raw AS (
         join zeroex_tx on zeroex_tx.tx_hash = swap.evt_tx_hash
     		WHERE sender = '\xdef1c0ded9bec7f1a1670819833240f027b25eff'::BYTEA
     	),
+
+      direct_uniswapv3 AS (
+    		SELECT 	swap.evt_tx_hash AS tx_hash,
+    				swap.evt_index,
+            swap.contract_address,
+    				swap.evt_block_time AS block_time,
+    				swap.contract_address AS maker,
+    				LAST_VALUE(swap."recipient") OVER (PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
+    				pair.token1 AS taker_token,
+    				pair.token0 AS maker_token,
+            abs(swap."amount1") AS taker_token_amount_raw,
+            abs(swap."amount0") AS maker_token_amount_raw,
+    			 	'UniswapV3 Direct' AS type,
+            zeroex_tx.affiliate_address as affiliate_address,
+            TRUE AS swap_flag,
+            FALSE AS matcha_limit_order_flag
+    		FROM uniswap_v3."Pair_evt_Swap" swap
+    		LEFT JOIN uniswap_v3."Factory_evt_PoolCreated" pair ON pair.pool = swap.contract_address
+        join zeroex_tx on zeroex_tx.tx_hash = swap.evt_tx_hash
+    		WHERE sender = '\xdef1c0ded9bec7f1a1670819833240f027b25eff'::BYTEA
+    	),
+
     	all_tx AS (
           SELECT * FROM direct_uniswapv2
+          UNION ALL
+          SELECT * FROM direct_uniswapv3
           UNION ALL
           SELECT * FROM direct_sushiswap
           UNION ALL
