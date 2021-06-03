@@ -1,4 +1,4 @@
-CREATE TABLE dex.trades (
+CREATE TABLE dex.trades2 (
     block_time timestamptz NOT NULL,
     token_a_symbol text,
     token_b_symbol text,
@@ -28,7 +28,7 @@ LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
 WITH rows AS (
-    INSERT INTO dex.trades (
+    INSERT INTO dex.trades2 (
         block_time,
         token_a_symbol,
         token_b_symbol,
@@ -121,14 +121,14 @@ END
 $function$;
 
 
-CREATE UNIQUE INDEX IF NOT EXISTS dex_trades_tr_addr_uniq_idx ON dex.trades (tx_hash, trace_address, trade_id);
-CREATE UNIQUE INDEX IF NOT EXISTS dex_trades_evt_index_uniq_idx ON dex.trades (tx_hash, evt_index, trade_id);
-CREATE INDEX IF NOT EXISTS dex_trades_tx_from_idx ON dex.trades (tx_from);
-CREATE INDEX IF NOT EXISTS dex_trades_tx_to_idx ON dex.trades (tx_to);
-CREATE INDEX IF NOT EXISTS dex_trades_project_idx ON dex.trades (project);
-CREATE INDEX IF NOT EXISTS dex_trades_block_time_idx ON dex.trades USING BRIN (block_time);
-CREATE INDEX IF NOT EXISTS dex_trades_token_a_idx ON dex.trades (token_a_address);
-CREATE INDEX IF NOT EXISTS dex_trades_token_b_idx ON dex.trades (token_b_address);
+CREATE UNIQUE INDEX IF NOT EXISTS dex_trades_tr_addr_uniq_idx ON dex.trades2 (tx_hash, trace_address, trade_id);
+CREATE UNIQUE INDEX IF NOT EXISTS dex_trades_evt_index_uniq_idx ON dex.trades2 (tx_hash, evt_index, trade_id);
+CREATE INDEX IF NOT EXISTS dex_trades_tx_from_idx ON dex.trades2 (tx_from);
+CREATE INDEX IF NOT EXISTS dex_trades_tx_to_idx ON dex.trades2 (tx_to);
+CREATE INDEX IF NOT EXISTS dex_trades_project_idx ON dex.trades2 (project);
+CREATE INDEX IF NOT EXISTS dex_trades_block_time_idx ON dex.trades2 USING BRIN (block_time);
+CREATE INDEX IF NOT EXISTS dex_trades_token_a_idx ON dex.trades2 (token_a_address);
+CREATE INDEX IF NOT EXISTS dex_trades_token_b_idx ON dex.trades2 (token_b_address);
 
 -- fill 2017
 SELECT dex.insert_trades(
@@ -136,7 +136,7 @@ SELECT dex.insert_trades(
     '2018-01-01',
     (SELECT max(number) FROM xdai.blocks WHERE time < '2017-01-01'),
     (SELECT max(number) FROM xdai.blocks WHERE time <= '2018-01-01'))
-WHERE NOT EXISTS (SELECT * FROM dex.trades WHERE block_time > '2017-01-01' AND block_time <= '2018-01-01' LIMIT 1);
+WHERE NOT EXISTS (SELECT * FROM dex.trades2 WHERE block_time > '2017-01-01' AND block_time <= '2018-01-01' LIMIT 1);
 
 -- fill 2018
 SELECT dex.insert_trades(
@@ -144,7 +144,7 @@ SELECT dex.insert_trades(
     '2019-01-01',
     (SELECT max(number) FROM xdai.blocks WHERE time < '2018-01-01'),
     (SELECT max(number) FROM xdai.blocks WHERE time <= '2019-01-01'))
-WHERE NOT EXISTS (SELECT * FROM dex.trades WHERE block_time > '2018-01-01' AND block_time <= '2019-01-01' LIMIT 1);
+WHERE NOT EXISTS (SELECT * FROM dex.trades2 WHERE block_time > '2018-01-01' AND block_time <= '2019-01-01' LIMIT 1);
 
 -- fill 2019 H1
 SELECT dex.insert_trades(
@@ -152,7 +152,7 @@ SELECT dex.insert_trades(
     '2019-07-01',
     (SELECT max(number) FROM xdai.blocks WHERE time < '2019-01-01'),
     (SELECT max(number) FROM xdai.blocks WHERE time <= '2019-07-01'))
-WHERE NOT EXISTS (SELECT * FROM dex.trades WHERE block_time > '2019-01-01' AND block_time <= '2019-07-01' LIMIT 1);
+WHERE NOT EXISTS (SELECT * FROM dex.trades2 WHERE block_time > '2019-01-01' AND block_time <= '2019-07-01' LIMIT 1);
 
 -- fill 2019 H2
 SELECT dex.insert_trades(
@@ -160,7 +160,7 @@ SELECT dex.insert_trades(
     '2020-01-01',
     (SELECT max(number) FROM xdai.blocks WHERE time <= '2019-07-01'),
     (SELECT max(number) FROM xdai.blocks WHERE time < '2020-01-01'))
-WHERE NOT EXISTS (SELECT * FROM dex.trades WHERE block_time > '2019-07-01' AND block_time <= '2020-01-01' LIMIT 1);
+WHERE NOT EXISTS (SELECT * FROM dex.trades2 WHERE block_time > '2019-07-01' AND block_time <= '2020-01-01' LIMIT 1);
 
 -- fill 2020 H1
 SELECT dex.insert_trades(
@@ -168,7 +168,7 @@ SELECT dex.insert_trades(
     '2020-07-01',
     (SELECT max(number) FROM xdai.blocks WHERE time <= '2020-01-01'),
     (SELECT max(number) FROM xdai.blocks WHERE time <= '2020-07-01'))
-WHERE NOT EXISTS (SELECT * FROM dex.trades WHERE block_time > '2020-01-01' AND block_time <= '2020-07-01' LIMIT 1);
+WHERE NOT EXISTS (SELECT * FROM dex.trades2 WHERE block_time > '2020-01-01' AND block_time <= '2020-07-01' LIMIT 1);
 
 -- fill 2020 H2
 SELECT dex.insert_trades(
@@ -176,8 +176,8 @@ SELECT dex.insert_trades(
     '2021-01-01',
     (SELECT max(number) FROM xdai.blocks WHERE time <= '2020-07-01'),
     (SELECT max(number) FROM xdai.blocks WHERE time <= '2021-01-01'))
-WHERE NOT EXISTS (SELECT * FROM dex.trades WHERE block_time > '2020-07-01' AND block_time <= '2021-01-01' LIMIT 1);
+WHERE NOT EXISTS (SELECT * FROM dex.trades2 WHERE block_time > '2020-07-01' AND block_time <= '2021-01-01' LIMIT 1);
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('*/10 * * * *', $$SELECT dex.insert_trades((SELECT max(block_time) - interval '1 days' FROM dex.trades), (SELECT now()), (SELECT max(number) FROM xdai.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades)), (SELECT MAX(number) FROM xdai.blocks));$$)
+VALUES ('*/10 * * * *', $$SELECT dex.insert_trades((SELECT max(block_time) - interval '1 days' FROM dex.trades2), (SELECT now()), (SELECT max(number) FROM xdai.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades2)), (SELECT MAX(number) FROM xdai.blocks));$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

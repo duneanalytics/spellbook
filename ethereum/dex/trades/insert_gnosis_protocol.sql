@@ -3,7 +3,7 @@ LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
 WITH rows AS (
-    INSERT INTO dex.trades (
+    INSERT INTO dex.trades2 (
         block_time,
         token_a_symbol,
         token_b_symbol,
@@ -108,7 +108,7 @@ SELECT dex.insert_gnosis_protocol(
 )
 WHERE NOT EXISTS (
     SELECT *
-    FROM dex.trades
+    FROM dex.trades2
     WHERE block_time > '2020-01-01'
     AND block_time <= '2021-01-01'
     AND project = 'Gnosis Protocol'
@@ -123,7 +123,7 @@ SELECT dex.insert_gnosis_protocol(
 )
 WHERE NOT EXISTS (
     SELECT *
-    FROM dex.trades
+    FROM dex.trades2
     WHERE block_time > '2021-01-01'
     AND block_time <= now()
     AND project = 'Gnosis Protocol'
@@ -132,9 +132,9 @@ WHERE NOT EXISTS (
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
     SELECT dex.insert_gnosis_protocol(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Gnosis Protocol'),
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades2 WHERE project='Gnosis Protocol'),
         (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Gnosis Protocol')),
+        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades2 WHERE project='Gnosis Protocol')),
         SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes');
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

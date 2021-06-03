@@ -4,36 +4,36 @@ DROP MATERIALIZED VIEW IF EXISTS dex.view_token_prices;
 
 CREATE MATERIALIZED VIEW dex.view_token_prices AS (
     WITH tokens_in_prices_usd AS (
-        SELECT DISTINCT contract_address 
+        SELECT DISTINCT contract_address
         FROM prices.usd
         WHERE minute > now() - interval '10 minutes'
     ), dex_trades AS (
-        SELECT 
-            token_a_address as contract_address, 
+        SELECT
+            token_a_address as contract_address,
             usd_amount/token_a_amount as price,
             block_time
-        FROM dex.trades
+        FROM dex.trades2
         WHERE 1=1
         AND usd_amount  > 0
         AND category = 'DEX'
         AND token_a_amount > 0
         AND token_a_address NOT IN (SELECT contract_address FROM tokens_in_prices_usd)
-        
-        UNION ALL 
-        
-        SELECT 
-            token_b_address as contract_address, 
+
+        UNION ALL
+
+        SELECT
+            token_b_address as contract_address,
             usd_amount/token_b_amount as price,
             block_time
-        FROM dex.trades
+        FROM dex.trades2
         WHERE 1=1
         AND usd_amount  > 0
         AND category = 'DEX'
         AND token_b_amount > 0
         AND token_b_address NOT IN (SELECT contract_address FROM tokens_in_prices_usd)
-    ) 
+    )
 
-    SELECT 
+    SELECT
         date_trunc('hour', block_time) as hour,
         contract_address,
         (PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY price)) AS median_price,

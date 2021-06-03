@@ -17,5 +17,5 @@ SELECT
     tx_from,
     trace_address,
     evt_index
-FROM dex.trades
+FROM dex.trades2
 WHERE project = 'Balancer'
