@@ -72,7 +72,7 @@ WITH rows AS (
             evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             evt_index
-        FROM zeroex_v2."Exchange2.1_evt_Fill"
+        FROM zeroex_v2."Exchange2.1_evt_Fill" 
         WHERE "feeRecipientAddress" IN ('\x6f7ae872e995f98fcd2a7d3ba17b7ddfb884305f'::BYTEA,'\xb9e29984fe50602e7a619662ebed4f90d93824c7'::BYTEA)
 
         UNION ALL
@@ -94,7 +94,7 @@ WITH rows AS (
             evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             evt_index
-        FROM zeroex_v2."Exchange2.1_evt_Fill"
+        FROM zeroex_v2."Exchange2.1_evt_Fill" 
         WHERE "takerAddress" IN ('\x8d90113a1e286a5ab3e496fbd1853f265e5913c6'::BYTEA)
 
         UNION ALL
@@ -179,7 +179,7 @@ SELECT dex.insert_tokenlon_dex(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'
+    (SELECT max(number) FROM ethereum.blocks)
 )
 WHERE NOT EXISTS (
     SELECT *
@@ -193,8 +193,8 @@ INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
     SELECT dex.insert_tokenlon_dex(
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project = 'Tokenlon'),
-        (SELECT now() - interval '20 minutes'),
+        (SELECT now()),
         (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project = 'Tokenlon')),
-        SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes');
+        (SELECT MAX(number) FROM ethereum.blocks));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

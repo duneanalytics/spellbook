@@ -223,7 +223,7 @@ SELECT dex.insert_1inch(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'
+    (SELECT max(number) FROM ethereum.blocks)
 )
 WHERE NOT EXISTS (
     SELECT *
@@ -237,8 +237,8 @@ INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
     SELECT dex.insert_1inch(
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1inch'),
-        (SELECT now() - interval '20 minutes'),
+        (SELECT now()),
         (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1inch')),
-        SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes');
+        (SELECT MAX(number) FROM ethereum.blocks));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

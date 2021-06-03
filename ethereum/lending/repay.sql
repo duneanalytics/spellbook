@@ -203,7 +203,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS lending_repays_tr_addr_uniq_idx ON lending.rep
 CREATE UNIQUE INDEX IF NOT EXISTS lending_repays_evt_index_uniq_idx ON lending.repay (tx_hash, evt_index);
 CREATE INDEX IF NOT EXISTS lending_repays_block_time_idx ON lending.repay USING BRIN (block_time);
 
-SELECT lending.insert_repays('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes') WHERE NOT EXISTS (SELECT * FROM lending.repay LIMIT 1);
+SELECT lending.insert_repays('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks)) WHERE NOT EXISTS (SELECT * FROM lending.repay LIMIT 1);
 INSERT INTO cron.job (schedule, command)
-VALUES ('14 2 * * *', $$SELECT lending.insert_repays((SELECT max(block_time) - interval '2 days' FROM lending.repay), (SELECT now() - interval '20 minutes'), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM lending.repay)), SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes');$$)
+VALUES ('14 2 * * *', $$SELECT lending.insert_repays((SELECT max(block_time) - interval '2 days' FROM lending.repay), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM lending.repay)), (SELECT MAX(number) FROM ethereum.blocks));$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
