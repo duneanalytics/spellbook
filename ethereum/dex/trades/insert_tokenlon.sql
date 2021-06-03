@@ -53,14 +53,14 @@ WITH rows AS (
         tx."to" as tx_to,
         trace_address,
         evt_index,
-        row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
+        row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
         -- Tokenlon V4
         SELECT
             evt_block_time AS block_time,
             'Tokenlon' AS project,
             '4' AS version,
-            'DEX' AS category,
+            'Aggregator' AS category,
             "takerAddress" AS trader_a,
             "makerAddress" AS trader_b,
             "takerAssetFilledAmount" AS token_a_amount_raw,
@@ -82,7 +82,7 @@ WITH rows AS (
             evt_block_time AS block_time,
             'Tokenlon' AS project,
             '5' AS version,
-            'DEX' AS category,
+            'Aggregator' AS category,
             "takerAddress" AS trader_a,
             "makerAddress" AS trader_b,
             "takerAssetFilledAmount" AS token_a_amount_raw,
@@ -104,7 +104,7 @@ WITH rows AS (
             evt_block_time AS block_time,
             'Tokenlon' AS project,
             '5' AS version,
-            'DEX' AS category,
+            'Aggregator' AS category,
             "userAddr" AS trader_a,
             "makerAddr" AS trader_b,
             "takerAssetAmount" AS token_a_amount_raw,
