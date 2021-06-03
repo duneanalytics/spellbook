@@ -59,7 +59,7 @@ WITH rows AS (
         -- dodo v1 sell
         SELECT
             s.evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO' AS project,
             '1' AS version,
             'DEX' AS category,
             s.seller AS trader_a,
@@ -83,7 +83,7 @@ WITH rows AS (
         -- dodo v1 buy
         SELECT
             b.evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO' AS project,
             '1' AS version,
             'DEX' AS category,
             b.buyer AS trader_a,
@@ -107,7 +107,7 @@ WITH rows AS (
         -- dodov1 proxy01
         SELECT
             evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO' AS project,
             '1' AS version,
             'DEX' AS category,
             sender AS trader_a,
@@ -129,7 +129,7 @@ WITH rows AS (
         -- dodov1 proxy04
         SELECT
             evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO' AS project,
             '1' AS version,
             'DEX' AS category,
             sender AS trader_a,
@@ -151,7 +151,7 @@ WITH rows AS (
         -- dodov2 proxy02
         SELECT
             evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO' AS project,
             '2' AS version,
             'DEX' AS category,
             sender AS trader_a,
@@ -173,7 +173,7 @@ WITH rows AS (
         -- dodov2 dvm
         SELECT
             evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO' AS project,
             '2' AS version,
             'DEX' AS category,
             trader AS trader_a,
@@ -196,7 +196,7 @@ WITH rows AS (
         -- dodov2 dpp
         SELECT
             evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO' AS project,
             '2' AS version,
             'DEX' AS category,
             trader AS trader_a,
@@ -217,7 +217,7 @@ WITH rows AS (
         -- dodov2 dsp
         SELECT
             evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO' AS project,
             '2' AS version,
             'DEX' AS category,
             trader AS trader_a,
@@ -274,7 +274,7 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2020-01-01'
     AND block_time <= '2021-01-01'
-    AND project = 'dodo'
+    AND project = 'DODO'
 );
 
 -- fill 2021
@@ -289,15 +289,15 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2021-01-01'
     AND block_time <= now()
-    AND project = 'dodo'
+    AND project = 'DODO'
 );
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
     SELECT dex.insert_dodo(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='dodo'),
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='DODO'),
         (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='dodo')),
+        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='DODO')),
         SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes');
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
