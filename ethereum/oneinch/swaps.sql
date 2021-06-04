@@ -1,4 +1,4 @@
-CREATE TABLE oneinch.swaps2 (
+CREATE TABLE IF NOT EXISTS oneinch.swaps2 (
     tx_from bytea,
     tx_to bytea,
     from_token bytea,
