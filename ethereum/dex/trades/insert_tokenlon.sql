@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION dex.insert_dydx(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+CREATE OR REPLACE FUNCTION dex.insert_tokenlon_dex(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -55,71 +55,68 @@ WITH rows AS (
         evt_index,
         row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
-        -- dYdX Solo Margin v2
+        -- Tokenlon V4
         SELECT
             evt_block_time AS block_time,
-            'dYdX' AS project,
-            'Solo Margin v2' AS version,
-            'DEX' AS category,
-            "takerAccountOwner" AS trader_a,
-            "makerAccountOwner" AS trader_b,
-            abs(("takerOutputUpdate"->'deltaWei'->'value')::numeric)/2 AS token_a_amount_raw, --"takerOutputNumber"
-            abs(("takerInputUpdate"->'deltaWei'->'value')::numeric)/2 AS token_b_amount_raw, --"takerInputNumber"
+            'Tokenlon' AS project,
+            '4' AS version,
+            'Aggregator' AS category,
+            "takerAddress" AS trader_a,
+            "makerAddress" AS trader_b,
+            "takerAssetFilledAmount" AS token_a_amount_raw,
+            "makerAssetFilledAmount" AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            CASE
-                WHEN "outputMarket" = 0 THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
-                WHEN "outputMarket" = 1 THEN '\x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'::bytea
-                WHEN "outputMarket" = 2 THEN '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'::bytea
-                WHEN "outputMarket" = 3 THEN '\x6b175474e89094c44da98b954eedeac495271d0f'::bytea
-            END AS token_a_address,
-            CASE
-                WHEN "inputMarket" = 0 THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
-                WHEN "inputMarket" = 1 THEN '\x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'::bytea
-                WHEN "inputMarket" = 2 THEN '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'::bytea
-                WHEN "inputMarket" = 3 THEN '\x6b175474e89094c44da98b954eedeac495271d0f'::bytea
-            END AS token_b_address,
+            substring("takerAssetData" for 20 from 17) AS token_a_address,
+            substring("makerAssetData" for 20 from 17) AS token_b_address,
             contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             evt_index
-        FROM dydx."SoloMargin_evt_LogTrade"
+        FROM zeroex_v2."Exchange2.1_evt_Fill"
+        WHERE "feeRecipientAddress" IN ('\x6f7ae872e995f98fcd2a7d3ba17b7ddfb884305f'::BYTEA,'\xb9e29984fe50602e7a619662ebed4f90d93824c7'::BYTEA)
 
         UNION ALL
 
-        -- dYdX Perpetual
+        -- Tokenlon V5
         SELECT
             evt_block_time AS block_time,
-            'dYdX' AS project,
-            CASE
-                WHEN contract_address = '\x1c50c582c7066049C560Bca20416b1d9E0dfb003' THEN 'PLINK-USDC Perpetual'
-                WHEN contract_address = '\x07aBe965500A49370D331eCD613c7AC47dD6e547' THEN 'PBTC-USDC Perpetual'
-                WHEN contract_address = '\x09403FD14510F8196F7879eF514827CD76960B5d' THEN 'WETH-PUSD Perpetual'
-            END AS version,
-            'DEX' AS category,
-            maker AS trader_a,
-            taker AS trader_b,
-            "positionAmount" AS token_a_amount_raw,
-            "marginAmount" AS token_b_amount_raw,
-            CASE
-                WHEN contract_address = '\x09403FD14510F8196F7879eF514827CD76960B5d' THEN "positionAmount"/1e6
-                ELSE NULL::numeric
-            END AS usd_amount,
-            CASE
-                WHEN contract_address = '\x1c50c582c7066049C560Bca20416b1d9E0dfb003' THEN '\x514910771af9ca656af840dff83e8264ecf986ca'::bytea
-                WHEN contract_address = '\x07aBe965500A49370D331eCD613c7AC47dD6e547' THEN '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599'::bytea
-                WHEN contract_address = '\x09403FD14510F8196F7879eF514827CD76960B5d' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
-            END AS token_a_address,
-            CASE
-                WHEN contract_address = '\x1c50c582c7066049C560Bca20416b1d9E0dfb003' THEN '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'::bytea
-                WHEN contract_address = '\x07aBe965500A49370D331eCD613c7AC47dD6e547' THEN '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'::bytea
-                WHEN contract_address = '\x09403FD14510F8196F7879eF514827CD76960B5d' THEN NULL::bytea
-            END AS token_b_address,
+            'Tokenlon' AS project,
+            '5' AS version,
+            'Aggregator' AS category,
+            "takerAddress" AS trader_a,
+            "makerAddress" AS trader_b,
+            "takerAssetFilledAmount" AS token_a_amount_raw,
+            "makerAssetFilledAmount" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            substring("takerAssetData" for 20 from 17) AS token_a_address,
+            substring("makerAssetData" for 20 from 17) AS token_b_address,
             contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             evt_index
-        FROM dydx_perpetual."PerpetualV1_evt_LogTrade"
-        WHERE "isBuy"
+        FROM zeroex_v2."Exchange2.1_evt_Fill"
+        WHERE "takerAddress" IN ('\x8d90113a1e286a5ab3e496fbd1853f265e5913c6'::BYTEA)
+
+        UNION ALL
+
+        -- Tokenlon V5
+        SELECT
+            evt_block_time AS block_time,
+            'Tokenlon' AS project,
+            '5' AS version,
+            'Aggregator' AS category,
+            "userAddr" AS trader_a,
+            "makerAddr" AS trader_b,
+            "takerAssetAmount" AS token_a_amount_raw,
+            "makerAssetAmount" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            "takerAssetAddr" AS token_a_address,
+            "makerAssetAddr" AS token_b_address,
+            contract_address AS exchange_contract_address,
+            evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index
+        FROM tokenlon_v2."AMMWrapper_evt_Swapped"
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
@@ -148,7 +145,7 @@ END
 $function$;
 
 -- fill 2019
-SELECT dex.insert_dydx(
+SELECT dex.insert_tokenlon_dex(
     '2019-01-01',
     '2020-01-01',
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'),
@@ -159,11 +156,11 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2019-01-01'
     AND block_time <= '2020-01-01'
-    AND project = 'dYdX'
+    AND project = 'Tokenlon'
 );
 
 -- fill 2020
-SELECT dex.insert_dydx(
+SELECT dex.insert_tokenlon_dex(
     '2020-01-01',
     '2021-01-01',
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
@@ -174,11 +171,11 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2020-01-01'
     AND block_time <= '2021-01-01'
-    AND project = 'dYdX'
+    AND project = 'Tokenlon'
 );
 
 -- fill 2021
-SELECT dex.insert_dydx(
+SELECT dex.insert_tokenlon_dex(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
@@ -189,15 +186,15 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2021-01-01'
     AND block_time <= now()
-    AND project = 'dYdX'
+    AND project = 'Tokenlon'
 );
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
-    SELECT dex.insert_dydx(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='dYdX'),
+    SELECT dex.insert_tokenlon_dex(
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project = 'Tokenlon'),
         (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='dYdX')),
+        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project = 'Tokenlon')),
         SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes');
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

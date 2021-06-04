@@ -53,7 +53,7 @@ WITH rows AS (
         tx."to" as tx_to,
         trace_address,
         evt_index,
-        row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
+        row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
         --Curve
         SELECT
@@ -120,7 +120,7 @@ SELECT dex.insert_curve(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    (SELECT max(number) FROM ethereum.blocks)
+    SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'
 )
 WHERE NOT EXISTS (
     SELECT *
@@ -134,8 +134,8 @@ INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
     SELECT dex.insert_curve(
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Curve'),
-        (SELECT now()),
+        (SELECT now() - interval '20 minutes'),
         (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Curve')),
-        (SELECT MAX(number) FROM ethereum.blocks));
+        SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes');
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

@@ -53,7 +53,7 @@ WITH rows AS (
         tx."to" as tx_to,
         trace_address,
         evt_index,
-        row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
+        row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
         -- Uniswap v1 TokenPurchase
         SELECT
@@ -100,7 +100,6 @@ WITH rows AS (
         INNER JOIN uniswap. "Factory_evt_NewExchange" f ON f.exchange = t.contract_address
 
         UNION ALL
-
         -- Uniswap v2
         SELECT
             t.evt_block_time AS block_time,
@@ -114,14 +113,40 @@ WITH rows AS (
             NULL::numeric AS usd_amount,
             CASE WHEN "amount0Out" = 0 THEN f.token1 ELSE f.token0 END AS token_a_address,
             CASE WHEN "amount0In" = 0 THEN f.token1 ELSE f.token0 END AS token_b_address,
-            t.contract_address exchange_contract_address,
+            t.contract_address AS exchange_contract_address,
             t.evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             t.evt_index
         FROM
             uniswap_v2."Pair_evt_Swap" t
         INNER JOIN uniswap_v2."Factory_evt_PairCreated" f ON f.pair = t.contract_address
-        WHERE t.contract_address != '\xed9c854cb02de75ce4c9bba992828d6cb7fd5c71' --Remove WETH-UBOMB wash trading pair
+        WHERE t.contract_address NOT IN (
+            '\xed9c854cb02de75ce4c9bba992828d6cb7fd5c71', -- remove WETH-UBOMB wash trading pair
+            '\x854373387e41371ac6e307a1f29603c6fa10d872' ) -- remove FEG/ETH token pair
+
+
+        UNION ALL
+        --Uniswap v3
+        SELECT
+            t.evt_block_time AS block_time,
+            'Uniswap' AS project,
+            '3' AS version,
+            'DEX' AS category,
+            t."recipient" AS trader_a,
+            NULL::bytea AS trader_b,
+            abs(amount0) AS token_a_amount_raw,
+            abs(amount1) AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            f.token0 AS token_a_address,
+            f.token1 AS token_b_address,
+            t.contract_address as exchange_contract_address,
+            t.evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            t.evt_index
+        FROM
+            uniswap_v3."Pair_evt_Swap" t
+        INNER JOIN uniswap_v3."Factory_evt_PoolCreated" f ON f.pool = t.contract_address
+
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
@@ -185,7 +210,7 @@ SELECT dex.insert_uniswap(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    (SELECT max(number) FROM ethereum.blocks)
+    SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'
 )
 WHERE NOT EXISTS (
     SELECT *
@@ -199,8 +224,8 @@ INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
     SELECT dex.insert_uniswap(
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Uniswap'),
-        (SELECT now()),
+        (SELECT now() - interval '20 minutes'),
         (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Uniswap')),
-        (SELECT MAX(number) FROM ethereum.blocks));
+        (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

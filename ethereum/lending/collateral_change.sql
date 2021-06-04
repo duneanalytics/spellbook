@@ -1,4 +1,4 @@
-CREATE TABLE lending.collateral_change (
+CREATE TABLE IF NOT EXISTS lending.collateral_change (
     project text NOT NULL,
     version text,
     block_time timestamptz NOT NULL,
@@ -112,7 +112,7 @@ WITH collateral_change AS (
 
         UNION ALL
         --Aave 2 liquidation calls
-        SELECT    
+        SELECT
             'Aave' AS project,
             '2' AS version,
             evt_block_number AS block_number,
@@ -263,7 +263,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS lending_collateral_change_tr_addr_uniq_idx ON 
 CREATE UNIQUE INDEX IF NOT EXISTS lending_collateral_change_evt_index_uniq_idx ON lending.collateral_change (tx_hash, evt_index);
 CREATE INDEX IF NOT EXISTS lending_collateral_change_block_time_idx ON lending.collateral_change USING BRIN (block_time);
 
-SELECT lending.insert_collateral_changes('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks)) WHERE NOT EXISTS (SELECT * FROM lending.collateral_change LIMIT 1);
+SELECT lending.insert_collateral_changes('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes') WHERE NOT EXISTS (SELECT * FROM lending.collateral_change LIMIT 1);
 INSERT INTO cron.job (schedule, command)
-VALUES ('14 0 * * *', $$SELECT lending.insert_collateral_changes((SELECT max(block_time) - interval '2 days' FROM lending.collateral_change), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM lending.collateral_change)), (SELECT MAX(number) FROM ethereum.blocks));$$)
+VALUES ('14 0 * * *', $$SELECT lending.insert_collateral_changes((SELECT max(block_time) - interval '2 days' FROM lending.collateral_change), (SELECT now() - interval '20 minutes'), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM lending.collateral_change)), SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes');$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
