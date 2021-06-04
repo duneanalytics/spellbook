@@ -13,7 +13,7 @@ CREATE TABLE oneproto.swaps2 (
     evt_index integer
 );
 
-CREATE OR REPLACE FUNCTION oneproto.insert_swap(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+CREATE OR REPLACE FUNCTION oneproto.insert_swap2(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
