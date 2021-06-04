@@ -259,9 +259,9 @@ END
 $function$;
 
 
--- CREATE UNIQUE INDEX IF NOT EXISTS lending_collateral_change_tr_addr_uniq_idx ON lending.collateral_change (tx_hash, trace_address);
--- CREATE UNIQUE INDEX IF NOT EXISTS lending_collateral_change_evt_index_uniq_idx ON lending.collateral_change (tx_hash, evt_index);
--- CREATE INDEX IF NOT EXISTS lending_collateral_change_block_time_idx ON lending.collateral_change USING BRIN (block_time);
+CREATE UNIQUE INDEX IF NOT EXISTS lending_collateral_change_tr_addr_uniq_idx ON lending.collateral_change (tx_hash, trace_address);
+CREATE UNIQUE INDEX IF NOT EXISTS lending_collateral_change_evt_index_uniq_idx ON lending.collateral_change (tx_hash, evt_index);
+CREATE INDEX IF NOT EXISTS lending_collateral_change_block_time_idx ON lending.collateral_change USING BRIN (block_time);
 
 SELECT lending.insert_collateral_changes('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')) WHERE NOT EXISTS (SELECT * FROM lending.collateral_change2 LIMIT 1);
 -- INSERT INTO cron.job (schedule, command)
