@@ -83,19 +83,18 @@ WITH rows AS (
             'Tokenlon' AS project,
             '5' AS version,
             'Aggregator' AS category,
-            "takerAddress" AS trader_a,
-            "makerAddress" AS trader_b,
-            "takerAssetFilledAmount" AS token_a_amount_raw,
-            "makerAssetFilledAmount" AS token_b_amount_raw,
+            "userAddr" AS trader_a,
+            "makerAddr" AS trader_b,
+            "takerAssetAmount" AS token_a_amount_raw,
+            "makerAssetAmount" AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            substring("takerAssetData" for 20 from 17) AS token_a_address,
-            substring("makerAssetData" for 20 from 17) AS token_b_address,
+            "takerAssetAddr" AS token_a_address,
+            "makerAssetAddr" AS token_b_address,
             contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             evt_index
-        FROM zeroex_v2."Exchange2.1_evt_Fill"
-        WHERE "takerAddress" IN ('\x8d90113a1e286a5ab3e496fbd1853f265e5913c6'::BYTEA)
+        FROM tokenlon_v2."PMM_evt_FillOrder"
 
         UNION ALL
 
