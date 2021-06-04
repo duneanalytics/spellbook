@@ -207,5 +207,5 @@ $function$;
 
 SELECT lending.insert_borrow2('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')) WHERE NOT EXISTS (SELECT * FROM lending.borrow2 LIMIT 1);
 -- INSERT INTO cron.job (schedule, command)
--- VALUES ('14 1 * * *', $$SELECT lending.insert_borrow((SELECT max(block_time) - interval '2 days' FROM lending.borrow), (SELECT now() - interval '20 minutes'), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM lending.borrow)), SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes');$$)
+-- VALUES ('14 1 * * *', $$SELECT lending.insert_borrow((SELECT max(block_time) - interval '2 days' FROM lending.borrow), (SELECT now() - interval '20 minutes'), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM lending.borrow)), (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));$$)
 -- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
