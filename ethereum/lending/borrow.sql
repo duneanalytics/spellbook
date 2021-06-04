@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS lending.borrow (
+CREATE TABLE IF NOT EXISTS lending.borrow2 (
     project text NOT NULL,
     version text,
     block_time timestamptz NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS lending.borrow (
 );
 
 
-CREATE OR REPLACE FUNCTION lending.insert_borrow(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+CREATE OR REPLACE FUNCTION lending.insert_borrow2(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -162,7 +162,7 @@ WITH borrow AS (
     LEFT JOIN prices.usd p ON p.minute = date_trunc('minute', borrow.block_time) AND p.contract_address = borrow.asset_address AND p.minute >= start_ts AND p.minute < end_ts
 ),
 rows AS (
-    INSERT INTO lending.borrow (
+    INSERT INTO lending.borrow2 (
        project,
        version,
        block_time,
@@ -201,11 +201,11 @@ END
 $function$;
 
 
-CREATE UNIQUE INDEX IF NOT EXISTS lending_borrow_tr_addr_uniq_idx ON lending.borrow (tx_hash, trace_address);
-CREATE UNIQUE INDEX IF NOT EXISTS lending_borrow_evt_index_uniq_idx ON lending.borrow (tx_hash, evt_index);
-CREATE INDEX IF NOT EXISTS lending_borrow_block_time_idx ON lending.borrow USING BRIN (block_time);
+-- CREATE UNIQUE INDEX IF NOT EXISTS lending_borrow_tr_addr_uniq_idx ON lending.borrow (tx_hash, trace_address);
+-- CREATE UNIQUE INDEX IF NOT EXISTS lending_borrow_evt_index_uniq_idx ON lending.borrow (tx_hash, evt_index);
+-- CREATE INDEX IF NOT EXISTS lending_borrow_block_time_idx ON lending.borrow USING BRIN (block_time);
 
-SELECT lending.insert_borrow('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes') WHERE NOT EXISTS (SELECT * FROM lending.borrow LIMIT 1);
-INSERT INTO cron.job (schedule, command)
-VALUES ('14 1 * * *', $$SELECT lending.insert_borrow((SELECT max(block_time) - interval '2 days' FROM lending.borrow), (SELECT now() - interval '20 minutes'), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM lending.borrow)), SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes');$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+SELECT lending.insert_borrow2('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes') WHERE NOT EXISTS (SELECT * FROM lending.borrow2 LIMIT 1);
+-- INSERT INTO cron.job (schedule, command)
+-- VALUES ('14 1 * * *', $$SELECT lending.insert_borrow((SELECT max(block_time) - interval '2 days' FROM lending.borrow), (SELECT now() - interval '20 minutes'), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM lending.borrow)), SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes');$$)
+-- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
