@@ -199,7 +199,7 @@ $function$;
 -- CREATE INDEX IF NOT EXISTS oneproto_swaps_idx_tx_from ON oneproto.swaps (tx_from);
 
 -- backfill
-SELECT oneproto.insert_swap2('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes') WHERE NOT EXISTS (SELECT * FROM oneproto.swaps2 LIMIT 1);
+SELECT oneproto.insert_swap2('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')) WHERE NOT EXISTS (SELECT * FROM oneproto.swaps2 LIMIT 1);
 
 -- INSERT INTO cron.job (schedule, command)
 -- VALUES ('*/17 * * * *', $$SELECT oneproto.insert_swap((SELECT max(block_time) - interval '2 days' FROM oneproto.swaps), (SELECT now() - interval '20 minutes'), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM oneproto.swaps)), SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes');$$)
