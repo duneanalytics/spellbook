@@ -53,7 +53,7 @@ WITH rows AS (
         tx."to" as tx_to,
         trace_address,
         evt_index,
-        row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
+        row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
         -- 1inch LP
         SELECT
@@ -66,10 +66,10 @@ WITH rows AS (
             result AS token_a_amount_raw,
             amount AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            CASE WHEN "dstToken" = '\x0000000000000000000000000000000000000000' THEN 
+            CASE WHEN "dstToken" = '\x0000000000000000000000000000000000000000' THEN
                 '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'::bytea ELSE "dstToken"
             END AS token_a_address,
-            CASE WHEN "srcToken" = '\x0000000000000000000000000000000000000000' THEN 
+            CASE WHEN "srcToken" = '\x0000000000000000000000000000000000000000' THEN
                 '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'::bytea ELSE "srcToken"
             END AS token_b_address,
             contract_address AS exchange_contract_address,
@@ -124,7 +124,7 @@ SELECT dex.insert_1inch_lp(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-07-01'),
-    (SELECT max(number) FROM ethereum.blocks)
+    SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'
 )
 WHERE NOT EXISTS (
     SELECT *
@@ -138,8 +138,8 @@ INSERT INTO cron.job (schedule, command)
 VALUES ('*/12 * * * *', $$
     SELECT dex.insert_1inch_lp(
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1inch LP'),
-        (SELECT now()),
+        (SELECT now() - interval '20 minutes'),
         (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1inch LP')),
-        (SELECT MAX(number) FROM ethereum.blocks));
+        SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes');
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

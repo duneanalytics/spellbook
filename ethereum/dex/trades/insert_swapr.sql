@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION dex.insert_ddex(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+CREATE OR REPLACE FUNCTION dex.insert_swapr(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -55,33 +55,27 @@ WITH rows AS (
         evt_index,
         row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
-        --DDEX
+
+        -- Swapr
         SELECT
-            evt_block_time AS block_time,
-            'DDEX' AS project,
-            NULL AS version,
+            t.evt_block_time AS block_time,
+            'swapr' AS project,
+            '1' AS version,
             'DEX' AS category,
-            buyer AS trader_a,
-            CASE
-                WHEN buyer = maker
-                THEN taker ELSE maker
-            END AS trader_b,
-            "quoteAssetFilledAmount" AS token_a_amount_raw,
-            "baseAssetFilledAmount" AS token_b_amount_raw,
+            t."to" AS trader_a,
+            NULL::bytea AS trader_b,
+            CASE WHEN "amount0Out" = 0 THEN "amount1Out" ELSE "amount0Out" END AS token_a_amount_raw,
+            CASE WHEN "amount0In" = 0 THEN "amount1In" ELSE "amount0In" END AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            CASE
-                WHEN "addressSet"->>'quoteAsset' = '0x000000000000000000000000000000000000000e' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-                ELSE decode(substring(("addressSet"->'quoteAsset')::TEXT, 4,40), 'hex')
-            END AS token_a_address,
-            CASE
-                WHEN "addressSet"->>'baseAsset' = '0x000000000000000000000000000000000000000e' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-                ELSE decode(substring(("addressSet"->'baseAsset')::TEXT, 4,40), 'hex')
-            END AS token_b_address,
-            contract_address AS exchange_contract_address,
-            evt_tx_hash AS tx_hash,
+            CASE WHEN "amount0Out" = 0 THEN f.token1 ELSE f.token0 END AS token_a_address,
+            CASE WHEN "amount0In" = 0 THEN f.token1 ELSE f.token0 END AS token_b_address,
+            t.contract_address exchange_contract_address,
+            t.evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
-            evt_index AS evt_index
-        FROM hydroprotocol."Margin_evt_Match"
+            t.evt_index
+        FROM
+            swapr."Pair_evt_Swap" t
+        INNER JOIN swapr."Factory_evt_PairCreated" f ON f.pair = t.contract_address
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
@@ -109,53 +103,8 @@ RETURN r;
 END
 $function$;
 
--- fill 2019
-SELECT dex.insert_ddex(
-    '2019-01-01',
-    '2020-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-01-01')
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2019-01-01'
-    AND block_time <= '2020-01-01'
-    AND project = 'DDEX'
-);
-
--- fill 2020H1
-SELECT dex.insert_ddex(
-    '2020-01-01',
-    '2020-06-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-06-01')
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2020-01-01'
-    AND block_time <= '2020-06-01'
-    AND project = 'DDEX'
-);
-
--- fill 2020H2
-SELECT dex.insert_ddex(
-    '2020-06-01',
-    '2021-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-06-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2021-01-01')
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2020-06-01'
-    AND block_time <= '2021-01-01'
-    AND project = 'DDEX'
-);
-
 -- fill 2021
-SELECT dex.insert_ddex(
+SELECT dex.insert_swapr(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
@@ -166,15 +115,15 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2021-01-01'
     AND block_time <= now()
-    AND project = 'DDEX'
+    AND project = 'swapr'
 );
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
-    SELECT dex.insert_ddex(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='DDEX'),
-        (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='DDEX')),
+    SELECT dex.insert_swapr(
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='swapr'),
+        (SELECT now()),
+        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='swapr')),
         SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes');
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

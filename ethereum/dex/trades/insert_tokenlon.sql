@@ -53,14 +53,14 @@ WITH rows AS (
         tx."to" as tx_to,
         trace_address,
         evt_index,
-        row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
+        row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
         -- Tokenlon V4
         SELECT
             evt_block_time AS block_time,
             'Tokenlon' AS project,
             '4' AS version,
-            'DEX' AS category,
+            'Aggregator' AS category,
             "takerAddress" AS trader_a,
             "makerAddress" AS trader_b,
             "takerAssetFilledAmount" AS token_a_amount_raw,
@@ -72,7 +72,7 @@ WITH rows AS (
             evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             evt_index
-        FROM zeroex_v2."Exchange2.1_evt_Fill" 
+        FROM zeroex_v2."Exchange2.1_evt_Fill"
         WHERE "feeRecipientAddress" IN ('\x6f7ae872e995f98fcd2a7d3ba17b7ddfb884305f'::BYTEA,'\xb9e29984fe50602e7a619662ebed4f90d93824c7'::BYTEA)
 
         UNION ALL
@@ -82,7 +82,7 @@ WITH rows AS (
             evt_block_time AS block_time,
             'Tokenlon' AS project,
             '5' AS version,
-            'DEX' AS category,
+            'Aggregator' AS category,
             "takerAddress" AS trader_a,
             "makerAddress" AS trader_b,
             "takerAssetFilledAmount" AS token_a_amount_raw,
@@ -94,7 +94,7 @@ WITH rows AS (
             evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             evt_index
-        FROM zeroex_v2."Exchange2.1_evt_Fill" 
+        FROM zeroex_v2."Exchange2.1_evt_Fill"
         WHERE "takerAddress" IN ('\x8d90113a1e286a5ab3e496fbd1853f265e5913c6'::BYTEA)
 
         UNION ALL
@@ -104,7 +104,7 @@ WITH rows AS (
             evt_block_time AS block_time,
             'Tokenlon' AS project,
             '5' AS version,
-            'DEX' AS category,
+            'Aggregator' AS category,
             "userAddr" AS trader_a,
             "makerAddr" AS trader_b,
             "takerAssetAmount" AS token_a_amount_raw,
@@ -179,7 +179,7 @@ SELECT dex.insert_tokenlon_dex(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    (SELECT max(number) FROM ethereum.blocks)
+    SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'
 )
 WHERE NOT EXISTS (
     SELECT *
@@ -193,8 +193,8 @@ INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
     SELECT dex.insert_tokenlon_dex(
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project = 'Tokenlon'),
-        (SELECT now()),
+        (SELECT now() - interval '20 minutes'),
         (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project = 'Tokenlon')),
-        (SELECT MAX(number) FROM ethereum.blocks));
+        SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes');
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

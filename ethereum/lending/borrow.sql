@@ -1,4 +1,4 @@
-CREATE TABLE lending.borrow (
+CREATE TABLE IF NOT EXISTS lending.borrow (
     project text NOT NULL,
     version text,
     block_time timestamptz NOT NULL,
@@ -64,10 +64,10 @@ WITH borrow AS (
             WHERE evt_block_time >= start_ts
             AND evt_block_time < end_ts
         ) aave
-       
 
-        UNION ALL        
-        
+
+        UNION ALL
+
         -- Aave V2
         SELECT
             'Aave' AS project,
@@ -95,7 +95,7 @@ WITH borrow AS (
             AND evt_block_time < end_ts
         ) aave_v2
 
-        UNION ALL        
+        UNION ALL
 
         -- Compound
         SELECT
@@ -205,7 +205,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS lending_borrow_tr_addr_uniq_idx ON lending.bor
 CREATE UNIQUE INDEX IF NOT EXISTS lending_borrow_evt_index_uniq_idx ON lending.borrow (tx_hash, evt_index);
 CREATE INDEX IF NOT EXISTS lending_borrow_block_time_idx ON lending.borrow USING BRIN (block_time);
 
-SELECT lending.insert_borrow('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks)) WHERE NOT EXISTS (SELECT * FROM lending.borrow LIMIT 1);
+SELECT lending.insert_borrow('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes') WHERE NOT EXISTS (SELECT * FROM lending.borrow LIMIT 1);
 INSERT INTO cron.job (schedule, command)
-VALUES ('14 1 * * *', $$SELECT lending.insert_borrow((SELECT max(block_time) - interval '2 days' FROM lending.borrow), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM lending.borrow)), (SELECT MAX(number) FROM ethereum.blocks));$$)
+VALUES ('14 1 * * *', $$SELECT lending.insert_borrow((SELECT max(block_time) - interval '2 days' FROM lending.borrow), (SELECT now() - interval '20 minutes'), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM lending.borrow)), SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes');$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
