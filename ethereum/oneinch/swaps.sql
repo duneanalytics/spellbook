@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS oneinch.swaps (
+CREATE TABLE IF NOT EXISTS oneinchswaps2 (
     tx_from bytea,
     tx_to bytea,
     from_token bytea,
@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS oneinch.swaps (
     trace_address integer[]
 );
 
-CREATE OR REPLACE FUNCTION oneinch.insert_swap(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+CREATE OR REPLACE FUNCTION oneinch.insert_swap2(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -161,7 +161,7 @@ WITH swap AS (
     AND tmp.block_time < end_ts
 ),
 rows AS (
-    INSERT INTO oneinch.swaps (
+    INSERT INTO oneinchswaps2 (
         tx_from,
         tx_to,
         from_token,
@@ -199,14 +199,14 @@ RETURN r;
 END
 $function$;
 
-CREATE UNIQUE INDEX IF NOT EXISTS oneinch_swaps_unique_trace_address_idx_aea ON oneinch.swaps (tx_hash, trace_address);
-CREATE UNIQUE INDEX IF NOT EXISTS oneinch_swaps_unique_evt_index_idx ON oneinch.swaps (tx_hash, evt_index);
-CREATE INDEX IF NOT EXISTS oneinch_swaps_idx ON oneinch.swaps USING BRIN (block_time);
-CREATE INDEX IF NOT EXISTS oneinch_swaps_idx_tx_from ON oneinch.swaps (tx_from);
+-- CREATE UNIQUE INDEX IF NOT EXISTS oneinch_swaps_unique_trace_address_idx_aea ON oneinch.swaps (tx_hash, trace_address);
+-- CREATE UNIQUE INDEX IF NOT EXISTS oneinch_swaps_unique_evt_index_idx ON oneinch.swaps (tx_hash, evt_index);
+-- CREATE INDEX IF NOT EXISTS oneinch_swaps_idx ON oneinch.swaps USING BRIN (block_time);
+-- CREATE INDEX IF NOT EXISTS oneinch_swaps_idx_tx_from ON oneinch.swaps (tx_from);
 
 -- backfill
-SELECT oneinch.insert_swap('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')) WHERE NOT EXISTS (SELECT * FROM oneinch.swaps LIMIT 1);
+SELECT oneinch.insert_swap2('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')) WHERE NOT EXISTS (SELECT * FROM oneinchswaps2 LIMIT 1);
 
-INSERT INTO cron.job (schedule, command)
-VALUES ('*/15 * * * *', $$SELECT oneinch.insert_swap((SELECT max(block_time) - interval '2 days' FROM oneinch.swaps), (SELECT now() - interval '20 minutes'), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM oneinch.swaps)), (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+-- INSERT INTO cron.job (schedule, command)
+-- VALUES ('*/15 * * * *', $$SELECT oneinch.insert_swap((SELECT max(block_time) - interval '2 days' FROM oneinch.swaps), (SELECT now() - interval '20 minutes'), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM oneinch.swaps)), (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));$$)
+-- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
