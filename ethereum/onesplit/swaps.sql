@@ -1,4 +1,4 @@
-CREATE TABLE onesplit.swaps2 (
+CREATE TABLE onesplit.swaps (
     tx_from bytea,
     tx_to bytea,
     from_token bytea,
@@ -13,7 +13,7 @@ CREATE TABLE onesplit.swaps2 (
     contract_address bytea
 );
 
-CREATE OR REPLACE FUNCTION onesplit.insert_swap2(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+CREATE OR REPLACE FUNCTION onesplit.insert_swap(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -170,7 +170,7 @@ WHERE tmp.block_time >= start_ts
     AND tmp.block_time < end_ts
 ),
 rows AS (
-    INSERT INTO onesplit.swaps2 (
+    INSERT INTO onesplit.swaps (
         tx_from,
         tx_to,
         from_token,
@@ -206,13 +206,13 @@ RETURN r;
 END
 $function$;
 
--- CREATE UNIQUE INDEX IF NOT EXISTS oonesplit_swaps_unique_idx ON onesplit.swaps (tx_hash, trace_address);
--- CREATE INDEX IF NOT EXISTS onesplit_swaps_idx ON onesplit.swaps USING BRIN (block_time);
--- CREATE INDEX IF NOT EXISTS onesplit_swaps_idx_tx_from ON onesplit.swaps (tx_from);
+CREATE UNIQUE INDEX IF NOT EXISTS oonesplit_swaps_unique_idx ON onesplit.swaps (tx_hash, trace_address);
+CREATE INDEX IF NOT EXISTS onesplit_swaps_idx ON onesplit.swaps USING BRIN (block_time);
+CREATE INDEX IF NOT EXISTS onesplit_swaps_idx_tx_from ON onesplit.swaps (tx_from);
 
 --backfill
-SELECT onesplit.insert_swap2('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')) WHERE NOT EXISTS (SELECT * FROM onesplit.swaps2 LIMIT 1);
+SELECT onesplit.insert_swap('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')) WHERE NOT EXISTS (SELECT * FROM onesplit.swaps LIMIT 1);
 
--- INSERT INTO cron.job (schedule, command)
--- VALUES ('*/14 * * * *', $$SELECT onesplit.insert_swap((SELECT max(block_time) - interval '2 days' FROM onesplit.swaps), (SELECT now() - interval '20 minutes'), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM onesplit.swaps)), (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));$$)
--- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+INSERT INTO cron.job (schedule, command)
+VALUES ('*/14 * * * *', $$SELECT onesplit.insert_swap((SELECT max(block_time) - interval '2 days' FROM onesplit.swaps), (SELECT now() - interval '20 minutes'), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM onesplit.swaps)), (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));$$)
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
