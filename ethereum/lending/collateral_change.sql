@@ -264,6 +264,6 @@ CREATE UNIQUE INDEX IF NOT EXISTS lending_collateral_change_evt_index_uniq_idx O
 CREATE INDEX IF NOT EXISTS lending_collateral_change_block_time_idx ON lending.collateral_change USING BRIN (block_time);
 
 SELECT lending.insert_collateral_changes('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')) WHERE NOT EXISTS (SELECT * FROM lending.collateral_change2 LIMIT 1);
--- INSERT INTO cron.job (schedule, command)
--- VALUES ('14 0 * * *', $$SELECT lending.insert_collateral_changes((SELECT max(block_time) - interval '2 days' FROM lending.collateral_change), (SELECT now() - interval '20 minutes'), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM lending.collateral_change)), (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));$$)
--- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+INSERT INTO cron.job (schedule, command)
+VALUES ('14 0 * * *', $$SELECT lending.insert_collateral_changes((SELECT max(block_time) - interval '2 days' FROM lending.collateral_change), (SELECT now() - interval '20 minutes'), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM lending.collateral_change)), (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));$$)
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
