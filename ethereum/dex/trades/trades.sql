@@ -23,11 +23,11 @@ CREATE TABLE dex.trades2 (
     trade_id integer
 );
 
-CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS dex_trades_proj_tr_addr_uniq_idx ON dex.trades2 (project, tx_hash, trace_address, trade_id);
-CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS dex_trades_proj_evt_index_uniq_idx ON dex.trades2 (project, tx_hash, evt_index, trade_id);
-CREATE INDEX IF NOT EXISTS dex_trades_tx_from_idx ON dex.trades2 (tx_from);
-CREATE INDEX IF NOT EXISTS dex_trades_tx_to_idx ON dex.trades2 (tx_to);
-CREATE INDEX IF NOT EXISTS dex_trades_project_idx ON dex.trades2 (project);
-CREATE INDEX IF NOT EXISTS dex_trades_block_time_idx ON dex.trades2 USING BRIN (block_time);
-CREATE INDEX IF NOT EXISTS dex_trades_token_a_idx ON dex.trades2 (token_a_address);
-CREATE INDEX IF NOT EXISTS dex_trades_token_b_idx ON dex.trades2 (token_b_address);
+CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS dex_trades2_proj_tr_addr_uniq_idx ON dex.trades2 (project, tx_hash, trace_address, trade_id);
+CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS dex_trades2_proj_evt_index_uniq_idx ON dex.trades2 (project, tx_hash, evt_index, trade_id);
+CREATE INDEX IF NOT EXISTS dex_trades2_tx_from_idx ON dex.trades2 (tx_from);
+CREATE INDEX IF NOT EXISTS dex_trades2_tx_to_idx ON dex.trades2 (tx_to);
+CREATE INDEX IF NOT EXISTS dex_trades2_project_idx ON dex.trades2 (project);
+CREATE INDEX IF NOT EXISTS dex_trades2_block_time_idx ON dex.trades2 USING BRIN (block_time);
+CREATE INDEX IF NOT EXISTS dex_trades2_token_a_idx ON dex.trades2 (token_a_address);
+CREATE INDEX IF NOT EXISTS dex_trades2_token_b_idx ON dex.trades2 (token_b_address);

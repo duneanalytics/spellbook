@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION dex.insert_paraswap(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+CREATE OR REPLACE FUNCTION dex.insert2_paraswap(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -208,7 +208,7 @@ END
 $function$;
 
 -- fill 2019
-SELECT dex.insert_paraswap(
+SELECT dex.insert2_paraswap(
     '2019-11-01',
     '2020-01-01',
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-11-01'),
@@ -223,7 +223,7 @@ WHERE NOT EXISTS (
 );
 
 -- fill 2020
-SELECT dex.insert_paraswap(
+SELECT dex.insert2_paraswap(
     '2020-01-01',
     '2021-01-01',
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
@@ -238,7 +238,7 @@ WHERE NOT EXISTS (
 );
 
 -- fill 2021
-SELECT dex.insert_paraswap(
+SELECT dex.insert2_paraswap(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
@@ -254,7 +254,7 @@ WHERE NOT EXISTS (
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
-    SELECT dex.insert_paraswap(
+    SELECT dex.insert2_paraswap(
         (SELECT max(block_time) - interval '1 days' FROM dex.trades2 WHERE project='Paraswap'),
         (SELECT now()),
         (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades2 WHERE project='Paraswap')),
