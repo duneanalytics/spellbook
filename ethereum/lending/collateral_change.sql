@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS lending.collateral_change2 (
+CREATE TABLE IF NOT EXISTS lending.collateral_change (
     project text NOT NULL,
     version text,
     block_time timestamptz NOT NULL,
@@ -220,7 +220,7 @@ WITH collateral_change AS (
     LEFT JOIN prices.usd p ON p.minute = date_trunc('minute', collateral.block_time) AND p.contract_address = collateral.asset_address AND p.minute >= start_ts AND p.minute < end_ts
 ),
 rows AS (
-    INSERT INTO lending.collateral_change2 (
+    INSERT INTO lending.collateral_change (
        project,
        version,
        block_time,
@@ -263,7 +263,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS lending_collateral_change_tr_addr_uniq_idx ON 
 CREATE UNIQUE INDEX IF NOT EXISTS lending_collateral_change_evt_index_uniq_idx ON lending.collateral_change (tx_hash, evt_index);
 CREATE INDEX IF NOT EXISTS lending_collateral_change_block_time_idx ON lending.collateral_change USING BRIN (block_time);
 
-SELECT lending.insert_collateral_changes('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')) WHERE NOT EXISTS (SELECT * FROM lending.collateral_change2 LIMIT 1);
+SELECT lending.insert_collateral_changes('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')) WHERE NOT EXISTS (SELECT * FROM lending.collateral_change LIMIT 1);
 INSERT INTO cron.job (schedule, command)
 VALUES ('14 0 * * *', $$SELECT lending.insert_collateral_changes((SELECT max(block_time) - interval '2 days' FROM lending.collateral_change), (SELECT now() - interval '20 minutes'), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM lending.collateral_change)), (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
