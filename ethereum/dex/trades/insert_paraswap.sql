@@ -53,7 +53,7 @@ WITH rows AS (
         tx."to" as tx_to,
         trace_address,
         evt_index,
-        row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY category) AS trade_id
+        row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address) AS trade_id
 
     FROM (
 
