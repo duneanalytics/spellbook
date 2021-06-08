@@ -210,13 +210,13 @@ SELECT dex.insert2_uniswap(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'
+    (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
 )
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.trades2
     WHERE block_time > '2021-01-01'
-    AND block_time <= now()
+    AND block_time <= now() - interval '20 minutes'
     AND project = 'Uniswap'
 );
 

@@ -179,13 +179,13 @@ SELECT dex.insert2_tokenlon_dex(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'
+    (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
 )
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.trades2
     WHERE block_time > '2021-01-01'
-    AND block_time <= now()
+    AND block_time <= now() - interval '20 minutes'
     AND project = 'Tokenlon'
 );
 
@@ -195,6 +195,6 @@ VALUES ('*/10 * * * *', $$
         (SELECT max(block_time) - interval '1 days' FROM dex.trades2 WHERE project = 'Tokenlon'),
         (SELECT now() - interval '20 minutes'),
         (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades2 WHERE project = 'Tokenlon')),
-        SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes');
+        (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
