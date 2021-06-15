@@ -3,8 +3,8 @@ SELECT
     'arbitrage bot' AS label,
     'dapp usage' AS type,
     'balancerlabs' AS author
-FROM dex.trades2 t1
-INNER JOIN dex.trades2 t2
+FROM dex.trades t1
+INNER JOIN dex.trades t2
 ON t1.tx_hash = t2.tx_hash
 AND t1.token_a_address = t2.token_b_address
 AND t1.token_b_address = t2.token_a_address
@@ -18,8 +18,8 @@ SELECT
     'arbitrage bot' AS label,
     'dapp usage' AS type,
     'balancerlabs' AS author
-FROM dex.trades2 t1
-INNER JOIN dex.trades2 t2
+FROM dex.trades t1
+INNER JOIN dex.trades t2
 ON t1.tx_hash = t2.tx_hash
 AND t1.token_a_address = t2.token_b_address
 AND t1.token_b_address = t2.token_a_address

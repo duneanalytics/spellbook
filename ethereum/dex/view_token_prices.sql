@@ -12,7 +12,7 @@ CREATE MATERIALIZED VIEW dex.view_token_prices AS (
             token_a_address as contract_address,
             usd_amount/token_a_amount as price,
             block_time
-        FROM dex.trades2
+        FROM dex.trades
         WHERE 1=1
         AND usd_amount  > 0
         AND category = 'DEX'
@@ -25,7 +25,7 @@ CREATE MATERIALIZED VIEW dex.view_token_prices AS (
             token_b_address as contract_address,
             usd_amount/token_b_amount as price,
             block_time
-        FROM dex.trades2
+        FROM dex.trades
         WHERE 1=1
         AND usd_amount  > 0
         AND category = 'DEX'

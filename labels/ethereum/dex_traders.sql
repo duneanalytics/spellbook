@@ -4,7 +4,7 @@ SELECT
     'dapp usage' AS type,
     'hagaetc' AS author
 FROM
-    dex.trades2
+    dex.trades
 WHERE
     block_time >= '{{timestamp}}'
 UNION
@@ -14,6 +14,6 @@ SELECT
     'dapp usage' AS type,
     'hagaetc' AS author
 FROM
-    dex.trades2
+    dex.trades
 WHERE
     block_time >= '{{timestamp}}';

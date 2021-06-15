@@ -3,7 +3,7 @@ LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
 WITH rows AS (
-    INSERT INTO dex.trades2 (
+    INSERT INTO dex.trades (
         block_time,
         token_a_symbol,
         token_b_symbol,
@@ -156,7 +156,7 @@ SELECT dex.insert2_dydx(
 )
 WHERE NOT EXISTS (
     SELECT *
-    FROM dex.trades2
+    FROM dex.trades
     WHERE block_time > '2019-01-01'
     AND block_time <= '2020-01-01'
     AND project = 'dYdX'
@@ -171,7 +171,7 @@ SELECT dex.insert2_dydx(
 )
 WHERE NOT EXISTS (
     SELECT *
-    FROM dex.trades2
+    FROM dex.trades
     WHERE block_time > '2020-01-01'
     AND block_time <= '2021-01-01'
     AND project = 'dYdX'
@@ -186,7 +186,7 @@ SELECT dex.insert2_dydx(
 )
 WHERE NOT EXISTS (
     SELECT *
-    FROM dex.trades2
+    FROM dex.trades
     WHERE block_time > '2021-01-01'
     AND block_time <= now() - interval '20 minutes'
     AND project = 'dYdX'
@@ -195,9 +195,9 @@ WHERE NOT EXISTS (
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
     SELECT dex.insert2_dydx(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades2 WHERE project='dYdX'),
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='dYdX'),
         (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades2 WHERE project='dYdX')),
+        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='dYdX')),
         (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
