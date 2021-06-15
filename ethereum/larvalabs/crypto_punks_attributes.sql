@@ -1,11 +1,12 @@
-CREATE TABLE IF NOT EXISTS cryptopunks.CryptoPunks_Attributes
+CREATE TABLE IF NOT EXISTS larvalabs.crypto_punks_attributes
+(
 id SERIAL PRIMARY KEY,
 cp_type varchar,
 cp_attributes int,
 cp_accessories text[]
 );
 
-INSERT INTO cryptopunks.CryptoPunks_Attributes (id,cp_type,cp_attributes,cp_accessories)
+INSERT INTO larvalabs.crypto_punks_attributes (id,cp_type,cp_attributes,cp_accessories)
 VALUES
 ('0','Female','3','{"Green Eye Shadow","Earring","Blonde Bob"}'),
 ('1','Male','2','{"Smile","Mohawk"}'),
