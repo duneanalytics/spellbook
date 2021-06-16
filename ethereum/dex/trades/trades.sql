@@ -31,3 +31,4 @@ CREATE INDEX IF NOT EXISTS dex_trades_project_idx ON dex.trades (project);
 CREATE INDEX IF NOT EXISTS dex_trades_block_time_idx ON dex.trades USING BRIN (block_time);
 CREATE INDEX IF NOT EXISTS dex_trades_token_a_idx ON dex.trades (token_a_address);
 CREATE INDEX IF NOT EXISTS dex_trades_token_b_idx ON dex.trades (token_b_address);
+CREATE INDEX IF NOT EXISTS dex_trades_block_time_project_idx ON dex.trades (block_time, project);
