@@ -53,7 +53,7 @@ WITH rows AS (
         tx."to" as tx_to,
         trace_address,
         evt_index,
-        row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
+        row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
 
     FROM (
 
@@ -242,13 +242,13 @@ SELECT dex.insert_paraswap(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    SELECT MAX(number) FROM ethereum.blocks WHERE time < now() - interval '20 minutes'
+    (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
 )
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.trades
     WHERE block_time > '2021-01-01'
-    AND block_time <= now()
+    AND block_time <= now() - interval '20 minutes'
     AND project = 'Paraswap'
 );
 
@@ -258,6 +258,6 @@ VALUES ('*/10 * * * *', $$
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Paraswap'),
         (SELECT now()),
         (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Paraswap')),
-        SELECT MAX(number) FROM ethereum.blocks WHERE time < now() - interval '20 minutes');
+        (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
