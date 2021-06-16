@@ -559,3 +559,53 @@ SELECT
     NULL::integer[] AS trace_address,
     evt_index
 FROM curvefi."dai_usdc_usdt_evt_TokenExchange"
+
+UNION
+
+SELECT
+    evt_block_time AS block_time,
+    'Curve' AS project,
+    NULL::text AS version,
+    buyer AS trader_a,
+    NULL::bytea AS trader_b,
+    tokens_bought AS token_a_amount_raw,
+    tokens_sold AS token_b_amount_raw,
+    CASE
+        WHEN bought_id = 0 THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
+        WHEN bought_id = 1 THEN '\xae7ab96520de3a18e5e111b5eaab095312d7fe84'::bytea
+    END as token_a_address,
+    CASE
+        WHEN sold_id = 0 THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
+        WHEN sold_id = 1 THEN '\xae7ab96520de3a18e5e111b5eaab095312d7fe84'::bytea
+    END as token_b_address,
+    contract_address AS exchange_contract_address,
+    evt_tx_hash AS tx_hash,
+    NULL::integer[] AS trace_address,
+    evt_index
+FROM curvefi."steth_evt_TokenExchange"
+
+UNION
+
+SELECT
+    evt_block_time AS block_time,
+    'Curve' AS project,
+    '2' AS version,
+    buyer AS trader_a,
+    NULL::bytea AS trader_b,
+    tokens_bought AS token_a_amount_raw,
+    tokens_sold AS token_b_amount_raw,
+    CASE
+        WHEN bought_id = 0 THEN '\xdac17f958d2ee523a2206206994597c13d831ec7'::bytea
+        WHEN bought_id = 1 THEN '\xdac17f958d2ee523a2206206994597c13d831ec7'::bytea
+        WHEN bought_id = 2 THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
+    END as token_a_address,
+    CASE
+        WHEN sold_id = 0 THEN '\xdac17f958d2ee523a2206206994597c13d831ec7'::bytea
+        WHEN sold_id = 1 THEN '\xdac17f958d2ee523a2206206994597c13d831ec7'::bytea
+        WHEN sold_id = 2 THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
+    END as token_b_address,
+    contract_address AS exchange_contract_address,
+    evt_tx_hash AS tx_hash,
+    NULL::integer[] AS trace_address,
+    evt_index
+FROM curvefi."tricrypto_evt_TokenExchange"
