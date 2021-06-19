@@ -214,6 +214,8 @@ WITH rows AS (
             dodo."DPP_evt_DODOSwap"
         WHERE trader <> '\xa356867fdcea8e71aeaf87805808803806231fdc'
 
+        UNION ALL
+
         -- dodov2 dsp
         SELECT
             evt_block_time AS block_time,
@@ -282,13 +284,13 @@ SELECT dex.insert_dodo(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'
+    (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
 )
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.trades
     WHERE block_time > '2021-01-01'
-    AND block_time <= now()
+    AND block_time <= now() - interval '20 minutes'
     AND project = 'DODO'
 );
 
@@ -298,6 +300,6 @@ VALUES ('*/10 * * * *', $$
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='DODO'),
         (SELECT now() - interval '20 minutes'),
         (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='DODO')),
-        SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes');
+        (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
