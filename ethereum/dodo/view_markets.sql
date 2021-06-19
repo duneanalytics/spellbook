@@ -12,5 +12,7 @@ CREATE OR REPLACE VIEW dodo.view_markets (market_contract_address, base_token_sy
 ('\x8876819535b48b551c9e97ebc07332c7482b4b2d'::bytea, 'DODO'::text, 'USDT'::text, '\x43dfc4159d86f3a37a5a4b3d4580b888ad7d4ddd'::bytea, '\xdac17f958d2ee523a2206206994597c13d831ec7'::bytea),
 ('\x9d9793e1e18cdee6cf63818315d55244f73ec006'::bytea, 'FIN'::text, 'USDT'::text, '\x054f76beed60ab6dbeb23502178c52d6c5debe40'::bytea, '\xdac17f958d2ee523a2206206994597c13d831ec7'::bytea),
 ('\x94512fd4fb4feb63a6c0f4bedecc4a00ee260528'::bytea, 'AAVE'::text, 'USDC'::text, '\x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9'::bytea, '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'::bytea),
-('\x85f9569b69083c3e6aeffd301bb2c65606b5d575'::bytea, 'wCRES'::text, 'USDT'::text, '\xa0afaa285ce85974c3c881256cb7f225e3a1178a'::bytea, '\xdac17f958d2ee523a2206206994597c13d831ec7'::bytea)
+('\x85f9569b69083c3e6aeffd301bb2c65606b5d575'::bytea, 'wCRES'::text, 'USDT'::text, '\xa0afaa285ce85974c3c881256cb7f225e3a1178a'::bytea, '\xdac17f958d2ee523a2206206994597c13d831ec7'::bytea),
+('\x3058ef90929cb8180174d74c507176cca6835d73'::bytea, 'DAI'::text, 'USDT'::text, '\x6b175474e89094c44da98b954eedeac495271d0f'::bytea, '\xdac17f958d2ee523a2206206994597c13d831ec7'::bytea),
+('\xd84820f0e66187c4f3245e1fe5ccc40655dbacc9'::bytea, 'sUSD'::text, 'USDT'::text, '\x57ab1ec28d129707052df4df418d58a2d46d5f51'::bytea, '\xdac17f958d2ee523a2206206994597c13d831ec7'::bytea)
 ;

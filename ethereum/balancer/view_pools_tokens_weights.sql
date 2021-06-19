@@ -60,3 +60,10 @@ select c."poolId" as pool_id, unnest(cc.tokens) as token_address, unnest(cc.weig
 from balancer_v2."Vault_evt_PoolRegistered" c
 inner join balancer_v2."WeightedPoolFactory_call_create" cc
 on c.evt_tx_hash = cc.call_tx_hash
+
+union all
+
+select c."poolId" as pool_id, unnest(cc.tokens) as token_address, unnest(cc.weights)/1e18 as normalized_weight
+from balancer_v2."Vault_evt_PoolRegistered" c
+inner join balancer_v2."WeightedPool2TokensFactory_call_create" cc
+on c.evt_tx_hash = cc.call_tx_hash

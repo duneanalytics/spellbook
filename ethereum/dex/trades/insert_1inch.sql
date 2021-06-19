@@ -42,8 +42,8 @@ WITH rows AS (
         token_b_amount_raw,
         coalesce(
             usd_amount,
-            token_a_amount_raw / 10 ^ erc20a.decimals * pa.price,
-            token_b_amount_raw / 10 ^ erc20b.decimals * pb.price
+            token_a_amount_raw / 10 ^ pa.decimals * pa.price,
+            token_b_amount_raw / 10 ^ pb.decimals * pb.price
         ) as usd_amount,
         token_a_address,
         token_b_address,
@@ -53,7 +53,7 @@ WITH rows AS (
         tx."to" as tx_to,
         trace_address,
         evt_index,
-        row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
+        row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
         SELECT
             oi.block_time,
@@ -111,12 +111,12 @@ WITH rows AS (
             '1inch' AS project,
             '1' AS version,
             'Aggregator' AS category,
-            COALESCE(tr.address, tx."from") AS trader_a,
+            tx."from" AS trader_a,
             NULL::bytea AS trader_b,
             "output_returnAmount" AS token_a_amount_raw,
             "amount" AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            (CASE WHEN ll.contract_address = '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AND substring("_3"[ARRAY_LENGTH("_3", 1)] from 1 for 1) IN ('\xc0', '\x40') THEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' ELSE ll.contract_address END) AS token_a_address,
+            (CASE WHEN ll.to = '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AND substring("_3"[ARRAY_LENGTH("_3", 1)] from 1 for 1) IN ('\xc0', '\x40') THEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' ELSE ll.to END) AS token_a_address,
             (CASE WHEN "srcToken" = '\x0000000000000000000000000000000000000000' THEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' ELSE "srcToken" END) AS token_b_address,
             us.contract_address AS exchange_contract_address,
             call_tx_hash,
@@ -125,9 +125,7 @@ WITH rows AS (
         FROM oneinch_v3."AggregationRouterV3_call_unoswap" us
         LEFT JOIN ethereum.transactions tx ON tx.hash = us.call_tx_hash
         LEFT JOIN ethereum.traces tr ON tr.tx_hash = us.call_tx_hash AND tr.trace_address = us.call_trace_address[:ARRAY_LENGTH(us.call_trace_address, 1)-1]
-        LEFT JOIN ethereum.logs ll ON ll.tx_hash = us.call_tx_hash
-            AND topic1 = '\xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef' -- Transfer(addresss,addresss,uint256)
-            AND substring(topic2 from 13 for 20) = substring("_3"[ARRAY_LENGTH("_3", 1)] from 13 for 20)
+        LEFT JOIN ethereum.traces ll ON ll.tx_hash = us.call_tx_hash AND ll.trace_address = (us.call_trace_address || (ARRAY_LENGTH("_3", 1)*2 + CASE WHEN "srcToken" = '\x0000000000000000000000000000000000000000' THEN 1 ELSE 0 END) || 0)
         WHERE tx.success
 
     ) dexs
@@ -170,7 +168,7 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2017-01-01'
     AND block_time <= '2018-01-01'
-    AND project = '1inch' 
+    AND project = '1inch'
 );
 
 -- fill 2018
@@ -223,13 +221,13 @@ SELECT dex.insert_1inch(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    (SELECT max(number) FROM ethereum.blocks)
+    (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
 )
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.trades
     WHERE block_time > '2021-01-01'
-    AND block_time <= now()
+    AND block_time <= now() - interval '20 minutes'
     AND project = '1inch'
 );
 
@@ -237,8 +235,8 @@ INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
     SELECT dex.insert_1inch(
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1inch'),
-        (SELECT now()),
+        (SELECT now() - interval '20 minutes'),
         (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1inch')),
-        (SELECT MAX(number) FROM ethereum.blocks));
+        (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
