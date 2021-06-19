@@ -42,8 +42,8 @@ WITH rows AS (
         token_b_amount_raw,
         coalesce(
             usd_amount,
-            token_a_amount_raw / 10 ^ erc20a.decimals * pa.price,
-            token_b_amount_raw / 10 ^ erc20b.decimals * pb.price
+            token_a_amount_raw / 10 ^ pa.decimals * pa.price,
+            token_b_amount_raw / 10 ^ pb.decimals * pb.price
         ) as usd_amount,
         token_a_address,
         token_b_address,
@@ -172,13 +172,13 @@ SELECT dex.insert_idex(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'
+    (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
 )
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.trades
     WHERE block_time > '2021-01-01'
-    AND block_time <= now()
+    AND block_time <= now() - interval '20 minutes'
     AND project = 'IDEX'
 );
 
@@ -188,6 +188,6 @@ VALUES ('*/10 * * * *', $$
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='IDEX'),
         (SELECT now() - interval '20 minutes'),
         (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='IDEX')),
-        SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes');
+        (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
