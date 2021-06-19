@@ -12,6 +12,12 @@ AND ((t1.project = 'Balancer' AND t2.project = 'Uniswap') or (t1.project = 'Unis
 INNER JOIN ethereum.transactions t ON t.hash = t1.tx_hash
 WHERE t1.block_time >= '{{timestamp}}'
 AND t2.block_time >= '{{timestamp}}'
+AND t.to NOT IN (
+    select address 
+    from labels.labels 
+    where author = 'balancerlabs'
+    and type = 'balancer_source'
+)
 UNION ALL
 SELECT
     DISTINCT(t.to) AS address,
@@ -27,3 +33,9 @@ AND ((t1.project = 'Balancer' AND t2.project = 'Sushiswap') or (t1.project = 'Su
 INNER JOIN ethereum.transactions t ON t.hash = t1.tx_hash
 WHERE t1.block_time >= '{{timestamp}}'
 AND t2.block_time >= '{{timestamp}}'
+AND t.to NOT IN (
+    select address 
+    from labels.labels 
+    where author = 'balancerlabs'
+    and type = 'balancer_source'
+)
