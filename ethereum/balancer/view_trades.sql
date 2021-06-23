@@ -15,7 +15,7 @@ CREATE TABLE balancer.view_trades (
     token_a_address bytea,
     token_b_address bytea,
     exchange_contract_address bytea NOT NULL,
-    swap_fee numeric NOT NULL,
+    swap_fee numeric,
     tx_hash bytea NOT NULL,
     tx_from bytea NOT NULL,
     tx_to bytea,
@@ -107,7 +107,7 @@ WITH rows AS (
             t."tokenOut" token_a_address,
             t."tokenIn" token_b_address,
             t.contract_address exchange_contract_address,
-            t."swapFee"/1e18 AS swap_fee,
+            s."swapFee"/1e18 AS swap_fee,
             t.evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             t.evt_index
@@ -139,23 +139,23 @@ WITH rows AS (
             t."tokenOut" AS token_a_address,
             t."tokenIn" AS token_b_address,
             t."poolId" AS exchange_contract_address,
-            "swapFeePercentage"/1e18 AS swap_fee,
+            COALESCE(s1."swapFeePercentage", s2."swapFeePercentage")/1e18 AS swap_fee,
             t.evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             t.evt_index
         FROM
             balancer_v2."Vault_evt_Swap" t
-        LEFT JOIN balancer_v2."WeightedPool_evt_SwapFeePercentageChanged" s ON s.contract_address = SUBSTRING(t.exchange_contract_address from 0 for 21)
-        AND s.evt_block_time = (
+        LEFT JOIN balancer_v2."WeightedPool_evt_SwapFeePercentageChanged" s1 ON s1.contract_address = SUBSTRING(t."poolId" from 0 for 21)
+        AND s1.evt_block_time = (
             SELECT MAX(evt_block_time)
             FROM balancer_v2."WeightedPool_evt_SwapFeePercentageChanged"
             WHERE evt_block_time <= t.evt_block_time
             AND contract_address = SUBSTRING(t."poolId" from 0 for 21)
         )
-        LEFT JOIN balancer_v2."WeightedPool2Tokens_evt_SwapFeePercentageChanged" s ON s.contract_address = SUBSTRING(t."poolId" from 0 for 21)
-        AND s.evt_block_time = (
+        LEFT JOIN balancer_v2."StablePool_evt_SwapFeePercentageChanged" s2 ON s2.contract_address = SUBSTRING(t."poolId" from 0 for 21)
+        AND s2.evt_block_time = (
             SELECT MAX(evt_block_time)
-            FROM balancer_v2."WeightedPool2Tokens_evt_SwapFeePercentageChanged"
+            FROM balancer_v2."StablePool_evt_SwapFeePercentageChanged"
             WHERE evt_block_time <= t.evt_block_time
             AND contract_address = SUBSTRING(t."poolId" from 0 for 21)
         )
