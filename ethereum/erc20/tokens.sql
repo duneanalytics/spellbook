@@ -943,6 +943,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\xe41d2489571d322189246dafa5ebde1f4699f498	ZRX	18
 \\x1a3c6768e200482F5f47D1BE77B7255aBCAe4Fe2	ZRXUSDB	18
 \\xee06a81a695750e71a662b51066f2c74cf4478a0	$DG	18
+\\xa283aa7cfbb27ef0cfbcb2493dd9f4330e0fd304	MM	18
 \.
 
 
