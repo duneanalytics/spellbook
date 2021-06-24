@@ -293,7 +293,7 @@ WHERE NOT EXISTS (
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
     SELECT balancer.insert_balancer_liquidity(
-        (SELECT max(block_time) - interval '1 days' FROM balancer.view_liquidity WHERE version = '1'),
+        (SELECT max(block_time) - interval '1 days' FROM balancer.view_liquidity),
         (SELECT now()));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
