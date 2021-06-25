@@ -20,6 +20,9 @@ COPY erc20.stablecoins(contract_address, symbol, decimals, name) FROM stdin;
 \\x056fd409e1d7a124bd7017459dfea2f387b6d5cd	GUSD	2	Gemini dollar
 \\xdac17f958d2ee523a2206206994597c13d831ec7	USDT	6	Tether
 \\x1456688345527bE1f37E9e627DA0837D6f08C925	USDP	18	USDP Stablecoin
+\\xa47c8bf37f92abed4a126bda807a7b7498661acd UST 18 Wrapped UST Token
+\\xbc6da0fe9ad5f3b0d58160288917aa56653660e9 alUSD 18 Alchemix USD
+\\x5f98805A4E8be255a32880FDeC7F6728C6568bA0 LUSD 18 Liquity LUSD
 \.
 
 COMMIT;
