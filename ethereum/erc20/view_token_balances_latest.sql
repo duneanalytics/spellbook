@@ -4,8 +4,8 @@ wallet_address,
 token_address,
 t.symbol as token_symbol,
 amount_raw,
-amount_raw / 10^coalesce(t.decimals, 0) amount_formatted,
-amount_raw / 10^coalesce(t.decimals, 0) * p.price amount_usd,
+amount_raw / 10^coalesce(t.decimals, null) amount,
+amount_raw / 10^coalesce(t.decimals, null) * p.price amount_usd,
 timestamp as last_transfer_timestamp
 FROM erc20.token_balances
 left join erc20.tokens t on t.contract_address = token_address
