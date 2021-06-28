@@ -11,7 +11,14 @@ b as (
     lead(date_trunc('hour', timestamp), 1, now()) OVER (PARTITION BY token_address, wallet_address ORDER BY date_trunc('hour', timestamp)) AS next_hour 
     FROM erc20.token_balances tb
 )
-SELECT h.hour, b.wallet_address, b.token_address, b.amount_raw
+SELECT 
+    h.hour, 
+    b.wallet_address, 
+    b.token_address, 
+    b.amount_raw,
+    t.symbol as token_symbol,
+    amount_raw / 10^t.decimals amount,
+    amount_raw / 10^t.decimals * p.price amount_usd
 FROM b
 INNER JOIN hours h ON b.hour <= h.hour AND h.hour < b.next_hour
 left join erc20.tokens t on t.contract_address = token_address
