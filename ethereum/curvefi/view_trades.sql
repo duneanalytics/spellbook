@@ -596,12 +596,12 @@ SELECT
     tokens_sold AS token_b_amount_raw,
     CASE
         WHEN bought_id = 0 THEN '\xdac17f958d2ee523a2206206994597c13d831ec7'::bytea
-        WHEN bought_id = 1 THEN '\xdac17f958d2ee523a2206206994597c13d831ec7'::bytea
+        WHEN bought_id = 1 THEN '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599'::bytea
         WHEN bought_id = 2 THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
     END as token_a_address,
     CASE
         WHEN sold_id = 0 THEN '\xdac17f958d2ee523a2206206994597c13d831ec7'::bytea
-        WHEN sold_id = 1 THEN '\xdac17f958d2ee523a2206206994597c13d831ec7'::bytea
+        WHEN sold_id = 1 THEN '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599'::bytea
         WHEN sold_id = 2 THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
     END as token_b_address,
     contract_address AS exchange_contract_address,
