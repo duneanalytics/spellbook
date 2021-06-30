@@ -83,7 +83,7 @@ WITH rows AS (
 
         UNION ALL
 
-        -- 1inch Limit Orders (0x)
+        -- 1inch 0x Limit Orders
         SELECT
             evt_block_time as block_time,
             '1inch' AS project,
@@ -128,6 +128,28 @@ WITH rows AS (
         LEFT JOIN ethereum.traces ll ON ll.tx_hash = us.call_tx_hash AND ll.trace_address = (us.call_trace_address || (ARRAY_LENGTH("_3", 1)*2 + CASE WHEN "srcToken" = '\x0000000000000000000000000000000000000000' THEN 1 ELSE 0 END) || 0)
         WHERE tx.success
 
+        UNION ALL
+
+        -- 1inch Limit Order Protocol
+        SELECT
+            call_block_time as block_time,
+            '1inch Limit Order Protocol' AS project,
+            '1' AS version,
+            'DEX' AS category,
+            "from"  AS trader_a,
+            decode(substring("order"::jsonb->>'makerAssetData' from 35 for 40), 'hex') AS trader_b,
+            "output_1" AS token_a_amount_raw,
+            "output_0" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            decode(substring("order"::jsonb->>'takerAsset' from 3), 'hex') AS token_a_address,
+            decode(substring("order"::jsonb->>'makerAsset' from 3), 'hex') AS token_b_address,
+            contract_address AS exchange_contract_address,
+            call_tx_hash,
+            trace_address,
+            NULL AS evt_index
+        FROM oneinch."LimitOrderProtocol_call_fillOrder" call
+        LEFT JOIN ethereum.traces ts ON call_tx_hash = ts.tx_hash AND call_trace_address = ts.trace_address
+        WHERE call_success
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
