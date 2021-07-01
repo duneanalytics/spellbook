@@ -382,7 +382,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\x419d0d8bdd9af5e606ae2232ed285aff190e711b	FUN	8
 \\xbf5496122cf1bb778e0cbe5eab936f2be5fc0940	FUNDZ	18
 \\x970b9bb2c0444f5e81e9d0efb84c8ccdcdcaf84d	FUSE	18
-\\x35bd01fc9d6d5d81ca9e055db88dc49aa2c699a8 	FWB	18
+\\x35bd01fc9d6d5d81ca9e055db88dc49aa2c699a8	FWB	18
 \\x4a57e687b9126435a9b19e4a802113e266adebde	FXC	18
 \\x15d4c048f83bd7e37d49ea4c83a07267ec4203da	GALA	8
 \\x6307b25a665efc992ec1c1bc403c38f3ddd7c661	GCR	4
@@ -3560,7 +3560,6 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\xb05097849bca421a3f51b249ba6cca4af4b97cb9	FLOAT	18
 \\x91d6f6e9026e43240ce6f06af6a4b33129ebde94	RVX	18
 \\x3b73c1b2ea59835cbfcadade5462b6ab630d9890	ASAP	18
-\\x35bd01fc9d6d5d81ca9e055db88dc49aa2c699a8	FWB	18
 \\x3f8a2f7bcd70e7f7bdd3fbb079c11d073588dea2	FIRE	18
 \\x0aee8703d34dd9ae107386d3eff22ae75dd616d1	SLICE	18
 \\xf0bc1ae4ef7ffb126a8347d06ac6f8add770e1ce	1MT	7
