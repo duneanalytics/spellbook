@@ -1,7 +1,7 @@
 -- notes
 -- input from:
 -- https://raw.githubusercontent.com/vasa-develop/nft-tokenlist/master/trimmed_3300_nfts.tokenlist.json
---
+-- this tokenlist is created with data from the Graphql API of OpenSea: https://opensea.io/ 
 -- 1. `name` is a non-reserved SQL keyword
 -- See https://www.postgresql.org/docs/8.1/sql-keywords-appendix.html
 --
