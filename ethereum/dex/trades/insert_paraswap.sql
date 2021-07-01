@@ -155,7 +155,7 @@ WITH rows AS (
             LEFT(RIGHT(swaps.path::text, 44), 42)::bytea AS token_b_address,
             swaps."contract_address" AS exchange_contract_address,
             swaps."call_tx_hash" AS tx_hash,
-            NULL::integer[] AS trace_address,
+            swaps.call_trace_address AS trace_address,
             NULL::int8 AS evt_index
         FROM paraswap."AugustusSwapper5.0_call_swapOnUniswap" swaps
 
@@ -173,7 +173,7 @@ WITH rows AS (
             LEFT(RIGHT(swaps.path::text, 44), 42)::bytea AS token_b_address,
             swaps."contract_address" AS exchange_contract_address,
             swaps."call_tx_hash" AS tx_hash,
-            NULL::integer[] AS trace_address,
+            swaps.call_trace_address AS trace_address,
             NULL::int8 AS evt_index
         FROM paraswap."AugustusSwapper5.0_call_swapOnUniswapFork" swaps
 
