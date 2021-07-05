@@ -1,7 +1,15 @@
 -- notes
--- input from:
+--
+-- (a) input data
+-- The token list is created with data compiled by https://github.com/vasa-develop:
 -- https://raw.githubusercontent.com/vasa-develop/nft-tokenlist/master/trimmed_3300_nfts.tokenlist.json
--- this tokenlist is created with data from the Graphql API of OpenSea: https://opensea.io/ 
+--
+-- https://github.com/vasa-develop used the data from OpenSea API https://docs.opensea.io/reference#api-overview
+--
+-- Added some extra entries to the tokenlist for Rarible and SuperRare.
+-- 
+--
+-- (b) info for developer handling pull request
 -- 1. `name` is a non-reserved SQL keyword
 -- See https://www.postgresql.org/docs/8.1/sql-keywords-appendix.html
 --
@@ -25,7 +33,9 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xa3aee8bce55beea1951ef834b99f3ac60d1abeeb	VeeFriends	VFT	erc721
 \\xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270	Art Blocks Curated	BLOCKS	erc721
 \\x629a673a8242c2ac4b7b8c5d8735fbeac21a6205	Sorare	SOR	erc721
-\\xd07dc4262bcdbf85190c01c996b4c06a461d2430	Rarible		erc1155
+\\xd07dc4262bcdbf85190c01c996b4c06a461d2430	Rarible	RARI	erc1155
+\\x60f80121c31a0d46b5279700f9df786054aa5ee5	Rarible	RARI	erc721
+\\x6a5ff3ceecae9ceb96e6ac6c76b82af8b39f0eb3	Rarible	RARE	erc721
 \\xba30e5f9bb24caa003e9f2f0497ad287fdf95623	Bored Ape Kennel Club	BAKC	erc721
 \\x3f0785095a660fee131eebcd5aa243e529c21786	Super Yeti	defra	erc721
 \\x959e104e1a4db6317fa58f8295f586e1a978c297	Decentraland	EST	erc721
@@ -36,7 +46,9 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xf17131a4c85e8a75ba52b3f91ce8c32f6f163924	The Sandbox	SAND	erc721
 \\x5ab21ec0bfa0b29545230395e3adaca7d552c948	PUNKS Comic	COMIC	erc721
 \\xf78296dfcf01a2612c2c847f68ad925801eeed80	My Fucking Pickle	FUCKINGPICKLES	erc721
-\\x8c9f364bf7a56ed058fc63ef81c6cf09c833e656	SuperRare		unknown
+\\x8c9f364bf7a56ed058fc63ef81c6cf09c833e656	SuperRare		
+\\xb932a70a57673d89f4acffbe830e8ed7f75fb9e0	SuperRare	SUPR	erc721
+\\x41a322b28d0ff354040e2cbc676f0320d8c8850d	SupeRare	SUPR	erc721
 \\xbfcd68ded9d511a632d45333155350a1907d4977	BoredNessApeClub	BNAC	erc721
 \\x11bdfb09bebf4f0ab66dd1d6b85d0ef58ef1ba6c	MakersPlace	MKT	erc721
 \\x17acddb7053be19e852e64dc5a344b599756f557	F1® Delta Time	F1DT.LCK	erc20
