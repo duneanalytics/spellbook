@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS nft.tokens (
 );
 
 BEGIN;
-DELETE FROM nft.tokens *;
+TRUNCATE nft.tokens;
 
 COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d	Bored Ape Yacht Club	BAYC	erc721
