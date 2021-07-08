@@ -17,7 +17,7 @@ CREATE MATERIALIZED VIEW dex.view_token_prices AS (
         WHERE 1=1
         AND usd_amount  > 0
         AND category = 'DEX'
-        AND token_a_amount > 0
+        AND token_a_amount_raw > 0
         AND token_a_address NOT IN (SELECT contract_address FROM tokens_in_prices_usd)
 
         UNION ALL
@@ -31,7 +31,7 @@ CREATE MATERIALIZED VIEW dex.view_token_prices AS (
         WHERE 1=1
         AND usd_amount  > 0
         AND category = 'DEX'
-        AND token_b_amount > 0
+        AND token_b_amount_raw > 0
         AND token_b_address NOT IN (SELECT contract_address FROM tokens_in_prices_usd)
     )
 
