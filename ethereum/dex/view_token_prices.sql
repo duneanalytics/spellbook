@@ -10,9 +10,10 @@ CREATE MATERIALIZED VIEW dex.view_token_prices AS (
     ), dex_trades AS (
         SELECT
             token_a_address as contract_address,
-            usd_amount/token_a_amount as price,
+            coalesce(usd_amount/token_a_amount, usd_amount/(token_a_amount_raw/10^decimals)) AS price,
             block_time
         FROM dex.trades
+        LEFT JOIN erc20.tokens ON contract_address = token_a_address
         WHERE 1=1
         AND usd_amount  > 0
         AND category = 'DEX'
@@ -23,9 +24,10 @@ CREATE MATERIALIZED VIEW dex.view_token_prices AS (
 
         SELECT
             token_b_address as contract_address,
-            usd_amount/token_b_amount as price,
+            coalesce(usd_amount/token_b_amount, usd_amount/(token_b_amount_raw/10^decimals)) AS price,
             block_time
         FROM dex.trades
+        LEFT JOIN erc20.tokens ON contract_address = token_b_address
         WHERE 1=1
         AND usd_amount  > 0
         AND category = 'DEX'
