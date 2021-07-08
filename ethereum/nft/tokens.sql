@@ -1,22 +1,3 @@
--- notes
---
--- (a) input data
--- The token list is created with data compiled by https://github.com/vasa-develop:
--- https://raw.githubusercontent.com/vasa-develop/nft-tokenlist/master/trimmed_3300_nfts.tokenlist.json
---
--- https://github.com/vasa-develop used the data from OpenSea API https://docs.opensea.io/reference#api-overview
---
--- Added some extra entries to the tokenlist for Rarible and SuperRare.
--- 
---
--- (b) info for developer handling pull request
--- 1. `name` is a non-reserved SQL keyword
--- See https://www.postgresql.org/docs/8.1/sql-keywords-appendix.html
---
--- 2. Some lines contain unusual or special Unicode characters e.g.
--- '
--- $
--- emoji 
 CREATE TABLE IF NOT EXISTS nft.tokens (
 	contract_address bytea PRIMARY KEY,
 	name text,
@@ -562,16 +543,5 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 
 COMMIT;
 
--- expectation how this table will be used most of the time:
--- As part of a JOIN operation using 'contract_address' as join key to get entries for columns 'name' or 'standard'
 CREATE INDEX IF NOT EXISTS nft_tokens_contract_address_name_idx ON nft.tokens (contract_address, name);
 CREATE INDEX IF NOT EXISTS nft_tokens_contract_address_standard_idx ON nft.tokens (contract_address, standard);
-
--- SEE BELOW ALTERNATIVE OPTION for indexes 
--- Because the column 'name' is text of variable length, this is risky 
--- especially if new additions to this table are added via pull requests .
--- from https://www.postgresql.org/docs/13/sql-createindex.html :
--- "It's wise to be conservative about adding non-key columns to an index, especially wide columns.
--- If an index tuple exceeds the maximum size allowed for the index type, data insertion will fail.""
--- CREATE INDEX IF NOT EXISTS tokens_contract_address_name_idx ON nft.tokens USING btree (contract_address) INCLUDE (name);
--- CREATE INDEX IF NOT EXISTS tokens_contract_address_standard_idx ON nft.tokens USING btree (contract_address) INCLUDE (standard);
