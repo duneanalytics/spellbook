@@ -172,7 +172,7 @@ WHERE NOT EXISTS (
 );
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('53 * * * *', $$
+VALUES ('47 * * * *', $$
     SELECT nft.insert_opensea(
         (SELECT max(block_time) - interval '1 days' FROM nft.trades WHERE platform='OpenSea'),
         (SELECT now() - interval '20 minutes'),
