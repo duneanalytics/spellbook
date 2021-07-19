@@ -35,10 +35,10 @@ WITH rows AS (
         trades.evt_block_time AS block_time,
         tokens.name AS nft_project_name,
         CAST(created."tokenId" AS TEXT) AS nft_token_id,
-        'Foundation' AS platform,
-        '1' AS platform_version,
-        'Auction Settled' AS category,
-        'Trade' AS evt_type,
+        platform,
+        platform_version,
+        category,
+        evt_type,
         (trades."f8nFee" + trades."ownerRev" + trades."creatorFee") / 10 ^ 18 * p.price AS usd_amount, --
         trades.seller, --
         trades.bidder AS buyer, --
@@ -47,17 +47,23 @@ WITH rows AS (
         'ETH' AS original_currency,
         '\x0000000000000000000000000000000000000000'::bytea AS original_currency_contract,
         '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea AS currency_contract,
-        created."nftContract" AS nft_contract_address,
-        trades.contract_address AS exchange_contract_address,
+        created."nftContract" AS nft_contract_address, -- Foundation NFT
+        trades.contract_address AS exchange_contract_address, -- Foundation: Market
         trades.evt_tx_hash AS tx_hash,
         trades.evt_block_number AS block_number,
         tx."from" AS tx_from,
         tx."to" AS tx_to,
         NULL::integer[] AS trace_address,
         trades.evt_index,
-        row_number() OVER (PARTITION BY 4, 18, 23, 6) AS trade_id
+        row_number() OVER (PARTITION BY platform, trades.evt_tx_hash, trades.evt_index, category ORDER BY platform_version, evt_type) AS trade_id
     FROM
-        foundation."market_evt_ReserveAuctionFinalized" trades
+        (SELECT 
+            'Foundation' AS platform,
+            '1' AS platform_version,
+            'Auction Settled' AS category,
+            'Trade' AS evt_type,
+            *
+        FROM foundation."market_evt_ReserveAuctionFinalized") trades
     INNER JOIN ethereum.transactions tx
         ON trades.evt_tx_hash = tx.hash
         AND tx.block_time >= start_ts

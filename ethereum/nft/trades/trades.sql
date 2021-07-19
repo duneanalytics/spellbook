@@ -25,10 +25,10 @@ CREATE TABLE nft.trades (
     trade_id integer
 );
 
-CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS nft_trades_platform_tx_hash_evt_index_uniq_idx ON nft.trades (platform, tx_hash, evt_index);
+CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS nft_trades_platform_tx_hash_evt_index_trade_id_uniq_idx ON nft.trades (platform, tx_hash, evt_index, trade_id);
 CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS nft_trades_platform_tx_hash_trace_address_trade_id_uniq_idx ON nft.trades (platform, tx_hash, trace_address, trade_id);
 CREATE INDEX IF NOT EXISTS nft_trades_block_time_idx ON nft.trades USING BRIN (block_time);
 CREATE INDEX IF NOT EXISTS nft_trades_seller_idx ON nft.trades (seller);
 CREATE INDEX IF NOT EXISTS nft_trades_buyer_idx ON nft.trades (buyer);
-CREATE INDEX IF NOT EXISTS nft_trades_nft_project_name_nft_token_id_block_time_idx ON nft.trades (nft_project_name, nft_token_id, block_time)
-CREATE INDEX IF NOT EXISTS nft_trades_block_time_platform_seller_buyer_nft_project_name_nft_token_id_idx ON nft.trades (block_time, platform, seller, buyer, nft_project_name, nft_token_id)
+CREATE INDEX IF NOT EXISTS nft_trades_nft_project_name_nft_token_id_block_time_idx ON nft.trades (nft_project_name, nft_token_id, block_time);
+CREATE INDEX IF NOT EXISTS nft_trades_block_time_platform_seller_buyer_nft_project_name_nft_token_id_idx ON nft.trades (block_time, platform, seller, buyer, nft_project_name, nft_token_id);

@@ -5,6 +5,10 @@ BEGIN
 
 WITH wyvern_calldata AS (
     SELECT
+        'OpenSea' AS platform,
+        '1' AS platform_version,
+        'Buy' AS category,
+        'Trade' AS evt_type,
         call_tx_hash,
         addrs [5] AS nft_contract_address,
         addrs [2] AS buyer,
@@ -61,10 +65,10 @@ rows AS (
         trades.evt_block_time AS block_time,
         tokens.name AS nft_project_name,
         token_id AS nft_token_id,
-        'OpenSea' AS platform,
-        '1' AS platform_version,
-        'Buy' AS category,
-        'Trade' AS evt_type,
+        wc.platform,
+        wc.platform_version,
+        wc.category,
+        wc.evt_type,
         trades.price / 10 ^ erc20.decimals * p.price AS usd_amount,
         wc.seller,
         wc.buyer,
@@ -81,7 +85,7 @@ rows AS (
         tx."to" AS tx_to,
         call_trace_address AS trace_address,
         trades.evt_index,
-        row_number() OVER (PARTITION BY 4, 18, 23, 6) AS trade_id
+        row_number() OVER (PARTITION BY wc.platform, trades.evt_tx_hash, trades.evt_index, wc.category ORDER BY wc.platform_version, wc.evt_type) AS trade_id
     FROM
         opensea."WyvernExchange_evt_OrdersMatched" trades
     INNER JOIN ethereum.transactions tx
@@ -97,9 +101,11 @@ rows AS (
         AND p.minute >= start_ts
         AND p.minute < end_ts
     LEFT JOIN erc20.tokens erc20 ON erc20.contract_address = wc.currency_token
-    LEFT JOIN erc721."ERC721_evt_Transfer" erc721 ON trades.evt_tx_hash = erc721.evt_tx_hash
     WHERE
-        erc721."from" <> '\x0000000000000000000000000000000000000000' 
+        NOT EXISTS (SELECT *
+                    FROM erc721."ERC721_evt_Transfer" erc721 
+                    WHERE trades.evt_tx_hash = erc721.evt_tx_hash
+                    AND erc721."from" = '\x0000000000000000000000000000000000000000')
         AND trades.evt_block_time >= start_ts
         AND trades.evt_block_time < end_ts
     ON CONFLICT DO NOTHING

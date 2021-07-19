@@ -120,11 +120,11 @@ WITH all_data AS (
         owner,
         buyer,
         "buyValue" * amount / "sellValue",
-        "buyToken", -- original_currency_contract 
+        "buyToken",
         CASE
             WHEN "buyToken" = '\x0000000000000000000000000000000000000000' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
             ELSE "buyToken"
-        END, -- currency_contract,
+        END, 
         'ExchangeV1_evt_Buy' as category
     FROM rarible."ExchangeV1_evt_Buy"
     where "buyTokenId" = 0 --buy
@@ -144,11 +144,11 @@ WITH all_data AS (
         buyer AS seller,
         owner AS buyer,
         amount,
-        "sellToken",
+        "sellToken", 
         CASE
             WHEN "sellToken" = '\x0000000000000000000000000000000000000000' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
             ELSE "sellToken"
-        END,
+        END, -- currency_contract,
         'ExchangeV1_evt_Buy' as category
     FROM rarible."ExchangeV1_evt_Buy"
     where "sellTokenId" = 0 
@@ -171,7 +171,7 @@ WITH all_data AS (
         bytea2numericpy(substring(data FROM 129 FOR 32)) original_amount_raw,
         '\x0000000000000000000000000000000000000000'::bytea as original_currency_contract,
         '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea as currency_contract,
-        'Buy' AS category
+        'Buy' AS category -- 'Purchase'
     FROM ethereum."logs" 
     WHERE "contract_address" = '\x9757f2d2b135150bbeb65308d4a91804107cd8d6' 
     AND topic1 = '\x268820db288a211986b26a8fda86b1e0046281b21206936bb0e61c67b5c79ef4'
@@ -195,7 +195,7 @@ UNION ALL
         bytea2numericpy(substring(data FROM 161 FOR 32)) AS original_amount_raw,
         substring(data FROM 365 FOR 20) AS original_currency_contract,
         substring(data FROM 365 FOR 20) AS currency_contract,
-        'Offer Accepted' AS category
+        'Offer Accepted' AS category -- 'Bid Accepted'
     FROM ethereum."logs"
     WHERE "contract_address" = '\x9757f2d2b135150bbeb65308d4a91804107cd8d6'
     AND topic1 = '\x268820db288a211986b26a8fda86b1e0046281b21206936bb0e61c67b5c79ef4'
@@ -220,7 +220,7 @@ UNION ALL
         bytea2numericpy(substring(data FROM 129 FOR 32)) AS original_amount_raw,
         substring(data FROM 525 FOR 20) AS original_currency_contract,
         substring(data FROM 525 FOR 20) AS currency_contract,
-        'Buy' AS category
+        'Buy' AS category -- 'Bid Accepted'
     FROM ethereum."logs"
     WHERE "contract_address" = '\x9757f2d2b135150bbeb65308d4a91804107cd8d6'
     AND topic1 = '\x268820db288a211986b26a8fda86b1e0046281b21206936bb0e61c67b5c79ef4'
@@ -279,7 +279,7 @@ rows AS (
         tx."to" AS tx_to,
         NULL::integer[] AS trace_address,
         trades.evt_index,
-        row_number() OVER (PARTITION BY 4, 18, 23, 6) AS trade_id
+        row_number() OVER (PARTITION BY platform, trades.evt_tx_hash, trades.evt_index, category ORDER BY platform_version, evt_type) AS trade_id
     FROM
         all_data trades
     INNER JOIN ethereum.transactions tx

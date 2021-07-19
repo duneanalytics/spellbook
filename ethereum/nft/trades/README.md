@@ -13,11 +13,12 @@ Known limitations:
 # Notes for contributors to `nft.trades`
 
 Here are some things to check before doing your pull request:
--> As much as possible, verify data from the NFT page on the market place itself as well as on Etherscan. In one case, we noticed that event log data was not correctly decoded in case the trade was done in WETH instead of ETH.
--> Verify buyer and seller. In some scenario's (again when currency is not ETH) these get inversed. A good way to double-check is to verify against ERC721 transfers.
--> Different types of trades ("Direct Purchase", "Offer Accepted", "Auction Settled"...)  often have a different encoding in the event logs.
+- As much as possible, verify data from the NFT page on the market place itself as well as on Etherscan. In one case, we noticed that event log data was not correctly decoded in case the trade was done in WETH instead of ETH.
+- Verify buyer and seller. In some scenario's (again when currency is not ETH) these get inversed. A good way to double-check is to verify against ERC721 transfers.
+- Different types of trades ("Direct Purchase", "Offer Accepted", "Auction Settled"...)  often have a different encoding in the event logs.
 
 Don't hesitate to ask for help in Discord if you get stuck: https://discord.gg/ppntYkQu
+
 
 # Credits
 

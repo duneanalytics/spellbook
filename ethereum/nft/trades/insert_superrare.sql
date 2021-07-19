@@ -5,6 +5,7 @@ BEGIN
 
 WITH all_trades AS (
     SELECT
+	'SuperRare' AS platform,
         tx_hash,
         block_time,
         CAST(bytea2numericpy(substring(data FROM 33)) as TEXT) AS token_id,
@@ -13,6 +14,7 @@ WITH all_trades AS (
         contract_address AS exchange_contract_address,
         block_number,
         "index" AS evt_index,
+	'Trade' as evt_type,
         'Buy' AS category
     FROM
         ethereum."logs"
@@ -22,6 +24,7 @@ WITH all_trades AS (
         topic1 = '\x5764dbcef91eb6f946584f4ea671217c686fa7e858ce4f9f42d08422b86556a9'
 UNION ALL
     SELECT
+	'SuperRare' AS platform,
         tx_hash,
         block_time,
         CAST(bytea2numericpy(topic4) as TEXT) AS token_id,
@@ -30,6 +33,7 @@ UNION ALL
         contract_address,
         block_number,
         "index" AS evt_index,
+	'Trade' as evt_type,
         'Buy' AS category
     FROM
         ethereum."logs"
@@ -39,6 +43,7 @@ UNION ALL
         topic1 = '\x16dd16959a056953a63cf14bf427881e762e54f03d86b864efea8238dd3b822f'
 UNION ALL
     SELECT
+	'SuperRare' AS platform,
         tx_hash,
         block_time,
         CAST(bytea2numericpy(substring(data FROM 33)) as TEXT) AS token_id,
@@ -47,6 +52,7 @@ UNION ALL
         contract_address,
         block_number,
         "index" AS evt_index,
+	'Trade' as evt_type,
         'Buy' AS category
     FROM
         ethereum."logs"
@@ -56,6 +62,7 @@ UNION ALL
         topic1 = '\x5764dbcef91eb6f946584f4ea671217c686fa7e858ce4f9f42d08422b86556a9'
 UNION ALL
     SELECT
+	'SuperRare' AS platform,
         tx_hash,
         block_time,
         CAST(bytea2numericpy(substring(data FROM 33)) as TEXT) AS token_id,
@@ -64,6 +71,7 @@ UNION ALL
         contract_address,
         block_number,
         "index" AS evt_index,
+	'Trade' as evt_type,
         'Offer Accepted' AS category
     FROM
         ethereum."logs"
@@ -73,6 +81,7 @@ UNION ALL
         topic1 = '\x2a9d06eec42acd217a17785dbec90b8b4f01a93ecd8c127edd36bfccf239f8b6'
 UNION ALL
     SELECT
+	'SuperRare' AS platform,
         tx_hash,
         block_time,
         CAST(bytea2numericpy(topic4) as TEXT) AS token_id,
@@ -81,6 +90,7 @@ UNION ALL
         contract_address,
         block_number,
         "index" AS evt_index,
+	'Trade' as evt_type,
         'Offer Accepted' AS category
     FROM
         ethereum."logs"
@@ -90,6 +100,7 @@ UNION ALL
         topic1 = '\xd6deddb2e105b46d4644d24aac8c58493a0f107e7973b2fe8d8fa7931a2912be'
 UNION ALL
     SELECT
+	'SuperRare' AS platform,
         tx_hash,
         block_time,
         CAST(bytea2numericpy(substring(data FROM 33)) as TEXT) AS token_id,
@@ -98,6 +109,7 @@ UNION ALL
         contract_address,
         block_number,
         "index" AS evt_index,
+	'Trade' as evt_type,
         'Offer Accepted' AS category
     FROM
         ethereum."logs"
@@ -107,6 +119,7 @@ UNION ALL
         topic1 = '\x2a9d06eec42acd217a17785dbec90b8b4f01a93ecd8c127edd36bfccf239f8b6'
 UNION ALL
     SELECT
+	'SuperRare' AS platform,
         tx_hash,
         block_time,
         CAST(bytea2numericpy(topic4) as TEXT) AS token_id,
@@ -115,6 +128,7 @@ UNION ALL
         contract_address,
         block_number,
         "index" AS evt_index,
+	'Trade' as evt_type,
         CASE WHEN topic3 = '\x0000000000000000000000000000000000000000000000000000000000000000' THEN 'Auction Retired' ELSE 'Auction Settled' END AS category
     FROM
         ethereum."logs"
@@ -122,6 +136,25 @@ UNION ALL
         contract_address = '\x8c9f364bf7a56ed058fc63ef81c6cf09c833e656'
     AND
         topic1 = '\xea6d16c6bfcad11577aef5cc6728231c9f069ac78393828f8ca96847405902a9'
+), 
+erc721_distinct AS (
+SELECT
+    DISTINCT erc721.contract_address AS contract_address,
+    evt_tx_hash,
+    first_value("from") OVER (PARTITION BY evt_tx_hash ORDER BY erc721.evt_index) as "from",
+    first_value("to") OVER  (PARTITION BY evt_tx_hash ORDER BY erc721.evt_index DESC) as "to"
+FROM erc721."ERC721_evt_Transfer" erc721 
+INNER JOIN all_trades ON all_trades.tx_hash = erc721.evt_tx_hash
+),
+erc20_distinct AS (
+SELECT
+    DISTINCT erc20.contract_address AS contract_address,
+    evt_tx_hash,
+    first_value("from") OVER (PARTITION BY evt_tx_hash ORDER BY erc20.evt_index) as "from",
+    first_value("to") OVER (PARTITION BY evt_tx_hash ORDER BY erc20.evt_index DESC) as "to"
+FROM erc20."ERC20_evt_Transfer" erc20 
+INNER JOIN all_trades ON all_trades.tx_hash = erc20.evt_tx_hash
+WHERE erc20.contract_address <> '\x0f5d2fb29fb7d3cfee444a200298f468908cc942'
 ),
 rows AS (
     INSERT INTO nft.trades (
@@ -152,12 +185,12 @@ rows AS (
     )
     SELECT
 	trades.block_time,
-    tokens.name AS nft_project_name,
+        tokens.name AS nft_project_name,
 	trades.token_id AS nft_token_id,
-	'SuperRare' AS platform,
+	trades.platform,
 	trades.platform_version,
 	category,
-	'Trade' as evt_type,
+	evt_type,
 	trades.original_amount_raw / 10^18 * p.price AS usd_amount,
 	COALESCE(erc721."from", erc20."from") AS seller,
 	COALESCE(erc721."to", erc20."to") AS buyer,
@@ -174,7 +207,7 @@ rows AS (
 	tx."to" AS tx_to,
 	NULL::integer[] AS trace_address,
 	trades.evt_index,
-	row_number() OVER (PARTITION BY 4, 18, 23, 6) AS trade_id
+        row_number() OVER (PARTITION BY platform, trades.tx_hash, trades.evt_index, category ORDER BY platform_version, evt_type) AS trade_id
     FROM
 	all_trades trades
     INNER JOIN ethereum.transactions tx
@@ -187,8 +220,8 @@ rows AS (
         AND p.contract_address = '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
         AND p.minute >= start_ts
         AND p.minute < end_ts
-    LEFT JOIN erc721."ERC721_evt_Transfer" erc721 ON trades.tx_hash = erc721.evt_tx_hash
-    LEFT JOIN erc20."ERC20_evt_Transfer" erc20 ON trades.tx_hash = erc20.evt_tx_hash
+    LEFT JOIN erc721_distinct erc721 ON trades.tx_hash = erc721.evt_tx_hash
+    LEFT JOIN erc20_distinct erc20 ON trades.tx_hash = erc20.evt_tx_hash
     LEFT JOIN nft.tokens tokens ON tokens.contract_address = COALESCE(erc721.contract_address, erc20.contract_address)
     WHERE category IN ('Buy','Offer Accepted','Auction Settled')
     AND trades.block_time >= start_ts
