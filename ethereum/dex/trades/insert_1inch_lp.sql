@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION dex.insert_bancor(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+CREATE OR REPLACE FUNCTION dex.insert_1inch_lp(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -55,30 +55,28 @@ WITH rows AS (
         evt_index,
         row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
-        -- Bancor Network
+        -- 1inch LP
         SELECT
-            block_time,
-            'Bancor Network' AS project,
-            NULL AS version,
+            evt_block_time AS block_time,
+            '1inch LP' AS project,
+            '1' AS version,
             'DEX' AS category,
-            trader AS trader_a,
+            sender AS trader_a,
             NULL::bytea AS trader_b,
-            target_token_amount_raw AS token_a_amount_raw,
-            source_token_amount_raw AS token_b_amount_raw,
+            result AS token_a_amount_raw,
+            amount AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            CASE WHEN target_token_address = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN
-                '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
-            ELSE target_token_address
+            CASE WHEN "dstToken" = '\x0000000000000000000000000000000000000000' THEN
+                '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'::bytea ELSE "dstToken"
             END AS token_a_address,
-            CASE WHEN source_token_address = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN
-                '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
-            ELSE source_token_address
+            CASE WHEN "srcToken" = '\x0000000000000000000000000000000000000000' THEN
+                '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'::bytea ELSE "srcToken"
             END AS token_b_address,
             contract_address AS exchange_contract_address,
-            tx_hash,
+            evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             evt_index
-        FROM bancornetwork.view_convert
+        FROM onelp."Mooniswap_evt_Swapped"
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
@@ -106,42 +104,11 @@ RETURN r;
 END
 $function$;
 
-
--- fill 2018
-SELECT dex.insert_bancor(
-    '2018-01-01',
-    '2019-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2018-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2019-01-01')
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2018-01-01'
-    AND block_time <= '2019-01-01'
-    AND project = 'Bancor Network'
-);
-
--- fill 2019
-SELECT dex.insert_bancor(
-    '2019-01-01',
-    '2020-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-01-01')
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2019-01-01'
-    AND block_time <= '2020-01-01'
-    AND project = 'Bancor Network'
-);
-
 -- fill 2020
-SELECT dex.insert_bancor(
+SELECT dex.insert_1inch_lp(
     '2020-01-01',
     '2021-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-01-01'),
     (SELECT max(number) FROM ethereum.blocks WHERE time <= '2021-01-01')
 )
 WHERE NOT EXISTS (
@@ -149,14 +116,14 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2020-01-01'
     AND block_time <= '2021-01-01'
-    AND project = 'Bancor Network'
+    AND project = '1inch LP'
 );
 
 -- fill 2021
-SELECT dex.insert_bancor(
+SELECT dex.insert_1inch_lp(
     '2021-01-01',
     now(),
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-07-01'),
     (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
 )
 WHERE NOT EXISTS (
@@ -164,15 +131,15 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2021-01-01'
     AND block_time <= now() - interval '20 minutes'
-    AND project = 'Bancor Network'
+    AND project = '1inch LP'
 );
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('*/10 * * * *', $$
-    SELECT dex.insert_bancor(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Bancor Network'),
+VALUES ('*/12 * * * *', $$
+    SELECT dex.insert_1inch_lp(
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1inch LP'),
         (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Bancor Network')),
+        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1inch LP')),
         (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

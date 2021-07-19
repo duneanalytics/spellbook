@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION dex.insert_bancor(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+CREATE OR REPLACE FUNCTION dex.insert_tokenlon_dex(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -55,30 +55,68 @@ WITH rows AS (
         evt_index,
         row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
-        -- Bancor Network
+        -- Tokenlon V4
         SELECT
-            block_time,
-            'Bancor Network' AS project,
-            NULL AS version,
-            'DEX' AS category,
-            trader AS trader_a,
-            NULL::bytea AS trader_b,
-            target_token_amount_raw AS token_a_amount_raw,
-            source_token_amount_raw AS token_b_amount_raw,
+            evt_block_time AS block_time,
+            'Tokenlon' AS project,
+            '4' AS version,
+            'Aggregator' AS category,
+            "takerAddress" AS trader_a,
+            "makerAddress" AS trader_b,
+            "takerAssetFilledAmount" AS token_a_amount_raw,
+            "makerAssetFilledAmount" AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            CASE WHEN target_token_address = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN
-                '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
-            ELSE target_token_address
-            END AS token_a_address,
-            CASE WHEN source_token_address = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN
-                '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
-            ELSE source_token_address
-            END AS token_b_address,
+            substring("takerAssetData" for 20 from 17) AS token_a_address,
+            substring("makerAssetData" for 20 from 17) AS token_b_address,
             contract_address AS exchange_contract_address,
-            tx_hash,
+            evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             evt_index
-        FROM bancornetwork.view_convert
+        FROM zeroex_v2."Exchange2.1_evt_Fill"
+        WHERE "feeRecipientAddress" IN ('\x6f7ae872e995f98fcd2a7d3ba17b7ddfb884305f'::BYTEA,'\xb9e29984fe50602e7a619662ebed4f90d93824c7'::BYTEA)
+
+        UNION ALL
+
+        -- Tokenlon V5
+        SELECT
+            evt_block_time AS block_time,
+            'Tokenlon' AS project,
+            '5' AS version,
+            'Aggregator' AS category,
+            "takerAddress" AS trader_a,
+            "makerAddress" AS trader_b,
+            "takerAssetFilledAmount" AS token_a_amount_raw,
+            "makerAssetFilledAmount" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            substring("takerAssetData" for 20 from 17) AS token_a_address,
+            substring("makerAssetData" for 20 from 17) AS token_b_address,
+            contract_address AS exchange_contract_address,
+            evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index
+        FROM zeroex_v2."Exchange2.1_evt_Fill"
+        WHERE "takerAddress" IN ('\x8d90113a1e286a5ab3e496fbd1853f265e5913c6'::BYTEA)
+
+        UNION ALL
+
+        -- Tokenlon V5
+        SELECT
+            evt_block_time AS block_time,
+            'Tokenlon' AS project,
+            '5' AS version,
+            'Aggregator' AS category,
+            "userAddr" AS trader_a,
+            "makerAddr" AS trader_b,
+            "takerAssetAmount" AS token_a_amount_raw,
+            "makerAssetAmount" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            "takerAssetAddr" AS token_a_address,
+            "makerAssetAddr" AS token_b_address,
+            contract_address AS exchange_contract_address,
+            evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index
+        FROM tokenlon_v2."AMMWrapper_evt_Swapped"
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
@@ -106,24 +144,8 @@ RETURN r;
 END
 $function$;
 
-
--- fill 2018
-SELECT dex.insert_bancor(
-    '2018-01-01',
-    '2019-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2018-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2019-01-01')
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2018-01-01'
-    AND block_time <= '2019-01-01'
-    AND project = 'Bancor Network'
-);
-
 -- fill 2019
-SELECT dex.insert_bancor(
+SELECT dex.insert_tokenlon_dex(
     '2019-01-01',
     '2020-01-01',
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'),
@@ -134,11 +156,11 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2019-01-01'
     AND block_time <= '2020-01-01'
-    AND project = 'Bancor Network'
+    AND project = 'Tokenlon'
 );
 
 -- fill 2020
-SELECT dex.insert_bancor(
+SELECT dex.insert_tokenlon_dex(
     '2020-01-01',
     '2021-01-01',
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
@@ -149,11 +171,11 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2020-01-01'
     AND block_time <= '2021-01-01'
-    AND project = 'Bancor Network'
+    AND project = 'Tokenlon'
 );
 
 -- fill 2021
-SELECT dex.insert_bancor(
+SELECT dex.insert_tokenlon_dex(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
@@ -164,15 +186,15 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2021-01-01'
     AND block_time <= now() - interval '20 minutes'
-    AND project = 'Bancor Network'
+    AND project = 'Tokenlon'
 );
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
-    SELECT dex.insert_bancor(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Bancor Network'),
+    SELECT dex.insert_tokenlon_dex(
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project = 'Tokenlon'),
         (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Bancor Network')),
+        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project = 'Tokenlon')),
         (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

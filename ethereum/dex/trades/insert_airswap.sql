@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION dex.insert_bancor(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+CREATE OR REPLACE FUNCTION dex.insert_airswap(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -53,32 +53,45 @@ WITH rows AS (
         tx."to" as tx_to,
         trace_address,
         evt_index,
-        row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
+        row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
     FROM (
-        -- Bancor Network
         SELECT
-            block_time,
-            'Bancor Network' AS project,
-            NULL AS version,
-            'DEX' AS category,
-            trader AS trader_a,
-            NULL::bytea AS trader_b,
-            target_token_amount_raw AS token_a_amount_raw,
-            source_token_amount_raw AS token_b_amount_raw,
-            NULL::numeric AS usd_amount,
-            CASE WHEN target_token_address = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN
-                '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
-            ELSE target_token_address
-            END AS token_a_address,
-            CASE WHEN source_token_address = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN
-                '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
-            ELSE source_token_address
-            END AS token_b_address,
-            contract_address AS exchange_contract_address,
-            tx_hash,
-            NULL::integer[] AS trace_address,
+            evt_block_time as block_time,
+            'airswap' as project,
+            'light' as version,
+            'DEX' as category,
+            "senderWallet" as trader_a, --define taker as trader a
+            "signerWallet" as trader_b, --define maker as trader b
+            "senderAmount" as token_a_amount_raw,
+            "signerAmount" as token_b_amount_raw,
+            "senderToken" as token_a_address,
+            "signerToken" as token_b_address,
+            contract_address as exchange_contract_address,
+            evt_tx_hash as tx_hash,
+            NULL::integer[] as trace_address,
+            NULL::numeric as usd_amount,
             evt_index
-        FROM bancornetwork.view_convert
+        FROM airswap."Light_evt_Swap"
+
+        UNION ALL
+
+        SELECT
+            evt_block_time as block_time,
+            'airswap' as project,
+            'swap' as version,
+            'DEX' as category,
+            "senderWallet" as trader_a, --define taker as trader a
+            "signerWallet" as trader_b, --define maker as trader b
+            "senderAmount" as token_a_amount_raw,
+            "signerAmount" as token_b_amount_raw,
+            "senderToken" as token_a_address,
+            "signerToken" as token_b_address,
+            contract_address as exchange_contract_address,
+            evt_tx_hash as tx_hash,
+            NULL::integer[] as trace_address,
+            NULL::numeric as usd_amount,
+            evt_index
+        FROM airswap."swap_evt_Swap"
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
@@ -98,6 +111,7 @@ WITH rows AS (
         AND pb.minute < end_ts
     WHERE dexs.block_time >= start_ts
     AND dexs.block_time < end_ts
+
     ON CONFLICT DO NOTHING
     RETURNING 1
 )
@@ -106,9 +120,8 @@ RETURN r;
 END
 $function$;
 
-
--- fill 2018
-SELECT dex.insert_bancor(
+--fill 2018
+SELECT dex.insert_airswap(
     '2018-01-01',
     '2019-01-01',
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2018-01-01'),
@@ -119,11 +132,11 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2018-01-01'
     AND block_time <= '2019-01-01'
-    AND project = 'Bancor Network'
+    AND project = 'airswap'
 );
 
--- fill 2019
-SELECT dex.insert_bancor(
+--fill 2019
+SELECT dex.insert_airswap(
     '2019-01-01',
     '2020-01-01',
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'),
@@ -134,11 +147,11 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2019-01-01'
     AND block_time <= '2020-01-01'
-    AND project = 'Bancor Network'
+    AND project = 'airswap'
 );
 
 -- fill 2020
-SELECT dex.insert_bancor(
+SELECT dex.insert_airswap(
     '2020-01-01',
     '2021-01-01',
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
@@ -149,11 +162,11 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2020-01-01'
     AND block_time <= '2021-01-01'
-    AND project = 'Bancor Network'
+    AND project = 'airswap'
 );
 
 -- fill 2021
-SELECT dex.insert_bancor(
+SELECT dex.insert_airswap(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
@@ -164,15 +177,15 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2021-01-01'
     AND block_time <= now() - interval '20 minutes'
-    AND project = 'Bancor Network'
+    AND project = 'airswap'
 );
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
-    SELECT dex.insert_bancor(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Bancor Network'),
+    SELECT dex.insert_airswap(
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='airswap'),
         (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Bancor Network')),
+        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='airswap')),
         (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

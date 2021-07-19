@@ -42,8 +42,8 @@ WITH rows AS (
         token_b_amount_raw,
         coalesce(
             usd_amount,
-            token_a_amount_raw / 10 ^ erc20a.decimals * pa.price,
-            token_b_amount_raw / 10 ^ erc20b.decimals * pb.price
+            token_a_amount_raw / 10 ^ pa.decimals * pa.price,
+            token_b_amount_raw / 10 ^ pb.decimals * pb.price
         ) as usd_amount,
         token_a_address,
         token_b_address,
@@ -53,7 +53,7 @@ WITH rows AS (
         tx."to" as tx_to,
         trace_address,
         evt_index,
-        row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
+        row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
         -- IDEX v1
         SELECT
@@ -107,6 +107,36 @@ RETURN r;
 END
 $function$;
 
+-- fill 2017
+SELECT dex.insert_idex(
+    '2017-01-01',
+    '2018-01-01',
+    (SELECT max(number) FROM ethereum.blocks WHERE time < '2017-01-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2018-01-01')
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.trades
+    WHERE block_time > '2017-01-01'
+    AND block_time <= '2018-01-01'
+    AND project = 'IDEX'
+);
+
+-- fill 2018
+SELECT dex.insert_idex(
+    '2018-01-01',
+    '2019-01-01',
+    (SELECT max(number) FROM ethereum.blocks WHERE time < '2018-01-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2019-01-01')
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.trades
+    WHERE block_time > '2018-01-01'
+    AND block_time <= '2019-01-01'
+    AND project = 'IDEX'
+);
+
 -- fill 2019
 SELECT dex.insert_idex(
     '2019-01-01',
@@ -142,13 +172,13 @@ SELECT dex.insert_idex(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    (SELECT max(number) FROM ethereum.blocks)
+    (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
 )
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.trades
     WHERE block_time > '2021-01-01'
-    AND block_time <= now()
+    AND block_time <= now() - interval '20 minutes'
     AND project = 'IDEX'
 );
 
@@ -156,8 +186,8 @@ INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
     SELECT dex.insert_idex(
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='IDEX'),
-        (SELECT now()),
+        (SELECT now() - interval '20 minutes'),
         (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='IDEX')),
-        (SELECT MAX(number) FROM ethereum.blocks));
+        (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

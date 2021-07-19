@@ -42,8 +42,8 @@ WITH rows AS (
         token_b_amount_raw,
         coalesce(
             usd_amount,
-            token_a_amount_raw / 10 ^ erc20a.decimals * pa.price,
-            token_b_amount_raw / 10 ^ erc20b.decimals * pb.price
+            token_a_amount_raw / 10 ^ pa.decimals * pa.price,
+            token_b_amount_raw / 10 ^ pb.decimals * pb.price
         ) as usd_amount,
         token_a_address,
         token_b_address,
@@ -53,7 +53,7 @@ WITH rows AS (
         tx."to" as tx_to,
         trace_address,
         evt_index,
-        row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
+        row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
         -- 0x v2.1
         SELECT
@@ -242,13 +242,13 @@ SELECT dex.insert_zeroex(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    (SELECT max(number) FROM ethereum.blocks)
+    (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
 )
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.trades
     WHERE block_time > '2021-01-01'
-    AND block_time <= now()
+    AND block_time <= now() - interval '20 minutes'
     AND project IN ('0x Native', '0x API', 'Matcha')
 );
 
@@ -256,8 +256,8 @@ INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
     SELECT dex.insert_zeroex(
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project IN ('0x Native', '0x API', 'Matcha')),
-        (SELECT now()),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project IN ('0x Native', '0x API', 'Matcha')),
-        (SELECT MAX(number) FROM ethereum.blocks));
+        (SELECT now() - interval '20 minutes'),
+        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project IN ('0x Native', '0x API', 'Matcha'))),
+        (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
