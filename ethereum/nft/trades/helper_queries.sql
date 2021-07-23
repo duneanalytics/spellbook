@@ -25,6 +25,8 @@ FROM
 where
 	trades.platform = new_prices.platform
 	AND trades.tx_hash = new_prices.tx_hash
+	-- These coalesces are to handle the times these values are null
+	-- because in postgres NULL = NULL equals NULL :face_palm:
 	AND COALESCE(trades.trace_address, '{-1}') = COALESCE(new_prices.trace_address, '{-1}')
 	AND COALESCE(trades.evt_index, -1) = COALESCE(new_prices.evt_index, -1)
 	AND trades.trade_id = new_prices.trade_id;
