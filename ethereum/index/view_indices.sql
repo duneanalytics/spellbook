@@ -20,5 +20,6 @@ CREATE OR REPLACE VIEW index.view_indices (symbol, project, token_address, asset
 ('CC10'::text,  'Indexed'   ::text, '\x17ac188e09a7890a1844e5e65471fe8b0ccfadf3'::bytea,    '\x17ac188e09a7890a1844e5e65471fe8b0ccfadf3'::bytea, 'ready'::text  ,'defi'::text),
 ('DEGEN'::text, 'Indexed'   ::text, '\x126c121f99e1E211dF2e5f8De2d96Fa36647c855'::bytea,    '\x126c121f99e1E211dF2e5f8De2d96Fa36647c855'::bytea, 'ready'::text  ,'defi'::text),
 ('NFTP'::text,  'Indexed'   ::text, '\x68bb81b3f67f7aab5fd1390ecb0b8e1a806f2465'::bytea,    '\x68bb81b3f67f7aab5fd1390ecb0b8e1a806f2465'::bytea, 'ready'::text  ,'NFT'::text),
-('ERROR'::text, 'Indexed'   ::text, '\xd3deff001ef67e39212f4973b617c2e684fa436c'::bytea,    '\xd3deff001ef67e39212f4973b617c2e684fa436c'::bytea, 'ready'::text  ,'defi'::text)
+('ERROR'::text, 'Indexed'   ::text, '\xd3deff001ef67e39212f4973b617c2e684fa436c'::bytea,    '\xd3deff001ef67e39212f4973b617c2e684fa436c'::bytea, 'ready'::text  ,'defi'::text),
+('FFF'::text,   'Indexed'   ::text, '\xabafa52d3d5a2c18a4c1ae24480d22b831fc0413'::bytea,    '\xabafa52d3d5a2c18a4c1ae24480d22b831fc0413'::bytea, 'ready'::text  ,'defi'::text)
 ;
