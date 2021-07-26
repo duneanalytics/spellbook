@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS wicked_cranium.wicked_cranium_attributes (
-    token_id int,
+    token_id integer NOT NULL,
     background text,
     body text,
     eyes text,
@@ -10772,3 +10772,5 @@ VALUES
 ('10759','Pohutukawa','CarouselPink','Eyepatch','ChiefCranium','Construction','Noodles'),
 ('10760','Scrub','Golden','Shy','Chef','Ushanka','Moustache'),
 ('10761','Scrub','TheOG','3D','FurCape','Bald','BoneMask');
+
+CREATE INDEX IF NOT EXISTS wicked_cranium_attributes_idx ON wicked_cranium.wicked_cranium_attributes USING BRIN (token_id);
