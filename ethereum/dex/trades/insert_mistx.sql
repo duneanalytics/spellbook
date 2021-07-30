@@ -56,7 +56,7 @@ WITH rows AS (
         row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
 
-        -- Sushiswap
+        -- mistX router for Sushiswap
         SELECT
             t.evt_block_time AS block_time,
             'mistX' AS project,
@@ -79,7 +79,7 @@ WITH rows AS (
 
         UNION ALL
 
-        -- Uniswap v2
+        -- mistX router for Uniswap v2
         SELECT
             t.evt_block_time AS block_time,
             'mistX' AS project,
