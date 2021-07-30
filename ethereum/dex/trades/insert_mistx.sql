@@ -82,7 +82,7 @@ WITH rows AS (
         -- Uniswap v2
         SELECT
             t.evt_block_time AS block_time,
-            'Uniswap' AS project,
+            'mistX' AS project,
             '2' AS version,
             'DEX' AS category,
             t."to" AS trader_a,
@@ -133,23 +133,8 @@ RETURN r;
 END
 $function$;
 
--- fill 2020
-SELECT dex.insert_sushi(
-    '2020-01-01',
-    '2021-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2021-01-01')
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2020-01-01'
-    AND block_time <= '2021-01-01'
-    AND project = 'Sushiswap'
-);
-
 -- fill 2021
-SELECT dex.insert_sushi(
+SELECT dex.insert_mistx(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
@@ -160,15 +145,15 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2021-01-01'
     AND block_time <= now() - interval '20 minutes'
-    AND project = 'Sushiswap'
+    AND project = 'mistX'
 );
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
-    SELECT dex.insert_sushi(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Sushiswap'),
+    SELECT dex.insert_mistx(
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='mistX'),
         (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Sushiswap')),
+        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='mistX')),
         (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
