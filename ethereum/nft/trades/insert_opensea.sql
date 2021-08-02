@@ -33,13 +33,58 @@ WITH wyvern_calldata AS (
     WHERE
         "call_success"
 ),
+opensea_erc_union AS (
+SELECT
+    erc721.evt_tx_hash,
+    'erc721' as erc_type,
+    CAST(erc721."tokenId" AS TEXT) AS "tokenId",
+    erc721."from",
+    erc721."to",
+    erc721.contract_address,
+    NULL::numeric AS value
+FROM erc721."ERC721_evt_Transfer" erc721
+INNER JOIN wyvern_calldata wc ON erc721.evt_tx_hash = wc.call_tx_hash
+WHERE erc721.evt_block_time >= start_ts
+AND erc721.evt_block_time < end_ts
+AND erc721."from" <> '\x0000000000000000000000000000000000000000'
+UNION ALL
+SELECT
+    erc1155.evt_tx_hash,
+    'erc1155' as erc_type,
+    CAST(erc1155.id AS TEXT) AS "tokenId",
+    erc1155."from",
+    erc1155."to",
+    erc1155.contract_address,
+    erc1155.value
+FROM erc1155."ERC1155_evt_TransferSingle" erc1155
+INNER JOIN wyvern_calldata wc ON erc1155.evt_tx_hash = wc.call_tx_hash
+WHERE erc1155.evt_block_time >= start_ts
+AND erc1155.evt_block_time < end_ts
+AND erc1155."from" <> '\x0000000000000000000000000000000000000000'
+),
+opensea_erc_subsets AS (
+SELECT
+    evt_tx_hash,
+    array_agg("tokenId") AS token_id_array,
+    cardinality(array_agg("tokenId")) AS no_of_transfers,
+    array_agg("from") AS from_array,
+    array_agg("to") AS to_array,
+    array_agg(erc_type) AS erc_type_array,
+    array_agg(contract_address) AS contract_address_array,
+    array_agg(value) AS erc1155_value_array
+FROM opensea_erc_union
+GROUP BY 1
+),
 rows AS (
     INSERT INTO nft.trades (
 	block_time,
 	nft_project_name,
 	nft_token_id,
+        erc_standard,
 	platform,
 	platform_version,
+        trade_type,
+        number_of_items,
 	category,
 	evt_type,
 	usd_amount,
@@ -54,6 +99,12 @@ rows AS (
 	exchange_contract_address,
 	tx_hash,
 	block_number,
+        nft_token_ids_array,
+        senders_array,
+        recipients_array,
+        erc_types_array,
+        nft_contract_addresses_array,
+        erc_values_array,
 	tx_from,
 	tx_to,
 	trace_address,
@@ -64,9 +115,12 @@ rows AS (
     SELECT
         trades.evt_block_time AS block_time,
         tokens.name AS nft_project_name,
-        token_id AS nft_token_id,
+        CASE WHEN erc.no_of_transfers > 1 THEN NULL ELSE token_id END AS nft_token_id, -- modified
+        CASE WHEN erc.no_of_transfers > 1 THEN NULL ELSE COALESCE(erc.erc_type_array[1], tokens.standard) END AS erc_standard, -- new
         wc.platform,
         wc.platform_version,
+        CASE WHEN erc.no_of_transfers > 1 THEN 'Bundle Trade' ELSE 'Single Item Trade' END AS trade_type, -- new
+        erc.no_of_transfers AS number_of_items, -- new
         wc.category,
         wc.evt_type,
         trades.price / 10 ^ erc20.decimals * p.price AS usd_amount,
@@ -77,10 +131,16 @@ rows AS (
         CASE WHEN wc.original_currency_address = '\x0000000000000000000000000000000000000000' THEN 'ETH' ELSE erc20.symbol END AS original_currency,
         wc.original_currency_address AS original_currency_contract,
         wc.currency_token AS currency_contract,
-        wc.nft_contract_address AS nft_contract_address,
+        COALESCE(erc.contract_address_array[1], wc.nft_contract_address) AS nft_contract_address, -- modified
         trades.contract_address AS exchange_contract_address,
         trades.evt_tx_hash AS tx_hash,
         trades.evt_block_number,
+        erc.token_id_array AS nft_token_ids_array, -- new
+        erc.from_array AS senders_array, -- new
+        erc.to_array AS recipients_array, -- new
+        erc.erc_type_array AS erc_types_array, -- new
+        erc.contract_address_array AS nft_contract_addresses_array, -- new
+        erc.erc1155_value_array AS erc_values_array, -- new
         tx."from" AS tx_from,
         tx."to" AS tx_to,
         call_trace_address AS trace_address,
@@ -94,6 +154,7 @@ rows AS (
         AND tx.block_time < end_ts
         AND tx.block_number >= start_block
         AND tx.block_number < end_block
+    LEFT JOIN opensea_erc_subsets erc ON erc.evt_tx_hash = trades.evt_tx_hash
     LEFT JOIN wyvern_calldata wc ON wc.call_tx_hash = trades.evt_tx_hash
     LEFT JOIN nft.tokens tokens ON tokens.contract_address = wc.nft_contract_address
     LEFT JOIN prices.usd p ON p.minute = date_trunc('minute', trades.evt_block_time)
@@ -103,9 +164,9 @@ rows AS (
     LEFT JOIN erc20.tokens erc20 ON erc20.contract_address = wc.currency_token
     WHERE
         NOT EXISTS (SELECT *
-                    FROM erc721."ERC721_evt_Transfer" erc721 
-                    WHERE trades.evt_tx_hash = erc721.evt_tx_hash
-                    AND erc721."from" = '\x0000000000000000000000000000000000000000')
+            FROM erc721."ERC721_evt_Transfer" erc721
+            WHERE trades.evt_tx_hash = erc721.evt_tx_hash
+            AND erc721."from" = '\x0000000000000000000000000000000000000000')
         AND trades.evt_block_time >= start_ts
         AND trades.evt_block_time < end_ts
     ON CONFLICT DO NOTHING
