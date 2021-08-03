@@ -155,78 +155,83 @@ WITH rarible_trades AS (
     where "sellTokenId" = 0 
     UNION ALL
 -- from 2021-06-15 onwards
--- 'Purchases' in ETH
+    -- ETH purchases of ERC1155 or ERC721 
     SELECT
-        'Rarible' as platform,
-        '2' as platform_version,
+        'Rarible' AS platform,
+        '2' AS platform_version,
         contract_address AS exchange_contract_address,
-        'Trade' as evt_type,
-        tx_hash AS evt_tx_hash,
-        block_time AS evt_block_time,
-        block_number AS evt_block_number,
-        "index" AS evt_index,
-        substring(data FROM 365 FOR 20) AS nft_contract_address,
-        CAST(bytea2numericpy(substring(data FROM 385 FOR 32)) AS TEXT) AS nft_token_id,
-        substring(data FROM 77 FOR 20) AS seller,
-        substring(data FROM 109 FOR 20) AS buyer,
-        bytea2numericpy(substring(data FROM 129 FOR 32)) original_amount_raw,
-        '\x0000000000000000000000000000000000000000'::bytea as original_currency_contract,
-        '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea as currency_contract,
+        'Trade' AS evt_type,
+        evt_tx_hash,
+        evt_block_time,
+        evt_block_number,
+        evt_index,
+        decode(substring("leftAsset"->>'data' FROM 27 FOR 40), 'hex') AS nft_contract_address,
+        CAST(bytea2numericpy(decode(substring("leftAsset"->>'data' FROM 67 FOR 64), 'hex')) AS TEXT) AS nft_token_id,
+        "leftMaker" AS seller,
+        "rightMaker" AS buyer,
+        "newLeftFill" AS original_amount_raw,
+        '\x0000000000000000000000000000000000000000'::bytea AS original_currency_contract,
+        '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea AS currency_contract,
         'Buy' AS category -- 'Purchase'
-    FROM ethereum."logs" 
-    WHERE "contract_address" = '\x9757f2d2b135150bbeb65308d4a91804107cd8d6' 
-    AND topic1 = '\x268820db288a211986b26a8fda86b1e0046281b21206936bb0e61c67b5c79ef4'
-    AND length(data) = 512
-UNION ALL
--- from 2021-06-15 onwards
--- 'Bid Accepted' non-ETH
+    FROM rarible."ExchangeV2_evt_Match"
+    WHERE "rightAsset"->>'assetClass' = '0xaaaebeba' -- ETH
+    AND (
+        "leftAsset"->>'assetClass' = '0x973bb640' 
+        OR 
+        "leftAsset"->>'assetClass' = '0x73ad2146'
+        )
+    UNION ALL
+    -- ERC20 purchases of ERC1155 or ERC721 
     SELECT
-        'Rarible' as platform,
-        '2' as platform_version,
+        'Rarible' AS platform,
+        '2' AS platform_version,
         contract_address AS exchange_contract_address,
-        'Trade' as evt_type,
-         tx_hash AS evt_tx_hash,
-        block_time AS evt_block_time,
-        block_number AS evt_block_number,
-        "index" AS evt_index,
-        substring(data FROM 493 FOR 20) AS nft_contract_address,
-        CAST(bytea2numericpy(substring(data FROM 513 FOR 32)) AS TEXT) AS nft_token_id,
-        substring(data FROM 109 FOR 20) AS seller,
-        substring(data FROM 77 FOR 20) AS buyer,
-        bytea2numericpy(substring(data FROM 161 FOR 32)) AS original_amount_raw,
-        substring(data FROM 365 FOR 20) AS original_currency_contract,
-        substring(data FROM 365 FOR 20) AS currency_contract,
-        'Offer Accepted' AS category -- 'Bid Accepted'
-    FROM ethereum."logs"
-    WHERE "contract_address" = '\x9757f2d2b135150bbeb65308d4a91804107cd8d6'
-    AND topic1 = '\x268820db288a211986b26a8fda86b1e0046281b21206936bb0e61c67b5c79ef4'
-    AND length(data) = 544
-    AND bytea2numericpy(substring(data FROM 225 FOR 32)) = 384
-UNION ALL
--- from 2021-06-15 onwards
--- 'Purchases' in non-ETH currencies
+        'Trade' AS evt_type,
+        evt_tx_hash,
+        evt_block_time,
+        evt_block_number,
+        evt_index,
+        decode(substring("leftAsset"->>'data' FROM 27 FOR 40), 'hex') AS nft_contract_address,
+        CAST(bytea2numericpy(decode(substring("leftAsset"->>'data' FROM 67 FOR 64), 'hex')) AS TEXT) AS nft_token_id,
+        "leftMaker" AS seller,
+        "rightMaker" AS buyer,
+        "newLeftFill" AS original_amount_raw,
+        decode(substring("rightAsset"->>'data' FROM 27 FOR 40), 'hex') AS original_currency_contract,
+        decode(substring("rightAsset"->>'data' FROM 27 FOR 40), 'hex') AS currency_contract,
+        'Buy' AS category -- 'Purchase'
+    FROM rarible."ExchangeV2_evt_Match"
+    WHERE "rightAsset"->>'assetClass' = '0x8ae85d84'
+    AND (
+        "leftAsset"->>'assetClass' = '0x973bb640' 
+        OR
+        "leftAsset"->>'assetClass' = '0x73ad2146' 
+        )
+    UNION ALL
+    -- WETH Bid Accepted
     SELECT
-        'Rarible' as platform,
-        '2' as platform_version,
+        'Rarible' AS platform,
+        '2' AS platform_version,
         contract_address AS exchange_contract_address,
-        'Trade' as evt_type,
-        tx_hash AS evt_tx_hash,
-        block_time AS evt_block_time,
-        block_number AS evt_block_number,
-        "index" AS evt_index,
-        substring(data FROM 365 FOR 20) AS nft_contract_address,
-        CAST(bytea2numericpy(substring(data FROM 385 FOR 32)) AS TEXT) AS nft_token_id,
-        substring(data FROM 77 FOR 20) AS seller,
-        substring(data FROM 109 FOR 20) AS buyer,
-        bytea2numericpy(substring(data FROM 129 FOR 32)) AS original_amount_raw,
-        substring(data FROM 525 FOR 20) AS original_currency_contract,
-        substring(data FROM 525 FOR 20) AS currency_contract,
-        'Buy' AS category -- 'Bid Accepted'
-    FROM ethereum."logs"
-    WHERE "contract_address" = '\x9757f2d2b135150bbeb65308d4a91804107cd8d6'
-    AND topic1 = '\x268820db288a211986b26a8fda86b1e0046281b21206936bb0e61c67b5c79ef4'
-    AND length(data) = 544
-    AND bytea2numericpy(substring(data FROM 225 FOR 32)) = 416
+        'Trade' AS evt_type,
+        evt_tx_hash,
+        evt_block_time,
+        evt_block_number,
+        evt_index,
+        decode(substring("rightAsset"->>'data' FROM 27 FOR 40), 'hex') AS nft_contract_address,
+        CAST(bytea2numericpy(decode(substring("rightAsset"->>'data' FROM 67 FOR 64), 'hex')) AS TEXT) AS nft_token_id,
+        "rightMaker" AS seller,
+        "leftMaker" AS buyer,
+        "newRightFill" AS original_amount_raw,
+        decode(substring("leftAsset"->>'data' FROM 27 FOR 40), 'hex') AS original_currency_contract,
+        decode(substring("leftAsset"->>'data' FROM 27 FOR 40), 'hex') AS currency_contract,
+        'Buy' AS category -- 'Purchase'
+    FROM rarible."ExchangeV2_evt_Match"
+    WHERE "leftAsset"->>'assetClass' = '0x8ae85d84'
+    AND (
+        "rightAsset"->>'assetClass' = '0x973bb640' 
+        OR
+        "rightAsset"->>'assetClass' = '0x73ad2146' 
+        )
 ),
 rarible_erc_union AS (
 SELECT
