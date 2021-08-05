@@ -172,8 +172,8 @@ WITH rows AS (
             NULL AS evt_index
         FROM oneinch."LimitOrderProtocol_call_fillOrderRFQ" call
         LEFT JOIN ethereum.traces ts ON call_tx_hash = ts.tx_hash AND ts.trace_address = call_trace_address
-        LEFT JOIN ethereum.traces tf1 ON call_tx_hash = tf1.tx_hash AND tf1.trace_address = COALESCE(call_trace_address, '{}') || 0
-        LEFT JOIN ethereum.traces tf2 ON call_tx_hash = tf2.tx_hash AND tf2.trace_address = COALESCE(call_trace_address, '{}') || 1
+        LEFT JOIN ethereum.traces tf1 ON call_tx_hash = tf1.tx_hash AND tf1.trace_address = COALESCE(call_trace_address, '{}') || (ts.sub_traces-2)
+        LEFT JOIN ethereum.traces tf2 ON call_tx_hash = tf2.tx_hash AND tf2.trace_address = COALESCE(call_trace_address, '{}') || (ts.sub_traces-1)
         WHERE call_success
     ) dexs
     INNER JOIN ethereum.transactions tx
