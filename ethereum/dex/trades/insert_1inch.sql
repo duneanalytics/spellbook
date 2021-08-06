@@ -150,6 +150,31 @@ WITH rows AS (
         FROM oneinch."LimitOrderProtocol_call_fillOrder" call
         LEFT JOIN ethereum.traces ts ON call_tx_hash = ts.tx_hash AND call_trace_address = ts.trace_address
         WHERE call_success
+
+        UNION ALL
+
+        -- 1inch Limit Order Protocol RFQ
+        SELECT
+            call_block_time as block_time,
+            '1inch Limit Order Protocol' AS project,
+            'RFQ v1' AS version,
+            'DEX' AS category,
+            ts."from"  AS trader_a,
+            decode(substring("order"::jsonb->>'makerAssetData' from 35 for 40), 'hex') AS trader_b,
+            bytea2numeric(substring(tf2.input from 69 for 32)) AS token_a_amount_raw,
+            bytea2numeric(substring(tf1.input from 69 for 32)) AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            decode(substring("order"::jsonb->>'takerAsset' from 3), 'hex') AS token_a_address,
+            decode(substring("order"::jsonb->>'makerAsset' from 3), 'hex') AS token_b_address,
+            contract_address AS exchange_contract_address,
+            call_tx_hash,
+            call_trace_address,
+            NULL AS evt_index
+        FROM oneinch."LimitOrderProtocol_call_fillOrderRFQ" call
+        LEFT JOIN ethereum.traces ts ON call_tx_hash = ts.tx_hash AND ts.trace_address = call_trace_address
+        LEFT JOIN ethereum.traces tf1 ON call_tx_hash = tf1.tx_hash AND tf1.trace_address = COALESCE(call_trace_address, '{}') || (ts.sub_traces-2)
+        LEFT JOIN ethereum.traces tf2 ON call_tx_hash = tf2.tx_hash AND tf2.trace_address = COALESCE(call_trace_address, '{}') || (ts.sub_traces-1)
+        WHERE call_success
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
