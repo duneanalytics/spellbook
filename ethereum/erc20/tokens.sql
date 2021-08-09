@@ -1084,7 +1084,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\x2fe94ea3d5d4a175184081439753de15aef9d614	crvObtcSbtc	18
 \\x410e3e86ef427e30b9235497143881f717d93c2a	crvBbtcSbtc	18
 \\xca3d75ac011bf5ad07a98d02f18225f9bd9a6bdf	crvTricrypto	18
-\\xc4ad29ba4b3c580e6d59105fff484999997675ff	crv3pool	18
+\\xc4ad29ba4b3c580e6d59105fff484999997675ff	crvTricrypto2	18
 \\x72a56f7bbee939a8c441c891e1754bb795ee0b21	CRWN	8
 \\xdbddf072d7aae7b9288e31a4eebe6c54e3a143b1	CRWNY	18
 \\x1062fdf250b44697216d07e41df93824519f47aa	CRYPL	8
