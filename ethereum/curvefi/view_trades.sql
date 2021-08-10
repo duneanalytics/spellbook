@@ -36,7 +36,7 @@ CREATE OR REPLACE VIEW curvefi.view_trades (
     evt_tx_hash AS tx_hash,
     NULL::integer[] AS trace_address,
     evt_index
-FROM curvefi."susd_v2_evt_TokenExchange"
+FROM curvefi."susd_swap_evt_TokenExchange"
 
 UNION
 
@@ -64,7 +64,7 @@ SELECT
     evt_tx_hash AS tx_hash,
     NULL::integer[] AS trace_address,
     evt_index
-FROM curvefi."susd_v2_evt_TokenExchangeUnderlying"
+FROM curvefi."susd_swap_evt_TokenExchangeUnderlying"
 
 UNION
 
@@ -208,7 +208,7 @@ SELECT
     evt_tx_hash AS tx_hash,
     NULL::integer[] AS trace_address,
     evt_index
-FROM curvefi."compound_v3_evt_TokenExchange"
+FROM curvefi."compound_swap_evt_TokenExchange"
 
 UNION
 
@@ -232,7 +232,7 @@ SELECT
     evt_tx_hash AS tx_hash,
     NULL::integer[] AS trace_address,
     evt_index
-FROM curvefi."compound_v3_evt_TokenExchangeUnderlying"
+FROM curvefi."compound_swap_evt_TokenExchangeUnderlying"
 
 UNION
 
@@ -258,7 +258,7 @@ SELECT
     evt_tx_hash AS tx_hash,
     NULL::integer[] AS trace_address,
     evt_index
-FROM curvefi."usdt_evt_TokenExchange"
+FROM curvefi."usdt_swap_evt_TokenExchange"
 
 UNION
 
@@ -284,7 +284,7 @@ SELECT
     evt_tx_hash AS tx_hash,
     NULL::integer[] AS trace_address,
     evt_index
-FROM curvefi."usdt_evt_TokenExchangeUnderlying"
+FROM curvefi."usdt_swap_evt_TokenExchangeUnderlying"
 
 UNION
 
@@ -312,7 +312,7 @@ SELECT
     evt_tx_hash AS tx_hash,
     NULL::integer[] AS trace_address,
     evt_index
-FROM curvefi."y_evt_TokenExchange"
+FROM curvefi."y_swap_evt_TokenExchange"
 
 UNION
 
@@ -340,7 +340,7 @@ SELECT
     evt_tx_hash AS tx_hash,
     NULL::integer[] AS trace_address,
     evt_index
-FROM curvefi."y_evt_TokenExchangeUnderlying"
+FROM curvefi."y_swap_evt_TokenExchangeUnderlying"
 
 UNION
 
@@ -368,7 +368,7 @@ SELECT
     evt_tx_hash AS tx_hash,
     NULL::integer[] AS trace_address,
     evt_index
-FROM curvefi."busd_evt_TokenExchange"
+FROM curvefi."busd_swap_evt_TokenExchange"
 
 UNION
 
@@ -396,7 +396,7 @@ SELECT
     evt_tx_hash AS tx_hash,
     NULL::integer[] AS trace_address,
     evt_index
-FROM curvefi."busd_evt_TokenExchangeUnderlying"
+FROM curvefi."busd_swap_evt_TokenExchangeUnderlying"
 
 UNION
 
@@ -424,7 +424,7 @@ SELECT
     evt_tx_hash AS tx_hash,
     NULL::integer[] AS trace_address,
     evt_index
-FROM curvefi."pax_evt_TokenExchange"
+FROM curvefi."pax_swap_evt_TokenExchange"
 
 UNION
 
@@ -452,7 +452,7 @@ SELECT
     evt_tx_hash AS tx_hash,
     NULL::integer[] AS trace_address,
     evt_index
-FROM curvefi."pax_evt_TokenExchangeUnderlying"
+FROM curvefi."pax_swap_evt_TokenExchangeUnderlying"
 
 UNION
 
@@ -478,7 +478,7 @@ SELECT
     evt_tx_hash AS tx_hash,
     NULL::integer[] AS trace_address,
     evt_index
-FROM curvefi."renbtc_evt_TokenExchange"
+FROM curvefi."ren_swap_evt_TokenExchange"
 
 UNION
 
@@ -506,7 +506,7 @@ SELECT
     evt_tx_hash AS tx_hash,
     NULL::integer[] AS trace_address,
     evt_index
-FROM curvefi."sbtc_evt_TokenExchange"
+FROM curvefi."sbtc_swap_evt_TokenExchange"
 
 UNION
 
@@ -532,7 +532,7 @@ SELECT
     evt_tx_hash AS tx_hash,
     NULL::integer[] AS trace_address,
     evt_index
-FROM curvefi."hbtc_evt_TokenExchange"
+FROM curvefi."hbtc_swap_evt_TokenExchange"
 
 UNION
 
@@ -558,7 +558,7 @@ SELECT
     evt_tx_hash AS tx_hash,
     NULL::integer[] AS trace_address,
     evt_index
-FROM curvefi."dai_usdc_usdt_evt_TokenExchange"
+FROM curvefi."threepool_swap_evt_TokenExchange"
 
 UNION
 
@@ -582,7 +582,7 @@ SELECT
     evt_tx_hash AS tx_hash,
     NULL::integer[] AS trace_address,
     evt_index
-FROM curvefi."steth_evt_TokenExchange"
+FROM curvefi."steth_swap_evt_TokenExchange"
 
 UNION
 
@@ -608,4 +608,4 @@ SELECT
     evt_tx_hash AS tx_hash,
     NULL::integer[] AS trace_address,
     evt_index
-FROM curvefi."tricrypto_evt_TokenExchange"
+FROM curvefi."tricrypto_swap_evt_TokenExchange"
