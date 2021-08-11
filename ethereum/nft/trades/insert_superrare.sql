@@ -151,6 +151,8 @@ UNION ALL
     AND
         topic1 = '\xea6d16c6bfcad11577aef5cc6728231c9f069ac78393828f8ca96847405902a9'
 ), 
+-- Get ERC721 and ERC1155 transfer data for every trade transaction
+-- as well as ERC20 and custom `transfer` data for specific SuperRare contracts
 superrare_erc_union AS (
 SELECT
     erc721.evt_tx_hash,
@@ -164,7 +166,7 @@ FROM erc721."ERC721_evt_Transfer" erc721
 INNER JOIN superrare_trades ON superrare_trades.tx_hash = erc721.evt_tx_hash
 WHERE erc721.evt_block_time >= start_ts
 AND erc721.evt_block_time < end_ts
-AND erc721."from" <> '\x0000000000000000000000000000000000000000'
+AND erc721."from" <> '\x0000000000000000000000000000000000000000' -- exclude mints
 UNION ALL
 SELECT
     erc1155.evt_tx_hash,
@@ -178,7 +180,7 @@ FROM erc1155."ERC1155_evt_TransferSingle" erc1155
 INNER JOIN superrare_trades ON superrare_trades.tx_hash = erc1155.evt_tx_hash
 WHERE erc1155.evt_block_time >= start_ts
 AND erc1155.evt_block_time < end_ts
-AND erc1155."from" <> '\x0000000000000000000000000000000000000000'
+AND erc1155."from" <> '\x0000000000000000000000000000000000000000' -- exclude mints
 UNION ALL 
 SELECT
     erc20.evt_tx_hash,
@@ -192,7 +194,7 @@ FROM erc20."ERC20_evt_Transfer" erc20
 INNER JOIN superrare_trades ON superrare_trades.tx_hash = erc20.evt_tx_hash
 WHERE erc20.evt_block_time >= start_ts
 AND erc20.evt_block_time < end_ts
-AND erc20."from" <> '\x0000000000000000000000000000000000000000'
+AND erc20."from" <> '\x0000000000000000000000000000000000000000' -- exclude mints
 AND erc20.contract_address = '\xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb'
 UNION ALL
 SELECT
@@ -207,9 +209,10 @@ FROM superrare."SuperRare_evt_Transfer" st
 INNER JOIN superrare_trades ON superrare_trades.tx_hash = st.evt_tx_hash
 WHERE st.evt_block_time >= '2019-01-01'
 AND st.evt_block_time < now()
-AND st."_from" <> '\x0000000000000000000000000000000000000000'
+AND st."_from" <> '\x0000000000000000000000000000000000000000' -- exclude mints
 AND st.contract_address = '\x41a322b28d0ff354040e2cbc676f0320d8c8850d'
 ),
+-- aggregate NFT transfers per transaction 
 superrare_erc_subsets AS (
 SELECT
     evt_tx_hash,
@@ -262,12 +265,14 @@ rows AS (
     SELECT
 	trades.block_time,
         tokens.name AS nft_project_name,
-        CASE WHEN erc.no_of_transfers > 1 THEN NULL ELSE trades.token_id END AS nft_token_id, -- modified
-        CASE WHEN erc.no_of_transfers > 1 THEN NULL ELSE COALESCE(erc.erc_type_array[1], tokens.standard) END AS erc_standard, -- new
+        -- Set NFT token ID to `NULL` if the trade consists of multiple NFT transfers
+        CASE WHEN erc.no_of_transfers > 1 THEN NULL ELSE trades.token_id END AS nft_token_id,
+        -- Set ERC standard to `NULL` if the trade consists of multiple NFT transfers
+        CASE WHEN erc.no_of_transfers > 1 THEN NULL ELSE COALESCE(erc.erc_type_array[1], tokens.standard) END AS erc_standard,
 	trades.platform,
 	trades.platform_version,
-        CASE WHEN erc.no_of_transfers > 1 THEN 'Bundle Trade' ELSE 'Single Item Trade' END AS trade_type, -- new
-        erc.no_of_transfers AS number_of_items, -- new
+        CASE WHEN erc.no_of_transfers > 1 THEN 'Bundle Trade' ELSE 'Single Item Trade' END AS trade_type,
+        erc.no_of_transfers AS number_of_items,
 	category,
 	evt_type,
 	trades.original_amount_raw / 10^18 * p.price AS usd_amount,
@@ -282,12 +287,13 @@ rows AS (
 	trades.exchange_contract_address,
 	trades.tx_hash,
 	trades.block_number,
-        erc.token_id_array AS nft_token_ids_array, -- new
-        erc.from_array AS senders_array, -- new
-        erc.to_array AS recipients_array, -- new
-        erc.erc_type_array AS erc_types_array, -- new
-        erc.contract_address_array AS nft_contract_addresses_array, -- new
-        erc.erc1155_value_array AS erc_values_array, -- new
+        -- Sometimes multiple NFT transfers occur in a given trade; the 'array' fields below provide info for these use cases 
+        erc.token_id_array AS nft_token_ids_array,
+        erc.from_array AS senders_array,
+        erc.to_array AS recipients_array,
+        erc.erc_type_array AS erc_types_array,
+        erc.contract_address_array AS nft_contract_addresses_array,
+        erc.erc1155_value_array AS erc_values_array,
 	tx."from" AS tx_from,
 	tx."to" AS tx_to,
 	NULL::integer[] AS trace_address,

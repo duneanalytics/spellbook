@@ -3,6 +3,7 @@ LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
 
+-- update `PunkBought` event data in case of one of more punks bought via bid instead of direct list price purchase
 WITH punks_union AS (
 SELECT
     "evt_tx_hash",
@@ -12,6 +13,8 @@ SELECT
     'erc20' AS erc_type,
     CAST("punkIndex" AS text) AS "tokenId",
     "fromAddress" AS "from",
+    -- When the seller accepts a bid, the `PunkBought` event emits '\x0000000000000000000000000000000000000000' as `toAddress`
+    -- Get the buyer from `erc20."ERC20_evt_Transfer"`
     CASE WHEN "toAddress" = '\x0000000000000000000000000000000000000000'
          THEN (SELECT "to"
                FROM erc20."ERC20_evt_Transfer" e
@@ -19,6 +22,8 @@ SELECT
          ELSE "toAddress"
          END AS "to",
     "contract_address",
+    -- When the seller accepts a bid, the `value` event emits '0'
+    -- Get the value from the `PunkBidEntered` event but after double-checking that the last bidder equals the punk NFT recipient
     CASE WHEN "value" = 0
         THEN COALESCE(
         (
@@ -43,6 +48,7 @@ FROM cryptopunks."CryptoPunksMarket_evt_PunkBought" p
 WHERE evt_block_time >= start_ts
 AND evt_block_time < end_ts
 ),
+-- aggregate all NFT transfers per transaction 
 punks_agg_tx AS (
 SELECT
     evt_tx_hash,
@@ -100,12 +106,13 @@ rows AS (
     SELECT
         trades.evt_block_time AS block_time,
         'CryptoPunks' AS nft_project_name,
-        CASE WHEN trades.no_of_transfers > 1 THEN NULL ELSE CAST(trades.token_id_array[1] AS TEXT) END AS nft_token_id, -- modified
-        'erc20' AS erc_standard, -- new
+        -- Set NFT token ID to `NULL` if the trade consists of multiple NFT transfers
+        CASE WHEN trades.no_of_transfers > 1 THEN NULL ELSE CAST(trades.token_id_array[1] AS TEXT) END AS nft_token_id,
+        'erc20' AS erc_standard,
         platform,
         platform_version,
-        CASE WHEN trades.no_of_transfers > 1 THEN 'Bundle Trade' ELSE 'Single Item Trade' END AS trade_type, -- new
-        trades.no_of_transfers AS number_of_items, -- new
+        CASE WHEN trades.no_of_transfers > 1 THEN 'Bundle Trade' ELSE 'Single Item Trade' END AS trade_type,
+        trades.no_of_transfers AS number_of_items,
         category,
         evt_type,
         trades.value / 10 ^ 18 * p.price AS usd_amount,
@@ -120,12 +127,14 @@ rows AS (
         '\xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb'::bytea AS exchange_contract_address,
         trades.evt_tx_hash AS tx_hash,
         trades.evt_block_number AS block_number,
-        trades.token_id_array AS nft_token_ids_array, -- new
-        trades.from_array AS senders_array, -- new
-        trades.to_array AS recipients_array, -- new
-        trades.erc_type_array AS erc_types_array, -- new
-        trades.contract_address_array AS nft_contract_addresses_array, -- new
-        trades.erc1155_value_array AS erc_values_array, -- new
+        -- Sometimes multiple NFT transfers occur in a given trade; the 'array' fields below provide info for these use cases 
+        erc.token_id_array AS nft_token_ids_array,
+        trades.token_id_array AS nft_token_ids_array,
+        trades.from_array AS senders_array,
+        trades.to_array AS recipients_array,
+        trades.erc_type_array AS erc_types_array,
+        trades.contract_address_array AS nft_contract_addresses_array,
+        trades.erc1155_value_array AS erc_values_array,
         tx."from" AS tx_from,
         tx."to" AS tx_to,
         NULL::integer[] AS trace_address,
