@@ -48,7 +48,7 @@ FROM cryptopunks."CryptoPunksMarket_evt_PunkBought" p
 WHERE evt_block_time >= start_ts
 AND evt_block_time < end_ts
 ),
--- aggregate all NFT transfers per transaction 
+-- aggregate all NFT transfers per transaction
 punks_agg_tx AS (
 SELECT
     evt_tx_hash,
@@ -127,7 +127,7 @@ rows AS (
         '\xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb'::bytea AS exchange_contract_address,
         trades.evt_tx_hash AS tx_hash,
         trades.evt_block_number AS block_number,
-        -- Sometimes multiple NFT transfers occur in a given trade; the 'array' fields below provide info for these use cases 
+        -- Sometimes multiple NFT transfers occur in a given trade; the 'array' fields below provide info for these use cases
         erc.token_id_array AS nft_token_ids_array,
         trades.token_id_array AS nft_token_ids_array,
         trades.from_array AS senders_array,
@@ -181,7 +181,7 @@ WHERE NOT EXISTS (
     FROM nft.trades
     WHERE block_time > '2017-01-01'
     AND block_time <= '2018-01-01'
-    AND platform = 'CryptoPunks'
+    AND platform = 'LarvaLabs Contract'
 );
 
 -- fill 2018
@@ -196,7 +196,7 @@ WHERE NOT EXISTS (
     FROM nft.trades
     WHERE block_time > '2018-01-01'
     AND block_time <= '2019-01-01'
-    AND platform = 'CryptoPunks'
+    AND platform = 'LarvaLabs Contract'
 );
 
 -- fill 2019
@@ -211,7 +211,7 @@ WHERE NOT EXISTS (
     FROM nft.trades
     WHERE block_time > '2019-01-01'
     AND block_time <= '2020-01-01'
-    AND platform = 'CryptoPunks'
+    AND platform = 'LarvaLabs Contract'
 );
 
 
@@ -227,7 +227,7 @@ WHERE NOT EXISTS (
     FROM nft.trades
     WHERE block_time > '2020-01-01'
     AND block_time <= '2021-01-01'
-    AND platform = 'CryptoPunks'
+    AND platform = 'LarvaLabs Contract'
 );
 
 -- fill 2021
@@ -242,15 +242,15 @@ WHERE NOT EXISTS (
     FROM nft.trades
     WHERE block_time > '2021-01-01'
     AND block_time <= now() - interval '20 minutes'
-    AND platform = 'CryptoPunks'
+    AND platform = 'LarvaLabs Contract'
 );
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('53 * * * *', $$
     SELECT nft.insert_cryptopunks(
-        (SELECT max(block_time) - interval '1 days' FROM nft.trades WHERE platform='CryptoPunks'),
+        (SELECT max(block_time) - interval '1 days' FROM nft.trades WHERE platform='LarvaLabs Contract'),
         (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM nft.trades WHERE platform='CryptoPunks')),
+        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM nft.trades WHERE platform='LarvaLabs Contract')),
         (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
