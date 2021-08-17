@@ -4956,6 +4956,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\x175666d12fc722abd9e4a8ebf5d9b2d17b36b268	WSKR	18
 \\x2cf2f4e07ecc54740293df6d6fb4150d725a919f	WST	18
 \\xedeec5691f23e4914cf0183a4196bbeb30d027a0	WSTA	18
+\\x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0	wstETH	18
 \\x5538ac3ce36e73bb851921f2a804b4657b5307bf	WSZO	18
 \\xb7cb1c96db6b22b0d3d9536e0108d062bd488f74	WTC	18
 \\x0501e7a02c285b9b520fdbf1badc74ae931ad75d	WTF	18
