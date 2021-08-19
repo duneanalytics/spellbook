@@ -55,6 +55,7 @@ WITH rows AS (
         evt_index,
         row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
+        -- V1
         SELECT
             block_time,
             'Gnosis Protocol' AS project,
@@ -72,6 +73,29 @@ WITH rows AS (
             NULL::integer[] AS trace_address,
             evt_index_trades as evt_index
         FROM gnosis_protocol.view_trades
+
+        UNION ALL
+        
+        -- V2
+        SELECT
+            t.evt_block_time AS block_time,
+            'Gnosis Protocol' AS project,
+            '2' AS version,
+            'Aggregator' AS category,
+            t.owner AS trader_a, -- this relies on the outer query coalescing to tx."from"
+            NULL::bytea AS trader_b,
+            t."buyAmount" AS token_a_amount_raw,
+            t."sellAmount" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            t."buyToken" token_a_address,
+            t."sellToken" token_b_address,
+            t.contract_address exchange_contract_address,
+            t.evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            t.evt_index
+        FROM
+            gnosis_protocol_v2."GPv2Settlement_evt_Trade" t
+        )
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
