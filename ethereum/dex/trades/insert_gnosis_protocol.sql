@@ -75,14 +75,14 @@ WITH rows AS (
         FROM gnosis_protocol.view_trades
 
         UNION ALL
-        
+
         -- V2
         SELECT
             t.evt_block_time AS block_time,
             'Gnosis Protocol' AS project,
             '2' AS version,
             'Aggregator' AS category,
-            t.owner AS trader_a, -- this relies on the outer query coalescing to tx."from"
+            t.owner AS trader_a,
             NULL::bytea AS trader_b,
             t."buyAmount" AS token_a_amount_raw,
             t."sellAmount" AS token_b_amount_raw,
