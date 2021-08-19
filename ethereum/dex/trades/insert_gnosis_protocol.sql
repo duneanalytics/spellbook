@@ -105,12 +105,21 @@ WITH rows AS (
         AND tx.block_number < end_block
     LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
-    LEFT JOIN prices.usd pa ON pa.minute = date_trunc('minute', dexs.block_time)
-        AND pa.contract_address = dexs.token_a_address
+    LEFT JOIN prices.usd pa 
+        ON pa.minute = date_trunc('minute', dexs.block_time)
+        AND pa.contract_address = (
+            CASE 
+                WHEN dexs.token_a_address = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                ELSE dexs.token_a_address
+            END)
         AND pa.minute >= start_ts
         AND pa.minute < end_ts
     LEFT JOIN prices.usd pb ON pb.minute = date_trunc('minute', dexs.block_time)
-        AND pb.contract_address = dexs.token_b_address
+        AND pb.contract_address = (
+            CASE 
+                WHEN dexs.token_b_address = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                ELSE dexs.token_b_address
+            END)
         AND pb.minute >= start_ts
         AND pb.minute < end_ts
     WHERE dexs.block_time >= start_ts
