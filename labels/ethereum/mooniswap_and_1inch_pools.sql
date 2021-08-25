@@ -19,7 +19,6 @@ SELECT
     t.symbol as token_0_symbol
 FROM onelp."MooniswapFactory_evt_Deployed" dex
 INNER JOIN erc20.tokens t ON dex.token1 = t.contract_address
-WHERE t.symbol IS NOT NULL
 ),
 pools_1inch_second_token AS (
 SELECT
@@ -27,7 +26,6 @@ SELECT
     t.symbol as token_1_symbol
 FROM onelp."MooniswapFactory_evt_Deployed" dex
 INNER JOIN erc20.tokens t ON dex.token2 = t.contract_address
-WHERE t.symbol IS NOT NULL
 ),
 
 -- Mooniswap
@@ -37,7 +35,6 @@ SELECT
     t.symbol as token_0_symbol
 FROM mooniswap."MooniFactory_evt_Deployed" dex
 INNER JOIN erc20.tokens t ON dex.token1 = t.contract_address
-WHERE t.symbol IS NOT NULL
 ),
 mooniswap_second_token AS (
 SELECT
@@ -45,7 +42,6 @@ SELECT
     t.symbol as token_1_symbol
 FROM mooniswap."MooniFactory_evt_Deployed" dex
 INNER JOIN erc20.tokens t ON dex.token2 = t.contract_address
-WHERE t.symbol IS NOT NULL
 )
 
 -- Main Query
