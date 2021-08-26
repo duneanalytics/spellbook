@@ -31,7 +31,7 @@ balancer_v2_pools as ( -- https://github.com/duneanalytics/abstractions/blob/mas
     ) all_pools
 ),
 balance_changes AS (
-SELECT change.evt_block_time AS timestamp
+SELECT
     "poolId" AS pool_id,
     unnest(tokens) AS token_address,
     unnest(deltas) AS liq_change,
@@ -107,7 +107,7 @@ rows AS (
         version,
         category,
         token_amount_raw,
-        token_amount_raw / 10 ^ erc20.decimals * p.price AS usd_amount,
+        token_amount_raw / (10 ^ erc20.decimals) * p.price AS usd_amount,
         token_address,
         pool_address,
         token_index,

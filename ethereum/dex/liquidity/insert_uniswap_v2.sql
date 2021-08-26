@@ -64,7 +64,7 @@ rows AS (
         version,
         category,
         token_amount_raw,
-        token_amount_raw / 10 ^ erc20.decimals * p.price AS usd_amount,
+        token_amount_raw / (10 ^ erc20.decimals) * p.price AS usd_amount,
         token_address,
         pool_address,
         token_index,

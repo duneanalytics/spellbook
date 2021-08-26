@@ -5,18 +5,12 @@ BEGIN
 WITH days as ( -- update table entries until previous day
     SELECT day FROM generate_series(start_ts, (SELECT end_ts - interval '1 day'), '1 day') g(day)
 ), 
-pools_v1 AS (
-    SELECT pool
-    FROM balancer."BFactory_evt_LOG_NEW_POOL"
-),
-pools_tokens_v1 AS ( -- 15243 rows
+pools_tokens_v1 AS (
     SELECT DISTINCT
-    p.pool,
-    e.contract_address AS token
-    FROM erc20."ERC20_evt_Transfer" e
-    INNER JOIN pools_v1 p ON e."to" = p.pool
-    -- AND e.evt_block_time >= start_ts
-    -- AND e.evt_block_time < end_ts
+    contract_address as pool, 
+    token
+    FROM balancer."BPool_call_bind"
+    WHERE call_success
 ),
 dex_wallet_balances AS (
     SELECT
@@ -73,7 +67,7 @@ rows AS (
         version,
         category,
         token_amount_raw,
-        token_amount_raw / 10 ^ erc20.decimals * p.price AS usd_amount,
+        token_amount_raw / (10 ^ erc20.decimals) * p.price AS usd_amount,
         token_address,
         pool_address,
         token_index,

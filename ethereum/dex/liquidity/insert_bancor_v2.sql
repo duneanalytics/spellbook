@@ -72,7 +72,7 @@ rows AS (
         version,
         category,
         token_amount_raw,
-        token_amount_raw / 10 ^ erc20.decimals * p.price AS usd_amount,
+        token_amount_raw / (10 ^ erc20.decimals) * p.price AS usd_amount,
         token_address,
         pool_address,
         token_index,
@@ -104,20 +104,6 @@ END
 $function$;
 
 -- First bancor."StandardPoolConverter_evt_LiquidityAdded" evt on '2020-12-14'
--- fill 2020 - Q2 + Q3
-SELECT dex.insert_liquidity_bancor_v2(
-    '2020-05-04',
-    '2020-10-01'
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.liquidity
-    WHERE day >= '2020-05-04'
-    AND day < '2020-10-01'
-    AND project = 'Bancor'
-    AND version = '2'
-);
-
 -- fill 2020 - Q4
 SELECT dex.insert_liquidity_bancor_v2(
     '2020-10-01',
