@@ -1,4 +1,4 @@
-CREATE TABLE dex.liquidity (
+CREATE TABLE IF NOT EXISTS dex.liquidity (
     day timestamptz NOT NULL,
     token_symbol text,
     token_amount numeric,
@@ -14,7 +14,7 @@ CREATE TABLE dex.liquidity (
     token_pool_percentage numeric
 );
 
-CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS dex_liquidity_day_pool_address_token_address_uniq_idx ON dex.liquidity (day, pool_address, token_address);
+CREATE UNIQUE INDEX IF NOT EXISTS dex_liquidity_day_pool_address_token_address_uniq_idx ON dex.liquidity (day, pool_address, token_address);
 CREATE INDEX IF NOT EXISTS dex_liquidity_day_idx ON dex.liquidity USING BRIN (day);
 CREATE INDEX IF NOT EXISTS dex_liquidity_token_address_idx ON dex.liquidity (token_address);
 CREATE INDEX IF NOT EXISTS dex_liquidity_pool_address_idx ON dex.liquidity (pool_address);
