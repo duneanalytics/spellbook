@@ -340,7 +340,6 @@ rows AS (
         trades.evt_block_number AS block_number,
         -- Sometimes multiple NFT transfers occur in a given trade; the 'array' fields below provide info for these use cases 
         erc.token_id_array AS nft_token_ids_array,
-        erc.token_id_array AS nft_token_ids_array,
         erc.from_array AS senders_array,
         erc.to_array AS recipients_array,
         erc.erc_type_array AS erc_types_array,

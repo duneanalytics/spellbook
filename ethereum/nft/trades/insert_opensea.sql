@@ -5,10 +5,6 @@ BEGIN
 
 WITH wyvern_calldata AS (
     SELECT
-        'OpenSea' AS platform,
-        '1' AS platform_version,
-        'Buy' AS category,
-        'Trade' AS evt_type,
         call_tx_hash,
         addrs [5] AS nft_contract_address,
         addrs [2] AS buyer,
@@ -44,7 +40,7 @@ SELECT
     erc721.contract_address,
     NULL::numeric AS value
 FROM erc721."ERC721_evt_Transfer" erc721
-INNER JOIN wyvern_calldata wc ON erc721.evt_tx_hash = wc.call_tx_hash
+INNER JOIN opensea."WyvernExchange_evt_OrdersMatched" trades ON erc721.evt_tx_hash = trades.evt_tx_hash
 WHERE erc721.evt_block_time >= start_ts
 AND erc721.evt_block_time < end_ts
 AND erc721."from" <> '\x0000000000000000000000000000000000000000' -- Exclude mints
@@ -58,7 +54,7 @@ SELECT
     erc1155.contract_address,
     erc1155.value
 FROM erc1155."ERC1155_evt_TransferSingle" erc1155
-INNER JOIN wyvern_calldata wc ON erc1155.evt_tx_hash = wc.call_tx_hash
+INNER JOIN opensea."WyvernExchange_evt_OrdersMatched" trades ON erc1155.evt_tx_hash = trades.evt_tx_hash
 WHERE erc1155.evt_block_time >= start_ts
 AND erc1155.evt_block_time < end_ts
 AND erc1155."from" <> '\x0000000000000000000000000000000000000000' -- Exclude mints
@@ -121,12 +117,12 @@ rows AS (
         CASE WHEN erc.no_of_transfers > 1 THEN NULL ELSE token_id END AS nft_token_id,
         -- Set ERC standard to `NULL` if the trade consists of multiple NFT transfers
         CASE WHEN erc.no_of_transfers > 1 THEN NULL ELSE COALESCE(erc.erc_type_array[1], tokens.standard) END AS erc_standard,
-        wc.platform,
-        wc.platform_version,
+        trades.platform,
+        trades.platform_version,
         CASE WHEN erc.no_of_transfers > 1 THEN 'Bundle Trade' ELSE 'Single Item Trade' END AS trade_type,
         erc.no_of_transfers AS number_of_items,
-        wc.category,
-        wc.evt_type,
+        trades.category,
+        trades.evt_type,
         trades.price / 10 ^ erc20.decimals * p.price AS usd_amount,
         wc.seller,
         wc.buyer,
@@ -141,7 +137,6 @@ rows AS (
         trades.evt_block_number,
         -- Sometimes multiple NFT transfers occur in a given trade; the 'array' fields below provide info for these use cases 
         erc.token_id_array AS nft_token_ids_array,
-        erc.token_id_array AS nft_token_ids_array,
         erc.from_array AS senders_array,
         erc.to_array AS recipients_array,
         erc.erc_type_array AS erc_types_array,
@@ -151,9 +146,20 @@ rows AS (
         tx."to" AS tx_to,
         call_trace_address AS trace_address,
         trades.evt_index,
-        row_number() OVER (PARTITION BY wc.platform, trades.evt_tx_hash, trades.evt_index, wc.category ORDER BY wc.platform_version, wc.evt_type) AS trade_id
+        row_number() OVER (PARTITION BY trades.platform, trades.evt_tx_hash, trades.evt_index, trades.category ORDER BY trades.platform_version, trades.evt_type) AS trade_id
     FROM
-        opensea."WyvernExchange_evt_OrdersMatched" trades
+        (SELECT 
+            'OpenSea' AS platform,
+            '1' AS platform_version,
+            'Buy' AS category,
+            'Trade' AS evt_type,
+            evt_block_time,
+            price,
+            contract_address,
+            evt_tx_hash,
+            evt_block_number,
+            evt_index
+        FROM opensea."WyvernExchange_evt_OrdersMatched") trades
     INNER JOIN ethereum.transactions tx
         ON trades.evt_tx_hash = tx.hash
         AND tx.block_time >= start_ts
@@ -247,9 +253,9 @@ WHERE NOT EXISTS (
 INSERT INTO cron.job (schedule, command)
 VALUES ('47 * * * *', $$
     SELECT nft.insert_opensea(
-        (SELECT max(block_time) - interval '1 days' FROM nft.trades WHERE platform='OpenSea'),
+        (SELECT max(block_time) - interval '6 hours' FROM nft.trades WHERE platform='OpenSea'),
         (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM nft.trades WHERE platform='OpenSea')),
+        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '6 hours' FROM nft.trades WHERE platform='OpenSea')),
         (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
