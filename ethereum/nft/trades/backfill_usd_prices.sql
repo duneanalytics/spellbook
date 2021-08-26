@@ -44,7 +44,7 @@ $function$;
 SELECT nft.backfill_usd_amount();
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('31 * * * *', $$
+VALUES ('12 12 * * *', $$
     SELECT nft.backfill_usd_amount();
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
