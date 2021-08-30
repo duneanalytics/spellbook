@@ -231,7 +231,6 @@
 - id: polycrystal
 - id: polydoge
 - id: polyfi
-- id: polygaj
 - id: polygold
 - id: polygon-babydoge
 - id: polygonfarm-finance
@@ -336,5 +335,5 @@
 - id: yvs-finance
 - id: zcash
 - id: zenko
-- id: zeon-2
+- id: zeon
 - id: zero-utility-token
