@@ -2,27 +2,27 @@
 - name: dmg_dmm_governance
   id: dmg-dmm-governance
   symbol: DMG
-  address: 0XED91879919B71BB6905F23AF0A68D231ECF87B14
+  address: 0xEd91879919B71bB6905f23af0A68d231EcF87b14
   decimals: 18
 - name: srm_serum
   id: srm-serum
   symbol: SRM
-  address: 0X476C5E26A75BD202A9683FFD34359C0CC15BE0FF
+  address: 0x476c5e26a75bd202a9683ffd34359c0cc15be0ff
   decimals: 6
 - name: mta_meta
   id: mta-meta
   symbol: MTA
-  address: 0XA3BED4E1C75D00FA6F4E5E6922DB7261B5E9ACD2
+  address: 0xa3BeD4E1c75D00fa6f4E5E6922DB7261B5E9AcD2
   decimals: 18
 - name: bal_balancer
   id: bal-balancer
   symbol: BAL
-  address: 0XBA100000625A3754423978A60C9317C58A424E3D
+  address: 0xba100000625a3754423978a60c9317c58a424e3D
   decimals: 18
 - name: uma_uma
   id: uma-uma
   symbol: UMA
-  address: 0X04FA0D235C4ABF4BCF4787AF4CF447DE572EF828
+  address: 0x04fa0d235c4abf4bcf4787af4cf447de572ef828
   decimals: 18
 - name: aave_new
   id: aave-new
@@ -31,1016 +31,1016 @@
 - name: uni_uniswap
   id: uni-uniswap
   symbol: UNI
-  address: 0X1F9840A85D5AF5BF1D1762F925BDADDC4201F984
+  address: 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
   decimals: 18
 - name: yfi_yearnfinance
   id: yfi-yearnfinance
   symbol: YFI
-  address: 0X0BC529C00C6401AEF6D220BE8C6EA1667F6AD93E
+  address: 0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e
   decimals: 18
 - name: crv_curve_dao_token
   id: crv-curve-dao-token
   symbol: CRV
-  address: 0XD533A949740BB3306D119CC777FA900BA034CD52
+  address: 0xd533a949740bb3306d119cc777fa900ba034cd52
   decimals: 18
 - name: tusd_trueusd
   id: tusd-trueusd
   symbol: TUSD
-  address: 0X0000000000085D4780B73119B644AE5ECD22B376
+  address: 0x0000000000085d4780b73119b644ae5ecd22b376
   decimals: 18
 - name: kcs_kucoin_shares
   id: kcs-kucoin-shares
   symbol: KCS
-  address: 0X039B5649A59967E3E936D7471F9C3700100EE1AB
+  address: 0x039b5649a59967e3e936d7471f9c3700100ee1ab
   decimals: 6
 - name: gusd_gemini_dollar
   id: gusd-gemini-dollar
   symbol: GUSD
-  address: 0X056FD409E1D7A124BD7017459DFEA2F387B6D5CD
+  address: 0x056fd409e1d7a124bd7017459dfea2f387b6d5cd
   decimals: 2
 - name: zil_zilliqa
   id: zil-zilliqa
   symbol: ZIL
-  address: 0X05F4A42E251F2D52B8ED15E9FEDAACFCEF1FAD27
+  address: 0x05f4a42e251f2d52b8ed15e9fedaacfcef1fad27
   decimals: 12
 - name: dnt_district0x
   id: dnt-district0x
   symbol: DNT
-  address: 0X0ABDACE70D3790235AF448C88547603B945604EA
+  address: 0x0abdace70d3790235af448c88547603b945604ea
   decimals: 18
 - name: trb_tributes
   id: trb-tributes
   symbol: TRB
-  address: 0X0BA45A8B5D5575935B8158A88C631E9F9C95A2E5
+  address: 0x0ba45a8b5d5575935b8158a88c631e9f9c95a2e5
   decimals: 18
 - name: cocos_cocos_bcx
   id: cocos-cocos-bcx
   symbol: COCOS
-  address: 0X0C6F5F7D555E7518F6841A79436BD2B1EEF03381
+  address: 0x0c6f5f7d555e7518f6841a79436bd2b1eef03381
   decimals: 18
 - name: data_streamr_datacoin
   id: data-streamr-datacoin
   symbol: DATA
-  address: 0X0CF0EE63788A0849FE5297F3407F701E122CC023
+  address: 0x0cf0ee63788a0849fe5297f3407f701e122cc023
   decimals: 18
 - name: bat_basic_attention_token
   id: bat-basic-attention-token
   symbol: BAT
-  address: 0X0D8775F648430679A709E98D2B0CB6250D2887EF
+  address: 0x0d8775f648430679a709e98d2b0cb6250d2887ef
   decimals: 18
 - name: poe_poet
   id: poe-poet
   symbol: POE
-  address: 0X0E0989B1F9B8A38983C2BA8053269CA62EC9B195
+  address: 0x0e0989b1f9b8a38983c2ba8053269ca62ec9b195
   decimals: 8
 - name: mana_decentraland
   id: mana-decentraland
   symbol: MANA
-  address: 0X0F5D2FB29FB7D3CFEE444A200298F468908CC942
+  address: 0x0f5d2fb29fb7d3cfee444a200298f468908cc942
   decimals: 18
 - name: tmtg_the_midas_touch_gold
   id: tmtg-the-midas-touch-gold
   symbol: TMTG
-  address: 0X10086399DD8C1E3DE736724AF52587A2044C9FA2
+  address: 0x10086399dd8c1e3de736724af52587a2044c9fa2
   decimals: 18
 - name: cennz_centrality
   id: cennz-centrality
   symbol: CENNZ
-  address: 0X1122B6A0E00DCE0563082B6E2953F3A943855C1F
+  address: 0x1122b6a0e00dce0563082b6e2953f3a943855c1f
   decimals: 18
 - name: cre_carry
   id: cre-carry
   symbol: CRE
-  address: 0X115EC79F1DE567EC68B7AE7EDA501B406626478E
+  address: 0x115ec79f1de567ec68b7ae7eda501b406626478e
   decimals: 18
 - name: qbit_qubitica
   id: qbit-qubitica
   symbol: QBIT
-  address: 0X1602AF2C782CC03F9241992E243290FCCF73BB13
+  address: 0x1602af2c782cc03f9241992e243290fccf73bb13
   decimals: 18
 - name: nmr_numeraire
   id: nmr-numeraire
   symbol: NMR
-  address: 0X1776E1F26F98B1A5DF9CD347953A26DD3CB46671
+  address: 0x1776e1f26f98b1a5df9cd347953a26dd3cb46671
   decimals: 18
 - name: inb_insight_chain
   id: inb-insight-chain
   symbol: INB
-  address: 0X17AA18A4B64A55ABED7FA543F2BA4E91F2DCE482
+  address: 0x17aa18a4b64a55abed7fa543f2ba4e91f2dce482
   decimals: 18
 - name: dgtx_digitex_futures
   id: dgtx-digitex-futures
   symbol: DGTX
-  address: 0X1C83501478F1320977047008496DACBD60BB15EF
+  address: 0x1c83501478f1320977047008496dacbd60bb15ef
   decimals: 18
 - name: fetch_ai
   id: fetch-ai
   symbol: FET
-  address: 0X1D287CC25DAD7CCAF76A26BC660C5F7C8E2A05BD
+  address: 0x1d287cc25dad7ccaf76a26bc660c5f7c8e2a05bd
   decimals: 18
 - name: can_canyacoin
   id: can-canyacoin
   symbol: CAN
-  address: 0X1D462414FE14CF489C7A21CAC78509F4BF8CD7C0
+  address: 0x1d462414fe14cf489c7a21cac78509f4bf8cd7c0
   decimals: 6
 - name: bnt_bancor
   id: bnt-bancor
   symbol: BNT
-  address: 0X1F573D6FB3F13D689FF844B4CE37794D79A7FF1C
+  address: 0x1f573d6fb3f13d689ff844b4ce37794d79a7ff1c
   decimals: 18
 - name: brc_baer_chain
   id: brc-baer-chain
   symbol: BRC
-  address: 0X21AB6C9FAC80C59D401B37CB43F81EA9DDE7FE34
+  address: 0x21ab6c9fac80c59d401b37cb43f81ea9dde7fe34
   decimals: 8
 - name: rep_augur_v1
   id: rep-augur
   symbol: REP
-  address: 0XE94327D07FC17907B4DB788E5ADF2ED424ADDFF6
+  address: 0xE94327D07Fc17907b4DB788E5aDf2ed424adDff6
   decimals: 18
   end: 2018-07-09T06:03:00Z
 - name: rep_augur_v1mig
   id: rep-augur
   symbol: REP
-  address: 0X1985365E9F78359A9B6AD760E32412F4A445E862
+  address: 0x1985365e9f78359a9B6AD760e32412f4a445E862
   decimals: 18
   start: 2018-07-09T06:03:00Z
 - name: rep_augur_v2
   id: rep-augur
   symbol: REPV2
-  address: 0X221657776846890989A759BA2973E427DFF5C9BB
+  address: 0x221657776846890989a759ba2973e427dff5c9bb
   decimals: 18
   start: 2020-07-27T09:51:00Z
 - name: wbtc_wrapped_bitcoin
   id: wbtc-wrapped-bitcoin
   symbol: WBTC
-  address: 0X2260FAC5E5542A773AA44FBCFEDF7C193BC2C599
+  address: 0x2260fac5e5542a773aa44fbcfedf7c193bc2c599
   decimals: 8
 - name: pro_propy
   id: pro-propy
   symbol: PRO
-  address: 0X226BB599A12C826476E3A771454697EA52E9E220
+  address: 0x226bb599a12c826476e3a771454697ea52e9e220
   decimals: 8
 - name: rdn_raiden_network_token
   id: rdn-raiden-network-token
   symbol: RDN
-  address: 0X255AA6DF07540CB5D3D297F0D0D4D84CB52BC8E6
+  address: 0x255aa6df07540cb5d3d297f0d0d4d84cb52bc8e6
   decimals: 18
 - name: c20_crypto20
   id: c20-crypto20
   symbol: C20
-  address: 0X26E75307FC0C021472FEB8F727839531F112F317
+  address: 0x26e75307fc0c021472feb8f727839531f112f317
   decimals: 18
 - name: ast_airswap
   id: ast-airswap
   symbol: AST
-  address: 0X27054B13B1B798B345B591A4D22E6562D47EA75A
+  address: 0x27054b13b1b798b345b591a4d22e6562d47ea75a
   decimals: 4
 - name: wabi_wabi
   id: wabi-wabi
   symbol: WABI
-  address: 0X286BDA1413A2DF81731D4930CE2F862A35A609FE
+  address: 0x286bda1413a2df81731d4930ce2f862a35a609fe
   decimals: 18
 - name: leo_leo_token
   id: leo-leo-token
   symbol: LEO
-  address: 0X2AF5D2AD76741191D15DFE7BF6AC92D4BD912CA3
+  address: 0x2af5d2ad76741191d15dfe7bf6ac92d4bd912ca3
   decimals: 18
 - name: hex_hex
   id: hex-hex
   symbol: HEX
-  address: 0X2B591E99AFE9F32EAA6214F7B7629768C40EEB39
+  address: 0x2b591e99afe9f32eaa6214f7b7629768c40eeb39
   decimals: 8
 - name: chz_chiliz
   id: chz-chiliz
   symbol: CHZ
-  address: 0X3506424F91FD33084466F402D5D97F05F8E3B4AF
+  address: 0x3506424f91fd33084466f402d5d97f05f8e3b4af
   decimals: 18
 - name: dent_dent
   id: dent-dent
   symbol: DENT
-  address: 0X3597BFD533A99C9AA083587B074434E61EB0A258
+  address: 0x3597bfd533a99c9aa083587b074434e61eb0a258
   decimals: 8
 - name: vest_vestchain
   id: vest-vestchain
   symbol: VEST
-  address: 0X37F04D2C3AE075FAD5483BB918491F656B12BDB6
+  address: 0x37f04d2c3ae075fad5483bb918491f656b12bdb6
   decimals: 8
 - name: theta_theta_token
   id: theta-theta-token
   symbol: THETA
-  address: 0X3883F5E181FCCAF8410FA61E12B59BAD963FB645
+  address: 0x3883f5e181fccaf8410fa61e12b59bad963fb645
   decimals: 18
 - name: wax_wax
   id: wax-wax
   symbol: WAX
-  address: 0X39BB259F66E1C59D5ABEF88375979B4D20D98022
+  address: 0x39bb259f66e1c59d5abef88375979b4d20d98022
   decimals: 8
 - name: ren_republic_protocol
   id: ren-republic-protocol
   symbol: REN
-  address: 0X408E41876CCCDC0F92210600EF50372656052A38
+  address: 0x408e41876cccdc0f92210600ef50372656052a38
   decimals: 18
 - name: salt_salt
   id: salt-salt
   symbol: SALT
-  address: 0X4156D3342D5C385A87D264F90653733592000581
+  address: 0x4156d3342d5c385a87d264f90653733592000581
   decimals: 8
 - name: drgn_dragonchain
   id: drgn-dragonchain
   symbol: DRGN
-  address: 0X419C4DB4B9E25D6DB2AD9691CCB832C8D9FDA05E
+  address: 0x419c4db4b9e25d6db2ad9691ccb832c8d9fda05e
   decimals: 18
 - name: fun_funfair
   id: fun-funfair
   symbol: FUN
-  address: 0X419D0D8BDD9AF5E606AE2232ED285AFF190E711B
+  address: 0x419d0d8bdd9af5e606ae2232ed285aff190e711b
   decimals: 8
 - name: xdce_xinfin_network
   id: xdce-xinfin-network
   symbol: XDCE
-  address: 0X41AB1B6FCBB2FA9DCED81ACBDEC13EA6315F2BF2
+  address: 0x41ab1b6fcbb2fa9dced81acbdec13ea6315f2bf2
   decimals: 18
 - name: cvc_civic
   id: cvc-civic
   symbol: CVC
-  address: 0X41E5560054824EA6B0732E656E3AD64E20E94E45
+  address: 0x41e5560054824ea6b0732e656e3ad64e20e94e45
   decimals: 8
 - name: spank_spankchain
   id: spank-spankchain
   symbol: SPANK
-  address: 0X42D6622DECE394B54999FBD73D108123806F6A18
+  address: 0x42d6622dece394b54999fbd73d108123806f6a18
   decimals: 18
 - name: vidt_v_id
   id: vidt-v-id
   symbol: VIDT
-  address: 0X445F51299EF3307DBD75036DD896565F5B4BF7A5
+  address: 0x445f51299ef3307dbd75036dd896565f5b4bf7a5
   decimals: 18
 - name: adx_adex
   id: adx-adex
   symbol: ADX
-  address: 0X4470BB87D77B963A013DB939BE332F927F2B992E
+  address: 0x4470bb87d77b963a013db939be332f927f2b992e
   decimals: 4
 - name: paxg_pax_gold
   id: paxg-pax-gold
   symbol: PAXG
-  address: 0X45804880DE22913DAFE09F4980848ECE6ECBAF78
+  address: 0x45804880de22913dafe09f4980848ece6ecbaf78
   decimals: 18
 - name: tel_telcoin
   id: tel-telcoin
   symbol: TEL
-  address: 0X467BCCD9D29F223BCE8043B84E8C8B282827790F
+  address: 0x467bccd9d29f223bce8043b84e8c8b282827790f
   decimals: 2
 - name: foam_foam
   id: foam-foam
   symbol: FOAM
-  address: 0X4946FCEA7C692606E8908002E55A582AF44AC121
+  address: 0x4946fcea7c692606e8908002e55a582af44ac121
   decimals: 18
 - name: qnt_quant
   id: qnt-quant
   symbol: QNT
-  address: 0X4A220E6096B25EADB88358CB44068A3248254675
+  address: 0x4a220e6096b25eadb88358cb44068a3248254675
   decimals: 18
 - name: fxc_flexacoin
   id: fxc-flexacoin
   symbol: FXC
-  address: 0X4A57E687B9126435A9B19E4A802113E266ADEBDE
+  address: 0x4a57e687b9126435a9b19e4a802113e266adebde
   decimals: 18
 - name: aion_aion
   id: aion-aion
   symbol: AION
-  address: 0X4CEDA7906A5ED2179785CD3A40A69EE8BC99C466
+  address: 0x4ceda7906a5ed2179785cd3a40a69ee8bc99c466
   decimals: 8
 - name: dgx_digix_gold_token
   id: dgx-digix-gold-token
   symbol: DGX
-  address: 0X4F3AFEC4E5A3F2A6A1A411DEF7D7DFE50EE057BF
+  address: 0x4f3afec4e5a3f2a6a1a411def7d7dfe50ee057bf
   decimals: 9
 - name: celr_celer_network
   id: celr-celer-network
   symbol: CELR
-  address: 0X4F9254C83EB525F9FCF346490BBB3ED28A81C667
+  address: 0x4f9254c83eb525f9fcf346490bbb3ed28a81c667
   decimals: 18
 - name: busd_binance_usd
   id: busd-binance-usd
   symbol: BUSD
-  address: 0X4FABB145D64652A948D72533023F6E7A623C7C53
+  address: 0x4fabb145d64652a948d72533023f6e7a623c7c53
   decimals: 18
 - name: ftt_ftx_token
   id: ftt-ftx-token
   symbol: FTT
-  address: 0X50D1C9771902476076ECFC8B2A83AD6B9355A4C9
+  address: 0x50d1c9771902476076ecfc8b2a83ad6b9355a4c9
   decimals: 18
 - name: link_chainlink
   id: link-chainlink
   symbol: LINK
-  address: 0X514910771AF9CA656AF840DFF83E8264ECF986CA
+  address: 0x514910771af9ca656af840dff83e8264ecf986ca
   decimals: 18
 - name: gen_daostack
   id: gen-daostack
   symbol: GEN
-  address: 0X543FF227F64AA17EA132BF9886CAB5DB55DCADDF
+  address: 0x543ff227f64aa17ea132bf9886cab5db55dcaddf
   decimals: 18
 - name: brd_bread
   id: brd-bread
   symbol: BRD
-  address: 0X558EC3152E2EB2174905CD19AEA4E34A23DE9AD6
+  address: 0x558ec3152e2eb2174905cd19aea4e34a23de9ad6
   decimals: 18
 - name: blz_bluzelle
   id: blz-bluzelle
   symbol: BLZ
-  address: 0X5732046A883704404F284CE41FFADD5B007FD668
+  address: 0x5732046a883704404f284ce41ffadd5b007fd668
   decimals: 18
 - name: susd_old
   id: nusd-nusd
   symbol: SUSD
-  address: 0X57AB1E02FEE23774580C119740129EAC7081E9D3
+  address: 0x57Ab1E02fEE23774580C119740129eAC7081e9D3
   decimals: 18
   end: 2020-05-11T00:00:00Z
 - name: susd_new
   id: nusd-nusd
   symbol: SUSD
-  address: 0X57AB1EC28D129707052DF4DF418D58A2D46D5F51
+  address: 0x57ab1ec28d129707052df4df418d58a2d46d5f51
   decimals: 18
   start: 2020-04-28T11:00:00Z
 - name: noah_noah_coin
   id: noah-noah-coin
   symbol: NOAH
-  address: 0X58A4884182D9E835597F405E5F258290E46AE7C2
+  address: 0x58a4884182d9e835597f405e5f258290e46ae7c2
   decimals: 18
 - name: powr_power_ledger
   id: powr-power-ledger
   symbol: POWR
-  address: 0X595832F8FC6BF59C85C527FEC3740A1B7A361269
+  address: 0x595832f8fc6bf59c85c527fec3740a1b7a361269
   decimals: 6
 - name: nkn_nkn
   id: nkn-nkn
   symbol: NKN
-  address: 0X5CF04716BA20127F1E2297ADDCF4B5035000C9EB
+  address: 0x5cf04716ba20127f1e2297addcf4b5035000c9eb
   decimals: 18
 - name: nas_nebulas
   id: nas-nebulas
   symbol: NAS
-  address: 0X5D65D971895EDC438F465C17DB6992698A52318D
+  address: 0x5d65d971895edc438f465c17db6992698a52318d
   decimals: 18
 - name: itc_iot_chain
   id: itc-iot-chain
   symbol: ITC
-  address: 0X5E6B6D9ABAD9093FDC861EA1600EBA1B355CD940
+  address: 0x5e6b6d9abad9093fdc861ea1600eba1b355cd940
   decimals: 18
 - name: rlc_iexec_rlc
   id: rlc-iexec-rlc
   symbol: RLC
-  address: 0X607F4C5BB672230E8672085532F7E901544A7375
+  address: 0x607f4c5bb672230e8672085532f7e901544a7375
   decimals: 9
 - name: qash_qash
   id: qash-qash
   symbol: QASH
-  address: 0X618E75AC90B12C6049BA3B27F5D5F8651B0037F6
+  address: 0x618e75ac90b12c6049ba3b27f5d5f8651b0037f6
   decimals: 6
 - name: mof_molecular_future
   id: mof-molecular-future
   symbol: MOF
-  address: 0X653430560BE843C4A3D143D0110E896C2AB8AC0D
+  address: 0x653430560be843c4a3d143d0110e896c2ab8ac0d
   decimals: 16
 - name: gno_gnosis
   id: gno-gnosis
   symbol: GNO
-  address: 0X6810E776880C02933D47DB1B9FC05908E5386B96
+  address: 0x6810e776880c02933d47db1b9fc05908e5386b96
   decimals: 18
 - name: qrl_quantum_resistant_ledger
   id: qrl-quantum-resistant-ledger
   symbol: QRL
-  address: 0X697BEAC28B09E122C4332D163985E8A73121B97F
+  address: 0x697beac28b09e122c4332d163985e8a73121b97f
   decimals: 8
 - name: dai_dai
   id: dai-dai
   symbol: DAI
-  address: 0X6B175474E89094C44DA98B954EEDEAC495271D0F
+  address: 0x6b175474e89094c44da98b954eedeac495271d0f
   decimals: 18
 - name: hot_holo
   id: hot-holo
   symbol: HOT
-  address: 0X6C6EE5E31D828DE241282B9606C8E98EA48526E2
+  address: 0x6c6ee5e31d828de241282b9606c8e98ea48526e2
   decimals: 18
 - name: ht_huobi_token
   id: ht-huobi-token
   symbol: HT
-  address: 0X6F259637DCD74C767781E37BC6133CD6A68AA161
+  address: 0x6f259637dcd74c767781e37bc6133cd6a68aa161
   decimals: 18
 - name: iotx_iotex
   id: iotx-iotex
   symbol: IOTX
-  address: 0X6FB3E0A217407EFFF7CA062D46C26E5D60A14D69
+  address: 0x6fb3e0a217407efff7ca062d46c26e5d60a14d69
   decimals: 18
 - name: utk_utrust
   id: utk-utrust
   symbol: UTK
-  address: 0X70A72833D6BF7F508C8224CE59EA1EF3D0EA3A38
+  address: 0x70a72833d6bf7f508c8224ce59ea1ef3d0ea3a38
   decimals: 18
 - name: snt_status
   id: snt-status
   symbol: SNT
-  address: 0X744D70FDBE2BA4CF95131626614A1763DF805B9E
+  address: 0x744d70fdbe2ba4cf95131626614a1763df805b9e
   decimals: 18
 - name: okb_okb
   id: okb-okb
   symbol: OKB
-  address: 0X75231F58B43240C9718DD58B4967C5114342A86C
+  address: 0x75231f58b43240c9718dd58b4967c5114342a86c
   decimals: 18
 - name: one_harmony
   id: one-harmony
   symbol: ONE
-  address: 0X799A4202C12CA952CB311598A024C80ED371A41E
+  address: 0x799a4202c12ca952cb311598a024c80ed371a41e
   decimals: 18
 - name: mrph_morpheusnetwork
   id: mrph-morpheusnetwork
   symbol: MRPH
-  address: 0X7B0C06043468469967DBA22D1AF33D77D44056C8
+  address: 0x7b0c06043468469967dba22d1af33d77d44056c8
   decimals: 4
 - name: san_santiment_network_token
   id: san-santiment-network-token
   symbol: SAN
-  address: 0X7C5A0CE9267ED19B22F8CAE653F198E3E8DAF098
+  address: 0x7c5a0ce9267ed19b22f8cae653f198e3e8daf098
   decimals: 18
 - name: matic_polygon
   id: matic-polygon
   symbol: MATIC
-  address: 0X7D1AFA7B718FB893DB30A3ABC0CFC608AACFEBB0
+  address: 0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0
   decimals: 18
 - name: ncash_nucleus_vision
   id: ncash-nucleus-vision
   symbol: NCASH
-  address: 0X809826CCEAB68C387726AF962713B64CB5CB3CCA
+  address: 0x809826cceab68c387726af962713b64cb5cb3cca
   decimals: 18
 - name: crpt_crypterium
   id: crpt-crypterium
   symbol: CRPT
-  address: 0X80A7E048F37A50500351C204CB407766FA3BAE7F
+  address: 0x80a7e048f37a50500351c204cb407766fa3bae7f
   decimals: 18
 - name: lend_ethlend
   id: lend-ethlend
   symbol: LEND
-  address: 0X80FB784B7ED66730E8B1DBD9820AFD29931AAB03
+  address: 0x80fb784b7ed66730e8b1dbd9820afd29931aab03
   decimals: 18
 - name: drg_dragon_coins
   id: drg-dragon-coins
   symbol: DRG
-  address: 0X814F67FA286F7572B041D041B1D99B432C9155EE
+  address: 0x814f67fa286f7572b041d041b1d99b432c9155ee
   decimals: 8
 - name: kin_kin
   id: kin-kin
   symbol: KIN
-  address: 0X818FC6C2EC5986BC6E2CBF00939D90556AB12CE5
+  address: 0x818fc6c2ec5986bc6e2cbf00939d90556ab12ce5
   decimals: 18
 - name: ankr_ankr_network
   id: ankr-ankr-network
   symbol: ANKR
-  address: 0X8290333CEF9E6D528DD5618FB97A76F268F3EDD4
+  address: 0x8290333cef9e6d528dd5618fb97a76f268f3edd4
   decimals: 18
 - name: ubt_unibright
   id: ubt-unibright
   symbol: UBT
-  address: 0X8400D94A5CB0FA0D041A3788E395285D61C9EE5E
+  address: 0x8400d94a5cb0fa0d041a3788e395285d61c9ee5e
   decimals: 8
 - name: rsr_reserve_rights
   id: rsr-reserve-rights
   symbol: RSR
-  address: 0X8762DB106B2C2A0BCCB3A80D1ED41273552616E8
+  address: 0x8762db106b2c2a0bccb3a80d1ed41273552616e8
   decimals: 18
 - name: lamb_lambda
   id: lamb-lambda
   symbol: LAMB
-  address: 0X8971F9FD7196E5CEE2C1032B50F656855AF7DD26
+  address: 0x8971f9fd7196e5cee2c1032b50f656855af7dd26
   decimals: 18
 - name: sai_single_collateral_dai
   id: sai-single-collateral-dai
   symbol: SAI
-  address: 0X89D24A6B4CCB1B6FAA2625FE562BDD9A23260359
+  address: 0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359
   decimals: 18
 - name: akro_akropolis
   id: akro-akropolis
   symbol: AKRO
-  address: 0X8AB7404063EC4DBCFD4598215992DC3F8EC853D7
+  address: 0x8ab7404063ec4dbcfd4598215992dc3f8ec853d7
   decimals: 18
 - name: fx_function_x
   id: fx-function-x
   symbol: FX
-  address: 0X8C15EF5B4B21951D50E53E4FBDA8298FFAD25057
+  address: 0x8c15ef5b4b21951d50e53e4fbda8298ffad25057
   decimals: 18
 - name: sxp_swipe
   id: sxp-swipe
   symbol: SXP
-  address: 0X8CE9137D39326AD0CD6491FB5CC0CBA0E089B6A9
+  address: 0x8ce9137d39326ad0cd6491fb5cc0cba0e089b6a9
   decimals: 18
 - name: pax_paxos_standard_token
   id: pax-paxos-standard-token
   symbol: PAX
-  address: 0X8E870D67F660D95D5BE530380D0EC0BD388289E1
+  address: 0x8e870d67f660d95d5be530380d0ec0bd388289e1
   decimals: 18
 - name: agi_singularitynet
   id: agi-singularitynet
   symbol: AGI
-  address: 0X8EB24319393716668D768DCEC29356AE9CFFE285
+  address: 0x8eb24319393716668d768dcec29356ae9cffe285
   decimals: 8
 - name: req_request_network
   id: req-request-network
   symbol: REQ
-  address: 0X8F8221AFBB33998D8584A2B05749BA73C37A938A
+  address: 0x8f8221afbb33998d8584a2b05749ba73c37a938a
   decimals: 18
 - name: chr_chromia
   id: chr-chromia
   symbol: CHR
-  address: 0X915044526758533DFB918ECEB6E44BC21632060D
+  address: 0x915044526758533dfb918eceb6e44bc21632060d
   decimals: 6
 - name: dusk_dusk_network
   id: dusk-dusk-network
   symbol: DUSK
-  address: 0X940A2DB1B7008B6C776D4FAACA729D6D4A4AA551
+  address: 0x940a2db1b7008b6c776d4faaca729d6d4a4aa551
   decimals: 18
 - name: ant_aragon
   id: ant-aragon
   symbol: ANT
-  address: 0X960B236A07CF122663C4303350609A66A7B288C0
+  address: 0x960b236a07cf122663c4303350609a66a7b288c0
   decimals: 18
 - name: ant_aragon_new
   id: ant-aragon
   symbol: ANT
-  address: 0XA117000000F279D81A1D3CC75430FAA017FA5A2E
+  address: 0xa117000000f279D81A1D3cc75430fAA017FA5A2e
   start: 2020-10-15T11:39:00Z
   decimals: 18
 - name: dx_dxchain_token
   id: dx-dxchain-token
   symbol: DX
-  address: 0X973E52691176D36453868D9D86572788D27041A9
+  address: 0x973e52691176d36453868d9d86572788d27041a9
   decimals: 18
 - name: ocean_ocean_protocol
   id: ocean-ocean-protocol
   symbol: OCEAN
-  address: 0X985DD3D42DE1E256D09E1C10F112BCCB8015AD41
+  address: 0x985dd3d42de1e256d09e1c10f112bccb8015ad41
   decimals: 18
   end: 2020-09-27T03:54:00Z
 - name: ocean_ocean_protocol2
   id: ocean-ocean-protocol
   symbol: OCEAN
-  address: 0X967DA4048CD07AB37855C090AAF366E4CE1B9F48
+  address: 0x967da4048cD07aB37855c090aAF366e4ce1b9F48
   decimals: 18
   start: 2020-09-27T03:54:00Z
 - name: poly_polymath
   id: poly-polymath
   symbol: POLY
-  address: 0X9992EC3CF6A55B00978CDDF2B27BC6882D88D1EC
+  address: 0x9992ec3cf6a55b00978cddf2b27bc6882d88d1ec
   decimals: 18
 - name: qsp_quantstamp
   id: qsp-quantstamp
   symbol: QSP
-  address: 0X99EA4DB9EE77ACD40B119BD1DC4E33E1C070B80D
+  address: 0x99ea4db9ee77acd40b119bd1dc4e33e1c070b80d
   decimals: 18
 - name: qtum_qtum
   id: qtum-qtum
   symbol: QTUM
-  address: 0X9A642D6B3368DDC662CA244BADF32CDA716005BC
+  address: 0x9a642d6b3368ddc662ca244badf32cda716005bc
   decimals: 18
 - name: aoa_aurora
   id: aoa-aurora
   symbol: AOA
-  address: 0X9AB165D795019B6D8B3E971DDA91071421305E5A
+  address: 0x9ab165d795019b6d8b3e971dda91071421305e5a
   decimals: 18
 - name: mkr_maker
   id: mkr-maker
   symbol: MKR
-  address: 0X9F8F72AA9304C8B593D555F12EF6589CC3A579A2
+  address: 0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2
   decimals: 18
 - name: cro_cryptocom_chain
   id: cro-cryptocom-chain
   symbol: CRO
-  address: 0XA0B73E1FF0B80914AB6FE0444E65848C4C34450B
+  address: 0xa0b73e1ff0b80914ab6fe0444e65848c4c34450b
   decimals: 8
 - name: usdc_usd_coin
   id: usdc-usd-coin
   symbol: USDC
-  address: 0XA0B86991C6218B36C1D19D4A2E9EB0CE3606EB48
+  address: 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48
   decimals: 6
 - name: npxs_pundi_x
   id: npxs-pundi-x
   symbol: NPXS
-  address: 0XA15C7EBE1F07CAF6BFF097D8A589FB8AC49AE5B3
+  address: 0xa15c7ebe1f07caf6bff097d8a589fb8ac49ae5b3
   decimals: 18
 - name: met_metronome
   id: met-metronome
   symbol: MET
-  address: 0XA3D58C4E56FEDCAE3A7C43A725AEE9A71F0ECE4E
+  address: 0xa3d58c4e56fedcae3a7c43a725aee9a71f0ece4e
   decimals: 18
 - name: sent_sentinel
   id: sent-sentinel
   symbol: SENT
-  address: 0XA44E5137293E855B1B7BC7E2C6F8CD796FFCB037
+  address: 0xa44e5137293e855b1b7bc7e2c6f8cd796ffcb037
   decimals: 8
 - name: loom_loom_network
   id: loom-loom-network
   symbol: LOOM
-  address: 0XA4E8C3EC456107EA67D3075BF9E3DF3A75823DB0
+  address: 0xa4e8c3ec456107ea67d3075bf9e3df3a75823db0
   decimals: 18
 - name: hpt_huobi_pool_token
   id: hpt-huobi-pool-token
   symbol: HPT
-  address: 0XA66DAA57432024023DB65477BA87D4E7F5F95213
+  address: 0xa66daa57432024023db65477ba87d4e7f5f95213
   decimals: 18
 - name: gnt_golem
   id: gnt-golem
   symbol: GNT
-  address: 0XA74476443119A942DE498590FE1F2454D7D4AC0D
+  address: 0xa74476443119a942de498590fe1f2454d7d4ac0d
   decimals: 18
 - name: xin_mixin
   id: xin-mixin
   symbol: XIN
-  address: 0XA974C709CFB4566686553A20790685A47ACEAA33
+  address: 0xa974c709cfb4566686553a20790685a47aceaa33
   decimals: 18
 - name: trac_origintrail
   id: trac-origintrail
   symbol: TRAC
-  address: 0XAA7A9CA87D3694B5755F213B5D04094B8D0F0A6F
+  address: 0xaa7a9ca87d3694b5755f213b5d04094b8d0f0a6f
   decimals: 18
 - name: cel_celsius
   id: cel-celsius
   symbol: CEL
-  address: 0XAAAEBE6FE48E54F431B0C390CFAF0B017D09D42D
+  address: 0xaaaebe6fe48e54f431b0c390cfaf0b017d09d42d
   decimals: 4
 - name: tkn_monolith
   id: tkn-monolith
   symbol: TKN
-  address: 0XAAAF91D9B90DF800DF4F55C205FD6989C977E73A
+  address: 0xaaaf91d9b90df800df4f55c205fd6989c977e73a
   decimals: 8
 - name: dac_davinci_coin
   id: dac-davinci-coin
   symbol: DAC
-  address: 0XAAD54C9F27B876D2538455DDA69207279FF673A5
+  address: 0xaad54c9f27b876d2538455dda69207279ff673a5
   decimals: 18
 - name: awc_atomic_wallet_coin
   id: awc-atomic-wallet-coin
   symbol: AWC
-  address: 0XAD22F63404F7305E4713CCBD4F296F34770513F4
+  address: 0xad22f63404f7305e4713ccbd4f296f34770513f4
   decimals: 8
 - name: ihf_invictus_hyperion_fund
   id: ihf-invictus-hyperion-fund
   symbol: IHF
-  address: 0XAF1250FA68D7DECD34FD75DE8742BC03B29BD58E
+  address: 0xaf1250fa68d7decd34fd75de8742bc03b29bd58e
   decimals: 18
 - name: bix_bibox_token
   id: bix-bibox-token
   symbol: BIX
-  address: 0XB3104B4B9DA82025E8B9F8FB28B3553CE2F67069
+  address: 0xb3104b4b9da82025e8b9f8fb28b3553ce2f67069
   decimals: 18
 - name: rpl_rocket_pool
   id: rpl-rocket-pool
   symbol: RPL
-  address: 0XB4EFD85C19999D84251304BDA99E90B92300BD93
+  address: 0xb4efd85c19999d84251304bda99e90b92300bd93
   decimals: 18
 - name: nexo_nexo
   id: nexo-nexo
   symbol: NEXO
-  address: 0XB62132E35A6C13EE1EE0F84DC5D40BAD8D815206
+  address: 0xb62132e35a6c13ee1ee0f84dc5d40bad8d815206
   decimals: 18
 - name: mco_mco
   id: mco-mco
   symbol: MCO
-  address: 0XB63B606AC810A52CCA15E44BB630FD42D8D1D83D
+  address: 0xb63b606ac810a52cca15e44bb630fd42d8d1d83d
   decimals: 8
 - name: storj_storj
   id: storj-storj
   symbol: STORJ
-  address: 0XB64EF51C888972C908CFACF59B47C1AFBC0AB8AC
+  address: 0xb64ef51c888972c908cfacf59b47c1afbc0ab8ac
   decimals: 8
 - name: btu_btu_protocol
   id: btu-btu-protocol
   symbol: BTU
-  address: 0XB683D83A532E2CB7DFA5275EED3698436371CC9F
+  address: 0xb683d83a532e2cb7dfa5275eed3698436371cc9f
   decimals: 18
 - name: gtc_gamecom
   id: gtc-gamecom
   symbol: GTC
-  address: 0XB70835D7822EBB9426B56543E391846C107BD32C
+  address: 0xb70835d7822ebb9426b56543e391846c107bd32c
   decimals: 18
 - name: wtc_waltonchain
   id: wtc-waltonchain
   symbol: WTC
-  address: 0XB7CB1C96DB6B22B0D3D9536E0108D062BD488F74
+  address: 0xb7cb1c96db6b22b0d3d9536e0108d062bd488f74
   decimals: 18
 - name: bnb_binance_coin
   id: bnb-binance-coin
   symbol: BNB
-  address: 0XB8C77482E45F1F44DE1745F52C74426C631BDD52
+  address: 0xb8c77482e45f1f44de1745f52c74426c631bdd52
   decimals: 18
 - name: nuls_nuls
   id: nuls-nuls
   symbol: NULS
-  address: 0XB91318F35BDB262E9423BC7C7C2A3A93DD93C92C
+  address: 0xb91318f35bdb262e9423bc7c7c2a3a93dd93c92c
   decimals: 18
 - name: pay_tenx
   id: pay-tenx
   symbol: PAY
-  address: 0XB97048628DB6B661D4C2AA833E95DBE1A905B280
+  address: 0xb97048628db6b661d4c2aa833e95dbe1a905b280
   decimals: 18
 - name: abt_arcblock
   id: abt-arcblock
   symbol: ABT
-  address: 0XB98D4C97425D9908E66E53A6FDF673ACCA0BE986
+  address: 0xb98d4c97425d9908e66e53a6fdf673acca0be986
   decimals: 18
 - name: band_band_protocol
   id: band-band-protocol
   symbol: BAND
-  address: 0XBA11D00C5F74255F56A5E366F4F77F5A186D7F55
+  address: 0xba11d00c5f74255f56a5e366f4f77f5a186d7f55
   decimals: 18
 - name: chsb_swissborg
   id: chsb-swissborg
   symbol: CHSB
-  address: 0XBA9D4199FAB4F26EFE3551D490E3821486F135BA
+  address: 0xba9d4199fab4f26efe3551d490e3821486f135ba
   decimals: 8
 - name: lrc_loopring
   id: lrc-loopring
   symbol: LRC
-  address: 0XBBBBCA6A901C926F240B89EACB641D8AEC7AEAFD
+  address: 0xbbbbca6a901c926f240b89eacb641d8aec7aeafd
   decimals: 18
 - name: zb_zb
   id: zb-zb
   symbol: ZB
-  address: 0XBD0793332E9FB844A52A205A233EF27A5B34B927
+  address: 0xbd0793332e9fb844a52a205a233ef27a5b34b927
   decimals: 18
 - name: cvt_cybervein
   id: cvt-cybervein
   symbol: CVT
-  address: 0XBE428C3867F05DEA2A89FC76A102B544EAC7F772
+  address: 0xbe428c3867f05dea2a89fc76a102b544eac7f772
   decimals: 18
 - name: elf_aelf
   id: elf-aelf
   symbol: ELF
-  address: 0XBF2179859FC6D5BEE9BF9158632DC51678A4100E
+  address: 0xbf2179859fc6d5bee9bf9158632dc51678a4100e
   decimals: 18
 - name: comp_compoundd
   id: comp-compoundd
   symbol: COMP
-  address: 0XC00E94CB662C3520282E6F5717214004A7F26888
+  address: 0xc00e94cb662c3520282e6f5717214004a7f26888
   decimals: 18
 - name: snx_new
   id: hav-havven
   symbol: SNX
-  address: 0XC011A73EE8576FB46F5E1C5751CA3B9FE0AF2A6F
+  address: 0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f
   decimals: 18
   start: 2020-04-28T11:00:00Z
 - name: snx_old
   id: hav-havven
   symbol: SNX
-  address: 0XC011A72400E58ECD99EE497CF89E3775D4BD732F
+  address: 0xC011A72400E58ecD99Ee497CF89E3775d4bd732F
   decimals: 18
 - name: weth_ethereum
   id: eth-ethereum
   symbol: WETH
-  address: 0XC02AAA39B223FE8D0A0E5C4F27EAD9083C756CC2
+  address: 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
   decimals: 18
 - name: erc20_erc20
   id: erc20-erc20
   symbol: ERC20
-  address: 0XC3761EB917CD790B30DAD99F6CC5B4FF93C4F9EA
+  address: 0xc3761eb917cd790b30dad99f6cc5b4ff93c4f9ea
   decimals: 18
 - name: gto_gifto
   id: gto-gifto
   symbol: GTO
-  address: 0XC5BBAE50781BE1669306B9E001EFF57A2957B09D
+  address: 0xc5bbae50781be1669306b9e001eff57a2957b09d
   decimals: 5
 - name: instar_insights_network
   id: instar-insights-network
   symbol: INSTAR
-  address: 0XC72FE8E3DD5BEF0F9F31F259399F301272EF2A2D
+  address: 0xc72fe8e3dd5bef0f9f31f259399f301272ef2a2d
   decimals: 18
 - name: bnk_bankera
   id: bnk-bankera
   symbol: BNK
-  address: 0XC80C5E40220172B36ADEE2C951F26F2A577810C5
+  address: 0xc80c5e40220172b36adee2c951f26f2a577810c5
   decimals: 8
 - name: ino_ino_coin
   id: ino-ino-coin
   symbol: INO
-  address: 0XC9859FCCC876E6B4B3C749C5D29EA04F48ACB74F
+  address: 0xc9859fccc876e6b4b3c749c5d29ea04f48acb74f
   decimals: 0
 - name: btm_bytom
   id: btm-bytom
   symbol: BTM
-  address: 0XCB97E65F07DA24D46BCDD078EBEBD7C6E6E3D750
+  address: 0xcb97e65f07da24d46bcdd078ebebd7c6e6e3d750
   decimals: 8
 - name: nec_nectar
   id: nec-nectar
   symbol: NEC
-  address: 0XCC80C051057B774CD75067DC48F8987C4EB97A5E
+  address: 0xcc80c051057b774cd75067dc48f8987c4eb97a5e
   decimals: 18
 - name: btmx_bitmax_token
   id: btmx-bitmax-token
   symbol: BTMX
-  address: 0XCCA0C9C383076649604EE31B20248BC04FDF61CA
+  address: 0xcca0c9c383076649604ee31b20248bc04fdf61ca
   decimals: 18
 - name: edo_eidoo
   id: edo-eidoo
   symbol: EDO
-  address: 0XCED4E93198734DDAFF8492D525BD258D49EB388E
+  address: 0xced4e93198734ddaff8492d525bd258d49eb388e
   decimals: 18
 - name: fsn_fusion
   id: fsn-fusion
   symbol: FSN
-  address: 0XD0352A019E9AB9D757776F532377AAEBD36FD541
+  address: 0xd0352a019e9ab9d757776f532377aaebd36fd541
   decimals: 18
 - name: tol_tolar
   id: tol-tolar
   symbol: TOL
-  address: 0XD07D9FE2D2CC067015E2B4917D24933804F42CFA
+  address: 0xd07d9fe2d2cc067015e2b4917d24933804f42cfa
   decimals: 18
 - name: omg_omisego
   id: omg-omisego
   symbol: OMG
-  address: 0XD26114CD6EE289ACCF82350C8D8487FEDB8A0C07
+  address: 0xd26114cd6ee289accf82350c8d8487fedb8a0c07
   decimals: 18
 - name: ampl_ampleforth
   id: ampl-ampleforth
   symbol: AMPL
-  address: 0XD46BA6D942050D489DBD938A2C909A5D5039A161
+  address: 0xd46ba6d942050d489dbd938a2c909a5d5039a161
   decimals: 9
 - name: ppt_populous
   id: ppt-populous
   symbol: PPT
-  address: 0XD4FA1460F537BB9085D22C7BCCB5DD450EF28E3A
+  address: 0xd4fa1460f537bb9085d22c7bccb5dd450ef28e3a
   decimals: 8
 - name: evn_envion
   id: evn-envion
   symbol: EVN
-  address: 0XD780AE2BF04CD96E577D3D014762F831D97129D0
+  address: 0xd780ae2bf04cd96e577d3d014762f831d97129d0
   decimals: 18
 - name: vet_vechain
   id: vet-vechain
   symbol: VET
-  address: 0XD850942EF8811F2A866692A623011BDE52A462C1
+  address: 0xd850942ef8811f2a866692a623011bde52a462c1
   decimals: 18
 - name: usdt_tether
   id: usdt-tether
   symbol: USDT
-  address: 0XDAC17F958D2EE523A2206206994597C13D831EC7
+  address: 0xdac17f958d2ee523a2206206994597c13d831ec7
   decimals: 6
 - name: eurs_stasis_eurs
   id: eurs-stasis-eurs
   symbol: EURS
-  address: 0XDB25F211AB05B1C97D595516F45794528A807AD8
+  address: 0xdb25f211ab05b1c97d595516f45794528a807ad8
   decimals: 2
 - name: knc_kyber_network
   id: knc-kyber-network
   symbol: KNC
-  address: 0XDD974D5C2E2928DEA5F71B9825B8B646686BD200
+  address: 0xdd974d5c2e2928dea5f71b9825b8b646686bd200
   decimals: 18
 - name: stpt_stpt
   id: stpt-stpt
   symbol: STPT
-  address: 0XDE7D85157D9714EADF595045CC12CA4A5F3E2ADB
+  address: 0xde7d85157d9714eadf595045cc12ca4a5f3e2adb
   decimals: 18
 - name: mft_mainframe
   id: mft-mainframe
   symbol: MFT
-  address: 0XDF2C7238198AD8B389666574F2D8BC411A4B7428
+  address: 0xdf2c7238198ad8b389666574f2d8bc411a4b7428
   decimals: 18
 - name: husd_husd
   id: husd-husd
   symbol: HUSD
-  address: 0XDF574C24545E5FFECB9A659C229253D4111D87E1
+  address: 0xdf574c24545e5ffecb9a659c229253d4111d87e1
   decimals: 8
 - name: dgd_digixdao
   id: dgd-digixdao
   symbol: DGD
-  address: 0XE0B7927C4AF23765CB51314A0E0521A9645F0E2A
+  address: 0xe0b7927c4af23765cb51314a0e0521a9645f0e2a
   decimals: 9
 - name: plr_pillar
   id: plr-pillar
   symbol: PLR
-  address: 0XE3818504C1B32BF1557B16C238B2E01FD3149C17
+  address: 0xe3818504c1b32bf1557b16c238b2e01fd3149c17
   decimals: 18
 - name: zrx_0x
   id: zrx-0x
   symbol: ZRX
-  address: 0XE41D2489571D322189246DAFA5EBDE1F4699F498
+  address: 0xe41d2489571d322189246dafa5ebde1f4699f498
   decimals: 18
 - name: zeon_zeon_network
   id: zeon-zeon-network
   symbol: ZEON
-  address: 0XE5B826CA2CA02F09C1725E9BD98D9A8874C30532
+  address: 0xe5b826ca2ca02f09c1725e9bd98d9a8874c30532
   decimals: 18
 - name: dock_dock
   id: dock-dock
   symbol: DOCK
-  address: 0XE5DADA80AA6477E85D09747F2842F7993D0DF71C
+  address: 0xe5dada80aa6477e85d09747f2842f7993d0df71c
   decimals: 18
 - name: ult_ultiledger
   id: ult-ultiledger
   symbol: ULT
-  address: 0XE884CC2795B9C45BEEAC0607DA9539FD571CCF85
+  address: 0xe884cc2795b9c45beeac0607da9539fd571ccf85
   decimals: 18
 - name: hyn_hyperion
   id: hyn-hyperion
   symbol: HYN
-  address: 0XE99A894A69D7C2E3C92E61B64C505A6A57D2BC07
+  address: 0xe99a894a69d7c2e3c92e61b64c505a6a57d2bc07
   decimals: 18
 - name: ctxc_cortex
   id: ctxc-cortex
   symbol: CTXC
-  address: 0XEA11755AE41D889CEEC39A63E6FF75A02BC1C00D
+  address: 0xea11755ae41d889ceec39a63e6ff75a02bc1c00d
   decimals: 18
 - name: qkc_quarkchain
   id: qkc-quarkchain
   symbol: QKC
-  address: 0XEA26C4AC16D4A5A106820BC8AEE85FD0B7B2B664
+  address: 0xea26c4ac16d4a5a106820bc8aee85fd0b7b2b664
   decimals: 18
 - name: mln_melon
   id: mln-melon
   symbol: MLN
-  address: 0XEC67005C4E498EC7F55E092BD1D35CBC47C91892
+  address: 0xec67005c4e498ec7f55e092bd1d35cbc47c91892
   decimals: 18
 - name: thx_thorenext
   id: thx-thorenext
   symbol: THX
-  address: 0XF08C68BD5F4194D994FD70726746BF529EE5A617
+  address: 0xf08c68bd5f4194d994fd70726746bf529ee5a617
   decimals: 0
 - name: eng_enigma
   id: eng-enigma
   symbol: ENG
-  address: 0XF0EE6B27B759C9893CE4F094B49AD28FD15A23E4
+  address: 0xf0ee6b27b759c9893ce4f094b49ad28fd15a23e4
   decimals: 8
 - name: hedg_hedgetrade
   id: hedg-hedgetrade
   symbol: HEDG
-  address: 0XF1290473E210B2108A85237FBCD7B6EB42CC654F
+  address: 0xf1290473e210b2108a85237fbcd7b6eb42cc654f
   decimals: 18
 - name: evx_everex
   id: evx-everex
   symbol: EVX
-  address: 0XF3DB5FA2C66B7AF3EB0C0B782510816CBE4813B8
+  address: 0xf3db5fa2c66b7af3eb0c0b782510816cbe4813b8
   decimals: 4
 - name: mtl_metal
   id: mtl-metal
   symbol: MTL
-  address: 0XF433089366899D83A9F26A773D59EC7ECF30355E
+  address: 0xf433089366899d83a9f26a773d59ec7ecf30355e
   decimals: 8
 - name: enj_enjin_coin
   id: enj-enjin-coin
   symbol: ENJ
-  address: 0XF629CBD94D3791C9250152BD8DFBDF380E2A3B9C
+  address: 0xf629cbd94d3791c9250152bd8dfbdf380e2a3b9c
   decimals: 18
 - name: rcn_ripio_credit_network
   id: rcn-ripio-credit-network
   symbol: RCN
-  address: 0XF970B8E36E23F7FC3FD752EEA86F8BE8D83375A6
+  address: 0xf970b8e36e23f7fc3fd752eea86f8be8d83375a6
   decimals: 18
 - name: iost_iost
   id: iost-iost
   symbol: IOST
-  address: 0XFA1A856CFA3409CFA145FA4E20EB270DF3EB21AB
+  address: 0xfa1a856cfa3409cfa145fa4e20eb270df3eb21ab
   decimals: 18
 - name: btt_bittorrent
   id: btt-bittorrent
   symbol: BTT
-  address: 0XFA456CF55250A839088B27EE32A424D7DACB54FF
+  address: 0xfa456cf55250a839088b27ee32a424d7dacb54ff
   decimals: 18
 - name: prom_prometeus
   id: prom-prometeus
   symbol: PROM
-  address: 0XFC82BB4BA86045AF6F327323A46E80412B91B27D
+  address: 0xfc82bb4ba86045af6f327323a46e80412b91b27d
   decimals: 18
 - name: lba_libra_credit
   id: lba-libra-credit
   symbol: LBA
-  address: 0XFE5F141BF94FE84BC28DED0AB966C16B17490657
+  address: 0xfe5f141bf94fe84bc28ded0ab966c16b17490657
   decimals: 18
 - name: ogo_origo
   id: ogo-origo
   symbol: OGO
-  address: 0XFF0E5E014CF97E0615CB50F6F39DA6388E2FAE6E
+  address: 0xff0e5e014cf97e0615cb50f6f39da6388e2fae6e
   decimals: 18
 - name: orbs_orbs
   id: orbs-orbs
   symbol: ORBS
-  address: 0XFF56CC6B1E6DED347AA0B7676C85AB0B3D08B0FA
+  address: 0xff56cc6b1e6ded347aa0b7676c85ab0b3d08b0fa
   decimals: 18
 - name: skl_skale
   id: skl-skale
   symbol: SKL
-  address: 0X00C83AECC790E8A4453E5DD3B0B4B3680501A7A7
+  address: 0x00c83aecc790e8a4453e5dd3b0b4b3680501a7a7
   decimals: 18
 - name: wnxm_wrapped_nxm
   id: wnxm-wrapped-nxm
   symbol: WNXM
-  address: 0X0D438F3B5175BEBC262BF23753C1E53D03432BDE
+  address: 0x0d438f3b5175bebc262bf23753c1e53d03432bde
   decimals: 18
 - name: stake_xdai_stake
   id: stake-xdai-stake
   symbol: STAKE
-  address: 0X0AE055097C6D159879521C384F1D2123D1F195E6
+  address: 0x0ae055097c6d159879521c384f1d2123d1f195e6
   decimals: 18
 - name: pnk_kleros
   id: pnk-kleros
   symbol: PNK
-  address: 0X93ED3FBE21207EC2E8F2D3C3DE6E058CB73BC04D
+  address: 0x93ed3fbe21207ec2e8f2d3c3de6e058cb73bc04d
   decimals: 18
 - name: ada_cardano
   id: ada-cardano
@@ -1138,320 +1138,320 @@
 - name: hegic_hegic
   id: hegic-hegic
   symbol: HEGIC
-  address: 0X584BC13C7D411C00C01A62E8019472DE68768430
+  address: 0x584bC13c7D411c00c01A62e8019472dE68768430
   decimals: 18
 - name: 1inch_1inch
   id: 1inch-1inch
   symbol: 1INCH
-  address: 0X111111111117DC0AA78B770FA6A738034120C302
+  address: 0x111111111117dC0aa78b770fA6A738034120C302
   decimals: 18
 - name: index_index_cooperative
   id: index-index-cooperative
   symbol: INDEX
-  address: 0X0954906DA0BF32D5479E25F46056D22F08464CAB
+  address: 0x0954906da0Bf32d5479e25f46056d22f08464cab
   decimals: 18
 - name: dpi_defi_pulse_index
   id: dpi-defi-pulse-index
   symbol: DPI
-  address: 0X1494CA1F11D487C2BBE4543E90080AEBA4BA3C2B
+  address: 0x1494ca1f11d487c2bbe4543e90080aeba4ba3c2b
   decimals: 18
 - name: 0xbtc_0xbitcoin
   id: 0xbtc-0xbitcoin
   symbol: 0XBTC
-  address: 0XB6ED7644C69416D67B522E20BC294A9A9B405B31
+  address: 0xb6ed7644c69416d67b522e20bc294a9a9b405b31
   decimals: 8
 - name: dia_dia
   id: dia-dia
   symbol: DIA
-  address: 0X84CA8BC7997272C7CFB4D0CD3D55CD942B3C9419
+  address: 0x84ca8bc7997272c7cfb4d0cd3d55cd942b3c9419
   decimals: 18
 - name: amb_ambrosus
   id: amb-ambrosus
   symbol: AMB
-  address: 0X4DC3643DBC642B72C158E7F3D2FF232DF61CB6CE
+  address: 0x4dc3643dbc642b72c158e7f3d2ff232df61cb6ce
   decimals: 18
 - name: amn_amon
   id: amn-amon
   symbol: AMN
-  address: 0X737F98AC8CA59F2C68AD658E3C3D8C8963E40A4C
+  address: 0x737f98ac8ca59f2c68ad658e3c3d8c8963e40a4c
   decimals: 18
 - name: auc_auctus
   id: auc-auctus
   symbol: AUC
-  address: 0XC12D099BE31567ADD4E4E4D0D45691C3F58F5663
+  address: 0xc12d099be31567add4e4e4d0d45691c3f58f5663
   decimals: 18
 - name: blt_bloom
   id: blt-bloom
   symbol: BLT
-  address: 0X107C4504CD79C5D2696EA0030A8DD4E92601B82E
+  address: 0x107c4504cd79c5d2696ea0030a8dd4e92601b82e
   decimals: 18
 - name: bsov_bitcoinsov
   id: bsov-bitcoinsov
   symbol: BSOV
-  address: 0X26946ADA5ECB57F3A1F91605050CE45C482C9EB1
+  address: 0x26946ada5ecb57f3a1f91605050ce45c482c9eb1
   decimals: 8
 - name: cnd_cindicator
   id: cnd-cindicator
   symbol: CND
-  address: 0XD4C435F5B09F855C3317C8524CB1F586E42795FA
+  address: 0xd4c435f5b09f855c3317c8524cb1f586e42795fa
   decimals: 18
 - name: day_chronologic
   id: day-chronologic
   symbol: DAY
-  address: 0XE814AEE960A85208C3DB542C53E7D4A6C8D5F60F
+  address: 0xe814aee960a85208c3db542c53e7d4a6c8d5f60f
   decimals: 18
 - name: dxd_dxdao
   id: dxd-dxdao
   symbol: DXD
-  address: 0XA1D65E8FB6E87B60FECCBC582F7F97804B725521
+  address: 0xa1d65e8fb6e87b60feccbc582f7f97804b725521
   decimals: 18
 - name: dzar_digital_rand
   id: dzar-digital-rand
   symbol: DZAR
-  address: 0X9CB2F26A23B8D89973F08C957C4D7CDF75CD341C
+  address: 0x9cb2f26a23b8d89973f08c957c4d7cdf75cd341c
   decimals: 6
 - name: ethplo_ethplode
   id: ethplo-ethplode
   symbol: ETHPLO
-  address: 0XE0C6CE3E73029F201E5C0BEDB97F67572A93711C
+  address: 0xe0c6ce3e73029f201e5c0bedb97f67572a93711c
   decimals: 6
 - name: ftx_fintrux_network
   id: ftx-fintrux-network
   symbol: FTX
-  address: 0XD559F20296FF4895DA39B5BD9ADD54B442596A61
+  address: 0xd559f20296ff4895da39b5bd9add54b442596a61
   decimals: 18
 - name: fuse_fuse_network
   id: fuse-fuse-network
   symbol: FUSE
-  address: 0X970B9BB2C0444F5E81E9D0EFB84C8CCDCDCAF84D
+  address: 0x970b9bb2c0444f5e81e9d0efb84c8ccdcdcaf84d
   decimals: 18
 - name: get_get_protocol
   id: get-get-protocol
   symbol: GET
-  address: 0X8A854288A5976036A725879164CA3E91D30C6A1B
+  address: 0x8a854288a5976036a725879164ca3e91d30c6a1b
   decimals: 18
 - name: grid_grid
   id: grid-grid
   symbol: GRID
-  address: 0X12B19D3E2CCC14DA04FAE33E63652CE469B3F2FD
+  address: 0x12b19d3e2ccc14da04fae33e63652ce469b3f2fd
   decimals: 12
 - name: gse_gsenetwork
   id: gse-gsenetwork
   symbol: GSE
-  address: 0XE530441F4F73BDB6DC2FA5AF7C3FC5FD551EC838
+  address: 0xe530441f4f73bdb6dc2fa5af7c3fc5fd551ec838
   decimals: 4
 - name: idex_idex
   id: idex-idex
   symbol: IDEX
-  address: 0XB705268213D593B8FD88D3FDEFF93AFF5CBDCFAE
+  address: 0xb705268213d593b8fd88d3fdeff93aff5cbdcfae
   decimals: 18
 - name: ind_indorse_token
   id: ind-indorse-token
   symbol: IND
-  address: 0XF8E386EDA857484F5A12E4B5DAA9984E06E73705
+  address: 0xf8e386eda857484f5a12e4b5daa9984e06e73705
   decimals: 18
 - name: isla_insula
   id: isla-insula
   symbol: ISLA
-  address: 0X697EF32B4A3F5A4C39DE1CB7563F24CA7BFC5947
+  address: 0x697ef32b4a3f5a4c39de1cb7563f24ca7bfc5947
   decimals: 18
 - name: jrt_jarvis_reward_token
   id: jrt-jarvis-reward-token
   symbol: JRT
-  address: 0X8A9C67FEE641579DEBA04928C4BC45F66E26343A
+  address: 0x8a9c67fee641579deba04928c4bc45f66e26343a
   decimals: 18
 - name: key_selfkey
   id: key-selfkey
   symbol: KEY
-  address: 0X4CC19356F2D37338B9802AA8E8FC58B0373296E7
+  address: 0x4cc19356f2d37338b9802aa8e8fc58b0373296e7
   decimals: 18
 - name: lpt_livepeer
   id: lpt-livepeer
   symbol: LPT
-  address: 0X58B6A8A3302369DAEC383334672404EE733AB239
+  address: 0x58b6a8a3302369daec383334672404ee733ab239
   decimals: 18
 - name: ost_ost
   id: ost-ost
   symbol: OST
-  address: 0X2C4E8F2D746113D0696CE89B35F0D8BF88E0AECA
+  address: 0x2c4e8f2d746113d0696ce89b35f0d8bf88e0aeca
   decimals: 18
 - name: pkg_pkg_token
   id: pkg-pkg-token
   symbol: PKG
-  address: 0X02F2D4A04E6E01ACE88BD2CD632875543B2EF577
+  address: 0x02f2d4a04e6e01ace88bd2cd632875543b2ef577
   decimals: 18
 - name: sngls_singulardtv
   id: sngls-singulardtv
   symbol: SNGLS
-  address: 0XAEC2E87E0A235266D9C5ADC9DEB4B2E29B54D009
+  address: 0xaec2e87e0a235266d9c5adc9deb4b2e29b54d009
   decimals: 0
 - name: srm_serum
   id: srm-serum
   symbol: SRM
-  address: 0X476C5E26A75BD202A9683FFD34359C0CC15BE0FF
+  address: 0x476c5e26a75bd202a9683ffd34359c0cc15be0ff
   decimals: 6
 - name: srn_sirin_labs_token
   id: srn-sirin-labs-token
   symbol: SRN
-  address: 0X68D57C9A1C35F63E2C83EE8E49A64E9D70528D25
+  address: 0x68d57c9a1c35f63e2c83ee8e49a64e9d70528d25
   decimals: 18
 - name: sushi_sushi
   id: sushi-sushi
   symbol: SUSHI
-  address: 0X6B3595068778DD592E39A122F4F5A5CF09C90FE2
+  address: 0x6b3595068778dd592e39a122f4f5a5cf09c90fe2
   decimals: 18
 - name: trst_wetrust
   id: trst-wetrust
   symbol: TRST
-  address: 0XCB94BE6F13A1182E4A4B6140CB7BF2025D28E41B
+  address: 0xcb94be6f13a1182e4a4b6140cb7bf2025d28e41b
   decimals: 6
 - name: tryb_bilira
   id: tryb-bilira
   symbol: TRYB
-  address: 0X2C537E5624E4AF88A7AE4060C022609376C8D0EB
+  address: 0x2c537e5624e4af88a7ae4060c022609376c8d0eb
   decimals: 6
 - name: utnp_universa
   id: utnp-universa
   symbol: UTNP
-  address: 0X9E3319636E2126E3C0BC9E3134AEC5E1508A46C7
+  address: 0x9e3319636e2126e3c0bc9e3134aec5e1508a46c7
   decimals: 18
 - name: xchf_cryptofranc
   id: xchf-cryptofranc
   symbol: XCHF
-  address: 0XB4272071ECADD69D933ADCD19CA99FE80664FC08
+  address: 0xb4272071ecadd69d933adcd19ca99fe80664fc08
   decimals: 18
 - name: xrt_robonomics_network
   id: xrt-robonomics-network
   symbol: XRT
-  address: 0X7DE91B204C1C737BCEE6F000AAA6569CF7061CB7
+  address: 0x7de91b204c1c737bcee6f000aaa6569cf7061cb7
   decimals: 9
 - name: perp_perpetual_protocol
   id: perp-perpetual-protocol
   symbol: PERP
-  address: 0XBC396689893D065F41BC2C6ECBEE5E0085233447
+  address: 0xbC396689893D065F41bc2C6EcbeE5e0085233447
   decimals: 18
 - name: ftm_fantom
   id: ftm-fantom
   symbol: FTM
-  address: 0X4E15361FD6B4BB609FA63C81A2BE19D873717870
+  address: 0x4E15361FD6b4BB609Fa63C81A2be19d873717870
   decimals: 18
 - name: grt_the_graph
   id: grt-the-graph
   symbol: GRT
-  address: 0XC944E90C64B2C07662A292BE6244BDF05CDA44A7
+  address: 0xc944e90c64b2c07662a292be6244bdf05cda44a7
   decimals: 18
 - name: rook_keeperdao
   id: rook-keeperdao
   symbol: ROOK
-  address: 0XFA5047C9C78B8877AF97BDCB85DB743FD7313D4A
+  address: 0xfa5047c9c78b8877af97bdcb85db743fd7313d4a
   decimals: 18
 - name: alpha_alpha_finance
   id: alpha-alpha-finance
   symbol: ALPHA
-  address: 0XA1FAA113CBE53436DF28FF0AEE54275C13B40975
+  address: 0xa1faa113cbe53436df28ff0aee54275c13b40975
   decimals: 18
 - name: idle_idle
   id: idle-idle
   symbol: IDLE
-  address: 0X875773784AF8135EA0EF43B5A374AAD105C5D39E
+  address: 0x875773784Af8135eA0ef43b5a374AaD105c5D39e
   decimals: 18
 - name: renbtc_renbtc
   id: renbtc-renbtc
   symbol: RENBTC
-  address: 0XEB4C2781E4EBA804CE9A9803C67D0893436BB27D
+  address: 0xeb4c2781e4eba804ce9a9803c67d0893436bb27d
   decimals: 8
 - name: sdt_stake_dao
   id: sdt-stake-dao
   symbol: SDT
-  address: 0X73968B9A57C6E53D41345FD57A6E6AE27D6CDB2F
+  address: 0x73968b9a57c6e53d41345fd57a6e6ae27d6cdb2f
   decimals: 18
 - name: axs_axie_infinity
   id: axs-axie-infinity
   symbol: AXS
-  address: 0XF5D669627376EBD411E34B98F19C868C8ABA5ADA
+  address: 0xf5d669627376ebd411e34b98f19c868c8aba5ada
   decimals: 18
 - name: rai_rai_reflex_index
   id: rai-rai-reflex-index
   symbol: RAI
-  address: 0X03AB458634910AAD20EF5F1C8EE96F1D6AC54919
+  address: 0x03ab458634910AaD20eF5f1C8ee96F1D6ac54919
   decimals: 18
 - name: flx_reflexer_ungovernance_token
   id: flx-reflexer-ungovernance-token
   symbol: FLX
-  address: 0X6243D8CEA23066D098A15582D81A598B4E8391F4
+  address: 0x6243d8CEA23066d098a15582d81a598b4e8391F4
   decimals: 18
 - name: badger_badger
   id: badger-badger
   symbol: BADGER
-  address: 0X3472A5A71965499ACD81997A54BBA8D852C6E53D
+  address: 0x3472A5A71965499acd81997a54BBA8D852C6E53d
   decimals: 18
 - name: digg_digg
   id: digg-digg
   symbol: DIGG
-  address: 0X798D1BE841A82A273720CE31C822C61A67A601C3
+  address: 0x798d1be841a82a273720ce31c822c61a67a601c3
   decimals: 9
 - name: farm_harvest_finance
   id: farm-harvest-finance
   symbol: FARM
-  address: 0XA0246C9032BC3A600820415AE600C6388619A14D
+  address: 0xa0246c9032bC3A600820415aE600c6388619A14D
   decimals: 18
 - name: woo_wootrade
   id: woo-wootrade
   symbol: WOO
-  address: 0X4691937A7508860F876C9C0A2A617E7D9E945D4B
+  address: 0x4691937a7508860f876c9c0a2a617e7d9e945d4b
   decimals: 18
 - name: cream_cream
   id: cream-cream
   symbol: CREAM
-  address: 0X2BA592F78DB6436527729929AAF6C908497CB200
+  address: 0x2ba592F78dB6436527729929AAf6c908497cB200
   decimals: 18
 - name: fry_foundry_logistics_token
   id: fry-foundry-logistics-token
   symbol: FRY
-  address: 0X6C972B70C533E2E045F333EE28B9FFB8D717BE69
+  address: 0x6c972b70c533E2E045F333Ee28b9fFb8D717bE69
   decimals: 18
 - name: rari_rarible
   id: rari-rarible
   symbol: RARI
-  address: 0XFCA59CD816AB1EAD66534D82BC21E7515CE441CF
+  address: 0xfca59cd816ab1ead66534d82bc21e7515ce441cf
   decimals: 18
 - name: mph_88mph
   id: mph-88mph
   symbol: MPH
-  address: 0X8888801AF4D980682E47F1A9036E589479E835C5
+  address: 0x8888801af4d980682e47f1a9036e589479e835c5
   decimals: 18
 - name: dodo_dodo
   id: dodo-dodo
   symbol: DODO
-  address: 0X43DFC4159D86F3A37A5A4B3D4580B888AD7D4DDD
+  address: 0x43Dfc4159D86F3A37A5A4B3D4580b888ad7d4DDd
   decimals: 18
 - name: stakewise
   id: swise-stakewise
   symbol: SWISE
-  address: 0X48C3399719B582DD63EB5AADF12A40B4C3F52FA2
+  address: 0x48c3399719b582dd63eb5aadf12a40b4c3f52fa2
   decimals: 18
 - name: mm-mmtoken
   id: mm-mmtoken
   symbol: MM
-  address: 0XA283AA7CFBB27EF0CFBCB2493DD9F4330E0FD304
+  address: 0xa283aA7CfBB27EF0cfBcb2493dD9F4330E0fd304
   decimals: 18
 - name: govi_govi
   id: govi-govi
   symbol: GOVI
-  address: 0XEEAA40B28A2D1B0B08F6F97BB1DD4B75316C6107
+  address: 0xeeaa40b28a2d1b0b08f6f97bb1dd4b75316c6107
   decimals: 18
 - name: zcn_0chain
   id: zcn-0chain
   symbol: ZCN
-  address: 0XB9EF770B6A5E12E45983C5D80545258AA38F3B78
+  address: 0xb9ef770b6a5e12e45983c5d80545258aa38f3b78
   decimals: 10
 - name: ndx_indexed_finance
   id: ndx-indexed-finance
   symbol: NDX
-  address: 0X86772B1409B61C639EAAC9BA0ACFBB6E238E5F83
+  address: 0x86772b1409b61c639eaac9ba0acfbb6e238e5f83
   decimals: 18
 - name: mona_monavale
   id: mona-monavale
   symbol: MONA
-  address: 0X275F5AD03BE0FA221B4C6649B8AEE09A42D9412A
+  address: 0x275f5Ad03be0Fa221B4C6649B8AeE09a42D9412A
   decimals: 18
