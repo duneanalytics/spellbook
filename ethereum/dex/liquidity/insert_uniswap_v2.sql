@@ -89,6 +89,8 @@ rows AS (
     ) dexs
     LEFT JOIN erc20.tokens erc20 on erc20.contract_address = dexs.token_address
     LEFT JOIN prices.usd p on p.contract_address = dexs.token_address and p.minute = dexs.day
+        AND p.minute >= start_ts
+        AND p.minute < end_ts
 
     ON CONFLICT DO NOTHING
     RETURNING 1
@@ -99,66 +101,234 @@ END
 $function$;
 
 -- Uniswap V2 contract deployed on '2020-05-04'
--- fill 2020 - Q2 + Q3
+-- monthly fill
 SELECT dex.insert_liquidity_uniswap_v2(
     '2020-05-04',
-    '2020-10-01'
+    '2020-06-01'
 )
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.liquidity
     WHERE day >= '2020-05-04'
+    AND day < '2020-06-01'
+    AND project = 'Uniswap'
+    AND version = '2'
+);
+
+
+SELECT dex.insert_liquidity_uniswap_v2(
+    '2020-06-01',
+    '2020-07-01'
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.liquidity
+    WHERE day >= '2020-06-01'
+    AND day < '2020-07-01'
+    AND project = 'Uniswap'
+    AND version = '2'
+);
+
+
+SELECT dex.insert_liquidity_uniswap_v2(
+    '2020-07-01',
+    '2020-08-01'
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.liquidity
+    WHERE day >= '2020-07-01'
+    AND day < '2020-08-01'
+    AND project = 'Uniswap'
+    AND version = '2'
+);
+
+
+SELECT dex.insert_liquidity_uniswap_v2(
+    '2020-08-01',
+    '2020-09-01'
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.liquidity
+    WHERE day >= '2020-08-01'
+    AND day < '2020-09-01'
+    AND project = 'Uniswap'
+    AND version = '2'
+);
+
+
+SELECT dex.insert_liquidity_uniswap_v2(
+    '2020-09-01',
+    '2020-10-01'
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.liquidity
+    WHERE day >= '2020-09-01'
     AND day < '2020-10-01'
     AND project = 'Uniswap'
     AND version = '2'
 );
 
--- fill 2020 - Q4
+
 SELECT dex.insert_liquidity_uniswap_v2(
     '2020-10-01',
-    '2021-01-01'
+    '2020-11-01'
 )
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.liquidity
     WHERE day >= '2020-10-01'
+    AND day < '2020-11-01'
+    AND project = 'Uniswap'
+    AND version = '2'
+);
+
+
+SELECT dex.insert_liquidity_uniswap_v2(
+    '2020-11-01',
+    '2020-12-01'
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.liquidity
+    WHERE day >= '2020-11-01'
+    AND day < '2020-12-01'
+    AND project = 'Uniswap'
+    AND version = '2'
+);
+
+
+SELECT dex.insert_liquidity_uniswap_v2(
+    '2020-12-01',
+    '2021-01-01'
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.liquidity
+    WHERE day >= '2020-12-01'
     AND day < '2021-01-01'
     AND project = 'Uniswap'
     AND version = '2'
 );
 
--- fill 2021 - Q1
+
 SELECT dex.insert_liquidity_uniswap_v2(
     '2021-01-01',
-    '2021-04-01'
+    '2021-02-01'
 )
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.liquidity
     WHERE day >= '2021-01-01'
+    AND day < '2021-02-01'
+    AND project = 'Uniswap'
+    AND version = '2'
+);
+
+
+SELECT dex.insert_liquidity_uniswap_v2(
+    '2021-02-01',
+    '2021-03-01'
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.liquidity
+    WHERE day >= '2021-02-01'
+    AND day < '2021-03-01'
+    AND project = 'Uniswap'
+    AND version = '2'
+);
+
+
+SELECT dex.insert_liquidity_uniswap_v2(
+    '2021-03-01',
+    '2021-04-01'
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.liquidity
+    WHERE day >= '2021-03-01'
     AND day < '2021-04-01'
     AND project = 'Uniswap'
     AND version = '2'
 );
 
--- fill 2021 Q2 + Q3
+
 SELECT dex.insert_liquidity_uniswap_v2(
     '2021-04-01',
-    now()
+    '2021-05-01'
 )
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.liquidity
     WHERE day >= '2021-04-01'
+    AND day < '2021-05-01'
+    AND project = 'Uniswap'
+    AND version = '2'
+);
+
+
+SELECT dex.insert_liquidity_uniswap_v2(
+    '2021-05-01',
+    '2021-06-01'
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.liquidity
+    WHERE day >= '2021-05-01'
+    AND day < '2021-06-01'
+    AND project = 'Uniswap'
+    AND version = '2'
+);
+
+
+SELECT dex.insert_liquidity_uniswap_v2(
+    '2021-06-01',
+    '2021-07-01'
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.liquidity
+    WHERE day >= '2021-06-01'
+    AND day < '2021-07-01'
+    AND project = 'Uniswap'
+    AND version = '2'
+);
+
+
+SELECT dex.insert_liquidity_uniswap_v2(
+    '2021-07-01',
+    '2021-08-01'
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.liquidity
+    WHERE day >= '2021-07-01'
+    AND day < '2021-08-01'
+    AND project = 'Uniswap'
+    AND version = '2'
+);
+
+-- fill final month
+SELECT dex.insert_liquidity_uniswap_v2(
+    '2021-08-01',
+    now()
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.liquidity
+    WHERE day >= '2021-08-01'
     AND day < now() - interval '20 minutes'
     AND project = 'Uniswap'
     AND version = '2'
 );
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('17 2 * * *', $$
+VALUES ('17 3 * * *', $$
     SELECT dex.insert_liquidity_uniswap_v2(
         (SELECT max(day) FROM dex.liquidity WHERE project = 'Uniswap' and version = '2'),
-        (SELECT now() - interval '20 minutes');
+        (SELECT now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

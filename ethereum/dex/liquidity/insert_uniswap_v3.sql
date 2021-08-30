@@ -85,6 +85,8 @@ rows AS (
     ) dexs
     LEFT JOIN erc20.tokens erc20 on erc20.contract_address = dexs.token_address
     LEFT JOIN prices.usd p on p.contract_address = dexs.token_address and p.minute = dexs.day
+        AND p.minute >= start_ts
+        AND p.minute < end_ts
 
     ON CONFLICT DO NOTHING
     RETURNING 1
@@ -95,24 +97,66 @@ END
 $function$;
 
 -- Uniswap v3 contract deployed on '2021-05-04'
--- fill 2021 YTD
+-- monthly fill
 SELECT dex.insert_liquidity_uniswap_v3(
-    '2021-05-04',
+    '2021-05-01',
+    '2021-06-01'
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.liquidity
+    WHERE day >= '2021-05-01'
+    AND day < '2021-06-01'
+    AND project = 'Uniswap'
+    AND version = '3'
+);
+
+
+SELECT dex.insert_liquidity_uniswap_v3(
+    '2021-06-01',
+    '2021-07-01'
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.liquidity
+    WHERE day >= '2021-06-01'
+    AND day < '2021-07-01'
+    AND project = 'Uniswap'
+    AND version = '3'
+);
+
+
+SELECT dex.insert_liquidity_uniswap_v3(
+    '2021-07-01',
+    '2021-08-01'
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.liquidity
+    WHERE day >= '2021-07-01'
+    AND day < '2021-08-01'
+    AND project = 'Uniswap'
+    AND version = '3'
+);
+
+-- fill final month
+SELECT dex.insert_liquidity_uniswap_v3(
+    '2021-08-01',
     now()
 )
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.liquidity
-    WHERE day >= '2021-05-04'
+    WHERE day >= '2021-08-01'
     AND day < now() - interval '20 minutes'
     AND project = 'Uniswap'
     AND version = '3'
 );
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('29 2 * * *', $$
+VALUES ('29 3 * * *', $$
     SELECT dex.insert_liquidity_uniswap_v3(
         (SELECT max(day) FROM dex.liquidity WHERE project = 'Uniswap' and version = '3'),
-        (SELECT now() - interval '20 minutes');
+        (SELECT now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS dex.liquidity (
 CREATE UNIQUE INDEX IF NOT EXISTS dex_liquidity_day_pool_address_token_address_uniq_idx ON dex.liquidity (day, pool_address, token_address);
 CREATE INDEX IF NOT EXISTS dex_liquidity_day_idx ON dex.liquidity USING BRIN (day);
 CREATE INDEX IF NOT EXISTS dex_liquidity_token_address_idx ON dex.liquidity (token_address);
+CREATE INDEX IF NOT EXISTS dex_liquidity_token_symbol_idx ON dex.liquidity (token_symbol);
 CREATE INDEX IF NOT EXISTS dex_liquidity_pool_address_idx ON dex.liquidity (pool_address);
 CREATE INDEX IF NOT EXISTS dex_liquidity_pool_name_idx ON dex.liquidity (pool_name);
 CREATE INDEX IF NOT EXISTS dex_liquidity_day_project_version_idx ON dex.liquidity (day, project, version);

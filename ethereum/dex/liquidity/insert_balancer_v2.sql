@@ -102,7 +102,7 @@ rows AS (
         day,
         erc20.symbol AS token_symbol,
         token_amount_raw / 10 ^ erc20.decimals AS token_amount,
-        (labels.get(pool_address, 'lp_pool_name'))[1],
+        pool_name,
         project,
         version,
         category,
@@ -116,21 +116,23 @@ rows AS (
         -- Balancer v2
         SELECT
             d.day,
-            CONCAT('balancer v2 lp ', pools.pool_name_symbolic),
+            (labels.get(SUBSTRING(balances.wallet_address FOR 20), 'lp_pool_name'))[1] AS pool_name,
             'Balancer' AS project,
             '2' AS version,
             'DEX' AS category,
             balances.amount_raw AS token_amount_raw,
             balances.token_address,
-            balances.wallet_address AS pool_address,
+            SUBSTRING(balances.wallet_address FOR 20) AS pool_address,
             balances.token_index,
             pools.normalized_weight AS token_pool_percentage
         FROM balances
         INNER JOIN days d ON balances.day <= d.day AND d.day < balances.next_day
-        LEFT JOIN balancer_v2_pools pools ON balances.wallet_address = pools.pool_address AND balances.token_address = pools.token_address
+        LEFT JOIN balancer_v2_pools pools ON balances.wallet_address = pools.pool_id AND balances.token_address = pools.token_address
     ) dexs
     LEFT JOIN erc20.tokens erc20 on erc20.contract_address = dexs.token_address
     LEFT JOIN prices.usd p on p.contract_address = dexs.token_address and p.minute = dexs.day
+        AND p.minute >= start_ts
+        AND p.minute < end_ts
 
     ON CONFLICT DO NOTHING
     RETURNING 1
@@ -148,9 +150,9 @@ SELECT dex.insert_liquidity_balancer_v2(
 );
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('23 2 * * *', $$
+VALUES ('23 3 * * *', $$
     SELECT dex.insert_liquidity_balancer_v2(
         (SELECT max(day) FROM dex.liquidity WHERE project = 'Balancer' and version = '2'),
-        (SELECT now() - interval '20 minutes');
+        (SELECT now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

@@ -98,6 +98,8 @@ rows AS (
     ) dexs
     LEFT JOIN erc20.tokens erc20 on erc20.contract_address = dexs.token_address
     LEFT JOIN prices.usd p on p.contract_address = dexs.token_address and p.minute = dexs.day
+        AND p.minute >= start_ts
+        AND p.minute < end_ts
 
     ON CONFLICT DO NOTHING
     RETURNING 1
@@ -137,9 +139,9 @@ WHERE NOT EXISTS (
 );
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('21 2 * * *', $$
+VALUES ('21 3 * * *', $$
     SELECT dex.insert_liquidity_1inch_v1(
         (SELECT max(day) FROM dex.liquidity WHERE project = '1inch' and version = '1'),
-        (SELECT now() - interval '20 minutes');
+        (SELECT now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
