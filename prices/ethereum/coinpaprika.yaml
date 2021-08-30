@@ -27,6 +27,7 @@
 - name: aave_new
   id: aave-new
   symbol: AAVE
+  address: 0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9
   decimals: 18
 - name: uni_uniswap
   id: uni-uniswap
@@ -167,7 +168,7 @@
   start: 2018-07-09T06:03:00Z
 - name: rep_augur_v2
   id: rep-augur
-  symbol: REPV2
+  symbol: REPv2
   address: 0x221657776846890989a759ba2973e427dff5c9bb
   decimals: 18
   start: 2020-07-27T09:51:00Z
@@ -198,7 +199,7 @@
   decimals: 4
 - name: wabi_wabi
   id: wabi-wabi
-  symbol: WABI
+  symbol: WaBi
   address: 0x286bda1413a2df81731d4930ce2f862a35a609fe
   decimals: 18
 - name: leo_leo_token
@@ -353,13 +354,13 @@
   decimals: 18
 - name: susd_old
   id: nusd-nusd
-  symbol: SUSD
+  symbol: sUSD
   address: 0x57Ab1E02fEE23774580C119740129eAC7081e9D3
   decimals: 18
   end: 2020-05-11T00:00:00Z
 - name: susd_new
   id: nusd-nusd
-  symbol: SUSD
+  symbol: sUSD
   address: 0x57ab1ec28d129707052df4df418d58a2d46d5f51
   decimals: 18
   start: 2020-04-28T11:00:00Z
@@ -470,7 +471,7 @@
   decimals: 18
 - name: ncash_nucleus_vision
   id: ncash-nucleus-vision
-  symbol: NCASH
+  symbol: nCash
   address: 0x809826cceab68c387726af962713b64cb5cb3cca
   decimals: 18
 - name: crpt_crypterium
@@ -1029,7 +1030,7 @@
   decimals: 18
 - name: wnxm_wrapped_nxm
   id: wnxm-wrapped-nxm
-  symbol: WNXM
+  symbol: wNXM
   address: 0x0d438f3b5175bebc262bf23753c1e53d03432bde
   decimals: 18
 - name: stake_xdai_stake
@@ -1157,7 +1158,7 @@
   decimals: 18
 - name: 0xbtc_0xbitcoin
   id: 0xbtc-0xbitcoin
-  symbol: 0XBTC
+  symbol: 0xBTC
   address: 0xb6ed7644c69416d67b522e20bc294a9a9b405b31
   decimals: 8
 - name: dia_dia
@@ -1307,7 +1308,7 @@
   decimals: 6
 - name: tryb_bilira
   id: tryb-bilira
-  symbol: TRYB
+  symbol: TRYb
   address: 0x2c537e5624e4af88a7ae4060c022609376c8d0eb
   decimals: 6
 - name: utnp_universa
@@ -1357,7 +1358,7 @@
   decimals: 18
 - name: renbtc_renbtc
   id: renbtc-renbtc
-  symbol: RENBTC
+  symbol: renBTC
   address: 0xeb4c2781e4eba804ce9a9803c67d0893436bb27d
   decimals: 8
 - name: sdt_stake_dao
@@ -1452,16 +1453,16 @@
   decimals: 10
 - name: ndx_indexed_finance
   id: ndx-indexed-finance
-  symbol: NDX
+  symbol: ndx
   address: 0x86772b1409b61c639eaac9ba0acfbb6e238e5f83
   decimals: 18
 - name: mona_monavale
   id: mona-monavale
-  symbol: MONA
+  symbol: mona
   address: 0x275f5Ad03be0Fa221B4C6649B8AeE09a42D9412A
   decimals: 18
 - name: steth_lido_staked_ether
   id: steth-lido-staked-ether
-  symbol: STETH
+  symbol: stETH
   address: 0xae7ab96520de3a18e5e111b5eaab095312d7fe84
   decimals: 18
