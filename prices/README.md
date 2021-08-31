@@ -22,13 +22,11 @@ When the PR is merged we will deploy the changes and you will soon see USD price
 
 ## Polygon
 
-1. Find the asset on coingecko. Note the symbol
+1. Find the asset on coingecko.
 2. Go the page for the given coin. Under the `Info` section there should be a field called `API id`. This it the `id`
 3. The last step is to add an entry to `prices/polygon/coingecko.yaml` with the following format (Without comments)
 
 ```yaml
-- name: dmg_dmm_governance
-  id: dmg-dmm-governance    # the id from above
-  symbol: DMG 				      # the asset ticker
+- id: dmg-dmm-governance    # the id from above
 ```
-**NOTE**: For coingecko the contract address and decimals is not needed and will be accessed when the feed begins
+**NOTE**: For coingecko only the id is required. All other fields will be generated when the feed begins.
