@@ -794,7 +794,7 @@
   address: 0xC011A72400E58ecD99Ee497CF89E3775d4bd732F
   decimals: 18
 - name: weth_ethereum
-  id: eth-ethereum
+  id: weth-weth
   symbol: WETH
   address: 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
   decimals: 18
