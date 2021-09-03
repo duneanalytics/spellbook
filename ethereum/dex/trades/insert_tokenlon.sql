@@ -165,8 +165,8 @@ WITH rows AS (
             'Aggregator' AS category,
             REPLACE(t.order::jsonb ->> 'userAddr', '0x', '\x')::BYTEA AS trader_a,
             REPLACE(t.order::jsonb ->> 'makerAddr', '0x', '\x')::BYTEA AS trader_b,
-            t.order::jsonb -> 'takerAssetAmount' AS token_a_amount_raw,
-            t.order::jsonb -> 'makerAssetAmount' AS token_b_amount_raw,
+            (t.order::jsonb -> 'takerAssetAmount')::numeric token_a_amount_raw,
+            (t.order::jsonb -> 'makerAssetAmount')::numeric token_b_amount_raw,
             NULL::numeric AS usd_amount,
             CASE
                 WHEN REPLACE(t.order::jsonb ->> 'takerAssetAddr', '0x', '\x')::BYTEA = '\x0000000000000000000000000000000000000000'
