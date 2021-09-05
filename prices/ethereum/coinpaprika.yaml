@@ -1461,3 +1461,8 @@
   symbol: stETH
   address: 0xae7ab96520de3a18e5e111b5eaab095312d7fe84
   decimals: 18
+- name: ersdl_unfederalreserve
+  id: ersdl-unfederalreserve
+  symbol: ERSDL
+  address: 0x5218e472cfcfe0b64a064f055b43b4cdc9efd3a6
+  decimals: 18
