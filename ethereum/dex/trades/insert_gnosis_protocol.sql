@@ -93,9 +93,7 @@ WITH rows AS (
             t.evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             t.evt_index
-        FROM
-            gnosis_protocol_v2."GPv2Settlement_evt_Trade" t
-        )
+        FROM gnosis_protocol_v2."GPv2Settlement_evt_Trade" t
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
