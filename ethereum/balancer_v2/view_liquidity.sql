@@ -1,5 +1,7 @@
 BEGIN;
 
+CREATE SCHEMA IF NOT EXISTS balancer_v2;
+
 DROP MATERIALIZED VIEW IF EXISTS balancer_v2.view_liquidity;
 
 CREATE MATERIALIZED VIEW balancer_v2.view_liquidity AS (
@@ -333,7 +335,7 @@ INSERT INTO
 VALUES
     (
         '*/12 * * * *',
-        $ $ REFRESH MATERIALIZED VIEW CONCURRENTLY balancer_v2.view_liquidity $ $
+        $$REFRESH MATERIALIZED VIEW CONCURRENTLY balancer_v2.view_liquidity$$
     ) ON CONFLICT (command) DO
 UPDATE
 SET

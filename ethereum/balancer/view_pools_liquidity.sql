@@ -1,3 +1,5 @@
+CREATE SCHEMA IF NOT EXISTS balancer;
+
 CREATE
 OR REPLACE VIEW balancer.view_pools_liquidity AS
 SELECT
