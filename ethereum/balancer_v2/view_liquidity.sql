@@ -74,14 +74,14 @@ CREATE MATERIALIZED VIEW balancer_v2.view_liquidity AS (
     swaps_changes AS (
         SELECT
             DAY,
-            pool,
+            pool_id,
             token,
             SUM(COALESCE(delta, 0)) AS delta
         FROM
             (
                 SELECT
                     date_trunc('day', evt_block_time) AS DAY,
-                    "poolId" AS pool,
+                    "poolId" AS pool_id,
                     "tokenIn" AS token,
                     "amountIn" AS delta
                 FROM
@@ -90,7 +90,7 @@ CREATE MATERIALIZED VIEW balancer_v2.view_liquidity AS (
                 ALL
                 SELECT
                     date_trunc('day', evt_block_time) AS DAY,
-                    "poolId" AS pool,
+                    "poolId" AS pool_id,
                     "tokenOut" AS token,
                     - "amountOut" AS delta
                 FROM
@@ -104,7 +104,7 @@ CREATE MATERIALIZED VIEW balancer_v2.view_liquidity AS (
     balances_changes AS (
         SELECT
             date_trunc('day', evt_block_time) AS DAY,
-            "poolId" AS pool,
+            "poolId" AS pool_id,
             UNNEST(tokens) AS token,
             UNNEST(deltas) AS delta
         FROM
@@ -113,7 +113,7 @@ CREATE MATERIALIZED VIEW balancer_v2.view_liquidity AS (
     internal_changes AS (
         SELECT
             date_trunc('day', evt_block_time) AS DAY,
-            NULL :: bytea AS pool,
+            NULL :: bytea AS pool_id,
             token,
             SUM(COALESCE(delta, 0)) AS delta
         FROM
@@ -126,7 +126,7 @@ CREATE MATERIALIZED VIEW balancer_v2.view_liquidity AS (
     managed_changes AS (
         SELECT
             date_trunc('day', evt_block_time) AS DAY,
-            "poolId" AS pool,
+            "poolId" AS pool_id,
             token,
             "cashDelta" + "managedDelta" AS delta
         FROM
@@ -135,14 +135,14 @@ CREATE MATERIALIZED VIEW balancer_v2.view_liquidity AS (
     daily_delta_balance AS (
         SELECT
             DAY,
-            pool,
+            pool_id,
             token,
             SUM(COALESCE(amount, 0)) AS amount
         FROM
             (
                 SELECT
                     DAY,
-                    pool,
+                    pool_id,
                     token,
                     SUM(COALESCE(delta, 0)) AS amount
                 FROM
@@ -155,7 +155,7 @@ CREATE MATERIALIZED VIEW balancer_v2.view_liquidity AS (
                 ALL
                 SELECT
                     DAY,
-                    pool,
+                    pool_id,
                     token,
                     delta AS amount
                 FROM
@@ -164,7 +164,7 @@ CREATE MATERIALIZED VIEW balancer_v2.view_liquidity AS (
                 ALL
                 SELECT
                     DAY,
-                    pool,
+                    pool_id,
                     token,
                     delta AS amount
                 FROM
@@ -173,7 +173,7 @@ CREATE MATERIALIZED VIEW balancer_v2.view_liquidity AS (
                 ALL
                 SELECT
                     DAY,
-                    pool,
+                    pool_id,
                     token,
                     delta AS amount
                 FROM
@@ -187,16 +187,16 @@ CREATE MATERIALIZED VIEW balancer_v2.view_liquidity AS (
     cumulative_balance AS (
         SELECT
             DAY,
-            pool,
+            pool_id,
             token,
             LEAD(DAY, 1, NOW()) OVER (
                 PARTITION BY token,
-                pool
+                pool_id
                 ORDER BY
                     DAY
             ) AS day_of_next_change,
             SUM(amount) OVER (
-                PARTITION BY pool,
+                PARTITION BY pool_id,
                 token
                 ORDER BY
                     DAY ROWS BETWEEN UNBOUNDED PRECEDING
@@ -208,13 +208,13 @@ CREATE MATERIALIZED VIEW balancer_v2.view_liquidity AS (
     weekly_delta_balance_by_token AS (
         SELECT
             DAY,
-            pool,
+            pool_id,
             token,
             cumulative_amount,
             (
                 cumulative_amount - COALESCE(
                     LAG(cumulative_amount, 1) OVER (
-                        PARTITION BY pool,
+                        PARTITION BY pool_id,
                         token
                         ORDER BY
                             DAY
@@ -226,7 +226,7 @@ CREATE MATERIALIZED VIEW balancer_v2.view_liquidity AS (
             (
                 SELECT
                     DAY,
-                    pool,
+                    pool_id,
                     token,
                     SUM(cumulative_amount) AS cumulative_amount
                 FROM
@@ -254,7 +254,7 @@ CREATE MATERIALIZED VIEW balancer_v2.view_liquidity AS (
     cumulative_usd_balance AS (
         SELECT
             c.day,
-            b.pool,
+            b.pool_id,
             b.token,
             cumulative_amount / 10 ^ t.decimals * COALESCE(p1.price, p2.price, 0) AS amount_usd
         FROM
@@ -289,11 +289,11 @@ CREATE MATERIALIZED VIEW balancer_v2.view_liquidity AS (
     pool_liquidity_estimates AS (
         SELECT
             b.day,
-            b.pool,
+            b.pool_id,
             SUM(b.amount_usd) / COALESCE(SUM(w.normalized_weight), 1) AS liquidity
         FROM
             cumulative_usd_balance b
-            LEFT JOIN pools_tokens_weights w ON b.pool = w.pool_id
+            LEFT JOIN pools_tokens_weights w ON b.pool_id = w.pool_id
             AND b.token = w.token_address
         GROUP BY
             1,
@@ -302,7 +302,7 @@ CREATE MATERIALIZED VIEW balancer_v2.view_liquidity AS (
     balancer_liquidity AS (
         SELECT
             b.day,
-            b.pool,
+            b.pool_id,
             pool_symbol,
             token AS token_address,
             symbol AS token_symbol,
@@ -310,11 +310,11 @@ CREATE MATERIALIZED VIEW balancer_v2.view_liquidity AS (
         FROM
             pool_liquidity_estimates b
             LEFT JOIN cumulative_usd_balance c ON c.day = b.day
-            AND c.pool = b.pool
-            LEFT JOIN pools_tokens_weights w ON b.pool = w.pool_id
+            AND c.pool_id = b.pool_id
+            LEFT JOIN pools_tokens_weights w ON b.pool_id = w.pool_id
             AND w.token_address = c.token
             LEFT JOIN erc20.tokens t ON t.contract_address = c.token
-            LEFT JOIN pool_labels p ON p.pool_id = SUBSTRING(b.pool :: text, 0, 43) :: bytea
+            LEFT JOIN pool_labels p ON p.pool_id = SUBSTRING(b.pool_id :: text, 0, 43) :: bytea
     )
     SELECT
         *
