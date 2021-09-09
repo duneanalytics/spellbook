@@ -13,9 +13,16 @@ with pools as (
 
     union all
 
-    select c."poolId" as pool_id, unnest(cc.tokens) as token_address, 0 as normalized_weight, cc.symbol, 'SP' as pool_type
+    select c."poolId" as pool_id, unnest(cc.tokens) as token_address, NULL as normalized_weight, cc.symbol, 'SP' as pool_type
     from balancer_v2."Vault_evt_PoolRegistered" c
     inner join balancer_v2."StablePoolFactory_call_create" cc
+    on c.evt_tx_hash = cc.call_tx_hash
+
+    union all
+
+    select c."poolId" as pool_id, unnest(cc.tokens) as token_address, NULL as normalized_weight, cc.symbol, 'SP' as pool_type
+    from balancer_v2."Vault_evt_PoolRegistered" c
+    inner join balancer_v2."MetaStablePoolFactory_call_create" cc
     on c.evt_tx_hash = cc.call_tx_hash
 
     union all
