@@ -1471,3 +1471,8 @@
   symbol: DPX
   address: 0xeec2be5c91ae7f8a338e1e5f3b5de49d07afdc81
   decimals: 18
+- name: rdpx-dopex-rebate-token
+  id: rdpx-dopex-rebate-token
+  symbol: rDPX
+  address: 0x0ff5a8451a839f5f0bb3562689d9a44089738d11
+  decimals: 18
