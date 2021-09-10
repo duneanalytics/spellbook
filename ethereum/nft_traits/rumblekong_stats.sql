@@ -1,3 +1,5 @@
+CREATE SCHEMA IF NOT EXISTS rumblekongleague;
+
 CREATE TABLE IF NOT EXISTS rumblekongleague.rumblekong_stats (
 	token_id	TEXT,
 	shooting	INTEGER,
