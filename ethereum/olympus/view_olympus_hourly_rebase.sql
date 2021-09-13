@@ -1,7 +1,6 @@
 BEGIN;
 DROP materialized VIEW IF EXISTS olympus.olympus_hourly_rebase;
 create materialized view olympus.olympus_hourly_rebase as 
---this query gives you an hour-per-hour record of APY and rebase rates for olympus
 with time as
 (
 SELECT
@@ -13,48 +12,41 @@ staking_address AS
 --staking v2
     SELECT
     evt_block_time as Date,
-    COALESCE(sum(e.value/1e9), 0) as staked_amount
+    e.value as staked_amount
     FROM erc20."ERC20_evt_Transfer" e
-    LEFT JOIN ethereum."transactions" tx ON evt_tx_hash = tx.hash
     WHERE "contract_address" = '\x383518188c0c6d7730d91b2c03a03c837814a899' -- OHM contract address
     and e."from" = '\xFd31c7d00Ca47653c6Ce64Af53c1571f9C36566a'
-    GROUP BY 1
 UNION ALL
     SELECT
     evt_block_time as Date,
-    COALESCE(sum(-e.value/1e9), 0) as staked_amount
+    -e.value as staked_amount
     FROM erc20."ERC20_evt_Transfer" e
-    LEFT JOIN ethereum."transactions" tx ON evt_tx_hash = tx.hash
     WHERE "contract_address" = '\x383518188c0c6d7730d91b2c03a03c837814a899' -- OHM contract address
     and e."to" = '\xFd31c7d00Ca47653c6Ce64Af53c1571f9C36566a'
-    GROUP BY 1
 ),
 
 final_staked as
 (
-SELECT
-Date as second,
-sum(-sum(staked_amount)) over (order by Date) as OHM_staked_amount
-FROM 
-(
-SELECT Date, staking_address.staked_amount as staked_amount FROM staking_address UNION ALL
-SELECT Date, 0 as staked_amount FROM time
-) t
-GROUP BY 1
-ORDER BY Date DESC
+    SELECT
+    date_trunc('hour',date) as hour,
+    sum(-sum(staked_amount)) over (order by 1)/1e9 as OHM_staked_amount
+    FROM 
+    staking_address
+    group by 1
 ),
-
 staking_tx as (
-select evt_block_time, (value/1e9) as ohm_transferred, evt_tx_hash
-from erc20."ERC20_evt_Transfer" e
-where e."from" = '\x383518188c0c6d7730d91b2c03a03c837814a899'
-and e."to"  = '\xFd31c7d00Ca47653c6Ce64Af53c1571f9C36566a' and value != 0
+    select evt_block_time, value/1e9 as ohm_transferred, evt_tx_hash
+    from erc20."ERC20_evt_Transfer" e
+    where e."from" = '\x383518188c0c6d7730d91b2c03a03c837814a899'
+    and e."to"  = '\xFd31c7d00Ca47653c6Ce64Af53c1571f9C36566a' and value != 0
 ),
 
-rebase as (select evt_block_time, ohm_transferred, ohm_staked_amount, (ohm_transferred/(ohm_staked_amount)) as rebase, evt_tx_hash
-from staking_tx
-left join final_staked on final_staked."second" = evt_block_time
-order by evt_block_time desc)
+rebase as (
+    select evt_block_time, ohm_transferred, ohm_staked_amount, (ohm_transferred/(ohm_staked_amount)) as rebase, evt_tx_hash
+    from staking_tx
+    left join final_staked on final_staked."hour" = date_trunc('hour',evt_block_time)
+    order by evt_block_time desc
+) 
 
 ,init_data as (
 select evt_block_time as rebase_time,rebase, (1+rebase)^(1095) as apy, row_number() over (order by evt_block_time asc) as rebase_id
@@ -127,7 +119,7 @@ select
     ,new_rebase as rebase
     ,new_apy as APY
 from final_table
-order by 1 
+order by 1  
 ; 
 CREATE UNIQUE INDEX IF NOT EXISTS "timestamp" ON olympus.olympus_hourly_rebase ("timestamp", rebase, APY);
 
