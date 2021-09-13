@@ -5,14 +5,14 @@ create materialized view olympus.olympus_hourly_rebase as
 with time as
 (
 SELECT
-generate_series( '2021-06-16', NOW(), '1 second'::interval) as Date
+generate_series( '2021-06-16', NOW(), '1 hour'::interval) as Date
 ),
 
 staking_address AS
 (
 --staking v2
     SELECT
-    date_trunc('second', block_time) as Date,
+    evt_block_time as Date,
     COALESCE(sum(e.value/1e9), 0) as staked_amount
     FROM erc20."ERC20_evt_Transfer" e
     LEFT JOIN ethereum."transactions" tx ON evt_tx_hash = tx.hash
@@ -21,7 +21,7 @@ staking_address AS
     GROUP BY 1
 UNION ALL
     SELECT
-    date_trunc('second', block_time) as Date,
+    evt_block_time as Date,
     COALESCE(sum(-e.value/1e9), 0) as staked_amount
     FROM erc20."ERC20_evt_Transfer" e
     LEFT JOIN ethereum."transactions" tx ON evt_tx_hash = tx.hash
@@ -97,7 +97,7 @@ from holey_data A
     join rebase_start B on 1=1
 Where
     A.rebase_hour >= B.rebase_start
-)   
+)
 
 -- group the rows with null values with the first non-null value above it.
 ,grouped_table as (
