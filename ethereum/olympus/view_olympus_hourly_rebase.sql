@@ -4,21 +4,21 @@ create materialized view olympus.olympus_hourly_rebase as
 with time as
 (
 SELECT
-generate_series( '2021-06-16', NOW(), '1 hour'::interval) as Date
+generate_series( '2021-06-16', NOW(), '1 hour'::interval) as date
 ),
 
 staking_address AS
 (
 --staking v2
     SELECT
-    evt_block_time as Date,
+    evt_block_time as date,
     e.value as staked_amount
     FROM erc20."ERC20_evt_Transfer" e
     WHERE "contract_address" = '\x383518188c0c6d7730d91b2c03a03c837814a899' -- OHM contract address
     and e."from" = '\xFd31c7d00Ca47653c6Ce64Af53c1571f9C36566a'
 UNION ALL
     SELECT
-    evt_block_time as Date,
+    evt_block_time as date,
     -e.value as staked_amount
     FROM erc20."ERC20_evt_Transfer" e
     WHERE "contract_address" = '\x383518188c0c6d7730d91b2c03a03c837814a899' -- OHM contract address
@@ -29,7 +29,7 @@ final_staked as
 (
     SELECT
     date_trunc('hour',date) as hour,
-    sum(-sum(staked_amount)) over (order by 1)/1e9 as OHM_staked_amount
+    sum(-sum(staked_amount)) over (order by 1)/1e9 as ohm_staked_amount
     FROM 
     staking_address
     group by 1
@@ -117,10 +117,12 @@ Where
 select
     rebase_hour as timestamp
     ,new_rebase as rebase
-    ,new_apy as APY
+    ,new_apy as apy
 from final_table
 order by 1  
 ; 
+CREATE INDEX IF NOT EXISTS "timestamp" ON olympus.olympus_hourly_rebase ("timestamp", rebase, APY);
+
 CREATE UNIQUE INDEX IF NOT EXISTS "timestamp" ON olympus.olympus_hourly_rebase ("timestamp", rebase, APY);
 
 INSERT INTO cron.job(schedule, command)
