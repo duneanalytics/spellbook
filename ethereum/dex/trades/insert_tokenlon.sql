@@ -73,7 +73,7 @@ WITH rows AS (
             NULL::integer[] AS trace_address,
             evt_index
         FROM zeroex_v2."Exchange2.1_evt_Fill"
-        WHERE "feeRecipientAddress" IN ('\x6f7ae872e995f98fcd2a7d3ba17b7ddfb884305f'::BYTEA,'\xb9e29984fe50602e7a619662ebed4f90d93824c7'::BYTEA)
+        WHERE "feeRecipientAddress" IN ('\xb9e29984fe50602e7a619662ebed4f90d93824c7'::BYTEA)
 
         UNION ALL
 
