@@ -1461,3 +1461,18 @@
   symbol: stETH
   address: 0xae7ab96520de3a18e5e111b5eaab095312d7fe84
   decimals: 18
+- name: ersdl_unfederalreserve
+  id: ersdl-unfederalreserve
+  symbol: ERSDL
+  address: 0x5218e472cfcfe0b64a064f055b43b4cdc9efd3a6
+  decimals: 18
+- name: dpx-dopex
+  id: dpx-dopex
+  symbol: DPX
+  address: 0xeec2be5c91ae7f8a338e1e5f3b5de49d07afdc81
+  decimals: 18
+- name: rdpx-dopex-rebate-token
+  id: rdpx-dopex-rebate-token
+  symbol: rDPX
+  address: 0x0ff5a8451a839f5f0bb3562689d9a44089738d11
+  decimals: 18

@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION dex.insert_gnosis_protocol(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+CREATE OR REPLACE FUNCTION dex.insert_mistx(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -55,45 +55,55 @@ WITH rows AS (
         evt_index,
         row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
-        -- V1
-        SELECT
-            block_time,
-            'Gnosis Protocol' AS project,
-            '1' AS version,
-            'DEX' AS category,
-            trader_hex AS trader_a,
-            NULL::bytea AS trader_b,
-            sell_amount_atoms / 2 AS token_a_amount_raw,
-            buy_amount_atoms / 2 AS token_b_amount_raw,
-            NULL::numeric AS usd_amount,
-            sell_token AS token_a_address,
-            buy_token AS token_b_address,
-            '\x6F400810b62df8E13fded51bE75fF5393eaa841F'::bytea AS exchange_contract_address,
-            tx_hash,
-            NULL::integer[] AS trace_address,
-            evt_index_trades as evt_index
-        FROM gnosis_protocol.view_trades
 
-        UNION ALL
-
-        -- V2
+        -- mistX router for Sushiswap
         SELECT
             t.evt_block_time AS block_time,
-            'Gnosis Protocol' AS project,
-            '2' AS version,
+            'mistX' AS project,
+            '1' AS version,
             'Aggregator' AS category,
-            t.owner AS trader_a,
+            t."to" AS trader_a,
             NULL::bytea AS trader_b,
-            t."buyAmount" AS token_a_amount_raw,
-            t."sellAmount" AS token_b_amount_raw,
+            CASE WHEN "amount0Out" = 0 THEN "amount1Out" ELSE "amount0Out" END AS token_a_amount_raw,
+            CASE WHEN "amount0In" = 0 THEN "amount1In" ELSE "amount0In" END AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            t."buyToken" token_a_address,
-            t."sellToken" token_b_address,
+            CASE WHEN "amount0Out" = 0 THEN f.token1 ELSE f.token0 END AS token_a_address,
+            CASE WHEN "amount0In" = 0 THEN f.token1 ELSE f.token0 END AS token_b_address,
             t.contract_address exchange_contract_address,
             t.evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             t.evt_index
-        FROM gnosis_protocol_v2."GPv2Settlement_evt_Trade" t
+        FROM
+            sushi."Pair_evt_Swap" t
+        INNER JOIN sushi."Factory_evt_PairCreated" f ON f.pair = t.contract_address
+
+        UNION ALL
+
+        -- mistX router for Uniswap v2
+        SELECT
+            t.evt_block_time AS block_time,
+            'mistX' AS project,
+            '2' AS version,
+            'Aggregator' AS category,
+            t."to" AS trader_a,
+            NULL::bytea AS trader_b,
+            CASE WHEN "amount0Out" = 0 THEN "amount1Out" ELSE "amount0Out" END AS token_a_amount_raw,
+            CASE WHEN "amount0In" = 0 THEN "amount1In" ELSE "amount0In" END AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            CASE WHEN "amount0Out" = 0 THEN f.token1 ELSE f.token0 END AS token_a_address,
+            CASE WHEN "amount0In" = 0 THEN f.token1 ELSE f.token0 END AS token_b_address,
+            t.contract_address AS exchange_contract_address,
+            t.evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            t.evt_index
+        FROM
+            uniswap_v2."Pair_evt_Swap" t
+        INNER JOIN uniswap_v2."Factory_evt_PairCreated" f ON f.pair = t.contract_address
+        WHERE t.contract_address NOT IN (
+            '\xed9c854cb02de75ce4c9bba992828d6cb7fd5c71', -- remove WETH-UBOMB wash trading pair
+            '\x854373387e41371ac6e307a1f29603c6fa10d872' ) -- remove FEG/ETH token pair
+
+
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
@@ -103,24 +113,17 @@ WITH rows AS (
         AND tx.block_number < end_block
     LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
-    LEFT JOIN prices.usd pa 
-        ON pa.minute = date_trunc('minute', dexs.block_time)
-        AND pa.contract_address = (
-            CASE 
-                WHEN dexs.token_a_address = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-                ELSE dexs.token_a_address
-            END)
+    LEFT JOIN prices.usd pa ON pa.minute = date_trunc('minute', dexs.block_time)
+        AND pa.contract_address = dexs.token_a_address
         AND pa.minute >= start_ts
         AND pa.minute < end_ts
     LEFT JOIN prices.usd pb ON pb.minute = date_trunc('minute', dexs.block_time)
-        AND pb.contract_address = (
-            CASE 
-                WHEN dexs.token_b_address = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-                ELSE dexs.token_b_address
-            END)
+        AND pb.contract_address = dexs.token_b_address
         AND pb.minute >= start_ts
         AND pb.minute < end_ts
-    WHERE dexs.block_time >= start_ts
+    WHERE ( tx."to" = '\xfcadf926669e7cad0e50287ea7d563020289ed2c' -- mistX Router for Sushi Contract address
+    or tx."to" = '\xa58f22e0766b3764376c92915ba545d583c19dbc') -- mistX Router for Uniswap Contract address
+    AND dexs.block_time >= start_ts
     AND dexs.block_time < end_ts
     ON CONFLICT DO NOTHING
     RETURNING 1
@@ -130,23 +133,8 @@ RETURN r;
 END
 $function$;
 
--- fill 2020
-SELECT dex.insert_gnosis_protocol(
-    '2020-01-01',
-    '2021-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2021-01-01')
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2020-01-01'
-    AND block_time <= '2021-01-01'
-    AND project = 'Gnosis Protocol'
-);
-
 -- fill 2021
-SELECT dex.insert_gnosis_protocol(
+SELECT dex.insert_mistx(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
@@ -157,15 +145,15 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2021-01-01'
     AND block_time <= now() - interval '20 minutes'
-    AND project = 'Gnosis Protocol'
+    AND project = 'mistX'
 );
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
-    SELECT dex.insert_gnosis_protocol(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Gnosis Protocol'),
+    SELECT dex.insert_mistx(
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='mistX'),
         (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Gnosis Protocol')),
+        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='mistX')),
         (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
