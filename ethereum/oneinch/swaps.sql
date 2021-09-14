@@ -21,8 +21,8 @@ BEGIN
 WITH swap AS (
     SELECT tx."from" AS tx_from,
         tx."to" AS tx_to,
-        from_token,
-        to_token,
+        CASE WHEN from_token = '\x0000000000000000000000000000000000000000' THEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' ELSE from_token END as from_token,
+        CASE WHEN to_token = '\x0000000000000000000000000000000000000000' THEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' ELSE to_token END as to_token,
         from_amount,
         to_amount,
         tx_hash,
@@ -33,6 +33,7 @@ WITH swap AS (
         from_amount * (
             CASE
                 WHEN from_token IN (
+                    '\x0000000000000000000000000000000000000000', -- ETH
                     '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', -- ETH
                     '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', -- WETH
                     '\x5e74c9036fb86bd7ecdcb084a0673efc32ea31cb', -- sETH
@@ -89,6 +90,7 @@ WITH swap AS (
         to_amount * (
             CASE
                 WHEN to_token IN (
+                    '\x0000000000000000000000000000000000000000', -- ETH
                     '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', -- ETH
                     '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', -- WETH
                     '\x5e74c9036fb86bd7ecdcb084a0673efc32ea31cb', -- sETH
