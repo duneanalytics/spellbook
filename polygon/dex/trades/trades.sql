@@ -1,3 +1,5 @@
+CREATE SCHEMA IF NOT EXISTS dex;
+
 CREATE TABLE dex.trades (
     block_time timestamptz NOT NULL,
     token_a_symbol text,
