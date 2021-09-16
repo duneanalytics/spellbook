@@ -1,3 +1,5 @@
+CREATE SCHEMA IF NOT EXISTS olympus;
+
 BEGIN;
 DROP materialized VIEW IF EXISTS olympus.olympus_hourly_rebase;
 create materialized view olympus.olympus_hourly_rebase as 
@@ -121,11 +123,10 @@ select
 from final_table
 order by 1  
 ; 
-CREATE INDEX IF NOT EXISTS "timestamp" ON olympus.olympus_hourly_rebase ("timestamp", rebase, apy);
 
-CREATE UNIQUE INDEX IF NOT EXISTS "timestamp" ON olympus.olympus_hourly_rebase ("timestamp", rebase, apy);
+CREATE INDEX IF NOT EXISTS "timestamp" ON olympus.olympus_hourly_rebase ("timestamp", rebase, apy);
+COMMIT;
 
 INSERT INTO cron.job(schedule, command)
 VALUES ('* 1 * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY olympus.olympus_hourly_rebase$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
-COMMIT:
