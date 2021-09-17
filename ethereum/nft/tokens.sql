@@ -538,6 +538,7 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x809865309dfa75d3f18b4ffa219b396452076ae8	CryptoShark	CSHP	erc721
 \\x36b4267a4f472e25919bf51a9aff32bd1ee60d62	4Birders	Bird Collectibles and Photography	erc721
 \\x4d1004c81a18006b567ea8aa2eb7680b3e960781	Know-how-1 V2	KNW1	erc721
+\\xf36446105fF682999a442b003f2224BcB3D82067	Axolittles	AXOLITTLE	erc721
 \.
 
 
