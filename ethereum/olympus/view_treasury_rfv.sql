@@ -465,5 +465,5 @@ CREATE INDEX IF NOT EXISTS "date" ON olympus.treasury_rfv ("date", mv_slp_bonded
 COMMIT;
 
 INSERT INTO cron.job(schedule, command)
-VALUES ('* 1 * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY olympus.olympus_revenue$$)
+VALUES ('* 59 * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY olympus.olympus_revenue$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

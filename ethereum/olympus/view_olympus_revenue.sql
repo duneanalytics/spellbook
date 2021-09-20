@@ -509,5 +509,5 @@ CREATE INDEX IF NOT EXISTS "date" ON olympus.olympus_revenue ("date", mv_slp_bon
 COMMIT;
 
 INSERT INTO cron.job(schedule, command)
-VALUES ('* 1 * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY olympus.olympus_revenue$$)
+VALUES ('* 59 * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY olympus.olympus_revenue$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
