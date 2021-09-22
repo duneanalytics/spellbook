@@ -4816,6 +4816,7 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xcca90ddc76c9e3db6fd436eca1d425128b9483ab	Xmas tree		ERC721
 \\xb32601bbc5136842b716a815d6cafe9a490f604d	make it beautIful		ERC721
 \\x7853f89f65344f9d6807d7080c4a02be1b12adb3	Cat Russell	CAAAT	ERC721
+\\xf36446105fF682999a442b003f2224BcB3D82067	Axolittles	AXOLITTLE	erc721
 \.
 
 
