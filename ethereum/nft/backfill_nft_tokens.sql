@@ -21,7 +21,7 @@ FROM
 		WHERE
                         block_time >= start_ts
 			AND block_time < end_ts
-			nft_project_name IS NULL
+			AND nft_project_name IS NULL
 			AND t.name IS NOT NULL
 	) as new_names
 where
