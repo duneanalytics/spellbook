@@ -11,8 +11,8 @@ UNION
 SELECT
     borrower AS address,
     lower(project) || ' user' AS label,
-    'hagaetc' AS author,
-    'dapp usage' AS type
+    'dapp usage' AS type,
+    'hagaetc' AS author
 FROM
     lending.collateral_change
 WHERE
