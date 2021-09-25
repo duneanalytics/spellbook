@@ -461,9 +461,9 @@ order by 1 desc
 
 ; 
 
-CREATE INDEX IF NOT EXISTS "date" ON olympus.treasury_rfv ("date", mv_slp_bonded_ohmdai, apy,mv_univ2_bonded_ohmfrax,dai_bonded,frax_bonded,bond_revenue, xsushi_revenue,weth_revenue,total_fees,total_revenue,"total_revenue_7d_moving_avg");
+CREATE INDEX IF NOT EXISTS "date" ON olympus.treasury_rfv ("date", treasury_rfv, treasury_dai, lp_dai, lp_ohm, slp_treasury, slp_supply, treasury_frax, lp_frax, f_lp_ohm, treasury_univ2, univ2_supply);
 COMMIT;
 
 INSERT INTO cron.job(schedule, command)
-VALUES ('* 59 * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY olympus.olympus_revenue$$)
+VALUES ('* 59 * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY olympus.treasury_rfv$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
