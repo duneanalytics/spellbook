@@ -782,17 +782,17 @@
   symbol: COMP
   address: 0xc00e94cb662c3520282e6f5717214004a7f26888
   decimals: 18
+- name: snx_old
+  id: hav-havven
+  symbol: SNX
+  address: 0xC011A72400E58ecD99Ee497CF89E3775d4bd732F
+  decimals: 18
 - name: snx_new
   id: hav-havven
   symbol: SNX
   address: 0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f
   decimals: 18
   start: 2020-04-28T11:00:00Z
-- name: snx_old
-  id: hav-havven
-  symbol: SNX
-  address: 0xC011A72400E58ecD99Ee497CF89E3775d4bd732F
-  decimals: 18
 - name: weth_ethereum
   id: weth-weth
   symbol: WETH
