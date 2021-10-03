@@ -1476,3 +1476,8 @@
   symbol: rDPX
   address: 0x0ff5a8451a839f5f0bb3562689d9a44089738d11
   decimals: 18
+- name: lqty_liquity
+  id: lqty-liquity
+  symbol: LQTY
+  address: 0x6DEA81C8171D0bA574754EF6F8b412F2Ed88c54D
+  decimals: 18
