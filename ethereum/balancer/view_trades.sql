@@ -114,10 +114,11 @@ WITH rows AS (
         FROM
             balancer."BPool_evt_LOG_SWAP" t
         INNER JOIN balancer."BFactory_evt_LOG_NEW_POOL" f ON f.pool = t.contract_address
-        INNER JOIN balancer."BPool_call_setSwapFee" s ON s.contract_address = t.contract_address
+        LEFT JOIN balancer_v1.view_pools_fees s
+        ON s.contract_address = t.contract_address
         AND s.call_block_time = (
             SELECT MAX(call_block_time)
-            FROM balancer."BPool_call_setSwapFee"
+            FROM balancer_v1.view_pools_fees
             WHERE call_block_time <= t.evt_block_time
             AND contract_address = t.contract_address
             AND call_success
@@ -139,27 +140,21 @@ WITH rows AS (
             t."tokenOut" AS token_a_address,
             t."tokenIn" AS token_b_address,
             t."poolId" AS exchange_contract_address,
-            COALESCE(s1."swapFeePercentage", s2."swapFeePercentage")/1e18 AS swap_fee,
+            s."swapFeePercentage"/1e18 AS swap_fee,
             t.evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             t.evt_index
         FROM
             balancer_v2."Vault_evt_Swap" t
-        LEFT JOIN balancer_v2."WeightedPool_evt_SwapFeePercentageChanged" s1 ON s1.contract_address = SUBSTRING(t."poolId" from 0 for 21)
-        AND s1.evt_block_time = (
+        LEFT JOIN balancer_v2.view_pools_fees s
+        ON s.contract_address = SUBSTRING(t."poolId" from 0 for 21)
+        AND s.evt_block_time = (
             SELECT MAX(evt_block_time)
-            FROM balancer_v2."WeightedPool_evt_SwapFeePercentageChanged"
+            FROM balancer_v2.view_pools_fees
             WHERE evt_block_time <= t.evt_block_time
             AND contract_address = SUBSTRING(t."poolId" from 0 for 21)
         )
-        LEFT JOIN balancer_v2."StablePool_evt_SwapFeePercentageChanged" s2 ON s2.contract_address = SUBSTRING(t."poolId" from 0 for 21)
-        AND s2.evt_block_time = (
-            SELECT MAX(evt_block_time)
-            FROM balancer_v2."StablePool_evt_SwapFeePercentageChanged"
-            WHERE evt_block_time <= t.evt_block_time
-            AND contract_address = SUBSTRING(t."poolId" from 0 for 21)
-        )
-    ) dexs
+    ) dexss
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
         AND tx.block_time >= start_ts
