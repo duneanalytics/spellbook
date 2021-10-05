@@ -83,7 +83,7 @@ WITH rows AS (
         SELECT
             t.evt_block_time AS block_time,
             'mistX' AS project,
-            '2' AS version,
+            '1' AS version,
             'Aggregator' AS category,
             t."to" AS trader_a,
             NULL::bytea AS trader_b,
