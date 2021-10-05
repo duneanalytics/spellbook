@@ -1476,3 +1476,8 @@
   symbol: rDPX
   address: 0x0ff5a8451a839f5f0bb3562689d9a44089738d11
   decimals: 18
+- name: eden_eden_network
+  id: eden-eden-network
+  symbol: EDEN
+  address: 0x1559fa1b8f28238fd5d76d9f434ad86fd20d1559
+  decimals: 18
