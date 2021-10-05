@@ -1481,3 +1481,13 @@
   symbol: LQTY
   address: 0x6DEA81C8171D0bA574754EF6F8b412F2Ed88c54D
   decimals: 18
+- name: sand_the_sandbox
+  id: sand-the-sandbox
+  symbol: SAND
+  address: 0x3845badade8e6dff049820680d1f14bd3903a5d0
+  decimals: 18
+- name: eden_eden_network
+  id: eden-eden-network
+  symbol: EDEN
+  address: 0x1559fa1b8f28238fd5d76d9f434ad86fd20d1559
+  decimals: 18
