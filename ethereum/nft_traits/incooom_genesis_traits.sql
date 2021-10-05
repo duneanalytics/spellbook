@@ -2930,3 +2930,5 @@ VALUES
 ( 2915, 'Eight', 'Hearts', 'PYSCHEDELIC', 54, 45 );
 
 CREATE INDEX IF NOT EXISTS incooom_genesis_traits_idx ON incooom.incooom_genesis_traits USING BRIN (token_id);
+
+COMMIT;
