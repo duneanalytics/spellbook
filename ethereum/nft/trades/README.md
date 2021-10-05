@@ -4,9 +4,10 @@ This repo collects trade data of NFT marketplaces in a single table `nft.trades`
 
 The goal is to enable a powerful new wave of Dune dashboards on NFTs, and inspire new contributors to add more marketplaces and NFT data. 
 
+ERC721 and ERC1155 `transfer` data is integrated for every trade transaction to enable analysis of trades consisting of multiple NFTs.
+
 Known limitations:
 - OpenSea and Rarible support non-ETH trades. Some of the tokens used for these transactions are not in Dune's `prices.usd`. In these cases, the `usd_amount` is `NULL`. At the time of writing (July 2021), for OpenSea and Rarible, the percentage of rows with missing USD values is 2% or less.
-- Some column data for less common trades such as bundle sales or multiple transfers in one transaction will be incorrect e.g. the column `nft_token_id`. On the tests we did, the `buyer` and `amount` fields were correct.
 - In some cases, there are rounding errors on the `original_amount` fields.
 
 
