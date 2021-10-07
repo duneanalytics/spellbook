@@ -154,7 +154,7 @@ WITH rows AS (
             WHERE evt_block_time <= t.evt_block_time
             AND contract_address = SUBSTRING(t."poolId" from 0 for 21)
         )
-    ) dexss
+    ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
         AND tx.block_time >= start_ts

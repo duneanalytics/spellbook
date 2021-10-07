@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW balancer_v1.view_transfers_bpt AS
+CREATE OR REPLACE VIEW balancer_v2.view_transfers_bpt AS
 SELECT *
 FROM balancer_v2."WeightedPool_evt_Transfer"
 UNION ALL
