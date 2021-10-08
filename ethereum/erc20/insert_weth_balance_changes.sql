@@ -36,14 +36,14 @@ rows AS (
         hour,
         wallet_address,
         token_address,
-        change_amount_raw
+        amount_raw
     )
 
     SELECT
         hour,
         wallet_address,
         '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::BYTEA AS token_address,
-        SUM(amount) AS change_amount_raw
+        SUM(amount) AS amount_raw
     FROM all_transfers t
     GROUP BY 1, 2, 3
 

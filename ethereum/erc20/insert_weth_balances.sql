@@ -8,7 +8,7 @@ WITH balances AS (
     SELECT
         wallet_address,
         token_address,
-        SUM(change_amount_raw) AS amount_raw
+        SUM(amount_raw) AS amount_raw
     FROM dex.hourly_balance_changes d1
     -- Sum over all previous balance changes to get current balance
     WHERE hour <= time_to_add
