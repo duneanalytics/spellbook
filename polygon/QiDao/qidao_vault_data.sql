@@ -3,9 +3,8 @@ CREATE TABLE IF NOT EXISTS qidao.vaults (
     evt_block_time TIMESTAMPTZ, 
     vaults TEXT, 
     totals FLOAT, 
-    vault_tvl NUMERIC
-    vault_tvl_usd NUMERIC, 
-    vault_tvl NUMERIC
+    vault_tvl NUMERIC,
+    vault_tvl_usd NUMERIC
 );
 
 with data AS (
@@ -114,8 +113,7 @@ final_data_grouped_insert AS (
             vaults, 
             totals, 
             vault_tvl,
-            vault_tvl_usd, 
-            vault_tvl
+            vault_tvl_usd
         )
 SELECT evt_block_time, vaults, totals, vault_tvl_usd, vault_tvl FROM final_data_grouped
 GROUP BY 1,2,3,4,5
@@ -123,5 +121,4 @@ ORDER BY 1 DESC
 )
 
 SELECT * from qidao.vaults
-
 
