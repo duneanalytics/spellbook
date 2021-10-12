@@ -3,8 +3,28 @@ BEGIN;
 DROP MATERIALIZED VIEW IF EXISTS dex.view_lp_pools;
 
 CREATE MATERIALIZED VIEW dex.view_lp_pools AS (
-    WITH distinct_pools AS (
-        -- 1inch v1
+    WITH balancer_v2_evts AS (
+        SELECT
+            SUBSTRING("poolId" FOR 20) as pool_address,
+            unnest(tokens) AS token_address
+        FROM balancer_v2."Vault_evt_PoolBalanceChanged"
+        UNION ALL
+        SELECT 
+            SUBSTRING("poolId" FOR 20) as pool_address,
+            "tokenIn"
+        FROM balancer_v2."Vault_evt_Swap"
+        UNION ALL
+        SELECT  
+            SUBSTRING("poolId" FOR 20) as pool_address,
+            "tokenOut"
+        FROM balancer_v2."Vault_evt_Swap"
+        UNION ALL
+        SELECT  
+            SUBSTRING("poolId" FOR 20) as pool_address,
+            token
+        FROM balancer_v2."Vault_evt_PoolBalanceManaged"),
+        distinct_pools AS (
+        -- 1inch_v1
         SELECT
             '1inch' AS project,
             '1' AS version,
@@ -33,9 +53,9 @@ CREATE MATERIALIZED VIEW dex.view_lp_pools AS (
             token2
         FROM onelp."MooniswapFactory_v2_evt_Deployed"
         UNION ALL
-        -- balancer v1
+        -- balancer_v1
         SELECT 
-            DISTINCT -- is needed here :todo: at end
+            DISTINCT
             'Balancer' AS project,
             '1' AS version,
             contract_address as pool, 
@@ -43,27 +63,21 @@ CREATE MATERIALIZED VIEW dex.view_lp_pools AS (
         FROM balancer."BPool_call_bind"
         WHERE call_success
         UNION ALL
-        -- balancer v2 :todo: review today
+        -- balancer_v2
         SELECT
             'Balancer' AS project,
             '2' AS version,
-            SUBSTRING(pool_id FOR 20) as pool_address,
+            pool_address,
             token_address
         FROM
         (
-            select c."poolId" as pool_id, unnest(cc.tokens) as token_address, unnest(cc.weights)/1e18 as normalized_weight, cc.symbol, 'WP' as pool_type
-            from balancer_v2."Vault_evt_PoolRegistered" c
-            inner join balancer_v2."WeightedPoolFactory_call_create" cc
-            on c.evt_tx_hash = cc.call_tx_hash
-            union all
-            select c."poolId" as pool_id, unnest(cc.tokens) as token_address, unnest(cc.weights)/1e18 as normalized_weight, cc.symbol, 'WP2T' as pool_type
-            from balancer_v2."Vault_evt_PoolRegistered" c
-            inner join balancer_v2."WeightedPool2TokensFactory_call_create" cc
-            on c.evt_tx_hash = cc.call_tx_hash
+            SELECT
+                DISTINCT
+                pool_address,
+                token_address 
+                FROM balancer_v2_evts
         ) all_pools
         UNION ALL
-        -- :todo: DO count at the end
-        -- Bancor_v2 :todo: check `ETH` vs `WETH` also at end
         SELECT
             DISTINCT 
             'Bancor' AS project,
@@ -177,13 +191,12 @@ CREATE MATERIALIZED VIEW dex.view_lp_pools AS (
     LEFT JOIN erc20.tokens t ON p.token_address = t.contract_address
 );
 
--- :todo: :review:
 CREATE UNIQUE INDEX IF NOT EXISTS dex_view_lp_pools_pool_addr_token_addr_uniq_idx ON dex.view_lp_pools (pool_address, token_address);
 CREATE INDEX IF NOT EXISTS dex_view_lp_pools_pool_address_project_idx ON dex.view_lp_pools (pool_address, project);
 CREATE INDEX IF NOT EXISTS dex_view_lp_pools_token_address_project_idx ON dex.view_lp_pools (token_address, project);
 CREATE INDEX IF NOT EXISTS dex_view_lp_pools_token_symbol_idx ON dex.view_lp_pools (token_symbol);
 CREATE INDEX IF NOT EXISTS dex_view_lp_pools_pool_address_idx ON dex.view_lp_pools (pool_address);
-CREATE INDEX IF NOT EXISTS dex_view_lp_pools_token_address_idx ON dex.view_lp_pools (token_address;
+CREATE INDEX IF NOT EXISTS dex_view_lp_pools_token_address_idx ON dex.view_lp_pools (token_address);
 CREATE INDEX IF NOT EXISTS dex_view_lp_pools_project_idx ON dex.view_lp_pools (project);
 
 -- This script needs to run before (some of) the daily insert scripts into `dex.liquidity`: `dex.insert_liquidity_...` 
