@@ -42,8 +42,8 @@ CREATE MATERIALIZED VIEW dex.view_lp_pools AS (
             token
         FROM balancer."BPool_call_bind"
         WHERE call_success
-        -- balancer v2 :todo: review today
         UNION ALL
+        -- balancer v2 :todo: review today
         SELECT
             'Balancer' AS project,
             '2' AS version,
@@ -61,51 +61,129 @@ CREATE MATERIALIZED VIEW dex.view_lp_pools AS (
             inner join balancer_v2."WeightedPool2TokensFactory_call_create" cc
             on c.evt_tx_hash = cc.call_tx_hash
         ) all_pools
+        UNION ALL
         -- :todo: DO count at the end
-
-
-
-        -- 1inch v1
+        -- Bancor_v2 :todo: check `ETH` vs `WETH` also at end
+        SELECT
+            DISTINCT 
+            'Bancor' AS project,
+            '2' AS version,
+            contract_address AS pool_address,
+            CASE 
+                WHEN "_reserveToken" = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '\x0000000000000000000000000000000000000000'::BYTEA
+                ELSE "_reserveToken"
+            END AS token 
+        FROM bancor."StandardPoolConverter_evt_LiquidityAdded"
+        UNION ALL
+        -- Curve_v1
         SELECT
             DISTINCT
-            '1inch' AS project,
+            'Curve' AS project,
             '1' AS version,
-            token1,
-            token2,
-            mooniswap
-        FROM onelp."MooniswapFactory_evt_Deployed"
+            exchange_contract_address AS pool,
+            -- Add exception for curve v1 lp steth which contains `ETH`
+            CASE WHEN exchange_contract_address = '\xdc24316b9ae028f1497c275eb9192a3ea0f67022' AND token_a_address = '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
+                 THEN '\x0000000000000000000000000000000000000000'::BYTEA
+                 ELSE token_a_address 
+            END AS token
+        FROM curvefi.view_trades
+        UNION
+        SELECT
+            DISTINCT
+            'Curve' AS project,
+            '1' AS version,
+            exchange_contract_address,
+            -- Add exception for curve v1 lp steth which contains `ETH`
+            CASE WHEN exchange_contract_address = '\xdc24316b9ae028f1497c275eb9192a3ea0f67022' AND token_b_address = '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
+                 THEN '\x0000000000000000000000000000000000000000'::BYTEA
+                 ELSE token_b_address 
+            END 
+        FROM curvefi.view_trades
+        UNION ALL
+        -- Sushiswap_v1
+        SELECT
+            'Sushiswap' AS project,
+            '1' AS version,
+            pair AS pool_address,
+            token0 AS token_address
+        FROM sushi."Factory_evt_PairCreated"
         UNION ALL
         SELECT
-            DISTINCT
-            '1inch' AS project,
+            'Sushiswap' AS project,
             '1' AS version,
-            token1,
-            token2,
-            mooniswap
-        FROM onelp."MooniswapFactory_v2_evt_Deployed"
-        -- 
-
-        SELECT DISTINCT 
-            pool_address,
-            project,
-            version,
-            category
-        FROM dex.liquidity
+            pair,
+            token1
+        FROM sushi."Factory_evt_PairCreated"
+        UNION ALL
+        -- Uniswap_v1
+        -- ERC20 - ETH pairs
+        SELECT
+            'Uniswap' AS project,
+            '1' AS version,
+            exchange AS pool_address,
+            token AS token_address
+        FROM uniswap."Factory_evt_NewExchange"
+        UNION ALL
+        SELECT
+            'Uniswap' AS project,
+            '1' AS version,
+            exchange,
+            '\x0000000000000000000000000000000000000000'::BYTEA
+        FROM uniswap."Factory_evt_NewExchange"
+        UNION ALL
+        -- Uniswap_v2
+        -- ERC20 - ERC20 pairs
+        SELECT
+            'Uniswap' AS project,
+            '2' AS version,
+            pair AS pool_address,
+            token0 AS token_address
+        FROM uniswap_v2."Factory_evt_PairCreated"
+        UNION ALL
+        SELECT
+            'Uniswap' AS project,
+            '2' AS version,
+            pair,
+            token1 AS token_address
+        FROM uniswap_v2."Factory_evt_PairCreated"
+        UNION ALL
+        -- Uniswap_v3
+        SELECT
+            'Uniswap' AS project,
+            '3' AS version,
+            pool AS pool_address,
+            token0 AS token_address
+        FROM uniswap_v3."Factory_evt_PoolCreated"
+        UNION ALL
+        SELECT
+            'Uniswap' AS project,
+            '3' AS version,
+            pool,
+            token1 AS token_address
+        FROM uniswap_v3."Factory_evt_PoolCreated"
     )
     SELECT
-        pool_address,
-        (labels.get(pool_address, 'lp_pool_name'))[1] AS pool_name,
         project,
         version,
-        category
-    FROM distinct_pools
+        (labels.get(pool_address, 'lp_pool_name'))[1] AS pool_name,
+        pool_address,
+        CASE WHEN token_address = '\x0000000000000000000000000000000000000000'::BYTEA THEN 'ETH'
+             WHEN token_address = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'::BYTEA THEN 'ETH'
+             ELSE t.symbol
+        END AS token_symbol,
+        token_address,
+        'CEX' AS category
+    FROM distinct_pools p
+    LEFT JOIN erc20.tokens t ON p.token_address = t.contract_address
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS dex_view_lp_pools_pool_address_token1_token2_uniq_idx ON dex.view_lp_pools (pool_address, token1, token2);
+-- :todo: :review:
+CREATE UNIQUE INDEX IF NOT EXISTS dex_view_lp_pools_pool_addr_token_addr_uniq_idx ON dex.view_lp_pools (pool_address, token_address);
 CREATE INDEX IF NOT EXISTS dex_view_lp_pools_pool_address_project_idx ON dex.view_lp_pools (pool_address, project);
+CREATE INDEX IF NOT EXISTS dex_view_lp_pools_token_address_project_idx ON dex.view_lp_pools (token_address, project);
+CREATE INDEX IF NOT EXISTS dex_view_lp_pools_token_symbol_idx ON dex.view_lp_pools (token_symbol);
 CREATE INDEX IF NOT EXISTS dex_view_lp_pools_pool_address_idx ON dex.view_lp_pools (pool_address);
-CREATE INDEX IF NOT EXISTS dex_view_lp_pools_token1_idx ON dex.view_lp_pools (token1);
-CREATE INDEX IF NOT EXISTS dex_view_lp_pools_token2_idx ON dex.view_lp_pools (token2);
+CREATE INDEX IF NOT EXISTS dex_view_lp_pools_token_address_idx ON dex.view_lp_pools (token_address;
 CREATE INDEX IF NOT EXISTS dex_view_lp_pools_project_idx ON dex.view_lp_pools (project);
 
 -- This script needs to run before (some of) the daily insert scripts into `dex.liquidity`: `dex.insert_liquidity_...` 
