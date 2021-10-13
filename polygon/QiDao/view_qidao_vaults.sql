@@ -1,12 +1,8 @@
-DROP TABLE IF EXISTS qidao.vaults;
-CREATE TABLE IF NOT EXISTS qidao.vaults (
-    evt_block_time TIMESTAMPTZ, 
-    vaults TEXT, 
-    totals FLOAT, 
-    vault_tvl NUMERIC,
-    vault_tvl_usd NUMERIC
-);
+BEGIN;
 
+DROP MATERIALIZED VIEW IF EXISTS qidao.view_qidao_vaults;
+
+CREATE MATERIALIZED VIEW qidao.view_qidao_vaults  AS(
 with data AS (
 SELECT evt_block_time, contract_address, amount/10^18 AS totals 
 FROM qidao."erc20QiStablecoin_evt_DepositCollateral"
@@ -105,20 +101,14 @@ ON c.symbol = p.symbol
 
 final_data_grouped AS (
 SELECT evt_block_time, vaults, totals, totals*eight_week_avg_price AS vault_tvl_usd, SUM(totals*eight_week_avg_price) OVER (ORDER BY evt_block_time) AS vault_tvl FROM final_data
-),
+)
 
-final_data_grouped_insert AS (
-        INSERT into qidao.vaults (
-            evt_block_time, 
-            vaults, 
-            totals, 
-            vault_tvl,
-            vault_tvl_usd
-        )
 SELECT evt_block_time, vaults, totals, vault_tvl_usd, vault_tvl FROM final_data_grouped
 GROUP BY 1,2,3,4,5
 ORDER BY 1 DESC
-)
+);
 
-SELECT * from qidao.vaults
-
+INSERT INTO cron.job(schedule, command)
+VALUES ('*/12 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY qidao.view_qidao_vaults$$)
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+COMMIT;
