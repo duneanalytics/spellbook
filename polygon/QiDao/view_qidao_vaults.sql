@@ -1,8 +1,8 @@
 BEGIN;
 
-DROP MATERIALIZED VIEW IF EXISTS qidao.view_qidao_vaults;
+DROP MATERIALIZED VIEW IF EXISTS dune_user_generated."view_qidao_vaults";
 
-CREATE MATERIALIZED VIEW qidao.view_qidao_vaults  AS(
+CREATE MATERIALIZED VIEW dune_user_generated."view_qidao_vaults" AS(
 with data AS (
 SELECT evt_block_time, contract_address, amount/10^18 AS totals 
 FROM qidao."erc20QiStablecoin_evt_DepositCollateral"
@@ -83,28 +83,28 @@ AND minute > NOW() - interval '1 week'
 avg_price_data AS (
 SELECT 
     week, symbol, 
-    AVG(price) OVER (PARTITION BY symbol ORDER BY week) AS eight_week_avg_price, 
+    AVG(price) OVER (PARTITION BY symbol ORDER BY week) AS one_week_avg_price, 
     ROW_NUMBER() OVER (PARTITION BY symbol ORDER BY week DESC) AS transaction_rank 
 FROM price_data --avg price is taken over the same period as the vault collaterals
 ),
 
 avg_price_data_final AS (
 SELECT * FROM avg_price_data
-WHERE transaction_rank = 1
+WHERE week > now() - interval '1 week'
+AND transaction_rank = 1
 ),
 
 final_data AS (
-SELECT DISTINCT c.evt_block_time, c.totals, c.vaults, c.symbol, p.eight_week_avg_price FROM mai_vault_collaterals_names c
+SELECT DISTINCT c.evt_block_time, c.totals, c.vaults, c.symbol, p.one_week_avg_price FROM mai_vault_collaterals_names c
 LEFT JOIN avg_price_data_final p
 ON c.symbol = p.symbol
 ),
 
 final_data_grouped AS (
-SELECT evt_block_time, vaults, totals, totals*eight_week_avg_price AS vault_tvl_usd, SUM(totals*eight_week_avg_price) OVER (ORDER BY evt_block_time) AS vault_tvl FROM final_data
+SELECT evt_block_time, vaults, totals, totals*one_week_avg_price AS vault_tvl_usd FROM final_data
 )
 
-SELECT evt_block_time, vaults, totals, vault_tvl_usd, vault_tvl FROM final_data_grouped
-GROUP BY 1,2,3,4,5
+SELECT evt_block_time, vaults, totals as total_vault_collateral, vault_tvl_usd as total_vault_collateral_usd FROM final_data_grouped
 ORDER BY 1 DESC
 );
 
