@@ -1,8 +1,8 @@
 BEGIN;
 
-DROP MATERIALIZED VIEW IF EXISTS dune_user_generated."view_qidao_vaults";
+DROP MATERIALIZED VIEW IF EXISTS qidao."view_qidao_vaults";
 
-CREATE MATERIALIZED VIEW dune_user_generated."view_qidao_vaults" AS(
+CREATE MATERIALIZED VIEW qidao."view_qidao_vaults" AS(
 with data AS (
 SELECT evt_block_time, contract_address, amount/10^18 AS totals 
 FROM qidao."erc20QiStablecoin_evt_DepositCollateral"
