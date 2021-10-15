@@ -236,7 +236,7 @@ WHERE NOT EXISTS (
 );
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('4 19 * * *', $$
+VALUES ('19 4 * * *', $$
     SELECT dex.insert_liquidity_cex(
         (SELECT max(day) FROM dex.liquidity WHERE project = 'Centralized Exchanges' and version = '1'),
         (SELECT now() - interval '20 minutes'));
