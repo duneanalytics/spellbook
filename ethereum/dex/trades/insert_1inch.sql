@@ -43,7 +43,7 @@ WITH rows AS (
         coalesce(
             usd_amount,
             token_a_amount_raw / 10 ^ (CASE token_a_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 18 ELSE pa.decimals END) * (CASE token_a_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN pe.price ELSE pa.price END),
-            token_b_amount_raw / 10 ^ (CASE token_b_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 18 ELSE pb.decimals END) * (CASE token_a_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN pe.price ELSE pb.price END)
+            token_b_amount_raw / 10 ^ (CASE token_b_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 18 ELSE pb.decimals END) * (CASE token_b_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN pe.price ELSE pb.price END)
         ) as usd_amount,
         token_a_address,
         token_b_address,
