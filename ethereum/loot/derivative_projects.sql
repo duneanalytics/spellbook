@@ -7,7 +7,7 @@ BEGIN;
 DELETE FROM loot.derivative_projects *;
 
 COPY loot.derivative_projects (contract_address, project_name) FROM stdin;
-\\x42A87e04f87A038774fb39c0A61681e7e859937b ability score
+\\x42A87e04f87A038774fb39c0A61681e7e859937b	ability score
 \\x1CA5694E2bAa4A4D1Fc95f3cb01d8A940b336908	abodes
 \\xcc56775606730c96ea245d9cf3890247f1c57fb1	abstract loot
 \\x615a610649e656485d9baf0ebe525496d7b78e24	banquets
