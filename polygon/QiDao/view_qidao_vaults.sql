@@ -1,8 +1,8 @@
 BEGIN;
 
-DROP MATERIALIZED VIEW IF EXISTS qidao."view_qidao_vaults";
+DROP MATERIALIZED VIEW IF EXISTS qidao."view_vaults";
 
-CREATE MATERIALIZED VIEW qidao."view_qidao_vaults" AS(
+CREATE MATERIALIZED VIEW qidao."view_vaults" AS(
 with data AS (
 SELECT evt_block_time, contract_address, amount/10^18 AS totals 
 FROM qidao."erc20QiStablecoin_evt_DepositCollateral"
@@ -109,6 +109,6 @@ ORDER BY 1 DESC
 );
 
 INSERT INTO cron.job(schedule, command)
-VALUES ('*/12 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY qidao.view_qidao_vaults$$)
+VALUES ('*/12 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY qidao.view_vaults$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;
