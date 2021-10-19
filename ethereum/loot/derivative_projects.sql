@@ -40,7 +40,6 @@ COPY loot.derivative_projects (contract_address, project_name) FROM stdin;
 \\x7AFe30cB3E53dba6801aa0EA647A0EcEA7cBe18d	realms
 \\x60F88993099b6c94b553Ed7a1ee11cb63278F929	lootspell
 \\x38e942948Cea825992F105e0EC4A2ee9138AFaE4	wizardspell
-\\xF22d64F31B312a64C900Dd6fB30b31711c463132	Summons
 \\xdeed638915ea9160912a77221829364f19a7b99d	Super Loot
 \\xF7AC82FedA08d0f3E071847250521c1297E1aF9c	Travelling musician
 \\xf3DFbE887D81C442557f7a59e3a0aEcf5e39F6aa	Treasure
