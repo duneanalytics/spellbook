@@ -12,7 +12,6 @@ COPY loot.derivative_projects (contract_address, project_name) FROM stdin;
 \\xcc56775606730c96ea245d9cf3890247f1c57fb1	abstract loot
 \\x615a610649e656485d9baf0ebe525496d7b78e24	banquets
 \\x4deaFaA0f5512AFa1F7fA74fD83Cb98C498f3D7A	character
-\\x3461D89c7DD0119c6411850eb69a8A0a5531DAe4	companions
 \\x4335541d17f6344c29f2412e520ed71639150ead	emoji loot
 \\xc32a49ffbb4cd071c8bfd335250cf223890b4dfd	encounters
 \\xB8AF61Bf2C0D8D4F65ebeCb4f46124AbDD462699	foes
