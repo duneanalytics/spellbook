@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS erc20.stablecoins (
-    contract_address	bytea,
-    symbol	text,
-    decimals numeric,
-    name	text
+    contract_address    bytea UNIQUE,
+    symbol              text,
+    decimals            numeric,
+    name                text
 );
 
 BEGIN;
@@ -13,7 +13,7 @@ COPY erc20.stablecoins(contract_address, symbol, decimals, name) FROM stdin;
 \\x45c32fa6df82ead1e2ef74d17b76547eddfaff89 FRAX    18  Frax
 \\xa3fa99a148fa48d14ed51d610c367c61876997f1 MAI     18  miMATIC
 \\x9af3b7dc29d3c4b1a5731408b6a9656fa7ac3b72 PUSD    18  PUSD
-\\x2791bca1f2de4661ed88a30c99a7a9449aa84174	USDC	6	USD Coin
+\\x2791bca1f2de4661ed88a30c99a7a9449aa84174 USDC    6   USD Coin
 \\xc2132d05d31c914a87c6611c10748aeb04b58e8f USDT    6   (PoS) Tether USD
 \.
 
