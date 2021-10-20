@@ -9,7 +9,7 @@ BEGIN;
 DELETE FROM erc20.stablecoins *;
 
 COPY erc20.stablecoins(contract_address, symbol, decimals, name) FROM stdin;
-\\xbc6da0fe9ad5f3b0d58160288917aa56653660e9 AlUSD   18  Alchemix USD
+\\xbc6da0fe9ad5f3b0d58160288917aa56653660e9 alUSD   18  Alchemix USD
 \\x4fabb145d64652a948d72533023f6e7a623c7c53 BUSD    18  Binance USD
 \\x6b175474e89094c44da98b954eedeac495271d0f DAI     18  Dai
 \\xdb25f211ab05b1c97d595516f45794528a807ad8 EURS    18  STASIS EURS
@@ -21,8 +21,8 @@ COPY erc20.stablecoins(contract_address, symbol, decimals, name) FROM stdin;
 \\x99d8a9c45b2eca8864373a26d1459e3dff1e17f3 MIM     18  Magic Internet Money
 \\xe2f2a5c287993345a840db3b0845fbc70f5935a5 MUSD    18  mStable USD
 \\x8e870d67f660d95d5be530380d0ec0bd388289e1 PAX     18  Paxos Standard
-\\x57Ab1ec28D129707052df4dF418D58a2D46d5f51 SUSD    18  Synthetix sUSD
-\\x57Ab1E02fEE23774580C119740129eAC7081e9D3 SUSD    18  Synthetix sUSD
+\\x57Ab1ec28D129707052df4dF418D58a2D46d5f51 sUSD    18  Synthetix sUSD
+\\x57Ab1E02fEE23774580C119740129eAC7081e9D3 sUSD    18  Synthetix sUSD
 \\x0000000000085d4780b73119b644ae5ecd22b376 TUSD    18  TrueUSD
 \\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48 USDC    6   USD Coin
 \\x674c6ad92fd080e4004b2312b45f796a192d27a0 USDN    18  Neutrino USD
