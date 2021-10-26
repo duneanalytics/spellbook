@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS loot.loot_attributes (
     ring text
 );
 
-INSERT INTO wicked_cranium.wicked_cranium_attributes (token_id, weapon, chest, head, waist, foot, hand, neck, ring)
+INSERT INTO loot.loot_attributes (token_id, weapon, chest, head, waist, foot, hand, neck, ring)
 VALUES
 ('3043','Tome','Hard Leather Armor of Anger','Woe Grasp Hood of the Twins +1','Rage Shout Sash of Protection +1','Demonhide Boots of the Fox','Sorrow Bite Silk Gloves of the Fox +1','Amulet of Titans','Titanium Ring of the Twins'),
 ('7658','Short Sword of Skill','Plate Mail','Dragons Crown of Rage','Sash of Rage','Chain Boots of the Fox','Leather Gloves of Enlightenment','Mind Peak Pendant of Anger +1','Woe Peak Platinum Ring of Anger +1'),
