@@ -8013,4 +8013,4 @@ VALUES
 ('1980','Grave Wand','Linen Robe','Divine Hood','Plated Belt','Chain Boots','Heavy Gloves','Pendant','Bronze Ring'),
 ('1039','Grave Wand','Chain Mail','Hood','Silk Sash','Chain Boots','Wool Gloves','Pendant','Bronze Ring');
 
-CREATE INDEX IF NOT EXISTS loot.loot_attributes_idx ON loot.loot_attributes USING BRIN (token_id);
+CREATE INDEX IF NOT EXISTS loot_loot_attributes_idx ON loot.loot_attributes USING BRIN (token_id);
