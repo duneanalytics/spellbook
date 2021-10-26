@@ -152,7 +152,6 @@
 - id: iota
 - id: iron-finance
 - id: iron-stablecoin
-- id: iron-titanium-token
 - id: jpyc
 - id: kenny-token
 - id: kin
@@ -170,7 +169,6 @@
 - id: loser-coin
 - id: l-pesa
 - id: mahadao
-- id: malt-stablecoin
 - id: mantra-dao
 - id: mask-network
 - id: matic-aave-aave
