@@ -1486,3 +1486,8 @@
   symbol: EDEN
   address: 0x1559fa1b8f28238fd5d76d9f434ad86fd20d1559
   decimals: 18
+- name: fxs-frax-share
+  id: fxs-frax-share
+  symbol: FXS
+  address: 0x3432B6A60D23Ca0dFCa7761B7ab56459D9C964D0
+  decimals: 18
