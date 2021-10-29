@@ -29,22 +29,22 @@ FROM
 		FROM
 			dex.trades d
 			left join prices.usd pa on d.token_a_address = pa.contract_address
-			AND pa."minute" > start_ts
+			AND pa."minute" >= start_ts
 			AND pa."minute" < end_ts
 			AND date_trunc('minute', d.block_time) = pa."minute"
 			left join prices.usd pb on d.token_b_address = pb.contract_address
-			AND pb."minute" > start_ts
+			AND pb."minute" >= start_ts
 			AND pb."minute" < end_ts
 			AND date_trunc('minute', d.block_time) = pb."minute"
 		WHERE
-			block_time > start_ts
+			block_time >= start_ts
 			AND block_time < end_ts
 			and d.usd_amount is NULL
 			and (pa.price is not NULL or pb.price is not null)
 	) as new_prices
 where
-	block_time > start_ts
-	AND block_time < now() - end_ts
+	block_time >= start_ts
+	AND block_time < end_ts
 	AND trades.project = new_prices.project
 	AND trades.tx_hash = new_prices.tx_hash
 	-- These coalesces are to handle the times these values are null
@@ -56,3 +56,13 @@ where
 RETURN TRUE;
 END
 $function$;
+
+-- daily backfill run
+-- back fill last 3 days in case something goes wrong over the weekend
+INSERT INTO cron.job (schedule, command)
+VALUES ('52 3 * * *', $$
+    SELECT dex.backfill_usd_amount(
+        (SELECT now() - interval '3 days'),
+        (SELECT now() - interval '20 minutes'));
+$$)
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
