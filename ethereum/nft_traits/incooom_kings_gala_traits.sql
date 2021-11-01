@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS incooom.incooom_kings_gala_traits(
     hands VARCHAR(50) NOT NULL
 );
 
-INSERT INTO incooom.incooom_king_gala_traits(token_id, background, legs, body, wrists, arms, head, hands)
+INSERT INTO incooom.incooom_kings_gala_traits(token_id, background, legs, body, wrists, arms, head, hands)
     VALUES
     (1,'GoldenTicket','Monk','Monk','Monk','Monk','Monk','Monk'),
     (5,'GoldenTicket','Samurai','Samurai','Samurai','Samurai','Samurai','Samurai'),
