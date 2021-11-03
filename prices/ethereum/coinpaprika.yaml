@@ -1490,6 +1490,21 @@
   symbol: FXS
   address: 0x3432B6A60D23Ca0dFCa7761B7ab56459D9C964D0
   decimals: 18
+- name: cvx_convex_finance
+  id: cvx-convex-finance
+  symbol: CVX
+  address: 0x4e3fbd56cd56c3e72c1403e103b45db9da5b9d2b
+  decimals: 18
+- name: ldo_lido_dao
+  id: ldo-lido-dao
+  symbol: LDO
+  address: 0x5a98fcbea516cf06857215779fd812ca3bef1b32
+  decimals: 18
+- name: gtc_gitcoin
+  id: gtc-gitcoin
+  symbol: GTC
+  address: 0xde30da39c46104798bb5aa3fe8b9e0e1f348163f
+  decimals: 18
 - name: ohm_olympus
   id: ohm-olympus
   symbol: OHM
@@ -1514,11 +1529,6 @@
   id: spell-spell-token
   symbol: SPELL
   address: 0x090185f2135308bad17527004364ebcc2d37e5f6
-  decimals: 18
-- name: waves_waves
-  id: waves-waves
-  symbol: WAVES
-  address: 0x1cf4592ebffd730c7dc92c1bdffdfc3b9efcf29a
   decimals: 18
 - name: toke_tokemak
   id: toke-tokemak
@@ -1580,6 +1590,11 @@
   symbol: RGT
   address: 0xd291e7a03283640fdc51b121ac401383a46cc623
   decimals: 18
+- name: warp_warp_finance
+  id: warp-warp-finance
+  symbol: WARP
+  address: 0xed40834a13129509a89be39a9be9c0e96a0ddd71
+  decimals: 18
 - name: vxv_vectorspace_ai
   id: vxv-vectorspace-ai
   symbol: VXV
@@ -1594,6 +1609,11 @@
   id: fodl-fodl-finance
   symbol: FODL
   address: 0x4c2e59d098df7b6cbae0848d66de2f8a4889b9c3
+  decimals: 18
+- name: ufo_ufo_gaming
+  id: ufo-ufo-gaming
+  symbol: UFO
+  address: 0x249e38ea4102d0cf8264d3701f1a0e39c4f2dc3b
   decimals: 18
 - name: mim_magic_internet_money
   id: mim-magic-internet-money
@@ -1660,10 +1680,20 @@
   symbol: NTVRK
   address: 0xfc0d6cf33e38bce7ca7d89c0e292274031b7157a
   decimals: 18
+- name: pop_pop_chest_token
+  id: pop-pop-chest-token
+  symbol: POP
+  address: 0x7fc3ec3574d408f3b59cd88709bacb42575ebf2b
+  decimals: 18
 - name: fei_fei_protocol
   id: fei-fei-protocol
   symbol: FEI
   address: 0x956f47f50a910163d8bf957cf5846d573e7f87ca
+  decimals: 18
+- name: super_superfarm
+  id: super-superfarm
+  symbol: SUPER
+  address: 0xe53ec727dbdeb9e2d5456c3be40cff031ab40a55
   decimals: 18
 - name: forth_ampleforth_governance_token
   id: forth-ampleforth-governance-token
@@ -1685,6 +1715,11 @@
   symbol: DAO
   address: 0x0f51bb10119727a7e5ea3538074fb341f56b09ad
   decimals: 18
+- name: tcr_tracer_dao
+  id: tcr-tracer-dao
+  symbol: TCR
+  address: 0xe38b72d6595fd3885d1d2f770aa23e94757f91a1
+  decimals: 8
 - name: mcb_mcdex
   id: mcb-mcdex
   symbol: MCB
@@ -1710,38 +1745,3 @@
   symbol: KP3R
   address: 0x1ceb5cb57c4d4e2b2433641b95dd330a33185a44
   decimals: 18
-- name: nftx_nftx
-  id: nftx-nftx
-  symbol: NFTX
-  address: 0x87d73e916d7057945c9bcd8cdd94e42a6f47f776
-  decimals: 18
-- name: pendle_pendle
-  id: pendle-pendle
-  symbol: PENDLE
-  address: 0x808507121b80c02388fad14726482e061b8da827
-  decimals: 18
-- name: tribe_tribe
-  id: tribe-tribe
-  symbol: TRIBE
-  address: 0xc7283b66eb1eb5fb86327f08e1b5816b0720212b
-  decimals: 18
-- name: lix_lixir_finance
-  id: lix-lixir-finance
-  symbol: LIX
-  address: 0xd0345d30fd918d7682398acbcdf139c808998709
-  decimals: 18
-- name: zcx_unizen
-  id: zcx-unizen
-  symbol: ZCX
-  address: 0xc52c326331e9ce41f04484d3b5e5648158028804
-  decimals: 18
-- name: keep_keep_network
-  id: keep-keep-network
-  symbol: KEEP
-  address: 0x85eee30c52b0b379b046fb0f85f4f3dc3009afec
-  decimals: 18
-- name: skey_skey_network
-  id: skey-skey-network
-  symbol: SKEY
-  address: 0x06a01a4d579479dd5d884ebf61a31727a3d8d442
-  decimals: 8
