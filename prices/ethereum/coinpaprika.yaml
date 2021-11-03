@@ -1505,6 +1505,26 @@
   symbol: GTC
   address: 0xde30da39c46104798bb5aa3fe8b9e0e1f348163f
   decimals: 18
+- name: rbn_ribbon_finance
+  id: rbn-ribbon-finance
+  symbol: RBN
+  address: 0x6123b0049f904d730db3c36a31167d9d4121fa6b
+  decimals: 18
+- name: ice_popsicle_finance
+  id: ice-popsicle-finance
+  symbol: ICE
+  address: 0xf16e81dce15b08f326220742020379b855b87df9
+  decimals: 18
+- name: pickle_pickle_finance
+  id: pickle-pickle-finance
+  symbol: PICKLE
+  address: 0x429881672b9ae42b8eba0e26cd9c73711b891ca5
+  decimals: 18
+- name: wild_wild_credit
+  id: wild-wild-credit
+  symbol: WILD
+  address: 0x08a75dbc7167714ceac1a8e43a8d643a4edd625a
+  decimals: 18
 - name: ohm_olympus
   id: ohm-olympus
   symbol: OHM
