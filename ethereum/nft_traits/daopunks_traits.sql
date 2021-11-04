@@ -2,7 +2,7 @@ BEGIN;
 CREATE SCHEMA IF NOT EXISTS daopunks;
 
 CREATE TABLE IF NOT EXISTS daopunks.daopunks_traits(
-   token_id     INTEGER  NOT NULL,
+   token_id     SMALLINT PRIMARY KEY,
    archetype    VARCHAR(90),
    background   VARCHAR(90),
    clothes      VARCHAR(90),
@@ -1123,4 +1123,8 @@ VALUES
 (1108, 'Crypto Native', 'Shadowy', 'B Punk DAOmensional - Bankless Red', '', '', 'Robot Blue'),
 (1109, 'Creative', 'Unicorn Pink', 'Memelord Couture - Bankless Red', '', '', ''),
 (1110, 'Crypto Native', 'Liquidity Blue', 'Streetwear', 'GM Red Socks', 'GM Purple', 'Robot Purple'),
-(1111, 'Creative', 'Unicorn Pink', 'Memelord Sporty Punk - Purple Node', '', 'WAGMI Wave Sushi Rice White', '')
+(1111, 'Creative', 'Unicorn Pink', 'Memelord Sporty Punk - Purple Node', '', 'WAGMI Wave Sushi Rice White', '');
+
+CREATE INDEX IF NOT EXISTS daopunks_traits_idx ON daopunks.daopunks_traits USING BRIN (token_id);
+
+COMMIT;
