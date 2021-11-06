@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS erc20.stablecoins (
-    contract_address    bytea UNIQUE,
+    contract_address    bytea PRIMARY KEY,
     symbol              text,
     decimals            numeric,
     name                text
