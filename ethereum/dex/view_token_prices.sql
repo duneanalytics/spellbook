@@ -45,6 +45,8 @@ CREATE MATERIALIZED VIEW dex.view_token_prices AS (
     SELECT
         date_trunc('hour', block_time) as hour,
         contract_address,
+        decimals,
+        symbol,
         (PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY price)) AS median_price,
         count(1) AS sample_size
     FROM dex_trades
