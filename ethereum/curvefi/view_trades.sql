@@ -465,13 +465,11 @@ SELECT
     tokens_bought AS token_a_amount_raw,
     tokens_sold AS token_b_amount_raw,
     CASE
-        --change address back to renBTC's, right now Dune only tracks WBTC price
-        WHEN bought_id = 0 THEN '\x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599'::bytea
+        WHEN bought_id = 0 THEN '\xEB4C2781e4ebA804CE9a9803C67d0893436bB27D'::bytea
         WHEN bought_id = 1 THEN '\x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599'::bytea
     END as token_a_address,
     CASE
-        --change address back to renBTC's, right now Dune only tracks WBTC price
-        WHEN sold_id = 0 THEN '\x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599'::bytea
+        WHEN sold_id = 0 THEN '\xEB4C2781e4ebA804CE9a9803C67d0893436bB27D'::bytea
         WHEN sold_id = 1 THEN '\x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599'::bytea
     END as token_b_address,
     contract_address AS exchange_contract_address,
@@ -491,14 +489,12 @@ SELECT
     tokens_bought AS token_a_amount_raw,
     tokens_sold AS token_b_amount_raw,
     CASE
-        --change address back to renBTC's, right now Dune only tracks WBTC price
-        WHEN bought_id = 0 THEN '\x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599'::bytea
+        WHEN bought_id = 0 THEN '\xEB4C2781e4ebA804CE9a9803C67d0893436bB27D'::bytea
         WHEN bought_id = 1 THEN '\x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599'::bytea
         WHEN bought_id = 2 THEN '\xfE18be6b3Bd88A2D2A7f928d00292E7a9963CfC6'::bytea
     END as token_a_address,
     CASE
-        --change address back to renBTC's, right now Dune only tracks WBTC price
-        WHEN sold_id = 0 THEN '\x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599'::bytea
+        WHEN sold_id = 0 THEN '\xEB4C2781e4ebA804CE9a9803C67d0893436bB27D'::bytea
         WHEN sold_id = 1 THEN '\x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599'::bytea
         WHEN sold_id = 2 THEN '\xfE18be6b3Bd88A2D2A7f928d00292E7a9963CfC6'::bytea
     END as token_b_address,
@@ -609,3 +605,29 @@ SELECT
     NULL::integer[] AS trace_address,
     evt_index
 FROM curvefi."tricrypto_swap_evt_TokenExchange"
+
+UNION
+
+SELECT
+    evt_block_time AS block_time,
+    'Curve' AS project,
+    '2' AS version,
+    buyer AS trader_a,
+    NULL::bytea AS trader_b,
+    tokens_bought AS token_a_amount_raw,
+    tokens_sold AS token_b_amount_raw,
+    CASE
+        WHEN bought_id = 0 THEN '\xdac17f958d2ee523a2206206994597c13d831ec7'::bytea
+        WHEN bought_id = 1 THEN '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599'::bytea
+        WHEN bought_id = 2 THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
+    END as token_a_address,
+    CASE
+        WHEN sold_id = 0 THEN '\xdac17f958d2ee523a2206206994597c13d831ec7'::bytea
+        WHEN sold_id = 1 THEN '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599'::bytea
+        WHEN sold_id = 2 THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
+    END as token_b_address,
+    contract_address AS exchange_contract_address,
+    evt_tx_hash AS tx_hash,
+    NULL::integer[] AS trace_address,
+    evt_index
+FROM curvefi."tricrypto2_swap_evt_TokenExchange"

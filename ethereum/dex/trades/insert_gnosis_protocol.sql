@@ -55,6 +55,7 @@ WITH rows AS (
         evt_index,
         row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
+        -- V1
         SELECT
             block_time,
             'Gnosis Protocol' AS project,
@@ -72,6 +73,27 @@ WITH rows AS (
             NULL::integer[] AS trace_address,
             evt_index_trades as evt_index
         FROM gnosis_protocol.view_trades
+
+        UNION ALL
+
+        -- V2
+        SELECT
+            t.evt_block_time AS block_time,
+            'Gnosis Protocol' AS project,
+            '2' AS version,
+            'Aggregator' AS category,
+            t.owner AS trader_a,
+            NULL::bytea AS trader_b,
+            t."buyAmount" AS token_a_amount_raw,
+            t."sellAmount" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            t."buyToken" token_a_address,
+            t."sellToken" token_b_address,
+            t.contract_address exchange_contract_address,
+            t.evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            t.evt_index
+        FROM gnosis_protocol_v2."GPv2Settlement_evt_Trade" t
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
@@ -81,12 +103,21 @@ WITH rows AS (
         AND tx.block_number < end_block
     LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
-    LEFT JOIN prices.usd pa ON pa.minute = date_trunc('minute', dexs.block_time)
-        AND pa.contract_address = dexs.token_a_address
+    LEFT JOIN prices.usd pa 
+        ON pa.minute = date_trunc('minute', dexs.block_time)
+        AND pa.contract_address = (
+            CASE 
+                WHEN dexs.token_a_address = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                ELSE dexs.token_a_address
+            END)
         AND pa.minute >= start_ts
         AND pa.minute < end_ts
     LEFT JOIN prices.usd pb ON pb.minute = date_trunc('minute', dexs.block_time)
-        AND pb.contract_address = dexs.token_b_address
+        AND pb.contract_address = (
+            CASE 
+                WHEN dexs.token_b_address = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                ELSE dexs.token_b_address
+            END)
         AND pb.minute >= start_ts
         AND pb.minute < end_ts
     WHERE dexs.block_time >= start_ts

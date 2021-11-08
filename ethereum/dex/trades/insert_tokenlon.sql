@@ -73,7 +73,7 @@ WITH rows AS (
             NULL::integer[] AS trace_address,
             evt_index
         FROM zeroex_v2."Exchange2.1_evt_Fill"
-        WHERE "feeRecipientAddress" IN ('\x6f7ae872e995f98fcd2a7d3ba17b7ddfb884305f'::BYTEA,'\xb9e29984fe50602e7a619662ebed4f90d93824c7'::BYTEA)
+        WHERE "feeRecipientAddress" IN ('\xb9e29984fe50602e7a619662ebed4f90d93824c7'::BYTEA)
 
         UNION ALL
 
@@ -99,7 +99,7 @@ WITH rows AS (
 
         UNION ALL
 
-        -- Tokenlon V5
+        -- Tokenlon V5 AMMWrapper
         SELECT
             evt_block_time AS block_time,
             'Tokenlon' AS project,
@@ -110,13 +110,79 @@ WITH rows AS (
             "takerAssetAmount" AS token_a_amount_raw,
             "makerAssetAmount" AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            "takerAssetAddr" AS token_a_address,
-            "makerAssetAddr" AS token_b_address,
+            CASE
+                WHEN "takerAssetAddr" IN ('\x0000000000000000000000000000000000000000')
+                THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::BYTEA
+                ELSE "takerAssetAddr"
+            END AS token_a_address,
+            CASE
+                WHEN "makerAssetAddr" IN ('\x0000000000000000000000000000000000000000')
+                THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::BYTEA
+                ELSE "makerAssetAddr"
+            END AS token_b_address,
             contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             evt_index
         FROM tokenlon_v2."AMMWrapper_evt_Swapped"
+
+        UNION ALL
+
+        -- Tokenlon V5 AMMWrapperWithPath swapped0 event
+        SELECT
+            evt_block_time AS block_time,
+            'Tokenlon' AS project,
+            '5' AS version,
+            'Aggregator' AS category,
+            "userAddr" AS trader_a,
+            "makerAddr" AS trader_b,
+            "takerAssetAmount" AS token_a_amount_raw,
+            "makerAssetAmount" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            CASE
+                WHEN "takerAssetAddr" IN ('\x0000000000000000000000000000000000000000')
+                THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::BYTEA
+                ELSE "takerAssetAddr"
+            END AS token_a_address,
+            CASE
+                WHEN "makerAssetAddr" IN ('\x0000000000000000000000000000000000000000')
+                THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::BYTEA
+                ELSE "makerAssetAddr"
+            END AS token_b_address,
+            contract_address AS exchange_contract_address,
+            evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index
+        FROM tokenlon_v2."AMMWrapperWithPath_evt_Swapped0"
+
+        UNION ALL
+
+        -- Tokenlon V5 AMMWrapperWithPath swapped event
+        SELECT
+            t.evt_block_time AS block_time,
+            'Tokenlon' AS project,
+            '5' AS version,
+            'Aggregator' AS category,
+            REPLACE(t.order::jsonb ->> 'userAddr', '0x', '\x')::BYTEA AS trader_a,
+            REPLACE(t.order::jsonb ->> 'makerAddr', '0x', '\x')::BYTEA AS trader_b,
+            (t.order::jsonb -> 'takerAssetAmount')::numeric token_a_amount_raw,
+            (t.order::jsonb -> 'makerAssetAmount')::numeric token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            CASE
+                WHEN REPLACE(t.order::jsonb ->> 'takerAssetAddr', '0x', '\x')::BYTEA = '\x0000000000000000000000000000000000000000'
+                THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::BYTEA
+                ELSE REPLACE(t.order::jsonb ->> 'takerAssetAddr', '0x', '\x')::BYTEA
+            END AS token_a_address,
+            CASE
+                WHEN REPLACE(t.order::jsonb ->> 'makerAssetAddr', '0x', '\x')::BYTEA = '\x0000000000000000000000000000000000000000'
+                THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::BYTEA
+                ELSE REPLACE(t.order::jsonb ->> 'makerAssetAddr', '0x', '\x')::BYTEA
+            END AS token_b_address,
+            t.contract_address AS exchange_contract_address,
+            t.evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            t.evt_index
+        FROM tokenlon_v2."AMMWrapperWithPath_evt_Swapped" t
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
