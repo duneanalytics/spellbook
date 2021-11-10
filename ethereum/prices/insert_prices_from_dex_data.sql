@@ -56,7 +56,7 @@ grouped_by_hour AS (
         median_price,
         sample_size
     FROM prices.prices_from_dex_data
-    WHERE hour = (select start_ts - INTERVAL '1 hour')
+    WHERE hour = (select start_time - INTERVAL '1 hour')
 ),
 -- The SQL code in `leaddata`, `generate_hours` and `add_data_for_all_hours`
 -- sets the median_price to the price of the previous hour in case that there
