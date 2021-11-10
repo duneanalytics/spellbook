@@ -72,147 +72,21 @@ CREATE MATERIALIZED VIEW balancer_v1.view_liquidity AS (
         FROM
             dex_prices_1
     ),
-    pools AS (
-        SELECT
-            pool AS pools
-        FROM
-            balancer."BFactory_evt_LOG_NEW_POOL"
-    ),
-    joins AS (
-        SELECT
-            p.pools AS pool,
-            date_trunc('day', e.evt_block_time) AS DAY,
-            e.contract_address AS token,
-            SUM(value) AS amount
-        FROM
-            erc20."ERC20_evt_Transfer" e
-            INNER JOIN pools p ON e."to" = p.pools
-        GROUP BY
-            1,
-            2,
-            3
-    ),
-    exits AS (
-        SELECT
-            p.pools AS pool,
-            date_trunc('day', e.evt_block_time) AS DAY,
-            e.contract_address AS token,
-            - SUM(value) AS amount
-        FROM
-            erc20."ERC20_evt_Transfer" e
-            INNER JOIN pools p ON e."from" = p.pools
-        GROUP BY
-            1,
-            2,
-            3
-    ),
-    daily_delta_balance AS (
-        SELECT
-            DAY,
-            pool,
-            token,
-            SUM(COALESCE(amount, 0)) AS amount
-        FROM
-            (
-                SELECT
-                    *
-                FROM
-                    joins j
-                UNION
-                ALL
-                SELECT
-                    *
-                FROM
-                    exits e
-            ) foo
-        GROUP BY
-            1,
-            2,
-            3
-    ),
-    cumulative_balance AS (
-        SELECT
-            DAY,
-            pool,
-            token,
-            LEAD(DAY, 1, NOW()) OVER (
-                PARTITION BY token,
-                pool
-                ORDER BY
-                    DAY
-            ) AS day_of_next_change,
-            SUM(amount) OVER (
-                PARTITION BY pool,
-                token
-                ORDER BY
-                    DAY ROWS BETWEEN UNBOUNDED PRECEDING
-                    AND CURRENT ROW
-            ) AS cumulative_amount
-        FROM
-            daily_delta_balance
-    ),
-    weekly_delta_balance_by_token AS (
-        SELECT
-            DAY,
-            pool,
-            token,
-            cumulative_amount,
-            (
-                cumulative_amount - COALESCE(
-                    LAG(cumulative_amount, 1) OVER (
-                        PARTITION BY pool,
-                        token
-                        ORDER BY
-                            DAY
-                    ),
-                    0
-                )
-            ) AS amount
-        FROM
-            (
-                SELECT
-                    DAY,
-                    pool,
-                    token,
-                    SUM(cumulative_amount) AS cumulative_amount
-                FROM
-                    cumulative_balance b
-                WHERE
-                    extract(
-                        dow
-                        FROM
-                            DAY
-                    ) = 1
-                GROUP BY
-                    1,
-                    2,
-                    3
-            ) foo
-    ),
-    calendar AS (
-        SELECT
-            generate_series(
-                '2020-01-01' :: timestamp,
-                CURRENT_DATE,
-                '1 day' :: INTERVAL
-            ) AS DAY
-    ),
     cumulative_usd_balance AS (
         SELECT
-            c.day,
+            b.day,
             b.pool,
             b.token,
             cumulative_amount / 10 ^ t.decimals * COALESCE(p1.price, p2.price, 0) AS amount_usd
         FROM
-            calendar c
-            LEFT JOIN cumulative_balance b ON b.day <= c.day
-            AND c.day < b.day_of_next_change
+            balancer.view_balances b
             LEFT JOIN erc20.tokens t ON t.contract_address = b.token
             LEFT JOIN prices p1 ON p1.day = b.day
             AND p1.token = b.token
-            LEFT JOIN dex_prices p2 ON p2.day <= c.day
-            AND c.day < p2.day_of_next_change
+            LEFT JOIN dex_prices p2 ON p2.day <= b.day
+            AND b.day < p2.day_of_next_change
             AND p2.token = b.token
+            WHERE pool != '\xBA12222222228d8Ba445958a75a0704d566BF2C8'
     ),
     pools_tokens_weights AS (
         SELECT
@@ -245,7 +119,7 @@ CREATE MATERIALIZED VIEW balancer_v1.view_liquidity AS (
             liquidity * normalized_weight AS usd_amount
         FROM
             pool_liquidity_estimates b
-            INNER JOIN pools_tokens_weights w ON b.pool = w.pool_id
+            LEFT JOIN pools_tokens_weights w ON b.pool = w.pool_id
             AND w.normalized_weight > 0
             LEFT JOIN erc20.tokens t ON t.contract_address = w.token_address
             LEFT JOIN pool_labels p ON p.pool_id = w.pool_id
