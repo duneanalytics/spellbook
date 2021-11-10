@@ -7,6 +7,7 @@ WITH trades_with_usd_amount AS (
     SELECT
         token_a_address as contract_address,
         token_a_symbol as symbol,
+        decimals,
         usd_amount/(token_a_amount_raw/10^decimals) AS price,
         block_time
     FROM dex.trades
@@ -22,6 +23,7 @@ WITH trades_with_usd_amount AS (
     SELECT
         token_b_address as contract_address,
         token_b_symbol as symbol,
+        decimals,
         usd_amount/(token_b_amount_raw/10^decimals) AS price,
         block_time
     FROM dex.trades
@@ -37,10 +39,11 @@ grouped_by_hour AS (
         date_trunc('hour', block_time) as hour,
         contract_address,
         symbol,
+        decimals,
         (PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY price)) AS median_price,
         count(1) AS sample_size
     FROM trades_with_usd_amount
-    GROUP BY 1, 2, 3
+    GROUP BY 1, 2, 3, 4
     -- Get previous entries from the table
     -- This is necessary to provide price continuity for tokens with low swap volume
     -- when performing historic backfill.
@@ -49,6 +52,7 @@ grouped_by_hour AS (
         hour,
         contract_address,
         symbol,
+        decimals,
         median_price,
         sample_size
     FROM prices.prices_from_dex_data
@@ -63,6 +67,7 @@ leaddata as
         hour,
         contract_address,
         symbol,
+        decimals,
         median_price,
         sample_size,
         lead(hour, 1, now() ) OVER (PARTITION BY contract_address ORDER BY hour asc) AS next_hour
@@ -79,6 +84,7 @@ add_data_for_all_hours as
     gen.hour as hour,
     contract_address,
     symbol,
+    decimals,
     median_price,
     CASE WHEN gen.hour = data.hour THEN sample_size ELSE 0 END AS sample_size
     FROM leaddata data
@@ -92,7 +98,8 @@ rows AS (
         hour,
         median_price,
         sample_size,
-        symbol
+        symbol,
+        decimals
     )
 
     SELECT 
@@ -100,7 +107,8 @@ rows AS (
         hour,
         median_price,
         sample_size,
-        symbol
+        symbol,
+        decimals
     FROM add_data_for_all_hours
 
     ON CONFLICT (contract_address, hour) DO UPDATE SET median_price = EXCLUDED.median_price 

@@ -1,9 +1,10 @@
-CREATE TABLE prices.prices_from_dex_data(
+CREATE TABLE IF NOT EXISTS prices.prices_from_dex_data(
     contract_address bytea NOT NULL,
     hour timestamptz NOT NULL,
     median_price numeric,
     sample_size integer,
-    symbol text
+    symbol text,
+    decimals int4
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS prices_prices_from_dex_data_contract_addr_hour_uniq_idx ON prices.prices_from_dex_data (contract_address, hour);
