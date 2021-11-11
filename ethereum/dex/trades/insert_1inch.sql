@@ -182,6 +182,32 @@ WITH rows AS (
 
         UNION ALL
 
+        -- 1inch Clipper Router
+        SELECT
+            call_block_time as block_time,
+            '1inch' AS project,
+            'CLIPPER v1' AS version,
+            'Aggregator' AS category,
+            tx."from" AS trader_a,
+            NULL::bytea AS trader_b,
+            "output_returnAmount" AS token_a_amount_raw,
+            "amount" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            (CASE WHEN "dstToken" = '\x0000000000000000000000000000000000000000' THEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' ELSE "dstToken" END) AS token_a_address,
+            (CASE WHEN "srcToken" = '\x0000000000000000000000000000000000000000' THEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' ELSE "srcToken" END) AS token_b_address,
+            us.contract_address AS exchange_contract_address,
+            call_tx_hash,
+            call_trace_address AS trace_address,
+            NULL::integer AS evt_index
+        FROM (
+            select "output_returnAmount", "amount", "srcToken", "dstToken", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address" from oneinch_v4."AggregationRouterV4_call_clipperSwap" where call_success union all
+            select "output_returnAmount", "amount", "srcToken", "dstToken", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address" from oneinch_v4."AggregationRouterV4_call_clipperSwapTo" where call_success union all
+            select "output_returnAmount", "amount", "srcToken", "dstToken", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address" from oneinch_v4."AggregationRouterV4_call_clipperSwapToWithPermit" where call_success
+        ) us
+        LEFT JOIN ethereum.transactions tx ON tx.hash = us.call_tx_hash
+
+        UNION ALL
+
         -- 1inch Limit Order Protocol
         SELECT
             call_block_time as block_time,
