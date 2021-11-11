@@ -26,7 +26,7 @@ Dex.trades will assign a `usd_amount` to this trade based on the $ETH price data
 
 That `usd_amount` is $23,498.
 
-`5* price of ETH (4.699,6) =  $23,498`
+`5 * price of ETH (4.699,6) =  $23,498`
 
 Calculating the price of $SPELL is now as simple as dividing the amount of tokens exchanged with the `usd_amount` recorded in `dex.trades`.
 
@@ -54,4 +54,4 @@ In cases like this, you have to manually construct a pricefeed.
 
 ## Outro
 
-We are always looking to improve this even further, if you have any ideas or comments, don't hesistate to open a PR or contact us in our Discord.
+We are always looking to improve this table, if you have any ideas or comments don't hesistate to open a PR or contact us in our Discord.
