@@ -156,7 +156,7 @@ WITH rows AS (
             select 
                 "output_returnAmount", "amount",
                 COALESCE((select tr1.to from
-                    ethereum.traces tr1 where tr1.tx_hash = call_tx_hash and substring(tr1.input from 1 for 4) = '\x23b872dd'
+                    ethereum.traces tr1 where type = 'call' and tr1.tx_hash = call_tx_hash and substring(tr1.input from 1 for 4) = '\x23b872dd'
                     and COALESCE(call_trace_address, array[]::int[]) = tr1.trace_address[:COALESCE(ARRAY_LENGTH(call_trace_address, 1), 0)]
                     order by trace_address
                     LIMIT 1
@@ -164,7 +164,7 @@ WITH rows AS (
                 CASE WHEN ((pools[array_length(pools, 1)] / 2^252)::int & 2 <> 0) THEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
                 ELSE
                     (select tr2.to from
-                        ethereum.traces tr2 where tr2.tx_hash = call_tx_hash and substring(tr2.input from 1 for 4) = '\xa9059cbb'
+                        ethereum.traces tr2 where type = 'call' and tr2.tx_hash = call_tx_hash and substring(tr2.input from 1 for 4) = '\xa9059cbb'
                         and COALESCE(call_trace_address, array[]::int[]) = tr2.trace_address[:COALESCE(ARRAY_LENGTH(call_trace_address, 1), 0)]
                         and tr2.from <> contract_address
                         order by trace_address desc
