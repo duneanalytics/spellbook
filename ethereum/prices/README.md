@@ -45,10 +45,12 @@ An example of this would be $PLAY, a metaverse index from piedao.
 The liquid trading pair for this asset is $PLAY/$DOUGH. The "correct" price of $PLAY is represented in this pool, but the combination of `dex.trades` and `prices.prices_from_dex_data` are not able to pick up this price.
 
 Instead, `dex.trades` will only have a `usd_amount` for illiquid pairs of this asset. 
-In this case, the $PLAY/$ETH pool has trades once in a while and this will have a `usd_amount` in `dex.trades`. The liquidity of the  $PLAY/$ETH pool is very low and it pretty much only consists of arbritrage trades.
+In this case, the $PLAY/$ETH pool has trades once in a while and these will have a `usd_amount` in `dex.trades`. The liquidity of the  $PLAY/$ETH pool is very low and it pretty much only consists of arbritrage trades.
 Therefore, the resulting pricefeed in `prices.prices_from_dex_data` is faulty since it depends on the `usd_amount` in `dex.trades`.
 
-In order to check for this, you should manually verify the results of `prices.prices_from_dex_data` and also check the `sample size` of given assets in order to make sure arbritrage trades do not disturb the pricefeed constructed.
+In order to check for this, you should manually verify the results of `prices.prices_from_dex_data` in order to make sure arbritrage trades do not disturb the pricefeed constructed. A simple way of validating that the script is working with the right pools is checking the `sample_size` column. If the number seems suspiciously low, the script probably doesn't pick up the right price.
+
+In cases like this, you have to manually construct a pricefeed.
 
 ## Outro
 
