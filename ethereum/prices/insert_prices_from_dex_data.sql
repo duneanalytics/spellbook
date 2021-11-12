@@ -6,7 +6,7 @@ BEGIN
 WITH trades_with_usd_amount AS (
     SELECT
         token_a_address as contract_address,
-        token_a_symbol as symbol,
+        symbol,
         decimals,
         usd_amount/(token_a_amount_raw/10^decimals) AS price,
         block_time
@@ -22,7 +22,7 @@ WITH trades_with_usd_amount AS (
 
     SELECT
         token_b_address as contract_address,
-        token_b_symbol as symbol,
+        symbol,
         decimals,
         usd_amount/(token_b_amount_raw/10^decimals) AS price,
         block_time
