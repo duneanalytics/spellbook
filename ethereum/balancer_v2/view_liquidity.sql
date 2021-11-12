@@ -110,19 +110,6 @@ CREATE MATERIALIZED VIEW balancer_v2.view_liquidity AS (
         FROM
             balancer_v2."Vault_evt_PoolBalanceChanged"
     ),
-    internal_changes AS (
-        SELECT
-            date_trunc('day', evt_block_time) AS DAY,
-            NULL :: bytea AS pool_id,
-            token,
-            SUM(COALESCE(delta, 0)) AS delta
-        FROM
-            balancer_v2."Vault_evt_InternalBalanceChanged"
-        GROUP BY
-            1,
-            2,
-            3
-    ),
     managed_changes AS (
         SELECT
             date_trunc('day', evt_block_time) AS DAY,
@@ -168,15 +155,6 @@ CREATE MATERIALIZED VIEW balancer_v2.view_liquidity AS (
                     token,
                     delta AS amount
                 FROM
-                    internal_changes
-                UNION
-                ALL
-                SELECT
-                    DAY,
-                    pool_id,
-                    token,
-                    delta AS amount
-                FROM
                     managed_changes
             ) balance
         GROUP BY
@@ -204,44 +182,6 @@ CREATE MATERIALIZED VIEW balancer_v2.view_liquidity AS (
             ) AS cumulative_amount
         FROM
             daily_delta_balance
-    ),
-    weekly_delta_balance_by_token AS (
-        SELECT
-            DAY,
-            pool_id,
-            token,
-            cumulative_amount,
-            (
-                cumulative_amount - COALESCE(
-                    LAG(cumulative_amount, 1) OVER (
-                        PARTITION BY pool_id,
-                        token
-                        ORDER BY
-                            DAY
-                    ),
-                    0
-                )
-            ) AS amount
-        FROM
-            (
-                SELECT
-                    DAY,
-                    pool_id,
-                    token,
-                    SUM(cumulative_amount) AS cumulative_amount
-                FROM
-                    cumulative_balance b
-                WHERE
-                    extract(
-                        dow
-                        FROM
-                            DAY
-                    ) = 1
-                GROUP BY
-                    1,
-                    2,
-                    3
-            ) foo
     ),
     calendar AS (
         SELECT
