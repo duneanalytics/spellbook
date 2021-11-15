@@ -1,8 +1,27 @@
-BEGIN;
+CREATE TABLE IF NOT EXISTS zeroex.view_0x_api_fills (
+    tx_hash bytea,
+    evt_index integer,
+    contract_address bytea,
+    block_time timestamptz,
+    maker bytea,
+    taker bytea,
+    taker_token bytea,
+    maker_token bytea,
+    taker_token_amount float,
+    taker_token_amount_raw numeric,
+    maker_token_amount float,
+    maker_token_amount_raw numeric,
+    "type" text,
+    affiliate_address bytea,
+    swap_flag boolean,
+    matcha_limit_order_flag boolean,
+    volume_usd float
+);
 
-DROP MATERIALIZED VIEW IF EXISTS zeroex.view_0x_api_fills;
-CREATE MATERIALIZED VIEW zeroex.view_0x_api_fills AS (
-
+CREATE OR REPLACE FUNCTION zeroex.insert_0x_api_fills (start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+LANGUAGE plpgsql AS $function$
+DECLARE r integer;
+BEGIN
 WITH zeroex_tx_raw AS (
             SELECT DISTINCT
                 v3.evt_tx_hash AS tx_hash
@@ -320,14 +339,64 @@ WITH zeroex_tx_raw AS (
       								AND all_tx.maker_token = mp.contract_address
       		LEFT JOIN erc20.tokens mt ON mt.contract_address = all_tx.maker_token
       		LEFT JOIN erc20.tokens tt ON tt.contract_address = all_tx.taker_token
-      	) select * from total_volume
-
-);
+          WHERE all_tx.block_time >= start_ts
+              AND all_tx.block_time < end_ts
+      ),
+        rows AS (
+            INSERT INTO zeroex.view_0x_api_fills (
+                tx_hash,
+                evt_index,
+                contract_address,
+                block_time,
+                maker,
+                taker,
+                taker_token,
+                maker_token,
+                taker_token_amount,
+                taker_token_amount_raw,
+                maker_token_amount,
+                maker_token_amount_raw,
+                "type",
+                affiliate_address,
+                swap_flag,
+                matcha_limit_order_flag,
+                volume_usd
+            )
+            SELECT
+                tx_hash,
+                evt_index,
+                contract_address,
+                block_time,
+                maker,
+                taker,
+                taker_token,
+                maker_token,
+                taker_token_amount,
+                taker_token_amount_raw,
+                maker_token_amount,
+                maker_token_amount_raw,
+                "type",
+                affiliate_address,
+                swap_flag,
+                matcha_limit_order_flag,
+                volume_usd
+            FROM total_volume
+            ON CONFLICT DO NOTHING
+            RETURNING 1
+    )
+    SELECT count(*) INTO r from rows;
+    RETURN r;
+    END
+    $function$;
+      
 
 CREATE UNIQUE INDEX IF NOT EXISTS zeroex_api_fills_unique ON zeroex.view_0x_api_fills (tx_hash, evt_index);
 CREATE INDEX IF NOT EXISTS zeroex_api_fills_time_index ON zeroex.view_0x_api_fills (block_time);
 
+--backfill
+SELECT zeroex.insert_0x_api_fills('2020-01-29', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-29'), (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')) WHERE NOT EXISTS (SELECT * FROM zeroex.view_0x_api_fills LIMIT 1);
+
+
 INSERT INTO cron.job (schedule, command)
-VALUES ('*/20 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY zeroex.view_0x_api_fills')
+VALUES ('*/15 * * * *', $$SELECT zeroex.insert_0x_api_fills((SELECT max(block_time) - interval '2 days' FROM zeroex.view_0x_api_fills), (SELECT now() - interval '20 minutes'), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM zeroex.view_0x_api_fills)), (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
-COMMIT;
