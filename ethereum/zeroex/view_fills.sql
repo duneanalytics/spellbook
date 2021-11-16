@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS zeroex.view_fills (
 );
 
 
-CREATE OR REPLACE FUNCTION zeroex.insert_fills (start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+CREATE OR REPLACE FUNCTION zeroex.insert_fills(start_ts timestamptz, end_ts timestamptz=now()) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -299,6 +299,5 @@ CREATE UNIQUE INDEX IF NOT EXISTS zeroex_fills_unique ON zeroex.view_fills (tran
 CREATE INDEX IF NOT EXISTS zeroex_fills_time_index ON zeroex.view_fills (timestamp);
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('*/15 * * * *', $$SELECT zeroex.insert_fills((SELECT max(block_time) - interval '2 days' FROM zeroex.view_fills), (SELECT now() - interval '20 minutes'), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM zeroex.view_fills)), (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));$$)
+VALUES ('15 * * * *', $$SELECT zeroex.insert_fills((SELECT max(block_time) - interval '2 days' FROM zeroex.view_fills), (SELECT now() - interval '20 minutes'));$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
-
