@@ -299,5 +299,5 @@ CREATE UNIQUE INDEX IF NOT EXISTS zeroex_fills_unique ON zeroex.view_fills (tran
 CREATE INDEX IF NOT EXISTS zeroex_fills_time_index ON zeroex.view_fills (timestamp);
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('15 * * * *', $$SELECT zeroex.insert_fills((SELECT max(block_time) - interval '2 days' FROM zeroex.view_fills), (SELECT now() - interval '20 minutes'));$$)
+VALUES ('15 * * * *', $$SELECT zeroex.insert_fills((SELECT max("timestamp") - interval '2 days' FROM zeroex.view_fills), (SELECT now() - interval '20 minutes'));$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
