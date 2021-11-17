@@ -1765,3 +1765,8 @@
   symbol: KP3R
   address: 0x1ceb5cb57c4d4e2b2433641b95dd330a33185a44
   decimals: 18
+- name: pepemon_pepeballs
+  id: ppblz-pepemon-pepeballs
+  symbol: PPBLZ
+  address: 0x4d2ee5dae46c86da2ff521f7657dad98834f97b8
+  decimals: 18
