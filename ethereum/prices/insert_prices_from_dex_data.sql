@@ -111,7 +111,7 @@ rows AS (
         decimals
     FROM add_data_for_all_hours
 
-    ON CONFLICT (contract_address, hour) DO UPDATE SET median_price = EXCLUDED.median_price 
+    ON CONFLICT (contract_address, hour) DO UPDATE SET median_price = EXCLUDED.median_price, sample_size = EXCLUDED.sample_size
     RETURNING 1
 )
 SELECT count(*) INTO r from rows;
