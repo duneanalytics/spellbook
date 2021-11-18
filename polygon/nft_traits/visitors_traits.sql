@@ -3,7 +3,7 @@ CREATE SCHEMA IF NOT EXISTS visitors;
 
 CREATE TABLE IF NOT EXISTS visitors.visitors_traits(
    token_id     SMALLINT PRIMARY KEY,
-   #traits      SMALLINT PRIMARY KEY,
+   traits      SMALLINT PRIMARY KEY,
    background   VARCHAR(90),
    base         VARCHAR(90),
    apparel      VARCHAR(90),
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS visitors.visitors_traits(
    bonusSlot    VARCHAR(90)
 );
 
-INSERT INTO visitors.visitors_traits(token_id, #traits, background, base, apparel, head, face, mouth, mask, misc, bonusSlot)
+INSERT INTO visitors.visitors_traits(token_id, traits, background, base, apparel, head, face, mouth, mask, misc, bonusSlot)
 VALUES
 (1,5,'Purple','Orange','','Orange Beanie','','Happy','','','Popcorn'),
 (2,4,'White','White','Purple Cat Suit','','','Pixel','','',''),
@@ -10017,7 +10017,7 @@ VALUES
 (9998,5,'Yellow','Blue','White T-Shirt','Headphones','','Regular','','',''),
 (9999,4,'Stars','White','Red Frog Suit','','','Duckbill','','',''),
 (10000,6,'Orange','Black','White T-Shirt','Red Bucket Hat','','Scream','','','Peace'),
-(10001,4,'Clouds','Orange','','Bald','','Happy','','','',);
+(10001,4,'Clouds','Orange','','Bald','','Happy','','','');
 
 CREATE INDEX IF NOT EXISTS visitors_traits_idx ON visitors.visitors_traits USING BRIN (token_id);
 
