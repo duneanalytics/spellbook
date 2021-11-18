@@ -70,13 +70,13 @@ leaddata as
         decimals,
         median_price,
         sample_size,
-        lead(hour, 1, now() ) OVER (PARTITION BY contract_address ORDER BY hour asc) AS next_hour
+        lead(hour, 1, end_time) OVER (PARTITION BY contract_address ORDER BY hour asc) AS next_hour
     FROM grouped_by_hour
-    WHERE sample_size > 0
+--    WHERE sample_size > 0
 ),
 generate_hours AS
 (
-    SELECT hour from generate_series(start_time, (select end_time - INTERVAL '1 hour'), '1 hour') g(hour)
+    SELECT hour from generate_series(start_time, end_time, '1 hour') g(hour)
 ),
 add_data_for_all_hours as 
 (
