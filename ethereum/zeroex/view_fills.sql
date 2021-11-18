@@ -1,6 +1,27 @@
-BEGIN;
-DROP MATERIALIZED VIEW IF EXISTS zeroex.view_fills;
-CREATE MATERIALIZED VIEW zeroex.view_fills AS (
+CREATE TABLE IF NOT EXISTS zeroex.view_fills (
+    "timestamp" timestamptz,
+    protocol_version text,
+    transaction_hash bytea,
+    evt_index integer,
+    maker_address bytea,
+    taker_address bytea,
+    maker_token bytea,
+    maker_symbol text,
+    maker_asset_filled_amount float,
+    taker_token bytea,
+    taker_symbol text,
+    taker_asset_filled_amount float,
+    fee_recipient_address bytea,
+    volume_usd float,
+    protocol_fee_paid_eth numeric
+);
+
+
+CREATE OR REPLACE FUNCTION zeroex.insert_fills(start_ts timestamptz, end_ts timestamptz=now()) RETURNS integer
+LANGUAGE plpgsql AS $function$
+DECLARE r integer;
+BEGIN
+
 WITH
     v3_fills AS (
         SELECT
@@ -52,6 +73,8 @@ WITH
                 END = mp.contract_address
         LEFT JOIN erc20.tokens mt ON mt.contract_address = SUBSTRING(fills."makerAssetData",17,20)
         LEFT JOIN erc20.tokens tt ON tt.contract_address = SUBSTRING(fills."takerAssetData",17,20)
+        WHERE fills.evt_block_time >= start_ts
+              AND fills.evt_block_time < end_ts
     )
     , v2_1_fills AS (
         SELECT
@@ -103,6 +126,8 @@ WITH
                 END = mp.contract_address
         LEFT JOIN erc20.tokens mt ON mt.contract_address = SUBSTRING(fills."makerAssetData",17,20)
         LEFT JOIN erc20.tokens tt ON tt.contract_address = SUBSTRING(fills."takerAssetData",17,20)
+        WHERE fills.evt_block_time >= start_ts
+              AND fills.evt_block_time < end_ts
     )
     , v4_limit_fills AS (
 
@@ -155,6 +180,8 @@ WITH
                 END = mp.contract_address
         LEFT JOIN erc20.tokens mt ON mt.contract_address = fills."makerToken"
         LEFT JOIN erc20.tokens tt ON tt.contract_address = fills."takerToken"
+        WHERE fills.evt_block_time >= start_ts
+              AND fills.evt_block_time < end_ts
     )
 
     , v4_rfq_fills AS (
@@ -207,7 +234,11 @@ WITH
               END = mp.contract_address
       LEFT JOIN erc20.tokens mt ON mt.contract_address = fills."makerToken"
       LEFT JOIN erc20.tokens tt ON tt.contract_address = fills."takerToken"
-    )
+      WHERE fills.evt_block_time >= start_ts
+              AND fills.evt_block_time < end_ts
+    ), 
+    all_fills as (
+    
     SELECT * FROM v3_fills
 
     UNION ALL
@@ -221,12 +252,52 @@ WITH
     UNION ALL
 
     SELECT * FROM v4_rfq_fills
-);
+    ), rows AS (
+            INSERT INTO zeroex.view_fills (
+                "timestamp",
+                protocol_version,
+                transaction_hash,
+                evt_index,
+                maker_address,
+                taker_address,
+                maker_token,
+                maker_symbol,
+                maker_asset_filled_amount,
+                taker_token,
+                taker_symbol,
+                taker_asset_filled_amount,
+                fee_recipient_address,
+                volume_usd,
+                protocol_fee_paid_eth
+            )
+            SELECT
+                "timestamp",
+                protocol_version,
+                transaction_hash,
+                evt_index,
+                maker_address,
+                taker_address,
+                maker_token,
+                maker_symbol,
+                maker_asset_filled_amount,
+                taker_token,
+                taker_symbol,
+                taker_asset_filled_amount,
+                fee_recipient_address,
+                volume_usd,
+                protocol_fee_paid_eth
+            FROM all_fills
+            ON CONFLICT DO NOTHING
+            RETURNING 1
+    )
+    SELECT count(*) INTO r from rows;
+    RETURN r;
+    END
+    $function$;
 
 CREATE UNIQUE INDEX IF NOT EXISTS zeroex_fills_unique ON zeroex.view_fills (transaction_hash, evt_index);
 CREATE INDEX IF NOT EXISTS zeroex_fills_time_index ON zeroex.view_fills (timestamp);
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('*/10 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY zeroex.view_fills')
+VALUES ('15 * * * *', $$SELECT zeroex.insert_fills((SELECT max("timestamp") - interval '2 days' FROM zeroex.view_fills), (SELECT now() - interval '20 minutes'));$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
-COMMIT;
