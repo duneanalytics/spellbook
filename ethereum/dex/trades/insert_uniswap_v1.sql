@@ -138,7 +138,7 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2019-01-01'
     AND block_time <= '2020-01-01'
-    AND project = 'Uniswap'
+    AND project = 'Uniswap' AND version = '1'
 );
 
 -- fill 2020
@@ -153,7 +153,7 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2020-01-01'
     AND block_time <= '2021-01-01'
-    AND project = 'Uniswap'
+    AND project = 'Uniswap' AND version = '1'
 );
 
 -- fill 2021
@@ -168,15 +168,15 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2021-01-01'
     AND block_time <= now() - interval '20 minutes'
-    AND project = 'Uniswap'
+    AND project = 'Uniswap' AND version = '1'
 );
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('7,37 * * * *', $$
     SELECT dex.insert_uniswap_v1(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Uniswap'),
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Uniswap' AND version = '1'),
         (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Uniswap')),
+        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Uniswap' AND version = '1')),
         (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
