@@ -1,9 +1,11 @@
 BEGIN;
 CREATE SCHEMA IF NOT EXISTS visitors;
 
+DROP TABLE visitors.visitors_traits;
+
 CREATE TABLE IF NOT EXISTS visitors.visitors_traits(
    token_id     SMALLINT PRIMARY KEY,
-   traits      SMALLINT PRIMARY KEY,
+   traits       SMALLINT NOT NULL,
    background   VARCHAR(90),
    base         VARCHAR(90),
    apparel      VARCHAR(90),
@@ -14,6 +16,8 @@ CREATE TABLE IF NOT EXISTS visitors.visitors_traits(
    misc         VARCHAR(90),
    bonusSlot    VARCHAR(90)
 );
+
+DELETE FROM visitors.visitors_traits *;
 
 INSERT INTO visitors.visitors_traits(token_id, traits, background, base, apparel, head, face, mouth, mask, misc, bonusSlot)
 VALUES
