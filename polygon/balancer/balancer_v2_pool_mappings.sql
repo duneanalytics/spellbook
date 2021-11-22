@@ -1,3 +1,5 @@
+BEGIN;
+
 CREATE OR REPLACE FUNCTION balancer.balancer_v2_pool_mappings() RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
@@ -57,7 +59,7 @@ WITH rows AS (
         select s1.pool_id, token_symbol, pool_symbol, cast(100*normalized_weight as integer) as norm_weight, pool_type from settings s1
         order by 1 asc , 3 desc, 2 asc
     ) s
-    GROUP  BY pool_id, pool_symbol, pool_type;
+    GROUP  BY pool_id, pool_symbol, pool_type
     ON CONFLICT DO NOTHING
     RETURNING 1
 )
@@ -73,3 +75,5 @@ SELECT balancer.balancer_v2_pool_mappings();
 INSERT INTO cron.job (schedule, command)
 VALUES ('2 22 * * *', $$SELECT balancer.balancer_v2_pool_mappings();$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+
+COMMIT;
