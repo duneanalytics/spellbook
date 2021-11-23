@@ -53,6 +53,11 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\xe3c332a5dce0e1d9bc2cc72a68437790570c28a4	VEE	18
 \\xb27e3eab7526bf721ea8029bfcd3fdc94c4f8b5b	ODOGE	18
 \\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000	ETH	18
+\\x9bcef72be871e61ed4fbbc7630889bee758eb81d	rETH	18
+\\xc40f949f8a4e094d1b49a23ea9241d289b7b2819	LUSD	18
+\\xe88d846b69020680b2deeea58511636250c42707	OVM-TEST	18
+\\xf98dcd95217e15e05d8638da4c91125e59590b07	KROM	18
+\\xc7b04dc5a2644522a0c58c107346b5e3a63600b0	SACRO	18
 \.
 
 
