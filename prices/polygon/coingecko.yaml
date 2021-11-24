@@ -49,6 +49,7 @@
 - id: betapulsartoken
 - id: beyond-finance
 - id: binance-smart-chain-girl
+- id: bilira
 - id: bitcoin
 - id: bitcoin-cash
 - id: bitcoin-cash-sv
@@ -62,6 +63,7 @@
 - id: btu-protocol
 - id: bunny-token-polygon
 - id: bytom
+- id: cad-coin
 - id: cardano
 - id: cartesi
 - id: celsius-degree-token
@@ -96,6 +98,7 @@
 - id: defiville-island
 - id: deli-of-thrones
 - id: dfyn-network
+- id: dfx-finance
 - id: dhedge-dao
 - id: dhedge-top-index
 - id: digital-reserve-currency
@@ -202,6 +205,7 @@
 - id: neo
 - id: noia-network
 - id: nuls
+- id: nzd-stablecoin
 - id: omniunit
 - id: one-hundred-coin-2
 - id: ontology
@@ -283,6 +287,7 @@
 - id: stacker-ventures
 - id: stacktical
 - id: stake-dao
+- id: statis-eurs
 - id: stellar
 - id: superbid
 - id: superfarm
@@ -325,6 +330,7 @@
 - id: xdollar
 - id: xdollar-stablecoin
 - id: xmark
+- id: xsgd
 - id: yamp-finance
 - id: yayo-coin
 - id: yearn-finance
