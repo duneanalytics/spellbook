@@ -5696,6 +5696,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\xf974b5f9ac9c6632fee8b76c61b0242ce69c839d	ZYX	18
 \\xc75f15ada581219c95485c578e124df3985e4ce0	ZZZ	18
 \\x93ed140172ff226dad1f7f3650489b8daa07ae7f	ZZZV2	18
+\\xa0dc5132c91ea4d94fcf1727c32cc5a303b34cfc ISLAND 9
 \.
 
 
