@@ -109,6 +109,6 @@ ORDER BY 1 DESC
 );
 
 INSERT INTO cron.job(schedule, command)
-VALUES ('*/12 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY qidao.view_qidao_vaults$$)
+VALUES ('0 0-12/12 * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY qidao.view_qidao_vaults$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;
