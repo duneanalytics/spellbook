@@ -6,7 +6,7 @@ BEGIN
 WITH wyvern_calldata AS (
     SELECT
         call_tx_hash,
-        addrs [5] AS nft_contract_address,
+        addrs [5] AS nft_contract_address, -- only works in cases of single item trades, otherwise will call WyvernAtomicizer
         addrs [2] AS buyer,
         addrs [9] AS seller,
         addrs [7] AS original_currency_address,
@@ -21,7 +21,7 @@ WITH wyvern_calldata AS (
                     FROM
                         69 FOR 32
                 )
-            ) AS TEXT
+            ) AS TEXT -- only works in cases of single item trades
         ) AS token_id,
         call_trace_address
     FROM
@@ -131,7 +131,8 @@ rows AS (
         CASE WHEN wc.original_currency_address = '\x0000000000000000000000000000000000000000' THEN 'ETH' ELSE erc20.symbol END AS original_currency,
         wc.original_currency_address AS original_currency_contract,
         wc.currency_token AS currency_contract,
-        COALESCE(erc.contract_address_array[1], wc.nft_contract_address) AS nft_contract_address,
+        -- Sometimes multiple NFT transfers occur in a given trade; only include a contract address where all items belong to the same collection
+        CASE WHEN nft_contract_addresses_array[1] = ALL (nft_contract_addresses_array) then nft_contract_addresses_array[1] else NULL END AS nft_contract_address,
         trades.contract_address AS exchange_contract_address,
         trades.evt_tx_hash AS tx_hash,
         trades.evt_block_number,
