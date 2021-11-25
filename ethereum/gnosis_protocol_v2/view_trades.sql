@@ -32,9 +32,9 @@ WITH trades_with_prices AS (
 
      trades_with_token_units as (
          SELECT block_time,
-                CONCAT('0x', ENCODE(tx_hash, 'hex'))   as tx_hash,
-                CONCAT('0x', ENCODE(order_uid, 'hex')) as order_uid,
-                CONCAT('0x', ENCODE(owner, 'hex'))     as trader,
+                tx_hash,
+                order_uid,
+                owner,
                 sell_token                             as sell_token_address,
                 (CASE
                      WHEN s.symbol IS NULL THEN TEXT(sell_token)
@@ -62,7 +62,7 @@ WITH trades_with_prices AS (
          SELECT block_time,
                 tx_hash,
                 order_uid,
-                trader,
+                owner,
                 sell_token_address,
                 sell_token,
                 buy_token_address,
@@ -88,7 +88,7 @@ WITH trades_with_prices AS (
 --     results as (
 --         SELECT
 --             block_time,
---             CONCAT('<a href="https://etherscan.io/address/', trader, '" target="_blank">', trader,  '</a>') as trader,
+--             CONCAT('<a href="https://etherscan.io/address/', CONCAT('0x', ENCODE(owner, 'hex')), '" target="_blank">', CONCAT('0x', ENCODE(owner, 'hex')),  '</a>') as trader,
 --             sell_token,
 --             buy_token,
 --             units_sold,
@@ -96,8 +96,8 @@ WITH trades_with_prices AS (
 --             trade_value_usd,
 --             fee,
 --             fee_usd,
---             CONCAT('<a href="https://etherscan.io/tx/', tx_hash, '" target="_blank">', tx_hash,  '</a>') as transaction,
---             CONCAT('<a href="https://gnosis-protocol.io/orders/', order_uid, '" target="_blank">', order_uid,  '</a>') as order_uid
+--             CONCAT('<a href="https://etherscan.io/tx/', CONCAT('0x', ENCODE(tx_hash, 'hex')), '" target="_blank">', CONCAT('0x', ENCODE(tx_hash, 'hex')),  '</a>') as transaction,
+--             CONCAT('<a href="https://gnosis-protocol.io/orders/', CONCAT('0x', ENCODE(order_uid, 'hex')), '" target="_blank">', CONCAT('0x', ENCODE(order_uid, 'hex')),  '</a>') as order_uid
 --         FROM valued_trades
 --     )
 
@@ -108,8 +108,9 @@ ORDER BY block_time DESC;
 
 CREATE UNIQUE INDEX IF NOT EXISTS view_trades_id ON gnosis_protocol_v2.view_trades (order_uid);
 CREATE INDEX view_trades_idx_1 ON gnosis_protocol_v2.view_trades (block_time);
-CREATE INDEX view_trades_idx_2 ON gnosis_protocol_v2.view_trades (sell_token);
-CREATE INDEX view_trades_idx_3 ON gnosis_protocol_v2.view_trades (buy_token);
+CREATE INDEX view_trades_idx_2 ON gnosis_protocol_v2.view_trades (sell_token_address);
+CREATE INDEX view_trades_idx_3 ON gnosis_protocol_v2.view_trades (buy_token_address);
+CREATE INDEX view_trades_idx_4 ON gnosis_protocol_v2.view_trades (trader);
 
 
 INSERT INTO cron.job (schedule, command)
