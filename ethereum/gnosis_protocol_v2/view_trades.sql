@@ -1,0 +1,118 @@
+BEGIN;
+DROP MATERIALIZED VIEW IF EXISTS gnosis_protocol_v2.view_trades;
+
+CREATE MATERIALIZED VIEW gnosis_protocol_v2.view_trades AS
+WITH trades_with_prices AS (
+    SELECT evt_block_time               as block_time,
+           evt_tx_hash                  as tx_hash,
+           owner,
+           "orderUid"                   as order_uid,
+           "sellToken"                  as sell_token,
+           "buyToken"                   as buy_token,
+           ("sellAmount" - "feeAmount") as sell_amount,
+           "buyAmount"                  as buy_amount,
+           "feeAmount"                  as fee_amount,
+           s.price                      as sell_price,
+           b.price                      as buy_price
+    FROM gnosis_protocol_v2."GPv2Settlement_evt_Trade" trades
+             LEFT OUTER JOIN prices.usd as s
+                             ON trades."sellToken" = s.contract_address
+                                 AND s.minute > TO_DATE('2021/03/03', 'YYYY/MM/DD') --! Deployment Date
+                                 AND s.minute = date_trunc('minute', evt_block_time)
+             LEFT OUTER JOIN prices.usd as b
+                             ON b.contract_address = (
+                                 CASE
+                                     WHEN trades."buyToken" = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+                                         THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                                     ELSE trades."buyToken"
+                                     END)
+                                 AND b.minute > TO_DATE('2021/03/03', 'YYYY/MM/DD') --! Deployment Date
+                                 AND b.minute = date_trunc('minute', evt_block_time)
+),
+
+     trades_with_token_units as (
+         SELECT block_time,
+                CONCAT('0x', ENCODE(tx_hash, 'hex'))   as tx_hash,
+                CONCAT('0x', ENCODE(order_uid, 'hex')) as order_uid,
+                CONCAT('0x', ENCODE(owner, 'hex'))     as trader,
+                sell_token                             as sell_token_address,
+                (CASE
+                     WHEN s.symbol IS NULL THEN TEXT(sell_token)
+                     ELSE s.symbol
+                    END)                               as sell_token,
+                buy_token                              as buy_token_address,
+                (CASE
+                     WHEN b.symbol IS NULL THEN TEXT(buy_token)
+                     ELSE b.symbol
+                    END)                               as buy_token,
+                sell_amount / 10 ^ s.decimals          as units_sold,
+                buy_amount / 10 ^ b.decimals           as units_bought,
+                -- We use sell value when possible and buy value when not
+                fee_amount / 10 ^ s.decimals           as fee,
+                sell_price,
+                buy_price
+         FROM trades_with_prices
+                  LEFT OUTER JOIN dune_user_generated.erc20_extended s
+                                  ON s.contract_address = sell_token
+                  LEFT OUTER JOIN dune_user_generated.erc20_extended b
+                                  ON b.contract_address = buy_token
+     ),
+
+     valued_trades as (
+         SELECT block_time,
+                tx_hash,
+                order_uid,
+                trader,
+                sell_token_address,
+                sell_token,
+                buy_token_address,
+                buy_token,
+                units_sold,
+                units_bought,
+                -- We use sell value when possible and buy value when not
+                (CASE
+                     WHEN sell_price IS NOT NULL THEN sell_price * units_sold
+                     WHEN sell_price IS NULL AND buy_price IS NOT NULL THEN buy_price * units_bought
+                     ELSE -0.01
+                    END) as trade_value_usd,
+                fee,
+                (CASE
+                     WHEN sell_price IS NOT NULL THEN sell_price * fee
+                     WHEN sell_price IS NULL AND buy_price IS NOT NULL THEN buy_price * units_bought * fee / units_sold
+                     ELSE -0.01
+                    END) as fee_usd
+         FROM trades_with_token_units
+     )
+-- This would be the kind of basic table we display when querying: It seems impractical to store the URL links
+-- created from the hashes (trader, transaction and order id) so they have not been included here.
+--     results as (
+--         SELECT
+--             block_time,
+--             CONCAT('<a href="https://etherscan.io/address/', trader, '" target="_blank">', trader,  '</a>') as trader,
+--             sell_token,
+--             buy_token,
+--             units_sold,
+--             units_bought,
+--             trade_value_usd,
+--             fee,
+--             fee_usd,
+--             CONCAT('<a href="https://etherscan.io/tx/', tx_hash, '" target="_blank">', tx_hash,  '</a>') as transaction,
+--             CONCAT('<a href="https://gnosis-protocol.io/orders/', order_uid, '" target="_blank">', order_uid,  '</a>') as order_uid
+--         FROM valued_trades
+--     )
+
+SELECT *
+FROM valued_trades
+ORDER BY block_time DESC;
+
+
+CREATE UNIQUE INDEX IF NOT EXISTS view_trades_id ON gnosis_protocol_v2.view_trades (order_uid);
+CREATE INDEX view_trades_idx_1 ON gnosis_protocol_v2.view_trades (block_time);
+CREATE INDEX view_trades_idx_2 ON gnosis_protocol_v2.view_trades (sell_token);
+CREATE INDEX view_trades_idx_3 ON gnosis_protocol_v2.view_trades (buy_token);
+
+
+INSERT INTO cron.job (schedule, command)
+VALUES ('*/30 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol_v2.view_trades')
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+COMMIT;
