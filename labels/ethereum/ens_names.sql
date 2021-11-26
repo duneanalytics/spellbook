@@ -28,5 +28,6 @@ SELECT
 FROM
     ethereumnameservice."ETHRegistrarController_3_evt_NameRegistered"
 WHERE
-    evt_block_time >= '{{timestamp}}';
-
+    evt_block_time >= '{{timestamp}}'
+    AND
+    LENGTH(name) < 10000;
