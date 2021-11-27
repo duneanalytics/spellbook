@@ -4817,6 +4817,7 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xb32601bbc5136842b716a815d6cafe9a490f604d	make it beautIful		ERC721
 \\x7853f89f65344f9d6807d7080c4a02be1b12adb3	Cat Russell	CAAAT	ERC721
 \\xf36446105fF682999a442b003f2224BcB3D82067	Axolittles	AXOLITTLE	erc721
+\\xb228d7b6e099618ca71bd5522b3a8c3788a8f172	Poolsuite Executive Member	POOLEXEC	ERC721
 \.
 
 
