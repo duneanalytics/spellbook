@@ -62,7 +62,7 @@ WITH trades_with_prices AS (
          SELECT block_time,
                 tx_hash,
                 order_uid,
-                owner,
+                owner as trader,
                 sell_token_address,
                 sell_token,
                 buy_token_address,
