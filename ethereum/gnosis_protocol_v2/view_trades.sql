@@ -88,24 +88,23 @@ WITH trades_with_prices AS (
                      ELSE -0.01
                     END) as fee_usd
          FROM trades_with_token_units
+         ORDER BY block_time DESC
      )
 -- This would be the kind of basic table we display when querying: It seems impractical to store the URL links
 -- created from the hashes (trader, transaction and order id) so they have not been included here.
---     results as (
---         SELECT
---             block_time,
---             CONCAT('<a href="https://etherscan.io/address/', CONCAT('0x', ENCODE(owner, 'hex')), '" target="_blank">', CONCAT('0x', ENCODE(owner, 'hex')),  '</a>') as trader,
---             sell_token,
---             buy_token,
---             units_sold,
---             units_bought,
---             trade_value_usd,
---             fee,
---             fee_usd,
---             CONCAT('<a href="https://etherscan.io/tx/', CONCAT('0x', ENCODE(tx_hash, 'hex')), '" target="_blank">', CONCAT('0x', ENCODE(tx_hash, 'hex')),  '</a>') as transaction,
---             CONCAT('<a href="https://gnosis-protocol.io/orders/', CONCAT('0x', ENCODE(order_uid, 'hex')), '" target="_blank">', CONCAT('0x', ENCODE(order_uid, 'hex')),  '</a>') as order_uid
---         FROM valued_trades
---     )
+-- SELECT
+--     block_time,
+--     CONCAT('<a href="https://etherscan.io/address/', CONCAT('0x', ENCODE(trader, 'hex')), '" target="_blank">', CONCAT('0x', ENCODE(trader, 'hex')),  '</a>') as trader,
+--     sell_token,
+--     buy_token,
+--     units_sold,
+--     units_bought,
+--     trade_value_usd,
+--     fee,
+--     fee_usd,
+--     CONCAT('<a href="https://etherscan.io/tx/', CONCAT('0x', ENCODE(tx_hash, 'hex')), '" target="_blank">', CONCAT('0x', ENCODE(tx_hash, 'hex')),  '</a>') as transaction,
+--     CONCAT('<a href="https://gnosis-protocol.io/orders/', CONCAT('0x', ENCODE(order_uid, 'hex')), '" target="_blank">', CONCAT('0x', ENCODE(order_uid, 'hex')),  '</a>') as order_uid
+-- FROM valued_trades
 
 SELECT *
 FROM valued_trades
