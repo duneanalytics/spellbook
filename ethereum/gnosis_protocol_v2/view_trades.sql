@@ -52,9 +52,9 @@ WITH trades_with_prices AS (
                 sell_price,
                 buy_price
          FROM trades_with_prices
-                  LEFT OUTER JOIN dune_user_generated.erc20_extended s
+                  LEFT OUTER JOIN erc20.tokens s
                                   ON s.contract_address = sell_token
-                  LEFT OUTER JOIN dune_user_generated.erc20_extended b
+                  LEFT OUTER JOIN erc20.tokens b
                                   ON b.contract_address = buy_token
      ),
 
