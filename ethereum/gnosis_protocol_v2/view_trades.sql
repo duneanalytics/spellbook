@@ -35,20 +35,23 @@ WITH trades_with_prices AS (
                 tx_hash,
                 order_uid,
                 owner,
-                sell_token                             as sell_token_address,
+                sell_token                    as sell_token_address,
                 (CASE
                      WHEN s.symbol IS NULL THEN TEXT(sell_token)
                      ELSE s.symbol
-                    END)                               as sell_token,
-                buy_token                              as buy_token_address,
+                    END)                      as sell_token,
+                buy_token                     as buy_token_address,
                 (CASE
                      WHEN b.symbol IS NULL THEN TEXT(buy_token)
                      ELSE b.symbol
-                    END)                               as buy_token,
-                sell_amount / 10 ^ s.decimals          as units_sold,
-                buy_amount / 10 ^ b.decimals           as units_bought,
+                    END)                      as buy_token,
+                sell_amount / 10 ^ s.decimals as units_sold,
+                sell_amount                   as atoms_sold,
+                buy_amount / 10 ^ b.decimals  as units_bought,
+                buy_amount                    as atoms_bought,
                 -- We use sell value when possible and buy value when not
-                fee_amount / 10 ^ s.decimals           as fee,
+                fee_amount / 10 ^ s.decimals  as fee,
+                fee_amount                    as fee_atoms,
                 sell_price,
                 buy_price
          FROM trades_with_prices
@@ -62,13 +65,15 @@ WITH trades_with_prices AS (
          SELECT block_time,
                 tx_hash,
                 order_uid,
-                owner as trader,
+                owner    as trader,
                 sell_token_address,
                 sell_token,
                 buy_token_address,
                 buy_token,
                 units_sold,
+                atoms_sold,
                 units_bought,
+                atoms_bought,
                 -- We use sell value when possible and buy value when not
                 (CASE
                      WHEN sell_price IS NOT NULL THEN sell_price * units_sold
@@ -76,6 +81,7 @@ WITH trades_with_prices AS (
                      ELSE -0.01
                     END) as trade_value_usd,
                 fee,
+                fee_atoms,
                 (CASE
                      WHEN sell_price IS NOT NULL THEN sell_price * fee
                      WHEN sell_price IS NULL AND buy_price IS NOT NULL THEN buy_price * units_bought * fee / units_sold
