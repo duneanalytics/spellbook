@@ -1770,3 +1770,8 @@
   symbol: PPBLZ
   address: 0x4d2ee5dae46c86da2ff521f7657dad98834f97b8
   decimals: 18
+- name: dydx_dydx
+  id: dydx-dydx
+  symbol: DYDX
+  address: 0x92d6c1e31e14520e676a687f0a93788b716beff5
+  decimals: 18
