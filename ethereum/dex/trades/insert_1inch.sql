@@ -231,6 +231,58 @@ WITH rows AS (
 
         UNION ALL
 
+        -- 1inch Limit Order Protocol Embedded RFQ v1
+        SELECT
+            call_block_time as block_time,
+            '1inch Limit Order Protocol' AS project,
+            'eRFQ v1' AS version,
+            'DEX' AS category,
+            "from"  AS trader_a,
+            decode(substring("order"::jsonb->>'makerAssetData' from 35 for 40), 'hex') AS trader_b,
+            "output_1" AS token_a_amount_raw,
+            "output_0" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            decode(substring("order"::jsonb->>'takerAsset' from 3), 'hex') AS token_a_address,
+            decode(substring("order"::jsonb->>'makerAsset' from 3), 'hex') AS token_b_address,
+            contract_address AS exchange_contract_address,
+            call_tx_hash,
+            trace_address,
+            NULL AS evt_index
+        FROM (
+            select "call_block_time", "order", "output_0", "output_1", "contract_address", "call_tx_hash", "call_trace_address" from oneinch_v4."AggregationRouterV4_call_fillOrderRFQ" where call_success union all
+            select "call_block_time", "order", "output_0", "output_1", "contract_address", "call_tx_hash", "call_trace_address" from oneinch_v4."AggregationRouterV4_call_fillOrderRFQTo" where call_success union all
+            select "call_block_time", "order", "output_0", "output_1", "contract_address", "call_tx_hash", "call_trace_address" from oneinch_v4."AggregationRouterV4_call_fillOrderRFQToWithPermit" where call_success
+        ) tt
+        LEFT JOIN ethereum.traces ts ON call_tx_hash = ts.tx_hash AND call_trace_address = ts.trace_address
+
+        UNION ALL
+
+        -- 1inch Embedded RFQ v1
+        SELECT
+            call_block_time as block_time,
+            '1inch' AS project,
+            'eRFQ v1' AS version,
+            'Aggregator' AS category,
+            "from"  AS trader_a,
+            decode(substring("order"::jsonb->>'makerAssetData' from 35 for 40), 'hex') AS trader_b,
+            "output_1" AS token_a_amount_raw,
+            "output_0" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            decode(substring("order"::jsonb->>'takerAsset' from 3), 'hex') AS token_a_address,
+            decode(substring("order"::jsonb->>'makerAsset' from 3), 'hex') AS token_b_address,
+            contract_address AS exchange_contract_address,
+            call_tx_hash,
+            trace_address,
+            NULL AS evt_index
+        FROM (
+            select "call_block_time", "order", "output_0", "output_1", "contract_address", "call_tx_hash", "call_trace_address" from oneinch_v4."AggregationRouterV4_call_fillOrderRFQ" where call_success union all
+            select "call_block_time", "order", "output_0", "output_1", "contract_address", "call_tx_hash", "call_trace_address" from oneinch_v4."AggregationRouterV4_call_fillOrderRFQTo" where call_success union all
+            select "call_block_time", "order", "output_0", "output_1", "contract_address", "call_tx_hash", "call_trace_address" from oneinch_v4."AggregationRouterV4_call_fillOrderRFQToWithPermit" where call_success
+        ) tt
+        LEFT JOIN ethereum.traces ts ON call_tx_hash = ts.tx_hash AND call_trace_address = ts.trace_address
+
+        UNION ALL
+
         -- 1inch Limit Order Protocol RFQ
         SELECT
             call_block_time as block_time,
