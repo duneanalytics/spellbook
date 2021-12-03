@@ -3,7 +3,7 @@ CREATE SCHEMA IF NOT EXISTS visitors;
 
 CREATE TABLE IF NOT EXISTS visitors.visitors_traits(
    token_id     SMALLINT PRIMARY KEY,
-   traits       SMALLINT PRIMARY KEY,
+   traits       SMALLINT NOT NULL,
    background   VARCHAR(90),
    base         VARCHAR(90),
    apparel      VARCHAR(90),
