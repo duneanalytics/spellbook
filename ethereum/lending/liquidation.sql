@@ -125,19 +125,21 @@ WITH liquidation AS (
             debt_to_cover_amount
         FROM (
             -- Liquidation V1.0
-            SELECT evt_block_number, evt_block_time, evt_tx_hash, contract_address, evt_index,
-                   "tab" AS debt_to_cover_amount, "usr" AS liquidated_borrower 
-            FROM makermcd."FLIP_evt_Kick"
-            WHERE tab > 0
+            SELECT evt_block_number, evt_block_time, evt_tx_hash, 
+                   "flip" AS contract_address, evt_index,
+                   "art" AS debt_to_cover_amount, "urn" AS liquidated_borrower 
+            FROM makermcd."CAT_evt_Bite"
+            WHERE art > 0
             AND evt_block_time >= start_ts
             AND evt_block_time < end_ts
 
             UNION ALL
             -- Liquidation V2.0 
-            SELECT evt_block_number, evt_block_time, evt_tx_hash, contract_address, evt_index,
-                   "tab" AS debt_to_cover_amount, "usr" AS liquidated_borrower
-            FROM makerdao."Clipper_evt_Kick"
-            WHERE tab > 0
+            SELECT evt_block_number, evt_block_time, evt_tx_hash, 
+                   "clip" AS contract_address, evt_index,
+                   "art" AS debt_to_cover_amount, "urn" AS liquidated_borrower
+            FROM makerdao."Dog_evt_Bark"
+            WHERE art > 0
             AND evt_block_time >= start_ts
             AND evt_block_time < end_ts
         ) maker_liq
