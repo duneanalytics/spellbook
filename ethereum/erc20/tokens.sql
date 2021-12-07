@@ -5772,6 +5772,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\xe7f58a92476056627f9fdb92286778abd83b285f	DWEB	18
 \\xf17e65822b568b3903685a7c9f496cf7656cc6c2	BICO	18
 \\xf28463c616bd7b14287b0a4a950d35324f2d7280	IRX	18
+\\x5b52bfb8062ce664d74bbcd4cd6dc7df53fd7233	ZENIQ	18
 \.
 
 
