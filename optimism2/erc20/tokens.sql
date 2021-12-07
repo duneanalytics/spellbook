@@ -86,6 +86,9 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\x8f00a5e13b3f2aaaddc9708ad5c77fbcc300b0ee	pLINK	8
 \\x9413b54f04c90ed8eb59a08323d767b72dcd278e	WETH	18
 \\xab3f8a9599d62f09a71d7337dfff4458a4c7fe27	vETH	18
+\\xc84da6c8ec7a57cd10b939e79eaf9d2d17834e04	vUSD	18
+\\x8c835dfaa34e2ae61775e80ee29e2c724c6ae2bb	vETH	18
+\\x86f1e0420c26a858fc203A3645dD1A36868F18e5	vBTC	18
 \.
 
 
