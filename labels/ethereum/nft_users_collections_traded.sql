@@ -7,7 +7,7 @@ WITH nft_users_collections_traded_clean AS (
         'masquot' AS author
     FROM nft.trades
     WHERE
-        block_time >= '2021-12-01 00:00:00' AND nft_project_name IS NOT NULL
+        block_time >= '{{timestamp}}' AND nft_project_name IS NOT NULL
     UNION
     SELECT
         seller AS address,
@@ -17,7 +17,7 @@ WITH nft_users_collections_traded_clean AS (
         'masquot' AS author
     FROM nft.trades
     WHERE
-        block_time >= '2021-12-01 00:00:00' AND nft_project_name IS NOT NULL
+        block_time >= '{{timestamp}}' AND nft_project_name IS NOT NULL
 ) 
 SELECT 
     address,
