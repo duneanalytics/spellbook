@@ -62,14 +62,14 @@ WITH rows AS (
             'DEX' AS category,
             sender AS trader_a,
             NULL::bytea AS trader_b,
-            "inputAmount" AS token_a_amount_raw,
-            "outputAmount" AS token_b_amount_raw,
+            "outputAmount" AS token_a_amount_raw,
+            "inputAmount" AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            CASE WHEN "inputToken" = '\x0000000000000000000000000000000000000000' THEN 
-                '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'::bytea ELSE "inputToken"
+            CASE WHEN "outputToken" = '\x0000000000000000000000000000000000000000' THEN 
+                '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'::bytea ELSE "outputToken"
                 END AS token_a_address,
-            CASE WHEN "outputToken" = '\x0000000000000000000000000000000000000000' THEN
-                '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'::bytea ELSE "outputToken" 
+            CASE WHEN "inputToken" = '\x0000000000000000000000000000000000000000' THEN
+                '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'::bytea ELSE "inputToken" 
                 END AS token_b_address,
             contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
