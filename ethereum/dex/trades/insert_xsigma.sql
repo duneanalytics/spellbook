@@ -36,7 +36,7 @@ WITH rows AS (
         token_b_amount_raw / 10 ^ erc20b.decimals AS token_b_amount,
         'xSigma' AS project,
         '1' AS version,
-        'Aggregator' AS category,
+        'DEX' AS category,
         COALESCE(trader_a, tx."from") AS trader_a,
         trader_b,
         token_a_amount_raw,
