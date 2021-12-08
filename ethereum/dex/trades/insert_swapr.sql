@@ -27,8 +27,7 @@ WITH rows AS (
         evt_index,
         trade_id
     )
-    SELECT
-        dexs.block_time,
+    SELECT dexs.block_time,
         erc20a.symbol AS token_a_symbol,
         erc20b.symbol AS token_b_symbol,
         token_a_amount_raw / 10 ^ erc20a.decimals AS token_a_amount,
@@ -36,7 +35,8 @@ WITH rows AS (
         project,
         version,
         category,
-        coalesce(trader_a, tx."from") as trader_a, -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
+        coalesce(trader_a, tx."from") as trader_a,
+        -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
         trader_b,
         token_a_amount_raw,
         token_b_amount_raw,
@@ -52,36 +52,149 @@ WITH rows AS (
         tx."from" as tx_from,
         tx."to" as tx_to,
         trace_address,
-        evt_index,
-        row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
+        events.evt_index,
+        row_number() OVER (
+            PARTITION BY project,
+            tx_hash,
+            events.evt_index,
+            trace_address
+            ORDER BY version,
+                category
+        ) AS trade_id
     FROM (
-
-        -- Swapr
-        SELECT
-            t.evt_block_time AS block_time,
+        SELECT call_block_time AS block_time,
             'swapr' AS project,
             '1' AS version,
             'DEX' AS category,
-            t."to" AS trader_a,
+            "to" AS trader_a,
             NULL::bytea AS trader_b,
-            CASE WHEN "amount0Out" = 0 THEN "amount1Out" ELSE "amount0Out" END AS token_a_amount_raw,
-            CASE WHEN "amount0In" = 0 THEN "amount1In" ELSE "amount0In" END AS token_b_amount_raw,
+            "amountInMax" AS token_a_amount_raw,
+            "amountOut" AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            CASE WHEN "amount0Out" = 0 THEN f.token1 ELSE f.token0 END AS token_a_address,
-            CASE WHEN "amount0In" = 0 THEN f.token1 ELSE f.token0 END AS token_b_address,
-            t.contract_address exchange_contract_address,
-            t.evt_tx_hash AS tx_hash,
-            NULL::integer[] AS trace_address,
-            t.evt_index
-        FROM
-            swapr."Pair_evt_Swap" t
-        INNER JOIN swapr."Factory_evt_PairCreated" f ON f.pair = t.contract_address
+            path [1]::bytea as token_a_address,
+            path [2]::bytea as token_b_address,
+            contract_address AS exchange_contract_address,
+            call_tx_hash AS tx_hash,
+            call_trace_address AS trace_address
+        FROM swapr."Swapr_call_swapTokensForExactTokens"
+        UNION ALL
+            SELECT call_block_time AS block_time,
+            'swapr' AS project,
+            '1' AS version,
+            'DEX' AS category,
+            "to" AS trader_a,
+            NULL::bytea AS trader_b,
+            "amountIn" AS token_a_amount_raw,
+            "amountOutMin" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            path [1]::bytea as token_a_address,
+            path [2]::bytea as token_b_address,
+            contract_address AS exchange_contract_address,
+            call_tx_hash AS tx_hash,
+            call_trace_address AS trace_address
+        FROM swapr."Swapr_call_swapExactTokensForETH"
+        UNION ALL
+            SELECT call_block_time AS block_time,
+            'swapr' AS project,
+            '1' AS version,
+            'DEX' AS category,
+            "to" AS trader_a,
+            NULL::bytea AS trader_b,
+            NULL::numeric AS token_a_amount_raw,
+            "amountOut" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            path [1]::bytea as token_a_address,
+            path [2]::bytea as token_b_address,
+            contract_address AS exchange_contract_address,
+            call_tx_hash AS tx_hash,
+            call_trace_address AS trace_address
+        FROM swapr."Swapr_call_swapETHForExactTokens"
+        UNION ALL
+            SELECT call_block_time AS block_time,
+            'swapr' AS project,
+            '1' AS version,
+            'DEX' AS category,
+            "to" AS trader_a,
+            NULL::bytea AS trader_b,
+            NULL::numeric AS token_a_amount_raw,
+            "amountOutMin" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            path [1]::bytea as token_a_address,
+            path [2]::bytea as token_b_address,
+            contract_address AS exchange_contract_address,
+            call_tx_hash AS tx_hash,
+            call_trace_address AS trace_address
+        FROM swapr."Swapr_call_swapExactETHForTokens"
+        UNION ALL
+            SELECT call_block_time AS block_time,
+            'swapr' AS project,
+            '1' AS version,
+            'DEX' AS category,
+            "to" AS trader_a,
+            NULL::bytea AS trader_b,
+            "amountIn" AS token_a_amount_raw,
+            "amountOutMin" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            path [1]::bytea as token_a_address,
+            path [2]::bytea as token_b_address,
+            contract_address AS exchange_contract_address,
+            call_tx_hash AS tx_hash,
+            call_trace_address AS trace_address
+        FROM swapr."Swapr_call_swapExactTokensForTokens"
+        UNION ALL
+            SELECT call_block_time AS block_time,
+            'swapr' AS project,
+            '1' AS version,
+            'DEX' AS category,
+            "to" AS trader_a,
+            NULL::bytea AS trader_b,
+            "amountInMax" AS token_a_amount_raw,
+            "amountOut" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            path [1]::bytea as token_a_address,
+            path [2]::bytea as token_b_address,
+            contract_address AS exchange_contract_address,
+            call_tx_hash AS tx_hash,
+            call_trace_address AS trace_address
+        FROM swapr."Swapr_call_swapTokensForExactETH"
+        UNION ALL
+            SELECT call_block_time AS block_time,
+            'swapr' AS project,
+            '1' AS version,
+            'DEX' AS category,
+            "to" AS trader_a,
+            NULL::bytea AS trader_b,
+            "amountIn" AS token_a_amount_raw,
+            "amountOutMin" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            path [1]::bytea as token_a_address,
+            path [2]::bytea as token_b_address,
+            contract_address AS exchange_contract_address,
+            call_tx_hash AS tx_hash,
+            call_trace_address AS trace_address
+        FROM swapr."Swapr_call_swapExactTokensForTokensSupportingFeeOnTransferToken"
+        UNION ALL
+            SELECT call_block_time AS block_time,
+            'swapr' AS project,
+            '1' AS version,
+            'DEX' AS category,
+            "to" AS trader_a,
+            NULL::bytea AS trader_b,
+            NULL::numeric AS token_a_amount_raw,
+            "amountOutMin" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            path [1]::bytea as token_a_address,
+            path [2]::bytea as token_b_address,
+            contract_address AS exchange_contract_address,
+            call_tx_hash AS tx_hash,
+            call_trace_address AS trace_address
+        FROM swapr."Swapr_call_swapExactETHForTokensSupportingFeeOnTransferTokens"
     ) dexs
-    INNER JOIN ethereum.transactions tx
-        ON dexs.tx_hash = tx.hash
-        AND tx.block_time >= start_ts
+    LEFT JOIN swapr."DXswapFactory_evt_PairCreated" events ON events.evt_tx_hash = dexs.tx_hash
+    INNER JOIN ethereum.transactions tx ON dexs.tx_hash = tx.hash
+        AND tx.block_time >= start_ts 
         AND tx.block_time < end_ts
-        AND tx.block_number >= start_block
+        AND tx.block_number >= start_block 
         AND tx.block_number < end_block
     LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
@@ -97,11 +210,26 @@ WITH rows AS (
     AND dexs.block_time < end_ts
     ON CONFLICT DO NOTHING
     RETURNING 1
-)
+)    
 SELECT count(*) INTO r from rows;
 RETURN r;
 END
 $function$;
+
+-- fill 2020
+SELECT dex.insert_swapr(
+    '2020-01-01',
+    '2021-01-01',
+    (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
+    (SELECT MAX(number) FROM ethereum.blocks where time < '2021-01-01' - interval '20 minutes')
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.trades
+    WHERE block_time > '2021-01-01'
+    AND block_time <= now() - interval '20 minutes'
+    AND project = 'swapr'
+);
 
 -- fill 2021
 SELECT dex.insert_swapr(
@@ -126,4 +254,3 @@ VALUES ('*/10 * * * *', $$
         (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='swapr')),
         (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
