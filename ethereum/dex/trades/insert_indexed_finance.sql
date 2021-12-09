@@ -78,7 +78,7 @@ WITH rows AS (
             SELECT  
                 evt_block_time AS block_time,
                 'Indexed Finance' AS project,
-                NULL AS version,
+                '1' AS version,
                 'DEX' AS category,
                 caller AS trader_a,
                 NULL::bytea AS trader_b,
@@ -104,7 +104,7 @@ WITH rows AS (
             SELECT  
                 evt_block_time AS block_time,
                 'Indexed Finance' AS project,
-                NULL AS version,
+                '1' AS version,
                 'DEX' AS category,
                 caller AS trader_a,
                 NULL::bytea AS trader_b,
@@ -130,7 +130,7 @@ WITH rows AS (
             SELECT  
                 evt_block_time AS block_time,
                 'Indexed Finance' AS project,
-                NULL AS version,
+                '1' AS version,
                 'DEX' AS category,
                 caller AS trader_a,
                 NULL::bytea AS trader_b,
@@ -156,7 +156,7 @@ WITH rows AS (
             SELECT  
                 evt_block_time AS block_time,
                 'Indexed Finance' AS project,
-                NULL AS version,
+                '1' AS version,
                 'DEX' AS category,
                 caller AS trader_a,
                 NULL::bytea AS trader_b,
@@ -182,7 +182,7 @@ WITH rows AS (
             SELECT  
                 evt_block_time AS block_time,
                 'Indexed Finance' AS project,
-                NULL AS version,
+                '1' AS version,
                 'DEX' AS category,
                 caller AS trader_a,
                 NULL::bytea AS trader_b,
