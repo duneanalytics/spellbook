@@ -58,18 +58,18 @@ WITH rows AS (
         SELECT  
             evt_block_time AS block_time,
             'Shell' AS project,
-            NULL AS version,
+            '1' AS version,
             'DEX' AS category,
             trader AS trader_a,
             NULL::bytea AS trader_b,
-            "originAmount" AS token_a_amount_raw,
-            "targetAmount" AS token_b_amount_raw,
+            "targetAmount" AS token_a_amount_raw,
+            "originAmount" AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            CASE WHEN "origin" = '\x0000000000000000000000000000000000000000' THEN 
-                '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'::bytea ELSE "origin"
+            CASE WHEN "target" = '\x0000000000000000000000000000000000000000' THEN 
+                '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'::bytea ELSE "target"
                 END AS token_a_address,
-            CASE WHEN "target" = '\x0000000000000000000000000000000000000000' THEN
-                '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'::bytea ELSE "target" 
+            CASE WHEN "origin" = '\x0000000000000000000000000000000000000000' THEN
+                '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'::bytea ELSE "origin" 
                 END AS token_b_address,
             contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
