@@ -103,6 +103,21 @@ RETURN r;
 END
 $function$;
 
+-- fill 2020H2
+SELECT dex.insert_shell(
+    '2020-06-01',
+    '2021-01-01',
+    (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-06-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2021-01-01')
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.trades
+    WHERE block_time > '2020-06-01'
+    AND block_time <= '2021-01-01'
+    AND project = 'Shell'
+);
+
 -- fill 2021
 SELECT dex.insert_shell(
     '2021-01-01',
