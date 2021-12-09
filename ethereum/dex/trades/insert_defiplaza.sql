@@ -58,7 +58,7 @@ WITH rows AS (
         SELECT 
             evt_block_time AS block_time,
             'DefiPlaza' AS project,
-            NULL AS version,
+            '1' AS version,
             'DEX' AS category,
             sender AS trader_a,
             NULL::bytea AS trader_b,
