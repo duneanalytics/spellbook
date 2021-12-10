@@ -60,9 +60,9 @@ WITH rows AS (
       -- SigThreePool_evt_TokenExchange
 
         SELECT
-          swaps."evt_block_number" as block_time,
-          NULL::bytea as trader_a,
-          swaps."buyer" as trader_b,
+          swaps."evt_block_time" as block_time,
+          swaps."buyer" as trader_a,
+          NULL::bytea as trader_b,
           swaps."tokens_bought" as token_a_amount_raw,
           swaps."tokens_sold" as token_b_amount_raw,
           CASE
