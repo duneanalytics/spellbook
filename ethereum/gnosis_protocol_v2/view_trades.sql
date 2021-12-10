@@ -75,15 +75,25 @@ WITH trades_with_prices AS (
                 units_bought,
                 atoms_bought,
                 -- We use sell value when possible and buy value when not
+                -- We use sell value when possible and buy value when not
                 (CASE
-                     WHEN sell_price IS NOT NULL THEN sell_price * units_sold
+                     WHEN sell_price IS NOT NULL THEN
+                         -- Choose the larger of two prices when both not null.
+                         CASE
+                             WHEN buy_price IS NOT NULL and buy_price > sell_price then buy_price * units_bought
+                             ELSE sell_price * units_sold
+                             END
                      WHEN sell_price IS NULL AND buy_price IS NOT NULL THEN buy_price * units_bought
                      ELSE -0.01
                     END) as trade_value_usd,
                 fee,
                 fee_atoms,
                 (CASE
-                     WHEN sell_price IS NOT NULL THEN sell_price * fee
+                     WHEN sell_price IS NOT NULL THEN
+                         CASE
+                             WHEN buy_price IS NOT NULL and buy_price > sell_price then buy_price * units_bought * fee / units_sold
+                             ELSE sell_price * fee
+                             END
                      WHEN sell_price IS NULL AND buy_price IS NOT NULL THEN buy_price * units_bought * fee / units_sold
                      ELSE -0.01
                     END) as fee_usd
