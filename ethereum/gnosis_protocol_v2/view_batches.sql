@@ -53,7 +53,7 @@ WITH batch_counts AS (
                                   ON b.evt_tx_hash = t.tx_hash
                   JOIN ethereum."transactions" tx
                        ON evt_tx_hash = hash
-                  JOIN dune_user_generated."gnosis_protocol_v2_registered_solvers"
+                  JOIN gnosis_protocol_v2.view_solvers
                        ON solver = address
          WHERE tx.block_time > '2021-03-03' --! Contract Launch Date
            AND num_trades > 0 -- Exclude Withdrawal Batches
