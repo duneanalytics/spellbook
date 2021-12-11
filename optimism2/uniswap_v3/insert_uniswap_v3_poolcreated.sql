@@ -25,13 +25,12 @@ SELECT uniswap_v3.insert_uniswap_v3_poolcreated(
     now(),
     0,
     (SELECT MAX(number) FROM optimism.blocks where time < now() - interval '20 minutes')
-) ovm1
+)
 WHERE NOT EXISTS (
     SELECT *
     FROM uniswap_v3.insert_uniswap_v3_poolcreated p
     WHERE block_time > '2021-11-10'
     AND block_time <= now() - interval '20 minutes'
-    AND ovm1.pool = p.pool
 );
 
 INSERT INTO cron.job (schedule, command)
