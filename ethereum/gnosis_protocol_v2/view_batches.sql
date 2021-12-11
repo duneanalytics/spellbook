@@ -21,11 +21,10 @@ WITH batch_counts AS (
 ),
 
      batch_values as (
-         select
-             tx_hash,
-             sum(trade_value_usd) as batch_value,
-             sum(fee_usd) as fee_value,
-             price as eth_price
+         select tx_hash,
+                sum(trade_value_usd) as batch_value,
+                sum(fee_usd)         as fee_value,
+                price                as eth_price
          from gnosis_protocol_v2."view_trades"
                   JOIN prices.usd as p
                        ON p.contract_address = '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
@@ -34,19 +33,19 @@ WITH batch_counts AS (
      ),
 
      batch_info as (
-         SELECT evt_block_time                         as block_time,
+         SELECT evt_block_time                               as block_time,
                 num_trades,
                 dex_swaps,
                 batch_value,
-                tx.gas_used / num_trades               as gas_per_trade,
-                solver                                 as solver_address,
-                CONCAT(environment, CONCAT('-', name)) as solver_name,
-                evt_tx_hash                            as tx_hash,
-                gas_price / pow(10, 9)                 as gas_price_gwei,
-                tx.gas_used                            as gas_used,
-                (gas_price * gas_used * eth_price) / 10^18 as tx_cost_usd,
-                length(data)::decimal / 1024           as call_data_size,
+                tx.gas_used / num_trades                     as gas_per_trade,
+                solver                                       as solver_address,
+                CONCAT(environment, CONCAT('-', name))       as solver_name,
+                evt_tx_hash                                  as tx_hash,
+                gas_price / pow(10, 9)                       as gas_price_gwei,
+                tx.gas_used                                  as gas_used,
+                (gas_price * gas_used * eth_price) / 10 ^ 18 as tx_cost_usd,
                 fee_value,
+                length(data)::decimal / 1024                 as call_data_size,
                 unwraps,
                 token_approvals
          FROM batch_counts b
