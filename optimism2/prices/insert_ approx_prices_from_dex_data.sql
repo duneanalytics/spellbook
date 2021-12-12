@@ -6,7 +6,7 @@ BEGIN
 WITH 
 
 hour_gs AS (
-SELECT generate_series(start_time - interval '3 days' , DATE_TRUNC('hour',end_time), '1 hour') AS hour
+SELECT generate_series(DATE_TRUNC('hour',start_time - interval '3 days') , DATE_TRUNC('hour',end_time) , '1 hour') AS hour
 )
 
 , dex_price_stables AS (
@@ -51,7 +51,7 @@ FROM (
         INNER JOIN erc20."tokens" eb
         ON eb."contract_address" = t.token_b_address
         WHERE project = 'Uniswap' AND version = '3'
-	AND t.evt_block_time >= start_time - interval '3 days' --3 day buffer to catch tokens which may not have had a recent trade
+	AND t.evt_block_time >= DATE_TRUNC('hour',start_time - interval '3 days') --3 day buffer to catch tokens which may not have had a recent trade
 		AND t.evt_block_time <= end_time
         
         AND t.token_a_amount_raw > 100 --min to exclude weird stuff
@@ -79,7 +79,7 @@ FROM (
         INNER JOIN erc20."tokens" eb
         ON eb."contract_address" = t.token_b_address
         WHERE project = 'Uniswap' AND version = '3'
-	AND t.evt_block_time >= start_time - interval '3 days' --3 day buffer to catch tokens which may not have had a recent trade
+	AND t.evt_block_time >= DATE_TRUNC('hour',start_time - interval '3 days') --3 day buffer to catch tokens which may not have had a recent trade
 		AND t.evt_block_time <= end_time
         
         AND t.token_b_amount_raw > 100 --min to exclude weird stuff
@@ -188,7 +188,7 @@ FROM (
 
         WHERE t.token_a_amount_raw > 100 --min to exclude weird stuff
         AND t.token_b_address = '\x4200000000000000000000000000000000000006' -- weth
-	AND t.evt_block_time >= start_time - interval '3 days' --3 day buffer to catch tokens which may not have had a recent trade
+	AND t.evt_block_time >= DATE_TRUNC('hour',start_time - interval '3 days') --3 day buffer to catch tokens which may not have had a recent trade
 		AND t.evt_block_time <= end_time
 
     ) tokena
@@ -218,7 +218,7 @@ FROM (
             AND dp.hour = DATE_TRUNC('hour',t.block_time)
         WHERE t.token_b_amount_raw > 100 --min to exclude weird stuff
         AND t.token_a_address = '\x4200000000000000000000000000000000000006' --weth
-	AND t.evt_block_time >= start_time - interval '3 days' --3 day buffer to catch tokens which may not have had a recent trade
+	AND t.evt_block_time >= DATE_TRUNC('hour',start_time - interval '3 days') --3 day buffer to catch tokens which may not have had a recent trade
 		AND t.evt_block_time <= end_time
     ) tokenb
     
@@ -243,6 +243,8 @@ WITH token_sent AS (
             ON e."contract_address" = r."contract_address"
         WHERE t."to" = '\x8700daec35af8ff88c16bdf0418774cb3d7599b4'
         AND substring(data from 1 for 4) = '\x30ead760' --methodid
+	AND r.evt_block_time >= DATE_TRUNC('hour',start_time - interval '3 days') --3 day buffer to catch tokens which may not have had a recent trade
+		AND r.evt_block_time <= end_time
 
     )
 , token_received AS (
@@ -254,6 +256,8 @@ WITH token_sent AS (
             ON e."contract_address" = r."contract_address"
         WHERE t."to" = '\x8700daec35af8ff88c16bdf0418774cb3d7599b4'
         AND substring(data from 1 for 4) = '\x30ead760' --methodid
+	AND r.evt_block_time >= DATE_TRUNC('hour',start_time - interval '3 days') --3 day buffer to catch tokens which may not have had a recent trade
+		AND r.evt_block_time <= end_time
         
     )
     , susd_fees AS ( --the user pays the fees, but this shouldn't go in to the price conversion, so we subtract from the sUSD total
@@ -267,6 +271,8 @@ WITH token_sent AS (
         AND r."from" = '\x0000000000000000000000000000000000000000'
         AND r."to" = '\xfeefeefeefeefeefeefeefeefeefeefeefeefeef'
         AND r."contract_address" = '\x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9'
+	AND r.evt_block_time >= DATE_TRUNC('hour',start_time - interval '3 days') --3 day buffer to catch tokens which may not have had a recent trade
+	    AND r.evt_block_time <= end_time
         
     )
 , ratios AS (
@@ -311,12 +317,23 @@ FROM (
     
     ) pps
     INNER JOIN prices_vs_stables sp ON --latest eth price
-            pps.token = sp.token
+            sp.token = '\x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9'
             AND sp.hour = pps.hour
 
-    WHERE sp.token = '\x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9'
     ) rnk
 --WHERE h_rank = 1
+)
+
+, dex_price_bridge_tokens AS (
+SELECT DATE_TRUNC('hour', dt) AS hour, "bridge_token" AS token, "bridge_symbol" AS symbol, "bridge_decimals" AS decimals, median_price * price_ratio AS median_price, pr.num_samples,
+DENSE_RANK() OVER (PARTITION BY bridge_token ORDER BY dt DESC) AS hrank
+
+FROM prices.hourly_bridge_token_price_ratios pr--https://dune.xyz/queries/264679
+
+INNER JOIN prices_vs_stables p
+        ON pr.erc20_token = p.token
+        AND DATE_TRUNC('hour',pr.dt) = p.hour
+
 )
 
 
@@ -327,10 +344,12 @@ SELECT hour, token, symbol, decimals, median_price, num_samples
         SELECT *, DENSE_RANK() OVER (PARTITION BY hour, token ORDER BY num_samples DESC, rnk ASC) AS p_rank --pick which price to take
         FROM (
             SELECT hour, token, symbol, decimals, median_price, num_samples, 1 AS rnk FROM prices_vs_stables WHERE "window" = 1 --when trades happened
-            UNION ALL
+		UNION ALL
             SELECT hour, token, symbol, decimals, median_price, num_samples, 2 AS rnk FROM dex_price_weth
-            UNION ALL
+		UNION ALL
             SELECT hour, token, symbol, decimals, median_price, num_samples, -1 AS rnk FROM dex_price_synths --always use synths for susd
+		UNION ALL
+            SELECT hour, token, symbol, decimals, median_price, num_samples, -1 AS rnk FROM dex_price_bridge_tokens --bridge tokens
             ) a
         ) r
     WHERE p_rank = 1
