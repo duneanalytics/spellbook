@@ -383,7 +383,7 @@ token AS contract_address, hour
 , first_value(median_price) OVER (PARTITION BY token, grp ORDER BY hour) AS median_price
 , first_value(num_samples) OVER (PARTITION BY token, grp ORDER BY hour) AS sample_size
 
-symbol, decimals
+, symbol, decimals
      
 FROM (
     SELECT 
