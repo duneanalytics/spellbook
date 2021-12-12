@@ -379,7 +379,7 @@ token_list, hour_gs
 --logic to fill in gaps https://dba.stackexchange.com/questions/186218/carry-over-long-sequence-of-missing-values-with-postgres
 , final_prices AS (
 SELECT
-token AS contract_address, hour, 
+token AS contract_address, hour
 , first_value(median_price) OVER (PARTITION BY token, grp ORDER BY hour) AS median_price
 , first_value(num_samples) OVER (PARTITION BY token, grp ORDER BY hour) AS sample_size
 
