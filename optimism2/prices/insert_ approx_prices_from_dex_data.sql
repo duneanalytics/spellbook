@@ -328,7 +328,7 @@ FROM (
 SELECT DATE_TRUNC('hour', dt) AS hour, "bridge_token" AS token, "bridge_symbol" AS symbol, "bridge_decimals" AS decimals, median_price * price_ratio AS median_price, pr.num_samples,
 DENSE_RANK() OVER (PARTITION BY bridge_token ORDER BY dt DESC) AS hrank
 
-FROM prices.hourly_bridge_token_price_ratios pr--https://dune.xyz/queries/264679
+FROM prices.hourly_bridge_token_price_ratios pr
 
 INNER JOIN prices_vs_stables p
         ON pr.erc20_token = p.token
