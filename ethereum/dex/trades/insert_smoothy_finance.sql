@@ -65,33 +65,35 @@ WITH rows AS (
             "outAmount" AS token_a_amount_raw,
             "inAmount" AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            CASE 
-                WHEN "bTokenIdOut" = 0 THEN '\xdac17f958d2ee523a2206206994597c13d831ec7'::bytea -- USDT
-                WHEN "bTokenIdOut" = 1 THEN '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'::bytea -- USDC
-                WHEN "bTokenIdOut" = 2 THEN '\x6b175474e89094c44da98b954eedeac495271d0f'::bytea -- DAI
-                WHEN "bTokenIdOut" = 3 THEN '\x0000000000085d4780b73119b644ae5ecd22b376'::bytea -- TUSD
-                WHEN "bTokenIdOut" = 4 THEN '\x57ab1ec28d129707052df4df418d58a2d46d5f51'::bytea -- sUSD
-                WHEN "bTokenIdOut" = 5 THEN '\x4fabb145d64652a948d72533023f6e7a623c7c53'::bytea -- BUSD
-                WHEN "bTokenIdOut" = 6 THEN '\x8e870d67f660d95d5be530380d0ec0bd388289e1'::bytea -- USDP(PAX)
-                WHEN "bTokenIdOut" = 7 THEN '\x056fd409e1d7a124bd7017459dfea2f387b6d5cd'::bytea -- GUSD
-                ELSE NULL::bytea 
-                END AS token_a_address,
-            CASE 
-                WHEN "bTokenIdIn" = 0 THEN '\xdac17f958d2ee523a2206206994597c13d831ec7'::bytea -- USDT
-                WHEN "bTokenIdIn" = 1 THEN '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'::bytea -- USDC
-                WHEN "bTokenIdIn" = 2 THEN '\x6b175474e89094c44da98b954eedeac495271d0f'::bytea -- DAI
-                WHEN "bTokenIdIn" = 3 THEN '\x0000000000085d4780b73119b644ae5ecd22b376'::bytea -- TUSD
-                WHEN "bTokenIdIn" = 4 THEN '\x57ab1ec28d129707052df4df418d58a2d46d5f51'::bytea -- sUSD
-                WHEN "bTokenIdIn" = 5 THEN '\x4fabb145d64652a948d72533023f6e7a623c7c53'::bytea -- BUSD
-                WHEN "bTokenIdIn" = 6 THEN '\x8e870d67f660d95d5be530380d0ec0bd388289e1'::bytea -- USDP(PAX)
-                WHEN "bTokenIdIn" = 7 THEN '\x056fd409e1d7a124bd7017459dfea2f387b6d5cd'::bytea -- GUSD
-                ELSE NULL::bytea 
-                END AS token_b_address,
+            ta.address AS token_a_address,
+            tb.address AS token_b_address,
             contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             evt_index
         FROM smoothy."Root_evt_Swap"
+        LEFT JOIN (
+            SELECT 
+                a.nr - 1 AS id,
+                a.elem AS address
+            FROM (
+                SELECT array_agg("tokens") AS tokens
+                FROM smoothy."Root_call_addTokens"
+            ) f
+            LEFT JOIN LATERAL UNNEST(f.tokens)
+                WITH ORDINALITY AS a(elem, nr) ON TRUE
+        ) ta ON ta.id = "bTokenIdOut"
+        LEFT JOIN (
+            SELECT 
+                a.nr - 1 AS id,
+                a.elem AS address
+            FROM (
+                SELECT array_agg("tokens") AS tokens
+                FROM smoothy."Root_call_addTokens"
+            ) f
+            LEFT JOIN LATERAL UNNEST(f.tokens)
+                WITH ORDINALITY AS a(elem, nr) ON TRUE
+        ) tb ON tb.id = "bTokenIdIn"
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
