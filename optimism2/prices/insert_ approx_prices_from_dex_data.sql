@@ -9,30 +9,6 @@ hour_gs AS (
 SELECT generate_series(start_time - interval '3 days' , DATE_TRUNC('hour',end_time), '1 hour') AS hour
 )
 
-,dex_trades AS ( --only Uniswap now, should have SNX and others later
-SELECT --pulled from eth dex_trades abstraction: https://github.com/duneanalytics/abstractions/blob/master/ethereum/dex/trades/insert_uniswap.sql
-            t.evt_block_time AS block_time,
-            'Uniswap' AS project,
-            '3' AS version,
-            'DEX' AS category,
-            t."recipient" AS trader_a,
-            NULL::bytea AS trader_b,
-            abs(amount0) AS token_a_amount_raw,
-            abs(amount1) AS token_b_amount_raw,
-            NULL::numeric AS usd_amount,
-            f.token0 AS token_a_address,
-            f.token1 AS token_b_address,
-            t.contract_address as exchange_contract_address,
-            t.evt_tx_hash AS tx_hash,
-            NULL::integer[] AS trace_address,
-            t.evt_index
-        FROM
-            uniswap_v3."Pair_evt_Swap" t
-	WHERE t.evt_block_time >= start_time - interval '3 days' --3 day buffer to catch tokens which may not have had a recent trade
-		AND t.evt_block_time <= end_time
-        INNER JOIN dune_user_generated."uniswap_v3_pools" f ON f.pool = t.contract_address
-
-)
 , dex_price_stables AS (
 --for tokens where dune doesn't have the price, calculate the median price, assuming USDT, DAI, USDC = 1
 SELECT
@@ -69,12 +45,14 @@ FROM (
             t.token_b_amount_raw/(10^eb.decimals) ELSE NULL
             END AS usd_amount
 
-        FROM dex_trades t
+        FROM dex.trades t
         INNER JOIN erc20."tokens" ea --both need to have known decimals, we're not going to assume anything.
         ON ea."contract_address" = t.token_a_address
         INNER JOIN erc20."tokens" eb
         ON eb."contract_address" = t.token_b_address
         WHERE project = 'Uniswap' AND version = '3'
+	AND t.evt_block_time >= start_time - interval '3 days' --3 day buffer to catch tokens which may not have had a recent trade
+		AND t.evt_block_time <= end_time
         
         AND t.token_a_amount_raw > 100 --min to exclude weird stuff
     ) tokena
@@ -95,12 +73,14 @@ FROM (
         t.token_a_amount_raw/(10^ea.decimals) ELSE NULL
         END AS usd_amount
         
-        FROM dex_trades t
+        FROM dex.trades t
         INNER JOIN erc20."tokens" ea --both need to have known decimals, we're not going to assume anything.
         ON ea."contract_address" = t.token_a_address
         INNER JOIN erc20."tokens" eb
         ON eb."contract_address" = t.token_b_address
         WHERE project = 'Uniswap' AND version = '3'
+	AND t.evt_block_time >= start_time - interval '3 days' --3 day buffer to catch tokens which may not have had a recent trade
+		AND t.evt_block_time <= end_time
         
         AND t.token_b_amount_raw > 100 --min to exclude weird stuff
     ) tokenb
@@ -195,7 +175,7 @@ FROM (
             t.token_b_amount_raw/(10^eb.decimals) * dp.median_price --#eth * latestusd
              AS usd_amount
 
-        FROM dex_trades t
+        FROM dex.trades t
         INNER JOIN dune_user_generated.uniswap_v3_pools p ON
         t."exchange_contract_address" = p.pool
         INNER JOIN erc20."tokens" ea --both need to have known decimals, we're not going to assume anything.
@@ -208,6 +188,8 @@ FROM (
 
         WHERE t.token_a_amount_raw > 100 --min to exclude weird stuff
         AND t.token_b_address = '\x4200000000000000000000000000000000000006' -- weth
+	AND t.evt_block_time >= start_time - interval '3 days' --3 day buffer to catch tokens which may not have had a recent trade
+		AND t.evt_block_time <= end_time
 
     ) tokena
     
@@ -224,7 +206,7 @@ FROM (
         t.token_b_amount_raw/(10^eb.decimals) AS token_amount,
         t.token_a_amount_raw/(10^ea.decimals) * dp.median_price --#eth * latestusd
          AS usd_amount
-        FROM dex_trades t
+        FROM dex.trades t
         INNER JOIN dune_user_generated.uniswap_v3_pools p ON
         t."exchange_contract_address" = p.pool
         INNER JOIN erc20."tokens" ea --both need to have known decimals, we're not going to assume anything.
@@ -236,6 +218,8 @@ FROM (
             AND dp.hour = DATE_TRUNC('hour',t.block_time)
         WHERE t.token_b_amount_raw > 100 --min to exclude weird stuff
         AND t.token_a_address = '\x4200000000000000000000000000000000000006' --weth
+	AND t.evt_block_time >= start_time - interval '3 days' --3 day buffer to catch tokens which may not have had a recent trade
+		AND t.evt_block_time <= end_time
     ) tokenb
     
 ) a
