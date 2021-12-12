@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS prices.hourly_bridge_token_price_ratios(
-    dt timestamptz NOT NULL,
+    hour timestamptz NOT NULL,
     LP_contract bytea NOT NULL,
     erc20_token bytea NOT NULL,
     bridge_token bytea NOT NULL,
