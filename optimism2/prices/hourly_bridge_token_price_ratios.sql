@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS prices.hourly_bridge_token_price_ratios(
     bridge_symbol text, 
     bridge_decimals numeric,
     price_ratio numeric, 
-    num_samples numeric,
+    sample_size numeric,
     	PRIMARY KEY (dt, LP_contract, erc20_token, bridge_token)
 );
 
