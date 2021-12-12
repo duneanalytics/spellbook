@@ -41,3 +41,10 @@ FROM (
          select *
          from unknown_solvers
      ) as _;
+
+CREATE UNIQUE INDEX IF NOT EXISTS view_solvers_address_unique_idx ON gnosis_protocol_v2.view_solvers (address);
+
+INSERT INTO cron.job (schedule, command)
+VALUES ('*/30 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol_v2.view_solvers')
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+COMMIT;
