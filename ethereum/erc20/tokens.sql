@@ -5542,6 +5542,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\x94183cfacfaca73ba36a12a4cd7775fdae5fed69	AUR-0819	18
 \\xdb726152680ece3c9291f1016f1d36f3995f6941	MEDIA	6
 \\xdfdb7f72c1f195c5951a234e8db9806eb0635346	NFD	18
+\\xdc59ac4fefa32293a95889dc396682858d52e5db	BEAN	6
 \.
 
 
