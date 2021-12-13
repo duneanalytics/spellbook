@@ -94,6 +94,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\xb344795f0e7cf65a55cb0dde1e866d46041a2cc2	iUSDC	6
 \\x5bede655e2386abc49e2cc8303da6036bf78564c	iDAI	18
 \\x30adf434dc6d586526efc3e7ea3b4550b2be7456	FNDR	18
+\\x50c5725949a6f0c72e6c4a641f24049a917db0cb	LYRA	18
 \.
 
 
