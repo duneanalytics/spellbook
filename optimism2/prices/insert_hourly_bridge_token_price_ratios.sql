@@ -85,14 +85,15 @@ WITH bridge_tokens AS (
             AND t.contract_address != s.token
         LEFT JOIN erc20."tokens" et
             ON et."contract_address" = s.token
-            GROUP BY 1,2,3,4,5,6,7 --DISTINCT
+--            GROUP BY 1,2,3,4,5,6,7 --DISTINCT
 	    
 	WHERE t.evt_block_time >= start_time
             AND t.evt_block_time < end_time
     ) n
 GROUP BY 1,2,3,4,5,6
 
-)
+),
+final_prices AS (
 
 SELECT dt, lp_contract,
 CASE WHEN erc20_token IN ('\x121ab82b49b2bc4c7901ca46b8277962b4350204','\x1259adc9f2a0410d0db5e226563920a2d49f4454') --other WETHS
@@ -102,7 +103,7 @@ ELSE erc20_token END AS erc20_token
 ,bridge_token, bridge_symbol, bridge_decimals,price_ratio, sample_size
 
 FROM bridge_tokens
-
+),
 
 rows AS (
     INSERT INTO prices.hourly_bridge_token_price_ratios (
@@ -113,18 +114,18 @@ rows AS (
 	bridge_symbol,
 	bridge_decimals,
 	price_ratio,
-	sample_size,
+	sample_size
     )
 
     SELECT 
-        hour,
+        dt,
 	lp_contract,
 	erc20_token,
 	bridge_token,
 	bridge_symbol,
 	bridge_decimals,
 	price_ratio,
-	sample_size,
+	sample_size
     FROM final_prices
 
     ON CONFLICT (bridge_token, hour) DO UPDATE SET price_ratio = EXCLUDED.price_ratio, sample_size = EXCLUDED.sample_size
@@ -138,8 +139,11 @@ $function$;
 -- Monthly backfill starting 11 Nov 2021 (regenesis
 --TODO: Add pre-regenesis prices
 
-SELECT prices.insert_prices_from_dex_data('2021-11-01', '2021-12-01')
-WHERE NOT EXISTS (SELECT * FROM prices.insert_hourly_bridge_token_price_ratios WHERE hour >= '2021-11-01' and hour < '2021-12-01');
+SELECT prices.insert_hourly_bridge_token_price_ratios('2021-11-01', '2021-12-01')
+WHERE NOT EXISTS (SELECT * FROM prices.hourly_bridge_token_price_ratios WHERE hour >= '2021-11-01' and hour < '2021-12-01');
+
+SELECT prices.insert_hourly_bridge_token_price_ratios('2021-12-01', '2021-12-14')
+WHERE NOT EXISTS (SELECT * FROM prices.hourly_bridge_token_price_ratios WHERE hour >= '2021-12-01' and hour < '2021-12-14');
 
 -- Have the insert script run twice every hour at minute 16 and 46
 -- `start-time` is set to go back three days in time so that entries can be retroactively updated 

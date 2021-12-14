@@ -1,8 +1,8 @@
 INSERT INTO uniswap_v3.view_pools(
-token0 bytea NOT NULL,
-token1 bytea NOT NULL,
-fee integer,
-pool bytea PRIMARY KEY
+    token0,
+    token1,
+    fee,
+    pool
 )
 
 WITH jsons AS (

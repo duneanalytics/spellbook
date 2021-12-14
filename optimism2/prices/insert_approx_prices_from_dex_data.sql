@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION prices.insert_prices_from_dex_data(start_time timestamptz, end_time timestamptz=now()) RETURNS integer
+CREATE OR REPLACE FUNCTION prices.insert_approx_prices_from_dex_data(start_time timestamptz, end_time timestamptz=now()) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -51,8 +51,8 @@ FROM (
         INNER JOIN erc20."tokens" eb
         ON eb."contract_address" = t.token_b_address
         WHERE project = 'Uniswap' AND version = '3'
-	AND t.evt_block_time >= DATE_TRUNC('hour',start_time - interval '3 days') --3 day buffer to catch tokens which may not have had a recent trade
-		AND t.evt_block_time <= end_time
+	AND t.block_time >= DATE_TRUNC('hour',start_time - interval '3 days') --3 day buffer to catch tokens which may not have had a recent trade
+		AND t.block_time <= end_time
         
         AND t.token_a_amount_raw > 100 --min to exclude weird stuff
     ) tokena
@@ -79,8 +79,8 @@ FROM (
         INNER JOIN erc20."tokens" eb
         ON eb."contract_address" = t.token_b_address
         WHERE project = 'Uniswap' AND version = '3'
-	AND t.evt_block_time >= DATE_TRUNC('hour',start_time - interval '3 days') --3 day buffer to catch tokens which may not have had a recent trade
-		AND t.evt_block_time <= end_time
+	AND t.block_time >= DATE_TRUNC('hour',start_time - interval '3 days') --3 day buffer to catch tokens which may not have had a recent trade
+		AND t.block_time <= end_time
         
         AND t.token_b_amount_raw > 100 --min to exclude weird stuff
     ) tokenb
@@ -176,7 +176,7 @@ FROM (
              AS usd_amount
 
         FROM dex.trades t
-        INNER JOIN dune_user_generated.uniswap_v3_pools p ON
+        INNER JOIN uniswap_v3.view_pools p ON
         t."exchange_contract_address" = p.pool
         INNER JOIN erc20."tokens" ea --both need to have known decimals, we're not going to assume anything.
         ON ea."contract_address" = t.token_a_address
@@ -188,8 +188,8 @@ FROM (
 
         WHERE t.token_a_amount_raw > 100 --min to exclude weird stuff
         AND t.token_b_address = '\x4200000000000000000000000000000000000006' -- weth
-	AND t.evt_block_time >= DATE_TRUNC('hour',start_time - interval '3 days') --3 day buffer to catch tokens which may not have had a recent trade
-		AND t.evt_block_time <= end_time
+	AND t.block_time >= DATE_TRUNC('hour',start_time - interval '3 days') --3 day buffer to catch tokens which may not have had a recent trade
+		AND t.block_time <= end_time
 
     ) tokena
     
@@ -207,7 +207,7 @@ FROM (
         t.token_a_amount_raw/(10^ea.decimals) * dp.median_price --#eth * latestusd
          AS usd_amount
         FROM dex.trades t
-        INNER JOIN dune_user_generated.uniswap_v3_pools p ON
+        INNER JOIN uniswap_v3.view_pools p ON
         t."exchange_contract_address" = p.pool
         INNER JOIN erc20."tokens" ea --both need to have known decimals, we're not going to assume anything.
         ON ea."contract_address" = t.token_a_address
@@ -218,8 +218,8 @@ FROM (
             AND dp.hour = DATE_TRUNC('hour',t.block_time)
         WHERE t.token_b_amount_raw > 100 --min to exclude weird stuff
         AND t.token_a_address = '\x4200000000000000000000000000000000000006' --weth
-	AND t.evt_block_time >= DATE_TRUNC('hour',start_time - interval '3 days') --3 day buffer to catch tokens which may not have had a recent trade
-		AND t.evt_block_time <= end_time
+	AND t.block_time >= DATE_TRUNC('hour',start_time - interval '3 days') --3 day buffer to catch tokens which may not have had a recent trade
+		AND t.block_time <= end_time
     ) tokenb
     
 ) a
@@ -325,14 +325,14 @@ FROM (
 )
 
 , dex_price_bridge_tokens AS (
-SELECT DATE_TRUNC('hour', dt) AS hour, "bridge_token" AS token, "bridge_symbol" AS symbol, "bridge_decimals" AS decimals, median_price * price_ratio AS median_price, pr.num_samples,
-DENSE_RANK() OVER (PARTITION BY bridge_token ORDER BY dt DESC) AS hrank
+SELECT DATE_TRUNC('hour', pr.hour) AS hour, "bridge_token" AS token, "bridge_symbol" AS symbol, "bridge_decimals" AS decimals, median_price * price_ratio AS median_price, p.num_samples,
+DENSE_RANK() OVER (PARTITION BY bridge_token ORDER BY pr.hour DESC) AS hrank
 
 FROM prices.hourly_bridge_token_price_ratios pr
 
 INNER JOIN prices_vs_stables p
         ON pr.erc20_token = p.token
-        AND DATE_TRUNC('hour',pr.dt) = p.hour
+        AND DATE_TRUNC('hour',pr.hour) = p.hour
 
 )
 
@@ -397,9 +397,9 @@ FROM (
         AND gs.decimals = p.decimals
     ) fill
 )
-
+,
 rows AS (
-    INSERT INTO prices.prices_from_dex_data (
+    INSERT INTO prices.approx_prices_from_dex_data (
         contract_address,
         hour,
         median_price,
@@ -428,15 +428,18 @@ $function$;
 -- Monthly backfill starting 11 Nov 2021 (regenesis
 --TODO: Add pre-regenesis prices
 
-SELECT prices.insert_prices_from_dex_data('2021-11-01', '2021-12-01')
-WHERE NOT EXISTS (SELECT * FROM prices.prices_from_dex_data WHERE hour >= '2021-11-01' and hour < '2021-12-01');
+SELECT prices.insert_approx_prices_from_dex_data('2021-11-01', '2021-12-01')
+WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2021-11-01' and hour < '2021-12-01');
+
+SELECT prices.insert_approx_prices_from_dex_data('2021-12-01', '2021-12-14')
+WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2021-12-01' and hour < '2021-12-14');
 
 -- Have the insert script run twice every hour at minute 16 and 46
 -- `start-time` is set to go back three days in time so that entries can be retroactively updated 
 -- in case `dex.trades` or price data falls behind.
 INSERT INTO cron.job (schedule, command)
 VALUES ('16,46 * * * *', $$
-    SELECT prices.insert_prices_from_dex_data(
+    SELECT prices.insert_approx_prices_from_dex_data(
         (SELECT date_trunc('hour', now()) - interval '3 days'),
         (SELECT date_trunc('hour', now())));
 $$)

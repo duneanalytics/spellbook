@@ -1,3 +1,5 @@
+CREATE SCHEMA IF NOT EXISTS prices;
+
 CREATE TABLE IF NOT EXISTS prices.approx_prices_from_dex_data(
     contract_address bytea NOT NULL,
     hour timestamptz NOT NULL,
