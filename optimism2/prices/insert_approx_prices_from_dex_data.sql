@@ -260,29 +260,32 @@ WITH token_sent AS (
 		AND r.evt_block_time <= end_time
         
     )
-    , susd_fees AS ( --the user pays the fees, but this shouldn't go in to the price conversion, so we subtract from the sUSD total
-    SELECT evt_block_time, evt_tx_hash, r.contract_address AS token, r.value, decimals, symbol FROM erc20."ERC20_evt_Transfer" r
-        INNER JOIN optimism.transactions t
-            ON t.hash = r.evt_tx_hash
-        INNER JOIN erc20."tokens" e
-            ON e."contract_address" = r."contract_address"
-        WHERE t."to" = '\x8700daec35af8ff88c16bdf0418774cb3d7599b4'
-        AND substring(data from 1 for 4) = '\x30ead760' --methodid
-        AND r."from" = '\x0000000000000000000000000000000000000000'
-        AND r."to" = '\xfeefeefeefeefeefeefeefeefeefeefeefeefeef'
-        AND r."contract_address" = '\x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9'
-	AND r.evt_block_time >= DATE_TRUNC('hour',start_time - interval '3 days') --3 day buffer to catch tokens which may not have had a recent trade
-	    AND r.evt_block_time <= end_time
+--	This negatively impacts runtime for some reason. To be figured out later.
+--     , susd_fees AS ( --the user pays the fees, but this shouldn't go in to the price conversion, so we subtract from the sUSD total
+--     SELECT evt_block_time, evt_tx_hash, r.contract_address AS token, r.value, decimals, symbol FROM erc20."ERC20_evt_Transfer" r
+--         INNER JOIN optimism.transactions t
+--             ON t.hash = r.evt_tx_hash
+--         INNER JOIN erc20."tokens" e
+--             ON e."contract_address" = r."contract_address"
+--         WHERE t."to" = '\x8700daec35af8ff88c16bdf0418774cb3d7599b4'
+--         AND substring(data from 1 for 4) = '\x30ead760' --methodid
+--         AND r."from" = '\x0000000000000000000000000000000000000000'
+--         AND r."to" = '\xfeefeefeefeefeefeefeefeefeefeefeefeefeef'
+--         AND r."contract_address" = '\x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9'
+-- 	AND r.evt_block_time >= DATE_TRUNC('hour',start_time - interval '3 days') --3 day buffer to catch tokens which may not have had a recent trade
+-- 	    AND r.evt_block_time <= end_time
         
-    )
+--     )
 , ratios AS (
     SELECT
     s.evt_block_time, s.evt_tx_hash, s.decimals AS s_decimals, r.decimals AS r_decimals,
     r.token AS r_token, r.symbol AS r_symbol, s.token AS s_token, s.symbol AS s_symbol,
     CASE WHEN r.token = '\x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9' THEN
-        ((r.value-f.value)/(10^r.decimals))::decimal/(s.value/(10^s.decimals))::decimal
+        ((r.value/*-f.value*/)
+	 	/(10^r.decimals))::decimal/(s.value/(10^s.decimals))::decimal
     WHEN s.token = '\x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9' THEN
-        ((s.value-f.value)/(10^s.decimals))::decimal/(r.value/(10^r.decimals))::decimal 
+        ((s.value/*-f.value*/)
+	 	/(10^s.decimals))::decimal/(r.value/(10^r.decimals))::decimal 
     END AS price_ratio,
     CASE WHEN r.token = '\x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9' THEN 'sent' --sent token, received sUSD
         WHEN s.token = '\x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9' THEN 'received' -- received token, sent sUSD
@@ -291,9 +294,9 @@ WITH token_sent AS (
     FROM token_sent s
     INNER JOIN token_received r
         ON s.evt_tx_hash = r.evt_tx_hash
-    INNER JOIN susd_fees f
-        ON s.evt_tx_hash = f.evt_tx_hash
-        AND r.evt_tx_hash = f.evt_tx_hash
+--     INNER JOIN susd_fees f
+--         ON s.evt_tx_hash = f.evt_tx_hash
+
     )
     
 SELECT *
