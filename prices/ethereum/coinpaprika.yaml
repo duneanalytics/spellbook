@@ -1780,3 +1780,13 @@
   symbol: MOVE
   address: 0x3fa729b4548becbad4eab6ef18413470e6d5324c
   decimals: 18
+- name: cadc-cad-coin
+  id: cadc-cad-coin
+  symbol: CADC
+  address: 0xcadc0acd4b445166f12d2c07eac6e2544fbe2eef
+  decimals: 18
+- name: xsgd-xsgd
+  id: xsgd-xsgd
+  symbol: CADC
+  address: 0x70e8de73ce538da2beed35d14187f6959a8eca96
+  decimals: 6
