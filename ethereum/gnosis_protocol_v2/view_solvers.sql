@@ -12,6 +12,7 @@ WITH known_solvers (address, environment, active, name) as (
                  (decode('e92f359e6f05564849afa933ce8f62b8007a1d5d', 'hex'), 'prod', True, '0x'),
                  (decode('77ec2a722c2393d3fd64617bbaf1499c713e616b', 'hex'), 'prod', True, 'QuasiModo'),
                  (decode('a6ddbd0de6b310819b49f680f65871bee85f517e', 'hex'), 'prod', False, 'Legacy (Archived)'),
+                 (decode('2d15894fac906386ff7f4bd07fceac43fcf80c73', 'hex'), 'prod', True, 'DexCowAgg'),
                  (decode('70f3c870b6e7e1d566e40c41e2e3d6e895fcee23', 'hex'), 'barn', True, 'QuasiModo'),
                  (decode('97dd6a023b06ba4722af8af775ec3c2361e66684', 'hex'), 'barn', True, '0x'),
                  (decode('6372bcbf66656e91b9213b61d861b5e815296207', 'hex'), 'barn', True, 'ParaSwap'),
