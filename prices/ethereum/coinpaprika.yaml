@@ -1790,3 +1790,18 @@
   symbol: XSGD
   address: 0x70e8de73ce538da2beed35d14187f6959a8eca96
   decimals: 6
+- name: unfi-unifi-protocol
+  id: unfi-unifi-protocol
+  symbol: UNFI
+  address: 0x441761326490cACF7aF299725B6292597EE822c2
+  decimals: 18
+- name: sync-sync-network
+  id: sync-sync-network
+  symbol: SYNC
+  address: 0xb6ff96b8a8d214544ca0dbc9b33f7ad6503efd32
+  decimals: 18
+- name: up-unifi-protocol
+  id: up-unifi-protocol
+  symbol: UP
+  address: 0xb6c5c839cef46082a2b51164e8db649c121f147e
+  decimals: 18
