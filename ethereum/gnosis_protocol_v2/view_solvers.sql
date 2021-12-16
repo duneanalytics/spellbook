@@ -12,6 +12,7 @@ WITH known_solvers (address, environment, active, name) as (
                  (decode('e92f359e6f05564849afa933ce8f62b8007a1d5d', 'hex'), 'prod', True, '0x'),
                  (decode('77ec2a722c2393d3fd64617bbaf1499c713e616b', 'hex'), 'prod', True, 'QuasiModo'),
                  (decode('a6ddbd0de6b310819b49f680f65871bee85f517e', 'hex'), 'prod', False, 'Legacy (Archived)'),
+                 (decode('2d15894fac906386ff7f4bd07fceac43fcf80c73', 'hex'), 'prod', True, 'DexCowAgg'),
                  (decode('70f3c870b6e7e1d566e40c41e2e3d6e895fcee23', 'hex'), 'barn', True, 'QuasiModo'),
                  (decode('97dd6a023b06ba4722af8af775ec3c2361e66684', 'hex'), 'barn', True, '0x'),
                  (decode('6372bcbf66656e91b9213b61d861b5e815296207', 'hex'), 'barn', True, 'ParaSwap'),
@@ -19,6 +20,7 @@ WITH known_solvers (address, environment, active, name) as (
                  (decode('8c9d33828dace1eb9fc533ffde88c4a9db115061', 'hex'), 'barn', True, '1inch'),
                  (decode('bfaf2b5e351586551d8bf461ba5b2b5455b173da', 'hex'), 'barn', True, 'Baseline'),
                  (decode('b8650702412d0aa7f01f6bee70335a18d6a78e77', 'hex'), 'barn', True, 'Naive'),
+                 (decode('583cD88b9D7926357FE6bddF0E8950557fcDA0Ca', 'hex'), 'barn', True, 'DexCowAgg'),
                  (decode('6c2999b6b1fad608ecea71b926d68ee6c62beef8', 'hex'), 'barn', False, 'Legacy (Archived)'),
                  (decode('0798540ee03a8c2e68cef19c56d1faa86271d5cf', 'hex'), 'service', False, 'Withdraw (Archived)'),
                  (decode('256bb5ad3dbdf61ae08d7cbc0b9223ccb1c60aae', 'hex'), 'service', True, 'Withdraw'),
@@ -28,7 +30,7 @@ WITH known_solvers (address, environment, active, name) as (
 ),
 
      unknown_solvers as (
-         select distinct(solver), NULL, True, 'Uncatalogued'
+         select distinct(solver), 'new', True, 'Uncatalogued'
          from gnosis_protocol_v2."GPv2Settlement_evt_Settlement"
          where solver not in (select address from known_solvers)
      )
@@ -45,6 +47,6 @@ FROM (
 CREATE UNIQUE INDEX IF NOT EXISTS view_solvers_address_unique_idx ON gnosis_protocol_v2.view_solvers (address);
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('*/30 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol_v2.view_solvers')
+VALUES ('0 */12 * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol_v2.view_solvers')
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;
