@@ -101,7 +101,7 @@ WITH trades_with_prices AS (
                              ELSE sell_price * units_sold
                              END
                      WHEN sell_price IS NULL AND buy_price IS NOT NULL THEN buy_price * units_bought
-                     ELSE -0.01
+                     ELSE NULL::numeric
                     END)                                        as trade_value_usd,
                 buy_price * units_bought                        as buy_value_usd,
                 sell_price * units_sold                         as sell_value_usd,
@@ -115,7 +115,7 @@ WITH trades_with_prices AS (
                              ELSE sell_price * fee
                              END
                      WHEN sell_price IS NULL AND buy_price IS NOT NULL THEN buy_price * units_bought * fee / units_sold
-                     ELSE -0.01
+                     ELSE NULL::numeric
                     END)                                        as fee_usd,
                 app_data,
                 CONCAT('\x', substring(receiver from 3))::bytea as receiver

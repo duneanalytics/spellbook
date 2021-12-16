@@ -86,7 +86,10 @@ WITH rows AS (
             NULL::bytea AS trader_b,
             t."buyAmount" AS token_a_amount_raw,
             t."sellAmount" AS token_b_amount_raw,
-            NULL::numeric AS usd_amount,
+            (CASE
+                 WHEN v.trade_value_usd >= 0 then v.trade_value_usd
+                 ELSE NULL::numeric
+            END) AS usd_amount,
             t."buyToken" token_a_address,
             t."sellToken" token_b_address,
             t.contract_address exchange_contract_address,
@@ -94,6 +97,8 @@ WITH rows AS (
             NULL::integer[] AS trace_address,
             t.evt_index
         FROM gnosis_protocol_v2."GPv2Settlement_evt_Trade" t
+        JOIN gnosis_protocol_v2."view_trades" v
+            ON "orderUid" = order_uid
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
