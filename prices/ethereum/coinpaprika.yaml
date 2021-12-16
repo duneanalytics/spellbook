@@ -1307,7 +1307,7 @@
   decimals: 6
 - name: tryb_bilira
   id: tryb-bilira
-  symbol: TRYb
+  symbol: TRYB
   address: 0x2c537e5624e4af88a7ae4060c022609376c8d0eb
   decimals: 6
 - name: utnp_universa
