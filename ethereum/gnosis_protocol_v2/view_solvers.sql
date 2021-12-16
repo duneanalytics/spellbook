@@ -19,6 +19,7 @@ WITH known_solvers (address, environment, active, name) as (
                  (decode('8c9d33828dace1eb9fc533ffde88c4a9db115061', 'hex'), 'barn', True, '1inch'),
                  (decode('bfaf2b5e351586551d8bf461ba5b2b5455b173da', 'hex'), 'barn', True, 'Baseline'),
                  (decode('b8650702412d0aa7f01f6bee70335a18d6a78e77', 'hex'), 'barn', True, 'Naive'),
+                 (decode('583cD88b9D7926357FE6bddF0E8950557fcDA0Ca', 'hex'), 'barn', True, 'DexCowAgg'),
                  (decode('6c2999b6b1fad608ecea71b926d68ee6c62beef8', 'hex'), 'barn', False, 'Legacy (Archived)'),
                  (decode('0798540ee03a8c2e68cef19c56d1faa86271d5cf', 'hex'), 'service', False, 'Withdraw (Archived)'),
                  (decode('256bb5ad3dbdf61ae08d7cbc0b9223ccb1c60aae', 'hex'), 'service', True, 'Withdraw'),
@@ -45,6 +46,6 @@ FROM (
 CREATE UNIQUE INDEX IF NOT EXISTS view_solvers_address_unique_idx ON gnosis_protocol_v2.view_solvers (address);
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('*/30 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol_v2.view_solvers')
+VALUES ('0 */12 * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol_v2.view_solvers')
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;
