@@ -1787,6 +1787,6 @@
   decimals: 18
 - name: xsgd-xsgd
   id: xsgd-xsgd
-  symbol: CADC
+  symbol: XSGD
   address: 0x70e8de73ce538da2beed35d14187f6959a8eca96
   decimals: 6
