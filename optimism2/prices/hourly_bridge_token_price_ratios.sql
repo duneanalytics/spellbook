@@ -1,4 +1,6 @@
-CREATE TABLE IF NOT EXISTS dune_user_generated.test_hourly_bridge_token_price_ratios(
+DROP TABLE prices.hourly_bridge_token_price_ratios;
+
+CREATE TABLE IF NOT EXISTS prices.hourly_bridge_token_price_ratios(
     hour timestamptz NOT NULL,
     lp_contract bytea,
     erc20_token bytea NOT NULL,
