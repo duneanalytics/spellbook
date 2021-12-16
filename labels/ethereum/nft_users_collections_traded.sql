@@ -25,4 +25,5 @@ SELECT
     type,
     author
 FROM nft_users_collections_traded_clean 
-WHERE label = label_trim;
+WHERE label = label_trim
+    AND LENGTH(label) < 45;;
