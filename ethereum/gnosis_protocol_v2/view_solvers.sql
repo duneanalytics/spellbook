@@ -29,7 +29,7 @@ WITH known_solvers (address, environment, active, name) as (
 ),
 
      unknown_solvers as (
-         select distinct(solver), NULL, True, 'Uncatalogued'
+         select distinct(solver), 'new', True, 'Uncatalogued'
          from gnosis_protocol_v2."GPv2Settlement_evt_Settlement"
          where solver not in (select address from known_solvers)
      )
