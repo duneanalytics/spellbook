@@ -64,13 +64,13 @@ FROM batch_info
 ORDER BY block_time DESC;
 
 
-CREATE UNIQUE INDEX IF NOT EXISTS view_batches_id ON gnosis_protocol_v2.view_batches (tx_hash);
+CREATE INDEX view_batches_id ON gnosis_protocol_v2.view_batches (tx_hash);
 CREATE INDEX view_batches_idx_1 ON gnosis_protocol_v2.view_batches (block_time);
 CREATE INDEX view_batches_idx_2 ON gnosis_protocol_v2.view_batches (solver_address);
 CREATE INDEX view_batches_idx_3 ON gnosis_protocol_v2.view_batches (num_trades);
 
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('*/60 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol_v2.view_batches')
+VALUES ('*/30 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol_v2.view_batches')
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;
