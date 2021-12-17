@@ -71,6 +71,6 @@ CREATE INDEX view_batches_idx_3 ON gnosis_protocol_v2.view_batches (num_trades);
 
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('*/30 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol_v2.view_batches')
+VALUES ('*/60 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol_v2.view_batches')
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;
