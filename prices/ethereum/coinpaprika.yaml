@@ -1795,3 +1795,8 @@
   symbol: BENT
   address: 0x01597e397605bf280674bf292623460b4204c375
   decimals: 18
+  name: convex-crv
+  id: cvxcrv-convex-crv
+  symbol: CVXCRV
+  address: 0x62b9c7356a2dc64a1969e19c23e4f579f9810aa7
+  decimals: 18
