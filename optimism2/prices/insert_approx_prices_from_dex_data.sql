@@ -423,6 +423,7 @@ rows AS (
     ON CONFLICT (contract_address, hour) DO UPDATE SET median_price = EXCLUDED.median_price, sample_size = EXCLUDED.sample_size
     RETURNING 1
 )
+
 SELECT count(*) INTO r from rows;
 RETURN r;
 END
@@ -437,6 +438,9 @@ WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >=
 SELECT prices.insert_approx_prices_from_dex_data('2021-12-01', '2021-12-14')
 WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2021-12-01' and hour < '2021-12-14');
 
+SELECT prices.insert_approx_prices_from_dex_data('2021-12-14', '2021-12-20')
+WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2021-12-14' and hour < '2021-12-20');
+
 -- Have the insert script run twice every hour at minute 16 and 46
 -- `start-time` is set to go back three days in time so that entries can be retroactively updated 
 -- in case `dex.trades` or price data falls behind.
@@ -444,6 +448,7 @@ INSERT INTO cron.job (schedule, command)
 VALUES ('16,46 * * * *', $$
     SELECT prices.insert_approx_prices_from_dex_data(
         (SELECT date_trunc('hour', now()) - interval '3 days'),
-        (SELECT date_trunc('hour', now())));
+        (SELECT now() )
+    );
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
