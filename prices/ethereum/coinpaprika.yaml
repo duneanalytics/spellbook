@@ -1785,3 +1785,18 @@
   symbol: NRG
   address: 0x1416946162b1c2c871a73b07e932d2fb6c932069
   decimals: 18
+- name: agix_singularitynet
+  id: agix-singularitynet
+  symbol: AGIX
+  address: 0x5B7533812759B45C2B44C19e320ba2cD2681b542
+  decimals: 8
+- name: sdao_singularitydao
+  id: sdao-singularitydao
+  symbol: SDAO
+  address: 0x993864e43caa7f7f12953ad6feb1d1ca635b875f
+  decimals: 18
+- name: ntx_nunet
+  id: ntx-nunet
+  symbol: NTX
+  address: 0xf0d33beda4d734c72684b5f9abbebf715d0a7935
+  decimals: 6
