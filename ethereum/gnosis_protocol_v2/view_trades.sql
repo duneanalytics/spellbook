@@ -144,8 +144,7 @@ SELECT *
 FROM valued_trades
 ORDER BY block_time DESC;
 
-
-CREATE UNIQUE INDEX IF NOT EXISTS view_trades_id ON gnosis_protocol_v2.view_trades (order_uid);
+CREATE INDEX view_trades_id ON gnosis_protocol_v2.view_trades (order_uid);
 CREATE INDEX view_trades_idx_1 ON gnosis_protocol_v2.view_trades (block_time);
 CREATE INDEX view_trades_idx_2 ON gnosis_protocol_v2.view_trades (sell_token_address);
 CREATE INDEX view_trades_idx_3 ON gnosis_protocol_v2.view_trades (buy_token_address);
