@@ -79,6 +79,10 @@ WITH trades_with_prices AS (
          FROM batches_with_nested_uids_and_appdata
      ),
 
+     deduplicated_app_uid_map as (
+         select distinct on (uid) uid, app_data, receiver from uid_to_app_id
+     ),
+
      valued_trades as (
          SELECT block_time,
                 tx_hash,
@@ -120,9 +124,8 @@ WITH trades_with_prices AS (
                 app_data,
                 CONCAT('\x', substring(receiver from 3))::bytea as receiver
          FROM trades_with_token_units
-                  JOIN uid_to_app_id
+                  JOIN deduplicated_app_uid_map
                        ON uid = order_uid
-         ORDER BY block_time DESC
      )
 -- This would be the kind of basic table we display when querying: It seems impractical to store the URL links
 -- created from the hashes (trader, transaction and order id) so they have not been included here.
