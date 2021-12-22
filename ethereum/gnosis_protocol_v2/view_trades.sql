@@ -31,7 +31,7 @@ WITH trades_with_prices AS (
                                          THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                                      ELSE trades."buyToken"
                                      END)
-                                 AND s.minute > NOW() - interval '1 day'
+                                 AND b.minute > NOW() - interval '1 day'
                                  AND b.minute = date_trunc('minute', evt_block_time)
     WHERE evt_block_time > NOW() - interval '1 day'
 ),
