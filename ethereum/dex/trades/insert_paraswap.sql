@@ -149,6 +149,7 @@ WITH rows AS (
             swaps."call_trace_address" AS trace_address,
             NULL::int8 AS evt_index
         FROM paraswap."AugustusSwapper5.0_call_swapOnUniswap" swaps
+        WHERE swaps."call_success" = true
         UNION ALL
 
         -- AugustusSwapper5.0_call_swapOnUniswapFork
@@ -165,6 +166,7 @@ WITH rows AS (
             swaps."call_trace_address" AS trace_address,
             NULL::int8 AS evt_index
         FROM paraswap."AugustusSwapper5.0_call_swapOnUniswapFork" swaps
+        WHERE swaps."call_success" = true
         UNION ALL
         
         -- AugustusSwapper6.0_evt_Swapped
@@ -213,6 +215,7 @@ WITH rows AS (
             swaps."call_trace_address" AS trace_address,
             NULL::int8 AS evt_index
         FROM paraswap."AugustusSwapper6.0_call_swapOnUniswap" swaps
+        WHERE swaps."call_success" = true
         UNION ALL
 
         -- AugustusSwapper6.0_call_swapOnUniswapFork
@@ -229,6 +232,7 @@ WITH rows AS (
             swaps."call_trace_address" AS trace_address,
             NULL::int8 AS evt_index
         FROM paraswap."AugustusSwapper6.0_call_swapOnUniswapFork" swaps
+        WHERE swaps."call_success" = true
         UNION ALL
 
         -- AugustusSwapper6.0_call_swapOnZeroXv2 
@@ -249,6 +253,7 @@ WITH rows AS (
             SELECT * FROM paraswap."AugustusSwapper6.0_call_swapOnZeroXv2" UNION ALL
             SELECT * FROM paraswap."AugustusSwapper6.0_call_swapOnZeroXv4"
         ) swaps
+        WHERE swaps."call_success" = true
 
     ) dexs
 

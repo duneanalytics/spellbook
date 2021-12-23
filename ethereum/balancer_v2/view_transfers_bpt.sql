@@ -16,3 +16,9 @@ FROM element."ConvergentCurvePool_evt_Transfer"
 UNION ALL
 SELECT *
 FROM balancer_v2."InvestmentPool_evt_Transfer"
+UNION ALL
+SELECT *
+FROM balancer_v2."AaveLinearPool_evt_Transfer"
+UNION ALL
+SELECT *
+FROM balancer_v2."StablePhantomPool_evt_Transfer"
