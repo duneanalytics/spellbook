@@ -9,8 +9,6 @@ WITH batch_counts AS (
            (select count(*)
             from gnosis_protocol_v2."GPv2Settlement_evt_Trade" t
             where t.evt_tx_hash = i.evt_tx_hash)                                                  as num_trades,
-           -- TODO: DEX swaps is counted as 1 when we use an aggregator (regardless of route taken).
-           --  We should be able to dissect the call data here and get the correct number of swaps
            sum(case when selector != '\x2e1a7d4d' and selector != '\x095ea7b3' then 1 else 0 end) as dex_swaps,
            sum(case when selector = '\x2e1a7d4d' then 1 else 0 end)                               as unwraps,
            sum(case when selector = '\x095ea7b3' then 1 else 0 end)                               as token_approvals
@@ -35,7 +33,13 @@ WITH batch_counts AS (
      batch_info as (
          SELECT evt_block_time                               as block_time,
                 num_trades,
-                dex_swaps,
+                CASE
+                    WHEN name = '1inch'
+                        OR name = 'Paraswap'
+                        OR name = '0x'
+                        OR name = 'Legacy'
+                        THEN (select count(*) from dex.trades where tx_hash = evt_tx_hash and category = 'DEX')
+                    ELSE dex_swaps END                       as dex_swaps,
                 batch_value,
                 tx.gas_used / num_trades                     as gas_per_trade,
                 solver                                       as solver_address,

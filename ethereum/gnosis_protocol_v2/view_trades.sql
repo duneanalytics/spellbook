@@ -79,6 +79,10 @@ WITH trades_with_prices AS (
          FROM batches_with_nested_uids_and_appdata
      ),
 
+     deduplicated_app_uid_map as (
+         select distinct on (uid) uid, app_data, receiver from uid_to_app_id
+     ),
+
      valued_trades as (
          SELECT block_time,
                 tx_hash,
@@ -101,7 +105,7 @@ WITH trades_with_prices AS (
                              ELSE sell_price * units_sold
                              END
                      WHEN sell_price IS NULL AND buy_price IS NOT NULL THEN buy_price * units_bought
-                     ELSE -0.01
+                     ELSE NULL::numeric
                     END)                                        as trade_value_usd,
                 buy_price * units_bought                        as buy_value_usd,
                 sell_price * units_sold                         as sell_value_usd,
@@ -115,14 +119,13 @@ WITH trades_with_prices AS (
                              ELSE sell_price * fee
                              END
                      WHEN sell_price IS NULL AND buy_price IS NOT NULL THEN buy_price * units_bought * fee / units_sold
-                     ELSE -0.01
+                     ELSE NULL::numeric
                     END)                                        as fee_usd,
                 app_data,
                 CONCAT('\x', substring(receiver from 3))::bytea as receiver
          FROM trades_with_token_units
-                  JOIN uid_to_app_id
+                  JOIN deduplicated_app_uid_map
                        ON uid = order_uid
-         ORDER BY block_time DESC
      )
 -- This would be the kind of basic table we display when querying: It seems impractical to store the URL links
 -- created from the hashes (trader, transaction and order id) so they have not been included here.
@@ -144,13 +147,13 @@ SELECT *
 FROM valued_trades
 ORDER BY block_time DESC;
 
-
-CREATE UNIQUE INDEX IF NOT EXISTS view_trades_id ON gnosis_protocol_v2.view_trades (order_uid);
+CREATE UNIQUE INDEX IF NOT EXISTS view_trades_id ON gnosis_protocol_v2.view_trades (order_uid, tx_hash);
 CREATE INDEX view_trades_idx_1 ON gnosis_protocol_v2.view_trades (block_time);
 CREATE INDEX view_trades_idx_2 ON gnosis_protocol_v2.view_trades (sell_token_address);
 CREATE INDEX view_trades_idx_3 ON gnosis_protocol_v2.view_trades (buy_token_address);
 CREATE INDEX view_trades_idx_4 ON gnosis_protocol_v2.view_trades (trader);
 CREATE INDEX view_trades_idx_5 ON gnosis_protocol_v2.view_trades (app_data);
+CREATE INDEX view_trades_idx_6 ON gnosis_protocol_v2.view_trades (tx_hash);
 
 
 INSERT INTO cron.job (schedule, command)
