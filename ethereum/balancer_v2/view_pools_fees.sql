@@ -13,3 +13,9 @@ FROM balancer_v2."LiquidityBootstrappingPool_evt_SwapFeePercentageChanged"
 UNION ALL
 SELECT *
 FROM balancer_v2."InvestmentPool_evt_SwapFeePercentageChanged"
+UNION ALL
+SELECT *
+FROM balancer_v2."AaveLinearPool_evt_SwapFeePercentageChanged"
+UNION ALL
+SELECT *
+FROM balancer_v2."StablePhantomPool_evt_SwapFeePercentageChanged"
