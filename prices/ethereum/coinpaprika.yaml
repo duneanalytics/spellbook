@@ -1785,6 +1785,17 @@
   symbol: NRG
   address: 0x1416946162b1c2c871a73b07e932d2fb6c932069
   decimals: 18
+- name: bpro_bprotocol
+  id: bpro-bprotocol    
+  symbol: BPRO 				      
+  address: 0xbbbbbbb5aa847a2003fbc6b5c16df0bd1e725f61       
+  decimals: 18              
+  decimals: 18       
+- name: bent_finance
+  id: bent-bent-finance
+  symbol: BENT
+  address: 0x01597e397605bf280674bf292623460b4204c375
+  decimals: 18
 - name: agix_singularitynet
   id: agix-singularitynet
   symbol: AGIX
