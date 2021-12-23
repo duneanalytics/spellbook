@@ -1307,7 +1307,7 @@
   decimals: 6
 - name: tryb_bilira
   id: tryb-bilira
-  symbol: TRYb
+  symbol: TRYB
   address: 0x2c537e5624e4af88a7ae4060c022609376c8d0eb
   decimals: 6
 - name: utnp_universa
@@ -1800,3 +1800,23 @@
   symbol: NTX
   address: 0xf0d33beda4d734c72684b5f9abbebf715d0a7935
   decimals: 6
+- name: xsgd_xsgd
+  id: xsgd-xsgd
+  symbol: XSGD
+  address: 0x70e8de73ce538da2beed35d14187f6959a8eca96
+  decimals: 6
+- name: unfi_unifi_protocol
+  id: unfi-unifi-protocol
+  symbol: UNFI
+  address: 0x441761326490cACF7aF299725B6292597EE822c2
+  decimals: 18
+- name: sync_sync_network
+  id: sync-sync-network
+  symbol: SYNC
+  address: 0xb6ff96b8a8d214544ca0dbc9b33f7ad6503efd32
+  decimals: 18
+- name: up_unifi_protocol
+  id: up-unifi-protocol
+  symbol: UP
+  address: 0xb6c5c839cef46082a2b51164e8db649c121f147e
+  decimals: 18
