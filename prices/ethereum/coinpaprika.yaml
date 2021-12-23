@@ -1780,28 +1780,43 @@
   symbol: MOVE
   address: 0x3fa729b4548becbad4eab6ef18413470e6d5324c
   decimals: 18
-- name: cadc-cad-coin
-  id: cadc-cad-coin
-  symbol: CADC
-  address: 0xcadc0acd4b445166f12d2c07eac6e2544fbe2eef
+- name: nrg_energi
+  id: nrg-energi
+  symbol: NRG
+  address: 0x1416946162b1c2c871a73b07e932d2fb6c932069
   decimals: 18
-- name: xsgd-xsgd
+- name: agix_singularitynet
+  id: agix-singularitynet
+  symbol: AGIX
+  address: 0x5B7533812759B45C2B44C19e320ba2cD2681b542
+  decimals: 8
+- name: sdao_singularitydao
+  id: sdao-singularitydao
+  symbol: SDAO
+  address: 0x993864e43caa7f7f12953ad6feb1d1ca635b875f
+  decimals: 18
+- name: ntx_nunet
+  id: ntx-nunet
+  symbol: NTX
+  address: 0xf0d33beda4d734c72684b5f9abbebf715d0a7935
+  decimals: 6
+- name: xsgd_xsgd
   id: xsgd-xsgd
   symbol: XSGD
   address: 0x70e8de73ce538da2beed35d14187f6959a8eca96
   decimals: 6
-- name: unfi-unifi-protocol
+- name: unfi_unifi_protocol
   id: unfi-unifi-protocol
   symbol: UNFI
   address: 0x441761326490cACF7aF299725B6292597EE822c2
   decimals: 18
-- name: sync-sync-network
+- name: sync_sync_network
   id: sync-sync-network
   symbol: SYNC
   address: 0xb6ff96b8a8d214544ca0dbc9b33f7ad6503efd32
   decimals: 18
-- name: up-unifi-protocol
+- name: up_unifi_protocol
   id: up-unifi-protocol
   symbol: UP
   address: 0xb6c5c839cef46082a2b51164e8db649c121f147e
-  decimals: 18
+  decimals: 18 
