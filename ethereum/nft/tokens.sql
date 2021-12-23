@@ -4818,6 +4818,11 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x7853f89f65344f9d6807d7080c4a02be1b12adb3	Cat Russell	CAAAT	ERC721
 \\xf36446105fF682999a442b003f2224BcB3D82067	Axolittles	AXOLITTLE	erc721
 \\xb228d7b6e099618ca71bd5522b3a8c3788a8f172	Poolsuite Executive Member	POOLEXEC	ERC721
+\\xc3f8a0f5841abff777d3eefa5047e8d413a1c9ab	Merge	M	ERC721
+\\xb228d7b6e099618ca71bd5522b3a8c3788a8f172	Omnomnom	M	ERC721
+\\x938e95271311641dc88fedaa6d7b9afdc875daa9	Invisible Mechanisms	Hate	ERC721
+\\x62f5418d9edbc13b7e07a15e095d7228cd9386c5	Fade	FADE	ERC721
+\\x74bb71a4210e33256885def483fd4227b7f9d88f	Fomoverse	FOMO	ERC721
 \.
 
 
