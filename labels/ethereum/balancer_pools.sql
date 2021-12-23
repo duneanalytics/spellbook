@@ -54,4 +54,4 @@ final as (
 )
 SELECT *
 FROM final
-WHERE LENGTH(label) < 50
+WHERE LENGTH(label) < 35
