@@ -1831,3 +1831,13 @@
   symbol: UP
   address: 0xb6c5c839cef46082a2b51164e8db649c121f147e
   decimals: 18
+- name: near_protocol
+  id: near-near-protocol
+  symbol: NEAR
+  address: 0x85f17cf997934a597031b2e18a9ab6ebd4b9f6a4
+  decimal: 24
+- name: bitdao
+  id: bit-bitdao
+  symbol: BIT
+  address: 0x1a4b46696b2bb4794eb3d4c26f1c55f9170fa4c5
+  decimal: 18
