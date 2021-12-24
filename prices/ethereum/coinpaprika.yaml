@@ -1831,3 +1831,8 @@
   symbol: UP
   address: 0xb6c5c839cef46082a2b51164e8db649c121f147e
   decimals: 18
+- name: bios-0xnodes
+  id: bios-0xnodes
+  symbol: BIOS
+  address: 0xAACa86B876ca011844b5798ECA7a67591A9743C8
+  decimals: 18
