@@ -1846,3 +1846,8 @@
   symbol: FOX
   address: 0xc770eefad204b5180df6a14ee197d99d808ee52d
   decimals: 18
+- name: bios-0xnodes
+  id: bios-0xnodes
+  symbol: BIOS
+  address: 0xAACa86B876ca011844b5798ECA7a67591A9743C8
+  decimals: 18
