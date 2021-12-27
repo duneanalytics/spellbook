@@ -1,7 +1,7 @@
 CREATE SCHEMA IF NOT EXISTS ovm2;
 
 CREATE TABLE IF NOT EXISTS ovm2.l1_gas_price_oracle_updates (
-    block_number numeric PRIMARY,
+    block_number numeric PRIMARY KEY,
     l1_gas_price numeric NOT NULL,
     block_time timestamptz NOT NULL,
 );
