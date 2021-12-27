@@ -1,0 +1,75 @@
+CREATE OR REPLACE FUNCTION ovm2.insert_l1_gas_price_oracle_updates(start_block numeric, end_block numeric) RETURNS integer
+LANGUAGE plpgsql AS $function$
+DECLARE r integer;
+BEGIN
+WITH rows AS (
+    INSERT INTO ovm2.l1_gas_price_oracle_updates (
+        block_number,
+        l1_gas_price,
+        block_time
+    )
+
+	WITH gs AS (
+	SELECT
+	generate_series(start_block,end_block +1,1) AS bn
+	)
+
+	,updates AS (
+	SELECT block_number, "block_time",
+	    bytea2numeric(data)/1e9 AS l1_gas_price
+	    FROM optimism.logs l
+	    WHERE topic1 ='\x351fb23757bb5ea0546c85b7996ddd7155f96b939ebaa5ff7bc49c75f27f2c44'
+	    AND contract_address = '\x420000000000000000000000000000000000000f'
+
+	UNION ALL
+	SELECT 0,'11-11-2021'::date,1 --backfill block 1
+	WHERE 1 >= start_block --only backfill if needed
+
+	)
+
+	, events AS (
+	SELECT
+	block_number, "block_time",
+	l1_gas_price,
+	count(l1_gas_price) OVER (ORDER BY block_number) AS grp
+	FROM (
+	SELECT gs.bn AS block_number, "block_time",
+	    CASE WHEN gs.bn = 1 THEN 1 ELSE l1_gas_price END AS l1_gas_price
+	    FROM gs
+	    LEFT JOIN updates u
+	    ON gs.bn = u.block_number + 1  --add 1 since the new gas price takes effect in the next block
+	    ) p
+
+	)
+
+	--https://dba.stackexchange.com/questions/186218/carry-over-long-sequence-of-missing-values-with-postgres
+
+	SELECT block_number
+	, first_value(l1_gas_price) OVER (PARTITION BY grp ORDER BY block_number) AS l1_gas_price
+	, first_value(block_time) OVER (PARTITION BY grp ORDER BY block_number) AS block_time
+
+	FROM events
+
+    ON CONFLICT DO NOTHING
+    RETURNING 1
+)
+SELECT count(*) INTO r from rows;
+RETURN r;
+END
+$function$;
+
+-- Get the table started
+SELECT ovm2.insert_l1_gas_price_oracle_updates(1,1000)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM ovm2.l1_gas_price_oracle_updates
+    WHERE block_number = 1000
+);
+
+INSERT INTO cron.job (schedule, command)
+VALUES ('5,15,25,35,45,55 * * * *', $$
+    SELECT ovm2.insert_l1_gas_price_oracle_updates(
+        (SELECT max(number) FROM optimism.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM ovm2.l1_gas_price_oracle_updates),
+        (SELECT MAX(number) FROM optimism.blocks);
+$$)
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
