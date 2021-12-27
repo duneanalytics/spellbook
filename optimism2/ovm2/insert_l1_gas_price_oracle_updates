@@ -65,12 +65,6 @@ WHERE NOT EXISTS (
     FROM ovm2.l1_gas_price_oracle_updates
     WHERE block_number = 1000
 );
-SELECT ovm2.insert_l1_gas_price_oracle_updates(1001,10000)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM ovm2.l1_gas_price_oracle_updates
-    WHERE block_number = 1000
-);
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('5,15,25,35,45,55 * * * *', $$
