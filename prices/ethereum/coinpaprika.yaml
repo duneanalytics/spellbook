@@ -1851,3 +1851,8 @@
   symbol: BIOS
   address: 0xAACa86B876ca011844b5798ECA7a67591A9743C8
   decimals: 18
+- name: pooltogether
+  id: pool-pooltogether
+  symbol: POOL
+  address: 0x0cec1a9154ff802e7934fc916ed7ca50bde6844e
+  decimals: 18
