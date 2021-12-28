@@ -162,6 +162,7 @@ WITH rows AS (
                         and substring(tr1.input from 1 for 4) = '\x23b872dd' -- transferFrom()
                         and substring(tr1.input from 17 for 20) = sender
                         and substring(tr1.input from 49 for 20) = substring(numeric2bytea(mod(pools[1], 2^160::numeric)) from 13 for 20)
+                        and COALESCE(call_trace_address, array[]::int[]) = tr1.trace_address[:COALESCE(ARRAY_LENGTH(call_trace_address, 1), 0)]
                     limit 1
                 ), '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') as "srcToken",
                 COALESCE((
@@ -170,6 +171,7 @@ WITH rows AS (
                         and substring(tr2.input from 1 for 4) = '\xa9059cbb' -- transfer()
                         and substring(tr2.input from 17 for 20) = recipient
                         and tr2.from = substring(numeric2bytea(mod(pools[array_length(pools, 1)], 2^160::numeric)) from 13 for 20)
+                        and COALESCE(call_trace_address, array[]::int[]) = tr2.trace_address[:COALESCE(ARRAY_LENGTH(call_trace_address, 1), 0)]
                     limit 1
                 ), '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') as "dstToken",
                 "pools",
