@@ -143,11 +143,11 @@ SELECT prices.insert_hourly_bridge_token_price_ratios('2021-11-01', '2021-12-01'
 
 SELECT prices.insert_hourly_bridge_token_price_ratios('2021-12-01', '2021-12-16');
 
--- Have the insert script run twice every hour at minute 16 and 46
+-- Have the insert script run twice every hour at minute 15 and 45
 -- `start-time` is set to go back three days in time so that entries can be retroactively updated 
 -- in case `dex.trades` or price data falls behind.
 INSERT INTO cron.job (schedule, command)
-VALUES ('16,46 * * * *', $$
+VALUES ('15,45 * * * *', $$
     SELECT prices.insert_hourly_bridge_token_price_ratios(
         (SELECT date_trunc('hour', now()) - interval '3 days'),
         (SELECT date_trunc('hour', now())));
