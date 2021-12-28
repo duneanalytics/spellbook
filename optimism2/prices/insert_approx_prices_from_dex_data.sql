@@ -230,6 +230,7 @@ GROUP BY 1,2,3, 4
 
 ) c
 --WHERE hrank = 1 -- holdover if we want to turn this to latest price
+WHERE num_samples > 1 -- exclude low sample updates for DEX trades
 )
 
 , dex_price_synths AS (
@@ -325,6 +326,7 @@ FROM (
 
     ) rnk
 --WHERE h_rank = 1
+WHERE num_samples > 1 -- exclude low sample updates for DEX trades
 )
 
 , dex_price_bridge_tokens AS (
