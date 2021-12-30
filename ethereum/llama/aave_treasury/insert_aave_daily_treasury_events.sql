@@ -219,7 +219,7 @@ LEFT JOIN dune_user_generated.llama_token_migrations m
 
 GROUP BY 1,2,3--,4,5
 ) b
-LEFT JOIN dune_user_generated.llama_aave_fees_by_day at --fee generating events
+LEFT JOIN llama.aave_fees_by_day at --fee generating events
 ON DATE_TRUNC('day',at.day) = b.evt_day
 AND at.contract_address = b.contract_address
 AND LOWER(at.version) = LOWER(b.version)
