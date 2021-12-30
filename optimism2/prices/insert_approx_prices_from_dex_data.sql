@@ -9,6 +9,25 @@ hour_gs AS (
 SELECT generate_series(DATE_TRUNC('hour',start_time) , DATE_TRUNC('hour',end_time) , '1 hour') AS hour
 )
 
+, starting_prices AS ( --carry over previous prices if no trades (to avoid gaps)
+	WITH last_updates AS (
+		SELECT        
+		contract_address,
+		MAX(hour) AS last_hour
+		FROM prices.approx_prices_from_dex_data
+		WHERE median_price IS NOT NULL
+		AND hour <= (start_time - interval '3 days')
+		AND contract_address != '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000' --Raw ETH, gets auto-filled in from WETH later
+		GROUP BY 1
+		)
+	SELECT p.contract_address AS token, DATE_TRUNC('hour',(start_time - interval '3 days')) AS hour, p.median_price, 1 AS num_samples, p.symbol, p.decimals
+	FROM prices.approx_prices_from_dex_data p
+	INNER JOIN last_updates u
+		ON u.contract_address = p.contract_address
+		AND u.last_hour = p.hour
+	GROUP BY 1,2,3,4,5,6
+)
+
 , dex_price_stables AS (
 --for tokens where dune doesn't have the price, calculate the median price, assuming USDT, DAI, USDC = 1
 SELECT
@@ -344,9 +363,9 @@ INNER JOIN prices_vs_stables p
 
 , price AS (
 WITH get_best_price_estimate AS (
-SELECT hour, token, symbol, decimals, median_price, num_samples
+SELECT hour, token, symbol, decimals, median_price, num_samples, rnk
     FROM (    
-        SELECT *, DENSE_RANK() OVER (PARTITION BY hour, token ORDER BY num_samples DESC, rnk ASC) AS p_rank --pick which price to take
+        SELECT *, ROW_NUMBER() OVER (PARTITION BY hour, token ORDER BY num_samples DESC, rnk ASC) AS p_rank --pick which price to take
         FROM (
             SELECT hour, token, symbol, decimals, median_price, num_samples, 1 AS rnk FROM prices_vs_stables WHERE "window" = 1 --when trades happened
 		UNION ALL
@@ -355,13 +374,16 @@ SELECT hour, token, symbol, decimals, median_price, num_samples
             SELECT hour, token, symbol, decimals, median_price, num_samples, -1 AS rnk FROM dex_price_synths --always use synths for susd
 		UNION ALL
             SELECT hour, token, symbol, decimals, median_price, num_samples, -1 AS rnk FROM dex_price_bridge_tokens --bridge tokens
+        	UNION ALL
+            SELECT hour, token, symbol, decimals, median_price, num_samples, 99 AS rnk FROM starting_prices --starting point if null
             ) a
+            WHERE median_price IS NOT NULL
         ) r
     WHERE p_rank = 1
     )
-SELECT hour, token, symbol, decimals, median_price, num_samples FROM get_best_price_estimate
+SELECT hour, token, symbol, decimals, median_price, num_samples, rnk FROM get_best_price_estimate
 UNION ALL
-SELECT hour, '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000' AS token, 'ETH' AS symbol, 18 AS decimals, median_price, num_samples
+SELECT hour, '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000' AS token, 'ETH' AS symbol, 18 AS decimals, median_price, num_samples, rnk
 FROM get_best_price_estimate WHERE token = '\x4200000000000000000000000000000000000006'
 
 )
