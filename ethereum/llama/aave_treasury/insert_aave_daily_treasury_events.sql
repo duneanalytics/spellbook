@@ -38,7 +38,7 @@ gas_out
     )
 	
 WITH addresses AS (
-SELECT address FROM dune_user_generated.llama_treasury_addresses WHERE protocol = 'Aave' AND version IN ('V1','V2') AND blockchain = 'Ethereum'
+SELECT address FROM dune_user_generated.llama_treasury_addresses WHERE protocol = 'Aave' AND blockchain = 'Ethereum'
 )
 
 , eth_transfers AS 
@@ -57,7 +57,7 @@ SELECT address FROM dune_user_generated.llama_treasury_addresses WHERE protocol 
     'Gas Out' AS tr_type, t."from" AS addr
     FROM ethereum.transactions t
     WHERE t."from" IN (SELECT "address" FROM dune_user_generated."llama_treasury_addresses"
-                        WHERE "blockchain" = 'Ethereum' AND "protocol" = 'Aave' AND "version" IN ('V1','V2'))
+                        WHERE "blockchain" = 'Ethereum' AND "protocol" = 'Aave')
     AND "success" = false
     AND block_time >= start_time_day AND block_time <= end_time_day
     --GROUP BY 1,2,3
@@ -101,7 +101,6 @@ INNER JOIN dune_user_generated.llama_treasury_addresses g
     ON a.addr = g.address
     AND g.blockchain = 'Ethereum'
     AND g."protocol" = 'Aave'
-    AND "version" IN ('V1','V2')
 WHERE ABS(value) >0
 )
 
@@ -176,8 +175,7 @@ FROM
     AND g.blockchain = 'Ethereum'
     AND g."protocol" = 'Aave'
     
-    WHERE g."version" IN ('V1','V2')
-    AND t."from" IN (SELECT address FROM addresses)
+    WHERE t."from" IN (SELECT address FROM addresses)
     AND t.evt_block_time >= start_time_day AND t.evt_block_time <= end_time_day
     
     UNION ALL
@@ -205,8 +203,7 @@ FROM
     AND g.blockchain = 'Ethereum'
     AND g."protocol" = 'Aave'
     
-    WHERE g."version" IN ('V1','V2')
-    AND tb."to" IN (SELECT address FROM addresses)
+    WHERE tb."to" IN (SELECT address FROM addresses)
     AND tb.evt_block_time >= start_time_day AND tb.evt_block_time <= end_time_day
     
     UNION ALL
