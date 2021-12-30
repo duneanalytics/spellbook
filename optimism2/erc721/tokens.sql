@@ -16,6 +16,7 @@ COPY erc721.tokens (contract_address, project_name) FROM stdin;
 \\x8ceac0f1fbac4cf48527b35f8bc629fb30653184	Animal Coloring Book Eraser
 \\xfb0b3e0f27a2a858cc6656627e662b0d3cd5b19b	ETHDubaiTicket
 \\x2596b971ee0de4532566c59fa394c0d29f21d224	OptimisticBoredApeYachtClub
+\\xC7adDfaf516751e1b3C068B763bcA13dDc5499F9	MintMyRun
 \.
 
 COMMIT;

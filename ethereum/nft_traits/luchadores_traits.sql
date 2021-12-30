@@ -1,5 +1,8 @@
 BEGIN;
 CREATE SCHEMA IF NOT EXISTS luchadores;
+
+DROP TABLE luchadores.attributes;
+
 CREATE TABLE IF NOT EXISTS luchadores.attributes(
     token_id SMALLINT PRIMARY KEY,
     number_attributes SMALLINT,
@@ -13,7 +16,6 @@ CREATE TABLE IF NOT EXISTS luchadores.attributes(
 );
 
 INSERT INTO luchadores.attributes(token_id, number_attributes, torso, arms, mask, mouth, spirit, cape, boots) VALUES
-
 ( 1,3,'Suspenders','Gloves','Striped','','','',''),
 ( 2,3,'','Arm Bands','Split','','','','Two Tone'),
 ( 3,2,'Open Shirt','Sleeves','','','','',''),
