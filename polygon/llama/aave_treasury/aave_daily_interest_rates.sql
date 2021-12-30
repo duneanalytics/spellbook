@@ -2,11 +2,11 @@ CREATE SCHEMA IF NOT EXISTS llama;
 
 CREATE TABLE IF NOT EXISTS llama.aave_daily_interest_rates (   
 	underlying_token bytea,
-	  token bytea,
-	  day timestamptz,
-	  interest_rate_raw numeric,
-	  interest_rate_ray numeric,
-	  interest_rate_apr numeric,
+	token bytea,
+	day timestamptz,
+	interest_rate_raw numeric,
+	interest_rate_ray numeric,
+	interest_rate_apr numeric,
 		PRIMARY KEY (underlying_token, token, day)
 );
 
