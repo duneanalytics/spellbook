@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS llama.aave_tokens (
     symbol text,
     erc20_address bytea,
     erc20_symbol text,
-    side text
+    side text,
+        UNIQUE (token_address, erc20_address, side)
 );
 
 CREATE INDEX IF NOT EXISTS llama_aave_treasury_aave_tokens_token_address_idx ON llama.aave_tokens (token_address);
