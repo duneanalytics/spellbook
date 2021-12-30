@@ -31,7 +31,7 @@ WITH rows AS (
 		)
 		, start_off AS ( --default first block to the most recent L1 Gas Price (handle for edge case of no updates)
 		SELECT start_block-1 AS block_number, time AS block_time, --start number minus 1 since we increment it later
-			(SELECT l1_gas_price FROM dune_user_generated.l1_gas_price_oracle_updates_b
+			(SELECT l1_gas_price FROM ovm2.l1_gas_price_oracle_updates
 			    WHERE block_number <= start_block  ORDER BY block_number DESC LIMIT 1) AS l1_gas_price
 		FROM optimism.blocks b
 		WHERE b."number" = start_block
