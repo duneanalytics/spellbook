@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION llama.insert_aave_tokens(start_time numeric, end_time numeric) RETURNS integer
+CREATE OR REPLACE FUNCTION llama.insert_aave_tokens(start_time timestamptz, end_time timestamptz) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -24,11 +24,12 @@ a.asset AS erc20_address,
 e.symbol AS erc20_symbol,
 'Deposit' AS side
 FROM aave_v2."LendingPoolConfigurator_evt_ReserveInitialized" a --asset is raw, atoken is atoken
-	WHERE evt_block_time >= start_time
-	AND evt_block_time <= end_time
 
 LEFT JOIN erc20."tokens" e
 ON a.asset = e."contract_address"
+	
+WHERE evt_block_time >= start_time
+AND evt_block_time <= end_time
 
 UNION --ammtokens
 
@@ -88,7 +89,7 @@ END
 $function$;
 
 -- Get the table started
-SELECT llama.insert_aave_tokens('2019-01-01'::date,NOW())
+SELECT llama.insert_aave_tokens('2019-01-01'::timestamptz,NOW())
 WHERE NOT EXISTS (
     SELECT *
     FROM llama.insert_aave_tokens
