@@ -120,7 +120,7 @@ END
 $function$;
 
 -- Get the table started
-SELECT llama.insert_aave_daily_atoken_balances(DATE_TRUNC('day','2021-04-13'::timestamptz),DATE_TRUNC('day','2021-12-31'::timestamptz) )
+SELECT llama.insert_aave_daily_atoken_balances(DATE_TRUNC('day','2020-01-24'::timestamptz),DATE_TRUNC('day','2021-12-31'::timestamptz) )
 WHERE NOT EXISTS (
     SELECT *
     FROM llama.aave_daily_atoken_balances
