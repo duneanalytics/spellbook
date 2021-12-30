@@ -13,17 +13,33 @@ WITH rows AS (
 	SELECT
 	generate_series(start_block,end_block +1,1) AS bn
 	)
+	
 
 	,updates AS (
-	SELECT block_number, "block_time",
-	    bytea2numeric(data)/1e9 AS l1_gas_price
-	    FROM optimism.logs l
-	    WHERE topic1 ='\x351fb23757bb5ea0546c85b7996ddd7155f96b939ebaa5ff7bc49c75f27f2c44'
-	    AND contract_address = '\x420000000000000000000000000000000000000f'
+		WITH oracle_reads  AS (
+		SELECT block_number, "block_time",
+		    bytea2numeric(data)/1e9 AS l1_gas_price
+		    FROM optimism.logs l
+		    WHERE topic1 ='\x351fb23757bb5ea0546c85b7996ddd7155f96b939ebaa5ff7bc49c75f27f2c44'
+		    AND contract_address = '\x420000000000000000000000000000000000000f'
+			AND block_number IN (SELECT bn FROM gs)
+			AND block_number >= start_block
 
+		UNION ALL
+		SELECT 0,'11-11-2021'::date,1 --backfill block 1
+		WHERE 1 >= start_block --only backfill if needed
+		)
+		, start_off AS ( --default first block to the most recent L1 Gas Price (handle for edge case of no updates)
+		SELECT start_block-1 AS block_number, time AS block_time, --start number minus 1 since we increment it later
+			(SELECT l1_gas_price FROM ovm2.l1_gas_price_oracle_updates
+			    WHERE block_number <= start_block  ORDER BY block_number DESC LIMIT 1) AS l1_gas_price
+		FROM optimism.blocks b
+		WHERE b."number" = start_block
+		AND NOT EXISTS (SELECT 1 FROM oracle_reads oru WHERE oru.block_number <= start_block) --if there's no block on or before the start
+		)
+	SELECT block_number, block_time, l1_gas_price FROM oracle_reads
 	UNION ALL
-	SELECT 0,'11-11-2021'::date,1 --backfill block 1
-	WHERE 1 >= start_block --only backfill if needed
+	SELECT block_number, block_time, l1_gas_price FROM start_off
 
 	)
 
@@ -64,6 +80,13 @@ WHERE NOT EXISTS (
     SELECT *
     FROM ovm2.l1_gas_price_oracle_updates
     WHERE block_number = 1000
+);
+
+SELECT ovm2.insert_l1_gas_price_oracle_updates(1000,100000)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM ovm2.l1_gas_price_oracle_updates
+    WHERE block_number = 100000
 );
 
 INSERT INTO cron.job (schedule, command)
