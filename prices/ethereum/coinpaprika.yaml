@@ -1856,3 +1856,8 @@
   symbol: POOL
   address: 0x0cec1a9154ff802e7934fc916ed7ca50bde6844e
   decimals: 18
+- name: biconomy
+  id: bico-biconomy
+  symbol: BICO
+  address: 0xf17e65822b568b3903685a7c9f496cf7656cc6c2
+  decimals: 18
