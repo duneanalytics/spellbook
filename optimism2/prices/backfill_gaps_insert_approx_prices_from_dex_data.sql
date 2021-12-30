@@ -11,7 +11,7 @@ SELECT generate_series(DATE_TRUNC('hour',start_time) , DATE_TRUNC('hour',end_tim
 
 , hour_token_gs AS (
 WITH token_list AS (
-    SELECT token, symbol, decimals FROM  prices.approx_prices_from_dex_data
+    SELECT contract_address AS token, symbol, decimals FROM  prices.approx_prices_from_dex_data
     GROUP BY 1,2,3
     )
 
@@ -35,7 +35,7 @@ token AS contract_address, hour
      
 FROM (
     SELECT 
-    gs.hour, gs.token, gs.symbol, gs.decimals, p.median_price, p.num_samples, 
+    gs.hour, gs.token, gs.symbol, gs.decimals, p.median_price, p.sample_size AS num_samples,
         count(p.median_price) OVER (PARTITION BY gs.token ORDER BY gs.hour) AS grp
     FROM hour_token_gs gs
     LEFT JOIN prices.approx_prices_from_dex_data p
@@ -77,8 +77,5 @@ $function$;
 -- Monthly backfill starting 11 Nov 2021 (regenesis
 --TODO: Add pre-regenesis prices
 
-SELECT prices.backfill_gaps_insert_approx_prices_from_dex_data('2021-11-01', '2021-30-01')
+SELECT prices.backfill_gaps_insert_approx_prices_from_dex_data('2021-11-11', '2021-12-30')
 
-
-$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
