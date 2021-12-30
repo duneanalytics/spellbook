@@ -34,7 +34,7 @@ other_fees,
 
 swap_out,
 swap_in,
-gas_out,
+gas_out
     )
 	
 WITH addresses AS (
@@ -113,7 +113,7 @@ b.money_in - COALESCE(deployer_in,0) AS money_in --don't count deployer as rev
 COALESCE(borrow_fees_originated,0) AS borrow_fees_originated,
 COALESCE(repay_fees,0) AS repay_fees,
 COALESCE(flashloan_v1_fees,0) AS flashloan_v1_fees, --check a flashloan event vs a transaction? Maybe I'm pulling the wrong asset?
---COALESCE(flashloan_v2_fees,0) AS flashloan_v2_fees,
+COALESCE(flashloan_v2_fees,0) AS flashloan_v2_fees,
 COALESCE(liquidation_fees,0) AS liquidation_fees,
 COALESCE(swap_fees,0) AS swap_fees,
 COALESCE(lend_burn_fees,0) AS lend_burn_fees,
@@ -207,7 +207,7 @@ FROM
     
     WHERE g."version" IN ('V1','V2')
     AND tb."to" IN (SELECT address FROM addresses)
-    AND t.evt_block_time >= start_time_day AND t.evt_block_time <= end_time_day
+    AND tb.evt_block_time >= start_time_day AND tb.evt_block_time <= end_time_day
     
     UNION ALL
     
@@ -252,7 +252,7 @@ AND LOWER(at.version) = LOWER(b.version)
 
 	swap_out = EXCLUDED.swap_out,
 	swap_in = EXCLUDED.swap_in,
-	gas_out = EXCLUDED.gas_out,
+	gas_out = EXCLUDED.gas_out
 	
     RETURNING 1
 )
