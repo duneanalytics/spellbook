@@ -1,13 +1,13 @@
 CREATE SCHEMA IF NOT EXISTS llama;
 
 CREATE TABLE IF NOT EXISTS llama.aave_daily_atoken_balances (   
-	day,
-	token_address,
-	daily_change,
-	starting_balance,
-	interest_rate_apr,
-	int_earned,
-	total_bal
+	day timestamptz,
+	token_address bytea,
+	daily_change numeric,
+	starting_balance numeric,
+	interest_rate_apr numeric,
+	int_earned numeric,
+	total_bal numeric,
 		PRIMARY KEY (day, token_address)
 );
 
