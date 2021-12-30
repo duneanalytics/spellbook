@@ -6,7 +6,7 @@ BEGIN
 WITH 
 
 hour_gs AS (
-SELECT generate_series(DATE_TRUNC('hour',start_time - interval '3 days') , DATE_TRUNC('hour',end_time) , '1 hour') AS hour
+SELECT generate_series(DATE_TRUNC('hour',start_time) , DATE_TRUNC('hour',end_time) , '1 hour') AS hour
 )
 
 , dex_price_stables AS (
@@ -230,6 +230,7 @@ GROUP BY 1,2,3, 4
 
 ) c
 --WHERE hrank = 1 -- holdover if we want to turn this to latest price
+WHERE num_samples > 1 -- exclude low sample updates for DEX trades
 )
 
 , dex_price_synths AS (
@@ -325,6 +326,7 @@ FROM (
 
     ) rnk
 --WHERE h_rank = 1
+WHERE num_samples > 1 -- exclude low sample updates for DEX trades
 )
 
 , dex_price_bridge_tokens AS (
@@ -447,8 +449,8 @@ WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >=
 INSERT INTO cron.job (schedule, command)
 VALUES ('16,46 * * * *', $$
     SELECT prices.insert_approx_prices_from_dex_data(
-        (SELECT date_trunc('hour', now()) - interval '3 days'),
-        (SELECT now() )
+        (SELECT DATE_TRUNC('hour', now()) - interval '3 days'),
+        (SELECT DATE_TRUNC('hour', now()) + interval '1 hour')
     );
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
