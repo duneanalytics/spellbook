@@ -44,8 +44,8 @@ SELECT
     LEFT JOIN erc20."tokens" e
         ON amm.asset = e."contract_address"
     WHERE e.decimals IS NOT NULL
-	AND evt_block_time >= start_time
-	AND evt_block_time <= end_time
+	AND call_block_time >= start_time
+	AND call_block_time <= end_time
 
 UNION --variable debt
 
