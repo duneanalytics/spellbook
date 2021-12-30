@@ -6,24 +6,57 @@ DECLARE r integer;
 BEGIN
 WITH rows AS (
     INSERT INTO llama.aave_daily_interest_rates (
-	day,
-	token_address,
-	daily_change,
-	starting_balance,
-	interest_rate_apr,
-	int_earned,
-	total_bal
+	underlying_token,
+	    token,
+	    day,
+	    interest_rate_raw,
+	    interest_rate_ray,
+	    interest_rate_apr
     )
-	
+SELECT
+underlying_token, token, day, interest_rate_raw, interest_rate_ray, interest_rate_apr
+
+FROM
+( 
+SELECT 
+underlying_token, token, gs.day AS day, interest_rate_raw, interest_rate_ray --ray matches aave UI
+,((1+interest_rate_ray)^(1.0/365.0)-1) AS interest_rate_apr --convert apy to daily apr
+FROM (
+SELECT
+"reserve" AS underlying_token, a."output_aTokenAddress" AS token, day,
+lead(day, 1, DATE_TRUNC('day',now() + '1 day'::interval) ) OVER (PARTITION BY "reserve"
+                            ORDER BY day asc) AS next_day,
+interest_rate AS interest_rate_raw,
+interest_rate/(10^27) AS interest_rate_ray
+FROM
+(   SELECT
+    "reserve",
+    DATE_TRUNC('day',"evt_block_time") AS day,
+    AVG("liquidityRate") AS interest_rate
+    FROM
+    aave_v2."LendingPool_evt_ReserveDataUpdated"
+    GROUP BY 1,2
+) ra
+LEFT JOIN ( SELECT DISTINCT asset, "output_aTokenAddress"
+            FROM aave_v2."ProtocolDataProvider_call_getReserveTokensAddresses"
+            WHERE "output_aTokenAddress" IS NOT NULL
+            ) a --asset is raw, atoken is atoken
+ON ra."reserve" = a.asset
+
+) r
+INNER JOIN 
+(SELECT generate_series(start_time_day, end_time_day, '1 day') AS day) gs
+ON r.day <= gs.day
+AND gs.day < r.next_day
+) f	
 
 
-    ON CONFLICT (day, token_address) DO UPDATE SET
+    ON CONFLICT (underlying_token, token, day) DO UPDATE SET
     
-	daily_change = EXCLUDED.daily_change,
-	starting_balance = EXCLUDED.starting_balance,
-	interest_rate_apr = EXCLUDED.interest_rate_apr,
-	int_earned = EXCLUDED.int_earned,
-	total_bal = EXCLUDED.total_bal
+	interest_rate_raw = EXCLUDED.interest_rate_raw,
+	interest_rate_ray = EXCLUDED.interest_rate_ray,
+	interest_rate_apr = EXCLUDED.interest_rate_apr
+	
 	
     RETURNING 1
 )
