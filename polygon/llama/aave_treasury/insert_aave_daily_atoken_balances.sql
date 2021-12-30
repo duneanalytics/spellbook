@@ -30,7 +30,7 @@ gs.day,gs."token_address" AS "contract_address", COALESCE(a.value,0) AS value,
 COALESCE("interest_rate_apr",0) AS interest_rate_apr, drank
 FROM (
 SELECT pre.*,
-DENSE_RANK() OVER (PARTITION BY pre."contract_address" ORDER BY DATE_TRUNC('day',pre."evt_block_time") ASC) AS drank,
+DENSE_RANK() OVER (PARTITION BY pre."contract_address" ORDER BY DATE_TRUNC('day',pre."evt_block_time") ASC) AS drank
 FROM
 (
     SELECT
@@ -49,9 +49,9 @@ FROM
     GROUP BY 1,2
 
 UNION ALL --start balances
-	SELECT 
 	SELECT day, token_address, total_bal
 	FROM (
+		SELECT
 		day, token_address, total_bal,
 			DENSE_RANK() OVER (PARTITION BY token_address ORDER BY day DESC) AS rnk
 		FROM llama.aave_daily_atoken_balances
@@ -127,7 +127,7 @@ WHERE NOT EXISTS (
 );
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('16,46 * * * *', $$
+VALUES ('15,45 * * * *', $$
     SELECT llama.insert_aave_daily_atoken_balances(
         (SELECT DATE_TRUNC('day',NOW()) - interval '3 days'),
         (SELECT DATE_TRUNC('day',NOW()) );
