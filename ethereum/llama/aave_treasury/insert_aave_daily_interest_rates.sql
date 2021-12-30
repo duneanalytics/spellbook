@@ -73,7 +73,7 @@ WHERE NOT EXISTS (
 );
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('16,46 * * * *', $$
+VALUES ('14,44 * * * *', $$
     SELECT llama.insert_aave_daily_interest_rates(
         (SELECT DATE_TRUNC('day',NOW()) - interval '3 days'),
         (SELECT DATE_TRUNC('day',NOW()) );
