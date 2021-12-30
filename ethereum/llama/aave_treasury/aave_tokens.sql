@@ -2,7 +2,7 @@ CREATE SCHEMA IF NOT EXISTS llama;
 
 CREATE TABLE IF NOT EXISTS llama.aave_tokens (   
     token_address bytea PRIMARY KEY,
-    decimals numeric,
+    decimals int4,
     symbol text,
     erc20_address bytea,
     erc20_symbol text,
