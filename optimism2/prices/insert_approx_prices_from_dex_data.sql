@@ -14,14 +14,14 @@ SELECT generate_series(DATE_TRUNC('hour',start_time) , DATE_TRUNC('hour',end_tim
 		SELECT        
 		contract_address,
 		MAX(hour) AS last_hour
-		FROM dune_user_generated.test_approx_prices_from_dex_data
+		FROM prices.approx_prices_from_dex_data
 		WHERE median_price IS NOT NULL
 		AND hour <= (start_time - interval '3 days')
 		AND contract_address != '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000' --Raw ETH, gets auto-filled in from WETH later
 		GROUP BY 1
 		)
 	SELECT p.contract_address AS token, DATE_TRUNC('hour',(start_time - interval '3 days')) AS hour, p.median_price, 1 AS num_samples, p.symbol, p.decimals
-	FROM dune_user_generated.test_approx_prices_from_dex_data p
+	FROM prices.approx_prices_from_dex_data p
 	INNER JOIN last_updates u
 		ON u.contract_address = p.contract_address
 		AND u.last_hour = p.hour
