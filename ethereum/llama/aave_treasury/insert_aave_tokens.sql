@@ -92,7 +92,7 @@ $function$;
 SELECT llama.insert_aave_tokens('2019-01-01'::timestamptz,NOW())
 WHERE NOT EXISTS (
     SELECT *
-    FROM llama.insert_aave_tokens
+    FROM llama.aave_tokens
 );
 
 -- tables are so small, so just run everything rather than building in logic for backfilling tokens. Set a 1 year gap to add some constraint.
