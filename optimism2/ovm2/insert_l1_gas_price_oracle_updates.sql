@@ -91,8 +91,9 @@ WHERE NOT EXISTS (
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('5,15,25,35,45,55 * * * *', $$
-    SELECT ovm2.insert_l1_gas_price_oracle_updates(
-        (SELECT max(number) FROM optimism.blocks WHERE time < (SELECT GREATEST(max(block_time) - interval '1 days','11-12-2021'::timestamp) FROM ovm2.l1_gas_price_oracle_updates),
-        (SELECT MAX(number) FROM optimism.blocks);
+ SELECT ovm2.insert_l1_gas_price_oracle_updates(
+        (SELECT max(number) FROM optimism.blocks WHERE time < (SELECT GREATEST(max(block_time) - interval '1 days','11-12-2021'::timestamp) FROM ovm2.l1_gas_price_oracle_updates) ),
+        (SELECT MAX(number) FROM optimism.blocks)
+        );
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
