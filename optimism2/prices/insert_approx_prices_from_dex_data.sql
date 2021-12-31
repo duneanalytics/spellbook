@@ -471,7 +471,7 @@ WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >=
 INSERT INTO cron.job (schedule, command)
 VALUES ('16,46 * * * *', $$
     SELECT prices.insert_approx_prices_from_dex_data(
-        (SELECT DATE_TRUNC('hour', now()) - interval '3 days'),
+        (SELECT MAX(hour) - interval '1 hour' FROM prices.approx_prices_from_dex_data),
         (SELECT DATE_TRUNC('hour', now()) + interval '1 hour')
     );
 $$)
