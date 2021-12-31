@@ -123,7 +123,7 @@ WHERE NOT EXISTS (
 );
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('27,57 * * * *', $$
+VALUES ('15,45 * * * *', $$
     SELECT dex.insert_uniswap_v3(
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Uniswap' AND version = '3'),
         (SELECT now() - interval '20 minutes'),
