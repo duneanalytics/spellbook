@@ -99,7 +99,14 @@ WITH rows AS (
         AND pb.hour >= start_ts
         AND pb.hour < end_ts
 
-    ON CONFLICT DO NOTHING
+    -- update if we have new info on prices or the erc20
+    ON CONFLICT (project, tx_hash, evt_index, trade_id)
+    DO UPDATE SET
+        usd_amount = EXCLUDED.usd_amount,
+        token_a_amount = EXCLUDED.token_a_amount,
+        token_b_amount = EXCLUDED.token_b_amount,
+        token_a_symbol = EXCLUDED.token_a_symbol,
+        token_b_symbol = EXCLUDED.token_b_symbol
     RETURNING 1
 )
 SELECT count(*) INTO r from rows;
