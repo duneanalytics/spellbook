@@ -22,7 +22,8 @@ CREATE TABLE IF NOT EXISTS dex.trades (
     tx_to bytea,
     trace_address integer[],
     evt_index integer,
-    trade_id integer
+    trade_id integer,
+        UNIQUE (project, tx_hash, evt_index, trade_id)
 );
 
 CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS dex_trades_proj_tr_addr_uniq_idx ON dex.trades (project, tx_hash, trace_address, trade_id);
