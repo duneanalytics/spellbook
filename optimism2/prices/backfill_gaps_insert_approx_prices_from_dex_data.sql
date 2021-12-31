@@ -84,7 +84,7 @@ WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE median_
                     AND hour >= '2021-11-11'::timestamptz AND hour <= '2021-12-30'::timestamptz);
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('15,45 * * * *', $$
+VALUES ('13,43 * * * *', $$
     SELECT prices.backfill_gaps_insert_approx_prices_from_dex_data(
         (SELECT DATE_TRUNC('hour', now()) - interval '3 days'),
         (SELECT DATE_TRUNC('hour', now()) + interval '1 hour')
