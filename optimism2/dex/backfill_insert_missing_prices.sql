@@ -62,7 +62,7 @@ WITH rows AS (
         trade_id
         
         FROM dex.trades dexs
-        WHERE dexs.block_time >= start_ts AND dexs.block_time < end_ts
+        
         
         LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
         LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
@@ -77,6 +77,7 @@ WITH rows AS (
           AND pb.hour >= start_ts
           AND pb.hour < end_ts
     
+    WHERE dexs.block_time >= start_ts AND dexs.block_time < end_ts
     
     -- update if we have new info on prices or the erc20
     ON CONFLICT (project, tx_hash, evt_index, trade_id)
