@@ -1861,3 +1861,8 @@
   symbol: BICO
   address: 0xf17e65822b568b3903685a7c9f496cf7656cc6c2
   decimals: 18
+- name: gp-wnd
+  id: gp-wizards-and-dragons
+  symbol: GP
+  address: 0x38ec27c6f05a169e7ed03132bca7d0cfee93c2c5
+  decimals: 18
