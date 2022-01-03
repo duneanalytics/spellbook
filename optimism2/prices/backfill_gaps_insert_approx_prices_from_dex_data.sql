@@ -66,6 +66,7 @@ rows AS (
         symbol,
         decimals
     FROM final_prices
+        WHERE median_price IS NOT NULL
 
     ON CONFLICT (contract_address, hour) DO UPDATE SET median_price = EXCLUDED.median_price, sample_size = EXCLUDED.sample_size
     RETURNING 1
