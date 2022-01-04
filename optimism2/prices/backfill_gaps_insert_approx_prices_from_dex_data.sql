@@ -1,6 +1,6 @@
 --Intended for one-off use to backfill price gaps.
 
-CREATE OR REPLACE FUNCTION prices.backfill_gaps_insert_approx_prices_from_dex_data(start_time timestamptz, end_time timestamptz=now()) RETURNS integer
+CREATE OR REPLACE FUNCTION prices.backfill_gaps_insert_approx_prices_from_dex_data(start_time timestamp, end_time timestamp=now()) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
