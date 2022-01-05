@@ -18,13 +18,13 @@ FROM
 			d.evt_index,
 			d.trade_id,
 			d.usd_amount as original,
-			d.token_a_amount_raw / 10 ^ pa.decimals * pa.price as pa_price,
-			d.token_b_amount_raw / 10 ^ pb.decimals * pb.price as pb_price,
+			d.token_a_amount_raw / 10 ^ (CASE token_a_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 18 ELSE pa.decimals END) * (CASE token_a_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN pe.price ELSE pa.price END) as pa_price,
+			d.token_b_amount_raw / 10 ^ (CASE token_b_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 18 ELSE pb.decimals END) * (CASE token_b_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN pe.price ELSE pb.price END) as pb_price,
 			d.token_a_symbol as pa_symb,
 			d.token_b_symbol as pb_symb,
 			coalesce(
-				d.token_a_amount_raw / 10 ^ pa.decimals * pa.price,
-				d.token_b_amount_raw / 10 ^ pb.decimals * pb.price
+				d.token_a_amount_raw / 10 ^ (CASE token_a_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 18 ELSE pa.decimals END) * (CASE token_a_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN pe.price ELSE pa.price END),
+				d.token_b_amount_raw / 10 ^ (CASE token_b_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 18 ELSE pb.decimals END) * (CASE token_b_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN pe.price ELSE pb.price END)
 			) as usd_amount
 		FROM
 			dex.trades d
@@ -36,6 +36,10 @@ FROM
 			AND pb."minute" >= start_ts
 			AND pb."minute" < end_ts
 			AND date_trunc('minute', d.block_time) = pb."minute"
+			LEFT JOIN prices.layer1_usd pe ON pe.minute = date_trunc('minute', dexs.block_time)
+			AND pe.symbol = 'ETH'
+			AND pe.minute >= start_ts
+			AND pe.minute < end_ts
 		WHERE
 			block_time >= start_ts
 			AND block_time < end_ts
