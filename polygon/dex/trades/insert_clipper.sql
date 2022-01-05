@@ -104,7 +104,7 @@ SELECT dex.insert_clipper(
     '2021-01-01',
     '2022-01-01',
     (SELECT MAX(number) FROM polygon.blocks WHERE time < '2021-01-01'),
-    (SELECT MAX(number) FROM polygon.blocks WHERE time <= '2021-12-31')
+    (SELECT MAX(number) FROM polygon.blocks WHERE time < '2022-01-01')
 )
 WHERE NOT EXISTS (
     SELECT *
