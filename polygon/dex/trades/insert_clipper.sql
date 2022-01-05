@@ -102,14 +102,29 @@ $function$;
 -- fill 2021
 SELECT dex.insert_clipper(
     '2021-01-01',
-    now(),
+    '2021-12-31',
     (SELECT max(number) FROM polygon.blocks WHERE time < '2021-01-01'),
-    (SELECT MAX(number) FROM polygon.blocks where time < now() - interval '20 minutes')
+    (SELECT MAX(number) FROM polygon.blocks where time < '2021-12-31')
 )
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.trades
     WHERE block_time > '2021-01-01'
+    AND block_time <= '2021-12-31'
+    AND project = 'Clipper'
+);
+
+-- fill 2022
+SELECT dex.insert_clipper(
+    '2022-01-01',
+    now(),
+    (SELECT max(number) FROM polygon.blocks WHERE time < '2022-01-01'),
+    (SELECT MAX(number) FROM polygon.blocks where time < now() - interval '20 minutes')
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.trades
+    WHERE block_time > '2022-01-01'
     AND block_time <= now() - interval '20 minutes'
     AND project = 'Clipper'
 );
