@@ -32,11 +32,12 @@ WITH rows AS (
 		, start_off AS ( --default first block to the most recent L1 Gas Price (handle for edge case of no updates)
 		SELECT start_block-1 AS block_number, time AS block_time, --start number minus 1 since we increment it later
 			(SELECT l1_gas_price FROM ovm2.l1_gas_price_oracle_updates
-			    WHERE block_number <= start_block  ORDER BY block_number DESC LIMIT 1) AS l1_gas_price
+			    WHERE block_number <= start_block AND (l1_gas_price IS NOT NULL) ORDER BY block_number DESC LIMIT 1) AS l1_gas_price
 		FROM optimism.blocks b
 		WHERE b."number" = start_block
 		AND NOT EXISTS (SELECT 1 FROM oracle_reads oru WHERE oru.block_number <= start_block) --if there's no block on or before the start
 		)
+		
 	SELECT block_number, block_time, l1_gas_price FROM oracle_reads
 	UNION ALL
 	SELECT block_number, block_time, l1_gas_price FROM start_off
@@ -54,20 +55,24 @@ WITH rows AS (
 	    FROM gs
 	    LEFT JOIN updates u
 	    ON gs.bn = u.block_number + 1  --add 1 since the new gas price takes effect in the next block
+		AND u.l1_gas_price IS NOT NULL
 	    ) p
 
 	)
 
 	--https://dba.stackexchange.com/questions/186218/carry-over-long-sequence-of-missing-values-with-postgres
 
-	SELECT block_number
-	, first_value(l1_gas_price) OVER (PARTITION BY grp ORDER BY block_number) AS l1_gas_price
-	, first_value(block_time) OVER (PARTITION BY grp ORDER BY block_number) AS block_time
+	SELECT * FROM (
+	    SELECT block_number
+		, first_value(l1_gas_price) OVER (PARTITION BY grp ORDER BY block_number) AS l1_gas_price
+		, first_value(block_time) OVER (PARTITION BY grp ORDER BY block_number) AS block_time
 
-	FROM events
+		FROM events
+		) e_list
+	WHERE (block_number IS NOT NULL) AND (l1_gas_price IS NOT NULL) AND (block_time IS NOT NULL)
 
-    ON CONFLICT DO NOTHING
-    RETURNING 1
+	ON CONFLICT DO NOTHING
+	RETURNING 1
 )
 SELECT count(*) INTO r from rows;
 RETURN r;
@@ -92,7 +97,7 @@ WHERE NOT EXISTS (
 INSERT INTO cron.job (schedule, command)
 VALUES ('5,15,25,35,45,55 * * * *', $$
  SELECT ovm2.insert_l1_gas_price_oracle_updates(
-        (SELECT max(number) FROM optimism.blocks WHERE time < (SELECT GREATEST(max(block_time) - interval '1 days','11-12-2021'::timestamp) FROM ovm2.l1_gas_price_oracle_updates) ),
+        (SELECT MAX(block_number) FROM ovm2.l1_gas_price_oracle_updates),
         (SELECT MAX(number) FROM optimism.blocks)
         );
 $$)
