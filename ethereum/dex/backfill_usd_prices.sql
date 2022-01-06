@@ -36,7 +36,7 @@ FROM
 			AND pb."minute" >= start_ts
 			AND pb."minute" < end_ts
 			AND date_trunc('minute', d.block_time) = pb."minute"
-			LEFT JOIN prices.layer1_usd pe ON pe.minute = date_trunc('minute', dexs.block_time)
+			LEFT JOIN prices.layer1_usd pe ON pe.minute = date_trunc('minute', d.block_time)
 			AND pe.symbol = 'ETH'
 			AND pe.minute >= start_ts
 			AND pe.minute < end_ts
@@ -44,7 +44,7 @@ FROM
 			block_time >= start_ts
 			AND block_time < end_ts
 			and d.usd_amount is NULL
-			and (pa.price is not NULL or pb.price is not null)
+			and (pa.price is not NULL or pb.price is not null or pe.price is not null)
 	) as new_prices
 where
 	block_time >= start_ts
