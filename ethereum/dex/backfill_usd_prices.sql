@@ -64,7 +64,7 @@ $function$;
 -- daily backfill run
 -- back fill last 3 days in case something goes wrong over the weekend
 INSERT INTO cron.job (schedule, command)
-VALUES ('52 3 * * *', $$
+VALUES ('52 * * * *', $$
     SELECT dex.backfill_usd_amount(
         (SELECT now() - interval '3 days'),
         (SELECT now() - interval '20 minutes'));
