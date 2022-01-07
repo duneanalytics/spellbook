@@ -1866,3 +1866,8 @@
   symbol: GP
   address: 0x38ec27c6f05a169e7ed03132bca7d0cfee93c2c5
   decimals: 18
+- name: ash
+  id: ash-ash
+  symbol: ASH
+  address: 0x64d91f12ece7362f91a6f8e7940cd55f05060b92
+  decimals: 18
