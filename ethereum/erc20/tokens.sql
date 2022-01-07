@@ -5849,6 +5849,9 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\xd5d86fc8d5c0ea1ac1ac5dfab6e529c9967a45e9	WRLD	18
 \\xf0dc76c22139ab22618ddfb498be1283254612b1	WSTR	18
 \\xfa3aabe175b5fbdc714e7d52492e1c73537404eb	MGG	18
+\\x02d60b84491589974263d922d9cc7a3152618ef6	aDAI	18
+\\xf8fd466f12e236f4c96f7cce6c79eadb819abf58	aUSDT	6
+\\xd093fa4fb80d09bb30817fdcd442d4d02ed3e5de	aUSDC	6
 \.
 
 
