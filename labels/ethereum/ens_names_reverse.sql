@@ -9,6 +9,7 @@ ens_transactions AS (
         ("to" = '\x9062c0a6dbd6108336bcbe4593a3d1ce05512069' OR "to" = '\x084b1c3c81545d370f3634392de611caabff8148')
          -- Only successful transactions
         AND success IS TRUE
+        AND call_block_time >= '{{timestamp}}'
     ORDER BY "from", block_number DESC
 ),
 
@@ -18,13 +19,13 @@ ens_calls AS (
     -- Old Reverse Registrar
     FROM ethereumnameservice."ReverseRegistrar_v1_call_setName"
     -- To avoid issues with long names on Dune's side
-    WHERE char_length(name) < 10000 AND call_success IS TRUE
+    WHERE char_length(name) < 10000 AND call_success IS TRUE AND call_block_time >= '{{timestamp}}'
     UNION
     -- Reverse Registrar
     SELECT name AS ens_name, call_block_number AS block_number, call_tx_hash AS hash
     FROM ethereumnameservice."ReverseRegistrar_v2_call_setName"
     -- To avoid issues with long names on Dune's side
-    WHERE char_length(name) < 10000 AND call_success IS TRUE
+    WHERE char_length(name) < 10000 AND call_success IS TRUE AND call_block_time >= '{{timestamp}}'
 )
 
 -- Latest snapshot of ENS Reverse Records
