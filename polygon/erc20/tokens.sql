@@ -11,6 +11,7 @@ DELETE FROM erc20.tokens *;
 COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\x2a93172c8dccbfbc60a39d56183b7279a2f647b4	$DG	18
 \\xd6df932a45c0f255f85145f286ea0b292b21c90b	AAVE	18
+\\x6d5f5317308C6fE7D6CE16930353a8Dfd92Ba4D7 ABI	9
 \\xc3fdbadc7c795ef1d6ba111e06ff8f16a20ea539	ADDY	18
 \\x9a71012b13ca4d3d0cdc72a177df3ef03b0e76a3	BAL	18
 \\x92868a5255c628da08f550a858a802f5351c5223	BRIDGE	18
@@ -57,6 +58,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\xF664F50631A6f0D72ecdaa0e49b0c019Fa72a8dC	variableDebtmWBTC	8
 \\xeDe17e9d79fc6f9fF9250D9EEfbdB88Cc18038b5	variableDebtmWETH	18
 \\x59e8E9100cbfCBCBAdf86b9279fa61526bBB8765	variableDebtmWMATIC	18
+\\xe840b73e5287865eec17d250bfb1536704b43b21 imUSD	18
 \.
 
 

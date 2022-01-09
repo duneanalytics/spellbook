@@ -16,6 +16,7 @@ COPY erc20.stablecoins(contract_address, symbol, decimals, name) FROM stdin;
 \\x9af3b7dc29d3c4b1a5731408b6a9656fa7ac3b72	PUSD	18	PUSD
 \\x2791bca1f2de4661ed88a30c99a7a9449aa84174	USDC	6	USD Coin
 \\xc2132d05d31c914a87c6611c10748aeb04b58e8f	USDT	6	(PoS) Tether USD
+\\xe840b73e5287865eec17d250bfb1536704b43b21 mUSD   18  mStable USD (PoS)
 \.
 
 COMMIT;
