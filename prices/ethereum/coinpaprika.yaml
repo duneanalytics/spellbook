@@ -3,6 +3,11 @@
   symbol: DMG
   address: 0xEd91879919B71bB6905f23af0A68d231EcF87b14
   decimals: 18
+- name: kawa-kawa
+  id: kawa-kawa
+  symbol: KAWA
+  address: 0x546aed37d202d607f45cbd2b8c0cad0d25fbe339
+  decimals: 18
 - name: srm_serum
   id: srm-serum
   symbol: SRM
