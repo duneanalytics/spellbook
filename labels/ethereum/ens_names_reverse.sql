@@ -19,13 +19,13 @@ ens_calls AS (
     -- Old Reverse Registrar
     FROM ethereumnameservice."ReverseRegistrar_v1_call_setName"
     -- To avoid issues with long names on Dune's side
-    WHERE char_length(name) < 10000 AND call_success IS TRUE AND call_block_time >= '{{timestamp}}'
+    WHERE length(name) < 10000 AND call_success IS TRUE AND call_block_time >= '{{timestamp}}'
     UNION
     -- Reverse Registrar
     SELECT name AS ens_name, call_block_number AS block_number, call_tx_hash AS hash
     FROM ethereumnameservice."ReverseRegistrar_v2_call_setName"
     -- To avoid issues with long names on Dune's side
-    WHERE char_length(name) < 10000 AND call_success IS TRUE AND call_block_time >= '{{timestamp}}'
+    WHERE length(name) < 10000 AND call_success IS TRUE AND call_block_time >= '{{timestamp}}'
 )
 
 -- Latest snapshot of ENS Reverse Records
