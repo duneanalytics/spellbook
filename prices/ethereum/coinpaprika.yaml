@@ -1871,3 +1871,8 @@
   symbol: ASH
   address: 0x64d91f12ece7362f91a6f8e7940cd55f05060b92
   decimals: 18
+- name: kylin-network-token
+  id: kyl-kylin-network-token
+  symbol: KYL
+  address: 0x67b6d479c7bb412c54e03dca8e1bc6740ce6b99c
+  decimals: 18
