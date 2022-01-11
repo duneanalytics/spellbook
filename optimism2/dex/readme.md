@@ -8,4 +8,8 @@ Since we do not yet have price feeds for Optimism tokens, these tables pull USD 
 
 - **dex.insert_uniswap_v3.sql**: Inserts uniswap v3 data to the dex.trades table.
 
-_Other DEXs on Optimism to be added: 1Inch, Rubicon, Kwenta (Synthetix), [add to list]_
+_Other DEXs on Optimism to be added: Rubicon, Kwenta (Synthetix), ZipSwap, Juggler, (add to list)_
+- Aggregators: Matcha, 1Inch
+- - Perpetuals (figure out how to handle this): Perpetual Protocol, Pika Protocol, Kewnta shorts
+
+[OP DeFi Apps List](https://www.optimism.io/apps/defi)
