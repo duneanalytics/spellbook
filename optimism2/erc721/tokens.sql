@@ -18,6 +18,8 @@ COPY erc721.tokens (contract_address, project_name) FROM stdin;
 \\x2596b971ee0de4532566c59fa394c0d29f21d224	OptimisticBoredApeYachtClub
 \\xC7adDfaf516751e1b3C068B763bcA13dDc5499F9	MintMyRun
 \\x895e1669ef3db7b31cdd6129c7f333e9db053e3d	XmasBook
+\\xbE7706DFA9Cc5aEEB5b26698C1bc5c43829E808A	FancyLoogie
+\\x03587c8fd5346c07bbd4e6e154e6dfcecc775236	yearn Gift NFT
 \.
 
 COMMIT;
