@@ -97,7 +97,7 @@ WHERE NOT EXISTS (
 INSERT INTO cron.job (schedule, command)
 VALUES ('5,15,25,35,45,55 * * * *', $$
  SELECT ovm2.insert_l1_gas_price_oracle_updates(
-        (SELECT MAX(block_number) FROM ovm2.l1_gas_price_oracle_updates),
+        (SELECT MAX(block_number) - 5001 FROM ovm2.l1_gas_price_oracle_updates),
         (SELECT MAX(number) +5000 FROM optimism.blocks)
         );
 $$)
