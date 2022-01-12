@@ -71,7 +71,7 @@ WITH rows AS (
 		) e_list
 	WHERE (block_number IS NOT NULL) AND (l1_gas_price IS NOT NULL) AND (block_time IS NOT NULL)
 
-	ON CONFLICT DO NOTHING
+	ON CONFLICT (block_number) DO UPDATE SET l1_gas_price = EXCLUDED.l1_gas_price, block_time = EXCLUDED.block_time
 	RETURNING 1
 )
 SELECT count(*) INTO r from rows;
@@ -98,7 +98,7 @@ INSERT INTO cron.job (schedule, command)
 VALUES ('5,15,25,35,45,55 * * * *', $$
  SELECT ovm2.insert_l1_gas_price_oracle_updates(
         (SELECT MAX(block_number) FROM ovm2.l1_gas_price_oracle_updates),
-        (SELECT MAX(number) FROM optimism.blocks)
+        (SELECT MAX(number) +5000 FROM optimism.blocks)
         );
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
