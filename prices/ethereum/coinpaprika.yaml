@@ -1886,3 +1886,8 @@
   symbol: TEMP
   address: 0xa36fdbbae3c9d55a1d67ee5821d53b50b63a1ab9
   decimals: 18
+- name: dfx-finance
+  id: dfx-dfx-finance
+  symbol: DFX
+  address: 0x888888435fde8e7d4c54cab67f206e4199454c60
+  decimals: 18
