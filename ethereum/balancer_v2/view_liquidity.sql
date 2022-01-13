@@ -106,7 +106,7 @@ CREATE MATERIALIZED VIEW balancer_v2.view_liquidity AS (
             date_trunc('day', evt_block_time) AS DAY,
             "poolId" AS pool_id,
             UNNEST(tokens) AS token,
-            UNNEST(deltas) AS delta
+            UNNEST(deltas) - UNNEST("protocolFeeAmounts") AS delta
         FROM
             balancer_v2."Vault_evt_PoolBalanceChanged"
     ),
@@ -199,14 +199,15 @@ CREATE MATERIALIZED VIEW balancer_v2.view_liquidity AS (
             cumulative_amount / 10 ^ t.decimals * COALESCE(p1.price, p2.price, 0) AS amount_usd
         FROM
             calendar c
-            LEFT JOIN cumulative_balance b ON b.day <= c.day
-            AND c.day < b.day_of_next_change
-            LEFT JOIN erc20.tokens t ON t.contract_address = b.token
-            LEFT JOIN prices p1 ON p1.day = b.day
-            AND p1.token = b.token
-            LEFT JOIN dex_prices p2 ON p2.day <= c.day
-            AND c.day < p2.day_of_next_change
-            AND p2.token = b.token
+        LEFT JOIN cumulative_balance b ON b.day <= c.day
+        AND c.day < b.day_of_next_change
+        LEFT JOIN erc20.tokens t ON t.contract_address = b.token
+        LEFT JOIN prices p1 ON p1.day = b.day
+        AND p1.token = b.token
+        LEFT JOIN dex_prices p2 ON p2.day <= c.day
+        AND c.day < p2.day_of_next_change
+        AND p2.token = b.token
+        WHERE b.token != SUBSTRING(b.pool_id FOR 20)
     ),
     pools_tokens_weights AS (
         SELECT
