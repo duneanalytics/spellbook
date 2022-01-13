@@ -180,7 +180,12 @@ WITH rows AS (
             evt_tx_hash,
             NULL::integer[] AS trace_address,
             evt_index
-        FROM zeroex_v2."Exchange2.1_evt_Fill"
+        FROM (
+            select "feeRecipientAddress", "takerAssetData", "makerAssetData", "makerAddress", "takerAddress", "makerAssetFilledAmount", "takerAssetFilledAmount", contract_address, evt_block_time, evt_tx_hash, evt_index from zeroex_v2."Exchange2.0_evt_Fill" union all -- 0x v1
+            select "feeRecipientAddress", "takerAssetData", "makerAssetData", "makerAddress", "takerAddress", "makerAssetFilledAmount", "takerAssetFilledAmount", contract_address, evt_block_time, evt_tx_hash, evt_index from zeroex_v2."Exchange2.1_evt_Fill" union all -- 0x v2
+            select "feeRecipientAddress", "takerAssetData", "makerAssetData", "makerAddress", "takerAddress", "makerAssetFilledAmount", "takerAssetFilledAmount", contract_address, evt_block_time, evt_tx_hash, evt_index from zeroex_v3."Exchange_evt_Fill" union all -- 0x v3
+            select "feeRecipient", "takerToken", "makerToken", "maker", "taker", "makerTokenFilledAmount", "takerTokenFilledAmount", contract_address, evt_block_time, evt_tx_hash, evt_index from zeroex."ExchangeProxy_evt_LimitOrderFilled" -- 0x v4
+        ) oi
         WHERE "feeRecipientAddress" IN ('\x910bf2d50fa5e014fd06666f456182d4ab7c8bd2', '\x68a17b587caf4f9329f0e372e3a78d23a46de6b5')
 
         UNION ALL
