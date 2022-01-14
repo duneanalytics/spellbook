@@ -1,0 +1,26 @@
+BEGIN;
+
+CREATE TABLE IF NOT EXISTS qidao."qidao_lp_info" (
+	contract_address	bytea UNIQUE,
+	dex	text,
+	name	text
+);
+
+DELETE FROM qidao."qidao_lp_info" *;
+
+COPY qidao."qidao_lp_info"(contract_address, dex, name) FROM stdin;
+\\x8c1b40ea78081b70f661c3286c74e71b4602c9c0	"quickswap"	"QI\ETH"
+\\x9a8b2601760814019b7e6ee0052e25f1c623d1e6	"quickswap"	"QI\MATIC"
+\\x25d56e2416f20de1efb1f18fd06dd12efec3d3d0	"quickswap"	"QI\QUICK"
+\\x7afcf11f3e2f01e71b7cc6b8b5e707e42e6ea397	"quickswap"	"QI\MAI"
+\\x160532d2536175d65c03b97b0630a9802c274dad	"quickswap"	"MAI\USDC"
+\\x74214f5d8aa71b8dc921d8a963a1ba3605050781	"quickswap"	"MAI\DAI"
+\\xa3fa99a148fa48d14ed51d610c367c61876997f1	"quickswap"	"MAI\USDT"
+\\xf461f2240b66d55dcf9059e26c022160c06863bf	"balancer"	"QI\MAI"
+\\xf461f2240b66d55dcf9059e26c022160c06863bf000100000000000000000006	"balancer"	"BAL/QI/USDC/WMATIC/MIMATIC"
+\\x32fc95287b14eaef3afa92cccc48c285ee3a280a000100000000000000000005	"balancer"	"ADDY/BAL/QI/QUICK/SUSHI/USDC/WETH/WMATIC"
+\\x827ad315960f5a0f5280d6936c8e52a5878bba0400020000000000000000005c	"balancer"	"QI/BAL"
+\\0x06df3b2bbb68adc8b0e302443692037ed9f91b42000000000000000000000012	"balancer"	"USDC\DAI\MAI\USDT"
+\.
+
+COMMIT;
