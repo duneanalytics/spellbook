@@ -45,7 +45,7 @@ WITH rows AS (
             token_a_amount_raw / 10 ^ pa.decimals * pa.price,
             token_b_amount_raw / 10 ^ pb.decimals * pb.price,
             token_a_amount_raw / 10 ^ erc20a.decimals * bpa.price,
-            token_b_amount_raw / 10 ^ erc20b.decimals * bpb.price,
+            token_b_amount_raw / 10 ^ erc20b.decimals * bpb.price
         ) as usd_amount,
         token_a_address,
         token_b_address,
