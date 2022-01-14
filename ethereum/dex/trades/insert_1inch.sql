@@ -162,6 +162,8 @@ WITH rows AS (
                 SELECT decode(substring("desc"->>'srcToken' FROM 3), 'hex') as from_token, decode(substring("desc"->>'dstToken' FROM 3), 'hex') as to_token, "output_spentAmount" as from_amount, "output_returnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address, NULL::integer as evt_index, contract_address, '4' as version FROM oneinch_v4."AggregationRouterV4_call_swap" where call_success
             ) t
         )
+        
+        UNION ALL
 
         -- 1inch 0x Limit Orders
         SELECT
