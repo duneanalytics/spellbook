@@ -60,7 +60,6 @@ SELECT address FROM dune_user_generated.llama_treasury_addresses WHERE protocol 
                         WHERE "blockchain" = 'Ethereum' AND "protocol" = 'Aave')
     AND "success" = false
     AND block_time >= start_time_day AND block_time <= end_time_day
-    --GROUP BY 1,2,3
     
     UNION ALL
     
@@ -78,7 +77,6 @@ SELECT address FROM dune_user_generated.llama_treasury_addresses WHERE protocol 
     AND "tx_success" = true
     AND block_time >= start_time_day AND block_time <= end_time_day
     
-    --GROUP BY 1,2,3
     
     UNION ALL
     
@@ -94,7 +92,6 @@ SELECT address FROM dune_user_generated.llama_treasury_addresses WHERE protocol 
     AND success = true
     AND "tx_success" = true
     AND block_time >= start_time_day AND block_time <= end_time_day
-    --GROUP BY 1,2,3
     
     ) a
 INNER JOIN dune_user_generated.llama_treasury_addresses g
