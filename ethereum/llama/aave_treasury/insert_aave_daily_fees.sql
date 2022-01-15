@@ -1,11 +1,11 @@
-CREATE OR REPLACE FUNCTION llama.insert_aave_fees_by_day(start_time timestamptz, end_time timestamptz) RETURNS integer
+CREATE OR REPLACE FUNCTION llama.insert_aave_daily_fees(start_time timestamptz, end_time timestamptz) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 	start_time_day timestamptz := DATE_TRUNC('day',start_time);
 	end_time_day timestamptz := DATE_TRUNC('day',end_time) + interval '1 day'; --since we trunc to day
 BEGIN
 WITH rows AS (
-    INSERT INTO llama.aave_fees_by_day (
+    INSERT INTO llama.aave_daily_fees (
 	day,
 	contract_address,
 	borrow_fees_originated,
@@ -135,15 +135,15 @@ END
 $function$;
 
 -- Get the table started
-SELECT llama.insert_aave_fees_by_day(DATE_TRUNC('day','2020-01-24'::timestamptz),DATE_TRUNC('day','2021-12-31'::timestamptz) )
+SELECT llama.insert_aave_daily_fees(DATE_TRUNC('day','2020-01-24'::timestamptz),DATE_TRUNC('day','2021-12-31'::timestamptz) )
 WHERE NOT EXISTS (
     SELECT *
-    FROM llama.aave_fees_by_day
+    FROM llama.aave_daily_fees
 );
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$
-    SELECT llama.insert_aave_fees_by_day(
+    SELECT llama.insert_aave_daily_fees(
         (SELECT DATE_TRUNC('day',NOW()) - interval '3 days'),
         (SELECT DATE_TRUNC('day',NOW()) );
 	
