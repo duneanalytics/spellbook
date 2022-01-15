@@ -6,8 +6,8 @@ CREATE TABLE IF NOT EXISTS llama.aave_daily_atoken_balances (
 	daily_change numeric,
 	starting_balance numeric,
 	interest_rate_apr numeric,
-	int_earned numeric,
-	total_bal numeric,
+	interest_earned numeric,
+	total_balance numeric,
 		PRIMARY KEY (day, token_address)
 );
 
