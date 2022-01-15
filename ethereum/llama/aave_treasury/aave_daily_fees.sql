@@ -1,6 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS llama;
 
-CREATE TABLE IF NOT EXISTS llama.aave_fees_by_day (   
+CREATE TABLE IF NOT EXISTS llama.aave_daily_fees (   
 	day timestamptz,
 	contract_address bytea,
 	borrow_fees_originated numeric,
