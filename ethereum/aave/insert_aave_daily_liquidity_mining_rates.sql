@@ -113,7 +113,7 @@ WHERE NOT EXISTS (
 );
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('15,45 * * * *', $$
+VALUES ('16,46 * * * *', $$
     SELECT aave.insert_aave_daily_atoken_balances(
         (SELECT DATE_TRUNC('day',NOW()) - interval '3 days'),
         (SELECT DATE_TRUNC('day',NOW()) );
