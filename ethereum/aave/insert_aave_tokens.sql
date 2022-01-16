@@ -141,7 +141,9 @@ FROM (
     ) aat
 GROUP BY 1,2,3,4,5,6,7,8
 
-    ON CONFLICT (token_address, erc20_address, side) DO UPDATE SET decimals = EXCLUDED.decimals, symbol = EXCLUDED.symbol, erc20_symbol = EXCLUDED.erc20_symbol
+    ON CONFLICT (token_address, erc20_address, side) DO UPDATE SET
+	decimals = EXCLUDED.decimals, symbol = EXCLUDED.symbol, erc20_symbol = EXCLUDED.erc20_symbol,
+	token_name = EXCLUDED.token_name, program_type = EXCLUDED.program_type
     RETURNING 1
 )
 SELECT count(*) INTO r from rows;
