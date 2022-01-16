@@ -1,11 +1,11 @@
-CREATE OR REPLACE FUNCTION llama.insert_aave_daily_atoken_balances(start_time timestamptz, end_time timestamptz) RETURNS integer
+CREATE OR REPLACE FUNCTION aave.insert_aave_daily_atoken_balances(start_time timestamptz, end_time timestamptz) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 	start_time_day timestamptz := DATE_TRUNC('day',start_time);
 	end_time_day timestamptz := DATE_TRUNC('day',end_time) + interval '1 day'; --since we trunc to day
 BEGIN
 WITH rows AS (
-    INSERT INTO llama.aave_daily_atoken_balances (
+    INSERT INTO aave.aave_daily_atoken_balances (
 	day,
 	token_address,
 	daily_change,
@@ -18,7 +18,7 @@ WITH rows AS (
 WITH RECURSIVE 
 gs AS --doing a series so that we don't skip days when there's no deposits/withraws
 (
-SELECT DISTINCT d.address AS token_address, gs.day FROM llama."aave_tokens" d
+SELECT DISTINCT d.address AS token_address, gs.day FROM aave."aave_tokens" d
 INNER JOIN 
 (SELECT generate_series(start_time_day, end_time_day, '1 day') AS day) gs -- Generate all days since the first contract
 ON 1=1
@@ -40,7 +40,7 @@ FROM
         WHEN "to" = '\x0000000000000000000000000000000000000000' THEN -"value"
         ELSE 0 END) AS value
     FROM erc20."ERC20_evt_Transfer" e
-    INNER JOIN llama."aave_tokens" at
+    INNER JOIN aave."aave_tokens" at
         ON e."contract_address" = at."address"
     
     WHERE ("from" = '\x0000000000000000000000000000000000000000'
@@ -54,7 +54,7 @@ UNION ALL --start balances
 		SELECT
 		day, token_address, total_bal,
 			DENSE_RANK() OVER (PARTITION BY token_address ORDER BY day DESC) AS rnk
-		FROM llama.aave_daily_atoken_balances
+		FROM aave.aave_daily_atoken_balances
 		WHERE day < start_time_day
 	) start_bal
 	WHERE rnk = 1
@@ -63,7 +63,7 @@ UNION ALL --start balances
 RIGHT JOIN gs
 ON gs.day = a.day
 AND a."contract_address" = gs."token_address"
-INNER JOIN llama."aave_daily_interest_rates" di
+INNER JOIN aave."aave_daily_interest_rates" di
 ON di.day = gs.day
 AND di."token" = gs."token_address"
 )
@@ -120,15 +120,15 @@ END
 $function$;
 
 -- Get the table started
-SELECT llama.insert_aave_daily_atoken_balances(DATE_TRUNC('day','2021-04-13'::timestamptz),DATE_TRUNC('day','2021-12-31'::timestamptz) )
+SELECT aave.insert_aave_daily_atoken_balances(DATE_TRUNC('day','2021-04-13'::timestamptz),DATE_TRUNC('day','2021-12-31'::timestamptz) )
 WHERE NOT EXISTS (
     SELECT *
-    FROM llama.aave_daily_atoken_balances
+    FROM aave.aave_daily_atoken_balances
 );
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$
-    SELECT llama.insert_aave_daily_atoken_balances(
+    SELECT aave.insert_aave_daily_atoken_balances(
         (SELECT DATE_TRUNC('day',NOW()) - interval '3 days'),
         (SELECT DATE_TRUNC('day',NOW()) );
 	
