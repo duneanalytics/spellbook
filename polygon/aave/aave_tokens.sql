@@ -2,9 +2,9 @@ CREATE TABLE IF NOT EXISTS aave.aave_tokens (
 	address bytea UNIQUE,
 	symbol text,
 	decimals int4,
-  	erc20address bytea,
-  	erc20symbol text,
-  	erc20decimals int 4
+  	underlying_token_address bytea,
+  	underlying_token_symbol text,
+  	underlying_token_decimals int 4
 );
 
 BEGIN;
@@ -26,5 +26,5 @@ COMMIT;
 
 CREATE INDEX IF NOT EXISTS llama_aave_tokens_address_decimals_idx ON aave.aave_tokens USING btree (address) INCLUDE (decimals);
 CREATE INDEX IF NOT EXISTS llama_aave_tokens_symbol_decimals_idx ON aave.aave_tokens USING btree (symbol) INCLUDE (decimals);
-CREATE INDEX IF NOT EXISTS llama_aave_tokens_erc20address_decimals_idx ON aave.aave_tokens USING btree (erc20address) INCLUDE (erc20decimals);
-CREATE INDEX IF NOT EXISTS llama_aave_tokens_erc20symbol_decimals_idx ON aave.aave_tokens USING btree (erc20symbol) INCLUDE (erc20decimals);
+CREATE INDEX IF NOT EXISTS llama_aave_tokens_erc20address_decimals_idx ON aave.aave_tokens USING btree (underlying_token_address) INCLUDE (underlying_token_decimals);
+CREATE INDEX IF NOT EXISTS llama_aave_tokens_erc20symbol_decimals_idx ON aave.aave_tokens USING btree (underlying_token_symbol) INCLUDE (eunderlying_token_decimals);
