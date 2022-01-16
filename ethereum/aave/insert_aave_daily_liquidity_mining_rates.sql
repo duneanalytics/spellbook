@@ -32,14 +32,14 @@ SELECT DATE_TRUNC('day',"minute") AS p_day, "contract_address", decimals, symbol
                                                                         ON l.asset = at."token_address"
                                 UNION ALL SELECT '\x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9'::bytea --AAVE
                                 )
-    AND "minute" >= '2020-01-24'::TIMESTAMP
+    AND "minute" >= start_time AND "minute" <= end_time
     GROUP BY 1,2,3,4
     
 UNION ALL
 
 SELECT DATE_TRUNC('day',"minute") AS p_day, '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'::bytea AS "contract_address", 18 AS decimals, symbol, AVG(price) AS price --avg should be the best time-weighted way to approximate rates
     FROM  prices."layer1_usd_eth"
-    WHERE "minute" >= '2020-01-24'::TIMESTAMP
+    WHERE "minute" >= start_time AND "minute" <= end_time
     GROUP BY 1,2,3,4
 )
 
@@ -55,12 +55,12 @@ FROM
 (
 SELECT
 atb.day, atb.token_address,
-((i.emission * (60*60*24*365)) * aave.price/eth.price * 10^tok.decimals)
-/(atb.total_bal * tok.price/eth.price  * 10^aave.decimals) AS lm_reward_apr,
+((i.emission * (60*60*24*365)) * paave.price/eth.price * 10^tok.decimals)
+/(atb.total_bal * tok.price/eth.price  * 10^paave.decimals) AS lm_reward_apr,
 
 (i.emission * (60*60*24*365)) /*/ 10^aave.decimals)*/
 / (atb.total_bal / 10^tok.decimals) AS lm_token_yr_raw,
-aave.decimals AS aave_decimals
+paave.decimals AS aave_decimals
 
 FROM
 aave.aave_treasury_daily_atoken_balances atb 
@@ -73,9 +73,9 @@ ON i.asset = atb.token_address --get the lm rate on the day
 AND atb.day >= i.day
 AND atb.day < i.next_day
 
-INNER JOIN prices aave
-ON aave.p_day = atb.day
-AND aave."contract_address" = '\x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9'
+INNER JOIN prices paave
+ON paave.p_day = atb.day
+AND paave."contract_address" = '\x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9'
 
 INNER JOIN prices tok
 ON tok.p_day = atb.day
@@ -84,6 +84,8 @@ AND tok."contract_address" = at."underlying_token_address"
 INNER JOIN prices eth
 ON eth.p_day = atb.day
 AND eth.contract_address = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+	
+WHERE atb.day >= start_time AND atb.day <= end_time
 
 ) d
 
