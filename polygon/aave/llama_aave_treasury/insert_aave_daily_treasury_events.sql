@@ -262,7 +262,7 @@ WHERE NOT EXISTS (
 );
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('16,46 * * * *', $$
+VALUES ('17,47 * * * *', $$
     SELECT aave.insert_aave_daily_treasury_events(
         (SELECT DATE_TRUNC('day',NOW()) - interval '3 days'),
         (SELECT DATE_TRUNC('day',NOW()) );
