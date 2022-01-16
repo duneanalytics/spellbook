@@ -28,7 +28,7 @@ WITH lm_updates AS (
 , prices AS (
 SELECT DATE_TRUNC('day',"minute") AS p_day, "contract_address", decimals, symbol, AVG(price) AS price --avg should be the best time-weighted way to approximate rates
     FROM prices.usd
-    WHERE contract_address IN (SELECT at."erc20address" FROM lm_updates l INNER JOIN dune_user_generated."llama_aave_tokens" at
+    WHERE contract_address IN (SELECT at."underlying_token_address" FROM lm_updates l INNER JOIN dune_user_generated."llama_aave_tokens" at
                                                                         ON l.asset = at."address"
                                 UNION ALL SELECT '\x7ceb23fd6bc0add59e62ac25578270cff1b9f619'::bytea --WMATIC
                                 )
@@ -81,7 +81,7 @@ AND wm."contract_address" = '\x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'--WMATIC
 
 LEFT JOIN prices tok
 ON tok.p_day = atb.day
-AND tok."contract_address" = at."erc20address"
+AND tok."contract_address" = at."underlying_token_address"
 
 LEFT JOIN prices eth
 ON eth.p_day = atb.day
