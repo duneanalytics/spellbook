@@ -1,11 +1,11 @@
-CREATE OR REPLACE FUNCTION llama.insert_aave_daily_treasury_events(start_time timestamptz, end_time timestamptz) RETURNS integer
+CREATE OR REPLACE FUNCTION aave.insert_aave_daily_treasury_events(start_time timestamptz, end_time timestamptz) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 	start_time_day timestamptz := DATE_TRUNC('day',start_time);
 	end_time_day timestamptz := DATE_TRUNC('day',end_time) + interval '1 day'; --since we trunc to day
 BEGIN
 WITH rows AS (
-    INSERT INTO llama.aave_daily_treasury_events (
+    INSERT INTO aave.aave_daily_treasury_events (
 contract_address,
 version,
 evt_day,
@@ -212,7 +212,7 @@ FROM
 
 GROUP BY 1,2,3--,4,5
 ) b
-LEFT JOIN llama.aave_fees_by_day at --fee generating events
+LEFT JOIN aave.aave_daily_treasury_fees at --fee generating events
 ON DATE_TRUNC('day',at.day) = b.evt_day
 AND at.contract_address = b.contract_address
 AND LOWER(at.version) = LOWER(b.version)
@@ -255,15 +255,15 @@ END
 $function$;
 
 -- Get the table started
-SELECT llama.insert_aave_daily_treasury_events(DATE_TRUNC('day','2021-04-13'::timestamptz),DATE_TRUNC('day','2021-12-31'::timestamptz) )
+SELECT aave.insert_aave_daily_treasury_events(DATE_TRUNC('day','2021-04-13'::timestamptz),DATE_TRUNC('day','2021-12-31'::timestamptz) )
 WHERE NOT EXISTS (
     SELECT *
-    FROM llama.aave_daily_treasury_events
+    FROM aave.aave_daily_treasury_events
 );
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('16,46 * * * *', $$
-    SELECT llama.insert_aave_daily_treasury_events(
+    SELECT aave.insert_aave_daily_treasury_events(
         (SELECT DATE_TRUNC('day',NOW()) - interval '3 days'),
         (SELECT DATE_TRUNC('day',NOW()) );
 	
