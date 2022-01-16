@@ -1,6 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS aave;
 
-CREATE TABLE IF NOT EXISTS aave.aave_treasury_daily_fees (   
+CREATE TABLE IF NOT EXISTS aave.aave_daily_treasury_fees (   
 	day timestamptz,
 	contract_address bytea,
 	borrow_fees_originated numeric,
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS aave.aave_treasury_daily_fees (
 		PRIMARY KEY (day, contract_address)
 );
 
-CREATE INDEX IF NOT EXISTS llama_aave_treasury_fees_by_day_day_address_version_idx ON aave.aave_treasury_daily_fees (day,contract_address, version);
-CREATE INDEX IF NOT EXISTS llama_aave_treasury_fees_by_day_day_address_idx ON aave.aave_treasury_daily_fees (day,contract_address);
-CREATE INDEX IF NOT EXISTS llama_aave_treasury_fees_by_day_day_idx ON aave.aave_treasury_daily_fees (day);
-CREATE INDEX IF NOT EXISTS llama_aave_treasury_fees_by_day_address_idx ON aave.aave_treasury_daily_fees (contract_address);
+CREATE INDEX IF NOT EXISTS llama_aave_treasury_fees_by_day_day_address_version_idx ON aave.aave_daily_treasury_fees (day,contract_address, version);
+CREATE INDEX IF NOT EXISTS llama_aave_treasury_fees_by_day_day_address_idx ON aave.aave_daily_treasury_fees (day,contract_address);
+CREATE INDEX IF NOT EXISTS llama_aave_treasury_fees_by_day_day_idx ON aave.aave_daily_treasury_fees (day);
+CREATE INDEX IF NOT EXISTS llama_aave_treasury_fees_by_day_address_idx ON aave.aave_daily_treasury_fees (contract_address);
