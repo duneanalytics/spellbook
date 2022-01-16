@@ -1,0 +1,121 @@
+CREATE OR REPLACE FUNCTION aave.insert_aave_daily_liquidity_mining_rates(start_time timestamptz, end_time timestamptz) RETURNS integer
+LANGUAGE plpgsql AS $function$
+DECLARE r integer;
+
+BEGIN
+WITH rows AS (
+    INSERT INTO aave.aave_daily_liquidity_mining_rates (
+    day,
+    token_address,
+    lm_reward_apr_yr,
+    lm_reward_apr_daily,
+    lm_token_yr_raw,
+    lm_token_daily_raw,
+    aave_decimals
+    )
+
+WITH lm_updates AS (
+ SELECT day,"asset", "emission", "evt_block_time",
+    lead(day, 1, DATE_TRUNC('day',now() + '1 day'::interval) ) OVER (PARTITION BY "asset"
+                            ORDER BY day asc) AS next_day
+    FROM (
+        SELECT 
+        DATE_TRUNC('day',"evt_block_time") AS day, "asset", "emission", "evt_block_time"
+        FROM aave_v2."AaveIncentivesController_evt_AssetConfigUpdated"
+        ) lm
+)
+
+, prices AS (
+SELECT DATE_TRUNC('day',"minute") AS p_day, "contract_address", decimals, symbol, AVG(price) AS price --avg should be the best time-weighted way to approximate rates
+    FROM prices.usd
+    WHERE contract_address IN (SELECT at."erc20address" FROM lm_updates l INNER JOIN dune_user_generated."llama_aave_tokens" at
+                                                                        ON l.asset = at."address"
+                                UNION ALL SELECT '\x7ceb23fd6bc0add59e62ac25578270cff1b9f619'::bytea --WMATIC
+                                )
+    AND "minute" >= '2021-04-13'::TIMESTAMP
+    GROUP BY 1,2,3,4
+    
+UNION ALL
+
+SELECT DATE_TRUNC('day',"minute") AS p_day, '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'::bytea AS "contract_address", 18 AS decimals, symbol, AVG(price) AS price --avg should be the best time-weighted way to approximate rates
+    FROM  prices."layer1_usd"
+    WHERE "minute" >= '2021-04-13'::TIMESTAMP
+    AND "symbol" = 'MATIC'
+    GROUP BY 1,2,3,4
+)
+
+SELECT
+d.day, d.token_address,
+d.lm_reward_apr AS lm_reward_apr_yr,
+d.lm_reward_apr/365.00 AS lm_reward_apr_daily,
+d.lm_token_yr_raw, --needs to eventually be divided by aave's decimals
+d.lm_token_yr_raw/365.00 AS lm_token_daily_raw,
+aave_decimals
+
+FROM
+(
+SELECT
+atb.day, atb.token_address,
+((i.emission * (60*60*24*365)) * wm.price/eth.price * 10^tok.decimals)
+/(atb.total_bal * tok.price/eth.price  * 10^wm.decimals) AS lm_reward_apr,
+
+(i.emission * (60*60*24*365)) /*/ 10^aave.decimals)*/
+/ (atb.total_bal / 10^tok.decimals) AS lm_token_yr_raw,
+wm.decimals AS aave_decimals
+
+FROM
+aave.aave_daily_atoken_balances atb 
+
+INNER JOIN aave."aave_tokens" at
+ON atb.token_address = at."address"
+
+INNER JOIN lm_updates i
+ON i.asset = atb.token_address --get the lm rate on the day
+AND atb.day >= i.day
+AND atb.day < i.next_day
+
+LEFT JOIN prices wm
+ON wm.p_day = atb.day
+--AND aave."contract_address" = '\x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9'
+AND wm."contract_address" = '\x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'--WMATIC
+
+LEFT JOIN prices tok
+ON tok.p_day = atb.day
+AND tok."contract_address" = at."erc20address"
+
+LEFT JOIN prices eth
+ON eth.p_day = atb.day
+AND eth.contract_address = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' --ETH
+
+) d
+
+    ON CONFLICT (day, token_address) DO UPDATE SET
+    
+    lm_reward_apr_yr = EXCLUDED.lm_reward_apr_yr,
+    lm_reward_apr_daily = EXCLUDED.lm_reward_apr_daily,
+    lm_token_yr_raw = EXCLUDED.lm_token_yr_raw,
+    lm_token_daily_raw = EXCLUDED.lm_token_daily_raw,
+    aave_decimals = EXCLUDED.aave_decimals
+	
+    RETURNING 1
+)
+SELECT count(*) INTO r from rows;
+RETURN r;
+END
+$function$;
+
+-- Get the table started
+SELECT aave.aave_daily_liquidity_mining_rates(DATE_TRUNC('day','2020-01-24'::timestamptz),DATE_TRUNC('day',NOW()) )
+WHERE NOT EXISTS (
+    SELECT *
+    FROM aave.aave_daily_liquidity_mining_rates
+);
+
+INSERT INTO cron.job (schedule, command)
+VALUES ('15,45 * * * *', $$
+    SELECT aave.insert_aave_daily_atoken_balances(
+        (SELECT DATE_TRUNC('day',NOW()) - interval '3 days'),
+        (SELECT DATE_TRUNC('day',NOW()) );
+	
+$$)
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
