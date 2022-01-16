@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS aave.aave_tokens (
     side text,
     token_name text,
     program_type text,
-        UNIQUE (token_address, erc20_address, side)
+        UNIQUE (token_address, underlying_token_address, side)
 );
 
 CREATE INDEX IF NOT EXISTS llama_aave_treasury_aave_tokens_token_address_idx ON aave.aave_tokens (token_address);
