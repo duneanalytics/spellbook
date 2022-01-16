@@ -1,6 +1,6 @@
-CREATE SCHEMA IF NOT EXISTS llama;
+CREATE SCHEMA IF NOT EXISTS aave;
 
-CREATE TABLE IF NOT EXISTS llama.aave_daily_interest_rates (   
+CREATE TABLE IF NOT EXISTS aave.aave_daily_interest_rates (   
 	underlying_token bytea,
 	token bytea,
 	day timestamptz,
