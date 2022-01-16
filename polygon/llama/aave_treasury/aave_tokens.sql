@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS llama.aave_tokens (
+CREATE TABLE IF NOT EXISTS aave.aave_tokens (
 	address bytea UNIQUE,
 	symbol text,
 	decimals int4,
@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS llama.aave_tokens (
 );
 
 BEGIN;
-DELETE FROM llama.aave_tokens *;
+DELETE FROM aave.aave_tokens *;
 
 
 COPY llama.aave_tokens (address, symbol, decimals,erc20address,erc20symbol,erc20decimals) FROM stdin;
@@ -24,7 +24,7 @@ COPY llama.aave_tokens (address, symbol, decimals,erc20address,erc20symbol,erc20
 
 COMMIT;
 
-CREATE INDEX IF NOT EXISTS llama_aave_tokens_address_decimals_idx ON llama.aave_token USING btree (address) INCLUDE (decimals);
-CREATE INDEX IF NOT EXISTS llama_aave_tokens_symbol_decimals_idx ON llama.aave_token USING btree (symbol) INCLUDE (decimals);
-CREATE INDEX IF NOT EXISTS llama_aave_tokens_erc20address_decimals_idx ON llama.aave_token USING btree (erc20address) INCLUDE (erc20decimals);
-CREATE INDEX IF NOT EXISTS llama_aave_tokens_erc20symbol_decimals_idx ON llama.aave_token USING btree (erc20symbol) INCLUDE (erc20decimals);
+CREATE INDEX IF NOT EXISTS llama_aave_tokens_address_decimals_idx ON aave.aave_tokens USING btree (address) INCLUDE (decimals);
+CREATE INDEX IF NOT EXISTS llama_aave_tokens_symbol_decimals_idx ON aave.aave_tokens USING btree (symbol) INCLUDE (decimals);
+CREATE INDEX IF NOT EXISTS llama_aave_tokens_erc20address_decimals_idx ON aave.aave_tokens USING btree (erc20address) INCLUDE (erc20decimals);
+CREATE INDEX IF NOT EXISTS llama_aave_tokens_erc20symbol_decimals_idx ON aave.aave_tokens USING btree (erc20symbol) INCLUDE (erc20decimals);
