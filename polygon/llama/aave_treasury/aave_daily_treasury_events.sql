@@ -1,6 +1,6 @@
-CREATE SCHEMA IF NOT EXISTS llama;
+CREATE SCHEMA IF NOT EXISTS aave;
 
-CREATE TABLE IF NOT EXISTS llama.aave_daily_treasury_events (   
+CREATE TABLE IF NOT EXISTS aave.aave_daily_treasury_events (   
 contract_address bytea,
 version text,
 evt_day timestamptz,
@@ -34,7 +34,7 @@ gas_out numeric,
 
 );
 
-CREATE INDEX IF NOT EXISTS aave_daily_treasury_events_day_address_version_idx ON llama.aave_daily_treasury_events (evt_day, contract_address, version);
-CREATE INDEX IF NOT EXISTS aave_daily_treasury_events_day_address_idx ON llama.aave_daily_treasury_events (evt_day, contract_address);
-CREATE INDEX IF NOT EXISTS aave_daily_treasury_events_day_idx ON llama.aave_daily_treasury_events (evt_day);
-CREATE INDEX IF NOT EXISTS aave_daily_treasury_events_address_idx ON llama.aave_daily_treasury_events (contract_address);
+CREATE INDEX IF NOT EXISTS aave_daily_treasury_events_day_address_version_idx ON aave.aave_daily_treasury_events (evt_day, contract_address, version);
+CREATE INDEX IF NOT EXISTS aave_daily_treasury_events_day_address_idx ON aave.aave_daily_treasury_events (evt_day, contract_address);
+CREATE INDEX IF NOT EXISTS aave_daily_treasury_events_day_idx ON aave.aave_daily_treasury_events (evt_day);
+CREATE INDEX IF NOT EXISTS aave_daily_treasury_events_address_idx ON aave.aave_daily_treasury_events (contract_address);
