@@ -11,8 +11,8 @@ WITH rows AS (
 	daily_change,
 	starting_balance,
 	interest_rate_apr,
-	int_earned,
-	total_bal
+	interest_earned,
+	total_balalnce
     )
 	
 WITH RECURSIVE 
@@ -49,10 +49,10 @@ FROM
     GROUP BY 1,2
 
 UNION ALL --start balances
-	SELECT day, token_address, total_bal
+	SELECT day, token_address, total_balance
 	FROM (
 		SELECT
-		day, token_address, total_bal,
+		day, token_address, total_balance,
 			DENSE_RANK() OVER (PARTITION BY token_address ORDER BY day DESC) AS rnk
 		FROM llama.aave_daily_atoken_balances
 		WHERE day < start_time_day
@@ -73,8 +73,8 @@ AND di."token" = gs."token_address"
 SELECT day, contract_address,value, interest_rate_apr,
 value::decimal AS value_diff,
 value::decimal AS starting_value, value::decimal AS pre_int_balance,
-value*interest_rate_apr::decimal AS int_earned,
-value::decimal + (value*interest_rate_apr::decimal) AS total_bal
+value*interest_rate_apr::decimal AS interest_earned,
+value::decimal + (value*interest_rate_apr::decimal) AS total_balance
 FROM rawbals
 WHERE drank = 1 --first daily entry for each token
 
@@ -83,13 +83,13 @@ UNION
 SELECT
 gr.day,gr."contract_address", gr.value,gr."interest_rate_apr",
 gr.value,
-COALESCE(c.total_bal,0)::decimal AS starting_value,
-(COALESCE(c.total_bal,0) + gr.value)::decimal AS pre_int_balance,
-( (COALESCE(c.total_bal,0) + gr.value)::decimal * COALESCE(gr."interest_rate_apr",0)::decimal ) AS int_earned,
-( (COALESCE(c.total_bal,0) + gr.value)::decimal )
+COALESCE(c.total_balance,0)::decimal AS starting_value,
+(COALESCE(c.total_balance,0) + gr.value)::decimal AS pre_int_balance,
+( (COALESCE(c.total_balance,0) + gr.value)::decimal * COALESCE(gr."interest_rate_apr",0)::decimal ) AS interest_earned,
+( (COALESCE(c.total_balance,0) + gr.value)::decimal )
 +
-( (COALESCE(c.total_bal,0) + gr.value)::decimal * COALESCE(gr."interest_rate_apr",0)::decimal )
-AS total_bal
+( (COALESCE(c.total_balance,0) + gr.value)::decimal * COALESCE(gr."interest_rate_apr",0)::decimal )
+AS total_balance
 FROM rawbals gr
 
 INNER JOIN abalances c --yesterday
@@ -100,7 +100,7 @@ AND gr.day = c.day + '1 day'::interval
 
 
 SELECT day, contract_address AS token_address, value_diff AS daily_change,
-starting_value AS starting_balance, interest_rate_apr, int_earned, total_bal
+starting_value AS starting_balance, interest_rate_apr, interest_earned, total_balance
 FROM abalances
 
 
@@ -109,8 +109,8 @@ FROM abalances
 	daily_change = EXCLUDED.daily_change,
 	starting_balance = EXCLUDED.starting_balance,
 	interest_rate_apr = EXCLUDED.interest_rate_apr,
-	int_earned = EXCLUDED.int_earned,
-	total_bal = EXCLUDED.total_bal
+	interest_earned = EXCLUDED.interest_earned,
+	total_balance = EXCLUDED.total_balance
 	
     RETURNING 1
 )
