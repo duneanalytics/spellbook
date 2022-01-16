@@ -4825,6 +4825,11 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x938e95271311641dc88fedaa6d7b9afdc875daa9	Invisible Mechanisms	Hate	ERC721
 \\x62f5418d9edbc13b7e07a15e095d7228cd9386c5	Fade	FADE	ERC721
 \\x74bb71a4210e33256885def483fd4227b7f9d88f	Fomoverse	FOMO	ERC721
+\\xB5C747561a185A146f83cFff25BdfD2455b31fF4	Boss Beauties	BOOSB	erc721
+\\xac87FeBdf7ef7D5f930497CafaB9C25d35b932F9	SemiSupers	SEMISUPERS	erc721
+\\x123b30E25973FeCd8354dd5f41Cc45A3065eF88C	Alien Frens	ALIENFRENS	erc721
+\\x90ee3Cf59FcDe2FE11838b9075Ea4681462362F1	Non-Fungible Fungi	NFF	erc721
+\\x986aea67C7d6A15036e18678065eb663Fc5BE883	Nifty League Degens	DEGEN	erc721
 \.
 
 

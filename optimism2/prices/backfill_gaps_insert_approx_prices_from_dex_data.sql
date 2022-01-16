@@ -66,6 +66,7 @@ rows AS (
         symbol,
         decimals
     FROM final_prices
+        WHERE median_price IS NOT NULL
 
     ON CONFLICT (contract_address, hour) DO UPDATE SET median_price = EXCLUDED.median_price, sample_size = EXCLUDED.sample_size
     RETURNING 1
@@ -79,5 +80,15 @@ $function$;
 -- Monthly backfill starting 11 Nov 2021 (regenesis
 --TODO: Add pre-regenesis prices
 
-SELECT prices.backfill_gaps_insert_approx_prices_from_dex_data('2021-11-11', '2021-12-30')
+SELECT prices.backfill_gaps_insert_approx_prices_from_dex_data('2021-11-11'::timestamptz, '2021-12-30'::timestamptz)
+WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE median_price IS NULL
+                    AND hour >= '2021-11-11'::timestamptz AND hour <= '2021-12-30'::timestamptz);
 
+INSERT INTO cron.job (schedule, command)
+VALUES ('13,43 * * * *', $$
+    SELECT prices.backfill_gaps_insert_approx_prices_from_dex_data(
+        (SELECT DATE_TRUNC('hour', now()) - interval '3 days'),
+        (SELECT DATE_TRUNC('hour', now()) + interval '1 hour')
+    );
+$$)
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
