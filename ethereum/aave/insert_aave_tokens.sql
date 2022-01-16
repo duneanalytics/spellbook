@@ -141,8 +141,8 @@ FROM (
     ) aat
 GROUP BY 1,2,3,4,5,6,7,8
 
-    ON CONFLICT (token_address, erc20_address, side) DO UPDATE SET
-	decimals = EXCLUDED.decimals, symbol = EXCLUDED.symbol, erc20_symbol = EXCLUDED.erc20_symbol,
+    ON CONFLICT (token_address, underlying_token_address, side) DO UPDATE SET
+	decimals = EXCLUDED.decimals, symbol = EXCLUDED.symbol, underlying_token_symbol = EXCLUDED.underlying_token_symbol,
 	token_name = EXCLUDED.token_name, program_type = EXCLUDED.program_type
     RETURNING 1
 )
