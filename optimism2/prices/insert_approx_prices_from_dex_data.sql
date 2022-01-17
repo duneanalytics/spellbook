@@ -476,3 +476,13 @@ VALUES ('16,46 * * * *', $$
     );
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+
+--once per day run of the last 30 days to handle for new tokens
+INSERT INTO cron.job (schedule, command)
+VALUES ('1 0 * * *', $$
+    SELECT prices.insert_approx_prices_from_dex_data(
+        (SELECT MAX(hour) - interval '30 days' FROM prices.approx_prices_from_dex_data),
+        (SELECT DATE_TRUNC('hour', now()) + interval '1 hour')
+    );
+$$)
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
