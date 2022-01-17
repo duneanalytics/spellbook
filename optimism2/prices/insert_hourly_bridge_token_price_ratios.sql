@@ -15,8 +15,8 @@ WITH bridge_tokens AS (
     SELECT
         s.evt_block_time,
         lp_contract, erc20_token, bridge_token, bridge_symbol, bridge_decimals,
-        CASE WHEN "boughtId" = 0 THEN "tokensBought"::decimal/"tokensSold"::decimal --if buy bridge_token then buys per sells is bridge_token price
-                ELSE "tokensSold"::decimal/"tokensBought"::decimal
+        CASE WHEN "boughtId" = 0 THEN "tokensBought"::decimal/NULLIF("tokensSold",0)::decimal --if buy bridge_token then buys per sells is bridge_token price
+                ELSE "tokensSold"::decimal/NULLIF("tokensBought",0)::decimal
                 END
                 AS ratio
         FROM hop_protocol."Swap_evt_TokenSwap" s
@@ -63,7 +63,7 @@ WITH bridge_tokens AS (
         SELECT
         block_time, NULL::bytea AS lp_contract, t.contract_address AS erc20_token, s.token AS bridge_token,
         et.symbol AS bridge_symbol, et.decimals AS bridge_decimals,
-        t.value::decimal/s.amount::decimal AS ratio
+        t.value::decimal/NULLIF(s.amount,0)::decimal AS ratio
         FROM (
             SELECT
             "block_time", tx_hash,
