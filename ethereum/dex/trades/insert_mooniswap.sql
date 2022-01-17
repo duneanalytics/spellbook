@@ -42,8 +42,8 @@ WITH rows AS (
         token_b_amount_raw,
         coalesce(
             usd_amount,
-            token_a_amount_raw / 10 ^ erc20a.decimals * pa.price,
-            token_b_amount_raw / 10 ^ erc20b.decimals * pb.price
+            token_a_amount_raw / 10 ^ (CASE token_a_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 18 ELSE pa.decimals END) * (CASE token_a_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN pe.price ELSE pa.price END),
+            token_b_amount_raw / 10 ^ (CASE token_b_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 18 ELSE pb.decimals END) * (CASE token_b_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN pe.price ELSE pb.price END)
         ) as usd_amount,
         token_a_address,
         token_b_address,
@@ -53,7 +53,7 @@ WITH rows AS (
         tx."to" as tx_to,
         trace_address,
         evt_index,
-        row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
+        row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
         -- Mooniswap
         SELECT
@@ -66,10 +66,10 @@ WITH rows AS (
             result AS token_a_amount_raw,
             amount AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            CASE WHEN dst = '\x0000000000000000000000000000000000000000' THEN 
+            CASE WHEN dst = '\x0000000000000000000000000000000000000000' THEN
                 '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'::bytea ELSE dst
             END AS token_a_address,
-            CASE WHEN src = '\x0000000000000000000000000000000000000000' THEN 
+            CASE WHEN src = '\x0000000000000000000000000000000000000000' THEN
                 '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'::bytea ELSE src
             END AS token_b_address,
             contract_address AS exchange_contract_address,
@@ -94,6 +94,10 @@ WITH rows AS (
         AND pb.contract_address = dexs.token_b_address
         AND pb.minute >= start_ts
         AND pb.minute < end_ts
+    LEFT JOIN prices.layer1_usd pe ON pe.minute = date_trunc('minute', dexs.block_time)
+        AND pe.symbol = 'ETH'
+        AND pe.minute >= start_ts
+        AND pe.minute < end_ts
     WHERE dexs.block_time >= start_ts
     AND dexs.block_time < end_ts
     ON CONFLICT DO NOTHING
@@ -139,13 +143,13 @@ SELECT dex.insert_mooniswap(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    (SELECT max(number) FROM ethereum.blocks)
+    (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
 )
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.trades
     WHERE block_time > '2021-01-01'
-    AND block_time <= now()
+    AND block_time <= now() - interval '20 minutes'
     AND project = 'Mooniswap'
 );
 
@@ -153,8 +157,8 @@ INSERT INTO cron.job (schedule, command)
 VALUES ('*/12 * * * *', $$
     SELECT dex.insert_mooniswap(
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Mooniswap'),
-        (SELECT now()),
+        (SELECT now() - interval '20 minutes'),
         (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Mooniswap')),
-        (SELECT MAX(number) FROM ethereum.blocks));
+        (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

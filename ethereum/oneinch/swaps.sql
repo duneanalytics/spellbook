@@ -1,4 +1,4 @@
-CREATE TABLE oneinch.swaps (
+CREATE TABLE IF NOT EXISTS oneinch.swaps (
     tx_from bytea,
     tx_to bytea,
     from_token bytea,
@@ -21,8 +21,8 @@ BEGIN
 WITH swap AS (
     SELECT tx."from" AS tx_from,
         tx."to" AS tx_to,
-        from_token,
-        to_token,
+        CASE WHEN from_token = '\x0000000000000000000000000000000000000000' THEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' ELSE from_token END as from_token,
+        CASE WHEN to_token = '\x0000000000000000000000000000000000000000' THEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' ELSE to_token END as to_token,
         from_amount,
         to_amount,
         tx_hash,
@@ -33,6 +33,7 @@ WITH swap AS (
         from_amount * (
             CASE
                 WHEN from_token IN (
+                    '\x0000000000000000000000000000000000000000', -- ETH
                     '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', -- ETH
                     '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', -- WETH
                     '\x5e74c9036fb86bd7ecdcb084a0673efc32ea31cb', -- sETH
@@ -89,6 +90,7 @@ WITH swap AS (
         to_amount * (
             CASE
                 WHEN to_token IN (
+                    '\x0000000000000000000000000000000000000000', -- ETH
                     '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', -- ETH
                     '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', -- WETH
                     '\x5e74c9036fb86bd7ecdcb084a0673efc32ea31cb', -- sETH
@@ -152,7 +154,8 @@ WITH swap AS (
         SELECT "fromToken" as from_token, "toToken" as to_token, "fromTokenAmount" as from_amount, "minReturnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address FROM oneinch."exchange_v7_call_swap" WHERE call_success UNION ALL
         SELECT "fromToken" as from_token, "toToken" as to_token, "fromTokenAmount" as from_amount, "minReturnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address FROM oneinch."OneInchExchange_call_swap" WHERE call_success UNION ALL
         SELECT "srcToken" as from_token, "dstToken" as to_token, "spentAmount" as from_amount, "returnAmount" as to_amount, evt_tx_hash as tx_hash, evt_block_time as block_time, NULL::integer[] as call_trace_address, evt_index, contract_address FROM oneinch_v2."OneInchExchange_evt_Swapped" UNION ALL
-        SELECT "srcToken" as from_token, "dstToken" as to_token, "spentAmount" as from_amount, "returnAmount" as to_amount, evt_tx_hash as tx_hash, evt_block_time as block_time, NULL::integer[] as call_trace_address, evt_index, contract_address FROM oneinch_v3."AggregationRouterV3_evt_Swapped"
+        SELECT "srcToken" as from_token, "dstToken" as to_token, "spentAmount" as from_amount, "returnAmount" as to_amount, evt_tx_hash as tx_hash, evt_block_time as block_time, NULL::integer[] as call_trace_address, evt_index, contract_address FROM oneinch_v3."AggregationRouterV3_evt_Swapped" UNION ALL
+        SELECT decode(substring("desc"->>'srcToken' FROM 3), 'hex') as from_token, decode(substring("desc"->>'dstToken' FROM 3), 'hex') as to_token, "output_spentAmount" as from_amount, "output_returnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address, NULL::integer as evt_index, contract_address FROM oneinch_v4."AggregationRouterV4_call_swap" where call_success
     ) tmp
     INNER JOIN ethereum.transactions tx ON tx.hash = tx_hash
     LEFT JOIN erc20.tokens t1 ON t1.contract_address = from_token
@@ -199,14 +202,14 @@ RETURN r;
 END
 $function$;
 
-CREATE UNIQUE INDEX IF NOT EXISTS oneinch_sswaps_unique_trace_address_idx ON oneinch.swaps (tx_hash, trace_address);
-CREATE UNIQUE INDEX IF NOT EXISTS oneinch_sswaps_unique_evt_index_idx ON oneinch.swaps (tx_hash, evt_index);
+CREATE UNIQUE INDEX IF NOT EXISTS oneinch_swaps_unique_trace_address_idx ON oneinch.swaps (tx_hash, trace_address);
+CREATE UNIQUE INDEX IF NOT EXISTS oneinch_swaps_unique_evt_index_idx ON oneinch.swaps (tx_hash, evt_index);
 CREATE INDEX IF NOT EXISTS oneinch_swaps_idx ON oneinch.swaps USING BRIN (block_time);
 CREATE INDEX IF NOT EXISTS oneinch_swaps_idx_tx_from ON oneinch.swaps (tx_from);
 
 -- backfill
-SELECT oneinch.insert_swap('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks)) WHERE NOT EXISTS (SELECT * FROM oneinch.swaps LIMIT 1);
+SELECT oneinch.insert_swap('2019-01-01', (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'), (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')) WHERE NOT EXISTS (SELECT * FROM oneinch.swaps LIMIT 1);
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('*/15 * * * *', $$SELECT oneinch.insert_swap((SELECT max(block_time) - interval '2 days' FROM oneinch.swaps), (SELECT now()), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM oneinch.swaps)), (SELECT MAX(number) FROM ethereum.blocks));$$)
+VALUES ('*/15 * * * *', $$SELECT oneinch.insert_swap((SELECT max(block_time) - interval '2 days' FROM oneinch.swaps), (SELECT now() - interval '20 minutes'), (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '2 days' FROM oneinch.swaps)), (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

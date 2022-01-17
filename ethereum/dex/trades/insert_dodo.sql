@@ -42,8 +42,8 @@ WITH rows AS (
         token_b_amount_raw,
         coalesce(
             usd_amount,
-            token_a_amount_raw / 10 ^ erc20a.decimals * pa.price,
-            token_b_amount_raw / 10 ^ erc20b.decimals * pb.price
+            token_a_amount_raw / 10 ^ (CASE token_a_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 18 ELSE pa.decimals END) * (CASE token_a_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN pe.price ELSE pa.price END),
+            token_b_amount_raw / 10 ^ (CASE token_b_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 18 ELSE pb.decimals END) * (CASE token_b_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN pe.price ELSE pb.price END)
         ) as usd_amount,
         token_a_address,
         token_b_address,
@@ -53,13 +53,13 @@ WITH rows AS (
         tx."to" as tx_to,
         trace_address,
         evt_index,
-        row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
+        row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
 
         -- dodo v1 sell
         SELECT
             s.evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO' AS project,
             '1' AS version,
             'DEX' AS category,
             s.seller AS trader_a,
@@ -83,7 +83,7 @@ WITH rows AS (
         -- dodo v1 buy
         SELECT
             b.evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO' AS project,
             '1' AS version,
             'DEX' AS category,
             b.buyer AS trader_a,
@@ -107,9 +107,9 @@ WITH rows AS (
         -- dodov1 proxy01
         SELECT
             evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO' AS project,
             '1' AS version,
-            'DEX' AS category,
+            'Aggregator' AS category,
             sender AS trader_a,
             NULL::bytea AS trader_b,
             "fromAmount" token_a_amount_raw,
@@ -129,9 +129,9 @@ WITH rows AS (
         -- dodov1 proxy04
         SELECT
             evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO' AS project,
             '1' AS version,
-            'DEX' AS category,
+            'Aggregator' AS category,
             sender AS trader_a,
             NULL::bytea AS trader_b,
             "fromAmount" token_a_amount_raw,
@@ -151,9 +151,9 @@ WITH rows AS (
         -- dodov2 proxy02
         SELECT
             evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO' AS project,
             '2' AS version,
-            'DEX' AS category,
+            'Aggregator' AS category,
             sender AS trader_a,
             NULL::bytea AS trader_b,
             "fromAmount" token_a_amount_raw,
@@ -173,7 +173,7 @@ WITH rows AS (
         -- dodov2 dvm
         SELECT
             evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO' AS project,
             '2' AS version,
             'DEX' AS category,
             trader AS trader_a,
@@ -196,7 +196,7 @@ WITH rows AS (
         -- dodov2 dpp
         SELECT
             evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO' AS project,
             '2' AS version,
             'DEX' AS category,
             trader AS trader_a,
@@ -212,6 +212,29 @@ WITH rows AS (
             evt_index
         FROM
             dodo."DPP_evt_DODOSwap"
+        WHERE trader <> '\xa356867fdcea8e71aeaf87805808803806231fdc'
+
+        UNION ALL
+
+        -- dodov2 dsp
+        SELECT
+            evt_block_time AS block_time,
+            'DODO' AS project,
+            '2' AS version,
+            'DEX' AS category,
+            trader AS trader_a,
+            receiver AS trader_b,
+            "fromAmount" AS token_a_amount_raw,
+            "toAmount" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            "fromToken" AS token_a_address,
+            "toToken" AS token_b_address,
+            contract_address AS exchange_contract_address,
+            evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index
+        FROM
+            dodo."DSP_evt_DODOSwap"
         WHERE trader <> '\xa356867fdcea8e71aeaf87805808803806231fdc'
     ) dexs
     INNER JOIN ethereum.transactions tx
@@ -230,8 +253,13 @@ WITH rows AS (
         AND pb.contract_address = dexs.token_b_address
         AND pb.minute >= start_ts
         AND pb.minute < end_ts
+    LEFT JOIN prices.layer1_usd pe ON pe.minute = date_trunc('minute', dexs.block_time)
+        AND pe.symbol = 'ETH'
+        AND pe.minute >= start_ts
+        AND pe.minute < end_ts
     WHERE dexs.block_time >= start_ts
     AND dexs.block_time < end_ts
+    AND dexs.token_a_address <> dexs.token_b_address
 
     ON CONFLICT DO NOTHING
     RETURNING 1
@@ -253,7 +281,7 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2020-01-01'
     AND block_time <= '2021-01-01'
-    AND project = 'dodo'
+    AND project = 'DODO'
 );
 
 -- fill 2021
@@ -261,22 +289,22 @@ SELECT dex.insert_dodo(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    (SELECT max(number) FROM ethereum.blocks)
+    (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
 )
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.trades
     WHERE block_time > '2021-01-01'
-    AND block_time <= now()
-    AND project = 'dodo'
+    AND block_time <= now() - interval '20 minutes'
+    AND project = 'DODO'
 );
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
     SELECT dex.insert_dodo(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='dodo'),
-        (SELECT now()),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='dodo')),
-        (SELECT MAX(number) FROM ethereum.blocks));
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='DODO'),
+        (SELECT now() - interval '20 minutes'),
+        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='DODO')),
+        (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

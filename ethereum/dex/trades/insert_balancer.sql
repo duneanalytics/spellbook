@@ -42,8 +42,10 @@ WITH rows AS (
         token_b_amount_raw,
         coalesce(
             usd_amount,
-            token_a_amount_raw / 10 ^ erc20a.decimals * pa.price,
-            token_b_amount_raw / 10 ^ erc20b.decimals * pb.price
+            token_a_amount_raw / 10 ^ pa.decimals * pa.price,
+            token_b_amount_raw / 10 ^ pb.decimals * pb.price,
+            token_a_amount_raw / 10 ^ erc20a.decimals * bpa.median_price,
+            token_b_amount_raw / 10 ^ erc20b.decimals * bpb.median_price
         ) as usd_amount,
         token_a_address,
         token_b_address,
@@ -53,7 +55,7 @@ WITH rows AS (
         tx."to" as tx_to,
         trace_address,
         evt_index,
-        row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address) AS trade_id
+        row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
         -- V1
         SELECT
@@ -97,6 +99,8 @@ WITH rows AS (
             t.evt_index
         FROM
             balancer_v2."Vault_evt_Swap" t
+        WHERE t."tokenIn" != SUBSTRING(t."poolId" FOR 20)
+        AND t."tokenOut" != SUBSTRING(t."poolId" FOR 20)
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
@@ -114,6 +118,24 @@ WITH rows AS (
         AND pb.contract_address = dexs.token_b_address
         AND pb.minute >= start_ts
         AND pb.minute < end_ts
+    LEFT JOIN balancer_v2.view_bpt_prices bpa ON bpa.contract_address = dexs.token_a_address
+        AND bpa.hour = (
+            SELECT MAX(hour)
+            FROM balancer_v2.view_bpt_prices
+            WHERE hour <= dexs.block_time
+            AND contract_address = dexs.token_b_address
+        )
+        AND bpa.hour >= start_ts
+        AND bpa.hour < end_ts
+    LEFT JOIN balancer_v2.view_bpt_prices bpb ON bpb.contract_address = dexs.token_b_address
+        AND bpb.hour = (
+            SELECT MAX(hour)
+            FROM balancer_v2.view_bpt_prices
+            WHERE hour <= dexs.block_time
+            AND contract_address = dexs.token_b_address
+        )
+        AND bpb.hour >= start_ts
+        AND bpb.hour < end_ts
     WHERE dexs.block_time >= start_ts
     AND dexs.block_time < end_ts
     ON CONFLICT DO NOTHING
@@ -144,13 +166,13 @@ SELECT dex.insert_balancer(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    (SELECT max(number) FROM ethereum.blocks)
+    (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
 )
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.trades
     WHERE block_time > '2021-01-01'
-    AND block_time <= now()
+    AND block_time <= now() - interval '20 minutes'
     AND project = 'Balancer'
 );
 
@@ -158,8 +180,8 @@ INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
     SELECT dex.insert_balancer(
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Balancer'),
-        (SELECT now()),
+        (SELECT now() - interval '20 minutes'),
         (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Balancer')),
-        (SELECT MAX(number) FROM ethereum.blocks));
+        (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
