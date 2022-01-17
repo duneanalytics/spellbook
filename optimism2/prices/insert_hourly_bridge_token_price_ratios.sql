@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION prices.insert_hourly_bridge_token_price_ratios(start_time timestamp, end_time timestamp=now()) RETURNS integer
+CREATE OR REPLACE FUNCTION prices.insert_hourly_bridge_token_price_ratios(start_time timestamptz, end_time timestamptz=now()) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
