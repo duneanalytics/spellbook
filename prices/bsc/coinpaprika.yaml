@@ -464,3 +464,8 @@
   id: cummies-cumrocket
   name: CumRocket
   symbol: CUMMIES
+- address: '0xBA96731324dE188ebC1eD87ca74544dDEbC07D7f'
+  decimals: 18
+  id: titano-titano
+  name: Titano
+  symbol: TITANO
