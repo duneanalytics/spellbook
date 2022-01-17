@@ -62,7 +62,7 @@ WITH rows AS (
 
 	--https://dba.stackexchange.com/questions/186218/carry-over-long-sequence-of-missing-values-with-postgres
 
-	SELECT e_list.block_number, e_list.l1_gas_price, b.block_time --grab actual block time
+	SELECT e_list.block_number, e_list.l1_gas_price, b.time --grab actual block time
 	FROM (
 	    SELECT block_number
 		, first_value(l1_gas_price) OVER (PARTITION BY grp ORDER BY block_number) AS l1_gas_price
@@ -71,7 +71,7 @@ WITH rows AS (
 		FROM events
 		) e_list
 	INNER JOIN optimism.blocks b
-		ON b.block_number = e_list.block_number
+		ON b."number" = e_list.block_number
 	
 	WHERE (block_number IS NOT NULL) AND (l1_gas_price IS NOT NULL) AND (block_time IS NOT NULL)
 
