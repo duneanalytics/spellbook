@@ -67,8 +67,9 @@ WITH rows AS (
             "returnAmount" AS token_a_amount_raw,
             "spentAmount" AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            "dstToken" AS token_a_address,
-            "srcToken" token_b_address,
+	    --map default eth to OP Eth dead address
+            CASE WHEN "dstToken" = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'::bytea ELSE "dstToken" END AS token_a_address,
+            CASE WHEN "srcToken" = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'::bytea ELSE "srcToken" END AS token_b_address,
             t.contract_address as exchange_contract_address,
             t.evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
