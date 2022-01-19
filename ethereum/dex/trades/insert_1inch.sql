@@ -58,29 +58,111 @@ WITH rows AS (
         SELECT
             oi.block_time,
             '1inch' AS project,
-            '1' AS version,
+            version,
             'Aggregator' AS category,
-            tx_from AS trader_a,
+            tx."from" AS trader_a,
             NULL::bytea AS trader_b,
             to_amount AS token_a_amount_raw,
             from_amount AS token_b_amount_raw,
-            GREATEST(from_usd, to_usd) AS usd_amount,
-            to_token AS token_a_address,
-            from_token AS token_b_address,
+            NULL::numeric AS usd_amount,
+            (CASE WHEN to_token = '\x0000000000000000000000000000000000000000' THEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' ELSE to_token END) AS token_a_address,
+            (CASE WHEN from_token = '\x0000000000000000000000000000000000000000' THEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' ELSE from_token END) AS token_b_address,
             contract_address AS exchange_contract_address,
             tx_hash,
             trace_address,
             evt_index
         FROM (
-            SELECT to_token, from_token, to_amount, from_amount, tx_hash, tx_from, block_time, from_usd, to_usd, contract_address, trace_address, evt_index AS evt_index FROM oneinch.swaps
-            UNION ALL
-            SELECT to_token, from_token, to_amount, from_amount, tx_hash, tx_from, block_time, from_usd, to_usd, contract_address, trace_address, NULL::integer AS evt_index FROM onesplit.swaps
-            WHERE tx_hash NOT IN (SELECT tx_hash FROM oneinch.swaps)
-            UNION ALL
-            SELECT to_token, from_token, to_amount, from_amount, tx_hash, tx_from, block_time, from_usd, to_usd, contract_address, NULL::integer[] AS trace_address, evt_index FROM oneproto.swaps
-            WHERE tx_hash NOT IN (SELECT tx_hash FROM oneinch.swaps)
+            SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."exchange_v1_call_aggregate" WHERE call_success UNION ALL
+            SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."exchange_v2_call_aggregate" WHERE call_success UNION ALL
+            SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."exchange_v3_call_aggregate" WHERE call_success UNION ALL
+            SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."exchange_v4_call_aggregate" WHERE call_success UNION ALL
+            SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."exchange_v5_call_aggregate" WHERE call_success UNION ALL
+            SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."exchange_v6_call_aggregate" WHERE call_success UNION ALL
+            SELECT "fromToken" as from_token, "toToken" as to_token, "fromTokenAmount" as from_amount, "minReturnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."exchange_v7_call_swap" WHERE call_success UNION ALL
+            SELECT "fromToken" as from_token, "toToken" as to_token, "fromTokenAmount" as from_amount, "minReturnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."OneInchExchange_call_swap" WHERE call_success UNION ALL
+            SELECT "srcToken" as from_token, "dstToken" as to_token, "spentAmount" as from_amount, "returnAmount" as to_amount, evt_tx_hash as tx_hash, evt_block_time as block_time, NULL::integer[] as call_trace_address, evt_index, contract_address, '2' as version FROM oneinch_v2."OneInchExchange_evt_Swapped" UNION ALL
+            SELECT "srcToken" as from_token, "dstToken" as to_token, "spentAmount" as from_amount, "returnAmount" as to_amount, evt_tx_hash as tx_hash, evt_block_time as block_time, NULL::integer[] as call_trace_address, evt_index, contract_address, '3' as version FROM oneinch_v3."AggregationRouterV3_evt_Swapped" UNION ALL
+            SELECT decode(substring("desc"->>'srcToken' FROM 3), 'hex') as from_token, decode(substring("desc"->>'dstToken' FROM 3), 'hex') as to_token, "output_spentAmount" as from_amount, "output_returnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address, NULL::integer as evt_index, contract_address, '4' as version FROM oneinch_v4."AggregationRouterV4_call_swap" where call_success
         ) oi
+        left join ethereum.transactions tx on hash = tx_hash
 
+        UNION ALL
+
+        SELECT
+            oi.block_time,
+            '1inch' AS project,
+            '1split' as version,
+            'Aggregator' AS category,
+            tx."from" AS trader_a,
+            NULL::bytea AS trader_b,
+            to_amount AS token_a_amount_raw,
+            from_amount AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            (CASE WHEN to_token = '\x0000000000000000000000000000000000000000' THEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' ELSE to_token END) AS token_a_address,
+            (CASE WHEN from_token = '\x0000000000000000000000000000000000000000' THEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' ELSE from_token END) AS token_b_address,
+            contract_address AS exchange_contract_address,
+            tx_hash,
+            call_trace_address as trace_address,
+            NULL::integer as evt_index
+        FROM (
+            SELECT "fromToken" AS from_token, "toToken" AS to_token, "amount" AS from_amount, "minReturn" AS to_amount, call_tx_hash AS tx_hash, call_trace_address, call_block_time AS block_time, contract_address FROM onesplit."OneSplit_call_swap" WHERE call_success UNION ALL
+            SELECT "fromToken" AS from_token, "toToken" AS to_token, "amount" AS from_amount, "minReturn" AS to_amount, call_tx_hash AS tx_hash, call_trace_address, call_block_time AS block_time, contract_address FROM onesplit."OneSplit_call_goodSwap" WHERE call_success
+        ) oi
+        left join ethereum.transactions tx on hash = tx_hash
+        where tx_hash not in (
+            select tx_hash from (
+                SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."exchange_v1_call_aggregate" WHERE call_success UNION ALL
+                SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."exchange_v2_call_aggregate" WHERE call_success UNION ALL
+                SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."exchange_v3_call_aggregate" WHERE call_success UNION ALL
+                SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."exchange_v4_call_aggregate" WHERE call_success UNION ALL
+                SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."exchange_v5_call_aggregate" WHERE call_success UNION ALL
+                SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."exchange_v6_call_aggregate" WHERE call_success UNION ALL
+                SELECT "fromToken" as from_token, "toToken" as to_token, "fromTokenAmount" as from_amount, "minReturnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."exchange_v7_call_swap" WHERE call_success UNION ALL
+                SELECT "fromToken" as from_token, "toToken" as to_token, "fromTokenAmount" as from_amount, "minReturnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."OneInchExchange_call_swap" WHERE call_success UNION ALL
+                SELECT "srcToken" as from_token, "dstToken" as to_token, "spentAmount" as from_amount, "returnAmount" as to_amount, evt_tx_hash as tx_hash, evt_block_time as block_time, NULL::integer[] as call_trace_address, evt_index, contract_address, '2' as version FROM oneinch_v2."OneInchExchange_evt_Swapped" UNION ALL
+                SELECT "srcToken" as from_token, "dstToken" as to_token, "spentAmount" as from_amount, "returnAmount" as to_amount, evt_tx_hash as tx_hash, evt_block_time as block_time, NULL::integer[] as call_trace_address, evt_index, contract_address, '3' as version FROM oneinch_v3."AggregationRouterV3_evt_Swapped" UNION ALL
+                SELECT decode(substring("desc"->>'srcToken' FROM 3), 'hex') as from_token, decode(substring("desc"->>'dstToken' FROM 3), 'hex') as to_token, "output_spentAmount" as from_amount, "output_returnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address, NULL::integer as evt_index, contract_address, '4' as version FROM oneinch_v4."AggregationRouterV4_call_swap" where call_success
+            ) t
+        )
+
+        UNION ALL
+
+        SELECT
+            oi.block_time,
+            '1inch' AS project,
+            '1proto' as version,
+            'Aggregator' AS category,
+            tx."from" AS trader_a,
+            NULL::bytea AS trader_b,
+            to_amount AS token_a_amount_raw,
+            from_amount AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            (CASE WHEN to_token = '\x0000000000000000000000000000000000000000' THEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' ELSE to_token END) AS token_a_address,
+            (CASE WHEN from_token = '\x0000000000000000000000000000000000000000' THEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' ELSE from_token END) AS token_b_address,
+            contract_address AS exchange_contract_address,
+            tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index
+        FROM (
+            SELECT "fromToken" as from_token, "destToken" as to_token, "fromTokenAmount" as from_amount, "destTokenAmount" as to_amount, evt_tx_hash as tx_hash, evt_block_time as block_time, contract_address, evt_index FROM oneproto."OneSplitAudit_evt_Swapped"
+        ) oi
+        left join ethereum.transactions tx on hash = tx_hash
+        where tx_hash not in (
+            select tx_hash from (
+                SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."exchange_v1_call_aggregate" WHERE call_success UNION ALL
+                SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."exchange_v2_call_aggregate" WHERE call_success UNION ALL
+                SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."exchange_v3_call_aggregate" WHERE call_success UNION ALL
+                SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."exchange_v4_call_aggregate" WHERE call_success UNION ALL
+                SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."exchange_v5_call_aggregate" WHERE call_success UNION ALL
+                SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."exchange_v6_call_aggregate" WHERE call_success UNION ALL
+                SELECT "fromToken" as from_token, "toToken" as to_token, "fromTokenAmount" as from_amount, "minReturnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."exchange_v7_call_swap" WHERE call_success UNION ALL
+                SELECT "fromToken" as from_token, "toToken" as to_token, "fromTokenAmount" as from_amount, "minReturnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."OneInchExchange_call_swap" WHERE call_success UNION ALL
+                SELECT "srcToken" as from_token, "dstToken" as to_token, "spentAmount" as from_amount, "returnAmount" as to_amount, evt_tx_hash as tx_hash, evt_block_time as block_time, NULL::integer[] as call_trace_address, evt_index, contract_address, '2' as version FROM oneinch_v2."OneInchExchange_evt_Swapped" UNION ALL
+                SELECT "srcToken" as from_token, "dstToken" as to_token, "spentAmount" as from_amount, "returnAmount" as to_amount, evt_tx_hash as tx_hash, evt_block_time as block_time, NULL::integer[] as call_trace_address, evt_index, contract_address, '3' as version FROM oneinch_v3."AggregationRouterV3_evt_Swapped" UNION ALL
+                SELECT decode(substring("desc"->>'srcToken' FROM 3), 'hex') as from_token, decode(substring("desc"->>'dstToken' FROM 3), 'hex') as to_token, "output_spentAmount" as from_amount, "output_returnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address, NULL::integer as evt_index, contract_address, '4' as version FROM oneinch_v4."AggregationRouterV4_call_swap" where call_success
+            ) t
+        )
+        
         UNION ALL
 
         -- 1inch 0x Limit Orders
@@ -100,7 +182,12 @@ WITH rows AS (
             evt_tx_hash,
             NULL::integer[] AS trace_address,
             evt_index
-        FROM zeroex_v2."Exchange2.1_evt_Fill"
+        FROM (
+            select "feeRecipientAddress", "takerAssetData", "makerAssetData", "makerAddress", "takerAddress", "makerAssetFilledAmount", "takerAssetFilledAmount", contract_address, evt_block_time, evt_tx_hash, evt_index from zeroex_v2."Exchange2.0_evt_Fill" union all -- 0x v1
+            select "feeRecipientAddress", "takerAssetData", "makerAssetData", "makerAddress", "takerAddress", "makerAssetFilledAmount", "takerAssetFilledAmount", contract_address, evt_block_time, evt_tx_hash, evt_index from zeroex_v2."Exchange2.1_evt_Fill" union all -- 0x v2
+            select "feeRecipientAddress", "takerAssetData", "makerAssetData", "makerAddress", "takerAddress", "makerAssetFilledAmount", "takerAssetFilledAmount", contract_address, evt_block_time, evt_tx_hash, evt_index from zeroex_v3."Exchange_evt_Fill" union all -- 0x v3
+            select "feeRecipient", "takerToken", "makerToken", "maker", "taker", "makerTokenFilledAmount", "takerTokenFilledAmount", contract_address, evt_block_time, evt_tx_hash, evt_index from zeroex."ExchangeProxy_evt_LimitOrderFilled" -- 0x v4
+        ) oi
         WHERE "feeRecipientAddress" IN ('\x910bf2d50fa5e014fd06666f456182d4ab7c8bd2', '\x68a17b587caf4f9329f0e372e3a78d23a46de6b5')
 
         UNION ALL
@@ -156,18 +243,20 @@ WITH rows AS (
             select 
                 "output_returnAmount", "amount",
                 COALESCE((select tr1.to from
-                    ethereum.traces tr1 where type = 'call' and tr1.tx_hash = call_tx_hash and substring(tr1.input from 1 for 4) = '\x23b872dd'
+                    ethereum.traces tr1 where call_type = 'call' and tr1.tx_hash = call_tx_hash and substring(tr1.input from 1 for 4) = '\x23b872dd'
                     and COALESCE(call_trace_address, array[]::int[]) = tr1.trace_address[:COALESCE(ARRAY_LENGTH(call_trace_address, 1), 0)]
-                    order by trace_address
+                    and COALESCE(ARRAY_LENGTH(call_trace_address, 1), 0) + 3 = COALESCE(ARRAY_LENGTH(tr1.trace_address, 1), 0)
+                    order by COALESCE(trace_address, array[]::int[])
                     LIMIT 1
                 ), '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') as "srcToken",
                 CASE WHEN ((pools[array_length(pools, 1)] / 2^252)::int & 2 <> 0) THEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
                 ELSE
                     (select tr2.to from
-                        ethereum.traces tr2 where type = 'call' and tr2.tx_hash = call_tx_hash and substring(tr2.input from 1 for 4) = '\xa9059cbb'
+                        ethereum.traces tr2 where call_type = 'call' and tr2.tx_hash = call_tx_hash and substring(tr2.input from 1 for 4) = '\xa9059cbb'
                         and COALESCE(call_trace_address, array[]::int[]) = tr2.trace_address[:COALESCE(ARRAY_LENGTH(call_trace_address, 1), 0)]
+                        and COALESCE(ARRAY_LENGTH(call_trace_address, 1), 0) + 2 = COALESCE(ARRAY_LENGTH(tr2.trace_address, 1), 0)
                         and tr2.from <> contract_address
-                        order by trace_address desc
+                        order by COALESCE(trace_address, array[]::int[]) desc
                         LIMIT 1
                     )
                 END as "dstToken",
