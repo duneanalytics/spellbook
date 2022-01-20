@@ -108,8 +108,8 @@ $function$;
 SELECT dex.insert_uniswap_v3(
     '2021-12-20',
     '2022-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-12-20'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2022-01-01')
+    (SELECT max(number) FROM polygon.blocks WHERE time < '2021-12-20'),
+    (SELECT max(number) FROM polygon.blocks WHERE time <= '2022-01-01')
 )
 WHERE NOT EXISTS (
     SELECT *
@@ -123,8 +123,8 @@ WHERE NOT EXISTS (
 SELECT dex.insert_uniswap_v3(
     '2022-01-01',
     now(),
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2022-01-01'),
-    (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
+    (SELECT max(number) FROM polygon.blocks WHERE time < '2022-01-01'),
+    (SELECT MAX(number) FROM polygon.blocks where time < now() - interval '20 minutes')
 )
 WHERE NOT EXISTS (
     SELECT *
@@ -135,11 +135,11 @@ WHERE NOT EXISTS (
 );
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('27,57 * * * *', $$                       --NOT SURE WHAT TO FILL HERE
+VALUES ('27,57 * * * *', $$
     SELECT dex.insert_uniswap_v3(
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Uniswap' AND version = '3'),
         (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Uniswap' AND version = '3')),
-        (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
+        (SELECT max(number) FROM polygon.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Uniswap' AND version = '3')),
+        (SELECT MAX(number) FROM polygon.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
