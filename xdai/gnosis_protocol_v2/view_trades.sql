@@ -984,10 +984,10 @@ trades_with_prices AS (
     FROM gnosis_protocol_v2."GPv2Settlement_evt_Trade" trades
              LEFT OUTER JOIN daily_average_mainnet_prices as s
                              ON trades."sellToken" = s.contract_address
-                                 AND date(evt_block_time) = s.day
+                                 AND date(evt_block_time) = date(s.day)
              LEFT OUTER JOIN daily_average_mainnet_prices as b
                              ON trades."buyToken" = b.contract_address
-                                 AND date(evt_block_time) = b.day
+                                 AND date(evt_block_time) = date(b.day)
 ),
 
 trades_with_token_units as (
@@ -1097,4 +1097,5 @@ CREATE INDEX view_trades_idx_6 ON gnosis_protocol_v2.view_trades (tx_hash);
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/30 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol_v2.view_trades')
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+
 COMMIT;
