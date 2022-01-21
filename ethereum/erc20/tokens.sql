@@ -2111,6 +2111,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\x63f88a2298a5c4aee3c216aa6d926b184a4b2437	GAME	18
 \\xd567b5f02b9073ad3a982a099a23bf019ff11d1c	GAME	5
 \\x1e1eed62f8d82ecfd8230b8d283d5b5c1ba81b55	GAMMA	18
+\\x6bea7cfef803d1e3d5f7c0103f7ded065644e197     GAMMA   18
 \\x9570ec7ab05d61877ff7eb180f837c7c079c4844	GAP	18
 \\xc58467b855401ef3ff8fda9216f236e29f0d6277	GASG	18
 \\x24efe6b87bf1bfe9ea2ccb5a9d0a959c7172b364	GAT	0
