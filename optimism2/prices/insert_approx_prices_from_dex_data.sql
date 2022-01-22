@@ -69,7 +69,7 @@ FROM (
         ON ea."contract_address" = t.token_a_address
         INNER JOIN erc20."tokens" eb
         ON eb."contract_address" = t.token_b_address
-        WHERE project = 'Uniswap' AND version = '3'
+        WHERE project IN ('Uniswap','1inch')
 	AND t.block_time >= DATE_TRUNC('hour',start_time - interval '3 days') --3 day buffer to catch tokens which may not have had a recent trade
 		AND t.block_time <= end_time
         
@@ -97,7 +97,7 @@ FROM (
         ON ea."contract_address" = t.token_a_address
         INNER JOIN erc20."tokens" eb
         ON eb."contract_address" = t.token_b_address
-        WHERE project = 'Uniswap' AND version = '3'
+        WHERE project IN ('Uniswap','1inch')
 	AND t.block_time >= DATE_TRUNC('hour',start_time - interval '3 days') --3 day buffer to catch tokens which may not have had a recent trade
 		AND t.block_time <= end_time
         
