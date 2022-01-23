@@ -78,13 +78,13 @@ WITH rows AS (
 	    
         FROM ( --pulled from https://github.com/duneanalytics/abstractions/blob/master/ethereum/dex/trades/insert_1inch.sql
 		--v3 router
-		SELECT "srcToken" as from_token, "dstToken" as to_token, "spentAmount" as from_amount, "returnAmount" as to_amount, evt_tx_hash as tx_hash, evt_block_time as block_time, NULL::integer[] as call_trace_address, evt_index, contract_address, '3' as version FROM oneinch_v3."AggregationRouterV3_evt_Swapped"
+		SELECT "srcToken" as from_token, "dstToken" as to_token, "spentAmount" as from_amount, "returnAmount" as to_amount, evt_tx_hash as tx_hash, evt_block_time as block_time, NULL::integer[] as call_trace_address, evt_index, contract_address, '3' as version FROM oneinch."AggregationRouterV3_evt_Swapped"
 			WHERE evt_block_time BETWEEN start_ts AND end_ts
 		UNION ALL
 		--v4 router
 		SELECT decode(substring("desc"->>'srcToken' FROM 3), 'hex') as from_token, decode(substring("desc"->>'dstToken' FROM 3), 'hex') as to_token, "output_spentAmount" as from_amount, "output_returnAmount" as to_amount,
 			call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address, NULL::integer as evt_index, contract_address, '4' as version FROM oneinch."AggregationRouterV4_call_swap" where call_success
-			WHERE call_block_time BETWEEN start_ts AND end_ts
+			AND call_block_time BETWEEN start_ts AND end_ts
 		) oiv
 	
 	INNER join ethereum.transactions tx on tx.hash = oiv.tx_hash
@@ -168,7 +168,7 @@ WHERE NOT EXISTS (
 INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$
     SELECT dex.insert_oneinch(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1Inch' AND version = '3'),
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1Inch'),
         (SELECT now() - interval '20 minutes'),
         (SELECT max(number) FROM optimism.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Uniswap' AND version = '3')),
         (SELECT MAX(number) FROM optimism.blocks where time < now() - interval '20 minutes'),
