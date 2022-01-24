@@ -1,4 +1,6 @@
-CREATE OR REPLACE FUNCTION dex.insert_oneinch(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+--use dex version to control for a specific implementation. Default = 0 means include all versions.
+
+CREATE OR REPLACE FUNCTION dex.insert_oneinch(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18, dex_version integer=0) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -55,31 +57,40 @@ WITH rows AS (
         evt_index,
         row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
-        --AggregationRouterV3
-        SELECT
-            t.evt_block_time AS block_time,
+	   SELECT
+            oiv.block_time AS block_time,
             '1inch' AS project,
-            '3' AS version,
+            oiv.version AS version,
             'Aggregator' AS category,
-            "dstReceiver" AS trader_a,
+            tx."from" AS trader_a,
             NULL::bytea AS trader_b,
             --Token a is what was received 
-            "returnAmount" AS token_a_amount_raw,
-            "spentAmount" AS token_b_amount_raw,
+            oiv.to_amount AS token_a_amount_raw,
+            oiv.from_amount AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
 	    --map default eth to OP Eth dead address
-            CASE WHEN "dstToken" = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'::bytea ELSE "dstToken" END AS token_a_address,
-            CASE WHEN "srcToken" = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'::bytea ELSE "srcToken" END AS token_b_address,
-            t.contract_address as exchange_contract_address,
-            t.evt_tx_hash AS tx_hash,
+            CASE WHEN to_token = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'::bytea ELSE to_token END AS token_a_address,
+            CASE WHEN from_token = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'::bytea ELSE from_token END AS token_b_address,
+            oiv.contract_address as exchange_contract_address,
+            oiv.tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
-            t.evt_index
-        FROM
-            oneinch."AggregationRouterV3_evt_Swapped" t
-
-        WHERE t.evt_block_time >= start_ts AND t.evt_block_time < end_ts
+            oiv.evt_index
+	    
+        FROM ( --pulled from https://github.com/duneanalytics/abstractions/blob/master/ethereum/dex/trades/insert_1inch.sql
+		--v3 router
+		SELECT "srcToken" as from_token, "dstToken" as to_token, "spentAmount" as from_amount, "returnAmount" as to_amount, evt_tx_hash as tx_hash, evt_block_time as block_time, NULL::integer[] as call_trace_address, evt_index, contract_address, '3' as version FROM oneinch."AggregationRouterV3_evt_Swapped"
+			WHERE evt_block_time BETWEEN start_ts AND end_ts
+		UNION ALL
+		--v4 router
+		SELECT decode(substring("desc"->>'srcToken' FROM 3), 'hex') as from_token, decode(substring("desc"->>'dstToken' FROM 3), 'hex') as to_token, "output_spentAmount" as from_amount, "output_returnAmount" as to_amount,
+			call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address, NULL::integer as evt_index, contract_address, '4' as version FROM oneinch."AggregationRouterV4_call_swap" where call_success
+			AND call_block_time BETWEEN start_ts AND end_ts
+		) oiv
 	
-	--TODO: UNION ALL AggregationRouterV4 Once it's decoded
+	INNER join optimism.transactions tx on tx.hash = oiv.tx_hash
+
+
+        WHERE oiv.block_time >= start_ts AND oiv.block_time < end_ts
 
     ) dexs
     INNER JOIN optimism.transactions tx
@@ -100,7 +111,13 @@ WITH rows AS (
         AND pb.contract_address = dexs.token_b_address
         AND pb.hour >= start_ts
         AND pb.hour < end_ts
-
+	
+	WHERE 1 = (
+		CASE WHEN dex_version = 0 THEN 1
+		WHEN dexs.version::INTEGER = dex_version THEN 1
+		ELSE 0
+		END )
+	
     -- update if we have new info on prices or the erc20
     ON CONFLICT (project, tx_hash, evt_index, trade_id)
     DO UPDATE SET
@@ -117,11 +134,13 @@ END
 $function$;
 
 -- table start fill
+-- v3
 SELECT dex.insert_oneinch(
     '2021-11-11',
     now(),
     0,
-    (SELECT MAX(number) FROM optimism.blocks where time < now() - interval '20 minutes')
+    (SELECT MAX(number) FROM optimism.blocks where time < now() - interval '20 minutes'),
+	3
 )
 WHERE NOT EXISTS (
     SELECT *
@@ -130,13 +149,29 @@ WHERE NOT EXISTS (
     AND block_time <= now() - interval '20 minutes'
     AND project = '1inch' AND version = '3'
 );
+--v4
+SELECT dex.insert_oneinch(
+    '2021-11-11',
+    now(),
+    0,
+    (SELECT MAX(number) FROM optimism.blocks where time < now() - interval '20 minutes'),
+	4
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.trades
+    WHERE block_time > '2021-11-10'
+    AND block_time <= now() - interval '20 minutes'
+    AND project = '1inch' AND version = '4'
+);
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$
     SELECT dex.insert_oneinch(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1Inch' AND version = '3'),
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1Inch'),
         (SELECT now() - interval '20 minutes'),
         (SELECT max(number) FROM optimism.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Uniswap' AND version = '3')),
-        (SELECT MAX(number) FROM optimism.blocks where time < now() - interval '20 minutes'));
+        (SELECT MAX(number) FROM optimism.blocks where time < now() - interval '20 minutes'),
+    0);
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
