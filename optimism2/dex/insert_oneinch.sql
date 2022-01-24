@@ -1,6 +1,6 @@
 --use dex version to control for a specific implementation. Default = 0 means include all versions.
 
-CREATE OR REPLACE FUNCTION dex.insert_oneinch(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18, dex_version=0) RETURNS integer
+CREATE OR REPLACE FUNCTION dex.insert_oneinch(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18, dex_version integer=0) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -72,7 +72,7 @@ WITH rows AS (
             CASE WHEN to_token = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'::bytea ELSE to_token END AS token_a_address,
             CASE WHEN from_token = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'::bytea ELSE from_token END AS token_b_address,
             oiv.contract_address as exchange_contract_address,
-            oiv.evt_tx_hash AS tx_hash,
+            oiv.tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             oiv.evt_index
 	    
@@ -87,10 +87,10 @@ WITH rows AS (
 			AND call_block_time BETWEEN start_ts AND end_ts
 		) oiv
 	
-	INNER join ethereum.transactions tx on tx.hash = oiv.tx_hash
+	INNER join optimism.transactions tx on tx.hash = oiv.tx_hash
 
 
-        WHERE evt_block_time >= start_ts AND evt_block_time < end_ts
+        WHERE oiv.block_time >= start_ts AND oiv.block_time < end_ts
 
     ) dexs
     INNER JOIN optimism.transactions tx
@@ -113,8 +113,8 @@ WITH rows AS (
         AND pb.hour < end_ts
 	
 	WHERE 1 = (
-		CASE WHEN dex_vesion = 0 THEN 1
-		WHEN version = dex_version THEN 1
+		CASE WHEN dex_version = 0 THEN 1
+		WHEN dexs.version::INTEGER = dex_version THEN 1
 		ELSE 0
 		END )
 	
