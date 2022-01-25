@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS nft.tokens (
+CREATE TABLE IF NOT EXISTS TT_nft.TT_tokens (
 	contract_address bytea PRIMARY KEY,
 	name text,
 	symbol text,
@@ -6,9 +6,8 @@ CREATE TABLE IF NOT EXISTS nft.tokens (
 );
 
 BEGIN;
-TRUNCATE nft.tokens;
-
-COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
+TRUNCATE TT_nft.TT_tokens;
+COPY TT_nft.TT_tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d	Bored Ape Yacht Club	BAYC	erc721
 \\xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb	CryptoPunks	PUNK	cryptopunks
 \\xa3aee8bce55beea1951ef834b99f3ac60d1abeeb	VeeFriends	VFT	erc721
@@ -1322,7 +1321,7 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x5ed22d051f0718d85c9642321592a120fefc99cd	OVERCOME	OVRCM	ERC721
 \\xe4ca5542b2fb60c88735165bc655102bdc70be39	Gachapon.xyz Capsule (Series 1)	GACHAPON	ERC721
 \\x93284e029dd089b24b2801e75bca39931e078573	MINDDS COLLAB LAND	MCL	ERC1155
-\\x9eb68034630fd22be860edab675e7b02e4292dfc	ZACHEM – SPACE EDITION	ZCHM	ERC1155
+\\x9eb68034630fd22be860edab675e7b02e4292dfc	ZACHEM – SPACE EDITION	ZCHM	ERC1155
 \\x9649f44a1c2ee73ca686d40569236ef4638706d2	#CyberSquad	CyberSquad	ERC721
 \\x3e6e3a9ee1ad8f14a311b23540c4ca927ca3e3c3	Pathological	$tracy	ERC721
 \\x781478cf1fc8572605ed878b13ebe931b9d8fb5a	Lander	LNDR	ERC721
@@ -4830,10 +4829,22 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x123b30E25973FeCd8354dd5f41Cc45A3065eF88C	Alien Frens	ALIENFRENS	erc721
 \\x90ee3Cf59FcDe2FE11838b9075Ea4681462362F1	Non-Fungible Fungi	NFF	erc721
 \\x986aea67C7d6A15036e18678065eb663Fc5BE883	Nifty League Degens	DEGEN	erc721
+\x3316525386fb28cbb9deaa11191104a92c8daff6	Pixel Queen	PXLQWN	ERC721
+\xbf2fae50b12de2b53670b544b87a9f1ea5ea7620	Yep NFTs	YEP	ERC1155
+\xefea4280acdfdfc10359f000cd6f5606221aa4e2	FaZeR		ERC721
+\x3724444b2dacff1668647705f297b80e0fb4035d	Airplane Models		ERC721
+\x7e9a1abacc225356d1e1d83c12a35f624fd3b7e5	Ron English Essential NFT Collection	RONENGLISHESSENTIALNFTCOLLECTION	ERC721
+\xcd1ac8220c5493e30c6d1888690a1afb63a0ffda	Loie		ERC1155
+\x31dbe3cf0ddbde8230c1a4c8e1b11c0eff1bad26	VIRTUAL TWIN	❇︎	ERC721
+\xcbe642d1b28caeff5f8377560db29e43ba7ac200	ManWithNoName	MWNN	ERC721
+\xbf479555e7dc9cb08fbe237478436f7ac269ed7d	LOLx707 Series	LOLx707	ERC721
+\x9930929903f9c6c83d9e7c70d058d03c376a8337	RTFKT Creators	RTFKT	ERC1155
+\x77a251ac8a70cf15dd2e80329fa8c464101087b0	Slumboginis	SBO	ERC721
+\xa55996a44ee90259a33faaf8a97278dcae678ae0	Trapped Souls™	TSC	ERC1155
 \.
 
 
 COMMIT;
 
-CREATE INDEX IF NOT EXISTS nft_tokens_contract_address_name_idx ON nft.tokens (contract_address, name);
-CREATE INDEX IF NOT EXISTS nft_tokens_contract_address_standard_idx ON nft.tokens (contract_address, standard);
+CREATE INDEX IF NOT EXISTS nft_tokens_contract_address_name_idx ON TT_nft.TT_tokens (contract_address, name);
+CREATE INDEX IF NOT EXISTS nft_tokens_contract_address_standard_idx ON TT_nft.TT_tokens (contract_address, standard);
