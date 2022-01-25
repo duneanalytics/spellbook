@@ -1,10 +1,10 @@
 BEGIN;
 CREATE SCHEMA IF NOT EXISTS bucketsclub;
 
-CREATE TABLE IF NOT EXISTS "bucketsclub.body" (
-    "body_type" VARCHAR(90),
-    "os_link" VARCHAR(90),
-    "nft_token_id" SMALLINT PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS bucketsclub.body (
+    body_type VARCHAR(90),
+    os_link VARCHAR(90),
+    nft_token_id SMALLINT PRIMARY KEY
 );
 
 INSERT INTO bucketsclub.body(body_type, os_link, nft_token_id)
@@ -258,8 +258,7 @@ VALUES
     ('Not Orko Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/824',824),
     ('Sahara Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/832',832),
     ('Tophat Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/859',859),
-    ('Koston Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/819',819);
-INSERT INTO "Buckets_Club_Traits_DunePrep_2" VALUES
+    ('Koston Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/819',819),
     ('Palmer Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/838',838),
     ('Chi Chi Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/836',836),
     ('Palmer Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/857',857),
@@ -509,8 +508,7 @@ INSERT INTO "Buckets_Club_Traits_DunePrep_2" VALUES
     ('Rabit Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/606',606),
     ('Clover Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/667',667),
     ('Stinger Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/624',624),
-    ('Drive Thru Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/510',510);
-INSERT INTO "Buckets_Club_Traits_DunePrep_2" VALUES
+    ('Drive Thru Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/510',510),
     ('Fiesta Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/18',18),
     ('Squirrel Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/287',287),
     ('Oakley Bucket Hat Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/149',149),
@@ -760,8 +758,7 @@ INSERT INTO "Buckets_Club_Traits_DunePrep_2" VALUES
     ('Norman Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/354',354),
     ('Greyson Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/325',325),
     ('Caddy Bear Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/32',32),
-    ('Oakley Rope Cap Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/321',321);
-INSERT INTO "Buckets_Club_Traits_DunePrep_2" VALUES
+    ('Oakley Rope Cap Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/321',321),
     ('Agave Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/312',312),
     ('Goat Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/317',317),
     ('Tortoise Frame Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/344',344),
@@ -1012,6 +1009,6 @@ INSERT INTO "Buckets_Club_Traits_DunePrep_2" VALUES
     ('Gummo Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/124',124),
     ('Tortoise Frame Rope Cap Buckets','https://opensea.io/assets/0x025f45bb7e08abea27a3c6a9cfb8d2acc2f6a134/128',128);
 
-CREATE INDEX IF NOT EXISTS bucketsclub__body_idx ON bucketsclub.body USING BRIN (token_id);
+CREATE INDEX IF NOT EXISTS bucketsclub__body_idx ON bucketsclub.body USING BRIN (nft_token_id);
 
 COMMIT;
