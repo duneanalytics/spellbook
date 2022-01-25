@@ -23,6 +23,7 @@ COPY erc721.tokens (contract_address, project_name) FROM stdin;
 \\x915d0d9e68cca951b3a0aed95f236fff912431da	Gladiators of the Galaxy
 \\x7c230d7a7efbf17b2ebd2aac24a8fb5373e381b7	Pixel Bunnies
 \\x3af0441ce31974c9ea6553fdba60c9cd3dfd933d	Cat Game
+\\xc58c9a631ce193fC3F2Bb190Ab5Ba1BE181c09D1	Octavas
 \.
 
 COMMIT;
