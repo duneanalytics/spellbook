@@ -48,7 +48,7 @@ WITH zeroex_tx AS (
             zeroex_tx.affiliate_address as affiliate_address,
             TRUE AS swap_flag,
             FALSE AS matcha_limit_order_flag
-        FROM ethereum."logs" logs
+        FROM optimism."logs" logs
         join zeroex_tx on zeroex_tx.tx_hash = logs.tx_hash
         WHERE topic1 = '\xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8'::bytea
                 and contract_address = '\xa3128d9b7cca7d5af29780a56abeec12b05a6740'::bytea
