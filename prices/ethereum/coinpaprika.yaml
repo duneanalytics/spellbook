@@ -1893,5 +1893,6 @@
   decimals: 18
 - name: sos-opendao
   id: sos-opendao
+  symbol: SOS
   address: 0x3b484b82567a09e2588a13d54d032153f0c0aee0
   decimals: 18
