@@ -1891,3 +1891,8 @@
   symbol: DFX
   address: 0x888888435fde8e7d4c54cab67f206e4199454c60
   decimals: 18
+- name: sos-opendao
+  id: sos-opendao
+  symbol: SOS
+  address: 0x3b484b82567a09e2588a13d54d032153f0c0aee0
+  decimals: 18
