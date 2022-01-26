@@ -168,9 +168,9 @@ WHERE NOT EXISTS (
 INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$
     SELECT dex.insert_oneinch(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1Inch'),
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1inch'),
         (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM optimism.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Uniswap' AND version = '3')),
+        (SELECT max(number) FROM optimism.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1inch')),
         (SELECT MAX(number) FROM optimism.blocks where time < now() - interval '20 minutes'),
     0);
 $$)
