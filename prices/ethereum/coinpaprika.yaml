@@ -1780,3 +1780,13 @@
   symbol: MOVE
   address: 0x3fa729b4548becbad4eab6ef18413470e6d5324c
   decimals: 18
+- name: wild_wild_credit
+  id: wild-wild-credit
+  symbol: WILD
+  address: 0x08a75dbc7167714ceac1a8e43a8d643a4edd625a
+  decimals: 18
+- name: looks_looksrare_token
+  id: looks-looksrare-token
+  symbol: LOOKS
+  address: 0xf4d2888d29d722226fafa5d9b24f9164c092421e
+  decimals: 18

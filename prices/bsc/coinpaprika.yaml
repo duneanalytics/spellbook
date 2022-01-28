@@ -464,3 +464,18 @@
   id: cummies-cumrocket
   name: CumRocket
   symbol: CUMMIES
+- address: '0x1fd991fb6c3102873ba68a4e6e6a87b3a5c10271'
+  decimals: 18
+  id: atl-atlantis-loans
+  name: Atlantis
+  symbol: ATL
+- address: '0x20de22029ab63cf9a7cf5feb2b737ca1ee4c82a6'
+  decimals: 18
+  id: chess-tranchess
+  name: Tranchess
+  symbol: CHESS
+- address: '0x8f0528ce5ef7b51152a59745befdd91d97091d2f'
+  decimals: 18
+  id: alpaca-alpaca-finance
+  name: Alpaca
+  symbol: ALPACA
