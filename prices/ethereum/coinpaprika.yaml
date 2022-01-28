@@ -1896,7 +1896,7 @@
   symbol: SOS
   address: 0x3b484b82567a09e2588a13d54d032153f0c0aee0
   decimals: 18
-  - name: Tribe
+- name: Tribe
   id: tribe-tribe
   symbol: TRIBE
   address: 0xc7283b66eb1eb5fb86327f08e1b5816b0720212b
