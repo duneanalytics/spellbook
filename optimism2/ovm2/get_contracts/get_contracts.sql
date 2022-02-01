@@ -3,7 +3,7 @@ CREATE SCHEMA IF NOT EXISTS ovm2;
 CREATE TABLE IF NOT EXISTS ovm2.get_contracts (
 	contract_address bytea UNIQUE,
 	contract_project text,
-	erc20_symbol bytea, 
+	erc20_symbol text, 
 	contract_name text,
 	creator_address bytea, 
 	created_time timestamp,
