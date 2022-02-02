@@ -100,7 +100,7 @@ LEFT JOIN prices."approx_prices_from_dex_data" dp
                                         END
                                         )
             AND dp.hour = sumo.hour
-
+WHERE user_address IS NOT NULL
     -- update if we have new info on prices or the erc20
     ON CONFLICT (hour, user_address, token_address)
     DO UPDATE SET
