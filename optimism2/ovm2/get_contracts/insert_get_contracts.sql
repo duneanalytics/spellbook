@@ -286,7 +286,8 @@ INSERT INTO cron.job (schedule, command)
 VALUES ('14,29,44,59 * * * *', $$
  SELECT ovm2.insert_get_contracts(
         (SELECT MAX("time") FROM optimism.blocks WHERE block_time > NOW() - interval '1 week'),
-        (SELECT MAX("time") FROM optimism.blocks WHERE "time" > NOW() - interval '1 week')
+        (SELECT MAX("time") FROM optimism.blocks WHERE "time" > NOW() - interval '1 week'),
+	 NULL::bytea[]
         );
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
