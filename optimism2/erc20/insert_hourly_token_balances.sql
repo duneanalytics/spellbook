@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION dex.insert_hourly_token_balances(start_block_time timestamp, end_block_time timestamp=now()) RETURNS integer
+CREATE OR REPLACE FUNCTION erc20.insert_hourly_token_balances(start_block_time timestamp, end_block_time timestamp=now()) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -155,7 +155,7 @@ WHERE NOT EXISTS (
 INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$
     SELECT erc20.insert_hourly_token_balances.sql(
-        (SELECT max(block_time) - interval '3 days' FROM dex.hourly_token_balances),
+        (SELECT max(block_time) - interval '3 days' FROM erc20.hourly_token_balances),
         (SELECT now() - interval '5 minutes'),
         );
 $$)
