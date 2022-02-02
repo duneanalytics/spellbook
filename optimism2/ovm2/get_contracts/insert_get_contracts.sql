@@ -37,7 +37,7 @@ WHERE
 )
 
 AND 1 = (
-    CASE WHEN creators IS NULL THEN 1 --when no input, search everythin
+    CASE WHEN creators IS NULL THEN 1 --when no input, search everything
         WHEN a."from" IN (creators) AND
             (w.creator_address IN (creators)
             OR w.creator_address IS NULL) THEN 1--Either a match or not in the static creator list
@@ -79,7 +79,7 @@ AND 1 = (
             mc.creator_address, tx."to" AS contract_factory, r.address AS contract_address, tx.block_time --use factory to assign project
             FROM (
                 SELECT t.* FROM optimism."transactions" t
-                WHERE t."to" IN (SELECT contract_address FROM main_creates) --AND t."from" IN (SELECT creator_address FROM contract_creators)
+                WHERE t."to" IN (SELECT contract_address FROM main_creates)
                 AND t.success = true
                 AND t."block_time" >= start_blocktime
                 AND t."block_time" < end_blocktime 
@@ -100,7 +100,7 @@ AND 1 = (
             tf.creator_address, tx."to" AS contract_factory, r.address AS contract_address, tx.block_time --use factory to assign project
             FROM (
                 SELECT t.* FROM optimism."transactions" t
-                WHERE t."to" IN (SELECT contract_address FROM to_factories) --AND t."from" IN (SELECT creator_address FROM contract_creators)
+                WHERE t."to" IN (SELECT contract_address FROM to_factories)
                 AND t.success = true
                     AND t."block_time" >= start_blocktime
                     AND t."block_time" < end_blocktime 
@@ -134,14 +134,14 @@ AND 1 = (
     
     
     )
-    
+    --Check if token. (Add the "where" check after the initial run since some tokens were created at regenesis.
     ,erc20_tokens AS (
     SELECT e.contract_address, CASE WHEN tl.symbol IS NULL THEN 'erc20' ELSE tl.symbol END AS symbol
     FROM (
         SELECT contract_address FROM erc20."ERC20_evt_Transfer" WHERE contract_address IN (SELECT contract_address FROM creator_contracts)
             GROUP BY 1
         UNION ALL
-        SELECT "contract_address" FROM erc20."tokens" WHERE contract_address IN (SELECT contract_address FROM creator_contracts)
+        SELECT "contract_address" FROM erc20."tokens" --WHERE contract_address IN (SELECT contract_address FROM creator_contracts)
         ) e
     LEFT JOIN erc20."tokens" tl
         ON tl."contract_address" = e."contract_address"
@@ -154,7 +154,7 @@ AND 1 = (
         SELECT contract_address FROM erc721."ERC721_evt_Transfer" WHERE contract_address IN (SELECT contract_address FROM creator_contracts)
             GROUP BY 1
         UNION ALL
-        SELECT "contract_address" FROM erc721."tokens" WHERE contract_address IN (SELECT contract_address FROM creator_contracts)
+        SELECT "contract_address" FROM erc721."tokens" --WHERE contract_address IN (SELECT contract_address FROM creator_contracts)
         ) e
     LEFT JOIN erc721."tokens" tl
         ON tl."contract_address" = e."contract_address"
