@@ -7,7 +7,7 @@ WITH rows AS (
     INSERT INTO ovm2.get_contracts (
         contract_address,
       contract_project,
-      erc20_symbol, 
+      token_symbol, 
       contract_name,
       creator_address, 
       created_time,
@@ -165,7 +165,7 @@ SELECT
 COALESCE(c.contract_address,erc20.contract_address,snx.address) AS contract_address,
     contract_factory,
     CASE WHEN snx.address IS NOT NULL THEN 'Synthetix' ELSE c.project END AS contract_project,
-    COALESCE(erc20.symbol,erc721.symbol) AS erc20_symbol, COALESCE(c.contract_name,snx.contract_name) AS contract_name, creator_address,
+    COALESCE(erc20.symbol,erc721.symbol) AS token_symbol, COALESCE(c.contract_name,snx.contract_name) AS contract_name, creator_address,
     created_time
     
 FROM (
@@ -219,7 +219,7 @@ FROM (
             values
             ('\x8be60b5031c0686e48a079c81822173bfa1268da','Synthetix',NULL,NULL)
             ,('\xc16251b5401087902e0956a2968CB3e0e4a52760','Celer',NULL,NULL)
-            ) a (contract_address,contract_project,erc20_symbol,contract_name)
+            ) a (contract_address,contract_project,token_symbol,contract_name)
             WHERE contract_address::bytea NOT IN (SELECT contract_address FROM creator_contracts)
             AND 1 = (
                 CASE WHEN creators IS NULL THEN 1 --when no input, search everythin
@@ -240,11 +240,11 @@ WHERE c."created_time" >= start_blocktime
 )
 
 
-SELECT c.contract_address, COALESCE(c.contract_project,ovm1c.contract_project) AS contract_project ,c.erc20_symbol, COALESCE(c.contract_name) AS contract_name,
+SELECT c.contract_address, COALESCE(c.contract_project,ovm1c.contract_project) AS contract_project ,c.token_symbol, COALESCE(c.contract_name) AS contract_name,
 COALESCE(c.creator_address,ovm1c.creator_address) AS creator_address, COALESCE(c.created_time,ovm1c.created_time::timestamp) AS created_time, contract_factory AS contract_creator_if_factory
 FROM (
     SELECT *,
-    ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY contract_project ASC NULLS LAST, erc20_symbol ASC NULLS LAST) AS contract_rank --to ensure no dupes
+    ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY contract_project ASC NULLS LAST, token_symbol ASC NULLS LAST) AS contract_rank --to ensure no dupes
     FROM get_contracts
     WHERE contract_address IS NOT NULL
     ) c
@@ -255,7 +255,7 @@ WHERE contract_rank = 1
 
 	ON CONFLICT (contract_address) DO UPDATE SET
   contract_project = EXCLUDED.contract_project,
-  erc20_symbol = EXCLUDED.erc20_symbol,
+  token_symbol = EXCLUDED.token_symbol,
   contract_name = EXCLUDED.contract_name,
   creator_address = EXCLUDED.creator_address,
   created_time = EXCLUDED.created_time,
