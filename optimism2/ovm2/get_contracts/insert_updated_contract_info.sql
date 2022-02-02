@@ -1,5 +1,5 @@
 INSERT INTO cron.job (schedule, command)
-VALUES ('14,29,44,59 * * * *', $$
+VALUES ('11,44 * * * *', $$
  SELECT ovm2.insert_get_contracts(
         (SELECT MAX("time") FROM optimism.blocks WHERE block_time > NOW() - interval '1 week'),
         (SELECT '07-06-2021'::timestamp ),
@@ -10,7 +10,7 @@ VALUES ('14,29,44,59 * * * *', $$
     (
     SELECT gc.creator_address
     
-    FROM dune_user_generated.ovm2_get_contracts gc
+    FROM ovm2.get_contracts gc
     LEFT JOIN dune_user_generated."contract_creator_address_list" cc
         ON cc."creator_address" = gc.creator_address
     
