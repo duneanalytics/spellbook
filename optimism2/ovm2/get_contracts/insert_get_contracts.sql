@@ -4,7 +4,7 @@ DECLARE r integer;
 BEGIN
 
 WITH rows AS (
-    INSERT INTO dune_user_generated.ovm2_get_contracts (
+    INSERT INTO ovm2.get_contracts (
         contract_address,
       contract_project,
       erc20_symbol, 
