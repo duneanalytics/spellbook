@@ -11,7 +11,7 @@ WITH rows AS (
         raw_value,
         token_value,
         median_price,
-        usd_value,
+        usd_value
     )
 
 
