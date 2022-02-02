@@ -16,23 +16,23 @@ WITH rows AS (
 
 
 SELECT
-hour, user_address, token_address, symbol, raw_value, token_value, 
+hour, user_address, token_address, sumo.symbol, raw_value, token_value, 
 dp.median_price,
 token_value*median_price AS usd_value
 FROM (
     SELECT 
-    user_address, hour, token_address, symbol, SUM(raw_value) OVER (ORDER BY hour ASC) AS raw_value, SUM(token_value) OVER (ORDER BY hour ASC) AS token_value
+    user_address, f.hour, token_address, f.symbol, SUM(raw_value) OVER (ORDER BY hour ASC) AS raw_value, SUM(token_value) OVER (ORDER BY hour ASC) AS token_value
     
     FROM (
     SELECT 
-    user_address, hour, tb.token_address, tb.symbol, SUM(raw_value) raw_value, SUM(raw_value/10^decimals) token_value
+    user_address, hour, token_address, symbol, SUM(value) raw_value, SUM(value/10^decimals) token_value
     
     FROM (
         
             SELECT user_address, '11-11-2021'::timestamp AS hour, "contract_address" AS token_address, value FROM ovm1."erc20_balances"
             WHERE start_block_time <= '11-11-2021'::timestamp
             UNION ALL
-            SELECT user_address, start_block_time AS hour, token_address, value FROM erc20.hourly_token_balances
+            SELECT user_address, start_block_time AS hour, token_address, raw_value FROM erc20.hourly_token_balances
             
             --ERC20s
             UNION ALL
@@ -49,7 +49,7 @@ FROM (
             FROM optimism."traces"
             WHERE (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') or call_type is null)
             AND "tx_success" AND success
-            AND t.block_time BETWEEN start_block_time AND end_block_time
+            AND block_time BETWEEN start_block_time AND end_block_time
             GROUP BY 1, 2, 3
             
             UNION ALL
@@ -57,14 +57,14 @@ FROM (
             SELECT "from", DATE_TRUNC('hour',block_time) AS hour, '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'::bytea AS token_address, SUM(-value) AS value
             FROM optimism."traces"
             WHERE (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') or call_type is null)
-            AND t.block_time BETWEEN start_block_time AND end_block_time
+            AND block_time BETWEEN start_block_time AND end_block_time
             AND "tx_success" AND success
             GROUP BY 1, 2, 3
             
             UNION ALL --gas costs (approximated)
             
             SELECT
-            "from", DATE_TRUNC('hour',evt_block_time) AS hour, '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'::bytea AS token_address,
+            "from", DATE_TRUNC('hour',t.block_time) AS hour, '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'::bytea AS token_address,
             -SUM(
                 CASE WHEN gas_price = 0 THEN 0 ELSE
                 (gas_used*gas_price)--l2 fees
@@ -85,16 +85,16 @@ FROM (
             GROUP BY 1, 2,3
         ) bals
         LEFT JOIN erc20."tokens" e
-            ON bals."contract_address" = e."contract_address"
+            ON bals."token_address" = e."contract_address"
         
         GROUP BY 1,2,3, 4
     ) f
 ) sumo
-LEFT JOIN prices."approx_prices_from_dex_data"
+LEFT JOIN prices."approx_prices_from_dex_data" dp
             ON dp."contract_address" = ( --If using the ETH placeholder address, pull the price for WETH address
-                                        CASE WHEN sumo.contract_address = '\xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000'
+                                        CASE WHEN sumo.token_address = '\xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000'
                                             THEN '\x4200000000000000000000000000000000000006'
-                                            ELSE sumo.contract_address
+                                            ELSE sumo.token_address
                                         END
                                         )
             AND dp.hour = sumo.hour
@@ -102,12 +102,11 @@ LEFT JOIN prices."approx_prices_from_dex_data"
     -- update if we have new info on prices or the erc20
     ON CONFLICT (hour, user_address, token_address)
     DO UPDATE SET
-        usd_amount = EXCLUDED.usd_amount,
         symbol = EXCLUDED.symbol,
         raw_value = EXCLUDED.raw_value,
         token_value = EXCLUDED.token_value,
         median_price = EXCLUDED.median_price,
-	usd_value = EXCLUDED.usd_value,
+	usd_value = EXCLUDED.usd_value
 
     RETURNING 1
 )
@@ -124,8 +123,8 @@ SELECT erc20.insert_hourly_token_balances(
 WHERE NOT EXISTS (
     SELECT *
     FROM erc20.hourly_token_balances
-    WHERE block_time > '2021-07-01'
-    AND block_time <= '2022-01-01'::timestamp
+    WHERE hour > '2021-07-01'
+    AND hour <= '2022-01-01'::timestamp
 );
 
 -- fill Jan 2022
@@ -136,8 +135,8 @@ SELECT erc20.insert_hourly_token_balances(
 WHERE NOT EXISTS (
     SELECT *
     FROM erc20.hourly_token_balances
-    WHERE block_time > '2022-01-01'
-    AND block_time <= '2022-02-01'::timestamp
+    WHERE hour > '2022-01-01'
+    AND hour <= '2022-02-01'::timestamp
 );
 
 -- fill the rest 
@@ -148,8 +147,8 @@ SELECT erc20.insert_hourly_token_balances(
 WHERE NOT EXISTS (
     SELECT *
     FROM erc20.hourly_token_balances
-    WHERE block_time > '2022-02-01'::timestamp
-    AND block_time <= NOW()
+    WHERE hour > '2022-02-01'::timestamp
+    AND hour <= NOW()
 );
 
 INSERT INTO cron.job (schedule, command)
