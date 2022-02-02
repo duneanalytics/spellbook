@@ -247,10 +247,21 @@ WHERE c."created_time" >= start_blocktime
 SELECT c.contract_address, COALESCE(c.contract_project,ovm1c.contract_project) AS contract_project ,c.token_symbol, COALESCE(c.contract_name) AS contract_name,
 COALESCE(c.creator_address,ovm1c.creator_address) AS creator_address, COALESCE(c.created_time,ovm1c.created_time::timestamp) AS created_time, contract_factory AS contract_creator_if_factory
 FROM (
-    SELECT *,
-    ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY contract_project ASC NULLS LAST, token_symbol ASC NULLS LAST) AS contract_rank --to ensure no dupes
+--grab the first non-null value for each (i.e. if we have the contract via both contract mapping and optimism.contracts)
+    SELECT 
+	contract_address,
+    (ARRAY_AGG(contract_project) FILTER (WHERE contract_project IS NOT NULL))[1] AS contract_project,
+    (ARRAY_AGG(erc20_symbol) FILTER (WHERE erc20_symbol IS NOT NULL))[1] AS erc20_symbol,
+    (ARRAY_AGG(contract_name) FILTER (WHERE contract_name IS NOT NULL))[1] AS contract_name,
+    (ARRAY_AGG(creator_address) FILTER (WHERE creator_address IS NOT NULL))[1] AS creator_address,
+    (ARRAY_AGG(created_time) FILTER (WHERE created_time IS NOT NULL))[1] AS created_time,
+    (ARRAY_AGG(contract_factory) FILTER (WHERE contract_factory IS NOT NULL))[1] AS contract_factory
+
     FROM get_contracts
     WHERE contract_address IS NOT NULL
+    
+    GROUP BY 1
+
     ) c
     LEFT JOIN dune_user_generated."oe_ovm1_contracts" ovm1c
         ON c."contract_address" = ovm1c."contract_address" --fill in any missing contract creators
