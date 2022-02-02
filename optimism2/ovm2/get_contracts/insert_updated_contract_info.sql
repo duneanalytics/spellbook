@@ -1,3 +1,4 @@
+-- Scan for contracts that have a missing contract name or missing project name mapping and see if we have updated data to fill in.
 INSERT INTO cron.job (schedule, command)
 VALUES ('11,44 * * * *', $$
  SELECT ovm2.insert_get_contracts(
