@@ -27,7 +27,7 @@ AND success = true
 AND t."block_time" >= start_blocktime
 AND t."block_time" < end_blocktime 
 AND 1 = (
-    CASE WHEN NOT EXISTS (SELECT creators FROM creator_rows) THEN 1 --when no input, search everythin
+    CASE WHEN NOT EXISTS (SELECT creators FROM creator_rows WHERE creators IS NOT NULL) THEN 1 --when no input, search everythin
         WHEN t."from" IN (SELECT creators FROM creator_rows) THEN 1--when input, limit to these contracts (i.e. updated mapping)
         ELSE 0 END
         )
@@ -41,7 +41,7 @@ WHERE
 )
 
 AND 1 = (
-    CASE WHEN NOT EXISTS (SELECT creators FROM creator_rows) THEN 1 --when no input, search everythin
+    CASE WHEN NOT EXISTS (SELECT creators FROM creator_rows WHERE creators IS NOT NULL) THEN 1 --when no input, search everythin
         WHEN a."from" IN (SELECT creators FROM creator_rows) AND
             (w.creator_address IN (SELECT creators FROM creator_rows)
             OR w.creator_address IS NULL) THEN 1--Either a match or not in the static creator list
@@ -177,7 +177,7 @@ FROM (
         LEFT JOIN optimism."contracts" oc
             ON oc."address" = cc.contract_address
         WHERE 1 = (
-                CASE WHEN NOT EXISTS (SELECT creators FROM creator_rows) THEN 1 --when no input, search everythin
+                CASE WHEN NOT EXISTS (SELECT creators FROM creator_rows WHERE creators IS NOT NULL) THEN 1 --when no input, search everythin
                 WHEN cc.creator_address IN (SELECT creators FROM creator_rows) THEN 1--when input, limit to these contracts (i.e. updated mapping)
                 ELSE 0 END
                 )
@@ -187,7 +187,7 @@ FROM (
     FROM optimism."contracts"
     WHERE "address" NOT IN (SELECT contract_address FROM creator_contracts)
     AND 1 = (
-                CASE WHEN NOT EXISTS (SELECT creators FROM creator_rows) THEN 1 --when no input, search everythin
+                CASE WHEN NOT EXISTS (SELECT creators FROM creator_rows WHERE creators IS NOT NULL) THEN 1 --when no input, search everythin
                 --WHEN cc.creator_address IN (SELECT creators FROM creator_rows) THEN 1--when input, limit to these contracts (i.e. updated mapping)
                 ELSE 0 END
                 )
@@ -198,7 +198,7 @@ FROM (
     SELECT creator_address::bytea, NULL::bytea AS contract_factory, "contract_address","contract_project" AS project,"contract_name" AS name, created_time::timestamptz FROM dune_user_generated.oe_ovm1_contracts
     WHERE contract_address NOT IN (SELECT contract_address FROM creator_contracts)
     AND 1 = (
-                CASE WHEN NOT EXISTS (SELECT creators FROM creator_rows) THEN 1 --when no input, search everythin
+                CASE WHEN NOT EXISTS (SELECT creators FROM creator_rows WHERE creators IS NOT NULL) THEN 1 --when no input, search everythin
                 WHEN creator_address IN (SELECT creators FROM creator_rows) THEN 1--when input, limit to these contracts (i.e. updated mapping)
                 ELSE 0 END
                 )
@@ -210,7 +210,7 @@ FROM (
     FROM dune_user_generated.synthetix_genesis_contracts
         WHERE address NOT IN (SELECT contract_address FROM creator_contracts)
         AND 1 = (
-                CASE WHEN NOT EXISTS (SELECT creators FROM creator_rows) THEN 1 --when no input, search everythin
+                CASE WHEN NOT EXISTS (SELECT creators FROM creator_rows WHERE creators IS NOT NULL)rows) THEN 1 --when no input, search everythin
                 --WHEN cc.creator_address IN (SELECT creators FROM creator_rows) THEN 1--when input, limit to these contracts (i.e. updated mapping)
                 ELSE 0 END
                 )
@@ -226,7 +226,7 @@ FROM (
             ) a (contract_address,contract_project,token_symbol,contract_name)
             WHERE contract_address::bytea NOT IN (SELECT contract_address FROM creator_contracts)
             AND 1 = (
-                CASE WHEN NOT EXISTS (SELECT creators FROM creator_rows) THEN 1 --when no input, search everythin
+                CASE WHEN NOT EXISTS (SELECT creators FROM creator_rows WHERE creators IS NOT NULL) THEN 1 --when no input, search everythin
                 --WHEN cc.creator_address IN (SELECT creators FROM creator_rows) THEN 1--when input, limit to these contracts (i.e. updated mapping)
                 ELSE 0 END
                 )
