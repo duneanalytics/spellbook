@@ -21,7 +21,9 @@ dp.median_price,
 token_value*median_price AS usd_value
 FROM (
     SELECT 
-    user_address, f.hour, token_address, f.symbol, SUM(raw_value) OVER (ORDER BY hour ASC) AS raw_value, SUM(token_value) OVER (ORDER BY hour ASC) AS token_value
+    user_address, f.hour, token_address, f.symbol,
+	SUM(raw_value) OVER (PARTITION BY user_address, token_address ORDER BY hour ASC) AS raw_value,
+    	SUM(token_value) OVER (PARTITION BY user_address, token_address ORDER BY hour ASC) AS token_value
     
     FROM (
     SELECT 
