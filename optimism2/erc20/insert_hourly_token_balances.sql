@@ -156,7 +156,7 @@ INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$
     SELECT erc20.insert_hourly_token_balances.sql(
         (SELECT max(block_time) - interval '3 days' FROM dex.hourly_token_balances),
-        (SELECT now() - interval '20 minutes'),
+        (SELECT now() - interval '5 minutes'),
         );
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
