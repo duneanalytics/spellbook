@@ -3,13 +3,13 @@ CREATE SCHEMA IF NOT EXISTS erc20;
 CREATE TABLE IF NOT EXISTS erc20.hourly_token_balances (
    
     hour timestamp,
-    user_address AS bytea,
-    token_address AS bytea, 
-    symbol AS text,
-    raw_value AS numeric,
-    token_value AS numeric,
-    median_price AS numeric,
-    usd_value AS numeric,
+    user_address bytea,
+    token_address bytea, 
+    symbol text,
+    raw_value numeric,
+    token_value numeric,
+    median_price numeric,
+    usd_value numeric,
     	UNIQUE(hour,user_address,token_address)
 );
 
