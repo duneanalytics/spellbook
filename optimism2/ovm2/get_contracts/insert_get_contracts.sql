@@ -1,8 +1,7 @@
-CREATE OR REPLACE FUNCTION ovm2.insert_get_contracts(start_blocktime timestamp, end_blocktime timestamp) RETURNS integer
+CREATE OR REPLACE FUNCTION ovm2.insert_get_contracts(start_blocktime timestamp, end_blocktime timestamp, creator_list bytea[] = NULL::bytea[]) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
-
 WITH rows AS (
     INSERT INTO ovm2.get_contracts (
         contract_address,
@@ -13,8 +12,13 @@ WITH rows AS (
       created_time,
       contract_creator_if_factory
     )
+WITH creator_rows AS (
 
-WITH contract_creators AS (
+SELECT UNNEST(creator_list::bytea[]) AS creators
+
+)
+
+, contract_creators AS (
 SELECT COALESCE(a."from",w.creator_address) AS creator_address, w.project
 FROM (
 SELECT "from" FROM optimism."transactions" t
@@ -23,8 +27,8 @@ AND success = true
 AND t."block_time" >= start_blocktime
 AND t."block_time" < end_blocktime 
 AND 1 = (
-    CASE WHEN creators IS NULL THEN 1 --when no input, search everythin
-        WHEN t."from" IN (creators) THEN 1--when input, limit to these contracts (i.e. updated mapping)
+    CASE WHEN NOT EXISTS (SELECT creators FROM creator_rows) THEN 1 --when no input, search everythin
+        WHEN t."from" IN (SELECT creators FROM creator_rows) THEN 1--when input, limit to these contracts (i.e. updated mapping)
         ELSE 0 END
         )
 GROUP BY 1
@@ -37,9 +41,9 @@ WHERE
 )
 
 AND 1 = (
-    CASE WHEN creators IS NULL THEN 1 --when no input, search everything
-        WHEN a."from" IN (creators) AND
-            (w.creator_address IN (creators)
+    CASE WHEN NOT EXISTS (SELECT creators FROM creator_rows) THEN 1 --when no input, search everythin
+        WHEN a."from" IN (SELECT creators FROM creator_rows) AND
+            (w.creator_address IN (SELECT creators FROM creator_rows)
             OR w.creator_address IS NULL) THEN 1--Either a match or not in the static creator list
         ELSE 0 END
         )
@@ -79,7 +83,7 @@ AND 1 = (
             mc.creator_address, tx."to" AS contract_factory, r.address AS contract_address, tx.block_time --use factory to assign project
             FROM (
                 SELECT t.* FROM optimism."transactions" t
-                WHERE t."to" IN (SELECT contract_address FROM main_creates)
+                WHERE t."to" IN (SELECT contract_address FROM main_creates) --AND t."from" IN (SELECT creator_address FROM contract_creators)
                 AND t.success = true
                 AND t."block_time" >= start_blocktime
                 AND t."block_time" < end_blocktime 
@@ -100,7 +104,7 @@ AND 1 = (
             tf.creator_address, tx."to" AS contract_factory, r.address AS contract_address, tx.block_time --use factory to assign project
             FROM (
                 SELECT t.* FROM optimism."transactions" t
-                WHERE t."to" IN (SELECT contract_address FROM to_factories)
+                WHERE t."to" IN (SELECT contract_address FROM to_factories) --AND t."from" IN (SELECT creator_address FROM contract_creators)
                 AND t.success = true
                     AND t."block_time" >= start_blocktime
                     AND t."block_time" < end_blocktime 
@@ -134,11 +138,11 @@ AND 1 = (
     
     
     )
-    --Check if token. (Add the "where" check after the initial run since some tokens were created at regenesis.
+    
     ,erc20_tokens AS (
     SELECT e.contract_address, CASE WHEN tl.symbol IS NULL THEN 'erc20' ELSE tl.symbol END AS symbol
     FROM (
-        SELECT contract_address FROM erc20."ERC20_evt_Transfer" WHERE contract_address IN (SELECT contract_address FROM creator_contracts)
+        SELECT contract_address FROM erc20."ERC20_evt_Transfer" --WHERE contract_address IN (SELECT contract_address FROM creator_contracts)
             GROUP BY 1
         UNION ALL
         SELECT "contract_address" FROM erc20."tokens" --WHERE contract_address IN (SELECT contract_address FROM creator_contracts)
@@ -154,7 +158,7 @@ AND 1 = (
         SELECT contract_address FROM erc721."ERC721_evt_Transfer" WHERE contract_address IN (SELECT contract_address FROM creator_contracts)
             GROUP BY 1
         UNION ALL
-        SELECT "contract_address" FROM erc721."tokens" --WHERE contract_address IN (SELECT contract_address FROM creator_contracts)
+        SELECT "contract_address" FROM erc721."tokens" WHERE contract_address IN (SELECT contract_address FROM creator_contracts)
         ) e
     LEFT JOIN erc721."tokens" tl
         ON tl."contract_address" = e."contract_address"
@@ -173,8 +177,8 @@ FROM (
         LEFT JOIN optimism."contracts" oc
             ON oc."address" = cc.contract_address
         WHERE 1 = (
-                CASE WHEN creators IS NULL THEN 1 --when no input, search everythin
-                WHEN cc.creator_address IN (creators) THEN 1--when input, limit to these contracts (i.e. updated mapping)
+                CASE WHEN NOT EXISTS (SELECT creators FROM creator_rows) THEN 1 --when no input, search everythin
+                WHEN cc.creator_address IN (SELECT creators FROM creator_rows) THEN 1--when input, limit to these contracts (i.e. updated mapping)
                 ELSE 0 END
                 )
 
@@ -183,8 +187,8 @@ FROM (
     FROM optimism."contracts"
     WHERE "address" NOT IN (SELECT contract_address FROM creator_contracts)
     AND 1 = (
-                CASE WHEN creators IS NULL THEN 1 --when no input, search everythin
-                --WHEN cc.creator_address IN (creators) THEN 1--when input, limit to these contracts (i.e. updated mapping)
+                CASE WHEN NOT EXISTS (SELECT creators FROM creator_rows) THEN 1 --when no input, search everythin
+                --WHEN cc.creator_address IN (SELECT creators FROM creator_rows) THEN 1--when input, limit to these contracts (i.e. updated mapping)
                 ELSE 0 END
                 )
     GROUP BY 1,2,3,4,5,6
@@ -194,8 +198,8 @@ FROM (
     SELECT creator_address::bytea, NULL::bytea AS contract_factory, "contract_address","contract_project" AS project,"contract_name" AS name, created_time::timestamptz FROM dune_user_generated.oe_ovm1_contracts
     WHERE contract_address NOT IN (SELECT contract_address FROM creator_contracts)
     AND 1 = (
-                CASE WHEN creators IS NULL THEN 1 --when no input, search everythin
-                WHEN creator_address IN (creators) THEN 1--when input, limit to these contracts (i.e. updated mapping)
+                CASE WHEN NOT EXISTS (SELECT creators FROM creator_rows) THEN 1 --when no input, search everythin
+                WHEN creator_address IN (SELECT creators FROM creator_rows) THEN 1--when input, limit to these contracts (i.e. updated mapping)
                 ELSE 0 END
                 )
     GROUP BY 1,2,3,4,5,6
@@ -206,8 +210,8 @@ FROM (
     FROM dune_user_generated.synthetix_genesis_contracts
         WHERE address NOT IN (SELECT contract_address FROM creator_contracts)
         AND 1 = (
-                CASE WHEN creators IS NULL THEN 1 --when no input, search everythin
-                --WHEN cc.creator_address IN (creators) THEN 1--when input, limit to these contracts (i.e. updated mapping)
+                CASE WHEN NOT EXISTS (SELECT creators FROM creator_rows) THEN 1 --when no input, search everythin
+                --WHEN cc.creator_address IN (SELECT creators FROM creator_rows) THEN 1--when input, limit to these contracts (i.e. updated mapping)
                 ELSE 0 END
                 )
     GROUP BY 1,2,3,4,5,6
@@ -222,8 +226,8 @@ FROM (
             ) a (contract_address,contract_project,token_symbol,contract_name)
             WHERE contract_address::bytea NOT IN (SELECT contract_address FROM creator_contracts)
             AND 1 = (
-                CASE WHEN creators IS NULL THEN 1 --when no input, search everythin
-                --WHEN cc.creator_address IN (creators) THEN 1--when input, limit to these contracts (i.e. updated mapping)
+                CASE WHEN NOT EXISTS (SELECT creators FROM creator_rows) THEN 1 --when no input, search everythin
+                --WHEN cc.creator_address IN (SELECT creators FROM creator_rows) THEN 1--when input, limit to these contracts (i.e. updated mapping)
                 ELSE 0 END
                 )
     ) c
@@ -253,13 +257,15 @@ FROM (
 
 WHERE contract_rank = 1
 
+
+
 	ON CONFLICT (contract_address) DO UPDATE SET
-  contract_project = EXCLUDED.contract_project,
-  token_symbol = EXCLUDED.token_symbol,
-  contract_name = EXCLUDED.contract_name,
-  creator_address = EXCLUDED.creator_address,
-  created_time = EXCLUDED.created_time,
-  contract_creator_if_factory = EXCLUDED.contract_creator_if_factory
+	  contract_project = EXCLUDED.contract_project,
+	  token_symbol = EXCLUDED.token_symbol,
+	  contract_name = EXCLUDED.contract_name,
+	  creator_address = EXCLUDED.creator_address,
+	  created_time = EXCLUDED.created_time,
+	  contract_creator_if_factory = EXCLUDED.contract_creator_if_factory
 
 	RETURNING 1
 )
