@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION erc20.insert_daily_token_balances(start_block_time timestamp, end_block_time timestamp=now()) RETURNS integer
+CREATE OR REPLACE FUNCTION erc20.insert_daily_token_balances(start_block_time timestamptz, end_block_time timestamptz=now()) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
