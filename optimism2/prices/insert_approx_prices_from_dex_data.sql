@@ -380,6 +380,7 @@ SELECT hour, token, symbol, decimals, median_price, num_samples, rnk
             WHERE median_price IS NOT NULL
         ) r
     WHERE p_rank = 1
+	AND token != '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000' --make sure native ETH's ERC20 deposit token isn't pulled in
     )
 SELECT hour, token, symbol, decimals, median_price, num_samples, rnk FROM get_best_price_estimate
 UNION ALL
@@ -443,6 +444,8 @@ rows AS (
         symbol,
         decimals
     FROM final_prices
+	
+	WHERE median_price IS NOT NULL
 
     ON CONFLICT (contract_address, hour) DO UPDATE SET median_price = EXCLUDED.median_price, sample_size = EXCLUDED.sample_size
     RETURNING 1
