@@ -34,7 +34,14 @@ FROM (
             SELECT user_address, '11-11-2021'::timestamp AS day, "contract_address" AS token_address, value FROM ovm1."erc20_balances"
             WHERE start_block_time <= '11-11-2021'::timestamp
             UNION ALL
-            SELECT user_address, start_block_time AS day, token_address, raw_value FROM erc20.daily_token_balances
+	    
+	    SELECT user_address, start_block_time AS day, token_address, raw_value
+	    FROM (
+		    SELECT user_address, day, token_address, raw_value,
+		    DENSE_RANK() OVER(PARTITION BY user_address, token_address ORDER BY day DESC) AS user_token_rank
+		    FROM erc20.daily_token_balances
+		 ) at
+	    WHERE user_token_rank = 1
             
             --ERC20s
             UNION ALL
