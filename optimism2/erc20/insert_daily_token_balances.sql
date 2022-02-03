@@ -109,7 +109,7 @@ LEFT JOIN prices."approx_prices_from_dex_data" dp
             AND DATE_TRUNC('day',dp.hour) = sumo.day
 WHERE user_address IS NOT NULL
 
-GROUP BY day, user_address, token_address, sumo.symbol, raw_value, token_value, 
+GROUP BY day, user_address, token_address, sumo.symbol, raw_value, token_value
 	
     -- update if we have new info on prices or the erc20
     ON CONFLICT (day, user_address, token_address)
