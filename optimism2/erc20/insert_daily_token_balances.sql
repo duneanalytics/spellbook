@@ -1,10 +1,10 @@
-CREATE OR REPLACE FUNCTION erc20.insert_hourly_token_balances(start_block_time timestamp, end_block_time timestamp=now()) RETURNS integer
+CREATE OR REPLACE FUNCTION erc20.insert_daily_token_balances(start_block_time timestamp, end_block_time timestamp=now()) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
 WITH rows AS (
-    INSERT INTO erc20.hourly_token_balances (
-        hour,
+    INSERT INTO erc20.daily_token_balances (
+        day,
         user_address,
         token_address, 
         symbol,
@@ -16,38 +16,38 @@ WITH rows AS (
 
 
 SELECT
-hour, user_address, token_address, sumo.symbol, raw_value, token_value, 
-dp.median_price,
-token_value*median_price AS usd_value
+day, user_address, token_address, sumo.symbol, raw_value, token_value, 
+AVG(dp.median_price) AS median_price,
+token_value*AVG(dp.median_price) AS usd_value
 FROM (
     SELECT 
-    user_address, f.hour, token_address, f.symbol,
-	SUM(raw_value) OVER (PARTITION BY user_address, token_address ORDER BY hour ASC) AS raw_value,
-    	SUM(token_value) OVER (PARTITION BY user_address, token_address ORDER BY hour ASC) AS token_value
+    user_address, f.day, token_address, f.symbol,
+	SUM(raw_value) OVER (PARTITION BY user_address, token_address ORDER BY day ASC) AS raw_value,
+    	SUM(token_value) OVER (PARTITION BY user_address, token_address ORDER BY day ASC) AS token_value
     
     FROM (
     SELECT 
-    user_address, hour, token_address, symbol, SUM(value) raw_value, SUM(value/10^decimals) token_value
+    user_address, day, token_address, symbol, SUM(value) raw_value, SUM(value/10^decimals) token_value
     
     FROM (
         
-            SELECT user_address, '11-11-2021'::timestamp AS hour, "contract_address" AS token_address, value FROM ovm1."erc20_balances"
+            SELECT user_address, '11-11-2021'::timestamp AS day, "contract_address" AS token_address, value FROM ovm1."erc20_balances"
             WHERE start_block_time <= '11-11-2021'::timestamp
             UNION ALL
-            SELECT user_address, start_block_time AS hour, token_address, raw_value FROM erc20.hourly_token_balances
+            SELECT user_address, start_block_time AS day, token_address, raw_value FROM erc20.daily_token_balances
             
             --ERC20s
             UNION ALL
-            SELECT "from", DATE_TRUNC('hour',evt_block_time) AS hour, "contract_address" AS token_address, SUM(-value) AS value FROM erc20."ERC20_evt_Transfer" 
+            SELECT "from", DATE_TRUNC('day',evt_block_time) AS day, "contract_address" AS token_address, SUM(-value) AS value FROM erc20."ERC20_evt_Transfer" 
                 WHERE evt_block_time BETWEEN start_block_time AND end_block_time GROUP BY 1,2, 3
             UNION ALL
-            SELECT "to", DATE_TRUNC('hour',evt_block_time) AS hour, "contract_address" AS token_address, SUM(value) AS value FROM erc20."ERC20_evt_Transfer" 
+            SELECT "to", DATE_TRUNC('day',evt_block_time) AS day, "contract_address" AS token_address, SUM(value) AS value FROM erc20."ERC20_evt_Transfer" 
                 WHERE evt_block_time BETWEEN start_block_time AND end_block_time GROUP BY 1,2, 3
             
             --ETH Transfers
             
             UNION ALL
-            SELECT "to", DATE_TRUNC('hour',block_time) AS hour, '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'::bytea AS token_address, SUM(value) AS value
+            SELECT "to", DATE_TRUNC('day',block_time) AS day, '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'::bytea AS token_address, SUM(value) AS value
             FROM optimism."traces"
             WHERE (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') or call_type is null)
             AND "tx_success" AND success
@@ -56,7 +56,7 @@ FROM (
             
             UNION ALL
             
-            SELECT "from", DATE_TRUNC('hour',block_time) AS hour, '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'::bytea AS token_address, SUM(-value) AS value
+            SELECT "from", DATE_TRUNC('day',block_time) AS day, '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'::bytea AS token_address, SUM(-value) AS value
             FROM optimism."traces"
             WHERE (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') or call_type is null)
             AND block_time BETWEEN start_block_time AND end_block_time
@@ -66,7 +66,7 @@ FROM (
             UNION ALL --gas costs (approximated)
             
             SELECT
-            "from", DATE_TRUNC('hour',t.block_time) AS hour, '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'::bytea AS token_address,
+            "from", DATE_TRUNC('day',t.block_time) AS day, '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'::bytea AS token_address,
             -SUM(
                 CASE WHEN gas_price = 0 THEN 0 ELSE
                 (gas_used*gas_price)--l2 fees
@@ -99,10 +99,13 @@ LEFT JOIN prices."approx_prices_from_dex_data" dp
                                             ELSE sumo.token_address
                                         END
                                         )
-            AND dp.hour = sumo.hour
+            AND DATE_TRUNC('day',dp.hour) = sumo.day
 WHERE user_address IS NOT NULL
+
+GROUP BY day, user_address, token_address, sumo.symbol, raw_value, token_value, 
+	
     -- update if we have new info on prices or the erc20
-    ON CONFLICT (hour, user_address, token_address)
+    ON CONFLICT (day, user_address, token_address)
     DO UPDATE SET
         symbol = EXCLUDED.symbol,
         raw_value = EXCLUDED.raw_value,
@@ -118,45 +121,45 @@ END
 $function$;
 
 -- fill Dec 2021 (post-regenesis 11-11)
-SELECT erc20.insert_hourly_token_balances(
+SELECT erc20.insert_daily_token_balances(
     '2021-07-01'::timestamp,
-    '2021-12-01'::timestamp
+    '2022-01-01'::timestamp
 )
 WHERE NOT EXISTS (
     SELECT *
-    FROM erc20.hourly_token_balances
-    WHERE hour > '2021-07-01'
-    AND hour <= '2022-01-01'::timestamp
+    FROM erc20.daily_token_balances
+    WHERE day >= '2021-07-01'
+    AND day <= '2022-01-01'::timestamp
 );
 
 -- fill Jan 2022
-SELECT erc20.insert_hourly_token_balances(
+SELECT erc20.insert_daily_token_balances(
     '2022-01-01'::timestamp,
     '2022-02-01'::timestamp
 )
 WHERE NOT EXISTS (
     SELECT *
-    FROM erc20.hourly_token_balances
-    WHERE hour > '2022-01-01'
-    AND hour <= '2022-02-01'::timestamp
+    FROM erc20.daily_token_balances
+    WHERE day > '2022-01-01'::timestamp
+    AND day <= '2022-02-01'::timestamp
 );
 
 -- fill the rest 
-SELECT erc20.insert_hourly_token_balances(
+SELECT erc20.insert_daily_token_balances(
     '2022-02-01'::timestamp,
     NOW()
 )
 WHERE NOT EXISTS (
     SELECT *
-    FROM erc20.hourly_token_balances
-    WHERE hour > '2022-02-01'::timestamp
-    AND hour <= NOW()
+    FROM erc20.daily_token_balances
+    WHERE day > '2022-02-01'::timestamp
+    AND day <= NOW()
 );
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$
-    SELECT erc20.insert_hourly_token_balances.sql(
-        (SELECT max(block_time) - interval '3 days' FROM erc20.hourly_token_balances),
+    SELECT erc20.insert_daily_token_balances.sql(
+        (SELECT max(block_time) - interval '3 days' FROM erc20.daily_token_balances),
         (SELECT now() - interval '5 minutes'),
         );
 $$)
