@@ -1,8 +1,8 @@
 CREATE SCHEMA IF NOT EXISTS erc20;
 
-CREATE TABLE IF NOT EXISTS erc20.hourly_token_balances (
+CREATE TABLE IF NOT EXISTS erc20.daily_token_balances (
    
-    hour timestamp,
+    day timestamp,
     user_address bytea,
     token_address bytea, 
     symbol text,
@@ -10,9 +10,9 @@ CREATE TABLE IF NOT EXISTS erc20.hourly_token_balances (
     token_value numeric,
     median_price numeric,
     usd_value numeric,
-    	UNIQUE(hour,user_address,token_address)
+    	UNIQUE(day,user_address,token_address)
 );
 
-CREATE INDEX IF NOT EXISTS ovm2_hourly_token_balances_hour_idx ON erc20.hourly_token_balances (hour);
-CREATE INDEX IF NOT EXISTS ovm2_hourly_token_balances_hour_user_address_idx ON erc20.hourly_token_balances (hour,user_address);
-CREATE INDEX IF NOT EXISTS ovm2_hourly_token_balances_hour_user_address_token_address_idx ON erc20.hourly_token_balances (hour,user_address,token_address);
+CREATE INDEX IF NOT EXISTS ovm2_daily_token_balances_day_idx ON erc20.daily_token_balances (day);
+CREATE INDEX IF NOT EXISTS ovm2_daily_token_balances_day_user_address_idx ON erc20.daily_token_balances (day,user_address);
+CREATE INDEX IF NOT EXISTS ovm2_daily_token_balances_day_user_address_token_address_idx ON erc20.daily_token_balances (day,user_address,token_address);
