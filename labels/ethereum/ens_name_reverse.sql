@@ -35,4 +35,5 @@ SELECT
     'ens name reverse' AS type,
     'zxsasha' AS author
 FROM ens_transactions AS t
-INNER JOIN ens_calls AS c ON c.block_number = t.block_number AND c.tx_hash = t.tx_hash AND c.ens_name <> '0x0000000000000000000000000000000000000000';
+INNER JOIN ens_calls AS c ON c.block_number = t.block_number AND c.tx_hash = t.tx_hash AND c.ens_name <> '0x0000000000000000000000000000000000000000'
+WHERE LOWER(c.ens_name) not ilike '% %';
