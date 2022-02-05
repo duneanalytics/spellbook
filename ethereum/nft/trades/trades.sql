@@ -39,6 +39,7 @@ CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS nft_trades_platform_tx_hash_trace
 CREATE INDEX CONCURRENTLY IF NOT EXISTS nft_trades_block_time_idx ON nft.trades USING BRIN (block_time);
 CREATE INDEX CONCURRENTLY IF NOT EXISTS nft_trades_seller_idx ON nft.trades (seller);
 CREATE INDEX CONCURRENTLY IF NOT EXISTS nft_trades_buyer_idx ON nft.trades (buyer);
+CREATE INDEX CONCURRENTLY IF NOT EXISTS nft_trades_nft_contract_address_nft_token_id_block_time_idx ON nft.trades (nft_contract_address, nft_token_id, block_time);
 CREATE INDEX CONCURRENTLY IF NOT EXISTS nft_trades_nft_project_name_nft_token_id_block_time_idx ON nft.trades (nft_project_name, nft_token_id, block_time);
 CREATE INDEX CONCURRENTLY IF NOT EXISTS nft_trades_block_time_platform_seller_buyer_nft_project_name_nft_token_id_idx ON nft.trades (block_time, platform, seller, buyer, nft_project_name, nft_token_id);
 CREATE INDEX CONCURRENTLY IF NOT EXISTS nft_trades_nft_token_ids_array_idx ON nft.trades USING GIN(nft_token_ids_array);
