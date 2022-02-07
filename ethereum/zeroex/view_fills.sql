@@ -290,7 +290,7 @@ WITH
       WHERE fills.evt_block_time >= start_ts
               AND fills.evt_block_time < end_ts
 
-    )
+    ),
 
     all_fills as (
     
