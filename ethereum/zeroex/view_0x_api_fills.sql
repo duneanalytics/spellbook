@@ -128,7 +128,7 @@ WITH zeroex_tx_raw AS (
                   , fills."takerTokenFilledAmount"  AS taker_token_amount_raw
                   , fills."makerTokenFilledAmount"  AS maker_token_amount_raw
                   , 'Native Fill v4' as type
-                  , zeroex_tx.affiliate_address as affiliate_address as affiliate_address
+                  , zeroex_tx.affiliate_address as affiliate_address
                   , (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag
                   , FALSE AS matcha_limit_order_flag
               FROM zeroex."ExchangeProxy_evt_OtcOrderFilled" fills
