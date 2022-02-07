@@ -34,6 +34,8 @@ CREATE TABLE IF NOT EXISTS nft.trades (
     trade_id integer
 );
 
+CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS nft_trades_platform_tx_hash_evt_index_trade_id_uniq_idx ON nft.trades (platform, tx_hash, evt_index, trade_id);
+CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS nft_trades_platform_tx_hash_trace_address_trade_id_uniq_idx ON nft.trades (platform, tx_hash, trace_address, trade_id);
 CREATE INDEX IF NOT EXISTS nft_trades_block_time_idx ON nft.trades USING BRIN (block_time);
 CREATE INDEX IF NOT EXISTS nft_trades_seller_idx ON nft.trades (seller);
 CREATE INDEX IF NOT EXISTS nft_trades_buyer_idx ON nft.trades (buyer);
