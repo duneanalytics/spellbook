@@ -1882,7 +1882,7 @@
   address: 0x67b6d479c7bb412c54e03dca8e1bc6740ce6b99c
   decimals: 18
 - name: tempus-finance
-  id: temp-temp
+  id: temp-tempus
   symbol: TEMP
   address: 0xa36fdbbae3c9d55a1d67ee5821d53b50b63a1ab9
   decimals: 18
