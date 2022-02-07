@@ -33,7 +33,6 @@ FROM (
     	WITH updates AS (
             SELECT user_address, '11-11-2021'::timestamp AS day, "contract_address" AS token_address, value FROM ovm1."erc20_balances"
             WHERE start_block_time <= '11-11-2021'::timestamp
-            UNION ALL
             
             --ERC20s
             UNION ALL
@@ -45,21 +44,24 @@ FROM (
 	    
 	    --WETH Deposit (Wrap) / Withdraw (Unwrap)
 	    UNION ALL --Deposit
+	   SELECT
 	    substring(topic2 from 13 for 20) AS user_address, DATE_TRUNC('day',block_time) AS day,
-	    	"contract_address" AS token_address, SUM(-bytea2numeric(data) AS value
+	    	"contract_address" AS token_address, SUM(-bytea2numeric(data)) AS value
 
 		FROM optimism.logs
 		WHERE contract_address = '\x4200000000000000000000000000000000000006'
 		AND topic1 = '\xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c'
+		GROUP BY 1,2,3
 	    
 	    UNION ALL --Withdraw
+	    SELECT
 	    substring(topic2 from 13 for 20) AS user_address, DATE_TRUNC('day',block_time) AS day,
 	    	"contract_address" AS token_address, SUM(bytea2numeric(data)) AS value
 
 		FROM optimism.logs
 		WHERE contract_address = '\x4200000000000000000000000000000000000006'
 		AND topic1 = '\x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65'
-	    
+		GROUP BY 1,2,3	    
             
             --ETH Transfers
             
@@ -110,14 +112,14 @@ FROM (
 		
 	SELECT user_address, day, token_address, raw_value --get the latest update for the token + wallet combo
 	    FROM (
-		    SELECT user_address, day, token_address, raw_value,
-		    DENSE_RANK() OVER(PARTITION BY user_address, token_address ORDER BY day DESC) AS user_token_rank
+		    SELECT u.user_address, u.day, u.token_address, raw_value,
+		    DENSE_RANK() OVER(PARTITION BY u.user_address, u.token_address ORDER BY u.day DESC) AS user_token_rank
 		    FROM erc20.daily_token_balances dtb
 		    	INNER JOIN updates u
 		    	ON u.user_address = dtb.user_address
 		    	AND u.token_address = dtb.token_address
-		    WHERE user_address IN (SELECT user_address FROM updates)
-		    AND token_address IN (SELECT token_address FROM updates)
+		    WHERE u.user_address IN (SELECT user_address FROM updates)
+		    AND u.token_address IN (SELECT token_address FROM updates)
 		 ) at
 	    WHERE user_token_rank = 1
         
