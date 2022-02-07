@@ -474,3 +474,8 @@
   id: jade-jade-protocol
   name: Jade Protocol
   symbol: JADE
+- address: '0xa77346760341460b42c230ca6d21d4c8e743fa9c'
+  decimals: 18
+  id: pets-micropets
+  name: MicroPets
+  symbol: PETS
