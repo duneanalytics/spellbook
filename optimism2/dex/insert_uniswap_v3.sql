@@ -131,10 +131,19 @@ WHERE NOT EXISTS (
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$
+BEGIN;
     SELECT dex.insert_uniswap_v3(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Uniswap' AND version = '3'),
+        (SELECT max(block_time) - interval '1 day' FROM dex.trades WHERE project='Uniswap' AND version = '3'),
         (SELECT now() - interval '20 minutes'),
         (SELECT max(number) FROM optimism.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Uniswap' AND version = '3')),
         (SELECT MAX(number) FROM optimism.blocks where time < now() - interval '20 minutes'));
+        
+    --Temporary workaround to force prices to run after the Uniswap insert has completed.
+        
+    SELECT prices.insert_approx_prices_from_dex_data(
+        (SELECT MAX(hour) - interval '1 day' FROM prices.approx_prices_from_dex_data),
+        (SELECT DATE_TRUNC('hour', now()) + interval '1 hour')
+    );
+COMMIT;
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
