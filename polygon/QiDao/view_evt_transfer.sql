@@ -4,7 +4,7 @@ DROP VIEW IF EXISTS qidao."view_evt_transfer" CASCADE;
 CREATE VIEW qidao."view_evt_transfer" AS(
     --transfer of vault NFT from one address to another
     select
-        "tokenId" as vaultID,
+        CASE WHEN "interaction_type" = 'base' then NULL else "tokenId" END as vaultID,
         contract_address as contract_address,
         evt_tx_hash as evt_tx_hash,
         evt_index as evt_index,
@@ -58,6 +58,6 @@ CREATE VIEW qidao."view_evt_transfer" AS(
         )) transfer
     );
     
-COMMIT;
+
     
     
