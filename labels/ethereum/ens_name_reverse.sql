@@ -36,4 +36,5 @@ SELECT
     'zxsasha' AS author
 FROM ens_transactions AS t
 INNER JOIN ens_calls AS c ON c.block_number = t.block_number AND c.tx_hash = t.tx_hash AND c.ens_name <> '0x0000000000000000000000000000000000000000'
-WHERE LOWER(c.ens_name) not ilike '% %';
+-- Filter all possible Unicode Whitespace characters to prevent malicious issues in the future
+WHERE LOWER(c.ens_name) !~ '[\u0009\u000A\u000B\u000C\u000D\u0020\u0085\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202f\u205f\u3000]';
