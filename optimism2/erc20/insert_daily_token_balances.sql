@@ -140,7 +140,7 @@ LEFT JOIN prices."approx_prices_from_dex_data" dp
                                         )
             AND DATE_TRUNC('day',dp.hour) = sumo.day
 WHERE user_address IS NOT NULL
-AND day >= DATE_TRUNC('day',start_blocktime) - interval '1 day' --Only update current adds, 1 day buffer for timezone / end of day stuff
+AND day >= DATE_TRUNC('day',start_block_time) - interval '1 day' --Only update current adds, 1 day buffer for timezone / end of day stuff
 
 GROUP BY day, user_address, token_address, sumo.symbol, raw_value, token_value
 	
