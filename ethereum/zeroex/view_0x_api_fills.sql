@@ -116,6 +116,25 @@ WITH zeroex_tx_raw AS (
               LEFT join zeroex_tx on zeroex_tx.tx_hash = fills.evt_tx_hash
               AND evt_block_time >= start_ts AND evt_block_time < end_ts
       ),
+      otc_fills AS (
+              SELECT fills.evt_tx_hash AS tx_hash
+                  , fills.evt_index
+                  , fills.contract_address
+                  , fills.evt_block_time AS block_time
+                  , fills.maker AS maker
+                  , fills.taker AS taker
+                  , fills."takerToken" AS taker_token
+                  , fills."makerToken" AS maker_token
+                  , fills."takerTokenFilledAmount"  AS taker_token_amount_raw
+                  , fills."makerTokenFilledAmount"  AS maker_token_amount_raw
+                  , 'Native Fill v4' as type
+                  , zeroex_tx.affiliate_address as affiliate_address
+                  , (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag
+                  , FALSE AS matcha_limit_order_flag
+              FROM zeroex."ExchangeProxy_evt_OtcOrderFilled" fills
+              LEFT join zeroex_tx on zeroex_tx.tx_hash = fills.evt_tx_hash
+              AND evt_block_time >= start_ts AND evt_block_time < end_ts
+      ),
       -- bridge fills
     	ERC20BridgeTransfer AS (
     		SELECT 	logs.tx_hash,
@@ -309,6 +328,8 @@ WITH zeroex_tx_raw AS (
           SELECT * FROM v4_rfq_fills_no_bridge
           UNION ALL
           SELECT * FROM v4_limit_fills_no_bridge
+          UNION ALL
+          SELECT * FROM otc_fills
     	),
     	total_volume AS (
     		SELECT 	all_tx.tx_hash,
