@@ -1,10 +1,10 @@
 BEGIN;
-
 DROP VIEW IF EXISTS qidao."view_evt_transfer" CASCADE;
+
 CREATE VIEW qidao."view_evt_transfer" AS(
     --transfer of vault NFT from one address to another
     select
-        NULL::int as vaultID,
+        "tokenId" as vaultID,
         contract_address as contract_address,
         evt_tx_hash as evt_tx_hash,
         evt_index as evt_index,
@@ -28,7 +28,7 @@ CREATE VIEW qidao."view_evt_transfer" AS(
         from
             qidao."crosschainQiStablecoin_evt_Transfer"
         )
-        union
+        union 
         (select
             *,
             'crosschainV2' as interaction_type
@@ -42,19 +42,22 @@ CREATE VIEW qidao."view_evt_transfer" AS(
         from
             qidao."erc20QiStablecoin_evt_Transfer"
         )
-        union
+        union 
         (select
             *,
             'erc20' as interaction_type
         from
             qidao."erc20QiStablecoinwbtc_evt_Transfer"
         )
-        union
+        union 
         (select
             *,
             'base' as interaction_type
         from
             qidao."QiStablecoin_evt_Transfer"
         )) transfer
-    )
+    );
+    
 COMMIT;
+    
+    
