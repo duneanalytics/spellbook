@@ -30,18 +30,9 @@ FROM (
     user_address, day, token_address, symbol, SUM(value) raw_value, SUM(value/10^decimals) token_value
     
     FROM (
-        
+    	WITH updates AS (
             SELECT user_address, '11-11-2021'::timestamp AS day, "contract_address" AS token_address, value FROM ovm1."erc20_balances"
             WHERE start_block_time <= '11-11-2021'::timestamp
-            UNION ALL
-	    
-	    SELECT user_address, start_block_time AS day, token_address, raw_value
-	    FROM (
-		    SELECT user_address, day, token_address, raw_value,
-		    DENSE_RANK() OVER(PARTITION BY user_address, token_address ORDER BY day DESC) AS user_token_rank
-		    FROM erc20.daily_token_balances
-		 ) at
-	    WHERE user_token_rank = 1
             
             --ERC20s
             UNION ALL
@@ -50,6 +41,27 @@ FROM (
             UNION ALL
             SELECT "to", DATE_TRUNC('day',evt_block_time) AS day, "contract_address" AS token_address, SUM(value) AS value FROM erc20."ERC20_evt_Transfer" 
                 WHERE evt_block_time BETWEEN start_block_time AND end_block_time GROUP BY 1,2, 3
+	    
+	    --WETH Deposit (Wrap) / Withdraw (Unwrap)
+	    UNION ALL --Deposit
+	   SELECT
+	    substring(topic2 from 13 for 20) AS user_address, DATE_TRUNC('day',block_time) AS day,
+	    	"contract_address" AS token_address, SUM(-bytea2numeric(data)) AS value
+
+		FROM optimism.logs
+		WHERE contract_address = '\x4200000000000000000000000000000000000006'
+		AND topic1 = '\xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c'
+		GROUP BY 1,2,3
+	    
+	    UNION ALL --Withdraw
+	    SELECT
+	    substring(topic2 from 13 for 20) AS user_address, DATE_TRUNC('day',block_time) AS day,
+	    	"contract_address" AS token_address, SUM(bytea2numeric(data)) AS value
+
+		FROM optimism.logs
+		WHERE contract_address = '\x4200000000000000000000000000000000000006'
+		AND topic1 = '\x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65'
+		GROUP BY 1,2,3	    
             
             --ETH Transfers
             
@@ -92,10 +104,30 @@ FROM (
             AND gaso.block_time BETWEEN start_block_time AND end_block_time
             
             GROUP BY 1, 2,3
-        ) bals
+	)
+	SELECT user_address, day, token_address, value --get updates
+		FROM updates
+		
+	UNION ALL		
+		
+	SELECT user_address, day, token_address, raw_value --get the latest update for the token + wallet combo
+	    FROM (
+		    SELECT u.user_address, u.day, u.token_address, raw_value,
+		    DENSE_RANK() OVER(PARTITION BY u.user_address, u.token_address ORDER BY u.day DESC) AS user_token_rank
+		    FROM erc20.daily_token_balances dtb
+		    	INNER JOIN updates u
+		    	ON u.user_address = dtb.user_address
+		    	AND u.token_address = dtb.token_address
+		    WHERE u.user_address IN (SELECT user_address FROM updates)
+		    AND u.token_address IN (SELECT token_address FROM updates)
+		 ) at
+	    WHERE user_token_rank = 1
+        
+	) bals
         LEFT JOIN erc20."tokens" e
             ON bals."token_address" = e."contract_address"
         
+	WHERE user_address NOT IN ('\x0000000000000000000000000000000000000000','\x4200000000000000000000000000000000000006') --not burn address or WETH
         GROUP BY 1,2,3, 4
     ) f
 ) sumo
@@ -108,6 +140,7 @@ LEFT JOIN prices."approx_prices_from_dex_data" dp
                                         )
             AND DATE_TRUNC('day',dp.hour) = sumo.day
 WHERE user_address IS NOT NULL
+AND day >= DATE_TRUNC('day',start_block_time) - interval '1 day' --Only update current adds, 1 day buffer for timezone / end of day stuff
 
 GROUP BY day, user_address, token_address, sumo.symbol, raw_value, token_value
 	
