@@ -21,5 +21,5 @@ CREATE OR REPLACE VIEW venus.view_vtokens (symbol, contract_address, decimals, u
    ('vUSDC'::text,   '\xecA88125a5ADbe82614ffC12D0DB554E2e2867C8'::bytea, 8::numeric, '\x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d'::bytea),
    ('vUSDT'::text,   '\xfD5840Cd36d94D7229439859C0112a4185BC0255'::bytea, 8::numeric, '\x55d398326f99059fF775485246999027B3197955'::bytea),
    ('vXRP'::text,   '\xB248a295732e0225acd3337607cc01068e3b9c10'::bytea, 8::numeric, '\x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE'::bytea),
-   ('vXVS'::text,   '\x151B1e2635A717bcDc836ECd6FbB62B674FE3E1D'::bytea, 8::numeric, '\xcF6BB5389c92Bdda8a3747Ddb454cB7a64626C63'::bytea),
+   ('vXVS'::text,   '\x151B1e2635A717bcDc836ECd6FbB62B674FE3E1D'::bytea, 8::numeric, '\xcF6BB5389c92Bdda8a3747Ddb454cB7a64626C63'::bytea)
 ;   
