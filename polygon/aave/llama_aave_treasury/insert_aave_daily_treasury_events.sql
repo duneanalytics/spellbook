@@ -38,7 +38,7 @@ gas_out
     )
 	
 WITH addresses AS (
-SELECT address FROM dune_user_generated.llama_treasury_addresses WHERE protocol = 'Aave' AND blockchain = 'Polygon'
+SELECT address FROM llama.llama_treasury_addresses WHERE protocol = 'Aave' AND blockchain = 'Polygon'
 )
 
 , eth_transfers AS 
@@ -56,7 +56,7 @@ SELECT address FROM dune_user_generated.llama_treasury_addresses WHERE protocol 
     SELECT block_time, COALESCE(-(gas_price*gas_used),0) AS value,
     'Gas Out' AS tr_type, t."from" AS addr
     FROM polygon.transactions t
-    WHERE t."from" IN (SELECT "address" FROM dune_user_generated."llama_treasury_addresses"
+    WHERE t."from" IN (SELECT "address" FROM llama."llama_treasury_addresses"
                         WHERE "blockchain" = 'Polygon' AND "protocol" = 'Aave')
     AND "success" = false
     AND block_time >= start_time_day AND block_time <= end_time_day
@@ -65,7 +65,7 @@ SELECT address FROM dune_user_generated.llama_treasury_addresses WHERE protocol 
     UNION ALL
     
     SELECT block_time, value AS value,
-    CASE WHEN l."from" IN (SELECT "address" FROM dune_user_generated."llama_treasury_addresses" --different for transfers
+    CASE WHEN l."from" IN (SELECT "address" FROM llama."llama_treasury_addresses" --different for transfers
                                 WHERE "blockchain" = 'Polygon' AND "protocol" = 'Aave')
     
         THEN 'Transfer In'
@@ -83,7 +83,7 @@ SELECT address FROM dune_user_generated.llama_treasury_addresses WHERE protocol 
     UNION ALL
     
     SELECT block_time, -value AS value,
-    CASE WHEN l."to" IN (SELECT "address" FROM dune_user_generated."llama_treasury_addresses" --different for transfers
+    CASE WHEN l."to" IN (SELECT "address" FROM llama."llama_treasury_addresses" --different for transfers
                                 WHERE "blockchain" = 'Polygon' AND "protocol" = 'Aave')
         THEN 'Transfer Out'
         ELSE 'Money Out'
@@ -97,7 +97,7 @@ SELECT address FROM dune_user_generated.llama_treasury_addresses WHERE protocol 
     --GROUP BY 1,2,3
     
     ) a
-INNER JOIN dune_user_generated.llama_treasury_addresses g
+INNER JOIN llama.llama_treasury_addresses g
     ON a.addr = g.address
     AND g.blockchain = 'Polygon'
     AND g."protocol" = 'Aave'
@@ -168,7 +168,7 @@ FROM
     ELSE 'Money Out' END AS tr_type,
     g.address AS ag_address, g.version
     FROM erc20."ERC20_evt_Transfer" t
-    INNER JOIN dune_user_generated.llama_treasury_addresses g
+    INNER JOIN llama.llama_treasury_addresses g
     ON t."from" = g.address
     AND g.blockchain = 'Polygon'
     AND g."protocol" = 'Aave'
@@ -196,7 +196,7 @@ FROM
     ELSE 'Money In' END AS tr_type,
     g.address AS ag_address, g.version
     FROM erc20."ERC20_evt_Transfer" tb
-    INNER JOIN dune_user_generated.llama_treasury_addresses g
+    INNER JOIN llama.llama_treasury_addresses g
     ON tb."to" = g.address
     AND g.blockchain = 'Polygon'
     AND g."protocol" = 'Aave'
