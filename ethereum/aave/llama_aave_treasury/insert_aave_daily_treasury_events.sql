@@ -38,7 +38,7 @@ gas_out
     )
 	
 WITH addresses AS (
-SELECT address FROM dune_user_generated.llama_treasury_addresses WHERE protocol = 'Aave' AND blockchain = 'Ethereum'
+SELECT address FROM llama.llama_treasury_addresses WHERE protocol = 'Aave' AND blockchain = 'Ethereum'
 )
 
 , eth_transfers AS 
@@ -56,7 +56,7 @@ SELECT address FROM dune_user_generated.llama_treasury_addresses WHERE protocol 
     SELECT block_time, COALESCE(-(gas_price*gas_used),0) AS value,
     'Gas Out' AS tr_type, t."from" AS addr
     FROM ethereum.transactions t
-    WHERE t."from" IN (SELECT "address" FROM dune_user_generated."llama_treasury_addresses"
+    WHERE t."from" IN (SELECT "address" FROM llama."llama_treasury_addresses"
                         WHERE "blockchain" = 'Ethereum' AND "protocol" = 'Aave')
     AND "success" = false
     AND block_time >= start_time_day AND block_time <= end_time_day
@@ -64,7 +64,7 @@ SELECT address FROM dune_user_generated.llama_treasury_addresses WHERE protocol 
     UNION ALL
     
     SELECT block_time, value AS value,
-    CASE WHEN l."from" IN (SELECT "address" FROM dune_user_generated."llama_treasury_addresses" --different for transfers
+    CASE WHEN l."from" IN (SELECT "address" FROM llama."llama_treasury_addresses" --different for transfers
                                 WHERE "blockchain" = 'Ethereum' AND "protocol" = 'Aave')
     
         THEN 'Transfer In'
@@ -81,7 +81,7 @@ SELECT address FROM dune_user_generated.llama_treasury_addresses WHERE protocol 
     UNION ALL
     
     SELECT block_time, -value AS value,
-    CASE WHEN l."to" IN (SELECT "address" FROM dune_user_generated."llama_treasury_addresses" --different for transfers
+    CASE WHEN l."to" IN (SELECT "address" FROM llama."llama_treasury_addresses" --different for transfers
                                 WHERE "blockchain" = 'Ethereum' AND "protocol" = 'Aave')
         THEN 'Transfer Out'
         ELSE 'Money Out'
@@ -94,7 +94,7 @@ SELECT address FROM dune_user_generated.llama_treasury_addresses WHERE protocol 
     AND block_time >= start_time_day AND block_time <= end_time_day
     
     ) a
-INNER JOIN dune_user_generated.llama_treasury_addresses g
+INNER JOIN llama.llama_treasury_addresses g
     ON a.addr = g.address
     AND g.blockchain = 'Ethereum'
     AND g."protocol" = 'Aave'
@@ -167,7 +167,7 @@ FROM
     ELSE 'Money Out' END AS tr_type,
     g.address AS ag_address, g.version
     FROM erc20."ERC20_evt_Transfer" t
-    INNER JOIN dune_user_generated.llama_treasury_addresses g
+    INNER JOIN llama.llama_treasury_addresses g
     ON t."from" = g.address
     AND g.blockchain = 'Ethereum'
     AND g."protocol" = 'Aave'
@@ -195,7 +195,7 @@ FROM
     ELSE 'Money In' END AS tr_type,
     g.address AS ag_address, g.version
     FROM erc20."ERC20_evt_Transfer" tb
-    INNER JOIN dune_user_generated.llama_treasury_addresses g
+    INNER JOIN llama.llama_treasury_addresses g
     ON tb."to" = g.address
     AND g.blockchain = 'Ethereum'
     AND g."protocol" = 'Aave'
@@ -208,7 +208,7 @@ FROM
     SELECT * FROM eth_transfers
     
 ) a
-LEFT JOIN dune_user_generated.llama_token_migrations m
+LEFT JOIN llama.llama_token_migrations m
     ON a.contract_address = m.old_address
 
 GROUP BY 1,2,3
@@ -255,11 +255,26 @@ RETURN r;
 END
 $function$;
 
--- Get the table started
-SELECT aave.insert_aave_daily_treasury_events(DATE_TRUNC('day','2020-01-24'::timestamptz),DATE_TRUNC('day','2021-12-31'::timestamptz) )
+-- Get the table started --2020
+SELECT aave.insert_aave_daily_treasury_events(DATE_TRUNC('day','2020-01-24'::timestamptz),DATE_TRUNC('day','2020-12-31'::timestamptz) )
 WHERE NOT EXISTS (
     SELECT *
     FROM aave.aave_daily_treasury_events
+	WHERE evt_day >= '2021-01-01'::timestamptz
+);
+--2021
+SELECT aave.insert_aave_daily_treasury_events(DATE_TRUNC('day','2021-01-01'::timestamptz),DATE_TRUNC('day','2021-12-31'::timestamptz) )
+WHERE NOT EXISTS (
+    SELECT *
+    FROM aave.aave_daily_treasury_events
+	WHERE evt_day >= '2021-01-01'::timestamptz
+);
+
+SELECT aave.insert_aave_daily_treasury_events(DATE_TRUNC('day','2022-01-01'::timestamptz),DATE_TRUNC('day',NOW()::timestamptz) )
+WHERE NOT EXISTS (
+    SELECT *
+    FROM aave.aave_daily_treasury_events
+	WHERE evt_day >= '2022-01-01'::timestamptz
 );
 
 INSERT INTO cron.job (schedule, command)
