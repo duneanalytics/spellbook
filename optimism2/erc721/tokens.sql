@@ -24,6 +24,10 @@ COPY erc721.tokens (contract_address, project_name) FROM stdin;
 \\x7c230d7a7efbf17b2ebd2aac24a8fb5373e381b7	Pixel Bunnies
 \\x3af0441ce31974c9ea6553fdba60c9cd3dfd933d	Cat Game
 \\xc58c9a631ce193fC3F2Bb190Ab5Ba1BE181c09D1	Octavas
+\\xA433e0Bf662Dd934833C66D4f03711e1CCE9c9B2	Ethernauts
+\\xC36442b4a4522E871399CD717aBDD847Ab11FE88	Uniswap V3 Positions NFT-V1
+\\x0932F43d1b5f81A34FC986f9a34D05FD5E92874b	Pegasus OG Task Ticket
+\\x5dc68E29F8f8Eb9de35e655Ac541D9F5b93A31aD	BakeryNFT - 30 DAY
 \.
 
 COMMIT;
