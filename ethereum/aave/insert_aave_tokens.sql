@@ -82,14 +82,14 @@ SELECT
 l.contract_address AS token_address,
 bytea2numeric(substring(data from 65 for 32)) AS decimals,
 regexp_replace(REPLACE(encode(substring(data from 288 for 128),'escape')::text,'\000',''), '\W', ' ', 'g') AS symbol,
-dune_user_generated.get_address_from_data(topic2) AS underlying_token_address,
+get_address_from_data(topic2) AS underlying_token_address,
 e.symbol AS underlying_token_symbol,
 'Deposit' AS side,
 regexp_replace(REPLACE(encode(substring(data from 224 for 64), 'escape')::text,'\000',''), '\W', ' ', 'g') AS token_name
 
 FROM ethereum.logs l
 LEFT JOIN erc20."tokens" e
-        ON e.contract_address = dune_user_generated.get_address_from_data(topic2)
+        ON e.contract_address = get_address_from_data(topic2)
 WHERE topic1 = '\xb19e051f8af41150ccccb3fc2c2d8d15f4a4cf434f32a559ba75fe73d6eea20b'
 AND EXISTS (SELECT 1 FROM erc20."ERC20_evt_Transfer" e WHERE e.contract_address = l.contract_address LIMIT 1)
 AND block_time >= start_time
@@ -101,14 +101,14 @@ SELECT
 l.contract_address AS token_address,
 bytea2numeric(substring(data from 33 for 32)) AS decimals,
 regexp_replace(replace(encode(substring(data from 256 for 64), 'escape')::text,'\000',''), '\W', ' ', 'g') AS symbol,
-dune_user_generated.get_address_from_data(topic2) AS underlying_token_address,
+get_address_from_data(topic2) AS underlying_token_address,
 e.symbol AS underlying_token_symbol,
 'Borrow' AS side,
 regexp_replace(replace(encode(substring(data from 193 for 64),'escape')::text,'\000',''), '\W', ' ', 'g') AS token_name
 
 FROM ethereum.logs l
 LEFT JOIN erc20."tokens" e
-        ON e.contract_address = dune_user_generated.get_address_from_data(topic2)
+        ON e.contract_address = get_address_from_data(topic2)
 WHERE topic1 = '\x40251fbfb6656cfa65a00d7879029fec1fad21d28fdcff2f4f68f52795b74f2c'
 AND block_time >= start_time
     AND block_time < end_time
