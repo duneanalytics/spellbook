@@ -120,7 +120,7 @@ END
 $function$;
 
 -- Get the table started
-SELECT aave.insert_aave_daily_atoken_balances(DATE_TRUNC('day','2020-01-24'::timestamptz),DATE_TRUNC('day','2021-12-31'::timestamptz) )
+SELECT aave.insert_aave_daily_atoken_balances(DATE_TRUNC('day','2020-01-24'::timestamptz),DATE_TRUNC('day',NOW()) )
 WHERE NOT EXISTS (
     SELECT *
     FROM aave.aave_daily_atoken_balances
