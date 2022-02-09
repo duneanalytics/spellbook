@@ -56,6 +56,6 @@ CREATE VIEW qidao."view_evt_destroy_vault" AS(
         from
             qidao."QiStablecoin_evt_DestroyVault"
         )) destroy_vault
-    )
+    );
 
 COMMIT;

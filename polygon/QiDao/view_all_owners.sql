@@ -64,5 +64,5 @@ FROM cte left join (
         "contract_address" in (select distinct("price_address") from qidao."view_contract_token_label")
     order by contract_address,"minute" desc) prices 
     on contracts.price_address = prices.ca
-)
+);
 COMMIT;

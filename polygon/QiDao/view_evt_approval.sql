@@ -108,6 +108,6 @@ CREATE VIEW qidao."view_evt_approval" AS(
             qidao."QiStablecoin_evt_Approval"
         )) approvals_basic
     ))all_approvals
-)
+);
 
 COMMIT;

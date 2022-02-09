@@ -57,7 +57,5 @@ CREATE VIEW qidao."view_evt_transfer" AS(
             qidao."QiStablecoin_evt_Transfer"
         )) transfer
     );
-    
 
-    
-    
+COMMIT;

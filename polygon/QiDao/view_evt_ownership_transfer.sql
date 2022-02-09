@@ -55,5 +55,5 @@ CREATE VIEW qidao."view_evt_ownership_transfer" AS(
           from
               qidao."QiStablecoin_evt_OwnershipTransferred"
           )) ownership_trasfer
-  )
+  );
 COMMIT;

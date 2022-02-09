@@ -59,7 +59,7 @@ CREATE VIEW qidao."view_evt_deposit_collateral" AS(
           from
               qidao."QiStablecoin_evt_DepositCollateral"
           )) deposit_collateral
-  )
+  );
 
 
 

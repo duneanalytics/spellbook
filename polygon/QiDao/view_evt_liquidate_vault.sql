@@ -69,5 +69,5 @@ CREATE VIEW qidao."view_evt_liquidate_vault" AS(
       from
           qidao."QiStablecoin_evt_BuyRiskyVault"
       )) liquidate_vault
-  )
+  );
 COMMIT;

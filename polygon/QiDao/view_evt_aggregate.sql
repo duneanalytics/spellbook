@@ -17,7 +17,7 @@ CREATE VIEW qidao."view_evt_aggregate" AS(
       (select
           *
       from
-          qidao."view_evt_trasfer"
+          qidao."view_evt_transfer"
       )
       UNION ALL
       (select
@@ -29,13 +29,13 @@ CREATE VIEW qidao."view_evt_aggregate" AS(
       (select
           *
       from
-          qidao."view_evt_trasfer_vault"
+          qidao."view_evt_transfer_vault"
       )
       UNION ALL
       (select
           *
       from
-          qidao."view_evt_ownership_trasfer"
+          qidao."view_evt_ownership_transfer"
       )
       UNION ALL
       (select
@@ -67,5 +67,5 @@ CREATE VIEW qidao."view_evt_aggregate" AS(
       from
           qidao."view_evt_deposit_collateral"
       )
-  )
+  );
 COMMIT;

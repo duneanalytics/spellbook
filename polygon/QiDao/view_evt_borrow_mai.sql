@@ -55,6 +55,6 @@ CREATE VIEW qidao."view_evt_borrow_mai" AS(
           from
               qidao."QiStablecoin_evt_BorrowToken"
           )) borrow_token
-      )
+      );
 
 COMMIT;

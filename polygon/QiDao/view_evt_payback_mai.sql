@@ -57,6 +57,6 @@ CREATE VIEW qidao."view_evt_payback_mai" AS(
         from
             qidao."QiStablecoin_evt_PayBackToken"
         )) payback_token
-    )
+    );
 
 COMMIT;

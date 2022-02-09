@@ -59,6 +59,6 @@ CREATE VIEW qidao."view_evt_withdraw_collateral" AS(
           from
               qidao."QiStablecoin_evt_WithdrawCollateral"
           )) withdraw_collateral
-      )
+      );
 
 COMMIT;

@@ -56,6 +56,6 @@ FROM
     group by 1
     ) cp2 on cp."qidao_contract" = cp2."qidao_contract" and cp."count_txs" = cp2."max_count"
     order by "count_txs" desc
-)
+);
 
 COMMIT;
