@@ -41,7 +41,7 @@ FROM
     SELECT DISTINCT l."evt_tx_hash", l."evt_block_time", 0 AS fee, 'Paid' AS fee_type, e.contract_address AS contract_address, /*"asset" AS amount_currency, "amount" AS amount,*/ 'FlashLoan' AS event, 'V2' AS version FROM aave_v2."LendingPool_evt_FlashLoan" l
     INNER JOIN erc20."ERC20_evt_Transfer" e 
     ON e."evt_tx_hash" = l."evt_tx_hash"
-    WHERE e."to" IN (SELECT address FROM dune_user_generated.llama_treasury_addresses WHERE protocol = 'Aave' AND version = 'V2') --some flashloans will use v1 aave, so we don't want to double count
+    WHERE e."to" IN (SELECT address FROM llama.llama_treasury_addresses WHERE protocol = 'Aave' AND version = 'V2') --some flashloans will use v1 aave, so we don't want to double count
    	AND l.evt_block_time >= start_time_day AND l.evt_block_time <= end_time_day
 	--v2 doesn't take any transaction-specific fees
     
@@ -57,7 +57,7 @@ FROM
     WHERE e."from" IN ( '\x2fbb0c60a41cb7ea5323071624dcead3d213d0fa' --v2
                         ,'\x3dfd23a6c5e8bbcfc9581d2e864a68feb6a076d3' --v1
                     )
-    AND e."to" IN (SELECT address FROM dune_user_generated.llama_treasury_addresses WHERE protocol = 'Aave' AND version IN ('V1','V2'))
+    AND e."to" IN (SELECT address FROM llama.llama_treasury_addresses WHERE protocol = 'Aave' AND version IN ('V1','V2'))
     AND e.evt_tx_hash NOT IN (SELECT evt_tx_hash FROM tran)
  	AND e.evt_block_time >= start_time_day AND e.evt_block_time <= end_time_day
  
