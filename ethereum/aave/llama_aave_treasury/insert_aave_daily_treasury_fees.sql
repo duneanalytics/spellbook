@@ -65,7 +65,7 @@ FROM
                         ,'\x7c66550c9c730b6fdd4c03bc2e73c5462c5f7acc' --Kyber
                         ,'\x65bf64ff5f51272f729bdcd7acfb00677ced86cd' --Kyber
                     )
-    AND e."to" IN (SELECT address FROM dune_user_generated.llama_treasury_addresses WHERE protocol = 'Aave' AND version = 'V1')
+    AND e."to" IN (SELECT address FROM llama.llama_treasury_addresses WHERE protocol = 'Aave' AND version = 'V1')
     AND e."contract_address" != '\x80fb784b7ed66730e8b1dbd9820afd29931aab03' --excluding because LEND gets burned
 	AND e.evt_block_time >= start_time_day AND e.evt_block_time <= end_time_day
     
@@ -77,7 +77,7 @@ FROM
                         ,'\x7c66550c9c730b6fdd4c03bc2e73c5462c5f7acc' --Kyber
                         ,'\x65bf64ff5f51272f729bdcd7acfb00677ced86cd' --Kyber
                     )
-    AND e."to" IN (SELECT address FROM dune_user_generated.llama_treasury_addresses WHERE protocol = 'Aave' AND version = 'V1')
+    AND e."to" IN (SELECT address FROM llama.llama_treasury_addresses WHERE protocol = 'Aave' AND version = 'V1')
     AND e."contract_address" = '\x80fb784b7ed66730e8b1dbd9820afd29931aab03' --only LEND so we get the revenue that's actually burnt LEND
 	AND e.evt_block_time >= start_time_day AND e.evt_block_time <= end_time_day
     
@@ -102,7 +102,7 @@ FROM
     WHERE e."from" IN ( '\x2fbb0c60a41cb7ea5323071624dcead3d213d0fa' --v2
                         ,'\x3dfd23a6c5e8bbcfc9581d2e864a68feb6a076d3' --v1
                     )
-    AND e."to" IN (SELECT address FROM dune_user_generated.llama_treasury_addresses WHERE protocol = 'Aave' AND version IN ('V1','V2'))
+    AND e."to" IN (SELECT address FROM llama.llama_treasury_addresses WHERE protocol = 'Aave' AND version IN ('V1','V2'))
     AND e.evt_tx_hash NOT IN (SELECT evt_tx_hash FROM tran)
  	AND e.evt_block_time >= start_time_day AND e.evt_block_time <= end_time_day
  
