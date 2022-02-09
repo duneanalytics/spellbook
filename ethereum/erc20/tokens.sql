@@ -1,10 +1,11 @@
+BEGIN;
+
 CREATE TABLE IF NOT EXISTS erc20.tokens (
 	contract_address bytea UNIQUE,
 	symbol text,
 	decimals integer
 );
 
-BEGIN;
 DELETE FROM erc20.tokens *;
 
 
@@ -2921,6 +2922,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\xf4d2888d29d722226fafa5d9b24f9164c092421e	LOOKS	18
 \\x42476f744292107e34519f9c357927074ea3f75d	LOOM	18
 \\xa4e8c3ec456107ea67d3075bf9e3df3a75823db0	LOOM	18
+\\xeb57bf569ad976974c1f861a5923a59f40222451	LOOMI	18
 \\x7c5d5100b339fe7d995a893af6cb496b9474373c	LOON	18
 \\x7b3d36eb606f873a75a6ab68f8c999848b04f935	LOOT	18
 \\xcfbd04b3cef2cf1527f143a49e5dc1e19941d254	LOOTL	18
@@ -5865,7 +5867,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \.
 
 
-COMMIT;
-
 CREATE INDEX IF NOT EXISTS tokens_contract_address_decimals_idx ON erc20.tokens USING btree (contract_address) INCLUDE (decimals);
 CREATE INDEX IF NOT EXISTS tokens_symbol_decimals_idx ON erc20.tokens USING btree (symbol) INCLUDE (decimals);
+
+COMMIT;
