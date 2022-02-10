@@ -1901,3 +1901,13 @@
   symbol: TRIBE
   address: 0xc7283b66eb1eb5fb86327f08e1b5816b0720212b
   decimals: 18
+- name: gro-dao-token
+  id: gro-gro-dao-token
+  symbol: GRO
+  address: 0x3ec8798b81485a254928b70cda1cf0a2bb0b74d7
+  decimals: 18
+- name: phonon-dao
+  id: phonon-phonon-dao
+  symbol: PHONON
+  address: 0x758b4684be769e92eefea93f60dda0181ea303ec
+  decimals: 18
