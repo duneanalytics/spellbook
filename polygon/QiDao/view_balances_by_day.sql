@@ -78,6 +78,6 @@ order by ft."date",ft."collateral_token_symbol"
 );
 
 INSERT INTO cron.job(schedule, command)
-VALUES ('0 12 * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY qidao.view_balances_by_day$$)
+VALUES ('3 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY qidao.view_balances_by_day$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;
