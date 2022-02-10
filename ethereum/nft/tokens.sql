@@ -4830,6 +4830,7 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x123b30E25973FeCd8354dd5f41Cc45A3065eF88C	Alien Frens	ALIENFRENS	erc721
 \\x90ee3Cf59FcDe2FE11838b9075Ea4681462362F1	Non-Fungible Fungi	NFF	erc721
 \\x986aea67C7d6A15036e18678065eb663Fc5BE883	Nifty League Degens	DEGEN	erc721
+\\x42f1654B8eeB80C96471451B1106b63D0B1a9fe1	Chubbiverse Frens	CHF	erc721
 \.
 
 
