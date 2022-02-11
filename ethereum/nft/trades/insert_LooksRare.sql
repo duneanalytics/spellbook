@@ -22,8 +22,8 @@ WITH looks_rare AS (
         evt_block_number AS block_number,
         evt_index AS evt_index,
 	CASE -- CATEGORIZE Collection Wide Offers Accepted 
-	    WHEN strategy = '\x86f909f70813cdb1bc733f4d97dc6b03b8e7e8f3' THEN 'Offer Accepted'
-	    ELSE 'Buy' 
+	    WHEN strategy = '\x86f909f70813cdb1bc733f4d97dc6b03b8e7e8f3' THEN 'Collection Offer Accepted'
+	    ELSE 'Offer Accepted' 
 	END AS category
     FROM looksrare."LooksRareExchange_evt_TakerAsk"
 UNION ALL
