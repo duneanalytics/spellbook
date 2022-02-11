@@ -9098,7 +9098,8 @@ VALUES
 ('9086','Global'),
 ('9087','Global'),
 ('9088','Global'),
-('9089','Global');
+('9089','Global'),
+('9090','Global');
 
 
 CREATE INDEX IF NOT EXISTS linksdao_traits_idx ON linksdao.linksdao_traits USING BRIN (token_id);
