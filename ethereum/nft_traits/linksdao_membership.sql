@@ -9103,3 +9103,4 @@ VALUES
 
 
 CREATE INDEX IF NOT EXISTS linksdao_traits_idx ON linksdao.linksdao_traits USING BRIN (token_id);
+COMMIT;
