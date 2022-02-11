@@ -28,6 +28,8 @@ COPY erc721.tokens (contract_address, project_name) FROM stdin;
 \\xC36442b4a4522E871399CD717aBDD847Ab11FE88	Uniswap V3 Positions NFT-V1
 \\x0932F43d1b5f81A34FC986f9a34D05FD5E92874b	Pegasus OG Task Ticket
 \\x5dc68E29F8f8Eb9de35e655Ac541D9F5b93A31aD	BakeryNFT - 30 DAY
+\\xdbfeaae58b6da8901a8a40ba0712beb2ee18368e	Dope Wars Hustlers
+\\xeac4c25aaefe942d408004f5afcce947bae51484	Pegasus Welcome Ticket
 \.
 
 COMMIT;
