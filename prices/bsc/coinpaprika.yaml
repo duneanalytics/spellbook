@@ -479,3 +479,8 @@
   id: pets-micropets
   name: MicroPets
   symbol: PETS
+- address: '0x4BA0057f784858a48fe351445C672FF2a3d43515'
+  decimals: 18
+  id: kalm-kalmar
+  name: Kalmar
+  symbol: KALM
