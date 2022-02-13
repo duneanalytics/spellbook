@@ -1,7 +1,7 @@
 BEGIN;
-DROP VIEW IF EXISTS qidao.view_vaults_collaterals_mapping CASCADE;
+DROP VIEW IF EXISTS qidao.view_vault_collateral_mappings CASCADE;
 
-CREATE VIEW qidao.view_vaults_collaterals_mapping (vault_contract, collateral_contract, collateral_symbol, collateral_decimals, collateral_price_symbol) AS VALUES
+CREATE VIEW qidao.view_vault_collateral_mappings (vault_contract_address, collateral_contract_address, collateral_symbol, collateral_decimals, collateral_price_symbol) AS VALUES
 ('\xa3fa99a148fa48d14ed51d610c367c61876997f1'::bytea, NULL::bytea,                                         'MATIC'::text, 18::integer, 'MATIC'::text), -- MATIC vault
 ('\x3fd939B017b31eaADF9ae50C7fF7Fa5c0661d47C'::bytea, '\x7ceb23fd6bc0add59e62ac25578270cff1b9f619'::bytea, 'WETH'::text, 18::integer, 'WETH'::text), -- WETH Vault
 ('\x61167073E31b1DAd85a3E531211c7B8F1E5cAE72'::bytea, '\x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39'::bytea, 'LINK'::text, 18::integer, 'LINK'::text), -- LINK Vault
