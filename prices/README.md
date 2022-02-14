@@ -35,7 +35,7 @@ When the PR is merged we will deploy the changes and you will soon see USD price
 
 1. Find the asset on coinpaprika. Note the symbol
 2. Note the ID of the asset from coinpaprikas URL. In https://coinpaprika.com/coin/dmg-dmm-governance/ `dmg-dmm-governance` is the ID.
-3. If the asset is a token on Ethereum, find the contract address and number of decimals e.g. through etherscan.
+3. If the asset is a token on Binance Smart Chain, find the contract address and number of decimals e.g. through https://bscscan.com/.
 4. The last step is to add an entry to `prices/bsc/coinpaprika.yaml` with the following format (Without comments)
 
 ```yaml
