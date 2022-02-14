@@ -1,7 +1,7 @@
 BEGIN;
-DROP MATERIALIZED VIEW IF EXISTS qidao.view_deposit_collateral;
+DROP VIEW IF EXISTS qidao.view_deposit_collateral CASCADE;
 
-CREATE MATERIALIZED VIEW qidao.view_deposit_collateral AS (
+CREATE VIEW qidao.view_deposit_collateral AS (
 with deposits as
 (
   select * from qidao."erc20QiStablecoin_evt_DepositCollateral"
@@ -27,7 +27,4 @@ select a."evt_block_time" as "block_time",
        on a."contract_address" = b."vault_contract_address"
 );
 
-INSERT INTO cron.job(schedule, command)
-VALUES ('3 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY qidao.view_deposit_collateral$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;

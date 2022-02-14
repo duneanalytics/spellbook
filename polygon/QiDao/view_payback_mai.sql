@@ -1,7 +1,7 @@
 BEGIN;
-DROP MATERIALIZED VIEW IF EXISTS qidao.view_payback_mai;
+DROP VIEW IF EXISTS qidao.view_payback_mai CASCADE;
 
-CREATE MATERIALIZED VIEW qidao.view_payback_mai AS (
+CREATE VIEW qidao.view_payback_mai AS (
 with paybacks as
 (
   select * from qidao."erc20QiStablecoin_evt_PayBackToken"
@@ -29,7 +29,4 @@ select a."evt_block_time" as "block_time",
        on a."contract_address" = b."vault_contract_address"
 );
 
-INSERT INTO cron.job(schedule, command)
-VALUES ('3 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY qidao.view_payback_mai$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;

@@ -1,7 +1,7 @@
 BEGIN;
-DROP MATERIALIZED VIEW IF EXISTS qidao.view_vault_collateral_mai_changes;
+DROP VIEW IF EXISTS qidao.view_vault_collateral_mai_changes CASCADE;
 
-CREATE MATERIALIZED VIEW qidao.view_vault_collateral_mai_changes AS (
+CREATE VIEW qidao.view_vault_collateral_mai_changes AS (
 select "block_time", "tx_hash", "vault_contract_address", "vault_id",
        "collateral_contract_address", "collateral_symbol",
        "collateral_price_symbol",
@@ -54,7 +54,4 @@ from qidao.view_liquidate_vault
 order by 1
 );
 
-INSERT INTO cron.job(schedule, command)
-VALUES ('3 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY qidao.view_vault_collateral_mai_changes$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;

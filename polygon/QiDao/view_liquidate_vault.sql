@@ -1,7 +1,7 @@
 BEGIN;
-DROP MATERIALIZED VIEW IF EXISTS qidao.view_liquidate_vault;
+DROP VIEW IF EXISTS qidao.view_liquidate_vault CASCADE;
 
-CREATE MATERIALIZED VIEW qidao.view_liquidate_vault AS (
+CREATE VIEW qidao.view_liquidate_vault AS (
 with liquidates as
 (
   select * from qidao."erc20QiStablecoin_evt_LiquidateVault"
@@ -30,7 +30,4 @@ select a."evt_block_time" as "block_time",
        on a."contract_address" = b."vault_contract_address"
 );
 
-INSERT INTO cron.job(schedule, command)
-VALUES ('3 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY qidao.view_liquidate_vault$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;
