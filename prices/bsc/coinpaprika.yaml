@@ -479,3 +479,8 @@
   id: pets-micropets
   name: MicroPets
   symbol: PETS
+- address: '0xce86f7fcd3b40791f63b86c3ea3b8b355ce2685b'
+  decimals: 18
+  id: maha-mahadao
+  name: mahadao
+  symbol: MAHA
