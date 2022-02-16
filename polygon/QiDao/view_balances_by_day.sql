@@ -1,17 +1,17 @@
 BEGIN;
 DROP MATERIALIZED VIEW IF EXISTS qidao."view_balances_by_day";
 
-CREATE MATERIALIZED VIEW qidao."view_balances_by_day" AS(   
+CREATE MATERIALIZED VIEW qidao."view_balances_by_day" AS(
 with all_values as ((SELECT * FROM
 (SELECT
 DISTINCT(t1."collateral_token_symbol") as collateral_token_symbol,
 t2."collateral_token_contract"
-from 
-qidao."view_contract_token_label" t1 left join qidao."view_contract_token_label" t2 on t1."qidao_contract" = t2."qidao_contract") tokens 
+from
+qidao."view_contract_token_label" t1 left join qidao."view_contract_token_label" t2 on t1."qidao_contract" = t2."qidao_contract") tokens
 CROSS JOIN
 (SELECT date_trunc('day', dd):: date as date
 FROM generate_series
-        ( '2021-05-01'::timestamp 
+        ( '2021-05-01'::timestamp
         , CURRENT_DATE::timestamp
         , '1 day'::interval) dd
 ) tok2)),
@@ -25,7 +25,7 @@ SELECT
     sum("amount_collateral") as change_in_collateral_amount,
     sum("amount_mai") as change_in_mai_amount
 from
-    qidao."view_evt_aggregate" qa 
+    qidao."view_evt_aggregate" qa
     left join qidao."view_contract_token_label" cl on qa."contract_address" = cl."qidao_contract"
 where
     transaction_type in ('deposit_collateral','withdraw_collateral','payback_mai','borrow_mai','liquidate_vault')
@@ -61,7 +61,7 @@ SELECT
     ) * 100 as collateral_ratio
 FROM
     final_table ft
-    left join 
+    left join
         (SELECT
             "contract_address",
             date_trunc('day',"minute") as date,
@@ -78,6 +78,6 @@ order by ft."date",ft."collateral_token_symbol"
 );
 
 INSERT INTO cron.job(schedule, command)
-VALUES ('3 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY qidao.view_balances_by_day$$)
+VALUES ('3 * * * *', $$REFRESH MATERIALIZED VIEW qidao.view_balances_by_day$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;
