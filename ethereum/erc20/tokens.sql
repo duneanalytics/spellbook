@@ -5960,6 +5960,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\xebc345e12c14449f2b63f077fd86f3345b0f0d14	ESPL	18
 \\xed704e11d975a966b4edcc5780a2e8955c536fa0	VISA	18
 \\xf66cd2f8755a21d3c8683a10269f795c0532dd58	CoreDAO	18
+\\xd2d8d78087d0e43bc4804b6f946674b2ee406b80	✺RUG	18
 \.
 
 
