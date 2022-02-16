@@ -1911,3 +1911,8 @@
   symbol: PHONON
   address: 0x758b4684be769e92eefea93f60dda0181ea303ec
   decimals: 18
+- name: babl-babylonfinance
+  id: babl-babylonfinance
+  symbol: BABL
+  address: 0xf4dc48d260c93ad6a96c5ce563e70ca578987c74
+  decimals: 18
