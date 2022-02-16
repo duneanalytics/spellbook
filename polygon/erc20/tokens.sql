@@ -72,6 +72,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\xeDe17e9d79fc6f9fF9250D9EEfbdB88Cc18038b5	variableDebtmWETH	18
 \\x59e8E9100cbfCBCBAdf86b9279fa61526bBB8765	variableDebtmWMATIC	18
 \\xe840b73e5287865eec17d250bfb1536704b43b21	imUSD	18
+\\xdd2af2e723547088d3846841fbdcc6a8093313d6	GOGO	18
 \.
 
 
