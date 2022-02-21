@@ -1,7 +1,7 @@
 BEGIN;
-DROP VIEW IF EXISTS dune_user_generated.qidao_view_qi_pool_deposit CASCADE;
+DROP VIEW IF EXISTS qidao.view_qi_pool_deposit CASCADE;
 
-CREATE VIEW dune_user_generated.qidao_view_qi_pool_deposit AS (
+CREATE VIEW qidao.view_qi_pool_deposit AS (
 with dws as (
 select evt_block_time as block_time,
        '0x' || encode("user", 'hex') as user_address,
@@ -36,4 +36,3 @@ where "type" = 'deposit'
 );
 
 COMMIT;
-select * from dune_user_generated.qidao_view_qi_pool_deposit order by block_time desc limit 1000

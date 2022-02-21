@@ -1,7 +1,7 @@
 BEGIN;
-DROP VIEW IF EXISTS dune_user_generated.qidao_view_qi_pool_events CASCADE;
+DROP VIEW IF EXISTS qidao.view_qi_pool_events CASCADE;
 
-CREATE VIEW dune_user_generated.qidao_view_qi_pool_events AS (
+CREATE VIEW qidao.view_qi_pool_events AS (
 with dws as (
 select evt_block_time as block_time,
        '0x' || encode("user", 'hex') as user_address,
@@ -30,4 +30,3 @@ order by block_time
 );
 
 COMMIT;
-select * from dune_user_generated.qidao_view_qi_pool_events order by block_time desc limit 1000
