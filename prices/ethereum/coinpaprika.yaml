@@ -1916,3 +1916,8 @@
   symbol: BABL
   address: 0xf4dc48d260c93ad6a96c5ce563e70ca578987c74
   decimals: 18
+- name: radar_radar
+  id: radar-radar
+  symbol: RADAR
+  address: 0xf9fbe825bfb2bf3e387af0dc18cac8d87f29dea8
+  decimals: 18
