@@ -190,8 +190,7 @@ WHERE NOT EXISTS(
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/5 * * * *', $$
     SELECT gnosis_protocol_v2.insert_trades(
-        (SELECT max(block_time) - interval '1 days' FROM gnosis_protocol_v2.trades,
-        (SELECT now() - interval '5 minutes')
+        (SELECT max(block_time) - interval '1 days' FROM gnosis_protocol_v2.trades
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;
