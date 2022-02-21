@@ -1,17 +1,17 @@
 BEGIN;
-DROP VIEW IF EXISTS dune_user_generated.qidao_view_lp_pool_daily_status CASCADE;
+DROP MATERIALIZED VIEW IF EXISTS qidao.view_lp_pool_daily_status;
 
-CREATE VIEW dune_user_generated.qidao_view_lp_pool_daily_status as (
+CREATE MATERIALIZED VIEW qidao.view_lp_pool_daily_status as (
 with dws as (
 select block_time, user_address, lp_name,
        amount - fee_in_lp_token as change,
        fee_in_lp_token
-from dune_user_generated.qidao_view_lp_pool_deposit
+from qidao.view_lp_pool_deposit
 union all
 select block_time, user_address, lp_name,
        amount * (-1) as change,
        0 as fee_in_lp_token
-from dune_user_generated.qidao_view_lp_pool_withdraw
+from qidao.view_lp_pool_withdraw
 )
 ,changes_daily as (
 select date_trunc('day', block_time) as day,
@@ -32,7 +32,7 @@ select a."day", a."lp_name",
        sum(a."fee_in_lp_token") over (partition by a."lp_name" order by a."day") as cumulative_fee_in_lp_token,
        sum(a."fee_in_lp_token" * b."price") over (partition by a."lp_name" order by a."day") as cumulative_fee_in_usd,
        lead(a."day", 1, date_trunc('day', now()) + interval '1 day') over (partition by a."lp_name" order by a."day") as next_day
-from changes_daily a left join dune_user_generated.qidao_view_lp_token_price b on a."day" = b."day" and a."lp_name" = b."name"
+from changes_daily a left join qidao.view_lp_token_price b on a."day" = b."day" and a."lp_name" = b."name"
 order by day
 )
 ,days as (
@@ -49,6 +49,10 @@ from changes_daily_ext a inner join days b
 order by 1 desc
 );
 
-COMMIT;
+CREATE UNIQUE INDEX IF NOT EXISTS qidao_view_lp_pool_daily_status_idx ON qidao.view_lp_pool_daily_status (day, lp_name);
 
-select * from dune_user_generated.qidao_view_lp_pool_daily_status; 
+INSERT INTO cron.job(schedule, command)
+VALUES ('15 */2 * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY qidao.view_lp_pool_daily_status$$)
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+
+COMMIT;

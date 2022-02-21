@@ -1,7 +1,7 @@
 BEGIN;
-DROP VIEW IF EXISTS dune_user_generated.qidao_view_lp_pool_deposit CASCADE;
+DROP VIEW IF EXISTS qidao.view_lp_pool_deposit CASCADE;
 
-CREATE VIEW dune_user_generated.qidao_view_lp_pool_deposit AS (
+CREATE VIEW qidao.view_lp_pool_deposit AS (
 with deposits as (
 /*select evt_block_time as block_time,
        user as user_address,
@@ -21,7 +21,7 @@ from polygon.logs
 where block_time >= '2021-5-2'
   and contract_address in
       (select pool_contract_address
-       from dune_user_generated.qidao_view_lp_pool_basic_info
+       from qidao.view_lp_pool_basic_info
       )
   and topic1 = '\x90890809c654f11d6e72a28fa60149770a0d11ec6c92319d6ceb2bb0a4ea1a15'
   and bytea2numeric( decode( SUBSTRING( encode(data, 'hex'), 1, 64), 'hex')) > 0
@@ -31,12 +31,11 @@ select a."block_time", a."user_address", a."pool_contract_address",
        b."lp_contract_address", c."lp_name", a."amount",
        a."amount" * b."deposit_fee_ratio" as "fee_in_lp_token", a.tx_hash
 from deposits a
-     inner join dune_user_generated.qidao_view_lp_pool_basic_info b
+     inner join qidao.view_lp_pool_basic_info b
        on a."pool_contract_address" = b."pool_contract_address"
           and a."lp_id" = b."lp_id"
-     inner join dune_user_generated.qidao_view_lp_basic_info c
+     inner join qidao.view_lp_basic_info c
        on b."lp_contract_address" = c."lp_contract_address"
 );
 
 COMMIT;
-select * from dune_user_generated.qidao_view_lp_pool_deposit order by block_time desc limit 1000

@@ -1,15 +1,15 @@
 BEGIN;
-DROP VIEW IF EXISTS dune_user_generated.qidao_view_lp_token_price CASCADE;
+DROP MATERIALIZED VIEW IF EXISTS qidao.view_lp_token_price;
 
-CREATE VIEW dune_user_generated.qidao_view_lp_token_price as (
+CREATE MATERIALIZED VIEW qidao.view_lp_token_price as (
 with token_symbols as (
-  select distinct token_a_symbol as symbol from dune_user_generated.qidao_view_lp_basic_info where dex_name = 'QuickSwap'
+  select distinct token_a_symbol as symbol from qidao.view_lp_basic_info where dex_name = 'QuickSwap'
   union all
-  select distinct token_b_symbol as symbol from dune_user_generated.qidao_view_lp_basic_info where dex_name = 'QuickSwap'
+  select distinct token_b_symbol as symbol from qidao.view_lp_basic_info where dex_name = 'QuickSwap'
 )
 ,lp_address as (
   select lp_contract_address
-  from dune_user_generated.qidao_view_lp_basic_info where dex_name = 'QuickSwap'
+  from qidao.view_lp_basic_info where dex_name = 'QuickSwap'
 )
 ,token_prices as (
   select minute, symbol, price
@@ -89,7 +89,7 @@ with token_symbols as (
   select a.day, c."lp_contract_address", c."lp_name",
         (d.reserve0 / (10^c."token_a_decimals") * a.price + d.reserve1 / (10^c."token_b_decimals") * b.price) / e.supply as price
   from token_prices_day a inner join token_prices_day b on a."day" = b."day"
-       inner join dune_user_generated.qidao_view_lp_basic_info c
+       inner join qidao.view_lp_basic_info c
          on a."symbol" = c."token_a_symbol"
             and b."symbol" = c."token_b_symbol"
        inner join reserve_day_last_ext d
@@ -118,6 +118,10 @@ from token_prices_day where symbol = 'USDC' -- just take usdc price
 order by day, name
 );
 
-COMMIT;
+CREATE UNIQUE INDEX IF NOT EXISTS qidao_view_lp_token_price_idx ON qidao.view_lp_token_price (day, name);
 
-select * from dune_user_generated."qidao_view_lp_token_price"
+INSERT INTO cron.job(schedule, command)
+VALUES ('0 */2 * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY qidao.view_lp_token_price$$)
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+
+COMMIT;
