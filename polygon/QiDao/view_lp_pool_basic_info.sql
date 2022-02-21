@@ -1,7 +1,7 @@
 BEGIN;
-DROP VIEW IF EXISTS dune_user_generated.qidao_view_lp_pool_basic_info CASCADE;
+DROP VIEW IF EXISTS qidao.view_lp_pool_basic_info CASCADE;
 
-CREATE VIEW dune_user_generated.qidao_view_lp_pool_basic_info AS (
+CREATE VIEW qidao.view_lp_pool_basic_info AS (
 select contract_address as pool_contract_address,
        (row_number() over (partition by contract_address order by call_block_time)) - 1 as lp_id,
        "_lpToken" as lp_contract_address,
