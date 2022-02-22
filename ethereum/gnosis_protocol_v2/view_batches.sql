@@ -3,20 +3,21 @@ DROP MATERIALIZED VIEW IF EXISTS gnosis_protocol_v2.view_batches;
 
 CREATE MATERIALIZED VIEW gnosis_protocol_v2.view_batches AS
 WITH batch_counts AS (
-    SELECT i.evt_block_time,
-           i.evt_tx_hash,
+    SELECT s.evt_block_time,
+           s.evt_tx_hash,
            solver,
            (select count(*)
             from gnosis_protocol_v2."GPv2Settlement_evt_Trade" t
-            where t.evt_tx_hash = i.evt_tx_hash)                                                  as num_trades,
+            where t.evt_tx_hash = s.evt_tx_hash)                                                  as num_trades,
            sum(case when selector != '\x2e1a7d4d' and selector != '\x095ea7b3' then 1 else 0 end) as dex_swaps,
            sum(case when selector = '\x2e1a7d4d' then 1 else 0 end)                               as unwraps,
            sum(case when selector = '\x095ea7b3' then 1 else 0 end)                               as token_approvals
-    FROM gnosis_protocol_v2."GPv2Settlement_evt_Interaction" i
-             JOIN gnosis_protocol_v2."GPv2Settlement_evt_Settlement" s
-                  ON i.evt_tx_hash = s.evt_tx_hash
-    GROUP BY i.evt_tx_hash, solver, i.evt_block_time
+    FROM gnosis_protocol_v2."GPv2Settlement_evt_Settlement" s
+             LEFT OUTER JOIN gnosis_protocol_v2."GPv2Settlement_evt_Interaction" i
+                             ON i.evt_tx_hash = s.evt_tx_hash
+    GROUP BY s.evt_tx_hash, solver, s.evt_block_time
 ),
+
 
      batch_values as (
          select tx_hash,
