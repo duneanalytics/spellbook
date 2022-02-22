@@ -4695,7 +4695,7 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x26b365dd6c6c2c5c1b19658ede5ef00c12402702	Ultraviolet Vinyl Collection by 3LAU	UVCOLLECTION	erc721
 \\x0458d5a7a3830a42d4d68fb36865f5cd4e9cd488	BitPopArt		erc721
 \\x9be29d790c7e2c3ff6acb608f6a3799b2650314d	Cypto familly 	familly	erc1155
-\\x50f5474724e0ee42d9a4e711ccfb275809fd6d4a	Sandbox's LANDs		erc721
+\\x50f5474724e0ee42d9a4e711ccfb275809fd6d4a	Sandbox's LANDs	LAND	erc721
 \\x5df4602e7f38a91ea7724fc167f0c67f61604b1e	dcl://wz_wonderbot	DCLWZWNDRBT	erc721
 \\xccc441ac31f02cd96c153db6fd5fe0a2f4e6a68d	FLUF	FLUF	erc721
 \\xf6b7d7c5a7fd6b11f6b6616a3476f2b90ecb730f	GENESIS I Open Editions by ENCODE Graphics	GENESISIOPENEDITIONSBYENCODEGRAPHICS	erc721

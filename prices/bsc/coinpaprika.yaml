@@ -484,3 +484,8 @@
   id: maha-mahadao
   name: mahadao
   symbol: MAHA
+- address: '0xf03a2dc374d494fbe894563fe22ee544d826aa50'
+  decimals: 18
+  id: radar-radar
+  name: radar_radar
+  symbol: RADAR
