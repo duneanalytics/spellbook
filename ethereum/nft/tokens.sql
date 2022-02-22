@@ -14500,6 +14500,7 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x13e89276bd71fca653bef21d144f4a24d501ce1b	salty tooth	SALTY	erc721
 \\x60f03169cb00ea0774cf4bdf5b9c55d33442affc	Floating Cities	CITIES	erc721
 \\xec71ed650722ef6f98c1c28f0b34c9846c1ba10b	DRIVE // DAVE KRUGMAN	DRIVE	erc721
+\\x880509ff28915fa62cdc7b07d1ea951bd5cfe882	Metavatar	MVTR	erc721
 \.
 
 
