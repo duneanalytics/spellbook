@@ -26,7 +26,7 @@ SELECT
     sum("amount_mai") as change_in_mai_amount
 from
     qidao."view_evt_aggregate" qa
-    left join qidao."view_contract_token_label" cl on qa."contract_address" = cl."qidao_contract"
+    left join (SELECT * FROM qidao."view_contract_token_label" LIMIT 5000) cl on qa."contract_address" = cl."qidao_contract"
 where
     transaction_type in ('deposit_collateral','withdraw_collateral','payback_mai','borrow_mai','liquidate_vault')
     and collateral_token_symbol is not NULL
@@ -71,8 +71,6 @@ FROM
         where
             "contract_address" in (select distinct("price_address") from qidao."view_contract_token_label")
         group by 1,2) pr on (ft."price_address" = pr."contract_address" AND ft."date" = pr."date")
-WHERE
-    ft."collateral_token_symbol" is not NULL
 Group by 1,2,3,4
 order by ft."date",ft."collateral_token_symbol"
 );
