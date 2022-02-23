@@ -213,7 +213,7 @@ VALUES ('*/5 * * * *', $$
     DELETE FROM gnosis_protocol_v2.trades
         WHERE block_time >= (SELECT DATE_TRUNC('day', now()) - INTERVAL '1 days');
     SELECT gnosis_protocol_v2.insert_trades(
-        SELECT DATE_TRUNC('day', now()) - INTERVAL '1 days'
+        (SELECT DATE_TRUNC('day', now()) - INTERVAL '1 days')
     );
     COMMIT;
 $$)
@@ -233,7 +233,7 @@ VALUES ('1 0 * * *', $$
     DELETE FROM gnosis_protocol_v2.trades
         WHERE block_time >= (SELECT DATE_TRUNC('day', now()) - INTERVAL '3 months');
     SELECT gnosis_protocol_v2.insert_trades(
-        SELECT DATE_TRUNC('day', now()) - INTERVAL '3 months'
+        (SELECT DATE_TRUNC('day', now()) - INTERVAL '3 months')
     );
     COMMIT;
 $$)
