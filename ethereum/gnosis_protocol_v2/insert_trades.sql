@@ -20,7 +20,6 @@ BEGIN
             FROM gnosis_protocol_v2."GPv2Settlement_evt_Trade" trades
                      LEFT OUTER JOIN prices.usd as s
                                      ON trades."sellToken" = s.contract_address
-                                         AND s.minute > TO_DATE('2021/03/03', 'YYYY/MM/DD') --! Deployment Date
                                          AND s.minute = date_trunc('minute', evt_block_time)
                      LEFT OUTER JOIN prices.usd as b
                                      ON b.contract_address = (
@@ -29,7 +28,6 @@ BEGIN
                                                  THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                                              ELSE trades."buyToken"
                                              END)
-                                         AND b.minute > TO_DATE('2021/03/03', 'YYYY/MM/DD') --! Deployment Date
                                          AND b.minute = date_trunc('minute', evt_block_time)
             WHERE evt_block_time >= start_ts
               AND evt_block_time < end_ts
@@ -165,17 +163,31 @@ BEGIN
                        units_sold
                 FROM valued_trades
                 ORDER BY block_time DESC
-                ON CONFLICT DO NOTHING -- TODO should probably use DO UPDATE and put those with trade_value in
+                -- We avoid conflict by dropping the values before executing the insertion (cf. the cronjobs below)
+                ON CONFLICT DO NOTHING
+                -- If we wanted to keep this method entirely independent of the cron schedule below, then we might use the following code block to handle conflicts.
+--                 ON CONFLICT (order_uid, tx_hash) DO UPDATE SET
+--                     trade_value_usd = EXCLUDED.trade_value_usd,
+--                     units_bought = EXCLUDED.units_bought,
+--                     units_sold = EXCLUDED.units_sold,
+--                     sell_price = EXCLUDED.sell_price,
+--                     buy_price = EXCLUDED.buy_price,
+--                     fee = EXCLUDED.fee,
+--                     fee_usd = EXCLUDED.fee_usd
+--                     buy_token = EXCLUDED.buy_token
+--                     sell_token = EXCLUDED.sell_token
                 RETURNING 1
     )
 
-    SELECT count(*) INTO r FROM rows;
+    SELECT count(*)
+    INTO r
+    FROM rows;
     RETURN r;
 END
 $function$;
 
 
--- fill 2021
+-- fill 2021: This is only ever relevant 1 time.
 SELECT gnosis_protocol_v2.insert_trades(
                '2021-03-03', --! Deployment date
                '2022-01-01'
@@ -187,10 +199,43 @@ WHERE NOT EXISTS(
           AND block_time < '2022-01-01'
     );
 
+-- For the two cron jobs defined below,
+-- one is intended to back fill lagging price feed (while also including most recent trades).
+-- The second, less frequent job is meant to back fill missing token data that is manually
+-- updated on an irregular schedule. A three month time window should suffice for manual token updates.
+
+-- Every five minutes we go back 1 day and repopulate the values.
+-- This captures new trades since the previous run, but also includes
+-- previously non-existent price data (since the price feed is slightly behind)
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/5 * * * *', $$
+    BEGIN;
+    DELETE FROM gnosis_protocol_v2.trades
+        WHERE block_time >= (SELECT DATE_TRUNC('day', now()) - INTERVAL '1 days');
     SELECT gnosis_protocol_v2.insert_trades(
-        (SELECT max(block_time) - interval '1 days' FROM gnosis_protocol_v2.trades
+        SELECT DATE_TRUNC('day', now()) - INTERVAL '1 days'
+    );
+    COMMIT;
+$$)
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+
+-- Once per day we go back 3 months repopulate the values.
+-- This is intended to back fill any new erc20 token data that may have been introduced.
+-- While simultaneously updating all fields relying on token data. Specifically, these are:
+-- buy_token, sell_token, (for the symbol) and
+-- trade_value_usd, units_bought, units_sold, sell_price, buy_price, fee, fee_usd (requiring token decimals).
+--
+-- NOTE that we choose to run this job daily at 1 minute past midnight,
+-- so not to compete with the every 5 minute job above
+INSERT INTO cron.job (schedule, command)
+VALUES ('1 0 * * *', $$
+    BEGIN;
+    DELETE FROM gnosis_protocol_v2.trades
+        WHERE block_time >= (SELECT DATE_TRUNC('day', now()) - INTERVAL '3 months');
+    SELECT gnosis_protocol_v2.insert_trades(
+        SELECT DATE_TRUNC('day', now()) - INTERVAL '3 months'
+    );
+    COMMIT;
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;
