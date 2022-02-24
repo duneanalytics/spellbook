@@ -31,6 +31,12 @@ COPY erc721.tokens (contract_address, project_name) FROM stdin;
 \\xdbfeaae58b6da8901a8a40ba0712beb2ee18368e	Dope Wars Hustlers
 \\xeac4c25aaefe942d408004f5afcce947bae51484	Pegasus Welcome Ticket
 \\xa698713a3bc386970Cdc95A720B5754cC0f96931	Words (viaMirror)
+\\xB5604Fc106074A140DF727Fe28cd68F0dbB6C1B9	PixelConInvaders
+\\x0e55e1913c50e015e0f60386ff56a4bfb00d7110	Dope Wars Gear
+\\xb752dfFA1d8Fbb107cde9aa6dBB511a89A7CFf49	SpaceHook
+\\x0ceAE206F543E361f5C4428da80d1E77d3D82698	SNX L222
+\\x7F313258c747c19f388e4D1d219Eff26a876A743	AI Crystals
+\\x5BDb639399A91890356C98Aa2De402073dc642c3	PegaPal
 \.
 
 COMMIT;
