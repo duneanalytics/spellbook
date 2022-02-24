@@ -63,7 +63,7 @@ atb.day, atb.token_address,
 paave.decimals AS aave_decimals
 
 FROM
-aave.aave_treasury_daily_atoken_balances atb 
+aave.aave_daily_atoken_balances atb
 
 INNER JOIN aave."aave_tokens" at
 ON atb.token_address = at."token_address"

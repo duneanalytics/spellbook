@@ -1,6 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS aave;
 
-CREATE TABLE IF NOT EXISTS aave.aave_treasury_daily_atoken_balances (   
+CREATE TABLE IF NOT EXISTS aave.aave_daily_atoken_balances (
 	day timestamptz,
 	token_address bytea,
 	daily_change numeric,
@@ -11,5 +11,5 @@ CREATE TABLE IF NOT EXISTS aave.aave_treasury_daily_atoken_balances (
 		PRIMARY KEY (day, token_address)
 );
 
-CREATE INDEX IF NOT EXISTS llama_aave_treasury_atoken_balances_token_day_idx ON aave.aave_treasury_daily_atoken_balances (token_address, day);
-CREATE INDEX IF NOT EXISTS llama_aave_treasury_atoken_balances_day_idx ON aave.aave_treasury_daily_atoken_balances (day);
+CREATE INDEX IF NOT EXISTS llama_aave_treasury_atoken_balances_token_day_idx ON aave.aave_daily_atoken_balances (token_address, day);
+CREATE INDEX IF NOT EXISTS llama_aave_treasury_atoken_balances_day_idx ON aave.aave_daily_atoken_balances (day);
