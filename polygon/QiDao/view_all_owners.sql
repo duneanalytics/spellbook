@@ -68,6 +68,6 @@ FROM cte left join (
 COMMIT;
 
 INSERT INTO cron.job(schedule, command)
-VALUES ('3 * * * *', $$REFRESH MATERIALIZED VIEW qidao.view_all_owners$$)
+VALUES ('3 * * * *', $$REFRESH MATERIALIZED VIEW qidao.view_all_owners;$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;
