@@ -18,8 +18,8 @@ WITH rows AS (
 WITH RECURSIVE 
 gs AS --doing a series so that we don't skip days when there's no deposits/withraws
 (
-SELECT DISTINCT d.address AS token_address, gs.day FROM aave."aave_tokens" d
-INNER JOIN 
+SELECT DISTINCT d.token_address AS token_address, gs.day FROM aave."aave_tokens" d
+INNER JOIN
 (SELECT generate_series(start_time_day, end_time_day, '1 day') AS day) gs -- Generate all days since the first contract
 ON 1=1
 )
@@ -41,8 +41,8 @@ FROM
         ELSE 0 END) AS value
     FROM erc20."ERC20_evt_Transfer" e
     INNER JOIN aave."aave_tokens" at
-        ON e."contract_address" = at."address"
-    
+        ON e."contract_address" = at."token_address"
+
     WHERE ("from" = '\x0000000000000000000000000000000000000000'
     OR "to" = '\x0000000000000000000000000000000000000000')
 	AND e.evt_block_time >= start_time_day AND e.evt_block_time <= end_time_day
