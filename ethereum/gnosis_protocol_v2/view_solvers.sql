@@ -60,7 +60,7 @@ known_solver_metadata (address, environment, name) as (
                  (decode('56d4ed5e49539ebb1366c7d6b8f2530f1e4fe753', 'hex'), 'test', 'Test Solver 2')
          ) as _
 )
--- Combining the metadata with activation status for final table
+-- Combining the metadata with current activation status for final table
 select address,
        case when environment is not null then environment else 'new' end as environment,
        case when name is not null then name else 'Uncatalogued' end      as name,
