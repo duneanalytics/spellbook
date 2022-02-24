@@ -1,6 +1,6 @@
 BEGIN;
 DROP MATERIALIZED VIEW IF EXISTS qidao."view_all_owners";
-CREATE MATERIALIZED VIEW qidao."view_all_owners" AS(    
+CREATE MATERIALIZED VIEW qidao."view_all_owners" AS(
 
 WITH cte AS
 (
@@ -9,22 +9,22 @@ SELECT
      "contract_address",
      "address_one"
 FROM(
-    SELECT 
+    SELECT
         DISTINCT ON ("vaultid","contract_address")
          "vaultid",
          "contract_address",
-         "address_one", 
+         "address_one",
          "evt_block_time",
          "evt_index"
-    FROM 
-        qidao."view_evt_aggregate" 
-    WHERE 
+    FROM
+        qidao."view_evt_aggregate"
+    WHERE
         transaction_type in ('create_vault','destroy_vault','transfer_vault','transfer')
     ORDER BY "vaultid","contract_address","address_one", "evt_block_time" DESC, "evt_index" ASC) last_tx
-WHERE 
+WHERE
     vaultid IS NOT null
 )
-SELECT 
+SELECT
     cte."vaultid",
     cte."contract_address",
     cte."address_one" as owner,
@@ -49,9 +49,9 @@ FROM cte left join (
         "qidao_contract" as contract_address,
         "collateral_token_symbol",
         "price_address"
-    FROM 
+    FROM
         qidao."view_contract_token_label"
-    
+
     ) contracts on (cte."contract_address" = contracts."contract_address")
     LEFT JOIN (
     select
@@ -62,7 +62,12 @@ FROM cte left join (
         prices."usd"
     where
         "contract_address" in (select distinct("price_address") from qidao."view_contract_token_label")
-    order by contract_address,"minute" desc) prices 
+    order by contract_address,"minute" desc) prices
     on contracts.price_address = prices.ca
 );
+COMMIT;
+
+INSERT INTO cron.job(schedule, command)
+VALUES ('3 * * * *', $$REFRESH MATERIALIZED VIEW qidao.view_all_owners;$$)
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;
