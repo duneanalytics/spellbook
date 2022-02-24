@@ -12,7 +12,7 @@ WITH rows AS (
 	starting_balance,
 	interest_rate_apr,
 	interest_earned,
-	total_balalnce
+	total_balance
     )
 	
 WITH RECURSIVE 
