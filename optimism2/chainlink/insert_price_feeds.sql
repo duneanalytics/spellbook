@@ -91,7 +91,7 @@ WHERE NOT EXISTS (
 INSERT INTO cron.job (schedule, command)
 VALUES ('15,30,45,59 * * * *', $$
     SELECT chainlink.insert_price_feeds(
-        (SELECT MAX(hour) - interval '1 day' FROM chainlink.view_price_feeds),
+        (SELECT MAX(hour) - interval '3 days' FROM chainlink.view_price_feeds), --buffer in case the db gets stuck
         now() + interval '1 hour' -- to pull prices in to the next hour if needed
         );
 $$)
