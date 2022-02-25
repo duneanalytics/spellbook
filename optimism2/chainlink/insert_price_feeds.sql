@@ -65,3 +65,23 @@ SELECT count(*) INTO r from rows;
 RETURN r;
 END
 $function$;
+
+-- fill to start
+SELECT chainlink.insert_price_feeds(
+    '2021-11-11'::date,
+    now()
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM chainlink.view_price_feeds
+    LIMIT 1
+);
+
+INSERT INTO cron.job (schedule, command)
+VALUES ('15,30,45,59 * * * *', $$
+    SELECT chainlink.insert_price_feeds(
+        (SELECT MAX(hour) - interval '1 day' FROM chainlink.view_price_feeds),
+        now() + interval '1 hour' -- to pull prices in to the next hour if needed
+        );
+$$)
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
