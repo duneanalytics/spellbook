@@ -453,6 +453,7 @@ RETURN r;
 END
 $function$;
 
+/*
 -- Monthly backfill starting 11 Nov 2021 (regenesis
 --TODO: Add pre-regenesis prices
 
@@ -486,3 +487,4 @@ VALUES ('1 0 * * *', $$
     );
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+*/
