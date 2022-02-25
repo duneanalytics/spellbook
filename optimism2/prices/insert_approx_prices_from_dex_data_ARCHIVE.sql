@@ -27,7 +27,7 @@ SELECT generate_series(DATE_TRUNC('hour',start_time) , DATE_TRUNC('hour',end_tim
 		AND u.last_hour = p.hour
 	GROUP BY 1,2,3,4,5,6
 )
-
+-- TODO UPDATE THIS TO MATCH L1 DEX PRICING LOGIC SINCE WE HAVE CHAINLINK PRICES
 , dex_price_stables AS (
 --for tokens where dune doesn't have the price, calculate the median price, assuming USDT, DAI, USDC = 1
 SELECT
