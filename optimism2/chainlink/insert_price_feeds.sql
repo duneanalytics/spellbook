@@ -7,8 +7,6 @@ WITH rows AS (
         hour,
     	feed_name,
     	price,
-    	proxy,
-    	address,
     	underlying_token_address
     )
     
@@ -37,7 +35,8 @@ WITH gs AS (
 	GROUP BY 1,2, 4,5,6
 )
 
-SELECT *
+SELECT --avg in case there are multiple overlapping feeds
+	hour, feed_name, AVG(price) AS price, underlying_token_address
 FROM (
 SELECT hr AS hour, feed_name
 , first_value(price) OVER (PARTITION BY feed_name, grp ORDER BY hr) AS price
@@ -53,9 +52,10 @@ FROM (
         AND gs.feed_name = f.feed_name
     ) uni
 ) a
+GROUP BY 1,2, 4
 WHERE price IS NOT NULL
 
-ON CONFLICT (hour,feed_name,proxy,address,underlying_token_address)
+ON CONFLICT (hour,feed_name,underlying_token_address)
     DO UPDATE SET
         price = EXCLUDED.price
 	
