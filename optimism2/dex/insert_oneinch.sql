@@ -1,6 +1,6 @@
 --use dex version to control for a specific implementation. Default = 0 means include all versions.
 
-CREATE OR REPLACE FUNCTION dex.insert_oneinch(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18, dex_version integer=0) RETURNS integer
+CREATE OR REPLACE FUNCTION dex.insert_oneinch(start_ts timestamptz, end_ts timestamptz=now(), dex_version integer=0) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -44,8 +44,8 @@ WITH rows AS (
         token_b_amount_raw,
         coalesce(
             usd_amount,
-            token_a_amount_raw / 10 ^ pa.decimals * pa.median_price,
-            token_b_amount_raw / 10 ^ pb.decimals * pb.median_price
+            token_a_amount_raw / 10 ^ erc20a.decimals * pa.price,
+            token_b_amount_raw / 10 ^ erc20b.decimals * pb.price
         ) as usd_amount,
         token_a_address,
         token_b_address,
@@ -101,12 +101,12 @@ WITH rows AS (
         AND tx.block_number < end_block
     LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
-    LEFT JOIN prices.approx_prices_from_dex_data pa
+    LEFT JOIN chainlink.view_price_feeds pa
       ON pa.hour = date_trunc('hour', dexs.block_time)
         AND pa.contract_address = dexs.token_a_address
         AND pa.hour >= start_ts
         AND pa.hour < end_ts
-    LEFT JOIN prices.approx_prices_from_dex_data pb
+    LEFT JOIN chainlink.view_price_feeds pb
       ON pb.hour = date_trunc('hour', dexs.block_time)
         AND pb.contract_address = dexs.token_b_address
         AND pb.hour >= start_ts
@@ -169,9 +169,9 @@ INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$
     SELECT dex.insert_oneinch(
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1inch'),
-        (SELECT now() - interval '20 minutes'),
+        (SELECT now()),
         (SELECT max(number) FROM optimism.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1inch')),
-        (SELECT MAX(number) FROM optimism.blocks where time < now() - interval '20 minutes'),
+        (SELECT MAX(number) FROM optimism.blocks where time < now()),
     0);
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
