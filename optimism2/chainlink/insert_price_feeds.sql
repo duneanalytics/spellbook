@@ -12,7 +12,48 @@ WITH rows AS (
     	underlying_token_address
     )
     
-    -- code here
+WITH gs AS (
+    SELECT
+    generate_series (
+    DATE_TRUNC('day', start_block_time ),
+    DATE_TRUNC('hour', end_block_time ),
+    '1 hour'
+    ) AS hr
+    , "feed_name"
+    FROM chainlink.oracle_addresses
+)
+
+, feed_updates AS (
+	SELECT
+	DATE_TRUNC('hour',block_time) AS dt
+	, feed_name
+	, AVG(bytea2numeric(topic2)::decimal/(10^decimals)::decimal) AS price
+	,"proxy", "address", underlying_token_address
+	FROM optimism.logs l
+	INNER JOIN chainlink.oracle_addresses cfa
+	    ON l.contract_address = cfa.address
+	WHERE topic1 = '\x0559884fd3a460db3073b7fc896cc77986f16e378210ded43186175bf646fc5f' --Answer Updated
+	AND contract_address IN (SELECT address FROM chainlink.oracle_addresses)
+	GROUP BY 1,2, 4,5,6
+)
+
+SELECT *
+FROM (
+SELECT hr AS hour, feed_name
+, first_value(price) OVER (PARTITION BY feed_name, grp ORDER BY hr) AS price
+, first_value(proxy) OVER (PARTITION BY feed_name, grp ORDER BY hr) AS proxy
+, first_value(address) OVER (PARTITION BY feed_name, grp ORDER BY hr) AS address
+, first_value(underlying_token_address) OVER (PARTITION BY feed_name, grp ORDER BY hr) AS underlying_token_address
+FROM (
+    SELECT gs.hr, gs.feed_name, price, "proxy", "address", underlying_token_address,
+    count(price) OVER (PARTITION BY gs.feed_name ORDER BY gs.hr) AS grp
+    FROM gs
+    LEFT JOIN feed_updates f
+        ON gs.hr = f.dt
+        AND gs.feed_name = f.feed_name
+    ) uni
+) a
+WHERE price IS NOT NULL
 
 ON CONFLICT (hour,feed_name,proxy,address,underlying_token_address)
     DO UPDATE SET
