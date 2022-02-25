@@ -40,16 +40,27 @@ SELECT --avg in case there are multiple overlapping feeds
 FROM (
 SELECT hr AS hour, feed_name
 , first_value(price) OVER (PARTITION BY feed_name, grp ORDER BY hr) AS price
-, first_value(proxy) OVER (PARTITION BY feed_name, grp ORDER BY hr) AS proxy
-, first_value(address) OVER (PARTITION BY feed_name, grp ORDER BY hr) AS address
+
 , first_value(underlying_token_address) OVER (PARTITION BY feed_name, grp ORDER BY hr) AS underlying_token_address
 FROM (
-    SELECT gs.hr, gs.feed_name, price, "proxy", "address", underlying_token_address,
-    count(price) OVER (PARTITION BY gs.feed_name ORDER BY gs.hr) AS grp
+SELECT hr, feed_name, price, underlying_token_address,
+count(price) OVER (PARTITION BY feed_name ORDER BY hr) AS grp
+FROM (
+    SELECT gs.hr, gs.feed_name, price, underlying_token_address
     FROM gs
     LEFT JOIN feed_updates f
         ON gs.hr = f.dt
         AND gs.feed_name = f.feed_name
+    UNION ALL
+	SELECT hour, feed_name, price, underlying_token_address
+    	FROM (
+    		SELECT hour, feed_name, price, underlying_token_address,
+    			DENSE_RANK() OVER (PARTITION BY feed_name, underlying_token_address ORDER BY hour DESC) AS h_rank
+    			FROM chainlink.view_price_feeds
+    		WHERE hour >= end_block_time - interval '1 day'
+        	) old
+    	WHERE h_rank = 1
+    	) str
     ) uni
 ) a
 GROUP BY 1,2, 4
