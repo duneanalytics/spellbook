@@ -38,3 +38,20 @@ VALUES ('15,30,45,59 * * * *', $$
 	
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+
+-- Longer periodic backfill once per day (i.e. when we add new tokens or feeds)
+INSERT INTO cron.job (schedule, command)
+VALUES ('7 1 * * *', $$
+--Chainlink Updates
+	SELECT chainlink.insert_price_feeds(
+        (SELECT MAX(hour) - interval '30 days' FROM chainlink.view_price_feeds), --buffer in case the db gets stuck
+        now()
+        );
+-- Third Prices Run. We expect this to pull in the remining prices (Oracles + Interacted with Tokens + Next level of tokens).
+	SELECT prices.insert_approx_prices_from_dex_data(
+        	(SELECT MAX(hour) - interval '30 days' FROM prices.approx_prices_from_dex_data),
+        	(SELECT now() )
+    	);
+	
+$$)
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
