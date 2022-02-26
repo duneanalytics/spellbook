@@ -94,7 +94,7 @@ WHERE NOT EXISTS (
     FROM chainlink.view_price_feeds
     LIMIT 1
 );
-
+/*
 INSERT INTO cron.job (schedule, command)
 VALUES ('15,30,45,59 * * * *', $$
     SELECT chainlink.insert_price_feeds(
@@ -103,3 +103,4 @@ VALUES ('15,30,45,59 * * * *', $$
         );
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+*/
