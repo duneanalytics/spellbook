@@ -1,6 +1,6 @@
 --use dex version to control for a specific implementation. Default = 0 means include all versions.
 
-CREATE OR REPLACE FUNCTION dex.insert_oneinch(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18, dex_version integer=0) RETURNS integer
+CREATE OR REPLACE FUNCTION dex.insert_oneinch(start_ts timestamptz, end_ts timestamptz=now(), dex_version integer=0) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -97,8 +97,7 @@ WITH rows AS (
         ON dexs.tx_hash = tx.hash
         AND tx.block_time >= start_ts
         AND tx.block_time < end_ts
-        AND tx.block_number >= start_block
-        AND tx.block_number < end_block
+
     LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
     LEFT JOIN prices.approx_prices_from_dex_data pa
@@ -138,8 +137,6 @@ $function$;
 SELECT dex.insert_oneinch(
     '2021-11-11',
     now(),
-    0,
-    (SELECT MAX(number) FROM optimism.blocks where time < now() - interval '20 minutes'),
 	3
 )
 WHERE NOT EXISTS (
@@ -153,8 +150,6 @@ WHERE NOT EXISTS (
 SELECT dex.insert_oneinch(
     '2021-11-11',
     now(),
-    0,
-    (SELECT MAX(number) FROM optimism.blocks where time < now() - interval '20 minutes'),
 	4
 )
 WHERE NOT EXISTS (
@@ -169,9 +164,7 @@ INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$
     SELECT dex.insert_oneinch(
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1inch'),
-        (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM optimism.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1inch')),
-        (SELECT MAX(number) FROM optimism.blocks where time < now() - interval '20 minutes'),
+        SELECT now(),
     0);
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
