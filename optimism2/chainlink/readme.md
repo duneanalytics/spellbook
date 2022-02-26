@@ -1,6 +1,8 @@
 # Chainlink Price Oracle Updates - Optimism
 The following queries create a prices table based on Optimism Chainlink Oracle updates. These may be used as the base "source" of truth to populate prices for DEX trades and other relevant tables.
 
+The actual cron job insert is housed in dex.prices_and_trades_inserts .
+
 To add a new price feed, add a row to the `oracle_addresses.sql` table with the following information:
 - **feed_name**: Sourced from [Chainlink Docs](https://docs.chain.link/docs/optimism-price-feeds/)
 - **decimals**: Sourced from [Chainlink Docs](https://docs.chain.link/docs/optimism-price-feeds/) (Note: This refers to the price feed deciamls, not the underlying token's decimals)
