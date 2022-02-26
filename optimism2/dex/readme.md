@@ -15,7 +15,7 @@ Since we do not yet have price feeds for Optimism tokens, these tables pull USD 
 
 #### Remaining to be added
 Want to contribute to building dex.trades on Optimism? Here are some examples of DEXs and Aggregators that need insert queries built:
-- _**DEXs: **Rubicon, Kwenta (Synthetix), ZipSwap, Clipper, etc_
+- _**DEXs:** Rubicon, Kwenta (Synthetix), ZipSwap, Clipper, etc_
 - _**Aggregators:** Slingshot_
 
 _Other Cases (how to handle this - TBD)_
