@@ -95,7 +95,7 @@ END
 $function$;
 
 
-
+/*
 INSERT INTO cron.job (schedule, command)
 VALUES ('18,48 * * * *', $$
     SELECT dex.backfill_insert_missing_prices(
@@ -104,3 +104,4 @@ VALUES ('18,48 * * * *', $$
         )
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+*/
