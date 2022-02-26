@@ -22,6 +22,7 @@ WITH gs AS (
 )
 
 , feed_updates AS (
+WITH feeds AS (
 	SELECT
 	DATE_TRUNC('hour',block_time) AS dt
 	, feed_name
@@ -33,6 +34,12 @@ WITH gs AS (
 	WHERE topic1 = '\x0559884fd3a460db3073b7fc896cc77986f16e378210ded43186175bf646fc5f' --Answer Updated
 	AND contract_address IN (SELECT address FROM chainlink.oracle_addresses)
 	GROUP BY 1,2, 4,5,6
+	)
+SELECT * FROM feeds
+	UNION ALL
+-- add WETH as a copy of ETH
+SELECT  dt, feed_name, price ,"proxy", "address", '\x4200000000000000000000000000000000000006' AS underlying_token_address
+	FROM feeds WHERE underlying_token_address = '\xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000'
 )
 
 SELECT --avg in case there are multiple overlapping feeds
