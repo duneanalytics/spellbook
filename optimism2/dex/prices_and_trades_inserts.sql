@@ -1,0 +1,40 @@
+CREATE OR REPLACE FUNCTION dex.prices_and_trades_inserts(start_time timestamptz, end_time timestamptz=now()) RETURNS integer
+LANGUAGE plpgsql AS $function$
+DECLARE r integer;
+BEGIN
+
+INSERT INTO cron.job (schedule, command)
+VALUES ('15,30,45,59 * * * *', $$
+--Chainlink Updates
+	SELECT chainlink.insert_price_feeds(
+        (SELECT MAX(hour) - interval '1 hour' FROM chainlink.view_price_feeds), --buffer in case the db gets stuck
+        now()
+        );
+--First Prices Run. We expect this to only pull in Chainlink updates
+	SELECT prices.insert_approx_prices_from_dex_data(
+        	(SELECT MAX(hour) - interval '1 hour' FROM prices.approx_prices_from_dex_data),
+        	(SELECT now() )
+    	);
+--DEX Inserts. These should only pull in prices where there is a Chainlink oracle.
+	SELECT dex.insert_uniswap_v3( (SELECT max(block_time) - interval '1 hour' FROM dex.trades WHERE project='Uniswap' AND version = '3'), now() );
+	SELECT dex.insert_oneinch( (SELECT max(block_time) - interval '1 hour' FROM dex.trades WHERE project='1inch'), now(), 0);
+	SELECT dex.insert_zeroex( (SELECT max(block_time) - interval '1 hour' FROM dex.trades WHERE project IN ('0x API', 'Matcha')), now() );
+	--ADD REMAINING DEX INSERTS HERE
+-- Second Prices Run. We expect this to pull in prices for all tokens that interacted with a token included in Chainlink oralces.
+	SELECT prices.insert_approx_prices_from_dex_data(
+        	(SELECT MAX(hour) - interval '1 hour' FROM prices.approx_prices_from_dex_data),
+        	(SELECT now() )
+    	);
+-- Backfill DEX Trades Run. This updates usd_volume based on our latest prices run.
+	SELECT dex.backfill_insert_missing_prices(
+		(SELECT max(block_time) - interval '2 hours' FROM dex.trades), --adding extra 1hr buffer for safety
+		now()
+		)
+-- Third Prices Run. We expect this to pull in the remining prices (Oracles + Interacted with Tokens + Next level of tokens).
+	SELECT prices.insert_approx_prices_from_dex_data(
+        	(SELECT MAX(hour) - interval '1 hour' FROM prices.approx_prices_from_dex_data),
+        	(SELECT now() )
+    	);
+	
+$$)
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
