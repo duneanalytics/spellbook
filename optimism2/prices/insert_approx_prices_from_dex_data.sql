@@ -161,19 +161,23 @@ END
 $function$;
 
 
-/*
+
 -- Monthly backfill starting 11 Nov 2021 (regenesis
---TODO: Add pre-regenesis prices
 
 SELECT prices.insert_approx_prices_from_dex_data('2021-11-01', '2021-12-01')
 WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2021-11-01' and hour < '2021-12-01');
 
-SELECT prices.insert_approx_prices_from_dex_data('2021-12-01', '2021-12-14')
-WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2021-12-01' and hour < '2021-12-14');
+SELECT prices.insert_approx_prices_from_dex_data('2021-12-01', '2021-12-31')
+WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2021-12-01' and hour < '2021-12-31');
 
-SELECT prices.insert_approx_prices_from_dex_data('2021-12-14', '2021-12-20')
-WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2021-12-14' and hour < '2021-12-20');
+SELECT prices.insert_approx_prices_from_dex_data('2021-12-31', '2022-01-31')
+WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2021-12-31' and hour < '2022-01-31');
 
+SELECT prices.insert_approx_prices_from_dex_data('2022-01-31', NOW())
+WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2022-01-31');
+
+-- CRON inserts happen in the main dex update job
+/*
 -- Have the insert script run twice every hour at minute 16 and 46
 -- `start-time` is set to go back three days in time so that entries can be retroactively updated 
 -- in case `dex.trades` or price data falls behind.
