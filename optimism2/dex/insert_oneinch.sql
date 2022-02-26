@@ -103,12 +103,12 @@ WITH rows AS (
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
     LEFT JOIN chainlink.view_price_feeds pa
       ON pa.hour = date_trunc('hour', dexs.block_time)
-        AND pa.underlying_token_address = dexs.token_a_address
+        AND pa.contract_address = dexs.token_a_address
         AND pa.hour >= start_ts
         AND pa.hour < end_ts
     LEFT JOIN chainlink.view_price_feeds pb
       ON pb.hour = date_trunc('hour', dexs.block_time)
-        AND pb.underlying_token_address = dexs.token_b_address
+        AND pb.contract_address = dexs.token_b_address
         AND pb.hour >= start_ts
         AND pb.hour < end_ts
 	
