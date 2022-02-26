@@ -126,7 +126,7 @@ WHERE NOT EXISTS (
     AND block_time <= now() - interval '20 minutes'
     AND project = 'Uniswap' AND version = '3'
 );
-
+/*
 INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$
     SELECT dex.insert_uniswap_v3(
@@ -135,3 +135,4 @@ VALUES ('15,45 * * * *', $$
     );
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+*/
