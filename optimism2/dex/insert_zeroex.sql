@@ -150,9 +150,7 @@ INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$
     SELECT dex.insert_zeroex(
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project IN ('0x API', 'Matcha')),
-        (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM optimism.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project IN ('0x API', 'Matcha'))),
-        (SELECT MAX(number) FROM optimism.blocks where time < now() - interval '20 minutes'),
-    0);
+        now()
+        );
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
