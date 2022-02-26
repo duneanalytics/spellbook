@@ -1,8 +1,3 @@
-CREATE OR REPLACE FUNCTION dex.prices_and_trades_inserts(start_time timestamptz, end_time timestamptz=now()) RETURNS integer
-LANGUAGE plpgsql AS $function$
-DECLARE r integer;
-BEGIN
-
 INSERT INTO cron.job (schedule, command)
 VALUES ('15,30,45,59 * * * *', $$
 --Chainlink Updates
