@@ -10,7 +10,7 @@ chainlink_prices AS (
 	INNER JOIN erc20.tokens e
 		ON e.contract_address = cp.underlying_token_address
 	WHERE hour >= start_time
-	AND hour <= end_time
+	AND hour <= end_time + interval '1 hour'
 	
 	)
 
@@ -27,7 +27,7 @@ chainlink_prices AS (
     WHERE usd_amount > 0
     AND token_a_amount_raw > 100 -- filter out small spam
     AND block_time >= start_time
-    AND block_time < end_time
+    AND block_time < end_time + interval '1 hour'
 
     UNION ALL
 
@@ -42,7 +42,7 @@ chainlink_prices AS (
     WHERE usd_amount  > 0
     AND token_b_amount_raw > 100 -- filter out small spam
     AND block_time >= start_time
-    AND block_time < end_time
+    AND block_time < end_time + interval '1 hour'
 ),
 grouped_by_hour AS (
 
@@ -88,13 +88,13 @@ leaddata as
         decimals,
         median_price,
         sample_size,
-        lead(hour, 1, end_time) OVER (PARTITION BY contract_address ORDER BY hour asc) AS next_hour
+        lead(hour, 1, end_time + interval '1 hour') OVER (PARTITION BY contract_address ORDER BY hour asc) AS next_hour
     FROM grouped_by_hour
 --    WHERE sample_size > 0
 ),
 generate_hours AS
 (
-    SELECT hour from generate_series(start_time, end_time, '1 hour') g(hour)
+    SELECT hour from generate_series(start_time, end_time + interval '1 hour', '1 hour') g(hour)
 ),
 add_data_for_all_hours as 
 (
