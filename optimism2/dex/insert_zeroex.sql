@@ -145,7 +145,7 @@ WHERE NOT EXISTS (
     AND block_time <= now() - interval '20 minutes'
     AND project IN ('0x API', 'Matcha')
 );
-
+/*
 INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$
     SELECT dex.insert_zeroex(
@@ -154,3 +154,4 @@ VALUES ('15,45 * * * *', $$
         );
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+*/
