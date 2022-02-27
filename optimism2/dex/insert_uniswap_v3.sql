@@ -42,8 +42,8 @@ WITH rows AS (
         token_b_amount_raw,
         coalesce(
             usd_amount,
-            token_a_amount_raw / 10 ^ erc20a.decimals * pa.price,
-            token_b_amount_raw / 10 ^ erc20b.decimals * pb.price
+            token_a_amount_raw / 10 ^ erc20a.decimals * pa.median_price,
+            token_b_amount_raw / 10 ^ erc20b.decimals * pb.median_price
         ) as usd_amount,
         token_a_address,
         token_b_address,
