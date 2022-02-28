@@ -11,7 +11,7 @@ BEGIN;
 DELETE FROM aave.aave_tokens *;
 
 
-COPY llama.aave_tokens (address, symbol, decimals,erc20address,erc20symbol,erc20decimals) FROM stdin;
+COPY aave.aave_tokens (address, symbol, decimals,erc20address,erc20symbol,erc20decimals) FROM stdin;
 \\x1d2a0e5ec8e5bbdca5cb219e649b565d8e5c3360	amAAVE	18	\\xd6df932a45c0f255f85145f286ea0b292b21c90b	AAVE	18
 \\x27f8d03b3a2196956ed754badc28d73be8830a6e	amDAI	18	\\x8f3cf7ad23cd3cadbd9735aff958023239c6a063	DAI	18
 \\x1a13f4ca1d028320a707d99520abfefca3998b7f	amUSDC	6	\\x2791bca1f2de4661ed88a30c99a7a9449aa84174	USDC	6
