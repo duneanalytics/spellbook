@@ -8,7 +8,7 @@ VALUES ('15,30,45,59 * * * *', $$
 --First Prices Run. We expect this to only pull in Chainlink updates
 	SELECT prices.insert_approx_prices_from_dex_data(
         	(SELECT MAX(hour) - interval '1 hour' FROM prices.approx_prices_from_dex_data),
-        	(SELECT now() )
+        	now()
     	);
 	
 ----------
@@ -22,7 +22,7 @@ VALUES ('15,30,45,59 * * * *', $$
 	
 -- Second Prices Run. We expect this to pull in prices for all tokens that interacted with a token included in Chainlink oralces.
 	SELECT prices.insert_approx_prices_from_dex_data(
-        	(SELECT MAX(hour) - interval '1 hour' FROM prices.approx_prices_from_dex_data),
+        	(SELECT MAX(hour) - interval '2 hours' FROM prices.approx_prices_from_dex_data),
         	(SELECT now() )
     	);
 -- Backfill DEX Trades Run. This updates usd_volume based on our latest prices run.
@@ -32,8 +32,8 @@ VALUES ('15,30,45,59 * * * *', $$
 		)
 -- Third Prices Run. We expect this to pull in the remining prices (Oracles + Interacted with Tokens + Next level of tokens).
 	SELECT prices.insert_approx_prices_from_dex_data(
-        	(SELECT MAX(hour) - interval '1 hour' FROM prices.approx_prices_from_dex_data),
-        	(SELECT now() )
+        	(SELECT MAX(hour) - interval '3 hours' FROM prices.approx_prices_from_dex_data),
+        	now()
     	);
 	
 $$)
