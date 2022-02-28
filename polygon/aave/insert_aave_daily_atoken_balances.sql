@@ -30,7 +30,7 @@ gs.day,gs."token_address" AS "contract_address", COALESCE(a.value,0) AS value,
 COALESCE("interest_rate_apr",0) AS interest_rate_apr, drank
 FROM (
 SELECT pre.*,
-DENSE_RANK() OVER (PARTITION BY pre."contract_address" ORDER BY DATE_TRUNC('day',pre."evt_block_time") ASC) AS drank
+DENSE_RANK() OVER (PARTITION BY pre."contract_address" ORDER BY day ASC) AS drank
 FROM
 (
     SELECT
