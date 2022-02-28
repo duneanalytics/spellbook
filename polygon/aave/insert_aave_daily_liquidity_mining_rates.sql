@@ -28,7 +28,7 @@ WITH lm_updates AS (
 , prices AS (
 SELECT DATE_TRUNC('day',"minute") AS p_day, "contract_address", decimals, symbol, AVG(price) AS price --avg should be the best time-weighted way to approximate rates
     FROM prices.usd
-    WHERE contract_address IN (SELECT at."underlying_token_address" FROM lm_updates l INNER JOIN llama."llama_aave_tokens" at
+    WHERE contract_address IN (SELECT at."underlying_token_address" FROM lm_updates l INNER JOIN aave."aave_tokens" at
                                                                         ON l.asset = at."address"
                                 UNION ALL SELECT '\x7ceb23fd6bc0add59e62ac25578270cff1b9f619'::bytea --WMATIC
                                 )
