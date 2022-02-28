@@ -58,13 +58,15 @@ FROM (
     LEFT JOIN feed_updates f
         ON gs.hr = f.dt
         AND gs.feed_name = f.feed_name
+
+-- Union with the most recent prices to pull forward prices 
     UNION ALL
 	SELECT hour, feed_name, price, underlying_token_address
     	FROM (
     		SELECT hour, feed_name, price, underlying_token_address,
     			DENSE_RANK() OVER (PARTITION BY feed_name, underlying_token_address ORDER BY hour DESC) AS h_rank
     			FROM chainlink.view_price_feeds
-    		WHERE hour >= end_block_time - interval '1 day'
+    		WHERE hour >= start_block_time - interval '1 day'
         	) old
     	WHERE h_rank = 1
     	) str
