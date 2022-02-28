@@ -36,7 +36,7 @@ WITH batch_counts AS (
                 num_trades,
                 CASE
                     WHEN name = '1inch'
-                        OR name = 'Paraswap'
+                        OR name = 'ParaSwap'
                         OR name = '0x'
                         OR name = 'Legacy'
                         THEN (select count(*) from dex.trades where tx_hash = evt_tx_hash and category = 'DEX')
