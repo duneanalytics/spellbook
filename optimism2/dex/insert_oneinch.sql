@@ -89,8 +89,9 @@ WITH rows AS (
 	
 	INNER join optimism.transactions tx on tx.hash = oiv.tx_hash
 
-
         WHERE oiv.block_time >= start_ts AND oiv.block_time < end_ts
+	    
+	GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 --force uniques due to weird duplication error
 
     ) dexs
     INNER JOIN optimism.transactions tx
