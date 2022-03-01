@@ -489,3 +489,8 @@
   id: radar-radar
   name: radar_radar
   symbol: RADAR
+- address: '0x1042aA383CAb145dc77121ca75650804A5c134ff'
+  decimals: 18
+  id: aggl-aggleio
+  name: aggl_aggleio
+  symbol: AGGL
