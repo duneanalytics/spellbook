@@ -17,6 +17,7 @@ chainlink_prices AS (
 -- if this is the run before dex trades, then this CTE would be null and we only pull chainlink prices (this is by design)
 , trades_with_usd_amount AS (
     SELECT
+	tx_hash,
         token_a_address as contract_address,
         symbol,
         decimals,
@@ -29,9 +30,12 @@ chainlink_prices AS (
     AND block_time >= start_time
     AND block_time < end_time
 
+	GROUP BY 1,2,3,4,5,6 --remove dupes
+
     UNION ALL
 
     SELECT
+	tx_hash,
         token_b_address as contract_address,
         symbol,
         decimals,
@@ -43,6 +47,8 @@ chainlink_prices AS (
     AND token_b_amount_raw > 100 -- filter out small spam
     AND block_time >= start_time
     AND block_time < end_time
+	
+	GROUP BY 1,2,3,4,5,6 --remove dupes
 ),
 grouped_by_hour AS (
 
