@@ -56,10 +56,10 @@ FROM
 SELECT
 atb.day, atb.token_address,
 ((i.emission * (60*60*24*365)) * paave.price/eth.price * 10^tok.decimals)
-/(atb.total_bal * tok.price/eth.price  * 10^paave.decimals) AS lm_reward_apr,
+/(atb.total_balance * tok.price/eth.price  * 10^paave.decimals) AS lm_reward_apr,
 
 (i.emission * (60*60*24*365)) /*/ 10^aave.decimals)*/
-/ (atb.total_bal / 10^tok.decimals) AS lm_token_yr_raw,
+/ (atb.total_balance / 10^tok.decimals) AS lm_token_yr_raw,
 paave.decimals AS aave_decimals
 
 FROM
