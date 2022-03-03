@@ -72,8 +72,8 @@ FROM (
     	) str
     ) uni
 ) a
-GROUP BY 1,2, 4
 WHERE price IS NOT NULL
+GROUP BY 1,2, 4
 
 ON CONFLICT (hour,feed_name,underlying_token_address)
     DO UPDATE SET
@@ -86,6 +86,7 @@ RETURN r;
 END
 $function$;
 
+DELETE FROM chainlink.view_price_feeds;
 -- fill to start
 SELECT chainlink.insert_price_feeds(
     '2021-11-11'::date,

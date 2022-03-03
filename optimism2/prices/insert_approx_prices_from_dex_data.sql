@@ -169,7 +169,6 @@ $function$;
 
 
 -- Monthly backfill starting 11 Nov 2021 (regenesis
-
 SELECT prices.insert_approx_prices_from_dex_data('2021-11-01', '2021-12-01')
 WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2021-11-01' and hour < '2021-12-01');
 
@@ -178,13 +177,13 @@ WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >=
 
 --Splitting Jan/Feb in to pieces since there was higher tx volume
 SELECT prices.insert_approx_prices_from_dex_data('2021-12-31', '2022-01-10')
-WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2021-12-31' and hour < '2021-01-10');
-SELECT prices.insert_approx_prices_from_dex_data('2021-01-10', '2022-01-20')
-WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2021-01-10' and hour < '2022-01-20');
-SELECT prices.insert_approx_prices_from_dex_data('2021-01-20', '2022-01-31')
-WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2021-01-20' and hour < '2022-01-31');
+WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2021-12-31' and hour < '2022-01-10');
+SELECT prices.insert_approx_prices_from_dex_data('2022-01-10', '2022-01-20')
+WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2022-01-10' and hour < '2022-01-20');
+SELECT prices.insert_approx_prices_from_dex_data('2022-01-20', '2022-01-31')
+WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2022-01-20' and hour < '2022-01-31');
 SELECT prices.insert_approx_prices_from_dex_data('2022-01-31', '2022-02-14')
-WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2021-01-31' and hour < '2022-02-14');
+WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2022-01-31' and hour < '2022-02-14');
 
 SELECT prices.insert_approx_prices_from_dex_data('2022-02-14', NOW())
 WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2022-02-14');

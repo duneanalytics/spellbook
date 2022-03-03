@@ -133,6 +133,7 @@ RETURN r;
 END
 $function$;
 
+/*
 -- table start fill
 -- v3
 SELECT dex.insert_oneinch(
@@ -160,7 +161,7 @@ WHERE NOT EXISTS (
     AND block_time <= now() - interval '20 minutes'
     AND project = '1inch' AND version = '4'
 );
-/*
+
 INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$
     SELECT dex.insert_oneinch(

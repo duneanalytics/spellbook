@@ -84,8 +84,8 @@ WITH rows AS (
         ON dexs.tx_hash = tx.hash
         AND tx.block_time >= start_ts
         AND tx.block_time < end_ts
-        AND tx.block_number >= start_block
-        AND tx.block_number < end_block
+--        AND tx.block_number >= start_block
+--        AND tx.block_number < end_block
     LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
     LEFT JOIN prices.approx_prices_from_dex_data pa
@@ -127,6 +127,7 @@ WHERE NOT EXISTS (
     AND project = 'Uniswap' AND version = '3'
 );
 /*
+
 INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$
     SELECT dex.insert_uniswap_v3(

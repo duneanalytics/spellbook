@@ -131,6 +131,7 @@ RETURN r;
 END
 $function$;
 
+/*
 -- fill 2021, 0x only launched after op2
 SELECT dex.insert_zeroex(
     '2021-12-28',
@@ -145,7 +146,7 @@ WHERE NOT EXISTS (
     AND block_time <= now() - interval '20 minutes'
     AND project IN ('0x API', 'Matcha')
 );
-/*
+
 INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$
     SELECT dex.insert_zeroex(
