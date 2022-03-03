@@ -21,8 +21,8 @@ CREATE TABLE IF NOT EXISTS dex.trades (
     tx_from bytea NOT NULL,
     tx_to bytea,
     trace_address integer[],
-    evt_index integer,
-    trade_id integer,
+    evt_index integer NOT NULL,
+    trade_id integer NOT NULL,
         UNIQUE (project, tx_hash, evt_index, trade_id)
 );
 

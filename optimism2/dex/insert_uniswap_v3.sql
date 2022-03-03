@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION dex.insert_uniswap_v3(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+CREATE OR REPLACE FUNCTION dex.insert_uniswap_v3(start_ts timestamptz, end_ts timestamptz=now()) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -42,8 +42,8 @@ WITH rows AS (
         token_b_amount_raw,
         coalesce(
             usd_amount,
-            token_a_amount_raw / 10 ^ pa.decimals * pa.median_price,
-            token_b_amount_raw / 10 ^ pb.decimals * pb.median_price
+            token_a_amount_raw / 10 ^ erc20a.decimals * pa.median_price,
+            token_b_amount_raw / 10 ^ erc20b.decimals * pb.median_price
         ) as usd_amount,
         token_a_address,
         token_b_address,
@@ -84,8 +84,8 @@ WITH rows AS (
         ON dexs.tx_hash = tx.hash
         AND tx.block_time >= start_ts
         AND tx.block_time < end_ts
-        AND tx.block_number >= start_block
-        AND tx.block_number < end_block
+--        AND tx.block_number >= start_block
+--        AND tx.block_number < end_block
     LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
     LEFT JOIN prices.approx_prices_from_dex_data pa
@@ -117,9 +117,7 @@ $function$;
 -- fill 2021 (post-regenesis 11-11)
 SELECT dex.insert_uniswap_v3(
     '2021-11-10',
-    now(),
-    0,
-    (SELECT MAX(number) FROM optimism.blocks where time < now() - interval '20 minutes')
+    now()
 )
 WHERE NOT EXISTS (
     SELECT *
@@ -128,13 +126,14 @@ WHERE NOT EXISTS (
     AND block_time <= now() - interval '20 minutes'
     AND project = 'Uniswap' AND version = '3'
 );
+/*
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$
     SELECT dex.insert_uniswap_v3(
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Uniswap' AND version = '3'),
-        (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM optimism.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Uniswap' AND version = '3')),
-        (SELECT MAX(number) FROM optimism.blocks where time < now() - interval '20 minutes'));
+        now()
+    );
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+*/
