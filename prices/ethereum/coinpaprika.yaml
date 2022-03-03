@@ -33,6 +33,16 @@
   symbol: AAVE
   address: 0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9
   decimals: 18
+- name: knc-kyber-network
+  id: knc-kyber-network
+  symbol: KNC
+  address: 0xdeFA4e8a7bcBA345F687a2f1456F5Edd9CE97202
+  decimals: 18
+- name: inst-instadapp
+  id: inst-instadapp
+  symbol: INST
+  address: 0x6f40d4A6237C257fff2dB00FA0510DeEECd303eb
+  decimals: 18
 - name: uni_uniswap
   id: uni-uniswap
   symbol: UNI
