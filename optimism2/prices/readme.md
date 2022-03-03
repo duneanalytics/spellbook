@@ -5,13 +5,12 @@ Since Optimism tokens can have different contract addresses than on Ethereum L1 
 
 *Once official price feeds (i.e. CoinGecko, CoinPaprika) are live for Optimism, these tables can be deprecated and modified to match `prices.prices_from_dex_data` from the ethereum scema*
 
-- Our first pass is to calculate all token prices which have been traded against stablecoins.
+- Our first pass is to pull token prices from Chainlink price feeds, and populate `usd_amount` in dex.trades for trades including the underlying token.
 
-- Our second pass is to use the approximated ETH (WETH) price to approximate prices for tokens which may have only been traded against ETH.
+- Our second pass is to use the `usd_amount` to approximate prices for tokens traded against the tokens with Chainlink price feeds.
 
-- We then calculate prices for other "specialty" tokens (i.e. Synths from Synthetix vs sUSD, bridge liquidity tokens - i.e. hETH, nETH)
+- Our third pass is to re-populate `usd_amount` with our new known token prices, and then calculate the prices for tokens which have been traded our new known set (i.e. tokens only traded against tokens which are traded against tokens with Chainlink price feeds - LUSD <> sUSD <> ETH)
 
-From these potential sources, we pick the price approximation which had the greatest number of samples as the canonical token price. If there are any ties, we rank again by 1) "Specialty" swaps (i.e. synths, bridge tokens), 2) Stablecoin swaps (since there's less variability due to ETH price), 3) ETH swaps.
 
 - **prices.approx_prices_from_dex_data**: Base table schema for approximated trades by hour.
 
