@@ -12,18 +12,22 @@ WITH rows AS (
         decimals
     )
     
-    SELECT DATE_TRUNC('hour', pr.hour) AS hour, "bridge_token" AS token, "bridge_symbol" AS symbol, "bridge_decimals" AS decimals, median_price * price_ratio AS median_price, pr.sample_size,
-    DENSE_RANK() OVER (PARTITION BY bridge_token ORDER BY pr.hour DESC) AS hrank
+ WITH dex_price_bridge_tokens AS (
+            SELECT DATE_TRUNC('hour', pr.hour) AS hour, "bridge_token" AS token, "bridge_symbol" AS symbol, "bridge_decimals" AS decimals, median_price * price_ratio AS median_price, pr.sample_size,
+            DENSE_RANK() OVER (PARTITION BY bridge_token ORDER BY pr.hour DESC) AS hrank
 
-    FROM prices.hourly_bridge_token_price_ratios pr
+            FROM prices.hourly_bridge_token_price_ratios pr
 
-    INNER JOIN add_data_for_all_hours p
-            ON pr.erc20_token = p.contract_address
-            AND DATE_TRUNC('hour',pr.hour) = p.hour
+            INNER JOIN add_data_for_all_hours p
+                    ON pr.erc20_token = p.contract_address
+                    AND DATE_TRUNC('hour',pr.hour) = p.hour
+
+            WHERE pr.hour >= start_ts
+            AND pr.hour < end_ts
+        )
     
-    WHERE pr.hour >= start_ts
-    AND pr.hour < end_ts
-
+    SELECT token AS contract_address, hour, median_price, sample_size, symbol, decimals
+    FROM dex_price_bridge_tokens
     
     ON CONFLICT (contract_address, hour) DO UPDATE SET median_price = EXCLUDED.median_price, sample_size = EXCLUDED.sample_size
     RETURNING 1
