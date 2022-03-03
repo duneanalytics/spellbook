@@ -78,6 +78,8 @@ WITH rows AS (
           AND pb.hour < end_ts
     
     WHERE dexs.block_time >= start_ts AND dexs.block_time < end_ts
+    -- don't overwrite bridge tokens this way
+    AND NOT EXISTS (SELECT 1 FROM prices.hourly_bridge_token_price_ratios WHERE token_a_address = bridge_token OR token_b_address = bridge_token)
     
     -- update if we have new info on prices or the erc20
     ON CONFLICT (project, tx_hash, evt_index, trade_id)
