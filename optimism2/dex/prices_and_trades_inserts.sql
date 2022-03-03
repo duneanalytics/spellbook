@@ -29,7 +29,7 @@ VALUES ('15,30,45,59 * * * *', $$
 	SELECT dex.backfill_insert_missing_prices(
 		(SELECT max(block_time) - interval '2 hours' FROM dex.trades), --adding extra 1hr buffer for safety
 		now()
-		)
+		);
 -- Third Prices Run. We expect this to pull in the remining prices (Oracles + Interacted with Tokens + Next level of tokens).
 	SELECT prices.insert_approx_prices_from_dex_data(
         	(SELECT MAX(hour) - interval '3 hours' FROM prices.approx_prices_from_dex_data),
