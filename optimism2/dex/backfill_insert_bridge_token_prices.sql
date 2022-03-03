@@ -12,7 +12,6 @@ WITH rows AS (
         decimals
     )
     
-    WITH dex_price_bridge_tokens AS (
     SELECT DATE_TRUNC('hour', pr.hour) AS hour, "bridge_token" AS token, "bridge_symbol" AS symbol, "bridge_decimals" AS decimals, median_price * price_ratio AS median_price, pr.sample_size,
     DENSE_RANK() OVER (PARTITION BY bridge_token ORDER BY pr.hour DESC) AS hrank
 
@@ -25,7 +24,7 @@ WITH rows AS (
     WHERE pr.hour >= start_ts
     AND pr.hour < end_ts
 
-    ),
+    
     ON CONFLICT (contract_address, hour) DO UPDATE SET median_price = EXCLUDED.median_price, sample_size = EXCLUDED.sample_size
     RETURNING 1
 )
