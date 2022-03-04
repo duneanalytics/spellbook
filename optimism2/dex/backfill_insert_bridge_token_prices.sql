@@ -18,7 +18,7 @@ WITH rows AS (
 
             FROM prices.hourly_bridge_token_price_ratios pr
 
-            INNER JOIN add_data_for_all_hours p
+            INNER JOIN prices.approx_prices_from_dex_data p
                     ON pr.erc20_token = p.contract_address
                     AND DATE_TRUNC('hour',pr.hour) = p.hour
 
