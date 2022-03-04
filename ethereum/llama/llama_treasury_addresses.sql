@@ -5,19 +5,21 @@ CREATE TABLE IF NOT EXISTS llama.llama_treasury_addresses (
 	address bytea UNIQUE,
 	version text,
 	blockchain text,
-	tags integer
+	tags text
 );
 
 BEGIN;
 DELETE FROM llama.llama_treasury_addresses *;
 
-
+--Aave V1 revenue
+--Aave V2 revenue
+--Aave Treasury
+--Aave Polygon revenue
 COPY llama.llama_treasury_addresses (protocol,address,version,blockchain,tags) FROM stdin;
-\\
-Aave	\\xe3d9988f676457123c5fd01297605efdd0cba1ae	V1	Ethereum	NULL --Aave V1 revenue
-Aave	\\x464c71f6c2f760dda6093dcb91c24c39e5d6e18c	V2	Ethereum	NULL --Aave V2 revenue
-Aave	\\x25F2226B597E8F9514B3F68F00f494cF4f286491	Ecosystem Reserve	Ethereum	Treasury --Aave Treasury
-Aave	\\x7734280A4337F37Fbf4651073Db7c28C80B339e9	MATIC	Polygon	NULL --Aave Polygon revenue
+Aave	\\xe3d9988f676457123c5fd01297605efdd0cba1ae	V1	Ethereum	\N
+Aave	\\x464c71f6c2f760dda6093dcb91c24c39e5d6e18c	V2	Ethereum	\N
+Aave	\\x25F2226B597E8F9514B3F68F00f494cF4f286491	Ecosystem Reserve	Ethereum	Treasury
+Aave	\\x7734280A4337F37Fbf4651073Db7c28C80B339e9	MATIC	Polygon	\N
 \.
 
 
