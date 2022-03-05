@@ -37,6 +37,10 @@ COPY erc721.tokens (contract_address, project_name) FROM stdin;
 \\x0ceAE206F543E361f5C4428da80d1E77d3D82698	SNX L222
 \\x7F313258c747c19f388e4D1d219Eff26a876A743	AI Crystals
 \\x5BDb639399A91890356C98Aa2De402073dc642c3	PegaPal
+\\xD5f027a493848C925fD6984459F72142B42EbBBD	Connectivity
+\\x4d40396b4eb19be0c1ce1b9544608068bdf6b0fc	Optimistic Apes
+\\xb5abc2aa4b14e836cd202a43f53f463e6589f91b	Squibz
+\\x90da6e5c645e9ebd8b1ecee565d9dd1f5ef11595	GKD Showcase 3 Poster
 \.
 
 COMMIT;
