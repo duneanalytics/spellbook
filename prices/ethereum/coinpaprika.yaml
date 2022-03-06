@@ -1931,3 +1931,8 @@
   symbol: RADAR
   address: 0xf9fbe825bfb2bf3e387af0dc18cac8d87f29dea8
   decimals: 18
+- name: vsp-vesper-finance
+  id: vsp-vesper-finance
+  symbol: VSP
+  address: 0x1b40183EFB4Dd766f11bDa7A7c3AD8982e998421
+  decimals: 18
