@@ -1936,3 +1936,8 @@
   symbol: VSP
   address: 0x1b40183EFB4Dd766f11bDa7A7c3AD8982e998421
   decimals: 18
+- name: threshold-network-token
+  id: t-threshold-network-token
+  symbol: T
+  address: 0xCdF7028ceAB81fA0C6971208e83fa7872994beE5
+  decimals: 18
