@@ -149,7 +149,7 @@ rows AS (
 -- Don't pull trades for bridge tokens
 WHERE NOT EXISTS (
 	SELECT 1 FROM dex_price_bridge_tokens pr
-	  WHERE pr.bridge_token = a.contract_address
+	  WHERE pr.token = a.contract_address
 		AND DATE_TRUNC('hour',pr.hour) = a.hour
 	  )
 
