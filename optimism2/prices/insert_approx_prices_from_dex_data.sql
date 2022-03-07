@@ -125,12 +125,6 @@ FROM prices.hourly_bridge_token_price_ratios pr
 INNER JOIN add_data_for_all_hours p
         ON pr.erc20_token = p.contract_address
         AND DATE_TRUNC('hour',pr.hour) = p.hour
-	
-WHERE NOT EXISTS (
-		SELECT 1 FROM add_data_for_all_hours ah
-		  WHERE pr.bridge_token = ah.contract_address
-			AND DATE_TRUNC('hour',pr.hour) = ah.hour
-		  )
 
 ),
 
@@ -152,7 +146,13 @@ rows AS (
         symbol,
         decimals
     FROM add_data_for_all_hours a
-	
+-- Don't pull trades for bridge tokens
+WHERE NOT EXISTS (
+	SELECT 1 FROM dex_price_bridge_tokens pr
+	  WHERE pr.bridge_token = a.contract_address
+		AND DATE_TRUNC('hour',pr.hour) = a.hour
+	  )
+
 UNION ALL
 
 	SELECT token AS contract_address, hour, median_price, sample_size, symbol, decimals
