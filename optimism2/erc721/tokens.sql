@@ -41,6 +41,9 @@ COPY erc721.tokens (contract_address, project_name) FROM stdin;
 \\x4d40396b4eb19be0c1ce1b9544608068bdf6b0fc	Optimistic Apes
 \\xb5abc2aa4b14e836cd202a43f53f463e6589f91b	Squibz
 \\x90da6e5c645e9ebd8b1ecee565d9dd1f5ef11595	GKD Showcase 3 Poster
+\\x8954397e87A891f8b23c8baA8C47f726AB00b2B1	Optimism Contributor NFTs
+\\x8F05bADf192664fd3Dd48Dbc0E9aAa5E530E919D	DinoSours Collection
+\\x1E13B9055CCcD45ED43EE500AFbe89D8Fc1D3B1f	NFTMapQuest
 \.
 
 COMMIT;
