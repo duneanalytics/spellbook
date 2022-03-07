@@ -2,8 +2,7 @@
 
 SELECT dex.backfill_insert_bridge_token_prices(
     '2021-11-11',
-    now(),
-	3
+    now()
 )
 WHERE EXISTS (
   SELECT median_price FROM
