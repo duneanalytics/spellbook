@@ -44,6 +44,7 @@ COPY erc721.tokens (contract_address, project_name) FROM stdin;
 \\x8954397e87A891f8b23c8baA8C47f726AB00b2B1	Optimism Contributor NFTs
 \\x8F05bADf192664fd3Dd48Dbc0E9aAa5E530E919D	DinoSours Collection
 \\x1E13B9055CCcD45ED43EE500AFbe89D8Fc1D3B1f	NFTMapQuest
+\\x2F71f4a2D8BAB9703fff3fF5794762bF5b6C7E29	Thales Royale Pass
 \.
 
 COMMIT;
