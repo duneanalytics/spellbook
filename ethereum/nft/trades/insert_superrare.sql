@@ -5,7 +5,7 @@ BEGIN
 
 WITH superrare_trades AS (
     SELECT
-	'SuperRare' AS platform,
+    'SuperRare' AS platform,
         tx_hash,
         block_time,
         CAST(bytea2numericpy(substring(data FROM 33)) as TEXT) AS token_id,
@@ -16,7 +16,7 @@ WITH superrare_trades AS (
         contract_address AS exchange_contract_address,
         block_number,
         "index" AS evt_index,
-	'Trade' as evt_type,
+        'Trade' as evt_type,
         'Buy' AS category
     FROM
         ethereum."logs"
@@ -24,9 +24,11 @@ WITH superrare_trades AS (
         contract_address = '\x2947f98c42597966a0ec25e92843c09ac17fbaa7'
     AND
         topic1 = '\x5764dbcef91eb6f946584f4ea671217c686fa7e858ce4f9f42d08422b86556a9'
+    AND block_time >= start_ts
+    AND block_time < end_ts
 UNION ALL
     SELECT
-	'SuperRare' AS platform,
+    'SuperRare' AS platform,
         tx_hash,
         block_time,
         CAST(bytea2numericpy(topic4) as TEXT) AS token_id,
@@ -37,7 +39,7 @@ UNION ALL
         contract_address,
         block_number,
         "index" AS evt_index,
-	'Trade' as evt_type,
+    'Trade' as evt_type,
         'Buy' AS category
     FROM
         ethereum."logs"
@@ -45,9 +47,11 @@ UNION ALL
         contract_address = '\x41a322b28d0ff354040e2cbc676f0320d8c8850d'
     AND
         topic1 = '\x16dd16959a056953a63cf14bf427881e762e54f03d86b864efea8238dd3b822f'
+    AND block_time >= start_ts
+    AND block_time < end_ts
 UNION ALL
     SELECT
-	'SuperRare' AS platform,
+    'SuperRare' AS platform,
         tx_hash,
         block_time,
         CAST(bytea2numericpy(substring(data FROM 33)) as TEXT) AS token_id,
@@ -58,7 +62,7 @@ UNION ALL
         contract_address,
         block_number,
         "index" AS evt_index,
-	'Trade' as evt_type,
+    'Trade' as evt_type,
         'Buy' AS category
     FROM
         ethereum."logs"
@@ -66,9 +70,11 @@ UNION ALL
         contract_address = '\x65b49f7aee40347f5a90b714be4ef086f3fe5e2c'
     AND
         topic1 = '\x5764dbcef91eb6f946584f4ea671217c686fa7e858ce4f9f42d08422b86556a9'
+    AND block_time >= start_ts
+    AND block_time < end_ts
 UNION ALL
     SELECT
-	'SuperRare' AS platform,
+    'SuperRare' AS platform,
         tx_hash,
         block_time,
         CAST(bytea2numericpy(substring(data FROM 33)) as TEXT) AS token_id,
@@ -79,7 +85,7 @@ UNION ALL
         contract_address,
         block_number,
         "index" AS evt_index,
-	'Trade' as evt_type,
+    'Trade' as evt_type,
         'Offer Accepted' AS category
     FROM
         ethereum."logs"
@@ -87,9 +93,11 @@ UNION ALL
         contract_address = '\x2947f98c42597966a0ec25e92843c09ac17fbaa7'
     AND
         topic1 = '\x2a9d06eec42acd217a17785dbec90b8b4f01a93ecd8c127edd36bfccf239f8b6'
+    AND block_time >= start_ts
+    AND block_time < end_ts
 UNION ALL
     SELECT
-	'SuperRare' AS platform,
+    'SuperRare' AS platform,
         tx_hash,
         block_time,
         CAST(bytea2numericpy(topic4) as TEXT) AS token_id,
@@ -100,7 +108,7 @@ UNION ALL
         contract_address,
         block_number,
         "index" AS evt_index,
-	'Trade' as evt_type,
+    'Trade' as evt_type,
         'Offer Accepted' AS category
     FROM
         ethereum."logs"
@@ -108,9 +116,11 @@ UNION ALL
         contract_address = '\x41a322b28d0ff354040e2cbc676f0320d8c8850d'
     AND
         topic1 = '\xd6deddb2e105b46d4644d24aac8c58493a0f107e7973b2fe8d8fa7931a2912be'
+    AND block_time >= start_ts
+    AND block_time < end_ts
 UNION ALL
     SELECT
-	'SuperRare' AS platform,
+    'SuperRare' AS platform,
         tx_hash,
         block_time,
         CAST(bytea2numericpy(substring(data FROM 33)) as TEXT) AS token_id,
@@ -121,7 +131,7 @@ UNION ALL
         contract_address,
         block_number,
         "index" AS evt_index,
-	'Trade' as evt_type,
+    'Trade' as evt_type,
         'Offer Accepted' AS category
     FROM
         ethereum."logs"
@@ -129,9 +139,11 @@ UNION ALL
         contract_address = '\x65b49f7aee40347f5a90b714be4ef086f3fe5e2c'
     AND
         topic1 = '\x2a9d06eec42acd217a17785dbec90b8b4f01a93ecd8c127edd36bfccf239f8b6'
+    AND block_time >= start_ts
+    AND block_time < end_ts
 UNION ALL
     SELECT
-	'SuperRare' AS platform,
+    'SuperRare' AS platform,
         tx_hash,
         block_time,
         CAST(bytea2numericpy(topic4) as TEXT) AS token_id,
@@ -142,7 +154,7 @@ UNION ALL
         contract_address,
         block_number,
         "index" AS evt_index,
-	'Trade' as evt_type,
+        'Trade' as evt_type,
         CASE WHEN topic3 = '\x0000000000000000000000000000000000000000000000000000000000000000' THEN 'Auction Retired' ELSE 'Auction Settled' END AS category
     FROM
         ethereum."logs"
@@ -150,12 +162,15 @@ UNION ALL
         contract_address = '\x8c9f364bf7a56ed058fc63ef81c6cf09c833e656'
     AND
         topic1 = '\xea6d16c6bfcad11577aef5cc6728231c9f069ac78393828f8ca96847405902a9'
+    AND block_time >= start_ts
+    AND block_time < end_ts
 ), 
 -- Get ERC721 and ERC1155 transfer data for every trade transaction
 -- as well as ERC20 and custom `transfer` data for specific SuperRare contracts
 superrare_erc_union AS (
 SELECT
     erc721.evt_tx_hash,
+    erc721.evt_index,
     'erc721' as erc_type,
     CAST(erc721."tokenId" AS TEXT) AS "tokenId",
     erc721."from",
@@ -170,6 +185,7 @@ AND erc721."from" <> '\x0000000000000000000000000000000000000000' -- exclude min
 UNION ALL
 SELECT
     erc1155.evt_tx_hash,
+    erc1155.evt_index,
     'erc1155' as erc_type,
     CAST(erc1155.id AS TEXT) AS "tokenId",
     erc1155."from",
@@ -184,6 +200,7 @@ AND erc1155."from" <> '\x0000000000000000000000000000000000000000' -- exclude mi
 UNION ALL 
 SELECT
     erc20.evt_tx_hash,
+    erc20.evt_index,
     'erc20' as erc_type,
     NULL::text AS "tokenId",
     erc20."from",
@@ -199,6 +216,7 @@ AND erc20.contract_address = '\xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb'
 UNION ALL
 SELECT
     st.evt_tx_hash,
+    st.evt_index,
     'SupeRare' as erc_type,
     CAST("_tokenId" AS TEXT) AS "tokenId",
     st."_from",
@@ -217,17 +235,19 @@ superrare_erc_subsets AS (
 SELECT
     evt_tx_hash,
     array_agg("tokenId") AS token_id_array,
-    cardinality(array_agg("tokenId")) AS no_of_transfers,
+    CASE WHEN erc_type = 'erc1155' THEN value
+         WHEN erc_type = 'erc721'  THEN cardinality(array_agg(DISTINCT "tokenId")) END AS no_of_transfers,
     array_agg("from") AS from_array,
     array_agg("to") AS to_array,
     array_agg(erc_type) AS erc_type_array,
     array_agg(contract_address) AS contract_address_array,
-    array_agg(value) AS erc1155_value_array
+    array_agg(value) AS erc1155_value_array,
+    array_agg(evt_index) AS evt_index_array
 FROM superrare_erc_union
-GROUP BY 1
+GROUP BY 1, erc_type, value
 ),
 rows AS (
-    INSERT INTO nft.trades (
+    INSERT INTO nft.trades(
         block_time,
         nft_project_name,
         nft_token_id,
@@ -238,11 +258,19 @@ rows AS (
         number_of_items,
         category,
         evt_type,
+        aggregator,
         usd_amount,
         seller,
         buyer,
         original_amount,
         original_amount_raw,
+        eth_amount,
+        royalty_fees_percent,
+        original_royalty_fees,
+        usd_royalty_fees,
+        platform_fees_percent,
+        original_platform_fees,
+        usd_platform_fees,
         original_currency,
         original_currency_contract,
         currency_contract,
@@ -250,57 +278,52 @@ rows AS (
         exchange_contract_address,
         tx_hash,
         block_number,
-        nft_token_ids_array,
-        senders_array,
-        recipients_array,
-        erc_types_array,
-        nft_contract_addresses_array,
-        erc_values_array,
         tx_from,
         tx_to,
         trace_address,
         evt_index,
         trade_id
     )
-    SELECT
-	trades.block_time,
+ SELECT
+    trades.block_time,
         tokens.name AS nft_project_name,
         -- Set NFT token ID to `NULL` if the trade consists of multiple NFT transfers
         CASE WHEN erc.no_of_transfers > 1 THEN NULL ELSE trades.token_id END AS nft_token_id,
         -- Set ERC standard to `NULL` if the trade consists of multiple NFT transfers
         CASE WHEN erc.no_of_transfers > 1 THEN NULL ELSE COALESCE(erc.erc_type_array[1], tokens.standard) END AS erc_standard,
-	trades.platform,
-	trades.platform_version,
+    trades.platform,
+    trades.platform_version,
         CASE WHEN erc.no_of_transfers > 1 THEN 'Bundle Trade' ELSE 'Single Item Trade' END AS trade_type,
         erc.no_of_transfers AS number_of_items,
-	category,
-	evt_type,
-	trades.original_amount_raw / 10^18 * p.price AS usd_amount,
-	erc.from_array[1] AS seller,
-	erc.to_array[1] AS buyer,
-	trades.original_amount_raw / 10^18 as original_amount,
-	trades.original_amount_raw as original_amount_raw,
-	'ETH' AS original_currency,
-	'\x0000000000000000000000000000000000000000'::bytea AS original_currency_contract, 
-	'\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea AS currency_contract,
-	erc.contract_address_array[1] AS nft_contract_address,
-	trades.exchange_contract_address,
-	trades.tx_hash,
-	trades.block_number,
-        -- Sometimes multiple NFT transfers occur in a given trade; the 'array' fields below provide info for these use cases 
-        erc.token_id_array AS nft_token_ids_array,
-        erc.from_array AS senders_array,
-        erc.to_array AS recipients_array,
-        erc.erc_type_array AS erc_types_array,
-        erc.contract_address_array AS nft_contract_addresses_array,
-        erc.erc1155_value_array AS erc_values_array,
-	tx."from" AS tx_from,
-	tx."to" AS tx_to,
-	NULL::integer[] AS trace_address,
-	trades.evt_index,
+    category,
+    evt_type,
+    agg.name AS aggregator,
+    trades.original_amount_raw / 10^18 * p.price AS usd_amount,
+    erc.from_array[1] AS seller,
+    erc.to_array[1] AS buyer,
+    trades.original_amount_raw / 10^18 as original_amount,
+    trades.original_amount_raw as original_amount_raw,
+    trades.original_amount_raw / 10^18 as eth_amount,
+    10 as  "royalty_fees_percent",
+    ROUND(cast(10*(trades.original_amount_raw / 10^18)/100 as numeric),7) as original_royalty_fees,
+    ROUND(cast(10*(trades.original_amount_raw / 10^18 * p.price)/100 as numeric),7) as usd_royalty_fees,
+    3 as "platform_fees_percent",
+    ROUND(cast(3*(trades.original_amount_raw / 10^18)/100 as numeric),7) as original_platform_fees,
+    ROUND(cast(3*(trades.original_amount_raw / 10^18 * p.price)/100 as numeric),7) as usd_platform_fees,
+    'ETH' AS original_currency,
+    '\x0000000000000000000000000000000000000000'::bytea AS original_currency_contract, 
+    '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea AS currency_contract,
+    erc.contract_address_array[1] AS nft_contract_address,
+    trades.exchange_contract_address,
+    trades.tx_hash,
+    trades.block_number,
+    tx."from" AS tx_from,
+    tx."to" AS tx_to,
+    NULL::integer[] AS trace_address,
+    trades.evt_index,
         row_number() OVER (PARTITION BY platform, trades.tx_hash, trades.evt_index, category ORDER BY platform_version, evt_type) AS trade_id
     FROM
-	superrare_trades trades
+    superrare_trades trades
     INNER JOIN ethereum.transactions tx
         ON trades.tx_hash = tx.hash
         AND tx.block_time >= start_ts
@@ -313,6 +336,7 @@ rows AS (
         AND p.minute >= start_ts
         AND p.minute < end_ts
     LEFT JOIN nft.tokens tokens ON tokens.contract_address = erc.contract_address_array[1]
+    LEFT JOIN nft.aggregators agg ON agg.contract_address = tx."to"
     WHERE category IN ('Buy','Offer Accepted','Auction Settled')
     AND trades.block_time >= start_ts
     AND trades.block_time < end_ts
@@ -324,52 +348,7 @@ RETURN r;
 END
 $function$;
 
--- fill 2019
-SELECT nft.insert_superrare(
-    '2019-01-01',
-    '2020-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-01-01')
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM nft.trades
-    WHERE block_time > '2019-01-01'
-    AND block_time <= '2020-01-01'
-    AND platform = 'SuperRare'
-);
-
-
--- fill 2020
-SELECT nft.insert_superrare(
-    '2020-01-01',
-    '2021-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2021-01-01')
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM nft.trades
-    WHERE block_time > '2020-01-01'
-    AND block_time <= '2021-01-01'
-    AND platform = 'SuperRare'
-);
-
--- fill 2021
-SELECT nft.insert_superrare(
-    '2021-01-01',
-    now(),
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM nft.trades
-    WHERE block_time > '2021-01-01'
-    AND block_time <= now() - interval '20 minutes'
-    AND platform = 'SuperRare'
-);
-
+/*
 INSERT INTO cron.job (schedule, command)
 VALUES ('53 * * * *', $$
     SELECT nft.insert_superrare(
@@ -379,3 +358,4 @@ VALUES ('53 * * * *', $$
         (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+*/

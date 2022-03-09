@@ -4,52 +4,59 @@ DECLARE r INTEGER;
 BEGIN
 
 WITH looks_rare AS (
-    SELECT 
-        evt_block_time AS block_time,
-        "tokenId" AS token_id,
-        amount AS number_of_items,
+        SELECT 
+        ask.evt_block_time AS block_time,
+        ask."tokenId" AS token_id,
+        ask.amount AS number_of_items,
         taker AS seller,
         maker AS buyer,
         price AS price,
+        roy.amount AS fees,
         CASE -- REPLACE `ETH` WITH `WETH` for ERC20 lookup later
-            WHEN currency = '\x0000000000000000000000000000000000000000' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-            ELSE currency
+            WHEN ask.currency = '\x0000000000000000000000000000000000000000' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            ELSE ask.currency
         END AS currency_token,
-        currency AS original_currency_address,
-        collection AS nft_contract_address,
-        contract_address AS contract_address,
-        evt_tx_hash AS tx_hash,
-        evt_block_number AS block_number,
-        evt_index AS evt_index,
-        'Buy' as category
-    FROM looksrare."LooksRareExchange_evt_TakerAsk"
-UNION ALL
+        ask.currency AS original_currency_address,
+        ask.collection AS nft_contract_address,
+        ask.contract_address AS contract_address,
+        ask.evt_tx_hash AS tx_hash,
+        ask.evt_block_number AS block_number,
+        ask.evt_index AS evt_index,
+        CASE -- CATEGORIZE Collection Wide Offers Accepted 
+            WHEN strategy = '\x86f909f70813cdb1bc733f4d97dc6b03b8e7e8f3' THEN 'Collection Offer Accepted'
+            ELSE 'Offer Accepted' 
+            END AS category    
+    FROM looksrare."LooksRareExchange_evt_TakerAsk" ask
+    LEFT JOIN looksrare."LooksRareExchange_evt_RoyaltyPayment" roy ON roy.evt_tx_hash = ask.evt_tx_hash
+                            UNION ALL
     SELECT 
-        evt_block_time AS block_time,
-        "tokenId" AS token_id,
-        amount AS number_of_items,
+        bid.evt_block_time AS block_time,
+        bid."tokenId" AS token_id,
+        bid.amount AS number_of_items,
         maker AS seller,
         taker AS buyer,
         price AS price,
+        roy.amount AS fees,
        CASE -- REPLACE `ETH` WITH `WETH` for ERC20 lookup later
-            WHEN currency = '\x0000000000000000000000000000000000000000' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-            ELSE currency
+            WHEN bid.currency = '\x0000000000000000000000000000000000000000' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            ELSE bid.currency
         END AS currency_token,
-        currency AS original_currency_address,
-        collection AS nft_contract_address,
-        contract_address AS contract_address,
-        evt_tx_hash AS tx_hash,
-        evt_block_number AS block_number,
-        evt_index AS evt_index,
-        'Offer Accepted' as category
-    FROM looksrare."LooksRareExchange_evt_TakerBid"
-),
-
+        bid.currency AS original_currency_address,
+        bid.collection AS nft_contract_address,
+        bid.contract_address AS contract_address,
+        bid.evt_tx_hash AS tx_hash,
+        bid.evt_block_number AS block_number,
+        bid.evt_index AS evt_index,
+        'Buy' as category
+    FROM looksrare."LooksRareExchange_evt_TakerBid" bid
+    LEFT JOIN looksrare."LooksRareExchange_evt_RoyaltyPayment" roy ON roy.evt_tx_hash = bid.evt_tx_hash
+    ),
 
 -- Get ERC721 AND ERC1155 transfer data for every trade TRANSACTION
 erc_union AS (
-SELECT
+SELECT DISTINCT
     erc721.evt_tx_hash,
+    erc721.evt_index,
     'erc721' AS erc_type,
     CAST(erc721."tokenId" AS TEXT) AS "tokenId",
     erc721."from",
@@ -65,11 +72,10 @@ INNER JOIN (
             Select evt_tx_hash 
             from looksrare."LooksRareExchange_evt_TakerBid"
             ) hashes on hashes.evt_tx_hash = erc721.evt_tx_hash
-
 UNION ALL
-
-SELECT
+SELECT DISTINCT
     erc1155.evt_tx_hash,
+    erc1155.evt_index,
     'erc1155' AS erc_type,
     CAST(erc1155.id AS TEXT) AS "tokenId",
     erc1155."from",
@@ -86,61 +92,67 @@ INNER JOIN (
             from looksrare."LooksRareExchange_evt_TakerBid"
             ) hashes on  erc1155.evt_tx_hash = hashes.evt_tx_hash
 ),
+
 -- aggregate NFT transfers per TRANSACTION 
 looksrare_erc_subsets AS (
-SELECT
+SELECT 
     evt_tx_hash,
     array_agg("tokenId") AS token_id_array,
-    cardinality(array_agg("tokenId")) AS no_of_transfers,
+    CASE WHEN erc_type = 'erc1155' THEN value
+         WHEN erc_type = 'erc721'  THEN cardinality(array_agg(DISTINCT "tokenId")) END AS no_of_transfers,
     array_agg("from") AS from_array,
     array_agg("to") AS to_array,
     array_agg(erc_type) AS erc_type_array,
     array_agg(contract_address) AS contract_address_array,
-    array_agg(VALUE) AS erc1155_value_array
+    array_agg(VALUE) AS erc1155_value_array,
+    array_agg(evt_index) AS evt_index_array
 FROM erc_union
-GROUP BY 1
+GROUP BY 1,erc_type,value
 ),
 
-ROWS AS (
-    INSERT INTO nft.trades (
-	block_time,
-	nft_project_name,
-	nft_token_id,
+
+rows AS (
+    INSERT INTO nft.trades(
+    block_time,
+    nft_project_name,
+    nft_token_id,
     erc_standard,
-	platform,
-	platform_version,
+    platform,
+    platform_version,
     trade_type,
     number_of_items,
-	category,
-	evt_type,
-	usd_amount,
-	seller,
-	buyer,
-	original_amount,
-	original_amount_raw,
-	original_currency,
-	original_currency_contract,
-	currency_contract,
-	nft_contract_address,
-	exchange_contract_address,
-	tx_hash,
-	block_number,
-    nft_token_ids_array,
-    senders_array,
-    recipients_array,
-    erc_types_array,
-    nft_contract_addresses_array,
-    erc_values_array,
-	tx_from,
-	tx_to,
-	trace_address,
-	evt_index,
-	trade_id
+    category,
+    evt_type,
+    aggregator,
+    usd_amount,
+    seller,
+    buyer,
+    original_amount,
+    original_amount_raw,
+    eth_amount,
+    royalty_fees_percent,
+    original_royalty_fees,
+    usd_royalty_fees,
+    platform_fees_percent,
+    original_platform_fees,
+    usd_platform_fees,
+    original_currency,
+    original_currency_contract,
+    currency_contract,
+    nft_contract_address,
+    exchange_contract_address,
+    tx_hash,
+    block_number,
+    tx_from,
+    tx_to,
+    trace_address,
+    evt_index,
+    trade_id
     )
 
-    SELECT
+   SELECT DISTINCT
         trades.block_time AS block_time,
-        tokens.name AS nft_project_name,
+        CASE WHEN erc.no_of_transfers > 1 THEN NULL ELSE tokens.name END AS nft_project_name,
         -- SET NFT token ID to `NULL` IF the trade consists of multiple NFT transfers
         CASE WHEN erc.no_of_transfers > 1 THEN NULL ELSE token_id END AS nft_token_id,
         -- SET ERC standard to `NULL` IF the trade consists of multiple NFT transfers
@@ -151,11 +163,39 @@ ROWS AS (
         erc.no_of_transfers AS number_of_items,
         trades.category,
         trades.evt_type,
-        trades.price / 10 ^ erc20.decimals * p.price AS usd_amount,
-        trades.seller,
+        agg.name AS aggregator,
+        CASE WHEN erc.no_of_transfers > 1 THEN tx.value / 10 ^ erc20.decimals * p.price
+        ELSE trades.price / 10 ^ erc20.decimals * p.price END AS usd_amount,
+        CASE WHEN erc.no_of_transfers > 1 THEN NULL
+        ELSE trades.seller END AS seller,
         trades.buyer,
-        trades.price / 10 ^ erc20.decimals AS original_amount,
-        trades.price AS original_amount_raw,
+        
+        CASE WHEN erc.no_of_transfers > 1 THEN tx.value / 10 ^ erc20.decimals
+        ELSE trades.price / 10 ^ erc20.decimals END AS original_amount,
+        
+        CASE WHEN erc.no_of_transfers > 1 THEN tx.value
+        ELSE trades.price END AS original_amount_raw,
+
+        CASE WHEN erc.no_of_transfers > 1 THEN tx.value / 10 ^ erc20.decimals * p.price / peth.price
+            ELSE trades.price / 10 ^ erc20.decimals * p.price / peth.price END AS eth_amount,
+        
+        CASE WHEN erc.no_of_transfers > 1 THEN NULL::numeric
+        ELSE ROUND(cast((trades.fees/ 10 ^ erc20.decimals - 2.5*(trades.price / 10 ^ erc20.decimals)/100) * (100) / NULLIF(trades.price / 10 ^ erc20.decimals,0) as numeric),7) END AS royalty_fees_percent,
+        
+        CASE WHEN erc.no_of_transfers > 1 THEN NULL::numeric
+        ELSE ROUND(cast(trades.fees/ 10 ^ erc20.decimals - 2.5*(trades.price / 10 ^ erc20.decimals)/100 as numeric),7) END AS original_royalty_fees,
+        
+        CASE WHEN erc.no_of_transfers > 1 THEN NULL::numeric
+        ELSE ROUND(cast(trades.fees * p.price/ 10 ^ erc20.decimals - 2.5 * (trades.price / 10 ^ erc20.decimals * p.price) / 100 as numeric),7) END AS usd_royalty_fees,
+        
+        2 as platform_fees_percent,
+        
+        CASE WHEN erc.no_of_transfers > 1 THEN ROUND(cast(2*(tx.value / 10 ^ erc20.decimals)/100 as numeric),7) 
+        ELSE ROUND(cast(2*(trades.price / 10 ^ erc20.decimals)/100 as numeric),7) END AS original_platform_fees,
+        
+        CASE WHEN erc.no_of_transfers > 1 THEN ROUND(cast(2*(tx.value / 10 ^ erc20.decimals * p.price)/100 as numeric),7)
+        ELSE ROUND(cast(2*(trades.price / 10 ^ erc20.decimals * p.price)/100 as numeric),7) END AS usd_platform_fees,
+        
         CASE WHEN trades.original_currency_address = '\x0000000000000000000000000000000000000000' THEN 'ETH' ELSE erc20.symbol END AS original_currency,
         trades.original_currency_address AS original_currency_contract,
         trades.currency_token AS currency_contract,
@@ -163,25 +203,20 @@ ROWS AS (
         trades.contract_address AS exchange_contract_address,
         trades.tx_hash AS tx_hash,
         trades.block_number,
-        -- Sometimes multiple NFT transfers occur IN a given trade; the 'array' fields below provide info for these use cases 
-        erc.token_id_array AS nft_token_ids_array,
-        erc.from_array AS senders_array,
-        erc.to_array AS recipients_array,
-        erc.erc_type_array AS erc_types_array,
-        erc.contract_address_array AS nft_contract_addresses_array,
-        erc.erc1155_value_array AS erc_values_array,
         tx."from" AS tx_from,
         tx."to" AS tx_to,
-        NULL AS trace_address,
-        trades.evt_index,
+        NULL::integer[] as trace_address,
+        CASE WHEN erc.no_of_transfers > 1 THEN evt_index_array[1]
+        ELSE trades.evt_index END AS evt_index,
         ROW_NUMBER() OVER (PARTITION BY trades.platform, trades.tx_hash, trades.evt_index, trades.category ORDER BY trades.platform_version, trades.evt_type) AS trade_id
     FROM
-        (SELECT 
+         (SELECT 
             'LooksRare' AS platform,
             '1' AS platform_version,
             category,
             'Trade' AS evt_type,
             price,
+            fees,
             currency_token,
             contract_address,
             nft_contract_address,
@@ -193,8 +228,6 @@ ROWS AS (
             seller,
             buyer,
             original_currency_address
-            
-            
         FROM looks_rare) trades
     INNER JOIN ethereum.transactions tx ON trades.tx_hash = tx.hash
         AND tx.block_time >= start_ts
@@ -202,13 +235,18 @@ ROWS AS (
         AND tx.block_number >= start_block
         AND tx.block_number < end_block
     LEFT JOIN looksrare_erc_subsets erc ON erc.evt_tx_hash = trades.tx_hash
-    LEFT JOIN nft.tokens tokens ON tokens.contract_address = trades.nft_contract_address
+    LEFT JOIN nft.tokens tokens ON tokens.contract_address =  trades.nft_contract_address
+    LEFT JOIN nft.aggregators agg ON agg.contract_address = tx."to"
     LEFT JOIN prices.usd p ON p.minute = date_trunc('minute', trades.block_time)
+        AND p.contract_address = trades.currency_token
         AND p.minute >= start_ts
         AND p.minute < end_ts
-        AND p.contract_address = trades.currency_token
+    LEFT JOIN prices.usd peth ON peth.minute = date_trunc('minute', trades.block_time)
+        AND peth.contract_address = trades.currency_token
+        AND peth.minute >= start_ts
+        AND peth.minute < end_ts
     LEFT JOIN erc20.tokens erc20 ON erc20.contract_address = trades.currency_token
-
+    WHERE peth.symbol = 'WETH'
     ON CONFLICT DO NOTHING
     RETURNING 1
 )
@@ -217,22 +255,7 @@ RETURN r;
 END
 $function$;
 
--- fill 2022
-SELECT nft.insert_looksrare(
-    '2021-01-01',
-    now(),
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM nft.trades
-    WHERE block_time > '2022-01-01'
-    AND block_time <= now() - interval '20 minutes'
-    AND platform = 'LooksRare'
-);
-
-
+/*
 INSERT INTO cron.job (schedule, command)
 VALUES ('47 * * * *', $$
     SELECT nft.insert_looksrare(
@@ -242,3 +265,4 @@ VALUES ('47 * * * *', $$
         (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+*/
