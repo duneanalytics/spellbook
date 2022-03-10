@@ -1941,3 +1941,13 @@
   symbol: T
   address: 0xCdF7028ceAB81fA0C6971208e83fa7872994beE5
   decimals: 18
+- name: jarvis-synthetic-euro
+  id: jarvis-synthetic-euro
+  symbol: jEUR
+  address: 0x0f17BC9a994b87b5225cFb6a2Cd4D667ADb4F20B
+  decimals: 18
+- name: dsla-protocol
+  id: dsla-protocol
+  symbol: DSLA
+  address: 0x3aFfCCa64c2A6f4e3B6Bd9c64CD2C969EFd1ECBe
+  decimals: 18
