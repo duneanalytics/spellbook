@@ -4695,7 +4695,7 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x26b365dd6c6c2c5c1b19658ede5ef00c12402702	Ultraviolet Vinyl Collection by 3LAU	UVCOLLECTION	erc721
 \\x0458d5a7a3830a42d4d68fb36865f5cd4e9cd488	BitPopArt		erc721
 \\x9be29d790c7e2c3ff6acb608f6a3799b2650314d	Cypto familly 	familly	erc1155
-\\x50f5474724e0ee42d9a4e711ccfb275809fd6d4a	Sandbox's LANDs		erc721
+\\x50f5474724e0ee42d9a4e711ccfb275809fd6d4a	Sandbox's LANDs	LAND	erc721
 \\x5df4602e7f38a91ea7724fc167f0c67f61604b1e	dcl://wz_wonderbot	DCLWZWNDRBT	erc721
 \\xccc441ac31f02cd96c153db6fd5fe0a2f4e6a68d	FLUF	FLUF	erc721
 \\xf6b7d7c5a7fd6b11f6b6616a3476f2b90ecb730f	GENESIS I Open Editions by ENCODE Graphics	GENESISIOPENEDITIONSBYENCODEGRAPHICS	erc721
@@ -14500,6 +14500,7 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x13e89276bd71fca653bef21d144f4a24d501ce1b	salty tooth	SALTY	erc721
 \\x60f03169cb00ea0774cf4bdf5b9c55d33442affc	Floating Cities	CITIES	erc721
 \\xec71ed650722ef6f98c1c28f0b34c9846c1ba10b	DRIVE // DAVE KRUGMAN	DRIVE	erc721
+\\x880509ff28915fa62cdc7b07d1ea951bd5cfe882	Metavatar	MVTR	erc721
 \.
 
 

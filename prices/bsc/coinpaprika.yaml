@@ -479,3 +479,18 @@
   id: pets-micropets
   name: MicroPets
   symbol: PETS
+- address: '0xce86f7fcd3b40791f63b86c3ea3b8b355ce2685b'
+  decimals: 18
+  id: maha-mahadao
+  name: mahadao
+  symbol: MAHA
+- address: '0xf03a2dc374d494fbe894563fe22ee544d826aa50'
+  decimals: 18
+  id: radar-radar
+  name: radar_radar
+  symbol: RADAR
+- address: '0x1042aA383CAb145dc77121ca75650804A5c134ff'
+  decimals: 18
+  id: aggl-aggleio
+  name: aggl_aggleio
+  symbol: AGGL
