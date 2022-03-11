@@ -1,4 +1,4 @@
-dINSERT INTO cron.job (schedule, command)
+INSERT INTO cron.job (schedule, command)
 VALUES ('15,30,45,59 * * * *', $$
 --Chainlink Updates
 	SELECT chainlink.insert_price_feeds(
