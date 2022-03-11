@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION dex.insert_clipper(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+CREATE OR REPLACE FUNCTION dex.insert_clipper(start_ts timestamptz, end_ts timestamptz=now()) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -79,8 +79,6 @@ WITH rows AS (
         ON dexs.tx_hash = tx.hash
         AND tx.block_time >= start_ts
         AND tx.block_time < end_ts
-        AND tx.block_number >= start_block
-        AND tx.block_number < end_block
     LEFT JOIN prices.approx_prices_from_dex_data pa
       ON pa.hour = date_trunc('hour', dexs.block_time)
         AND pa.contract_address = dexs.token_a_address
@@ -101,27 +99,3 @@ RETURN r;
 END
 $function$;
 
--- fill 2022
-SELECT dex.insert_clipper(
-    '2022-01-01',
-    now(),
-    (SELECT MAX(number) FROM optimism.blocks WHERE time < '2022-01-01'),
-    (SELECT MAX(number) FROM optimism.blocks WHERE time < now() - interval '20 minutes')
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2022-01-01'
-    AND block_time <= now() - interval '20 minutes'
-    AND project = 'Clipper'
-);
-
-INSERT INTO cron.job (schedule, command)
-VALUES ('*/10 * * * *', $$
-    SELECT dex.insert_clipper(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Clipper'),
-        (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM optimism.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Clipper')),
-        (SELECT MAX(number) FROM optimism.blocks where time < now() - interval '20 minutes'));
-$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
