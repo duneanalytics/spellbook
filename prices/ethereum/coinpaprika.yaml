@@ -1946,3 +1946,8 @@
   symbol: DSLA
   address: 0x3aFfCCa64c2A6f4e3B6Bd9c64CD2C969EFd1ECBe
   decimals: 18
+- name: cusdt-compound-usdt
+  id: cusdt-compound-usdt
+  symbol: cUSDT
+  address: 0xf650c3d88d12db855b8bf7d11be6c55a4e07dcc9
+  decimals: 8
