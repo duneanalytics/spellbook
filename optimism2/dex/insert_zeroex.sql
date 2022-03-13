@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION dex.insert_zeroex(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+CREATE OR REPLACE FUNCTION dex.insert_zeroex(start_ts timestamptz, end_ts timestamptz=now()) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -42,8 +42,8 @@ WITH rows AS (
         token_b_amount_raw,
         coalesce(
             usd_amount,
-            token_a_amount_raw / 10 ^ pa.decimals * pa.median_price,
-            token_b_amount_raw / 10 ^ pb.decimals * pb.median_price
+            token_a_amount_raw / 10 ^ erc20a.decimals * pa.median_price,
+            token_b_amount_raw / 10 ^ erc20b.decimals * pb.median_price
         ) as usd_amount,
         token_a_address,
         token_b_address,
@@ -102,8 +102,7 @@ WITH rows AS (
         ON dexs.tx_hash = tx.hash
         AND tx.block_time >= start_ts
         AND tx.block_time < end_ts
-        AND tx.block_number >= start_block
-        AND tx.block_number < end_block
+
     LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
     LEFT JOIN prices.approx_prices_from_dex_data pa
@@ -132,6 +131,7 @@ RETURN r;
 END
 $function$;
 
+/*
 -- fill 2021, 0x only launched after op2
 SELECT dex.insert_zeroex(
     '2021-12-28',
@@ -151,9 +151,8 @@ INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$
     SELECT dex.insert_zeroex(
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project IN ('0x API', 'Matcha')),
-        (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM optimism.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project IN ('0x API', 'Matcha'))),
-        (SELECT MAX(number) FROM optimism.blocks where time < now() - interval '20 minutes'),
-    0);
+        now()
+        );
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+*/
