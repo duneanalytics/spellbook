@@ -1,1 +1,2 @@
-
+-- Zipswap contracts are unverified, but its base is a Uni v2 fork.
+-- We use events from sample trades to "manually decode" the swaps
