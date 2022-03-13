@@ -1,3 +1,8 @@
+- name: critterz-block
+  id: critterz-block
+  symbol: BLOCK
+  address: 0x807a0774236A0fBE9e7f8E7Df49EDFED0e6777Ea
+  decimals: 18
 - name: dmg_dmm_governance
   id: dmg-dmm-governance
   symbol: DMG
