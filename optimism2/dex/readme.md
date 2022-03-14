@@ -11,7 +11,10 @@ Since we do not yet have price feeds for Optimism tokens, these tables pull USD 
 
 - **dex.insert_uniswap_v3.sql**: Inserts uniswap v3 data to the dex.trades table.
 - **dex.insert_onceinch.sql**: Inserts 1inch (V3, V4) data to the dex.trades table.
-- **dex.insert_zeroex.sql**
+- **dex.insert_zeroex.sql**: 0x and Matcha
+- **dex.insert_clipper.sql**: Clipper DEX
+- **dex.insert_curve.sql**: Curve - Each pool type has different setup (i.e. Stableswap vs Metapools vs Other factory pools)
+- **dex.insert_zipswap.sql**: Zipswap calldata optimized DEX
 
 #### Remaining to be added
 Want to contribute to building dex.trades on Optimism? Here are some examples of DEXs and Aggregators that need insert queries built:
