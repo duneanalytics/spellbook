@@ -1951,3 +1951,8 @@
   symbol: cUSDT
   address: 0xf650c3d88d12db855b8bf7d11be6c55a4e07dcc9
   decimals: 8
+- name: thx-network
+  id: thx-network
+  symbol: THX
+  address: 0xe632ea2eF2CFD8Fc4a2731C76F99078Aef6a4B31
+  decimals: 18
