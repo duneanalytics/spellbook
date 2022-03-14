@@ -45,6 +45,12 @@ COPY erc721.tokens (contract_address, project_name) FROM stdin;
 \\x8F05bADf192664fd3Dd48Dbc0E9aAa5E530E919D	DinoSours Collection
 \\x1E13B9055CCcD45ED43EE500AFbe89D8Fc1D3B1f	NFTMapQuest
 \\x2F71f4a2D8BAB9703fff3fF5794762bF5b6C7E29	Thales Royale Pass
+\\x2700E1D41fF663E6652a25499f18f7a267685eb2	Layer2DAO Early Adopter - Level 6
+\\xaF1c25845C3b75835793F396820a782E3186F7CF	Layer2DAO Early Adopter - Level 5
+\\x65eecBf5E5BC6b1bdAf28Ab28A650e8c34d7ba04	Layer2DAO Early Adopter - Level 4
+\\xc5b00eff93c8f96c73de8035f896eca67255f465	Layer2DAO Early Adopter - Level 3
+\\x4fe576AA37B9858378425Ea981b8D1804A6367Ce	Layer2DAO Early Adopter - Level 2
+\\xF804D537c2530C79453C1cDBdd728a68F340CD9f	Layer2DAO Early Adopter - Level 1
 \.
 
 COMMIT;
