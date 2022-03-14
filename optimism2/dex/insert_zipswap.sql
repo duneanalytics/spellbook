@@ -1,8 +1,3 @@
--- Zipswap contracts are unverified, but its base is a Uni v2 fork.
--- We use events from sample trades to "manually decode" the swaps
--- Uni v2 Pool Factory for reference: https://etherscan.io/address/0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f
--- Uni v2 Router for reference: https://etherscan.io/address/0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D
-
 CREATE OR REPLACE FUNCTION dex.insert_zipswap(start_ts timestamptz, end_ts timestamptz=now()) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
@@ -61,32 +56,28 @@ SELECT
     evt_index,
     row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
-    SELECT 
-    block_time AS block_time,
-    'Zipswap' AS project,
-    '1' AS version,
-    'DEX' AS category,
-    "to" AS trader_a,
-    NULL::bytea AS trader_b,
-    -- logic from ethereum/dex/trades/insert_uniswap_v2
-    CASE WHEN "amount0Out" = 0 THEN "amount1Out" ELSE "amount0Out" END AS token_a_amount_raw,
-    CASE WHEN "amount0In" = 0 OR "amount1Out" = 0 THEN "amount1In" ELSE "amount0In" END AS token_b_amount_raw,
-    NULL::numeric AS usd_amount,
-    CASE WHEN "amount0Out" = 0 THEN token1 ELSE token0 END AS token_a_address,
-    CASE WHEN "amount0In" = 0 OR "amount1Out" = 0 THEN token1 ELSE token0 END AS token_b_address,
-    contract_address as exchange_contract_address,
-    evt_tx_hash AS tx_hash,
-    NULL::integer[] AS trace_address,
-    evt_index
-    FROM zipswap."UniswapV2_Pair_evt_Swap" t
-	 INNER JOIN zipswap."UniswapV2Factory_evt_PairCreated" f ON f.pair = l.contract_address
-	
-	AND t.block_time >= start_ts AND t.block_time < end_ts
-	AND l.block_time >= start_ts AND l.block_time < end_ts
-    ) d
+	    SELECT 
+	    block_time AS block_time,
+	    'Zipswap' AS project,
+	    '1' AS version,
+	    'DEX' AS category,
+	    "to" AS trader_a,
+	    NULL::bytea AS trader_b,
+	    -- logic from ethereum/dex/trades/insert_uniswap_v2
+	    CASE WHEN "amount0Out" = 0 THEN "amount1Out" ELSE "amount0Out" END AS token_a_amount_raw,
+	    CASE WHEN "amount0In" = 0 OR "amount1Out" = 0 THEN "amount1In" ELSE "amount0In" END AS token_b_amount_raw,
+	    NULL::numeric AS usd_amount,
+	    CASE WHEN "amount0Out" = 0 THEN token1 ELSE token0 END AS token_a_address,
+	    CASE WHEN "amount0In" = 0 OR "amount1Out" = 0 THEN token1 ELSE token0 END AS token_b_address,
+	    contract_address as exchange_contract_address,
+	    evt_tx_hash AS tx_hash,
+	    NULL::integer[] AS trace_address,
+	    evt_index
+	    FROM zipswap."UniswapV2_Pair_evt_Swap" t
+		 INNER JOIN zipswap."UniswapV2Factory_evt_PairCreated" f ON f.pair = l.contract_address
 
-
-    
+		AND t.block_time >= start_ts AND t.block_time < end_ts
+		AND l.block_time >= start_ts AND l.block_time < end_ts  
     ) dexs
     INNER JOIN optimism.transactions tx
         ON dexs.tx_hash = tx.hash
