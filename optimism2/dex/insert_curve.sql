@@ -105,6 +105,9 @@ SELECT
         INNER JOIN curve_pools tb
             ON t.contract_address = tb.pool
             AND t.sold_id = tb.tokenid
+	
+	WHERE t.evt_block_time >= start_ts AND t.evt_block_time < end_ts
+        
     
     -- UNION ALL
     --MetaPoolSwap
@@ -132,25 +135,26 @@ SELECT
     --     INNER JOIN curve_pools tb
     --         ON t.contract_address = tb.pool
     --         AND t.sold_id = tb.tokenid
+--         WHERE t.evt_block_time >= start_ts AND t.evt_block_time < end_ts
     
     ) dexs
     INNER JOIN optimism.transactions tx
         ON dexs.tx_hash = tx.hash
-        -- AND tx.block_time >= start_ts
-        -- AND tx.block_time < end_ts
+        AND tx.block_time >= start_ts
+        AND tx.block_time < end_ts
 
     LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
     LEFT JOIN prices.approx_prices_from_dex_data pa
       ON pa.hour = date_trunc('hour', dexs.block_time)
         AND pa.contract_address = dexs.token_a_address
-        -- AND pa.hour >= start_ts
-        -- AND pa.hour < end_ts
+        AND pa.hour >= start_ts
+        AND pa.hour < end_ts
     LEFT JOIN prices.approx_prices_from_dex_data pb
       ON pb.hour = date_trunc('hour', dexs.block_time)
         AND pb.contract_address = dexs.token_b_address
-        -- AND pb.hour >= start_ts
-        -- AND pb.hour < end_ts
+        AND pb.hour >= start_ts
+        AND pb.hour < end_ts
 
     -- update if we have new info on prices or the erc20
     ON CONFLICT (project, tx_hash, evt_index, trade_id)
