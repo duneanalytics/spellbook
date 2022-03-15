@@ -32,7 +32,7 @@ with event_decoded as (
                 "quoteTokenAmount" as maker_token_amount,
                 "baseTokenAmount" as taker_token_amount
      from hashflow."Pool_evt_Trade0"
-          AND block_time >= start_ts AND block_time < end_ts
+          AND evt_block_time >= start_ts AND evt_block_time < end_ts
 
     union all
 
@@ -45,7 +45,7 @@ with event_decoded as (
                 "quoteTokenAmount" as maker_token_amount,
                 "baseTokenAmount" as taker_token_amount
      from hashflow."Pool_evt_Trade"
-          AND block_time >= start_ts AND block_time < end_ts
+          AND evt_block_time >= start_ts AND evt_block_time < end_ts
 
 ) , new_router as (
 
@@ -90,7 +90,7 @@ with event_decoded as (
                                   and mp.contract_address = case when quote->>'quoteToken' = '0x0000000000000000000000000000000000000000'
                                             then '\xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c' else ('\x' || substring(quote->>'quoteToken' from 3))::bytea end
                                             -- table has no BNB so using WBNB
-    AND t.block_time >= start_ts AND t.block_time < end_ts
+    AND t.call_block_time >= start_ts AND t.call_block_time < end_ts
 ), rows AS (
       INSERT INTO hashflow.trades (
           composite_index,
