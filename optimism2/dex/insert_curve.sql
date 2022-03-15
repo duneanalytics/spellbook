@@ -193,7 +193,7 @@ WHERE NOT EXISTS (
     SELECT *
     FROM dex.trades
     WHERE block_time > '2021-11-10'
-    AND block_time <= now() - interval '20 minutes'
+    AND block_time <= now()
     AND project = 'Curve'
 );
 /*
