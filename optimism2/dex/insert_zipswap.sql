@@ -73,7 +73,7 @@ SELECT
 	    evt_tx_hash AS tx_hash,
 	    NULL::integer[] AS trace_address,
 	    evt_index
-	    FROM zipswap."UniswapV2_Pair_evt_Swap" t
+	    FROM zipswap."UniswapV2Pair_evt_Swap" t
 		 INNER JOIN zipswap."UniswapV2Factory_evt_PairCreated" f ON f.pair = l.contract_address
 
 		AND t.block_time >= start_ts AND t.block_time < end_ts
