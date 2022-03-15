@@ -57,7 +57,7 @@ SELECT
     row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
 	    SELECT 
-	    block_time AS block_time,
+	    t.evt_block_time AS block_time,
 	    'Zipswap' AS project,
 	    '1' AS version,
 	    'DEX' AS category,
@@ -69,15 +69,15 @@ SELECT
 	    NULL::numeric AS usd_amount,
 	    CASE WHEN "amount0Out" = 0 THEN token1 ELSE token0 END AS token_a_address,
 	    CASE WHEN "amount0In" = 0 OR "amount1Out" = 0 THEN token1 ELSE token0 END AS token_b_address,
-	    contract_address as exchange_contract_address,
-	    evt_tx_hash AS tx_hash,
+	    t.contract_address as exchange_contract_address,
+	    t.evt_tx_hash AS tx_hash,
 	    NULL::integer[] AS trace_address,
-	    evt_index
+	    t.evt_index
 	    FROM zipswap."UniswapV2Pair_evt_Swap" t
-		 INNER JOIN zipswap."UniswapV2Factory_evt_PairCreated" f ON f.pair = l.contract_address
+		 INNER JOIN zipswap."UniswapV2Factory_evt_PairCreated" f ON f.pair = t.contract_address
 
-		AND t.block_time >= start_ts AND t.block_time < end_ts
-		AND l.block_time >= start_ts AND l.block_time < end_ts  
+	WHERE t.block_time >= start_ts AND t.evt_block_time < end_ts
+		AND l.block_time >= start_ts AND t.evt_block_time < end_ts  
     ) dexs
     INNER JOIN optimism.transactions tx
         ON dexs.tx_hash = tx.hash
