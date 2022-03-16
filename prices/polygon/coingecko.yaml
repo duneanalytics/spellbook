@@ -415,4 +415,5 @@
 - id: btc-2x-flexible-leverage-index-polygon
 - id: inverse-btc-flexible-leverage-index
 - id: thx-network
+- id: mimo-parallel-governance-token
 - id: par-stablecoin
