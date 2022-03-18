@@ -494,3 +494,8 @@
   id: aggl-aggleio
   name: aggl_aggleio
   symbol: AGGL
+- address: '0x7dDEE176F665cD201F93eEDE625770E2fD911990'
+  decimals: 18
+  id: gala-gala
+  name: gala
+  symbol: GALA
