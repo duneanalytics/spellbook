@@ -76,8 +76,7 @@ SELECT
 	    FROM zipswap."UniswapV2Pair_evt_Swap" t
 		 INNER JOIN zipswap."UniswapV2Factory_evt_PairCreated" f ON f.pair = t.contract_address
 
-	WHERE t.block_time >= start_ts AND t.evt_block_time < end_ts
-		AND l.block_time >= start_ts AND t.evt_block_time < end_ts  
+	WHERE t.evt_block_time >= start_ts AND t.evt_block_time < end_ts
     ) dexs
     INNER JOIN optimism.transactions tx
         ON dexs.tx_hash = tx.hash
