@@ -29,7 +29,7 @@ chainlink_prices AS (
     AND token_a_amount_raw > 100 -- filter out small spam
     AND block_time >= start_time
     AND block_time < end_time
-
+AND project IN ('Uniswap','1inch','0x API','Matcha','Zipswap')
 	GROUP BY 1,2,3,4,5,6 --remove dupes
 
     UNION ALL
@@ -47,6 +47,7 @@ chainlink_prices AS (
     AND token_b_amount_raw > 100 -- filter out small spam
     AND block_time >= start_time
     AND block_time < end_time
+AND project IN ('Uniswap','1inch','0x API','Matcha','Zipswap')
 	
 	GROUP BY 1,2,3,4,5,6 --remove dupes
 ),
