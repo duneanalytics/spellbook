@@ -3,7 +3,31 @@ LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
 WITH rows AS (
-        SELECT
+     INSERT INTO dex.trades (
+        block_time,
+        token_a_symbol,
+        token_b_symbol,
+        token_a_amount,
+        token_b_amount,
+        project,
+        version,
+        category,
+        trader_a,
+        trader_b,
+        token_a_amount_raw,
+        token_b_amount_raw,
+        usd_amount,
+        token_a_address,
+        token_b_address,
+        exchange_contract_address,
+        tx_hash,
+        tx_from,
+        tx_to,
+        trace_address,
+        evt_index,
+        trade_id
+    )
+    SELECT
         dexs.block_time,
         erc20a.symbol AS token_a_symbol,
         erc20b.symbol AS token_b_symbol,
