@@ -29,10 +29,10 @@ WITH rows AS (
     )
     SELECT
         dexs.block_time,
-        pa.symbol AS token_a_symbol,
-        pb.symbol AS token_b_symbol,
-        token_a_amount_raw / 10 ^ pa.decimals AS token_a_amount,
-        token_b_amount_raw / 10 ^ pb.decimals AS token_b_amount,
+        erc20a.symbol AS token_a_symbol,
+        erc20b.symbol AS token_b_symbol,
+        token_a_amount_raw / 10 ^ erc20a.decimals AS token_a_amount,
+        token_b_amount_raw / 10 ^ erc20b.decimals AS token_b_amount,
         project,
         version,
         category,
@@ -42,8 +42,8 @@ WITH rows AS (
         token_b_amount_raw,
         coalesce(
             usd_amount,
-            token_a_amount_raw / 10 ^ pa.decimals * pa.median_price,
-            token_b_amount_raw / 10 ^ pb.decimals * pb.median_price
+            token_a_amount_raw / 10 ^ erc20a.decimals * pa.median_price,
+            token_b_amount_raw / 10 ^ erc20b.decimals * pb.median_price
         ) as usd_amount,
         token_a_address,
         token_b_address,
@@ -74,11 +74,14 @@ WITH rows AS (
             t.evt_index
         FROM
             clipper."ClipperPackedExchange_evt_Swapped" t
+        WHERE t.evt_block_time >= start_ts AND t.evt_block_time < end_ts
     ) dexs
     INNER JOIN optimism.transactions tx
         ON dexs.tx_hash = tx.hash
         AND tx.block_time >= start_ts
         AND tx.block_time < end_ts
+    LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
+    LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
     LEFT JOIN prices.approx_prices_from_dex_data pa
       ON pa.hour = date_trunc('hour', dexs.block_time)
         AND pa.contract_address = dexs.token_a_address
