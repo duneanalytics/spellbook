@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS chainlink.oracle_token_mapping (
 	feed_name text,
-  proxy bytea,
+	proxy bytea,
 	underlying_token_address bytea,
-  extra_decimals numeric
+	extra_decimals numeric,
 		PRIMARY KEY (proxy,underlying_token_address, extra_decimals)
 );
 
@@ -33,3 +33,9 @@ USDT / USD	\\xECef79E109e997bCA29c1c0897ec9d7b03647F5E	\\x94b008aA00579c1307B0EF
 AVAX / USD	\\x5087Dc69Fd3907a016BD42B38022F7f024140727	\\xB2b42B231C68cbb0b4bF2FFEbf57782Fd97D3dA4	0	--sAVAX
 SUSD / USD	\\x7f99817d87baD03ea21E05112Ca799d715730efe	\\x8c6f28f2F1A3C87F0f938b96d27520d9751ec8d9	0	--sUSD
 \.
+
+
+
+COMMIT;
+
+CREATE INDEX IF NOT EXISTS chainlink_oracle_token_mapping_idx ON chainlink.oracle_addresses (proxy,underlying_token_address,extra_decimals);
