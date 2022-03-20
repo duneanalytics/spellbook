@@ -7,7 +7,8 @@ WITH rows AS (
         hour,
     	feed_name,
     	price,
-    	underlying_token_address
+    	underlying_token_address,
+	underlying_token_price
     )
     
 WITH gs AS (
@@ -22,38 +23,39 @@ WITH gs AS (
 )
 
 , feed_updates AS (
-WITH feeds AS (
+SELECT
+dt, feed_name, price, proxy, address, underlying_token_address
+, price::decimal/(10^extra_decimals)::decimal AS underlying_token_price
+FROM (
 	SELECT
 	DATE_TRUNC('hour',block_time) AS dt
 	, feed_name
 	, AVG(bytea2numeric(topic2)::decimal/(10^decimals)::decimal) AS price
-	,"proxy", "address", underlying_token_address
+	,"proxy", "address"
 	FROM optimism.logs l
 	INNER JOIN chainlink.oracle_addresses cfa
 	    ON l.contract_address = cfa.address
 	WHERE topic1 = '\x0559884fd3a460db3073b7fc896cc77986f16e378210ded43186175bf646fc5f' --Answer Updated
 	AND contract_address IN (SELECT address FROM chainlink.oracle_addresses)
-	GROUP BY 1,2, 4,5,6
-	)
-SELECT * FROM feeds
-	UNION ALL
--- add WETH as a copy of ETH
-SELECT  dt, feed_name, price ,"proxy", "address", '\x4200000000000000000000000000000000000006' AS underlying_token_address
-	FROM feeds WHERE underlying_token_address = '\xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000'
+	GROUP BY 1,2, 4,5
+	) c
+LEFT JOIN chainlink.oracle_token_mapping o
+	ON c.proxy = o.proxy
 )
 
 SELECT --avg in case there are multiple overlapping feeds
-	hour, feed_name, AVG(price) AS price, underlying_token_address
+	hour, feed_name, AVG(price) AS price, underlying_token_address, underlying_token_price
 FROM (
 SELECT hr AS hour, feed_name
 , first_value(price) OVER (PARTITION BY feed_name, grp ORDER BY hr) AS price
-
 , first_value(underlying_token_address) OVER (PARTITION BY feed_name, grp ORDER BY hr) AS underlying_token_address
+, first_value(underlying_token_price) OVER (PARTITION BY feed_name, grp ORDER BY hr) AS underlying_token_price
+
 FROM (
-SELECT hr, feed_name, price, underlying_token_address,
+SELECT hr, feed_name, price, underlying_token_address, underlying_token_price,
 count(price) OVER (PARTITION BY feed_name ORDER BY hr) AS grp
 FROM (
-    SELECT gs.hr, gs.feed_name, price, underlying_token_address
+    SELECT gs.hr, gs.feed_name, price, underlying_token_address, underlying_token_price
     FROM gs
     LEFT JOIN feed_updates f
         ON gs.hr = f.dt
@@ -61,9 +63,9 @@ FROM (
 
 -- Union with the most recent prices to pull forward prices 
     UNION ALL
-	SELECT hour, feed_name, price, underlying_token_address
+	SELECT hour, feed_name, price, underlying_token_address, underlying_token_price
     	FROM (
-    		SELECT hour, feed_name, price, underlying_token_address,
+    		SELECT hour, feed_name, price, underlying_token_address, underlying_token_price,
     			DENSE_RANK() OVER (PARTITION BY feed_name, underlying_token_address ORDER BY hour DESC) AS h_rank
     			FROM chainlink.view_price_feeds
     		WHERE hour >= start_block_time - interval '1 day'
