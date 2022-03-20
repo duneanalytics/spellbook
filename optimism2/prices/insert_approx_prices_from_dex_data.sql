@@ -5,7 +5,7 @@ BEGIN
 
 WITH 
 chainlink_prices AS (
-	SELECT DATE_TRUNC('hour',hour) AS hour, underlying_token_address AS contract_address, symbol, decimals, price
+	SELECT DATE_TRUNC('hour',hour) AS hour, underlying_token_address AS contract_address, symbol, decimals, underlying_token_price AS price
 	FROM chainlink.view_price_feeds cp
 	INNER JOIN erc20.tokens e
 		ON e.contract_address = cp.underlying_token_address
