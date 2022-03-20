@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS chainlink.view_price_feeds(
     feed_name text NOT NULL,
     price numeric NOT NULL,
     underlying_token_address bytea,
+    underlying_token_price numeric,
         UNIQUE (hour,feed_name,underlying_token_address)
 );
 
