@@ -24,8 +24,8 @@ WITH gs AS (
 
 , feed_updates AS (
 SELECT
-dt, feed_name, price, proxy, address, underlying_token_address
-, price::decimal/(10^extra_decimals)::decimal AS underlying_token_price
+c.dt, c.feed_name, c.price, c.proxy, c.address, o.underlying_token_address
+, c.price::decimal/(10^o.extra_decimals)::decimal AS underlying_token_price
 FROM (
 	SELECT
 	DATE_TRUNC('hour',block_time) AS dt
@@ -75,7 +75,7 @@ FROM (
     ) uni
 ) a
 WHERE price IS NOT NULL
-GROUP BY 1,2, 4
+GROUP BY hour, feed_name, underlying_token_address, underlying_token_price
 
 ON CONFLICT (hour,feed_name,underlying_token_address)
     DO UPDATE SET
