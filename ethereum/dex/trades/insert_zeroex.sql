@@ -139,6 +139,24 @@ WITH rows AS (
 
         UNION ALL
 
+        SELECT evt_block_time AS block_time,
+                '0x Native' AS project,
+                '4' AS version,
+                'DEX' AS category,
+                taker AS trader_a,
+                maker AS trader_b,
+                "takerTokenFilledAmount" AS token_a_amount_raw,
+                "makerTokenFilledAmount" AS token_b_amount_raw,
+                NULL::numeric AS usd_amount,
+                "takerToken" AS token_a_address,
+                "makerToken" AS token_b_address,
+                contract_address AS exchange_contract_address,
+                evt_tx_hash AS tx_hash,
+                NULL::integer[] AS trace_address,
+                evt_index
+        FROM zeroex."ExchangeProxy_evt_OtcOrderFilled"
+
+        UNION ALL
         -- 0x api
         SELECT
             block_time,
