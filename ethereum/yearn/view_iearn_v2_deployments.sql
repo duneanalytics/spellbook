@@ -1,4 +1,4 @@
-sBEGIN;
+BEGIN;
 DROP VIEW IF EXISTS iearn_v2."view_iearn_v2_deployments" cascade;
 
 CREATE VIEW iearn_v2."view_iearn_v2_deployments" AS(
