@@ -1956,3 +1956,8 @@
   symbol: GALA
   address: 0x15D4c048F83bd7e37d49eA4C83a07267Ec4203dA
   decimals: 8
+- name: tlm-alien-worlds
+  id: tlm-alien-worlds
+  symbol: TLM
+  address: 0x888888848B652B3E3a0f34c96E00EEC0F3a23F72
+  decimals: 4
