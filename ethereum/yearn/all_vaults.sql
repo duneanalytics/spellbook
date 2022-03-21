@@ -1,6 +1,6 @@
 BEGIN;
 
-CREATE TABLE IF NOT EXISTS yearn."yearn_all_vaults" (
+CREATE TABLE IF NOT EXISTS yearn.yearn_all_vaults (
     contract_address	bytea UNIQUE,
     ytoken text,
     decimals numeric,  
@@ -8,10 +8,10 @@ CREATE TABLE IF NOT EXISTS yearn."yearn_all_vaults" (
     tag text
 );
 
---DELETE FROM dune_user_generated."yearn_all_vaults" *;
 
 
-COPY yearn."yearn_all_vaults"(contract_address, ytoken, decimals, symbol, tag) FROM stdin;
+
+COPY yearn.yearn_all_vaults(contract_address, ytoken, decimals, symbol, tag) FROM stdin;
 \\x16de59092dAE5CcF4A1E6439D611fd0653f0Bd01	iearn DAI	18	yDAI	earn
 \\xd6aD7a6750A7593E092a9B218d66C0A814a3436e	iearn USDC	6	yUSDC	earn
 \\x83f798e925BcD4017Eb265844FDDAbb448f1707D	iearn USDT	6	yUSDT	earn
