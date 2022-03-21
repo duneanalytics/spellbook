@@ -41,7 +41,7 @@ WITH wyvern_calldata AS (
         "call_success"
     AND call_block_time >= start_ts
     AND call_block_time < end_ts
-    GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13    
+    GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12    
 ),
 
 -- Get value of Royalty Fees from ethereum.traces
