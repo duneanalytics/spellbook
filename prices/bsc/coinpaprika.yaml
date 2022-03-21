@@ -499,6 +499,11 @@
   id: gala-gala
   name: gala
   symbol: GALA
+- address: '0x0df1b3f30865c5b324797f8db9d339514cac4e94'
+  decimals: 18
+  id: betu-betu
+  name: betu_betu
+  symbol: BETU
 - address: '0x2222227E22102Fe3322098e4CBfE18cFebD57c95'
   decimals: 4
   id: tlm-alien-worlds
