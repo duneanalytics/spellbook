@@ -499,3 +499,8 @@
   id: gala-gala
   name: gala
   symbol: GALA
+- address: '0x2222227E22102Fe3322098e4CBfE18cFebD57c95'
+  decimals: 4
+  id: tlm-alien-worlds
+  name: tlm_alien_worlds
+  symbol: TLM
