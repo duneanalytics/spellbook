@@ -97,14 +97,10 @@ INNER JOIN (
 looksrare_erc_subsets AS (
 SELECT 
     evt_tx_hash,
-    array_agg("tokenId") AS token_id_array,
     CASE WHEN erc_type = 'erc1155' THEN value
          WHEN erc_type = 'erc721'  THEN cardinality(array_agg(DISTINCT "tokenId")) END AS no_of_transfers,
-    array_agg("from") AS from_array,
-    array_agg("to") AS to_array,
     array_agg(erc_type) AS erc_type_array,
     array_agg(contract_address) AS contract_address_array,
-    array_agg(VALUE) AS erc1155_value_array,
     array_agg(evt_index) AS evt_index_array
 FROM erc_union
 GROUP BY 1,erc_type,value
@@ -242,11 +238,10 @@ rows AS (
         AND p.minute >= start_ts
         AND p.minute < end_ts
     LEFT JOIN prices.usd peth ON peth.minute = date_trunc('minute', trades.block_time)
-        AND peth.contract_address = trades.currency_token
+        AND peth.symbol = 'WETH'
         AND peth.minute >= start_ts
         AND peth.minute < end_ts
     LEFT JOIN erc20.tokens erc20 ON erc20.contract_address = trades.currency_token
-    WHERE peth.symbol = 'WETH'
     ON CONFLICT DO NOTHING
     RETURNING 1
 )

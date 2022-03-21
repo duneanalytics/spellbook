@@ -67,7 +67,8 @@ rows AS (
 
 SELECT
     tx.block_time AS block_time,
-    tokens.name AS nft_project_name,
+    CASE WHEN agg.name is NOT NULL THEN tokens_agg.name
+    ELSE tokens.name END AS nft_project_name,
     wc.token_id AS nft_token_id, 
     wc.erc_standard AS erc_standard,
     'OpenSea' AS platform,
@@ -86,12 +87,15 @@ SELECT
             FROM erc721."ERC721_evt_Transfer" erc721
             WHERE erc721.evt_tx_hash = wc.call_tx_hash
             AND erc721."from" NOT IN ('\x0000000000000000000000000000000000000000')
+            AND erc721.evt_block_time >= start_ts and erc721.evt_block_time < end_ts
           ) +    
           (SELECT
                 count(1) cnt
             FROM erc1155."ERC1155_evt_TransferSingle" erc1155
             WHERE erc1155.evt_tx_hash = wc.call_tx_hash
             AND erc1155."from" NOT IN ('\x0000000000000000000000000000000000000000')
+            AND erc1155.evt_block_time >= start_ts and erc1155.evt_block_time < end_ts
+    
           )
     END AS number_of_items, 
     'Buy' AS category,
@@ -112,11 +116,10 @@ SELECT
     2.5 AS platform_fees_percent,
     ROUND(cast(2.5*(wc.original_amount / 10 ^ erc20.decimals)/100 as numeric),7) AS original_platform_fees,
     ROUND(cast(2.5*(wc.original_amount / 10 ^ erc20.decimals * p.price)/100 as numeric),7) AS usd_platform_fees, 
-    CASE WHEN wc.original_currency_address[1] = '\x0000000000000000000000000000000000000000' THEN 'ETH' ELSE erc20.symbol END AS original_currency,
-    wc.original_currency_address[1] AS original_currency_contract,
+    CASE WHEN wc.original_currency_address = '\x0000000000000000000000000000000000000000' THEN 'ETH' ELSE erc20.symbol END AS original_currency,
+    wc.original_currency_address AS original_currency_contract,
     wc.currency_token AS currency_contract,
-    CASE WHEN agg.name is NULL THEN wc.nft_contract_address
-         ELSE wc.nft_contract_address_when_aggr END AS nft_contract_address,
+    wc.nft_contract_address AS nft_contract_address,
     wc.exchange_contract_address, 
     wc.call_tx_hash AS tx_hash,
     tx.block_number,
@@ -130,18 +133,22 @@ LEFT JOIN nft.wyvern_data wc ON wc.call_tx_hash = tx.hash
 LEFT JOIN erc_values_1155 ON erc_values_1155.evt_tx_hash = tx.hash AND wc.token_id = erc_values_1155.token_id_erc
 LEFT JOIN erc_count_721 ON erc_count_721.evt_tx_hash = tx.hash AND wc.token_id = erc_count_721.token_id_erc
 LEFT JOIN nft.tokens tokens ON tokens.contract_address = wc.nft_contract_address
+LEFT JOIN nft.tokens tokens_agg ON tokens_agg.contract_address = wc.nft_contract_address
 LEFT JOIN nft.aggregators agg ON agg.contract_address = tx."to"
 LEFT JOIN prices.usd p ON p.minute = date_trunc('minute', tx.block_time)
     AND p.contract_address = wc.currency_token
+    AND p.minute >= start_ts
+    AND p.minute < end_ts
 LEFT JOIN prices.usd peth ON peth.minute = date_trunc('minute', tx.block_time)
-    AND peth.contract_address = wc.currency_token
+    AND peth.symbol = 'WETH'
+    AND peth.minute >= start_ts
+    AND peth.minute < end_ts
 LEFT JOIN erc20.tokens erc20 ON erc20.contract_address = wc.currency_token
 WHERE
         NOT EXISTS (SELECT * -- Exclude OpenSea mint transactions
         FROM erc721."ERC721_evt_Transfer" erc721
         WHERE wc.call_tx_hash = erc721.evt_tx_hash
         AND erc721."from" = '\x0000000000000000000000000000000000000000')
-        AND peth.symbol = 'WETH'
         AND tx.block_time >= start_ts
         AND tx.block_time < end_ts
 ON CONFLICT DO NOTHING

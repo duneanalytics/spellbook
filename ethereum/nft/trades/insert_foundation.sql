@@ -39,15 +39,9 @@ AND erc1155."from" <> '\x0000000000000000000000000000000000000000' -- exclude mi
 foundation_erc_subsets AS (
 SELECT
     evt_tx_hash,
-    array_agg(DISTINCT "tokenId") AS token_id_array,
     CASE WHEN erc_type = 'erc1155' THEN value
          WHEN erc_type = 'erc721'  THEN cardinality(array_agg(DISTINCT "tokenId")) END AS no_of_transfers,
-    array_agg(DISTINCT "from") AS from_array,
-    array_agg(DISTINCT "to") AS to_array,
-    array_agg(DISTINCT erc_type) AS erc_type_array,
-    array_agg(DISTINCT contract_address) AS contract_address_array,
-    array_agg(DISTINCT value) AS erc1155_value_array,
-    array_agg(evt_index) AS evt_index_array
+    array_agg(DISTINCT erc_type) AS erc_type_array
 FROM foundation_erc_union
 GROUP BY 1,erc_type,value
 ),

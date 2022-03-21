@@ -300,15 +300,11 @@ rarible_erc_subsets AS (
 SELECT
     evt_tx_hash,
     fees/10 ^18 as fees,
-    array_agg(DISTINCT "tokenId") AS token_id_array,
     CASE WHEN erc_type = 'erc1155' THEN value
          WHEN erc_type = 'erc721'  THEN cardinality(array_agg(DISTINCT "tokenId")) END AS no_of_transfers,
     array_agg(DISTINCT "from") AS from_array,
     array_agg(DISTINCT "to") AS to_array,
-    array_agg(DISTINCT erc_type) AS erc_type_array,
-    array_agg(DISTINCT contract_address) AS contract_address_array,
-    array_agg(DISTINCT value) AS erc1155_value_array,
-    array_agg(evt_index) AS evt_index_array
+    array_agg(DISTINCT erc_type) AS erc_type_array
 FROM rarible_erc_union
 LEFT JOIN royalty_fees rf ON rf.tx_hash = evt_tx_hash AND rf.tx_to = "from"
 GROUP BY 1,erc_type,value,fees
@@ -409,12 +405,11 @@ rows AS (
         AND p.minute >= start_ts
         AND p.minute < end_ts
     LEFT JOIN prices.usd peth ON peth.minute = date_trunc('minute', trades.evt_block_time)
-        AND peth.contract_address = trades.currency_contract
+        AND peth.symbol = 'WETH'
         AND peth.minute >= start_ts
         AND peth.minute < end_ts
     WHERE   trades.evt_block_time >= start_ts
         AND trades.evt_block_time < end_ts
-        AND peth.symbol = 'WETH'
    ON CONFLICT DO NOTHING
     RETURNING 1
 )

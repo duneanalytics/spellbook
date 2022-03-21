@@ -60,11 +60,7 @@ SELECT
     CASE WHEN erc_type = 'erc1155' THEN value
          WHEN erc_type = 'erc721'  THEN cardinality(array_agg(DISTINCT "tokenId")) END AS no_of_transfers,
     array_agg(DISTINCT "from") AS from_array,
-    array_agg(DISTINCT "to") AS to_array,
-    array_agg(DISTINCT erc_type) AS erc_type_array,
-    array_agg(DISTINCT contract_address) AS contract_address_array,
-    array_agg(DISTINCT value) AS erc1155_value_array,
-    array_agg(evt_index) AS evt_index_array
+    array_agg(DISTINCT "to") AS to_array
 FROM punks_union
 GROUP BY 1,2,3,erc_type,value
 ),

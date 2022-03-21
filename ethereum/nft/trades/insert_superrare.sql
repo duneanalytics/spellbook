@@ -234,15 +234,12 @@ AND st.contract_address = '\x41a322b28d0ff354040e2cbc676f0320d8c8850d'
 superrare_erc_subsets AS (
 SELECT
     evt_tx_hash,
-    array_agg("tokenId") AS token_id_array,
     CASE WHEN erc_type = 'erc1155' THEN value
          WHEN erc_type = 'erc721'  THEN cardinality(array_agg(DISTINCT "tokenId")) END AS no_of_transfers,
     array_agg("from") AS from_array,
     array_agg("to") AS to_array,
     array_agg(erc_type) AS erc_type_array,
-    array_agg(contract_address) AS contract_address_array,
-    array_agg(value) AS erc1155_value_array,
-    array_agg(evt_index) AS evt_index_array
+    array_agg(contract_address) AS contract_address_array
 FROM superrare_erc_union
 GROUP BY 1, erc_type, value
 ),
