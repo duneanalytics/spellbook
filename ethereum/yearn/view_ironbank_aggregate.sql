@@ -1,4 +1,7 @@
+BEGIN;
 
+DROP VIEW IF EXISTS yearn."view_ironbank_aggregate" CASCADE;
+CREATE VIEW yearn."view_ironbank_aggregate" AS(
 With borrows as(
 (SELECT payer as address_one,
 borrower as address_two, 
@@ -174,4 +177,5 @@ tr.evt_block_time,
 tr.evt_block_number, tr.transaction_type 
 FROM transfers tr
 LEFT JOIN erc20."tokens" tok on tr.contract_address = tok.contract_address
+ )
 
