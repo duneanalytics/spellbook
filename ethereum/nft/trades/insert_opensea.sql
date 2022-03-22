@@ -95,7 +95,6 @@ SELECT
             WHERE erc1155.evt_tx_hash = wc.call_tx_hash
             AND erc1155."from" NOT IN ('\x0000000000000000000000000000000000000000')
             AND erc1155.evt_block_time >= start_ts and erc1155.evt_block_time < end_ts
-    
           )
     END AS number_of_items, 
     'Buy' AS category,

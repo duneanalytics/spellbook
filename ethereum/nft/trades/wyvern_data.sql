@@ -7,7 +7,6 @@ CREATE TABLE IF NOT EXISTS nft.wyvern_data(
         erc_standard text,
         exchange_contract_address bytea,
         nft_contract_address bytea,
-        nft_contract_address_when_aggr bytea,
         currency_token bytea,
         original_amount numeric,
         buyer bytea,
