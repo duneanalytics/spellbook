@@ -1,7 +1,7 @@
 BEGIN;
-DROP MATERIALIZED VIEW IF EXISTS safe.view_safes;
+DROP MATERIALIZED VIEW IF EXISTS gnosis_safe.view_safes;
 
-CREATE MATERIALIZED VIEW safe.view_safes AS
+CREATE MATERIALIZED VIEW gnosis_safe.view_safes AS
     SELECT
     	et.from AS address,
     	et.block_time AS creation_time
@@ -23,6 +23,6 @@ CREATE MATERIALIZED VIEW safe.view_safes AS
     FROM gnosis_safe."GnosisSafev1.3.0_evt_SafeSetup";
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('0 0 * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY safe.view_safes$$)
+VALUES ('0 0 * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_safe.view_safes$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;
