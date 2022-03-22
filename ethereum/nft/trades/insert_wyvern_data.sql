@@ -61,6 +61,20 @@ WHERE "from" in ('\x7Be8076f4EA4A4AD08075C2508e481d6C946D12b', '\x7f268357a8c255
 AND "to" = '\x5b3256965e7c3cf26e11fcaf296dfc8807c01073' -- OpenSea Wallet
 AND traces.block_time >= start_ts
 AND traces.block_time < end_ts
+        UNION ALL 
+SELECT 
+    '{3}' as trace_address,
+    evt_tx_hash as tx_hash,
+    value / 10^token.decimals * price AS fees,
+    "from",
+    "to"
+   FROM erc20."ERC20_evt_Transfer" erc
+   INNER JOIN erc20."tokens" token ON erc.contract_address = token.contract_address
+   INNER JOIN prices.usd p ON p.minute = date_trunc('minute', evt_block_time)
+   AND erc.contract_address = p.contract_address
+   AND "to" = '\x5b3256965e7c3cf26e11fcaf296dfc8807c01073'
+   AND evt_block_time >= start_ts
+   AND evt_block_time < start_ts
 ),
 
 rows AS (
