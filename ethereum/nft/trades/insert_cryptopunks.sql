@@ -56,11 +56,11 @@ SELECT
     evt_block_number,
     MIN(evt_index) AS evt_index,
     MAX(value) AS value,
-    array_agg(DISTINCT "tokenId") AS token_id_array,
+    array_agg("tokenId") AS token_id_array,
     CASE WHEN erc_type = 'erc1155' THEN value
-         WHEN erc_type = 'erc721'  THEN cardinality(array_agg(DISTINCT "tokenId")) END AS no_of_transfers,
-    array_agg(DISTINCT "from") AS from_array,
-    array_agg(DISTINCT "to") AS to_array
+         WHEN erc_type = 'erc721'  THEN cardinality(array_agg("tokenId")) END AS no_of_transfers,
+    array_agg("from") AS from_array,
+    array_agg("to") AS to_array
 FROM punks_union
 GROUP BY 1,2,3,erc_type,value
 ),
