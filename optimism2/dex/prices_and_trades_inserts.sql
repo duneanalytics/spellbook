@@ -16,9 +16,9 @@ VALUES ('15,30,45,59 * * * *', $$
 	SELECT dex.insert_uniswap_v3( (SELECT max(block_time) - interval '1 hour' FROM dex.trades WHERE project='Uniswap' AND version = '3'), now() );
 	SELECT dex.insert_oneinch( (SELECT max(block_time) - interval '1 hour' FROM dex.trades WHERE project='1inch'), now(), 0);
 	SELECT dex.insert_zeroex( (SELECT max(block_time) - interval '1 hour' FROM dex.trades WHERE project IN ('0x API', 'Matcha')), now() );
---	SELECT dex.insert_clipper( (SELECT max(block_time) - interval '1 hour' FROM dex.trades WHERE project='Clipper'), now() );
 	SELECT dex.insert_zipswap( (SELECT max(block_time) - interval '1 hour' FROM dex.trades WHERE project='Zipswap'), now() );
 	SELECT dex.insert_curve( (SELECT max(block_time) - interval '1 hour' FROM dex.trades WHERE project='Curve'), now() );
+	SELECT dex.insert_clipper( (SELECT max(block_time) - interval '1 hour' FROM dex.trades WHERE project='Clipper'), now() );
 	--ADD REMAINING DEX INSERTS HERE
 --END DEX Inserts
 ----------
