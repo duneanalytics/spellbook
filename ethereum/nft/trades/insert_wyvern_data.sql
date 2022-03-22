@@ -17,6 +17,7 @@ WITH wyvern_calldata AS (
         addrs [1] as exchange_contract_address,
         CASE WHEN substring("calldataBuy",1,4) in ('\xfb16a595','\x96809f90') THEN CAST(substr("calldataBuy", 81,20) as bytea) -- the NFT contract address
             WHEN  substring("calldataBuy",1,4) in ('\x23b872dd','\xf242432a') THEN addrs [5]
+            ELSE addrs [5]
             END AS nft_contract_address,
         CASE -- Replace `ETH` with `WETH` for ERC20 lookup later
             WHEN addrs [7] = '\x0000000000000000000000000000000000000000' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
@@ -95,7 +96,7 @@ rows AS (
         original_currency_address,
         fees
     FROM wyvern_calldata wc
-    INNER JOIN royalty_fees rf ON rf.tx_hash = wc.call_tx_hash AND rf.trace_address = wc.call_trace_address
+    LEFT JOIN royalty_fees rf ON rf.tx_hash = wc.call_tx_hash AND rf.trace_address = wc.call_trace_address
     ON CONFLICT DO NOTHING
     RETURNING 1
 )
