@@ -18,7 +18,8 @@ WITH gs AS (
     DATE_TRUNC('hour', end_block_time ),
     '1 hour'
     ) AS hr
-    , "feed_name"
+	, "feed_name"
+	,underlying_token_address
     FROM chainlink.oracle_addresses
 )
 
@@ -37,6 +38,9 @@ FROM (
 	    ON l.contract_address = cfa.address
 	WHERE topic1 = '\x0559884fd3a460db3073b7fc896cc77986f16e378210ded43186175bf646fc5f' --Answer Updated
 	AND contract_address IN (SELECT address FROM chainlink.oracle_addresses)
+	AND block_time >= start_block_time
+	AND block_time < end_block_time
+	
 	GROUP BY 1,2, 4,5
 	) c
 LEFT JOIN chainlink.oracle_token_mapping o
@@ -46,20 +50,20 @@ LEFT JOIN chainlink.oracle_token_mapping o
 SELECT --avg in case there are multiple overlapping feeds
 	hour, feed_name, AVG(price) AS price, underlying_token_address, underlying_token_price
 FROM (
-SELECT hr AS hour, feed_name
+SELECT hr AS hour, feed_name, underlying_token_address
 , first_value(price) OVER (PARTITION BY feed_name, grp ORDER BY hr) AS price
-, first_value(underlying_token_address) OVER (PARTITION BY feed_name, grp ORDER BY hr) AS underlying_token_address
 , first_value(underlying_token_price) OVER (PARTITION BY feed_name, grp ORDER BY hr) AS underlying_token_price
 
 FROM (
 SELECT hr, feed_name, price, underlying_token_address, underlying_token_price,
 count(price) OVER (PARTITION BY feed_name ORDER BY hr) AS grp
 FROM (
-    SELECT gs.hr, gs.feed_name, price, underlying_token_address, underlying_token_price
+    SELECT gs.hr, gs.feed_name, price, gs.underlying_token_address, underlying_token_price
     FROM gs
     LEFT JOIN feed_updates f
         ON gs.hr = f.dt
         AND gs.feed_name = f.feed_name
+	AND gs.underlying_token_address = f.underlying_token_address
 
 -- Union with the most recent prices to pull forward prices 
     UNION ALL
@@ -67,14 +71,18 @@ FROM (
     	FROM (
     		SELECT hour, feed_name, price, underlying_token_address, underlying_token_price,
     			DENSE_RANK() OVER (PARTITION BY feed_name, underlying_token_address ORDER BY hour DESC) AS h_rank
-    			FROM chainlink.view_price_feeds
+    			FROM chainlink.view_price_feeds v
     		WHERE hour >= start_block_time - interval '1 day'
+		AND hour < end_block_time
+		AND NOT EXISTS (SELECT 1 FROM feed_updates f WHERE f.hour = v.hour AND f.feed_name = v.feed_name) -- doesn't have an update
         	) old
     	WHERE h_rank = 1
     	) str
     ) uni
 ) a
 WHERE price IS NOT NULL
+AND hour >= DATE_TRUNC('hour',start_block_time)
+AND hour <= DATE_TRUNC('hour',end_block_time)
 GROUP BY hour, feed_name, underlying_token_address, underlying_token_price
 
 ON CONFLICT (hour,feed_name,underlying_token_address)
