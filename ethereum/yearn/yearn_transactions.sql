@@ -112,7 +112,7 @@ $function$;
 SELECT yearn.insert_yearn_transactions(
     '2020-01-01',
     now(),
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
+    (SELECT MAX(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
     (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
 )
 WHERE NOT EXISTS (
@@ -125,9 +125,9 @@ WHERE NOT EXISTS (
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/20 * * * *', $$
     SELECT yearn.insert_yearn_transactions(
-        (SELECT max(block_time) - interval '1 days' FROM yearn.view_transactions),
+        (SELECT MAX(block_time) - interval '1 days' FROM yearn.view_transactions),
         (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM yearn.view_transactions)),
+        (SELECT MAX(number) FROM ethereum.blocks WHERE time < (SELECT MAX(block_time) - interval '1 days' FROM yearn.view_transactions)),
         (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

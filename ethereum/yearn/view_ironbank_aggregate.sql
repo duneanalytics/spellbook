@@ -2,7 +2,7 @@ BEGIN;
 
 DROP VIEW IF EXISTS yearn."view_ironbank_aggregate" CASCADE;
 CREATE VIEW yearn."view_ironbank_aggregate" AS(
-With borrows as(
+WITH borrows AS(
 (SELECT payer as address_one,
 borrower as address_two, 
 'payer' as address_one_type, 
@@ -52,7 +52,7 @@ evt_tx_hash,
 evt_index, 
 evt_block_time, 
 evt_block_number, 
-'Reserves Reduced' as transaction_type
+'ReservesReduced' as transaction_type
 FROM yearn."ironbank_evt_ReservesReduced"
 )
 

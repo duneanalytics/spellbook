@@ -38,16 +38,16 @@ CREATE VIEW yearn."view_yearn_contract_tokens" AS(
     erc20."ERC20_evt_Transfer") ett left join erc20."tokens" et on ett."mod_contract" = et."contract_address"
     WHERE
     "from" in (
-        (SELECT DISTINCT("contract_address") FROM yearn."yVault_evt_Transfer")
+        (SELECT DISTINCT("contract_address") AS yearn_type FROM yearn."yVault_evt_Transfer")
         UNION ALL
-        (SELECT DISTINCT("contract_address") yearn_type FROM iearn_v2."yToken_evt_Transfer")
+        (SELECT DISTINCT("contract_address") AS yearn_type FROM iearn_v2."yToken_evt_Transfer")
         UNION ALL
-        (SELECT DISTINCT("contract_address") as yearn_type FROM yearn_v2."yVault_evt_Transfer")
+        (SELECT DISTINCT("contract_address") AS yearn_type FROM yearn_v2."yVault_evt_Transfer")
         UNION ALL
-        (SELECT DISTINCT("contract_address") as yearn_type FROM yearn."ironbank_evt_Transfer")
+        (SELECT DISTINCT("contract_address") AS yearn_type FROM yearn."ironbank_evt_Transfer")
         --iron bank can have ibEUR,ibAUD etc as supply assets https://app.ib.xyz/
         UNION ALL
-        (SELECT DISTINCT("contract_address") as yearn_type FROM yearn."woofy_evt_Transfer")
+        (SELECT DISTINCT("contract_address") AS yearn_type FROM yearn."woofy_evt_Transfer")
         )
         and "from" != ett."contract_address"
     group by 1,2,3,4,5
