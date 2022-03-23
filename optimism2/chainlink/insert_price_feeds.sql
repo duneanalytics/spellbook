@@ -62,7 +62,7 @@ FROM (
     FROM gs
     LEFT JOIN feed_updates f
         ON gs.hr = f.dt
-        AND gs.feed_name = f.feed_name
+--         AND gs.feed_name = f.feed_name --just underlying token address since feed names can get wonky
 	AND gs.underlying_token_address = f.underlying_token_address
 
 -- Union with the most recent prices to pull forward prices 
@@ -74,7 +74,7 @@ FROM (
     			FROM chainlink.view_price_feeds v
     		WHERE hour >= start_block_time - interval '1 day'
 		AND hour < end_block_time
-		AND NOT EXISTS (SELECT 1 FROM feed_updates f WHERE f.hour = v.hour AND f.feed_name = v.feed_name) -- doesn't have an update
+		AND NOT EXISTS (SELECT 1 FROM feed_updates f WHERE f.dt = v.hour AND f.feed_name = v.feed_name) -- doesn't have an update
         	) old
     	WHERE h_rank = 1
     	) str
