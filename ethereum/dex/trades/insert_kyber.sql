@@ -175,6 +175,8 @@ WITH rows AS (
         AND dst_token.contract_address != '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
         AND evt_block_time >= start_ts AND evt_block_time < end_ts
 
+        UNION ALL
+
         SELECT
             t.evt_block_time AS block_time,
             'Kyber' AS project,
@@ -195,6 +197,8 @@ WITH rows AS (
             kyber."DMMPool_evt_Swap" t
         INNER JOIN kyber."DMMFactory_evt_PoolCreated" f ON f.pool = t.contract_address        
         AND t.evt_block_time >= start_ts AND t.evt_block_time < end_ts
+
+        UNION ALL
 
         -- from Aggregator 
         SELECT
