@@ -79,6 +79,7 @@ WITH rows AS (
             kyber."Network_evt_KyberTrade"
         WHERE src NOT IN ('\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee','\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2')
         AND evt_block_time >= start_ts AND evt_block_time < end_ts
+        
         UNION ALL
 
         -- Kyber: trade from ETH - Token
