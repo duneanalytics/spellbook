@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS chainlink.oracle_token_mapping (
 BEGIN;
 DELETE FROM chainlink.oracle_token_mapping *;
 
-COPY chainlink.oracle_token_mapping (proxy, underlying_token_address, extra_decimals) FROM stdin;
+COPY chainlink.oracle_token_mapping (feed_name, proxy, underlying_token_address, extra_decimals) FROM stdin;
 AAVE / USD	\\x338ed6787f463394D24813b297401B9F05a8C9d1	\\x76FB31fb4af56892A25e32cFC43De717950c9278	0	--AAVE
 AAVE / USD	\\x338ed6787f463394D24813b297401B9F05a8C9d1	\\x00B8D5a5e1Ac97Cb4341c4Bc4367443c8776e8d9	0	--sAAVE synth
 BTC / USD	\\xD702DD976Fb76Fffc2D3963D037dfDae5b04E593	\\x68f180fcCe6836688e9084f035309E29Bf0A2095	0	--WBTC
