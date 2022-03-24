@@ -55,29 +55,29 @@ WITH rows AS (
         evt_index,
         row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
-        -- DMMFactory_evt_PoolCreated is not yet available on Dune for Polygon
-        -- SELECT
-        --     t.evt_block_time AS block_time,
-        --     'Kyber' AS project,
-        --     'dmm' AS version,
-        --     'DEX' AS category,
-        --     t."to" AS trader_a,
-        --     NULL::bytea AS trader_b,
-        --     CASE WHEN "amount0Out" = 0 THEN "amount1Out" ELSE "amount0Out" END AS token_a_amount_raw,
-        --     CASE WHEN "amount0In" = 0 OR "amount1Out" = 0 THEN "amount1In" ELSE "amount0In" END AS token_b_amount_raw,
-        --     NULL::numeric AS usd_amount,
-        --     CASE WHEN "amount0Out" = 0 THEN f.token1 ELSE f.token0 END AS token_a_address,
-        --     CASE WHEN "amount0In" = 0 OR "amount1Out" = 0 THEN f.token1 ELSE f.token0 END AS token_b_address,
-        --     t.contract_address AS exchange_contract_address,
-        --     t.evt_tx_hash AS tx_hash,
-        --     NULL::integer[] AS trace_address,
-        --     t.evt_index
-        -- FROM
-        --     kyber."DMMPool_evt_Swap" t
-        -- INNER JOIN kyber."DMMFactory_evt_PoolCreated" f ON f.pool = t.contract_address        
-        -- AND t.evt_block_time >= start_ts AND t.evt_block_time < end_ts
 
-        -- UNION ALL
+        SELECT
+            t.evt_block_time AS block_time,
+            'Kyber' AS project,
+            'dmm' AS version,
+            'DEX' AS category,
+            t."to" AS trader_a,
+            NULL::bytea AS trader_b,
+            CASE WHEN "amount0Out" = 0 THEN "amount1Out" ELSE "amount0Out" END AS token_a_amount_raw,
+            CASE WHEN "amount0In" = 0 OR "amount1Out" = 0 THEN "amount1In" ELSE "amount0In" END AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            CASE WHEN "amount0Out" = 0 THEN f.token1 ELSE f.token0 END AS token_a_address,
+            CASE WHEN "amount0In" = 0 OR "amount1Out" = 0 THEN f.token1 ELSE f.token0 END AS token_b_address,
+            t.contract_address AS exchange_contract_address,
+            t.evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            t.evt_index
+        FROM
+            kyber."DMMPool_evt_Swap" t
+        INNER JOIN kyber."Kyber Swap: Factory_evt_PoolCreated" f ON f.pool = t.contract_address        
+        AND t.evt_block_time >= start_ts AND t.evt_block_time < end_ts
+
+        UNION ALL
         
         -- from Aggregator 
         SELECT
