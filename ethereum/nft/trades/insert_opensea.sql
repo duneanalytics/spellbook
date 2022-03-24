@@ -79,18 +79,18 @@ SELECT
     WHEN agg.name is NULL AND erc_values_1155.value_unique > 1 OR erc_count_721.count_erc > 1 THEN 'Bundle Trade'
     ELSE wc.trade_type END AS trade_type,
     CASE -- Count number of items traded for different trade types and erc standards
-    WHEN wc.erc_standard = 'erc1155' THEN cast(erc_values_1155.value_unique as numeric)
-    WHEN wc.erc_standard = 'erc721' THEN cast(erc_count_721.count_erc as numeric)
-    WHEN wc.trade_type = 'Single Item Trade' THEN cast(1 as numeric)
+    WHEN wc.erc_standard = 'erc1155' THEN erc_values_1155.value_unique
+    WHEN wc.erc_standard = 'erc721' THEN erc_count_721.count_erc
+    WHEN wc.trade_type = 'Single Item Trade' THEN 1
     ELSE (SELECT
-                cast(count(1) as numeric) cnt
+                count(1) cnt
             FROM erc721."ERC721_evt_Transfer" erc721
             WHERE erc721.evt_tx_hash = wc.call_tx_hash
             AND erc721."from" NOT IN ('\x0000000000000000000000000000000000000000')
             AND erc721.evt_block_time >= start_ts and erc721.evt_block_time < end_ts
           ) +    
           (SELECT
-                cast(count(1) as numeric) cnt
+                count(1) cnt
             FROM erc1155."ERC1155_evt_TransferSingle" erc1155
             WHERE erc1155.evt_tx_hash = wc.call_tx_hash
             AND erc1155."from" NOT IN ('\x0000000000000000000000000000000000000000')
