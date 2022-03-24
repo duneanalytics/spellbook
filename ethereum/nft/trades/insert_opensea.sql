@@ -100,7 +100,7 @@ SELECT
     'Buy' AS category,
     'Trade' AS evt_type,
     agg.name AS aggregator,
-    wc.original_amount / 10 ^ erc20.decimals * p.price AS usd_amount,
+    cast(wc.original_amount / 10.0 ^ erc20.decimals * p.price as numeric) AS usd_amount,
     wc.seller AS seller,
     CASE WHEN agg.name is NULL THEN wc.buyer
          ELSE wc.buyer_when_aggr END AS buyer,
