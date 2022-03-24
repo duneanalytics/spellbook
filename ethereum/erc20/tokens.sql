@@ -6014,6 +6014,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\xfa57f00d948bb6a28072f5416fcbf7836c3d62dd	FRIES	18
 \\xffbf315f70e458e49229654dea4ce192d26f9b25	VOLT	18
 \\x1934e252f840aa98dfce2b6205b3e45c41aef830	₡ABIN	18
+\\x4d224452801aced8b2f0aebe155379bb5d594381	APE	18
 \.
 
 
