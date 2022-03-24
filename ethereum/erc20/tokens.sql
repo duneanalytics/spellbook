@@ -6028,7 +6028,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\xa74d4b67b3368e83797a35382afb776baae4f5c8	yvCurve-alUSD	18
 \\xb4ada607b9d6b2c9ee07a275e9616b84ac560139	yvCurve-FRAX	18
 \\xb9f747162ab1e95d07361f9048bcdf6edda9eea7	Wormhole	8
-\\xbb2b8038a1640196fbe3e38816f3e67cba72d940 UNIv2(WBTC/ETH)	18
+\\xbb2b8038a1640196fbe3e38816f3e67cba72d940	UNIv2(WBTC/ETH)	18
 \\xda816459f1ab5631232fe5e97a05bbbb94970c95	yvDAI	18
 \\xdec41db0c33f3f6f3cb615449c311ba22d418a8d	LOBI	9
 \.
