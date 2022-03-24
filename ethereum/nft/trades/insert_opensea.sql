@@ -24,7 +24,17 @@ erc_count_721 as
         WHERE erc721."from" NOT IN ('\x0000000000000000000000000000000000000000')
         AND erc721.evt_block_time >= start_ts
         AND erc721.evt_block_time < end_ts
-        GROUP BY evt_tx_hash,"tokenId")
+        GROUP BY evt_tx_hash,"tokenId"),
+
+-- Get ERC721 token ID and number of token IDs for every trade transaction 
+erc_count_20 as
+(SELECT evt_tx_hash,
+        contract_address,
+        value
+    FROM erc20."ERC20_evt_Transfer" erc20
+    WHERE erc20."from" NOT IN ('\x0000000000000000000000000000000000000000')
+        AND erc20.evt_block_time >= start_ts
+        AND erc20.evt_block_time < end_ts)
 
 rows AS (
     INSERT INTO nft.trades(
@@ -68,35 +78,42 @@ rows AS (
 SELECT
     tx.block_time AS block_time,
     CASE WHEN agg.name is NOT NULL THEN tokens_agg.name
-    ELSE tokens.name END AS nft_project_name,
-    wc.token_id AS nft_token_id, 
-    wc.erc_standard AS erc_standard,
+        ELSE tokens.name END AS nft_project_name,
+    CASE WHEN erc_count_20.evt_tx_hash = wc.call_tx_hash THEN null::text
+        ELSE wc.token_id END AS nft_token_id, 
+    CASE WHEN erc_count_20.evt_tx_hash = wc.call_tx_hash THEN 'erc20'
+        WHEN erc_values_1155.value_unique >= 1 THEN 'erc1155'
+        WHEN erc_count_721.count_erc >= 1 THEN 'erc721'
+        ELSE wc.erc_standard END AS erc_standard,
     'OpenSea' AS platform,
     '1' AS platform_version,
     CASE 
-    WHEN agg.name is NOT NULL THEN 'Aggregator Trade'  -- Aggregator Trade, see aggregators.sql to see included addresses and aggregators 
-    WHEN agg.name is NULL AND erc_values_1155.value_unique = 1 OR erc_count_721.count_erc = 1 THEN 'Single Item Trade'
-    WHEN agg.name is NULL AND erc_values_1155.value_unique > 1 OR erc_count_721.count_erc > 1 THEN 'Bundle Trade'
+        WHEN agg.name is NOT NULL THEN 'Aggregator Trade'  -- Aggregator Trade, see aggregators.sql to see included addresses and aggregators 
+        WHEN agg.name is NULL AND erc_values_1155.value_unique = 1 OR erc_count_721.count_erc = 1 THEN 'Single Item Trade'
+        WHEN agg.name is NULL AND erc_values_1155.value_unique > 1 OR erc_count_721.count_erc > 1 THEN 'Bundle Trade'
     ELSE wc.trade_type END AS trade_type,
-    CASE -- Count number of items traded for different trade types and erc standards
-    WHEN wc.erc_standard = 'erc1155' THEN erc_values_1155.value_unique
-    WHEN wc.erc_standard = 'erc721' THEN erc_count_721.count_erc
-    WHEN wc.trade_type = 'Single Item Trade' THEN 1
-    ELSE (SELECT
-                count(1) cnt
+    -- Count number of items traded for different trade types and erc standards
+    CASE 
+        WHEN erc_count_20.evt_tx_hash = wc.call_tx_hash THEN cast(wc.token_id as numeric)
+        WHEN agg.name is NULL AND erc_values_1155.value_unique > 1 THEN cast(erc_values_1155.value_unique as numeric)
+        WHEN agg.name is NULL AND erc_count_721.count_erc > 1 THEN cast(erc_count_721.count_erc as numeric)
+        WHEN wc.trade_type = 'Single Item Trade' THEN cast(1 as numeric)
+        WHEN wc.erc_standard = 'erc1155' THEN cast(erc_values_1155.value_unique as numeric)
+        WHEN wc.erc_standard = 'erc721' THEN cast(erc_count_721.count_erc as numeric)
+        ELSE (SELECT
+                cast(count(1) as numeric) cnt
             FROM erc721."ERC721_evt_Transfer" erc721
             WHERE erc721.evt_tx_hash = wc.call_tx_hash
             AND erc721."from" NOT IN ('\x0000000000000000000000000000000000000000')
             AND erc721.evt_block_time >= start_ts and erc721.evt_block_time < end_ts
           ) +    
           (SELECT
-                count(1) cnt
+               cast(count(1) as numeric)
             FROM erc1155."ERC1155_evt_TransferSingle" erc1155
             WHERE erc1155.evt_tx_hash = wc.call_tx_hash
             AND erc1155."from" NOT IN ('\x0000000000000000000000000000000000000000')
             AND erc1155.evt_block_time >= start_ts and erc1155.evt_block_time < end_ts
-          )
-    END AS number_of_items, 
+          ) END AS number_of_items,
     'Buy' AS category,
     'Trade' AS evt_type,
     agg.name AS aggregator,
@@ -131,6 +148,7 @@ FROM nft.wyvern_data wc
 LEFT JOIN ethereum.transactions tx ON wc.call_tx_hash = tx.hash
 LEFT JOIN erc_values_1155 ON erc_values_1155.evt_tx_hash = tx.hash AND wc.token_id = erc_values_1155.token_id_erc
 LEFT JOIN erc_count_721 ON erc_count_721.evt_tx_hash = tx.hash AND wc.token_id = erc_count_721.token_id_erc
+LEFT JOIN erc_count_20 ON erc_count_20.evt_tx_hash = tx.hash AND wc.nft_contract_address = erc_count_20.contract_address 
 LEFT JOIN nft.tokens tokens ON tokens.contract_address = wc.nft_contract_address
 LEFT JOIN nft.tokens tokens_agg ON tokens_agg.contract_address = wc.nft_contract_address
 LEFT JOIN nft.aggregators agg ON agg.contract_address = tx."to"
