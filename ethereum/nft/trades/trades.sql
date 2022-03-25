@@ -2,7 +2,7 @@ CREATE SCHEMA IF NOT EXISTS nft;
 
 DROP TABLE nft.trades;
 CREATE TABLE IF NOT EXISTS nft.trades(
-block_time timestamptz NOT NULL,
+    block_time timestamptz NOT NULL,
     nft_project_name text,
     nft_token_id text,
     erc_standard text,
@@ -46,7 +46,3 @@ CREATE INDEX IF NOT EXISTS nft_trades_seller_idx ON nft.trades (seller);
 CREATE INDEX IF NOT EXISTS nft_trades_buyer_idx ON nft.trades (buyer);
 CREATE INDEX IF NOT EXISTS nft_trades_nft_project_name_nft_token_id_block_time_idx ON nft.trades (nft_project_name, nft_token_id, block_time);
 CREATE INDEX IF NOT EXISTS nft_trades_block_time_platform_seller_buyer_nft_project_name_nft_token_id_idx ON nft.trades (block_time, platform, seller, buyer, nft_project_name, nft_token_id);
-CREATE INDEX IF NOT EXISTS nft_trades_nft_token_ids_array_idx ON nft.trades USING GIN(nft_token_ids_array);
-CREATE INDEX IF NOT EXISTS nft_trades_nft_contract_addresses_array_idx ON nft.trades USING GIN(nft_contract_addresses_array);
-CREATE INDEX IF NOT EXISTS nft_trades_senders_array_idx ON nft.trades USING GIN(senders_array);
-CREATE INDEX IF NOT EXISTS nft_trades_recipients_array_idx ON nft.trades USING GIN(recipients_array);
