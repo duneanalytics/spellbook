@@ -139,6 +139,8 @@ LEFT JOIN ethereum.transactions tx ON wc.call_tx_hash = tx.hash
 LEFT JOIN erc_values_1155 ON erc_values_1155.evt_tx_hash = tx.hash AND wc.token_id = erc_values_1155.token_id_erc
 LEFT JOIN erc_count_721 ON erc_count_721.evt_tx_hash = tx.hash AND wc.token_id = erc_count_721.token_id_erc
 LEFT JOIN erc20."ERC20_evt_Transfer" erc20tr ON erc20tr.evt_tx_hash = tx.hash AND wc.nft_contract_address = erc20tr.contract_address 
+    AND erc20tr.evt_block_time >= start_ts
+    AND erc20tr.evt_block_time < end_ts
 LEFT JOIN nft.tokens tokens ON tokens.contract_address = wc.nft_contract_address
 LEFT JOIN nft.tokens tokens_agg ON tokens_agg.contract_address = wc.nft_contract_address
 LEFT JOIN nft.aggregators agg ON agg.contract_address = tx."to"
@@ -158,8 +160,6 @@ WHERE
         AND erc721."from" = '\x0000000000000000000000000000000000000000')
         AND tx.block_time >= start_ts
         AND tx.block_time < end_ts
-        AND erc20tr.evt_block_time >= start_ts
-        AND erc20tr.evt_block_time < end_ts
 ON CONFLICT DO NOTHING
     RETURNING 1
 )
