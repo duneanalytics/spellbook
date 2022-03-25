@@ -1,12 +1,13 @@
 CREATE SCHEMA IF NOT EXISTS chainlink;
 
+DROP TABLE chainlink.view_price_feeds;
 CREATE TABLE IF NOT EXISTS chainlink.view_price_feeds(
     hour timestamptz NOT NULL,
     feed_name text NOT NULL,
     price numeric NOT NULL,
     underlying_token_address bytea,
     underlying_token_price numeric,
-        UNIQUE (hour,feed_name,underlying_token_address)
+    UNIQUE (hour,feed_name,underlying_token_address)
 );
 
 

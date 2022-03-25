@@ -10,7 +10,7 @@ BEGIN;
 DELETE FROM chainlink.oracle_addresses *;
 
 
-COPY chainlink.oracle_addresses (feed_name, decimals, proxy, address, underlying_token_address) FROM stdin;
+COPY chainlink.oracle_addresses (feed_name, decimals, proxy, address) FROM stdin;
 AAVE / USD	8	\\x338ed6787f463394D24813b297401B9F05a8C9d1	\\x81cc0c227bf9bfb8088b14755dfca65f7892203b
 BTC / USD	8	\\xD702DD976Fb76Fffc2D3963D037dfDae5b04E593	\\x0c1272d2ac652d10d03bb4deb0d31f15ea3eab2b
 CRV / USD	8	\\xbD92C6c284271c227a1e0bF1786F468b539f51D9	\\x7c56d3650f9acd992b3aa635c04a311c54ad264c

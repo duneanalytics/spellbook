@@ -38,4 +38,4 @@ SUSD / USD	\\x7f99817d87baD03ea21E05112Ca799d715730efe	\\x8c6f28f2F1A3C87F0f938b
 
 COMMIT;
 
-CREATE INDEX IF NOT EXISTS chainlink_oracle_token_mapping_idx ON chainlink.oracle_addresses (proxy,underlying_token_address,extra_decimals);
+CREATE INDEX IF NOT EXISTS chainlink_oracle_token_mapping_idx ON chainlink.oracle_token_mapping (proxy,underlying_token_address,extra_decimals);

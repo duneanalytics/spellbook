@@ -101,13 +101,13 @@ DELETE FROM chainlink.view_price_feeds;
 SELECT chainlink.insert_price_feeds(
     '2021-11-11'::date,
     now()
-)
+);
+/*
 WHERE NOT EXISTS (
     SELECT *
     FROM chainlink.view_price_feeds
     LIMIT 1
 );
-/*
 INSERT INTO cron.job (schedule, command)
 VALUES ('15,30,45,59 * * * *', $$
     SELECT chainlink.insert_price_feeds(
