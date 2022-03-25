@@ -150,7 +150,7 @@ WITH zeroex_tx AS (
             FROM total_volume
             ON CONFLICT (tx_hash, evt_index)
             DO UPDATE SET
-                usd_amount = EXCLUDED.usd_amount,
+                volume_usd = EXCLUDED.volume_usd,
                 taker_token_symbol = EXCLUDED.taker_token_symbol,
                 maker_token_symbol = EXCLUDED.maker_token_symbol,
                 taker_token_amount = EXCLUDED.taker_token_amount,
