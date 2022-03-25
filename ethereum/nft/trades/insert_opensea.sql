@@ -34,7 +34,7 @@ erc_count_20 as
     FROM erc20."ERC20_evt_Transfer" erc20
     WHERE erc20."from" NOT IN ('\x0000000000000000000000000000000000000000')
         AND erc20.evt_block_time >= start_ts
-        AND erc20.evt_block_time < end_ts)
+        AND erc20.evt_block_time < end_ts),
 
 rows AS (
     INSERT INTO nft.trades(
