@@ -10,6 +10,8 @@ WITH erc_values_1155 as
         cardinality(array_agg(value)) as card_values,
         value as value_unique
         FROM erc1155."ERC1155_evt_TransferSingle" erc1155
+        LEFT JOIN nft.wyvern_data wc ON erc1155.evt_tx_hash = wc.call_tx_hash
+        AND wc.token_id = erc1155.id::text
         WHERE erc1155."from" NOT IN ('\x0000000000000000000000000000000000000000')
         AND erc1155.evt_block_time >= start_ts
         AND erc1155.evt_block_time < end_ts
@@ -21,6 +23,8 @@ erc_count_721 as
         "tokenId"::text as token_id_erc,
         COUNT("tokenId") as count_erc
         FROM erc721."ERC721_evt_Transfer" erc721
+        LEFT JOIN nft.wyvern_data wc ON erc721.evt_tx_hash = wc.call_tx_hash
+        AND wc.token_id = erc721."tokenId"::text
         WHERE erc721."from" NOT IN ('\x0000000000000000000000000000000000000000')
         AND erc721.evt_block_time >= start_ts
         AND erc721.evt_block_time < end_ts
