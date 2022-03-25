@@ -32,7 +32,7 @@ CREATE MATERIALIZED VIEW gnosis_safe.view_safes AS
 )
 
 CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS view_safes_eth_transfers_unique_idx ON gnosis_safe.view_safes_eth_transfers (tx_hash);
-CREATE INDEX IF NOT EXISTS view_safes_eth_transfers_block_time_idx ON dgnosis_safeex.view_safes_eth_transfers USING BRIN (block_time);
+CREATE INDEX IF NOT EXISTS view_safes_eth_transfers_block_time_idx ON gnosis_safe.view_safes_eth_transfers USING BRIN (block_time);
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('0 0 * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_safe.view_safes_eth_transfers$$)
