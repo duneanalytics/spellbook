@@ -17,7 +17,8 @@ evt_tx_hash,
 evt_index, 
 evt_block_time, 
 evt_block_number, 
-'RepayBorrow' as transaction_type FROM yearn."ironbank_evt_RepayBorrow"
+'RepayBorrow' as transaction_type 
+FROM yearn."ironbank_evt_RepayBorrow"
 UNION ALL
 (SELECT "borrower" as address_one,
 NULL as address_two, 
