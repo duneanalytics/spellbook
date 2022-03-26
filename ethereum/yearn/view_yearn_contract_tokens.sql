@@ -6,9 +6,9 @@ CREATE VIEW yearn."view_yearn_contract_tokens" AS(
     SELECT
     DISTINCT ON ("from")
     ett."mod_contract" as yVault_deposit_token,
-    "decimals" as yVault_deposit_token_decimals,
-    "symbol" as yVault_deposit_token_symbol,
-    "from" as yVault_contract,
+    et."decimals" as yVault_deposit_token_decimals,
+    et."symbol" as yVault_deposit_token_symbol,
+    ett."from" as yVault_contract,
     CASE
         WHEN "from" in (SELECT DISTINCT("contract_address") FROM yearn."yVault_evt_Transfer") then 'yearn_v1'
         WHEN "from" in (SELECT DISTINCT("contract_address") yearn_type FROM iearn_v2."yToken_evt_Transfer") then 'iearn_v2'
