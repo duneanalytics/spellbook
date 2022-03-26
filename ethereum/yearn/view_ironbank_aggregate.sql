@@ -172,7 +172,7 @@ bo.evt_index,
 bo.evt_block_time, 
 bo.evt_block_number, bo.transaction_type 
 FROM borrows bo
-LEFT JOIN dune_user_generated."view_yearn_contract_tokens" yct on bo.contract_address = yct.yvault_contract
+LEFT JOIN yearn."view_yearn_contract_tokens" yct on bo.contract_address = yct.yvault_contract
 UNION ALL 
 SELECT  
 tr.address_one, 
