@@ -3,7 +3,7 @@ DROP VIEW IF EXISTS yearn."view_yearn_contract_strategy";
 
 CREATE VIEW yearn."view_yearn_contract_strategy" AS(
     SELECT
-    "yvault_contract",
+    yct."yvault_contract",
     CASE
         --https://api.yearn.finance/v1/chains/1/vaults/all
         WHEN "yvault_contract" = '\x03403154afc09ce8e44c3b185c82c6ad5f86b9ab'::bytea then '\x7a10be29c4d9073e6b3b6b7d1fb5bcdbeca2aa1f'::bytea
@@ -39,9 +39,10 @@ CREATE VIEW yearn."view_yearn_contract_strategy" AS(
         WHEN "yvault_contract" = '\xfe39ce91437c76178665d64d7a2694b0f6f17fe3'::bytea then '\x406813ff2143d178d1ebccd2357c20a424208912'::bytea
         ELSE "strategy"
     END as strategy,
-    "yearn_type"
+    yct."yearn_type"
     FROM
-    yearn."view_yearn_contract_tokens" yct left join yearn_v2."yVault_evt_StrategyAdded" ys on yct."yvault_contract" = ys."contract_address"
+    yearn."view_yearn_contract_tokens" yct 
+    LEFT JOIN yearn_v2."yVault_evt_StrategyAdded" ys on yct."yvault_contract" = ys."contract_address"
     WHERE
     "yearn_type" not in ('iearn_v2','ironbank','woofy')
 )
