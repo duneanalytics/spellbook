@@ -9,7 +9,8 @@ CREATE TABLE yearn.view_transactions (
     evt_block_number numeric,
     yvault_deposit_token_symbol text,
     yvault_contract bytea,
-    transaction_type text
+    transaction_type text,
+    yearn_type text
 );
 
 CREATE OR REPLACE FUNCTION yearn.insert_yearn_transactions(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
@@ -28,7 +29,8 @@ WITH rows AS (
       evt_block_number,
       yvault_deposit_token_symbol,
       yvault_contract,
-      transaction_type
+      transaction_type,
+      yearn_type
     )
     ((SELECT
     ett."from" as from_address,
@@ -41,9 +43,11 @@ WITH rows AS (
     ett."evt_block_number",
     yct."yvault_deposit_token_symbol",
     yct."yvault_contract",
-    'deposit' as transaction_type
+    'deposit' as transaction_type,
+    yct."yearn_type"
     FROM
-    erc20."ERC20_evt_Transfer" ett inner join dune_user_generated."view_yearn_contract_tokens" yct on (ett."contract_address" = yct."yvault_deposit_token" AND ett."to" = yct."yvault_contract")
+    erc20."ERC20_evt_Transfer" ett 
+    INNER JOIN yearn."view_yearn_contract_tokens" yct on (ett."contract_address" = yct."yvault_deposit_token" AND ett."to" = yct."yvault_contract")
     WHERE ett."evt_tx_hash" in (
         (SELECT "call_tx_hash" from yearn."yVault_call_deposit")
         UNION ALL
@@ -57,10 +61,10 @@ WITH rows AS (
         UNION ALL
         (SELECT "call_tx_hash" from iearn_v2."yToken_call_deposit")
     )
-    AND ett.block_time >= start_ts
-    AND ett.block_time < end_ts
-    AND ett.block_number >= start_block
-    AND ett.block_number < end_block
+    AND ett.evt_block_time >= start_ts
+    AND ett.evt_block_time < end_ts
+    AND ett.evt_block_number >= start_block
+    AND ett.evt_block_number < end_block
     )
 
     UNION ALL
@@ -77,9 +81,11 @@ WITH rows AS (
     ett."evt_block_number",
     yct."yvault_deposit_token_symbol",
     yct."yvault_contract",
-    'withdrawal' as transaction_type
+    'withdrawal' as transaction_type,
+    yct."yearn_type"
     FROM
-    erc20."ERC20_evt_Transfer" ett inner join dune_user_generated."view_yearn_contract_tokens" yct on (ett."contract_address" = yct."yvault_deposit_token" AND ett."from" = yct."yvault_contract")
+    erc20."ERC20_evt_Transfer" ett 
+    INNER JOIN yearn."view_yearn_contract_tokens" yct on (ett."contract_address" = yct."yvault_deposit_token" AND ett."from" = yct."yvault_contract")
     WHERE ett."evt_tx_hash" in (
         (SELECT "call_tx_hash" from yearn."yVault_call_withdraw")
         UNION ALL
@@ -95,10 +101,10 @@ WITH rows AS (
         UNION ALL
         (SELECT "call_tx_hash" from iearn_v2."yToken_call_withdraw")
     )
-    AND ett.block_time >= start_ts
-    AND ett.block_time < end_ts
-    AND ett.block_number >= start_block
-    AND ett.block_number < end_block
+    AND ett.evt_block_time >= start_ts
+    AND ett.evt_block_time < end_ts
+    AND ett.evt_block_number >= start_block
+    AND ett.evt_block_number < end_block
     ))
     ON CONFLICT DO NOTHING
     RETURNING 1
