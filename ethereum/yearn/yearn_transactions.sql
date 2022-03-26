@@ -33,9 +33,9 @@ WITH rows AS (
       yearn_type
     )
     ((SELECT
-    ett."from" as from_address,
-    ett."to" as to_address,
-    (ett."value" / (10^yct."yvault_deposit_token_decimals")) as amount,
+    ett."from" AS from_address,
+    ett."to" AS to_address,
+    (ett."value" / (10^yct."yvault_deposit_token_decimals")) AS amount,
     ett."contract_address",
     ett."evt_tx_hash",
     ett."evt_index",
@@ -73,7 +73,7 @@ WITH rows AS (
     (SELECT
     ett."from",
     ett."to",
-    (ett."value" / (10^yct."yvault_deposit_token_decimals"))*-1 as amount,
+    (ett."value" / (10^yct."yvault_deposit_token_decimals"))*-1 AS amount,
     ett."contract_address",
     ett."evt_tx_hash",
     ett."evt_index",
@@ -81,7 +81,7 @@ WITH rows AS (
     ett."evt_block_number",
     yct."yvault_deposit_token_symbol",
     yct."yvault_contract",
-    'withdrawal' as transaction_type,
+    'withdrawal' AS transaction_type,
     yct."yearn_type"
     FROM
     erc20."ERC20_evt_Transfer" ett 
