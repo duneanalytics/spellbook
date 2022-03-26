@@ -1,7 +1,7 @@
 BEGIN;
 DROP MATERIALIZED VIEW IF EXISTS gnosis_safe.view_safes_eth_transfers;
 
-CREATE MATERIALIZED VIEW gnosis_safe.view_safes AS
+CREATE MATERIALIZED VIEW gnosis_safe.view_safes_eth_transfers AS
     SELECT 
         et.tx_hash, 
         et.block_time, 
