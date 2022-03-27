@@ -143,6 +143,8 @@ LEFT JOIN ethereum.transactions tx ON wc.call_tx_hash = tx.hash
 LEFT JOIN erc_values_1155 ON erc_values_1155.evt_tx_hash = tx.hash AND wc.token_id = erc_values_1155.token_id_erc
 LEFT JOIN erc_count_721 ON erc_count_721.evt_tx_hash = tx.hash AND wc.token_id = erc_count_721.token_id_erc
 LEFT JOIN erc20."ERC20_evt_Transfer" erc20tr ON erc20tr.evt_tx_hash = tx.hash AND wc.nft_contract_address = erc20tr.contract_address 
+    AND erc20tr.from = tx."from"
+    AND erc20tr.to = tx."to"
     AND erc20tr.evt_block_time >= start_ts
     AND erc20tr.evt_block_time < end_ts
 LEFT JOIN nft.tokens tokens ON tokens.contract_address = wc.nft_contract_address
