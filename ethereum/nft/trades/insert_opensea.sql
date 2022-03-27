@@ -70,7 +70,7 @@ rows AS (
     )
 
 SELECT
-    tx.block_time AS block_time,
+    wc.block_time,
     CASE WHEN agg.name is NOT NULL THEN tokens_agg.name
         ELSE tokens.name END AS nft_project_name,
     CASE WHEN erc20tr.evt_tx_hash = wc.call_tx_hash THEN null::text
@@ -132,27 +132,26 @@ SELECT
     wc.nft_contract_address AS nft_contract_address,
     wc.exchange_contract_address, 
     wc.call_tx_hash AS tx_hash,
-    tx.block_number,
-    tx."from" AS tx_from,
-    tx."to" AS tx_to,
+    wc.block_number,
+    wc.tx_from,
+    wc.tx_to,
     call_trace_address::integer[] as trace_address,
     NULL::integer AS evt_index,
     row_number() OVER (PARTITION BY wc.call_tx_hash ORDER BY wc.call_trace_address) AS trade_id
 FROM nft.wyvern_data wc
-LEFT JOIN ethereum.transactions tx ON wc.call_tx_hash = tx.hash
-LEFT JOIN erc_values_1155 ON erc_values_1155.evt_tx_hash = tx.hash AND wc.token_id = erc_values_1155.token_id_erc
-LEFT JOIN erc_count_721 ON erc_count_721.evt_tx_hash = tx.hash AND wc.token_id = erc_count_721.token_id_erc
-LEFT JOIN erc20."ERC20_evt_Transfer" erc20tr ON erc20tr.evt_tx_hash = tx.hash AND wc.nft_contract_address = erc20tr.contract_address 
+LEFT JOIN erc_values_1155 ON erc_values_1155.evt_tx_hash = wc.call_tx_hash AND wc.token_id = erc_values_1155.token_id_erc
+LEFT JOIN erc_count_721 ON erc_count_721.evt_tx_hash = wc.call_tx_hash AND wc.token_id = erc_count_721.token_id_erc
+LEFT JOIN erc20."ERC20_evt_Transfer" erc20tr ON erc20tr.evt_tx_hash = wc.call_tx_hash AND wc.nft_contract_address = erc20tr.contract_address 
     AND erc20tr.evt_block_time >= start_ts
     AND erc20tr.evt_block_time < end_ts
 LEFT JOIN nft.tokens tokens ON tokens.contract_address = wc.nft_contract_address
 LEFT JOIN nft.tokens tokens_agg ON tokens_agg.contract_address = wc.nft_contract_address
-LEFT JOIN nft.aggregators agg ON agg.contract_address = tx."to"
-LEFT JOIN prices.usd p ON p.minute = date_trunc('minute', tx.block_time)
+LEFT JOIN nft.aggregators agg ON agg.contract_address = wc.tx_to
+LEFT JOIN prices.usd p ON p.minute = date_trunc('minute', wc.block_time)
     AND p.contract_address = wc.currency_token
     AND p.minute >= start_ts
     AND p.minute < end_ts
-LEFT JOIN prices.usd peth ON peth.minute = date_trunc('minute', tx.block_time)
+LEFT JOIN prices.usd peth ON peth.minute = date_trunc('minute', wc.block_time)
     AND peth.symbol = 'WETH'
     AND peth.minute >= start_ts
     AND peth.minute < end_ts
@@ -162,8 +161,8 @@ WHERE
         FROM erc721."ERC721_evt_Transfer" erc721
         WHERE wc.call_tx_hash = erc721.evt_tx_hash
         AND erc721."from" = '\x0000000000000000000000000000000000000000')
-        AND tx.block_time >= start_ts
-        AND tx.block_time < end_ts
+        AND wc.block_time >= start_ts
+        AND wc.block_time < end_ts
 ON CONFLICT DO NOTHING
     RETURNING 1
 )
