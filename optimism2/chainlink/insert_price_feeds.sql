@@ -2,7 +2,10 @@ CREATE OR REPLACE FUNCTION chainlink.insert_price_feeds(start_block_time timesta
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
+-- get a series of the proxy "basic
 WITH gs AS (
+SELECT hr, oa.feed_name, oa.address, oa.proxy, "underlying_token_address"
+FROM (
     SELECT
     generate_series (
     DATE_TRUNC('day', start_block_time ),
@@ -10,8 +13,11 @@ WITH gs AS (
     '1 hour'
     ) AS hr
     , "feed_name"
-    ,underlying_token_address
+    ,"proxy"
     FROM chainlink.oracle_addresses
+    ) oa
+LEFT JOIN chainlink.oracle_token_mapping c
+ON c.proxy = oa.proxy
 )
 
 , feed_updates AS (
@@ -47,17 +53,17 @@ rows AS (
     )
 
 SELECT --avg in case there are multiple overlapping feeds
-	hour, feed_name, AVG(price) AS price, underlying_token_address, AVG(underlying_token_price) AS underlying_token_price
+	hour, feed_name, address, proxy, AVG(price) AS price, underlying_token_address, AVG(underlying_token_price) AS underlying_token_price
 FROM (
-SELECT hr AS hour, feed_name, underlying_token_address
+SELECT hr AS hour, address, proxy, feed_name, underlying_token_address
 , first_value(price) OVER (PARTITION BY feed_name, grp ORDER BY hr) AS price
 , first_value(underlying_token_price) OVER (PARTITION BY feed_name, grp ORDER BY hr) AS underlying_token_price
 
 FROM (
-SELECT hr, feed_name, price, underlying_token_address, underlying_token_price,
+SELECT hr, feed_name, address, proxy, price, underlying_token_address, underlying_token_price,
 count(price) OVER (PARTITION BY feed_name ORDER BY hr) AS grp
 FROM (
-    SELECT gs.hr, gs.feed_name, price, gs.underlying_token_address, underlying_token_price
+    SELECT gs.hr, gs.feed_name, gs.address, gs.proxy, price, gs.underlying_token_address, underlying_token_price
     FROM gs
     LEFT JOIN feed_updates f
         ON gs.hr = f.dt
@@ -65,10 +71,10 @@ FROM (
 
 -- Union with the most recent prices to pull forward prices 
     UNION ALL
-	SELECT hour, feed_name, price, underlying_token_address, underlying_token_price
+	SELECT hour, feed_name, address, proxy, price, underlying_token_address, underlying_token_price
     	FROM (
-		SELECT hour, feed_name, price, underlying_token_address, underlying_token_price,
-    			DENSE_RANK() OVER (PARTITION BY feed_name, underlying_token_address ORDER BY hour DESC) AS h_rank
+		SELECT hour, feed_name, address, proxy, price, underlying_token_address, underlying_token_price,
+    			DENSE_RANK() OVER (PARTITION BY feed_name, address, proxy, underlying_token_address ORDER BY hour DESC) AS h_rank
     			FROM chainlink.view_price_feeds v
     		WHERE hour >= start_block_time - interval '1 day'
 		AND hour < end_block_time
@@ -83,7 +89,7 @@ WHERE price IS NOT NULL
 AND hour >= DATE_TRUNC('hour',start_block_time)
 AND hour <= DATE_TRUNC('hour',end_block_time)
 	
-GROUP BY hour, feed_name, underlying_token_address
+GROUP BY hour, feed_name, underlying_token_address, address, proxy
 
 ON CONFLICT (hour,feed_name,underlying_token_address)
     DO UPDATE SET
