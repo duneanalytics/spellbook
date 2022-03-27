@@ -88,6 +88,7 @@ GROUP BY hour, feed_name, underlying_token_address, underlying_token_price
 ON CONFLICT (hour,feed_name,underlying_token_address)
     DO UPDATE SET
         price = EXCLUDED.price
+	underlying_token_price = EXCLUDED.underlying_token_price
 	
     RETURNING 1
 )
