@@ -70,7 +70,7 @@ SELECT
     "to"
    FROM erc20."ERC20_evt_Transfer" erc
    INNER JOIN erc20."tokens" token ON erc.contract_address = token.contract_address
-   WHERE "to" = '\x5b3256965e7c3cf26e11fcaf296dfc8807c01073'
+   AND "to" = '\x5b3256965e7c3cf26e11fcaf296dfc8807c01073'
    AND evt_block_time >= start_ts
    AND evt_block_time < start_ts
 ),
