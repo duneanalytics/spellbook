@@ -120,6 +120,13 @@ rows AS (
         AND tx.block_time >= start_ts
         AND tx.block_time < end_ts
     LEFT JOIN royalty_fees rf ON rf.tx_hash = wc.call_tx_hash AND rf.trace_address = wc.call_trace_address
+    WHERE
+        NOT EXISTS (SELECT * -- Exclude OpenSea mint transactions
+        FROM erc721."ERC721_evt_Transfer" erc721
+        WHERE wc.call_tx_hash = erc721.evt_tx_hash
+        AND erc721.evt_block_time >= start_ts
+        AND erc721.evt_block_time < end_ts
+        AND erc721."from" = '\x0000000000000000000000000000000000000000')
     ON CONFLICT DO NOTHING
     RETURNING 1
 )

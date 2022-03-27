@@ -157,12 +157,8 @@ LEFT JOIN prices.usd peth ON peth.minute = date_trunc('minute', wc.block_time)
     AND peth.minute < end_ts
 LEFT JOIN erc20.tokens erc20 ON erc20.contract_address = wc.currency_token
 WHERE
-        NOT EXISTS (SELECT * -- Exclude OpenSea mint transactions
-        FROM erc721."ERC721_evt_Transfer" erc721
-        WHERE wc.call_tx_hash = erc721.evt_tx_hash
-        AND erc721."from" = '\x0000000000000000000000000000000000000000')
-        AND wc.block_time >= start_ts
-        AND wc.block_time < end_ts
+    wc.block_time >= start_ts
+    AND wc.block_time < end_ts
 ON CONFLICT DO NOTHING
     RETURNING 1
 )
