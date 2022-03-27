@@ -2,15 +2,6 @@ CREATE OR REPLACE FUNCTION chainlink.insert_price_feeds(start_block_time timesta
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
-WITH rows AS (
-    INSERT INTO chainlink.view_price_feeds (
-        hour,
-    	feed_name,
-    	price,
-    	underlying_token_address,
-    	underlying_token_price
-    )
-    
 WITH gs AS (
     SELECT
     generate_series (
@@ -44,7 +35,16 @@ FROM (
 	) c
 LEFT JOIN chainlink.oracle_token_mapping o
 	ON c.proxy = o.proxy
-)
+),
+
+rows AS (
+    INSERT INTO chainlink.view_price_feeds (
+        hour,
+    	feed_name,
+    	price,
+    	underlying_token_address,
+    	underlying_token_price
+    )
 
 SELECT --avg in case there are multiple overlapping feeds
 	hour, feed_name, AVG(price) AS price, underlying_token_address, AVG(underlying_token_price) AS underlying_token_price
