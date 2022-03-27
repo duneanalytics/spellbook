@@ -119,9 +119,9 @@ SELECT
     wc.original_amount AS original_amount_raw,
     wc.original_amount / 10 ^ erc20.decimals * p.price / peth.price AS eth_amount,
     -- Royalty Fees (in %, amount in original currency and in USD)
-    ROUND(cast((wc.fees - 2.5*(wc.original_amount / 10 ^ erc20.decimals)/100) * (100) / NULLIF(wc.original_amount / 10 ^ erc20.decimals,0) as numeric),7) AS royalty_fees_percent,
-    ROUND(cast(wc.fees - 2.5*(wc.original_amount / 10 ^ erc20.decimals)/100 as numeric),7) AS original_royalty_fees,
-    ROUND(cast(wc.fees * p.price - 2.5 * (wc.original_amount / 10 ^ erc20.decimals * p.price) / 100 as numeric),7) AS usd_royalty_fees,
+    ROUND(cast((wc.fees/ 10 ^ erc20.decimals - 2.5*(wc.original_amount / 10 ^ erc20.decimals)/100) * (100) / NULLIF(wc.original_amount / 10 ^ erc20.decimals,0) as numeric),7) AS royalty_fees_percent,
+    ROUND(cast(wc.fees/ 10 ^ erc20.decimals - 2.5*(wc.original_amount / 10 ^ erc20.decimals)/100 as numeric),7) AS original_royalty_fees,
+    ROUND(cast(wc.fees/ 10 ^ erc20.decimals * p.price - 2.5 * (wc.original_amount / 10 ^ erc20.decimals * p.price) / 100 as numeric),7) AS usd_royalty_fees,
     -- Platform Fees (in %, amount in original currency and in USD)
     2.5 AS platform_fees_percent,
     ROUND(cast(2.5*(wc.original_amount / 10 ^ erc20.decimals)/100 as numeric),7) AS original_platform_fees,

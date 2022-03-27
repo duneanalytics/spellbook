@@ -42,7 +42,6 @@ WITH wyvern_calldata AS (
         "call_success"
     AND call_block_time >= start_ts
     AND call_block_time < end_ts
-    GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12    
 ),
 
 -- Get value of Royalty Fees from ethereum.traces
@@ -65,11 +64,10 @@ AND traces.block_time < end_ts
 SELECT 
     '{3}' as trace_address,
     evt_tx_hash as tx_hash,
-    value / 10^token.decimals AS fees,
+    value AS fees,
     "from",
     "to"
    FROM erc20."ERC20_evt_Transfer" erc
-   INNER JOIN erc20."tokens" token ON erc.contract_address = token.contract_address
    WHERE "to" = '\x5b3256965e7c3cf26e11fcaf296dfc8807c01073'
    AND evt_block_time >= start_ts
    AND evt_block_time < start_ts
