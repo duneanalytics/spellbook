@@ -5,7 +5,7 @@ BEGIN
 
 WITH 
 chainlink_prices AS (
-	SELECT DATE_TRUNC('hour',hour) AS hour, underlying_token_address AS contract_address, symbol, decimals, price
+	SELECT DATE_TRUNC('hour',hour) AS hour, underlying_token_address AS contract_address, symbol, decimals, underlying_token_price AS price
 	FROM chainlink.view_price_feeds cp
 	INNER JOIN erc20.tokens e
 		ON e.contract_address = cp.underlying_token_address
@@ -186,8 +186,8 @@ WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >=
 SELECT prices.insert_approx_prices_from_dex_data('2022-01-31', '2022-02-14')
 WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2022-01-31' and hour < '2022-02-14');
 
-SELECT prices.insert_approx_prices_from_dex_data('2022-02-14', NOW())
-WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2022-02-14');
+SELECT prices.insert_approx_prices_from_dex_data('2022-02-14', NOW());
+--WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2022-02-14');
 
 -- CRON inserts happen in the main dex update job
 /*
