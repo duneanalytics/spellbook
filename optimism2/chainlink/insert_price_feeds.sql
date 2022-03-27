@@ -8,7 +8,7 @@ WITH rows AS (
     	feed_name,
     	price,
     	underlying_token_address,
-	underlying_token_price
+    	underlying_token_price
     )
     
 WITH gs AS (
@@ -18,15 +18,15 @@ WITH gs AS (
     DATE_TRUNC('hour', end_block_time ),
     '1 hour'
     ) AS hr
-	, "feed_name"
-	,underlying_token_address
+    , "feed_name"
+    ,underlying_token_address
     FROM chainlink.oracle_addresses
 )
 
 , feed_updates AS (
 SELECT
-c.dt, c.feed_name, c.price, c.proxy, c.address, o.underlying_token_address
-, c.price::decimal/(10^o.extra_decimals)::decimal AS underlying_token_price
+dt, c.feed_name, c.price, c.proxy, c.address, underlying_token_address
+, c.price::decimal/(10^extra_decimals)::decimal AS underlying_token_price
 FROM (
 	SELECT
 	DATE_TRUNC('hour',block_time) AS dt
@@ -34,13 +34,12 @@ FROM (
 	, AVG(bytea2numeric(topic2)::decimal/(10^decimals)::decimal) AS price
 	,"proxy", "address"
 	FROM optimism.logs l
-	INNER JOIN chainlink.oracle_addresses cfa
+	INNER JOIN dune_user_generated.chainlink_feed_addresses cfa
 	    ON l.contract_address = cfa.address
 	WHERE topic1 = '\x0559884fd3a460db3073b7fc896cc77986f16e378210ded43186175bf646fc5f' --Answer Updated
 	AND contract_address IN (SELECT address FROM chainlink.oracle_addresses)
 	AND block_time >= start_block_time
 	AND block_time < end_block_time
-	
 	GROUP BY 1,2, 4,5
 	) c
 LEFT JOIN chainlink.oracle_token_mapping o
@@ -48,7 +47,7 @@ LEFT JOIN chainlink.oracle_token_mapping o
 )
 
 SELECT --avg in case there are multiple overlapping feeds
-	hour, feed_name, AVG(price) AS price, underlying_token_address, underlying_token_price
+	hour, feed_name, AVG(price) AS price, underlying_token_address, AVG(underlying_token_price) AS underlying_token_price
 FROM (
 SELECT hr AS hour, feed_name, underlying_token_address
 , first_value(price) OVER (PARTITION BY feed_name, grp ORDER BY hr) AS price
@@ -62,32 +61,33 @@ FROM (
     FROM gs
     LEFT JOIN feed_updates f
         ON gs.hr = f.dt
---         AND gs.feed_name = f.feed_name --just underlying token address since feed names can get wonky
 	AND gs.underlying_token_address = f.underlying_token_address
 
 -- Union with the most recent prices to pull forward prices 
     UNION ALL
 	SELECT hour, feed_name, price, underlying_token_address, underlying_token_price
     	FROM (
-    		SELECT hour, feed_name, price, underlying_token_address, underlying_token_price,
+		SELECT hour, feed_name, price, underlying_token_address, underlying_token_price,
     			DENSE_RANK() OVER (PARTITION BY feed_name, underlying_token_address ORDER BY hour DESC) AS h_rank
     			FROM chainlink.view_price_feeds v
     		WHERE hour >= start_block_time - interval '1 day'
 		AND hour < end_block_time
 		AND NOT EXISTS (SELECT 1 FROM feed_updates f WHERE f.dt = v.hour AND f.feed_name = v.feed_name) -- doesn't have an update
         	) old
-    	WHERE h_rank = 1
+    	WHERE h_rank = 1 -- most recent update
     	) str
     ) uni
 ) a
+	
 WHERE price IS NOT NULL
 AND hour >= DATE_TRUNC('hour',start_block_time)
 AND hour <= DATE_TRUNC('hour',end_block_time)
-GROUP BY hour, feed_name, underlying_token_address, underlying_token_price
+	
+GROUP BY hour, feed_name, underlying_token_address
 
 ON CONFLICT (hour,feed_name,underlying_token_address)
     DO UPDATE SET
-        price = EXCLUDED.price
+        price = EXCLUDED.price,
 	underlying_token_price = EXCLUDED.underlying_token_price
 	
     RETURNING 1
