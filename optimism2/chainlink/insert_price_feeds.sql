@@ -14,6 +14,7 @@ FROM (
     ) AS hr
     , "feed_name"
     ,"proxy"
+    ,address
     FROM chainlink.oracle_addresses
     ) oa
 LEFT JOIN chainlink.oracle_token_mapping c
@@ -47,6 +48,8 @@ rows AS (
     INSERT INTO chainlink.view_price_feeds (
         hour,
     	feed_name,
+        address,
+        proxy,
     	price,
     	underlying_token_address,
     	underlying_token_price

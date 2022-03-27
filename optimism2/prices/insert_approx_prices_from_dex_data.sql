@@ -185,8 +185,8 @@ WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >=
 SELECT prices.insert_approx_prices_from_dex_data('2022-01-31', '2022-02-14')
 WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2022-01-31' and hour < '2022-02-14');
 
-SELECT prices.insert_approx_prices_from_dex_data('2022-02-14', NOW())
-WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2022-02-14');
+SELECT prices.insert_approx_prices_from_dex_data('2022-02-14', NOW());
+--WHERE NOT EXISTS (SELECT * FROM prices.approx_prices_from_dex_data WHERE hour >= '2022-02-14');
 
 -- CRON inserts happen in the main dex update job
 /*
