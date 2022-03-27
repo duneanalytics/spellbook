@@ -4,7 +4,7 @@ DROP MATERIALIZED VIEW IF EXISTS gnosis_safe.view_safes;
 CREATE MATERIALIZED VIEW gnosis_safe.view_safes AS
     SELECT
     	et.from AS address,
-    	et.block_time AS creation_time 
+    	et.block_time AS creation_time
     FROM ethereum.traces et 
     WHERE et.success = True
         AND et.call_type = 'delegatecall' -- the delegate call to the master copy is the Safe address
