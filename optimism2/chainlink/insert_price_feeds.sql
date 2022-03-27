@@ -34,7 +34,7 @@ FROM (
 	, AVG(bytea2numeric(topic2)::decimal/(10^decimals)::decimal) AS price
 	,"proxy", "address"
 	FROM optimism.logs l
-	INNER JOIN dune_user_generated.chainlink_feed_addresses cfa
+	INNER JOIN chainlink.oracle_addresses cfa
 	    ON l.contract_address = cfa.address
 	WHERE topic1 = '\x0559884fd3a460db3073b7fc896cc77986f16e378210ded43186175bf646fc5f' --Answer Updated
 	AND contract_address IN (SELECT address FROM chainlink.oracle_addresses)
