@@ -42,6 +42,7 @@ WITH wyvern_calldata AS (
         "call_success"
     AND call_block_time >= start_ts
     AND call_block_time < end_ts
+    GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12    
 ),
 
 -- Get value of Royalty Fees from ethereum.traces
@@ -52,7 +53,7 @@ SELECT
          WHEN array_length(trace_address,1) = 3 then '{'||trace_address[1]||','||trace_address[2]||'}'
     END as trace_address,
     tx_hash,
-    value/10^18 AS fees,
+    value AS fees,
     traces."from",
     traces."to"
 FROM ethereum.traces
@@ -88,7 +89,11 @@ rows AS (
         token_id,
         call_trace_address,
         original_currency_address,
-        fees
+        fees,
+        block_time,
+        block_number,
+        tx_from,
+        tx_to
         )
     SELECT 
         call_tx_hash,
@@ -104,9 +109,23 @@ rows AS (
         token_id,
         call_trace_address,
         original_currency_address,
-        fees
+        fees,
+        tx.block_time AS block_time,
+        tx.block_number,
+        tx."from" AS tx_from,
+        tx."to" AS tx_to
     FROM wyvern_calldata wc
+    LEFT JOIN ethereum.transactions tx ON wc.call_tx_hash = tx.hash
+        AND tx.block_time >= start_ts
+        AND tx.block_time < end_ts
     LEFT JOIN royalty_fees rf ON rf.tx_hash = wc.call_tx_hash AND rf.trace_address = wc.call_trace_address
+    WHERE
+        NOT EXISTS (SELECT * -- Exclude OpenSea mint transactions
+        FROM erc721."ERC721_evt_Transfer" erc721
+        WHERE wc.call_tx_hash = erc721.evt_tx_hash
+        AND erc721.evt_block_time >= start_ts
+        AND erc721.evt_block_time < end_ts
+        AND erc721."from" = '\x0000000000000000000000000000000000000000')
     ON CONFLICT DO NOTHING
     RETURNING 1
 )
