@@ -70,7 +70,8 @@ rows AS (
     )
 
 SELECT
-    wc.block_time,
+    CASE WHEN erc20tr.evt_tx_hash = wc.call_tx_hash THEN erc20tr.evt_block_time
+    ELSE wc.block_time END AS block_time,
     CASE WHEN agg.name is NOT NULL THEN tokens_agg.name
         ELSE tokens.name END AS nft_project_name,
     CASE WHEN erc20tr.evt_tx_hash = wc.call_tx_hash THEN null::text
