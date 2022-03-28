@@ -133,9 +133,12 @@ SELECT
     wc.nft_contract_address AS nft_contract_address,
     wc.exchange_contract_address, 
     wc.call_tx_hash AS tx_hash,
-    wc.block_number,
-    wc.tx_from,
-    wc.tx_to,
+    CASE WHEN erc20tr.evt_tx_hash = wc.call_tx_hash THEN erc20tr.evt_block_number
+    ELSE wc.block_number END AS block_number,
+    CASE WHEN erc20tr.evt_tx_hash = wc.call_tx_hash THEN erc20tr.from
+    ELSE wc.tx_from END AS tx_from,
+    CASE WHEN erc20tr.evt_tx_hash = wc.call_tx_hash THEN erc20tr.to
+    ELSE wc.tx_to END AS tx_to,   
     call_trace_address::integer[] as trace_address,
     NULL::integer AS evt_index,
     row_number() OVER (PARTITION BY wc.call_tx_hash ORDER BY wc.call_trace_address) AS trade_id
