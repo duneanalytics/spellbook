@@ -35,14 +35,13 @@ WITH wyvern_calldata AS (
              WHEN call_trace_address::varchar = '{}' then '{3}' -- For bundle join
              ELSE call_trace_address::varchar 
         END as call_trace_address,
-        array_agg(DISTINCT addrs [7]) AS original_currency_address
+        array[addrs [7]] AS original_currency_address
     FROM
         opensea."WyvernExchange_call_atomicMatch_"
     WHERE
         "call_success"
     AND call_block_time >= start_ts
     AND call_block_time < end_ts
-    GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12    
 ),
 
 -- Get value of Royalty Fees from ethereum.traces
