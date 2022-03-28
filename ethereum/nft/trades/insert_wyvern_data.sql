@@ -57,7 +57,7 @@ SELECT
     traces."from",
     traces."to"
 FROM ethereum.traces
-INNER JOIN erc20."ERC20_evt_Transfer" erc ON traces.tx_hash = erc.evt_tx_hash and traces."from" = erc.from
+LEFT JOIN erc20."ERC20_evt_Transfer" erc ON traces.tx_hash = erc.evt_tx_hash
 WHERE traces."from" in ('\x7Be8076f4EA4A4AD08075C2508e481d6C946D12b', '\x7f268357a8c2552623316e2562d90e642bb538e5')
 AND traces."to" = '\x5b3256965e7c3cf26e11fcaf296dfc8807c01073' -- OpenSea Wallet
 AND traces.block_time >= start_ts
