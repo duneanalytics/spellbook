@@ -52,18 +52,25 @@ SELECT
          WHEN array_length(trace_address,1) = 3 then '{'||trace_address[1]||','||trace_address[2]||'}'
     END as trace_address,
     tx_hash,
-    CASE WHEN traces.tx_hash = erc.evt_tx_hash THEN erc.value
-    ELSE traces.value END AS fees,
+    value AS fees,
     traces."from",
     traces."to"
 FROM ethereum.traces
-LEFT JOIN erc20."ERC20_evt_Transfer" erc ON traces.tx_hash = erc.evt_tx_hash
-WHERE traces."from" in ('\x7Be8076f4EA4A4AD08075C2508e481d6C946D12b', '\x7f268357a8c2552623316e2562d90e642bb538e5')
-AND traces."to" = '\x5b3256965e7c3cf26e11fcaf296dfc8807c01073' -- OpenSea Wallet
+WHERE "from" in ('\x7Be8076f4EA4A4AD08075C2508e481d6C946D12b', '\x7f268357a8c2552623316e2562d90e642bb538e5')
+AND "to" = '\x5b3256965e7c3cf26e11fcaf296dfc8807c01073' -- OpenSea Wallet
 AND traces.block_time >= start_ts
 AND traces.block_time < end_ts
-AND evt_block_time >= start_ts
-AND evt_block_time < end_ts
+        UNION ALL  
+SELECT 
+    '{3}' as trace_address,
+    evt_tx_hash as tx_hash,
+    value AS fees,
+    "from",
+    "to"
+   FROM erc20."ERC20_evt_Transfer" erc
+   WHERE "to" = '\x5b3256965e7c3cf26e11fcaf296dfc8807c01073'
+   AND evt_block_time >= start_ts
+   AND evt_block_time < start_ts
 ),
 
 rows AS (
