@@ -74,10 +74,8 @@ SELECT
     ELSE wc.block_time END AS block_time,
     CASE WHEN agg.name is NOT NULL THEN tokens_agg.name
         ELSE tokens.name END AS nft_project_name,
-    CASE WHEN erc20tr.evt_tx_hash = wc.call_tx_hash THEN null::text
-        ELSE wc.token_id END AS nft_token_id, 
-    CASE WHEN erc20tr.evt_tx_hash = wc.call_tx_hash THEN 'erc20'
-        WHEN erc_values_1155.value_unique >= 1 THEN 'erc1155'
+    wc.token_id AS nft_token_id, 
+    CASE WHEN erc_values_1155.value_unique >= 1 THEN 'erc1155'
         WHEN erc_count_721.count_erc >= 1 THEN 'erc721'
         ELSE wc.erc_standard END AS erc_standard,
     'OpenSea' AS platform,
@@ -89,7 +87,6 @@ SELECT
     ELSE wc.trade_type END AS trade_type,
     -- Count number of items traded for different trade types and erc standards
     CASE 
-        WHEN erc20tr.evt_tx_hash = wc.call_tx_hash THEN cast(wc.token_id as numeric)
         WHEN agg.name is NULL AND erc_values_1155.value_unique > 1 THEN cast(erc_values_1155.value_unique as numeric)
         WHEN agg.name is NULL AND erc_count_721.count_erc > 1 THEN cast(erc_count_721.count_erc as numeric)
         WHEN wc.trade_type = 'Single Item Trade' THEN cast(1 as numeric)
