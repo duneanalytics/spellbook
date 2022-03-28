@@ -56,12 +56,13 @@ known_solver_metadata (address, environment, name) as (
                  (decode('df30c9502eafea21ecc8410108dda338dd5047c5', 'hex'), 'service', 'Withdraw'),
                  (decode('256bb5ad3dbdf61ae08d7cbc0b9223ccb1c60aae', 'hex'), 'service', 'Withdraw'),
                  (decode('84e5c8518c248de590d5302fd7c32d2ae6b0123c', 'hex'), 'service', 'Withdraw'),
+                 (decode('a03be496e67ec29bc62f01a428683d7f9c204930', 'hex'), 'service', 'Withdraw'),
                  (decode('2caef7f0ee82fb0abf1ab0dcd3a093803002e705', 'hex'), 'test', 'Test Solver 1'),
                  (decode('56d4ed5e49539ebb1366c7d6b8f2530f1e4fe753', 'hex'), 'test', 'Test Solver 2')
          ) as _
 )
 -- Combining the metadata with current activation status for final table
-select address,
+select solver as address,
        case when environment is not null then environment else 'new' end as environment,
        case when name is not null then name else 'Uncatalogued' end      as name,
        active
