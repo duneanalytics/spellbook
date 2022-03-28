@@ -99,7 +99,7 @@ WITH rows AS (
         FROM kyber."AggregationRouterV2_evt_Swapped"
         WHERE evt_block_time >= start_ts AND evt_block_time < end_ts
     ) dexs
-    INNER JOIN ethereum.transactions tx
+    INNER JOIN polygon.transactions tx
         ON dexs.tx_hash = tx.hash
         AND tx.block_time >= start_ts
         AND tx.block_time < end_ts
@@ -129,8 +129,8 @@ $function$;
 SELECT dex.insert_kyber(
     '2019-01-01',
     '2020-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-01-01')
+    (SELECT max(number) FROM polygon.blocks WHERE time < '2019-01-01'),
+    (SELECT max(number) FROM polygon.blocks WHERE time <= '2020-01-01')
 )
 WHERE NOT EXISTS (
     SELECT *
@@ -144,8 +144,8 @@ WHERE NOT EXISTS (
 SELECT dex.insert_kyber(
     '2020-01-01',
     '2021-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2021-01-01')
+    (SELECT max(number) FROM polygon.blocks WHERE time < '2020-01-01'),
+    (SELECT max(number) FROM polygon.blocks WHERE time <= '2021-01-01')
 )
 WHERE NOT EXISTS (
     SELECT *
@@ -159,8 +159,8 @@ WHERE NOT EXISTS (
 SELECT dex.insert_kyber(
     '2021-01-01',
     now(),
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
+    (SELECT max(number) FROM polygon.blocks WHERE time < '2021-01-01'),
+    (SELECT MAX(number) FROM polygon.blocks where time < now() - interval '20 minutes')
 )
 WHERE NOT EXISTS (
     SELECT *
@@ -175,7 +175,7 @@ VALUES ('*/10 * * * *', $$
     SELECT dex.insert_kyber(
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Kyber'),
         (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Kyber')),
-        (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
+        (SELECT max(number) FROM polygon.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Kyber')),
+        (SELECT MAX(number) FROM polygon.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

@@ -29,10 +29,10 @@ WITH rows AS (
     )
     SELECT
         dexs.block_time,
-        erc20a.symbol AS token_a_symbol,
-        erc20b.symbol AS token_b_symbol,
-        token_a_amount_raw / 10 ^ erc20a.decimals AS token_a_amount,
-        token_b_amount_raw / 10 ^ erc20b.decimals AS token_b_amount,
+        bep20a.symbol AS token_a_symbol,
+        bep20b.symbol AS token_b_symbol,
+        token_a_amount_raw / 10 ^ bep20a.decimals AS token_a_amount,
+        token_b_amount_raw / 10 ^ bep20b.decimals AS token_b_amount,
         project,
         version,
         category,
@@ -76,7 +76,7 @@ WITH rows AS (
         INNER JOIN kyber."Kyber Swap: Factory_evt_PoolCreated" f ON f.pool = t.contract_address        
         AND t.evt_block_time >= start_ts AND t.evt_block_time < end_ts
 
-        -- UNION ALL
+        UNION ALL
         
         -- from Aggregator 
         SELECT
@@ -98,14 +98,14 @@ WITH rows AS (
         FROM kyber."AggregationRouterV2_evt_Swapped"
         WHERE evt_block_time >= start_ts AND evt_block_time < end_ts
     ) dexs
-    INNER JOIN ethereum.transactions tx
+    INNER JOIN bsc.transactions tx
         ON dexs.tx_hash = tx.hash
         AND tx.block_time >= start_ts
         AND tx.block_time < end_ts
         AND tx.block_number >= start_block
         AND tx.block_number < end_block
-    LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
-    LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
+    LEFT JOIN bep20.tokens bep20a ON bep20a.contract_address = dexs.token_a_address
+    LEFT JOIN bep20.tokens bep20b ON bep20b.contract_address = dexs.token_b_address
     LEFT JOIN prices.usd pa ON pa.minute = date_trunc('minute', dexs.block_time)
         AND pa.contract_address = dexs.token_a_address
         AND pa.minute >= start_ts
@@ -128,8 +128,8 @@ $function$;
 SELECT dex.insert_kyber(
     '2019-01-01',
     '2020-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-01-01')
+    (SELECT max(number) FROM bsc.blocks WHERE time < '2019-01-01'),
+    (SELECT max(number) FROM bsc.blocks WHERE time <= '2020-01-01')
 )
 WHERE NOT EXISTS (
     SELECT *
@@ -143,8 +143,8 @@ WHERE NOT EXISTS (
 SELECT dex.insert_kyber(
     '2020-01-01',
     '2021-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2021-01-01')
+    (SELECT max(number) FROM bsc.blocks WHERE time < '2020-01-01'),
+    (SELECT max(number) FROM bsc.blocks WHERE time <= '2021-01-01')
 )
 WHERE NOT EXISTS (
     SELECT *
@@ -158,8 +158,8 @@ WHERE NOT EXISTS (
 SELECT dex.insert_kyber(
     '2021-01-01',
     now(),
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
+    (SELECT max(number) FROM bsc.blocks WHERE time < '2021-01-01'),
+    (SELECT MAX(number) FROM bsc.blocks where time < now() - interval '20 minutes')
 )
 WHERE NOT EXISTS (
     SELECT *
@@ -174,7 +174,7 @@ VALUES ('*/10 * * * *', $$
     SELECT dex.insert_kyber(
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Kyber'),
         (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Kyber')),
-        (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
+        (SELECT max(number) FROM bsc.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Kyber')),
+        (SELECT MAX(number) FROM bsc.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
