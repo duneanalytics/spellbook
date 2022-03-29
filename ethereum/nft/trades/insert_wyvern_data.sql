@@ -45,7 +45,6 @@ WITH wyvern_calldata AS (
     AND call_block_time >= start_ts
     AND call_block_time < end_ts
     GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12    
-
 ),
 
 -- Get value of Royalty Fees from ethereum.traces
@@ -112,15 +111,8 @@ rows AS (
         token_id,
         call_trace_address,
         original_currency_address,
-        fees,
-        tx.block_time AS block_time,
-        tx.block_number,
-        tx."from" AS tx_from,
-        tx."to" AS tx_to
+        fees
     FROM wyvern_calldata wc
-    LEFT JOIN ethereum.transactions tx ON wc.call_tx_hash = tx.hash
-        AND tx.block_time >= start_ts
-        AND tx.block_time < end_ts
     LEFT JOIN royalty_fees rf ON rf.tx_hash = wc.call_tx_hash AND rf.trace_address = wc.call_trace_address
     WHERE
         NOT EXISTS (SELECT * -- Exclude OpenSea mint transactions

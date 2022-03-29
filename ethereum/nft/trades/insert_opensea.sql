@@ -70,8 +70,7 @@ rows AS (
     )
 
 SELECT
-    CASE WHEN erc20tr.evt_tx_hash = wc.call_tx_hash THEN erc20tr.evt_block_time
-    ELSE wc.block_time END AS block_time,
+    tx.block_time,
     CASE WHEN agg.name is NOT NULL THEN tokens_agg.name
         ELSE tokens.name END AS nft_project_name,
     wc.token_id AS nft_token_id, 
@@ -86,8 +85,7 @@ SELECT
         WHEN agg.name is NULL AND erc_values_1155.value_unique > 1 OR erc_count_721.count_erc > 1 THEN 'Bundle Trade'
     ELSE wc.trade_type END AS trade_type,
     -- Count number of items traded for different trade types and erc standards
-    CASE 
-        WHEN agg.name is NULL AND erc_values_1155.value_unique > 1 THEN cast(erc_values_1155.value_unique as numeric)
+    CASE WHEN agg.name is NULL AND erc_values_1155.value_unique > 1 THEN cast(erc_values_1155.value_unique as numeric)
         WHEN agg.name is NULL AND erc_count_721.count_erc > 1 THEN cast(erc_count_721.count_erc as numeric)
         WHEN wc.trade_type = 'Single Item Trade' THEN cast(1 as numeric)
         WHEN wc.erc_standard = 'erc1155' THEN cast(erc_values_1155.value_unique as numeric)
@@ -130,36 +128,30 @@ SELECT
     wc.nft_contract_address AS nft_contract_address,
     wc.exchange_contract_address, 
     wc.call_tx_hash AS tx_hash,
-    CASE WHEN erc20tr.evt_tx_hash = wc.call_tx_hash THEN erc20tr.evt_block_number
-    ELSE wc.block_number END AS block_number,
-    CASE WHEN erc20tr.evt_tx_hash = wc.call_tx_hash THEN erc20tr.from
-    ELSE wc.tx_from END AS tx_from,
-    CASE WHEN erc20tr.evt_tx_hash = wc.call_tx_hash THEN erc20tr.to
-    ELSE wc.tx_to END AS tx_to,   
+    tx.block_number,
+    tx.from,
+    tx.to,
     call_trace_address::integer[] as trace_address,
     NULL::integer AS evt_index,
     row_number() OVER (PARTITION BY wc.call_tx_hash ORDER BY wc.call_trace_address) AS trade_id
 FROM nft.wyvern_data wc
+LEFT JOIN ethereum.transactions tx ON wc.call_tx_hash = tx.hash
 LEFT JOIN erc_values_1155 ON erc_values_1155.evt_tx_hash = wc.call_tx_hash AND wc.token_id = erc_values_1155.token_id_erc
 LEFT JOIN erc_count_721 ON erc_count_721.evt_tx_hash = wc.call_tx_hash AND wc.token_id = erc_count_721.token_id_erc
-LEFT JOIN erc20."ERC20_evt_Transfer" erc20tr ON erc20tr.evt_tx_hash = wc.call_tx_hash AND wc.nft_contract_address = erc20tr.contract_address 
-    AND erc20tr.evt_block_time >= start_ts
-    AND erc20tr.evt_block_time < end_ts
 LEFT JOIN nft.tokens tokens ON tokens.contract_address = wc.nft_contract_address
 LEFT JOIN nft.tokens tokens_agg ON tokens_agg.contract_address = wc.nft_contract_address
-LEFT JOIN nft.aggregators agg ON agg.contract_address = wc.tx_to
-LEFT JOIN prices.usd p ON p.minute = date_trunc('minute', wc.block_time)
+LEFT JOIN nft.aggregators agg ON agg.contract_address = tx.to
+LEFT JOIN prices.usd peth ON peth.minute = date_trunc('minute', tx.block_time)
     AND p.contract_address = wc.currency_token
     AND p.minute >= start_ts
     AND p.minute < end_ts
-LEFT JOIN prices.usd peth ON peth.minute = date_trunc('minute', wc.block_time)
+LEFT JOIN prices.usd peth ON peth.minute = date_trunc('minute', tx.block_time)
     AND peth.symbol = 'WETH'
     AND peth.minute >= start_ts
     AND peth.minute < end_ts
 LEFT JOIN erc20.tokens erc20 ON erc20.contract_address = wc.currency_token
-WHERE
-    wc.block_time >= start_ts
-    AND wc.block_time < end_ts
+WHERE tx.block_time >= start_ts
+      AND tx.block_time < end_ts
 ON CONFLICT DO NOTHING
     RETURNING 1
 )
