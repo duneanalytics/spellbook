@@ -6,6 +6,7 @@ BEGIN
 
 WITH wyvern_calldata AS (
     SELECT 
+        call_block_time,
         call_tx_hash,
         -- calldataBuy can be used to extract meaningful information about:
         CASE WHEN substring("calldataBuy",1,4) in ('\x68f0bcaa') THEN 'Bundle Trade' -- the trade type
@@ -44,7 +45,7 @@ WITH wyvern_calldata AS (
     AND "call_success"
     AND call_block_time >= start_ts
     AND call_block_time < end_ts
-    GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12    
+    GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13
 ),
 
 mints AS (
@@ -86,6 +87,7 @@ SELECT
 
 rows AS (
     INSERT INTO nft.wyvern_data(
+        block_time,
         call_tx_hash,
         trade_type,
         erc_standard,
@@ -102,6 +104,7 @@ rows AS (
         fees
         )
     SELECT 
+        call_block_time AS block_time,
         call_tx_hash,
         trade_type,
         erc_standard,

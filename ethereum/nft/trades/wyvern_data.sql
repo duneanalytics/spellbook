@@ -2,6 +2,7 @@ CREATE SCHEMA IF NOT EXISTS nft;
 
 DROP TABLE nft.wyvern_data;
 CREATE TABLE IF NOT EXISTS nft.wyvern_data(
+    block_time timestamptz NOT NULL,
     call_tx_hash bytea,
     trade_type text,
     erc_standard text,
@@ -19,6 +20,7 @@ CREATE TABLE IF NOT EXISTS nft.wyvern_data(
     PRIMARY KEY (call_tx_hash, seller)
 );
 
+CREATE INDEX IF NOT EXISTS nft_wyv_data_block_time_idx ON nft.wyvern_data USING BRIN (block_time);
 CREATE INDEX IF NOT EXISTS nft_wyv_data_tx_hash_idx ON nft.wyvern_data (call_tx_hash);
 CREATE INDEX IF NOT EXISTS nft_wyv_data_currency_token_idx ON nft.wyvern_data (currency_token);
 CREATE INDEX IF NOT EXISTS nft_wyv_data_nft_contract_addr_idx ON nft.wyvern_data (nft_contract_address);

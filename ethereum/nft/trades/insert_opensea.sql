@@ -136,6 +136,8 @@ SELECT
     row_number() OVER (PARTITION BY wc.call_tx_hash ORDER BY wc.call_trace_address) AS trade_id
 FROM nft.wyvern_data wc
 LEFT JOIN ethereum.transactions tx ON wc.call_tx_hash = tx.hash
+    AND tx.block_time >= start_ts
+    AND tx.block_time < end_ts
 LEFT JOIN erc_values_1155 ON erc_values_1155.evt_tx_hash = wc.call_tx_hash AND wc.token_id = erc_values_1155.token_id_erc
 LEFT JOIN erc_count_721 ON erc_count_721.evt_tx_hash = wc.call_tx_hash AND wc.token_id = erc_count_721.token_id_erc
 LEFT JOIN nft.tokens tokens ON tokens.contract_address = wc.nft_contract_address
@@ -150,8 +152,8 @@ LEFT JOIN prices.usd peth ON peth.minute = date_trunc('minute', tx.block_time)
     AND peth.minute >= start_ts
     AND peth.minute < end_ts
 LEFT JOIN erc20.tokens erc20 ON erc20.contract_address = wc.currency_token
-WHERE tx.block_time >= start_ts
-      AND tx.block_time < end_ts
+WHERE wc.block_time >= start_ts
+    AND wc.block_time < end_ts
 ON CONFLICT DO NOTHING
     RETURNING 1
 )
