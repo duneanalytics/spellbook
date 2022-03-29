@@ -23,7 +23,7 @@ erc_count_721 as
         "tokenId"::text as token_id_erc,
         COUNT("tokenId") as count_erc
         FROM erc721."ERC721_evt_Transfer" erc721
-        INNER JOIN nft.wyvern_data wc ON erc721.evt_tx_hash = wc.call_tx_hash
+        LEFT JOIN nft.wyvern_data wc ON erc721.evt_tx_hash = wc.call_tx_hash
         AND wc.token_id = erc721."tokenId"::text
         WHERE erc721."from" NOT IN ('\x0000000000000000000000000000000000000000')
         AND erc721.evt_block_time >= start_ts
