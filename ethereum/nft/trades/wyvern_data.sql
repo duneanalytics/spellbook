@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS nft.wyvern_data(
     token_id text,
     call_trace_address varchar,
     original_currency_address bytea[],
-    fees numeric
+    fees numeric,
     PRIMARY KEY (call_tx_hash, seller)
 );
 
