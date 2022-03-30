@@ -94,7 +94,7 @@ rows AS (
         platform,
         platform_version,
         CASE WHEN erc.no_of_transfers > 1 THEN 'Bundle Trade' ELSE 'Single Item Trade' END AS trade_type,
-        cast(erc.no_of_transfers) AS number_of_items,
+        cast(trades.no_of_transfers as numeric) AS number_of_items,
         category,
         evt_type,
         agg.name AS aggregator,
