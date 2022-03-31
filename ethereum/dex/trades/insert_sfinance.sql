@@ -64,19 +64,19 @@ WITH rows AS (
             'DEX' AS category,
             buyer AS trader_a,
             NULL::bytea AS trader_b,
-            tokens_sold AS token_a_amount_raw,
-            tokens_bought AS token_b_amount_raw,
+            tokens_bought AS token_a_amount_raw,
+            tokens_sold AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            CASE WHEN sold_id = 0 THEN '\x6B175474E89094C44Da98b954EedeAC495271d0F'::bytea
-            WHEN sold_id = 1 THEN '\xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'::bytea
-            WHEN sold_id = 2 THEN '\xdAC17F958D2ee523a2206206994597C13D831ec7'::bytea
-            WHEN sold_id = 3 THEN '\x0000000000085d4780B73119b644AE5ecd22b376'::bytea
-            WHEN sold_id = 4 THEN '\x8E870D67F660D95d5be530380D0eC0bd388289E1'::bytea END AS token_a_address,
             CASE WHEN bought_id = 0 THEN '\x6B175474E89094C44Da98b954EedeAC495271d0F'::bytea
             WHEN bought_id = 1 THEN '\xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'::bytea
             WHEN bought_id = 2 THEN '\xdAC17F958D2ee523a2206206994597C13D831ec7'::bytea
             WHEN bought_id = 3 THEN '\x0000000000085d4780B73119b644AE5ecd22b376'::bytea
-            WHEN bought_id = 4 THEN '\x8E870D67F660D95d5be530380D0eC0bd388289E1'::bytea END AS token_b_address,
+            WHEN bought_id = 4 THEN '\x8E870D67F660D95d5be530380D0eC0bd388289E1'::bytea END AS token_a_address,
+            CASE WHEN sold_id = 0 THEN '\x6B175474E89094C44Da98b954EedeAC495271d0F'::bytea
+            WHEN sold_id = 1 THEN '\xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'::bytea
+            WHEN sold_id = 2 THEN '\xdAC17F958D2ee523a2206206994597C13D831ec7'::bytea
+            WHEN sold_id = 3 THEN '\x0000000000085d4780B73119b644AE5ecd22b376'::bytea
+            WHEN sold_id = 4 THEN '\x8E870D67F660D95d5be530380D0eC0bd388289E1'::bytea END AS token_b_address,
             contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
