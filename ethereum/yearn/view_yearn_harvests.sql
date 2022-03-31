@@ -22,4 +22,27 @@ CREATE VIEW yearn."view_yearn_harvests" AS(
   LEFT JOIN yearn."view_yearn_contract_tokens" yct on cs."yvault_contract" = yct."yvault_contract"
   WHERE
     "yvault_deposit_token_symbol" is not null
+UNION ALL 
+
+(
+SELECT 
+CASE 
+    WHEN hvst."wantEarned" > 0 THEN (hvst."wantEarned"/(10^yct."yvault_deposit_token_decimals"))
+    ELSE (hvst."wantEarned"/(10^yct."yvault_deposit_token_decimals"))*-1 END as profit_loss,
+NULL as debt_payment,
+NULL as debt_outstanding,
+hvst."evt_tx_hash",
+cs."yvault_contract",
+cs."strategy",
+cs."yearn_type",
+yct."yvault_deposit_token",
+yct."yvault_deposit_token_decimals",
+yct."yvault_deposit_token_symbol"
+FROM 
+yearn."yearn_v1_strat_evt_Harvested" hvst 
+LEFT JOIN dune_user_generated."view_yearn_contract_strategy" cs on hvst."contract_address" = cs."strategy"
+LEFT JOIN dune_user_generated."view_yearn_contract_tokens" yct on cs."yvault_contract" = yct."yvault_contract" 
+WHERE
+"yvault_deposit_token_symbol" is not null
 )
+  )
