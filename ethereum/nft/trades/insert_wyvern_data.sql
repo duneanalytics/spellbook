@@ -125,8 +125,8 @@ rows AS (
         call_trace_address,
         original_currency_address,
         fees,
-        tx.block_time,
-        tx.block_number,
+        block_time,
+        block_number,
         tx_from,
         tx_to 
     FROM wyvern_calldata wc

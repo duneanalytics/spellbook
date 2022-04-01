@@ -145,7 +145,7 @@ LEFT JOIN prices.usd p ON p.minute = date_trunc('minute', wc.block_time)
     AND p.contract_address = wc.currency_token
     AND p.minute >= start_ts
     AND p.minute < end_ts
-LEFT JOIN prices.usd peth ON peth.minute = date_trunc('minute', tx.block_time)
+LEFT JOIN prices.usd peth ON peth.minute = date_trunc('minute', wc.block_time)
     AND peth.symbol = 'WETH'
     AND peth.minute >= start_ts
     AND peth.minute < end_ts
