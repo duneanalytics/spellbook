@@ -40,7 +40,7 @@ WITH wyvern_calldata AS (
         tx."to" as tx_to,
         array_agg(addrs [7]) AS original_currency_address
     FROM
-        opensea."WyvernExchange_call_atomicMatch_"
+        opensea."WyvernExchange_call_atomicMatch_" wc
     LEFT JOIN ethereum.transactions tx ON wc.call_tx_hash = tx.hash
         AND tx.block_time >= start_ts
         AND tx.block_time < end_ts
