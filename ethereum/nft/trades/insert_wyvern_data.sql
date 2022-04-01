@@ -6,7 +6,8 @@ BEGIN
 
 WITH wyvern_calldata AS (
     SELECT 
-        call_block_time,
+        tx.block_time,
+        tx.block_number,
         call_tx_hash,
         -- calldataBuy can be used to extract meaningful information about:
         CASE WHEN substring("calldataBuy",1,4) in ('\x68f0bcaa') THEN 'Bundle Trade' -- the trade type
@@ -31,22 +32,25 @@ WITH wyvern_calldata AS (
         CASE WHEN substring("calldataBuy",1,4) in ('\xfb16a595','\x96809f90') THEN CAST(bytea2numericpy(substr("calldataBuy",101,32)) as text) -- the token ID
              WHEN  substring("calldataBuy",1,4) in ('\x23b872dd','\xf242432a') THEN CAST(bytea2numericpy(substr("calldataBuy", 69,32)) as text)
              END AS token_id,
-        
         CASE -- call_trace_address will be used to extract information about royalty fees 
              WHEN call_trace_address::varchar = '{}' then '{3}' -- For bundle join
              ELSE call_trace_address::varchar 
         END as call_trace_address,
+        tx."from" as tx_from,
+        tx."to" as tx_to,
         array_agg(addrs [7]) AS original_currency_address
     FROM
         opensea."WyvernExchange_call_atomicMatch_"
+    LEFT JOIN ethereum.transactions tx ON wc.call_tx_hash = tx.hash
+        AND tx.block_time >= start_ts
+        AND tx.block_time < end_ts
     WHERE
-        (addrs[4] = '\x5b3256965e7c3cf26e11fcaf296dfc8807c01073'
+    (addrs[4] = '\x5b3256965e7c3cf26e11fcaf296dfc8807c01073'
           OR addrs[11] = '\x5b3256965e7c3cf26e11fcaf296dfc8807c01073')
     AND "call_success"
     AND call_block_time >= start_ts
     AND call_block_time < end_ts
-    GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13
-),
+    GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16),
 
 mints AS (
     SELECT evt_tx_hash
@@ -87,7 +91,6 @@ SELECT
 
 rows AS (
     INSERT INTO nft.wyvern_data(
-        block_time,
         call_tx_hash,
         trade_type,
         erc_standard,
@@ -101,10 +104,13 @@ rows AS (
         token_id,
         call_trace_address,
         original_currency_address,
-        fees
+        fees,
+        block_time,
+        block_number,
+        tx_from,
+        tx_to
         )
     SELECT 
-        call_block_time AS block_time,
         call_tx_hash,
         trade_type,
         erc_standard,
@@ -118,7 +124,11 @@ rows AS (
         token_id,
         call_trace_address,
         original_currency_address,
-        fees
+        fees,
+        tx.block_time,
+        tx.block_number,
+        tx_from,
+        tx_to 
     FROM wyvern_calldata wc
     LEFT JOIN royalty_fees rf ON rf.tx_hash = wc.call_tx_hash AND rf.trace_address = wc.call_trace_address
     WHERE wc.call_tx_hash NOT IN (SELECT evt_tx_hash FROM mints)  -- Exclude OpenSea mint transactions

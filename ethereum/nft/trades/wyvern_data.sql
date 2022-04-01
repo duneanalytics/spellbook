@@ -2,7 +2,6 @@ CREATE SCHEMA IF NOT EXISTS nft;
 
 DROP TABLE nft.wyvern_data;
 CREATE TABLE IF NOT EXISTS nft.wyvern_data(
-    block_time timestamptz NOT NULL,
     call_tx_hash bytea,
     trade_type text,
     erc_standard text,
@@ -17,6 +16,10 @@ CREATE TABLE IF NOT EXISTS nft.wyvern_data(
     call_trace_address varchar,
     original_currency_address bytea[],
     fees numeric,
+    block_time timestamptz NOT NULL,
+    block_number integer,
+    tx_from bytea NOT NULL,
+    tx_to bytea,
     PRIMARY KEY (call_tx_hash, seller)
 );
 
@@ -25,7 +28,10 @@ CREATE INDEX IF NOT EXISTS nft_wyv_data_tx_hash_idx ON nft.wyvern_data (call_tx_
 CREATE INDEX IF NOT EXISTS nft_wyv_data_currency_token_idx ON nft.wyvern_data (currency_token);
 CREATE INDEX IF NOT EXISTS nft_wyv_data_nft_contract_addr_idx ON nft.wyvern_data (nft_contract_address);
 CREATE INDEX IF NOT EXISTS nft_wyv_data_token_id_idx ON nft.wyvern_data (token_id);
+CREATE INDEX IF NOT EXISTS nft_wyv_data_tx_to_idx ON nft.wyvern_data (tx_to);
 
+CREATE INDEX IF NOT EXISTS nft_wyv_data_tx_hash_block_time_idx ON nft.wyvern_data (call_tx_hash, block_time);
+CREATE INDEX IF NOT EXISTS nft_wyv_data_currency_token_block_time_idx ON nft.wyvern_data (currency_token, block_time);
 CREATE INDEX IF NOT EXISTS nft_wyv_data_tx_hash_token_id_idx ON nft.wyvern_data (call_tx_hash, token_id);
 CREATE INDEX IF NOT EXISTS nft_wyv_data_tx_hash_trace_addr_idx ON nft.wyvern_data (call_tx_hash, call_trace_address);
 CREATE INDEX IF NOT EXISTS nft_wyv_data_tx_hash_nft_contract_addr_idx ON nft.wyvern_data (call_tx_hash, nft_contract_address);
