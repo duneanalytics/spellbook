@@ -18,8 +18,8 @@ CREATE VIEW yearn."view_yearn_harvests" AS(
     yct."yvault_deposit_token_symbol"
   FROM
     yearn."yvault_strat_evt_Harvested" hvst 
-  LEFT JOIN yearn."view_yearn_contract_strategy" cs on hvst."contract_address" = cs."strategy"
-  LEFT JOIN yearn."view_yearn_contract_tokens" yct on cs."yvault_contract" = yct."yvault_contract"
+  LEFT JOIN yearn."view_yearn_contract_strategy" cs ON hvst."contract_address" = cs."strategy"
+  LEFT JOIN yearn."view_yearn_contract_tokens" yct ON cs."yvault_contract" = yct."yvault_contract"
   WHERE
     "yvault_deposit_token_symbol" is not null
 UNION ALL 
@@ -40,8 +40,8 @@ yct."yvault_deposit_token_decimals",
 yct."yvault_deposit_token_symbol"
 FROM 
 yearn."yearn_v1_strat_evt_Harvested" hvst 
-LEFT JOIN yearn."view_yearn_contract_strategy" cs on hvst."contract_address" = cs."strategy"
-LEFT JOIN yearn."view_yearn_contract_tokens" yct on cs."yvault_contract" = yct."yvault_contract" 
+LEFT JOIN yearn."view_yearn_contract_strategy" cs ON hvst."contract_address" = cs."strategy"
+LEFT JOIN yearn."view_yearn_contract_tokens" yct ON cs."yvault_contract" = yct."yvault_contract" 
 WHERE
 "yvault_deposit_token_symbol" is not null
 )
