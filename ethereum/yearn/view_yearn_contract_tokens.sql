@@ -37,7 +37,7 @@ CREATE VIEW yearn."view_yearn_contract_tokens" AS(
     FROM
     erc20."ERC20_evt_Transfer") ett LEFT JOIN erc20."tokens" et ON ett."mod_contract" = et."contract_address"
     WHERE
-    "from" in (
+    "from" IN (
         (SELECT DISTINCT("contract_address") AS yearn_type FROM yearn."yVault_evt_Transfer")
         UNION ALL
         (SELECT DISTINCT("contract_address") AS yearn_type FROM iearn_v2."yToken_evt_Transfer")
@@ -49,7 +49,7 @@ CREATE VIEW yearn."view_yearn_contract_tokens" AS(
         UNION ALL
         (SELECT DISTINCT("contract_address") AS yearn_type FROM yearn."woofy_evt_Transfer")
         )
-        and "from" != ett."contract_address"
-    group by 1,2,3,4,5
-    order by 4,5 desc
+        AND "from" != ett."contract_address"
+    GROUP BY 1, 2, 3, 4, 5
+    ORDER BY 4, 5 DESC
 )
