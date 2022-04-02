@@ -12,11 +12,11 @@ CREATE VIEW yearn."view_yearn_contract_tokens" AS(
     CASE
         WHEN "from" IN (SELECT DISTINCT("contract_address") FROM yearn."yVault_evt_Transfer") then 'yearn_v1'
         WHEN "from" IN (SELECT DISTINCT("contract_address") yearn_type FROM iearn_v2."yToken_evt_Transfer") then 'iearn_v2'
-        WHEN "from" in (SELECT DISTINCT("contract_address") as yearn_type FROM yearn_v2."yVault_evt_Transfer") then 'yearn_v2'
-        WHEN "from" in (SELECT DISTINCT("contract_address") as yearn_type FROM yearn."ironbank_evt_Transfer") then 'ironbank'
-        WHEN "from" in (SELECT DISTINCT("contract_address") as yearn_type FROM yearn."woofy_evt_Transfer") then 'woofy'
-    END as yearn_type,
-    count(*) as count_withdrawals
+        WHEN "from" IN (SELECT DISTINCT("contract_address") as yearn_type FROM yearn_v2."yVault_evt_Transfer") then 'yearn_v2'
+        WHEN "from" IN (SELECT DISTINCT("contract_address") AS yearn_type FROM yearn."ironbank_evt_Transfer") THEN 'ironbank'
+        WHEN "from" IN (SELECT DISTINCT("contract_address") AS yearn_type FROM yearn."woofy_evt_Transfer") THEN 'woofy'
+    END AS yearn_type,
+    COUNT(*) AS count_withdrawals
     FROM
     (
     SELECT
@@ -31,11 +31,11 @@ CREATE VIEW yearn."view_yearn_contract_tokens" AS(
             WHEN "from" = '\xe6354ed5bc4b393a5aad09f21c46e101e692d447'::bytea THEN '\xdac17f958d2ee523a2206206994597c13d831ec7'::bytea
             WHEN "from" = '\x04bc0ab673d88ae9dbc9da2380cb6b79c4bca9ae'::bytea THEN '\x4fabb145d64652a948d72533023f6e7a623c7c53'::bytea
             WHEN "from" = '\x26ea744e5b887e5205727f55dfbe8685e3b21951'::bytea THEN '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'::bytea
-        ELSE "contract_address" END as mod_contract,
+        ELSE "contract_address" END AS mod_contract,
         "contract_address",
         "from"
     FROM
-    erc20."ERC20_evt_Transfer") ett left join erc20."tokens" et on ett."mod_contract" = et."contract_address"
+    erc20."ERC20_evt_Transfer") ett LEFT JOIN erc20."tokens" et ON ett."mod_contract" = et."contract_address"
     WHERE
     "from" in (
         (SELECT DISTINCT("contract_address") AS yearn_type FROM yearn."yVault_evt_Transfer")
