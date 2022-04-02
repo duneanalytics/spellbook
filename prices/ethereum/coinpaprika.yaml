@@ -33,6 +33,16 @@
   symbol: AAVE
   address: 0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9
   decimals: 18
+- name: knc-kyber-network
+  id: knc-kyber-network
+  symbol: KNC
+  address: 0xdeFA4e8a7bcBA345F687a2f1456F5Edd9CE97202
+  decimals: 18
+- name: inst-instadapp
+  id: inst-instadapp
+  symbol: INST
+  address: 0x6f40d4A6237C257fff2dB00FA0510DeEECd303eb
+  decimals: 18
 - name: uni_uniswap
   id: uni-uniswap
   symbol: UNI
@@ -1905,4 +1915,64 @@
   id: ape-apecoin
   symbol: APE
   address: 0x4d224452801aced8b2f0aebe155379bb5d594381
+  decimals: 18
+- name: gro-dao-token
+  id: gro-gro-dao-token
+  symbol: GRO
+  address: 0x3ec8798b81485a254928b70cda1cf0a2bb0b74d7
+  decimals: 18
+- name: phonon-dao
+  id: phonon-phonon-dao
+  symbol: PHONON
+  address: 0x758b4684be769e92eefea93f60dda0181ea303ec
+  decimals: 18
+- name: babl-babylonfinance
+  id: babl-babylonfinance
+  symbol: BABL
+  address: 0xf4dc48d260c93ad6a96c5ce563e70ca578987c74
+  decimals: 18
+- name: radar_radar
+  id: radar-radar
+  symbol: RADAR
+  address: 0xf9fbe825bfb2bf3e387af0dc18cac8d87f29dea8
+  decimals: 18
+- name: vsp-vesper-finance
+  id: vsp-vesper-finance
+  symbol: VSP
+  address: 0x1b40183EFB4Dd766f11bDa7A7c3AD8982e998421
+  decimals: 18
+- name: threshold-network-token
+  id: t-threshold-network-token
+  symbol: T
+  address: 0xCdF7028ceAB81fA0C6971208e83fa7872994beE5
+  decimals: 18
+- name: dsla-protocol
+  id: dsla-dsla-protocol
+  symbol: DSLA
+  address: 0x3aFfCCa64c2A6f4e3B6Bd9c64CD2C969EFd1ECBe
+  decimals: 18
+- name: cusdt-compound-usdt
+  id: cusdt-compound-usdt
+  symbol: cUSDT
+  address: 0xf650c3d88d12db855b8bf7d11be6c55a4e07dcc9
+  decimals: 8
+- name: gala-gala
+  id: gala-gala
+  symbol: GALA
+  address: 0x15D4c048F83bd7e37d49eA4C83a07267Ec4203dA
+  decimals: 8
+- name: tlm-alien-worlds
+  id: tlm-alien-worlds
+  symbol: TLM
+  address: 0x888888848B652B3E3a0f34c96E00EEC0F3a23F72
+  decimals: 4
+- name: Sylo
+  id: sylo-sylo
+  symbol: SYLO
+  address: 0xf293d23BF2CDc05411Ca0edDD588eb1977e8dcd4
+  decimals: 18
+- name: TerraUSD
+  id: ust-terrausd
+  symbol: UST
+  address: 0xa47c8bf37f92aBed4A126BDA807A7b7498661acD
   decimals: 18

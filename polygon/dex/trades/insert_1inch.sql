@@ -132,7 +132,7 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2021-01-01'
     AND block_time <= now() - interval '20 minutes'
-    AND project = 'Curve'
+    AND project = '1inch'
 );
 
 INSERT INTO cron.job (schedule, command)
