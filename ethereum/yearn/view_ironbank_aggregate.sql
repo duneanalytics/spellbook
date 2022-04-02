@@ -76,9 +76,8 @@ CREATE VIEW yearn."view_ironbank_aggregate" AS(
             evt_block_number, 
             'Transfer' as transaction_type
         FROM yearn."ironbank_evt_Transfer"
-    )
+        )
     ),
-
 
     two_tokens as (
         (SELECT 
