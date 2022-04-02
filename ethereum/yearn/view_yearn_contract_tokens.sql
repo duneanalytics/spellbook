@@ -5,13 +5,13 @@ DROP VIEW IF EXISTS yearn."view_yearn_contract_tokens" cascade;
 CREATE VIEW yearn."view_yearn_contract_tokens" AS(
     SELECT
     DISTINCT ON ("from")
-    ett."mod_contract" as yVault_deposit_token,
-    et."decimals" as yVault_deposit_token_decimals,
-    et."symbol" as yVault_deposit_token_symbol,
-    ett."from" as yVault_contract,
+    ett."mod_contract" AS yVault_deposit_token,
+    et."decimals" AS yVault_deposit_token_decimals,
+    et."symbol" AS yVault_deposit_token_symbol,
+    ett."from" AS yVault_contract,
     CASE
-        WHEN "from" in (SELECT DISTINCT("contract_address") FROM yearn."yVault_evt_Transfer") then 'yearn_v1'
-        WHEN "from" in (SELECT DISTINCT("contract_address") yearn_type FROM iearn_v2."yToken_evt_Transfer") then 'iearn_v2'
+        WHEN "from" IN (SELECT DISTINCT("contract_address") FROM yearn."yVault_evt_Transfer") then 'yearn_v1'
+        WHEN "from" IN (SELECT DISTINCT("contract_address") yearn_type FROM iearn_v2."yToken_evt_Transfer") then 'iearn_v2'
         WHEN "from" in (SELECT DISTINCT("contract_address") as yearn_type FROM yearn_v2."yVault_evt_Transfer") then 'yearn_v2'
         WHEN "from" in (SELECT DISTINCT("contract_address") as yearn_type FROM yearn."ironbank_evt_Transfer") then 'ironbank'
         WHEN "from" in (SELECT DISTINCT("contract_address") as yearn_type FROM yearn."woofy_evt_Transfer") then 'woofy'
