@@ -38,11 +38,11 @@ CREATE VIEW yearn."view_yearn_contract_strategy" AS(
         WHEN "yvault_contract" = '\xf6c9e9af314982a4b38366f4abfaa00595c5a6fc'::bytea then '\x3be2717da725f43b7d6c598d8f76aec43e231b99'::bytea
         WHEN "yvault_contract" = '\xfe39ce91437c76178665d64d7a2694b0f6f17fe3'::bytea then '\x406813ff2143d178d1ebccd2357c20a424208912'::bytea
         ELSE "strategy"
-    END as strategy,
+    END AS strategy,
     yct."yearn_type"
     FROM
     yearn."view_yearn_contract_tokens" yct 
-    LEFT JOIN yearn_v2."yVault_evt_StrategyAdded" ys on yct."yvault_contract" = ys."contract_address"
+    LEFT JOIN yearn_v2."yVault_evt_StrategyAdded" ys ON yct."yvault_contract" = ys."contract_address"
     WHERE
-    "yearn_type" not in ('iearn_v2','ironbank','woofy')
+    "yearn_type" NOT IN ('iearn_v2','ironbank','woofy')
 )
