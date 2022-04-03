@@ -560,7 +560,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x50476811f205c0701ee7792ae1745c5af191f48c	Lyle Owerko Boombox Project		erc721
 \\x418b2ae7aecfbed1c0613bd5dc65c7269c045460	Zodiac by Chad Knight	ZODIACBYCHADKNIGHT	erc721
 \\xd61202a471f8fb2ff09b7e606a6447e0aad8f360	Dutchtide	TIDE	erc721
-\\xffb4ff24e76605d1bfdccb9d8f717e5c71439c2a	Unidentified contract		erc1155
 \\x89d81ac376eaec2bf6dfa1f63dcc00764524abae	Floral Art	FLR	erc721
 \\x875955af00d2a67786aed9501f92a2ce98750aa6	Golden Arm And Beatrice	MAB034	erc721
 \\x4fdeb4d857a62af2e03f6d21071e201635bedb58	RarePorn	PKN	erc721
@@ -598,7 +597,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xce952f518aed9670fb04b8b8ece2654a94188ecd	JGN Collection	JGNC	erc1155
 \\xdd7c1be33faa2154a92c5f428df12109c14e1df8	Crypto Heroes	CPH	erc1155
 \\x1645e87d3742d38b60646cd402364695df138b90	SlapDash		erc721
-\\x9030e2680861289294a202237f4cd397270c511a	Unidentified contract	swords	erc1155
 \\x3d2e530766d1556509894fc4527dd74613e49657	Pizza Punks by Jon Burgerman	PIZZAPUNKSBYJONBURGERMAN	erc721
 \\x7e61ef40aa09f6fa557519bc93ecddefcd61c753	Stina's Sketchbook	SJSB	erc721
 \\x41113bce4659cb4912ed61d48154839f75131d7a	My Journey Open Edition By toomuchlag	MYJOURNEYOPENEDITIONBYTOOMUCHLAG	erc721
@@ -618,7 +616,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xecf073f91101ce5628669c487aee8f5822a101b1	dcl://xmas_2020	DCLXMAS2020	erc721
 \\x89cbd0ad7f5c10efa66e5d15a35ba5813ef76140	Diamond HODLR Clothing	DHC	erc1155
 \\x81b0c8cb62daf41f3b6629c38914dbe898a9fbe7	Token Fighter Super Limited Edition	TKSLE	erc1155
-\\x618dc60c5cae3b42a3983f4c870bdf57a8037186	Unidentified contract		erc1155
 \\x8da8806fc0c459fce4625789374972693befc03f	farmsociety	fsociety	erc1155
 \\xaf7d37efb8fe7198ed55cb5254ef0b357db6049f	PROOFofARTWORK		erc721
 \\x3f91d36c222bb19737495cc8a39652712cc9ee3a	Bored Axie Yacht Club	BAxYC	erc721
@@ -698,7 +695,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xff1beb21c0f0bed7ed9f816493a96ef53f4949de	REMO	®	erc721
 \\x25741f5f2dbdde9cfd38f73be7052ec03b0e9d85	Neon District Founder Key	NDKEY0	erc721
 \\x2168470e1f566f51afc3651b0e357b226f3f2300	A Book of Little Dreams Open Editions by Ted Chin x SwolfChan	ABOOKOFLITTLEDREAMSOPENEDITIONSBYTEDCHINXSWOLFCHAN	erc721
-\\xde88396d523ec2e6ed82b01b254da092b65c03af	Unidentified contract		erc1155
 \\x14a4123da9ad21b2215dc0ab6984ec1e89842c6d	EvolutionLand	EVO	erc721
 \\x17ce005c05a41ce96e490188e9444019c2e2bf2d	Crypto Aliens	ET	erc721
 \\x4151da618e79c7eb20f47856e966a88f59d8827f	Cosmic Josh Collection	artCJ	erc1155
@@ -733,7 +729,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xf91b673aaf37242257618bf8b467d20adcea13ce	BoardRooms Trippyogi Dart Packs	BOARDROOMSTRIPPYOGIDARTPACKS	erc721
 \\x6cc462bc49cecfe943bc4f477b23b92906e6074f	League of Kingdoms Land		erc721
 \\x97214d748eb8de4fbdac4cf832adf4be2ab5af2c	MYCOLLECTION	MTSTCLTCN	erc1155
-\\x49ce90fd09ca07f8c16e073d193df5c7ed1be655	Unidentified contract		erc1155
 \\x0332b704f1a3c2ca064c183cd6a2548e7fdd56ee	Hybrid	HYBRID	erc1155
 \\x234d8121e322288ba0f159e1e2b25f173013beab	NFT Heroes	NFTH	erc1155
 \\x300533115a586fa305fe6ca4a32fb22c22abbd92	Cryptovoxels HomeGoods Store		erc1155
@@ -795,7 +790,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xc639246eb3758349846e1fbbd2eeb77fbcc13c77	GU: Hyperion Black Star		erc721
 \\xdb908f9718acd81a18ea978ead8b0c9477e23f24	Art of Resistance II Packs by PR1MAL CYPHER 	ARTOFRESISTANCEIIPACKSBYPRMALCYPHER	erc721
 \\xf78229f4f3ef95fecbea50239a26339b5ad2d31c	PunKit		erc1155
-\\xb70100348ff48cd0ab391686bf0128da7b2828b7	Unidentified contract		erc1155
 \\xdfb258c93af3f005dca930b3f10afaf2917946df	Crypto Dogs Collection	CRYPTODOGS	erc721
 \\xa2f48155742730dd1f6c8b434b2ce44fef170820	Golden Age Comics		erc721
 \\xe60d2325f996e197eedded8964227a0c6ca82d0f	CaesarsTriumph	CRLAND	erc721
@@ -822,7 +816,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x723241c9ff5d78a6843f644ee96a4df6bbe13fcd	Albus Noir	ABNR	erc1155
 \\x1af8551b88601cc879e505b4f7655fe855a3b680	Zplit Digital Disc's		erc721
 \\x2a127fef63d448a2e51e7a7b8298e9d89547c1f6	Artworks by Yalo	YALO	erc721
-\\x108ff39bc1b725870031208f44488fefc03f1f57	Unidentified contract		erc1155
 \\xe65c9866c456c94b49c58286f1686d7e554d1899	MEGA YACHT CULT	MYC	erc1155
 \\x45acf142062c0c1620b6f31e3de731f5ac93b588	Piggos	PIGGO	erc721
 \\xedb88cb36ba634b01819b5e2b546834416e4a945	GrandsonNFT	GrandsonNFT	erc1155
@@ -848,7 +841,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xff488fd296c38a24cccc60b43dd7254810dab64e	Zed Run	ZT	erc721
 \\xdbee9da09f8abd3e8e836df4338de08a29d158a0	Buy A Batsman	BATSMAN	erc721
 \\x23c9e48f7e9fca487bd0c4f41ee1445812d871fd	THEM Hats	HAT	erc721
-\\xece000cd85d38ca467a8b6f3e6a9d5c1d155ec65	Unidentified contract		erc1155
 \\x60d8271c501501c4b8cd9ed5343ac59d1b79d993	dcl://ml_pekingopera	DCLMLPKNGPR	erc721
 \\x0f864e29b01a72247b6795cc6054afeb53ef35ef	Unique One	UNE	erc721
 \\xa9b54160d180f6f10087787ba584318b40c536ed	Generatives	GEN	erc721
@@ -870,7 +862,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xae4015cdc92792e78b865bf6621d7576cb586d15	swether	SWTR	erc721
 \\x9a41cd49126a53b796dbbdcf8ce163e989465111	SNKR Cards	SNKR	erc1155
 \\xf315ccd130b43c33a9a497c67dc3a4f7a0be54ae	danky	DANKY	erc721
-\\x35f5a420ef9bcc748329021fbd4ed0986abdf201	Unidentified contract		erc1155
 \\xcc42f00298936d58c4dea5ba1c63cb8b9f486cba	Keili Major Artist	MAJR	erc721
 \\x40d1587cb0bd9e2bcf7ab16c857d9a9fd881d445	High Club	HC	erc721
 \\xe5056e519bda000b19fb0711c3d87677dda9640d	4:20		erc721
@@ -914,7 +905,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x55639484d7b960c0f4f05433d3157454ae88f8f5	NicoPets	NP	erc721
 \\x2cb77ce67d441e564ff6a50785d905fb8d58dfef	Capitalism		erc721
 \\x455f9e7020a0b1fe5cbdebb11d5e3ec2c585fe36	Redeemable Blankos	BLANKO	erc721
-\\x20178cd7721fdfc1fda815dd03acc809b82e9e40	Unidentified contract		erc1155
 \\xfb72f7405df1a670d6c4ac3ef780a3a1602eaec6	Simi Headers	SIMIHEADER	erc721
 \\xa2d544196fdbc9da15a701c38bb60513c1802ef4	Growing Up...I'm Scared Open Edition by FEWOCiOUS	GROWINGUPIMSCAREDOPENEDITIONBYFEWOCIOUS	erc721
 \\x28cda7d862047e8dff335a59679cf29fc8ba2a26	Tribute		erc721
@@ -1004,7 +994,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xb96697fa4a3361ba35b774a42c58daccaad1b8e1	dcl://wonderzone_steampunk	DCLWNDRZNSTMPNK	erc721
 \\x2f4bdafb22bd92aa7b7552d270376de8edccbc1e	Presale CheezeWizard	CHEEZE	erc721
 \\x953a89ae2cc623dd765ed297cc21ab96a4d0e327	Cyber Humanoid	HUMANOID	erc721
-\\x88d3e00ce938f1a591336131b859465b50d608b7	Unidentified contract		erc1155
 \\x199a6b43c14193344542ec431b7cbd7a89a6f9de	GR1M R34P	GR4P	erc721
 \\xd8d1f01b836f5717bbc5639e91d78032ebae2571	My Journey By toomuchlag	MYJOURNEYBYTOOMUCHLAG	erc721
 \\x9b0cc5153fcbb66197f1785ede0674f5a00a913e	Klara Labs	Klara Labs	erc721
@@ -1032,7 +1021,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x8c0266c8d5eaa4a2fbed19fff3621ab1120c7336	Personae	PERSONAE	erc721
 \\x1514520cf8dfc73d83c5655e7080787fcc6f10d9	The New World	THENEWWORLD	erc721
 \\xf9c4e7509e37ee0880d30fc3370cd13e53e2e033	Bitcoin Blockies	BLCKIE	erc1155
-\\xf915bbfbb6c097dc327e64eec55e9ef4d110d627	Unidentified contract		erc721
 \\xf4bd9aa31a4a0b6335108ca0e99182cc5ac2a6ae	GM	GM	erc721
 \\xf401b8a6acda31aed226682db416740c072e5ff8	Conata	CNT	erc721
 \\x1585dde96bbd28c8741888002d218ea758bdf8c2	Peter Klashorst	KLAS	erc1155
@@ -1045,7 +1033,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x12c10e0e9c82b88a7fd5a68e072c99a5741e6047	Say it with a NFT	SAYNFT	erc1155
 \\x643aa20ad8292fe7c7ec7a1525f08e9fad0b4c53	Diamond Hands	DH33	erc1155
 \\x36d9eaeab734fea56805c56abfb4d5f24500d3c5	MONA PIZZA		erc721
-\\x1ca3262009b21f944e6b92a2a88d039d06f1acfa	Unidentified contract		erc1155
 \\x3e4a4e0f32c39b2b065d604987cd2e7573cc78c5	Snowball	SNOW	erc721
 \\x923d9061870e54ecffa2e91bd7e69db2a4041273	Illuminati Tokens	ILL23	erc721
 \\x99e51171f4e9fc035a8ca6803d4a19a2669fc6c3	FAMECollectible	MCB	erc1155
@@ -1092,7 +1079,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x0756c900b18dd0c945b62685f8ca57c8a11ab025	RUDE LAB'S	RUDELABS	erc1155
 \\x3f4a885ed8d9cdf10f3349357e3b243f3695b24a	Incognito	ICON	erc721
 \\xef547d017f64863a1a741864d900956081744238	Ai Human Art		erc721
-\\x0e58f11315665db91bd05e32b91c490d83ca353e	Unidentified contract		erc1155
 \\xddda036d5f1bc5d4d198b37cdb5ecd9103c8aa0e	CarnivalSeries	hun7	erc1155
 \\xbb89a9ee61db459aa155faba9a6519c7ecbeb224	Isolation Reflections by Nathan Riley	ISOLATIONREFLECTIONSBYNATHANRILEY	erc721
 \\x480f319f0e75d1d5cc4b616dbd5c88d5bc22e668	Golden Art	GA	erc721
@@ -1137,7 +1123,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xfbf7ac8661c70ad19195bbe91ae1a27036b464db	Gone, But Not For Long by D*Face	GONEBUTNOTFORLONGBYDFACE	erc721
 \\xe7336840c87272b4e1963199f5636d41570d5bb6	artgenossenII		erc721
 \\xcfb9178297eb853f622590f619a66c5d4638032f	Moments In Time	WATCH	erc721
-\\x55e50c81972a80bae7ae8b45cc607c63b6cb106c	Unidentified contract		erc1155
 \\x1cfd39c883b4d487bf88fdfa9931b347361df81e	ocularephemera	oculeph	erc1155
 \\x39d10d6b06312b4f92602f0d3928b64849430356	CybertinoNFT	CYBER_NFT	erc1155
 \\x71b7904b4f45ecb874a08823532deb7105469e6d	I have to return some videotapes by Lushsux	IHAVETORETURNSOMEVIDEOTAPESBYLUSHSUX	erc721
@@ -1164,7 +1149,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x6f8c7c4f7c73a3ebbe2a32b168aab81880e17898	IrishGirlCrypto		erc721
 \\x032dd2a3c6d234aa9620d65eb618fcdc72be3dbb	HashDemons	HASHDEMONS	erc721
 \\x6515b261f17805bafdf3b8037926b67388ffea6a	PCæmæl		erc721
-\\xc2d296311c041332946ec8dce90b40127d217836	Unidentified contract		erc1155
 \\xe34ce39ea37a64bd24ff57a900a18e33640701f1	Unique Chads	Chads	erc1155
 \\x42149fbcf7b225f0eda5a051a8b7e2ccacc9be88	ATM	ATM	erc721
 \\x240eb6b465f61dfc965053791f963cd0f0e4fdb0	FuckinTrolls	FKNTRLLS	erc721
@@ -1191,7 +1175,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x19ff903500974237f7313b23899955f15793e7bd	SKYΞ	SKYE	erc721
 \\xda9c03dfd4d137f926c3cf6953cb951832eb08b2	WAR Token	WAR	erc721
 \\xbd60694eb9fc58e626f67884f1a0c80a89b0c994	Emperial-NFTs		erc721
-\\xd3fdaeac03cd397b37f98375dfac9308c933afa8	Unidentified contract		erc1155
 \\x837704ec8dfec198789baf061d6e93b0e1555da6	Evaverse	EVA	erc721
 \\xcbb4094193ca590069f9b246a7a6f1c6de4a6439	BONK Minter	BONKNFT	erc721
 \\xf3515a07a16e4e3687d86871534e9aa8f6637bc6	Crystal Pops - Down Under Edition by Goldweard	CRYSTALPOPSDOWNUNDEREDITIONBYGOLDWEARD	erc721
@@ -1226,7 +1209,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x6724b57fc837adc897e62e9c88be2f5b1364eea8	Test NFT	TNFT	erc721
 \\x5dea989fef70b042d47d09ff3138dacc22b2c5fc	WGM		erc721
 \\xa0f38233688bb578c0a88102a95b846c18bc0ba7	Great Ape Society	GAS	erc721
-\\x4fe397b1451ac277ab943fbdad46f68292c8c31b	Unidentified contract		erc1155
 \\x0c5c8c539cd635a5353e6bf51357069c34085ca4	ARKE	ARKE	erc1155
 \\xee5e3dad8ba7eaf840c3a7478feb9041cb310dc1	Max Capacity 2021	MAX2021	erc721
 \\xb90d9280992835618ece959492cfd1ab0ac20a98	Spectres	SPTR	erc721
@@ -1254,7 +1236,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x951b0d7c1e4f10567d1ebcad1daa91d96ddaac4a	HYPEBIRDS by Olive Allen	HYPEBIRDSBYOLIVEALLEN	erc721
 \\xa8934086a260f8ece9166296967d18bd9c8474a5	WhelpsNFT	WLPS	erc721
 \\xb2b42942133130e09d54d9712c3f7e1b54d088cb	GRILLZ GANG OG BADGE	GGOG	erc721
-\\xf74622ae47b939ae10cf5bfb9e18dded8e304051	Unidentified contract		erc1155
 \\x571ff03ef5ccdae5eec8eab860f54fad090494de	Wearing Legends	WLDS	erc1155
 \\x84d66a4fe8e7b164ccb2a97c4366a6c4603666bc	One Dimension Away open edition by Anna Zhilyaeva	ONEDIMENSIONAWAYOPENEDITIONBYANNAZHILYAEVA	erc721
 \\x633970e51e5bb341685eea571a3f3fd77f73b9d5	Pxlboiz	PxlBoiz	erc721
@@ -1365,11 +1346,9 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x8b673873573f7794204f9ecde9dc258ca985fd40	Death … The Fallen by Jose Delbo	DEATHTHEFALLENBYJOSEDELBO	erc721
 \\x8c0752fe797254d006ceb7c6bce53eea35dfc759	PAWZ	PAWZ	erc1155
 \\x6f1e642f460447b012fc6bff215a198b3075e91e	Ymen-Mutant	MUTANT	erc721
-\\x3a6504feb012cdff702019dd1f03d8cf99c029d9	Unidentified contract		erc1155
 \\x5576e1a81d2497dc01716e909dc2b81de14caf56	Crypto Art		erc721
 \\xd26b1217d9aa61c73819aefb3a5f29515a8fc431	Jokes Are Awesome!!!	JOKES	erc1155
 \\xe8bdae19d71f6294d663af1d62f57433955d6ece	Szabotage	SZABOTAGE	erc721
-\\x266820432937e9437f5cdb1b8e2357ae1588096a	Unidentified contract		erc1155
 \\x6968f1421b7a122d431009635e32925271016fb0	SCANNERCORE	SCNR	erc1155
 \\xde41fd6dfa8194a1b32a91cb1313402007a31173	BillionDollarDapp Pixel	BDDPixel	erc721
 \\xaac618749753fa774c63ed50deedeb002780fa82	Starchain NFT	SC	erc721
@@ -1454,7 +1433,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x92cb5f1fbabbcbdd891b9cbd8e9a056c8c1eebef	CryptoCountries	CCC	erc721
 \\x779e13b9b74da6662bdeff23c5ba9db6152065b9	Megacity	MC	erc1155
 \\x14b2d558687942834839874d33a73c852be5401d	WWWorld Cup	WWWC	erc721
-\\x3ef4cbe2d16420dea700acd6cfd05954fd5ddd3c	Unidentified contract		erc1155
 \\xdec4993f29f68f1ea4de65dfe9c14983c3a60142	Spirit VS Machine by Defer	SPIRITVSMACHINEBYDEFER	erc721
 \\xcee82cef5c32c7ab8780e2530e69a31d2545c7d4	Forest Fox Club	FFC	erc721
 \\xd21a23606d2746f086f6528cd6873bad3307b903	Sewer Rat Social Club	SRSC	erc721
@@ -1487,7 +1465,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x1d3e8ad275f997798a9d2087be4c581f0ce3e823	KNXTTI COLLECTION	KNX	erc721
 \\x40fe4c60673709a16a0f47c42ba54b466418a64a	OFF BLUE	OFF BLUE	erc1155
 \\xd92e44ac213b9ebda0178e1523cc0ce177b7fa96	Beeple Round 2 Open Edition	BEEPLE2	erc721
-\\x77f84c36e451496d7f489efd16e9753fc2c8f0df	Unidentified contract		erc1155
 \\x2993762f67c881d9d5d5b0b3657d3cb0f16f61be	Dirty Fractal Comics	☤	erc1155
 \\x2b534cdd43d6eb1567be24f3cf7304da3dcd792a	Limited Release	GG	erc1155
 \\xff9315c2c4c0208edb5152f4c4ebec75e74010c5	DeFiLABS	DLABS	erc721
@@ -1502,7 +1479,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xe9cdb9c3509a06fb42763c5cbb172e675290f82e	Juicy J Journey	JUICYJOURNEY	erc721
 \\x48470fb3fe7108b9e15b2bf7aa15b7adf774d721	Starlink Game Satellite	SATE	erc721
 \\x47734fb50ecb0410353cf6c0ab102c5b04f67860	Life Below Surface		erc721
-\\x6bc02773e39a2c763d81481edc7c0d4fe992b85c	Unidentified contract		erc1155
 \\x266ada7ae80f852e18a1d50fe17d9b6ce63b7666	SpiroNFT	SPIRONFT	erc721
 \\xdfba87c30aa55ab562850edcc0f909dbdad5fce3	Mani Grupa Lotto	MGL	erc721
 \\x4c82b42afd72c8505df2e3703f05f2df926ed8ba	moon		erc721
@@ -1522,7 +1498,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x5d4683ba64ee6283bb7fdb8a91252f6aab32a110	Genesis.sol - [sol]Seedlings	SSGS#0	erc721
 \\xe5840bce423e8c99ce2b47b870bc9985fc73f09d	Not Official	NOFL	erc721
 \\xec3e88dd59090d35712fbd06e8c25f2dfd767107	Unknown Universe	UUC	erc1155
-\\x7a44228e46cdd37a85c0b07c4043b86c11e8c315	Unidentified contract		erc1155
 \\x387384cab866702d29d3d729611d886507f11e3a	Litter.art	♻️	erc721
 \\x4c52d0a009b4757a53155cbedad4379b4b855811	The Meme Exchange	meme	erc1155
 \\x45d8f7db9b437efbc74ba6a945a81aaf62dceda7	TheWickedStallions	TWS	erc721
@@ -1570,7 +1545,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x93387edd457c3b02015e6a92707f3bdb631f0fe1	sqrlps	SQRLPS	erc721
 \\x76bd634d66265f4138f46df36efe89c61ce7396a	The Alpha Series		erc721
 \\x8dc3be37a1d83a174a4d417980bcb455e347ba65	CryptoMorph		erc721
-\\x65e1a455e7dc7dbf5d0249a7df3ed53cd4368cd4	Unidentified contract		erc1155
 \\x982e2d2d4e536641475a86b4ec66743bd6d00de8	ABCDEFGHIJ-NFT	AB-NFT	erc721
 \\x25271fad43f59614c0928f63e0e7e10c2b280e89	Figs	FIGS	erc1155
 \\x47dd5f6335ffecbe77e982d8a449263d1e501301	Hashrunes	RUNE	erc721
@@ -1590,7 +1564,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xfe1a333119d6213c3729c517e449e6b40493ae97	MCS:Art	MCSA	erc721
 \\x1fdf8687518e0db99339276b913e144f5f47af1e	The NFT Investors Club	NFTCLUB	erc721
 \\x9f0939424bc47013110d80c4f75371d7f2133f7a	Bitmonkey Digital Collectibles	BDC	erc1155
-\\xace942e89a84c50294832ed7b24cf2db42e95127	Unidentified contract		erc1155
 \\xda9f43015749056182352e9dc6d3ee0b6293d80a	EtherLambos	EL	erc721
 \\x952aa98e18ae4da0bf5326052b2ab23cd562b9c1	NFSci	NFS	erc721
 \\xccde9b6d9515e5d04879e62fc20b4551846281f7	I'd Rather Be Outside Open Editions By Ondrej Zunka	IDRATHERBEOUTSIDEOPENEDITIONSBYONDREJZUNKA	erc721
@@ -1638,7 +1611,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x601eb48eeb8baabd197d279919d55303f49f319d	'Scruff' The Trajik Dragon	MAB009	erc721
 \\x843ea96ff57e6032683fbaa7d07bdebfa19b524d	Bok's Collection	BC	erc721
 \\x11c20d2cbec201f330b294686d0d225d72ebb169	Ghosties	GHOST	erc721
-\\xf98e7f2645d5a281386d1d8abffe653bfc3499c4	Unidentified contract		erc1155
 \\xb4346be592dc0eb680f688a4710f99a28daff369	SKUL	SKUL	erc721
 \\x88dc75fde07a075fd97e90641f0b1e2c7ba2a0ba	Monster Cloth Alphabet	Mosters	erc1155
 \\xcf8d9ff26c13ede55cfd21638fcd03ba1b77c6d9	DrawWritePlay	DWP	erc1155
@@ -1682,7 +1654,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x35d2c040cd252a00dc2cdfb9fd3034bd99da2d45	Select Works by Perry Cooper	SELECTWORKSBYPERRYCOOPER	erc721
 \\x939ccad0c046f3ffc6ff5d7ecb0b9e635d6b0bd5	BlockBase Sandbox	BlockBase Sandbox	erc721
 \\x3f3d4700bd8b93e059cfd2a13bf1e361394bb443	LSR/CITY Drawings & Auctions by Gareth Emery	LSRCITYDRAWINGSAUCTIONSBYGARETHEMERY	erc721
-\\x93ea6ec350ace7473f7694d43dec2726a515e31a	Unidentified contract		erc1155
 \\x9c1d606c8b9ed5f3c7cbec84615344b1e4987fcd	House of Blackmoore	HOB1	erc1155
 \\x74ee0c3882b97d3d2a04c81c72d16878876329e4	Zeus kGeyser Pioneer NFT	ZNFT	erc721
 \\x6cb163cba9c49fed53c736f09babec295615dff5	The Archives by Jake	ARCHVS	erc721
@@ -1696,7 +1667,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x78c705829d75d0ed422b0e1be9dd97fccafd4718	SAFU Piggy Token	SPT	erc721
 \\xdde38e42f9bd64f8bc9ed34a01c96a8769b4c4ec	Campfire Bear Club	CBC	erc721
 \\x27943f4191dd6d7f33eb16e20c71fa2d74d06d2b	UNRELEASED		erc721
-\\xd495255ca4a7f0f0dcd1d53f662607764558a5c6	Unidentified contract		erc1155
 \\x3e841c1d8d094733a5ee9f4c976ea779f2d55e54	FLO MASKS	FLO	erc1155
 \\x560de36966bcd0d4691263b115aec64cb34e0281	iNFINITY GEMx		erc721
 \\x2f95688f0c23c28ae509be7e887773f465e368c4	Camo Paint Shop		erc721
@@ -1706,7 +1676,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x12216e4ec364f8cf0e7f2d1288cd79cb13e6bd61	Geometric Visions	GMVS	erc1155
 \\x12eee96a954d790d50a0c08a3900da5e3131cb13	Antidote		erc721
 \\xfb026c8edc423fa0aaeba2be812676e2f2d5da18	Fun 'n' Games	VIZF	erc1155
-\\x4937c9b011350058a1d4d3c4f8d51870a7a45f3a	Unidentified contract		erc1155
 \\xfa1e48aa62dfe28c29f7bfb9deec9532bae38c5b	Canverse	CANV	erc721
 \\xa0278b6132b7ff63391f0f9360862a383431643f	binance		erc721
 \\xe7f8c066ea90be005032262fa13b9c6aa5182bce	glowing_finger design		erc721
@@ -1732,12 +1701,10 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x8e6824bc310516e9481998c94963e9c25c7fe1fb	Crypto Cryptid #01 -BatCat-	CCPTD	erc1155
 \\x102daabd1e9d294d4436ec4c521dce7b1f15499e	dcl://dc_niftyblocksmith	DCLDCNFTYBLCKSMTH	erc721
 \\xabb2a4e1717f51d379489df8e784f770fa6d6511	SELFER Card		erc721
-\\xa5e77e7018cc34aa17191942eafec52dee9dfca9	Unidentified contract		erc1155
 \\xae29c4a370c20587cac93856caa1831abeb7fa53	Potemkins	potemkins	erc721
 \\x0ce87f77b1d83df522ae96af9cf810b16ab0942b	GFT Authentic Digital Collectibles	GFT	erc721
 \\xde44a816b050fa0b880028c4644f339bdeb8542a	CryptoPixels	PIXL	erc1155
 \\xa4f2748fa01b7fbe58c350580ed39b3c4da1b295	ARTEMIS	ARTEMIS	erc721
-\\xa45e9b86f929a32a91ec81e8f9362f524b058dc8	Unidentified contract		erc1155
 \\x7f1fa8eccd6d321bdafe759f0583d22985fdbeb7	Indica	INDICA	erc1155
 \\xd679a0a5c3c174127ec4e4a26b4a10aa2906375d	MegaWorld Art	MWA	erc721
 \\x8e893534f8ba4183d6303fe27ffecac34b7b25a1	Pepe Tatot Cards	PTC	erc1155
@@ -1824,10 +1791,8 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x9220c5628bb5ee28ef573d8d0a80ccaf9316cc51	Nature Collection	NATURE	erc1155
 \\x4e302fc5aac305b6976c1d837f3114bf76e7b8a5	Crypto Bottle Caps	CBCS	erc1155
 \\xc38c8f281f1e1e217d279a6d58a43d079e28a213	Big Naza	NAZA	erc1155
-\\x107feeb1b13346b71385da58ca691068eaf531a3	Unidentified contract	CAR$	erc1155
 \\xaddbf4405a5711201e3ff3074ab272697d4e4a97	Making Magazine	MKNG	erc1155
 \\x2a648cb23d3adf1bb171fabc0119ea3eb951841f	XOR by Nahiko	XOR	erc721
-\\x6656b20a5d6ccdc95aea98764285cf9d3e6ff3ce	Unidentified contract		erc1155
 \\xe9266aee3bfffad726d793e205aeade01aaa4ba4	Crypto Space Artworks	SPACE	erc1155
 \\xd4cc46b27eed4eddbad2da3671bb52506414707b	Select Works by Ekaitza	SELECTWORKSBYEKAITZA	erc721
 \\x4fe99deb8f0be517c31faaad49b4b054ed28c267	ChainGuardians LE		erc721
@@ -1858,7 +1823,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xc6e53b90c8c0fe67d060d172144d7b31f68f55d9	Emergence	EMGE	erc721
 \\x5ee38f7ed251fb362ce7130a63a529b533139776	Tier Zero	BEAST	erc721
 \\x6c9369dc930fd794ad0af7511f483d936a2ef7f3	Aku	AKU	erc721
-\\xb644476e44a797db3b8a6a16f2e63e8d5a541b67	Unidentified contract		erc1155
 \\x1496640fc4bdfd7ee6361894f5eefe1f5f297c6d	Doodle Cats	DCAT	erc1155
 \\x0b5a5b509737e1f9803c7867617c3948b62c7540	Lucky 0x NFT Series	0xNFT	erc1155
 \\x278e91f559304b33689867d545f96bc5bba9032b	Eyes on Money		erc721
@@ -1915,7 +1879,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x7fce4daee17ee233f390b62d179eaea02dcee723	BananaMart	BananaMart	erc721
 \\xf722b1134d9e27be39d4d19bcecc9873f41e1e1b	Eva Lovia™ NFT#1	Eva	erc721
 \\x88a667099e358005e78e2e7262d478187ce447dd	FaceHooks 	facehook	erc721
-\\xf4722eaae263ea3e8409e4b8fbe2ca2f7620aa0e	Unidentified contract		erc1155
 \\x1bbfd274cb23a39b4108162d029871e6e4e4f252	Avatar wearables for CV		erc721
 \\xcd76a34fcdcc482e25e1d86e71111b78f818b470	logbook		erc721
 \\xa6e5454d11b626ae5a3a02f45d7e5391af256163	Risk Volumes	RISK	erc1155
@@ -2018,7 +1981,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x237259666d49568455cd07ca44c024857ae1df34	Popins	Popins	erc721
 \\xef0182dc0574cd5874494a120750fd222fdb909a	RumbleKongLeague	RKL	erc721
 \\xa42dde04c207b75728b0b42fca857ea471198800	POiNT	POiNT	erc721
-\\xe54891774eed9277236bac10d82788aee0aed313	Unidentified contract		erc1155
 \\x61ea02874cdf4d59618e7bb3b6e58ff0c212532c	CypherPunk NFT	CYPK	erc721
 \\x1756788da43d1daff96b4941b999df0af0f66dad	Digital Soul Open Editions by Eduard_ov	DIGITALSOULOPENEDITIONSBYEDUARDOV	erc721
 \\x80a7386216e3ed5741effa15547a1e4d036994d7	Sneaker Collective	SNKRC	erc1155
@@ -2034,7 +1996,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xfe915324af04746a9fc1db30f6a4407b05d98de7	Crypto Records Singles	CRECORDS	erc721
 \\x3c62e8de798721963b439868d3ce22a5252a7e03	F1® Delta Time		erc721
 \\x9d27956b06d4b5332067c2d188c8aeb875dcbf4f	Select Works by Alotta Money	SELECTWORKSBYALOTTAMONEY	erc721
-\\x8436f16c090b0a6b2a7ae4cfcc82e007302a4b38	Unidentified contract		erc721
 \\x9103650d8c0fe6600de16d9f17d9b84910d43df5	Vizzy Visuals	VIZV	erc1155
 \\x36865d6641a371eb0c38526ff9381b1b54aaf488	Polyient Games		erc721
 \\x55591531864a6f0788387b00a8ad98032ad9ac79	Willie B And The Pede	ICO	erc721
@@ -2065,7 +2026,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xb6ab68a44ecc9fb2244aab83eb2f6dba54205ebf	Where is my Dragon	WIMD	erc1155
 \\xc233baa25ae0cadb5928550ba437acb2af637f77	CryptArt	CART	erc1155
 \\x48832491784ce7f2316a0b4dfeeac4c701a10b2f	$WHALE Kids	KIDS	erc721
-\\x6a5faba004675498c1b107a14fbc60adf1af8c4c	Unidentified contract		erc1155
 \\xd265ac44dd8d8b1f2b892af8ba7e550291d8b0bb	Mintable		erc721
 \\xd6c1693653b1145f01b4052c8a3fb5b1a13718dd	hyaliko	HLKO	erc721
 \\x06b1b815138ff3188ec38a26a13676d5a1069952	Eva Turtle	TRTL	erc721
@@ -2074,7 +2034,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x4e3eb34950f1246acffcf79ddf9e4435fc785dbe	Trippy Ape Yacht Club	TAYC	erc721
 \\x70e120bedba35694fd97045cc39b2c5b15b0fdff	Multi of Unity	MofU	erc1155
 \\xbfdf0dd4b90193cd3c34afb788dff02788bc03d7	Capitalism		erc721
-\\x08d0de44c61634775c2238197a28ee20b6cd5d5e	Unidentified contract		erc1155
 \\x30ab12b93a31124333643cb6d55b96046b31aaa1	ChainGuardians Art		erc721
 \\xe5b6b07b04295b95a7af049863d715ce2318db01	1Block	1Block	erc721
 \\x37b0fc7af6dfc0741b0ed562005da15301f6c571	Surrealistic	SRRL	erc1155
@@ -2140,13 +2099,11 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x819d965d8e0a1d9852e805dec073084bd3c5637f	CryptoDrinks™	$DRINK	erc1155
 \\x919efce49077b5a32a1028ace137bbe4a2a890de	Favicons.ico	FAVICON	erc1155
 \\x455f04c9c54fffa699e9f6b1271e857a1f2bddfa	Tafi LootBox	TAFILOOT	erc721
-\\x89ee76cc25fcbf1714ed575faa6a10202b71c26a	Unidentified contract		erc1155
 \\xcde30e7a7f37022a705cd1415046d322e1428578	UNIQUΞ	UNQ	erc721
 \\xf8e94e7d4f2e2cc9a07512ae9813841a0000cb4e	CryptoTonya		erc721
 \\xf876bbc810e84854c9c37018103c0045544a6af9	NFTBox	[BOX]	erc721
 \\xd049ab4988962c8d3f25908e25baf7dd868a01c3	Kamagang	KAMA	erc721
 \\x4fece400c0d3db0937162ab44bab34445626ecfe	ETH TOWN	HERO	erc721
-\\xfac7bea255a6990f749363002136af6556b31e04	Unidentified contract		erc721
 \\x7a786407b290b11aa0dad6cc7eef6f6724c83491	Growing Up Got Old Packs by Jonathan Wolfe	GROWINGUPGOTOLDPACKSBYJONATHANWOLFE	erc721
 \\x204ecf00b8f626ef40b470d915d1d944b61ef5c9	Shinji's Hand		erc721
 \\x2f83fc012a3cb31462104603b0a122c0d718982c	HodlAssets		erc721
@@ -2295,7 +2252,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xbc8adb88debc9d6c48e96faca0a44185414803f1	My dark twisted fantasy by DotPigeon	MYDARKTWISTEDFANTASYBYDOTPIGEON	erc721
 \\x765826d05d94b3e5d04c6c2287102d01645bfd82	DABDRAGON	DABER	erc721
 \\xbd94f6c90c667dfd46f85ddb4de41fd0bfe4e8d8	CryptoPersonalities		erc721
-\\x32c5a8a33f282a776495a6544b0a97db24d8922e	Unidentified contract		erc1155
 \\xfb501bf065e6a0d17560e897df1bf6ec1a4b3293	Yura Miron		erc721
 \\x7f3303844ce8b12af81e1d45edadc1aa3ccf30e6	Firstling	FST	erc721
 \\x5bdab992da700c02bdb07572dd026533e97c1dd3	100xARt	100xARt	erc1155
@@ -2320,14 +2276,12 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x3eacf2d8ce91b35c048c6ac6ec36341aae002fb9	GOATz	GOATZ	erc721
 \\xbe7e0d467d9e0235c8ac5a7d68e55e198ff2235b	TECHNOFISH Open Editions by Calvin Harris x Emil Nava	TECHNOFISHOPENEDITIONSBYCALVINHARRISXEMILNAVA	erc721
 \\xedbca34b7b113fd3694a2450b5787771add5a7d4	yrdgz doodles		erc721
-\\x1ec248167ed8059e5ada967cbddd5b49e613de1f	Unidentified contract		erc1155
 \\xd865c127ccdfa49fe3d92b24c559c427c41ac650	ZZ Coin	ZZC	erc1155
 \\xe8053b0d505c9abd9fe628696af1b2f6872b2bac	AlimPixelArtTeam	APAT	erc721
 \\x532b52793bd345cc8903968afad51e590e0f17aa	Wall and More	WallNMore	erc1155
 \\x23b0a6881c93219f97861746e122666072ed1824	Full set Bundle		erc721
 \\x0ac4b59aa9c320e556a1e19176ef61eebdfacd25	Legendary Cultures		erc721
 \\x9c859f7218a4bd4b328f039a090cec5a32facbd6	Non-Fungible Watches	NFW	erc1155
-\\xdaae81c0077e8917a2eb63bb66ef701ff4781bb0	Unidentified contract		erc1155
 \\x5e043329618a2ed767dfefcaf8c615bf8ed52456	MusicNft	MNFT	erc721
 \\x481b7668c2ac4d6a1ee42603e77ba1312b4e5c5f	NiftyWorldOfFootball	NFOW	erc721
 \\xca4a880e3dd240c882667106b41f9fce8f282da7	Galactic Noobs	GN	erc721
@@ -2347,14 +2301,12 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x403c3741dfe6a6afed0a50d68e07f1df3b4e24c5	Dreamfield NFT	DF	erc721
 \\x1505ef0087ca9bcd80741b306ed147a5d3b00bf0	PixelBix	PXBX	erc1155
 \\xdbded5071b2782dd0b94411eb0d00a538d6e21fc	Calories Attack Collection	ETH	erc1155
-\\xc7e8ad1467d6a2732691fd65dddc28f18ea6b1cc	Unidentified contract		erc1155
 \\xa3010f8f26608dcbbd16ec07fc3a32a06e17a729	Spyder Tank		erc721
 \\xd4dac030e2eb3ed6d1a0594f43a6c5e3c57b2455	Real Leek	Meme	erc1155
 \\x7885584a108e7996f415585a094e6914b169d87c	Narcissus by Pak	NARCISSUSBYPAK	erc721
 \\x9cbb84fcfc54c6d24640cc4c0aeb090704a700b5	Castar Collectibles	CSTR	erc1155
 \\x4d7fe227faa08f0307bcb5fb0f6ce8703c8d1d11	OfficialNFDoge	NFD	erc721
 \\x5ee2370e698365227a38836a133a71f5064d4635	BitLighters	ERC-721	erc721
-\\x9d2b0a0ea55df2e6bbe8056206440995d20f3171	Unidentified contract		erc1155
 \\xb2dc5f254c5568a9684afd9ffd0c0d9bed2b92c0	Infinite Sculptures by Jon Noorlander	INFINITESCULPTURESBYJONNOORLANDER	erc721
 \\x905a9c144ae22bba46afb89b2f6a2cc3984d4073	Dicks: The Seed Collection (FUN)	DICK	erc721
 \\xf7e197ff2c5a4a09caacc9b3a1c9069e9a200440	PVLACE NFT	PVLACE	erc721
@@ -2388,7 +2340,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xd99bc798c0d3161c7e2eee3760e8fc14686c9abb	It's Broken Anyway Collection	gc100	erc721
 \\xcfc3e0eaf9e0bf2d0d08b1d9110c80802d2e9037	dstr8	dstr8	erc721
 \\x424db67b40b15ed85475c3f29dedf601b6ee75b2	The Popsicle Collection	POP	erc1155
-\\x4f0d1c63aa3d6002c759937a9b83757f531d98ae	Unidentified contract		erc1155
 \\x6c1a604346f4b568cd78e09ba6371629be541366	Chiefmonkey		erc721
 \\xd94ebc86e58f8493b9414d2078bcd79623cf8fdd	MyYomeTime	1	erc721
 \\x09b9905a472aa1d387c9c1d8d956aff5463837e8	Ape Island - Season 1	APE1	erc721
@@ -2500,7 +2451,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x686514f27217d82df6c9790eca44ad566ba739ac	Crypters 		erc721
 \\x4bd94438fc6f6fe0a70ebe66976efd5cd9348e42	cVault.Hamster Series	cvhs	erc721
 \\x57e7c431b22e6b06de1ec6ba8846ab780c84a73a	Aavegotchi FRENS Raffle Ticket	FRENST	erc721
-\\xf3bb2bdb756e75c80fef8cd2332b3b593ffb398e	Unidentified contract		erc1155
 \\x45db714f24f5a313569c41683047f1d49e78ba07	Space Punks	⚇	erc721
 \\xc49145aa857cb73f0741da1b29248993703b6a23	Everything Audio by 3LAU	EVERYTHINGAUDIOBYLAU	erc721
 \\xb0513fcd20c872b20d7c630d1ca6adaddccbb147	UranusOyster		erc721
@@ -2517,7 +2467,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x227c19ba406dd2cf1e2f095c81d60d8ebb031ad5	LEEAUX	LEO	erc721
 \\x223e457fd366f461672b5d4d8665de25bd2fecc8	Boutique72 - Community Treasures	BTQ-CT	erc721
 \\xabc09daad7e9f2fc60c83a8f8965c6aed1091f17	Harako Dolls Special Edition	HARAKO-SE	erc721
-\\xeda47c3f7d199f6d61a6cd346228acb1f29ed61f	Unidentified contract		erc1155
 \\xb4b581ff5de940c5d803036054620e62e6f4f120	YouMe	YouMe	erc1155
 \\x903d8c84e2cfb00aac6093fd4f1ee2eeb06d2e69	Solar System		erc721
 \\x7564a7d83b91d5910e6c561fdca10f4e035f70fe	Azul Cobalto	AZC	erc721
@@ -2548,7 +2497,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x3c69208b56f178705a97bb1a6779e17a5df65056	XWAVE	XWAVE	erc721
 \\x2814d2de819d258acd6d37687623f786d295018f	The Doctor's Office		erc721
 \\xf9acfb7a7b83344c636e3f3099ef11767b4488fd	CYBERBULLY COLLECTION by Matt Gondek	CYBERBULLYCOLLECTIONBYMATTGONDEK	erc721
-\\x39c40e0dd57f745b05d29c2253245c0df8b7bb30	Unidentified contract		erc721
 \\x8f773b5cc83f42edf2cc45519dba27c7f2faf6fd	BlockyBears		erc721
 \\x402491a577373995ff3382e6da3c282cb0564902	WannabesMusicClub	WBMC	erc721
 \\xd01d8961f881edaf23936ad809bf4ad65779877b	TBin		erc721
@@ -2754,7 +2702,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x3caf7d3361938293a7dd15db45dc045adc871520	 What We Will We do Once The Hype is Over ? by CB Hoyo	WHATWEWILLWEDOONCETHEHYPEISOVERBYCBHOYO	erc721
 \\xc54648d5fc76b1ecbb4f76a33dec7b37caf14f7d	pulltherug.finance	RUGZ	erc1155
 \\x673f01361566b6f2b402cdaa4951719a27c738c3	Jaskimon		erc1155
-\\x1014cf898383d275da1c2ed970d0b2cd5ffef3c2	Unidentified contract		erc1155
 \\x2c2c9800a5da2a54db0bce70c1bd4a9e3fd26ff1	Crxxm	CRXXM	erc721
 \\xd6be6a8f01bcf904d7054e58054a8e1b45b63da0	Flicker Fusion by Bryan Brinkman	FLICKERFUSIONBYBRYANBRINKMAN	erc721
 \\xc4faf76f059d89b8e837d889babfbe37fa0a6d60	SUPER BLITZ	SB	erc721
@@ -2812,7 +2759,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x5ca317d70c10f47b3f6c50e0e8b4018d9f93ac40	Rebel Kids Familiars	RBLFML	erc721
 \\x595f279de4b5df1e47ca55b65175d8a9a935a0fa	Somnium Space Items		erc721
 \\xf38d6bf300d52ba7880b43cddb3f94ee3c6c4ea6	PixelGlyphs	PxG	erc721
-\\x537eb102e8a97c1c3a623da6d3d03171dd8cf6d6	Unidentified contract		erc1155
 \\x864ff5975607fb053056a4fb4c67f557028f7320	ArtGrails	GRAIL	erc721
 \\xe271415e289411c0564247357cb79fb97f7a59cc	A Poster A Day		erc721
 \\x663c5146e75b5b78a4f289e02ca864f3bb88c4e1	monkey	mkn	erc721
@@ -2892,8 +2838,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x05d2d781d8ca5a755924867815c1cd86085f8325	Crypto Games	CPG	erc1155
 \\x3f63a86c202879203c133da18fd24284ce2c9b4e	Super Pump	SUPERPUMP	erc721
 \\x2374425c7e7ddf1d46f771f068d205aed551faf8	MadToyJunction	MTJ	erc721
-\\x93795322d06e54c928f5833038fc7ade91fe930b	Unidentified contract		erc1155
-\\x52202190e82597b6842c2622d51d213b3b8972c9	Unidentified contract		erc1155
 \\xc2e437d54d0120851f34391e28e741d1b1df1a0f	MARCO	MARCO	erc721
 \\x15c2b137e59620552bd0d712fe7279cf1f47468d	Glue Factory Show	GFS	erc721
 \\x55fd00e014dc99bd2e82471ffca0da69afeed472	Spaced Painter		erc721
@@ -3013,7 +2957,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xa32e2b65e71565749691b12acce26b656c7380df	Stigma	stigma	erc1155
 \\x5fbef9fcb449d56154980e52e165d9650b9f6ec2	Shared Storefront	SS	erc721
 \\x3f9d7b15763f57d7f5015901eaccca27ce996bb2	Polysphere		erc721
-\\x9434b446bbef8c3de371b46a7a91c7fd90d2d9fb	Unidentified contract		erc1155
 \\x29c35e6b16d117cc35d4d34e0ed2b5259d5df2c5	ejthek raribles 2	EJKR2	erc1155
 \\xd35147be6401dcb20811f2104c33de8e97ed6818	DCL Launch		erc721
 \\x2683dc00083ecf26443362664cbc92f7514ebe62	Mani Grupa Token	MGT	erc1155
@@ -3080,7 +3023,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x8bf592fd4217f064327d1db45a58c66f6d297584	Automaton		erc721
 \\xd5f34225d125bbe24eb2f92f5822a1f6c5227329	Faces of Freedom	FoF	erc721
 \\x02915c436c3ef849a9816d6aef64fc0c5ca081dc	Garbage Pail Kids	KIDS	erc721
-\\xd7b397edad16ca8111ca4a3b832d0a5e3ae2438c	Unidentified contract		erc1155
 \\xbc15b9ba02dadd02d4a02eff808087c75fd6dc6d	The Dream Machine	DREAM	erc1155
 \\x9505a05046c828af5b1f7c565c1f87ee30c25d4e	Pierre Bouvier	BOUVIER	erc721
 \\x66779f4615f287b4db421b7910620e05daae79b9	nanakusa	nana	erc721
@@ -3112,7 +3054,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xaef8bec601fc9f1dc2f9bf0c4d04df4095ce5b7f	MajorArt	MAJOR	erc1155
 \\xc505c5f2ed732147993e020c74a551bc6a608109	Cardano Mythos Collection	ADAMYTHOS	erc1155
 \\x8d672f46b23da8237cdaed4b5101e1400e1f9e2c	CryptoCafe	CCAF	erc721
-\\x730151b8286ca0508a19a9d5c47fe91fdd9a6737	Unidentified contract		erc1155
 \\xe84737fa86b8790bee352ad3d86f8e37f536f458	people disappear here open editions by Halsey	PEOPLEDISAPPEARHEREOPENEDITIONSBYHALSEY	erc721
 \\xeaed5122233fbec169d1669e53b3b4e090d9e029	Satoshi The Creator – Genesis - Packs by Jose Delbo	SATOSHITHECREATORGENESISPACKSBYJOSEDELBO	erc721
 \\x675cfb57ae9d5b6a8cc2d7dc32b8fffe0f0c95f9	Yamori		erc721
@@ -3128,14 +3069,10 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x7f737b66921d18b008dc9c3a9b933a3bf559f1bc	Interface Token	TOKN	erc721
 \\x5245fc0baee7c7accb8f46451599e62b5207cc27	The Boring Bucket Hat	BORING	erc721
 \\xa0488e09af052e71caeca415a9401df904d1773c	Marko Zubak		erc721
-\\xc86ca2bb9c9c9c9f140d832de00bfa9e153fa1e3	Unidentified contract		erc1155
-\\x798ee82618fa6b36a79f9eec87db611338a7f866	Unidentified contract		erc1155
 \\x9f60d4a4b5dd2376ce9c3293b42257f3a12e82e4	OFF BLUE	BLUE	erc1155
 \\xc9b087f7f5d4d00478bb736b9a47bf7927976bca	AClockworkGirl	ACWG	erc721
-\\x778aef7198cc1aa931ce0911c8bec9250e2732a4	Unidentified contract		erc1155
 \\x6ac645fda81299c8eb0da31fc773953752112e82	Devious Demon Dudes	DEMON	erc721
 \\x5ba1ae724047add7797a2efdcab8fc5a0b8dc29e	KungfuHero	KFH	erc721
-\\x9c81ba58a80cbfaf879ec1440ac7b24f401f5873	Unidentified contract		erc1155
 \\x111b0c95bfdab3b977f91b753e346ef4de4c869d	MusicLiveNFT	MLNFT	erc721
 \\xa4535f84e8d746462f9774319e75b25bc151ba1d	Substrata Parcel	SUBP	erc721
 \\x78fcad8425ee130e7a7c45a26310bda69a4163fd	Select Illustrations by John Guydo		erc721
@@ -3192,7 +3129,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x0ed40a013bf071f59087b8788295307539ca1a54	Neon Punks	Neon Punks	erc721
 \\xe0450b58eaba0698b0aa6f2784487f78a0565d6a	F4T4L 3RR0R		erc721
 \\x41d5a950f032228f618fddedddd6315cde40d189	GO Bugs	gob	erc1155
-\\xc0322a9f9a8d18601983a775d2724291b1750486	Unidentified contract		erc1155
 \\xb1432546890d88a0c510ca73475e0c3b8933bf22	The Block Times - Throwback	TBTT	erc1155
 \\xb3a3ab875601c3e9772bb2cb1e6d870d355f010a	Encapsuled28	E28	erc721
 \\xf0a0293d762af2ac36e57613d42ac36773eeaf51	ZeniNameService		erc721
@@ -3207,7 +3143,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x10319d7994f211297de6ae555013a3eec23b9511	WizardX Limited Artwork		erc721
 \\x92e1121149ac6c71a00555d62e41054910495616	GU: Atlas Belt		erc721
 \\x374e4a05e665f25b6c996ec2eeae05c792359821	Uncut Gummies by Jon Burgerman	UNCUTGUMMIESBYJONBURGERMAN	erc721
-\\x47e22659d9ae152975e6cbfa2eed5dc8b75ac545	Unidentified contract		erc1155
 \\xa890d0d0b94269f3065d1e70f0b80cf7028c4ebc	Fragment		erc721
 \\xd0bd0d368436b4252116fb1fb6e148c4acf3e72b	Church of Whatever		erc721
 \\x88410f7d21550cd6dd67641cfa96f102d746bad2	THIS IS A WAR: 001	TIAW001	erc721
@@ -3237,7 +3172,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x3216502ccf3cbe147ed3d75d44e9adf6e8054806	Ogar's voxel models		erc721
 \\x1806b3527c18fb532c46405f6f014c1f381b499a	PlanetCrypto_old2	PTC	erc721
 \\x41e24c7549d8d4eef26a6cbe88d1775de40197ad	GAN Designs		erc721
-\\x1288c1539cfb247b8cdc1bce57796f1277ab3588	Unidentified contract		erc1155
 \\x58b248be8937a51295edd40c18b63d8e3ab3fc1e	ROYALE MOMENTS	ROM	erc721
 \\x5d7ca4bbb351f9f69ef9bcb057c54f3faa9be4d5	DAOrecords		erc721
 \\x1a9efe6d9a7a977a938f03b1a549bdd9cd316432	Rooms Open Edition by Baeige	ROOMSOPENEDITIONBYBAEIGE	erc721
@@ -3309,7 +3243,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x33859e4c083544e506712984b81ea3f3b551bc16	Distant void(ces)	DisVoid	erc721
 \\xe6212a0da1ebcedefeeee022083d86b9e97e5fef	COS.TV Video NFT	VIDEO	erc721
 \\xeb08d6fabbdbfa4633891b28c0ce780ba8c39a65	Social Distancing		erc721
-\\xd23f5e5848b57f03626b7c924a8224975934a4db	Unidentified contract		erc1155
 \\xee48879229ee219cb99f5868449a6d03147417a9	YFI	YFI	erc1155
 \\x31af195db332bc9203d758c74df5a5c5e597cdb7	CryptoAssault	CAU	erc721
 \\x1cbb182322aee8ce9f4f1f98d7460173ee30af1f	Polymorphs	MORPH	erc721
@@ -3324,9 +3257,7 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x706163a2ccfdf9b851830954a64a21a4987edd36	ChildArt	CAT	erc721
 \\x714f60b5d785712aeea81041c601ed272355701f	super MINIES	$MINI	erc1155
 \\x306f5d18d092ac7cefdfae9ae4fd7f951f29a3fe	Omelet Kingdom	OMELETK	erc1155
-\\x18e4f33b727e4658832576379d4549e31ab7c4cb	Unidentified contract		erc1155
 \\x8b802e9a4a1e16159661817707e3601cda30f6b7	Milo 'The Invincible'	MAB008	erc721
-\\x62eb9234ec26da725e90a270a452a8d6eb304b0d	Unidentified contract		erc1155
 \\x2334c862ef58c3dad497ce7e557f1e919ada8a84	C0IN WARS	C0IN WARS	erc1155
 \\x95ce3f6a5ada593d3738c05c45cba8291debc4bb	I Love Allah & Prophet Muhammad	ILAM	erc1155
 \\xa4546e276421d5ba5e6c67f48793bcbea9339ce8	NORMANCOMICS	NORMAN®	erc721
@@ -3417,7 +3348,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xba38a0cf1f336bcbb1809adec45179cfae2ebd05	Digital Transhumanism by Francesco Mai	DIGITALTRANSHUMANISMBYFRANCESCOMAI	erc721
 \\x810ac3aefc34806dcdaf1493bfe3be32759ed262	Satoshi Blocks	HFB	erc721
 \\x1f8672dca8ae79e8cd6ce0a73b9193af7ca5bf30	ANALOGY SERIES	ANSER	erc1155
-\\x477fe0770ab893998dc5c48071ee7cfd460583bc	Unidentified contract		erc1155
 \\x1c77afabe1f2f58a105376a90b2f05d37c4be8d6	TAMAG Accessory NiFTygotchi	TMA	erc1155
 \\x1d136924a33ff8a62f7e3910a50173f338131aa4	Digital Unisocks Classic Edition 0		erc721
 \\xec09758bd8a9313b58d8759533e2687abe34b6dd	NFT Estate		erc721
@@ -3435,7 +3365,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x188a7c473d94f5c5ed21bc2e820cf51934b40388	Glitch Art Gallery		erc721
 \\xff61dfdbfa899bff3de22f8df9602d343bc455e2	MyCryptoToter		erc721
 \\x0a001f945ed2e913f32cd08c32d2a7b91b599412	ENCHANTED TRASH		erc721
-\\xde508b1313367309360ddd5f0f416c42102a0eef	Unidentified contract		erc1155
 \\x16ac942e7c194051651cac878c3ca363ba2ab948	The NFT Guild	NFTG	erc1155
 \\x0b66015100c7ebc10cd3d9496e81e9bdfdccce32	Ultraculture		erc721
 \\xeb4bc405ff11cd67ad66b7bcc5397040ccb715b9	HIJABI ON HOLIDAY		erc721
@@ -3447,7 +3376,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x06d38f76f9d19edd086dbbbb4d0be56313dd795d	DeFi Art		erc721
 \\xfc221ad0f3212c2967f7642cc320e67da13a2000	STRAWBERRY.WTF	BERRYWTF	erc721
 \\x19bbb792667bc123f5d99c4f6077a06f79f6dbe4	SAUNA LAND	SAUNALAND	erc721
-\\xa87be4ad36d897a58ed47e5588852abf83ff1b82	Unidentified contract		erc1155
 \\xe9ef3d6ea53570b5cf730b4c353e8b7ba4ebda73	THE HONEYBADGER MINT	HBGR	erc1155
 \\xe1bd4b40079cd73d5d55426274a94ee662c0c67b	Aku: The Moon God Open Edition by Micah Johnson	AKUTHEMOONGODOPENEDITIONBYMICAHJOHNSON	erc721
 \\xdb19eb1b3842a52dcbd382a8dbc21c018c112ad9	Kush Fine Art	KFA	erc1155
@@ -3462,7 +3390,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x18ad63858b9f7fdb7903d803fea2a25fe760177c	n0wear		erc721
 \\xa399e2bc8337608602cad9724caf4c136b1b68d8	ADORs	ADRs	erc721
 \\xe0cfdccc6cd391dc8de1f7a2b2b5424131a87382	88mph cUSDC Pool Deposit	88mph-cUSDC-Deposit	erc721
-\\x399dad55c6bdabd7ebe0ada12627c261f81c6428	Unidentified contract		erc1155
 \\xcd223812722faf45848a431a6e0387de7ffbc2b2	CRYPTINIES	CRYPTINIES	erc721
 \\xf170b6b64c4c7d813c88e551aec3037a40e756c6	Galactic Noobs 	GNs	erc721
 \\x63e0eab409f1c1e737aad225003d709b57dbe9e5	Daz3D	DAZ	erc1155
@@ -3570,13 +3497,11 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x3d34976a56b17aa3403b4ea78c3376b8bf74f70d	Polker	POLKER	erc1155
 \\x88c2b948749b13abc1e0ae4b50ebeb2131d283c1	The WolfGang	WOLF	erc721
 \\xb574528bab3c61c13c2c180bf45f0ec59cdb8eab	Scribble		erc721
-\\x5237e33d805339925aa5ab220f13b386357aa349	Unidentified contract		erc1155
 \\xca9800c6875b5f5acd945c0542d9ba777ec0899d	Hurricane Haus Hoardables	COLEY	erc1155
 \\xdea185b66a1223bc5719f4cf7d3a159f957e10bb	RET 0	RET	erc721
 \\x91673149ffae3274b32997288395d07a8213e41f	JunkYardDogs	JYD	erc721
 \\xdd97bf1283eda095536dbfd96454a9286ac7517a	SATOSHI THE MYTH Open Editions Part I by NFT ART COM	SATOSHITHEMYTHOPENEDITIONSPARTIBYNFTARTCOM	erc721
 \\xdde2d979e8d39bb8416eafcfc1758f3cab2c9c72	Known Origin V1	KODA	erc721
-\\xaf1b9e46935587b08ecf242234111c1e919b763f	Unidentified contract		erc1155
 \\x7c621229fb0293ef8a4f5caa79a8bb4d60bf5ca4	Wolves of Wall Street - C-Folio NFTs	WOWSCFNFT	erc1155
 \\x090c53bac270768759c8f4c93151bd1a808a280e	The Title by Pak	THETITLEBYPAK	erc721
 \\x46d2f3fbfa5595b953a522f5e3d649610b37797d	Abstractions	TANGUY	erc721
@@ -3596,7 +3521,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x3427b2b238fd94a5cce545437fc66c6bd6e414dc	Sim Swappers	SWIMP	erc1155
 \\xe673b87e84a207aa49078564bcaa537d25c84a6f	Paintglyphs V2	p☵2	erc721
 \\x94ff2be4900140e58cc075e49033f720fb2df2de	KRtPaints	KRTPNT	erc721
-\\xe9120b3b9a8b389fa5cdbefc79f787836bd62034	Unidentified contract		erc1155
 \\x7673020703d81ee43f3f689c8f998de9e64f15e3	21 Heads - Portraits of Crypto Pioneers		erc721
 \\x43b557b1f923f1cb4ecd05ff3beac7b933bedb46	The Best I Could Do Open Edition by Justin Roiland	THEBESTICOULDDOOPENEDITIONBYJUSTINROILAND	erc721
 \\xfd1539ee9ccad1ab5d9b4877097cfd8221815b47	Mintable Governance NFT v2	MINT	erc721
@@ -3612,7 +3536,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x56b0935405221e99bf14a358b9bc1e6c911042b8	Joe Cash - 1631	JOECASH	erc721
 \\x061e49ec85e540c45964dc2485fcf9ef767dbeb0	Talking Terps	TLKTRPS	erc721
 \\x03c67746d9482ffee0d48cf03c56ad914687a31e	RendarToken	RDR	erc721
-\\x21545e9f21844758f6d4755230d9d7c62e08b449	Unidentified contract		erc1155
 \\x4a8b01e437c65fa8612e8b699266c0e0a98ff65c	Space Poggers	SP	erc721
 \\xefe49dd1d252af04e6358df2241803418634066f	Extrarare		erc721
 \\x803827db3316e3a0f1e00b876db8f5bc1d4ecafa	Charizard 1st edition		erc721
@@ -3706,15 +3629,12 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xc34c39aa3a83afdd35cb65351710cfc56a85c9f5	HOPPERS	HPRS	erc721
 \\x6cdf08ff9216b6e22a51852f48feb10ea05dff31	HEXBadge.com	HEXBADGE	erc721
 \\xe04d93d3185b04bf0a28dae2b39d5d3a44937f8c	Negev Genesis	NGV001	erc1155
-\\x0018a411c2b57474218be2ded576d10ed748f3d2	Unidentified contract		erc1155
 \\xb62bc21bf7eb25560a8b9f039feed78447203e11	Fucked Up Fables Open Editions by Wolfgang Gartner x Voodoo Bownz	FUCKEDUPFABLESOPENEDITIONSBYWOLFGANGGARTNERXVOODOOBOWNZ	erc721
-\\xab5b634f49b023c9f87d7ab0a591a18ab7b4df5a	Unidentified contract		erc1155
 \\x735fe667993c9e83e15f8045f4fbf4618d2d1b3a	1Million Token		erc721
 \\x49ef17995062459fc0d16ae1a1e5ea7f1133554b	Dizzy Doge	DDOGE	erc1155
 \\x340716f8428e9a548b86ac9995621fd1e2e9d0a1	Test		erc721
 \\x191a708b21a892c6ce2476849d6515fd177e0eb0	Digital Trip by Okuda	DIGITALTRIPBYOKUDA	erc721
 \\xcb53ac3735c0c234fb420d459043684cbc073a12	Extinction Packs by WhIsBe	EXTINCTIONPACKSBYWHISBE	erc721
-\\x47f42e4d4de7ebf20d582e57ecd88ff64b2d7910	Unidentified contract		erc1155
 \\xd43da58cce04150d5c9040211fd43ee3794d6861	UP & COMING ART | DIGITAL	ART	erc1155
 \\x2bfdd27272745ff75febac091e5b6d3447499964	Scarce Abundance Auctions by Mankind	SCARCEABUNDANCEAUCTIONSBYMANKIND	erc721
 \\xe8aef6b0a908820853c518feaf1e2d8819efeb3e	Crazy Food	FOOD	erc1155
@@ -3739,7 +3659,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xb4d8860ebe85901150995760cff71554356d2dc2	MadGallery	MAD	erc721
 \\x737ec9d434f1f9f7fec4768eb975eca19fa2cd84	Bottles	BTLS	erc721
 \\x9ca14fa3b6e64b596a469cb9438717b0984edcee	Core V1.21	CoreV121	erc721
-\\x7cc7add921e2222738561d03c89589929cefcf21	Unidentified contract		erc1155
 \\x3eea5bf894236f4b7a6f1451bca89a9c91f49719	Trust Collectible		erc721
 \\x0adf0bc748296bcba9f394d783a5f5e9406d6874	Portion Art Token	PAT	erc1155
 \\x011cd4cd1e49ab8be68d6caf658bae1ec07247be	Four Winds Open Edition by Blake Kathryn	FOURWINDSOPENEDITIONBYBLAKEKATHRYN	erc721
@@ -3806,7 +3725,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x4ee4d45620c2ed1a46d5ad1555bb79166f6cf34d	ThunderEgg	TEGG	erc721
 \\x5ceb41dd42fcb8e4eb82cb5e225891d894f76364	The American Psycho Collection	AMPSY	erc721
 \\x6ade36be35b0fd03e0bc06e469b71a35e25d8a0a	Robots		erc721
-\\xb58ab7b78c3255335f537bce6188d669e43faf27	Unidentified contract		erc1155
 \\x21b999ec13828edefa243675c64324298c03b831	RARE-EFFECT-1	RE1	erc721
 \\x4289fe6d945e567067e7e7af14940f33bc4d69b9	BitWorld	BitWorld	erc1155
 \\x64819844d403ab733803a0bda0a700f27a3821f4	Swole Doge’s	Swole Doge	erc1155
@@ -3933,7 +3851,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x9a40ceb075d5ecb43de0a399a9b4ace110fdbdb2	Stamps	STAMP	erc721
 \\x676e18a3a73c7185041f901a0da4dfbf670e04d6	Icons Open Edition by Klarens Malluta	ICONSOPENEDITIONBYKLARENSMALLUTA	erc721
 \\x5f5ff74b198e5095069cf132d2523dbae516613f	MonsterBit	MB	erc721
-\\xfe9231f0e6753a8412a00ec1f0028a24d5220ba9	Unidentified contract		erc1155
 \\xd448e6cca10ff5d1ce52ddc6b6fc4bfcb796d8eb	CashGrabNFT	CGNFT	erc721
 \\x600a4446094c341693c415e6743567b9bfc8a4a8	Anchor Certificates	ACS	erc721
 \\x8830eba9a50a470cd0cf28aafd7255f37345909a	Official Tiger King NFT 	Home of Joe Exotic 	erc721
@@ -3944,12 +3861,10 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xa0a6093e4d3ce245e1849231f396e8b20d3ba341	Myōbu Silver Cards	MYOBUAG	erc1155
 \\x121a03f7b2427cc5546f4c9bf6f2dd43a36b3d01	infectedpokémon	INPOKE	erc1155
 \\xadc97941cea7e33c436917d6dd8f1afb69ecb36b	Fly me to the moon by Dot Pigeon	FLYMETOTHEMOONBYDOTPIGEON	erc721
-\\x32aa07e6ebf2340eef1f717197ade6982b815536	Unidentified contract		erc1155
 \\x9fd5c67862aaae14a4c4a44fd16f9afe507649de	TS Moreau Sketches		erc721
 \\x3e30ca44cd35169bfd98e8ef2c80f06e4c97f6f1	TEMPLATE	TMPLT	erc721
 \\x41a2788b3599ae8f8fe5da4055e4ad89fdf33ee3	Lite Studios 		erc721
 \\xa5f4858ada386758e62165037af3fe21655068de	NIFTY HOROSCOPE		erc721
-\\x5c70591acaf87ddee68b50877d4975e498a32c1f	Unidentified contract		erc721
 \\x1ae6593db3e5fecb9d1ef5c4ebc81eb46999d6e8	No Labels	NOLABELS	erc1155
 \\x6caa272b1e9a074a66d82e7f77437e3ba5cdbcd0	Slickmau5 by deadmau5 x OG Slick	SLICKMAUBYDEADMAUXOGSLICK	erc721
 \\x56b75789580afcbce98db2f16c2cc8d037147da1	The Goose's Gander	by BruceTheGoose	erc721
@@ -4007,7 +3922,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xbc4359c1b81fafbce77b216b3b1b948de04f8d32	NFT Virtual Machine	NFTvm	erc1155
 \\x6f0365ca2c1dd63473f898a60f878a07e0f68a26	TopDogBeachClub	TDBC	erc721
 \\x723811a15bdb63811df2f7cd0aeb320de18c99de	Dev	ART	erc721
-\\x4a1836e5410bdaf584b74abe88219ec3cf6b2df4	Unidentified contract		erc1155
 \\x9d481e42d9a2b52397262cdbe76abf3ca7b52203	88mph cDAI Pool Deposit	88mph-cDAI-Deposit	erc721
 \\xd2f81cd7a20d60c0d558496c7169a20968389b40	Etherbots		erc721
 \\x4337d17c64fdab0b21297cb0829c1809e8e169d2	Nerd Fungible Tokens	NFT	erc1155
@@ -4016,7 +3930,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x8327bc17f66a6f37e3aff22e03307a5df5d817e4	Samaki Mkuu Collectibles		erc721
 \\x2afb35bd34b2cc9235a27f6318c189aa8f824694	Quarantini in the afternoon. 		erc721
 \\xc0d60341cb0ba6ac6ddcd2858e9f3d5c8fe6c45e	Cris Cyborg Collectibles		erc721
-\\x0e892bff0658b93b326e14d4558ce25a642676da	Unidentified contract		erc1155
 \\xdd5c14f6ec5281ca7bd2ad3c6934bee7fedd6d1b	BLVD Map Satellite	BLVDM	erc721
 \\x37f21981afcde1342b8a56d536cfbfe8e4b5d48a	Sunken Squids	SQUIDS	erc721
 \\x63d2dc90ceb3ae69d0c09eea7b6d425fb64c92a7	AnimalWorldWar	AWW	erc721
@@ -4040,7 +3953,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xd5f3b180e04dbc87d5776f51059a52a984e56b39	Ethraks	ETHRAKS	erc1155
 \\xd75c0967a159611dd317b72df68f8edf291905de	Jackson Pollock's Fucking Cigarette	JACKSONPOLLOCKSFUCKINGCIGARETTE	erc721
 \\x1e18de8a026a1cab515e105a26ea95cf35300037	Floki Inu - Diamond	FLOKI-DIAMOND	erc721
-\\xa3f226d6633ca531c1f8e26cfbf724b1eee9202e	Unidentified contract		erc1155
 \\x7b31b86a9895ca7ee766e42bc3f450338bcf49f1	Rarible	RARI	erc1155
 \\x6a152787369f41c77caf4c441daae2e615fbcb37	eMEOWtions	MEOW	erc1155
 \\xa8a63a99bfcd342fcf8b3633dc3dc87489beaddc	RARE LIMITED EDITION	RLE	erc1155
@@ -4056,7 +3968,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x95c43f41965b6d2ab803a9850dcc4ce3b9a064f7	Sound Block Chain by Roger Kilimanjaro	SOUNDBLOCKCHAINBYROGERKILIMANJARO	erc721
 \\x8a939fd297fab7388d6e6c634eee3c863626be57	TRAITORS open edition by XCOPY	TRAITORSOPENEDITIONBYXCOPY	erc721
 \\xdc62d6d2d91dd1835a579d88f9a7e0f994b05975	Voxel Drop	DROP	erc1155
-\\x232a68a51d6e07357ae025d2a459c16077327102	Unidentified contract		erc1155
 \\xa5469b5ffd65069191425d1f7db865fdc10421c5	The Designer Desk	TDD	erc1155
 \\x357eee542e3b1ec33c1b656f945297f3aaf12129	NFT.finance Domain Name	NFTFINTLD	erc721
 \\xcdb7c1a6fe7e112210ca548c214f656763e13533	Ready Player Cat NFT	MAODAO-RPC	erc721
@@ -4074,7 +3985,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x71f6d289e11e211b0708bea4e367b91d58db5999	$FEG 1st Edition NFT 	FEG1	erc721
 \\x515370a7aeb834866333c56d81045c7bd70fcd8c	Bengs Art	BENG	erc721
 \\x814f3965cddc69cf491369a2391adb9b91863c71	Epics		erc721
-\\x2da71c9db22f9d620fdc07bd42105e852afe05a2	Unidentified contract		erc1155
 \\x6e9b0ea460e14ff3b1170788668772ffc9c40ab2	ELSEWHERE METATALES		erc721
 \\xf38f3fdc3e93619971b6e27bc718e5d13fac1653	OFF BLUE 	BLUE	erc1155
 \\xa467a1b040dba0f3e42c3f5208f8a3f826890047	American Gods	AGODS	erc721
@@ -4084,7 +3994,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x7314eeed56d63bd892fe9f860bdf7c6452a9b0c6	Business Cards for NFTS	Biz	erc721
 \\xd07bc9b5ff9d4c7931a50da9722ad3ad55e9145a	Drea BitBae	DBB	erc1155
 \\x9c0d6b8ce018a6f2dbd5294d62aa85d7ca6c0527	Bored Ape Mountain Club	BAMC	erc721
-\\xfb2e0ef40f552d460098d6d8ac70e6e3ee96f496	Unidentified contract		erc1155
 \\x533bafa16aa76218ec4a365ad71bf8816cf21bbb	PlanetCrypto	PLANET	erc721
 \\xb59da34c9e2bc12b327d3116c46b3823ef11343d	Ted's Little Dream Vol 1 Open Editions By Ted Chin	TEDSLITTLEDREAMVOLOPENEDITIONSBYTEDCHIN	erc721
 \\xeea903d254da4dcfa941df2731975ccc6e770bd9	New Face	NFC	erc721
@@ -4152,13 +4061,11 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x4bc2d477758edbfc658af18b6283268b69919bad	GUMBINO	GUMBINO	erc1155
 \\x94f9fcfcb2638ceca042f576ac7351af1e328676	Wallem Landlords	WLAND	erc1155
 \\xe84b6f0f95605744de5ca3ce028d939f65b6294b	Hiroshi Noma	NOMA	erc1155
-\\x15790fd4aeed8b28a02f72787c77b1be43a196f5	Unidentified contract		erc1155
 \\xd0c402bcbcb5e70157635c41b2810b42fe592bb0	infiNFT alpha		erc721
 \\x5e8353930b557a524ff92eace9b87d82f9793124	Project INK	INK	erc721
 \\xee8ba81d3aab92ff5592652f32028078f919af8a	Lucha Libre Knockout	LLKO	erc721
 \\xf7aa404bae09ad87660f84487526b5ae6961841b	Coins & Steel Exclusive Item Skin V2	C&SSkin	erc721
 \\x23c9310982b09755a587ee7f9585dd21712dba09	Outlier Ventures	OV	erc1155
-\\xf81b349d7a3c7288eb3c7dd02171442c0856c887	Unidentified contract		erc1155
 \\xef6e922dcf47a975e64095ef3118bcf343a8074e	CryptoMintage	CRM	erc1155
 \\xb501f3ee54387671c62066b9a8d717df9bf206e4	DAOpunks	DAOpunks	erc721
 \\xe570131be8d38f5efe74232a4b2fa5e56a00c16f	Geomatrix Moxion		erc721
@@ -4255,8 +4162,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x31865d76403511000d44c803017f71f6d4bc02e6	Harto Photography	HOP	erc1155
 \\xa1b618929713134b6dda32a33e2e36d6a0cf52ef	The Zodiac 12	ZOD	erc1155
 \\x6e91869090a430e6ba6ffa7c585742e56fed2247	Dark Matter Collectible	DMC	erc1155
-\\x9ab44d05512ce5212f619d06a0a4260cda8adccd	Unidentified contract		erc1155
-\\x87802101122ba906c36cb4556c066e7f67ca5fe1	Unidentified contract		erc1155
 \\x660899b0a01d2728f1212a6624b80a97c02b10af	World Cosplay	COSPLAY	erc1155
 \\xcc05b7293f494fe696eff36f93e2957ba445ea06	$UPPER	💋	erc1155
 \\x73f126ef29bd62038c95179cfcbed2f49f1db8a8	Minted Rain	mtd	erc1155
@@ -4268,8 +4173,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x2515abeca26f921af88241b1f84700650524a021	"""Lost in Paradise"" NFPT.0001"	NFPT	erc721
 \\x6856333d5e769775a8de373ffb5cf48f69540edc	JustBananax	JBX	erc721
 \\x8eeb1c420767d7ddd927d05d46c93bf6ba0ef9d0	Kamaev Inc	KMV	erc1155
-\\x6a4c7bcbd42a10af1503a9e5f20c7a6c78a52309	Unidentified contract		erc1155
-\\xa928559273757f5b14a47ced3b0532d4291f88e2	Unidentified contract		erc1155
 \\x5341980a5289ee6f9f63358e084555e747cc9dce	VirtualUnicorns	UnicornS	erc1155
 \\xdf9072ccd1514fcfdfeee3084e0ed8c34ecc273d	Perfesserings		erc721
 \\x6033049f08bcee81f42f563ffd2ad9c0c2424519	ClasseART		erc721
@@ -4292,19 +4195,16 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x0e5450e25d9ed5db1655b690588b62d0eeda78b7	Museum of Uncut Funk	MOUF	erc721
 \\x5b8b553370703d7edc894da4332a41025f3b86f2	GISELXRARI	GFX	erc721
 \\x52b68a835aca64262845ccad4e18d58e10f0f521	CryptoLighters®	FLAME	erc1155
-\\x97f945cdd7827579e458502d7a8c9e3157604f3c	Unidentified contract		erc1155
 \\x9808226ed04e92f9380da67c5606354fae5891b0	StripperVille	SpV	erc721
 \\x8f86390963f1faba99468a8857e65e48ef2832ec	DingosArt	DGA	erc1155
 \\xc7d8d51367582900aca9b555b32571a72ebf3c6d	MZW collectible	MZW	erc721
 \\xb5211775248461a2fe48abaefc836476564c9ddc	Crypto Monkey King	CMK	erc721
 \\x01a7abd1e371d7a43ebbc1f17cd2660f1d77287b	Pop Culture Dystopia  Open Edition By Filip Hodas	POPCULTUREDYSTOPIAOPENEDITIONBYFILIPHODAS	erc721
 \\x75dde2c445a112d270d766697330be0db700636e	Love on a Curve	BONDLOVE	erc721
-\\x9724fdf5ae41570decc2d3094c65eafa7e1ab7d4	Unidentified contract		erc721
 \\x31705d3764f2917d3b51490b1d7439e05485f594	MojiBots	MOJI	erc721
 \\x7fc878905d5159a0b58a40b6cfeb78a31b3a0cbb	Richie Mason: Lone Legends	RMLL	erc1155
 \\xb104963fb51b32818059ee6a2cbc9ac66b56117c	HANAFUDA		erc721
 \\xd4d871419714b778ebec2e22c7c53572b573706e	Stoner Cats	TOKEn	erc721
-\\x7c7fc6d9f2c2e45f12657dab3581ead2bd53bdf1	Unidentified contract		erc1155
 \\xccd4b56d975620a7bef48fb5b8b00e28be668780	Pranksy Advent 2020	PRAD2020	erc1155
 \\x24e64e727330fdaec9f4e59e77556b2e654a3987	MNFT		erc721
 \\x6881064722232f6dc6927eab944798c5c809dcda	The Crypto Journey	CJO	erc721
@@ -4454,7 +4354,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xb0cf7da8dc482997525be8488b9cad4f44315422	the dudes	dude	erc721
 \\x09522f2ed48591af2c8df667d0152d223746c840	MinersVIP Minerals	MVIPM	erc721
 \\x6de2df57a697cd491a521162560c574ebccf4694	httpxx://:BlackBox.Art		erc721
-\\x3c2754c0cdc5499df1a50d608d8985070bf87b30	Unidentified contract		erc1155
 \\x62ae9df5bb1b49e3bb65702bfcc980c6e8e58562	Cryptimon Eggs	EGGS	erc1155
 \\x181aea6936b407514ebfc0754a37704eb8d98f91	yInsureNFT	yNFT	erc721
 \\x7d074dcb17a5a61acf1b0c485d7139be7177ede5	stuz0r 1st Nifty Drop open edition by stuz0r	STUZRSTNIFTYDROPOPENEDITIONBYSTUZR	erc721
@@ -4494,7 +4393,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xaac1c334fa3e791904439c5f217f53dccbf7ea59	Heroes Playing Poker Open Edition by Jose Delbo	HEROESPLAYINGPOKEROPENEDITIONBYJOSEDELBO	erc721
 \\x9944acaaf5e106fdfad1a0d9668e5f97e9cf7ee8	Ciphersquares	CSQR	erc721
 \\xc47da17fa2c860b5f60a0696050a910f3e509b27	DrunkenBears	DB	erc721
-\\x6a3cd1c6ce4125a591272b1fc1f3742e4f89dcb2	Unidentified contract		erc1155
 \\x69791249011f460e4aae598445bc1c83cd66b5cd	Space Yacht x Weed Club	SYWC	erc1155
 \\xa34b27582aab8dd2932aac3aec19b89d3de85533	PIETH		erc721
 \\xf1146572a20eba96862e4f9b2905d8594cffaaef	QuiverX 13 Founders	XFND	erc1155
@@ -4521,7 +4419,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x6825b4469466410b5d90fe90c69127a98ba3fae3	SoYounLee	SYL	erc1155
 \\xa5cdb0dd266b783566ece5cbd92d2cc9a11ccf23	Digital Art	DA	erc721
 \\x4c4c1a6fd78479253df7abb7cb439028441c3401	Robot Portrait		erc721
-\\x15161e5a8bb7d30df89857e3b6d110e04eeeb489	Unidentified contract		erc1155
 \\x43933d42126b0cac3c7660bf2d05762202ac9b82	Mutatis Mutandis	MUTT	erc721
 \\xa47b27cd872a68b9897a4a9222b25649c6393f5b	Hira Myōjin (比良明神)		erc721
 \\xca63c99d4ecf9acc3ae934cde1c818870574e2aa	Rocks	ROCK	erc721
@@ -4553,7 +4450,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x2140714e006c2242c79e63571fb9aebff7b0fe02	Surrogates Multi	SRGM	erc1155
 \\xc073aabfdace927554593892b0d22844d7d27732	cOVR Land	cOVRLand	erc721
 \\x31faf43bb1d8deb911dc82d96ac06e0c255088b8	HashersAI-Reloaded	HASHRE	erc721
-\\x1b7f1f63d284ff264c97f1f2426b74119fecc3b1	Unidentified contract		erc1155
 \\x3175e4b4bf9f45cc14430375bc8ce4833e5f692f	Valuation 420	V420	erc1155
 \\x149915f1fd17fe5899adac2542be90690ed8a526	TheBirdHouse	TBH	erc721
 \\xf0ccc03db1adea71598bdad5ea6d869204c467d2	Eco NFTs	ECONFT	erc1155
@@ -4587,7 +4483,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x28e2d5d0f53072eecd56e0f2c574ab30338664fb	Biffy's Stamps	BSTP	erc721
 \\xc5802bcf619301bdc6b1b9eda4b6fd26e63339af	Gem	GEM	erc721
 \\xa98771a46dcb34b34cdad5355718f8a97c8e603e	EulerBeats: Enigma	eBEATS	erc1155
-\\x6e5352afe4b7cc4a2b62bec8e68d31d014d62096	Unidentified contract		erc1155
 \\x587c93251dfceb987a84b85a52f9489d2ac820a7	Doobits	DOOBITS	erc721
 \\xab173f5dff2966d83289f047cf4840e15f9d8992	0x meets imToken	0ximToken	erc721
 \\xd517f959f5c7adaf2e264f6969008d0a80751452	Neon Future Packs by Steve Aoki x Maciej Kuciara	NEONFUTUREPACKSBYSTEVEAOKIXMACIEJKUCIARA	erc721
@@ -4707,7 +4602,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x597d44d6b2631d1788498781c73dcb7ede3a7dee	Sacramento Kings	KINGS	erc721
 \\x81a524d2efbd53f1b4ebe3fc02e48d847933130d	Goblin Ghosts	GGHOST	erc721
 \\x79670f9f9ec90574d3e6a7dcf69302ad9372216d	Chunks	CHUNK	erc721
-\\x56214525566c9f8dcbbd17a108690162476426fa	Unidentified contract		erc1155
 \\x068345b8c1097ac22f87597bf4292d2b32660187	History of the Doge	HODL	erc1155
 \\xbf8a84de5dcc0bd5792026bfdebfc75d9675a363	EtherElephants	CTN	erc721
 \\x7ad0b254a3ab90ac0d244a955bacfad2c95b5399	Cutiebears	CUTIES	erc721
@@ -4719,7 +4613,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x7e1a06e30ad5b165d278c0ee12efa02377035f2a	WHATS_N_YO_WALLET		erc721
 \\xa13325ba1b9493c02d364a4a41e646d24f532126	ElementBlocks	EBlocks	erc721
 \\xed90ac7ae6740affad5ce735c6f2070d11df0692	J48BA RECIPES	RECIPE	erc721
-\\x141042c1e0c1e60bcd649412072df4aa670dd2fb	Unidentified contract		erc1155
 \\x1a28a0239a3104d5e22fdd797a06b611e21b84e5	Rari Zodiac Animals	RZA	erc1155
 \\x69baad9c96cd98437d8b5b6a90c854a1ba2688de	Numbers		erc721
 \\x361b0aec61a3d696742722f8b8c9482a79adc57a	NiftyWorldOfFootballT	NFOWT	erc721
@@ -4799,7 +4692,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x5bf9f1285873331bb3f07d4bae663209c019841c	The Next Album by 3LAU	THENEXTALBUMBYLAU	erc721
 \\xa7823d6fdb8c3d522fc5720e4a4f5f1f0352567c	Crypto_Yuna		erc721
 \\x021ca7d72f8afeadf7b47300a1aecac5f44c1af1	Evoh: Sushi Frens	Evoh-SUSHI	erc721
-\\xed8eac2b942e86ae2d67eed489394228a1936f16	Unidentified contract		erc1155
 \\xee52c053e091e8382902e7788ac27f19bbdfeedc	Aegis Artworks	AART	erc721
 \\xcf402c67c59bbc28b99150e3a9c139fcf6dd748b	GISELX | 420 SPECIAL EDITION		erc721
 \\xdca7bf5fe3387562f5b32903d957a35be37d0bf7	Heather Hz		erc721
@@ -4826,7 +4718,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x09c4aaac8033c66869129c07ba71f9f3112f4880	aWSB Genesis 2021	aWSB	erc721
 \\xf0e4f1fd2f2289c77fbe9aca62d4a1ee5dc9d327	SuperCollectorCard	SCC	erc721
 \\xa17a51c35ac33d991c1132764e3bad80dffb640b	Yakuza Cats Society	YCS	erc721
-\\x0163642ba9d4235ea63423f0c2b9a8053ec1f7b2	Unidentified contract		erc1155
 \\x61598e2e6b012293cb6012b055ad77aa020e0206	Broadcasters	BCS	erc721
 \\x2e7ae73127595ad323710836015eac722d0089dc	Spherical Harmonics	SPH	erc721
 \\x9f484fac67a93cdab49e8f6d441d9bbe72dad3a3	Marco Mori	MM	erc721
@@ -4841,7 +4732,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xd8ab2b8b8a6036dcb91d44cbdf6e9a42a199ebe2	PixaWitches	PWIT	erc721
 \\x8023553971051bc90dea75a8012cb7e10e47d990	Fly-Tops	MVX1	erc721
 \\x1865d17b8576445e6b1cd014f4f7a995108a44f6	LITizen1GM		erc1155
-\\xd7a0744ec45fa49684ad99d99bf1bf992f08a526	Unidentified contract		erc1155
 \\x1d674753a346e53f3c65b3d2087a81e319b5e83c	Reptilians for Good	RFG	erc721
 \\x18f758c749c67aeac1faf14e9df9c68026606a23	ShowMe	ShowMe	erc721
 \\xbff184118bf575859dc6a236e8c7c4f80dc7c25c	Legend Maps	LMNFT	erc721
@@ -4882,17 +4772,14 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x80dd53069ccd0b96af88c2728a97bc8e38b5d006	Colin Benders X Chris Kore	CBXCK	erc721
 \\xe7a8d4da81c4069812af1c160556631df5a79c2e	The Tentaverse	TT	erc721
 \\x4ac9a0c1b66ac044c3f0da748e8cc08845844003	EtherYeezClub	EYC	erc721
-\\xa5f49464f60c17950db68803a9b28ce3f81c2059	Unidentified contract		erc1155
 \\x1fa68a0b1f902c5a86b494df5591dbaedbb46588	sjwBloot	SJWBLOOT	erc721
 \\xc60d8e1495bdf886c4af8d597b7e1a9001870624	idotdotdot	idotdotdot	erc721
 \\xb9ee6be83bd15701ff3d450f8eb3283e1784f05e	Drunk Ass Dinos	DAD	erc721
 \\x4ec83fb4e8ee6955a5b9bd88d901d232205f5444	THE SECRET SOCIETY XX	T$$ XX	erc721
 \\xc49cd62d0a38bb06b72087e2ba889ae36ef1c873	The Vogu: MUTTS		erc721
 \\x7ec7ccf202c8ea5b6ca46bb75ad86314cff377d0	Rich Jaguarz	RJ	erc721
-\\x364f4ef26f167713329f7deffa7aff2bc95024ec	Unidentified contract		erc1155
 \\xec1a560dc90f91194dc5fbbee0062da62a41aa02	Up Above	UPABOVE	erc721
 \\xd532b88607b1877fe20c181cba2550e3bbd6b31c	SuperNormalbyZipcy	SUPERNORMAL	erc721
-\\x6a391a2a80cc611f679b8e1a9e836528144a4aff	Unidentified contract		erc1155
 \\x2933fa5522e231863b233e9e5738147dddebf831	CycloTurtles	TURTLES	erc721
 \\xa889f5764f7dd7015c52e1de5a384c2418a7a265	acedia	ACEDIA	erc721
 \\x9289d55aa6f229cb377968b09defb586e745c8a3	Kool Rabbits	LaFemme	erc721
@@ -4906,7 +4793,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xad606bb93d28ea4e222f9c1261ac75550fe19e1f	Adorable Pandas	PANDAS	erc721
 \\x3a0335409a0becd0da1ff6e442b9b6874d4e87a1	Template	TMPLT	erc721
 \\x0233b93c5c38c7ba7974a6acba85797359c7a6eb	Extension Loot	SLOWLOOT	erc721
-\\x7006a61a63cc6351af8da23b0cc2b34972c73ad7	Unidentified contract		erc1155
 \\x9055c327986ff80b0580a45d2e2d715963152fe9	Jason Seife	WaqWaq	erc721
 \\xeceb6268f75174887a233112fc8bb9f8149ce45d	Zombie Social Club	ZSC	erc721
 \\x4665609b22d301b26e0da6dd4dc2810000c64e7b	Doodle Cats Club	DCC	erc721
@@ -4922,10 +4808,8 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x36044a8f7667c99aa43e92d067ab11a4e3c70d35	HAPEBEAST PRIMES	hapebeast	erc1155
 \\x7cf891ffdb758adf5fae13febac01375bda230f5	The Bad Crypto Podcast		erc721
 \\x30020bab5bc1226fdcb37a215fb8d7ce14a76618	Pixel Slimezz	PS	erc721
-\\x4570340e5c091f020ff31bc6012ba3b2eb83ad82	Unidentified contract		erc1155
 \\xce03674e10c56b345caacb39e6e1a60dd00e3ea3	experiments by hyam	xHYAM	erc1155
 \\x7932953d06cac4a4fbb0a3301dec3a8e969c2e78	Detik Genesis	DTKGen	erc721
-\\x0369edc7646948e2f36f9f85baf297bb99843054	Unidentified contract		erc1155
 \\xa8005fb2278e7b34f4d25ec1d8308690711dfd3b	FoodlesClub	FC	erc721
 \\x91874bf3927409594d30d2599dcdfb5dda859c32	digital feelings	SB	erc721
 \\x6eed3b3573599bb4746983319edaa45a82ea5d73	The Royal Cubs V3		erc721
@@ -4946,7 +4830,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x8b6e71d4c7f4f8a693bb5f84a95a2d642625507e	EtherBabes	EBABES	erc721
 \\xc9a95f3cddd903a0a99d388c5e8572a45b055e92	Bonzai	BNFT	erc721
 \\x9b1fe6fac3af7219b1a3e10956733b643798cc57	Thug Pugs	THUGPUGS	erc721
-\\xff1546d3d5cc63410a36c183260af7cd3b93ca7b	Unidentified contract		erc1155
 \\x10bb6e56e810f62c222a63090a608aef39153020	Lion Kingdom	LK	erc721
 \\x65de9eb7c9166e01c3b375a300cefe37e437738d	processed (art): manifest	MANIFEST	erc721
 \\x2f8ebf14b9c6060c5b516e039f75314379165686	Caricaturama	CTRM	erc1155
@@ -4955,7 +4838,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xbeda58401038c864c9fc9145f28e47b7b00a0e86	Dollars Nakamoto	USDSat	erc721
 \\xd4662bd405219b02b1ad0bc7d9558a417f9fefe7	We Are What We Eat	WAWWE	erc721
 \\x4045754a9a150fcf6d30a72258d0fb220c42fb6a	BAMC Capital	BAMCC	erc721
-\\x87fa0c6fd03fd9a03c9d327beaecf1a2c2b336e4	Unidentified contract	PIXEL	erc721
 \\x4bbcc727822b99330bf164c0972fcf1b537caa78	Blankos	BLNKS	erc721
 \\x4742d7e66fb868a4fdbedfea829e611335c0d562	Immortalz	IMMORTALZ	erc721
 \\xc24bcb1b67be29a01f59d58847ca95d937012e4f	Dystopian Dream	DYSTO	erc721
@@ -5016,21 +4898,18 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xfdc5b9f987eb510f1bbcfdaa4baf472a1a7c7689	Jesse Love Racing	JLR	erc1155
 \\xcf716e87dfd89b764fc34f6f14873c52f418a8ef	DooDoodles	DOO	erc721
 \\xb1bb22c3101e7653d0d969f42f831bd9accc38a5	KitPics	KIT	erc721
-\\x075d57d2c6afeec646f786fb4b568e4c3678c2f8	Unidentified contract		erc1155
 \\xa1c13e02a8b3f833d7b47fa57ba6484f656ee067	WhitelistNFT MintPass	WxMINT	erc721
 \\x8b6504ec1be9f3735defdf31bb5d771e1645d614	Titus Low NFT	TITUS	erc721
 \\x1a3c2b149177cdf622d4bb100e23de427f565e70	Joyfa	JOYFA	erc721
 \\xebf84a6a735187c60187022ed225b12deeeaf710	Paris in the Summer	PARIS	erc721
 \\xd8ff23d27fe7b4382dc8953d7f685e269ea22687	ThankYouX	TYX	erc721
 \\x9c3d415e22b13077650a5fc18c2ed95a2a4813ca	Meta Rich Club	MRC	erc721
-\\x8edf0426c0b0d10b50d72eb3f0c40985438cdaab	Unidentified contract		erc1155
 \\x205a10c241ca38918d3790c89f16675cc46d10a9	Distortion	DISTORTION	erc721
 \\x75633ad5a1f7d2a55231f4ac389bc407851b92ce	Pepe Capital	PEPECAP	erc721
 \\x48cac71acc7b34f51956913cb893ecefdf25c822	Happy Lions Circle	THLC	erc721
 \\xf98ad60ae4b2be13e8f3c4a1e85fb74f8e4bcffe	LOOT WAIFU	LOOT-WAIFU	erc721
 \\xbe1014903e2f623a88e4413e276fb176e6e832de	Tokenmon	TM	erc721
 \\x8be49fb1442a46c5f1b691a668d16ba4dfca17e1	Pixel Bro	PBRO	erc721
-\\x118ab18f9fb8e830c5cd88ec60276ce2bf4dace2	Unidentified contract		erc1155
 \\x70e27c26888d93b38f1cd5cc94fa6bdc5b9da6df	MANIFEST	MNFST	erc721
 \\xd3a99514913a7baf4e3f25e5f27be21aebedd8b6	Early Eccentrics	RADXEE	erc721
 \\x0b351aeedd1f578bac85d29b13fcdf87ba020372	FramedGallery	FG	erc721
@@ -5062,7 +4941,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x2ad0ed1621eaab92c71f53dde4baba88e5c0bc44	Trippy GAN Toadz	TGAN	erc721
 \\x92f7062e6993647c1602c40e90ba931765ba632e	Jeff Soto: THE NAUGHTY	JSJNK	erc721
 \\x1329bb0ac2d6a02ea34cfa733ac28f90023ff266	SYMBIOSIS	BIOSIS	erc721
-\\x9371934297a994a5a3e06e35ba1cb7bcae39d0c7	Unidentified contract		erc1155
 \\x7b215b62590ae3a3d98adbed11b202d1bb7253c9	Portrait Automatic	PORTRAIT-AUTOMATIC	erc721
 \\x4377ec8356040a9414301baa93fdfeeba981fc4d	The Journey of PEPE	PEPE	erc721
 \\xf1ef40f5aea5d1501c1b8bcd216cf305764fca40	Heroes of Evermore	HOE	erc721
@@ -5118,10 +4996,8 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xaa98551a659f44b34293ec6917dd936c4449b35b	COOL PETZ	CLPTZ	erc721
 \\xaf3f520ee28a428e6198ea961419ea333df88efd	left gallery familymaker	lgfm	erc721
 \\x72420b94cb54d9237023e887f590b95551b6595a	THEM Hatters	HATTER	erc721
-\\xb0b748190f46ddade510b08798171235766c4d30	Unidentified contract		erc721
 \\x2282655d950940532f4c49fd3d4bf3c0e1e0ab9d	Farmlands	LAND	erc721
 \\xf183ea2adf959ad832a1a9c348597c8ae77c1994	BONITOCATITO	CATITOS	erc721
-\\x9b1855bb5317f6bf56d0304e210b38059455ef84	Unidentified contract		erc1155
 \\x8d4026344b22fdc85722053b4f5c0e165b21d7b5	MetalHeads	MH	erc721
 \\x2f4a81c41540616069d3175cd48acc7e328ad464	Metaverse Space	SPACE	erc721
 \\x23e621935566a3663aa92155e637785db46c6d89	Coin Apes	APE	erc721
@@ -5145,7 +5021,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xafbd1828687dbf7e610f33951fa925bb16464782	Biophilia	MBIO	erc721
 \\x933a98faea57f1d68fcda5a13e0506439264b3bf	Dickheads	PEN15	erc721
 \\x86cce3590a35f9e1b47e1e863755a0c79be23c58	Browlser	WOOT	erc721
-\\xa7c1076e671e14c7b5ed5eac139e855cfa6b9663	Unidentified contract		erc1155
 \\x10c4a95e0ff3a79b854683484dc733b9522b607b	RADSANTAS	SNTA	erc721
 \\xfd75debba011087f420ea4233e21f79f5a054820	Paper Dreams	PRDS	erc721
 \\xbb0c6fa0661342b34cc413f5a8986aeb272df202	Hightech Ape Yacht Club	HAYC	erc721
@@ -5169,7 +5044,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x541ffab5a9a70f60d824f5b7ad742f6fe34405f7	Alone in Japan	ALONE	erc721
 \\x4be3223f8708ca6b30d1e8b8926cf281ec83e770	PartyDegenerates	PARTY	erc721
 \\x25fdebdcc1c7e5fe46c124e853204446b1ce1a14	ConcretePunks	CONCRETE	erc721
-\\x5b56d9679532024513e938feba7851d1b3f6070e	Unidentified contract		erc1155
 \\xa8a37c945656df4ababaf91c9f06ed6d4c4fd1d4	Persistence Of Vision	POV	erc721
 \\x3b6238f3f8d00e859d9d5e84853dcff31f0900e5	Tetranode	TETRA	erc721
 \\x134460d32fc66a6d84487c20dcd9fdcf92316017	Woodie	WOODIE	erc721
@@ -5181,7 +5055,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xf0834ba226a30270d0885847486fd16bc6774bd6	RichApeGang	RAG	erc721
 \\x6f91e5c7bae35c5074bfe463ccebc1f7f48316fe	6maker ART	6A	erc721
 \\x8259ae3cfc30fc4a79d1d6ae52d6a1d5af6d2111	SOLO | CULT	SC	erc721
-\\x34878e0960f02190f1eea39b1b99530db87b05d9	Unidentified contract		erc1155
 \\x32a5c961ed3b41f512952c5bb824b292b4444dd6	NUDEMENFT	NUDE	erc721
 \\xdcd918c7d0057c02a4d1eb135ede91252e75892b	This is What Hatred Did	TIWHD	erc721
 \\x7aac5d6bef76ec70c899f47753795d60029185f6	harm.work	HvdD	erc721
@@ -5249,7 +5122,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x889dd1eaa010d787f8b5a79fb1b6accea1e09436	ARCANE	ARCN	erc721
 \\xfc7d8bbc4391c5d3ca6f96fbab90a867a0d6f37f	TheFungiNFT	TFNFT	erc721
 \\xe276d85165ba8386d5d3a51837e3ccd58cb4991d	The Invitation	TI	erc1155
-\\xdf22c87ab3f19f3522f2787743404dd4fc4d081b	Unidentified contract		erc1155
 \\xf35480dbe5241c06d7860c463a53f34c346899fe	The Fingerprints	FNGPTS	erc721
 \\x53df8ef0d1c05fbebfad2ff45e22ef2d229bbc4e	Colorful Crayola	COLORFUL	erc721
 \\xd41a65b75ba49df1fc5c7c42dbd1cb2d43530368	Looterra	Terra	erc721
@@ -5257,7 +5129,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xf8b37af2b5fe2ce1cc303a8472dedccca0953bb2	Great Expectations	GE	erc721
 \\xb6589f28abc635d54c73bde105fbadcffb834207	Martin Luther King Jr	MLK	erc721
 \\x7f12f3655557927243536a1967230b53698e0f71	CryptoRockstage 	CRS	erc1155
-\\x1cacc96e5f01e2849e6036f25531a9a064d2fb5f	Unidentified contract		erc1155
 \\xfb2397daa1851ba306cee0bcad859959f63aa4f3	CryptoVideoGames	XGAME	erc721
 \\xacffdae4c1b0eb4aa8f8fe0b8dcfa3a55f8afb9c	God of Bitcoin	BTCGod	erc721
 \\x77b31c0a1486853442822f523f242653446fa697	CYBER GHETTO	CYBRGHTT	erc721
@@ -5292,7 +5163,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x8ed738990e6fe0b2b69e082c03375fb9224443e4	MetaValley	MV	erc721
 \\x0d9e3f0f76aea454b694007f7ad79a77d89118d7	LeapN Royal VIP	RYLLPNVIP	erc1155
 \\x6b38e3812940539d93cb3c2bb0dbf8548b0203a6	Gunnerz Club	GUNNERZ	erc721
-\\x87e8aee88ae939465da795d6c32963854bb5fba0	Unidentified contract		erc721
 \\x447c8ae8d3a48153addd671ea2a6cfb50e3e8799	Funks	FNKS	erc721
 \\x1a1dafdacfe5234038c7b07697b28b5bcaa12997	nincomputers	NCMP	erc721
 \\x015b192a652129f6ea8c03dddb030297cf721af2	Girls Riding Things	GRT	erc721
@@ -5367,7 +5237,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xb80776700778e7415da08ef65fa389f75737fb95	DigitalPrintImage	DPM	erc721
 \\x79498e4e8de71b9b4ece68cf724eb18b6a839713	SHIBAVERSENFT	SSS	erc721
 \\x05658624d92e63c778b2a24ec5c4858c399e9c6d	Pizza Punks 2 by Jon Burgerman	PIZZAPUNKSBYJONBURGERMAN	erc721
-\\x30ccc0127c5f29083ceb46f0c6b4bba2853d8970	Unidentified contract		erc1155
 \\x459124c1320bb66a2d2e58e04e7d28c344631ded	Cyberdogz	CDOGZ	erc1155
 \\x370690c949c4094b40f634cc70e15fd85a49869f	xerophile	XERO	erc721
 \\x2531f030a8c8aab77471f1843d72aa2e251b213d	SOSvengers	SOSVGR	erc721
@@ -5399,7 +5268,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x7cae7b9b9a235d1d94102598e1f23310a0618914	CROAKZ	CROAKZ	erc721
 \\x6c597e298f5a01c80457255521bdc258d47fdb11	SweeneyDAO	Sweeney	erc721
 \\x37eb591cc5007df65f76e866ea57fdd2b75f42a2	WOOSHI WORLD	WOOSH	erc721
-\\x94f6655cd3078157b07df370572f4f6cdae78771	Unidentified contract		erc1155
 \\x96cd9a08692657107050d0e49b3d6bed425ef8fe	Alternate Banality	ALTBANAL	erc721
 \\xd7a2c33fd059ff5c6159c51087bace5842060791	WolveSkaters	WolveSkaters	erc721
 \\x9047929f6c0e6910a6c261a4ae0e0fa03f711f05	niubi	GOGO	erc721
@@ -5409,7 +5277,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x117627112fc28b9fcf9729974504e16e8697c8f2	Ethereal Collective Art Supporter	ECAS	erc721
 \\x7fa5044a56c523634f98fa97a878399fa302f411	renaissance kids	RK	erc721
 \\xe024965c1fab8a0cf8a39dab67be23e0fb55bbe3	eg1rl	EGIRL	erc721
-\\x32b02ebafcb5781460d15a0244169f6d84eec887	Unidentified contract		erc1155
 \\x6097fe60da5d9637704aad5c76447b881bfb0767	Vera NFT Market		erc721
 \\xac27663e7b27da4fa969ddc990b504679a0d6f92	Black In Back Kat	BIBK	erc721
 \\xadb296f2990e8a027eb1e7e047e1b1f2ee5281db	Hiromita	HRMT	erc721
@@ -5423,7 +5290,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xeead8408d019ffd47cacd25b5442110fc9c6530a	QuantumVariant-7Pixel_Army	QV-7P_A	erc721
 \\x984923a967edb2e0f548cc97506baceda13d7a35	miyu#1	MIYU	erc721
 \\x5b133e0fd79ace5449bf925a2521b3c100133527	Light Trail Rush, Early concept art	LTRI	erc721
-\\xa8e4459a64e368880eec620b7ab1caa1a297be21	Unidentified contract		erc1155
 \\x5ea3b3f2ca1a04759838b84474e422804b80ee2a	Tokenmon Gen 2	TM2	erc721
 \\x36a8f000ab9224f273b99ea6a642d6f1cdb16c63	Just Mogwaiz		erc721
 \\xbf662a0e4069b58dfb9bcebebae99a6f13e06f5a	Toy Boogers	TOY	erc721
@@ -5432,7 +5298,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x40d143ea74f14232ba96341224c95e7959edc45f	Stillness	STILL	erc721
 \\x5e5616dc786ad4b1e3210186f8fd7bd14df3269f	Purr Evil	PURREVIL	erc721
 \\xf01e17454275785f6cfc719a163b279ec7048b2f	gamaccho-GuitarBitz	GBTz	erc721
-\\xccae32b36d7fa4667e54d24f504ddf2ad03e1cca	Unidentified contract		erc1155
 \\x0812074e395b711910f2fba9f129078918ade855	WebbItems	WEBBITEMS	erc721
 \\xf3559026b286d9524cb4677591924e9a98b0dddc	The Queue	TheQueue	erc721
 \\x44e4afa4b442f11693844d425fb29aeddfa0f33e	256ART	256ART	erc721
@@ -5481,7 +5346,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xfccc4856c4bf9e85edb19f93f5853cfa2f09202c	Crypto Rick Club	CRC	erc721
 \\x6060cb7916e1a13b531a799b1fd2fba6691380a1	War Apes	WA	erc721
 \\x36ce1ba422d58f43e4c6feae3637eb2b204c93f3	The Unbounded Space 	SPACE	erc721
-\\x0e588e910699f2d541a1e0eb795179c5f5402394	Unidentified contract		erc1155
 \\x1685133a98e1d4fc1fe8e25b7493d186c37b6b24	KaijuKingz	KAIJU	erc721
 \\x0aa7420c43b8c1a7b165d216948870c8ecfe1ee1	Thingdoms NFT Official	THING	erc721
 \\xa13d7d1214ac1a7938a7a4f4279c71e4dec716c4	ANGRY ANGLERS	AA	erc721
@@ -5505,17 +5369,14 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xca414feacd26006c3748a187bedf455bef5fc57d	Orcz	ORCZ	erc721
 \\x4affb1bcfe20e538f35153c19db7ae9c3751a199	Cool Kidz Club	CKC	erc721
 \\x29b062eea5700591aa4ff763a1cade4877e8987c	MetaDoge2D	MT2D	erc721
-\\xf15176bc2a8d95102e21641fc0c3b1a9990d2d2d	Unidentified contract		erc1155
 \\x10f74c70685e80185cd88965049ed8361f7d0be0	The planet of Frog 🐸	FROG	erc721
 \\x8b13f5dc0a5d1d58add1c6546248ad33c3cc1a35	Future Billionaires Club Original	FBCO	erc721
-\\x29e99baefeac4fe2b3dddbbfc18a517fb7d6ddf8	Unidentified contract		erc1155
 \\x8ee29b91c8d5dc082408824eed6539121b8f7001	PixelSnails	SNAIL	erc721
 \\xf91180a67a2c607523b5e32f98732d8cddd6538a	Founders Pass	GCP2	erc721
 \\xfd1ebc97e681e63b1e80b7237e3e0cd376b2c29e	EtherKois	EKS	erc721
 \\x389d61bd7a0e58fe663f59f03c2eda76ba592d8e	Coke Boys LA Sneaker	CB$	erc1155
 \\x5019d54f18fef36f6b22ac55a2aa2fb7009f308f	Temple	TMPL	erc721
 \\x652770f6881b2ffca5a0dcf979bd0b3024293eb9	Pixelmon Victim Foodstamp DAO	Pixelmon Victim Foodstamp DAO	erc721
-\\x503ac85cfab61a1e33df33c8b26ae81e3c6e3ef2	Unidentified contract		erc1155
 \\xa8b731d1d1891f5f017252327be4d461158b3f00	winterapes	WA	erc721
 \\xd76891b32ee1416d4a99854cdaf055eec59ace3e	Pepe	PEPE	erc721
 \\x1ed7f27f8c72a07165c8e89b92d64fe57fd19de1	Nightmare Reoccuring	N8MARE	erc721
@@ -5524,7 +5385,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x558690bf6bd4bd43d7b3588231f9dea531c90e75	StrikerOne	STKONE	erc721
 \\x4c51808027c8eedc3bfb8b130752e443ab3f95a3	BearBNS	BEAR	erc721
 \\x312f4a7398b5058b258ee6706841a0531c0ba585	SOCK DOODLES	SKDDLS	erc721
-\\xd386ff8b13e20a943ee0929da4228a32ce4f5261	Unidentified contract		erc1155
 \\x52daf33dac423ca3d63e53b098e3edab3acfdb0e	PRAYING HANDS CLUB	PHC	erc721
 \\x48dfc81a5d497b6af1c3e35e514d2a54ede1f9d9	GLEWME CITY	GCT	erc721
 \\x82ffaec11104a4506a39edce7994e321369b31ef	ろ47	OWO	erc721
@@ -5584,14 +5444,11 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x93975b0ac3c16ed0478e916921f84417e29f473f	Bingo!	BINGO	erc721
 \\x4d1aa5496ca60daf607ad7acba4e8fc819b1127d	MANICOMIO	MANICOMI	erc721
 \\x59cf823b0240dc4b540698122273c7a41f8936cd	Crypto Artist's Union by Kenny Schachter	CRYPTOARTISTSUNIONBYKENNYSCHACHTER	erc721
-\\x31ae5109e5adb582f4f42ca9aaa9a723a325f214	Unidentified contract		erc1155
 \\x9f38069e602d5ef76e9c67edcbd84b1cc0e8bdaa	Ankami	ANKAMI	erc721
 \\x5a0d4479aed030305a36a1fb516346d533e794fb	Moshi Mochi	MOSHI	erc721
-\\x34d465653db345ec9b338528c655ad68afc6d9db	Unidentified contract		erc1155
 \\x418dfa302f1c3b9f08c8704be01af60f35d2a4ca	VORONOiDS	VORO	erc721
 \\xff34d244764e5aa4cef6605a0e280c2f6567139b	Trendy Tigers	TT	erc721
 \\x5657a6aad87e5fbc6abf2da6e1e258c54dfdbb21	TMRW LAND	TMRW	erc721
-\\x907557792e2cf459fa15b5a80cb2063077d7de14	Unidentified contract		erc721
 \\x1e038a99aac19162633dcc4d215e5a27e6eb0355	ToadRunnerz	TDRZ	erc721
 \\x4f1144fed48dc1ef6c98e05ab96ad045dfba2ee0	Test Pass ETH	PASS	erc721
 \\xf6caccd03e74b7bd6a8e70e7f1d9c41e6b2a31a8	The ArrogantKei Collection	DESIRE	erc721
@@ -5614,7 +5471,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x116aebbad1c8226c80f9f0cb4e255540a0f7afd9	Sublimes	SBLMS	erc721
 \\xdccb258b92b9de470b7d7b3e10fd336827b3bf8f	The Space Doge V2	TSD	erc721
 \\xc27d9be628be93d69004a87880692f96e8d2e1c1	Chillin Chameleons	CC	erc721
-\\x89ecfb3e8a8ce9dd7133fe719f79697c5c6d30bd	Unidentified contract		erc1155
 \\xc116f58b8a312ce6b63cefc83ff3cf0569ef12bb	Onboarding — Heal The Deal Stage 2 by Maalavidaa	ONBOARDINGHEALTHEDEALSTAGEBYMAALAVIDAA	erc721
 \\xd69ca207bf14f3b6ef8624363bb2232722af7f3d	A Primitive Space Adventure	APSA	erc721
 \\x5381f50ffec1b551f561e99943da88211f1a64dd	Radical Digital Painting	RDP	erc721
@@ -5629,16 +5485,12 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x6350358a3671e54358404d87f3edd73155ec8473	MetaJoseon	MTJS	erc721
 \\x89feb811a5eb4a862bebecd187592d0f8a93080f	GreenHomies	GH	erc721
 \\xeefba5763c798ca53d9b3426d900bca1fa45d27f	AREA 51 SPACE PASS	FROST	erc721
-\\x5c1469ab0e3b4f96d7f25e23d80c540259f2ad5b	Unidentified contract		erc1155
 \\x435ce588a7d5ec64eed87c5c9cd0e60050de3d55	MiceOnToadZ	MICETOADS	erc721
 \\x96ea4f8d4788fb1d48d175cd751daab056ada627	Seed	SEED	erc721
 \\x71c4658acc7b53ee814a29ce31100ff85ca23ca7	GalaXY Kats	GXYK	erc721
 \\x1010b52fbf50c69f9911045d4d107b68c5833340	Kinetic Graphics	KNTCGRFX	erc721
 \\x5c685a3ebc751f36b2123c25f5c464d3b9964afc	Algo Lite	ALGLT	erc721
-\\xda807b65495870850fd1eed4794b723829abbf0c	Unidentified contract		erc1155
 \\x1f95cffd675f2a63455cf693ba6c1af63e73600a	Floadmaps		erc1155
-\\x2d391d9b6e723a10e693b536df4b3bd3d59584ad	Unidentified contract		erc1155
-\\x7d2285b523997b1290c0464e035ba98922297f22	Unidentified contract		erc721
 \\x498f05760d8cad970f7f99797b38316a9c7881b2	Bored Pepe Yacht Club	BPYC	erc721
 \\xfeb56aaf59f8c17300f4d8306365a491b05b6602	Beeings	BEE	erc721
 \\x72a1469d6eddc4dc7292b070b0570abab4a1175a	GrumpyPandaz	GP	erc721
@@ -5656,10 +5508,8 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x7b7dad77e4090160f9cb6ba57a5a774c12d4c28a	ScorchingDucks	SCD	erc721
 \\xe0a77c8b5a9b01ae7029b32e6ebbadc8955ebced	Dominant Eagles Alliance	DEA	erc721
 \\xdb1b8c91b2afbeddf84e862c8a213d64774f6fc8	ONE WRLD	CITIZEN ID	erc721
-\\x3ed83b9ae395ca3de994600fe0f2cd027753b2ee	Unidentified contract		erc1155
 \\xa998ac9bc09f3b9bf530508c47f67695c87aafbc	Tokyo Tree	TTREE	erc721
 \\xf656b98d6fdb1c403fa9c7f7628f57005447f946	Exploded Views	EVKC	erc721
-\\xc3ea52d903692814d6dbf043cba015975043560f	Unidentified contract		erc1155
 \\xb3e6b7e26bedcbc36649095a5cbb4181339da1b5	Nara Plaza Oil Painting	NPOP	erc721
 \\xb2e746effaea946efc212563419d94963b6ab4fc	Ishihara Plates	ISHIHARA	erc721
 \\x2eadabf820aeeadb201e99474b95d42997112b7b	MINT	MINT	erc1155
@@ -5670,14 +5520,12 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x4a8487c92a084245dd1adcc922dab345ba7ca1fc	Axolittles Unique Editions	AXOUNIQUE	erc721
 \\x2b91452ac1e275be23a7a7e38102586f3c5c950d	BoldAndBrash	BOLD	erc721
 \\x49150004d27743114b166fb16c9566a7b332b73f	SAU Legacy Works	LGCYSAU	erc721
-\\xd742ff03315c199f6d49f56dc970a3fb94f92daa	Unidentified contract		erc1155
 \\xbee93b0dbcba090a5d73cbdcf4a9f8559472f46d	FreshApes	FRESH	erc721
 \\x4840f2182109539acbfef535bb6dea2d560b9d70	Evil Teddy Bear	EVIL_TEDDY_BEAR	erc721
 \\xb36f8ee829b08cc5b322d1a848a19adbae6f9996	Twisted Lullaby	LULL	erc721
 \\x7faeafda498d4460986eb25c562eba3bf0c2172d	SatoshiQuest	SQG	erc721
 \\x89be59c801c981bd497bc1df404aa08cfbb7604f	Spitzbarth_since1921	CGN	erc721
 \\x1a2f71468f656e97c2f86541e57189f59951efe7	CryptoMories	CRYPTOMORIES	erc721
-\\x995e2ed939f074bc1dd65c53072490cea1b0fc26	Unidentified contract		erc1155
 \\x04b591ad5f4e23447c41e7abbb5a2c2e9d797b8f	Dead Handz Genesis	DHZ	erc721
 \\x3e99cdf32d27526e06fd4070619e21d9852281e7	Alligator Country Club	ACC	erc721
 \\xd58ccc17c99f270eeac1c59c1df04ed50f0859e9	CyberGen	CYBERGEN	erc721
@@ -5701,7 +5549,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xa04290ff2491f55aedc47dec497d432b19347768	On Chain Hex Truchet Tiles	XTIL	erc721
 \\x1aba27d6a420feb25af6cf6b80b93b7526725a71	CityLights	EEPCL	erc721
 \\xa37702c29b2ba7c72d0bd3d5a0b6c9e7221dc84a	Psychedelic Penguins	PP	erc721
-\\xa88209d0f1d772f5bba488a2e4bbb13921056a8b	Unidentified contract		erc1155
 \\x2b7d62c8d3e0cdf1c51c0a0d5077a34ab47b45ba	World of ApeWives	WAW	erc721
 \\xb018e5fd857b46910d053c7fb4cf590f404fcd99	Transient NFT	TNFT	erc721
 \\xa46c8fc9fd197dd255bd958e4084603517e89a30	Empower Women Planet	EWP	erc721
@@ -5749,7 +5596,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x1c9c514bc1fc4548db2b13702f6398ee5ae4bd05	Orcish Raiders	ORCS	erc721
 \\xfe886c9517b62b2c07007e47866cbd7ba3b9851b	Mechanical Planet	MPL	erc721
 \\x93e3f97c189e900a8efbeacaf096fbd054298c18	High Smugglers Club	HSC	erc721
-\\x8c335a5e0cf05eca62ca1e49afa48531b694824e	Unidentified contract		erc1155
 \\xf95b19c4a2e8564dfd26a594992d9a6aa984ed47	Machine Hallucinations - NYC	MACHINEHALLUCINATIONSNYC	erc721
 \\x9d1b599397490c31b988cb1a057e5591367b8f9d	0xHunter	0xH	erc721
 \\xcfba0b4122e84fd95a9af04c436cb8d313b78ad6	TheHauntedVoodoos	THV	erc721
@@ -5761,7 +5607,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xfedccbfcebce36ed9cca5596dbfedeb962fbb9e3	ETH Walkers	EWALK	erc721
 \\x9b4465894f818cac31e9ceb49a08bf41193d7e65	CRE8R DAO Founding 100	UDT	erc721
 \\xa98b29a8f5a247802149c268ecf860b8308b7291	ThorGuards	THORGUARDS	erc721
-\\x9de6788fe8fe6b1a53eb085de3ba13683a4adce6	Unidentified contract		erc1155
 \\x6a5d1449263c0ddde0a30bf48714ff97503597dc	BLU3PRINTS	BLU3PRINTS	erc721
 \\x58e5c3ee4b669029ff213c9eae8a7cff7a9dede6	 DESPOP IP  & Pin UP 	HUMBL	erc721
 \\x9676f09a056ff9437ae86b7dca7826135ac42ddf	Galactic Pony League	GPL	erc721
@@ -5780,12 +5625,10 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x11450058d796b02eb53e65374be59cff65d3fe7f	SHIBOSHIS	SBSH	erc721
 \\x2e1b5f11b55923bc56e78e974b41e650ad48fe3d	SNAP UNIVERSE special edition cover, Issue 01	SNAPCOVER1	erc721
 \\x6861dea288629b8db7beafe38ed3b2975bc4a870	Psychedelic Shop	LSD	erc721
-\\x8662175c4bfeb8d48ce144dd3cccfb108322d940	Unidentified contract		erc1155
 \\xbd6b5d192ff4c23ad54f8f497a07ce7afc96ede7	Mystery Man	MSTRY	erc721
 \\xe2d9a4b72f868f4fa3fe00d8544261eccc4c5f42	Mindscapes	SCAPES	erc721
 \\xc4dc21607257d6a860f6a658fd52444b3e9c142a	Original EtherEmojis	EMOJI	erc721
 \\xd72b2bc0b13250409f85f1f2fa7f741c4ee94a66	CZPunks	CZP	erc721
-\\xc868b3f657a308363ebd8acfd2f369784f9d2117	Unidentified contract		erc1155
 \\xf27f0516e03b7fa48b35192c43d316189efb41ae	AVA & Ramona	AR	erc721
 \\x869f8a4bad7cfc932f692af09645f263ee538a89	SLOE JACK	SLOEJACK	erc721
 \\x494cf10d3afe9071baca3300499503838e8febab	Yeehaw Series	YHAW	erc721
@@ -5795,14 +5638,12 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xe014be427727ca50e427f2ab8df39746defe3fa0	GUNBULL	GUNBULL	erc721
 \\x2780086dd9ef2589750ba1eea901123ab84d1f10	Gems	GEM	erc721
 \\x7cdca3adbe2d08d30dd7569d4ec6b1ae12a69b95	Bathed in Red	BIR	erc721
-\\x64da747f5f8349f0116e207eb420f95b9af0411f	Unidentified contract		erc1155
 \\xeed560b1b0172baa6e137c27aa0a643326f360d1	The Winkybots	WBOT	erc721
 \\x9261ffff189f419a33647120eb8eb27787267bdc	Scaredy Cat	ScaredyCat	erc721
 \\xb30fc2d754c88c451275b743b6f530f19f643683	Adam byGMO	ADAM	erc721
 \\x77aa555c8a518b56a1ed57b7b4b85ee2ad479d06	Afro Droids	AD	erc721
 \\x391f1f7566e70734bd07852f7c0649ddc80bd69e	NFG Open Editions by ART2PEOPLE x Mercedes-Benz G-Wagon	NFGOPENEDITIONSBYARTPEOPLEXMERCEDESBENZGWAGON	erc721
 \\x70c03a5b2d31ab695677dc1a97d03ee97dbed59e	The Lonely Hearts Club	LHC	erc721
-\\x9e469f3634016f2eab05d34c3939f9e6eae7d913	Unidentified contract		erc721
 \\x1d5ee8ce8c33132351d7e11d83ba8bf194490124	MAGIC TREASURE	MT	erc721
 \\xeb652a847e5961d1f7fa53699693ec13c008b57b	Halls of Olympia	HOO	erc721
 \\xae53e708df5580ac24a900885ba45bbef3aa9815	VOXISLAND	VLND	erc721
@@ -5845,7 +5686,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xce95fd8ba33dd1f394f17f5ad8100d4bc8daaa01	Blootavatars	BAVS	erc721
 \\x1a7e29a8c5d2320a1b56735b7654139e7b2860af	World of Freight	WOF	erc721
 \\xe64947ade01cfd5beac257c50d84d1acf661e474	Uncanny Unicorns	UNU	erc721
-\\xda7d42b6167f1497346d7b2336a6d7a603026db1	Unidentified contract		erc1155
 \\x138c22060d681cabc60bd83e9f5612f95725ee9f	DRAGONSAGA	SAGA	erc721
 \\xdba6f8b3749c1ae998e2374de9bad04e8618e9eb	KittySupercars	KS	erc721
 \\x4ba9e93337235a5a3e85abb77a7ef2898cff0608	Sonar Moji	MOJI	erc721
@@ -5862,7 +5702,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xfa17634d561a0cd2090a5b1cbb95c972f77d2534	Fine-Ass CryptoApes	FACA	erc721
 \\xfe7fee9cbcdbad2ec5d4c8d3c027d9351aca0b42	ProtoPixels	CTRLPLUS	erc721
 \\xe938e4b8ce51eeacc4c4454a08b59f70ee9c2293	AstroMojis	ASJ1	erc721
-\\x9aeaa9ed9ae5a433998e9e674ad836b2790b291b	Unidentified contract		erc1155
 \\x4c1e4718818ac8327edc2552883ac9f19a5d0eaa	Dopey Ducklings	DDL	erc721
 \\x9970b37454d7634526531fe5c5441af85e5479c6	Malachite	MALACHITE	erc721
 \\xae7f3e41ad78371cc64a2dd15f74596356f20b50	FELINE guild	FELINE	erc721
@@ -5908,7 +5747,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x0ea1fd79879d0e11d5d8e8234d49153420c3bdc4	Pootopia	POOTOPIA	erc721
 \\x508d06b8f3a4b0fd363239ce61e0c4b0b82f3626	LootExplorers	EXPLRS	erc721
 \\x9f5624edffda435300e281536ac6852d6c21f371	Spiritual Migration	SPRTM	erc721
-\\x38b7e06eb1a6b8af8b3a06ecc0f673d9f8421ebb	Unidentified contract		erc1155
 \\xaeef21a33453bff47f49f6202b5bb8e4e0c1eae1	PEPE 	PEPE	erc721
 \\x030eb9f0dc06f0d56757120c95ddc8aa00a05da2	High school girl + background	HSGPLUS	erc721
 \\xa3ad77cb54ee74fe75006a6d8aef4fbb69c79ffb	FROG CULTURE	KDOGS	erc721
@@ -5953,7 +5791,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x282afeb23d081da47258e41f631af8e575a7db14	TIANLONG by Ca Chou	TIANLONGBYCACHOU	erc721
 \\x333761cefcc5c30786fb8af304569c8d171fee9e	SpaceCats	SpaceCats	erc721
 \\x90e9da69c4c77c6123e54d9e0e51c1603b3d09e4	CastlesLootGenOne	CastlesLootGenOne	erc721
-\\xc6faaaddaee6953be305512fe59b3be43f2a61f1	Unidentified contract		erc1155
 \\x12bb5bf8a166098e1839d3f1396d73ac3fe42926	XOiDs	XOIDS	erc721
 \\x807b7601aa00ab306254e19c17aadc5c361354a4	LGND.art	ART	erc721
 \\x37608be52a9c4c2de597942c6e08b3f5f3890223	House of Warlords Gallery	HOWLG	erc721
@@ -5981,7 +5818,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x03ff83e2c8996e29db1d78c116926a369ffe83ab	Last Thought Open Editions by Adam Priester	LASTTHOUGHTOPENEDITIONSBYADAMPRIESTER	erc721
 \\xa9cf782ac5699c5c616fab6dc5724fea13daf221	Faceless Void	VOIDS	erc1155
 \\x8acc7a007a4c73f760aa0115bed4f148bfa9eb8d	The Gregs	GREG	erc721
-\\x41e3d4b3a79e464f65fffe18aa063de983ef97de	Unidentified contract		erc1155
 \\x1aaba8552d4e2fbfc99bc86f31f28788c7dc1218	KOKODI	KKD	erc721
 \\x553b96a33b06ad8aaad53bfea1e8cd04417e0a53	MEMORY	DISK	erc721
 \\x4646eec42c7679adce56966fa56ccb1b9517c429	Artonomy	ART	erc721
@@ -5990,7 +5826,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x89d723cdfc90e16ac0239abf72e6cd92afd31314	Elementals	ELEMENT	erc721
 \\x7150cd8593670341121eee513538108029298cf7	SLASHES	SLASHES	erc721
 \\x6f5c8a0e2c0424b2d76b59698e331a1083b4fa92	Phancy Pets	PHP	erc721
-\\x0034dc09c4f52557898aea215d74d690a05768a4	Unidentified contract		erc1155
 \\x92932560e0b3e8119be5023aa11ef65b5f283bfd	XTINE	XXX	erc721
 \\x7ecb204fed7e386386cab46a1fcb823ec5067ad5	FULL SEND METACARD	FSMC	erc721
 \\x46a7b5327c66dcb589155e8df25a5a35a702dc1c	Dream Catcher Bonus by Steve Aoki x Antoni Tudisco	DREAMCATCHERBONUSBYSTEVEAOKIXANTONITUDISCO	erc721
@@ -5998,12 +5833,10 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xde372f0d3d464dab42403e8c35d546829274b4ef	lightseekers	LTSKRS	erc721
 \\xbd9071b63f25dd199079ed80b3b384d78042956b	GRILLZ GANG	GRILLZ	erc721
 \\xafd867667ec6d2be5bdcd41d76da7e96a1f67f18	Regenz	REGENZ	erc721
-\\x888145d31faffa6d117e9a59dff3b3e7fba26388	Unidentified contract		erc1155
 \\xf0e9420a849bb74abed0fb318fbe15d0d39e63c6	CryptoPigeons	Pigeons	erc721
 \\x2c88aa0956bc9813505d73575f653f69ada60923	Land	LAND	erc721
 \\xdd099cd0db6f997b847f16ab486c30f62ed117c4	Shiba Society	SHIBS	erc721
 \\xb5d1add59a8c8c18645fab1ec11efee0db1df8a5	JUICEGANG	JG	erc721
-\\x963c8db738d71a056ecedac95ae4b15691035d46	Unidentified contract		erc1155
 \\x001400c1bfb953fc5a126e371f0a70dca1050595	Chapter 7: Candle by Micah Johnson	CHAPTERCANDLEBYMICAHJOHNSON	erc721
 \\x1915dc6834b112df7448de0ff99242b329d6a64e	Bloom	BLOOM	erc721
 \\xd5dd0814f62a21ab649fb9cb86dfe0a085d0e28a	Loopy Cups	CUP	erc721
@@ -6019,7 +5852,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xdd301bb7734d0e269a614766c00509df735b254c	The Gaussian Protocol	GAUS	erc721
 \\x45ac6c294e90e58a1adb81184ec6a03000223b9d	CloodleZ	CZ	erc721
 \\x9a03d87b3946b374a42d0b449c55791a252e1f72	Cityverse	CV	erc721
-\\x5b6660ca047cc351bfedca4fc864d0a88f551485	Unidentified contract		erc721
 \\xc787d7e5a33caaad31a1ae3c453f955142de145d	The Adventurers Text	The Adventurers Text	erc721
 \\xe2c5b926169ba37f43a4e83ee5443238d275bcbc	Jagged Coin #001	JC	erc721
 \\x1a50af1479ad618d33a615112c9abac1f974a372	Oneday	1D	erc721
@@ -6038,13 +5870,11 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x3839110742550ad38e0021e388f38f57a9b41b3e	Gwei Gators	GG	erc721
 \\x97d702037ca1d3ab3ad649248c3612935b60f4f4	DoodShib	DOOD	erc721
 \\x744f8235a20884b7e37532e40c1b5313d0d36d48	Seabum	SBUM	erc721
-\\x498b3d6ad30b1f584fa508e5b8c010cc730011a0	Unidentified contract		erc1155
 \\xbd3c6af08f193e52d7e897c66ad7de4237369dbb	Miu Rescue Team	MIU	erc721
 \\x26c813804430772665b0d38a3a0520a9c87c10b4	Squishy Apes	SQUAPES	erc721
 \\xb87102481d6d61a5e5b3b4315a4071717f340c99	Rebel Rabbits	RRR	erc721
 \\xcb35d14759e2931022c7315f53e37cdcd38e570c	CryptoCards Cards	CARDS	erc721
 \\x512db1b4d78e4bf4db3f308b2d4e0eedaa89eab4	A SAFE SPACE 	4U	erc721
-\\x958ec4f02d10762601e487d32b2814409fef7c44	Unidentified contract		erc1155
 \\x9cf63efbe189091b7e3d364c7f6cfbe06997872b	Chad	CHAD	erc721
 \\x8e04b34166612e73e8f8b7d7a5ddb6ea2895b4b5	the ape frens	apefrens	erc721
 \\x66b1dd8b17849e270075229b901ba9ef5dc3a8dc	Pork1984 Chapter II	PORK1984-C2	erc721
@@ -6065,7 +5895,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x2eeee40b14489acbef91551a9862b962cb2756ce	Skulls by Jon Noorlander Collectors Edition	SKULLSBYJONNOORLANDERCOLLECTORSEDITION	erc721
 \\x01234567bac6ff94d7e4f0ee23119cf848f93245	ETH Blocks	ETHB	erc721
 \\xd45ed1fb0d7e03d343a14971f73db8297bc64ea6	CryptoWineTasting	CWT	erc721
-\\xb01ce05efec8fdc3c14c572bf56314756f38507e	Unidentified contract		erc1155
 \\xc555ce25e48f625275ef6d5d798e00e037b90be1	SeptembersMonsters	SEP	erc721
 \\x658bb409083fcbcb80b1abaacf3452c43c5c644c	Plane Jane	Plane Jane	erc1155
 \\xe60a7825a80509de847ffe30ce2936dfc770db6b	PACDAO ACTION	PAC-A1	erc721
@@ -6087,7 +5916,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x8744c9f3c2dca15b306fefcb1175ecb22ecbe01f	Hello fam!		erc1155
 \\x84ad8ca83976f393e550cdf76723085b29779634	Froggie Frens	FRENS	erc721
 \\x9020296756abb302b65b8cac4532011f8903ac3a	Mutant Pandas	MP	erc721
-\\xd0ed73b33789111807bd64ae2a6e1e6f92f986f5	Unidentified contract		erc1155
 \\x73d10536915d5837135d884490eab6070b065870	Lucky Lion CLub	LLC	erc721
 \\xc4df6018f90f91bad7e24f89279305715b3a276f	AlienApeYachtClub	AAYC	erc721
 \\xc9570250369c7dde8be228e3641462af6200722c	MASHINE ORIGINALS	MASHINE	erc721
@@ -6104,7 +5932,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xb4b55cb5c7d3c59c69dcaac83ed067bb3abfa2d3	OnChainMask	OnChainMask	erc1155
 \\x38557823b4df955f015602d3ce31443e1f65e57c	Waifu Warriors	WW	erc721
 \\x16e9484f5b714d58b7d3bbc6c80e7e7aefe1390b	Bored Ape 8-Bit Club	BA8C	erc721
-\\xb7be4001bff2c5f4a61dd2435e4c9a19d8d12343	Unidentified contract		erc1155
 \\x81b220fb91958898a2b370d963c64588886e1ef9	Lego Pepe Hero	LEGOPEPE	erc721
 \\x555d4e319d6508fb9fb0a54882a5b5e98ea74121	Larva Breads	LBreads	erc721
 \\x592c31c129803eaee49667ca8e9b86b516da1900	Villager	V	erc721
@@ -6114,10 +5941,8 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xc04b88562d10057e06b3992bb01288ab835f6522	Golden Token | Incomplete Control	GTIC	erc721
 \\xd03d68cac608d2688d648206dff3e66b9b085152	Crypto Skulls 3D	Skulls3D	erc721
 \\xbd4455da5929d5639ee098abfaa3241e9ae111af	NFT Worlds	NFT Worlds	erc721
-\\x3afe3de67894fcd578eb492d1a74d13327b41aae	Unidentified contract		erc1155
 \\x87a314df010535910a84bdd078e8a2cb459bacc9	ISLAND BOYS		erc721
 \\x4140366c4077f8f5632e260f5522f80ef9bd86a1	darkfarms1	DF1	erc721
-\\x6b53e03df077e59c001a873db55820803bc5c800	Unidentified contract		erc721
 \\x92818b9b38cdfedeae254b338561d7de3ebe0037	TheGoldenPups	GoldenPups	erc1155
 \\xabe3a95049cc81eb6ea74d8bfb60b7d64647e5d0	SmolPunks	SMOL	erc721
 \\xfbd068d64953a6bb6f8f115f4121ad3e7417345d	s&m's journey	SM	erc721
@@ -6191,7 +6016,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x5e77d17a26a65de4fb60d523e7147f65a28f6692	LittleCloudPower	LCP	erc721
 \\x89af532726f48b7e77ae60705e166252e9dcde15	The Companion	TC	erc721
 \\x930380ace092903b1baba84b7bd5c6eab0dc44d6	Sense Collective Generative Artifacts		erc721
-\\x4bc87f553fce25bd613a7c31b17d6d224a84c7bf	Unidentified contract		erc1155
 \\x0a31727f265536894a3fb27ce75e79796651273f	Underwater genesis	UNDER	erc721
 \\xc68b9f8d12d54b2d17444604b10c560270488f1b	Pandamonium	PANDA	erc721
 \\xebc786e1dfa5e0194428d4dffbe1bf90703d53f7	Aliens Punks Evo	ALIENEVO	erc721
@@ -6225,7 +6049,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x72d16b256f82e4016726e00be827743b57b6d9d5	Croak!	Croak! 	erc1155
 \\x297f8eb30b696560578cd45ef8d745637e844a71	MetaKongz	MKZ	erc721
 \\x0f2b452094f2eac6e7a7ae8c760c5432bd7a7768	RAM ARCHIVE	RAMARCH	erc721
-\\xc9d0a8100325167f30e495e1c0073bc76ca28251	Unidentified contract		erc1155
 \\x8782248479384806592275850628480268655141	Sushipico Set	SPS	erc721
 \\x319935e91705d1bc8e870317ed766d277fe48298	WEN LAMBO by BRAiN VOMiT 	BVLAMBO	erc1155
 \\x97b70306eb1a04ce543676192b2414298a4de2f9	Psychic Blossom	PSYBLSM	erc721
@@ -6242,7 +6065,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x8d9d0b43a6cdfe080fc3b2f98289cbb3a75ecb8d	The Fine Art of Pepe 🐸🏛️	RIBBIT	erc721
 \\x102f272afa9b5f79429f4baf9adfb4087d78c1dc	Infinity Headset Genesis	IHG	erc721
 \\x5f7cedf538262661f06f9f5a0d9230c7b65a3f3f	NOT A RUG	NAR	erc721
-\\x78a7f7929219c88b8e8265ae606981d8a3056ad6	Unidentified contract		erc1155
 \\x13927739076014913a3a7c207ef84c5be4780014	VeeFriends Mini Drops	VFMD	erc721
 \\x325efafe8f40f4aaf264ea0a213f0f0003256e4e	OnceUponATime	OUAT	erc721
 \\xdc299dc0bfee847d045f8a24184884a28c049d32	A List Apes	ALIST	erc721
@@ -6253,7 +6075,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xc40cbcb0d1816549a5a7735d90c0d06715ec0620	BMF Skulls	BMF	erc721
 \\xfd3c3717164831916e6d2d7cdde9904dd793ec84	Chameleon Collective	CCNFT	erc721
 \\x80e06a0c376041ad3797bc7607b47e16afa08396	IvoryDreams	IVORY	erc721
-\\xb2adcdfdffa5c905e0db62a2d3d21697791a9321	Unidentified contract		erc1155
 \\x5a9d77cb65a0a7f6db180692c0a9853947d36dbd	Type Faces	TPFC	erc721
 \\x2e2691819d3441994e9709e776bd77d08cd9e89b	scorpio.world	SCORPIO	erc721
 \\x9401518f4ebba857baa879d9f76e1cc8b31ed197	Weirdo Ghost Gang	GHOST	erc721
@@ -6281,7 +6102,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x9b1bf0890dacb0de0749300b5633c0618463e180	blnk.	BLNK	erc721
 \\xb28926d4ce67baab41ee3673da315bfa02536a95	TERRA FLAMMA	TF	erc721
 \\x7a84036d678be8d320dc80d215577385702a3ed2	Where Did Macy Go?	MACY	erc721
-\\x10d44906e4f89e06117b526100faff9f2fdfa1c9	Unidentified contract		erc1155
 \\xa987b5ea8a86aa034b73c1cde7b2359dac5080dd	CYBER BEAST SOCIAL CLUB	CYBER BEAST	erc721
 \\xca49b939ad0b0b148fa61641d799e7777ad2e5db	Rowdy Roos	RROO	erc721
 \\xcb09ab66c9ca3f59c23e67109e266eab9ca754a9	BallerApes	BALLER	erc721
@@ -6292,7 +6112,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x06af79cdf3c94e734b0c7109b1a32e3025cd717c	Right Click Save As	RIGHTCLICK	erc721
 \\xabd8b4e59235bd1feeda2e2101268e83fc823756	L'émotion	ESPOIR	erc721
 \\xa797b1c128b314384fc3517d95be18fa76ba5835	AlchemixEthPatron	alETH-PATRON	erc721
-\\x0cb4a0670e3d146ddbb77595e15e510a0f9e3d82	Unidentified contract		erc1155
 \\xb94283dd50406c0c7137ec8436dbe5b808dee856	Caturday Tales	CATURDAY	erc721
 \\xa249ee2b3dca97019b4bfc4dbe0485a05c6dc156	FuteraUnited	FU	erc721
 \\xacf003f215ed77113e1aa52d5d9ce3075b874356	Rune	RUNE	erc721
@@ -6320,7 +6139,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x2809e6bd22a9a37c7c109145c5448a0bf88105ae	FullBodyApeClub	FBAC	erc721
 \\x9b2b257db3210bb4ceb9974b90de095ac0d53b55	Alpha, Beta, Omega.	ABO	erc721
 \\x3879cc5c624a7b101b2bf1b1a2ceea74f6eca53d	BadCache	BadCache	erc721
-\\x38065291fdce1a752afd725e96ff75e1c38ad6aa	Unidentified contract		erc721
 \\xf866b9c00b690e224f8c92ef436d43604268964f	Turtle Squad NFT	TURTLE	erc721
 \\xb95abd5fa9e71f1981505c3d9a7800c369b0718c	NetvrkTransports	NVKTP	erc721
 \\x06c232ecdea625545e57c2f038b5426c85cfd3cf	ZombieMonkeys	ZM	erc721
@@ -6334,7 +6152,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xe63be4ed45d32e43ff9b53ae9930983b0367330a	RareBunniClub	RareBunni	erc721
 \\x51d76560260037b53eac0a914f15a43b66f5bb56	Bitwise Vignettes	BITWISE	erc721
 \\xaeedd0b4ed284898f6a53a6015a4810ac7d99805	City-TEXTURED	OZRCTXRD	erc721
-\\x4e0dfd74857e9eebbdf332727d30818a0ae13e2c	Unidentified contract		erc1155
 \\x5ce26b64ae0edba3c72ef60e508c9a10e506a886	Genesis 8sian Halloween	G8H	erc721
 \\x56bca42b1aa0927f1332cbbdf4ae7e01d5c500b9	The Lazy Sloths	SLOTHS	erc721
 \\x9c5ff424a4ad21dd93e80ae69c80549249c8c4d8	Intergalactic Tokens	IGT	erc721
@@ -6347,7 +6164,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xc2a0a6d2841338eb09164ae2536221daeb041fdb	888 Inner Circle - Red Realm	888R	erc721
 \\x7ffd8c64587026bf1a2c54bc77fa7d74f87d3338	MusicFund	MUSICFUND	erc721
 \\xbfcb983a6c3e392cbddeca228854c51fbc29220a	Dogface	DF	erc721
-\\x9522f38d9ec8f273ed37a4071f41838385f94f1f	Unidentified contract		erc1155
 \\x3fba81d2e6d9ff2d77e92345d5f79f7dc0151e14	CircleJerkz	CJ	erc721
 \\xbe6a2f5960b27c7fde12e073d61b962d9c6c3cb7	Mystic Wizards	MYSTIC	erc721
 \\x59ec8e68d9caa87f6b5bc4013172c20e85ccdad0	SportsIcon Lion Club	SLC	erc721
@@ -6418,7 +6234,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x860e7b324322be262c164dc61d7703b75d0bca03	FastFoodDoodles	FFD	erc721
 \\xabb3738f04dc2ec20f4ae4462c3d069d02ae045b	KnownOriginDigitalAsset	KODA	erc721
 \\xd668a2e001f3385b8bbc5a8682ac3c0d83c19122	KingFrogs	KF	erc721
-\\x123456c13537c42f713fb748fb086344b825b38d	Unidentified contract		erc1155
 \\xb8c78d9c32061dc91406ed0bd7112ff912fa55a7	The Vampire Game	VGAME	erc721
 \\x3b5f771ee6787850748ad25eff93cf2cb35240d9	Hive Mind	HVEMND	erc721
 \\xc4c6d110226598cd24be9efcd0e094368dd4ed8c	Troll Fuckin' Tunes	TUNES	erc721
@@ -6443,7 +6258,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x2d6d318e7149163b0f2cf3619c4036ca91860e22	Dolly The Sheep Society	DTS	erc721
 \\xaacb29b0b95c05576894f34648985456e0617535	CryptoHeartzNFT	HEARTZ	erc721
 \\xa67d63e68715dcf9b65e45e5118b5fcd1e554b5f	Pepsi Mic Drop	PEPSIMICDROP	erc721
-\\x8a827360ad212e11450b7796ea79c3ee1faf2788	Unidentified contract		erc721
 \\x1d9545f79e40dc463da094d1ee138668670eeb19	Satoshi's Legions Presale Tokens	PRELEGIONS	erc1155
 \\xd7b02e7e6e0a2b9bf08694a31a7fc27c04eaf4c7	Dope Dinos	DOPEDINOS	erc721
 \\xb440872e7e1384d1e548a6e95a2253dce622dcaf	UCubePack	UCubePack	erc721
@@ -6463,9 +6277,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xee4b4a2487252f0cee54aed3b9b58538f05ecf9b	Metascape	SCAPE	erc721
 \\xc70748705ddb000bbff325b43377e89ec1407994	Monet nekoshima's Light Art	MNLA	erc721
 \\x32abf5f9b607ae3a23ad25a33d048299929f29b2	submerge	sub	erc721
-\\xfe5844af9cb93572fd8542619708935c0b90cefe	Unidentified contract		erc1155
-\\x7c0bc407f7cd0e3e32bcfac2170a60875bc32eb5	Unidentified contract		erc1155
-\\x2370f1e64d71ed5f47ef83bcb8ab61da193b8fba	Unidentified contract		erc1155
 \\x89dca2719182fda2133d15e21367fbce0a2525d8	Clay Boys	CLAY	erc721
 \\xfdce16e8c62e4904c14736968897ada5f0dad61f	Sovereign Degens	SVDGN	erc721
 \\x06c6db12875e254a0e0c7259c7d4993e017edc80	ChunkyChickens	CHKN	erc721
@@ -6478,7 +6289,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xeca65b55d504bf1e15d6f7f5e374e58c6a7d9011	0xmusic	music	erc721
 \\x70c7e98cf47b953b80a84b347f370c9b7c6b0cba	FUDFamiglia	FUDFAM	erc721
 \\xe0c543608d1449f627f6fa43321b619775750d58	NFT Freaks	FREAKS	erc721
-\\x2e48ad54bfc239da59bacfa6f6d94325e4d18d55	Unidentified contract		erc1155
 \\x7bc1d63b00248666547d3a912182c07f48bef07c	Rising	BAVUGAR	erc721
 \\xed19536a68ebbb5194df70d1699de6a5762d85bc	Meta Doodlz	Metaverse	erc721
 \\x18fce4cc587360979155ab8529612dfecf36b029	LLamas	BLL	erc721
@@ -6509,12 +6319,10 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x043474a14f17cf4f48bd07b385c077c45fd6707e	Synesthesia	SYN	erc721
 \\xa9f6c4610970b01a448bfbf43a273357df35c21e	QuentinMuiPhotos	QBALL	erc721
 \\x5506be29ae429c7f70a4f5c926af604899bbf692	FOMOTown	FOMO	erc721
-\\xc49fb20852619610180362146204b1b99f4eec04	Unidentified contract		erc1155
 \\xc0557393ed2ba4de44e488e946ddd00fc2913139	eq keys	KEYS	erc721
 \\x35485d89150457ce01098bca4bd47d5daad43f59	721DAO	721DAO	erc1155
 \\xbeda89eab547bded39a8ce6d600ad0b7473ca773	SOLECTIBLE GRAILS	SOLEGRAILS	erc721
 \\x85e2cac17c99bd56088671387c4a353e86e8d1d2	Low Effort Smileeez	SMLE	erc721
-\\x31ca6303acbaf42727117da3de8afc317d05dc2c	Unidentified contract		erc1155
 \\x691d2b32639bb0e45a31f9516f3becc1b7945c5f	BelleDAOphine	BELLE	erc721
 \\x4b8e2f93687e1353f255b62c7f3f19240656573f	DeMeta	DEMETA	erc721
 \\x36677a3580a438891ca8e74d0826146d7486e9ea	SCULPTURA	SCULPTURA	erc721
@@ -6526,7 +6334,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x259bc3540a68c3747f5af9634fd36c86e37e549a	ARAB META	AMSC	erc721
 \\x4fdf838c323e403b54116b1926fad47d0486b7b7	Barriers	BARRIERS	erc721
 \\x1308c158e60d7c4565e369df2a86ebd853eef2fb	Open Palette	OPL	erc721
-\\xbb69e1b162a34920de20400f4af5009eeb869789	Unidentified contract		erc1155
 \\xa792e03e42562a2240bbda4f2d4ffc8e3b12eab6	NoZone Shiny 001	LAMO	erc721
 \\x1b5ccdbeec92d7dafe2e939ea6c5526edd08a89a	Hip Hop Heads	HHH	erc721
 \\xe555b1117f5ff8751b7b51c05849c8793744d918	Working Anteater's Life	WAL	erc721
@@ -6560,7 +6367,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x687a8de830b7c1cdd12bf613f4da14e42ba49174	RAA-NFT	RAANFT	erc721
 \\xa5372ee48516f8ba07aaca07e57445d8401a2fe9	Ocarinas	OC	erc721
 \\x8224761320780f9c8022dddcbe2e4dcbaffbad3c	JANKYFAM: Frendz With Benzedrine by Superplastic x Janky	JANKYFAMFRENDZWITHBENZEDRINEBYSUPERPLASTICXJANKY	erc721
-\\x92520336a13de090fcd2e76771dd4d5f190232dc	Unidentified contract		erc1155
 \\x7cfcce62dc832c554f654192f4e49297c07af869	Illuminati	ILLUMINATI	erc721
 \\xf2d11bbf5049b76424834bcbead79548bbf2bb2b	kefan404	KEFAN404	erc721
 \\x61d0bd0264791ac61739eed64c6379a65d57dc27	32px Pandas	PANDAS	erc721
@@ -6637,7 +6443,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x78d61c684a992b0289bbfe58aaa2659f667907f8	SUPERPLASTIC: SUPERGUCCI	SPGCI	erc721
 \\xdcb901a81f84c4c14f0318b4a9f9a86efaaa99b3	Shaggy Sheep	SS	erc721
 \\x35275cfce766efb516b9bd502f6b5aeb1cff6f5f	Pepe-verse	PEPE	erc721
-\\x71ede9894aeb2ff2da92d2ca4865d37d1ab77a1b	Unidentified contract		erc1155
 \\x5d0e774ff94d254c61459ec752be43463ddcba25	Traditional x Ai	TXA	erc721
 \\x3d407cdc4a340f256f0de3c6671cc87bdaddfe85	Space Travelers	SPCTRVLR	erc721
 \\xdc35441e43c9e5ba5d50b8256753945f34607561	TheDarumaNFT	Daruma	erc721
@@ -6647,7 +6452,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x706a90186fc57ede20e365f46bff0f3b2162bc9b	Pan Pixels	PAN	erc721
 \\xeafa25e962ee875f75fdc97e152d39bb4c8978ae	Space Capsules	SCAP	erc721
 \\x2083bfc586265b3dfac363f075ef7bd2e1b44370	DegenArtClub	DAC	erc721
-\\x4e08b19c8016e613a55c2ba47f087e4476096549	Unidentified contract		erc1155
 \\xd1d411d2da363144248b98adab453aa3b19ccf04	Rug Radio Membership Pass	✺RUG	erc721
 \\x33ae326a719ae93d061d7640890baa899d1c8ebd	InteractiveFlow	INTERACTIVEFLOW	erc721
 \\x8ee9a60cb5c0e7db414031856cb9e0f1f05988d1	STAPLEVERSE - FEED CLAN	FEED	erc721
@@ -6655,8 +6459,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x23c54ac322cba66eddcf95c5697b53fc3a8a608c	CanineCartel	CARTEL	erc721
 \\xa7a53014ebb4615ad694adaeb209f3a647915642	Shiba	SHIBA	erc721
 \\xed01293842cc43a7197c95b6e986b7f66abaad80	YCSM	YCSM	erc721
-\\x73f06b00a546f32cf502c9b254e89772f618b77a	Unidentified contract		erc1155
-\\xcf67349cd2dbc798e8fc7cec5fa5082d2c6f4186	Unidentified contract		erc721
 \\x441bb5435859a173dc82fcdc4115f2755d4f7e9f	BRILLIANT	BRILLI	erc721
 \\x20da3edddcf7db344eff8d7ebbdb26ae2f6978c8	One Sun, One Shadow	OSOS	erc721
 \\x1ae840aecea3fc216f004cb99497290ad32e2394	Nostalgic Retro Moments	NRM	erc721
@@ -6682,8 +6484,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xb8b2da20be0ae30f6ad9c744e8d754652316b4dd	EARTH // The First Generative Art Project	EARTH	erc721
 \\xaef8b6346ca4dadaa71783dddf4a3d00633b679d	Nifty Ape Nation	NAN	erc721
 \\xb25d161443882d72ce24c988a095cd97043e5544	Island Boys	ISB	erc721
-\\x4252ea0edab51b696c6867168220be7d038ba533	Unidentified contract		erc1155
-\\x6cad6e1abc83068ea98924aef37e996ed02abf1c	Unidentified contract		erc1155
 \\x165b6675f8cd64697ba4366cdc531847186d0a0d	CrowPunks	CROW	erc721
 \\xae4109a8cfafc5789f444b1aef56605c2f6eaad1	hyaliko space factory	HYSF	erc721
 \\xdfb3944a005bb60d0f1099c18e8fc8e421b64a91	Unbearables	UNB	erc721
@@ -6694,9 +6494,7 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x6ca79823fc92d488852cec269d0ad875b33b47e3	Potato Punks	PPKS	erc721
 \\x7be979e5af3663b9c2391551c2afec46447db34c	Metadna	loot partner	erc721
 \\x8e9c050c06108fcd3cf92698e24c60d4461c4089	Pixel Squids	PXSQ	erc721
-\\x98ddb493ea12799018589cb1a1b8760249153f32	Unidentified contract		erc1155
 \\xf9b8e02a97780381ea1fbdd41d7706acd163dd9a	Burnables	BURN	erc721
-\\x37cb17edfab0067656e796675cea04f44e35882d	Unidentified contract		erc1155
 \\xcb54da78e6921b8bb64f3e7af06f337cb103070a	Metathugs	METATHUGS	erc721
 \\xc056b1346b8527715879bd5f8eeafb42450f87e1	WINDY	WINDY	erc721
 \\xe1fd6e69630a142a825ea2ffb3d2710c8c35bb6a	Yonani Khan Dream Series	YKDS	erc721
@@ -6716,9 +6514,7 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x3f916867a9f38aa68ad7583c7360f83387d06daf	eyeStar	EYESTAR	erc721
 \\xa71020f273d88e288ade4ea7fa2c6a18985a1d46	Fateweaver	FWVR	erc721
 \\x494dcb7a155a69cf3d60533a894593acb0a76b14	Minecraft Realestate NFT	OSC	erc721
-\\xa5d452a85b8c4ba11f65be98dc344b40629d985f	Unidentified contract		erc1155
 \\x47fb8da06eb96bcb04752388b456da28e56bad9f	BARFLIES	YNSB	erc721
-\\xbc8c47e8ecf973815b436de1fc827224c63f046e	Unidentified contract	GREAT	erc721
 \\x614e103e99ad9543d7555c44cb5666e76c2bb8aa	Dream Collaborations	DRMCLLB	erc721
 \\x43f65243daaf72ff3103c841c2b44cfe1e673441	IDOLS & ICONS	IANDI	erc721
 \\x7a3b97a7400e44dadd929431a3640e4fc47daebd	Apes In Space	AIS	erc721
@@ -6728,7 +6524,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xe99944fc9026e2c92e0dd4ddb455fc58c64e7ed7	Art Kids Online	ART	erc721
 \\x971f761110432c851516a73a338f1779814cf7f6	chibilegends	Chibi	erc721
 \\x19a42ebfcb0ab85cf19618eb42ed2b680d65c6c8	DOODLES Vol. 1 Open Edition by Vexx	DOODLESVOLOPENEDITIONBYVEXX	erc721
-\\xfc35efd86e63e0ef336f36c8ccf72fe942a58556	Unidentified contract		erc1155
 \\x368ffd21ad58faf073047452d5efba3ff7431e1c	fleeting	FLEETING	erc721
 \\x1bc2f28fb7e3be8b5905541a90e4312a9976ace1	Geneticists Pass	GCP4	erc721
 \\xc936362b37018b6e36c304105e766346adf2d78f	Current Style Day and Night	CSDAN	erc721
@@ -6744,7 +6539,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xab13ff73b391dc483a7ce48e0db7b13d2fe7763f	FVCK_BAEIGE//	FVCKBAEIGE	erc721
 \\xbbfb6e466f376e493da35b5665dbfc19f7204231	GEN.ART Collection	GENART	erc721
 \\x74e607e678f7d92f62ed56e41e1804911040cebf	Creemees	Creemees	erc721
-\\x238133ce985e09c7ad6c3009494992f73a6c3fad	Unidentified contract		erc1155
 \\x03392d7814aeacbdb55482ec54db618d38b7ef34	Minting Miracles	MM	erc721
 \\x6a5512853c4ef1965fd19a03090ce4b442948763	BoredApeMirrorClub	BAMC	erc721
 \\x1e399ac2316627123e68a049f3db5e87c9f4cf5d	Arjahn Seng	seng	erc1155
@@ -6761,7 +6555,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xc19e06734501445d02cfb886f8b112aa445a706c	Martian Misfits	MSFT	erc721
 \\xcb255da7e89072156299ba3b6a937c0b1a5b2d86	0xCrystals	0XCRYSTALS	erc1155
 \\x806010c3c09f76aaa95193bb81656baa8a04a646	Rare Folk	FOLK	erc721
-\\x1392e2a50a64c03e418c063358360f7639756c2e	Unidentified contract		erc1155
 \\x11c0468572af4912692dbca4d0ba2386e905249f	Fractal Factory SierpinskiNFT	SPK	erc721
 \\x17047f979cfd9771b8b0eccee52f655cb88d87c7	SSR Mazinger Z	MZR	erc721
 \\x144e84adafa54de411e68e1de16ec9953b46180f	Shiitakes	SHII	erc721
@@ -6781,7 +6574,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x47d989965498ebae3590091f7758b86b8e706345	GenesisRoaringLeaders	GROAR	erc721
 \\x22ed1236d9f6d17c101e0c58e04d1248a0495280	Moonlight Ride	MNLR	erc721
 \\xbb42e867e1d1a3fab476f1871a4371c680a76e5f	The White Lady	WLADY	erc721
-\\xa3a8e56be303a9e34e5d3b60b16de876c881223c	Unidentified contract		erc1155
 \\x2490cd4412540fe02de71122d6c596f58e8137e6	Non-Chimpz Headz	NONCHH	erc721
 \\x3b17d0e7f90795f55c14d2e4f6ce49f36fa45926	Pacific North West 	PNW	erc721
 \\xa77b521360b8a8c791010cfd7211412abc7a46b1	Life, All At Once.	KDK	erc721
@@ -6811,7 +6603,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xe55c8450e103695d299b30bbafa76e52a56613b2	Urabe Voxel Art Collection	UVAC	erc721
 \\x9a652e434250f29972a79b726f2e78974140bb8c	Necromint	DEAD	erc721
 \\xe0e19aa07cb819664001adffea6a176a75897899	URSPass	URPASS	erc721
-\\xa7870d4305254aea628bd34430bf8eab28919910	Unidentified contract		erc1155
 \\x118461022a2f99ef65bee1dd93ef62fb49d974fc	Monster Portal Badge	MPB	erc721
 \\x93aea122b519d4e609820e34bcf20c86a98f5dc2	Hall of Fame	HoF	erc721
 \\x80d4914685ba4bca07a995bb160a8fc4cd4de5b6	Zombie Zebras	ZEBRAS	erc721
@@ -6835,8 +6626,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x657fabdb226abc59227e02e94089afbc67a597fe	1,989 Sisters	1989-Sisters	erc721
 \\x3598fff0f78dd8b497e12a3ad91febcfc8f49d9e	Private Jet Pyjama Party	PJPP	erc721
 \\xa6916545a56f75acd43fb6a1527a73a41d2b4081	DemiHuman	DEMI	erc721
-\\xe1077ece6be24dfe9898cf2745fcd01c52c454e5	Unidentified contract		erc721
-\\x92a462984ac7961a0e88b196651fc19c0045e1fe	Unidentified contract		erc1155
 \\xe29a492bbf25f86b1340d7b9e440b1cda0ec3c49	CryptoPodz	CP	erc721
 \\xa048c212449c68eaaf866309c1202db7ab512c5c	Miss Universe NFT	MU	erc721
 \\x091561eb5b0fc1da32a0f8842512a994b0fdc37b	RandoMice	RMICE	erc721
@@ -6866,14 +6655,11 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x9d184a22db79443892b08bdd7cbd01c90efbedf1	Angels Oasis	AO	erc721
 \\x832a784baf6010cce7271528a8613bb8016bb621	NFYE	NFYE	erc721
 \\x37746ef74ecba38aee913e2fca0197a919d47310	The Ape Game	TAG	erc721
-\\xc03a9ab81327df07300c685067ef540d31d59cd0	Unidentified contract		erc1155
-\\xd18928351e285a76b0cb61c5abae354ac0bdc0f1	Unidentified contract		erc1155
 \\xa8b0ab8286d467f461e9fbfcacf0f511ddc594c4	MORPHY	MINTED x MORPHY	erc721
 \\x566df416664841a4abf109c95c24d4161910e9c2	CONVERGENCE by ThankYouX	CONVERGENCEBYTHANKYOUX	erc721
 \\x6e319877f5263a3e7b4b36c6f90a7f2542c91e3e	Guest Artist Open Edition by Mad Rabbits Riot Club	GUESTARTISTOPENEDITIONBYMADRABBITSRIOTCLUB	erc721
 \\xd820019bc22d6de7341b8ae22f39bd1ae442e346	Genesis Rain Boy Club	GRBC	erc721
 \\x1f62eaea3b1658aa4ecc21e89ec4ed2570ec528c	Kiv Bui	KIVBUI	erc721
-\\x888888888877a56b4b809bf14bb76d63eb208297	Unidentified contract		erc1155
 \\x536ac041f7db373f0e7969d5091ff657cf92a830	My Comic Manifolds	GANCOMIC	erc721
 \\x43e02e0c6a10e2763c16cfb50b49a981202081ef	ETERNOS	ENOS	erc721
 \\x1f5f1384db162ea619adaa760f4a246b909bdb5e	Lucky Llamas	LL	erc721
@@ -6888,8 +6674,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x86989de121d9b2df90c89ae190d32e85367b8837	DoodleMApes	MUTANT	erc721
 \\xbbc93a41f78a11d0779171f270fc86ee8efb3765	Oddies Club	ODD	erc721
 \\x91684594108834b4c3cffc9913911c4dcb9c1f26	Astrada	AST	erc721
-\\xe374b4df4cf95ecc0b7c93b49d465a1549f86cc0	Unidentified contract		erc1155
-\\x0f9b430cf1b872de5aa8b98c5333102ff1b87ae7	Unidentified contract		erc1155
 \\x35e27d8c08b2f94f751f240f21621d5a37a1d3c9	Cool Doods	CD	erc721
 \\x6fad73936527d2a82aea5384d252462941b44042	FLUF World: Scenes and Sounds		erc1155
 \\xcc152109b048e1a832c42e422ba11bbd0e45e877	Anonymice Cheese Club	MICE-CHEESE-CLUB	erc721
@@ -6906,7 +6690,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x9b51a88cffe9b50e043661ddd7f492cc3888fcbf	Lootmart	MART	erc1155
 \\xcff2487556275e81f8724aa25ccb87a348362ede	TheAfterlife	TA	erc721
 \\x1ced6f767092c099fc1cae22a2629772b0ba936a	Creation (Accusation) by NFN Kalyan	CREATIONACCUSATIONBYNFNKALYAN	erc721
-\\x46952c750ba45d31c22699ce0c66fd794caf5d45	Unidentified contract		erc1155
 \\xb7e17b1aab7a499d1b191513b0fce38f234e63d6	Welcome to Web3	WEB3	erc721
 \\x89ffd18897bae76a783d5718483ee8cb10602e25	Futurblocks	FUTUR	erc721
 \\x5ab3919884531dc742422351dbf9ae19b2b49822	Sneaky Squirrels	SQL	erc721
@@ -6916,7 +6699,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xdbf1549f64310c51bdba05e5c880ee5676d8e8d5	ZHEN. Token	ZHT	erc721
 \\x670f420a2a224cd3c620ef896cdf548d64328fab	NBA Pepestars	PEPENBA	erc721
 \\x45daf17701b82e6f32c1d6204127de54678a8f7b	MRAMMOU UTILITY TOKEN	MRAMMOUUTILITY	erc1155
-\\x9f94a2bca4ae047b8fa7d8dffec587ab6101390c	Unidentified contract		erc1155
 \\x1b0b98a93f0ac2fa135bd92a14a46f905f0aa455	Soft Cat Club	SCC	erc721
 \\xd1e1bf85823602fe60b7937f3eb7fd7a8abdb9e9	0xAI CryptoMaze	MAZE	erc721
 \\x7afe30cb3e53dba6801aa0ea647a0ecea7cbe18d	Realms (for Adventurers)	LootRealm	erc721
@@ -6950,15 +6732,12 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x5c4b89148d8ff147a3439540053cfc2ef64252ae	Degen Dragonz	DD	erc721
 \\x420a30e5da348fc205109d1e5785c1dc4f508637	THEE//SEANMARTIN	THEE	erc721
 \\xbe5c953dd0ddb0ce033a98f36c981f1b74d3b33f	Squid Game Card	SquidGameCard	erc721
-\\x59ab11d28299d8924506e020ec35beda22a3c3cb	Unidentified contract		erc1155
 \\xc8c54661e08980e6b702ffa94cb48fb9c5de13a9	YOLO Cat	YC	erc721
 \\x308f0092e1f2e10e22edc577e449c511f33be5aa	Lifeguard Towers: Miami	LTM	erc721
 \\x922dc160f2ab743312a6bb19dd5152c1d3ecca33	CryptoDuckies	DUCKIE	erc721
 \\x591e2b8c3d2c32d10b62ed04ca20b88e9865fd6d	Stage Names (For Rappers)	NAMES	erc721
 \\xff796cbbe32b2150a4585a3791cadb213d0f35a3	Gear	GEAR	erc721
 \\x3e349511dc3d2c255b9eb92ad0c9d700f30d2972	Caring Creatures	CARE	erc721
-\\x4dab23c0a529d1caf86f7a902d5340959d170c1e	Unidentified contract		erc1155
-\\x111909961f31a025efe6df4ebce1f7125dcabc36	Unidentified contract		erc1155
 \\xd46ac7bd0d652a8916c2dc0d039797f05318e67b	MIU DAO	MIU DAO	erc721
 \\x5b29d4c6de73fa99ea53172689b7f62c99408e8d	GenX by HOK	GenX	erc721
 \\xd78d0c3986a50abf67fcccf7c44192f43d8eac9f	reunity with nature	RWN	erc721
@@ -6983,7 +6762,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x68d5d4ff0274dd95760e300ef16b81c5eed09842	Flippy	FLPY	erc721
 \\x1d8aa558793967bcce8d217470bacdcd41746afd	isekai	ISK	erc721
 \\x6b1d83e3b74822c8a06296da59fe5b76432d6c83	GANGSTER ALL ★ STAR POSTER	GANGSTER	erc721
-\\x1a5352f18a3d70d4cd771f9eaba844aca586990b	Unidentified contract		erc1155
 \\xc592100ca36b27093fdf2bc95e404945aa88a2ce	Initials	Initials	erc721
 \\x8ca2ff102907cf101e8e857bf1ed844aeb0d936e	Crypto Mo	MO	erc721
 \\x179c356a86067418a245a11d24f252e780f1939c	TECHNOFISH by Calvin Harris x Emil Nava	TECHNOFISHBYCALVINHARRISXEMILNAVA	erc721
@@ -7025,10 +6803,8 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x18a7902877913dd86bc8df85a8342d79ca145374	10th-legion	LEGO	erc721
 \\xd9aea3f2c4bee243802a5448420857bbf922aae6	WrestlingSuperStarsPass	WSSP	erc721
 \\xb0c019794aa3fbc6ea67f85977348e5613dff560	mbranson editions	MB1155	erc1155
-\\x6de423112580306ec81e70f1345b5bfcabdf030e	Unidentified contract		erc1155
 \\x271b7c3bafb4eb23c93cbeb415d8231569944d58	Freshman Math Class		erc1155
 \\x691ca0d64b0f7ac1d4a5419baa6b9b8064c71a53	TRLab X AI2041	TRLabXAI2041	erc721
-\\x808b0825e51a681e62209adb5e6b21ece3e9c87a	Unidentified contract		erc1155
 \\x70e6b3f9d99432fcf35274d6b24d83ef5ba3de2d	Crayon Codes v1	CRAYON	erc721
 \\x65af1da0979a422de4291d567c6d2194343630ec	Crypto Alien Babes	CAB	erc721
 \\x3b930f45b33dc543bd934aaf0d8156fe5315484e	Kongzilla	KONGZILLA	erc721
@@ -7044,7 +6820,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x4936c0ff90d487a16cd8e21771071cb79b436718	Electric City TV	ELECTRIC	erc721
 \\x73883743dd9894bd2d43e975465b50df8d3af3b2	Doge Pound Puppies	PUPPY	erc721
 \\x39f0bc1df90e77682051bf1b70b479bbec7dbaff	Follow Cel	FOLLOWCEL	erc721
-\\x564887aecfc6c7e357e9827b90b531ede0b9fc46	Unidentified contract		erc1155
 \\x3f52ce5ea6d1cd75da26ae1f765a8b40f4a547be	Floydies	FLOYD	erc721
 \\x60c26df818f237657946d183dc286d6217f1b83a	Grande Dame Visual Delights	GD	erc721
 \\xc4819eff9968fc73362de7f6cc59d47f912901eb	Sock Pops	SP	erc721
@@ -7075,7 +6850,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xe8870b28d9dace7c2938139b14cb0bf9ad2825f4	SOLO | ROOM	SOLO	erc1155
 \\x979ce68a1ad31fd51602f1902f8e16678593b519	 DESPOP IP  & Pin UP 	HUMBL	erc721
 \\x4a19846c03e7e759d49945b1c52c3bbf5c20b0f1	Bet On Yourself	BET	erc721
-\\x2f2e698ee366b358cb04fe61a618018bf6d98b20	Unidentified contract		erc1155
 \\x662c9b3edd4bf2a5320525555c4d7dbd63a9cda4	Baby Ape Club	BAC	erc721
 \\xfaede859e539797a682a79dfc31a3bb2eb37e2a8	Animal Warriors	AW	erc721
 \\xc71b74432fad2cb3342e055c5e8de78394b2a0aa	Kusama	1	erc721
@@ -7083,7 +6857,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xaaa6a04106560aa95090848f98b38ed51e149dee	Dead Dinos NFT Original Collection	iDD	erc721
 \\x1410440c9082729ca7b5484890ab5509bcdee324	Mongolia, the Journey Home	MJH	erc721
 \\x86e9c5ad3d4b5519da2d2c19f5c71baa5ef40933	Puppies	BGP	erc721
-\\xde9a2236989a3e21ee46adc9bb60a513e4cd5c27	Unidentified contract		erc1155
 \\xb3862ca215d5ed2de22734ed001d701adf0a30b4	MiaKhalifaDAO	MiaDAO	erc721
 \\x7bd33f9dfbce127ead20e69971359a2cf8a1a075	Kareido art works	KAREIDO	erc721
 \\xfc52c44f1e6785b12fd37d10f86295c781120bb1	The most wicked of women	VMP	erc721
@@ -7121,8 +6894,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xa37b80820677a119cfc98cdc151ee429c8684504	Skelet Guys	SG	erc721
 \\x05e4bf7efa7e9831b20c2ee99216f6b867f26e0f	floragenic	FGENIC	erc721
 \\xd5fbd81cef9aba7464c5f17e529444918a8ecc57	EtherTulip	🌷	erc721
-\\xa6310c39faa5e21cc29c4b283c6cd4ef51c00d21	Unidentified contract		erc1155
-\\xbfaacd99f0752921aab5ad90e1ccceb9895e0d85	Unidentified contract		erc1155
 \\x8707276df042e89669d69a177d3da7dc78bd8723	DOPE	DOPE	erc721
 \\xf51692e1b605559b736d73722b8d8dbbacbdf028	Miners Genesis	MINER	erc721
 \\xbef648e3034e80efe152f3581117c1536fff5afc	Ohnahji	OHNAH	erc721
@@ -7142,11 +6913,9 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x01cd12de0a53b6ba77ca61ad22e87c531521f902	LUNASCAPΞ	LUNA	erc721
 \\xd9af5e6f1f4ca776d763c5701d016a6a1fa68d7b	Lost Souls	SOULS	erc721
 \\x4b24e905e29622fb02dc1bf67ae59c7df2f23872	BigBang Collection by Makeable.art	MAR-BB	erc721
-\\x5a8e39e1b1af534f148c90f6540707fd249cacae	Unidentified contract		erc1155
 \\x2c12e8ee34a761a8e2214598c22f4b3128adfdc6	Reds	REDS	erc721
 \\x4f7fcbda7246673b0239eaafed1864fcf8ed2346	Doody and Friends	DNF	erc721
 \\x69690fa25f3c2d4ccbf0e4395b098951f7473ccb	Tall Neck Tribe Skeleton	TNTS	erc721
-\\x829a028a13e89545b1736b37605a2df6d1580dbe	Unidentified contract		erc1155
 \\x750fe71ed1626134a4793f1acd33b34cf2bfb8fb	Sticker Travel	TRAVEL	erc721
 \\xeb958cb249b121c5495dc9f3a23c4cfcb7b98511	Ninjart Platinum Collection	NPC	erc721
 \\xd8eed224e1b358fa6f7b167124c2c1afe42275b4	Feral File — Field Guide	FF012	erc721
@@ -7164,7 +6933,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x170135664c25324f65b5ce9ddda8fe2c411e6cb4	RestoredCache	RestoredCache	erc721
 \\xd72a39055b5359f84a367c053c5482003f6cd2fe	Asphodel Meadows	ASPHODEL	erc721
 \\x44e6e5faa5bf7b401fb3e98c9599ae1b2c3dc7cc	PuzlPunk Parts	PUZLPARTS	erc1155
-\\x72e51393c7261dbf5075ffc520ebcd33951b9ab5	Unidentified contract		erc1155
 \\x15384a1241a8c6cbddd85e0b4d2c7a480cfedf49	Asuka_Kirara_LimitedNFT	AKLTTX	erc721
 \\x228367a8111f6c576bfa56190304459f387925f1	Sonic Piggy Token	SPT	erc721
 \\xe797820060a897d67f1faf6b406ef01ec0d2680a	Sockz (Edition 1)	SOCKZ1	erc721
@@ -7182,7 +6950,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xc679f22996efcc120626b18f9d01af1603b98952	Agent1	A10001	erc721
 \\xcab52a63d6d612d76532cc380e3b475f89227875	IDOLS	IDL	erc721
 \\x38575c75ab021a84969241bb784591833d0621b8	Unifi People	UPPL	erc721
-\\x2e8349fe39326833de048e63664f570a2a9c8904	Unidentified contract		erc1155
 \\x03b008eed21889fcd29e76b4d8f89394a1fc1497	Morphys	MORPHY	erc721
 \\xc266fc6804c32b343291ca638f12d87fe7134b96	Creepz Shapeshifters	M3	erc721
 \\xdcc2a6f7cf14b5d2fc0f2731faf0a37b914a0c82	Noodles	NOODS	erc721
@@ -7232,7 +6999,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x91fba69ce5071cf9e828999a0f6006a7f7e2a959	CLASSIFIED	CLSFD	erc721
 \\xafc467ca2213b5fc7f6fa02522dce7471c9dfea5	The Art of R.E.C	REC	erc721
 \\xb93aa812e8b05a04b4056ac3baf8a92a34d900ea	PolygonLow	PgL	erc721
-\\x09fd2ed278d0c9cc9b4671fe4849b02be2b6739e	Unidentified contract		erc1155
 \\xad628a5515a1ee56088ac188633e2aeeaae474d6	LordsOfLightPacks	RTLOL	erc721
 \\xa968f37a450436a25d3a13261a74e22f6bb814f3	H01dEm	H01D	erc721
 \\xd5827fd82af3972b60b8d934c8ab8df96b743c6b	Bears vs Bulls	BVB	erc721
@@ -7265,7 +7031,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x5d703533d86de1a55f4ba25b2789848c89723a6b	ETHERMINATORS	CSM	erc721
 \\x59462feab184428cb7caf4a6c885ffcd84fa2396	Kool Kittens	KoolKittens	erc721
 \\xaad62b59c6557152c458442c9e6d79dcfdaa3152	STRONG SASHIMI ART	SSM	erc721
-\\x4bb5273326e527c24b6e24ad7e2e774452b0bfc6	Unidentified contract		erc1155
 \\x388931828d7c09d2dbeb5fcfc7509f9920f184b3	Ancient Pepe 🐸	PEPE	erc721
 \\x0e45a4a0175f608a3faac896b3f5ba937fbd2e17	NFDADDY	NFD	erc721
 \\xc7ebcd2b57db3d133c456fdc407f88c1616e7c93	SmolPhunks	SmolPHUNKS	erc721
@@ -7308,11 +7073,9 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x88aea52b2118635cab3a9ae9becac382845bfd7a	Secret Frog	FROG	erc721
 \\xdb92a469886efb86eb895b689efc053cb3347890	Chibis by NFG	NFG	erc721
 \\x35438ae4bac767a6658a30e0996bf9208f469142	SNAP UNIVERSE special edition cover, Issue 02	SNAPCOVER2	erc721
-\\xe191d9629b46e132c3cb9cca9427904c91035943	Unidentified contract		erc1155
 \\x064d54c858f884698ef34b1cae5d989a2414e1b6	WhattyClub	WHATTY	erc721
 \\x7af0a49d94ca759a1bb2596b6ce7e1d017266668	striatis	STRIATIS	erc721
 \\x0ca81744e7b1db5799cce3a1711382990800801f	8Bit Bar	8BB	erc721
-\\x18d0e051317e04ae96314c372bd35220460eec62	Unidentified contract		erc1155
 \\x8d69a71d513b24d78b99b0ed4f25942b0ad77402	AwkwardAliens	AWKWARD	erc721
 \\x6250b989ecf7cb82c7892e1cea604ed813423635	Metafans Collection	MFC	erc721
 \\x3e5b1be24334705199b3adbbf715a593f449255c	Pilot	PILOT	erc721
@@ -7340,7 +7103,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x1abb768e835ab22aa5f815f34fdbc608652ce6f0	To Be Human	TBH	erc721
 \\x3b17d90d12fd8c6569ec39c3b0104caf98ca810f	Utopian Metaverse	UM	erc721
 \\x370108cf39555e561353b20ecf1eaae89beb72ce	Borpacasso	BORP1	erc721
-\\xddf0aef52d9b3c2dc63ec120828a761a28103ba0	Unidentified contract		erc1155
 \\x3e13b1b68200ed80ad37f5c4ab6888e5119402ad	Chemverse Compounds	CMVC	erc721
 \\xf18e1d9f893f7f175c9ec2df562a3b1e448747a6	TimeIt Token	TIMEIT	erc721
 \\xbeb931c72193f481186b2511678856bf1fab3205	MoonsofMarsPosters 4	MOMP4	erc721
@@ -7354,7 +7116,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xa4e1f6b5edf1fd64753e4ea95c738f264cb6d0e8	Overexposed	OVEREXPO	erc721
 \\x997ff853742dd683663213e3cf66999d7d95a42a	Breaking Panda Asset	Breakda	erc721
 \\x1e34466953d71f8f0e94263f21ab1cccb51646ca	CERNAN by Michael Kagan	CERNANBYMICHAELKAGAN	erc721
-\\x037bf28efbc02aed1d174f7c22d1bed3367891bc	Unidentified contract		erc1155
 \\x6c9a8328af9b779b16da700fbfb66139552ded17	Decentralized Renaissance	REBIRTH	erc721
 \\x60e4d786628fea6478f785a6d7e704777c86a7c6	MutantApeYachtClub	MAYC	erc721
 \\x5ab97a44d024871ba1c0df8c9be97387bbe844c8	CosmoChamber	CC	erc721
@@ -7392,7 +7153,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x46f101f3b08a6156e8f3553945500e1f62e72a37	Bored Mummy Halloween Candy 21	BMHC21	erc1155
 \\x83f1d1396b19fed8fbb31ed189579d07362d661d	Hymns (For Adventurers)	LootHymns	erc1155
 \\x6b8341969dee3edd76499a7a5370a82112dbd91b	M101Limited	M101Limited	erc721
-\\xed493f841b0527ff4ad0c08ac9cf84fe26ebb5e1	Unidentified contract		erc1155
 \\x9cda227147684fc93850d596e13e82ba6599beee	PLAY SQUID GAME	SQUID	erc721
 \\xb7a6c67668ba786c014d3b37ae2a17e55b5b766e	San Illustrations	SAN	erc721
 \\xa59195b0b7f7137cae79383c428a6d7af25f8229	Pixelmind Collector's Pass	PX PASS	erc721
@@ -7420,11 +7180,9 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xc99718df2d6286b7dc87c0cc71d46a20b0086f4c	Rave Pigs		erc1155
 \\x4a13161efe795ac1c9b6eb6081d88b4be17d51c1	TURN THE TIDE	LEMRITE	erc721
 \\x2f04d6f5881a0d49b870bea2d03853df7eb46101	AbJo	ABJONIAN	erc721
-\\x348fc118bcc65a92dc033a951af153d14d945312	Unidentified contract		erc1155
 \\xb23335829d464c2f6551c57768821c1f0b0bd8f6	PonziRugs	RUG	erc721
 \\xac8d000a5a18c0e045b7d7f4839f2bc977dbda86	Cringe Crows	CC	erc721
 \\xdc9fe731ce957c14a7b055a34270b2400b0905ec	Robonomics Pioneer Set	Robo	erc1155
-\\xcbefe27fda986c7c62243543e30f7eae5b5b799c	Unidentified contract		erc1155
 \\x55126d133ca4bef55800f7a07404d63acb15dac4	JumpN Jetpacks	LPNJMPN	erc1155
 \\x497553044fce704b5d7cf71da2246cdf391478f9	Magic Dust Miners	MDM	erc721
 \\xe4d0ad17b761dc5aa1a9adf741e1c8b9141c62e0	GOZDE	GZD	erc721
@@ -7438,7 +7196,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x401253bd4333014c73d81a308166ade05d954c2f	Los Muertos Club	LMC	erc721
 \\x0edf9f38fe1bf9eb1322c5560bd5b5eb23c0056e	Crypto Moments - DAO Hack	Ξ	erc721
 \\x916325fa4d914f39f0606528b65e6507637f9c37	BKToken	BKT	erc721
-\\x92594d0f692fc2b25a8030573f3ff10abf034bdb	Unidentified contract		erc1155
 \\xeeca1baa86846c17255de9b3ced3c3ea45474206	Promenades	WALK	erc721
 \\xb5068f4f23ce76f6f9e789e39b390de176a21e7f	MetaGeckos Genesis	MGEX0	erc721
 \\x953f2e39174debf031dc42d176513f6ee0a48a8c	TheSuperstarFam	TSF	erc721
@@ -7448,8 +7205,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xdf7e81cb2de9a2e8a9b518adb78ba279e1636db8	SugarBunny	Bunny	erc1155
 \\x73382b19fe136907e9fd4cb1d55228237566324c	Zooverse	ZOO	erc721
 \\xa905736754e8caf16020849b370ba056d372e6cb	Lazy Tiger Wood Club	LTWC	erc721
-\\x8215d264636588b5472205101003907d432f0772	Unidentified contract		erc1155
-\\xdf867faf6487f0cb5e3a5ad91ea46cb2e6c8f186	Unidentified contract		erc1155
 \\x0197374b08702ee7bd26112abd8b174c068051bb	Crypto Doctors	CD	erc721
 \\xc5cecc420a1f2f78503671f562e1fe61036ff0e0	WeGoBattle.com Pods	GoPod	erc721
 \\x28812ec6e46c3e5093de25e954a026ff99a57d53	Blockheads	BLOK	erc721
@@ -7471,7 +7226,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x9ddf80655635155909fd07b4e5855732ddb5e4e4	ARAKI35 ART WORKS	ARA	erc721
 \\x3ca69d4062e59576e2704e8e260f359643351042	Reebok NST2	REEBOKNST2	erc721
 \\xdf14a74719bcf77f1663f89569c3043045dda574	RAA-NFT	RAA-NFT	erc721
-\\x2013ff029f9d3d31169f4fdc673c8b9fa0ce1fbd	Unidentified contract		erc1155
 \\xe5c9353af2f0dab9a02607e7f1f874f1a9060387	CryptoLand	CL	erc721
 \\x694c7a0c71514a3b32154787578ab46d7e45266b	For Those Who Know by x0r	FORTHOSEWHOKNOWBYXR	erc721
 \\x2a0acf0c4b6c3dd67c3828e099a843ab08a6b72e	BrokenSeaDAO	BRKN	erc721
@@ -7484,7 +7238,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x3a777496005cc0402dce44bb1667789ebded1652	CHROMA2	CH2	erc721
 \\x05744a5899dda7a78531cd2b143799d62731824d	Tribuu Masks	Tribuu	erc721
 \\x62b3f9b12e3311557dfc03ee5d9cf8244e285f43	Chill Bear Society	CBS	erc721
-\\x50820403e8ae30338648316bdba7e56d5acae8bb	Unidentified contract	LBST	erc721
 \\x02c4394307de62241aa8d5a0915494a96b288261	Pixel Art	PIXLE	erc721
 \\x09151ae179692894c931276d546ca5a2f1907326	Deed	DEED	erc721
 \\x2f1b6ddfc852531bfd4474dda2d4aeb2be51ce84	Wealthy ape club	WAC	erc721
@@ -7502,7 +7255,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xb6e7b6a9d56b6f7ac0069cd24a248346681a1425	Warriors of Light	SWORD	erc721
 \\xdb50baf666104d77f5921126895c4fbec5b6b32b	Origins	ORIGINS	erc721
 \\x290841ba121462f90ea527849bd5302c50b6afb5	ORBITSNFT	ORBITS	erc721
-\\xed95fb27d335033c982921ccd39bcda3f995974b	Unidentified contract		erc1155
 \\x01a5e3268e3987f0ee5e6eb12fe63fa2af992d83	Dart Art Abstract	DARTS	erc721
 \\x7bc64f0b1e8654ddb350a5ab1e412cc4812f3c2f	Enoji	ENOJI	erc721
 \\x483483d2e48b54719397f270ee20e3adbea8f4ab	Mandelviews	MANDELS	erc721
@@ -7515,9 +7267,7 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x9f2862f5d5f878a56ad8bc81605f8e44ac2415a4	MiezeKatze	MZKZ	erc721
 \\x2ed2c16b073f573cedecffd943fd6ae966cdb9ce	Cypher City Pets		erc721
 \\xb66925b00714121e06187ee02ef8f76d64e4a519	Design Eggz	dEGGz	erc1155
-\\xfca372c1099e2f06c8d752ff2edd5769860b2366	Unidentified contract		erc1155
 \\xc051a9088b4a1bb2f80082cce264f340da4b11e6	Girl and Camera by hurtingbombz	GRLCAM	erc721
-\\x38398a2d7a4278b8d83967e0d235164335a0394a	Unidentified contract		erc1155
 \\xc9e2c9718ff7d3129b9ac12168195507e4275cea	0xVampire	0xV	erc721
 \\x172293deb1ac52d3bd34518f785361d075993bd0	UnStackedFloors	FLOORS	erc721
 \\x4ef0fe82b42b6104bbceb69e764abd2050acfdd4	Chibi	CHIBI	erc721
@@ -7566,11 +7316,8 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x46a4f390b2640971c87d7b327c820d98b58d55a1	Galeano Lempira	Lps	erc721
 \\xda302c6c52db415dbe8b8dc678025c8b79c49996	Portals	PORTALS	erc721
 \\xab636ca0ef439c311911921b991e743b8187559d	A Boring Game of Poker by Jose Delbo	ABORINGGAMEOFPOKERBYJOSEDELBO	erc721
-\\xd14f86e007078fce3d353ac47f0374540e99c1d1	Unidentified contract		erc1155
 \\xc397cb63dad5e89d49ea6206eac5754f6dc961e9	Shapes of Tokyo	TOKYO	erc721
-\\x00f4be5d58aaa93118cff472130a696927f2eadf	Unidentified contract		erc1155
 \\xb5572ef45a121cb72322be82a416aa548a41b76c	Chibis Dinos Trick or Treat #1	cdt	erc721
-\\x51f3ecf137e2e2084e6ed11b5cc0d8f833eae192	Unidentified contract		erc1155
 \\x32887799ba0d479fa9495c4f1dd28178b37068e5	House Plants by Felt Zine	HPFZ	erc721
 \\xc21a6bba897dd6d82295f8995b26359fdf17c698	Bhattaras	bhattara	erc721
 \\x4a5cf465fc90423ba515f5b7e48d69df1a7c7926	ELEMENTS OF HOPE	HOPE	erc721
@@ -7596,7 +7343,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x856492e4fc0de8ebacb5192024905ec857de5258	The Last Raptor	TLR	erc721
 \\xe51aac67b09eaed6d3d43e794d6bae679cbe09d8	FLUF World: Burrows	BURROWS	erc721
 \\x0c0f49b8efc5a2ddeb34e1f6f51292efa0a6cc7a	Doodles Penguin	DOODLEPENGS	erc721
-\\x57f14fbe42bc7e002c831ecbb007e2d4b8e9febb	Unidentified contract		erc1155
 \\x1a96787f93a784848f069273906d0804a6f8a6d9	Pixel Aliens	Alien	erc721
 \\x659cf1306edba213d1fb8f9352b4593a82b05d0c	Footium Football Club	FFC	erc721
 \\x9ba658650884fb36f3423d1ce2ee6d2a51361a99	MoonPass	MOONPASS	erc721
@@ -7647,16 +7393,12 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xb33fc9c26e22ae1b980a3008aa96445034f30bd5	SUBVERSE	SUB	erc721
 \\x35de4be8094d390c61f2aa89efcc2ffed6f65de7	Future	TIME	erc721
 \\x1d0513111b51fe8e3d6dfce7d63971b6b06df04f	HomieG	HG	erc721
-\\xf2c1005e375cb8ffeecf0fdcd256193c382bbdc3	Unidentified contract		erc1155
 \\x1978ff95e0d6bdee52420fef27a4391814deecff	Drools & Pixels	DROOLS	erc721
 \\xa3f2f7289538ee1b9f94f88834e1b35b519d2015	Generativemasks Girl	GMGIRL	erc721
 \\x3de8b4a66f85c9693b7e618c09d3555f61639843	PETS	PETS	erc721
-\\xa8cf067c340b1b1851737f85bf04baea3156c870	Unidentified contract		erc1155
 \\x96a4ae30c6695dd6124de2c5423c9865d6c209a6	Elettrochoc	ELETTRO	erc721
 \\xc52a74928b5c439dc115b2ce1572643d18cabe0b	One Shogun	OS	erc721
 \\xadc60305b9df338f1b5adc09e2cba69178465739	XX__XX	XX__XX	erc1155
-\\xb6883b3ead6e34e0fada5a4441eeca6f52ed521a	Unidentified contract		erc1155
-\\x602b3e3d1761ea2169f3c389683f8b5a272ee39d	Unidentified contract		erc1155
 \\xf5047a87fb67c68b043760dc710670e12fc20a00	Doodzuki	DOODZUKI	erc721
 \\xcebcf9c6fe1366ed0d79eec6e2e44824a4c408ad	RELICS Ticket by Monstercat	RELICSTICKETBYMONSTERCAT	erc721
 \\x017ba9ac7916ebd646e7c11dd220c05c5b790224	Fives	FIVES	erc721
@@ -7681,10 +7423,7 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x555b172a3e0f0c417b295216cc7376e8b0d410b7	ColorverseFounder	CVF	erc721
 \\x8fe95f6e12771ce664f916dcd8103d3731625f53	flow chroma	CHROMA	erc721
 \\x8abc09b1e4bd75a3953ffe20b1e38d94dd7ace05	Scratched Records	SNITCH	erc721
-\\xde680928e1d4104079efcb4c5b0cf0e156294585	Unidentified contract		erc1155
 \\xac8f8011aeba4c157fa06a8de8511ebc1a3ba1f1	Ether Terrestrial	ET	erc721
-\\x694379aaec7540bbd4a57dd67b2eadfe3a796445	Unidentified contract		erc1155
-\\x5c20d1ca0ce7b706143678a91fc433c1501636a5	Unidentified contract		erc1155
 \\x77ecf15f70476d41e5b83aff950d96d71bcb9ff6	merapomenē	MRPMN	erc721
 \\xdb95bfe1864355c8b373e96fd340d3399b82a790	Misterry	ARR	erc721
 \\x4c5d3106c4645079efe5a90d1f2b7d1696a1244f	Heroes & Demons Game	HnD	erc721
@@ -7693,13 +7432,11 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x7b9166d5cacc819f00fcd89f4bac5e57b234c1da	Elite Breeders Club Memberships	EBC	erc1155
 \\x3a56ab63c7ef4f07fe353beb132e0fd5ad270ca0	AutonomousArt	AART	erc721
 \\x9721de7dfc53d3be40191ac9e932922885bdbd2d	Lion Game	LGAME	erc721
-\\x8630cdeaa26d042f0f9242ca30229b425e7f243f	Unidentified contract		erc721
 \\xbeb1d3357cd525947b16a9f7a2b3d50b50b977bd	HUXLEY Robots	ROBOTS	erc721
 \\x3ed7dfaca773b90da1bc3fa8b04656c917d33afb	Ape Invaders	AI	erc721
 \\xdd660a2210a09358882c8c208fb170c33e2d5d55	Landscapes	MOOD	erc721
 \\x4a7637237e4f2645e7d53345d7e021fab59ee7a0	POLLOS LOCOS	LOCO	erc721
 \\x623be6b50746ca627f5f9399a5fc0e07baf304eb	Jail Turtles	#FreeTheTurtles	erc721
-\\xd9e86b0e6185f457cf3274fdaa16be59c58bc9b4	Unidentified contract		erc1155
 \\x52f6af183a4680ee87d1403e8e8d25fc2c569cc5	GhozalIreneDAO	GhozalIreneDAO	erc721
 \\xf317841acb3cbff644478920f68efb28c8f127be	Crypto Chicken Club House	CCCH	erc721
 \\xe54d13ecb8933ce09353dd1eb09f63a0fe00d37a	Rukes	RUKES	erc721
@@ -7707,7 +7444,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x46b95a569ef932adc1ebe0000727035ee1f2da75	Eth.r Brews	BREWS	erc721
 \\xf24a4e4b5f002a0c72b2677a666c634c587e66ec	Walking Mutant	Walking Mutant	erc721
 \\x0c90dddd152437e88bf458ee1afba095bd2f6605	Soo_k illustration	SOOART	erc721
-\\xf98b8651c6957715c8bb95dc07ee3189c03b3eff	Unidentified contract		erc1155
 \\x2a4d04f4e882a2800b14352162193a5ff3047202	Pixel Foxes Spooky Season	SPOOKYFOXES	erc721
 \\x6686461fd93399af5d08a9590f4fa87d734afb43	Familiars (for Adventurers)	LootFamiliars	erc721
 \\x5bd9a16d955f1dcd4a160bc49eac1f12bba73676	Lucky Elephant Club	LEC	erc721
@@ -7720,7 +7456,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xc817ea3fe49d0396e802daca0fe8af975de0a87a	Party Punks Private Club	PartyPPClub	erc721
 \\x1283ff14fb1de447955af429af05eafe959d2639	Heroes	HEROES	erc721
 \\xd46550dc5cb0ff6e4d904926917fe31a73bb336f	Cool Monkes Boosts	CMBSTS	erc721
-\\xbd5c4ec8a7d127ad0f5ed3e067ad640bfb2f2ba6	Unidentified contract		erc1155
 \\xae2715a11ce6ac33f14176cb8012eca50b98def1	ArkAngels	ARK	erc721
 \\xb596f9798d1340c60be3caa4fca80ad474122c53	LAZYPANDA	LP	erc721
 \\x6371b1a450505602cc741c8304925322e76cdb95	MeowdelEMP	EMP	erc721
@@ -7742,7 +7477,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x1aef95649ca1d8aa57791f8ff50a4da10c4f42af	MOVEMENT	MVMNT	erc721
 \\x88501ba74630705749dd0b1470099e5c57af38d9	Ruff Riders Syndicate	RRS	erc721
 \\xe5af430a731c287b733818fc172d64f8be69bd38	Rescue Sketches	2020	erc721
-\\xc50f11281b0821e5a9ad3dd77c33eaf82d3094f4	Unidentified contract		erc1155
 \\x1a2feaf9801ca832dfaf3e0a6f00dfaaad8481c4	SimpQueenDAO	SQDAO	erc721
 \\xbdb91d4cc58ad6c3ff5e848b8d1f0ff0b35a9467	Ether Troopers Mint Pass	ETMP	erc721
 \\xf8c18df7509c03b45e6247b2b9e73fcadef24dd6	BitMates	MATES	erc721
@@ -7761,12 +7495,10 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xac9db91e958d418bf83781ecadf0431601c48193	Night Owls	OWLS	erc721
 \\x04ebf11426b5b2fb34acf3a5d2546c6425920e29	Sharks: Out of Control	SOOC	erc721
 \\x3b7335f3f1771122cd0107416b1da1b2fb7e94dd	BOOBA TN	B2O_TN	erc1155
-\\x45a41dc2167158c0c8c88a1261abbeed70a8ebac	Unidentified contract		erc721
 \\x8542288f4b925fa9367614cfdc5abc1ea96a11a6	Letterhead	*b	erc1155
 \\xb4fbf9ab6172bc4652daa7b8aff67487650a6e98	GenHall	GENHALL	erc721
 \\xff553a1ef4a22cef36a8d9546cfd0cc627286fdb	MOET ART NFT	MOET	erc1155
 \\xd493af0b51f26dbd65188ac221d0a5a2f7c81234	Crypto Llamas NFT	CLN	erc721
-\\x7eef591a6cc0403b9652e98e88476fe1bf31ddeb	Unidentified contract		erc1155
 \\x6aac4b68638dc65083e7d1c9cc0af0781a98baf1	FoxGame	FOX	erc721
 \\x594a01e632fa334d7d865b09c34a9bf513c72457	From Nothing	FROMNOTHING	erc721
 \\xd9838f00296f79b7ab08048b251ad34f42076c74	Chinese Red Envelopes NFT	REDBAO	erc721
@@ -7836,14 +7568,12 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xa61ff264bba96e931569f07a09bf7f115f27e738	VENUS IN THE WINTER DUSK Online Exhibition.	VENUS	erc721
 \\x3113986265e02b5a7d91f67de5a0fd1f7ffcbe04	HoodPunks	HPX	erc721
 \\xdef08034405580988e622424e90a70f8439690fb	#RENAISSANCE#	#RENA#	erc721
-\\x8a7cad54c01a4afbe8f17732330db1943f62b9ec	Unidentified contract		erc1155
 \\xf1bdfc38b0089097f050141d21f5e8a3cb0ec8fc	CryptoTitVags	CTV	erc721
 \\x006055230e1a48269ea9d6e95aaa6e3572a350f1	Pepe kits 	PEPEKITS	erc721
 \\x09d72894ad4ebd51743ab5d86e730c83b5fa3ade	Squid (for Battle Royale)	Squid_Battle_Royale	erc721
 \\xc20fc9a3b03576b4048543c0f1e92c23bca1634c	Fuzzy Feelings Collectors Editions by David McLeod	FUZZYFEELINGSCOLLECTORSEDITIONSBYDAVIDMCLEOD	erc721
 \\x9e629d779be89783263d4c4a765c38eb3f18671c	Baby Bears	BABYB	erc721
 \\x3db6d4c845a4e21bbac220e734cfaaa516f9712e	MF PEPE	MFP	erc721
-\\xab45c53c164ac8c2a657bd74d75bf205661cc40e	Unidentified contract		erc1155
 \\x468847044a87d43aa4a8ccfcfbd97b64236ef29e	Froggy And Lovely	FROGGY	erc721
 \\x6dfeedf9bd94a3ce96afe7bbb43d8ddf01309bdb	Pixel Produce	PXLPRD	erc1155
 \\x46f1c444a9b10173c52ee7351eba1e49c8bc5851	Waves	MIN_0	erc721
@@ -7864,7 +7594,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xf82d80cbc62679021dbb63a64b662f3247d0060a	DeFine badge ampleforth	DFBA	erc1155
 \\x5fa82d1758461602c5c010265203856006b466f8	PLANET VISION Open Edition by Marc Tudisco	PLANETVISIONOPENEDITIONBYMARCTUDISCO	erc721
 \\xdc2901f6df054be770845b6e941d370b639192b4	22 Pigeons	PIGEONS22	erc721
-\\xf779cae120093807985d5f2e7dbb21d69be6b963	Unidentified contract		erc721
 \\x7f4e18998c89c9193e69ad30dca583d0b0ad2a08	BildrStudioPass	BSDP	erc721
 \\x33e89bf482047012dca298bc2f4ae209f20a9844	Blockship	BLK	erc721
 \\x9c93f03d43a7f1b0384c97e7c47c2515e53bb2a5	Kosium Pioneer	KPR	erc721
@@ -7901,10 +7630,8 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xf4da069c1eb871923416b499adab024737f2f742	WallstreetNFTs	CHAMP	erc721
 \\xc1e201e41cbab8522623be65ed63f21364862ce9	Phongz	PHONGZ	erc721
 \\x109678a2521c966bb9bfceb57262e503625dafa4	Light and Dark by Phil Bosua	AIMCLightAndDark	erc721
-\\xdfb8ad059ae5d11d78b7a2b5ffad93de0d46a0cc	Unidentified contract		erc1155
 \\x5f75c107c55734ce70d2acd906868896a82834e8	Spacewalker	SW	erc721
 \\x05fee3b8e939acbb4e8073d784e3ec0977509770	Angry Pitbull Club	APC	erc721
-\\x4143de93f70d7412d35fe4464a46fcf639b12d25	Unidentified contract		erc1155
 \\x0dbfb2640f0692dd96d6d66657a1eac816121f03	Curious Cabins	CCAB	erc721
 \\xd1ab323dbe96b1a3b973fb964c8e402b25aaa2b2	Secret Food Society	SFS	erc721
 \\x2e50c57733b9986771e8e0bcdefd3ffce5c9ad30	Lil Ddles Club	LDC	erc721
@@ -7913,7 +7640,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x9c3e5a4689d8a53886c2476f71e079df6fba4fc6	The Spirals (thecolors.art)	SPIRALS	erc721
 \\xee03ec62ddfa8b3eff3ffe40201652f1a953f70c	SAW THE FUTURE Open Edition by ThankYouX	SAWTHEFUTUREOPENEDITIONBYTHANKYOUX	erc721
 \\xe6b52a9ca4ad857fdff055b10e9c27744c68d823	LITTLE WORLDS	LTLWRLDS	erc721
-\\x60d6e6eb7c12e6dd2abc3e54f59281b24c62f46b	Unidentified contract		erc1155
 \\x475c9197e47a5510b16c702fefdd2a39becd0c49	Olympian	OLYMPIAN	erc721
 \\x83245940d746e170f7e9a4a4f447e8f694ec4d9c	LODB Angels Collection	LODBA	erc721
 \\xebae4253b05366b3446dc2edccaadf13cfcfcb9f	NIGHT ANTHEM	ANTHEM	erc721
@@ -7932,7 +7658,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x281e9c4b1dae55e3cdd9319ae1519bae6c42c5fd	IKONIKS AVATARS	IKAS	erc721
 \\x9715bf64923092617daee9447812723a3c19eeba	ApeFratClub	AFC	erc721
 \\x7100a73d6265c9e49933919dcd0e105c2acdd5e4	The Condition	TC	erc721
-\\xc696e78915dc9665a8b4a4ce1cb0a8d17667fd57	Unidentified contract		erc721
 \\x575a13e18b92b0a5382cf685fbd2c0dce9beb20f	7 Deadly Sins	SIN	erc721
 \\xf5b27c3ac3753dbc331768d42f5e56bfc7d7a84f	Blockchain Kittens	BLCK	erc721
 \\x3a0657d34e2d8a0324bb727a71a18a34c08a91a8	New Beginnings	BEGIN	erc721
@@ -7979,11 +7704,8 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x7190e2d5e3f514df54d04b0496234a09d6bc2d0a	Jolly Elves Girls	JEG	erc721
 \\x3c54b798b3aad4f6089533af3bdbd6ce233019bb	Neo Tokyo Part 4 Land Deeds	NTLD	erc721
 \\xd9e49f550d0f605e3ccee3167ec14ee7a9134ddb	Sidenoun	SDN	erc721
-\\xbb7a981f5f14b82ac3d3866304c8996d1d82be46	Unidentified contract		erc1155
 \\x50930d3156dfbec2d6bcf795ed907ff8cc01606f	CyberTrees	CT	erc721
-\\x7cd5ba0885d130a320a0373a4d6358d76876c6d9	Unidentified contract		erc1155
 \\x5a0f9393e7407226a94b0569fe10abbbbaf84f00	Nifty Royale X Lushsux: ONE DOES NOT SIMPLY SELL AN NFT	NRLSODNSSAN	erc721
-\\xd8261503704baff21abb5bb8dead1b11566b985e	Unidentified contract		erc1155
 \\x2d0ae893a1961231181008b2b53f4ad5d6a3b979	Fish Heads NFT	FishHeads	erc721
 \\x838cd6b5bf716ecb1529670850b7265a2d1bbd7c	LilBabyCoolCats	LBCC	erc721
 \\xe1a25f378dbbba97d48b35acbef440b1339adae7	Alpha Initium	ALPHA	erc721
@@ -8039,7 +7761,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xd0c540d08bf79a7b265ebb08b00c7fed45af1171	NoFunToads	TOADS	erc721
 \\x9a40bdeb0493cb9a264f5db3a2d8480b6b5f16ac	7th_knights Sexy girls	7THSG	erc721
 \\xde2942b52e75c327ad4ddd6c7db7c398fed6199f	Ponpave	PVE	erc721
-\\x61b31974b7b513a8514f0cebb4ec053cf0ca3da9	Unidentified contract		erc1155
 \\x0cab2ccd35ff7f7b4be2606c35a41b28f7ce0bae	ALoot	ALOOT	erc721
 \\x5bc2619937e19d58eaff492eced8a1e26194fe3a	Crypto Prezidents	PREZ	erc1155
 \\x0654eaa4ef6e4185aa36373cef00e2e86a0c8063	Locked Groove Crypto Decks	LGCD	erc721
@@ -8052,7 +7773,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x516b8001809e9b13f8fb359d539ef920d2088e04	MaskBillionaireClub	MBC	erc721
 \\x68e1eea3be3dda4f36e2d870121ea619cd5d75ea	Glass Editions V1	EDITIONS	erc721
 \\xfff7f797213d7ae5f654f2bc91c071745843b5b9	Elephants for Africa	EFA	erc721
-\\x1c579006cd499871ac39aa2bf787462de603936c	Unidentified contract		erc1155
 \\x6c1f6b8a4909c87378bed12d61c3de9753cd2aa6	ReaperHills	REAP	erc721
 \\xa5fa5a05c897c0f434de2f3c23a6c094c3248e95	CRYPTOBUTTERFLIES	BFLY	erc1155
 \\x49887f299dea25ca407f599d2d8a3937e108bac7	Colors of Life	COLORS	erc721
@@ -8089,19 +7809,15 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xf18ecb60201e5aabc67235fefcd58a41c97324ff	Paul Gerben	PG	erc721
 \\x35ede6d25fafc93938d9c0530f1f5c0edc9d3845	The Miners Club	TMC	erc721
 \\x49afe4f988b9853d3166d626c3b752ee7d0cf9a3	The Spheres Series	SPHERS	erc721
-\\x46d13ae3061cec9f703f2b1dfd6b1c1ddf711361	Unidentified contract		erc1155
-\\x40711e7d328b5b97737c869a23e43b3c147ce638	Unidentified contract		erc1155
 \\x5f5600aa68333b80d28d98e7ae80bd090f84f2d0	CirclesInMotion	CIM	erc721
 \\xa470df361c9b76b7783aef501cfb0a941cc060f4	Ibn Inglor	IBNINGLR	erc721
 \\x761f4e395bcdf5fee277e141888f12dd78c0333a	TSOAKOU	JXLOM	erc721
 \\xd2111332917c060f1450d88a2928f36100d3510f	COSMIC REAPERS	REAPER	erc721
 \\x0df49ce5a655b53118824c7ad4988da4fe9035f5	CryptoVerseSpike	CVSpike	erc721
 \\x5a3a79c4519e60b69bccca97bb9496e197e9f164	Doodle Apes	DApes	erc721
-\\x0a5c50ab7f7c4459da1cf6a775dd8e3e37724359	Unidentified contract		erc1155
 \\x0be9bfcf90b9331e7281fe75dc823f1a49e28752	GLOWSTONE	TONERS	erc721
 \\x12770beb72920bcdff7b132e207040691dd27213	Noble Medici		erc1155
 \\xad7d04c6c047e7475aadf98a4d6481bd022658d2	Larva Wolf	LARVAWOLF	erc721
-\\x0233ca02f66edec895ee1cfb02effe49a96a14a4	Unidentified contract		erc721
 \\x997488a40a133b304578df879b131aae8d8e59ba	HARMONY	HMN	erc721
 \\x45ef410547da744d78b0499890d8c06687661bc3	MetaWatchesGM	MWGM	erc721
 \\x2ffdd5b11e49ba5222b4a598011a925120f47785	Mean Men	MM	erc721
@@ -8129,17 +7845,14 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x741d06382f00ff411c3996895bc6f4d40e0455de	KittyCatNFT	KCACT	erc721
 \\x9fad36767eb4208abaf5f423b9a6c140c10bde8f	Art in Motion 	AIM	erc721
 \\x22203962e3f22fc1e5a1a1c31d9b76e3c08136e4	DontMakeArt	DMA	erc721
-\\xe9819a200423c9112b9dafb26cfe7b7d0ae9d60a	Unidentified contract		erc1155
 \\x379e8905ed6930339d29080a97b2d98b0ca37a1e	The Starry girls by Rexndeer	STRG	erc721
 \\xe2958cab7d3782cd35376ccdb7f50d6d5a15cbff	YAOYORO'S Animation	ARTFILM	erc721
 \\xf20e804b2207bf400a87969444876c7169deb201	☯️ 💚 🐸	PEPE	erc721
 \\xd6912053dafa559b754af2376ad271331afd61d7	MetaFight Pass	MFP	erc1155
-\\xadb99cd456ce2ce02daf58a9e9d2d5f8c5dd38c3	Unidentified contract		erc1155
 \\x66a18f15c77a367c2a31ce90d34b890dcf2625f2	Dilly DROPS	DROPS	erc1155
 \\x78569146f5635a31dd2ce08ea614360e8be7315d	WHNFT	WHNF	erc721
 \\x055c902d13a5bb72f08dbfff36f7eac67b242de2	Warrior Alliance Genesis	WAG	erc721
 \\xcd4778fe12908c5c23f97a21ce760adf47e5a83a	NoZone Mega 001	LAMO	erc721
-\\x236e7af5fcab94770e621c97a1e58b4d0143e95b	Unidentified contract		erc1155
 \\x0797cd81aa0cab62347770f117358125bd28fc62	Justin Pierce	IAMJPIERCE	erc1155
 \\x4fd63eb00f6dc9a9a747330de60de0e03406d44b	SPACE TREES	spce	erc1155
 \\x5d23bcb35571f1f2b96dcca633974aafddea1f32	FantasyFootball	FFB	erc721
@@ -8150,12 +7863,10 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x42543fdfe4847dc17d008bb0126d8f508552ff7d	Five Days (New York)	5DNYC	erc721
 \\x6bf22a3158c3f9ee68dfda6ea530961f316b0b81	KylerAndJesus	K&J	erc721
 \\x46689085f50799ae1bad506eb1efa5448a814ee9	Gotta Go Fast	GGF	erc721
-\\x945362a24147048424cec613f0ee8d3b1cbc8822	Unidentified contract		erc1155
 \\x6fd053bff10512d743fa36c859e49351a4920df6	C-01 Official Collection	C-01	erc721
 \\xa7d0043760b936c2416e07203ace2546f1dbc9c0	Wizard Treasure Collective	WTC	erc721
 \\x33b638d34f1f304f121ced3aacb0d899c4560eb2	FDNDECENTRALIZED DICK	FDNDICK	erc721
 \\x01a9f037d4cd7da318ab097a47acd4dea3abc083	Vortex	VTX	erc721
-\\xbfd957e4fcd759557d0463e37f8db1264ea60194	Unidentified contract		erc1155
 \\x32c3723fb43f65ea2c024d3d9bd65895b3b749f0	GT	GT	erc721
 \\x60052d1f00ea1a31c5cb3f69cb7125e0afce3ee8	The Pepe of Wall Street	PEPEWS	erc721
 \\x655ca62cf36a6ffbfd58873e06dc8d834970988e	Tiger	2022	erc721
@@ -8176,10 +7887,8 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xa282a31db0eb9d528b5de20d5d927475ca10f356	Polyverse Art by Idriss B.	PABI	erc721
 \\x8876b34f576fc8102f2f94a1d37a387cd33c623d	Pepe posters	PEPE	erc721
 \\x915a22a152654714fceca3f4704fcf6bd314624c	Items	I	erc1155
-\\x2e16303e294a88ff01d905d1481eadca22294f03	Unidentified contract		erc1155
 \\x5768b8a5db654fd6d8a3593d8a177ddbed7d93fb	Deadheads Raffle Ticket	DHCHIZRAF	erc721
 \\xf5206341240098d68993e54e222f949ef9a9e923	Deceased: Genesis	DEAD	erc721
-\\xd806d4a4c6289e2d68ef1ed66054c61ad7744577	Unidentified contract		erc1155
 \\x716aeb0a980003e43262f277cb7b18cdc0f8a6e2	Titxels	TITX	erc721
 \\xc8bd4e743940f9bed36dfc5838b52d5ac03160b6	IRLDAO	ILD	erc721
 \\x321b125cf85b0e9fbcf6554a71adb10d8138388a	Midnight Runner Pass	GCP7	erc721
@@ -8220,7 +7929,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xabeaee6c809ae0825fb511543fc992a57aa4473d	MoonsofMarsPosters	MOMP	erc721
 \\x92be38c8977f4bae271cbbcf1df0a3a300c1af30	Les rêves artificiels	RVART	erc721
 \\x30e4f23b7f4a2332296480a8cd67315efac1e5bd	FUZZGAFF cartoon	FUZZGAFF	erc721
-\\x6682819a3b5ddc616e7efd6c16e5a84ffaf18a2f	Unidentified contract		erc1155
 \\x575e08ded42ceadb07fda9ac399169dfa9bf4f93	Blood Pact	BP	erc721
 \\xf7503bea549e73c0f260e42c088568fd865a358a	Chained Horse	CH	erc721
 \\x08d7c0242953446436f34b4c78fe9da38c73668d	PROOF Collective	PROOF	erc721
@@ -8241,7 +7949,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xc36adee1d26712cdb33913b2f75928b74847a72a	Runaway Collection	ERC-1155	erc1155
 \\x5f5d1525472df82ad6bcd16537d93d49ee791f92	Surf Dreamz	SurfDreamz	erc721
 \\x450979a981c48cb055f6a4749ea7b1bc05a7540a	Adventure Roos	ADVR	erc721
-\\x2ab99216416018c2af55eb9376e9fb188c4f5c9c	Unidentified contract		erc1155
 \\x6a02928ab42872cc49dd05692dac4f59b998d0c7	Cyborg Syndicates	BORG	erc721
 \\x3e2803e5d68dfcfacfbc9be836e24d24fca674b8	ELVEN	ELVN	erc721
 \\xac725e981d61f5fa3ed15009d1ce6a7348c9420c	Persian House	PHC	erc721
@@ -8256,7 +7963,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xad5f6cdda157694439ef9f6dd409424321c74628	Fewmans	FEW	erc721
 \\x7fb5921210f93034d3de704afc3d89903839733a	The Endless Journey Auctions by Kygo	THEENDLESSJOURNEYAUCTIONSBYKYGO	erc721
 \\x5b5984291024ef8934089e14070192dce7e12237	dirty girl	XOXO	erc721
-\\xc466e2f98f95cc4cde31b134906f59e8264c1be0	Unidentified contract		erc1155
 \\x60a0860503d9ecda03436ca692d948319f5377f7	FeudalzOrcz	ORCZ	erc721
 \\x91c045116fde397f033788152f7ba7105dc01a51	MetaKellys - WebThreeLabs	MTKY	erc721
 \\x084d363ceda12d70ff0331e9cbc34b641b223021	Spirits	SPRTS	erc721
@@ -8272,7 +7978,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x7c272a538dd21b74b935878df4079185b47d4eb9	Chameleons In The City	CITC	erc721
 \\xd1581120884c98dfaa670a98931d49c055313173	Einform	Einform	erc721
 \\xa094b1e927093fae077b6a89b440e2575de9143e	SpritelyNFT	SPRITE	erc721
-\\x47f9fcc01a69eed427f807d9f2094abcbd2bf178	Unidentified contract		erc1155
 \\xef74de2e521f83713b21cd979813d640ed4d6f20	Dont Burn MEME	MOON	erc1155
 \\xcdf58314677959122432152783f02f4e5e247802	Orphan Girl	OG	erc721
 \\x26454a066c7b4220f9d9a396606e5a1c809362e4	Shitties	SHIT	erc721
@@ -8358,7 +8063,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xfcd433977292f107aac6e30e7712d0e38eeb4a7c	StickDix	DIX	erc721
 \\x4cf1f11f7da597eaaa485d50cdca5dec3d5c85eb	DoodleDoge	DDOGE	erc721
 \\x1f1168fbb87ea3f02523a9ecfb19a94ef830318d	Poker Dogs Club	PDGC	erc721
-\\x1beed1d6831cc077636a08bdc66c2f5602869198	Unidentified contract		erc1155
 \\xe93cc9b1fca0cd5ed9dc281a776117d4416647c9	Space Pals	PALS	erc721
 \\xa53d82be8386e6ae28fab0aa08cbc596299f627d	HAPEBEAST PRIME	hapebeast	erc1155
 \\x2933b109effcf29982a55fec1b8ffbca4d912900	Grillz Gang Gallery	GGG	erc721
@@ -8372,7 +8076,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xa9cdc7851df069b2a97b2fbd23259075aae6bed4	The Crazy Apes	TCA	erc721
 \\x64dc7f3624a1456a7ba52025fcfddf428fff92e0	National Parks NFT	NPNFT	erc721
 \\x260d0df7d892895b778d382c35dc0767c967d1b4	Punk Portraits	PP	erc721
-\\x727a4286a3b501eb90a6a8246c99188cf59ab023	Unidentified contract		erc1155
 \\xd70b5ae73457cf70711e21522fa14d04c7c1af9d	Artifex Collection	ARTIFEXCOLLECTION	erc721
 \\x1c2cd50f9efb463bdd2ec9e36772c14a8d1658b3	Bees Deluxe	BeesDeluxe	erc721
 \\x6e8ca9f24de73344854c4e97a9eaa2fbfbc6e6f6	NobodyNxt	NobodyNxt	erc721
@@ -8382,7 +8085,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xea6504ba9ec2352133e6a194bb35ad4b1a3b68e7	FusionApe	FAPE	erc721
 \\x0f9aba9fa6abd858a94f9eefe0f9d51ca2c11225	PudgyApes	PAFC	erc721
 \\x7b7bf127147332ca237a873808292b401adf7cc7	VEXAVERSE	VEXAVS	erc721
-\\x715565baf69afcbbe88f56d46f1c9fe2df828705	Unidentified contract		erc1155
 \\x2570f12074ac007aec09426c5d092dd2a1fa3e5f	GoulieNFT	GOLE	erc721
 \\xa603806c2bcd429841a075acadbebcd53b651b02	Genesis Jingles	GJ	erc721
 \\xdb374e0c6c62292add88d17ebd8b9d0c5904a327	SephirothArt Collection	SAC	erc1155
@@ -8402,7 +8104,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xa1caae7da6df6831d48e40a383528ac897664bf2	FemmeVerse	VFemme	erc721
 \\xfdf27d7c95eac62d86979e2d73fffbcf380fa9fe	Low Effort Nouns	LEN	erc721
 \\x97d8dd35cfb5ec2e8dc660881146a04bcc29ec92	Zuphioh	ZEBRA	erc721
-\\xd82c653fa9b9c94aec025fd36f83e37585df8110	Unidentified contract		erc1155
 \\x0e4b8e24789630618aa90072f520711d3d9db647	Flipmap	FLIP	erc721
 \\x934337b037f73ac93c167d0a6811129762286982	Creativity is my Foundation 	EMP	erc721
 \\x240ba10e17e3631109ed86432bf51ddc803cfb00	Machine Elves	ELF	erc721
@@ -8454,11 +8155,8 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x9e2f67a5407df705e6d0bd0679a9ba175ef47da3	MightyMeerkats	MEERKATS	erc721
 \\xcd4d337554862f9bc9ffffb67465b7d643e4e3ad	Role	ROLE	erc721
 \\x7c297817c186d9a11572d3929c400ce5894bab1b	Meta Force	FORCE	erc721
-\\x805ea79e3c0c7837cfe8f84ec09ea67d43465da1	Unidentified contract		erc1155
 \\xe5c45226683345b6a94b1ebfbcb0abe6594d8f6b	MetaManifesto NFTs	MGMM	erc1155
 \\x96c4056ba3b3a72eaa1f6ab58f6b945ea24bc715	Daniel Von Fange - SciFi Sketchbook	DVFSS	erc721
-\\xe8e7b0fec64eb11ea5cce0548083bd68ace3cb5d	Unidentified contract		erc1155
-\\xc38c876e702634a1e6bcec088b19952261d664d8	Unidentified contract		erc721
 \\x0878dbe61c7a8b46ee0df31a931519ae59592427	HappyLand Wummy Gurms	HLWG	erc721
 \\x70516a007d63768720760ad0a488aeb431c16179	Winterborn (2001)	WNTRBRN	erc721
 \\x20ef330947f30f98841a25bc8e563755d32cf48c	Fifty - Edition 1	FTY1	erc721
@@ -8466,7 +8164,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xe9d853bcc66070b8e308562a6ea6dcb9f8c262e7	H3ADCASES	H3ADCASES	erc721
 \\x1db699f97eb97417f4c484d29b50a4f5673c56d8	Rhymezlikedimez Official	RHYMEZ	erc721
 \\x0bd3007c50fcda6be1f94c04f9d7afd10c1bf409	Joy Fellaz	JF	erc721
-\\xe0e260492d05c17e2b386fa9c8817cdb74954e09	Unidentified contract		erc1155
 \\x2bdba7dee12da5a5a78a87185d73d968c5c769ef	TACTILE ABSENCES Open Edition by Skygolpe	TACTILEABSENCESOPENEDITIONBYSKYGOLPE	erc721
 \\x8518e34a11dfd80e46352c893175f797d9d81dcb	Pond of Ponders	LTPP	erc721
 \\x9c18d7074cce6500b7f283ed1f95164068cc1f70	For Tomorrow	4TMRW	erc721
@@ -8495,12 +8192,10 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x8c35d3c24c7856791d20412de4b34ae494095924	kingP/XELpush	PXLPSH	erc1155
 \\x3b7ee460dcec30482ac48acaa0abb2c3aa4155a3	CryptoVanz	VANZ	erc721
 \\x5c929e46ea6bd188541cfa8aaeb0ea9005431b2b	War and Mud	PLASTER	erc721
-\\x4433cf6f3f640d9659764a18db38aed7f3b08ff2	Unidentified contract		erc1155
 \\xf0123c8d27259c698a2304a1fa601246003828b5	Cube-ism	CC	erc721
 \\x8506540784ec25a19ab750741a4ab1b6d8790e2c	CzechPunks	CZECHPUNKS	erc721
 \\x55700cd2e91f39bc56f589b346dac12a7907ea08	Travel Tiger Club	TTC	erc721
 \\xd64a6f3c0bc12a619ff7eef511b0258da913c5c3	Golden Token Berlin	GTBR	erc721
-\\x54f3d69a19a8db554a85688704c7f19f4be111d3	Unidentified contract		erc1155
 \\xc2349b81597dff508b72d7cb7f03f9b1ca497e24	Triptcip	TRIP	erc721
 \\xfc7076f56b438ea140ac3e4c528cd9032ae26b6b	Tasty Terrors	TOYIO	erc721
 \\x5ad0ab392b9647d2293361864d4c0d68d52111a3	FLEX NFT	FLEX	erc721
@@ -8509,12 +8204,10 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xdd8ae902d22a5f270b18a57b64b961c6a01982f8	Monaco Genesis KOL	MGK	erc721
 \\xd5f1d715826df48d75db9e0ddec511d509d05036	StarryApes	SAAC	erc721
 \\xf9365d61350739e5128926d277375868e7119201	SmartOwlsClub	SOC	erc721
-\\xb9e9b77c5a930903c4fb0c34b6e2bb2c7dc90d75	Unidentified contract		erc1155
 \\xcf514faa49cb3133275eb4c9420e4161970ee806	Sacred Skulls	SSKULL	erc721
 \\x5ee657f5426484a777a1fc7abd436dfdb13b1cc3	MaidCoin Clone Nurses	CNURSES	erc721
 \\xe433e7b0f7e5d4ade54ccd96b6d9a54d7569297b	BKK Shophouses [Remixed]	BKKSHR	erc721
 \\xb1cab4da1630629feeecc04f9460193f1d5d344a	Mash	MASH	erc721
-\\x52cdba4e119e101706ddf774fe5696627df0bc31	Unidentified contract		erc1155
 \\x41b488dc287f7974b864583dd0b72cff512a71c8	Cyb0rg	CYBR	erc721
 \\x5380dee1f9dcd9a9bf89eebd5dbaa9050f0dffde	JAILBIRDS	JAILBIRDS	erc721
 \\x88323159ad2d22e3c1ff7c0f62816e9ec1177752	Neon Vibes	NEON	erc721
@@ -8543,9 +8236,7 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xa7db8c2cef7b253224eeb88fa11152bc05ca5d6e	Surprise chain	SPC	erc721
 \\x5e6ccdaf012251c076f7a30cc107a1c5a64fe34a	A DAY IN THE LIFE Open Edition by Greg Mike x NGHTMRE	ADAYINTHELIFEOPENEDITIONBYGREGMIKEXNGHTMRE	erc721
 \\x22b4da0a3bda3eb6a6adb278fac894386a361f73	EGGTOMATONS	EGGS	erc721
-\\x46ee7947cd4fc601b4ab39d14bad260806d33a87	Unidentified contract		erc1155
 \\x05b505f6bda522efd3b5f63b6338f275f14549a2	LandVoucher	LV	erc721
-\\x109440e0a0b37c0e2a17f91bdea42a8fb17663fb	Unidentified contract		erc1155
 \\xfd1076d80fff9dc702ae9fdfea0073467b9b3fb7	Spooky Boys Country Club	sbcc	erc721
 \\xf0c8d1fb2f39c0073cdd507c0ff272e9a9f9dbac	Flying Heads	FLYING	erc721
 \\xec7a49946f300dc1d97ebfaab1cc42272790868d	Secret NFT Club	NFT	erc721
@@ -8585,7 +8276,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xd75bdf41ecff629d9a49d4b72a89a68bde736fcf	Kyzo 2K	2K	erc721
 \\xa6794dec66df7d8b69752956df1b28ca93f77cd7	Savage Droids	SD888	erc721
 \\x152fcc68eb51c1c6b8fbc6411548f25a21791180	Tubby Buddies	TUBU	erc721
-\\xb5f7d50defe738f7c73bf965cd369ac15fa77de9	Unidentified contract		erc1155
 \\xb70b759ad676b227a01f7d406e2dc9c67103aaeb	Shibaku	SHIBAKU	erc721
 \\xbaadaea58dccae0d59f62cfc996e0486d2c73611	Bangbez	239	erc721
 \\x163a7af239b409e79a32fc6b437fda51dd8fa5f0	RoaringLeaders	ROAR	erc721
@@ -8605,7 +8295,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x45ebb5fe718f40052fb2dc2463c13717b7b72768	Degen Gang	DEGGN	erc721
 \\x082ae5217dcce652bd0e79ddeaaf59e28afcd96c	AlphaVerse / Beat AlphaVerse	BEAT	erc1155
 \\x6fc3ad6177b07227647ad6b4ae03cc476541a2a0	DarkEchelon	DARK	erc721
-\\xe3e0f44d46733afdb453c6553716c7dea530af4a	Unidentified contract		erc1155
 \\x75d639e5e52b4ea5426f2fb46959b9c3099b729a	Metascapes	MTSCPS	erc721
 \\xcb8b3830a9971fa8578694b83535e319b05a36c0	Warrior Apes	WAPE	erc721
 \\xe0ae5eb5ca4a45bfd506df41766d30ee6daa6ee3	BLOCKRUNRS_NFT	RUNR	erc721
@@ -8613,7 +8302,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x8d847faf4280b0ded9a8510ef945eb015313ff51	R66	R66	erc721
 \\x2002935aaa45ae7d09dfdb924f389b0d49557079	StradaVerse	STRADAVERSE	erc721
 \\x8fa666447041dc13e6f7dcbaafa821f9508d8ef5	Legions of Loud	LOL	erc721
-\\xf95bc00e6239c649772ddc131e79b473b083a5ef	Unidentified contract		erc1155
 \\x99654fd49c0e51b8029d2ba7de5b99734ab7afec	CryptoMoms	MOM	erc721
 \\xfb0d0fac242edd100b49913093e9bed30864ba09	Jackalope	CRPV	erc721
 \\x895bbc29f74df77279bf585116caa24ce33ed0ba	KangarooHeroesV2	KangarooHeroesV2	erc721
@@ -8622,7 +8310,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x5d4c502e184e52ef8c1d737dfa8882888c4e9b1d	NFT TIME 	NFT	erc721
 \\x9d0fc31c2958b76f43e8d21a227b647fa41eaa34	DJENERATES DERIVATIVES 	DJD	erc1155
 \\x2c03e851cf9add3bec893cf95b05b0c734ee5ede	MaskDAO Word on the Street	MDWS	erc721
-\\x1c0f44f446dcc65dc354a0ce3c78fd936adde87b	Unidentified contract		erc721
 \\xc8eebe2d141e6e3ed1c758707288cd7d8352362f	TheTigersGuildCubs	TTGC	erc721
 \\x6f6d5b4ff4e800d445e6c955825ed46d0f99ff87	The Matterhorn	AR	erc721
 \\xdd48a8e095020a06aa035f12f0e4f46932d51ce5	Gangstaroos	GANGSTAROOS	erc721
@@ -8642,11 +8329,9 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x1940fb92598dd7df6ce577990c30dbe5f59300e9	Adorable Teacup Pigs	ATP	erc721
 \\xaadba140ae5e4c8a9ef0cc86ea3124b446e3e46a	MutantCats	MUTCATS	erc721
 \\x4558815dd8ce1662286fca2d013c2928763d887d	Magical Unicorn Coalition	MUC	erc721
-\\x01f74df24e81c8ae5eb1ff6642283c10e022fb56	Unidentified contract		erc1155
 \\xacc908bbcd7f50f2e07afaec5455b73aea1d4f7d	Lil Dudes Club - LDC	LDC	erc721
 \\xb4aa3f26380fc1a8516f5ad5c16fba6acb5f2f10	Tweak Items	TWKDRIP	erc721
 \\x0e8f7b4e4319c3506ae1c6f1d04375ddeb0374a3	21 Lines NFT	21L	erc721
-\\xaa6e49caa0b717a5a892441fe9d5d971ca981e2c	Unidentified contract		erc1155
 \\xa32ba4034f9af9d558665c6a0c9ed9c1472f0752	rekt.news - hacks & hopium	RHH	erc721
 \\x61011916c3718e46a3d7217db01458305000e6da	Yes I Believe NFT	YIB	erc721
 \\x8328f8d228450a9662bfedd526c25278dfbf5e9d	Celestial Key	CKEY	erc721
@@ -8657,7 +8342,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x215e0482dd8635d5392ebb4f475d49c2ce65c5c1	ZeGarden	FLOWER	erc721
 \\xcb16b2cf9aa57acf85bbc4468098511cb6c51a3f	SharkCat Planet	SCP	erc721
 \\xf177ffabcb228d9363efc2beca0196767b815d00	Future Art™	FA	erc1155
-\\x5016e48d927755dec7ecd8c54843b12f6bb96ed6	Unidentified contract		erc1155
 \\xb85c6623dc889c152943072060eef4537afe1141	Algorithmic Aesthetics	AA	erc721
 \\x6bd7621d5d115697ee4676bbe0fb9f4d5fdbf444	The Grand Collection	GRAND	erc721
 \\x2c057de5eb421df66308c9c479bb30ae75a2685d	Kidcity	KDC	erc721
@@ -8674,7 +8358,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xb6777e49d44858def9bbaa0373161eb99c9d36b5	FatBabyApeClub	FBAC	erc721
 \\x84f4226af1eb4b5e76c5dd203eef7f1f3452fb9d	Metaverse Marauders	MM	erc721
 \\xb4e5622fe8c5f1c8253ce3143d4081c453a0b501	BoredApeCousins	BAC	erc721
-\\xdcaeb6b8bff1410c1f2143be2694826064262c1b	Unidentified contract		erc1155
 \\x38c5befc9fb2c389b25d4cd289a781e48319440e	Waifuland	Waifuland	erc721
 \\x76e4af25b648994092bce2df860dd5836708a8b3	B10nicVillains	BV	erc721
 \\x75c1864f2ad09ecf41bfff48037908810534ab54	XDROIDS	XDRD	erc721
@@ -8686,7 +8369,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x70624df0bac10baf0a44da6430c79e13231294d6	The 8102: Yachts	8102Y	erc721
 \\x70b56ababf0d7bb58dd92bf5e8a5ea4ceeea9879	Dem Apples	NOM	erc721
 \\x5660d118122ebf4a5b6b233735e203ca46ff92c2	Cybernites	CYBERNITES	erc721
-\\x61de59d7fea7e75324e649b4443df29f0e2356f7	Unidentified contract		erc1155
 \\x841958dd1ca1ab6ef3e3c4eefb3723733d3aa4f5	Meta Maniacs	MEMA	erc721
 \\xafd0ca9f0674b30b0436137177d0327be584fdb9	PolyPixos	POLYPIXOS	erc721
 \\x67995f1d21e149d254553d6693657ec29b149505	Aku Chapter IX: The Mission by Micah Johnson	AKUCHAPTERIXTHEMISSIONBYMICAHJOHNSON	erc721
@@ -8696,11 +8378,9 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x915bcb55faf663429fcc1efeb4e346703a91e4b2	Evil Elves Club	EEC	erc721
 \\x0ea00a87e111874ef9107bdb2fa0864940fccb1c	Dream	DREAM	erc721
 \\x3badda62fe3ee137548eb5ca0df1be0b2f960418	Queens+KingsFace	Q+KTF	erc721
-\\x9ef9b205bf16091e3cfaab23e873c257721e1abc	Unidentified contract		erc1155
 \\x9d754911790965e4c42ef0534c021728bad214ba	Non Fungible Dragons	NFD	erc721
 \\x5e94ee3e19f97339a612bf45d8cff044854e6fe7	CelePepe	CELEPEPE	erc721
 \\x76ac058545f2e3531a7337b23c0f13af94a1e00a	PEPE Mania	FUN	erc721
-\\x15de1beb13d7d38cbc493d3ecbc0c7650e715c22	Unidentified contract		erc1155
 \\xa39e3c0c3ff328905e91880f8398a5f9fcd808e4	Quarter Machine PiRATE iSLAND	QMPI	erc721
 \\x9889de6c6cc41dbc2dc1c23bb56b63888c77a0f0	Artificial Innocence	AI	erc721
 \\x6e77b5ed3c14a512ef3b11f6d3e456ebbd0e00da	PAINTING	PAINTING	erc721
@@ -8710,7 +8390,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x7d9300af71415306829a41d64cb8497034f7508d	GC	GC	erc721
 \\x734cf7d9f369fba2971c876915495301f2ee888d	Crypto Crossstitch Embroidery	EMB	erc721
 \\x324177ea22c230d10ef2613c139f7a24c75a86ea	ETHEE GEN 1 by Antoni Tudisco	ETHEEGENBYANTONITUDISCO	erc721
-\\x59eb07b595b7f911a71e8ebd1ae0c4ccad97dffd	Unidentified contract		erc1155
 \\x54309efdbe943a1f86e9315d401c7a3af75ea65e	Cinematic City 70mm - Buenos Aires 	CC	erc721
 \\x6264e45d7118f727314633d8e4c503d51d3b0d03	TastyToastys	TASTYTOASTYS	erc721
 \\x218fdc5b352f6560e3ee67da8112fe663f38aca1	Chill Ape Club	CAC	erc721
@@ -8721,10 +8400,8 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x99f04da425c4b2d8af2d77628a7516ceeb496471	Far Fetched Labs	FFLABZ	erc721
 \\xed0c28f292fd70f44b3f06ed0cfd8fda1fad3419	Paradise Trippies MintPass	TRIPPYPASS	erc1155
 \\x8469950a079caf775888b931f8876698bd21d243	MAGNIFICATION	MAGNX	erc721
-\\x679004a7bb659faaa816bd433fad43953413e156	Unidentified contract		erc1155
 \\xdfde78d2baec499fe18f2be74b6c287eed9511d7	BrainDrops	BRAIN	erc721
 \\x80a3236b5925be25a4a8ee0ba78c97ab1319d815	AFTRMATH Shiny 001	LAMO	erc721
-\\x68374de88110b69774c5b9c282597ce9fdb7098a	Unidentified contract		erc1155
 \\xb6dc6d6e16ac9dbb74684de94da7a158ba582bb2	Joey The Photographer	JTP	erc721
 \\x1144069d1868f2786b5f7d2679578634f230d187	Bye BanX	ByeBanX	erc721
 \\x954f048e95994f87750fe82addf4ae2f3f3dec9f	Trick or NFT	TONFT	erc721
@@ -8732,7 +8409,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xcfcfb4a650a36198cb85960c0610662cf6a4dc9d	MechaARC	MARC	erc721
 \\x86adedfde49b39a41eeefbcd9aa363cac9835ef0	Mental Vacation	MV	erc721
 \\x3bf42951001bb7cb3cc303068fe87debf696ee3d	CrashTestJoyride	CTJR	erc721
-\\x9b1bfa5d13375e8e21fdcb0a5f965974f9dcfdd1	Unidentified contract		erc1155
 \\x960987eb8f00b8ea75fdea8ccc3eb2eeaf10f978	SIDUS NFT HEROES - Galaxy Modificators		erc1155
 \\x7e40c9761e3e62054bc1e0cf136f9fbde7f8c479	GotchiLottery	GotchiLott	erc1155
 \\xc4f374aba14c31dc7e0ddc4082c12609bf1a3dcc	TheDeadDoodles	TDD	erc721
@@ -8757,7 +8433,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x1cef8c52f2350b2748e1b22f6444b8a7fcc3f656	Sub-liminal by Bryan Brinkman	SUBLIMINALBYBRYANBRINKMAN	erc721
 \\x4fb633bc9d4265c028fff313a754f9cc47c7bfc8	𝐁𝐋𝐀𝐍𝐂	BLANC	erc721
 \\xd9caa6d037bd5d65bfcd437b1287183dbbb8096b	CryptoDunkz	DNKZ	erc721
-\\x9ac9a08a8ff54e1355e5bcecfd0ead8f5d74f7d6	Unidentified contract		erc1155
 \\xc2f5abe1352b3c95a449a1aa0a67c5b5bfe00222	Midnight 	MDNT	erc721
 \\x05fda153b204a9211901e3f3da1befcf88c41b57	pepeyugi	YUGI	erc1155
 \\x6e1b98153399d5e4e710c1a0b803c74d3d7f2957	CryptoFootball2021	FOOT	erc721
@@ -8802,7 +8477,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x580d1938074d48c34f2e2d1371af0bf02ac44701	GFarmNFT V2 Type 2	GFARM2NFT2	erc721
 \\x6f9d53ba6c16fcbe66695e860e72a92581b58aed	Wrapped Pixereum	WPX	erc721
 \\xf22d64f31b312a64c900dd6fb30b31711c463132	SummoningLoot	SML	erc721
-\\x111174b2414e14b4b5441646ec221ef1726a87b1	Unidentified contract		erc1155
 \\x87ccee6e40411c5d4184618070e6bbeef02a2856	MusicVisuals	MV	erc721
 \\x46fb9de48988d6ad6d2b62af6c9671b49ca9ed7e	12 Months of Afterlife	AFTERLIFE	erc721
 \\x08dba2e03ad77780ece3aeec5b416fa691af9256	Clarity	Clarity	erc721
@@ -8831,14 +8505,11 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x37b5d1cd694e50209f046499cc9d5d342b402aa5	Another worlds	WORLDZ	erc721
 \\xa3fca54d9f5c6c3961b3ccccb8222b071539d389	Sour Milk Serum	MRONIC	erc721
 \\x04bd18e71d1629e960f4ed72eec2545e71f93b74	Crypto Pepes	PEPE	erc1155
-\\xef7862d6cdf0e2fb28374bcb32fa2e425fc8a8df	Unidentified contract		erc1155
 \\xa249a85fbaa120d75fc1e79bc6d6cb85a96d0b11	Spheres of Ash - The creator	SACR	erc721
 \\xfad025b3da8062d98ace0bc8b1425748cd262deb	SpacePirateBottles	SPB	erc721
 \\xeba596f75b5b9f42ba75cf05912217134cb0d7c8	Stranger EggZ	SEZ	erc721
-\\x75cc2b29bbea090a65456927c56d3a098fc44194	Unidentified contract		erc1155
 \\x15bb8e831849814f436e0e567a75b6241b58cca8	YOrUGATA	YORU	erc721
 \\x30de3508e1f826910a254719258346570b27627e	Love Is Love	LOVE	erc721
-\\x4de49a57235cc0d4d22baad106a4dc302c8d935e	Unidentified contract		erc1155
 \\xa3a321135112246b4cd8dd440e00e1b94cb86a41	CosmicCowboys	CCB	erc721
 \\xfd40af4e5fa5b0af310d92398fba63adc092232e	PixelPrimates	PXPR	erc721
 \\xa3b7cee4e082183e69a03fc03476f28b12c545a7	Chill Frogs	FROGS	erc721
@@ -8879,7 +8550,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x88ad1a691d2fb7029582dd8b3608625ebf34b1bc	No Pork On My Fork	NOPORK	erc721
 \\x77444efac307ef5a598dcacf3e367e4d9bc12878	PXLBUN	PXLBUN	erc721
 \\x3c76001c4d31c7f25a10235dda4ecddfe5e719f4	Art Wars	AW	erc721
-\\xf2e438fdb0b9db3cc2780a60bfd33db4c3e951ca	Unidentified contract		erc1155
 \\x8a655cdb00af99d379d5335fc3884e14465219fb	Captain Apemo - Genesis by Jose Delbo	CAPTAINAPEMOGENESISBYJOSEDELBO	erc721
 \\x696115768bbef67be8bd408d760332a7efbee92d	LinksDAO	LINKSDAO	erc721
 \\x3d12d0edc8f0284a49ffac3196ee1f796b454757	Dandy Ducks Club	DDC	erc721
@@ -8892,7 +8562,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x34a32df38fc511bf002aed9dec1b70e16870317f	CouncilOfKingz	COK	erc721
 \\xcd2d0aa981ed12bfe700693f701eac8b60ee68ee	Huxlxy	HUXLXY	erc721
 \\xcbb07cb17f3ef0a10fa881c5e961a29d8367da37	The WordFaces NFTs	WordFace	erc721
-\\x22c36bfdcef207f9c0cc941936eff94d4246d14a	Unidentified contract		erc1155
 \\x42535ec3ed3120c3d2f51828795984493f44f80b	BaboonBrigade	BBG	erc721
 \\x25708f5621ac41171f3ad6d269e422c634b1e96a	MintdiscThree	MD3	erc721
 \\xf746adc2aaa0aa9394fc2e6a64a1e01de60f1843	Stengel	STENGEL	erc721
@@ -8992,7 +8661,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xc4d4c17a11236a622097510ccfa23a6bedb6e937	Venin Noir	DGZ1	erc721
 \\x9992477b1b486e4a0c8ae6d34eb1389a5f8d3dd9	GodspeedMetaverse	GDSPD	erc721
 \\x98a9689be196fa973d17770c32f9c8eef30586a9	'Insides' Volume 2 by Paul Jackson	INSIDESVOLUMEBYPAULJACKSON	erc721
-\\x6d3b116ec49b2965aee1c9865c21e24a7604d2e8	Unidentified contract		erc1155
 \\x244cd778b9bbe49b5acc5e2987f2b673e537e5fa	CINEDEATH	CINEX	erc721
 \\x7a35f50857110732b0b2326d6f18c8e58bf6d5c0	Wealthy Penguin Island Club	WPIC	erc721
 \\x13a093b324697c365c37d0638050400308d11604	The Real Unreal	REAL	erc721
@@ -9029,7 +8697,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x21850dcfe24874382b12d05c5b189f5a2acf0e5b	KILLAz	Kz	erc721
 \\x3a7c0fd0b6a0ee11d3ed0e26fd36477e81b3e728	Fabric Of Space-Time	FOST	erc721
 \\xe975e558b6112f7018ff9b0e08c67eaa3db3d1af	The Doods	TheDoods	erc721
-\\xc52e56f5a53ccc02db5503d915497e568c762ebb	Unidentified contract		erc1155
 \\x701d32f0bbb18db243410e82d438ff5d917bd799	MomentX Genesis Tablet	MXGT	erc721
 \\x981dd290cdc9deef6d47fa3136aa6dc535537c88	Bri4nH3nry	B4H3	erc721
 \\x000001e1b2b5f9825f4d50bd4906aff2f298af4e	Imbued Art	IMBUED	erc721
@@ -9068,7 +8735,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x8397f2656a99ec6cb0e664b26bbb9632400bb801	Pug Force	PF	erc721
 \\xe78c5504a6a7af1b65e65d2ee01809c5a8bd10d7	Mental Health	MIND	erc721
 \\x1c5b772f5329c25bf23cc50131666679fde633f5	Fantasy of another world	FANTASY	erc721
-\\xfa1a07056c48dcba4b5e9e71aacc6aa791a93929	Unidentified contract		erc1155
 \\xc196ae96170c58eb7b78c917298064ce7192f046	HolyCows	HC	erc721
 \\x38dc84a9bc6d5880565b00f4a9fd41dd74344448	MonikasArt	MONIKA	erc721
 \\x15894278edd4c2cbe79605da5da1f0f39cc41ef0	Behind the Lines	F9BL	erc721
@@ -9086,8 +8752,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xf9d53e156fe880889e777392585feb46d8d840f6	DinoBabies	DINOBABIES	erc721
 \\x3d6ab55fb262f786ba1e9d1172657fb2d462f1f8	CyberNinja	CBNJ	erc721
 \\xf1fc4124729f01230b6a77d1bb603f6cd31be060	Pluto HipHop Dept.	PHHD	erc721
-\\xf1b435866bfe4df2e0b8cb4a2c2f78a59383b866	Unidentified contract		erc721
-\\xb2469a7dd9e154c97b99b33e88196f7024f2979e	Unidentified contract		erc1155
 \\x9ebab3b21b5ef5709bd476b022fc432fc84c0e86	OogaVerse	OOGA	erc721
 \\x519530a9e2ef309d8ba525ead7d4cf86b3f88f52	Artefacts by Stina Jones	ARTEFACTSBYSTINAJONES	erc721
 \\x2bce563c9848daf4ea7c7041d077d431eb78f565	Fud Society	FUDSOCIETY	erc721
@@ -9133,7 +8797,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xc3f78f50222b3cab2ed2f73d07ed28131d1ebaa3	GEN AI	GENAI	erc721
 \\x31608050c2f46167020ac0219cd7757af8f0de7c	Noob Photography	BNFOT021	erc721
 \\x71e7afa8b3ab8e83011ce7bbbdcd76ccd7cb0660	BDUCK	BDUCK	erc721
-\\x051226f287938e3c75b380ab82c3f59bad0688b1	Unidentified contract		erc1155
 \\x05844e9ae606f9867ae2047c93cac370d54ab2e1	AO Art Ball	ARTB	erc721
 \\xb840ec0db3b9ab7b920710d6fc21a9d206f994aa	CyberHunter	CBH	erc721
 \\x934fdb5084d448de4c61c960c5f806689ae720b1	INSIDES Open Edition by Paul Jackson	INSIDESOPENEDITIONBYPAULJACKSON	erc721
@@ -9141,23 +8804,18 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xf1fe05b336827e0fc2ee63e44f8e58e55f69fb8d	BentoBox	BENTOBOXNFT	erc721
 \\xa4218309cc1b842a22a472d3ba440bfad100df22	Fourty Two	42	erc1155
 \\x38d10a78bc529ce3519dfee49f9b11cf5183947a	Edge of Tomorrow	USSR	erc721
-\\xf6050f97ab4630a0a156055597f67b6e434fa43f	Unidentified contract		erc1155
-\\x819ce9c4e15258735f441000cd005643d4479a1e	Unidentified contract		erc1155
 \\xb33c496f82ba597fc969d35869a3e2b50adbeeef	FingerPunks	FING	erc721
 \\x4cd0ea8b1bdb5ab9249d96ccf3d8a0d3ada2bc76	Boonji Project	BOONJI	erc721
 \\x54591254be285789398719384a75527c68e3060b	The Sleepless Mine Society by Sleepless Workshop	SMS	erc721
 \\x25a3273f1b1f468845d08623fbe4b0885fc12cf0	CactusCrewCard	CACTUSCREWCARD	erc721
 \\x0cffe4a66c6b951d224aeb73532b8facfcc32a05	mire	MIRE	erc721
 \\xf924a80496bdf9e0e3932f09b94e3f8d5e467ad0	The Dog Pound	THEDOGPOUND	erc721
-\\x858aa6f8e7a344b6bd6879a4517d36e22cc92555	Unidentified contract		erc721
-\\x974a46cfdf5018258e48f4506ce062691cda2936	Unidentified contract		erc721
 \\xf38ee864e36650f8c0abd14622a55bb1f6833d32	ANCIENTSPIRIT	AS	erc721
 \\xc37880043cc617ccdab8f67ce48494050b733109	Winky Deebies	WINKY_DEEBIES	erc721
 \\x9d86a20973ef709dbb1386c62b5d1a2358b84faf	Immutable Matrix	IMMMTRX	erc721
 \\x423abaeaccb0a9428bb42a9466131053689179de	Pokèmon World I Generation 	Pkwrld	erc1155
 \\x14806992b6af497889a671d3f303990f8312006f	Cursor Punks	CPUNK	erc721
 \\x43a10115280634d788815cd9316df1d07c92e1c5	ratDAO	RDAO	erc721
-\\x36181f13e25dec81f8aa9188ac96a658acf24f63	Unidentified contract		erc721
 \\xa2dbd9e7e2969db08b6a8c6cbc9d002663e70147	MandelNFT	MANDELNFT	erc721
 \\x8e19be131d16afd9c00cfff6a8a60b098e6ab24f	PitBossToken	MBPB	erc1155
 \\x986cb2b4e3e1e846662b2a32fe11f7b13539c4e8	Sevens Special Edition	SEVENS-SE	erc721
@@ -9169,7 +8827,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x27fd4db097eef6682d88e96098e17b40d7cc85a0	ReeepT	REEPT	erc721
 \\x91a88d50ab81de48360d7a31c8c4de3aca8ce0cc	Kings	KINGS	erc721
 \\x7ed2ddad638ec29d71868b1e967fc8b53573ef62	Baby Birdez	BABYBIRDEZ	erc721
-\\x0170227514a274826685bf81aed06e4218175572	Unidentified contract		erc1155
 \\x240edcad2d6332d4cf79e2e8419135ee46ed1bff	Lively Sea	SEA	erc721
 \\x5beb8d47cb4d308496149406e653a2c944033a39	BraveMoreWant	BMW	erc721
 \\x28b695ff8638ad2714cc04a2d15c670a064d6234	Qweens of Heaven	MARY01	erc721
@@ -9211,7 +8868,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xfc371329c00aec60aba3880987da602917d7e382	Tigero	Tigero	erc721
 \\x2bb501a0374ff3af41f2009509e9d6a36d56a6c0	the Plug	PLUG	erc721
 \\xb826bde739897ad50363d045d65ee5b83fdb730d	Machinie	MACH	erc721
-\\x02725e3a966f91edcfedba2eaf5f534e0b2bbaed	Unidentified contract		erc1155
 \\x656a6d3081692a7da5d8cff1f8951bd078ec82d5	CrazyMummiez	MMYZ	erc721
 \\x0cd4f73dc9bf884225e2ce6d8b15a5684789e458	Nov20th Pepe Collection	FROGFAM	erc721
 \\x839c321be4947b2d48eab5efa45af899c69512ba	WTF	WTF	erc721
@@ -9228,7 +8884,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xca20f7279f7defd14e7524e609704ea2f436a539	The Donut Shop	DONUT	erc721
 \\x29a0742e813c938e0723ead9a9cb644719993a6d	Cosimo(s)	COS	erc721
 \\x57da2d140241d80a01cd37fb9f81824524a05b0d	SpaceFlightSimulator	SPACE	erc721
-\\xdaa5f6cd0d1ae382a67e8a9b1ddff08685e443bc	Unidentified contract		erc721
 \\xf18544f810311432a151475457f4707e0bc9fac6	Trevor Etienne	HUMBL	erc721
 \\xd2894bb48ad2b274dfa23d375a409ccd009905de	Characters	CHFTG	erc721
 \\x4be191b4603a0e0b95c0ec1c80c89b82e50f1253	Hollywood Apes	HA	erc721
@@ -9273,14 +8928,12 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xccda63c09807a9a6bcb9c8d23577c463a2fe20e7	BreadwinnersByCryptoes	BWC	erc721
 \\x72f615f4cc03c2d0e1e4fcb2339af6f1491d2e1e	Moss Amazon Forest	MAF	erc1155
 \\xcf986154ee502570ece8703b029216ef867d34d0	The Panther NFTs	PNFT	erc721
-\\xf23b8eacb9e7325f3f7714f8d28ae9bcfd262809	Unidentified contract		erc721
 \\x39239b6040207a4d3d657ad00554669a992ca451	Dwarfs alt world	DAW	erc721
 \\xe909c4a1275e8fd21accda5d4332d2306d2812ad	Gutter Comics	GCOM	erc721
 \\xbf4a15fd96deb06517b4251234020338c2742431	Lonelyleafs derivative contest	LEAFS	erc721
 \\x9235c809fba5005379e8bce09009b882bb4d8a8b	SupBirds	SupBirds	erc721
 \\x5aa2e6f4257d675251ffff220f6d976e232befd9	Just Dicks	Just Dicks NFT	erc721
 \\xab3c685e8b35cf311c26eb8bf3b9c441c6ee2e8f	Night Mood 	NM	erc721
-\\x6b71e154bc0381225af66d03f9f032be8f71d993	Unidentified contract		erc1155
 \\x2eb1f8622a4345b69a247bd3733befe51e7810ed	Planetscapes	PLANET	erc721
 \\x23312abf750038784cdfb3086d25216b2b9137d8	Esteban Diácono	ED	erc721
 \\xe38a02c3ae0fe490102df981cf0046c8aca6939a	Degen Donkeys	DONKS	erc721
@@ -9291,15 +8944,11 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xcbdca2c0cd9e3ddf6adac9e2fec1f3d250fd7658	Bradley Harms	ETHOS	erc721
 \\xc97f4244839c13c6df4258228c60488fa05c8528	Look	LOOK	erc721
 \\xc4fb0f97387eda8ab19f4e50e49ead1f287ee106	Monkzuki	MONKZUKI	erc721
-\\x39aefb036dabf9d29d33f357dcc3dce06dc2b899	Unidentified contract		erc1155
 \\xe2ea6300732ab77060463f04805bb484ccf1bd9b	Scavengers	SCAV	erc721
-\\x5e38ac7b9c3814925d8cae0acb32061cf4fff3ed	Unidentified contract		erc1155
-\\x1ed89eb526a8be0ac8c5f7a1646698c6913029e1	Unidentified contract		erc721
 \\x3619b7205124e8262e511bb930c588df792102e9	WE . same but different	WESBD	erc721
 \\xe46f907fd554f53dbe2725b7f4e60c1c3066c39e	The Eight	EIGHT	erc721
 \\x1464ed3b224b1db385c6d16cc9bce2e5dc5d82d5	Lantern Series	LANTERNS	erc721
 \\xb718ae352b43b98c77352445ab31d0ad447e30d8	LevX DAO	LXDAO	erc721
-\\x39b01ca9491d83935ff2e2418c4543d15fff4765	Unidentified contract		erc721
 \\x837abada0fee61105005e6fae41507e3eda23739	The Adventurers Avatar	The Adventurers Avatar	erc721
 \\x51dbf668b998bd9279587f2f139eef32dad33ee7	Oblox	OX	erc721
 \\x15ce6c459243d3e52d8b1b0d1b5d76fa835b40f8	Balance	BALANCE	erc721
@@ -9322,7 +8971,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xe798e8972b148592f83ae67e19e7e27805037ef8	PowerUp	POW	erc721
 \\x74f6ca4bb82fafd81f68b037070ed9c84fefdefc	Divinatory Relics	DIVINE	erc721
 \\x20cf3ad7a6cdc633ef9ead58881e5edf720b05a7	Sumatra Fitness Squad	SFS	erc721
-\\x99502f432d62db398f127639d2dc94e8ed523a4a	Unidentified contract		erc1155
 \\x59cfe16a8de39d7091f010bf9ac38f59329a2a83	GANOODLES by Stina Jones	GANOODLESBYSTINAJONES	erc721
 \\xf0f9ff75dc7e95e497cb92d5bfd427efbae0d204	Smol Winged Turtlez	SWT	erc721
 \\xc2b87f9251d819347d6914035d0b22c5c6ce767d	Dioramas	DIORAMAS	erc721
@@ -9338,7 +8986,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x7cc78084e8d7b2be045fd23d0cdf749599db6eb4	VeeDAO	Vee	erc721
 \\x05fa5bafcf14269ebef59ba4d252d7c58e77e5b2	Mongolia Eagle Keepers	MONGOLIA	erc721
 \\xd08b02a76552fa54d8616f8d42c3cf0de3c0a9ec	Cunning Wolf Society	CWS	erc721
-\\x6f06ee06d856e23ec0cb6df5dea1f9990444a2af	Unidentified contract		erc1155
 \\xb8af61bf2c0d8d4f65ebecb4f46124abdd462699	Foes	FOE	erc721
 \\x722f381b184049fb1525b93858c054c81604e938	Rainbow Creatures Collection	RC	erc1155
 \\x7460cd5c0ac73efe96d7cf54126ecd8f0b322553	Museum of Graffiti - Rasterms	MOGRASTERM	erc721
@@ -9358,7 +9005,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x00ea6eb897aba51da8100c54da119cdfa738e9d2	Photography Section	REDONDO	erc721
 \\x3fc1801789ccd1d5cfaad4116413c00837414856	DNA Cultura NFTs	DNAC	erc721
 \\x9ca3a9a3aa59c7ddd61c29f6b0540ad9988aede6	NEWKINOerc1155FORGALA	NEWKINO1155GALA	erc1155
-\\x2f8b420dbddd52367e88e72f80214a6680f9a81e	Unidentified contract		erc1155
 \\xa1daf1d81076916e0e3caac412dd0303df41aee7	Golden NFT	GOLD	erc721
 \\x92421a82ea64eefa1f635cef1350f73f1965f5f0	TheUltimateSurvivor	TUS	erc721
 \\xa3e015d92169b1f5ef436eeb58bf94cc6a5e5387	The Nearest Dusk	TND	erc721
@@ -9371,7 +9017,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x0588a0182ee72f74d0ba3b1fc6f5109599a46a9c	Dorkis	DRK	erc721
 \\xdf068287b6e2ef0af86cffd1ca0ffdc1bf37a2ab	Silly Goose Comedy Club	SGCC	erc721
 \\x2210cd898651b51acdbd1289d5144283dbe269ce	BlankFaceHaylosPiece3	BFH3	erc721
-\\x471f366d3a0242e3577e6a2e7f46f3211e05835a	Unidentified contract		erc1155
 \\x00b8924f98d3f9547afc74518e7cffda29ae8ea3	MWC Wolves	MWC	erc721
 \\xb411d36e034d87558c3f96636dd7f7b62e093a1e	Kyoto 3088	KYOTO	erc721
 \\x1531bf51a4f5174cbddb68b4db02322eea133525	MY CREW WEIGHS A TON	THECREW	erc721
@@ -9415,10 +9060,8 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x3ce341ebebb3341d3878c7ff22a94d30b7e25df8	DOOMSDAYX Gen 01: Haleek Maul Producer NFT	DOOMSDAYX_01	erc721
 \\xdecc60000ba66700a009b8f9f7d82676b5cfa88a	Settlements	STL	erc721
 \\xae18a2334fe3be0f5cadad48382e6cbd423592cd	『白』N『黒』	SNK	erc721
-\\x5988fc0c92313e1a511e05dc4803709b17c92262	Unidentified contract		erc1155
 \\x9a534628b4062e123ce7ee2222ec20b86e16ca8f	MekaVerse	MEKA	erc721
 \\x862cd6f29df02d73e52bde93d2b22bc4ad3e20ae	Sweet Cuts	SC	erc721
-\\x71d106ba5283260467a3caff59de9e5bceb9f444	Unidentified contract		erc721
 \\x5c32f69d08fb19e74bd23348ba94388fd09e1e6f	MafiaPunksNFT	MPF	erc721
 \\x01bf5dca89c6fbac79d723db09d16647e8824a41	Dream State	DRMS	erc721
 \\x80010cc10892990613e8bc2dc2845b5029eda934	The Four Seasons	HENGKS	erc721
@@ -9448,8 +9091,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xa54534cfbd8c1a82c24a9b01c347fda7a234187c	Little Things Girls Love	LTGL	erc721
 \\xdb799f575b9b0f07bd3bfd121b43732d120e7954	Nautilus	NTLS	erc721
 \\xba00fac94bcad96d9f18a45d93ed93ad3c505edc	Natura by Dhimant Vyas x Seva Love	NATURA	erc721
-\\x83c4d041b42fdf3d15ef2e3c8f61abf6f1e671d6	Unidentified contract		erc1155
-\\xc7dff8fae84e3ef27013c424198b136cdf1ed4ca	Unidentified contract		erc1155
 \\x2fe776dd5fd2388f5ccaefad214989131b3a8d6b	Crypto Noun Punks	CNP	erc721
 \\xeb6600e62c24d17734c1807414a9159b116c9520	The Tiger Archives	TIGER	erc721
 \\xd7425ffe949dcc6bf9fe95f7b7a81a0cd21c9447	NFT FC	NFTFC	erc721
@@ -9460,7 +9101,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xde3a8b06113d18e41949812b77716ea865aa8f48	FoxyHounds	HOUNDS	erc721
 \\x9b4c64a7e4b76dc83999d9c517db909a6d39648e	DOGS	DOGS	erc721
 \\x0c58ef43ff3032005e472cb5709f8908acb00205	6529 Gradient	6529G	erc721
-\\x1a564be1c4be76bb9b4cd56f00a34121bf241d7c	Unidentified contract	SYD	erc721
 \\x70999b1d3c58dedf52638535d8654125beeef21a	ZA_Self Portrait_Collection_2022	ZAA	erc721
 \\xb1b180cf640886dec6b935dc74831bc3f97f2e74	Kurochan	Kurochan	erc721
 \\xe031325d97652de4d517dad914afa5dafa660ffc	FlemiCollection	FLEMI	erc721
@@ -9478,7 +9118,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x3dffd6b352a16c154a8937d6591a204c349a5781	SergDickButts	SDB	erc721
 \\xe6425e0c908d0284c495777ef883299543308111	Pixel Life	PIXELIFE	erc721
 \\x8009250878ed378050ef5d2a48c70e24eb2ede7e	Solarbots	MK1	erc721
-\\x06b69c1c617a973e0ab91dc66442e97b490aa965	Unidentified contract		erc1155
 \\xb28a4fde7b6c3eb0c914d7b4d3ddb4544c3bcbd6	Skvllpvnkz Hideout	SKVLLZ	erc721
 \\xe62a9ed27708698cfd5eb95310d0010953843b13	Smoking Apes	SA	erc721
 \\x1a2a90fc32e9bcc7c944ed89f6383a10d2462692	Mirrored	Mirrored	erc721
@@ -9497,8 +9136,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xde1833c6b9e02ee4aa9ea5cfcdf83cab036d54e5	Baby Dino Club	BDC	erc721
 \\xa5d2b92091df326007cb5b856dccd702aefaf361	Generative Dynamic	GenD	erc721
 \\xdb8f52d04f9156dd2167d2503a5a2ceef3125b09	Soul Cafe	SC	erc721
-\\xa134c292c73dd99d0d2a545e80b986a695775623	Unidentified contract		erc1155
-\\xc2faa7cf625b8adadbe423738c269558dc909d41	Unidentified contract		erc1155
 \\x68aea268f92b715e073d2f5170039faa4b94a47b	Fantasy Islands - Sandbox 	ISLE 	erc1155
 \\xfa1f910ec3a9bff62c7f692663a67741192ce7da	Mageo	MAG	erc721
 \\xe8f76c61dab1262fbb2ca8d5bfe627b270f36a16	Ghost in the WiFi	GHOST	erc721
@@ -9547,7 +9184,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xec585943d298887ef00fa48103408ff89b31dade	Inventor Club NFT	IC	erc721
 \\xf0b5ac1b2c12700aa245c269383b10cabb23d4dd	DooDLads	Lads	erc721
 \\x3bf447963c8d8bdf06751528de40efb0849f3037	GossApeGirl	GG	erc721
-\\xbeb13ac6a46fea17a3244966b4163895e389da49	Unidentified contract		erc1155
 \\x3dc9c91cab92e5806250e2f5cabe711ad79296ea	The Pigeon Social	TPS	erc721
 \\xb3366fd40c98dd71df4ae3a0306a526f25b8fa89	Mekas of Krupt - Genesis	MOK	erc721
 \\x0337a552382dc9767becd99bd5caa11992f78e8d	Geohashes	GEOH	erc721
@@ -9578,7 +9214,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x834f071304c12a2491737b43ccefb6ccf560c815	DicPic	Dic	erc721
 \\x36a52262a85bf8fe213267da4ed85e42e1efed82	Hor1zon	H1Z	erc721
 \\x1ea8dacedf6a8896e3e27fd2617e650c1f11f52e	The Labyrinth	MAZE	erc721
-\\xf117593e01d376ca95035a7596171311a5616d11	Unidentified contract		erc1155
 \\xa319c382a702682129fcbf55d514e61a16f97f9c	Plottables	PLOTS	erc721
 \\x4d95adfedd17c3b604e8658cf26d137409c872f9	4EVERLAND		erc1155
 \\x141524ba331ea8f8856e39d8a24066dffd811d9e	Tough Turtles	TT	erc721
@@ -9612,7 +9247,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x034333679ecd571183f80e796a3500bff5d64216	The Elements	ELEMENTS	erc721
 \\x6eb4a1b1206535e0753831534d52597fd8379591	Knowing	KNWG	erc721
 \\x59c279f42da43cbab70fa26c3bceb135cfe031c1	Uno - The Photo Collection	UPC	erc721
-\\xfdb2f646962e87581a17477df7854c84cc99dc55	Unidentified contract	SSF	erc721
 \\x8dccd0ac948d4dd262fbd0e679c3d54677f56b34	RichSadCat	RSC	erc721
 \\xf8d4e0c28c6b7128c4d582f6cc8cb82ac2e98568	TheWitchHunter	WITCHUNT	erc721
 \\x4c10114e922e0eec2f515b1c4d940551e83d418c	Vibe Apes	VAPE	erc721
@@ -9670,7 +9304,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x87e738a3d5e5345d6212d8982205a564289e6324	Fighter	FIGHTER	erc721
 \\x6a05ae9c41c02aa0c76873f7b1c94cb5bbcbed38	Gear (for Loot)	GEAR	erc721
 \\xf8cceddfcd5329de91be6a55edf99b7d2f60924e	Kranky: Metal As Fuck Series by Superplastic x SketOne	KRANKYMETALASFUCKSERIESBYSUPERPLASTICXSKETONE	erc721
-\\xc4c377565a4b9eb6e657c2422bd33b6e4859b041	Unidentified contract		erc1155
 \\xc2fce7d84b5664b2ba9bfd0614a2457b19227e1b	Blockhead Tweets	GOODGRIEF	erc721
 \\x4e1afe0865f0e49a63012fba35fc9fbda50688be	Lisanne Haack	LHART	erc721
 \\x84bf51555c2a39930d2dfeb80dd8b0f1c059d9da	Unknown Space	3D	erc721
@@ -9684,7 +9317,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xf6266f30b7c9b23f48806abe56710e48233b7047	LegoBlueChipClub	LBCC	erc721
 \\xda9c3934854bc0c701f0e2d95cdc25fc94f4b229	Taiwan Ren (台灣人)	TW	erc721
 \\xe2f71603a1e0384d6cfa5e36dfe9ea67aea04108	Game Of Life	GOL	erc721
-\\x92b20d63bfa1073b4d1e2afc49378832b8c50ac9	Unidentified contract		erc1155
 \\xd5dfb159788856f9fd5f897509d5a68b7b571ea8	Tacoshi's Quest	TACOSHI	erc1155
 \\x9cc4db01c654883a009daa11ba3d019d0abfa2e3	SAMURAIcryptos_MakotoKobayashi	SMCMK	erc721
 \\x364c828ee171616a39897688a831c2499ad972ec	Sappy Seals	SAPS	erc721
@@ -9701,7 +9333,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x488c057cf3dee9ee2e386112e08f2c6d8e58cdfb	TwoBitCubs	TBC	erc721
 \\xadde36cea113cb5db315d17f499a5db0eee2c979	Poetry of poses	POETRY	erc721
 \\x1642719fef7ff4bec2ebc38f8b1380f3566f6459	FPS Loot	FPSLOOT	erc721
-\\x62c2294e6e5c3c6ec73195748e4fed15a3bba3f1	Unidentified contract		erc1155
 \\x1c7c7bc83d809782adb7e6e11d7a5cfd9a06e03b	Japanese Art	JAP	erc721
 \\x6547e281b43b229c74efc20f01299e36538d5daf	Apeships	AS	erc721
 \\x60f9d771d9ef68ef049e4b68c25c03260c303dc1	Crypto Bunny ( Not DOGE )	NOTDOGE	erc721
@@ -9730,7 +9361,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xd73acd7f5099fdd910215dbff029185f21ffbcf0	Acrocalypse	ACROC	erc721
 \\x2b5e56898def56d501a87728738df13fc84d2725	CryptoFartPunks	CRYPTOFARTPUNKS	erc721
 \\x1d2f2e5a338ce4132ab4c33a2d94ea189082221e	Board Animal 2nd 	BA2	erc721
-\\xef7c89f051ac48885b240eb53934b04fcf3339ab	Unidentified contract		erc1155
 \\xdbdb97c7de6d3fc9fc48a7b9532156e4af71d713	CAGLA Collection	CAGLA	erc721
 \\xf3c2ef554636e28ded5dbb804b3412d60e1ad7f5	meta_ep	meta_ep	erc721
 \\x1e7dd2cb2124158be4de71a82bca890d784f7a95	Paint Bore a Beauty	PBAB	erc721
@@ -9750,8 +9380,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x96f98c60c04ba6fe47b3315e3689b270b3952e26	Bored Bad Bunny	BBB	erc721
 \\x489c83145ec0f3b13c9de939a0fd1e8b3580e686	NEO TOKYO APES	NTA	erc721
 \\xc613a6eb188199b39274fc7f10a10140c895a303	RETROPASS	RETRO	erc1155
-\\x894b1e30a09d788a44efa7a47d7a737eaef927fe	Unidentified contract	GOLDLOXE	erc1155
-\\x137a81298c11708006405d75bc0541a2a07c0b33	Unidentified contract		erc1155
 \\xe513332ee09f802bd8d9732ab25588f636a966ec	Verbs	Verbs	erc721
 \\x5dd4f7357bd8ef41ff53ab0a7a20a700ef6e5933	Bored Skulls Yacht Club	BSYC	erc721
 \\x8f361a5369306d7192e661dcfdab355c128202f6	CryptoIsScam	BTCPILL	erc721
@@ -9821,7 +9449,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x9c27d994f0830d78372924f2a3fd3d007b7f7226	Deflatables	DFLTBL	erc721
 \\xf87f485a8a932cb72ec8bbc79d30ce355c3f4d45	Camoi's Toy Box	CTB	erc721
 \\xad8cbf6054acbade38472b376a1a3d23a8b116dd	King of Midtown Memberships	KINGOFMIDTOWNMEMBERSHIPS	erc721
-\\xa7a980d43da6b3290c727d1833cfc3ab8ee23150	Unidentified contract		erc1155
 \\xef3666ba4c5a04d90cea2fd6dbd57c2437b4f9e4	pxPlanets	pxPlanets	erc721
 \\x92aa4c9a4f54fe95d0e799687d1da12a7ebca538	IRL Psychedelics Anonymous Pass	PA	erc721
 \\xde4d8f2dafb7ea580807f81614be9829545a40c1	MONSTA Sound Garten	MSG	erc1155
@@ -9832,7 +9459,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x4335541d17f6344c29f2412e520ed71639150ead	emLoot	emLoot	erc721
 \\x3b82233d3c96d746f9ea707db1bcd578f716e0bb	Smart Bananas	BANANA	erc721
 \\x77a25d2fb4b8fd4d3d81323276eadc452785c338	Unyielding	UNYLDNG	erc721
-\\x6a47f2e78e6a594e594fd3e318f301e987b60d55	Unidentified contract		erc1155
 \\x260d1629e6ba91a83a7eefecf2b4bb00f74d5c40	Rave Candy	PILZ	erc1155
 \\x6f6dba0170de97249083994d85204f507cf416b4	CryptoGhost	GHOST	erc721
 \\xdad298d2a9d7df0ad2ac74203658a467a30861e6	Desires (for Creatures)	CREATD	erc721
@@ -9849,7 +9475,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x506543b7f2dce30e235714446dc9bd634efae8a1	SKIES	SKIES	erc721
 \\xf7302d66c61fd36ce3a084f16ed58bdce78bcf63	gummy.link	GUMMY	erc721
 \\x15f977385ebbe9267e62202409f5f876f097d414	Osinachi - Drop 2	OSINACHIDROP	erc721
-\\x54f456b544abfb785694400bcb1d85629b2d437f	Unidentified contract		erc1155
 \\xd46814b736db3c6feed576a59e3ff140075c9e0a	DarkHorizon	DH	erc721
 \\xafc4ded18ecb05a11b319b5ec7dceb183fc55650	IMOUTO	IMOUTO	erc721
 \\x9bf252f97891b907f002f2887eff9246e3054080	apekidsclub	AKC	erc721
@@ -9867,12 +9492,10 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x89d92a754fd1a672c21b5fc2a347198d1a9456b3	flooredApe	fA	erc721
 \\xe6b1add7d1497d726ba2635ac0716f06adceca5a	Grelysian Collaborations	GRELYSIANCOLLABS	erc1155
 \\x5c01961a412d2e24d61c04a8394f0330bd78195e	Amigos	AMGS	erc721
-\\x576b46f3fec611da0383c3a2a343325e8ba9de46	Unidentified contract		erc1155
 \\xf286e4955557361a7d245358b0d47a3f5c735b2e	Metagascar	Metagascar	erc721
 \\xa2376b5bc0fb86706bc457e32eb28780c244f0b4	Pepellery	KEK	erc721
 \\xb27e651317a3d2e0d0c73f04d1d0dbd758fa8f38	Genesis Comics Dusty Limited Covers	DUC	erc721
 \\x129c3727e8cc24d513bc5f8b87616e1754b64acd	「Ⅰ」	2022	erc721
-\\xefa7b9cf8171f2ca295b8cd5e0946f2739c3f9e5	Unidentified contract		erc1155
 \\x39da10a78d9bc77331d076fb857f270e0b606a58	Club Name	SHORTCODE	erc721
 \\xdc51a1f6e6dd40296ea02ffdf9dd7750a2417be1	Astroheads	Astro	erc721
 \\xc1872b01c30e9d8ac334b6895c55ab21a42c2fb5	Ninja Village	HNV	erc721
@@ -9922,7 +9545,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x62e37f664b5945629b6549a87f8e10ed0b6d923b	Tboa Club	TBOA	erc721
 \\xfb4f066701aa2cfa2bbad5ba94d88278070e3e21	Polyarnye Nochi	SRPN	erc721
 \\x1f2403da6a03f989d3588f61c9a6c6dbf94061b7	Cats	MICE	erc721
-\\xbaeb88470058df10081df46ffe3688e97a2332b6	Unidentified contract		erc1155
 \\x1e988ba4692e52bc50b375bcc8585b95c48aad77	Bufficorn Buidl Brigade	BBB	erc721
 \\xc717eec278199cceb84c6fd33683d772cba02218	AniCatsWorld	ACW	erc721
 \\x7499e10516df577f3079a0a4f326ac43f7091b60	POP BLOX	❤	erc1155
@@ -9942,7 +9564,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x7d804861126efe61f2a5ef33e92d181c2f53ce96	ETH Homepage	ETHHP	erc1155
 \\xb06204423d5e2d6ad48d33181defcf14307894cb	Cityroots	ROOTS	erc721
 \\x5a817e0db5712ababd75c6037bf5c83d87c79d19	Radioactive Ape	rxAPE	erc721
-\\x3d3d7ba0f6f33bdb91e61bf3f17ec7350e7f25ec	Unidentified contract		erc1155
 \\x862425ea48d7997932b20eb3479a407db151f841	Ocean & Earth	OCEANIC	erc721
 \\x79181c32d5539d18f239ed9ab304132478845631	EMETH	EMETH	erc721
 \\x700f045de43fce6d2c25df0288b41669b7566bbe	DAOPUNKS	DAOPNK	erc721
@@ -9967,9 +9588,7 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x86357a19e5537a8fba9a004e555713bc943a66c0	Neo Tokyo: Identities	NEOTI	erc721
 \\x2d0da0ff93b0ba6055a03aa03dfbbd9d1c3b88d4	Fish-tank NFT	FISH-TANK	erc721
 \\xb5f92891c11d5a50313f3b35d499562d95f02698	Realy NFT	Realy	erc721
-\\x6fdead7adee56d358f949a4492b6d0b9fd5f6705	Unidentified contract		erc1155
 \\xdd70af84ba86f29bf437756b655110d134b5651c	iNFT Personality Pod	POD	erc721
-\\x12d956999af474173d3a5c7d855908f308d1666f	Unidentified contract		erc1155
 \\x9940bf08f6457b6e484249e2a9d965e81ff10434	Floor X Creepz	FXC	erc1155
 \\xd080300d64fffed8181f5a8f6f5190450bfd388d	Potato Heads	PH	erc721
 \\x9aa0133d8b7b7bc4b5829ac221e5a1e1b8e2c53a	Cathode	CATHODE	erc721
@@ -9978,7 +9597,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x3af32fd45224c502469af10e8fff285c18a978bc	Mega Millions Gangstar Apes	MMGA	erc721
 \\x43c8e5ffa751f9d57525e245ae72f0ea2cbe5d49	Mente Ambigua	SIGMA	erc721
 \\x8956fa5434277c831a52b7dc08833ca71583fee7	The Whatevers	WHTVRS	erc1155
-\\x5f353bca23e1e1abdfb71941f34398a451a9e376	Unidentified contract		erc1155
 \\x77640cf3f89a4f1b5ca3a1e5c87f3f5b12ebf87e	Angry Ape Army	AAA	erc721
 \\x4e9b53c8092513b19d562b22f13874578b274ef9	TYCHO : ISO50 - Collection 005 : Dive	TYCHOISOCOLLECTIONDIVE	erc721
 \\x35a9c2d11f450fbd69cd6ef01a19c366d314a605	Jukebox	JUKEBOX	erc721
@@ -10011,7 +9629,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x70f11bc4d6c07c821b20bbe1872c35ab57f0a112	Familiars (for Adventurers)	Fam	erc721
 \\x37a5d883e99b39946cb3848f5ed93926431244f9	Path	PATH	erc721
 \\xdd6d02c2e291aa7d25e693db8b4a171190e10f3b	Rinu World	RWORLD	erc721
-\\x799c89f79fe794a58b426aef6b6d7d9f26d6c809	Unidentified contract		erc1155
 \\x44915bb47e4d764c11864f1ab862beeb736b4e8a	HillbillyHoller721LG	HHHB	erc721
 \\x3c99f2a4b366d46bcf2277639a135a6d1288eceb	Frosties NFT	FROST	erc721
 \\xfb5393f288d4ca5bd297b15742f0ed33e06afc62	Fractix by Hoven	FRACTIX	erc721
@@ -10046,7 +9663,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xeb5d200d2308c2421f05dc524b5fa51a7f30592b	Guilded Gods Mint Pass	GG	erc721
 \\x066a1d0f1e228d945eb4d0855a6ced5f15f40f3f	DeletedMessages	DEME	erc721
 \\xa440467f6d5fbd62f6eef01192caa52850aa1d5f	PPPandas	PPP	erc721
-\\x67b630e70e793d48f1329c00cad9d60977605df5	Unidentified contract		erc1155
 \\xe7df058ee3f091b46ab14b79b8efc5a5e46b275f	The Jims	JIM	erc721
 \\x65b1e54db4b4283e0f0670cbf817878a6cd238f2	Nomadic Frame	NOMAD	erc721
 \\xdb9bdbd5a74787f4bf105cc7809b79b206a62a84	Cultiez	CZ	erc721
@@ -10078,11 +9694,9 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xee426416033e9f906534ea255c60415018256667	P3P3land	PEPE	erc721
 \\xa93e294502550d4fc3373847400978d04c01c1cb	THE GRAFFITI COLLECTION Open Editions by Felipe Pantone	THEGRAFFITICOLLECTIONOPENEDITIONSBYFELIPEPANTONE	erc721
 \\xc22b1b9c3e8b67b3714f7400bfc58d7fe4ccf522	Bloom, 2018	BLOOM	erc721
-\\x7daec605e9e2a1717326eedfd660601e2753a057	Unidentified contract		erc1155
 \\x61d1484c9d48dbfdfdda81597f3b40a1f93ec4eb	DegenArcade	DCADE	erc721
 \\x4721d66937b16274fac603509e9d61c5372ff220	FastFoodFrens	FFF	erc721
 \\xb51f4206ad8149af72e0d600aee02d0fddb4edbb	Danny DAOVito	DEVITO	erc721
-\\x7d4a9ab145577ca2fd2810a08db1442c7bffea59	Unidentified contract		erc721
 \\x3cccba37c7514be89d7258e89ea83f3841499103	SupLadies	SL	erc721
 \\x1889b8d0860884c3595776419814168d07550cc1	Sleepy Sloth Society by Zzz Labs	SSCT	erc721
 \\xea5ad338924f9c49263d4d5a120c1aac9c9a673a	PEPE-OH LAND	PEPE-OH	erc721
@@ -10100,7 +9714,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x24d7fe5c678664f3f4bbe563cb0b411a1aa74c17	mechSTAR: h o r i  z o n  	MECHSTAR	erc721
 \\x1ffc950aa28f235a3245f88c4021b39160dc9294	CompanionWolfClub	CoWC	erc721
 \\x15f9d9332d106f10b2680901fa827b317a8be288	Flora	FLORA	erc721
-\\xa03b5a5bbc8f248254021763af5dde6e4498a029	Unidentified contract		erc1155
 \\x23fda8a873e9e46dbe51c78754dddccfbc41cfe1	SeeDao	SEED	erc721
 \\xfa8c109f5efa3b40c2dff5000f53bfc0f153dea2	The Heartbreakers	HBS	erc721
 \\xa111b06afa68703ad58732ce963386cbb2440f99	Now Now	NOWNOW	erc721
@@ -10113,7 +9726,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x176e0fe17314def59f0f06e976e1b74203be4a55	PhunkyApeYachtClub	PAYC	erc721
 \\x7f5a6c7936c1158776cafc474124e256c1b94849	MiceForce	MFORCE	erc721
 \\xdd1c843a0e960724aa00fe96d9f7662cd932d01f	Transit NFT Meelons	Meelons	erc721
-\\x936ebff82c75cb8b6a3baa519259af089396886a	Unidentified contract		erc1155
 \\xfd69bce04ee5979c24f72504569c0f399c4b4624	Tropical Turtles	TropicalTurtles	erc721
 \\xaa4954adb0495439539763c274f393d2e593e019	Greekdx	GRDX	erc721
 \\x428c28811febd2a8a1deb6b518cce77da2c094b3	Rocks	RCK	erc721
@@ -10140,19 +9752,16 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x4ae8cf925e010b917a7337796c7b91ee46e4beb5	The Cassandra Complex	CASSANDRA	erc721
 \\x797a1d149cfab0ac7392ec412de2e3d44554cec5	Lil Bitcoins	LB	erc721
 \\x93af00f62ebf5e29940bcdf6c6a86dac7887b767	PINK GALAXY	PINKW	erc721
-\\x046427fa6b924739cd98ee507cb0db34c7a66c2e	Unidentified contract		erc1155
 \\xebf61a776425046fc6c452d30700f7a2511f68aa	TheNeed	NEED	erc721
 \\x7f3c27a823376e64c8dcb73d4b51c50459fe1966	PenguinBottoms	PenguinBottoms	erc721
 \\x8e3e11d9386999bca0c122df081eb72c0ae6b2d8	Live Art	LUV	erc721
 \\x7761ec033f4d8519c72ed395d95c25efabf91a34	Bored Eminape Yacht Club	BEYC	erc721
 \\xf102f6d0759b0cf6b5b61745ec51fc20f7f67a21	the90sloot	90SLOOT	erc721
 \\x6cc5831c72df8d076357e20bda6d72aa5b48bd49	Djeenies	DJN	erc721
-\\xad0865d04a8f2c7c563e94e296ced47f30118b07	Unidentified contract		erc1155
 \\x7c9c5920629b93743b501f0876ee63c299d32feb	Hog Gang	HOGS	erc721
 \\xc125bb132f0d0141456982821f6d5ca82c5530b5	SunBlocksTraining1	SBLOCKST1	erc721
 \\x18e8e76aeb9e2d9fa2a2b88dd9cf3c8ed45c3660	Maltjik.jpg's Depressionists	DPNS	erc721
 \\xba12260139d99107ff1af8ebb2d79b7819e7735a	Middleton Creative	MDTNCRTV	erc721
-\\x47a1bc1a25bc09ab8607b4d5cb38bc83fd1f2e0d	Unidentified contract		erc1155
 \\x1fbc844a5e8e9df0c529bc16e0fc25b299c6a786	Toronto	TORONTO	erc721
 \\x0d685869cf9ce4a6bda2380ca76f504dd18eab8c	CryptoFoxesOrigins	CFXSO	erc721
 \\x44d26d3ba60df9e9737399a6ecb9781d7122a752	Hog Gang	HOGS	erc721
@@ -10179,26 +9788,20 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x6b666a56897ba2326ea2aceef2448a990700a34b	WasteLandUnionNFT	WLN	erc721
 \\x094c8e76d9e1e2a9c447d115dd1df043947c8126	Eggzilla	EGGZILLA	erc721
 \\xec9e799c6819bd792d35a4002e89d2cdc645031c	NFT Mint	MNT	erc721
-\\xebf44c51f466296668aa8329d7d7fc2b6cbdd36a	Unidentified contract		erc1155
-\\xe952bda8c06481506e4731c4f54ced2d4ab81659	Unidentified contract		erc1155
 \\xf61690ed5334d00ba7e03ff96dacf1fcf0685169	BabyDeluxe	BABYBEAR	erc721
 \\xb88392425e7b8db37d43b1eb62022c9432fd997e	pxMAYC	pxMAYC	erc721
-\\xe3da41cd7d644129920b06a92cdda4fda7beaaf3	Unidentified contract		erc1155
 \\x96fb5e22cbbd7c1578f963d16f7f558b14549e7d	PEPE Beauties	PEPBABES	erc721
 \\x412b98fecc9d1ff664df6083f228db839108e1cd	DOPE DOGS GAME	DDG	erc721
 \\xa8ce7026863b1c8dea3be3f671dd7eae6315aff1	Bubbler Symbiotic	BSYM	erc721
 \\x7e94853f229e0d2feaed35f969cbbc63fb2c24a0	Debonair Ape	DEBONAIR	erc721
 \\x4526d47d6281c1afdec0b631ffe9889a9561cdad	Baby Coterie	BABY	erc721
 \\x338866f8ba75bb9d7a00502e11b099a2636c2c18	Women and Weapons	WAW	erc721
-\\xe6b68127f4270df2450464c8e0689b6859eee652	Unidentified contract		erc1155
 \\xd9aaf0b1733159a4628ecf718a9a3920691891ad	MaxonBollocks	MXNBLKS	erc721
 \\xcddef51cd8f727b9661e44f090d71a1c7fafcf66	PHAPE PRIME	PHAPE	erc721
 \\x9110a9243c53cad0680c782827bd0d3549784bdf	Pinkslip NFT	PNFT	erc721
-\\xa57c9596934591c69bf720edb988555f7522d2f7	Unidentified contract		erc1155
 \\x7deb38a22694608a58b28970320d39ee50e7bc0f	TINY83	TINY83	erc721
 \\x1f8a79d58d25ba00b14edc1b96f6ed95987428c5	The Planet of Hares	HARES	erc721
 \\xdc2c9e85033ceb0aea0c4ed619a627d890b47b4f	Deep Feeling	DF	erc721
-\\x17e1bd6009702a4c47309d6dc8af0bc847327c46	Unidentified contract		erc1155
 \\x2a2205daedb1af58e0086fe2d4826e64a28ed69f	Electronic Pepe	15	erc721
 \\x000e49c87d2874431567d38ff9548890ab39baac	Goobers	GOOBERS	erc721
 \\x6e188bcbfc30a461c83edc70601cb088f560b730	Bored Ape Teen Club	BATC	erc721
@@ -10234,7 +9837,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x3f8c2d6d5de5a3cbfb5440d93721abf953c251ea	Artue	TUE	erc721
 \\xaa4c5486769d14c8e3c618bf2d2764e6be5d0cf1	Squid Apes	SQA	erc721
 \\xbf4b6eafa562e98be6fa2ecc21e81d6b375e6e63	Disco Dogs	DDG	erc721
-\\x0ee7bf57733e3da8c015a0e7e395d641fac512d6	Unidentified contract	OS	erc721
 \\x9e8d7fbb7d49ccf03b9bcacc4b3bbd7384e2cfff	Creature	OAC	erc721
 \\xae51f350061133b10114eb3c62f6c045df670555	UPSIRENE DAO	UPSIR	erc721
 \\x2015c347a8ba2da31189f7c1e28f7add640f39c9	Scribbles	SCRBL	erc721
@@ -10251,7 +9853,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x0eaa78e6c914b27bb2db56f1dbdec9cde34f02f3	METAPETS	META	erc1155
 \\xd81f156bbf7043a22d4ce97c0e8ca11d3f4fb3cc	Maps	MAP	erc721
 \\x6dd2236b1e089762cc264c85eebcff195ae38ea2	Stake DAO NFT	sdNFT	erc1155
-\\xbb9140e0344ba1c3565d2f82b09421e3f73fe7c3	Unidentified contract		erc1155
 \\x893d8b5390317caaa734ace8edc2acbfe7db43c4	Smoking	FMSC2	erc721
 \\x5198dfdc6efd06db7d3ee7c65e794caadca4296a	Crowded Fields	CFPC	erc721
 \\xa995e2c57b15478a30ff387bf5b863ea85b934ca	Benangbaja Studio	BBS	erc721
@@ -10261,7 +9862,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x4d9a13e6a34775fd24e51f957e4c6d35e91e8ec7	Sam Hayek	SH	erc721
 \\xffac70f3ba4ae74a53ec6e319c88a173dfafdcf3	Secret Walls Marker Mascot: Series 1 by Secret Walls	SECRETWALLSMARKERMASCOTSERIESBYSECRETWALLS	erc721
 \\x224824908333b00be96fd4a52ada7f7597c22cba	Gamer Monkeys	GM	erc721
-\\x1de8a1ba9e5f316d5c6fd964ba75e969d6d840ee	Unidentified contract		erc1155
 \\xea08ac46854f4bd2aebb17a345bb33069a2019a4	Digital Delicacies	DELICACY	erc721
 \\x7e35d41836c996449595b7c6e82d76df4b58fbca	ChineseLianpu	CLP	erc721
 \\x54e65f6cd1caa91ad74fb6395d644c7f7f5e1a34	The Face Shifflers	TFS	erc721
@@ -10278,7 +9878,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x65721c71d92432981991ccb99aeb717f3e42d96a	Cylindurus	CYLNDR	erc721
 \\x3228d344ba9dd52dbe6b3ef4cb967bfb88764df0	Night Reflection Four by Kim Henry & Eric Pare	NREFL4	erc721
 \\x7a7ce2d83a07f4960109e702131af078617012ec	PoteMonNFT	PM	erc721
-\\x8b56b4c300d58e7f5694dd8ec35aee9dd054881d	Unidentified contract		erc1155
 \\x71b8319279436dbb5ed2c30a902f4e4a796575c4	Muck	MUCK	erc721
 \\xf62c6a8e7bcdc96cda11bd765b40afa9ffc19ab9	HeadDAO	HEAD	erc721
 \\xc4deda0c636cee036cc1f650fdd8c3c2bf0f370a	Phantom of Samurai	POSM	erc721
@@ -10329,7 +9928,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xf96a05e19240c9ef9ad3b5a6e5c2f36fd1ffe4f5	SNAP UNIVERSE special edition cover, Issue 04	SNAPCOVER4	erc721
 \\x5c65b21fed9e97369d0e04b03b3180db3249759d	FramedGrowth	FRGR	erc721
 \\x2f7445cf648fd1d4d299e4bd0a550df697de055b	TORMintTicket	TORTKT	erc721
-\\x12fcf81e41f18235649e8317be9b68033efddabc	Unidentified contract		erc1155
 \\x07712e925a753da463d3be2f4731957857dce42a	Fan Bits V2	FBT	erc721
 \\x9692758901e398d4d4ed1ceebd16ad82abcb61d9	The Last Ones	THELASTONES	erc721
 \\x665a297b7412e0d08af37fb7492dd0e7c438eeca	888 Inner Circle - Yellow Realm	888Y	erc721
@@ -10353,7 +9951,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xece484493ef1d48df1c5b71bdb1b4df1192a11bb	GuildPunks	GPUNKS	erc721
 \\xf846261b048e0bbe815fa8d26d621090e70a2f3c	WhiteRabbitOne	WR1	erc721
 \\x3a42841fe526f7ed967dbf013a7e26c9026b3c81	Dragons (for Loot)	DRAGONS	erc721
-\\x929a8af7215f849f05366b41ba12c3114c188db1	Unidentified contract		erc1155
 \\x5bdf397bb2912859dbd8011f320a222f79a28d2e	Corruptions	CORRUPT	erc721
 \\x082dd3f3352d59de9d75dfd71449b02140bfd2c5	Giant Animals	GA	erc721
 \\x01a6fa5769b13302e82f1385e18baef7e913d0a7	Cool Ape Club	CAC	erc721
@@ -10363,7 +9960,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x9f1bb81734970abdef41037dc490db6941b29eac	Simpz Ex Machima	simpzexm	erc721
 \\x635543520ce1f468e007a9aab1d267d74eddc004	Secret Loot Club	LOOT	erc721
 \\x009d7d591efc072283e84cf55a03702433713d1f	InfraVision	INFRA	erc721
-\\xca24340e324b5f5f034da3d194e847c8af7d1822	Unidentified contract		erc1155
 \\x0e56aac23b99d1b6c306306db65b2638cf17d039	BHZ-LONGSTRANGETRIP	BHZLST	erc721
 \\xdf98c5982cf1e5829eb9e5803464b3ddc628acc8	ELIT3ALPHA	EA	erc1155
 \\x5267f4183868f0bff6f95b7ba70c9f0193e645c0	Lil Devils	DVLS	erc721
@@ -10379,8 +9975,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xc893b977ea42144da53325f075f05ad2be043f26	Gas War by x0r	GASWARBYXR	erc721
 \\x20b822001da55e4a7d5461017e64f609eafd101f	CRYPTOBABIES GENESIS	CBGEN	erc721
 \\x225144eb43913b30b6c1f43c9b72698bcd28a3bb	The Sentient Machine	TSM	erc721
-\\x8240534f3fbf684c0e29635ab5c8f8efb6f66d42	Unidentified contract		erc1155
-\\xa803144e27aef2ac95e7ab49214bd2f802c883dd	Unidentified contract		erc1155
 \\xdf7366bd68528eb4a3efd47f48d8e4d8c0311ccf	CryptoWines	CW	erc1155
 \\xd144b10e9837b24e0015e816e3cfd63ef5e4e192	Robotars	Robotars	erc1155
 \\x9200d984d029734c3c6103e1b6876eb389cabf67	Rowdy Society NFT	RSNFT	erc721
@@ -10391,20 +9985,16 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x63d48ed3f50aba950c17e37ca03356ccd6b6a280	Cozy Penguin	CZPG	erc721
 \\xfb4686447424d436f6a53b6369a6895fa596a41c	Lazy Monsters Space Club	LAZY	erc721
 \\xb2d4f230298cf68164f6c5dd994068cbb4c3d335	Alkimi NFTs	Alkimi NFTs	erc721
-\\x8eaaabe11896bd09fb852d3a5248004ec44bc793	Unidentified contract		erc1155
 \\x7ad654b3dfecd779d75a4972760dbb4e9b738ebb	Time Travelers	TRAVELERS	erc721
 \\xa1621e8269f303874298dbef1bb59d20d705af1c	monaco mix by rita vitorelli and harm van den dorpel, 2016, 100 editions	lgmm	erc721
 \\x6f7cfccc091300bdc8a3c33cd4e29668a7b4988f	JEWELS	GEM	erc721
 \\xc2d718b5f908f33ae7dd53334794d654ac05f72f	INCEPTIONPASS Collective	INCEPTIONPASS	erc721
 \\x7a0b85af50d78c679d680fbefecc17bbd989b260	Smoking Ape Gun Club	SAGC	erc721
 \\x60d9b4f9d85695274a5777537f204675082bd745	Party Grandpa Retirement Club	PGRC	erc721
-\\x43f48b416ee0a6367754c8257f2ff4d91c7a181e	Unidentified contract		erc1155
 \\xdc8bed466ee117ebff8ee84896d6acd42170d4bb	Non-Fungible Soup	NFS	erc721
 \\x391237023b875607a66b7dd6312cae4a40eb2d47	Lee Mullican	MUL	erc721
 \\x9586ff00c01ff588438414795589f524de430ab0	3D Wonders	3DW	erc721
-\\x36f1bfa4eec9a89ea897e9e8b44462471106c10d	Unidentified contract		erc721
 \\x67c3a89689d75d5b7d7875e5b0485dc7d7a1eca2	MetaWolves	MWL	erc721
-\\x4d57b36c1555b48a63feab9f90d38a9b7ebc4419	Unidentified contract		erc1155
 \\x2fb6a7747f52ee559e9fe0fa8ba4608fdbf1d541	4096	4096	erc721
 \\x3fe15e14187074f21dc5d354cb70695de014a562	Gravis Finance Captains Collection	GRVSCAPS	erc721
 \\x747f9d9497771005cedb9f38181a075f9022a06b	ZEITGUISED Series 000001	ZTGSD	erc1155
@@ -10437,7 +10027,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x32a705510790abfeee275f505c1e2d273595e62c	Ashley Longshore x Metagolden	MGOLD	erc721
 \\xbd16c356e4dea7b0bb821b853f684ddeb8dd1620	The WizarDAO	WAO	erc721
 \\xf3fcd0f025c21f087dbeb754516d2ad8279140fc	OpenVibes	OVIBES	erc721
-\\x3df25f701c97f8f95590c8dd7b0ce34d61e3b590	Unidentified contract		erc1155
 \\xe1da71be38eee04f2d9a38b086a565205dac82a0	Apocalypse Font	☣	erc721
 \\x4d9be129e88fb9a9c7eae5ce21908ff935c5e951	Creature	OSC	erc721
 \\x04ea14a3337446998486b5bc38c8d4203cfd2249	Ret(r)oys	RTRYS	erc721
@@ -10451,7 +10040,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x9261b6239a85348e066867c366d3942648e24511	MonkeyBet	MBET	erc721
 \\x265063399c6e23c7ffae956f9d44bcef700c59b6	How We Grow	GROW	erc721
 \\x118813f76ef0924af9f62cd222bed2714abcbde5	SpaceBots Passports	SBPP	erc1155
-\\x0a5ec5911639bc6f49818f9eadb961fb462e8323	Unidentified contract		erc1155
 \\xbfb98beace995653401863943c8c990d8173feb1	Dinomonks	DINO	erc721
 \\x07a0cba61cbce76203e53e026af4c8c21a90953c	CryptoGreeks	CG	erc721
 \\xbb53f28dad8704464faa4e2c17b5ebf807130408	Dreams and Visions	DREAM	erc721
@@ -10499,7 +10087,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xfa0dee816364275becdf8b3779b0d9e54a5f5b98	METABOB		erc1155
 \\x7f6c033ec60fefb4f29d63448567d5f609322b6a	The Pickleverse	PKVS	erc721
 \\xf5d48c791414382e36b5927b55dd8587d7d1afe6	Art by 500eth	ART500	erc721
-\\xf3b6fc1cee6f35941f64bfbc6ea610aee5d2b947	Unidentified contract		erc1155
 \\xa3c2e31ad437742173706578748a223dda95f019	The Divine	DIVI	erc721
 \\xdc3042c4c6fefd784d24d5f830025ab48d66779a	Authena Fragrances	AUF	erc721
 \\xccf43a244ab1a88ab6f3ff8e445fdddef454c602	LETS GET PHYSICAL! by Alex Solis	LETSGETPHYSICALBYALEXSOLIS	erc721
@@ -10512,7 +10099,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xb78026d03478896d23a7ad3e0380b4acf9295980	SexNFT BoySperm	SEXB	erc721
 \\x5b6aa3695956af03a8b8b07b88eb61b8ae1f64c1	Yuletide	DBXMAS	erc721
 \\x0a789e88a624e12040d324f795bb82b73867021f	Take Heart Collection	TAKEHEARTS	erc721
-\\xacc5bef50fc56fd0d1350ad6f735eb6d9d90b3e4	Unidentified contract		erc1155
 \\x05febf6a40a672854b3549f2b814e9a9946e6cc7	Floor	FLR	erc721
 \\x8c42dbbd449d53a7559685470dc77c25f9739f93	Dance of life	DANCE	erc721
 \\x48cdecf8ccadddd95bcac3d271a01732b47ec7b9	LEMUR LEMUR	LMR	erc721
@@ -10522,7 +10108,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x9fcb4f8fc4f780303ee17f33a10ffea1a52bcba4	GhostBros	GHST	erc721
 \\xbc1e44df6a4c09f87d4f2500c686c61429eea112	Derpys	DERP	erc721
 \\xc9038907cf4ea434443a432611b3d4c62c038115	Pepe The frogs	FROGS	erc721
-\\x41eb9dd376c9a3f1c02e5f3f89f22ad6ae970d51	Unidentified contract		erc1155
 \\x3bb983807373d9a78206db051c77b385dd094436	Seva.Love	SEVA	erc721
 \\x97124b9251dcb3db9ca189a138609233f0f0a4dd	CocoDraco	CCD	erc721
 \\x4e669d161e8b2430cf203c09ab7f3fffcdcf1388	OSCILLO NFT	OSIL	erc721
@@ -10550,11 +10135,8 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x6dd55cc3a318c20d6ac1c570ef814d327351e629	THE SNUFFY 500	SNUFFY500	erc721
 \\x4655f41dea823d556f237dc23691a748b7ea5697	t3rm.dev	t3rm	erc721
 \\x901682fe39416e61526203a11d212e3329d07e92	Gamete	GAMETE	erc721
-\\x8620bb2bf262a1a859020f3742203ecc907c9978	Unidentified contract		erc1155
 \\xff063937523c4514179a4d9a6769694baab357a8	888 Inner Circle - Pink Realm	888P	erc721
-\\xa74a6005f87b0ec07872d802459330f40ff6ae86	Unidentified contract		erc1155
 \\xf100518792c6804d8e14b8ecc91a374efc049ea4	The Haas Brothers NFTs	HAAS	erc721
-\\x6116b35f05c069a09201dd68e3219779bf18db35	Unidentified contract		erc1155
 \\x98ce7effebd16f58c7dd48fe842316cd1ca0be4b	The Rebels	RBLS	erc721
 \\xe82d7e6b546ec6dbc992fc8e5dfa589d2ad784aa	VAPES - Vertically Flipped Apes	VAPES	erc721
 \\x9a04f8d540f9f614477a2fa9d298b81283cc1351	Dream Sequence	DREAMSEQ	erc721
@@ -10565,7 +10147,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x0e42ffbac75bcc30cd0015f8aaa608539ba35fbb	Mind the Gap by MountVitruvius	MTG	erc721
 \\x84fd2ad58859b8ba163886033fa1b49240beed8c	Snails Free Mint	SFM	erc721
 \\x0e1f990d264a9818460dde1b81c0b04d8a88e751	TIMEPieces x Robotos		erc1155
-\\xdadff4a17d47badd8365822873f94b0abed8ceee	Unidentified contract		erc1155
 \\x9403cdaaadb570616c8dbbbe062eb97c405acb1c	CoolAmongUs	CAU	erc721
 \\x26f1077ae1cae792880d5d2ddf1a13bc379813c7	BlockchainHamstersSquad	BHS	erc721
 \\x722ea3c9d160fdcb89858db369de0fac32cc8641	Poolboys	PBOY	erc721
@@ -10600,7 +10181,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xffbc81170340cc12444615e14a39cc4240244a9c	Woodies Special Mints	WOODIESSPECIAL	erc1155
 \\xa2a3d9c2149d6dfec9fa49e05ae04b8472f818cc	PHUNKS PHACTS	PHPH	erc721
 \\x90ca8a3eb2574f937f514749ce619fdcca187d45	Gambling Apes	GA	erc721
-\\x60e5ba29c51a7102e09f691aaad4809bea75dd7b	Unidentified contract		erc1155
 \\x24ec50afc36c8c25f8fb07157a2cc262d98ffcaf	Real Touch Designer	3DTOUCH	erc721
 \\xd040bdc1a4df35f3eb0ddeff2e9550061de396ac	Lil' Heroes by Edgar Plans-	lilheroes	erc1155
 \\xcf0951ab291c5aeea59fa99f088a0baaa78b47db	The Blerginning	BLERG	erc721
@@ -10608,7 +10188,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x9bf53d8c65f03d895dacaa776cc960e462ecb599	Primera by Mitchell and Yun	PRMA	erc721
 \\x99b853ee4307d1089dd151f5885d45367a96a3a7	Metathugs3d	METATHUGS3D	erc721
 \\x3920ab837a7a6e947a90dc52a91d9fb57e5079b5	Tropical Readymade Ball Planters	REDYMADE	erc721
-\\x31158181b4b91a423bfdc758fc3bf8735711f9c5	Unidentified contract		erc1155
 \\xb091913861cc5e70668729144cfb8c611a4004f0	Ships	SHIP	erc721
 \\x29f1c1c5d3cd7e9c5c2d08d768204c7763347b96	Cuties	CUTIES	erc721
 \\xe80061f02e3ccb5277e64d5c3334620eb4c91033	Magic Shroomies	MGS	erc721
@@ -10649,9 +10228,7 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x055700706718279e089523b5166e423c7537c4f1	Rooftops	ROOF	erc721
 \\xfd69cf87ec3d8086926ffb10bed891379bbf1eca	Racer Girls	RACER	erc721
 \\xdf0266018ba8a233ccaeeb964c0872f5e8a21564	On Dreams by Hyperphantasia	ONDREAMSBYHYPERPHANTASIA	erc721
-\\xe242300ada476825a2fd39c9f8bf4d3376db20b1	Unidentified contract		erc1155
 \\xbc5e52353c7871fa6dddc1cb3ac192acc2920483	PandaBlocks	WEIR	erc721
-\\x640655d4553cd5545f49af56c2604b95e8505eac	Unidentified contract		erc1155
 \\xe00d98151b43fa6f2b0888952a392cfc9cf6fc24	Pussy Riot	XXPUSSYX	erc721
 \\xb7b1403b5ce89b446e4b73d5812fd447232cccc3	Optical Illusion	OPI	erc721
 \\x31a3be0eb8de880e7d00253da8d22631eb202062	TOKYO DARK GIRLS	TDG	erc721
@@ -10694,7 +10271,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xa6ab2f41e116c5c125fb81c6e6b19b755b361dc9	MetaSniper	MS	erc721
 \\x56ee7c8de67e00be2476372e463657d68de9f8f1	MVPD	MVPD	erc721
 \\x3bdde4d5b309f372e755212701037cba48bb9004	Art by ZOMBEANS	ZOMBEANS	erc721
-\\x9f4853789f51400a15e37d4c17629c8d2905155f	Unidentified contract		erc721
 \\xd94abf175dabb8153b6e5d4362ae57a26967fb3d	The M Society (Mr M)	TMS	erc721
 \\x044ec0152b9f253f0e71e567aaf40b37297886a6	NFTNatoClub	NATO	erc1155
 \\x4cfda7be4d62db7214dcaa582a2d721eb5a21ebb	ApemaniaSocialClub	ASC	erc721
@@ -10706,7 +10282,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x1e1b4e127a510cafa6d0eaec024a4319a5e18821	Cyber Gorillas	CyberGorillas	erc721
 \\x82c7c02a52b75387db14fa375938496cbb984388	EthBot	ETHBOT	erc721
 \\x099e369bd62e4c29ff1acbdaa05cccad9edadbde	BAND Royalty	BD	erc721
-\\x32894eb0d5c48ae5ed6b6761b76eba621c6e1b0b	Unidentified contract		erc1155
 \\x669cd1b2c841acfbe5725a6490659dbaf8cf3332	Turtle Rescue	TR	erc721
 \\x61626feae0501e4d6bf00ec2df902e1505b33762	SoulwareOrigins	SWO	erc721
 \\x53a4a5c46cb7dd288cf9457c5be6b92d0f00429e	Act & Expres	ACT	erc721
@@ -10723,13 +10298,11 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x737b8ad57e35569499752d3b05e31b578d012b74	WeMint Jefferson	JEFFERSON	erc721
 \\x19324ecf39eebbaa7bf3a217d88101436e7cb229	HashGuiseGenZero	HSGS0	erc721
 \\x41cb4a771fdd019adbf4685bd4885fbbeede1784	NOUNDLESTHEORY	NOUNDLESTHEORY	erc721
-\\xf7fde8933a2ed764c6135a52d4caa47559c0f059	Unidentified contract		erc1155
 \\x2b19466ee159de81c0393b933472bba4ebd8e0be	Awakened-Avatar	Avatar	erc1155
 \\x8bdca0301ad51ccbb94ca3d25d13bd210225254b	AlmightyPigs	APIGS	erc721
 \\x00ff07204c3b27d72cf83ef521adb7066167561a	Hokage Piggy Token	HPT	erc721
 \\x7c9b40440e7d9e6de06e64e5eef96afaaf08e42d	DragonsGame	WizardDragons	erc721
 \\x89842789784eb86b00752b05c73af231f65030ad	the Fatal Impact	FATAL	erc721
-\\xe165a89fc7299031380bfda3d4289a4f0014560d	Unidentified contract		erc1155
 \\x7006f401923f5753c53c11ac95bca98db8e19061	Agent D's Secret Room	ASR	erc721
 \\xa75904261588be56d53e39c3dd56422bb055c52b	T:ME	JPN	erc721
 \\x388c7a9ecf946f5ebb4385d1fd1bc61a10efef38	PEPE Playing Cards	PEPE	erc721
@@ -10750,7 +10323,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xfe54f2007b07af0ebb8bf1eb3b3ef2cef0db094f	The Infinite Machine	BOOK	erc721
 \\x083001e0c88fd7e59f6cc2195ab5bda0e82aebea	Ocean's 11	O11	erc721
 \\x8d17ca37bb689e7c9ae74397eb9c57c69f2447ff	MoonBoyz	MOONBOYZ	erc721
-\\x3bc09e34175de8b98d6fc9637de2b0c33380b9f0	Unidentified contract		erc1155
 \\xe49b9eb62efbc9945564414a7d5fe45911d67505	Verisart	VER	erc721
 \\x9d04d14e4a7089aa875daa5b8238cb607d1d517f	Forever Vacation	FV	erc1155
 \\x8325d5dc5efe8e5ce2d868d93d72facbb75925c2	Cosmopolity	COSMOPOLITY	erc721
@@ -10789,7 +10361,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x73a013cdb8c1d09ae3fb71d01dec6ca8095cf638	Hooligan	HLG	erc721
 \\x1fe92f36db21bb92ef183d7eb9af91657c1c85fa	The Adventures of Mineko	MINEKO	erc721
 \\xeaf546758e6e1ebcaf0b1d7e0bac5b7262c73f00	Spirit Orb Pets v0	SOPV0	erc721
-\\x9fe6f41ca212049a3a887288db069cd9c22258a6	Unidentified contract		erc1155
 \\x8653dd6ce3715c5ec9ef85a08dd788acd8f1b48a	Diamond	DMND	erc721
 \\x5f61975816ecdc761fac1e4d6359bfd4c3941e2f	Gaussian Timepieces by Takens Theorem	GTPTT1	erc721
 \\xe203cdc6011879cde80c6a1dcf322489e4786eb3	Loogies	LOOG	erc721
@@ -10806,7 +10377,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x19396df7412a74da57c3c4ac7ee2034491219508	Sleepy Shark	SleepyShark	erc721
 \\x9546eeb89df8f010da4953c2ef456e282b3db25a	Angry Apes United	AAU	erc721
 \\x36b6698544c96033152674e1dfccd868fb92d82d	MetaPredator	MP	erc721
-\\x688c91412f079cd6c9aeaa637b75dadd86febeef	Unidentified contract		erc721
 \\xb5e38715d5cc7a48984b7f8323bfe39d6d8e1e77	Meta Forest Society	MFS	erc721
 \\xf3114dd5c5b50a573e66596563d15a630ed359b4	Fat Ape Club	FAPE	erc721
 \\xcf3d707e2b3b3c76aa08f20afb7887c4114f5703	Queens+KingsBody	Q+KTBO	erc721
@@ -10820,7 +10390,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xf977ba7dba13ae1f954f24a6e7fa78410a90b4e8	Lost & Found	LFXHKJ	erc721
 \\x8632878d72fc7f9a1fcf62f5da096f77f7ecce4d	Lands End	LE	erc721
 \\x8b19a0b00eadb34ade0803062fee1e96e13a2dfd	Wrapped Etherization	WETHZ	erc721
-\\xfa3771fdd9588191f65c342683ba2816a538b81e	Unidentified contract		erc1155
 \\x9798655bb4803fb92751e29cca181217ec960e4a	ENCNTR	ENCNTR	erc721
 \\xf7f7b853fe278d6caf6962ad34b8719a49546015	Flying Cities	FLY	erc721
 \\xca75d883873bcd2f12776262d93c2e02e76e8a59	Winter Wonderland	WW	erc721
@@ -10853,7 +10422,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x653705486dec7909426157b4de1e27b19a481f95	Koro Card Combat	KoroCards	erc1155
 \\x0de7b6e3e2a1e5be39f57ed3f2eac7f3685675d8	TycoonApes	TYCN	erc721
 \\xd6dacb4ec29aff196b19ddf30aeee9ef5b6a8e7e	Bryce Young	BRYCE	erc721
-\\x6f60a2855ddf15c5f9f204f83ba7a7d4061285a7	Unidentified contract		erc1155
 \\xfee27fb71ae3feeef2c11f8e02037c42945e87c4	Colorverse	RGB	erc721
 \\xf44620456cb88c1d51cc6bb43c4728b807c180a2	PudgyChicks	Pudgy	erc721
 \\x547497876f4850579061811e847931223b478c23	First 25	25JB	erc721
@@ -10876,7 +10444,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x7d86c5422d101b6d0f0b8eda236ce49de725346b	Crypto Apes	CApes	erc721
 \\x923b60a6c2431c62f42204c2f0c97c5a7c89fb4c	PACE DEFAULT	PACE	erc721
 \\xb4d7908e3511378b542ed569f52cbaf911f82e67	Toon Boom	ART	erc721
-\\x942c4199312902b45e8032051ebad08be34a318c	Unidentified contract		erc1155
 \\x05c89e762a802652a61521fa8e42593cc498c007	Fatty Foodles	FOOD	erc721
 \\xad0969b48d379bf21f5bf71a13419675789c517a	Eternal Royals	RYLS	erc721
 \\xab146d13720b829c6416d4216ca33576e186d2a8	Art by iJUR	IJUR	erc721
@@ -10935,7 +10502,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x8a914d00e8bb0a4be6e66836e0569e2d303e1e00	Arq Skulls	SKULLS	erc721
 \\xb2be88c72c8cdf969370e41d1409e49875821766	Metajoseon	mtjs	erc721
 \\x17ac2c2dc895f0acfffa5c044c02283251cffe6d	HOME Editions	HOME	erc1155
-\\x513b8db5890f94c2d941ed898dafb09c63a29ffa	Unidentified contract		erc1155
 \\xfac0b889703ab4db3426ef67d437bee3408941ac	The Indifferent Duck	IndifferentDuck	erc721
 \\x2db02b4d1487a8ba26e0793c599ff74c87861d76	ICELAND_Wanderer.Within	WANDER	erc721
 \\x4cec6dca972bb810a1af1ef3c8366b22b390c5bc	Dice	Dice	erc721
@@ -10962,7 +10528,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x100c0033e337b314fd385502e8e3277a751348ca	The Outsiders	TOA	erc721
 \\xf510d6f04c498ae926b271d87eca36812097ac7c	Safe Passage	SP	erc721
 \\x0688e500003b7c3810295ffa7fccff435507b57c	ZENITH	ZNT	erc721
-\\xf6185371531ebe01fb872594a5a6aed659a1c5e4	Unidentified contract		erc1155
 \\xba7506a625231b20bd991f8c56b9fbc023011fcb	The Phoodles Official	PHOD	erc721
 \\x3a556784c56583bebd9996e0e19ec9f7ea17d56f	Sundown Horses	SNDWNHRS	erc721
 \\x219b8ab790decc32444a6600971c7c3718252539	Sneaky Vampire Syndicate	SVS	erc721
@@ -11004,7 +10569,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x4b35574172c58cb20cce1aec091571fe3c2d96fd	TRADITIONAL	TRAD	erc721
 \\x3d3d9cc92dba4559d0f862e34faa33e9967f6534	CAPTCHAS	CAPTCHA	erc721
 \\xd33eb0dc95aff1a5f6ca04ba6cc33acdf85e7f62	Fast Food Lil Baby Apes Club	WuW	erc721
-\\xfa0c2700b4d09f0a62e13d545d8da780b9ed92df	Unidentified contract		erc1155
 \\x13d66dbace34218fddaf50f7057092a43507adef	Hungry Wolves	HUNGRY	erc721
 \\x463d56ffd4d463e22444a03072ec0b75e1e49af2	WormVigils	LUMEN	erc721
 \\x35b7ed0a78c270282a171f0e917490dc83c926ad	samurai 侍	0	erc721
@@ -11050,7 +10614,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x59c0e4b889f4c036dd0d6d759c7b37cf91f3ec01	Turtle Shell Island	TSI	erc721
 \\x1bc7234a2e6bf2f487771977ac22aeed482b9a79	Chef Boi R Doge: Mutts	CBRD	erc721
 \\xb5a5e7c6ee5d6c8082b06fe1c5fe48685ebcac99	The Allosaurus Collection	DINO	erc721
-\\x871b8dd8d98e4fecd7d8e2b8a3c5a5e94ce8275d	Unidentified contract		erc1155
 \\xbd29894252d821277b76c8b2317cfe051a0aac6c	Life and Happiness	LAH	erc721
 \\xbc8f743ec41903e454544814e9ae86e3858177b9	Tasteless Alpacas	TLSAlpaca	erc721
 \\xeae243f3a457cd630d5947d46d9bd5490f20d119	'Melt' by Jisu	JISU	erc721
@@ -11082,35 +10645,28 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x58723cf94baf6ebb5be6b2c8fa7bd8cbbcafa162	Pengy Frens	PGF	erc721
 \\xe5ef6fc7e0dfc81fdadccfef75728cf28c42137d	Carsten Fleck	CF	erc721
 \\x7b426a60ce72643fdf11556ee1d0da3c0a041ed8	3NTITY-8PIRIT Mint Pass	3N8PPASS	erc1155
-\\xd7db307e8c758ee1781fff4ec8a7d2803adff249	Unidentified contract		erc1155
 \\x6650d8ea4ecb39554c904638d39d32a9e10ba188	Art of Axelle	AXART	erc721
 \\x566ba3b8f2c08b572cc2c3095dde9327fd7ee98a	Mutant Baby Ape Club	MBAC	erc721
 \\xc6b27b78128fb2210970cf343565534c02ff9107	Warrior Alliance Freedom Fighters	WAFF	erc721
 \\x8eb24307a8969650bf10b211008b8324ba3d6505	Artificial Tendencies	ARTENDCS	erc721
 \\xa96602e7f43b8b01d3a746bf2e178ef6dde7880d	NFT RedZone	NFTRZ	erc721
 \\x5f4705a33fefef245a06a253bdf4af184dae53b7	Hafftka World	HAFFTKA	erc721
-\\x8dd480b11df28ce56c44c98ca3ae9eea372d7d2b	Unidentified contract		erc1155
 \\xd66247eda32bacc0c06dacc80d19281535ce9d35	Zombie Fish Mafia	ZFM	erc721
 \\x322e582b2a1360b9377628344e7fc61d50ef3502	Mind-Blown	M | B	erc721
-\\x08be0024f7c6ade544d7ccf30749e14cbaf67f4e	Unidentified contract		erc721
 \\xde361820cdcbdf2d1ddbb0b636638b11dc3385ab	Obscure Octopus Club	OOC	erc721
 \\x27274def99d851a35e6f6b730ab0521527da3a41	SpookyKidsAlley	SKA	erc721
 \\x814954baf41f99c0b8de7ec0d7fa0956e298fa67	Core by Raf Grassetti	COREBYRAFGRASSETTI	erc721
 \\xaaec60f5f9d86cab8f07542eb231b024a9a8fb6f	ErrorPunks	ErrorPunks	erc721
 \\x6b4d92b10ae2f93b9f36dbb378c9eb4ff8da0174	OverCloudz	OVCD	erc721
-\\xfb49eef1b8d9ff9ab0576d66fac60848b874702b	Unidentified contract		erc1155
 \\x4d599f37eb7a2853bfa95b2ac1b9fd2197678f39	Punk Asses	PUNKASSES	erc721
 \\xd5380bebb6300944f6043c9107ba57517d31b262	VJyou_VisualDiary	VJDAYS	erc721
 \\xebaeefc0b4fe63aa42429261b66c628ab8048f52	BRIDGES	BRD	erc721
-\\xc6ae0328c110db4ef9710264a914965f187aa601	Unidentified contract		erc1155
 \\xf2a0f5102801e94090c4dac23bc640b61dd75b6b	Wicked Witch World	WW	erc721
 \\xf7b0354c0248b02cf316f73a9ce2f930baa3f477	Nigel@ConceptDept	HUMBL	erc721
 \\x76f359b6fbd0fad703cefd1b3665d00ece8e882c	DeRace Ticket	DRCTICKET	erc721
 \\x3101b0eea4902571ef1152e924fcd550bd5013a4	Digital  Arts	4K	erc721
 \\x0a7b47e4bac56fc51bf5c73db0eb4825d3620cd1	Curious Dreamlike Reality	CDR	erc721
-\\x6958f4e4f955393afb5db7a75909aa17d1edb4e1	Unidentified contract		erc1155
 \\xa7f767865fce8236f71adda56c60cf2e91dadc00	Infinites	INF	erc721
-\\x009c5b7ff119972e3437b51c4f94addb8dbb2bcd	Unidentified contract		erc1155
 \\xb4501493665b7ac8dd6f62665be0333675f39099	Re-Digitalization of Waves	RDW	erc721
 \\xd9110e3e0dc4413f8249e47e323091d33755ea48	Roger Allan Cleaves- Art Collection	FMNLAND	erc721
 \\x5ddb2ca013ebe1c0f2f9ab8ad3d3d4bccdb66b35	DeadHeads Vessels	DeadVessels	erc721
@@ -11128,9 +10684,7 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x4f94ea232919f6f5809b0ea717c038148c2ca443	Lost Moon	LOSTMOON	erc721
 \\xff5f931be65ea81691b9ac49fbe15999fc3234f1	StripperVille Marbles	SMRB	erc721
 \\xf4e246948ef1d92d4533e0bb7a0feca7c80c7332	Meta Boomers	BOOMER	erc721
-\\x91cc74cd9336108519860a2b2bdcb71e93e121b0	Unidentified contract		erc1155
 \\x75c51f0ee60963454f27e196a8d9095eb47cb886	Degen Elves	ELVES	erc721
-\\x36d30b3b85255473d27dd0f7fd8f35e36a9d6f06	Unidentified contract		erc1155
 \\x28fad421deea8140c0d3a2083f9640aa9a086daa	BoredApeSpaceAgency	BASA	erc721
 \\x6724da55f3d8e33bc68e9eb764e27af14407cdc2	Gem	OPAL	erc721
 \\x2af743179e9d464c9bd687e90bc18f5ea146950f	AstroGator Fam	AGF	erc721
@@ -11196,7 +10750,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xddbddece93514fb08c0fa2859e8eb1c5eaa61c51	World of Onigre	ONI	erc721
 \\x4e1f41613c9084fdb9e34e11fae9412427480e56	Terraforms	TERRAFORMS	erc721
 \\x82772a4938f2c75e22656ee3dad124748e71f49f	The Last Stand	TLS	erc721
-\\xbd6eb9a63ad130730ca5dd9037af2c46773b5270	Unidentified contract		erc1155
 \\x7d9c36619dcbc7442c48e2fc390b5a0adb84da20	STICKNESS	THICK	erc721
 \\x414422352231115354167f32a3ecec29a241e0b4	Dice for Loot	Dice	erc721
 \\x4dc6d9536b82552dd1f783fdf5810e517137e1e1	EtherDash	ED	erc721
@@ -11204,7 +10757,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x9b018134a3aafa899e75ec471cb78e7c7bd11520	WCC X CryptoDads Pimped Out Mowers	MOWER	erc721
 \\x3146dd9c200421a9c7d7b67bd1b75ba3e2c15310	Moose	MOOSE	erc721
 \\x3fb52e5eb205ffa14a0190f77287f7fa2ec593df	The Spaced Mythos Collection by Spaced Painter	THESPACEDMYTHOSCOLLECTIONBYSPACEDPAINTER	erc721
-\\x0a6d448547c6da0ed11e10a2358ee0b4f20a8a28	Unidentified contract		erc1155
 \\x0816c41b87200fc5c6176b38af608faeb8d62bb5	NonFungibleFungiMintPass	NFFMINT	erc721
 \\xcb7274eecbc9940f702cfd093ca2ef4ffaa1510a	Mythomemes	MYTH	erc721
 \\x71017b774639e586628e436fc1091155586c2cbf	Billelis	MEMENTOMORI	erc721
@@ -11226,7 +10778,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xbadc6c0dbc64c87f54ab4bdafb0b9349e94fb04f	MonkeyKingClub	MKC	erc721
 \\x2050fc00e016c3ada03211edc35711e44b8d014e	The Awakening	AWAKE	erc721
 \\xac3d871d3431847bdff9eebb42eb51ae06e131c3	NFT Gurus	GURU	erc721
-\\x63f2f3a48afaf0b4a23a96092e4ea90736b0648c	Unidentified contract		erc1155
 \\x9c5722de4158678a0e77eb127cb066da273b0db6	Alignments (for Adventurers)	Alignments	erc721
 \\x5f001a2a283d58192e9af7181ad10110fbbeee19	Cyclops Monkey Club	CMC	erc721
 \\xdce194b00d3d496861731ca230229ec860ae8b30	999PUNKS	PUNK	erc721
@@ -11249,7 +10800,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xdd5bf26263757d0b23dabae4a9ff0edae8fadb57	Frame	FRAME	erc721
 \\x4471ee55b9cb0f59452451bce79f69ac0cdbf51b	ReptileSyndicateClub	RSC	erc721
 \\x7adfe8a2ac15973485f0f8b253d2d75433d5be7d	Gunnar Magnus	GUNNAR	erc721
-\\xf21df2331cd0ea7e88cb6c4b736faf1318e9e007	Unidentified contract		erc721
 \\x7ad940ed9308545990497dd04e76df7d3c127ed4	URSCompanion	URSCOMP	erc721
 \\x9d8002137c84f1ae08c777025758c7760b9eb82f	Jobless Giraffes	GIRAFFES	erc721
 \\x1591b395035159e966d80751dde1a8eb6b194f9e	FacelessNFT	FNFT	erc721
@@ -11259,7 +10809,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x5577fbdee587d164658567bfeab1a4f71a3d71cb	Mark Cuban Experiment	Cool stuff we create 	erc721
 \\x56b391339615fd0e88e0d370f451fa91478bb20f	Ethaliens	EALIEN	erc721
 \\xbb5174381f946eaf487d3f036f75f5fb76c8395b	Skate Bored	SK8	erc721
-\\x9202c99b02284b99d7a6bc67180abaf37163f1e6	Unidentified contract		erc1155
 \\xee6747065eebe87fe7c1db0cd0820139cf2f74be	maNga	N	erc721
 \\xdecbe7d34b4521d07c8d366633269d586a648cfb	Silly Shiba	SILLY	erc721
 \\xe80676e042cbc2043f9e20dd62dd2dbb2abcd135	Inventory	INV	erc721
@@ -11329,7 +10878,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x81dd9c8a758ed5bb111eaf5cc4f45c3ace576129	DNFT	DNFT	erc721
 \\x9476a7eebb2382169ec48e90fb05c33d96cea7f2	CrocZ	CROCZ	erc721
 \\x02d181d796255fb55784df7da7e366d276127750	The Graveyard Sale	SKULL	erc721
-\\x7ef7c5bfc69937341bbb93d1da4f9326eb6ef842	Unidentified contract		erc1155
 \\x41663d3de8effe164644766ea4826493895df22e	Ragnarok	001	erc721
 \\x4e4224fbf98a2e6acc0fee4ff455c742b6e7ca46	111 (A Non Fungible Triptych) by Jason Seife	ANONFUNGIBLETRIPTYCHBYJASONSEIFE	erc721
 \\xf5d431bc1927fe8d98669ba737299b62f9aaf008	SANJAY ROBOTS	SJR	erc721
@@ -11350,7 +10898,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xa13d8a316ba28f4daf8ad5589d8598f5dc2ca878	MetaGame	MetaGame	erc721
 \\x9fdf1eed0467437132cd72144b5b6789d617ae12	Planetary Property Association	ppa	erc1155
 \\x7859b3bea9ed3420891578ef806d76dda4b752aa	Trippy Mints	TRIP	erc721
-\\x88984e0b0d1527f0f5be7e489dd994ecac5fddf2	Unidentified contract		erc721
 \\xce61d66deb02ee4251c6798c4f6d4e41538cadf7	BADBOI	BADBOI	erc721
 \\xe3823ad626d0c3ccb3894ef06b56a4f252d81310	CyberShakti	ETH	erc721
 \\x53c7c6d16eed5323c7f035988671ad149df0f840	Bad Barni Bears	BBB	erc721
@@ -11371,7 +10918,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x6b866ce22189a16b060448df427ee8c957d8019b	Collective 168	C168-GA1	erc721
 \\x99e47b20fa3111274bed1078ed0966847eb24197	YOLO Cat	YC	erc721
 \\x0356d96097723355c6a00011633659a8f2c96c9e	The Sloth Tribe	SLOTHS	erc721
-\\xa0b3a79cf7d4d1203b9d7b702755c18b4c5524cc	Unidentified contract		erc1155
 \\xf60762fe88da57b0c523f2b8f734dce9070ee4a4	FCF BALLERZ 8OKI	BALLERZ 8OKI	erc721
 \\x3c86c66680c850563de5331187595a029f969867	Bit Kongz	BKNGZ	erc721
 \\x321e9378cca218a8fd4a77a439aa6639a0ea2c19	CryptoTrexVX	TREXVX	erc721
@@ -11385,7 +10931,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x159640309cf1e732cff90a3a7c23d3825cd50f5a	Longimals	LONGIMALS	erc721
 \\x05dbbe4baed86d9b1da83e67dea6326e2617dad2	Dodgers MLB Crypto	DNFTCB	erc721
 \\xad01134c631032601c4639030876cd5d5d07df57	E.K.K.O. Academy	EKKO	erc721
-\\x514abfd5e0f9b1be27c7a793704d3446b07a690d	Unidentified contract	NPUNK	erc721
 \\x244fc4178fa685af909c88b4d4cd7eb9127edb0b	NetvrkLand	NVKLAND	erc721
 \\xf6d43e49f05d03cc5985a75b1111d7c48209921c	Salty Shakers	SHAKER	erc721
 \\xdf405ccccbc07f70d36d46dfcbc7ed61c4178d87	Future Art Access All Art Pass (Veefriends edition)	AAAVF	erc721
@@ -11403,25 +10948,21 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x51a7398e38b630f273022736e16206599d260d06	CIAN OC	CIANYOOC	erc721
 \\x2f36cf1e9ef86dc1f73e1df60bdf442155a9ed10	Consensus by x0r	CONSENSUSBYXR	erc721
 \\xba74c02d885aff9ba5a9d1f3d78e92b48a7f3bac	Human Nature by Harry Files	HNHF	erc721
-\\xcfd9aaaaa91e4ae2ef45743058a8383ae61bca52	Unidentified contract		erc1155
 \\x56681458e00cafe1206313d2d033946f458fdefd	COOLDOGS	COOLDOGS	erc721
 \\x463e32b5433f1c097eac42283f68794c5b2c1b8b	Planet Waifu	WAIFU	erc721
 \\x21bd8edb31a7423e8d899bfacfb69b6bbe75081a	Dragon Of Midgard	DRAGON	erc721
 \\x7a15b36cb834aea88553de69077d3777460d73ac	Feral File — Unsupervised	FF009	erc721
 \\xc1ba29ed103fceaffb0c708c69bcb2c0607f8623	The Orc Horde	TOH	erc721
-\\x0745eab680c1c596677eedecb7df38a986522e2a	Unidentified contract		erc1155
 \\xda8be86f37114b6a283c01999925480e056da08e	Reflections 	MIRROR	erc721
 \\x6d5c70cc8dadfe63759b339a9deeb37b4fedf6cb	Average Punks	AVGP	erc721
 \\xaa9303f6960124a8ee796ef61da5ab04954e4b5d	Golden Hours	GMGN	erc721
 \\x21e783ef5890137593d8280ce7fb7e6515179d0f	Redlion Gazette	RLGAZETTE	erc721
-\\x8219b81d9893f3fca3ba1905efc62679a08f2fcb	Unidentified contract		erc1155
 \\x19534c6bc37fd44c93f3a6506e44f32a99670f43	KronicKatz.NFT	KRONIC	erc721
 \\xf4794aeb9d243c024cf59b85b30ed94f5014168a	Stringify(door)	S	erc721
 \\xd88484d652df049e38cfd89b79d87857dcdf8a2d	Creator of Dogecoin Collection	DOGECOIN	erc721
 \\x9d5407c08febe35f3a747da422dc2da45ca30b61	FCF BALLERZ APES	BALLERZ APES	erc721
 \\xf22da0424d1dfd70099d30941bbaf35e7f986f1d	My Homies In Dreamland	HOMIES	erc721
 \\x090e0c2aa7c9b723f8a4e99c9f02f7ae2cd47d27	CarloVandeRoer Studio	CVDRSTUDIO1	erc721
-\\xf6c60065ce956d5ab44fc797a043669060432787	Unidentified contract	PKPC	erc721
 \\x6ca95b029e1bca507c87d42b46157a76dab54ec2	Turtle Tanks	TRLT	erc721
 \\xc6ff2bcfb3fb157102e4390a09e7e78844dd2438	Saffron NFT	SAFF-NFT	erc1155
 \\x35c7e761a199ad1990e2f786471312931951cf00	WAGMI Estates	WAG	erc1155
@@ -11471,7 +11012,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x1d5f486111432b9b8a056ca918b6e42a98416386	Omnis	OMNIS	erc721
 \\xe7bab76ee1d0cfda606d7c898bf6aea11f9490f7	The Life of Blue	BLUE	erc721
 \\x13d7b950b452cd3750bbefa9fff892c1b3f3e5a9	Cutetis	Cutetis	erc721
-\\xddeb05968bd8df1fa1285fd8670046ad1a53ca99	Unidentified contract		erc721
 \\x9dd72e2215a674739642651bcaa7083b97481eb5	NomNomNom	NOM	erc1155
 \\x6e16be154ca5e7351a4855826fbb6974a63f9802	BoardRooms Open Editions	BOARDROOMSOPENEDITIONS	erc721
 \\x511372b44231a31527025a3d273c1dc0a83d77af	Maps Restored	MAP	erc721
@@ -11484,14 +11024,12 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xb8040c0129dbde65571f0de76be93e7c319767e0	Pixel Planets	PLANETS	erc721
 \\xbbee846aa0c57bbcca87889aa290299e54a2cae4	Moments in Time	MOMENTS	erc721
 \\x792496a3f678187e59e1d1d5e075799cd1e124c2	Squishy Squad	SQUISH	erc721
-\\x7169887b559f625a81144eee8ac784d1d8b4920f	Unidentified contract		erc721
 \\x3ab1cc6795950b876ed6192ed8ea575a8483f658	Apocalyptic Apes	ApocalypticApes	erc721
 \\xe3796264933fff09d75a28e184379cca82b780b3	The Birds Come to Live in Blockchain	HUNTING	erc721
 \\x4df461f8c22c0bfb40a51560597d5b946d869d5c	Cryptobots Game	CBG	erc721
 \\x0b68be2e1072204e68c6c0b8b46ac108e3e3ddd0	CRYPTIDS	CRYPTIDS	erc721
 \\x4613becf8acb9e5adc4db994c2007769f37d3504	Exclusible Alpha	EXCLUSIBLE	erc721
 \\xbce3523c077798b9ac09aff6f7c8bd601a2bece6	Melissa Lori 	DIVINEAI	erc721
-\\x517e84661b86134072919f5e6be686e6caaa6bcf	Unidentified contract		erc1155
 \\x48aa17bad2e63558b71a7752a97408dc9090afca	Poison Bees	PBS	erc721
 \\xaa839178cbaa8bb6fe829d2f91eee345cef74e20	Dumpling Mafia	DM	erc721
 \\x9bf335f61a80686fc33f97a3a7f2e762f0b42622	Alien Punks	ALIENPUNKS	erc721
@@ -11503,7 +11041,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xa234909ed2f38f31d0a6fbd13fdbcfb2ae04d0d3	SkullZuki	SKZU	erc721
 \\x7403ac30de7309a0bf019cda8eec034a5507cbb3	Characters	CHAR	erc721
 \\x264d1e3c5739de2ea7fd9429c4335b0a994cfeb3	The Crypto Rangers	RANGERS	erc721
-\\x14ef509e108c849a75b4a229a885cba99ffec35a	Unidentified contract		erc1155
 \\x6b604b9f77e46a5d7b1f8b4719172fec67afc23f	Emojiverse	EMOJI	erc721
 \\xeb113c5d09bfc3a7b27a75da4432fb3484f90c6a	KinesisArt	KINESIS	erc721
 \\x9b4535244caf27e84aa600093fc20955ad179776	SkellieCats	SKC	erc721
@@ -11521,7 +11058,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x7f36182dee28c45de6072a34d29855bae76dbe2f	Wolf Game	WGAME	erc721
 \\xcc0b32fea2c3e2a66f4b90e35356aa557c52b3ac	If You Want My Love, Conduit 001	CONDUIT001	erc1155
 \\x29c9e04e05c5d261836e458bc5b779a7de3c58d6	Feral File — Reflections in the Water	FF007	erc721
-\\x3d76692f81478e04074b59e9cd96bd7f478c3645	Unidentified contract		erc1155
 \\x01dbbb64e6f6185ac9923d47e1f9b20dabadd263	Marian Hill	MH	erc721
 \\x6b207b71411219370931e9922c8dff10ab1fb436	00S: SELF PORTRAITS	00S-SP	erc721
 \\xa7377f1668fff6e0b6a6593854e5752c0382abfc	CPR BIO-ACCESSORY	INVASION	erc721
@@ -11555,7 +11091,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x44467df37184cc452a199fdd60ee4ccdaab5a71a	The Species Pandas	TSPANDA	erc721
 \\x3b4da358199060bcc5a527ab60099fb6a908aae9	Clash of Streamers Heroes	HERO	erc721
 \\x49b3f5230248e6dc637860c842221a2748dfa3a7	SunBlocks	SBLOCKS	erc721
-\\x2aae3c988e4207c6467c00ae1544e90875e92c0e	Unidentified contract		erc1155
 \\x46ccb782da782b9e921dd447736ab64fc4fb2636	Doggo Verse	DV	erc721
 \\x14b26542d1f7851d26ed55942a153cf7986af563	Papillon by Philippe Pasqua		erc1155
 \\x664ac093f047a131403e9b1cbe3ff1df7e756429	Immortalz	IMMORTALZ	erc721
@@ -11569,7 +11104,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x335ea58ca5af39ad8523369d86653f837e85a2b0	CryptoPortals V2	Portals	erc721
 \\x30a51024cef9e1c16e0d9f0dd4acc9064d01f8da	MetaSharks	MS	erc721
 \\xe16464bfe3d943d7959c5aad4564f9abe2f09802	Invisible Cities	IC	erc721
-\\x7f745cc97fccec16f7f8bb8cd333c3c1dfc4ab0d	Unidentified contract		erc721
 \\x5219c2f6f8ed1e76c937ed1269eda2658ba3c721	Club721 Membership	Club721	erc721
 \\x881d9c2f229323aad28a9c9045111e30e1f1eb25	Initializers	INIT	erc721
 \\x41a70a616a35cbfa00cc0319748f281396366736	The SolaVerse: SOLA-STARS	SOLA-STAR	erc721
@@ -11595,20 +11129,15 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x8d4e2435c262eb6df10e5e4672a8f07e42d8d67e	Cryptorayrays	rayrays	erc721
 \\x70cce62eb57512de65d8b1920a84f2f0499eb73b	Cribbo	CRIB	erc721
 \\x85a44587136c551c7fdf1f3e99dc68bde1ba3a2b	Metavaders	MVADER	erc721
-\\x3be0f00a6af964daa2a3a51a4dd5f4c87c3b806c	Unidentified contract		erc1155
 \\x2fbc53e14ea8e4c23be832a0389817e77744fdc1	Otomotors	OTO	erc721
 \\xf415499a4e2dfe9c5d5020b4ed9e4262d58ba34b	Blockchain Devs	Devs	erc721
 \\xa20773ee5895d632c932b2bce9a68eab774a8676	The Trailers	TRAILERS	erc721
 \\x35c415419ecbec4bb3fa87d61944e0d71d6fd2d2	Omni Legion	OMNI	erc721
 \\x21bb3a467dbf103e238783cfb9d79e55cd3929b8	TheCryptoBunnyMafia	TCBM	erc721
 \\xffaf39a574b825bc0f7b134e08f5ae1e0c6b9fab	PatNut Alpha Club	PAC	erc721
-\\xee9861b651ba165cfaeb6c326fe0a6cba504398a	Unidentified contract		erc1155
 \\x1cbd9862f2614dea297546cca075a444add86aee	COLD CALLING	COLD	erc721
-\\xd060910ada4e41e74920901fbec6e4e19ef37f9c	Unidentified contract		erc1155
-\\xae6293e990de973300a97b1f839ea5154cffa6d3	Unidentified contract		erc721
 \\x092520506d00ae1a24de30d707079e9f55bd11b4	Hooties	hoot	erc721
 \\x87dff557a3e1fffb537ab6158d93b5229fb2635e	Unearthed	EARTH	erc721
-\\x53bb74f37c2ca22b2c7fd6a05fbd31d8ff781e0a	Unidentified contract		erc1155
 \\xf5a04957880a92a4f7ce0215b3166efaf1fb517b	YondoMondo	YONDOMONDO	erc721
 \\x730b6e13e58a0e21d85f1e978b4422eb2da63157	456 Collectors Club	456CC	erc721
 \\x3680f4b8af191b542cfb1c467708f43f43952fb0	The Unminted	UNMNTD	erc721
@@ -11643,12 +11172,10 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xa7139e33bfb4b1fdbccba0aa91f7a11a3e42b4bf	SPECTRA22	SPECTRA	erc721
 \\x96e38fde3e46e240de1461a7785da2a61608c320	Zoo Gang	ZGANG	erc721
 \\x95518266918b5cf16e3f11d0ac0c32029b7df053	LUKAS TIGERS	TGRS	erc721
-\\x1066d77f2b0ffe7a667e95ebc442866088ab1248	Unidentified contract		erc1155
 \\x9c631190392d1b70c9d7ccd9be5048b05f508c05	Distorted	DISTORT	erc721
 \\x854eca04ff6c3b01940fe95620c555d3948bea38	bitGOONs	GOON	erc721
 \\x50a66436c7a0abad35b0f50a493819973be74784	NUDΞ	NUDE	erc721
 \\x7816af0fa315757f5efd5b50648e7db9147008ec	Global Footprint	GF	erc721
-\\xd7162092f616ab0d9c14bfa29c38ab781d90d345	Unidentified contract		erc1155
 \\x19d84bbb8331a79e5b31bc4b76b86f8e574b3ecd	digital _.~^_ dreams	DIGI	erc721
 \\xcd71a2e18afa875a7820835d07ab0a5ce522aef3	SexNFT GirlEgg	SEXG	erc721
 \\x90ad78735bc59a5dcb6a038728684c484cd5860d	Official Umi DeFi NFT Collection	UMI	erc1155
@@ -11656,12 +11183,10 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x06bc70a8b30609d70149f0dbcb65b2b8cf6e917e	3D mfers by mferverse	3DMF	erc721
 \\xc3f2c6716e77d9657278aa0a8ca4a760829e1e9f	Kitto Katsu	KITKAT	erc721
 \\x2bdc536ce434bf6c012f49db90b726042368b6eb	Fish Tank NFT	FISHTANK	erc721
-\\x24bf8abaa7370491b54ae552098ad79bb6952cf6	Unidentified contract		erc1155
 \\xd4048be096f969f51fd5642a9c744ec2a7eb89fe	HalloweenBears	HALLOWEENBEARS	erc721
 \\xe7b1ce1d6d6c6ac339fb77e55c7801a82d394d3c	CORPORA	CORPORA	erc721
 \\x367d3a87cc46fd91d202bd2b3ebe820fb010cadd	Nine Tales NFT Official	NTT	erc721
 \\xe7191c896d59a9c39965e16c5184c44172ec9cf9	Soldiers Of The Metaverse	SOTM	erc721
-\\xf6873503f7c7d1dea9cc0710ae5cc33f557475c3	Unidentified contract		erc1155
 \\xcd25d2d39b158e4086e9ade4342c57ff09dcab14	RebelSloths	RS	erc721
 \\x7124633621ef62732e97f28c24ae687530a08447	Zudartverse	ZUDARTS	erc721
 \\x61559040fac44187ec1ba94aca2c27cc52e91023	Cryptoyaji	NFT	erc721
@@ -11669,9 +11194,7 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x638b01204857652e5e8d2c1fbd87738b7fc212eb	Baby Mice	BMICE	erc721
 \\xe3215312246308776a889968566812068c940f2d	MiddlePunks	MIDPUNK	erc721
 \\xedcc5b70aa99f1b49fc7b214a0e2e5e1c06dbdd8	Death Row Records	DRR	erc721
-\\x4d8679083f77a44449162a0a7ce500f77ca406b8	Unidentified contract		erc1155
 \\x9ba24a9fed184d6b7675f1833341d2adb7e79689	High school Nem1	NEM1	erc721
-\\x5b485eb26a57b64b00e7f2b8cb21d317cf8beefa	Unidentified contract		erc1155
 \\x6d57dc970ee761d98b9433ab039722c0be5432c4	Cubeverse Color	C3C	erc721
 \\x3ccad627e9bac83d649eb3bb9a8502ac7b79dd46	Cool Apes	CAPE	erc721
 \\x050dc61dfb867e0fe3cf2948362b6c0f3faf790b	Wrapped PixelMap	WPXM	erc721
@@ -11695,7 +11218,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xe7a523740c7026ffa9f0b6d79df558c3330f3626	Crypto Poly Wealth Club	CPWC	erc721
 \\x5e1a591705b24b123010227d606e40343ff72f16	MetaHouse Pixel Collection	PMH	erc721
 \\x7dc33b42a4970892163c0f30bda8f54dea9fd6ed	MINTPS	MINTPS	erc721
-\\xfe50d8ac2fc36f71c4e081f0e9897ba4520d34f1	Unidentified contract		erc1155
 \\x794ce2e70308822160b60ef73e921478ee06cc9f	Wolf Game	WOLVES	erc721
 \\x26b925eef82525f514c0414db5cf65953d30a4ca	Genesis Blocks	GEN	erc721
 \\xc35ec2b4049dfa7c7bbf350eabe867eaa2eef152	SkyDrip NFTs	SD	erc721
@@ -11710,7 +11232,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x723adb9188317982c46810d5d7b13dee297e37c9	Women Across Continents	WAC	erc721
 \\xfdbb8329f5755c4cd0a1ac172d8a4df66969c1ef	Hustlers Of Wall Street	HWS	erc721
 \\x5e6bcb6c6585cba5c4ec81cb5d77475aca9b349a	The Moment Of Someday	TMOS	erc721
-\\xf5985c3917f857b197168f91324cb7b7d762b219	Unidentified contract		erc1155
 \\xaa6612f03443517ced2bdcf27958c22353ceeab9	Bamboozlers	Bamboozlers	erc721
 \\x213fde8b7fbb8b9ecf7f34792e604eafb9bd292f	GodsOfRock	GOR	erc721
 \\xad20084e30624f5eb5d2346ea509c35a86e8f9eb	Y2123	Y2123	erc721
@@ -11719,7 +11240,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x4592bf220f9a60477c97a840c9318525fe9a003f	Lands End	LND2SEA	erc721
 \\x66c7d72569c067030a4f003c170cb1161d7866f0	Love x Machina	LXM	erc721
 \\x3daa8377cb4c26deb62b5e6223dc6cc5385a79e9	In the Impressionism	IMPRESS	erc721
-\\x7b0500fdc298e7f3a26d4cfab87606779680b7db	Unidentified contract		erc1155
 \\x6bc8d703d11021d63e3885e572767f89e0fdb9d8	$STCL WLT SKNS Mintpass	WLTSKNS	erc1155
 \\x9db7c4c791a2e4dd500d326a0663eb87be173255	e-ternal wavs	EWAV	erc721
 \\x3abedba3052845ce3f57818032bfa747cded3fca	Ether Orcs Genesis	Orcs	erc721
@@ -11757,26 +11277,21 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xab91963cb90d79bfed9f9b222ea27a82b86db5a6	The Girl Game	THEGIRL	erc721
 \\xd4f417cfd29ae83a303b6d75f88b62a696de47e1	Skullx: Aeons	AEON	erc721
 \\xe302e9ea617e0a02f039587131bfe7505b58e45e	Ash Zero	AZRO	erc721
-\\x7a1c3b0fece53f7a6a73476b4c8930121e71d06e	Unidentified contract		erc1155
 \\x0747118c9f44c7a23365b2476dcd05e03114c747	Shields	SHIELDS	erc721
 \\xedc926958da04fcccc4c9373f3453776cea1145b	ShortCircuit	SCIRC	erc721
 \\x72727d9f2fbbfeb8e4af4929957aa56da3a1e449	SpeakerHeads Volume 1	SPKR	erc721
 \\xfcd9defe921fb7bbf7695010fca00c59bbc582e3	Ape Traders	APETRADERS	erc721
 \\x4bd6ea99e18c9954cbe0ef4b4af16c7254c10473	crazyseafork	CrazySeaFork	erc721
 \\x88888888c37d1affbc08008d31446f176d999c13	Dingbots	DINGBOTS	erc721
-\\x952cca00538ea600a82a3be20b86317edd5544c6	Unidentified contract		erc1155
 \\x43fc00c635f3f54d1863bff074391015a6d7c5d9	Viennese Architecture	VA	erc721
 \\xfdb272a3ae9ffcb6646005cf56c0f927bd5b8f1b	DeadPuppetSocietyNFT	DPS	erc721
-\\xb07f97c14d1b1b08481f9e2c3b8f13226ec0c903	Unidentified contract		erc1155
 \\xe8b18ba7102ebd029a575d134cb7db3e86f3eff8	PEPE 18+	PEPE18	erc721
 \\x764eda73b7d5f8e5cad58083aa49662eb3bd08d5	MythVerse Genesis	MYTH	erc721
-\\x0cf10ecc51d45bf7ba047835cb64ab9935326260	Unidentified contract	PSYCH	erc721
 \\x503052972547189fcf3e30d96b3457b0a70856a9	torii	TORII	erc721
 \\x196f7e9c5769fc777909a3f1b9bd65959f3f64fb	CryptoHoots Alpha Parliament	HOOTS	erc721
 \\x7a4f8cb14a6f97d3a9fb5f80fa136b4e2269d8be	DonkeyDAO	DONKEY	erc721
 \\x87b50964d1d4c60023f638ba6f5dca918c3af786	CULTISTS	CLT	erc721
 \\x5c02bfe9fd997b4ef07a41ef8d1d9805c7e9eada	Popheads	POP	erc721
-\\x65b7990ab726ef573c176bb8b9b5464de6ea6c89	Unidentified contract		erc1155
 \\x223a2a1a0e640881c9821a6caa309bc8b552b93f	Oni Clan	Oni Warrior	erc721
 \\x2bd2f75efae96fb6192680bf24d8d95937b45c42	WCC X Dizzy Viper | Generations	WCCGEN	erc721
 \\x16c3a4d47551cf42f00356752283d2a3a310a2cd	Doggystyle	DOGGY	erc721
@@ -11806,7 +11321,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xa71bf409a880f4a27c6efd6565e8884259368713	Postcards From Home	HOME	erc721
 \\x950b9476a4de757bb134483029ac4ec17e739e3a	Gutter Birds	GBIRD	erc721
 \\xfcc2abb74a384e7cc14d186db4a2c020212ca2cf	Alice in Wonderland	ALICE	erc721
-\\xf423d683407af9738e51276f905fb9a208901aac	Unidentified contract		erc1155
 \\x89be854f4787a449743e43f1c8b544831e34e3a0	BabyPixelDoods	BPD	erc721
 \\x5e0d1b7f318f7c3e6d1445e5f1122661aff0fae7	Baby Girls Ape Club	BGAC	erc721
 \\x78c7549716a6290bd92005eb2a4da9701599428a	Numerai NFTees	NFTEE	erc721
@@ -11825,14 +11339,11 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x71e06fe43722221ceb966a6bc684e61c6f68032c	The Selfish -  Self Portraits	SELFISH	erc721
 \\x032fbc8fa777323e484a4ed6897a3918dec00ca8	The Citysketcher	MMTCS	erc721
 \\x3605877da35000d8feefa528b0ced2b55c29a052	dream story	NARA	erc721
-\\x04987fb603393e1b824f1b4253f968ed0f483a03	Unidentified contract		erc1155
 \\xe3ea5022c464abea993bfef950fba0ca2b20bd80	WP	Wanted Punks	erc721
-\\xdd9a5a61f15b434629173330ee8ca49e4d82cbab	Unidentified contract		erc1155
 \\xf075134cdca036acf176e2b39e7490c9acb005c8	All about PEPE	THEWORLD	erc721
 \\xe893ca9d3bb8244f83648b7125a76ee1d0d334aa	TORCollections	TORC	erc721
 \\x5181af2c5cd19aaecada5d8a7afb7856b7643aca	Castle Kid	CASTLE KID	erc721
 \\x61daaca72c150cdda8c2ecf1670fa1a7969a4297	Kidrobot Zodiac	KRZ	erc1155
-\\x783c2a95b2a6cb5b9b4e2077c5cbecf5e3e2a573	Unidentified contract		erc1155
 \\xc4e27c3f0706945932adee2b1d5ce118b70f3fe2	BlankFaceHaylos	BFH	erc721
 \\x32973908faee0bf825a343000fe412ebe56f802a	Pixelmon	PXLMN	erc721
 \\x79b54b424249f515bb0315682da0eba2e5423f0d	PEPE FROG. FROM OLD MASTER TO CONTEMPORARY ART	PEPEFROG	erc721
@@ -11840,7 +11351,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x609a7cc32674adc356515df844bbc9444cb1465e	Black & White Fine Art Flora	FLOWER	erc721
 \\x96952728f070927201c67672b5ca1a79cabc6e67	CryptoCitizens Mint Pack	PACK	erc721
 \\xb183858f744eeff5c86f716b7e93d15a8696fa9a	Swag Sloth	SLOTH	erc721
-\\x309936afd6540a8794903d09d4aafd52b30f4193	Unidentified contract		erc1155
 \\x22ea856cac6ee38173948954d4073bdccccf8cb2	LeapN VIP Badges	LPNVIP	erc1155
 \\xdb2e297ac1806df065015060179ddd33f0968336	Supermatist Photographs	SM	erc721
 \\x7d0285ff2969af5b4152f67c445f14dc299dd77a	Greed. Growth. Angst	GGA	erc721
@@ -11852,7 +11362,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x50b45ebed0d68f4483932923e08808b3e98dabaa	HAPE: EXODUS	XH	erc721
 \\xb9283c41c95aeb2273d3afd1a1aa8e097346d06b	My Manifolds Are Round	AICIRCLE	erc721
 \\x40b1c0fc7c9849298ce4fe57d06aa44b03588ffc	DemigodsOfRock	DGOR	erc721
-\\xc8c96b3cb086ab0e44e0e6c2d4e5159c441d11d6	Unidentified contract		erc1155
 \\x62b997ea198a7704b8bc49f41afa1c043e6d4f74	Potions	POTS	erc721
 \\x53f59ff30640fb1ab2045d0ad9be5f7bb7ececc3	WeirdPandas	WPNFT	erc721
 \\x6f44db5ed6b86d9cc6046d0c78b82cad9e600f6a	DigiDragonzReborn	DDR	erc721
@@ -11892,13 +11401,11 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x1a5df18a7af753ed9386793d349c466a8cf26c3c	TenaciousTigers	TT	erc721
 \\xce17f8ef13cf67da6eab86e31360102eea8609ff	MadMeerkatBurrow	MMB	erc721
 \\xc29b546b57bda23a83e4537eb6096fab30a54ea5	Clever Girls	CG	erc721
-\\x4dd3b03e3319ff443bcf20c9f09e51a6151a9233	Unidentified contract		erc1155
 \\xe22e1e620dffb03065cd77db0162249c0c91bf01	BearX	BearX	erc721
 \\x65d97a9d21164039c443e1baa5d71a7c49a30a1f	Mother	MOTHER	erc721
 \\xf0ea56402b2e2b27556d7abf4236c7327722fe41	Pixelverse Item	PVIT	erc1155
 \\xdcf55ad8ee97b404a3543d2ded6ac0cd296d4b56	Crypto Painting	CRYPTPAIN	erc721
 \\x63a0560230b110bbfd1f324012893896474e2fab	Rainbow Nova	RNBW	erc721
-\\x073c16adfaceed6f350a41acbeacfa9ae1ea179a	Unidentified contract		erc1155
 \\xf4121a2880c225f90dc3b3466226908c9cb2b085	Shonen Junk	SJ	erc721
 \\x5f9e300108fb156cfbe21c48a870876e97745af9	Uncool Cats	UNCOOL	erc721
 \\xe020adb9e242702f1284440cf80df635e9a458c3	CryptoBears NFT	CBEARS	erc721
@@ -11917,7 +11424,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xe3d59f06110a924bfde62fe68720435f72d84d82	London Fog	LDNFOG	erc721
 \\xcaf07b28e60a8f1a1f8480a5e403e58d1be926a3	Extension Ability Score	xSCORE	erc721
 \\xb5abb7a42d01175b583e953839ee3722b9ef3dad	StrongDoge	SDOGE	erc721
-\\x87a3747c9942d8351cc85aac2f94807b27a37c0d	Unidentified contract		erc1155
 \\xbff2fc2f0f6df609a78280f85c338616cafd2ec3	Caboodles	CABOODLES	erc721
 \\x5e198af285388ba69bd2475a2c60ed9a9b55098a	WojakKingdom	WJKK	erc721
 \\x3ba8c518530b8217a810edac019455f110923cdc	DEGENERATIVE ART	DGEN	erc721
@@ -11929,7 +11435,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xf210d5d9dcf958803c286a6f8e278e4ac78e136e	Jay Pegs Auto Mart	JPAM	erc721
 \\x732b93f4e88cbdff1cc2b6cd5ec669a3f547e57f	PEPE'S PIXEL ARTS	PEPE	erc721
 \\xc6f09511b8012ee30c2e19d213e26796c89f80eb	Tuagom and the gang	TUAGOM	erc721
-\\x86825dfca7a6224cfbd2da48e85df2fc3aa7c4b1	Unidentified contract		erc1155
 \\xc2cd026220c7613cabd0e59143e6cec47da89d16	SprayCans	SC	erc721
 \\x0c6735263ff6c83b47306331cb9c61fe88ea1f26	Aluna	ALUNA	erc721
 \\x743b491cad5045e64c51aa9b87cb132395e00645	Dyno	DYNO	erc721
@@ -11978,7 +11483,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x0cfbe4a42c5fea8db5a533b0ce9b5ba2bbdefde0	The Christmas NFT	XMAS	erc721
 \\xceddbb75104693a02defddee5f680c05c70cdc5f	Grvsy	GRV	erc721
 \\xa7b6cb932eecacd956454317d59c49aa317e3c57	Psychedelics Anonymous Component #2	PAC2	erc721
-\\x67ca258bdbe0dc0cb756e4f0b7348f6733ce924a	Unidentified contract		erc1155
 \\x7d70d50a8e9d1b4f04f5a2fa2e46078da9ebb467	Pebbles	PEBBLES	erc721
 \\xf3dfbe887d81c442557f7a59e3a0aecf5e39f6aa	Treasure	TREASURE	erc721
 \\xe9a4f318b12c890ca93b1da0140394030672b0ad	PartySheepClub	PSC	erc721
@@ -11993,11 +11497,9 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x5a0121a0a21232ec0d024dab9017314509026480	Finiliar	FINI	erc721
 \\x671060811ebdfe775763069ba2604ff1d78de039	Nft bubbles	BUBBL	erc721
 \\xf6b97a199b1bd5b70ff9c67bafb04fca0535df59	TheApesOfficial	TAO	erc721
-\\xc14a73fcc775a861e597f1df2e6b86d1c982e2cf	Unidentified contract		erc1155
 \\x2a730f1fc3fe5a522efd02cad81c417aeed697c6	Popcateum ART	POPART	erc721
 \\xa954f3fd60bb95a67b19cb79f1b3f66c3602aa66	Moonboy Society	MBS	erc721
 \\xc2d8ae4ebbb387fd0dec0345ca95b65188b1c957	CoolKidsClub	CKC	erc721
-\\xcc39986019b25e26900619b5c5876139cbf3879c	Unidentified contract		erc1155
 \\xb099c97be520dc7629b5e4185cd9a6b99f3e027f	Wild Safari	WLD	erc721
 \\x459c5ab0f63dd2303e973f97235587498c6bf7e2	WASSIES WTF	WTF	erc721
 \\x21349dd7323e204cc9dd4ee8a86d4f5cc64d4a85	Shroomies, by Ines Helene	Shroomies	erc721
@@ -12024,7 +11526,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x1aed23748e901daeb1cec8a621b7ed7c01f712f0	Metavot G1	MTVT1	erc721
 \\xe67e8d5781abb61f13d1987c02dfb6ab9ccd1f19	New Town Fungus	HRMP	erc721
 \\x4c3120826e545102977028b0ff83cf3b1b35eb19	Starlit	STARLIT	erc721
-\\xaa874a0f797a748bcf52e605db8ae7d3f7a0ba52	Unidentified contract		erc721
 \\x26eeb71350d60466ab18c8cbac1ea2d58c39c140	Alfa Card	ALFA	erc721
 \\xf25bfc5b349af85bb4a41b03c9b0eb1530c93a2f	EBC Community Membership	EBC	erc1155
 \\x91094bc91e7a3b86a69980433d0bee55a1d6cbb3	Baby Ape Club	BAC	erc721
@@ -12063,13 +11564,11 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x796ecdba615635704bdcd58eea52fb53d8f8423a	Cosmic Monkey Club	CMC	erc721
 \\xe3f0a0860b3a1811673372e174ad2241a68ba0cb	Honkler's Posters	Ryanloveme	erc721
 \\xb8b6cb37c0968f72c6d37dc3074c80ad73521024	HULLYUniverse	HULLY	erc721
-\\x0dd0cfeae058610c88a87da2d9fda496cfade108	Unidentified contract		erc1155
 \\xe585be75799307ea90aba9299d10fb98bdd33e33	CryptoKrakens Club	CKC	erc721
 \\xd826826cc6fbf16fd6e91cfadb123dcd93a858e8	The Club of Cool Apes	coca	erc721
 \\xe1c30894a8ff005de7993a333f96e7f5c6034371	A.Mashiro	AMSR	erc721
 \\x1cd945e81a63c2086365f5fabda9d56b2587ab17	Dwarf Space Force	DSF	erc721
 \\x4d6404640a28d9d81c673f393817fe7456a1f122	Sleep Sloths	SSTH	erc721
-\\x5650c9649a77228e32bf2906d874716cf6a21374	Unidentified contract		erc1155
 \\xee669e0afa6de7f4bb2bff3e1e549274ad21a5dd	Strange Hands	STRGHNDZ	erc721
 \\x82b739e91054d0061f98058c87a9ee3af0b232e3	EURO CHARITY ART COLLECTION	1XBET	erc1155
 \\xe4b9063a4cbdcbf04d3ab1d345867c1ec01c9f7d	Wander[001]	WANDER	erc721
@@ -12093,7 +11592,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x197fc873b3e498b7ca8fac410f466515ceec600b	The SneakerHeadz Society	TSS	erc721
 \\xe4977ed4b75557d27047cf1cbe94f193951605c7	value	value	erc721
 \\xa589c086013fc0e6a5fa2bda2b22cab0c36e3a17	Turtle Time	TURTLE	erc721
-\\x1906fd9c4ac440561f7197da0a4bd2e88df5fa70	Unidentified contract		erc721
 \\x5f4a54e29ccb8a02cdf7d7bfa8a0999a8330cced	Reptile Armoury	ARMS	erc721
 \\xd0cb5deb7c75c11a9f3f1d951928703b54114fe8	dot	dot	erc721
 \\x219fbf0594217ad59c9a91254d8a688d189e390e	Shitpegs	SPEG	erc721
@@ -12113,7 +11611,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xb29ad32695499fb61935fe28ba94cddd0c128639	Living Tokyo	IDLT19	erc721
 \\x48be3c9d0119a982df1c7a8029592ccbbcaeb9a3	AKCC	AKCC	erc721
 \\x97a27580650a2e1c37d0d9eb1ce3ab72899f79a3	NOMEN ART	BELLA	erc721
-\\x6ecf3c08102c9d81afd579635a806b94d454dd63	Unidentified contract		erc1155
 \\x6c0312933b695ca75858c2c6ec732a89ff312c85	Daemonic Xe_ntities	XEN0	erc721
 \\x947600ad1ad2fadf88faf7d30193d363208fc76d	Shackled	SHACKLED	erc721
 \\x492d7c407d78d170af70ce53578a4ec839da0ebd	SUN SIGNALS	SUNSIGNALS	erc1155
@@ -12147,11 +11644,9 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x0bca7e6fe937077b317f8e9d3ad11eba6cef019b	PetPals	PP	erc721
 \\x4db2f986ca49d3938b472a3bf1aeba6168e61f7a	Larva Frens	LarvaFrens	erc721
 \\x13eb431566543050af1de57e1263d88ba403de7b	BS Special Editions	BSSE	erc1155
-\\xdda3f424e66d9c006c0d4120786bb6b4e0bc9e21	Unidentified contract		erc1155
 \\x21f53279d74f019b4452237851ce14f37eddc3b9	the park	THEPARK	erc721
 \\x7470f72118d84fb18be86738faccaee9a7befb33	King Of The Rooftop 👑	ROOF	erc721
 \\xdcbb200e480a94c9a29e27b336b7ffd2390df71e	Mad Mask Gang	MMG	erc721
-\\x4fbaec63358dbfe2ac302aa64a02b223cd8cd85b	Unidentified contract		erc1155
 \\x1d354236537b119ebda350a7d40e02da24827f98	BelleDAO	BELLEDELPHINE	erc721
 \\xb861555ae7590a5840f4b4d0e7f05a7eda684210	HAYC	HAYC	erc721
 \\x1fec856e25f757fed06eb90548b0224e91095738	FrankenPunks	FP	erc721
@@ -12163,7 +11658,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xa79163909babe7e992b73aace535dea6b553db11	Still Life	STILL	erc721
 \\xed62d569a545248269e5555cf31063f93ad7e04e	Ethernity	VERTIGO	erc721
 \\xd53588cb0a47d7d885c09a9aa0130b324d6021f1	Doodle Thieves	DT	erc721
-\\x60804954c2a20afc4ab9bba382edcfc52899db10	Unidentified contract		erc1155
 \\x623d21eff769ff08f8018c78f86f03ccaa11a2ed	Pioneer	P	erc721
 \\x1b0870b307406e17dd85c2c5e742ab55f008e7e6	Farmer Apes Yield Club	FAYC	erc721
 \\x16d889461eb1c08f7004be6a29280c5382634c9e	The White Stripes x The Glitch Mob x Strangeloop Studios - Seven Nation Army Remix Collect	THEWHITESTRIPESXTHEGLITCHMOBXSTRANGELOOPSTUDIOSSEVENNATIONARMYREMIXCOLLECTIONOPENEDITIONS	erc721
@@ -12177,7 +11671,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xf79fd44f2524771b534aaeea8b433dd5092e7be3	Eelies	EELIES	erc721
 \\xf18235b0ca86db127845b81aa37b1147ffaa8934	Monster Mobs	MMOBS	erc721
 \\xe106c63e655df0e300b78336af587f300cff9e76	OxyaOriginProject	OXYA	erc721
-\\xf3f8685cfc55fb9b2b50675fb671e7e311683086	Unidentified contract		erc1155
 \\x2581738e3c2f16f102ade8662bb5b891fd9933c4	Bangsta Bears	BB	erc721
 \\x33383382c81cc169a10bc9e7383f59dea3639e1b	The Wild Ape Gang	TWAG	erc721
 \\x1ca39c7f0f65b4da24b094a9afac7acf626b7f38	GEN.ART	GA	erc721
@@ -12192,7 +11685,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xdb43104970fe96dcd38958ebd9976cdc57f2c680	WAKA'S ILLUSTRATION	WAKA	erc721
 \\xc7e1179fc0da914ccc49f378eb9364ebb11b945c	Emodoge Limited Series	EMDGLTD	erc721
 \\x1619d2b997daf107d681c3cf1b3e1f3a540b5c4b	Event Horizon	EVNHZ	erc721
-\\x9421497d7ada5c672974e625a76af7539aea4585	Unidentified contract		erc1155
 \\xb4f0e074c31fc2b5d45ff212ca30025c3c047f48	Exclusible Gold Alpha	EXCLUSIBLEGOLD	erc721
 \\x1d3ada5856b14d9df178ea5cab137d436dc55f1d	Deathbats Club	DBC	erc721
 \\x3e4ee8e5b72a1c86c98a9ad49dfb0e60c483be03	Feelings and sensitivity	FEELINGS	erc721
@@ -12233,11 +11725,8 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x5fa45c53d41e390d2777b357cd34bfdae113a696	Astro Galactic	AGCG	erc1155
 \\xaaf6ee66a7480c505fe93dcf253c586b0b7e1340	Piggies On The Farm	POTF	erc721
 \\xecadf717db4330f031abe49f8832cf49250d1c82	Unity Cards	UNITY	erc721
-\\x22916f08c234188e31dba79884cb25ae2d01e483	Unidentified contract		erc1155
 \\xe47d4ed44d392a6abda037a6ae3634a6512c9a37	METAINVASION	META	erc1155
-\\x5310d7ddba8beb8dd80f2d51487a774ce7d37c3a	Unidentified contract		erc1155
 \\xd5692cede359a29be42a00348076e02b24274b12	Angels of Life and Deaths # 1	1	erc721
-\\x6ae335c743a27af8adeb0f84a32e3a699ea8c4d8	Unidentified contract		erc721
 \\x52607cb9c342821ea41ad265b9bb6a23bea49468	Flowtys	FLOWTY	erc721
 \\xac98d8d1bb27a94e79fbf49198210240688bb1ed	Book Games	BG	erc721
 \\xbc5f9b563425369f48ed3509b1ca14bbcec82341	NAMEchain	NAMES	erc721
@@ -12264,7 +11753,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x770153366d9b0aaf1ff0f87cbec27d942f888dd2	Candyverse	CANDYV	erc721
 \\x4600798069d27ca0786e7e1d6a2042287bec5892	Sentinel by Parrot_ism	SENTINELBYPARROTISM	erc721
 \\xf0bb34a3816d020cdc97fe824792c3866c04578a	Jungle Destroyers	JD	erc721
-\\xb0ec56162be68d03e9b7036aa8c3074201a71203	Unidentified contract		erc1155
 \\x482fc3a9f85754ae536c2df8ebc1b4f833c234dd	Slim Salamander Squad	SSS	erc721
 \\xe1ce2d556456cb5b04cce5c4c0865de2ebac6528	HearT	LOVE	erc721
 \\x9cfe0f93d9d44665a2bbee357ee082d2ea46bff7	SWAYILS	SWY	erc721
@@ -12273,7 +11761,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xaf847f761e4fc8165f0261808d8ab5acbb7fd77a	Lil Mutant Apes Club	LMAC	erc721
 \\xa4f6c450e515adfa8e4efa558d0d58087e7d59e3	Usr Message	USR MESSAGE	erc721
 \\x75bb33494441378513d9b6564e32df9b241891a6	COLORS	MOOD	erc721
-\\x2a1df34c01983d57c2ef8660f63c8801979939df	Unidentified contract		erc1155
 \\x8740eef45def23a94bed5b9793c6d1a9b7dc1ebf	GISELXRARE	GISELX	erc721
 \\xa3f960836a3d994d742eefeca9af0b585f74d12e	Cool Ape Yacht Club	CoolApes	erc721
 \\x2c10b1a0d4202b69bc0e203ba743441ed3301cc8	Clones Project	CLONES	erc721
@@ -12299,7 +11786,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xb11b78a10ff10204d3705afd92c6f3b880b8a337	Bojangles	Mr_Bo	erc721
 \\x13a2f5a3e3b497c1c5c2f11ffa40027e76af4f45	Salty Sharks Uprising	SSU	erc721
 \\xa17f63bcd85fd3b01c5996da0327f84c6ae86a82	RugBurn	RBN	erc721
-\\x3a1c88addec56e725ba2a432bc89eeaa5d068753	Unidentified contract		erc1155
 \\xa5f9211240d9d8c40753f713b11e67719e7d2260	Golden Gamblers	SVCCGG	erc721
 \\x9911347277a79fc4a00050dfc16afe65f2bff852	LiteralSquidGame	LSG	erc721
 \\xd07e5f9dff2909c78e924b1456d130095087365b	Crazy Ape Yacht Club	CAYC	erc721
@@ -12316,7 +11802,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xd2f668a8461d6761115daf8aeb3cdf5f40c532c6	Karafuru	KARAFURU	erc721
 \\x114405dab6b11bfe55d2e79cac8fb377224dd9ff	VM8	VM8	erc721
 \\xb1f61d2a72fbaf055f8470fb1491b734f9af3882	MUSIC	MUSIC	erc721
-\\x9c066824f00b9f444f6d56f29c949a07eaab39fc	Unidentified contract		erc1155
 \\x71e11e8601e3c774d930d31d30c56fc1bff32f44	GHOSTY300	GHOSTY	erc721
 \\xa925d4e1a9a0ebf130e247851a68b24a4597c38e	Paper Chasers	PCS	erc721
 \\x2d9a757e4b5a3a9dd7e21f5842eb746766525a9d	GasWarrior Clones	GWC	erc721
@@ -12346,7 +11831,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xcb81fbf168437a77c29b96e9e76e0159565b4e04	Eternal Elves	EE	erc721
 \\x99c29a66562bdd95c73d0f55806b4c8136dc1002	Race Federation	RF	erc721
 \\x5dd4e5656ec9e0aa4d1750ce246b9ae4c3976332	Blockchain Ballers	BALL	erc721
-\\x0a521bae51a6bf920ed26e5374cb6dc86a3be99b	Unidentified contract		erc1155
 \\xb0bd2ed33c288a2518b0fe910c1d9a5ce45f13ea	G•RILLAS	G-RILLAS	erc721
 \\x5c01f9a15619f92ebe995fe82015e8e1eba76b93	Vibeheads	VIBE	erc721
 \\xc0002c43a7aa7f04f264234fd38d2750391ee2ef	MetaGeckos	MGEX	erc721
@@ -12365,7 +11849,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x3eb0479c0147d0ae735f500f41fab2edd0d7529a	Quackland	QUACKLAND	erc721
 \\x8d6f0f6149e0717fd31b167947c6226e3d2f69b9	Monsters & Hunters Game	MHG	erc721
 \\xfba1bea3a8ff940beb154fa31bf0076866bf2478	Necromint	dEaD	erc721
-\\x4d5e6bbe21599ef31cc9c399aabae7e90ed58fad	Unidentified contract		erc721
 \\x8dd58e5ba46088bb52378d8beb70809b45ea79e2	dojo namwong	DOJO	erc721
 \\x4029c444f75bdd516af26d315b4b7912f7dac242	Jericha	JERICHA	erc721
 \\x19981566e4c709ebaba4d99a35a26c18a03a774e	The Path Less Traveled	PATH	erc721
@@ -12375,7 +11858,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xe98e81e02a31dcb3a99bfc10f83d40b4faf42903	Shark Game	SHRK	erc721
 \\x5eff740bcf7d48fbe99a0250ca8ef0387016500e	KIA Ordinance	KAO	erc721
 \\xce0dbf1aee57d418f94c70456eb42d5d0135b430	Origin Series	RCKNB	erc1155
-\\x0e0fc97e5337478830f30dda023339607ad1ba4c	Unidentified contract		erc1155
 \\x76e3dea18e33e61de15a7d17d9ea23dc6118e10f	Doggos (for DOG Owners)	DOGGO	erc721
 \\x7181d2038b849a18145eb153b8befc552e52c37a	DickPixNFT	DPX	erc721
 \\x146892f244045632891daf0f3886ec5ecff342e7	POETRY	POETRY	erc721
@@ -12386,7 +11868,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xd9c2b61ec1c7779427ea922637cc94288eee16a2	K9	K9	erc721
 \\xef920c1df72b8a1e48e976ca78e09fe35bfc6f38	SSoW Security Orcas	SO	erc721
 \\x3222aa7053fd6d3cc433df62160564421c16bab3	Freaking Turtles	FTT	erc721
-\\x693829fd164cb6ee5115f2863877dee2a024b9fb	Unidentified contract		erc1155
 \\x48c58b8496642bc4c860c7efc13813b73aa674f7	Super Shiba Club	SSC	erc721
 \\x6381bf280a51b5df90af25806bc2acaaaa5f52ff	Punk Kitties	PKKT	erc721
 \\xbe65296688723dde4d977d22588b5f50afa7070b	Pixel Doods	PXD	erc721
@@ -12427,7 +11908,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xc99de32957ca7deceabc8064541b49261efdf975	Photonics	PHOTONIC	erc721
 \\x3ba8ad37211ad070dca1a5f0a7f1fee6aab3fdc1	Aiyah Verse Stickman-X	SMX	erc721
 \\x2ca007dcff2044abdf94904813c61766efdfd8f6	The Secret Project	SECRET	erc721
-\\xe4462eb568e2dfbb5b0ca2d3dbb1a35c9aa98aad	Unidentified contract		erc1155
 \\x8056ad118916db0feef1c8b82744fa37e5d57cc0	krazykoalas	KZK	erc721
 \\x219172deda967724d129afdb7adacb418346a958	DARKNINJAZ	DNINJAZ	erc721
 \\x2efa07cac3395599db83035d196f2a0e7263f766	FlowerGirls	FLGS	erc721
@@ -12451,7 +11931,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x3863306d156794ca0cd1731cf2ef62754a4307b5	Church of crypto	CHURCH	erc1155
 \\x8c1b42672b0d242fc42b3f1bfc81ccc12df13cfe	SeeNoEvilMonkeyArt	SNEMA	erc721
 \\x6e2542aecc940ea56a9560a6b8ca34dbbef3b520	Valhalla Vacation Club	VVC	erc721
-\\x4cfaea89ab97c812befe64a47e1e15ee4da3cef4	Unidentified contract		erc1155
 \\x3aa510dc091980e3fddede457e7597bfd5d4d64c	KManuS88 NFT	KMANUS	erc721
 \\xb37de56f6c68d7f50dfe6ac95da9361571fb3792	Bitchcoin Genesis	BTCHGEN	erc721
 \\xc3c8a1e1ce5386258176400541922c414e1b35fd	Arcadians	ARC	erc721
@@ -12483,7 +11962,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xdb68c12b5cc499461b87c9d4e63d1a299990e1d8	CypherHumans	CH	erc721
 \\xce50d509b07d3261037c08dfd93e9b98bcd15f1f	Off the Wall	OTW	erc721
 \\x2fcfe8054b7d52daa783c2407dab53cd2071eae2	LittleBoos	LBS	erc721
-\\x36189af090560e45f1902fc4a5782a72215d68f0	Unidentified contract		erc1155
 \\x06976e9383a8e369a33f6ec4b7dd05be6f903110	NEON BANGKOK	NEON	erc721
 \\x3491ead95de2f4a945c2ead3c3afe7747f2ae373	Digital Animals Soul Passes	DASP	erc1155
 \\xb2d2e7786a9a9b59b6b318c71499fd48a6e121aa	UNSEEN	UNSEEN	erc721
@@ -12503,7 +11981,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xb89a71f1abe992dc71349fc782b393da2b6fb4c2	LootCreatures	LOOTC	erc721
 \\x7a4b1a8bb6e40cbce837fb72603c8a4a20d0b3e1	SaltyPirateCrew	SPC	erc721
 \\x113de669181708f8b497329654606e6134673c8c	Reindeer	Reindeer Relief	erc721
-\\xbd46d5ea27eee3924dbdb8f41e1a3dbf837c2cd3	Unidentified contract		erc1155
 \\x94952c05f3c1ee0810f7c84574773a8c65c8ffb7	InBetweeners	IBNS	erc721
 \\x21539eb0fe29afb6958dc94676d16ee669d96da5	Blue of Setouchi	SETOUCHI	erc721
 \\xe21fdb51be72ae5f55fbbdd66a581af1c490e948	Meta Dogs	Meta Dogs	erc721
@@ -12533,7 +12010,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x589b89164ce781475df59db280b42b13a640100d	GFT Atari 50th Anniversary	GFT_Atari	erc721
 \\xa6e5a1d2835329369031eedf5c478b55eda9ea33	Ode to Cats by Heidi Miles	ODECATS	erc721
 \\x3df53626df03d2c51964d1dcb3a6fd945ce8d168	The Metaverse	GAME	erc721
-\\x7d5773e8fee4bc9b679c1eb51b2597984c007682	Unidentified contract		erc721
 \\xdb6c0acd9b6bab6bee52a2985e4c6a42ddd200f8	Museum of Light	LIGHT	erc721
 \\x3cfd8cf1ce0dcf673a8747eefa6702ee709ca5d9	Captured Moment. The Masters Process.	FAKTURA	erc721
 \\x6779095aca6b2265ccd2ccc2b8674310c5ddf70b	FrogFam Story	FROGFAM	erc721
@@ -12547,10 +12023,7 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xd0f0c40fcd1598721567f140ebf8af436e7b97cf	Jadu Jetpack	JETPACK	erc721
 \\x16b4cf4b6834b9c661ba32dd83a7fe75e4e09f02	AlienGame	AG	erc721
 \\x59c1fbcbde1c5339e42bf1d48587718c15eead4e	Wealthy Ape Social Club	WASC	erc721
-\\x10f02e414e7cb7c64daa7140cd967db31d04ae18	Unidentified contract		erc1155
 \\x03e99afd576eaf6b818d58a4efc59d2d0cbf1678	Wall Street Dads	WSD	erc721
-\\x7670dfaa84fa7d62ac988840f237143254e4ce73	Unidentified contract		erc1155
-\\x26d2edd9bce916b9fecab9f3196367033dfef036	Unidentified contract		erc1155
 \\x18f87c05325ae47bfe75c039198b3dc1cb2ed23d	Cheeky Lion Club	CLC	erc721
 \\xe80b2538f33b15c8070db18b1a1cd3bb961c34f1	Rich Gator Golf Club	RGGC	erc721
 \\x67eda75e4cb78d170dfa6899ef979aea450e9850	Pleasers	VIP	erc721
@@ -12573,7 +12046,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x966731dfd9b9925dd105ff465687f5aa8f54ee9f	Hero	HERO	erc721
 \\xa23bb940ae07a29999d27f56485a9a5ecdb91c91	Doodle Punks	DP	erc721
 \\xf177311d87d3dbc94a3416cdd29e937fab451dbc	WhIsBe	WhIsBe	erc721
-\\xbbc3a1ccdcd8ac06ce75b4720bdc2ffe9fea227c	Unidentified contract		erc1155
 \\x52474fbf6b678a280d0c69f2314d6d95548b3daf	Pettametti	Petta	erc721
 \\x02f24000d787d17f47d80201f6e6364a2173322b	3dBoredClub - MBOT	MBOT	erc721
 \\x53828420451bd4298c8b1b8ce5c8f3474ea85e3d	Nice Skunks	SKUNK	erc721
@@ -12616,7 +12088,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x4eb28031a54e8e789cd09feb7e79078fbe23b028	Zombiemice	ZMICE	erc721
 \\x96429e4af2fac1a1ca6c620588ee9458b88832ec	Crypto Country Club	CCC	erc721
 \\x9c57d0278199c931cf149cc769f37bb7847091e7	Sipher INU	INU	erc721
-\\x226bf5293692610692e2c996c9875c914d2a7f73	Unidentified contract		erc1155
 \\x643219dd2d45d3b982070a8ab07c88fe1b2fae15	THE KATE'S CANVASES	KATE	erc721
 \\xf02d84183d86d0fb3920f7a7562c3629b27ef2bb	kingclub	KINGCLUB	erc721
 \\x948ef0612d6faa6354e22f97efd56665780b58e8	Runners	RUNNERS	erc721
@@ -12626,8 +12097,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x1d8cd1e693e92b1ba1d3fd57e4c1237edb0893de	Empty Curses	MTCRS	erc721
 \\xca4550905b5062510b2c232c7f4189a679c8fbe2	Who controls the memes, controls the Universe by Lushsux	WHOCONTROLSTHEMEMESCONTROLSTHEUNIVERSEBYLUSHSUX	erc721
 \\x1ca15ccdd91b55cd617a48dc9eefb98cae224757	Strange Attractors	SA	erc721
-\\x883cddda275facb7c9932ee4e0f410e1ccdb19c1	Unidentified contract		erc1155
-\\x168ecee26470f9491c0859ffa3ea0397d1047011	Unidentified contract		erc1155
 \\x80d5f31c85e969b580b2ad4f868b889c88b2f816	Satoshibles: Special Edition	SBLSE	erc721
 \\xee8f87ce3454c03b4a0719b1f7cd59612fb3dc6e	Frog of Peace	PEPE	erc721
 \\x236ebe2257ed8bd59299d61fe41baee2ccf8ed28	Inverted Mutants	IM	erc721
@@ -12648,7 +12117,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xaec579ec08f99365e248150bd8a5f7e6db5a6735	Robots	RBT	erc721
 \\x991a546a167ceb2a6a7c344c9d85269ac03035d9	Cyber Babies	CYBB	erc721
 \\x95f3113638e13aa453166295e1c100487efd0ddc	ApePunks	ApePunk	erc721
-\\x488f864a1ddfbed5c0942a89b5eb132f95dd55e0	Unidentified contract		erc1155
 \\xddf7bfd0c7905f9b84b100ad90bb7bf690ec7e8a	PIXΞL MΞMΞS.	PIXEL	erc721
 \\x3908118e0d83370effc80ac89aecee53f029aea0	Rwanda NFT	HUMBL	erc721
 \\x3f78c042ec74ddfc90d4b6a042d3bf5d3f3e018c	PolygonPlanets	PolygonPlanets	erc721
@@ -12687,7 +12155,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x7ac86deb89acd4c310cb1c2031160619be04daf3	AI GENERATED VIDEO	AIVIDEO	erc721
 \\xd90d393d9d3dcb3ee4942afe0ea2e07949dc23c6	Loot (a Residence Card)	RESIDENCE	erc721
 \\x67c7fefee720e809bfeb698ebf4526741b3a7ef0	mfers stuff	MFERS	erc721
-\\x628e1ae54610f6c553ec227019526776351cb6d4	Unidentified contract		erc1155
 \\x62d8ae32b0e6964d2126716cf3da70c2bd062d94	Alien Secret Society	A$$	erc721
 \\xd4974c4a77738006a844df60a7f1bb5236a5f869	EDG3S	EDG3S	erc1155
 \\x54bd584b644df0c8cbfe4b97ac55e9cd0341fb35	MEME CRAZE	MEME	erc721
@@ -12706,7 +12173,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x435353cd4855dc30dc97df01379f7bd0c3f811ae	HYBRID+α	HYBRID	erc721
 \\x2e66dfa3baeb48d1ef97862fd27bc2bb6eaef8f4	Vault Of Gems	VOG	erc721
 \\x1ff3c15744c10acdb9683c4e7dde33900b3e4c87	Dream Doges	DREAMDOGE	erc721
-\\xd22f83e8a1502b1d41c0b40cf64b291a6eabc44d	Unidentified contract		erc1155
 \\x6dc6001535e15b9def7b0f6a20a2111dfa9454e2	MetaHero	HERO	erc721
 \\xa9e12344f87a4a3d031d49d9842f1385aa2b81d9	metaPengus	MP	erc721
 \\xdfd307278a9cdab95e50e970939d3dcaf7b02205	wall*paper	PHONES	erc721
@@ -12719,7 +12185,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x53ae0345d8c53d9fedc880eb20955afdae4034f5	The Dogo	Dogo	erc721
 \\xc279ef035cba8002e1f51a67f922cbebedf605ca	Utopia vs Dystopia : Different Visions of The Future by Annibale Siconolfi | Inward	UTOPIAVSDYSTOPIADIFFERENTVISIONSOFTHEFUTUREBYANNIBALESICONOLFIINWARD	erc721
 \\x4f27fe03786c6dea6ab44d64bdc968216adb95cf	#PrideWithPabllo by Pabllo Vittar x Nicopanda x The Fabricant	PRIDEWITHPABLLOBYPABLLOVITTARXNICOPANDAXTHEFABRICANT	erc721
-\\x62911fe3175c9916e093c78a567ddec04a277309	Unidentified contract		erc1155
 \\xb8c14ad2bee655b1f23b98defb14a50a96c62841	Analog Dream	AD	erc721
 \\x17eb3b4954d36d5c14ee9990b479d063286153f5	Crazy Dragon Corps	Dragon	erc721
 \\xa9c0a07a7cb84ad1f2ffab06de3e55aab7d523e8	PUNKS Comic (Special Edition)	COMICSE	erc721
@@ -12727,7 +12192,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x70f30556b10990cd28ee2a70d8045f7927788807	Pranksy Rock	PRock	erc1155
 \\xb25495eba8490cc5286d3fbf21c6a6e03b87fa9b	BONEFLAX BOY	BNFLX36	erc721
 \\x34425c4fe933c00c9304ce56211e267a7ca46848	The Rusty Keys	RUSTYKEY	erc721
-\\xae51c192e73fbeafa0e2b9e9cc6c0d009b8f799e	Unidentified contract		erc1155
 \\x2b7c4a8f991877339c23f87d731a49233d96d87d	Polyverse Pass	POLYVERSEPASS	erc721
 \\xfdf4b4e70f90d431ab4672fef3be02e942c064bb	FullBodyMutantClub	FBMC	erc721
 \\xc5ebe5f2095e0302d6bf75c9ecc3e29e87f87bca	Mysterious	MYST	erc721
@@ -12756,7 +12220,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xc0cb97a0e22e9c14fb0b39da6cf6ccdab8078fa9	Dava	DAVA	erc721
 \\xc9e3ca32caaa6ee67476c5d35d4b8ec64f58d4ad	RugPullFrens	RPF	erc721
 \\x656b9e24de2e41a94a7dbbaeb3937777cf34e448	Grandpa Ape Country Club	GACC	erc721
-\\xebc651f4a8c898b5c45fbeeec9cf125bb8b452e1	Unidentified contract		erc1155
 \\x9142b1eebd10690b400487300599eebf746236d3	The Ascendants - Gifts of The Gods	GOTG	erc1155
 \\x5af0d9827e0c53e4799bb226655a1de152a425a5	Milady	MIL	erc721
 \\x12721f4b9d971aac9a2c9f9a15dde086e82ad94f	Jpeg Season 4	WLFPK	erc721
@@ -12791,12 +12254,9 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x4db33802cc83832ec03c0e1111102ff83307e9e2	ｓｅａｓｏｎｓ	2022	erc721
 \\xef49fa610976c1d6a76d9506b50b3d5bc6c9f65f	Circuit Board Species	CBS	erc721
 \\x078a570166dfbba60bf09dce363e2cb73a5888a0	FacelessNFT	FNFT	erc721
-\\xf82e772ceb1c7eeb9f54592e6d59b92e5b3f8fb3	Unidentified contract		erc1155
-\\x62674b8ace7d939bb07bea6d32c55b74650e0eaa	Unidentified contract		erc721
 \\x003a6eaf755c738d60e82d9e4c8eb2fb05b5d338	Party Pandas 	PARTYPANDAS	erc721
 \\xde15058116f16c43ab7c8b305d0ec55a692775fa	0xApes	0xApe	erc721
 \\x223b5c0c4fc75c5e695c197fd3b2df4988794c69	99 Paintings	99P	erc721
-\\x9da9d93023d021f89bfd8d7bbb3f6e84f34883d5	Unidentified contract		erc1155
 \\xdd93258a9c8b4c4ea900fd3043fc59be05d624a6	Metamaticians	METAMATH	erc721
 \\xd0318da435dbce0b347cc6faa330b5a9889e3585	ASMBrain	ASMBrain	erc721
 \\x2363974a4bd2969b68a94c7b90d760206cbf9050	Fate	FATE	erc721
@@ -12844,7 +12304,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x6f24a2a5ecfffb0610f69929e9aa7fcef441897a	Syn City Genesis Passes	SYNP	erc721
 \\xa12507123016f336bf1062bcef56e1ac27d292a5	MONO	MONO	erc721
 \\x51e3bcbe694964edd2db80df545bdad5fbdf9b7b	Loot For Everyone	LOOT	erc721
-\\xd374410e9bb22f3771ffbd0b40a07c0cf44a04fc	Unidentified contract		erc1155
 \\xfa956c57f5c07daf9552a3e062204e009e2d2e76	GolemZ Genesis	GLZG	erc721
 \\xeae1d1c686005a5a8510683c34d6bb2455988282	CRYPTO FATMEN CLUB	CFC	erc721
 \\x011644f5cddba11eb332f312f98c14cebc265820	The Anonymous Stroll	WALK	erc721
@@ -12913,7 +12372,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x6856afc2ef223770e884cf5a8f1778f7c34cd0e4	TastyToastys	TT	erc721
 \\x88954a16b93f296d3d993793143e2dcbc32222b2	Bloodpack	BPKS	erc721
 \\x2106d0274ce3354aeba10d0ba3f71ee0ee44a752	HouseOfRare	RARE	erc721
-\\xea1b905898dccb2996f60447692cc4d6156e55fb	Unidentified contract		erc1155
 \\x41679da0f03460b41ef74a1165b3f040504e7083	Literally Trash	TRASH	erc1155
 \\x74949ad3b1c14e612610fad0b63de82ca9769e8e	NEBULART	NBLA	erc721
 \\x6ed5120aca0dacd7b2d3cea48f70d5406e2b6523	LOOPS	LOOPS	erc721
@@ -12924,7 +12382,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xe4ad2ae9a4b59e5a22b987e2316d96a845a97dc6	Spagoot Delight by Roger Kilimanjaro	SPAGOOTDELIGHTBYROGERKILIMANJARO	erc721
 \\x04a745aa1f5d1bd81b0cea6a6470b6b132c855c3	Spooky Cats DAO	SCDAO	erc721
 \\xdca26715154b33ad84c6e27e864b0260b9adc20d	ToadBoats 1/1 Launchpad	TDBT	erc721
-\\xd5e793c08ce6e4bc225b64f19496629a81873c22	Unidentified contract		erc1155
 \\x4bd7cceab008de1c11947b8ff5ed4945f311d255	EtherFly	FLY	erc721
 \\x398ef032fd7bcf78289a53a8ab0dd396633fcd9a	DOODLECATS	DOODLECATS	erc721
 \\x8acee83e7ac9a10ef327c0ae592c8cb6d085bc26	The Gladiators	Gladiators	erc721
@@ -12960,10 +12417,8 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x454cbc099079dc38b145e37e982e524af3279c44	Yakuza Cats Society	YCS	erc721
 \\x1742fb6151f7d1cf6b5734ce3fccda1104e7c084	Xtract by rek0de x Marco Mori	XTRACTBYREKDEXMARCOMORI	erc721
 \\x80ab79e5c36351fb5dbe2b35e97f724eca47ae29	Ballman	BALL	erc721
-\\x500c5c9fe70e5820ec829354620f1c070224917d	Unidentified contract		erc1155
 \\x6144d927ee371de7e7f8221b596f3432e7a8e6d9	Wagumi Cats	WAGUMI	erc721
 \\xe00d86596e7d07250d76faa60b0653608305ae6c	Holidaze	DAZE	erc721
-\\x6917fbdb9c96fe71bb961e374cde8f4aa9287ffb	Unidentified contract		erc1155
 \\xeb3b418e4a4430392cd57b1356c5b1d2205a56d9	MaidCoin Sushi Girls	SUSHIGIRLS	erc721
 \\x8beffbfcc7aba95bdb88012da42e3eb1ea38f700	Chronicles of Voxel Art	CVA	erc721
 \\x8d8fbf034c37cce4dd9f71ec58e6068cfdf56906	Bepis	BEPIS	erc721
@@ -12972,19 +12427,15 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x832a2a8f1f1397a63bf4209c0a3d637acc50fcb6	Nascent - Timezone4 / Ethereum Edition	TZ4	erc721
 \\x2d3fa7ef3b6b9c749a108f86eafe27fff0da8134	Kandi Kids	KANDI	erc721
 \\xfa717eb95760386b8420d9a3eb8427fc333d2cd3	No Answer	NOANSWER	erc721
-\\x6f69141c0419b1d94c29bd5972f99213c2ce7b92	Unidentified contract		erc721
 \\x62acb9a3ecdc880dc8ab6dfd6cf48ca07ed10de4	twistedsister.io		erc721
 \\xb09368870d3fc2646653ba45558b805c76ae14e9	BoredApeMirrorClub	BAMC	erc721
 \\xb1093f00dff1cbad4709ba7ce82c3dc9ad839c36	Beepos	BEEPS	erc721
 \\x78a0701b7ba2538188129fd13aa808373436877d	Lazy Lion Ape Club	LLAC	erc721
 \\x3845b5fd5269502ea07c108856b299e41288f296	ChubbiesCollections	CHUBC	erc721
-\\x3db33f842f3a0dce59720da32efec3f98408a446	Unidentified contract		erc1155
 \\xa5a640a55bab9af759b52c131b059de67134f852	Haremtoken ETH collection on Unifty	Harem girl	erc1155
 \\xa3106416fde395bf6a62b8e932df01f5f660a5f2	NFT Academy		erc1155
 \\x8a91221b094c428eac0462174b05b51d5a3aa869	Moongang	MOONGANG	erc721
 \\x55256178afe74082c4f9afef7e40fec949c1b499	Philosophical Foxes V2	FOX	erc721
-\\xe681f9fbc023f8a35db7a217410028e3c6e1008b	Unidentified contract		erc1155
-\\x0e016d6634dab3a1da6e343da699a3069449e5d7	Unidentified contract		erc1155
 \\xd6d4e8681a1c9b491f0b9e656e9e4e930f783eca	Bubble Budz Genesis	BubbleBudzGen	erc721
 \\x38221a026370360d8c0767c232f39f72f8f3ffde	HUXLEY Genesis	GENESIS	erc1155
 \\x00050da3e6c42745898c4950cd99a5c66dc3911d	Car For Coin	C4C	erc721
@@ -13007,11 +12458,8 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x4ed2bab89c673ce3e20bac5d647fd2ecaf208ba4	Pepe is Unbreakable	RUGPULL	erc721
 \\x3e88721fa41d5e102d54b4a04e550222efdd234d	The Endless Journey Open Editions by Kygo	THEENDLESSJOURNEYOPENEDITIONSBYKYGO	erc721
 \\xf3ae416615a4b7c0920ca32c2dfebf73d9d61514	ChiptoPunks	CHIP	erc721
-\\x321c972046f3ce9484e30a3fd658b40bff400fec	Unidentified contract		erc1155
 \\xa7ff114a6ba8b9646a2c20690a75e460b51eff73	Jesse Boykins III	JBIII	erc721
 \\x305c57916d36b6f05094a8708b166d90ba8db1c0	Blox	BLX	erc721
-\\x8887ce34f6f1a4de4e8eb2a9195eeb261c413365	Unidentified contract		erc1155
-\\xa25bf81aacdb5e610eaf91a889975bba43398cf1	Unidentified contract		erc1155
 \\x9db11c5621ef21098fabb59d662857759e0b75a3	Crypto Squatches	CSQUATCH	erc721
 \\x90bae7c0d86b2583d02c072d45bd64ace0b8db86	Waveblocks	WAVE	erc721
 \\x5003d31f5aa2e5fd613b5ebf7b8f58923d9aa562	PEPE world by SARATH	PEPES	erc721
@@ -13041,7 +12489,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x9a6066a68372e64f987010000457cf74239a9b5d	RoaringLeadersElixir	RLELIXIR	erc721
 \\x2dba9a75fd9cdb40e69f5c7222f6503a7e2244ed	Polar Bear Club	PBC	erc721
 \\x2619d54ad1199011717cb209b8a44ea2e263cf1a	See Ciel	SC	erc721
-\\xdf0cbad5eaeab5b0638ece3e2de732861510e596	Unidentified contract		erc721
 \\x1f7f315d0bfa34524097b44123030c56d4784170	Gangaroos	GANG	erc721
 \\x35e1402fa69c60851ea8b86f04d823ff41796a51	ZodiacCapsule	ZODIACCAPSULE	erc721
 \\xb352131fe48571b7661390e65be4f12119e9686f	Chic-A-Dees	CHIC	erc1155
@@ -13063,7 +12510,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x751bcea63a0762718dccd0daae8d45ba81808728	J-CORP HEROES	JCORPH	erc721
 \\xcfed992541653ffb5c78c244ea15b1abee5f3253	Hans Kemp Gifts	HNSKMP	erc1155
 \\xb703ef5265a994fbab43c8bb4d1f2297d8e754d1	Coom girls	COOM	erc721
-\\xbac737496dcd972d72acf3360d15e3b1d954fc70	Unidentified contract		erc1155
 \\x75cd3cc29d90eee6e509a0380f1bab97624b80db	Brightmare NFT by Alex Pardee	BMJNK	erc721
 \\x5726090fe4b41102eb1548c55af4d34410af8951	austinvisual's 1/1s (Foundation)	AVFND	erc721
 \\x7d92ca5f228b942ef3b9775fd364a4d58620745d	The Seven Gateways: Malcolm Levy & Mathew Jonson	GATEWAYS	erc721
@@ -13073,7 +12519,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x423460bb2a4ac691cebb3b97c130c41508cd637c	CORE	ORIGIN	erc721
 \\x4eb0e3a2b5e9c63f62eb4048d47640a3f48c8f5a	It’s A Party And You’re Invited Open Editions by Gavin Shapiro x Yung Bae	ITSAPARTYANDYOUREINVITEDOPENEDITIONSBYGAVINSHAPIROXYUNGBAE	erc721
 \\x20a1acd836685c2de4c6c49de5489958e2fc52c6	HAPEBEAST OG	hape	erc1155
-\\x8aa86367f579a647f8e3757fe51968e5a5caf840	Unidentified contract		erc1155
 \\xcc754a7200b89ad019ae185ef206818c37c3c717	Fireworks	FRWRKS	erc721
 \\xf9c362cdd6eeba080dd87845e88512aa0a18c615	Meta-Legends	ML	erc721
 \\xde17efac631d766e509c8bb77fc9811b4a3c0750	ZombieCats	ZOMCATS	erc721
@@ -13129,7 +12574,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x313bded01a27a17f17803b0a7a134798eccdb018	ExecutiveHusky	ExecutiveHusky	erc721
 \\xb677b0c7a98c45ba2c124f3d43cf690e61c49a1c	Codename RARE	CDNR	erc721
 \\xc01c24c1c63f405c394769cf3e5949cfcb9ef093	Nodestones	NODESTONES	erc721
-\\x49b3bcacba13557500b63cb7e0757086aa87b602	Unidentified contract		erc1155
 \\x5e2deb3e10d1a44c216b397e4079c982062ae60a	the.art_Club Membership	the.art_Club Membership	erc721
 \\x27186a7fd56f62cc49f2971d3688ed20a679ae38	Crypto Squid Game	CSG	erc721
 \\xf1268733c6fb05ef6be9cf23d24436dcd6e0b35e	Desperate ApeWives	DAW	erc721
@@ -13144,19 +12588,16 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x65f18d5c9faa70f1dd1617d287c8970c18c54dbd	Crazy Babies	CB	erc721
 \\x7bc6d85a15b21cefd62ce5ab2cf87b611da6be59	JunkyardPuppies	JYP	erc721
 \\x579a60fbc649d3398f13e0385dbe79b3ffad757c	MaidCoin Lingerie Girls	LINGERIEGIRLS	erc721
-\\xb6283b2e41843612cce2a70a87cf6edb9f40aa8a	Unidentified contract		erc1155
 \\x94638cbf3c54c1f956a5f05cbc0f9afb6822020d	inbetweeners	IBNS	erc721
 \\xf169d117e1b03f42a87ce4e71732f6e0adf1befe	Jolly Elves	JE	erc721
 \\x15533781a650f0c34f587cdb60965cdfd16ff624	BlockchainBikers	BIKERS	erc721
 \\xeee850476f643e23bc2f3a84de2c42f7203b3615	Memorial Stone	MEST	erc721
 \\x50dc8adb60228a4c0200e8ae7e46d57dcb1d8390	The Garden by Sanho	GARDEN	erc721
 \\xbbb9f8296c31c848bee8a8564cb90f5635db6bf5	Doodle Miners	DM	erc721
-\\x2633aaa4fc6ba9ebb8ab2fb7547085bf89fd4203	Unidentified contract		erc1155
 \\x8530be483c42a22044ce57d405549f4267bfe831	MirArt	MIRART	erc721
 \\x7bfed4802733f6a2bc9e82499a41fa3c38346de8	WORLD OF P3P3	P3P3	erc721
 \\x80cbabd3d864016b01b32219e219fba190697b16	Magusz Art	MGZA	erc721
 \\x802c30ebd6806fce10176727a9a1874d0dc08cf7	Golden Token | Reflections	GTRF	erc721
-\\xdb8917344a367c5387b7744d7b5eed483b3d7cd6	Unidentified contract		erc1155
 \\x42d2e427ed560650ba63ee1ea9186b270bf2dc5b	CINDYDAO GENESIS	CINDYDAO	erc721
 \\x7f19f9fb0bda2c6cbfc5f049d8f7a910ebf6471f	Logarithms	Log	erc721
 \\x88341d1a8f672d2780c8dc725902aae72f143b0c	NFTfi Promissory Note		erc721
@@ -13191,7 +12632,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x8b61b61ec446944513172747bc3387f4ae8e355a	Acid Headz	ACIDHEADZ	erc721
 \\xbc0e0c1468aa9d80c0ddda8ca63de3798b4d8b93	Psycho Teddy	TEDDY	erc721
 \\x85b8a657b9988260b019c95f6e6124f20101cb82	Daimon Slayers	DS NFT	erc721
-\\xb04004aa955849739fde52da15249e65950238d3	Unidentified contract		erc1155
 \\x39c43989cc41ed858b582a47aa7ec913c453965a	Woodles	WOODLES	erc721
 \\x49b3c81119c59522c78649068529ca08aa78013e	Dreamverse - Land	LAND	erc721
 \\x82994dff990b80ee01a90a9c2f5afccc1f5e32f5	TentacleKnockout	TKO	erc721
@@ -13200,17 +12640,14 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xd13a6031f450bc2755e76123098e5d4331ed5643	Suntur - 8760 hours	1B1ST1	erc1155
 \\xc2f05fd9fe4cfe8f7395ddb220c84d3ef240cf3d	ToolsOfRock	TOR	erc721
 \\xeaca6dc08aff2694366c4405724973e2ac7e49e9	Giraffage	GIRAFFGE	erc721
-\\x6eccbfbf88af0f1550a9a78fcc9fce7079a6b6b7	Unidentified contract		erc1155
 \\x22674fd4ce74765c211eec01698fda36f57a650a	Metaverse Psychedelics Anonymous Pass	PA	erc721
 \\xc6c817cd60e17fed0af2a759624e02dd6c812e64	MetaBillionaire	MB	erc721
 \\x24410170e7910862dab1627327ee33bd5775d286	Babylions Kingdom - The 10k	BLK10K	erc721
 \\xa7ee407497b2aeb43580cabe2b04026b5419d1dc	Superlative Secret Society	SuperlativeSS	erc721
 \\xd37264c71e9af940e49795f0d3a8336afaafdda9	Junglebayapeclub	JBAC	erc721
 \\x09646c5c1e42ede848a57d6542382c32f2877164	Pumpametti	Metti	erc721
-\\x591d1e9bee3177af386df1c8d76f23755818c895	Unidentified contract		erc721
 \\xac639d331d69810b2fecc1cd9fd2e3780172c22f	Apollon Project	APL	erc721
 \\x53c9891592ba8efe278cedcee8045007259b6898	TARA	TARA	erc721
-\\x0ebeb5201b63f201d8a795ea5eabfbaf57194480	Unidentified contract		erc721
 \\xb8180bed5a2980f31a65ef4ce2ead0025fef0a03	Poker Face	Poker Face	erc721
 \\xa63673fd80e67aaeab5489c61760a490476a748a	Loomi Vault	VAULT	erc721
 \\x75c7b40fb3484a88a54d03898963f7e74bf0ae39	Mystic Forest	MFS	erc721
@@ -13220,8 +12657,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x630a032117d0bbe99c7f9eb8736375c5d3fbdadb	Silence	GATHKAL	erc721
 \\x5f43353470ce421fba6db6414d631fc050bbabf2	Ice World	ICE	erc721
 \\x21657812c07ab6d80214bdac0719319ac21f32e3	Halloween Ghosts	HG	erc721
-\\x0131b36ad41b041db46ded4016bca296deb2136a	Unidentified contract		erc1155
-\\xd282c166a89678340e516dae7b7c81e3558257fb	Unidentified contract		erc721
 \\x3a84b69ee5382a97bc67e0e83ee2733df9132ec9	NiftyBots License	NBL	erc721
 \\x50c5e47859a589d9ff7a88f2193cee175a4a16e3	SpaceConvicts	SC	erc721
 \\xa6c87eb422b7b4321e3d5d252dfa8351c9a89ccb	Mortified!	MORT	erc721
@@ -13249,12 +12684,10 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xf16a5b64f5a774c24218a83f6fb2c7700fb6469a	Nishikigoi	KOI	erc721
 \\x625d9e54d4346bc8c1b377e8bfcabb64bbb8dc89	The Forgotten Cult	TFC	erc721
 \\x9414022cacc3ba0863fe402d11f999b20d1640ca	PhantaCubs	PCUBS	erc721
-\\x7a7fc0157f070da05db78101b95f42c5ad337037	Unidentified contract		erc1155
 \\x778e48a87b2ee5120288f4e51e59305aeb527ca2	Unfoldrian	UNFLD	erc721
 \\x1c903a2f35fb7c6dc1792daec11c033f8b222d5b	Game Disease Open Editions by Frenetik Void x Milton Sanz x Oxeegeno	GAMEDISEASEOPENEDITIONSBYFRENETIKVOIDXMILTONSANZXOXEEGENO	erc721
 \\xc9a60953f2506003796bc66bc2895ae9b7b5b35e	Broke Outside Yacht Club	BOYC	erc721
 \\xfadc97b5943a6bcef17c198427f055718f872182	Found They !!	FT	erc721
-\\xb7f9ef1e09829d3937bfc6b5e46f3cc46a23d13d	Unidentified contract		erc1155
 \\x1e0a2cf49dff783631f1dda704e1d9a114b31c6b	TokenQuest	TOKQ	erc721
 \\x8e56e6c615946dedd47916d45ba883830ffdc256	The GANS Machine	GANS	erc721
 \\x18708162abc54f71dea397b0ec853b6abb0a81ea	CryptoBeers	CB	erc1155
@@ -13274,7 +12707,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x8e21a8b0516c0dc1252bf1f379d7889af3c2642c	Apocalypse Girls	APOCGRLS	erc721
 \\xc30ceae9f5bff800d45b7de6ce640844d04a66e6	Dragon Z Apes	APES	erc721
 \\x8236afc3447c55a499dc62d62080321563d47342	MetaMaps	MMaps	erc721
-\\x2fb32ffc5aad1684c45a4a8dc52c59a88a779bac	Unidentified contract		erc1155
 \\x95fea1523c426b601c7f8cfea70028324850e946	Ultrasound Burn Redemption by x0r 	ULTRASOUNDBURNREDEMPTIONBYXR	erc721
 \\x95e05f7a337d7d4cfa8b8d33734d0738df050e6d	AbstractWarriors	ABWA	erc721
 \\x5f47079d0e45d95f5d5167a480b695883c4e47d9	Non-Fungible Fungi Genesis	NFF	erc721
@@ -13284,7 +12716,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x6add0e64aee8e6741f5362dac3b165f95d992b27	Babystarlords	Babystarlords	erc721
 \\x697939a390396ba342a31679e57d6baef28c8fda	InversoMundus	AESF	erc721
 \\xf3613b80f8ff1bdc410a9230a014a64f2d380550	Freak Zoo	FKZ	erc721
-\\x920bbe21cb8b4ac38fb461fc62f8900aef18e923	Unidentified contract		erc1155
 \\x45bab379698f857c6332913811d4f0683d86496d	Tennis Bits	TNNISBTS	erc721
 \\x8a1f7cc4e1c7ca686bdd7fac10cc30b850739be7	LuxNoctis	LUX	erc721
 \\xdfe0e36ea59dd7bcf8e72b3aa38d7ff1f472f1ce	CryptoPets	CP	erc721
@@ -13293,7 +12724,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x49a1efeb86ef8f5ec1d1f337f8566b85c5c2644a	Stegano		erc721
 \\x444444444f301aceeadabc86a844ef47c9b3caed	Krew Studios Members Only Pass	KREW	erc721
 \\xb6857687658d12d35d827e45dd8b293bf1e32559	Eternal Reflections	ETERNL	erc721
-\\x341ccee47c2a0b5a481d19de4385788d0555693e	Unidentified contract		erc721
 \\x3582379612a58ac8bd9fbd483492c88c55d18794	Elite Doge Club	EDC	erc721
 \\x8f55deaad9f4ae34734e2dbc6b77ace6e564c3f7	Duke Dumont – DREAM LOGIC with LOREM & MattAttack	DUKEDUMONTDREAMLOGICWITHLOREMMATTATTACK	erc721
 \\x151187b6a9cb2c5b3132c1622d550a601b578b72	RockRuna	ROCKRUNA	erc721
@@ -13312,7 +12742,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xa0529c325e2594dcc599ba6e39aa4d6b28834c53	MetaZoo Games	MetaZoo Games NFT Store	erc721
 \\xd00dcd0345b213224446df9431f2c3117827ddfc	Touring Assembler	42	erc1155
 \\x980c7de5ea3b2d1f4f35c15f3e50bd1eca947e82	Budweiser Royalty X Immasoul	ROYALTY	erc721
-\\x86e117bcd5deb54b79476f24cb474ba5cfd7559c	Unidentified contract		erc1155
 \\xb066308de25f50bd6a26df690d4f2b135e7dc2f5	Ruriho Girls Collection	RURI	erc721
 \\xea3e8708e33b2072e7788aaa9159547749714e3a	FCF BALLERZ KNIGHTS	BALLERZ KNIGHTS	erc721
 \\xbab22c58f6f030df4fde6b68973e78b7716923b2	Bitcoin After Party Diamond Hand	$250KBTC	erc1155
@@ -13320,7 +12749,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x22d4f73b77dd241e10ea1a9bd3584c3332e0b0a5	Budweiser Royalty X Satomaa	ROYALTY	erc721
 \\x6a1361bbd958ebd0817466cac092a21eee819202	KEKollection	KEK	erc721
 \\x784a39233bace882c128b050f46b657ddfd112cb	niu	GG	erc721
-\\x6df054c15a2233587df1974814db197402cf3bab	Unidentified contract		erc1155
 \\xf6c08aa0ffd3e988a6d5403c6c741a590b99e328	JigsawNFT Drop #1	JGSAWONE	erc1155
 \\x57a8b21fba68b9e4228b488ae7af1d972aefa1cf	3022 Generals	3022G	erc721
 \\xa740e2c8541f8d6515b5eea9e7d80d9d314f8324	The eyes and The stories behind them	PORTRAIT	erc721
@@ -13334,7 +12762,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x506a286a6bb78c9e5d189f436619a87a90aab088	Wealth Cyborg Club	WCC	erc721
 \\x7f81858ea3b43513adfaf0a20dc7b4c6ebe72919	Mondrian	MND	erc721
 \\x2d097c1535988216499722df726617a3607b0f08	BearMarketBears	BEAR	erc721
-\\xac5f90beeb72572a38b6ca64ba00a429478502c7	Unidentified contract		erc1155
 \\x5876357559dff776835423840b807d126d92ee6d	MDV Official	MDV	erc721
 \\x52c840f129dfb42a30f46f567de3d0bf71d77e78	SMOL KONGZ	SMKZ	erc721
 \\x78b0094b766bce66b9a12e3198e06d0f3924b3c8	Shifters	SHFTRZ	erc721
@@ -13382,7 +12809,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xfecc1e1449496c0cddfb1a075e0ef74c50538c1a	Diccs (For Adventurers)	LootDicc	erc721
 \\xfdf04ca0b0c01324c9f1712ac14797bedf916fa2	RARE BEARZ COVER ART	RBAC	erc1155
 \\x595a8974c1473717c4b5d456350cd594d9bda687	MineablePunks	MPUNKS	erc721
-\\x4ae83de2753beb769ae00b99ffa403017cdca806	Unidentified contract		erc1155
 \\x2b30d3abac8cb465c318d7dfac77bfcbd00d5a31	Funky Monkeys	MONKEYS	erc721
 \\x86c1602f4a43504a253bad580bc55fdc9be64d80	Tyrannosaurus	TREX	erc721
 \\x72531dc8da366b66396d6d3f32750e10767dcdce	METACITY	META	erc721
@@ -13405,7 +12831,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x044397c20511214a5afa7796ac616c9a5075a0ba	Doodle Apes Billionaire Club	DABC	erc721
 \\xb43426a189de0580180a03c939df455e8f81e6f0	UNKNOWN SAINTS	UNKNWN	erc721
 \\x7ed5f03b28458f9d50056306c1027f17e85a140b	Lucky Parrots	LP	erc721
-\\x1bf47e4f2e9078c30914e33134b21c952b55c64b	Unidentified contract		erc1155
 \\xee705bd212f9041e084d8dcb5edb570eb0aa86f2	nAStep	NAS	erc721
 \\xbc37bd25e7f5afc4f3fb9c2751c1401ea095cbe6	Teen Ape Squad	TAS	erc721
 \\xb7c31ac2f96797518b92706654f773a466de4752	FunnyApeClub	FAC	erc721
@@ -13422,7 +12847,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xaeb1d3a4950be8011e4d91f00957e8c900da1f90	Voxel City Plots	VCP	erc721
 \\x251d6da8ca9819a6828f010bbacd7361fee7e0d7	Boudoir	WOMEN	erc721
 \\x45359616610a584cc39aecdcbb2a457976780023	Kindergarten BabyApes	KBA	erc721
-\\xb4b18e331a8539228fdbead6c559a09479bef09a	Unidentified contract		erc1155
 \\x58a5acfc6e3b86d72d7183b81c3f1c1bf4bce665	Curse NFT	CURSE	erc721
 \\xb6a5c65425f885aa5be60ac5875415da316eefbf	Monochrom	M-MS	erc721
 \\x7b856b2bfb2ac4a0c534687065edb933956cf761	Savan	SAVAN	erc721
@@ -13433,16 +12857,12 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xc1a1e381389cb927f1d57511e144b644ef0c6385	Lostboy	LOSTBOY	erc721
 \\x9dc8cdc06c5e8b6879cd7d50800d8517fbae3117	Battlepunk	BP	erc721
 \\x2f146c3224e0daf66583b3f37b06ec8195f899ec	THE EVANESCENCE OF INNOCENT PASSION	PASSION	erc721
-\\x917d62bbb22cfee0abc0a0999004c3a0626d7fed	Unidentified contract		erc1155
 \\x973f59f1572a96f70178e3700f0001e8c24f9495	Dilly Drop	DROP	erc721
 \\x168267a2a08db0e99074a67fe989d17868b7cb46	Treedefi Collectibles	NFTREE	erc721
 \\x14cba6049e5d449052ebd3ed8dee312d5f7f5b40	Trapped Emotions	EMOTIONS	erc721
 \\xd0c3cd7ac1109593e31150098ef77abe3ff18f98	Mutant Lads	MTNLARVA	erc721
 \\x638b496de69f117da030b5935c0c2a278bc36c3d	SpaceMice	SPACE	erc721
-\\x84ac6a9d253cc374b006a3629785e97a11a26f76	Unidentified contract		erc1155
-\\x56e0a0d0c8ebb29a3db38b52de9e9dc71781ffe0	Unidentified contract		erc1155
 \\x117182b1e58cd5916f4a2afd4f80f331a3a7c65b	Duffer Golf Club	DGC	erc721
-\\xc9361911253cff6af9bfc13860849744440510c1	Unidentified contract		erc1155
 \\xb216bd4d6f5d626f7afd32fc0be28480937125a7	🎄Merry Christmas☃ Pepe💚	PEPE	erc721
 \\xee27755e1a17bc03c1114effcec941f490e6f167	Canopy	CANOPY	erc721
 \\xf88747d4bb0f64a724c5417e52e8d8aa3d710ff8	Dragons of Zobrotera	DOZ	erc721
@@ -13490,7 +12910,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x0cb2067ea53df494cacd896ad50ce4923e7350f6	Jun girls​	JUNGIRLS	erc721
 \\x97fb1e97a05af8ff862c7f5fa9e28c716660d632	UltraSound Bat Club	USBC	erc721
 \\x5e9dc633830af18aa43ddb7b042646aadedcce81	Doji Crew	DOJI	erc721
-\\xf71ee2060e2daa27d7039bbf9f34f60faee55aa5	Unidentified contract		erc1155
 \\xef3a81ab22c53f054332344971a745b8f270cb55	Trashcans	Trash	erc721
 \\xc7d39fd21513ca63b479543d7f3e2557f4e2295f	It’s A Party And You’re Invited by Gavin Shapiro x Yung Bae	ITSAPARTYANDYOUREINVITEDBYGAVINSHAPIROXYUNGBAE	erc721
 \\x0ffa87cd27ae121b10b3f044dda4d28f9fb8f079	Sidus NFT Heroes	Sidus	erc721
@@ -13512,7 +12931,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xbad024f9ee1b54a41912c1da3009178796ef5053	Little Frog	8D	erc721
 \\xd136ad9eb0a53633156972e3f746ab10d6dced7d	Chain Renegades	CR	erc721
 \\xb0975bcfcf3079834fdb89fcaf0cbca510a464e4	NFT SuperPowers	NFT SPs	erc1155
-\\xecdc592e38b5f91613f20c641d61a2edad72257f	Unidentified contract		erc1155
 \\xfcd3dfd6a0baee2280442ed81e36ba19f2887978	Polar Pals	PALS	erc721
 \\x222829768f8751cd1663f7154ba5e5031aa53383	Men of Culture	MOC	erc721
 \\x103ffe3aee66a048e22821145a00c4cabc0ff05b	Bad Bunnies NFT	BBCl	erc721
@@ -13521,7 +12939,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x95fd87688a382355a50f8290e73c84620ca77823	Portraits of the world	KOREA	erc721
 \\xbc8ef36c4825631b73a52d622a0c08cf402dec6d	BM artwork	BM	erc721
 \\x7a7df9ca1aa0183cd3bfe680bb532204800e874a	Bloot Character	BLOOTCHAR	erc721
-\\xc5f20edb401a22ad24ef435d20461b880ce7bcd7	Unidentified contract		erc1155
 \\xbcfa7d21f401da6fcedfc5ec10c20623118ae309	Plushies	PS	erc721
 \\xabf401670cdd666f4ca3e9b49db5955d54ac1ef0	wondermundo	wonder	erc721
 \\xa5d37c0364b9e6d96ee37e03964e7ad2b33a93f4	CATGIRL ACADEMIA	CAT	erc721
@@ -13529,7 +12946,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xc045fb5b3ae934a7f95679852ee598d79f268114	WolfClub86	WC86	erc721
 \\xcf82757c5140661432829c34aebca4411d767e58	Paschamo - Vibes II	BLUES	erc721
 \\x3c1220dc26f85f02d69a790ade03e619f5c32582	Goat Troops Infantry NFT	GOAT	erc721
-\\x97451b61cf05d92ef181858e115fbd4f133991e0	Unidentified contract		erc1155
 \\xdfab2cd7b7efe3cfb6a09235ba8ec895eaedf062	Purse	PURSE	erc721
 \\xbd091f143ee754f1d755494441aee781d918cb93	Bit Monsters	💰🧟	erc721
 \\xb2dba612538ac6da999b218949ea919c8a0d8724	The 8102: Factory	8102FACTORY	erc1155
@@ -13565,12 +12981,10 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x2e2866796dc54efe6671d9ac15d7906ec450b38c	Portraits 	PORTRT	erc721
 \\xfd87ad22b132a50d1b89fdb0c90810f48891bb8d	Celestial Cats	CATS	erc721
 \\x14315da0cf2683696866ddf34345c9458db5bca1	ethimals	EML	erc721
-\\x3a6f22b9d33d68fab863bb5c17e9d31476df9fea	Unidentified contract		erc1155
 \\x530d21471bf902544f97096f3017479c7111615f	Larva Nouns	LARVANOUN	erc721
 \\x090d0f7d785ef31eebea2d612ee615c8d30f3c77	Strange Turtles in District99	STID99	erc721
 \\xf27229c20ef15ca8398afccba234fac3e9a2ce2b	Ikebana	GCP5	erc721
 \\xd1d89e3a49e50f5a05f1de017b607124c23611d0	event-listeners	lgel	erc721
-\\x4dad577f640c4854c8073744b5c9f501efb3ade5	Unidentified contract		erc1155
 \\x254a38245b88c7ad961f1aecab352d86dc1718f1	Tickeri	HUMBL	erc721
 \\xff4402978b910da6767f42d0d760926970942000	Melon's Early Works	2020	erc721
 \\x5cc5b05a8a13e3fbdb0bb9fccd98d38e50f90c38	Sandbox's LANDs	LAND	erc721
@@ -13662,7 +13076,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x94fc06847dbfcb4b4358e525c7fbd18033caee31	Waifus	WAIFUS	erc721
 \\x6aef297e2f93a7d7412d9f59c6e3d5bf550600df	GAIA	GAIA	erc721
 \\xb41166e34fa973ef34a7915ba03c4bc327a6eddb	Meta Dudes	MT	erc721
-\\xa80bb97ba233b5483f86b4d95372484414b40326	Unidentified contract		erc1155
 \\x88ed28549eb66cb5a4580fb3c54148ce2d5c7f0f	The Doggos	DOGGO	erc721
 \\x937a2cd137fe77db397c51975b0caaaa29559cf7	RarePepe by Matt Furie	MFRP	erc721
 \\x6d0de90cdc47047982238fcf69944555d27ecb25	Regulars	Regulars	erc721
@@ -13696,7 +13109,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xf9ae665e19460e3eae495ed288e6da9e6d21f26c	BabyMonkes	BABYMONKE	erc721
 \\x85dee02a7d2e0a53b8f68da4c64fd87187d8b946	DoodleKingz	DK	erc721
 \\x9818e51170a51a2a549f88c95ca2298828de3abd	SkidCars	SKIDCAR	erc721
-\\xcfe4499258541cd5e0a00600dc5db1c3dfe4de23	Unidentified contract		erc1155
 \\x23de1cb5f0217aa77977594af1806f4ebf9a1d71	Viva La Pepe	PEPE	erc721
 \\x7dd04448c6cd405345d03529bff9749fd89f8f4f	Crypto-Pills by Micha Klein	CP	erc721
 \\xc66a2dc39b2772110bedb2e80951f8a9393db0dc	Fairyland	FL	erc721
@@ -13767,7 +13179,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x0cf37fae1c174bc1e7431925b9aa5c7672adf6cf	Soul Food	SNTNCVLL	erc721
 \\x563157a5c01d33623e90e706fc3d36403343377d	Moments	MOMENTS	erc721
 \\x39d9ab9a6490b3a27a04e82201bef25c75a133ae	Nekroverse	NKRVRS	erc721
-\\x1291a3dde7c952fa06dce05a951f29fd4d609251	Unidentified contract		erc1155
 \\xb197ca81c6d0944a99489ef1968235a3d3748776	postvisions	POSTVIS	erc721
 \\x133bb1ec5892aa1467b6621f01e0251d3419f2cc	CryptoFranks	FRK	erc721
 \\xb44b7a31a3fdd087347f72823d97f3e2ac0b559c	Simulation Therapy	SIMULATIONTHERAPY	erc721
@@ -13781,27 +13192,21 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x34f5c46bc8d76f0484e4368cbe6c12af91c31fb7	Angel Baby Hit Squad	ABHS	erc721
 \\xbcbf811adbb1a1a45a57c9a94506d5422a53b236	DOGEXJR	DOGEXJR	erc721
 \\x4a0ef944edec299a8fa6a5562785c4b46e6d8c94	Electric Legends	ELL	erc721
-\\x8058aa8480de456cca8387ced3b7b5e57aaaa821	Unidentified contract		erc721
 \\x9c52f5df771939924f5bcfd5e2ecd8ed41e19fa8	Youth Atmosphere	FILM	erc721
 \\x6d849277a72be1af72e2b9e3dd28022aee119c41	Moments In Solitude	MIS	erc721
 \\x0beed7099af7514ccedf642cfea435731176fb02	DuskBreakers	DUSK	erc721
 \\x4d2072a982aee3cd9476067d42121f12d01f78a7	onigiriman's cute girl Collection	ONIGIRI	erc721
-\\x372e62f40b777b25ee8fe0c8700f61b9e17895db	Unidentified contract		erc1155
 \\xef66f3f1b4579938b68be54238a4b9988d846e86	Strataegis 	STRAEGIS	erc721
 \\xbc4014ae24bc7d86de0eaeb89161e5926dae08ed	Queens by Hackatao	QUEENSBYHACKATAO	erc721
 \\xbf50d1ce435322d801fd2e47e88d94de1488aa61	The Pit Genesis	PCG	erc721
 \\xa118c27ff48cddeb6225d20cbcad1a888f53bd28	Kepler Multivisa	KMV	erc721
 \\x0ddeef7842eefc31be16b297b3d97ac5389c5889	Blase Bunny Pixel	BBP	erc721
-\\xf4d4c212e4d461cf23d5f16782c2fb3e9baa1dc3	Unidentified contract		erc1155
-\\x2d7e3779162d3a3d4db32a8628a186e907f02e5a	Unidentified contract		erc1155
 \\xe45693dbe1f93815265adf4d4555d8a9100ceb76	Doodle Kongz	DNGZ	erc721
 \\xb8bd00aa3a8fa212e0654c7382c1c7936c9728e6	WickedCraniumsXHaylos	WCXHAYLOS	erc721
 \\x6827793828b804bfbf5a09dc527b0491d9ccce96	Bored Hamsters Hood	BHH	erc721
 \\x3cb1cc2f9a7ea63ce418bf0d9d02e2ecb59a10ee	Cursed Vegiemon	CVGM	erc721
 \\x03f3426fe1c016a96de0da4e26aee7523dbe2c19	Kong VS Kaiju Game - KVK	KVK	erc721
 \\xd16e4ce50de98bb663ad5a12f992be16e69ed1fa	The Final Burn by x0r	THEFINALBURNBYXR	erc721
-\\xa16891897378a82e9f0ad44a705b292c9753538c	Unidentified contract		erc1155
-\\xe1a510818634b5cc686cabf4ea32cfd9e1c9095e	Unidentified contract		erc1155
 \\x75889e73ecb397d4dac607338e4e4e5c9e1ce9f8	Dreams of Guccighost by Trevor Andrew	DREAMSOFGUCCIGHOSTBYTREVORANDREW	erc721
 \\xf30749c6e413a2596923eca308f1ec73e00a505c	Holy Rock NFT	HR	erc721
 \\x2f14f1b6c350c41801b2b7ba9445670d7e2ffc70	Goat Society	GS	erc721
@@ -13936,12 +13341,10 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x7fa6b489a0dd62967406c25b478a209f81a707de	AbandonedKidKongz	AKK	erc721
 \\x648e8428e0104ec7d08667866a3568a72fe3898f	DystoApez	DYSTO	erc721
 \\xbb67b19f369d5a7018fad2b886ee4a2a68c9b18c	Vexx	VEXX	erc721
-\\x8663602d09639510f07a3d84daa5703c4cc83b21	Unidentified contract		erc721
 \\xa0f2e185e98adeca32291ef0a017c3716f43048f	The Nifty Way Galaxy	TNWG	erc721
 \\x6eea12aff02bd371483b1bac7d8e9cb2cfad5ced	BirdHouseBuddies	BUDDY	erc721
 \\xcf280c7b5e5c495938ecfdf3306783a8a8565850	KVLT_ZOMBIES	KVLTZ	erc721
 \\x859122e76767d7078fe94a0046c85686bda60cd3	EllaOrtenDAO	ELLA	erc721
-\\xf6fede92794291fca094b55ce95fb3f2f3122569	Unidentified contract		erc1155
 \\xda096ae45ea16c439cb28509be592a367e55bc7d	Reflections of Home	HOME	erc721
 \\x293c51ca381ceaa18024dbcc78863aeaaa85f08e	LUFFY NFT COLLECTION	LUFFY	erc1155
 \\xf800263e11309e6c70afb965d0417f9c1a2251b8	BADASS Ape Club	 BADASS	erc721
@@ -13953,7 +13356,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xe7dd2a950bc4ac9297205df1004a1bb22f0336b4	THE MELODY OF THE WORLD	MTW	erc721
 \\xdb1b39ffe24f6f2d68254663f4985e8bd2e9021f	GemLoot	gLoot	erc721
 \\xbfba224810655e7b5d94190700768fa8abdb9eaa	The Hippo Hotel	HIPPO	erc721
-\\x83ec7ae2f5921e563d1b7065e9a2c9fd3868d378	Unidentified contract		erc1155
 \\x37e3519f99034c431c08b412d9fdad88be41d0bd	Trevor Etienne	HUMBL	erc721
 \\x1c55620bf84a4dc9b7d933ac204355da40e0acff	InfantApeClub	INF	erc721
 \\x7db87d7f4318ba78629cbf5d941dd784b5cff482	HeavenOrHell	ANGELWITCH	erc721
@@ -14039,12 +13441,10 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x504a63537c3910c7f628efb4c30dbe4d7594c112	ThreadGlyphs	⩬	erc721
 \\x4238e50bd593119bbd0baed05f9851eb84a0b0b7	Great Ape Bananas	GAB	erc721
 \\xf837281e92c1b4f844fe0642946aae2de16c5410	kyle.gold	kylegold	erc721
-\\x8f9749054390b96cca7b5a41c7215cb6745daaee	Unidentified contract		erc1155
 \\x8e692d1a07d4dfc35cc106ef8e4fe51cd55e7f3e	Puppy Punks	PUPPY	erc721
 \\xd305e3885a9ac0d77bfd8b6c954e357b04b3623d	CryptoSphere	CS	erc721
 \\xa2833be080e00c77775ed916bca34a3b63c9addd	the-base64-soldiers	b64s	erc721
 \\xe00c7386226c34145300b8abb9c98ad6385a5871	Imahmedamin	IMAHMEDAMIN	erc721
-\\x98cb0f4bb566a9db325ef0720ec41786068248bf	Unidentified contract		erc1155
 \\x4c22d3b875437d43402f5b81ae4f61b8f764e1b1	MetaBoom	$MMU	erc721
 \\x22bf9db5a63f2c41a0a0eb46ede5293aeeb97701	Crucible Events	CET	erc1155
 \\x6ca044fb1cd505c1db4ef7332e73a236ad6cb71c	DotCom Seance	DOTCOM	erc721
@@ -14074,14 +13474,12 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xd5867d614c60ba10543187622ef0a60c72626cc3	CryptoKrakens Club	CKC	erc721
 \\x304cceef74a8fc3fbcf6ecbde5b1a8888df564ff	Biophilia Hypothesis	Bio-Hypo	erc721
 \\x21011333fa45f3564176e9a16a043bb84f863e5d	Crazy Skullz Cards	SKULLZCARDS	erc721
-\\xb9b1f0b5a3f2b4d2abab1f7f7e76bf054d47e803	Unidentified contract		erc1155
 \\x51d007c9b6d753fac0410a261d418b53ac12289a	The Zoanthid Collection	ZOA	erc1155
 \\x47372620e06b05e722ee829f487fa132bc5a79a7	NFTeams Pass	nftmps	erc721
 \\xfdbab5079044c91e2c5bd879c248f09279df7fbf	NNNNoun.	NNNNOUN	erc721
 \\x9c310a63ee5352d1cdbec32439ce22f0e89d5e14	FCF BALLERZ GANG	BALLERZ GANG	erc721
 \\x78d00367044c260025e744167b74898cb79d93b5	SchemeScala	FUCHI1	erc721
 \\x13210be318a14b2e33343addab488ffc3892f945	skomra-721	SKOMRA-721	erc721
-\\x828b78e11bc6a061b8b1ab9cf29c68ed6abb247b	Unidentified contract		erc721
 \\xd7e5cb2c74e72b1f13686510a6a5131701fa9681	METAVATARS	MA	erc721
 \\xa2fcab0347b611479de2f83182b5a620f25ee777	DegenCoinApes	DCA	erc721
 \\x15974d7c82dd55fb3fc2a15edafcd47d92af0e07	Emergent Behavior	EB	erc721
@@ -14108,7 +13506,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xa9833d5d3ff75a32709a8da2e66a7df9d2c83aa0	Chain Gang Pass	GCP3	erc721
 \\x87065c3659024a56f772072190d9c6c592fbb312	Bodyglyph	BGLYPH	erc721
 \\x914f79a4bc44072e137692bd70944f85a55d88bc	Artworks	ART	erc721
-\\x09e7483e6d4054be9b21076f0dcdbbf30d202d8a	Unidentified contract		erc1155
 \\xef74c4ad1f619a947945fc7073e69bc5146bc74c	Odd Ogres	Ogre	erc721
 \\x9ec46a3dd227fd5977c7f1997c043122a703ff2a	XONE NFT	XONE	erc721
 \\x8c036c9aa826cbdbfd976905a7d25c7c661b18b1	Communal Cats Genesis	CMNL	erc721
@@ -14129,12 +13526,9 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x2b67221412d64377749e62348f4d7e7baf9b7a4a	DRAGON	DRAGON	erc721
 \\xae325be1d878d618306238a4136c44364e2d929e	Little Pengus	PENGU	erc721
 \\xc926d9b50fffbe9bc6db02362cc15f5a5f3b23c2	One Shape One Color	1shape	erc721
-\\xdf5e48519756de2e2447d5cfe28792e6b24f44a8	Unidentified contract		erc1155
 \\xb949c195da405aa1fb038eace15ccc73c8798a30	The Meta Art Club	TMAC	erc721
-\\xa7c6715f79e7cbc781b15a2ec411f78a5a13789c	Unidentified contract		erc721
 \\x2e2fd87c4789e6a938d025e8763d9bee62f17fd4	MetaTowers	MT	erc721
 \\xb28360ce2debebd8689a13e3539853026e9122f9	Xarb	XARB	erc721
-\\x8cdfcf535bc267623e0d433385c3be573153c77c	Unidentified contract		erc1155
 \\xef780a0de7d357993b605d65e0683714e275bdb3	Chickpeas	CP	erc721
 \\xb5e366c938fe38de600a7fe2f3949a9f41157fd6	Spookle	Spookle	erc721
 \\xe3da65218865ed0c59583b357aa784c5f9c759f9	KeroNyan	KNYAN	erc721
@@ -14150,11 +13544,9 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xe3726758371bc0a8ca038258fc1f3c7eff11f0f0	1024 Pixels	PXLS	erc721
 \\xdc178989e57e9235f1962389b74c8cb8c1b32d5d	Olmeks	OLM	erc721
 \\x10bf75ddc2c4073b9eaa504194504542d1e0cd22	INFINITY MATRIX	MATRIX	erc721
-\\xe5e09510e359fd0f50e3a7b7e9c8c0daba9c8f01	Unidentified contract		erc1155
 \\x3eff964d46c62be703d9a01ef720ba0479e79c3c	Beatnik Tiki Tribe	BTT	erc721
 \\x8fdf577df32dd75d6f6c9810af309cb02cc960ee	MirroredCats	MCATS	erc721
 \\x6f13d82d5d501b2eebb94a34bbf8bfdf20440079	Basic Buns	BSCBN	erc721
-\\x530e16ea574c6866b41b4951a6ce34a4a29f53cb	Unidentified contract		erc721
 \\x0db278c1942ae3444fe721af30feac30d500b1fb	BigAussieCrocs	BAC	erc721
 \\xf1f3ca6268f330fda08418db12171c3173ee39c9	Zapper NFT V2	ZPR NFT	erc1155
 \\x8c3258cbabc6947b333d0ce7439238459c24ab81	SIN PXL GENESIS	SPG	erc721
@@ -14173,7 +13565,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x0a1c8aaca683a124bce053962463434f43f74e91	Uncluttered Sobriety	ssart	erc721
 \\xccb754b5d99f41397b13bec72e0015d7bb2ab63e	Giraffes At The Bar	GATB	erc721
 \\x2d413006b09dc8953a468e662d81382942b4c0d2	SuperRare bitGANs	BITGANS	erc721
-\\xaf35edeb3222366185a6ce89f4704205210df0ed	Unidentified contract		erc1155
 \\x6632a9d63e142f17a668064d41a21193b49b41a0	Prime Ape Planet	PAP	erc721
 \\x885716aa346ad8238846fb7134f54370ad68f01c	Pheudalz	PHEUDALZ	erc721
 \\xc8d2bf842b9f0b601043fb4fd5f23d22b9483911	SamuraiCats by Hiro Ando	SCHA	erc721
@@ -14183,9 +13574,7 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x245637e772301a355682573e924337c481b480c5	ZAFLON	ZAFLON	erc1155
 \\xdacc9fde9e1fed9bc1a08ef2958e0eb886d2f119	Arlo Sinclair	ARLOSINCLAIR	erc721
 \\x06f42e0dadb13e1153cd682f062d7d3acadb3851	Island Bois	ISLND	erc721
-\\x9f608060c234f70d83ba16ad9277cd42f7dcff49	Unidentified contract		erc1155
 \\xfda91deb8959c2da8e021cf51a419d0a9397cae2	Labrats	LABRATS	erc721
-\\x7b29b5f2374812e4045173e0bc2cf15bcd57bac4	Unidentified contract		erc1155
 \\x4794df494a53ea51f654b93b93d61c09b9589f15	GM	GM	erc721
 \\xfa037f7fdfd56560623b16c5c9fcc2cced2d886e	Space Yacht Iconography Collection Vol. 2 Open Editions by Space Yacht	SPACEYACHTICONOGRAPHYCOLLECTIONVOLOPENEDITIONSBYSPACEYACHT	erc721
 \\xde83038b19611d7e6577e27c4cc90a4f2328a281	Cosmic Colors	CColors	erc721
@@ -14238,7 +13627,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xf1cf2fd8bb76d4e7cdfb198baf8c466a67f57e8e	TOYZ	TOYZ	erc721
 \\xc39fae1822b03791e862231d8b7025d9efca82b5	DO NOT FCKING MINT	DNFM	erc721
 \\x9326bd1cf4c4b52f7cb040ea89eca6d6f265e456	play2earn.crypto		erc721
-\\xaa03e09ab8485e079e666d1c43eca0914bd5ba63	Unidentified contract		erc721
 \\xf27e5f403336949426f7641580d686fd2d185873	mew.psd	MEW	erc721
 \\x3a0fe2f61fe792f1830c1f0c633c0633f7343e86	Missing Watcher	404	erc721
 \\x926c544fe18865fa3b31cd4b7c3543405ad2e963	Shiba Cards	SHIBACARDS	erc1155
@@ -14250,7 +13638,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xe4aae116ff29bbde601402eaae30c5057b53f0d0	Others	SYMBOL	erc721
 \\x527fed0373a22a2f288d3fd4f9264178386285f4	Lucky Foo Dogs	LFD	erc721
 \\x68c70406cebae5901a88cf7e024a2b02a6a0fbba	BabyElonWorld	BEW	erc721
-\\x4758f5189cecb2384e54389d1439cb8ebaf15565	Unidentified contract		erc721
 \\x110681405d0cf4afb47143652729bcb2d40c510e	SpeakerHeads Vol. 1	SPKR1	erc721
 \\x838043e01d38219b940124ba456c34f20a406d58	RuggedMugs	MUG	erc721
 \\x17a8cbbd824738f2f3e5bc329385a97b7f3bfa1f	Enchants	ENCHANTS	erc721
@@ -14267,7 +13654,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x8e81d22d0dc7ef48a81ab25b773d449f08059c33	Sashimono	PRINCIPLE	erc721
 \\x89908c13f686f798c688d6f9074dc41fd0679a7f	Awakened-Gear	Gears	erc1155
 \\xba1c51e4d657ba7702f8523f435120a6fe79673b	XXX Loot	xxxLOOT	erc721
-\\x94ccaefa46bad54cf1a5c594a84e17d440b305b3	Unidentified contract		erc1155
 \\xc9e77ef4a304b39bea702b882e701b757dcd3730	Roaring Roccstars	ROARROCC	erc721
 \\x953149ed724743fa3a7a7f402e157ad8cf914c45	BelleDAOphine	BELLE	erc721
 \\xe66b313cd00c1e86a7cfc4d3cc53d1f11ee62255	Tiger Cub Club	TigerCubClub	erc721
@@ -14278,7 +13664,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xdf3cb0bd38ae143444bfcb3183e4aa6a62e7bdec	Nuci_artist Japan collection	JAPAN	erc721
 \\x7581f90f03f1f3ed8dc1755caecb4fd2495c48c6	AzuKID DAO	KIDAZU	erc721
 \\x8412c11fccbfd862e74011eb0dee1222022da9aa	Rise 	RISE	erc721
-\\x7908e11e21fb82429a0d2687770472723ae8148d	Unidentified contract		erc1155
 \\x51d0b69886dcde7a4fb9b39722868056804afbca	Feather	FTHR	erc721
 \\x78ccad4da0a92a94f95405cf151f73e6a3c4c279	FriendlyGhosts	FRIENDLY GHOSTS	erc721
 \\x26d23db785717cec7b9d9b289f2e6c23e23f0ad0	SUBAQUEOUS	SUB	erc721
@@ -14307,7 +13692,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xc3d39585afc382527b9192c9032f443524b46457	MonkeyPoly	MonkeyPoly	erc721
 \\xb75fc829eb45246aac04261d5f01810d482c5546	Ryuseiverse	RYUSEI	erc721
 \\xafa1e41da1eec628d78ef6466f1a83b4dd31f024	The Bornless	TBL	erc721
-\\xb8fe06c4eee4a4db7aa2434bb36347363bc76340	Unidentified contract		erc1155
 \\x251b5f14a825c537ff788604ea1b58e49b70726f	ForgottenSouls	SOULS	erc721
 \\xc1aa2a21d0c1c861e3b5fa4df8f14db5e24fcd81	Crystal Pops 10K	CrystalPops10K	erc721
 \\xa8d235b3a1433cc7e6046973c1ce1994e6f14eea	Nue Geo	NGEO	erc721
@@ -14381,7 +13765,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x698fbaaca64944376e2cdc4cad86eaa91362cf54	Neo Tokyo: Outer Identities	NEOTOI	erc721
 \\x748d2e6a51a68f2ec3702fcbf3f76eb25bc63aff	dobun café story	DP29CAFE	erc721
 \\x4fd106648b239210c446da6a6d6536b9155503f2	FLOWER SHOWER	FLOWSHOW	erc721
-\\xb44349079cf3ee45a8c9b4986ffbf548ba2c0ecf	Unidentified contract		erc1155
 \\x27609c4dac1ca06f308110fac2535ddcb75dd833	Waifu Adoption Protocol	WFU	erc721
 \\xe64213b7bfbcb14c2f9cdfdd55eabd5aef17f6aa	Samurai2088	SA88	erc721
 \\xa9d58810b0139d734d02c4c7b90c836d90d68ad8	ASH Collector Card	ASHCC	erc721
@@ -14404,7 +13787,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x488fb59d73669d5a1cdf0960214563756594c528	Nonconformist Ducks 2nd GEN	NCD2	erc721
 \\xbf331d15070494020502c8a1970649a12e067dbb	Rock Dogs	RDOG	erc721
 \\x082a4d1816e35fac11852280ebe844b6d41bc076	Uniqiana	UNIQIANA	erc721
-\\x466a43f57df1f752181f9fb6d77d6ffb4813e1ab	Unidentified contract		erc721
 \\x5603172654f37b509d74c6fe3a3fc087104100d9	ApeOutcasts	OUTCASTS	erc721
 \\x323e318479a6fc22640e929dea57481ebd2fc3da	Origins	OII	erc721
 \\x4a52ce8557b46337daf4cd8ad216aa8c5d1a6cd0	My Great Korean Escape (B&W)	ABBB	erc721
@@ -14415,9 +13797,7 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x27f01493dbd83b6fee8d821e0b9d30cb389f8605	CyberLandNFT	CL	erc721
 \\xda7d7f75c9ab826329888f056026d6ba8525d5bb	KBOT_FACTORY	KBOTS	erc721
 \\xd278f51207d30cd9616ad0841a7486eca16e1f4a	Landloot Bloock.Art	Landloot.Bloock.Art	erc721
-\\x5113a3dd866a3ee8e973fc764cc380e6f07416ef	Unidentified contract		erc1155
 \\x35c1131e772d9077ec4560d406974bd7cc113586	CryptoGrandmas	CGM	erc721
-\\x2163f70d3b4de18a44e570309798e1fbbc916291	Unidentified contract		erc1155
 \\x1e9385ee28c5c7d33f3472f732fb08ce3cebce1f	MoonCatLootprint	📜	erc721
 \\x689b0256c7e76856d8cf4ca6e55c8b2f226cc552	P3P3	PEPE	erc721
 \\xd21adf8b2b7de80d8672df8c87b7b126a19e4d73	Waifu House DAO	WAIFU	erc721
@@ -14434,12 +13814,10 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xf30c702b76127478d48cf55377c580f611284763	Animal Parade	GIRL	erc721
 \\x97119f954640a4a432fb8d2d99815cfbd7592ebb	El Mundo De Alamo	Alamo	erc721
 \\xf4b6040a4b1b30f1d1691699a8f3bf957b03e463	Genesis Mana	GMANA	erc721
-\\x7ab7f10d09ae26e22bbcff5e322849be86da19a1	Unidentified contract		erc1155
 \\xac692ac187756279e8722551aa95fda5545078fe	Metaani For	MTANFOR	erc721
 \\x007a9548b02dfe8d834b4198f4e7a6acda29375c	Cowpedia's Cow Gang	CCG	erc721
 \\x88b7063107d2cf7fac83e30b37c938fe42c56040	Katana N Samurai 2	KNS2.0	erc721
 \\x25171b354f3e192ea4fb0c1268255d7a64448c91	Pixel Foxes	PIXELFOXES	erc721
-\\x559f26c7ffa7dcf3e4e9e3155ecab38c9212a5b0	Unidentified contract		erc721
 \\x31fcdd0e0f8f2b572407a7e91beb8163d0b8d47d	Baby Kongz	BK	erc721
 \\x841d6ed6129390af55f015f80c0849535b36f0d6	PixelMap Time Capsule I	PXMTCI	erc721
 \\xd426f8b71ad76435030028f9d26ec077356d344d	SEKUSHI GIRLS	SKG	erc721
@@ -14468,7 +13846,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\x0b0d765b798a624b3a266919805fbb740db7b76e	Go!Bots	GOBOTS	erc1155
 \\x9fe02db28282746d1e130d52d9bf6053d64b710f	Los Angeles	LA	erc721
 \\xbaeec315f9d7f8db2645edfd5633360f152279bc	Rengoku	REN	erc721
-\\x5df8462548a3ea3bbb91767a6e47a770e5252359	Unidentified contract		erc1155
 \\x3f33eea734b01ec9e9bd1b44a3eb80c36ba585be	Digital Landowners Society	DLS	erc721
 \\x405ca66eb6215ecc7941ebffd6d391f1845438ee	LaCollection	LAC	erc721
 \\xfb64bc4f186e12a94bab0b95f46cfeee1598b9b6	LewdLily Collection	69	erc721
@@ -20532,6 +19909,1310 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xffb5a4903019c606dbac9fad74a22a23c19830a4	DEFINE DECADENT V2	DCDNT	erc721
 \\xffd091f18dbbea0896d7ddad15305d81bb2a885b	Awry Visions	AV	erc721
 \\xffdc08892dc419d2ae97f88a17ef37763c529140	M42Genesis	M42G	erc721
+\\xffb4ff24e76605d1bfdccb9d8f717e5c71439c2a	Unidentified contract - I8REgEfQNX		erc1155
+\\x9030e2680861289294a202237f4cd397270c511a	8 Bit Swords	swords	erc1155
+\\x618dc60c5cae3b42a3983f4c870bdf57a8037186	NobrainerFinance		erc1155
+\\xde88396d523ec2e6ed82b01b254da092b65c03af	Ethernity's Master Collection		erc1155
+\\x49ce90fd09ca07f8c16e073d193df5c7ed1be655	Unidentified contract - wtVWfHCTwv		erc1155
+\\xb70100348ff48cd0ab391686bf0128da7b2828b7	Ethernity's Master Collection		erc1155
+\\x108ff39bc1b725870031208f44488fefc03f1f57	Art by David Sun		erc1155
+\\xece000cd85d38ca467a8b6f3e6a9d5c1d155ec65	Unidentified contract - lfSWs4h4Ac		erc1155
+\\x35f5a420ef9bcc748329021fbd4ed0986abdf201	Yearn Finance		erc1155
+\\x20178cd7721fdfc1fda815dd03acc809b82e9e40	RPC NFT Culture		erc1155
+\\x88d3e00ce938f1a591336131b859465b50d608b7	NFT FM		erc1155
+\\xf915bbfbb6c097dc327e64eec55e9ef4d110d627	Contract Servant		erc721
+\\x1ca3262009b21f944e6b92a2a88d039d06f1acfa	SERGS Corp.		erc1155
+\\x0e58f11315665db91bd05e32b91c490d83ca353e	Rarible V2		erc1155
+\\x55e50c81972a80bae7ae8b45cc607c63b6cb106c	bryanminear V2		erc1155
+\\xc2d296311c041332946ec8dce90b40127d217836	KNEECAPs		erc1155
+\\xd3fdaeac03cd397b37f98375dfac9308c933afa8	Lohko NFT		erc1155
+\\x4fe397b1451ac277ab943fbdad46f68292c8c31b	artbyjon		erc1155
+\\xf74622ae47b939ae10cf5bfb9e18dded8e304051	Ethernity's Master Collection		erc1155
+\\x3a6504feb012cdff702019dd1f03d8cf99c029d9	BeyondNFT [Ethereum]		erc1155
+\\x266820432937e9437f5cdb1b8e2357ae1588096a	Unidentified contract - RtVjv6HOQu		erc1155
+\\x3ef4cbe2d16420dea700acd6cfd05954fd5ddd3c	Ethernity's Master Collection		erc1155
+\\x77f84c36e451496d7f489efd16e9753fc2c8f0df	Locked Cards		erc1155
+\\x6bc02773e39a2c763d81481edc7c0d4fe992b85c	Ethernity's Master Collection		erc1155
+\\x7a44228e46cdd37a85c0b07c4043b86c11e8c315	Candy Digital		erc1155
+\\x65e1a455e7dc7dbf5d0249a7df3ed53cd4368cd4	Ethernity's Master Collection		erc1155
+\\xace942e89a84c50294832ed7b24cf2db42e95127	Umbrella Network		erc1155
+\\xf98e7f2645d5a281386d1d8abffe653bfc3499c4	Unidentified contract - ZxFv2rjgaJ		erc1155
+\\x93ea6ec350ace7473f7694d43dec2726a515e31a	[DEPRECATED] Aavegotchi FRENS Raffle Tickets		erc1155
+\\xd495255ca4a7f0f0dcd1d53f662607764558a5c6	Ethernity's Master Collection		erc1155
+\\x4937c9b011350058a1d4d3c4f8d51870a7a45f3a	Unidentified contract - WKcCNFypY9		erc1155
+\\xa5e77e7018cc34aa17191942eafec52dee9dfca9	Ethernity's Master Collection		erc1155
+\\xa45e9b86f929a32a91ec81e8f9362f524b058dc8	ReflectDAO		erc1155
+\\x107feeb1b13346b71385da58ca691068eaf531a3	Cars by Alfred Swahn	CAR$	erc1155
+\\x6656b20a5d6ccdc95aea98764285cf9d3e6ff3ce	Kool Bar		erc1155
+\\xb644476e44a797db3b8a6a16f2e63e8d5a541b67	isotile furnitures		erc1155
+\\xf4722eaae263ea3e8409e4b8fbe2ca2f7620aa0e	Filta		erc1155
+\\xe54891774eed9277236bac10d82788aee0aed313	Aavegotchi Wearable Vouchers		erc1155
+\\x8436f16c090b0a6b2a7ae4cfcc82e007302a4b38	Forever Domains		erc721
+\\x6a5faba004675498c1b107a14fbc60adf1af8c4c	AWOO! Finance Treats		erc1155
+\\x08d0de44c61634775c2238197a28ee20b6cd5d5e	Carnal Covin CCG		erc1155
+\\x89ee76cc25fcbf1714ed575faa6a10202b71c26a	Node Runners		erc1155
+\\xfac7bea255a6990f749363002136af6556b31e04	Unidentified contract V12		erc721
+\\x32c5a8a33f282a776495a6544b0a97db24d8922e	MLSxSecretWalls		erc1155
+\\x1ec248167ed8059e5ada967cbddd5b49e613de1f	Kingswap Partnership Projects		erc1155
+\\xdaae81c0077e8917a2eb63bb66ef701ff4781bb0	PepeDapp Remint		erc1155
+\\xc7e8ad1467d6a2732691fd65dddc28f18ea6b1cc	StarryNift		erc1155
+\\x9d2b0a0ea55df2e6bbe8056206440995d20f3171	Ethernity's Master Collection		erc1155
+\\x4f0d1c63aa3d6002c759937a9b83757f531d98ae	Historic Moments of Rico - The Berlin Wall		erc1155
+\\xf3bb2bdb756e75c80fef8cd2332b3b593ffb398e	HASHTAG NFTs by Proof of Culture		erc1155
+\\xeda47c3f7d199f6d61a6cd346228acb1f29ed61f	levis		erc1155
+\\x39c40e0dd57f745b05d29c2253245c0df8b7bb30	MetaLove		erc721
+\\x1014cf898383d275da1c2ed970d0b2cd5ffef3c2	Unidentified contract - tNoBnyzmcg		erc1155
+\\x537eb102e8a97c1c3a623da6d3d03171dd8cf6d6	FM Gallery		erc1155
+\\x93795322d06e54c928f5833038fc7ade91fe930b	Ethernity's Master Collection		erc1155
+\\x52202190e82597b6842c2622d51d213b3b8972c9	Moon In Motion		erc1155
+\\x9434b446bbef8c3de371b46a7a91c7fd90d2d9fb	gusfink		erc1155
+\\xd7b397edad16ca8111ca4a3b832d0a5e3ae2438c	Gutter Rats		erc1155
+\\x730151b8286ca0508a19a9d5c47fe91fdd9a6737	Nifty Island: Legendary Palms		erc1155
+\\xc86ca2bb9c9c9c9f140d832de00bfa9e153fa1e3	Cyber Curated		erc1155
+\\x798ee82618fa6b36a79f9eec87db611338a7f866	Godo's Farm		erc1155
+\\x778aef7198cc1aa931ce0911c8bec9250e2732a4	LYNC Network Craft & Reward		erc1155
+\\x9c81ba58a80cbfaf879ec1440ac7b24f401f5873	Forge Token		erc1155
+\\xc0322a9f9a8d18601983a775d2724291b1750486	Unidentified contract - zcvyHzBBwN - old		erc1155
+\\x47e22659d9ae152975e6cbfa2eed5dc8b75ac545	Fortune Media		erc1155
+\\x1288c1539cfb247b8cdc1bce57796f1277ab3588	Ethernity's Master Collection		erc1155
+\\xd23f5e5848b57f03626b7c924a8224975934a4db	MILLION TOKEN WEBSITE		erc1155
+\\x18e4f33b727e4658832576379d4549e31ab7c4cb	DeadHeads Wearables		erc1155
+\\x62eb9234ec26da725e90a270a452a8d6eb304b0d	Unidentified contract - 2aSCN2dbzV		erc1155
+\\x477fe0770ab893998dc5c48071ee7cfd460583bc	1999flyboy		erc1155
+\\xde508b1313367309360ddd5f0f416c42102a0eef	Launchpool Labs Investor Club		erc1155
+\\xa87be4ad36d897a58ed47e5588852abf83ff1b82	Ethernity's Master Collection		erc1155
+\\x399dad55c6bdabd7ebe0ada12627c261f81c6428	Derive		erc1155
+\\x5237e33d805339925aa5ab220f13b386357aa349	NFTBoxes		erc1155
+\\xaf1b9e46935587b08ecf242234111c1e919b763f	Ethernity's Master Collection		erc1155
+\\xe9120b3b9a8b389fa5cdbefc79f787836bd62034	BAR Lemon Hart NFT Project		erc1155
+\\x21545e9f21844758f6d4755230d9d7c62e08b449	ANIFTY Collection		erc1155
+\\x0018a411c2b57474218be2ded576d10ed748f3d2	Unidentified contract - Q70G3SLbqp		erc1155
+\\xab5b634f49b023c9f87d7ab0a591a18ab7b4df5a	Altitude Lodge		erc1155
+\\x47f42e4d4de7ebf20d582e57ecd88ff64b2d7910	VeryNifty Addons		erc1155
+\\x7cc7add921e2222738561d03c89589929cefcf21	TBAC		erc1155
+\\xb58ab7b78c3255335f537bce6188d669e43faf27	NO FUND TAMURA		erc1155
+\\xfe9231f0e6753a8412a00ec1f0028a24d5220ba9	Unidentified contract - 6kGGHP5vvI		erc1155
+\\x32aa07e6ebf2340eef1f717197ade6982b815536	Hord.app Champions' Pools NFT Tickets		erc1155
+\\x5c70591acaf87ddee68b50877d4975e498a32c1f	Unskilled Worker Collection		erc721
+\\x4a1836e5410bdaf584b74abe88219ec3cf6b2df4	adxmboni		erc1155
+\\x0e892bff0658b93b326e14d4558ce25a642676da	The First Mint DAY ONE		erc1155
+\\xa3f226d6633ca531c1f8e26cfbf724b1eee9202e	Jake's World Editions		erc1155
+\\x232a68a51d6e07357ae025d2a459c16077327102	ACK EDITIONS		erc1155
+\\x2da71c9db22f9d620fdc07bd42105e852afe05a2	Unidentified contract - XSGyRaIjpU		erc1155
+\\xfb2e0ef40f552d460098d6d8ac70e6e3ee96f496	Rainicorn Evolved		erc1155
+\\x15790fd4aeed8b28a02f72787c77b1be43a196f5	Fonts		erc1155
+\\xf81b349d7a3c7288eb3c7dd02171442c0856c887	Unidentified contract - rAT32F9Joc		erc1155
+\\x9ab44d05512ce5212f619d06a0a4260cda8adccd	frankxtown V2		erc1155
+\\x87802101122ba906c36cb4556c066e7f67ca5fe1	Bridge Mutual		erc1155
+\\x6a4c7bcbd42a10af1503a9e5f20c7a6c78a52309	Ethernity's Master Collection		erc1155
+\\xa928559273757f5b14a47ced3b0532d4291f88e2	Tyedied		erc1155
+\\x97f945cdd7827579e458502d7a8c9e3157604f3c	Unidentified contract - 2RtqQDF42t		erc1155
+\\x9724fdf5ae41570decc2d3094c65eafa7e1ab7d4	Dark Forest v0.6 - Valhalla		erc721
+\\x7c7fc6d9f2c2e45f12657dab3581ead2bd53bdf1	Cryptomancy		erc1155
+\\x3c2754c0cdc5499df1a50d608d8985070bf87b30	Wrapped Curio Cards		erc1155
+\\x6a3cd1c6ce4125a591272b1fc1f3742e4f89dcb2	Rainicorn		erc1155
+\\x15161e5a8bb7d30df89857e3b6d110e04eeeb489	Orion Protocol NFTs		erc1155
+\\x1b7f1f63d284ff264c97f1f2426b74119fecc3b1	Ethernity's Master Collection		erc1155
+\\x6e5352afe4b7cc4a2b62bec8e68d31d014d62096	Unidentified contract - p6gweIUgSR		erc1155
+\\x56214525566c9f8dcbbd17a108690162476426fa	Mintopoly!		erc1155
+\\x141042c1e0c1e60bcd649412072df4aa670dd2fb	Ethernity's Master Collection		erc1155
+\\xed8eac2b942e86ae2d67eed489394228a1936f16	Ethernity's Master Collection		erc1155
+\\x0163642ba9d4235ea63423f0c2b9a8053ec1f7b2	Intersectional Abstraction		erc1155
+\\xd7a0744ec45fa49684ad99d99bf1bf992f08a526	BOWERBIRD MINT PASS (EARLY BIRD)		erc1155
+\\xa5f49464f60c17950db68803a9b28ce3f81c2059	Brian Romero		erc1155
+\\x364f4ef26f167713329f7deffa7aff2bc95024ec	Monster Bricks		erc1155
+\\x6a391a2a80cc611f679b8e1a9e836528144a4aff	Dick Doods Official		erc1155
+\\x7006a61a63cc6351af8da23b0cc2b34972c73ad7	Crazy Carl Collective Genesis NFTs		erc1155
+\\x4570340e5c091f020ff31bc6012ba3b2eb83ad82	FEWOCiOUS x ComplexCon		erc1155
+\\x0369edc7646948e2f36f9f85baf297bb99843054	The Pinco Village		erc1155
+\\xff1546d3d5cc63410a36c183260af7cd3b93ca7b	The Fabled		erc1155
+\\x87fa0c6fd03fd9a03c9d327beaecf1a2c2b336e4	The Superpixel Bored Ape Club	PIXEL	erc721
+\\x075d57d2c6afeec646f786fb4b568e4c3678c2f8	Quantum Variant - Phase 2		erc1155
+\\x8edf0426c0b0d10b50d72eb3f0c40985438cdaab	Alien Samurai Dino Warriors		erc1155
+\\x118ab18f9fb8e830c5cd88ec60276ce2bf4dace2	UAE NFT - From Desert To Mars | Kristel Bechara		erc1155
+\\x9371934297a994a5a3e06e35ba1cb7bcae39d0c7	Ethernity's Master Collection		erc1155
+\\xb0b748190f46ddade510b08798171235766c4d30	Hunger Brainz NFT		erc721
+\\x9b1855bb5317f6bf56d0304e210b38059455ef84	Tiger Token Collectibles		erc1155
+\\xa7c1076e671e14c7b5ed5eac139e855cfa6b9663	UAE NFT - From Desert To Mars | Arefeh Norouzi		erc1155
+\\x5b56d9679532024513e938feba7851d1b3f6070e	Alpha Finance by Project Galaxy		erc1155
+\\x34878e0960f02190f1eea39b1b99530db87b05d9	Reuben Wu - Limited Editions		erc1155
+\\xdf22c87ab3f19f3522f2787743404dd4fc4d081b	mew_psd		erc1155
+\\x1cacc96e5f01e2849e6036f25531a9a064d2fb5f	Moody Brain by Loopring		erc1155
+\\x87e8aee88ae939465da795d6c32963854bb5fba0	Baby Spookles		erc721
+\\x30ccc0127c5f29083ceb46f0c6b4bba2853d8970	RedLightMgmt		erc1155
+\\x94f6655cd3078157b07df370572f4f6cdae78771	Ethernity's Master Collection		erc1155
+\\x32b02ebafcb5781460d15a0244169f6d84eec887	Ethernity's Master Collection		erc1155
+\\xa8e4459a64e368880eec620b7ab1caa1a297be21	Ethernity's Master Collection		erc1155
+\\xccae32b36d7fa4667e54d24f504ddf2ad03e1cca	Singles Going Steady (Editions)		erc1155
+\\x0e588e910699f2d541a1e0eb795179c5f5402394	Legends_of_Le_Mans		erc1155
+\\xf15176bc2a8d95102e21641fc0c3b1a9990d2d2d	APE DAO Legends		erc1155
+\\x29e99baefeac4fe2b3dddbbfc18a517fb7d6ddf8	GATE Artifacts		erc1155
+\\x503ac85cfab61a1e33df33c8b26ae81e3c6e3ef2	YOUNG & SICK 1155s		erc1155
+\\xd386ff8b13e20a943ee0929da4228a32ce4f5261	SODA Cans - Society of Derivative Apes		erc1155
+\\x31ae5109e5adb582f4f42ca9aaa9a723a325f214	Awakened - MultiPass		erc1155
+\\x34d465653db345ec9b338528c655ad68afc6d9db	Ethernity's Master Collection		erc1155
+\\x907557792e2cf459fa15b5a80cb2063077d7de14	Spooky VooDoo Society		erc721
+\\x89ecfb3e8a8ce9dd7133fe719f79697c5c6d30bd	The Red Ape Family Poster		erc1155
+\\x5c1469ab0e3b4f96d7f25e23d80c540259f2ad5b	Toy Boogers Special Editions		erc1155
+\\xda807b65495870850fd1eed4794b723829abbf0c	come_to_life		erc1155
+\\x2d391d9b6e723a10e693b536df4b3bd3d59584ad	Ethernity's Master Collection		erc1155
+\\x7d2285b523997b1290c0464e035ba98922297f22	rebelrebel Snoop Dogg		erc721
+\\x3ed83b9ae395ca3de994600fe0f2cd027753b2ee	Unidentified contract - GAtPHxnO5Z		erc1155
+\\xc3ea52d903692814d6dbf043cba015975043560f	Ethernity's Master Collection		erc1155
+\\xd742ff03315c199f6d49f56dc970a3fb94f92daa	Eomnomnom		erc1155
+\\x995e2ed939f074bc1dd65c53072490cea1b0fc26	N O I S E		erc1155
+\\xa88209d0f1d772f5bba488a2e4bbb13921056a8b	Vogue Singapore NFT Collection		erc1155
+\\x8c335a5e0cf05eca62ca1e49afa48531b694824e	HOT MESS		erc1155
+\\x9de6788fe8fe6b1a53eb085de3ba13683a4adce6	Disclosures Faces		erc1155
+\\x8662175c4bfeb8d48ce144dd3cccfb108322d940	JoeyThePhotographer		erc1155
+\\xc868b3f657a308363ebd8acfd2f369784f9d2117	Art By Jimena Buena Vida		erc1155
+\\x64da747f5f8349f0116e207eb420f95b9af0411f	Cosmos Astro Art Commemorative Editions		erc1155
+\\x9e469f3634016f2eab05d34c3939f9e6eae7d913	PoolCats NFT		erc721
+\\xda7d42b6167f1497346d7b2336a6d7a603026db1	Purrnelopes KittyVault Purrks		erc1155
+\\x9aeaa9ed9ae5a433998e9e674ad836b2790b291b	Deep Sky Network		erc1155
+\\x38b7e06eb1a6b8af8b3a06ecc0f673d9f8421ebb	8SIAN VIP GOLD PASS		erc1155
+\\xc6faaaddaee6953be305512fe59b3be43f2a61f1	Danny's Drawings		erc1155
+\\x41e3d4b3a79e464f65fffe18aa063de983ef97de	Hashflow (Official)		erc1155
+\\x0034dc09c4f52557898aea215d74d690a05768a4	DGS - Glitch series.		erc1155
+\\x888145d31faffa6d117e9a59dff3b3e7fba26388	Probably Nothing School		erc1155
+\\x963c8db738d71a056ecedac95ae4b15691035d46	Ethernity's Master Collection		erc1155
+\\x5b6660ca047cc351bfedca4fc864d0a88f551485	CryptoJingles		erc721
+\\x498b3d6ad30b1f584fa508e5b8c010cc730011a0	Ethernity's Master Collection		erc1155
+\\x958ec4f02d10762601e487d32b2814409fef7c44	Retric Dreams - Editions		erc1155
+\\xb01ce05efec8fdc3c14c572bf56314756f38507e	The Token Beyond The Image		erc1155
+\\xd0ed73b33789111807bd64ae2a6e1e6f92f986f5	Unidentified contract - OJq12Eho56		erc1155
+\\xb7be4001bff2c5f4a61dd2435e4c9a19d8d12343	RTFKT PodX		erc1155
+\\x3afe3de67894fcd578eb492d1a74d13327b41aae	Ethernity's Master Collection		erc1155
+\\x6b53e03df077e59c001a873db55820803bc5c800	Ferrum		erc721
+\\x4bc87f553fce25bd613a7c31b17d6d224a84c7bf	Space Punks Treasure Keys		erc1155
+\\xc9d0a8100325167f30e495e1c0073bc76ca28251	Ethernity's Master Collection		erc1155
+\\x78a7f7929219c88b8e8265ae606981d8a3056ad6	Perpetual Protocol NFT		erc1155
+\\xb2adcdfdffa5c905e0db62a2d3d21697791a9321	Efdot Editions		erc1155
+\\x10d44906e4f89e06117b526100faff9f2fdfa1c9	ETHEREAL WORLDS by RajaNandepu		erc1155
+\\x0cb4a0670e3d146ddbb77595e15e510a0f9e3d82	Ethernity's Master Collection		erc1155
+\\x38065291fdce1a752afd725e96ff75e1c38ad6aa	Relics of The Crypt		erc721
+\\x4e0dfd74857e9eebbdf332727d30818a0ae13e2c	Ethernity's Master Collection		erc1155
+\\x9522f38d9ec8f273ed37a4071f41838385f94f1f	Teen Rebel Ape Club - Milk Serums		erc1155
+\\x123456c13537c42f713fb748fb086344b825b38d	Degen'$ Farm Tools		erc1155
+\\x8a827360ad212e11450b7796ea79c3ee1faf2788	DankDecks		erc721
+\\xfe5844af9cb93572fd8542619708935c0b90cefe	Ethernity's Master Collection		erc1155
+\\x7c0bc407f7cd0e3e32bcfac2170a60875bc32eb5	Some Damn Photos		erc1155
+\\x2370f1e64d71ed5f47ef83bcb8ab61da193b8fba	Happy Hippos NFT		erc1155
+\\x2e48ad54bfc239da59bacfa6f6d94325e4d18d55	Woof's Minions		erc1155
+\\xc49fb20852619610180362146204b1b99f4eec04	DPS DeadList Token		erc1155
+\\x31ca6303acbaf42727117da3de8afc317d05dc2c	ledgerdust writing		erc1155
+\\xbb69e1b162a34920de20400f4af5009eeb869789	tyronejkd universe		erc1155
+\\x92520336a13de090fcd2e76771dd4d5f190232dc	_UNITY_		erc1155
+\\x71ede9894aeb2ff2da92d2ca4865d37d1ab77a1b	Cranes (for Special Editions)		erc1155
+\\x4e08b19c8016e613a55c2ba47f087e4476096549	abana		erc1155
+\\x73f06b00a546f32cf502c9b254e89772f618b77a	DIA ART - BAYC		erc1155
+\\xcf67349cd2dbc798e8fc7cec5fa5082d2c6f4186	Crypto Calaveras Genesis Membership		erc721
+\\x4252ea0edab51b696c6867168220be7d038ba533	DIA ART - Hashmasks		erc1155
+\\x6cad6e1abc83068ea98924aef37e996ed02abf1c	Dino Gangz NFT		erc1155
+\\x98ddb493ea12799018589cb1a1b8760249153f32	Baka Arts Interleave Artwork		erc1155
+\\x37cb17edfab0067656e796675cea04f44e35882d	Unidentified contract - GB2B30sheS		erc1155
+\\xa5d452a85b8c4ba11f65be98dc344b40629d985f	Ethernity's Master Collection		erc1155
+\\xbc8c47e8ecf973815b436de1fc827224c63f046e	The Great Ape Sketches	GREAT	erc721
+\\xfc35efd86e63e0ef336f36c8ccf72fe942a58556	Cabinet of Curiosities (SotH)		erc1155
+\\x238133ce985e09c7ad6c3009494992f73a6c3fad	XATAR		erc1155
+\\x1392e2a50a64c03e418c063358360f7639756c2e	Rabbithole.exe		erc1155
+\\xa3a8e56be303a9e34e5d3b60b16de876c881223c	Decentralized Dynamic Zeus NFT Minter - Ethereum Network		erc1155
+\\xa7870d4305254aea628bd34430bf8eab28919910	Unidentified contract - PzttC1Xd1K - old		erc1155
+\\xe1077ece6be24dfe9898cf2745fcd01c52c454e5	High End Sloths		erc721
+\\x92a462984ac7961a0e88b196651fc19c0045e1fe	USOpen		erc1155
+\\xc03a9ab81327df07300c685067ef540d31d59cd0	Ethernity's Master Collection		erc1155
+\\xd18928351e285a76b0cb61c5abae354ac0bdc0f1	Ethernity's Master Collection		erc1155
+\\x888888888877a56b4b809bf14bb76d63eb208297	Opium NFT		erc1155
+\\xe374b4df4cf95ecc0b7c93b49d465a1549f86cc0	Badges for Bandits		erc1155
+\\x0f9b430cf1b872de5aa8b98c5333102ff1b87ae7	DIA ART - OS		erc1155
+\\x46952c750ba45d31c22699ce0c66fd794caf5d45	LaserLewDude - Editions		erc1155
+\\x9f94a2bca4ae047b8fa7d8dffec587ab6101390c	CryptoMonkz - Official		erc1155
+\\x59ab11d28299d8924506e020ec35beda22a3c3cb	JakNFT Mints		erc1155
+\\x4dab23c0a529d1caf86f7a902d5340959d170c1e	FPB - Old Collection		erc1155
+\\x111909961f31a025efe6df4ebce1f7125dcabc36	MojoHeads Presale Passes		erc1155
+\\x1a5352f18a3d70d4cd771f9eaba844aca586990b	DIA ART - Decentraland		erc1155
+\\x6de423112580306ec81e70f1345b5bfcabdf030e	Jeff Nicholas | The Editions		erc1155
+\\x808b0825e51a681e62209adb5e6b21ece3e9c87a	my toad		erc1155
+\\x564887aecfc6c7e357e9827b90b531ede0b9fc46	dec0de		erc1155
+\\x2f2e698ee366b358cb04fe61a618018bf6d98b20	RadRaptors		erc1155
+\\xde9a2236989a3e21ee46adc9bb60a513e4cd5c27	Zombie Frens Antidote		erc1155
+\\xa6310c39faa5e21cc29c4b283c6cd4ef51c00d21	Etholvants Booster Syringe		erc1155
+\\xbfaacd99f0752921aab5ad90e1ccceb9895e0d85	deathrowrecords		erc1155
+\\x5a8e39e1b1af534f148c90f6540707fd249cacae	UAE NFT - From Desert To Mars | Mattar Bin Lahej		erc1155
+\\x829a028a13e89545b1736b37605a2df6d1580dbe	Ellen DeGeneres		erc1155
+\\x72e51393c7261dbf5075ffc520ebcd33951b9ab5	Jenkins Drops		erc1155
+\\x2e8349fe39326833de048e63664f570a2a9c8904	Cosmic Shop Season 1		erc1155
+\\x09fd2ed278d0c9cc9b4671fe4849b02be2b6739e	Ethernity's Master Collection		erc1155
+\\x4bb5273326e527c24b6e24ad7e2e774452b0bfc6	Unidentified contract - BForKI3KLQ		erc1155
+\\xe191d9629b46e132c3cb9cca9427904c91035943	Ethernity's Master Collection		erc1155
+\\x18d0e051317e04ae96314c372bd35220460eec62	Surreal Mint-Pass		erc1155
+\\xddf0aef52d9b3c2dc63ec120828a761a28103ba0	Patrn 2021 Collection		erc1155
+\\x037bf28efbc02aed1d174f7c22d1bed3367891bc	Ramon Interleave Artwork		erc1155
+\\xed493f841b0527ff4ad0c08ac9cf84fe26ebb5e1	Ape-In Productions		erc1155
+\\x348fc118bcc65a92dc033a951af153d14d945312	RTFKT - CloneX Mintvial		erc1155
+\\xcbefe27fda986c7c62243543e30f7eae5b5b799c	NoKo		erc1155
+\\x92594d0f692fc2b25a8030573f3ff10abf034bdb	Shroomheads NFT		erc1155
+\\x8215d264636588b5472205101003907d432f0772	Ethernity's Master Collection		erc1155
+\\xdf867faf6487f0cb5e3a5ad91ea46cb2e6c8f186	Ethernity's Master Collection		erc1155
+\\x2013ff029f9d3d31169f4fdc673c8b9fa0ce1fbd	TinyPaws		erc1155
+\\x50820403e8ae30338648316bdba7e56d5acae8bb	LazyBones SpaceTrip	LBST	erc721
+\\xed95fb27d335033c982921ccd39bcda3f995974b	Undra.game		erc1155
+\\xfca372c1099e2f06c8d752ff2edd5769860b2366	Unlearning Landscape		erc1155
+\\x38398a2d7a4278b8d83967e0d235164335a0394a	Parallel Auxiliary Items		erc1155
+\\xd14f86e007078fce3d353ac47f0374540e99c1d1	Nightkids Fearless Token		erc1155
+\\x00f4be5d58aaa93118cff472130a696927f2eadf	Trust by DK		erc1155
+\\x51f3ecf137e2e2084e6ed11b5cc0d8f833eae192	FakeUp		erc1155
+\\x57f14fbe42bc7e002c831ecbb007e2d4b8e9febb	Be Ashamed NFT		erc1155
+\\xf2c1005e375cb8ffeecf0fdcd256193c382bbdc3	Drop Magazine		erc1155
+\\xa8cf067c340b1b1851737f85bf04baea3156c870	Rogue Titans: Fragments		erc1155
+\\xb6883b3ead6e34e0fada5a4441eeca6f52ed521a	DWCNFT GENESIS PASSES		erc1155
+\\x602b3e3d1761ea2169f3c389683f8b5a272ee39d	Modern Renaissance Frens		erc1155
+\\xde680928e1d4104079efcb4c5b0cf0e156294585	TheWhiskyClub		erc1155
+\\x694379aaec7540bbd4a57dd67b2eadfe3a796445	MoonDAO-Legacy		erc1155
+\\x5c20d1ca0ce7b706143678a91fc433c1501636a5	Exclusive Kobe Airdrop		erc1155
+\\x8630cdeaa26d042f0f9242ca30229b425e7f243f	Claylings		erc721
+\\xd9e86b0e6185f457cf3274fdaa16be59c58bc9b4	Black NFT Art - Rise Token		erc1155
+\\xf98b8651c6957715c8bb95dc07ee3189c03b3eff	Ethernity's Master Collection		erc1155
+\\xbd5c4ec8a7d127ad0f5ed3e067ad640bfb2f2ba6	//CWS. x Triptcip		erc1155
+\\xc50f11281b0821e5a9ad3dd77c33eaf82d3094f4	Dystolab Crates		erc1155
+\\x45a41dc2167158c0c8c88a1261abbeed70a8ebac	SkullJunkies		erc721
+\\x7eef591a6cc0403b9652e98e88476fe1bf31ddeb	CityDAO Citizenship		erc1155
+\\x8a7cad54c01a4afbe8f17732330db1943f62b9ec	Falconaut MetaCubes		erc1155
+\\xab45c53c164ac8c2a657bd74d75bf205661cc40e	Unidentified contract - 6L5W6q0QC9		erc1155
+\\xf779cae120093807985d5f2e7dbb21d69be6b963	FVT Keymaster		erc721
+\\xdfb8ad059ae5d11d78b7a2b5ffad93de0d46a0cc	Lost Footage from the Realm of Horrors		erc1155
+\\x4143de93f70d7412d35fe4464a46fcf639b12d25	Metis NFT		erc1155
+\\x60d6e6eb7c12e6dd2abc3e54f59281b24c62f46b	Greg CRAOLA Simkins		erc1155
+\\xc696e78915dc9665a8b4a4ce1cb0a8d17667fd57	Ape Kids Yacht Club V2		erc721
+\\xbb7a981f5f14b82ac3d3866304c8996d1d82be46	888 Inner Circle The Drops		erc1155
+\\x7cd5ba0885d130a320a0373a4d6358d76876c6d9	Ethernity's Master Collection		erc1155
+\\xd8261503704baff21abb5bb8dead1b11566b985e	Ethernity's Master Collection		erc1155
+\\x61b31974b7b513a8514f0cebb4ec053cf0ca3da9	Poker Life NFT		erc1155
+\\x1c579006cd499871ac39aa2bf787462de603936c	Unidentified contract - jJ201dzIOi		erc1155
+\\x46d13ae3061cec9f703f2b1dfd6b1c1ddf711361	AlphaMint		erc1155
+\\x40711e7d328b5b97737c869a23e43b3c147ce638	Worst Case by 3LAU - royal		erc1155
+\\x0a5c50ab7f7c4459da1cf6a775dd8e3e37724359	Ethernity's Master Collection		erc1155
+\\x0233ca02f66edec895ee1cfb02effe49a96a14a4	Genesis Wolf V2		erc721
+\\xe9819a200423c9112b9dafb26cfe7b7d0ae9d60a	Evil Genius Masterpieces		erc1155
+\\xadb99cd456ce2ce02daf58a9e9d2d5f8c5dd38c3	Throwback Apes Club - Printmaker		erc1155
+\\x236e7af5fcab94770e621c97a1e58b4d0143e95b	Ethernity's Master Collection		erc1155
+\\x945362a24147048424cec613f0ee8d3b1cbc8822	ASH_Burn_Drop		erc1155
+\\xbfd957e4fcd759557d0463e37f8db1264ea60194	Derrick Adams Studio		erc1155
+\\x2e16303e294a88ff01d905d1481eadca22294f03	Myth Division Alpha Access Coin		erc1155
+\\xd806d4a4c6289e2d68ef1ed66054c61ad7744577	Intermezzo Tools		erc1155
+\\x6682819a3b5ddc616e7efd6c16e5a84ffaf18a2f	ThankYouX Editions		erc1155
+\\x2ab99216416018c2af55eb9376e9fb188c4f5c9c	Elysium merge		erc1155
+\\xc466e2f98f95cc4cde31b134906f59e8264c1be0	Genie.xyz		erc1155
+\\x47f9fcc01a69eed427f807d9f2094abcbd2bf178	NMB Dash		erc1155
+\\x1beed1d6831cc077636a08bdc66c2f5602869198	The House of Tengu - An 0N1 Story		erc1155
+\\x727a4286a3b501eb90a6a8246c99188cf59ab023	BlockBots MintPass		erc1155
+\\x715565baf69afcbbe88f56d46f1c9fe2df828705	888 Inner Circle The Drops		erc1155
+\\xd82c653fa9b9c94aec025fd36f83e37585df8110	Skate Bored Editions		erc1155
+\\x805ea79e3c0c7837cfe8f84ec09ea67d43465da1	Based Fish Mafia Wire		erc1155
+\\xe8e7b0fec64eb11ea5cce0548083bd68ace3cb5d	Skills (for skilled Adventurers)		erc1155
+\\xc38c876e702634a1e6bcec088b19952261d664d8	Legends and Relics Blokpax Vault		erc721
+\\xe0e260492d05c17e2b386fa9c8817cdb74954e09	FACING GIANTS		erc1155
+\\x4433cf6f3f640d9659764a18db38aed7f3b08ff2	The Adventures of Momoland		erc1155
+\\x54f3d69a19a8db554a85688704c7f19f4be111d3	Exodia Analytics		erc1155
+\\xb9e9b77c5a930903c4fb0c34b6e2bb2c7dc90d75	Divergence Divers		erc1155
+\\x52cdba4e119e101706ddf774fe5696627df0bc31	The Waq Waq Island Manuscript		erc1155
+\\x46ee7947cd4fc601b4ab39d14bad260806d33a87	Ethernity's Master Collection		erc1155
+\\x109440e0a0b37c0e2a17f91bdea42a8fb17663fb	CryptoEmpire Cards		erc1155
+\\xb5f7d50defe738f7c73bf965cd369ac15fa77de9	GameOfBlocks Landpass		erc1155
+\\xe3e0f44d46733afdb453c6553716c7dea530af4a	MaritimeVintage		erc1155
+\\xf95bc00e6239c649772ddc131e79b473b083a5ef	I N T E R V A L S		erc1155
+\\x1c0f44f446dcc65dc354a0ce3c78fd936adde87b	Rave Bunnies Official		erc721
+\\x01f74df24e81c8ae5eb1ff6642283c10e022fb56	FriendsWithYou		erc1155
+\\xaa6e49caa0b717a5a892441fe9d5d971ca981e2c	Space Pod Stuff		erc1155
+\\x5016e48d927755dec7ecd8c54843b12f6bb96ed6	The Alien Scouts		erc1155
+\\xdcaeb6b8bff1410c1f2143be2694826064262c1b	The Wind blows ( Radia editions )		erc1155
+\\x61de59d7fea7e75324e649b4443df29f0e2356f7	Nomad Blvd | Collectibles		erc1155
+\\x9ef9b205bf16091e3cfaab23e873c257721e1abc	LaserLewDude - 1155		erc1155
+\\x15de1beb13d7d38cbc493d3ecbc0c7650e715c22	Project Galaxy NFT		erc1155
+\\x59eb07b595b7f911a71e8ebd1ae0c4ccad97dffd	Ethernity's Master Collection		erc1155
+\\x679004a7bb659faaa816bd433fad43953413e156	DeadHeads Green Room		erc1155
+\\x68374de88110b69774c5b9c282597ce9fdb7098a	One Day Mint Pass		erc1155
+\\x9b1bfa5d13375e8e21fdcb0a5f965974f9dcfdd1	Pendle Finance		erc1155
+\\x9ac9a08a8ff54e1355e5bcecfd0ead8f5d74f7d6	ASHGAMES		erc1155
+\\x111174b2414e14b4b5441646ec221ef1726a87b1	collision.art		erc1155
+\\xef7862d6cdf0e2fb28374bcb32fa2e425fc8a8df	MetaScraper		erc1155
+\\x75cc2b29bbea090a65456927c56d3a098fc44194	Age of Robots		erc1155
+\\x4de49a57235cc0d4d22baad106a4dc302c8d935e	Unidentified contract - AYlSOcvvMD		erc1155
+\\xf2e438fdb0b9db3cc2780a60bfd33db4c3e951ca	Fab-U-Lus		erc1155
+\\x22c36bfdcef207f9c0cc941936eff94d4246d14a	Bored Ape Chemistry Club		erc1155
+\\x6d3b116ec49b2965aee1c9865c21e24a7604d2e8	Ethernity's Master Collection		erc1155
+\\xc52e56f5a53ccc02db5503d915497e568c762ebb	Like Nastya		erc1155
+\\xfa1a07056c48dcba4b5e9e71aacc6aa791a93929	Wizards & Dragons Game - Sacrificial Altar		erc1155
+\\xf1b435866bfe4df2e0b8cb4a2c2f78a59383b866	BRAINPASTA		erc721
+\\xb2469a7dd9e154c97b99b33e88196f7024f2979e	Fractional NFTs		erc1155
+\\x051226f287938e3c75b380ab82c3f59bad0688b1	Night Rider By Ronzo		erc1155
+\\xf6050f97ab4630a0a156055597f67b6e434fa43f	Joe Tamponi: 2022 Editions		erc1155
+\\x819ce9c4e15258735f441000cd005643d4479a1e	Ethnology MintPass		erc1155
+\\x858aa6f8e7a344b6bd6879a4517d36e22cc92555	Billionaire Bunker		erc721
+\\x974a46cfdf5018258e48f4506ce062691cda2936	Doomed Souls Army		erc721
+\\x36181f13e25dec81f8aa9188ac96a658acf24f63	skomra-editions		erc721
+\\x0170227514a274826685bf81aed06e4218175572	Memberships - Mirage Gallery		erc1155
+\\x02725e3a966f91edcfedba2eaf5f534e0b2bbaed	DRIFTER: A Novel		erc1155
+\\xdaa5f6cd0d1ae382a67e8a9b1ddff08685e443bc	Fusion by Hideki Tsukamoto		erc721
+\\xf23b8eacb9e7325f3f7714f8d28ae9bcfd262809	Pluma (SI)		erc721
+\\x6b71e154bc0381225af66d03f9f032be8f71d993	Interleave superNFT		erc1155
+\\x39aefb036dabf9d29d33f357dcc3dce06dc2b899	SpooKeys		erc1155
+\\x5e38ac7b9c3814925d8cae0acb32061cf4fff3ed	Dance of the Masses		erc1155
+\\x1ed89eb526a8be0ac8c5f7a1646698c6913029e1	Baby Ape Mutant Club		erc721
+\\x39b01ca9491d83935ff2e2418c4543d15fff4765	Skull Ape Yacht Club		erc721
+\\x99502f432d62db398f127639d2dc94e8ed523a4a	UAE NFT - From Desert To Mars | Jasim Al Bulushi		erc1155
+\\x6f06ee06d856e23ec0cb6df5dea1f9990444a2af	21 Million		erc1155
+\\x2f8b420dbddd52367e88e72f80214a6680f9a81e	things from the sketchbook		erc1155
+\\x471f366d3a0242e3577e6a2e7f46f3211e05835a	hawkward editions		erc1155
+\\x5988fc0c92313e1a511e05dc4803709b17c92262	Ethernity's Master Collection		erc1155
+\\x71d106ba5283260467a3caff59de9e5bceb9f444	SandVegasCasinoClub Official		erc721
+\\x83c4d041b42fdf3d15ef2e3c8f61abf6f1e671d6	CUBES BURN		erc1155
+\\xc7dff8fae84e3ef27013c424198b136cdf1ed4ca	DinoDoodles		erc1155
+\\x1a564be1c4be76bb9b4cd56f00a34121bf241d7c	Sweetyard Dogs	SYD	erc721
+\\x06b69c1c617a973e0ab91dc66442e97b490aa965	Bolly Legends		erc1155
+\\xa134c292c73dd99d0d2a545e80b986a695775623	Air Mail by Vinnie Hager		erc1155
+\\xc2faa7cf625b8adadbe423738c269558dc909d41	REMIX! Mint Club		erc1155
+\\xbeb13ac6a46fea17a3244966b4163895e389da49	Chumverse Mintpass		erc1155
+\\xf117593e01d376ca95035a7596171311a5616d11	Illuminion (NFTWiki.org)		erc1155
+\\xfdb2f646962e87581a17477df7854c84cc99dc55	Spiky Space Fish Origins	SSF	erc721
+\\xc4c377565a4b9eb6e657c2422bd33b6e4859b041	Dead Ringers: Edition by Dmitri Cherniak		erc1155
+\\x92b20d63bfa1073b4d1e2afc49378832b8c50ac9	Ethernity's Master Collection		erc1155
+\\x62c2294e6e5c3c6ec73195748e4fed15a3bba3f1	Thicc Pokemon		erc1155
+\\xef7c89f051ac48885b240eb53934b04fcf3339ab	Latent Works		erc1155
+\\x894b1e30a09d788a44efa7a47d7a737eaef927fe	JUST A GIRL by Goldloxe	GOLDLOXE	erc1155
+\\x137a81298c11708006405d75bc0541a2a07c0b33	JK KeyCard		erc1155
+\\xa7a980d43da6b3290c727d1833cfc3ab8ee23150	Sushiverse x Laya Mathikshara: The Galactic Sushi		erc1155
+\\x6a47f2e78e6a594e594fd3e318f301e987b60d55	Kuroro Ferry Tickets		erc1155
+\\x54f456b544abfb785694400bcb1d85629b2d437f	Raini: The Lords of Light		erc1155
+\\x576b46f3fec611da0383c3a2a343325e8ba9de46	UAE NFT - From Desert To Mars | Anantha Krishnan Nadamel		erc1155
+\\xefa7b9cf8171f2ca295b8cd5e0946f2739c3f9e5	Ethernity's Master Collection		erc1155
+\\xbaeb88470058df10081df46ffe3688e97a2332b6	soystreaming		erc1155
+\\x3d3d7ba0f6f33bdb91e61bf3f17ec7350e7f25ec	Mirny		erc1155
+\\x6fdead7adee56d358f949a4492b6d0b9fd5f6705	Anti Collective		erc1155
+\\x12d956999af474173d3a5c7d855908f308d1666f	(collection has migrated)		erc1155
+\\x5f353bca23e1e1abdfb71941f34398a451a9e376	MINTPS Spotlights - Murran Billi		erc1155
+\\x799c89f79fe794a58b426aef6b6d7d9f26d6c809	OmniFusion		erc1155
+\\x67b630e70e793d48f1329c00cad9d60977605df5	GAIMIN Genesis		erc1155
+\\x7daec605e9e2a1717326eedfd660601e2753a057	10KTF Stockroom		erc1155
+\\x7d4a9ab145577ca2fd2810a08db1442c7bffea59	Barefoot Parrots Island		erc721
+\\xa03b5a5bbc8f248254021763af5dde6e4498a029	Eric Rubens Editions		erc1155
+\\x936ebff82c75cb8b6a3baa519259af089396886a	Sarah Meyohas Speculations		erc1155
+\\x046427fa6b924739cd98ee507cb0db34c7a66c2e	Unidentified contract - V7hByRdrhA		erc1155
+\\xad0865d04a8f2c7c563e94e296ced47f30118b07	Ethernity's Master Collection		erc1155
+\\x47a1bc1a25bc09ab8607b4d5cb38bc83fd1f2e0d	Lagune DAO		erc1155
+\\xebf44c51f466296668aa8329d7d7fc2b6cbdd36a	DEGENESIS: A NEVER ENDING BOREDOM		erc1155
+\\xe952bda8c06481506e4731c4f54ced2d4ab81659	Revest Protocol FNFT		erc1155
+\\xe3da41cd7d644129920b06a92cdda4fda7beaaf3	Ethernity's Master Collection		erc1155
+\\xe6b68127f4270df2450464c8e0689b6859eee652	Meme.com		erc1155
+\\xa57c9596934591c69bf720edb988555f7522d2f7	All Mountain Style		erc1155
+\\x17e1bd6009702a4c47309d6dc8af0bc847327c46	Nifty Island: Ultra Blades		erc1155
+\\x0ee7bf57733e3da8c015a0e7e395d641fac512d6	Oni Squad	OS	erc721
+\\xbb9140e0344ba1c3565d2f82b09421e3f73fe7c3	Unidentified contract - 96EoBxSRTH		erc1155
+\\x1de8a1ba9e5f316d5c6fd964ba75e969d6d840ee	DIA ART - SR		erc1155
+\\x8b56b4c300d58e7f5694dd8ec35aee9dd054881d	DUST: ANCIENT CHIP		erc1155
+\\x12fcf81e41f18235649e8317be9b68033efddabc	Tales from the Wasteland. Bucky The Butcher by P1X37		erc1155
+\\x929a8af7215f849f05366b41ba12c3114c188db1	Chainguins | ETH Island		erc1155
+\\xca24340e324b5f5f034da3d194e847c8af7d1822	Wild Scapes		erc1155
+\\x8240534f3fbf684c0e29635ab5c8f8efb6f66d42	MekaVerse Factory		erc1155
+\\xa803144e27aef2ac95e7ab49214bd2f802c883dd	To be hidden		erc1155
+\\x8eaaabe11896bd09fb852d3a5248004ec44bc793	Refractions		erc1155
+\\x43f48b416ee0a6367754c8257f2ff4d91c7a181e	Dirty Robot Interleave Artwork		erc1155
+\\x36f1bfa4eec9a89ea897e9e8b44462471106c10d	FiatWorks 222		erc721
+\\x4d57b36c1555b48a63feab9f90d38a9b7ebc4419	Moonray Presale Pass		erc1155
+\\x3df25f701c97f8f95590c8dd7b0ce34d61e3b590	Ethernity's Master Collection		erc1155
+\\x0a5ec5911639bc6f49818f9eadb961fb462e8323	Pleasers.eth		erc1155
+\\xf3b6fc1cee6f35941f64bfbc6ea610aee5d2b947	Unidentified contract - QOV5CbkrXy		erc1155
+\\xacc5bef50fc56fd0d1350ad6f735eb6d9d90b3e4	Ethernity's Master Collection		erc1155
+\\x41eb9dd376c9a3f1c02e5f3f89f22ad6ae970d51	Phettaverse Editions		erc1155
+\\x8620bb2bf262a1a859020f3742203ecc907c9978	Ethernity's Master Collection		erc1155
+\\xa74a6005f87b0ec07872d802459330f40ff6ae86	Melvin's Snacks		erc1155
+\\x6116b35f05c069a09201dd68e3219779bf18db35	LegacyTr1llG33ks		erc1155
+\\xdadff4a17d47badd8365822873f94b0abed8ceee	WINTER CURATION		erc1155
+\\x60e5ba29c51a7102e09f691aaad4809bea75dd7b	NoWorkCity		erc1155
+\\x31158181b4b91a423bfdc758fc3bf8735711f9c5	The Forgotten Runes Infinity Veil		erc1155
+\\xe242300ada476825a2fd39c9f8bf4d3376db20b1	TRAF Episode 2 Mint Pass		erc1155
+\\x640655d4553cd5545f49af56c2604b95e8505eac	Crypto Club Global - Genesis Collection		erc1155
+\\x9f4853789f51400a15e37d4c17629c8d2905155f	Ape Kids Yacht Club V3		erc721
+\\x32894eb0d5c48ae5ed6b6761b76eba621c6e1b0b	epAIgrams by gonz0x		erc1155
+\\xf7fde8933a2ed764c6135a52d4caa47559c0f059	Etched Collections		erc1155
+\\xe165a89fc7299031380bfda3d4289a4f0014560d	theDoties		erc1155
+\\x3bc09e34175de8b98d6fc9637de2b0c33380b9f0	Jack Butcher Interleave Artwork V2		erc1155
+\\x9fe6f41ca212049a3a887288db069cd9c22258a6	Critter Passes		erc1155
+\\x688c91412f079cd6c9aeaa637b75dadd86febeef	Meta Legends Council Stones		erc721
+\\xfa3771fdd9588191f65c342683ba2816a538b81e	//CWS. x Yanis | ethikdesign		erc1155
+\\x6f60a2855ddf15c5f9f204f83ba7a7d4061285a7	Ethernity's Master Collection		erc1155
+\\x942c4199312902b45e8032051ebad08be34a318c	AniCats World mintpass		erc1155
+\\x513b8db5890f94c2d941ed898dafb09c63a29ffa	Qverse Companions		erc1155
+\\xf6185371531ebe01fb872594a5a6aed659a1c5e4	BeanieDoxi		erc1155
+\\xfa0c2700b4d09f0a62e13d545d8da780b9ed92df	Two-Faced by Al Cabones		erc1155
+\\x871b8dd8d98e4fecd7d8e2b8a3c5a5e94ce8275d	Ethernity's Master Collection		erc1155
+\\xd7db307e8c758ee1781fff4ec8a7d2803adff249	TRASH A LA REVOLT		erc1155
+\\x8dd480b11df28ce56c44c98ca3ae9eea372d7d2b	Phat Pandaz Gas Pass		erc1155
+\\x08be0024f7c6ade544d7ccf30749e14cbaf67f4e	DON'T BUY ME		erc721
+\\xfb49eef1b8d9ff9ab0576d66fac60848b874702b	EASTIP		erc1155
+\\xc6ae0328c110db4ef9710264a914965f187aa601	SecretWalls		erc1155
+\\x6958f4e4f955393afb5db7a75909aa17d1edb4e1	Ethernity's Master Collection		erc1155
+\\x009c5b7ff119972e3437b51c4f94addb8dbb2bcd	Signature Series by mendezmendez		erc1155
+\\x91cc74cd9336108519860a2b2bdcb71e93e121b0	Unidentified contract - fFWEzlEg5F		erc1155
+\\x36d30b3b85255473d27dd0f7fd8f35e36a9d6f06	888 inner circle		erc1155
+\\xbd6eb9a63ad130730ca5dd9037af2c46773b5270	REMIX! Halloween		erc1155
+\\x0a6d448547c6da0ed11e10a2358ee0b4f20a8a28	Order of the Glass Apes by Brian Morris		erc1155
+\\x63f2f3a48afaf0b4a23a96092e4ea90736b0648c	T1M6 to BUIDL by x0r		erc1155
+\\xf21df2331cd0ea7e88cb6c4b736faf1318e9e007	TheRoboVerse		erc721
+\\x9202c99b02284b99d7a6bc67180abaf37163f1e6	Ape-In Productions: Take Off		erc1155
+\\x7ef7c5bfc69937341bbb93d1da4f9326eb6ef842	DIA ART - CP		erc1155
+\\x88984e0b0d1527f0f5be7e489dd994ecac5fddf2	TheHappyCupCakes		erc721
+\\xa0b3a79cf7d4d1203b9d7b702755c18b4c5524cc	101 Shelter All-Star		erc1155
+\\x514abfd5e0f9b1be27c7a793704d3446b07a690d	Neon CryptoPunks	NPUNK	erc721
+\\xcfd9aaaaa91e4ae2ef45743058a8383ae61bca52	Ready Player Cat X Ruru		erc1155
+\\x0745eab680c1c596677eedecb7df38a986522e2a	APWine NFTs		erc1155
+\\x8219b81d9893f3fca3ba1905efc62679a08f2fcb	//CWS. x Harry Pack		erc1155
+\\xf6c60065ce956d5ab44fc797a043669060432787	Peaking Peacocks Official Collection	PKPC	erc721
+\\xddeb05968bd8df1fa1285fd8670046ad1a53ca99	The HUSL Collection		erc721
+\\x7169887b559f625a81144eee8ac784d1d8b4920f	YOLO-Cat-Club		erc721
+\\x517e84661b86134072919f5e6be686e6caaa6bcf	Meta Organization		erc1155
+\\x14ef509e108c849a75b4a229a885cba99ffec35a	SAND Pass		erc1155
+\\x3d76692f81478e04074b59e9cd96bd7f478c3645	Multicoin Capital		erc1155
+\\x2aae3c988e4207c6467c00ae1544e90875e92c0e	BabyDoodle		erc1155
+\\x7f745cc97fccec16f7f8bb8cd333c3c1dfc4ab0d	Doodle King Club V2		erc721
+\\x3be0f00a6af964daa2a3a51a4dd5f4c87c3b806c	NFTmetaCommunity		erc1155
+\\xee9861b651ba165cfaeb6c326fe0a6cba504398a	Hold Your Toke		erc1155
+\\xd060910ada4e41e74920901fbec6e4e19ef37f9c	Metasniper Beta Access - Do NOT BUY, BETA ACCESS ENDED		erc1155
+\\xae6293e990de973300a97b1f839ea5154cffa6d3	Bored Ape Yeet Club		erc721
+\\x53bb74f37c2ca22b2c7fd6a05fbd31d8ff781e0a	DIA ART - Cryptovoxel		erc1155
+\\x1066d77f2b0ffe7a667e95ebc442866088ab1248	TOKEN OF KINDNESS		erc1155
+\\xd7162092f616ab0d9c14bfa29c38ab781d90d345	MetaLoot		erc1155
+\\x24bf8abaa7370491b54ae552098ad79bb6952cf6	Ethernity's Master Collection		erc1155
+\\xf6873503f7c7d1dea9cc0710ae5cc33f557475c3	Timpers HD Interleave Artwork		erc1155
+\\x4d8679083f77a44449162a0a7ce500f77ca406b8	Pudgy Halloween		erc1155
+\\x5b485eb26a57b64b00e7f2b8cb21d317cf8beefa	jacobtheape		erc1155
+\\xfe50d8ac2fc36f71c4e081f0e9897ba4520d34f1	Squiggle Papi Digital		erc1155
+\\xf5985c3917f857b197168f91324cb7b7d762b219	Valiant Universe Mint Passes		erc1155
+\\x7b0500fdc298e7f3a26d4cfab87606779680b7db	Jake Inez - Limited Editions		erc1155
+\\x7a1c3b0fece53f7a6a73476b4c8930121e71d06e	Ethernity's Master Collection		erc1155
+\\x952cca00538ea600a82a3be20b86317edd5544c6	Ethernity's Master Collection		erc1155
+\\xb07f97c14d1b1b08481f9e2c3b8f13226ec0c903	Empire Drops		erc1155
+\\x0cf10ecc51d45bf7ba047835cb64ab9935326260	The Psychedelic Penguins Club	PSYCH	erc721
+\\x65b7990ab726ef573c176bb8b9b5464de6ea6c89	Two Bit Bears + Honey		erc1155
+\\xf423d683407af9738e51276f905fb9a208901aac	The Falconauts AstroLounge		erc1155
+\\x04987fb603393e1b824f1b4253f968ed0f483a03	DIA ART - The Sandbox		erc1155
+\\xdd9a5a61f15b434629173330ee8ca49e4d82cbab	Lunargistics Corp Space NFTs Mainnet		erc1155
+\\x783c2a95b2a6cb5b9b4e2077c5cbecf5e3e2a573	Ethernity's Master Collection		erc1155
+\\x309936afd6540a8794903d09d4aafd52b30f4193	Ethernity's Master Collection		erc1155
+\\xc8c96b3cb086ab0e44e0e6c2d4e5159c441d11d6	David Ariew Interleave Artwork		erc1155
+\\x4dd3b03e3319ff443bcf20c9f09e51a6151a9233	lush_render		erc1155
+\\x073c16adfaceed6f350a41acbeacfa9ae1ea179a	Ethernity's Master Collection		erc1155
+\\x87a3747c9942d8351cc85aac2f94807b27a37c0d	Animoca Brands Launchpad		erc1155
+\\x86825dfca7a6224cfbd2da48e85df2fc3aa7c4b1	RTFKT - MNLTH		erc1155
+\\x67ca258bdbe0dc0cb756e4f0b7348f6733ce924a	TUNA Pass		erc1155
+\\xc14a73fcc775a861e597f1df2e6b86d1c982e2cf	Cath Simard Editions		erc1155
+\\xcc39986019b25e26900619b5c5876139cbf3879c	Gutter Merch 2.0		erc1155
+\\xaa874a0f797a748bcf52e605db8ae7d3f7a0ba52	Atopia Apes		erc721
+\\x0dd0cfeae058610c88a87da2d9fda496cfade108	SoupxMondrian		erc1155
+\\x5650c9649a77228e32bf2906d874716cf6a21374	Ethernity's Master Collection		erc1155
+\\x1906fd9c4ac440561f7197da0a4bd2e88df5fa70	Aavegotchi Ethereum		erc721
+\\x6ecf3c08102c9d81afd579635a806b94d454dd63	Ethernity's Master Collection		erc1155
+\\xdda3f424e66d9c006c0d4120786bb6b4e0bc9e21	The Haunted 5 - An 0N1 Story		erc1155
+\\x4fbaec63358dbfe2ac302aa64a02b223cd8cd85b	ellieverse		erc1155
+\\x60804954c2a20afc4ab9bba382edcfc52899db10	Pokey Universe		erc1155
+\\xf3f8685cfc55fb9b2b50675fb671e7e311683086	Ethernity's Master Collection		erc1155
+\\x9421497d7ada5c672974e625a76af7539aea4585	Danger Islands		erc1155
+\\x22916f08c234188e31dba79884cb25ae2d01e483	TDN Butterfly CheckPoint Exclusives		erc1155
+\\x5310d7ddba8beb8dd80f2d51487a774ce7d37c3a	Flux88		erc1155
+\\x6ae335c743a27af8adeb0f84a32e3a699ea8c4d8	Mutant Ape Kids Club V2		erc721
+\\xb0ec56162be68d03e9b7036aa8c3074201a71203	Ethernity's Master Collection		erc1155
+\\x2a1df34c01983d57c2ef8660f63c8801979939df	SaNE MiND of fiTTy..		erc1155
+\\x3a1c88addec56e725ba2a432bc89eeaa5d068753	Enso Trophies		erc1155
+\\x9c066824f00b9f444f6d56f29c949a07eaab39fc	SlimHoods Specials		erc1155
+\\x0a521bae51a6bf920ed26e5374cb6dc86a3be99b	1B1D		erc1155
+\\x4d5e6bbe21599ef31cc9c399aabae7e90ed58fad	Fragmentz NFT		erc721
+\\x0e0fc97e5337478830f30dda023339607ad1ba4c	DickleButts		erc1155
+\\x693829fd164cb6ee5115f2863877dee2a024b9fb	Good Deeds With NFT's		erc1155
+\\xe4462eb568e2dfbb5b0ca2d3dbb1a35c9aa98aad	A0K1VERSE Credits		erc1155
+\\x4cfaea89ab97c812befe64a47e1e15ee4da3cef4	Companion Boxcutter		erc1155
+\\x36189af090560e45f1902fc4a5782a72215d68f0	Ethernity's Master Collection		erc1155
+\\xbd46d5ea27eee3924dbdb8f41e1a3dbf837c2cd3	Power Musix Seeds		erc1155
+\\x7d5773e8fee4bc9b679c1eb51b2597984c007682	Pixel Cat Gang Official		erc721
+\\x10f02e414e7cb7c64daa7140cd967db31d04ae18	Ethernity's Master Collection		erc1155
+\\x7670dfaa84fa7d62ac988840f237143254e4ce73	The MP3 Collection		erc1155
+\\x26d2edd9bce916b9fecab9f3196367033dfef036	Nomad Blvd | Mint Pass		erc1155
+\\xbbc3a1ccdcd8ac06ce75b4720bdc2ffe9fea227c	Legend of the Vampire Fern		erc1155
+\\x226bf5293692610692e2c996c9875c914d2a7f73	Cyber Factory 2		erc1155
+\\x883cddda275facb7c9932ee4e0f410e1ccdb19c1	The Richies		erc1155
+\\x168ecee26470f9491c0859ffa3ea0397d1047011	The Red Village Bones		erc1155
+\\x488f864a1ddfbed5c0942a89b5eb132f95dd55e0	Lipsies		erc1155
+\\x628e1ae54610f6c553ec227019526776351cb6d4	Bloodshed Bears Genesis MetaPass		erc1155
+\\xd22f83e8a1502b1d41c0b40cf64b291a6eabc44d	OpenDAO Genesis Membership		erc1155
+\\x62911fe3175c9916e093c78a567ddec04a277309	GRAYCRAFT Collaborations		erc1155
+\\xae51c192e73fbeafa0e2b9e9cc6c0d009b8f799e	Big Toys		erc1155
+\\xebc651f4a8c898b5c45fbeeec9cf125bb8b452e1	Pork1984 | Vaccines		erc1155
+\\xf82e772ceb1c7eeb9f54592e6d59b92e5b3f8fb3	Hand Drawn Loops by Prasad Bhat		erc1155
+\\x62674b8ace7d939bb07bea6d32c55b74650e0eaa	EtherOrcs Allies		erc721
+\\x9da9d93023d021f89bfd8d7bbb3f6e84f34883d5	Ethernity's Master Collection		erc1155
+\\xd374410e9bb22f3771ffbd0b40a07c0cf44a04fc	The Nifty Portal		erc1155
+\\xea1b905898dccb2996f60447692cc4d6156e55fb	Thieves Gang		erc1155
+\\xd5e793c08ce6e4bc225b64f19496629a81873c22	Wapuus by Web3 WP		erc1155
+\\x500c5c9fe70e5820ec829354620f1c070224917d	DAO Central		erc1155
+\\x6917fbdb9c96fe71bb961e374cde8f4aa9287ffb	The Age of Gangs P2E		erc1155
+\\x6f69141c0419b1d94c29bd5972f99213c2ce7b92	Sync x Colors		erc721
+\\x3db33f842f3a0dce59720da32efec3f98408a446	Vinnie		erc1155
+\\xe681f9fbc023f8a35db7a217410028e3c6e1008b	8SIAN Collectibles		erc1155
+\\x0e016d6634dab3a1da6e343da699a3069449e5d7	//CWS. x Michelle Thompson		erc1155
+\\x321c972046f3ce9484e30a3fd658b40bff400fec	Year One Artifacts		erc1155
+\\x8887ce34f6f1a4de4e8eb2a9195eeb261c413365	Editions x Guido		erc1155
+\\xa25bf81aacdb5e610eaf91a889975bba43398cf1	urn: genesis collection		erc1155
+\\xdf0cbad5eaeab5b0638ece3e2de732861510e596	HashLips - EYES V2		erc721
+\\xbac737496dcd972d72acf3360d15e3b1d954fc70	AstroRoss - Editions		erc1155
+\\x8aa86367f579a647f8e3757fe51968e5a5caf840	Ethernity's Master Collection		erc1155
+\\x49b3bcacba13557500b63cb7e0757086aa87b602	Wolfgang Beltracchi Signed Photo NFT		erc1155
+\\xb6283b2e41843612cce2a70a87cf6edb9f40aa8a	CyberKeys		erc1155
+\\x2633aaa4fc6ba9ebb8ab2fb7547085bf89fd4203	madebymetsa x cb		erc1155
+\\xdb8917344a367c5387b7744d7b5eed483b3d7cd6	The BlockPunks		erc1155
+\\xb04004aa955849739fde52da15249e65950238d3	Editions X Tylersjourney		erc1155
+\\x6eccbfbf88af0f1550a9a78fcc9fce7079a6b6b7	AmericanEagle		erc1155
+\\x591d1e9bee3177af386df1c8d76f23755818c895	Nightmare On ETH Street		erc721
+\\x0ebeb5201b63f201d8a795ea5eabfbaf57194480	Friend Tree		erc721
+\\x0131b36ad41b041db46ded4016bca296deb2136a	STAXX Mint Pass		erc1155
+\\xd282c166a89678340e516dae7b7c81e3558257fb	Doodle King Club V2		erc721
+\\x7a7fc0157f070da05db78101b95f42c5ad337037	Pods - The Awakening		erc1155
+\\xb7f9ef1e09829d3937bfc6b5e46f3cc46a23d13d	Non Fungible Tools Lifetime Membership		erc1155
+\\x2fb32ffc5aad1684c45a4a8dc52c59a88a779bac	Ash Walkers by Mwan		erc1155
+\\x920bbe21cb8b4ac38fb461fc62f8900aef18e923	NiftyCookies		erc1155
+\\x341ccee47c2a0b5a481d19de4385788d0555693e	Mutant Ape Kids Club		erc721
+\\x86e117bcd5deb54b79476f24cb474ba5cfd7559c	Unidentified contract - 4yCZbqwO8E		erc1155
+\\x6df054c15a2233587df1974814db197402cf3bab	Danny's Drawings		erc1155
+\\xac5f90beeb72572a38b6ca64ba00a429478502c7	Vanity by Philippe Pasqua		erc1155
+\\x4ae83de2753beb769ae00b99ffa403017cdca806	Extras - Mirage Gallery		erc1155
+\\x1bf47e4f2e9078c30914e33134b21c952b55c64b	Plug Pass		erc1155
+\\xb4b18e331a8539228fdbead6c559a09479bef09a	REDsistance Origins - old		erc1155
+\\x917d62bbb22cfee0abc0a0999004c3a0626d7fed	Chromamorphs by Local Machine		erc1155
+\\x84ac6a9d253cc374b006a3629785e97a11a26f76	Titan Tiki		erc1155
+\\x56e0a0d0c8ebb29a3db38b52de9e9dc71781ffe0	Ethernity's Master Collection		erc1155
+\\xc9361911253cff6af9bfc13860849744440510c1	cryptofish.io		erc1155
+\\xf71ee2060e2daa27d7039bbf9f34f60faee55aa5	Android by Andreea Gabriela		erc1155
+\\xecdc592e38b5f91613f20c641d61a2edad72257f	Avastar the song		erc1155
+\\xc5f20edb401a22ad24ef435d20461b880ce7bcd7	Gangs Around The Globe - NFT Fightclub		erc1155
+\\x97451b61cf05d92ef181858e115fbd4f133991e0	Ethernity's Master Collection		erc1155
+\\x3a6f22b9d33d68fab863bb5c17e9d31476df9fea	Shroom Scouts		erc1155
+\\x4dad577f640c4854c8073744b5c9f501efb3ade5	Unidentified contract - YcjWYx9Acy		erc1155
+\\xa80bb97ba233b5483f86b4d95372484414b40326	1x1x1 Project		erc1155
+\\xcfe4499258541cd5e0a00600dc5db1c3dfe4de23	Exploding Heads		erc1155
+\\x1291a3dde7c952fa06dce05a951f29fd4d609251	Daily GIFs		erc1155
+\\x8058aa8480de456cca8387ced3b7b5e57aaaa821	Pixelated Apes by TBSM		erc721
+\\x372e62f40b777b25ee8fe0c8700f61b9e17895db	ZEDHEADS NFT COLLECTION		erc1155
+\\xf4d4c212e4d461cf23d5f16782c2fb3e9baa1dc3	//CWS. x Ivona Tau		erc1155
+\\x2d7e3779162d3a3d4db32a8628a186e907f02e5a	Metaburps by bullxndr		erc1155
+\\xa16891897378a82e9f0ad44a705b292c9753538c	PILLS		erc1155
+\\xe1a510818634b5cc686cabf4ea32cfd9e1c9095e	Super Scaredrops		erc1155
+\\x8663602d09639510f07a3d84daa5703c4cc83b21	The Snake Mob		erc721
+\\xf6fede92794291fca094b55ce95fb3f2f3122569	UAE NFT - From Desert To Mars | Kaiwan Shaban		erc1155
+\\x83ec7ae2f5921e563d1b7065e9a2c9fd3868d378	holonick - interactive		erc1155
+\\x8f9749054390b96cca7b5a41c7215cb6745daaee	Renaissance Collection by Rene Makela		erc1155
+\\x98cb0f4bb566a9db325ef0720ec41786068248bf	JK DAO		erc1155
+\\xb9b1f0b5a3f2b4d2abab1f7f7e76bf054d47e803	NonExistentToken		erc1155
+\\x828b78e11bc6a061b8b1ab9cf29c68ed6abb247b	M Ape Kids Club - M1		erc721
+\\x09e7483e6d4054be9b21076f0dcdbbf30d202d8a	an mfer story		erc1155
+\\xdf5e48519756de2e2447d5cfe28792e6b24f44a8	BOWERBIRD MINT PASS (PUBLIC)		erc1155
+\\xa7c6715f79e7cbc781b15a2ec411f78a5a13789c	Totality by Hideki Tsukamoto		erc721
+\\x8cdfcf535bc267623e0d433385c3be573153c77c	Ballad(r)		erc1155
+\\xe5e09510e359fd0f50e3a7b7e9c8c0daba9c8f01	The Image is The Utility		erc1155
+\\x530e16ea574c6866b41b4951a6ce34a4a29f53cb	88mph USDT via Aave Deposit		erc721
+\\xaf35edeb3222366185a6ce89f4704205210df0ed	UAE NFT - From Desert To Mars | Thomas Dubois		erc1155
+\\x9f608060c234f70d83ba16ad9277cd42f7dcff49	Ninjalerts Lifetime License		erc1155
+\\x7b29b5f2374812e4045173e0bc2cf15bcd57bac4	Injective NFT		erc1155
+\\xaa03e09ab8485e079e666d1c43eca0914bd5ba63	Mutant Ape Kids Club V3		erc721
+\\x4758f5189cecb2384e54389d1439cb8ebaf15565	Mystery Chests by Dr. DMT		erc721
+\\x94ccaefa46bad54cf1a5c594a84e17d440b305b3	Fastlove Studios		erc1155
+\\x7908e11e21fb82429a0d2687770472723ae8148d	3LAU - WAVEFORM Powered by royal		erc1155
+\\xb8fe06c4eee4a4db7aa2434bb36347363bc76340	Unidentified contract - RG7NG3WkTO - old		erc1155
+\\xb44349079cf3ee45a8c9b4986ffbf548ba2c0ecf	Johntool VIP		erc1155
+\\x466a43f57df1f752181f9fb6d77d6ffb4813e1ab	GHOSPERS		erc721
+\\x5113a3dd866a3ee8e973fc764cc380e6f07416ef	ENS Tools		erc1155
+\\x2163f70d3b4de18a44e570309798e1fbbc916291	Gutter Merch		erc1155
+\\x7ab7f10d09ae26e22bbcff5e322849be86da19a1	Baby Llama Chemistry Labs		erc1155
+\\x559f26c7ffa7dcf3e4e9e3155ecab38c9212a5b0	PussPunks		erc721
+\\x5df8462548a3ea3bbb91767a6e47a770e5252359	Spatial X		erc1155
+\\x0000000010c38b3d8b4d642d9d065fb69bc77bc7	Underground Pass	ug	erc1155
+\\x0022a2937cb0748f7444e46b6ab5a792a4012024	Diary of 88	DO88	erc721
+\\x0023923d3cd59f30666c16d70a90bbb640c1370a	X-Moose	XMS	erc721
+\\x006090e6fbf5add663f76d16d4f8cf2907801d3c	MythoDrop		erc1155
+\\x006226dd9f5338fd6bcb9848306220c56fd3ec1a	very bad dork	VBD	erc721
+\\x0161b706371e0725e96c67cf55b2384540374cf1	Tom Sachs: Rocket Factory - Mothership Tickets		erc1155
+\\x016f99ae5894a1eef1effe0f3fb0fc73e12f24ed	WARDOGS NFT	WDN	erc721
+\\x01c55f610842c0506d0f9ef5d12d223008ee35ed	Cloud Reality V2	CLOUDS	erc721
+\\x02069f6c486256f5b245a5ac09b4974e78631b85	Funky Bubbles	BUBBLES	erc721
+\\x0224f7c5476b23865be7741857329fc9bed348bd	𝕄𝕪 𝕙𝕒𝕤𝕓𝕒𝕟𝕕𝕠	SUNZU	erc721
+\\x02da3ad430ee4a1ee9e1103f6692d3f67bcb581e	The Knoids by Shade	TKN	erc721
+\\x02db782e916b8274f8ee9acf573729e7b41cf317	SOCIAL EXPIREMENT BRO.....=SCAM	CrypLar	erc721
+\\x032ec2aa5b596b1bd10db05e4e11d3e624ee4b22	THE TRUMPS COLLECTION	TTRMPS	erc721
+\\x03315ec191c834cbcf88068e24408033f0e3bf4a	Antvasion	TAL	erc721
+\\x0352f1bc49c7c0c07f21acdd9d296de7e5f31fe1	🐸	PEPE	erc721
+\\x035e362e5d1f8c41ec882b37500d4e8632381d41	Cassette Sensei	CSS	erc721
+\\x0364e54fa0372ebd6738a38126747715e81d250c	VERRIER Still Life Paintings	VERRIER	erc721
+\\x03cb65b0d7ad3ac0e824b97c4e00606b24a50a44	Color Palette - I145k4aFan	CLRPLT	erc721
+\\x050f9a066f9ad3e7d97b5def0fdd2ecbdd0125a9	House of Finns	HOF	erc721
+\\x0647e3137ce7cd942ef8d8f1a35f10459973d069	Tiramisu Recipe by STILLZ	TMISU	erc721
+\\x0770613d48162b830968f49ddbdf2bbd072266d5	El fosforero	CUBAML1	erc721
+\\x07887ee0bd24e774903963d50cf4ec6a0a16977d	Doge Pixels		erc721
+\\x0797704db478930091d43d0bb330f89e08a75dc6	Humans Fear	HMNSFR	erc721
+\\x07d4f897b2ffd2316e969f2f2ee3322239079233	Equilibrium - Qmszt3n6iT	EQL	erc721
+\\x08b11824035034ecbc7eee1d090dc91e8bdefff7	Food and girls V2	FOOD	erc721
+\\x0910a580c69894375f584fbda44b2ddc90704daa	portraa	PORTRAA	erc721
+\\x091d8e039d532fd02d7acc593043acff05839927	Nubbies Genesis	NS	erc721
+\\x09f589e03381b767939ce118a209d474cc6d52fc	3DMutantMfers	3DMM	erc721
+\\x0a25888c23527e17d41657ae4cccb293320c7ebd	P1U3M	P1U3M	erc721
+\\x0a3266c3de5c3b84fc50ea7b669b9b4fb5599f74	DariushRaad.eth	RAAD	erc721
+\\x0a753480761f7b5b803305510e3574dc973c5aa5	TECHNOCULT	KSPRK	erc721
+\\x0b07e3b4e33781e0575f90e5598006b54c8e81c3	mAIss	AI	erc721
+\\x0b2a640932ae032f13898e9a7a25139006cc3f1f	Subtle.Bubble	SB	erc721
+\\x0bf384c11a27092d35dff64cf8502414c4a64492	CHARLOW SERIES	CHARO	erc721
+\\x0cd925f268678d03057d184ded76d98552d7d837	BEANS HOLDERS LOOT - Dumb Ways to Die	DWTD_HOLDERS_LOOT	erc1155
+\\x0d2faa24c109a5da0f8cf1ae494dfb14a7e44c21	Black And White - ZVjEAHaXSj	DHDP	erc721
+\\x0db41a3c406e4f68ee8991ea99e181f67d2edf59	my GENEROSO by Yuri Catania	MYG	erc721
+\\x0db9e2f4395a179e4add26b43cfe8e4ea1830b46	Tweet DAO Eggs	TWEETDAO	erc721
+\\x0e2bdde5eee52d37930d28177edb721c52e85452	Divinity Cells	Div	erc721
+\\x0e4dfc3328f10e3c6e3016b90a68f09fb0f72293	Fractal Universe by Fractal United	FUN	erc721
+\\x0e69c045419d77fdbca9cdf3321ae6bd6a44e459	MeldaVNH Illustration	MELDRAW	erc721
+\\x0e6c54bdf6bfc75777c23dd2b7504d82b484582a	Probably Something Genesis Passes	PSGENPASS	erc721
+\\x0f4738b2a1d5cb04ef68061098ae297942ddc53f	Hypercastle Explorers	HC-EXP	erc721
+\\x0f5835de26edc0898d6fd58233dfb07182e9a160	Soylads	SLS	erc721
+\\x0f7f90a5274ec882597be323f43347bf73e09bce	Jidori	JIDORI	erc721
+\\x1070b0367d5715104774395e1c927bcdf89d001f	Metamyths by Dan Gratz	MMDG	erc721
+\\x107723316d5a353b0e8fef6584fc4a57690d22df	FoundersToken	FT	erc721
+\\x10921fae4802949c5c4bcb81b995aeed3bfd4551	New Era Ultraviolet	NEU	erc721
+\\x10e93d8c68fddff2f95b9f2f6ee5ebb25f193ee5	Arctefact Approach	ARC	erc721
+\\x1106e9528cd4b4fe2cb9ff5f4f558926d70a973b	PeterArt18 Collection V3	PA18	erc721
+\\x11106dce9a8edd9320d890c7839e82198df5fb41	Barbican Architecture	BARBICAN	erc721
+\\x12662b6a2a424a0090b7d09401fb775a9b968898	Prime Mates Board Club	PMBC	erc721
+\\x12990813a9332fafdf354970dc2f9a39c7e88b9d	kjlqwekrjlkqjwerkkqjewlrkj		erc721
+\\x12cd86963f55eb8679f5ff84ac137bbfdecf8506	Spesh Cats NFT	SC	erc721
+\\x12cd87eac1802443580fc874c65fe6e653788924	SwampCatz	CATZ	erc721
+\\x13160321a82dbf941cfcbbcedeee10128b6c4687	MINDDS 2.0 Eternals	MNDS2	erc721
+\\x13da80daf7102144065f0e40e2be6ef096d8844c	Secret Society - Genesis Pass	GP	erc1155
+\\x13fd66240c4fa59c2429167bd84e39a89666c7d7	Imperial Whale Club (IWC)	IWC	erc721
+\\x1440dc6c965764402acd696787daf6e0b40afb2d	Why Did I Order This Robot	WHYROB	erc721
+\\x15a55d012d647aeea16bd5a0be25aa4373144ee1	ASTROGRAPHIA | TABLEAU	ASTTB	erc721
+\\x15aff23554ee2b7280cc962a60bbc2de54225afb	The Goofy Ghost Gang	GGG	erc721
+\\x1603f8135fee92c206d59f5e5a3174b86e777f80	Strange Paradise	CR-SP	erc721
+\\x17438b41d82e99fcba8333b39074aadb572b4ffc	THE ZEI ART	ZEI	erc721
+\\x176c650e2e6caf1647eeeb229e8abb67bdb6ccd3	MetaSpaceBabies	MSB	erc721
+\\x177d0b74c040de646a33b1a09dfdad0cd0981913	Hidden Portraits		erc1155
+\\x179bdae5f350f77033c6db58de7f07da8f738610	 2 V2	F3V2	erc721
+\\x180b83f986847f071e5fb5bb1c0a915b1df204c9	Lazy Mutant Lion	LML	erc721
+\\x183a5010297869af68acd0562fac708c76c410f4	Miscellany V2	MISC	erc721
+\\x18a276a01ce77057372f220e16ab3b44fed96288	ZendettaGrant	ZeGrant	erc721
+\\x195ca64978e4751dc858fefb157dc4ff07c84976	Travel and Girls Cartoon Video	MANGA	erc721
+\\x19a82ba71ea0710a741fcb285ecab4c8bafb887a	Women in VC	WVC	erc721
+\\x19b79dbe29f769c6050f2ae769865f0de833d281	Robot Era	RERA	erc721
+\\x19f918b5352fe3316564f5245942c57d78d6cf9d	Mutated Moon Apes	MAL_MUTANT	erc721
+\\x1b85ce00b9fdfa90d9e3f1da788087cca98e659f	LEMURIUM	RIUM	erc721
+\\x1b87be8debe0a806563a55e888424b7023f7ba48	Anemiart V2	AA	erc721
+\\x1cc625bf435eba08dcc66a0a34a150fd907f5f19	Original Collection - AKiTO	AKITO	erc721
+\\x1d0ec4a86ac39fef4485169b4d14dc39d0ea64cd	Sneaky's Internet Friends	SNIF	erc721
+\\x1d1a9826dc41cf4bb68adf5afd1998a305eea854	Endless Questions	EQ	erc721
+\\x1db44aa3b250434a131e329ff740832dea1c7db3	Qtees V2	Qteesv2	erc721
+\\x1e39a585b465a319e0ffbfb43306a82c5594a8fc	Gioia Pan x Too Much Information Lion	cub	erc721
+\\x1e8ef6cbe51400eb4f6d4f73c52ff485db8a8164	Early comprehension	VANCHES	erc721
+\\x1e9041c4b0413725bd0621a0ef7dae5ec34a7ea1	Spottie - Sportium's VIP fan	Spottie	erc721
+\\x1ffc8cd3d678de8d92f1de2bff25ad16220c817b	Freedom - 024puH0odi	FREEDOM	erc721
+\\x203e493d6bcf95893339289b3e3dd6f863c60e26	Official Property Heist Ape Club GENESIS	PHAC	erc721
+\\x20634a2d22275e54e15d0f357407dbc64f37df1a	Goofy Mystics	MYSTICS	erc721
+\\x20bd0551f05dc40117d6b91dfa9f67d25307d1d8	Loveless City Abnormal Jean	JEAN	erc721
+\\x20d51b12226d9a8e60afa3c238433581a89cd1cc	Plant Parade Main Collection - Official	PlantParadeToken	erc721
+\\x21601b64e3716e4614515663bb3ba8f7d791200d	Myas Treasures (Silver Key Squad Member)		erc1155
+\\x2165cce31f9b40d9e7916502271ce72dead3b211	naehrstff	NSTFF	erc721
+\\x225843610b4ea89cfeff8aecece8136b431f6036	TosinShotit	TSI	erc721
+\\x22c8d2847848df1ccfc1eb8b26a32a96b2984a64	World of Zuki Women	WOAW	erc721
+\\x23491afb493dfa6d384b9baf50da12dc95485a35	Serpentine Gate	SERPGATE	erc721
+\\x23f2a94fe4413eebb95541d502a3e74e5d2bc4b0	Metapaca	MET	erc721
+\\x2416bd7bd7e213fa526c41dd1c582b471297f847	Crypto Polar Bear Club (CPBC)	CPB	erc721
+\\x246d72e25eb1564eee952f3e9e8f01b7d178911e	SUNONG	ART	erc721
+\\x24a074c8558013a3e9eabf5ef742be389bc013c9	FOREST by METASQUATCH	FOREST	erc721
+\\x24b7c7755e79ac9dc23994062ba8dd12e9a84d06	chaos genesis	CHAOS	erc721
+\\x250e4e32c762e23c1d5b56e6ca9b9c5c281c796f	ASC Baby	ASCB	erc721
+\\x25ea7984341036a880f4fcf6aee53a16dc99dcd2	LOVERS - Swl495CNEn	LOVERS	erc721
+\\x25f12d8a0940ceb42cf82620d252e0b91c988d81	METASAMURAI Genesis	MS	erc721
+\\x25ff28d879a7c0fabbfa2bc839707cd363ff72ad	Girl Like Me	2022	erc721
+\\x2664731500426f377ceb13caa18aaec109ce7277	icP - M6IAx9mn4l	GLTCHPRT	erc721
+\\x2698d35de1d19779d8d0d75f3b625d5d332de2c7	ARMORY_HxxG series 01	ARMORY	erc721
+\\x26a4024dd3c9253e1a7af0162a92fe7d20774179	Dark Digital Magic	DDM	erc721
+\\x26d17b17467ec9736e0c30de4ea96eade6ea2808	Ayyoub Bouzerda Art	AYYOUB	erc721
+\\x26ebf50f638dc54a72d853aee79056fda5407c25	Meta Panther Club - Official	MPC	erc721
+\\x27510ac089ba7b78b00724ebf363845431a78ac2	Pad Club (official)	PC	erc721
+\\x2910312a1e3e4cdf3c33dfbc88d1e1d7a22e2bbf	Wired Beast	WIRED	erc721
+\\x2985e6456f3534fb5e0d12606f56206598055fbc	Lost Souls V4	LS	erc721
+\\x29a4c1fde97a58177346e624acd4a3677613174e	I Am W O M A N	WOMAN	erc721
+\\x2a9a66ceb1c544535f6a53fb4bbfacfb360eea72	Werewolves by Moonlight	MOON	erc721
+\\x2aa8ff2ed942985320343ce362e0c68d203d595f	Wicked Worlds NFT	WickedWorlds	erc721
+\\x2ab52577eca1ae30d183c40924c096773aff75b7	Moloud	ME	erc721
+\\x2b2d96cfe49a97ce3ea2fa71c952b38139fb8457	Eff You Guys		erc721
+\\x2c0671e509f32b13f0eb6fd807deb98dd5fb8c3c	Almost Human V2	C1AH	erc721
+\\x2c0e2a012eb342562480151e5a7824fd337086ec	NunoCosta_PT Photography Collection	SHOTS	erc721
+\\x2c32d7cc4b7b05a000560c9dcec62de5cc55ae6d	Random Beautiful Things	ACSNYC2	erc721
+\\x2cdc85a4bebe285dc6d446fc48eb5503af91905e	NFT Haute Horlogerie	NFTHH	erc1155
+\\x2d03b45e9183338b23de6dc2403a38282191c76e	Roadmap V2	RDMP	erc721
+\\x2d1e3b4ab403df48708d303608306b0dd694a0ef	  MOUNTAIN ADVENTURE	JAPAN	erc721
+\\x2d1f66e831659425200d1edbce257b969d647e60	Surprisingly Series S	SurprS	erc721
+\\x2db63c7339b1fc2508bf52ab7f8370f1a5b78424	PEPE ART - 97ETtBpCKC	PEPEART	erc721
+\\x2e23497f2bd18dc2de5ccd60233fcf9b767aa2c9	Late Nights in Japan	JAPAN	erc721
+\\x2ecdcc311f97d9db5de85da0c18b2d81e5872559	SEAK World	SEAK	erc721
+\\x2ef2bbc04eb17f83dfce5b83b3c08b11447fdd02	FLEE_BLOOD	FLEEBLOOD	erc721
+\\x2f03b97fbfb35869befedda4c0b64d60d8bb1e08	GORE-MODE	GOREMODE	erc721
+\\x2f5ccfba72e9d0b5c49b6d9b176e730f86720ec4	Unidentified contract - 7N7UrlHfBy		erc1155
+\\x2ff5556f0084bd6e7a267db17d788d3c00670c74	TJO's Editions		erc1155
+\\x306b1ea3ecdf94ab739f1910bbda052ed4a9f949	BEANZ Official	SMTH	erc721
+\\x30718f4e09873395b912b26ec2fa1befa2262c16	BabySkulls NFT	BSNFT	erc721
+\\x30c80b9633b4c6071b44569da52b58cceb6c17b4	avril15.eth	AVRIL	erc721
+\\x30f587bcae9042825a5ebc2181664039f4f2ad74	CyberPunk Clones Original	CPCL	erc721
+\\x3110ef5f612208724ca51f5761a69081809f03b7	Impostors Genesis Aliens	IMPOSTORS	erc721
+\\x313d47ac9106ddcae354ba601a0f9097375587f0	VipCardRoom Official	VCR	erc721
+\\x317aae5dfb3f5773c35c22d2e44551f902ae9083	SVCC Voxels	SVCCV	erc721
+\\x31d5e888955bad74ea17f638f9990ee85f7c4e4b	MANO NELLA MANO	MANO	erc721
+\\x31e95101a4116e226b9968821f4d3448ada284f8	LOVE CATS V2	CAT	erc721
+\\x321e7e77163bf82cb352932d7a3a0d7661a0813e	LittleGhostsMMO	LittleGhosts	erc721
+\\x3277e3c179160f6c54a0fa35923aa7526ccb1a4f	Washed Up V2	WASHEDUP	erc721
+\\x3299d23777331206ad2df10b112b023641c4dc7a	Croaky Labs	CRKYLBS	erc721
+\\x32b516bfbc5a7347de08c1bbe375daab140b5ea6	Mechanic girls	MECHANIC	erc721
+\\x33656fa23e4ce3c43db9c8576b722f8ef32e8502	California Red	ART	erc721
+\\x33a922380cb280983d02816adc1e28e530e8dab4	HALL OF ANGELS	ANGEL	erc721
+\\x3411e2d9ba86fd9c50b734d3943652e8f69da870	Marischa Becker	MB	erc721
+\\x341a1c534248966c4b6afad165b98daed4b964ef	Murakami.Flowers Seed	SEED	erc1155
+\\x346868f7e783e8206335bb14f74ba59a87c44f35	Happy Gaj	HPYGAJ	erc721
+\\x34cadc2ff14d57d6c3f806b5d798c6a27642af2e	Pepe Liberation Army	PLA	erc721
+\\x352bb674cd16ad62eeb2266809c9c2a395166c56	The Drones by KATSU	DRONES	erc721
+\\x355f0329f2422421ab66bc1fe5fdd763adfa7647	Mutant Fools	Mutant Fools	erc721
+\\x3566d52da042e6de2f3cc8f2b621361a9a783918	MIND-FCK	MNDFCK	erc721
+\\x36433fdb0c577322e5cdee8aad2534ed184938c6	Mickey and Mr. Peanut	MMP	erc721
+\\x370a08401263abef1cacd72326d6b08eaa09b79c	Sharky - Art	SK-A	erc721
+\\x374937e245034dffb484a40f4a728feca095a1b5	PARTIKELZ V2	ARAAASCH	erc721
+\\x389b385231575a58514d1bb5cc1f998d231a7d31	Kawaii girls collection V2	KGC	erc721
+\\x38fb6b6205436082612aadeca74beb97717e0206	ACKFTW	ACKFTW	erc721
+\\x38fff26236c404152ac646143a4bbbf30c3b0faf	SUBTERRANEAN HISTORY IS MY MUSE		erc1155
+\\x3918b7e63b0d81f5560caad047e15c60fdd77a5d	x__x	X	erc721
+\\x395bf890e2147d50f058385518d79cbde461e607	at light	INK	erc721
+\\x39f507a22af00b1a4751c64660b6c4b78aeb07c7	Emis World	EMI	erc721
+\\x3ad30c5e2985e960e89f4a28efc91ba73e104b77	Mad Mouse Circus Genesis	MMC	erc721
+\\x3b446c18f8126ec8bf24114acf903910ef499080	O-MEE ERC1155	OMEE1155	erc1155
+\\x3b83f476f157b055821ab10fa1e9da83526916ff	Hammer Ape Studio Official	HAS	erc721
+\\x3b8abb2ec5a42115b5d7b40dd8e07872004a2790	Black & Gold V2	BLKGLD	erc721
+\\x3bba492966100f0208df9769d8cbbb04d9c9a78a	High school girl NEW character	HSGN	erc721
+\\x3d106a04e5a443072fa8f5f4bc441e2a270db5fa	Odd Dogs	ODDD	erc721
+\\x3d6c47c1022a7aa5cf3c0acbaed2d23a19af6cb2	Universo V2	UNVRS	erc721
+\\x3da90c21bfec6a8e55dec53a5641537458301163	Goetia Collection	GOETIA	erc721
+\\x3e36222517ec1413c627c69e7d56564d8a4165e5	RichGangGenesis	RichGang	erc721
+\\x3e42d0943865bcc12eadfeb3187e0e13f966d3b1	TANA547 and FRENS	TANA547	erc721
+\\x3ec0f025c96292522f10217b2bde667d181b4ed8	Sneaker News Membership Card	SNMC	erc1155
+\\x402f164cccfdc9bc24788320b84b8fd8eb951d5e	BLIND V4	EYE	erc721
+\\x40fb4485a75ab95fd8add48d4b03aa64364c055b	Squad Of Knights	SOK	erc721
+\\x4113dcf5f97cef9b7e8ec4bb9fcfe18a42fa0462	Ganime NFT	GAN	erc721
+\\x41455c6e28fcbeabbe5b44675a3435b7386f27fa	Everything Gear	9LEK	erc721
+\\x4158664b13c86c91c1ee8e713b69482a53543b4f	Monochromism V2	MNCSM	erc721
+\\x415e3073a91c66d16245df90b7c56c96c7fa3b52	Morningstar V2	LUCI	erc721
+\\x417e11bc9a8901d11004271c1ab0becdc78b327f	Soul fantasies	SFS	erc721
+\\x41f20599e9e049004c4d169046eb7023117a6244	Gutter Clones	CLONE	erc721
+\\x429c83bdd265673b624c449b4f8545bdf50789aa	Cyber-Eve // Nu Eden	CYBER-EVE	erc721
+\\x4530c4c5dab8952ef5dc18df5cbeeab6bb446931	BitMart Ethereum NFT	BMX	erc721
+\\x453cefe0ceb72930a247c562bd87fc6fa985c454	SquareFrens	SF	erc721
+\\x456a80f354f2cc86570a9c18dfa0f2d9e2eda802	Geode girl	ANANFT	erc721
+\\x45e3a06b2baea183f02e9b948b425a47b46a9352	The F8 Club Specials	F8CLUBSPECIALS	erc721
+\\x464ef019cc5f2550998c8a11408c2f52b382bfe2	CryptoTigers 2022	TIGER	erc721
+\\x468590bd3324fcab119d0640a62f2a79dd1e5419	Infernal Princesses	INFERNAL	erc721
+\\x46d14b7ba5330e1bbf03dd6ca0ab228a4348be5b	Alec King	ALEC	erc721
+\\x46fd0fbc02299bd2504bf316d61bb4ed566e1dd9	Bruhbies	BBs	erc721
+\\x473fbdf1a797589df54751816623eb037c71ce27	Gutter Punks Comic - Flyer	GPCMAYC	erc721
+\\x481510b99e406e0709812ed1011c43038ca38863	The Nonster Bonder	NVB	erc721
+\\x485b381151b67a2c713ac1eef843253fc17dd794	Spirit - fcazzoQOYb	SPIRIT	erc721
+\\x486fbcfca361971a1734c002122b3c4786a182e0	Fake Banksy Punks	ByP	erc721
+\\x49135b19de4a3762a5595a9b79b72a5cfe225b8e	Tales of Mayu	MAYUNEAW	erc721
+\\x4931e2807e3bc1dfb2921431d58329d3b83ab8fa	The Ronaldinhos	Dinho	erc721
+\\x496901a8a60218a5c582de36612b8fac84895cd9	CryptoFamers	CF	erc721
+\\x49efd5986807b139048ccc00b4c09f2135b5a8a8	BlockProbe Founders Pass	BPFP	erc721
+\\x4a16795481c47f8ed0f04c366b9a761a805fcd3d	Surreal touch	TOUCH	erc721
+\\x4a1a0f9159ae7397ba6ffeae42e972e860a95230	Ethan Lington Editions		erc1155
+\\x4a7cd4fc2b023d87e2e5f8be82480b1bafaa9ddb	𝐓𝐇𝐄 𝐏𝐑𝐎𝐋𝐎𝐆𝐔𝐄	MM	erc721
+\\x4a8c9d751eeabc5521a68fb080dd7e72e46462af	Arcade Land	ARCLAND	erc721
+\\x4a9d651c5be716aabe2ebde56014f6f2385d32a8	Treasures of Hope V2	HOPE	erc721
+\\x4aad731b4434755186a6ea7bff5b13de3863c38e	official mfers drive	mfd	erc721
+\\x4acd08a8f882e7612083cce35ad23039f91aa95c	Surreal Haven	HAVEN	erc721
+\\x4b139b493e5f41dfda251f047681d69d19438766	Dreamscapes - 15MxqYwTsj	ETH	erc721
+\\x4bfb45faae68db5271eda644689a933ff5c9a5eb	Hungry Sausages Club	HS	erc721
+\\x4c0943aedc02b0e920a32c4ef6f0792feb4931e6	BAD WASSIE	BWASSIE	erc721
+\\x4c540c428b675a35957efae0d53f4e32f5dbe59c	hrunz sketches	SKTCH	erc721
+\\x4c6736018e503fd4cdefed07c5812ca35d9535be	Slyfly NFT	SLYFLY	erc721
+\\x4d232cd85294acd53ec03f4a57f57888c9ea1946	Ash Chapter Two: Metamorphosis	MORPH	erc721
+\\x4d8bec307873df80b9e3b5c6c3850f90a2f683f3	WHITE POTION	WPOTION	erc721
+\\x4ddc53028e7898811bd8e626200171a865fb6fe6	Daydreaming V3	ABSTRACT	erc721
+\\x4dff46e4985107961ce9d7d04ef4b095a24161d7	Panda Insight	PandaInsight	erc1155
+\\x4e0db52cd78d8dea2a4097da716d3330da47282f	SoundSparks	SSpark	erc721
+\\x4ed18841069e2c51692d1f1c7ba2a0dcc8b11826	Out of Africa: Poster NFTs	P-NFT	erc721
+\\x4f2e3209947f6538e2947e056f68ea0468c73b7c	Ape Money Society NFTS	$APE	erc721
+\\x4f32b44f530b92e180cc0b664ed7d942f3b27479	Albedo V4	ALB	erc721
+\\x4f5537a4a161faec817b90f32d6081e514463128	Dirty Basturdz		erc721
+\\x4f98a004f97b5ab7eb60df385ef9fed02449993b	Grooming Cats	GC	erc721
+\\x4fa6b067252d53b70e59911fb234e24ca8b57b61	Angel Alliance Official	AGA	erc721
+\\x4fde07466aa4013c170a5c1c14507dbcea98f10c	A Shadow Lost in History	VOART	erc721
+\\x4fe0ec184798d39dbe9c917d23dc78f29cc98054	Artifacts and Armaments	ARTFCT	erc721
+\\x500a6d2def505ebe9cac909ef04600952b42d94e	BEAUTIFUL DANGER V2	DNGR	erc721
+\\x50340228da3842905780621c514fd750eaa881fe	The Metamouse Clubhouse Official	METACLUBHOUSE	erc721
+\\x50f68e9188323dbc87339f0abef9489d47ba3616	mute.nft	MUTE	erc721
+\\x5139cfee9e8533d9f52be27be183ec60c7222274	The Wizards of Etheen	WZRDS	erc721
+\\x513b144c49057eb9710d2ff846a93f6d3bff34e9	Warriors NFT: Sloth Warriors	SLOWAR	erc721
+\\x5179b679b33361e73350bfb7799f2b4c6c75a086	MEMORIES BY FVCK_VICTOR	MEMORIESBYFVCKVICTOR	erc721
+\\x518421a066209a176542475061bf5291b70b3cfc	Graces V2	GRACES	erc721
+\\x52510a6e3502cc47e80460bb241836d88a91c4a9	VISION - Uipw2EQ9UY	VISION	erc721
+\\x52735da391fe8a407231c1f9c6f0ef2389378635	Non-Fungible Miners Official Collection	NFM	erc721
+\\x5290b1b765d6f3e6de41cd45a8c1384433079d5a	Decaffeinated Nekos Waifus	DNEKO	erc721
+\\x52cce45b02bbd0b6b0089a291f44c93848bcdb6f	ThePlayBox (METAVERSE)	Playbox	erc721
+\\x533a91100f316477d59e71199d205dd0fb0336aa	Soul Chip		erc721
+\\x53673da928609af45db94c877d80e89339f47d58	mariamaghaeesfix	MARIAM	erc721
+\\x538e8dbc022b29f997ecd72b6413350918ae1320	Pixel Wars.	PXLWRS	erc721
+\\x54a6e5094cdff565bd48a61890483d3aa5b6cfb3	Astroverse Assets	AVA	erc1155
+\\x54e7e3b7eb4db3b901779f72f662a409c7a7c61b	Project SOS - Genesis Pirates	PIRAT	erc721
+\\x54eeff6042001f75dd83046bc59dd1622d034c56	Song of a Southern Dream	SOSD	erc721
+\\x5506fac5d5965cab6cadb6f6fbcf6b62e495b3a3	Awoo Items	AWOOI	erc1155
+\\x554356888c5e61e4197db1d508e1ff0a2938806a	Filip Hodas	CARTOONFOSSILSBYFILIPHODAS	erc721
+\\x5544b9a65cb44af506bb742e2330911b314bfb62	three asterisks	ASTERISK	erc721
+\\x55f9fece2bf82b4be05a313e1625d5d76cca20af	Drippy Worlds Archived	DW	erc721
+\\x56376fabaef17bad054f8f963133a21e068926e8	Habel	HABELFX	erc721
+\\x564b8ba42c8b27912ec89aec87c34c192c031c0d	Realms V3	REALM	erc721
+\\x564c295f1b096b7212fe72e99ec3fefc44e0feda	 Somewhere Into The Shadows	SHADOWS	erc721
+\\x565946c2386a1d9a25de00000fefe4546a5aae47	Cubie Singles	SINGLES	erc721
+\\x56d4b1ff51c6607828582b30ff6aa15aaa97f516	Saga of the Nephilims	NEPHILIM	erc721
+\\x5706147ca5828af643e19f7aaf5a50e1294799a0	SloodlesWorld	Sloodles	erc721
+\\x572e9503285fd854fab847063a5633df947175d0	Stoned Puppies NFT Project	SP	erc721
+\\x5759110402aa65241fd03435646afd01a91ab948	Fuzzy Felons	FELON	erc721
+\\x576f82890fb07289f87a6822dcbeb735d1dd3372	individuals V2	JOOG	erc721
+\\x57aede7a948fb175c7ffe692c04ef22057f6148b	Mutant Shiba Club  MSC	MSC	erc721
+\\x57b927f728a1eddc6c3184c4648366c7fb49dec7	Shinigami.Official	Shinigami.Official	erc721
+\\x580e2a87dae999c240d394d6bd107420f9e49701	NFTWordle	NWD	erc721
+\\x5848639c9664250e447f9b8457a5622c0b99a7cf	Willy The Cool Boy V2	WILLY	erc721
+\\x5870136b771b3df0defc99b733fbfd29a62e3b0f	Apezuki EP	APEZUKI	erc721
+\\x58bd0391f0da9afa38836a2e0b1fe1088d1ce535	NFTLionHeart	LH	erc721
+\\x58f30a37fe571f7e80f3dfa3f0622d1d64d4359f	BlomScenes	BLMSNS	erc721
+\\x59c1527109445d797706535f5a450daca729ece3	Aesthetic Pleasure	AP	erc721
+\\x59e437b41c3bf012e892dcd676611f225c3f7f43	Glow-In-the-Dark Comic + Street Mech Mint Disk		erc1155
+\\x5a0291fe1303074dd6d782b1bda35909bea13142	Kelvin Est - Animated 2022 Collection	KXFNDX22	erc721
+\\x5a5fcbf18071e4cf750009aa00cac5b51e6a41a0	DREAMING WORLD V2	DW	erc721
+\\x5a685cbbf9ccdd2a3aeb02ac0b066c86598b67a3	Chroma Chronicles	CHROMA	erc721
+\\x5b23b7686f84191000329643a91ce33759005ead	Jonas Bendiksen	JB	erc721
+\\x5b2c19622bfcaea15b9e6db42cc211d9a7a442c7	Clarity - hos3FgH80b	CY	erc721
+\\x5b6cdb612a2c8b2cfed0a1dfb433f5ab2c43ec5e	The Good Doctors Ghosts: Ghost Hunters	TGDGHNTR	erc721
+\\x5bceaa140657e9dc85d38effd55b26cbe2807816	Womens portraits V2	PORTRAIT	erc721
+\\x5bd815fd6c096bab38b4c6553cfce3585194dff9	The Art of Seasons	TAOS	erc721
+\\x5c43a74a80a3e7a207918fec0004721fd877ce61	Echoes of an Insurrection	EOAI	erc721
+\\x5cc13af28893eb5c2cdd82d355ba8643d0f91ff0	Hon's Buns Club	BUNS	erc721
+\\x5d515f9d03171ae08bebc6d082acdd6e2b74cd3a	Uninspired by Current Events	UBCE	erc721
+\\x5e6fa6b6fd43cf10f066a26f2d10b47574b8e60c	CriptoMentor Board	CMB	erc721
+\\x5e97e6c654c5d61d5b3770c52b21790c27dcf3b1	Allure V3	LURE	erc721
+\\x5ec6611f16986a0b8328b5fc879276e946bf4ab0	PEPE Division	PEPE	erc721
+\\x605b05115863db669e358e0edd86cad9200d6830	XORADMAGICAL	XORAD	erc721
+\\x606d82da82a84d0ddf79b94d2e974fdfdc3ad44d	Le Jardin des Paridolies	LJDP	erc721
+\\x6080b6d2c02e9a0853495b87ce6a65e353b74744	EightBit Me	BIT	erc721
+\\x609054a45966b66d3b38f789350df8e573ab2d8b	3Q Series Zero	3QS0	erc721
+\\x60cb1abea9c7a5ed48f87cc861fdcffa9e622a1c	Compass Medallions - Gold Collection	MPGCM	erc721
+\\x6110fe554fd77d7a3a5ceefd63256691fa823d08	Birthstone	JEWELRY	erc721
+\\x614e38c75770556edb08ad715abbd9c835d7274b	Ke - Rae Girls	KRG	erc721
+\\x61f90f4a3ff7b721ed106e6284b946283d797bc5	Errorism by Igor	IGOR	erc721
+\\x6243235bc847bf4c56e7ae4b8f9201f5ccf4210e	THE LEAGUE by Bounty Sports	BOUNTY	erc721
+\\x63554dd633103293732f60698400f2eeb37b0660	signals - a direct experience		erc1155
+\\x63a2502977a7ee8b4345a9d8b8e10ad278c63d46	Pluto Studio NFT	PHHD_Studio	erc721
+\\x63cfa3d1dd38b93f6e124d7d0326e6e9af5c2bba	Face is Fake	FACE	erc721
+\\x648993b3237aa8c024da957af0b4c32b8c42d915	Supermax V3	SPMX	erc721
+\\x64b59fabf90736f48c4ddd2c0afb55f3819a7985	XENO-TRIPS	XNT	erc721
+\\x64bd0afbd86ac88f276960b5df1c80b1cb9726fc	Hangry Hippo Official Collection	HH	erc721
+\\x64f2c738eac665c557f3c96d92b6ff25fb97487d	Madolci Recipes	MDLR	erc721
+\\x65de837a9f840aa1fb02a836a3a805d4d33f296b	Kikillo Magic Places	MP	erc721
+\\x6641c20a0792b16a3f645b8ecf043cd7eef84b50	WATA WORLD	WORLD	erc721
+\\x66ab33a2f69a4d1a02953f52c3e6cd4fe4f91a83	Irresponsibilities	MM	erc721
+\\x66ae58a54800c7f5caeec6ef7078eabc97c490c6	Isabela V2	ISA	erc721
+\\x67062888a7c4d7acac8d4ee82920aa1e0189accc	Swampverse: Creatures	Creatures	erc721
+\\x674e4349be3008624e26ec6c0ad5ba4d2da51433	TOKYO GF	TGF	erc721
+\\x675c3f69789f9ac8b3cbeb834b87955fa09db808	Rhelms of Surrealism	RMLS	erc721
+\\x6778ef6b97890734311a78c19a0fa2ba19598b2c	Organisation Decentralisee Autonome		erc1155
+\\x67953a0816be87dc94328f08c69058e52dc62287	Doodle Frenz	Frenz	erc721
+\\x685d4173dec209f42fbe45d745356a95235fa939	Inspiration4 NFT Auction	INSPIREFOURNFT	erc721
+\\x689d505ae3b19bfa0517da1fa9080f12c5438478	White Tale	WT	erc721
+\\x69963cc72cad8a5cd7a038ee9c90648265902043	Tmatanga	ART	erc721
+\\x699918cbb326a11233b508d9fec7ef95fe2c57e8	Cyber Vamps Official	CVNFT	erc721
+\\x69aa5560884f61e78086e28cd3df7dd3c868639d	Like a Dream V2	LOVE	erc721
+\\x6a2b9471601db8651882fbae2900b2717482ad4c	Cool NFT collection V2	COOLNFT	erc721
+\\x6a59fb76f9857fb8e50717f4c974e84ee8da322a	PlayTiger	PT	erc1155
+\\x6b6feb517ab6cc58d509734485fa3b625f7c8b44	Hudroidz	DROID	erc721
+\\x6bb69f0234eb798c38343eeddee1241523134b8a	PxPx	VRAK	erc721
+\\x6c249e51a0021f0d05932bf94ad225cb1f21445c	guestlisted	guestlist	erc721
+\\x6c40df0b19e10d21651b41c1a21bda17bf5d0efe	J.Robb	JROBB	erc721
+\\x6ce7ac41421ee1ba0f86d1cfca9151b5ea45b884	Ode to Dreams V2	OTD	erc721
+\\x6e9211b66e49e03e3dd44aaec3838283837c871a	As Di Boo	ADB	erc721
+\\x6ea790b106218c5621a0869fefa8afae46e2db0c	SAUDADE DO FUTURO	MMXXXV	erc721
+\\x6ee51b128611c9711d8ea927d7477d62c7113ac6	Meta Pharaohs Deployment	MPA	erc721
+\\x6f73ede804cd7bf860474210f12582b25ec4816a	DNMO	DNMO	erc721
+\\x6fb2059970b5ee893bde15c49be98cee76844aeb	MONSTERS - kv5odlCNZ5	MONSTERS	erc721
+\\x6ff5752486f9793a023bdd5ad94db349a42006a5	The Silly Friends NFT	TSF	erc721
+\\x700dbbc32bb25299a26c4710eef08dfe4a612c2d	Cyber Devth	DEVTH	erc721
+\\x7025a71f15e6ee3d6a289d59be84385160b95a73	Leander Herzog	LHLHL	erc721
+\\x7128dd3b4f1c7d3e3beca87b8a3de9396d0d7ef8	Baby CyberGorillas V2	BabyCyberGorillas	erc721
+\\x71406c7212fa41f172108acf2b7257d554de0245	T R A N S F I G U R E D		erc1155
+\\x716838c433722e037eec90df2e81937f9358c6c0	Josal	JS	erc721
+\\x7212e2ab00d7fe8bb290f8a2c311bf583835da40	Cyber Ape Tower Club (Mint Pod)	CATC	erc721
+\\x72530e4cc95e6e95372040a70a808cdb6d43e68e	Darwish	Darwish	erc721
+\\x72ac57347da7072889f972ac730c8304cb9451da	M3M3TIC 3NGIN33RING	M3M3	erc721
+\\x72af2de62d19a88feeb5b5a75bc819c3822fedbe	ANASA V2	ANASA	erc721
+\\x73f70a41de9e999829714625fe243c3900f5d044	MemeGraphics	Mess	erc721
+\\x74d9d90a7fc261fbe92ed47b606b6e0e00d75e70	Mad Mouse Circus Troupe	MMC	erc721
+\\x74fd9e6c1dcba0234bb7079e3bbb92dcb17a607e	Platy Pals	PP	erc721
+\\x752fdacb71e76a68ec949fe25ccfccd10eee2f9f	Sweti Yeti Launch Club SYLC	SYLC	erc721
+\\x75d9d2588447d2c8816a832e7db53611ae9affa9	iamnobodi	NOBODI	erc721
+\\x772cfe6cec2c9ba0268d87795b508f1365c9df1f	GREG MIKE - Mad Cans (3D)	MADCANSDBURNBYGREGMIKE	erc721
+\\x77e6029b1b9853e21324532913791285a03b8d18	The Black Void	TBV	erc721
+\\x784d3caf4bff470bd54b5219bf8208b13bed25a3	Rebels of Wealth by Hornsleth	ROW	erc721
+\\x78db32bc96abebb02b6dfeeab6d078a0e273eb9e	lurk loves you V2	LLY	erc721
+\\x79d83bac88feec5dfca6e719afade8ccce71a420	Hape Mfers	HM	erc721
+\\x79e7aad941cd5228cf9f0fd1bc87af8c1e30dd00	Rexndeers artwork	RENART	erc721
+\\x7a13db03c6852c05899ace12663c5cd4d456cf60	Artwork 11 - All love for Art ALFA	ALFA	erc721
+\\x7a25a288072b7361eb266ffa2309d4cc76b03c11	Special Edition - Icons 1	1687 Icons 1	erc721
+\\x7a36860549fde14baa9ee53d2ba6fdf63ec39e68	Unfathomable Cityscapes	C-SCAPES	erc721
+\\x7a5963206f1c5529430716de9feeb6b6da5c0518	Yogies - Genesis	YG	erc721
+\\x7a94638e232e653a8e44a4e1c260a796d730fbc4	The SolaVerse: Companions	Companion	erc721
+\\x7b19ce19f8ff7e721dff4dfdcca598c4866ceda1	ASHES - uugaOHFJF0	INKWORKS	erc721
+\\x7b3b12b20732b0c1227a41631c50282f0814b4c6	BLONDISHMUSIC	BLONDISH	erc721
+\\x7b5435058ce23328bb918e815c4c13558e468964	Rad NFT Collectibles	RADC	erc721
+\\x7bc504a24864f3717d442a8b72c30555a627d8c2	Fvck Buddy	FVCKB	erc721
+\\x7bd6d40fa3d56137f100a214f91e5a341da69af0	smol snaps		erc1155
+\\x7d0ac5e7428f671e5b7552ef549377fbb4521c76	Adoni Originals	ADONI	erc721
+\\x7d19607411df2596d9d1f36385dcf58c9886af31	Teji's Trunk	TT	erc721
+\\x7d2cb25a4db7f96fe2e450e0c2601c756e34c204	Mushrooms Club NFT | MCN	MCN	erc721
+\\x7d43bdefd188542709618234c4e6cce715477e9c	aZooKey	aZooKey	erc721
+\\x7d4672493e1af568e08419424a8fb585f428d73a	Colorize V2	CLZ	erc721
+\\x7d5b5d0f18e48ababa8e8eb1854621d71149fdef	O-MEE ERC721	OMEE721	erc721
+\\x7d6c88b02cec8aea7d641cec1d8781b2285db3d6	Dolphrens	Dolphrens	erc721
+\\x7e7c8ae51546933ddc3afaeba61266309157f786	GoldenDAO Founding Membership	GD	erc1155
+\\x7eb3872c3bb4b5f2eafea6670e08a7f158221cdb	Digital Noise Frontier Art Collabs	DNFART	erc721
+\\x7f3c0eb1f2b34d1b0fa319bd4379df8b6bee120f	1 OF NONE	ZKL	erc721
+\\x7fac7eeb086d3c294abe48591073c4480251abce	Pridezuki	PRIDEZUKI	erc721
+\\x7fbc73c0e041ead9e81a66cc0c5d4e7b69bcdcf9	Voyage by Y4Si		erc1155
+\\x7fe4d18a94424f527fb4aa47901958aefd34752b	333	XTR-333	erc721
+\\x805830c294969a957e8057ff0e0606438a4cf717	Flawless Flavours	FLA	erc721
+\\x80663348c9ec962a8e8e906bf233e70d0e2234ea	Dark Holes V2	DRKHOLES	erc721
+\\x80b745ada7c13cb420e0a2acbcbffa033a3b5164	Cyber Cosmos World Official	CCW	erc721
+\\x814bbbb90b090e274901ff6de7932534217aaafb	Louise And Fred MemberCards	L&F	erc721
+\\x81ae0be3a8044772d04f32398bac1e1b4b215aa8	Dreadfulz	Dreadfulz	erc721
+\\x81f296145c5555d7b4b426d97e4e2260c017f5d0	The Red Ape Family	TRAF	erc721
+\\x82ef8bee91f3071d095f8a8f13a42a734c839270	Peter Saputo	PJS	erc721
+\\x8303112709a7197c29a117efbe9e261a8c1b90b2	BUKU 2022 Festival Collection Curated by Autograph	BKU	erc721
+\\x834be568512f07455ca390ff98d10c32c57bc337	Pop Wonder Land Full Map	POPWONDERLANDFULLMAP	erc721
+\\x83605721840a8a9fddb6f039ecf548af9668c06a	CryptoNinja - CMaUHerVsb	CRYPTONINJA	erc721
+\\x83e068936a402659d64ec9e5d9973fce022655e1	BBvsEA: Exotic Apes	EAV2	erc721
+\\x83fbf5fe391dcaf4ef852b766b728729b6a47ae6	KPK Project	KPK	erc721
+\\x844f60e05cf13cafbef02d2e8f4319f1cb882d06	Nihans unique arts	NIHAN	erc721
+\\x847e696ac0a0dff058cc34b04725fc3d2ed686cb	Toodles	TOODLES	erc721
+\\x849300d52007ed74227fef5bd078dff273ef97d3	Oozoids	OOZD	erc721
+\\x84994388ad70a6cbf64fe1fc941716c03529ce33	FollyMadness Genesis	FMG	erc721
+\\x8637e31f9fc8bb0aeafcddafe20c9b9b74ee3637	Nouns on the Runway	FASHION	erc721
+\\x8676e8f350374295087cd30a50fe650db89f81e2	CryptoBullBalls	CBB	erc721
+\\x86e55eb016b29d18c82df03fdb91646dd24a2cf7	RIOT by DJ Semtex	SEMTEX	erc1155
+\\x87242d187940c74594c47a4cd98bca7a8f7f3ae7	FlagsNFT OS	FLAGS	erc721
+\\x87858a5a3372cb3310e2780bfad1477c7be81865	Jungle Of Dreams V2	JUNGLE	erc721
+\\x87a0ad668c4cce5c06974df0d1ab36140b8fa8de	Pop Wonder Land	POPWONDERLAND	erc721
+\\x87afa6d80bbc0c33dc308de350c5f6a0b605c278	Upon a Time V2	PAGE	erc721
+\\x87b2153771564cf85351d54f010a825622265d48	THE SPARKLE CENTER OFFICIAL		erc721
+\\x87ba7eeb098d25052f4e5299e2880e97285e344f	Modern Poker Club	MPC	erc721
+\\x88673f7a59962736f0d6902ec07efa2e8771091d	100 TOMBSTONES	SIFT	erc721
+\\x88b5881e91b1f5d4bbc793e542b964268560a5d1	Crystal Ethereum Laboratory	CEL	erc721
+\\x88beb297de26d7d4553a972d2cabb7781173f208	Gutter Punks Comic - Flyers	GPCFPC	erc721
+\\x8910f83de861479dcae09f91a8c12d9c20a7c75b	NFT Finesser	FNSR	erc721
+\\x8926582f3686a771f8f5614973aca52e8d0135e8	Gutter Clone	GC	erc721
+\\x89c3df79aa8a3cbc96caf32f83eba8f1bd3787b9	Genesis Oath	MTNT	erc1155
+\\x8a4bf410de1e38a695f4e32e4bc1799e9fb1a467	Ovena Labs	OVL	erc721
+\\x8aa6b68c5245d2ea95b4ce98ed4b70c820d2b831	Ocean Conservation	OCEAN	erc721
+\\x8ad199e8c028607e4081d1422fb032797100f32f	2022	1	erc721
+\\x8b28cf72fc6f47ef4d585c47b54ccc1b691356a5	Love Is More Than Just A Kiss	35MM	erc721
+\\x8b7832b70400c84f6ac4e707e70939f6a92e9646	Kurachan	KURACHAN	erc721
+\\x8bc3877c573b2b6adb1def0de9779499f7d18f34	BJ Smith Art	BJS	erc721
+\\x8bd347f04c18e6ebeb4c5dd69099c5e3e284cdef	NBA Sniper Gang	NBA	erc1155
+\\x8bf4b0da05204aa64b7c145f02520b2da54b90db	Ibis Chess Club	IBIS	erc721
+\\x8c6e1a15c1a2073ed196c5339a7368ccc35cc5a3	SniperZuki	SNIPERZUKI	erc721
+\\x8c9f2c9f10c7a9cd405e96bb8e33c4702fec85ef	Stranger EggZ Art	SEZART	erc721
+\\x8caba5bb7e628614b15050039c553f5dde88e2a6	Plagiarism V2	PLSM	erc721
+\\x8cb332602d2f614b570c7631202e5bf4bb93f3f6	Hro DC	HroDC	erc721
+\\x8cde4b7361c348c5319edbc11f4e5ea6aa0f944a	SHZ Creatures Test Collection	SGH	erc721
+\\x8d302c4a3c065fa08e2cb5ed3bd551ca83fb9706	Oil Painting - R471JFFq13	OIL	erc721
+\\x8db620546ed6c3dfe6c81533a2a06e1dcaae3500	Baked V2	BAKED	erc721
+\\x8dcbdc15c7e735e9151b66f19c188c482a103fb2	thefreenfts		erc1155
+\\x8dec534d922c1da8aa738e0003052c6b5c68b7dd	Carmen 703 Hz	LAR	erc721
+\\x8dfcec5590f53a141445100449ee1c07a94c3fce	CryptoBulldogsOfficial	CBD	erc721
+\\x8fba8ecc42a85f082758cb1e109ec3660da985e1	Garrids Lair	GARRID	erc721
+\\x90148351232bc9f4eecb3dac5603761387415a33	Made in Tears	P29MIT	erc721
+\\x9091c144218d3ab99c716833404b74a87aea4c74	Degen Dwarfs	DD	erc721
+\\x90a4576b3852568e02a83f5cfea37094b745ce11	Fool Rich Pig	FRP	erc721
+\\x91ec1b8a0f979dc9cb44647363246b3fb34f8781	Moby Doodles	MOBYDOOD	erc721
+\\x9274ba673eec326b5fbcf98f42618586988c591d	FreshStash	FRS	erc721
+\\x92adf47b949007d27eec7fe090c70cff112bd945	uptest	UPT	erc721
+\\x931f6a2c2fd174115c93247c63d47e85cf319b35	Anna Ridler	Anna Ridler	erc721
+\\x93c1bc9f83cc250d18b62920dced34d9ad224816	CHRoNCLASH	CHRoNCLASH	erc721
+\\x93de2b5660f76d253433d317d2f1bd2870a755b0	Printer V2	PRN	erc721
+\\x940004f62c7bf94c42b1082f64ce60f397bcb4a1	G.A.S. Trading Cards		erc1155
+\\x9416f877fef16c1451c4ea1a3be0ddb18449b41c	Monet's Giverny	GIVERNY	erc721
+\\x94774d53f0e0ccfccd000e1d75b7f8d45fa52257	Jrrdan Factory	SOULS	erc721
+\\x948f57f063242240d66300547b35a082b27caf0a	Love in Dystopia	LID	erc721
+\\x951e4297561e9abef6e5b4b2f78696ed8c552fd0	BaeCafe	BAE	erc721
+\\x95ce0659b2817b15319c047b7d217102d1d82d7d	RoyalEggs8888	ROYL	erc721
+\\x9716f1c25d9192a09296982017f900e55721585e	Shinobi Bunny SAGA	SNB	erc721
+\\x972cdadb235f74a1fa7521070a3a8b7fc13d8c4d	Light and Darkness collection	LIGHT	erc721
+\\x97d8e9233eb3318a95f51553802c448fbdcb3edb	BoredApePlayingCards	BAPC	erc721
+\\x980ece433480420787ecf45c94743955643eb436	Smith Slappers	SMITHSLAPPERS	erc721
+\\x9823fd70adc04a3210160e190e21851a306613ce	WAV3 TAPE Vol. 1	WAV3TAPE	erc721
+\\x988c08eb9702d8f29fb6cdd5494553027a94fae9	33 Curated Drop featuring Vhils and Six N. Five	CURATEDDROPFEATURINGVHILSANDSIXNFIVE	erc721
+\\x98b28c2afe2133efcb6755bf2c7c0f48e921d46d	One Question Project	QUESTION	erc721
+\\x98e76ccbd1e4f509e15529d00272fe9e719588ea	Midnight Synthwave Club	JB	erc721
+\\x98edafb5e970f17d185c8a7ae97181c26f853cbb	tiffatronn  friends	TAF	erc721
+\\x995f6858365115a722f4b0428573d943ddd84f4c	CyberBananas	CBNS	erc1155
+\\x99ad76874d21ab6480ef88238f2f9e38206d8f3b	Metamerican Dream by Metarkitex		erc1155
+\\x99cd79ec72a6b58bc3b606fff2e7fa907e138fb1	Unrelated Things V2	URT	erc721
+\\x9a1e04e2e744e1734e6eb03060a68b1df2f2e360	Other Monke	OM	erc721
+\\x9a37ed2a5c752b36c1f7313b1c42ecaef626f1c3	Daydream - Br9rz6z1vp	DREAM	erc721
+\\x9b091d2e0bb88ace4fe8f0fab87b93d8ba932ec4	Neo Tokyo Outer Citizen	NTOCTZN	erc721
+\\x9c4aaa5e284b4271e8213d727fcd33afcb9c8604	Nainos Oficial (SolidarY)	NO	erc721
+\\x9d6aaf0becdd243a5543e9fa60eae47ab930ac20	GREG MIKE - LIVE COLLECTION	GMIKE	erc721
+\\x9d8380e019c4872a6bcc61d18529385c0b771f5d	Legends of Asians Genesis	LOFA	erc721
+\\x9e5ed32616768dbd39478481c2016d22cc64fd5a	Rainforest Punks	RAIN	erc721
+\\x9e6b0dc3562494be0b18400ff4f8853cec28801d	Shazu Ninja Collection SNC	SNC	erc721
+\\x9e89e30cd85f65362df218d1ffc4fe81601f90c1	Iceverse Official	ICEBEARS	erc721
+\\x9e9630613018c3b325327557f75bd672f27128ee	APHRODITE by LUIS SIMO		erc1155
+\\x9f5ea079222b592169fde619649f53def7a2279d	League of Light	LOL	erc721
+\\x9f65a3aa3dc9911da23839fb70d236215c499436	Magical Beasts V2	MB	erc721
+\\x9fc72e97e7c7550861df95238bcadc57d032bec1	Right Click Save...	Right Click Save...	erc721
+\\x9fc7d54235027cf84aa8ef82de21cd7fe307d2f3	The Faces I Dont Show	MMM	erc721
+\\xa04bd7d6eb440b6478095905caab13cf98001512	ValkyraeDAO	VDAO	erc721
+\\xa04c6bd65e4352b30dcc6b0f21cf58adecc52781	the Universe Machine by Joshua Davis / PrayStation	TUM	erc721
+\\xa07434e100618972611b4c4d786c49b2492b226a	KWICK GF (Official)	KWGF	erc721
+\\xa1f1e3886a973882e567c1253c11377a486c7b17	Totus Tuus	AETERNUM	erc721
+\\xa304058a52c9dc28c829869a7340e2f7f8970411	JorrBox by JorrParivar		erc1155
+\\xa329681534a5c2f02302ced54c04a3d9ce0cbc7c	Liquid - QO3FlWfpVz	ILY	erc721
+\\xa34a3b007a0fc56bd7b667b9d32265cb4085563f	TimeTravelerClub	TTC	erc721
+\\xa35f12d3b934e21b9212e82f3cadde20a0820352	Mutant Shiba Club(MSC)	MSC	erc721
+\\xa364b507c705a5ae73045b7206b54bf64f982172	Ninjatown Dumpling Pets FREE	nuDUMPLINGS	erc721
+\\xa4176150bdda3dcd6fd13c1a8d3191e88d675ffc	FortuneAnimalsClub	FAC	erc721
+\\xa4b5bf07f9f0300b8190fb7bc6376e86582e3f3e	Metamorphosis by Yot		erc1155
+\\xa4b7b5935cc507b76c2877e3e32f1df53a707c97	Midnite Wolf Pack	WOLF	erc721
+\\xa57c9ec71eab1aee7a37a09011c7d8c93d353ad8	55Unity: Toxic Power	Toxic Power	erc1155
+\\xa5a5383173f6cbdd8ae4b205bb641b4c5758695e	8bit Beats	8	erc721
+\\xa5c0ff339c448421cc05e0dedfcccc7d017a3612	MiraBo_Collection	MiraBo	erc721
+\\xa797df356675f459e5bb81bb2062646a0853e83c	Pepe Magic City	PEPE	erc721
+\\xa7e63b303d57da09597f7945b243d47edc562d99	Jacob Riglin	ALAAERIALSOFLOSANGELESBYJACOBRIGLIN	erc721
+\\xa82bb51055790bce02cd00c20ef888251844b016	Art restoring ancient ways V2	PHOENIX	erc721
+\\xa8da3ff1524ec86be9c81dd305791058f36ab80c	AixHuman	AIXH	erc721
+\\xa9b311315d1828ef395048ca7233c8f3b1a9949a	Mutant Ape Marriage Club	MAYC MAMC	erc721
+\\xaa1748b12f9c6f25797c9b222ba09817bb722832	spiritual travel	NUFSOUL	erc721
+\\xaa690a7dcd0ef9598b2bc81acf4b6861bdc9a88a	Droplets OfficiaI	DLT	erc721
+\\xaa79bf28097131a225ab564d04c4a3b06375f016	SANNAS	SNS	erc721
+\\xaae239ece1a2967979260aedb6414e1d41f30396	still life (FND)	SL	erc721
+\\xaaf03a65cbd8f01b512cd8d530a675b3963de255	The Seekers	SEEKERS	erc721
+\\xae5c5d64b2ba48e32f57b4172d9b6a7c44cb26b8	Muri Punks	MP	erc721
+\\xafb4338be217b911f17dda6be08d723a07ed24ed	Caio Vicentino - Yield Hacker	CVYC	erc721
+\\xaff167337289edb939cf52c2be434885db50abe9	SOLIDS by FAR	SOLID	erc721
+\\xb006af94b2623fb2b6bf7532eba5fc1c18dbe648	Gnome Frens	GFNFT	erc721
+\\xb04e3f02196698b5985b1066c05763b7f26042e8	The Invisible Kennel (IKNL)	IKNL	erc721
+\\xb077dc1aef9ebe7851d736cd0d8e28a01aee35e6	Yommi illustration collection	YOMMI	erc721
+\\xb0c81c53b267a4cd6cbaf48d746d00e369d060a5	Poisoned Bananas	PSB	erc1155
+\\xb0c88f70eb04099573461e354f1d3502abd6939f	Monochrome Chronicles	MONOC	erc721
+\\xb10bface5bb225b04b0fce0ddb2f6f1075af13a2	Blob Mob Migrated	BLOB	erc721
+\\xb1fd4135c9aa0a349021b21c2d9399e429530e4b	Digital Fairytales	DIGI	erc721
+\\xb2157550f3094219f4e2ad5a7fed1e4a556dd932	Katomarans Digital Art	DIGITAL	erc721
+\\xb266c9eb4701632d8eb1dd2a469124c75b327326	The Seekers V2	SEEKERS	erc721
+\\xb29736487afe97c33cef31986a803f03088c873e	1/1	1OF1	erc721
+\\xb2b938315799fd9471b209310d1a4561de601a60	Save Planet Earth NFT	SPE	erc721
+\\xb2c003e61623421d110dbfe70c2f871e73cc2150	Feelings - BFRp4cyYmB	FEEL	erc721
+\\xb345233fa189c643772a35586b915e222c278d85	Tribe Quokka Genesis	TQ	erc721
+\\xb379c1d34be9577c73e4ff3bf30fa7d2cca06f30	LazyCapy	LZCP	erc721
+\\xb3a10e504b96af22895db75ed85f2dea55deb703	DREAMLAND - 7F98MkzcEy	KATANIKA	erc721
+\\xb4165dc57601a6562749086e25cf58185a40c387	Art in the surrealist metaverse	ASM	erc721
+\\xb472f658f426a2ff4bffd6a1fa7b46ea8a0b4c40	World of Wanderers	WOW	erc721
+\\xb4e67bab8baef1c4cf871937d85bc42ceb364197	Genesis Bouncing Ball	BALL	erc721
+\\xb5158c2a43749bce970aa3cebeafb18d609c2722	Memorial Art of Gymnastics Legend - KOHEI UCHIMURA x DAI TAMURA -	KOHEI UCHIMURA NFT	erc721
+\\xb5f646c15a2054b5f87918646c0596d7af51d3a6	Combat Maids	MAID	erc721
+\\xb60cbe5d21760086b0707c39966f017a4e75fcda	HOLY BABIES	HB	erc721
+\\xb683dadc5e4271d0d1b8695702c7f2b4203699f9	PIXELGHOST	PXLG	erc721
+\\xb72e40cfb96dddd4d40fc06ab66269bcc49a1382	Derivative Kitchen by mbarutcu	DKbMB	erc1155
+\\xb753b59caf85c2755150857ee4919c22ae71926c	5KM	5KM	erc721
+\\xb75b13b843fd0acf538a19703eb06c89332a2ca3	Polymite NFT	POLYM	erc721
+\\xb91356428184a31f115bbbd8fed8797198c8bf96	Tonakais world	TNK	erc721
+\\xb92591cded56b77182634786d4567b132b0342f0	Aesthetic - mTI1e3WNmT	BWNY	erc721
+\\xb92b8d7e45c0f197a8236c8345b86765250baf7c	Asprey Bugatti La Voiture Noire Collection	AB:C1	erc721
+\\xb935354579aecb28fd5d3ee495228401cf8f1edd	RECORDS STORY	RCRDS	erc721
+\\xb935b858280e9c429514d8514c484e512ba0aea7	Koodle Kats Official	KOODLE	erc721
+\\xba72b008d53d3e65f6641e1d63376be2f9c1ad05	Hydro Whales Mining Club Official	HWMC	erc721
+\\xbaedabc39212b50a6cf04807269cf923a004df9d	TheCabalKids	1776	erc1155
+\\xbaf5e7811beaf0ebb52390786d486f19f8e18ba9	Sand&flake	MYART	erc721
+\\xbbdfd760780ae93ebdafcecf544edce35cf2ab30	Leafswan V2	LEAFSWAN	erc721
+\\xbc1dc25205b8220f1c954720dd476781e3386621	B-Collab Keycards		erc1155
+\\xbccc00f3f90782af7eac8cc2e46d2b535ff6508b	Multicolord	MULT	erc721
+\\xbcdda0ac78965b5a32192633f26b197d02bb33d5	Exclusible Supercars	EXCLUSIBLE-SUPERCARS	erc721
+\\xbd785591d714f691e939de7ec6d72550a44c598c	AlphaDoggg Tags		erc1155
+\\xbd79022c37de26572320a4f0b7628776ad430d81	SlapDao	Will Smith Slap Dao	erc721
+\\xbd87c3eb7d3bcc48bc1aa80acc2a7a7ca09bfb69	War Cards	DWC	erc721
+\\xbdc5a3a7517b8f175f5a16de496e178076092593	Within/Without	WW	erc721
+\\xbdcf0dba489c9349afd5e350d51558d137ae846d	Belpaese	MM-NN	erc721
+\\xbddc8b037b102abb3a7913484a12e3f771284e5e	BirthdayWish V2 - old	BW	erc721
+\\xbe1a18882ea193869c32d461d44f349310edb570	FM9Xa Mutagen	FM9Xa	erc721
+\\xbe223020724cc3e2999f5dceda3120484fdbfef7	GURU Season Pass NFT V2	SeasonPass	erc721
+\\xbec43787183a483ee99ee39583108a9202cc3279	Fairy Ape Kids Club (FAKC)	FAKC	erc721
+\\xbed57beec7191e59d18844124cbb0db660aef25f	Yat Gems		erc1155
+\\xc015b1596aa46d4b39ef9053a374186370d22d97	Marinas Diary	MARIN	erc721
+\\xc0c6d8e0ac4fc9aab4e6f293339ce3275d66bce2	Carlo Van de Roer - Modulator One	Gen1	erc721
+\\xc0e9e27eee4edc65ffb0643c3990f3625ac28c11	Visual of Dreams	DREAMS	erc721
+\\xc1212002d7b9334f7b9bf3a2612bd2cd826c3df1	Peace - cDfn8XVaBd	PEACE	erc721
+\\xc1551cc193b73a656a873062472df41d29632d51	Telomeres	Tlmrs	erc721
+\\xc175da1b577e3108164900f5231aef20d5e57a85	Being Kowloon Emperor	IDENTITY	erc721
+\\xc1a2f17a31e8fb8c45aacc8c62c099339ab89d0a	0xRED	0xRED	erc721
+\\xc1e9147418498cb6744a4d30e4b0b4e57ae320be	Mr. Doll: Emote		erc1155
+\\xc2477e7eeb3afec448b5827e3b75d91473242460	Prime Ape Planet V3	PAP	erc721
+\\xc257f0d0def58bcbc2b3a7f3d09e5c285cf26908	Unlisted Punks	UP	erc721
+\\xc28265f9c7a6ed004a6721b798603eab95b367a9	La Mancha Urbana  La Paz	MULP	erc721
+\\xc293f79ff507c25783128e4934b9bfd067b6982e	Nostalgic girl	NOSTALGY	erc721
+\\xc2d29135b7252dd4d18ba9ca375b10ff61c860a8	NoNo's NFT Official	NONOS	erc721
+\\xc2d2d2f4946e6807542dac73c8554977a00a69de	Even more special NFTs	S	erc721
+\\xc332b5fefe44c732bb4f2d497292378c60e287ae	The Recruits	RCR	erc721
+\\xc3c31782cfac9563ba65f332bbe3100020ad81b6	Daz Tokens for NFP Upgrades		erc1155
+\\xc485cba784d6065bbd4d2ac7e4b176f500b10c01	painful bliss.	PAIN	erc721
+\\xc5794f58a111828b0e76f3fcac79057a243acec6	Vic Mensa	VINO	erc721
+\\xc57bdaf2b930611fd3f4b4fd78b8908c5b85d666	CyberPigs 2177	PIGLET	erc721
+\\xc58fc4693b3170de0c1dcd2c0b0af8eecfb3186f	Snuggle Buddies Genesis	SNUGBUDS	erc721
+\\xc5b4da6d33bbc36bef397d2455d83f3dd8bfcaf6	Art during war	MARCH	erc721
+\\xc5fafa5c47e7eae89e1261d5891ecf03558f1473	The Dream Archive	LTDA	erc721
+\\xc69866e51a2aa423445e09ef002483d077e438c3	Womens Mystery	MIRACLE	erc721
+\\xc6c12eefc72fa2a9016173537606e1c4554def45	STUFF FOR MY PEOPLE		erc1155
+\\xc6f57b991ad496acd6a2d2310f823f0ffa4c6db1	Crypto Sculptures V2	CSV	erc721
+\\xc71a0306a0a628c616dac42097bdc21ecdbc5d9d	Tennis Champs Genesis	CHAMPS	erc721
+\\xc73e70d4cf20e49f127fa3ad0406d403fc6e933a	Amatou High School	AMATOUHS	erc721
+\\xc799f57355677a19b91c722734743215513dece5	Shattered Eon Colonists	Colonists	erc721
+\\xc7ac967879c16d073cdcdb2fbf4b515dd7ad5eca	TheoChron Abstractions	TCABSTR	erc721
+\\xc7b6f2c08e74da205fce6651112e716acdd0e6a5	TWF! Trees With Faces Official	TWF!	erc721
+\\xc80b37583a368bc594a290fccda1effc1cd91b8e	Omega Alpha		erc1155
+\\xc8d3efda9dc9912150e7d2afe17587e566a0bdae	VBC Betamon	VBC Betamon	erc721
+\\xc937dab1533d2020c34ea02ddae8514c37e76460	madi V2	MADI	erc721
+\\xc9499b3da90cd76ee7831d6a193b28e151b222d9	Fud Frens	FF	erc721
+\\xc9c8dd2ae71e675203e2aff72c6cf9b8e420735d	Cyborghini Collection	CYBORG	erc721
+\\xc9cd2873f00fbd4520077b2113336be7603b9a90	Sad Bears Club Official	SBC	erc721
+\\xca95777971c7c438eecbd8bfc23249fbee99e716	Mutant Shiba Club | MSC	MSC	erc721
+\\xca98fdf936243edc3bbd65dc1dcc386ec7a7d540	BAYC X OTHERSIDE LAND WORLD	BYOL	erc721
+\\xcab407229a5e2d0961261a09c54a7809df5b14a9	World of Girls Galaxy	WOGG	erc721
+\\xcc3947c0c96e96ddc4a3547a212048e2aa903c46	Odysseys Cities	ODY	erc721
+\\xccd3cbcc6d1135a69d0327440596d6d20cb49984	Chad & Brad Family Collection	CHADNFT	erc721
+\\xcd384c2697465b782a968b12c636ae06e10dc944	Murakami.Flowers Seed V2	SEED	erc1155
+\\xcdae89a0d944a011c596772bef5fec2ad84f974a	There is Nothing New Under The Sky	NNUS	erc721
+\\xcdba95e4fd98da8b3a58b71fd58e2ea7c385b171	Fresh Lemons	FLMNS	erc721
+\\xcf76932ad61672d7719f90c1600f7b9acbf32baf	Robomito	ROBOMITO	erc721
+\\xcfb01c96074146df23135e57c1f260d484218acf	aoiame collection V2	AOIAME	erc721
+\\xd084d3ff534556e4921cd0cb118301e7afe8aad8	WAIFULAND - KLTUa4mV8X	WLAND	erc721
+\\xd1948f1affe4116d2bc62d29aeb79332eb18a5f0	Geek Fancy Club Specials	GFCSPECIAL	erc721
+\\xd1bb5afc41bf57a04e5729f7bf9276e8f300b417	Divine Anarchy - Wasteland	DAW	erc721
+\\xd1dc638ac7e410d3c335efc949b905da61810bd5	infinite insomnia V2	INSOMNIA	erc721
+\\xd2041cf271af17a8d40441525d90134d1c16ab48	Elemento Dragons	ED	erc721
+\\xd272ce9c724030eaee4d2b1c82ed1653b73a61d8	Promised Land V2	PMLD	erc721
+\\xd2d77733a664416c0e2390cc47fff5ddad305abf	Crimson NOIR	NOIR	erc721
+\\xd2eb7f962200cf3085de0f2dc0a87198106a3a2f	HYPEES NFT - Official	HYPEES	erc721
+\\xd3228e099e6596988ae0b73eaa62591c875e5693	Meta History - Museum of War	MHXYZ	erc721
+\\xd34d2f953cfdbd16a62c764f6d60fcd57506cbe0	WGG Haunted House	HH	erc1155
+\\xd40eae088eebd08f447205a84bda29113146849d	Little Rabbits Journey	RABBIT	erc721
+\\xd5a991fd557d125784d0ba236c3f27ace3253857	Shinsekai OfficiaI	SSK	erc721
+\\xd602a269ae4bffd9ad9fa7971c73de301efb27a2	Vhils	RUSTBELTOPENEDITIONBYVHILS	erc721
+\\xd62f8c84f37682204a179170d4755318fdff70aa	SUPER GREMPLIN	SGRMP	erc721
+\\xd65c5d035a35f41f31570887e3ddf8c3289eb920	ETHTerrestrials	ETHT	erc721
+\\xd6832d18befcc9952f5dc72106f6e7108ae723a5	Jillrus Collection - old	ETH	erc721
+\\xd68a5fca1854b4b50430a3ba28a99a5400ad215f	Cyberpunk series V2	01	erc721
+\\xd73a923d895084febb7b0afdf76b15c903d04090	Bouncy Surprisingly Series	BSurpr	erc721
+\\xd78b6bcdeee9dd9168833af4008990d35541d320	The Story of a Seeker	SEEKER	erc721
+\\xd7951522027e5e5c28cd7b357b239557354ebc7d	Mini-Mich Accessory		erc1155
+\\xd7ac080800566d42ab9789a99b7ed0dd5ecbe594	The Psychonaut Ape Division	PAD	erc721
+\\xd83b5ab62313aa4aecb1b1f089d2f597508bd32f	geist.xyz Outtakes		erc1155
+\\xd83fe2c3c96d14775bef23d637725f77ecd0372a	Toppy Eton+	TOPPY	erc721
+\\xd8cc0efbd1c7b0be32b5f4b3613ff3cc4d2af5f2	Teddy Bear Squad Cubs	TBSC	erc721
+\\xd9187c2bbcf6f29fcf0a0659d1d726315772a595	Ape Society Collection	ASC	erc721
+\\xd96d374e5ef2a6c489cfce505262600a9509d480	Chiba Girls the Legendary Collection	CGLEGND	erc721
+\\xd9a4cf49e21c33f1634e2de3ec7a973968087206	Zodiac Beauties	$ZDB	erc721
+\\xd9b8ffc7f55b3bef72c831736c74a87c3bdb0d11	InvisibleWomen	IWM	erc721
+\\xdad077a93a6eea942d8219e7d7e7e50254b851a2	Story of Pixelaurus	PXLRS	erc721
+\\xdaf7f01b17209bc1e13c8f493263eb48fc7b9250	The Rich Fox Club NFT RFC444	RFC.X	erc721
+\\xdc05e0979a5a2e049150fa36f92d54bae04d5a78	Meta Vote	MV	erc721
+\\xdc407132134b02dec21516b4d0f5a36aed01939c	MOCAGE	MOCAGE	erc721
+\\xdc5d814347706c2c0dc50cfe725f6f0731b8a1fe	THE ETH WORLD	ETH	erc721
+\\xdccc3158e7d5a9a2863cfed396ffc5c7a5425cd8	jkhkqjewrjoipadfsklqewr		erc721
+\\xdcd6d4a557ff208f01d4c2b5bf829078622c37c5	Alpha Wolves DAO	ALPHA	erc721
+\\xdd79f3d2b21ee95a8907da113609d39750eb2a08	Pepe Impressionism	PEPE	erc721
+\\xdd96149c4380cc19830b93819d4da946083bd572	Ya-kunverse	YAKUN	erc721
+\\xde2708ccb210f8ca02a1778b6a5c6558e6b9ca3d	Surreality - PLKCd9GCVB	MX	erc721
+\\xde602f2f1f8213fc7af15d8365c28dcc7329c9cd	Wovenfolk	WVF	erc721
+\\xdec935b4d3c776525222f404f4a610645c8815bb	Cityscapes - 9ZNh19waOa	TOSIK01	erc721
+\\xdfa4f8b7191ad3689d4ea2a5fe0291ee699b33c2	She Survives	SURVIVE	erc721
+\\xdfd63e85cd36e822f016d501846b25cca9e786d3	kjqwerkldfjklqweorklewjqr		erc721
+\\xe0176ba60efddb29cac5b15338c9962daee9de0c	PREMINT Collector Pass - OFFICIAL	PREMINTCOLL	erc721
+\\xe0cdf882eba049e363b1226a5af1e4c6062840cf	CultDAO NFT	Cult	erc721
+\\xe1025d36740f2728cdaad86017b5f17dc78437fd	RWX Quest NPC Questlines	RWXQNPC	erc721
+\\xe105af90c3aa98b4300a210007362a3b288352fc	GRAY ART EDITIONS		erc1155
+\\xe15715d6dbbc7227b2f6b0f044c3b4978676d48f	Suckiverse DilDAO	DILDAO	erc721
+\\xe1e20c0b87b008374826f99e165d4fb6f925290e	SHlNSEKAl MlNTING	SSK	erc721
+\\xe32bf6724843321d5dbbaeddcf295d4b10728d7d	McXrayz	X	erc721
+\\xe333c4b2e3f17a7dee55b32d9b7a7a34c6b4934b	Bored Of Work Club	BWC	erc721
+\\xe449943fcc09af55a3167405971573bb98749a6f	AiLBUMS by GEN.ART	AiB	erc721
+\\xe4b17f0a2d83f6e191504e3cb3f1103bff0a7af1	CASTLES - n2xskXCfqQ	CASTLE	erc721
+\\xe4eb9c54fd890116463e9a8e0d34e8e3fe441cdd	Forever Flora	FLORA	erc721
+\\xe5af63234f93afd72a8b9114803e33f6d9766956	fRiENDSiES	fRiENDSiES	erc721
+\\xe5f902cf902adfff849b284d9164d3ecc1225b5f	Rain, Pt. 2	RAIN	erc721
+\\xe63247ee5ad1cb59283f108ab9a2edb89d25276b	STASIS by FVCK_VICTOR	STASISBYFVCKVICTOR	erc721
+\\xe66f94530d257b0bdfbd1e05dcbc2f51a802cdb8	Girls - rqmXpNSVax	GIRLS	erc721
+\\xe6b12acd863f94936a47c7a90092c2aee5219a0a	TFA - Taco Force Academy	TFA	erc721
+\\xe786bba73dc69cdb3dd8f0a0466b77eef097988d	Something Token	SOMETHING	erc721
+\\xe7cb5e2e538fec1492b66f180fac6d4106991250	Realm Ronin	UDT	erc721
+\\xe88e1b15080f2f56a269b4eabcd28f782d2578dc	Weapon Girls	GIRLS	erc721
+\\xe8e331649506124dedd6d4da4f249336bdb66dfc	ZombyWorld Official NFT	ZOMBY	erc721
+\\xe93d7e7deea757d3516aeec51eaf302e0e506cd4	Raw - Gb2aVRpxg0	RAW	erc1155
+\\xe940d33281acabd3913b545e2fdace53955108c7	JellyPoolBear	JPB	erc721
+\\xe9976abf75c0a56ad0ae8b03cd9baf512680af13	Spirit Creatures	SPCREAT	erc721
+\\xe9c0a5e00ebd94c4c63cdfbe0e407871eea16ae6	Women We Love	WWL	erc721
+\\xea3d29218b8853d283dfc3805e5bc3d934d81c39	L - kPhN1mpQaE	LGHTN	erc721
+\\xeaabe3ac985968a90fda09462d43e7b001b42e20	Through Torrealbas Eyes	EYES	erc721
+\\xeafc650b710b31f99a9a57b92585e795deff1be5	Rebels In Disguise : Generative Collection	REBELSSPECIAL	erc721
+\\xebfdf99872ffe985eefb15bc1ae3a55f827cfc90	raCC0ons	CC0	erc721
+\\xec37050579b4ac55c0bb67a2de1825d52d4d50f9	Anon Robin OG OFFICIAL	ARO	erc721
+\\xed4616d9f406bc226e3836421bfab8ec868f81f9	Do what you love - OcFciCaVWg	OSORA	erc721
+\\xeda562a0bd6ab1b6c8043bab45ab5221e97ef24c	MetaSoulzNFT	META	erc721
+\\xedd9a5515ce3db199cfa0aea3c3de47c28f19f6f	Sothebys	SOTHEBYS	erc721
+\\xedfe4053e5cbe84a45681488a42deab8d6abbb6f	Geometrica V3	GEOXNDR	erc721
+\\xee3baaa1076efa4f02a49b1382a141a83da2d4b0	doll garden	DGN	erc721
+\\xee6f6f830c2305c41439d7d45c4908c5a9389c94	BEACHBOYSTRATEGIC	BBS	erc721
+\\xeeb906e1aaf6abd260bea6a95cc8a0f1859642f7	Chosen Ones Legendary Heroes	COLH	erc721
+\\xeec43ddb389b6eb269e7370dcaf7b0bf28813440	Crash - 5Lj9L4QnjC	BPLR	erc721
+\\xf04127b3f415734bb3b59f31169b5e5d434e3520	PuzlWorld Land	PUZLWLND	erc1155
+\\xf09ea0f482dc962601bdb494df877fa315e97bdc	NWP Genesis	NWP	erc721
+\\xf0d84dc2922e43cdc8f10a427d798bffd4462447	Oni Mansion	OM	erc721
+\\xf0eaea14cdd46ae1c7dd0c12916f107334de7d0f	CCC Genesis Packaging- Ganji	Ganj	erc721
+\\xf12f0fd99e913fde707c449e488e67687ec1a7c4	Bloot Comic	BLOOTC	erc721
+\\xf18cd0446735bd132db0f0413ae9a5e581449c22	DDD Rainbow	3D	erc721
+\\xf1d9734e5110868af322170b20bbfa60a8559987	CAPTAIN MALPYO OFFICIAL	SCM	erc721
+\\xf258d6efb634615d9e05b9eddef3996682871c68	Dynamic Society by Mamatism		erc1155
+\\xf3186ee49279406efe060fa6eb79663f47daef85	blessings from kami	kami	erc721
+\\xf39c6435c082257bb135a64e7c1d1a52e46d811a	Diane Lindo	DL	erc721
+\\xf459c232409acc57ca994b1705b29e4f55a476c9	illustration and animation	2DART	erc721
+\\xf482da733159d9831f56f2edf9bc1c17e70ef8d7	Modigliani Digital Collection	IAM	erc721
+\\xf5345f3ddb667a8afbd0b63237e797b523b2a9c5	Familiar Pure Girl	sFPG	erc721
+\\xf66d1e00f4882c48dba369947234b54884a01129	RiverEstate	RE	erc721
+\\xf693b177d964295aae2ed48b9afc8b77c918921a	phobias V2	SURREAL	erc721
+\\xf6c2fe2b411a5a6b464a24e3978d755ec592e5cf	Monster - you vs. you	M	erc721
+\\xf72b7e82063c47e417c6f7faae280460d01bedde	Lab Trials	TEST3	erc721
+\\xf749aebe5e398402f91e9fe34c6ed26456b55626	FROGGYs Mythos	FROGGY	erc721
+\\xf758731e6a5f3dc8d407fda26371f1f5678877d2	Monster Friends NFT	MONSTER	erc721
+\\xf8a039669c2c13222d523bfbfc32381835342319	Dysto Kingz	KING	erc721
+\\xf8bdd7ee465bb732c6b47ce0e23a1f1df2686fd2	Cyberpunk stories	CS	erc721
+\\xf90733ab2f368ffe41bfba80443e04fc33321f67	Gray Boys: Science Lab		erc1155
+\\xf94c7c60732979e8e24c75883fc8df66158c5fed	avril15.eth season one	AVRIL15_S1	erc721
+\\xf9b0d42bd7dd5efa9142faadef945364fbc61137	Hillbilly Holler Gen2 Collection	HHG2	erc721
+\\xf9c12bd715df34c7850766a48178648ac0cb200d	Permies	PERM	erc721
+\\xfa17e965a740ade5a58224072e236899bb453bd0	Torque Squad	TSQ	erc721
+\\xfa7e3f898c80e31a3aedeae8b0c713a3f9666264	Akuma Origins	Akuma	erc721
+\\xfb26c3ac142ea208272c582a84d266dd6771f7b7	Alex sketchbook		erc1155
+\\xfbb316044cdb3a20cc52d6d5c50e3a8362baafad	Pandora Gods	PANDORA	erc721
+\\xfbc9c7ae92abea562429d96ee998030997f702c9	Skullpunks-Xg Genesis	SP-Xg	erc721
+\\xfbdc912795b7c5ba61a39d1c1b6d7277b008a79a	Patronize a Star	STAR	erc721
 \.
 
 
