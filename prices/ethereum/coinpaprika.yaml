@@ -1911,6 +1911,11 @@
   symbol: TRIBE
   address: 0xc7283b66eb1eb5fb86327f08e1b5816b0720212b
   decimals: 18
+- name: ApeCoin
+  id: ape-apecoin
+  symbol: APE
+  address: 0x4d224452801aced8b2f0aebe155379bb5d594381
+  decimals: 18
 - name: gro-dao-token
   id: gro-gro-dao-token
   symbol: GRO
