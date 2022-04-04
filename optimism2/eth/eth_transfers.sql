@@ -1,6 +1,6 @@
-CREATE SCHEMA IF NOT EXISTS erc20;
+CREATE SCHEMA IF NOT EXISTS eth;
 
-CREATE TABLE IF NOT EXISTS erc20.daily_token_balances (
+CREATE TABLE IF NOT EXISTS eth.eth_transfers (
 from	bytea,
 to	bytea,
 value	decimal,
