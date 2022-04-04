@@ -26,6 +26,9 @@ UNION ALL
 
   (
   SELECT 
+    CASE 
+      WHEN hvst."wantEarned" > 0 THEN (hvst."wantEarned"/(10^yct."yvault_deposit_token_decimals"))
+      ELSE (hvst."wantEarned"/(10^yct."yvault_deposit_token_decimals")) END as profit_loss,
     NULL as debt_payment,
     NULL as debt_outstanding,
     hvst."evt_tx_hash",
