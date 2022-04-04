@@ -1,8 +1,8 @@
 CREATE SCHEMA IF NOT EXISTS eth;
 
 CREATE TABLE IF NOT EXISTS eth.eth_transfers (
-from	bytea,
-to	bytea,
+"from"	bytea,
+"to"	bytea,
 value	decimal,
 trace_tx_hash	bytea,
 trace_index	int8,
