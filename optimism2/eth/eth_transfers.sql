@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS eth.eth_transfers (
 	tx_index	int8,
 	tx_block_time 	timestamptz,
 	tx_block_number	int8,
+	tx_method_id	bytea,
 		PRIMARY KEY (tx_hash, tx_index)
 	);
 
@@ -25,3 +26,9 @@ CREATE INDEX "eth_transfer_incl_value_tx_idx_using_to_contract_addr_ev" ON eth."
 CREATE INDEX "eth_transfer_incl_value_tx_idx_using_from_contract_time_" ON eth."eth_transfer" USING btree ("from", contract_address, tx_block_time) INCLUDE (value, value_decimal, tx_index)
 CREATE INDEX "eth_transfer_incl_value_tx_idx_using_contract_from_time_" ON eth."eth_transfer" USING btree (contract_address, "from", tx_block_time) INCLUDE (value, value_decimal, tx_index)
 CREATE INDEX "eth_transfer_incl_value_tx_idx_using_contract_to_time_id" ON eth."eth_transfer" USING btree (contract_address, "to", tx_block_time) INCLUDE (value, value_decimal, tx_index)
+
+CREATE INDEX IF NOT EXISTS "eth_transfer_tx_method_id" ON eth.eth_transfer (tx_method_id);
+CREATE INDEX IF NOT EXISTS "eth_transfer_tx_method_id_block_time" ON eth.eth_transfer (tx_method_id,tx_block_time);
+CREATE INDEX IF NOT EXISTS "eth_transfer_tx_method_id_to" ON eth.eth_transfer (tx_method_id, "to");
+CREATE INDEX IF NOT EXISTS "eth_transfer_tx_method_id_to_from" ON eth.eth_transfer (tx_method_id, "to","from");
+CREATE INDEX IF NOT EXISTS "eth_transfer_tx_method_id_to_block_time" ON eth.eth_transfer (tx_method_id, "to",tx_block_time);
