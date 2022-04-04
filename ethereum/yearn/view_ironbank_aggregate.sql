@@ -4,136 +4,136 @@ DROP VIEW IF EXISTS yearn."view_ironbank_aggregate" CASCADE;
 CREATE VIEW yearn."view_ironbank_aggregate" AS(
     WITH borrows AS(
         SELECT 
-            payer as address_one,
-            borrower as address_two, 
-            'payer' as address_one_type, 
-            'borrower' as address_two_type,
-            "repayAmount" as amount_one,
-            "accountBorrows" as amount_two,
-            'repayAmount' as amount_one_type, 
-            'accountBorrows' as amount_two_type, 
-            NULL::bytea as c_token_collateral,
+            payer AS address_one,
+            borrower AS address_two, 
+            'payer' AS address_one_type, 
+            'borrower' AS address_two_type,
+            "repayAmount" AS amount_one,
+            "accountBorrows" AS amount_two,
+            'repayAmount' AS amount_one_type, 
+            'accountBorrows' AS amount_two_type, 
+            NULL::bytea AS c_token_collateral,
             contract_address, 
             evt_tx_hash, 
             evt_index, 
             evt_block_time, 
             evt_block_number, 
-            'RepayBorrow' as transaction_type 
+            'RepayBorrow' AS transaction_type 
         FROM yearn."ironbank_evt_RepayBorrow"
         UNION ALL
         SELECT 
-            "borrower" as address_one,
-            NULL as address_two, 
-            'borrower' as address_one_type, 
-            NULL as address_two_type,
-            "borrowAmount" as amount_one,
-            "accountBorrows" as amount_two,
-            'borrowAmount' as amount_one_type, 
-            'accountBorrows' as amount_two_type, 
-            NULL::bytea as c_token_collateral,
+            "borrower" AS address_one,
+            NULL AS address_two, 
+            'borrower' AS address_one_type, 
+            NULL AS address_two_type,
+            "borrowAmount" AS amount_one,
+            "accountBorrows" AS amount_two,
+            'borrowAmount' AS amount_one_type, 
+            'accountBorrows' AS amount_two_type, 
+            NULL::bytea AS c_token_collateral,
             contract_address, 
             evt_tx_hash, 
             evt_index, 
             evt_block_time, 
             evt_block_number, 
-            'Borrow' as transaction_type
+            'Borrow' AS transaction_type
         FROM yearn."ironbank_evt_Borrow"
         UNION ALL
         SELECT 
-            admin as address_one,
-            NULL as address_two, 
-            'admin' as address_one_type, 
-            NULL as address_two_type,
-            "reduceAmount" as amount_one,
-            "newTotalReserves" as amount_two,
-            'reduceAmount' as amount_one_type, 
-            'newTotalReserves' as amount_two_type, 
-            NULL::bytea as c_token_collateral,
+            admin AS address_one,
+            NULL AS address_two, 
+            'admin' AS address_one_type, 
+            NULL AS address_two_type,
+            "reduceAmount" AS amount_one,
+            "newTotalReserves" AS amount_two,
+            'reduceAmount' AS amount_one_type, 
+            'newTotalReserves' AS amount_two_type, 
+            NULL::bytea AS c_token_collateral,
             contract_address, 
             evt_tx_hash, 
             evt_index, 
             evt_block_time, 
             evt_block_number, 
-            'ReservesReduced' as transaction_type
+            'ReservesReduced' AS transaction_type
         FROM yearn."ironbank_evt_ReservesReduced"
     ), 
 
-    transfers as (
+    transfers AS (
         (SELECT 
-            "from" as address_one,
-            "to" as address_two, 
-            'from' as address_one_type, 
-            'to' as address_two_type,
-            "amount" as amount_one,
-            NULL as amount_two,
-            'transferAmount' as amount_one_type, 
-            NULL as amount_two_type, 
-            NULL::bytea as c_token_collateral,
+            "from" AS address_one,
+            "to" AS address_two, 
+            'from' AS address_one_type, 
+            'to' AS address_two_type,
+            "amount" AS amount_one,
+            NULL AS amount_two,
+            'transferAmount' AS amount_one_type, 
+            NULL AS amount_two_type, 
+            NULL::bytea AS c_token_collateral,
             contract_address, 
             evt_tx_hash, 
             evt_index, 
             evt_block_time, 
             evt_block_number, 
-            'Transfer' as transaction_type
+            'Transfer' AS transaction_type
         FROM yearn."ironbank_evt_Transfer"
         )
     ),
 
-    two_tokens as (
+    two_tokens AS (
         (SELECT 
-            liquidator as address_one,
-            borrower as address_two, 
-            'liquidator' as address_one_type, 
-            'borrower' as address_two_type,
-            "repayAmount" as amount_one,
-            "seizeTokens" as amount_two,
-            'repayAmount' as amount_one_type, 
-            'numberTokensSeized' as amount_two_type, 
-            "cTokenCollateral" as c_token_collateral,
+            liquidator AS address_one,
+            borrower AS address_two, 
+            'liquidator' AS address_one_type, 
+            'borrower' AS address_two_type,
+            "repayAmount" AS amount_one,
+            "seizeTokens" AS amount_two,
+            'repayAmount' AS amount_one_type, 
+            'numberTokensSeized' AS amount_two_type, 
+            "cTokenCollateral" AS c_token_collateral,
             contract_address, 
             evt_tx_hash, 
             evt_index, 
             evt_block_time, 
             evt_block_number, 
-            'Liquidate' as transaction_type
+            'Liquidate' AS transaction_type
         FROM yearn."ironbank_evt_LiquidateBorrow"
         )
         UNION ALL
         (SELECT 
-            minter as address_one,
-            NULL::bytea as address_two, 
-            'minter' as address_one_type, 
-            NULL as address_two_type,
-            "mintAmount" as amount_one,
-            "mintTokens" as amount_two,
-            'mintAmount' as amount_one_type, 
-            'mintTokens' as amount_two_type, 
-            NULL::bytea as c_token_collateral,
+            minter AS address_one,
+            NULL::bytea AS address_two, 
+            'minter' AS address_one_type, 
+            NULL AS address_two_type,
+            "mintAmount" AS amount_one,
+            "mintTokens" AS amount_two,
+            'mintAmount' AS amount_one_type, 
+            'mintTokens' AS amount_two_type, 
+            NULL::bytea AS c_token_collateral,
             contract_address, 
             evt_tx_hash, 
             evt_index, 
             evt_block_time, 
             evt_block_number, 
-            'Mint' as transaction_type
+            'Mint' AS transaction_type
         FROM yearn."ironbank_evt_Mint"
         )
         UNION ALL 
         (SELECT 
-            redeemer as address_one,
-            NULL as address_two, 
-            'redeemer' as address_one_type, 
-            NULL as address_two_type,
-            "redeemAmount" as amount_one,
-            "redeemTokens" as amount_two,
-            'redeemAmount' as amount_one_type, 
-            'redeemTokens' as amount_two_type, 
-            NULL::bytea as c_token_collateral,
+            redeemer AS address_one,
+            NULL AS address_two, 
+            'redeemer' AS address_one_type, 
+            NULL AS address_two_type,
+            "redeemAmount" AS amount_one,
+            "redeemTokens" AS amount_two,
+            'redeemAmount' AS amount_one_type, 
+            'redeemTokens' AS amount_two_type, 
+            NULL::bytea AS c_token_collateral,
             contract_address, 
             evt_tx_hash, 
             evt_index, 
             evt_block_time, 
             evt_block_number, 
-            'Redeem' as transaction_type
+            'Redeem' AS transaction_type
         FROM yearn."ironbank_evt_Redeem"
         )
     )
@@ -145,8 +145,8 @@ CREATE VIEW yearn."view_ironbank_aggregate" AS(
         tt.address_one_type, 
         tt.address_two_type, 
         tt."c_token_collateral",
-        tt.amount_one/10^yct.yvault_deposit_token_decimals as amount_one,
-        tt.amount_two/10^tok.decimals as amount_two,
+        tt.amount_one/10^yct.yvault_deposit_token_decimals AS amount_one,
+        tt.amount_two/10^tok.decimals AS amount_two,
         tt.amount_one_type, 
         tt.amount_two_type, 
         tt.contract_address, 
@@ -165,8 +165,8 @@ CREATE VIEW yearn."view_ironbank_aggregate" AS(
         bo.address_one_type, 
         bo.address_two_type, 
         bo.c_token_collateral,
-        bo.amount_one/10^yct.yvault_deposit_token_decimals as amount_one,
-        bo.amount_two/10^yct.yvault_deposit_token_decimals as amount_two,
+        bo.amount_one/10^yct.yvault_deposit_token_decimals AS amount_one,
+        bo.amount_two/10^yct.yvault_deposit_token_decimals AS amount_two,
         bo.amount_one_type, bo.amount_two_type, 
         bo.contract_address, 
         bo.evt_tx_hash, 
@@ -182,8 +182,8 @@ CREATE VIEW yearn."view_ironbank_aggregate" AS(
         tr.address_one_type, 
         tr.address_two_type, 
         tr.c_token_collateral,
-        tr.amount_one/10^tok.decimals as amount_one,
-        NULL::numeric as amount_two,
+        tr.amount_one/10^tok.decimals AS amount_one,
+        NULL::numeric AS amount_two,
         tr.amount_one_type, 
         tr.amount_two_type, 
         tr.contract_address, 
