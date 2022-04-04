@@ -36,7 +36,9 @@ WITH rows AS (
         AND block_time < end_block_time
 
     ON CONFLICT (trace_tx_hash, trace_index)
-    DO NOTHING
+    DO UPDATE SET
+	value = EXCLUDED.value,
+	value_decimal = EXCLUDED.value_decimal
 
     RETURNING 1
 )
