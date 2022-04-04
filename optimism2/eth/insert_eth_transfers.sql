@@ -1,9 +1,9 @@
-CREATE OR REPLACE FUNCTION dune_user_generated.eth_insert_eth_transfers(start_block_time timestamptz, end_block_time timestamptz=now()) RETURNS integer
+CREATE OR REPLACE FUNCTION eth.insert_eth_transfers(start_block_time timestamptz, end_block_time timestamptz=now()) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
 WITH rows AS (
-    INSERT INTO dune_user_generated.eth_eth_transfers (
+    INSERT INTO eth.eth_transfers (
        "from",
         "to",
         raw_value,
@@ -12,7 +12,8 @@ WITH rows AS (
         tx_hash,
         tx_index,
         tx_block_time,
-        tx_block_number
+        tx_block_number,
+	tx_method_id
     )
     
     SELECT 
@@ -34,8 +35,6 @@ WITH rows AS (
         AND block_time >= start_block_time
         AND block_time < end_block_time
 
-	
-    -- update if we have new info on prices or the erc20
     ON CONFLICT (trace_tx_hash, trace_index)
     DO NOTHING
 
@@ -45,3 +44,58 @@ SELECT count(*) INTO r from rows;
 RETURN r;
 END
 $function$;
+
+-- fill post-regenesis 11-11
+SELECT eth.insert_eth_transfers(
+    '2021-11-11'::timestamptz,
+    '2022-01-01'::timestamptz
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM eth.eth_transfers
+    WHERE day >= '2021-11-11'::timestamptz
+    AND day <= '2022-01-01'::timestamptz
+);
+
+--fill jan 2022
+SELECT eth.insert_eth_transfers(
+    '2022-01-01'::timestamptz,
+    '2022-02-01'::timestamptz
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM eth.eth_transfers
+    WHERE day >= '2022-01-01'::timestamptz
+    AND day <= '2022-02-01'::timestamptz
+);
+--fill feb 2022
+SELECT eth.insert_eth_transfers(
+    '2022-02-01'::timestamptz,
+    '2022-03-01'::timestamptz
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM eth.eth_transfers
+    WHERE day >= '2022-02-01'::timestamptz
+    AND day <= '2022-03-01'::timestamptz
+);
+--fill mar 2022
+SELECT eth.insert_eth_transfers(
+    '2022-03-01'::timestamptz,
+    '2022-04-01'::timestamptz
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM eth.eth_transfers
+    WHERE day >= '2022-03-01'::timestamptz
+    AND day <= '2022-04-01'::timestamptz
+);
+
+INSERT INTO cron.job (schedule, command)
+VALUES ('* * * * *', $$
+    SELECT eth.insert_daily_token_balances(
+        (SELECT max(tx_block_time) - interval '20 minutes' FROM eth.eth_transfers WHERE block_time > NOW() - interval '1 month'),
+        (SELECT now())
+        );
+$$)
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
