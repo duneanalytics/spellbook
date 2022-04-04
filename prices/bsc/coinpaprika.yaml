@@ -509,3 +509,8 @@
   id: tlm-alien-worlds
   name: tlm_alien_worlds
   symbol: TLM
+- address: '0xf7722aA0714096f1FB5ef83e6041CEBB4d58a08e'
+  decimals: 12
+  id: ruby-ruby-play-network
+  name: ruby_play_network
+  symbol: RUBY
