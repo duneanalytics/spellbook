@@ -115,7 +115,7 @@ DATE_TRUNC('day',"evt_block_time"),
 contract_address,
  version
 
-    ON CONFLICT (day, contract_address) DO UPDATE SET
+    ON CONFLICT (day, contract_address, version) DO UPDATE SET
 	borrow_fees_originated = EXCLUDED.borrow_fees_originated,
 	repay_fees = EXCLUDED.repay_fees,
 	liquidation_fees = EXCLUDED.liquidation_fees,
