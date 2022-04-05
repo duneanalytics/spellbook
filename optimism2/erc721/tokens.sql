@@ -51,6 +51,8 @@ COPY erc721.tokens (contract_address, project_name) FROM stdin;
 \\xc5b00eff93c8f96c73de8035f896eca67255f465	Layer2DAO Early Adopter - Level 3
 \\x4fe576AA37B9858378425Ea981b8D1804A6367Ce	Layer2DAO Early Adopter - Level 2
 \\xF804D537c2530C79453C1cDBdd728a68F340CD9f	Layer2DAO Early Adopter - Level 1
+\\x43b91b168D210F722f2896d258c2c236B9CeBB7b	OptiNouns
+\\x99c69E6A368dC644a7872a676a16703E7b59d1eC	Party Panda
 \.
 
 COMMIT;

@@ -13,19 +13,29 @@ ens_transactions AS (
     ORDER BY "from", block_number DESC
 ),
 
--- Reverse Registrar setName calls
-ens_calls AS (
-    SELECT name AS ens_name, call_block_number AS block_number, call_tx_hash AS tx_hash
-    -- Old Reverse Registrar
+-- Old Reverse Registrar
+ens_calls_v1 AS (
+    SELECT DISTINCT ON (name) name AS ens_name, call_block_number AS block_number, call_tx_hash AS tx_hash
     FROM ethereumnameservice."ReverseRegistrar_v1_call_setName"
     -- To avoid issues with long names on Dune's side
-    WHERE length(name) < 10000 AND call_success IS TRUE AND call_block_time >= '{{timestamp}}'
-    UNION
-    -- Reverse Registrar
-    SELECT name AS ens_name, call_block_number AS block_number, call_tx_hash AS hash
+    WHERE length(name) < 10000 AND call_success IS TRUE
+    ORDER BY ens_name, block_number DESC
+),
+
+-- New Reverse Registrar
+ens_calls_v2 AS (
+    SELECT DISTINCT ON (name) name AS ens_name, call_block_number AS block_number, call_tx_hash AS tx_hash
     FROM ethereumnameservice."ReverseRegistrar_v2_call_setName"
     -- To avoid issues with long names on Dune's side
-    WHERE length(name) < 10000 AND call_success IS TRUE AND call_block_time >= '{{timestamp}}'
+    WHERE length(name) < 10000 AND call_success IS TRUE
+    ORDER BY ens_name, block_number DESC
+),
+
+-- Reverse Registrar setName calls
+ens_calls AS (
+    SELECT * FROM ens_calls_v1
+    UNION
+    SELECT * FROM ens_calls_v2
 )
 
 -- Latest snapshot of ENS Reverse Records
