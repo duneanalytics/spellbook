@@ -59,7 +59,7 @@ CREATE VIEW yearn."view_ironbank_aggregate" AS(
     ), 
 
     transfers AS (
-        (SELECT 
+        SELECT 
             "from" AS address_one,
             "to" AS address_two, 
             'from' AS address_one_type, 
@@ -76,11 +76,11 @@ CREATE VIEW yearn."view_ironbank_aggregate" AS(
             evt_block_number, 
             'Transfer' AS transaction_type
         FROM yearn."ironbank_evt_Transfer"
-        )
+        
     ),
 
     two_tokens AS (
-        (SELECT 
+        SELECT 
             liquidator AS address_one,
             borrower AS address_two, 
             'liquidator' AS address_one_type, 
@@ -97,9 +97,9 @@ CREATE VIEW yearn."view_ironbank_aggregate" AS(
             evt_block_number, 
             'Liquidate' AS transaction_type
         FROM yearn."ironbank_evt_LiquidateBorrow"
-        )
+        
         UNION ALL
-        (SELECT 
+        SELECT 
             minter AS address_one,
             NULL::bytea AS address_two, 
             'minter' AS address_one_type, 
@@ -116,9 +116,9 @@ CREATE VIEW yearn."view_ironbank_aggregate" AS(
             evt_block_number, 
             'Mint' AS transaction_type
         FROM yearn."ironbank_evt_Mint"
-        )
+        
         UNION ALL 
-        (SELECT 
+        SELECT 
             redeemer AS address_one,
             NULL AS address_two, 
             'redeemer' AS address_one_type, 
@@ -135,7 +135,7 @@ CREATE VIEW yearn."view_ironbank_aggregate" AS(
             evt_block_number, 
             'Redeem' AS transaction_type
         FROM yearn."ironbank_evt_Redeem"
-        )
+        
     )
 
 
