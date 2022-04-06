@@ -1976,3 +1976,13 @@
   symbol: UST
   address: 0xa47c8bf37f92aBed4A126BDA807A7b7498661acD
   decimals: 18
+- name: ethereum-name-service
+  id: ens-ethereum-name-service
+  symbol: ENS
+  address: 0xC18360217D8F7Ab5e7c516566761Ea12Ce7F9D72
+  decimals: 18
+- name: xsushi
+  id: xsushi-xsushi
+  symbol: XSUSHI
+  address: 0x8798249c2E607446EfB7Ad49eC89dD1865Ff4272
+  decimals: 18
