@@ -92,6 +92,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\x84526c812D8f6c4fD6C1a5B68713AFF50733E772	jCNY	18
 \\xADAC33f543267c4D59a8c299cF804c303BC3e4aC	MIMO	18
 \\xe0b52e49357fd4daf2c15e02058dce6bc0057db4	agEUR	18
+\\xe111178a87a3bff0c8d18decba5798827539ae99	EURS	2
 \.
 
 
