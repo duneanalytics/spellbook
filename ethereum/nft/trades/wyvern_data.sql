@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS nft.wyvern_data(
     block_number integer,
     tx_from bytea NOT NULL,
     tx_to bytea,
-    PRIMARY KEY (call_tx_hash, seller)
+    PRIMARY KEY (call_tx_hash, seller, token_id, call_trace_address)
 );
 
 CREATE INDEX IF NOT EXISTS nft_wyv_data_block_time_idx ON nft.wyvern_data USING BRIN (block_time);
