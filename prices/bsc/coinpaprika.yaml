@@ -484,3 +484,33 @@
   id: maha-mahadao
   name: mahadao
   symbol: MAHA
+- address: '0xf03a2dc374d494fbe894563fe22ee544d826aa50'
+  decimals: 18
+  id: radar-radar
+  name: radar_radar
+  symbol: RADAR
+- address: '0x1042aA383CAb145dc77121ca75650804A5c134ff'
+  decimals: 18
+  id: aggl-aggleio
+  name: aggl_aggleio
+  symbol: AGGL
+- address: '0x7dDEE176F665cD201F93eEDE625770E2fD911990'
+  decimals: 18
+  id: gala-gala
+  name: gala
+  symbol: GALA
+- address: '0x0df1b3f30865c5b324797f8db9d339514cac4e94'
+  decimals: 18
+  id: betu-betu
+  name: betu_betu
+  symbol: BETU
+- address: '0x2222227E22102Fe3322098e4CBfE18cFebD57c95'
+  decimals: 4
+  id: tlm-alien-worlds
+  name: tlm_alien_worlds
+  symbol: TLM
+- address: '0xf7722aA0714096f1FB5ef83e6041CEBB4d58a08e'
+  decimals: 12
+  id: ruby-ruby-play-network
+  name: ruby_play_network
+  symbol: RUBY
