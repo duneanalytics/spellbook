@@ -21213,7 +21213,6 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xfbb316044cdb3a20cc52d6d5c50e3a8362baafad	Pandora Gods	PANDORA	erc721
 \\xfbc9c7ae92abea562429d96ee998030997f702c9	Skullpunks-Xg Genesis	SP-Xg	erc721
 \\xfbdc912795b7c5ba61a39d1c1b6d7277b008a79a	Patronize a Star	STAR	erc721
-\\xC878671fF88f1374d2186127573E4A63931370FC	Los Muertos World 	LOSMUERTOS	erc721
 \.
 
 
