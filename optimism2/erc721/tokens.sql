@@ -63,6 +63,7 @@ COPY erc721.tokens (contract_address, project_name) FROM stdin;
 \\x43b91b168d210f722f2896d258c2c236b9cebb7b	OptiNouns
 \\x2c7de36caf3a014d724de4f461343d68099093ea	Optiland Citizens
 \\xb03a572ee91aEcbdfa8ceF8196BF140A1E7410dF	Boxer
+\\x12A8e658792E940bdB344264318dD2Af9e5C25B2	xZEROs
 \.
 
 COMMIT;
