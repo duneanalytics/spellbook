@@ -10,6 +10,7 @@ DELETE FROM erc20.stablecoins *;
 
 COPY erc20.stablecoins(contract_address, symbol, decimals, name) FROM stdin;
 \\xbc6da0fe9ad5f3b0d58160288917aa56653660e9	alUSD	18	Alchemix USD
+\\xd46ba6d942050d489dbd938a2c909a5d5039a161	AMPL	9	Ampleforth
 \\x4fabb145d64652a948d72533023f6e7a623c7c53	BUSD	18	Binance USD
 \\x6b175474e89094c44da98b954eedeac495271d0f	DAI	18	Dai
 \\xdb25f211ab05b1c97d595516f45794528a807ad8	EURS	18	STASIS EURS
@@ -21,6 +22,7 @@ COPY erc20.stablecoins(contract_address, symbol, decimals, name) FROM stdin;
 \\x99d8a9c45b2eca8864373a26d1459e3dff1e17f3	MIM	18	Magic Internet Money
 \\xe2f2a5c287993345a840db3b0845fbc70f5935a5	MUSD	18	mStable USD
 \\x8e870d67f660d95d5be530380d0ec0bd388289e1	PAX	18	Paxos Standard
+\\x03ab458634910aad20ef5f1c8ee96f1d6ac54919	RAI	18	Rai Reflex Index
 \\x57Ab1ec28D129707052df4dF418D58a2D46d5f51	sUSD	18	Synthetix sUSD
 \\x57Ab1E02fEE23774580C119740129eAC7081e9D3	sUSD	18	Synthetix sUSD
 \\x0000000000085d4780b73119b644ae5ecd22b376	TUSD	18	TrueUSD
@@ -29,6 +31,7 @@ COPY erc20.stablecoins(contract_address, symbol, decimals, name) FROM stdin;
 \\x1456688345527bE1f37E9e627DA0837D6f08C925	USDP	18	Pax Dollar
 \\xdac17f958d2ee523a2206206994597c13d831ec7	USDT	6	Tether
 \\xa47c8bf37f92abed4a126bda807a7b7498661acd	UST	18	Wrapped UST Token
+\\xa693b19d2931d498c5b318df961919bb4aee87a5	UST	6	UST (Wormhole)
 \.
 
 COMMIT;
