@@ -17,23 +17,28 @@ WITH rows AS (
     )
     
     SELECT 
-    "from",
-    "to",
-    value,
-    value/1e18 AS value_decimal,
-    "tx_hash",
-    "tx_index",
-    "block_time" AS tx_block_time,
-    "block_number" AS tx_block_number,
-    substring(input from 1 for 4) AS tx_method_id
-        FROM optimism."traces"
-        WHERE (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') or call_type is null)
-        AND "tx_success" = true
-        AND success = true
-        AND value > 0
+    r."from",
+    r."to",
+    r.value,
+    r.value/1e18 AS value_decimal,
+    r."tx_hash",
+    r."tx_index",
+    r."block_time" AS tx_block_time,
+    r."block_number" AS tx_block_number,
+    substring(t.data from 1 for 4) AS tx_method_id
+        FROM optimism."traces" r
+	INNER JOIN optimism.transactions t
+                ON t.hash = r.tx_hash
+        WHERE (r.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') or r.call_type is null)
+        AND r."tx_success" = true
+        AND r.success = true
+        AND r.value > 0
         
-        AND block_time >= start_block_time
-        AND block_time < end_block_time
+        AND r.block_time >= start_block_time
+        AND r.block_time < end_block_time
+	
+	AND t.block_time >= start_block_time
+        AND t.block_time < end_block_time
 
     ON CONFLICT (trace_tx_hash, trace_index)
     DO UPDATE SET
