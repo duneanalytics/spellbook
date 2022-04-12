@@ -73,7 +73,7 @@ WITH rows AS (
             NULL::integer[] AS trace_address,
             t.evt_index
         FROM
-            shibaswap."UniswapV2Pair_evt_Swap" 
+            shibaswap."UniswapV2Pair_evt_Swap" t
         INNER JOIN shibaswap."UniswapV2Factory_evt_PairCreated" f ON f.pair = t.contract_address
     ) dexs
     INNER JOIN ethereum.transactions tx
