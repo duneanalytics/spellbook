@@ -1991,3 +1991,8 @@
   symbol: XSUSHI
   address: 0x8798249c2E607446EfB7Ad49eC89dD1865Ff4272
   decimals: 18
+- name: arbismart
+  id: arbismart-arbismart
+  symbol: RBIS
+  address: 0xf34B1Db61ACa1a371fE97BAd2606c9f534fb9D7D
+  decimals: 18
