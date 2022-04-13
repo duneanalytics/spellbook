@@ -12,9 +12,9 @@ create table if not exists setprotocol_v2.set_component_token_mappings
   mapped_component_address bytea         
 );
 
-create index if not exists on setprotocol_v2.set_component_token_mappings(component_address, mapped_component_address);
-create index if not exists on setprotocol_v2.set_component_token_mappings(component_address);
-create index if not exists on setprotocol_v2.set_component_token_mappings(mapped_component_address); 
+create index if not exists setprotocol_v2_set_component_mappings_comp_map_adr_idx on setprotocol_v2.set_component_token_mappings(component_address, mapped_component_address);
+create index if not exists setprotocol_v2_set_component_mappings_comp_adr_idx on setprotocol_v2.set_component_token_mappings(component_address);
+create index if not exists setprotocol_v2_set_component_mappings_comp_map_idx on setprotocol_v2.set_component_token_mappings(mapped_component_address); 
 
 truncate table setprotocol_v2.set_component_token_mappings;
 
