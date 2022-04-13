@@ -30,7 +30,7 @@ with initial_components as (
     , m.symbol as pre_mapped_symbol
     , ac.component_address
   from all_components ac
-  left join dune_user_generated.set_component_token_mappings m on ac.component_address = m.component_address
+  left join setprotocol_v2.set_component_token_mappings m on ac.component_address = m.component_address
 )
 , daily_component_prices_usd as (
   -- so we're taking the average of a time series here, which is not fully valid, but this part of the query was benchmarked to 3 minutes
@@ -118,7 +118,7 @@ with initial_components as (
     , m.symbol as pre_mapped_symbol
     , ac.component_address
   from all_components ac
-  left join dune_user_generated.set_component_token_mappings m on ac.component_address = m.component_address
+  left join setprotocol_v2.set_component_token_mappings m on ac.component_address = m.component_address
 )
 , tokens_from_paprika as (
   select distinct contract_address 

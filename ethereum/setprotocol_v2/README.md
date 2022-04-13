@@ -12,4 +12,4 @@ there is data across at least 5 different hours that day. Then, we take the medi
 
 Another thing we do is that many of our Sets use components that don't have active trading but are closely pegged to other tokens, most
 notably Aave Interest Bearing tokens. For these tokens, we map the price directly from the underlying, e.g. we map `astETH`'s directly to
-`stETH`. That token pricing map we are maintaining in the Set Protocol repo, in the table `dune_user_generated.set_component_token_mappings`.
+`stETH`. We're still working on trying to get price feeds for Compound's tokens.

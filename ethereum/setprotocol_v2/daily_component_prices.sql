@@ -33,4 +33,4 @@ CREATE INDEX IF NOT EXISTS setprotocol_v2_daily_component_prices_date_idx on dun
 CREATE INDEX IF NOT EXISTS setprotocol_v2_daily_component_prices_symbol_idx on dune_user_generated.daily_component_prices (symbol);
 CREATE INDEX IF NOT EXISTS setprotocol_v2_daily_component_prices_avg_price_usd_idx on dune_user_generated.daily_component_prices (avg_price_usd);
 */
--- don't forget to drop it because the index names will conflict
+-- don't forget to drop the test table before deploying because the index names will conflict
