@@ -85,7 +85,7 @@ WITH rows AS (
 	    
         FROM ( 
 		SELECT
-		from_token, to_token, from_amount, to_amount, tx_hash, evt_block_time, call_trace_address, evt_index, contract_address, '3' as version,
+		from_token, to_token, from_amount, to_amount, tx_hash, evt_block_time, call_trace_address, evt_index, contract_address, version,
 		CASE WHEN tx_hash IN (SELECT evt_tx_hash FROM limit_orders THEN 1 ELSE 0 END) AS is_limit_order
 		FROM (
 			--pulled from https://github.com/duneanalytics/abstractions/blob/master/ethereum/dex/trades/insert_1inch.sql
