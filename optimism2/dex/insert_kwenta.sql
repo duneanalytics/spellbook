@@ -55,7 +55,7 @@ WITH rows AS (
         evt_index,
         row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
-        --Uniswap v3
+        --Kwenta - MintableSynthetix_evt_SynthExchange
         SELECT
             se.evt_block_time AS block_time,
             'Kwenta' AS project,
@@ -72,7 +72,7 @@ WITH rows AS (
             se.contract_address as exchange_contract_address,
             se.evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
-            t.evt_index
+            se.evt_index
 	--Synthetix event uses hash keys for tokens, so we pull ERC20 transfers instead
     FROM synthetix."MintableSynthetix_evt_SynthExchange" se
     INNER JOIN erc20."ERC20_evt_Transfer" send
