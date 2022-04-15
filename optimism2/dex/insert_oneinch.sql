@@ -30,9 +30,9 @@ WITH rows AS (
         trade_id
     )
 	
-WITH limit_orders AS ( --limit order trades use 1inch, but do not route to a DEX
-	SELECT evt_tx_hash FROM oneinch."LimitOrderProtocol_evt_OrderFilled"
-	WHERE evt_block_time BETWEEN start_ts AND end_ts
+    WITH limit_orders AS ( --limit order trades use 1inch, but do not route to a DEX
+        SELECT evt_tx_hash FROM oneinch."LimitOrderProtocol_evt_OrderFilled"
+        WHERE evt_block_time BETWEEN start_ts AND end_ts
 	)
 	
 
@@ -68,7 +68,7 @@ WITH limit_orders AS ( --limit order trades use 1inch, but do not route to a DEX
             oiv.block_time AS block_time,
             '1inch' AS project,
             CASE WHEN is_limit_order = 1 THEN oiv.version || ' - Limit Order' ELSE oiv.version END AS version,
-	    CASE WHEN is_limit_order = 1 THEN 'DEX' ELSE 'Aggregator' END AS category,
+	        CASE WHEN is_limit_order = 1 THEN 'DEX' ELSE 'Aggregator' END AS category,
             tx."from" AS trader_a,
             NULL::bytea AS trader_b,
             --Token a is what was received 
@@ -86,7 +86,7 @@ WITH limit_orders AS ( --limit order trades use 1inch, but do not route to a DEX
         FROM ( 
 		SELECT
 		from_token, to_token, from_amount, to_amount, tx_hash, evt_block_time, call_trace_address, evt_index, contract_address, version,
-		CASE WHEN tx_hash IN (SELECT evt_tx_hash FROM limit_orders THEN 1 ELSE 0 END) AS is_limit_order
+		CASE WHEN tx_hash IN (SELECT evt_tx_hash FROM limit_orders) THEN 1 ELSE 0 END AS is_limit_order
 		FROM (
 			--pulled from https://github.com/duneanalytics/abstractions/blob/master/ethereum/dex/trades/insert_1inch.sql
 			--v3 router
