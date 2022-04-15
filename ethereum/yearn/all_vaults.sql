@@ -148,7 +148,6 @@ COPY yearn.yearn_all_vaults(contract_address, ytoken, decimals, symbol, tag) FRO
 \\x0d4EA8536F9A13e4FBa16042a46c30f092b06aA5	Curve EURT Pool yVault	18	yvCurve-EURT	v2
 \\xA696a63cc78DfFa1a63E9E50587C197387FF6C7E	WBTC yVault	8	yvWBTC	v2
 \\x671a912C10bba0CFA74Cfc2d6Fba9BA1ed9530B2	LINK yVault	18	yvLINK	v2
-
 \.
 
 COMMIT;
