@@ -6,6 +6,7 @@ WITH rows AS (
     INSERT INTO eth.eth_transfers (
        "from",
         "to",
+	contract_address,
         raw_value,
         value,
         value_decimal,
