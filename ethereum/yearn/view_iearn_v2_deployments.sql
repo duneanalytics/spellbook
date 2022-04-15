@@ -45,4 +45,5 @@ CREATE VIEW iearn_v2."view_iearn_v2_deployments" AS(
     LEFT JOIN yearn."view_yearn_contract_tokens" yct ON wtd."contract_address" = yct."yvault_contract"
     WHERE
     "call_success" = True)
-)
+);
+COMMIT;
