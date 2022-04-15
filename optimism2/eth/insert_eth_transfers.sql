@@ -19,6 +19,7 @@ WITH rows AS (
     SELECT 
     r."from",
     r."to",
+	'\xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000' AS	contract_address, --Using the ETH deposit placeholder address to match with prices tables
     r.value,
     r.value/1e18 AS value_decimal,
     r."tx_hash",
@@ -101,7 +102,7 @@ WHERE NOT EXISTS (
 INSERT INTO cron.job (schedule, command)
 VALUES ('* * * * *', $$
     SELECT eth.insert_daily_token_balances(
-        (SELECT max(tx_block_time) - interval '20 minutes' FROM eth.eth_transfers WHERE block_time > NOW() - interval '1 month'),
+        (SELECT max(tx_block_time) FROM eth.eth_transfers WHERE block_time > NOW() - interval '1 month'),
         (SELECT now())
         );
 $$)
