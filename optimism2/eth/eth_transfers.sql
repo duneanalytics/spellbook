@@ -3,6 +3,7 @@ CREATE SCHEMA IF NOT EXISTS eth;
 CREATE TABLE IF NOT EXISTS eth.eth_transfers (
 	"from"	bytea,
 	"to"	bytea,
+	"contract_address"	bytea,
 	value	numeric,
 	value_decimal	numeric,
 	tx_hash	bytea,
