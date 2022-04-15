@@ -45,4 +45,5 @@ CREATE VIEW yearn."view_yearn_contract_strategy" AS(
     LEFT JOIN yearn_v2."yVault_evt_StrategyAdded" ys ON yct."yvault_contract" = ys."contract_address"
     WHERE
     "yearn_type" NOT IN ('iearn_v2','ironbank','woofy')
-)
+);
+COMMIT;
