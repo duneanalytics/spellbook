@@ -43,4 +43,5 @@ UNION ALL
   WHERE
   "yvault_deposit_token_symbol" is not null
   )
-)
+);
+COMMIT;
