@@ -6,15 +6,14 @@ WITH rows AS (
     INSERT INTO eth.eth_transfers (
        "from",
         "to",
-	contract_address,
-        raw_value,
+	    contract_address,
         value,
         value_decimal,
         tx_hash,
         tx_index,
         tx_block_time,
         tx_block_number,
-	tx_method_id
+	    tx_method_id
     )
     
     SELECT 
@@ -28,21 +27,19 @@ WITH rows AS (
     r."block_time" AS tx_block_time,
     r."block_number" AS tx_block_number,
     substring(t.data from 1 for 4) AS tx_method_id
-        FROM optimism."traces" r
+    FROM optimism."traces" r
 	INNER JOIN optimism.transactions t
-                ON t.hash = r.tx_hash
-        WHERE (r.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') or r.call_type is null)
-        AND r."tx_success" = true
-        AND r.success = true
-        AND r.value > 0
-        
-        AND r.block_time >= start_block_time
-        AND r.block_time < end_block_time
-	
+            ON t.hash = r.tx_hash
+    WHERE (r.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') or r.call_type is null)
+    AND r."tx_success" = true
+    AND r.success = true
+    AND r.value > 0    
+    AND r.block_time >= start_block_time
+    AND r.block_time < end_block_time	
 	AND t.block_time >= start_block_time
-        AND t.block_time < end_block_time
+    AND t.block_time < end_block_time
 
-    ON CONFLICT (trace_tx_hash, trace_index)
+    ON CONFLICT (tx_hash, tx_index)
     DO UPDATE SET
 	value = EXCLUDED.value,
 	value_decimal = EXCLUDED.value_decimal
@@ -62,8 +59,8 @@ SELECT eth.insert_eth_transfers(
 WHERE NOT EXISTS (
     SELECT *
     FROM eth.eth_transfers
-    WHERE day >= '2021-11-11'::timestamptz
-    AND day <= '2022-01-01'::timestamptz
+    WHERE tx_block_time >= '2021-11-11'::timestamptz
+    AND tx_block_time < '2022-01-01'::timestamptz
 );
 
 --fill jan 2022
@@ -74,8 +71,8 @@ SELECT eth.insert_eth_transfers(
 WHERE NOT EXISTS (
     SELECT *
     FROM eth.eth_transfers
-    WHERE day >= '2022-01-01'::timestamptz
-    AND day <= '2022-02-01'::timestamptz
+    WHERE tx_block_time >= '2022-01-01'::timestamptz
+    AND tx_block_time < '2022-02-01'::timestamptz
 );
 --fill feb 2022
 SELECT eth.insert_eth_transfers(
@@ -85,8 +82,8 @@ SELECT eth.insert_eth_transfers(
 WHERE NOT EXISTS (
     SELECT *
     FROM eth.eth_transfers
-    WHERE day >= '2022-02-01'::timestamptz
-    AND day <= '2022-03-01'::timestamptz
+    WHERE tx_block_time >= '2022-02-01'::timestamptz
+    AND tx_block_time < '2022-03-01'::timestamptz
 );
 --fill mar 2022
 SELECT eth.insert_eth_transfers(
@@ -96,14 +93,14 @@ SELECT eth.insert_eth_transfers(
 WHERE NOT EXISTS (
     SELECT *
     FROM eth.eth_transfers
-    WHERE day >= '2022-03-01'::timestamptz
-    AND day <= '2022-04-01'::timestamptz
+    WHERE tx_block_time >= '2022-03-01'::timestamptz
+    AND tx_block_time < '2022-04-01'::timestamptz
 );
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('* * * * *', $$
-    SELECT eth.insert_daily_token_balances(
-        (SELECT max(tx_block_time) FROM eth.eth_transfers WHERE block_time > NOW() - interval '1 month'),
+    SELECT eth.insert_eth_transfers(
+        (SELECT max(tx_block_time) FROM eth.eth_transfers WHERE tx_block_time > NOW() - interval '1 month'),
         (SELECT now())
         );
 $$)
