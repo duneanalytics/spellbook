@@ -194,4 +194,5 @@ CREATE VIEW yearn."view_ironbank_aggregate" AS(
         tr.transaction_type 
     FROM transfers tr
     LEFT JOIN erc20."tokens" tok on tr.contract_address = tok.contract_address
- )
+ );
+COMMIT;
