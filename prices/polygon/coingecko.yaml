@@ -262,6 +262,7 @@
 - id: polyyield-token
 - id: polyyork
 - id: polyzap
+- id: popcorn
 - id: prism-network
 - id: project-inverse
 - id: pspace
@@ -287,6 +288,7 @@
 - id: shiba-inu
 - id: showcase-token
 - id: spacerat
+- id: sphere-finance
 - id: stablegaj
 - id: stacker-ventures
 - id: stacktical
@@ -420,3 +422,8 @@
 - id: par-stablecoin
 - id: unicorn-milk
 - id: rainbow-token-2
+- id: jarvis-synthetic-euro
+- id: jarvis-synthetic-swiss-franc
+- id: stasis-eurs
+- id: ageur
+- id: sphere-finance
