@@ -52,4 +52,5 @@ CREATE VIEW yearn."view_yearn_contract_tokens" AS(
         AND "from" != ett."contract_address"
     GROUP BY 1, 2, 3, 4, 5
     ORDER BY 4, 5 DESC
-)
+);
+COMMIT;
