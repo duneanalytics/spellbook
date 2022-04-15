@@ -30,7 +30,7 @@ WITH rows AS (
         trade_id
     )
 	
-,limit_orders AS ( --limit order trades use 1inch, but do not route to a DEX
+WITH limit_orders AS ( --limit order trades use 1inch, but do not route to a DEX
 	SELECT evt_tx_hash FROM oneinch."LimitOrderProtocol_evt_OrderFilled"
 	WHERE evt_block_time BETWEEN start_ts AND end_ts
 	)
