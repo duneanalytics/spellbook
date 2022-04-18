@@ -117,23 +117,51 @@ $function$;
 -- fill history
 SELECT yearn.insert_yearn_transactions(
     '2020-01-01',
-    now(),
+    '2021-01-01',
     (SELECT MAX(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
+    (SELECT MAX(number) FROM ethereum.blocks where time < '2021-01-01')
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM yearn.view_transactions
+    WHERE evt_block_time >= '2020-01-01'
+    AND evt_block_time < '2021-01-01'
+);
+
+-- fill history
+SELECT yearn.insert_yearn_transactions(
+    '2021-01-01',
+    '2022-01-01',
+    (SELECT MAX(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
+    (SELECT MAX(number) FROM ethereum.blocks where time < '2022-01-01')
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM yearn.view_transactions
+    WHERE evt_block_time >= '2021-01-01'
+    AND evt_block_time < '2022-01-01'
+);
+
+-- fill history
+SELECT yearn.insert_yearn_transactions(
+    '2022-01-01',
+    now(),
+    (SELECT MAX(number) FROM ethereum.blocks WHERE time < '2022-01-01'),
     (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
 )
 WHERE NOT EXISTS (
     SELECT *
     FROM yearn.view_transactions
-    WHERE block_time > '2020-01-01'
-    AND block_time <= now() - interval '20 minutes'
+    WHERE evt_block_time >= '2022-01-01'
+    AND evt_block_time < now() - interval '20 minutes'
 );
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/20 * * * *', $$
     SELECT yearn.insert_yearn_transactions(
-        (SELECT MAX(block_time) - interval '1 days' FROM yearn.view_transactions),
+        (SELECT MAX(evt_block_time) - interval '1 days' FROM yearn.view_transactions),
         (SELECT now() - interval '20 minutes'),
-        (SELECT MAX(number) FROM ethereum.blocks WHERE time < (SELECT MAX(block_time) - interval '1 days' FROM yearn.view_transactions)),
+        (SELECT MAX(number) FROM ethereum.blocks WHERE time < (SELECT MAX(evt_block_time) - interval '1 days' FROM yearn.view_transactions)),
         (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
