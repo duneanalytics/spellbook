@@ -2051,3 +2051,8 @@
   symbol: oSQTH
   address: 0xf1b99e3e573a1a9c5e6b2ce818b617f0e664e86b
   decimals: 18
+- name: arbismart
+  id: rbis-arbismart-token
+  symbol: RBIS
+  address: 0xf34B1Db61ACa1a371fE97BAd2606c9f534fb9D7D
+  decimals: 18
