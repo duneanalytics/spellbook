@@ -1,4 +1,4 @@
-CREATE TABLE yearn.view_transactions (
+CREATE TABLE yearn.transactions (
     from_address bytea,
     to_address bytea,
     amount numeric,
@@ -18,7 +18,7 @@ LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
 WITH rows AS (
-    INSERT INTO yearn.view_transactions (
+    INSERT INTO yearn.transactions (
       from_address,
       to_address,
       amount,
@@ -123,7 +123,7 @@ SELECT yearn.insert_yearn_transactions(
 )
 WHERE NOT EXISTS (
     SELECT *
-    FROM yearn.view_transactions
+    FROM yearn.transactions
     WHERE evt_block_time >= '2020-01-01'
     AND evt_block_time < '2021-01-01'
 );
@@ -137,7 +137,7 @@ SELECT yearn.insert_yearn_transactions(
 )
 WHERE NOT EXISTS (
     SELECT *
-    FROM yearn.view_transactions
+    FROM yearn.transactions
     WHERE evt_block_time >= '2021-01-01'
     AND evt_block_time < '2022-01-01'
 );
@@ -151,7 +151,7 @@ SELECT yearn.insert_yearn_transactions(
 )
 WHERE NOT EXISTS (
     SELECT *
-    FROM yearn.view_transactions
+    FROM yearn.transactions
     WHERE evt_block_time >= '2022-01-01'
     AND evt_block_time < now() - interval '20 minutes'
 );
@@ -159,9 +159,9 @@ WHERE NOT EXISTS (
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/20 * * * *', $$
     SELECT yearn.insert_yearn_transactions(
-        (SELECT MAX(evt_block_time) - interval '1 days' FROM yearn.view_transactions),
+        (SELECT MAX(evt_block_time) - interval '1 days' FROM yearn.transactions),
         (SELECT now() - interval '20 minutes'),
-        (SELECT MAX(number) FROM ethereum.blocks WHERE time < (SELECT MAX(evt_block_time) - interval '1 days' FROM yearn.view_transactions)),
+        (SELECT MAX(number) FROM ethereum.blocks WHERE time < (SELECT MAX(evt_block_time) - interval '1 days' FROM yearn.transactions)),
         (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
