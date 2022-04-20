@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION dex.insert_swapr(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+CREATE OR REPLACE FUNCTION dex.insert_shibaswap(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -55,10 +55,10 @@ WITH rows AS (
         evt_index,
         row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
-        -- Swapr
+        -- Shibaswap
         SELECT
             t.evt_block_time AS block_time,
-            'swapr' AS project,
+            'Shibaswap' AS project,
             '1' AS version,
             'DEX' AS category,
             t."to" AS trader_a,
@@ -73,8 +73,8 @@ WITH rows AS (
             NULL::integer[] AS trace_address,
             t.evt_index
         FROM
-            swapr."DXswapPair_evt_Swap" t
-        INNER JOIN swapr."DXswapFactory_evt_PairCreated" f ON f.pair = t.contract_address
+            shibaswap."UniswapV2Pair_evt_Swap" t
+        INNER JOIN shibaswap."UniswapV2Factory_evt_PairCreated" f ON f.pair = t.contract_address
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
@@ -103,7 +103,7 @@ END
 $function$;
 
 -- fill 2020
-SELECT dex.insert_swapr(
+SELECT dex.insert_shibaswap(
     '2020-01-01',
     '2021-01-01',
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
@@ -114,45 +114,30 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2020-01-01'
     AND block_time <= '2021-01-01'
-    AND project = 'swapr'
+    AND project = 'Shibaswap'
 );
 
---- fill 2021
-SELECT dex.insert_swapr(
+-- fill 2021
+SELECT dex.insert_shibaswap(
     '2021-01-01',
-    '2022-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2022-01-01')
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2021-01-01'
-    AND block_time <= '2022-01-01'
-    AND project = 'swapr'
-);
-
--- fill 2022
-SELECT dex.insert_swapr(
-    '2022-01-01',
     now(),
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2022-01-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
     (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
 )
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.trades
-    WHERE block_time > '2022-01-01'
+    WHERE block_time > '2021-01-01'
     AND block_time <= now() - interval '20 minutes'
-    AND project = 'swapr'
+    AND project = 'Shibaswap'
 );
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
-    SELECT dex.insert_swapr(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='swapr'),
+    SELECT dex.insert_shibaswap(
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Shibaswap'),
         (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='swapr')),
+        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Shibaswap')),
         (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule; 
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
