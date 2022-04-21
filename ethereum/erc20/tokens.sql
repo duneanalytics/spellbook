@@ -1,5 +1,3 @@
--- noinspection SqlNoDataSourceInspectionForFile
-
 BEGIN;
 
 CREATE TABLE IF NOT EXISTS erc20.tokens (
