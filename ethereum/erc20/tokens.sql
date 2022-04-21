@@ -6319,6 +6319,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\xeff3f1b9400d6d0f1e8805bdde592f61535f5ecd	SQUAWK	18
 \\xf3b9569f82b18aef890de263b84189bd33ebe452	CAW	18
 \\xf5a6271bb4f4eb7426ac1bcceb848cfda95c6dfe	GMT	18
+\\x48af7b1c9dac8871c064f62fcec0d9d6f7c269f5	α	18
 \.
 
 
