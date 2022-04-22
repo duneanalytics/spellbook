@@ -106,7 +106,7 @@ END
 $function$;
 
 -- Get the table started
-SELECT aave.aave_daily_liquidity_mining_rates(DATE_TRUNC('day','2020-01-24'::timestamptz),DATE_TRUNC('day',NOW()) )
+SELECT aave.insert_aave_daily_liquidity_mining_rates(DATE_TRUNC('day','2020-01-24'::timestamptz),DATE_TRUNC('day',NOW()) )
 WHERE NOT EXISTS (
     SELECT *
     FROM aave.aave_daily_liquidity_mining_rates
@@ -114,7 +114,7 @@ WHERE NOT EXISTS (
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('16,46 * * * *', $$
-    SELECT aave.insert_aave_daily_atoken_balances(
+    SELECT aave.insert_aave_daily_liquidity_mining_rates(
         (SELECT DATE_TRUNC('day',NOW()) - interval '3 days'),
         (SELECT DATE_TRUNC('day',NOW()) );
 	
