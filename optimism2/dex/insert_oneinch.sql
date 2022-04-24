@@ -138,7 +138,10 @@ WITH rows AS (
         token_a_amount = EXCLUDED.token_a_amount,
         token_b_amount = EXCLUDED.token_b_amount,
         token_a_symbol = EXCLUDED.token_a_symbol,
-        token_b_symbol = EXCLUDED.token_b_symbol
+	token_b_symbol = EXCLUDED.token_b_symbol,
+        version = EXCLUDED.version,
+        category = EXCLUDED.category
+	
     RETURNING 1
 )
 SELECT count(*) INTO r from rows;
