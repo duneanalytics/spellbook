@@ -10,7 +10,7 @@ WITH rows AS (
         value,
         value_decimal,
         tx_hash,
-        tx_index,
+        trace_address,
         tx_block_time,
         tx_block_number,
 	    tx_method_id
@@ -23,7 +23,7 @@ WITH rows AS (
     r.value,
     r.value/1e18 AS value_decimal,
     r."tx_hash",
-    r."tx_index",
+    r."trace_address",
     r."block_time" AS tx_block_time,
     r."block_number" AS tx_block_number,
     substring(t.data from 1 for 4) AS tx_method_id
@@ -39,7 +39,7 @@ WITH rows AS (
 	AND t.block_time >= start_block_time
     AND t.block_time < end_block_time
 
-    ON CONFLICT (tx_hash, tx_index)
+    ON CONFLICT (tx_hash, trace_address)
     DO UPDATE SET
 	value = EXCLUDED.value,
 	value_decimal = EXCLUDED.value_decimal
