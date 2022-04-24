@@ -35,7 +35,7 @@ AND 1 = (
         )
 GROUP BY 1
 ) a
-FULL OUTER JOIN dune_user_generated.contract_creator_address_list w
+FULL OUTER JOIN ovm2.contract_creator_address_list w
 ON w.creator_address = a."from"
 WHERE 
 (
@@ -202,7 +202,7 @@ FROM (
     UNION ALL --synthetix genesis contracts
 
     SELECT NULL::bytea AS creator_address, NULL::bytea AS contract_factory, snx.contract_address AS contract_address, 'Synthetix' AS contract_project, contract_name, '07-06-2021 00:00:00'::timestamp
-    FROM dune_user_generated.synthetix_genesis_contracts snx
+    FROM ovm1.synthetix_genesis_contracts snx
         WHERE address NOT IN (SELECT contract_address FROM creator_contracts)
 	AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts gc WHERE gc.contract_address = snx.contract_address AND 'Synthetix' = contract_project) 
 	
@@ -219,7 +219,7 @@ FROM (
             WHERE contract_address::bytea NOT IN (SELECT contract_address FROM creator_contracts)
 		AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts gc WHERE gc.contract_address = a.contract_address::bytea) 
     ) c
-LEFT JOIN dune_user_generated.synthetix_genesis_contracts snx --TODO: could replace this will all predeploys
+LEFT JOIN ovm1.synthetix_genesis_contracts snx --TODO: could replace this will all predeploys
     ON c.contract_address = snx.address
 FULL OUTER JOIN erc20_tokens erc20 -- b/c we want to get all ERC20s that aren't in this list too.
     ON COALESCE(c.contract_address,snx.address) = erc20.contract_address
