@@ -194,7 +194,7 @@ FROM (
     
     UNION ALL --ovm 1.0 contracts
     
-    SELECT creator_address::bytea, NULL::bytea AS contract_factory, "contract_address","contract_project" AS project,"contract_name" AS name, created_time::timestamptz FROM dune_user_generated.oe_ovm1_contracts d
+    SELECT creator_address::bytea, NULL::bytea AS contract_factory, "contract_address","contract_project" AS project,"contract_name" AS name, created_time::timestamptz FROM ovm1.op_ovm1_contracts d
     WHERE contract_address NOT IN (SELECT contract_address FROM creator_contracts)
 	AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts gc WHERE gc.contract_address = d.address AND gc.contract_name = d.contract_name) 
     GROUP BY 1,2,3,4,5,6
@@ -246,7 +246,7 @@ FROM (
     
     GROUP BY 1
     ) c
-    LEFT JOIN dune_user_generated."oe_ovm1_contracts" ovm1c
+    LEFT JOIN ovm1.op_ovm1_contracts ovm1c
         ON c."contract_address" = ovm1c."contract_address" --fill in any missing contract creators
 
 
