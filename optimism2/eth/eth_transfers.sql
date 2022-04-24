@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS eth.eth_transfers (
 	value	numeric,
 	value_decimal	numeric,
 	tx_hash	bytea,
-	trace_address	int8,
+	trace_address	integer[],
 	tx_block_time 	timestamptz,
 	tx_block_number	int8,
 	tx_method_id	bytea,
