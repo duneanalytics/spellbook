@@ -201,10 +201,10 @@ FROM (
     
     UNION ALL --synthetix genesis contracts
 
-    SELECT NULL::bytea AS creator_address, NULL::bytea AS contract_factory, address AS contract_address, 'Synthetix' AS contract_project, contract_name, '07-06-2021 00:00:00'::timestamp
-    FROM dune_user_generated.synthetix_genesis_contracts
+    SELECT NULL::bytea AS creator_address, NULL::bytea AS contract_factory, snx.contract_address AS contract_address, 'Synthetix' AS contract_project, contract_name, '07-06-2021 00:00:00'::timestamp
+    FROM dune_user_generated.synthetix_genesis_contracts snx
         WHERE address NOT IN (SELECT contract_address FROM creator_contracts)
-	AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts WHERE contract_address = address AND 'Synthetix' = contract_project) 
+	AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts gc WHERE gc.contract_address = snx.contract_address AND 'Synthetix' = contract_project) 
 	
     GROUP BY 1,2,3,4,5,6
         
