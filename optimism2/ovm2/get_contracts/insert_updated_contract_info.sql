@@ -12,7 +12,7 @@ VALUES ('11,44 * * * *', $$
     SELECT gc.creator_address
     
     FROM ovm2.get_contracts gc
-    LEFT JOIN dune_user_generated."contract_creator_address_list" cc
+    LEFT JOIN ovm2.contract_creator_address_list cc
         ON cc."creator_address" = gc.creator_address
     
     WHERE
@@ -21,7 +21,7 @@ VALUES ('11,44 * * * *', $$
         OR 
          (  (
             COALESCE(contract_name,token_symbol) IS NULL --Check if we have a contract name 
-            OR token_symbol IN ('erc20','erc721') --Check if we have a symbol now
+            OR token_symbol IN ('erc20','erc721','OTHER ERC20','OTHER ERC721','OTHER ERC1155','OTHER NFT') --Check if we have a symbol now
             )
             )
             AND ( -- Check if there's any reason to believe that we have an update
