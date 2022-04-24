@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS eth.eth_transfers (
 	tx_block_time 	timestamptz,
 	tx_block_number	int8,
 	tx_method_id	bytea,
-		PRIMARY KEY (tx_hash, tx_index)
+		PRIMARY KEY (tx_hash, trace_address)
 	);
 
 
