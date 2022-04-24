@@ -78,6 +78,7 @@ COPY erc721.tokens (contract_address, project_name) FROM stdin;
 \\x1A0a9864e6607e163bB41F831a81D518DFE1cDce	OmniChicks
 \\xba6228B6169B452778f3cca4567a6E8eD7f2d94D	TinyDoge
 \\xF5B2F191817CBadC9ecD0C61718309FBa0FdF99f	Layer Zero Punks
+\\xaCF63E56fd08970b43401492a02F6F38B6635C91	Yakuza Pandas
 \.
 
 COMMIT;
