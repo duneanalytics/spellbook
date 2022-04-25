@@ -32,10 +32,10 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x6c9fc64a53c1b71fb3f9af64d1ae3a4931a5f4e9	Uniswap V3
 \\xdead1cb30b3ca13cd67d1d6f4e2790d12484fdd8	Chainlink
 \\x03863f6ad36f1fcd908517e3c56c6b3fd3f50752	Chainlink
-\\x19ba331d6adfc46e829ea33fa2a24ee87d7a676d	EXCLUDE
+-- \\x19ba331d6adfc46e829ea33fa2a24ee87d7a676d	EXCLUDE
 \\x1e4e0e7dd2a854ea15f4ee852abb78a99c86357c	Uniswap V3
-\\x72fb15f502af58765015972a85f2c58551ef3fa1	EXCLUDE
-\\x7492ce19d83b3a0bac1bebc9706ce0df4add105f	EXCLUDE
+-- \\x72fb15f502af58765015972a85f2c58551ef3fa1	EXCLUDE
+-- \\x7492ce19d83b3a0bac1bebc9706ce0df4add105f	EXCLUDE
 \\xced01e7617bf6052a71154daa6d50d8b243f1b26	Uniswap V3
 \\xd640037fa41436326e4a0e3fd0511aad83d2345c	Xchain
 \\x1b9dfc56e38b0f92448659c114e2347bd803911c	Celer
