@@ -222,7 +222,19 @@ WITH token_extention
                      ('CHEEMS', 18, decode('eaf7b3376173df8bc0c22ad6126943cc8353c1ee', 'hex')),
                      ('TRAC', 18, decode('eddd81e0792e764501aae206eb432399a0268db5', 'hex')),
                      ('XGT', 18, decode('f1738912ae7439475712520797583ac784ea9033', 'hex')),
-                     ('ALBC', 18, decode('fb23cfd35046466fdba7f73dc2fccb5b17abf1aa', 'hex'))
+                     ('ALBC', 18, decode('fb23cfd35046466fdba7f73dc2fccb5b17abf1aa', 'hex')),
+                     ('ROOK', 18, decode('03959ac65e621e8c95d5e0f75ea96e5c03a15009', 'hex')),
+                     ('VITA', 18, decode('0939a7c3f8d37c1ce67fada4963ae7e0bd112ff3', 'hex')),
+                     ('HND', 18, decode('10010078a54396f62c96df8532dc2b4847d47ed3', 'hex')),
+                     ('COW', 18, decode('177127622c4a00f3d409b75571e12cb3c8973d3c', 'hex')),
+                     ('HUSD', 8, decode('1e37e5b504f7773460d6eb0e24d2e7c223b66ec7', 'hex')),
+                     ('MAI', 18, decode('3f56e0c36d275367b8c502090edf38289b3dea0d', 'hex')),
+                     ('MR', 18, decode('481d6104761442f162d1f7ac3dc6f98896e7a4ef', 'hex')),
+                     ('GTON', 18, decode('6ab6d61428fde76768d7b45d8bfeec19c6ef91a8', 'hex')),
+                     ('GHO', 18, decode('9913ed5c459a5f67e22366df5bbf00cd33154214', 'hex')),
+                     ('AGF', 18, decode('99c9df4bae3ae5630a146cae3fdec791ab0440c6', 'hex')),
+                     ('sGNO', 18, decode('a4ef9da5ba71cc0d2e5e877a910a37ec43420445', 'hex')),
+                     ('FLX', 18, decode('d87eaa26dcfb0c0a6160ccf8c8a01beb1c15fb00', 'hex'))
              ) as unlisted (symbol, decimals, contract_address)
     )
 
