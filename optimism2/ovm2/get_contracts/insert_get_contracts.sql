@@ -37,10 +37,11 @@ GROUP BY 1
 ) a
 FULL OUTER JOIN ovm2.contract_creator_address_list w
 ON w.creator_address = a."from"
-WHERE 
-(
-(w.project != 'EXCLUDE') OR (w.project IS NULL)
-)
+-- Placeholder if we includer logic to exclude certain contract creators
+-- WHERE 
+-- (
+-- (w.project != 'EXCLUDE') OR (w.project IS NULL)
+-- )
 
 AND 1 = (
     CASE WHEN NOT EXISTS (SELECT creators FROM creator_rows WHERE creators IS NOT NULL) THEN 1 --when no input, search everythin
