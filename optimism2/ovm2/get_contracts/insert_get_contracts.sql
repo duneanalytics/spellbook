@@ -266,7 +266,7 @@ END
 $function$;
 
 -- Get the table started
-SELECT ovm2.insert_get_contracts('07-06-2021'::timestamptz,NOW())
+SELECT ovm2.insert_get_contracts('01-01-2021'::timestamptz,NOW())
 WHERE NOT EXISTS (
     SELECT *
     FROM ovm2.get_contracts
