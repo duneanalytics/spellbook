@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS ovm2.get_contracts (
 	token_symbol text, 
 	contract_name text,
 	creator_address bytea, 
-	created_time timestamp,
+	created_time timestamptz,
 	contract_creator_if_factory bytea
 );
 
