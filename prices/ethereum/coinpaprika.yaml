@@ -2061,3 +2061,8 @@
   symbol: NFTI
   address: 0x525eF76138Bf76118d786DbedeaE5F87aaBf4a81
   decimals: 18
+- name: jpeg'd
+  id: jpeg-jpeg39d
+  symbol: JPEG
+  address: 0xe80c0cd204d654cebe8dd64a4857cab6be8345a3
+  decimals: 18
