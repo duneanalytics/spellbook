@@ -46,7 +46,7 @@ known_solver_metadata (address, environment, name) as (
                  (decode('0d2584da2f637805071f184bcfa1268ebae8a24a', 'hex'), 'barn', 'Baseline'),
                  (decode('a0044c620da7f2876da7004719b8370eb7be5e50', 'hex'), 'barn', 'MIP'),
                  (decode('da324c2f06d3544e7965767ce9ca536dcb67a660', 'hex'), 'barn', 'QuasiModo'),
-                 (decode('e33062a24149f7801a48b2675ed5111d3278f0f5', 'hex'), 'barn', '1Inch'),
+                 (decode('e33062a24149f7801a48b2675ed5111d3278f0f5', 'hex'), 'barn', '1inch'),
                  (decode('080a8b1e2f3695e179453c5e617b72a381be44b9', 'hex'), 'barn', 'ParaSwap'),
                  (decode('de786877a10dbb7eba25a4da65aecf47654f08ab', 'hex'), 'barn', '0x'),
                  (decode('dae69affe582d36f330ee1145995a53fab670962', 'hex'), 'barn', 'DexCowAgg'),
