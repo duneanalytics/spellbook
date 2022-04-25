@@ -3,7 +3,7 @@ INSERT INTO cron.job (schedule, command)
 VALUES ('11,44 * * * *', $$
  SELECT ovm2.insert_get_contracts(
         (SELECT MAX("time") FROM optimism.blocks WHERE block_time > NOW() - interval '1 week'),
-        (SELECT '07-06-2021'::timestamp ),
+        (SELECT '07-06-2021'::timestamptz ),
 	
 	
 	    (
