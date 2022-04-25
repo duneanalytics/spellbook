@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS ovm1.synthetix_genesis_contracts (
 BEGIN;
 DELETE FROM ovm1.synthetix_genesis_contracts *;
 
-COPY ovm1.synthetix_genesis_contracts (address,contract_name) FROM stdin;
+COPY ovm1.synthetix_genesis_contracts (contract_address,contract_name) FROM stdin;
 \\x0142f40c25ce1f1177ed131101fa19217396cb88	SafeDecimalMath
 \\x0b3a73ee0740b3130e40b2a6b5aaf59e7e3ef74c	Math
 \\x95a6a3f44a70172e7d50a9e28c85dfd712756b8c	AddressResolver
