@@ -3,7 +3,7 @@ INSERT INTO cron.job (schedule, command)
 VALUES ('11,44 * * * *', $$
  SELECT ovm2.insert_get_contracts(
 	(SELECT '01-01-2021'::timestamptz ), --start time
-        (SELECT MAX("time") FROM optimism.blocks WHERE block_time > NOW() - interval '1 week'), --end time (max time)
+        (SELECT MAX("time") FROM optimism.blocks WHERE "time" > NOW() - interval '1 week'), --end time (max time)
 	
 	    (
     SELECT array_agg(creator_address) FROM
@@ -16,7 +16,7 @@ VALUES ('11,44 * * * *', $$
     
     WHERE
     (
-        gc.contract_project IS NULL -- Check if we have mappings now
+        (gc.contract_project IS NULL AND cc.project IS NOT NULL) -- Check if we have mappings now
         OR 
          (  (
             COALESCE(contract_name,token_symbol) IS NULL --Check if we have a contract name 
@@ -31,7 +31,7 @@ VALUES ('11,44 * * * *', $$
                 contract_address IN (SELECT "contract_address" FROM erc721."tokens")--is it now in the erc721 table
                 )
     )
-    OR cc.project != gc."contract_project"
+    OR lower(cc.project) != lower(gc."contract_project")
     GROUP BY 1
 
     ) a
