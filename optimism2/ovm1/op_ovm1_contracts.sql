@@ -335,3 +335,4 @@ COPY ovm1.op_ovm1_contracts (contract_address,contract_project,contract_name,erc
 
 CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS op_ovm1_contracts_addr_uniq_idx ON ovm1.op_ovm1_contracts (contract_address);
 CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS op_ovm1_contracts_proj_addr_uniq_idx ON ovm1.op_ovm1_contracts (contract_address,contract_project);
+CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS op_ovm1_contracts_time_addr_uniq_idx ON ovm1.op_ovm1_contracts (contract_address,created_time);
