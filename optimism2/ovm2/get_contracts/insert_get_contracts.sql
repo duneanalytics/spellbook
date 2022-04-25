@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION ovm2.insert_get_contracts(start_blocktime timestamp, end_blocktime timestamp, creator_list bytea[] = NULL::bytea[]) RETURNS integer
+CREATE OR REPLACE FUNCTION ovm2.insert_get_contracts(start_blocktime timestamptz, end_blocktime timestamptz, creator_list bytea[] = NULL::bytea[]) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -201,7 +201,7 @@ FROM (
     
     UNION ALL --synthetix genesis contracts
 
-    SELECT NULL::bytea AS creator_address, NULL::bytea AS contract_factory, snx.contract_address AS contract_address, 'Synthetix' AS contract_project, contract_name, '07-06-2021 00:00:00'::timestamp
+    SELECT NULL::bytea AS creator_address, NULL::bytea AS contract_factory, snx.contract_address AS contract_address, 'Synthetix' AS contract_project, contract_name, '07-06-2021 00:00:00'::timestamptz
     FROM ovm1.synthetix_genesis_contracts snx
         WHERE address NOT IN (SELECT contract_address FROM creator_contracts)
 	AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts gc WHERE gc.contract_address = snx.contract_address AND 'Synthetix' = contract_project) 
@@ -229,7 +229,7 @@ FULL OUTER JOIN nft_tokens nft
 )
 
 SELECT c.contract_address, INITCAP(COALESCE(c.contract_project,ovm1c.contract_project)) AS contract_project ,c.erc20_symbol, COALESCE(c.contract_name) AS contract_name,
-COALESCE(c.creator_address,ovm1c.creator_address) AS creator_address, COALESCE(c.created_time,ovm1c.created_time::timestamp) AS created_time, contract_factory AS contract_creator_if_factory
+COALESCE(c.creator_address,ovm1c.creator_address) AS creator_address, COALESCE(c.created_time,ovm1c.created_time::timestamptz) AS created_time, contract_factory AS contract_creator_if_factory
 FROM (
 --grab the first non-null value for each (i.e. if we have the contract via both contract mapping and optimism.contracts)
     SELECT 
@@ -266,7 +266,7 @@ END
 $function$;
 
 -- Get the table started
-SELECT ovm2.insert_get_contracts('07-06-2021'::timestamp,NOW())
+SELECT ovm2.insert_get_contracts('07-06-2021'::timestamptz,NOW())
 WHERE NOT EXISTS (
     SELECT *
     FROM ovm2.get_contracts
