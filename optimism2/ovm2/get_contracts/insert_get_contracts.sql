@@ -180,7 +180,9 @@ FROM (
 
     UNION ALL --other decoded contracts
     SELECT NULL::bytea AS creator_address, NULL::bytea AS contract_factory, "address" AS contract_address, namespace AS project, name, created_at AS contract_name
-    FROM optimism."contracts"
+    FROM optimism."contracts" oc
+	LEFT JOIN creator_contracts cc
+            ON oc."address" = cc.contract_address
     WHERE "address" NOT IN (SELECT contract_address FROM creator_contracts)-- WHERE address IS NOT NULL)
 	AND 1 = ( --1 if we're re-running, 0 if it already exists
                 CASE
@@ -196,7 +198,7 @@ FROM (
     
     SELECT creator_address::bytea, NULL::bytea AS contract_factory, "contract_address","contract_project" AS project,"contract_name" AS name, created_time::timestamptz FROM ovm1.op_ovm1_contracts d
     WHERE contract_address NOT IN (SELECT contract_address FROM creator_contracts)
-	AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts gc WHERE gc.contract_address = d.address AND gc.contract_name = d.contract_name) 
+	AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts gc WHERE gc.contract_address = d.contract_address AND gc.contract_name = d.contract_name) 
     GROUP BY 1,2,3,4,5,6
     
     UNION ALL --synthetix genesis contracts
