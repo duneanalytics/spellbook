@@ -1,4 +1,4 @@
-CREATE TABLE dune_user_generated.klp_data (liquidity, token_0, token_1) AS
+CREATE TABLE keep3r.klp_data (liquidity, token_0, token_1) AS
 VALUES
 	(
 		'0xfbba1784163212e7b639ed9e434e3aed48036b34' :: VARCHAR,

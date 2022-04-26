@@ -1,4 +1,4 @@
-CREATE TABLE dune_user_generated.job_data (job, job_name) AS
+CREATE TABLE keep3r.job_data (job, job_name) AS
 VALUES (
 		'0x5d469e1ef75507b0e0439667ae45e280b9d81b9c'::VARCHAR,
 		'V0-MakerDAOUpkeep'::VARCHAR

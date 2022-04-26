@@ -1,4 +1,4 @@
-CREATE TABLE dune_user_generated.token_data (address, symbol) AS
+CREATE TABLE keep3r.token_data (address, symbol) AS
 VALUES (
 		'0x1ceb5cb57c4d4e2b2433641b95dd330a33185a44'::VARCHAR,
 		'KP3R'::VARCHAR

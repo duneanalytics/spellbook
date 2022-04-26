@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW dune_user_generated.view_job_migrations AS (
+CREATE OR REPLACE VIEW keep3r.view_job_migrations AS (
 	SELECT evt_block_time AS timestamp,
 		'0x' || encode(evt_tx_hash, 'hex') AS tx_hash,
 		evt_index + s.step AS evt_index,

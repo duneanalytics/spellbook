@@ -1,17 +1,17 @@
 CREATE
-OR REPLACE VIEW dune_user_generated.view_job_liquidity_log AS (
+OR REPLACE VIEW keep3r.view_job_liquidity_log AS (
   with df as (
     select
       *
     from
-      dune_user_generated.view_job_liquidities
+      keep3r.view_job_liquidities
     union
     select
       migs.*,
       liqs.token as token,
       null as amount
     from
-      dune_user_generated.view_job_migrations migs
+      keep3r.view_job_migrations migs
       inner join (
         -- generates 1 extra line per token of keep3r
         select
@@ -19,7 +19,7 @@ OR REPLACE VIEW dune_user_generated.view_job_liquidity_log AS (
           job,
           token
         from
-          dune_user_generated.view_job_liquidities
+          keep3r.view_job_liquidities
       ) liqs on migs.keep3r = liqs.keep3r
   ),
   migration_out as (
