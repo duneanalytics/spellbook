@@ -2,7 +2,9 @@ CREATE OR REPLACE VIEW keep3r_network.view_work_tx as (
     WITH work_txs as (
       select evt_block_time as timestamp,
         evt_tx_hash as tx_hash,
+        '0x' || encode(contract_address, 'hex') as keep3r,
         '0x' || encode("_job", 'hex') as job,
+        '0x' || encode("_keeper", 'hex') as keeper,
         _amount
       from (
           SELECT *
@@ -34,9 +36,11 @@ CREATE OR REPLACE VIEW keep3r_network.view_work_tx as (
       GROUP BY timestamp
     )
     select timestamp,
+    '0x' || encode(tx_hash, 'hex') as tx_hash,
       'WorkTx' as event,
+      keep3r,
       job,
-      '0x' || encode(tx_hash, 'hex') as tx_hash,
+      keeper,
       gas_price / 1e9 as gas_price,
       base_fee_per_gas / 1e9 as base_fee_per_gas,
       gas_used

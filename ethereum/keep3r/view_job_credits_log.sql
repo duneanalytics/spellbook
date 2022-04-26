@@ -1,5 +1,6 @@
 CREATE OR REPLACE VIEW keep3r_network.view_job_credits_log AS (
 	WITH work_evt AS (
+		
 				SELECT evt_block_time AS timestamp,
 					'0x' || encode(evt_tx_hash, 'hex') AS tx_hash,
 					evt_index,
@@ -40,9 +41,12 @@ CREATE OR REPLACE VIEW keep3r_network.view_job_credits_log AS (
 			SELECT *,
 				NULL AS period_credits
 			FROM work_evt
+
 			UNION
+
 			SELECT *
 			FROM reward_evt
+
 			UNION
 			SELECT timestamp,
 				tx_hash,
@@ -55,4 +59,5 @@ CREATE OR REPLACE VIEW keep3r_network.view_job_credits_log AS (
 				null as amount,
 				null as period_credits
 			FROM keep3r_network.view_job_migrations
+
 );
