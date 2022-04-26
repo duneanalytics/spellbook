@@ -29,6 +29,13 @@ WITH rows AS (
         evt_index,
         trade_id
     )
+	
+    WITH limit_orders AS ( --limit order trades use 1inch, but do not route to a DEX
+        SELECT evt_tx_hash FROM oneinch."LimitOrderProtocol_evt_OrderFilled"
+        WHERE evt_block_time BETWEEN start_ts AND end_ts
+	)
+	
+
     SELECT
         dexs.block_time,
         erc20a.symbol AS token_a_symbol,
@@ -60,8 +67,8 @@ WITH rows AS (
 	   SELECT
             oiv.block_time AS block_time,
             '1inch' AS project,
-            oiv.version AS version,
-            'Aggregator' AS category,
+            CASE WHEN is_limit_order = 1 THEN oiv.version || ' - Limit Order' ELSE oiv.version END AS version,
+	        CASE WHEN is_limit_order = 1 THEN 'DEX' ELSE 'Aggregator' END AS category,
             tx."from" AS trader_a,
             NULL::bytea AS trader_b,
             --Token a is what was received 
@@ -76,15 +83,21 @@ WITH rows AS (
             NULL::integer[] AS trace_address,
             oiv.evt_index
 	    
-        FROM ( --pulled from https://github.com/duneanalytics/abstractions/blob/master/ethereum/dex/trades/insert_1inch.sql
-		--v3 router
-		SELECT "srcToken" as from_token, "dstToken" as to_token, "spentAmount" as from_amount, "returnAmount" as to_amount, evt_tx_hash as tx_hash, evt_block_time as block_time, NULL::integer[] as call_trace_address, evt_index, contract_address, '3' as version FROM oneinch."AggregationRouterV3_evt_Swapped"
-			WHERE evt_block_time BETWEEN start_ts AND end_ts
-		UNION ALL
-		--v4 router
-		SELECT decode(substring("desc"->>'srcToken' FROM 3), 'hex') as from_token, decode(substring("desc"->>'dstToken' FROM 3), 'hex') as to_token, "output_spentAmount" as from_amount, "output_returnAmount" as to_amount,
-			call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address, ROW_NUMBER() OVER(PARTITION BY call_tx_hash) as evt_index, contract_address, '4' as version FROM oneinch."AggregationRouterV4_call_swap" where call_success
-			AND call_block_time BETWEEN start_ts AND end_ts
+        FROM ( 
+		SELECT
+		from_token, to_token, from_amount, to_amount, tx_hash, block_time, call_trace_address, evt_index, contract_address, version,
+		CASE WHEN tx_hash IN (SELECT evt_tx_hash FROM limit_orders) THEN 1 ELSE 0 END AS is_limit_order
+		FROM (
+			--pulled from https://github.com/duneanalytics/abstractions/blob/master/ethereum/dex/trades/insert_1inch.sql
+			--v3 router
+			SELECT "srcToken" as from_token, "dstToken" as to_token, "spentAmount" as from_amount, "returnAmount" as to_amount, evt_tx_hash as tx_hash, evt_block_time as block_time, NULL::integer[] as call_trace_address, evt_index, contract_address, '3' as version FROM oneinch."AggregationRouterV3_evt_Swapped"
+				WHERE evt_block_time BETWEEN start_ts AND end_ts
+			UNION ALL
+			--v4 router
+			SELECT decode(substring("desc"->>'srcToken' FROM 3), 'hex') as from_token, decode(substring("desc"->>'dstToken' FROM 3), 'hex') as to_token, "output_spentAmount" as from_amount, "output_returnAmount" as to_amount,
+				call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address, ROW_NUMBER() OVER(PARTITION BY call_tx_hash) as evt_index, contract_address, '4' as version FROM oneinch."AggregationRouterV4_call_swap" where call_success
+				AND call_block_time BETWEEN start_ts AND end_ts
+			) oi_raw
 		) oiv
 	
 	INNER join optimism.transactions tx on tx.hash = oiv.tx_hash
@@ -125,7 +138,10 @@ WITH rows AS (
         token_a_amount = EXCLUDED.token_a_amount,
         token_b_amount = EXCLUDED.token_b_amount,
         token_a_symbol = EXCLUDED.token_a_symbol,
-        token_b_symbol = EXCLUDED.token_b_symbol
+	token_b_symbol = EXCLUDED.token_b_symbol,
+        version = EXCLUDED.version,
+        category = EXCLUDED.category
+	
     RETURNING 1
 )
 SELECT count(*) INTO r from rows;
