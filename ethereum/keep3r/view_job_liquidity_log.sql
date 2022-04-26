@@ -1,5 +1,4 @@
-CREATE
-OR REPLACE VIEW keep3r.view_job_liquidity_log AS (
+CREATE OR REPLACE VIEW keep3r.view_job_liquidity_log AS (
   with df as (
     select
       *
