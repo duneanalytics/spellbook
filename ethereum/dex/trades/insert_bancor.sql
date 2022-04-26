@@ -59,7 +59,7 @@ WITH rows AS (
         SELECT
             block_time,
             'Bancor Network' AS project,
-            NULL AS version,
+            version::text AS version,
             'DEX' AS category,
             trader AS trader_a,
             NULL::bytea AS trader_b,
