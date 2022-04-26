@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION keep3r.fn_calculate_credits(_tbl regclass) RETURNS SETOF keep3r.type_credits_accountance AS $func$ BEGIN RETURN QUERY EXECUTE $$ WITH df as (
+CREATE OR REPLACE FUNCTION keep3r_network.fn_calculate_credits(_tbl regclass) RETURNS SETOF keep3r_network.type_credits_accountance AS $func$ BEGIN RETURN QUERY EXECUTE $$ WITH df as (
         SELECT timestamp::TIMESTAMP,
             evt_index::INTEGER,
             event::VARCHAR,

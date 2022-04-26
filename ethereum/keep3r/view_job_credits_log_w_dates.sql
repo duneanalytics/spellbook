@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW keep3r.view_job_credits_log_w_dates AS (
+CREATE OR REPLACE VIEW keep3r_network.view_job_credits_log_w_dates AS (
 		SELECT COALESCE("timestamp", s.dd) AS timestamp,
 			tx_hash,
 			COALESCE(evt_index, NULL) AS evt_index,
@@ -9,7 +9,7 @@ CREATE OR REPLACE VIEW keep3r.view_job_credits_log_w_dates AS (
 			amount,
 			period_credits
 		FROM (
-				keep3r.view_job_credits_log AS df
+				keep3r_network.view_job_credits_log AS df
 				RIGHT JOIN (
 					SELECT job,
 						dd
@@ -25,7 +25,7 @@ CREATE OR REPLACE VIEW keep3r.view_job_credits_log_w_dates AS (
 							SELECT job,
 								min("timestamp") AS min_timestamp,
 								max("timestamp") AS max_timestamp
-							FROM keep3r.view_job_credits_log
+							FROM keep3r_network.view_job_credits_log
 							GROUP BY job
 						) AS df ON dd >= min_timestamp
 						AND dd < max_timestamp + '5 days'::INTERVAL

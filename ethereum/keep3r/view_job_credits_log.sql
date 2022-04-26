@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW keep3r.view_job_credits_log AS (
+CREATE OR REPLACE VIEW keep3r_network.view_job_credits_log AS (
 	WITH work_evt AS (
 				SELECT evt_block_time AS timestamp,
 					'0x' || encode(evt_tx_hash, 'hex') AS tx_hash,
@@ -54,5 +54,5 @@ CREATE OR REPLACE VIEW keep3r.view_job_credits_log AS (
 				'0x1ceb5cb57c4d4e2b2433641b95dd330a33185a44' AS token,
 				null as amount,
 				null as period_credits
-			FROM keep3r.view_job_migrations
+			FROM keep3r_network.view_job_migrations
 );

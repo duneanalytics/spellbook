@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW keep3r.view_job_log AS (
+CREATE OR REPLACE VIEW keep3r_network.view_job_log AS (
 	(select
 	timestamp,
 	tx_hash,
@@ -10,10 +10,10 @@ CREATE OR REPLACE VIEW keep3r.view_job_log AS (
 	token,
 	amount,
 	null as period_credits
-	from keep3r.view_job_liquidity_log
+	from keep3r_network.view_job_liquidity_log
 
 	union all
-	select * from keep3r.view_job_credits_log
+	select * from keep3r_network.view_job_credits_log
 
 	)
 	order by timestamp, evt_index

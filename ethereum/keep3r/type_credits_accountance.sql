@@ -1,4 +1,4 @@
-CREATE TYPE keep3r.type_credits_accountance AS (
+CREATE TYPE keep3r_network.type_credits_accountance AS (
     timestamp TIMESTAMP,
     evt_index INTEGER,
     event VARCHAR,

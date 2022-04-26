@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW keep3r.view_job_liquidities AS
+CREATE OR REPLACE VIEW keep3r_network.view_job_liquidities AS
 (
   select
   add."evt_block_time" as TIMESTAMP,

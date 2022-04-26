@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW keep3r.view_jobs AS (
+CREATE OR REPLACE VIEW keep3r_network.view_jobs AS (
   select
   '0x' || encode(keep3r,'hex') keep3r,
   '0x' || encode(job,'hex') job,
