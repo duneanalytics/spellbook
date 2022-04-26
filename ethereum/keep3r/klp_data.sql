@@ -1,0 +1,12 @@
+CREATE TABLE dune_user_generated.klp_data (liquidity, token_0, token_1) AS
+VALUES
+	(
+		'0xfbba1784163212e7b639ed9e434e3aed48036b34' :: VARCHAR,
+		'KP3R' :: VARCHAR,
+		'WETH' :: VARCHAR
+	),
+	(
+		'0x3f6740b5898c5d3650ec6eace9a649ac791e44d7' :: VARCHAR,
+		'KP3R' :: VARCHAR,
+		'WETH' :: VARCHAR
+	);
