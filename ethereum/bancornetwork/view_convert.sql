@@ -26,6 +26,7 @@ SELECT "_smartToken" AS smart_token_address,
        "_toAmount" AS target_token_amount_raw,
        "_trader" AS trader,
        s.contract_address,
+       null as version,
        evt_tx_hash AS tx_hash,
        evt_index,
        evt_block_time AS block_time
@@ -46,6 +47,7 @@ SELECT
     trade."targetAmount" AS target_token_amount_raw,
     trade."trader" AS trader,
     trade."contract_address",
+    3 as version,
     evt_tx_hash AS tx_hash,
     evt_index,
     evt_block_time AS block_time
