@@ -95,22 +95,32 @@ GROUP BY 1,2
     creator_contracts AS
     (
     SELECT
-    con.creator_address, con.contract_factory, contract_address, project, con.block_time AS created_time
+    con.creator_address, con.contract_factory, contract_address, project, con.block_time AS created_time,
+	    -- Check if the contract is an immediate self-destruct contract
+	    CASE WHEN
+	    	EXISTS (
+			SELECT 1 FROM optimism.traces sd
+                        WHERE con.tx_hash = sd.tx_hash
+                        AND con.trace_element = sd.trace_address[1]
+                        AND sd."type" = 'suicide'
+			AND sd."block_time" >= start_blocktime
+                	AND sd."block_time" < end_blocktime
+			)
+	   THEN 1 ELSE 0 END AS is_self_destruct 
     FROM (
         WITH base_level AS (
-            SELECT "from" AS creator_address, NULL::bytea AS contract_factory, "address" AS contract_address, "block_time"
+            SELECT "from" AS creator_address, NULL::bytea AS contract_factory, "address" AS contract_address, "block_time", r.tx_hash, trace_address[1] AS trace_element
             FROM optimism.traces r
             WHERE "success" AND "tx_success"
             AND r."type" = 'create'
 		AND r."block_time" >= start_blocktime
-                AND r."block_time" < end_blocktime 
-            )
+                AND r."block_time" < end_blocktime
         , second_level AS (
         SELECT
         COALESCE(b1.creator_address,b.creator_address) AS creator_address,
             CASE WHEN b1.creator_address IS NULL THEN NULL
             ELSE b.creator_address END AS contract_factory
-        ,b.contract_address, b.block_time
+        ,b.contract_address, b.block_time, b.tx_hash, trace_address[1] AS trace_element
             FROM base_level b
             LEFT JOIN base_level b1
                 ON b.creator_address = b1.contract_address
@@ -120,7 +130,7 @@ GROUP BY 1,2
         COALESCE(b1.creator_address,b.creator_address) AS creator_address,
         CASE WHEN b1.creator_address IS NULL THEN b.contract_factory
             ELSE b.creator_address END AS contract_factory
-        ,b.contract_address, b.block_time
+        ,b.contract_address, b.block_time, b.tx_hash, trace_address[1] AS trace_element
             FROM second_level b
             LEFT JOIN base_level b1
                 ON b.creator_address = b1.contract_address
@@ -131,7 +141,7 @@ GROUP BY 1,2
         COALESCE(b1.creator_address,b.creator_address) AS creator_address,
         CASE WHEN b1.creator_address IS NULL THEN b.contract_factory
             ELSE b.creator_address END AS contract_factory
-        ,b.contract_address, b.block_time
+        ,b.contract_address, b.block_time, b.tx_hash, trace_address[1] AS trace_element
             FROM third_level b
             LEFT JOIN base_level b1
                 ON b.creator_address = b1.contract_address
@@ -142,7 +152,7 @@ GROUP BY 1,2
         COALESCE(b1.creator_address,b.creator_address) AS creator_address,
         CASE WHEN b1.creator_address IS NULL THEN b.contract_factory
             ELSE b.creator_address END AS contract_factory
-        ,b.contract_address, b.block_time
+        ,b.contract_address, b.block_time, b.tx_hash, trace_address[1] AS trace_element
             FROM fourth_level b
             LEFT JOIN base_level b1
                 ON b.creator_address = b1.contract_address
@@ -232,7 +242,7 @@ FULL OUTER JOIN nft_tokens nft
 )
 
 SELECT c.contract_address, INITCAP(COALESCE(c.contract_project,ovm1c.contract_project)) AS contract_project ,c.erc20_symbol, COALESCE(c.contract_name) AS contract_name,
-COALESCE(c.creator_address,ovm1c.creator_address) AS creator_address, COALESCE(c.created_time,ovm1c.created_time::timestamptz) AS created_time, contract_factory AS contract_creator_if_factory
+COALESCE(c.creator_address,ovm1c.creator_address) AS creator_address, COALESCE(c.created_time,ovm1c.created_time::timestamptz) AS created_time, contract_factory AS contract_creator_if_factory, is_self_destruct
 FROM (
 --grab the first non-null value for each (i.e. if we have the contract via both contract mapping and optimism.contracts)
     SELECT 
@@ -242,7 +252,8 @@ FROM (
     (ARRAY_AGG(contract_name) FILTER (WHERE contract_name IS NOT NULL))[1] AS contract_name,
     (ARRAY_AGG(creator_address) FILTER (WHERE creator_address IS NOT NULL))[1] AS creator_address,
     (ARRAY_AGG(created_time) FILTER (WHERE created_time IS NOT NULL))[1] AS created_time,
-    (ARRAY_AGG(contract_factory) FILTER (WHERE contract_factory IS NOT NULL))[1] AS contract_factory
+    (ARRAY_AGG(contract_factory) FILTER (WHERE contract_factory IS NOT NULL))[1] AS contract_factory,
+	(ARRAY_AGG(is_self_destruct) FILTER (WHERE is_self_destruct IS NOT NULL))[1] AS is_self_destruct,
 
     FROM get_contracts
     WHERE contract_address IS NOT NULL
@@ -260,7 +271,8 @@ FROM (
 	  creator_address = EXCLUDED.creator_address,
 	  created_time = EXCLUDED.created_time,
 	  contract_creator_if_factory = EXCLUDED.contract_creator_if_factory
-
+	is_self_destruct = EXCLUDED.is_self_destruct
+	
 	RETURNING 1
 )
 SELECT count(*) INTO r from rows;
