@@ -214,14 +214,14 @@ FROM (
                 WHEN cc.creator_address IN (SELECT creators FROM creator_rows) THEN 1--when input, limit to these contracts (i.e. updated mapping)
                 ELSE 0 END
                 )
-    GROUP BY 1,2,3,4,5,6
+    GROUP BY 1,2,3,4,5,6,7
     
     UNION ALL --ovm 1.0 contracts
     
     SELECT creator_address::bytea, NULL::bytea AS contract_factory, "contract_address","contract_project" AS project,"contract_name" AS name, created_time::timestamptz  AS created_time, false AS is_self_destruct FROM ovm1.op_ovm1_contracts d
     WHERE contract_address NOT IN (SELECT contract_address FROM creator_contracts)
 	AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts gc WHERE gc.contract_address = d.contract_address AND gc.contract_name = d.contract_name) 
-    GROUP BY 1,2,3,4,5,6
+    GROUP BY 1,2,3,4,5,6,7
     
     UNION ALL --synthetix genesis contracts
 
@@ -230,7 +230,7 @@ FROM (
         WHERE address NOT IN (SELECT contract_address FROM creator_contracts)
 	AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts gc WHERE gc.contract_address = snx.contract_address AND 'Synthetix' = contract_project) 
 	
-    GROUP BY 1,2,3,4,5,6
+    GROUP BY 1,2,3,4,5,6,7
         
     UNION ALL --other missing genesis contracts
     
