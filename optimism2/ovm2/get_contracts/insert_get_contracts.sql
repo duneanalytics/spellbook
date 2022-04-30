@@ -106,7 +106,7 @@ GROUP BY 1,2
 			AND sd."block_time" >= start_blocktime
                 	AND sd."block_time" < end_blocktime
 			)
-	   THEN 1 ELSE 0 END AS is_self_destruct 
+	   THEN true ELSE false END AS is_self_destruct 
     FROM (
         WITH base_level AS (
             SELECT "from" AS creator_address, NULL::bytea AS contract_factory, "address" AS contract_address, "block_time", r.tx_hash, trace_address[1] AS trace_element
@@ -201,7 +201,7 @@ FROM (
                 )
 
     UNION ALL --other decoded contracts
-    SELECT NULL::bytea AS creator_address, NULL::bytea AS contract_factory, "address" AS contract_address, namespace AS project, name, created_at  AS created_time, 0 AS is_self_destruct
+    SELECT NULL::bytea AS creator_address, NULL::bytea AS contract_factory, "address" AS contract_address, namespace AS project, name, created_at  AS created_time, false AS is_self_destruct
     FROM optimism."contracts" oc
 	LEFT JOIN creator_contracts cc
             ON oc."address" = cc.contract_address
@@ -218,14 +218,14 @@ FROM (
     
     UNION ALL --ovm 1.0 contracts
     
-    SELECT creator_address::bytea, NULL::bytea AS contract_factory, "contract_address","contract_project" AS project,"contract_name" AS name, created_time::timestamptz  AS created_time, 0 AS is_self_destruct FROM ovm1.op_ovm1_contracts d
+    SELECT creator_address::bytea, NULL::bytea AS contract_factory, "contract_address","contract_project" AS project,"contract_name" AS name, created_time::timestamptz  AS created_time, false AS is_self_destruct FROM ovm1.op_ovm1_contracts d
     WHERE contract_address NOT IN (SELECT contract_address FROM creator_contracts)
 	AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts gc WHERE gc.contract_address = d.contract_address AND gc.contract_name = d.contract_name) 
     GROUP BY 1,2,3,4,5,6
     
     UNION ALL --synthetix genesis contracts
 
-    SELECT NULL::bytea AS creator_address, NULL::bytea AS contract_factory, snx.contract_address AS contract_address, 'Synthetix' AS contract_project, contract_name, '07-06-2021 00:00:00'::timestamptz AS created_time, 0 AS is_self_destruct
+    SELECT NULL::bytea AS creator_address, NULL::bytea AS contract_factory, snx.contract_address AS contract_address, 'Synthetix' AS contract_project, contract_name, '07-06-2021 00:00:00'::timestamptz AS created_time, false AS is_self_destruct
     FROM ovm1.synthetix_genesis_contracts snx
         WHERE address NOT IN (SELECT contract_address FROM creator_contracts)
 	AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts gc WHERE gc.contract_address = snx.contract_address AND 'Synthetix' = contract_project) 
@@ -234,7 +234,7 @@ FROM (
         
     UNION ALL --other missing genesis contracts
     
-    SELECT NULL::bytea AS creator_address, NULL::bytea AS contract_factory, contract_address::bytea, contract_project::text, contract_name, '07-06-2021 00:00:00'::timestamptz AS created_time, 0 AS is_self_destruct
+    SELECT NULL::bytea AS creator_address, NULL::bytea AS contract_factory, contract_address::bytea, contract_project::text, contract_name, '07-06-2021 00:00:00'::timestamptz AS created_time, false AS is_self_destruct
         FROM (
             values
             ('\x8be60b5031c0686e48a079c81822173bfa1268da','Synthetix',NULL,NULL)
