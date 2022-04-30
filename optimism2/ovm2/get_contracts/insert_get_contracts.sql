@@ -120,7 +120,7 @@ GROUP BY 1,2
         COALESCE(b1.creator_address,b.creator_address) AS creator_address,
             CASE WHEN b1.creator_address IS NULL THEN NULL
             ELSE b.creator_address END AS contract_factory
-        ,b.contract_address, b.block_time, b1.tx_hash, b1.trace_element
+        ,b.contract_address, b.block_time, b.tx_hash, b.trace_element
             FROM base_level b
             LEFT JOIN base_level b1
                 ON b.creator_address = b1.contract_address
@@ -130,7 +130,7 @@ GROUP BY 1,2
         COALESCE(b1.creator_address,b.creator_address) AS creator_address,
         CASE WHEN b1.creator_address IS NULL THEN b.contract_factory
             ELSE b.creator_address END AS contract_factory
-        ,b.contract_address, b.block_time, b1.tx_hash, b1.trace_element
+        ,b.contract_address, b.block_time, b.tx_hash, b.trace_element
             FROM second_level b
             LEFT JOIN base_level b1
                 ON b.creator_address = b1.contract_address
@@ -141,7 +141,7 @@ GROUP BY 1,2
         COALESCE(b1.creator_address,b.creator_address) AS creator_address,
         CASE WHEN b1.creator_address IS NULL THEN b.contract_factory
             ELSE b.creator_address END AS contract_factory
-        ,b.contract_address, b.block_time, b1.tx_hash, b1.trace_element
+        ,b.contract_address, b.block_time, b.tx_hash, b.trace_element
             FROM third_level b
             LEFT JOIN base_level b1
                 ON b.creator_address = b1.contract_address
@@ -152,7 +152,7 @@ GROUP BY 1,2
         COALESCE(b1.creator_address,b.creator_address) AS creator_address,
         CASE WHEN b1.creator_address IS NULL THEN b.contract_factory
             ELSE b.creator_address END AS contract_factory
-        ,b.contract_address, b.block_time, b1.tx_hash, b1.trace_element
+        ,b.contract_address, b.block_time, b.tx_hash, b.trace_element
             FROM fourth_level b
             LEFT JOIN base_level b1
                 ON b.creator_address = b1.contract_address
