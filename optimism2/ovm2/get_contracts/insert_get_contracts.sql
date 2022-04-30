@@ -120,7 +120,7 @@ GROUP BY 1,2
         COALESCE(b1.creator_address,b.creator_address) AS creator_address,
             CASE WHEN b1.creator_address IS NULL THEN NULL
             ELSE b.creator_address END AS contract_factory
-        ,b.contract_address, b.block_time, b.tx_hash, trace_address[1] AS trace_element
+        ,b.contract_address, b.block_time, b1.tx_hash, b1.trace_element
             FROM base_level b
             LEFT JOIN base_level b1
                 ON b.creator_address = b1.contract_address
@@ -130,7 +130,7 @@ GROUP BY 1,2
         COALESCE(b1.creator_address,b.creator_address) AS creator_address,
         CASE WHEN b1.creator_address IS NULL THEN b.contract_factory
             ELSE b.creator_address END AS contract_factory
-        ,b.contract_address, b.block_time, b.tx_hash, trace_address[1] AS trace_element
+        ,b.contract_address, b.block_time, b1.tx_hash, b1.trace_element
             FROM second_level b
             LEFT JOIN base_level b1
                 ON b.creator_address = b1.contract_address
@@ -141,7 +141,7 @@ GROUP BY 1,2
         COALESCE(b1.creator_address,b.creator_address) AS creator_address,
         CASE WHEN b1.creator_address IS NULL THEN b.contract_factory
             ELSE b.creator_address END AS contract_factory
-        ,b.contract_address, b.block_time, b.tx_hash, trace_address[1] AS trace_element
+        ,b.contract_address, b.block_time, b1.tx_hash, b1.trace_element
             FROM third_level b
             LEFT JOIN base_level b1
                 ON b.creator_address = b1.contract_address
@@ -152,7 +152,7 @@ GROUP BY 1,2
         COALESCE(b1.creator_address,b.creator_address) AS creator_address,
         CASE WHEN b1.creator_address IS NULL THEN b.contract_factory
             ELSE b.creator_address END AS contract_factory
-        ,b.contract_address, b.block_time, b.tx_hash, trace_address[1] AS trace_element
+        ,b.contract_address, b.block_time, b1.tx_hash, b1.trace_element
             FROM fourth_level b
             LEFT JOIN base_level b1
                 ON b.creator_address = b1.contract_address
@@ -174,10 +174,10 @@ COALESCE(c.contract_address,erc20.contract_address,snx.address) AS contract_addr
         INITCAP(REPLACE(c.project,'_',' '))
     END AS contract_project,
     COALESCE(erc20.symbol,nft.symbol) AS erc20_symbol, COALESCE(c.contract_name,snx.contract_name) AS contract_name, creator_address,
-    created_time
+    created_time, is_self_destruct
     
 FROM (
-    SELECT cc.creator_address, contract_factory, cc.contract_address, COALESCE(cc.project, oc.namespace) AS project, oc.name AS contract_name, cc.created_time FROM creator_contracts cc
+    SELECT cc.creator_address, contract_factory, cc.contract_address, COALESCE(cc.project, oc.namespace) AS project, oc.name AS contract_name, cc.created_time, is_self_destruct FROM creator_contracts cc
         LEFT JOIN optimism."contracts" oc
             ON oc."address" = cc.contract_address
 	WHERE 1 = ( --1 if we're re-running, 0 if it already exists
@@ -201,7 +201,7 @@ FROM (
                 )
 
     UNION ALL --other decoded contracts
-    SELECT NULL::bytea AS creator_address, NULL::bytea AS contract_factory, "address" AS contract_address, namespace AS project, name, created_at AS contract_name
+    SELECT NULL::bytea AS creator_address, NULL::bytea AS contract_factory, "address" AS contract_address, namespace AS project, name, created_at  AS created_time, 0 AS is_self_destruct
     FROM optimism."contracts" oc
 	LEFT JOIN creator_contracts cc
             ON oc."address" = cc.contract_address
@@ -218,14 +218,14 @@ FROM (
     
     UNION ALL --ovm 1.0 contracts
     
-    SELECT creator_address::bytea, NULL::bytea AS contract_factory, "contract_address","contract_project" AS project,"contract_name" AS name, created_time::timestamptz FROM ovm1.op_ovm1_contracts d
+    SELECT creator_address::bytea, NULL::bytea AS contract_factory, "contract_address","contract_project" AS project,"contract_name" AS name, created_time::timestamptz  AS created_time, 0 AS is_self_destruct FROM ovm1.op_ovm1_contracts d
     WHERE contract_address NOT IN (SELECT contract_address FROM creator_contracts)
 	AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts gc WHERE gc.contract_address = d.contract_address AND gc.contract_name = d.contract_name) 
     GROUP BY 1,2,3,4,5,6
     
     UNION ALL --synthetix genesis contracts
 
-    SELECT NULL::bytea AS creator_address, NULL::bytea AS contract_factory, snx.contract_address AS contract_address, 'Synthetix' AS contract_project, contract_name, '07-06-2021 00:00:00'::timestamptz
+    SELECT NULL::bytea AS creator_address, NULL::bytea AS contract_factory, snx.contract_address AS contract_address, 'Synthetix' AS contract_project, contract_name, '07-06-2021 00:00:00'::timestamptz AS created_time, 0 AS is_self_destruct
     FROM ovm1.synthetix_genesis_contracts snx
         WHERE address NOT IN (SELECT contract_address FROM creator_contracts)
 	AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts gc WHERE gc.contract_address = snx.contract_address AND 'Synthetix' = contract_project) 
@@ -234,7 +234,7 @@ FROM (
         
     UNION ALL --other missing genesis contracts
     
-    SELECT NULL::bytea AS creator_address, NULL::bytea AS contract_factory, contract_address::bytea, contract_project::text, contract_name, '07-06-2021 00:00:00'
+    SELECT NULL::bytea AS creator_address, NULL::bytea AS contract_factory, contract_address::bytea, contract_project::text, contract_name, '07-06-2021 00:00:00'::timestamptz AS created_time, 0 AS is_self_destruct
         FROM (
             values
             ('\x8be60b5031c0686e48a079c81822173bfa1268da','Synthetix',NULL,NULL)
