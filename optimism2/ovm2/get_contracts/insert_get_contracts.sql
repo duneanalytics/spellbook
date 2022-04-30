@@ -168,11 +168,9 @@ GROUP BY 1,2
     )
 
 SELECT
-COALESCE(c.contract_address,erc20.contract_address,snx.address) AS contract_address,
+COALESCE(c.contract_address,erc20.contract_address) AS contract_address,
     contract_factory,
-    CASE WHEN snx.address IS NOT NULL THEN 'Synthetix' ELSE
-        INITCAP(REPLACE(c.project,'_',' '))
-    END AS contract_project,
+    INITCAP(REPLACE(c.project,'_',' ')) AS contract_project,
     COALESCE(erc20.symbol,nft.symbol) AS token_symbol, COALESCE(c.contract_name,snx.contract_name) AS contract_name, creator_address,
     created_time, is_self_destruct
     
@@ -205,8 +203,7 @@ FROM (
     FROM optimism."contracts" oc
 	LEFT JOIN creator_contracts cc
             ON oc."address" = cc.contract_address
-    WHERE "address" NOT IN (SELECT contract_address FROM creator_contracts)-- WHERE address IS NOT NULL)
-	AND 1 = ( --1 if we're re-running, 0 if it already exists
+    WHERE 1 = ( --1 if we're re-running, 0 if it already exists
                 CASE
 			WHEN NOT EXISTS (SELECT creators FROM creator_rows WHERE creators IS NOT NULL)
 			AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts WHERE contract_address = address AND COALESCE(cc.project, oc.namespace) = contract_project) 
@@ -219,16 +216,14 @@ FROM (
     UNION ALL --ovm 1.0 contracts
     
     SELECT creator_address::bytea, NULL::bytea AS contract_factory, "contract_address","contract_project" AS project,"contract_name" AS name, created_time::timestamptz  AS created_time, false AS is_self_destruct FROM ovm1.op_ovm1_contracts d
-    WHERE contract_address NOT IN (SELECT contract_address FROM creator_contracts)
-	AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts gc WHERE gc.contract_address = d.contract_address AND gc.contract_name = d.contract_name) 
+    WHERE NOT EXISTS (SELECT 1 FROM ovm2.get_contracts gc WHERE gc.contract_address = d.contract_address AND gc.contract_name = d.contract_name) 
     GROUP BY 1,2,3,4,5,6,7
     
     UNION ALL --synthetix genesis contracts
 
     SELECT NULL::bytea AS creator_address, NULL::bytea AS contract_factory, snx.contract_address AS contract_address, 'Synthetix' AS contract_project, contract_name, '07-06-2021 00:00:00'::timestamptz AS created_time, false AS is_self_destruct
     FROM ovm1.synthetix_genesis_contracts snx
-        WHERE address NOT IN (SELECT contract_address FROM creator_contracts)
-	AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts gc WHERE gc.contract_address = snx.contract_address AND 'Synthetix' = contract_project) 
+        WHERE NOT EXISTS (SELECT 1 FROM ovm2.get_contracts gc WHERE gc.contract_address = snx.contract_address AND 'Synthetix' = contract_project) 
 	
     GROUP BY 1,2,3,4,5,6,7
         
@@ -240,15 +235,13 @@ FROM (
             ('\x8be60b5031c0686e48a079c81822173bfa1268da','Synthetix',NULL,NULL)
             ,('\xc16251b5401087902e0956a2968CB3e0e4a52760','Celer',NULL,NULL)
             ) a (contract_address,contract_project,erc20_symbol,contract_name)
-            WHERE contract_address::bytea NOT IN (SELECT contract_address FROM creator_contracts)
-		AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts gc WHERE gc.contract_address = a.contract_address::bytea) 
+            WHERE NOT EXISTS (SELECT 1 FROM ovm2.get_contracts gc WHERE gc.contract_address = a.contract_address::bytea) 
     ) c
-LEFT JOIN ovm1.synthetix_genesis_contracts snx --TODO: could replace this will all predeploys
-    ON c.contract_address = snx.address
+
 FULL OUTER JOIN erc20_tokens erc20 -- b/c we want to get all ERC20s that aren't in this list too.
-    ON COALESCE(c.contract_address,snx.address) = erc20.contract_address
+    ON c.contract_address = erc20.contract_address
 FULL OUTER JOIN nft_tokens nft
-    ON COALESCE(c.contract_address,snx.address) = nft.contract_address
+    ON c.contract_address = nft.contract_address
     
 )
 
