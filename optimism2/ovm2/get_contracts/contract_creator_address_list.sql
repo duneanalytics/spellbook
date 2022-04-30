@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS ovm2.contract_creator_address_list (
 
   creator_address  bytea NOT NULL,
   project text,
-        PRIMARY KEY (contract_address)
+        PRIMARY KEY (creator_address)
 );
 
 
