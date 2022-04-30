@@ -173,7 +173,7 @@ COALESCE(c.contract_address,erc20.contract_address,snx.address) AS contract_addr
     CASE WHEN snx.address IS NOT NULL THEN 'Synthetix' ELSE
         INITCAP(REPLACE(c.project,'_',' '))
     END AS contract_project,
-    COALESCE(erc20.symbol,nft.symbol) AS erc20_symbol, COALESCE(c.contract_name,snx.contract_name) AS contract_name, creator_address,
+    COALESCE(erc20.symbol,nft.symbol) AS token_symbol, COALESCE(c.contract_name,snx.contract_name) AS contract_name, creator_address,
     created_time, is_self_destruct
     
 FROM (
@@ -252,14 +252,14 @@ FULL OUTER JOIN nft_tokens nft
     
 )
 
-SELECT c.contract_address, INITCAP(COALESCE(c.contract_project,ovm1c.contract_project)) AS contract_project ,c.erc20_symbol, COALESCE(c.contract_name) AS contract_name,
+SELECT c.contract_address, INITCAP(COALESCE(c.contract_project,ovm1c.contract_project)) AS contract_project ,c.token_symbol, COALESCE(c.contract_name) AS contract_name,
 COALESCE(c.creator_address,ovm1c.creator_address) AS creator_address, COALESCE(c.created_time,ovm1c.created_time::timestamptz) AS created_time, contract_factory AS contract_creator_if_factory, , COALESCE(is_self_destruct,false) AS is_self_destruct
 FROM (
 --grab the first non-null value for each (i.e. if we have the contract via both contract mapping and optimism.contracts)
     SELECT 
     contract_address,
     (ARRAY_AGG(contract_project) FILTER (WHERE contract_project IS NOT NULL))[1] AS contract_project,
-    (ARRAY_AGG(erc20_symbol) FILTER (WHERE erc20_symbol IS NOT NULL))[1] AS erc20_symbol,
+    (ARRAY_AGG(token_symbol) FILTER (WHERE token_symbol IS NOT NULL))[1] AS token_symbol,
     (ARRAY_AGG(contract_name) FILTER (WHERE contract_name IS NOT NULL))[1] AS contract_name,
     (ARRAY_AGG(creator_address) FILTER (WHERE creator_address IS NOT NULL))[1] AS creator_address,
     (ARRAY_AGG(created_time) FILTER (WHERE created_time IS NOT NULL))[1] AS created_time,
