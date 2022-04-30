@@ -177,7 +177,7 @@ COALESCE(c.contract_address,erc20.contract_address,snx.address) AS contract_addr
     created_time, is_self_destruct
     
 FROM (
-    SELECT cc.creator_address, contract_factory, cc.contract_address, COALESCE(cc.project, oc.namespace) AS project, oc.name AS contract_name, cc.created_time, is_self_destruct FROM creator_contracts cc
+    SELECT cc.creator_address, contract_factory, cc.contract_address, COALESCE(cc.project, oc.namespace) AS project, oc.name AS contract_name, cc.created_time, COALESCE(is_self_destruct,false) AS is_self_destruct FROM creator_contracts cc
         LEFT JOIN optimism."contracts" oc
             ON oc."address" = cc.contract_address
 	WHERE 1 = ( --1 if we're re-running, 0 if it already exists
@@ -201,7 +201,7 @@ FROM (
                 )
 
     UNION ALL --other decoded contracts
-    SELECT NULL::bytea AS creator_address, NULL::bytea AS contract_factory, "address" AS contract_address, namespace AS project, name, created_at  AS created_time, false AS is_self_destruct
+    SELECT NULL::bytea AS creator_address, NULL::bytea AS contract_factory, "address" AS contract_address, namespace AS project, name, created_at  AS created_time, , COALESCE(is_self_destruct,false) AS is_self_destruct AS is_self_destruct
     FROM optimism."contracts" oc
 	LEFT JOIN creator_contracts cc
             ON oc."address" = cc.contract_address
@@ -253,7 +253,7 @@ FULL OUTER JOIN nft_tokens nft
 )
 
 SELECT c.contract_address, INITCAP(COALESCE(c.contract_project,ovm1c.contract_project)) AS contract_project ,c.erc20_symbol, COALESCE(c.contract_name) AS contract_name,
-COALESCE(c.creator_address,ovm1c.creator_address) AS creator_address, COALESCE(c.created_time,ovm1c.created_time::timestamptz) AS created_time, contract_factory AS contract_creator_if_factory, is_self_destruct
+COALESCE(c.creator_address,ovm1c.creator_address) AS creator_address, COALESCE(c.created_time,ovm1c.created_time::timestamptz) AS created_time, contract_factory AS contract_creator_if_factory, , COALESCE(is_self_destruct,false) AS is_self_destruct
 FROM (
 --grab the first non-null value for each (i.e. if we have the contract via both contract mapping and optimism.contracts)
     SELECT 
