@@ -183,10 +183,21 @@ FROM (
 	WHERE 1 = ( --1 if we're re-running, 0 if it already exists
                 CASE
 			WHEN NOT EXISTS (SELECT creators FROM creator_rows WHERE creators IS NOT NULL)
-			AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts WHERE contract_address = address) 
+			AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts WHERE contract_address = address AND COALESCE(cc.project, oc.namespace) = contract_project) 
 			THEN 1 --when no input or doesn't already exist, search everything
                 WHEN cc.creator_address IN (SELECT creators FROM creator_rows) THEN 1--when input, limit to these contracts (i.e. updated mapping)
                 ELSE 0 END
+                )
+	-- Only pick our mapping if the names are similar. If they're completely different (i.e. multi-project contract creator, then fall back to decoded contracts)
+        -- this handles for user error when submitting contracts
+        -- examples include 'Aave and Aave_v3', 'synthetix and synthetix_futures'
+	AND 1 = ( --1 if we should grab our contract creator name mapping, 0 if we should grab from decoded contracts
+                CASE
+                    WHEN oc."namespace" IS NULL THEN 1 --if not decoded, pick creator
+                    WHEN LOWER(oc."namespace") LIKE LOWER('%' || cc.project || '%') THEN 1 --if similar, then select our mapping
+                    WHEN LOWER(cc.project) LIKE LOWER('%' || oc."namespace" || '%') THEN 1 --if similar, then select our mapping
+                    ELSE 0
+                END
                 )
 
     UNION ALL --other decoded contracts
@@ -198,7 +209,7 @@ FROM (
 	AND 1 = ( --1 if we're re-running, 0 if it already exists
                 CASE
 			WHEN NOT EXISTS (SELECT creators FROM creator_rows WHERE creators IS NOT NULL)
-			AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts WHERE contract_address = address) 
+			AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts WHERE contract_address = address AND COALESCE(cc.project, oc.namespace) = contract_project) 
 			THEN 1 --when no input or doesn't already exist, search everything
                 WHEN cc.creator_address IN (SELECT creators FROM creator_rows) THEN 1--when input, limit to these contracts (i.e. updated mapping)
                 ELSE 0 END
