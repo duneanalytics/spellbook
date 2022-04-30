@@ -211,6 +211,15 @@ FROM (
                 WHEN cc.creator_address IN (SELECT creators FROM creator_rows) THEN 1--when input, limit to these contracts (i.e. updated mapping)
                 ELSE 0 END
                 )
+	--Exclude if we mapped it prior
+    AND 0 = (
+		CASE
+		    WHEN cc."project" IS NULL THEN 0 --if not decoded, pick creator
+		    WHEN LOWER(oc."namespace") LIKE '%' || LOWER(cc.project) || '%' THEN 1 --if similar, then select our mapping
+		    WHEN LOWER(cc.project) LIKE '%' || LOWER(oc."namespace") || '%' THEN 1 --if similar, then select our mapping
+		    ELSE 0
+		END
+		)
     GROUP BY 1,2,3,4,5,6,7
     
     UNION ALL --ovm 1.0 contracts
