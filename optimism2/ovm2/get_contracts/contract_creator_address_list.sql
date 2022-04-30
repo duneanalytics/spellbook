@@ -163,8 +163,6 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x7856f2a12a7a18b4a115d295f548434a9b078fa1	Aelin
 \\xdbeabb16b017d321cbaa00c7412ce76d08ec2fc1	BitBTC Protocol
 \\xc22834581ebc8527d974f8a1c97e1bea4ef910bc	Gnosis Safe
-\\x09e2d51281b0d9ae7d01f41e961695058d333fe1	Ahegao
-\\x3fab184622dc19b6109349b94811493bf2a45362	Socket
 \\x5fd7d0d6b91cc4787bcb86ca47e0bd4ea0346d34	Socket
 \\xfd8c6ebe0d284f9d2c9665f17bba47032259e907	Connext
 \\x83bc3055649f9a829bebeccbc86e090d6a157161	Chainlink
