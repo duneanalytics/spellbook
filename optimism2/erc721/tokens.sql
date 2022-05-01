@@ -79,6 +79,11 @@ COPY erc721.tokens (contract_address, project_name) FROM stdin;
 \\xba6228B6169B452778f3cca4567a6E8eD7f2d94D	TinyDoge
 \\xF5B2F191817CBadC9ecD0C61718309FBa0FdF99f	Layer Zero Punks
 \\xaCF63E56fd08970b43401492a02F6F38B6635C91	Yakuza Pandas
+\\xa95579592078783b409803ddc75bb402c217a924	Optimism Collective: Hello World
+\\x56d01d6273d8f3532c966a6316a2ce4ee5d0dd03	World of African Women
+\\x419195da41e96da8c71164d0e71b6efd0d73c3ac	OptiDudes
+\\xf534848023ba851c6265e8f99a919c4d5fd05cd0	Thales Royale Passport
+
 \.
 
 COMMIT;
