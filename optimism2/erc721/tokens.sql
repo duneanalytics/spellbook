@@ -83,7 +83,6 @@ COPY erc721.tokens (contract_address, project_name) FROM stdin;
 \\x56d01d6273d8f3532c966a6316a2ce4ee5d0dd03	World of African Women
 \\x419195da41e96da8c71164d0e71b6efd0d73c3ac	OptiDudes
 \\xf534848023ba851c6265e8f99a919c4d5fd05cd0	Thales Royale Passport
-
 \.
 
 COMMIT;
