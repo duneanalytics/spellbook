@@ -60,7 +60,7 @@ WITH rows AS (
             'Rubicon' AS project,
             '1' AS version,
             'DEX' AS category,
-            "receiver" AS trader_a,
+            NULL::bytea AS trader_a, --not in events, but we'll grab this from the transaction
             NULL::bytea AS trader_b,
             -- buy is being bought, pay is being sold
             "buy_amt" AS token_a_amount_raw,
