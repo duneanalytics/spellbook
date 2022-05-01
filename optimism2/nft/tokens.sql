@@ -1,13 +1,15 @@
-CREATE TABLE IF NOT EXISTS erc721.tokens (
+CREATE SCHEMA IF NOT EXISTS nft;
+
+CREATE TABLE IF NOT EXISTS nft.tokens (
 	contract_address bytea UNIQUE,
 	project_name text
 );
 
 BEGIN;
-DELETE FROM erc721.tokens *;
+DELETE FROM nft.tokens *;
 
 
-COPY erc721.tokens (contract_address, project_name) FROM stdin;
+COPY nft.tokens (contract_address, project_name) FROM stdin;
 \\xb8df6cc3050cc02f967db1ee48330ba23276a492	OptiPunk
 \\x52782699900df91b58ecd618e77847c5774dcd2e	Optimistic Bunnies
 \\x006eb613cc586198003a119485594ecbbdf41230	OptimisticLoogies
@@ -87,4 +89,4 @@ COPY erc721.tokens (contract_address, project_name) FROM stdin;
 
 COMMIT;
 
-CREATE INDEX IF NOT EXISTS erc721_tokens_contract_address_project_name_idx ON erc721.tokens USING btree (contract_address) INCLUDE (project_name);
+CREATE INDEX IF NOT EXISTS nft_tokens_contract_address_project_name_idx ON nft.tokens USING btree (contract_address) INCLUDE (project_name);
