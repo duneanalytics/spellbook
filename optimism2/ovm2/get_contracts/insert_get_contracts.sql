@@ -75,17 +75,18 @@ FROM (
 	AND "evt_block_time" < end_blocktime
 	GROUP BY 1,2
     UNION ALL
-    SELECT "contract_address", 'Other ERC721' AS fallback FROM erc721."tokens"
-    UNION ALL
     SELECT contract_address, 'Other ERC1155' AS fallback FROM erc1155."ERC1155_evt_TransferBatch"
 	WHERE "evt_block_time" >= start_blocktime - interval '1 day'
 	AND "evt_block_time" < end_blocktime
 	GROUP BY 1,2
     UNION ALL
     SELECT contract_address, 'Other ERC1155' AS fallback FROM erc1155."ERC1155_evt_TransferSingle" GROUP BY 1,2
+	WHERE "evt_block_time" >= start_blocktime - interval '1 day'
+	AND "evt_block_time" < end_blocktime
+	GROUP BY 1,2
     
     ) e
-LEFT JOIN erc721."tokens" tl
+LEFT JOIN nft."tokens" tl
     ON tl."contract_address" = e."contract_address"
 GROUP BY 1,2
 )
