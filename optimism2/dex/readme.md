@@ -4,9 +4,8 @@
 
 Since we do not yet have price feeds for Optimism tokens, these tables pull USD amounts from **prices.approx_prices_from_dex_data**. *Once we have accurate price feeds, this can be migrated.*
 
-**Currently Included:** Uniswap V3, 1inch, 0x (Matcha)
 
-#### Insert Queries
+#### Currently Includes DEXs & Insert Queries
 - **dex.prices_and_trades_inserts**: Top-level cron insert for chainlink prices, dex prices, dex trades, and price backfills.
 
 - **dex.insert_uniswap_v3.sql**: Inserts uniswap v3 data to the dex.trades table.
