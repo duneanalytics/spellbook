@@ -24,7 +24,7 @@ SELECT gc.creator_address, MIN(created_time) AS min_created_time, MAX(created_ti
                 OR
                 contract_address IN (SELECT "contract_address" FROM erc20."tokens")--is it now in the erc20 table
                 OR
-                contract_address IN (SELECT "contract_address" FROM erc721."tokens")--is it now in the erc721 table
+                contract_address IN (SELECT "contract_address" FROM nft."tokens")--is it now in the nft table
             )
     )
     OR lower(cc.project) != lower(gc."contract_project")
