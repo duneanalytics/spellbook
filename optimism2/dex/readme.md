@@ -15,11 +15,12 @@ Since we do not yet have price feeds for Optimism tokens, these tables pull USD 
 - **dex.insert_curve.sql**: Curve - Each pool type has different setup (i.e. Stableswap vs Metapools vs Other factory pools)
 - **dex.insert_zipswap.sql**: Zipswap calldata optimized DEX
 - **dex.insert_kwenta.sql**: Synthetix's Kwenta spot trading. These trades determined are based on ERC20 transfers.
+- **dex.insert_rubicon.sql**: Rubicon Order Book DEX. We only add trade logs (filled orders) here in order to align with AMM DEXs.
 - **dex.insert_wardenswap.sql**: WardenSwap DEX Aggregator. This has it's own pools as well, but seems to always route through other DEXs.
 
 #### Remaining to be added
 Want to contribute to building dex.trades on Optimism? Here are some examples of DEXs and Aggregators that need insert queries built:
-- _**DEXs:** Rubicon, Kromatika, etc_
+- _**DEXs:** Kromatika, etc_
 - _**Aggregators:** Slingshot_
 
 _Other Cases (how to handle this - TBD)_
