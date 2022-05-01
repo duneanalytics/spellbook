@@ -87,11 +87,11 @@ rows AS (
 		token_index,
 		token_pool_percentage
 	FROM (
-		-- DODO v1
+		-- DODO v2
 		SELECT
 			d.day,
 			'DODO' AS project,
-			'1' AS version,
+			'2' AS version,
 			'DEX' AS category,
 			balances.amount_raw AS token_amount_raw,
 			balances.token_address,
