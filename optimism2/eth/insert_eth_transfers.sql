@@ -38,6 +38,31 @@ WITH rows AS (
     AND r.block_time < end_block_time	
 	AND t.block_time >= start_block_time
     AND t.block_time < end_block_time
+	
+	UNION ALL --ETH Transfers from deposits and withdrawals are ERC20 transfers of the 'deadeadead' ETH token. These do not appear in traces.
+	
+	SELECT 
+    r."from",
+    r."to",
+	'\xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000' AS	contract_address, --Using the ETH deposit placeholder address to match with prices tables
+    r.value,
+    r.value/1e18 AS value_decimal,
+    r."evt_tx_hash" AS tx_hash,
+    array[r."evt_index"::int] AS "trace_address",
+    r."evt_block_time" AS tx_block_time,
+    r."evt_block_number" AS tx_block_number,
+    substring(t.data from 1 for 4) AS tx_method_id
+    FROM erc20."ERC20_evt_Transfer" r
+	INNER JOIN optimism.transactions t
+            ON t.hash = r.evt_tx_hash
+
+    WHERE contract_address = '\xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000'
+    AND t.success = true
+    AND r.value > 0    
+    AND r.evt_block_time >= start_block_time
+    AND r.evt_block_time < end_block_time	
+	AND t.block_time >= start_block_time
+    AND t.block_time < end_block_time
 
     ON CONFLICT (tx_hash, trace_address)
     DO UPDATE SET
