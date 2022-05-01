@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION dex.insert_liquidity_dodo(start_ts timestamptz, end_ts timestamptz=now()) RETURNS integer
+CREATE OR REPLACE FUNCTION dex.insert_liquidity_dodo_v1(start_ts timestamptz, end_ts timestamptz=now()) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -11,18 +11,6 @@ dodo_pools AS (
 		"baseToken" AS token0,
 		"quoteToken" AS token1
 	FROM dodo."DODOZoo_evt_DODOBirth"
-	UNION ALL
-	SELECT
-		"dpp" AS "pool",
-		"baseToken" AS token0,
-		"quoteToken" AS token1
-	FROM dodo."DPPFactory_evt_NewDPP"
-	UNION ALL
-	SELECT
-		"DSP" AS "pool",
-		"baseToken" AS token0,
-		"quoteToken" AS token1
-	FROM dodo."DSPFactory_evt_NewDSP"
 ),
 dex_wallet_balances AS (
 	SELECT
@@ -44,7 +32,6 @@ dex_wallet_balances AS (
 			liq.day,
 			token_index
 		FROM dex.liquidity liq
-		-- DODO SEEMS TO HAVE V1 AND V2
 		WHERE project = 'DODO' AND version = '1' AND liq.day >= start_ts - interval '3 days'
 ),
 balances AS ( -- logic from https://github.com/duneanalytics/abstractions/pull/398
@@ -113,6 +100,20 @@ SELECT count(*) INTO r from rows;
 RETURN r;
 END
 $function$;
+
+-- fill 2020
+SELECT dex.insert_liquidity_curve(
+    '2020-01-01',
+    '2021-01-01'
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.liquidity
+    WHERE day >= '2020-01-01'
+    AND day < '2021-01-01'
+    AND project = 'DODO'
+    AND version = '1'
+);
 
 -- fill 2021 - Q1
 SELECT dex.insert_liquidity_curve(
