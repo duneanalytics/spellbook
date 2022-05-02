@@ -103,7 +103,7 @@ END
 $function$;
 
 -- fill 2020
-SELECT dex.insert_liquidity_curve(
+SELECT dex.insert_liquidity_dodo_v1(
     '2020-01-01',
     '2021-01-01'
 )
@@ -117,7 +117,7 @@ WHERE NOT EXISTS (
 );
 
 -- fill 2021 - Q1
-SELECT dex.insert_liquidity_curve(
+SELECT dex.insert_liquidity_dodo_v1(
     '2021-01-01',
     '2021-04-01'
 )
@@ -131,7 +131,7 @@ WHERE NOT EXISTS (
 );
 
 -- fill 2021 - Q2
-SELECT dex.insert_liquidity_curve(
+SELECT dex.insert_liquidity_dodo_v1(
     '2021-04-01',
     '2021-07-01'
 )
@@ -145,7 +145,7 @@ WHERE NOT EXISTS (
 );
 
 -- fill 2021 - Q3
-SELECT dex.insert_liquidity_curve(
+SELECT dex.insert_liquidity_dodo_v1(
     '2021-07-01',
     '2021-10-01'
 )
@@ -159,7 +159,7 @@ WHERE NOT EXISTS (
 );
 
 -- fill 2021 - Q4
-SELECT dex.insert_liquidity_curve(
+SELECT dex.insert_liquidity_dodo_v1(
     '2021-10-01',
     '2022-01-01'
 )
@@ -173,7 +173,7 @@ WHERE NOT EXISTS (
 );
 
 -- fill 2022 - Q1
-SELECT dex.insert_liquidity_curve(
+SELECT dex.insert_liquidity_dodo_v1(
     '2022-01-01',
     '2022-04-01'
 )
@@ -187,7 +187,7 @@ WHERE NOT EXISTS (
 );
 
 -- fill 2022 Q2+
-SELECT dex.insert_liquidity_curve(
+SELECT dex.insert_liquidity_dodo_v1(
     '2022-04-01',
     now()
 )
@@ -202,7 +202,7 @@ WHERE NOT EXISTS (
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('18 3 * * *', $$
-    SELECT dex.insert_liquidity_curve(
+    SELECT dex.insert_liquidity_dodo_v1(
         (SELECT max(day) FROM dex.liquidity WHERE project = 'DODO' and version = '1'),
         (SELECT now() - interval '20 minutes'));
 $$)
