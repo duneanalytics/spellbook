@@ -179,14 +179,15 @@ FROM (
     SELECT cc.creator_address, contract_factory, cc.contract_address, COALESCE(cc.project, oc.namespace) AS project, oc.name AS contract_name, cc.created_time, COALESCE(is_self_destruct,false) AS is_self_destruct FROM creator_contracts cc
         LEFT JOIN optimism."contracts" oc
             ON oc."address" = cc.contract_address
-	WHERE 1 = ( --1 if we're re-running, 0 if it already exists
-                CASE
-			WHEN NOT EXISTS (SELECT creators FROM creator_rows WHERE creators IS NOT NULL)
-			AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts WHERE contract_address = address AND COALESCE(cc.project, oc.namespace) = contract_project) 
-			THEN 1 --when no input or doesn't already exist, search everything
-                WHEN cc.creator_address IN (SELECT creators FROM creator_rows) THEN 1--when input, limit to these contracts (i.e. updated mapping)
-                ELSE 0 END
-                )
+-- 	To fix: some kind of fuzzy match to see if we should take the creator's mapping or not
+-- 	WHERE 1 = ( --1 if we're re-running, 0 if it already exists
+--                 CASE
+-- 			WHEN NOT EXISTS (SELECT creators FROM creator_rows WHERE creators IS NOT NULL)
+-- 			AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts WHERE contract_address = address AND COALESCE(cc.project, oc.namespace) = contract_project) 
+-- 			THEN 1 --when no input or doesn't already exist, search everything
+--                 WHEN cc.creator_address IN (SELECT creators FROM creator_rows) THEN 1--when input, limit to these contracts (i.e. updated mapping)
+--                 ELSE 0 END
+--                 )
 	-- Only pick our mapping if the names are similar. If they're completely different (i.e. multi-project contract creator, then fall back to decoded contracts)
         -- this handles for user error when submitting contracts
         -- examples include 'Aave and Aave_v3', 'synthetix and synthetix_futures'
@@ -213,14 +214,15 @@ FROM (
                 ELSE 0 END
                 )
 	--Exclude if we mapped it prior
-    AND 0 = (
-		CASE
-		    WHEN cc."project" IS NULL THEN 0 --if not decoded, pick creator
-		    WHEN LOWER(oc."namespace") LIKE '%' || LOWER(cc.project) || '%' THEN 1 --if similar, then select our mapping
-		    WHEN LOWER(cc.project) LIKE '%' || LOWER(oc."namespace") || '%' THEN 1 --if similar, then select our mapping
-		    ELSE 0
-		END
-		)
+-- 	To fix: some kind of fuzzy match to see if we should take the creator's mapping or not
+--     AND 0 = (
+-- 		CASE
+-- 		    WHEN cc."project" IS NULL THEN 0 --if not decoded, pick creator
+-- 		    WHEN LOWER(oc."namespace") LIKE '%' || LOWER(cc.project) || '%' THEN 1 --if similar, then select our mapping
+-- 		    WHEN LOWER(cc.project) LIKE '%' || LOWER(oc."namespace") || '%' THEN 1 --if similar, then select our mapping
+-- 		    ELSE 0
+-- 		END
+-- 		)
     GROUP BY 1,2,3,4,5,6,7
     
     UNION ALL --ovm 1.0 contracts
