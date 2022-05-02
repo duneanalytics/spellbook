@@ -17,10 +17,11 @@ dex_wallet_balances AS (
 		balances.wallet_address,
 		balances.token_address,
 		balances.amount_raw,
-		balances.timestamp
+		balances.timestamp,
 		CASE WHEN balances.token_address = dex.token0 THEN 'token_0'
 			WHEN balances.token_address = dex.token1 THEN 'token_1'
 			ELSE 'token_x'
+        END AS token_index
 		FROM erc20.token_balances balances
 		INNER JOIN dodo_pools dex ON (balances.token_address = dex.token0 OR balances.token_address = dex.token1) AND dex.pool = balances.wallet_address
 		WHERE balances.timestamp >= start_ts AND balances.timestamp < end_ts
