@@ -1,13 +1,15 @@
-CREATE TABLE IF NOT EXISTS erc721.tokens (
+CREATE SCHEMA IF NOT EXISTS nft;
+
+CREATE TABLE IF NOT EXISTS nft.tokens (
 	contract_address bytea UNIQUE,
 	project_name text
 );
 
 BEGIN;
-DELETE FROM erc721.tokens *;
+DELETE FROM nft.tokens *;
 
 
-COPY erc721.tokens (contract_address, project_name) FROM stdin;
+COPY nft.tokens (contract_address, project_name) FROM stdin;
 \\xb8df6cc3050cc02f967db1ee48330ba23276a492	OptiPunk
 \\x52782699900df91b58ecd618e77847c5774dcd2e	Optimistic Bunnies
 \\x006eb613cc586198003a119485594ecbbdf41230	OptimisticLoogies
@@ -79,8 +81,12 @@ COPY erc721.tokens (contract_address, project_name) FROM stdin;
 \\xba6228B6169B452778f3cca4567a6E8eD7f2d94D	TinyDoge
 \\xF5B2F191817CBadC9ecD0C61718309FBa0FdF99f	Layer Zero Punks
 \\xaCF63E56fd08970b43401492a02F6F38B6635C91	Yakuza Pandas
+\\xa95579592078783b409803ddc75bb402c217a924	Optimism Collective: Hello World
+\\x56d01d6273d8f3532c966a6316a2ce4ee5d0dd03	World of African Women
+\\x419195da41e96da8c71164d0e71b6efd0d73c3ac	OptiDudes
+\\xf534848023ba851c6265e8f99a919c4d5fd05cd0	Thales Royale Passport
 \.
 
 COMMIT;
 
-CREATE INDEX IF NOT EXISTS erc721_tokens_contract_address_project_name_idx ON erc721.tokens USING btree (contract_address) INCLUDE (project_name);
+CREATE INDEX IF NOT EXISTS nft_tokens_contract_address_project_name_idx ON nft.tokens USING btree (contract_address) INCLUDE (project_name);
