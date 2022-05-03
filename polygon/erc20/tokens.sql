@@ -160,6 +160,8 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\x130ce4e4f76c2265f94a961d70618562de0bb8d2	iBTC-FLI-P	18
 \\x11cd37bb86f65419713f30673a480ea33c826872	WETH	18
 \\xE06Bd4F5aAc8D0aA337D13eC88dB6defC6eAEefE	IXT	18
+\\x9c78ee466d6cb57a4d01fd887d2b5dfb2d46288f	MUST	18
+\\xb3b681dee0435ecc0a508e40b02b3c9068d618cd	YAM	18
 \.
 
 
