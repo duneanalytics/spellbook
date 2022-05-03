@@ -2071,3 +2071,8 @@
   symbol: LPL
   address: 0x99295f1141d58A99e939F7bE6BBe734916a875B8
   decimals: 18
+- name: CoW Protocol Token
+  id: cow-cow-protocol-token
+  symbol: COW
+  address: 0xDEf1CA1fb7FBcDC777520aa7f396b4E015F497aB
+  decimals: 18
