@@ -1,4 +1,5 @@
 CREATE OR REPLACE VIEW venus.view_vtokens (symbol, contract_address, decimals, underlying_token_address) AS VALUES
+   ('vAAVE'::text,   '\x26da28954763b92139ed49283625cecaf52c6f94'::bytea, 8::numeric, '\xfb6115445bff7b52feb98650c87f44907e58f802'::bytea),
    ('vBNB'::text,   '\xa07c5b74c9b40447a954e1466938b865b6bbea36'::bytea, 8::numeric, '\xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'::bytea),
    ('vAAVE'::text,   '\x26DA28954763B92139ED49283625ceCAf52C6f94'::bytea, 8::numeric, '\xfb6115445Bff7b52FeB98650C87f44907E58f802'::bytea),
    ('vADA'::text,   '\x9A0AF7FDb2065Ce470D72664DE73cAE409dA28Ec'::bytea, 8::numeric, '\x3EE2200Efb3400fAbB9AacF31297cBdD1d435D47'::bytea),
@@ -14,12 +15,14 @@ CREATE OR REPLACE VIEW venus.view_vtokens (symbol, contract_address, decimals, u
    ('vFIL'::text,   '\xf91d58b5aE142DAcC749f58A49FCBac340Cb0343'::bytea, 8::numeric, '\x0D8Ce2A99Bb6e3B7Db580eD848240e4a0F9aE153'::bytea),
    ('vLINK'::text,   '\x650b940a1033B8A1b1873f78730FcFC73ec11f1f'::bytea, 8::numeric, '\xF8A0BF9cF54Bb92F17374d9e9A321E6a111a51bD'::bytea),
    ('vLTC'::text,   '\x57A5297F2cB2c0AaC9D554660acd6D385Ab50c6B'::bytea, 8::numeric, '\x4338665CBB7B2485A8855A139b75D5e34AB0DB94'::bytea),
+   ('vLUNA'::text,   '\xb91a659e88b51474767cd97ef3196a3e7cedd2c8'::bytea, 8::numeric, '\x156ab3346823b651294766e23e6cf87254d68962'::bytea),
    ('vMATIC'::text,   '\x5c9476fcd6a4f9a3654139721c949c2233bbbbc8'::bytea, 8::numeric, '\xcc42724c6683b7e57334c4e856f4c9965ed682bd'::bytea),
    ('vSXP'::text,   '\x2fF3d0F6990a40261c66E1ff2017aCBc282EB6d0'::bytea, 8::numeric, '\x47BEAd2563dCBf3bF2c9407fEa4dC236fAbA485A'::bytea),
    ('vTRX'::text,   '\x61eDcFe8Dd6bA3c891CB9bEc2dc7657B3B422E93'::bytea, 8::numeric, '\x85EAC5Ac2F758618dFa09bDbe0cf174e7d574D5B'::bytea),
    ('vTUSD'::text,   '\x08ceb3f4a7ed3500ca0982bcd0fc7816688084c3'::bytea, 8::numeric, '\x14016e85a25aeb13065688cafb43044c2ef86784'::bytea),
    ('vUSDC'::text,   '\xecA88125a5ADbe82614ffC12D0DB554E2e2867C8'::bytea, 8::numeric, '\x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d'::bytea),
    ('vUSDT'::text,   '\xfD5840Cd36d94D7229439859C0112a4185BC0255'::bytea, 8::numeric, '\x55d398326f99059fF775485246999027B3197955'::bytea),
+   ('vUST'::text,   '\x78366446547d062f45b4c0f320cdaa6d710d87bb'::bytea, 8::numeric, '\x3d4350cd54aef9f9b2c29435e0fa809957b3f30a'::bytea),
    ('vXRP'::text,   '\xB248a295732e0225acd3337607cc01068e3b9c10'::bytea, 8::numeric, '\x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE'::bytea),
    ('vXVS'::text,   '\x151B1e2635A717bcDc836ECd6FbB62B674FE3E1D'::bytea, 8::numeric, '\xcF6BB5389c92Bdda8a3747Ddb454cB7a64626C63'::bytea)
 ;   
