@@ -19,7 +19,7 @@ WITH rows AS (
     SELECT 
     r."from",
     r."to",
-	'\xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000' AS	contract_address, --Using the ETH deposit placeholder address to match with prices tables
+	'\xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000'::bytea AS	contract_address, --Using the ETH deposit placeholder address to match with prices tables
     r.value,
     r.value/1e18 AS value_decimal,
     r."tx_hash",
@@ -44,7 +44,7 @@ WITH rows AS (
 	SELECT 
     r."from",
     r."to",
-	'\xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000' AS	contract_address, --Using the ETH deposit placeholder address to match with prices tables
+	'\xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000'::bytea AS	contract_address, --Using the ETH deposit placeholder address to match with prices tables
     r.value,
     r.value/1e18 AS value_decimal,
     r."evt_tx_hash" AS tx_hash,
@@ -76,57 +76,37 @@ RETURN r;
 END
 $function$;
 
--- fill post-regenesis 11-11
-SELECT eth.insert_eth_transfers(
-    '2021-11-11'::timestamptz,
-    '2022-01-01'::timestamptz
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM eth.eth_transfers
-    WHERE tx_block_time >= '2021-11-11'::timestamptz
-    AND tx_block_time < '2022-01-01'::timestamptz
-);
+-- -- fill post-regenesis 11-11
+-- SELECT eth.insert_eth_transfers(
+--     '2021-11-11'::timestamptz,
+--     '2022-01-01'::timestamptz
+-- )
+-- WHERE NOT EXISTS (
+--     SELECT *
+--     FROM eth.eth_transfers
+--     WHERE tx_block_time >= '2021-11-11'::timestamptz
+--     AND tx_block_time < '2022-01-01'::timestamptz
+-- )
+-- ;
 
---fill jan 2022
-SELECT eth.insert_eth_transfers(
-    '2022-01-01'::timestamptz,
-    '2022-02-01'::timestamptz
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM eth.eth_transfers
-    WHERE tx_block_time >= '2022-01-01'::timestamptz
-    AND tx_block_time < '2022-02-01'::timestamptz
-);
---fill feb 2022
-SELECT eth.insert_eth_transfers(
-    '2022-02-01'::timestamptz,
-    '2022-03-01'::timestamptz
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM eth.eth_transfers
-    WHERE tx_block_time >= '2022-02-01'::timestamptz
-    AND tx_block_time < '2022-03-01'::timestamptz
-);
---fill mar 2022
-SELECT eth.insert_eth_transfers(
-    '2022-03-01'::timestamptz,
-    '2022-04-01'::timestamptz
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM eth.eth_transfers
-    WHERE tx_block_time >= '2022-03-01'::timestamptz
-    AND tx_block_time < '2022-04-01'::timestamptz
-);
+-- --fill 2022
+-- SELECT eth.insert_eth_transfers(
+--     '2022-01-01'::timestamptz,
+--     '2022-05-01'::timestamptz
+-- )
+-- WHERE NOT EXISTS (
+--     SELECT *
+--     FROM eth.eth_transfers
+--     WHERE tx_block_time >= '2022-01-01'::timestamptz
+--     AND tx_block_time < '2022-02-01'::timestamptz
+-- )
+-- ;
 
-INSERT INTO cron.job (schedule, command)
-VALUES ('* * * * *', $$
-    SELECT eth.insert_eth_transfers(
-        (SELECT max(tx_block_time) FROM eth.eth_transfers WHERE tx_block_time > NOW() - interval '1 month'),
-        (SELECT now())
-        );
-$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+-- INSERT INTO cron.job (schedule, command)
+-- VALUES ('* * * * *', $$
+--     SELECT eth.insert_eth_transfers(
+--         (SELECT max(tx_block_time) FROM eth.eth_transfers WHERE tx_block_time > NOW() - interval '1 month'),
+--         (SELECT now())
+--         );
+-- $$)
+-- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
