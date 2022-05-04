@@ -33,7 +33,7 @@ known_solver_metadata (address, environment, name) as (
                  (decode('2d15894fac906386ff7f4bd07fceac43fcf80c73', 'hex'), 'prod', 'DexCowAgg'),
                  (decode('a97DEF4fBCBa3b646dd169Bc2eeE40f0f3fE7771', 'hex'), 'prod', 'BalancerSOR'),
                  (decode('6fa201C3Aff9f1e4897Ed14c7326cF27548d9c35', 'hex'), 'prod', 'otex'),
-                 (decode('1e05EE95b8DfCB7C7567FA52e0ef47288b1C8Fb5', 'hex'), 'barn', 'otex'),
+                 (decode('109BF9E0287Cc95cc623FBE7380dD841d4bdEb03', 'hex'), 'barn', 'otex'),
                  (decode('70f3c870b6e7e1d566e40c41e2e3d6e895fcee23', 'hex'), 'barn', 'QuasiModo'),
                  (decode('97dd6a023b06ba4722aF8Af775ec3C2361e66684', 'hex'), 'barn', '0x'),
                  (decode('6372bcbf66656e91b9213b61d861b5e815296207', 'hex'), 'barn', 'ParaSwap'),
