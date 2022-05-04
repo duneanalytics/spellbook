@@ -3,7 +3,7 @@ CREATE OR REPLACE FUNCTION gnosis_protocol_v2.insert_batches(start_ts timestampt
 $function$
 DECLARE
     r integer;
-BEGIN
+BEGIN;
     WITH rows AS (
         WITH batch_counts AS (
             SELECT s.evt_block_time,
@@ -18,8 +18,8 @@ BEGIN
             FROM gnosis_protocol_v2."GPv2Settlement_evt_Settlement" s
                      LEFT OUTER JOIN gnosis_protocol_v2."GPv2Settlement_evt_Interaction" i
                                      ON i.evt_tx_hash = s.evt_tx_hash
-            WHERE evt_block_time >= start_ts
-              AND evt_block_time < end_ts
+            WHERE s.evt_block_time >= start_ts
+              AND s.evt_block_time < end_ts
             GROUP BY s.evt_tx_hash, solver, s.evt_block_time
             ),
 
@@ -100,6 +100,7 @@ BEGIN
 END
 $function$;
 
+COMMIT;
 
 -- fill 2021: This is only ever relevant 1 time.
 SELECT gnosis_protocol_v2.insert_batches(
@@ -153,4 +154,3 @@ VALUES ('11 0 * * *', $$
     COMMIT;
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
-COMMIT;
