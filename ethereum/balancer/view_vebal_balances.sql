@@ -1,13 +1,32 @@
-CREATE OR REPLACE VIEW balancer.view_vebal_balances AS
+DROP VIEW IF EXISTS balancer.view_vebal_balances;
 
-WITH locks_info AS (
-        SELECT
-            provider,
-            MAX(locktime) - MIN(ts) AS lock_period, 
-            MIN(ts) AS locked_at,
-            MAX(locktime) AS unlocked_at
+CREATE VIEW balancer.view_vebal_balances AS
+
+WITH base_locks AS (
+        SELECT d.provider, ts AS locked_at, locktime AS unlocked_at, ts AS updated_at
+        FROM balancer."veBAL_call_create_lock" l
+        JOIN balancer."veBAL_evt_Deposit" d
+        ON d.evt_tx_hash = l.call_tx_hash
+        
+        UNION ALL
+        
+        SELECT provider, null::numeric AS locked_at, locktime AS unlocked_at, ts AS updated_at
         FROM balancer."veBAL_evt_Deposit"
-        GROUP BY 1
+        WHERE value = 0
+    ),
+    
+    decorated_locks AS (
+        SELECT 
+            provider,
+            COALESCE(locked_at, LAG(locked_at, 1) OVER (PARTITION BY provider ORDER BY updated_at)) AS locked_at,
+            unlocked_at,
+            updated_at
+        FROM base_locks
+    ),
+    
+    locks_info AS (
+        SELECT *, unlocked_at - locked_at AS lock_period
+        FROM decorated_locks
     ),
 
     deposits AS (
@@ -43,7 +62,7 @@ WITH locks_info AS (
         FROM bpt_locked_balance
     ),
     
-    cumulative_bpt_balance AS (
+    cumulative_balances AS (
         SELECT
             day,
             provider,
@@ -61,25 +80,31 @@ WITH locks_info AS (
         FROM bpt_locked_balance
     ),
     
-    running_bpt_balance AS (
+    running_balances AS (
         SELECT
             c.day,
             provider,
             bpt_balance
         FROM calendar c
-        LEFT JOIN cumulative_bpt_balance b
+        LEFT JOIN cumulative_balances b
         ON b.day <= c.day
         AND c.day < b.day_of_next_change
     )
-
 SELECT
     day,
-    FLOOR(EXTRACT(EPOCH FROM day)) AS day_ts,
     b.provider,
     bpt_balance,
-    bpt_balance *
+    lock_period,
+    COALESCE((bpt_balance *
     (lock_period / (365*86400)) *
-    ((unlocked_at - FLOOR(EXTRACT(EPOCH FROM day))) / lock_period) AS vebal
-FROM running_bpt_balance b
+    ((unlocked_at - (FLOOR(EXTRACT(EPOCH FROM b.day))+86400)) / lock_period)), 0) AS vebal
+FROM running_balances b
 LEFT JOIN locks_info l
-ON b.provider = l.provider
+ON l.provider = b.provider
+AND l.updated_at = (
+    SELECT MAX(updated_at)
+    FROM locks_info
+    WHERE updated_at <= (FLOOR(EXTRACT(EPOCH FROM b.day))+86400)
+    AND provider = b.provider
+)
+;
