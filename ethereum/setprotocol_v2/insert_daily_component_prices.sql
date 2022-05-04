@@ -189,7 +189,7 @@ with initial_components as (
     from day_series d 
     inner join daily_component_prices_usd_passing_lead p
         on d.day >= p.date
-        and d.day < coalesce(p.next_date,now()::date) -- if it's missing that means it's the last entry in the series
+        and d.day < coalesce(p.next_date,now()::date + 1) -- if it's missing that means it's the last entry in the series
 )
 , daily_eth_price_usd as (
   select minute::date as date
