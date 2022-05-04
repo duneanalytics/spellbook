@@ -24,7 +24,7 @@ WITH batch_counts AS (
                 sum(trade_value_usd) as batch_value,
                 sum(fee_usd)         as fee_value,
                 price                as eth_price
-         from gnosis_protocol_v2."view_trades"
+         from gnosis_protocol_v2.trades
                   JOIN prices.usd as p
                        ON p.contract_address = '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                            AND p.minute = date_trunc('minute', block_time)
