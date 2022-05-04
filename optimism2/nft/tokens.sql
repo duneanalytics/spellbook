@@ -1,13 +1,15 @@
-CREATE TABLE IF NOT EXISTS erc721.tokens (
+CREATE SCHEMA IF NOT EXISTS nft;
+
+CREATE TABLE IF NOT EXISTS nft.tokens (
 	contract_address bytea UNIQUE,
 	project_name text
 );
 
 BEGIN;
-DELETE FROM erc721.tokens *;
+DELETE FROM nft.tokens *;
 
 
-COPY erc721.tokens (contract_address, project_name) FROM stdin;
+COPY nft.tokens (contract_address, project_name) FROM stdin;
 \\xb8df6cc3050cc02f967db1ee48330ba23276a492	OptiPunk
 \\x52782699900df91b58ecd618e77847c5774dcd2e	Optimistic Bunnies
 \\x006eb613cc586198003a119485594ecbbdf41230	OptimisticLoogies
@@ -64,8 +66,27 @@ COPY erc721.tokens (contract_address, project_name) FROM stdin;
 \\xb03a572ee91aEcbdfa8ceF8196BF140A1E7410dF	Boxer
 \\x12A8e658792E940bdB344264318dD2Af9e5C25B2	xZEROs
 \\x0057540158a99451d26b165c436EeDCE88Ef2890	The Meld
+\\xbBBD1c7bB0A62B1E6b892bEF552CECb4598Cba2f	BillionaireSkullClub
+\\xaAEEf52Ad4695b8e3B758215ca6BBCa4D7680C62	tiny dinos
+\\xf0b2e73928069Bdb7Bb3Bd99334e41c661e7FE16	Omni Doors
+\\x08079cC597CeAd1C566de3596e33d9801F131370	Omni Apes
+\\xc70a4E13C1A5d169EEaC50E410d5D42BB080CbBe	tiny cats
+\\x061d2E46bb3b6666953218bf737a74D8e8FA7F1D	Punks Unchained
+\\xE124e4D4015c8F3EA1F302a2F13D0ff15eA989B3	Omni Mosquitoes
+\\xad50463997caa189e9700408050C7c105D364CA6	Omni Robotics
+\\x0dEa7e8b0b38D20b2807d657E121430fD55789b0	One Hand Cleans The Other
+\\x7fd31c7E50c9d76d52EB32F8e5f8a3e78bedB483	PillowCats
+\\x0d2e6ec50924fd7A9f763aE69De2E1EEf1d6f466	OmniSneaker
+\\x1A0a9864e6607e163bB41F831a81D518DFE1cDce	OmniChicks
+\\xba6228B6169B452778f3cca4567a6E8eD7f2d94D	TinyDoge
+\\xF5B2F191817CBadC9ecD0C61718309FBa0FdF99f	Layer Zero Punks
+\\xaCF63E56fd08970b43401492a02F6F38B6635C91	Yakuza Pandas
+\\xa95579592078783b409803ddc75bb402c217a924	Optimism Collective: Hello World
+\\x56d01d6273d8f3532c966a6316a2ce4ee5d0dd03	World of African Women
+\\x419195da41e96da8c71164d0e71b6efd0d73c3ac	OptiDudes
+\\xf534848023ba851c6265e8f99a919c4d5fd05cd0	Thales Royale Passport
 \.
 
 COMMIT;
 
-CREATE INDEX IF NOT EXISTS erc721_tokens_contract_address_project_name_idx ON erc721.tokens USING btree (contract_address) INCLUDE (project_name);
+CREATE INDEX IF NOT EXISTS nft_tokens_contract_address_project_name_idx ON nft.tokens USING btree (contract_address) INCLUDE (project_name);
