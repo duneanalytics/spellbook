@@ -88,8 +88,6 @@ WITH base_locks AS (
         ON b.day <= c.day
         AND c.day < b.day_of_next_change
     )
-
-INSERT INTO dune_user_generated.balancer_vebal_balance 
 SELECT
     day,
     b.provider,
@@ -107,4 +105,4 @@ AND l.updated_at = (
     WHERE updated_at <= (FLOOR(EXTRACT(EPOCH FROM b.day))+86400)
     AND provider = b.provider
 )
-
+;
