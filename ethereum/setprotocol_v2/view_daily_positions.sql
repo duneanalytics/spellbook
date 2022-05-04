@@ -25,7 +25,7 @@ with initial_components as (
     , c.day
   from initial_components c 
   left join erc20.tokens t on c.component_token_address = t.contract_address
-  union all
+  union
   -- subsequent component_level position changes
   select s."contract_address" as set_address
     , s."_component" as component_token_address
@@ -39,7 +39,8 @@ with initial_components as (
   left join erc20.tokens t on s."_component" = t.contract_address
   -- Note: there is a known edge case that's currently not being handled of the same set juggling
   -- two external positions of the same underlying component, e.g. if the set has USDC debt in both Aave and Compound. 
-  union all
+  -- This query checks for if we currently have to worry about this or not: 
+  union
   select s."contract_address" as set_address
     , s."_component" as component_token_address
     , 'default' as position_type
@@ -84,7 +85,7 @@ with initial_components as (
   from day_series d
   left join position_changes_ranked pc
     on d.day >= pc.day 
-    and d.day < coalesce(pc.next_day,now()::date) -- if it's missing that means it's the last entry in the series
+    and d.day < coalesce(pc.next_day,now()::date + interval '1 day') -- if it's missing that means it's the last entry in the series
     and entry_num = 1 -- get the last position change of each day
 )
 select * from daily_positions
