@@ -1,4 +1,6 @@
-CREATE OR REPLACE VIEW balancer_v2.view_lbps AS
+DROP VIEW IF EXISTS balancer_v2.view_lbps;
+
+CREATE VIEW balancer_v2.view_lbps AS
 
 WITH lbps_call_create AS (
         SELECT * FROM balancer_v2."LiquidityBootstrappingPoolFactory_call_create"
@@ -80,3 +82,4 @@ SELECT
 FROM lbps_info l
 LEFT JOIN erc20.tokens t
 ON l.token = t.contract_address
+;
