@@ -140,8 +140,9 @@ with initial_components as (
   select dcp.date
     , dcp.component_address
     , dcp.symbol
-    , dcp.avg_price
+    , dcp.avg_price_usd as avg_price
   from setprotocol_v2.daily_component_prices dcp
+  -- from dune_user_generated.daily_component_prices dcp
   inner join missing_components_mapped mc on dcp.component_address = mc.component_address
   where dcp.date = start_time::date - interval '1 day'
 )
