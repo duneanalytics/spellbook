@@ -514,3 +514,8 @@
   id: ruby-ruby-play-network
   name: ruby_play_network
   symbol: RUBY
+- address: '0x9c1A3e3A69F83bDF98A51E4a552BbC2e479d45e7'
+  decimals: 18
+  id: bund-bundles
+  name: bund_bundles
+  symbol: BUND

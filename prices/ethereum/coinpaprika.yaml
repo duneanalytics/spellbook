@@ -2051,3 +2051,28 @@
   symbol: oSQTH
   address: 0xf1b99e3e573a1a9c5e6b2ce818b617f0e664e86b
   decimals: 18
+- name: arbismart
+  id: rbis-arbismart-token
+  symbol: RBIS
+  address: 0xf34B1Db61ACa1a371fE97BAd2606c9f534fb9D7D
+  decimals: 18
+- name: scalara-nft-index
+  id: nfti-scalara-nft-index
+  symbol: NFTI
+  address: 0x525eF76138Bf76118d786DbedeaE5F87aaBf4a81
+  decimals: 18
+- name: jpeg'd
+  id: jpeg-jpeg39d
+  symbol: JPEG
+  address: 0xe80c0cd204d654cebe8dd64a4857cab6be8345a3
+  decimals: 18
+- name: LinkPool
+  id: lpl-linkpool
+  symbol: LPL
+  address: 0x99295f1141d58A99e939F7bE6BBe734916a875B8
+  decimals: 18
+- name: CoW Protocol Token
+  id: cow-cow-protocol-token
+  symbol: COW
+  address: 0xDEf1CA1fb7FBcDC777520aa7f396b4E015F497aB
+  decimals: 18

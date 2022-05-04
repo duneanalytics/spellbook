@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION dex.insert_bancor(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+CREATE OR REPLACE FUNCTION dex.insert_algebra(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -55,32 +55,31 @@ WITH rows AS (
         evt_index,
         row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
-        -- Bancor Network
+        --Algebra v1
         SELECT
-            block_time,
-            'Bancor Network' AS project,
-            version::text AS version,
+            t.evt_block_time AS block_time,
+            'Algebra' AS project,
+            '1' AS version,
             'DEX' AS category,
-            trader AS trader_a,
+            t."recipient" AS trader_a,
             NULL::bytea AS trader_b,
-            target_token_amount_raw AS token_a_amount_raw,
-            source_token_amount_raw AS token_b_amount_raw,
+            -- when amount0 is negative it means trader_a is buying token0 from the pool
+            CASE WHEN "amount0" < 0 THEN abs(amount0) ELSE abs(amount1) END AS token_a_amount_raw,
+            CASE WHEN "amount0" < 0 THEN abs(amount1) ELSE abs(amount0) END AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            CASE WHEN target_token_address = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN
-                '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
-            ELSE target_token_address
-            END AS token_a_address,
-            CASE WHEN source_token_address = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN
-                '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea
-            ELSE source_token_address
-            END AS token_b_address,
-            contract_address AS exchange_contract_address,
-            tx_hash,
+            CASE WHEN "amount0" < 0 THEN f.token0 ELSE f.token1 END AS token_a_address,
+            CASE WHEN "amount0" < 0 THEN f.token1 ELSE f.token0 END AS token_b_address,
+            t.contract_address as exchange_contract_address,
+            t.evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
-            evt_index
-        FROM bancornetwork.view_convert
+            t.evt_index
+        FROM
+            algebra_finance."AlgebraPool_evt_Swap" t
+        INNER JOIN algebra_finance."AlgebraFactory_evt_PoolCreated" f ON f.pool = t.contract_address
+        WHERE t.evt_block_time >= start_ts AND t.evt_block_time < end_ts
+
     ) dexs
-    INNER JOIN ethereum.transactions tx
+    INNER JOIN polygon."transactions" tx
         ON dexs.tx_hash = tx.hash
         AND tx.block_time >= start_ts
         AND tx.block_time < end_ts
@@ -96,8 +95,7 @@ WITH rows AS (
         AND pb.contract_address = dexs.token_b_address
         AND pb.minute >= start_ts
         AND pb.minute < end_ts
-    WHERE dexs.block_time >= start_ts
-    AND dexs.block_time < end_ts
+
     ON CONFLICT DO NOTHING
     RETURNING 1
 )
@@ -106,73 +104,42 @@ RETURN r;
 END
 $function$;
 
-
--- fill 2018
-SELECT dex.insert_bancor(
-    '2018-01-01',
-    '2019-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2018-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2019-01-01')
+-- fill 2021 first pool created on 2021-12-14 17:37
+SELECT dex.insert_algebra(
+    '2021-12-14',
+    '2022-01-01',
+    (SELECT max(number) FROM polygon.blocks WHERE time < '2021-12-14'),
+    (SELECT max(number) FROM polygon.blocks WHERE time <= '2022-01-01')
 )
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.trades
-    WHERE block_time > '2018-01-01'
-    AND block_time <= '2019-01-01'
-    AND project = 'Bancor Network'
+    WHERE block_time > '2021-12-14'
+    AND block_time <= '2022-01-01'
+    AND project = 'Algebra' AND version = '1'
 );
 
--- fill 2019
-SELECT dex.insert_bancor(
-    '2019-01-01',
-    '2020-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-01-01')
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2019-01-01'
-    AND block_time <= '2020-01-01'
-    AND project = 'Bancor Network'
-);
-
--- fill 2020
-SELECT dex.insert_bancor(
-    '2020-01-01',
-    '2021-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2021-01-01')
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2020-01-01'
-    AND block_time <= '2021-01-01'
-    AND project = 'Bancor Network'
-);
-
--- fill 2021
-SELECT dex.insert_bancor(
-    '2021-01-01',
+-- fill 2022
+SELECT dex.insert_algebra(
+    '2022-01-01',
     now(),
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
+    (SELECT max(number) FROM polygon.blocks WHERE time < '2022-01-01'),
+    (SELECT MAX(number) FROM polygon.blocks where time < now() - interval '20 minutes')
 )
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.trades
-    WHERE block_time > '2021-01-01'
+    WHERE block_time > '2022-01-01'
     AND block_time <= now() - interval '20 minutes'
-    AND project = 'Bancor Network'
+    AND project = 'Algebra' AND version = '1'
 );
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
-    SELECT dex.insert_bancor(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Bancor Network'),
+    SELECT dex.insert_algebra(
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Algebra' AND version = '1'),
         (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Bancor Network')),
-        (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
+        (SELECT max(number) FROM polygon.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Algebra' AND version = '1')),
+        (SELECT MAX(number) FROM polygon.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

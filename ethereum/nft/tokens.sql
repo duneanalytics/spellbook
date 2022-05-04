@@ -21977,6 +21977,2085 @@ COPY nft.tokens (contract_address, name, symbol, standard) FROM stdin;
 \\xfedf89efc966506910f3e7e398852f0abac8bf75	The MinimaI Collection		erc1155
 \\xff2790802f3ca1777c632892394f8afaca92bd9c	Yumi Official	YUMI	erc721
 \\xfffaab67dad67620dba4e0d8434b54a32526fa00	 After-party	HARE	erc721
+\\x00047d0d2a0afad9aedc5e840533df8336f85e4e	Ultraviolet V3	ULTRAVIO	erc721
+\\x00139fdd8f2bb8b4376aab2435c44981ec34e7e0	Kingdoms of Ether Collection	KOE	erc721
+\\x00404a98c5fe8d3b313ec25b6e612391208d52cc	Happy Robot Friends	HRF	erc721
+\\x0062e2da8cbbfdf034c72f5b9e6d973cd180aa04	Adulting Achievos	ACHVS	erc721
+\\x006f6538ba4bddd20ccc330a89d334c601edab02	Desert Dreams V2	DSRT	erc721
+\\x00808c4201db673c00950b291ecd23bb9c1c6b0f	Turf Shop	TURF_OBJ	erc1155
+\\x0084837cc386150e56c0e93f2e59469579da5443	BUGCITY	BUG	erc721
+\\x00bc0f2890af8bae6058398b7666fc01ffb5981f	Def_Ink V2	DEF	erc721
+\\x00bcb64aac006d69778e4f95c72ab4ed1b843b0d	fire of wind	WINDFIRE	erc721
+\\x00e699bb8d011585e6429fc2f2550743a38d7f8f	OG CRYPTOPUPPETS	CPPT	erc721
+\\x0164fb48891b891e748244b8ae931f2318b0c25b	Boring Security	BoringSEC	erc1155
+\\x016f9ea03fed02d8b595aae133df55316a499bf2	KINGS and DEMONS	KX	erc721
+\\x01ae9df9cc72ed928c6f34aa74a3449e8d5ab134	OmniBird	OBIRD	erc721
+\\x01b956a0149808806a81148ad93cf71d1a05e302	Foodz Party	FP	erc721
+\\x01d48cc316db377cc50e2a5dd5d7db0567155a97	Mutant Rat Social Club	MRSC	erc721
+\\x01db525f0c22ae58400fa041653c6bac8ef5779d	AllBright Crypto Cocktails	AB-CC	erc1155
+\\x01ea0a1c4cf5d6d948320ff16b1b6b972626e599	Hikari Official	Hikari	erc721
+\\x01fac6744f460abd6a1d89f4ca190ea822464919	Nameless Jovians: Shards	NJS	erc721
+\\x02305914f7379f140c6906138e5d6163b0d48746	❤️	FACE	erc721
+\\x02376ef3119388e48f1791f7005fe214b2b4bd69	BURGERISM_STUDIO	BURGER	erc721
+\\x023b4b77c5fbbecdd033fb44eabd57effdac3039	e9Art AI Genesis	E9AG	erc721
+\\x025c78aebe9d042b8c181dac56aea9ab3e66d529	Fancy Mfers	FMFER	erc721
+\\x02af68b9df900524470956e00399214ddf8e8128	BOXED BONES		erc1155
+\\x02bc748cda9c1e4d0abcc510a579f863b5b10f68	DLG.	DLG	erc721
+\\x02bdd74a47363641181f79ebeb8c1e094f44f323	STARKADE: The Lost Fighters	💫	erc721
+\\x02fc9bf7d97200dfe2dc789047b6fa5320ae9bbf	Funky Bunnies Club	FBC	erc721
+\\x031f8cef82c258c3cf440036a034c34cb348df36	invisible mate	IVM	erc721
+\\x03240e86d1520fa92ae438b493093994edbf696c	experiments in glitch 2	JAKNFT	erc721
+\\x032da637fba9c8608bd4e04da81c13ef8b3622fa	Peerless meta heroes	PMH	erc721
+\\x0341744d4cd97e3225e7f3e0fdfd0b66723f949b	Lazer Tools	LZR	erc721
+\\x0354949805e93a0015c4fdb74a2ebd63b366fbc6	Plastic Age V2	CJNY	erc721
+\\x035b7e32116a25c580228028c4f64801b97a3fad	Rising Owl Society	OWL	erc721
+\\x038d924647c4fbade97a66901739997d1277683e	Sybil V3	SYBIL	erc721
+\\x03b8d129a8f6dc62a797b59aa5eebb11ad63dada	SMOWL	SMOL	erc721
+\\x03cdf805ac5e22e01e7026a1a9e93d1040a699f0	tiny skullz (ether)	tinyskullz	erc721
+\\x03d8f1b85f23149f8eaee2aa2d58b69b588c8236	UTOPIA Universe	UTOPIA	erc721
+\\x03d8ff0226dacd17d180b417f193ec4aa27530e5	Journey to Anomalitism	JOURNEY	erc721
+\\x03e725ded9d4713515fb703a9a6ce57ff0ac7507	 the Creatures of my mind	FAFE	erc721
+\\x042874309bf3f6c8e69be4bf3d251fe9e41cf0d2	Impostergram	IMPOSTER	erc721
+\\x04332e697ca8cf1af73c440391fc419d9d107c67	REDS V2	REDS-FND	erc721
+\\x0449f89f90a7163c7db8837beef59cea81f2b6de	Yomogis special collections	YOMOGI	erc721
+\\x04637e5fb8beb283820b74f625face2bae5237fc	VanDi Mints	EMc21	erc721
+\\x04799b86ef72053af15373641ea0c8d5bc3a71ab	Mata Atlntica	MATLC-DB	erc721
+\\x04a12154ebeb9f000d614d85ca964f50f7e3ed25	MechNuggets FND Series	MECHFND	erc721
+\\x04b92d69f4b48f39fcc97928429cf4b270394cc1	AUTOMEMORIES	MEMORIA	erc721
+\\x04cedb4b42dd8b94dcb23dee008b66a26c09624b	MIND POLICE	MiPo404	erc721
+\\x04f5b1c5c38a4c4ee90decc5561e7a1e1606b404	Digital art for real life		erc1155
+\\x051a2bb32566ecc31a47797554baa6aa657ea727	Kitsu	KITSUNE	erc721
+\\x0531cbcce7c4e30dbc9fff82b330da8420d7c4ef	Moonbird ETH	MTK	erc721
+\\x05532ce1d89a1aa03929f38e7cb884d96c3f4b96	notBanksyStencils		erc721
+\\x05539eca1f74cde11a6b6a467e59e13a63ee4036	Friends of London	FL	erc721
+\\x0560e8081654b465593595c152be9cf5d8214bdf	Gals of the Galaxy Official	TIT	erc721
+\\x056d394510f29dca9247bd7c200c069bacea720f	Redkams Derivative Art	RDA	erc721
+\\x0570a26f3500fbf0d38669547e20b2de71315f6b	Mechanized Anguish	ANGUISH	erc721
+\\x0595a1ebd1ec335d36ecb5289adb1985ff4bd5cf	human stories V2	LIFE	erc721
+\\x05e7f2499ff153fea2f20bbde0b5584c911c0af1	Something Token	SOMETHING	erc721
+\\x05fc3d92fd73448563e9a869c9e4a533d46209ca	MBC Fananees Genesis Collection	FNN	erc721
+\\x060d385007f1dce8416b668ed5585390bbd0c5f7	Demon Death Cult: Coins		erc1155
+\\x06354c8bb48e7dd75d872137aeb63333b0ffdaa1	The Beast Official Alpha Collection	BEAST	erc721
+\\x063ed2d971cdb9361958adf61c2c49437d70dc6d	Warp Squad 16	WS16	erc721
+\\x065b2b0ce5fda197c8a384558b207f001e369848	sneakerdad singles V2	DAD	erc721
+\\x0662b45cd8b04cdbf0dea9958d826e10a36c91fa	Beegens	BGNS	erc721
+\\x0684e04f8b83d735687ef80929f96efc4705b94d	Black Cats V3	MEOW	erc721
+\\x06a1617ba1499e8199fa29535e638da434e9e577	SebastianMVibes	SMV	erc721
+\\x06bad3c034c4c91f783470b6144df54833442a3b	Cryptelligence: New Eden Chronicles	CSComics	erc1155
+\\x06fe1be626b8f7f47c8892863920e622fe6325df	Back to the rootz III	BTTR3	erc721
+\\x075ad4d55b9a7a746fb05cc8523b50acc9f62358	Goji Bears	GOJI	erc721
+\\x075b6eb71ccf661c47bf23c287132b2f68990efe	3D tiny dinos V2	3D dinos	erc721
+\\x0782fbfcbb9c7476bc57c9d2b179f83b3861f73a	SMC Art AiYokoyama	SMC_Art_AiYokoyama	erc721
+\\x07bd4c92bbb4e83b410c17172969c2a0b68dcbd9	Friend in an abandoned house	FIAAH	erc721
+\\x07e8d4a25d36d7259879337a923170453944614f	milady mfers	MILFER	erc721
+\\x07ed0fe673e2fc77e5b25e36e5c89eef2ff1ebb5	Mooncocks	MC	erc721
+\\x07fc8d539a6eee48aad920032c0f4ce9e4b170ea	jkqrjljeqlkrjqoiadfoiqwer		erc721
+\\x081955fe9f1a5163d7810f326f4a70c5d4139348	World on my face	WMF	erc721
+\\x0858dfc6c88137755049155426881dc2b04f89fc	Celestials Stellar Club - Unique Exoplanets Collection	CSC	erc721
+\\x085dbf2e601b21a852bb37b3e3376768dd477dfa	WEST - WMPHvKDTRh	WEST	erc721
+\\x0877899889cca9622ac6263e7f269cbaa8040454	Hordes	HORDES	erc721
+\\x087d41a9c07dc35413c395df04b2883a134bf539	Boundless Blue	BOUNDLSS	erc721
+\\x089826d5e0b734622ce61eb076e2654446151ce8	MOE-VERSE	MOE	erc721
+\\x08aab9a8f024abe28191da4821dff9a3bc1c6bfb	doodleverse V2	D	erc721
+\\x08af0cc9400af4ae36f76245c7d593571e5d6e9a	Watch the Peace	WTPC	erc721
+\\x08af76d59936c0a6f607d549122f3aa368b5605f	Linework by Yinkore	YIN	erc721
+\\x08d20b4d97a29c4471e93ca21f7ad3da32c8d76d	Cancerous Cows	CC	erc721
+\\x0900a8b234871533cdfa24b3eacd4f614c2eeda8	Zoinked Punks	ZP	erc721
+\\x09079c6e5078fa319beac408a015a3ea44b3a1bb	Reverb V2	BREATH	erc721
+\\x091ab870f625fe72abd5317c46b5100f17a4bb86	Bodko x Tubby Cats	TBBYBDK	erc721
+\\x0953605f41599f8ecc84849e734182b5d224fd33	Inner Thoughts V3	THOUGHTS	erc721
+\\x095e447a825895006bcae433b3816b5092b50152	Imprison of mind	IMPRISON	erc721
+\\x0968de2dcd46b6e759ea38d88f39f265e0bb6347	Ilcaruxs art	ILCX	erc721
+\\x09ab2e01cba550f7121cfe9e765cac261b4e5e8c	literallynothing.	NOTHING	erc721
+\\x09d0288a67ba73787c720c87d34233d16a9c9089	Trust Issues V2	TRST	erc1155
+\\x09ee6a5c458960e5cb4e8d10121006d9b140e278	METAVS Metapass	metapass	erc721
+\\x09f02c6842a1be7394e36dea09767f185131cd6c	Power Meets Peace	SEASHOTS	erc721
+\\x09f0a7f88085b2de883a155512b4fcbc68a7d79e	Undead Ape Society Official Gen 2	UAS	erc721
+\\x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676	QXJ0IEJsb2NrcyBQdXJnYXRvcnk=	MOMENT	erc721
+\\x0a278d4c904c4ce1bba91cdc0c3ec2b14307c67c	The Ramen Shop NFT Genesis Collection	TRS	erc721
+\\x0a3d4f735898a66e621ab55c4e975db10cadf13e	Cheeks by PEPO Paradise	CHEEK	erc721
+\\x0a4a20f57f7638d49eff182c97242219bb50ac5a	BASED & PLEB FRENS	FRENS	erc721
+\\x0a81ada1fd3bd9027c7bd793758201713e4a6ac9	SAU Official	SAU	erc721
+\\x0ac1e2b16e30f961467ba1f5193f9089f2b02a70	XBERG MOVING PORTRAITS	XFACES	erc721
+\\x0b16667810163f516c2f44364e3eb22bbec74900	soundsbynova	NOVA	erc721
+\\x0b1d6565d88f9bf6473e21c2ab58d28a495d7bb5	Metacraft Season Pass 2022	MC2022	erc721
+\\x0b34510d70b6bb0a573470fc555b4a4935765e04	Pulse App Lifetime Access	NFTPULSE	erc721
+\\x0b4d96f01f3e2cc0ce5ff421dcac80d4f564f0cf	The Cubies NFT	CUB	erc721
+\\x0b5b7960c982a55a0e5f78c7fa7b921f27033602	HYPERDAVY	HYPER	erc721
+\\x0b6a54343b891839ea224083221a530edb7fa48b	The Nauty Collection	NAUTY	erc721
+\\x0b72337f5811c8f3e802c762dc03a5a822fc46f8	1/1 (Foundation)	BASIRAT	erc721
+\\x0b84a80a65d64107241ff413a3412f0b32420ef8	FUYUKOs Kawaii Art	FUYUKO	erc721
+\\x0b95b4f29d10f7a676f8c38c7c0692b29a396d1d	vSamurai Genesis	VS	erc721
+\\x0b992cd45d8b72d304b5de443a59720e9bd9cc5e	Sarutama Genesis NFT	SARUTAMA	erc721
+\\x0bc0f91ab392ca88a22924af66d3af154946ce27	Croko Gang	CRGG	erc721
+\\x0bf50c2d8f16eab44104d03694970254db787a27	Orgy Club	ORGYCLUB	erc721
+\\x0c052fddebbe76697fadf0a502db9ed54f210f87	Official Stickman Saga	STICKMAN	erc721
+\\x0c24f4224dd1abdaa907bacc26679f7e06a8a442	InvestMan_JustForFun	JFF	erc1155
+\\x0c2538d1ae129b2c73dcc9bf1c5228b09d274c73	Archivo		erc1155
+\\x0c8b0e8f975bf3dfb99904005385e825a391af81	Nifty Tailor Genesis	DAPE	erc721
+\\x0caecb72a7217470fa6dadf871b6d63dd3754112	Doodle & Co	FABICHE	erc721
+\\x0cc33a4a2ff2b41441a7545987965a2a494d4f13	Punked Apes	PA	erc721
+\\x0ce17874722e31c6604b8b4b41ebc44a72502b83	Angry Frogs Famiglia	AFFs	erc721
+\\x0d1fe1ebab085bd039b4d1fbf96dbe8decf769a1	Zukibirds	ZUKIBIRDS	erc721
+\\x0d2e6ec50924fd7a9f763ae69de2e1eef1d6f466	OmniSneaker	OS	erc721
+\\x0d49a326fdb6569a1d141cbd59866eeb1ef5a456	Magic Toadz	MT	erc721
+\\x0d7cbfa90a214fc0d8ea692779626fc3dfebbe08	MegaKongs	KONGS	erc721
+\\x0d853d5e3b4c6f70d9ef9211f159de3d67408b38	Girls glow in their own light	3DART	erc721
+\\x0d8b285201602c6aec82915b88cfcf72deabd36d	Samurai - 20kR5hErky	SAMURAI	erc721
+\\x0da0af2bc2b95b2493f645de6efa3a2d58c2c406	Forgotten Tomes	TOME	erc721
+\\x0da0b365bfab16a317f60d135474702326942d05	Starbirds Official	STARBIRD	erc721
+\\x0da8bd71b70936a290d73531463756a728e328d8	TheWhitelist.io Aces - Signature Collection	SACE	erc721
+\\x0dcc038eac9839317d2e297b91467d2ada1a56a7	KuChiAcademyGirls V2	KUCHI	erc721
+\\x0df5d6fb131a13c2d6f4dc0226689c34b018ab8a	Magical Portraits V2	RYKYART	erc721
+\\x0e043e39e1f9382e4b3cb9b859a1452a93993be7	SHIBA ARMY by ShibaDoge	SA	erc721
+\\x0e09734c4bdc2555071ece2a9f3c97c0d2e3b6e8	discover: india	DSCVRIND	erc721
+\\x0e25ff55445a2cf3eb96fbf7fce4536bb7dac4de	Original - vYDsA0GvBq	ART	erc721
+\\x0e2712fb1bfb6ba845ce01fcc726eea59aee4074	Devault	DEVAULT	erc721
+\\x0e3d63a39a678034f410dc6cc49e1052277e10ef	Deleted Scenes	SCENES	erc721
+\\x0e5b1348bddc08b24efb3cca4f2a519da305cd4f	The Loomi Heads	LOOMI	erc721
+\\x0e5f01485b2be4facd983692f5cc68adecef88ff	santiago V3	SNM	erc721
+\\x0e93ead3492aa40f4065e285c51331b4b1257fef	Weirdo Water		erc1155
+\\x0ec773447b1436bb7c8db58fb2104a83b2a56c0f	SURREAL WORLDS V4	RANDOM	erc721
+\\x0ed3b264aaff624d991588d3fc4a0bfa4648ae49	IAmUkraine	UKIEART	erc721
+\\x0eda3c383f13c36db1c96bd9c56f715b09b9e350	Avius Animae	AVA	erc721
+\\x0edb29ef467c364f173bc0f6da8237386303b107	0xBLACK OGs	0xBLACK	erc721
+\\x0edbb2e485619cae9b396beab17e807ea3411004	Humans and Nature V2	HAN	erc721
+\\x0ee88a26afaa594fcaa9ee67f04ea60f3cd1f983	In search of myself V2	DORA	erc721
+\\x0f22e0348d9104db28ae7457c5eb6edbf2df5d1c	Aloha Frens	ALOHA	erc721
+\\x0f4d6cf7b8248f10aef7903a48b62f0af3bc2105	Alex Dori Art V2	ADART	erc721
+\\x0f5108d0d82198697c54ff8c94f36cec80292d3c	Foofee Friends		erc1155
+\\x0f59d9e70fadf5e36909a186fc32dfd5e16ba140	STAR BIRDS	SB	erc721
+\\x0f5ac1716d088b52869a3cfe28f10ddfcc565e94	OOF Collective Official	OOF	erc721
+\\x0f7067fc7b606e9a90108ade0f29c4239d2f9e60	Reasons Why She Will Go To Hell	RWSWGH	erc721
+\\x0f70a1a2f1baca95ea91a50ea1d516b2ad6bef4c	Baby Dragoons	BBD	erc721
+\\x0f7f76ab1fbaf21740d26f2ab0fca2391fcafdf5	Feminine beauties	ETH	erc721
+\\x0f9c4f415f387fa148e0fb75cc6fe35a2d0774ef	Mysteries of Yellowstone Collection 1	EPC	erc721
+\\x0f9d9494b7bdc0e73239780399ddf480e94592a8	Supergirls dont cry	EMI	erc721
+\\x0fa253f191cd31562f6b58a83cfd3be6eb6f4e78	VIVID 2.0 - old	FEELING	erc721
+\\x0fca0435ca2817e192581e40c9f62dff3ca0c8c7	bloomingmossnft	bloomingmoss	erc721
+\\x0fdd6cc0bad342dd468de40d95f77b6795ca4d35	oxMoonbirds	oxMB	erc721
+\\x0fe9f1036e915cc0e672e9bad27c9f61c390033d	The beauty of chaos V2	D-HERB	erc721
+\\x0ff55bd2efbef8356298fa2be134919b2b529362	Whiskers	WHISKERS	erc721
+\\x100fb9acaea12b6a5f0742e0af9a70cae0b5b7ed	69 Club NFT	69CLUB	erc721
+\\x1061acc5520fd6391d4bcb40758d606c463edb8d	Vlada Bystrova collection	BYS	erc721
+\\x106bbf1391f0d9f05c4e784aad105309e334c809	Curvy Portraits	CP	erc721
+\\x1077b10a02ef6bf5912ad5ed31146c069f50331b	Amateur Guardians of Ethereum	AGE	erc721
+\\x1082cb089de2ed91cbab338850da50d56496837d	MOONBIRDS MOONIE	MOONBIRDS	erc721
+\\x10927a14001d9ca5817c4b8aeb7754a17c240ce5	The Cubists	CUBIST	erc721
+\\x10adaa7037353457fd46a17147b9b827c1518b3e	Onna Area Party NFT	OAP	erc721
+\\x10b61c0a5693c66b5096792ad5aeb4a3150061e2	Meishu Flight Club	MFC	erc721
+\\x10b94fdbc624789ae832f4866c1c4922bb3f56dd	Sakura Tree Evolution	STE	erc721
+\\x10c98bf44fec746287733fe073cb593477246a77	NYANKONE1	NYAN	erc721
+\\x10f30f4c0ae16ebc5ff761f55ae5d5611897e2b4	Official Momoco	MMC	erc721
+\\x112db457953996687ad0f827111df0f00d324baf	Mutant AI Ape Club	MAAC	erc721
+\\x1172519b5ce8f88517f3b353c2c140c268d6a712	digital sketchbook V3	SKETCH	erc721
+\\x119ed1d06d549a388e71233ead8c79f855ef1fa0	PinkCatNFT	PC	erc721
+\\x11bc4c6a82b0b356c4f15c77a328ed2815924c62	COLLEXX SEED		erc1155
+\\x11c0e5d6df73402b655c0aae80006bf6b8d8a26c	Grounded V3	FLRRDD	erc721
+\\x1231c9dab79dc31b192f218636457a71f85d5153	Genetic Chain: Crusties	CRUSTIES	erc721
+\\x1251374b5c97e1184037a0d896b81b95e1d30de2	Mighty Mutants	MM	erc721
+\\x12892f1ce50359336ee388913f59b915b81c71f9	3D tiny dinos	TD3D	erc721
+\\x129d9b3da1ae90a27cbfe39b5615a5585326e7b2	Happy Land V2	HAPPY	erc721
+\\x12e084cb973315dc6ed8741ef654338035e00b2f	The Photograph Of DJ Animals Adventure	TPODJAA	erc721
+\\x133a5b56017a9c8e0c02019ce985c449d71ddce6	Taika x FWB: Mateverse	MATE	erc721
+\\x133e00beb2deca75da5dc5efe1f737dbabdb5e0e	Five Dollar Shop	FDS	erc721
+\\x13eb776d259e30cbf9ab4d37fa0b82f69eed8a2b	Bird Without Moon	OnlyBird	erc721
+\\x14109dcaf851216fb8f7c225d8dfbb115ae3becf	Regenerative Rave VIP Pass	RRVIP	erc721
+\\x1417404d0d92f9d21b046afbaa9d1c4e17c4c723	Queen Apes	AAQUEENS	erc721
+\\x1419e0ac1c9a9319561c087651c47a506da86f28	Lurk & Destroy	LRK	erc721
+\\x145b250cce77604209e52f9cabbb408721f01f9c	Shattered Eon Raw Resources		erc1155
+\\x147167ba6ed86e31a6d4947f08e7369c8858df6d	DookieZuki	DZ	erc721
+\\x14c6276f169ede44dc9896ac0d77b68a6be3b2fe	Zukey	ZUKEY	erc721
+\\x14ceab5d5025d0e48cec55c5827441a2c1854aa0	Accelerator Crystal	ACC	erc1155
+\\x14d0a0dfe163c365a86c5dc22eac329a39ded3d0	Dreams of Alchemy		erc1155
+\\x14e56e1acc0a96bd91820d16bcd78c0c96f00943	The Ocean Bandits	OB	erc721
+\\x15142bfe5da675666c8895a3e3e2de5d1aa74482	Photo Synergy	PS	erc721
+\\x15386d58f245ba4282b18feb6ff41f406283c2f1	Nifty City	CITY	erc721
+\\x1553d0240f3f8c2b801d77c1919014da170e4b1b	Abstract Aerials	AERIAL	erc721
+\\x1563825b2efca3b49dc390add8a343471ad18f28	Brian Morris : Contract Mints	ooo000ooo	erc721
+\\x156b05b48625ab11777c79d1b860c89d72cf9a3d	Pixelwooks	pixelwook	erc721
+\\x157f48b6b53aff95d57137081e1e10adbc599f2c	DayDream Girls V2	D2G	erc721
+\\x162259b410df3b8c9c488a16bd2a57e04e11397b	BBS Collabs	BBSC	erc721
+\\x1671edda71662725d01596498b7d83361681ba3c	IZUKI ZEN	IZK	erc721
+\\x167f4c0561eea486ac7cf11f7fa1b88beaa47c28	JRNY Club Rewards Collection	JRNYREWARDS	erc1155
+\\x169b487cc1294a3a7412f5bdfb12e65cb161b2ab	Murakami Mfers V2	MURA-MFERS	erc721
+\\x16ceb018fb3e5b68351a83cce7cbae8f3d6f6b7d	Omni Zuki	OMNIZUKI	erc721
+\\x16e2220bba4a2c5c71f628f4db2d5d1e0d6ad6e0	The Wrapped Companions	wTC	erc721
+\\x17092cf6be18d89a7347bfb584be4a74a5bfc8e0	Zom NFT	ZOM	erc721
+\\x174491f9f644cba7d820729676b03d8f61b151f9	Spgelsesmaskinen	SPOGEL	erc721
+\\x17735824fe2818d62955898c60c09cd3f0021267	APC (Old Contract)	APC	erc721
+\\x1778e7c6cf0bad4d0182ce29fe61ed9132c3024c	.r5ty	5C	erc721
+\\x177fd1b773e09f2c5a157daa191e9479ba0b752b	BirbFrensETH	BIRB	erc721
+\\x17b41188edf0248a4f062e793af8455f0d6c6496	M.X.N	MXN	erc721
+\\x1821d56d2f3bc5a5aba6420676a4bbcbccb2f7fd	DANKBOTS	DB	erc721
+\\x184289b51259331d602ed74a1e3662f30a82f549	Being-There-Sound	BT	erc721
+\\x184d6a40a2849b2080c3d868543754624a98b208	Chinzoo Art	CHINZOO	erc721
+\\x189dab395d7b523f7fbf442f7fe7eab6cb388812	Messed Up Girls	MUG	erc721
+\\x18b256fdb020240c8d1cdb97a1b881e3a47bb10f	666 DEGEN PIGZ	DPSIX	erc721
+\\x18be8609aae2223117a21d35b45fc154703a26eb	MEKAZUKI GENESIS	MKZ!	erc721
+\\x18cc43afb88f7f469e2b4f0931d2aa4eb7870a43	Monstarz NFT Kings of the court	MOG	erc721
+\\x18f2863093f619901270c9534cbe71206d2cb20d	smoky thoughts V2	SMKTHUGT	erc721
+\\x197bcadb9b9c9092e6b7896d6c4e45663b223b09	ArtbySunshine Collection	ASC	erc721
+\\x19bb64b80cbf61e61965b0e5c2560cc7364c6546	CREYZIES	CREYZIES	erc721
+\\x19cbcd15bc95801f93b2a814c6411aa0dd6296a3	Elevate Vinyls	VINYLS	erc721
+\\x19d4ddb9d1ba1f45475094e417ad6a7de34f6881	Duskus	DUSKUS	erc721
+\\x19e6bf30e94636e7ed40351f11802350ce99d39c	BeatsuNFTs Key Holders	BKEYS	erc721
+\\x19f77c638878a1b941496b938aac4c1396501e8b	Official Hikari	Hikari	erc721
+\\x1a0f9969f02651cae7acb89b685ed2ceb00c02b5	Early Risers	ER	erc721
+\\x1a178cfd768f74b3308cbca9998c767f4e5b2cf8	Wilder Beasts	ZNS	erc721
+\\x1ab7cd0a68bb763b2fe9687faa96a0f512bd2d23	The Rings by Andrew Fernandez	RINGS	erc721
+\\x1ac8acb916fd62b5ed35587a10d64cdfc940a271	Night Vision Series by Jake Fried	NVS	erc721
+\\x1ae23853eb211b4fc707050bdedff34adb41512e	Iris - DXUWea4Sjm	IRIS	erc721
+\\x1af26e6077bb6a4f445d81f4281c47ac2839dc32	QUOTE CITY FND	QCFND	erc721
+\\x1b4eacd5bdc9e662c567030e547a741d99085ab9	BLUE - WpaionOX1e	2	erc721
+\\x1b5f120d1dedf5a022b439853fdcc9945b4cfc92	NEBULAND	NEBULAND	erc721
+\\x1b8920cd9bab07a78316f2417d62b4661d387823	OmniToadz (official)	omnitdz	erc721
+\\x1b8ab0b410f54ae0a24320e6188e3ec20a6c609a	FLOOR by MOCA	FLOOR	erc721
+\\x1b8b1f3fcabfdefd98dea94f47b747ec6c2766bc	Pet Phrock Collection	PP	erc721
+\\x1bc6f62dd3b41aea7660183778fe090a9cac30c7	OmniOwls (eth)	Hoot	erc721
+\\x1c30850bff5627782e87550a73d3fdb346dd1c47	The Uncolorful Ape Club	UCAC	erc721
+\\x1c700ca4185bc9396bc1cbda7ee683198a60c6ac	Ethernity's Master Collection		erc1155
+\\x1c895742c14c2caec4555afa9216de7b3867cd13	HARU-ILLUST 2	HARUART2	erc721
+\\x1c95266be78a8bbe560b62bca36c36f7c7c078d5	Bored Brothers	BOREDBRO	erc721
+\\x1cdc0f5f615431d2fbdabd76e0ac88f2419d1541	Wobbles Official	WBLS	erc721
+\\x1ce9912284ab1dc649e48e8e66c45ba21dd87369	neo-expressionist Airs	nA	erc721
+\\x1ceb05c76b58d0c1ae66e322717a4c617c6e92fc	Shimayos Contract	SMYC	erc721
+\\x1cf6c91b65f3c3577643eb5fad570e3f324bdfcd	Pixoods		erc721
+\\x1d0f260d78b6d73a2b98327c8d27a0cd95ac8c70	𝕺𝖗𝖊𝖓𝖉𝖆	ORENDA	erc721
+\\x1d22e98e537376c048279d67865fa95e693333c9	Gutter Punks Anthem	GPA	erc721
+\\x1d2dab3df82dc69782e5c13e74efc38c0840ff5a	Dark Machina	DXM	erc721
+\\x1d43736f44ca48a5b6600e952f6ef11ad2535d43	Paul Warren - Editions	PDWE	erc721
+\\x1d439cfc5c11782b58bf030c552d298b2fcb33d6	Omnicat's World	OMNICAT	erc721
+\\x1d71bdaef67133875bb324c0ce7fe0058a4d13a1	SameMoonBirds	SameMoonBirds	erc721
+\\x1da087e06da83248087f7c9692a7e664e4e19f34	ColorCopia Origins	ColorCopiaOrigins	erc721
+\\x1dca66c9a839d6f2b18960b88e932b537092af01	Shibuki	SHIB	erc721
+\\x1dcb3d8fb1a953703f1c23a9846451c765859a8a	The Lackhoney Collection	HONEY	erc721
+\\x1dcfad5c92e56437f846043e96d9c6da46686ccd	Life Attack V2	LIFEATT	erc721
+\\x1de7617f0ccf3da2f334d216e8810db76b89d944	TOPDJ Genesis Membership		erc1155
+\\x1e1c19e1000726b415b1b4ad96958020ae0f0cfb	Meta Riviera	MR	erc721
+\\x1e5d1c83314159cf3be71972907d8ae697925fa5	My Pet Egg	EGG	erc721
+\\x1e65fb300caa10fac11bc2239781548a63f8c384	Other - LhJWlMLn2O	OTHER	erc721
+\\x1e680d51d7ce93c52afa5e2e23bec24915198cc3	ARoseIsARose	ROSE	erc721
+\\x1e6b568b1578988182b10e37b6db72b09abea846	Crocodood	DOODS	erc721
+\\x1e860d45d8345efa0252aa20801a21ee53e4c4c6	GENESIS COLLECTION Zodiacs by Raquel Casilda	RC	erc721
+\\x1ee75e3d1e364a34ef779108c6e6360493009e1d	PIXEL CITY V4	PX-CITY	erc721
+\\x1eefb7790b9d46452cd458159fa7616cfb5baf2f	Epic Thundercat V2	ETC	erc721
+\\x1f2c6920750a018886b994626ee5445755b26a44	Antarctica - The Last Continent	FROZEN	erc721
+\\x1f3af870403958b881e410467dc0071175480220	the everyday is a fiction	PHOTO	erc721
+\\x1f93a0f4c9b4cc3f690bc62d46fbb3d68a2fb279	PlayWithMe V2	PEEPS	erc1155
+\\x1fed6c2f27da508997ef454f33af0015bd7d22e0	The Squids Official	TSQ	erc721
+\\x201414c33648572e848419f7f692afd587af1d06	omni Apes (eth)	oApes	erc721
+\\x2044ddb73864c13700540477b71a8a6cb1974589	Tiny Omni Starz	TinyOmniStarz	erc721
+\\x2074f617c1d6372a3761d9832aa4dbfc96312b2d	PizzaBot	PBOT	erc721
+\\x20984d5308a87f04d1fdd965e331629fb0aece07	ZLORPS	ZLP	erc721
+\\x20a32097acd942eb5b4d9737f9f281a47df31ba9	NOME Genesis	NOME	erc721
+\\x20f72fa33a2b87ebc2461c2df4624bf6edc14abc	MOV3 M2 - Genesis Edition	M2	erc721
+\\x2105f29670e4cd72e51385d668e1415025c616c4	MAYRIT	MRT	erc721
+\\x210efe534d7ba41abb96249de5b0df66c28f19f7	Story of Nova	NOVA	erc721
+\\x2130c8375ed53f26d32bb88cbdc13f67d817dd12	Dragon Fruits NFT	DF	erc721
+\\x21329eda7e418b433c7e8c103900607783feb142	Lemon paradise	PARADISE	erc721
+\\x214f83c188caa702ce9551d03b8cdf305160d72d	Crossing Land	CROSS	erc721
+\\x216d06a5c47eb1ccc03e07c459d19877f39d9520	DoodMfers	DM	erc721
+\\x217a1bd217f5ae29d5ad8958205b23404467fc5d	Project Paradise	HEAVEN	erc721
+\\x219c4b347dcf6bb9af644edbd259b84d45c58672	UNLEARNING V2	INSPACE	erc721
+\\x21ce5c89e419541e9a5b97c7a819ee3e1b819bb5	Let's all love Lain	LoveLain	erc721
+\\x22091da8f8a04a16504e7cb931369360d8c91e1d	Daily life - 8wuSb1uija	ED00	erc721
+\\x220c8189bf9d816e1891af3e68dde37412165a36	Wincity Lille Liberte	WincityLL	erc1155
+\\x221bbed99350b2acbaed21495499e0ecf5c7f3c8	Slimesunday	ACIDWSHBYSLIMESUNDAY	erc721
+\\x2228b73a855795bf2d5debbcd18d08cf941ecb7f	Single Photos V2	NAZERI	erc721
+\\x22a176866c92623178c4c6970fbb2a8580b44901	100 beauties	UKIYOE	erc721
+\\x22a3cb46dfa29ee6d53da9fdd985fef2327fd951	Nymphs Unshackled	NYMPHS	erc721
+\\x22c3ae680dcd1cd2547b8de102e8a0df375697ef	Golden Genesis Official	GG	erc721
+\\x22c9b0fd52641935bf4212140b22868320989682	Brown Chips to Liquid	MDC	erc721
+\\x22d847f58e64c09f42a2c23544b2b154cb7093f2	Sabertooth Poker Club	SPC	erc721
+\\x22f287c5387d9a536b8c07cf5327ab3d16da153e	DAO House	DAOH	erc721
+\\x22fae2d364a732179a86dc7a58cd0adab60bc3e1	Season - cQ7q59fSNc	SEASON	erc721
+\\x23141b0f89b4e6694ac21246eca27ab627ebbc6e	Delicious Memories	DM	erc721
+\\x23562a5cb6eddc1572efbe1b40d91ca25952019e	BASQKEK EDITION 1155		erc1155
+\\x23581767a106ae21c074b2276d25e5c3e136a68b	Moonbirds	MOONBIRD	erc721
+\\x23aa7060d0a966edeb298e645da304911e7157c1	harris cole	HARRIS	erc721
+\\x23b931fa511ac85f11c61344ab499a8261c85e38	The Day We Won	TDWW	erc721
+\\x23ccf7f93b9433cb8f30b41fc8557b07ce6812bc	Mega City Medallions	MEDALLION	erc721
+\\x23cd2e6b283754fd2340a75732f9ddbb5d11807e	EverRise Staking NFTs	nftRISE	erc721
+\\x23ddf3097eda05f59dae5f78fae9529a45aeecc8	Dream Walkers	DW	erc721
+\\x23e090493a4a95ad7f6fba267c9749558cfb13a0	Apes of Space VX Official	AOSVX	erc721
+\\x242f3b95bc7bdc99cafd99114abab8231e8076b0	Bitcoin Nakamoto		erc721
+\\x2496fb15b4df79c289586be40ada6b28888679f6	Chaos Theory V4	CHAOS	erc721
+\\x24aa236de33f2053f710fd6e244c21b89ac437c0	guru sounds	guru	erc721
+\\x24d04dff7343bd8e53d719633e52ddcb6bdd55cd	Doodle MoonBird	Doodle MoonBird	erc721
+\\x24ed24f98965acad3109bf0786dcc67f7496ba55	TurtleMoons	TTM	erc721
+\\x25042e298cb958ec75ff8d0951b4b36198f9dcd9	ZuckerBuddies	ZUCK	erc721
+\\x251a7aa0e7af94e79ab519660b79bbdba4be70da	-CORE-	CD	erc721
+\\x25364b04145cd22e0723d1317cf9470af6e9504d	Life by Shu KInouchi	LIFE	erc721
+\\x253c2cb13507eaeb97e9b5a688058c02e0f8c4b1	MetaLibrary Founder Cards	MLC	erc721
+\\x254a6ef1a79fd98a9001515a4ecfce4310a56432	From the City to the Sea V2	LIL	erc721
+\\x254ea2143bc715b5b1c9b46ff0c6c4edc5cb1212	IVY BOYS BBRC	BBRC	erc721
+\\x255ed9231d1e0bd789de67cd9f2694b44bb55cfa	Degen Monkeys Official	DEGENS	erc721
+\\x2564f4adbcb4d77464f83d8af119a34810e5c729	JK UNIVERSE	JKU	erc721
+\\x2567785308c4ec38fabf25679ba407a3ecd00d6f	WYMN	WYMN	erc721
+\\x2583d8154d4b05d5bf924d672c57c7466a133590	Duviel Hertogin	DH	erc721
+\\x25eb5581aeaebdcf896fd00f553a76c09085bae0	The Lil Homies	TLH	erc721
+\\x25ebabd5197cdea401c4d8710caa22d97134f760	Ethernity's Master Collection		erc1155
+\\x25eec3316a5c7363933d5b6c7e5713fb51a26366	Magdalena Cubrova	MC	erc721
+\\x25f1aa56e264a2cf68ab2c2ef889dfa3618c7a24	Cute Skullz Official	CS	erc721
+\\x26403327dea04ad801f07e700b766a5fa0ac1dce	ShowMe PONAs	SHOW	erc721
+\\x266a5797e803e5e299a806afa51fb2d80ec31911	MoonbirdPunks	MBP	erc721
+\\x266e458dd487b2a6200631b14b6e9cf94d55d323	Hiros	HIR	erc721
+\\x26c1a65fcda0995148d660b54b14ed532aa4e975	MYTHOLOGY V4	MYTHOLOG	erc721
+\\x26db7c201cf83b0a5f4e764e854b9f108ef0e71c	Shines - Companions	CMP	erc721
+\\x26e8b6a13bc53443d2bd21793eb96773c012ce4f	Koolworld: Koollamas	KLAM	erc721
+\\x26ee604aa1948f9b3f838bc677145115bebea67f	Bluntz.io	BLNTZ	erc721
+\\x27307451ab7b807289c7caeb1f7820a8e5ac93aa	Film Magic	PORTRAIT	erc721
+\\x2781b28934943f51a8a08375d6f95e0208d7150e	CryptoFarm Book	FARM	erc721
+\\x27cda43f8246ab6f1f87f8a344c6316a435b1e10	PEACEVOID PIECES	PIECES	erc1155
+\\x27cec3607e73eb00e4582e38c1b1b58583476653	Utopias of the Damned	UTOPIAS	erc721
+\\x27de8dae2d07aad1690333b8ca5a909c6172dcaa	Induced Transition	IT	erc721
+\\x27fbe9ce5397acff57e436737191deac50027097	Ethernity's Master Collection		erc1155
+\\x282a7d13152b3f51a3e31d46a2ca563f8554d85d	Toxic Skulls Club	TSC	erc721
+\\x28604737bbe1ef2b6edfadd774e740e53de53592	Ukiyo PIayers	UP	erc721
+\\x2865e58ac0f3bc53ea51a558c972c616cc43f7cb	Gutter Punks - Monkey Legends	GPML	erc721
+\\x2870d9863a106b6c1eac9838d061ec6cdd7dc403	HimeVerse Specialties	HIMES	erc721
+\\x288088133a61fe993470665b848a135be5444a79	Ouroboros - KjdjkJXMnk	OURBRS	erc721
+\\x289ea1ced34fdf50e26fbff8574828c6228d517b	MoonbirdDicks	MBD	erc721
+\\x28a7149960bd2176809d1161442ff597d829b9ee	Cyberzuki2077	CZ	erc721
+\\x28d788e70b789536c56f7bb8bd27b29ff88b2af1	Dragons of Midgard 3D Official	DRAGONS	erc721
+\\x290606655891aea3f1b75213d343e06789f6f08d	Project SOS - Ships	SHIP	erc721
+\\x29190d0dc19b6c506d01f4d7f305e7aaf5425092	Elixir of The Ancient		erc1155
+\\x2932fa75a5f4eb51691e7cc4746938f350ec2b82	Lights and Shadows V2	PORTRAIT	erc721
+\\x2954b51bdbb12514bbff7804f0af258ad6bf0db2	Not Moonbirds	Not Moonbirds	erc721
+\\x29aa0bf7e7bd17a201ac9270cdd21bdd53d2abb6	FernDaddy	FernDaddy	erc721
+\\x29ce2db4ba836c848f7b904e3ba4d9cd0a9efb7e	Healing Homies	HH	erc721
+\\x29d697abb0a6543b88fc840234ef72bf6dfa1acd	Earth Day Every Day V2	EARTH	erc721
+\\x29f9884510eb45f6cc60a378dd12440b45b2da83	Fools NFT	FOOLS	erc721
+\\x2a016e85efdf2969aa4da1645b3024b29efd8843	MFERZ by REDI	MFERZ	erc721
+\\x2a19f7c9af876741ccb8ae6c9fe2345c18506f4e	ChickAverse	MCLG	erc721
+\\x2a215f31a67b19451325b77afa11c9f0c8ad7693	NORZs ART	NZ	erc721
+\\x2a324f741309dcbd76c054b4c2c873337ec5c695	Musk's Blue Bird	MuskBlueBird	erc721
+\\x2a48420d75777af4c99970c0ed3c25effd1c08be	MV3 - Access Passes	MV3NFT	erc721
+\\x2a71cbadd4d735c1827a36827e0b8dc4df0e57fb	BoarJetClub	BOAR	erc721
+\\x2a733cec51cca5445dae5a0da7bc2a9b82c9ea23	AR Mask Club -collaboration-	ARMCC	erc721
+\\x2a8938cd612824940a96eed1033b0ae18bd5cf2e	AngryFurbies	TL	erc721
+\\x2ab03a6eebfa9b7aa51d3e883e4780b482b609fd	The GM Dragons	GM	erc721
+\\x2b1c4215aa724376bca9cb7795153e839e08b437	Preludes V2	WIND	erc721
+\\x2b672d591f48c112ffc1682dd98b762e5bdb6ea1	Mutant Turkeys Megaverse	MUTANT TURKEY	erc721
+\\x2b75f65bc52dee1adb94689bbe960b890bd7ee0b	theLUCKYBUDDHAEGG	BE	erc721
+\\x2b8cfaa566d949758cb7b47a9e1f4831e63a146e	Shichiho	SHICHIHO	erc721
+\\x2ba1135813b9de5a5202723466c35eabcc02b591	My Pet Ghosts	PG	erc721
+\\x2ba316434b2760f22c1c4b43aed7974d0677cf71	PuppyFT	PuppyFT	erc721
+\\x2be0773474d93d6b9d954ad318821b8c3f751c49	BurnCard	BURNCARD	erc721
+\\x2bf0aa02078f5bd9061469ee786f0ceace66c15b	Glue   paper  scissors	GPS	erc721
+\\x2bf55139dadda5e440c67a8b8facd10cc7c32954	DSM Loot	DSM	erc721
+\\x2c646523321cddb6efe066ab5b0826f4e6c6cd32	Rebel Boodle	RB	erc721
+\\x2c6bfc2b8cf6482049079e9d89ddb0d5ac1b520e	weqprlkdsafkeqwproqepwr		erc721
+\\x2c878317e81b4525cfe82dc86e49cd047d96cbf6	defunct-1	RQA1	erc721
+\\x2c91b51a8a7e529f1442ba68c98480357f463a11	tiny criminals	tc	erc721
+\\x2ca113e1aa37d83662a1d3f84e209f7068700fa6	Crecodiles	CRECO	erc721
+\\x2ca7b94f03d4c8a1e6ece442787e777b4bded04b	DystopiansXYZ	DYS	erc721
+\\x2cc4ba24809717ca8075d154afce1b2e41fb962c	D U N E V2	GYPSUM	erc721
+\\x2cccdcefda683a2bdb8116c22847857af1ff9631	0mni punks	0xpunks	erc721
+\\x2d039614bb534b513682db6149d7e081c24ef7fc	frat bears	FB	erc721
+\\x2d0cfb7c593d5c7000dce5389d555883648a61c9	MoonlightLoveAffair	MLAF	erc721
+\\x2d7bacc033abadf3a5625caa8bf5ead03c88572d	Ugly People V2	UP	erc721
+\\x2da5df1ce0b2528b4ea83cf847aa635ef6157882	Classical Street Chronicles	S41NT	erc721
+\\x2dab63ebfcc7fc918fa06b8015eefc6597fa88a7	Silentless-X	SLNTLSS	erc721
+\\x2dacf8f471e94e7de5c0ba62402194d2053ead43	Medical Jazz Quartets	MJQBYT	erc721
+\\x2dee59a5640e3ee37db13c5c754a64da0f3c9aec	Non-Fungible Cassettes	CASSETTE	erc721
+\\x2df7bedb3cf02c948e129d68bbd6c12209150604	NrG PIGEONZ x CROCS		erc1155
+\\x2e0bedd4bda1b7d70a9cad764262610bd577d397	PhoonbirdsV2	PHOONBIRD	erc721
+\\x2e543d056da8f1e4bc7b01c0320e64fc5d656e97	MetaDragonz	MDRG	erc721
+\\x2e9211422c793fa14a2ef7d0972216000a590315	Bumy the Magician	BTM	erc721
+\\x2eb0fee210e1f6d3dd8414246475ac1dc72babcc	Natural Wonders V2	STEW	erc721
+\\x2eb4f7625aad8c521e3600ee38fb8f82751e8870	Sugar Skullz by Pandaverse	SKULLZ	erc721
+\\x2ee2781aa3e86966c56086e1e7bf59387b967b6a	phases.space		erc1155
+\\x2f4ffe2299c86be747da04f0d7ac4222a0869514	DoodsVerse	Doods	erc721
+\\x2f705c2d37210bcea70578e8f4ef8bfac1d26a05	Chill World	CW	erc721
+\\x2f8845eb37093287eb8258e20bf6b481fa07b2d0	Kosher-Kit	KK	erc721
+\\x2fb3c41a78b4a282f24720b21ae137ee8684578d	WhatTheFoxes V3 - old	WhatTheFoxes	erc721
+\\x2fd64ac68513f5a97219ec7c119f0593f3d91610	With Ukraine V2	ARTWORKS	erc721
+\\x2ffc6f911197e7430b72f5cbcab008a547b70389	Run Wild / Feeling Forever by PLS&TY	PLSANDTYRWFF	erc721
+\\x3015cf09e0761487ee77e8903c98e27380d586a5	Psychedelic Nightmares	PSYC	erc721
+\\x30255abbf157e01880e482e9b1d8e3b10554ea5c	Singularities V3	BANG	erc721
+\\x30333a963b1c79162f0a9169e238c6da8a621110	sketchy mfers	SMFER	erc721
+\\x30808a6047f3d61c38ff43d8390da350d9be1870	Meta Wizards - Official	MWIZ	erc721
+\\x309725cb7abde5e04f0ca66b90dc3819c4a19ccb	EightBit Doodled Punks	EightBit Doodled Punks	erc721
+\\x30a7d4565ed5e9ec424c9f2aee831877344300cc	SNIF Marketplace Pass	SNIFMPP	erc721
+\\x30d5407800539a0de9c82d47611f477af047052e	Hiroyuki Tamakoshi X NFT	HiroyukiTamakoshiNFT	erc721
+\\x3146a98777ec7eea4e159378a67c852588f0c743	SOUL - I2E2T1nhwD	SOUL	erc721
+\\x31578fc47255bc2f1ed98f812226c46e273064c3	 Wanderings	WANDER	erc721
+\\x316d4ec3a959bbda234e8e97cc8fbe1b6c94aba2	Kindness is Magic	KIM	erc721
+\\x31738478af3d891391877c1cf28cdb96da961c03	Lazy Mfer	LAZYMFER	erc721
+\\x3178300bdbd5dd0eb4a1ca3d728eaee7f79c9438	Mini Sadnime Club	SDNM CLUB	erc721
+\\x318d81d4a3a7385866e620c28a25a80d0ed121b5	Ape Energy	AE	erc1155
+\\x31978367ff2b15ba8eea7d5f09628630f723b4e1	AcrocoDao	ADAO	erc721
+\\x31979f9d3f9af5171bfff403c9270d925d1b7f7d	Superlocal Mayorships	MAYOR	erc721
+\\x31acad3206914f53661909443d18be7148c38dd3	TNT DAO Pass G0	TNT	erc721
+\\x31e7dcf4f44e79e9c2f0143f549ac9dafa744cac	MoonTurds	MT	erc721
+\\x31ec634450f591aa098d6712650f79dcd3016c9d	The Men Of Ali	TMOA	erc721
+\\x31f2bebb280ec5618a8d6a346ade42f7a0e9edef	Airbrush by Mashine		erc1155
+\\x3210761bf63aab82e060e9c49aa4ae0aef11ec28	yugy	AVE	erc721
+\\x322642ea10c801080caf251aee260f3bfc5172cc	Unapologetic Apes	UA	erc721
+\\x322987cd1e0466be43fa88ae33e2637dff46f06f	tokenproof Founder's Circle	TKPFC	erc721
+\\x32327271acdc64e63c1e11a42b3372ba332ca962	Gutter Punks - Dented Feels	GPDEN	erc721
+\\x323d63282bb4b0b39b3e544dfc4ff019d3b87b20	Banana Art Club Main	BAC	erc721
+\\x324c49eb5bfaed0bbe34e1a490f60b819b631eb3	cafe art	CAFE	erc721
+\\x325d4da80571d948bbe7fd7724cb5e9919633cec	Ma Chrie	BELOVED	erc721
+\\x329b5d29d8b8049e215740f42e5c14aa8be11618	Neko Darumas	DARUMA	erc721
+\\x32cd5dd1691aff816b68c0ba04ee4871b963cfd6	INFRSNCS	INFRSNCS	erc721
+\\x32d90a6986879fe8ef7133b7960971b1df9d2b0d	Brain Twist	BT	erc721
+\\x32e1692ee94170be214c1dd4b963ecaa81256c8a	Element - music	ELT	erc721
+\\x32f7f82c3d145e401dfba4e9bd3c3aa86e6f37b9	The Middle Club	TMC	erc721
+\\x330082e46d837de2e7a3021f87e774bcb1314d3e	FOREVERYOUNG: CozyKidz	COZY	erc721
+\\x3371345a8cae1fe3b0d2f5bdc547df6cd6404e2a	VIVUMMORIE	VVM	erc721
+\\x3394c64a9465567c183d62f974e225c010757447	Jason Zeenkov Photo Vault	JZPV	erc721
+\\x33a42fd27b68cd4a1a7d8c6d7fb344967da22ed9	RapGods by Montana of 300	RGNFT	erc721
+\\x33acef87484005e03f0f054ef6d3c187f5d900e1	VeeFriends Series 2	VFRS2	erc721
+\\x33c6c6fd79d6ef1fb7ee10d87d8a42f4fc3ac36d	GRONK GORILLAS	GRONKS	erc721
+\\x33fcd9263806a4ca6d6e4f83fb309fab719d4fa2	Equivocal Significance	ONEOFONE	erc721
+\\x33fd4167e51a10d19c89c3a606389d0fddc3e676	Galactic Alien Social Club	GASC	erc721
+\\x340c93c028052f2193b42dbf9013d58016dcf7ba	cryptomementokens		erc1155
+\\x3420d130727d412a168778d1e76219b786bfa6c2	treet Dream	SC	erc721
+\\x34552c010ed8ecc123e3966b7e2a333696956fff	RTFKT x Nike Dunk Genesis   CRYPTOKICKS	RTFKT - MNLTH	erc721
+\\x34a3919231bdbea4411decaefcd84f454b5255d3	Universe Pass - old	Universe Pass	erc721
+\\x34bd15f2d5791157c68be47f1d9f3beed4945462	notFVCKRENDER//	notfvck	erc721
+\\x34f094baa03e2645e535b970b549caf92a059e38	From the Shadow Realm	YUGI	erc721
+\\x34f9be608577a58a9be55364d4d7c73fc944ef8f	Omni Moon Birds	OMNIMOON	erc721
+\\x3502e53d598c0749c934029c883ad2f60eace664	Atticus NFT	ATTC	erc721
+\\x3503c1387e6502a07ab71d8c99e0c5596b4ce4c5	thirteen V2	THRTN	erc721
+\\x355f4fe5250ac04d38c9ba98168838a3c6a94519	Vast Depth - Volume I	VDP	erc721
+\\x35757676efe7b20ad15bedf29976b236ab95245f	Cloud Clouts	Cloud	erc721
+\\x3575d929d0b9d366db3520426e1a835245fce008	SURREAL CREATIONS BY AZEE	SCA	erc721
+\\x357e9069e427fbc9cf145cc4706013adc3fef16d	The Precum	SG	erc721
+\\x358f8ac9a5f8891cb98f61ce5f6466ffc8e28c68	Metapals Pass	MMP	erc721
+\\x366026c5d81e6ae42f68b0b119b89ae246afa4fd	Bored Boy	BoredBoy	erc721
+\\x3675a1c05dad924dd66e1ceb77635b0d1ad3a8cf	Pandolas	PNDLS	erc721
+\\x368100068252e240092e4a024e6d67606433a5d9	JEFF TOWN	JEFF	erc721
+\\x36aa43ab431a988892113ab2b1d5518c1f202eb3	NounQuest		erc1155
+\\x36abf635ee17623cc00b06ecd1bf0a02fae359f1	Asian Identity	AsianID	erc721
+\\x36be2009b7c06cc7d3f25c20a2d66862d6c5c685	artisanal RUBBISH	GARBAGE	erc721
+\\x372405a6d95628ad14518bfe05165d397f43de1d	Liquid Legends	LEGENDS	erc721
+\\x37518230a35324be180312a629a1413b677cc73f	shapes - QpPR23UHWM	S	erc721
+\\x37572d0c069221ed7e8406b34cbd332983353ab6	Akamir - Set Sail	AKA	erc721
+\\x378336caec1d1ace92297767258d0794abc76ad6	Metapoly IDO	MetapolyIDO	erc721
+\\x378a2b9ca306b5020f45225791692653d7a02124	SMOKERS V2	SMK	erc721
+\\x37b2e4e074dc8d4e853077e554113fc1168cccb5	invincible summer V3	DMNO	erc721
+\\x37bf1ff9796404e882b8464e733f37ff5edc4609	Avatar - playBenders	TLAB	erc721
+\\x37c3d0412e1ca9cb5ab98ea0a1abe7fea27ad20c	Gutter Punks - Shinsekai	GPS	erc721
+\\x37d60a30403732844112526c74c9b971a6c978d7	Dig-A Hash Presents: "Stay NFTy" landscape art	SNART	erc721
+\\x37e206b04f2ee5ccf5e459c03290afece31c267f	Lost Dreams Among the Ash		erc1155
+\\x37ea31191cd45b4ad359c51be70c1af76a02a86d	Boys Noize on Sound.xyz	CWEJMAN	erc721
+\\x3803f0db56974289ccc3511708565e026604d747	COLORFUL - CzWEbLNuPG	TTCF	erc721
+\\x3809c9d7d136f45111ac188fe8b96a93c342851a	sans toi	ST	erc721
+\\x381534eeced0e7e20ce58d061aed476ca64c0e92	TheSimpsonZEthernity	SPV2	erc721
+\\x3899ec4eda97baa524f317d6ecfb84bac632c30a	Exorians: CM21 Mintpass		erc1155
+\\x38a4553bd54e9664582bb5bf4749b1785887ae71	Urban Theory  Most Viral Videos	UT-6	erc721
+\\x38d058419398787efd99f14e08209447a9999c00	Egg Town	EGGTOWN	erc721
+\\x38e0c9324d299eacc71698f8282d121afee0de0e	(STARxHEART)	STARHRT	erc721
+\\x392db9c00ab1b73e31630aad6931377dfcac2b99	LlamaJira	LJ	erc721
+\\x3957ad6d7215b031fd6be31a954aa1bfcdd2545d	ColorPencil Club X BAYC	CPBY	erc721
+\\x397cad4133b5747c0dd1909e4784f27a99b08580	XG NXMXLXSS	NXMXLXSS	erc721
+\\x3981e07c402a739618f5a66431db493ea4a98d42	There is no right side up	TINRSU	erc721
+\\x39eca85aeba214ea3f1c2b2683914914420209ca	minimal humans illustrations	ETH	erc721
+\\x39fab845afb0b2584b2834c6b2b673581fea36bb	Sybil V2	SYBIL	erc721
+\\x39fdb940dd8af09e62375e36a79f12a86b7b2aa5	ETH Hodler Nft	HODL	erc721
+\\x3a1cd3a0a1118a97caefb8c2d2d95e828be7afc6	Golden DAZK	GDAZK	erc721
+\\x3a23d03e46fe45a5c51b2a809674f8ea8a1e5263	PandaManSticker NFT	PDMS	erc721
+\\x3a5edff0a7e4dd1f75725fbfb40b64c2a38263dc	Nounbirds	NOUNBIRDS	erc721
+\\x3a7011e7e2b32c2b52f7de1294ff35d6ff20310f	Storyverse PLOTs	PLOT	erc721
+\\x3a7e042b4f1ad1b10e9f222ffe20a21f4f82b09d	Monkey Verse V2	THEVERSE	erc721
+\\x3ab35a3d594bebf80c9a83b438c3e7e3d4042f9e	Fantastical Worlds	FNTWRLDS	erc721
+\\x3adbfbc71747658b85bc392bc468e9f4f737532f	Chapter 1 - g6PY8CE77b	1	erc721
+\\x3ae7f1ce5c272b0e33a39760a5801287f04e7a32	Pet Rock Collection	PR	erc721
+\\x3aebb320a0c06465c66bb0a027f6522912e14287	Showdeer	SHOWDEER	erc721
+\\x3b1e2d2c6f9c7932ec47fcbe61d4968e1f854068	Ballistic Bananas	BALLISTIC	erc721
+\\x3b8420eb6ef77bc25025b32d8205cde2683f979e	Moonbears NFT	MB	erc721
+\\x3b92628bd53c1492ad316d14372498d166f1477d	Isolated Town By The Sea	ITN	erc721
+\\x3baee7c2425b3ef0f5d7e2eed7ba792209a02e79	Lazy Towel	LT	erc721
+\\x3bb0cff058d55c2aadcad64d18430c8440edcc9b	Shhh-FND	SHHH	erc721
+\\x3bc11937b33bc27cf730961b93dc3beef2e3a2d5	RadarScope	RadarScope	erc721
+\\x3be85977ca6564dfcac9e4823948899d6d87036f	KawaiiClouds	Clouds	erc721
+\\x3bf254b6e2c616a72e1540cdfd17533ac9f57891	M.U.G.S	M.U.G.S	erc721
+\\x3bfd5e45a41b947fa020db204111b83c476f1275	PrimeApe Mutant Vials		erc1155
+\\x3c197a9bbedccd44d71f4dd8581bbf6a7196c57d	War Snails Official	WSG	erc721
+\\x3c3044a9c3a7b350984ef7dcd314fcd6e44c2f64	DeFi Dogz	DFDZ	erc721
+\\x3c63d735aa953535b57ec9f48c39aa979c2d0bf8	Moontirdz	MT	erc721
+\\x3c9c795c4a98c5a45ceb9cea95e65f89c73511dd	Skulmfers E	Skulmfers	erc1155
+\\x3ca358469f0048f41587ee1188fd80eb4aa87b6d	SANIKSANIKs	sanik	erc721
+\\x3cd123ebfcba07d02f10d6bf7b36439a71b7244f	superflirt	SUPERFLT	erc721
+\\x3cff4aa9f58ded8bb54743b7ef6740e32a78d83b	MetaLife V2	LIFE	erc721
+\\x3d24ec14816b4d7fb30e4613e5d8adc743726312	Cute Gator Club Genesis	CGC	erc721
+\\x3d42a6a58e5c51a01ca5e282cb0e2a92d132bd7d	Emotions and feelings V2	EMOTIONS	erc721
+\\x3dc9a54661c9d3d5d810ca5cf862ff7fe9950f7e	BouncingZoo	BZoo	erc721
+\\x3e2d03f436fdfbdaf9250e8b916fcbd4607fd61e	Elon Musks NFT	EM	erc721
+\\x3e37accf71ba1c25a1cb3cbfa41e8de6056bc3cf	Liminal Liability Collection	LLC	erc721
+\\x3e4f0f6ce968f56194b2cea84c8e4b8d2c4bed78	tiny notbanksy	nbsy	erc721
+\\x3e501e96e8db608dcb88bccb6858c79da1af3e09	m00nboys NFT	m00n	erc721
+\\x3e6046b4d127179f0a421f3148b43cf52c08fc41	You by BFF	✺You	erc721
+\\x3e71094976dc7d9204c913c04a013882964abcda	Refraction Season 0 Lanyard	RS0L	erc1155
+\\x3ecbd88cdc58e7c3bdd65b3a4992d4f47d16187d	Dubai Above The Fog	AMP01	erc721
+\\x3ecca6f922768ef2dfd0f60ad610ff7091743e92	Omni Bots (eth)	OB	erc721
+\\x3ed6d812e9c2f0cb717664cf61a8ef4c216a5d0a	BepTunes		erc1155
+\\x3f209ffcdc6ed989b6464168fdaeea6719889b40	notBanksyballoon	notBanksy	erc721
+\\x3f350aa137033d0a970f70e90a1b850bf1b6202d	AkiraPills	AKP	erc721
+\\x3f491600e8b81805ca8e11361155a8c49b0e2be4	Sol Flowers x AP Cover Remix	APSF	erc1155
+\\x3f5692ba570f6902b8b1a4505ce67226261e7947	Year of the Woman Beholders Pass	YOTWBP	erc1155
+\\x3f68af3d9c4f338023080e07eae69ec368c2a9bd	FoodMoonNFT	FMNFT	erc721
+\\x3f83988794324f8e74aea617cac2d4fa8666b4da	zacktics 11	ZACKTIC	erc721
+\\x3fa32ccd28047bb6bb203e1e79910a7ae340ff43	Black Crypto Panthers Official	BCP	erc721
+\\x3faa28fca89f657fb410c63f8ed42e111322836e	Personae by Oxen	POXEN	erc721
+\\x3fc0c8632ad76889fa93ad163e495f03832aa409	NRDNM 2.0	NRDNM2	erc721
+\\x3fe697192a5508fb7dfc03ddcb2c4c457883b508	MAD K1NG5	MK	erc721
+\\x3fe7c1cd3a005388341458f9402fd2c7e0491a95	ZenFrogs	ZENFROG	erc721
+\\x400c96b3fda8f4435f6cb58195d9478e7652e33c	Metaterrestrials V2	MTRSTRL	erc721
+\\x401a71ff98477766330759b4e278ed34420a41cb	PillowCats (Eth)	PC	erc721
+\\x4028e0cf0c93a3d5f7b595df61d9ace4441e0682	Zephyranthes	ZRT	erc721
+\\x40603a4d80e60e2030cf20b96e96bd64987119ad	RUNEMAIDENS	RUNE	erc721
+\\x407954c90ba8a70a7fdc0a9dc4c02131e0407349	Dear Dreamer III	SL	erc721
+\\x4084fb055ac7ce9cfa54b4d316c3489d55065f46	jkkfajkkljafljweqlrjkqewr989		erc721
+\\x40a7cf6f5589591e5155402005b666cb5256991f	notoxmnb	0xMB	erc721
+\\x40c4ffa0003ca2df50cafd540a4ad2b6608becb1	HyperSenseHumans-HFS	HFS	erc721
+\\x40cd5e1bfe82cda094f47ff33f5066a481582d23	SUPER BOB	BOB	erc721
+\\x40d5502f05a9c0d6dce09c4e39e57566648e6cbf	Super Geisha Founders	SGF	erc721
+\\x40d57f45eac95d27b55f5989d367b1f1164b3c77	Beyond Yu Sheng	YS	erc721
+\\x411aa47f6929d916f3497c53f16f700067aa7d2f	Black and white - QwFumgoFPH	PORTRAIT	erc721
+\\x412feac281db3480210d4ba2411c59418debbbad	kljkfjkqewrooidasfioadsdfklklqewr		erc721
+\\x414bf02c4e9542ff76bd861e6543c241d3e0dfdc	People In Their Own Fashion	POF	erc721
+\\x414f03e2d9928eadbf85e60ded88f9441bc4b44c	Ugly People by TorreaIba	UPG	erc721
+\\x415ce0d94ed1d5c07bcf7b3021acbf4a5b176df3	Chapter 01 Story of A Journalist	MAFIA	erc721
+\\x415d2e2b6e832ba12d7ad56d1b14b90e821fc087	SkullFellas: Family First	FELLA	erc721
+\\x417295225ec7b54bbf4fe4030008bb9c6cae73dd	TOKiMONSTA on Sound.xyz	TKIMNSTA	erc721
+\\x41c31655087fa24b9b7066b8e08f0bc9ea6f1345	PROJECT CANCELED DON'T BUY	RVN	erc721
+\\x41efd9c4b6f786ebbb2bef2701595e6d337bc0ea	Notomni Wonder Bibiz	OmWBz	erc721
+\\x424530d239ba23f86b7d8de5cf247cdb393b316f	VIDEOGRAM V2	VGRM	erc721
+\\x425d72a6a67396bdd62db28be1ce49453404a3a3	Dancing Metaverse Sound	DMeta	erc721
+\\x427ce6c9e2a504aeb22dc3839fbc4f4b6ebd75bb	Blues NFT - Migrated	BLUES	erc721
+\\x428f40fd0cec2e1b36a01f2037583075e76645c3	VIPS V3	VIPS	erc721
+\\x4293a3d527ee4587865d7c3007036d02a7ec9fcd	GoldSilverPirates	GSP	erc721
+\\x42b52e5002ceb8132f2eb77ae6e255813c31ff9a	Audras Diary	AD	erc721
+\\x42c08684f48e49af15dc4b46b8fad1a0c01e6ebf	FACES No.	FacesNo. 	erc721
+\\x42d94a4664cfd52a7b107719192f13649eabe5dc	Moon Without Bird	OnlyMoon	erc721
+\\x42e4ad1ddfd1ac8234ee5cd4bdd083521ddb10cd	Strangers by Jericho	STRANGE	erc721
+\\x430465ba877e694045b7bde3a94e10babb1d69c6	Jelly Bellies For Life - Original Collection		erc1155
+\\x433601b90417df49cb936ad8fb2d6929d6c9e2f7	Zakalwe_x V2	ZKX	erc721
+\\x433992547464f3536d924477ad7454365e1f40b9	MoonTurds NFT	MT	erc721
+\\x43680ed69bc5413d9379f4a03ff958cd9b00bb45	Lola Feet Gang	LFG	erc721
+\\x4391cda52c5eaf6e665a9ceadbbb9c828eeb4379	droids_project	droid_pr	erc721
+\\x43b61f3a6f87af8aa77f50fac3715cd416514f60	notBanksyWindow		erc721
+\\x43c3abe150e5afd0177e70719dabac83027dfc0b	Collision V3	HBC	erc721
+\\x445d4b7b0e15da9e96e93f35e598dd8c83cb9dc3	Kanpai VIP Pass	VIP	erc721
+\\x4460a21bfb51286744f1c40e20544916c1462760	UKRAINE NOW V2	UANOW	erc721
+\\x4483af27e73fcd79b6264b7960ff3209d1357b70	Pixie Jars Rewards	PJR	erc1155
+\\x44ab21cb8972c7b783dda32e93ed8a9075da8e6f	Zoofrenz Apefrenz 2.0 by Zombot Studio	ZA2	erc721
+\\x44ae74c92d6f0af7d1137ff8b7dd2eddf409221b	Dinho's Treasures	Dinho Treasures	erc721
+\\x44d2d78f2d319f0b1f18019bb4ba27afa0f8ea5c	SECRET ROOM V2	NUDE	erc721
+\\x4508f6609d740811fa8e225414955b46032431b2	FOOTPRINT V2	F	erc721
+\\x45210c1ab83f87a464ea24b73feeaec3df72f839	Virtual Unreality	UNRLTY	erc721
+\\x455c4f21f1dcd41f31796523adcc0383f0078347	COLOR AND MEMORY	KABUA	erc721
+\\x456773caf9fa2105774fc10b1ea4b3917872dd99	The RollUp presents: The Puff Puff Pass	RUNFT	erc721
+\\x459fdc6017283f3efbd1f54bd93dbab08c7ff61b	JustJesus.	JEGG	erc721
+\\x45b727e740a82d865d9a90c9b109335e20da1f97	MoonCollective Official	MOONx	erc721
+\\x45e757a52dca3d17e449818a921fcf7c50726415	BY THE BY	BYTBY	erc721
+\\x45fb2b7fd7db816e7ebef75043a3cf1ab06e6f8b	Into The Night V4	0X0	erc721
+\\x464263ec064982a08d6d59759929f0f3eda302a9	Beauty in DeFi	BID-KB	erc721
+\\x468975b05dfcf8c0c11eafa632b968faf072fbfe	The Lady - fjgzIIJiOn	AKAZUMII	erc721
+\\x469debd4b6574c77c658eb811202ec4d438afd91	Top Frogs Genesis	TF	erc721
+\\x46a9e5b490175724699d09f0f6104c95defd447a	CREW Coins	CREW	erc721
+\\x46be8f341dbdf7bb0890ddb5056f62c3c034cbf6	UNSORTED V2	UN	erc721
+\\x46c3097bb73a867520914f6692fdbe5c9ef83cea	Guardians-NFT	GDN	erc721
+\\x46db69276d57e372d6c18228b4c5b7a2b6d6f826	Onion World	STORY	erc721
+\\x46eb6f410a8f226d6ab174612595f4216cc8c344	EightBit   Me	BIT	erc721
+\\x46ffcee133e68e4c9b7dff38e0db98c0ceb5d5bb	cPolarBear	c PolarBear	erc1155
+\\x472adffba3d35bd31110a32030d42a5b25c84fd9	ZukiMoonBirdnft  (official)	MBZ	erc721
+\\x479dbfbc1eed6d1f9da99742b4b16c7f37ed87f9	The ComKings Club	CK	erc721
+\\x47a00fc8590c11be4c419d9ae50dec267b6e24ee	Alien Frens Evolution	AFE	erc721
+\\x47aebe13ccea6a80d5a653e147adcc8e2b8b27ac	The Others V4	TO	erc721
+\\x47da1137c06bb9dd25cab8b141b0ef9009512e8d	Bobu, the Bean  Farmer		erc1155
+\\x47e60ee1721c1ba5f1188b276bd3f49792229581	Omni Beast (Ethereum)	OMNB	erc721
+\\x47ee459fb3378881237bdcd5bc6578161409a965	Good_Friday	gfriday	erc721
+\\x47f3a38990ca12e39255e959f7d97fbe5906afd4	Ape Reunion	APE_REUNION	erc721
+\\x4806c37fe419d6fdcff5fc4eb78884c946e40de0	Memories Frozen in Time	WARM	erc721
+\\x480f5e6b1bf7d73a5c09228e38195c62dc711154	CC Demon Girl Anime	CCDG	erc721
+\\x48691815e61810c5e2ae1ecf4c666cfb412227f3	imagination lab V2	IMAGINE	erc721
+\\x48c2aa07ad6a4e53cfef7c3c3da4a75b01a69bdb	Bored Dickbutts	BDB	erc721
+\\x48dacfb883a452af47404650f7538e6e0893cc56	AlphaDoggg Signature Collection		erc1155
+\\x48e09fe9c82bd30b0c48dc71509511f4a2845cf2	Wings of Hope V2	SHUBH	erc721
+\\x48ff543c0df1a22e35a6449f4ad771bf8fd46fc7	RCS Floppy Disks	RCSFP	erc721
+\\x490571e17d12334eb61eac154251de2ea16f9213	Your Daytime Fireworks - Firework Packets		erc1155
+\\x4938cab6b83bb7cd864723c28829234f14182841	Melancholy Monsters Club	MMC	erc721
+\\x4952b7b9f6f54f3d7dc0e94660a25fef902c7d64	NostaLex	CS	erc721
+\\x49578bc228d84a0e2c061eb51b2634b583159b1c	Misfits Ape Society Co	Misfits Ape Society	erc1155
+\\x49591483a143b1e44d5a56946be9ffc190da45b4	sneakerdad singles	DAD	erc721
+\\x495b01c1bc3b9203fde4362d9913c692fb661f3f	Quantum Access Pass	QUANTUM	erc721
+\\x4972a2ac14d07cc55144550017018fa163c00609	Pixel Palette Sneakers	PXLPLTSNKRS	erc721
+\\x499d7f2d4105b367599fd22595129b0bef092c38	Bansho - CRANE	BNSH	erc721
+\\x49b86c1c88cec2def5a8ead5b4f977445877f99a	goodluckgraphics		erc1155
+\\x49be34e1c9839f7186596c029a2a80ebb0ff7523	beautyblog	SEXY	erc721
+\\x49d02b5f8be84df003203303a396ba597b0d6961	RickhouseDAO	RickhouseDAO	erc1155
+\\x49f0c2d84f2db48f5b610d115e43ea6c983507ff	The Royal Habibiz	ROYALS	erc721
+\\x4a08ecbdb88e703a58bbb6322f7dad7852602819	SweetPalss	PAL	erc721
+\\x4a41131473ea0ee7ee9db3d489aba8b39ada290b	sadfkakljkewqrjkkjeqwrjdasjfjladsf		erc721
+\\x4a608283b470288c679c9cf8d44b14ac4a3d2881	Gooofy Golfers	GG	erc721
+\\x4a9271911a7fcdef1159a8e6bf9874b28dced5c6	Layer Zero Punks | ETH	LZP	erc721
+\\x4a9b0920ccfa69cef2fe20b147456ad06705d5f0	notMoonbirds	BIRDS	erc721
+\\x4a9b2f7888a7cf3665cdbcc3239e8c50bb9686eb	Lamerz	lame	erc721
+\\x4ad5aadb2ef2608cfddd396f0db8e95edef41088	CRUMBLE V2	ART	erc721
+\\x4ae7aa90ff00f8baf39123a243216f23266b4ebc	MILLENNIUM DAWN	00S	erc721
+\\x4b0295fd5afb4c1b28e8e196e3474ab48a5ae724	Chasing Thor Edition	THOR	erc721
+\\x4b103d07c18798365946e76845edc6b565779402	Grandpa Ape Country Club	GACC	erc721
+\\x4b1705c75fde41e35e454ddd14e5d0a0eac06280	Etheria v0.9	EW09	erc721
+\\x4b3dfee769402af2578546724e1813b05bc2b0a7	HUMAN VOID V2	HOMININE	erc721
+\\x4b406acb6c43caf306e4662aaf3a4c8e085e6439	Fanzone.io Sports Club	FSC	erc721
+\\x4b474b3df1d1217c6956818f162e73a752cb1f50	Akimo Inu	Akimo	erc721
+\\x4b708a422bde1f48df2b09037d6b22834f451d42	Wisher Cocktail	WISH	erc721
+\\x4baf4df3694c90d8267d643a10801797c8ab97b1	SYL V4	SYL	erc721
+\\x4bdf87cdb76959b31f3b00067a2e4a51540a14ec	SillyWorld	SILLY	erc721
+\\x4c0b4cef6bfd2afc09c93ea7869c6525b00d4991	NATSUMI ART COLLECTION	NAC	erc721
+\\x4c299d9348821a183c40eff1baf75986984586db	Tender Lines	SKETCH	erc721
+\\x4c31b5a170a8035a5144ac0109c5f4fd0c4cf556	Flying Stars	FSTARS	erc721
+\\x4c46b0562cb71af8adcfb659d410283f632fe9a3	D-CAVE Computron	COMP	erc721
+\\x4c71dde844f34e643bfa9d7248dadcb83db8cc01	ASUKA DIGIBABEZ	DGB	erc721
+\\x4ca1da63dc5fc827362fec1843dc4c25d0868088	iSeaMonsters	ISM	erc1155
+\\x4cbe1651acbe697e06073fe265119048d83f410b	1st collection  Servants	SERVANTS	erc721
+\\x4ce3f32c1091a57e2b475f660fba211ff7815c18	OmniMonke (eth)	OM	erc721
+\\x4ceae3c1c32471bfaee9420c922b32590790734c	Y0UKEY	Y0UKEY	erc721
+\\x4d13d387e34d412088a6428cd360a06b533e8a8f	Reva x LiveArtX -Sacred Garden	REVA.LIVEARTX.MEMBERSHIPS	erc721
+\\x4d55109a17a6914130ace90325dc98cf66ebfa00	Chimpers Genesis	CHIMPGEN	erc721
+\\x4d68ce90c48fbe79bba500f99d0df8f5050ce7df	Quirkidz & Co.	QRKDZ	erc721
+\\x4d923e538fbfa39c1f0fd4f207a301a5a89e562f	Moustache Sauvage V2 - old	SAUVAGE	erc721
+\\x4da4c01b3db8f298a2f49ca07842f00b460cf237	Blue Banana Serum	BBS	erc1155
+\\x4ddc6d77c37c6c11dd5dbde85d96290ff3b2cab5	Sunday Journal - Secret Garden Bouquet	SUNDAY JOURNAL	erc721
+\\x4df844490006fa8098cce548508956896d6496c2	BestGirls		erc721
+\\x4e21404ff4d6732f7476952ed8f63f345531ce25	No Tomorrow V2	NTMRW	erc721
+\\x4e38464b2f3e839fca3b32469d137b4ec6b0615c	KINETIC MASS	X	erc721
+\\x4e3d37aa406af2dd1111c6cd46ce11a66d90cd38	BYAC-Boredcollection ORIGINAL	Little	erc721
+\\x4e7a853fc88139afa46ad9ee19dd4db0c87773e7	Red Skull V2	RDSKL	erc721
+\\x4e900b1518fce5a34d18f5e8a3c74d48089e7e6a	DAY-DREAM	DREAM	erc721
+\\x4ee851f81e68aeed50693a8ead5d2a451eca9f91	002_Alpha	ALPHA	erc721
+\\x4ef925c6bfba707d0636607af4fe9abdc5c7fe44	HUE  MANOIDS	HUE-MAN	erc721
+\\x4f78fce77c0c1502a4b16a61b0ccd199bb8601fc	Banana Republique	BRQ	erc721
+\\x4f812c0205cded4597f1ae9d3c4ca65684baf79b	Anime Meta Collection	AM	erc721
+\\x4fcfbdc52d6da314d52ed3e9358195d7446609c4	KONIEC Editions		erc1155
+\\x4ff8f719b924e0c94ebc6d66ea1a9032d62cc68d	Faces and Outer Spaces	FAOS	erc721
+\\x500701a747900e6dfeccff4362077369a62d647f	Cem Dinlenmi	CD	erc721
+\\x504c9dfab28e0bc72dea156cd7190f034b539c2e	Ice Cream Ghosts	ICG	erc721
+\\x504da0755d10eec2e46884d6d342bdd10dc65f6b	The Lost Neko	NEKOMARU	erc721
+\\x5075201cdff22c4f1ad049086168ae8a62cd9805	Basquimfers	Basquimfers	erc721
+\\x5077af1fe19e132532c27d22d662fd6e03428472	Gutter Punks - HAKI	GPH	erc721
+\\x5091c91fa8320ef39706d774eb19d5d1061a630a	X Monsters Bar - Bobone	XMB	erc721
+\\x50933af1aaa511c582b7c400979c0ad4424c42ae	Mayhem Alumni's	Alumni's	erc721
+\\x510887c470ee8eebebff0104b54d24aef8c45368	Pixel Pengs	PXP	erc721
+\\x510d66012b306657417a8908cac281696000f005	Bitcans Beta	BITCANSBETA	erc721
+\\x5124797aa4be68fd19fecdc5933b22234c2fe302	user221	221	erc721
+\\x512de689ecfc61b9c2c9a00c33cd38243741a496	NotBanksyDove	NBD	erc721
+\\x513d93de6e086ae2f5a274fbac762ae8f21fda9a	TANTAN Animal Girl	TAG	erc721
+\\x515802278abf652a0e72346450e224fc3485ea81	Hexx Audio: Dreamscapes	DRMSCPS	erc721
+\\x5162caff0886a4ed83be4a3b03c6ce5d1ded6b62	Enzo V4	ENZ	erc721
+\\x516d85f0c80d2c4809736aca3f3f95ce8545b5d2	Highrises	HIGHRISE	erc721
+\\x5182a9ba9eacef7997056c247ea9b5e317224a16	tiny girls (eth)	TG	erc721
+\\x519afed29129a53e2894cfb2e3bafc5261fb42a2	Jaguar Gang	Jaguar Gang	erc721
+\\x51bba0dab288bc425530023a0d35d9775e099156	Nude Killers	NUKILLER	erc721
+\\x51c4d7490ff31f6effaec7b6b4575077e8d19502	Cool Birds: Official	CBIRD	erc721
+\\x52151750c8fed691db06b6033fae0525ced659e7	SOS VX	SHARKVX	erc721
+\\x526be82de01131e11af5ec660f5efed408ec18ce	16 Bit Apes	APES	erc721
+\\x528062ac8ea1ca9ee08ee01c7d15e814bf872ae7	Space Colony V2	SPC	erc721
+\\x529bd17578014552f432b365cd3b712eb582fd4f	JOURNAL STORIES	STORIES	erc721
+\\x52ac64e0679f86ae556b4c410e24d8c20a3905ab	A Lone Whale in the Metropolis	FEELING	erc721
+\\x52f7dca46ffe4f269e8cbb6cb1e18606f642e5b8	Puli Runners	PRNR	erc721
+\\x53064e88ddc2fd55e065d25292810f5217eec520	NotBanksyClub - old V2		erc1155
+\\x530d8c859417c5b421af79bb8684f3eaa2ec6693	Legacy - 68FTb2Zrin	LGCY	erc721
+\\x5342ffebc74bccdb48b4c0a8eaac8b0fb4475ea7	SOCIATY66		erc1155
+\\x5367c4fd8c0ea9149e2cf4bb669a161ed6517abd	Slimies Collection	SLMS	erc721
+\\x537b754d0999f9b73f4536f751f23dbb1c8fa196	Artist Writers Collection	WISH	erc721
+\\x53e4c0167ed855e96f562dbb911854d586f5cc07	Silk Road by Ezra Miller	SILK	erc721
+\\x53e8ed5311d4815cb39007a5eadbea42d6d1046c	Sweet Squad	SS	erc721
+\\x5411a625c100a742dd66d644437348c1dc74fa32	0xBASB	0xBASB	erc721
+\\x5423856728612f358c84a37805799755be2722c8	Cool Guys NFT	CG	erc721
+\\x542926a868b6730a7dcc8b28311e2d5ef1ccd697	Big Brain Alien Genesis	BBA	erc721
+\\x545f0a45ba06c7c5b1a5fb0b29008462ceea07b7	The Picaroons	PIC	erc721
+\\x5464cddd9d44d01f0d5bb42c062bf30d22ed8a59	S U G A R V E R S E	SGRVRS	erc721
+\\x54f2b895ad07daa0f3fc2458f16b36ce30bd203f	PALETTE - VhtM9ONaW9	PALETTE	erc721
+\\x55092357075da6a2fc6f176cf2db2e53fe7772fb	ShaggyBags NostalgiaCrew	SHAG	erc721
+\\x553cb3f9dfb836f0d192545f99987c0bce1cd27c	Supreme Skulls Genesis	SP	erc721
+\\x553fdf5584e4a9f581775549397b726a4561b685	Blow Your Soul	FD	erc721
+\\x556f4f52167483cc7f685789d4dc761ea0401f46	The Key Drop		erc1155
+\\x558c3d5a92c726b754327c518a50be2b26004465	question of numbers	QUEST	erc721
+\\x559545131685cbbaf051f85475f8e96aba1ca3fb	Boreta - Ephemeros	Ephemeros	erc721
+\\x559c23ca62385f9d5d3fea41cadd11b8845ee914	Every Trump Donor	TRUMP	erc721
+\\x55b14494aa0faf65bea6835fb6b6120b0f7ea1e9	Isa Collabs	ISACOL	erc721
+\\x55bb92b5bbc838efc3fda6cbd4b47e55843037ef	Quantum Loops	TOSIK02	erc721
+\\x55cb3001d84e6b0dbf9703bc8e02385ca619cb23	Powder Season	PWDSSN	erc721
+\\x55ef8cdfa91435a97df5e5276c8fca873f5c414a	Six n Five	SIXNFIVE	erc721
+\\x5625f11a919f7f0232327adda58d011e907a9b43	Playground Genesis	PGG	erc721
+\\x56319854dff7b1c74122430d90593ff3cf6a6043	Larva Lambs	LarvaLambs	erc721
+\\x5660e206496808f7b5cdb8c56a696a96ae5e9b23	NFTfi Promissory Note V3	PNNFI	erc721
+\\x567cf971dfa33357ab21cc4bf7b3bf84effc2b19	Freaks of the Feast	FOTFEAST	erc721
+\\x56968127fcaa60593ce93d29fe09ca6d58cca845	sky - XajZ2ar6om	SKY	erc721
+\\x569f4c41332206ba63bd2c01a5e2f5c6603a0c89	PinguNootNoot	Pingu	erc721
+\\x56ca5970c0fe31580c3e6eef2bb81573015e81be	JohnnyX NFT Collection	JohnnyX	erc721
+\\x56d0fe4f2f420e1383cfff414cead6f1dc4ab478	Marvelous Mushroom	MMRs	erc721
+\\x57013d9f036bb274014bde8a1db8d3f214163155	BOOTLEG MECHAS		erc1155
+\\x57215ef3ea7a6c9364ccf3c3e7dd627e1f2448c0	ddabk editions		erc1155
+\\x572e4830d2280af634db96eaeabe7c725d72c6b8	Hand drawn Moonbird	Moonbird	erc721
+\\x57340adaa35bf59f8e28df2d8a89c287cf36f04f	Seems Unreal	SU	erc721
+\\x575ec01a9e70bf3e192a774eb265c46ec993e4cc	FLUF World: EGGs	EGGs	erc721
+\\x5762f422fec2eb15f77a186cd22ef0de74eb7d5e	Dreamers VX	DRMR-VX	erc721
+\\x57a630797b9be59ea4dd42fe53080584100c612c	Crazy Ice Cream Man	CD	erc721
+\\x57a777cec2c4ba8b219e9be48208fad111ff480c	Syncretic Transhumanism	NEOHUMAN	erc721
+\\x57ad024d253639babd7919de9c66aca45cb59407	TBC Genesis: Panda Collection	TBC	erc721
+\\x57bdda25b2bc8311032ede806798f05a952220fc	Jomas Twitter Videos	JOMA	erc721
+\\x57be7543d6977d2d06f246f1a42bb75b3bb90d5a	Ancient Alien Skulls	AAS	erc721
+\\x57ccfa9241088e174031e2e1c9588a2d3a9a832c	The Little Lions Club	LION	erc721
+\\x57e86cc9588f801fb3ed80c0e1d44f908d5fef1a	Goodaz by Evaflow	EGC	erc721
+\\x57f1470d943bf5fc0245168f854bf8904efc5d2a	ILLUSTRATION - bbnyYJaEuH	ILLUST	erc721
+\\x58091d4c4f8f37a103789dc0341616717a6f31cf	Kenkyo: Genesis	KENKYO	erc721
+\\x580f59d64680464d44ea9856405cfe48ea00c5ae	Candlelight Tales	CANDLE	erc721
+\\x582048c4077a34e7c3799962f1f8c5342a3f4b12	Shinsei Galverse Official	GALS	erc721
+\\x5832883e87dad0201a75c4d5d572defbce95b32d	Omaru collection	OMR	erc721
+\\x58519ea95cdfad3622c4c574e61a58fa257d9e77	Ghxsts Comics	CXMIC	erc721
+\\x585cfdd161c6e3d459727a2364a4a768fbf0ff85	Shattered Eon Pirates Migrated	Pirates Migrated	erc721
+\\x58a5ca1420460c1b0e985564cf567dbbed7a4bf0	Mirror Mirror - GLI6lvEi5i	MRRM	erc721
+\\x58dcedfb8291b2da55c523d3d9ef90409c1535ef	Tomodachi Friends Official	TOMO	erc721
+\\x58f94bf3da128a3cae7829359c26b3dc0577e28f	The Kampoeng	KNFT	erc721
+\\x5902fe452ce0a7591e857f84a64b02847f464e5f	Nine Lives 721	NINELIVES	erc721
+\\x591bd2ac883f1ae3be558fbaf7111d1067749687	CH V3	CYBER	erc721
+\\x5955373cc1196fd91a4165c4c5c227b30a3948f9	Chiptos X	ChiptosX	erc721
+\\x595a70409711f20523bd99b83d088cea9d3f92e1	AlphaGang	AG	erc1155
+\\x595d413865a3f419fba89b247910982988829954	SHIBABEAST REBORN	SBREBORN	erc721
+\\x596b3adb7cf48b52aeb4b1ad04662a21b7ae35f6	TRICKERZ WORLD	TRZ	erc721
+\\x596fd15c2b9de656d641dc4e66a4ae23be351a94	CNNNR Originals	CNNNR	erc721
+\\x597612db5b54ce16e9484563e761c428b2041580	Blvck Paris Portal	BP	erc721
+\\x598c038b10e22bb8fa4d1900435712e6dbe4c1d1	Wolf Game - Merch		erc1155
+\\x59bd8e74bb611dad594378319f853d8113e86c84	Chupsee collection.	667	erc721
+\\x59c4e7b29c1bd40c10dca8d9270bafff4a1bc1aa	Murder Foundation	MURDER	erc721
+\\x5a0d6e239a9137bb089edf326b2b2435b1975fa0	COS.SPACE	SPACE	erc721
+\\x5a123f4241d60de5b1d3f6cdd92c129d6047d6c6	Crypto Canines NFTs	CK9S	erc721
+\\x5a219adc82f51ade9e10b2a335d6794d4a7b82f1	Base Metaships	METASHIP	erc1155
+\\x5a3136b705b217ee664f3db6d4262f2655c6727b	God particle V3	MATTER	erc721
+\\x5a594b3492b7345c3e496d3be448160e5dd354a4	Canny Wolves Pack | NFT Alpha Group	CWP	erc721
+\\x5a77e8c6a68e50ec5225e486201ce19618a09b10	L.O NFT	LO	erc721
+\\x5a7f5a79c64b4a53c1c1be8bf53ca5df2b85c4b5	Flowers - uUIyed81xR	FLOWERS	erc721
+\\x5aa1a8379729c22a825408abaf78d2af6d2ff736	Definitely A Rug Not	DARN	erc721
+\\x5aa3c175d4da6b7b924732b9e188bf90c45462de	8 Bit Kush Collection	8BKC	erc721
+\\x5ac1eb1dcc1fff456a1aae629c458f965583cfa2	The Sushimi Collection	SUSH	erc721
+\\x5b18c2b5979854411cbfb2f1ba8ffbb03cad2c1e	Wolf Game - Gem		erc1155
+\\x5b3b99226040343c54a7531d0170b5db32953f68	Closing time	PHOTOART	erc721
+\\x5b4c617e689a711cf7338dae7dcd02bdac49c1f9	Boss Babes Genesis Collection	BB	erc721
+\\x5b4df75a2fc968d121bfa5bd1bd661a753df9337	Wheres Mekong	WM	erc721
+\\x5b5214333e4ec990b3a6e36b55fbceebfb41f5e7	Pocket Dimension Earth	PDE	erc721
+\\x5b7622ded96511639ddc12c86eb2703331ca2c78	0xOG Pass by 0xStudio	0xOGPASS	erc721
+\\x5b7d941ccf1bc52b154652f13087b7b96453a6ff	OmniWhales	OmniWhales	erc721
+\\x5b8d8a7a6b6e3bda129e4ef833a2a08f24ca501c	white - bmzWPIM7qz	9	erc721
+\\x5b91f5c0e40357e52b39d72e28dee5fcb58c8516	StonerDogz	STNRDOGZ	erc721
+\\x5b9236707ab7f5d43b889b5affc0a780d2c734ad	Wronguns		erc1155
+\\x5ba27d17821f9ac041b648fe9f90ec40abb8c3c2	SOURCE ONE		erc1155
+\\x5bbf50bc340876203856985741173947b8b48f62	lil'Goku	lilgoku	erc721
+\\x5bf86e933799aa23e7578cb0428583329eb482d8	Devils Dinner	2022	erc721
+\\x5c10ce77083ab3cccaca88af6276495374d3a026	ALL OUT The NFT Collection	ALLOUT	erc721
+\\x5c7485d0fd7cf511523d7229de823b1f5c34a78d	Ordinary Turts	SHELL	erc721
+\\x5c9f8b00db5ae281e8f401789224fe0227f24d81	ETHX    AI	ETHX	erc721
+\\x5cbbc46d69acdce1b6312122c1b4ea636e5ac2be	Baked Bananas NFT	NANAS	erc721
+\\x5cbc4b44226e3e3fededcebe87b84e0ea5c8bd67	Figment Country Club	FIGMENT	erc721
+\\x5cf5991befd5a3c0a53eb743773dc1733c367013	Haleek Maul VERIFIED Video Moments x DOOMSDAYX	DOOMSDAYX_03	erc721
+\\x5d127db260f8908800b3d60346ffe89f69edcf02	Juicy Fruits Genesis	JF	erc721
+\\x5d51f2fc76b3ecd28470ddc8dca9da8fe1ab1239	Out Of The Blue_	OOTB	erc721
+\\x5d8770b51853c78ae8b89a4dd83b4b6d34fe4ba4	a-hum V2	GADGET	erc721
+\\x5d88b399903d7a75ad5a9faa26208693942778eb	Lavatai	LAVATAI	erc721
+\\x5d8bc52378c6cce24535004ed19b5bf3b1a90917	PixelSpyClub	PSC	erc721
+\\x5d949a57a4dfc1fa0dc63e992fa28175f4b9c094	Scott Kelly: Dreams Out of This World, Postcards from Space Collection	SK-DREAMS	erc721
+\\x5d9e55d87595ff0597f956e04875293fee6f0273	Deadmates by Supermeta+ Official	DMS	erc721
+\\x5d9ee85b340c743587470ccfffcee423831c1400	Hymn of Dreams	HYMN	erc721
+\\x5dd35c26c9d91f36387e80745dd7e79b8a60db54	Moments - BGeIGOZ6hB	LIFE	erc721
+\\x5dfbd861b86831472158f64304a60d656f723917	Tiny Pixel eGirl	PXe	erc721
+\\x5e26f8b6058335d366f7c31bc62afeca04bfca3c	BLOOM - Omh8tjkXD6	NATURE	erc721
+\\x5e2a7ea1a13014d7235befe92883cee6c7312287	Terroir by Kelly Milligan	TRO	erc721
+\\x5e79b3bdbfa4192bf66a64f3c49f6e428a685621	Magic Moon Girls V2	MOON	erc721
+\\x5f1926bf6e3dd849bad862627d5555ba8ca65846	lkdlfoqewrqewjr		erc721
+\\x5f35ac14883b73ec0b572e7cb7694cc0fdd3bc2e	Views of Japan V2	JPNVIEW	erc721
+\\x5f489e33a65fcf13bd9da1f27a2ac5f58546baa2	Sugar Parent Country Club Donuts		erc1155
+\\x5f4e0c8625e548f412f101ca5e6981632202697b	Manantial Blanco - White Wellspring Genesis -		erc1155
+\\x5f66c76f5bf8cbd8ff85e5055d24ea5dc998465e	Cylinder Universe	CYLINDER	erc721
+\\x5f75b17a44625f8814fea5b30fecd3d6ab510bb0	Flappy Boys	FlappyBoys	erc721
+\\x5fa74bbf8a7d1a8f946d3766d9f19b50daeac332	Hidden emotions V2	UNSPOKEN	erc721
+\\x5fc22f6e12205afd92acb124ea9aadc0af6abd7d	Real Kitsune	KITSUNE	erc721
+\\x5fe218ba6f2b35225a63141c558bd4a606c42b46	Bridges by Oshi	BRDG	erc721
+\\x60227ffd6b6a543585d9790d121676b4fd622b1f	In Color Hors-Sries	INCLR	erc721
+\\x604d53c32c6dd3fd9a3d96b1d95b9ca6ca450d30	Pixel Kingdoms Quest	PIXEL QUESST	erc721
+\\x607b0a0354a205f7f0fc89d219c8549215acec3f	Physical works linked with NFTS	METRO	erc721
+\\x60806e2f47aa826d57d08ed1e46e81839ecd9187	Doodle3landers	DD3L	erc721
+\\x60ac86497f30d4ad747b3e3d6dec4db3068ba69a	BLIND - XUNTCPqzXu	BLIND	erc721
+\\x60ae9cb918124af6c7ed7c3ad4d40f52fb4a2018	//THE SUIT//		erc1155
+\\x60c2266087c0daef452a886edc1acdc979b29daa	farnaz dashti	FD	erc721
+\\x60db9a1b86fe0099da1271ca2ddb372783383deb	JOURNEY - TAKpnCbMFP	JRNY	erc721
+\\x61003a55135662174388e63885ab6feed5d1f455	Chinese Loot	LOOT	erc721
+\\x61048b63fce39b129e2db1de0773ef5baf670457	Collaboration V4	COLLABO	erc721
+\\x610e5dc73087bb08560ad641492670e7a95251a9	Melting Realities	FLM	erc721
+\\x61569f767ac0c9f5c64a4d63a21207a97e6022db	The Cyber Souls	SOUL	erc721
+\\x6161235f0348bcf382390696e34792ecce0c47be	White Sands Islands Villas	WSI	erc721
+\\x61ca631819ff0220e1b501af104ead83e0d98aa2	EightBitZuki	BITZUKI	erc721
+\\x61d49cd457ec02ea210b7221310f6025edeaa453	FICTIONALE	MDRL	erc721
+\\x61ea7b8a303a3a0b1aaa62703900d6472b932727	Support Ukraine - lhe3AaBpbu	UKRAINE	erc721
+\\x6238b1201da84cf84d4bd49f687279fd44f12c34	Witchery collections	SOLARICA	erc721
+\\x62548788ebc169b209434003e906b520e4b779d5	Som Tachs Beer Factory	BEER	erc721
+\\x62584d1090d21b598e2efa7af5c2267fd85ab510	BLUE NIGHTS	BLUNITES	erc721
+\\x626acf48a59d5dee6e4e7eb07386ad2851bcb5ce	JIN X9 GENESIS	JX9	erc721
+\\x627f965f26ed4a9e46782d4b20df6c9e2c2a88ae	Polar Clash Astro	ASTRO	erc721
+\\x62cdda29d04ecef7cc460c84ff95d166d6a8075e	Dreams - WceHb0qpW6	123	erc721
+\\x62e719065eb0425ee47c04bb5b70805bd6d88e65	Trial and Error NTR	NTR	erc721
+\\x62f5ef7346652188cb2d0676060cd667bbba147d	Meta F1 Club(MFC)	MFC	erc721
+\\x630ee73155209d742f7e1e467b0471924bcf8ce1	JakNFT ARTBOT Drops		erc1155
+\\x630fd418668ab8121e8e3e45676bcf4c859320b3	Official Space Cadets	SCAD	erc721
+\\x63d29091172ae8533c781c5e9af71213877ad5af	Romantic artworks	POETIC	erc721
+\\x63ef196191d54eabb6925ac97363844d6a4bdfdf	Nakedness V2	NKDNS	erc721
+\\x641475850e0316220a2d7e902508e08f72848316	Gratitude Gang	GRATITUDE	erc721
+\\x6423d82d36c54cdca40f4a69dac56f7c9a3fdb69	Broken Form	BROKNFRM	erc721
+\\x6424c29548d780cfc5d028c9c5f36ee3bc54f682	Skulltoon Punks	STP	erc721
+\\x6447007e97831beba68e13fac51913dad416776b	Odyssey - WYuncvS0JL	ODYSSEY	erc721
+\\x6450c33450d5d501a3091120494a4259c062a61b	Gifts - byYsbOTKJE	FLRK	erc721
+\\x64589d2d1b0c0fce065ac6bc0252be62e05bb8ef	Pillars Of Creation V2	PILLAR	erc721
+\\x64891a15a25bdc39caa88a03d2f7743f24f0267c	Aqua Nation V2	CULTURE	erc721
+\\x64906ef707a0423a4c4505d38549a7f37441b5f4	ScavengerPunks	SCAVS	erc721
+\\x64ea3a6edfbbf9b3474f8caf8095193693caa993	MemeBirds V2	MEM2	erc721
+\\x6524c9ca604e5e920ac3e01cac57e110b03a4c59	SYL V3	SYL	erc721
+\\x654ba831615a847ea0eb0a441be7905bb6da26d3	Milady That D.G.E.N	MDG	erc721
+\\x6575b436574fad094f3425439c50fba943260ec7	WOMEN OF THE CULTURE PART 1	WOC1	erc721
+\\x6586aee1bad2f2ff809ba514db4d0f406426c902	HeyEdu Founders		erc721
+\\x65922260237378b75fd2fef9f6236ab1dd5776aa	Chibi Frens	FREN	erc721
+\\x65990c01b715013f3f83e5c82c22804fa6036c1a	Yellow Light	YELLOW	erc721
+\\x65b4da14637cd90b9304c8fc185f30315eb7ea74	Boys Club V3	PEPE	erc721
+\\x65d0b9c7841841debc8bdf5f96e072e8efbbb71f	Non-Fungible CDs	CD	erc721
+\\x65dca230a9a4933ace65f79cecf1fdccceffd5ab	Toyz NFT Project (OUTDATED)	TOYZ	erc721
+\\x65ec81259dbffaff767c901229eb8791b7cb5d39	Mutant Kong Club (Official)	MKC	erc721
+\\x6610befe2034cff33ea893080f1bb767de64c03a	Falling - gihe1zrzbb	TUNNEL	erc721
+\\x6610f19ac01e42fc0903df61b385d9577b91672c	lklkqewkladsfkadkflqer		erc721
+\\x6640046fcacbde0000d159b2099b55eb25003d45	BRIDGE - IbOAgL7ijp	BRIDGE	erc721
+\\x66411c2428dc55b5c02be232d0673817c929d102	RAC - A3 S24		erc1155
+\\x66571e65d5f86ff268d09fb5beb7fa78f49ed828	RELI3F UKR: Drop 2		erc1155
+\\x665e2e1cefdc68851708055b3fe6f50ca59d8d60	DOODLES - BKgV9moiwW	DOODLES	erc1155
+\\x666f49af5bacb044f3932f35439ef55db6db60a7	CHERRY BON	CHERIE	erc721
+\\x66a1b09adcff8df2e321b5cfbbf134121520d785	CyberRonin Haruka	Haruka	erc721
+\\x66a4a1227b471e709ee76303ece790820cad55cc	𝖐𝖞𝖎𝖛	UKRAINE	erc721
+\\x66c687c73a1fb42fdf2391fc9da90048189dd97d	GOD Panels	GOD	erc721
+\\x6703881b6bb6f8265235d859e32f464d34da0648	Pump Gang	PmPGnG	erc721
+\\x676df22379be45dd044a4f2d4adf3cae31bbdadf	MizukiKen	MK	erc721
+\\x67ae5bb2039e0402ad9193908c77315c0c377ea9	Neighborheadz Official	NBHZ	erc721
+\\x67b16a95d09ba7a08a65cf4674222212925c7e19	𝐓𝐡𝐞 𝐌𝐚𝐣𝐨𝐫 𝐀𝐫𝐜𝐚𝐧𝐚	22	erc721
+\\x67d4f5c368641938166b379267f54d6498ab0a3f	Crypto Kings Official	KINGS	erc721
+\\x68755aeb1cbc6bac47428bed0dbd0cea41bceab8	DemonicSkulls [DO NOT TRADE]	DemonicSkulls	erc721
+\\x689642e2c31fe06268c9deb5560af93739f106bb	Sui Generis V2	JKLSUI	erc721
+\\x68a6c3c2e3c7232ecdc01bf2af8b0402076cd59b	Language of Love	DIAA	erc721
+\\x68d283bf523927e127411cb7788aa7af58c771ac	Kamands colorful world	TELEPORT	erc721
+\\x68e00ff4789745d916e8bcff84a08d5394e5b83f	LunarSociety	TARDIGRADES	erc721
+\\x68ec932ccb3b1aac03766a3f2f3d90b7603f2cd3	Mutant Money Society Official	MMSNFT	erc721
+\\x68f4ba8018216542ac2ab8125166be66304dd71c	Dolce&Gabbana: DGFamily Glass Box	DGGLASS	erc721
+\\x691613e222f22e559b9842e4fc8e0e47325bc1fc	Swimwear V2	SWIMWEAR	erc721
+\\x695fd029ba5c40c881873338eab7a21e0a97c37f	Cat People NFT	CAT	erc721
+\\x69676895fc1e08f405d5d63946c6d262d1093184	KIMONO-SAMA	KS	erc721
+\\x697fa1bd7d3e8051c470310ce26bdfd59e865c97	GIRLS  X FOOD	GRLXFD	erc721
+\\x698aefde6113baa6fabee3e9d4df25dc12c892fd	Unxcodes perspective	UNX	erc721
+\\x69c4c50d747d3fd9cea3af0b3044d650dd75b39e	HaoGoodMan	HAO	erc721
+\\x69c62b9f317667ca9799939b34c921c9cec37f28	Geisha V4	GEISHA	erc721
+\\x69d38ff11285941f2f6cf8c024f2af7ae51f79dc	NotBeeple NFT	NOTBEEP	erc721
+\\x69f0513f9b2c2233c18f17d08559f0dbd915e2b7	Lofi OriginaIs	LO	erc721
+\\x69f062d64a7cab90bcab8b78e710d07e58e22754	Plant Voices	PLTVC	erc721
+\\x6a0c97f4e66f58952badf32916b1375199072bf3	ART - JXOY4lOsLK	RINKOART	erc721
+\\x6a2571da2307818c293912a71393203549ab5a0c	The 100 Pieces of Shit	SHIT	erc721
+\\x6a4f1cf35ce900e096e08b4ea725facedf2654f0	La Table Du Chef - PASS	TCP	erc721
+\\x6a59b21c0b61f8c07ee730e05e7381983d61ecf7	Marc Tudisco	CHAOSWORLDOPENEDITIONBYMARCTUDISCO	erc721
+\\x6a68175902905a44504949d68bf2c54b1ca98db5	Recon Rams Elites	RRE	erc721
+\\x6a75ea015f81fb0a3d01ab2fb339d20bd10e35ba	Honor Of The Clash Warriors	ClashWarriors	erc721
+\\x6a93ef35030846d8e0a50984c98482e7b80a7727	EBOT Cyber Club	EBOT	erc721
+\\x6af385f45b2f00c49f78f3829d69fbc197d4faee	LootWorld - Wizards	WIZARD	erc721
+\\x6b2a5d9d451c425591cc91da8f8e7e4538c5cd29	LIGHT PAINTING in FORGOTTEN JAPAN		erc1155
+\\x6b445e05385f126b6245e158ce82b7534fed2d92	My Inner Defiance	MIND	erc721
+\\x6b7b0bba4b8c26680f267f5621025f146a4cbddf	Decentrabis	DCB	erc721
+\\x6b83f0a974cf49b4e99473b67da41139d0fdf99e	CONSERVE_CRI41003	CSRV-CRI41003	erc721
+\\x6b9a8b9bbc3910c286d679accfc127035c7ce86d	The Good Monkeyz	GM	erc721
+\\x6bc06f403221b02548778a34507a096c09d2cdee	Ether Royale	ER	erc721
+\\x6bdc1e0b81eef1d38667b0c57b8856d527ccca05	Ghostly Omnichain Secrets	GOS	erc721
+\\x6bf1181998221399ca08c1c9d13a7ca4e6a5fe9b	Mutant Zukis	MUTANT	erc721
+\\x6bf7230ec3faff46bffedfbf765b54ac622bb3a6	BillionaireSkullClub	BSC	erc721
+\\x6bfb7698645365bdeec53a19eb81b4a03a1c1993	NoEvilMonkeys	MONK	erc721
+\\x6bfceb72c4c785d63dee34d48878fb61ac7cf57b	Official Haki NFT	HAKI	erc721
+\\x6c06ff31156c4db4be59d2ee4525b7380c9f09ca	-BRICKS-	BRICKS	erc721
+\\x6c1b3dfe89659d3616b31535ccb5955ff0e7f9f1	The Wes Lang F.A.T. Series 1 Airdrop	F1AIR	erc1155
+\\x6c260d4d24cf26671afcc4c5748590ffad595233	QwertyTurtleCrew	QT2	erc721
+\\x6c51fab55e598ef96e446b4a430fbb516aee455c	Tales of the near future	FTR	erc721
+\\x6cbecd339042f50ea8e1209d0259a378942c4fad	CHIE Chapter 1 Genesis	CHIECHAPTERGENESIS	erc721
+\\x6ccd2f02ba658c0a778fc6df0bdb4a31bd8d1785	berndawgler  ohyouknowx	bernohyouknow	erc721
+\\x6cdfe06c61270ef2840bd059faa5a33cb8008c2a	Kesean Sketches	Ksn	erc721
+\\x6ce75fda89ea442be770d0e3876ab344f8dc6df8	jklqweroiadfkljqwerqkwejrkqewr		erc721
+\\x6d0152d76199638ebd0417d733f38dd5ef7edce0	META BUMZ-v2	META BUMZ-v2	erc1155
+\\x6d0ca13f9547a78636d5086ec5e0041f213edaa9	itismunn	MUNN	erc721
+\\x6d1ac3334ce11e0b518a56c56e7ef63700713978	doodle experiments	YUZUX	erc721
+\\x6d3a644c4a890fbcc5f75eea6ff3377923b8f6dc	500Moons- EARTH DAY!	CPED	erc721
+\\x6d4bbc0387dd4759eee30f6a482ac6dc2df3facf	RTFKT X NIKE MONOLITH		erc1155
+\\x6d994407f64b232d656c72bdc1d7727760ff1705	MferMobile	MM	erc721
+\\x6e2ad3824eecdb91e4258359a8d383ce6b58c01f	Berk aka PrincessCamel Things	BERKTHINGS	erc721
+\\x6eb96c788abe0ee611d0610d4cc3b0463f411f80	Wealthy Whales Gen 2	WW	erc721
+\\x6ecb0612cdfa72a06dc343678d9172f5aa0f48d5	5715 Miles of Coast	MOC	erc721
+\\x6eedb0fb452abc57c4d495b1ae14123c2de39b9a	Lonely Stoner Dude - OG Edition	LSDOG	erc721
+\\x6efd4e2eae38ce3105843d5b6a038fabf5649b4f	Moon Kongz Test	MoonKongz	erc721
+\\x6f0e1468282575f5ee8f1bd7758ba1cbdf1d4848	trevorjonesart	MANVSMACHINEBYTREVORJONESXICECUBE	erc721
+\\x6f166736b92cec22f64ba74d27dd93cf9abeffc2	Lofi - 1	ANIME	erc721
+\\x6f2bf15b26971bbad60c56aac775ab9fc6db1155	The Mimics	MIMIC	erc721
+\\x6f693f64161dcc7151c89022333397ec254a4313	Metropass	MP	erc721
+\\x6f8ea9fa2c02d2a55f6515a17c53c2ae3881db0f	Lull V2	LULL	erc721
+\\x6f96a768eeb30421ac50afcc9d67a70b22b90ab6	Scar Island	0102	erc721
+\\x6fd3fe10d2cd28aecf1ff4153e8d3a80d077ada9	Unusual Guests | UG	UG	erc721
+\\x70264df68d31eb41073d7746899658963f3920bf	Memory Glitches	MG	erc721
+\\x7035796ed535e1d338bbe1c75f9a75b2997d9a51	TTTreasures	TTT	erc721
+\\x705525c9160e20504e0cb7f634a67193675c63d8	Aqua Shells NFT	AQUA	erc721
+\\x708e73c7a0d81e00e848c902217d2d39e56d65af	ApeFrens	BAF	erc721
+\\x70aa0b0c2d3414f70f32cff1d6359b28e80de708	KIMOs WRLD	KIWI	erc721
+\\x70aa47b0c1626de432129b0ac869ecebdc329426	TestinProd	0xOG	erc721
+\\x70ad227cb7e82726dd7445ec5a68ce14989cac9d	Fantasy - SSQZIeMwGH	KITSUNE	erc721
+\\x70be4e3761188d0a8c525e54bb81c4ea97712de4	Moonshot by Violetta Zironi	MOON	erc721
+\\x70c4f47e3be395f2e4f8b5a524806b84ca7d9096	The Temples	TEMPLES	erc721
+\\x70e5eefa040a04d39173df5472b3c815516cf43d	SunMoonbirds	SUNMOON	erc721
+\\x70ec58ec3a2ad80300a81968753aee56ebda89a1	Refraction Season 0 Founding Artists Collection	RS0C	erc1155
+\\x713ad491b8f23790352dde88986dde74cf862f45	Primaries V2	PRIMARY	erc721
+\\x7141d21dc6dc075265db015d5f2365a65bb9fa48	Pink - Jf5rHHJNmJ	PINK	erc721
+\\x715e842880648ef7cf50ce3c3e031702e3da7a60	Demon Death Cult: Season 1	DDC	erc721
+\\x716cc99a386ec8511955cee54a287878ebcc584f	Expired Gold	GOLD	erc721
+\\x71f7e82dc366f12eea4a888659b37be09b073828	Ambience and Sensibility	ILLUST	erc721
+\\x720d1b21b02b9404a4234aa296b0698767cb3372	Painted Woman	PAINTED	erc721
+\\x726719d0b5d62bde627372d449c23dac8661d523	PuffyPals	PP	erc721
+\\x72781d491c748392cbc78efa9eba6b630516dedf	Cross Country Canada	CANADA	erc721
+\\x72dd8df9a3005ad2bb3080abd1cc2cf23155bc2a	VOLTZ Avatar Mint Vial	VIALZ	erc1155
+\\x7300599d0975d9e896d7a003eafef2aaf2a6dc56	Alien DNA by Shvembldr V2	Art Blocks	erc721
+\\x7388dff8f09f94d4308eaab2c79e4a8f42c6444a	portals V4	PORTALS	erc721
+\\x73e363ed7ef033bf4a933bc5fe0e7617c7ecfcff	Degen Mints CC0	DGN	erc721
+\\x7404dd20ddaa4bdf0ba4c88587f48b5e9c9e218a	Melancholia - UoTFR6SFZ6	TEARS	erc721
+\\x740bccf2e550aaa40f53670c9c20eef2a03eee1b	Radioactive Dozen	DVP	erc721
+\\x74397b97a750dc6fcd6d77a66e1b1325fcad927d	GoblinTown	GBT	erc721
+\\x743d787e883a5a7391203cd49e21a8f59e207893	ZEITGEISTER	ZTGSTR	erc721
+\\x744aa2b8ebba38c50fe78b1ec1a8039cd0aa90b1	Just A Blunt	BLUNT	erc721
+\\x745ceb516031fa7cb7fdddeb5022976f4214429c	Editions by illkoncept		erc1155
+\\x745fc083f4336a4151c76de9f598e0f67991c3fa	Mems, Voyage One	MEMS	erc721
+\\x74634a04f6eb33944fdec9ca3a4db4b40a2289c2	fqerjkwqerioqerioqoeri		erc721
+\\x75395985f5831e430d3db05424adb0b6f4e99043	Robinhood NFT Alpha	ALLALPHAS	erc721
+\\x75541836787f35a807560d54cf5cac5946f28f65	Where I was Born	WIB	erc721
+\\x756aa826359ef6a23a3c726f6ead959d10ff17eb	Copernicus Beer DAO	CPBEER	erc721
+\\x75963d1df77df5cd34641a369332d25e5693d5d6	SMC Art HiroyaIijima	SMC_Art_HiroyaIijima	erc721
+\\x75e404231433c0993125c8cfae78e3a9f016b44f	iDreamer (Impermanent Digital)	IDREAM	erc721
+\\x76141201a43b7b2ad411648b9ab6692a9b63db97	1/1	1OF1	erc721
+\\x76bdbfcfd0601bbd44fefde6744bd556870efa87	Squinkz	SQNKZ	erc721
+\\x76d04739519930d76e404899ac68a2c9d730f185	Landscape - ZY4DluKZIf	LAN	erc721
+\\x76f320c12819c984c4b9a79f6ad756feb6ef1969	Chalice Station Medallion		erc1155
+\\x76f6307b138c3d6151516ef9096623fffd074970	tiny lions (eth)	tl	erc721
+\\x771636955d550d556490dbb3fce5d30ced584e18	Glyphic x FUZI	GLYP	erc721
+\\x772808e70c2e720819eb96d1daf63f8d3c9db243	TinyDoge (ETH)	tdoge	erc721
+\\x772adade00b887adfd8b7e957417b91e9b0d708d	I love it Black	ILIB	erc721
+\\x7740a504fcfff8effddaa85b820d7fc0b6559493	Waves Ducks	WAVESDUCKS	erc721
+\\x77433b3c0cc5f8cdaf977350f0749c5d33b34ea0	PeakyPelicans	PP	erc721
+\\x777094c9ede5ad9e04d2b2f00f992cd7f9b0a85c	The Shmurfs Official Collection	SHMURFS	erc721
+\\x778efc5961570158df0989ad7c9369ca23383adc	BlueBirds.eth	BB	erc721
+\\x77b5e25e3b428b4b70a4f5bb96c1bbcf496ac573	playIRL: Press Play	GENESIS	erc721
+\\x77bc1e466fd5b69dd7dc331193f5dbc7b3bf602c	BOB & Co.	BOB	erc721
+\\x77ffa96497db0a80f816a36583e5cffe920bd9a7	Diamond Heist	DIAMONDHEIST	erc721
+\\x783489e8fcc746a9f108a3c9cf8c09a81efd52a5	123Avocado V2	ABC	erc721
+\\x784bba97951651012c15983c1e9cc25841f66d00	Greatest Wishes	FONTDIVA	erc721
+\\x7887f40763ace5f0e8320181fd5b42776d35b1ff	HAKI NFT	HAKI	erc721
+\\x788a73e34aa43aa69ae82a0b150bc27d37f8906f	Blazz Lab	BLAZZ	erc721
+\\x78a8145d68cc390f6baa4e641b68ea4abecee7c5	BRIGHT MOMENTS ICON SERIES	ICONS	erc721
+\\x78b8be05e7f26a7eb82cf0cfaf4c8bca562699b7	Ponzu Collection (eth)	sushi	erc721
+\\x78bc8261530d0c4e6a6135ca5b00fcc0f70276cf	Knights of the Hidden Garden	KNIGHT	erc721
+\\x78e4a471454ac864576da9edb25684d591236e00	Space & Lights	CIB	erc721
+\\x78eaf151fa52dce1c5a9dabdd3e4df0e98503306	NUKES by Primary Nature - Official Collection	Nukes	erc721
+\\x78f66e0d7bbb4eb6202dcb12230fa67caeabf011	Line Goddesses	LINE	erc721
+\\x7912a656ece2bc669d4116ad8e9495f722d92d76	UNDAO		erc1155
+\\x79163f1f40b2eb999b79fa19551f2c07d98cbb6e	Bunga Society	BUNGA	erc721
+\\x7916901381f42a2f8eee98cd4970b22032fb8fe5	G-NO Digital Art Collectibles	G-NO	erc1155
+\\x791b116dfde9cac212c2e213532d4493c13849c5	WEIRDO WITCH	WITCH	erc721
+\\x793020529f25f6d01d6b6b7b3337738c4c93b7c1	Fancy Foxes V2	FOXES	erc721
+\\x79367786c62e20f4488111d8d33a5011e35b61a2	The Silly Snakes	SS	erc721
+\\x7938498415a7ee0c085807dd8b862c7fee065cbe	Moon Birbs	BIRB	erc721
+\\x793b847256e4f3ec64453e115a8c44716be4f029	STRANGE LAND V2	SL	erc721
+\\x79b928e920a0e2b5b30ca5b1ad56660797c8bd40	Degenerator	DGNRTR	erc721
+\\x79f59691782d6ad2e3aad185013ce7de942c0a1d	Bit - zSqeO8FJcy	BIGBIT	erc721
+\\x7a01533d649822a651afc94c679f2fc6ae62df0b	Gutter Punks - Los Muertos	GPLM	erc721
+\\x7a273d9199e34b2111c738c40ec2d6a096829b58	METAVS Vault Pass	vault-pass	erc721
+\\x7a4311ad184e3b44106d42203c5350d8476531d1	420MoonBird	420MB	erc721
+\\x7a9c405d8a34d7f5ff1b175bee87aa00e8443111	The Paraverse: Relics		erc1155
+\\x7aabb77ba782c57209dbe88aff8bef113f55c05b	Crow Clan	CROWCLAN	erc721
+\\x7adf109c3629d05e6a8a634d1734965855ac2027	OmniCamels (ETH)	DC	erc721
+\\x7afee6bdb79e53fb8ab7cc39425fc2d076f9a280	Junior Ape Club	JAYC	erc721
+\\x7b0a75e16c652a42faa3e3c65ad881b71ea664c4	Levitate V3	LEVITATE	erc721
+\\x7b0ca224f52a88415da762f78d8373afc5394184	Embrace Color	EC	erc721
+\\x7b16710231e787d345dfa43d5f601dbc305976e1	scent fragrance perfume.	UJIN	erc721
+\\x7b30fd98ff27837cc6de62bd2a8dcdd84393e297	Crystallia	CTL	erc721
+\\x7b43b5ad2471474f4c8ed6ffb0df6e037bb558f5	Stalomirism	STALOMIR	erc721
+\\x7b86c7221a7fbf1f16f5ab3ec9e3f0d6807a1083	jamex V2	JAMEX	erc721
+\\x7b89890989d50b631322c6977c7937531460957a	Zero Ape Club	ZAPE	erc721
+\\x7b98414153bf345389c1af6cef7d755b9dd93e04	Ljusskare V2	LJUS	erc721
+\\x7b9897b8c7d8c18c11cff2f65680607649d683c6	PSXMA	PSXMA	erc721
+\\x7bdc92e225562aad5192e4d0e21813690d7a4fcc	NFZ V2	Z	erc721
+\\x7be507d129c08e2101f76874f9e3bc5676a2df36	Rap Off - The Fridge	RAP	erc721
+\\x7c0a5ac8be4f4715cb6f9cc7c89d8e601aab62f8	Smokestacks 1 of 1's	Smokestacks	erc721
+\\x7c126002d0bc83d8604d9f6ab429c3743f48aca0	Secret Sesh NFTS	SESHERS	erc721
+\\x7c9c6e39e6d1d539acc2ec1de5cc4ab30c6bfe0e	THING - xIOkMhmQ0N	THING	erc721
+\\x7cb788b627da227c14687e7f701f80290e3edac8	METAPOSTERS	METAPOSTERS	erc721
+\\x7cb90567a118cd9f6ca326067a0813b289bdcb54	Apes Together Strong Official NFT	ATSNFT	erc721
+\\x7ce2f6b97a4d925ed28892716bdd54479f2d3211	ArtApe(eth)	OAA	erc721
+\\x7d0874f682c42f0fe907baf7785d9dcb5a0b1285	ACKPFP?	ACKPFP	erc721
+\\x7d0ce39f45a04c259b7efe6e8dea32f03ecdeadd	AiFantasy	FANTASY	erc721
+\\x7d0e26ae212734656f410bdbb53eb3d665b46b3f	CryptoKidsDAO	CKD	erc721
+\\x7d23347add4a6c6bf1cbac427d3f0703449b0f30	ANIMA - DStRVTYovL	ANIMA	erc721
+\\x7d3f243b0026eb2d78a7b8bddae2a1093fbdd08f	Not Art Blocks	BLOCKS	erc721
+\\x7d45bc446e54c5ae5be7c46e5c385e9484cd6c7c	ANTH  Genesis Collection	ANTH	erc721
+\\x7d56b3069963c341f35bc7754043b79c6036374a	Rare Pepe Gallery	RAREPEPE	erc721
+\\x7d5d996593da19bd25c5d73b2875d3af946c561c	Art of life - OBiqNbyIVJ	AL	erc721
+\\x7d8955fb8f0c9dd11a6501a30a88bfce2793f734	Daydream - juY4IdG3GD	DD	erc721
+\\x7d8e22699aa1572777e1b94772b91595cb57fc6d	Squshy	SQUSHY	erc721
+\\x7db92aa8be35109d367403de49da78933abfbb09	Phoonbirds (Old)	PHOON	erc721
+\\x7ddaa898d33d7ab252ea5f89f96717c47b2fee6e	EVMavericks	EVM	erc721
+\\x7de11a2d9e9727fa5ead3094e40211c5e9cf5857	Forgotten Runes Beast Spawn	BEASTSPAWN	erc721
+\\x7def54f662dd53b1713e9c4127d3769a0aa191d8	Africarare Ubuntuland	UBUL	erc721
+\\x7e3ceb5a07be2b5965e666a15575092e58eb5c6d	MferGrannies	MFG	erc721
+\\x7e46e260679e9c5af3512e7a427d22433c88f7b2	The hope V4	GODS	erc721
+\\x7e4b999afebcbcf26c6ad609f3f92f8261f7e68a	MOREHOPE INDONESIA	MHI	erc721
+\\x7eee12477080c5dc16fb90b6d1e31495bd136392	Moonbats1k	MBATS	erc721
+\\x7f5fa6016f0ab7cd7f4c6b603fd9440308953e91	CoCoVerse Official	CV	erc721
+\\x7fab3439200a2e4030fb4be0bf7453d4419bb744	OBSCURE PERSONAS	OP	erc721
+\\x7ff95a455a8d57e5f262be95069c55f7519f6131	MY MoonApes	Moonapes	erc721
+\\x8005c6012986bfcb780f7cdd290f451773405ac6	Swan - PTdZTXq6FU	FOG	erc721
+\\x800c8acc5beeececbc022373146eaa150825935f	TestCuteGator	TST	erc721
+\\x80190f09c78d0c71cc52c2ae9c6fdba18fd2c499	CAB Anime Series NFT		erc1155
+\\x80441d608f5b34586e3b8811f060aaf0b34344ca	Dreamy state of mind	DSOM	erc721
+\\x8069fca6c73e411871c97f8b005b1d93698a2074	Life in Seoul V2	BYGEM	erc721
+\\x806e9c790a2a4d803fced7cdc9fa99d275ae67e0	Freaks University	Freaks	erc721
+\\x80782b6363a0c21e739c4642d31ae32f1f1aba71	Ballerinas V2	DANCER	erc721
+\\x80b6a2f6da155905f4b131ec60974267aab07faf	Vkuzo	VKZ	erc721
+\\x80b9c86b44d9ce8869a4b103c2e5e5f26062dda0	??1?		erc1155
+\\x80d1877764b6d706cb9e7a2d7cedd62064b3a16f	Poetry in Women	PIW	erc721
+\\x81205c950c27aff050a3fa483fd9a9fabc380ae9	Moon Kongz	MNKNGZ	erc721
+\\x8191719c526034972fae5145ad3cf3fd02682c68	religion - IilUeL0IJk	REL	erc721
+\\x819d1e8c95fe3eb1f451e09f1b54e15adc6c5c43	mfer watches	MFW	erc721
+\\x81b75fb6d271805c67c85caf35f94583a746ac09	Decentral Degens	DEDE	erc721
+\\x81c50fe3f697e9d6f0a26664ace8f1cdd8f02bf7	The Banksters	BANKS	erc721
+\\x81dd5c539fb65da257ea5f6719f1944ce5514724	My Shower Diaries	SD	erc721
+\\x81de85ac875768e53f9e30b9bea7bb5a31ee33c0	Archan Nair	WAIT	erc721
+\\x81f94d4d6a3d4639dafb86daf7955ebb56a4666b	Luo Chuan - Fiat Lux - CYC  Collections	CYC1	erc721
+\\x8208c034850c6d6184e01759770ade89abc46eb5	Liquid Weird Monsters Club	LWMC	erc721
+\\x822674bc21e35d4d79557335fb1cf679dd934500	Trippy Frens NFT	TRIPPY	erc721
+\\x825b8d4e1432ccbc5ab2bc24c9e65f0434dcaf37	Zen Blocks - Data Blocks		erc1155
+\\x82a25a2d5d367daf2871fc404b2b8e7248bf156a	My Wife's Wife With Colours	MW3C	erc721
+\\x82a33159cea0f0df29c329d32bf9d1e1d015c86d	Ninfa.io	NINFA	erc721
+\\x82fab54a2e7a504720328ff5797dcd3ee182c9a6	Journey to Nusquam		erc1155
+\\x832ec87b1f6d840c071f109eabf599bac7a11cba	B Sons Art Book	BOOK	erc721
+\\x8353b5f52254be516b28070ab48ff436a09ac4a4	manoArt	MA	erc721
+\\x837d420bbb100a12d8483b3cb5a7291261bfe710	omni chicks (eth)	OCC	erc721
+\\x83bc08be94d848c7ff7f68c416173dfc5ff68062	Sanctuary of Legends	SOL	erc721
+\\x83c87c3df4ab8cdc096485da418811450c68c000	Wavy Sharks Society NFT	Wavy Shark Society	erc721
+\\x83ff1721726a9b9caaee308da528604b2c70c5e3	CockCockCOCKROACH	COCKROACH	erc721
+\\x844eabeac70fa839aeceb50de4a1155d8266827b	Stories - o38gKCuFD8	STORIES	erc721
+\\x846bccf02dbd848d792940ffa5f714216ff0b8b4	Tarot Whimsies	WHIMSY	erc721
+\\x847cef50b1af40fa89387c284fb0559f9d557e79	TSUNDERE OFFICIAL	TSUNDERE	erc721
+\\x848805b349741aef9aec4bbff197f674a3231dd9	3d crazy kids	3D	erc721
+\\x84d6d7acf0f6b8a2497d0357668918943758c125	White - IXru5VV68M	EWP	erc721
+\\x8514ef77f7b808de634a559a2c1fce3a311adb1c	7DayNFT	7Day	erc721
+\\x8532b519631e6c6abe9d130b7461e930ba230358	PGSF	PGSF	erc721
+\\x85a5f8edbbf58278ac1ceb5b1c2101fb3ca90433	Mushroom Pals Official	MP	erc721
+\\x85a80bd77216d02b618739f483e187e3d0c1e014	Pixel Birds official	PIXEL BIRDS	erc721
+\\x85d3e66ceef7da43a0eadff5c4c0193b868a1479	You Can Not	YCN	erc721
+\\x85e9dbffe99ec7f9c2e73181d3caacff2751ca25	Dress up Zoo Girls	DZG	erc721
+\\x86232df6947a1c3ed3c7a31ec6be3c43b3234ab1	Birdzuki	BirdZuki	erc721
+\\x86685534e63c5c3aabc6346b26ae543d4f1bd208	Flappy Moonbirds	FMB	erc721
+\\x8684415be9ed85b47478b86df2d2890842b9305f	alevis adrops		erc1155
+\\x8684f8a721339b9664c2c6b89d921915b9682c7b	An empty canvas is full.	AECIF	erc721
+\\x869804f258d637dfc24e379c925b39758c88625e	MoonRacoons	MRCS	erc721
+\\x86a0671ed1a3c1385318bd409eb5cf6ebab217fd	HypeX Warrior		erc1155
+\\x86cc7eba48703333bf3f2cd5b00948dc478ae594	C-02 Collection	C-02	erc721
+\\x86d4f07b4341fbe43107124d9dde003a601249fd	DKNFT	DKNFT	erc721
+\\x870672feb758d3462138ff270523dd1ea560b501	Binoculars V2	BNCS	erc721
+\\x871056fb436059be99d7bdce794f6562fab922d5	Muses of the Magical Metaverse	MMM	erc721
+\\x87601dfb2c66b6de22e3f00b2120f327e361abf2	Layer One Punks | ETH	LOP	erc721
+\\x878e06b10573e1d09864a9ab2641a91eda5bcbe1	Neuromod Genesis	Neuromod	erc721
+\\x8796c06b50eb4ffd389bed6ed401c764ba89a4af	Dirty Taco NFT	DT	erc721
+\\x87c4ba6f6ee73e0d420eb56c54243a5ae486e51b	The Lobstars	LOBS	erc721
+\\x87f708d0afe61dfbde4886968d9198564c32fe5b	Filthy Rich Club	FRC	erc721
+\\x88618b8c04da0471b30b25a2148e95128e169ae6	postcards to my younger self	POSTCARD	erc721
+\\x886bb00b19b0d1f043d6479b17a5b4210d4eb13b	Nemesis Test Contract V2	NT	erc721
+\\x88942910d917ed29a1b9274bf7daba4c7f873b91	MoonbirdsBatz	MBB	erc721
+\\x88ad44557afa093b561488ca58c9c342bfaea3e5	Silhouettes - YIlMDRQ3us	S	erc721
+\\x88bafd3ae7d8d420a934f77428485ff32fc3f30d	Surreal Fantasy V2	SURF	erc721
+\\x88c5630847c218245323850897bc62244f201426	Miscellaneous - Rr7sk0zoaQ	MSCLLNS	erc721
+\\x8917db5cfee954b072e16a3027fa8adff71d50ba	SMC Art JunichiTakaoka	SMC_Art_JunichiTakaoka	erc721
+\\x8932a1b06ab4cb444f731900582199f5adc7442e	Mesmerized V2	MSMRZD	erc721
+\\x89469f52642940c57183f6101c51e406210d1c78	Secret - RtloMy5Gv6	SECRET	erc721
+\\x897e7a1b57bc576073bfd83da12232c2d14fd746	Tax Extension	TAX	erc721
+\\x898f004af95ae6d5a23f40f486e046faeae4b67e	smols nft	SMOLS	erc721
+\\x89dd93b942de8338441e7b66cd17ab369db4157c	Cool Kids Walk (Official)	CKW	erc721
+\\x8a1598780d0ea3e7e7183a23d81fb887dcf7e247	Ethernity's Master Collection		erc1155
+\\x8a6c6fc7e87544af37454f933706eb1dcc47338a	Obscura Magnum	OM	erc721
+\\x8a787d787b2e0924fa9ab79607eb8ddc5cc7b717	FUCK notBanksy	FKNB	erc721
+\\x8a93bc8ed29da1b090265137a9d201ebf1154626	Metaani x Kyary Pamyu Pamyu	METKPP	erc721
+\\x8a9d68e6f75534516b6a7cb1dfeede5662edc722	Dream - Zg9VLRbU2D	DI	erc721
+\\x8ae0d617f1a6f6d3fdb2b398f4814bebd3939ddf	Furu's Mint Club | Genesis Pass		erc1155
+\\x8b11d603b5bd9cce0ebebd544fa556cf1a6a8bd6	88 Dynasty Official	NFT88D	erc721
+\\x8b4d3a9f292ec6e6bb7bfe45cb747bf1ad2c3af6	MP Old Collection	MP	erc721
+\\x8b5065c5354d1ec05d28cc9fceafe18783c59f69	Nounish Eggs	EGG	erc721
+\\x8b8c4fb046d374107fc08315daabe1a54cc31153	GENESIS Toons	GT	erc721
+\\x8b8d9a8b08d9c0e21442fdd9b37e6737a546dfd5	Neo Drive V2	NEODRV	erc721
+\\x8bae7f14248e71184d405ac6d8886cd696df13ba	Failed CyberRonin Experiment	Haruka	erc721
+\\x8bc5438b889015e57ad4985ef6c69cbc25d85648	Defragmentations of the Self	DFRGS	erc721
+\\x8bd8bbaa0d0a1772f0a684447266518372423e9f	Disembody	DSMBDY	erc721
+\\x8be066874781e9a9590f416a5187a99db93387a5	Blasphemy X	COLLAB	erc721
+\\x8be62466f9c2effb68a182e1c3f1914291fbd268	Sacred Belief	SACRED01	erc721
+\\x8be757f19d282a415dcb75c25a7f4978491f6293	Delusional Mind V2	DEL	erc721
+\\x8bf9b929d3e690e079f17492fe1cdd8ed621ea71	To Remember V2	RMMBR	erc721
+\\x8c198b492cada2fd9697e8e9ac61f706f1e817ec	One-Dimensional	OD	erc721
+\\x8c6da8e36db108595985c13b11db06a80324f314	FTX US NFTs	FTXUSNFT	erc721
+\\x8c7d457db16b9b4999efbf85114f44c515d96ffc	Bank of Metaverse Pass Collection	MDAO	erc1155
+\\x8c9a44a98b9a50396f26ef1201c570c8c3953c96	WhatTheFoxes V2	WhatTheFoxes	erc721
+\\x8caf58ce52dc283d9ef9e896c228252927833d20	Dodotas Collection	DODOTA	erc721
+\\x8cdd1d5e516ff77f3cdb760e406ec8f81c248ac5	Oh My Darkling	DRKLNG	erc721
+\\x8d00675315d5e73abb04e5f068910fc4064f4818	Dead Format Music Club Collection		erc1155
+\\x8d03690adc6b81f29232865170efa05593c54a1c	ACTIVAT0R	GRIME	erc721
+\\x8d3b078d9d9697a8624d4b32743b02d270334af1	Watchfaces.World	WFW	erc721
+\\x8d3d512aa0fb81d52e1a8a69398c2d0289459375	uvre	RYAK	erc721
+\\x8d429e23278c47310628e374e1c405d7ee485407	MoonTird	MT	erc721
+\\x8d8ac3ec74ca3b50c52f2df4f082e526549322ee	Ekanart Ind.	EKAIND	erc721
+\\x8da6570af7d1af979cd74415c8ee804bf755f9ab	Moonlight - wT780ziIzw	HXZ	erc721
+\\x8dc4d3a3cddf87e2e4b916947a5ab4cf5fa52c2f	KPK Pets	KPKPet	erc721
+\\x8ddfca4f57a3128b5b756caec881aacaabb25bbc	XUnderWorld(XUW)	XUW	erc721
+\\x8e2125ab50b5c4994d16805b67191c052c933a37	Generative Spiderweb V2	GSW	erc721
+\\x8e43b1a5518af763bfe9dca4cd38877267e70647	420th Street Stoner Chicks	SC	erc721
+\\x8eaaec6e817a61f5e868ef42cacd09966fc85134	mfrankrz	MFRANKRZ	erc721
+\\x8ec63ceae1ccd89b3213db02ffaab439fb3ead8f	Greedy Gekkos	GGHS	erc721
+\\x8efbc39a34e0622ed8837620f931958cb00b028c	automation	ARMIR	erc721
+\\x8f2638695197ee2c23e888f3d2feb7663ca690c9	Bee Keeper Society - By Bettinardi Golf	BETT	erc721
+\\x8f45c3fa05badf377b966aba8176cc02b052220b	My Dead feelings	ART	erc721
+\\x8f5757dbdd8cf5a80345552551fc3e11317dff49	DayDream Girls	DAYDREAM	erc721
+\\x8f5bffc35f920c99463ce623f9f66b692401c457	Spirit Zuki OFFICIAL	SZ	erc721
+\\x8f7453d9efeb362fd027b8fd2ea4e5f169b13138	Unidentified contract - MBh97WCiwc		erc1155
+\\x8f852f93bce3a4efeb934cc87dd65bde04b136e5	Pepe Tale	PEPETALE	erc721
+\\x8fd09259e572d93194cc02fddbb851681f1d0223	ANEMONE V2	DESIREE	erc721
+\\x8ff2a949d750a28fc389d49c3cab738256706cde	THE MOTHER LTD.	LUCID	erc721
+\\x8ff85482a1a1894523e549f89736fed8e0d0c5c9	Demolition divers	DEMO	erc721
+\\x904e8156ae5ba48b0d0cbebe21f481f2e5dbd1c7	One Day - YeH1ohyn3N	DAY	erc721
+\\x905c0b9d5c059057ad0e00d160e229ad78a479eb	Weird Kid Wonderland	WKW	erc721
+\\x90ac394902a7b81d7b049d7a46eaabeff2eb6674	DunicornZ	NFT	erc721
+\\x90ed94d2c3e51a0fb47b9514469651060e1395e1	SBGU Original	SORI	erc721
+\\x90f3319d59114a22facab5ff5c2d639c9d386f77	CONTRACT WORK	CNTRCT	erc721
+\\x91146bb8d37324de145acfaa06c53794bf045838	SUNMAI for LOVE	BEE	erc721
+\\x912a19f510b1cec1ac292e140be4f250a6840de7	AlphaOwls	OWLZ	erc721
+\\x9150459fc7ba5a2c92f920b73c076b7a84ae2ec7	Open Your Mind - z7Gs0UOSFn	OYM	erc721
+\\x9167b6a03a048e75d6f209eec5a21624056d66a6	Something Unofficial	SUN	erc721
+\\x9174db3c8a7272117066e57658c98bd53ea79172	The land of temples	TEM	erc721
+\\x9188e4a1f49dfb823b5a178517bbc07b38c010d0	 I cant explain what I think.	CANT	erc721
+\\x918fe7149045e6510f26fe4c26e73e1c0a7427bf	WEAVE DATA	WEAVE	erc721
+\\x9195699e1685c236f30b23a31a1b297506fa624f	Inspirations & Aspirations V2	SHONA22	erc721
+\\x91a5d4f6e691432a58d5579ae45955210ec6a2f1	REFLECTIONS by Jacob Riglin	REFLECTIONS	erc721
+\\x91c3255c95e7a879a96257953d93b236b43ba6db	STREET WALKERS by Studio Brooke	STREETWALKERS	erc721
+\\x91d471545e0a67fdade6c2a6d0fb68e6e19e7ec9	Flip City Bosses	FCP	erc721
+\\x91f5252bc42246081fe330fb690787ba3c89f558	bandy-bandy	BANDY	erc721
+\\x9214e4d522c7398362406141355472a67cea8840	ShatteredEon Pirates Non Migrated	Pirates	erc721
+\\x92170baa3ed2cb3bffd3490c0b55416245ca8caf	tiny dogs eth	TDOG	erc721
+\\x922d5fdf506768359181743e87d87a1a5d10fc21	Your Daytime Fireworks	YDF	erc721
+\\x923e8aeed6af5b1f131fd74df8f2be61d9d2f54d	Skallz	SKALLZ	erc721
+\\x9259c39495fcc81509ab6ff82179950c7d36735f	Holdem Heroes	HEH	erc721
+\\x92a8ee8abf1e24791c68af6fc3ae9effbd865008	The Heist (Characters)	HEIST	erc721
+\\x92b4d3e3f0f43f069fdbf3f34070150fa6d54048	Mud Dreams	MUDREAMS	erc721
+\\x92e1e2d55f5187027c1a34e7e35a9a307fd9b86e	Bansho - LIGHT	BNSH	erc721
+\\x92ee1139aec7231ad11bf42a99c9b229494c95ea	Naughty Teddies Club (Official Collection)	NTC	erc721
+\\x93416ff33e6ae982fe595f353ce243d94a7fbf7e	Living in smoething	ANIME	erc721
+\\x934bb239b99063a2e156da40e250822572c00a84	Hikari    Official	HIKARI	erc721
+\\x93505b359ee7a7c1b6d17668cd3a8dd7d22ff26d	BIIMOs Art	BIIMO	erc721
+\\x93505fc6a701475ee5490526bef3d91f01ee78c0	The Crypt - 2nd Army	CRYPT2	erc721
+\\x9378368ba6b85c1fba5b131b530f5f5bedf21a18	VeeFriends Series 2	VF2	erc721
+\\x937d65c1a4b7b3d26679d41781c64f941f1f4198	OmniPepe	pepe	erc721
+\\x938195f9b6888d0b85e3c0eee3cee1ad1611ff58	VoyagersGame Genesis Pass	VGGP	erc1155
+\\x938e5ed128458139a9c3306ace87c60bcba9c067	Based Ghouls		erc721
+\\x939853b0cc4f03d97d9c46a20ffdcb15ec6cbd9f	Living Dead Pixel Society Official	LDPS	erc721
+\\x93b60f0327d2a7633f5c40832c575a03d6aace50	tiny baby dinos	TBD	erc721
+\\x93e228c61c6f1b4a3367f79ec4ea0154ebd68b12	Miami Tech Runs Season 1 NFTs V2	MTRS1FINALE	erc1155
+\\x93f849f383506858d636be404dd900959cd32da0	Artificial Sweetener	RTF	erc721
+\\x942a8f5d85ab7b07d267769cb1325f3136f3caf2	Pixel N8A Players V2	PN8AP2	erc721
+\\x94a8792c012767aedfd17473c854c920456d64ae	Founders Factory WL Mint Pass		erc1155
+\\x94ac7f452a35b8b62f0e2986d393e6b2a73a3277	Zombie Army Club	Zombie	erc721
+\\x94bf0f6afa72b44a954015b7e0b98b2567d5a3d3	Tiger Kids Club	TKC	erc721
+\\x94dbe072d8f43ad93dd2662824f4dd2c07fdb03f	365 Days of The Meppo Witch.	TSFDOTMW	erc721
+\\x94e94913e10f19b564260ae8ee9c8139f554e8d1	Dennis Rodman's Barbershop	DRB	erc721
+\\x94ef36a4874260036b368fbb088abba369e50279	TORI ZERO-REDLAB	TORIZERO	erc721
+\\x950a62e4328e5263a3ef041f4c637b2289d5ac88	Anonymous Society | NFT	AS	erc721
+\\x95273c6ebf5bf69422107ba2bc7f64a2106392ac	Gogi Bots	GOGIBOTS	erc721
+\\x95305b06bea587e15d19f48c02345ee5fea12872	Back Home V2	1	erc721
+\\x95381c699d6d037c223a535933b447f17204d1a8	Ninja Bears Genesis	NB	erc721
+\\x953aebe73fca9d1f0c2650c6f6187d20e3ed9360	MIRAGE - Oreste Mercado	MIRAGE	erc721
+\\x95648a2d1adf340ee30286f33a7d239d93a708b9	Nekkid Access Pass	NEKKID	erc721
+\\x956b543a2c06d2fe1f0b5157d9beb6b8c96d413d	DE RERUM NATURA CG	DERERUM	erc721
+\\x95916321280889c122e0cd49faa89a1a1cc97046	Little Mouse (eth)	LMOUSE	erc721
+\\x959d8bdaa7fb87940757866ae53a335de526826c	Radical Raptors	RR	erc721
+\\x95c6057f718d4797467e575c5267d7b981ac5829	The 100 Club DAO	C100	erc721
+\\x9622fa8bb2de6031bd7dfe6dc11f9c78958d97f8	HandOfMind Collection		erc1155
+\\x9654473254c8150b3d5c1984dd1eb4978fc3c2a5	WenWL Ruby Pass		erc1155
+\\x967a02af480c1b50610769cf977174cfdfad2378	t0-Troopers	T0T	erc721
+\\x974414764a3238ba6364831a4a87527e5d371f9b	HeyDay V2	DAYZ	erc721
+\\x977107dc42febc2c25f9b896a856575caa178f65	Take Your Pills V2	PILLS	erc721
+\\x97a45e94a46c1dc00edd9062baa57c210f7c909a	M1NG0 P@$$		erc1155
+\\x97b18526b558084403ef9be6034afcb7e7dac667	Savannah.Land.Y2123	Y2123.Land	erc721
+\\x97c21abdc6cb4b852c820cace3f51eeb87c467f4	Murakami Mfers	MM	erc721
+\\x97c5f77e8899c89a90fb46152bf127ea310525cc	Eyes of My IPhone	EMI	erc721
+\\x98401aa56fcbdc4360e8b2ba90542bf99e341f2a	Crypto Menma Girl #2	ETH	erc721
+\\x9854d6c0195458c34ba80a6a258be3974b4913ad	Pepes Boys Club	PIECE	erc721
+\\x98fb8fc7e7cf7cbcbce3ac1fb0c6b9da60c785ca	Fuzzies V3 - old	SUNDAZE	erc721
+\\x990c2c584f10e4e0d448ebd54771261a4291a755	DigiDorables Chapter One: Llamaville	cbDigiC1	erc721
+\\x990e42f5348fb139d11657a6621ba9a5b2e03824	Galactic Tigerz Genesis	GT	erc721
+\\x991eacae34bd9cde0775bfae950e29d3808c17f7	P.S. i love you		erc1155
+\\x992274bfa5f32d2ca8a283dd80ac335882ab19fa	Gutter Punks - MURI	GPM	erc721
+\\x99271a58d099f102893cdb3b10f8c946a8caaf99	Gods of Causality	GOC	erc721
+\\x9940bb667f64fca06fc4127861855696def7c69d	Elysium Code		erc1155
+\\x994e3f3a0a25f8c2de60f3c9632003ad3a1f99df	hyperland	HYPR	erc721
+\\x9971f7f3300d10311d618682383bfccc9b0c36c2	Bear Cartel NFT	BEAR	erc721
+\\x999deea6402237f28b0ae11eeb55bc4acb6e71bf	BWP NFT Official	BWCP	erc721
+\\x99ef72ff0b3bbaaca4d6c8f7e4106964bed0614d	Drunken Monkey Members Club	DMMC	erc721
+\\x99fbe6a0829d51aaa365f899d375e9e3060c214c	Pure Wildlife V2	ALPHA	erc721
+\\x9a06ef3a841316a9e2c1c93b9c21a7342abe484f	RTFKT SKIN VIAL: EVO X		erc1155
+\\x9a0fe7ae5dbe44bef46ffce6b0ab1613b1c626ab	test nft mintage	tnm	erc721
+\\x9a1dfefc2465b47c2114db547e6d212bafe50e8c	asfkjjkqjewrkjqkewrjqkewr		erc721
+\\x9a37e3c5c23a916e10e57fb1729df0d8836a2465	one evening	LADIES	erc721
+\\x9a4a5c83466bbdd138da480708067242c7ff341a	BirthdayWishCF	BW	erc721
+\\x9aa10bb7afbd6d27bf2ff989852bf8c97877fae8	DODGY STORE	DODGY	erc721
+\\x9aa5ef5ab9627d9e186c2efdb9aa6633c84a0987	0xDivas	0xdiva	erc721
+\\x9aa700161b698b44eff5b9ea6b3ac8e6b098a0e3	Sink V3	SINK	erc721
+\\x9ab13305d22bd02daa402f308aa8c1b44b0328f9	Legend of Famous Peoples V2	LFP	erc721
+\\x9ac56aca096d8c68f676d87c9fead3bac94f98f3	COLLAB LAB	COLLABS	erc721
+\\x9ac9e914247c5fac48a20d69a03220f3f1090b68	MHC x MADGRADDAD		erc1155
+\\x9ad8f9e8f7c0210b63c44e59ad1391774d2bcf22	re:Place (by GM420 Labs)	PXLART	erc721
+\\x9b405386939d39ffde04d81ac1c81a0bfd00e532	The Anatomy of Dissonance	TAOD	erc721
+\\x9b6553f0bdc85cf749a32be94b070039dff39211	DayDream - VxWBZQFef1	SH	erc721
+\\x9b6ff8cc4865445091f189f427a0b03310db39fe	widea7 art collection	WIDEA7	erc721
+\\x9b8b9c7c02be0bd0aa4d669bf6a1f6003424c6dc	The Association NFT (NBA)	ASSOC	erc721
+\\x9bacbc644757417ca25290b0d9b39b8ab4a96c1f	Ryukai Tempest Island	RYU	erc721
+\\x9bdfb0957bbdf10a47b7067730762be15e8504a2	BEAAAANZZWHATTHEFUCKKK	BEAAAANZZWHATTHEFUCKKK	erc721
+\\x9bfba74b0f3ff6918f55b69d10b0827bfb147870	Zero Gravity Club Genesis	ZGC	erc721
+\\x9c0b182866305afa730d5d40703ee885651b18fd	ColorCodes V2	COLORS	erc721
+\\x9c17a01dbae79b9bd955c83f0e14ac15225a40c9	pride mfers	PRIDEMF	erc721
+\\x9c226ea7fc6a76da3d1fba96b0385f8cf434e796	FAKE THOUGHTS	FAKETHOUGHTS	erc721
+\\x9c35ab3453b580ba94a0f1a585290e9b9e3d0110	SatoshiFlowers	SATFLOW	erc721
+\\x9c3dc67faea065777a4bb301eefecb80e54cfaab	Spacegate Pass	SGP	erc1155
+\\x9c822a2f64d6f778b77e3b3deb9bf82af9e44253	0xSLAPES	0xSLAPE	erc721
+\\x9c8882c6b3e40530cdbce404eef003443b1e455a	Alien Frens Incubator		erc1155
+\\x9c8f0f7b7b02b8b008ef02d209e42ff439f24057	Reflections - VMi99Iw9H0	REFLCT	erc721
+\\x9cb7712c6a91506e69e8751fcb08e72e1256477d	Moonturtlez	MOONTURTLE	erc721
+\\x9cf4cddac88cb0d1ae43d7191fb33bb4d0abcbd0	Salty Siren Crew	SSC	erc721
+\\x9d1cd2dcc7ea6ef7420ee69fa2a58946b8c3e738	Bambi for Breakfast	BRKF	erc721
+\\x9d3b8bc5625765aca9380546829c454da7babd99	Zodiac Cyborg	CYBORG	erc721
+\\x9d446b745926001fdf78e277d9985a59970f2aac	Surf Noir v1	SRFv1	erc721
+\\x9d64f600593437a9b40dae5c53d81103a359bc51	The Nymph of Love	NYMPH	erc721
+\\x9d714d192bf2aa77b4acbb9500039d3d18298080	Art by Gabe Weis		erc1155
+\\x9d76b794654596a3b771de2c4fa3a4ed1e758774	moonbridapes	mbp	erc721
+\\x9d7caf9ff78b1edad4500bccfb8e52ffc15dafce	LOOK LABS End Game	EG	erc721
+\\x9d89216f82637f04201cf60a5c573e3a497d1adb	420MoonBirdMfers XYZ	MBM	erc721
+\\x9e103d72afaea930e623ae90878eadfca75806e5	TangBadVoice	FLASHED	erc721
+\\x9e1a2854c2a1cea8ff382b25d82895c3ec7c0253	Trevor Shin Sketchbook	ShinBook	erc721
+\\x9e42c3c5748774180c84e75b4192f1e12fe9823c	Solitary Journeys	ISOPJRNY	erc721
+\\x9e6e924fb4db89cc33f095c022e4a75e6169058d	Santos Neo-Expressionism	SNE	erc721
+\\x9e823e08c46978d62db7aad31d3765b927b9a2b4	Adagio For Passion	ADAGIO	erc721
+\\x9e9103b91ee813dba47d5fcb82830262fb6c383f	tiny ghosts // boo	ghosts	erc721
+\\x9e922b2008eba5835ef80f724fba053503bb01fe	strange popsicles NFT collection	STPP	erc721
+\\x9ee53839999c7f5ab5e0b5eff4d9a6e755b44d2f	Billi The Cat	BTC	erc721
+\\x9f1f2696f4e8f138c1cc92361960665cb2d4617e	Non-Fungible Films Studio	NFFMP	erc721
+\\x9f2218abb153a081f740572d1a61cee449ebbd28	utopia - lQ4DrG8ho8	UTOPIA	erc721
+\\x9f6697cf86054d9f227286ebbea5e1adf45b10b6	shape of life V2	LIFE	erc721
+\\x9f77ec684bebd3389170855051e4737166438b35	CoolBoys Official	COOLBOYS	erc721
+\\x9f91717cd794f3b7a7b5e2ddfaa6723f19e24134	BraveBears	BB	erc721
+\\x9f98f2896588efad9fbe4121205fcc3c79638555	JakeChams	JMC	erc721
+\\x9fb9914aa6d0f9d8dbba783bd612f54d54eee002	MR. MELTY	MELTY721	erc721
+\\x9ff9ca94542ac24c2d7ab2edf527f715afbbe074	SOUND OF UNIVERSE V4	ART	erc721
+\\xa01711374b467c33e3a4c0d2b2a015c79bf43e0d	CryptoMonks V3	MONK	erc721
+\\xa0183866eb5b5bf5558d23424c128b43098dcace	PROPERTY DEEDS		erc1155
+\\xa033e47ae32e8366943a7290ad813a6310079c9d	VOXEL_ERIC BOING	AMIGA500	erc721
+\\xa092474fe14cc1f1d84ae608024903aba38078f0	Polaroids by Parra	PARRA	erc721
+\\xa0d8959912b851e986cb8b43ca8fc209e1270413	SMC Art RangeMurata	SMC_Art_RangeMurata	erc721
+\\xa10c256b10c2b12b23a452dbc6c693c8f7210fbb	Cityscapes and Panoramas	CTYPN	erc721
+\\xa119cf428300d91051c555652e5b7e45b44485d0	SAMURAI 800 by PROJECT 800	SAMURAI800	erc721
+\\xa11f91e9cc83c2512d726420e01b453d8227330e	tiny dogs eth - old	TDOG	erc721
+\\xa12adb9492bd690e2ba4a047fbb311c7415a240f	Universe - xyzfzb119H	UNIVERSE	erc721
+\\xa13b1aa64e85dab1be7ca92110e8d63df8bb998e	Otherworld - FND	RSTOW	erc721
+\\xa14932af930aad4d6eebd6b8c7e6b9c562d03ec4	Filthy Rich Crypto Kids	FRCK	erc721
+\\xa151b506cdb764f1ee58edf4acba959ec783ff65	futuristic nostalgia V2	SOLRPUNK	erc721
+\\xa15fe927f980bc81870625b0b780872139b87624	Glitch - AOtbxJKGHX	GLITCH	erc721
+\\xa165a54bd7f477ce039d632c8dfbdd3d5892b68e	Teenage Ninja Apes	TNA	erc721
+\\xa167184a20074fcf764709c31d65eea02a7a2db8	MONSTERS - u6kYqz0pUY	MONSTERS	erc721
+\\xa1925709573e79e2abbb35fce1837159f7c28e34	MOMOCO(OFFICIAL)	MMC	erc721
+\\xa1a3b6018206281e50bf936cdf65820497852bd9	MOOD - KFtkOf99EG	MD	erc721
+\\xa1c9282fd3adbc38646cb7d93c13920f5cdd9f86	Euro Heroes	EOH	erc721
+\\xa1e7921277ce21c2c2226a46e172c310391d378f	Sperm Game	SG	erc721
+\\xa1f60f41473b40b2fb894a17fe3f8e62ae8d3289	urlz.com	Urlz	erc721
+\\xa1fd39ba7d0d7d6bbd46e67f9966140031bf8649	Michael Yamashita Editions for Ukraine		erc1155
+\\xa20f2adc76478b5cd7b004e3aeaa688ae4ebe0d8	CT27	CT27	erc721
+\\xa222689c56f443e1397f69330b0c916e043efb20	Official Shounen	SHOUNEN	erc721
+\\xa2450f6efe0ab83082b821806be515872552d308	Lumps Emporium	LUMPEMP	erc721
+\\xa258b268a7c9d0b8ba30527157bda00866de9660	dream realm V2	DREALM	erc721
+\\xa25f35fbd9f0819def9e1809954357c4489ced80	An Unexpected Dystopia	AUD	erc721
+\\xa2918cac214f633eb2b79f02591ad3d2f5735903	danknugz		erc1155
+\\xa292e954771a29f3f0f2e66e28241a61658bc042	$paulrus	paulrus	erc721
+\\xa2fb8851d600820d2fc417e659fb4db10d52c21d	RambowCloud	RAMBOW	erc721
+\\xa31fa8c3970b051d89ee17dda834ee82ce7aa341	Wedding Upcycled V2	WWW	erc721
+\\xa333f9722b4980f4aca6e897f97193b25a719bf5	Mendel Exodus	MNDLXODUS	erc721
+\\xa338b3dedc7b3cdfca4dc1f9fc81dfdc7b1c0368	MANGA SOCIETY	MS	erc721
+\\xa382d95b80cec7c4a65c5803b9eca8fd7a070c11	ChibiDBs	CHIBIDBS	erc721
+\\xa3b563a58231d9f3754c4122303326e1ee56ac56	KUJIRA NO KONTON - Gen 1	KNK	erc721
+\\xa3bbf5607c2e7263c32fc3682159e11c9ee392e4	OmniWolves CC0 (ETH)	OW	erc721
+\\xa3e3639dba0a18dd12baf0aaa8ee2466378b7f72	Og Alevi	OG20	erc721
+\\xa44532d67005042e8f60aa3ca5087cf49a2e1b78	FUD - FEAR UNCERTAINTY & DOUBT OF THE MIND	ZEBRAFUD	erc721
+\\xa463d61ea301f455d445588de63ce9d8be53638f	Desi POP	DESI	erc721
+\\xa46edf5110be035e148a3067855b88cbe33478ba	sun - N4MCI1f9fL	SUN	erc721
+\\xa483048c5a0848e75b86e3d1ebbe5872fd032549	Chum Chums Special Editions		erc1155
+\\xa4ae8aafeca1f38106aa6094e64d17404b969f66	Evo-Colorz-old	COLORZ	erc721
+\\xa4be9cd0db8d401decfcf21084708b7b576e7368	Sumati SARIRA	SARIRA	erc721
+\\xa4ccd65a4d2b07b5f5573ba97876ac640a4d45a5	Ailoverse Robots	AILOBOT	erc721
+\\xa52583dfc5ee97c7c954e23ae2a44f7fafa8e607	Faces of India I	FACES	erc721
+\\xa529725b85b1ebb91dbb5c3ff2d60f0373a002e2	DoodleBirds NFT	DoodleBirds	erc721
+\\xa54859c655be1cfb9fb0f037b7e53c3c03066e56	Daisuke V2	DAISUKE	erc721
+\\xa553aae9b809ccfa6a0c6363cba666570dc8933e	Mad Rabbits Gang Wars	MRGW	erc721
+\\xa556157eb576d59482e6146846e08f67ade26c21	wackies	WACK	erc721
+\\xa5b56a1f6a50e36359b985a68bfdc283a7f88297	Breezy Bears	BB	erc721
+\\xa5c42ce030088197b4822d4d7f20d5717f007d30	SuperBear Club x MetaBangDAO	SBC	erc721
+\\xa5f8b616558210091127dac45450692add692835	Just Married NFT	JM	erc1155
+\\xa5fa4d81df610fefeafc0884d94ce8ec9753dd49	Poetry of Earth	EARTH	erc721
+\\xa5fadc8395b67716dc5eefb2b5e823a4f6e2de9f	GCC Exclusives		erc1155
+\\xa6095fad82df2c4b9affca08856ea3e0e9963003	The Beauty V2	TB	erc721
+\\xa612684660475d8b8bff0de403232bd38c267cd6	Glory to Ukraine by Tristan Eaton	G2U	erc721
+\\xa642d418430a95daf3dabdd3380bb346011e523b	ALPHA KIDS	APKD	erc721
+\\xa6579c7700411789b27c37e3d176851d9a6d3845	World of Zaudoria	WoZGen	erc721
+\\xa658542ca3265c00beb9a7b45a23503ed87c66c0	The Wes Lang F.A.T. Series 2	FAT2	erc1155
+\\xa691781807fb826598fe3dc08de47cd67e2d82a5	Lost - DHANz1yxmZ	HOUSES	erc721
+\\xa6bcf590b8eb283891c704f04fa03ae705ac2fa2	Bored Bit Kennel Club	BBKC	erc721
+\\xa6cddaf6d53a8167b3b1c5065e4611816e36c5fa	I n d e p e n d e n t	SHXKA	erc721
+\\xa7120866cf5bdbda355f98667b3ac05c6128fa59	HPPRS X CONSIDER IT FLOWERS		erc1155
+\\xa75ebaa0e9daa1a7736e550ec66f0d6baac5152a	SoleSavy - SS4	SOLESAVY	erc721
+\\xa76ececaba1096bef94bb944522f3174375e289e	DystoAzuki	DYSZUKI	erc721
+\\xa775a10fcd8990cc8611373ecb7e1cbec781e461	L A D I E S	LADIES	erc721
+\\xa79e7c2a8caa544cb20867f5e8b0b08a1e864273	GenerARTed	ART	erc721
+\\xa79f99fa764839cdd800b51208dbfe6d8d5a6720	Lonely Legends Genesis	LLG	erc721
+\\xa7a61d8aaede5e5da87a275ca6552db89ea23c7e	cutting room floor V2	CRF	erc721
+\\xa80ec052de73e8f18db3676aa3e9335ec6249048	AI - Autistic Intelligence	AI	erc721
+\\xa82e5612bd5a34aeec49e4aec91f8fd4c8fbe154	420 Punks Official	SP	erc721
+\\xa85f1955e927d27118688c16b65e66fa87fc7f46	Art By vad		erc1155
+\\xa87f2697241913fbcebb49add1f5e38a891758de	Sushi Cats Fam	SC	erc721
+\\xa88cd1cb6e9b620fac62e2e93cb76b4f04a12655	Ethereal Beings V2	ETHEREAL	erc721
+\\xa8ed317c5a491bbd9127fd2fce6ec7f409b40783	Monkey Legends - Official	MKL	erc721
+\\xa903a80cb91baab81354554b79dbf7b7481c8187	Legendary Dragons Collection	DRGN	erc721
+\\xa91849459ccce9791bbd42bbc77cec7dcad1bd82	The Winners Games	TWG	erc721
+\\xa91921c59f3155360d4c133608b9a7d9e22a3e28	Dystopian World V2	DYSTOPIA	erc721
+\\xa923777c0d1d6b431418db616915618a8f3a689a	RayFIELD	S88	erc721
+\\xa93a3b4cecace9651c20c31368edf06afcbadeba	Koala Gangsters V2	KGS	erc721
+\\xa96e9fb137bce3f04c80295448cc0761e403001b	BIBOVERSE	BIBO	erc721
+\\xa9a83082a9ac09ae81158eb0bcf2724c2c7c5320	CoW Citizen from xDai	CITIZEN	erc721
+\\xa9d7bb543f5b96d5ceb38f064b81162362a23da5	Honey Badger Gangster	HBG	erc721
+\\xaa57a67d2d3e62ed654c64bf354fec52391d826d	Dot Pigeon	NOTHINGBEATSAGANGBYDOTPIGEON	erc721
+\\xaad35c2dadbe77f97301617d82e661776c891fa9	Akutars	AKU	erc721
+\\xab1c28adb2c720386cda577fa7643ad4a6f56bb8	SmolFrens Official	SMOLFRENS	erc721
+\\xab265246ca5c9ba96457370a64a2b2cca8463ab4	Space Age V2	SPA	erc721
+\\xab3cf98d4417a4835a509351e05907d7443de14d	The Joy of Creation V2	LEMONY	erc721
+\\xab5177c0c75ba2d7484416c08543c0c581b99c6f	Reborners by Bavugar	REBORN	erc721
+\\xab56041cf1fcfdec04170e31b0944fbd83e204c8	In Chaos V2	IC	erc721
+\\xab5709be88a500de208de5996b081a0a85dd4e97	Manifestation Editions		erc1155
+\\xab761c589b86c25fdcdd1a7a1d3c16be62e87083	Cosplay Membership Pass		erc1155
+\\xaba28ec95c232ed5d29166530a396a6f014847e2	Photo ID.	ID	erc721
+\\xaba6754680d21f067207f5ca10ecc1db3992cc07	Gold aztec gods & goddesses	OWO	erc721
+\\xac0e8b91745ac44a6b19e4039cd6f297ef7e2744	Fuzzy Fighters Genesis	FuzzyFighters	erc721
+\\xac0f360506c20df0ab2fdb5d6218c1235f848bf6	WaifuCollection V2	WC	erc721
+\\xac16674d650e9221b512296f588948b3f00d3790	Down The Maw	DTM	erc721
+\\xac26453d7ddf3c8543ee1904c1fa15d6d4c0c84f	Future in the Past V2	FITP	erc721
+\\xac36f5e33734953590150af33b3c082a5c006b8c	The 900 Project	A900	erc721
+\\xac7b8e815092ab962f32b4c3ebfc886802166b3b	Vebjrn Isaksen	VEBITS	erc721
+\\xac9eb69f76803c5c629791f9f07b383a0a5ca4d7	Cryptonaut Planets	CryptonautPlanets	erc721
+\\xace5b1d9633ac35bf527dd9146689c7886c497a5	Doge Generals Genesis Collection	DO-GEN	erc721
+\\xacf63e56fd08970b43401492a02f6f38b6635c91	Kanpai Pandas	YKPS	erc721
+\\xacfb15867d46f9f3784dd1de693ee72f0e3400ab	FunkoBits Genesis	FBITS	erc721
+\\xad372b34fea9bd04fd633b5c1f534b5c6c4a2dad	Mutant Birdzuki	MutantBirdZuki	erc721
+\\xad50463997caa189e9700408050c7c105d364ca6	Omni Robotics (ETH)	ORT	erc721
+\\xad55cb6fcd548326acd22cd40088134b4cb5a573	The Moon Penguins (Official)	TMP	erc721
+\\xad7dc3cbc0ae59b8090ea06b8f87ebd083864cf0	3AM Owl	3AMOWL	erc721
+\\xad9286e573e3588cbfad3b9eba14ce52a6cbf6ba	N 1  FIVEMILLIMETRE	5MM	erc721
+\\xad939093f5d7ac2488be4cda4295f89ba5dba348	ESSENTIALS - 5yzErIYW2R	HCTRZ	erc721
+\\xadc5f935d9afb186d4ef210b0f537ddb0d6c524c	WTF is this??	BLNT	erc1155
+\\xadd81293d44785736b80e28a7a77cf50a95e3d4f	GuXeClub	GUXE	erc721
+\\xae2abbd18195dfc7d1af3f6ddaabe63014ff0f8d	CryptoCrimeClub	CCC	erc721
+\\xae387a4d7f5dda9a2c9112fb70c10b8cb335af1a	elements - MN0EXjUJi0	ELLE	erc721
+\\xae5d0f319b392282761f6353098d80baad9de6c2	Rubber GM Punks	Rubber GM	erc721
+\\xae5f416f47b4081c31d1dccffb598ed65f94a06d	P F P A R A S I T E S	PARASITE	erc721
+\\xae81e0da9078b00140b423bb96115f453ad0061f	Seven Woodland Tales	SWT	erc721
+\\xae8502bcf125448407c9040eda838fd1f003edf1	SupGators - Official	SG	erc721
+\\xaed33fd12f723b5c02753f89184e12f4616c26ed	Oculus - A06aDMXUX3	OCULUS	erc721
+\\xaf09c694f37df83439ccf08d35bf7fdc605a902e	StzhMob V3	STZH	erc721
+\\xaf192cc0e182a34f21dddbd36b6552c5e1a2c181	RE_EXPERIMENT	REXP	erc721
+\\xaf52d69bed4d5e955176b56051cf9690afdf3fe1	Glitch Girls Reloaded	GG2	erc721
+\\xaf57eb97ac00daf68cc9483b5b5b32db9d4bf217	Sneakers - 4C95oEmpy3	SNK	erc721
+\\xaf859da46c20540779d6aa5f3fbb9c64fba703e5	SUMMER - by fades	SUN	erc721
+\\xaf85b11536ced55387b30939bce1ca16aa2d8254	An Apes 3D World	DGA3D	erc721
+\\xafb069de6e50ae907c31866b9c2b45a32537aec0	NASA OG	NASAOG	erc721
+\\xafb7377dcf7ce25dcb4556ca04a8e761fda2412b	sirasawa rumi	RUMI	erc721
+\\xafbec41c21b6f98f0026df787a3749fc677b750a	Photography  I	PI	erc721
+\\xafd8da3668eae79dc1f2a937da710e708685cedc	nepenthe V2	NIL	erc721
+\\xafdd0501f3e7f8c243429149b92ff52a16010645	Battle Fish	FISH	erc721
+\\xafe6a6c6ccc972b44ade29af3b51c842901b7c00	Pat Dimitri on Foundation	PD	erc721
+\\xb004fa889fee195cb580448bfc5dc936efcc835f	mutant Lobstars	the Lobstars	erc1155
+\\xb08aad5491eba5c33e5b7454f057707a6ce2c129	Dripperz CyberClub	DCC	erc721
+\\xb0b8143ca80ad110b39c6a6b4fd6a0666b85216e	Chillin' Ape Surf Club	CASC	erc721
+\\xb0e61ff11c5094b2a6cdc15fae4d6c7ab6d3979b	The Ethvaders	TE	erc721
+\\xb0e84ff3fb12f39662db713f1d8cc4f8d684bedb	Meets Motors	MM	erc721
+\\xb0f0bca7aaff59b125f29202decffcf2d197cbb1	THE knekSHn	CNNCTN	erc721
+\\xb183166b4197c61e9410066c1d24e005b6e4755b	OG Anatomy Science Club	ASC	erc721
+\\xb18e56e324bb935e43927b461475d165b0ad9533	ITALIANA	BYBORT	erc721
+\\xb1a2d16634c014124299882dd37843ba005d2b2b	Society of Deranged Apes (SODA Mutants)	SODeranged	erc721
+\\xb1b0301900744d0751559083b82e8147269d1589	007 NATALIE CHRISTENSEN SETANTA BOOKS	OO7	erc721
+\\xb1e37d9f8103973228305a3d8e9af01894071b6e	ssong2	SSONG2	erc721
+\\xb1f44bf437380a01c80645c91d64fb04a69c0919	Eldermyths	EMYTH	erc721
+\\xb243bba427ff57114a69e37ceeb0c2d6d5f92d33	The Mood Octopus	TMO	erc721
+\\xb25af628c6adea2a3467abf5bce911889a113be1	MOMENTS BY FRANCO AND LEA	BYFRANCO	erc721
+\\xb25e1fd137cff8ab3066079e4493d9403d8d7434	SN0WCR4SH	SNOW	erc721
+\\xb26dcab187136a7d716667985a4654e786549432	eternally infamous	INFAMOUS	erc721
+\\xb27614ba8d583faf8177eaca1239188d63b4c4e8	The Coffee Junkies	CJ	erc721
+\\xb27bb932b623a342c62451589051ad6a67f1804a	Gateway to Japan	GTJ	erc721
+\\xb2ebc011e1c7145d9bf34eca5081d08ed2efe551	The Casting Couch NFT	CASTINGCOUCH	erc721
+\\xb2f35598c80b8ca841c34235babb8d3d1dd78d67	OPERATOR GRUNTZ	GRUNTZOG	erc721
+\\xb30b7933b85e2aadd5e86139838e7bc84a64e49c	COLLABORATIONS - LQijFOhuSq	COLLABS	erc721
+\\xb319c85ba1acecddeefad70eb733b596daa5348b	Space Punks Galaxy	SPunks	erc721
+\\xb363af6181a4335608880510772a5f61a5183c88	TinyFaces NFT (Official)	TINY	erc721
+\\xb38281fb31138cc609511b3d83e404b783b33922	Pieland Ovens	PIELAND_OVENS	erc721
+\\xb38a91f69e868333a8a3d34a0d840517294c0fd2	Terps Army Official	TerpsArmyOfficial	erc721
+\\xb3b6296e948927fb8882a019693ed0853f7d2121	Kolazz V2	KOLAZZ	erc721
+\\xb3c326722107155ce1c6ed508ee256d357e19b1f	Anocam x Editions		erc1155
+\\xb40ddc0cfe3f0ced2b10f4491377fbb09cf21725	Woodlings V2	WOOD	erc721
+\\xb41ad60b60f73d4b75ca2f24ade28009fce8323c	Provoked	PRVKD	erc721
+\\xb41cfee86fbd91d47e37816c33dae626c93de01a	Podium Genesis	PODIUM	erc721
+\\xb43398fbd978d76aadad3c70cc7793ce1b31b879	Mis Dergi	MIS	erc1155
+\\xb43dcdec1b0d229303239d7389554142496d712b	Gritty Cats Official	GCAT	erc721
+\\xb46906699b80df34b7993afa40fb11470e51735b	Moonturds69	Moonturds69	erc721
+\\xb4799479a3d10be674e50a5898bf30e8827cfc58	Blust Vol. 1	BLUSTv1	erc721
+\\xb4aeb2ab2d8a8b3e6a9965289acbe4ca3126dd11	Divine Comedy V2	DIVINE	erc721
+\\xb4dd7a836cb4827df039f72751281e8710269c9d	MetaVoxels V2	METAVOX	erc721
+\\xb4dfadc655d9bd22c836eb22e047107f3b47dfc1	Bae Collab	BAE	erc721
+\\xb4e570232d3e55d2ee850047639dc74da83c7067	The Band Bears	BANDB	erc721
+\\xb4e7fa2bfe3f5391ebfe1bdba34c2de87e978bdb	Unusual thoughts V2	1	erc721
+\\xb4ee7c4fb0b8dcaa1dceb0773b79113626158fa6	PASTEL BIRDS CLUB	PBIRDS	erc721
+\\xb51439f5d64ff394280e8a437f22e259a61377d8	BUCHSTUDIO	ANIME	erc721
+\\xb55ab27704b4ca01eeeb0fed4dccd32c1eaa4716	Extreme Machine Overlord	XTREMEMA	erc721
+\\xb59c15f277631606e72599eae9ba997f34f1e7a1	I'm no-one | Omnichain NFT (eth)	NOONE	erc721
+\\xb5c728ccc8cd299e48782b719d1b7923f992d44b	Beauty and the Beast - NOEF8azJwE	BTYBST	erc721
+\\xb5de46e900fe4a80193b84211894f8947a038209	tiny roosters(eth)	rstr	erc721
+\\xb5e07dd9004812e00507d8ef7645eb4798ff31e6	DARKroom V2	DAOM	erc721
+\\xb5f3ebb46dd5471c8b062e564cd41a0e6f8ecf6a	Skeleton - rfGMRkwmuF	SKULLS	erc721
+\\xb60b63095ea0c60e84da07af7ed56c2d76d28777	Dysto Bots Genesis	DYS	erc721
+\\xb61ed6e9776529aa29ce5b9afdf2c41857f47f59	OmniDoors	odoors	erc721
+\\xb62f96dce0dbdca84d9c504ef57b94f9ff3b0df4	FLOAT - XTakZRVp4o	FLOAT	erc721
+\\xb64150b7cfb7dbeba4e50e28087533cabfb387a1	Reppin NFT Pass		erc1155
+\\xb67dd38618cb724c717f2f72706155d4230e2b2f	Pixel Easter Eggs NFT	EASTEREGGS	erc721
+\\xb6b1cc44bdf5f09372923fe9437bb09b5e6cc690	MoonBhirds Collection	MOONBHIRD	erc721
+\\xb6fa034282e4cda998da8b10151fa8ab8994b619	NERAs World	NERA	erc721
+\\xb710590534795a4b1368de842e97626b6f6807dc	HAPE GIRLS	HG	erc721
+\\xb722ccd3002f7d564994e401f1e7006fad8e3947	Animations - Yc8GyMKcJF	3DA	erc721
+\\xb732ba22292259085ac15f0ba0183638e3615104	Zombie Apes Official NFT	ZAPE	erc721
+\\xb78bf82dee2733cb4731d5a7769e0740fb4c796c	Bronze Muffins	bronze-muf	erc721
+\\xb798e45a2b090cfff44d20178673b438566e1722	Lamb Duhs PX	LDPX	erc721
+\\xb80098958c55196e9e727447a66da2ea2ed57db3	Moonbabies	BABY	erc721
+\\xb80216d5b4eec2bec74ef10e5d3814fec6fd8af0	Yogies Free Mint Today	YOG	erc721
+\\xb817590ed93a79d596312608057f98b94f7036ec	ChippysWorld	CHIP	erc721
+\\xb83510cfc6ad6c46d4324e0b4b30007eb0942b29	Generative Experiments  01	GEXP1	erc721
+\\xb863806ac31c432dda7791ffc48d88202c41d13c	Cyberpunk - q0hJ1fEI4L	CYBRPNK	erc721
+\\xb8802a4231b31ce977aa37f693d3d9bf5857facd	Baby Dragos Collection	BDRAGOS	erc721
+\\xb896c17c8e5e06ea393c4b2b79d5842fabcd3b94	Stewie the Stick	STS	erc721
+\\xb8cb41cd0972ecf8e9cae38d1b4f6c122723dbca	doge on the moon official	MOONDOGE	erc721
+\\xb8cf80b968e20b85e521b9a1391db57ceba45806	Thrilling Beauty V2	BEAUTY	erc721
+\\xb8dd8e737780fa4ae18911c4209e883310bed9e2	Warriors vs Aliens: Warriors	WVAw	erc721
+\\xb8de8a212b057d0835fe3584fb390b7f672d26d6	Anime-Multiverse	NAI	erc721
+\\xb8e76c3282adc0cb9ee806ae2e98cbc731c1e9dc	MoonbirdsMfers	Moonbirds Mfers	erc721
+\\xb8e8fa84a25321ed11ad5f054d24b3bb0722ce9b	MetaGeckos by Trent Kaniuga	MGEX1	erc721
+\\xb8fea0af11708829190c0c87ef56581cf37d9917	Chewing-Gum Thieves	ARAM	erc721
+\\xb9288fc06e7e10f6a14c528d7f1f226810a81a1f	Ailoverse Cats	AILOCAT	erc721
+\\xb95588b7987ed776223e0645cf0291c167bfcb8e	AlienHigh V4	AH	erc1155
+\\xb959a78ed7f5f33963848e4dab45a780d013680a	cakdjfjksadfklqwejrljewqr		erc721
+\\xb96c78415d0f2abe3b1a49fee19080d270e9083a	Indonesian Punks	IDP	erc721
+\\xb9963e8e14fac6e44a5f9f1fa9ff521f809f4505	Stoner Art V2	420	erc721
+\\xb9ad60090c283359f94797e88152ace1f28182d6	WenWL Diamond Pass	WENWL	erc721
+\\xb9d2a59ad5da5ae625b21de0df618685bd511564	DAYDREAM - 1pGNpEdGUn	DREAM	erc721
+\\xb9fdb1d3ae783753bcb4d16af8e06b787bd97ec9	Pepe Battle Card	PPBTCARD	erc721
+\\xba033d82c64dd514b184e2d1405cd395dfe6e706	Bao Society Official	BAOSOC	erc721
+\\xba2eda9088486416f6c8ae6720c32f62b10ce628	Invisible Kanaks	IVK	erc721
+\\xba3972b22dfc4b1d397854725eced1c08e720b7b	Eye of Eden	EOFE	erc721
+\\xba43034b0f3aa66f262d5510536f816fa05c6bce	UTOPIAS.	X	erc721
+\\xba736c6111ceffae8f00273204dd655067ab4e11	The Scroll Monument	SSART	erc721
+\\xbaa666e2bea9c6dd8e210d508d40b5956544a7eb	Gutter Punks - Women Tribe	GPWT	erc721
+\\xbaab6f38a37a1f94144a37a1601b8d6024007781	NEXUS XSULLO	XS	erc721
+\\xbad5d8f72940434ebd7ca5a2d58e1876d755a819	bird mfers	BMF	erc721
+\\xbafc28ff645a4f34f1cf44e8da5229b1d11c6469	Critical Comfort	CC	erc721
+\\xbb04aafd02b6cafb86d163861899aea34ebdcb46	DRIVEN Alpha Collection	DVN	erc721
+\\xbb45f082a72424cb805c7f26c7be14908a160ba7	Lil Moonbirds	MOONBIRD	erc721
+\\xbb5090ae89352d27f29193caa7049982f11d3807	DogsRuleTheWorld V2	DRTd	erc721
+\\xbb67cc65f3853bdf75dcd8b9f93180fc143d8664	HIGHER DIMENTIONS	HI-DI	erc721
+\\xbbaac20b5256bb50d9ecb3b99ea7917014cc4351	Hillbilly Hound Dogs Official	HD	erc721
+\\xbbdd5401b7b6c6b77fc7cae38904ffffe4139edc	FireZuki	FZ	erc721
+\\xbbe0f03a099864b3a1aa1e601b9184016f847e51	0xMonkey	0xMONKEY	erc721
+\\xbbee75ee62767e099975b7a37940dd9a6fd3839d	Memories - 2Xjy7iLmfv	MEM	erc721
+\\xbc56ce7a9034c7d36d056d2bef93c39960dace97	State Of Lemon	LMN	erc721
+\\xbc7ba50a98ef8eadef6756adea9eb91c0a70d06e	Gates of Creation	THEGATES	erc721
+\\xbc868363397d85a0f977e03de06a0da1d43dd4f1	Legions Of Arcana	DRAGONS	erc721
+\\xbcd4c9b1548990175d4dae40f8bd405fa0624f20	THROW STONE by Yusuke Hanai	TSYH	erc721
+\\xbce2a2920f82be51f7d5b77fa12d68e899f58f18	Black Parade V2	6	erc721
+\\xbcf700a9c4fb8085022c019365b5b145ff9b2d27	Himeka Days	HD	erc721
+\\xbd066ba52fb6bf2fd9bcf5f9566f776215440d83	MOONAKAMI-BIRDS	MOONAKAMI-BIRDS	erc721
+\\xbd436386789d97f5a249338665ac0f1eb8c5ed9b	Hyperreal V3	HYPRL	erc721
+\\xbd48e237cc6fc464a1c90b48e79a621516a9224e	Voxels NFT (by Voxelverse Studios)	VNFT	erc721
+\\xbd5986827e5009ad789565a6f7e68370409c9964	twinkle V2	TWINKLE	erc721
+\\xbd8332cd443830b3b466c091aaee010d569791a1	REALM(S)	REALMS	erc721
+\\xbdaa976bc92795942de0466df18a59eb9a411520	Scanned Scenes	SCNDSCNS	erc721
+\\xbdb91782c45b79bacfcce74959b78e21494693a4	POXEL V2	POXEL	erc721
+\\xbe10f4f14aaae197d27f3a290ca3b8bc34cb8d10	OmniFrogs (Ethereum Collection)	OFROGS	erc721
+\\xbe519e9ef0274548504814ef254f420b738bf7e9	Playground - F8aw8jbldr	FUNNY	erc721
+\\xbe9c34abef91d037ab4ce3db94b70e44d28cf164	Orchid Seed	OS	erc721
+\\xbecf19657579eb17698dcb8f56e7d52f731fa7f8	Nifty Tailor Genesis MintPass	MP	erc721
+\\xbef72f50b6505fba57f3f8899c59d3abc763d3ce	Ponse Lakiva - old	PONSE	erc721
+\\xbf1f5b4a8c20e9ac8b5b37616f029444bc924d41	Miss O Cool Girls	MOCG	erc721
+\\xbf24680bd9de4b83bf25bfa6d6cbd092a4f54e8b	_GIRL V2	AG	erc721
+\\xbf7ebb9a70c845a4721e24043a3a4a28151ee3bb	Pepo DGAF	PepoDGAF	erc721
+\\xbf8b8f09eefdb74cedd461fa0daf36b5784dc80a	The Rebellion NFT	Rebel	erc721
+\\xbfdffced7852f24e00ad4623f56ad351c0436ce2	Motion 11	MOT	erc721
+\\xbfebf0721513ec714f1942628179eb595c02d578	AGENT1 Artifact	A1ART	erc721
+\\xbffb0449842324c07be7ae801ec50c59571057ce	Bored Azuki Yacht Club	BAYC	erc721
+\\xc0029c7d80aa99a9fec5121a253e7f4e590c3220	Koda Punks	KPs	erc721
+\\xc0121bd3d686ac5b51f925e3b28ec14315fbceb6	Bridge 3 Labs | B3L		erc1155
+\\xc0532fbd68dd65592364bf981b8a7aaf5cb7d613	Pugz Not Drugz	PUGZ	erc721
+\\xc087e4e934ddf2c234e7af126dba25c531c8a53f	Cool Canine	COOLK9	erc721
+\\xc094ac20b791e5bd4d1d1bcbc0dd771e4ec33063	Jovoxity	JVXTY	erc721
+\\xc09d1aa618ae8a4b54c5ac60efb394d38bf79d03	Birdez Kingdom	BIRDEZKINGDOM	erc721
+\\xc0c5299f3f943d2acac1e047adc9ce4041889c20	Poop Doggies	POOP	erc721
+\\xc16c5f1fc9fc316fb3b4b353500efda9a1a1b7f0	Rooster Fighter ETH	RSF	erc721
+\\xc1830ab819941dd996567981d35f6e82162d44f0	Tokyo Clone - Official	TOKYOCLONE	erc721
+\\xc188d625e96e5d7c95320075e1f3d7853a75c498	you freaks	UFREAKS	erc721
+\\xc1a7eee5d02357cd5db61c93b10137af28476c2e	In Silence	SILENCE	erc721
+\\xc1ae3fe5f93c2c042fac7bdcdf94fdd673544e31	MetaFriendsNFT-Official	MF	erc721
+\\xc1ec494822f4bc322ecf46e808de57d33a636408	Dream of the future V2	DOF	erc721
+\\xc1facb70e0b60884bc4864b34f926ad382ee9827	Season - vm0Yp0ENqr	YEAR	erc721
+\\xc1fade63b2a44936e01fa8d22f4e20fd044e9ab4	CHIBI Little Artist	CHIBI	erc721
+\\xc2527f0c964cbd962bd0351f96a2f678500430cd	Colour Chouchou Magic	CCM	erc721
+\\xc2680d3670e9dcf42d8793b42cf1541ec0e73bc3	The Blinkless Official	BLNK	erc721
+\\xc2841c1b992a4cb390b726bb8ed458dfc0812b9c	Elona Musk NFT	ELONA	erc721
+\\xc2855e9232d9747f078e4cf5832e0ef43e0aa065	ToonBirds Official	ToonBird	erc721
+\\xc2984301e0b46917df9eed945f160c178d473fa3	Sixth Reseau Lucidia Dreams Cardholder	SRLDC	erc1155
+\\xc2a17179729ea4c294529612624a875b17c7824b	CRYPTOPOP_OFFICIAL	PoP	erc721
+\\xc2b25d8c763a9804a534e07a7a32b72ccd2b7e79	DIVAS BY MTHR TRSA	MTHRTRSA	erc721
+\\xc2e24a0d8c30f8b65813781b88317980972e5973	DollIsland Genesis	DOLL	erc721
+\\xc2e917a8fad0d69b77675a63a0c6272f9d839dda	DRESSX	DSX	erc721
+\\xc2ee8e22f130a44d62cd2f0a23c373733ea4058b	Degen 0xSLAPE	DegenXSLAPE	erc721
+\\xc315c1982efab100b4a3eca4035567358f85bbb2	numba go up!	#	erc721
+\\xc32da4457e8c82d5fe082ad416db97366451b78c	BLOOMING EVE	BEVE	erc721
+\\xc336fef7ca01af1296bcd6d7ffbbf58ab0871919	Mutant Ape Kids Club M2	MAKCM2	erc721
+\\xc35b30df124e863ff3241c1839904211e678e67a	Pudgy Ape Moldy Serums	PAMS	erc1155
+\\xc3ccaeb8d3cff0e8fd0cfc78f82d8456886fa1c2	INTERFERENCE ANALYTICA	INTER	erc721
+\\xc3cd69649394bf1a18a7a0c7f90e4d0e4f1a9758	The Sevens Eve	EVE	erc721
+\\xc3d6f2ef844c948c6b581ade65b8fc96655e0706	FRAGMENTS - WNiRgRZLz9	FRGMT	erc721
+\\xc3f788cbe24a8da186921a5524738bcdf19d1857	nuigurumi	NG	erc721
+\\xc4046119119464a4cd6839c97be53d782f83cd5b	SNGLRTY	CR4FT	erc721
+\\xc408d68a1344a4f15e77f839c00ae0a8b8b6218c	LEGACY APE SPERM BANK	LASB	erc721
+\\xc40c0caff1110fbaac75031044c14549bc8104f4	SMC Art UgetsuHakua	SMC_Art_UgetsuHakua	erc721
+\\xc4771c27fb631ff6046845d06561bf20ef753dab	WarKittens Genesis	KITTEN	erc721
+\\xc49837260f2055dbcdd665de69057872f18e1ec7	Erlebnis V2	SINS	erc721
+\\xc4bc4f901dbc5fa1e73d0294d55779ab0cd629f7	Superheroes Hiding In Toilets by Cryptic Burger	FLUSH	erc721
+\\xc4d42971a2967f344f12538d4c58534755970b8a	Nature Lover - QqE9Fzbv9a	WATER	erc721
+\\xc4ff327949466909d6c5b32640f44a21e9e1afff	MojoPals by MojoHeads		erc1155
+\\xc5527adf2b64638105014cd46d8f470ff70becee	twilight - 4xJwgA61OW	TWILIGHT	erc721
+\\xc5666dd4a435745b38c7a67cf5211a4d918e779f	Tankies Collection	TANKIES	erc721
+\\xc580d47a972739a15d5057e1eff42c6f2d913a3d	Project824	P824	erc721
+\\xc59791e0d4986fa31fd0fa13d0087837770e6df9	Bored Bad Boys	BoredBadBoys	erc721
+\\xc5c8b560f325647fdd130437a13727c9261399da	Tribute to Da Vinci		erc1155
+\\xc5f86533d7b36154346e35356cc5c1498d247a93	Azuki Demon	AZUKID	erc721
+\\xc607891d96a9f0c36ec7c078d0345a2ac405486a	BitBot Friends (ETH)	BB Friends	erc721
+\\xc60fbe56ffa909952c5542f7150fc3ac9799867f	JivaCAT Artworks	JIVACAT	erc721
+\\xc6380b7d6d4c1e3b231c9e13457673f585483aef	GADAVERSE	GADA	erc721
+\\xc6389bf2f641b1510246feb241ad7a56fdf15f0d	Baby MoonBirds	Baby MoonBirds	erc721
+\\xc64c152078ee7d6d0367f038b8429272c815e528	Omniya Mint Pass	OP	erc1155
+\\xc679f12eb81336c42c63a63c8e0dc8e80854b31e	SVT Founders Card TEST	SVT	erc721
+\\xc688c1bc91bcee44ae4a0a6983402e20e9cb621d	Infinity - wxY77dtmEA	INFNT	erc721
+\\xc695efb3f59c64951acee5ddb8a3847dee7a81a5	Industrial Waste	I-WASTE	erc721
+\\xc69828e1d7cf16f51d88b097caedc62cabfdbf93	MemeBirds V1 Depreciated	MEM	erc721
+\\xc698c3fefc643eb9de33258cf10314836eb6be14	GENSOU Creatures	GENC	erc721
+\\xc6c0890f8b4bf3151d004561278d322f122168de	RC01	RC01	erc721
+\\xc6ca869b1628bd48ba02e6238724dca6bdb67ee5	Blackhawk Diaries	BLKHWKD	erc721
+\\xc70a4e13c1a5d169eeac50e410d5d42bb080cbbe	tiny cats (eth)	cat	erc721
+\\xc70a5392ba0acba013e85c0f12d6b2d08bad9604	WANDER: Collector's Editions		erc1155
+\\xc7101bea5ff049f8afbed047d23d6057226ac3ff	Phallic Phrenz	PP	erc721
+\\xc72420d0e90a1bdb5c80d591d6cdbf47b53b4b76	HomieFaces NFT Official	HOMIEFACESNFT	erc721
+\\xc72ddd126b9ab6418b95dbd7dc99ec09fa9b7b91	The Ugly Ducklings	UD	erc721
+\\xc7926bae96dcfecfbe44e0bcfbe19f0be2dbdb1b	PigGang	PIGGANG	erc721
+\\xc79df0030121b0d3296baa831594e344e69bacc4	SuperSzcz4 GM		erc1155
+\\xc7a3229724e73c66c5072b6c6b923a9e76dd8d83	TaoNFTs	TAO	erc721
+\\xc7ceef1ba93890203edc3682e05ffd93bf6c8883	cosmic dimensions V2	COSMIC-D	erc721
+\\xc7e45a0bf5cee4278493328aa0b64f3d669c8556	Minase Nagi Girls Collection	MNG	erc721
+\\xc7e5a135f30b2e9f874666efe9bb0dd2405ad740	Beauty in Form	FORMS	erc721
+\\xc7f0d7f0e88117c4df67b08efa13b967f13cfb84	summer noon	FINART	erc721
+\\xc8015ec9bf67d66a7194542fc72fc0430d0d9b2c	ULTRAMAN Genesis ETH	UTM_F	erc721
+\\xc80a48d960ca895df4c6cf86420a933615d3fd79	a21	a21	erc721
+\\xc81dd7c30e20d587e77e5d41917382b8db7a8fac	EtherGods.io	EGODS	erc721
+\\xc84c588d4d9861a2ada2c34ae60460ff14e2d69f	tiny bees	tinybees	erc721
+\\xc89b639ba978f48bff093a62e74c9ce91396e05a	DEFFIE	DEFFIE	erc721
+\\xc8a5c05945a5a91af7142f968fc3b6bc082fe514	Bored Ape Comic 2	BAC2	erc721
+\\xc8cc20febe260c62a9717534442d4e499f9de741	Psychedelics Anonymous Component 3	Component 3	erc721
+\\xc8d822ae4895f3d972eeac7c3aa7707e716437c3	 MERMAID	MERMAID	erc721
+\\xc8f7b7be4ea811dbd2f2c20d837c91f9d19e8436	KawaiiKowai	KAWAIIKOWAI	erc721
+\\xc91c626d6e780d9c1675b72be3fb2829d7723cdb	IN AN INSTANT	INSTANT	erc721
+\\xc94985d1cd053f96bf65d021fba31cd0f4fb46ab	WonderGirl DAO	WGD	erc721
+\\xc9950a27841fa64825b66c6e31222a06f5235c6b	LlamaYo	YO	erc721
+\\xc99c679c50033bbc5321eb88752e89a93e9e83c5	KILLABEARS	KILLABEARS	erc721
+\\xc9a196d702c8dbcd39eaba5b05f60659f3993ba5	THE NOVAS	NOVAS	erc721
+\\xc9b76ac6b6f6f0785363067a76ac4f2fd524c3b0	DATA RA33ITS	CARAT	erc721
+\\xc9eea096c23aabc60207a3804dc73b1ffb32cafd	Ghostly Friends Club	GFN	erc721
+\\xca1ba464fce8bd7704619ab79e94ea543d84fdee	SONATA N 1	1	erc721
+\\xca29e36fffea0fd1c6b69386ace35b5264524d3c	Anonymous Traveler in Europe	AT_E	erc721
+\\xca52c16c468624b78bd52431eb1b6856d38e61ff	Ugly People by Torrealba	UPG	erc721
+\\xca553e24617c7e2681b717c34c4ac2c5b25553a4	GarageXYZ Genesis 500	GARAGE	erc721
+\\xca72fecc4bdb993650654a9881f2be15a7875796	Legend Maps Adventurers	LMA	erc721
+\\xca90a81a6957414c0e55f7911d015de98757ec01	BZUKI a.k.a. BoredZUKI	BZUKI	erc721
+\\xcabe017480f788690c5514016ba2542daa1c5834	3D Moonbirds	3DBIRD	erc721
+\\xcac7f03d17dbadbd3d79d36e10507063ba90b79e	The Pearls V2	PEARLS	erc721
+\\xcb2564ae2d9ca07711f908a45879cd051a69b403	The Emergence Collection	EMERGE	erc721
+\\xcb264e46f558876fb73f23349073c7d51076d605	Relic Punks	RPUNKS	erc721
+\\xcb33665c53bdeb28f92702be36b143f2b95bec67	Bobby Swingers V2	BBSWINGS	erc721
+\\xcb3585d5b0e300c1f68a17cc34640ec7b58dff43	REINEN	REINEN	erc721
+\\xcb36d51c5b0fea29cce8303073bf90b540c53679	Women Of Venusverse	VV	erc721
+\\xcb440ca41858b2c260893d48d8b18f681a3f44a5	AFTERLIF3 AI	AFT3R	erc721
+\\xcbaa6db302a1ee2e66c20b6add2265c3aad371f7	Classic Maids Life	MAIDS02	erc721
+\\xcbc7596249c12a884b9e0035639c1ce2b00f1215	Baby Boss NFT	$BBOSS	erc721
+\\xcbd38d10511f0274e040085c0bc1f85cc96fff82	Ghxsts	GHXST	erc721
+\\xcc1b98ff5642a0c14054cde04ff34274aa8967ea	Not Tiny Echoes	NTE	erc721
+\\xcc2382787ca681aa10ae377fa6024a9a54903c8a	Burnt MatchStick	BMS	erc721
+\\xcc41116ceb4926ec36aa7669f8461f2b39d69b3b	Touching Sensations		erc1155
+\\xcc63542b0fc2131a6b0ca593362b5224f7a9e024	Waifu Harem Club NFT	WHC	erc721
+\\xcc74f41795de17a9b10e86654f0e2855e715c791	Celestial Muses	CM	erc721
+\\xcc996e5ba7867e433bffbba2085ed4732997ccf6	Float Float Lands	FFL	erc721
+\\xccb9d89e0f77df3618eec9f6bf899be3b5561a89	Remember~Me	MEMORY	erc721
+\\xccc3503ad4075ad285eb9a500aecdad413ab6be9	Maggie V3	MAGGIE	erc721
+\\xccd174525209e0af2ea51bca91070d9f93d1bf4b	Mayweverse By Floyd	MWV	erc1155
+\\xccd1eaddbeb84e88ef0f40890410e5fcebf562a6	LBR Platinum Hardhat Membership	LBR	erc721
+\\xccd658fb07a4467c6573d8fe74d053bdce697b8b	THE OFFICIAL OMNI SOCIETY	OMNI	erc721
+\\xcd0b6f5d1fa876a44b807cb43257501e3af6a74a	Clag & Frog	CLFROG	erc721
+\\xcd0c54d7b37a51fe27c1df580220b21c8608ce38	multi-chain moonbirdPUNKS	mbPUNKS	erc721
+\\xcd157317aa52589da1f1ca47ad486b6de1d075a3	The Walking Dead Official: Daryl's Motorcycles	TWD-DARYL-MOTORCYCLES	erc721
+\\xcd185f3fb71364bd2b2e7aa93fee0ddfa4c98d94	junk.art V3	ARTIST	erc721
+\\xcd267cfb66023055e27fa948332d881a0145a95d	420 StonerBox NFT	420MYSTERYBOX	erc721
+\\xcd26a16dff96501f364332f6c15c931de17a691c	Stickz NFT Collection	STICKZ	erc721
+\\xcd327d27f64b9bd998c7fde6bf279ad542750826	Swaps by Coldie	SWAPS	erc721
+\\xcd3718e5216bd5ad6a71fbac30a5f9f0ba1e725c	UrbanDogz	UDC	erc721
+\\xcd4c7819a017da7b726c825da21b1ce0c7280edc	Relentless LifeMap	LMB	erc721
+\\xcd96d928feb9ba8dd530faf0515b49eeffc6c815	WEEDZ NFT	WEEDZ	erc721
+\\xcd9b14fd4edcf709738beee2b70c8f3f298f50e2	Flight - edBkZbK8SM	FLIGHT	erc721
+\\xcdc7bce8121bc97a42061aad637684863c907298	Fer Caggiano V2	FER	erc721
+\\xcddd247a28c027e785a0343840e641c6c8a7e84d	My Pet Monkey	MPM EVOLVE	erc721
+\\xcde595182e659180939ef860761a1f01a8325022	Lil Dreamerz OFFICIAL	LD	erc721
+\\xcde5e5a70700fd5669c7f35006fd72df5a544d90	Lost Faces by Fireman	AIMCLostFaces	erc721
+\\xcdec41858e34b3b502726b72e417e54a49760a29	The Silly Cubes NFT	TSCNFT	erc721
+\\xce15ec0fbbee22c2a069fe0483f968ffe657335d	Fire Moon Birds	firemoonbirds	erc721
+\\xce15f018b083844a0b650b8000a00f227fb8cfbe	Fancy Bear Trait Swap V2		erc1155
+\\xce2d59850a4c3a82ccb0a8b0238bb4cd87b78fa6	KGF CHARITY	CHARITY	erc721
+\\xce535ff0f35cb4bc06edb2d633edbed42168a46f	FLOWER NUNS	FLWRNUNS	erc721
+\\xcec9a45c048d1f2754ce27ef806efc8344af1dcb	*Relaunching This Collection* See Discord For Info (Refunds Available to Minters)	CKD	erc721
+\\xced4948fcb7a4dd018efd89223dc6167fde6688b	Sleepy Zuki	SLZK	erc721
+\\xcf23fcbce77ad4540a1d63a6c3ca178459aa59bc	MechaLands	$MECHALANDS	erc721
+\\xcf78a437ea48c1d6ffeb2c41fe16f573182b05b0	Nightmare V2 V2	NMV2	erc721
+\\xcf8896d28b905cefd5ffbddd5dbfa0eeff8d938b	APIENS OFFICIALS	APIENS	erc721
+\\xcfb1c95fd4360790429aceeac655d00a65ecb04c	Never Fear Truth: Track 1		erc1155
+\\xcfbf7fc93a519b55418974c7e0eb4e2447df505b	Monks of Crypto (migrated)	CRYPTOMONKS	erc1155
+\\xcfe45d57e16bf2a70a963a4fdd361c06e379e0ca	Boredsone Park	BS	erc721
+\\xcffc3d66aee22fd5fe99011f64435038f29f9644	0xMoonbirds	0xMOONBIRDS	erc721
+\\xd0420ded10eb46d44daa50890407600b7eb810f4	Move to > lZUKI ZEN <	IZK	erc721
+\\xd058b07d1d7f52774395ca89b4d41e3a8d8bda31	Catharsis X MadRabbitsRiotClub	CxMRRC	erc721
+\\xd06cf9e1189feab09c844c597abc3767bc12608c	Cats and Watches Society	CAWS	erc721
+\\xd0e9faf06ff4cc3948295b665ccff764ec696f47	Feathered Frens	FF	erc721
+\\xd19f4daa3661e349af8d0b81faaffbf3722b9acc	AlienHigh - MKuXpolXUl	AH	erc1155
+\\xd1bd0724c0fddfc6155d742dad0d6d2d13080594	EightBit You	EightBit You	erc721
+\\xd2033d5c5320f620251dffadfde578548a456390	Hyundai X Meta Kongz	HXMK	erc721
+\\xd2083372000ff9ab9a018affe71bbc826141dd0a	Lockout - NotAudited.xyz	LOCKOUT	erc721
+\\xd20f84f7894503c324fb12305e6be87d4b668ee5	Archangel Ecosystem NFT Tickets	AA Tickets	erc1155
+\\xd253aa501ae56b8f2ac043518f6388de29a2e2a6	APIENS OFFICIALS -Edition Specials	APP	erc721
+\\xd25508dab0b8fa88e783ee065d8f78b10745dd21	Maneki Neko Art	MNeko	erc721
+\\xd2767e53017165ff66fec8ac7bfa6b079912015b	Stories from the Stars	SFTS	erc721
+\\xd2867927cf87c41440ef08c6e6a628b2b250fbff	In y House	VKG-IMHS	erc721
+\\xd2c15763e503277c057d4a30f5b7174b844ed5b8	The Project Beings Collection	PB	erc721
+\\xd3120c2aba62e9ecaff28054ffcca843d963f1d3	OmniAmongPunks	AP	erc721
+\\xd31fcd9581b71c1d0a0d57f95dd1c89af66916e1	420frenss	420FRENS	erc721
+\\xd331561191428b8937080e516e25ad379257c38b	Voxel Ville Avatars	VVA	erc721
+\\xd352f194a8272f4012bb3832d22a0152c566a9a2	After The Explosion - AURORA x galcid	ATE	erc721
+\\xd360bea5980aa74992367baad258047a7aac8ef0	Family Names V3	FN	erc721
+\\xd3770e54d2d3dfc27062fa0e80f5bd448ed0d94c	Harmonics V2	HRMNCS	erc721
+\\xd377c123621b85953da348eeaf69d4b9b8d8ee99	Kyrie Meii Illustration	KMILLUST	erc721
+\\xd3a6b89e30e23a6830531719bad99ded91e45393	Heads - dJaVKdBHdW	PK	erc721
+\\xd3a9733e51211350daaf97088706db8e00e1b7d4	BigMommyMilkers	MommysMilk	erc721
+\\xd3cf04d7a5513ce8148790d90d91361476f5da94	DemonicSkulls	DemonicSkulls	erc721
+\\xd433f1601574b2288c32e60ccd2423384fcfd699	Legend-X by Will Jack	LEGENDX	erc721
+\\xd459e111472f44dde5f20605b1657afefd3d3bbb	With Love, Yinkore		erc1155
+\\xd4909e76d7b2576a6679ea46a9e8ea91f19e9edd	FamilyTeesNFT	FTNFT	erc721
+\\xd4b6e1e0066bd376fe93f943cf886e40c2408f82	Mysterious Crypto Crypers	MCC	erc1155
+\\xd4f40de30ce845ce6cd3ea495c9c2e4f04a2f608	Mutant Alien Ape Yacht Collection - MAAYC	MAAYC	erc721
+\\xd500edf91d3bba2b581e8aaa1daea4037837fb32	Cacti Cacti Cacti	CactiCactiCacti	erc721
+\\xd50cb63bd3c1a4e5106fd15dd7640154961e1b70	neurocolor's abstract paintings	NAP	erc721
+\\xd576683bae0cbb671f70d37f9a079a0c517a3626	FREAK V3	FRE	erc721
+\\xd596ccbc498c7c845d929536c0ce37298a65ae32	Sticky DAO - Official	SDAO	erc721
+\\xd5c5bfda834550f84b1eda3e81abfb3c2eef9092	Creation of light and color	CLC	erc721
+\\xd5c6cc6b9c7824b893f8b4a5cd9da757f9db0fbf	ShanghaiQing	SHQ	erc721
+\\xd5e55226db047837ef78a2ba9eebf6a9bf34b081	ZaraArt V2	ZARAART	erc721
+\\xd605061c2d8ba814db9a32afad52ae3a2c7a8595	CryptoGators V2	CG	erc721
+\\xd627390a7997c3e0943c184fd57aa31ed8774771	EverydayBeeple	BEEPLES	erc721
+\\xd62e547eff1073e6f23200cefcae017223b696a1	Because i like you MV collection	MILKTEA	erc721
+\\xd65c946edb5b84021323ab9726d3a2a0d1ee4ae8	Arcane Avians Genesis Collection	AA	erc721
+\\xd66eddae448ee69690688dd5e08805e12b12cfd3	Degen Gangsters	Gang	erc721
+\\xd680801c6906b03953417c7e8532cd280d3c000d	Le World	LEWORLD	erc721
+\\xd6d7c30f6845cfb5fcdcfc9d23f53bbb7b56edd5	when cities lose their souls	CITYSOUL	erc721
+\\xd705b41d5d5fff1b688bd5d7dd5baf52d50b7269	Obscura Community	OC	erc721
+\\xd71fb899c13bd58f53592f5afb69bba5543629bb	Mutant Cat Club Official	MCC	erc721
+\\xd735f8fca417c08ee8d241b1ae9b5ab0778576b2	Stoner Moon Bird	Bird	erc721
+\\xd7503e03d35acac4068fc7068ab0f8db7976441f	Tanuki Racooza	TARA	erc721
+\\xd76391e43d7c1be19e8bd98311940064052546d2	ABRdFiles	ABR	erc721
+\\xd76b3b614e5e4fca6705204f388b1bd5964c699f	Elle - OSPjDxSirf	E-I	erc721
+\\xd7799ae043833f7c798dd5334f272c9a071fc80c	Space Walkers Collection	Space Walkers	erc721
+\\xd789ae59450e4230026707118e7cfebdd82d5934	Emotions - L9wgDtOAPd	EMOTIONS	erc721
+\\xd79f662202ac731883fa53f34a7f0369d973b9ad	Funwayves	GIFOETRY	erc721
+\\xd7bea2b69c7a1015aadaa134e564eee6d34149c0	The Association NFT (NBA)	ASSOC	erc721
+\\xd7cd6bbce334bfec6fb9e0a1fb0e97b4fbff29f5	Original Paintings V4	OP	erc721
+\\xd7f703297e4a2ff5229680697bb1d163f0c48d07	Super Sunflower	Super Sunflower	erc721
+\\xd8183d1a8d0f7c9d19cb474a2bc3a84a406d14cf	Cardinal Sins V2	SIN	erc721
+\\xd8287343a4258de28d6061d949fbf61ed1ce4e0d	Knights of Babylon	GUARDIAN	erc721
+\\xd83b6f9a3e623ae4427298726ae32907b477b8cc	[the reliquary]	RELICS	erc721
+\\xd84ae58e586e648b26393a9e7590b385112ebd93	0xAncientDragons	ANCNT	erc721
+\\xd87a136bae7e69f787a24a2a0781199707e1670f	ETHWizards	EWIZ	erc721
+\\xd89239186180617cfe17e8b73b2b8bd9c96d0a15	Grailers	GRAILER	erc721
+\\xd8f2eefed38f10e9b53952125cfe66d6d1511559	CLAY GENESIS	ClayNFT	erc721
+\\xd92adcdcdebe43eaa4f579f25c17ee3739a397ef	SOULMATE by Lana Denina	SOUL	erc721
+\\xd9375043bba57a601e30c36bc66cb18b51311bd9	Iconic Mavericks Genesis	ICONIC	erc721
+\\xd945172543f818ef84999f85e0d800f59f65f993	ShibaFantasy	SHIBA	erc721
+\\xd94e1a012d86372dcf673bfed31744e51b4d6be1	SYL V0	SYL	erc721
+\\xd95ab9349f3b3ae96ff44fa2e8535f3985b94128	The Heart Punks	THP	erc721
+\\xd9672697c87679440925afe0490a771709c8119c	iueqwhjadfsqewrjkkadjfs		erc721
+\\xd98beb82bac1fcfd271ddd2f300c80348dadbb72	KIKYO V2	KIKYO	erc721
+\\xd9917441c1ed53d5a8bcf4b94d26d02609944bdf	Apes Zuki Club	AZC	erc721
+\\xd9dd493a6249f95de31e00cf5deef8def695d405	noitide ojt		erc1155
+\\xd9e0765f22827b96dc7e769a757ec13cf069d98a	Alaina Castillo	ALAINAC	erc721
+\\xd9ebc2ec7022e11ea59a6e6ea95ca7919e393027	Everyday Goddesses Collabs	EGC	erc721
+\\xd9f092bdf2b6eaf303fc09cc952e94253ae32fae	Baby Doge Army	BabyDoge	erc721
+\\xda07dc6f9f72f66b85ae61c21bfd7817a674b692	Minimalist Movie Series Posters V2	MPMB	erc721
+\\xda216128024e122354ba20b648b8cc0a3e2be51c	The Weirdos: Battle Royale	WEIRDO	erc721
+\\xda442e4c30e179a5e43c4b6f3de3f4d995d2a912	Raf Grassetti	WAVESBYRAFGRASSETTI	erc721
+\\xda4fb246b959e7b9933c13d3a9fc860f53bda58c	The Communion V2	ISFC	erc721
+\\xda5cf3a42ebacd2d8fcb53830b1025e01d37832d	Forgotten Runes Gate To The Seventh Realm	SeventhRealm	erc721
+\\xdaf9b553a9b4ad286a180effea1bc96086df026f	ORDINXXRY_Series	ORD	erc721
+\\xdb497abc64c14dbd84de70cc172fe1c6d389e3c1	Time Machines by Project Dark Eye	DEYEMACHINE	erc721
+\\xdb58a56cb7c736d8b949a25340cc6d47ce312f05	ONIRIA V2	ONIRIA	erc721
+\\xdb6fd84921272e288998a4b321b6c187bbd2ba4c	Omni Mosquitoes (ETH)	OxMosquitoes	erc721
+\\xdb8ed1ea15e2d9a8a3b0f47b750fa48e43964506	IceBirds	ICEB	erc721
+\\xdbbbe2ff206e5d803553d1e26461797082ee4a04	Degen Space Social Club		erc721
+\\xdbff8fb7c608cadee9b3e5a247b3eb35b5f50e67	Collectors Club: Founders Keys	CCFK	erc721
+\\xdc0a5d7734c3c94ba4d144bd828a4ca2358bcdfc	OmniEggs	EGGS	erc721
+\\xdc0fa4967b7d9604fd33fd4591fae7e8e18a9a7c	AdWorld Titans	ADWT	erc721
+\\xdc12fce52414707f84e73e64e782e1a43278fa76	tiny monkeys (ether)	mnks	erc721
+\\xdc2d0188ca0a6766e997557ba167fc71573c9235	The Larva Crabs	LARVACRABSV4	erc721
+\\xdc7a73abbf19efdc9a5db0ff9d588501c8cf4da2	Soul Magic Genesis	CHDZ	erc721
+\\xdc9a5bf600ceb2c312c53566b15c773f55f21d69	-Our amazing planet-	P	erc721
+\\xdcdcaa3296c2fc73b5a113514f9443dcbe36150d	thereisnoBanksy	NoBa	erc721
+\\xdce71ed7e27c8698a285ef835e4a844ceff733b7	By Danny Cassese	DCASS	erc721
+\\xdd06ab6f407b207b638c6b0aa83682c8cefceb93	bevisualz	1	erc721
+\\xdd097a9dac5130d00f1ccbea91694b33d40c4c21	Foundation - WdC4gEZyi4	FNDREZ	erc721
+\\xdd0afa8c5cc186ac70915343229bf759078d4c15	MoonSquirrels	MOONSQUIRRELS	erc721
+\\xdd0c21e8920d555d645a3604bb3fc31d01c0c06d	Feet NFT Collection	feet	erc721
+\\xdd15feff50c9a9a7b64b98d2a345f515036cbcdd	GESTALT by EM1T	GSTLT	erc721
+\\xdd16374e87698511c494604dc389edd088efddb0	MetamonGo	Metamon	erc721
+\\xdd389666f178bc36931be916ba804a061e55f9f9	Murasai : Official	MURASAI	erc721
+\\xdd782034307ff54c4f0bf2719c9d8e78fcefdd40	NEON PLEXUS: Override	NPO	erc721
+\\xdd7e26849f031562d4def5f06598a270eccb9460	GEEKFANCYCLUB	GFC	erc721
+\\xddab15da2e0190be020ce247e8f148c44e1782d7	Kiki Adventures	KIKI	erc721
+\\xddbddcfdec729ee7013c3038482538c03d7c62cb	Pixel Interfaces	PXI	erc721
+\\xddcfcfb93417b43853ee033322f04f1ac3dce835	Apes of Galata	AoG	erc721
+\\xddd616648446da56821df1e1606161ab44b09507	TRONS X	TRONX	erc721
+\\xdde6885d89ea91105c79dc733fda92ed970efa27	Manic-Depressive	MNCDPSV	erc721
+\\xdde7ee69a434c4d1d8a936917f70a886cb66b1b0	Bored Otter Club NFT	BOC	erc721
+\\xde04941c69a99294de3169ae53e3b0b8bdae65c0	Chopp V4	CHOPP	erc721
+\\xde101c890c3f2b8a63c7fca59656ecf6844fe5f4	Tekyan Tribe	TEKYAN	erc721
+\\xde10ec5303b168c297ffae3e7c9f957a573b0eb7	LUNACY V2	LUNACY	erc721
+\\xde654ca028f61986e3fea0042c68c8049e8a20cb	Toons Official	TOONS	erc721
+\\xdea06570f4cf6de5dd38fa69721df801e4dab4e0	AmeliaDAO	AmeliaDAO	erc721
+\\xdea1009e42348b3a55f0ba03eab4033d871b8476	Writers Block V3	ARTBLOCK	erc721
+\\xdecd1dd5c601da5b2e33f3163be07f171e7fbc20	pqowerpopadfopqwerojoqwerk		erc721
+\\xdee256a5fc24f21cd35412bf09cee81110f79ab2	tructor		erc1155
+\\xdf4f14ace07dfec452d54179e68392608fa9d2a7	RiseDAO First Season	RISE1S	erc721
+\\xdf52e170a177f35ce3ca526d3ec190d9bb8a21cb	SilWHOettes	WHO	erc721
+\\xdf5a832c34386d79d27f3afabc93da2332dbcf20	Official House of Heroines	HOH	erc721
+\\xdf73168b3a4d0b1d2bb4539e6aca259a91963c6c	GarageGenesis V2	GARAGE	erc721
+\\xdf7f7fb98259f4a4119e2f4a1583ddf03f22a29f	Pictograph Stomach Ache	PSA	erc721
+\\xdf85a78fd65b5695ae6f9ba1880f6c6ee7f86237	GothKidZuki	GOTHKIDZUKI	erc721
+\\xdf9e706de8b7c504136a70141f72f2b09cbeee9e	Metabella by Pokmi	METABELLA	erc721
+\\xdfd30015ae4d464fe4dba9923b4f8f6b29df8cb5	BUNNY CULT	BUNNY	erc721
+\\xdfe071702852081a82818f404f1e745cbf6ac527	Metroverse Pass	METROPASS	erc721
+\\xe018e4047890b9b9b0ae6de4cdace40dbe862f06	AstarCats	AstarCats	erc721
+\\xe0417829b8c2be50123d3741fd0bf25e0861a988	Moonguns	Moonguns	erc721
+\\xe06fe5ef5f73c31032387d685e235b1da65e5f87	Lil Pop Culture Project	LILPOP	erc721
+\\xe08529a9cd9522ed4d1b9a83f01dc06456d40945	Meta Lion Ring	RING	erc721
+\\xe0901883d567f50bdc0f090ebe7d0bb6d1dfe61f	Smilies Genesis	SMI	erc721
+\\xe0929e6261ab443d912a9cf63135faf927ad6c84	Hungry Hippos NFT	HH	erc721
+\\xe0be388ab81c47b0f098d2030a1c9ef190691a8a	Unemployables	UNE	erc721
+\\xe0cb15f90a9fa1e7d7f69a6d054b934989ed013c	Starcatchers: Space Junk	SC:SJ	erc1155
+\\xe0e28f13d59b3f6c37e49c8447df3c9d418f0188	comely turtle (eth)	turtle	erc721
+\\xe0ef2610bf1c932ccc363beb5c4b65f0f4c1ddfc	Squishiverse Items	SVITEM	erc1155
+\\xe0f392b9bcf88c50d2e4dcd18465f10e48530b21	The boy who chased the sunset.	SYRE	erc721
+\\xe129ee1acbf96236866d34846c83ad2684b3e4cf	Victor Birkeland	VB	erc721
+\\xe1334f3dd6d51a633f4d6d391324989f82b56d36	Proados Pinup	PP	erc721
+\\xe15573faeb5c53ed3305382692e125680423865f	HALLUCINATION V2	HLC	erc721
+\\xe172298c364333256e90863869461cdacbb1818a	The Space Resistance	SR	erc721
+\\xe1adfdb71c0a66b4130218922a1a912c0b3003bd	de Misfits Ape Society		erc1155
+\\xe1c175a6032d7b66a5fe6a20bd2856ad7f50b5f3	Pillars of the Earth A Prelude	PEAP	erc721
+\\xe1d8dda05beb37603a608cc21dee6fd92a0a727e	Godjira Punks	GP	erc721
+\\xe23898711090e152dfacd90fa39c6502e9e1159c	Companion V2	COMP	erc721
+\\xe243cd91d372d6dca64fab9048246ae5544fbeb4	Fashion Female Ape Club	ApeGirls_Nft	erc721
+\\xe256396b9401a70ac44cba74364876ac27c935e0	(icon) universe -Editions		erc1155
+\\xe25f0fe686477f9df3c2876c4902d3b85f75f33a	Illuminati DAO Token	TRUTH	erc1155
+\\xe26bbb75b75378c4e032c9af0f4a9b899bd0e7bc	Ukiyo Players	UKIYO	erc721
+\\xe283dddc1d93e40e3748de182ff0219cd154372e	Sneaky Goblins	SG	erc721
+\\xe2b4cb9abd12a25ed74a8b63c7a78eb233640d7a	MAGADON	MAGADON	erc721
+\\xe2fe2df0f075e2af8fc0a166e3a4fe959af78197	AstroGator VX	AGVX	erc721
+\\xe30a64a4e7f590cb4184a05702661504114824cb	Ero Shunga	MKL	erc721
+\\xe373db56b558a7d9dd6090124f0857c8d622a427	Dogs On Mars!	DOM	erc721
+\\xe3ad2289fe2a992f44081c88c488f8a36dfb23ae	PORA art	OC	erc721
+\\xe3d403a38f0c5b21be3f766825d828d498e57e3f	Team Seagull DAO	TSDAO	erc721
+\\xe3d59d95c88990c84c85ba3e04d23e8d8f4aaa24	 Green World	PEPEEE	erc721
+\\xe406d81020edad359becc48955e828e8d7e59aa8	Therapets Forest Friends Genesis Collection	THPTS	erc721
+\\xe4198ea3db52d3c9c8b9ec27c221c2de123e3ce1	Insomnia Jitters		erc1155
+\\xe41b1549ce968392add2448b0588f5551011177d	Hanamori	HANA	erc721
+\\xe46007d0a248661478d757e208837a1fb6ff15b2	Culture of Dependence  The Hunters I	COD	erc721
+\\xe4677c14ed48bf5e5d9a06e46239d5b7687b4887	Puff Music Entertainment: Generative	PUFF	erc721
+\\xe4d885f4855fded0821e804fa94d038599d8baf7	Gutter Punks - The Humanoids	GPTH	erc721
+\\xe51300537437ad26de42b59f15802eb175e46df6	XDao Mint Pass	XDMP	erc721
+\\xe57b1fc22bc432140b2436e6d69e2265accc513c	PSYCHE DAO	PSYDAO	erc721
+\\xe583d6b120ef6942bb1434328c63d7f2bbc3023c	Sakura - FkODc4doFs	SKR	erc721
+\\xe597486de1f3ec45b3c0bfa93b78463a54a85148	JustaNut	JUSTANUT	erc721
+\\xe5d5e90d77bd30a099de7de785c0257bb1d7b4a4	enso by EKS.REI x Jay Lee	enso	erc721
+\\xe5f1cf66eefa3b2ba28e71b484474b6d57629edd	StrongHero	SHNFT	erc721
+\\xe602281471535cb1089a9c355d7ea02c4e73ec5c	UMAMI ART	UMAMI	erc721
+\\xe60ad69ae883a9294855f189b9f63c2e42537f2e	FUTURISTIC PAINTINGS	ACIDTECH	erc721
+\\xe627c57626db2a40e8350b0ecd9db77f47640ecd	Perky Piglets	PP	erc721
+\\xe62ae1d042612ab18468db915740efba207bc2e7	un-distance	PHYGITAL	erc721
+\\xe6715b8209319e9a342d67bdf52ac8a6eb710189	something akin to a daydream	SA2D	erc721
+\\xe6961a536184d03a115acc84fc8f52b2937894a5	Storyteller Cards	CARDS	erc721
+\\xe6cf90e270a2714f2610ed719001d126504ede94	notBanksyFinale	NBFINALE	erc721
+\\xe6d1cf4945c90409963227caf95cfab0dcd61537	slumbear millionaires	slumbear	erc721
+\\xe71a8ddcad4a950a1bbea58a301f62b5337ecb5c	GodJira Staking Pass		erc721
+\\xe7557a1e7b44b67d0dea3aeeff4307b88e5c38d0	Newlyweds-JM	JHMY	erc721
+\\xe76512732b1e49eb259dfc6d9d49e4c5dac6a75c	Quasars Reborn	QSR	erc1155
+\\xe794de49ec33837c8b410742c96b9fbc6e9248f3	Perennials	PRNLS	erc721
+\\xe7a7ab382345543ea6efb7cead8c39d22a88035a	NoFace Project	NFP	erc721
+\\xe7d738ea4d0faa2004585bb079fd78d54beba19a	*HYPEHAUS	HYPE	erc721
+\\xe82eae68a7dc935a8a5aebcc7e707d5a42ffb987	21st centurys MIINDO	MIINDO	erc721
+\\xe85e04edce578e1afe0a3dbece745601b0700b53	Moonbirds 3D	MOON3D	erc721
+\\xe87346871a1e056d3bc0e1ae61ec7425fc966ac5	Night in new light	NINL	erc721
+\\xe890269f26dd07e26491241730139d132b5b8525	IKUZA	IKUZA	erc721
+\\xe893544a6e7ff3f7620d8b53ff8bc8f20a15ed19	Sky of Eden	EDEN	erc721
+\\xe8b720f8f5f24fef5dbe030a041fa18d37695941	Crypto Collective NFT	CCNFT	erc1155
+\\xe8e5b486316c78469255681671b6a130d65e3578	TinyBirdsNFT	TMB	erc721
+\\xe8e809edcef6c851f8c2d6fb8126b6565fa18e52	METActivists-Genesis	METActivists	erc721
+\\xe93737a7fd0b68b1b8ac40f53f6a76741c62b535	JFC NFT	JFC	erc721
+\\xe937f57e4878d585cbbc9052c72a68d721dbdedb	tiny tubbies	ttub	erc721
+\\xe99e541aeab499a6c258b9f9bc427558df22a8fa	Bavugari Dream	GEILEN	erc721
+\\xe9f7ca94c65ffde8223b87608171a04c0a898874	soul experience	8	erc721
+\\xea121c555701c5b6295f0254f4c2aaf3bfa6b31a	TRANSMUTE by Israel Riqueros	IR	erc721
+\\xea40f1992d9416ad4529816edd3d75e65de34ee9	w3lock EAP Ticket	W3LET	erc721
+\\xea433c9ad9a494637e8bfc5cc4796ec339082e75	EightBit Elons	MUSK	erc721
+\\xea5526a9e1e8886b08e12ad917dc7ad0c721c0a7	pixel froyo kittens	pxkittens	erc721
+\\xea62deea578641ce0f017c0ecd24e2b7ca39eb09	AlphaSciPass	AlphaSciPass	erc721
+\\xea87075770e7822ed37dcdf61f083f87557785fe	ktwfc	K	erc721
+\\xea917326e8a95299c02655fe947962c43a11487f	The Artieverse	ARTIE	erc721
+\\xea94df1db727e4f30f89ca69d7534933b2ba8ce1	AiDark	AIDRK	erc721
+\\xeaa30bea4dc57388f86c9996ab67992e07a778f1	Moonbirdzuki	MBZ	erc721
+\\xeab1e4fc74abf3080b42f39a2ce70caa25b3296e	BabyDoge Doodle	BabyDoge	erc721
+\\xeabfaf3e6844f02ea9f886192979e914363c3b3b	Zombie NFTs by Braindom	Zombie	erc721
+\\xeb0493d5317c968003b708f0e3dcc478ca6679b6	Quest-3	⛰	erc721
+\\xeb1e5e7942c4b5f75bb5e16641e9c8a41da32655	HUMBL - EW3RL1m6cH	HUMBL	erc721
+\\xeb3f9f56eebcb2628e7de29ff93aab91616a0c6f	SURREAL LIFE - AI	SURREAL	erc721
+\\xeb7b1865277f204f9df3eb4010d12570a89d6d8e	DEATHWISH COLLABS		erc1155
+\\xeba336f01918736ba58c91e8d2c1ece569fd0cf9	tiny moonbirds	TMB	erc721
+\\xeba8b372776397ef3a030e3cd0c58b9d2ad3a449	Starbirds	Starbirds	erc721
+\\xebcd048ed4347b2fc28004b951117189a36008d1	nbmadfkjadsjkflklerj		erc721
+\\xebcd7bb0f05b26992cd6b5503bcaab485ca6e9a2	The Art Of V2	CREATE	erc721
+\\xebd8d80d5926699f916e0f46574ee209c4cac49c	fastfoodbirds	FastFoodBird	erc721
+\\xec1723cc841f4e7ef166bf38c0eb77bd7012322e	Omniscience V2	OS	erc721
+\\xec28acc49eadccb6122569dd1f4497838a33f764	jsdkljzxcnmkjladfskjdasf		erc721
+\\xec4c7dbdfcd4a29d7caf4a44197ad6a5ce0d38f8	Gutter Punks - Crookz	GPCZ	erc721
+\\xec4de0a00c694cc7957fb90b9005b24a3f4f8b99	Habbo Furni	HFURNI	erc721
+\\xec93f1b34876ee69dcb37d3bd57f08ba9a869f76	Editions by Daniel Valer		erc1155
+\\xecbb55078af37104abdad53dba5c606ab99f63dc	LarvaMoonbirds	LMB	erc721
+\\xecbbae02f5d24740f9da6ca9e564fd62a3190f74	Noox Genesis Pass Tier 3	NOOXGP3	erc721
+\\xecc316ad4324388ad94a66dee60c59f612a1416f	FLOW - s3vjAVogNq	FLOW	erc721
+\\xecd64ae5f64834cb0e5cdd9038507307bd678bef	mfers masterpiece	TMJ	erc721
+\\xecf99fb1551f9d3442b3fcc8495a8b752cca2547	SYL - Dawn of East V2	SYL	erc721
+\\xed5432c022ebd94ce6d084ca44f3e9fd48bd9ef1	Atoms Movie Comic Book NFT	atoms	erc721
+\\xedbc1103c8133e34ff1ed6d8b81fbece81e50458	Waifu Potions	WP	erc1155
+\\xeddee664c3ee06e1961c819af925753744605fa2	Usako-chans lovely 3D world	USAKO-3D	erc721
+\\xedeaeeafb386e293952fc5f77c3424bc18753cdf	Easy Demons Club Official	DEMON	erc721
+\\xee0e0660fc6227a4a67cc3ed6d1756b1ff2ad352	Color Series V2	FEELINGS	erc721
+\\xee1ae2df71a7510693c30b60e01657354009b07a	Professors ART LIFE	PAL	erc721
+\\xee407c3dbf03c9d67925392eae662250a10d31c8	tinydickz	tinydicks	erc721
+\\xee5f115811d18a1c5d95457c83ba531ce0c92f06	Singularity 0 Universe ANTHRO	S0UANTHRO	erc721
+\\xee6a3511c308d04caf6aa8e8d14b4782b134fe2a	Conspiracy V3	CNSP	erc721
+\\xee6cf63dce9f8ff81114a1a06970f40d21c68d8a	Invisible Girlfriends	INVSBLEG	erc721
+\\xee988fd7e78c1e9064c79aad0abfe6de7a4805ba	Gutter Punks - Arcade Land	GPAL	erc721
+\\xeea6dcde96eda35dd4afff250fc2a16cf029dd23	Nick of Time	NKTM	erc721
+\\xeecd896e39d1ebdab51f0dbf7087f4ebc918c878	CopeBeanz	cbnz	erc721
+\\xef02c887e2cc58cbaaffa2c3b6b1bb2978b3ef77	justawhitepage	wp	erc721
+\\xef1d024a29a18b405a2e799e4fb332672c15fe26	SCORCHEDREALM V2	SCR	erc721
+\\xef4fc659254954d83597a33c68c47cc7d9fd24a4	Steedz of Degen	STEEDZ	erc721
+\\xef5ae71f6c1fd2ee51118f64022a88e14a193e07	If Not Here, Then Where	INHTW	erc721
+\\xef8e8e165df41d3377fac5540b3e1926a7846dd2	RoboVerse-NFT	RVN	erc721
+\\xef96624da6b4031cdb096ebf1a37e0c99102eedb	Yabai	YBI	erc721
+\\xefa7827f0f5a59a0e88da2d20d335d95a9dd6b7f	Meta Pass Collection		erc1155
+\\xefaed650f1a94801806bb110019d9b0dc79531a8	SHIB YARD	SHIBYARD	erc721
+\\xf01189c2f6883e6bad6e955f47bb790793f6a476	Pysanky For Ukraine	PYSANKY	erc721
+\\xf015e49b04dbe977eeb43cae00ca1159b8c9a0ed	The CryptoBabyPass	BBPASS	erc721
+\\xf0a91eabae21d88aaede8742d931a27ed83d1169	Tiny Serpents	TS	erc721
+\\xf0acd3e41ec02de672db09a88a7855ac1a69af5f	WCC Limited Editions	WCCLE	erc1155
+\\xf0c61d343c6dcfb04e4c362743f9969fdde7f84e	TommyWilson	TFW	erc721
+\\xf0ff3cae38b8e5063d631c1c578f9df503a3c9f8	Moonbirds Nests	MOONBIRDNESTS	erc721
+\\xf13b8d8b5a86f770b662cf5bf8690db9492bbe6b	996fubao	FUBAO	erc721
+\\xf156ce1840c82784d912a8c7a0d5c46aec785973	VQ2	VQ2	erc721
+\\xf1578cfd4069f4055a8cdf737515feb52ea13bd3	LandSpaceship	LSSP	erc721
+\\xf1a827c1fcbf26ac7c079039c50f633ab7a550bf	Rich Rabbits	RichRabbits	erc721
+\\xf1a9dc6f9b9d61314e776ed2de63eced8a045dd7	notXCOPY	notXCOPY	erc721
+\\xf1bb5e676d0412f2824c5a22e61f1d62e8a4f9bc	LYSERGIC V2	LYS	erc721
+\\xf1bd627bc1b94ffc8153400e3b312c6c9135fe48	KOOKA Art	KOOKA	erc721
+\\xf1d4d352827eaac0646988d68e2d551c797c3a50	Life-S	LS	erc721
+\\xf1d88a386354ae740370a45bdfc0a61f6d9871b0	Bored Bones Genesis	BBG	erc721
+\\xf1f3cfd044599ea180af46b87b419358656f105d	clememtine 11s	CLEM11	erc721
+\\xf1f3ee49470606ab2c209ccc0daccc47ee9b6355	Tweet Moonbirds	TWMOONBIRD	erc721
+\\xf22e89e9f345f85a206fda87167e70c9aa578e56	Alpha Flyers Pass	FLYER	erc721
+\\xf2333584fc5fb17e6b2e9416ad4b3f5e94afd467	Gokudo Paradise	GokudoParadise	erc721
+\\xf25f4f4f6517101dc947d1c0370571ebdd25f14a	Lilium by Taylor	LILIUM	erc721
+\\xf27fb0beb9c1d4360bf14df0cfb7e313c6e2e247	Cheeky Lion Cubs NFT	CCC	erc721
+\\xf291383b95115f8ee7c504df162b198bcde24ac9	Mounts(for Adventurers)	MOUNT	erc721
+\\xf2a2feb8dafebdcb24c95e6abf3623ad8da14e79	Octotokes Reef	OR	erc721
+\\xf2b4bb6ca987fbb9b6ecd5a8d94b27dfaae49204	Shattered Eon Imperial Guild		erc1155
+\\xf2b8aeef28d175dbed650f300f93f1cc1f6e3d50	Glitch Studio	GLITCH	erc721
+\\xf2fa5a674a37f3071387157e9afe1ab9b4933790	PRIVATE - wgYvW4wdn0	2	erc721
+\\xf353488e96e4330a5358982ab16475f69f31231f	MetaPlaces Luxury Properties	MP	erc721
+\\xf35762ea3f9c5202b6e872ba58f38a64ae9018e0	Dystopia - Y6bnYFgFXg	ART	erc721
+\\xf399ce5bf49bd12027734f01549db7afeee2c404	qweroqwieorioqwereqwr		erc721
+\\xf39f02b3ae3fb936618a3f03aee9314527a3e6ce	Bitaverse NFT	Bitaverse	erc721
+\\xf3e3f6ebe08c6c80b19de37bfb051f529c40739c	The Rainbow Friends NFT	TRFNFT	erc721
+\\xf41d0a7a8f79f24bc4ed417860a0eabea5ba028d	Bull Factory Owner	BFO	erc721
+\\xf43a4f487b76e27eeb410ec51345b7c48f56a21d	Project Kurayami	KURAYAMI	erc721
+\\xf46dbb81dc46955d602a93a4e633ea7440f7aea0	NekoCore Pilot Program	NEKOPILOTS	erc721
+\\xf48490b3c80a25ea6e3ae76f2e41b7cacdbeb56b	Spring Cubism	CUBISM	erc721
+\\xf485a5c509f25a38114804c31d4ee65f61752d61	Medical treatment	M	erc721
+\\xf4ba94e60990733f5718beccece96e98559a3e7d	100 PRINT | DRAFT PICK	PICK	erc721
+\\xf4bacb2375654ef2459f427c8c6cf34573f75154	TPL Mecha Part	TPLMECHAPART	erc1155
+\\xf4dab2283b3a1efc256297d1d80d4b86fcb0065b	Pet Flower Collection	PF	erc721
+\\xf509ecb3d39f7a9a229fae33393b85face5c797e	MotherBear.eth	MBE	erc721
+\\xf50f88e5bfcbc690b678c73dedb017a400991535	Dead_Seagull - Crimson Tide	ARTEM.DEAD_SEAGULL	erc721
+\\xf534843a57fa2947745441d2908fdc434925c32c	Furukami Flowers	FURUKAMI FLOWER	erc721
+\\xf54cfa20bf45b83ab6cb3c4ce9efd3f2441d36f6	Kumi V2	KUMI	erc721
+\\xf5680935caf59a90b4a4d84c7ac328e1901eb9f9	The Bodega by LOGIK		erc721
+\\xf5786d2c1e20b990611beecbfe796cabbf8abaa7	HUMBL - 2hCUITef36	HUMBL	erc721
+\\xf585bc6ac59aa6070c92eac2d2ea2fc7a1997c78	Harrys Hammer Club	HARRYS	erc721
+\\xf5925932f141aa58f3d349a731ac6ad09386dab0	Kokutos Animal Collection	KOKUTO	erc721
+\\xf5d0504d9f425133053cb16f151a590764900d5f	Alfie Motion 1/1s	AM	erc721
+\\xf5f57a71f1ab56267a97517c9a7c7522994f7387	Moon Stamps NFT	MOON	erc721
+\\xf5f62e4cd9e783bdf2c55e3ce38069e71d2feaf5	ippSketchbook V2	IPP	erc721
+\\xf6231fcb24c5282731377eb6f319bb4f6bb1f2c3	Potatoez	PTTZ	erc721
+\\xf634b7a356b99bc5cf333487e18268aca7068063	Other Worlds by Swickie	OhWrlds	erc721
+\\xf661d58cfe893993b11d53d11148c4650590c692	RTFKT x Nike Dunk Genesis CRYPTOKICKS	MNLTHRVLD	erc721
+\\xf67519894775c287d227aee5617efa3cae31f25e	NFT HUD Lifetime Access V2		erc721
+\\xf69dcfdbe98a3500ff36c2d5f472b98f361c293a	Soulmate - gqViN0cXxO	ARTWORKS	erc721
+\\xf6bc8d07c96c0a491622b9fc02a9ab4ba0f6d351	Mad city V2	MADCITY	erc721
+\\xf6c20254a805cc00a80b911ac97fcdf649d53065	The Happenin by Jean Paul Rivas	HPN	erc721
+\\xf6eb738d306c9905dbdf5ad3a29defa6c5cf0a91	DippiesPepe	DPEPE	erc721
+\\xf711f6a6b41a8d2339237da7c5db1f6eebc0d9e1	Yakuza Project	YAKUZA	erc721
+\\xf729f878f95548bc7f14b127c96089cf121505f8	Anata	ANATA	erc721
+\\xf74c492dd174d951fe9fc7cd126fe5c7e0766c09	I.M.P.R.I.N.T	IMPRINT	erc721
+\\xf76f54736d8c74fde6545f2945b376e5d0f03b40	Sherwyn	SHERWYN	erc721
+\\xf7a2668de912abba78a57b7b38d6fbbb9c69fb25	Morphosis V2	0XM7	erc721
+\\xf7ad5ece3c68da2c76940f0f2a8cbd6885a589e2	Mini-Mich	MM	erc721
+\\xf7cbffc0453c649c0e33ba82db47597c089df080	Kucha Mala	KM3X9	erc721
+\\xf7ea3e164ddaf8ca7f119168e24aaa2a6ddf399f	Wanning Moon Night	WMN	erc721
+\\xf7ea5e4aa481cb424d7549173bd51974e521abdf	𝖍𝖊𝖑𝖑𝖍𝖔𝖚𝖓𝖉	STELLAR	erc721
+\\xf807125954ef2707d8bca4de1dc4a39db9444d1e	The Meld OmniChain	mld	erc721
+\\xf80fd3390839f89f4abe1f632b4d3048f92f62b6	Broken People V2	RR	erc721
+\\xf8207bcfef4cc5dfd711545275b94e1bf17ca0de	.JPEG Season 7		erc1155
+\\xf82528dac6fdaa3dfd01731fa3953774ec5a100b	BB-Incubator	bbi	erc1155
+\\xf837d4560683f6e243c743fadf429d64efdb810b	Fast Food Moonbirds	FFMB	erc721
+\\xf8584f13237d7f8bcd1d81009740c6b304bb13ba	Stoned Punks by Gutter Punks	SP	erc721
+\\xf86fb9022c0189c61d9df2da0e135a2a474fff17	Freedom - Y93XXDF28N	GIRL	erc721
+\\xf89249ed13c3ae1ff48f9ca944e6839cbad72260	Kevin The Monkey Genesis Collection	KTM	erc721
+\\xf8a21629f0801ba24c15d971afac303c2fa74e4d	Overactive Imagination	MIND	erc721
+\\xf8c7333802e4c2bac0605414edf113742cc50af7	Traditional points	GRIDA	erc721
+\\xf8d4fef9af82de6e57f6aabafd49ff9730242d75	Space Boo Official NFT	spaceboo	erc721
+\\xf8d9f5e29de5d74464422de68ea6d44431084be3	Journey - 3xwFRKZloF	STORIES	erc721
+\\xf8eb22e806332c717307a9fd3246220c252a8f1b	Punks Unchained (ETH)	PU	erc721
+\\xf8f9ffc0ef3b66c8184b57fee86d5f5ea1bd3f75	Pretty Girls - yu1Ff0NbGV	TT	erc721
+\\xf8ff43ba95cbea618d81b699a681ed9051126ddf	M.O.T.U.	MOTU	erc721
+\\xf90108e0f78c109a406d4256b568bf1d0b780a8f	notBanksyPeace	NB	erc721
+\\xf91d03b07904c48759ca2ce4875f12016f7ce57c	Bestie Bots	BESTIE	erc721
+\\xf92e69af11a72af1a875477f4c3d18972f1191ed	Tatols NFT	TATOLS	erc721
+\\xf92f3669ee9aca2a94bedbe46b04f69a00412652	Story of the Ocean Town	OCT	erc721
+\\xf93807bf02cd5b126a5107e79b313dfad8ec3945	NFTeryBox by Playaverse	NFTB	erc721
+\\xf9788ba587b90d789a5c03615b88d73ef963e0c6	eoqroqeriioqewritqewoiqewp		erc721
+\\xf992cae9649872fcbcc51afd6a96cf8f9675ccfc	peaceful spacehuman	ERC-721	erc721
+\\xf999a666405c2f8a0f8d40dc2e7d0cfe3dfc6601	CowLoots	CL	erc721
+\\xf9fa02531ba23e7f66455c87946d4c3d123147f1	SMC Art MichinoriChiba	SMC_Art_MichinoriChiba	erc721
+\\xfa056aa17e639ce4b71b5d73e34a6392029ff456	GDR Editions		erc1155
+\\xfa07e604d84a861bc73cd236d12b71aadd23a4f4	Travel Memories V2	TMCK	erc721
+\\xfa2dbc4eb68ca6e20be05c8a3d0a6ebeaedc169d	The HUG Pass	HUG	erc721
+\\xfa32856da07822303326fc151fa93b91db01f44b	L'amour rebelle - First Live Opera NFT Limited Collection	LAR	erc721
+\\xfa3d97ac39ffae3eadfa7f0e52d650af60d252f4	Cosmic Reunion	COSMIC	erc721
+\\xfa4020b0064aacdbb0ed8becac28c0c95bb29840	TrapMonkie	TM	erc721
+\\xfa91627ce4e370c5e60c54132a3a721e3447d57c	Ruku Lux Alter Ego Playing Cards	222	erc721
+\\xfa9d47e4e8dbedb20de5634252c3ca10e16ac36e	Pet Swan Collection	PS	erc721
+\\xfaad67f5174d481bff18736a0d468ad1f3e3db9e	SnipeSea	SS	erc721
+\\xfacb22d1ab3f1055156e9710812cb48564b1654b	AV CLUB V2	AVC	erc721
+\\xfb103a0da5a058846b80d7b483e229075adee969	Babes V3	BABES	erc721
+\\xfb275abf92498c6c8ed76736a30aae763f51541b	MaxBauer	BAUER	erc721
+\\xfb39aa12b0bb64098047264a549d5b64b9def04f	NIAZI x ANIME	NIMEZI	erc721
+\\xfb49dce6483152be2ff3c6e0c9428ca78c0248e5	Playing Tigers Edition 1	PT1	erc721
+\\xfb5d75d87be323af75e53f60a629078d37e94970	DayMare	MARE	erc721
+\\xfb8c978208b42b6fe851416c585c057283a5dbcb	Unidentified contract - BsUTeIbj8E - old		erc1155
+\\xfbd09991e4f88904f7cb83b80bc37fe422e87a53	FIRE BIRDS NFT	FIRE BIRDS NFT	erc721
+\\xfc18972fc295f4f139f3f64799e4a70b702b7ec3	Qr Pixels Friends	QPF	erc721
+\\xfc3746b2fb2774c163bd816ccc60cf3dc6fb1e05	DEGEN TOONZ MINTER REWARDS	MINTR	erc721
+\\xfc38bfffdeecd1bb76f1f0b0c82c98382e606508	RYOSHIS GUARD	RG	erc721
+\\xfc4f44568216482512564b01f64fdb9f70e24569	poqewrpooqperoqewiroeqwr		erc721
+\\xfcc57058ec232a5234d495d95fb7e593e31756bd	Praise Pals [Official]	PRAISEPALS	erc721
+\\xfce86fcde238e71928416058fc556b84eae4e831	Frogs World V3	FROGFAM	erc721
+\\xfcedc64fb3db559120ae56f537474569e8fad2d7	Angry Sphynx	ANGRY	erc721
+\\xfd0955b7dc15d892ebd42db32babb1066e9beb24	The Girl 1665	TheGirl	erc721
+\\xfd31d6655c220520609d5a3105150fffb1458492	ozuki	ozuki	erc721
+\\xfd3e667e3258823a27e7be19e22af123f14e5d54	notBanksyflower	NBF	erc721
+\\xfd43fe9d69948afe7b896d3856a1de813a536d04	Monty Experiences	MONTYEXP	erc721
+\\xfd440152723c374f9a153959aa59602b4b09d2fb	Plank Plank	PLNK	erc721
+\\xfd561ec4d16b5fdfc113bf750424cc23c41df268	Lil Bears Collection	LB	erc721
+\\xfd5b9b4bee5de4956ec67ddbea0618939b54ead6	BANNFT	🚫	erc721
+\\xfd74b97dc1a8f51ed9a8878422cc442769332aa8	Fruglys	FRUGLY	erc721
+\\xfd7d8887ed720650f6e7061ce1641bf290f91f15	I Am Bubble BOY	BBB	erc721
+\\xfd8917a36f76c4da9550f26db2faaaa242d6ae2c	Infected Ape Planet by PAP	IAP	erc721
+\\xfd8f77b8f8d5ee123bf0c4c7f7fd2b8992baf66e	Zodiacs Collection by Raquel Casilda		erc1155
+\\xfdde9ebb475c63f15bf10638a1c5b1be9d517441	2034 - Taiwan	TAIWAN	erc721
+\\xfe4cafbb063a88e5059a599c3e670508c2f83e93	EPISODES Vol.2	VOLUME2	erc721
+\\xfe7534f21425f5b79e2134afa7692ea52e4c6bb3	Nyan Cafe	CUTE	erc721
+\\xfe87b7febcf537b8b5a5373579fedd0b384bbd37	POSSESSED HEADS	HEADS	erc721
+\\xfe8d4ced8d63603fdf94c4cd5e0ef410175a8484	Remember The Future V2	FUTURE	erc721
+\\xfe93785f5ad4c5a740628f9b950bef90c67260d9	Gradient Life NFT	GRADIE	erc721
+\\xfec41f0c4e4b74aad0222277b5e75620c5c3aff0	TRANSMISSIONS | LOVEBEING	TRNSMIT	erc721
+\\xfee6d46bba0ef5ab0b86b90ce9167069127f9b09	notGrifters	NG	erc721
+\\xfee8d0abe3b894b4242f667251be353ed57845da	Masayuki Official	MYUKI	erc721
+\\xfeed43f806fc3c37f8c60da8e7f4bb9f8a8e6193	NMSL NFT	NMSL	erc721
+\\xff1ea078fe83891f0059d8b10bd13c53d53f1cc4	IT'S GONNA BE TASTY	CREAM	erc721
+\\xff1faf35783383852ae7b96a637abe68843b2c08	Old Legacy	CV	erc721
+\\xff292aef2d6297035f127ef1de46db0a265b2c90	NoonBirds	NOON	erc721
+\\xff465c9f5d5c00190c9de34646ff2aab4daa622c	# HELPUKRAINE		erc1155
+\\xff4b0f47a253c5e87747bd50ff53cae4ccdd64af	SUDOBURGER: INGREDIENTS	ING	erc1155
+\\xff4cc79435603ff1af8cc90832e452bf54bf18a4	Baboonverse Official Collections	BABOON	erc721
+\\xff603ffef662032eb0d0332eb0523f3e4f8debbd	MoonSkull NFT	MoonSkull	erc721
+\\xff718e345ce20f4531f546f66243efbed0aeadae	The Matrix Avatars - Blue Pill	MATRIXBLUE	erc721
+\\xff80bd43e3f0e414afc70cb8ac1d3f0e6a303a2f	SYLTARE, Dawn of East	SYL	erc721
+\\xff894ea844552dc8a2c539d07a3458100cb38a39	FlipBirbs	FLIPBIRBS	erc721
+\\xff98cef505c728701a913ab03c46b06d690ff114	CyberE1	CE1	erc721
+\\xffbe1944d868bb909cbade27674dd3670472ead4	Palm Sprung	PLMSPRNG	erc721
+\\xffce5f9b3ef3ea9ab68591ea268d36c8f216bd02	DGA Token Editions		erc1155
+\\xfffbb85f395267818442013e6b5245ee738de85b	Snug - Metaverse Exhibition	snug	erc721
 \.
 
 
