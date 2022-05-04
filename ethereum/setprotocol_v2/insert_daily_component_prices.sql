@@ -134,7 +134,25 @@ with initial_components as (
   left join tokens_from_paprika tfp on ac.mapped_component_address = tfp.contract_address
   where tfp.contract_address is null
 )
+-- The insertion operation is broken up into multiple queries that "forget" the last known price
+-- so we should re-introduce the "last known price" from the table so it can be used in imputations
+, anchor_prices as (
+  select dcp.date
+    , dcp.component_address
+    , dcp.symbol
+    , dcp.avg_price_usd as avg_price
+  from setprotocol_v2.daily_component_prices dcp
+  -- from dune_user_generated.daily_component_prices dcp
+  inner join missing_components_mapped mc on dcp.component_address = mc.component_address
+  where dcp.date = start_time::date - interval '1 day'
+)
 , daily_component_prices_usd_passing as (
+  select date
+    , component_address
+    , symbol
+    , avg_price
+  from anchor_prices
+  union
   select p.hour::date as date
     , mc.component_address
     , coalesce(mc.pre_mapped_symbol, p.symbol) as symbol
