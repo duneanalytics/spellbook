@@ -1,5 +1,5 @@
 -- grabs a snapshot of each set's position multiplier at midnight UTC of each day
-create or replace view setprotocol_v2.daily_position_multipliers as 
+create or replace view setprotocol_v2.view_daily_position_multipliers as 
 
 with position_multiplier_changes as (
   -- When the contract is created, assume the multiplier is 1
@@ -45,5 +45,5 @@ with position_multiplier_changes as (
     and d.day < coalesce(pmc.next_day,now()::date) -- if it's missing that means it's the last entry in the series
     and entry_num = 1 -- get the last position change of each day
 )
-select * from daily_position_multipliers
+select * from daily_position_multipliers;
 

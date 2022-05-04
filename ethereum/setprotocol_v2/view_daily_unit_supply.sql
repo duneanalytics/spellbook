@@ -1,4 +1,4 @@
-create or replace view setprotocol_v2.daily_unit_supply as
+create or replace view setprotocol_v2.view_daily_unit_supply as
 
 with set_balance_changes as (
   -- mints
@@ -38,3 +38,4 @@ with set_balance_changes as (
 )
 
 select * from daily_balances
+;

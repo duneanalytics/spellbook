@@ -1,7 +1,7 @@
 -- Pull prices from approx_prices_from_dex_data
 -- Note that this pulls from erc20.tokens, so if the token is not in there then we won't have the price
 
-create or replace view setprotocol_v2.daily_component_prices as 
+create or replace view setprotocol_v2.view_daily_component_prices as 
 
 with initial_components as (
   -- Get the initial components from the create function

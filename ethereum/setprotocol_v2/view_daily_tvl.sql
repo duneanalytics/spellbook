@@ -1,5 +1,5 @@
 -- drop view if exists setprotocol_v2.daily_tvl_raw;
-create or replace view setprotocol_v2.daily_tvl_raw as 
+create or replace view setprotocol_v2.view_daily_tvl_raw as 
 
 select dp.set_address
   , dp.component_token_address
@@ -10,10 +10,11 @@ select dp.set_address
   , dcp.data_source
   , dcp.avg_price_usd
   , dcp.avg_price_eth
-from setprotocol_v2.daily_positions dp
-inner join setprotocol_v2.daily_unit_supply ds
+from setprotocol_v2.view_daily_positions dp
+inner join setprotocol_v2.view_daily_unit_supply ds
   on ds.set_address = dp.set_address
   and ds.day = dp.day
 inner join setprotocol_v2.daily_component_prices dcp -- note that this depends on erc20.tokens
   on dcp.component_address = dp.component_token_address --TODO: standardize the naming
   and dcp.date = dp.day
+  ;

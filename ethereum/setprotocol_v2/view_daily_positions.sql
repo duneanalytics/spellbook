@@ -2,7 +2,7 @@
 
 -- drop view if exists setprotocol_v2.daily_positions;
 
-create or replace view setprotocol_v2.daily_positions as 
+create or replace view setprotocol_v2.view_daily_positions as 
 with initial_components as (
   -- Get the initial components from the create function
   select output_0 as set_address
@@ -88,4 +88,4 @@ with initial_components as (
     and d.day < coalesce(pc.next_day,now()::date + interval '1 day') -- if it's missing that means it's the last entry in the series
     and entry_num = 1 -- get the last position change of each day
 )
-select * from daily_positions
+select * from daily_positions;

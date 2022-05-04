@@ -1,6 +1,6 @@
 -- grabs a snapshot of each set's position at midnight UTC of each day
 
-create or replace view setprotocol_v2.daily_positions as 
+create or replace view setprotocol_v2.view_daily_positions as 
 with initial_components as (
   -- Get the initial components from the create function
   select output_0 as set_address
@@ -90,3 +90,4 @@ with initial_components as (
     and entry_num = 1 -- get the last position change of each day
 )
 select * from daily_positions
+;

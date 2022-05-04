@@ -8,11 +8,11 @@ select dp.set_address
   , ds.supply as set_supply
   , dcp.price_usd
   , dcp.price_eth
-from setprotocol_v2.daily_positions dp
-inner join setprotocol_v2.daily_unit_supply ds
+from setprotocol_v2.view_daily_positions dp
+inner join setprotocol_v2.view_daily_unit_supply ds
   on ds.set_address = dp.set_address
   and ds.day = dp.day
-inner join setprotocol_V2.daily_component_prices dcp -- note that this depends on erc20.tokens
+inner join setprotocol_V2.view_daily_component_prices dcp -- note that this depends on erc20.tokens
   on dcp.component_address = dp.component_token_address --TODO: standardize the naming
   and dcp.day = dp.day
-  
+  ;
