@@ -263,7 +263,7 @@ INSERT INTO cron.job (schedule, command)
 VALUES ('20 0,12 * * *', $$
     SELECT setprotocol_v2.insert_daily_component_prices(
         (SELECT date_trunc('day', now()) - interval '3 days'),
-        (SELECT date_trunc('day', now())));
+        (SELECT date_trunc('day', now()) + interval '1 day')); -- the insert function is noninclusive of the end date, so add a day
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 
