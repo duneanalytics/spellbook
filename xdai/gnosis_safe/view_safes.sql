@@ -30,6 +30,6 @@ COMMIT;
 
 CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS view_safes_unique_idx ON gnosis_safe.view_safes (address);
 
-INSERT INTO cron.job (schedule, command)
-VALUES ('0 0 * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_safe.view_safes')
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+-- INSERT INTO cron.job (schedule, command)
+-- VALUES ('0 0 * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_safe.view_safes')
+-- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
