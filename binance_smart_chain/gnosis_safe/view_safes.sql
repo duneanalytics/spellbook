@@ -10,6 +10,7 @@ CREATE MATERIALIZED VIEW gnosis_safe.view_safes AS
         AND et.call_type = 'delegatecall' -- The delegate call to the master copy is the Safe address
         AND substring(et."input" for 4) = '\xb63e800d' -- setup method of v1.1.1
         AND et."to" = '\x34cfac646f301356faa8b21e94227e3583fe3f5f'  -- mastercopy v1.1.1
+        AND gas_used > 0  -- to ensure the setup call was successful
     
     UNION ALL
     

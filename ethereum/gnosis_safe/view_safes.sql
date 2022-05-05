@@ -22,6 +22,7 @@ CREATE MATERIALIZED VIEW gnosis_safe.view_safes AS
                 '\x6851d6fdfafd08c0295c392436245e5bc78b0185')  -- mastercopy v1.2.0
             )
         )
+        AND gas_used > 0  -- to ensure the setup call was successful
         
     UNION ALL
     
