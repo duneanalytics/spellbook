@@ -5,13 +5,10 @@ CREATE MATERIALIZED VIEW gnosis_safe.view_safes AS
     SELECT
     	et.from AS address,
     	et.block_time AS creation_time
-    FROM ethereum.traces et 
+    FROM xdai.traces et 
     WHERE et.success = True
         AND et.call_type = 'delegatecall' -- The delegate call to the master copy is the Safe address
         AND (
-            (substring(et."input" for 4) = '\x0ec78d9e' -- setup methods of v0.1.0
-                AND et."to" = '\x8942595A2dC5181Df0465AF0D7be08c8f23C93af') -- mastercopy v0.1.0
-            OR
             (substring(et."input" for 4) = '\xa97ab18a' -- setup methods of v1.0.0
                 AND et."to" = '\xb6029ea3b2c51d09a50b53ca8012feeb05bda35a') -- mastercopy v1.0.0
             OR
@@ -23,14 +20,16 @@ CREATE MATERIALIZED VIEW gnosis_safe.view_safes AS
             )
         )
         AND gas_used > 0  -- to ensure the setup call was successful
-        
+
     UNION ALL
-    
+
     SELECT contract_address AS address, evt_block_time AS creation_time
-    FROM gnosis_safe."GnosisSafev1.3.0_evt_SafeSetup";
+    FROM gnosis_safe."GnosisSafeL2_v1_3_0_evt_SafeSetup";
+
 COMMIT;
+
 CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS view_safes_unique_idx ON gnosis_safe.view_safes (address);
 
 -- INSERT INTO cron.job (schedule, command)
--- VALUES ('0 0 * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_safe.view_safes$$)
+-- VALUES ('0 0 * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_safe.view_safes')
 -- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
