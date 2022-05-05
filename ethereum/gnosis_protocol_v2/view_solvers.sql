@@ -1,6 +1,11 @@
 BEGIN;
+DROP MATERIALIZED VIEW IF EXISTS gnosis_protocol_v2.view_batches; -- due to downstream dependency, drop view_batches -- remember to rebuild after this script!
+COMMIT;
+BEGIN;
 DROP MATERIALIZED VIEW IF EXISTS gnosis_protocol_v2.view_solvers;
+COMMIT;
 
+BEGIN;
 CREATE MATERIALIZED VIEW gnosis_protocol_v2.view_solvers (address, environment, name, active) AS
 WITH
 -- Aggregate the solver added and removed events into a single table
@@ -74,8 +79,9 @@ from registered_solvers
 
 CREATE UNIQUE INDEX IF NOT EXISTS view_solvers_address_unique_idx ON gnosis_protocol_v2.view_solvers (address);
 
--- This job updates the view every half day to capture any new (but currently uncatalogued solvers)
-INSERT INTO cron.job (schedule, command)
-VALUES ('0 */12 * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol_v2.view_solvers')
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;
+
+-- -- This job updates the view every half day to capture any new (but currently uncatalogued solvers)
+-- INSERT INTO cron.job (schedule, command)
+-- VALUES ('0 */12 * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol_v2.view_solvers')
+-- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
