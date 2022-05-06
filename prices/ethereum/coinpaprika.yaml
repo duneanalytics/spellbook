@@ -2076,3 +2076,8 @@
   symbol: COW
   address: 0xDEf1CA1fb7FBcDC777520aa7f396b4E015F497aB
   decimals: 18
+- name: Yield Optimisation Platform
+  id: yop-yop
+  symbol: YOP
+  address: 0xae1eaae3f627aaca434127644371b67b18444051
+  decimals: 8
