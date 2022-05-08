@@ -66,8 +66,13 @@ WITH rows AS (
             "destAmount" AS token_a_amount_raw,
             "srcAmount" AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            "destAsset" AS token_a_address,
-            "srcAsset" AS token_b_address,
+        --handle for OP native ETH placeholder
+        CASE WHEN "destAsset" = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'::bytea
+            ELSE "destAsset"
+        END AS token_a_address,
+        CASE WHEN "srcAsset" = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'::bytea
+            ELSE "srcAsset"
+        END AS token_b_address,
             t.contract_address as exchange_contract_address,
             t.evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
