@@ -85,6 +85,14 @@ COPY nft.tokens (contract_address, project_name) FROM stdin;
 \\x56d01d6273d8f3532c966a6316a2ce4ee5d0dd03	World of African Women
 \\x419195da41e96da8c71164d0e71b6efd0d73c3ac	OptiDudes
 \\xf534848023ba851c6265e8f99a919c4d5fd05cd0	Thales Royale Passport
+\\xF25CBa0AE45496E71117442378F820b2cf09e9f1	ROCKETS - AstarCats Official
+\\xbb0bbd5c908e9e0267fb3c8fb5260e71126a9ad8	Xeno Gems
+\\xC16aCAdf99E4540E6f4E6Da816fd6D2A2C6E1d4F	.op
+\\xfaC7fe5e11FcbC837c2E115626324CAAf3A56dD9	OmniForce
+\\x0F75f5442845C24Ea29ae5b99023b8D351001840	Warzilla
+\\x4cE3F32C1091a57e2B475F660fba211fF7815c18	OmniMonke
+\\xEf0e8BA283b209cBBD0F1FbF958a436D180fbeE2	Ashes of Light
+
 \.
 
 COMMIT;
