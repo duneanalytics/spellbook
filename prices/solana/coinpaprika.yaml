@@ -57,3 +57,8 @@
   symbol: GST
   address: AFbX8oGjGpmVFywbVouvhQSRmiW2aR1mohfahi4Y2AdB
   decimals: 9
+- name: aury-aurory
+  id: aury-aurory
+  symbol: AURY
+  address: AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP
+  decimals: 9
