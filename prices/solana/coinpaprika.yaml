@@ -47,3 +47,8 @@
   symbol: USDT
   address: Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB
   decimals: 6
+- name: shdw-genesysgo-shadow
+  id: shdw-genesysgo-shadow
+  symbol: SHDW
+  address: SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y
+  decimals: 9
