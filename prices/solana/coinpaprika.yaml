@@ -52,3 +52,8 @@
   symbol: SHDW
   address: SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y
   decimals: 9
+- name: gst-gst
+  id: gst-gst
+  symbol: GST
+  address: AFbX8oGjGpmVFywbVouvhQSRmiW2aR1mohfahi4Y2AdB
+  decimals: 9
