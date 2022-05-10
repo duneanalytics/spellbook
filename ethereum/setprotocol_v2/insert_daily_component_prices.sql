@@ -352,7 +352,6 @@ with cwbtc_wbtc_exchange_rate as (
 )
 , day_series as (
   select generate_series(start_time::date, end_time::date, '1 day') as day
-  from cwbtc_wbtc_exchange_rate
 )
 , avg_daily_wbtc_price as (
     select minute::date as day
@@ -416,6 +415,7 @@ with cwbtc_wbtc_exchange_rate as (
     from avg_daily_cwbtc_wbtc_exchange_rate_imputed r
     inner join avg_daily_wbtc_price pb on r.day = pb.day
     inner join avg_daily_eth_price pe on r.day = pe.day
+    where r.one_cwbtc_in_wbtc is not null
 )
 , rows as (
   insert into setprotocol_v2.daily_component_prices (
