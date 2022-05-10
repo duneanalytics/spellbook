@@ -519,3 +519,33 @@
   id: bund-bundles
   name: bund_bundles
   symbol: BUND
+- address: '0xfb6115445bff7b52feb98650c87f44907e58f802'
+  decimals: 18
+  id: aave-aave-token
+  name: Aave Token
+  symbol: AAVE
+- address: '0x250632378e573c6be1ac2f97fcdf00515d0aa91b'
+  decimals: 18
+  id: beth-binance-beacon-eth
+  name: Binance Beacon ETH
+  symbol: BETH
+- address: '0xcf6bb5389c92bdda8a3747ddb454cb7a64626c63'
+  decimals: 18
+  id: xvs-venus
+  name: Venus
+  symbol: XVS
+- address: '0x156ab3346823b651294766e23e6cf87254d68962'
+  decimals: 6
+  id: luna-luna-wormhole
+  name: LUNA (Wormhole)
+  symbol: LUNA
+- address: '0x3d4350cd54aef9f9b2c29435e0fa809957b3f30a'
+  decimals: 6
+  id: ust-ust-wormhole
+  name: UST (Wormhole)
+  symbol: UST
+- address: '0xcc42724c6683b7e57334c4e856f4c9965ed682bd'
+  decimals: 18
+  id: matic-polygon
+  name: Polygon
+  symbol: MATIC
