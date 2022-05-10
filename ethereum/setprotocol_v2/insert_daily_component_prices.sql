@@ -254,7 +254,7 @@ with ceth_eth_exchange_rate as (
     and call_block_time < end_time
 )
 , day_series as (
-  select generate_series(min(call_block_time::date), end_time, '1 day') as day
+  select generate_series(start_time::date, end_time::date, '1 day') as day
   from ceth_eth_exchange_rate
 )
 , anchor_prices as (
@@ -351,7 +351,7 @@ with cwbtc_wbtc_exchange_rate as (
     and call_block_time < end_time
 )
 , day_series as (
-  select generate_series(min(call_block_time::date), now(), '1 day') as day
+  select generate_series(start_time::date, end_time::date, '1 day') as day
   from cwbtc_wbtc_exchange_rate
 )
 , avg_daily_wbtc_price as (
