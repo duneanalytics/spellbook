@@ -1,6 +1,6 @@
 CREATE OR REPLACE VIEW curvefi.view_pools (
     version, 
-    p.name,
+    name,
     symbol,
     pool_address,
     decoded,
