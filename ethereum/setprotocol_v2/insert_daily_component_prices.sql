@@ -254,7 +254,8 @@ with ceth_eth_exchange_rate as (
     and call_block_time < end_time
 )
 , day_series as (
-  select generate_series(start_time::date, end_time::date, '1 day') as day
+  select generate_series(start_time::date - interval '1 day' -- include an extra day for the anchor price
+                        , end_time::date, '1 day') as day
   from ceth_eth_exchange_rate
 )
 , anchor_prices as (
@@ -351,14 +352,15 @@ with cwbtc_wbtc_exchange_rate as (
     and call_block_time < end_time
 )
 , day_series as (
-  select generate_series(start_time::date, end_time::date, '1 day') as day
+  select generate_series(start_time::date - interval '1 day' -- include an extra day for the anchor price
+                        , end_time::date, '1 day') as day
 )
 , avg_daily_wbtc_price as (
     select minute::date as day
       , avg(price) as wbtc_price
     from prices.usd
     where contract_address = '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599' -- WBTC contract address
-    and minute >= start_time
+    and minute >= start_time - interval '1 day' -- include one extra day for the anchor price
     and minute < end_time
     group by minute::date
 )
