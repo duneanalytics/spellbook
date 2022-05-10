@@ -1,6 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS aave;
 
-CREATE TABLE IF NOT EXISTS aave.aave_daily_treasury_events (   
+CREATE TABLE IF NOT EXISTS aave.aave_daily_treasury_events (
 contract_address bytea,
 version text,
 evt_day timestamptz,
@@ -30,7 +30,7 @@ other_fees numeric,
 swap_out numeric,
 swap_in numeric,
 gas_out numeric,
-	PRIMARY KEY (contract_address, version, evt_day)
+	UNIQUE (contract_address, version, evt_day)
 
 );
 
