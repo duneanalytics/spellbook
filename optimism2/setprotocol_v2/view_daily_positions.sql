@@ -1,7 +1,4 @@
 -- grabs a snapshot of each set's position at midnight UTC of each day
-
--- drop view if exists dune_user_generated.set_protocol_daily_positions;
-
 create or replace view setprotocol_v2.view_daily_positions as 
 with initial_components as (
   -- Get the initial components from the create function
@@ -82,3 +79,4 @@ with initial_components as (
     and entry_num = 1 -- get the last position change of each day
 )
 select * from daily_positions
+;
