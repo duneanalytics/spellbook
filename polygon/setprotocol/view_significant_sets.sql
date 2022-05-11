@@ -31,3 +31,6 @@ with set_balance_changes as (
   group by 1
   having sum(quantity) > 10 -- filter out all sets that have less than 10 unit supply
 )
+select *
+from significant_sets
+;
