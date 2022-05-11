@@ -29,4 +29,4 @@ CREATE INDEX IF NOT EXISTS perpetuals_trades_project_idx ON perpetuals.trades (p
 CREATE INDEX IF NOT EXISTS perpetuals_trades_block_time_idx ON perpetuals.trades USING BRIN (block_time);
 CREATE INDEX IF NOT EXISTS perpetuals_trades_market_address_idx ON perpetuals.trades (market_address);
 CREATE INDEX IF NOT EXISTS perpetuals_trades_block_time_project_idx ON perpetuals.trades (block_time, project);
-CREATE INDEX CONCURRENTLY IF NOT EXISTS perpetuals_trades_volume_usd_idx ON dex.trades (volume_usd);
+CREATE INDEX CONCURRENTLY IF NOT EXISTS perpetuals_trades_volume_usd_idx ON perpetuals.trades (volume_usd);
