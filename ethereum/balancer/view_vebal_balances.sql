@@ -17,11 +17,11 @@ WITH base_locks AS (
     
     decorated_locks AS (
         SELECT
-          provider, unlocked_at, updated_at, FIRST_VALUE(locked_at) OVER (PARTITION BY provider ORDER BY updated_at) AS locked_at
+          provider, unlocked_at, updated_at, FIRST_VALUE(locked_at) OVER (PARTITION BY locked_partition, provider ORDER BY updated_at) AS locked_at
         FROM (
           SELECT
             *,
-            SUM(CASE WHEN locked_at IS NULL THEN 0 ELSE 1 END) OVER (PARTITION BY provider ORDER BY updated_at) AS partition
+            SUM(CASE WHEN locked_at IS NULL THEN 0 ELSE 1 END) OVER (PARTITION BY provider ORDER BY updated_at) AS locked_partition
           FROM base_locks
         ) AS foo
     ),
