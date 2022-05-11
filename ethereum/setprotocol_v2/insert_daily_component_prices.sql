@@ -256,7 +256,6 @@ with ceth_eth_exchange_rate as (
 , day_series as (
   select generate_series(start_time::date - interval '1 day' -- include an extra day for the anchor price
                         , end_time::date, '1 day') as day
-  from ceth_eth_exchange_rate
 )
 , anchor_prices as (
     select dcp.date as day
