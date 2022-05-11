@@ -1,5 +1,7 @@
 -- grabs a snapshot of each set's position at midnight UTC of each day
 
+-- drop view if exists dune_user_generated.set_protocol_daily_positions;
+
 create or replace view setprotocol_v2.view_daily_positions as 
 with initial_components as (
   -- Get the initial components from the create function
@@ -23,7 +25,7 @@ with initial_components as (
     , c.day
   from initial_components c 
   left join erc20.tokens t on c.component_token_address = t.contract_address
-  union all
+  union
   -- subsequent component_level position changes
   select s."contract_address" as set_address
     , s."_component" as component_token_address
@@ -34,7 +36,7 @@ with initial_components as (
     , evt_block_time::date as day
   from setprotocol_v2."SetToken_evt_ExternalPositionUnitEdited" s
   left join erc20.tokens t on s."_component" = t.contract_address
-  union all
+  union
   select s."contract_address" as set_address
     , s."_component" as component_token_address
     , t.symbol as component_symbol
@@ -43,16 +45,6 @@ with initial_components as (
     , evt_block_time as timestamp
     , evt_block_time::date as day
   from setprotocol_v2."SetToken_evt_DefaultPositionUnitEdited" s
-  left join erc20.tokens t on s."_component" = t.contract_address
-  union all
-  select s."contract_address" as set_address
-    , s."_component" as component_token_address
-    , t.symbol as component_symbol
-    , 0 as raw_real_units
-    , 0 as real_units_per_set_token
-    , call_block_time as timestamp
-    , call_block_time::date as day
-  from setprotocol_v2."SetToken_call_removeComponent" s
   left join erc20.tokens t on s."_component" = t.contract_address
 )
 , position_changes_ranked as (
@@ -90,4 +82,3 @@ with initial_components as (
     and entry_num = 1 -- get the last position change of each day
 )
 select * from daily_positions
-;
