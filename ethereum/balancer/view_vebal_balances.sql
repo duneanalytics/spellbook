@@ -17,7 +17,7 @@ WITH base_locks AS (
     
     decorated_locks AS (
         SELECT
-          provider, unlocked_at, updated_at, FIRST_VALUE(locked_at) OVER (PARTITION BY locked_partition, provider ORDER BY updated_at) AS locked_at
+          provider, unlocked_at, updated_at, FIRST_VALUE(locked_at) OVER (PARTITION BY provider, locked_partition ORDER BY updated_at) AS locked_at
         FROM (
           SELECT
             *,
