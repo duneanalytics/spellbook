@@ -52,4 +52,5 @@ with set_balance_changes as (
   group by 1,2
   order by 2,1
 )
-select * from daily_balances 
+select * from daily_balances
+;

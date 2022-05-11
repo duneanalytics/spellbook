@@ -64,3 +64,4 @@ with initial_components as (
   inner join daily_eth_price_usd e on p.date = e.date
 )
 select * from paprika_price_feed
+;

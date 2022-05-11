@@ -92,3 +92,4 @@ with initial_components as (
     and entry_num = 1 -- get the last position change of each day
 )
 select * from daily_positions
+;
