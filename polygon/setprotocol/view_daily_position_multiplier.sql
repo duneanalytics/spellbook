@@ -15,7 +15,7 @@ with position_multiplier_changes as (
         as next_day
         -- this gives the day that this particular snapshot value is valid until
   from setprotocol."SetToken_evt_PositionMultiplierEdited"
-  inner join dune_user_generated.set_protocol_significant_sets ss on "contract_address" = ss.set_address
+  inner join setprotocol.view_significant_sets ss on "contract_address" = ss.set_address
 )
 , day_series as (
   SELECT generate_series(min(day), now(), '1 day') AS day 
@@ -32,4 +32,4 @@ with position_multiplier_changes as (
     and entry_num = 1 -- get the last position change of each day
 )
 select * from daily_position_multipliers
-
+;
