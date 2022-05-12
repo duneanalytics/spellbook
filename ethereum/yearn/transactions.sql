@@ -129,7 +129,7 @@ WHERE NOT EXISTS (
     AND evt_block_time < '2021-01-01'
 );
 
-fill history
+-- fill history
 SELECT yearn.insert_yearn_transactions(
     '2021-01-01',
     '2022-01-01',
