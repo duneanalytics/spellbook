@@ -340,13 +340,32 @@ SELECT count(*) + r INTO r from rows;
 -- Step 4: Update prices for cWBTC (and other cTokens in the future) using Compound-specific query
 -- exchangeRate (https://compound.finance/docs#protocol-math)
 -- one_cWBTC_in_WBTC is strictly increasing over time
-with cwbtc_wbtc_exchange_rate as (
-    select output_0 as exchange_rate_raw
+with components as (
+  -- this is the list of components that are pegged to wBTC
+  select '\xc11b1268c1a384e55c48c2391d8d480264a3a7f4'::bytea as component_address -- cWBTC address
+  union
+  select '\xccF4429DB6322D5C611ee964527D42E5d685DD6a'::bytea as component_addrses -- cWBTC2, erc20Delegatorcall
+)
+, cwbtc_wbtc_exchange_rate as (
+    select contract_address
+      , output_0 as exchange_rate_raw
       , output_0 / (1.0 * 10 ^ (18 + 8 - 8)) as one_cwbtc_in_wbtc
       , call_block_time
     from compound_v2."cErc20_call_exchangeRateCurrent"
+    inner join components c on contract_address = component_address
     where call_success 
-    and contract_address = '\xc11b1268c1a384e55c48c2391d8d480264a3a7f4' -- cWBTC address
+    -- and contract_address = '\xc11b1268c1a384e55c48c2391d8d480264a3a7f4' -- cWBTC address
+    and call_block_time >= start_time
+    and call_block_time < end_time
+    union
+    select contract_address
+      , output_0 as exchange_rate_raw
+      , output_0 / (1.0 * 10 ^ (18 + 8 - 8)) as one_cwbtc_in_wbtc
+      , call_block_time
+    from compound_v2."CErc20Delegator_call_exchangeRateCurrent"
+    inner join components c on contract_address = component_address
+    where call_success 
+    -- and contract_address = '\xccF4429DB6322D5C611ee964527D42E5d685DD6a' -- cWBTC address
     and call_block_time >= start_time
     and call_block_time < end_time
 )
@@ -374,40 +393,50 @@ with cwbtc_wbtc_exchange_rate as (
 )
 , anchor_prices as (
     select dcp.date as day
-    -- , dcp.component_address
+     , dcp.component_address
     -- , dcp.symbol
     , dcp.avg_price_usd / pw.wbtc_price as one_cwbtc_in_wbtc
   from setprotocol_v2.daily_component_prices dcp
   -- from dune_user_generated.daily_component_prices dcp
   inner join avg_daily_wbtc_price pw on dcp.date = pw.day
+  inner join components c on dcp.component_address = c.component_address
   where dcp.date = start_time::date - interval '1 day'
-    and dcp.component_address = '\xc11b1268c1a384e55c48c2391d8d480264a3a7f4'::bytea -- cWBTC address
+  --  and dcp.component_address = '\xc11b1268c1a384e55c48c2391d8d480264a3a7f4'::bytea -- cWBTC address
 )
 , avg_daily_cwbtc_wbtc_exchange_rate as (
     select day
+        , component_address
         , one_cwbtc_in_wbtc
     from anchor_prices
     union
     select call_block_time::date as day
+      , contract_address as component_address
       , avg(one_cwbtc_in_wbtc) as one_cwbtc_in_wbtc
     from cwbtc_wbtc_exchange_rate
-    group by call_block_time::date
+    group by 1,2
 )
--- Impute daily cWBTC to WBTC exchange rate with the last known value
--- Becuase the exchange rate is strictly increasing, this results in a slight price underestimate
--- when cErc20_call_exchangeRateCurrent data availability is low
+, avg_daily_cwbtc_wbtc_exchange_rate_lead as (
+  select day
+        , component_address
+        , one_cwbtc_in_wbtc
+        , lead(day, 1) over (partition by component_address order by day) as next_day
+            -- this gives the day that this particular snapshot value is valid until
+    from avg_daily_cwbtc_wbtc_exchange_rate 
+)
 , avg_daily_cwbtc_wbtc_exchange_rate_imputed as (
     select d.day
-      , max(r.one_cwbtc_in_wbtc) over (order by d.day) as one_cwbtc_in_wbtc -- this only works because the exchange rate is strictly increasing
-    from day_series d
-    left join avg_daily_cwbtc_wbtc_exchange_rate r on d.day = r.day
+        , p.component_address
+        , p.one_cwbtc_in_wbtc
+    from day_series d 
+    inner join avg_daily_cwbtc_wbtc_exchange_rate_lead p
+        on d.day >= p.day
+        and d.day < coalesce(p.next_day,now()::date + 1) -- if it's missing that means it's the last entry in the series
 )
-
 , avg_daily_cwbtc_price as (
-    select '\xc11b1268c1a384e55c48c2391d8d480264a3a7f4'::bytea as component_address -- cWBTC address
+    select r.component_address 
         , 'cWBTC' as symbol
         , r.day as date
-        , 'ctoken_feed' as data_source
+        , 'cwbtc_feed' as data_source
       -- , r.one_cwbtc_in_wbtc
       -- , p.wbtc_price
       , r.one_cwbtc_in_wbtc * pb.wbtc_price as avg_price_usd
