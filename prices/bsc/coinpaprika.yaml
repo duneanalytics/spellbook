@@ -549,3 +549,18 @@
   id: matic-polygon
   name: Polygon
   symbol: MATIC
+  - address: '0x1FFD0b47127fdd4097E54521C9E2c7f0D66AafC5'
+  decimals: 18
+  id: txl-tixl
+  name: Autobahn.network
+  symbol: TXL
+- address: '0x92868a5255c628da08f550a858a802f5351c5223'
+  decimals: 18
+  id: bridge-cross-chain-bridge-token
+  name: Cross-Chain-Bridge-Token
+  symbol: BRIDGE 
+- address: '0x464FdB8AFFC9bac185A7393fd4298137866DCFB8'
+  decimals: 18
+  id: realm-realm
+  name: REALM
+  symbol: REALM 
