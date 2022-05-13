@@ -796,12 +796,12 @@ V1_poolDeployed AS (
             _fee AS out_fee,
             output_0 AS token_address,
             output_0 AS deposit_contract,
+            _coin AS coin0,
             CASE 
                 WHEN _base_pool = '\xbEbc44782C7dB0a1A60Cb6fe97d0b483032FF1C7' THEN '\x6c3F90f043a72FA612cbac8115EE7e52BDe6E490'::bytea --changing from swap to token contract
                 WHEN _base_pool = '\x7fc77b5c7614e1533320ea6ddc2eb61fa00a9714' THEN '\x075b1bb99792c9E1041bA13afEf80C91a1e70fB3'::bytea --changing from swap to token contract
                 WHEN _base_pool = '\x93054188d876f558f4a66b2ef1d97d16edf0895b' THEN '\x49849C98ae39Fff122806C06791Fa73784FB3675'::bytea --changing from swap to token contract
-                END AS coin0,
-            _coin AS coin1,
+                END AS coin1,
             NULL::bytea AS coin2,
             NULL::bytea AS coin3,
             _coin AS undercoin0, --Listing underlying coins for the ExchangeUnderlying function
