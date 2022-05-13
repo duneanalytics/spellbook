@@ -549,6 +549,11 @@
   id: matic-polygon
   name: Polygon
   symbol: MATIC
+- address: '0x14a9a94e555fdd54c21d7f7e328e61d7ebece54b'
+  decimals: 18
+  id: loot-lootex-token
+  name: LOOT Token
+  symbol: LOOT
   - address: '0x1FFD0b47127fdd4097E54521C9E2c7f0D66AafC5'
   decimals: 18
   id: txl-tixl
@@ -563,4 +568,4 @@
   decimals: 18
   id: realm-realm
   name: REALM
-  symbol: REALM 
+  symbol: REALM
