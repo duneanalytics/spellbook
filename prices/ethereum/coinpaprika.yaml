@@ -2081,3 +2081,8 @@
   symbol: YOP
   address: 0xae1eaae3f627aaca434127644371b67b18444051
   decimals: 8
+- name: LOOT Token
+  id: loot-lootex-token
+  symbol: LOOT
+  address: 0x721A1B990699eE9D90b6327FaaD0A3E840aE8335
+  decimals: 18
