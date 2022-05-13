@@ -549,3 +549,9 @@
   id: matic-polygon
   name: Polygon
   symbol: MATIC
+- name: LOOT Token
+  id: loot-lootex-token
+  symbol: LOOT
+  address: '0x14a9a94e555fdd54c21d7f7e328e61d7ebece54b'
+  decimals: 18
+  
