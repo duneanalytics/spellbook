@@ -554,3 +554,8 @@
   id: loot-lootex-token
   name: LOOT Token
   symbol: LOOT
+- address: '0x4bd17003473389a42daf6a0a729f6fdb328bbbd7'
+  decimals: 18
+  id: vai-vai
+  name: Vai
+  symbol: VAI
