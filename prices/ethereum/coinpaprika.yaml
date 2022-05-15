@@ -1540,10 +1540,15 @@
   symbol: WILD
   address: 0x08a75dbc7167714ceac1a8e43a8d643a4edd625a
   decimals: 18
-- name: ohm_olympus
-  id: ohm-olympus
+- name: ohm_olympus_v1
+  id: ohm-olympus-v1
   symbol: OHM
   address: 0x383518188c0c6d7730d91b2c03a03c837814a899
+  decimals: 9
+- name: ohm_olympus_v2
+  id: ohmv2-olympus-v2
+  symbol: OHM
+  address: 0x64aa3364F17a4D01c6f1751Fd97C2BD3D7e7f1D5
   decimals: 9
 - name: strong_strong
   id: strong-strong
