@@ -1,4 +1,4 @@
-CREATE TABLE yearn.transactions (
+CREATE TABLE IF NOT EXISTS yearn.transactions (
     from_address bytea,
     to_address bytea,
     amount numeric,
@@ -10,7 +10,8 @@ CREATE TABLE yearn.transactions (
     yvault_deposit_token_symbol text,
     yvault_contract bytea,
     transaction_type text,
-    yearn_type text
+    yearn_type text,
+    PRIMARY KEY (evt_tx_hash, evt_index)
 );
 
 CREATE OR REPLACE FUNCTION yearn.insert_yearn_transactions(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer

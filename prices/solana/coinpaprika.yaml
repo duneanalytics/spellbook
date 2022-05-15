@@ -47,3 +47,18 @@
   symbol: USDT
   address: Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB
   decimals: 6
+- name: shdw-genesysgo-shadow
+  id: shdw-genesysgo-shadow
+  symbol: SHDW
+  address: SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y
+  decimals: 9
+- name: gst-gst
+  id: gst-gst
+  symbol: GST
+  address: AFbX8oGjGpmVFywbVouvhQSRmiW2aR1mohfahi4Y2AdB
+  decimals: 9
+- name: aury-aurory
+  id: aury-aurory
+  symbol: AURY
+  address: AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP
+  decimals: 9
