@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS ovm2.contract_overrides (
 
 
 BEGIN;
-DELETE FROM ovm2.unverified_contracts *;
+DELETE FROM ovm2.contract_overrides *;
 
 COPY ovm2.contract_overrides (contract_address,project_name) FROM stdin;
 
