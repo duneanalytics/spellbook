@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS ovm2.contract_overrides (
 BEGIN;
 DELETE FROM ovm2.contract_overrides *;
 
-COPY ovm2.contract_overrides (contract_address,project_name) FROM stdin;
+COPY ovm2.contract_overrides (contract_address,project_name,contract_name) FROM stdin;
 
 \\xc30141B657f4216252dc59Af2e7CdB9D8792e1B0	Socket	Socket Registry
 
