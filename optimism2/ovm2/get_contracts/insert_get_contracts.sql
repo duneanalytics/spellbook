@@ -171,7 +171,7 @@ GROUP BY 1,2
 SELECT
 COALESCE(c.contract_address,erc20.contract_address) AS contract_address,
     contract_factory,
-    INITCAP(REPLACE(c.project,'_',' ')) AS contract_project,
+    c.project AS contract_project,
     COALESCE(erc20.symbol,nft.symbol) AS token_symbol, COALESCE(c.contract_name,snx.contract_name) AS contract_name, creator_address,
     created_time, is_self_destruct
     
@@ -179,28 +179,18 @@ FROM (
     SELECT cc.creator_address, contract_factory, cc.contract_address, COALESCE(cc.project, oc.namespace) AS project, oc.name AS contract_name, cc.created_time, COALESCE(is_self_destruct,false) AS is_self_destruct FROM creator_contracts cc
         LEFT JOIN optimism."contracts" oc
             ON oc."address" = cc.contract_address
--- 	To fix: some kind of fuzzy match to see if we should take the creator's mapping or not
--- 	WHERE 1 = ( --1 if we're re-running, 0 if it already exists
---                 CASE
--- 			WHEN NOT EXISTS (SELECT creators FROM creator_rows WHERE creators IS NOT NULL)
--- 			AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts WHERE contract_address = address AND COALESCE(cc.project, oc.namespace) = contract_project) 
--- 			THEN 1 --when no input or doesn't already exist, search everything
---                 WHEN cc.creator_address IN (SELECT creators FROM creator_rows) THEN 1--when input, limit to these contracts (i.e. updated mapping)
---                 ELSE 0 END
---                 )
-	-- Only pick our mapping if the names are similar. If they're completely different (i.e. multi-project contract creator, then fall back to decoded contracts)
-        -- this handles for user error when submitting contracts
-        -- examples include 'Aave and Aave_v3', 'synthetix and synthetix_futures'
-	AND 1 = ( --1 if we should grab our contract creator name mapping, 0 if we should grab from decoded contracts
+
+	WHERE 1 = ( --1 if we're re-running, 0 if it already exists
                 CASE
-                    WHEN oc."namespace" IS NULL THEN 1 --if not decoded, pick creator
-                    WHEN LOWER(oc."namespace") LIKE LOWER('%' || cc.project || '%') THEN 1 --if similar, then select our mapping
-                    WHEN LOWER(cc.project) LIKE LOWER('%' || oc."namespace" || '%') THEN 1 --if similar, then select our mapping
-                    ELSE 0
-                END
+			WHEN NOT EXISTS (SELECT creators FROM creator_rows WHERE creators IS NOT NULL)
+			AND NOT EXISTS (SELECT 1 FROM ovm2.get_contracts WHERE contract_address = address AND COALESCE(cc.project, oc.namespace) = contract_project) 
+			THEN 1 --when no input or doesn't already exist, search everything
+                WHEN cc.creator_address IN (SELECT creators FROM creator_rows) THEN 1--when input, limit to these contracts (i.e. updated mapping)
+                ELSE 0 END
                 )
 
     UNION ALL --other decoded contracts
+	
     SELECT NULL::bytea AS creator_address, NULL::bytea AS contract_factory, "address" AS contract_address, namespace AS project, name, created_at  AS created_time, , COALESCE(is_self_destruct,false) AS is_self_destruct AS is_self_destruct
     FROM optimism."contracts" oc
 	LEFT JOIN creator_contracts cc
@@ -213,16 +203,7 @@ FROM (
                 WHEN cc.creator_address IN (SELECT creators FROM creator_rows) THEN 1--when input, limit to these contracts (i.e. updated mapping)
                 ELSE 0 END
                 )
-	--Exclude if we mapped it prior
--- 	To fix: some kind of fuzzy match to see if we should take the creator's mapping or not
---     AND 0 = (
--- 		CASE
--- 		    WHEN cc."project" IS NULL THEN 0 --if not decoded, pick creator
--- 		    WHEN LOWER(oc."namespace") LIKE '%' || LOWER(cc.project) || '%' THEN 1 --if similar, then select our mapping
--- 		    WHEN LOWER(cc.project) LIKE '%' || LOWER(oc."namespace") || '%' THEN 1 --if similar, then select our mapping
--- 		    ELSE 0
--- 		END
--- 		)
+
     GROUP BY 1,2,3,4,5,6,7
     
     UNION ALL --ovm 1.0 contracts
@@ -238,17 +219,7 @@ FROM (
         WHERE NOT EXISTS (SELECT 1 FROM ovm2.get_contracts gc WHERE gc.contract_address = snx.contract_address AND 'Synthetix' = contract_project) 
 	
     GROUP BY 1,2,3,4,5,6,7
-        
-    UNION ALL --other missing genesis contracts
-    
-    SELECT NULL::bytea AS creator_address, NULL::bytea AS contract_factory, contract_address::bytea, contract_project::text, contract_name, '07-06-2021 00:00:00'::timestamptz AS created_time, false AS is_self_destruct
-        FROM (
-            values
-            ('\x8be60b5031c0686e48a079c81822173bfa1268da','Synthetix',NULL,NULL)
-            ,('\xc16251b5401087902e0956a2968CB3e0e4a52760','Celer',NULL,NULL)
-            ) a (contract_address,contract_project,erc20_symbol,contract_name)
-            WHERE NOT EXISTS (SELECT 1 FROM ovm2.get_contracts gc WHERE gc.contract_address = a.contract_address::bytea) 
-    ) c
+
 
 FULL OUTER JOIN erc20_tokens erc20 -- b/c we want to get all ERC20s that aren't in this list too.
     ON c.contract_address = erc20.contract_address
@@ -257,8 +228,16 @@ FULL OUTER JOIN nft_tokens nft
     
 )
 
-SELECT c.contract_address, INITCAP(COALESCE(c.contract_project,ovm1c.contract_project)) AS contract_project ,c.token_symbol, COALESCE(c.contract_name) AS contract_name,
-COALESCE(c.creator_address,ovm1c.creator_address) AS creator_address, COALESCE(c.created_time,ovm1c.created_time::timestamptz) AS created_time, contract_factory AS contract_creator_if_factory, , COALESCE(is_self_destruct,false) AS is_self_destruct
+SELECT c.contract_address,
+	    INITCAP(REPLACE(
+		    	--Priority order: Override name, Mapped vs Dune, Raw/Actual names
+		    	COALESCE(oc.project_name, dnm.mapped_name, c.contract_project, ovm1c.contract_project)
+		    	,'_',' ')
+	    	) AS contract_project,
+	c.token_symbol, COALESCE(oc.contract_name, c.contract_name) AS contract_name,
+	COALESCE(c.creator_address,ovm1c.creator_address) AS creator_address,
+	    COALESCE(c.created_time,ovm1c.created_time::timestamptz) AS created_time,
+	    contract_factory AS contract_creator_if_factory, COALESCE(is_self_destruct,false) AS is_self_destruct
 FROM (
 --grab the first non-null value for each (i.e. if we have the contract via both contract mapping and optimism.contracts)
     SELECT 
@@ -278,6 +257,14 @@ FROM (
     ) c
     LEFT JOIN ovm1.op_ovm1_contracts ovm1c
         ON c."contract_address" = ovm1c."contract_address" --fill in any missing contract creators
+
+	LEFT JOIN ovm2.project_name_mappings dnm --fix names for decoded contracts
+	    ON LOWER(c.contract_project) = LOWER(dune_name)
+	
+    LEFT JOIN contract_overrides ovm2.contract_overrides co --override contract maps
+	    ON c."contract_address" = co."contract_address"
+
+	
 
 
 	ON CONFLICT (contract_address) DO UPDATE SET
