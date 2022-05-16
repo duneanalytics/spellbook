@@ -9,25 +9,29 @@ SELECT gc.creator_address, MIN(created_time) AS min_created_time, MAX(created_ti
         ON cc."creator_address" = gc.creator_address
     
     WHERE
+	is_self_destruct = false
+    AND 
     (
-        (gc.contract_project IS NULL AND cc.project IS NOT NULL) -- Check if we have mappings now
-        OR 
-         (  
-            (
-            COALESCE(contract_name,token_symbol) IS NULL --Check if we have a contract name 
-            OR upper(token_symbol) IN ('ERC20','ERC721','OTHER ERC20','OTHER ERC721','OTHER ERC1155','OTHER NFT') --Check if we have a symbol now
-            )
-            AND (gc.contract_name IS NOT NULL OR gc.token_symbol IS NOT NULL)
-        )
-        AND ( -- Check if there's any reason to believe that we have an update
-                contract_address IN (SELECT "address" FROM optimism."contracts") --is it now in the contracts table
-                OR
-                contract_address IN (SELECT "contract_address" FROM erc20."tokens")--is it now in the erc20 table
-                OR
-                contract_address IN (SELECT "contract_address" FROM nft."tokens")--is it now in the nft table
-            )
-    )
-    OR lower(cc.project) != lower(gc."contract_project")
+	    (
+		(gc.contract_project IS NULL AND cc.project IS NOT NULL) -- Check if we have mappings now
+		OR 
+		 (  
+		    (
+		    COALESCE(contract_name,token_symbol) IS NULL --Check if we have a contract name 
+		    OR upper(token_symbol) IN ('ERC20','ERC721','OTHER ERC20','OTHER ERC721','OTHER ERC1155','OTHER NFT') --Check if we have a symbol now
+		    )
+		    AND (gc.contract_name IS NOT NULL OR gc.token_symbol IS NOT NULL)
+		)
+		AND ( -- Check if there's any reason to believe that we have an update
+			contract_address IN (SELECT "address" FROM optimism."contracts") --is it now in the contracts table
+			OR
+			contract_address IN (SELECT "contract_address" FROM erc20."tokens")--is it now in the erc20 table
+			OR
+			contract_address IN (SELECT "contract_address" FROM nft."tokens")--is it now in the nft table
+		    )
+	    )
+	    OR lower(cc.project) != lower(gc."contract_project")
+	)
     GROUP BY 1
 
 )
