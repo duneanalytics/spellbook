@@ -141,7 +141,7 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x8602ee2f8aaeb671e409b26d48e36dd8cc3b7ed7	ZipSwap
 \\xf7c1daf7443d7307df13c81f5f0328d4c7803e7b	BoringDAO
 \\x38e63793993ae54be374d129f34a3faf2c382e97	TokenFunder
-\\xa990077c3205cbdf861e17fa532eeb069ce9ff96	EXCLUDE
+-- \\xa990077c3205cbdf861e17fa532eeb069ce9ff96	EXCLUDE
 \\xbb6e024b9cffacb947a71991e386681b1cd1477d	Tornado Cash
 \\x512472840327530ea03cce6f58966b221f3a8b6a	Perpetual Protocol
 \\x56cf1fa9185e42e90205e955e299f33b6204da59	DoraHacks
@@ -170,7 +170,7 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x0c16527ec6d017541568f1998fda2b3c24b81977	CatDAO
 \\xf9ce0b68f4baa50bd30128a01c5297e2b46a6428	CircusDAO
 \\xd9cbe784df2ae03ea0e22335bb5cd7fcb42a0e32	Gelato
-\\x88215a2794ddc031439c72922ec8983bde831c78	Gelato
+\\x88215a2794ddc031439c72922ec8983bde831c78	Arrakis Finance
 \\x11978d32619cfefc2e7c75a70ef8beb077b503ca	Frax Finance
 \\x68d03de837cc395ec34c61c078fa901468a3bb29	Frax Finance
 \\x4707ddf20584a1df862403e7e0cc77c33330dca0	Bongswap
@@ -250,6 +250,23 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x817b4eab0e595801f382f531e36245ebcd401452	Pegasus Finance
 \\xb7eb3f6a9abcae7559484fb126b8f872781cf9dd	Nested
 \\x4fbe899d37fb7514adf2f41b0630e018ec275a0c	Beethoven X
+\\x3d64fb8a2fFd08C186e8060aA57c8011D8b999cC	Beethoven X
+\\x697A71353A4BC1eb1356763018a229c27a3fbA0C	Beethoven X
+\\xADE38bd2E8D5A52E60047AfFe6E595bB5E61923A	Gamma
+\\x9c5a87452d4FAC0cbd53BDCA580b20A45526B3AB	Niftyswap
+\\x669dcFd6C2c0B267DDa08E9478E3e2c9Def8b7f2	Putty
+\\xf87BC5535602077d340806D71f805EA9907a843D	Sushi
+\\xE8bc44AE4bA6EDDB88C8c087fD9b479Dff729850	Hashflow
+\\x2AfAeCA15Ac8A62E9bfa3EAF0285315AbAEcf334	Elk Finance
+\\x111617795C52555D45cF100D0cBF01c82E157E81	Elk Finance
+\\xF220eA963D27Ebe782f09403017B29692A4fC4aE	Elk Finance
+\\x8b5F94a2c2e23eE8cC0Ff56872aF973243eF7628	ChainHop
+\\x00778C4222c7d837cbfe4C1539AD10c127eC1C1F	Celer
+\\xbac4edFAB0FFBD3344B163fAd587F07261c6CD7E	Backed
+\\x4a27c059FD7E383854Ea7DE6Be9c390a795f6eE3	Backed
+\\x5b0390bccCa1F040d8993eB6e4ce8DeD93721765	Tarot Finance
+\\xCDf41a135C65d0013393B3793F92b4FAF31032d0	Gelato
+\\x6EB3783165E3e9BF6f3B463524738A2147BE08Ff	Clipper
 \.
 
 CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS contract_creator_address_list_addr_uniq_idx ON ovm2.contract_creator_address_list (creator_address);
