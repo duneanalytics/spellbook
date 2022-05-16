@@ -1,5 +1,4 @@
 --Add contracts where we know their mapping, but their creator is not deterministic and the contracts are not verified.
---Alternatively, add contracts that we want to force mapping to (i.e. Synthetix Genesis Contracts)
 
 CREATE SCHEMA IF NOT EXISTS ovm2;
 
