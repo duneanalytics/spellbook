@@ -19,6 +19,8 @@ lyra_v1	Lyra
 aave_v3	Aave
 perp_v2	Perpetual Protocol
 synthetix_futures	Kwenta
+zeroex  0x
+uniswap_v3  Uniswap
 
 \.
 
