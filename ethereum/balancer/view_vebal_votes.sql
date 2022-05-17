@@ -1,3 +1,4 @@
+BEGIN;
 DROP VIEW IF EXISTS balancer.view_vebal_votes;
 
 CREATE VIEW balancer.view_vebal_votes AS
@@ -87,3 +88,5 @@ SELECT
     ((bias - slope * (end_timestamp - block_timestamp)) * weight) AS vote 
 FROM running_votes
 GROUP BY 1, 2, 3, 4, 5
+;
+COMMIT;

@@ -1,3 +1,4 @@
+BEGIN;
 DROP VIEW IF EXISTS balancer.view_vebal_slopes;
 
 CREATE VIEW balancer.view_vebal_slopes AS
@@ -93,4 +94,5 @@ AND l.updated_at = (
     FROM locks_info
     WHERE updated_at <= (FLOOR(EXTRACT(EPOCH FROM block_time)))
     AND provider = b.provider
-)
+);
+COMMIT;
