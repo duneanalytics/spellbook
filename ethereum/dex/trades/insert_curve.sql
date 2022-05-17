@@ -1297,6 +1297,23 @@ WITH rows AS (
             LEFT JOIN curvefi."waBTC_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
             WHERE call_success
     ),
+    
+    pools AS (
+        SELECT   
+            version,
+            name,
+            symbol,
+            pool_address,
+            CASE WHEN coin0 = '\x0000000000000000000000000000000000000000' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' ELSE coin0 END AS coin0,
+            CASE WHEN coin1 = '\x0000000000000000000000000000000000000000' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' ELSE coin1 END AS coin1,
+            CASE WHEN coin2 = '\x0000000000000000000000000000000000000000' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' ELSE coin2 END AS coin2,
+            CASE WHEN coin3 = '\x0000000000000000000000000000000000000000' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' ELSE coin3 END AS coin3,
+            undercoin0,
+            undercoin1,
+            undercoin2,
+            undercoin3
+        FROM curvefi."view_pools"
+    ),
 
     curve_trades AS (
         SELECT
