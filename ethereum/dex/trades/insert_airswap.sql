@@ -92,6 +92,26 @@ WITH rows AS (
             NULL::numeric as usd_amount,
             evt_index
         FROM airswap."swap_evt_Swap"
+        
+        UNION ALL
+
+        SELECT
+            evt_block_time as block_time,
+            'airswap' as project,
+            'swap_v3' as version,
+            'DEX' as category,
+            "senderWallet" as trader_a, --define taker as trader a
+            "signerWallet" as trader_b, --define maker as trader b
+            "senderAmount" as token_a_amount_raw,
+            "signerAmount" as token_b_amount_raw,
+            "senderToken" as token_a_address,
+            "signerToken" as token_b_address,
+            contract_address as exchange_contract_address,
+            evt_tx_hash as tx_hash,
+            NULL::integer[] as trace_address,
+            NULL::numeric as usd_amount,
+            evt_index
+        FROM airswap."Swap_v3_evt_Swap"
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash

@@ -95,7 +95,7 @@ with initial_components as (
   
 )
 SELECT count(*) INTO r from rows;
-
+-------------------------------------------------------------------------------------------------------------------------
 --Step 2: Grab components from dex trades
 with initial_components as (
   -- Get the initial components from the create function
@@ -134,7 +134,25 @@ with initial_components as (
   left join tokens_from_paprika tfp on ac.mapped_component_address = tfp.contract_address
   where tfp.contract_address is null
 )
+-- The insertion operation is broken up into multiple queries that "forget" the last known price
+-- so we should re-introduce the "last known price" from the table so it can be used in imputations
+, anchor_prices as (
+  select dcp.date
+    , dcp.component_address
+    , dcp.symbol
+    , dcp.avg_price_usd as avg_price
+  from setprotocol_v2.daily_component_prices dcp
+  -- from dune_user_generated.daily_component_prices dcp
+  inner join missing_components_mapped mc on dcp.component_address = mc.component_address
+  where dcp.date = start_time::date - interval '1 day'
+)
 , daily_component_prices_usd_passing as (
+  select date
+    , component_address
+    , symbol
+    , avg_price
+  from anchor_prices
+  union
   select p.hour::date as date
     , mc.component_address
     , coalesce(mc.pre_mapped_symbol, p.symbol) as symbol
@@ -171,7 +189,7 @@ with initial_components as (
     from day_series d 
     inner join daily_component_prices_usd_passing_lead p
         on d.day >= p.date
-        and d.day < coalesce(p.next_date,now()::date) -- if it's missing that means it's the last entry in the series
+        and d.day < coalesce(p.next_date,now()::date + 1) -- if it's missing that means it's the last entry in the series
 )
 , daily_eth_price_usd as (
   select minute::date as date
@@ -222,6 +240,242 @@ with initial_components as (
   
 )
 SELECT count(*) + r INTO r from rows;
+-------------------------------------------------------------------------------------------------------------------------
+-- Step 3: Update prices for cETH using Compound-specific query
+-- Compound Protocol V2: exhcangeRate (https://compound.finance/docs#protocol-math)
+-- one_ceth_in_eth is strictly increasing over time
+with ceth_eth_exchange_rate as (
+    select output_0 as exchange_rate_raw
+      , output_0 / (1.0 * 10 ^ (18 + 18 - 8)) as one_ceth_in_eth
+      , call_block_time
+    from compound_v2."cEther_call_exchangeRateCurrent"
+    where call_success
+    and call_block_time >= start_time
+    and call_block_time < end_time
+)
+, day_series as (
+  select generate_series(start_time::date - interval '1 day' -- include an extra day for the anchor price
+                        , end_time::date, '1 day') as day
+)
+, anchor_prices as (
+    select dcp.date as day
+    -- , dcp.component_address
+    -- , dcp.symbol
+    , dcp.avg_price_eth as one_ceth_in_eth
+  from setprotocol_v2.daily_component_prices dcp
+  -- from dune_user_generated.daily_component_prices dcp
+  where dcp.date = start_time::date - interval '1 day'
+    and dcp.component_address = '\x4ddc2d193948926d02f9b1fe9e1daa0718270ed5'::bytea -- cETH address
+)
+, avg_daily_ceth_eth_exchange_rate as (
+    select day
+        , one_ceth_in_eth
+    from anchor_prices
+    union
+    select call_block_time::date as day
+      , avg(one_ceth_in_eth) as one_ceth_in_eth
+    from ceth_eth_exchange_rate
+    group by call_block_time::date
+)
+-- Impute daily cETH to ETH exchange rate with the last known value
+-- Becuase the exchange rate is strictly increasing, this results in a slight price underestimate
+-- when cEther_call_exchangeRateCurrent data availability is low
+, avg_daily_ceth_eth_exchange_rate_imputed as (
+    select d.day
+      , max(r.one_ceth_in_eth) over (order by d.day) as one_ceth_in_eth -- this only works because the exchange rate is strictly increasing
+    from day_series d
+    left join avg_daily_ceth_eth_exchange_rate r on d.day = r.day
+)
+, avg_daily_eth_price as (
+    select minute::date as day
+      , avg(price) as eth_price
+    from prices.layer1_usd
+    where symbol = 'ETH'
+    and minute >= start_time
+    and minute < end_time
+    group by minute::date
+)
+, avg_daily_ceth_price as (
+    select '\x4ddc2d193948926d02f9b1fe9e1daa0718270ed5'::bytea as component_address -- cETH address
+        , 'cETH' as symbol
+        , r.day as date
+        , 'ceth_feed' as data_source
+      , r.one_ceth_in_eth * p.eth_price as avg_price_usd
+      , p.eth_price as eth_price
+      , r.one_ceth_in_eth as avg_price_eth
+      
+    from avg_daily_ceth_eth_exchange_rate_imputed r
+    inner join avg_daily_eth_price p on r.day = p.day
+)
+, rows as (
+  insert into setprotocol_v2.daily_component_prices (
+  -- insert into dune_user_generated.daily_component_prices (
+    component_address
+    , symbol
+    , date
+    , data_source
+    , avg_price_usd
+    , eth_price
+    , avg_price_eth
+  )
+  select
+    component_address
+    , symbol
+    , date
+    , data_source
+    , avg_price_usd
+    , eth_price
+    , avg_price_eth
+  from avg_daily_ceth_price
+
+  on CONFLICT(component_address, date) do update set 
+    data_source = EXCLUDED.data_source
+    , avg_price_usd = EXCLUDED.avg_price_usd
+    , eth_price = EXCLUDED.eth_price
+    , avg_price_eth = EXCLUDED.avg_price_eth
+  RETURNING 1
+)
+SELECT count(*) + r INTO r from rows;
+-------------------------------------------------------------------------------------------------------------------------
+-- Step 4: Update prices for cWBTC (and other cTokens in the future) using Compound-specific query
+-- exchangeRate (https://compound.finance/docs#protocol-math)
+-- one_cWBTC_in_WBTC is strictly increasing over time
+with components as (
+  -- this is the list of components that are pegged to wBTC
+  select '\xc11b1268c1a384e55c48c2391d8d480264a3a7f4'::bytea as component_address -- cWBTC address
+  union
+  select '\xccF4429DB6322D5C611ee964527D42E5d685DD6a'::bytea as component_addrses -- cWBTC2, erc20Delegatorcall
+)
+, cwbtc_wbtc_exchange_rate as (
+    select contract_address
+      , output_0 as exchange_rate_raw
+      , output_0 / (1.0 * 10 ^ (18 + 8 - 8)) as one_cwbtc_in_wbtc
+      , call_block_time
+    from compound_v2."cErc20_call_exchangeRateCurrent"
+    inner join components c on contract_address = component_address
+    where call_success 
+    -- and contract_address = '\xc11b1268c1a384e55c48c2391d8d480264a3a7f4' -- cWBTC address
+    and call_block_time >= start_time
+    and call_block_time < end_time
+    union
+    select contract_address
+      , output_0 as exchange_rate_raw
+      , output_0 / (1.0 * 10 ^ (18 + 8 - 8)) as one_cwbtc_in_wbtc
+      , call_block_time
+    from compound_v2."CErc20Delegator_call_exchangeRateCurrent"
+    inner join components c on contract_address = component_address
+    where call_success 
+    -- and contract_address = '\xccF4429DB6322D5C611ee964527D42E5d685DD6a' -- cWBTC address
+    and call_block_time >= start_time
+    and call_block_time < end_time
+)
+, day_series as (
+  select generate_series(start_time::date - interval '1 day' -- include an extra day for the anchor price
+                        , end_time::date, '1 day') as day
+)
+, avg_daily_wbtc_price as (
+    select minute::date as day
+      , avg(price) as wbtc_price
+    from prices.usd
+    where contract_address = '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599' -- WBTC contract address
+    and minute >= start_time - interval '1 day' -- include one extra day for the anchor price
+    and minute < end_time
+    group by minute::date
+)
+, avg_daily_eth_price as (
+    select minute::date as day
+      , avg(price) as eth_price
+    from prices.layer1_usd
+    where symbol = 'ETH'
+    and minute >= start_time
+    and minute < end_time
+    group by minute::date
+)
+, anchor_prices as (
+    select dcp.date as day
+     , dcp.component_address
+    -- , dcp.symbol
+    , dcp.avg_price_usd / pw.wbtc_price as one_cwbtc_in_wbtc
+  from setprotocol_v2.daily_component_prices dcp
+  -- from dune_user_generated.daily_component_prices dcp
+  inner join avg_daily_wbtc_price pw on dcp.date = pw.day
+  inner join components c on dcp.component_address = c.component_address
+  where dcp.date = start_time::date - interval '1 day'
+  --  and dcp.component_address = '\xc11b1268c1a384e55c48c2391d8d480264a3a7f4'::bytea -- cWBTC address
+)
+, avg_daily_cwbtc_wbtc_exchange_rate as (
+    select day
+        , component_address
+        , one_cwbtc_in_wbtc
+    from anchor_prices
+    union
+    select call_block_time::date as day
+      , contract_address as component_address
+      , avg(one_cwbtc_in_wbtc) as one_cwbtc_in_wbtc
+    from cwbtc_wbtc_exchange_rate
+    group by 1,2
+)
+, avg_daily_cwbtc_wbtc_exchange_rate_lead as (
+  select day
+        , component_address
+        , one_cwbtc_in_wbtc
+        , lead(day, 1) over (partition by component_address order by day) as next_day
+            -- this gives the day that this particular snapshot value is valid until
+    from avg_daily_cwbtc_wbtc_exchange_rate 
+)
+, avg_daily_cwbtc_wbtc_exchange_rate_imputed as (
+    select d.day
+        , p.component_address
+        , p.one_cwbtc_in_wbtc
+    from day_series d 
+    inner join avg_daily_cwbtc_wbtc_exchange_rate_lead p
+        on d.day >= p.day
+        and d.day < coalesce(p.next_day,now()::date + 1) -- if it's missing that means it's the last entry in the series
+)
+, avg_daily_cwbtc_price as (
+    select r.component_address 
+        , 'cWBTC' as symbol
+        , r.day as date
+        , 'cwbtc_feed' as data_source
+      -- , r.one_cwbtc_in_wbtc
+      -- , p.wbtc_price
+      , r.one_cwbtc_in_wbtc * pb.wbtc_price as avg_price_usd
+      , pe.eth_price
+      , r.one_cwbtc_in_wbtc * pb.wbtc_price / pe.eth_price as avg_price_eth
+    from avg_daily_cwbtc_wbtc_exchange_rate_imputed r
+    inner join avg_daily_wbtc_price pb on r.day = pb.day
+    inner join avg_daily_eth_price pe on r.day = pe.day
+    where r.one_cwbtc_in_wbtc is not null
+)
+, rows as (
+  insert into setprotocol_v2.daily_component_prices (
+  -- insert into dune_user_generated.daily_component_prices (
+    component_address
+    , symbol
+    , date
+    , data_source
+    , avg_price_usd
+    , eth_price
+    , avg_price_eth
+  )
+  select
+    component_address
+    , symbol
+    , date
+    , data_source
+    , avg_price_usd
+    , eth_price
+    , avg_price_eth
+  from avg_daily_cwbtc_price
+
+  on CONFLICT(component_address, date) do update set 
+    data_source = EXCLUDED.data_source
+    , avg_price_usd = EXCLUDED.avg_price_usd
+    , eth_price = EXCLUDED.eth_price
+    , avg_price_eth = EXCLUDED.avg_price_eth
+  RETURNING 1
+)
+SELECT count(*) + r INTO r from rows;
 RETURN r;
 END
 $function$;
@@ -245,7 +499,7 @@ INSERT INTO cron.job (schedule, command)
 VALUES ('20 0,12 * * *', $$
     SELECT setprotocol_v2.insert_daily_component_prices(
         (SELECT date_trunc('day', now()) - interval '3 days'),
-        (SELECT date_trunc('day', now())));
+        (SELECT date_trunc('day', now()) + interval '1 day')); -- the insert function is noninclusive of the end date, so add a day
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 

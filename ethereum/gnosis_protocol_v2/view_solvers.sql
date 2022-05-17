@@ -1,6 +1,11 @@
 BEGIN;
+DROP MATERIALIZED VIEW IF EXISTS gnosis_protocol_v2.view_batches; -- due to downstream dependency, drop view_batches -- remember to rebuild after this script!
+COMMIT;
+BEGIN;
 DROP MATERIALIZED VIEW IF EXISTS gnosis_protocol_v2.view_solvers;
+COMMIT;
 
+BEGIN;
 CREATE MATERIALIZED VIEW gnosis_protocol_v2.view_solvers (address, environment, name, active) AS
 WITH
 -- Aggregate the solver added and removed events into a single table
@@ -32,6 +37,8 @@ known_solver_metadata (address, environment, name) as (
                  (decode('a6ddbd0de6b310819b49f680f65871bee85f517e', 'hex'), 'prod', 'Legacy'),
                  (decode('2d15894fac906386ff7f4bd07fceac43fcf80c73', 'hex'), 'prod', 'DexCowAgg'),
                  (decode('a97DEF4fBCBa3b646dd169Bc2eeE40f0f3fE7771', 'hex'), 'prod', 'BalancerSOR'),
+                 (decode('6fa201C3Aff9f1e4897Ed14c7326cF27548d9c35', 'hex'), 'prod', 'Otex'),
+                 (decode('109BF9E0287Cc95cc623FBE7380dD841d4bdEb03', 'hex'), 'barn', 'Otex'),
                  (decode('70f3c870b6e7e1d566e40c41e2e3d6e895fcee23', 'hex'), 'barn', 'QuasiModo'),
                  (decode('97dd6a023b06ba4722aF8Af775ec3C2361e66684', 'hex'), 'barn', '0x'),
                  (decode('6372bcbf66656e91b9213b61d861b5e815296207', 'hex'), 'barn', 'ParaSwap'),
@@ -72,8 +79,9 @@ from registered_solvers
 
 CREATE UNIQUE INDEX IF NOT EXISTS view_solvers_address_unique_idx ON gnosis_protocol_v2.view_solvers (address);
 
--- This job updates the view every half day to capture any new (but currently uncatalogued solvers)
-INSERT INTO cron.job (schedule, command)
-VALUES ('0 */12 * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol_v2.view_solvers')
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;
+
+-- -- This job updates the view every half day to capture any new (but currently uncatalogued solvers)
+-- INSERT INTO cron.job (schedule, command)
+-- VALUES ('0 */12 * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol_v2.view_solvers')
+-- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

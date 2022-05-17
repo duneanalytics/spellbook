@@ -22,15 +22,15 @@ CREATE MATERIALIZED VIEW gnosis_safe.view_safes AS
                 '\x6851d6fdfafd08c0295c392436245e5bc78b0185')  -- mastercopy v1.2.0
             )
         )
+        AND gas_used > 0  -- to ensure the setup call was successful
         
     UNION ALL
     
     SELECT contract_address AS address, evt_block_time AS creation_time
     FROM gnosis_safe."GnosisSafev1.3.0_evt_SafeSetup";
-
+COMMIT;
 CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS view_safes_unique_idx ON gnosis_safe.view_safes (address);
 
-INSERT INTO cron.job (schedule, command)
-VALUES ('0 0 * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_safe.view_safes$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
-COMMIT;
+-- INSERT INTO cron.job (schedule, command)
+-- VALUES ('0 0 * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_safe.view_safes$$)
+-- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
