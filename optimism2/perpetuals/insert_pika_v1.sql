@@ -57,6 +57,9 @@ WITH rows AS (
             WHEN p."productId" = 7 THEN 'MATIC'
             WHEN p."productId" = 8 THEN 'LUNA'
             WHEN p."productId" = 9 THEN 'AAVE'
+            WHEN p."productId" = 10 THEN 'APE'
+            WHEN p."productId" = 11 THEN 'AXS'
+            WHEN p."productId" = 12 THEN 'UNI'
             ELSE CONCAT ('product_id_', p."productId") 
             END AS virtual_asset,
             
@@ -70,6 +73,9 @@ WITH rows AS (
             WHEN p."productId" = 7 THEN 'MATIC'
             WHEN p."productId" = 8 THEN 'LUNA'
             WHEN p."productId" = 9 THEN 'AAVE'
+            WHEN p."productId" = 10 THEN 'APE'
+            WHEN p."productId" = 11 THEN 'AXS'
+            WHEN p."productId" = 12 THEN 'UNI'
             ELSE CONCAT ('product_id_', p."productId") 
             END AS underlying_asset,
             
@@ -83,6 +89,9 @@ WITH rows AS (
             WHEN p."productId" = 7 THEN 'MATIC-USD'
             WHEN p."productId" = 8 THEN 'LUNA-USD'
             WHEN p."productId" = 9 THEN 'AAVE-USD'
+            WHEN p."productId" = 10 THEN 'APE-USD'
+            WHEN p."productId" = 11 THEN 'AXS-USD'
+            WHEN p."productId" = 12 THEN 'UNI-USD'
             ELSE CONCAT ('product_id_', p."productId") 
             END AS market,
             
