@@ -1,5 +1,5 @@
 CREATE OR REPLACE VIEW curvefi.view_pools (
-    version, 
+    version,
     name,
     symbol,
     pool_address,
@@ -20,14 +20,14 @@ CREATE OR REPLACE VIEW curvefi.view_pools (
     undercoin2,
     undercoin3,
     gauge_contract
-) AS 
+) AS
 
 WITH regular_poolDeployed AS (
     WITH regular_pools AS (
-        WITH data_json AS (    
+        WITH data_json AS (
             SELECT data_json::json
             FROM (values ('
-                {"data": 
+                {"data":
                     [{
                         "version": "Regular",
                         "name": "3pool",
@@ -74,7 +74,7 @@ WITH regular_poolDeployed AS (
                         "pool_address": "0xA96A65c051bF88B4095Ee1f2451C2A9d43F53Ae2",
                         "token_address": "0xaA17A236F2bAdc98DDc0Cf999AbB47D47Fc0A6Cf",
                         "gauge_contract": "0x6d10ed2cF043E6fcf51A0e7b4C2Af3Fa06695707",
-                        "coin0": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+                        "coin0": "0x0000000000000000000000000000000000000000",
                         "coin1": "0xe95a203b1a91a908f9b9ce46459d101078c2c3cb"
                     },
                     {
@@ -143,7 +143,7 @@ WITH regular_poolDeployed AS (
                         "pool_address": "0x8301AE4fc9c624d1D396cbDAa1ed877821D7C511",
                         "token_address": "0xEd4064f376cB8d68F770FB1Ff088a3d0F3FF5c4d",
                         "gauge_contract": "0x1cEBdB0856dd985fAe9b8fEa2262469360B8a3a6",
-                        "coin0": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+                        "coin0": "0x0000000000000000000000000000000000000000",
                         "coin1": "0xd533a949740bb3306d119cc777fa900ba034cd52"
                     },
                     {
@@ -153,7 +153,7 @@ WITH regular_poolDeployed AS (
                         "pool_address": "0xB576491F1E6e5E62f1d8F26062Ee822B40B0E0d4",
                         "token_address": "0x3A283D9c08E8b55966afb64C515f5143cf907611",
                         "gauge_contract": "0x7E1444BA99dcdFfE8fBdb42C02F0005D14f13BE1",
-                        "coin0": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+                        "coin0": "0x0000000000000000000000000000000000000000",
                         "coin1": "0x4e3fbd56cd56c3e72c1403e103b45db9da5b9d2b"
                     },
                     {
@@ -431,7 +431,7 @@ WITH regular_poolDeployed AS (
                         "token_address": "0x53a901d48795C58f485cBB38df08FA96a24669D5",
                         "gauge_contract": "0x824F13f1a2F29cFEEa81154b46C0fc820677A637",
                         "coin0": "0x9559Aaa82d9649C7A7b220E7c461d2E74c9a3593",
-                        "coin1": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+                        "coin1": "0x0000000000000000000000000000000000000000"
                     },
                     {
                         "version": "Regular",
@@ -478,7 +478,7 @@ WITH regular_poolDeployed AS (
                         "pool_address": "0xc5424b857f758e906013f3555dad202e4bdb4567",
                         "token_address": "0xA3D87FffcE63B53E0d54fAa1cc983B7eB0b74A9c",
                         "gauge_contract": "0x3C0FFFF15EA30C35d7A85B85c0782D6c94e1d238",
-                        "coin0": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+                        "coin0": "0x0000000000000000000000000000000000000000",
                         "coin1": "0x5e74c9036fb86bd7ecdcb084a0673efc32ea31cb"
                     },
                     {
@@ -488,7 +488,7 @@ WITH regular_poolDeployed AS (
                         "pool_address": "0x98638FAcf9a3865cd033F36548713183f6996122",
                         "token_address": "0x8282BD15dcA2EA2bDf24163E8f2781B30C43A2ef",
                         "gauge_contract": "0x08380a4999Be1a958E2abbA07968d703C7A3027C",
-                        "coin0": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+                        "coin0": "0x0000000000000000000000000000000000000000",
                         "coin1": "0x090185f2135308bad17527004364ebcc2d37e5f6"
                     },
                     {
@@ -498,7 +498,7 @@ WITH regular_poolDeployed AS (
                         "pool_address": "0xDC24316b9AE028F1497c275EB9192a3Ea0f67022",
                         "token_address": "0x06325440D014e39736583c165C2963BA99fAf14E",
                         "gauge_contract": "0x182B723a58739a9c974cFDB385ceaDb237453c28",
-                        "coin0": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+                        "coin0": "0x0000000000000000000000000000000000000000",
                         "coin1": "0xae7ab96520de3a18e5e111b5eaab095312d7fe84"
                     },
                     {
@@ -540,7 +540,7 @@ WITH regular_poolDeployed AS (
                         "pool_address": "0x752eBeb79963cf0732E9c0fec72a49FD1DEfAEAC",
                         "token_address": "0xCb08717451aaE9EF950a2524E33B6DCaBA60147B",
                         "gauge_contract": "0x6070fBD4E608ee5391189E7205d70cc4A274c017",
-                        "coin0": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+                        "coin0": "0x0000000000000000000000000000000000000000",
                         "coin1": "0xcdf7028ceab81fa0c6971208e83fa7872994bee5"
                     },
                     {
@@ -692,12 +692,12 @@ WITH regular_poolDeployed AS (
                 }
             ') ) json (data_json)
         ),
-          
+
         records AS (
             SELECT json_array_elements(data_json->'data') AS record
             FROM data_json
         )
-        
+
         SELECT
             (record->>'version') AS version,
             (record->>'name') AS name,
@@ -717,7 +717,7 @@ WITH regular_poolDeployed AS (
         FROM records
     )
     SELECT
-        version, 
+        version,
         name,
         symbol,
         pool_address,
@@ -752,9 +752,9 @@ V1_poolDeployed AS (
             SELECT _name, _symbol, output_0, _coins, "_A", _fee
             FROM curvefi."CurveFactory_call_deploy_plain_pool"
         )
-        
+
         SELECT
-            'Factory V1 Plain' AS version, 
+            'Factory V1 Plain' AS version,
             _name AS name,
             _symbol AS symbol,
             output_0 AS pool_address,
@@ -774,7 +774,7 @@ V1_poolDeployed AS (
             -- c.coins::text AS coins
         FROM plain_calls
     ),
-    
+
     meta_poolDeployed AS (
         WITH meta_calls AS (
             SELECT _name, _symbol, output_0, call_tx_hash, _base_pool, _coin, "_A", _fee
@@ -785,9 +785,9 @@ V1_poolDeployed AS (
             FROM curvefi."CurveFactory_call_deploy_metapool0"
             WHERE call_success
         )
-        
+
         SELECT
-            'Factory V1 Meta' AS version, 
+            'Factory V1 Meta' AS version,
             _name AS name,
             _symbol AS symbol,
             output_0 AS pool_address,
@@ -797,7 +797,7 @@ V1_poolDeployed AS (
             output_0 AS token_address,
             output_0 AS deposit_contract,
             _coin AS coin0,
-            CASE 
+            CASE
                 WHEN _base_pool = '\xbEbc44782C7dB0a1A60Cb6fe97d0b483032FF1C7' THEN '\x6c3F90f043a72FA612cbac8115EE7e52BDe6E490'::bytea --changing from swap to token contract
                 WHEN _base_pool = '\x7fc77b5c7614e1533320ea6ddc2eb61fa00a9714' THEN '\x075b1bb99792c9E1041bA13afEf80C91a1e70fB3'::bytea --changing from swap to token contract
                 WHEN _base_pool = '\x93054188d876f558f4a66b2ef1d97d16edf0895b' THEN '\x49849C98ae39Fff122806C06791Fa73784FB3675'::bytea --changing from swap to token contract
@@ -806,22 +806,22 @@ V1_poolDeployed AS (
             NULL::bytea AS coin3,
             _coin AS undercoin0, --Listing underlying coins for the ExchangeUnderlying function
             CASE
-                WHEN _base_pool = '\xbEbc44782C7dB0a1A60Cb6fe97d0b483032FF1C7' THEN '\x6b175474e89094c44da98b954eedeac495271d0f'::bytea 
-                WHEN _base_pool = '\x7fc77b5c7614e1533320ea6ddc2eb61fa00a9714' THEN '\xeb4c2781e4eba804ce9a9803c67d0893436bb27d'::bytea 
-                WHEN _base_pool = '\x93054188d876f558f4a66b2ef1d97d16edf0895b' THEN '\xeb4c2781e4eba804ce9a9803c67d0893436bb27d'::bytea 
+                WHEN _base_pool = '\xbEbc44782C7dB0a1A60Cb6fe97d0b483032FF1C7' THEN '\x6b175474e89094c44da98b954eedeac495271d0f'::bytea
+                WHEN _base_pool = '\x7fc77b5c7614e1533320ea6ddc2eb61fa00a9714' THEN '\xeb4c2781e4eba804ce9a9803c67d0893436bb27d'::bytea
+                WHEN _base_pool = '\x93054188d876f558f4a66b2ef1d97d16edf0895b' THEN '\xeb4c2781e4eba804ce9a9803c67d0893436bb27d'::bytea
                 END AS undercoin1,
             CASE
-                WHEN _base_pool = '\xbEbc44782C7dB0a1A60Cb6fe97d0b483032FF1C7' THEN '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'::bytea 
-                WHEN _base_pool = '\x7fc77b5c7614e1533320ea6ddc2eb61fa00a9714' THEN '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599'::bytea 
-                WHEN _base_pool = '\x93054188d876f558f4a66b2ef1d97d16edf0895b' THEN '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599'::bytea 
+                WHEN _base_pool = '\xbEbc44782C7dB0a1A60Cb6fe97d0b483032FF1C7' THEN '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'::bytea
+                WHEN _base_pool = '\x7fc77b5c7614e1533320ea6ddc2eb61fa00a9714' THEN '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599'::bytea
+                WHEN _base_pool = '\x93054188d876f558f4a66b2ef1d97d16edf0895b' THEN '\x2260fac5e5542a773aa44fbcfedf7c193bc2c599'::bytea
                 END AS undercoin2,
             CASE
-                WHEN _base_pool = '\xbEbc44782C7dB0a1A60Cb6fe97d0b483032FF1C7' THEN '\xdac17f958d2ee523a2206206994597c13d831ec7'::bytea 
+                WHEN _base_pool = '\xbEbc44782C7dB0a1A60Cb6fe97d0b483032FF1C7' THEN '\xdac17f958d2ee523a2206206994597c13d831ec7'::bytea
                 WHEN _base_pool = '\x7fc77b5c7614e1533320ea6ddc2eb61fa00a9714' THEN '\xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6'::bytea
                 END AS undercoin3
         FROM meta_calls
     )
-    
+
     SELECT *
     FROM plain_poolDeployed
     UNION ALL
@@ -830,8 +830,8 @@ V1_poolDeployed AS (
 ),
 
 V2_poolDeployed AS (
-    SELECT 
-        'Factory V2' AS version, 
+    SELECT
+        'Factory V2' AS version,
         _name AS name,
         _symbol AS symbol,
         output_0 AS pool_address,
@@ -856,18 +856,18 @@ V2_poolDeployed AS (
 pools AS (
     SELECT *
     FROM regular_poolDeployed
-        
+
     UNION ALL
-    
+
     SELECT
         pd.*,
         gauge AS gauge_contract
     FROM V1_poolDeployed pd
     LEFT JOIN curvefi."CurveFactory_evt_LiquidityGaugeDeployed" g ON pd.pool_address = g.pool
-    
+
     UNION ALL
-    
-    SELECT 
+
+    SELECT
         pd.*,
         gauge AS gauge_contract
     FROM V2_poolDeployed pd
@@ -875,7 +875,7 @@ pools AS (
 )
 
 SELECT
-    version, 
+    version,
     p.name,
     symbol,
     pool_address,
