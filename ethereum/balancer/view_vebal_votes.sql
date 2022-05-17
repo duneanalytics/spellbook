@@ -86,7 +86,5 @@ SELECT
     gauge,
     provider,
     ((bias - slope * (end_timestamp - block_timestamp)) * weight) AS vote 
-FROM running_votes
-GROUP BY 1, 2, 3, 4, 5
-;
+FROM running_votes;
 COMMIT;
