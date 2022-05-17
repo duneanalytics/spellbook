@@ -159,7 +159,19 @@ Txs as
 (
     select * from Txs_t2 LEFT JOIN vaults on Txs_t2.vault = vaults."vaultAddress"
 ),
-
+agg_columns AS ( -- aggregate NFT transfers per transaction 
+    SELECT
+        tx,
+        array_agg(nfts) AS nft_token_ids_array,
+        cardinality(array_agg(nfts)) AS number_of_items,
+        array_agg(seller) AS senders_array,
+        array_agg(buyer) AS recipients_array,
+        array_agg('erc20'::text) AS erc_types_array,
+        array_agg("assetAddress") AS nft_contract_addresses_array,
+        array_agg(0) AS erc_values_array
+    FROM Txs
+    GROUP BY 1
+),
 -- #################################################################
 -- #################################################################
 
@@ -205,40 +217,41 @@ rows AS (
     )
 
     SELECT
-        time AS block_time,
-        name AS nft_project_name,
-        nfts AS nft_token_id,
+        t.time AS block_time,
+        t.name AS nft_project_name,
+        t.nfts AS nft_token_id,
         'erc20' AS erc_standard,
         'NFTX' as platform,
         1 as platform_version,
         'Single Item Trade' AS trade_type,
         1 AS number_of_items,
-        tx_type as category,
-        type as evt_type,
-        tok_price_usd AS usd_amount,
-        seller AS seller,
-        buyer AS buyer,
-        tok_price AS original_amount,
-        tok_price*10^18 AS original_amount_raw,
+        t.tx_type as category,
+        t.type as evt_type,
+        t.tok_price_usd AS usd_amount,
+        t.seller AS seller,
+        t.buyer AS buyer,
+        t.tok_price AS original_amount,
+        t.tok_price*10^18 AS original_amount_raw,
         'WETH' AS original_currency,
         '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea AS original_currency_contract,
         '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'::bytea AS currency_contract,
         "assetAddress" AS nft_contract_address,
         "vaultAddress" AS exchange_contract_address,
-        tx AS tx_hash,
-        evt_block_number AS block_number,
-        nfts AS nft_token_ids_array,
-        seller AS senders_array,
-        buyer AS recipients_array,
-        'erc20' AS erc_types_array,
-        "assetAddress" AS nft_contract_addresses_array,
-        0 AS erc_values_array,
-        seller AS tx_from,
-        buyer AS tx_to,
+        t.tx AS tx_hash,
+        t.evt_block_number AS block_number,
+        agg.nft_token_ids_array,
+        agg.senders_array,
+        agg.recipients_array,
+        agg.erc_types_array,
+        agg.nft_contract_addresses_array,
+        agg.erc_values_array,
+        t.seller AS tx_from,
+        t.buyer AS tx_to,
         NULL::integer[] AS trace_address,
-        evt_index,
+        t.evt_index,
         1 AS trade_id
-    FROM Txs
+    FROM Txs t
+    LEFT JOIN agg_columns agg on t.tx = agg.tx
     WHERE time >= start_ts
         AND time < end_ts
     ON CONFLICT DO NOTHING
