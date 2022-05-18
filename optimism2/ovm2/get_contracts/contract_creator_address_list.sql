@@ -32,10 +32,7 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x6c9fc64a53c1b71fb3f9af64d1ae3a4931a5f4e9	Uniswap V3
 \\xdead1cb30b3ca13cd67d1d6f4e2790d12484fdd8	Chainlink
 \\x03863f6ad36f1fcd908517e3c56c6b3fd3f50752	Chainlink
--- \\x19ba331d6adfc46e829ea33fa2a24ee87d7a676d	EXCLUDE
 \\x1e4e0e7dd2a854ea15f4ee852abb78a99c86357c	Uniswap V3
--- \\x72fb15f502af58765015972a85f2c58551ef3fa1	EXCLUDE
--- \\x7492ce19d83b3a0bac1bebc9706ce0df4add105f	EXCLUDE
 \\xced01e7617bf6052a71154daa6d50d8b243f1b26	Uniswap V3
 \\xd640037fa41436326e4a0e3fd0511aad83d2345c	Xchain
 \\x1b9dfc56e38b0f92448659c114e2347bd803911c	Celer
@@ -49,10 +46,8 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x22cdc93f53ee3f6b8ad66fad6f98915a5349950e	Synapse
 \\xa67b7147dce20d6f25fd9abfbcb1c3ca74e11f0b	Synapse
 \\xa9e90579eb086bcda910dd94041ffe041fb4ac89	Synapse
-\\x155b15a7e9ff0e34ceaf2439589d5c661adc9493	Connext
 \\xa430a8a6911e8de02acfe835eb1d5539a58cee94	Flux Protocol
 \\x0e860f44d73f9fdbaf5e9b19afc554bf3c8e8a57	Poly Network
-\\xc715aa67866a2fef297b12cb26e953481aed2df4	dHedge
 \\xe1cb04a0fa36ddd16a06ea828007e35e1a3cbc37	Gnosis Safe
 \\x914d7fec6aac8cd542e72bca78b30650d45643d7	Gnosis Safe
 \\xab0d90fde397a4362acbe1d3a1c17f24b5b53266	Gnosis Safe
@@ -141,7 +136,6 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x8602ee2f8aaeb671e409b26d48e36dd8cc3b7ed7	ZipSwap
 \\xf7c1daf7443d7307df13c81f5f0328d4c7803e7b	BoringDAO
 \\x38e63793993ae54be374d129f34a3faf2c382e97	TokenFunder
--- \\xa990077c3205cbdf861e17fa532eeb069ce9ff96	EXCLUDE
 \\xbb6e024b9cffacb947a71991e386681b1cd1477d	Tornado Cash
 \\x512472840327530ea03cce6f58966b221f3a8b6a	Perpetual Protocol
 \\x56cf1fa9185e42e90205e955e299f33b6204da59	DoraHacks
@@ -217,7 +211,6 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x4365f8e70cf38c6ca67de41448508f2da8825500	Aave
 \\xae0b890a625a87c23a1fccdefb4c26a798719f17	Aave
 \\x1d7c6783328c145393e84fb47a7f7c548f5ee28d	Stargate Finance
-\\x68d03de837cc395ec34c61c078fa901468a3bb29	Frax Finance
 \\x0298f4332e3857631385b39766325058a93e249f	Sabiler
 \\xb29050965a5ac70ab487aa47546cdcbc97dae45d	Punk Domains
 \\x83a15cb9781458b421ad11def469586242cd06cb	Superfluid
@@ -242,7 +235,6 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x14719476c596fce28d381bd3ac12c3ce4698a1e9	Raid Project
 \\xeb10511109053787b3ed6cc02d5cb67a265806cc	Party Panda
 \\x919124f5f5135d3020a0b075412679755545f7c5	Curvefi
-\\xef31d75a2f85cfdd9032158a2ceb773c84d79192	dHedge
 \\x244a807084a3eb9fd5fe88aa0b13aec8401577bd	dLab
 \\xbe9228ce3b7ed30c8646143d0e56ee16fec6c07c	WardenSwap
 \\xbb73463b88b0cb9681f176d6d43a12c2fea2c237	DeFiHelper
@@ -266,8 +258,7 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x4a27c059FD7E383854Ea7DE6Be9c390a795f6eE3	Backed
 \\x5b0390bccCa1F040d8993eB6e4ce8DeD93721765	Tarot Finance
 \\xCDf41a135C65d0013393B3793F92b4FAF31032d0	Gelato
-\\x6EB3783165E3e9BF6f3B463524738A2147BE08Ff	Clipper
 \.
-
+COMMIT;
 CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS contract_creator_address_list_addr_uniq_idx ON ovm2.contract_creator_address_list (creator_address);
-CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS contract_creator_address_list_addr_proj_uniq_idx ON ovm2.contract_creator_address_list (contract_address,project);
+CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS contract_creator_address_list_addr_proj_uniq_idx ON ovm2.contract_creator_address_list (creator_address,project);
