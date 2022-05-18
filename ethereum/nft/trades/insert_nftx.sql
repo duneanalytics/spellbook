@@ -296,8 +296,8 @@ INSERT INTO cron.job (schedule, command)
 VALUES ('53 * * * *', $$
     SELECT nft.insert_nftx(
         (SELECT max(block_time) - interval '1 days' FROM nft.trades WHERE platform='NFTX'),
-        (SELECT now() - interval '20 minutes'),
+        (SELECT now() - interval '60 minutes'),
         (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM nft.trades WHERE platform='NFTX')),
-        (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
+        (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '60 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
