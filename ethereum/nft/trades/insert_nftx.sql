@@ -71,10 +71,11 @@ Minted_t2 AS
         'Mint' as type,
         'Sell' as tx_type,
         contract_address as vault,
-        unnest("nftIds") as nfts,
+        nftidx as nfts,
+        ordinality as trade_id,
         "to" as seller,
         contract_address as buyer
-    from Minted_t1
+    from Minted_t1, unnest("nftIds") WITH ORDINALITY nftidx
     ORDER BY time
 ),
 Redeemed_t1 AS
@@ -93,11 +94,12 @@ Redeemed_t2 AS
     'Redeem' as type,
     'Buy' as tx_type,
     contract_address as vault,
-    unnest("nftIds") as nfts,
+    nftidx as nfts,
+    ordinality as trade_id,
     contract_address as seller,
     "to" as buyer
     from
-    Redeemed_t1
+    Redeemed_t1, unnest("nftIds") WITH ORDINALITY nftidx
     ORDER BY time
 ),
 Swapped_t1 AS
@@ -116,11 +118,12 @@ Swapped_t2M AS
     'Swap' as type,
     'Sell' as tx_type,
     contract_address as vault,
-    unnest("nftIds") as nfts,
+    nftidx as nfts,
+    ordinality as trade_id,
     "to" as seller,
     contract_address as buyer
     from
-    Swapped_t1
+    Swapped_t1, unnest("nftIds") WITH ORDINALITY nftidx
     ORDER BY time
 ),
 Swapped_t2R AS
@@ -133,11 +136,12 @@ Swapped_t2R AS
     'Swap' as type,
     'Buy' as tx_type,
     contract_address as vault,
-    unnest("redeemedIds") as nfts,
+    nftidx as nfts,
+    -1*ordinality as trade_id,
     contract_address as seller,
     "to" as buyer
     from
-    Swapped_t1
+    Swapped_t1, unnest("nftIds") WITH ORDINALITY nftidx
     ORDER BY time
 ),
 Txs_t as
@@ -249,7 +253,7 @@ rows AS (
         t.buyer AS tx_to,
         NULL::integer[] AS trace_address,
         t.evt_index,
-        1 AS trade_id
+        t.trade_id AS trade_id
     FROM Txs t
     LEFT JOIN agg_columns agg on t.tx = agg.tx
     WHERE time >= start_ts
