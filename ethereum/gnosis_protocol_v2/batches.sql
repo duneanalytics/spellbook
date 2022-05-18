@@ -1,4 +1,4 @@
-CREATE TABLE gnosis_protocol_v2.batches
+CREATE TABLE IF NOT EXISTS gnosis_protocol_v2.batches
 (
     block_time      timestamptz NOT NULL,
     num_trades      int8        NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE gnosis_protocol_v2.batches
     token_approvals int8
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS batches_id ON gnosis_protocol_v2.view_batches (tx_hash);
-CREATE INDEX batches_idx_1 ON gnosis_protocol_v2.view_batches (block_time);
-CREATE INDEX batches_idx_2 ON gnosis_protocol_v2.view_batches (solver_address);
-CREATE INDEX batches_idx_3 ON gnosis_protocol_v2.view_batches (num_trades);
+CREATE UNIQUE INDEX IF NOT EXISTS batches_id ON gnosis_protocol_v2.batches (tx_hash);
+CREATE INDEX batches_idx_1 ON gnosis_protocol_v2.batches (block_time);
+CREATE INDEX batches_idx_2 ON gnosis_protocol_v2.batches (solver_address);
+CREATE INDEX batches_idx_3 ON gnosis_protocol_v2.batches (num_trades);
