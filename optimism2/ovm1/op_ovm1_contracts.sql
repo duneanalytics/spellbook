@@ -15,8 +15,7 @@ CREATE TABLE IF NOT EXISTS ovm1.op_ovm1_contracts (
 BEGIN;
 DELETE FROM ovm1.op_ovm1_contracts *;
 
-COPY ovm1.op_ovm1_contracts (contract_address,contract_project,contract_name,erc20_address,created_time,creator_address) FROM stdin;
-
+COPY ovm1.op_ovm1_contracts (contract_address,contract_project,contract_name,erc20_address,created_time,creator_address) FROM stdin WITH (NULL '');
 \\x000a2c01f114b89952749359922d85e27edda38d	Lyra V1	PoolHedger		2021-08-21T07:24:41+00:00	\\x932607335869cff6349ef450e74c83a3b871a9ff
 \\x0142f40c25ce1f1177ed131101fa19217396cb88	Synthetix				
 \\x017a2f9ca9adb018fc4e06016e4f69a46dbabece	Lyra V1			2021-09-22T01:04:12+00:00	\\x932607335869cff6349ef450e74c83a3b871a9ff
@@ -332,7 +331,7 @@ COPY ovm1.op_ovm1_contracts (contract_address,contract_project,contract_name,erc
 \\xff4287311138ad3bd051f84524b2ea3a682944a5	Synthetix			2021-10-12T21:03:08+00:00	\\x3c05b1239b223c969540fefc0270227a2b00e047
 \\xffbd695bf246c514110f5dae3fa88b8c2f42c411	Rubicon	BathToken	bathUSDT	2021-09-29T20:50:11+00:00	\\x3204ac6f848e05557c6c7876e09059882e07962f
 \.
-
+COMMIT;
 CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS op_ovm1_contracts_addr_uniq_idx ON ovm1.op_ovm1_contracts (contract_address);
 CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS op_ovm1_contracts_proj_addr_uniq_idx ON ovm1.op_ovm1_contracts (contract_address,contract_project);
 CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS op_ovm1_contracts_time_addr_uniq_idx ON ovm1.op_ovm1_contracts (contract_address,created_time);
