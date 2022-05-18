@@ -56,6 +56,6 @@ COPY ovm1.synthetix_genesis_contracts (contract_address,contract_name) FROM stdi
 \\xad32aa4bff8b61b4ae07e3ba437cf81100af0cd7	Wrapper
 \\x8a91e92fdd86e734781c38db52a390e1b99fba7c	Wrapper
 \.
-
+COMMIT;
 CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS op_synthetix_genesis_contracts_addr_uniq_idx ON ovm1.synthetix_genesis_contracts (contract_address);
 CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS op_synthetix_genesis_contracts_name_addr_uniq_idx ON ovm1.synthetix_genesis_contracts (contract_address,contract_name);
