@@ -517,7 +517,7 @@ CREATE INDEX IF NOT EXISTS zerion_trades_time_index ON zerion.view_trades USING 
 CREATE UNIQUE INDEX IF NOT EXISTS zerion_trades_unique ON zerion.view_trades USING btree (tx_hash, protocol, sold_token_address);
 
 --backfill
-SELECT zerion.view_trades('2021-04-28', (SELECT NOW() - interval '20 minutes')) WHERE NOT EXISTS (SELECT * FROM zerion.view_trades LIMIT 1);
+SELECT zerion.view_trades('2019-01-01', (SELECT NOW() - interval '20 minutes')) WHERE NOT EXISTS (SELECT * FROM zerion.view_trades LIMIT 1);
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('15 * * * *', $$SELECT zerion.view_trades((SELECT MAX(block_time) - interval '2 days' FROM zerion.view_trades), (SELECT NOW() - interval '20 minutes'));$$)
