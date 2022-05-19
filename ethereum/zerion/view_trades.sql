@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS zerion.trades (
+CREATE TABLE IF NOT EXISTS zerion.view_trades (
     block_time TIMESTAMP
     , trader BYTEA
     , usd_volume DECIMAL
@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS zerion.trades (
     , bought_token_symbol TEXT
 );
 
-CREATE OR REPLACE FUNCTION zerion.trades (start_ts timestamptz, end_ts timestamptz=NOW()) RETURNS integer
+CREATE OR REPLACE FUNCTION zerion.view_trades (start_ts timestamptz, end_ts timestamptz=NOW()) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -467,7 +467,7 @@ BEGIN
 
 
   , rows AS (
-    INSERT INTO zerion.trades (
+    INSERT INTO zerion.view_trades (
       block_time
       , trader
       , usd_volume
@@ -513,12 +513,12 @@ BEGIN
   $function$
 ;
 
-CREATE INDEX IF NOT EXISTS zerion_trades_time_index ON zerion.trades USING btree (block_time);
-CREATE UNIQUE INDEX IF NOT EXISTS zerion_trades_unique ON zerion.trades USING btree (tx_hash, protocol, sold_token_address);
+CREATE INDEX IF NOT EXISTS zerion_trades_time_index ON zerion.view_trades USING btree (block_time);
+CREATE UNIQUE INDEX IF NOT EXISTS zerion_trades_unique ON zerion.view_trades USING btree (tx_hash, protocol, sold_token_address);
 
 --backfill
-SELECT zerion.trades('2021-04-28', (SELECT NOW() - interval '20 minutes')) WHERE NOT EXISTS (SELECT * FROM zerion.trades LIMIT 1);
+SELECT zerion.view_trades('2021-04-28', (SELECT NOW() - interval '20 minutes')) WHERE NOT EXISTS (SELECT * FROM zerion.view_trades LIMIT 1);
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('15 * * * *', $$SELECT zerion.trades((SELECT MAX(block_time) - interval '2 days' FROM zerion.trades), (SELECT NOW() - interval '20 minutes'));$$)
+VALUES ('15 * * * *', $$SELECT zerion.view_trades((SELECT MAX(block_time) - interval '2 days' FROM zerion.view_trades), (SELECT NOW() - interval '20 minutes'));$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
