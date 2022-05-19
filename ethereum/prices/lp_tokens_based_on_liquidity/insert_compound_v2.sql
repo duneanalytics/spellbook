@@ -86,16 +86,16 @@ price_with_gap AS (
         mr.hour,
         LEAD(mr.hour, 1, now()) OVER (PARTITION BY mr.contract_address ORDER BY mr.hour) AS next_hour,
         mr.contract_address,
-        (amount/10^p.decimals)*price/NULLIF((cToken/10^t.decimals),0) AS price,
+        (mr.amount/10^p.decimals)*p.price/NULLIF((mr.cToken/10^t.decimals),0) AS price,
         t.symbol,
         t.decimals
     FROM mintRedeem mr
     LEFT JOIN compound."view_ctokens" t USING (contract_address)
-    LEFT JOIN prices p ON p.contract_address = underlying_token_address AND mr.hour = p.hour
+    LEFT JOIN prices p ON p.contract_address = t.underlying_token_address AND mr.hour = p.hour
 ),
 
 rows AS (
-    INSERT INTO dex.liquidity (
+    INSERT INTO prices.lp_tokens_based_on_liquidity (
         hour,
         contract_address,
         price,
@@ -107,10 +107,10 @@ rows AS (
 
     SELECT
         h.hour,
-        contract_address,
-        price,
-        symbol,
-        decimals,
+        p.contract_address,
+        p.price,
+        p.symbol,
+        p.decimals,
         'Compound' AS project,
         '2' AS version
     FROM price_with_gap p
@@ -133,10 +133,9 @@ SELECT prices.insert_compound_v2(
     '2019-05-07 00:00',
     '2021-02-01 00:00'
 )
-
 WHERE NOT EXISTS (
     SELECT *
-    FROM prices.lptokens_based_on_liquidity
+    FROM prices.lp_tokens_based_on_liquidity
     WHERE hour >= '2020-01-01 00:00'
     AND hour < '2021-02-01 00:00'
     AND project = 'Compound'
@@ -148,10 +147,9 @@ SELECT prices.insert_compound_v2(
     '2021-01-01 00:00',
     '2022-03-04 00:00'
 )
-
 WHERE NOT EXISTS (
     SELECT *
-    FROM prices.lptokens_based_on_liquidity
+    FROM prices.lp_tokens_based_on_liquidity
     WHERE hour >= '2021-01-01 00:00'
     AND hour < '2022-03-04 00:00'
     AND project = 'Compound'
@@ -159,13 +157,13 @@ WHERE NOT EXISTS (
 );
 
 -- fill 2022 and following
-SELECT dex.insert_liquidity_uniswap_v2(
+SELECT prices.insert_compound_v2(
     '2022-01-01 00:00',
     now()
 )
 WHERE NOT EXISTS (
     SELECT *
-    FROM prices.lptokens_based_on_liquidity
+    FROM prices.lp_tokens_based_on_liquidity
     WHERE hour >= '2022-01-01'
     AND hour < now() - interval '20 minutes'
     AND project = 'Compound'
@@ -174,8 +172,8 @@ WHERE NOT EXISTS (
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('17 3 * * *', $$
-    SELECT prices.lptokens_based_on_liquidity(
-        (SELECT max(hour) FROM prices.lptokens_based_on_liquidity WHERE project = 'Compound' and version = '2'),
+    SELECT prices.insert_compound_v2(
+        (SELECT max(hour) FROM prices.lp_tokens_based_on_liquidity WHERE project = 'Compound' and version = '2'),
         (SELECT now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
