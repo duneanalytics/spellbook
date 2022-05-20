@@ -1,7 +1,4 @@
 BEGIN;
-DROP MATERIALIZED VIEW IF EXISTS gnosis_protocol_v2.view_batches; -- due to downstream dependency, drop view_batches -- remember to rebuild after this script!
-COMMIT;
-BEGIN;
 DROP MATERIALIZED VIEW IF EXISTS gnosis_protocol_v2.view_solvers;
 COMMIT;
 
