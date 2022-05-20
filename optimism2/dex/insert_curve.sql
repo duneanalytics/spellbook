@@ -31,6 +31,8 @@ WITH curve_pools AS (
     WITH base_pools AS (
         SELECT "arg0" AS tokenid, output_0 AS token, contract_address AS pool
             FROM curvefi."StableSwap_call_coins" WHERE call_success
+	    
+	    GROUP BY 1,2,3
         )
     , meta_pools AS (
     SELECT tokenid, token, et."contract_address" AS pool
