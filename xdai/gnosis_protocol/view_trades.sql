@@ -92,7 +92,7 @@ CREATE INDEX view_trades_idx_6 ON gnosis_protocol.view_trades (trader_hex, order
 
 
 
-INSERT INTO cron.job (schedule, command)
-VALUES ('*/1 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol.view_trades')
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
-COMMIT;
+-- INSERT INTO cron.job (schedule, command)
+-- VALUES ('*/1 * * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol.view_trades')
+-- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+-- COMMIT;
