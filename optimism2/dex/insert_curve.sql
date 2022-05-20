@@ -31,6 +31,7 @@ WITH curve_pools AS (
     WITH base_pools AS (
         SELECT "arg0" AS tokenid, output_0 AS token, contract_address AS pool
             FROM curvefi."StableSwap_call_coins" WHERE call_success
+	    GROUP BY 1,2,3 --unique
         )
     , meta_pools AS (
     SELECT tokenid, token, et."contract_address" AS pool
@@ -39,11 +40,15 @@ WITH curve_pools AS (
         FROM curvefi."PoolFactory_evt_MetaPoolDeployed" mp
         INNER JOIN base_pools bp
             ON mp.base_pool = bp.pool
+	GROUP BY 1,2,3 --unique
+	    
         UNION ALL
         SELECT mp.evt_tx_hash, 0 AS tokenid, mp."coin" AS token
         FROM curvefi."PoolFactory_evt_MetaPoolDeployed" mp
         INNER JOIN base_pools bp
             ON mp.base_pool = bp.pool
+	GROUP BY 1,2,3 --unique
+	    
         ) mps
         -- the exchange address appears as an erc20 minted to itself (not in the deploymeny event)
         INNER JOIN erc20."ERC20_evt_Transfer" et
@@ -58,6 +63,7 @@ WITH curve_pools AS (
         UNION ALL
         SELECT tokenid, token, pool FROM meta_pools
         ) a
+	GROUP BY 1,2,3 --unique
     ORDER BY pool ASC, tokenid ASC
 )
 SELECT
