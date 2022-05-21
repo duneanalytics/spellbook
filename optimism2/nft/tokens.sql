@@ -97,6 +97,8 @@ COPY nft.tokens (contract_address, project_name) FROM stdin;
 \\x23550C801B88fC1a4C8b69EaE8C57310c4FF6482	Loogie Eyelash
 \\x01fb3CfBB534910bBE51B0EFDDaBCe75A7dE94E2	Loogie Mustaches
 \\x43693eeC62666D621ba33095090BE60d4aF6D6FA	Loogie Contact Lenses
+\\x70706edeEa0BB9fB8A9214764066B79441528704	Elements of Ganland
+\\x18a1bC18cEfdc952121F319039502FDD5f48B6fF	CryptoTesters
 \.
 
 COMMIT;
