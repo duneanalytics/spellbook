@@ -306,7 +306,7 @@ BEGIN
           AND contract_address = '\xd291328a6c202c5b18dcb24f279f69de1e065f70'
           AND substring(traces.input, 1, 4) = '\x695f7219'
           AND tx.hash <> '\x84552aca155ee0b6c7f444cc94f3161791afa7980ddf6b364bc8155f01cf5623'
-          AND block_time >= start_ts AND block_time < end_ts
+          AND logs.block_time >= start_ts AND logs.block_time < end_ts
       GROUP by tx.hash, tx.value, tx.block_time, sender
       )
 
@@ -438,34 +438,7 @@ BEGIN
       , NULL::text AS bought_token_symbol
       FROM transfers_with_prices
       )
-
-  INSERT INTO zerion.trades
-  SELECT *
-  FROM (
-      SELECT * FROM hashflow_trades
-      UNION ALL
-      SELECT * FROM uniswap_and_forks
-      UNION ALL
-      SELECT * FROM oneinch_after_20_09_2021
-      UNION ALL
-      SELECT * FROM zrx_api_volume
-      UNION ALL
-      SELECT * FROM paraswap_trades
-      UNION ALL
-      SELECT * FROM defi_sdk_trades
-      ) zerion_all_trades
-
-
-
-
-
-
-
-
-
-
-
-
+      
   , rows AS (
     INSERT INTO zerion.trades (
       block_time
