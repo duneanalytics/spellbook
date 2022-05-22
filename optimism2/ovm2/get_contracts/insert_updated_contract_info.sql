@@ -42,12 +42,11 @@ VALUES ('11,44 * * * *', $$
  SELECT ovm2.insert_get_contracts(
 	(SELECT MIN(min_created_time) FROM  contracts_to_update), --start time
         (SELECT MAX(max_created_time) FROM  contracts_to_update), --end time (max time)
-	(
-    	SELECT array_agg(creator_address) FROM contracts_to_update
-    	LIMIT 1
+	(SELECT array_agg(creator_address) FROM contracts_to_update LIMIT 1)
 	)
-	
-);
+	WHERE EXISTS (
+		SELECT * FROM contracts_to_update LIMIT 1 --only run if there are contracts to update.
+	);
 	
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
