@@ -18,6 +18,6 @@ COPY ovm2.contract_overrides (contract_address,project_name,contract_name) FROM 
 \\xc30141B657f4216252dc59Af2e7CdB9D8792e1B0	Socket	Socket Registry
 \.
 COMMIT;
-CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS contract_overrides_address_list_addr_uniq_idx ON ovm2.contract_overrides (contract_address);
-CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS contract_overrides_address_list_addr_proj_uniq_idx ON ovm2.contract_overrides (contract_address,project_name);
-CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS contract_overrides_address_list_addr_proj_contract_name_uniq_idx ON ovm2.contract_overrides (contract_address,project_name, contract_name);
+CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS contract_overrides_list_addr_uniq_idx ON ovm2.contract_overrides (contract_address);
+CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS contract_overrides_list_addr_proj_uniq_idx ON ovm2.contract_overrides (contract_address,project_name);
+CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS contract_overrides_list_addr_proj_name_uniq_idx ON ovm2.contract_overrides (contract_address,project_name, contract_name);
