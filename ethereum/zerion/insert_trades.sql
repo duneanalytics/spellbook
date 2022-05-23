@@ -60,6 +60,8 @@ BEGIN
           ELSE tp.symbol END AS bought_token_symbol
       FROM ethereum.traces t
       LEFT JOIN ethereum.transactions tx ON tx.hash = t.tx_hash
+      AND tx.block_time >= start_ts
+      AND tx.block_time < end_ts
       LEFT JOIN hashflow_event_decoding l ON l.tx_id = substring(t.input,325,32) 
       JOIN prices.usd tp ON tp.minute = date_trunc('minute', t.block_time) 
           AND tp.contract_address = CASE WHEN substring(input, 81, 20) = '\x0000000000000000000000000000000000000000'::bytea 
@@ -88,6 +90,8 @@ BEGIN
       , token_b_symbol AS bought_token_symbol
       FROM dex.trades dt
       INNER JOIN ethereum.traces et ON et.tx_hash=dt.tx_hash
+      AND et.block_time >= start_ts
+      AND et.block_time < end_ts
       AND et.to IN ( 
           '\xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F', -- Sushi
           '\x7a250d5630B4cF539739dF2C5dAcb4c659F2488D', -- Uni 
@@ -115,6 +119,8 @@ BEGIN
       , token_b_symbol AS bought_token_symbol
       FROM ethereum."traces" et
       INNER JOIN dex.trades dt ON et.tx_hash=dt.tx_hash AND dt.project='1inch'
+      AND dt.block_time >= start_ts
+      AND dt.block_time < end_ts
       LEFT JOIN prices."prices_from_dex_data" pua ON dt.token_a_address=pua.contract_address AND date_trunc('hour', dt.block_time)=pua.hour
       LEFT JOIN prices."prices_from_dex_data" pub ON  dt.token_b_address=pub.contract_address AND date_trunc('hour', dt.block_time)=pub.hour
       WHERE "to" IN ('\x11111112542d85b3ef69ae05771c2dccff4faa26', '\x1111111254fb6c44bac0bed2854e76f90643097d')
@@ -284,6 +290,8 @@ BEGIN
               AND call_block_time >= start_ts AND call_block_time < end_ts
       ) swap
       LEFT JOIN ethereum.transactions tx ON tx.hash = swap.evt_tx_hash
+        AND block_time >= start_ts
+        AND block_time < end_ts
       LEFT JOIN erc20."tokens" tb ON swap."destToken"=tb.contract_address
       LEFT JOIN erc20."tokens" ts ON swap."srcToken"=ts.contract_address
       ) zerion_through_paraswap
@@ -299,9 +307,13 @@ BEGIN
       FROM ethereum."logs" 
       INNER JOIN ethereum."transactions" tx ON tx.hash = tx_hash
           AND tx.success = TRUE 
+          AND tx.block_time >= start_ts
+          AND tx.block_time < end_ts
       RIGHT JOIN ethereum."traces" traces ON traces.tx_hash = tx.hash
           AND traces.to = '\xd291328a6c202c5b18dcb24f279f69de1e065f70'
           AND traces.from = '\xb2be281e8b11b47fec825973fc8bb95332022a54'
+          AND traces.block_time >= start_ts
+          AND traces.block_time < end_ts
       WHERE topic1 = '\x5c416a271db2ac40f70515df028f580eeb1e2f7be2e656664553b83d9e15a039' 
           AND contract_address = '\xd291328a6c202c5b18dcb24f279f69de1e065f70'
           AND substring(traces.input, 1, 4) = '\x695f7219'
@@ -344,6 +356,8 @@ BEGIN
       INNER JOIN ethereum."traces" traces 
           ON traces.tx_hash = hash
           AND traces.to = sender
+          AND traces.block_time >= start_ts
+          AND traces.block_time < end_ts
       INNER JOIN prices.usd p 
           ON p.minute = date_trunc('minute', defi_sdk_txs.block_time)
           AND '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' = p.contract_address
@@ -393,6 +407,8 @@ BEGIN
           AND traces.to = '\xd291328a6c202c5b18dcb24f279f69de1e065f70'
           AND traces.from = '\xb2be281e8b11b47fec825973fc8bb95332022a54' 
           AND traces.value > 0
+          AND traces.block_time >= start_ts
+          AND traces.block_time < end_ts
       INNER JOIN prices.usd p 
           ON p.minute = date_trunc('minute', defi_sdk_txs.block_time)
           AND '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' = p.contract_address
@@ -438,7 +454,7 @@ BEGIN
       , NULL::text AS bought_token_symbol
       FROM transfers_with_prices
       )
-      
+
   , rows AS (
     INSERT INTO zerion.trades (
       block_time
@@ -490,7 +506,17 @@ CREATE INDEX IF NOT EXISTS zerion_trades_time_index ON zerion.trades USING btree
 CREATE UNIQUE INDEX IF NOT EXISTS zerion_trades_unique ON zerion.trades USING btree (tx_hash, protocol, sold_token_address);
 
 --backfill
-SELECT zerion.trades('2019-01-01', (SELECT NOW() - interval '20 minutes')) WHERE NOT EXISTS (SELECT * FROM zerion.trades LIMIT 1);
+SELECT zerion.trades('2019-01-01', '2020-01-01') --WHERE NOT EXISTS (SELECT * FROM zerion.trades LIMIT 1);
+
+--backfill
+SELECT zerion.trades('2020-01-01', '2021-01-01') --WHERE NOT EXISTS (SELECT * FROM zerion.trades LIMIT 1);
+
+--backfill
+SELECT zerion.trades('2021-01-01', '2022-01-01') --WHERE NOT EXISTS (SELECT * FROM zerion.trades LIMIT 1);
+
+--backfill
+SELECT zerion.trades('2022-01-01', (SELECT NOW() - interval '20 minutes')) --WHERE NOT EXISTS (SELECT * FROM zerion.trades LIMIT 1);
+
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('15 * * * *', $$SELECT zerion.trades((SELECT MAX(block_time) - interval '2 days' FROM zerion.trades), (SELECT NOW() - interval '20 minutes'));$$)
