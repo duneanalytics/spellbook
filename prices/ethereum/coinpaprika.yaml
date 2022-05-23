@@ -2096,3 +2096,8 @@
   symbol: VPAD
   address: 0x51FE2E572e97BFEB1D719809d743Ec2675924EDc
   decimals: 18
+- name: global-coin-research
+  id: gcr-global-coin-research
+  symbol: GCR
+  address: 0x6307B25A665Efc992EC1C1bC403c38F3dDd7c661
+  decimals: 4
