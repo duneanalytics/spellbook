@@ -136,7 +136,7 @@ SELECT prices.insert_compound_v2(
 WHERE NOT EXISTS (
     SELECT *
     FROM prices.lp_tokens_based_on_liquidity
-    WHERE hour >= '2020-01-01 00:00'
+    WHERE hour >= '2019-05-07 00:00'
     AND hour < '2021-02-01 00:00'
     AND project = 'Compound'
     AND version = '2'
@@ -150,11 +150,12 @@ SELECT prices.insert_compound_v2(
 WHERE NOT EXISTS (
     SELECT *
     FROM prices.lp_tokens_based_on_liquidity
-    WHERE hour >= '2021-01-01 00:00'
+    WHERE hour >= '2021-02-01 00:00'
     AND hour < '2022-03-04 00:00'
     AND project = 'Compound'
     AND version = '2'
-);
+)
+;
 
 -- fill 2022 and following
 SELECT prices.insert_compound_v2(
