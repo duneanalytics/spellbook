@@ -16,7 +16,7 @@ WITH rows AS (
 --This is used for backfilling
 WITH
   creator_rows AS (
-      UNNEST(creator_list:: bytea []) AS creators
+      SELECT UNNEST(creator_list:: bytea []) AS creators
   ),
   contract_creators AS (
     SELECT
