@@ -59,5 +59,5 @@ CREATE UNIQUE INDEX ON tokemak.view_tokemak_prices_usd_eth_daily (
 );
 
 INSERT INTO cron.job(schedule, command)
-VALUES ('* 1 * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY x.view_tokemak_prices_usd_eth_daily$$)
+VALUES ('* 1 * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_prices_usd_eth_daily$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
