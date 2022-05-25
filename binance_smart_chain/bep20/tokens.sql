@@ -1018,7 +1018,7 @@ COPY bep20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\xe3f1d843dde0748fa370879536cb6877a7ff9db3	anyFEVR	18
 \\x59d66751eff67d7150196b4086afcc0313163026	anyCIFI	18
 \\x1104918312cc9ad88eadabe07b5110cae99583f6	MIDA	18
-\\xbc70a08ece842698dd89dd7fc8767fc962e4533b	anyFroyo    18
+\\xbc70a08ece842698dd89dd7fc8767fc962e4533b	anyFroyo	18
 \\x231f197d0e3e912deccd93c076ad92bddde70d61	anynuBTC	9
 \\xeac7ec051a0854cfc2bb543c96fad879de545b90	anyCYT	18
 \\xb097e83211d896650ed0104da3309d3654416bc0	anyPINK	18
@@ -1038,7 +1038,7 @@ COPY bep20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\xed77bc3dad55f320f8807586c2aef9285c1a5ed2	anyGEM	18
 \\x989a6de580b9e918017f02fe7180e6f94805d2ab	anyPLOT	18
 \\x400e3a1ba43d272e576c237e51d0e1ef3253f153	anySPONGS	9
-\\xc55d3a143e16e509358ccb09c00aed072efd48e0	anybBzB 18
+\\xc55d3a143e16e509358ccb09c00aed072efd48e0	anybBzB	18
 \\x5329b989b69f3c46b5e6868619ee390757b7c5bb	anyRSD	18
 \\xdae0e692805350d738202e0a7d8136da3e9078d9	anyAUTO	18
 \\xd8dbc29c651e0571d8c1e1b5f9c1d68d5fa4d752	anyCK	0
