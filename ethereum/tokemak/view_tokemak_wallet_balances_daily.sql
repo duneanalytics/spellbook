@@ -34,7 +34,7 @@ WITH calendar AS
             --order by "timestamp" desc
             INNER JOIN tokemak."view_tokemak_addresses" ta ON ta.address = b.wallet_address
             INNER JOIN tokemak."view_tokemak_lookup_tokens" tl ON b.token_address = tl.address  
-             WHERE NOT (date_trunc('day', "timestamp")::date >'2022-05-08' AND (tl.address='\xa47c8bf37f92aBed4A126BDA807A7b7498661acD' OR tl.address='\xa693b19d2931d498c5b318df961919bb4aee87a5' OR tl.address = '\xCEAF7747579696A2F0bb206a14210e3c9e6fB269'))--remove UST tokens and pools
+            -- WHERE NOT (date_trunc('day', "timestamp")::date >'2022-05-08' AND (tl.address='\xa47c8bf37f92aBed4A126BDA807A7b7498661acD' OR tl.address='\xa693b19d2931d498c5b318df961919bb4aee87a5' OR tl.address = '\xCEAF7747579696A2F0bb206a14210e3c9e6fB269'))--remove UST tokens and pools
             ORDER BY "date" desc , b.wallet_address, b.token_address, "timestamp" desc NULLS LAST
             ) as t  GROUP BY 1,2,3,4,5,6 
        -- ORDER BY "date" desc, source, symbol
