@@ -14,7 +14,7 @@ WITH calendar AS
         FROM dune_user_generated."tokemak_lookup_reactors" r  
         INNER JOIN dune_user_generated."tokemak_lookup_tokens" tl ON tl.address = r.underlyer_address
         CROSS JOIN generate_series('2021-08-01'::date, current_date, '1 day') t(i) 
-        WHERE NOT (i>'2022-05-08' AND r.reactor_address='\x7A75ec20249570c935Ec93403A2B840fBdAC63fd')
+        WHERE NOT (i>'2022-05-10' AND r.reactor_address='\x7A75ec20249570c935Ec93403A2B840fBdAC63fd')
  ) , 
 
 reactor_underlyer_balances as (
