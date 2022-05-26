@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: tokens_ethereum_erc20
+    meta:
+      blockchain: ethereum
+      sector: tokens
+      project: erc20
+      contibutors: soispoke, dot2dotseurat
+    config:
+      tags: ['table', 'erc20']
+    description: "ERC20 Token Addresses, Symbols and Decimals"
+    columns:
+      - name: contract_address
+        description: "ERC20 token contract address"
+      - name: symbol
+        description: "ERC20 token symbol"
+      - name: decimals
+        description: "Number of decimals, refers to how divisible an ERC20 token can be"
+
+  - name: tokens_ethereum_rebase
+    meta:
+      blockchain: ethereum
+      sector: tokens
+      project: erc20
+      contibutors: dot2dotseurat
+    config:
+      tags: ['table', 'erc20', 'rebase']
+    description: >
+      Ethereum Rebase Token Addresses and Symbols. 
+      A Rebase Token is a cryptocurrency with an algorithmically adjusted supply that controls its price.
+    columns:
+      - name: contract_address
+        description: "Token contract address"
+      - name: symbol
+        description: "Token symbol"
