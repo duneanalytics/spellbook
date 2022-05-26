@@ -13,7 +13,7 @@ WITH calendar AS
         CROSS JOIN generate_series('2021-08-01'::date, current_date, '1 day') t(i) 
         CROSS JOIN generate_series(0,4,1) tt(s) 
         CROSS JOIN (SELECT address from dune_user_generated."tokemak_addresses") as a 
-        WHERE NOT (i>'2022-05-10' AND (tl.address='\xa47c8bf37f92aBed4A126BDA807A7b7498661acD' OR tl.address='\xa693b19d2931d498c5b318df961919bb4aee87a5' OR tl.address = '\xCEAF7747579696A2F0bb206a14210e3c9e6fB269'))--remove UST tokens and pools
+        --WHERE NOT (i>'2022-05-10' AND (tl.address='\xa47c8bf37f92aBed4A126BDA807A7b7498661acD' OR tl.address='\xa693b19d2931d498c5b318df961919bb4aee87a5' OR tl.address = '\xCEAF7747579696A2F0bb206a14210e3c9e6fB269'))--remove UST tokens and pools
  ) ,
  result AS (
     SELECT "date", source, wallet_address, token_address, symbol, display_name, sum(balance)  as balance FROM (
