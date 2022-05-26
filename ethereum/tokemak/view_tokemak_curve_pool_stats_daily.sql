@@ -44,7 +44,7 @@ WITH   pools_and_constituents As
                     SUM(CASE WHEN "to" = '\xCEAF7747579696A2F0bb206a14210e3c9e6fB269' THEN value  ELSE value *-1  END) as qty 
                 FROM erc20."ERC20_evt_Transfer" 
                 WHERE ("to" = '\xCEAF7747579696A2F0bb206a14210e3c9e6fB269' OR "from" = '\xCEAF7747579696A2F0bb206a14210e3c9e6fB269') AND contract_address <> '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48' --somehow $100 worth of USDC was put in this pool so we need to omit it
-                AND NOT ("to" = "from") AND DATE_TRUNC('day', evt_block_time) < '2022-05-09'
+                AND NOT ("to" = "from") AND DATE_TRUNC('day', evt_block_time) < '2022-05-11'
                 GROUP BY 1,2 
             ) as tt
        )as t 
