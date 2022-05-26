@@ -1,4 +1,4 @@
-CREATE MATERIALIZED VIEW tokemak.view_tokemak_curve_pool_stats_daily
+CREATE MATERIALIZED VIEW tokemak."view_tokemak_curve_pool_stats_daily"
 (
     source
     ,"date"
@@ -31,8 +31,8 @@ WITH   pools_and_constituents As
                 GROUP BY 1,2 --ORDER BY "date" desc
             ) as tt
        )as t 
-       INNER JOIN dune_user_generated.tokemak_lookup_tokens m ON m.address = t.token_address
-       CROSS JOIN dune_user_generated.tokemak_lookup_metapools p WHERE p.base_pool_address = '\xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7' 
+       INNER JOIN tokemak."view_tokemak_lookup_tokens" m ON m.address = t.token_address
+       CROSS JOIN tokemak."view_tokemak_lookup_metapools" p WHERE p.base_pool_address = '\xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7' 
     UNION    
        --wormhole
         SELECT"date", token_address,p.symbol as pool_symbol,p.address as pool_address, m.symbol as token_symbol, (qty/10^m.decimals) as qty FROM (
@@ -48,8 +48,8 @@ WITH   pools_and_constituents As
                 GROUP BY 1,2 
             ) as tt
        )as t 
-       INNER JOIN dune_user_generated.tokemak_lookup_tokens m ON m.address = t.token_address
-       CROSS JOIN dune_user_generated.tokemak_lookup_tokens p WHERE p.address = '\xCEAF7747579696A2F0bb206a14210e3c9e6fB269'
+       INNER JOIN tokemak."view_tokemak_lookup_tokens" m ON m.address = t.token_address
+       CROSS JOIN tokemak."view_tokemak_lookup_tokens" p WHERE p.address = '\xCEAF7747579696A2F0bb206a14210e3c9e6fB269'
        AND qty>0 
     UNION 
     --alUSD
@@ -66,8 +66,8 @@ WITH   pools_and_constituents As
                 GROUP BY 1,2 --ORDER BY"date" desc
             ) as tt --order by "date" desc
        )as t 
-       INNER JOIN dune_user_generated.tokemak_lookup_tokens m ON m.address = t.token_address
-       CROSS JOIN dune_user_generated.tokemak_lookup_tokens p WHERE p.address = '\x43b4FdFD4Ff969587185cDB6f0BD875c5Fc83f8c'
+       INNER JOIN tokemak."view_tokemak_lookup_tokens" m ON m.address = t.token_address
+       CROSS JOIN tokemak."view_tokemak_lookup_tokens" p WHERE p.address = '\x43b4FdFD4Ff969587185cDB6f0BD875c5Fc83f8c'
        AND qty>0 
     UNION    
     --FRAX3CRV
@@ -85,8 +85,8 @@ WITH   pools_and_constituents As
                 GROUP BY 1,2 --ORDER BY"date" 
             ) as tt
        )as t 
-       INNER JOIN dune_user_generated.tokemak_lookup_tokens m ON m.address = t.token_address
-       CROSS JOIN dune_user_generated.tokemak_lookup_tokens p WHERE p.address = '\xd632f22692FaC7611d2AA1C0D552930D43CAEd3B'
+       INNER JOIN tokemak."view_tokemak_lookup_tokens" m ON m.address = t.token_address
+       CROSS JOIN tokemak."view_tokemak_lookup_tokens" p WHERE p.address = '\xd632f22692FaC7611d2AA1C0D552930D43CAEd3B'
        AND qty>0  
     UNION
     --LUSD3CRV
@@ -103,8 +103,8 @@ WITH   pools_and_constituents As
                 GROUP BY 1,2 --ORDER BY"date" 
             ) as tt
        )as t 
-       INNER JOIN dune_user_generated.tokemak_lookup_tokens m ON m.address = t.token_address
-       CROSS JOIN dune_user_generated.tokemak_lookup_tokens p WHERE p.address = '\xEd279fDD11cA84bEef15AF5D39BB4d4bEE23F0cA'
+       INNER JOIN tokemak."view_tokemak_lookup_tokens" m ON m.address = t.token_address
+       CROSS JOIN tokemak."view_tokemak_lookup_tokens" p WHERE p.address = '\xEd279fDD11cA84bEef15AF5D39BB4d4bEE23F0cA'
        AND qty>0  
     UNION   
         --ALCX
@@ -121,8 +121,8 @@ WITH   pools_and_constituents As
                 GROUP BY 1,2 --ORDER BY"date" desc
             ) as tt
        )as t 
-       INNER JOIN dune_user_generated.tokemak_lookup_tokens m ON m.address = t.token_address
-       CROSS JOIN dune_user_generated.tokemak_lookup_tokens p WHERE p.address = '\x9001a452d39A8710D27ED5c2E10431C13F5Fba74'
+       INNER JOIN tokemak."view_tokemak_lookup_tokens" m ON m.address = t.token_address
+       CROSS JOIN tokemak."view_tokemak_lookup_tokens" p WHERE p.address = '\x9001a452d39A8710D27ED5c2E10431C13F5Fba74'
        AND qty>0 
     UNION    
         --TCR
@@ -139,8 +139,8 @@ WITH   pools_and_constituents As
                 GROUP BY 1,2 --ORDER BY"date" desc
             ) as tt
        )as t 
-       INNER JOIN dune_user_generated.tokemak_lookup_tokens m ON m.address = t.token_address
-       CROSS JOIN dune_user_generated.tokemak_lookup_tokens p WHERE p.address = '\x01FE650EF2f8e2982295489AE6aDc1413bF6011F'
+       INNER JOIN tokemak."view_tokemak_lookup_tokens" m ON m.address = t.token_address
+       CROSS JOIN tokemak."view_tokemak_lookup_tokens" p WHERE p.address = '\x01FE650EF2f8e2982295489AE6aDc1413bF6011F'
        AND qty>0
     UNION    
         --SUSHI
@@ -157,8 +157,8 @@ WITH   pools_and_constituents As
                 GROUP BY 1,2 --ORDER BY"date" desc
             ) as tt
        )as t 
-       INNER JOIN dune_user_generated.tokemak_lookup_tokens m ON m.address = t.token_address
-       CROSS JOIN dune_user_generated.tokemak_lookup_tokens p WHERE p.address = '\x0437ac6109e8A366A1F4816edF312A36952DB856'
+       INNER JOIN tokemak."view_tokemak_lookup_tokens" m ON m.address = t.token_address
+       CROSS JOIN tokemak."view_tokemak_lookup_tokens" p WHERE p.address = '\x0437ac6109e8A366A1F4816edF312A36952DB856'
        AND qty>0
     UNION    
         --FXS
@@ -175,8 +175,8 @@ WITH   pools_and_constituents As
                 GROUP BY 1,2 --ORDER BY"date" desc
             ) as tt
        )as t 
-       INNER JOIN dune_user_generated.tokemak_lookup_tokens m ON m.address = t.token_address
-       CROSS JOIN dune_user_generated.tokemak_lookup_tokens p WHERE p.address = '\x961226B64AD373275130234145b96D100Dc0b655'
+       INNER JOIN tokemak."view_tokemak_lookup_tokens" m ON m.address = t.token_address
+       CROSS JOIN tokemak."view_tokemak_lookup_tokens" p WHERE p.address = '\x961226B64AD373275130234145b96D100Dc0b655'
        AND qty>0
     UNION    
         --FOX
@@ -193,8 +193,8 @@ WITH   pools_and_constituents As
                 GROUP BY 1,2 --ORDER BY"date" desc
             ) as tt
        )as t 
-       INNER JOIN dune_user_generated.tokemak_lookup_tokens m ON m.address = t.token_address
-       CROSS JOIN dune_user_generated.tokemak_lookup_tokens p WHERE p.address = '\xC250B22d15e43d95fBE27B12d98B6098f8493eaC'
+       INNER JOIN tokemak."view_tokemak_lookup_tokens" m ON m.address = t.token_address
+       CROSS JOIN tokemak."view_tokemak_lookup_tokens" p WHERE p.address = '\xC250B22d15e43d95fBE27B12d98B6098f8493eaC'
        AND qty>0
     UNION
     --APW
@@ -211,8 +211,8 @@ WITH   pools_and_constituents As
                 GROUP BY 1,2 --ORDER BY"date" desc
             ) as tt
        )as t 
-       INNER JOIN dune_user_generated.tokemak_lookup_tokens m ON m.address = t.token_address
-       CROSS JOIN dune_user_generated.tokemak_lookup_tokens p WHERE p.address = '\xCaf8703f8664731cEd11f63bB0570E53Ab4600A9'
+       INNER JOIN tokemak."view_tokemak_lookup_tokens" m ON m.address = t.token_address
+       CROSS JOIN tokemak."view_tokemak_lookup_tokens" p WHERE p.address = '\xCaf8703f8664731cEd11f63bB0570E53Ab4600A9'
        AND qty>0
     UNION    
         --SNX
@@ -229,8 +229,8 @@ WITH   pools_and_constituents As
                 GROUP BY 1,2 --ORDER BY"date" desc
             ) as tt
        )as t 
-       INNER JOIN dune_user_generated.tokemak_lookup_tokens m ON m.address = t.token_address
-       CROSS JOIN dune_user_generated.tokemak_lookup_tokens p WHERE p.address = '\x50B0D9171160d6EB8Aa39E090Da51E7e078E81c4'
+       INNER JOIN tokemak."view_tokemak_lookup_tokens" m ON m.address = t.token_address
+       CROSS JOIN tokemak."view_tokemak_lookup_tokens" p WHERE p.address = '\x50B0D9171160d6EB8Aa39E090Da51E7e078E81c4'
        AND qty>0
     UNION
     --GAMMA
@@ -247,8 +247,8 @@ WITH   pools_and_constituents As
                 GROUP BY 1,2 --ORDER BY"date" desc
             ) as tt
        )as t 
-       INNER JOIN dune_user_generated.tokemak_lookup_tokens m ON m.address = t.token_address
-       CROSS JOIN dune_user_generated.tokemak_lookup_tokens p WHERE p.address = '\x9462F2b3C9bEeA8afc334Cdb1D1382B072e494eA'
+       INNER JOIN tokemak."view_tokemak_lookup_tokens" m ON m.address = t.token_address
+       CROSS JOIN tokemak."view_tokemak_lookup_tokens" p WHERE p.address = '\x9462F2b3C9bEeA8afc334Cdb1D1382B072e494eA'
        AND qty>0 
       UNION
     --WETH
@@ -265,8 +265,8 @@ WITH   pools_and_constituents As
                 GROUP BY 1,2 --ORDER BY"date" desc
             ) as tt
        )as t 
-       INNER JOIN dune_user_generated.tokemak_lookup_tokens m ON m.address = t.token_address
-       CROSS JOIN dune_user_generated.tokemak_lookup_tokens p WHERE p.address = '\x06d39e95977349431e3d800d49c63b4d472e10fb'
+       INNER JOIN tokemak."view_tokemak_lookup_tokens" m ON m.address = t.token_address
+       CROSS JOIN tokemak."view_tokemak_lookup_tokens" p WHERE p.address = '\x06d39e95977349431e3d800d49c63b4d472e10fb'
        AND qty>0 
      UNION
       --ETH and stETH 
@@ -285,8 +285,8 @@ WITH   pools_and_constituents As
                 GROUP BY 1,2 --ORDER BY"date" desc
             ) as tt --order by "date" desc
        )as t 
-       INNER JOIN dune_user_generated.tokemak_lookup_tokens m ON m.address = t.token_address
-       CROSS JOIN dune_user_generated.tokemak_lookup_metapools p WHERE p.base_pool_address = '\xDC24316b9AE028F1497c275EB9192a3Ea0f67022'
+       INNER JOIN tokemak."view_tokemak_lookup_tokens" m ON m.address = t.token_address
+       CROSS JOIN tokemak."view_tokemak_lookup_metapools" p WHERE p.base_pool_address = '\xDC24316b9AE028F1497c275EB9192a3Ea0f67022'
        AND qty>0 
         UNION
         --stETH
@@ -297,8 +297,8 @@ WITH   pools_and_constituents As
                 FROM lido."steth_call_balanceOf" where _account = '\xDC24316b9AE028F1497c275EB9192a3Ea0f67022'
                     --order by call_block_time::date desc, call_block_time desc
            )as t 
-       INNER JOIN dune_user_generated.tokemak_lookup_tokens m ON m.address = t.token_address
-       CROSS JOIN dune_user_generated.tokemak_lookup_metapools p WHERE p.base_pool_address = '\xDC24316b9AE028F1497c275EB9192a3Ea0f67022'
+       INNER JOIN tokemak."view_tokemak_lookup_tokens" m ON m.address = t.token_address
+       CROSS JOIN tokemak."view_tokemak_lookup_metapools" p WHERE p.base_pool_address = '\xDC24316b9AE028F1497c275EB9192a3Ea0f67022'
        AND qty>0 
     )as t 
     --order by "date" desc, t.pool_symbol asc
@@ -336,7 +336,7 @@ WITH   pools_and_constituents As
         ,ts.total_supply as lp_total_supply
         ,first_value(qty) OVER (PARTITION BY pool_address, token_address, grpQty ORDER BY t."date") AS qty
         FROM  temp t
-        INNER JOIN dune_user_generated.tokemak_curve_convex_pool_total_supply ts ON (t.pool_address = ts.address AND ts."date" = t."date")
+        INNER JOIN tokemak."view_tokemak_curve_convex_pool_total_supply" ts ON (t.pool_address = ts.address AND ts."date" = t."date")
         --ORDER BY "date" desc, pool_symbol asc
         
             

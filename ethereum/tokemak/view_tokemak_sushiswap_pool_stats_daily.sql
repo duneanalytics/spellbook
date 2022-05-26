@@ -12,11 +12,11 @@ CREATE MATERIALIZED VIEW tokemak.view_tokemak_sushiswap_pool_stats_daily
     WITH pairs AS(
             SELECT t.token_address, t.symbol as token_symbol,t.token_decimals, t.index,t.pool_address,tl.symbol as pool_symbol, tl.decimals as pool_decimals FROM(
                 SELECT token0 as token_address, tl.symbol,tl.decimals as token_decimals, pair as pool_address, 1 as index FROM sushi."Factory_evt_PairCreated"
-                INNER JOIN dune_user_generated."tokemak_lookup_tokens" tl ON tl.address = token0
+                INNER JOIN tokemak."view_tokemak_lookup_tokens" tl ON tl.address = token0
                 UNION
                 SELECT token1 as token_address, tl.symbol,tl.decimals as token_decimals, pair as pool_address, 2 as index FROM sushi."Factory_evt_PairCreated"
-                INNER JOIN dune_user_generated."tokemak_lookup_tokens" tl ON tl.address = token1
-            ) as t INNER JOIN dune_user_generated."tokemak_lookup_tokens" tl on tl.address = pool_address 
+                INNER JOIN tokemak."view_tokemak_lookup_tokens" tl ON tl.address = token1
+            ) as t INNER JOIN tokemak."view_tokemak_lookup_tokens" tl on tl.address = pool_address 
             --ORDER BY pool_symbol, token_symbol
         )
     
@@ -27,7 +27,7 @@ CREATE MATERIALIZED VIEW tokemak.view_tokemak_sushiswap_pool_stats_daily
             ,tl.symbol as pool_symbol
             ,tl.decimals as pool_decimals
             FROM sushi."Factory_evt_PairCreated" pc
-            INNER JOIN dune_user_generated."tokemak_lookup_tokens" tl on pc.pair = tl.address
+            INNER JOIN tokemak."view_tokemak_lookup_tokens" tl on pc.pair = tl.address
             CROSS JOIN generate_series('2021-08-01'::date, current_date, '1 day') t(i)
             WHERE tl.is_pool = true order by "date" desc) c
         INNER JOIN pairs p ON p.pool_address = c.pool_address
@@ -78,7 +78,7 @@ CREATE MATERIALIZED VIEW tokemak.view_tokemak_sushiswap_pool_stats_daily
                 ,tl.address as pool_address
                 ,MAX(ARRAY[evt_block_number, evt_index, reserve0, reserve1]) AS latest_reserves
                 FROM sushi."Pair_evt_Sync" t 
-                INNER JOIN dune_user_generated."tokemak_lookup_tokens" tl ON tl.address = t.contract_address 
+                INNER JOIN tokemak."view_tokemak_lookup_tokens" tl ON tl.address = t.contract_address 
                 GROUP BY 1, 2 ORDER BY "date" desc) dr ON c.pool_address = dr.pool_address and dr."date" = c."date")
 
     /*,fees AS

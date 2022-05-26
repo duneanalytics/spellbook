@@ -18,13 +18,13 @@ WITH  convex_pools As
             FROM (
             SELECT contract_address,tl.symbol, (value/10^tl.decimals)*-1 as qty 
             FROM erc20."ERC20_evt_Transfer" t
-            INNER JOIN dune_user_generated.tokemak_lookup_tokens tl on tl.address = t.contract_address
+            INNER JOIN tokemak.view_tokemak_lookup_tokens tl on tl.address = t.contract_address
             WHERE t."to"='\xA86e412109f77c45a3BC1c5870b880492Fb86A14' and t."from"='\xF403C135812408BFbE8713b5A23a04b3D48AAE31'
             AND NOT (t."to" = t."from")
             UNION
             SELECT contract_address,tl.symbol, value/10^tl.decimals as qty 
             FROM erc20."ERC20_evt_Transfer" t
-            INNER JOIN dune_user_generated.tokemak_lookup_tokens tl on tl.address = t.contract_address
+            INNER JOIN tokemak.view_tokemak_lookup_tokens tl on tl.address = t.contract_address
             WHERE t."from"='\xA86e412109f77c45a3BC1c5870b880492Fb86A14' and t."to"='\x989aeb4d175e16225e39e87d0d97a3360524ad80'
             AND NOT (t."to" = t."from")
         )as t GROUP BY contract_address, symbol 
@@ -47,8 +47,8 @@ WITH  convex_pools As
                 GROUP BY 1,2 --ORDER BY "date" desc
             ) as tt
        )as t 
-       INNER JOIN dune_user_generated.tokemak_lookup_tokens m ON m.address = t.token_address
-       CROSS JOIN dune_user_generated.tokemak_lookup_metapools p WHERE p.base_pool_address = '\xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7'
+       INNER JOIN tokemak.view_tokemak_lookup_tokens m ON m.address = t.token_address
+       CROSS JOIN tokemak."view_tokemak_lookup_metapools" p WHERE p.base_pool_address = '\xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7'
       UNION
       --ETH and stETH 
          SELECT"date", token_address,p.base_pool_symbol as pool_symbol,p.pool_token_address as pool_address, m.symbol,  (qty/10^m.decimals) as qty  FROM (
@@ -66,8 +66,8 @@ WITH  convex_pools As
                 GROUP BY 1,2 --ORDER BY"date" desc
             ) as tt --order by "date" desc
        )as t 
-       INNER JOIN dune_user_generated.tokemak_lookup_tokens m ON m.address = t.token_address
-       CROSS JOIN dune_user_generated.tokemak_lookup_metapools p WHERE p.base_pool_address = '\xDC24316b9AE028F1497c275EB9192a3Ea0f67022'
+       INNER JOIN tokemak.view_tokemak_lookup_tokens m ON m.address = t.token_address
+       CROSS JOIN tokemak."view_tokemak_lookup_metapools" p WHERE p.base_pool_address = '\xDC24316b9AE028F1497c275EB9192a3Ea0f67022'
        AND qty>0 
         UNION
         --stETH
@@ -78,8 +78,8 @@ WITH  convex_pools As
                 FROM lido."steth_call_balanceOf" where _account = '\xDC24316b9AE028F1497c275EB9192a3Ea0f67022'
                     --order by call_block_time::date desc, call_block_time desc
            )as t 
-       INNER JOIN dune_user_generated.tokemak_lookup_tokens m ON m.address = t.token_address
-       CROSS JOIN dune_user_generated.tokemak_lookup_metapools p WHERE p.base_pool_address = '\xDC24316b9AE028F1497c275EB9192a3Ea0f67022'
+       INNER JOIN tokemak.view_tokemak_lookup_tokens m ON m.address = t.token_address
+       CROSS JOIN tokemak."view_tokemak_lookup_metapools" p WHERE p.base_pool_address = '\xDC24316b9AE028F1497c275EB9192a3Ea0f67022'
        AND qty>0 
        --all other convex pools
     UNION 
@@ -98,8 +98,8 @@ WITH  convex_pools As
                 GROUP BY 1,2,3 --ORDER BY"date" 
             ) as tt 
       )as t 
-       INNER JOIN dune_user_generated.tokemak_lookup_tokens m ON m.address = t.token_address  
-       CROSS JOIN dune_user_generated.tokemak_lookup_tokens p WHERE p.address = t.pool_address
+       INNER JOIN tokemak.view_tokemak_lookup_tokens m ON m.address = t.token_address  
+       CROSS JOIN tokemak.view_tokemak_lookup_tokens p WHERE p.address = t.pool_address
       AND qty>0  --order by "date" desc, pool_symbol, token_symbol
  )
 --SELECT * FROM pools_and_constituents --WHERE pool_symbol = 'steCRV'
@@ -135,7 +135,7 @@ WITH  convex_pools As
         ,ts.total_supply as lp_total_supply
         ,first_value(qty) OVER (PARTITION BY pool_address, token_address, grpQty ORDER BY t."date") AS qty
         FROM  temp t 
-        INNER JOIN dune_user_generated.tokemak_curve_convex_pool_total_supply ts ON (t.pool_address = ts.address AND ts."date" = t."date")
+        INNER JOIN tokemak."view_tokemak_curve_convex_pool_total_supply" ts ON (t.pool_address = ts.address AND ts."date" = t."date")
         ORDER BY "date" desc, pool_symbol asc
 
         

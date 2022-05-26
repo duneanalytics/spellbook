@@ -11,8 +11,8 @@ WITH calendar AS
             ,tl.symbol
             ,tl.display_name
             
-        FROM dune_user_generated."tokemak_lookup_reactors" r  
-        INNER JOIN dune_user_generated."tokemak_lookup_tokens" tl ON tl.address = r.underlyer_address
+        FROM tokemak."view_tokemak_lookup_reactors" r  
+        INNER JOIN tokemak."view_tokemak_lookup_tokens" tl ON tl.address = r.underlyer_address
         CROSS JOIN generate_series('2021-08-01'::date, current_date, '1 day') t(i) 
         --WHERE NOT (i>'2022-05-10' AND r.reactor_address='\x7A75ec20249570c935Ec93403A2B840fBdAC63fd')
  ) , 
@@ -30,8 +30,8 @@ reactor_underlyer_balances as (
         tl.display_name,
         b.amount_raw/10^tl.decimals as balance
         FROM erc20."token_balances" b  --where b.token_address = '\x04F2694C8fcee23e8Fd0dfEA1d4f5Bb8c352111F' AND b.wallet_address='\x8b4334d4812c530574bd4f2763fcd22de94a969b' order by "timestamp" desc
-        INNER JOIN dune_user_generated."tokemak_lookup_reactors" r ON r.reactor_address = b.wallet_address AND r.underlyer_address = b.token_address AND r.underlyer_address = '\xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'  -- only weth
-        INNER JOIN dune_user_generated."tokemak_lookup_tokens" tl ON tl.address = b.token_address
+        INNER JOIN tokemak."view_tokemak_lookup_reactors" r ON r.reactor_address = b.wallet_address AND r.underlyer_address = b.token_address AND r.underlyer_address = '\xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'  -- only weth
+        INNER JOIN tokemak."view_tokemak_lookup_tokens" tl ON tl.address = b.token_address
         ORDER BY "date" desc,b.wallet_address, b.token_address, "timestamp" desc NULLS LAST
         ) as t 
     GROUP BY "date",token_address, symbol, display_name,reactor_name, reactor_address, is_deployable
@@ -43,17 +43,17 @@ reactor_underlyer_balances as (
                 select date_trunc('day', "evt_block_time") as "date", r.reactor_name,r.reactor_address,r.underlyer_address,r.is_deployable, "to",
                     SUM(value) as amount
                 from erc20."ERC20_evt_Transfer" t
-                INNER JOIN dune_user_generated."tokemak_lookup_reactors" r ON r.underlyer_address = t.contract_address and r.reactor_address = "to" AND r.underlyer_address <> '\xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
+                INNER JOIN tokemak."view_tokemak_lookup_reactors" r ON r.underlyer_address = t.contract_address and r.reactor_address = "to" AND r.underlyer_address <> '\xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
                 WHERE NOT (t."to" = t."from")
                 GROUP BY 1,2,3,4,5,6
                 union
                 select date_trunc('day', "evt_block_time") as "date", r.reactor_name,r.reactor_address,r.underlyer_address,r.is_deployable,"from",
                     SUM(-value) as amount
                 from erc20."ERC20_evt_Transfer" t
-                INNER JOIN dune_user_generated."tokemak_lookup_reactors" r ON r.underlyer_address = t.contract_address and r.reactor_address = "from" AND r.underlyer_address <> '\xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
+                INNER JOIN tokemak."view_tokemak_lookup_reactors" r ON r.underlyer_address = t.contract_address and r.reactor_address = "from" AND r.underlyer_address <> '\xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
                 WHERE NOT (t."to" = t."from")
                 GROUP BY 1,2,3,4,5,6
-            ) t INNER JOIN dune_user_generated."tokemak_lookup_tokens" tl on tl.address = underlyer_address and tl.symbol <> ''
+            ) t INNER JOIN tokemak."view_tokemak_lookup_tokens" tl on tl.address = underlyer_address and tl.symbol <> ''
            group by 1,2,3,4,5,6,7
      ) as t  order by "date" desc, reactor_name
 ) ,
