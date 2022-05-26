@@ -660,641 +660,641 @@ WITH rows AS (
 
       SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."tusd_call_exchange_underlying" c
-            LEFT JOIN curvefi."tusd_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."tusd_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."tusd_call_exchange_underlying0" c
-            LEFT JOIN curvefi."tusd_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."tusd_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."rai_swap_call_exchange_underlying" c
-            LEFT JOIN curvefi."rai_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."rai_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."gusd_swap_call_exchange_underlying" c
-            LEFT JOIN curvefi."gusd_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."gusd_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."USX3CRV_call_exchange_underlying" c
-            LEFT JOIN curvefi."USX3CRV_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."USX3CRV_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."USX3CRV_call_exchange_underlying0" c
-            LEFT JOIN curvefi."USX3CRV_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."USX3CRV_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."usdd_call_exchange_underlying" c
-            LEFT JOIN curvefi."usdd_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."usdd_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."usdd_call_exchange_underlying0" c
-            LEFT JOIN curvefi."usdd_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."usdd_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."linkusd_swap_call_exchange_underlying" c
-            LEFT JOIN curvefi."linkusd_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."linkusd_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."usdp_swap_call_exchange_underlying" c
-            LEFT JOIN curvefi."usdp_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."usdp_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."tbtc2_call_exchange_underlying" c
-            LEFT JOIN curvefi."tbtc2_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."tbtc2_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."tbtc2_call_exchange_underlying0" c
-            LEFT JOIN curvefi."tbtc2_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."tbtc2_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."rsv_swap_call_exchange_underlying" c
-            LEFT JOIN curvefi."rsv_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."rsv_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."usdk_swap_call_exchange_underlying" c
-            LEFT JOIN curvefi."usdk_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."usdk_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."usdm_call_exchange_underlying" c
-            LEFT JOIN curvefi."usdm_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."usdm_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."usdm_call_exchange_underlying0" c
-            LEFT JOIN curvefi."usdm_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."usdm_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."kusd3pool_call_exchange_underlying" c
-            LEFT JOIN curvefi."kusd3pool_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."kusd3pool_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."kusd3pool_call_exchange_underlying0" c
-            LEFT JOIN curvefi."kusd3pool_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."kusd3pool_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."AETHV1_call_exchange_underlying" c
-            LEFT JOIN curvefi."AETHV1_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."AETHV1_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."AETHV1_call_exchange_underlying0" c
-            LEFT JOIN curvefi."AETHV1_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."AETHV1_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."tpd_call_exchange_underlying" c
-            LEFT JOIN curvefi."tpd_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."tpd_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."tpd_call_exchange_underlying0" c
-            LEFT JOIN curvefi."tpd_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."tpd_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."fUSD_call_exchange_underlying" c
-            LEFT JOIN curvefi."fUSD_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."fUSD_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."fUSD_call_exchange_underlying0" c
-            LEFT JOIN curvefi."fUSD_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."fUSD_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."busdv2_call_exchange_underlying" c
-            LEFT JOIN curvefi."busdv2_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."busdv2_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."pbtc_swap_call_exchange_underlying" c
-            LEFT JOIN curvefi."pbtc_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."pbtc_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."XIM3CRV_call_exchange_underlying" c
-            LEFT JOIN curvefi."XIM3CRV_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."XIM3CRV_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."XIM3CRV_call_exchange_underlying0" c
-            LEFT JOIN curvefi."XIM3CRV_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."XIM3CRV_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."XIM_call_exchange_underlying" c
-            LEFT JOIN curvefi."XIM_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."XIM_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."XIM_call_exchange_underlying0" c
-            LEFT JOIN curvefi."XIM_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."XIM_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."sUSD_call_exchange_underlying" c
-            LEFT JOIN curvefi."sUSD_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."sUSD_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."sUSD_call_exchange_underlying0" c
-            LEFT JOIN curvefi."sUSD_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."sUSD_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."fiat3crv_call_exchange_underlying" c
-            LEFT JOIN curvefi."fiat3crv_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."fiat3crv_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."fiat3crv_call_exchange_underlying0" c
-            LEFT JOIN curvefi."fiat3crv_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."fiat3crv_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."dusd_swap_call_exchange_underlying" c
-            LEFT JOIN curvefi."dusd_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."dusd_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."lusd_swap_call_exchange_underlying" c
-            LEFT JOIN curvefi."lusd_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."lusd_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."DSU3Crv_call_exchange_underlying" c
-            LEFT JOIN curvefi."DSU3Crv_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."DSU3Crv_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."DSU3Crv_call_exchange_underlying0" c
-            LEFT JOIN curvefi."DSU3Crv_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."DSU3Crv_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."DSU_call_exchange_underlying" c
-            LEFT JOIN curvefi."DSU_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."DSU_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."DSU_call_exchange_underlying0" c
-            LEFT JOIN curvefi."DSU_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."DSU_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."usdn_swap_call_exchange_underlying" c
-            LEFT JOIN curvefi."usdn_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."usdn_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."par3crv_call_exchange_underlying" c
-            LEFT JOIN curvefi."par3crv_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."par3crv_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."par3crv_call_exchange_underlying0" c
-            LEFT JOIN curvefi."par3crv_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."par3crv_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, tokens_bought, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."y_swap_call_exchange_underlying" c
-            LEFT JOIN curvefi."y_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."y_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, tokens_bought, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."usdt_swap_call_exchange_underlying" c
-            LEFT JOIN curvefi."usdt_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."usdt_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, tokens_bought, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."susd_swap_call_exchange_underlying" c
-            LEFT JOIN curvefi."susd_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."susd_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."saave_swap_call_exchange_underlying" c
-            LEFT JOIN curvefi."saave_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."saave_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, tokens_bought, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."pax_swap_call_exchange_underlying" c
-            LEFT JOIN curvefi."pax_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."pax_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."ironbank_swap_call_exchange_underlying" c
-            LEFT JOIN curvefi."ironbank_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."ironbank_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, tokens_bought, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."compound_swap_call_exchange_underlying" c
-            LEFT JOIN curvefi."compound_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."compound_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, tokens_bought, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."busd_swap_call_exchange_underlying" c
-            LEFT JOIN curvefi."busd_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."busd_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."aave_swap_call_exchange_underlying" c
-            LEFT JOIN curvefi."aave_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."aave_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."baoUSD_call_exchange_underlying" c
-            LEFT JOIN curvefi."baoUSD_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."baoUSD_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."baoUSD_call_exchange_underlying0" c
-            LEFT JOIN curvefi."baoUSD_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."baoUSD_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."obtc_swap_call_exchange_underlying" c
-            LEFT JOIN curvefi."obtc_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."obtc_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."ELONXSWAP_call_exchange_underlying" c
-            LEFT JOIN curvefi."ELONXSWAP_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."ELONXSWAP_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."ELONXSWAP_call_exchange_underlying0" c
-            LEFT JOIN curvefi."ELONXSWAP_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."ELONXSWAP_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."frax_call_exchange_underlying" c
-            LEFT JOIN curvefi."frax_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."frax_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."frax_call_exchange_underlying0" c
-            LEFT JOIN curvefi."frax_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."frax_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."dola_3crv_pool_call_exchange_underlying" c
-            LEFT JOIN curvefi."dola_3crv_pool_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."dola_3crv_pool_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."dola_3crv_pool_call_exchange_underlying0" c
-            LEFT JOIN curvefi."dola_3crv_pool_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."dola_3crv_pool_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."ibbtc_call_exchange_underlying" c
-            LEFT JOIN curvefi."ibbtc_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."ibbtc_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."ibbtc_call_exchange_underlying0" c
-            LEFT JOIN curvefi."ibbtc_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."ibbtc_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."QWell1_call_exchange_underlying" c
-            LEFT JOIN curvefi."QWell1_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."QWell1_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."QWell1_call_exchange_underlying0" c
-            LEFT JOIN curvefi."QWell1_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."QWell1_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."QBITWELLS_call_exchange_underlying" c
-            LEFT JOIN curvefi."QBITWELLS_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."QBITWELLS_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."QBITWELLS_call_exchange_underlying0" c
-            LEFT JOIN curvefi."QBITWELLS_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."QBITWELLS_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."tbtc_swap_call_exchange_underlying" c
-            LEFT JOIN curvefi."tbtc_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."tbtc_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."paxusdp_call_exchange_underlying" c
-            LEFT JOIN curvefi."paxusdp_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."paxusdp_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."paxusdp_call_exchange_underlying0" c
-            LEFT JOIN curvefi."paxusdp_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."paxusdp_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."3DYDX_call_exchange_underlying" c
-            LEFT JOIN curvefi."3DYDX_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."3DYDX_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."3DYDX_call_exchange_underlying0" c
-            LEFT JOIN curvefi."3DYDX_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."3DYDX_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM fei_protocol."Fei3Crv_call_exchange_underlying" c
-            LEFT JOIN fei_protocol."Fei3Crv_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN fei_protocol."Fei3Crv_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM fei_protocol."Fei3Crv_call_exchange_underlying0" c
-            LEFT JOIN fei_protocol."Fei3Crv_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN fei_protocol."Fei3Crv_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."mim_call_exchange_underlying" c
-            LEFT JOIN curvefi."mim_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."mim_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."mim_call_exchange_underlying0" c
-            LEFT JOIN curvefi."mim_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."mim_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."bbtc_swap_call_exchange_underlying" c
-            LEFT JOIN curvefi."bbtc_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."bbtc_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."BTCpx_call_exchange_underlying" c
-            LEFT JOIN curvefi."BTCpx_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."BTCpx_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."BTCpx_call_exchange_underlying0" c
-            LEFT JOIN curvefi."BTCpx_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."BTCpx_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."ust_swap_call_exchange_underlying" c
-            LEFT JOIN curvefi."ust_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."ust_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."wormhole_v2_call_exchange_underlying" c
-            LEFT JOIN curvefi."wormhole_v2_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."wormhole_v2_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."wormhole_v2_call_exchange_underlying0" c
-            LEFT JOIN curvefi."wormhole_v2_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."wormhole_v2_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."bhome_call_exchange_underlying" c
-            LEFT JOIN curvefi."bhome_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."bhome_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."bhome_call_exchange_underlying0" c
-            LEFT JOIN curvefi."bhome_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."bhome_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."alusd_call_exchange_underlying" c
-            LEFT JOIN curvefi."alusd_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."alusd_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."alusd_call_exchange_underlying0" c
-            LEFT JOIN curvefi."alusd_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."alusd_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."17PctCypt_call_exchange_underlying" c
-            LEFT JOIN curvefi."17PctCypt_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."17PctCypt_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."17PctCypt_call_exchange_underlying0" c
-            LEFT JOIN curvefi."17PctCypt_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."17PctCypt_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."17PctCypt_call_exchange_underlying" c
-            LEFT JOIN curvefi."17PctCypt_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."17PctCypt_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."17PctCypt_call_exchange_underlying0" c
-            LEFT JOIN curvefi."17PctCypt_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."17PctCypt_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."ibbtc_call_exchange_underlying" c
-            LEFT JOIN curvefi."ibbtc_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."ibbtc_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."ibbtc_call_exchange_underlying0" c
-            LEFT JOIN curvefi."ibbtc_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."ibbtc_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."XSTUSD_call_exchange_underlying" c
-            LEFT JOIN curvefi."XSTUSD_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."XSTUSD_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."XSTUSD_call_exchange_underlying0" c
-            LEFT JOIN curvefi."XSTUSD_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."XSTUSD_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."RAMPrUSD_call_exchange_underlying" c
-            LEFT JOIN curvefi."RAMPrUSD_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."RAMPrUSD_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."RAMPrUSD_call_exchange_underlying0" c
-            LEFT JOIN curvefi."RAMPrUSD_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."RAMPrUSD_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."dei_call_exchange_underlying" c
-            LEFT JOIN curvefi."dei_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."dei_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."dei_call_exchange_underlying0" c
-            LEFT JOIN curvefi."dei_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."dei_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."husd_swap_call_exchange_underlying" c
-            LEFT JOIN curvefi."husd_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."husd_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."ORK_call_exchange_underlying" c
-            LEFT JOIN curvefi."ORK_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."ORK_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."ORK_call_exchange_underlying0" c
-            LEFT JOIN curvefi."ORK_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."ORK_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."ORK_call_exchange_underlying" c
-            LEFT JOIN curvefi."ORK_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."ORK_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."ORK_call_exchange_underlying0" c
-            LEFT JOIN curvefi."ORK_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."ORK_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."musd_swap_call_exchange_underlying" c
-            LEFT JOIN curvefi."musd_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."musd_swap_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."usdv_call_exchange_underlying" c
-            LEFT JOIN curvefi."usdv_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."usdv_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."usdv_call_exchange_underlying0" c
-            LEFT JOIN curvefi."usdv_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."usdv_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."tusd3pool_call_exchange_underlying" c
-            LEFT JOIN curvefi."tusd3pool_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."tusd3pool_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."tusd3pool_call_exchange_underlying0" c
-            LEFT JOIN curvefi."tusd3pool_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."tusd3pool_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."PWRD3CRV_call_exchange_underlying" c
-            LEFT JOIN curvefi."PWRD3CRV_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."PWRD3CRV_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."PWRD3CRV_call_exchange_underlying0" c
-            LEFT JOIN curvefi."PWRD3CRV_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."PWRD3CRV_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."PWRD_call_exchange_underlying" c
-            LEFT JOIN curvefi."PWRD_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."PWRD_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."PWRD_call_exchange_underlying0" c
-            LEFT JOIN curvefi."PWRD_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."PWRD_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
 
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."waBTC_call_exchange_underlying" c
-            LEFT JOIN curvefi."waBTC_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."waBTC_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
         UNION ALL
         SELECT call_block_time, buyer, output_0, "_dx", j, i, c.contract_address, call_tx_hash, evt_index
             FROM curvefi."waBTC_call_exchange_underlying0" c
-            LEFT JOIN curvefi."waBTC_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash
+            INNER JOIN curvefi."waBTC_evt_TokenExchangeUnderlying" e ON evt_tx_hash = call_tx_hash AND i = sold_id AND j = bought_id
             WHERE call_success
     ),
     
