@@ -12,7 +12,7 @@ WITH calendar AS
             ,tl.symbol
         FROM dune_user_generated."tokemak_lookup_tokens" tl
         CROSS JOIN generate_series('2021-08-01'::date, current_date, '1 day') t(i) 
-        --WHERE tl.is_liability = true AND NOT (i>'2022-05-10' AND (tl.address='\x7A75ec20249570c935Ec93403A2B840fBdAC63fd' OR tl.address='\x482258099de8de2d0bda84215864800ea7e6b03d')) order by "date" desc
+        WHERE tl.is_liability = true --AND NOT (i>'2022-05-10' AND (tl.address='\x7A75ec20249570c935Ec93403A2B840fBdAC63fd' OR tl.address='\x482258099de8de2d0bda84215864800ea7e6b03d')) order by "date" desc
  ) ,
 minted as (
     SELECT 
