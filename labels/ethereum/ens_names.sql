@@ -14,7 +14,6 @@ WITH aux AS (
         lower(name) AS label,
         'ens name' AS type,
         'hagaetc' AS author
-
     FROM
         ethereumnameservice."ETHRegistrarController_2_evt_NameRegistered"
     WHERE
@@ -25,13 +24,9 @@ WITH aux AS (
         lower(name) AS label,
         'ens name' AS type,
         'hagaetc' AS author
-
     FROM
         ethereumnameservice."ETHRegistrarController_3_evt_NameRegistered"
-    WHERE
-        evt_block_time >= '{{timestamp}}'
-        AND
-        LENGTH(name) < 10000
+    WHERE evt_block_time >= '{{timestamp}}'
 )
 SELECT
     address,
@@ -39,4 +34,5 @@ SELECT
     type,
     author
 FROM aux
-WHERE regexp_replace(btrim(aux.label, ' '::text), '(\s+)'::text, ' '::text, 'g'::text) = aux.label IS TRUE;
+WHERE LENGTH(label) < 100
+    AND regexp_replace(btrim(aux.label, ' '::text), '(\s+)'::text, ' '::text, 'g'::text) = aux.label IS TRUE;
