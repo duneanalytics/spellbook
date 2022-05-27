@@ -8,6 +8,8 @@ SELECT gc.creator_address, MIN(created_time) AS min_created_time, MAX(created_ti
     FROM ovm2.get_contracts gc
     LEFT JOIN ovm2.contract_creator_address_list cc
         ON cc."creator_address" = gc.creator_address
+	LEFT JOIN ovm2.project_name_mappings pnm
+	ON pnm.dune_name = gc.contract_project
     
     WHERE
 	is_self_destruct = false
@@ -32,6 +34,7 @@ SELECT gc.creator_address, MIN(created_time) AS min_created_time, MAX(created_ti
 		    )
 	    )
 	    OR lower(cc.project) != lower(gc."contract_project")
+	    OR pnm.dune_name IS NOT NULL
 	)
     GROUP BY 1
 ;
