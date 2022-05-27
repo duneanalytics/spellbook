@@ -1,0 +1,110 @@
+#Welcome to your Spellbook!
+
+name: 'spellbook'
+version: '1.0.0'
+config-version: 2
+
+# This setting configures which "profile" dbt uses for this project.
+profile: 'spellbook'
+
+# These configurations specify where dbt should look for different types of files.
+# You don't need to change these!
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+
+target-path: "target"  # directory which will store compiled SQL files
+clean-targets:         # directories to be removed by `dbt clean`
+  - "target"
+  - "dbt_packages"
+
+# Configuring models
+# Full documentation: https://docs.getdbt.com/docs/configuring-models
+models:
+  spellbook:
+    opensea:
+      +schema: opensea
+      +materialized: view
+      ethereum:
+        +schema: opensea_ethereum
+        +materialized: view
+      solana:
+        +schema: opensea_solana
+        +materialized: view
+
+    balances:
+      +schema: balances
+      +materialized: view
+      ethereum:
+        +schema: balances_ethereum
+        +materialized: view
+
+    tokens:
+      +schema: tokens
+      +materialized: view
+      ethereum:
+        +schema: tokens_ethereum
+        +materialized: view
+    
+    transfers:
+      +schema: transfers
+      +materialized: view
+      ethereum:
+        +schema: transfers_ethereum
+        +materialized: view
+
+seeds:
+  spellbook:
+    balances:
+      ethereum:
+        +enabled: true
+        +schema: test_data
+        balances_ethereum_erc20_latest_entries:
+          +column_types:
+            timestamp: timestamp
+            wallet_address: string
+            token_address: string
+            amount_raw: string
+        balances_ethereum_erc20_specific_wallet:
+          +column_types:
+            timestamp: timestamp
+            wallet_address: string
+            token_address: string
+            token_symbol: string
+            amount_raw: string
+            amount: string
+    opensea:
+      ethereum:
+        +enabled: true
+        +schema: test_data
+        opensea_ethereum_trades_caladan:
+          +column_types:
+            evt_block_times: timestamp
+            evt_tx_hash: string
+            price: string
+      solana:
+        +enabled: true
+        +schema: test_data
+        opensea_solana_trades_caladan:
+          +column_types:
+            block_time: timestamp
+            tx_hash: string
+            amount: string
+
+on-run-end:
+  - "{{ alter_tblproperties_tokens_ethereum_erc20() }}"
+
+  - "{{ alter_tblproperties_transfers_ethereum_erc20() }}"
+
+  - "{{ alter_tblproperties_balances_ethereum_erc20_hour() }}"
+  - "{{ alter_tblproperties_balances_ethereum_erc20_day() }}"
+  - "{{ alter_tblproperties_balances_ethereum_erc20_latest() }}"
+
+  - "{{ alter_tblproperties_opensea_trades() }}"
+  - "{{ alter_tblproperties_opensea_volume_day() }}"
+  - "{{ alter_tblproperties_opensea_txns_day() }}"
+  - "{{ alter_tblproperties_opensea_active_traders_day() }}"
