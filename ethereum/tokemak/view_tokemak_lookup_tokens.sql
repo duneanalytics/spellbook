@@ -8,7 +8,7 @@ CREATE MATERIALIZED VIEW tokemak.view_tokemak_lookup_tokens
     UNION
     SELECT 'tWETH' as symbol, 'Tokemak-Wrapped Ether' as display_name,'\xD3D13a578a53685B4ac36A1Bab31912D2B2A2F36'::bytea as address,'\xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'::bytea as pricing_contract,  18::numeric as decimals, false, true, true, false
     UNION
-    SELECT 'stETH' as symbol, 'Staked Ether' as display_name,'\xae7ab96520DE3A18E5e111B5EaAb095312D7fE84'::bytea as address,'\xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'::bytea as pricing_contract, 18::numeric as decimals, false, true, false, false
+    SELECT 'stETH' as symbol, 'Staked Ether' as display_name,'\xae7ab96520DE3A18E5e111B5EaAb095312D7fE84'::bytea as address,'\xae7ab96520DE3A18E5e111B5EaAb095312D7fE84'::bytea as pricing_contract, 18::numeric as decimals, false, true, false, false
     UNION
     SELECT 'USDC' as symbol, 'USD Coin' as display_name,'\xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'::bytea as address,''::bytea as pricing_contract,  6::numeric as decimals, false, true, false, true
     UNION
