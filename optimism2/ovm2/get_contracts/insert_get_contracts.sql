@@ -4,13 +4,14 @@ DECLARE r integer;
 BEGIN
 WITH rows AS (
     INSERT INTO ovm2.get_contracts (
-        contract_address,
+      contract_address,
       contract_project,
       token_symbol, 
       contract_name,
       creator_address, 
       created_time,
-      contract_creator_if_factory
+      contract_creator_if_factory,
+      is_self_destruct
     )
 
 --This is used for backfilling
@@ -519,8 +520,8 @@ WITH
 	  contract_name = EXCLUDED.contract_name,
 	  creator_address = EXCLUDED.creator_address,
 	  created_time = EXCLUDED.created_time,
-	  contract_creator_if_factory = EXCLUDED.contract_creator_if_factory
-	is_self_destruct = EXCLUDED.is_self_destruct
+	  contract_creator_if_factory = EXCLUDED.contract_creator_if_factory,
+	  is_self_destruct = EXCLUDED.is_self_destruct
 	
 	RETURNING 1
 )
