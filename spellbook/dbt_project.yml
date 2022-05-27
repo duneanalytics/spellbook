@@ -26,6 +26,9 @@ clean-targets:         # directories to be removed by `dbt clean`
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
   spellbook:
+    nft:
+      +schema: nft
+      +materialized: view
     opensea:
       +schema: opensea
       +materialized: view
@@ -34,6 +37,12 @@ models:
         +materialized: view
       solana:
         +schema: opensea_solana
+        +materialized: view
+    magiceden:
+      +schema: magiceden
+      +materialized: view
+      solana:
+        +schema: magiceden_solana
         +materialized: view
 
     balances:
