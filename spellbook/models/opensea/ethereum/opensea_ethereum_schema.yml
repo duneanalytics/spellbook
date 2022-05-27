@@ -1,0 +1,91 @@
+version: 2
+
+models:
+  - name: opensea_ethereum_trades
+    meta:
+      blockchain: ethereum
+      project: opensea
+      contributors: rchen8, soispoke
+    config:
+      tags: ['ethereum','opensea','trades']
+    description: >
+        OpenSea trades on Ethereum
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - name: evt_tx_hash
+        description: "Transaction hash"
+      - name: evt_block_time
+        description: "UTC event block time"
+      - name: token_symbol
+        description: "Token Symbol"
+      - name: amount
+        description: "Value of the trade at time of execution in the original currency"
+      - name: amount_usd
+        description:  "USD value of the trade at time of execution"
+      - name: maker
+        description:  "Maker"
+      - name: taker
+        description:  "Taker"
+        
+  - name: opensea_ethereum_volume_day
+    meta:
+      blockchain: ethereum
+      project: opensea
+      contributors: rchen8
+    config:
+      tags: ['ethereum','opensea','view']
+    description: >
+        Daily OpenSea volume on Ethereum
+    columns:
+      - *blockchain
+      - &day
+        name: day
+        description: "UTC event block time truncated to the day mark"
+      - name: volume
+        description: "Daily OpenSea trading volume in original currency"
+      - name: token_symbol
+        description: "Token Symbol"
+      - name: volume_usd
+        description:  "Daily OpenSea trading volume in $USD"
+
+  - name: opensea_ethereum_txns_day
+    meta:
+      blockchain: ethereum
+      project: opensea
+      contributors: rchen8
+    config:
+      tags: ['ethereum','opensea','view']
+    description: >
+        Daily OpenSea transactions on Ethereum
+    columns:
+    - *blockchain
+    - *day
+    - name: transactions
+      description:  "Daily OpenSea transactions"
+
+  - name: opensea_ethereum_excluded_txns
+    meta:
+      blockchain: ethereum
+      project: opensea
+      contributors: rchen8
+    config:
+      tags: ['ethereum','opensea','view']
+    description: >
+        Excluded OpenSea transactions on Ethereum
+  
+  - name: opensea_ethereum_active_traders_day
+    meta:
+      blockchain: ethereum
+      project: opensea
+      contributors: rchen8
+    config:
+      tags: ['ethereum','opensea','view']
+    description: >
+        Daily OpenSea active traders on Ethereum
+    columns:
+    - *blockchain
+    - *day
+    - name: traders
+      description:  "Daily OpenSea active traders"

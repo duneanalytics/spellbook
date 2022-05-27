@@ -1,0 +1,77 @@
+version: 2
+
+models:
+  - name: opensea_trades
+    meta:
+      blockchain: ethereum, solana
+      project: opensea
+      contributors: rchen8, soispoke
+    config:
+      tags: ['opensea','ethereum', 'solana','trades']
+    description: >
+        Daily OpenSea volume
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - name: evt_tx_hash
+        description: "Transaction hash"
+      - name: evt_block_time
+        description: "UTC event block time"
+      - name: token_symbol
+        description: "Token Symbol"
+      - name: amount
+        description: "Value of the trade at time of execution in the original currency"
+      - name: amount_usd
+        description:  "USD value of the trade at time of execution"
+
+  - name: opensea_volume_day
+    meta:
+      blockchain: ethereum, solana
+      project: opensea
+      contributors: rchen8, soispoke
+    config:
+      tags: ['opensea','ethereum', 'solana','volume','day']
+    description: >
+        Daily OpenSea volume
+    columns:
+      - *blockchain
+      - &day
+        name: day
+        description: "UTC event block time truncated to the day mark"
+      - name: volume
+        description: "Daily OpenSea trading volume in original currency"
+      - name: token_symbol
+        description: "Token Symbol"
+      - name: volume_usd
+        description:  "Daily OpenSea trading volume in $USD"
+
+  - name: opensea_txns_day
+    meta:
+      blockchains: ethereum, solana
+      project: opensea
+      contributors: rchen8, soispoke
+    config:
+      tags: ['opensea','ethereum', 'solana','transactions','day']
+    description: >
+        Daily opensea transactions
+    columns:
+    - *blockchain
+    - *day
+    - name: transactions
+      description:  "Daily OpenSea transactions"
+
+  - name: opensea_active_traders_day
+    meta:
+      blockchain: ethereum, solana
+      project: opensea
+      contributors: rchen8, soispoke
+    config:
+      tags: ['opensea','ethereum', 'solana','traders','day']
+    description: >
+        Daily OpenSea active traders
+    columns:
+    - *blockchain
+    - *day
+    - name: traders
+      description:  "Daily OpenSea active traders"
