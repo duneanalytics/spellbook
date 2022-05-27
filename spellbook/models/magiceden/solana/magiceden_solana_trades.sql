@@ -22,6 +22,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p
   AND p.symbol = 'SOL'        
 WHERE (array_contains(account_keys, 'rFqFJ9g7TGBD8Ed7TPDnvGKZ5pWLPDyxLcvcH2eRCtt')
        OR array_contains(account_keys, '2NZukH2TXpcuZP4htiuT8CFxcaQSWzkkR6kepSWnZ24Q'))
+AND ARRAY_CONTAINS(log_messages, 'Program log: Instruction: ExecuteSale')
 AND block_time > '2021-09-01'
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
