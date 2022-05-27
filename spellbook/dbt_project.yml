@@ -113,7 +113,7 @@ on-run-end:
   - "{{ alter_tblproperties_balances_ethereum_erc20_day() }}"
   - "{{ alter_tblproperties_balances_ethereum_erc20_latest() }}"
 
-  - "{{ alter_tblproperties_nfttrades() }}"
+  - "{{ alter_tblproperties_nft_trades() }}"
   - "{{ alter_tblproperties_magiceden_trades() }}"
   - "{{ alter_tblproperties_opensea_trades() }}"
   - "{{ alter_tblproperties_opensea_volume_day() }}"
