@@ -1,3 +1,13 @@
+- name: weapon_megaweapon
+  id: weapon-megaweapon
+  symbol: $WEAPON
+  address: 0x0b8057C3Cc676C329c25C1d0Cd27776efA73762d
+  decimals: 9
+- name: battle_battlefish
+  id: battle-battlefish
+  symbol: $BATTLE
+  address: 0xa48F7A48BDAFf54587A1C4e4B2f35459a2328E29
+  decimals: 9
 - name: dmg_dmm_governance
   id: dmg-dmm-governance
   symbol: DMG
