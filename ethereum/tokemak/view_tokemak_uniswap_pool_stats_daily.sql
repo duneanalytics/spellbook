@@ -19,7 +19,10 @@ CREATE MATERIALIZED VIEW tokemak.view_tokemak_uniswap_pool_stats_daily
                 INNER JOIN tokemak."view_tokemak_lookup_tokens" tl ON tl.address = token1
             ) as t INNER JOIN tokemak."view_tokemak_lookup_tokens" tl on tl.address = pool_address 
             --ORDER BY pool_symbol, token_symbol
-        )
+        ),
+    pools as (
+        SELECT DISTINCT pool_address, pool_decimals FROM pairs
+    )
     , calendar AS (
         SELECT c.*, p.token_address, p.token_symbol,p.index, p.token_decimals 
         FROM (SELECT i::date as "date"
@@ -50,15 +53,9 @@ CREATE MATERIALIZED VIEW tokemak.view_tokemak_uniswap_pool_stats_daily
                         ,p.pool_decimals
                         ,CASE WHEN "from" = '\x0000000000000000000000000000000000000000' THEN value ELSE -value END as value
                     FROM uniswap_V2."Pair_evt_Transfer" t
-                    INNER JOIN pairs p ON p.pool_address = t.contract_address AND ("from" = '\x0000000000000000000000000000000000000000' OR  "to" = '\x0000000000000000000000000000000000000000')
-                    /*UNION
-                    SELECT 
-                        evt_block_time 
-                        ,p.pool_address
-                        ,p.pool_decimals
-                        ,(-value)
-                    FROM uniswap_V2."Pair_evt_Transfer" t
-                    INNER JOIN pairs p ON p.pool_address = t.contract_address AND "to" = '\x0000000000000000000000000000000000000000' */
+                    INNER JOIN pools p ON p.pool_address = t.contract_address 
+                    WHERE ("from" = '\x0000000000000000000000000000000000000000' OR  "to" = '\x0000000000000000000000000000000000000000')
+
                     ) AS t GROUP BY 1, 2, 3 --order by "date" desc
             ) AS d --order by "date" desc
         )
