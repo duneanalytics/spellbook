@@ -1,0 +1,13 @@
+version: 2
+
+macros:
+  - name: alter_tblproperties_balances_ethereum_erc20_hour
+    description: "Set balances ethereum metadata by altering TBLPROPERTIES"
+  - name: alter_tblproperties_balances_ethereum_erc20_day
+    description: "Set balances ethereum metadata by altering TBLPROPERTIES"
+  - name: alter_tblproperties_balances_ethereum_erc20_latest
+    description: "Set balances ethereum metadata by altering TBLPROPERTIES"
+  - name: alter_tblproperties_tokens_ethereum_erc20
+    description: "Set tokens ethereum erc20 metadata by altering TBLPROPERTIES"
+  - name: alter_tblproperties_transfers_ethereum_erc20
+    description: "Set transfers ethereum erc20 metadata by altering TBLPROPERTIES"

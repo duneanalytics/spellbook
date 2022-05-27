@@ -1,0 +1,12 @@
+version: 2
+
+macros:
+  - name: generate_schema_name
+    description: "This macro trims the schema name when the target is set to prod so prefixes before the model's name are removed"
+    arguments:
+      - name: custom_schema_name
+        type: column name or expression
+        description: "Custom schema name"
+      - name: node
+        type: column name or expression
+        description: "Node"  
