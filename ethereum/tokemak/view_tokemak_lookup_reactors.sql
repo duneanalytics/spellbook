@@ -51,7 +51,7 @@ CREATE MATERIALIZED VIEW tokemak.view_tokemak_lookup_reactors
     UNION
     SELECT '\x96F98Ed74639689C3A11daf38ef86E59F43417D3'::bytea as reactor_address, '\x2e9d63788249371f1DFC918a52f8d799F4a38C94'::bytea as underlyer_address, 'TOKE-Staking Reactor', false
     UNION
-    SELECT '\x2d3eADE781c4E203c6028DAC11ABB5711C022029 '::bytea as reactor_address, '\xF938424F7210f31dF2Aee3011291b658f872e91e'::bytea as underlyer_address, 'VISOR Reactor', true
+    SELECT '\x2d3eADE781c4E203c6028DAC11ABB5711C022029'::bytea as reactor_address, '\xF938424F7210f31dF2Aee3011291b658f872e91e'::bytea as underlyer_address, 'VISOR Reactor', true
 );
 CREATE UNIQUE INDEX ON tokemak.view_tokemak_lookup_reactors (
    reactor_address, underlyer_address
