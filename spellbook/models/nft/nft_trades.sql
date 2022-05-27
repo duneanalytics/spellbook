@@ -3,11 +3,11 @@
         )
 }}
 
-SELECT blockchain, tx_hash, block_time, amount_usd, amount, token_symbol, token_address FROM 
+SELECT blockchain, project, version, tx_hash, block_time, amount_usd, amount, token_symbol, token_address FROM 
 (
-SELECT blockchain, tx_hash, block_time, amount_usd, amount, token_symbol, token_address FROM {{ ref('opensea_trades') }}
+SELECT blockchain, project, version, tx_hash, block_time, amount_usd, amount, token_symbol, token_address FROM {{ ref('opensea_trades') }}
 UNION ALL
-SELECT blockchain, tx_hash, block_time, amount_usd, amount, token_symbol, token_address FROM {{ ref('magiceden_trades') }}
+SELECT blockchain, project, version, tx_hash, block_time, amount_usd, amount, token_symbol, token_address FROM {{ ref('magiceden_trades') }}
 ) 
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
