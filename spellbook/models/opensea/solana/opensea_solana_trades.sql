@@ -23,6 +23,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p
 WHERE (array_contains(account_keys, '3o9d13qUvEuuauhFrVom1vuCzgNsJifeaBYDPquaT73Y')
        OR array_contains(account_keys, 'pAHAKoTJsAAe2ZcvTZUxoYzuygVAFAmbYmJYdWT886r'))
 AND block_time > '2022-04-06'
+AND ARRAY_CONTAINS(log_messages, 'Program log: Instruction: ExecuteSale')
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
 AND block_time > (select max(block_time) from {{ this }})
