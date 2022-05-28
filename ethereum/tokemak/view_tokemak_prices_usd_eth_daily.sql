@@ -7,9 +7,9 @@ AS
 WITH contracts as(
 --select our tokens and then select the tokens which match to a pricing contract so they are in one table
     SELECT DISTINCT address, pricing_contract, symbol FROM (
-        SELECT DISTINCT address, pricing_contract, symbol FROM dune_user_generated."tokemak_lookup_tokens" WHERE is_pool = false and pricing_contract <> ''
+        SELECT DISTINCT address, pricing_contract, symbol FROM tokemak."view_tokemak_lookup_tokens" WHERE is_pool = false and pricing_contract <> ''
         UNION 
-        SELECT DISTINCT address, address as pricing_contract, symbol FROM dune_user_generated."tokemak_lookup_tokens" WHERE is_pool = false and pricing_contract = ''
+        SELECT DISTINCT address, address as pricing_contract, symbol FROM tokemak."view_tokemak_lookup_tokens" WHERE is_pool = false and pricing_contract = ''
         )as t ORDER BY symbol, address, pricing_contract
 ),
 calendar AS  
@@ -77,6 +77,7 @@ SELECT c."date"::date,  c.address, c.pricing_contract,c.symbol, t.price_usd, t.p
 INNER JOIN eth_prices e on e."date" = c."date"
 INNER JOIN temp t on t."date" = c."date" AND t.pricing_contract = c.pricing_contract
 order by "date" desc, symbol asc
+
 );
 
 CREATE UNIQUE INDEX ON tokemak.view_tokemak_prices_usd_eth_daily (
