@@ -1,0 +1,62 @@
+version: 2
+
+sources:
+# Base Tables
+  - name: solana
+    description: "Solana raw tables including transactions, traces and logs."
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: transactions
+        loaded_at_field: block_time
+        description: "A Solana transaction contains a compact-array of signatures, followed by a message. Each item in the signatures array is a digital signature of the given message.."
+        columns:
+          - name: account_keys
+            description: "Array of addresses"
+          - &block_date
+            name: block_date
+            description: "Block event date in UTC"
+          - &block_hash
+            name: block_hash
+            description: "Block hash"
+          - &block_slot
+            name: block_slot
+            description: "Block slot"
+          - &block_time
+            name: block_time
+            description: "Timestamp for block event time in UTC" 
+          - name: error
+            description: "Error message" 
+          - name: fee
+            description: "Transaction fee" 
+          - name: id
+            description: "Transaction id" 
+          - name: index
+            description: "Transaction index"
+          - name: instructions
+            description: "Instructions" 
+          - name: log_messages
+            description: "Log messages" 
+          - name: post_balances
+            description: "Post balances" 
+          - name: post_token_balances
+            description: "Post token balances" 
+          - name: pre_balances
+            description: "Pre balances" 
+          - name: pre_token_balances
+            description: "Pre token balances" 
+          - name: readonly_signed_accounts
+            description: "Read only signed accounts" 
+          - name: readonly_unsigned_accounts
+            description: "Read only unsigned accounts" 
+          - name: recent_block_hash
+            description: "Recent block hash" 
+          - name: required_signatures
+            description: "Required signatures" 
+          - name: signatures
+            description: "Signatures" 
+          - name: signers
+            description: "Signers" 
+          - name: success
+            description: "Success" 

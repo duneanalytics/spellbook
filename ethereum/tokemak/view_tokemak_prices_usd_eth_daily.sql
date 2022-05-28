@@ -36,6 +36,7 @@ dex_prices as (
     where "hour" > '8/1/2021' and median_price > .0001
     ORDER BY "date" desc,p.contract_address, "hour" desc NULLS LAST
 ),
+
 steth_prices as (
     select 
         DISTINCT ON(date_trunc('day', evt_block_time))
@@ -60,6 +61,7 @@ steth_prices as (
         ) as p
      ORDER BY "date" desc, date_trunc('minute', "evt_block_time")  desc NULLS LAST
 ),
+
 temp as (
     SELECT "date"::date, t.pricing_contract, MAX(price) as price_usd FROM (
         SELECT "date", pricing_contract, price  FROM dex_prices

@@ -36,3 +36,7 @@ CREATE INDEX IF NOT EXISTS dex_trades_token_a_idx ON dex.trades (token_a_address
 CREATE INDEX IF NOT EXISTS dex_trades_token_b_idx ON dex.trades (token_b_address);
 CREATE INDEX IF NOT EXISTS dex_trades_block_time_project_idx ON dex.trades (block_time, project);
 CREATE INDEX CONCURRENTLY IF NOT EXISTS dex_trades_usd_amount_idx ON dex.trades (usd_amount);
+CREATE INDEX IF NOT EXISTS dex_trades_token_a_sym_idx ON dex.trades (token_a_symbol);
+CREATE INDEX IF NOT EXISTS dex_trades_token_b_sym_idx ON dex.trades (token_b_symbol);
+
+
