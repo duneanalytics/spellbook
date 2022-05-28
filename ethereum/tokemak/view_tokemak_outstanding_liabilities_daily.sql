@@ -111,5 +111,5 @@ CREATE UNIQUE INDEX ON tokemak.view_tokemak_outstanding_liabilities_daily (
 );
 
 INSERT INTO cron.job(schedule, command)
-VALUES ('* 3 * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_outstanding_liabilities_daily$$)
+VALUES ('* * 30 * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_outstanding_liabilities_daily$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
