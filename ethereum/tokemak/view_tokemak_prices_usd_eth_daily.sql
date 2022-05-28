@@ -7,9 +7,9 @@ AS
 WITH contracts as(
 --select our tokens and then select the tokens which match to a pricing contract so they are in one table
     SELECT DISTINCT address, pricing_contract, symbol FROM (
-        SELECT DISTINCT address, pricing_contract, symbol FROM tokemak."view_tokemak_lookup_tokens" WHERE is_pool = false and pricing_contract <> ''
+        SELECT DISTINCT address, pricing_contract, symbol FROM dune_user_generated."tokemak_lookup_tokens" WHERE is_pool = false and pricing_contract <> ''
         UNION 
-        SELECT DISTINCT address, address as pricing_contract, symbol FROM tokemak."view_tokemak_lookup_tokens" WHERE is_pool = false and pricing_contract = ''
+        SELECT DISTINCT address, address as pricing_contract, symbol FROM dune_user_generated."tokemak_lookup_tokens" WHERE is_pool = false and pricing_contract = ''
         )as t ORDER BY symbol, address, pricing_contract
 ),
 calendar AS  
@@ -36,11 +36,37 @@ dex_prices as (
     where "hour" > '8/1/2021' and median_price > .0001
     ORDER BY "date" desc,p.contract_address, "hour" desc NULLS LAST
 ),
+steth_prices as (
+    select 
+        DISTINCT ON(date_trunc('day', evt_block_time))
+        '\xae7ab96520DE3A18E5e111B5EaAb095312D7fE84'::bytea as pricing_contract,
+        date_trunc('day', "evt_block_time") as "date", 
+        date_trunc('minute', "evt_block_time") as "minute", 
+        price
+    from (
+        select 
+            evt_block_time, 
+            "tokens_sold"/"tokens_bought" as price,  
+            "tokens_bought" as amount
+        from curvefi."steth_swap_evt_TokenExchange"
+        where sold_id = 0  
+        union 
+        select
+            evt_block_time,  
+            "tokens_bought"/"tokens_sold" as price,  
+            "tokens_sold" as amount
+        from curvefi."steth_swap_evt_TokenExchange"
+        where sold_id = 1 and "tokens_bought" > 0 
+        ) as p
+     ORDER BY "date" desc, date_trunc('minute', "evt_block_time")  desc NULLS LAST
+),
 temp as (
     SELECT "date"::date, t.pricing_contract, MAX(price) as price_usd FROM (
         SELECT "date", pricing_contract, price  FROM dex_prices
         UNION
         SELECT "date", pricing_contract, price  FROM main_prices
+        UNION
+        SELECT "date", pricing_contract, price  FROM steth_prices
     ) as t
      GROUP BY "date", pricing_contract
 ),
