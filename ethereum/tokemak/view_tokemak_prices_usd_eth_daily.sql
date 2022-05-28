@@ -7,9 +7,9 @@ AS
 WITH contracts as(
 --select our tokens and then select the tokens which match to a pricing contract so they are in one table
     SELECT DISTINCT address, pricing_contract, symbol FROM (
-        SELECT DISTINCT address, pricing_contract, symbol FROM dune_user_generated."tokemak_lookup_tokens" WHERE is_pool = false and pricing_contract <> ''
+        SELECT DISTINCT address, pricing_contract, symbol FROM tokemak."view_tokemak_lookup_tokens" WHERE is_pool = false and pricing_contract <> ''
         UNION 
-        SELECT DISTINCT address, address as pricing_contract, symbol FROM dune_user_generated."tokemak_lookup_tokens" WHERE is_pool = false and pricing_contract = ''
+        SELECT DISTINCT address, address as pricing_contract, symbol FROM tokemak."view_tokemak_lookup_tokens" WHERE is_pool = false and pricing_contract = ''
         )as t ORDER BY symbol, address, pricing_contract
 ),
 calendar AS  
@@ -36,6 +36,7 @@ dex_prices as (
     where "hour" > '8/1/2021' and median_price > .0001
     ORDER BY "date" desc,p.contract_address, "hour" desc NULLS LAST
 ),
+
 steth_prices as (
     select 
         DISTINCT ON(date_trunc('day', evt_block_time))
@@ -60,6 +61,7 @@ steth_prices as (
         ) as p
      ORDER BY "date" desc, date_trunc('minute', "evt_block_time")  desc NULLS LAST
 ),
+
 temp as (
     SELECT "date"::date, t.pricing_contract, MAX(price) as price_usd FROM (
         SELECT "date", pricing_contract, price  FROM dex_prices
