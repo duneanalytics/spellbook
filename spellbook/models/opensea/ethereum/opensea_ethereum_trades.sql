@@ -21,7 +21,7 @@ taker
 FROM
   {{ source('opensea_ethereum','wyvernexchange_evt_ordersmatched') }} om
   INNER JOIN {{ ref('opensea_ethereum_wyvern_atomic_match') }} wam ON wam.tx_hash = om.evt_tx_hash
-  INNER JOIN {{ ref('tokens_ethereum_erc20') }} ON terc20.contract_address = wam.token_address
+  INNER JOIN {{ ref('tokens_ethereum_erc20') }} terc20 ON terc20.contract_address = wam.token_address
   INNER JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', evt_block_time)
       AND p.blockchain = 'ethereum'
       AND p.contract_address = wam.token_address
