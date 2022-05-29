@@ -27,7 +27,7 @@ Quixotic V1	Quixotic
 Quixotic V2	Quixotic
 Quixotic V3	Quixotic
 Quixotic V4	Quixotic
-Across V2	Accross
+Across V2	Across
 Openocean V2	OpenOcean
 Setprotocol V2	Set Protocol
 Kromatikafinance	Kromatika
