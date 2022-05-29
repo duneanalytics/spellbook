@@ -36,7 +36,8 @@ Curvefi	Curve
 Pika Perp	Pika Protocol
 Dhedge V2	Dhedge
 Bitbtc	Bitbtc Protocol
-Teleportr Teleportr/ Warp Speed
+Teleportr	Teleportr/ Warp Speed
+Balancer V2	Beethoven X
 
 \.
 COMMIT;
