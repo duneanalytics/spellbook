@@ -22,6 +22,21 @@ zeroex	0x
 uniswap_v3	Uniswap V3
 Uniswap V3	Uniswap V3
 OneInch	1inch
+Pika Perp V2	Pika Protocol
+Quixotic V1	Quixotic
+Quixotic V2	Quixotic
+Quixotic V3	Quixotic
+Quixotic V4	Quixotic
+Across V2	Accross
+Openocean V2	OpenOcean
+Setprotocol V2	Set Protocol
+Kromatikafinance	Kromatika
+kratosdao	Kratos Dao
+Curvefi	Curve
+Pika Perp	Pika Protocol
+Dhedge V2	Dhedge
+Bitbtc	Bitbtc Protocol
+
 \.
 COMMIT;
 CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS dune_name_mapped_name_uniq_idx ON ovm2.project_name_mappings (dune_name);
