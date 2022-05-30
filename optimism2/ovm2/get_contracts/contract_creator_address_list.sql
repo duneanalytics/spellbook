@@ -261,9 +261,9 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x6EB3783165E3e9BF6f3B463524738A2147BE08Ff	Clipper
 \\xbA3C7B0b8f29b41F0E841c1ffB1Bda8B605830dA	DefiSaver
 \\x0000000000933edea24f198114758e45BF9B9f14	Mean Finance
-
-
+\\x98D93988b17caDdeC301aC40E805c565F2D5925B	Optimistic Loogies
 \.
+
 COMMIT;
 CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS contract_creator_address_list_addr_uniq_idx ON ovm2.contract_creator_address_list (creator_address);
 CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS contract_creator_address_list_addr_proj_uniq_idx ON ovm2.contract_creator_address_list (creator_address,project);
