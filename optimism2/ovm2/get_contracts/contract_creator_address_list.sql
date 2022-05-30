@@ -260,7 +260,7 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\xCDf41a135C65d0013393B3793F92b4FAF31032d0	Gelato
 \\x6EB3783165E3e9BF6f3B463524738A2147BE08Ff	Clipper
 \\xbA3C7B0b8f29b41F0E841c1ffB1Bda8B605830dA	DefiSaver
-
+\\x0000000000933edea24f198114758e45BF9B9f14	Mean Finance
 
 
 \.
