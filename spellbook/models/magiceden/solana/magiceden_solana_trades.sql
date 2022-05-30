@@ -20,8 +20,8 @@ FROM {{ source('solana','transactions') }}
 LEFT JOIN {{ source('prices', 'usd') }} p 
   ON p.minute = date_trunc('minute', block_time)
   AND p.symbol = 'SOL'        
-WHERE (array_contains(account_keys, 'rFqFJ9g7TGBD8Ed7TPDnvGKZ5pWLPDyxLcvcH2eRCtt')
-       OR array_contains(account_keys, '2NZukH2TXpcuZP4htiuT8CFxcaQSWzkkR6kepSWnZ24Q'))
+WHERE (array_contains(account_keys, 'MEisE1HzehtrDpAAT8PnLHjpSSkRYakotTuJRPjTpo8') -- magic eden v1
+       OR array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))  -- magic eden v2
 AND ARRAY_CONTAINS(log_messages, 'Program log: Instruction: ExecuteSale')
 AND block_time > '2021-09-01'
 {% if is_incremental() %}
