@@ -38,6 +38,7 @@ dhedge_v2	Dhedge
 bitbtc	Bitbtc Protocol
 teleportr	Teleportr/ Warp Speed
 balancer_v2	Beethoven X
+stargate  Stargate Finance
 
 \.
 COMMIT;
