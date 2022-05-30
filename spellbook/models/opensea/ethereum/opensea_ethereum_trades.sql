@@ -8,6 +8,7 @@
 }}
 
 SELECT
+evt_tx_hash || evt_index::string as unique_id,
 'ethereum' as blockchain,
 evt_tx_hash as tx_hash,
 evt_block_time as block_time,
@@ -18,7 +19,7 @@ terc20.symbol as token_symbol,
 wam.token_address as token_address,
 maker,
 taker,
-evt_index
+evt_index as trade_id
 FROM
   {{ source('opensea_ethereum','wyvernexchange_evt_ordersmatched') }} om
   LEFT JOIN {{ ref('opensea_ethereum_wyvern_atomic_match') }} wam ON wam.tx_hash = om.evt_tx_hash

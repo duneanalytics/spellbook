@@ -18,9 +18,9 @@ models:
         description: "Project"
       - name: version
         description: "Project version"
-      - name: evt_tx_hash
+      - name: tx_hash
         description: "Transaction hash"
-      - name: evt_block_time
+      - name: block_time
         description: "UTC event block time"
       - name: token_symbol
         description: "Token Symbol"
@@ -28,3 +28,5 @@ models:
         description: "Value of the trade at time of execution in the original currency"
       - name: amount_usd
         description:  "USD value of the trade at time of execution"
+      - name: trade_id
+        description:  "Trade ID (derived from id in solana transactions)"

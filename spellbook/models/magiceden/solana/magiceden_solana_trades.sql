@@ -8,6 +8,7 @@
 }}
 
 SELECT 
+  signatures[0] || id as unique_id,
   'solana' as blockchain,
   signatures[0] as tx_hash, 
   block_time,
@@ -15,7 +16,8 @@ SELECT
   abs(post_balances[0] / 1e9 - pre_balances[0] / 1e9) AS amount,
   p.symbol as token_symbol,
   p.contract_address as token_address,
-  account_keys[0] as traders
+  account_keys[0] as traders,
+  id as trade_id
 FROM {{ source('solana','transactions') }}
 LEFT JOIN {{ source('prices', 'usd') }} p 
   ON p.minute = date_trunc('minute', block_time)

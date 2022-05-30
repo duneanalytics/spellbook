@@ -90,7 +90,7 @@ seeds:
       ethereum:
         +enabled: true
         +schema: test_data
-        opensea_ethereum_trades_caladan:
+        opensea_ethereum_trades_postgres:
           +column_types:
             evt_block_times: timestamp
             evt_tx_hash: string
@@ -98,7 +98,16 @@ seeds:
       solana:
         +enabled: true
         +schema: test_data
-        opensea_solana_trades_caladan:
+        opensea_solana_trades_postgres:
+          +column_types:
+            block_time: timestamp
+            tx_hash: string
+            amount: string
+    opensea:
+      solana:
+        +enabled: true
+        +schema: test_data
+        magiceden_solana_trades_postgres:
           +column_types:
             block_time: timestamp
             tx_hash: string
