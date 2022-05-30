@@ -103,7 +103,7 @@ seeds:
             block_time: timestamp
             tx_hash: string
             amount: string
-    opensea:
+    magiceden:
       solana:
         +enabled: true
         +schema: test_data
