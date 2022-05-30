@@ -133,4 +133,4 @@ on-run-end:
   - "OPTIMIZE transfers_ethereum.erc20_agg_day"
   - "OPTIMIZE opensea_ethereum.trades"
   - "OPTIMIZE opensea_solana.trades"
-  - "OPTIMIZE opensea_magiceden.trades"
+  - "OPTIMIZE magiceden_solana.trades"
