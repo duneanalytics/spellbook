@@ -36,7 +36,7 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\xced01e7617bf6052a71154daa6d50d8b243f1b26	Uniswap V3
 \\xd640037fa41436326e4a0e3fd0511aad83d2345c	Xchain
 \\x1b9dfc56e38b0f92448659c114e2347bd803911c	Celer
-\\x9a8f92a830a5cb89a3816e3d267cb7791c16b04d	UMA
+\\x9a8f92a830a5cb89a3816e3d267cb7791c16b04d	Across
 \\x155b15a7e9ff0e34ceaf2439589d5c661adc9493	Connext
 \\xc715aa67866a2fef297b12cb26e953481aed2df4	dHedge
 \\xf8c3875bfa461a38532fedf90453985901c55114	Dope Wars
@@ -258,6 +258,11 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x4a27c059FD7E383854Ea7DE6Be9c390a795f6eE3	Backed
 \\x5b0390bccCa1F040d8993eB6e4ce8DeD93721765	Tarot Finance
 \\xCDf41a135C65d0013393B3793F92b4FAF31032d0	Gelato
+\\x6EB3783165E3e9BF6f3B463524738A2147BE08Ff	Clipper
+\\xbA3C7B0b8f29b41F0E841c1ffB1Bda8B605830dA	DefiSaver
+
+
+
 \.
 COMMIT;
 CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS contract_creator_address_list_addr_uniq_idx ON ovm2.contract_creator_address_list (creator_address);
