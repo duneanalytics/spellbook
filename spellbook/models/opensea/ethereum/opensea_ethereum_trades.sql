@@ -38,5 +38,5 @@ FROM
   )
   {% if is_incremental() %}
   -- this filter will only be applied on an incremental run
-  AND evt_block_time > (select max(block_time) from {{ this }})
+  AND evt_block_time > now() - interval 2 days
   {% endif %} 
