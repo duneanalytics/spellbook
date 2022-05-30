@@ -21,24 +21,25 @@ synthetix_futures	Kwenta
 zeroex	0x
 uniswap_v3	Uniswap V3
 Uniswap V3	Uniswap V3
-OneInch	1inch
-Pika Perp V2	Pika Protocol
-Quixotic V1	Quixotic
-Quixotic V2	Quixotic
-Quixotic V3	Quixotic
-Quixotic V4	Quixotic
-Across V2	Across
-Openocean V2	OpenOcean
-Setprotocol V2	Set Protocol
-Kromatikafinance	Kromatika
+oneinch	1inch
+pika_perp_v2	Pika Protocol
+quixotic_v1	Quixotic
+quixotic_v2	Quixotic
+quixotic_v3	Quixotic
+quixotic_v4	Quixotic
+across_v2	Across
+openocean_v2	OpenOcean
+setprotocol_v2	Set Protocol
+kromatikafinance	Kromatika
 kratosdao	Kratos Dao
-Curvefi	Curve
-Pika Perp	Pika Protocol
-Dhedge V2	Dhedge
-Bitbtc	Bitbtc Protocol
-Teleportr	Teleportr/ Warp Speed
-Balancer V2	Beethoven X
+curvefi	Curve
+pika_perp	Pika Protocol
+dhedge_v2	Dhedge
+bitbtc	Bitbtc Protocol
+teleportr	Teleportr/ Warp Speed
+balancer_v2	Beethoven X
 
 \.
 COMMIT;
 CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS dune_name_mapped_name_uniq_idx ON ovm2.project_name_mappings (dune_name);
+CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS dune_name_mapped_name_low_uniq_idx ON ovm2.project_name_mappings (LOWER(dune_name));
