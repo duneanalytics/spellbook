@@ -17,15 +17,16 @@ om.price AS amount_raw,
 terc20.symbol as token_symbol,
 wam.token_address as token_address,
 maker,
-taker
+taker,
+evt_index
 FROM
   {{ source('opensea_ethereum','wyvernexchange_evt_ordersmatched') }} om
-  INNER JOIN {{ ref('opensea_ethereum_wyvern_atomic_match') }} wam ON wam.tx_hash = om.evt_tx_hash
-  INNER JOIN {{ ref('tokens_ethereum_erc20') }} terc20 ON terc20.contract_address = wam.token_address
-  INNER JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', evt_block_time)
+  LEFT JOIN {{ ref('opensea_ethereum_wyvern_atomic_match') }} wam ON wam.tx_hash = om.evt_tx_hash
+  LEFT JOIN {{ ref('tokens_ethereum_erc20') }} terc20 ON terc20.contract_address = wam.token_address
+  LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', evt_block_time)
       AND p.blockchain = 'ethereum'
       AND p.contract_address = wam.token_address
-  AND maker != taker
+  WHERE maker != taker
   AND date_trunc('day', p.minute) >= '2018-06-01'
   AND evt_tx_hash not in (
     SELECT
@@ -35,5 +36,5 @@ FROM
   )
   {% if is_incremental() %}
   -- this filter will only be applied on an incremental run
-  WHERE evt_block_time > (select max(block_time) from {{ this }})
+  AND evt_block_time > (select max(block_time) from {{ this }})
   {% endif %} 
