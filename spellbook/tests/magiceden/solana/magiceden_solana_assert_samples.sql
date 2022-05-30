@@ -3,8 +3,8 @@
 
 WITH unit_tests as
 (SELECT case when test_data.amount = os_trades.amount then True else False end as price_test
-FROM {{ ref('opensea_solana_trades') }} os_trades
-JOIN {{ ref('opensea_solana_trades_postgres') }} test_data ON test_data.tx_hash = os_trades.tx_hash
+FROM {{ ref('magiceden_solana_trades') }} os_trades
+JOIN {{ ref('magiceden_solana_trades_postgres') }} test_data ON test_data.tx_hash = os_trades.tx_hash
 AND test_data.block_time = os_trades.block_time
 )
 

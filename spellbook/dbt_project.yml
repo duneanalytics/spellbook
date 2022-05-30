@@ -26,6 +26,9 @@ clean-targets:         # directories to be removed by `dbt clean`
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
   spellbook:
+    nft:
+      +schema: nft
+      +materialized: view
     opensea:
       +schema: opensea
       +materialized: view
@@ -34,6 +37,12 @@ models:
         +materialized: view
       solana:
         +schema: opensea_solana
+        +materialized: view
+    magiceden:
+      +schema: magiceden
+      +materialized: view
+      solana:
+        +schema: magiceden_solana
         +materialized: view
 
     balances:
@@ -81,7 +90,7 @@ seeds:
       ethereum:
         +enabled: true
         +schema: test_data
-        opensea_ethereum_trades_caladan:
+        opensea_ethereum_trades_postgres:
           +column_types:
             evt_block_times: timestamp
             evt_tx_hash: string
@@ -89,7 +98,16 @@ seeds:
       solana:
         +enabled: true
         +schema: test_data
-        opensea_solana_trades_caladan:
+        opensea_solana_trades_postgres:
+          +column_types:
+            block_time: timestamp
+            tx_hash: string
+            amount: string
+    magiceden:
+      solana:
+        +enabled: true
+        +schema: test_data
+        magiceden_solana_trades_postgres:
           +column_types:
             block_time: timestamp
             tx_hash: string
@@ -104,6 +122,8 @@ on-run-end:
   - "{{ alter_tblproperties_balances_ethereum_erc20_day() }}"
   - "{{ alter_tblproperties_balances_ethereum_erc20_latest() }}"
 
+  - "{{ alter_tblproperties_nft_trades() }}"
+  - "{{ alter_tblproperties_magiceden_trades() }}"
   - "{{ alter_tblproperties_opensea_trades() }}"
   - "{{ alter_tblproperties_opensea_volume_day() }}"
   - "{{ alter_tblproperties_opensea_txns_day() }}"
