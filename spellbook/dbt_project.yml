@@ -128,3 +128,9 @@ on-run-end:
   - "{{ alter_tblproperties_opensea_volume_day() }}"
   - "{{ alter_tblproperties_opensea_txns_day() }}"
   - "{{ alter_tblproperties_opensea_active_traders_day() }}"
+
+  - "OPTIMIZE transfers_ethereum.erc20_agg_hour"
+  - "OPTIMIZE transfers_ethereum.erc20_agg_day"
+  - "OPTIMIZE opensea_ethereum.trades"
+  - "OPTIMIZE opensea_solana.trades"
+  - "OPTIMIZE magiceden_solana.trades"
