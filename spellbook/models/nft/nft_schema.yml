@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: nft_trades
+    meta:
+      blockchain: ethereum, solana
+      sector: nft
+      contributors: soispoke
+    config:
+      tags: ['nft', 'opensea', 'magiceden', 'ethereum', 'solana', 'trades']
+    description: >
+        NFT trades
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: block_time
+        description: "UTC event block time"
+      - name: token_symbol
+        description: "Token Symbol"
+      - name: amount
+        description: "Value of the trade at time of execution in the original currency"
+      - name: amount_usd
+        description:  "USD value of the trade at time of execution"

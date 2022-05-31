@@ -11,12 +11,16 @@ models:
     description: >
         OpenSea trades on Ethereum
     columns:
+      - name: unique_id
+        description:  "Unique id, combination of tx_hash and trade_id"
+        tests:
+          - unique
       - &blockchain
         name: blockchain
         description: "Blockchain"
-      - name: evt_tx_hash
+      - name: tx_hash
         description: "Transaction hash"
-      - name: evt_block_time
+      - name: block_time
         description: "UTC event block time"
       - name: token_symbol
         description: "Token Symbol"
@@ -28,7 +32,9 @@ models:
         description:  "Maker"
       - name: taker
         description:  "Taker"
-        
+      - name: trade_id
+        description:  "Trade id (derived from evt_index for ethereum nft trades)"
+          
   - name: opensea_ethereum_volume_day
     meta:
       blockchain: ethereum

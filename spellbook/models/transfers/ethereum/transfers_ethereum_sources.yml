@@ -7,7 +7,7 @@ sources:
       error_after: { count: 24, period: hour }
     tables:
       - name: weth9_evt_deposit
-        loaded_at_field: evt_blocktime
+        loaded_at_field: evt_block_time
         description: "WETH deposits"
         columns:
           - &contract_address
@@ -33,7 +33,7 @@ sources:
             description: "Raw amount of WETH"
             
       - name: weth9_evt_withdrawal
-        loaded_at_field: evt_blocktime
+        loaded_at_field: evt_block_time
         description: "WETH withdrawals"
         columns:
           - *contract_address
