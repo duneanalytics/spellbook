@@ -18,7 +18,7 @@ from {{ ref('transfers_ethereum_erc20') }} tr
 left join {{ ref('tokens_ethereum_erc20') }} t on t.contract_address = tr.token_address
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-where date_trunc('hour', tr.evt_block_time) > (select max(hour) from {{ this }})
+where tr.evt_block_time > now() - interval 2 days
 {% endif %}
 group by
     date_trunc('hour', tr.evt_block_time), tr.wallet_address, tr.token_address, t.symbol

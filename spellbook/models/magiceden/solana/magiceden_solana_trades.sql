@@ -29,5 +29,5 @@ AND ARRAY_CONTAINS(log_messages, 'Program log: Instruction: ExecuteSale')
 AND block_time > '2021-09-01'
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-AND block_time > (select max(block_time) from {{ this }})
+AND block_time > now() - interval 2 days
 {% endif %} 
