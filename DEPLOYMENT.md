@@ -28,12 +28,17 @@ Push your tag to github
 | --- |
 
 Navigate to the [Releases](https://github.com/duneanalytics/abstractions/tags) page for the repo. Click create a release.
+<img width="1416" alt="Screen Shot 2022-05-27 at 2 44 14 PM" src="https://user-images.githubusercontent.com/9472574/171188506-4abfcd4c-6a0d-4d89-ae53-9a1d27befdee.png">
 
 
 From the release creation page, use the drop down menu to select your tag. Write some notes to describe the changes since last release.
+<img width="1411" alt="Screen Shot 2022-05-27 at 2 44 25 PM" src="https://user-images.githubusercontent.com/9472574/171188577-244cd752-926d-44c3-a9b0-c4541504bc0f.png">
+
 
 
 Update the branch name on the [production environment](https://cloud.getdbt.com/#/accounts/58579/projects/95826/environments/83086/settings/) on DBT CLoud.
+<img width="1411" alt="Screen Shot 2022-05-31 at 9 46 24 AM" src="https://user-images.githubusercontent.com/9472574/171188799-20649e07-aed9-4d0a-b840-50b5a8bf7e78.png">
+
 
 # Rollback
 Check the Releases page and deploy the previous tag to DBT Cloud. 
