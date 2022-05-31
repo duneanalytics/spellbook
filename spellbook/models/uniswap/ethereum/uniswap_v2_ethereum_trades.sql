@@ -67,5 +67,5 @@ LEFT JOIN {{ source('prices', 'usd') }} pb ON pb.minute = date_trunc('minute', d
     AND pb.blockchain = 'ethereum'
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-WHERE block_time > now() - interval 2 days
+WHERE dexs.block_time > now() - interval 2 days
 {% endif %} 
