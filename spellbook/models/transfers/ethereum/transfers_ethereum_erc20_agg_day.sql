@@ -2,7 +2,10 @@
         alias ='erc20_agg_day',
         materialized ='incremental',
         file_format ='delta',
-        incremental_strategy='merge'
+        incremental_strategy='merge',
+        tblproperties={
+          'delta.autoOptimize.optimizeWrite' : 'true',
+          'delta.autoOptimize.autoCompact' : 'true'}
         )
 }}
 
