@@ -12,5 +12,5 @@ CREATE UNIQUE INDEX ON tokemak.view_tokemak_lookup_metapools (
 );
 
 INSERT INTO cron.job(schedule, command)
-VALUES ('* 1 * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_lookup_metapools$$)
+VALUES ('0 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_lookup_metapools$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
