@@ -128,9 +128,6 @@ models:
       - &tokenId
         name: tokenId
         description: "ID of this ERC721 token"
-      - &amount_erc721
-        name: amount
-        description: "Raw amount of ERC721 token held *after* taking into account token decimals"
 
   - name: balances_ethereum_erc721_hour
     meta:
@@ -149,7 +146,6 @@ models:
       - *wallet_address_erc721
       - *token_address_erc721
       - *tokenId
-      - *amount_erc721
 
   - name: balances_ethereum_erc721_latest
     meta:
@@ -167,5 +163,4 @@ models:
       - *last_updated
       - *wallet_address
       - *token_address
-      - *amount
       - *tokenId

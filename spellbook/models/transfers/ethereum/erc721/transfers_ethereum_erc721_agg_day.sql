@@ -11,12 +11,12 @@ select
     date_trunc('day', evt_block_time) as day,
     wallet_address,
     token_address,
-    tokenId,
-    sum(amount) as amount
+    tokenId
 from {{ ref('transfers_ethereum_erc721') }}
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
 where evt_block_time > now() - interval 2 days
 {% endif %}
+having sum(amount) = 1
 group by
     date_trunc('day', evt_block_time), wallet_address, token_address, tokenId

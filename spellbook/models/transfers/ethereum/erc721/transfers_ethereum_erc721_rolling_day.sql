@@ -11,8 +11,5 @@
             token_address,
             tokenId,
             current_timestamp() as updated_at,
-            row_number() over (partition by token_address, tokenId, wallet_address order by day desc) as recency_index,
-            sum(amount) over (
-                partition by token_address, tokenId, wallet_address order by day
-            ) as amount
+            row_number() over (partition by token_address, tokenId, wallet_address order by day desc) as recency_index
         from {{ ref('transfers_ethereum_erc721_agg_day') }}

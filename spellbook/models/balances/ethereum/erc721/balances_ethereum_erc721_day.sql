@@ -18,7 +18,6 @@ with
     wallet_address,
     token_address,
     tokenId,
-    amount,
     day,
     lead(day, 1, now()) OVER (PARTITION BY token_address, wallet_address ORDER BY day) AS next_day
     FROM {{ ref('transfers_ethereum_erc721_rolling_day') }})
@@ -28,7 +27,6 @@ SELECT
     d.day,
     b.wallet_address,
     b.token_address,
-    b.tokenId,
-    b.amount
+    b.tokenId
 FROM daily_balances b
 INNER JOIN days d ON b.day <= d.day AND d.day < b.next_day

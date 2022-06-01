@@ -149,7 +149,7 @@ models:
       - &tokenId
         name: tokenId
         description: "ID of the ERC721 token"
-      - name: amount_raw
+      - name: amount
         description: "Amount of ERC721 token held"
 
   - name: transfers_ethereum_erc721_agg_hour
@@ -166,8 +166,6 @@ models:
       - *wallet_address_erc721
       - *token_address_erc721
       - *tokenId
-      - name: amount
-        description: "Rolling sum of amount of ERC721 token"
 
   - name: transfers_ethereum_erc721_rolling_hour
     meta:
@@ -187,8 +185,6 @@ models:
         description: "UTC timestamp when table was last updated"
       - name: recency_index
         description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
-      - name: amount
-        description: "Rolling sum of raw amount of ERC721 token held *after* taking into account token decimals"
 
   - name: transfers_ethereum_erc721_agg_day
     meta:
@@ -204,8 +200,6 @@ models:
       - *wallet_address_erc721
       - *token_address_erc721
       - *tokenId
-      - name: amount
-        description: "Rolling sum of amount of ERC721 token"
 
   - name: transfers_ethereum_erc721_rolling_day
     meta:
@@ -225,5 +219,3 @@ models:
         description: "UTC timestamp when table was last updated"
       - name: recency_index
         description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
-      - name: amount
-        description: "Rolling sum of raw amount of ERC721 token held *after* taking into account token decimals"

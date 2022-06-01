@@ -5,7 +5,6 @@
 SELECT
     wallet_address,
     token_address,
-    amount,
     tokenId,
     updated_at
 FROM {{ ref('transfers_ethereum_erc721_rolling_hour') }}
