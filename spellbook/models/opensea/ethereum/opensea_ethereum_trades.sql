@@ -4,10 +4,7 @@
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
-        unique_key='unique_id',
-        tblproperties={
-          'delta.autoOptimize.optimizeWrite' : 'true',
-          'delta.autoOptimize.autoCompact' : 'true'}
+        unique_key='unique_id'
   )
 }}
 
