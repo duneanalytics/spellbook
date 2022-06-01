@@ -114,21 +114,6 @@ seeds:
             amount: string
 
 on-run-end:
-  - "{{ alter_tblproperties_tokens_ethereum_erc20() }}"
-
-  - "{{ alter_tblproperties_transfers_ethereum_erc20() }}"
-
-  - "{{ alter_tblproperties_balances_ethereum_erc20_hour() }}"
-  - "{{ alter_tblproperties_balances_ethereum_erc20_day() }}"
-  - "{{ alter_tblproperties_balances_ethereum_erc20_latest() }}"
-
-  - "{{ alter_tblproperties_nft_trades() }}"
-  - "{{ alter_tblproperties_magiceden_trades() }}"
-  - "{{ alter_tblproperties_opensea_trades() }}"
-  - "{{ alter_tblproperties_opensea_volume_day() }}"
-  - "{{ alter_tblproperties_opensea_txns_day() }}"
-  - "{{ alter_tblproperties_opensea_active_traders_day() }}"
-
   - "OPTIMIZE transfers_ethereum.erc20_agg_hour"
   - "OPTIMIZE transfers_ethereum.erc20_agg_day"
   - "OPTIMIZE opensea_ethereum.trades"
