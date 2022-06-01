@@ -113,9 +113,4 @@ seeds:
             tx_hash: string
             amount: string
 
-on-run-end:
-  - "OPTIMIZE transfers_ethereum.erc20_agg_hour"
-  - "OPTIMIZE transfers_ethereum.erc20_agg_day"
-  - "OPTIMIZE opensea_ethereum.trades"
-  - "OPTIMIZE opensea_solana.trades"
-  - "OPTIMIZE magiceden_solana.trades"
+
