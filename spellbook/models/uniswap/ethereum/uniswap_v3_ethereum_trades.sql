@@ -59,5 +59,5 @@ SELECT
         AND pb.blockchain = 'ethereum'
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-WHERE block_time > now() - interval 2 days
+WHERE dexs.block_time > now() - interval 2 days
 {% endif %} 
