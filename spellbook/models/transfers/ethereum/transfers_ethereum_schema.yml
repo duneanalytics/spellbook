@@ -119,7 +119,7 @@ models:
         description: "Rolling sum of raw amount of ERC20 token held *after* taking into account token decimals"
       - name: amount_usd
         description: "Rolling sum of amount of ERC20 token held in USD (fiat value at time of transaction)"
-      - name: updated_at
+      - name: last_updated
         description: "UTC timestamp when table was last updated"
       - name: recency_index
         description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
