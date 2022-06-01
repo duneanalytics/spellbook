@@ -114,8 +114,6 @@ seeds:
             amount: string
 
 on-run-end:
-  - "{{ alter_tblproperties() }}"
-  
   - "OPTIMIZE transfers_ethereum.erc20_agg_hour"
   - "OPTIMIZE transfers_ethereum.erc20_agg_day"
   - "OPTIMIZE opensea_ethereum.trades"
