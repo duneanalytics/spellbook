@@ -1,30 +1,30 @@
 {% macro optimize_tables() %}
 {%- if flags.full_refresh -%}
-{% set sql_1 %}
-OPTIMIZE dbt_thomas_transfers_ethereum.erc20_agg_hour;
+{% set transfers_ethereum_erc20_agg_hour %}
+OPTIMIZE transfers_ethereum.erc20_agg_hour;
 {% endset %}
 
-{% set sql_2 %}
+{% set transfers_ethereum_erc20_agg_day %}
 OPTIMIZE transfers_ethereum.erc20_agg_day;
 {% endset %}
 
-{% set sql_3 %}
+{% set opensea_ethereum_trades %}
 OPTIMIZE opensea_ethereum.trades;
 {% endset %}
 
-{% set sql_4 %}
+{% set opensea_solana_trades %}
 OPTIMIZE opensea_solana.trades;
 {% endset %}
 
-{% set sql_5 %}
+{% set magiceden_solana_trades %}
 OPTIMIZE magiceden_solana.trades;
 {% endset %}
 
-{% do run_query(sql_1) %}
-{% do run_query(sql_2) %}
-{% do run_query(sql_3) %}
-{% do run_query(sql_4) %}
-{% do run_query(sql_5) %}
+{% do run_query(transfers_ethereum_erc20_agg_hour) %}
+{% do run_query(transfers_ethereum_erc20_agg_day) %}
+{% do run_query(opensea_ethereum_trades) %}
+{% do run_query(opensea_solana_trades) %}
+{% do run_query(magiceden_solana_trades) %}
 
 {% do log("Tables Optimized", info=True) %}
 {%- else -%}
