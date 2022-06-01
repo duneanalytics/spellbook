@@ -29,7 +29,6 @@ SELECT
     b.wallet_address,
     b.token_address,
     b.tokenId,
-    b.amount,
+    b.amount
 FROM daily_balances b
 INNER JOIN days d ON b.day <= d.day AND d.day < b.next_day
-WHERE r.contract_address is null

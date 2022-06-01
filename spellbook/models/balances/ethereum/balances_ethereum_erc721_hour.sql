@@ -29,7 +29,6 @@ SELECT
     b.wallet_address,
     b.token_address,
     b.tokenId,
-    b.amount,
+    b.amount
 FROM daily_balances b
 INNER JOIN hours d ON b.hour <= d.hour AND d.hour < b.next_hour
-WHERE r.contract_address is null
