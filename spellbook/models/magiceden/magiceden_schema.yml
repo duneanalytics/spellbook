@@ -24,6 +24,8 @@ models:
         description: "UTC event block time"
       - name: token_symbol
         description: "Token Symbol"
+      - name: token_address
+        description: "Token Address"
       - name: amount
         description: "Value of the trade at time of execution in the original currency"
       - name: amount_usd
