@@ -183,10 +183,10 @@ WHERE NOT EXISTS (
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/20 * * * *', $$
-    SELECT aave.insert_aave_borrow(
-        (SELECT MAX(evt_block_time) - interval '1 days' FROM aave.aave_borrow),
+    SELECT aave.insert_borrow(
+        (SELECT MAX(evt_block_time) - interval '1 days' FROM aave.borrow),
         (SELECT now() - interval '20 minutes'),
-        (SELECT MAX(number) FROM polygon.blocks WHERE time < (SELECT MAX(evt_block_time) - interval '1 days' FROM aave.aave_borrow)),
+        (SELECT MAX(number) FROM polygon.blocks WHERE time < (SELECT MAX(evt_block_time) - interval '1 days' FROM aave.borrow)),
         (SELECT MAX(number) FROM polygon.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
