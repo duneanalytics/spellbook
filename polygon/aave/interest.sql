@@ -120,11 +120,10 @@ WHERE NOT EXISTS (
 );
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('*/20 * * * *', $$
+VALUES ('14,44 * * * *', $$
     SELECT aave.insert_interest(
-        (SELECT MAX(evt_block_time) - interval '1 days' FROM aave.interest),
-        (SELECT now() - interval '20 minutes'),
-        (SELECT MAX(number) FROM polygon.blocks WHERE time < (SELECT MAX(evt_block_time) - interval '1 days' FROM aave.interest)),
-        (SELECT MAX(number) FROM polygon.blocks where time < now() - interval '20 minutes'));
+        (SELECT DATE_TRUNC('day',NOW()) - interval '3 days'),
+        (SELECT DATE_TRUNC('day',NOW()) );
+	
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
