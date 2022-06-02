@@ -1,9 +1,3 @@
 
-target/
 dbt_packages/
 logs/
-
-# exclusions
-!target/manifest.json
-!target/run_results.json
-!target/sources.json
