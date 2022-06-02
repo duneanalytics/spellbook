@@ -55,7 +55,7 @@ WITH rows AS (
         evt_index,
         row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
-        -- Clipper v2
+        -- Clipper v2 "Caravel" on ETH Mainnet
         SELECT
             t.evt_block_time AS block_time,
             'Clipper' AS project,
@@ -100,7 +100,7 @@ END
 $function$;
 
 -- fill 2022
-SELECT dex.insert_clipper(
+SELECT dex.insert_clipper_v2(
     '2022-01-01',
     now(),
     (SELECT MAX(number) FROM ethereum.blocks WHERE time < '2022-01-01'),

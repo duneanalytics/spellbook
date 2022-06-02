@@ -100,7 +100,7 @@ END
 $function$;
 
 -- fill 2022
-SELECT dex.insert_clipper(
+SELECT dex.insert_clipper_v2(
     '2022-01-01',
     now(),
     (SELECT MAX(number) FROM polygon.blocks WHERE time < '2022-01-01'),
