@@ -38,8 +38,7 @@ dhedge_v2	Dhedge
 bitbtc	Bitbtc Protocol
 teleportr	Teleportr/ Warp Speed
 balancer_v2	Beethoven X
-stargate  Stargate Finance
-
+stargate	Stargate Finance
 \.
 COMMIT;
 CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS dune_name_mapped_name_uniq_idx ON ovm2.project_name_mappings (dune_name);
