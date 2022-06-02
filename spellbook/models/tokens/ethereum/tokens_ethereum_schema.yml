@@ -34,3 +34,28 @@ models:
         description: "Token contract address"
       - name: symbol
         description: "Token symbol"
+
+  - name: tokens_ethereum_nft
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: dot2dotseurat
+    config:
+      tags: ['tokens', 'ethereum', 'nft']
+    description: >
+        Selection of NFT token addresses.
+    columns:
+      - name: contract_address
+        description: "The contract address is the unique address of where the NFTs are stored."
+      - name: name
+        description: "NFT Project Name"
+      - name: symbol
+        description: "NFT Token Symbol"
+      - name: standard
+        tests:
+          - accepted_values:
+              values: ['erc721', 'erc1155' , 'erc20', 'cryptopunks','superrare']
+        description: >
+            The token standard. This is the set of rules that the contract must respect 
+            to be compatible with the common standards. Accepted values are presently standards represented.
+            If you are adding a token with a new standard, remember to add it the accepted valeus list.
