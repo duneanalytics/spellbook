@@ -100,6 +100,15 @@ ALTER VIEW transfers_ethereum.erc20 SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["soispoke","dot2dotseurat"]');
 {% endset %}
 
+{% set tokens_ethereum_nft %}
+ALTER VIEW tokens_ethereum.nft SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='tokens',
+                                                    'dune.data_explorer.contributors'='["dot2dotseurat","soispoke"]');
+{% endset %}
+
 {% do run_query(balances_ethereum_erc20_hour) %}
 {% do run_query(balances_ethereum_erc20_latest) %}
 {% do run_query(magiceden_trades) %}
@@ -110,6 +119,7 @@ ALTER VIEW transfers_ethereum.erc20 SET TBLPROPERTIES('dune.public'='true',
 {% do run_query(opensea_volume_day) %}
 {% do run_query(tokens_ethereum_erc20) %}
 {% do run_query(transfers_ethereum_erc20) %}
+{% do run_query(tokens_ethereum_nft) %}
 
 {% do log("Tables generated", info=True) %}
 {%- else -%}
