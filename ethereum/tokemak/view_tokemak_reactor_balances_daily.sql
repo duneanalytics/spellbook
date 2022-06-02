@@ -14,7 +14,6 @@ WITH calendar AS
         FROM tokemak."view_tokemak_lookup_reactors" r  
         INNER JOIN tokemak."view_tokemak_lookup_tokens" tl ON tl.address = r.underlyer_address
         CROSS JOIN generate_series('2021-08-01'::date, current_date, '1 day') t(i) 
-        --WHERE NOT (i>'2022-05-10' AND r.reactor_address='\x7A75ec20249570c935Ec93403A2B840fBdAC63fd')
  ) , 
 
 reactor_underlyer_balances as (
@@ -115,5 +114,5 @@ CREATE UNIQUE INDEX ON tokemak.view_tokemak_reactor_balances_daily (
 );
 
 INSERT INTO cron.job(schedule, command)
-VALUES ('0 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_reactor_balances_daily$$)
+VALUES ('10 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_reactor_balances_daily$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
