@@ -1,0 +1,131 @@
+version: 2
+
+models:
+  - name: uniswap_ethereum_trades
+    meta:
+      blockchain: ethereum
+      project: uniswap
+      contributors: masquot, soispoke
+    config:
+      tags: ['ethereum','uniswap','trades']
+    description: >
+        Uniswap V1 trades on Ethereum
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &project 
+        name: project
+        description:  "Project name"  
+      - &version
+        name: version
+        description:  "Version"  
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+      - &token_a_symbol
+        name: token_a_symbol
+        description: "Symbol for first token traded"
+      - &token_b_symbol
+        name: token_b_symbol
+        description: "Symbol for second token traded"
+      - &token_a_amount
+        name: token_a_amount
+        description: "Value of the trade at time of execution in the original currency for the first token"
+      - &token_b_amount
+        name: token_b_amount
+        description: "Value of the trade at time of execution in the original currency for the second token"
+      - &trader_a
+        name: trader_a
+        description: "Address of trader A"
+      - &trader_b
+        name: trader_b
+        description: "Address of trader B"
+      - &amount_usd
+        name: amount_usd
+        description:  "USD value of the trade at time of execution"
+      - &token_a_address
+        name: token_a_address
+        description: "Contract address of first token traded"
+      - &token_b_address
+        name: token_b_address
+        description: "Contract address of second token traded"
+      - &exchange_contract_address
+        name: exchange_contract_address
+        description:  "Exchange contract address"
+      - &tx_hash
+        name: tx_hash
+        description:  "Transaction hash"
+      - &tx_from
+        name: tx_from
+        description:  "Initiated this transaction"
+      - &tx_to
+        name: tx_to
+        description:  "Receive this transaction"   
+      - &trade_id
+        name: trade_id
+        description:  "Trade ID (derived from evt_index for ethereum dex trades)"      
+
+  - name: uniswap_v2_ethereum_trades
+    meta:
+      blockchain: ethereum
+      project: uniswap_v2
+      contributors: masquot, soispoke
+    config:
+      tags: ['ethereum','uniswap_v2','trades']
+    description: >
+        Uniswap V2 trades on Ethereum
+    columns:
+      - &unique_id
+        name: unique_id
+        description:  "Unique id, combination of tx_hash and trade_id"
+        tests:
+          - unique
+      - *blockchain
+      - *project
+      - *version  
+      - *block_time
+      - *token_a_symbol
+      - *token_b_symbol
+      - *token_a_amount
+      - *token_b_amount
+      - *trader_a
+      - *trader_b
+      - *amount_usd
+      - *token_a_address
+      - *token_b_address
+      - *exchange_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *trade_id      
+
+  - name: uniswap_v3_ethereum_trades
+    meta:
+      blockchain: ethereum
+      project: uniswap_v3
+      contributors: masquot, soispoke
+    config:
+      tags: ['ethereum','uniswap_v3','trades']
+    description: >
+        Uniswap V3 trades on Ethereum
+    columns:
+      - *unique_id
+      - *blockchain
+      - *project
+      - *version  
+      - *block_time
+      - *token_a_symbol
+      - *token_b_symbol
+      - *token_a_amount
+      - *token_b_amount
+      - *trader_a
+      - *trader_b
+      - *amount_usd
+      - *token_a_address
+      - *token_b_address
+      - *exchange_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *trade_id    

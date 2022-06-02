@@ -29,6 +29,12 @@ models:
     nft:
       +schema: nft
       +materialized: view
+    uniswap:
+      +schema: uniswap
+      +materialized: view
+      ethereum:
+        +schema: uniswap_ethereum
+        +materialized: view
     opensea:
       +schema: opensea
       +materialized: view
