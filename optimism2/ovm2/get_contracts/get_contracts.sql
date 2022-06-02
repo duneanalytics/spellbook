@@ -18,3 +18,8 @@ CREATE INDEX IF NOT EXISTS ovm2_get_contracts_address_project_idx ON ovm2.get_co
 CREATE INDEX IF NOT EXISTS ovm2_get_contracts_address_project_time_idx ON ovm2.get_contracts (contract_address,contract_project,created_time);
 CREATE INDEX IF NOT EXISTS ovm2_get_contracts_address_project_time_destruct_idx ON ovm2.get_contracts (contract_address,contract_project,created_time,is_self_destruct);
 CREATE INDEX IF NOT EXISTS ovm2_get_contracts_destruct_idx ON ovm2.get_contracts (is_self_destruct);
+CREATE UNIQUE INDEX IF NOT EXISTS ovm2_uniq_get_contracts_address_idx ON ovm2.get_contracts (contract_address);
+CREATE UNIQUE INDEX IF NOT EXISTS ovm2_uniq_gc_address_dest_idx ON ovm2.get_contracts (contract_address,is_self_destruct);
+CREATE UNIQUE INDEX IF NOT EXISTS ovm2_uniq_gc_address_time_dest_idx ON ovm2.get_contracts (contract_address,created_time,is_self_destruct);
+CREATE INDEX IF NOT EXISTS ovm2_get_contracts_project_low_idx ON ovm2.get_contracts (LOWER(contract_project));
+CREATE INDEX IF NOT EXISTS ovm2_get_contracts_dd_view ON ovm2.get_contracts (LOWER(COALESCE(contract_project,token_symbol)));

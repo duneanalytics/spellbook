@@ -517,11 +517,7 @@ WITH
 	
 	  contract_project = EXCLUDED.contract_project,
 	  token_symbol = EXCLUDED.token_symbol,
-	  contract_name = EXCLUDED.contract_name,
-	  creator_address = EXCLUDED.creator_address,
-	  created_time = EXCLUDED.created_time,
-	  contract_creator_if_factory = EXCLUDED.contract_creator_if_factory,
-	  is_self_destruct = EXCLUDED.is_self_destruct
+	  contract_name = EXCLUDED.contract_name
 	
 	RETURNING 1
 )
