@@ -45,7 +45,7 @@ SELECT
         t.evt_tx_hash AS tx_hash,
         t.evt_index
         FROM {{ source('uniswap_v3_ethereum', 'pair_evt_swap') }} t
-        INNER JOIN {{ source('uniswap_v3_ethereum', 'factory_evt_poolcreated') }} f
+        INNER JOIN {{ source('uniswap_v3_ethereum', 'factory_evt_poolcreated') }} f ON t.evt_tx_hash = f.evt_tx_hash
         ) dexs
     INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON dexs.tx_hash = tx.hash

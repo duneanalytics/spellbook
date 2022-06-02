@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: uniswap_v1_ethereum_trades
+  - name: uniswap_ethereum_trades
     meta:
       blockchain: ethereum
-      project: uniswap_v1
+      project: uniswap
       contributors: masquot, soispoke
     config:
-      tags: ['ethereum','uniswap_v1','trades']
+      tags: ['ethereum','uniswap','trades']
     description: >
         Uniswap V1 trades on Ethereum
     columns:
