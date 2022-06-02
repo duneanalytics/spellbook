@@ -12,8 +12,6 @@ CREATE MATERIALIZED VIEW tokemak.view_tokemak_convex_pool_stats_daily
     
 WITH  convex_pools As 
     (
-    
-      --SELECT contract_address as pool_address, symbol as pool_symbol, sum(qty) OVER (PARTITION BY symbol ORDER BY "date") as pool_lp_qty FROM (
         SELECT contract_address as pool_address, symbol, sum(qty) as qty 
             FROM (
             SELECT contract_address,tl.symbol, (value/10^tl.decimals)*-1 as qty 
@@ -28,7 +26,6 @@ WITH  convex_pools As
             WHERE t."from"='\xA86e412109f77c45a3BC1c5870b880492Fb86A14' and t."to"='\x989aeb4d175e16225e39e87d0d97a3360524ad80'
             AND NOT (t."to" = t."from")
         )as t GROUP BY contract_address, symbol 
-   -- ) as t ORDER BY  symbol
     ),
     pools_and_constituents AS (
         --3crv
@@ -95,22 +92,20 @@ WITH  convex_pools As
                 AND NOT (cp.pool_address = '\xceaf7747579696a2f0bb206a14210e3c9e6fb269' AND t.contract_address = '\xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48')--somehow $100 worth of USDC was put in this pool so we need to omit it otherwise it looks like the ust 3crv pool also consists of a third instrument
                 WHERE t.contract_address <>'\x4eb8b4c65d8430647586cf44af4bf23ded2bb794'   --need to omit anything that was airdropped into the pool 
                 AND NOT (t."to" = t."from")
-                GROUP BY 1,2,3 --ORDER BY"date" 
+                GROUP BY 1,2,3 
             ) as tt 
       )as t 
        INNER JOIN tokemak.view_tokemak_lookup_tokens m ON m.address = t.token_address  
        CROSS JOIN tokemak.view_tokemak_lookup_tokens p WHERE p.address = t.pool_address
-      AND qty>0  --order by "date" desc, pool_symbol, token_symbol
+      AND qty>0  
  )
---SELECT * FROM pools_and_constituents --WHERE pool_symbol = 'steCRV'
  
 ,  calendar AS  
     (SELECT DISTINCT  i::date as "date", pool_address,pool_symbol,token_address,token_symbol
         FROM pools_and_constituents
         CROSS JOIN generate_series('2021-08-01'::date, current_date, '1 day') t(i)
-        --ORDER BY "date" desc, pool_symbol asc
         )
-  --SELECT * FROM calendar
+
   , temp AS
   (
   SELECT c."date"
@@ -122,7 +117,6 @@ WITH  convex_pools As
   ,count(pc.qty) OVER (PARTITION BY c.pool_address,c.token_address ORDER BY c."date") AS grpQty
   FROM calendar c 
   LEFT JOIN pools_and_constituents pc on pc."date" = c."date" AND pc.pool_address = c.pool_address AND pc.token_address = c.token_address 
-  --order by "date" desc, pool_symbol 
   )
 
     SELECT 
@@ -149,6 +143,6 @@ CREATE UNIQUE INDEX ON tokemak.view_tokemak_convex_pool_stats_daily (
 );
 
 INSERT INTO cron.job(schedule, command)
-VALUES ('0 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_convex_pool_stats_daily$$)
+VALUES ('9 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_convex_pool_stats_daily$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 

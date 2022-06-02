@@ -565,5 +565,5 @@ CREATE UNIQUE INDEX ON tokemak.view_tokemak_curve_convex_pool_total_supply (
 );
 
 INSERT INTO cron.job(schedule, command)
-VALUES ('0 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_curve_convex_pool_total_supply$$)
+VALUES ('1 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_curve_convex_pool_total_supply$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
