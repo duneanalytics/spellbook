@@ -24,12 +24,14 @@ models:
         description: "UTC event block time"
       - name: token_symbol
         description: "Token Symbol"
+      - name: token_address
+        description: "Token Address"
       - name: amount
         description: "Value of the trade at time of execution in the original currency"
       - name: amount_usd
         description:  "USD value of the trade at time of execution"
-      - name: trader
-        description:  "Trader"
+      - name: traders
+        description:  "Traders"
       - name: trade_id
         description:  "Trade ID (derived from id in solana transactions)"
 
