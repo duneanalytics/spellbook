@@ -1,4 +1,4 @@
-{{config(schema = 'uniswap_v3', 
+{{config(schema = 'uniswap_v3_ethereum', 
         alias='trades',
         materialized ='incremental',
         file_format ='delta',
