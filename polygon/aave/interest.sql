@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS aave.interest (
     
 );
 
+
 CREATE OR REPLACE FUNCTION aave.insert_interest(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
