@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: magiceden_solana_trades
+    meta:
+      blockchain: solana
+      project: magiceden
+      contributors: soispoke
+    config:
+      tags: ['solana','magiceden','trades']
+    description: >
+        MagicEden trades on Solana
+    columns:
+      - name: unique_id
+        description:  "Unique id, combination of signatures[0] and id"
+        tests:
+          - unique
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: block_time
+        description: "UTC event block time"
+      - name: token_symbol
+        description: "Token Symbol"
+      - name: amount
+        description: "Value of the trade at time of execution in the original currency"
+      - name: amount_usd
+        description:  "USD value of the trade at time of execution"
+      - name: trader
+        description:  "Trader"
+      - name: trade_id
+        description:  "Trade ID (derived from id in solana transactions)"
