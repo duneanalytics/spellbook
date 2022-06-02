@@ -11,11 +11,6 @@ models:
     description: >
         Uniswap V1 trades on Ethereum
     columns:
-      - &unique_id
-        name: unique_id
-        description:  "Unique id, combination of tx_hash and trade_id"
-        tests:
-          - unique
       - &blockchain
         name: blockchain
         description: "Blockchain"
@@ -81,7 +76,11 @@ models:
     description: >
         Uniswap V2 trades on Ethereum
     columns:
-      - *unique_id
+      - &unique_id
+        name: unique_id
+        description:  "Unique id, combination of tx_hash and trade_id"
+        tests:
+          - unique
       - *blockchain
       - *project
       - *version  
