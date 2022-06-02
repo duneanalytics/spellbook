@@ -3,7 +3,7 @@ CREATE MATERIALIZED VIEW tokemak.view_tokemak_PCAs_daily
     "date", asset_symbol, token_address, total_asset_qty, total_liability_qty, total_liability_value_usd,total_liability_value_eth,total_asset_value_usd,total_asset_value_eth, pca_value_usd, pca_value_eth, pca_qty
 )
 AS (
-    WITH liabilities_daily as (
+   WITH liabilities_daily as (
         SELECT "date",symbol, pricing_contract, SUM(total_liability_qty) as total_liability_qty
         FROM tokemak."view_tokemak_outstanding_liabilities_daily" 
         GROUP BY 1,2,3
@@ -18,7 +18,7 @@ AS (
         SELECT "date",tl.symbol, token_address, tl.pricing_contract, tokemak_qty as total_qty
         , tl.is_dollar_stable  
             FROM (
-            SELECT  b."date", b.wallet_address, b.source_name, b.symbol, tl.address, b.display_name, b.tokemak_qty 
+            SELECT  b."date", b.wallet_address, b.token_address, b.source_name, b.symbol, tl.address, b.display_name, b.tokemak_qty 
                 FROM tokemak."view_tokemak_wallet_balances_daily" b INNER JOIN 
                 tokemak.view_tokemak_lookup_tokens tl on tl.address = b.token_address AND tl.is_pool = false AND tl.symbol <>'TOKE'
                 LEFT JOIN tokemak."view_tokemak_prices_usd_eth_daily" tp on tp."contract_address" = b."token_address" and tp."date" = b."date"
