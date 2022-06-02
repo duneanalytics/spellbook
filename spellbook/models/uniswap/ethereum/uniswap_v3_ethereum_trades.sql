@@ -11,7 +11,7 @@ SELECT
     'ethereum' as blockchain,
     'uniswap' as project, 
     'v3' as version,
-    dexs.block_time,
+    dex.block_time,
     erc20a.symbol AS token_a_symbol,
     erc20b.symbol AS token_b_symbol,
     token_a_amount_raw / power(10, erc20a.decimals) AS token_a_amount,
@@ -46,18 +46,18 @@ SELECT
         t.evt_index
         FROM {{ source('uniswap_v3_ethereum', 'pair_evt_swap') }} t
         INNER JOIN {{ source('uniswap_v3_ethereum', 'factory_evt_poolcreated') }} f ON t.evt_tx_hash = f.evt_tx_hash
-        ) dexs
+        ) dex
     INNER JOIN {{ source('ethereum', 'transactions') }} tx
-    ON dexs.tx_hash = tx.hash
-    LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20a ON erc20a.contract_address = dexs.token_a_address
-    LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20b ON erc20b.contract_address = dexs.token_b_address
-    LEFT JOIN {{ source('prices', 'usd') }} pa ON pa.minute = date_trunc('minute', dexs.block_time)
-        AND pa.contract_address = dexs.token_a_address
+    ON dex.tx_hash = tx.hash
+    LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20a ON erc20a.contract_address = dex.token_a_address
+    LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20b ON erc20b.contract_address = dex.token_b_address
+    LEFT JOIN {{ source('prices', 'usd') }} pa ON pa.minute = date_trunc('minute', dex.block_time)
+        AND pa.contract_address = dex.token_a_address
         AND pa.blockchain = 'ethereum'
-    LEFT JOIN {{ source('prices', 'usd') }} pb ON pb.minute = date_trunc('minute', dexs.block_time)
-        AND pb.contract_address = dexs.token_b_address
+    LEFT JOIN {{ source('prices', 'usd') }} pb ON pb.minute = date_trunc('minute', dex.block_time)
+        AND pb.contract_address = dex.token_b_address
         AND pb.blockchain = 'ethereum'
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-WHERE dexs.block_time > now() - interval 2 days
+WHERE dex.block_time > now() - interval 2 days
 {% endif %} 
