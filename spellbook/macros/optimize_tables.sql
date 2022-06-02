@@ -20,11 +20,21 @@ OPTIMIZE opensea_solana.trades;
 OPTIMIZE magiceden_solana.trades;
 {% endset %}
 
+{% set uniswap_v2_ethereum_trades %}
+OPTIMIZE uniswap_v2_ethereum.trades;
+{% endset %}
+
+{% set uniswap_v3_ethereum_trades %}
+OPTIMIZE uniswap_v3_ethereum.trades;
+{% endset %}
+
 {% do run_query(transfers_ethereum_erc20_agg_hour) %}
 {% do run_query(transfers_ethereum_erc20_agg_day) %}
 {% do run_query(opensea_ethereum_trades) %}
 {% do run_query(opensea_solana_trades) %}
 {% do run_query(magiceden_solana_trades) %}
+{% do run_query(uniswap_v2_ethereum_trades) %}
+{% do run_query(uniswap_v3_ethereum_trades) %}
 
 {% do log("Tables Optimized", info=True) %}
 {%- else -%}
