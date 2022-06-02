@@ -12,19 +12,25 @@ AS (
         SELECT "date",symbol, token_address,  SUM(total_qty) as total_qty FROM (
             SELECT "date", tl.symbol, a.token_address,tl.pricing_contract, total_qty
             ,tl.is_dollar_stable 
-            FROM dune_user_generated."tokemak_all_deployable_assets_by_asset_daily" a 
+            FROM tokemak."view_tokemak_all_deployable_assets_by_asset_daily" a 
             INNER JOIN tokemak."view_tokemak_lookup_tokens" tl on tl.address = a.token_address and is_liability=false 
         UNION
         SELECT "date",tl.symbol, token_address, tl.pricing_contract, tokemak_qty as total_qty
         , tl.is_dollar_stable  
-            FROM dune_user_generated."tokemak_wallet_balances_nonlp_daily" b
+            FROM (
+            SELECT  b."date", b.wallet_address, b.source_name, b.symbol, tl.address, b.display_name, b.tokemak_qty 
+                FROM tokemak."view_tokemak_wallet_balances_daily" b INNER JOIN 
+                tokemak.view_tokemak_lookup_tokens tl on tl.address = b.token_address AND tl.is_pool = false AND tl.symbol <>'TOKE'
+                LEFT JOIN tokemak."view_tokemak_prices_usd_eth_daily" tp on tp."contract_address" = b."token_address" and tp."date" = b."date"
+                WHERE tl.is_pool = false and tl.symbol <>'TOKE' 
+                ORDER BY source_name, symbol, wallet_address
+            ) b
             INNER JOIN tokemak."view_tokemak_lookup_tokens" tl on tl.address = b.token_address and is_pool = false and is_liability=false ) as t GROUP BY 1,2,3
-    ),--xa693b19d2931d498c5b318df961919bb4aee87a5
-   -- SELECT * FROM temp_assets ORDER BY "date" desc, symbol
+    ),
+
 temp_combined as (
     SELECT a."date",a.symbol as asset_symbol
     , a.token_address as token_address
-    --, a.pricing_contract as pricing_contract
     , a.total_qty as total_asset_qty
     , l.total_liability_qty as total_liability_qty
    , a.total_qty * tp.price_usd as  total_asset_value_usd
@@ -38,7 +44,7 @@ temp_combined as (
     LEFT JOIN tokemak."view_tokemak_prices_usd_eth_daily" tp on tp."contract_address" = a."token_address" and tp."date" = a."date"
     WHERE NOT (a."date" > '2022-05-10'::date AND (a.token_address = '\x7A75ec20249570c935Ec93403A2B840fBdAC63fd' OR a.token_address='\x482258099de8de2d0bda84215864800ea7e6b03d' OR a.token_address = '\xa693b19d2931d498c5b318df961919bb4aee87a5' OR a.token_address='\xa47c8bf37f92aBed4A126BDA807A7b7498661acD')) --remove the UST tokens
     order by a."date" desc, asset_symbol asc)
-   -- SELECT * FROM temp_combined where  "date" > '2022-05-08'
+
 SELECT "date", asset_symbol, token_address, total_asset_qty, total_liability_qty, total_liability_value_usd,total_liability_value_eth,total_asset_value_usd,total_asset_value_eth
 , pca_value_usd
 , pca_value_eth, pca_qty FROM(
@@ -97,9 +103,9 @@ SELECT "date", asset_symbol, token_address, total_asset_qty, total_liability_qty
 
 );
 CREATE UNIQUE INDEX ON tokemak.view_tokemak_PCAs_daily (
-   address
+   "date", token_address
 );
 
 INSERT INTO cron.job(schedule, command)
-VALUES ('45 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_PCAs_daily$$)
+VALUES ('30 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_PCAs_daily$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
