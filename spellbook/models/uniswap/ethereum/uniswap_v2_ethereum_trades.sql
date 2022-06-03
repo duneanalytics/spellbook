@@ -1,6 +1,6 @@
  {{
   config(
-        schema = 'uniswap_v2', 
+        schema = 'uniswap_v2_ethereum', 
         alias='trades',
         materialized ='incremental',
         file_format ='delta',
