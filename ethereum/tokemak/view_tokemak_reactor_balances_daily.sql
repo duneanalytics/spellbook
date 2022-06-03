@@ -14,7 +14,6 @@ WITH calendar AS
         FROM tokemak."view_tokemak_lookup_reactors" r  
         INNER JOIN tokemak."view_tokemak_lookup_tokens" tl ON tl.address = r.underlyer_address
         CROSS JOIN generate_series('2021-08-01'::date, current_date, '1 day') t(i) 
-        --WHERE NOT (i>'2022-05-10' AND r.reactor_address='\x7A75ec20249570c935Ec93403A2B840fBdAC63fd')
  ) , 
 
 reactor_underlyer_balances as (
@@ -29,7 +28,7 @@ reactor_underlyer_balances as (
         tl.symbol as symbol,
         tl.display_name,
         b.amount_raw/10^tl.decimals as balance
-        FROM erc20."token_balances" b  --where b.token_address = '\x04F2694C8fcee23e8Fd0dfEA1d4f5Bb8c352111F' AND b.wallet_address='\x8b4334d4812c530574bd4f2763fcd22de94a969b' order by "timestamp" desc
+        FROM erc20."token_balances" b  
         INNER JOIN tokemak."view_tokemak_lookup_reactors" r ON r.reactor_address = b.wallet_address AND r.underlyer_address = b.token_address AND r.underlyer_address = '\xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'  -- only weth
         INNER JOIN tokemak."view_tokemak_lookup_tokens" tl ON tl.address = b.token_address
         ORDER BY "date" desc,b.wallet_address, b.token_address, "timestamp" desc NULLS LAST
@@ -58,12 +57,6 @@ reactor_underlyer_balances as (
      ) as t  order by "date" desc, reactor_name
 ) ,
 
-/*withdrawals as (
-    SELECT lt.address as contract_address, total_outstanding_request_qty 
-    FROM dune_user_generated.tokemak_current_withdrawal_requests r
-    INNER JOIN dune_user_generated.tokemak_lookup_reactors t on r.contract_address = t.reactor_address
-    INNER JOIN dune_user_generated.tokemak_lookup_tokens lt on lt.address = t.underlyer_address
-),*/
 temp as (
 
     SELECT  c."date", c.address as token_address, c.symbol as token_symbol
@@ -72,15 +65,9 @@ temp as (
     , c.reactor_address
     , c.is_deployable
     , r.reactor_qty
-   -- , COALESCE(r.reactor_qty * tp.price_usd, 0) as reactor_gross_value
     , count(r.reactor_qty) OVER (PARTITION BY c.reactor_address ORDER BY c."date") AS grpQty
-   -- , count(COALESCE(r.reactor_qty * tp.price_usd, 0)) OVER (PARTITION BY c.reactor_address ORDER BY c."date") AS grpVal
-    --,SUM(COALESCE(w.total_outstanding_request_qty,0))as outstanding_withdrawal_request_qty
-    --,SUM(COALESCE(r.reactor_qty,0)) - SUM(COALESCE(w.total_outstanding_request_qty,0)) as reactor_net_balance
     FROM calendar c 
-    --LEFT JOIN withdrawals w on w.contract_address = tl.address
     LEFT JOIN reactor_underlyer_balances r on c."date" = r."date" and c.address = r.token_address and c.reactor_address = r.reactor_address
-    --LEFT JOIN tokemak.view_tokemak_prices_usd_eth_daily tp on tp."contract_address" = r."token_address" and tp."date" = r."date"
     GROUP BY 1,2,3,4,5,6,7,8
     ORDER BY c."date" desc, reactor_name, c.symbol
     ),
@@ -95,14 +82,11 @@ temp as (
         , reactor_address
         , is_deployable
         ,first_value(reactor_qty) OVER (PARTITION BY reactor_address, grpQty ORDER BY "date") AS reactor_qty
-       -- ,first_value(reactor_gross_value) OVER (PARTITION BY reactor_address, grpVal ORDER BY "date") AS reactor_gross_value
     FROM  temp
     order by "date" desc, reactor_name)
 
     SELECT  r."date", token_address, token_symbol, token_display_name, reactor_name, reactor_address, is_deployable, reactor_qty 
-    --COALESCE(r.reactor_qty * tp.price_usd, 0) as reactor_gross_value_usd ,COALESCE(r.reactor_qty * tp.price_eth, 0) as reactor_gross_value_eth 
     FROM res_temp r
-   -- LEFT JOIN dune_user_generated.tokemak_prices_usd_eth_daily tp on tp."contract_address" = r."token_address" and tp."date" = r."date"
     WHERE reactor_qty <> 0 order by "date" desc, reactor_name
  
 );
@@ -115,5 +99,5 @@ CREATE UNIQUE INDEX ON tokemak.view_tokemak_reactor_balances_daily (
 );
 
 INSERT INTO cron.job(schedule, command)
-VALUES ('0 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_reactor_balances_daily$$)
+VALUES ('10 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_reactor_balances_daily$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
