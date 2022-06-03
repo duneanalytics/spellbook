@@ -1,4 +1,4 @@
-{{config(schema = 'uniswap_v3', 
+{{config(schema = 'uniswap_v3_ethereum', 
         alias='trades',
         materialized ='incremental',
         file_format ='delta',
@@ -45,8 +45,8 @@ SELECT
         t.evt_tx_hash AS tx_hash,
         t.evt_index
         FROM {{ source('uniswap_v3_ethereum', 'pair_evt_swap') }} t
-        INNER JOIN {{ source('uniswap_v3_ethereum', 'factory_evt_poolcreated') }} f ON t.evt_tx_hash = f.evt_tx_hash
-        ) dex
+        INNER JOIN {{ source('uniswap_v3_ethereum', 'factory_evt_poolcreated') }} f ON f.pool = t.contract_address
+        ) dex 
     INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON dex.tx_hash = tx.hash
     LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20a ON erc20a.contract_address = dex.token_a_address
