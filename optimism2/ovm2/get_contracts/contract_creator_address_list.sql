@@ -262,6 +262,7 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x0000000000933edea24f198114758e45BF9B9f14	Mean Finance
 \\x98D93988b17caDdeC301aC40E805c565F2D5925B	Optimistic Loogies
 \\xc0DE1436C4E247F8652476A0B9ff55699801e1d0	Velodrome
+\\xab1ef74D2C461e95f4b658ca1f94aC519ad80BA2	OP
 \.
 
 COMMIT;
