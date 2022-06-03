@@ -1,0 +1,101 @@
+version: 2
+
+models:
+  - name: serum_solana_trades
+    meta:
+      blockchain: solana
+      project: serum
+      contributors: soispoke
+    config:
+      tags: ['solana','serum','trades']
+    description: >
+        Serum trades on Solana
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &project 
+        name: project
+        description:  "Project name"  
+      - &version
+        name: version
+        description:  "Version"  
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+      - &token_a_symbol
+        name: token_a_symbol
+        description: "Symbol for first token traded"
+      - &token_b_symbol
+        name: token_b_symbol
+        description: "Symbol for second token traded"
+      - &trader_a
+        name: trader_a
+        description: "Address of trader A"
+      - &trader_b
+        name: trader_b
+        description: "Address of trader B"
+      - &amount_usd
+        name: amount_usd
+        description:  "USD value of the trade at time of execution"
+      - &exchange_contract_address
+        name: exchange_contract_address
+        description:  "Exchange contract address"
+      - &tx_hash
+        name: tx_hash
+        description:  "Transaction hash" 
+      - &trade_id
+        name: trade_id
+        description:  "Trade ID (derived from id in solana transactions)"     
+
+  - name: serum_v2_solana_trades
+    meta:
+      blockchain: solana
+      project: serum_v2
+      contributors: soispoke
+    config:
+      tags: ['solana','serum_v2','trades']
+    description: >
+        Serum V2 trades on Solana
+    columns:
+      - &unique_id
+        name: unique_id
+        description:  "Unique id, combination of tx_hash and trade_id"
+        tests:
+          - unique
+      - *blockchain
+      - *project
+      - *version  
+      - *block_time
+      - *token_a_symbol
+      - *token_b_symbol
+      - *trader_a
+      - *trader_b
+      - *amount_usd
+      - *exchange_contract_address
+      - *tx_hash
+      - *trade_id      
+
+  - name: serum_v3_solana_trades
+    meta:
+      blockchain: solana
+      project: serum_v3
+      contributors: soispoke
+    config:
+      tags: ['solana','serum_v3','trades']
+    description: >
+        Serum V3 trades on Solana
+    columns:
+      - *unique_id
+      - *blockchain
+      - *project
+      - *version  
+      - *block_time
+      - *token_a_symbol
+      - *token_b_symbol
+      - *trader_a
+      - *trader_b
+      - *amount_usd
+      - *exchange_contract_address
+      - *tx_hash
+      - *trade_id 

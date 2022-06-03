@@ -35,6 +35,12 @@ models:
       ethereum:
         +schema: uniswap_ethereum
         +materialized: view
+    serum:
+      +schema: serum
+      +materialized: view
+      solana:
+        +schema: serum_solana
+        +materialized: view
     opensea:
       +schema: opensea
       +materialized: view

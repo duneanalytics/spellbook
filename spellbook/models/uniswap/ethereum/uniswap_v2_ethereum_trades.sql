@@ -25,7 +25,7 @@ SELECT
         usd_amount,
         token_a_amount_raw / power(10, erc20a.decimals) * pa.price,
         token_b_amount_raw / power(10, erc20b.decimals) * pb.price
-    ) as usd_amount,
+    ) as amount_usd,
     token_a_address,
     token_b_address,
     exchange_contract_address,
