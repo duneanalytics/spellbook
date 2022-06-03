@@ -22,6 +22,7 @@ VALUES ('15,30,45,59 * * * *', $$
 	SELECT dex.insert_kwenta( (SELECT max(block_time) - interval '1 hour' FROM dex.trades WHERE project='Kwenta'), now() );
 	SELECT dex.insert_wardenswap( (SELECT max(block_time) - interval '1 hour' FROM dex.trades WHERE project='WardenSwap' AND version = '2'), now() );
 	SELECT dex.insert_rubicon( (SELECT max(block_time) - interval '1 hour' FROM dex.trades WHERE project='Rubicon'), now() );
+	SELECT dex.insert_velodrome( (SELECT max(block_time) - interval '1 hour' FROM dex.trades WHERE project='Velodrome'), now() );
     );
 	--ADD REMAINING DEX INSERTS HERE
 --END DEX Inserts
