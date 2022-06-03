@@ -26,6 +26,9 @@ clean-targets:         # directories to be removed by `dbt clean`
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
   spellbook:
+    dex:
+      +schema: dex
+      +materialized: view
     nft:
       +schema: nft
       +materialized: view
