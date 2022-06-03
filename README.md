@@ -16,7 +16,7 @@ pipenv shell
 ```
 
 Set up the dbt spellbook project. (You must run this step from the spellbook directory)
-Select Databricks and enter `.` or other placeholders after running `dbt init` for the host, HTTP path, and token. This will not connect to the database but you have access to some dbt actions.
+Run `dbt init` and select Databricks, then enter `.` or other placeholders for the host, HTTP path, and token. This will not connect to the database but you have access to some dbt actions.
 
 When you are prompted to choose a target, please enter `wizard` so we know you are an external contributor.
 ```
