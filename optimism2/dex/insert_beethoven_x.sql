@@ -78,8 +78,8 @@ SELECT
             balancer_v2."Vault_evt_Swap" t
         WHERE t."tokenIn" != SUBSTRING(t."poolId" FOR 20)
         AND t."tokenOut" != SUBSTRING(t."poolId" FOR 20)
-
-	WHERE t.evt_block_time >= start_ts AND t.evt_block_time < end_ts
+	AND t.evt_block_time >= start_ts AND t.evt_block_time < end_ts
+	    
     ) dexs
     INNER JOIN optimism.transactions tx
         ON dexs.tx_hash = tx.hash
