@@ -119,7 +119,7 @@ SELECT dex.insert_velodrome(
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.trades
-    WHERE block_time > '2022-05-010'
+    WHERE block_time > '2022-05-01'
     AND block_time <= now()
     AND project = 'Velodrome'
 );
