@@ -66,7 +66,7 @@ WITH curve_pools AS (
 	GROUP BY 1,2,3 --unique
     ORDER BY pool ASC, tokenid ASC
 )
-SELECT
+SELECT DISTINCT
     dexs.block_time,
     erc20a.symbol AS token_a_symbol,
     erc20b.symbol AS token_b_symbol,
