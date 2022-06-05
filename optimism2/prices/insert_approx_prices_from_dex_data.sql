@@ -32,7 +32,7 @@ chainlink_prices AS (
 AND 1 =
 	(CASE
 	 -- For the following DEXs, grab tokens for all trades
-	 	WHEN project IN ('Uniswap','1inch','0x API','Matcha','Zipswap','Velodrome','Curve','Sushiswap') THEN 1
+	 	WHEN project IN ('Uniswap','1inch','0x API','Matcha','Zipswap','Velodrome','Curve','Sushiswap','Slingshot') THEN 1
 	 -- For Beethoven X, only grab BEETS and BAL for now.
 	 	WHEN project = 'Beethoven X'
 	 		AND
@@ -65,7 +65,7 @@ AND 1 =
 AND 1 =
 	(CASE
 	 -- For the following DEXs, grab tokens for all trades
-	 	WHEN project IN ('Uniswap','1inch','0x API','Matcha','Zipswap','Velodrome','Curve','Sushiswap') THEN 1
+	 	WHEN project IN ('Uniswap','1inch','0x API','Matcha','Zipswap','Velodrome','Curve','Sushiswap','Slingshot') THEN 1
 	 -- For Beethoven X, only grab BEETS and BAL for now.
 	 	WHEN project = 'Beethoven X'
 	 		AND
