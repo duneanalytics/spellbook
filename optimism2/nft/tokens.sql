@@ -111,6 +111,7 @@ COPY nft.tokens (contract_address, project_name) FROM stdin;
 \\x907bc276f2e855865887422353221c86a575fd1e	Cryptovania
 \\xc0cbf706fa55ea946d8fd9912e0f7f9d30fd3b0b	Co-ownership as a web3 social primitive
 \\x51E5426eDE4e2d4c2586371372313B5782387222	Apetimism
+\\x9c7305eb78a432ced5C4D14Cac27E8Ed569A2e26	veNFT
 \.
 
 COMMIT;
