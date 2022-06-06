@@ -1,0 +1,7 @@
+name: dbt-publish-documentation
+uses: mwhitaker/dbt-action@master
+runs-on: [self-hosted, linux]
+with:
+  dbt_command: "dbt docs generate --project-dir ./spellbook"
+env:
+  DBT_TOKEN: notneeded

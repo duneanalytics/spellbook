@@ -1,0 +1,14 @@
+default:
+  target: prod
+  outputs:
+    dev:
+      type: spark
+      method: http
+      schema: dev_user
+      host: <not needed>
+      port: 443
+      token: _token_ # this will be substituted during build time
+      cluster: <not needed>
+      connect_timeout: 30
+      connect_retries: 15
+      threads: 5
