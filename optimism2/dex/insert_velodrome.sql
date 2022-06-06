@@ -73,7 +73,7 @@ SELECT
 	    t.evt_tx_hash AS tx_hash,
 	    NULL::integer[] AS trace_address,
 	    t.evt_index
-	    FROM velodrome."Router_evt_Swap" t
+	    FROM velodrome."Pair_evt_Swap" t
 		 INNER JOIN velodrome."PairFactory_evt_PairCreated" f ON f.pair = t.contract_address
 
 	WHERE t.evt_block_time >= start_ts AND t.evt_block_time < end_ts
