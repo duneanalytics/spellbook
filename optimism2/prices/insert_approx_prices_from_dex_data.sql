@@ -29,7 +29,22 @@ chainlink_prices AS (
     AND token_a_amount_raw > 100 -- filter out small spam
     AND block_time >= start_time
     AND block_time < end_time
-AND project IN ('Uniswap','1inch','0x API','Matcha','Zipswap')
+AND 1 =
+	(CASE
+	 -- For the following DEXs, grab tokens for all trades
+	 	WHEN project IN ('Uniswap','1inch','0x API','Matcha','Zipswap','Velodrome','Curve','Sushiswap','Slingshot') THEN 1
+	 -- For Beethoven X, only grab BEETS and BAL for now.
+	 	WHEN project = 'Beethoven X'
+	 		AND
+	 		(
+				token_a_address IN ('\xFE8B128bA8C78aabC59d4c64cEE7fF28e9379921','\x97513e975a7fA9072c72C92d8000B0dB90b163c5')
+				OR
+				token_b_address IN ('\xFE8B128bA8C78aabC59d4c64cEE7fF28e9379921','\x97513e975a7fA9072c72C92d8000B0dB90b163c5')
+			) THEN 1
+	 ELSE 0
+	 END
+	 )
+	 
 	GROUP BY 1,2,3,4,5,6 --remove dupes
 
     UNION ALL
@@ -47,7 +62,21 @@ AND project IN ('Uniswap','1inch','0x API','Matcha','Zipswap')
     AND token_b_amount_raw > 100 -- filter out small spam
     AND block_time >= start_time
     AND block_time < end_time
-AND project IN ('Uniswap','1inch','0x API','Matcha','Zipswap')
+AND 1 =
+	(CASE
+	 -- For the following DEXs, grab tokens for all trades
+	 	WHEN project IN ('Uniswap','1inch','0x API','Matcha','Zipswap','Velodrome','Curve','Sushiswap','Slingshot') THEN 1
+	 -- For Beethoven X, only grab BEETS and BAL for now.
+	 	WHEN project = 'Beethoven X'
+	 		AND
+	 		(
+				token_a_address IN ('\xFE8B128bA8C78aabC59d4c64cEE7fF28e9379921','\x97513e975a7fA9072c72C92d8000B0dB90b163c5')
+				OR
+				token_b_address IN ('\xFE8B128bA8C78aabC59d4c64cEE7fF28e9379921','\x97513e975a7fA9072c72C92d8000B0dB90b163c5')
+			) THEN 1
+	 ELSE 0
+	 END
+	 )
 	
 	GROUP BY 1,2,3,4,5,6 --remove dupes
 ),
