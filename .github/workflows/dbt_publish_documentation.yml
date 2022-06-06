@@ -1,5 +1,6 @@
 name: dbt-publish-documentation
 uses: mwhitaker/dbt-action@master
+on: workflow_dispatch
 runs-on: [self-hosted, linux]
 with:
   dbt_command: "dbt docs generate --project-dir ./spellbook"
