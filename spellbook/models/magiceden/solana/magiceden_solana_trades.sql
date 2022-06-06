@@ -8,26 +8,37 @@
   )
 }}
 
-SELECT 
-  signatures[0] || id as unique_id,
-  'solana' as blockchain,
-  signatures[0] as tx_hash, 
-  block_time,
-  abs(post_balances[0] / 1e9 - pre_balances[0] / 1e9) * p.price AS amount_usd,
-  abs(post_balances[0] / 1e9 - pre_balances[0] / 1e9) AS amount,
-  p.symbol as token_symbol,
-  p.contract_address as token_address,
-  account_keys[0] as traders,
-  id as trade_id
-FROM {{ source('solana','transactions') }}
-LEFT JOIN {{ source('prices', 'usd') }} p 
-  ON p.minute = date_trunc('minute', block_time)
-  AND p.symbol = 'SOL'        
-WHERE (array_contains(account_keys, 'MEisE1HzehtrDpAAT8PnLHjpSSkRYakotTuJRPjTpo8') -- magic eden v1
-       OR array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))  -- magic eden v2
-AND ARRAY_CONTAINS(log_messages, 'Program log: Instruction: ExecuteSale')
-AND block_time > '2021-09-01'
-{% if is_incremental() %}
--- this filter will only be applied on an incremental run
-AND block_time > now() - interval 2 days
-{% endif %} 
+SELECT
+    'solana' AS blockchain,
+    t.block_time,
+    p.symbol AS token_symbol,
+    p.contract_address AS token_address,
+    t.id AS trade_id,
+    t.signatures[0] || t.id AS unique_id,
+    t.signatures[0] AS tx_hash,
+    abs(
+        t.post_balances[0] / 1e9 - t.pre_balances[0] / 1e9
+    ) * p.price AS amount_usd,
+    abs(t.post_balances[0] / 1e9 - t.pre_balances[0] / 1e9) AS amount,
+    t.account_keys[0] AS traders
+FROM {{ source('solana','transactions') }} AS t
+LEFT JOIN {{ source('prices', 'usd') }} AS p
+          ON p.minute = date_trunc('minute', t.block_time)
+          AND p.symbol = 'SOL'
+-- magic eden v1
+WHERE
+    (
+        array_contains(
+            t.account_keys, 'MEisE1HzehtrDpAAT8PnLHjpSSkRYakotTuJRPjTpo8'
+        )
+        -- magic eden v2
+        OR array_contains(
+            t.account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'
+        )
+    )
+    AND array_contains(t.log_messages, 'Program log: Instruction: ExecuteSale')
+    AND t.block_time > '2021-09-01'
+    {% if is_incremental() %}
+    -- this filter will only be applied on an incremental run
+    AND t.block_time > now() - INTERVAL 2 DAYS
+{% endif %}
