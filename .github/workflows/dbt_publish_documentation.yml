@@ -1,8 +1,18 @@
-name: dbt-publish-documentation
-uses: mwhitaker/dbt-action@master
-on: workflow_dispatch
-runs-on: [self-hosted, linux]
-with:
-  dbt_command: "dbt docs generate --project-dir ./spellbook"
-env:
-  DBT_TOKEN: notneeded
+name: Publish DBT Documentation
+on: 
+  workflow_dispatch:
+  push:
+
+jobs:
+  action:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v0.1.0
+
+      - name: dbt-document
+        uses: mwhitaker/dbt-action@master
+        with:
+          dbt_command: "dbt docs generate --project-dir ./spellbook"
+        env:
+          DBT_TOKEN: notneeded
