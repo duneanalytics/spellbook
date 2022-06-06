@@ -8,11 +8,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Check out repository code
+        uses: actions/checkout@v3
 
-      - name: dbt-document
-        uses: mwhitaker/dbt-action@master
+      - name: Set up Python 3.8.12
+        uses: actions/setup-python@v1
         with:
-          dbt_command: "dbt docs generate --project-dir ./spellbook"
-        env:
-          DBT_TOKEN: notneeded
+          python-version: 3.8.12
+          cache: 'pipenv'
+
+      - name: Install pipenv
+        run: pip install pipenv
+
+      - id: cache-pipenv
+        uses: actions/cache@v1
+        with:
+          path: ~/.local/share/virtualenvs
+          key: ${{ runner.os }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+
+      - name: Install dependencies
+        if: steps.cache-pipenv.outputs.cache-hit != 'true'
+        run: |
+          pipenv install 
+
+      - name: DBT configure without db connection
+        working-directory: ./spellbook
+        continue-on-error: true
+        run: |
+          echo "2
+          .
+          .
+          .
+          .
+          1" | pipenv run dbt init
+
+      - name: DBT document
+        working-directory: ./spellbook
+        run: "pipenv run dbt docs generate"
