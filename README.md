@@ -31,6 +31,8 @@ dbt compile
 ```
 dbt compile will compile the JINJA and SQL templated SQL into plain SQL which can be executed in the Dune UI. We are thinking about better solutions to make more dbt actions available directly but also have to consider security. 
 
+https://user-images.githubusercontent.com/9472574/172207409-731a54a0-f1c2-4a57-93a7-6e7934567caa.mov
+
 ### How to use dbt to create abstractions
 
 There's a couple new concepts to consider when making abstractions in dbt. The most common ones wizards will encounter are refs, sources, freshness, and tests. 

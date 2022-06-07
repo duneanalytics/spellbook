@@ -22,7 +22,8 @@ models:
       - &token_address
         name: token_address
         description: "Contract address for token"
-      - name: evt_block_time
+      - &evt_block_time
+        name: evt_block_time
         description: "Timestamp for block event time in UTC"
       - &amount_raw
         name: amount_raw
@@ -86,7 +87,8 @@ models:
       tags: ['transfers', 'ethereum', 'erc20', 'agg_day', 'soispoke', 'dot2dotseurat']
     columns:
       - *blockchain
-      - name: day
+      - &day
+        name: day
         description: "UTC event block time truncated to the day mark."
       - *wallet_address
       - *token_address
@@ -108,8 +110,7 @@ models:
       tags: ['transfers', 'ethereum', 'erc20', 'rolling_day', 'soispoke', 'dot2dotseurat']
     columns:
       - *blockchain
-      - name: day
-        description: "UTC event block time truncated to the day mark."
+      - *day
       - *wallet_address
       - *token_address
       - name: symbol
@@ -120,6 +121,101 @@ models:
       - name: amount_usd
         description: "Rolling sum of amount of ERC20 token held in USD (fiat value at time of transaction)"
       - name: last_updated
+        description: "UTC timestamp when table was last updated"
+      - name: recency_index
+        description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
+
+  - name: transfers_ethereum_erc721
+    meta:
+      blockchain: ethereum
+      sector: transfers
+      project: erc721
+      contibutors: soispoke, dot2dotseurat, hildobby
+    config:
+      tags: ['transfers', 'ethereum', 'erc721', 'soispoke', 'dot2dotseurat', 'hildobby']
+    description: "ERC721 Token Transfers on Ethereum. This table is updated every 15 minutes."
+    columns:
+      - name: unique_tx_id
+        description: "Unique tx ID (testing)"
+      - *blockchain
+      - &wallet_address_erc721
+        name: wallet_address
+        description: "Wallet address of sender or receiver."
+      - &token_address_erc721
+        name: token_address_erc721
+      - name: symbol
+        description: "ERC721 token symbol"
+      - *evt_block_time
+      - &tokenId
+        name: tokenId
+        description: "ID of the ERC721 token"
+      - name: amount
+        description: "Amount of ERC721 token held"
+
+  - name: transfers_ethereum_erc721_agg_hour
+    meta:
+      blockchain: ethereum
+      sector: transfers
+      project: erc721
+      contibutors: soispoke, dot2dotseurat, hildobby
+    config:
+      tags: ['transfers', 'ethereum', 'erc721', 'agg_hour', 'soispoke', 'dot2dotseurat', 'hildobby']
+    columns:
+      - *blockchain
+      - *hour
+      - *wallet_address_erc721
+      - *token_address_erc721
+      - *tokenId
+
+  - name: transfers_ethereum_erc721_rolling_hour
+    meta:
+      blockchain: ethereum
+      sector: transfers
+      project: erc721
+      contibutors: soispoke, dot2dotseurat, hildobby
+    config:
+      tags: ['transfers', 'ethereum', 'erc721', 'rolling_hour', 'soispoke', 'dot2dotseurat', 'hildobby']
+    columns:
+      - *blockchain
+      - *hour
+      - *wallet_address_erc721
+      - *token_address_erc721
+      - *tokenId
+      - name: updated_at
+        description: "UTC timestamp when table was last updated"
+      - name: recency_index
+        description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
+
+  - name: transfers_ethereum_erc721_agg_day
+    meta:
+      blockchain: ethereum
+      sector: transfers
+      project: erc721
+      contibutors: soispoke, dot2dotseurat, hildobby
+    config:
+      tags: ['transfers', 'ethereum', 'erc721', 'agg_hour', 'soispoke', 'dot2dotseurat', 'hildobby']
+    columns:
+      - *blockchain
+      - *day
+      - *wallet_address_erc721
+      - *token_address_erc721
+      - *tokenId
+
+  - name: transfers_ethereum_erc721_rolling_day
+    meta:
+      blockchain: ethereum
+      sector: transfers
+      project: erc721
+      contibutors: soispoke, dot2dotseurat, hildobby
+    config:
+      tags: ['transfers', 'ethereum', 'erc721', 'rolling_day', 'soispoke', 'dot2dotseurat', 'hildobby']
+    columns:
+      - *blockchain
+      - *day
+      - *wallet_address_erc721
+      - *token_address_erc721
+      - *tokenId
+      - name: updated_at
         description: "UTC timestamp when table was last updated"
       - name: recency_index
         description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
