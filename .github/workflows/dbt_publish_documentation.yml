@@ -5,7 +5,7 @@ on:
 
 jobs:
   action:
-    runs-on: [self-hosted, linux]
+    runs-on: [self-hosted, linux, prod]
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
