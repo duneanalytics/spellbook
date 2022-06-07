@@ -34,7 +34,7 @@ ALTER VIEW balances_ethereum.erc721_day SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='sector',
                                                     'dune.data_explorer.abstraction.name'='balances',
-                                                    'dune.data_explorer.contributors'='["soispoke","dot2dotseurat"]');
+                                                    'dune.data_explorer.contributors'='["hildobby","soispoke","dot2dotseurat"]');
 {% endset %}
 
 {% set balances_ethereum_erc721_hour %}
@@ -43,7 +43,7 @@ ALTER VIEW balances_ethereum.erc721_hour SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='sector',
                                                     'dune.data_explorer.abstraction.name'='balances',
-                                                    'dune.data_explorer.contributors'='["soispoke","dot2dotseurat"]');
+                                                    'dune.data_explorer.contributors'='["hildobby","soispoke","dot2dotseurat"]');
 {% endset %}
 
 {% set balances_ethereum_erc721_latest %}
@@ -52,7 +52,7 @@ ALTER VIEW balances_ethereum.erc721_latest SET TBLPROPERTIES('dune.public'='true
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='sector',
                                                     'dune.data_explorer.abstraction.name'='balances',
-                                                    'dune.data_explorer.contributors'='["soispoke","dot2dotseurat"]');
+                                                    'dune.data_explorer.contributors'='["hildobby","soispoke","dot2dotseurat"]');
 {% endset %}
 
 {% set magiceden_trades %}
