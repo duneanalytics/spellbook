@@ -112,3 +112,5 @@ alter view mock.mock_tbl set tblproperties ('dune.public'='true',
 {%- endmacro %}
 
 ```
+
+test internal branch from external user
