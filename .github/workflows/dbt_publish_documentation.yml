@@ -41,6 +41,17 @@ jobs:
           .
           1" | pipenv run dbt init
 
+      - name: DBT configure without db connection (take 2)
+        working-directory: ./spellbook
+        continue-on-error: true
+        run: |
+          echo "1
+          .
+          .
+          .
+          .
+          1" | pipenv run dbt init
+
       - name: DBT document
         working-directory: ./spellbook
         run: "pipenv run dbt docs generate"
