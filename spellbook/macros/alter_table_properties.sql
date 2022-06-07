@@ -28,6 +28,33 @@ ALTER VIEW balances_ethereum.erc20_latest SET TBLPROPERTIES('dune.public'='true'
                                                     'dune.data_explorer.contributors'='["soispoke","dot2dotseurat"]');
 {% endset %}
 
+{% set balances_ethereum_erc721_day %}
+ALTER VIEW balances_ethereum.erc721_day SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='balances',
+                                                    'dune.data_explorer.contributors'='["hildobby","soispoke","dot2dotseurat"]');
+{% endset %}
+
+{% set balances_ethereum_erc721_hour %}
+ALTER VIEW balances_ethereum.erc721_hour SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='balances',
+                                                    'dune.data_explorer.contributors'='["hildobby","soispoke","dot2dotseurat"]');
+{% endset %}
+
+{% set balances_ethereum_erc721_latest %}
+ALTER VIEW balances_ethereum.erc721_latest SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='balances',
+                                                    'dune.data_explorer.contributors'='["hildobby","soispoke","dot2dotseurat"]');
+{% endset %}
+
 {% set magiceden_trades %}
 ALTER VIEW magiceden.trades SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["solana"]',
@@ -118,8 +145,12 @@ ALTER VIEW uniswap_ethereum.trades SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["soispoke"]');
 {% endset %}
 
+{% do run_query(balances_ethereum_erc20_day) %}
 {% do run_query(balances_ethereum_erc20_hour) %}
 {% do run_query(balances_ethereum_erc20_latest) %}
+{% do run_query(balances_ethereum_erc721_day) %}
+{% do run_query(balances_ethereum_erc721_hour) %}
+{% do run_query(balances_ethereum_erc721_latest) %}
 {% do run_query(magiceden_trades) %}
 {% do run_query(nft_trades) %}
 {% do run_query(opensea_active_traders_day) %}
