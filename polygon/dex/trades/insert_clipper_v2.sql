@@ -29,10 +29,10 @@ WITH rows AS (
     )
     SELECT
         dexs.block_time,
-        pa.symbol AS token_a_symbol,
-        pb.symbol AS token_b_symbol,
-        token_a_amount_raw / 10 ^ pa.decimals AS token_a_amount,
-        token_b_amount_raw / 10 ^ pb.decimals AS token_b_amount,
+        erc20a.symbol AS token_a_symbol,
+        erc20b.symbol AS token_b_symbol,
+        token_a_amount_raw / 10 ^ erc20a.decimals AS token_a_amount,
+        token_b_amount_raw / 10 ^ erc20b.decimals AS token_b_amount,
         project,
         version,
         category,
@@ -42,8 +42,8 @@ WITH rows AS (
         token_b_amount_raw,
         coalesce(
             usd_amount,
-            token_a_amount_raw / 10 ^ pa.decimals * pa.price,
-            token_b_amount_raw / 10 ^ pb.decimals * pb.price
+            token_a_amount_raw / 10 ^ erc20a.decimals * pa.price,
+            token_b_amount_raw / 10 ^ erc20b.decimals * pb.price
         ) as usd_amount,
         token_a_address,
         token_b_address,
@@ -81,6 +81,8 @@ WITH rows AS (
         AND tx.block_time < end_ts
         AND tx.block_number >= start_block
         AND tx.block_number < end_block
+    LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
+    LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
     LEFT JOIN prices.usd pa ON pa.minute = date_trunc('minute', dexs.block_time)
         AND pa.contract_address = dexs.token_a_address
         AND pa.minute >= start_ts
@@ -120,7 +122,7 @@ VALUES ('*/10 * * * *', $$
     SELECT dex.insert_clipper_v2(
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Clipper' AND version='2'),
         (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM polygon.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Clipper')),
+        (SELECT max(number) FROM polygon.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Clipper' AND version='2')),
         (SELECT MAX(number) FROM polygon.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
