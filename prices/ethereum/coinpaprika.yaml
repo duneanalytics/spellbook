@@ -2116,3 +2116,8 @@
   symbol: AUDIO
   address: 0x18aAA7115705e8be94bfFEBDE57Af9BFc265B998
   decimals: 18
+- name: iagon
+  id: iag-iagon
+  symbol: IAG
+  address: 0x40eb746dee876ac1e78697b7ca85142d178a1fc8
+  decimals: 18
