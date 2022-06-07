@@ -5,8 +5,7 @@ on:
 
 jobs:
   action:
-    runs-on: ubuntu-latest
-
+    runs-on: [self-hosted, linux]
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
@@ -45,3 +44,12 @@ jobs:
       - name: DBT document
         working-directory: ./spellbook
         run: "pipenv run dbt docs generate"
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1.6.1
+        with:
+          role-to-assume: arn:aws:iam::118330671040:role/core-ci
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Upload S3
+        run: aws s3 cp ./spellbook/target s3://spellbook-bucket/ --recursive
