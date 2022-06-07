@@ -176,6 +176,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\x430ef9263e76dae63c84292c3409d61c598e9682	PYR	18
 \\x7c28f627ea3aec8b882b51eb1935f66e5b875714	PAINT	18
 \\x8d1566569d5b695d44a9a234540f68d393cdc40d	GAME	18
+\\x264808855b0a6a5a318d238c6ee9f299179f27fc	SPACE	18
 \.
 
 
