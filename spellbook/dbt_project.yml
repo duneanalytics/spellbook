@@ -81,6 +81,7 @@ models:
         +schema: transfers_ethereum
         +materialized: view
 
+
 seeds:
   spellbook:
     balances:
