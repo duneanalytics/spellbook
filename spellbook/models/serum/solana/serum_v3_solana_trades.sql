@@ -9,7 +9,7 @@
 }}
 
 SELECT 
-  signatures[0] || id as unique_id,
+  signatures[0] as unique_id,
   'solana' as blockchain,
   'serum' as project, 
   'v3' as version,
