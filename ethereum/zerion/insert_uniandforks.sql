@@ -41,8 +41,10 @@ WITH uni_and_forks AS (
     , token_b_symbol AS sold_token_symbol
     , token_a_symbol AS bought_token_symbol
     FROM dex.trades
-    WHERE tx_hash IN (SELECT tx_hash FROM uni_and_forks)
-    AND tx_hash NOT IN (SELECT tx_hash FROM zerion.trades)
+    WHERE block_time >= start_ts
+    AND block_time < end_ts
+    AND tx_hash IN (SELECT tx_hash FROM uni_and_forks)
+    AND tx_hash NOT IN (SELECT tx_hash FROM zerion.trades WHERE block_time >= start_ts AND block_time < end_ts)
 
     ON CONFLICT DO NOTHING
     RETURNING 1
@@ -52,27 +54,40 @@ WITH uni_and_forks AS (
     END
     $function$;
 
--- fill 2022
+-- fill 2020
 SELECT zerion.insert_uniandforks(
     '2020-01-01',
-    NOW(),
+    '2021-01-01',
     (SELECT MAX(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
+    (SELECT MAX(number) FROM ethereum.blocks where time < '2021-01-01')
+)
+;
+
+fill 2021
+SELECT zerion.insert_uniandforks(
+    '2021-01-01',
+    '2022-01-01',
+    (SELECT MAX(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
+    (SELECT MAX(number) FROM ethereum.blocks where time < '2022-01-01')
+)
+;
+
+-- fill 2022
+SELECT zerion.insert_uniandforks(
+    '2022-01-01',
+    NOW(),
+    (SELECT MAX(number) FROM ethereum.blocks WHERE time < '2022-01-01'),
     (SELECT MAX(number) FROM ethereum.blocks where time < NOW() - interval '20 minutes')
 )
-WHERE NOT EXISTS (
-    SELECT *
-    FROM zerion.trades
-    WHERE block_time > '2020-01-01'
-    AND block_time <= NOW() - interval '20 minutes'
-);
+;
 
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('/15 * * * *', $$
     SELECT zerion.insert_uniandforks(
-        (SELECT MAX(block_time) - interval '6 hours' FROM zerion.insert_uniandforks),
+        (SELECT MAX(block_time) - interval '6 hours' FROM zerion.trades),
         (SELECT now() - interval '20 minutes'),
-        (SELECT MAX(number) FROM ethereum.blocks WHERE time < (SELECT MAX(block_time) - interval '6 hours' FROM zerion.insert_uniandforks)),
+        (SELECT MAX(number) FROM ethereum.blocks WHERE time < (SELECT MAX(block_time) - interval '6 hours' FROM zerion.trades)),
         (SELECT MAX(number) FROM ethereum.blocks where time < NOW() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
