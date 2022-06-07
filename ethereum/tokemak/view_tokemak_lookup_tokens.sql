@@ -181,5 +181,5 @@ CREATE UNIQUE INDEX ON tokemak.view_tokemak_lookup_tokens (
 );
 
 INSERT INTO cron.job(schedule, command)
-VALUES ('0 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_lookup_tokens$$)
+VALUES ('1 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_lookup_tokens$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
