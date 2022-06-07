@@ -64,3 +64,4 @@ jobs:
 
       - name: Upload S3
         run: aws s3 cp ./spellbook/target s3://prod-dbt-docs-118330671040/ --recursive
+
