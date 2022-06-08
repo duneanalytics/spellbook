@@ -17,7 +17,7 @@ Given a version number MAJOR.MINOR.PATCH, increment the:
 2. MINOR version when you add functionality in a backwards compatible manner, and
 3. PATCH version when you make backwards compatible bug fixes.
 
-`git tag -a vX-X-X -m &quot;some notes on the changes`
+`git tag -a vX-X-X -m "some notes on the changes"`
 
 Push your tag to github
 
