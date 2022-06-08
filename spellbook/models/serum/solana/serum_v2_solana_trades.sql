@@ -21,7 +21,21 @@ SELECT
   account_keys[0] as trader_a,
   cast(NULL as string) AS trader_b,
   'EUqojwWA2rd19FZrzeBncJsm38Jm1hEhE3zsmX3bRc2o' as exchange_contract_address,
-  id as trade_id
+  id as trade_id,
+  index,
+  account_keys,
+  block_hash, 
+  block_slot,
+  error,
+  fee,
+  instructions,
+  log_messages,
+  readonly_signed_accounts,
+  readonly_unsigned_accounts,
+  recent_block_hash,
+  required_signatures,
+  signatures,
+  signer
 FROM {{ source('solana','transactions') }}
 LEFT JOIN {{ ref('serum_solana_pairs') }} srmprs ON array_contains(account_keys,srmprs.account_key)
 LEFT JOIN {{ source('prices', 'usd') }} p 
