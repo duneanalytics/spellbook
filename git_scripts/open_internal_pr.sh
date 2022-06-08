@@ -1,4 +1,5 @@
 #!/bin/bash
+### For Dune employees.
 ### This script fetches a branch from a forked repo, opens a new internal branch, and opens a pull request
 ### Example usage:
 ### To open a pull request from 0xbitfly from their master branch
