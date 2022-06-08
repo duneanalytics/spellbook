@@ -83,7 +83,7 @@ SELECT zerion.insert_uniandforks(
 
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('/15 * * * *', $$
+VALUES ('*/15 * * * *', $$
     SELECT zerion.insert_uniandforks(
         (SELECT MAX(block_time) - interval '6 hours' FROM zerion.trades),
         (SELECT now() - interval '20 minutes'),
