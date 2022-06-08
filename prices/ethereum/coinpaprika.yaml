@@ -2121,3 +2121,7 @@
   symbol: IAG
   address: 0x40eb746dee876ac1e78697b7ca85142d178a1fc8
   decimals: 18
+- name: avax_avalanche
+  id: avax-avalanche
+  symbol: AVAX
+  
