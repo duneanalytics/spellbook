@@ -5,6 +5,11 @@
 ### run the following command from your terminal in the abstractions repo
 ### sh open_internal_pr.sh 0xbitfly master
 
+### If you run into an error that looks like:
+### fatal: The upstream branch of your current branch does not match
+### the name of your current branch.  To push to the upstream branch
+### on the remote, use...
+### Run `git branch --unset-upstream` from your terminal
 
 ### Print total arguments and their values
 echo "Total Arguments:" $#
