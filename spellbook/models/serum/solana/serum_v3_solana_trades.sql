@@ -9,7 +9,7 @@
 }}
 
 SELECT 
-  signatures[0] || id || fee::string as unique_id,
+  instructions as unique_id,
   'solana' as blockchain,
   'serum' as project, 
   'v3' as version,
