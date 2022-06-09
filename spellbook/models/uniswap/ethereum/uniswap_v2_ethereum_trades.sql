@@ -1,11 +1,7 @@
  {{
   config(
-        schema = 'uniswap_v2', 
-        alias='trades',
-        materialized ='incremental',
-        file_format ='delta',
-        incremental_strategy='merge',
-        unique_key='unique_id'
+        schema = 'uniswap_v2_ethereum', 
+        alias='trades'
   )
 }}
 

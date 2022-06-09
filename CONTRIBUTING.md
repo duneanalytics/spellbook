@@ -47,7 +47,7 @@ Using refs and sources is important because it allows us to build a dependency t
 
 To test your queries on dune, run `dbt compile` and copy the compiled SQL from the target folder which will mirror the directory structure of the rest of the project. 
 You can then test the query with compiled JINJA directly on `dune.com`.
-Important: The target defined when you ran `dbt init` has to be set to `wizards`, otherwise the SQL rendered by dbt compile will have a target attached to it and won't be able to integrate with existing models.
+Important: The target defined when you ran `dbt init` has to be set to `wizard`, otherwise the SQL rendered by dbt compile will have a target attached to it and won't be able to integrate with existing models.
 
 You can add generic tests to your model in the directory's schema.yml file. These tests are compiled as SQL on runtime. If you want, you can test them yourself with a little work. We recommend wrapping your model as a CTE and running what the SQL would compile to if you need to debug.
 ```sql
