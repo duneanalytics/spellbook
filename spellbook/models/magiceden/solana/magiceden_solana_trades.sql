@@ -1,10 +1,6 @@
  {{
   config(
-        alias='trades',
-        materialized ='incremental',
-        file_format ='delta',
-        incremental_strategy='merge',
-        unique_key='unique_id'
+        alias='trades'
   )
 }}
 

@@ -1,9 +1,5 @@
 {{config(schema = 'uniswap_v3_ethereum', 
-        alias='trades',
-        materialized ='incremental',
-        file_format ='delta',
-        incremental_strategy='merge',
-        unique_key='unique_id')
+        alias='trades')
 }}
         
 SELECT
