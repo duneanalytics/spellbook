@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW opensea.view_seaport_trades AS
+CREATE OR REPLACE VIEW opensea.view_seaport_transactions AS
 with iv_transfer_level as (
     select 'normal' as main_type
           ,'offer' as sub_type
@@ -195,10 +195,10 @@ with iv_transfer_level as (
           ,a.fee_amount / 10^p2.decimals as fee_amount
           ,a.fee_amount / 10^p2.decimals * p2.price as fee_usd_amount
           ,a.zone as zone_address
-          ,case when spc1.call_tx_hash is not null then 'Dutch Auction'
-                when spc2.call_tx_hash is not null and (spc2.parameters->>'basicOrderType')::integer between 16 and 23 then 'English Auction'
+          ,case when spc1.call_tx_hash is not null then 'Auction'
+                when spc2.call_tx_hash is not null and (spc2.parameters->>'basicOrderType')::integer between 16 and 23 then 'Auction'
                 when spc2.call_tx_hash is not null and (spc2.parameters->>'basicOrderType')::integer between 0 and 7 then 'Buy Now'
-                when spc2.call_tx_hash is not null then 'Normal'
+                when spc2.call_tx_hash is not null then 'Buy Now'
                 when spc3.call_tx_hash is not null and (spc3."advancedOrder" -> 'parameters' -> 'consideration' -> 0 ->> 'identifierOrCriteria') > '0' then 'Trait Offer'
                 when spc3.call_tx_hash is not null then 'Collection Offer'
                 else 'Private Sales'
