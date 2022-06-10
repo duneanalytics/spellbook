@@ -1,4 +1,5 @@
 CREATE TABLE IF NOT EXISTS aave.interest (   
+    version text, 
     day timestamptz,
     symbol text,
     reserve bytea,
@@ -18,6 +19,7 @@ DECLARE r integer;
 BEGIN
 WITH rows AS (
     INSERT INTO aave.interest (
+    version,
     day,
     symbol,
     reserve,
@@ -29,7 +31,7 @@ WITH rows AS (
     daily_variable_borrow_apr
     )
     ((SELECT
-    
+    '2' AS version,
     day,
     symbol,
     reserve,
@@ -80,7 +82,7 @@ AND gs.day < day.next_day
 LEFT JOIN (
     SELECT 
         contract_address, 
-        tokens.decimals,
+        decimals,
         CASE WHEN (symbol = 'ETH'::text) THEN 'WETH'::text ELSE symbol
         END AS "symbol"
     FROM erc20.tokens
