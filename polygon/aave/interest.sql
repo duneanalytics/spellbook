@@ -2,14 +2,14 @@ CREATE TABLE IF NOT EXISTS aave.interest (
     day timestamptz,
     version text,
     symbol text,
-    reserve bytea,
+    token bytea,
     deposit_apy numeric,
     stable_borrow_apy numeric,
     variable_borrow_apy numeric,
     daily_deposit_apr numeric,
     daily_stable_borrow_apr numeric,
     daily_variable_borrow_apr numeric,
-    PRIMARY KEY (version, reserve, day)
+    PRIMARY KEY (version, token, day)
     
 );
 
@@ -23,7 +23,7 @@ WITH rows AS (
     day,
     version,
     symbol,
-    reserve,
+    token,
     deposit_apy,
     stable_borrow_apy,
     variable_borrow_apy,
@@ -36,7 +36,7 @@ WITH rows AS (
     day,
     version,
     symbol,
-    reserve,
+    token,
     deposit_apy,
     stable_borrow_apy,
     variable_borrow_apy,
@@ -47,7 +47,7 @@ FROM (
 SELECT 
     gs.day,
     version,
-    reserve,
+    reserve AS token,
     deposit_apy,
     stable_borrow_apy,
     variable_borrow_apy,
@@ -102,7 +102,7 @@ LEFT JOIN (
         END AS "symbol"
     FROM erc20.tokens
 ) erc20tokens
-ON i.reserve = erc20tokens.contract_address
+ON i.token = erc20tokens.contract_address
     
     ))
     ON CONFLICT DO NOTHING
