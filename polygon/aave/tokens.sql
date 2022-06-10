@@ -1,13 +1,13 @@
 CREATE TABLE IF NOT EXISTS aave.tokens (   
     version text,
     symbol  text,
-    contract_address bytea,
-    "aToken" bytea,
-    "stableDebtToken" bytea,
-    "variableDebtToken" bytea,
+    token bytea,
+    a_token bytea,
+    stable_debt_token bytea,
+    variable_debt_token bytea,
     decimals numeric,
-    PRIMARY KEY (version, contract_address),
-    UNIQUE (version, contract_address)
+    PRIMARY KEY (version, token),
+    UNIQUE (version, token)
     
 );
 
@@ -19,24 +19,24 @@ WITH rows AS (
     INSERT INTO aave.tokens (
     version,
     symbol,
-    contract_address,
-    "aToken",
-    "stableDebtToken",
-    "variableDebtToken",
+    token,
+    a_token,
+    stable_debt_token,
+    variable_debt_token,
     decimals
     )
     ((SELECT
     version,
     symbol,
-    pools.contract_address,
-    "aToken",
-    "stableDebtToken",
-    "variableDebtToken",
+    pools.token,
+    "aToken" AS a_token,
+    "stableDebtToken" AS stable_debt_token,
+    "variableDebtToken" AS variable_debt_token,
     decimals
 FROM (
 SELECT 
     '2' AS version,
-    asset AS contract_address,
+    asset AS token,
     "aToken",
     "stableDebtToken",
     "variableDebtToken"
@@ -51,7 +51,7 @@ SELECT
 FROM aave_v3."PoolConfigurator_evt_ReserveInitialized"
 ) pools
 LEFT JOIN erc20.tokens erc20tokens
-ON pools.contract_address = erc20tokens.contract_address
+ON pools.token = erc20tokens.contract_address
 
     
     ))
