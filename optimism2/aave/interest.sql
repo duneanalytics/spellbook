@@ -1,14 +1,15 @@
 CREATE TABLE IF NOT EXISTS aave.interest (   
+    version text,
     day timestamptz,
     symbol text,
-    reserve bytea,
+    token bytea,
     deposit_apy numeric,
     stable_borrow_apy numeric,
     variable_borrow_apy numeric,
     daily_deposit_apr numeric,
     daily_stable_borrow_apr numeric,
     daily_variable_borrow_apr numeric,
-    PRIMARY KEY (reserve, day)
+    PRIMARY KEY (token, day)
     
 );
 
@@ -18,9 +19,10 @@ DECLARE r integer;
 BEGIN
 WITH rows AS (
     INSERT INTO aave.interest (
+    version,
     day,
     symbol,
-    reserve,
+    token,
     deposit_apy,
     stable_borrow_apy,
     variable_borrow_apy,
@@ -29,10 +31,10 @@ WITH rows AS (
     daily_variable_borrow_apr
     )
     ((SELECT
-    
+    '3' AS version,
     day,
     symbol,
-    reserve,
+    reserve AS token,
     deposit_apy,
     stable_borrow_apy,
     variable_borrow_apy,
@@ -81,7 +83,8 @@ LEFT JOIN (
     SELECT 
         contract_address, 
         tokens.decimals,
-        CASE WHEN (symbol = 'ETH'::text) THEN 'WETH'::text ELSE symbol
+        CASE 
+		WHEN (symbol = 'ETH'::text) THEN 'WETH'::text ELSE symbol
         END AS "symbol"
     FROM erc20.tokens
 ) erc20tokens
