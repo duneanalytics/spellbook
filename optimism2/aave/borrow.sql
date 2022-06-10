@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS aave.borrow (
     transaction_type text,
     loan_type text,
     symbol text,
-    contract_address bytea,
+    token bytea,
     borrower bytea,
     repayer bytea,
     liquidator bytea,
@@ -26,7 +26,7 @@ WITH rows AS (
       transaction_type,
       loan_type,
       symbol,
-      contract_address,
+      token,
       borrower,
       repayer,
       liquidator,
@@ -43,7 +43,7 @@ WITH rows AS (
       transaction_type,
       loan_type,
       erc20.symbol,
-      borrow.contract_address,
+      borrow.token,
       borrower,
       repayer,
       liquidator,
@@ -60,12 +60,12 @@ SELECT
     '3' AS version,
     'borrow' AS transaction_type,
     CASE 
-    WHEN "interestRateMode" = '1' THEN 'stable'
-    WHEN "interestRateMode" = '2' THEN 'variable'
+        WHEN "interestRateMode" = '1' THEN 'stable'
+        WHEN "interestRateMode" = '2' THEN 'variable'
     END AS loan_type,
-    reserve AS contract_address,
+    reserve AS token,
     "user" AS borrower,
-     NULL::bytea as repayer,
+    NULL::bytea AS repayer,
     NULL::bytea AS liquidator,
     amount,
     evt_tx_hash,
@@ -79,7 +79,7 @@ SELECT
     '3' AS version,
     'repay' AS transaction_type,
     NULL AS loan_type,
-    reserve AS contract_address,
+    reserve AS token,
     "user" AS borrower,
     repayer AS repayer,
     NULL::bytea AS liquidator,
@@ -92,10 +92,10 @@ FROM aave_v3."Pool_evt_Repay"
 UNION ALL 
 -- liquidation
 SELECT 
-    '2' AS version,
+    '3' AS version,
     'borrow_liquidation' AS transaction_type,
     NULL AS loan_type,
-    "debtAsset" AS contract_address,
+    "debtAsset" AS token,
     "user" AS borrower,
     liquidator AS repayer,
     liquidator AS liquidator,
@@ -107,10 +107,10 @@ SELECT
 FROM aave_v3."Pool_evt_LiquidationCall"
 ) borrow
 LEFT JOIN erc20."tokens" erc20
-    ON borrow.contract_address = erc20.contract_address
+    ON borrow.token = erc20.contract_address
 LEFT JOIN prices."approx_prices_from_dex_data" p
     ON p.hour = date_trunc('hour', borrow.evt_block_time) 
-    AND p.contract_address = borrow.contract_address
+    AND p.contract_address = borrow.token
 WHERE borrow.evt_block_time >= start_ts
 AND borrow.evt_block_time < end_ts
 AND borrow.evt_block_number >= start_block
