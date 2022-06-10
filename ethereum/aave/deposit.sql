@@ -2,9 +2,10 @@ CREATE TABLE IF NOT EXISTS aave.deposit (
     version text,
     transaction_type text,
     symbol text,
+    token bytea,
     contract_address bytea,
-    borrower bytea,
-    "to" bytea,
+    depositor bytea,
+    withdrawn_to bytea,
     liquidator bytea,
     amount numeric,
     usd_amount numeric,
@@ -24,9 +25,10 @@ WITH rows AS (
       version,
       transaction_type,
       symbol,
+      token,
       contract_address,
-      borrower,
-      "to",
+      depositor,
+      withdrawn_to,
       liquidator,
       amount,
       usd_amount,
@@ -39,9 +41,10 @@ WITH rows AS (
      version,
       transaction_type,
       erc20.symbol,
-      deposit.contract_address,
-      borrower,
-      "to",
+      deposit.token,
+      erc20.contract_address,
+      depositor,
+      withdrawn_to,
       liquidator,
       amount / (10^erc20.decimals) AS amount,
       (amount/(10^p.decimals)) * price AS usd_amount,
@@ -56,11 +59,11 @@ SELECT
     '1' AS version,
     'deposit' AS transaction_type,
     CASE
-    WHEN _reserve = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
-    ELSE _reserve
-    END AS contract_address,
-    "_user" AS borrower, 
-    NULL::bytea as "to",
+        WHEN _reserve = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
+        ELSE _reserve
+    END AS token,
+    "_user" AS depositor, 
+    NULL::bytea as withdrawn_to,
     NULL::bytea AS liquidator,
     _amount AS amount,
     evt_tx_hash,
@@ -72,13 +75,13 @@ UNION ALL
 -- all withdrawals
 SELECT 
     '1' AS version,
-    'withdrawn' AS transaction_type,
+    'withdraw' AS transaction_type,
     CASE
-    WHEN _reserve = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
-    ELSE _reserve
-    END AS contract_address,
-    "_user" AS borrower,
-    "_user" AS "to",
+        WHEN _reserve = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
+        ELSE _reserve
+    END AS token,
+    "_user" AS depositor,
+    "_user" AS withdrawn_to,
     NULL::bytea AS liquidator,
     - _amount AS amount,
     evt_tx_hash,
@@ -92,11 +95,11 @@ SELECT
     '1' AS version,
     'deposit_liquidation' AS transaction_type,
     CASE
-    WHEN "_collateral" = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
-    ELSE "_collateral"
-    END AS contract_address,
-    "_user" AS borrower,
-    _liquidator AS "to",
+        WHEN "_collateral" = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
+        ELSE "_collateral"
+    END AS token,
+    "_user" AS depositor,
+    _liquidator AS withdrawn_to,
     _liquidator AS liquidator,
     - "_liquidatedCollateralAmount" AS amount,
     evt_tx_hash,
@@ -108,9 +111,9 @@ UNION ALL
 SELECT 
     '2' AS version,
     'deposit' AS transaction_type,
-    reserve AS contract_address,
-    "user" AS borrower, 
-    NULL::bytea as "to",
+    reserve AS token,
+    "user" AS depositor, 
+    NULL::bytea as withdrawn_to,
     NULL::bytea AS liquidator,
     amount, 
     evt_tx_hash,
@@ -122,10 +125,10 @@ UNION ALL
 -- all withdrawals
 SELECT 
     '2' AS version,
-    'withdrawn' AS transaction_type,
-    reserve AS contract_address,
-    "user" AS borrower,
-    "to" AS "to",
+    'withdraw' AS transaction_type,
+    reserve AS token,
+    "user" AS depositor,
+    "to" AS withdrawn_to,
     NULL::bytea AS liquidator,
     - amount AS amount,
     evt_tx_hash,
@@ -138,9 +141,9 @@ UNION ALL
 SELECT 
     '2' AS version,
     'deposit_liquidation' AS transaction_type,
-    "collateralAsset" AS contract_address,
-    "user" AS borrower,
-    liquidator AS "to",
+    "collateralAsset" AS token,
+    "user" AS depositor,
+    liquidator AS withdrawn_to,
     liquidator AS liquidator,
     - "liquidatedCollateralAmount" AS amount,
     evt_tx_hash,
@@ -150,10 +153,10 @@ SELECT
 FROM aave_v2."LendingPool_evt_LiquidationCall"
 ) deposit
 LEFT JOIN erc20."tokens" erc20
-    ON deposit.contract_address = erc20.contract_address
+    ON deposit.token = erc20.contract_address
 LEFT JOIN prices.usd p 
     ON p.minute = date_trunc('minute', deposit.evt_block_time) 
-    AND p.contract_address = deposit.contract_address
+    AND p.contract_address = deposit.token
 WHERE deposit.evt_block_time >= start_ts
 AND deposit.evt_block_time < end_ts
 AND deposit.evt_block_number >= start_block
