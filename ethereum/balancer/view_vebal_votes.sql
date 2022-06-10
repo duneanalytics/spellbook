@@ -76,7 +76,6 @@ WITH calendar AS (
         ON v.round_id <= r.round_id
         AND r.round_id < v.next_round
         AND r.end_timestamp <= v.unlocked_at
-        AND v.weight > 0
     )
 
 SELECT

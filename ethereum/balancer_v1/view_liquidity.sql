@@ -58,7 +58,7 @@ CREATE MATERIALIZED VIEW balancer_v1.view_liquidity AS (
             1,
             2
         HAVING
-            SUM(sample_size) > 3
+            SUM(sample_size) > 5
             AND AVG(median_price) < 1e8
     ),
     dex_prices AS (
