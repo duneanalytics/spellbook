@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS aave.borrow (
     transaction_type text,
     loan_type text,
     symbol text,
+    token bytea,
     contract_address bytea,
     borrower bytea,
     repayer bytea,
@@ -26,6 +27,7 @@ WITH rows AS (
       transaction_type,
       loan_type,
       symbol,
+      token,
       contract_address,
       borrower,
       repayer,
@@ -43,7 +45,8 @@ WITH rows AS (
       transaction_type,
       loan_type,
       erc20.symbol,
-      borrow.contract_address,
+      borrow.token,
+      erc20.contract_address,
       borrower,
       repayer,
       liquidator,
@@ -61,15 +64,15 @@ SELECT
     '1' AS version,
     'borrow' AS transaction_type,
     CASE 
-    WHEN "_borrowRateMode" = '1' THEN 'stable'
-    WHEN "_borrowRateMode" = '2' THEN 'variable'
+        WHEN "_borrowRateMode" = '1' THEN 'stable'
+        WHEN "_borrowRateMode" = '2' THEN 'variable'
     END AS loan_type,
     CASE
-    WHEN _reserve = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' --Use WETH instead of Aave "mock" address
-    ELSE _reserve
-    END AS contract_address,
+        WHEN _reserve = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' --Use WETH instead of Aave "mock" address
+        ELSE _reserve
+    END AS token,
     "_user" AS borrower,
-     NULL::bytea as repayer,
+    NULL::bytea AS repayer,
     NULL::bytea AS liquidator,
     _amount AS amount, 
     evt_tx_hash,
@@ -84,9 +87,9 @@ SELECT
     'repay' AS transaction_type,
     NULL AS loan_type,
     CASE
-    WHEN _reserve = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
-    ELSE _reserve
-    END AS contract_address,
+        WHEN _reserve = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
+        ELSE _reserve
+    END AS token,
     "_user" AS borrower,
     "_repayer" AS repayer,
     NULL::bytea AS liquidator,
@@ -99,13 +102,13 @@ FROM aave."LendingPool_evt_Repay"
 UNION ALL 
 -- liquidation
 SELECT 
-    '2' AS version,
+    '1' AS version,
     'borrow_liquidation' AS transaction_type,
     NULL AS loan_type,
     CASE
-    WHEN _reserve = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
-    ELSE _reserve
-    END AS contract_address,
+        WHEN _reserve = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
+        ELSE _reserve
+    END AS token,
     "_user" AS borrower,
     _liquidator AS repayer,
     _liquidator AS liquidator,
@@ -120,12 +123,12 @@ SELECT
     '2' AS version,
     'borrow' AS transaction_type,
     CASE 
-    WHEN "borrowRateMode" = '1' THEN 'stable'
-    WHEN "borrowRateMode" = '2' THEN 'variable'
+        WHEN "borrowRateMode" = '1' THEN 'stable'
+        WHEN "borrowRateMode" = '2' THEN 'variable'
     END AS loan_type,
-    reserve AS contract_address,
+    reserve AS token,
     "user" AS borrower, 
-     NULL::bytea as repayer,
+    NULL::bytea AS repayer,
     NULL::bytea AS liquidator,
     amount, 
     evt_tx_hash,
@@ -139,7 +142,7 @@ SELECT
     '2' AS version,
     'repay' AS transaction_type,
     NULL AS loan_type,
-    reserve AS contract_address,
+    reserve AS token,
     "user" AS borrower,
     repayer AS repayer,
     NULL::bytea AS liquidator,
@@ -155,7 +158,7 @@ SELECT
     '2' AS version,
     'borrow_liquidation' AS transaction_type,
     NULL AS loan_type,
-    "debtAsset" AS contract_address,
+    "debtAsset" AS token,
     "user" AS borrower,
     liquidator AS repayer,
     liquidator AS liquidator,
@@ -167,10 +170,10 @@ SELECT
 FROM aave_v2."LendingPool_evt_LiquidationCall"
 ) borrow
 LEFT JOIN erc20."tokens" erc20
-    ON borrow.contract_address = erc20.contract_address
+    ON borrow.token = erc20.contract_address
 LEFT JOIN prices.usd p 
     ON p.minute = date_trunc('minute', borrow.evt_block_time) 
-    AND p.contract_address = borrow.contract_address
+    AND p.contract_address = borrow.token
 WHERE borrow.evt_block_time >= start_ts
 AND borrow.evt_block_time < end_ts
 AND borrow.evt_block_number >= start_block
