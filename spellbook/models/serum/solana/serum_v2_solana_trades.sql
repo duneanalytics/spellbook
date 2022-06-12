@@ -1,15 +1,10 @@
  {{
-  config(schema = 'serum_v2_solana',
-        alias='trades',
-        materialized ='incremental',
-        file_format ='delta',
-        incremental_strategy='merge',
-        unique_key='unique_id'
+  config(schema = 'serum_v2_solana', alias='trades'
   )
 }}
 
 SELECT 
-  instructions as unique_id,
+  signatures[0] || id || index::string as unique_trade_id,
   'solana' as blockchain,
   'serum' as project, 
   'v2' as version,
@@ -20,22 +15,7 @@ SELECT
   abs(post_balances[0] / 1e9 - pre_balances[0] / 1e9) * p.price AS amount_usd,
   account_keys[0] as trader_a,
   cast(NULL as string) AS trader_b,
-  'EUqojwWA2rd19FZrzeBncJsm38Jm1hEhE3zsmX3bRc2o' as exchange_contract_address,
-  id as trade_id,
-  index,
-  account_keys,
-  block_hash, 
-  block_slot,
-  error,
-  fee,
-  instructions,
-  log_messages,
-  readonly_signed_accounts,
-  readonly_unsigned_accounts,
-  recent_block_hash,
-  required_signatures,
-  signatures,
-  signer
+  'EUqojwWA2rd19FZrzeBncJsm38Jm1hEhE3zsmX3bRc2o' as exchange_contract_address
 FROM {{ source('solana','transactions') }}
 LEFT JOIN {{ ref('serum_solana_pairs') }} srmprs ON array_contains(account_keys,srmprs.account_key)
 LEFT JOIN {{ source('prices', 'usd') }} p 
