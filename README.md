@@ -1,12 +1,27 @@
 # spellbook
-![spellbook](https://user-images.githubusercontent.com/9472574/162809539-f60a5529-525b-4681-9e2e-22fa4498d0bc.jpeg)
+<img width="799" alt="Screen Shot 2022-05-28 at 7 54 26 AM" src="https://user-images.githubusercontent.com/9472574/170824402-9ab683b5-b04e-434f-b19e-6fb626d2d64f.png">
 
 Welcome to your [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation to tame the blockchain.
 
 ### Dune contributors using the project
-Follow instructions from [Databricks](https://docs.databricks.com/dev-tools/dbt.html) on how to set up dbt core until you reach the dbt init step. 
+Use the pipfile to create a pipenv.
+```
+cd spellbook/
+pipenv install
+```
 
-Enter `.` or other placeholders after running `dbt init`. This will not connect to the database but you have access to some dbt actions. When you are prompted to choose a target, please enter `wizard` so we know you are an external contributor.
+If the env is created successfully, enter the env shell. (If you run into Python version errors, try installing the matching version or editing the python version in the Pipfile but don't commit your change).
+```
+pipenv shell
+```
+
+Set up the dbt spellbook project. (You must run this step from the spellbook directory)
+Run `dbt init` and select Databricks, then enter `.` or other placeholders for the host, HTTP path, and token. This will not connect to the database but you have access to some dbt actions.
+
+When you are prompted to choose a target, please enter `wizard` so we know you are an external contributor.
+```
+dbt init
+```
 
 Then, run the following commands:
 
@@ -15,6 +30,8 @@ cd spellbook/
 dbt compile
 ```
 dbt compile will compile the JINJA and SQL templated SQL into plain SQL which can be executed in the Dune UI. We are thinking about better solutions to make more dbt actions available directly but also have to consider security. 
+
+https://user-images.githubusercontent.com/9472574/172207409-731a54a0-f1c2-4a57-93a7-6e7934567caa.mov
 
 ### How to use dbt to create abstractions
 

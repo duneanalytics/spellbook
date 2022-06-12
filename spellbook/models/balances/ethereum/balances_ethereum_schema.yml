@@ -16,7 +16,8 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain"
-      - name: hour
+      - &hour
+        name: hour
         description: "UTC event block time truncated to the hour mark"
       - &wallet_address
         name: wallet_address
@@ -50,7 +51,8 @@ models:
         Depends on erc20_ethereum_transfers.
     columns:
       - *blockchain
-      - name: day
+      - &day
+        name: day
         description: "UTC event block time truncated to the day mark"
       - *wallet_address
       - *token_address
@@ -73,7 +75,8 @@ models:
         Depends on erc20_ethereum_transfers.
     columns:
       - *blockchain
-      - name: last_updated
+      - &last_updated
+        name: last_updated
         description: "UTC timestamp when data was last updated"
       - *wallet_address
       - *token_address
@@ -100,3 +103,64 @@ models:
     columns:
       - name: token_address
         description: "Token Address for possibly non-compliant erc20 token"
+
+
+  - name: balances_ethereum_erc721_day
+    meta:
+      blockchain: ethereum
+      sector: balances
+      project: erc721
+      contibutors: soispoke, dot2dotseurat, hildobby
+    config:
+      tags: ['balances', 'ethereum', 'erc721', 'day', 'soispoke', 'dot2dotseurat', 'hildobby']
+    description: >
+        Daily token balances of ERC721 Ethereum tokens per wallet and contract address pair.
+        Depends on erc721_ethereum_transfers.
+    columns:
+      - *blockchain
+      - *day
+      - &wallet_address_erc721
+        name: wallet_address
+        description: "Address of the wallet holding this ERC721 token"
+      - &token_address_erc721
+        name: token_address
+        description: "Contract address for the ERC721 token"
+      - &tokenId
+        name: tokenId
+        description: "ID of this ERC721 token"
+
+  - name: balances_ethereum_erc721_hour
+    meta:
+      blockchain: ethereum
+      sector: balances
+      project: erc721
+      contibutors: soispoke, dot2dotseurat, hildobby
+    config:
+      tags: ['balances', 'ethereum', 'erc721', 'hour', 'soispoke', 'dot2dotseurat', 'hildobby']
+    description: >
+        Hourly token balances of ERC721 Ethereum tokens per wallet and contract address pair.
+        Depends on erc721_ethereum_transfers.
+    columns:
+      - *blockchain
+      - *hour
+      - *wallet_address_erc721
+      - *token_address_erc721
+      - *tokenId
+
+  - name: balances_ethereum_erc721_latest
+    meta:
+      blockchain: ethereum
+      sector: balances
+      project: erc721
+      contibutors: soispoke, dot2dotseurat, hildobby
+    config:
+      tags: ['balances', 'ethereum', 'erc721', 'latest', 'soispoke', 'dot2dotseurat', 'hildobby']
+    description: >
+        Latest token balances of ERC721 Ethereum tokens per wallet and contract address pair.
+        Depends on erc721_ethereum_transfers.
+    columns:
+      - *blockchain
+      - *last_updated
+      - *wallet_address
+      - *token_address
+      - *tokenId
