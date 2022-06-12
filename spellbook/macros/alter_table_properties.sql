@@ -28,35 +28,8 @@ ALTER VIEW balances_ethereum.erc20_latest SET TBLPROPERTIES('dune.public'='true'
                                                     'dune.data_explorer.contributors'='["soispoke","dot2dotseurat"]');
 {% endset %}
 
-{% set balances_ethereum_erc721_day %}
-ALTER VIEW balances_ethereum.erc721_day SET TBLPROPERTIES('dune.public'='true',
-                                                    'dune.data_explorer.blockchains'='["ethereum"]',
-                                                    'dune.data_explorer.category'='abstraction',
-                                                    'dune.data_explorer.abstraction.type'='sector',
-                                                    'dune.data_explorer.abstraction.name'='balances',
-                                                    'dune.data_explorer.contributors'='["hildobby","soispoke","dot2dotseurat"]');
-{% endset %}
-
-{% set balances_ethereum_erc721_hour %}
-ALTER VIEW balances_ethereum.erc721_hour SET TBLPROPERTIES('dune.public'='true',
-                                                    'dune.data_explorer.blockchains'='["ethereum"]',
-                                                    'dune.data_explorer.category'='abstraction',
-                                                    'dune.data_explorer.abstraction.type'='sector',
-                                                    'dune.data_explorer.abstraction.name'='balances',
-                                                    'dune.data_explorer.contributors'='["hildobby","soispoke","dot2dotseurat"]');
-{% endset %}
-
-{% set balances_ethereum_erc721_latest %}
-ALTER VIEW balances_ethereum.erc721_latest SET TBLPROPERTIES('dune.public'='true',
-                                                    'dune.data_explorer.blockchains'='["ethereum"]',
-                                                    'dune.data_explorer.category'='abstraction',
-                                                    'dune.data_explorer.abstraction.type'='sector',
-                                                    'dune.data_explorer.abstraction.name'='balances',
-                                                    'dune.data_explorer.contributors'='["hildobby","soispoke","dot2dotseurat"]');
-{% endset %}
-
 {% set magiceden_trades %}
-ALTER VIEW magiceden.trades SET TBLPROPERTIES('dune.public'='true',
+ALTER TABLE magiceden.trades SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["solana"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='project',
@@ -65,7 +38,7 @@ ALTER VIEW magiceden.trades SET TBLPROPERTIES('dune.public'='true',
 {% endset %}
 
 {% set nft_trades %}
-ALTER VIEW nft.trades SET TBLPROPERTIES('dune.public'='true',
+ALTER TABLE nft.trades SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum","solana"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='sector',
@@ -83,7 +56,7 @@ ALTER VIEW opensea.active_traders_day SET TBLPROPERTIES('dune.public'='true',
 {% endset %}
 
 {% set opensea_trades %}
-ALTER VIEW opensea.trades SET TBLPROPERTIES('dune.public'='true',
+ALTER TABLE opensea.trades SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum","solana"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='project',
@@ -137,7 +110,7 @@ ALTER VIEW tokens_ethereum.nft SET TBLPROPERTIES('dune.public'='true',
 {% endset %}
 
 {% set uniswap_ethereum_trades %}
-ALTER VIEW uniswap_ethereum.trades SET TBLPROPERTIES('dune.public'='true',
+ALTER TABLE uniswap_ethereum.trades SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='project',
@@ -145,12 +118,8 @@ ALTER VIEW uniswap_ethereum.trades SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["soispoke"]');
 {% endset %}
 
-{% do run_query(balances_ethereum_erc20_day) %}
 {% do run_query(balances_ethereum_erc20_hour) %}
 {% do run_query(balances_ethereum_erc20_latest) %}
-{% do run_query(balances_ethereum_erc721_day) %}
-{% do run_query(balances_ethereum_erc721_hour) %}
-{% do run_query(balances_ethereum_erc721_latest) %}
 {% do run_query(magiceden_trades) %}
 {% do run_query(nft_trades) %}
 {% do run_query(opensea_active_traders_day) %}
