@@ -554,3 +554,8 @@
   id: loot-lootex-token
   name: LOOT Token
   symbol: LOOT
+- address: '0xeca41281c24451168a37211f0bc2b8645af45092'
+  decimals: 4
+  id: tpt-token-pocket
+  name: TokenPocket Token
+  symbol: TPT
