@@ -1,3 +1,5 @@
+CREATE SCHEMA IF NOT EXISTS anyswap;
+
 CREATE OR REPLACE VIEW anyswap.view_anytokens (symbol, contract_address, decimals, name, underlying_token_address, underlying_symbol, underlying_decimals) AS VALUES
     ('anyURUS'::text, '\xb2c7a198be3345d554043f6b875e254cb2034219'::bytea, 18::numeric, 'Aurox Token'::text, '\xc6dddb5bc6e61e0841c54f3e723ae1f3a807260b'::bytea, 'URUS'::text, 18::numeric),
     ('anySALE'::text, '\xb969792e669b92e2e6d33441a0c6caf3aee1d01d'::bytea, 18::numeric, 'DxSale.Network'::text, '\x04f73a09e2eb410205be256054794fb452f0d245'::bytea, 'SALE'::text, 18::numeric),
