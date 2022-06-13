@@ -66,17 +66,23 @@ END
 $function$;
 
 -- Get the table started
-SELECT aave.insert_aave_daily_interest_rates(DATE_TRUNC('day','2021-04-13'::timestamptz),DATE_TRUNC('day',NOW()) )
-WHERE NOT EXISTS (
-    SELECT *
-    FROM aave.aave_daily_interest_rates
-);
+SELECT aave.insert_aave_daily_interest_rates(
+    '2021-04-13'
+    ,'2022-01-01'
+    )
+;
+
+-- Get the table started
+SELECT aave.insert_aave_daily_interest_rates(
+    '2022-01-01'
+    ,NOW() 
+    )
+;
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('14,44 * * * *', $$
     SELECT aave.insert_aave_daily_interest_rates(
-        (SELECT DATE_TRUNC('day',NOW()) - interval '3 days'),
-        (SELECT DATE_TRUNC('day',NOW()) );
-	
+        (SELECT NOW() - interval '3 days'),
+        (SELECT NOW());
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
