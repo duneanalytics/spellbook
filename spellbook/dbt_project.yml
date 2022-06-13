@@ -99,7 +99,7 @@ seeds:
         +schema: test_data
         opensea_ethereum_trades_postgres:
           +column_types:
-            evt_block_times: timestamp
+            evt_block_time: timestamp
             evt_tx_hash: string
             price: string
       solana:
