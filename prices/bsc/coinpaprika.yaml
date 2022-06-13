@@ -559,3 +559,8 @@
   id: xct-citadelone
   name: Citadel.one
   symbol: XCT
+- address: '0xeca41281c24451168a37211f0bc2b8645af45092'
+  decimals: 4
+  id: tpt-token-pocket
+  name: TokenPocket Token
+  symbol: TPT
