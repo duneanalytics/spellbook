@@ -1,5 +1,6 @@
 -- welcome to the commented version of the Seaport data abstraction on the Dune legacy.
 -- this first section pulls data from seaport."Seaport_evt_OrderFulfilled", which shows all successful transactions that occur on Seaport
+create schema if not exists seaport;
 
 create or replace view seaport.view_transactions 
 AS
@@ -294,3 +295,4 @@ select block_time -- time in UTC at which the block containing the transaction w
       ,fee_usd_amount -- fee amount in USD
       ,zone_address -- A zone is an account (usually a contract) that performs additional validation prior to fulfillment, and that can cancel the listing on behalf of the offerer. We'll use this to select for OpenSea transactions on Seaport.
   from iv_nft_trades
+;
