@@ -120,17 +120,31 @@ END
 $function$;
 
 -- Get the table started
+SELECT aave.insert_aave_daily_atoken_balances(
+	'2021-04-13'
+	,'2022-01-01'
+	)
+;
+
+-- Get the table started
+SELECT aave.insert_aave_daily_atoken_balances(
+	'2022-01-01'
+	,NOW()
+	)
+;
+
+
 SELECT aave.insert_aave_daily_atoken_balances(DATE_TRUNC('day','2021-04-13'::timestamptz),DATE_TRUNC('day',NOW()) )
 WHERE NOT EXISTS (
     SELECT *
     FROM aave.aave_daily_atoken_balances
-);
+)
+;
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$
     SELECT aave.insert_aave_daily_atoken_balances(
-        (SELECT DATE_TRUNC('day',NOW()) - interval '3 days'),
-        (SELECT DATE_TRUNC('day',NOW()) );
-	
+        (SELECT NOW() - interval '3 days'),
+        (SELECT NOW());	
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
