@@ -71,6 +71,10 @@ SELECT
     AVG("stableBorrowRate" / 1e27) AS stable_borrow_apy,
     AVG("variableBorrowRate" /1e27) AS variable_borrow_apy
 FROM aave_v3."Pool_evt_ReserveDataUpdated"
+WHERE evt_block_time >= start_ts
+AND evt_block_time < end_ts
+AND evt_block_number >= start_block
+AND evt_block_number < end_block 
 GROUP BY 1, 2
 ) o
 ) day

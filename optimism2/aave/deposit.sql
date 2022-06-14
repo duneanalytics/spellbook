@@ -66,6 +66,10 @@ SELECT
     evt_block_time,
     evt_block_number
 FROM aave_v3."Pool_evt_Supply" 
+WHERE evt_block_time >= start_ts
+AND evt_block_time < end_ts
+AND evt_block_number >= start_block
+AND evt_block_number < end_block 
 UNION ALL 
 -- all withdrawals
 SELECT 
@@ -81,6 +85,10 @@ SELECT
     evt_block_time,
     evt_block_number
 FROM aave_v3."Pool_evt_Withdraw"
+WHERE evt_block_time >= start_ts
+AND evt_block_time < end_ts
+AND evt_block_number >= start_block
+AND evt_block_number < end_block 
 UNION ALL 
 -- liquidation
 SELECT 
@@ -96,17 +104,17 @@ SELECT
     evt_block_time,
     evt_block_number
 FROM aave_v3."Pool_evt_LiquidationCall"
+WHERE evt_block_time >= start_ts
+AND evt_block_time < end_ts
+AND evt_block_number >= start_block
+AND evt_block_number < end_block 
 ) deposit
 LEFT JOIN erc20."tokens" erc20
     ON deposit.token = erc20.contract_address
 LEFT JOIN prices."approx_prices_from_dex_data" p
     ON p.hour = date_trunc('hour', deposit.evt_block_time) 
     AND p.contract_address = deposit.token
-WHERE deposit.evt_block_time >= start_ts
-AND deposit.evt_block_time < end_ts
-AND deposit.evt_block_number >= start_block
-AND deposit.evt_block_number < end_block 
-    ))
+))
     ON CONFLICT DO NOTHING
     RETURNING 1
 )
