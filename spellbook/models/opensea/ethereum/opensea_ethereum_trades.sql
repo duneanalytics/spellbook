@@ -9,7 +9,7 @@
 }}
 
 SELECT
-evt_tx_hash || evt_index::string as unique_id,
+evt_tx_hash || evt_index::string as unique_trade_id,
 'ethereum' as blockchain,
 evt_tx_hash as tx_hash,
 evt_block_time as block_time,
@@ -19,8 +19,7 @@ om.price AS amount_raw,
 terc20.symbol as token_symbol,
 wam.token_address as token_address,
 maker,
-taker,
-evt_index as trade_id
+taker
 FROM
   {{ source('opensea_ethereum','wyvernexchange_evt_ordersmatched') }} om
   LEFT JOIN {{ ref('opensea_ethereum_wyvern_atomic_match') }} wam ON wam.tx_hash = om.evt_tx_hash
@@ -36,7 +35,3 @@ FROM
     FROM
       {{ ref('opensea_ethereum_excluded_txns') }}
   )
-  {% if is_incremental() %}
-  -- this filter will only be applied on an incremental run
-  AND evt_block_time > now() - interval 2 days
-  {% endif %} 
