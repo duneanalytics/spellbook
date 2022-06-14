@@ -29,6 +29,7 @@
 - id: algorand
 - id: aloha
 - id: amber
+- id: apecoin
 - id: apwine
 - id: apy-vision
 - id: arianee
@@ -38,6 +39,7 @@
 - id: atari
 - id: augury-finance
 - id: auroratoken
+- id: axie-infinity
 - id: azuki
 - id: baby-matic
 - id: balancer
@@ -175,6 +177,7 @@
 - id: loser-coin
 - id: l-pesa
 - id: mahadao
+- id: maker
 - id: mantra-dao
 - id: mask-network
 - id: matic-aave-aave

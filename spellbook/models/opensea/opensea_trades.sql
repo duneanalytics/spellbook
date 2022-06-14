@@ -15,3 +15,4 @@ SELECT blockchain, tx_hash, block_time, amount_usd, amount, token_symbol, token_
 -- this filter will only be applied on an incremental run
 WHERE block_time > now() - interval 2 days
 {% endif %} 
+
