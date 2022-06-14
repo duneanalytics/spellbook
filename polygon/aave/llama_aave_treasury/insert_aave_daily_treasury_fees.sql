@@ -5,7 +5,7 @@ DECLARE r integer;
 	end_time_day timestamptz := DATE_TRUNC('day',end_time) + interval '1 day'; --since we trunc to day
 BEGIN
 WITH rows AS (
-    INSERT INTO aave.aave_daily_treasury_fees (
+    INSERT INTO aave.aave_treasury_fees_by_day (
 	day,
 	contract_address,
 	borrow_fees_originated,
@@ -88,17 +88,17 @@ END
 $function$;
 
 -- Get the table started
-SELECT aave.insert_aave_treasury_daily_treasury_fees(DATE_TRUNC('day','2019-01-01'::timestamptz),DATE_TRUNC('day',NOW()) )
-WHERE NOT EXISTS (
-    SELECT *
-    FROM aave.aave_daily_treasury_fees
-);
+SELECT aave.insert_aave_treasury_daily_treasury_fees(
+    '2019-01-01'
+    , NOW()
+    )
+;
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$
     SELECT aave.insert_aave_treasury_daily_treasury_fees(
         (SELECT DATE_TRUNC('day',NOW()) - interval '3 days'),
-        (SELECT DATE_TRUNC('day',NOW()) );
+        (SELECT DATE_TRUNC('day',NOW()) ));
 	
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
