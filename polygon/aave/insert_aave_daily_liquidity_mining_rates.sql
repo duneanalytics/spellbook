@@ -29,17 +29,17 @@ WITH lm_updates AS (
 SELECT DATE_TRUNC('day',"minute") AS p_day, "contract_address", decimals, symbol, AVG(price) AS price --avg should be the best time-weighted way to approximate rates
     FROM prices.usd
     WHERE contract_address IN (SELECT at."underlying_token_address" FROM lm_updates l INNER JOIN aave."aave_tokens" at
-                                                                        ON l.asset = at."address"
+                                                                        ON l.asset = at."token_address"
                                 UNION ALL SELECT '\x7ceb23fd6bc0add59e62ac25578270cff1b9f619'::bytea --WMATIC
                                 )
-    AND "minute" >= '2021-04-13'::TIMESTAMP
+    AND "minute" >= start_time
     GROUP BY 1,2,3,4
     
 UNION ALL
 
 SELECT DATE_TRUNC('day',"minute") AS p_day, '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'::bytea AS "contract_address", 18 AS decimals, symbol, AVG(price) AS price --avg should be the best time-weighted way to approximate rates
     FROM  prices."layer1_usd"
-    WHERE "minute" >= '2021-04-13'::TIMESTAMP
+    WHERE "minute" >= start_time
     AND "symbol" = 'MATIC'
     GROUP BY 1,2,3,4
 )
@@ -67,7 +67,7 @@ FROM
 aave.aave_daily_atoken_balances atb 
 
 INNER JOIN aave."aave_tokens" at
-ON atb.token_address = at."address"
+ON atb.token_address = at."token_address"
 
 INNER JOIN lm_updates i
 ON i.asset = atb.token_address --get the lm rate on the day
@@ -105,15 +105,22 @@ END
 $function$;
 
 -- Get the table started
-SELECT aave.aave_daily_liquidity_mining_rates(DATE_TRUNC('day','2020-01-24'::timestamptz),DATE_TRUNC('day',NOW()) )
-WHERE NOT EXISTS (
-    SELECT *
-    FROM aave.aave_daily_liquidity_mining_rates
-);
+SELECT aave.insert_aave_daily_liquidity_mining_rates(
+    DATE_TRUNC('day','2020-01-24'::timestamptz)
+    ,DATE_TRUNC('day','2022-01-01'::timestamptz)
+    )
+;
+
+-- Get the table started
+SELECT aave.insert_aave_daily_liquidity_mining_rates(
+    DATE_TRUNC('day','2022-01-01'::timestamptz)
+    ,DATE_TRUNC('day',NOW())
+    )
+;
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('16,46 * * * *', $$
-    SELECT aave.insert_aave_daily_atoken_balances(
+    SELECT aave.insert_aave_daily_liquidity_mining_rates(
         (SELECT DATE_TRUNC('day',NOW()) - interval '3 days'),
         (SELECT DATE_TRUNC('day',NOW()) );
 	
