@@ -80,6 +80,10 @@ SELECT
     evt_block_time,
     evt_block_number
 FROM aave."LendingPool_evt_Borrow" 
+WHERE evt_block_time >= start_ts
+AND evt_block_time < end_ts
+AND evt_block_number >= start_block
+AND evt_block_number < end_block
 UNION ALL 
 -- all repays
 SELECT 
@@ -99,6 +103,10 @@ SELECT
     evt_block_time,
     evt_block_number
 FROM aave."LendingPool_evt_Repay"
+WHERE evt_block_time >= start_ts
+AND evt_block_time < end_ts
+AND evt_block_number >= start_block
+AND evt_block_number < end_block
 UNION ALL 
 -- liquidation
 SELECT 
@@ -118,6 +126,10 @@ SELECT
     evt_block_time,
     evt_block_number
 FROM aave."LendingPool_evt_LiquidationCall"
+WHERE evt_block_time >= start_ts
+AND evt_block_time < end_ts
+AND evt_block_number >= start_block
+AND evt_block_number < end_block
 UNION ALL 
 SELECT 
     '2' AS version,
@@ -136,6 +148,10 @@ SELECT
     evt_block_time,
     evt_block_number
 FROM aave_v2."LendingPool_evt_Borrow" 
+WHERE evt_block_time >= start_ts
+AND evt_block_time < end_ts
+AND evt_block_number >= start_block
+AND evt_block_number < end_block
 UNION ALL 
 -- all repays
 SELECT 
@@ -152,6 +168,10 @@ SELECT
     evt_block_time,
     evt_block_number
 FROM aave_v2."LendingPool_evt_Repay"
+WHERE evt_block_time >= start_ts
+AND evt_block_time < end_ts
+AND evt_block_number >= start_block
+AND evt_block_number < end_block
 UNION ALL 
 -- liquidation
 SELECT 
@@ -168,17 +188,17 @@ SELECT
     evt_block_time,
     evt_block_number
 FROM aave_v2."LendingPool_evt_LiquidationCall"
+WHERE evt_block_time >= start_ts
+AND evt_block_time < end_ts
+AND evt_block_number >= start_block
+AND evt_block_number < end_block
 ) borrow
 LEFT JOIN erc20."tokens" erc20
     ON borrow.token = erc20.contract_address
 LEFT JOIN prices.usd p 
     ON p.minute = date_trunc('minute', borrow.evt_block_time) 
     AND p.contract_address = borrow.token
-WHERE borrow.evt_block_time >= start_ts
-AND borrow.evt_block_time < end_ts
-AND borrow.evt_block_number >= start_block
-AND borrow.evt_block_number < end_block
-    ))
+))
     ON CONFLICT DO NOTHING
     RETURNING 1
 )
