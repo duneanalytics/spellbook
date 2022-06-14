@@ -13,6 +13,8 @@ models:
     columns:
       - name: unique_tx_id
         description: "Unique tx ID (testing)"
+        tests:
+          - unique
       - &blockchain
         name: blockchain
         description: "Blockchain"
