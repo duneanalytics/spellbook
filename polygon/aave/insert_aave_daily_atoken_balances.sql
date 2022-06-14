@@ -133,14 +133,6 @@ SELECT aave.insert_aave_daily_atoken_balances(
 	)
 ;
 
-
-SELECT aave.insert_aave_daily_atoken_balances(DATE_TRUNC('day','2021-04-13'::timestamptz),DATE_TRUNC('day',NOW()) )
-WHERE NOT EXISTS (
-    SELECT *
-    FROM aave.aave_daily_atoken_balances
-)
-;
-
 INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$
     SELECT aave.insert_aave_daily_atoken_balances(
