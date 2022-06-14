@@ -63,7 +63,7 @@ SELECT
         ELSE _reserve
     END AS token,
     "_user" AS depositor, 
-    NULL::bytea as withdrawn_to,
+    NULL::bytea AS withdrawn_to,
     NULL::bytea AS liquidator,
     _amount AS amount,
     evt_tx_hash,
