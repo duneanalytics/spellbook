@@ -1,4 +1,5 @@
 CREATE TABLE IF NOT EXISTS aave.tokens (   
+    version text,
     symbol text,
     token bytea PRIMARY KEY,
     a_token bytea,
@@ -15,6 +16,7 @@ DECLARE r integer;
 BEGIN
 WITH rows AS (
     INSERT INTO aave.tokens (
+    version,
     symbol,
     token,
     a_token,
@@ -23,6 +25,7 @@ WITH rows AS (
     decimals
     )
     ((SELECT
+    '3' AS version,
     symbol,
     pools.token,
     "aToken" AS a_token,
