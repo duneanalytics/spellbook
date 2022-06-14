@@ -4,12 +4,12 @@
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
-        unique_key='unique_id'
+        unique_key='unique_trade_id'
   )
 }}
 
 SELECT 
-  signatures[0] || id as unique_id,
+  signatures[0] || id as unique_trade_id,
   'solana' as blockchain,
   signatures[0] as tx_hash, 
   block_time,

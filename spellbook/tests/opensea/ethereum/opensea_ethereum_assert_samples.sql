@@ -1,5 +1,4 @@
 -- Bootstrapped correctness test against legacy Postgres values.
--- Postgres query: "SELECT evt_block_time, evt_tx_hash, price FROM opensea."WyvernExchange_evt_OrdersMatched" ORDER BY evt_block_time DESC LIMIT 100"
 -- Also manually check etherscan info for the first 5 rows
 WITH unit_tests as
 (SELECT case when test_data.price = os_trades.amount_raw then True else False end as price_test
