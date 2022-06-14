@@ -212,7 +212,7 @@ FROM
 
 GROUP BY 1,2,3--,4,5
 ) b
-LEFT JOIN aave.aave_daily_treasury_fees at --fee generating events
+LEFT JOIN aave.aave_treasury_fees_by_day at --fee generating events
 ON DATE_TRUNC('day',at.day) = b.evt_day
 AND at.contract_address = b.contract_address
 AND LOWER(at.version) = LOWER(b.version)
@@ -255,17 +255,17 @@ END
 $function$;
 
 -- Get the table started
-SELECT aave.insert_aave_daily_treasury_events(DATE_TRUNC('day','2021-04-13'::timestamptz),DATE_TRUNC('day',NOW()) )
-WHERE NOT EXISTS (
-    SELECT *
-    FROM aave.aave_daily_treasury_events
-);
+SELECT aave.insert_aave_daily_treasury_events(
+    '2021-04-13'
+    , NOW()
+    )
+;
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('17,47 * * * *', $$
     SELECT aave.insert_aave_daily_treasury_events(
         (SELECT DATE_TRUNC('day',NOW()) - interval '3 days'),
-        (SELECT DATE_TRUNC('day',NOW()) );
+        (SELECT DATE_TRUNC('day',NOW()) ));
 	
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
