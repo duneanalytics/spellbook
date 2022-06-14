@@ -1,9 +1,5 @@
 {{config(schema = 'uniswap_v3_ethereum', 
-        alias='trades',
-        materialized ='incremental',
-        file_format ='delta',
-        incremental_strategy='merge',
-        unique_key='unique_id')
+        alias='trades')
 }}
         
 SELECT
@@ -56,7 +52,3 @@ SELECT
     LEFT JOIN {{ source('prices', 'usd') }} pb ON pb.minute = date_trunc('minute', dex.block_time)
         AND pb.contract_address = dex.token_b_address
         AND pb.blockchain = 'ethereum'
-{% if is_incremental() %}
--- this filter will only be applied on an incremental run
-WHERE dex.block_time > now() - interval 2 days
-{% endif %} 
