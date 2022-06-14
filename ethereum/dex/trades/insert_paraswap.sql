@@ -27,7 +27,6 @@ WITH rows AS (
         evt_index,
         trade_id
     )
-
     SELECT
         dexs.block_time,
         erc20a.symbol AS token_a_symbol,
@@ -136,6 +135,7 @@ WITH rows AS (
         UNION ALL
 
         -- AugustusSwapper5.0_call_swapOnUniswap
+        -- AugustusSwapper5.0_call_buyOnUniswap
         SELECT
             swaps."call_block_time" AS block_time,
             NULL::bytea AS trader_a,
@@ -148,11 +148,19 @@ WITH rows AS (
             swaps."call_tx_hash" AS tx_hash,
             swaps."call_trace_address" AS trace_address,
             NULL::int8 AS evt_index
-        FROM paraswap."AugustusSwapper5.0_call_swapOnUniswap" swaps
-        WHERE swaps."call_success" = true
+        FROM (
+            SELECT *
+            FROM paraswap."AugustusSwapper5.0_call_swapOnUniswap"
+            WHERE "call_success" = true
+            UNION ALL
+            SELECT *
+            FROM paraswap."AugustusSwapper5.0_call_buyOnUniswap"
+            WHERE "call_success" = true
+        ) swaps
         UNION ALL
 
         -- AugustusSwapper5.0_call_swapOnUniswapFork
+        -- AugustusSwapper5.0_call_buyOnUniswapFork
         SELECT
             swaps."call_block_time" AS block_time,
             NULL::bytea AS trader_a,
@@ -165,11 +173,19 @@ WITH rows AS (
             swaps."call_tx_hash" AS tx_hash,
             swaps."call_trace_address" AS trace_address,
             NULL::int8 AS evt_index
-        FROM paraswap."AugustusSwapper5.0_call_swapOnUniswapFork" swaps
-        WHERE swaps."call_success" = true
+        FROM (
+            SELECT *
+            FROM paraswap."AugustusSwapper5.0_call_swapOnUniswapFork"
+            WHERE "call_success" = true
+            UNION ALL
+            SELECT *
+            FROM paraswap."AugustusSwapper5.0_call_buyOnUniswapFork"
+            WHERE "call_success" = true
+        ) swaps
         UNION ALL
         
         -- AugustusSwapper6.0_evt_Swapped
+        -- AugustusSwapper6.0_evt_Swapped2
         SELECT 
             swaps."evt_block_time" AS block_time,
             swaps."initiator"::bytea AS trader_a,
@@ -182,10 +198,17 @@ WITH rows AS (
             swaps."evt_tx_hash" AS tx_hash,
             NULL::integer[] AS trace_address,
             swaps."evt_index" AS evt_index
-        FROM paraswap."AugustusSwapper6.0_evt_Swapped" swaps
+        FROM (
+            SELECT "evt_block_time", "initiator", "beneficiary", "srcAmount", "receivedAmount", "srcToken", "destToken", "contract_address", "evt_tx_hash", "evt_index"
+                FROM paraswap."AugustusSwapper6.0_evt_Swapped"
+            UNION ALL
+            SELECT "evt_block_time", "initiator", "beneficiary", "srcAmount", "receivedAmount", "srcToken", "destToken", "contract_address", "evt_tx_hash", "evt_index"
+                FROM paraswap."AugustusSwapper6.0_evt_Swapped2"
+        ) swaps
         UNION ALL
 
         -- AugustusSwapper6.0_evt_Bought
+        -- AugustusSwapper6.0_evt_Bought2
         SELECT 
             swaps."evt_block_time" AS block_time,
             swaps."initiator"::bytea AS trader_a,
@@ -198,10 +221,17 @@ WITH rows AS (
             swaps."evt_tx_hash" AS tx_hash,
             NULL::integer[] AS trace_address,
             swaps."evt_index" AS evt_index
-        FROM paraswap."AugustusSwapper6.0_evt_Bought" swaps
+        FROM (
+            SELECT "evt_block_time", "initiator", "beneficiary", "srcAmount", "receivedAmount", "srcToken", "destToken", "contract_address", "evt_tx_hash", "evt_index"
+                FROM paraswap."AugustusSwapper6.0_evt_Bought"
+            UNION ALL
+            SELECT "evt_block_time", "initiator", "beneficiary", "srcAmount", "receivedAmount", "srcToken", "destToken", "contract_address", "evt_tx_hash", "evt_index"
+                FROM paraswap."AugustusSwapper6.0_evt_Bought2"
+        ) swaps
         UNION ALL
 
         -- AugustusSwapper6.0_call_swapOnUniswap
+        -- AugustusSwapper6.0_call_buyOnUniswap
         SELECT 
             swaps."call_block_time" AS block_time,
             NULL::bytea AS trader_a,
@@ -214,11 +244,19 @@ WITH rows AS (
             swaps."call_tx_hash" AS tx_hash,
             swaps."call_trace_address" AS trace_address,
             NULL::int8 AS evt_index
-        FROM paraswap."AugustusSwapper6.0_call_swapOnUniswap" swaps
-        WHERE swaps."call_success" = true
+        FROM (
+            SELECT *
+            FROM paraswap."AugustusSwapper6.0_call_swapOnUniswap"
+            WHERE "call_success" = true
+            UNION ALL
+            SELECT *
+            FROM paraswap."AugustusSwapper6.0_call_buyOnUniswap"
+            WHERE "call_success" = true
+        ) swaps
         UNION ALL
 
         -- AugustusSwapper6.0_call_swapOnUniswapFork
+        -- AugustusSwapper6.0_call_buyOnUniswapFork
         SELECT 
             swaps."call_block_time" AS block_time,
             NULL::bytea AS trader_a,
@@ -231,8 +269,65 @@ WITH rows AS (
             swaps."call_tx_hash" AS tx_hash,
             swaps."call_trace_address" AS trace_address,
             NULL::int8 AS evt_index
-        FROM paraswap."AugustusSwapper6.0_call_swapOnUniswapFork" swaps
-        WHERE swaps."call_success" = true
+        FROM (
+            SELECT *
+            FROM paraswap."AugustusSwapper6.0_call_swapOnUniswapFork"
+            WHERE "call_success" = true
+            UNION ALL
+            SELECT *
+            FROM paraswap."AugustusSwapper6.0_call_buyOnUniswapFork"
+            WHERE "call_success" = true
+        ) swaps
+        UNION ALL
+
+        -- AugustusSwapper6.0_call_swapOnUniswapV2Fork
+        -- AugustusSwapper6.0_call_buyOnUniswapV2Fork
+        SELECT 
+            swaps."call_block_time" AS block_time,
+            NULL::bytea AS trader_a,
+            NULL::bytea AS trader_b,
+            swaps."amountIn" AS token_a_amount_raw,
+            swaps."amountOutMin" AS token_b_amount_raw,
+            swaps."tokenIn" AS token_a_address,
+            NULL::bytea AS token_b_address,
+            swaps."contract_address" AS exchange_contract_address,
+            swaps."call_tx_hash" AS tx_hash,
+            swaps."call_trace_address" AS trace_address,
+            NULL::int8 AS evt_index
+        FROM (
+            SELECT *
+            FROM paraswap."AugustusSwapper6.0_call_swapOnUniswapV2Fork"
+            WHERE "call_success" = true
+            UNION ALL
+            SELECT *
+            FROM paraswap."AugustusSwapper6.0_call_buyOnUniswapV2Fork"
+            WHERE "call_success" = true
+        ) swaps
+        UNION ALL
+
+        -- AugustusSwapper6.0_call_swapOnUniswapV2ForkWithPermit
+        -- AugustusSwapper6.0_call_buyOnUniswapV2ForkWithPermit
+        SELECT 
+            swaps."call_block_time" AS block_time,
+            NULL::bytea AS trader_a,
+            NULL::bytea AS trader_b,
+            swaps."amountIn" AS token_a_amount_raw,
+            swaps."amountOutMin" AS token_b_amount_raw,
+            swaps."tokenIn" AS token_a_address,
+            NULL::bytea AS token_b_address,
+            swaps."contract_address" AS exchange_contract_address,
+            swaps."call_tx_hash" AS tx_hash,
+            swaps."call_trace_address" AS trace_address,
+            NULL::int8 AS evt_index
+        FROM (
+            SELECT *
+            FROM paraswap."AugustusSwapper6.0_call_swapOnUniswapV2ForkWithPermit"
+            WHERE "call_success" = true
+            UNION ALL
+            SELECT *
+            FROM paraswap."AugustusSwapper6.0_call_buyOnUniswapV2ForkWithPermit"
+            WHERE "call_success" = true
+        ) swaps
         UNION ALL
 
         -- AugustusSwapper6.0_call_swapOnZeroXv2 
@@ -252,6 +347,27 @@ WITH rows AS (
         FROM (
             SELECT * FROM paraswap."AugustusSwapper6.0_call_swapOnZeroXv2" UNION ALL
             SELECT * FROM paraswap."AugustusSwapper6.0_call_swapOnZeroXv4"
+        ) swaps
+        WHERE swaps."call_success" = true
+        UNION ALL
+
+        -- AugustusSwapper6.0_call_swapOnZeroXv2WithPermit
+        -- AugustusSwapper6.0_call_swapOnZeroXv4WithPermit
+        SELECT
+            swaps."call_block_time" AS block_time,
+            NULL::bytea AS trader_a,
+            NULL::bytea AS trader_b,
+            swaps."fromAmount" AS token_a_amount_raw,
+            swaps."amountOutMin" AS token_b_amount_raw,
+            swaps."fromToken" AS token_a_address,
+            swaps."toToken" AS token_b_address,
+            swaps."contract_address" AS exchange_contract_address,
+            swaps."call_tx_hash" AS tx_hash,
+            swaps."call_trace_address" AS trace_address,
+            NULL::int8 AS evt_index
+        FROM (
+            SELECT * FROM paraswap."AugustusSwapper6.0_call_swapOnZeroXv2WithPermit" UNION ALL
+            SELECT * FROM paraswap."AugustusSwapper6.0_call_swapOnZeroXv4WithPermit"
         ) swaps
         WHERE swaps."call_success" = true
 
@@ -318,14 +434,29 @@ WHERE NOT EXISTS (
 -- fill 2021
 SELECT dex.insert_paraswap(
     '2021-01-01',
-    now(),
+    '2022-01-01',
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2022-01-01')
 )
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.trades
     WHERE block_time > '2021-01-01'
+    AND block_time <= '2022-01-01'
+    AND project = 'Paraswap'
+);
+
+-- fill 2022
+SELECT dex.insert_paraswap(
+    '2022-01-01',
+    now(),
+    (SELECT max(number) FROM ethereum.blocks WHERE time < '2022-01-01'),
+    (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.trades
+    WHERE block_time > '2022-01-01'
     AND block_time <= now() - interval '20 minutes'
     AND project = 'Paraswap'
 );

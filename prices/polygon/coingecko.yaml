@@ -17,6 +17,7 @@
 - id: aave-polygon-wbtc
 - id: aave-polygon-weth
 - id: aave-polygon-wmatic
+- id: abachi
 - id: adamant
 - id: adshares
 - id: aga-carbon-credit
@@ -28,6 +29,7 @@
 - id: algorand
 - id: aloha
 - id: amber
+- id: apecoin
 - id: apwine
 - id: apy-vision
 - id: arianee
@@ -37,6 +39,7 @@
 - id: atari
 - id: augury-finance
 - id: auroratoken
+- id: axie-infinity
 - id: azuki
 - id: baby-matic
 - id: balancer
@@ -48,6 +51,7 @@
 - id: beluga-fi
 - id: betapulsartoken
 - id: beyond-finance
+- id: biconomy
 - id: binance-smart-chain-girl
 - id: bilira
 - id: bitcoin
@@ -79,6 +83,7 @@
 - id: cryption-network
 - id: cryptocurrency-top-10-tokens-index
 - id: cryptotipsfr
+- id: cubo
 - id: curve-dao-token
 - id: cyberfi
 - id: cyclone-protocol
@@ -172,6 +177,7 @@
 - id: loser-coin
 - id: l-pesa
 - id: mahadao
+- id: maker
 - id: mantra-dao
 - id: mask-network
 - id: matic-aave-aave
@@ -259,6 +265,7 @@
 - id: polyyield-token
 - id: polyyork
 - id: polyzap
+- id: popcorn
 - id: prism-network
 - id: project-inverse
 - id: pspace
@@ -284,6 +291,7 @@
 - id: shiba-inu
 - id: showcase-token
 - id: spacerat
+- id: sphere-finance
 - id: stablegaj
 - id: stacker-ventures
 - id: stacktical
@@ -397,3 +405,29 @@
 - id: eth-2x-flexible-leverage-index
 - id: btc-2x-flexible-leverage-index
 - id: index-cooperative
+- id: the-sandbox
+- id: idle-usdc-yield
+- id: idle-usdt-yield
+- id: nacho-finance
+- id: nshare
+- id: richochet
+- id: gogocoin
+- id: milk
+- id: radar
+- id: dogecoin
+- id: scalara-nft-index
+- id: jarvis-synthetic-euro
+- id: stacktical
+- id: btc-2x-flexible-leverage-index-polygon
+- id: inverse-btc-flexible-leverage-index
+- id: thx-network
+- id: mimo-parallel-governance-token
+- id: par-stablecoin
+- id: unicorn-milk
+- id: rainbow-token-2
+- id: jarvis-synthetic-euro
+- id: jarvis-synthetic-swiss-franc
+- id: stasis-eurs
+- id: ageur
+- id: sphere-finance
+- id: yam-2

@@ -55,7 +55,6 @@ WITH rows AS (
         evt_index,
         row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
-
         -- Swapr
         SELECT
             t.evt_block_time AS block_time,
@@ -65,17 +64,17 @@ WITH rows AS (
             t."to" AS trader_a,
             NULL::bytea AS trader_b,
             CASE WHEN "amount0Out" = 0 THEN "amount1Out" ELSE "amount0Out" END AS token_a_amount_raw,
-            CASE WHEN "amount0In" = 0 THEN "amount1In" ELSE "amount0In" END AS token_b_amount_raw,
+            CASE WHEN "amount0In" = 0 OR "amount1Out" = 0 THEN "amount1In" ELSE "amount0In" END AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
             CASE WHEN "amount0Out" = 0 THEN f.token1 ELSE f.token0 END AS token_a_address,
-            CASE WHEN "amount0In" = 0 THEN f.token1 ELSE f.token0 END AS token_b_address,
+            CASE WHEN "amount0In" = 0 OR "amount1Out" = 0 THEN f.token1 ELSE f.token0 END AS token_b_address,
             t.contract_address exchange_contract_address,
             t.evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             t.evt_index
         FROM
-            swapr."Pair_evt_Swap" t
-        INNER JOIN swapr."Factory_evt_PairCreated" f ON f.pair = t.contract_address
+            swapr."DXswapPair_evt_Swap" t
+        INNER JOIN swapr."DXswapFactory_evt_PairCreated" f ON f.pair = t.contract_address
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
@@ -103,17 +102,47 @@ RETURN r;
 END
 $function$;
 
--- fill 2021
+-- fill 2020
+SELECT dex.insert_swapr(
+    '2020-01-01',
+    '2021-01-01',
+    (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2021-01-01')
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.trades
+    WHERE block_time > '2020-01-01'
+    AND block_time <= '2021-01-01'
+    AND project = 'swapr'
+);
+
+--- fill 2021
 SELECT dex.insert_swapr(
     '2021-01-01',
-    now(),
+    '2022-01-01',
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2022-01-01')
 )
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.trades
     WHERE block_time > '2021-01-01'
+    AND block_time <= '2022-01-01'
+    AND project = 'swapr'
+);
+
+-- fill 2022
+SELECT dex.insert_swapr(
+    '2022-01-01',
+    now(),
+    (SELECT max(number) FROM ethereum.blocks WHERE time < '2022-01-01'),
+    (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.trades
+    WHERE block_time > '2022-01-01'
     AND block_time <= now() - interval '20 minutes'
     AND project = 'swapr'
 );
@@ -122,8 +151,8 @@ INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
     SELECT dex.insert_swapr(
         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='swapr'),
-        (SELECT now()),
+        (SELECT now() - interval '20 minutes'),
         (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='swapr')),
         (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule; 
