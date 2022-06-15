@@ -65,6 +65,8 @@ models:
       - &unique_trade_id
         name: unique_trade_id
         description:  "Unique trade ID (derived from tx_hash and evt_index for ethereum dex trades)"      
+        tests:
+          - unique
 
   - name: uniswap_v2_ethereum_trades
     meta:
@@ -76,11 +78,7 @@ models:
     description: >
         Uniswap V2 trades on Ethereum
     columns:
-      - &unique_trade_id
-        name: unique_trade_id
-        description:  "Unique trade ID (derived from tx_hash and evt_index for ethereum dex trades)"      
-        tests:
-          - unique
+      - *unique_trade_id
       - *blockchain
       - *project
       - *version  
