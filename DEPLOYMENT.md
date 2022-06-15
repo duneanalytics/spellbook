@@ -38,6 +38,8 @@ Update the branch name on the [production environment](https://cloud.getdbt.com/
 
 <img width="1411" alt="Screen Shot 2022-05-31 at 9 46 24 AM" src="https://user-images.githubusercontent.com/9472574/171188799-20649e07-aed9-4d0a-b840-50b5a8bf7e78.png">
 
+If your change affected column names or data types for an incremental table, you'll need to run a job that fully refreshes that table. Either an ad-hoc job or use the manual deploy job. 
+
 
 # Rollback
 Check the Releases page and deploy the previous tag to DBT Cloud. 
