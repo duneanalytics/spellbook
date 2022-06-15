@@ -2134,3 +2134,8 @@
   symbol: AUD
   address: 0xFAFdF0C4c1CB09d430Bf88c75D88BB46DAe09967
   decimals: 18
+- name: Pound Sterling Token
+  id: gbp-pound-sterling-token
+  symbol: GBP
+  address: 0x69681f8fde45345C3870BCD5eaf4A05a60E7D227
+  decimals: 18
