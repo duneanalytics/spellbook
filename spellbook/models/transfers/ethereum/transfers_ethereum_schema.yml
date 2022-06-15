@@ -11,8 +11,10 @@ models:
       tags: ['transfers', 'ethereum', 'erc20', 'soispoke', 'dot2dotseurat']
     description: "ERC20 Token Transfers on Ethereum. This table is updated every 15 minutes."
     columns:
-      - name: unique_tx_id
-        description: "Unique tx ID (testing)"
+      - name: unique_transfer_id
+        description: "Unique transfer ID (used for testing for duplicates)"
+        tests:
+          - unique
       - &blockchain
         name: blockchain
         description: "Blockchain"
