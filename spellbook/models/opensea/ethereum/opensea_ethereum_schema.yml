@@ -12,7 +12,7 @@ models:
         OpenSea trades on Ethereum
     columns:
       - name: unique_trade_id
-        description:  "Unique id, combination of tx_hash and trade_id"
+        description:  "Unique trade ID (derived from tx_hash and evt_index for ethereum dex trades)"      
         tests:
           - unique
       - &blockchain

@@ -25,7 +25,7 @@ models:
       - name: amount_usd
         description:  "USD value of the trade at time of execution"
       - name: unique_trade_id
-        description:  "Trade ID"
+        description:  "Unique trade ID"
 
   - name: opensea_volume_day
     meta:

@@ -31,4 +31,4 @@ models:
       - name: amount_usd
         description:  "USD value of the trade at time of execution"
       - name: unique_trade_id
-        description:  "Trade ID (derived from id in solana transactions)"
+        description:  "Unique trade ID (derived from signatures[Ø] and id in solana transactions)"

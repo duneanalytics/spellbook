@@ -12,7 +12,7 @@ models:
         OpenSea trades on Solana
     columns:
       - name: unique_trade_id
-        description:  "Unique id, combination of signatures[0] and id"
+        description:  "Unique trade id, combination of signatures[0] and id"
         tests:
           - unique
       - &blockchain
