@@ -23,8 +23,14 @@ jobs:
       - name: Check out code
         run: git checkout -b dot2dotseurat_branch dot2dotseurat/master
 
-      - name: check files
-        run: echo "$(ls)"
+      - name: check repository
+        run: echo 'Hi ${{ github.repository }}'
+
+      - name: check repository url
+        run: echo 'Hi ${{ github.repositoryUrl }}'
+
+      - name: check ref
+        run: echo 'Hi ${{ github.ref }}'
 
       - name: Set up Python 3.8.12
         uses: actions/setup-python@v1
