@@ -77,8 +77,8 @@ WITH rows AS (
             SELECT decode(substring("desc"->>'srcToken' FROM 3), 'hex') as from_token, decode(substring("desc"->>'dstToken' FROM 3), 'hex') as to_token, ("desc"->>'amount')::numeric as from_amount, "output_returnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address, NULL::integer as evt_index, contract_address, '4' as version FROM oneinch_v4."AggregationRouterV4_call_swap" where call_success AND call_block_time >= start_ts AND call_block_time < end_ts
         ) oi
         left join polygon.transactions tx on hash = tx_hash
-        WHERE tx.block_time >= start_ts
-        AND tx.block_time < end_ts
+            AND tx.block_time >= start_ts
+            AND tx.block_time < end_ts
 
         UNION ALL
 
@@ -107,14 +107,14 @@ WITH rows AS (
             select "output_returnAmount", "amount", "srcToken", "pools", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address" from oneinch_v4."AggregationRouterV4_call_unoswapWithPermit"  where call_success AND call_block_time >= start_ts AND call_block_time < end_ts
         ) us
         LEFT JOIN polygon.transactions tx ON tx.hash = us.call_tx_hash
+            AND tx.block_time >= start_ts
+            AND tx.block_time < end_ts
         LEFT JOIN polygon.traces tr ON tr.tx_hash = us.call_tx_hash AND tr.trace_address = us.call_trace_address[:ARRAY_LENGTH(us.call_trace_address, 1)-1]
+            AND tr.block_time >= start_ts
+            AND tr.block_time < end_ts
         LEFT JOIN polygon.traces ll ON ll.tx_hash = us.call_tx_hash AND ll.trace_address = (us.call_trace_address || (ARRAY_LENGTH("pools", 1)*2 + CASE WHEN "srcToken" = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 1 ELSE 0 END) || 0)
-        WHERE tx.block_time >= start_ts
-        AND tx.block_time < end_ts
-        AND tr.block_time >= start_ts
-        AND tr.block_time < end_ts
-        AND ll.block_time >= start_ts
-        AND ll.block_time < end_ts
+            AND ll.block_time >= start_ts
+            AND ll.block_time < end_ts
         
         
         UNION ALL
@@ -165,8 +165,8 @@ WITH rows AS (
             ) sw
         ) us
         LEFT JOIN polygon.transactions tx ON tx.hash = us.call_tx_hash
-        WHERE tx.block_time >= start_ts
-        AND tx.block_time < end_ts
+            AND tx.block_time >= start_ts
+            AND tx.block_time < end_ts
         
         UNION ALL
 
@@ -194,8 +194,8 @@ WITH rows AS (
             select '2' as version, decode(substring("order"::jsonb->>'maker' from 3 for 40), 'hex') as maker, contract_address, "order", output_0, output_1, call_block_time, call_tx_hash, call_trace_address from oneinch_lop_v2."LimitOrderProtocol_V2_call_fillOrderToWithPermit" where call_success AND call_block_time >= start_ts AND call_block_time < end_ts
         ) call
         LEFT JOIN polygon.traces ts ON call_tx_hash = ts.tx_hash AND call_trace_address = ts.trace_address
-        WHERE ts.block_time >= start_ts
-        AND ts.block_time < end_ts
+            AND ts.block_time >= start_ts
+            AND ts.block_time < end_ts
         
         UNION ALL
 
@@ -222,8 +222,8 @@ WITH rows AS (
             select "call_block_time", "order", "output_0", "output_1", "contract_address", "call_tx_hash", "call_trace_address" from oneinch_v4."AggregationRouterV4_call_fillOrderRFQToWithPermit" where call_success AND call_block_time >= start_ts AND call_block_time < end_ts
         ) tt
         LEFT JOIN polygon.traces ts ON call_tx_hash = ts.tx_hash AND call_trace_address = ts.trace_address
-        WHERE ts.block_time >= start_ts
-        AND ts.block_time < end_ts
+            AND ts.block_time >= start_ts
+            AND ts.block_time < end_ts
         
         UNION ALL
 
@@ -250,8 +250,8 @@ WITH rows AS (
             select "call_block_time", "order", "output_0", "output_1", "contract_address", "call_tx_hash", "call_trace_address" from oneinch_v4."AggregationRouterV4_call_fillOrderRFQToWithPermit" where call_success AND call_block_time >= start_ts AND call_block_time < end_ts
         ) tt
         LEFT JOIN polygon.traces ts ON call_tx_hash = ts.tx_hash AND call_trace_address = ts.trace_address
-        WHERE ts.block_time >= start_ts
-        AND ts.block_time < end_ts
+            AND ts.block_time >= start_ts
+            AND ts.block_time < end_ts
         
         UNION ALL
 
@@ -274,17 +274,17 @@ WITH rows AS (
             NULL AS evt_index
         FROM oneinch_lop."LimitOrderProtocol_call_fillOrderRFQ" call 
         LEFT JOIN polygon.traces ts ON call_tx_hash = ts.tx_hash AND ts.trace_address = call_trace_address
+            AND ts.block_time >= start_ts
+            AND ts.block_time < end_ts
         LEFT JOIN polygon.traces tf1 ON call_tx_hash = tf1.tx_hash AND tf1.trace_address = COALESCE(call_trace_address, '{}') || (ts.sub_traces-2)
+            AND tf1.block_time >= start_ts
+            AND tf1.block_time < end_ts
         LEFT JOIN polygon.traces tf2 ON call_tx_hash = tf2.tx_hash AND tf2.trace_address = COALESCE(call_trace_address, '{}') || (ts.sub_traces-1)
+            AND tf2.block_time >= start_ts
+            AND tf2.block_time < end_ts
         WHERE call_success 
         AND call_block_time >= start_ts
         AND call_block_time < end_ts
-        AND ts.block_time >= start_ts
-        AND ts.block_time < end_ts
-        AND tf1.block_time >= start_ts
-        AND tf1.block_time < end_ts
-        AND tf2.block_time >= start_ts
-        AND tf2.block_time < end_ts
 
         UNION ALL
         
@@ -311,8 +311,8 @@ WITH rows AS (
             select contract_address, "order", output_0, output_1, call_block_time, call_tx_hash, call_trace_address from oneinch_lop_v2."LimitOrderProtocol_V2_call_fillOrderRFQToWithPermit" where call_success AND call_block_time >= start_ts AND call_block_time < end_ts
         ) call
         LEFT JOIN polygon.traces ts ON call_tx_hash = ts.tx_hash AND call_trace_address = ts.trace_address
-        WHERE ts.block_time >= start_ts
-        AND ts.block_time < end_ts
+            AND ts.block_time >= start_ts
+            AND ts.block_time < end_ts
     ) dexs
 
     INNER JOIN polygon.transactions tx
@@ -343,31 +343,53 @@ END
 $function$;
 
 -- fill 2021
+DELETE FROM dex.trades WHERE project='1inch'
+;
 SELECT dex.insert_1inch(
     '2021-01-01',
-    '2022-01-01',
+    '2021-04-01',
     (SELECT max(number) FROM polygon.blocks WHERE time < '2021-01-01'),
+    (SELECT MAX(number) FROM polygon.blocks where time < '2021-04-01')
+);
+
+-- fill 2021
+SELECT dex.insert_1inch(
+    '2021-04-01',
+    '2021-07-01',
+    (SELECT max(number) FROM polygon.blocks WHERE time < '2021-04-01'),
+    (SELECT MAX(number) FROM polygon.blocks where time < '2021-07-01')
+);
+
+-- fill 2021
+SELECT dex.insert_1inch(
+    '2021-07-01',
+    '2021-10-01',
+    (SELECT max(number) FROM polygon.blocks WHERE time < '2021-07-01'),
+    (SELECT MAX(number) FROM polygon.blocks where time < '2021-10-01')
+);
+
+-- fill 2021
+SELECT dex.insert_1inch(
+    '2021-10-01',
+    '2022-01-01',
+    (SELECT max(number) FROM polygon.blocks WHERE time < '2021-10-01'),
     (SELECT MAX(number) FROM polygon.blocks where time < '2022-01-01')
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2021-01-01'
-    AND block_time <= '2022-01-01'
 );
 
 -- fill 2022
 SELECT dex.insert_1inch(
     '2022-01-01',
-    now(),
+    '2022-04-01',
     (SELECT max(number) FROM polygon.blocks WHERE time < '2022-01-01'),
+    (SELECT MAX(number) FROM polygon.blocks where time < '2022-04-01')
+);
+
+-- fill 2022
+SELECT dex.insert_1inch(
+    '2022-04-01',
+    now() - interval '20 minutes',
+    (SELECT max(number) FROM polygon.blocks WHERE time < '2022-04-01'),
     (SELECT MAX(number) FROM polygon.blocks where time < now() - interval '20 minutes')
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2022-01-01'
-    AND block_time <= now() - interval '20 minutes'
 );
 
 
