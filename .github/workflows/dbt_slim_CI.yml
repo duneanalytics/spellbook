@@ -14,6 +14,18 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
 
+      - name: Add remote
+        run: git remote add https://github.com/dot2dotseurat/abstractions
+
+      - name: Fetch remote
+        run: git fetch dot2dotseurat
+
+      - name: Check out code
+        run: git checkout -b dot2dotseurat_branch dot2dotseurat/master
+
+      - name: check files
+        run: echo "$ls"
+
       - name: Set up Python 3.8.12
         uses: actions/setup-python@v1
         with:
