@@ -24,7 +24,7 @@ jobs:
         run: git checkout -b dot2dotseurat_branch dot2dotseurat/master
 
       - name: check files
-        run: echo "$ls"
+        run: echo "$(ls)"
 
       - name: Set up Python 3.8.12
         uses: actions/setup-python@v1
