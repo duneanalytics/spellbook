@@ -2129,3 +2129,8 @@
 - name: avax_avalanche
   id: avax-avalanche
   symbol: AVAX
+- name: GYEN
+  id: gyen-gyen
+  symbol: GYEN
+  address: 0x5555f75e3d5278082200Fb451D1b6bA946D8e13b
+  decimals: 18
