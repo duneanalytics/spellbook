@@ -1,0 +1,26 @@
+# .github/workflows/app.yaml
+name: dbt slim ci
+on: push
+#  push:
+#    paths:
+#      - 'spellbook/**'
+
+jobs:
+  dbt-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Add remote
+        run: git remote add $1 https://github.com/dot2dotseurat/abstractions
+
+      - name: Fetch remote
+        run: git fetch dot2dotseurat
+
+      - name: Check out code
+        run: git checkout -b dot2dotseurat_branch dot2dotseurat/master
+
+      - name: check files
+        run: echo "$ls"
