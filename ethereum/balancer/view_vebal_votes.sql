@@ -1,5 +1,5 @@
 BEGIN;
-DROP VIEW IF EXISTS balancer.view_vebal_votes;
+DROP VIEW IF EXISTS balancer.view_vebal_votes CASCADE;
 
 CREATE VIEW balancer.view_vebal_votes AS
 
