@@ -5,7 +5,7 @@
 }}
 
 SELECT 
-  signatures[0] || id as unique_trade_id,
+  signatures[0] || '-' || id as unique_trade_id,
   'solana' as blockchain,
   signatures[0] as tx_hash, 
   block_time,
