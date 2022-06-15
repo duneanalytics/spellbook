@@ -2129,6 +2129,11 @@
 - name: avax_avalanche
   id: avax-avalanche
   symbol: AVAX
+- name: KROWN
+  id: krw-krown
+  symbol: KRW
+  address: 0x95dfdc8161832e4ff7816ac4b6367ce201538253
+  decimals: 18
 - name: GYEN
   id: gyen-gyen
   symbol: GYEN
