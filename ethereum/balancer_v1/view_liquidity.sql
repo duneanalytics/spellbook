@@ -58,7 +58,7 @@ CREATE MATERIALIZED VIEW balancer_v1.view_liquidity AS (
             1,
             2
         HAVING
-            SUM(sample_size) > 3
+            SUM(sample_size) > 5
             AND AVG(median_price) < 1e8
     ),
     dex_prices AS (
@@ -130,6 +130,8 @@ CREATE MATERIALIZED VIEW balancer_v1.view_liquidity AS (
         balancer_liquidity
 );
 
+COMMIT;
+
 CREATE UNIQUE INDEX IF NOT EXISTS balancer_view_liquidity_idx ON balancer_v1.view_liquidity (DAY, pool_id, token_address);
 
 CREATE INDEX IF NOT EXISTS balancer_view_liquidity_day_idx ON balancer_v1.view_liquidity USING BRIN (DAY);
@@ -148,5 +150,3 @@ VALUES
 UPDATE
 SET
     schedule = EXCLUDED.schedule;
-
-COMMIT;
