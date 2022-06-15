@@ -2129,6 +2129,11 @@
 - name: avax_avalanche
   id: avax-avalanche
   symbol: AVAX
+- name: Australian Dollar Token
+  id: aud-australian-dollar-token
+  symbol: AUD
+  address: 0xFAFdF0C4c1CB09d430Bf88c75D88BB46DAe09967
+  decimals: 18
 - name: Pound Sterling Token
   id: gbp-pound-sterling-token
   symbol: GBP
