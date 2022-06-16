@@ -1,6 +1,9 @@
 # .github/workflows/app.yaml
 name: dbt slim ci
-on: workflow_dispatch
+on:
+  pull_request_review:
+    types: [submitted]
+
 
 jobs:
   test:
