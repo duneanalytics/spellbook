@@ -200,6 +200,8 @@ with legacy_routers as (
                     maker_token_amount/power(10, mp.decimals) * mp.price) else null end as usd_amount
     from ethereum.traces t
     left join ethereum.transactions tx on tx.hash = t.tx_hash
+        and tx.block_time >= start_ts 
+        and tx.block_time < end_ts
     left join event_decoding_legacy_router l on l.tx_id = substring(t.input,325,32) -- join on tx_id 1:1, no dup
     left join prices.usd tp on tp.minute = date_trunc('minute', t.block_time)
                                   and tp.contract_address = case when substring(input, 81, 20) = '\x0000000000000000000000000000000000000000'::bytea
@@ -245,6 +247,8 @@ with legacy_routers as (
                     maker_token_amount/power(10, mp.decimals) * mp.price) else null end as usd_amount
     from ethereum.traces t
     left join ethereum.transactions tx on tx.hash = t.tx_hash
+        and tx.block_time >= start_ts 
+        and tx.block_time < end_ts
     left join event_decoding_legacy_router l on l.tx_id = substring(t.input,485,32) -- join on tx_id 1:1, no dup
     left join prices.usd tp on tp.minute = date_trunc('minute', t.block_time)
                                   and tp.contract_address = case when substring(input, 177, 20) = '\x0000000000000000000000000000000000000000'::bytea
@@ -320,17 +324,68 @@ with legacy_routers as (
                             (quote->'maxQuoteTokenAmount')::float/power(10, mp.decimals) * mp.price)
                     end as usd_amount
 
-    from hashflow."Router_call_tradeSingleHop" t
+    from hashflow."Router_call_tradeSingleHop" t 
+            -- 2022-01-10 to 2022-04-08
     join ethereum.transactions tx on tx.hash = t.call_tx_hash
+        and tx.block_time >= start_ts 
+        and tx.block_time < end_ts
     left join event_decoded l on l.tx_id = ('\x' || substring(quote->>'txid' from 3))::bytea -- join on tx_id 1:1, no dup
     left join prices.usd tp on tp.minute = date_trunc('minute', t.call_block_time)
                                   and tp.contract_address = case when quote->>'baseToken' = '0x0000000000000000000000000000000000000000'
                                             then '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' else ('\x' || substring(quote->>'baseToken' from 3))::bytea end
+                                  AND tp.minute >= start_ts
+                                  AND tp.minute < end_ts
     left join prices.usd mp on mp.minute = date_trunc('minute', t.call_block_time)
                                   and mp.contract_address = case when quote->>'quoteToken' = '0x0000000000000000000000000000000000000000'
                                             then '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' else ('\x' || substring(quote->>'quoteToken' from 3))::bytea end
-    AND t.call_block_time >= start_ts AND t.call_block_time < end_ts
-), all_trades as (
+                                  AND tp.minute >= start_ts
+                                  AND tp.minute < end_ts
+    WHERE t.call_block_time >= start_ts 
+            AND t.call_block_time < end_ts
+), new_pool as (
+    -- subquery for including new pools created on 2022-04-09
+    -- same Trade event abi, effectively only from table hashflow.Pool_evt_Trade since 2022-04-09
+    select  l.evt_index as composite_index,
+            null as source, -- no join on call for this batch, refer to metabase for source info
+            tx.block_time as block_time,
+            tx.hash as tx_hash,
+            TRUE as fill_status, -- without call we are only logging successful fills
+            null as method_id, -- without call we dont have function call info
+            tx."to" as router_contract, -- taking top level contract called in tx as router, not necessarily HF contract
+            l."pool" as pool,
+            tx."from" as trader,
+            l."quoteToken" as maker_token,
+            l."baseToken" as taker_token,
+            case when l."quoteToken" = '\x0000000000000000000000000000000000000000'
+                                            then 'ETH' else mp.symbol end as maker_symbol,
+            case when l."baseToken" = '\x0000000000000000000000000000000000000000'
+                                            then 'ETH' else tp.symbol end as taker_symbol,
+            l."quoteTokenAmount"/power(10,mp.decimals) as maker_token_amount,
+            l."baseTokenAmount"/power(10,tp.decimals) as taker_token_amount,
+            coalesce(
+                    l."baseTokenAmount"/power(10, tp.decimals) * tp.price,
+                    l."quoteTokenAmount"/power(10, mp.decimals) * mp.price)
+                    as usd_amount
+
+    from hashflow."Pool_evt_Trade" l 
+    join ethereum.transactions tx on tx.hash = l.evt_tx_hash
+        and tx.block_time >= start_ts 
+        and tx.block_time < end_ts
+    left join prices.usd tp on tp.minute = date_trunc('minute', tx.block_time)
+                                  and tp.contract_address = case when l."baseToken" = '\x0000000000000000000000000000000000000000'
+                                            then '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' else l."baseToken" end
+                                  AND tp.minute >= start_ts
+                                  AND tp.minute < end_ts
+    left join prices.usd mp on mp.minute = date_trunc('minute', tx.block_time)
+                                  and mp.contract_address = case when l."quoteToken" = '\x0000000000000000000000000000000000000000'
+                                            then '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' else l."quoteToken" end
+                                  AND tp.minute >= start_ts
+                                  AND tp.minute < end_ts
+    WHERE l.evt_block_time > '2022-04-08' -- necessary filter to only include new trades
+            AND l.evt_block_time >= start_ts 
+            AND l.evt_block_time < end_ts
+)
+, all_trades as (
     select
           -1::int as composite_index,
           -- was decoding from trace, no log_index, only single swap exist so works as PK
@@ -342,6 +397,8 @@ with legacy_routers as (
     select * from legacy_router_w_integration
     union all
     select * from new_router
+    union all
+    select * from new_pool
 
 ), rows AS (
       INSERT INTO hashflow.trades (
@@ -393,6 +450,7 @@ CREATE INDEX IF NOT EXISTS hashflow_trades_time_index ON hashflow.trades USING b
 CREATE UNIQUE INDEX IF NOT EXISTS hashflow_trades_unique ON hashflow.trades USING btree (tx_hash, composite_index);
 
 --backfill
+delete FROM hashflow.trades;
 SELECT hashflow.insert_trades('2021-04-28', (SELECT now() - interval '20 minutes')) WHERE NOT EXISTS (SELECT * FROM hashflow.trades LIMIT 1);
 
 INSERT INTO cron.job (schedule, command)

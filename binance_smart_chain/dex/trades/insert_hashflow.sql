@@ -105,6 +105,7 @@ $function$;
 
 
 -- fill 2022
+delete from dex.trades WHERE project='hashflow';
 SELECT dex.insert_hashflow(
     '2022-01-24',
     now(),
