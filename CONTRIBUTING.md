@@ -113,4 +113,3 @@ alter view mock.mock_tbl set tblproperties ('dune.public'='true',
 
 ```
 
-change to trigger pr for test
