@@ -5,7 +5,7 @@
 }}
 
 SELECT
-evt_tx_hash || evt_index::string as unique_trade_id,
+evt_tx_hash || '-' || evt_index::string as unique_trade_id,
 'ethereum' as blockchain,
 evt_tx_hash as tx_hash,
 evt_block_time as block_time,
