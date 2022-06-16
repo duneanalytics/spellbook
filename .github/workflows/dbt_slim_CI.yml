@@ -18,4 +18,4 @@ jobs:
       - name: Check dummy secret
         env: # Or as an environment variable
           dummy_secret: ${{ secrets.DUMMY_SECRET }}
-        run: echo "dummy_secret"
+        run: echo "$dummy_secret"
