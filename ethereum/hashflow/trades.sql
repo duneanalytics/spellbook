@@ -200,6 +200,8 @@ with legacy_routers as (
                     maker_token_amount/power(10, mp.decimals) * mp.price) else null end as usd_amount
     from ethereum.traces t
     left join ethereum.transactions tx on tx.hash = t.tx_hash
+        and tx.block_time >= start_ts 
+        and tx.block_time < end_ts
     left join event_decoding_legacy_router l on l.tx_id = substring(t.input,325,32) -- join on tx_id 1:1, no dup
     left join prices.usd tp on tp.minute = date_trunc('minute', t.block_time)
                                   and tp.contract_address = case when substring(input, 81, 20) = '\x0000000000000000000000000000000000000000'::bytea
@@ -245,6 +247,8 @@ with legacy_routers as (
                     maker_token_amount/power(10, mp.decimals) * mp.price) else null end as usd_amount
     from ethereum.traces t
     left join ethereum.transactions tx on tx.hash = t.tx_hash
+        and tx.block_time >= start_ts 
+        and tx.block_time < end_ts
     left join event_decoding_legacy_router l on l.tx_id = substring(t.input,485,32) -- join on tx_id 1:1, no dup
     left join prices.usd tp on tp.minute = date_trunc('minute', t.block_time)
                                   and tp.contract_address = case when substring(input, 177, 20) = '\x0000000000000000000000000000000000000000'::bytea
@@ -323,6 +327,8 @@ with legacy_routers as (
     from hashflow."Router_call_tradeSingleHop" t 
             -- 2022-01-10 to 2022-04-08
     join ethereum.transactions tx on tx.hash = t.call_tx_hash
+        and tx.block_time >= start_ts 
+        and tx.block_time < end_ts
     left join event_decoded l on l.tx_id = ('\x' || substring(quote->>'txid' from 3))::bytea -- join on tx_id 1:1, no dup
     left join prices.usd tp on tp.minute = date_trunc('minute', t.call_block_time)
                                   and tp.contract_address = case when quote->>'baseToken' = '0x0000000000000000000000000000000000000000'
@@ -363,6 +369,8 @@ with legacy_routers as (
 
     from hashflow."Pool_evt_Trade" l 
     join ethereum.transactions tx on tx.hash = l.evt_tx_hash
+        and tx.block_time >= start_ts 
+        and tx.block_time < end_ts
     left join prices.usd tp on tp.minute = date_trunc('minute', tx.block_time)
                                   and tp.contract_address = case when l."baseToken" = '\x0000000000000000000000000000000000000000'
                                             then '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' else l."baseToken" end
@@ -442,6 +450,7 @@ CREATE INDEX IF NOT EXISTS hashflow_trades_time_index ON hashflow.trades USING b
 CREATE UNIQUE INDEX IF NOT EXISTS hashflow_trades_unique ON hashflow.trades USING btree (tx_hash, composite_index);
 
 --backfill
+delete FROM hashflow.trades;
 SELECT hashflow.insert_trades('2021-04-28', (SELECT now() - interval '20 minutes')) WHERE NOT EXISTS (SELECT * FROM hashflow.trades LIMIT 1);
 
 INSERT INTO cron.job (schedule, command)
