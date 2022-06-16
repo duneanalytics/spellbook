@@ -1,9 +1,9 @@
 # .github/workflows/app.yaml
 name: dbt slim ci
-on:
-  workflow_dispatch:
-    paths:
-      - 'spellbook/**'
+on: push
+#  workflow_dispatch:
+#    paths:
+#      - 'spellbook/**'
 
 jobs:
   test:
