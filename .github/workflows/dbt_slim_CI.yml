@@ -1,6 +1,6 @@
 # .github/workflows/app.yaml
 name: dbt slim ci
-on: workflow_dispatch
+on: push
 #on:
 #  push:
 #    paths:
