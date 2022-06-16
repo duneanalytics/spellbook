@@ -1,8 +1,9 @@
 # .github/workflows/app.yaml
 name: dbt slim ci
-on:
+on: [push, pull_request_review]
   pull_request_review:
-    types: [submitted]
+    types: [submitted, edited]
+
 
 
 jobs:
