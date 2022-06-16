@@ -24,10 +24,6 @@ with iv_availadv as (
           ,jsonb_array_elements(output_executions) with ordinality as t (exec, exec_idx)
      where call_success
 )
-,iv_availadv_txn as (
-    select distinct tx_hash
-      from iv_availadv
-)
 ,iv_transfer_level_pre as ( -- in this section, we extract and then union all offers and considerations from all successful transactions on Seaport and organize it into the same table structure, as well as pull out all the variables we need to later on to differentiate by order type
     select 'normal' as main_type -- this pulls data from normal (non private) orders that are successfully fulfilled. 
           ,'offer' as sub_type  -- Seaport includes both offers and considerations. These are ingested as json arrays into Dune. This section separates out the offer section of transactions that are succcessfully fulfilled. 
@@ -109,9 +105,9 @@ with iv_availadv as (
                                    and b.token_id = a.token_id
                                    and b.sender = a.sender
                                    and b.receiver = a.receiver
-           left join iv_availadv_txn c on c.tx_hash = a.tx_hash
+           left join seaport."Seaport_call_fulfillAvailableAdvancedOrders" c on c.call_tx_hash = a.tx_hash
      where 1=1 
-       and not (a.item_type in ('2','3') and b.tx_hash is null and c.tx_hash is not null)
+       and not (a.item_type in ('2','3') and b.tx_hash is null and c.call_tx_hash is not null)
 )
 ,iv_txn_level as ( -- we now take all the unioned offers and considerations from successful transactions on Seaport and organize it into an unique, transaction level table (as each transaction has both an offer and a consideration), with some aggregations we need for later categorization by order type
     select tx_hash -- unique transaction hash 
@@ -199,11 +195,13 @@ with iv_availadv as (
            end as erc_standard -- whether the NFTs transacted are ERC-721, ERC-1155 or a mix of both
           ,case when a.zone in ('\xf397619df7bfd4d1657ea9bdd9df7ff888731a11'
                                ,'\x9b814233894cd227f561b78cc65891aa55c62ad2'
+                               ,'\x004c00500000ad104d7dbd00e3ae0a5c00560c00'
                                )
                 then 'OpenSea' -- use zone data to identify platform transacted
            end as platform -- platform on which transaction occurred (e.g. OpenSea)
           ,case when a.zone in ('\xf397619df7bfd4d1657ea9bdd9df7ff888731a11'
                                ,'\x9b814233894cd227f561b78cc65891aa55c62ad2'
+                               ,'\x004c00500000ad104d7dbd00e3ae0a5c00560c00'
                                )
                 then 3
            end as platform_version -- Seaport is the 3rd exchange contract used by OpenSea (after Wyvern 2.2 and Wyvern 2.3)
@@ -212,13 +210,13 @@ with iv_availadv as (
            end as trade_type -- identify whether it was a single NFT trade or multiple NFTs traded
           ,nft_item_count as number_of_items -- identify the number of items traded in the transaction
           ,'Trade' as evt_type -- identify these transactions as trades (there may be future transactions that are simply wallet-to-wallet transfers or swaps, for example)
-          ,a.original_amount / 10^p1.decimals * p1.price as usd_amount -- use the prices table to convert the original amount to amount in USD at the minute of the transaction
+          ,a.original_amount / 10^t1.decimals * p1.price as usd_amount -- use the prices table to convert the original amount to amount in USD at the minute of the transaction
           ,seller -- seller wallet address
           ,buyer -- buyer wallet address
-          ,a.original_amount / 10^p1.decimals as original_amount -- original amount in original currency 
+          ,a.original_amount / 10^t1.decimals as original_amount -- original amount in original currency 
           ,a.original_amount as original_amount_raw -- raw original amount (can have many decimals or 0s in front)
           ,case when a.original_currency_contract = '\x0000000000000000000000000000000000000000'::bytea then 'ETH'
-                else p1.symbol
+                else t1.symbol
            end as original_currency -- symbol of original token used in payment
           ,a.original_currency_contract -- contract address of original token used for payment
           ,a.currency_contract -- contract address of original token used for payment, with swap of ETH contract address for WETH 
@@ -232,20 +230,24 @@ with iv_availadv as (
           ,1 as trade_id -- index of transaction within the block
           ,a.fee_receive_address -- wallet addresses receiving fees from the transaction
           ,case when a.fee_currency_contract = '\x0000000000000000000000000000000000000000'::bytea then 'ETH'
-                else p2.symbol 
+                else t2.symbol 
            end as fee_currency -- symbol of the token in which fees are paid out
           ,a.fee_amount as fee_amount_raw -- raw numerical amount of fees
-          ,a.fee_amount / 10^p2.decimals as fee_amount -- fee amount in original token currency (properly formatted in decimals)
-          ,a.fee_amount / 10^p2.decimals * p2.price as fee_usd_amount -- fee amount in USD
+          ,a.fee_amount / 10^t2.decimals as fee_amount -- fee amount in original token currency (properly formatted in decimals)
+          ,a.fee_amount / 10^t2.decimals * p2.price as fee_usd_amount -- fee amount in USD
           ,a.zone as zone_address -- zone address, we use this to determine platform
-          ,case when spc1.call_tx_hash is not null then 'Auction' -- include English Auction and Dutch Auction
-                when spc2.call_tx_hash is not null and (spc2.parameters->>'basicOrderType')::integer between 16 and 23 then 'Auction'
-                when spc2.call_tx_hash is not null and (spc2.parameters->>'basicOrderType')::integer between 0 and 7 then 'Buy Now' -- Buy it directly
+          ,case when spc1.call_tx_hash is not null then 'Collection/Trait Offers' -- include English Auction and Dutch Auction
+                when spc2.call_tx_hash is not null and (spc2.parameters->>'basicOrderType')::integer between 0 and 15 then 'Buy Now' -- Buy it directly
+                when spc2.call_tx_hash is not null and (spc2.parameters->>'basicOrderType')::integer between 16 and 23 and (spc2.parameters->>'considerationIdentifier') = a.nft_token_id then 'Individual Offer'
+                -- when spc2.call_tx_hash is not null and (spc2.parameters->>'basicOrderType')::integer between 16 and 23 then 'Collection/Trait Offer'  -- temporary
                 when spc2.call_tx_hash is not null then 'Buy Now'
-                when spc3.call_tx_hash is not null and (spc3."advancedOrder" -> 'parameters' -> 'consideration' -> 0 ->> 'identifierOrCriteria') > '0' then 'Trait Offer' -- offer for specific criteria
-                when spc3.call_tx_hash is not null then 'Collection Offer' -- offer for collection
-                when spc4.tx_hash is not null then 'Bulk Purchase' -- bundles of NFTs are purchased through aggregators or in a cart 
-                else 'Private Sales' -- sales for designated address
+                when spc3.call_tx_hash is not null and a.original_currency_contract = '\x0000000000000000000000000000000000000000'::bytea then 'Buy Now'
+                when spc3.call_tx_hash is not null then 'Collection/Trait Offers' -- offer for collection
+                when spc4.call_tx_hash is not null then 'Bulk Purchase' -- bundles of NFTs are purchased through aggregators or in a cart 
+                when spc5.call_tx_hash is not null then 'Bulk Purchase' -- bundles of NFTs are purchased through aggregators or in a cart 
+                -- when spc3.call_tx_hash is not null and (spc3."advancedOrder" -> 'parameters' -> 'consideration' -> 0 ->> 'identifierOrCriteria') > '0' then 'Collection/Trait Offer' -- offer for specific criteria
+                when spc6.call_tx_hash is not null then 'Private Sales' -- sales for designated address
+                else 'Buy Now' -- temporary
            end as order_type  -- here we specify order type using the call tables as well as parameters passed into those (including basic order type and identifier criteria for collection and trait offers)
       from iv_txn_level a
            left join ethereum.transactions tx on tx.hash = a.tx_hash -- join in eth transactions table so that we can get to and from wallet address info
@@ -254,13 +256,17 @@ with iv_availadv as (
            left join prices.usd p1 on p1.contract_address = a.currency_contract  -- joining to prices table to allow us to get USD amount data
                                    and p1.minute = date_trunc('minute', a.block_time)
                                    and p1.minute >= '2022-05-15'
+           left join erc20.tokens t1 on t1.contract_address = a.currency_contract
            left join prices.usd p2 on p2.contract_address = a.currency_contract2
                                    and p2.minute = date_trunc('minute', a.block_time)
                                    and p2.minute >= '2022-05-15'
+           left join erc20.tokens t2 on t2.contract_address = a.currency_contract2
            left join seaport."Seaport_call_fulfillOrder" spc1 on spc1.call_tx_hash = a.tx_hash -- we uses these call tables to categorize transaction order type
            left join seaport."Seaport_call_fulfillBasicOrder" spc2 on spc2.call_tx_hash = a.tx_hash
            left join seaport."Seaport_call_fulfillAdvancedOrder" spc3 on spc3.call_tx_hash = a.tx_hash
-           left join iv_availadv_txn spc4 on spc4.tx_hash = a.tx_hash
+           left join seaport."Seaport_call_fulfillAvailableAdvancedOrders" spc4 on spc4.call_tx_hash = a.tx_hash
+           left join seaport."Seaport_call_fulfillAvailableOrders" spc5 on spc5.call_tx_hash = a.tx_hash
+           left join seaport."Seaport_call_matchOrders" spc6 on spc6.call_tx_hash = a.tx_hash
 )
  -- create the final table by taking most relevant columns from last table
 select block_time -- time in UTC at which the block containing the transaction was executed (Ethereum is in UTC)
