@@ -51,6 +51,8 @@ with new_pool as (
 
     from hashflow."Pool_evt_Trade" l 
     join optimism.transactions tx on tx.hash = l.evt_tx_hash
+        and tx.block_time >= start_ts 
+        AND tx.block_time < end_ts
     left join prices.approx_prices_from_dex_data tp on tp.hour = date_trunc('hour', tx.block_time)
                                   and tp.contract_address = case when l."baseToken" = '\x0000000000000000000000000000000000000000'
                                             then '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000' else l."baseToken" end
