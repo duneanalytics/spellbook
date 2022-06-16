@@ -11,8 +11,8 @@ models:
     description: >
         MagicEden trades on Solana
     columns:
-      - name: unique_id
-        description:  "Unique id, combination of signatures[0] and id"
+      - name: unique_trade_id
+        description:  "Unique trade id, combination of signatures[0] and id"
         tests:
           - unique
       - &blockchain
@@ -32,5 +32,3 @@ models:
         description:  "USD value of the trade at time of execution"
       - name: traders
         description:  "Traders"
-      - name: trade_id
-        description:  "Trade ID (derived from id in solana transactions)"

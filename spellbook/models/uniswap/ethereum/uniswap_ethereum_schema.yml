@@ -62,9 +62,11 @@ models:
       - &tx_to
         name: tx_to
         description:  "Receive this transaction"   
-      - &trade_id
-        name: trade_id
-        description:  "Trade ID (derived from evt_index for ethereum dex trades)"      
+      - &unique_trade_id
+        name: unique_trade_id
+        description:  "Unique trade ID (derived from tx_hash and evt_index for ethereum dex trades)"      
+        tests:
+          - unique
 
   - name: uniswap_v2_ethereum_trades
     meta:
@@ -76,11 +78,7 @@ models:
     description: >
         Uniswap V2 trades on Ethereum
     columns:
-      - &unique_id
-        name: unique_id
-        description:  "Unique id, combination of tx_hash and trade_id"
-        tests:
-          - unique
+      - *unique_trade_id
       - *blockchain
       - *project
       - *version  
@@ -98,7 +96,6 @@ models:
       - *tx_hash
       - *tx_from
       - *tx_to
-      - *trade_id      
 
   - name: uniswap_v3_ethereum_trades
     meta:
@@ -110,7 +107,7 @@ models:
     description: >
         Uniswap V3 trades on Ethereum
     columns:
-      - *unique_id
+      - *unique_trade_id
       - *blockchain
       - *project
       - *version  
@@ -128,4 +125,3 @@ models:
       - *tx_hash
       - *tx_from
       - *tx_to
-      - *trade_id    
