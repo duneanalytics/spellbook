@@ -1,0 +1,20 @@
+# .github/workflows/app.yaml
+name: dbt slim ci
+on: workflow_dispatch
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Add remote
+        run: git remote add ${{ github.repository_owner }} ${{ github.repositoryUrl }}
+
+      - name: Fetch remote
+        run: git fetch ${{ github.repository_owner }}
+
+      - name: Check out code
+        run: git checkout -b ${{ github.ref_name }}_internal ${{ github.ref_name }}
