@@ -128,6 +128,12 @@ models:
       - &tokenId
         name: tokenId
         description: "ID of this ERC721 token"
+      - &collection
+        name: collection
+        description: "Name of NFT collection"
+      - &category
+        name: category
+        description: "NFT category"
 
   - name: balances_ethereum_erc721_hour
     meta:
@@ -146,6 +152,8 @@ models:
       - *wallet_address_erc721
       - *token_address_erc721
       - *tokenId
+      - *collection
+      - *category
 
   - name: balances_ethereum_erc721_latest
     meta:
@@ -164,3 +172,5 @@ models:
       - *wallet_address
       - *token_address
       - *tokenId
+      - *collection
+      - *category
