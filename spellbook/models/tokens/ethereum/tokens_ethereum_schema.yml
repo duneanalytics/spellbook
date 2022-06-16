@@ -39,7 +39,7 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: dot2dotseurat
+      contributors: dot2dotseurat, hildobby
     config:
       tags: ['tokens', 'ethereum', 'nft']
     description: >
@@ -59,3 +59,5 @@ models:
             The token standard. This is the set of rules that the contract must respect 
             to be compatible with the common standards. Accepted values are presently standards represented.
             If you are adding a token with a new standard, remember to add it the accepted valeus list.
+      - name: category
+        description: "NFT Collection Category"
