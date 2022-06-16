@@ -13,3 +13,21 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
+
+      - name: Add remote
+        run: git remote add dot2dotseurat https://github.com/dot2dotseurat/abstractions
+
+      - name: Fetch remote
+        run: git fetch dot2dotseurat
+
+      - name: Check out code
+        run: git checkout -b dot2dotseurat_branch dot2dotseurat/master
+
+      - name: check repository
+        run: echo 'repo ${{ github.repository }}'
+
+      - name: check repository url
+        run: echo 'url ${{ github.repositoryUrl }}'
+
+      - name: check ref
+        run: echo 'ref ${{ github.ref }}'
