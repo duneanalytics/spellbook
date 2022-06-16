@@ -2,7 +2,9 @@
 name: dbt slim ci
 on:
   pull_request_review:
-    types: [submitted]
+    types: [submitted, edited]
+  push:
+
 
 
 jobs:
@@ -13,5 +15,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
 
-      - name: Echo file contents
-        run: echo "ls $(ls)"
+      - name: Check dummy secret
+        env: # Or as an environment variable
+          dummy_secret: ${{ secrets.DUMMY_SECRET }}
+        run: echo "$dummy_secret"
