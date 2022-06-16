@@ -20,4 +20,4 @@ jobs:
         run: git fetch ${{ github.repository_owner }}
 
       - name: Check out code
-        run: git checkout -b ${{ github.ref }}_internal ${{ github.ref }}
+        run: git checkout -b ${{ github.ref_name }}_internal ${{ github.ref_name }}
