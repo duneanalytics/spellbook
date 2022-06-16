@@ -76,13 +76,11 @@ RETURN r;
 END
 $function$;
 
-/*
+
 -- fill 2022
 SELECT dex.insert_hashflow(
     '2022-05-07',
-    now(),
-    0,
-    (SELECT MAX(number) FROM optimism.blocks where time < now() - interval '20 minutes')
+    now()
 )
 WHERE NOT EXISTS (
     SELECT *
@@ -100,4 +98,3 @@ VALUES ('15,45 * * * *', $$
         );
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
-*/
