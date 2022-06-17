@@ -3,7 +3,7 @@
 with
     sent_transfers as (
         select
-            'send' || '-' || evt_tx_hash || '-' || evt_index || '-' || `to` as unique_transfer_id,
+            'send' || '-' || evt_tx_hash || '-' || evt_index || '-' || `to` as unique_tx_id,
             `to` as wallet_address,
             contract_address as token_address,
             evt_block_time,
@@ -15,7 +15,7 @@ with
     ,
     received_transfers as (
         select
-        'receive' || '-' || evt_tx_hash || '-' || evt_index || '-' || `from` as unique_transfer_id,
+        'receive' || '-' || evt_tx_hash || '-' || evt_index || '-' || `from` as unique_tx_id,
         `from` as wallet_address,
         contract_address as token_address,
         evt_block_time,
@@ -27,7 +27,7 @@ with
     ,
     deposited_weth as (
         select
-            'deposit' || '-' || evt_tx_hash || '-' || evt_index || '-' || dst as unique_transfer_id,
+            'deposit' || '-' || evt_tx_hash || '-' || evt_index || '-' || dst as unique_tx_id,
             dst as wallet_address,
             contract_address as token_address,
             evt_block_time,
@@ -39,7 +39,7 @@ with
     ,
     withdrawn_weth as (
         select
-            'withdrawn' || '-' || evt_tx_hash || '-' || evt_index || '-' || src as unique_transfer_id,
+            'withdrawn' || '-' || evt_tx_hash || '-' || evt_index || '-' || src as unique_tx_id,
             src as wallet_address,
             contract_address as token_address,
             evt_block_time,
@@ -48,14 +48,14 @@ with
             {{ source('zeroex_ethereum', 'weth9_evt_withdrawal') }}
     )
     
-select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, amount_raw
+select unique_tx_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, amount_raw
 from sent_transfers
 union
-select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, amount_raw
+select unique_tx_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, amount_raw
 from received_transfers
 union
-select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, amount_raw
+select unique_tx_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, amount_raw
 from deposited_weth
 union
-select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, amount_raw
+select unique_tx_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, amount_raw
 from withdrawn_weth
