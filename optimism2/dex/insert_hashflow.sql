@@ -1,10 +1,8 @@
-CREATE OR REPLACE FUNCTION dex.insert_hashflow(start_ts timestamp with time zone, end_ts timestamp with time zone DEFAULT now(), start_block numeric DEFAULT 0, end_block numeric DEFAULT '9000000000000000000'::numeric)
- RETURNS integer
- LANGUAGE plpgsql
-AS $function$
+CREATE OR REPLACE FUNCTION dex.insert_hashflow(start_ts timestamptz, end_ts timestamptz=now()) RETURNS integer
+LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
-WITH aux AS (
+WITH aux as (
     SELECT
         hf.block_time,
         maker_symbol AS token_a_symbol,
@@ -23,23 +21,18 @@ WITH aux AS (
         taker_token as token_b_address,
         router_contract as exchange_contract_address,
         tx_hash,
-        tx."from" as tx_from,
-        tx."to" as tx_to,
+        trader as tx_from, -- already join on tx table with same logic in table creation
+        router_contract as tx_to, -- already join on tx table with same logic in table creation
         NULL::integer[] as trace_address,
         (case when hf.composite_index=-1 then NULL::integer else hf.composite_index end) as evt_index -- -1 means decoded from traces
     FROM hashflow.trades hf
-    INNER JOIN ethereum.transactions tx
-            ON hf.tx_hash = tx.hash
-            AND tx.block_time >= start_ts
-            AND tx.block_time < end_ts
-            AND tx.block_number >= start_block
-            AND tx.block_number < end_block
+
     LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = hf.maker_token
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = hf.taker_token
     WHERE fill_status is true -- success trade
           AND hf.block_time >= start_ts
           AND hf.block_time < end_ts
-    ), rows AS (
+), rows AS (
     INSERT INTO dex.trades (
         block_time,
         token_a_symbol,
@@ -68,37 +61,40 @@ WITH aux AS (
         *,
         row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM aux
-    ON CONFLICT DO NOTHING
+    -- update if we have new info on prices or the erc20
+    ON CONFLICT (project, tx_hash, evt_index, trade_id)
+    DO UPDATE SET
+        usd_amount = EXCLUDED.usd_amount,
+        token_a_amount = EXCLUDED.token_a_amount,
+        token_b_amount = EXCLUDED.token_b_amount,
+        token_a_symbol = EXCLUDED.token_a_symbol,
+        token_b_symbol = EXCLUDED.token_b_symbol
     RETURNING 1
 )
 SELECT count(*) INTO r from rows;
 RETURN r;
 END
-$function$
-;
+$function$;
 
--- fill 2021
-delete from dex.trades WHERE project='hashflow';
+
+-- fill 2022
 SELECT dex.insert_hashflow(
-    '2021-04-28',
-    now(),
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-04-28'),
-    (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
+    '2022-05-07',
+    now()
 )
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.trades
-    WHERE block_time > '2021-04-28'
+    WHERE block_time > '2021-12-28'
     AND block_time <= now() - interval '20 minutes'
     AND project = 'hashflow'
 );
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('*/10 * * * *', $$
+VALUES ('15,45 * * * *', $$
     SELECT dex.insert_hashflow(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='hashflow'),
-        (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='hashflow')),
-        (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project = 'hashflow'),
+        now()
+        );
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

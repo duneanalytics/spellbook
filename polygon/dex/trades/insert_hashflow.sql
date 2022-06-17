@@ -78,11 +78,12 @@ $function$
 ;
 
 -- fill 2022
+delete from dex.trades WHERE project='hashflow';
 SELECT dex.insert_hashflow(
     '2022-01-13',
     now(),
     (SELECT max(number) FROM polygon.blocks WHERE time < '2022-01-13'),
-    (SELECT MAX(number) FROM polygon.blocks where time < now() - interval '20 minutes')
+    (SELECT MAX(number) FROM polygon.blocks where time < now() - interval '20 minutes'))
 WHERE NOT EXISTS (
     SELECT *
     FROM dex.trades
