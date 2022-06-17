@@ -1,7 +1,5 @@
 {{ config(
-        alias ='erc721_rolling_hour',
-        materialized ='view'
-        )
+        alias ='erc721_rolling_hour')
 }}
 
         select
