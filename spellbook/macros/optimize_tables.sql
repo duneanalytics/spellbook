@@ -16,6 +16,14 @@ OPTIMIZE transfers_ethereum.erc721_agg_hour;
 OPTIMIZE transfers_ethereum.erc721_agg_day;
 {% endset %}
 
+{% set transfers_ethereum_erc1155_agg_hour %}
+OPTIMIZE transfers_ethereum.erc1155_agg_hour;
+{% endset %}
+
+{% set transfers_ethereum_erc1155_agg_day %}
+OPTIMIZE transfers_ethereum.erc1155_agg_day;
+{% endset %}
+
 {% set opensea_trades %}
 OPTIMIZE opensea.trades;
 {% endset %}
@@ -37,6 +45,8 @@ OPTIMIZE nft.trades;
 {% do run_query(transfers_ethereum_erc20_agg_day) %}
 {% do run_query(transfers_ethereum_erc721_agg_hour) %}
 {% do run_query(transfers_ethereum_erc721_agg_day) %}
+{% do run_query(transfers_ethereum_erc1155_agg_hour) %}
+{% do run_query(transfers_ethereum_erc1155_agg_day) %}
 {% do run_query(opensea_trades) %}
 {% do run_query(magiceden_trades) %}
 {% do run_query(uniswap_ethereum_trades) %}
