@@ -1,7 +1,5 @@
 {{ config(
-        alias ='erc20_rolling_day',
-        materialized ='view'
-        )
+        alias ='erc20_rolling_day')
 }}
 
         select
