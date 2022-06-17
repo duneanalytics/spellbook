@@ -1,6 +1,5 @@
 {{ config(
-        alias ='erc1155_rolling_hour',
-        materialized ='view'
+        alias ='erc1155_rolling_hour'
         )
 }}
 

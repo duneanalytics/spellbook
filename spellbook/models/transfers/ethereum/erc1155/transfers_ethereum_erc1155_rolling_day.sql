@@ -1,6 +1,5 @@
 {{ config(
-        alias ='erc1155_rolling_day',
-        materialized ='view'
+        alias ='erc1155_rolling_day'
         )
 }}
 
