@@ -42,8 +42,8 @@ WITH rows AS (
         token_b_amount_raw,
         coalesce(
             usd_amount,
-            token_a_amount_raw / 10 ^ pa.decimals * pa.price,
-            token_b_amount_raw / 10 ^ pb.decimals * pb.price
+            token_a_amount_raw / 10 ^ (CASE token_a_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 18 ELSE pa.decimals END) * (CASE token_a_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN pe.price ELSE pa.price END),
+            token_b_amount_raw / 10 ^ (CASE token_b_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 18 ELSE pb.decimals END) * (CASE token_b_address WHEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN pe.price ELSE pb.price END)
         ) as usd_amount,
         token_a_address,
         token_b_address,
@@ -109,7 +109,7 @@ WITH rows AS (
             evt_block_time AS block_time,
             'DODO' AS project,
             '1' AS version,
-            'DEX' AS category,
+            'Aggregator' AS category,
             sender AS trader_a,
             NULL::bytea AS trader_b,
             "fromAmount" token_a_amount_raw,
@@ -131,7 +131,7 @@ WITH rows AS (
             evt_block_time AS block_time,
             'DODO' AS project,
             '1' AS version,
-            'DEX' AS category,
+            'Aggregator' AS category,
             sender AS trader_a,
             NULL::bytea AS trader_b,
             "fromAmount" token_a_amount_raw,
@@ -153,7 +153,7 @@ WITH rows AS (
             evt_block_time AS block_time,
             'DODO' AS project,
             '2' AS version,
-            'DEX' AS category,
+            'Aggregator' AS category,
             sender AS trader_a,
             NULL::bytea AS trader_b,
             "fromAmount" token_a_amount_raw,
@@ -253,8 +253,13 @@ WITH rows AS (
         AND pb.contract_address = dexs.token_b_address
         AND pb.minute >= start_ts
         AND pb.minute < end_ts
+    LEFT JOIN prices.layer1_usd pe ON pe.minute = date_trunc('minute', dexs.block_time)
+        AND pe.symbol = 'ETH'
+        AND pe.minute >= start_ts
+        AND pe.minute < end_ts
     WHERE dexs.block_time >= start_ts
     AND dexs.block_time < end_ts
+    AND dexs.token_a_address <> dexs.token_b_address
 
     ON CONFLICT DO NOTHING
     RETURNING 1

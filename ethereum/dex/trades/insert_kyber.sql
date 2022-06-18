@@ -78,7 +78,8 @@ WITH rows AS (
         FROM
             kyber."Network_evt_KyberTrade"
         WHERE src NOT IN ('\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee','\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2')
-
+        AND evt_block_time >= start_ts AND evt_block_time < end_ts
+        
         UNION ALL
 
         -- Kyber: trade from ETH - Token
@@ -105,7 +106,8 @@ WITH rows AS (
         FROM
             kyber."Network_evt_KyberTrade"
         WHERE dest NOT IN ('\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee','\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2')
-
+        AND evt_block_time >= start_ts AND evt_block_time < end_ts
+        
         UNION ALL
 
         --- Kyber_V2
@@ -138,7 +140,8 @@ WITH rows AS (
         FROM kyber_v2."Network_evt_KyberTrade" trade
         INNER JOIN erc20."tokens" src_token ON trade.src = src_token.contract_address
         AND src_token.contract_address != '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-
+        AND evt_block_time >= start_ts AND evt_block_time < end_ts
+        
         UNION ALL
 
         -- trade from eth - token
@@ -170,6 +173,52 @@ WITH rows AS (
         FROM kyber_v2."Network_evt_KyberTrade" trade
         INNER JOIN erc20."tokens" dst_token ON trade.dest = dst_token.contract_address
         AND dst_token.contract_address != '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+        AND evt_block_time >= start_ts AND evt_block_time < end_ts
+
+        UNION ALL
+
+        SELECT
+            t.evt_block_time AS block_time,
+            'Kyber' AS project,
+            'dmm' AS version,
+            'DEX' AS category,
+            t."to" AS trader_a,
+            NULL::bytea AS trader_b,
+            CASE WHEN "amount0Out" = 0 THEN "amount1Out" ELSE "amount0Out" END AS token_a_amount_raw,
+            CASE WHEN "amount0In" = 0 OR "amount1Out" = 0 THEN "amount1In" ELSE "amount0In" END AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            CASE WHEN "amount0Out" = 0 THEN f.token1 ELSE f.token0 END AS token_a_address,
+            CASE WHEN "amount0In" = 0 OR "amount1Out" = 0 THEN f.token1 ELSE f.token0 END AS token_b_address,
+            t.contract_address AS exchange_contract_address,
+            t.evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            t.evt_index
+        FROM
+            kyber."DMMPool_evt_Swap" t
+        INNER JOIN kyber."DMMFactory_evt_PoolCreated" f ON f.pool = t.contract_address        
+        AND t.evt_block_time >= start_ts AND t.evt_block_time < end_ts
+
+        UNION ALL
+
+        -- from Aggregator 
+        SELECT
+            evt_block_time AS block_time,
+            'Kyber' AS project,
+            'dmm' AS version,
+            'Aggregator' AS category,
+            sender AS trader_a,
+            NULL::bytea AS trader_b,
+            "spentAmount" token_a_amount_raw,
+            "returnAmount" token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            "srcToken" token_a_address,
+            "dstToken" token_b_address,
+            contract_address AS exchange_contract_address,
+            evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index AS evt_index
+        FROM kyber."AggregationRouterV2_evt_Swapped"
+        WHERE evt_block_time >= start_ts AND evt_block_time < end_ts
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash

@@ -35,18 +35,23 @@ settings as (
     left join erc20.tokens t on s.token = t.contract_address
     where next_block_number = '99999999'
     and denorm > 0
+),
+final as (
+    SELECT 
+      pool as address, 
+      lower(CONCAT(string_agg(symbol, '/'), ' ', string_agg(cast(norm_weight as text), '/'))) AS label,
+      'balancer_pool' AS type,
+      'balancerlabs' as author
+
+    FROM   (
+        select s1.pool, symbol, cast(100*denorm/total_denorm as integer) as norm_weight from settings s1
+        inner join (select pool, sum(denorm) as total_denorm from settings group by pool) s2
+        on s1.pool = s2.pool
+        order by 1 asc , 3 desc, 2 asc
+    ) s
+
+    GROUP  BY 1
 )
-
-SELECT 
-  pool as address, 
-  lower(CONCAT(string_agg(symbol, '/'), ' ', string_agg(cast(norm_weight as text), '/'))) AS label,
-  'balancer_pool' AS type,
-  'balancerlabs' as author
-
-FROM   (
-    select s1.pool, symbol, cast(100*denorm/total_denorm as integer) as norm_weight from settings s1
-    inner join (select pool, sum(denorm) as total_denorm from settings group by pool) s2
-    on s1.pool = s2.pool
-    order by 1 asc , 3 desc, 2 asc
-) s
-GROUP  BY 1
+SELECT *
+FROM final
+WHERE LENGTH(label) < 35

@@ -43,7 +43,9 @@ WITH rows AS (
         coalesce(
             usd_amount,
             token_a_amount_raw / 10 ^ pa.decimals * pa.price,
-            token_b_amount_raw / 10 ^ pb.decimals * pb.price
+            token_b_amount_raw / 10 ^ pb.decimals * pb.price,
+            token_a_amount_raw / 10 ^ erc20a.decimals * bpa.median_price,
+            token_b_amount_raw / 10 ^ erc20b.decimals * bpb.median_price
         ) as usd_amount,
         token_a_address,
         token_b_address,
@@ -97,6 +99,8 @@ WITH rows AS (
             t.evt_index
         FROM
             balancer_v2."Vault_evt_Swap" t
+        WHERE t."tokenIn" != SUBSTRING(t."poolId" FOR 20)
+        AND t."tokenOut" != SUBSTRING(t."poolId" FOR 20)
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
@@ -114,6 +118,24 @@ WITH rows AS (
         AND pb.contract_address = dexs.token_b_address
         AND pb.minute >= start_ts
         AND pb.minute < end_ts
+    LEFT JOIN balancer_v2.view_bpt_prices bpa ON bpa.contract_address = dexs.token_a_address
+        AND bpa.hour = (
+            SELECT MAX(hour)
+            FROM balancer_v2.view_bpt_prices
+            WHERE hour <= dexs.block_time
+            AND contract_address = dexs.token_b_address
+        )
+        AND bpa.hour >= start_ts
+        AND bpa.hour < end_ts
+    LEFT JOIN balancer_v2.view_bpt_prices bpb ON bpb.contract_address = dexs.token_b_address
+        AND bpb.hour = (
+            SELECT MAX(hour)
+            FROM balancer_v2.view_bpt_prices
+            WHERE hour <= dexs.block_time
+            AND contract_address = dexs.token_b_address
+        )
+        AND bpb.hour >= start_ts
+        AND bpb.hour < end_ts
     WHERE dexs.block_time >= start_ts
     AND dexs.block_time < end_ts
     ON CONFLICT DO NOTHING
