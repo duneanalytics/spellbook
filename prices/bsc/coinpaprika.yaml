@@ -564,3 +564,8 @@
   id: tpt-token-pocket
   name: TokenPocket Token
   symbol: TPT
+- address: '0x84b174628911896a3b87fa6980d05dbc2ee74836'
+  decimals: 8
+  id: znn-zenon
+  name: Zenon
+  symbol: Znn
