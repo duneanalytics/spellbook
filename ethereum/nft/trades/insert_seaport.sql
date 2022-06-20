@@ -16,7 +16,7 @@ WITH seaport AS (
     , 'Trade' AS evt_type
     , exchange_contract_address
     , nft_contract_address
-    , nft_contract_address AS nft_contract_address_array
+    , nft_contract_address AS nft_contract_addresses_array
     , nft_project_name
     , nft_token_id
     , nft_token_id AS nft_token_ids_array
@@ -84,11 +84,11 @@ WITH seaport AS (
     , platform_version
     , CASE WHEN number_of_items > 1 THEN 'Bundle Trade' ELSE 'Single Item Trade' END AS trade_type
     , number_of_items
-    , trades.category
-    , trades.evt_type
+    , category
+    , evt_type
     , usd_amount
-    , trades.seller
-    , trades.buyer
+    , seller
+    , buyer
     , original_amount
     , original_amount_raw
     , original_currency
