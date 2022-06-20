@@ -1,6 +1,8 @@
- {{
-  config(
-        alias='trades', materialize = 'incremental')
+{{ config(
+        alias ='trades',
+        materialized ='incremental',
+        file_format ='delta'
+        )
 }}
 
 SELECT blockchain, project, version, block_time, token_a_symbol, token_b_symbol, 

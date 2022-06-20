@@ -1,6 +1,7 @@
 {{ config(
         alias ='erc20_agg_hour', 
-        materialized ='incremental'
+        materialized ='incremental',
+        file_format ='delta'
         )
 }}
 
