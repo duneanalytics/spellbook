@@ -1,5 +1,5 @@
 {{ config(
-        alias ='erc721_agg_day',
+        alias ='erc721_agg_day', 
         materialized ='incremental'
         )
 }}
