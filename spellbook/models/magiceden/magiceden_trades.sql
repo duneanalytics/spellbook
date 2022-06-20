@@ -1,6 +1,7 @@
 {{ config(
         alias ='trades',
-        materialized ='incremental'
+        materialized ='incremental',
+        file_format ='delta'
         )
 }}
 
