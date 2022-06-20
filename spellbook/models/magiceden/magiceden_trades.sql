@@ -1,6 +1,7 @@
-{{ config(
-        alias='trades',
-        materialized ='incremental') }}
+ {{
+  config(
+        alias='trades', materialize = 'incremental')
+}}
 
 SELECT blockchain, 'magiceden' as project, '' as version, tx_hash, block_time, amount_usd, amount, token_symbol, token_address, unique_trade_id 
 FROM 
