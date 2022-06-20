@@ -1,6 +1,5 @@
 {{
   config(
-        schema = 'seaport_ethereum', 
         alias='view_transactions'
   )
 }}
