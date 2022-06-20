@@ -1,6 +1,6 @@
 {{
   config(
-        alias='view_transactions'
+        alias='view_transactions', materialized = 'incremental'
   )
 }}
 
