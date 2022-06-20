@@ -163,8 +163,8 @@ ALTER VIEW tokens_ethereum.nft SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["dot2dotseurat","soispoke"]');
 {% endset %}
 
-{% set uniswap_ethereum_trades %}
-ALTER TABLE uniswap_ethereum.trades SET TBLPROPERTIES('dune.public'='true',
+{% set uniswap_trades %}
+ALTER TABLE uniswap.trades SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='project',
@@ -190,7 +190,7 @@ ALTER TABLE uniswap_ethereum.trades SET TBLPROPERTIES('dune.public'='true',
 {% do run_query(tokens_ethereum_erc20) %}
 {% do run_query(transfers_ethereum_erc20) %}
 {% do run_query(tokens_ethereum_nft) %}
-{% do run_query(uniswap_ethereum_trades) %}
+{% do run_query(uniswap_trades) %}
 
 {% do log("Tables generated", info=True) %}
 {%- else -%}

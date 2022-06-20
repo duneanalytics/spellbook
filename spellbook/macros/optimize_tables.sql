@@ -32,8 +32,8 @@ OPTIMIZE opensea.trades;
 OPTIMIZE magiceden.trades;
 {% endset %}
 
-{% set uniswap_ethereum_trades %}
-OPTIMIZE uniswap_ethereum.trades;
+{% set uniswap_trades %}
+OPTIMIZE uniswap.trades;
 {% endset %}
 
 {% set nft_trades %}
@@ -49,7 +49,7 @@ OPTIMIZE nft.trades;
 {% do run_query(transfers_ethereum_erc1155_agg_day) %}
 {% do run_query(opensea_trades) %}
 {% do run_query(magiceden_trades) %}
-{% do run_query(uniswap_ethereum_trades) %}
+{% do run_query(uniswap_trades) %}
 {% do run_query(nft_trades) %}
 
 {% do log("Tables Optimized", info=True) %}

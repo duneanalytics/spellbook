@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: uniswap_ethereum_trades
+  - name: uniswap_trades
     meta:
       blockchain: ethereum
       project: uniswap
@@ -9,7 +9,7 @@ models:
     config:
       tags: ['ethereum','uniswap','trades']
     description: >
-        Uniswap V1 trades on Ethereum
+        Uniswap V1 trades
     columns:
       - &blockchain
         name: blockchain
@@ -64,62 +64,6 @@ models:
         description:  "Receive this transaction"   
       - &unique_trade_id
         name: unique_trade_id
-        description:  "Unique trade ID (derived from tx_hash and evt_index for ethereum dex trades)"
-
-  - name: uniswap_v2_ethereum_trades
-    meta:
-      blockchain: ethereum
-      project: uniswap_v2
-      contributors: masquot, soispoke
-    config:
-      tags: ['ethereum','uniswap_v2','trades']
-    description: >
-        Uniswap V2 trades on Ethereum
-    columns:
-      - *unique_trade_id
-      - *blockchain
-      - *project
-      - *version  
-      - *block_time
-      - *token_a_symbol
-      - *token_b_symbol
-      - *token_a_amount
-      - *token_b_amount
-      - *trader_a
-      - *trader_b
-      - *amount_usd
-      - *token_a_address
-      - *token_b_address
-      - *exchange_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-
-  - name: uniswap_v3_ethereum_trades
-    meta:
-      blockchain: ethereum
-      project: uniswap_v3
-      contributors: masquot, soispoke
-    config:
-      tags: ['ethereum','uniswap_v3','trades']
-    description: >
-        Uniswap V3 trades on Ethereum
-    columns:
-      - *unique_trade_id
-      - *blockchain
-      - *project
-      - *version  
-      - *block_time
-      - *token_a_symbol
-      - *token_b_symbol
-      - *token_a_amount
-      - *token_b_amount
-      - *trader_a
-      - *trader_b
-      - *amount_usd
-      - *token_a_address
-      - *token_b_address
-      - *exchange_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
+        description:  "Unique trade ID (derived from tx_hash and evt_index for ethereum dex trades)"      
+        tests:
+          - unique
