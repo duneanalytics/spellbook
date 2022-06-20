@@ -1,6 +1,8 @@
- {{
-  config(
-        alias='trades', materialize = 'incremental')
+{{ config(
+        alias ='trades',
+        materialized ='incremental',
+        file_format ='delta'
+        )
 }}
 
 SELECT blockchain, 'opensea' as project, 'v1' as version, tx_hash, block_time, amount_usd, amount, token_symbol, token_address, unique_trade_id FROM 

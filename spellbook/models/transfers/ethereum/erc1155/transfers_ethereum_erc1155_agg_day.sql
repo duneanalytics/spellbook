@@ -1,6 +1,7 @@
 {{ config(
         alias ='erc1155_agg_day',
-        materialized ='incremental'
+        materialized ='incremental',
+        file_format ='delta'
         )
 }}
 
