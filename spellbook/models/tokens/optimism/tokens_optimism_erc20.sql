@@ -41,7 +41,7 @@ SELECT contract_address, symbol, decimals
 ,('0x8f69ee043d52161fd29137aedf63f5e70cd504d5', 'DOG', 18)
 ,('0x11b6b63515ab0d04a4b28a316486820cf5012ddf', 'f6-USDC', 18)
 ,('0x7c17611ed67d562d1f00ce82eebd39cb7b595472', 'THIRM', 18)
-,('0xe0bb0d3de8c10976511e5030ca403dbf4c25165b', 0)xBTC', 8)
+,('0xe0bb0d3de8c10976511e5030ca403dbf4c25165b', '0xBTC', 8)
 ,('0xb04095d45a98dbda07564d124b3cdb7f0d88c696', 'Demo', 18)
 ,('0x588abc030b08819c4c284189ce269a8fb4efe439', 'quotMKRquot', 18)
 ,('0xe3c332a5dce0e1d9bc2cc72a68437790570c28a4', 'VEE', 18)
