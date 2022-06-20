@@ -1,0 +1,80 @@
+version: 2
+
+models:
+  - name: seaport_ethereum_view_transactions
+    meta:
+      blockchain: ethereum
+      project: seaport
+      contributors: sohwak, soispoke
+    config:
+      tags: ['ethereum','seaport','opensea','transaction']
+    description: >
+        Seaport transactions on Ethereum
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "UTC event block time"
+      - name: nft_project_name
+        description: "name of the NFT collection"
+      - name: nft_token_id
+        description: "the token ID of the NFT transacted"
+      - name: erc_standard
+        description: "whether the NFTs transacted are ERC-721, ERC-1155 or a mix of both"
+      - name: platform
+        description: "platform on which transaction occurred (e.g. OpenSea)"
+      - name: platform_version
+        description: "Seaport is the 3rd exchange contract used by OpenSea (after Wyvern 2.2 and Wyvern 2.3)"
+      - name: trade_type
+        description: "identify whether it was a single NFT trade or multiple NFTs traded"
+      - name: number_of_items
+        description: "identify the number of items traded in the transaction"
+      - name: order_type
+        description: "basic order type and identifier criteria for collection and trait offers"
+      - name: evt_type
+        description:  "identify these transactions as trades"
+      - name: usd_amount
+        description:  "use the prices table to convert the original amount to amount in USD at the minute of the transaction"
+      - name: seller
+        description:  "seller wallet address"
+      - name: buyer
+        description:  "buyer wallet address"
+      - name: original_amount
+        description:  "original amount in original currency (so 0.2 if original final price was 0.2E)"
+      - name: original_amount_raw
+        description:  "raw original amount (can have many decimals or 0s in front)"
+      - name: original_currency
+        description:  "symbol of original token used in payment"
+      - name: original_currency_contract
+        description:  "contract address of original token used for payment"
+      - name: currency_contract
+        description:  "contract address of original token used for payment, with ETH contract address swapped for WETH"
+      - name: nft_contract_address
+        description:  "nft contract address, if only 1 nft was transacted"
+      - name: exchange_contract_address
+        description:  "exchange contract address - in this case, Seaport contract address"
+      - name: tx_hash
+        description: "Transaction hash"
+        tests:
+          - unique
+      - name: block_number
+        description:  "number of the ETH block in which transaction was executed "
+      - name: tx_from
+        description:  "actual from wallet address from ethereum.transactions table "
+      - name: tx_to
+        description:  "actual to wallet address from ethereum.transactions table (can be different from actual buyer if an aggregator is used)"
+      - name: evt_index
+        description:  "index of transaction within the block"
+      - name: fee_receive_address
+        description:  "wallet addresses receiving fees from the transaction"
+      - name: fee_currency
+        description:  "symbol of the token in which fees are paid out"
+      - name: fee_amount_raw
+        description:  "raw numerical amount of fees"
+      - name: fee_amount
+        description:  "fee amount in original token currency (properly formatted in decimals)"
+      - name: fee_usd_amount
+        description:  "fee amount in USD"
+      - name: zone_address
+        description:  "A zone is an account (usually a contract) that performs additional validation prior to fulfillment, and that can cancel the listing on behalf of the offerer. We'll use this to select for OpenSea transactions on Seaport."
