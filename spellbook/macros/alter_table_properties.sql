@@ -146,7 +146,7 @@ ALTER TABLE uniswap_ethereum.trades SET TBLPROPERTIES('dune.public'='true',
 {% endset %}
 
 {% set seaport_ethereum_view_transactions %}
-ALTER TABLE seaport_ethereum.view_transactions SET TBLPROPERTIES('dune.public'='true',
+ALTER VIEW seaport_ethereum.view_transactions SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='project',
