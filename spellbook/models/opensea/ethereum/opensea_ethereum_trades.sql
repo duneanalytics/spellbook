@@ -1,8 +1,4 @@
- {{
-  config(
-        alias='trades'
-  )
-}}
+ {{ config(alias='trades') }}
 
 SELECT
 evt_tx_hash || '-' || evt_index::string as unique_trade_id,

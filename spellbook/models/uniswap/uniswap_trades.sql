@@ -1,9 +1,7 @@
  {{
   config(
         alias='trades',        
-        materialized ='incremental'
-  )
-}}
+        materialized ='incremental') }}
 
 SELECT blockchain, project, version, block_time, token_a_symbol, token_b_symbol, 
        token_a_amount, token_b_amount, trader_a, trader_b, usd_amount, token_a_address, 

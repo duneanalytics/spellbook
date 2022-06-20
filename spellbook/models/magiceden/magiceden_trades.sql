@@ -1,13 +1,12 @@
 {{ config(
         alias='trades',
-        materialized ='incremental'
-        )
-}}
+        materialized ='incremental') }}
 
-SELECT blockchain, 'magiceden' as project, '' as version, tx_hash, block_time, amount_usd, amount, token_symbol, token_address, unique_trade_id FROM 
+SELECT blockchain, 'magiceden' as project, '' as version, tx_hash, block_time, amount_usd, amount, token_symbol, token_address, unique_trade_id 
+FROM 
 (
-        SELECT blockchain, tx_hash, block_time, amount_usd, amount, token_symbol, token_address, unique_trade_id
-        FROM {{ ref('magiceden_solana_trades') }}
+SELECT blockchain, tx_hash, block_time, amount_usd, amount, token_symbol, token_address, unique_trade_id
+FROM {{ ref('magiceden_solana_trades') }}
 ) 
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
