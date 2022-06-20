@@ -126,6 +126,8 @@ COPY nft.tokens (contract_address, project_name) FROM stdin;
 \\x9e33566aA5Ba0C0b041A15962D5301e60B911aFa	Strange 46 (OPT)
 \\xBAae851cB5cd2a923984856067eA68313AD8d113	Butterfly Collective Cards (Optim)
 \\x9e925d6D3c35Fe70DD164D4D39bdb12533b143f5	Dragonia Dragon Trainer
+\\xD182adC29d09FcF823C9FE8ED678ee96e09BE7a9	Oops-lotto
+\\x735439E0b73001E578243A310Fe870e50Fb06b57	TokenMasks
 \.
 
 COMMIT;
