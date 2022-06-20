@@ -13,8 +13,6 @@ models:
     columns:
       - name: unique_trade_id
         description:  "Unique trade id, combination of signatures[0] and id"
-        tests:
-          - unique
       - &blockchain
         name: blockchain
         description: "Blockchain"
