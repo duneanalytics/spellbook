@@ -170,6 +170,7 @@ ALTER TABLE seaport_ethereum.view_transactions SET TBLPROPERTIES('dune.public'='
 {% do run_query(transfers_ethereum_erc20) %}
 {% do run_query(tokens_ethereum_nft) %}
 {% do run_query(uniswap_ethereum_trades) %}
+{% do run_query(seaport_ethereum_view_transactions) %}
 
 {% do log("Tables generated", info=True) %}
 {%- else -%}
