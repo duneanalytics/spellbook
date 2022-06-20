@@ -79,7 +79,7 @@ ALTER VIEW balances_ethereum.erc1155_latest SET TBLPROPERTIES('dune.public'='tru
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='sector',
                                                     'dune.data_explorer.abstraction.name'='balances',
-                                                    'dune.data_explorer.contributors'='["soispoke""]');
+                                                    'dune.data_explorer.contributors'='["soispoke"]');
 {% endset %}
 
 {% set magiceden_trades %}
