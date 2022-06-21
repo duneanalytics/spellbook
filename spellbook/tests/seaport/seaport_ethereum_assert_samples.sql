@@ -2,7 +2,7 @@
 
 -- Also manually check etherscan info for the first 5 rows
 WITH unit_tests as
-(SELECT case when test_data.nft_token_id = seaport_trades.nft_token_id AND test_data.tx_hash = seaport_trades.tx_hash then True else False end as price_test
+(SELECT case when test_data.nft_token_id::string = seaport_trades.nft_token_id::string AND test_data.tx_hash = seaport_trades.tx_hash then True else False end as price_test
 FROM {{ ref('seaport_ethereum_view_transactions') }} seaport_trades
 JOIN {{ ref('seaport_ethereum_view_transactions_postgres') }} test_data ON test_data.tx_hash = seaport_trades.tx_hash
 )
