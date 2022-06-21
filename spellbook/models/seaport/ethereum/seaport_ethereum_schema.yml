@@ -56,8 +56,6 @@ models:
         description:  "exchange contract address - in this case, Seaport contract address"
       - name: tx_hash
         description: "Transaction hash"
-        tests:
-          - unique
       - name: block_number
         description:  "number of the ETH block in which transaction was executed "
       - name: tx_from
@@ -78,3 +76,7 @@ models:
         description:  "fee amount in USD"
       - name: zone_address
         description:  "A zone is an account (usually a contract) that performs additional validation prior to fulfillment, and that can cancel the listing on behalf of the offerer. We'll use this to select for OpenSea transactions on Seaport."
+      - name: unique_trade_id
+        description:  "Unique trade ID"
+        tests:
+          - unique

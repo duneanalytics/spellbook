@@ -315,4 +315,5 @@ select block_time
       ,fee_amount
       ,fee_usd_amount
       ,zone_address
+      ,tx_hash || '-' || evt_index::string || '-' || trade_id as unique_trade_id
   from iv_nft_trades
