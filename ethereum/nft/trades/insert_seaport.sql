@@ -10,27 +10,27 @@ WITH seaport AS (
     , 'Buy' AS category
     , currency_contract
     , erc_standard
-    , erc_standard AS erc_types_array
-    , NULL AS erc_values_array
+    , array[erc_standard] AS erc_types_array
+    , NULL::numeric[] AS erc_values_array
     , evt_index
     , 'Trade' AS evt_type
     , exchange_contract_address
     , nft_contract_address
-    , nft_contract_address AS nft_contract_addresses_array
+    , array[nft_contract_address] AS nft_contract_address_array
     , nft_project_name
     , nft_token_id
-    , nft_token_id AS nft_token_ids_array
+    , array[nft_token_id] AS nft_token_ids_array
     , number_of_items
     , original_amount
     , original_amount_raw
     , original_currency
     , original_currency_contract
     , platform
-    , platform_version
-    , buyer AS recipients_array
+    , platform_version::text as platform_version
+    , array[buyer] AS recipients_array
     , seller
-    , seller AS senders_array
-    , NULL AS trace_address
+    , array[seller] AS senders_array
+    , NULL::integer[] AS trace_address
     , trade_type
     , tx_from
     , tx_hash
@@ -102,7 +102,7 @@ WITH seaport AS (
     , senders_array
     , recipients_array
     , erc_types_array
-    , nft_contract_addresses_array
+    , nft_contract_address_array
     , erc_values_array
     , tx_from
     , tx_to
@@ -133,16 +133,16 @@ WHERE NOT EXISTS (
     WHERE block_time > '2022-06-10'
     AND block_time <= NOW() - interval '20 minutes'
     AND platform = 'OpenSea'
-    AND platform_version = 3
+    AND platform_version = '3'
 );
 
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('/15 * * * *', $$
+VALUES ('11 * * * *', $$
     SELECT nft.insert_seaport(
-        (SELECT MAX(block_time) - interval '6 hours' FROM nft.trades WHERE platform='OpenSea' AND platform_version = 3)
+        (SELECT MAX(block_time) - interval '6 hours' FROM nft.trades WHERE platform='OpenSea' AND platform_version = '3')
         , (SELECT NOW() - interval '20 minutes')
-        , (SELECT MAX(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '6 hours' FROM nft.trades WHERE platform='OpenSea' AND platform_version = 3))
+        , (SELECT MAX(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '6 hours' FROM nft.trades WHERE platform='OpenSea' AND platform_version = '3'))
         , (SELECT MAX(number) FROM ethereum.blocks WHERE time < NOW() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
