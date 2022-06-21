@@ -56,8 +56,6 @@ models:
         description:  "exchange contract address - in this case, Seaport contract address"
       - name: tx_hash
         description: "Transaction hash"
-        tests:
-          - unique
       - name: block_number
         description:  "number of the ETH block in which transaction was executed "
       - name: tx_from
