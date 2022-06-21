@@ -51,6 +51,13 @@ models:
         +schema: magiceden_solana
         +materialized: view
 
+    seaport:
+      +schema: seaport
+      +materialized: view
+      ethereum:
+        +schema: seaport_ethereum
+        +materialized: view
+
     balances:
       +schema: balances
       +materialized: view
