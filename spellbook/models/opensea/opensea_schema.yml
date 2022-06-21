@@ -26,6 +26,8 @@ models:
         description:  "USD value of the trade at time of execution"
       - name: unique_trade_id
         description:  "Unique trade ID"
+        tests:
+          - unique
 
   - name: opensea_volume_day
     meta:
