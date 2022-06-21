@@ -16,35 +16,41 @@ OPTIMIZE transfers_ethereum.erc721_agg_hour;
 OPTIMIZE transfers_ethereum.erc721_agg_day;
 {% endset %}
 
-{% set opensea_ethereum_trades %}
-OPTIMIZE opensea_ethereum.trades;
+{% set transfers_ethereum_erc1155_agg_hour %}
+OPTIMIZE transfers_ethereum.erc1155_agg_hour;
 {% endset %}
 
-{% set opensea_solana_trades %}
-OPTIMIZE opensea_solana.trades;
+{% set transfers_ethereum_erc1155_agg_day %}
+OPTIMIZE transfers_ethereum.erc1155_agg_day;
 {% endset %}
 
-{% set magiceden_solana_trades %}
-OPTIMIZE magiceden_solana.trades;
+{% set opensea_trades %}
+OPTIMIZE opensea.trades;
 {% endset %}
 
-{% set uniswap_v2_ethereum_trades %}
-OPTIMIZE uniswap_v2_ethereum.trades;
+{% set magiceden_trades %}
+OPTIMIZE magiceden.trades;
 {% endset %}
 
-{% set uniswap_v3_ethereum_trades %}
-OPTIMIZE uniswap_v3_ethereum.trades;
+{% set uniswap_trades %}
+OPTIMIZE uniswap.trades;
 {% endset %}
+
+{% set nft_trades %}
+OPTIMIZE nft.trades;
+{% endset %}
+
 
 {% do run_query(transfers_ethereum_erc20_agg_hour) %}
 {% do run_query(transfers_ethereum_erc20_agg_day) %}
 {% do run_query(transfers_ethereum_erc721_agg_hour) %}
 {% do run_query(transfers_ethereum_erc721_agg_day) %}
-{% do run_query(opensea_ethereum_trades) %}
-{% do run_query(opensea_solana_trades) %}
-{% do run_query(magiceden_solana_trades) %}
-{% do run_query(uniswap_v2_ethereum_trades) %}
-{% do run_query(uniswap_v3_ethereum_trades) %}
+{% do run_query(transfers_ethereum_erc1155_agg_hour) %}
+{% do run_query(transfers_ethereum_erc1155_agg_day) %}
+{% do run_query(opensea_trades) %}
+{% do run_query(magiceden_trades) %}
+{% do run_query(uniswap_trades) %}
+{% do run_query(nft_trades) %}
 
 {% do log("Tables Optimized", info=True) %}
 {%- else -%}

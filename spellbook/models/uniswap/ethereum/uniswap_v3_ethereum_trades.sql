@@ -1,13 +1,9 @@
 {{config(schema = 'uniswap_v3_ethereum', 
-        alias='trades',
-        materialized ='incremental',
-        file_format ='delta',
-        incremental_strategy='merge',
-        unique_key='unique_id')
+        alias='trades')
 }}
         
 SELECT
-    tx_hash || evt_index::string as unique_id,
+    tx_hash || '-' || evt_index::string as unique_trade_id,
     'ethereum' as blockchain,
     'uniswap' as project, 
     'v3' as version,
@@ -28,8 +24,7 @@ SELECT
     exchange_contract_address,
     tx_hash,
     tx.from as tx_from,
-    tx.to as tx_to,
-    evt_index as trade_id
+    tx.to as tx_to
     FROM (--Uniswap v3
     SELECT
     t.evt_block_time AS block_time,
@@ -57,7 +52,3 @@ SELECT
     LEFT JOIN {{ source('prices', 'usd') }} pb ON pb.minute = date_trunc('minute', dex.block_time)
         AND pb.contract_address = dex.token_b_address
         AND pb.blockchain = 'ethereum'
-{% if is_incremental() %}
--- this filter will only be applied on an incremental run
-WHERE dex.block_time > now() - interval 2 days
-{% endif %} 
