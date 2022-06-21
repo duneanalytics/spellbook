@@ -27,6 +27,9 @@ SELECT
     d.hour,
     b.wallet_address,
     b.token_address,
-    b.tokenId
+    b.tokenId,
+    nft_tokens.name as collection,
+    nft_tokens.category as category
 FROM daily_balances b
 INNER JOIN hours d ON b.hour <= d.hour AND d.hour < b.next_hour
+LEFT JOIN {{ ref('tokens_ethereum_nft') }} nft_tokens ON nft_tokens.contract_address = b.token_address

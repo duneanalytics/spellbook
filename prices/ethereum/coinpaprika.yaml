@@ -2111,6 +2111,11 @@
   symbol: GCR
   address: 0x6307B25A665Efc992EC1C1bC403c38F3dDd7c661
   decimals: 4
+- name: TokenPocket Token
+  id: tpt-token-pocket
+  symbol: TPT
+  address: 0x4161725d019690a3e0de50f6be67b07a86a9fae1
+  decimals: 4
 - name: audio_audius
   id: audio-audius
   symbol: AUDIO
@@ -2120,4 +2125,27 @@
   id: iag-iagon
   symbol: IAG
   address: 0x40eb746dee876ac1e78697b7ca85142d178a1fc8
+  decimals: 18
+- name: avax_avalanche
+  id: avax-avalanche
+  symbol: AVAX
+- name: KROWN
+  id: krw-krown
+  symbol: KRW
+  address: 0x95dfdc8161832e4ff7816ac4b6367ce201538253
+  decimals: 18
+- name: GYEN
+  id: gyen-gyen
+  symbol: GYEN
+  address: 0x5555f75e3d5278082200Fb451D1b6bA946D8e13b
+  decimals: 18
+- name: Australian Dollar Token
+  id: aud-australian-dollar-token
+  symbol: AUD
+  address: 0xFAFdF0C4c1CB09d430Bf88c75D88BB46DAe09967
+  decimals: 18
+- name: Pound Sterling Token
+  id: gbp-pound-sterling-token
+  symbol: GBP
+  address: 0x69681f8fde45345C3870BCD5eaf4A05a60E7D227
   decimals: 18

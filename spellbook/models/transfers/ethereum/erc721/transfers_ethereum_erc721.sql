@@ -24,8 +24,8 @@ with
             {{ source('erc721_ethereum', 'evt_transfer') }}
     )
     
-select 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, tokenId, amount
+select 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, tokenId, amount, unique_tx_id
 from sent_transfers
 union all
-select 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, tokenId, amount
+select 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, tokenId, amount, unique_tx_id
 from received_transfers
