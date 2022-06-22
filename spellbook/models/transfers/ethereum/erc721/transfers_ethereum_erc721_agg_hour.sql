@@ -1,7 +1,9 @@
 {{ config(
         alias ='erc721_agg_hour', 
         materialized ='incremental',
-        file_format ='delta'
+        file_format ='delta',
+        incremental_strategy='merge',
+        unique_key='unique_transfer_id'
         )
 }}
 
