@@ -92,4 +92,8 @@
   symbol: 1SOL
   address: 4ThReWAbAVZjNVgs5Ui9Pk3cZ5TYaD9u6Y89fp6EFzoF
   decimals: 8
-
+- name: stsol-lido-staked-sol
+  id: stsol-lido-staked-sol
+  symbol: stSOL
+  address: 7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj
+  decimals: 9
