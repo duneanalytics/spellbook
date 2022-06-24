@@ -204,6 +204,9 @@ WITH rows AS (
             UNION ALL
             SELECT "evt_block_time", "initiator", "beneficiary", "srcAmount", "receivedAmount", "srcToken", "destToken", "contract_address", "evt_tx_hash", "evt_index"
                 FROM paraswap."AugustusSwapper6.0_evt_Swapped2"
+            UNION ALL
+            SELECT "evt_block_time", "initiator", "beneficiary", "srcAmount", "receivedAmount", "srcToken", "destToken", "contract_address", "evt_tx_hash", "evt_index"
+                FROM paraswap."AugustusSwapper6.0_evt_SwappedV3"
         ) swaps
         UNION ALL
 
@@ -227,6 +230,9 @@ WITH rows AS (
             UNION ALL
             SELECT "evt_block_time", "initiator", "beneficiary", "srcAmount", "receivedAmount", "srcToken", "destToken", "contract_address", "evt_tx_hash", "evt_index"
                 FROM paraswap."AugustusSwapper6.0_evt_Bought2"
+            UNION ALL
+            SELECT "evt_block_time", "initiator", "beneficiary", "srcAmount", "receivedAmount", "srcToken", "destToken", "contract_address", "evt_tx_hash", "evt_index"
+                FROM paraswap."AugustusSwapper6.0_evt_BoughtV3"
         ) swaps
         UNION ALL
 
