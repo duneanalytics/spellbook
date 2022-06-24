@@ -564,6 +564,11 @@
   id: tpt-token-pocket
   name: TokenPocket Token
   symbol: TPT
+- address: '0xE85aFCcDaFBE7F2B096f268e31ccE3da8dA2990A'
+  decimals: 18
+  id: abnbc-abnbc
+  name: Ankr BNB Reward Bearing Certificate
+  symbol: ABNBC
 - address: '0x84b174628911896a3b87fa6980d05dbc2ee74836'
   decimals: 8
   id: znn-zenon
