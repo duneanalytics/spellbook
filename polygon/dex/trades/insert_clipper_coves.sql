@@ -43,8 +43,7 @@ WITH rows AS (
         coalesce(
             usd_amount,
             token_a_amount_raw / 10 ^ erc20a.decimals * pa.price,
-            token_b_amount_raw / 10 ^ erc20b.decimals * pb.price,
-            0
+            token_b_amount_raw / 10 ^ erc20b.decimals * pb.price
         ) as usd_amount,
         token_a_address,
         token_b_address,
@@ -66,8 +65,6 @@ WITH rows AS (
             NULL::bytea AS trader_b,
             "inAmount" AS token_b_amount_raw,
             "outAmount" AS token_a_amount_raw,
-            -- This is referenced in the coalesce above
-            NULL::numeric AS usd_amount,
             -- Cast raw sigil as MATIC for price purposes
             CASE WHEN "outAsset" = '\x0000000000000000000000000000000000000000' THEN
                 '\x0000000000000000000000000000000000001010'::bytea ELSE "outAsset"
