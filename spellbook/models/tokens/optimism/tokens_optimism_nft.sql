@@ -1,7 +1,7 @@
 {{ config(alias='nft') }}
 
 SELECT
-  contract_address, name
+  LOWER(contract_address) AS contract_address, name
 FROM
   (VALUES 
  ('0xb8df6cc3050cc02f967db1ee48330ba23276a492',	'OptiPunk')
