@@ -178,5 +178,9 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0x81ab7e0d570b01411fcc4afd3d50ec8c241cb74b', 'EQZ', 18)
 ,('0x117cfd9060525452db4a34d51c0b3b7599087f05', 'GYSR', 18)
 ,('0xfeaa9194f9f8c1b65429e31341a103071464907e', 'LRC', 18)
+,('0xf390830DF829cf22c53c8840554B98eafC5dCBc2','anyUSDC',6)
+,('0x965f84d915a9efa2dd81b653e3ae736555d945f4','anyWETH',18)
+,('0x1ccca1ce62c62f7be95d4a67722a8fdbed6eecb4','Multichain alETH',18)
+,('0x922D641a426DcFFaeF11680e5358F34d97d112E1','anyFXS',18)
   
 ) AS temp_table (contract_address, symbol, decimals)
