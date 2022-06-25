@@ -1,6 +1,6 @@
 {{ config( alias='erc20')}}
 
-SELECT contract_address, symbol, decimals
+SELECT LOWER(contract_address) AS contract_address, symbol, decimals
   FROM (VALUES 
   
  ('0x4200000000000000000000000000000000000006', 'WETH', 18)
