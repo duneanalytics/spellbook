@@ -1,5 +1,5 @@
 BEGIN;
-DROP MATERIALIZED VIEW IF EXISTS gnosis_protocol_v2.view_solvers;
+DROP MATERIALIZED VIEW IF EXISTS gnosis_protocol_v2.view_solvers CASCADE;
 COMMIT;
 
 BEGIN;
@@ -36,6 +36,18 @@ known_solver_metadata (address, environment, name) as (
                  (decode('a97DEF4fBCBa3b646dd169Bc2eeE40f0f3fE7771', 'hex'), 'prod', 'BalancerSOR'),
                  (decode('6fa201C3Aff9f1e4897Ed14c7326cF27548d9c35', 'hex'), 'prod', 'Otex'),
                  (decode('e58c68679e7aab8ef83bf37e88b18eb1f6e30e22', 'hex'), 'prod', 'PLM'),
+                 (decode('0e8F282CE027f3ac83980E6020a2463F4C841264', 'hex'), 'prod', 'Legacy'),
+                 (decode('7A0A8890D71A4834285efDc1D18bb3828e765C6A', 'hex'), 'prod', 'Naive'),
+                 (decode('3Cee8C7d9B5C8F225A8c36E7d3514e1860309651', 'hex'), 'prod', 'Baseline'),
+                 (decode('e8fF24ec26bd46E0140d1824DA44eFad2a0920B5', 'hex'), 'prod', 'MIP'),
+                 (decode('731a0A8ab2C6FcaD841e82D06668Af7f18e34970', 'hex'), 'prod', 'QuasiModo'),
+                 (decode('b20B86C4e6DEEB432A22D773a221898bBBD03036', 'hex'), 'prod', '1inch'),
+                 (decode('E9aE2D792F981C53EA7f6493A17Abf5B2a45a86b', 'hex'), 'prod', 'ParaSwap'),
+                 (decode('dA869Be4AdEA17AD39E1DFeCe1bC92c02491504f', 'hex'), 'prod', '0x'),
+                 (decode('6D1247b8ACf4dFD5Ff8cfD6C47077ddC43d4500E', 'hex'), 'prod', 'DexCowAgg'),
+                 (decode('F7995B6B051166eA52218c37b8d03A2A6bbeF3DA', 'hex'), 'prod', 'BalancerSOR'),
+                 (decode('c9ec550BEA1C64D779124b23A26292cc223327b6', 'hex'), 'prod', 'Otex'),
+                 (decode('149d0f9282333681Ee41D30589824b2798E9fb47', 'hex'), 'prod', 'PLM'),
                  (decode('109BF9E0287Cc95cc623FBE7380dD841d4bdEb03', 'hex'), 'barn', 'Otex'),
                  (decode('70f3c870b6e7e1d566e40c41e2e3d6e895fcee23', 'hex'), 'barn', 'QuasiModo'),
                  (decode('97dd6a023b06ba4722aF8Af775ec3C2361e66684', 'hex'), 'barn', '0x'),
