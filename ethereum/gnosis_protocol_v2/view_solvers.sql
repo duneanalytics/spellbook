@@ -1,5 +1,5 @@
 BEGIN;
-DROP MATERIALIZED VIEW IF EXISTS gnosis_protocol_v2.view_solvers;
+DROP MATERIALIZED VIEW IF EXISTS gnosis_protocol_v2.view_solvers CASCADE;
 COMMIT;
 
 BEGIN;
