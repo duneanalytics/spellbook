@@ -48,6 +48,8 @@ known_solver_metadata (address, environment, name) as (
                  (decode('F7995B6B051166eA52218c37b8d03A2A6bbeF3DA', 'hex'), 'prod', 'BalancerSOR'),
                  (decode('c9ec550BEA1C64D779124b23A26292cc223327b6', 'hex'), 'prod', 'Otex'),
                  (decode('149d0f9282333681Ee41D30589824b2798E9fb47', 'hex'), 'prod', 'PLM'),
+                 (decode('e18B5632DF2Ec339228DD65e4D9F004eF59653d3', 'hex'), 'prod', 'Atlas'),
+                 (decode('8567351D6989d83513D3BC3ad951CcCe363941e3', 'hex'), 'barn', 'Atlas'),
                  (decode('109BF9E0287Cc95cc623FBE7380dD841d4bdEb03', 'hex'), 'barn', 'Otex'),
                  (decode('70f3c870b6e7e1d566e40c41e2e3d6e895fcee23', 'hex'), 'barn', 'QuasiModo'),
                  (decode('97dd6a023b06ba4722aF8Af775ec3C2361e66684', 'hex'), 'barn', '0x'),
