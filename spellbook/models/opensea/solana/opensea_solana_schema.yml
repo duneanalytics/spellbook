@@ -11,10 +11,6 @@ models:
     description: >
         OpenSea trades on Solana
     columns:
-      - name: unique_trade_id
-        description:  "Unique trade id, combination of signatures[0] and id"
-        tests:
-          - unique
       - &blockchain
         name: blockchain
         description: "Blockchain"
@@ -22,16 +18,20 @@ models:
         description: "Transaction hash"
       - name: block_time
         description: "UTC event block time"
-      - name: token_symbol
-        description: "Token Symbol"
-      - name: token_address
-        description: "Token Address"
-      - name: amount
+      - name: currency_symbol
+        description: "Currency Symbol of the trade value"
+      - name: currency_contract
+        description: "Contract address of the currency in which the trade is denominated in"
+      - name: amount_original
         description: "Value of the trade at time of execution in the original currency"
       - name: amount_usd
         description:  "USD value of the trade at time of execution"
       - name: traders
         description:  "Traders"
+      - name: unique_trade_id
+        description:  "Unique trade id, combination of signatures[0] and id"
+        tests:
+          - unique
 
   - name: opensea_solana_volume_day
     meta:

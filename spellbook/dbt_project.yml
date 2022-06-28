@@ -28,7 +28,9 @@ models:
   spellbook:
     nft:
       +schema: nft
-      +materialized: view
+      ethereum:
+        +schema: nft_ethereum
+        +materialized: view
     uniswap:
       +schema: uniswap
       +materialized: view
@@ -78,7 +80,6 @@ models:
       ethereum:
         +schema: transfers_ethereum
         +materialized: view
-
 
 seeds:
   spellbook:
