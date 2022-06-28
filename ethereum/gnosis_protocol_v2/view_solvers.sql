@@ -94,7 +94,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS view_solvers_address_unique_idx ON gnosis_prot
 
 COMMIT;
 
--- -- This job updates the view every half day to capture any new (but currently uncatalogued solvers)
--- INSERT INTO cron.job (schedule, command)
--- VALUES ('0 */12 * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol_v2.view_solvers')
--- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+-- This job updates the view every half day to capture any new (but currently uncatalogued solvers)
+INSERT INTO cron.job (schedule, command)
+VALUES ('0 */12 * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol_v2.view_solvers')
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
