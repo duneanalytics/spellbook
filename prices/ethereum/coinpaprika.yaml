@@ -2149,3 +2149,8 @@
   symbol: GBP
   address: 0x69681f8fde45345C3870BCD5eaf4A05a60E7D227
   decimals: 18
+- name: rndr-render-token
+  id: rndr-render-token
+  symbol: RNDR
+  address: 0x6De037ef9aD2725EB40118Bb1702EBb27e4Aeb24
+  decimals: 18
