@@ -1,10 +1,6 @@
  {{
   config(
-        alias='trades',
-        materialized ='incremental',
-        file_format ='delta',
-        incremental_strategy='merge',
-        unique_key='unique_trade_id')
+        alias='trades')
 }}
 
 SELECT blockchain,
@@ -39,9 +35,4 @@ fee_amount_usd,
 fee_receive_address,
 fee_currency_symbol,
 unique_trade_id
-FROM (SELECT * FROM {{ ref('opensea_v1_ethereum_trades') }} ) 
-
-{% if is_incremental() %}
--- this filter will only be applied on an incremental run
-WHERE block_time > now() - interval 2 days
-{% endif %} 
+FROM (SELECT * FROM {{ ref('opensea_v1_ethereum_trades') }} )
