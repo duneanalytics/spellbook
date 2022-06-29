@@ -225,4 +225,4 @@ sources:
         - *from
         - *to
         - name: tokenId
-          description: "ERC721 token ID"  
+          description: "ERC721 token ID."
