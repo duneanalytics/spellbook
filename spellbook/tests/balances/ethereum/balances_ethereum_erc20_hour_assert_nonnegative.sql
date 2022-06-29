@@ -6,3 +6,4 @@ from {{ ref('balances_ethereum_erc20_hour') }}
 where round(amount/power(10, 18), 6) < 0
 -- limiting to a selection of tokens because we haven't filtered out all non-compliant tokens
 and symbol in ('AAVE', 'DAI', 'UNI', 'LINK')
+and block_time > now() - interval 2 days
