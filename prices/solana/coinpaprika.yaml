@@ -14,7 +14,7 @@
   decimals: 6
 - name: mngo-mango-markets
   id: mngo-mango-markets
-  symbol: SRM
+  symbol: MNGO
   address: MangoCzJ36AjZyKwVj3VnYU4GTonjfVEnJmvvWaxLac
   decimals: 6
 - name: samo-samoyedcoin
