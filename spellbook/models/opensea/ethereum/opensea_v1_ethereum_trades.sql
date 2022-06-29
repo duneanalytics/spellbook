@@ -1,7 +1,6 @@
  {{ config(schema = 'opensea_v1_ethereum', 
 alias='trades') }}
 
-
 WITH wyvern_call_data as (
 SELECT 
   call_tx_hash,

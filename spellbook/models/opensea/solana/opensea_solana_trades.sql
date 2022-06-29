@@ -12,9 +12,11 @@ SELECT
   block_time,
   abs(post_balances[0] / 1e9 - pre_balances[0] / 1e9) * p.price AS amount_usd,
   abs(post_balances[0] / 1e9 - pre_balances[0] / 1e9) AS amount_original,
+  abs(post_balances[0] - pre_balances[0])::string AS amount_raw,
   p.symbol as currency_symbol,
   p.contract_address as currency_contract,
   'pAHAKoTJsAAe2ZcvTZUxoYzuygVAFAmbYmJYdWT886r' as project_contract_address,
+  'ExecuteSale' as evt_type,
   account_keys[0] as traders,
   signatures[0] || '-' || id as unique_trade_id
 FROM {{ source('solana','transactions') }}
