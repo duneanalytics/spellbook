@@ -137,7 +137,7 @@ SELECT
   wa.fees / power(10,erc20.decimals) * p.price AS fee_amount_usd, 
   wa.fee_receive_address,
   wa.fee_currency_symbol,
-  wa.call_tx_hash || '-' || token_id as unique_trade_id
+  wa.call_tx_hash || '-' || wa.token_id || '-' || amount_original::string as unique_trade_id
 FROM wyvern_all wa
 LEFT JOIN {{ source('ethereum','transactions') }} tx ON wa.call_tx_hash = tx.hash
 LEFT JOIN erc_values_1155 ON erc_values_1155.evt_tx_hash = wa.call_tx_hash AND wa.token_id = erc_values_1155.token_id_erc

@@ -30,8 +30,6 @@ models:
         description:  "Traders"
       - name: unique_trade_id
         description:  "Unique trade id, combination of signatures[0] and id"
-        tests:
-          - unique
 
   - name: opensea_solana_volume_day
     meta:
