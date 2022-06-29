@@ -25,10 +25,10 @@ SELECT
   uints [4] as amount_original,
   addrs [1] as buyer,
   addrs [8] AS seller,
-  CASE WHEN contains('0xfb16a595', substring(calldataBuy,1,4)) THEN conv(substr(calldataBuy,203,64),16,10)::string
-        WHEN contains('0x96809f90', substring(calldataBuy,1,4)) THEN conv(substr(calldataBuy,203,64),16,10)::string
-        WHEN contains('0x23b872dd', substring(calldataBuy,1,4)) THEN conv(substr(calldataBuy,139,64),16,10)::string
-        WHEN contains('0xf242432a', substring(calldataBuy,1,4)) THEN conv(substr(calldataBuy,139,64),16,10)::string
+  CASE WHEN contains('0xfb16a595', substring(calldataBuy,1,4)) THEN bytea2numeric_v2(substr(calldataBuy,203,64))
+        WHEN contains('0x96809f90', substring(calldataBuy,1,4)) THEN bytea2numeric_v2(substr(calldataBuy,203,64))
+        WHEN contains('0x23b872dd', substring(calldataBuy,1,4)) THEN bytea2numeric_v2(substr(calldataBuy,139,64))
+        WHEN contains('0xf242432a', substring(calldataBuy,1,4)) THEN bytea2numeric_v2(substr(calldataBuy,139,64))
         END AS token_id,
   CASE WHEN size(call_trace_address) = 0 then array(3::bigint) -- for bundle join
   ELSE call_trace_address 
