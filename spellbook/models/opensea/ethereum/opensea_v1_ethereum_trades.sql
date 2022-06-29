@@ -67,19 +67,21 @@ erc_values_1155 as
 (SELECT evt_tx_hash,
         id::string as token_id_erc,
         cardinality(collect_list(value)) as card_values,
-        value as value_unique
+        value as value_unique,
+        evt_index
         FROM {{ source('erc1155_ethereum','evt_transfersingle') }} erc1155
         WHERE erc1155.from NOT IN ('0x0000000000000000000000000000000000000000')
-        GROUP BY evt_tx_hash,value,id),
+        GROUP BY evt_tx_hash,value,id,evt_index),
 
 -- Get ERC721 token ID and number of token IDs for every trade transaction 
 erc_count_721 as
 (SELECT evt_tx_hash,
         tokenId::string as token_id_erc,
-        COUNT(tokenId) as count_erc
+        COUNT(tokenId) as count_erc,
+        evt_index
         FROM {{ source('erc721_ethereum','evt_transfer') }} erc721
         WHERE erc721.from NOT IN ('0x0000000000000000000000000000000000000000')
-        GROUP BY evt_tx_hash,tokenId)
+        GROUP BY evt_tx_hash,tokenId,evt_index)
         
 SELECT
   'ethereum' as blockchain,
@@ -136,7 +138,7 @@ SELECT
   wa.fees / power(10,erc20.decimals) * p.price AS fee_amount_usd, 
   wa.fee_receive_address,
   wa.fee_currency_symbol,
-  wa.call_tx_hash || '-' || wa.token_id || '-' || amount_original::string as unique_trade_id
+  wa.call_tx_hash || '-' || wa.token_id || '-' ||  wa.seller || '-' || erc_values_1155.evt_index::string || '-' || erc_count_721.evt_index::string as unique_trade_id
 FROM wyvern_all wa
 LEFT JOIN {{ source('ethereum','transactions') }} tx ON wa.call_tx_hash = tx.hash
 LEFT JOIN erc_values_1155 ON erc_values_1155.evt_tx_hash = wa.call_tx_hash AND wa.token_id = erc_values_1155.token_id_erc
