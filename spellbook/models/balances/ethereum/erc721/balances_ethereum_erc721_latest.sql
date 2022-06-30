@@ -2,7 +2,7 @@
         alias='erc721_latest'
         )
 }}
-SELECT
+SELECT distinct
     wallet_address,
     token_address,
     tokenId,
