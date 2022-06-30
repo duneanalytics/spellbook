@@ -77,6 +77,8 @@ WITH rows AS (
             dodoex."DODO_evt_SellBaseToken" s
         LEFT JOIN dodoex."view_markets_bsc" m on s.contract_address = m.market_contract_address
         WHERE s.seller <> '\xbe60d4c4250438344bec816ec2dec99925deb4c7'
+            AND s.evt_block_time >= start_ts
+            AND s.evt_block_time < end_ts
 
         UNION ALL
 
@@ -101,6 +103,8 @@ WITH rows AS (
             dodoex."DODO_evt_BuyBaseToken" b
         LEFT JOIN dodoex."view_markets_bsc" m on b.contract_address = m.market_contract_address
         WHERE b.buyer <> '\xbe60d4c4250438344bec816ec2dec99925deb4c7'
+            AND b.evt_block_time >= start_ts
+            AND b.evt_block_time < end_ts
 
         UNION ALL
 
@@ -123,6 +127,8 @@ WITH rows AS (
             evt_index
         FROM
             dodoex."DODOV2Proxy01_evt_OrderHistory"
+        WHERE evt_block_time >= start_ts
+            AND evt_block_time < end_ts
 
         UNION ALL
 
@@ -145,6 +151,8 @@ WITH rows AS (
             evt_index
         FROM
             dodoex."DODORouteProxy_evt_OrderHistory"
+        WHERE evt_block_time >= start_ts
+            AND evt_block_time < end_ts
 
         UNION ALL
 
@@ -167,6 +175,8 @@ WITH rows AS (
             evt_index
         FROM
             dodoex."DODOV2Proxy02_evt_OrderHistory"
+        WHERE evt_block_time >= start_ts
+            AND evt_block_time < end_ts
 
         UNION ALL
 
@@ -190,6 +200,8 @@ WITH rows AS (
         FROM
             dodoex."DVM_evt_DODOSwap"
         WHERE trader <> '\xa356867fdcea8e71aeaf87805808803806231fdc'
+            AND evt_block_time >= start_ts
+            AND evt_block_time < end_ts
 
         UNION ALL
 
@@ -213,6 +225,8 @@ WITH rows AS (
         FROM
             dodoex."DPP_evt_DODOSwap"
         WHERE trader <> '\xbe60d4c4250438344bec816ec2dec99925deb4c7'
+            AND evt_block_time >= start_ts
+            AND evt_block_time < end_ts
 
         UNION ALL
 
@@ -236,8 +250,10 @@ WITH rows AS (
         FROM
             dodoex."DSP_evt_DODOSwap"
         WHERE trader <> '\xbe60d4c4250438344bec816ec2dec99925deb4c7'
+            AND evt_block_time >= start_ts
+            AND evt_block_time < end_ts
     ) dexs
-    INNER JOIN bsc.transactions tx
+    LEFT JOIN bsc.transactions tx
         ON dexs.tx_hash = tx.hash
         AND tx.block_time >= start_ts
         AND tx.block_time < end_ts
@@ -272,7 +288,7 @@ END
 $function$;
 
 -- fill 2020
-SELECT dex.insert_dodo(
+SELECT dex.insert_dodoex_bsc(
     '2020-09-01',
     '2021-01-01',
     (SELECT max(number) FROM bsc.blocks WHERE time < '2020-09-01'),
@@ -287,7 +303,7 @@ WHERE NOT EXISTS (
 );
 
 -- fill 2021
-SELECT dex.insert_dodo(
+SELECT dex.insert_dodoex_bsc(
     '2021-01-01',
     now(),
     (SELECT max(number) FROM bsc.blocks WHERE time < '2021-01-01'),
