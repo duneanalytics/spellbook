@@ -2154,3 +2154,8 @@
   symbol: RNDR
   address: 0x6De037ef9aD2725EB40118Bb1702EBb27e4Aeb24
   decimals: 18
+- name: Notional Token
+  id: note-notional
+  symbol: NOTE
+  address: 0xCFEAead4947f0705A14ec42aC3D44129E1Ef3eD5
+  decimals: 8
