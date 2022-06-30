@@ -41,7 +41,7 @@ models:
       sector: nft
       contributors: dot2dotseurat, hildobby
     config:
-      tags: ['tokens', 'ethereum', 'nft']
+      tags: ['tokens', 'ethereum', 'nft', 'erc721']
     description: >
         Selection of NFT token addresses.
     columns:
