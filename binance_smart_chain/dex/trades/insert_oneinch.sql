@@ -1,3 +1,5 @@
+--###### Forked from Ethreum insert_1inch at https://github.com/duneanalytics/abstractions/blob/master/ethereum/dex/trades/insert_1inch.sql
+
 CREATE OR REPLACE FUNCTION dex.insert_oneinch(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
