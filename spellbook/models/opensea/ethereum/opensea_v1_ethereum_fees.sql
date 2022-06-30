@@ -1,5 +1,6 @@
 
- {{ config(alias='fees') }}
+ {{ config(schema = 'opensea_v1_ethereum', 
+alias='fees') }}
 
 SELECT  
     CASE WHEN size(trace_address) = 1 then array(3::bigint) -- for single row join

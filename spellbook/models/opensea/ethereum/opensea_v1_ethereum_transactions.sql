@@ -1,5 +1,5 @@
  {{ config(schema = 'opensea_v1_ethereum', 
-alias='trades') }}
+alias='transactions') }}
 
 WITH wyvern_call_data as (
 SELECT 
@@ -25,11 +25,11 @@ SELECT
   uints [4] as amount_original,
   addrs [1] as buyer,
   addrs [8] AS seller,
-  CASE WHEN contains('0xfb16a595', substring(calldataBuy,1,4)) THEN bytea2numeric_v2(substr(calldataBuy,203,64))
-        WHEN contains('0x96809f90', substring(calldataBuy,1,4)) THEN bytea2numeric_v2(substr(calldataBuy,203,64))
-        WHEN contains('0x23b872dd', substring(calldataBuy,1,4)) THEN bytea2numeric_v2(substr(calldataBuy,139,64))
-        WHEN contains('0xf242432a', substring(calldataBuy,1,4)) THEN bytea2numeric_v2(substr(calldataBuy,139,64))
-        END AS token_id,
+  CASE WHEN contains('0xfb16a595', substring(calldataBuy,1,4)) THEN conv(substr(calldataBuy,203,64),16,10)::string
+       WHEN contains('0x96809f90', substring(calldataBuy,1,4)) THEN conv(substr(calldataBuy,203,64),16,10)::string
+       WHEN contains('0x23b872dd', substring(calldataBuy,1,4)) THEN conv(substr(calldataBuy,139,64),16,10)::string
+       WHEN contains('0xf242432a', substring(calldataBuy,1,4)) THEN conv(substr(calldataBuy,139,64),16,10)::string
+       END AS token_id,
   CASE WHEN size(call_trace_address) = 0 then array(3::bigint) -- for bundle join
   ELSE call_trace_address 
   END as call_trace_address,  
@@ -68,20 +68,26 @@ erc_values_1155 as
         id::string as token_id_erc,
         cardinality(collect_list(value)) as card_values,
         value as value_unique,
+        CASE WHEN erc1155.from = '0x0000000000000000000000000000000000000000' THEN 'Mint'
+        WHEN erc1155.to = '0x0000000000000000000000000000000000000000' 
+        OR erc1155.to = '0x000000000000000000000000000000000000dead' THEN 'Burn' 
+        ELSE 'Trade' END AS evt_type,
         evt_index
         FROM {{ source('erc1155_ethereum','evt_transfersingle') }} erc1155
-        WHERE erc1155.from NOT IN ('0x0000000000000000000000000000000000000000')
-        GROUP BY evt_tx_hash,value,id,evt_index),
+        GROUP BY evt_tx_hash,value,id,evt_index, erc1155.from, erc1155.to),
 
 -- Get ERC721 token ID and number of token IDs for every trade transaction 
 erc_count_721 as
 (SELECT evt_tx_hash,
         tokenId::string as token_id_erc,
         COUNT(tokenId) as count_erc,
+        CASE WHEN erc721.from = '0x0000000000000000000000000000000000000000' THEN 'Mint'
+        WHEN erc721.to = '0x0000000000000000000000000000000000000000' 
+        OR erc721.to = '0x000000000000000000000000000000000000dead' THEN 'Burn' 
+        ELSE 'Trade' END AS evt_type,
         evt_index
         FROM {{ source('erc721_ethereum','evt_transfer') }} erc721
-        WHERE erc721.from NOT IN ('0x0000000000000000000000000000000000000000')
-        GROUP BY evt_tx_hash,tokenId,evt_index)
+        GROUP BY evt_tx_hash,tokenId,evt_index, erc721.from, erc721.to)
         
 SELECT
   'ethereum' as blockchain,
@@ -108,18 +114,20 @@ SELECT
               count(1)::bigint cnt
           FROM {{ source('erc721_ethereum','evt_transfer') }} erc721
           WHERE erc721.evt_tx_hash = wa.call_tx_hash
-          AND erc721.from NOT IN ('0x0000000000000000000000000000000000000000')
         ) +    
         (SELECT
              count(1)::bigint cnt
           FROM {{ source('erc1155_ethereum','evt_transfersingle') }} erc1155
           WHERE erc1155.evt_tx_hash = wa.call_tx_hash
-          AND erc1155.from NOT IN ('0x0000000000000000000000000000000000000000')
         ) END AS number_of_items,
   'Buy' AS trade_category,
-  'Trade' AS evt_type,
   wa.seller AS seller,
   wa.buyer AS buyer,
+  CASE WHEN erc_count_721.evt_type = 'Mint' 
+       OR erc_values_1155.evt_type = 'Mint' THEN 'Mint'
+  WHEN erc_count_721.evt_type = 'Burn' 
+       OR erc_values_1155.evt_type = 'Burn' THEN 'Burn'
+  ELSE 'Trade' END as evt_type,
   wa.amount_original / power(10,erc20.decimals) AS amount_original,
   wa.amount_original AS amount_raw,
   CASE WHEN wa.currency_contract_original = '0x0000000000000000000000000000000000000000' THEN 'ETH' ELSE erc20.symbol END AS currency_symbol,
@@ -138,7 +146,7 @@ SELECT
   wa.fees / power(10,erc20.decimals) * p.price AS fee_amount_usd, 
   wa.fee_receive_address,
   wa.fee_currency_symbol,
-  wa.call_tx_hash || '-' || wa.token_id || '-' ||  wa.seller || '-' || erc_values_1155.evt_index::string || '-' || erc_count_721.evt_index::string as unique_trade_id
+  wa.call_tx_hash || '-' || wa.token_id || '-' ||  wa.seller || '-' || coalesce(erc_values_1155.evt_index::string, erc_count_721.evt_index::string, '1') as unique_trade_id
 FROM wyvern_all wa
 LEFT JOIN {{ source('ethereum','transactions') }} tx ON wa.call_tx_hash = tx.hash
 LEFT JOIN erc_values_1155 ON erc_values_1155.evt_tx_hash = wa.call_tx_hash AND wa.token_id = erc_values_1155.token_id_erc
@@ -149,14 +157,8 @@ LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', tx.
     AND p.contract_address = wa.currency_contract
     AND p.blockchain ='ethereum'
 LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20 ON erc20.contract_address = wa.currency_contract
- WHERE
-        NOT EXISTS (SELECT * -- Exclude OpenSea mint transactions
-            FROM {{ source('erc721_ethereum','evt_transfer') }} erc721
-            WHERE wa.call_tx_hash = erc721.evt_tx_hash
-            AND erc721.from = '0x0000000000000000000000000000000000000000')
-  AND wa.call_tx_hash not in (
+  WHERE wa.call_tx_hash not in (
     SELECT
       *
     FROM
-      {{ ref('opensea_v1_ethereum_excluded_txns') }}
-  )
+      {{ ref('opensea_v1_ethereum_excluded_txns') }})

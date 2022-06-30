@@ -1,6 +1,6 @@
  {{
   config(
-        alias='trades')
+        alias='mints')
 }}
 
 SELECT blockchain,
@@ -24,11 +24,9 @@ currency_contract,
 currency_contract_original,
 nft_contract_address,
 project_contract_address,
-aggregator_name,
-aggregator_address,
 tx_hash,
 tx_from,
 tx_to,
 unique_trade_id
-FROM (SELECT * FROM {{ ref('opensea_v1_ethereum_transactions') }} )
-WHERE evt_type = 'Trade'
+FROM ({{ ref('opensea_ethereum_transactions') }})
+WHERE evt_type = 'Mint'

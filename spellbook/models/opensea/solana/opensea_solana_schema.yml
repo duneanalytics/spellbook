@@ -7,7 +7,7 @@ models:
       project: opensea
       contributors: rchen8, soispoke
     config:
-      tags: ['solana','opensea','trades']
+      tags: ['solana','opensea','transactions']
     description: >
         OpenSea trades on Solana
     columns:
@@ -26,58 +26,5 @@ models:
         description: "Value of the trade at time of execution in the original currency"
       - name: amount_usd
         description:  "USD value of the trade at time of execution"
-      - name: traders
-        description:  "Traders"
       - name: unique_trade_id
         description:  "Unique trade id, combination of signatures[0] and id"
-
-  - name: opensea_solana_volume_day
-    meta:
-      blockchain: solana
-      project: opensea
-      contributors: rchen8
-    config:
-      tags: ['solana','opensea','view']
-    description: >
-        Daily OpenSea volume on Solana
-    columns:
-      - *blockchain
-      - &day
-        name: day
-        description: "UTC event block time truncated to the day mark"
-      - name: volume
-        description: "Daily OpenSea trading volume in original currency"
-      - name: token_symbol
-        description: "Token Symbol"
-      - name: volume_usd
-        description:  "Daily OpenSea trading volume in $USD"
-
-  - name: opensea_solana_txns_day
-    meta:
-      blockchain: solana
-      project: opensea
-      contributors: rchen8
-    config:
-      tags: ['solana','opensea','view']
-    description: >
-        Daily OpenSea transactions on Solana
-    columns:
-    - *blockchain
-    - *day
-    - name: transactions
-      description:  "Daily OpenSea transactions"
-
-  - name: opensea_solana_active_traders_day
-    meta:
-      blockchain: solana
-      project: opensea
-      contributors: rchen8
-    config:
-      tags: ['solana','opensea','view']
-    description: >
-        Daily OpenSea active traders
-    columns:
-    - *blockchain
-    - *day
-    - name: traders
-      description:  "Daily OpenSea active traders"

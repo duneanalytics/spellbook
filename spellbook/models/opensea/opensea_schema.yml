@@ -7,9 +7,9 @@ models:
       project: opensea
       contributors: rchen8, soispoke
     config:
-      tags: ['opensea','ethereum', 'solana','trades']
+      tags: ['opensea','ethereum', 'solana','transactions']
     description: >
-        Daily OpenSea volume
+        Daily OpenSea trades
     columns:
       - &blockchain
         name: blockchain
