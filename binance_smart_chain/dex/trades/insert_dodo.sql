@@ -253,7 +253,7 @@ WITH rows AS (
             AND evt_block_time >= start_ts
             AND evt_block_time < end_ts
     ) dexs
-    LEFT JOIN bsc.transactions tx
+    INNER JOIN bsc.transactions tx
         ON dexs.tx_hash = tx.hash
         AND tx.block_time >= start_ts
         AND tx.block_time < end_ts
