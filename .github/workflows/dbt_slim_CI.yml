@@ -11,7 +11,10 @@ jobs:
 
     steps:
       - name: test
-        run: ${${{ github.ref_name}} | sed 's/ /-/_'
+        run: echo "${{ github.ref_name}}" | tr - _
+
+      - name: test var
+        run: echo "${{ github.ref_name}}" | tr - _ >> $PR_SCHEMA
 
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -44,7 +47,7 @@ jobs:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_HTTPS_PATH: ${{ secrets.DATABRICKS_HTTPS_PATH }}
           DATABRICKS_ACCESS_TOKEN: ${{ secrets.DATABRICKS_ACCESS_TOKEN }}
-          SCHEMA: ${${{ github.ref_name}}//[0-9]/X}
+          SCHEMA: $PR_SCHEMA
         run: |
           echo "2
           $DATABRICKS_HOST
@@ -60,7 +63,7 @@ jobs:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_HTTPS_PATH: ${{ secrets.DATABRICKS_HTTPS_PATH }}
           DATABRICKS_ACCESS_TOKEN: ${{ secrets.DATABRICKS_ACCESS_TOKEN }}
-          SCHEMA: ${${{ github.ref_name}}//[0-9]/X}
+          SCHEMA: $PR_SCHEMA
         run: |
           echo "1
           $DATABRICKS_HOST
