@@ -1,0 +1,45 @@
+{#
+    Renders a alias name given a custom alias name. If the custom
+    alias name is none, then the resulting alias is just the filename of the
+    model. If an alias override is specified, then that is used.
+
+    This macro can be overriden in projects to define different semantics
+    for rendering a alias name.
+
+    Arguments:
+    custom_alias_name: The custom alias name specified for a model, or none
+    node: The available node that an alias is being generated for, or none
+
+#}
+
+{% macro generate_alias_name(custom_alias_name=none, node=none) -%}
+    {% do return(adapter.dispatch('generate_alias_name', 'dbt')(custom_alias_name, node)) %}
+{%- endmacro %}
+
+{% macro default__generate_alias_name(custom_alias_name=none, node=none) -%}
+
+    {%- if 'dbt_meghan' not in target.schema -%}
+        {%- if custom_alias_name is none -%}
+
+            {{ node.name }}
+
+        {%- else -%}
+
+            {{ custom_alias_name | trim }}
+
+        {%- endif -%}
+
+    {%- else -%}
+        {%- if custom_alias_name is none -%}
+
+            {{ "s3a://meghan-sandbox/" + target.schema + '/' + node.name }}
+
+        {%- else -%}
+
+            {{ "s3a://meghan-sandbox/" + target.schema + '/' + node.name + '_' + custom_alias_name | trim }}
+
+        {%- endif -%}
+
+    {%- endif -%}
+
+{%- endmacro %}
