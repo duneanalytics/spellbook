@@ -11,7 +11,7 @@ models:
       tags: ['balances', 'ethereum', 'erc20', 'hour', 'soispoke', 'dot2dotseurat']
     description: >
         Hourly token balances of ERC20 Ethereum tokens per wallet and contract address pair.
-        Depends on erc20_ethereum_transfers.
+        Depends on erc20_ethereum_transfers
     columns:
       - &blockchain
         name: blockchain
