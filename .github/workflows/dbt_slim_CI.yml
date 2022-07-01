@@ -35,7 +35,7 @@ jobs:
           pipenv install
 
       - name: test
-        run: echo "$GITHUB_REF_NAME"
+        run: echo "${{ github.ref_name }}"
 
       - name: DBT configure
         working-directory: ./spellbook
@@ -44,7 +44,7 @@ jobs:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_HTTPS_PATH: ${{ secrets.DATABRICKS_HTTPS_PATH }}
           DATABRICKS_ACCESS_TOKEN: ${{ secrets.DATABRICKS_ACCESS_TOKEN }}
-          SCHEMA: $GITHUB_REF_NAME
+          SCHEMA: ${{ github.ref_name }}
         run: |
           echo "2
           $DATABRICKS_HOST
@@ -60,7 +60,7 @@ jobs:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_HTTPS_PATH: ${{ secrets.DATABRICKS_HTTPS_PATH }}
           DATABRICKS_ACCESS_TOKEN: ${{ secrets.DATABRICKS_ACCESS_TOKEN }}
-          SCHEMA: $GITHUB_REF_NAME
+          SCHEMA: ${{ github.ref_name }}
         run: |
           echo "1
           $DATABRICKS_HOST
