@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Set DBT schema
-        run: echo "PR_SCHEMA=$(${{ github.ref_name}} | tr - _)" >> $GITHUB_ENV
+        run: echo "PR_SCHEMA=$(echo ${{ github.ref_name}} | tr - _)" >> $GITHUB_ENV
 
       - name: Check out repository code
         uses: actions/checkout@v2
