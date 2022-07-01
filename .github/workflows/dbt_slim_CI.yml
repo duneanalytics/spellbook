@@ -44,7 +44,7 @@ jobs:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_HTTPS_PATH: ${{ secrets.DATABRICKS_HTTPS_PATH }}
           DATABRICKS_ACCESS_TOKEN: ${{ secrets.DATABRICKS_ACCESS_TOKEN }}
-          SCHEMA: $PR_SCHEMA
+          SCHEMA: echo $PR_SCHEMA
         run: |
           echo "2
           $DATABRICKS_HOST
@@ -60,7 +60,7 @@ jobs:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_HTTPS_PATH: ${{ secrets.DATABRICKS_HTTPS_PATH }}
           DATABRICKS_ACCESS_TOKEN: ${{ secrets.DATABRICKS_ACCESS_TOKEN }}
-          SCHEMA: $PR_SCHEMA
+          SCHEMA: echo $PR_SCHEMA
         run: |
           echo "1
           $DATABRICKS_HOST
@@ -84,7 +84,7 @@ jobs:
         run: |
           curl  -o spellbook/manifest.json \
             --request GET \
-            --url https://cloud.getdbt.com/api/v2/accounts/58579/runs/$DBT_RUN_ID/artifacts/manifest.json \
+            --url https://cloud.getdbt.com/api/v2/accounts/58579/runs/echo $DBT_RUN_ID/artifacts/manifest.json \
             --header 'Content-Type: application/json' \
             --header 'Authorization: Token ${{ secrets.DBT_API_TOKEN }}'
 
