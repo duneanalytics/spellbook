@@ -145,7 +145,7 @@ models:
       tags: ['balances', 'ethereum', 'erc721', 'hour', 'soispoke', 'dot2dotseurat', 'hildobby']
     description: >
         Hourly token balances of ERC721 Ethereum tokens per wallet and contract address pair.
-        Depends on erc721_ethereum_transfers.
+        Depends on erc721_ethereum_transfers..
     columns:
       - *blockchain
       - *hour
