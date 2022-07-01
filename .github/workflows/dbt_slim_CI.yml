@@ -2,8 +2,8 @@
 name: dbt slim ci
 on:
   push:
-    paths:
-      - 'spellbook/**'
+#    paths:
+#      - 'spellbook/**'
 
 jobs:
   dbt-test:
@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: test
-        run: echo   "${${{ github.ref_name}}//[0-9]/X}"
+        run: echo "${${{ github.ref_name}}//-/_}"
 
       - name: Check out repository code
         uses: actions/checkout@v2
