@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: test
+        run: echo "${{ github.ref_name}}//-/_ "
+
       - name: Check out repository code
         uses: actions/checkout@v2
 
@@ -34,9 +37,6 @@ jobs:
         run: |
           pipenv install
 
-      - name: test
-        run: echo "${{ github.ref_name }}"
-
       - name: DBT configure
         working-directory: ./spellbook
         continue-on-error: true
@@ -44,7 +44,7 @@ jobs:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_HTTPS_PATH: ${{ secrets.DATABRICKS_HTTPS_PATH }}
           DATABRICKS_ACCESS_TOKEN: ${{ secrets.DATABRICKS_ACCESS_TOKEN }}
-          SCHEMA: ${{ github.ref_name }}
+          SCHEMA: ${{ github.ref_name}}//-/_
         run: |
           echo "2
           $DATABRICKS_HOST
@@ -60,7 +60,7 @@ jobs:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_HTTPS_PATH: ${{ secrets.DATABRICKS_HTTPS_PATH }}
           DATABRICKS_ACCESS_TOKEN: ${{ secrets.DATABRICKS_ACCESS_TOKEN }}
-          SCHEMA: ${{ github.ref_name }}
+          SCHEMA: ${{ github.ref_name}}//-/_
         run: |
           echo "1
           $DATABRICKS_HOST
