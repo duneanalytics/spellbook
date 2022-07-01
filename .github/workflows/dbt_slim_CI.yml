@@ -34,6 +34,9 @@ jobs:
         run: |
           pipenv install
 
+      - name: test
+        run: echo "${{ env.GITHUB_REF_NAME }}"
+
       - name: DBT configure
         working-directory: ./spellbook
         continue-on-error: true
