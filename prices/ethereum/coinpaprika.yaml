@@ -2159,3 +2159,8 @@
   symbol: NOTE
   address: 0xCFEAead4947f0705A14ec42aC3D44129E1Ef3eD5
   decimals: 8
+- name: Confetti
+  id: cfti-confetti
+  symbol: CFTI
+  address: 0xCfef8857E9C80e3440A823971420F7Fa5F62f020
+  decimals: 18
