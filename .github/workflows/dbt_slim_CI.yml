@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Set schema var
-      run: echo "pr_schema=$(echo ${{ github.ref_name}} | tr - _)" >> $PR_SCHEMA
+        run: echo "pr_schema=$(echo ${{ github.ref_name}} | tr - _)" >> $PR_SCHEMA
 
       - name: Check out repository code
         uses: actions/checkout@v2
