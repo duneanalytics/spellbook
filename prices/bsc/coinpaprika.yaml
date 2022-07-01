@@ -99,11 +99,6 @@
   id: cake-pancakeswap
   name: PancakeSwap
   symbol: CAKE
-- address: '0xa4b6e76bba7413b9b4bd83f4e3aa63cc181d869f'
-  decimals: 9
-  id: ftm-fantom
-  name: Fitmin
-  symbol: FTM
 - address: '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c'
   decimals: 18
   id: btcb-binance-bitcoin
@@ -154,11 +149,6 @@
   id: zil-zilliqa
   name: Zilliqa
   symbol: ZIL
-- address: '0xe76804b43f17fc41f226d63fd2a676df409d4678'
-  decimals: 9
-  id: bat-basic-attention-token
-  name: Bat Finance
-  symbol: BAT
 - address: '0x8076c74c5e3f5852037f31ff0093eeb8c8add8d3'
   decimals: 9
   id: safemoon-safemoon
@@ -259,11 +249,6 @@
   id: ant-aragon
   name: ANTcoin
   symbol: ANT
-- address: '0xf50155cffd6c9a3634edfd6a00850016fe02c4dc'
-  decimals: 9
-  id: med-medibloc-qrc20
-  name: MiniEverDoge
-  symbol: MED
 - address: '0x2222227e22102fe3322098e4cbfe18cfebd57c95'
   decimals: 4
   id: tlm-alien-worlds
@@ -359,11 +344,6 @@
   id: zel-zelcash
   name: Flux Protocol
   symbol: FLUX
-- address: '0x587c16b84c64751760f6e3e7e32f896634704352'
-  decimals: 9
-  id: whale-whale
-  name: Whale Fall
-  symbol: WHALE
 - address: '0x935a544bf5816e3a7c13db2efe3009ffda0acda2'
   decimals: 18
   id: blz-bluzelle
