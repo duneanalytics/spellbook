@@ -10,11 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: test
-        run: echo "${{ github.ref_name}}" | tr - _
-
-      - name: test var
-        run: echo "pr_schema=$(${{ github.ref_name}}" | tr - _)" >> $PR_SCHEMA
+      - name: Set schema var
+      run: echo "pr_schema=$(echo ${{ github.ref_name}} | tr - _)" >> $PR_SCHEMA
 
       - name: Check out repository code
         uses: actions/checkout@v2
