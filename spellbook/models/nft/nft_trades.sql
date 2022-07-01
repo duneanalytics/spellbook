@@ -6,7 +6,7 @@
 
 
 SELECT * FROM {{ ref('opensea_trades') }} 
-        UNION
+         UNION
 SELECT * FROM {{ ref('magiceden_trades') }}
 
 {% if is_incremental() %}
