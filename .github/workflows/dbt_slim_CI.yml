@@ -2,8 +2,8 @@
 name: dbt slim ci
 on:
   push:
-    paths:
-      - 'spellbook/**'
+#    paths:
+#      - 'spellbook/**'
 
 jobs:
   dbt-test:
