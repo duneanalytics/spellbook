@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: test
-        run: echo "${${{ github.ref_name}}//-/_}"
+        run: ${${{ github.ref_name}} | sed 's/ /-/_'
 
       - name: Check out repository code
         uses: actions/checkout@v2
