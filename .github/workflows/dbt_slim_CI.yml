@@ -10,9 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set schema var
-        run: echo "pr_schema=$(echo ${{ github.ref_name}} | tr - _)" >> $PR_SCHEMA
-
       - name: Check out repository code
         uses: actions/checkout@v2
 
@@ -44,7 +41,7 @@ jobs:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_HTTPS_PATH: ${{ secrets.DATABRICKS_HTTPS_PATH }}
           DATABRICKS_ACCESS_TOKEN: ${{ secrets.DATABRICKS_ACCESS_TOKEN }}
-          SCHEMA: $PR_SCHEMA
+          SCHEMA: ${{ github.ref_name}} | tr - _
         run: |
           echo "2
           $DATABRICKS_HOST
@@ -60,7 +57,7 @@ jobs:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_HTTPS_PATH: ${{ secrets.DATABRICKS_HTTPS_PATH }}
           DATABRICKS_ACCESS_TOKEN: ${{ secrets.DATABRICKS_ACCESS_TOKEN }}
-          SCHEMA: $PR_SCHEMA
+          SCHEMA: ${{ github.ref_name}} | tr - _
         run: |
           echo "1
           $DATABRICKS_HOST
