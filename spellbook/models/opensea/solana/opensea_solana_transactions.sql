@@ -1,7 +1,10 @@
- {{
-  config(
-        alias='transactions'
-  )
+{{ config(
+        alias ='transactions',
+        materialized ='incremental',
+        file_format ='delta',
+        incremental_strategy='merge',
+        unique_key='unique_trade_id'
+        )
 }}
 
 SELECT 
