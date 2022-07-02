@@ -33,9 +33,17 @@ aggregator_address,
 tx_hash,
 tx_from,
 tx_to,
+platform_fee_amount_raw,
+platform_fee_amount,
+platform_fee_amount_usd,
+royalty_fee_amount_raw,
+royalty_fee_amount,
+royalty_fee_amount_usd,
+royalty_fee_receive_address,
+royalty_fee_currency_symbol,
 unique_trade_id
 FROM
-(SELECT * FROM {{ ref('opensea_ethereum_trades') }} 
+(SELECT * FROM {{ ref('opensea_ethereum_transactions') }} 
 
                                 UNION
 
@@ -65,8 +73,16 @@ NULL::string as aggregator_address,
 tx_hash,
 NULL::string as tx_from,
 NULL::string as tx_to,
+NULL::double as platform_fee_amount_raw,
+NULL::double as platform_fee_amount,
+NULL::double as platform_fee_amount_usd,
+NULL::double as royalty_fee_amount_raw,
+NULL::double as royalty_fee_amount,
+NULL::double as royalty_fee_amount_usd,
+NULL::double as royalty_fee_receive_address,
+NULL::double as royalty_fee_currency_symbol,
 unique_trade_id
-FROM {{ ref('opensea_solana_trades') }}) 
+FROM {{ ref('opensea_solana_transactions') }}) 
 
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run

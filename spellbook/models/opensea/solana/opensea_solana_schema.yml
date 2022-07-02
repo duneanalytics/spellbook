@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: opensea_solana_trades
+  - name: opensea_solana_transactions
     meta:
       blockchain: solana
       project: opensea
@@ -9,7 +9,7 @@ models:
     config:
       tags: ['solana','opensea','transactions']
     description: >
-        OpenSea trades on Solana
+        OpenSea transactions on Solana
     columns:
       - &blockchain
         name: blockchain
@@ -26,5 +26,9 @@ models:
         description: "Value of the trade at time of execution in the original currency"
       - name: amount_usd
         description:  "USD value of the trade at time of execution"
+      - name: project_contract_address
+        description:  "Contract address used by the project, in this case wyvern contract"
+      - name: evt_type
+        description:  "Event type (Trade, Mint, Burn)"
       - name: unique_trade_id
         description:  "Unique trade id, combination of signatures[0] and id"

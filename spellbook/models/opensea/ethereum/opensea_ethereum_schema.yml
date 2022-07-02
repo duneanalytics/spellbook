@@ -126,23 +126,30 @@ models:
       - &tx_to
         name: tx_to
         description:  "Address that received the transaction"
-      - &fee_amount_raw
-        name: fee_amount_raw
-        description:  "Raw numerical amount for fees"
-      - &fee_amount
-        name: fee_amount
-        description:  "Fee amount in original token currency (properly formatted in decimals)"
-      - &fee_amount_usd
-        name: fee_amount_usd
-        description:  "Fee amount in USD"
-      - &fee_receive_address
-        name: fee_receive_address
+      - &platform_fee_amount_raw
+        name: platform_fee_amount_raw
+        description:  "Raw numerical amount for platform fees"
+      - &platform_fee_amount
+        name: platform_fee_amount
+        description:  "Platform fee amount in original token currency (properly formatted in decimals)"
+      - &platform_fee_amount_usd
+        name: platform_fee_amount_usd
+        description:  "Platform fee amount in USD"
+      - &royalty_fee_amount_raw
+        name: royalty_fee_amount_raw
+        description:  "Raw numerical amount for royalty fees"
+      - &royalty_fee_amount
+        name: royalty_fee_amount
+        description:  "Royalty fee amount in original token currency (properly formatted in decimals)"
+      - &royalty_fee_amount_usd
+        name: royalty_fee_amount_usd
+        description:  "Royalty fee amount in USD"
+      - &royalty_fee_receive_address
+        name: royalty_fee_receive_address
         description:  "Wallet addresses receiving fees from the transaction"
-      - &fee_currency_symbol
-        name: fee_currency_symbol
+      - &royalty_fee_currency_symbol
+        name: royalty_fee_currency_symbol
         description: "Symbol of the token in which fees are paid out"
-      - name: zone_address
-        description:  "A zone is an account (usually a contract) that performs additional validation prior to fulfillment, and that can cancel the listing on behalf of the offerer. We'll use this to select for OpenSea transactions on Seaport."
       - &unique_trade_id
         name: unique_trade_id
         description:  "Unique trade ID"
@@ -184,11 +191,14 @@ models:
       - *block_number
       - *tx_from
       - *tx_to
-      - *fee_amount_raw
-      - *fee_amount
-      - *fee_amount_usd
-      - *fee_receive_address
-      - *fee_currency_symbol
+      - *platform_fee_amount_raw
+      - *platform_fee_amount
+      - *platform_fee_amount_usd
+      - *royalty_fee_amount_raw
+      - *royalty_fee_amount
+      - *royalty_fee_amount_usd
+      - *royalty_fee_receive_address
+      - *royalty_fee_currency_symbol
       - *unique_trade_id
 
   - name: opensea_ethereum_trades
@@ -261,6 +271,8 @@ models:
       - *currency_contract_original
       - *nft_contract_address
       - *project_contract_address
+      - *aggregator_name
+      - *aggregator_address
       - *tx_hash
       - *block_number
       - *tx_from
@@ -298,6 +310,52 @@ models:
       - *currency_contract_original
       - *nft_contract_address
       - *project_contract_address
+      - *aggregator_name
+      - *aggregator_address
+      - *tx_hash
+      - *block_number
+      - *tx_from
+      - *tx_to
+      - *unique_trade_id
+
+  - name: opensea_ethereum_fees
+    meta:
+      blockchain: ethereum
+      project: opensea
+      contributors: soispoke
+    config:
+      tags: ['ethereum','opensea','fees']
+    description: >
+        OpenSea fees on Ethereum
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *token_id
+      - *collection
+      - *platform_fee_amount_raw
+      - *platform_fee_amount
+      - *platform_fee_amount_usd
+      - *royalty_fee_amount_raw
+      - *royalty_fee_amount
+      - *royalty_fee_amount_usd
+      - *royalty_fee_receive_address
+      - *royalty_fee_currency_symbol
+      - *token_standard
+      - *trade_type
+      - *number_of_items
+      - *trade_category
+      - *evt_type
+      - *seller
+      - *buyer
+      - *currency_symbol
+      - *currency_contract
+      - *currency_contract_original
+      - *nft_contract_address
+      - *project_contract_address
+      - *aggregator_name
+      - *aggregator_address
       - *tx_hash
       - *block_number
       - *tx_from
