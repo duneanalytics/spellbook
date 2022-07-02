@@ -136,11 +136,14 @@ SELECT
   tx.block_number,
   tx.from as tx_from,
   tx.to as tx_to,
-  wa.fees AS fee_amount_raw,
-  wa.fees / power(10,erc20.decimals) AS fee_amount,
-  wa.fees / power(10,erc20.decimals) * p.price AS fee_amount_usd, 
-  wa.fee_receive_address,
-  wa.fee_currency_symbol,
+  ROUND((2.5*(wa.amount_original)/100),7) AS platform_fee_amount_raw,
+  ROUND((2.5*(wa.amount_original / power(10,erc20.decimals))/100),7) AS platform_fee_amount,
+  ROUND((2.5*(wa.amount_original / power(10,erc20.decimals) * p.price)/100),7) AS platform_fee_amount_usd, 
+  wa.fees AS royalty_fee_amount_raw,
+  wa.fees / power(10,erc20.decimals) AS royalty_fee_amount,
+  wa.fees / power(10,erc20.decimals) * p.price AS royalty_fee_amount_usd, 
+  wa.fee_receive_address as royalty_fee_receive_address,
+  wa.fee_currency_symbol as royalty_fee_currency_symbol,
   wa.call_tx_hash || '-' || wa.token_id || '-' ||  wa.seller || '-' || evt_index as unique_trade_id
 FROM wyvern_all wa
 LEFT JOIN {{ source('ethereum','transactions') }} tx ON wa.call_tx_hash = tx.hash
