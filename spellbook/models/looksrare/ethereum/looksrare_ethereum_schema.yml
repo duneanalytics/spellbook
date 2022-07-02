@@ -104,13 +104,11 @@ models:
       - &fee_receive_address
         name: fee_receive_address
         description:  "Wallet addresses receiving fees from the transaction"
+        tests:
+          - unique
       - &fee_currency_symbol
         name: fee_currency_symbol
         description: "Symbol of the token in which fees are paid out"
-      - name: zone_address
-        description:  "A zone is an account (usually a contract) that performs additional validation prior to fulfillment, and that can cancel the listing on behalf of the offerer. We'll use this to select for OpenSea transactions on Seaport."
       - &unique_trade_id
         name: unique_trade_id
         description:  "Unique trade ID"
-        tests:
-          - unique

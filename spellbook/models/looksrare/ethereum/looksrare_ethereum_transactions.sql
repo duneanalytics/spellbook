@@ -15,9 +15,9 @@ WITH looks_rare AS (
         taker AS seller,
         maker AS buyer,
         price AS price,
-        roy.amount AS fees,
-        roy.royaltyRecipient AS fee_receive_address,
-        roy.currency AS fee_currency_symbol,
+        roy.amount AS royalty_fee,
+        roy.royaltyRecipient AS royalty_fee_receive_address,
+        roy.currency AS royalty_fee_currency_symbol,
         CASE -- REPLACE `ETH` WITH `WETH` for ERC20 lookup later
             WHEN ask.currency = '0x0000000000000000000000000000000000000000' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
             ELSE ask.currency
@@ -28,12 +28,14 @@ WITH looks_rare AS (
         ask.evt_tx_hash AS tx_hash,
         ask.evt_block_number AS block_number,
         ask.evt_index AS evt_index,
+        roy.evt_index as roy_event_index,
         CASE -- CATEGORIZE Collection Wide Offers Accepted 
             WHEN strategy = '0x86f909f70813cdb1bc733f4d97dc6b03b8e7e8f3' THEN 'Collection Offer Accepted'
             ELSE 'Offer Accepted' 
             END AS category    
     FROM {{ source('looksrare_ethereum','looksrareexchange_evt_takerask') }} ask
     LEFT JOIN {{ source('looksrare_ethereum','looksrareexchange_evt_royaltypayment') }} roy ON roy.evt_tx_hash = ask.evt_tx_hash
+    WHERE ask.evt_index - 2 = roy.evt_index
                             UNION
     SELECT 
         bid.evt_block_time AS block_time,
@@ -42,9 +44,9 @@ WITH looks_rare AS (
         maker AS seller,
         taker AS buyer,
         price AS price,
-        roy.amount AS fees,
-        roy.royaltyRecipient AS fee_receive_address,
-        roy.currency AS fee_currency_symbol,
+        roy.amount AS royalty_fee,
+        roy.royaltyRecipient AS royalty_fee_receive_address,
+        roy.currency AS royalty_fee_currency_symbol,
        CASE -- REPLACE `ETH` WITH `WETH` for ERC20 lookup later
             WHEN bid.currency = '0x0000000000000000000000000000000000000000' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
             ELSE bid.currency
@@ -55,9 +57,11 @@ WITH looks_rare AS (
         bid.evt_tx_hash AS tx_hash,
         bid.evt_block_number AS block_number,
         bid.evt_index AS evt_index,
+        roy.evt_index as roy_event_index,
         'Buy' as category
     FROM {{ source('looksrare_ethereum','looksrareexchange_evt_takerbid') }} bid
     LEFT JOIN {{ source('looksrare_ethereum','looksrareexchange_evt_royaltypayment') }} roy ON roy.evt_tx_hash = bid.evt_tx_hash
+    WHERE roy.evt_index = bid.evt_index - 4
     ),
 
 -- Get ERC721 AND ERC1155 transfer data for every trade TRANSACTION
@@ -133,15 +137,18 @@ SELECT DISTINCT
     looks_rare.block_number,
     tx.from AS tx_from,
     tx.to AS tx_to,
-    fees as fee_amount_raw,
-    fees / power(10,erc20.decimals) as fee_amount,
-    fees * p.price/ power(10,erc20.decimals) as fee_amount_usd,
-    fee_receive_address,
-    fee_currency_symbol,
-    tx_hash || '-' ||  token_id_erc || '-' ||  seller || '-' || looks_rare.evt_index as unique_trade_id
+    ROUND((2*(looks_rare.price)/100),7) as platform_fee_amount_raw,
+    ROUND((2*(looks_rare.price / power(10,erc20.decimals))/100),7) platform_fee_amount,
+    ROUND((2*(looks_rare.price / power(10,erc20.decimals) * p.price)/100),7) as  platform_fee_amount_usd,
+    royalty_fee as royalty_fee_amount_raw,
+    royalty_fee / power(10,erc20.decimals) as royalty_fee_amount,
+    royalty_fee * p.price/ power(10,erc20.decimals) as royalty_fee_amount_usd,
+    royalty_fee_receive_address,
+    royalty_fee_currency_symbol,
+    tx_hash || '-' ||  token_id || '-' ||  seller || '-' || looks_rare.evt_index::string || '-' || evt_type as unique_trade_id
 FROM looks_rare
 INNER JOIN {{ source('ethereum','transactions') }} tx ON tx_hash = tx.hash
-LEFT JOIN erc_transfers erc ON erc.evt_tx_hash = tx_hash and erc.token_id_erc = looks_rare.token_id
+LEFT JOIN erc_transfers erc ON erc.evt_tx_hash = tx_hash AND erc.token_id_erc = token_id
 LEFT JOIN {{ ref('tokens_ethereum_nft') }} tokens ON tokens.contract_address =  nft_contract_address
 LEFT JOIN  {{ ref('nft_ethereum_aggregators') }} agg ON agg.contract_address = tx.to
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', looks_rare.block_time)

@@ -1,0 +1,6 @@
+{{ config(
+        alias ='burns'
+        )
+}}
+
+SELECT 
