@@ -10,10 +10,18 @@ curve_pool_tokens AS (
         SELECT 
             pool_address as pool,
             version,
-            UNNEST(ARRAY[coin0, coin1, coin2, coin3]) AS token,
+            UNNEST(ARRAY[coin0, coin1, coin2, coin3]) AS token
         FROM curvefi.view_pools
     )
-    SELECT * FROM tokens_with_null
+    SELECT
+        pool,
+        version,
+        CASE
+            WHEN token = '\x0000000000000000000000000000000000000000'
+            THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            ELSE token
+        END AS token
+    FROM tokens_with_null
     WHERE token IS NOT NULL
 ),
 dex_wallet_balances AS (
