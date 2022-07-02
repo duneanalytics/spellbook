@@ -554,3 +554,8 @@
   id: znn-zenon
   name: Zenon
   symbol: Znn
+- address: '0xc748673057861a797275cd8a068abb95a902e8de'
+  decimals: 9
+  id: babydoge-baby-doge-coin
+  name: babydoge_baby_doge_coin
+  symbol: BabyDoge
