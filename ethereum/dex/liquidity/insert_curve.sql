@@ -6,15 +6,15 @@ WITH days AS (
     SELECT day FROM generate_series(start_ts, (SELECT end_ts - interval '1 day'), '1 day') g(day)
 ),
 curve_pool_tokens AS (
-    SELECT
-        DISTINCT exchange_contract_address AS pool,
-        token_a_address AS token
-    FROM curvefi.view_trades
-    UNION
-    SELECT
-        DISTINCT exchange_contract_address,
-        token_b_address
-    FROM curvefi.view_trades
+    with tokens_with_null as(
+        SELECT 
+            pool_address as pool,
+            version,
+            UNNEST(ARRAY[coin0, coin1, coin2, coin3]) AS token,
+        FROM curvefi.view_pools
+    )
+    SELECT * FROM tokens_with_null
+    WHERE token IS NOT NULL
 ),
 dex_wallet_balances AS (
     SELECT
@@ -34,7 +34,7 @@ dex_wallet_balances AS (
         liq.day,
         token_index
     FROM dex.liquidity liq
-    WHERE project = 'Curve' AND version = '1' AND liq.day >= start_ts - interval '3 days'
+    WHERE project = 'Curve' AND liq.day >= start_ts - interval '3 days'
 ),
 balances AS ( -- logic from https://github.com/duneanalytics/abstractions/pull/398
     SELECT
@@ -77,11 +77,9 @@ rows AS (
         token_index,
         token_pool_percentage
     FROM (
-        -- Curve v1
         SELECT
             d.day,
             'Curve' AS project,
-            '1' AS version,
             'DEX' AS category,
             balances.amount_raw AS token_amount_raw,
             balances.token_address,
@@ -91,6 +89,7 @@ rows AS (
         FROM balances
         INNER JOIN days d ON balances.day <= d.day AND d.day < balances.next_day
     ) dexs
+    LEFT JOIN curve_pool_tokens c on c.pool = dexs.pool_address
     LEFT JOIN erc20.tokens erc20 on erc20.contract_address = dexs.token_address
     LEFT JOIN prices.usd p on p.contract_address = dexs.token_address and p.minute = dexs.day
         AND p.minute >= start_ts
@@ -115,7 +114,6 @@ WHERE NOT EXISTS (
     WHERE day >= '2020-01-01'
     AND day < '2020-04-01'
     AND project = 'Curve'
-    AND version = '1'
 );
 
 -- fill 2020 - Q2
@@ -129,7 +127,6 @@ WHERE NOT EXISTS (
     WHERE day >= '2020-04-01'
     AND day < '2020-07-01'
     AND project = 'Curve'
-    AND version = '1'
 );
 
 -- fill 2020 - Q3
@@ -143,7 +140,6 @@ WHERE NOT EXISTS (
     WHERE day >= '2020-07-01'
     AND day < '2020-10-01'
     AND project = 'Curve'
-    AND version = '1'
 );
 
 -- fill 2020 - Q4
@@ -157,7 +153,6 @@ WHERE NOT EXISTS (
     WHERE day >= '2020-10-01'
     AND day < '2021-01-01'
     AND project = 'Curve'
-    AND version = '1'
 );
 
 -- fill 2021 - Q1
@@ -171,7 +166,6 @@ WHERE NOT EXISTS (
     WHERE day >= '2021-01-01'
     AND day < '2021-04-01'
     AND project = 'Curve'
-    AND version = '1'
 );
 
 -- fill 2021 Q2 + Q3
@@ -185,13 +179,12 @@ WHERE NOT EXISTS (
     WHERE day >= '2021-04-01'
     AND day < now() - interval '20 minutes'
     AND project = 'Curve'
-    AND version = '1'
 );
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('18 3 * * *', $$
     SELECT dex.insert_liquidity_curve(
-        (SELECT max(day) FROM dex.liquidity WHERE project = 'Curve' and version = '1'),
+        (SELECT max(day) FROM dex.liquidity WHERE project = 'Curve'),
         (SELECT now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
