@@ -29,7 +29,7 @@ WITH regular_poolDeployed AS (
             FROM (values ('
                 {"data":
                     [{
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "3pool",
                         "symbol": "3pool",
                         "pool_address": "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7",
@@ -40,7 +40,7 @@ WITH regular_poolDeployed AS (
                         "coin2": "0xdac17f958d2ee523a2206206994597c13d831ec7"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "aave",
                         "symbol": "aave",
                         "pool_address": "0xDeBF20617708857ebe4F679508E7b7863a8A8EeE",
@@ -54,7 +54,7 @@ WITH regular_poolDeployed AS (
                         "undercoin2": "0xdac17f958d2ee523a2206206994597c13d831ec7"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "alusd",
                         "symbol": "alusd",
                         "pool_address": "0x43b4FdFD4Ff969587185cDB6f0BD875c5Fc83f8c",
@@ -68,7 +68,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0xdac17f958d2ee523a2206206994597c13d831ec7"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "ankreth",
                         "symbol": "ankreth",
                         "pool_address": "0xA96A65c051bF88B4095Ee1f2451C2A9d43F53Ae2",
@@ -78,7 +78,7 @@ WITH regular_poolDeployed AS (
                         "coin1": "0xe95a203b1a91a908f9b9ce46459d101078c2c3cb"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "bbtc",
                         "symbol": "bbtc",
                         "pool_address": "0x071c661B4DeefB59E2a3DdB20Db036821eeE8F4b",
@@ -93,7 +93,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "busd",
                         "symbol": "busd",
                         "pool_address": "0x79a8C46DeA5aDa233ABaFFD40F3A0A2B1e5A4F27",
@@ -110,7 +110,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0x4fabb145d64652a948d72533023f6e7a623c7c53"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V2",
                         "name": "busdv2",
                         "symbol": "busdv2",
                         "pool_address": "0x4807862AA8b2bF68830e4C8dc86D0e9A998e085a",
@@ -124,7 +124,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0xdac17f958d2ee523a2206206994597c13d831ec7"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "compound",
                         "symbol": "compound",
                         "pool_address": "0xA2B47E3D5c44877cca798226B7B8118F9BFb7A56",
@@ -137,7 +137,7 @@ WITH regular_poolDeployed AS (
                         "undercoin1": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V2",
                         "name": "crveth",
                         "symbol": "crveth",
                         "pool_address": "0x8301AE4fc9c624d1D396cbDAa1ed877821D7C511",
@@ -147,7 +147,7 @@ WITH regular_poolDeployed AS (
                         "coin1": "0xd533a949740bb3306d119cc777fa900ba034cd52"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V2",
                         "name": "cvxeth",
                         "symbol": "cvxeth",
                         "pool_address": "0xB576491F1E6e5E62f1d8F26062Ee822B40B0E0d4",
@@ -157,7 +157,7 @@ WITH regular_poolDeployed AS (
                         "coin1": "0x4e3fbd56cd56c3e72c1403e103b45db9da5b9d2b"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "dusd",
                         "symbol": "dusd",
                         "pool_address": "0x8038C01A0390a8c547446a0b2c18fc9aEFEcc10c",
@@ -172,7 +172,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0xdac17f958d2ee523a2206206994597c13d831ec7"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "eurs",
                         "symbol": "eurs",
                         "pool_address": "0x0Ce6a5fF5217e38315f87032CF90686C96627CAA",
@@ -182,7 +182,7 @@ WITH regular_poolDeployed AS (
                         "coin1": "0xd71ecff9342a5ced620049e616c5035f1db98620"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V2",
                         "name": "eursusd",
                         "symbol": "eursusd",
                         "pool_address": "0x98a7F18d4E56Cfe84E3D081B40001B3d5bD3eB8B",
@@ -192,7 +192,7 @@ WITH regular_poolDeployed AS (
                         "coin1": "0xdb25f211ab05b1c97d595516f45794528a807ad8"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "eurt",
                         "symbol": "eurt",
                         "pool_address": "0xfd5db7463a3ab53fd211b4af195c5bccc1a03890",
@@ -202,7 +202,7 @@ WITH regular_poolDeployed AS (
                         "coin1": "0xd71ecff9342a5ced620049e616c5035f1db98620"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V2",
                         "name": "eurtusd",
                         "symbol": "eurtusd",
                         "pool_address": "0x9838eCcC42659FA8AA7daF2aD134b53984c9427b",
@@ -217,7 +217,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0xdac17f958d2ee523a2206206994597c13d831ec7"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "frax",
                         "symbol": "frax",
                         "pool_address": "0xd632f22692FaC7611d2AA1C0D552930D43CAEd3B",
@@ -231,7 +231,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0xdac17f958d2ee523a2206206994597c13d831ec7"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "gusd",
                         "symbol": "gusd",
                         "pool_address": "0x4f062658EaAF2C1ccf8C8e36D6824CDf41167956",
@@ -246,7 +246,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0xdac17f958d2ee523a2206206994597c13d831ec7"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "hbtc",
                         "symbol": "hbtc",
                         "pool_address": "0x4CA9b3063Ec5866A4B82E437059D2C43d1be596F",
@@ -256,7 +256,7 @@ WITH regular_poolDeployed AS (
                         "coin1": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "husd",
                         "symbol": "husd",
                         "pool_address": "0x3eF6A01A0f81D6046290f3e2A8c5b843e738E604",
@@ -271,7 +271,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0xdac17f958d2ee523a2206206994597c13d831ec7"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "ib",
                         "symbol": "ib",
                         "pool_address": "0x2dded6Da1BF5DBdF597C45fcFaa3194e53EcfeAF",
@@ -285,7 +285,7 @@ WITH regular_poolDeployed AS (
                         "undercoin2": "0xdac17f958d2ee523a2206206994597c13d831ec7"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "link",
                         "symbol": "link",
                         "pool_address": "0xF178C0b5Bb7e7aBF4e12A4838C7b7c5bA2C623c0",
@@ -295,7 +295,7 @@ WITH regular_poolDeployed AS (
                         "coin1": "0xbbc455cb4f1b9e4bfc4b73970d360c8f032efee6"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "linkusd",
                         "symbol": "linkusd",
                         "pool_address": "0xE7a24EF0C5e95Ffb0f6684b813A78F2a3AD7D171",
@@ -309,7 +309,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0xdac17f958d2ee523a2206206994597c13d831ec7"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "lusd",
                         "symbol": "lusd",
                         "pool_address": "0xEd279fDD11cA84bEef15AF5D39BB4d4bEE23F0cA",
@@ -323,7 +323,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0xdac17f958d2ee523a2206206994597c13d831ec7"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "mim",
                         "symbol": "mim",
                         "pool_address": "0x5a6A4D54456819380173272A5E8E9B9904BdF41B",
@@ -337,7 +337,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0xdac17f958d2ee523a2206206994597c13d831ec7"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "musd",
                         "symbol": "musd",
                         "pool_address": "0x8474DdbE98F5aA3179B3B3F5942D724aFcdec9f6",
@@ -352,7 +352,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0xdac17f958d2ee523a2206206994597c13d831ec7"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "obtc",
                         "symbol": "obtc",
                         "pool_address": "0xd81dA8D904b52208541Bade1bD6595D8a251F8dd",
@@ -367,7 +367,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "pax",
                         "symbol": "pax",
                         "pool_address": "0x06364f10B501e868329afBc005b3492902d6C763",
@@ -384,7 +384,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0x8E870D67F660D95d5be530380D0eC0bd388289E1"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "pbtc",
                         "symbol": "pbtc",
                         "pool_address": "0x7F55DDe206dbAD629C080068923b36fe9D6bDBeF",
@@ -399,7 +399,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "rai",
                         "symbol": "rai",
                         "pool_address": "0x618788357D0EBd8A37e763ADab3bc575D54c2C7d",
@@ -414,7 +414,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0xdac17f958d2ee523a2206206994597c13d831ec7"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "ren",
                         "symbol": "ren",
                         "pool_address": "0x93054188d876f558f4a66B2EF1d97d16eDf0895B",
@@ -424,7 +424,7 @@ WITH regular_poolDeployed AS (
                         "coin1": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "reth",
                         "symbol": "reth",
                         "pool_address": "0xF9440930043eb3997fc70e1339dBb11F341de7A8",
@@ -434,7 +434,7 @@ WITH regular_poolDeployed AS (
                         "coin1": "0x0000000000000000000000000000000000000000"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "rsv",
                         "symbol": "rsv",
                         "pool_address": "0xC18cC39da8b11dA8c3541C598eE022258F9744da",
@@ -449,7 +449,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0xdac17f958d2ee523a2206206994597c13d831ec7"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "saave",
                         "symbol": "saave",
                         "pool_address": "0xEB16Ae0052ed37f479f7fe63849198Df1765a733",
@@ -461,7 +461,7 @@ WITH regular_poolDeployed AS (
                         "undercoin1": "0x57Ab1ec28D129707052df4dF418D58a2D46d5f51"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "sbtc",
                         "symbol": "sbtc",
                         "pool_address": "0x7fC77b5c7614E1533320Ea6DDc2Eb61fa00A9714",
@@ -472,7 +472,7 @@ WITH regular_poolDeployed AS (
                         "coin2": "0xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "seth",
                         "symbol": "seth",
                         "pool_address": "0xc5424b857f758e906013f3555dad202e4bdb4567",
@@ -482,7 +482,7 @@ WITH regular_poolDeployed AS (
                         "coin1": "0x5e74c9036fb86bd7ecdcb084a0673efc32ea31cb"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V2",
                         "name": "spelleth",
                         "symbol": "spelleth",
                         "pool_address": "0x98638FAcf9a3865cd033F36548713183f6996122",
@@ -492,7 +492,7 @@ WITH regular_poolDeployed AS (
                         "coin1": "0x090185f2135308bad17527004364ebcc2d37e5f6"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "steth",
                         "symbol": "steth",
                         "pool_address": "0xDC24316b9AE028F1497c275EB9192a3Ea0f67022",
@@ -502,7 +502,7 @@ WITH regular_poolDeployed AS (
                         "coin1": "0xae7ab96520de3a18e5e111b5eaab095312d7fe84"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "susdv2",
                         "symbol": "susd",
                         "pool_address": "0xA5407eAE9Ba41422680e2e00537571bcC53efBfD",
@@ -519,7 +519,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0x57Ab1E02fEE23774580C119740129eAC7081e9D3"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "tbtc",
                         "symbol": "tbtc",
                         "pool_address": "0xC25099792E9349C7DD09759744ea681C7de2cb66",
@@ -534,7 +534,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V2",
                         "name": "teth",
                         "symbol": "teth",
                         "pool_address": "0x752eBeb79963cf0732E9c0fec72a49FD1DEfAEAC",
@@ -544,7 +544,7 @@ WITH regular_poolDeployed AS (
                         "coin1": "0xcdf7028ceab81fa0c6971208e83fa7872994bee5"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V2",
                         "name": "tricrypto",
                         "symbol": "tricrypto",
                         "pool_address": "0x80466c64868E1ab14a1Ddf27A676C3fcBE638Fe5",
@@ -556,7 +556,7 @@ WITH regular_poolDeployed AS (
                         "coin2": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V2",
                         "name": "tricrypto2",
                         "symbol": "tricrypto2",
                         "pool_address": "0xD51a44d3FaE010294C616388b506AcdA1bfAAE46",
@@ -568,7 +568,7 @@ WITH regular_poolDeployed AS (
                         "coin2": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "tusd",
                         "symbol": "tusd",
                         "pool_address": "0xecd5e75afb02efa118af914515d6521aabd189f1",
@@ -583,7 +583,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0xdac17f958d2ee523a2206206994597c13d831ec7"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "usdk",
                         "symbol": "usdk",
                         "pool_address": "0x3E01dD8a5E1fb3481F0F589056b428Fc308AF0Fb",
@@ -598,7 +598,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0xdac17f958d2ee523a2206206994597c13d831ec7"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "usdn",
                         "symbol": "usdn",
                         "pool_address": "0x0f9cb53Ebe405d49A0bbdBD291A65Ff571bC83e1",
@@ -613,7 +613,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0xdac17f958d2ee523a2206206994597c13d831ec7"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "usdp",
                         "symbol": "usdp",
                         "pool_address": "0x42d7025938bEc20B69cBae5A77421082407f053A",
@@ -628,7 +628,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0xdac17f958d2ee523a2206206994597c13d831ec7"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "usdt",
                         "symbol": "usdt",
                         "pool_address": "0x52EA46506B9CC5Ef470C5bf89f17Dc28bB35D85C",
@@ -643,7 +643,7 @@ WITH regular_poolDeployed AS (
                         "undercoin2": "0xdac17f958d2ee523a2206206994597c13d831ec7"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "ust",
                         "symbol": "ust",
                         "pool_address": "0x890f4e345B1dAED0367A877a1612f86A1f86985f",
@@ -658,7 +658,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0xdac17f958d2ee523a2206206994597c13d831ec7"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V2",
                         "name": "xautusd",
                         "symbol": "xautusd",
                         "pool_address": "0xAdCFcf9894335dC340f6Cd182aFA45999F45Fc44",
@@ -673,7 +673,7 @@ WITH regular_poolDeployed AS (
                         "undercoin3": "0xdac17f958d2ee523a2206206994597c13d831ec7"
                     },
                     {
-                        "version": "Regular",
+                        "version": "Regular V1",
                         "name": "y",
                         "symbol": "y",
                         "pool_address": "0x45F783CCE6B7FF23B2ab2D70e416cdb7D6055f51",
