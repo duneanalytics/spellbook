@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: nft_trades
+  - name: nft_transactions
     meta:
       blockchain: ethereum, solana
       sector: nft
       contributors: soispoke
     config:
-      tags: ['nft', 'opensea', 'magiceden', 'ethereum', 'solana', 'trades']
+      tags: ['nft', 'opensea', 'magiceden', 'ethereum', 'solana', 'transactions']
     description: >
-        NFT trades
+        NFT transactions
     columns:
       - &blockchain
         name: blockchain
@@ -92,20 +92,29 @@ models:
       - &tx_to
         name: tx_to
         description:  "Address that received the transaction"
-      - &fee_amount_raw
-        name: fee_amount_raw
-        description:  "Raw numerical amount for fees"
-      - &fee_amount
-        name: fee_amount
-        description:  "Fee amount in original token currency (properly formatted in decimals)"
-      - &fee_amount_usd
-        name: fee_amount_usd
-        description:  "Fee amount in USD"
-      - &fee_receive_address
-        name: fee_receive_address
+      - &platform_fee_amount_raw
+        name: platform_fee_amount_raw
+        description:  "Raw numerical amount for platform fees"
+      - &platform_fee_amount
+        name: platform_fee_amount
+        description:  "Platform fee amount in original token currency (properly formatted in decimals)"
+      - &platform_fee_amount_usd
+        name: platform_fee_amount_usd
+        description:  "Platform fee amount in USD"
+      - &royalty_fee_amount_raw
+        name: royalty_fee_amount_raw
+        description:  "Raw numerical amount for royalty fees"
+      - &royalty_fee_amount
+        name: royalty_fee_amount
+        description:  "Royalty fee amount in original token currency (properly formatted in decimals)"
+      - &royalty_fee_amount_usd
+        name: royalty_fee_amount_usd
+        description:  "Royalty fee amount in USD"
+      - &royalty_fee_receive_address
+        name: royalty_fee_receive_address
         description:  "Wallet addresses receiving fees from the transaction"
-      - &fee_currency_symbol
-        name: fee_currency_symbol
+      - &royalty_fee_currency_symbol
+        name: royalty_fee_currency_symbol
         description: "Symbol of the token in which fees are paid out"
       - &unique_trade_id
         name: unique_trade_id

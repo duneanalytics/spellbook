@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: opensea_trades
+  - name: opensea_transactions
     meta:
       blockchain: ethereum, solana
       project: opensea
@@ -9,7 +9,7 @@ models:
     config:
       tags: ['opensea','ethereum', 'solana','transactions']
     description: >
-        Daily OpenSea trades
+        Daily OpenSea transactions
     columns:
       - &blockchain
         name: blockchain

@@ -1,11 +1,11 @@
 {{ config(
-        alias ='trades',
+        alias ='transactions',
         materialized ='incremental'
         )
 }}
 
 
-SELECT * FROM {{ ref('opensea_trades') }} 
+SELECT * FROM {{ ref('opensea_transactions') }} 
          UNION
 SELECT * FROM {{ ref('magiceden_trades') }}
 
