@@ -7,7 +7,7 @@
 
 SELECT * FROM {{ ref('opensea_transactions') }} 
          UNION
-SELECT * FROM {{ ref('magiceden_transaction') }}
+SELECT * FROM {{ ref('magiceden_transactions') }}
 
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run

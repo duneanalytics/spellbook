@@ -14,23 +14,32 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain"
-      - name: tx_hash
+      - &tx_hash
+        name: tx_hash
         description: "Transaction hash"
-      - name: block_time
+      - &block_time
+        name: block_time
         description: "UTC event block time"
-      - name: currency_symbol
+      - &currency_symbol
+        name: currency_symbol
         description: "Currency Symbol of the trade value"
-      - name: currency_contract
+      - &currency_contract
+        name: currency_contract
         description: "Contract address of the currency in which the trade is denominated in"
-      - name: amount_original
+      - &amount_original
+        name: amount_original
         description: "Value of the trade at time of execution in the original currency"
-      - name: amount_usd
+      - &amount_usd
+        name: amount_usd
         description:  "USD value of the trade at time of execution"
-      - name: project_contract_address
-        description:  "Contract address used by the project, in this case wyvern contract"
-      - name: evt_type
-        description:  "Event type (Trade, Mint, Burn)"
-      - name: unique_trade_id
+      - &project_contract_address
+        name: project_contract_address
+        description:  "Contract address used by the v1 project"
+      - &evt_type
+        name: evt_type
+        description:  "Event type (Trade, Mint, Burn, Transaction)"
+      - &unique_trade_id
+        name: unique_trade_id
         description:  "Unique trade id, combination of signatures[0] and id"
 
   - name: opensea_solana_trades
