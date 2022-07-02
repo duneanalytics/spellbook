@@ -1,6 +1,6 @@
  {{
   config(schema = 'magiceden_v1_solana', 
-        alias='trades'
+        alias='transactions'
   )
 }}
 
@@ -16,8 +16,8 @@ SELECT
   p.symbol as currency_symbol,
   p.contract_address as currency_contract,
   'MEisE1HzehtrDpAAT8PnLHjpSSkRYakotTuJRPjTpo8' as project_contract_address,
-  'ExecuteSale' as evt_type,
-  account_keys[0] as traders,
+  CASE WHEN ARRAY_CONTAINS(log_messages, 'Program log: Instruction: ExecuteSale') THEN 'Trade' 
+  ELSE 'Transaction' END as evt_type,
   signatures[0] || '-' || id as unique_trade_id
 FROM {{ source('solana','transactions') }}
 LEFT JOIN {{ source('prices', 'usd') }} p 

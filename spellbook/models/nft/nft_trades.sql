@@ -1,13 +1,11 @@
 {{ config(
-        alias ='transactions',
-        materialized ='incremental'
+        alias ='trades'
         )
 }}
 
-
-SELECT * FROM {{ ref('opensea_transactions') }} 
+SELECT * FROM {{ ref('opensea_trades') }} 
          UNION
-SELECT * FROM {{ ref('magiceden_transaction') }}
+SELECT * FROM {{ ref('magiceden_trades') }}
 
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run

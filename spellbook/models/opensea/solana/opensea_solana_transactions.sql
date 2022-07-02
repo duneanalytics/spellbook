@@ -1,6 +1,6 @@
  {{
   config(
-        alias='transaction'
+        alias='transactions'
   )
 }}
 

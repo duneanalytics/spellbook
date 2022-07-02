@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: magiceden_solana_trades
+  - name: magiceden_solana_transactions
     meta:
       blockchain: solana
       project: magiceden
       contributors: soispoke
     config:
-      tags: ['magiceden','solana','trades']
+      tags: ['magiceden','solana','transactions']
     description: >
-        Magic Eden trades on Solana
+        Magic Eden transactions on Solana
     columns:
       - &blockchain
         name: blockchain
@@ -35,22 +35,22 @@ models:
       - &project_contract_address
         name: project_contract_address
         description:  "Contract address used by the v1 project"
-      - &traders
-        name: traders
-        description:  "Traders"
+      - &evt_type
+        name: evt_type
+        description:  "Event type (Trade, Mint, Burn, Transaction)"
       - &unique_trade_id
         name: unique_trade_id
         description:  "Unique trade id, combination of signatures[0] and id"
 
-  - name: magiceden_v1_solana_trades
+  - name: magiceden_solana_trades
     meta:
       blockchain: solana
       project: magiceden
       contributors: soispoke
     config:
-      tags: ['solana','magiceden_v1','trades']
+      tags: ['solana','magiceden','trades']
     description: >
-        MagicEden v1 trades on Solana
+        MagicEden trades on Solana
     columns:
       - *blockchain
       - *tx_hash
@@ -60,18 +60,18 @@ models:
       - *amount_original
       - *amount_usd
       - *project_contract_address
-      - *traders
+      - *evt_type
       - *unique_trade_id
 
-  - name: magiceden_v2_solana_trades
+  - name: magiceden_v1_solana_transactions
     meta:
       blockchain: solana
       project: magiceden
       contributors: soispoke
     config:
-      tags: ['solana','magiceden_v2','trades']
+      tags: ['solana','magiceden','v1','transactions']
     description: >
-        MagicEden v2 trades on Solana
+        MagicEden v1 transactions on Solana
     columns:
       - *blockchain
       - *tx_hash
@@ -81,5 +81,26 @@ models:
       - *amount_original
       - *amount_usd
       - *project_contract_address
-      - *traders
+      - *evt_type
+      - *unique_trade_id
+
+  - name: magiceden_v2_solana_transactions
+    meta:
+      blockchain: solana
+      project: magiceden
+      contributors: soispoke
+    config:
+      tags: ['solana','magiceden','v2','transactions']
+    description: >
+        MagicEden v2 transactions on Solana
+    columns:
+      - *blockchain
+      - *tx_hash
+      - *block_time
+      - *currency_symbol
+      - *currency_contract
+      - *amount_original
+      - *amount_usd
+      - *project_contract_address
+      - *evt_type
       - *unique_trade_id
