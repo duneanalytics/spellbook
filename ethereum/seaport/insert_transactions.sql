@@ -3,6 +3,15 @@ LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
 
+-- ## this function consists of 4 parts,
+-- ## p1_ : seaport."Seaport_call_fulfillBasicOrder"
+-- ## p2_ : seaport."Seaport_call_fulfillAvailableAdvancedOrders"
+-- ##       seaport."Seaport_call_fulfillAvailableOrders"
+-- ## p3_ : seaport."Seaport_call_fulfillOrder"
+-- ##       seaport."Seaport_call_fulfillAdvancedOrder"
+-- ## p4_ : seaport."Seaport_call_matchOrders"
+-- ##     : seaport."Seaport_call_matchAdvancedOrders"
+
 with p1_call as (
     select 'basic_order' as main_type
           ,'single' as sub_type
