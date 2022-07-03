@@ -138,6 +138,8 @@ COPY nft.tokens (contract_address, project_name) FROM stdin;
 \\xCc4445aBf253EbFEb0F5AD8A8AFE2675e5f6a759	NAGA KIDS
 \\xa351c7b0ee07e1341625e3fe30066841cd3b0f30	Zero Ape Club
 \\x21d516adc2926fed3b48329fb486400a057dcd97	Mirror WNFT - Choosing Optimism
+\\xe8FDF5D5b243Dc8e092BcBBe10E38728EAFB5f6d	SasoshiLab
+\\x6f54391fE0386D506b51d69Deeb8b04E0544E088	Mean Finance - DCA Position
 \.
 
 COMMIT;
