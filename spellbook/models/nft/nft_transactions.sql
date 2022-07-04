@@ -8,7 +8,7 @@
 }}
 
 
-SELECT * FROM(
+SELECT * FROM (
 SELECT * FROM {{ ref('opensea_transactions') }} 
          UNION
 SELECT * FROM {{ ref('magiceden_transactions') }})

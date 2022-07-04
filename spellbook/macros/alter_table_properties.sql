@@ -135,6 +135,7 @@ ALTER TABLE magiceden.transactions SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.abstraction.type'='project',
                                                     'dune.data_explorer.abstraction.name'='magiceden',
                                                     'dune.data_explorer.contributors'='["soispoke"]');
+{% endset %}
 
 {% set magiceden_trades %}
 ALTER VIEW magiceden.trades SET TBLPROPERTIES('dune.public'='true',
