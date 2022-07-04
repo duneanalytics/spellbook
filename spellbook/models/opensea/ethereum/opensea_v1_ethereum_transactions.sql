@@ -23,6 +23,7 @@ SELECT
       ELSE addrs [6]
   END AS currency_contract,
   uints [4] as amount_original,
+  addrs[4] as shared_storefront_address,
   addrs [1] as buyer,
   addrs [8] AS seller,
   CASE WHEN contains('0xfb16a595', substring(calldataBuy,1,4)) THEN conv(substr(calldataBuy,203,64),16,10)::string
@@ -52,6 +53,7 @@ SELECT
   nft_contract_address,
   currency_contract,
   amount_original,
+  shared_storefront_address,
   buyer,
   seller,
   token_id,
@@ -123,8 +125,8 @@ SELECT DISTINCT
   'Buy' AS trade_category,
   wa.seller AS seller,
   wa.buyer AS buyer,
-  CASE WHEN nft_contract_address = '0x495f947276749ce646f68ac8c248420045cb7b5e' 
-  and buyer = '0x83c8f28c26bf6aaca652df1dbbe0e1b56f8baba2' THEN 'Mint' ELSE evt_type END as evt_type,
+  CASE WHEN shared_storefront_address = '0x495f947276749ce646f68ac8c248420045cb7b5e' THEN 'Mint'
+  WHEN evt_type is not NULL THEN evt_type ELSE 'Trade' END as evt_type,
   wa.amount_original / power(10,erc20.decimals) AS amount_original,
   wa.amount_original AS amount_raw,
   CASE WHEN wa.currency_contract_original = '0x0000000000000000000000000000000000000000' THEN 'ETH' ELSE erc20.symbol END AS currency_symbol,

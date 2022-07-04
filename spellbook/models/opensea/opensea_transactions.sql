@@ -86,6 +86,6 @@ FROM {{ ref('opensea_solana_transactions') }})
 
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-WHERE block_time > now() - interval 2 days
+where block_time > (select max(block_time) from {{ this }})
 {% endif %} 
 
