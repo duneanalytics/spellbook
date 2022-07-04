@@ -25,6 +25,7 @@ SELECT
   abs(post_balances[0] - pre_balances[0])::string AS amount_raw,
   p.symbol as currency_symbol,
   p.contract_address as currency_contract,
+  'metaplex' as token_standard,
   CASE WHEN (array_contains(account_keys, 'MEisE1HzehtrDpAAT8PnLHjpSSkRYakotTuJRPjTpo8')) THEN 'MEisE1HzehtrDpAAT8PnLHjpSSkRYakotTuJRPjTpo8'
   WHEN (array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K')) THEN 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K' 
   END as project_contract_address,

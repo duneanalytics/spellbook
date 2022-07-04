@@ -18,6 +18,7 @@ SELECT
   abs(post_balances[0] - pre_balances[0])::string AS amount_raw,
   p.symbol as currency_symbol,
   p.contract_address as currency_contract,
+  'metaplex' as token_standard,
   'pAHAKoTJsAAe2ZcvTZUxoYzuygVAFAmbYmJYdWT886r' as project_contract_address,
   CASE WHEN ARRAY_CONTAINS(log_messages, 'Program log: Instruction: ExecuteSale') THEN 'Trade' 
   ELSE 'Transaction' END as evt_type,

@@ -26,6 +26,9 @@ models:
       - &currency_contract
         name: currency_contract
         description: "Contract address of the currency in which the trade is denominated in"
+      - &token_standard
+        name: token_standard
+        description: "Token standard (Metaplex for Solana NFTs)"
       - &amount_original
         name: amount_original
         description: "Value of the trade at time of execution in the original currency"
@@ -57,6 +60,7 @@ models:
       - *block_time
       - *currency_symbol
       - *currency_contract
+      - *token_standard
       - *amount_original
       - *amount_usd
       - *project_contract_address
