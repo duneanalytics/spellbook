@@ -63,6 +63,27 @@ models:
       - *evt_type
       - *unique_trade_id
 
+  - name: magiceden_solana_mints
+    meta:
+      blockchain: solana
+      project: magiceden
+      contributors: soispoke
+    config:
+      tags: ['solana','magiceden','mints']
+    description: >
+        MagicEden mints on Solana
+    columns:
+      - *blockchain
+      - *tx_hash
+      - *block_time
+      - *currency_symbol
+      - *currency_contract
+      - *amount_original
+      - *amount_usd
+      - *project_contract_address
+      - *evt_type
+      - *unique_trade_id
+
   - name: magiceden_v1_solana_transactions
     meta:
       blockchain: solana
