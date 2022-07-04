@@ -19,9 +19,10 @@ SELECT
   p.symbol as currency_symbol,
   p.contract_address as currency_contract,
   'metaplex' as token_standard,
-  'pAHAKoTJsAAe2ZcvTZUxoYzuygVAFAmbYmJYdWT886r' as project_contract_address,
-  CASE WHEN ARRAY_CONTAINS(log_messages, 'Program log: Instruction: ExecuteSale') THEN 'Trade' 
-  ELSE 'Transaction' END as evt_type,
+  CASE WHEN (array_contains(account_keys, '3o9d13qUvEuuauhFrVom1vuCzgNsJifeaBYDPquaT73Y')) THEN '3o9d13qUvEuuauhFrVom1vuCzgNsJifeaBYDPquaT73Y'
+  WHEN (array_contains(account_keys, 'pAHAKoTJsAAe2ZcvTZUxoYzuygVAFAmbYmJYdWT886r')) THEN 'pAHAKoTJsAAe2ZcvTZUxoYzuygVAFAmbYmJYdWT886r' 
+  END as project_contract_address,
+  'Trade' as evt_type,
   signatures[0] || '-' || id as unique_trade_id
 FROM {{ source('solana','transactions') }}
 LEFT JOIN {{ source('prices', 'usd') }} p 
