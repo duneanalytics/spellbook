@@ -59,7 +59,8 @@ SELECT
   currency_contract_original,
   fees,
   fees.to as fee_receive_address,
-  fees.fee_currency_symbol
+  fees.fee_currency_symbol,
+  call_trace_address
   FROM wyvern_call_data wc
   LEFT JOIN {{ ref('opensea_v1_ethereum_fees') }} fees ON fees.tx_hash = wc.call_tx_hash AND fees.trace_address = wc.call_trace_address),
 
@@ -88,7 +89,7 @@ SELECT evt_tx_hash,
         FROM {{ source('erc721_ethereum','evt_transfer') }} erc721
         GROUP BY evt_tx_hash,tokenId,evt_index, erc721.from, erc721.to)
         
-SELECT
+SELECT DISTINCT
   'ethereum' as blockchain,
   'opensea' as project,
   'v1' as version,
@@ -122,7 +123,8 @@ SELECT
   'Buy' AS trade_category,
   wa.seller AS seller,
   wa.buyer AS buyer,
-  evt_type,
+  CASE WHEN nft_contract_address = '0x495f947276749ce646f68ac8c248420045cb7b5e' 
+  and buyer = '0x83c8f28c26bf6aaca652df1dbbe0e1b56f8baba2' THEN 'Mint' ELSE evt_type END as evt_type,
   wa.amount_original / power(10,erc20.decimals) AS amount_original,
   wa.amount_original AS amount_raw,
   CASE WHEN wa.currency_contract_original = '0x0000000000000000000000000000000000000000' THEN 'ETH' ELSE erc20.symbol END AS currency_symbol,
@@ -144,7 +146,7 @@ SELECT
   wa.fees / power(10,erc20.decimals) * p.price AS royalty_fee_amount_usd, 
   wa.fee_receive_address as royalty_fee_receive_address,
   wa.fee_currency_symbol as royalty_fee_currency_symbol,
-  wa.call_tx_hash || '-' || wa.token_id || '-' ||  wa.seller || '-' || evt_index as unique_trade_id
+  wa.call_tx_hash || '-' || wa.token_id || '-' ||  wa.seller || '-' || coalesce(evt_index, 1) || '-' || wa.call_trace_address::string as unique_trade_id
 FROM wyvern_all wa
 LEFT JOIN {{ source('ethereum','transactions') }} tx ON wa.call_tx_hash = tx.hash
 LEFT JOIN erc_transfers ON erc_transfers.evt_tx_hash = wa.call_tx_hash AND wa.token_id = erc_transfers.token_id_erc
