@@ -33,5 +33,5 @@ AND block_date > '2022-04-06'
 
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-WHERE block_date > now() - interval 2 days
+AND block_date > now() - interval 2 days
 {% endif %} 
