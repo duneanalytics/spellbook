@@ -10,8 +10,6 @@
 SELECT 
   'solana' as blockchain,
   'magiceden' as project,
-  account_keys,
-  instructions,
   CASE WHEN (array_contains(account_keys, 'MEisE1HzehtrDpAAT8PnLHjpSSkRYakotTuJRPjTpo8')) THEN 'v1'
   WHEN (array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K')) THEN 'v2' 
   WHEN (array_contains(account_keys, 'CMX5tvuWs2rBUL3vqVWiARfcDoCKjdeSinCsZdxJmYoF')) THEN 'launchpad_v1'
