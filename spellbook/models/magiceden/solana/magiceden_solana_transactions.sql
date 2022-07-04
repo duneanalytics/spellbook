@@ -10,6 +10,8 @@
 SELECT 
   'solana' as blockchain,
   'magiceden' as project,
+  account_keys,
+  instructions,
   CASE WHEN (array_contains(account_keys, 'MEisE1HzehtrDpAAT8PnLHjpSSkRYakotTuJRPjTpo8')) THEN 'v1'
   WHEN (array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K')) THEN 'v2' 
   WHEN (array_contains(account_keys, 'CMX5tvuWs2rBUL3vqVWiARfcDoCKjdeSinCsZdxJmYoF')) THEN 'launchpad_v1'
@@ -27,12 +29,10 @@ SELECT
   WHEN (array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K')) THEN 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K' 
   END as project_contract_address,
   CASE WHEN (array_contains(account_keys, 'MEisE1HzehtrDpAAT8PnLHjpSSkRYakotTuJRPjTpo8')) 
-  OR (array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K')) 
-  AND ARRAY_CONTAINS(log_messages, 'Program log: Instruction: ExecuteSale') THEN 'Trade' 
+  OR (array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K')) THEN 'Trade' 
   WHEN (array_contains(account_keys, 'CMX5tvuWs2rBUL3vqVWiARfcDoCKjdeSinCsZdxJmYoF'))
   OR (array_contains(account_keys, 'CMY8R8yghKfFnHKCWjzrArUpYH4PbJ56aWBr4kCP4DMk'))
-  OR (array_contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb'))
-  AND ARRAY_CONTAINS(log_messages, 'Program log: Instruction: MintNft') THEN 'Mint'
+  OR (array_contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb')) THEN 'Mint'
   ELSE 'Transaction' END as evt_type,
   signatures[0] || '-' || id as unique_trade_id
 FROM {{ source('solana','transactions') }}
@@ -45,3 +45,8 @@ OR (array_contains(account_keys, 'CMX5tvuWs2rBUL3vqVWiARfcDoCKjdeSinCsZdxJmYoF')
 OR (array_contains(account_keys, 'CMY8R8yghKfFnHKCWjzrArUpYH4PbJ56aWBr4kCP4DMk'))
 OR (array_contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb'))
 AND block_date > '2022-01-07'
+
+{% if is_incremental() %}
+-- this filter will only be applied on an incremental run
+AND block_date > now() - interval 2 days
+{% endif %} 
