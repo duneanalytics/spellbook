@@ -13,7 +13,7 @@ SELECT
     'ETH' as fee_currency_symbol
 FROM ethereum.traces source_fees
 WHERE 
-from in ('0x7be8076f4ea4a4ad08075c2508e481d6c946d12b','0x7f268357a8c2552623316e2562d90e642bb538e5')
+FROM IN ('0x7be8076f4ea4a4ad08075c2508e481d6c946d12b','0x7f268357a8c2552623316e2562d90e642bb538e5')
 AND to = '0x5b3256965e7c3cf26e11fcaf296dfc8807c01073' -- OpenSea Wallet
 GROUP BY 1,2,4,5
                 UNION ALL  
@@ -26,5 +26,5 @@ SELECT
    FROM erc20_ethereum.evt_transfer erc
    LEFT JOIN dbt_thomas_tokens_ethereum.erc20 erc20 ON erc20.contract_address =  erc.contract_address
    WHERE to = '0x5b3256965e7c3cf26e11fcaf296dfc8807c01073'
-   and evt_tx_hash = '0xaa68c271a72a2a280eb06d89506d1feb3de6a84f6f19d1aa001885d783d5b9c7'
+   AND evt_tx_hash = '0xaa68c271a72a2a280eb06d89506d1feb3de6a84f6f19d1aa001885d783d5b9c7'
    GROUP BY 1,2,4,5
