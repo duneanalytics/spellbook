@@ -41,6 +41,7 @@ WHERE
 (addrs[3] = '0x5b3256965e7c3cf26e11fcaf296dfc8807c01073'
         OR addrs[10] = '0x5b3256965e7c3cf26e11fcaf296dfc8807c01073')
 AND call_success = true
+AND call_block_time > '2022-06-01'
 ),
 
 wyvern_all as 
@@ -77,6 +78,7 @@ erc_transfers as
         ELSE 'Trade' END AS evt_type,
         evt_index
         FROM {{ source('erc1155_ethereum','evt_transfersingle') }} erc1155
+        WHERE erc1155.evt_block_time > '2022-06-01'
         GROUP BY evt_tx_hash,value,id,evt_index, erc1155.from, erc1155.to
             UNION ALL
 SELECT evt_tx_hash,
@@ -89,6 +91,7 @@ SELECT evt_tx_hash,
         ELSE 'Trade' END AS evt_type,
         evt_index
         FROM {{ source('erc721_ethereum','evt_transfer') }} erc721
+        WHERE erc721.evt_block_time > '2022-06-01'
         GROUP BY evt_tx_hash,tokenId,evt_index, erc721.from, erc721.to)
         
 SELECT DISTINCT
@@ -163,3 +166,4 @@ LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20 ON erc20.contract_address = w
       *
     FROM
       {{ ref('opensea_v1_ethereum_excluded_txns') }})
+  AND tx.block_time > '2022-06-01'

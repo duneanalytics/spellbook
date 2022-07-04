@@ -33,17 +33,19 @@ SELECT
   OR (array_contains(account_keys, 'CMY8R8yghKfFnHKCWjzrArUpYH4PbJ56aWBr4kCP4DMk'))
   OR (array_contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb')) THEN 'Mint'
   ELSE 'Transaction' END as evt_type,
-  signatures[0] || '-' || id as unique_trade_id
+  signatures[0] || '-' || id || '-' || instructions[0]::string as unique_trade_id
 FROM {{ source('solana','transactions') }}
 LEFT JOIN {{ source('prices', 'usd') }} p 
   ON p.minute = date_trunc('minute', block_time)
   AND p.symbol = 'SOL'        
-WHERE (array_contains(account_keys, 'MEisE1HzehtrDpAAT8PnLHjpSSkRYakotTuJRPjTpo8'))  -- magic eden v2
-OR (array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
-OR (array_contains(account_keys, 'CMX5tvuWs2rBUL3vqVWiARfcDoCKjdeSinCsZdxJmYoF'))
-OR (array_contains(account_keys, 'CMY8R8yghKfFnHKCWjzrArUpYH4PbJ56aWBr4kCP4DMk'))
-OR (array_contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb'))
+WHERE (
+array_contains(account_keys, 'MEisE1HzehtrDpAAT8PnLHjpSSkRYakotTuJRPjTpo8')  -- magic eden v2
+OR array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K')
+OR array_contains(account_keys, 'CMX5tvuWs2rBUL3vqVWiARfcDoCKjdeSinCsZdxJmYoF')
+OR array_contains(account_keys, 'CMY8R8yghKfFnHKCWjzrArUpYH4PbJ56aWBr4kCP4DMk')
+OR array_contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb'))
 AND block_date > '2022-01-07'
+AND block_slot > 114980355
 
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
