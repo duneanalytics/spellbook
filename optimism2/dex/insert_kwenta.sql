@@ -64,8 +64,8 @@ WITH rows AS (
             se."toAddress" AS trader_a,
             NULL::bytea AS trader_b,
 	    -- Receive token_a, Send token_b
-	    rec.value AS token_a_amount_raw,
-            send.value AS token_b_amount_raw,
+	    se."toAmount" AS token_a_amount_raw,
+            se."fromAmount" AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
             rec.contract_address AS token_a_address,
             send.contract_address AS token_b_address,
@@ -75,16 +75,11 @@ WITH rows AS (
             se.evt_index
 	--Synthetix event uses hash keys for tokens, so we pull ERC20 transfers instead
     FROM synthetix."MintableSynthetix_evt_SynthExchange" se
-    INNER JOIN erc20."ERC20_evt_Transfer" send
-        ON send."evt_tx_hash" = se.evt_tx_hash
-        AND send."from" = se."toAddress"
-        AND send."to" = '\x0000000000000000000000000000000000000000'
-        AND send.evt_block_time = se.evt_block_time
-    INNER JOIN erc20."ERC20_evt_Transfer" rec
-        ON rec."evt_tx_hash" = se.evt_tx_hash
-        AND rec."to" = se."toAddress"
-        AND rec."from" = '\x0000000000000000000000000000000000000000'
-        AND rec.evt_block_time = se.evt_block_time
+-- to-do: Find a way to validate that this is the Synthetix token and not a token with the same symbol
+    INNER JOIN erc20.tokens send
+        ON send."symbol" = split_part(encode("fromCurrencyKey", 'escape'),'\',1)
+    INNER JOIN erc20.tokens rec
+        ON rec."symbol" = split_part(encode("toCurrencyKey", 'escape'),'\',1)
 
 	WHERE se.evt_block_time >= start_ts AND se.evt_block_time < end_ts
 
