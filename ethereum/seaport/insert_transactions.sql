@@ -860,16 +860,16 @@ $function$
 
 -- backfill
 SELECT seaport.insert_transactions('2022-06-11', '2022-06-16');
--- SELECT seaport.insert_transactions('2022-06-16', '2022-06-21');
--- SELECT seaport.insert_transactions('2022-06-21', '2022-06-26');
--- SELECT seaport.insert_transactions('2022-06-26', '2022-07-01');
--- SELECT seaport.insert_transactions('2022-07-01', (SELECT current_timestamp - interval '20 minutes'));
+SELECT seaport.insert_transactions('2022-06-16', '2022-06-21');
+SELECT seaport.insert_transactions('2022-06-21', '2022-06-26');
+SELECT seaport.insert_transactions('2022-06-26', '2022-07-01');
+SELECT seaport.insert_transactions('2022-07-01', (SELECT current_timestamp - interval '20 minutes'));
 
--- -- cronjob
--- INSERT INTO cron.job (schedule, command)
--- VALUES ('*/20 * * * *', 
--- $$SELECT seaport.insert_transactions((SELECT date_trunc('day',MAX(block_time)) FROM seaport.transactions)
---                                             ,(SELECT current_timestamp - interval '20 minutes'));$$
---        )
--- ON CONFLICT (command) 
--- DO UPDATE SET schedule=EXCLUDED.schedule;
+-- cronjob
+INSERT INTO cron.job (schedule, command)
+VALUES ('*/20 * * * *', 
+$$SELECT seaport.insert_transactions((SELECT date_trunc('day',MAX(block_time)) FROM seaport.transactions)
+                                            ,(SELECT current_timestamp - interval '20 minutes'));$$
+       )
+ON CONFLICT (command) 
+DO UPDATE SET schedule=EXCLUDED.schedule;
