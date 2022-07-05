@@ -105,7 +105,7 @@ SELECT DISTINCT
   'opensea' as project,
   'v1' as version,
   tx.block_time,
-  token_id_erc as token_id, 
+  coalesce(token_id_erc, wa.token_id) as token_id, 
   tokens_nft.name AS collection,
   wa.amount_original / power(10,erc20.decimals) * p.price AS amount_usd,
   CASE WHEN erc_transfers.value_unique >= 1 THEN 'erc1155'
