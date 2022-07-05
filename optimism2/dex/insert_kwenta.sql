@@ -76,9 +76,9 @@ WITH rows AS (
 	--Synthetix event uses hash keys for tokens, so we pull ERC20 transfers instead
     FROM synthetix."MintableSynthetix_evt_SynthExchange" se
 -- to-do: Find a way to validate that this is the Synthetix token and not a token with the same symbol
-    INNER JOIN erc20.tokens send
+    LEFT JOIN erc20.tokens send
         ON send."symbol" = split_part(encode("fromCurrencyKey", 'escape'),'\',1)
-    INNER JOIN erc20.tokens rec
+    LEFT JOIN erc20.tokens rec
         ON rec."symbol" = split_part(encode("toCurrencyKey", 'escape'),'\',1)
 
 	WHERE se.evt_block_time >= start_ts AND se.evt_block_time < end_ts
