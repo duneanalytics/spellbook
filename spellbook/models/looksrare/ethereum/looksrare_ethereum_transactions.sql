@@ -22,7 +22,6 @@ WITH looks_rare AS (
             WHEN ask.currency = '0x0000000000000000000000000000000000000000' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
             ELSE ask.currency
         END AS currency_contract,
-        ask.currency AS currency_contract_original,
         ask.collection AS nft_contract_address,
         ask.contract_address AS contract_address,
         ask.evt_tx_hash AS tx_hash,
@@ -51,7 +50,6 @@ WITH looks_rare AS (
             WHEN bid.currency = '0x0000000000000000000000000000000000000000' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
             ELSE bid.currency
         END AS currency_contract,
-        bid.currency AS currency_contract_original,
         bid.collection AS nft_contract_address,
         bid.contract_address AS contract_address,
         bid.evt_tx_hash AS tx_hash,
@@ -127,7 +125,6 @@ SELECT DISTINCT
     looks_rare.price / power(10,erc20.decimals) AS amount_original,
     looks_rare.price AS amount_raw,
     CASE WHEN looks_rare.currency_contract_original = '0x0000000000000000000000000000000000000000' THEN 'ETH' ELSE erc20.symbol END AS currency_symbol,
-    currency_contract_original,
     currency_contract,
     COALESCE(erc.contract_address, nft_contract_address) AS nft_contract_address,
     looks_rare.contract_address AS project_contract_address,
@@ -140,9 +137,11 @@ SELECT DISTINCT
     ROUND((2*(looks_rare.price)/100),7) as platform_fee_amount_raw,
     ROUND((2*(looks_rare.price / power(10,erc20.decimals))/100),7) platform_fee_amount,
     ROUND((2*(looks_rare.price / power(10,erc20.decimals) * p.price)/100),7) as  platform_fee_amount_usd,
+    '2' as platform_fee_percentage,
     royalty_fee as royalty_fee_amount_raw,
     royalty_fee / power(10,erc20.decimals) as royalty_fee_amount,
     royalty_fee * p.price/ power(10,erc20.decimals) as royalty_fee_amount_usd,
+    royalty_fee / looks_rare.price * 100 as royalty_fee_percentage,
     royalty_fee_receive_address,
     royalty_fee_currency_symbol,
     tx_hash || '-' ||  token_id || '-' ||  seller || '-' || looks_rare.evt_index::string || '-' || evt_type as unique_trade_id
