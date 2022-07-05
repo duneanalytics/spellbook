@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: execute py script
-        working-directory: ./git_scripts
+        working-directory: ./spellbook
         run: python fetch_latest_manifest.py
 
       - name: Set DBT schema
