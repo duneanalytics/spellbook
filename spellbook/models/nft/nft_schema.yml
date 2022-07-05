@@ -92,10 +92,6 @@ models:
       - &platform_fee_amount_raw
         name: platform_fee_amount_raw
         description:  "Raw numerical amount for platform fees"
-        tests:
-          - dbt_utils.accepted_range:
-              min_value: 0
-              inclusive: true
       - &platform_fee_amount
         name: platform_fee_amount
         description:  "Platform fee amount in original token currency (properly formatted in decimals)"
