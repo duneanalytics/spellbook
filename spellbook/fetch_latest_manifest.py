@@ -1,6 +1,4 @@
 import argparse
-import logging
-import shutil
 
 import requests as re
 
@@ -18,7 +16,6 @@ def loop_till_success(token, run_ids):
     success = False
     while success == False:
         for run_id in run_ids:
-            print(run_id)
             response = re.get(f"https://cloud.getdbt.com/api/v2/accounts/58579/runs/{run_id}/artifacts/manifest.json", headers=headers)
             if response.status_code == 200:
                 success = True
@@ -28,8 +25,6 @@ def loop_till_success(token, run_ids):
     return run_id
 
 def main():
-    logging.basicConfig(level=logging.DEBUG)
-
     parser = argparse.ArgumentParser()
     parser.add_argument('--dbt_api_token', type=str)
     args = parser.parse_args()
