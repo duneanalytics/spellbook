@@ -207,8 +207,8 @@ with p1_call as (
       from p1_txn_level a
           left join ethereum.transactions tx on tx.hash = a.tx_hash 
                                               and tx.block_number > 14801608
-                                              and tx.block_time >= start_ts
-                                              and tx.block_time < end_ts
+                                              and tx.block_time >= p_start_ts
+                                              and tx.block_time < p_end_ts
           left join nft.tokens n on n.contract_address = concat('\x',substr(a.nft_address,3,40))::bytea
           left join erc20.tokens t1 on t1.contract_address = case when concat('\x',substr(a.price_token,3,40))::bytea = '\x0000000000000000000000000000000000000000'::bytea then '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                                                                   else concat('\x',substr(a.price_token,3,40))::bytea
@@ -217,8 +217,8 @@ with p1_call as (
                                                                  else concat('\x',substr(a.price_token,3,40))::bytea
                                                             end
                                   and p1.minute = date_trunc('minute', a.block_time)
-                                  and p1.minute >= start_ts
-                                  and p1.minute < end_ts
+                                  and p1.minute >= p_start_ts
+                                  and p1.minute < p_end_ts
 )
 ,p2_call as (
     select 'available_advanced_orders' as main_type
@@ -416,8 +416,8 @@ with p1_call as (
       from p2_txn_level a
           left join ethereum.transactions tx on tx.hash = a.tx_hash 
                                               and tx.block_number > 14801608
-                                              and tx.block_time >= start_ts
-                                              and tx.block_time < end_ts
+                                              and tx.block_time >= p_start_ts
+                                              and tx.block_time < p_end_ts
           left join nft.tokens n on n.contract_address = concat('\x',substr(a.nft_address,3,40))::bytea
           left join erc20.tokens t1 on t1.contract_address = case when concat('\x',substr(a.price_token,3,40))::bytea = '\x0000000000000000000000000000000000000000'::bytea then '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                                                                   else concat('\x',substr(a.price_token,3,40))::bytea
@@ -426,8 +426,8 @@ with p1_call as (
                                                                  else concat('\x',substr(a.price_token,3,40))::bytea
                                                             end
                                   and p1.minute = date_trunc('minute', a.block_time)
-                                  and p1.minute >= start_ts
-                                  and p1.minute < end_ts
+                                  and p1.minute >= p_start_ts
+                                  and p1.minute < p_end_ts
 )
 ,p3_call as (
     select 'order' as main_type
@@ -619,8 +619,8 @@ with p1_call as (
       from p3_txn_level a
            left join ethereum.transactions tx on tx.hash = a.tx_hash
                                               and tx.block_number > 14801608
-                                              and tx.block_time >= start_ts
-                                              and tx.block_time < end_ts
+                                              and tx.block_time >= p_start_ts
+                                              and tx.block_time < p_end_ts
            left join nft.tokens n on n.contract_address = a.nft_contract_address
            left join erc20.tokens t1 on t1.contract_address = case when a.original_currency_contract = '\x0000000000000000000000000000000000000000'::bytea then '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                                                                    else a.original_currency_contract
@@ -629,8 +629,8 @@ with p1_call as (
                                                                  else a.original_currency_contract
                                                             end
                                    and p1.minute = date_trunc('minute', a.block_time)
-                                   and p1.minute >= start_ts
-                                   and p1.minute < end_ts
+                                   and p1.minute >= p_start_ts
+                                   and p1.minute < p_end_ts
 )
 ,p4_call as (
     select 'match_orders' as main_type
@@ -823,8 +823,8 @@ with p1_call as (
       from p4_txn_level a
           left join ethereum.transactions tx on tx.hash = a.tx_hash 
                                               and tx.block_number > 14801608
-                                              and tx.block_time >= start_ts
-                                              and tx.block_time < end_ts
+                                              and tx.block_time >= p_start_ts
+                                              and tx.block_time < p_end_ts
           left join nft.tokens n on n.contract_address = concat('\x',substr(a.nft_address,3,40))::bytea
           left join erc20.tokens t1 on t1.contract_address = case when concat('\x',substr(a.price_token,3,40))::bytea = '\x0000000000000000000000000000000000000000'::bytea then '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                                                                   else concat('\x',substr(a.price_token,3,40))::bytea
@@ -833,8 +833,8 @@ with p1_call as (
                                                                  else concat('\x',substr(a.price_token,3,40))::bytea
                                                             end
                                   and p1.minute = date_trunc('minute', a.block_time)
-                                  and p1.minute >= start_ts
-                                  and p1.minute < end_ts
+                                  and p1.minute >= p_start_ts
+                                  and p1.minute < p_end_ts
 )
 ,rows AS (
     INSERT INTO seaport.transactions
@@ -860,16 +860,16 @@ $function$
 
 -- backfill
 SELECT seaport.insert_transactions('2022-06-11', '2022-06-16');
-SELECT seaport.insert_transactions('2022-06-16', '2022-06-21');
-SELECT seaport.insert_transactions('2022-06-21', '2022-06-26');
-SELECT seaport.insert_transactions('2022-06-26', '2022-07-01');
-SELECT seaport.insert_transactions('2022-07-01', (SELECT current_timestamp - interval '20 minutes'));
+-- SELECT seaport.insert_transactions('2022-06-16', '2022-06-21');
+-- SELECT seaport.insert_transactions('2022-06-21', '2022-06-26');
+-- SELECT seaport.insert_transactions('2022-06-26', '2022-07-01');
+-- SELECT seaport.insert_transactions('2022-07-01', (SELECT current_timestamp - interval '20 minutes'));
 
--- cronjob
-INSERT INTO cron.job (schedule, command)
-VALUES ('*/20 * * * *', 
-$$SELECT seaport.insert_transactions((SELECT date_trunc('day',MAX(block_time)) FROM seaport.transactions)
-                                            ,(SELECT current_timestamp - interval '20 minutes'));$$
-       )
-ON CONFLICT (command) 
-DO UPDATE SET schedule=EXCLUDED.schedule;
+-- -- cronjob
+-- INSERT INTO cron.job (schedule, command)
+-- VALUES ('*/20 * * * *', 
+-- $$SELECT seaport.insert_transactions((SELECT date_trunc('day',MAX(block_time)) FROM seaport.transactions)
+--                                             ,(SELECT current_timestamp - interval '20 minutes'));$$
+--        )
+-- ON CONFLICT (command) 
+-- DO UPDATE SET schedule=EXCLUDED.schedule;
