@@ -68,24 +68,28 @@ jobs:
           $PR_SCHEMA
           1" | pipenv run dbt init
 
-      - name: Fetch latest run_id
-        uses: JamesIves/fetch-api-data-action@v2.1.0
-        with:
-          endpoint: https://cloud.getdbt.com/api/v2/accounts/58579/runs/?job_definition_id=81672&order_by=-finished_at&limit=2
-          configuration: '{ "method": "GET", 
-                            "headers": {"Authorization": "Token ${{ secrets.DBT_API_TOKEN }}"} }'
-          debug: true
+      - name: execute py script
+        working-directory: ./git_scripts
+        run: python fetch_latest_manifest.py
 
-      - name: Set env, 2nd to last run_id (avoids fetching in progress runs)
-        run: echo "DBT_RUN_ID=$(jq .data[1].id fetch-api-data-action/data.json)" >> $GITHUB_ENV
-
-      - name: Fetch latest manifest.json
-        run: |
-          curl  -o spellbook/manifest.json \
-            --request GET \
-            --url https://cloud.getdbt.com/api/v2/accounts/58579/runs/$DBT_RUN_ID/artifacts/manifest.json \
-            --header 'Content-Type: application/json' \
-            --header 'Authorization: Token ${{ secrets.DBT_API_TOKEN }}'
+#      - name: Fetch latest run_id
+#        uses: JamesIves/fetch-api-data-action@v2.1.0
+#        with:
+#          endpoint: https://cloud.getdbt.com/api/v2/accounts/58579/runs/?job_definition_id=81672&order_by=-finished_at&limit=2
+#          configuration: '{ "method": "GET",
+#                            "headers": {"Authorization": "Token ${{ secrets.DBT_API_TOKEN }}"} }'
+#          debug: true
+#
+#      - name: Set env, 2nd to last run_id (avoids fetching in progress runs)
+#        run: echo "DBT_RUN_ID=$(jq .data[1].id fetch-api-data-action/data.json)" >> $GITHUB_ENV
+#
+#      - name: Fetch latest manifest.json
+#        run: |
+#          curl  -o spellbook/manifest.json \
+#            --request GET \
+#            --url https://cloud.getdbt.com/api/v2/accounts/58579/runs/$DBT_RUN_ID/artifacts/manifest.json \
+#            --header 'Content-Type: application/json' \
+#            --header 'Authorization: Token ${{ secrets.DBT_API_TOKEN }}'
 
       - name: dbt compile to create manifest to compare to
         working-directory: ./spellbook
