@@ -40,11 +40,11 @@ CREATE TABLE IF NOT EXISTS seaport.transfers (
    ,param3 text
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS seaport_transactions_tx_hash_trade_id_idx ON seaport.transactions (tx_hash, trade_id);
-CREATE INDEX IF NOT EXISTS seaport_transactions_block_time_idx ON seaport.transactions (block_time);
-CREATE INDEX IF NOT EXISTS seaport_transactions_call_function_block_time_idx ON seaport.transactions (call_function, block_time);
-CREATE INDEX IF NOT EXISTS seaport_transactions_seller_idx ON seaport.transactions (seller);
-CREATE INDEX IF NOT EXISTS seaport_transactions_buyer_idx ON seaport.transactions (buyer);
-CREATE INDEX IF NOT EXISTS seaport_transactions_fee_receive_address_idx ON seaport.transactions (fee_receive_address);
-CREATE INDEX IF NOT EXISTS seaport_transactions_royalty_receive_address_idx ON seaport.transactions (royalty_receive_address);
-CREATE INDEX IF NOT EXISTS seaport_transactions_nft_contract_address_nft_token_id_block_time_idx ON seaport.transactions (nft_contract_address, nft_token_id, block_time);
+CREATE UNIQUE INDEX IF NOT EXISTS seaport_transfers_tx_hash_trade_id_idx ON seaport.transfers (tx_hash, trade_id);
+CREATE INDEX IF NOT EXISTS seaport_transfers_block_time_idx ON seaport.transfers (block_time);
+CREATE INDEX IF NOT EXISTS seaport_transfers_call_function_block_time_idx ON seaport.transfers (call_function, block_time);
+CREATE INDEX IF NOT EXISTS seaport_transfers_seller_idx ON seaport.transfers (seller);
+CREATE INDEX IF NOT EXISTS seaport_transfers_buyer_idx ON seaport.transfers (buyer);
+CREATE INDEX IF NOT EXISTS seaport_transfers_fee_receive_address_idx ON seaport.transfers (fee_receive_address);
+CREATE INDEX IF NOT EXISTS seaport_transfers_royalty_receive_address_idx ON seaport.transfers (royalty_receive_address);
+CREATE INDEX IF NOT EXISTS seaport_transfers_nft_contract_address_nft_token_id_block_time_idx ON seaport.transfers (nft_contract_address, nft_token_id, block_time);
