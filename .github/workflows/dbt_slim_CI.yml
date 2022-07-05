@@ -23,10 +23,6 @@ jobs:
           python-version: 3.9
           cache: 'pipenv'
 
-      - name: execute py script
-        working-directory: ./spellbook
-        run: python fetch_latest_manifest.py
-
       - name: Cache pipenv virtualenv
         id: cache-pipenv
         uses: actions/cache@v1
@@ -41,6 +37,10 @@ jobs:
         if: steps.cache-pipenv.outputs.cache-hit != 'true'
         run: |
           pipenv install
+
+      - name: execute py script
+        working-directory: ./spellbook
+        run: python fetch_latest_manifest.py
 
       - name: DBT configure
         working-directory: ./spellbook
