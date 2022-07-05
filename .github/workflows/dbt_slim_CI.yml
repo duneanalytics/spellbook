@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set DBT schema
+        run: echo "PR_SCHEMA=$(echo ${{ github.ref_name}} | tr - _)" >> $GITHUB_ENV
+
       - name: Check out repository code
         uses: actions/checkout@v2
 
@@ -41,13 +44,12 @@ jobs:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_HTTPS_PATH: ${{ secrets.DATABRICKS_HTTPS_PATH }}
           DATABRICKS_ACCESS_TOKEN: ${{ secrets.DATABRICKS_ACCESS_TOKEN }}
-          SCHEMA: "github_actions"
         run: |
           echo "2
           $DATABRICKS_HOST
           $DATABRICKS_HTTPS_PATH
           $DATABRICKS_ACCESS_TOKEN
-          $SCHEMA
+          $PR_SCHEMA
           1" | pipenv run dbt init
 
       - name: DBT configure take 2 (sometimes dbt init switches the order of db options)
@@ -57,13 +59,12 @@ jobs:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_HTTPS_PATH: ${{ secrets.DATABRICKS_HTTPS_PATH }}
           DATABRICKS_ACCESS_TOKEN: ${{ secrets.DATABRICKS_ACCESS_TOKEN }}
-          SCHEMA: "github_actions"
         run: |
           echo "1
           $DATABRICKS_HOST
           $DATABRICKS_HTTPS_PATH
           $DATABRICKS_ACCESS_TOKEN
-          $SCHEMA
+          $PR_SCHEMA
           1" | pipenv run dbt init
 
       - name: Fetch latest run_id
@@ -75,13 +76,13 @@ jobs:
           debug: true
 
       - name: Set env, 2nd to last run_id (avoids fetching in progress runs)
-        run: echo "dbt_run_id=$(jq .data[1].id fetch-api-data-action/data.json)" >> $GITHUB_ENV
+        run: echo "DBT_RUN_ID=$(jq .data[1].id fetch-api-data-action/data.json)" >> $GITHUB_ENV
 
       - name: Fetch latest manifest.json
         run: |
           curl  -o spellbook/manifest.json \
             --request GET \
-            --url https://cloud.getdbt.com/api/v2/accounts/58579/runs/62469111/artifacts/manifest.json \
+            --url https://cloud.getdbt.com/api/v2/accounts/58579/runs/$DBT_RUN_ID/artifacts/manifest.json \
             --header 'Content-Type: application/json' \
             --header 'Authorization: Token ${{ secrets.DBT_API_TOKEN }}'
 
