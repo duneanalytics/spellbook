@@ -40,7 +40,7 @@ jobs:
 
       - name: execute py script
         working-directory: ./spellbook
-        run: "pipenv run python fetch_latest_manifest.py --${{ secrets.DBT_API_TOKEN }}"
+        run: "pipenv run python fetch_latest_manifest.py --dbt_api_token ${{ secrets.DBT_API_TOKEN }}"
 
       - name: DBT configure
         working-directory: ./spellbook
