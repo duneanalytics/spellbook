@@ -40,7 +40,7 @@ jobs:
 
       - name: execute py script
         working-directory: ./spellbook
-        run: "pipenv run python fetch_latest_manifest.py"
+        run: "pipenv run python fetch_latest_manifest.py --${{ secrets.DBT_API_TOKEN }}"
 
       - name: DBT configure
         working-directory: ./spellbook
@@ -92,7 +92,7 @@ jobs:
 #            --header 'Content-Type: application/json' \
 #            --header 'Authorization: Token ${{ secrets.DBT_API_TOKEN }}'
 
-      - name: dbt compile to create manifest to compare to
+      - name: DBT compile to create manifest to compare to
         working-directory: ./spellbook
         run: "pipenv run dbt compile"
 
