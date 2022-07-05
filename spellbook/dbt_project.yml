@@ -16,6 +16,9 @@ seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 
+packages:
+  - git: "https://github.com/dbt-labs/dbt-utils.git"
+    revision: 0.8.6
 
 target-path: "target"  # directory which will store compiled SQL files
 clean-targets:         # directories to be removed by `dbt clean`
