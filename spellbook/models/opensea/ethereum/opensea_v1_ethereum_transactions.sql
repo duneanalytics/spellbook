@@ -26,11 +26,20 @@ SELECT
   addrs[4] as shared_storefront_address,
   addrs [1] as buyer,
   addrs [8] AS seller,
-  CASE WHEN contains('0xfb16a595', substring(calldataBuy,1,4)) THEN conv(substr(calldataBuy,203,64),16,10)::string
-       WHEN contains('0x96809f90', substring(calldataBuy,1,4)) THEN conv(substr(calldataBuy,203,64),16,10)::string
-       WHEN contains('0x23b872dd', substring(calldataBuy,1,4)) THEN conv(substr(calldataBuy,139,64),16,10)::string
-       WHEN contains('0xf242432a', substring(calldataBuy,1,4)) THEN conv(substr(calldataBuy,139,64),16,10)::string
-       END AS token_id,
+  -- Temporary fix for token ID until we implement a UDF equivalent for bytea2numeric that works for numbers higher than 64 bits
+  CASE WHEN contains('0xfb16a595', substring(calldataBuy,1,4)) AND conv(substr(calldataBuy,203,64),16,10)::string = '18446744073709551615' 
+  THEN 'Token ID is larger than 64 bits and can not be displayed' 
+  WHEN contains('0x96809f90', substring(calldataBuy,1,4)) AND conv(substr(calldataBuy,203,64),16,10)::string = '18446744073709551615' 
+  THEN 'Token ID is larger than 64 bits and can not be displayed' 
+  WHEN contains('0x23b872dd', substring(calldataBuy,1,4)) AND conv(substr(calldataBuy,139,64),16,10)::string = '18446744073709551615' 
+  THEN 'Token ID is larger than 64 bits and can not be displayed' 
+  WHEN contains('0xf242432a', substring(calldataBuy,1,4)) AND conv(substr(calldataBuy,139,64),16,10)::string = '18446744073709551615' 
+  THEN 'Token ID is larger than 64 bits and can not be displayed' 
+  WHEN contains('0xfb16a595', substring(calldataBuy,1,4)) THEN conv(substr(calldataBuy,203,64),16,10)::string
+  WHEN contains('0x96809f90', substring(calldataBuy,1,4)) THEN conv(substr(calldataBuy,203,64),16,10)::string
+  WHEN contains('0x23b872dd', substring(calldataBuy,1,4)) THEN conv(substr(calldataBuy,139,64),16,10)::string
+  WHEN contains('0xf242432a', substring(calldataBuy,1,4)) THEN conv(substr(calldataBuy,139,64),16,10)::string
+  END AS token_id,
   CASE WHEN size(call_trace_address) = 0 then array(3::bigint) -- for bundle join
   ELSE call_trace_address 
   END as call_trace_address,  
@@ -41,7 +50,6 @@ WHERE
 (addrs[3] = '0x5b3256965e7c3cf26e11fcaf296dfc8807c01073'
         OR addrs[10] = '0x5b3256965e7c3cf26e11fcaf296dfc8807c01073')
 AND call_success = true
-AND call_block_time > '2022-06-01'
 ),
 
 wyvern_all as 
@@ -69,7 +77,7 @@ SELECT
 
 erc_transfers as
 (SELECT evt_tx_hash,
-        id::string as token_id_erc,
+        CASE WHEN length(id::string) > 64 THEN 'Token ID is larger than 64 bits and can not be displayed' ELSE id::string END as token_id_erc,
         cardinality(collect_list(value)) as count_erc,
         value as value_unique,
         CASE WHEN erc1155.from = '0x0000000000000000000000000000000000000000' THEN 'Mint'
@@ -78,11 +86,10 @@ erc_transfers as
         ELSE 'Trade' END AS evt_type,
         evt_index
         FROM {{ source('erc1155_ethereum','evt_transfersingle') }} erc1155
-        WHERE erc1155.evt_block_time > '2022-06-01'
         GROUP BY evt_tx_hash,value,id,evt_index, erc1155.from, erc1155.to
             UNION ALL
 SELECT evt_tx_hash,
-        tokenId::string as token_id_erc,
+        CASE WHEN length(tokenId::string) > 64 THEN 'Token ID is larger than 64 bits and can not be displayed' ELSE tokenId::string END as token_id_erc,
         COUNT(tokenId) as count_erc,
         NULL as value_unique,
         CASE WHEN erc721.from = '0x0000000000000000000000000000000000000000' THEN 'Mint'
@@ -91,7 +98,6 @@ SELECT evt_tx_hash,
         ELSE 'Trade' END AS evt_type,
         evt_index
         FROM {{ source('erc721_ethereum','evt_transfer') }} erc721
-        WHERE erc721.evt_block_time > '2022-06-01'
         GROUP BY evt_tx_hash,tokenId,evt_index, erc721.from, erc721.to)
         
 SELECT DISTINCT
@@ -99,7 +105,7 @@ SELECT DISTINCT
   'opensea' as project,
   'v1' as version,
   tx.block_time,
-  wa.token_id, 
+  token_id_erc as token_id, 
   tokens_nft.name AS collection,
   wa.amount_original / power(10,erc20.decimals) * p.price AS amount_usd,
   CASE WHEN erc_transfers.value_unique >= 1 THEN 'erc1155'
@@ -134,7 +140,6 @@ SELECT DISTINCT
   wa.amount_original AS amount_raw,
   CASE WHEN wa.currency_contract_original = '0x0000000000000000000000000000000000000000' THEN 'ETH' ELSE erc20.symbol END AS currency_symbol,
   wa.currency_contract,
-  wa.currency_contract_original AS currency_contract_original,
   wa.nft_contract_address AS nft_contract_address,
   wa.project_contract_address, 
   agg.name as aggregator_name,
@@ -151,10 +156,11 @@ SELECT DISTINCT
   wa.fees / power(10,erc20.decimals) * p.price AS royalty_fee_amount_usd, 
   wa.fee_receive_address as royalty_fee_receive_address,
   wa.fee_currency_symbol as royalty_fee_currency_symbol,
-  wa.call_tx_hash || '-' || wa.token_id || '-' ||  wa.seller || '-' || coalesce(evt_index, 1) || '-' || wa.call_trace_address::string as unique_trade_id
+  wa.call_tx_hash || '-' || wa.token_id || '-' ||  wa.seller || '-' || coalesce(evt_index, 1)::string || '-' || coalesce(wa.call_trace_address::string,1)::string  as unique_trade_id
 FROM wyvern_all wa
 LEFT JOIN {{ source('ethereum','transactions') }} tx ON wa.call_tx_hash = tx.hash
-LEFT JOIN erc_transfers ON erc_transfers.evt_tx_hash = wa.call_tx_hash AND wa.token_id = erc_transfers.token_id_erc
+LEFT JOIN erc_transfers ON erc_transfers.evt_tx_hash = wa.call_tx_hash AND (wa.token_id = erc_transfers.token_id_erc
+OR wa.token_id = null)
 LEFT JOIN {{ ref('tokens_ethereum_nft') }} tokens_nft ON tokens_nft.contract_address = wa.nft_contract_address 
 LEFT JOIN {{ ref('nft_ethereum_aggregators') }} agg ON agg.contract_address = tx.to
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', tx.block_time)
@@ -166,4 +172,3 @@ LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20 ON erc20.contract_address = w
       *
     FROM
       {{ ref('opensea_v1_ethereum_excluded_txns') }})
-  AND tx.block_time > '2022-06-01'

@@ -65,9 +65,6 @@ models:
       - &currency_contract
         name: currency_contract
         description:  "Contract address of original token used for payment, with ETH contract address swapped for WETH"
-      - &currency_contract_original
-        name: currency_contract_original
-        description:  "Contract address of original currency used for payment"
       - &nft_contract_address
         name: nft_contract_address
         description:  "NFT contract address, only if 1 nft was transacted"
@@ -148,7 +145,6 @@ models:
       - *amount_raw
       - *currency_symbol
       - *currency_contract
-      - *currency_contract_original
       - *nft_contract_address
       - *project_contract_address
       - *aggregator_name
@@ -187,7 +183,6 @@ models:
       - *amount_raw
       - *currency_symbol
       - *currency_contract
-      - *currency_contract_original
       - *nft_contract_address
       - *project_contract_address
       - *aggregator_name
