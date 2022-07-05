@@ -99,8 +99,8 @@ SELECT DISTINCT
     looks_rare.block_time,
     token_id,
     tokens.name AS collection,
-    looks_rare.price / power(10,erc20.decimals) * p.price AS usd_amount,
-    tokens.standard AS erc_standard,
+    looks_rare.price / power(10,erc20.decimals) * p.price AS amount_usd,
+    tokens.standard AS token_standard,
     CASE 
         WHEN agg.name is NULL AND erc.value_unique = 1 OR erc.count_erc = 1 THEN 'Single Item Trade'
         WHEN agg.name is NULL AND erc.value_unique > 1 OR erc.count_erc > 1 THEN 'Bundle Trade'
