@@ -43,7 +43,7 @@ royalty_fee_percentage,
 royalty_fee_receive_address,
 royalty_fee_currency_symbol,
 unique_trade_id
-FROM {{ ref('opensea_ethereum_transactions') }} 
+FROM {{ ref('looksrare_ethereum_transactions') }} 
 
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
