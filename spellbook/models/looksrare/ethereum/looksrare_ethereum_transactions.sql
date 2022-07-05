@@ -22,6 +22,7 @@ WITH looks_rare AS (
             WHEN ask.currency = '0x0000000000000000000000000000000000000000' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
             ELSE ask.currency
         END AS currency_contract,
+        ask.currency AS currency_contract_original,
         ask.collection AS nft_contract_address,
         ask.contract_address AS contract_address,
         ask.evt_tx_hash AS tx_hash,
@@ -50,6 +51,7 @@ WITH looks_rare AS (
             WHEN bid.currency = '0x0000000000000000000000000000000000000000' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
             ELSE bid.currency
         END AS currency_contract,
+        bid.currency AS currency_contract_original,
         bid.collection AS nft_contract_address,
         bid.contract_address AS contract_address,
         bid.evt_tx_hash AS tx_hash,
