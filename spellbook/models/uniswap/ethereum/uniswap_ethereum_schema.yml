@@ -101,7 +101,7 @@ models:
       project: uniswap_v3
       contributors: masquot, soispoke
     config:
-      tags: ['ethereum','uniswap_v3','trades', 'uniswap']
+      tags: ['ethereum','uniswap_v3', 'trades', 'uniswap']
     description: >
         Uniswap V3 trades on Ethereum
     columns:
