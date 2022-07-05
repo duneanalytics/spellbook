@@ -83,7 +83,7 @@ ALTER VIEW balances_ethereum.erc1155_latest SET TBLPROPERTIES('dune.public'='tru
 {% endset %}
 
 {% set opensea_transactions %}
-ALTER TABLE opensea.trades SET TBLPROPERTIES('dune.public'='true',
+ALTER TABLE opensea.transactions SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum","solana"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='project',
