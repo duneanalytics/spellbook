@@ -7,7 +7,7 @@ models:
       sector: nft
       contributors: soispoke
     config:
-      tags: ['nft', 'opensea', 'magiceden', 'ethereum', 'solana', 'transactions']
+      tags: ['nft', 'opensea', 'looksrare', 'magiceden', 'ethereum', 'solana', 'transactions']
     description: >
         NFT transactions
     columns:
@@ -129,7 +129,7 @@ models:
       sector: nft
       contributors: soispoke
     config:
-      tags: ['nft', 'opensea', 'magiceden', 'ethereum', 'solana', 'trades']
+      tags: ['nft', 'opensea', 'looksrare', 'magiceden', 'ethereum', 'solana', 'trades']
     description: >
         NFT trades
     columns:
@@ -167,7 +167,7 @@ models:
       sector: nft
       contributors: soispoke
     config:
-      tags: ['nft', 'opensea', 'magiceden', 'ethereum', 'solana', 'mints']
+      tags: ['nft', 'opensea', 'looksrare', 'magiceden', 'ethereum', 'solana', 'mints']
     description: >
         NFT mints
     columns:
@@ -205,7 +205,7 @@ models:
       sector: nft
       contributors: soispoke
     config:
-      tags: ['nft', 'opensea', 'magiceden', 'ethereum', 'solana', 'burns']
+      tags: ['nft', 'opensea', 'looksrare', 'magiceden', 'ethereum', 'solana', 'burns']
     description: >
         NFT burns
     columns:
@@ -243,7 +243,7 @@ models:
       sector: nft
       contributors: soispoke
     config:
-      tags: ['nft', 'opensea', 'magiceden', 'ethereum', 'solana', 'fees']
+      tags: ['nft', 'opensea', 'looksrare', 'magiceden', 'ethereum', 'solana', 'fees']
     description: >
         NFT fees
     columns:
