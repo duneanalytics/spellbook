@@ -6,7 +6,7 @@
 }}
 
 SELECT
-    tx_hash || '-' || evt_index::string as unique_trade_id,
+    'v2' || '-' ||  tx_hash || '-' || evt_index::string as unique_trade_id,
     'ethereum' as blockchain,
     'uniswap' as project, 
     'v2' as version,
