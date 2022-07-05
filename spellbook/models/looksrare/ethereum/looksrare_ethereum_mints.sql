@@ -10,7 +10,7 @@ block_time,
 token_id,
 collection,
 amount_usd,
-token_standard,a
+token_standard,
 trade_type,
 number_of_items,
 trade_category,
