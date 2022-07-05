@@ -11,6 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: execute py script
+        working-directory: ./git_scripts
+        run: python fetch_latest_manifest.py
+
       - name: Set DBT schema
         run: echo "PR_SCHEMA=$(echo ${{ github.actor}} | tr - _)" >> $GITHUB_ENV
 
@@ -68,9 +72,6 @@ jobs:
           $PR_SCHEMA
           1" | pipenv run dbt init
 
-      - name: execute py script
-        working-directory: ./git_scripts
-        run: python fetch_latest_manifest.py
 
 #      - name: Fetch latest run_id
 #        uses: JamesIves/fetch-api-data-action@v2.1.0
