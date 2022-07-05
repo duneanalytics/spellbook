@@ -45,6 +45,8 @@ with p1_call as (
            inner join p1_call c on c.tx_hash = e.evt_tx_hash
           ,jsonb_array_elements(offer) with ordinality as t (offer2, offer_idx)
      where 1=1
+       and e.evt_block_time >= p_start_ts
+       and e.evt_block_time < p_end_ts
     union all
     select c.main_type
           ,c.tx_hash
@@ -65,6 +67,8 @@ with p1_call as (
       from seaport."Seaport_evt_OrderFulfilled" e
            inner join p1_call c on c.tx_hash = e.evt_tx_hash
           ,jsonb_array_elements(consideration) with ordinality as t (consideration2, consideration_idx)
+      where e.evt_block_time >= p_start_ts
+       and e.evt_block_time < p_end_ts
 )
 ,p1_add_rn as (
     select (max(case when purchase_method = 'Offer Accepted' and sub_type = 'offer' and sub_idx = 1 then token_contract_address::text
@@ -285,6 +289,8 @@ with p1_call as (
           ,e.evt_index
       from p2_call c
            inner join seaport."Seaport_evt_OrderFulfilled" e on e.evt_tx_hash = c.tx_hash
+                                                            and e.evt_block_time >= p_start_ts
+                                                            and e.evt_block_time < p_end_ts
                                                             and e.offerer = concat('\x',substr(c.offerer,3,40))::bytea 
                                                             and e.offer->0->>'token' = c.offer_token
                                                             and e.offer->0->>'identifier' = c.offer_identifier
@@ -447,6 +453,8 @@ with p1_call as (
            inner join p3_call c on c.tx_hash = e.evt_tx_hash
           ,jsonb_array_elements(offer) with ordinality as t (offer2, offer_idx)
      where 1=1
+       and e.evt_block_time >= p_start_ts
+       and e.evt_block_time < p_end_ts
     union all
     select c.main_type
           ,c.tx_hash
@@ -467,6 +475,8 @@ with p1_call as (
       from seaport."Seaport_evt_OrderFulfilled" e
            inner join p3_call c on c.tx_hash = e.evt_tx_hash
           ,jsonb_array_elements(consideration) with ordinality as t (consideration2, consideration_idx)
+      where e.evt_block_time >= p_start_ts
+       and e.evt_block_time < p_end_ts
 )
 ,p3_add_rn as (
     select (max(case when purchase_method = 'Offer Accepted' and sub_type = 'offer' and sub_idx = 1 then token_contract_address::text
@@ -817,7 +827,7 @@ with p1_call as (
     union all
     select *
       from p4_nft_trades
-    ON CONFLICT ON CONSTRAINT seaport_transfers_tx_hash_trade_id_idx DO NOTHING
+    ON CONFLICT (tx_hash, trade_id) DO NOTHING
     RETURNING 1
 )
 SELECT count(*) INTO r from rows;
