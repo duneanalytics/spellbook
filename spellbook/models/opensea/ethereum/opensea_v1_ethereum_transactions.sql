@@ -151,9 +151,11 @@ SELECT DISTINCT
   ROUND((2.5*(wa.amount_original)/100),7) AS platform_fee_amount_raw,
   ROUND((2.5*(wa.amount_original / power(10,erc20.decimals))/100),7) AS platform_fee_amount,
   ROUND((2.5*(wa.amount_original / power(10,erc20.decimals) * p.price)/100),7) AS platform_fee_amount_usd, 
+  '2.5' AS platform_fee_percentage, 
   wa.fees AS royalty_fee_amount_raw,
   wa.fees / power(10,erc20.decimals) AS royalty_fee_amount,
   wa.fees / power(10,erc20.decimals) * p.price AS royalty_fee_amount_usd, 
+  (wa.fees / wa.amount_original * 100)::string  AS royalty_fee_percentage, 
   wa.fee_receive_address as royalty_fee_receive_address,
   wa.fee_currency_symbol as royalty_fee_currency_symbol,
   wa.call_tx_hash || '-' || coalesce(wa.token_id, token_id_erc, '') || '-' ||  wa.seller || '-' || coalesce(evt_index::string, '') || '-' || coalesce(wa.call_trace_address::string,'') as unique_trade_id
