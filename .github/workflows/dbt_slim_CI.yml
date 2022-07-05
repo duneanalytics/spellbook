@@ -69,12 +69,11 @@ jobs:
           1" | pipenv run dbt init
 
       - name: Fetch latest run_id
-        uses: JamesIves/fetch-api-data-action@v2.1.0
-        with:
-          endpoint: https://cloud.getdbt.com/api/v2/accounts/58579/runs/?job_definition_id=81672&order_by=-finished_at&limit=2
-          configuration: '{ "method": "GET", 
-                            "headers": {"Authorization": "Token ${{ secrets.DBT_API_TOKEN }}"} }'
-          debug: true
+        run: |
+          curl  --request GET \
+                --url https://cloud.getdbt.com/api/v2/accounts/58579/runs/?job_definition_id=81672&order_by=-finished_at&limit=2 \
+                --header 'Content-Type: application/json' \
+                --header 'Authorization: Token ${{ secrets.DBT_API_TOKEN }}'
 
       - name: Set env, 2nd to last run_id (avoids fetching in progress runs)
         run: echo "DBT_RUN_ID=$(jq .data[1].id fetch-api-data-action/data.json)" >> $GITHUB_ENV
