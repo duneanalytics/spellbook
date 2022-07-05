@@ -40,7 +40,7 @@ jobs:
 
       - name: execute py script
         working-directory: ./spellbook
-        run: python fetch_latest_manifest.py
+        run: "pipenv run python fetch_latest_manifest.py"
 
       - name: DBT configure
         working-directory: ./spellbook
