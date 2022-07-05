@@ -11,10 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: execute py script
-        working-directory: ./spellbook
-        run: python fetch_latest_manifest.py
-
       - name: Set DBT schema
         run: echo "PR_SCHEMA=$(echo ${{ github.actor}} | tr - _)" >> $GITHUB_ENV
 
@@ -26,6 +22,10 @@ jobs:
         with:
           python-version: 3.9
           cache: 'pipenv'
+
+      - name: execute py script
+        working-directory: ./spellbook
+        run: python fetch_latest_manifest.py
 
       - name: Cache pipenv virtualenv
         id: cache-pipenv
