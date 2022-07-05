@@ -10,7 +10,10 @@
 SELECT * FROM (
 SELECT * FROM {{ ref('opensea_trades') }} 
          UNION
-SELECT * FROM {{ ref('magiceden_trades') }})
+SELECT * FROM {{ ref('magiceden_trades') }}
+         UNION
+SELECT * FROM {{ ref('looksrare_ethereum_trades') }}
+)
 
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run

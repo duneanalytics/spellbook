@@ -259,6 +259,11 @@ ALTER VIEW seaport_ethereum.view_transactions SET TBLPROPERTIES('dune.public'='t
 {% do run_query(opensea_mints) %}
 {% do run_query(opensea_burns) %}
 {% do run_query(opensea_fees) %}
+{% do run_query(looksrare_ethereum_transactions) %}
+{% do run_query(looksrare_ethereum_trades) %}
+{% do run_query(looksrare_ethereum_mints) %}
+{% do run_query(looksrare_ethereum_burns) %}
+{% do run_query(looksrare_ethereum_fees) %}
 {% do run_query(magiceden_transactions) %}
 {% do run_query(magiceden_trades) %}
 {% do run_query(magiceden_mints) %}
