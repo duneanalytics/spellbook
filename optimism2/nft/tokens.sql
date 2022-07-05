@@ -81,7 +81,7 @@ COPY nft.tokens (contract_address, project_name) FROM stdin;
 \\xba6228B6169B452778f3cca4567a6E8eD7f2d94D	TinyDoge
 \\xF5B2F191817CBadC9ecD0C61718309FBa0FdF99f	Layer Zero Punks
 \\xaCF63E56fd08970b43401492a02F6F38B6635C91	Yakuza Pandas
-\\xa95579592078783b409803ddc75bb402c217a924	Optimism Collective: Hello World
+\\xa95579592078783b409803ddc75bb402c217a924	Mirror WNFT - Optimism Collective: Hello World
 \\x56d01d6273d8f3532c966a6316a2ce4ee5d0dd03	World of African Women
 \\x419195da41e96da8c71164d0e71b6efd0d73c3ac	OptiDudes
 \\xf534848023ba851c6265e8f99a919c4d5fd05cd0	Thales Royale Passport
@@ -107,9 +107,9 @@ COPY nft.tokens (contract_address, project_name) FROM stdin;
 \\x43ba1f4fb82556cb8cfacab50a22559a6b36202a	Cryptovania Blood Rune
 \\x37cb612689f6ad82bbf7ee9f8e49128c251809cc	Optimistic Bored Dinos
 \\xaab7a7a301f19b8482d6c4942e0ef977d4361e42	Flekos
-\\xc513f6c92a1b4726da5b24cb786fe2b8bd6464f3	Introducing Writing NFTs
+\\xc513f6c92a1b4726da5b24cb786fe2b8bd6464f3	Mirror WNFT - Introducing Writing NFTs
 \\x907bc276f2e855865887422353221c86a575fd1e	Cryptovania
-\\xc0cbf706fa55ea946d8fd9912e0f7f9d30fd3b0b	Co-ownership as a web3 social primitive
+\\xc0cbf706fa55ea946d8fd9912e0f7f9d30fd3b0b	Mirror WNFT - Co-ownership as a web3 social primitive
 \\x51E5426eDE4e2d4c2586371372313B5782387222	Apetimism
 \\x9c7305eb78a432ced5C4D14Cac27E8Ed569A2e26	veNFT
 \\x8e56343adafa62dac9c9a8ac8c742851b0fb8b03	Bored Town
@@ -128,6 +128,18 @@ COPY nft.tokens (contract_address, project_name) FROM stdin;
 \\x9e925d6D3c35Fe70DD164D4D39bdb12533b143f5	Dragonia Dragon Trainer
 \\xD182adC29d09FcF823C9FE8ED678ee96e09BE7a9	Oops-lotto
 \\x735439E0b73001E578243A310Fe870e50Fb06b57	TokenMasks
+\\xf912C18f73AaEce880e2c683d4c412ea55327509	Bored Survivors
+\\x824BB1f0438A38Ea424e19171eF6665A4bCCe3A5	NerdApeDAONFT
+\\xbb1b0DA320CCC7a677A2FE00871F422e2E505fb1	Global Gans
+\\x1e8C93377954360F18b4a2A9f3F1F4A9917484e1	MrBlendClub
+\\xb91b2276bd5A98994Bf1f496E3886f688f8d4581	GenesisKami
+\\x545CC0A52B7b9228cB8349eE2Ba14BD4f25863CD	FatCatsVerse
+\\xf3C82A13eD736324a6837775360622b7fCC970a5	B.A.N. CLUB
+\\xCc4445aBf253EbFEb0F5AD8A8AFE2675e5f6a759	NAGA KIDS
+\\xa351c7b0ee07e1341625e3fe30066841cd3b0f30	Zero Ape Club
+\\x21d516adc2926fed3b48329fb486400a057dcd97	Mirror WNFT - Choosing Optimism
+\\xe8FDF5D5b243Dc8e092BcBBe10E38728EAFB5f6d	SasoshiLab
+\\x6f54391fE0386D506b51d69Deeb8b04E0544E088	Mean Finance - DCA Position
 \.
 
 COMMIT;
