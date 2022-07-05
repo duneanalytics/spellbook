@@ -133,7 +133,6 @@ SELECT DISTINCT
     agg.name AS aggregator_name,
     agg.contract_address AS aggregator_address,
     tx_hash,
-    looks_rare.block_number,
     tx.from AS tx_from,
     tx.to AS tx_to,
     ROUND((2*(looks_rare.price)/100),7) as platform_fee_amount_raw,
