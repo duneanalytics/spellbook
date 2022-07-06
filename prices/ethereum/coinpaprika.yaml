@@ -68,6 +68,11 @@
   symbol: CRV
   address: 0xd533a949740bb3306d119cc777fa900ba034cd52
   decimals: 18
+- name: 3crv_lp_3pool_curve
+  id: 3crv-lp-3pool-curve
+  symbol: 3Crv
+  address: 0x6c3f90f043a72fa612cbac8115ee7e52bde6e490
+  decimals: 18
 - name: tusd_trueusd
   id: tusd-trueusd
   symbol: TUSD
