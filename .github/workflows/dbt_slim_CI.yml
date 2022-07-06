@@ -78,12 +78,12 @@ jobs:
 
       - name: DBT seed
         working-directory: ./spellbook
-        run: "pipenv run dbt seed --select state:modified --state ."
+        run: "pipenv run dbt seed --select +state:modified --state ."
 
       - name: DBT run
         working-directory: ./spellbook
-        run: "pipenv run dbt run --select state:modified --state ."
+        run: "pipenv run dbt run --select +state:modified --state ."
 
       - name: DBT test
         working-directory: ./spellbook
-        run: "pipenv run dbt test --select state:new state:modified --state ."
+        run: "pipenv run dbt test --select +state:new +state:modified --state ."
