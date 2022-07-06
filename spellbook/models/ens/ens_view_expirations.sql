@@ -8,15 +8,15 @@ SELECT
     count(*) AS count
 FROM (
     SELECT
-        numeric2bytea(id) AS label,
+        conv((id),10,16) AS label,
         expires,
         evt_block_time
     FROM {{source('ethereumnameservice_ethereum', 'BaseRegistrarImplementation_evt_NameRegistered')}}
     UNION
     SELECT
-        numeric2bytea(id) AS label,
+        conv((id),10,16) AS label,
         expires,
         evt_block_time
     FROM {{source('ethereumnameservice_ethereum', 'BaseRegistrarImplementation_evt_NameRenewed')}}
 ) AS r
-GROUP BY label;
+GROUP BY label ;
