@@ -2,7 +2,8 @@
         alias='trades')
 }}
         
-SELECT DISTINCT
+SELECT
+    tx_hash || '-' || evt_index::string as unique_trade_id,
     'ethereum' as blockchain,
     'uniswap' as project, 
     'v3' as version,
@@ -23,8 +24,7 @@ SELECT DISTINCT
     exchange_contract_address,
     tx_hash,
     tx.from as tx_from,
-    tx.to as tx_to,
-    tx_hash || '-' || evt_index::string || '-' || token_a_amount_raw::string as unique_trade_id
+    tx.to as tx_to
     FROM (--Uniswap v3
     SELECT
     t.evt_block_time AS block_time,

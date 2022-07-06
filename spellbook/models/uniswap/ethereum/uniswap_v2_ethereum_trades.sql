@@ -6,6 +6,7 @@
 }}
 
 SELECT
+    tx_hash || '-' || evt_index::string as unique_trade_id,
     'ethereum' as blockchain,
     'uniswap' as project, 
     'v2' as version,
@@ -26,8 +27,7 @@ SELECT
     exchange_contract_address,
     tx_hash,
     tx.from as tx_from,
-    tx.to as tx_to,
-    tx_hash || '-' || evt_index::string || '-' || token_a_address || '-' || token_a_amount_raw::string as unique_trade_id
+    tx.to as tx_to
 FROM (
     --Uniswap v2
     SELECT
