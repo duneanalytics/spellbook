@@ -1,3 +1,5 @@
+create schema if not exists seaport;
+
 drop view if exists seaport.view_transactions;
 
 create or replace view seaport.view_transactions
