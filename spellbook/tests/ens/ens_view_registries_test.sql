@@ -8,7 +8,7 @@ WITH unit_tests AS (
         END AS min_evt_block_time_test
     FROM {{ ref('ens_view_registries') }} AS ens_vr
     JOIN {{ ref('ens_view_registries_postgres') }} AS test_data 
-        ON test_data.label = ens_vr.label
+        ON test_data.label = ens_vr.label and test_data.min_evt_block_time = ens_vr.min_evt_block_time  
 )
 SELECT
     COUNT(*) AS count_rows,
