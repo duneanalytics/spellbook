@@ -15,4 +15,4 @@ SELECT
     COUNT(*) AS count_rows,
     COUNT(CASE WHEN evt_block_number_test = FALSE THEN 1 ELSE NULL END)/COUNT(*) AS pct_mismatch
 FROM unit_tests 
-HAVING COUNT(CASE WHEN evt_block_number_test = FALSE THEN 1 ELSE NULL END) > COUNT(*)*0.05;
+HAVING COUNT(CASE WHEN evt_block_number_test = FALSE THEN 1 ELSE NULL END) > COUNT(*)*0.05

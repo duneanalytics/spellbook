@@ -15,4 +15,4 @@ SELECT
     COUNT(*) AS count_rows,
     COUNT(CASE WHEN min_evt_block_time_test = FALSE THEN 1 ELSE NULL END)/COUNT(*) AS pct_mismatch
 FROM unit_tests 
-HAVING COUNT(CASE WHEN min_evt_block_time_test = FALSE THEN 1 ELSE NULL END) > COUNT(*)*0.05;
+HAVING COUNT(CASE WHEN min_evt_block_time_test = FALSE THEN 1 ELSE NULL END) > COUNT(*)*0.05
