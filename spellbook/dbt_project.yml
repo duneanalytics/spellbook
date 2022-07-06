@@ -26,6 +26,9 @@ clean-targets:         # directories to be removed by `dbt clean`
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
   spellbook:
+    ens:
+      +schema: ens
+      +materialized: view
     nft:
       +schema: nft
       +materialized: view
@@ -126,5 +129,7 @@ seeds:
             block_time: timestamp
             tx_hash: string
             amount: string
-
+    ens:
+      +enabled: true
+      +schema: test_data
 
