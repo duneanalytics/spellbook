@@ -17,7 +17,7 @@ Given a version number MAJOR.MINOR.PATCH, increment the:
 2. MINOR version when you add functionality in a backwards compatible manner, and
 3. PATCH version when you make backwards compatible bug fixes.
 
-`git tag -a vX-X-X -m &quot;some notes on the changes`
+`git tag -a vX-X-X -m "some notes on the changes"`
 
 Push your tag to github
 
@@ -38,6 +38,7 @@ Update the branch name on the [production environment](https://cloud.getdbt.com/
 
 <img width="1411" alt="Screen Shot 2022-05-31 at 9 46 24 AM" src="https://user-images.githubusercontent.com/9472574/171188799-20649e07-aed9-4d0a-b840-50b5a8bf7e78.png">
 
+To deploy the new version, run the "Manually Deploy New Version" job in the Production environment in dbt Cloud. This will ensure models and tests are updated.
 
 # Rollback
 Check the Releases page and deploy the previous tag to DBT Cloud. 

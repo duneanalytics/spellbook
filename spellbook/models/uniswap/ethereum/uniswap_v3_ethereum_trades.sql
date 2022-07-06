@@ -1,13 +1,8 @@
-{{config(schema = 'uniswap_v3', 
-        alias='trades',
-        materialized ='incremental',
-        file_format ='delta',
-        incremental_strategy='merge',
-        unique_key='unique_id')
+{{config(schema = 'uniswap_v3_ethereum', 
+        alias='trades')
 }}
         
 SELECT
-    tx_hash || evt_index::string as unique_id,
     'ethereum' as blockchain,
     'uniswap' as project, 
     'v3' as version,
@@ -29,7 +24,7 @@ SELECT
     tx_hash,
     tx.from as tx_from,
     tx.to as tx_to,
-    evt_index as trade_id
+    'v3' || '-' ||  tx_hash || '-' || evt_index::string || '-' || token_a_amount_raw::string as unique_trade_id
     FROM (--Uniswap v3
     SELECT
     t.evt_block_time AS block_time,
@@ -45,8 +40,8 @@ SELECT
         t.evt_tx_hash AS tx_hash,
         t.evt_index
         FROM {{ source('uniswap_v3_ethereum', 'pair_evt_swap') }} t
-        INNER JOIN {{ source('uniswap_v3_ethereum', 'factory_evt_poolcreated') }} f ON t.evt_tx_hash = f.evt_tx_hash
-        ) dex
+        INNER JOIN {{ source('uniswap_v3_ethereum', 'factory_evt_poolcreated') }} f ON f.pool = t.contract_address
+        ) dex 
     INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON dex.tx_hash = tx.hash
     LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20a ON erc20a.contract_address = dex.token_a_address
@@ -57,7 +52,3 @@ SELECT
     LEFT JOIN {{ source('prices', 'usd') }} pb ON pb.minute = date_trunc('minute', dex.block_time)
         AND pb.contract_address = dex.token_b_address
         AND pb.blockchain = 'ethereum'
-{% if is_incremental() %}
--- this filter will only be applied on an incremental run
-WHERE dex.block_time > now() - interval 2 days
-{% endif %} 

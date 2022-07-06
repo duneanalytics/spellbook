@@ -68,6 +68,11 @@
   symbol: CRV
   address: 0xd533a949740bb3306d119cc777fa900ba034cd52
   decimals: 18
+- name: 3crv_lp_3pool_curve
+  id: 3crv-lp-3pool-curve
+  symbol: 3Crv
+  address: 0x6c3f90f043a72fa612cbac8115ee7e52bde6e490
+  decimals: 18
 - name: tusd_trueusd
   id: tusd-trueusd
   symbol: TUSD
@@ -2111,3 +2116,56 @@
   symbol: GCR
   address: 0x6307B25A665Efc992EC1C1bC403c38F3dDd7c661
   decimals: 4
+- name: TokenPocket Token
+  id: tpt-token-pocket
+  symbol: TPT
+  address: 0x4161725d019690a3e0de50f6be67b07a86a9fae1
+  decimals: 4
+- name: audio_audius
+  id: audio-audius
+  symbol: AUDIO
+  address: 0x18aAA7115705e8be94bfFEBDE57Af9BFc265B998
+  decimals: 18
+- name: iagon
+  id: iag-iagon
+  symbol: IAG
+  address: 0x40eb746dee876ac1e78697b7ca85142d178a1fc8
+  decimals: 18
+- name: avax_avalanche
+  id: avax-avalanche
+  symbol: AVAX
+- name: KROWN
+  id: krw-krown
+  symbol: KRW
+  address: 0x95dfdc8161832e4ff7816ac4b6367ce201538253
+  decimals: 18
+- name: GYEN
+  id: gyen-gyen
+  symbol: GYEN
+  address: 0x5555f75e3d5278082200Fb451D1b6bA946D8e13b
+  decimals: 18
+- name: Australian Dollar Token
+  id: aud-australian-dollar-token
+  symbol: AUD
+  address: 0xFAFdF0C4c1CB09d430Bf88c75D88BB46DAe09967
+  decimals: 18
+- name: Pound Sterling Token
+  id: gbp-pound-sterling-token
+  symbol: GBP
+  address: 0x69681f8fde45345C3870BCD5eaf4A05a60E7D227
+  decimals: 18
+- name: rndr-render-token
+  id: rndr-render-token
+  symbol: RNDR
+  address: 0x6De037ef9aD2725EB40118Bb1702EBb27e4Aeb24
+  decimals: 18
+- name: Notional Token
+  id: note-notional
+  symbol: NOTE
+  address: 0xCFEAead4947f0705A14ec42aC3D44129E1Ef3eD5
+  decimals: 8
+- name: Confetti
+  id: cfti-confetti
+  symbol: CFTI
+  address: 0xCfef8857E9C80e3440A823971420F7Fa5F62f020
+  decimals: 18

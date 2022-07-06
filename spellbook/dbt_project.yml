@@ -26,6 +26,9 @@ clean-targets:         # directories to be removed by `dbt clean`
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
   spellbook:
+    ens:
+      +schema: ens
+      +materialized: view
     nft:
       +schema: nft
       +materialized: view
@@ -51,6 +54,13 @@ models:
         +schema: magiceden_solana
         +materialized: view
 
+    seaport:
+      +schema: seaport
+      +materialized: view
+      ethereum:
+        +schema: seaport_ethereum
+        +materialized: view
+
     balances:
       +schema: balances
       +materialized: view
@@ -71,6 +81,7 @@ models:
       ethereum:
         +schema: transfers_ethereum
         +materialized: view
+
 
 seeds:
   spellbook:
@@ -98,7 +109,7 @@ seeds:
         +schema: test_data
         opensea_ethereum_trades_postgres:
           +column_types:
-            evt_block_times: timestamp
+            evt_block_time: timestamp
             evt_tx_hash: string
             price: string
       solana:
@@ -118,5 +129,7 @@ seeds:
             block_time: timestamp
             tx_hash: string
             amount: string
-
+    ens:
+      +enabled: true
+      +schema: test_data
 
