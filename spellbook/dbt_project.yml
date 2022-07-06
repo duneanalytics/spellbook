@@ -28,9 +28,7 @@ models:
   spellbook:
     ens:
       +schema: ens
-      ethereum:
-        +schema: ens_ethereum
-        +materialized: view
+      +materialized: view
     nft:
       +schema: nft
       +materialized: view
@@ -134,22 +132,4 @@ seeds:
     ens:
       +enabled: true
       +schema: test_data
-      ens_ethereum_view_expirations_postgres:
-        +column_types:
-          label: string
-          min_expires: timestamp
-      ens_ethereum_view_registries_postgres:
-        +column_types:
-          label: string
-          min_evt_block_time: timestamp
-      ens_ethereum_view_renewals_postgres:
-        +column_types:
-          label: string
-          evt_block_number: timestamp
-          evt_index: int
-      ens_ethereum_view_registrations_postgres:
-        +column_types:
-          label: string
-          evt_block_number: bigint
-          evt_index: int
 
