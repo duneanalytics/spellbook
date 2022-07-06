@@ -132,25 +132,24 @@ seeds:
             tx_hash: string
             amount: string
     ens:
-      ethereum:
-        +enabled: true
-        +schema: test_data
-        ens_ethereum_view_expirations_postgres:
-          +column_types:
-            label: string
-            min_expires: timestamp
-        ens_ethereum_view_registries_postgres:
-          +column_types:
-            label: string
-            min_evt_block_time: timestamp
-        ens_ethereum_view_renewals_postgres:
-          +column_types:
-            label: string
-            evt_block_number: timestamp
-            evt_index: int
-        ens_ethereum_view_registrations_postgres:
-          +column_types:
-            label: string
-            evt_block_number: bigint
-            evt_index: int
+      +enabled: true
+      +schema: test_data
+      ens_ethereum_view_expirations_postgres:
+        +column_types:
+          label: string
+          min_expires: timestamp
+      ens_ethereum_view_registries_postgres:
+        +column_types:
+          label: string
+          min_evt_block_time: timestamp
+      ens_ethereum_view_renewals_postgres:
+        +column_types:
+          label: string
+          evt_block_number: timestamp
+          evt_index: int
+      ens_ethereum_view_registrations_postgres:
+        +column_types:
+          label: string
+          evt_block_number: bigint
+          evt_index: int
 
