@@ -1,6 +1,6 @@
 create schema if not exists seaport;
 
-drop view if exists seaport.view_transactions;
+drop view if exists seaport.view_transactions cascade;
 
 create or replace view seaport.view_transactions
 AS
