@@ -3,13 +3,13 @@
 -- Also manually check etherscan info for the first 5 rows
 WITH unit_tests AS (
     SELECT 
-        CASE WHEN test_data.label = ens_vr.label
-            AND test_data.min_evt_block_time = ens_vr.min_evt_block_time THEN True 
+        CASE WHEN test_date.label = ens_vr.label
+            AND test_date.min_evt_block_time = ens_vr.min_evt_block_time THEN True 
         ELSE False 
         END AS min_evt_block_time_test
     FROM {{ ref('ens_view_registries') }} AS ens_vr
     JOIN {{ ref('ens_view_registries_postgres') }} AS test_date 
-        ON test_data.label = ens_vr.label
+        ON test_date.label = ens_vr.label
 )
 SELECT
     COUNT(*) AS count_rows,
