@@ -7,8 +7,8 @@ WITH unit_tests AS (
             AND test_data.min_evt_block_time = ens_vr.min_evt_block_time THEN True 
         ELSE False 
         END AS min_evt_block_time_test
-    FROM {{ ref('ens_ethereum_view_registries') }} AS ens_vr
-    JOIN {{ ref('ens_ethereum_view_registries') }} AS test_date 
+    FROM {{ ref('ens_view_registries') }} AS ens_vr
+    JOIN {{ ref('ens_view_registries_postgres') }} AS test_date 
         ON test_data.label = ens_vr.label
 )
 SELECT

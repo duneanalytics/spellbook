@@ -7,8 +7,8 @@ WITH unit_tests AS (
             AND test_data.min_expires = ens_ve.min_expires THEN TRUE 
         ELSE False 
         END AS min_expiration_test
-    FROM {{ ref('ens_ethereum_view_expirations') }} AS ens_ve
-    JOIN {{ ref('ens_ethereum_view_expirations_postgres') }} AS test_date 
+    FROM {{ ref('ens_view_expirations') }} AS ens_ve
+    JOIN {{ ref('ens_view_expirations_postgres') }} AS test_date 
         ON test_data.label = ens_ve.label
 )
 SELECT

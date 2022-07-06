@@ -7,8 +7,8 @@ WITH unit_tests AS (
             AND test_data.evt_block_number = ens_vr.evt_block_number THEN True 
         ELSE False 
         END AS evt_block_number_test
-    FROM {{ ref('ens_ethereum_view_renewals') }} AS ens_vr
-    JOIN {{ ref('ens_ethereum_view_renewals_postgres') }} AS test_date 
+    FROM {{ ref('ens_view_renewals') }} AS ens_vr
+    JOIN {{ ref('ens_view_renewals_postgres') }} AS test_date 
         ON test_data.label = ens_vr.label
 )
 SELECT
