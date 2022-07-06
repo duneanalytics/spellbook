@@ -9,7 +9,7 @@ models:
       contibutors: soispoke, dot2dotseurat
     config:
       tags: ['transfers', 'ethereum', 'erc20', 'soispoke', 'dot2dotseurat']
-    description: "ERC20 Token Transfers on Ethereum. This table is updated every 15 minutes."
+    description: "ERC20 Token Transfers on Ethereum. This table is updated every 30 minutes."
     columns:
       - name: unique_transfer_id
         description: "Unique transfer ID (used for testing for duplicates)"
@@ -135,7 +135,7 @@ models:
       contibutors: soispoke, dot2dotseurat, hildobby
     config:
       tags: ['transfers', 'ethereum', 'erc721', 'soispoke', 'dot2dotseurat', 'hildobby']
-    description: "ERC721 Token Transfers on Ethereum. This table is updated every 15 minutes."
+    description: "ERC721 Token Transfers on Ethereum. This table is updated every 30 minutes."
     columns:
       - name: unique_tx_id
         description: "Unique tx ID (testing)"
@@ -230,7 +230,7 @@ models:
       contibutors: soispoke
     config:
       tags: ['transfers', 'ethereum', 'erc1155', 'soispoke']
-    description: "ERC1155 Token Transfers on Ethereum. This table is updated every 15 minutes."
+    description: "ERC1155 Token Transfers on Ethereum. This table is updated every 30 minutes."
     columns:
       - name: unique_tx_id
         description: "Unique tx ID (testing)"
