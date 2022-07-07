@@ -173,6 +173,42 @@ WITH collateral_change AS (
         LEFT JOIN compound.view_ctokens c ON compound_redeem.contract_address = c.contract_address
 
         UNION ALL
+        -- IronBank add collateral
+        SELECT
+            'IronBank' AS project,
+            '1' AS version,
+            evt_block_number AS block_number,
+            evt_block_time AS block_time,
+            evt_tx_hash AS tx_hash,
+            evt_index,
+            NULL::integer[] AS trace_address,
+            minter AS borrower,
+            i."underlying_token_address" AS asset_address,
+            "mintAmount" AS asset_amount
+        FROM (
+            SELECT * FROM ironbank."CErc20Delegator_evt_Mint" WHERE evt_block_time >= start_ts AND evt_block_time < end_ts
+        ) ironbank_add
+        LEFT JOIN ironbank.view_itokens i ON ironbank_add.contract_address = i.contract_address
+
+        UNION ALL
+        -- IronBank remove collateral
+        SELECT
+            'IronBank' AS project,
+            '1' AS version,
+            evt_block_number AS block_number,
+            evt_block_time AS block_time,
+            evt_tx_hash AS tx_hash,
+            evt_index,
+            NULL::integer[] AS trace_address,
+            redeemer AS borrower,
+            i."underlying_token_address" AS asset_address,
+            -"redeemAmount" AS asset_amount
+        FROM (
+            SELECT * FROM ironbank."CErc20Delegator_evt_Redeem" WHERE evt_block_time >= start_ts AND evt_block_time < end_ts
+        ) ironbank_redeem
+        LEFT JOIN ironbank.view_itokens i ON ironbank_redeem.contract_address = i.contract_address
+
+        UNION ALL
 
         -- MakerDAO add collateral
         SELECT
