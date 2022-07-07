@@ -1,4 +1,4 @@
-#Optimism ERC20 Schema
+# Optimism ERC20 Schema
 
 - `erc20.tokens`: Mapping for token addresses to symbols and decimals
   -  open q: can we pull this from Etherscan or contracts?

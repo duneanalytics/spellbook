@@ -46,8 +46,8 @@ CREATE UNIQUE INDEX IF NOT EXISTS view_daily_average_prices_id ON gnosis_protoco
 CREATE INDEX view_daily_average_prices_1 ON gnosis_protocol.view_daily_average_prices (day);
 CREATE INDEX view_daily_average_prices_2 ON gnosis_protocol.view_daily_average_prices (symbol);
 
-INSERT INTO cron.job (schedule, command)
--- Every 6 hours.
-VALUES ('0 */6 * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol.view_daily_average_prices')
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
-COMMIT;
+-- INSERT INTO cron.job (schedule, command)
+-- -- Every 6 hours.
+-- VALUES ('0 */6 * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol.view_daily_average_prices')
+-- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+-- COMMIT;

@@ -39,7 +39,7 @@ WITH zeroex_tx AS (
             logs.contract_address,
             block_time AS block_time,
             substring(DATA,13,20) AS maker,
-            '\xdef1c0ded9bec7f1a1670819833240f027b25eff'::bytea AS taker,
+            '\xdef1abe32c034e558cdd535791643c58a13acc10'::bytea AS taker,
             substring(DATA,45,20) AS taker_token,
             substring(DATA,77,20) AS maker_token,
             bytea2numeric(substring(DATA,109,20)) AS taker_token_amount_raw,
@@ -61,7 +61,7 @@ WITH zeroex_tx AS (
             all_tx.contract_address,
             all_tx.block_time,
             maker,
-            case when taker = '\xdef1c0ded9bec7f1a1670819833240f027b25eff'::bytea then tx."from" else taker end as taker, -- fix the user masked by ProxyContract issue
+            case when taker = '\xdef1abe32c034e558cdd535791643c58a13acc10'::bytea then tx."from" else taker end as taker, -- fix the user masked by ProxyContract issue
             taker_token as taker_token_address,
             tt.symbol as taker_token_symbol,
             maker_token as maker_token_address,
@@ -148,7 +148,13 @@ WITH zeroex_tx AS (
                 matcha_limit_order_flag,
                 volume_usd
             FROM total_volume
-            ON CONFLICT DO NOTHING
+            ON CONFLICT (tx_hash, evt_index)
+            DO UPDATE SET
+                volume_usd = EXCLUDED.volume_usd,
+                taker_token_symbol = EXCLUDED.taker_token_symbol,
+                maker_token_symbol = EXCLUDED.maker_token_symbol,
+                taker_token_amount = EXCLUDED.taker_token_amount,
+                maker_token_amount = EXCLUDED.maker_token_amount
             RETURNING 1
     )
     SELECT count(*) INTO r from rows;

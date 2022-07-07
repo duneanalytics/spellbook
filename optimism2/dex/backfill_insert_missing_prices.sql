@@ -4,7 +4,7 @@
 -- But these most recent trades may not have a usd amount if we haven't yet calculated a dex price from previous trades. So, we:
 -- 3. Backfill the usd_amount of the most recent dex.trades, in order to fill this gap
 
-CREATE OR REPLACE FUNCTION dex.backfill_insert_missing_prices(start_ts timestamptz, end_ts timestamptz=now(), start_block numeric=0, end_block numeric=9e18) RETURNS integer
+CREATE OR REPLACE FUNCTION dex.backfill_insert_missing_prices(start_ts timestamptz, end_ts timestamptz=now()) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
@@ -78,6 +78,8 @@ WITH rows AS (
           AND pb.hour < end_ts
     
     WHERE dexs.block_time >= start_ts AND dexs.block_time < end_ts
+    -- don't overwrite bridge tokens this way
+    AND NOT EXISTS (SELECT 1 FROM prices.hourly_bridge_token_price_ratios WHERE token_a_address = bridge_token OR token_b_address = bridge_token)
     
     -- update if we have new info on prices or the erc20
     ON CONFLICT (project, tx_hash, evt_index, trade_id)
@@ -95,13 +97,13 @@ END
 $function$;
 
 
-
+/*
 INSERT INTO cron.job (schedule, command)
 VALUES ('18,48 * * * *', $$
     SELECT dex.backfill_insert_missing_prices(
         (SELECT max(block_time) - interval '25 hours' FROM dex.trades), --small 1 hr buffer for safety with time offsets
-        (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM optimism.blocks WHERE time < (SELECT max(block_time) - interval '25 hours' FROM dex.trades)), 
-        (SELECT MAX(number) FROM optimism.blocks where time < now() - interval '20 minutes'));
+        now()
+        )
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+*/

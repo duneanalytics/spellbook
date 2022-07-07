@@ -1,3 +1,13 @@
+- name: weapon_megaweapon
+  id: weapon-megaweapon
+  symbol: $WEAPON
+  address: 0x0b8057C3Cc676C329c25C1d0Cd27776efA73762d
+  decimals: 9
+- name: battle_battlefish
+  id: battle-battlefish
+  symbol: $BATTLE
+  address: 0xa48F7A48BDAFf54587A1C4e4B2f35459a2328E29
+  decimals: 9
 - name: dmg_dmm_governance
   id: dmg-dmm-governance
   symbol: DMG
@@ -33,6 +43,16 @@
   symbol: AAVE
   address: 0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9
   decimals: 18
+- name: knc-kyber-network
+  id: knc-kyber-network
+  symbol: KNC
+  address: 0xdeFA4e8a7bcBA345F687a2f1456F5Edd9CE97202
+  decimals: 18
+- name: inst-instadapp
+  id: inst-instadapp
+  symbol: INST
+  address: 0x6f40d4A6237C257fff2dB00FA0510DeEECd303eb
+  decimals: 18
 - name: uni_uniswap
   id: uni-uniswap
   symbol: UNI
@@ -47,6 +67,11 @@
   id: crv-curve-dao-token
   symbol: CRV
   address: 0xd533a949740bb3306d119cc777fa900ba034cd52
+  decimals: 18
+- name: 3crv_lp_3pool_curve
+  id: 3crv-lp-3pool-curve
+  symbol: 3Crv
+  address: 0x6c3f90f043a72fa612cbac8115ee7e52bde6e490
   decimals: 18
 - name: tusd_trueusd
   id: tusd-trueusd
@@ -1530,10 +1555,15 @@
   symbol: WILD
   address: 0x08a75dbc7167714ceac1a8e43a8d643a4edd625a
   decimals: 18
-- name: ohm_olympus
-  id: ohm-olympus
+- name: ohm_olympus_v1
+  id: ohm-olympus-v1
   symbol: OHM
   address: 0x383518188c0c6d7730d91b2c03a03c837814a899
+  decimals: 9
+- name: ohm_olympus_v2
+  id: ohmv2-olympus-v2
+  symbol: OHM
+  address: 0x64aa3364F17a4D01c6f1751Fd97C2BD3D7e7f1D5
   decimals: 9
 - name: strong_strong
   id: strong-strong
@@ -1901,6 +1931,11 @@
   symbol: TRIBE
   address: 0xc7283b66eb1eb5fb86327f08e1b5816b0720212b
   decimals: 18
+- name: ApeCoin
+  id: ape-apecoin
+  symbol: APE
+  address: 0x4d224452801aced8b2f0aebe155379bb5d594381
+  decimals: 18
 - name: gro-dao-token
   id: gro-gro-dao-token
   symbol: GRO
@@ -1915,4 +1950,222 @@
   id: babl-babylonfinance
   symbol: BABL
   address: 0xf4dc48d260c93ad6a96c5ce563e70ca578987c74
+  decimals: 18
+- name: radar_radar
+  id: radar-radar
+  symbol: RADAR
+  address: 0xf9fbe825bfb2bf3e387af0dc18cac8d87f29dea8
+  decimals: 18
+- name: vsp-vesper-finance
+  id: vsp-vesper-finance
+  symbol: VSP
+  address: 0x1b40183EFB4Dd766f11bDa7A7c3AD8982e998421
+  decimals: 18
+- name: threshold-network-token
+  id: t-threshold-network-token
+  symbol: T
+  address: 0xCdF7028ceAB81fA0C6971208e83fa7872994beE5
+  decimals: 18
+- name: dsla-protocol
+  id: dsla-dsla-protocol
+  symbol: DSLA
+  address: 0x3aFfCCa64c2A6f4e3B6Bd9c64CD2C969EFd1ECBe
+  decimals: 18
+- name: cusdt-compound-usdt
+  id: cusdt-compound-usdt
+  symbol: cUSDT
+  address: 0xf650c3d88d12db855b8bf7d11be6c55a4e07dcc9
+  decimals: 8
+- name: gala-gala
+  id: gala-gala
+  symbol: GALA
+  address: 0x15D4c048F83bd7e37d49eA4C83a07267Ec4203dA
+  decimals: 8
+- name: tlm-alien-worlds
+  id: tlm-alien-worlds
+  symbol: TLM
+  address: 0x888888848B652B3E3a0f34c96E00EEC0F3a23F72
+  decimals: 4
+- name: Sylo
+  id: sylo-sylo
+  symbol: SYLO
+  address: 0xf293d23BF2CDc05411Ca0edDD588eb1977e8dcd4
+  decimals: 18
+- name: TerraUSD
+  id: ust-terrausd
+  symbol: UST
+  address: 0xa47c8bf37f92aBed4A126BDA807A7b7498661acD
+  decimals: 18
+- name: TerraUSD (Wormhole)
+  id: ust-terrausd-wormhole
+  symbol: UST
+  address: 0xa693B19d2931d498c5B318dF961919BB4aee87a5
+  decimals: 6
+- name: ethereum-name-service
+  id: ens-ethereum-name-service
+  symbol: ENS
+  address: 0xC18360217D8F7Ab5e7c516566761Ea12Ce7F9D72
+  decimals: 18
+- name: xsushi
+  id: xsushi-xsushi
+  symbol: XSUSHI
+  address: 0x8798249c2E607446EfB7Ad49eC89dD1865Ff4272
+  decimals: 18
+- name: angle-protocol
+  id: ageur-ageur
+  symbol: agEUR
+  address: 0x1a7e4e63778b4f12a199c062f3efdd288afcbce8
+  decimals: 18
+- name: float-protocol-bank
+  id: bank-float-protocol
+  symbol: BANK
+  address: 0x24a6a37576377f63f194caa5f518a60f45b42921
+  decimals: 18
+- name: strudel-finance
+  id: trdl-strudel-finance
+  symbol: TRDL
+  address: 0x297d33e17e61c2ddd812389c2105193f8348188a
+  decimals: 18
+- name: radicle
+  id: rad-radicle
+  symbol: RAD
+  address: 0x31c8eacbffdd875c74b94b077895bd78cf1e64a3
+  decimals: 18
+- name: bright
+  id: bright-bright-token
+  symbol: BRIGHT
+  address: 0x5dd57da40e6866c9fcc34f4b6ddc89f1ba740dfe
+  decimals: 18
+- name: e-radix
+  id: exrd-e-radix
+  symbol: eXRD
+  address: 0x6468e79a80c0eab0f9a2b574c8d5bc374af59414
+  decimals: 18
+- name: gamma-strategies
+  id: gamma-gamma-strategies
+  symbol: GAMMA
+  address: 0x6bea7cfef803d1e3d5f7c0103f7ded065644e197
+  decimals: 18
+- name: illuvium
+  id: ilv-illuvium
+  symbol: ILV
+  address: 0x767fe9edc9e0df98e07454847909b5e959d7ca0e
+  decimals: 18
+- name: perperrtual-protocol
+  id: perp-perpetual-protocol
+  symbol: PERP
+  address: 0xbc396689893d065f41bc2c6ecbee5e0085233447
+  decimals: 18
+- name: falcon-project
+  id: fnt-falcon-project
+  symbol: FNT
+  address: 0xdc5864ede28bd4405aa04d93e05a0531797d9d59
+  decimals: 6
+- name: universal-basic-income
+  id: ubi-universal-basic-income
+  symbol: UBI
+  address: 0xdd1ad9a21ce722c151a836373babe42c868ce9a4
+  decimals: 18
+- name: opyn-squeeth
+  id: osqth-opyn-squeeth
+  symbol: oSQTH
+  address: 0xf1b99e3e573a1a9c5e6b2ce818b617f0e664e86b
+  decimals: 18
+- name: arbismart
+  id: rbis-arbismart-token
+  symbol: RBIS
+  address: 0xf34B1Db61ACa1a371fE97BAd2606c9f534fb9D7D
+  decimals: 18
+- name: scalara-nft-index
+  id: nfti-scalara-nft-index
+  symbol: NFTI
+  address: 0x525eF76138Bf76118d786DbedeaE5F87aaBf4a81
+  decimals: 18
+- name: jpeg'd
+  id: jpeg-jpeg39d
+  symbol: JPEG
+  address: 0xe80c0cd204d654cebe8dd64a4857cab6be8345a3
+  decimals: 18
+- name: LinkPool
+  id: lpl-linkpool
+  symbol: LPL
+  address: 0x99295f1141d58A99e939F7bE6BBe734916a875B8
+  decimals: 18
+- name: CoW Protocol Token
+  id: cow-cow-protocol-token
+  symbol: COW
+  address: 0xDEf1CA1fb7FBcDC777520aa7f396b4E015F497aB
+  decimals: 18
+- name: Yield Optimisation Platform
+  id: yop-yop
+  symbol: YOP
+  address: 0xae1eaae3f627aaca434127644371b67b18444051
+  decimals: 8
+- name: LOOT Token
+  id: loot-lootex-token
+  symbol: LOOT
+  address: 0x721A1B990699eE9D90b6327FaaD0A3E840aE8335
+  decimals: 18
+- name: VLaunch
+  id: vpad-vlaunch
+  symbol: VPAD
+  address: 0x51FE2E572e97BFEB1D719809d743Ec2675924EDc
+  decimals: 18
+- name: global-coin-research
+  id: gcr-global-coin-research
+  symbol: GCR
+  address: 0x6307B25A665Efc992EC1C1bC403c38F3dDd7c661
+  decimals: 4
+- name: TokenPocket Token
+  id: tpt-token-pocket
+  symbol: TPT
+  address: 0x4161725d019690a3e0de50f6be67b07a86a9fae1
+  decimals: 4
+- name: audio_audius
+  id: audio-audius
+  symbol: AUDIO
+  address: 0x18aAA7115705e8be94bfFEBDE57Af9BFc265B998
+  decimals: 18
+- name: iagon
+  id: iag-iagon
+  symbol: IAG
+  address: 0x40eb746dee876ac1e78697b7ca85142d178a1fc8
+  decimals: 18
+- name: avax_avalanche
+  id: avax-avalanche
+  symbol: AVAX
+- name: KROWN
+  id: krw-krown
+  symbol: KRW
+  address: 0x95dfdc8161832e4ff7816ac4b6367ce201538253
+  decimals: 18
+- name: GYEN
+  id: gyen-gyen
+  symbol: GYEN
+  address: 0x5555f75e3d5278082200Fb451D1b6bA946D8e13b
+  decimals: 18
+- name: Australian Dollar Token
+  id: aud-australian-dollar-token
+  symbol: AUD
+  address: 0xFAFdF0C4c1CB09d430Bf88c75D88BB46DAe09967
+  decimals: 18
+- name: Pound Sterling Token
+  id: gbp-pound-sterling-token
+  symbol: GBP
+  address: 0x69681f8fde45345C3870BCD5eaf4A05a60E7D227
+  decimals: 18
+- name: rndr-render-token
+  id: rndr-render-token
+  symbol: RNDR
+  address: 0x6De037ef9aD2725EB40118Bb1702EBb27e4Aeb24
+  decimals: 18
+- name: Notional Token
+  id: note-notional
+  symbol: NOTE
+  address: 0xCFEAead4947f0705A14ec42aC3D44129E1Ef3eD5
+  decimals: 8
+- name: Confetti
+  id: cfti-confetti
+  symbol: CFTI
+  address: 0xCfef8857E9C80e3440A823971420F7Fa5F62f020
   decimals: 18

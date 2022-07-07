@@ -99,11 +99,6 @@
   id: cake-pancakeswap
   name: PancakeSwap
   symbol: CAKE
-- address: '0xa4b6e76bba7413b9b4bd83f4e3aa63cc181d869f'
-  decimals: 9
-  id: ftm-fantom
-  name: Fitmin
-  symbol: FTM
 - address: '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c'
   decimals: 18
   id: btcb-binance-bitcoin
@@ -154,11 +149,6 @@
   id: zil-zilliqa
   name: Zilliqa
   symbol: ZIL
-- address: '0xe76804b43f17fc41f226d63fd2a676df409d4678'
-  decimals: 9
-  id: bat-basic-attention-token
-  name: Bat Finance
-  symbol: BAT
 - address: '0x8076c74c5e3f5852037f31ff0093eeb8c8add8d3'
   decimals: 9
   id: safemoon-safemoon
@@ -259,11 +249,6 @@
   id: ant-aragon
   name: ANTcoin
   symbol: ANT
-- address: '0xf50155cffd6c9a3634edfd6a00850016fe02c4dc'
-  decimals: 9
-  id: med-medibloc-qrc20
-  name: MiniEverDoge
-  symbol: MED
 - address: '0x2222227e22102fe3322098e4cbfe18cfebd57c95'
   decimals: 4
   id: tlm-alien-worlds
@@ -359,11 +344,6 @@
   id: zel-zelcash
   name: Flux Protocol
   symbol: FLUX
-- address: '0x587c16b84c64751760f6e3e7e32f896634704352'
-  decimals: 9
-  id: whale-whale
-  name: Whale Fall
-  symbol: WHALE
 - address: '0x935a544bf5816e3a7c13db2efe3009ffda0acda2'
   decimals: 18
   id: blz-bluzelle
@@ -484,3 +464,98 @@
   id: maha-mahadao
   name: mahadao
   symbol: MAHA
+- address: '0xf03a2dc374d494fbe894563fe22ee544d826aa50'
+  decimals: 18
+  id: radar-radar
+  name: radar_radar
+  symbol: RADAR
+- address: '0x1042aA383CAb145dc77121ca75650804A5c134ff'
+  decimals: 18
+  id: aggl-aggleio
+  name: aggl_aggleio
+  symbol: AGGL
+- address: '0x7dDEE176F665cD201F93eEDE625770E2fD911990'
+  decimals: 18
+  id: gala-gala
+  name: gala
+  symbol: GALA
+- address: '0x0df1b3f30865c5b324797f8db9d339514cac4e94'
+  decimals: 18
+  id: betu-betu
+  name: betu_betu
+  symbol: BETU
+- address: '0x2222227E22102Fe3322098e4CBfE18cFebD57c95'
+  decimals: 4
+  id: tlm-alien-worlds
+  name: tlm_alien_worlds
+  symbol: TLM
+- address: '0xf7722aA0714096f1FB5ef83e6041CEBB4d58a08e'
+  decimals: 12
+  id: ruby-ruby-play-network
+  name: ruby_play_network
+  symbol: RUBY
+- address: '0x9c1A3e3A69F83bDF98A51E4a552BbC2e479d45e7'
+  decimals: 18
+  id: bund-bundles
+  name: bund_bundles
+  symbol: BUND
+- address: '0xfb6115445bff7b52feb98650c87f44907e58f802'
+  decimals: 18
+  id: aave-aave-token
+  name: Aave Token
+  symbol: AAVE
+- address: '0x250632378e573c6be1ac2f97fcdf00515d0aa91b'
+  decimals: 18
+  id: beth-binance-beacon-eth
+  name: Binance Beacon ETH
+  symbol: BETH
+- address: '0xcf6bb5389c92bdda8a3747ddb454cb7a64626c63'
+  decimals: 18
+  id: xvs-venus
+  name: Venus
+  symbol: XVS
+- address: '0x156ab3346823b651294766e23e6cf87254d68962'
+  decimals: 6
+  id: luna-luna-wormhole
+  name: LUNA (Wormhole)
+  symbol: LUNA
+- address: '0x3d4350cd54aef9f9b2c29435e0fa809957b3f30a'
+  decimals: 6
+  id: ust-ust-wormhole
+  name: UST (Wormhole)
+  symbol: UST
+- address: '0xcc42724c6683b7e57334c4e856f4c9965ed682bd'
+  decimals: 18
+  id: matic-polygon
+  name: Polygon
+  symbol: MATIC
+- address: '0x14a9a94e555fdd54c21d7f7e328e61d7ebece54b'
+  decimals: 18
+  id: loot-lootex-token
+  name: LOOT Token
+  symbol: LOOT
+- address: '0xe8670901e86818745b28c8b30b17986958fce8cc'
+  decimals: 6
+  id: xct-citadelone
+  name: Citadel.one
+  symbol: XCT
+- address: '0xeca41281c24451168a37211f0bc2b8645af45092'
+  decimals: 4
+  id: tpt-token-pocket
+  name: TokenPocket Token
+  symbol: TPT
+- address: '0xE85aFCcDaFBE7F2B096f268e31ccE3da8dA2990A'
+  decimals: 18
+  id: abnbc-abnbc
+  name: Ankr BNB Reward Bearing Certificate
+  symbol: ABNBC
+- address: '0x84b174628911896a3b87fa6980d05dbc2ee74836'
+  decimals: 8
+  id: znn-zenon
+  name: Zenon
+  symbol: Znn
+- address: '0xc748673057861a797275cd8a068abb95a902e8de'
+  decimals: 9
+  id: babydoge-baby-doge-coin
+  name: babydoge_baby_doge_coin
+  symbol: BabyDoge

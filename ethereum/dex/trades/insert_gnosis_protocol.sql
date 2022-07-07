@@ -97,7 +97,7 @@ WITH rows AS (
             NULL::integer[] AS trace_address,
             t.evt_index
         FROM gnosis_protocol_v2."GPv2Settlement_evt_Trade" t
-        JOIN gnosis_protocol_v2."view_trades" v
+        JOIN gnosis_protocol_v2.trades v
             ON "orderUid" = order_uid
     ) dexs
     INNER JOIN ethereum.transactions tx

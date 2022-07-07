@@ -21,8 +21,8 @@ CREATE TABLE IF NOT EXISTS dex.trades (
     tx_from bytea NOT NULL,
     tx_to bytea,
     trace_address integer[],
-    evt_index integer,
-    trade_id integer,
+    evt_index integer NOT NULL,
+    trade_id integer NOT NULL,
         UNIQUE (project, tx_hash, evt_index, trade_id)
 );
 
@@ -36,3 +36,7 @@ CREATE INDEX IF NOT EXISTS dex_trades_token_a_idx ON dex.trades (token_a_address
 CREATE INDEX IF NOT EXISTS dex_trades_token_b_idx ON dex.trades (token_b_address);
 CREATE INDEX IF NOT EXISTS dex_trades_block_time_project_idx ON dex.trades (block_time, project);
 CREATE INDEX CONCURRENTLY IF NOT EXISTS dex_trades_usd_amount_idx ON dex.trades (usd_amount);
+CREATE INDEX IF NOT EXISTS dex_trades_token_a_sym_idx ON dex.trades (token_a_symbol);
+CREATE INDEX IF NOT EXISTS dex_trades_token_b_sym_idx ON dex.trades (token_b_symbol);
+
+
