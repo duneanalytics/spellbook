@@ -146,7 +146,7 @@ ALTER VIEW tokens_ethereum.erc20 SET TBLPROPERTIES ('dune.public'='true',
 {% endset %}
 
 {% set transfers_ethereum_erc20 %}
-ALTER VIEW transfers_ethereum.erc20 SET TBLPROPERTIES('dune.public'='true',
+ALTER TABLE transfers_ethereum.erc20 SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='sector',
