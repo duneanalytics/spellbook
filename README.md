@@ -6,7 +6,6 @@ Welcome to your [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incant
 ### Dune contributors using the project
 Use the pipfile to create a pipenv.
 ```
-cd spellbook/
 pipenv install
 ```
 
