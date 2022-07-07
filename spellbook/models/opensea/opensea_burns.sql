@@ -1,8 +1,8 @@
- {{
-  config(
-        alias='trades')
+{{ config(
+        alias ='burns'
+        )
 }}
-
+ 
 SELECT blockchain,
 project,
 version,
@@ -29,5 +29,4 @@ tx_hash,
 tx_from,
 tx_to,
 unique_trade_id
-FROM (SELECT * FROM {{ ref('opensea_v1_ethereum_transactions') }} )
-WHERE evt_type = 'Trade'
+FROM {{ ref('opensea_ethereum_burns') }}
