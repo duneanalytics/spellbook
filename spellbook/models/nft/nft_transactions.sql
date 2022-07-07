@@ -1,5 +1,5 @@
 {{ config(
-        alias ='trades',
+        alias ='transactions',
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
@@ -7,10 +7,11 @@
         )
 }}
 
+
 SELECT * FROM (
-SELECT * FROM {{ ref('opensea_trades') }} 
+SELECT * FROM {{ ref('opensea_transactions') }} 
          UNION
-SELECT * FROM {{ ref('magiceden_trades') }})
+SELECT * FROM {{ ref('magiceden_transactions') }})
 
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run

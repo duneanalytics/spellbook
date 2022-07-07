@@ -16,7 +16,6 @@ seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 
-
 target-path: "target"  # directory which will store compiled SQL files
 clean-targets:         # directories to be removed by `dbt clean`
   - "target"
@@ -31,7 +30,9 @@ models:
       +materialized: view
     nft:
       +schema: nft
-      +materialized: view
+      ethereum:
+        +schema: nft_ethereum
+        +materialized: view
     uniswap:
       +schema: uniswap
       +materialized: view
@@ -81,7 +82,6 @@ models:
       ethereum:
         +schema: transfers_ethereum
         +materialized: view
-
 
 seeds:
   spellbook:
