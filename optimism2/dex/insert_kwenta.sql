@@ -63,9 +63,9 @@ WITH rows AS (
             'DEX' AS category,
             se."toAddress" AS trader_a,
             NULL::bytea AS trader_b,
-	    -- Receive token_a, Send token_b
-	    rec.value AS token_a_amount_raw,
-            send.value AS token_b_amount_raw,
+            -- Receive token_a, Send token_b
+            se."toAmount" AS token_a_amount_raw,
+            se."fromAmount" AS token_b_amount_raw,
             NULL::numeric AS usd_amount,
             rec.contract_address AS token_a_address,
             send.contract_address AS token_b_address,
@@ -73,28 +73,23 @@ WITH rows AS (
             se.evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             se.evt_index
-	--Synthetix event uses hash keys for tokens, so we pull ERC20 transfers instead
-    FROM synthetix."MintableSynthetix_evt_SynthExchange" se
-    INNER JOIN erc20."ERC20_evt_Transfer" send
-        ON send."evt_tx_hash" = se.evt_tx_hash
-        AND send."from" = se."toAddress"
-        AND send."to" = '\x0000000000000000000000000000000000000000'
-        AND send.evt_block_time = se.evt_block_time
-    INNER JOIN erc20."ERC20_evt_Transfer" rec
-        ON rec."evt_tx_hash" = se.evt_tx_hash
-        AND rec."to" = se."toAddress"
-        AND rec."from" = '\x0000000000000000000000000000000000000000'
-        AND rec.evt_block_time = se.evt_block_time
+        --Synthetix event uses hash keys for tokens, so we pull ERC20 transfers instead
+        FROM synthetix."MintableSynthetix_evt_SynthExchange" se
+        -- to-do: Find a way to validate that this is the Synthetix token and not a token with the same symbol
+        LEFT JOIN erc20.tokens send
+            ON send."symbol" = split_part(encode("fromCurrencyKey", 'escape'),'\',1)
+        LEFT JOIN erc20.tokens rec
+            ON rec."symbol" = split_part(encode("toCurrencyKey", 'escape'),'\',1)
 
-	WHERE se.evt_block_time >= start_ts AND se.evt_block_time < end_ts
+        WHERE se.evt_block_time >= start_ts AND se.evt_block_time < end_ts
 
     ) dexs
     INNER JOIN optimism.transactions tx
         ON dexs.tx_hash = tx.hash
         AND tx.block_time >= start_ts
         AND tx.block_time < end_ts
---        AND tx.block_number >= start_block
---        AND tx.block_number < end_block
+        -- AND tx.block_number >= start_block
+        -- AND tx.block_number < end_block
     LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
     LEFT JOIN prices.approx_prices_from_dex_data pa
@@ -124,6 +119,7 @@ END
 $function$;
 
 -- fill 2021 (post-regenesis 11-11)
+delete FROM dex.trades WHERE project='Kwenta';
 SELECT dex.insert_kwenta(
     '2021-11-10',
     now()
