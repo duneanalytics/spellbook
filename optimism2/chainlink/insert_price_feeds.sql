@@ -106,12 +106,22 @@ RETURN r;
 END
 $function$;
 
-DELETE FROM chainlink.view_price_feeds;
--- fill to start
+-- --delete prior to backfill reload (uncomment as needed)
+-- DELETE FROM chainlink.view_price_feeds;
+
+-- -- fill to start
+-- SELECT chainlink.insert_price_feeds(
+--     '2021-11-11'::date,
+--     '2022-03-16'::date
+-- )
+-- ;
+
 SELECT chainlink.insert_price_feeds(
-    '2021-11-11'::date,
+    '2022-03-16'::date,
     now()
-);
+)
+;
+
 /*
 WHERE NOT EXISTS (
     SELECT *
