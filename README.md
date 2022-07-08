@@ -3,6 +3,12 @@
 
 Welcome to your [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation to tame the blockchain.
 
+### Prerequisites
+- Fork this repo and clone your fork locally. See Github's [guide](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) on contributing to projects. 
+- python 3.9 installed. Our recommendation is to follow the [Hitchhiker's Guide to Python](https://docs.python-guide.org/starting/installation/)
+- [pip](https://pip.pypa.io/en/stable/installation/) installed
+- [pipenv](https://pypi.org/project/pipenv/) installed
+
 ### Dune contributors using the project
 Use the pipfile to create a pipenv.
 ```
