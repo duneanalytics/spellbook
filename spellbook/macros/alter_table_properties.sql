@@ -282,7 +282,7 @@ ALTER VIEW ens.view_renewals SET TBLPROPERTIES('dune.public'='true',
 {% endset %}
 
 {% set labels_ethereum %}
-ALTER VIEW labels.ethereum SET TBLPROPERTIES('dune.public'='true',
+ALTER TABLE labels.ethereum SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='project',
