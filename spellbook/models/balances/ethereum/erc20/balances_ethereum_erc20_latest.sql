@@ -22,6 +22,5 @@ LEFT JOIN {{ ref('tokens_ethereum_rebase') }}  as r
 LEFT JOIN {{ ref('balances_ethereum_erc20_noncompliant') }}  as nc
     ON rh.token_address = nc.token_address
 where rh.recency_index = 1
-and p.minute is not null
 and r.contract_address is null
 and nc.token_address is null
