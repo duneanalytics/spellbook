@@ -86,7 +86,7 @@ models:
 seeds:
   spellbook:
     labels:
-      eth_labels:
+      ethereum:
         +column_types:
           address: string
           name: string
