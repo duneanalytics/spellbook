@@ -44,6 +44,8 @@ models:
       - &unique_trade_id
         name: unique_trade_id
         description:  "Unique trade id, combination of signatures[0] and id"
+        tests:
+          - unique
 
   - name: magiceden_solana_trades
     meta:
