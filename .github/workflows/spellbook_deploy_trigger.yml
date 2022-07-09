@@ -9,7 +9,7 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Create repository dispatch event
+      - name: Create a repository dispatch event to dune spellbook-deploy
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
