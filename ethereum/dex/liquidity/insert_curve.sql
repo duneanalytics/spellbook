@@ -98,6 +98,7 @@ rows AS (
         INNER JOIN days d ON balances.day <= d.day AND d.day < balances.next_day
     ) dexs
     LEFT JOIN curve_pool_tokens c on c.pool = dexs.pool_address
+        AND c.token = dexs.token_address
     LEFT JOIN erc20.tokens erc20 on erc20.contract_address = dexs.token_address
     LEFT JOIN prices.usd p on p.contract_address = dexs.token_address and p.minute = dexs.day
         AND p.minute >= start_ts
