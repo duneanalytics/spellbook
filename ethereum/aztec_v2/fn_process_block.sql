@@ -461,27 +461,27 @@ end;
 
 $$LANGUAGE PLPGSQL;
 
-select
-  "call_block_time",
---   "_0",
-(
-    select
-      rollupid
-    from
-      aztec_v2.fn_process_aztec_block("_0")
-  ),
-  (
-    select
-      assetIds
-    from
-      aztec_v2.fn_process_aztec_block("_0")
-  ),
-  (
-    select
-      totalTxFees
-    from
-      aztec_v2.fn_process_aztec_block("_0")
-  )
+-- select
+--   "call_block_time",
+-- --   "_0",
+-- (
+--     select
+--       rollupid
+--     from
+--       aztec_v2.fn_process_aztec_block("_0")
+--   ),
+--   (
+--     select
+--       assetIds
+--     from
+--       aztec_v2.fn_process_aztec_block("_0")
+--   ),
+--   (
+--     select
+--       totalTxFees
+--     from
+--       aztec_v2.fn_process_aztec_block("_0")
+--   )
   
-from
-  aztec_v2."RollupProcessor_call_processRollup"
+-- from
+--   aztec_v2."RollupProcessor_call_processRollup"
