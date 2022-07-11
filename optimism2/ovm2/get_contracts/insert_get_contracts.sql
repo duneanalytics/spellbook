@@ -19,153 +19,65 @@ WITH
   creator_rows AS (
       SELECT UNNEST(creator_list:: bytea []) AS creators
   ),
-  contract_creators AS (
-    SELECT
-      COALESCE(a."from", w.creator_address) AS creator_address,
-      w.project
-    FROM
-      (
-        SELECT
-          "from"
-        FROM
-          optimism."transactions" t
-        WHERE
-          "to" IS NULL
-          AND success = true
-          AND t."block_time" >= start_blocktime
-          AND t."block_time" < end_blocktime
-          AND 1 = (
-            CASE
-              WHEN NOT EXISTS (
-                SELECT
-                  creators
-                FROM
-                  creator_rows
-                WHERE
-                  creators IS NOT NULL
-              ) THEN 1 --when no input, search everything
-              WHEN t."from" IN (
-                SELECT
-                  creators
-                FROM
-                  creator_rows
-              ) THEN 1 --when input, limit to these contracts (i.e. updated mapping)
-              ELSE 0
-            END
-          )
-        GROUP BY
-          1
-      ) a
-      FULL OUTER JOIN ovm2.contract_creator_address_list w ON w.creator_address = a."from" -- Placeholder if we includer logic to exclude certain contract creators
-      -- WHERE
-      -- (
-      -- (w.project != 'EXCLUDE') OR (w.project IS NULL)
-      -- )
-      AND 1 = (
-        CASE
-          WHEN NOT EXISTS (
-            SELECT
-              creators
-            FROM
-              creator_rows
-            WHERE
-              creators IS NOT NULL
-          ) THEN 1 --when no input, search everythin
-          WHEN a."from" IN (
-            SELECT
-              creators
-            FROM
-              creator_rows
-          )
-          AND (
-            w.creator_address IN (
-              SELECT
-                creators
-              FROM
-                creator_rows
-            )
-            OR w.creator_address IS NULL
-          ) THEN 1 --Either a match or not in the static creator list
-          ELSE 0
-        END
-      )
-  ),
-  erc20_tokens AS (
+
+base_level AS (
+SELECT *
+	FROM (
+	-- On Normal Runs, grab the entire time window
+	SELECT
+	  "from" AS creator_address,
+	  NULL:: bytea AS contract_factory,
+	  "address" AS contract_address,
+	  "block_time",
+	  r.tx_hash,
+	  trace_address[1] AS trace_element
+	FROM
+	  optimism.traces r
+	WHERE
+	  "success"
+	  AND "tx_success"
+	  AND r."type" = 'create'
+	  AND r."block_time" >= start_blocktime
+	  AND r."block_time" < end_blocktime
+	AND (SELECT creators FROM creator_rows IS NULL)
+	
+	-- On update runs, grab any contracts we have info to update
+	UNION ALL -- grab any contracts that we have info to update
+	
+        SELECT "creator_address", "contract_creator_if_factory", "contract_address", "created_time", tx_hash, trace_address[1] AS trace_element
+        FROM ovm2."get_contracts" gc
+            INNER JOIN optimism.traces r ON r.address = gc.contract_address 
+         WHERE ( "creator_address" IN (SELECT creators FROM creator_rows) OR "contract_creator_if_factory" IN (SELECT creators FROM creator_rows) ) 
+            AND "success" AND "tx_success" AND r."type" = 'create'
+	--start and end will reflect contract creation times
+	AND r."block_time" >= start_blocktime
+	  AND r."block_time" < end_blocktime
+		
+	) uni
+GROUP BY 1,2,3,4,5,6
+	
+	
+	  )
+  , erc20_tokens AS (
     SELECT
       e.contract_address,
-      CASE
-        WHEN tl.symbol IS NULL THEN 'Other ERC20'
-        ELSE tl.symbol
-      END AS symbol
-    FROM
-      (
-        SELECT
-          contract_address
-        FROM
-          erc20."ERC20_evt_Transfer"
-        WHERE
-          "evt_block_time" >= start_blocktime - interval '1 day'
-          AND "evt_block_time" < end_blocktime
-        GROUP BY
-          1
-        UNION ALL
-        SELECT
-          "contract_address"
-        FROM
-          erc20."tokens"
-      ) e
-      LEFT JOIN erc20."tokens" tl ON tl."contract_address" = e."contract_address"
-    GROUP BY
-      1,
-      2
-  ),
-  nft_tokens AS (
-    SELECT
-      e.contract_address,
-      CASE
-        WHEN tl."project_name" IS NULL THEN fallback
-        ELSE tl."project_name"
-      END AS symbol
-    FROM
-      (
-        SELECT
-          contract_address,
-          'Other ERC721' AS fallback
-        FROM
-          erc721."ERC721_evt_Transfer"
-        WHERE
-          "evt_block_time" >= start_blocktime - interval '1 day'
-          AND "evt_block_time" < end_blocktime
-        GROUP BY
-          1, 2
-        UNION ALL
-        SELECT
-          contract_address,
-          'Other ERC1155' AS fallback
-        FROM
-          erc1155."ERC1155_evt_TransferBatch"
-        WHERE
-          "evt_block_time" >= start_blocktime - interval '1 day'
-          AND "evt_block_time" < end_blocktime
-        GROUP BY
-          1, 2
-        UNION ALL
-        SELECT
-          contract_address,
-          'Other ERC1155' AS fallback
-        FROM
-          erc1155."ERC1155_evt_TransferSingle"
-        WHERE
-          "evt_block_time" >= start_blocktime - interval '1 day'
-          AND "evt_block_time" < end_blocktime
-        GROUP BY
-          1, 2
-      ) e
-      LEFT JOIN nft."tokens" tl ON tl."contract_address" = e."contract_address"
+      tl.symbol AS symbol
+    FROM base_level e
+	INNER JOIN erc20."tokens" tl ON tl."contract_address" = e."contract_address"
     GROUP BY
       1, 2
-  ),
-  get_contracts AS (
+  )
+ , nft_tokens AS (
+    SELECT
+      e.contract_address,
+      tl."project_name" AS symbol
+    FROM
+      base_level e
+      INNER JOIN nft."tokens" tl ON tl."contract_address" = e."contract_address"
+    GROUP BY
+      1, 2
+  )
+  , get_contracts AS (
     WITH
       creator_contracts AS (
         SELECT
@@ -193,24 +105,7 @@ WITH
         FROM
           (
             WITH
-              base_level AS (
-                SELECT
-                  "from" AS creator_address,
-                  NULL:: bytea AS contract_factory,
-                  "address" AS contract_address,
-                  "block_time",
-                  r.tx_hash,
-                  trace_address[1] AS trace_element
-                FROM
-                  optimism.traces r
-                WHERE
-                  "success"
-                  AND "tx_success"
-                  AND r."type" = 'create'
-                  AND r."block_time" >= start_blocktime
-                  AND r."block_time" < end_blocktime
-                  )
-                  ,second_level AS (
+              second_level AS (
                     SELECT
                       COALESCE(b1.creator_address, b.creator_address) AS creator_address,
                       CASE
@@ -275,7 +170,7 @@ WITH
                 FROM
                   fifth_level -- check for contract factories 4 layers down --as of 3/12, this ran through all contracts
               ) con
-              LEFT JOIN contract_creators cc ON con.creator_address = cc.creator_address
+              LEFT JOIN ovm2."contract_creator_address_list" cc ON con.creator_address = cc.creator_address
             WHERE
               contract_address IS NOT NULL
           )
