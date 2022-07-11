@@ -1,0 +1,31 @@
+models:
+  - name: op_airdrop1_address_list
+    meta:
+      blockchain: optimism
+      sector: address_lists
+      project: airdrop_lists
+      contibutors: msilb7
+    config:
+      tags: ['optimism', 'airdrop', 'address list']
+    description: "List of eligible addresses for OP Airdrop #1 (Launched May 31, 2022) | Docs: https://community.optimism.io/docs/governance/airdrop-1/#"
+    columns:
+      - name: address
+        description: "Address eligible to claim the airdrop"
+      - name: a_is_voter
+        description: "Tokens eligible to claim for qualifying as a DAO Voter. Shows 0 if the address did not qualify."
+      - name: b_is_multisig_signer
+        description: "Tokens eligible to claim for qualifying as a Multisig Signer. Shows 0 if the address did not qualify."
+      - name: c_is_gitcoin
+        description: "Tokens eligible to claim for qualifying as a Gitcoin Donor. Shows 0 if the address did not qualify."
+      - name: d_is_price_out
+        description: "Tokens eligible to claim for qualifying as being Priced out of Ethereum. Shows 0 if the address did not qualify."
+      - name: e_op_user
+        description: "Tokens eligible to claim for qualifying as an Optimism User. Shows 0 if the address did not qualify."
+      - name: f_op_repeat
+        description: "Tokens eligible to claim for qualifying as a Repeat Optimism User (subset of e_op_user). Shows 0 if the address did not qualify."
+      - name: num_categories_if_op_user
+        description: "Number of Categories that an address was eligible for, if they qualified as an Optimism User. Shows 0 if the address did not qualify as an Optimism User."
+      - name: g_overlap_bonus
+        description: "Tokens eligible to claim for qualifying to receive an Overlap Bonus. Shows 0 if the address did not qualify."
+      - name: total_op_eligible_to_claim
+        description: "Total number of tokens that an address was eligible to claim in the airdrop"
