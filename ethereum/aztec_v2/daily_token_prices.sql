@@ -1,12 +1,3 @@
-select p.token_address
-    , p.symbol
-    , p.date
-    , 'prices.prices_from_dex_data' as data_source
-    , p.avg_price_usd
-    , e.eth_price
-    , p.avg_price_usd / e.eth_price as avg_price_eth
-
--- CREATE TABLE IF NOT EXISTS dune_user_generated.aztec_v2_daily_token_prices(
 CREATE TABLE IF NOT EXISTS aztec_v2.daily_token_prices ( 
   token_address bytea
   , symbol varchar
