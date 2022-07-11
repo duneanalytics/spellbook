@@ -1,4 +1,4 @@
-version: 2
+version: 1
 
 models:
   - name: tokens_ethereum_erc20
