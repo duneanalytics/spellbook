@@ -1,3 +1,5 @@
+version: 1
+
 models:
   - name: op_airdrop1_address_list
     meta:
