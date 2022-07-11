@@ -60,7 +60,7 @@ WITH rows AS (
             '1inch' AS project,
             version,
             'Aggregator' AS category,
-            tx."from" AS trader_a,
+            min_trace.trader_a AS trader_a,
             NULL::bytea AS trader_b,
             to_amount AS token_a_amount_raw,
             from_amount AS token_b_amount_raw,
@@ -85,6 +85,21 @@ WITH rows AS (
             SELECT decode(substring("desc"->>'srcToken' FROM 3), 'hex') as from_token, decode(substring("desc"->>'dstToken' FROM 3), 'hex') as to_token, "output_spentAmount" as from_amount, "output_returnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address, NULL::integer as evt_index, contract_address, '4' as version FROM oneinch_v4."AggregationRouterV4_call_swap" where call_success
         ) oi
         left join ethereum.transactions tx on hash = tx_hash
+        left join (
+            SELECT DISTINCT ON (tx_hash)
+                tx_hash,
+                trace_address::text,
+                "from" as trader_a
+            FROM ethereum.traces tr
+            WHERE
+                tr.to in (
+                    SELECT address FROM ethereum."contracts"
+                    WHERE namespace like 'oneinch%'
+                        and (name = 'OneInchExchange' or name like 'AggregationRouterV%')
+                        )
+            ORDER BY
+                tx_hash, trace_address::text
+        ) min_trace on min_trace.tx_hash = oi.tx_hash
 
         UNION ALL
 
