@@ -43,7 +43,7 @@ NULL::string as royalty_fee_percentage,
 NULL::double as royalty_fee_receive_address,
 NULL::double as royalty_fee_currency_symbol,
 unique_trade_id
-FROM {{ ref('magiceden_solana_transactions') }}
+FROM {{ ref('magiceden_solana_events') }}
 
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run

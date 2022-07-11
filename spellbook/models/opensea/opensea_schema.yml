@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: opensea_transactions
+  - name: opensea_events
     meta:
       blockchain: ethereum, solana
       project: opensea
       contributors: rchen8, soispoke
     config:
-      tags: ['ethereum','solana','opensea','transactions']
+      tags: ['ethereum','solana','opensea','events']
     description: >
-       OpenSea transactions on Ethereum and Solana
+       OpenSea events on Ethereum and Solana
     columns:
       - &blockchain
         name: blockchain

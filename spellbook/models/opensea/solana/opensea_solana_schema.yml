@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: opensea_solana_transactions
+  - name: opensea_solana_events
     meta:
       blockchain: solana
       project: opensea
       contributors: rchen8, soispoke
     config:
-      tags: ['solana','opensea','transactions']
+      tags: ['solana','opensea','events']
     description: >
-        OpenSea transactions on Solana
+        OpenSea events on Solana
     columns:
       - &blockchain
         name: blockchain
