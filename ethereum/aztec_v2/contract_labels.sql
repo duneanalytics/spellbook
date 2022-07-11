@@ -11,8 +11,8 @@ create table if not exists aztec_v2.contract_labels
   contract_address bytea                       
 );
 
-create index on aztec_v2.contract_labels(contract_address);
-create index on aztec_v2.contract_labels(protocol);
+create index contract_labels_contract_address_idx on aztec_v2.contract_labels(contract_address);
+create index contract_labels_protocol_idx on aztec_v2.contract_labels(protocol);
 
 truncate table aztec_v2.contract_labels;
 
@@ -33,4 +33,4 @@ update aztec_v2.contract_labels
 set contract_creator = t."from"
 from ethereum.traces t
 where t.type = 'create'
-and aztec_v2_contract_labels.contract_address = t.address;
+and contract_labels.contract_address = t.address;
