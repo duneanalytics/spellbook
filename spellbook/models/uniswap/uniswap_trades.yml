@@ -9,7 +9,7 @@ models:
     config:
       tags: ['ethereum','uniswap','trades']
     description: >
-        Uniswap V1 trades
+        Uniswap trades
     columns:
       - &blockchain
         name: blockchain

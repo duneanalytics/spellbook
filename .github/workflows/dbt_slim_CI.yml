@@ -5,19 +5,26 @@ on:
     paths:
       - 'spellbook/**'
 
+
 jobs:
   dbt-test:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set DBT schema
+        run: echo "PR_SCHEMA=$(echo sha_${{ github.sha}} | tr - _)" >> $GITHUB_ENV
+
       - name: Check out repository code
         uses: actions/checkout@v2
 
-      - name: Set up Python 3.8.12
+      - name: Set up Python 3.9
         uses: actions/setup-python@v1
         with:
-          python-version: 3.8.12
+          python-version: 3.9
           cache: 'pipenv'
+
+      - name: Install pipenv
+        run: pip install pipenv
 
       - name: Cache pipenv virtualenv
         id: cache-pipenv
@@ -26,13 +33,14 @@ jobs:
           path: ~/.local/share/virtualenvs
           key: ${{ runner.os }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
 
-      - name: Install pipenv
-        run: pip install pipenv
-
       - name: Install dependencies
         if: steps.cache-pipenv.outputs.cache-hit != 'true'
         run: |
           pipenv install
+
+      - name: Get latest manifest
+        working-directory: ./spellbook
+        run: "pipenv run python fetch_latest_manifest.py --dbt_api_token ${{ secrets.DBT_API_TOKEN }}"
 
       - name: DBT configure
         working-directory: ./spellbook
@@ -41,13 +49,12 @@ jobs:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_HTTPS_PATH: ${{ secrets.DATABRICKS_HTTPS_PATH }}
           DATABRICKS_ACCESS_TOKEN: ${{ secrets.DATABRICKS_ACCESS_TOKEN }}
-          SCHEMA: "github_actions"
         run: |
           echo "2
           $DATABRICKS_HOST
           $DATABRICKS_HTTPS_PATH
           $DATABRICKS_ACCESS_TOKEN
-          $SCHEMA
+          $PR_SCHEMA
           1" | pipenv run dbt init
 
       - name: DBT configure take 2 (sometimes dbt init switches the order of db options)
@@ -57,46 +64,26 @@ jobs:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_HTTPS_PATH: ${{ secrets.DATABRICKS_HTTPS_PATH }}
           DATABRICKS_ACCESS_TOKEN: ${{ secrets.DATABRICKS_ACCESS_TOKEN }}
-          SCHEMA: "github_actions"
         run: |
           echo "1
           $DATABRICKS_HOST
           $DATABRICKS_HTTPS_PATH
           $DATABRICKS_ACCESS_TOKEN
-          $SCHEMA
+          $PR_SCHEMA
           1" | pipenv run dbt init
 
-      - name: Fetch latest run_id
-        uses: JamesIves/fetch-api-data-action@v2.1.0
-        with:
-          endpoint: https://cloud.getdbt.com/api/v2/accounts/58579/runs/?job_definition_id=81672&order_by=-finished_at&limit=2
-          configuration: '{ "method": "GET", 
-                            "headers": {"Authorization": "Token ${{ secrets.DBT_API_TOKEN }}"} }'
-          debug: true
-
-      - name: Set env, 2nd to last run_id (avoids fetching in progress runs)
-        run: echo "dbt_run_id=$(jq .data[1].id fetch-api-data-action/data.json)" >> $GITHUB_ENV
-
-      - name: Fetch latest manifest.json
-        run: |
-          curl  -o spellbook/manifest.json \
-            --request GET \
-            --url https://cloud.getdbt.com/api/v2/accounts/58579/runs/62469111/artifacts/manifest.json \
-            --header 'Content-Type: application/json' \
-            --header 'Authorization: Token ${{ secrets.DBT_API_TOKEN }}'
-
-      - name: dbt compile to create manifest to compare to
+      - name: DBT compile to create manifest to compare to
         working-directory: ./spellbook
         run: "pipenv run dbt compile"
 
       - name: DBT seed
         working-directory: ./spellbook
-        run: "pipenv run dbt seed --select state:modified --state ."
+        run: "pipenv run dbt seed --select +state:modified --state ."
 
       - name: DBT run
         working-directory: ./spellbook
-        run: "pipenv run dbt run --select state:modified --state ."
+        run: "pipenv run dbt run --select +state:modified --state ."
 
       - name: DBT test
         working-directory: ./spellbook
-        run: "pipenv run dbt test --select state:new state:modified --state ."
+        run: "pipenv run dbt test --select +state:new +state:modified --state ."

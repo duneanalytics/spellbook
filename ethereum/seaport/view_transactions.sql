@@ -1,6 +1,6 @@
--- welcome to the commented version of the Seaport data abstraction on the Dune legacy.
--- this first section pulls data from seaport."Seaport_evt_OrderFulfilled", which shows all successful transactions that occur on Seaport
 create schema if not exists seaport;
+
+drop view if exists seaport.view_transactions cascade;
 
 create or replace view seaport.view_transactions 
 AS
