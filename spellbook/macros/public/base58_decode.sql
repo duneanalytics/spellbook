@@ -1,15 +1,12 @@
-CREATE OR REPLACE FUNCTION base58_decode2(value string)
-RETURNS STRING
-RETURN
--- Based on the query https://dune.com/queries/654207 by user @neodyme
-SELECT
+{% macro base58_decode(column_name) %}
+
 concat(
     -- leading zeros generate leading zero bytes
-    replace(regexp_extract(value, "^1*", 0), "1", "00"),
+    replace(regexp_extract({{ column_name }}, "^1*", 0), "1", "00"),
     array_join(reverse(
         aggregate(
             transform(
-                regexp_extract_all(value,"(.)"),
+                regexp_extract_all({{ column_name }},"(.)"),
                 x -> instr("123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz", x)-1
             ),
             array(cast(0 as LONG)), -- output, starts at 0. Approximate final length: len(base58)*log(58, 2)/log(256,2) bytes, 4 in each long
@@ -47,4 +44,7 @@ concat(
                 )
         )
     ), "")
+
 )
+
+{% endmacro %}
