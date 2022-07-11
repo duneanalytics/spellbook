@@ -1,5 +1,5 @@
 {% macro alter_table_properties() %}
-{%- if target.name == 'prod'-%}
+{%- if target.name == 'dbt_thomas'-%}
 
 {% set balances_ethereum_erc20_day %}
 ALTER VIEW balances_ethereum.erc20_day SET TBLPROPERTIES('dune.public'='true',
@@ -127,8 +127,8 @@ ALTER VIEW opensea.fees SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["soispoke"]');
 {% endset %}
 
-{% set looksrare_ethereum_transactions %}
-ALTER TABLE looksrare_ethereum.transactions SET TBLPROPERTIES('dune.public'='true',
+{% set looksrare_ethereum_events %}
+ALTER TABLE looksrare_ethereum.events SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='project',
@@ -340,7 +340,7 @@ ALTER VIEW ens.view_renewals SET TBLPROPERTIES('dune.public'='true',
 {% do run_query(opensea_mints) %}
 {% do run_query(opensea_burns) %}
 {% do run_query(opensea_fees) %}
-{% do run_query(looksrare_ethereum_transactions) %}
+{% do run_query(looksrare_ethereum_events) %}
 {% do run_query(looksrare_ethereum_trades) %}
 {% do run_query(looksrare_ethereum_mints) %}
 {% do run_query(looksrare_ethereum_burns) %}

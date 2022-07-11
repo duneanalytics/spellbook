@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: looksrare_ethereum_transactions
+  - name: looksrare_ethereum_events
     meta:
       blockchain: ethereum
       project: looksrare
       contributors: soispoke
     config:
-      tags: ['ethereum','looksrare','v1','transactions']
+      tags: ['ethereum','looksrare','v1','events']
     description: >
-        LooksRare v1 trades on Ethereum
+        LooksRare v1 events on Ethereum
     columns:
       - &blockchain
         name: blockchain

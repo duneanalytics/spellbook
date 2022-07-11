@@ -12,7 +12,7 @@ SELECT * FROM {{ ref('opensea_transactions') }}
          UNION
 SELECT * FROM {{ ref('magiceden_transactions') }}
          UNION
-SELECT * FROM {{ ref('looksrare_ethereum_transactions') }}
+SELECT * FROM {{ ref('looksrare_ethereum_events') }}
 )
 
 {% if is_incremental() %}
