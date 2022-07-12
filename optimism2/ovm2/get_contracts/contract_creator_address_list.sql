@@ -293,8 +293,8 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x1E71AEE6081f62053123140aacC7a06021D77348	Reaper Farm
 \\x982F264ce97365864181df65dF4931C593A515ad	Beefy Finance
 \\xdd32a567bc09384057a1f260086618d88b28e64f	Ganland
-\\x13c716188c38ce27b9b2b672a59543cf1170eabe Alchemix
-\\x2d356b114cbCA8DEFf2d8783EAc2a5A5324fE1dF Thales
+\\x13c716188c38ce27b9b2b672a59543cf1170eabe	Alchemix
+\\x2d356b114cbCA8DEFf2d8783EAc2a5A5324fE1dF	Thales
 \.
 
 COMMIT;
