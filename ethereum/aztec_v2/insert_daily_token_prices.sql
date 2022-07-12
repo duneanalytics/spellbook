@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION aztec_v2.insert_daily_token_prices((start_time timestamptz, end_time timestamptz=now())) RETURNS integer
+CREATE OR REPLACE FUNCTION aztec_v2.insert_daily_token_prices(start_time timestamptz, end_time timestamptz=now()) RETURNS integer
 -- CREATE OR REPLACE FUNCTION dune_user_generated.aztec_v2_insert_daily_token_prices(start_time timestamptz, end_time timestamptz=now()) RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
