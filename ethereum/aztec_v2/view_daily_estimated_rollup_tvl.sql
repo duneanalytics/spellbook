@@ -42,4 +42,4 @@ with rollup_balance_changes as (
   inner join aztec_v2.daily_token_prices p on b.date = p.date and b.token_address = p.token_address
   
 )
-select * from token_tvls
+select * from token_tvls;
