@@ -1,5 +1,5 @@
  {{ config(schema = 'opensea_v1_ethereum', 
-alias='transactions') }}
+alias='events') }}
 
 WITH wyvern_call_data as (
 SELECT 

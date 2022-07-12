@@ -120,6 +120,25 @@ WITH borrow AS (
 
         UNION ALL
 
+        -- IronBank V1
+        SELECT
+            'IronBank' AS project,
+            '1' AS version,
+            evt_block_number AS block_number,
+            evt_block_time AS block_time,
+            evt_tx_hash AS tx_hash,
+            evt_index,
+            NULL::integer[] as trace_address,
+            borrower,
+            i."underlying_token_address" AS asset_address,
+            "borrowAmount" AS asset_amount
+        FROM (
+            SELECT * FROM ironbank."CErc20Delegator_evt_Borrow" WHERE evt_block_time >= start_ts AND evt_block_time < end_ts
+        ) events
+        LEFT JOIN ironbank.view_itokens i ON events.contract_address = i.contract_address
+
+        UNION ALL
+
         -- MakerDAO
         SELECT
             'MakerDAO' AS project,

@@ -1,5 +1,5 @@
 {{ config(
-        alias ='transactions',
+        alias ='events',
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
