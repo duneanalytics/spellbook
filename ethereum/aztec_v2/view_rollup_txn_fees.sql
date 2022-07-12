@@ -18,3 +18,4 @@ select f.rollupid
 from tx_fees_unnested f
 left join aztec_v2.view_deposit_assets a on f.asset_id = a.asset_id
 where f.asset_id <> 1073741824 -- assetID 1073741824 is null value
+;
