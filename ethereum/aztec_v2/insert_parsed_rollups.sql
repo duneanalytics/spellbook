@@ -36,7 +36,7 @@ with rows as (
     r."call_block_time"
     , r.contract_address
     , r.call_tx_hash
-    , (dune_user_generated.fn_process_aztec_block(r."_0")).*
+    , (aztec_v2.fn_process_aztec_block(r."_0")).*
   from aztec_v2."RollupProcessor_call_processRollup" r
   -- left join dune_user_generated.aztec_v2_rollups_parsed_cached rp on r.call_tx_hash = rp.call_tx_hash
   left join aztec_v2.rollups_parsed rp on r.call_tx_hash = rp.call_tx_hash
