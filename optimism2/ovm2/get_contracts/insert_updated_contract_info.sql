@@ -9,6 +9,8 @@ SELECT gc.creator_address, MIN(created_time) AS min_created_time, MAX(created_ti
     LEFT JOIN ovm2.contract_creator_address_list cc
         ON cc."creator_address" = gc.creator_address
 		OR cc."creator_address" = gc.contract_creator_if_factory
+	LEFT JOIN ovm2.project_name_mappings pnmc
+	ON pnmc.dune_name = gc.contract_project
 	LEFT JOIN ovm2.project_name_mappings pnm
 	ON pnm.dune_name = gc.contract_project
     
@@ -36,7 +38,7 @@ SELECT gc.creator_address, MIN(created_time) AS min_created_time, MAX(created_ti
                 )
             )
 		)
-	    OR lower(cc.project) != lower(gc."contract_project") --check if the name is now updates
+	    OR (lower(cc.project) != lower(COALESCE(pnmc."mapped_name",gc."contract_project")) ) --check if the name is now updates
 	    OR pnm.dune_name IS NOT NULL -- currently mapped to an old name version
 	)
 	and gc.creator_address IS NOT NULL
