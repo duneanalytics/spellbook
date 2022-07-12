@@ -13,7 +13,7 @@ parsed as (
     from rows
 )
 select decode(gauge, 'hex') as address, 
-label,
+lower(label) as label,
 'balancer_gauge' as "type",
 'balancerlabs' as author
 from parsed
