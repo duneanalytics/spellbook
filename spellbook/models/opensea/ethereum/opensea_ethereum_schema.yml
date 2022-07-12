@@ -153,11 +153,8 @@ models:
       - &royalty_fee_currency_symbol
         name: royalty_fee_currency_symbol
         description: "Symbol of the token in which fees are paid out"
-      - &unique_trade_id
-        name: unique_trade_id
+      - name: unique_trade_id
         description:  "Unique trade ID"
-        tests:
-          - unique
 
   - name: opensea_ethereum_transactions
     meta:
@@ -203,8 +200,12 @@ models:
       - *royalty_fee_amount_usd
       - *royalty_fee_receive_address
       - *royalty_fee_currency_symbol
-      - *unique_trade_id
-
+      - &unique_trade_id
+        name: unique_trade_id
+        description:  "Unique trade ID"
+        tests:
+          - unique
+          
   - name: opensea_ethereum_trades
     meta:
       blockchain: ethereum

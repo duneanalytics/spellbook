@@ -7,6 +7,6 @@ select blockchain,
     tokenId,
     count(*)
 from {{ ref('balances_ethereum_erc721_day') }}
-where day >= now() - interval '4 days'
+where day >= now() - interval '2 days'
 group by blockchain, day, wallet_address, token_address, tokenId
 having count(*) > 1
