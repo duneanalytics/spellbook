@@ -1,5 +1,5 @@
 {{ config(
-        alias ='transactions',
+        alias ='events',
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
@@ -8,9 +8,9 @@
 }}
 
 SELECT * FROM (
-SELECT * FROM {{ ref('opensea_transactions') }} 
+SELECT * FROM {{ ref('opensea_events') }} 
          UNION
-SELECT * FROM {{ ref('magiceden_transactions') }}
+SELECT * FROM {{ ref('magiceden_events') }}
          UNION
 SELECT * FROM {{ ref('looksrare_ethereum_events') }}
 )
