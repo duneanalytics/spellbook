@@ -39,7 +39,7 @@ SELECT *
 	  AND r."type" = 'create'
 	  AND r."block_time" >= start_blocktime
 	  AND r."block_time" < end_blocktime
-	AND (SELECT creators FROM creator_rows IS NULL)
+	AND NOT EXISTS (SELECT creators FROM creator_rows)
 	
 	-- On update runs, grab any contracts we have info to update
 	UNION ALL -- grab any contracts that we have info to update
