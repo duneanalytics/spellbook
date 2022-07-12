@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS ovm2.get_contracts (
 	creator_address bytea, 
 	created_time timestamptz,
 	contract_creator_if_factory bytea,
-	is_self_destruct boolean
+	is_self_destruct boolean,
+	creation_tx_hash bytea
 );
 
 CREATE INDEX IF NOT EXISTS ovm2_get_contracts_address_idx ON ovm2.get_contracts (contract_address);
@@ -23,3 +24,6 @@ CREATE UNIQUE INDEX IF NOT EXISTS ovm2_uniq_gc_address_dest_idx ON ovm2.get_cont
 CREATE UNIQUE INDEX IF NOT EXISTS ovm2_uniq_gc_address_time_dest_idx ON ovm2.get_contracts (contract_address,created_time,is_self_destruct);
 CREATE INDEX IF NOT EXISTS ovm2_get_contracts_project_low_idx ON ovm2.get_contracts (LOWER(contract_project));
 CREATE INDEX IF NOT EXISTS ovm2_get_contracts_dd_view ON ovm2.get_contracts (LOWER(COALESCE(contract_project,token_symbol)));
+CREATE INDEX IF NOT EXISTS ovm2_get_contracts_creation_idx ON ovm2.get_contracts (creation_tx_hash);
+CREATE INDEX IF NOT EXISTS ovm2_get_contracts_creation_address_idx ON ovm2.get_contracts (creation_tx_hash, contract_address);
+CREATE INDEX IF NOT EXISTS ovm2_get_contracts_creation_project_idx ON ovm2.get_contracts (creation_tx_hash, contract_project);
