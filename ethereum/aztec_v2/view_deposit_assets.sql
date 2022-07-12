@@ -17,4 +17,5 @@ select a.*
   , t.symbol
   , t.decimals
 from assets_added a
-left join erc20.tokens t on a.asset_address = t.contract_address 
+left join erc20.tokens t on a.asset_address = t.contract_address
+;
