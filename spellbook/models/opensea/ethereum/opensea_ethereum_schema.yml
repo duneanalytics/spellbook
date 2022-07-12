@@ -35,13 +35,13 @@ models:
       - name: fee_currency_symbol
         description: "Currency symbol in which fees were paid"
 
-  - name: opensea_v1_ethereum_transactions
+  - name: opensea_v1_ethereum_events
     meta:
       blockchain: ethereum
       project: opensea
       contributors: soispoke
     config:
-      tags: ['ethereum','opensea','v1','transactions']
+      tags: ['ethereum','opensea','v1','events']
     description: >
         OpenSea v1 trades on Ethereum
     columns:
@@ -156,15 +156,15 @@ models:
       - name: unique_trade_id
         description:  "Unique trade ID"
 
-  - name: opensea_ethereum_transactions
+  - name: opensea_ethereum_events
     meta:
       blockchain: ethereum
       project: opensea
       contributors: soispoke
     config:
-      tags: ['ethereum','opensea','transactions']
+      tags: ['ethereum','opensea','events']
     description: >
-        OpenSea transactions on Ethereum
+        OpenSea events on Ethereum
     columns:
       - *blockchain
       - *project
