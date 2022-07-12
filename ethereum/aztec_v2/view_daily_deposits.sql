@@ -9,7 +9,7 @@ with daily_transfers as (
         , sum(case when spec_txn_type in ('User Deposit','User Withdrawal') then value_norm else 0 end ) as abs_value_norm
         , sum(case when spec_txn_type = 'User Deposit' then value_norm else 0 end ) as user_deposit_value_norm
         , sum(case when spec_txn_type = 'User Withdrawal' then value_norm else 0 end ) as user_withdrawal_value_norm
-    from dune_user_generated.aztec_v2_rollup_bridge_transfers
+    from aztec_v2.view_rollup_bridge_transfers
     where spec_txn_type in ('User Deposit','User Withdrawal')
     group by 1,2
 )
@@ -30,4 +30,4 @@ with daily_transfers as (
     -- inner join dune_user_generated.table_aztec_v2_daily_bridged_tokens_prices_cached p on dt.date = p.date and dt.token_address = p.token_address
     inner join aztec_v2.daily_token_prices p on dt.date = p.date and dt.token_address = p.token_address
 )
-select * from daily_volume
+select * from daily_volume;
