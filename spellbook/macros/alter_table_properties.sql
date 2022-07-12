@@ -1,5 +1,5 @@
 {% macro alter_table_properties() %}
-{%- if target.name == 'dbt_thomas'-%}
+{%- if target.name == 'prod'-%}
 
 {% set balances_ethereum_erc20_day %}
 ALTER VIEW balances_ethereum.erc20_day SET TBLPROPERTIES('dune.public'='true',
