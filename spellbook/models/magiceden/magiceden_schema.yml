@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: magiceden_transactions
+  - name: magiceden_events
     meta:
       blockchain: solana
       project: magiceden
       contributors: soispoke
     config:
-      tags: ['magiceden','solana','transactions']
+      tags: ['magiceden','solana','events']
     description: >
-        Magic Eden transactions
+        Magic Eden events
     columns:
       - &blockchain
         name: blockchain

@@ -82,8 +82,8 @@ ALTER VIEW balances_ethereum.erc1155_latest SET TBLPROPERTIES('dune.public'='tru
                                                     'dune.data_explorer.contributors'='["soispoke"]');
 {% endset %}
 
-{% set opensea_transactions %}
-ALTER TABLE opensea.transactions SET TBLPROPERTIES('dune.public'='true',
+{% set opensea_events %}
+ALTER TABLE opensea.events SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum","solana"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='project',
@@ -128,8 +128,8 @@ ALTER VIEW opensea.fees SET TBLPROPERTIES('dune.public'='true',
 {% endset %}
 
 
-{% set magiceden_transactions %}
-ALTER TABLE magiceden.transactions SET TBLPROPERTIES('dune.public'='true',
+{% set magiceden_events %}
+ALTER TABLE magiceden.events SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["solana"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='project',
@@ -155,8 +155,8 @@ ALTER VIEW magiceden.mints SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["soispoke"]');
 {% endset %}
 
-{% set nft_transactions %}
-ALTER TABLE nft.transactions SET TBLPROPERTIES('dune.public'='true',
+{% set nft_events %}
+ALTER TABLE nft.events SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum","solana"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='sector',
@@ -290,15 +290,15 @@ ALTER VIEW ens.view_renewals SET TBLPROPERTIES('dune.public'='true',
 {% do run_query(balances_ethereum_erc1155_day) %}
 {% do run_query(balances_ethereum_erc1155_hour) %}
 {% do run_query(balances_ethereum_erc1155_latest) %}
-{% do run_query(opensea_transactions) %}
+{% do run_query(opensea_events) %}
 {% do run_query(opensea_trades) %}
 {% do run_query(opensea_mints) %}
 {% do run_query(opensea_burns) %}
 {% do run_query(opensea_fees) %}
-{% do run_query(magiceden_transactions) %}
+{% do run_query(magiceden_events) %}
 {% do run_query(magiceden_trades) %}
 {% do run_query(magiceden_mints) %}
-{% do run_query(nft_transactions) %}
+{% do run_query(nft_events) %}
 {% do run_query(nft_trades) %}
 {% do run_query(nft_mints) %}
 {% do run_query(nft_burns) %}
