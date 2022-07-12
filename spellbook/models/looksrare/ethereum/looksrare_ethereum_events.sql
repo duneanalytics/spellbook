@@ -35,7 +35,7 @@ WITH looks_rare AS (
             END AS category    
     FROM {{ source('looksrare_ethereum','looksrareexchange_evt_takerask') }} ask
     LEFT JOIN {{ source('looksrare_ethereum','looksrareexchange_evt_royaltypayment') }} roy ON roy.evt_tx_hash = ask.evt_tx_hash
-    WHERE ask.evt_index - 2 = roy.evt_index
+    AND ask.evt_index - 2 = roy.evt_index
                             UNION
     SELECT 
         bid.evt_block_time AS block_time,
@@ -61,7 +61,7 @@ WITH looks_rare AS (
         'Buy' as category
     FROM {{ source('looksrare_ethereum','looksrareexchange_evt_takerbid') }} bid
     LEFT JOIN {{ source('looksrare_ethereum','looksrareexchange_evt_royaltypayment') }} roy ON roy.evt_tx_hash = bid.evt_tx_hash
-    WHERE roy.evt_index = bid.evt_index - 4
+    AND roy.evt_index = bid.evt_index - 4
     ),
 
 -- Get ERC721 AND ERC1155 transfer data for every trade TRANSACTION
@@ -77,6 +77,7 @@ erc_transfers as
         ELSE 'Trade' END AS evt_type,
         evt_index
         FROM {{ source('erc1155_ethereum','evt_transfersingle') }} erc1155
+        WHERE erc1155.evt_block_time > '2022-01-01'
         GROUP BY evt_tx_hash,value,id,evt_index, erc1155.from, erc1155.to, erc1155.contract_address
             UNION
 SELECT evt_tx_hash,
@@ -90,6 +91,7 @@ SELECT evt_tx_hash,
         ELSE 'Trade' END AS evt_type,
         evt_index
         FROM {{ source('erc721_ethereum','evt_transfer') }} erc721
+        WHERE erc721.evt_block_time > '2022-01-01'
         GROUP BY evt_tx_hash,tokenId,evt_index, erc721.from, erc721.to, erc721.contract_address)
 
 SELECT DISTINCT
@@ -155,3 +157,8 @@ LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', loo
     AND p.contract_address = currency_contract
     AND p.blockchain ='ethereum'
 LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20 ON erc20.contract_address = currency_contract
+WHERE tx.block_time > '2022-01-01'
+{% if is_incremental() %}
+-- this filter will only be applied on an incremental run
+AND looks_rare.block_time > now() - interval 2 days
+{% endif %} 
