@@ -3,9 +3,10 @@
 with sampled_wallets as
  (
      select *
-     from {{ ref('balances_ethereum_erc20_hour') }}
+     from {{ ref('balances_ethereum_erc20_hour') }} bal
      where wallet_address in (select distinct wallet_address from {{ ref('balances_ethereum_erc20_latest_entries') }})
      and symbol in ('USDT', 'LINK', 'DAI', 'USDC')
+     and bal.hour > '2022-05-04' and bal.hour < '2022-05-06'
  )
 
 , unit_tests as

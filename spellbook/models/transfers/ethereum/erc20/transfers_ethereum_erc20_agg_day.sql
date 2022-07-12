@@ -3,7 +3,7 @@
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
-        unique_key='wallet_contract_day'
+        unique_key='unique_transfer_id'
         )
 }}
 
@@ -13,7 +13,7 @@ select
     tr.wallet_address,
     tr.token_address,
     t.symbol,
-    tr.wallet_address || '-' || tr.token_address || '-' || date_trunc('day', tr.evt_block_time) as wallet_contract_day,
+    tr.wallet_address || '-' || tr.token_address || '-' || date_trunc('day', tr.evt_block_time) as unique_transfer_id,
     sum(tr.amount_raw) as amount_raw,
     sum(tr.amount_raw / power(10, t.decimals)) as amount
 from {{ ref('transfers_ethereum_erc20') }} tr
