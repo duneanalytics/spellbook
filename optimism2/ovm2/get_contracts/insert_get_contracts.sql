@@ -283,7 +283,7 @@ GROUP BY 1,2,3,4,5,6
               LEFT JOIN tokens
               ON c.contract_address = tokens.contract_address
               GROUP BY
-              1, 2, 3, 4, 5, 6, 7, 8, 9
+              1, 2, 3, 4, 5, 6, 7, 8, 9, 10
               
           )
         SELECT
