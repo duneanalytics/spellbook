@@ -110,6 +110,7 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\xef31d75a2f85cfdd9032158a2ceb773c84d79192	dHedge
 \\x9841484a4a6c0b61c4eea71376d76453fd05ec9c	Thales
 \\x8314125c8b68af2afd0d151eb4a551e88128a2ae	Thales
+\\x2d356b114cbCA8DEFf2d8783EAc2a5A5324fE1dF Thales
 \\xde6d6f23aabbdc9469c8907ece7c379f98e4cb75	dForce
 \\x1b5caa1d3a1582a438e4cd93ee7a7e0e4d5624fb	Uniswap V3
 \\xc73567e09e1774f6e9e5f1f9de7fd0c3c4ce94fa	NFT for my bro
@@ -293,6 +294,7 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x1E71AEE6081f62053123140aacC7a06021D77348	Reaper Farm 
 \\x982F264ce97365864181df65dF4931C593A515ad	Beefy Finance 
 \\xdd32a567bc09384057a1f260086618d88b28e64f	Ganland 
+\\x13c716188c38ce27b9b2b672a59543cf1170eabe Alchemix
 \.
 
 COMMIT;

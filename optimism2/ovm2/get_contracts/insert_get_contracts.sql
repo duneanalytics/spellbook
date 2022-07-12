@@ -18,9 +18,9 @@ WITH rows AS (
 WITH
   creator_rows AS (
       SELECT UNNEST(creator_list:: bytea []) AS creators
-  ),
+  )
 
-base_level AS (
+, base_level AS (
 SELECT *
 	FROM (
 	-- On Normal Runs, grab the entire time window
@@ -58,7 +58,7 @@ GROUP BY 1,2,3,4,5,6
 	
 	
 	  )
-  , erc20_tokens AS (
+  , tokens AS (
     SELECT
       e.contract_address,
       tl.symbol AS symbol
@@ -66,8 +66,9 @@ GROUP BY 1,2,3,4,5,6
 	INNER JOIN erc20."tokens" tl ON tl."contract_address" = e."contract_address"
     GROUP BY
       1, 2
-  )
- , nft_tokens AS (
+    
+    UNION ALL
+ 
     SELECT
       e.contract_address,
       tl."project_name" AS symbol
@@ -175,10 +176,10 @@ GROUP BY 1,2,3,4,5,6
               contract_address IS NOT NULL
           )
         SELECT
-          COALESCE(c.contract_address, erc20.contract_address) AS contract_address,
+          c.contract_address AS contract_address,
           contract_factory,
           c.project AS contract_project,
-          COALESCE(erc20.symbol, nft.symbol) AS token_symbol,
+          tokens.symbol AS token_symbol,
           contract_name,
           creator_address,
           created_time,
@@ -192,40 +193,13 @@ GROUP BY 1,2,3,4,5,6
               COALESCE(cc.project, oc.namespace) AS project,
               oc.name AS contract_name,
               cc.created_time,
-              COALESCE(is_self_destruct, false) AS is_self_destruct
+              COALESCE(is_self_destruct, false) AS is_self_destruct,
+              'creator contracts' as source
             FROM
               creator_contracts cc
               LEFT JOIN optimism."contracts" oc ON oc."address" = cc.contract_address
-            WHERE
-              1 = (
-                --1 if we're re-running, 0 if it already exists
-                CASE
-                  WHEN NOT EXISTS (
-                    SELECT
-                      creators
-                    FROM
-                      creator_rows
-                    WHERE
-                      creators IS NOT NULL
-                  )
-                  AND NOT EXISTS (
-                    SELECT
-                      1
-                    FROM
-                      ovm2.get_contracts
-                    WHERE
-                      contract_address = address
-                      AND COALESCE(cc.project, oc.namespace) = contract_project
-                  ) THEN 1 --when no input or doesn't already exist, search everything
-                  WHEN cc.creator_address IN (
-                    SELECT
-                      creators
-                    FROM
-                      creator_rows
-                  ) THEN 1 --when input, limit to these contracts (i.e. updated mapping)
-                  ELSE 0
-                END
-              )
+            WHERE cc.contract_address IN (SELECT contract_address FROM creator_contracts)
+
             UNION ALL
             --other decoded contracts
             SELECT
@@ -235,40 +209,13 @@ GROUP BY 1,2,3,4,5,6
               namespace AS project,
               name,
               created_at AS created_time,
-              COALESCE(is_self_destruct, false) AS is_self_destruct
+              COALESCE(is_self_destruct, false) AS is_self_destruct,
+              'decoded contracts' as source
             FROM
               optimism."contracts" oc
               LEFT JOIN creator_contracts cc ON oc."address" = cc.contract_address
-            WHERE
-              1 = (
-                --1 if we're re-running, 0 if it already exists
-                CASE
-                  WHEN NOT EXISTS (
-                    SELECT
-                      creators
-                    FROM
-                      creator_rows
-                    WHERE
-                      creators IS NOT NULL
-                  )
-                  AND NOT EXISTS (
-                    SELECT
-                      1
-                    FROM
-                      ovm2.get_contracts
-                    WHERE
-                      contract_address = address
-                      AND COALESCE(cc.project, oc.namespace) = contract_project
-                  ) THEN 1 --when no input or doesn't already exist, search everything
-                  WHEN cc.creator_address IN (
-                    SELECT
-                      creators
-                    FROM
-                      creator_rows
-                  ) THEN 1 --when input, limit to these contracts (i.e. updated mapping)
-                  ELSE 0
-                END
-              )
+            WHERE oc.address IN (SELECT contract_address FROM creator_contracts)
+
             GROUP BY
               1, 2, 3, 4, 5, 6, 7
             UNION ALL
@@ -280,7 +227,8 @@ GROUP BY 1,2,3,4,5,6
               "contract_project" AS project,
               "contract_name" AS name,
               created_time:: timestamptz AS created_time,
-              false AS is_self_destruct
+              false AS is_self_destruct,
+              'ovm1 contracts' as source
             FROM
               ovm1.op_ovm1_contracts d
             WHERE
@@ -291,8 +239,10 @@ GROUP BY 1,2,3,4,5,6
                   ovm2.get_contracts gc
                 WHERE
                   gc.contract_address = d.contract_address
-                  AND gc.contract_name = d.contract_name
+                  AND (
+                      (gc.contract_project = d.contract_project) OR (gc.contract_project IS NULL)
               )
+              OR contract_address IN (SELECT contract_address FROM creator_contracts)
             GROUP BY
               1, 2, 3, 4, 5, 6, 7
             UNION ALL
@@ -304,7 +254,8 @@ GROUP BY 1,2,3,4,5,6
               'Synthetix' AS contract_project,
               contract_name,
               '07-06-2021 00:00:00':: timestamptz AS created_time,
-              false AS is_self_destruct
+              false AS is_self_destruct,
+              'synthetix contracts' as source
             FROM
               ovm1.synthetix_genesis_contracts snx
             WHERE
@@ -317,10 +268,11 @@ GROUP BY 1,2,3,4,5,6
                   gc.contract_address = snx.contract_address
                   AND 'Synthetix' = contract_project
               )
+              OR contract_address IN (SELECT contract_address FROM creator_contracts)
+
               ) c
-              FULL OUTER JOIN erc20_tokens erc20 -- b/c we want to get all ERC20s that aren't in this list too.
-              ON c.contract_address = erc20.contract_address
-              FULL OUTER JOIN nft_tokens nft ON c.contract_address = nft.contract_address
+              LEFT JOIN tokens
+              ON c.contract_address = tokens.contract_address
               GROUP BY
               1, 2, 3, 4, 5, 6, 7, 8
               
