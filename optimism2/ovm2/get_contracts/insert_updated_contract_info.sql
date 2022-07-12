@@ -46,11 +46,17 @@ SELECT gc.creator_address, MIN(created_time) AS min_created_time, MAX(created_ti
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('11,44 * * * *', $$
- SELECT ovm2.insert_get_contracts(
-	(SELECT MIN(min_created_time) FROM  ovm2.view_get_contracts_contracts_to_update), --start time
-        (SELECT MAX(max_created_time) FROM  ovm2.view_get_contracts_contracts_to_update), --end time (max time)
-	(SELECT array_agg(creator_address) FROM ovm2.view_get_contracts_contracts_to_update LIMIT 1)
-	)
+
+	SELECT dune_user_generated.ovm2_insert_get_contracts
+    (
+     min_created_time, max_created_time, creator_address
+     )
+
+--  SELECT ovm2.insert_get_contracts(
+-- 	(SELECT MIN(min_created_time) FROM  ovm2.view_get_contracts_contracts_to_update), --start time
+--         (SELECT MAX(max_created_time) FROM  ovm2.view_get_contracts_contracts_to_update), --end time (max time)
+-- 	(SELECT array_agg(creator_address) FROM ovm2.view_get_contracts_contracts_to_update LIMIT 1)
+-- 	)
 	WHERE EXISTS (
 		SELECT * FROM ovm2.view_get_contracts_contracts_to_update LIMIT 1 --only run if there are contracts to update.
 	);
