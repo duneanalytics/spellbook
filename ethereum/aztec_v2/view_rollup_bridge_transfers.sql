@@ -46,4 +46,4 @@ with tfers_raw as (
   left join aztec_v2.contract_labels to_contract on t."to" = to_contract.contract_address
   left join aztec_v2.contract_labels from_contract on t."from" = from_contract.contract_address
 )
-select * from tfers_categorized
+select * from tfers_categorized;
