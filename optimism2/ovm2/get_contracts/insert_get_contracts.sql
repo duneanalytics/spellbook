@@ -223,7 +223,7 @@ GROUP BY 1,2,3,4,5,6
             WHERE oc.address IN (SELECT contract_address FROM creator_contracts)
 
             GROUP BY
-              1, 2, 3, 4, 5, 6, 7
+              1, 2, 3, 4, 5, 6, 7, 8, 9
             UNION ALL
             --ovm 1.0 contracts
             SELECT
@@ -252,7 +252,7 @@ GROUP BY 1,2,3,4,5,6
               )
               OR contract_address IN (SELECT contract_address FROM creator_contracts)
             GROUP BY
-              1, 2, 3, 4, 5, 6, 7
+              1, 2, 3, 4, 5, 6, 7, 8, 9
             UNION ALL
             --synthetix genesis contracts
             SELECT
@@ -283,7 +283,7 @@ GROUP BY 1,2,3,4,5,6
               LEFT JOIN tokens
               ON c.contract_address = tokens.contract_address
               GROUP BY
-              1, 2, 3, 4, 5, 6, 7, 8
+              1, 2, 3, 4, 5, 6, 7, 8, 9
               
           )
         SELECT
