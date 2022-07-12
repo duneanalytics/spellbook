@@ -15,6 +15,9 @@ select i.*
     , a.asset_address
     , a.decimals
     , i.publicvalue * 1.0 / 10 ^ (coalesce(a.decimals, 18)) as publicvalue_norm
+    , i.publicvalue * 1.0 / 10 ^ (coalesce(a.decimals, 18)) * p.avg_price_usd as publicvalue_usd
 from inner_proofs i
 left join aztec_v2.view_deposit_assets a on i.assetid = a.asset_id
+left join aztec_v2.daily_token_prices p on a.asset_address = p.token_address
+    and i.call_block_time::date = p.date
 ;
