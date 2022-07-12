@@ -28,5 +28,5 @@ CREATE TABLE IF NOT EXISTS aztec_v2.rollups_parsed (
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS aztec_v2_rollups_parsed_uniq_idx on aztec_v2.rollups_parsed (call_tx_hash);
-CREATE UNIQUE INDEX IF NOT EXISTS aztec_v2_rollups_parsed_block_time_idx on aztec_v2.rollups_parsed (call_block_time);
-CREATE UNIQUE INDEX IF NOT EXISTS aztec_v2_rollups_parsed_rollup_id_idx on aztec_v2.rollups_parsed (rollupid);
+CREATE INDEX IF NOT EXISTS aztec_v2_rollups_parsed_block_time_idx on aztec_v2.rollups_parsed (call_block_time);
+CREATE INDEX IF NOT EXISTS aztec_v2_rollups_parsed_rollup_id_idx on aztec_v2.rollups_parsed (rollupid);
