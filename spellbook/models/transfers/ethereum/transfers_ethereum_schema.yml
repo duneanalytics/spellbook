@@ -13,8 +13,6 @@ models:
     columns:
       - name: unique_transfer_id
         description: "Unique transfer ID (used for testing for duplicates)"
-        tests:
-          - unique
       - &blockchain
         name: blockchain
         description: "Blockchain"
@@ -51,8 +49,10 @@ models:
       - *amount_raw
       - name: amount
         description: "Raw amount of ERC20 token held *after* taking into account token decimals"
-      - name: amount_usd
-        description: "Amount of ERC20 token held in USD (fiat value at time of transaction)"
+      - name: unique_transfer_id
+        description: "Unique ID, used in order to apply the merge into incremental strategy"
+        tests:
+          - unique
 
   - name: transfers_ethereum_erc20_rolling_hour
     meta:
@@ -72,8 +72,6 @@ models:
       - *amount_raw
       - name: amount
         description: "Rolling sum of raw amount of ERC20 token held *after* taking into account token decimals"
-      - name: amount_usd
-        description: "Rolling sum of amount of ERC20 token held in USD (fiat value at time of transaction)"
       - name: updated_at
         description: "UTC timestamp when table was last updated"
       - name: recency_index
@@ -99,8 +97,10 @@ models:
       - *amount_raw
       - name: amount
         description: "Raw amount of ERC20 token held *after* taking into account token decimals"
-      - name: amount_usd
-        description: "Amount of ERC20 token held in USD (fiat value at time of transaction)"
+      - name: unique_transfer_id
+        description: "Unique ID, used in order to apply the merge into incremental strategy"
+        tests:
+          - unique
 
   - name: transfers_ethereum_erc20_rolling_day
     meta:
@@ -120,8 +120,6 @@ models:
       - *amount_raw
       - name: amount
         description: "Rolling sum of raw amount of ERC20 token held *after* taking into account token decimals"
-      - name: amount_usd
-        description: "Rolling sum of amount of ERC20 token held in USD (fiat value at time of transaction)"
       - name: last_updated
         description: "UTC timestamp when table was last updated"
       - name: recency_index
