@@ -85,7 +85,7 @@ GROUP BY 1,2,3,4,5,6
           con.creator_address,
           con.contract_factory,
           contract_address,
-          COALESCE(cc.project,ccf.project) AS project
+          COALESCE(cc.project,ccf.project) AS project,
           con.block_time AS created_time,
           -- Check if the contract is an immediate self-destruct contract
           CASE
@@ -242,6 +242,7 @@ GROUP BY 1,2,3,4,5,6
                   gc.contract_address = d.contract_address
                   AND (
                       (gc.contract_project = d.contract_project) OR (gc.contract_project IS NULL)
+                      )
               )
               OR contract_address IN (SELECT contract_address FROM creator_contracts)
             GROUP BY
@@ -374,20 +375,20 @@ RETURN r;
 END
 $function$;
 
--- Get the table started
-SELECT ovm2.insert_get_contracts('01-01-2021'::timestamptz,NOW())
-WHERE NOT EXISTS (
-    SELECT *
-    FROM ovm2.get_contracts
-);
+-- -- Get the table started
+-- SELECT ovm2.insert_get_contracts('01-01-2021'::timestamptz,NOW())
+-- WHERE NOT EXISTS (
+--     SELECT *
+--     FROM ovm2.get_contracts
+-- );
 
 
-INSERT INTO cron.job (schedule, command)
-VALUES ('14,29,44,59 * * * *', $$
- SELECT ovm2.insert_get_contracts(
-        (SELECT MAX("created_time") FROM ovm2.get_contracts WHERE block_time > NOW() - interval '1 month')::timestamptz,
-        (SELECT MAX("time") FROM optimism.blocks WHERE "time" > NOW() - interval '1 week')::timestamptz,
-	 NULL::bytea[]
-        );
-$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+-- INSERT INTO cron.job (schedule, command)
+-- VALUES ('14,29,44,59 * * * *', $$
+--  SELECT ovm2.insert_get_contracts(
+--         (SELECT MAX("created_time") FROM ovm2.get_contracts WHERE block_time > NOW() - interval '1 month')::timestamptz,
+--         (SELECT MAX("time") FROM optimism.blocks WHERE "time" > NOW() - interval '1 week')::timestamptz,
+-- 	 NULL::bytea[]
+--         );
+-- $$)
+-- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
