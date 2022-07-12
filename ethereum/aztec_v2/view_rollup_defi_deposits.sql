@@ -2,6 +2,7 @@ create or replace view aztec_v2.view_rollup_defi_deposits as
 
 with bridge_rollups as (
 select rollupid
+    , call_block_time
     , (unnest(bridges)).*
     , (unnest(defiDepositSums)) as defi_deposit_sum
 from aztec_v2.rollups_parsed
