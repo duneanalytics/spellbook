@@ -1,3 +1,5 @@
+drop view if exists aztec_v2.view_rollup_defi_deposits;
+
 create or replace view aztec_v2.view_rollup_defi_deposits as
 
 with bridge_rollups as (
@@ -47,3 +49,4 @@ left join aztec_v2.view_deposit_assets ob on ob.asset_id = b.outputassetidb
 left join aztec_v2.daily_token_prices p on ia.asset_address = p.token_address
     and b.call_block_time::date = p.date
 where addressid <> 0 -- address id 0 means no data here
+;
