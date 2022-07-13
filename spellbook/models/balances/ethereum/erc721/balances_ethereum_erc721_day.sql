@@ -13,22 +13,17 @@ with
             ) as day
     )
 
-, daily_balances as
- (SELECT
-    wallet_address,
-    token_address,
-    tokenId,
-    day,
-    lead(day, 1, now()) OVER (PARTITION BY token_address, wallet_address ORDER BY day) AS next_day
-    FROM {{ ref('transfers_ethereum_erc721_rolling_day') }})
 
-SELECT distinct
+SELECT
     'ethereum' as blockchain,
     d.day,
     b.wallet_address,
     b.token_address,
     b.tokenId,
-    nft_tokens.name as collection
-FROM daily_balances b
-INNER JOIN days d ON b.day <= d.day AND d.day < b.next_day
-LEFT JOIN {{ ref('tokens_ethereum_nft') }} nft_tokens ON nft_tokens.contract_address = b.token_address
+    b.num_tokens,
+    nft_tokens.name as collection,
+    nft_tokens.category
+FROM days d
+INNER JOIN {{ ref('transfers_ethereum_erc721_rolling_day') }} b ON (b.evt_block_time <= d.day AND d.day < b.next_evt)
+LEFT JOIN {{ ref('tokens_ethereum_nft') }} nft_tokens ON (nft_tokens.contract_address = b.token_address)
+where num_tokens = 1
