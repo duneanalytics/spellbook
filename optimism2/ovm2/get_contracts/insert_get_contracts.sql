@@ -174,7 +174,7 @@ GROUP BY 1,2,3,4,5,6
                   fifth_level -- check for contract factories 4 layers down --as of 3/12, this ran through all contracts
               ) con
               LEFT JOIN ovm2."contract_creator_address_list" cc ON con.creator_address = cc.creator_address
-              LEFT JOIN ovm2."contract_creator_address_list" ccf ON con.creator_address = ccf.contract_creator_if_factory
+              LEFT JOIN ovm2."contract_creator_address_list" ccf ON con.creator_address = ccf.creator_address
             WHERE
               contract_address IS NOT NULL
           )
@@ -283,7 +283,7 @@ GROUP BY 1,2,3,4,5,6
               LEFT JOIN tokens
               ON c.contract_address = tokens.contract_address
               GROUP BY
-              1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+              1, 2, 3, 4, 5, 6, 7, 8, 9
               
           )
         SELECT
@@ -390,12 +390,12 @@ RETURN r;
 END
 $function$;
 
--- -- Get the table started
--- SELECT ovm2.insert_get_contracts('01-01-2021'::timestamptz,NOW())
--- WHERE NOT EXISTS (
---     SELECT *
---     FROM ovm2.get_contracts
--- );
+-- Get the table started
+SELECT ovm2.insert_get_contracts('01-01-2021'::timestamptz,NOW())
+WHERE NOT EXISTS (
+    SELECT *
+    FROM ovm2.get_contracts
+);
 
 
 -- INSERT INTO cron.job (schedule, command)
