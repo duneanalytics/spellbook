@@ -145,6 +145,15 @@ with tokens as (
   select * from paprika_price_feed
   union 
   select * from dex_price_feed
+  union
+  select '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'::bytea as token_address
+    , 'ETH' as symbol
+    , date
+    , 'prices.layer1_usd' as data_source
+    , eth_price as avg_price_usd
+    , eth_price
+    , 1 as avg_price_eth
+  from daily_eth_price_usd
   
   on conflict(token_address, date) do update set
     data_source = excluded.data_source

@@ -1,4 +1,4 @@
-DROP TABLE aztec_v2.daily_token_prices
+DROP TABLE aztec_v2.daily_token_prices cascade
 ;
 
 CREATE TABLE IF NOT EXISTS aztec_v2.daily_token_prices ( 
