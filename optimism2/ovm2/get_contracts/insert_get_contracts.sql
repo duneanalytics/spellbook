@@ -11,168 +11,82 @@ WITH rows AS (
       creator_address, 
       created_time,
       contract_creator_if_factory,
-      is_self_destruct
+      is_self_destruct,
+      creation_tx_hash
     )
 
 --This is used for backfilling
 WITH
   creator_rows AS (
       SELECT UNNEST(creator_list:: bytea []) AS creators
-  ),
-  contract_creators AS (
-    SELECT
-      COALESCE(a."from", w.creator_address) AS creator_address,
-      w.project
-    FROM
-      (
-        SELECT
-          "from"
-        FROM
-          optimism."transactions" t
-        WHERE
-          "to" IS NULL
-          AND success = true
-          AND t."block_time" >= start_blocktime
-          AND t."block_time" < end_blocktime
-          AND 1 = (
-            CASE
-              WHEN NOT EXISTS (
-                SELECT
-                  creators
-                FROM
-                  creator_rows
-                WHERE
-                  creators IS NOT NULL
-              ) THEN 1 --when no input, search everything
-              WHEN t."from" IN (
-                SELECT
-                  creators
-                FROM
-                  creator_rows
-              ) THEN 1 --when input, limit to these contracts (i.e. updated mapping)
-              ELSE 0
-            END
-          )
-        GROUP BY
-          1
-      ) a
-      FULL OUTER JOIN ovm2.contract_creator_address_list w ON w.creator_address = a."from" -- Placeholder if we includer logic to exclude certain contract creators
-      -- WHERE
-      -- (
-      -- (w.project != 'EXCLUDE') OR (w.project IS NULL)
-      -- )
-      AND 1 = (
-        CASE
-          WHEN NOT EXISTS (
-            SELECT
-              creators
-            FROM
-              creator_rows
-            WHERE
-              creators IS NOT NULL
-          ) THEN 1 --when no input, search everythin
-          WHEN a."from" IN (
-            SELECT
-              creators
-            FROM
-              creator_rows
-          )
-          AND (
-            w.creator_address IN (
-              SELECT
-                creators
-              FROM
-                creator_rows
-            )
-            OR w.creator_address IS NULL
-          ) THEN 1 --Either a match or not in the static creator list
-          ELSE 0
-        END
-      )
-  ),
-  erc20_tokens AS (
+  )
+
+, base_level AS (
+SELECT *
+	FROM (
+	-- On Normal Runs, grab the entire time window
+	SELECT
+	  "from" AS creator_address,
+	  NULL:: bytea AS contract_factory,
+	  "address" AS contract_address,
+	  "block_time",
+	  r.tx_hash,
+	  trace_address[1] AS trace_element
+	FROM
+	  optimism.traces r
+	WHERE
+	  "success"
+	  AND "tx_success"
+	  AND r."type" = 'create'
+	  AND r."block_time" >= start_blocktime
+	  AND r."block_time" < end_blocktime
+	AND NOT EXISTS (SELECT creators FROM creator_rows)
+	
+	-- On update runs, grab any contracts we have info to update
+	UNION ALL -- grab any contracts that we have info to update
+	
+        SELECT "creator_address", "contract_creator_if_factory", "contract_address", "created_time", tx_hash, trace_address[1] AS trace_element
+        FROM ovm2."get_contracts" gc
+            INNER JOIN optimism.traces r ON r.address = gc.contract_address AND r.tx_hash = gc.creation_tx_hash
+         WHERE ( "creator_address" IN (SELECT creators FROM creator_rows) OR "contract_creator_if_factory" IN (SELECT creators FROM creator_rows) ) 
+            AND "success" AND "tx_success" AND r."type" = 'create'
+	--start and end will reflect contract creation times
+	AND r."block_time" >= start_blocktime
+	  AND r."block_time" < end_blocktime
+		
+	) uni
+GROUP BY 1,2,3,4,5,6
+	
+	
+	  )
+  , tokens AS (
     SELECT
       e.contract_address,
-      CASE
-        WHEN tl.symbol IS NULL THEN 'Other ERC20'
-        ELSE tl.symbol
-      END AS symbol
-    FROM
-      (
-        SELECT
-          contract_address
-        FROM
-          erc20."ERC20_evt_Transfer"
-        WHERE
-          "evt_block_time" >= start_blocktime - interval '1 day'
-          AND "evt_block_time" < end_blocktime
-        GROUP BY
-          1
-        UNION ALL
-        SELECT
-          "contract_address"
-        FROM
-          erc20."tokens"
-      ) e
-      LEFT JOIN erc20."tokens" tl ON tl."contract_address" = e."contract_address"
-    GROUP BY
-      1,
-      2
-  ),
-  nft_tokens AS (
-    SELECT
-      e.contract_address,
-      CASE
-        WHEN tl."project_name" IS NULL THEN fallback
-        ELSE tl."project_name"
-      END AS symbol
-    FROM
-      (
-        SELECT
-          contract_address,
-          'Other ERC721' AS fallback
-        FROM
-          erc721."ERC721_evt_Transfer"
-        WHERE
-          "evt_block_time" >= start_blocktime - interval '1 day'
-          AND "evt_block_time" < end_blocktime
-        GROUP BY
-          1, 2
-        UNION ALL
-        SELECT
-          contract_address,
-          'Other ERC1155' AS fallback
-        FROM
-          erc1155."ERC1155_evt_TransferBatch"
-        WHERE
-          "evt_block_time" >= start_blocktime - interval '1 day'
-          AND "evt_block_time" < end_blocktime
-        GROUP BY
-          1, 2
-        UNION ALL
-        SELECT
-          contract_address,
-          'Other ERC1155' AS fallback
-        FROM
-          erc1155."ERC1155_evt_TransferSingle"
-        WHERE
-          "evt_block_time" >= start_blocktime - interval '1 day'
-          AND "evt_block_time" < end_blocktime
-        GROUP BY
-          1, 2
-      ) e
-      LEFT JOIN nft."tokens" tl ON tl."contract_address" = e."contract_address"
+      tl.symbol AS symbol
+    FROM base_level e
+	INNER JOIN erc20."tokens" tl ON tl."contract_address" = e."contract_address"
     GROUP BY
       1, 2
-  ),
-  get_contracts AS (
+    
+    UNION ALL
+ 
+    SELECT
+      e.contract_address,
+      tl."project_name" AS symbol
+    FROM
+      base_level e
+      INNER JOIN nft."tokens" tl ON tl."contract_address" = e."contract_address"
+    GROUP BY
+      1, 2
+  )
+  , get_contracts AS (
     WITH
       creator_contracts AS (
         SELECT
           con.creator_address,
           con.contract_factory,
           contract_address,
-          project,
+          COALESCE(cc.project,ccf.project) AS project,
           con.block_time AS created_time,
           -- Check if the contract is an immediate self-destruct contract
           CASE
@@ -189,28 +103,12 @@ WITH
                 AND sd."block_time" < end_blocktime
             ) THEN true
             ELSE false
-          END AS is_self_destruct
+          END AS is_self_destruct,
+          tx_hash AS creation_tx_hash
         FROM
           (
             WITH
-              base_level AS (
-                SELECT
-                  "from" AS creator_address,
-                  NULL:: bytea AS contract_factory,
-                  "address" AS contract_address,
-                  "block_time",
-                  r.tx_hash,
-                  trace_address[1] AS trace_element
-                FROM
-                  optimism.traces r
-                WHERE
-                  "success"
-                  AND "tx_success"
-                  AND r."type" = 'create'
-                  AND r."block_time" >= start_blocktime
-                  AND r."block_time" < end_blocktime
-                  )
-                  ,second_level AS (
+              second_level AS (
                     SELECT
                       COALESCE(b1.creator_address, b.creator_address) AS creator_address,
                       CASE
@@ -275,19 +173,21 @@ WITH
                 FROM
                   fifth_level -- check for contract factories 4 layers down --as of 3/12, this ran through all contracts
               ) con
-              LEFT JOIN contract_creators cc ON con.creator_address = cc.creator_address
+              LEFT JOIN ovm2."contract_creator_address_list" cc ON con.creator_address = cc.creator_address
+              LEFT JOIN ovm2."contract_creator_address_list" ccf ON con.creator_address = ccf.creator_address
             WHERE
               contract_address IS NOT NULL
           )
         SELECT
-          COALESCE(c.contract_address, erc20.contract_address) AS contract_address,
+          c.contract_address AS contract_address,
           contract_factory,
           c.project AS contract_project,
-          COALESCE(erc20.symbol, nft.symbol) AS token_symbol,
+          tokens.symbol AS token_symbol,
           contract_name,
           creator_address,
           created_time,
-          is_self_destruct
+          is_self_destruct,
+          creation_tx_hash
         FROM
           (
             SELECT
@@ -297,42 +197,16 @@ WITH
               COALESCE(cc.project, oc.namespace) AS project,
               oc.name AS contract_name,
               cc.created_time,
-              COALESCE(is_self_destruct, false) AS is_self_destruct
+              COALESCE(is_self_destruct, false) AS is_self_destruct,
+              'creator contracts' as source,
+              creation_tx_hash
             FROM
               creator_contracts cc
               LEFT JOIN optimism."contracts" oc ON oc."address" = cc.contract_address
-            WHERE
-              1 = (
-                --1 if we're re-running, 0 if it already exists
-                CASE
-                  WHEN NOT EXISTS (
-                    SELECT
-                      creators
-                    FROM
-                      creator_rows
-                    WHERE
-                      creators IS NOT NULL
-                  )
-                  AND NOT EXISTS (
-                    SELECT
-                      1
-                    FROM
-                      ovm2.get_contracts
-                    WHERE
-                      contract_address = address
-                      AND COALESCE(cc.project, oc.namespace) = contract_project
-                  ) THEN 1 --when no input or doesn't already exist, search everything
-                  WHEN cc.creator_address IN (
-                    SELECT
-                      creators
-                    FROM
-                      creator_rows
-                  ) THEN 1 --when input, limit to these contracts (i.e. updated mapping)
-                  ELSE 0
-                END
-              )
+            WHERE cc.contract_address IN (SELECT contract_address FROM creator_contracts)
+
             UNION ALL
-            --other decoded contracts
+            --other decoded contracts / Only pull if there's a match to avoid unnecessary overwriting
             SELECT
               NULL:: bytea AS creator_address,
               NULL:: bytea AS contract_factory,
@@ -340,42 +214,16 @@ WITH
               namespace AS project,
               name,
               created_at AS created_time,
-              COALESCE(is_self_destruct, false) AS is_self_destruct
+              COALESCE(is_self_destruct, false) AS is_self_destruct,
+              'decoded contracts' as source,
+              creation_tx_hash
             FROM
               optimism."contracts" oc
-              LEFT JOIN creator_contracts cc ON oc."address" = cc.contract_address
-            WHERE
-              1 = (
-                --1 if we're re-running, 0 if it already exists
-                CASE
-                  WHEN NOT EXISTS (
-                    SELECT
-                      creators
-                    FROM
-                      creator_rows
-                    WHERE
-                      creators IS NOT NULL
-                  )
-                  AND NOT EXISTS (
-                    SELECT
-                      1
-                    FROM
-                      ovm2.get_contracts
-                    WHERE
-                      contract_address = address
-                      AND COALESCE(cc.project, oc.namespace) = contract_project
-                  ) THEN 1 --when no input or doesn't already exist, search everything
-                  WHEN cc.creator_address IN (
-                    SELECT
-                      creators
-                    FROM
-                      creator_rows
-                  ) THEN 1 --when input, limit to these contracts (i.e. updated mapping)
-                  ELSE 0
-                END
-              )
+              INNER JOIN creator_contracts cc ON oc."address" = cc.contract_address --enforce match
+            WHERE oc.address IN (SELECT contract_address FROM creator_contracts)
+
             GROUP BY
-              1, 2, 3, 4, 5, 6, 7
+              1, 2, 3, 4, 5, 6, 7, 8, 9
             UNION ALL
             --ovm 1.0 contracts
             SELECT
@@ -385,7 +233,9 @@ WITH
               "contract_project" AS project,
               "contract_name" AS name,
               created_time:: timestamptz AS created_time,
-              false AS is_self_destruct
+              false AS is_self_destruct,
+              'ovm1 contracts' as source,
+              NULL::bytea AS creation_tx_hash
             FROM
               ovm1.op_ovm1_contracts d
             WHERE
@@ -396,10 +246,13 @@ WITH
                   ovm2.get_contracts gc
                 WHERE
                   gc.contract_address = d.contract_address
-                  AND gc.contract_name = d.contract_name
+                  AND (
+                      (gc.contract_project = d.contract_project) OR (gc.contract_project IS NULL)
+                      )
               )
+              OR contract_address IN (SELECT contract_address FROM creator_contracts)
             GROUP BY
-              1, 2, 3, 4, 5, 6, 7
+              1, 2, 3, 4, 5, 6, 7, 8, 9
             UNION ALL
             --synthetix genesis contracts
             SELECT
@@ -409,7 +262,9 @@ WITH
               'Synthetix' AS contract_project,
               contract_name,
               '07-06-2021 00:00:00':: timestamptz AS created_time,
-              false AS is_self_destruct
+              false AS is_self_destruct,
+              'synthetix contracts' as source,
+              NULL::bytea AS creation_tx_hash
             FROM
               ovm1.synthetix_genesis_contracts snx
             WHERE
@@ -422,12 +277,13 @@ WITH
                   gc.contract_address = snx.contract_address
                   AND 'Synthetix' = contract_project
               )
+              OR contract_address IN (SELECT contract_address FROM creator_contracts)
+
               ) c
-              FULL OUTER JOIN erc20_tokens erc20 -- b/c we want to get all ERC20s that aren't in this list too.
-              ON c.contract_address = erc20.contract_address
-              FULL OUTER JOIN nft_tokens nft ON c.contract_address = nft.contract_address
+              LEFT JOIN tokens
+              ON c.contract_address = tokens.contract_address
               GROUP BY
-              1, 2, 3, 4, 5, 6, 7, 8
+              1, 2, 3, 4, 5, 6, 7, 8, 9
               
           )
         SELECT
@@ -450,7 +306,8 @@ WITH
           COALESCE(c.creator_address, ovm1c.creator_address) AS creator_address,
           COALESCE(c.created_time, ovm1c.created_time:: timestamptz) AS created_time,
           contract_factory AS contract_creator_if_factory,
-          COALESCE(is_self_destruct, false) AS is_self_destruct
+          COALESCE(is_self_destruct, false) AS is_self_destruct,
+          creation_tx_hash
         FROM
           (
             --grab the first non-null value for each (i.e. if we have the contract via both contract mapping and optimism.contracts)
@@ -497,7 +354,14 @@ WITH
                   WHERE
                     is_self_destruct IS NOT NULL
                 )
-              ) [1] AS is_self_destruct
+              ) [1] AS is_self_destruct,
+
+              (
+                ARRAY_AGG(creation_tx_hash) FILTER (
+                  WHERE
+                    creation_tx_hash IS NOT NULL
+                )
+              ) [1] AS creation_tx_hash
               
             FROM
               get_contracts
@@ -534,12 +398,12 @@ WHERE NOT EXISTS (
 );
 
 
-INSERT INTO cron.job (schedule, command)
-VALUES ('14,29,44,59 * * * *', $$
- SELECT ovm2.insert_get_contracts(
-        (SELECT MAX("created_time") FROM ovm2.get_contracts WHERE block_time > NOW() - interval '1 month')::timestamptz,
-        (SELECT MAX("time") FROM optimism.blocks WHERE "time" > NOW() - interval '1 week')::timestamptz,
-	 NULL::bytea[]
-        );
-$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+-- INSERT INTO cron.job (schedule, command)
+-- VALUES ('14,29,44,59 * * * *', $$
+--  SELECT ovm2.insert_get_contracts(
+--         (SELECT MAX("created_time") FROM ovm2.get_contracts WHERE block_time > NOW() - interval '1 month')::timestamptz,
+--         (SELECT MAX("time") FROM optimism.blocks WHERE "time" > NOW() - interval '1 week')::timestamptz,
+-- 	 NULL::bytea[]
+--         );
+-- $$)
+-- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
