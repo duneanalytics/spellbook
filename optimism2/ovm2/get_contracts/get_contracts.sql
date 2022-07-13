@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS ovm2.get_contracts CASCADE;
+
 CREATE SCHEMA IF NOT EXISTS ovm2;
 
 CREATE TABLE IF NOT EXISTS ovm2.get_contracts (
