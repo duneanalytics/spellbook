@@ -28,7 +28,7 @@ select solver as address,
        active
 from registered_solvers
          left outer join gnosis_protocol_v2.solver_names
-                         on solver = replace(address, '0x', '\x')::bytea;
+                         on solver = replace(address::text, '0x', '\x')::bytea;
 
 CREATE UNIQUE INDEX IF NOT EXISTS view_solvers_address_unique_idx ON gnosis_protocol_v2.view_solvers (address);
 
