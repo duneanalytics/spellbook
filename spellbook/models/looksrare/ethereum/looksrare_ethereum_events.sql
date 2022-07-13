@@ -150,6 +150,7 @@ SELECT DISTINCT
     tx_hash || '-' ||  token_id || '-' ||  seller || '-' || looks_rare.evt_index::string || '-' || evt_type as unique_trade_id
 FROM looks_rare
 INNER JOIN {{ source('ethereum','transactions') }} tx ON tx_hash = tx.hash
+AND tx.block_time > '2022-01-01'
 LEFT JOIN erc_transfers erc ON erc.evt_tx_hash = tx_hash AND erc.token_id_erc = token_id
 LEFT JOIN {{ ref('tokens_ethereum_nft') }} tokens ON tokens.contract_address =  nft_contract_address
 LEFT JOIN  {{ ref('nft_ethereum_aggregators') }} agg ON agg.contract_address = tx.to
@@ -157,8 +158,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', loo
     AND p.contract_address = currency_contract
     AND p.blockchain ='ethereum'
 LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20 ON erc20.contract_address = currency_contract
-WHERE tx.block_time > '2022-01-01'
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-AND looks_rare.block_time > now() - interval 2 days
+WHERE looks_rare.block_time >= (select max(block_time) from {{ this }})
 {% endif %} 
