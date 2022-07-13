@@ -1,4 +1,7 @@
 -- https://dune.com/queries/981250
+
+drop view if exists aztec_v2.view_rollup_txn_fees;
+
 create or replace view aztec_v2.view_rollup_txn_fees as
 with tx_fees_unnested as (
 select rollupid
