@@ -1,6 +1,6 @@
 -- https://dune.com/queries/1007310
 
--- drop view aztec_v2.rollup_inner_proofs
+drop view if exists aztec_v2.view_rollup_inner_proofs;
 
 create or replace view aztec_v2.view_rollup_inner_proofs as 
 with inner_proofs as (
