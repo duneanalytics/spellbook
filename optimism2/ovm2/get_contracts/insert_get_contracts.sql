@@ -85,7 +85,7 @@ GROUP BY 1,2,3,4,5,6
         SELECT
           con.creator_address,
           con.contract_factory,
-          contract_address,
+          con.contract_address,
           COALESCE(cc.project,ccf.project) AS project,
           con.block_time AS created_time,
           -- Check if the contract is an immediate self-destruct contract
