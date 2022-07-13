@@ -85,7 +85,7 @@ GROUP BY 1,2,3,4,5,6
         SELECT
           con.creator_address,
           con.contract_factory,
-          contract_address,
+          con.contract_address,
           COALESCE(cc.project,ccf.project) AS project,
           con.block_time AS created_time,
           -- Check if the contract is an immediate self-destruct contract
@@ -174,7 +174,7 @@ GROUP BY 1,2,3,4,5,6
                   fifth_level -- check for contract factories 4 layers down --as of 3/12, this ran through all contracts
               ) con
               LEFT JOIN ovm2."contract_creator_address_list" cc ON con.creator_address = cc.creator_address
-              LEFT JOIN ovm2."contract_creator_address_list" ccf ON con.creator_address = ccf.creator_address
+              LEFT JOIN ovm2."contract_creator_address_list" ccf ON con.contract_factory = ccf.creator_address
             WHERE
               contract_address IS NOT NULL
           )
