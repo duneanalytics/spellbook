@@ -1,5 +1,5 @@
 {{ config(
-        alias ='erc721_agg_day', 
+        alias ='erc721_agg', 
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
@@ -20,3 +20,5 @@ from {{ ref('transfers_ethereum_erc721') }}
 -- this filter will only be applied on an incremental run
 where date_trunc('day', evt_block_time) > now() - interval 2 days
 {% endif %}
+
+-- summing over leaves us with a table that contains all current and prior holders, we need those in tact here to be able to carry forward the state

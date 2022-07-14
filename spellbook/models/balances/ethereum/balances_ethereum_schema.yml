@@ -128,6 +128,9 @@ models:
       - &tokenId
         name: tokenId
         description: "ID of this ERC721 token"
+      - &num_tokens
+        name: num_tokens
+        description: "Column that indicates how many of this NFT the owner holds. Should always be 1 and is here as a helper column."
       - &collection
         name: collection
         description: "Name of NFT collection"
@@ -152,6 +155,7 @@ models:
       - *wallet_address_erc721
       - *token_address_erc721
       - *tokenId
+      - *num_tokens
       - *collection
       - *category
 
@@ -172,6 +176,7 @@ models:
       - *wallet_address
       - *token_address
       - *tokenId
+      - *num_tokens
       - *collection
       - *category
 

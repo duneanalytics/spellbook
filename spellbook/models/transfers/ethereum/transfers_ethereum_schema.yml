@@ -152,73 +152,45 @@ models:
       - name: amount
         description: "Amount of ERC721 token held"
 
-  - name: transfers_ethereum_erc721_agg_hour
-    meta:
-      blockchain: ethereum
-      sector: transfers
-      project: erc721
-      contibutors: soispoke, dot2dotseurat, hildobby
-    config:
-      tags: ['transfers', 'ethereum', 'erc721', 'agg_hour', 'soispoke', 'dot2dotseurat', 'hildobby']
-    columns:
-      - *blockchain
-      - *hour
-      - *wallet_address_erc721
-      - *token_address_erc721
-      - *tokenId
 
-  - name: transfers_ethereum_erc721_rolling_hour
+  - name: transfers_ethereum_erc721_agg
     meta:
       blockchain: ethereum
       sector: transfers
       project: erc721
-      contibutors: soispoke, dot2dotseurat, hildobby
+      contibutors: soispoke, dot2dotseurat, hildobby, 0xBoxer
     config:
-      tags: ['transfers', 'ethereum', 'erc721', 'rolling_hour', 'soispoke', 'dot2dotseurat', 'hildobby']
+      tags: ['transfers', 'ethereum', 'erc721', 'agg_hour', 'soispoke', 'dot2dotseurat', 'hildobby', '0xBoxer']
     columns:
-      - *blockchain
-      - *hour
+      - *blockchain                                           
+      - *evt_block_time
       - *wallet_address_erc721
       - *token_address_erc721
       - *tokenId
+      - name: num_tokens
+        description: the erc721 balance for a particular combination of erc721 contract and tokenID for a wallet
+
+
+  - name: transfers_ethereum_erc721_rolling
+    meta:
+      blockchain: ethereum
+      sector: transfers
+      project: erc721
+      contibutors: soispoke, dot2dotseurat, hildobby, 0xBoxer
+    config:
+      tags: ['transfers', 'ethereum', 'erc721', 'rolling_day', 'soispoke', 'dot2dotseurat', 'hildobby', '0xBoxer']
+    columns:
+      - *blockchain
+      - *evt_block_time
+      - *wallet_address_erc721
+      - *token_address_erc721
+      - *tokenId
+      - name: num_tokens
+        description: the erc721 balance for a particular combination of erc721 contract and tokenID for a wallet
+      - name: next_evt
+        description: The next event where this NFT moves, used to do database magic
       - name: updated_at
         description: "UTC timestamp when table was last updated"
-      - name: recency_index
-        description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
-
-  - name: transfers_ethereum_erc721_agg_day
-    meta:
-      blockchain: ethereum
-      sector: transfers
-      project: erc721
-      contibutors: soispoke, dot2dotseurat, hildobby
-    config:
-      tags: ['transfers', 'ethereum', 'erc721', 'agg_hour', 'soispoke', 'dot2dotseurat', 'hildobby']
-    columns:
-      - *blockchain
-      - *day
-      - *wallet_address_erc721
-      - *token_address_erc721
-      - *tokenId
-
-  - name: transfers_ethereum_erc721_rolling_day
-    meta:
-      blockchain: ethereum
-      sector: transfers
-      project: erc721
-      contibutors: soispoke, dot2dotseurat, hildobby
-    config:
-      tags: ['transfers', 'ethereum', 'erc721', 'rolling_day', 'soispoke', 'dot2dotseurat', 'hildobby']
-    columns:
-      - *blockchain
-      - *day
-      - *wallet_address_erc721
-      - *token_address_erc721
-      - *tokenId
-      - name: updated_at
-        description: "UTC timestamp when table was last updated"
-      - name: recency_index
-        description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
 
   - name: transfers_ethereum_erc1155
     meta:
