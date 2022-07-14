@@ -76,6 +76,37 @@ WITH calendar AS
                     GROUP BY symbol, mp.pool_token_address,  "date"
             ) as t GROUP BY  symbol, pool_token_address,  "date")
             UNION
+            --frax/USDC
+            (SELECT symbol, pool_token_address as contract_address,  "date",MAX(total_supply) as total_supply FROM (
+                SELECT symbol
+                    , mp.pool_token_address                    
+                    , date_trunc('day', evt_block_time)::date as "date"
+                    , MAX(ARRAY[evt_block_number, evt_index, token_supply/10^tl.decimals]) AS total_supply 
+                    FROM curvefi."frax_base_pool_fraxbp_evt_AddLiquidity"
+                    INNER JOIN tokemak."view_tokemak_lookup_metapools" mp ON mp.base_pool_address = contract_address
+                    INNER JOIN tokemak."view_tokemak_lookup_tokens" tl on tl.address = mp.pool_token_address
+                    GROUP BY symbol, mp.pool_token_address,  "date"
+                UNION 
+                SELECT symbol
+                    , mp.pool_token_address                   
+                    , date_trunc('day', evt_block_time)::date as "date"
+                    , MAX(ARRAY[evt_block_number, evt_index, token_supply/10^tl.decimals]) AS total_supply 
+                    FROM curvefi."frax_base_pool_fraxbp_evt_RemoveLiquidity"
+                    INNER JOIN tokemak."view_tokemak_lookup_metapools" mp ON mp.base_pool_address = contract_address
+                    INNER JOIN tokemak."view_tokemak_lookup_tokens" tl on tl.address = mp.pool_token_address
+                    GROUP BY symbol, mp.pool_token_address,  "date"
+                UNION
+                SELECT symbol
+                    , mp.pool_token_address                  
+                    , date_trunc('day', evt_block_time)::date as "date"
+                    , MAX(ARRAY[evt_block_number, evt_index, token_supply/10^tl.decimals]) AS total_supply 
+                    FROM curvefi."frax_base_pool_fraxbp_evt_RemoveLiquidityImbalance" 
+                    INNER JOIN tokemak."view_tokemak_lookup_metapools" mp ON mp.base_pool_address = contract_address
+                    INNER JOIN tokemak."view_tokemak_lookup_tokens" tl on tl.address = mp.pool_token_address
+                    GROUP BY symbol, mp.pool_token_address,  "date"
+            ) as t GROUP BY  symbol, pool_token_address,  "date")
+            UNION
+            UNION
             --alUSD3CRV
             (SELECT symbol, contract_address,  "date",MAX(total_supply) as total_supply FROM (
                 SELECT symbol

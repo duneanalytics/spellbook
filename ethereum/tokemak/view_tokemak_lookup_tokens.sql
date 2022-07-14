@@ -152,6 +152,8 @@ CREATE MATERIALIZED VIEW tokemak.view_tokemak_lookup_tokens
     UNION
     SELECT 'steCRV' as symbol, 'Curve.fi ETH/stETH' as display_name,'\x06325440D014e39736583c165C2963BA99fAf14E'::bytea as address,''::bytea as pricing_contract, 18::numeric as decimals, true, true, false, false
     UNION
+    SELECT 'fraxUSDC' as symbol, 'Curve.fi FRAX/USDC' as display_name,'\x3175Df0976dFA876431C2E9eE6Bc45b65d3473CC'::bytea as address,''::bytea as pricing_contract, 18::numeric as decimals, true, true, false, false
+    UNION
     SELECT 'UNI-V2-FXS/ETH' as symbol, 'Uniswap FXS/ETH LP' as display_name,'\xecba967d84fcf0405f6b32bc45f4d36bfdbb2e81'::bytea as address,''::bytea as pricing_contract, 18::numeric as decimals, true, true, false, false
     UNION 
     SELECT 'UNI-V2-ETH/FOX' as symbol, 'Uniswap ETH/FOX LP' as display_name,'\x470e8de2eBaef52014A47Cb5E6aF86884947F08c'::bytea as address,''::bytea as pricing_contract, 18::numeric as decimals, true, true, false, false
