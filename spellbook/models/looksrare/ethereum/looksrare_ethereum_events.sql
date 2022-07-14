@@ -36,6 +36,9 @@ WITH looks_rare AS (
     FROM {{ source('looksrare_ethereum','looksrareexchange_evt_takerask') }} ask
     LEFT JOIN {{ source('looksrare_ethereum','looksrareexchange_evt_royaltypayment') }} roy ON roy.evt_tx_hash = ask.evt_tx_hash
     AND ask.evt_index - 2 = roy.evt_index
+     {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+     AND ask.evt_block_time >= (select max(block_time) from {{ this }}) 
+     {% endif %}
                             UNION
     SELECT 
         bid.evt_block_time AS block_time,
@@ -62,6 +65,9 @@ WITH looks_rare AS (
     FROM {{ source('looksrare_ethereum','looksrareexchange_evt_takerbid') }} bid
     LEFT JOIN {{ source('looksrare_ethereum','looksrareexchange_evt_royaltypayment') }} roy ON roy.evt_tx_hash = bid.evt_tx_hash
     AND roy.evt_index = bid.evt_index - 4
+     {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+     AND bid.evt_block_time >= (select max(block_time) from {{ this }}) 
+     {% endif %}
     ),
 
 -- Get ERC721 AND ERC1155 transfer data for every trade TRANSACTION
