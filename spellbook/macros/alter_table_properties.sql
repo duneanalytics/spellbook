@@ -200,6 +200,15 @@ ALTER TABLE nft.fees SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["soispoke"]');
 {% endset %}
 
+{% set nft_ethereum_aggregators %}
+ALTER VIEW nft_ethereum.aggregators SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='nft',
+                                                    'dune.data_explorer.contributors'='["hildobby","soispoke"]');
+{% endset %}
+
 {% set tokens_ethereum_erc20 %}
 ALTER VIEW tokens_ethereum.erc20 SET TBLPROPERTIES ('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum"]',
@@ -303,6 +312,7 @@ ALTER VIEW ens.view_renewals SET TBLPROPERTIES('dune.public'='true',
 {% do run_query(nft_mints) %}
 {% do run_query(nft_burns) %}
 {% do run_query(nft_fees) %}
+{% do run_query(nft_ethereum_aggregators) %}
 {% do run_query(tokens_ethereum_erc20) %}
 {% do run_query(transfers_ethereum_erc20) %}
 {% do run_query(tokens_ethereum_nft) %}
