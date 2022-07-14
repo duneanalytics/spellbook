@@ -1,3 +1,6 @@
+DROP MATERIALIZED VIEW IF EXISTS tokemak.view_tokemak_curve_convex_pool_total_supply
+;
+
 CREATE MATERIALIZED VIEW tokemak.view_tokemak_curve_convex_pool_total_supply (
 	"date"
     ,address
@@ -105,7 +108,6 @@ WITH calendar AS
                     INNER JOIN tokemak."view_tokemak_lookup_tokens" tl on tl.address = mp.pool_token_address
                     GROUP BY symbol, mp.pool_token_address,  "date"
             ) as t GROUP BY  symbol, pool_token_address,  "date")
-            UNION
             UNION
             --alUSD3CRV
             (SELECT symbol, contract_address,  "date",MAX(total_supply) as total_supply FROM (
@@ -595,6 +597,6 @@ CREATE UNIQUE INDEX ON tokemak.view_tokemak_curve_convex_pool_total_supply (
    "date", address
 );
 
-INSERT INTO cron.job(schedule, command)
-VALUES ('1 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_curve_convex_pool_total_supply$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+-- INSERT INTO cron.job(schedule, command)
+-- VALUES ('1 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_curve_convex_pool_total_supply$$)
+-- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
