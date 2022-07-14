@@ -13,7 +13,6 @@ with
             ) as day
     )
 
-
 SELECT
     'ethereum' as blockchain,
     d.day,
