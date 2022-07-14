@@ -15,19 +15,21 @@ You can watch the video version of this if you scroll down a bit.
 
 Navigate to the abstraction repo within your CLI (Command line interface).
 ```
-cd user\directory\github\abstractions #change this to whereever abstractions are stored locally on your machine
+cd user\directory\github\abstractions 
+#change this to whereever abstractions are stored locally on your machine
 ```
 Use the pipfile to create a pipenv.
 ```
 pipenv install
 ```
 
-If the env is created successfully, skip the next part
+If the env is created successfully, skip the next part.
 Our script is looking for a static python version, the likelihood of an error for a wrong python version is pretty high. If that error occurs, check your python version with:
 ```
 py --version
 ```
-Now use any text editor program to change the python version in the pipfile within the abstractions directory to your python version.
+Now use any text editor program to change the python version in the pipfile within the abstractions directory to your python version. You need to have at least python 3.9.
+
 If you have done that, run `pipenv install` again.
 You are now ready to activate this project's virtual environment.
 Use: 
