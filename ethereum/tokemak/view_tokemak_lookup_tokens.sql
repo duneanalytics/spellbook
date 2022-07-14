@@ -1,3 +1,6 @@
+DROP MATERIALIZED VIEW IF EXISTS tokemak.view_tokemak_lookup_tokens CASCADE
+;
+
 CREATE MATERIALIZED VIEW tokemak.view_tokemak_lookup_tokens
 (
 	symbol, display_name, address, pricing_contract, decimals, is_pool, is_active, is_liability, is_dollar_stable
@@ -182,6 +185,6 @@ CREATE UNIQUE INDEX ON tokemak.view_tokemak_lookup_tokens (
    pricing_contract
 );
 
-INSERT INTO cron.job(schedule, command)
-VALUES ('1 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_lookup_tokens$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+-- INSERT INTO cron.job(schedule, command)
+-- VALUES ('1 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_lookup_tokens$$)
+-- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

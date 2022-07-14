@@ -1,3 +1,6 @@
+DROP MATERIALIZED VIEW IF EXISTS tokemak.view_tokemak_curve_pool_stats_daily
+;
+
 CREATE MATERIALIZED VIEW tokemak."view_tokemak_curve_pool_stats_daily"
 (
     source
@@ -369,6 +372,6 @@ CREATE UNIQUE INDEX ON tokemak.view_tokemak_curve_pool_stats_daily (
    token_address
 );
 
-INSERT INTO cron.job(schedule, command)
-VALUES ('5 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_curve_pool_stats_daily$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+-- INSERT INTO cron.job(schedule, command)
+-- VALUES ('5 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_curve_pool_stats_daily$$)
+-- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
