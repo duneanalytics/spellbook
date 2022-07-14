@@ -1,5 +1,5 @@
 {{ config(
-        alias ='erc721_rolling_day')
+        alias ='erc721_rolling')
 }}
 
         select
