@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: nft_ethereum_aggregators
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: hildobby, soispoke
+    config:
+      tags: ['nft', 'ethereum', 'aggregators']
+    description: >
+        NFT aggregators
+    columns:
+      - name: contract_address
+        description: "Aggregator project's contract address"
+      - name: name
+        description: "Aggregator project's name"

@@ -1,3 +1,6 @@
+DROP MATERIALIZED VIEW IF EXISTS tokemak.view_tokemak_convex_pool_stats_daily
+;
+
 CREATE MATERIALIZED VIEW tokemak.view_tokemak_convex_pool_stats_daily
 (   
     source
@@ -28,6 +31,25 @@ WITH  convex_pools As
         )as t GROUP BY contract_address, symbol 
     ),
     pools_and_constituents AS (
+        --fraxUSDC
+       SELECT "date", token_address,p.base_pool_symbol as pool_symbol,p.pool_token_address as pool_address, m.symbol as token_symbol, (qty/10^m.decimals) as qty  FROM (
+            SELECT "date",token_address,
+            SUM(qty) OVER (PARTITION BY token_address ORDER BY "date")as qty
+            FROM
+            (
+                SELECT
+                    DATE_TRUNC('day', evt_block_time) as "date",
+                    contract_address as token_address,
+                    SUM(CASE WHEN "to" = '\xDcEF968d416a41Cdac0ED8702fAC8128A64241A2' THEN value ELSE value *-1  END) as qty 
+                FROM erc20."ERC20_evt_Transfer" 
+                WHERE "to" = '\xDcEF968d416a41Cdac0ED8702fAC8128A64241A2' OR "from" = '\xDcEF968d416a41Cdac0ED8702fAC8128A64241A2'
+                AND NOT ("to" = "from")
+                GROUP BY 1,2 --ORDER BY "date" desc
+            ) as tt
+       )as t 
+       INNER JOIN tokemak."view_tokemak_lookup_tokens" m ON m.address = t.token_address
+       CROSS JOIN tokemak."view_tokemak_lookup_metapools" p WHERE p.base_pool_address = '\xDcEF968d416a41Cdac0ED8702fAC8128A64241A2'
+     UNION
         --3crv
        SELECT "date", token_address,p.base_pool_symbol as pool_symbol,p.pool_token_address as pool_address, m.symbol as token_symbol, (qty/10^m.decimals) as qty  FROM (
             SELECT "date",token_address,
@@ -142,7 +164,7 @@ CREATE UNIQUE INDEX ON tokemak.view_tokemak_convex_pool_stats_daily (
    token_address
 );
 
-INSERT INTO cron.job(schedule, command)
-VALUES ('9 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_convex_pool_stats_daily$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+-- INSERT INTO cron.job(schedule, command)
+-- VALUES ('9 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_convex_pool_stats_daily$$)
+-- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 

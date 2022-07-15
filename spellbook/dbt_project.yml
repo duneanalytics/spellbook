@@ -115,7 +115,7 @@ seeds:
       solana:
         +enabled: true
         +schema: test_data
-        opensea_solana_trades_postgres:
+        opensea_solana_trades_solscan:
           +column_types:
             block_time: timestamp
             tx_hash: string
@@ -124,7 +124,7 @@ seeds:
       solana:
         +enabled: true
         +schema: test_data
-        magiceden_solana_trades_postgres:
+        magiceden_solana_trades_solscan:
           +column_types:
             block_time: timestamp
             tx_hash: string

@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: nft_transactions
+  - name: nft_events
     meta:
       blockchain: ethereum, solana
       sector: nft
       contributors: soispoke
     config:
-      tags: ['nft', 'opensea', 'magiceden', 'ethereum', 'solana', 'transactions']
+      tags: ['nft', 'opensea', 'magiceden', 'ethereum', 'solana', 'events']
     description: >
-        NFT transactions
+        NFT events
     columns:
       - &blockchain
         name: blockchain

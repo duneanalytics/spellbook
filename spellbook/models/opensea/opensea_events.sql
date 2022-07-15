@@ -1,5 +1,5 @@
 {{ config(
-        alias ='transactions',
+        alias ='events',
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
@@ -44,7 +44,7 @@ royalty_fee_receive_address,
 royalty_fee_currency_symbol,
 unique_trade_id
 FROM
-(SELECT * FROM {{ ref('opensea_ethereum_transactions') }} 
+(SELECT * FROM {{ ref('opensea_ethereum_events') }} 
 
                                 UNION
 
@@ -84,7 +84,7 @@ NULL::string as royalty_fee_percentage,
 NULL::double as royalty_fee_receive_address,
 NULL::double as royalty_fee_currency_symbol,
 unique_trade_id
-FROM {{ ref('opensea_solana_transactions') }}) 
+FROM {{ ref('opensea_solana_events') }}) 
 
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
