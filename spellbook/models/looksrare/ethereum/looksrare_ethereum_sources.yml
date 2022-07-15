@@ -1,0 +1,14 @@
+version: 2
+
+sources: 
+  - name: looksrare_ethereum
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: looksrareexchange_evt_takerask
+        loaded_at_field: evt_block_time
+      - name: looksrareexchange_evt_takerbid
+        loaded_at_field: evt_block_time
+      - name: looksrareexchange_evt_royaltypayment
+        loaded_at_field: evt_block_time
