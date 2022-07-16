@@ -153,7 +153,7 @@ SELECT DISTINCT
     royalty_fee / looks_rare.price * 100 as royalty_fee_percentage,
     royalty_fee_receive_address,
     royalty_fee_currency_symbol,
-    tx_hash || '-' ||  token_id || '-' ||  seller || '-' || looks_rare.evt_index::string || '-' || evt_type as unique_trade_id
+    'looksrare' || '-' || tx_hash || '-' ||  token_id || '-' ||  seller || '-' || buyer || '-' || looks_rare.evt_index::string || '-' || evt_type as unique_trade_id
 FROM looks_rare
 INNER JOIN {{ source('ethereum','transactions') }} tx ON tx_hash = tx.hash
 AND tx.block_time > '2022-01-01'
