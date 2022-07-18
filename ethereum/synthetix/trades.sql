@@ -59,6 +59,9 @@ RETURN r;
 END
 $function$;
 
+--backfill command
+SELECT synthetix.insert_trades((SELECT max(block_time) FROM synthetix.trades));
+
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', 'SELECT synthetix.insert_trades((SELECT max(block_time) FROM synthetix.trades));')
