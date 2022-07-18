@@ -2,7 +2,7 @@
 {% materialization incremental, default -%}
 
 -- if a PR test, use delta live table
-    {%- if target.schema.startswith("sha_") -%}
+    {%- if target.schema.startswith("sha_") or target.schema.startswith("dbt_") -%}
 
         {%- set identifier = model['name'] -%}
         {%- set target_relation = api.Relation.create(

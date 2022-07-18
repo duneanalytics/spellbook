@@ -27,10 +27,11 @@
     {%- endif -%}
 
      -- if a PR test, use delta live table
-    {%- if target.schema.startswith("sha_") -%}
-                {%- set identifier = model['name'] -%}
+    {%- if target.schema.startswith("sha_") or target.schema.startswith("dbt_") -%}
+
+        {%- set identifier = model['alias'] -%}
         {%- set target_relation = api.Relation.create(
-         identifier=identifier, schema='global_temp', database=database,
+         identifier=identifier, schema='delta', database=database,
          type='view') -%}
 
       -- build model

@@ -5,7 +5,7 @@
 
         {{ custom_schema_name | trim }}
 
-    {%- elif target.schema == 'dbt_meghan' -%}
+    {%- elif target.schema.startswith("sha_") or target.schema.startswith("dbt_") -%}
 
         {{ 'delta' }}
 

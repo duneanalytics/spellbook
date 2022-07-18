@@ -19,7 +19,12 @@
 
 {% macro default__generate_alias_name(custom_alias_name=none, node=none) -%}
 
-    {%- if target.schema != 'dbt_meghan' -%}
+
+    {%- if target.schema.startswith("sha_") or target.schema.startswith("dbt_") -%}
+
+        `/tmp/delta/{{target.schema}}/{{node.name}}`
+
+    {%- else -%}
 
         {%- if custom_alias_name is none -%}
 
@@ -30,10 +35,6 @@
             {{ custom_alias_name | trim }}
 
         {%- endif -%}
-
-    {%- else -%}
-
-        `/tmp/delta/{{target.schema}}/{{node.name}}`
 
     {%- endif -%}
 
