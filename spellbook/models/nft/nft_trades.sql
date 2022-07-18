@@ -13,6 +13,8 @@ SELECT * FROM {{ ref('opensea_trades') }}
 SELECT * FROM {{ ref('magiceden_trades') }}
          UNION
 SELECT * FROM {{ ref('looksrare_ethereum_trades') }}
+         UNION
+SELECT * FROM {{ ref('x2y2_ethereum_trades') }}
 )
 
 {% if is_incremental() %}

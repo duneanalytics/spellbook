@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: nft_events
+  - name: x2y2_ethereum_events
     meta:
-      blockchain: ethereum, solana
-      sector: nft
-      contributors: soispoke, hildobby
+      blockchain: ethereum
+      project: x2y2
+      contributors: [hildobby, soispoke]
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'ethereum', 'solana', 'events']
+      tags: ['ethereum','x2y2','v1','events']
     description: >
-        NFT events
+        X2Y2 v1 events on Ethereum
     columns:
       - &blockchain
         name: blockchain
@@ -123,15 +123,15 @@ models:
         name: unique_trade_id
         description:  "Unique trade ID"
 
-  - name: nft_trades
+  - name: x2y2_ethereum_trades
     meta:
-      blockchain: ethereum, solana
-      sector: nft
-      contributors: soispoke, hildobby
+      blockchain: ethereum
+      project: x2y2
+      contributors: [hildobby, soispoke]
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'ethereum', 'solana', 'trades']
+      tags: ['ethereum','x2y2','trades']
     description: >
-        NFT trades
+        X2Y2 trades on Ethereum
     columns:
       - *blockchain
       - *project
@@ -161,15 +161,15 @@ models:
       - *tx_to
       - *unique_trade_id
 
-  - name: nft_mints
+  - name: x2y2_ethereum_mints
     meta:
-      blockchain: ethereum, solana
-      sector: nft
-      contributors: soispoke, hildobby
+      blockchain: ethereum
+      project: x2y2
+      contributors: [hildobby, soispoke]
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'ethereum', 'solana', 'mints']
+      tags: ['ethereum','x2y2','mints']
     description: >
-        NFT mints
+        X2Y2 mints on Ethereum
     columns:
       - *blockchain
       - *project
@@ -199,15 +199,15 @@ models:
       - *tx_to
       - *unique_trade_id
 
-  - name: nft_burns
+  - name: x2y2_ethereum_burns
     meta:
-      blockchain: ethereum, solana
-      sector: nft
-      contributors: soispoke, hildobby
+      blockchain: ethereum
+      project: x2y2
+      contributors: soispoke
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'ethereum', 'solana', 'burns']
+      tags: ['ethereum','x2y2','burns']
     description: >
-        NFT burns
+        X2Y2 burns on Ethereum
     columns:
       - *blockchain
       - *project
@@ -237,15 +237,15 @@ models:
       - *tx_to
       - *unique_trade_id
 
-  - name: nft_fees
+  - name: x2y2_ethereum_fees
     meta:
-      blockchain: ethereum, solana
-      sector: nft
-      contributors: soispoke, hildobby
+      blockchain: ethereum
+      project: x2y2
+      contributors: [hildobby, soispoke]
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'ethereum', 'solana', 'fees']
+      tags: ['ethereum','x2y2','fees']
     description: >
-        NFT fees
+        X2Y2 fees on Ethereum
     columns:
       - *blockchain
       - *project
