@@ -129,7 +129,7 @@ SELECT DISTINCT
             WHERE erc1155.evt_tx_hash = tx_hash
             ), 0) END AS number_of_items,
     looks_rare.category as trade_category,
-    evt_type,
+    CASE WHEN evt_type is NULL THEN 'Other' ELSE evt_type END as evt_type,
     seller,
     buyer,
     looks_rare.price / power(10,erc20.decimals) AS amount_original,
@@ -153,7 +153,7 @@ SELECT DISTINCT
     royalty_fee / looks_rare.price * 100 as royalty_fee_percentage,
     royalty_fee_receive_address,
     royalty_fee_currency_symbol,
-    'looksrare' || '-' || tx_hash || '-' ||  token_id || '-' ||  seller || '-' || COALESCE(erc.contract_address, nft_contract_address) || '-' || looks_rare.evt_index::string || '-' || evt_type  || '-' || COALESCE(case when erc.value_unique::string is null then '0' end, '1') as unique_trade_id
+    'looksrare' || '-' || tx_hash || '-' ||  token_id::string || '-' ||  seller::string || '-' || COALESCE(erc.contract_address, nft_contract_address) || '-' || looks_rare.evt_index::string || '-' || COALESCE(evt_type::string, 'Other')  || '-' || COALESCE(case when erc.value_unique::string is null then '0' ELSE '1' end, '1') as unique_trade_id
 FROM looks_rare
 INNER JOIN {{ source('ethereum','transactions') }} tx ON tx_hash = tx.hash
 AND tx.block_time > '2022-01-01'
