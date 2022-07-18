@@ -20,9 +20,13 @@
 {% macro default__generate_alias_name(custom_alias_name=none, node=none) -%}
 
 
-    {%- if target.schema.startswith("sha_") or target.schema.startswith("dbt_") -%}
+    {%- if (target.schema.startswith("sha_") or target.schema.startswith("dbt_")) and node.config.materialized != 'view' -%}
 
         `/tmp/delta/{{target.schema}}/{{node.name}}`
+
+    {%- elif (target.schema.startswith("sha_") or target.schema.startswith("dbt_")) and node.config.materialized == 'view' -%}
+
+            {{ node.name }}
 
     {%- else -%}
 
