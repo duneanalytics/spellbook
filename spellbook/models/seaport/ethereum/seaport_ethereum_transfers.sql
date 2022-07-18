@@ -22,7 +22,7 @@ with p1_call as (
           ,call_block_time as block_time
           ,call_block_number as block_number
           ,max(get_json_object(parameters, "$.basicOrderType")) as order_type_id
-      from seaport_ethereum.Seaport_call_fulfillBasicOrder
+      from {{ source('seaport_ethereum','Seaport_call_fulfillBasicOrder') }}
      where 1=1
      group by 1,2,3,4
 )
@@ -45,7 +45,7 @@ with p1_call as (
           ,e.contract_address as exchange_contract_address
           ,e.evt_index
       from 
-          (select *, posexplode(offer) as (offer_idx, offer2) from seaport_ethereum.seaport_evt_orderfulfilled) e 
+          (select *, posexplode(offer) as (offer_idx, offer2) from {{ source('seaport_ethereum','seaport_evt_orderfulfilled') }}) e 
           inner join p1_call c on c.tx_hash = e.evt_tx_hash
      where 1=1
                       union all
@@ -66,7 +66,7 @@ with p1_call as (
           ,e.contract_address as exchange_contract_address
           ,e.evt_index
       from 
-          (select *, posexplode(consideration) as (consideration_idx, consideration2) from seaport_ethereum.seaport_evt_orderfulfilled) e 
+          (select *, posexplode(consideration) as (consideration_idx, consideration2) from {{ source('seaport_ethereum','seaport_evt_orderfulfilled') }}) e 
           inner join p1_call c on c.tx_hash = e.evt_tx_hash
 )
 
@@ -235,7 +235,7 @@ with p1_call as (
           ,c.call_block_time as block_time
           ,c.call_block_number as block_number
           ,c.contract_address as exchange_contract_address
-      from (select *, posexplode(advancedOrders) as (idx, each) from seaport_ethereum.Seaport_call_fulfillAvailableAdvancedOrders) c
+      from (select *, posexplode(advancedOrders) as (idx, each) from {{ source('seaport_ethereum','Seaport_call_fulfillAvailableAdvancedOrders') }}) c
      where call_success
                                                   union all
       select 'available_orders' as main_type
@@ -256,7 +256,7 @@ with p1_call as (
           ,c.call_block_time as block_time
           ,c.call_block_number as block_number
           ,c.contract_address as exchange_contract_address
-      from (select *, posexplode(orders) as (idx, each) from seaport_ethereum.Seaport_call_fulfillAvailableOrders) c
+      from (select *, posexplode(orders) as (idx, each) from {{ source('seaport_ethereum','Seaport_call_fulfillAvailableOrders') }}) c
       where call_success 
 )
 ,p2_evt as (
@@ -281,7 +281,7 @@ with p1_call as (
           ,get_json_object(consideration[2], "$.identifier") as evt_royalty_identifier
           ,e.evt_index
       from p2_call c
-            inner join seaport_ethereum.Seaport_evt_OrderFulfilled e 
+            inner join {{ source('seaport_ethereum','seaport_evt_orderfulfilled') }} e 
             on e.evt_tx_hash = c.tx_hash
             and e.offerer = concat('0x',substr(c.offerer,3,40)) 
             and get_json_object(e.offer[0], "$.token") = c.offer_token
@@ -403,7 +403,7 @@ with p1_call as (
           ,call_block_time as block_time
           ,call_block_number as block_number
           ,max(get_json_object(get_json_object(order, "$.parameters"), "$.orderType")) as order_type_id
-      from seaport_ethereum.Seaport_call_fulfillOrder
+      from {{ source('seaport_ethereum','Seaport_call_fulfillOrder') }}
      where 1=1      
      group by 1,2,3,4
      union all
@@ -412,7 +412,7 @@ with p1_call as (
           ,call_block_time as block_time
           ,call_block_number as block_number
           ,max(get_json_object(get_json_object(advancedOrder, "$.parameters"), "$.orderType")) as order_type_id
-      from seaport_ethereum.Seaport_call_fulfillAdvancedOrder 
+      from {{ source('seaport_ethereum','Seaport_call_fulfillAdvancedOrder') }} 
      where 1=1      
      group by 1,2,3,4)
  
@@ -433,7 +433,7 @@ with p1_call as (
           ,e.contract_address as exchange_contract_address
           ,e.evt_index
           from 
-          (select *, posexplode(offer) as (offer_idx, offer2) from seaport_ethereum.seaport_evt_orderfulfilled) e 
+          (select *, posexplode(offer) as (offer_idx, offer2) from {{ source('seaport_ethereum','seaport_evt_orderfulfilled') }}) e 
           inner join p3_call c on c.tx_hash = e.evt_tx_hash
      where 1=1
                               union all
@@ -454,7 +454,7 @@ with p1_call as (
           ,e.contract_address as exchange_contract_address
           ,e.evt_index
           from 
-          (select *, posexplode(consideration) as (consideration_idx, consideration2) from seaport_ethereum.seaport_evt_orderfulfilled) e 
+          (select *, posexplode(consideration) as (consideration_idx, consideration2) from {{ source('seaport_ethereum','seaport_evt_orderfulfilled') }}) e 
           inner join p3_call c on c.tx_hash = e.evt_tx_hash)
           
 
@@ -616,7 +616,7 @@ with p1_call as (
           ,c.call_block_time as block_time
           ,c.call_block_number as block_number
           ,c.contract_address as exchange_contract_address
-     from (select *, posexplode(output_executions) as (idx, each) from seaport_ethereum.Seaport_call_matchOrders) c 
+     from (select *, posexplode(output_executions) as (idx, each) from {{ source('seaport_ethereum','Seaport_call_matchOrders') }}) c 
      where call_success
     union all
     select 'match_advanced_orders' as main_type
@@ -633,7 +633,7 @@ with p1_call as (
           ,c.call_block_time as block_time
           ,c.call_block_number as block_number
           ,c.contract_address as exchange_contract_address
-      from (select *, posexplode(output_executions) as (idx, each) from seaport_ethereum.Seaport_call_matchAdvancedOrders) c 
+      from (select *, posexplode(output_executions) as (idx, each) from {{ source('seaport_ethereum','Seaport_call_matchAdvancedOrders') }}) c 
      where call_success)
      
   ,p4_add_rn as (
