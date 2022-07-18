@@ -233,17 +233,14 @@ WITH
     $function$;
 
 -- Fill 2020
-SELECT zerion.insert_oneinchpre2021(
+SELECT zerion.insert_oneinchpre2022(
     '2020-01-01',
-    '2021-01-01',
-    (SELECT MAX(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
-    (SELECT MAX(number) FROM ethereum.blocks WHERE time < '2021-01-01')
+    '2021-01-01'
 )
-
+;
 -- Fill 2021
 SELECT zerion.insert_oneinchpre2022(
     '2021-01-01',
-    '2022-01-01',
-    (SELECT MAX(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    (SELECT MAX(number) FROM ethereum.blocks WHERE time < '2022-01-01')
+    '2022-01-01'
 )
+;
