@@ -8,35 +8,67 @@ Welcome to your [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incant
 - python 3.9 installed. Our recommendation is to follow the [Hitchhiker's Guide to Python](https://docs.python-guide.org/starting/installation/)
 - [pip](https://pip.pypa.io/en/stable/installation/) installed
 - [pipenv](https://pypi.org/project/pipenv/) installed
+- paths for both pip and pipenv are set (this should happen automatically but sometimes does not). If you run into issues like "pipenv: command not found", try troubleshooting with the pip or pipenv documentation.
 
-### Dune contributors using the project
+### Initial Installation
+You can watch the video version of this if you scroll down a bit.
+
+Navigate to the abstraction repo within your CLI (Command line interface).
+```
+cd user\directory\github\abstractions 
+#change this to whereever abstractions are stored locally on your machine
+```
 Use the pipfile to create a pipenv.
 ```
 pipenv install
 ```
+If the env is created successfully, skip ahead to `pipenv shell`.
 
-If the env is created successfully, enter the env shell. (If you run into Python version errors, try installing the matching version or editing the python version in the Pipfile but don't commit your change).
+Our script is looking for a static python version, the likelihood of an error for a wrong python version is pretty high. If that error occurs, check your python version with:
+```
+py --version
+```
+Now use any text editor program to change the python version in the pipfile within the abstractions directory to your python version. You need to have at least python 3.9.
+If you have changed the python version in the pipfile, run `pipenv install` again.
+
+You are now ready to activate this project's virtual environment.
+Use: 
 ```
 pipenv shell
 ```
+You have now created a virtual environment for this project. You can read more about virtual environments [here](https://realpython.com/pipenv-guide/).
 
-Set up the dbt spellbook project. (You must run this step from the spellbook directory)
-Run `dbt init` and select Databricks, then enter `.` or other placeholders for the host, HTTP path, and token. This will not connect to the database but you have access to some dbt actions.
-
-When you are prompted to choose a target, please enter `wizard` so we know you are an external contributor.
+Navigate to the spellbook directory with:
+```
+cd spellbook
+```
+To initiate the dbt project run:
 ```
 dbt init
 ```
+Select Databricks, then enter `.` or other placeholders for the host, HTTP path, and token. This will not connect to the database but you have access to some dbt actions.
+**When you are prompted to choose a profile, please enter `wizard` so we know you are an external contributor.**
+Should you make an error during this process (not entering `wizard` being the only one you can make), simply quit the CLI and start over.
 
-Then, run the following commands:
-
+Then, run the following command:
 ```
-cd spellbook/
 dbt compile
 ```
-dbt compile will compile the JINJA and SQL templated SQL into plain SQL which can be executed in the Dune UI. We are thinking about better solutions to make more dbt actions available directly but also have to consider security. 
+dbt compile will compile the JINJA and SQL templated SQL into plain SQL which can be executed in the Dune UI. Your spellbook directory now has a folder named `target` containg plain SQL versions of all models in Dune. If you have made changes to the repo before completing all these actions, you can now be certain that at least the compile process works correctly, if there is big errors the compile process will not complete.
+If you haven't made changes to the directory beforehand, you can now start adding, editing or deleting files within the repository.
+Afterwards simply run `dbt compile` again once you are finished with your work in the directory and test the plain language sql queries on dune.com.
 
 https://user-images.githubusercontent.com/9472574/172207409-731a54a0-f1c2-4a57-93a7-6e7934567caa.mov
+### Coming back
+If you have done these installation on your machine once, to get back into dbt, simply navigate to the abstractions repo, run `pipenv shell`, navigate to spellbook directory with `cd spellbook` and you can run `dbt compile` again.
+
+### What did I just do?
+You now have the ability to compile your dbt model statements and test statements into plain SQL. This allows you to test those queries on the usual dune.com environment and should therefore lead to a better experience while developing abstractions. Running the queries will immediately give you feedback on typos, logical errors or mismatches.
+This in turn will help us deploy these abstractions faster and avoid any potential mistakes.
+
+We are thinking about better solutions to make more dbt actions available directly but we also have to consider security.
+
+
 
 ### How to use dbt to create abstractions
 
