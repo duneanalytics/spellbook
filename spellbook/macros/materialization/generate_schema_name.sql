@@ -5,6 +5,10 @@
 
         {{ custom_schema_name | trim }}
 
+    {%- elif target.schema == 'dbt_meghan' -%}
+
+        {{ 'delta' }}
+
     {%- elif custom_schema_name is none -%}
 
         {{ default_schema }}
