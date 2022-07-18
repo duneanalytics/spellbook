@@ -12,6 +12,6 @@
 {% macro create_global_temp_view(relation, sql) -%}
 
     CREATE OR REPLACE GLOBAL TEMPORARY VIEW {{ relation }} as (
-    {{ sql }} limit 10)
+    {{ sql }})
 
 {%- endmacro %}

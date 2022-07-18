@@ -5,9 +5,13 @@
 
         {{ custom_schema_name | trim }}
 
-    {%- elif target.schema.startswith("sha_") or target.schema.startswith("dbt_") -%}
+    {%- elif target.schema.startswith("sha_") or target.schema.startswith("dbt_")  and node.config.materialized in ('view') -%}
 
         {{ 'global_temp' }}
+
+    {%- elif target.schema.startswith("sha_") or target.schema.startswith("dbt_")  and node.config.materialized in ('table', 'incremental', 'seed') -%}
+
+         {{ 'delta' }}
 
     {%- elif custom_schema_name is none -%}
 
