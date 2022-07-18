@@ -8,7 +8,7 @@
 }}
 
 WITH looks_rare AS (
-        SELECT 
+        SELECT
         ask.evt_block_time AS block_time,
         ask.tokenId::string AS token_id,
         ask.amount AS number_of_items,
@@ -118,7 +118,7 @@ SELECT DISTINCT
         WHEN agg.name is NULL AND erc.value_unique is NULL AND erc.count_erc > 1 THEN erc.count_erc
         WHEN tokens.standard = 'erc1155' THEN erc.value_unique
         WHEN tokens.standard = 'erc721' THEN erc.count_erc
-        ELSE (SELECT
+        ELSE COALESCE((SELECT
                 count(1)::bigint cnt
             FROM {{ source('erc721_ethereum','evt_transfer') }} erc721
             WHERE erc721.evt_tx_hash = tx_hash
@@ -127,9 +127,9 @@ SELECT DISTINCT
                 count(1)::bigint cnt
             FROM {{ source('erc1155_ethereum','evt_transfersingle') }} erc1155
             WHERE erc1155.evt_tx_hash = tx_hash
-            ) END AS number_of_items,
+            ), 0) END AS number_of_items,
     looks_rare.category as trade_category,
-    evt_type,
+    CASE WHEN evt_type is NULL THEN 'Other' ELSE evt_type END as evt_type,
     seller,
     buyer,
     looks_rare.price / power(10,erc20.decimals) AS amount_original,
@@ -153,7 +153,7 @@ SELECT DISTINCT
     royalty_fee / looks_rare.price * 100 as royalty_fee_percentage,
     royalty_fee_receive_address,
     royalty_fee_currency_symbol,
-    tx_hash || '-' ||  token_id || '-' ||  seller || '-' || looks_rare.evt_index::string || '-' || evt_type as unique_trade_id
+    'looksrare' || '-' || tx_hash || '-' ||  token_id::string || '-' ||  seller::string || '-' || COALESCE(erc.contract_address, nft_contract_address) || '-' || looks_rare.evt_index::string || '-' || COALESCE(evt_type::string, 'Other')  || '-' || COALESCE(case when erc.value_unique::string is null then '0' ELSE '1' end, '1') as unique_trade_id
 FROM looks_rare
 INNER JOIN {{ source('ethereum','transactions') }} tx ON tx_hash = tx.hash
 AND tx.block_time > '2022-01-01'
@@ -164,7 +164,8 @@ LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', loo
     AND p.contract_address = currency_contract
     AND p.blockchain ='ethereum'
 LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20 ON erc20.contract_address = currency_contract
+WHERE number_of_items >= 1
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-WHERE looks_rare.block_time >= (select max(block_time) from {{ this }})
+AND looks_rare.block_time >= (select max(block_time) from {{ this }})
 {% endif %} 
