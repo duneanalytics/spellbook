@@ -31,12 +31,12 @@
 
         {%- set identifier = model['alias'] -%}
         {%- set target_relation = api.Relation.create(
-         identifier=identifier, schema='delta', database=database,
+         identifier=identifier, schema=model['schema'], database=database,
          type='view') -%}
 
       -- build model
         {% call statement('main') -%}
-            {{ get_create_dlt_as_sql(identifier, sql) }}
+            {{ get_create_global_temp_view_as_sql(identifier,  sql) }}
         {%- endcall %}
 
         {{ return({'relations': [target_relation ]}) }}

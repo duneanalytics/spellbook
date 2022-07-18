@@ -12,7 +12,6 @@
 {% macro create_dlt_as(relation, sql) -%}
 
     CREATE OR REPLACE TABLE delta.{{ relation }} USING DELTA as (
-    {{ sql }}
-    limit 10 )
+    {{ sql }})
 
 {%- endmacro %}

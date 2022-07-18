@@ -7,7 +7,7 @@
 
     {%- elif target.schema.startswith("sha_") or target.schema.startswith("dbt_") -%}
 
-        {{ 'delta' }}
+        {{ 'global_temp' }}
 
     {%- elif custom_schema_name is none -%}
 
