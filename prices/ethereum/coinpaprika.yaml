@@ -1765,11 +1765,6 @@
   symbol: XYZ
   address: 0x618679df9efcd19694bb1daa8d00718eacfa2883
   decimals: 18
-- name: dao_gamedao
-  id: dao-gamedao
-  symbol: DAO
-  address: 0x0f51bb10119727a7e5ea3538074fb341f56b09ad
-  decimals: 18
 - name: tcr_tracer_dao
   id: tcr-tracer-dao
   symbol: TCR
@@ -2168,4 +2163,9 @@
   id: cfti-confetti
   symbol: CFTI
   address: 0xCfef8857E9C80e3440A823971420F7Fa5F62f020
+  decimals: 18
+- name: Wrapped Liquid Staked Ether
+  id: wsteth-wrapped-liquid-staked-ether-20
+  symbol: wstETH
+  address: 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
   decimals: 18
