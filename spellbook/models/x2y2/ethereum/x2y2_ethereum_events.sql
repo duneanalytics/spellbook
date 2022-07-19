@@ -9,11 +9,13 @@
 
 WITH aggregator_routed_x2y2_txs AS (
     SELECT inv.evt_block_time AS block_time
+    , inv.evt_block_number AS block_number
     , prof.to AS seller
     , ROUND(bytea2numeric_v2(substring(get_json_object(inv.item, '$.data'), 195,64)),0) AS token_id
     , get_json_object(inv.item, '$.price') AS amount_raw
     , prof.currency AS currency_contract
-    , '0x' || substring(get_json_object(inv.item, '$.data'), 155, 40) AS project_contract_address
+    , prof.contract_address AS project_contract_address
+    , '0x' || substring(get_json_object(inv.item, '$.data'), 155, 40) AS nft_contract_address
     , tokens.name AS collection
     , agg.name AS aggregator_name
     , agg.contract_address AS aggregator_address
@@ -29,16 +31,22 @@ WITH aggregator_routed_x2y2_txs AS (
     LEFT JOIN {{ ref('tokens_ethereum_nft') }} tokens ON ('0x' || substring(get_json_object(inv.item, '$.data'), 155, 40)) = tokens.contract_address
     LEFT JOIN {{ ref('nft_ethereum_aggregators') }} agg ON agg.contract_address=taker
     WHERE taker IN (SELECT contract_address FROM {{ ref('nft_ethereum_aggregators') }})
+    {% if is_incremental() %}
+    -- this filter will only be applied on an incremental run
+    AND tx.block_time >= (select max(block_time) from {{ this }})
+    {% endif %}
     )
 
 , direct_x2y2_txs AS (
     SELECT inv.evt_block_time AS block_time
+    , inv.evt_block_number AS block_number
     , CASE WHEN inv.currency = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' THEN maker ELSE taker END AS buyer
     , prof.to AS seller
     , ROUND(bytea2numeric_v2(substring(get_json_object(inv.item, '$.data'), 195,64)),0) AS token_id
     , get_json_object(inv.item, '$.price') AS amount_raw
     , prof.currency AS currency_contract
-    , '0x' || substring(get_json_object(inv.item, '$.data'), 155, 40) AS project_contract_address
+    , prof.contract_address AS project_contract_address
+    , '0x' || substring(get_json_object(inv.item, '$.data'), 155, 40) AS nft_contract_address
     , tokens.name AS collection
     , NULL AS aggregator_name
     , NULL AS aggregator_address
@@ -53,16 +61,22 @@ WITH aggregator_routed_x2y2_txs AS (
     INNER JOIN {{ source('x2y2_ethereum','X2Y2_r1_evt_EvInventory') }} inv ON inv.itemHash=prof.itemHash
     LEFT JOIN {{ ref('tokens_ethereum_nft') }} tokens ON ('0x' || substring(get_json_object(inv.item, '$.data'), 155, 40)) = tokens.contract_address
     WHERE taker NOT IN (SELECT contract_address FROM {{ ref('nft_ethereum_aggregators') }})
+    {% if is_incremental() %}
+    -- this filter will only be applied on an incremental run
+    AND tx.block_time >= (select max(block_time) from {{ this }})
+    {% endif %}
     )
 
 , aggregator_routed_x2y2_txs_formatted AS (
     SELECT block_time
+    , block_number
     , e721.to AS buyer
     , seller
     , token_id
     , amount_raw
     , currency_contract
     , project_contract_address
+    , nft_contract_address
     , collection
     , 'Bundle Trade' AS trade_type
     , aggregator_name
@@ -79,16 +93,22 @@ WITH aggregator_routed_x2y2_txs AS (
         AND txs.token_id = e721.tokenId
         AND e721.contract_address = txs.project_contract_address
         AND to NOT IN (SELECT contract_address FROM {{ ref('nft_ethereum_aggregators') }})
+    {% if is_incremental() %}
+    -- this filter will only be applied on an incremental run
+    AND tx.block_time >= (select max(block_time) from {{ this }})
+    {% endif %}
    )
 
 , direct_x2y2_txs_formated AS (
     SELECT block_time
+    , block_number
     , buyer
     , seller
     , token_id
     , amount_raw
     , currency_contract
     , project_contract_address
+    , nft_contract_address
     , collection
     , 'Single Item Trade' AS trade_type
     , aggregator_name
@@ -101,6 +121,10 @@ WITH aggregator_routed_x2y2_txs AS (
     , royalty_fee_percentage
     , royalty_fee_receive_address
     FROM direct_x2y2_txs
+    {% if is_incremental() %}
+    -- this filter will only be applied on an incremental run
+    AND tx.block_time >= (select max(block_time) from {{ this }})
+    {% endif %}
     )
 
 , all_x2y2_txs AS (
@@ -113,6 +137,7 @@ SELECT 'ethereum' AS blockchain
 , 'X2Y2' AS project
 , 'v1' AS version
 , txs.block_time
+, txs.block_number
 , txs.token_id
 , txs.collection
 , CASE WHEN currency_contract='0x0000000000000000000000000000000000000000' THEN pu.price*txs.amount_raw/POWER(10, 18)
@@ -138,6 +163,7 @@ SELECT 'ethereum' AS blockchain
     END AS currency_symbol
 , txs.currency_contract
 , txs.project_contract_address
+, txs.nft_contract_address
 , aggregator_name
 , aggregator_address
 , txs.tx_hash
@@ -163,7 +189,7 @@ SELECT 'ethereum' AS blockchain
 , CASE WHEN currency_contract='0x0000000000000000000000000000000000000000' THEN 'ETH'
     ELSE pu.symbol
     END AS royalty_fee_currency_symbol
-, 'x2y2-' || txs.tx_hash || '-' || txs.token_id || '-' || txs.seller || '-' || txs.evt_index || 'Trade' AS unique_trade_id
+, 'x2y2-' || txs.tx_hash || '-' || txs.nft_contract_address || txs.token_id || '-' || txs.seller || '-' || txs.evt_index || 'Trade' AS unique_trade_id
 FROM all_x2y2_txs txs
 LEFT JOIN prices.usd pu ON pu.blockchain='ethereum'
     AND date_trunc('minute', pu.minute)=date_trunc('minute', txs.block_time)
