@@ -1,3 +1,4 @@
+# Requirements for running unit tests on dbt macros. 
 # install latest changes in dbt-core
 git+https://github.com/dbt-labs/dbt-core.git#egg=dbt-core&subdirectory=core
 git+https://github.com/dbt-labs/dbt-core.git#egg=dbt-tests-adapter&subdirectory=tests/adapter
