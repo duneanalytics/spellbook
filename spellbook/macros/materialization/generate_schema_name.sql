@@ -5,7 +5,7 @@
 
         {{ custom_schema_name | trim }}
 
-    {%- elif target.schema.startswith("sha_") or target.schema.startswith("dbt_")  and node.config.materialized in ('view') -%}
+    {%- elif (target.schema.startswith("sha_") or target.schema.startswith("dbt_"))  and node.config.materialized == 'view' -%}
 
         {{ 'global_temp' }}
 

@@ -1,11 +1,11 @@
 {% materialization table, default %}
 
 -- if a PR test, use delta table w/o metastore reference
-    {%- if target.schema.startswith("sha_") -%}
+    {%- if target.schema.startswith("sha_") or target.schema.startswith("dbt_")-%}
 
         {%- set file_path = model['name'] -%}
         {%- set target_relation = api.Relation.create(
-         identifier=file_path, schema='global_temp', database=database,
+         identifier=file_path, schema='delta', database=database,
          type='view') -%}
 
       -- build model
