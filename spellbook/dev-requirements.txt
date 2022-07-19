@@ -1,0 +1,23 @@
+# install latest changes in dbt-core
+# TODO: how to automate switching from develop to version branches?
+git+https://github.com/dbt-labs/dbt-core.git#egg=dbt-core&subdirectory=core
+git+https://github.com/dbt-labs/dbt-core.git#egg=dbt-tests-adapter&subdirectory=tests/adapter
+
+# install latest changes in dbt-spark
+# TODO: how to automate switching from develop to version branches?
+git+https://github.com/dbt-labs/dbt-spark.git#egg=dbt-spark
+
+freezegun==0.3.9
+pytest>=6.0.2
+mock>=1.3.0
+flake8
+pytz
+tox>=3.2.0
+ipdb
+pytest-xdist
+pytest-dotenv
+pytest-csv
+flaky
+
+mypy==0.920
+black==22.3.0

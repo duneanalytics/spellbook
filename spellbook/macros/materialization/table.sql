@@ -1,16 +1,16 @@
 {% materialization table, default %}
 
--- if a PR test, use delta live table
+-- if a PR test, use delta table w/o metastore reference
     {%- if target.schema.startswith("sha_") -%}
 
-        {%- set identifier = model['name'] -%}
+        {%- set file_path = model['name'] -%}
         {%- set target_relation = api.Relation.create(
-         identifier=identifier, schema='global_temp', database=database,
+         identifier=file_path, schema='global_temp', database=database,
          type='view') -%}
 
       -- build model
         {% call statement('main') -%}
-            {{ get_create_dlt_as_sql(identifier, sql) }}
+            {{ get_create_dt_as_sql(file_path, sql) }}
         {%- endcall %}
 
         {{ return({'relations': [target_relation ]}) }}
