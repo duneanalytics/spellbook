@@ -1,7 +1,7 @@
-import jinja2
 import os
 import re
 
+import jinja2
 import pytest
 
 
