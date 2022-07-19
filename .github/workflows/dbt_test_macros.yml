@@ -80,9 +80,9 @@ jobs:
       # Use build in to run and test at same time
       - name: DBT build
         working-directory: ./spellbook
-        run: "pipenv run dbt built --select  +transfers_ethereum_erc1155_agg_day"
+        run: "pipenv run dbt build --select  +transfers_ethereum_erc1155_agg_day"
 
         # Run a second time to check for conflicts or issues overwriting
       - name: DBT build
         working-directory: ./spellbook
-        run: "pipenv run dbt built --select  +transfers_ethereum_erc1155_agg_day"
+        run: "pipenv run dbt build --select  +transfers_ethereum_erc1155_agg_day"
