@@ -150,6 +150,8 @@ COPY nft.tokens (contract_address, project_name) FROM stdin;
 \\x2e6A5b24BFe6C2E45A0F1AF5bb5EB6E362129e2C	Airgans
 \\x63a9addf2327a0f4b71bcf9bfa757e333e1b7177	BackedCommunity
 \\xcb2a50bebe8e118c260867a813e5ed3752b12f29	OptiKitties
+\\x7b95fe8957387FCa48ac7c94Ca073a56A471fD2a	Aetherwarden
+\\x9b66424ad77a243f4b3cc5b59b236162b39f5b02	Optimistic Dishes #1
 \.
 
 COMMIT;
