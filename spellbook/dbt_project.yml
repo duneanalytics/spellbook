@@ -48,6 +48,12 @@ models:
       solana:
         +schema: opensea_solana
         +materialized: view
+    looksrare:
+      +schema: looksrare
+      +materialized: view
+      ethereum:
+        +schema: looksrare_ethereum
+        +materialized: view
     magiceden:
       +schema: magiceden
       +materialized: view

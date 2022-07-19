@@ -136,6 +136,6 @@ pool_balances as (
    token_address
 );
 
-INSERT INTO cron.job(schedule, command)
-VALUES ('20 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_deployed_asset_balances_daily$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+-- INSERT INTO cron.job(schedule, command)
+-- VALUES ('20 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_deployed_asset_balances_daily$$)
+-- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
