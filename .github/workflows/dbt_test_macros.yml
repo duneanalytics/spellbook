@@ -1,10 +1,6 @@
 # .github/workflows/app.yaml
-name: dbt slim ci
-on:
-  push:
-    paths:
-      - 'spellbook/**'
-
+name: dbt test macros
+on: workflow_dispatch
 
 jobs:
   dbt-test:
@@ -76,10 +72,17 @@ jobs:
         working-directory: ./spellbook
         run: "pipenv run dbt compile"
 
+      # Create seeds as delta tables
       - name: DBT seed
         working-directory: ./spellbook
-        run: "pipenv run dbt seed --select +state:modified --state ."
+        run: "pipenv run dbt seed  --select transfers_ethereum_erc1155_transfersingle"
 
+      # Use build in to run and test at same time
       - name: DBT build
         working-directory: ./spellbook
-        run: "pipenv run dbt built --select +state:modified --state ."
+        run: "pipenv run dbt built --select  +transfers_ethereum_erc1155_agg_day"
+
+        # Run a second time to check for conflicts or issues overwriting
+      - name: DBT build
+        working-directory: ./spellbook
+        run: "pipenv run dbt built --select  +transfers_ethereum_erc1155_agg_day"
