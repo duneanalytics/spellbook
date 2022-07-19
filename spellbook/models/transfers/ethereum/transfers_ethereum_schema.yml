@@ -1,14 +1,6 @@
 version: 2
 
 models:
-  - name: transfers_ethereum_erc20_test
-    columns:
-      - name: unique_transfer_id
-        description: "Unique transfer ID (used for testing for duplicates)"
-        tests:
-          - accepted_values:
-              values: ['placed', 'shipped', 'completed', 'returned']
-
   - name: transfers_ethereum_erc20
     meta:
       blockchain: ethereum
@@ -21,8 +13,6 @@ models:
     columns:
       - name: unique_transfer_id
         description: "Unique transfer ID (used for testing for duplicates)"
-        tests:
-          - unique
       - &blockchain
         name: blockchain
         description: "Blockchain"
