@@ -1,10 +1,8 @@
 # install latest changes in dbt-core
-# TODO: how to automate switching from develop to version branches?
 git+https://github.com/dbt-labs/dbt-core.git#egg=dbt-core&subdirectory=core
 git+https://github.com/dbt-labs/dbt-core.git#egg=dbt-tests-adapter&subdirectory=tests/adapter
 
 # install latest changes in dbt-spark
-# TODO: how to automate switching from develop to version branches?
 git+https://github.com/dbt-labs/dbt-spark.git#egg=dbt-spark
 
 freezegun==0.3.9
