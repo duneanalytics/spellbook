@@ -201,7 +201,7 @@ with p1_call as (
           '0x0000000000000000000000000000000000000000' then 'ETH'
                 when royalty_amount > 0 then t1.symbol
           end as royalty_fee_currency_symbol
-          ,a.tx_hash || '-' || a.nft_token_id || '-' ||  concat('0x',substr(seller,3,40)) || '-' || 
+          ,a.tx_hash || '-' || a.nft_token_id || '-' || a.original_amount::string || '-' ||  concat('0x',substr(seller,3,40)) || '-' || 
           order_type_id::string || '-' || cast(row_number () over (partition by tx_hash order by sub_idx) as 
           string) as unique_trade_id,
           a.zone
@@ -390,7 +390,7 @@ with p1_call as (
           '0x0000000000000000000000000000000000000000' then 'ETH'
                 when evt_royalty_amount > 0 then t1.symbol
           end as royalty_fee_currency_symbol
-          ,a.tx_hash || '-' || a.nft_token_id || '-' ||  concat('0x',substr(seller,3,40)) || '-' || 
+          ,a.tx_hash || '-' || a.nft_token_id || '-' || a.attempt_amount::string || '-' ||  concat('0x',substr(seller,3,40)) || '-' || 
           cast(row_number () over (partition by tx_hash order by sub_idx) as 
           string) as unique_trade_id,
           a.zone
@@ -603,7 +603,7 @@ with p1_call as (
           '0x0000000000000000000000000000000000000000' then 'ETH'
           when royalty_amount > 0 then t1.symbol
           end as royalty_fee_currency_symbol
-          ,a.tx_hash || '-' || a.nft_token_id || '-' ||  concat('0x',substr(seller,3,40)) || '-' || 
+          ,a.tx_hash || '-' || a.attempt_amount::string || '-' || a.nft_token_id || '-' ||  concat('0x',substr(seller,3,40)) || '-' || 
           order_type_id::string || '-' || cast(row_number () over (partition by tx_hash order by sub_idx) as 
           string) as unique_trade_id,
           a.zone
@@ -792,7 +792,7 @@ with p1_call as (
           '0x0000000000000000000000000000000000000000' then 'ETH'
                 when evt_royalty_amount > 0 then t1.symbol
           end as royalty_fee_currency_symbol
-          ,a.tx_hash || '-' || a.nft_token_id || '-' ||  concat('0x',substr(seller,3,40)) || '-' || cast(row_number () over (partition by tx_hash order by sub_idx) as 
+          ,a.tx_hash || '-' || a.nft_token_id || '-' || a.attempt_amount::string || '-' || concat('0x',substr(seller,3,40)) || '-' || cast(row_number () over (partition by tx_hash order by sub_idx) as 
           string) as unique_trade_id,
           a.zone
       from p4_transfer_level a
