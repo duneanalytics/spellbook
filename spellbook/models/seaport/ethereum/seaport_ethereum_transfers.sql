@@ -47,11 +47,11 @@ with p1_call as (
           ,e.contract_address as exchange_contract_address
           ,e.evt_index
       from 
-          (select *, posexplode(offer) as (offer_idx, offer2) from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }}) e 
+          (select *, posexplode(offer) as (offer_idx, offer2) from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }}
+               {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+               where evt_block_time >= (select max(block_time) from {{ this }}) 
+               {% endif %}) e 
           inner join p1_call c on c.tx_hash = e.evt_tx_hash
-      {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-      where c.block_time >= (select max(block_time) from {{ this }}) 
-      {% endif %}
                       union all
     select c.main_type
           ,c.tx_hash
@@ -70,12 +70,13 @@ with p1_call as (
           ,e.contract_address as exchange_contract_address
           ,e.evt_index
       from 
-          (select *, posexplode(consideration) as (consideration_idx, consideration2) from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }}) e 
-          inner join p1_call c on c.tx_hash = e.evt_tx_hash
-      {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-      where c.block_time >= (select max(block_time) from {{ this }}) 
-      {% endif %}
-)
+        (select *, posexplode(consideration) as (consideration_idx, consideration2) from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }}
+            {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+            where evt_block_time >= (select max(block_time) from {{ this }}) 
+            {% endif %}) e 
+        inner join p1_call c on c.tx_hash = e.evt_tx_hash
+     )
+       
 
 ,p1_add_rn as (select (max(case when purchase_method = 'Offer Accepted' and sub_type = 'offer' and sub_idx = 0 then token_contract_address
                      when purchase_method = 'Buy Now' and sub_type = 'consideration' then token_contract_address
@@ -242,11 +243,12 @@ with p1_call as (
           ,c.call_block_time as block_time
           ,c.call_block_number as block_number
           ,c.contract_address as exchange_contract_address
-      from (select *, posexplode(advancedOrders) as (idx, each) from {{ source('seaport_ethereum','Seaport_call_fulfillAvailableAdvancedOrders') }}) c
-     where call_success
+      from (select *, posexplode(advancedOrders) as (idx, each) from {{ source('seaport_ethereum','Seaport_call_fulfillAvailableAdvancedOrders') }}
       {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-      and c.call_block_time >= (select max(block_time) from {{ this }}) 
-      {% endif %}
+      where call_block_time >= (select max(block_time) from {{ this }}) 
+      {% endif %}) c
+       where call_success
+
                                                   union all
       select 'available_orders' as main_type
           ,'bulk' as sub_type
@@ -266,11 +268,11 @@ with p1_call as (
           ,c.call_block_time as block_time
           ,c.call_block_number as block_number
           ,c.contract_address as exchange_contract_address
-      from (select *, posexplode(orders) as (idx, each) from {{ source('seaport_ethereum','Seaport_call_fulfillAvailableOrders') }}) c
-      where call_success 
+      from (select *, posexplode(orders) as (idx, each) from {{ source('seaport_ethereum','Seaport_call_fulfillAvailableOrders') }}
       {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-      and c.call_block_time >= (select max(block_time) from {{ this }}) 
-      {% endif %}
+      where call_block_time >= (select max(block_time) from {{ this }}) 
+      {% endif %}) c
+      where call_success 
 )
 ,p2_evt as (
  select c.*
@@ -450,11 +452,11 @@ with p1_call as (
           ,e.contract_address as exchange_contract_address
           ,e.evt_index
           from 
-          (select *, posexplode(offer) as (offer_idx, offer2) from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }}) e 
-          inner join p3_call c on c.tx_hash = e.evt_tx_hash
+          (select *, posexplode(offer) as (offer_idx, offer2) from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }}
           {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-          where c.block_time >= (select max(block_time) from {{ this }}) 
-          {% endif %}
+          where evt_block_time >= (select max(block_time) from {{ this }}) 
+          {% endif %}) e 
+          inner join p3_call c on c.tx_hash = e.evt_tx_hash
                               union all
     select c.main_type
           ,c.tx_hash
@@ -473,11 +475,11 @@ with p1_call as (
           ,e.contract_address as exchange_contract_address
           ,e.evt_index
           from 
-          (select *, posexplode(consideration) as (consideration_idx, consideration2) from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }}) e 
-          inner join p3_call c on c.tx_hash = e.evt_tx_hash
+          (select *, posexplode(consideration) as (consideration_idx, consideration2) from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }}
           {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-          where c.block_time >= (select max(block_time) from {{ this }}) 
-          {% endif %})
+          where evt_block_time >= (select max(block_time) from {{ this }}) 
+          {% endif %}) e
+          inner join p3_call c on c.tx_hash = e.evt_tx_hash)
           
 
 ,p3_add_rn as (select (max(case when purchase_method = 'Offer Accepted' and sub_type = 'offer' and sub_idx = 0 then token_contract_address::string
@@ -638,11 +640,12 @@ with p1_call as (
           ,c.call_block_time as block_time
           ,c.call_block_number as block_number
           ,c.contract_address as exchange_contract_address
-     from (select *, posexplode(output_executions) as (idx, each) from {{ source('seaport_ethereum','Seaport_call_matchOrders') }}) c 
-     where call_success
+     from (select *, posexplode(output_executions) as (idx, each) from {{ source('seaport_ethereum','Seaport_call_matchOrders') }}
      {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-     and c.call_block_time >= (select max(block_time) from {{ this }}) 
-     {% endif %}
+     where call_block_time >= (select max(block_time) from {{ this }}) 
+     {% endif %}) c 
+     where call_success
+     
     union all
     select 'match_advanced_orders' as main_type
           ,'match_advanced_orders' as sub_type
@@ -658,11 +661,12 @@ with p1_call as (
           ,c.call_block_time as block_time
           ,c.call_block_number as block_number
           ,c.contract_address as exchange_contract_address
-      from (select *, posexplode(output_executions) as (idx, each) from {{ source('seaport_ethereum','Seaport_call_matchAdvancedOrders') }}) c 
-     where call_success
+      from (select *, posexplode(output_executions) as (idx, each) from {{ source('seaport_ethereum','Seaport_call_matchAdvancedOrders') }}  
      {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-     and c.call_block_time >= (select max(block_time) from {{ this }}) 
-     {% endif %})
+     where call_block_time >= (select max(block_time) from {{ this }}) 
+     {% endif %}) c
+    where call_success)
+
      
   ,p4_add_rn as (
     select max(case when fee_royalty_yn = 'price' then offerer end) over (partition by tx_hash) as price_offerer
