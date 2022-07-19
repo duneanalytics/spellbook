@@ -1,6 +1,6 @@
 # .github/workflows/app.yaml
 name: dbt test macros
-on: workflow_dispatch
+on: push
 
 jobs:
   dbt-test:
