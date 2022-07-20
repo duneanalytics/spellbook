@@ -24,6 +24,7 @@ SELECT
   END as version,
   signatures[0] as tx_hash, 
   block_time,
+  block_slot::string as block_number,
   abs(post_balances[0] / 1e9 - pre_balances[0] / 1e9) * p.price AS amount_usd,
   abs(post_balances[0] / 1e9 - pre_balances[0] / 1e9) AS amount_original,
   abs(post_balances[0] - pre_balances[0])::string AS amount_raw,
