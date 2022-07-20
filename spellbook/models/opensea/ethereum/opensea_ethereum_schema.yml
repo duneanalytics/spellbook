@@ -409,4 +409,5 @@ models:
       - *block_number
       - *tx_from
       - *tx_to
-      - *unique_trade_id
+      - name: unique_trade_id
+        description:  "Unique trade ID"
