@@ -75,11 +75,6 @@ models:
         +schema: transfers_ethereum
         +materialized: view
 
-    address_lists:
-      optimism:
-        +schema: optimism_airdrop1
-        +materialized: view
-
 seeds:
   spellbook:
     balances:
