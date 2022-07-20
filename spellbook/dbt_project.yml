@@ -89,8 +89,17 @@ models:
         +schema: transfers_ethereum
         +materialized: view
 
-seeds:
-  spellbook:
+seeds: 
+  spellbook: 
+    labels: 
+      ethereum_labels: 
+        +column_types: 
+          address: string
+          name: string
+          source: string
+          type: string
+          updated_at: timestamp
+        +schema: labels
     balances:
       ethereum:
         +enabled: true
