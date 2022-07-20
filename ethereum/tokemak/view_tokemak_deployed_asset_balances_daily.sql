@@ -1,3 +1,6 @@
+DROP MATERIALIZED VIEW IF EXISTS tokemak.view_tokemak_deployed_asset_balances_daily CASCADE
+;
+
 CREATE MATERIALIZED VIEW tokemak.view_tokemak_deployed_asset_balances_daily (
     "date"
     ,source_name
