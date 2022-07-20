@@ -64,6 +64,9 @@ models:
       ethereum:
         +schema: tokens_ethereum
         +materialized: view
+      optimism:
+        +schema: tokens_optimism
+        +materialized: view
     
     transfers:
       +schema: transfers
@@ -72,6 +75,10 @@ models:
         +schema: transfers_ethereum
         +materialized: view
 
+    address_lists:
+      optimism:
+        +schema: optimism_airdrop1
+        +materialized: view
 
 seeds:
   spellbook:
