@@ -22,7 +22,7 @@ models:
     meta:
       blockchain: optimism
       sector: nft
-      contributors: msilb7
+      contributors: msilb7, dot2dotseurat
     config:
       tags: ['tokens', 'optimism', 'nft', 'erc721', 'erc1155']
     description: >
