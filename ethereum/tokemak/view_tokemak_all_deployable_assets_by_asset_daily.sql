@@ -25,6 +25,6 @@ CREATE UNIQUE INDEX ON tokemak.view_tokemak_all_deployable_assets_by_asset_daily
    "date", token_address
 );
 
-INSERT INTO cron.job(schedule, command)
-VALUES ('23 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_all_deployable_assets_by_asset_daily$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+-- INSERT INTO cron.job(schedule, command)
+-- VALUES ('23 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_all_deployable_assets_by_asset_daily$$)
+-- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

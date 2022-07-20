@@ -5,7 +5,8 @@ name = "pypi"
 
 [packages]
 dbt-databricks = "*"
+numpy = "*"
 
 
 [requires]
-python_version = "3.8.12"
+python_version = "3.9"
