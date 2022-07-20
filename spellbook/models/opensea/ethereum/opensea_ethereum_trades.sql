@@ -29,5 +29,5 @@ tx_hash,
 tx_from,
 tx_to,
 unique_trade_id
-FROM (SELECT * FROM {{ ref('opensea_v1_ethereum_events') }} )
+FROM (SELECT * FROM {{ ref('opensea_ethereum_events') }} )
 WHERE evt_type = 'Trade'
