@@ -149,7 +149,7 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x21ffcbdbdd2c0f59d779cf8f1fd0a87b5f84bc44	OctoFinance
 \\x8c1fd2de219c98f5f88620422e36a8a32f83324e	opengsn
 \\x892e04f20f9d7118917d7f94850c3c9423120c32	Teahouse
-\\x9972d940c9a23f84fcf92867d18f28d75d010e5e	Mask Network?
+\\x9972d940c9a23f84fcf92867d18f28d75d010e5e	Mask Network
 \\x74f85fe5538dbfcf3b46399e121c3ba83f695f91	TokenPocket
 \\xcf85a70d88d14d157c50aa61999f7808027a15d6	Animal Coloring Books
 \\x2596b971ee0de4532566c59fa394c0d29f21d224	OE Ape
@@ -295,6 +295,9 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\xdd32a567bc09384057a1f260086618d88b28e64f	Ganland
 \\x13c716188c38ce27b9b2b672a59543cf1170eabe	Alchemix
 \\x2d356b114cbCA8DEFf2d8783EAc2a5A5324fE1dF	Thales
+\\xa7ECcdb9Be08178f896c26b7BbD8C3D4E844d9Ba	Abacus
+\\xf01121e808F782d7F34E857c27dA31AD1f151b39	Paraswap
+\\xE89CB2053A04Daf86ABaa1f4bC6D50744e57d39E	Backed
 \.
 
 COMMIT;

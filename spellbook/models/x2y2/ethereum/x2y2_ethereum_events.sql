@@ -33,7 +33,7 @@ WITH aggregator_routed_x2y2_txs AS (
     WHERE taker IN (SELECT contract_address FROM {{ ref('nft_ethereum_aggregators') }})
     {% if is_incremental() %}
     -- this filter will only be applied on an incremental run
-    AND tx.block_time >= (select max(block_time) from {{ this }})
+    AND prof.evt_block_time >= (select max(block_time) from {{ this }})
     {% endif %}
     )
 
@@ -63,7 +63,7 @@ WITH aggregator_routed_x2y2_txs AS (
     WHERE taker NOT IN (SELECT contract_address FROM {{ ref('nft_ethereum_aggregators') }})
     {% if is_incremental() %}
     -- this filter will only be applied on an incremental run
-    AND tx.block_time >= (select max(block_time) from {{ this }})
+    AND prof.evt_block_time >= (select max(block_time) from {{ this }})
     {% endif %}
     )
 
@@ -95,7 +95,7 @@ WITH aggregator_routed_x2y2_txs AS (
         AND to NOT IN (SELECT contract_address FROM {{ ref('nft_ethereum_aggregators') }})
     {% if is_incremental() %}
     -- this filter will only be applied on an incremental run
-    AND tx.block_time >= (select max(block_time) from {{ this }})
+    AND e721.evt_block_time >= (select max(block_time) from {{ this }})
     {% endif %}
    )
 
@@ -121,10 +121,6 @@ WITH aggregator_routed_x2y2_txs AS (
     , royalty_fee_percentage
     , royalty_fee_receive_address
     FROM direct_x2y2_txs
-    {% if is_incremental() %}
-    -- this filter will only be applied on an incremental run
-    AND tx.block_time >= (select max(block_time) from {{ this }})
-    {% endif %}
     )
 
 , all_x2y2_txs AS (
@@ -191,16 +187,16 @@ SELECT 'ethereum' AS blockchain
     END AS royalty_fee_currency_symbol
 , 'x2y2-' || txs.tx_hash || '-' || txs.nft_contract_address || txs.token_id || '-' || txs.seller || '-' || txs.evt_index || 'Trade' AS unique_trade_id
 FROM all_x2y2_txs txs
-LEFT JOIN prices.usd pu ON pu.blockchain='ethereum'
+LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain='ethereum'
     AND date_trunc('minute', pu.minute)=date_trunc('minute', txs.block_time)
     AND (pu.contract_address=txs.currency_contract
         OR (pu.contract_address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AND txs.currency_contract='0x0000000000000000000000000000000000000000'))
-LEFT JOIN ethereum.transactions et ON et.hash=txs.tx_hash
-LEFT JOIN erc721_ethereum.evt_Transfer erct ON txs.project_contract_address=erct.contract_address
+LEFT JOIN {{ source('ethereum','transactions') }} et ON et.hash=txs.tx_hash
+LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct ON txs.project_contract_address=erct.contract_address
     AND erct.evt_tx_hash=txs.tx_hash
     AND erct.tokenId=txs.token_id
     AND erct.from=txs.seller
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-WHERE all_x2y2_txs.block_time >= (select max(block_time) from {{ this }})
+WHERE et.block_time >= (select max(block_time) from {{ this }})
 {% endif %} 

@@ -24,16 +24,20 @@ OPTIMIZE transfers_ethereum.erc1155_agg_hour;
 OPTIMIZE transfers_ethereum.erc1155_agg_day;
 {% endset %}
 
-{% set opensea_transactions %}
-OPTIMIZE opensea.transactions;
+{% set opensea_events %}
+OPTIMIZE opensea.events;
 {% endset %}
 
-{% set magiceden_transactions %}
-OPTIMIZE magiceden.transactions;
+{% set seaport_ethereum_transfers %}
+OPTIMIZE seaport_ethereum.transfers;
 {% endset %}
 
-{% set nft_transactions %}
-OPTIMIZE nft.transactions;
+{% set magiceden_events %}
+OPTIMIZE magiceden.events;
+{% endset %}
+
+{% set nft_events %}
+OPTIMIZE nft.events;
 {% endset %}
 
 {% set nft_trades %}
@@ -62,9 +66,10 @@ OPTIMIZE uniswap.trades;
 {% do run_query(transfers_ethereum_erc721_agg_day) %}
 {% do run_query(transfers_ethereum_erc1155_agg_hour) %}
 {% do run_query(transfers_ethereum_erc1155_agg_day) %}
-{% do run_query(opensea_transactions) %}
-{% do run_query(magiceden_transactions) %}
-{% do run_query(nft_transactions) %}
+{% do run_query(opensea_events) %}
+{% do run_query(seaport_ethereum_transfers) %}
+{% do run_query(magiceden_events) %}
+{% do run_query(nft_events) %}
 {% do run_query(nft_trades) %}
 {% do run_query(nft_mints) %}
 {% do run_query(nft_burns) %}
