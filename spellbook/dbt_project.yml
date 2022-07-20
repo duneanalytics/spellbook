@@ -21,6 +21,10 @@ clean-targets:         # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
 
+dispatch:
+  - macro_namespace: dbt
+    search_order: ['dbt_dune', 'spellbook', 'dbt']
+
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:

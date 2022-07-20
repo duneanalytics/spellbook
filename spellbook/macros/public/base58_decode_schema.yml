@@ -1,0 +1,9 @@
+version: 2
+
+macros:
+  - name: base58_decode
+    description: "Decodes a base58 encoded string to a hex string"
+    arguments:
+      - name: value
+        type: column name or expression
+        description: "Valid base58 string"
