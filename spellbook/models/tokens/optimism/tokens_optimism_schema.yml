@@ -1,4 +1,4 @@
-version: 1
+version: 2
 
 models:
   - name: tokens_optimism_erc20
