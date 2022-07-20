@@ -7,11 +7,13 @@
         )
 }}
 
-
 SELECT * FROM (
 SELECT * FROM {{ ref('opensea_events') }} 
          UNION
-SELECT * FROM {{ ref('magiceden_events') }})
+SELECT * FROM {{ ref('magiceden_events') }}
+         UNION
+SELECT * FROM {{ ref('looksrare_ethereum_events') }}
+)
 
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run

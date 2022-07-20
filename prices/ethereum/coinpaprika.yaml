@@ -1765,11 +1765,6 @@
   symbol: XYZ
   address: 0x618679df9efcd19694bb1daa8d00718eacfa2883
   decimals: 18
-- name: dao_gamedao
-  id: dao-gamedao
-  symbol: DAO
-  address: 0x0f51bb10119727a7e5ea3538074fb341f56b09ad
-  decimals: 18
 - name: tcr_tracer_dao
   id: tcr-tracer-dao
   symbol: TCR
