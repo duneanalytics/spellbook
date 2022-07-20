@@ -11,7 +11,7 @@
 SELECT * FROM
 (SELECT * FROM {{ ref('opensea_burns') }} 
 UNION
-SELECT * FROM {{ ref('looksrare_ethereum_burns') }})
+SELECT * FROM {{ ref('looksrare_ethereum_burns') }}
 UNION
 SELECT * FROM {{ ref('x2y2_ethereum_burns') }})
 {% if is_incremental() %}
