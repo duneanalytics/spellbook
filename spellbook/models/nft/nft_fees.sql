@@ -10,7 +10,7 @@
 SELECT * FROM
 (SELECT * FROM {{ ref('opensea_fees') }} 
 UNION
-SELECT * FROM {{ ref('looksrare_ethereum_fees') }})
+SELECT * FROM {{ ref('looksrare_ethereum_fees') }}
 UNION
 SELECT * FROM {{ ref('x2y2_ethereum_fees') }})
 {% if is_incremental() %}
