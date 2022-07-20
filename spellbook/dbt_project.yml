@@ -81,6 +81,9 @@ models:
       ethereum:
         +schema: tokens_ethereum
         +materialized: view
+      optimism:
+        +schema: tokens_optimism
+        +materialized: view
     
     transfers:
       +schema: transfers
