@@ -3,35 +3,72 @@
 
 Welcome to your [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation to tame the blockchain.
 
-### Dune contributors using the project
+### Prerequisites
+- Fork this repo and clone your fork locally. See Github's [guide](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) on contributing to projects. 
+- python 3.9 installed. Our recommendation is to follow the [Hitchhiker's Guide to Python](https://docs.python-guide.org/starting/installation/)
+- [pip](https://pip.pypa.io/en/stable/installation/) installed
+- [pipenv](https://pypi.org/project/pipenv/) installed
+- paths for both pip and pipenv are set (this should happen automatically but sometimes does not). If you run into issues like "pipenv: command not found", try troubleshooting with the pip or pipenv documentation.
+
+### Initial Installation
+You can watch the video version of this if you scroll down a bit.
+
+Navigate to the abstraction repo within your CLI (Command line interface).
+```
+cd user\directory\github\abstractions 
+#change this to whereever abstractions are stored locally on your machine
+```
 Use the pipfile to create a pipenv.
 ```
-cd spellbook/
 pipenv install
 ```
+If the env is created successfully, skip ahead to `pipenv shell`.
 
-If the env is created successfully, enter the env shell. (If you run into Python version errors, try installing the matching version or editing the python version in the Pipfile but don't commit your change).
+Our script is looking for a static python version, the likelihood of an error for a wrong python version is pretty high. If that error occurs, check your python version with:
+```
+py --version
+```
+Now use any text editor program to change the python version in the pipfile within the abstractions directory to your python version. You need to have at least python 3.9.
+If you have changed the python version in the pipfile, run `pipenv install` again.
+
+You are now ready to activate this project's virtual environment.
+Use: 
 ```
 pipenv shell
 ```
+You have now created a virtual environment for this project. You can read more about virtual environments [here](https://realpython.com/pipenv-guide/).
 
-Set up the dbt spellbook project. (You must run this step from the spellbook directory)
-Run `dbt init` and select Databricks, then enter `.` or other placeholders for the host, HTTP path, and token. This will not connect to the database but you have access to some dbt actions.
-
-When you are prompted to choose a target, please enter `wizard` so we know you are an external contributor.
+Navigate to the spellbook directory with:
+```
+cd spellbook
+```
+To initiate the dbt project run:
 ```
 dbt init
 ```
+Select Databricks, then enter `.` or other placeholders for the host, HTTP path, and token. This will not connect to the database but you have access to some dbt actions.
+**When you are prompted to choose a profile, please enter `wizard` so we know you are an external contributor.**
+Should you make an error during this process (not entering `wizard` being the only one you can make), simply quit the CLI and start over.
 
-Then, run the following commands:
-
+Then, run the following command:
 ```
-cd spellbook/
 dbt compile
 ```
-dbt compile will compile the JINJA and SQL templated SQL into plain SQL which can be executed in the Dune UI. We are thinking about better solutions to make more dbt actions available directly but also have to consider security. 
+dbt compile will compile the JINJA and SQL templated SQL into plain SQL which can be executed in the Dune UI. Your spellbook directory now has a folder named `target` containg plain SQL versions of all models in Dune. If you have made changes to the repo before completing all these actions, you can now be certain that at least the compile process works correctly, if there is big errors the compile process will not complete.
+If you haven't made changes to the directory beforehand, you can now start adding, editing or deleting files within the repository.
+Afterwards simply run `dbt compile` again once you are finished with your work in the directory and test the plain language sql queries on dune.com.
 
 https://user-images.githubusercontent.com/9472574/172207409-731a54a0-f1c2-4a57-93a7-6e7934567caa.mov
+### Coming back
+If you have done these installation on your machine once, to get back into dbt, simply navigate to the abstractions repo, run `pipenv shell`, navigate to spellbook directory with `cd spellbook` and you can run `dbt compile` again.
+
+### What did I just do?
+You now have the ability to compile your dbt model statements and test statements into plain SQL. This allows you to test those queries on the usual dune.com environment and should therefore lead to a better experience while developing abstractions. Running the queries will immediately give you feedback on typos, logical errors or mismatches.
+This in turn will help us deploy these abstractions faster and avoid any potential mistakes.
+
+We are thinking about better solutions to make more dbt actions available directly but we also have to consider security.
+
+
 
 ### How to use dbt to create abstractions
 
@@ -84,43 +121,6 @@ As a preview, you can do [things](https://docs.getdbt.com/reference/resource-pro
 - Add images / project logos from the repo into descriptions. 
 - Use HTML in your description.
 
-### Dune employees using the project developing locally
-Follow instructions from [Databricks](https://docs.databricks.com/dev-tools/dbt.html) on how to set up dbt-core. 
-
-Use the dbt_local_development cluster on Arrakis-[Dev](https://dbc-4f40755f-e259.cloud.databricks.com/?o=2121725202597946#setting/clusters/0414-134107-y2lk5vai/configuration). 
-Look under Advanced Options and JDBC/ODBC to find host name, port, and HTTP Path. Use a schema with your name in it, ex `dbt_meghan`. 
-Ask meghan@dune.com if you need help. 
-
-Create your own [access token](https://dbc-4f40755f-e259.cloud.databricks.com/?o=2121725202597946#setting/account) for the Arrakis Dev.
-Save this to a secure password manager. 
-
-Try running the following commands from spellbook directory:
-- dbt run
-- dbt test
-- dbt run --select {model_name e.g. opensea_trades}
-
-Try `dbt debug` if the commands above do not work. 
-
-See the dbt command reference for more [options](https://docs.getdbt.com/reference/commands/run)
-
-### Dune employees using the project developing in the cloud
-Ask meghan@dune.com to invite you to the dbt cloud projects. 
-
-In dbt cloud, navigate to your profile on the right hand side and then credentials in the menu on the left. You'll need to add a personal access token to the spellbook dev project from generated from the arrakis-dev databricks workspace. You won't need to add credentials for spellbook prod. 
-
-<img width="1428" alt="Screen Shot 2022-04-28 at 4 58 28 PM" src="https://user-images.githubusercontent.com/9472574/165844567-a02d11c7-3195-46c6-b80b-40de6cff7d79.png">
-
-These credentials will be used for the Develop IDE in the hamburger menu. You can run dbt commands from this browser IDE and preview query results, lineages, and compiled SQL. 
-
-### Dune employees deploying the project
-
-Each pull request triggers a PR job in dbt cloud spellbook dev. This job will run and test only the models that have been modified since the last dev deploy job which runs daily. Verify this job runs correctly and request code review from a colleague. When approved, merge into main. 
-
-When we are ready to deploy to production, merge main into a new branch named following the v{major}-{minor}-{patch} pattern. In dbt cloud spellbook prod deploy environment, update the custom branch to match the new branch (note the name of the current branch). Trigger the production deploy or production deploy full refresh job depending on whether the change needs to rewrite exisiting tables. 
-
-<img width="1166" alt="Screen Shot 2022-04-28 at 5 29 08 PM" src="https://user-images.githubusercontent.com/9472574/165849010-64cd5306-d6ab-4514-813a-7496bc8591b7.png">
-
-If the deploy fail, rollback by replacing the previous branch and trigger the job again.
 
 ### Troubleshooting
 

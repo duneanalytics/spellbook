@@ -16,7 +16,6 @@ seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 
-
 target-path: "target"  # directory which will store compiled SQL files
 clean-targets:         # directories to be removed by `dbt clean`
   - "target"
@@ -26,9 +25,14 @@ clean-targets:         # directories to be removed by `dbt clean`
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
   spellbook:
+    ens:
+      +schema: ens
+      +materialized: view
     nft:
       +schema: nft
-      +materialized: view
+      ethereum:
+        +schema: nft_ethereum
+        +materialized: view
     uniswap:
       +schema: uniswap
       +materialized: view
@@ -44,11 +48,24 @@ models:
       solana:
         +schema: opensea_solana
         +materialized: view
+    looksrare:
+      +schema: looksrare
+      +materialized: view
+      ethereum:
+        +schema: looksrare_ethereum
+        +materialized: view
     magiceden:
       +schema: magiceden
       +materialized: view
       solana:
         +schema: magiceden_solana
+        +materialized: view
+
+    seaport:
+      +schema: seaport
+      +materialized: view
+      ethereum:
+        +schema: seaport_ethereum
         +materialized: view
 
     balances:
@@ -107,7 +124,7 @@ seeds:
       solana:
         +enabled: true
         +schema: test_data
-        opensea_solana_trades_postgres:
+        opensea_solana_trades_solscan:
           +column_types:
             block_time: timestamp
             tx_hash: string
@@ -116,10 +133,12 @@ seeds:
       solana:
         +enabled: true
         +schema: test_data
-        magiceden_solana_trades_postgres:
+        magiceden_solana_trades_solscan:
           +column_types:
             block_time: timestamp
             tx_hash: string
             amount: string
-
+    ens:
+      +enabled: true
+      +schema: test_data
 

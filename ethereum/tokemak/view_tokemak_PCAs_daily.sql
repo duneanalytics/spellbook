@@ -106,6 +106,6 @@ CREATE UNIQUE INDEX ON tokemak.view_tokemak_PCAs_daily (
    "date", token_address
 );
 
-INSERT INTO cron.job(schedule, command)
-VALUES ('30 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_PCAs_daily$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+-- INSERT INTO cron.job(schedule, command)
+-- VALUES ('30 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_PCAs_daily$$)
+-- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

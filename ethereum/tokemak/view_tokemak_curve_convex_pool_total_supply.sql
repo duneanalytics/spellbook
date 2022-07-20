@@ -1,3 +1,6 @@
+DROP MATERIALIZED VIEW IF EXISTS tokemak.view_tokemak_curve_convex_pool_total_supply
+;
+
 CREATE MATERIALIZED VIEW tokemak.view_tokemak_curve_convex_pool_total_supply (
 	"date"
     ,address
@@ -71,6 +74,36 @@ WITH calendar AS
                     , date_trunc('day', evt_block_time)::date as "date"
                     , MAX(ARRAY[evt_block_number, evt_index, token_supply/10^tl.decimals]) AS total_supply 
                     FROM curvefi."steth_swap_evt_RemoveLiquidityImbalance" 
+                    INNER JOIN tokemak."view_tokemak_lookup_metapools" mp ON mp.base_pool_address = contract_address
+                    INNER JOIN tokemak."view_tokemak_lookup_tokens" tl on tl.address = mp.pool_token_address
+                    GROUP BY symbol, mp.pool_token_address,  "date"
+            ) as t GROUP BY  symbol, pool_token_address,  "date")
+            UNION
+            --frax/USDC
+            (SELECT symbol, pool_token_address as contract_address,  "date",MAX(total_supply) as total_supply FROM (
+                SELECT symbol
+                    , mp.pool_token_address                    
+                    , date_trunc('day', evt_block_time)::date as "date"
+                    , MAX(ARRAY[evt_block_number, evt_index, token_supply/10^tl.decimals]) AS total_supply 
+                    FROM curvefi."frax_base_pool_fraxbp_evt_AddLiquidity"
+                    INNER JOIN tokemak."view_tokemak_lookup_metapools" mp ON mp.base_pool_address = contract_address
+                    INNER JOIN tokemak."view_tokemak_lookup_tokens" tl on tl.address = mp.pool_token_address
+                    GROUP BY symbol, mp.pool_token_address,  "date"
+                UNION 
+                SELECT symbol
+                    , mp.pool_token_address                   
+                    , date_trunc('day', evt_block_time)::date as "date"
+                    , MAX(ARRAY[evt_block_number, evt_index, token_supply/10^tl.decimals]) AS total_supply 
+                    FROM curvefi."frax_base_pool_fraxbp_evt_RemoveLiquidity"
+                    INNER JOIN tokemak."view_tokemak_lookup_metapools" mp ON mp.base_pool_address = contract_address
+                    INNER JOIN tokemak."view_tokemak_lookup_tokens" tl on tl.address = mp.pool_token_address
+                    GROUP BY symbol, mp.pool_token_address,  "date"
+                UNION
+                SELECT symbol
+                    , mp.pool_token_address                  
+                    , date_trunc('day', evt_block_time)::date as "date"
+                    , MAX(ARRAY[evt_block_number, evt_index, token_supply/10^tl.decimals]) AS total_supply 
+                    FROM curvefi."frax_base_pool_fraxbp_evt_RemoveLiquidityImbalance" 
                     INNER JOIN tokemak."view_tokemak_lookup_metapools" mp ON mp.base_pool_address = contract_address
                     INNER JOIN tokemak."view_tokemak_lookup_tokens" tl on tl.address = mp.pool_token_address
                     GROUP BY symbol, mp.pool_token_address,  "date"
@@ -564,6 +597,6 @@ CREATE UNIQUE INDEX ON tokemak.view_tokemak_curve_convex_pool_total_supply (
    "date", address
 );
 
-INSERT INTO cron.job(schedule, command)
-VALUES ('1 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_curve_convex_pool_total_supply$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+-- INSERT INTO cron.job(schedule, command)
+-- VALUES ('1 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY tokemak.view_tokemak_curve_convex_pool_total_supply$$)
+-- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
