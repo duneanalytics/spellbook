@@ -54,6 +54,12 @@ models:
       ethereum:
         +schema: looksrare_ethereum
         +materialized: view
+    x2y2:
+      +schema: x2y2
+      +materialized: view
+      ethereum:
+        +schema: x2y2_ethereum
+        +materialized: view
     magiceden:
       +schema: magiceden
       +materialized: view
