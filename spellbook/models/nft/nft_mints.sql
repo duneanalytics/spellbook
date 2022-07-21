@@ -13,6 +13,8 @@ SELECT * FROM {{ ref('opensea_mints') }}
 SELECT * FROM {{ ref('magiceden_mints') }}
          UNION
 SELECT * FROM {{ ref('looksrare_ethereum_mints') }}
+         UNION
+SELECT * FROM {{ ref('x2y2_ethereum_mints') }}
 )
 
 {% if is_incremental() %}

@@ -1,6 +1,6 @@
  {{
   config(
-        alias='trades')
+        alias='burns')
 }}
 
 SELECT blockchain,
@@ -30,4 +30,5 @@ tx_hash,
 tx_from,
 tx_to,
 unique_trade_id
-FROM {{ ref('opensea_ethereum_events') }} WHERE evt_type = 'Trade'
+FROM ({{ ref('x2y2_ethereum_events') }})
+WHERE evt_type = 'Burn'
