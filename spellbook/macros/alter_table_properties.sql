@@ -388,6 +388,15 @@ ALTER VIEW ens.view_renewals SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["antonio-mendes","mewwts"]');
 {% endset %}
 
+{% set airdrop_optimism_address_list %}
+ALTER TABLE airdrop_optimism.address_list SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='airdrop',
+                                                    'dune.data_explorer.contributors'='["mslib7"]');
+{% endset %}
+
 {% do run_query(balances_ethereum_erc20_day) %}
 {% do run_query(balances_ethereum_erc20_hour) %}
 {% do run_query(balances_ethereum_erc20_latest) %}
@@ -431,6 +440,7 @@ ALTER VIEW ens.view_renewals SET TBLPROPERTIES('dune.public'='true',
 {% do run_query(ens_view_registrations) %}
 {% do run_query(ens_view_registries) %}
 {% do run_query(ens_view_renewals) %}
+{% do run_query(airdrop_optimism_address_list) %}
 
 {% do log("Tables generated", info=True) %}
 {%- else -%}

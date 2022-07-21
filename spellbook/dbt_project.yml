@@ -28,6 +28,11 @@ models:
     ens:
       +schema: ens
       +materialized: view
+    airdrop:
+      +schema: airdrop
+      optimism:
+        +schema: airdrop_optimism
+        +materialized: view
     nft:
       +schema: nft
       ethereum:
