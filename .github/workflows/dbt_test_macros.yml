@@ -72,17 +72,17 @@ jobs:
         working-directory: ./spellbook
         run: "pipenv run dbt compile"
 
-      # Create seeds as delta tables
+      # Install dependencies
       - name: DBT seed
         working-directory: ./spellbook
-        run: "pipenv run dbt seed  --select transfers_ethereum_erc1155_transfersingle"
+        run: "pipenv run dbt deps"
 
       # Use build in to run and test at same time
       - name: DBT build
         working-directory: ./spellbook
-        run: "pipenv run dbt build --select  +transfers_ethereum_erc1155_agg_day"
+        run: "pipenv run dbt build --select  +tag:integration_test"
 
         # Run a second time to check for conflicts or issues overwriting
       - name: DBT build
         working-directory: ./spellbook
-        run: "pipenv run dbt build --select  +transfers_ethereum_erc1155_agg_day"
+        run: "pipenv run dbt build --select  +tag:integration_test"
