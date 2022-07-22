@@ -48,5 +48,5 @@ FROM {{ ref('magiceden_solana_events') }}
 
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-AND block_time >= (select max(block_time) from {{ this }})
+WHERE block_time >= (select max(block_time) from {{ this }})
 {% endif %} 
