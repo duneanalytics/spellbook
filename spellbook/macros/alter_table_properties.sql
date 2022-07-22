@@ -244,6 +244,15 @@ ALTER VIEW magiceden.mints SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["soispoke"]');
 {% endset %}
 
+{% set magiceden_fees %}
+ALTER VIEW magiceden.fees SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["solana"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='project',
+                                                    'dune.data_explorer.abstraction.name'='magiceden',
+                                                    'dune.data_explorer.contributors'='["soispoke"]');
+{% endset %}
+
 {% set nft_events %}
 ALTER TABLE nft.events SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum","solana"]',
@@ -415,6 +424,7 @@ ALTER VIEW ens.view_renewals SET TBLPROPERTIES('dune.public'='true',
 {% do run_query(magiceden_events) %}
 {% do run_query(magiceden_trades) %}
 {% do run_query(magiceden_mints) %}
+{% do run_query(magiceden_fees) %}
 {% do run_query(nft_events) %}
 {% do run_query(nft_trades) %}
 {% do run_query(nft_mints) %}
