@@ -102,5 +102,5 @@ AND block_slot > 114980355
 
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-AND block_date > now() - interval 2 days
+AND block_date >= (select max(block_time) from {{ this }})
 {% endif %} 
