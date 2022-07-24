@@ -152,6 +152,8 @@ COPY nft.tokens (contract_address, project_name) FROM stdin;
 \\xcb2a50bebe8e118c260867a813e5ed3752b12f29	OptiKitties
 \\x7b95fe8957387FCa48ac7c94Ca073a56A471fD2a	Aetherwarden
 \\x9b66424ad77a243f4b3cc5b59b236162b39f5b02	Optimistic Dishes #1
+\\xCfDfF4E171133D55dE2e45c66a0E144a135D93f2	Lyra sETH market Option Token
+\\x8e9c516c202277D47Ccd33acEb081b90be2Fd5DC	sUSD/sETH Pool Certificate
 \.
 
 COMMIT;

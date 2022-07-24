@@ -298,6 +298,7 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\xa7ECcdb9Be08178f896c26b7BbD8C3D4E844d9Ba	Abacus
 \\xf01121e808F782d7F34E857c27dA31AD1f151b39	Paraswap
 \\xE89CB2053A04Daf86ABaa1f4bC6D50744e57d39E	Backed
+\\xfdA462548Ce04282f4B6D6619823a7C64Fdc0185	Angle Protocol
 \.
 
 COMMIT;
