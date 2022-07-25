@@ -196,7 +196,7 @@ COPY erc20.tokens (contract_address, symbol, decimals) FROM stdin;
 \\xbd1fe73e1f12bd2bc237de9b626f056f21f86427	jMXN	18
 \\x182c76e977161f703bb8f111047df6c43cfacc56	jNGN	18
 \\x6b526Daf03B4C47AF2bcc5860B12151823Ff70E0	jNZD	18
-\\x08e6d1f0c4877ef2993ad733fc6f1d022d0e9dbf	jPNL	18
+\\x08e6d1f0c4877ef2993ad733fc6f1d022d0e9dbf	jPLN	18
 \\xa22f6bc96f13bcc84df36109c973d3c0505a067e	jKRW	18
 \.
 
