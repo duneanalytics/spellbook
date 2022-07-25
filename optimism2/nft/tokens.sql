@@ -148,6 +148,10 @@ COPY nft.tokens (contract_address, project_name) FROM stdin;
 \\xB489A7b15F0797c104d759DC4a308D6FB84F1a50	Crypto Geometric (OPT)
 \\x31fcf00D84a3CCC36a299412741E7cc754aC0466	MUTED🔇
 \\x2e6A5b24BFe6C2E45A0F1AF5bb5EB6E362129e2C	Airgans
+\\x63a9addf2327a0f4b71bcf9bfa757e333e1b7177	BackedCommunity
+\\xcb2a50bebe8e118c260867a813e5ed3752b12f29	OptiKitties
+\\x7b95fe8957387FCa48ac7c94Ca073a56A471fD2a	Aetherwarden
+\\x9b66424ad77a243f4b3cc5b59b236162b39f5b02	Optimistic Dishes #1
 \.
 
 COMMIT;

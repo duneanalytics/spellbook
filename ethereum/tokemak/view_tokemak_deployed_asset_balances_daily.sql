@@ -1,3 +1,6 @@
+DROP MATERIALIZED VIEW IF EXISTS tokemak.view_tokemak_deployed_asset_balances_daily CASCADE
+;
+
 CREATE MATERIALIZED VIEW tokemak.view_tokemak_deployed_asset_balances_daily (
     "date"
     ,source_name
@@ -78,7 +81,9 @@ base as (
             ON wb."date" = t."date" AND t.pool_address = wb.token_address AND wb.source_name = ls.source_name
             ORDER BY t."date" desc, source_name asc, pool_symbol asc, token_symbol asc 
 
-),
+)
+--SELECT * FROM base
+,
 pool_balances as (
     SELECT "date"
         ,source_name
@@ -94,19 +99,19 @@ pool_balances as (
         INNER JOIN tokemak."view_tokemak_lookup_tokens" tl on tl.address = token_address AND tl.is_liability = false --remove liabilities
         order by "date" desc, source_name, pool_symbol 
         )
-      
+
  , temp_balances AS(
  
-    SELECT "date", source_name, token_address, btoken_symbol as token_symbol, sum(tokemak_qty) as tokemak_qty
+    SELECT "date", source_name, token_address, bpool_address, btoken_symbol as token_symbol, sum(tokemak_qty) as tokemak_qty
     FROM (SELECT b."date",b.source_name,b.pool_address as bpool_address, b.pool_symbol as bpool_symbol,t.pool_address as tpool_address, 
         t.pool_symbol as tpool_symbol, b.token_address,t.token_symbol as ttoken_symbol,b.token_symbol as btoken_symbol,
         (t.tokemak_pool_reserve_qty/b.total_lp_supply)*b.pool_reserve_qty as tokemak_qty
         FROM
         pool_balances  b INNER JOIN pool_balances t ON t.token_address = b.pool_address and t.source_name = b.source_name and b."date" = t."date") as t
-        GROUP BY "date", source_name, token_address, btoken_symbol 
-        ORDER BY "date" desc, source_name, token_address, btoken_symbol 
+        GROUP BY "date", source_name, token_address,bpool_address, btoken_symbol 
+        ORDER BY "date" desc, source_name, token_address,bpool_address, btoken_symbol 
  )
-
+--SELECT * FROM temp_balances
     SELECT 
     p."date"
         ,p.source_name
@@ -124,7 +129,7 @@ pool_balances as (
        , tp.price_eth
       , (COALESCE(p.tokemak_pool_reserve_qty ,0) + COALESCE(t.tokemak_qty, 0)) * COALESCE(tp.price_eth,0) as value_eth
         FROM pool_balances p
-        LEFT JOIN temp_balances t on t."date" = p."date" AND t."source_name" = p."source_name" AND p.token_address = t.token_address
+        LEFT JOIN temp_balances t on t."date" = p."date" AND t."source_name" = p."source_name" AND p.token_address = t.token_address and p.pool_address = t.bpool_address
         LEFT JOIN tokemak."view_tokemak_prices_usd_eth_daily" tp on tp."contract_address" = p."token_address" and tp."date" = p."date"
         ORDER BY p."date" desc, p."source_name", p."pool_symbol", p."token_symbol"
 

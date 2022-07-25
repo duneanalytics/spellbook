@@ -140,6 +140,7 @@ SELECT DISTINCT
     looks_rare.contract_address AS project_contract_address,
     agg.name AS aggregator_name,
     agg.contract_address AS aggregator_address,
+    looks_rare.block_number,
     tx_hash,
     tx.from AS tx_from,
     tx.to AS tx_to,

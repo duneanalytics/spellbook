@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: tokens_optimism_erc20
+    meta:
+      blockchain: optimism
+      sector: tokens
+      project: erc20
+      contibutors: msilb7
+    config:
+      tags: ['table', 'erc20', 'optimism']
+    description: "ERC20 Token Addresses, Symbols and Decimals"
+    columns:
+      - name: contract_address
+        description: "ERC20 token contract address on Optimism"
+      - name: symbol
+        description: "ERC20 token symbol"
+      - name: decimals
+        description: "Number of decimals, refers to how divisible an ERC20 token can be"
+
+  - name: tokens_optimism_nft
+    meta:
+      blockchain: optimism
+      sector: nft
+      contributors: msilb7, dot2dotseurat
+    config:
+      tags: ['tokens', 'optimism', 'nft', 'erc721', 'erc1155']
+    description: >
+        Selection of NFT token addresses.
+    columns:
+      - name: contract_address
+        description: "The contract address is the unique address of where the NFTs are stored on Optimism."
+      - name: name
+        description: "NFT Project Name"
