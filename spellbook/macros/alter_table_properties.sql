@@ -388,8 +388,8 @@ ALTER VIEW ens.view_renewals SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["antonio-mendes","mewwts"]');
 {% endset %}
 
-{% set airdrop_optimism_address_list %}
-ALTER TABLE airdrop_optimism.address_list SET TBLPROPERTIES('dune.public'='true',
+{% set airdrop_optimism_addresses %}
+ALTER TABLE airdrop_optimism.addresses SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='sector',
