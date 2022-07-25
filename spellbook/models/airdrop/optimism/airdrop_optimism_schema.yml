@@ -5,9 +5,9 @@ models:
     meta:
       blockchain: optimism
       sector: airdrop
-      contibutors: mslib7
+      contibutors: msilb7
     config:
-      tags: ['airdrop', 'optimism', 'address_list', 'mslib7']
+      tags: ['airdrop', 'optimism', 'address_list', 'msilb7']
     description: >
         List of addresses eligible for $OP airdrop and amount they received based on their activity
     columns:

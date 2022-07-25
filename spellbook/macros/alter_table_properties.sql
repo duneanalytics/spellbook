@@ -394,7 +394,7 @@ ALTER TABLE airdrop_optimism.address_list SET TBLPROPERTIES('dune.public'='true'
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='sector',
                                                     'dune.data_explorer.abstraction.name'='airdrop',
-                                                    'dune.data_explorer.contributors'='["mslib7"]');
+                                                    'dune.data_explorer.contributors'='["msilb7"]');
 {% endset %}
 
 {% do run_query(balances_ethereum_erc20_day) %}
