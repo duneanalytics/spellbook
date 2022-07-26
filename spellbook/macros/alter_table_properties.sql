@@ -397,6 +397,15 @@ ALTER VIEW ens.view_renewals SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["antonio-mendes","mewwts"]');
 {% endset %}
 
+{% set cex_addresses %}
+ALTER VIEW cex.addresses SET TBLPROPERTIES ('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='cex',
+                                                    'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
 {% do run_query(balances_ethereum_erc20_day) %}
 {% do run_query(balances_ethereum_erc20_hour) %}
 {% do run_query(balances_ethereum_erc20_latest) %}
@@ -441,6 +450,7 @@ ALTER VIEW ens.view_renewals SET TBLPROPERTIES('dune.public'='true',
 {% do run_query(ens_view_registrations) %}
 {% do run_query(ens_view_registries) %}
 {% do run_query(ens_view_renewals) %}
+{% do run_query(cex_addresses) %}
 
 {% do log("Tables generated", info=True) %}
 {%- else -%}
