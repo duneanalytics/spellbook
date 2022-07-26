@@ -5,9 +5,10 @@ models:
     meta:
       blockchain: ethereum
       sector: cex
+      project: addresses
       contibutors: hildobby
     config:
-      tags: ['table', 'cex']
+      tags: ['table', 'cex', 'addresses', 'ethereum']
     description: "Known centralised exchange addresses"
     columns:
       - name: address
