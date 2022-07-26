@@ -274,7 +274,7 @@ FROM (VALUES
     -- WhiteBIT, Source: https://etherscan.io/address/0x39f6a6c85d39d5abad8a398310c52e7c374f2ba3
     , ('0x39f6a6c85d39d5abad8a398310c52e7c374f2ba3', 'WhiteBIT', 'WhiteBIT 1')
     -- DigiFinex, Source: https://etherscan.io/accounts/label/digifinex
-    , ('0x2fa2bc2ce6a4f92952921a4caa46b3727d24a1ec0x2fa2bc2ce6a4f92952921a4caa46b3727d24a1ec', 'DigiFinex', 'DigiFinex 1')
+    , ('0xe17ee7b3c676701c66b395a35f0df4c2276a344e', 'DigiFinex', 'DigiFinex 1')
     -- MEXC
     , ('0x75e89d5979e4f6fba9f97c104c2f0afb3f1dcb88', 'MEXC', 'MEXC 1') -- https://etherscan.io/address/0x75e89d5979e4f6fba9f97c104c2f0afb3f1dcb88
     , ('0x0211f3cedbef3143223d3acf0e589747933e8527', 'MEXC', 'MEXC 2') -- https://etherscan.io/address/0x0211f3cedbef3143223d3acf0e589747933e8527
