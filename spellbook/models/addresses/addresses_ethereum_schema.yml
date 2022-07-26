@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: cex_ethereum_addresses
+  - name: cex_addresses
     meta:
       blockchain: ethereum
       sector: cex

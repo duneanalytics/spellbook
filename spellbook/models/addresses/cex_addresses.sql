@@ -1,4 +1,4 @@
-{{config(alias='addresses')}}
+{{config(schema='cex', alias='addresses')}}
 
 SELECT address, cex_name, distinct_name
 FROM (VALUES
