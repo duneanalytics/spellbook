@@ -2,13 +2,24 @@
 
 -- filter txns down to only relevant txns to prevent double counting
 create or replace view aztec_v2.view_rollup_bridge_transfers as 
-with tfers_raw as (
+with erc_tfers_filtered as (
   -- get the erc20 tokens
   select distinct t.*
     from erc20."ERC20_evt_Transfer" t
     inner join aztec_v2.contract_labels c 
       on t."from" = c.contract_address
       or t."to" = c.contract_address
+)
+, eth_traces_filtered as (
+    select distinct t.*
+    from ethereum."traces" t
+    inner join aztec_v2.contract_labels c 
+          on t."from" = c.contract_address
+          or t."to" = c.contract_address
+)
+, tfers_raw as (
+    select *
+    from erc_tfers_filtered
   union all 
   -- Track the ETH that's transferred
   SELECT "from"
@@ -16,14 +27,12 @@ with tfers_raw as (
       , value
       , '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'::bytea as contract_address
       , tx_hash as evt_tx_hash
-      , null as evt_index
+      , null::bigint as evt_index
       , block_time as evt_block_time
       , block_number as evt_block_number
-  FROM ethereum."traces" t
-  inner join aztec_v2.contract_labels c 
-      on t."from" = c.contract_address
-      or t."to" = c.contract_address
-  WHERE value <> 0
+  FROM eth_traces_filtered
+  WHERE true
+    and value <> 0
     AND (LOWER(call_type) NOT IN ('delegatecall', 'callcode', 'staticcall') or call_type is null)
     AND CASE WHEN block_number < 4370000  THEN True
             WHEN block_number >= 4370000 THEN tx_success
