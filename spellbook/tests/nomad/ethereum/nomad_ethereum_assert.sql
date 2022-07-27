@@ -6,4 +6,4 @@ JOIN {{ ref('nomad_ethereum_transactions_etherscan') }} test_data ON test_data.t
 WHERE nomad_transactions.block_time >= '2022-07-27' and nomad_transactions.block_time < '2022-07-28'
 )
 
-select * from unit_tests where amount_test = false
+select * from unit_tests where amount_test = False
