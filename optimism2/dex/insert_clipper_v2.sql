@@ -74,6 +74,8 @@ WITH rows AS (
             t.evt_index
         FROM
             clipper."ClipperPackedVerifiedExchange_evt_Swapped" t
+        WHERE t.evt_block_time >= start_ts
+        AND t.evt_block_time < end_ts
     ) dexs
     INNER JOIN optimism.transactions tx
         ON dexs.tx_hash = tx.hash
@@ -91,8 +93,6 @@ WITH rows AS (
         AND pb.contract_address = dexs.token_b_address
         AND pb.hour >= start_ts
         AND pb.hour < end_ts
-    WHERE dexs.block_time >= start_ts
-    AND dexs.block_time < end_ts
     ON CONFLICT DO NOTHING
     RETURNING 1
 )
