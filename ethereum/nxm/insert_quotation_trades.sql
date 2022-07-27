@@ -159,7 +159,5 @@ WHERE evt_block_time >= (SELECT DATE_TRUNC('day', now()) - INTERVAL '3 months');
 SELECT nxm.insert_quotation_trades(
     (SELECT DATE_TRUNC('day', now()) - INTERVAL '3 months')
   );
-COMMIT;
-$$
-) ON CONFLICT (command) DO UPDATE SET schedule = EXCLUDED.schedule;
-COMMIT;
+$$) 
+ON CONFLICT (command) DO UPDATE SET schedule = EXCLUDED.schedule;
