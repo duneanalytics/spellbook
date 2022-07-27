@@ -31,3 +31,4 @@ CREATE TABLE IF NOT EXISTS nxm.quotation_trades (
     evt_expiry_date timestamptz,
     PRIMARY KEY (evt_tx_hash, evt_index)
   );
+  
