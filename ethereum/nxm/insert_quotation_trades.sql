@@ -1,3 +1,5 @@
+CREATE SCHEMA IF NOT EXISTS nxm;
+
 CREATE TABLE IF NOT EXISTS nxm.quotation_trades (
     cid numeric,
     contract_address bytea,
@@ -7,10 +9,10 @@ CREATE TABLE IF NOT EXISTS nxm.quotation_trades (
     curr bytea,
     premium numeric,
     pre_amount numeric,
-    premiumNXM numeric,
-    preNXM_amount numeric,
-    scAdd bytea,
-    sumAssured numeric,
+    premium_nxm numeric,
+    pre_nxm_amount numeric,
+    sc_add bytea,
+    sum_assured numeric,
     block_hash bytea,
     nonce numeric,
     gas_limit numeric,
@@ -22,7 +24,7 @@ CREATE TABLE IF NOT EXISTS nxm.quotation_trades (
     success bool,
     tx_type text,
     tx_value numeric,
-    statusNum numeric,
+    status_num numeric,
     cover_block_number integer,
     cover_block_time timestamptz,
     evt_block_number integer,
@@ -34,10 +36,8 @@ CREATE TABLE IF NOT EXISTS nxm.quotation_trades (
   
 --报价
 CREATE OR REPLACE FUNCTION nxm.insert_quotation_trades(start_ts timestamptz, end_ts timestamptz = now()) RETURNS integer 
-    LANGUAGE plpgsql AS 
-$function$ 
-DECLARE 
-    r integer;
+    LANGUAGE plpgsql AS $function$ 
+    DECLARE r integer;
 BEGIN
 WITH
   rows AS (
@@ -51,10 +51,10 @@ WITH
         curr,
         premium,
         pre_amount,
-        premiumNXM,
-        preNXM_amount,
-        scAdd,
-        sumAssured,
+        premium_nxm,
+        pre_nxm_amount,
+        sc_add,
+        sum_assured,
         block_hash,
         nonce,
         gas_limit,
@@ -66,7 +66,7 @@ WITH
         success,
         tx_type,
         tx_value,
-        statusNum,
+        status_num,
         cover_block_number,
         cover_block_time,
         evt_block_number,
@@ -130,8 +130,15 @@ WITH
           AND evt_block_time < end_ts
       ) quo_evt
       INNER JOIN ethereum.transactions tx ON quo_evt.evt_tx_hash = tx.hash
+      and tx.block_time >= start_ts
+      AND tx.block_time < end_ts
       INNER JOIN erc20.tokens erc20 on quo_evt.token = erc20.contract_address
       LEFT JOIN nexusmutual."QuotationData_evt_CoverStatusEvent" cse ON quo_evt.cid = cse.cid
+      and cse.evt_block_time >= start_ts
+      AND cse.evt_block_time < end_ts
+
+      ON CONFLICT DO NOTHING
+      RETURNING 1
   )
 SELECT count(*) INTO r FROM rows;
 RETURN r;
@@ -141,7 +148,7 @@ END $function$;
 SELECT
   nxm.insert_quotation_trades(
     '2019-05-30', --! Deployment date
-    '2022-07-27')
+    '2022-07-28')
 WHERE
   NOT EXISTS(
     SELECT *
