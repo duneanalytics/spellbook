@@ -1,7 +1,21 @@
 version: 2
 
 sources: 
+  - name: uniswap_v1_ethereumm
+    description: "Uniswap v1 schema containing decoded tables related to contract"
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: Exchange_evt_TokenPurchase
+        loaded_at_field: evt_block_time
+      - name: Factory_evt_NewExchange
+        loaded_at_field: evt_block_time
+      - name: Exchange_evt_EthPurchase
+        loaded_at_field: evt_block_time
+
   - name: uniswap_v2_ethereum
+    description: "Uniswap v2 schema containing decoded tables related to contract"
     freshness:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
@@ -12,6 +26,7 @@ sources:
         loaded_at_field: evt_block_time
 
   - name: uniswap_v3_ethereum
+    description: "Uniswap v3 schema containing decoded tables related to contract"
     freshness:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
