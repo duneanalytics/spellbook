@@ -125,7 +125,7 @@ models:
       - name: recency_index
         description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
 
-  - name: transfers_ethereum_erc721
+  - name: transfers_ethereum_erc721_day
     meta:
       blockchain: ethereum
       sector: transfers
@@ -133,37 +133,15 @@ models:
       contibutors: soispoke, dot2dotseurat, hildobby
     config:
       tags: ['transfers', 'ethereum', 'erc721', 'soispoke', 'dot2dotseurat', 'hildobby']
-    description: "ERC721 Token Transfers on Ethereum. This table is updated every 30 minutes."
-    columns:
-      - name: unique_tx_id
-        description: "Unique tx ID (testing)"
-        tests:
-          - not_null
-          - unique
-      - *blockchain
-      - &wallet_address_erc721
-        name: wallet_address
-        description: "Wallet address of sender or receiver."
-        tests:
-          - not_null
-      - &token_address_erc721
-        name: token_address
-        tests:
-          - not_null
-      - *evt_block_time
-      - &tokenId
-        name: tokenId
-        description: "ID of the ERC721 token"
-        tests:
-          - not_null
-      - name: amount
-        description: >
-          Amount = 1 when the token is received by a wallet 
-          Amount -1 when the token is sent by a wallet
-        tests:
-          - not_null
-          - accepted_values:
-              values: [-1, 1]
+
+  - name: transfers_ethereum_erc721_hour
+    meta:
+      blockchain: ethereum
+      sector: transfers
+      project: erc721
+      contibutors: soispoke, dot2dotseurat, hildobby
+    config:
+      tags: ['transfers', 'ethereum', 'erc721', 'soispoke', 'dot2dotseurat', 'hildobby']
 
   - name: transfers_ethereum_erc1155
     meta:
