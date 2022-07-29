@@ -9,3 +9,9 @@ seeds:
 
   - name: balances_ethereum_erc20_daily_entries
     description: Legacy values from Postgres for daily token balances. Sampled on December 31st, 2021.
+
+  - name: balances_ethereum_erc721_day_manual_seed
+    description: Manually tracked owner of single token on day following transfer events. Sampled on July 29th, 2022.
+
+  - name: balances_ethereum_erc721_hour_manual_seed
+    description: Manually tracked owner of single token twelve hours following transfer events. Sampled on July 29th, 2022
