@@ -1,4 +1,9 @@
-{{ config(alias='erc721_transfers') }}
+{{ config(alias='erc721_transfers',
+          materialized ='incremental',
+          file_format ='delta',
+          incremental_strategy='merge',
+          unique_key='unique_tx_id')
+}}
 
 with
     received_transfers as (
@@ -10,6 +15,10 @@ with
             1 as amount
         from
             {{ source('erc721_ethereum', 'evt_transfer') }}
+        {% if is_incremental() %}
+        -- this filter will only be applied on an incremental run
+        where date_trunc('day', tr.evt_block_time) > now() - interval 2 days
+        {% endif %}
     )
 
     ,
@@ -22,6 +31,10 @@ with
             -1 as amount
         from
             {{ source('erc721_ethereum', 'evt_transfer') }}
+        {% if is_incremental() %}
+        -- this filter will only be applied on an incremental run
+        where date_trunc('day', tr.evt_block_time) > now() - interval 2 days
+        {% endif %}
     )
 
 select 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, tokenId, amount, unique_tx_id

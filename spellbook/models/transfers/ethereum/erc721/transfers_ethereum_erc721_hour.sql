@@ -1,4 +1,4 @@
-{{ config(materialized='table', alias='erc721_transfer_hour') }}
+{{ config(alias='erc721_transfer_hour') }}
 
 with one_zero_balances AS
 -- sum(amount) ... = 1 for the hour the token was recieved
