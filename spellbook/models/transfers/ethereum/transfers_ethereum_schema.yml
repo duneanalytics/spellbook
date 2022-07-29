@@ -125,6 +125,15 @@ models:
       - name: recency_index
         description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
 
+  - name: transfers_ethereum_erc721
+    meta:
+      blockchain: ethereum
+      sector: transfers
+      project: erc721
+      contibutors: soispoke, dot2dotseurat, hildobby
+    config:
+      tags: ['transfers', 'ethereum', 'erc721', 'soispoke', 'dot2dotseurat', 'hildobby']
+
   - name: transfers_ethereum_erc721_day
     meta:
       blockchain: ethereum
