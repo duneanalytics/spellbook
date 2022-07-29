@@ -10,7 +10,7 @@ with count_sampled_rows as
 from {{ ref('balances_ethereum_erc721_day') }} d
 left join {{ ref('balances_ethereum_erc721_day_manual_seed') }} s
 on d.wallet_address = s.wallet_address
-and d.contract_address = s.contract_address
+and d.token_address = s.token_address
 and d.day = s.day
 and d.blockchain = s.blockchain
 and d.tokenId = s.tokenId)

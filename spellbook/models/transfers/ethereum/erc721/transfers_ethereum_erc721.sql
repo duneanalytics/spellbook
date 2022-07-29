@@ -2,7 +2,8 @@
           materialized ='incremental',
           file_format ='delta',
           incremental_strategy='merge',
-          unique_key='unique_tx_id')
+          unique_key='unique_tx_id',
+          partition='evt_block_time')
 }}
 
 with
