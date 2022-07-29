@@ -18,7 +18,7 @@ SELECT     /*+ RANGE_JOIN(d, 24) */
            th.token_address,
            th.tokenid,
            nft_tokens.name as collection
-FROM {{ ref('transfer_ethereum_erc721_day') }} AS th
+FROM {{ ref('transfers_ethereum_erc721_day') }} AS th
 INNER JOIN days d
 ON         th.day <= d.day
 AND        d.day < th.next_day

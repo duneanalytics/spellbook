@@ -15,7 +15,7 @@ SELECT     /*+ RANGE_JOIN(h, 24) */
            th.token_address,
            th.tokenid,
            nft_tokens.name as collection
-FROM      {{ ref('transfer_ethereum_erc721_hour') }} AS th
+FROM      {{ ref('transfers_ethereum_erc721_hour') }} AS th
 INNER JOIN hours h
 ON         th.hour <= h.hour
 AND        h.hour < th.next_hour
