@@ -1,5 +1,5 @@
 {{ config(
-        alias='erc721_latest'
+        alias='erc721_latest',
         )
 }}
 SELECT
