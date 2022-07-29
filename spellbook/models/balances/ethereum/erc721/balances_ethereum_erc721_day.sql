@@ -3,32 +3,46 @@
         )
 }}
 
-with
-    days as (
-        select
-            explode(
-                sequence(
-                    to_date('2015-01-01'), date_trunc('day', now()), interval 1 day
-                )
-            ) as day
-    )
+with one_zero_balances AS
+-- sum(amount) ... = 1 for the day the token was recieved
+-- sum(amount) ... = 0 for the day the token was sent
+--
+(
+       SELECT 'ethereum' as blockchain,
+              date_trunc('day', evt_block_time) as day,
+              wallet_address,
+              token_address,
+              tokenId,
+              current_timestamp() as updated_at,
+              sum(amount) over (partition by token_address, tokenId, wallet_address order by date_trunc('day', evt_block_time) asc) as balance,
+              row_number() over (partition by token_address, tokenId, wallet_address order by date_trunc('day', evt_block_time) desc) as recency_index
+       FROM    {{ ref('transfers_ethereum_erc721') }})
 
-, daily_balances as
- (SELECT
-    wallet_address,
-    token_address,
-    tokenId,
-    day,
-    lead(day, 1, now()) OVER (PARTITION BY token_address, wallet_address ORDER BY day) AS next_day
-    FROM {{ ref('transfers_ethereum_erc721_rolling_day') }})
+, days AS
+(
+       SELECT explode( sequence( to_date('2015-01-01'), date_trunc('day', now()), interval 1 day ) ) AS day
+)
 
-SELECT distinct
-    'ethereum' as blockchain,
-    d.day,
-    b.wallet_address,
-    b.token_address,
-    b.tokenId,
-    nft_tokens.name as collection
-FROM daily_balances b
-INNER JOIN days d ON b.day <= d.day AND d.day < b.next_day
-LEFT JOIN {{ ref('tokens_ethereum_nft') }} nft_tokens ON nft_tokens.contract_address = b.token_address
+
+, token_holders as
+     (SELECT   blockchain,
+              day,
+              lead(day, 1, now()) OVER (partition BY blockchain, token_address, tokenId ORDER BY day) AS next_day, --day sold
+              wallet_address,
+              token_address,
+              tokenid
+     FROM     one_zero_balances
+     WHERE    balance = 1)
+
+SELECT     /*+ RANGE_JOIN(d, 24) */
+           th.blockchain,
+           d.day,
+           th.wallet_address,
+           th.token_address,
+           th.tokenid,
+           nft_tokens.name as collection
+FROM       token_holders AS th
+INNER JOIN days d
+ON         th.day <= d.day
+AND        d.day < th.next_day
+LEFT JOIN {{ ref('tokens_ethereum_nft') }} nft_tokens ON nft_tokens.contract_address = th.token_address
