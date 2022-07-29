@@ -8,6 +8,6 @@ select
     tokenId,
     count(distinct wallet_address) as wallets
 from {{ ref('balances_ethereum_erc721_hour') }}
-where day >= now() - interval '2 days'
+where hour >= now() - interval '2 days'
 group by blockchain, hour, token_address, tokenId
 having count(distinct wallet_address) > 1
