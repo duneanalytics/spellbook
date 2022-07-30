@@ -3,7 +3,7 @@
           file_format ='delta',
           incremental_strategy='merge',
           unique_key='unique_tx_id',
-          partition='evt_block_time')
+          partition='day')
 }}
 
 with
@@ -38,8 +38,8 @@ with
         {% endif %}
     )
 
-select 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, tokenId, amount, unique_tx_id
+select 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, tokenId, amount, unique_tx_id, date_trunc('day', evt_block_time) as day
 from sent_transfers
 union
-select 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, tokenId, amount, unique_tx_id
+select 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, tokenId, amount, unique_tx_id, date_trunc('day', evt_block_time) as day
 from received_transfers
