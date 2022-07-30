@@ -1,4 +1,4 @@
-{{ config(alias='erc721_transfer_day') }}
+{{ config(alias='erc721_transfer_day', materialized ='table') }}
 
 
 
