@@ -6544,5 +6544,6 @@ FROM (VALUES
           ('0x920a12c59A64E632E1c1Fa7D2c3b0ea4940E57c3', 'RYSUKA', 18),
           ('0x952B771bfd71A370391DD072bEce8C3E843FBb54', 'MIKASA', 18),
           ('0x9af28adEd262b48E7bF3396388a6aC71dE95053F', 'SUNSET', 9),
-          ('0xAFCdd4f666c84Fed1d8BD825aA762e3714F652c9', 'VINU', 18)
+          ('0xAFCdd4f666c84Fed1d8BD825aA762e3714F652c9', 'VINU', 18),
+          ('0x8CC0F052fff7eaD7f2EdCCcaC895502E884a8a71', 'ARTH', 18)
      ) AS temp_table (contract_address, symbol, decimals)
