@@ -6531,5 +6531,19 @@ FROM (VALUES
           ('0xca6a720ac282e8634f595c4351b827191aea1bbe', 'ORBS', 18),
           ('0xfcaa8eef70f373e00ac29208023d106c846259ee', 'GIZA', 9),
           ('0xfcb7658a1a1d874e2c121861d3076e08d793f92c', 'OKAMI', 18),
-          ('0xfe88c952dfd9595f266bae053daaac411ccfaf07', 'Koma', 0)
+          ('0xfe88c952dfd9595f266bae053daaac411ccfaf07', 'Koma', 0),
+          ('0x0642026E7f0B6cCaC5925b4E7Fa61384250e1701', 'H2O', 18),
+          ('0x0652322C5BBff476f213BF501DED45e61d7494c9', 'HAWK', 18),
+          ('0x1aBaEA1f7C830bD89Acc67eC4af516284b1bC33c', 'EUROC', 6),
+          ('0x331b9C07aFbaBbAc2A263454a1B45d3F3C3d5857', 'CRBN', 18),
+          ('0x35bA8966aa3D81E007d2CBC167172583a07dFf8C', 'TAKE', 9),
+          ('0x50bD674BD9C9F78b457c8a2D0c7697B2d73dBDcb', 'TEMPEST', 9),
+          ('0x594e29F0dc124c99EfD096eE9273707982579af8', 'BUCEPHALUS', 9),
+          ('0x5b432C9AA586109FB27B0e40506deC9c7058b8f0', 'PERITAS', 9),
+          ('0x77f9CF0bd8C500CfFdF420e72343893aeCC2EC0b', 'LAIKA', 18),
+          ('0x920a12c59A64E632E1c1Fa7D2c3b0ea4940E57c3', 'RYSUKA', 18),
+          ('0x952B771bfd71A370391DD072bEce8C3E843FBb54', 'MIKASA', 18),
+          ('0x9af28adEd262b48E7bF3396388a6aC71dE95053F', 'SUNSET', 9),
+          ('0xAFCdd4f666c84Fed1d8BD825aA762e3714F652c9', 'VINU', 18),
+          ('0x8CC0F052fff7eaD7f2EdCCcaC895502E884a8a71', 'ARTH', 18)
      ) AS temp_table (contract_address, symbol, decimals)
