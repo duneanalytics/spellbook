@@ -115,9 +115,9 @@ SELECT
     trades.tx_hash as tx_hash,
     tx.`from` as tx_from,
     tx.`to` as tx_to,
-    'niftygateway' || '-' || tx_hash || '-' ||  token_id::string || '-' ||  seller::string || '-' || COALESCE(erc.contract_address, nft_contract_address) || '-' || trades.evt_index::string || '-' || COALESCE(evt_type::string, 'Other')  || '-' || COALESCE(case when erc.value_unique::string is null then '0' ELSE '1' end, '1') as unique_trade_id
+    'niftygateway' || '-' || tx_hash || '-' ||  token_id::string || '-' ||  seller::string || '-' || COALESCE(erc.contract_address_array[1], trades.nft_contract_address)  || '-' || trades.evt_index::string || '-' || COALESCE(evt_type::string, 'Other')  as unique_trade_id
     FROM nifty_gateway as trades
-    INNER JOIN {{ source('ethereum', 'transactions') }} tx ON trades.tx_hash = tx.hash
+    INNER JOIN {{ source('ethereum', 'transactions') }} tx ON trades.tx_hash = tx.hash and trades.block_time = tx.block_time
     LEFT JOIN niftygateway_erc_subsets erc ON erc.evt_tx_hash = trades.tx_hash
     LEFT JOIN {{ ref('tokens_ethereum_nft') }} as tokens ON tokens.contract_address = trades.nft_contract_address
     LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', trades.block_time)
