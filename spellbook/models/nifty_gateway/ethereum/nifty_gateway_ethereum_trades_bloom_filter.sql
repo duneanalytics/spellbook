@@ -1,5 +1,5 @@
 {{ config(
-        alias ='trades_bloom_filter',
+        alias ='trades_bloomfilter',
         )
 }}
 
@@ -14,7 +14,8 @@ select
         b.call_block_number
     FROM {{ source('nifty_gateway_ethereum', 'NiftyExchangeExecutor_evt_NiftySale721') }} a
     INNER JOIN  {{ source('nifty_gateway_ethereum', 'NiftyExchangeExecutor_call_executeSaleEth721') }} b
-    ON a.evt_block_time = b.call_block_time)
+    ON a.evt_block_time = b.call_block_time
+    and a.evt_tx_hash = b.call_tx_hash)
 
 , nifty_gateway AS (
     SELECT
@@ -53,6 +54,7 @@ SELECT
 FROM {{ source('erc721_ethereum', 'evt_transfer') }} erc721
 INNER JOIN {{ source('nifty_gateway_ethereum' , 'NiftyExchangeExecutor_evt_NiftySale721') }} nifty_sale
 on nifty_sale.evt_tx_hash = erc721.evt_tx_hash
+and nifty_sale.evt_block_time = erc721.evt_block_time
 
 
 UNION ALL
@@ -67,7 +69,8 @@ SELECT
     erc1155.value
 FROM {{ source('erc1155_ethereum', 'evt_transfersingle') }} erc1155
 INNER JOIN  {{ source('nifty_gateway_ethereum', 'NiftyExchangeExecutor_evt_NiftySale721') }} nifty_sale
-on  erc1155.evt_tx_hash = nifty_sale.evt_tx_hash)
+on  erc1155.evt_tx_hash = nifty_sale.evt_tx_hash
+and erc1155.evt_block_time = nifty_sale.evt_block_time)
 
 -- aggregate NFT transfers per TRANSACTION
 , niftygateway_erc_subsets AS (
@@ -114,7 +117,6 @@ SELECT
     tx.`to` as tx_to,
     ROW_NUMBER() OVER (PARTITION BY trades.platform, trades.tx_hash, trades.evt_index, trades.category ORDER BY trades.platform_version, trades.evt_type)  as unique_trade_id
     FROM nifty_gateway as trades
-    -- clone of ethereum transactions with a bloom filter on tx_hash
     INNER JOIN alan_ethereum.transactions_0006 tx ON trades.tx_hash = tx.hash
     LEFT JOIN niftygateway_erc_subsets erc ON erc.evt_tx_hash = trades.tx_hash
     LEFT JOIN {{ ref('tokens_ethereum_nft') }} as tokens ON tokens.contract_address = trades.nft_contract_address
