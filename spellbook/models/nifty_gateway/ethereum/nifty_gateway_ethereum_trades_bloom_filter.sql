@@ -1,5 +1,5 @@
 {{ config(
-        alias ='trades',
+        alias ='trades_bloom_filter',
         )
 }}
 
@@ -114,7 +114,8 @@ SELECT
     tx.`to` as tx_to,
     ROW_NUMBER() OVER (PARTITION BY trades.platform, trades.tx_hash, trades.evt_index, trades.category ORDER BY trades.platform_version, trades.evt_type)  as unique_trade_id
     FROM nifty_gateway as trades
-    INNER JOIN {{ source('ethereum', 'transactions') }} tx ON trades.tx_hash = tx.hash
+    -- clone of ethereum transactions with a bloom filter on tx_hash
+    INNER JOIN alan_ethereum.transactions_0006 tx ON trades.tx_hash = tx.hash
     LEFT JOIN niftygateway_erc_subsets erc ON erc.evt_tx_hash = trades.tx_hash
     LEFT JOIN {{ ref('tokens_ethereum_nft') }} as tokens ON tokens.contract_address = trades.nft_contract_address
     LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', trades.block_time)
