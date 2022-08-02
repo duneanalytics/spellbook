@@ -95,7 +95,7 @@ SELECT
     trades.block_time block_time,
     CASE WHEN erc.no_of_transfers > 1 THEN NULL ELSE token_id END as token_id,
     tokens.name as collection,
-    trades.price/(10 ^ erc20.decimals::int) * p.price as amount_usd,
+    trades.price/power(10, erc20.decimals)  * p.price as amount_usd,
     CASE WHEN erc.no_of_transfers > 1 THEN NULL ELSE COALESCE(erc.erc_type_array[1], tokens.standard) END token_standard,
     CASE WHEN erc.no_of_transfers > 1 THEN 'Bundle Trade' ELSE 'Single Item Trade' END as trade_type,
     erc.no_of_transfers AS number_of_items,
@@ -115,7 +115,7 @@ SELECT
     trades.tx_hash as tx_hash,
     tx.`from` as tx_from,
     tx.`to` as tx_to,
-    ROW_NUMBER() OVER (PARTITION BY trades.platform, trades.tx_hash, trades.evt_index, trades.category ORDER BY trades.platform_version, trades.evt_type)  as unique_trade_id
+    'niftygateway' || '-' || tx_hash || '-' ||  token_id::string || '-' ||  seller::string || '-' || COALESCE(erc.contract_address, nft_contract_address) || '-' || trades.evt_index::string || '-' || COALESCE(evt_type::string, 'Other')  || '-' || COALESCE(case when erc.value_unique::string is null then '0' ELSE '1' end, '1') as unique_trade_id
     FROM nifty_gateway as trades
     INNER JOIN {{ source('ethereum', 'transactions') }} tx ON trades.tx_hash = tx.hash
     LEFT JOIN niftygateway_erc_subsets erc ON erc.evt_tx_hash = trades.tx_hash
