@@ -73,6 +73,13 @@ models:
         +schema: nomad_ethereum
         +materialized: view
 
+    nifty_gateway:
+      +schema: niftygateway
+      +materialized: view
+      ethereum:
+        +schema: niftygateway_ethereum
+        +materialized: view
+
     seaport:
       +schema: seaport
       +materialized: view

@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: nifty_gateway_ethereum
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: NiftyExchangeExecutor_evt_NiftySale721
+        loaded_at_field: evt_block_time
+
+      - name: NiftyExchangeExecutor_call_executeSaleEth721
+        loaded_at_field: call_block_time
