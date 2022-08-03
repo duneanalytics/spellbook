@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: uniswap_ethereum_trades
+  - name: uniswap_v1_ethereum_trades
     meta:
       blockchain: ethereum
       sector: dex
-      project: uniswap
+      project: uniswap_v1
       contributors: jeff-dude, masquot, soispoke
     config:
-      tags: ['ethereum','dex','trades', 'uniswap', 'jeff-dude']
+      tags: ['ethereum','uniswap_v1','trades', 'uniswap','dex']
     description: >
-        Uniswap trades on Ethereum across all contracts and versions. This table will load dex trades downstream.
+        Uniswap V1 contract trades on Ethereum
     columns:
       - &blockchain
         name: blockchain
@@ -81,41 +81,6 @@ models:
       - &unique_trade_id
         name: unique_trade_id
         description: "Unique trade ID built to track merge incremental strategy in the model"
-
-  - name: uniswap_v1_ethereum_trades
-    meta:
-      blockchain: ethereum
-      sector: dex
-      project: uniswap_v1
-      contributors: jeff-dude, masquot, soispoke
-    config:
-      tags: ['ethereum','uniswap_v1','trades', 'uniswap','dex']
-    description: >
-        Uniswap V1 contract trades on Ethereum
-    columns:
-      - *blockchain
-      - *project
-      - *version  
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index
-      - *unique_trade_id
         tests:
           - unique
 
@@ -153,8 +118,6 @@ models:
   #     - *trace_address
   #     - *evt_index
   #     - *unique_trade_id
-  #     tests:
-  #        - unique
 
   # - name: uniswap_v3_ethereum_trades
   #   meta:
@@ -190,5 +153,38 @@ models:
   #     - *trace_address
   #     - *evt_index
   #     - *unique_trade_id
-  #     tests:
-  #        - unique
+
+  - name: uniswap_ethereum_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: uniswap
+      contributors: jeff-dude, masquot, soispoke
+    config:
+      tags: ['ethereum','dex','trades', 'uniswap', 'jeff-dude']
+    description: >
+        Uniswap trades on Ethereum across all contracts and versions. This table will load dex trades downstream.
+    columns:
+      - *blockchain
+      - *project
+      - *version  
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *trace_address
+      - *evt_index
+      - *unique_trade_id
