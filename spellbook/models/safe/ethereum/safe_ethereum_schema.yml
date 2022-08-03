@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: safes_ethereum
+    meta:
+      blockchain: ethereum
+      sector: safe
+      project: safes
+      contibutors: scherbovich, tschubotz
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'ethereum']
+    description: "Safe addresses"
+    columns:
+      - name: address
+        description: "Safe contract address"
+      - name: creation_version
+        description: "Version of initially created safe"
+      - name: creation_date
+        description: "Date of safe creation"
+      - name: tx_hash
+        description: "Safe creation transaction hash"
