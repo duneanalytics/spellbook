@@ -8,9 +8,9 @@ models:
       project: uniswap
       contributors: jeff-dude, masquot, soispoke
     config:
-      tags: ['ethereum','dex','trades', 'uniswap']
+      tags: ['ethereum','dex','trades', 'uniswap', 'jeff-dude']
     description: >
-        Uniswap trades on Ethereum across all contracts and versions
+        Uniswap trades on Ethereum across all contracts and versions. This table will load dex trades downstream.
     columns:
       - &blockchain
         name: blockchain
