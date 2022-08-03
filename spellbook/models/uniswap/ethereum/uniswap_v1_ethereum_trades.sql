@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'uniswap_v1_ethereum',
+        schema = 'uniswap_v1_ethereum', --overwrite dbt project file schema name for version(s) of contracts
         alias ='trades',
         materialized ='incremental',
         file_format ='delta',
