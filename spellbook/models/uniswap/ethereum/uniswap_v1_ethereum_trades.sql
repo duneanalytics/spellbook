@@ -36,7 +36,7 @@ SELECT
     tx."to" AS tx_to,
     dexs.trace_address,
     dexs.evt_index,
-    'uniswap' ||'-'|| '1' ||'-'|| dexs.tx_hash ||'-'|| dexs.evt_index ||'-'|| dexs.trace_address as unique_trade_id
+    'uniswap' ||'-'|| '1' ||'-'|| dexs.tx_hash ||'-'|| dexs.evt_index ||'-'|| dexs.trace_address AS unique_trade_id
 FROM (
     -- Uniswap v1 TokenPurchase
     SELECT
