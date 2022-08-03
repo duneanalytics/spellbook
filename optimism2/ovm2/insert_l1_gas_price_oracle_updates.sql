@@ -101,7 +101,7 @@ WHERE NOT EXISTS (
 INSERT INTO cron.job (schedule, command)
 VALUES ('* * * * *', $$
  SELECT ovm2.insert_l1_gas_price_oracle_updates(
-        (SELECT MAX(block_number) FROM ovm2.l1_gas_price_oracle_updates WHERE block_time > NOW() - interval '1 week'),
+        (SELECT MAX(block_number) FROM ovm2.l1_gas_price_oracle_updates WHERE block_time > NOW() - interval '30 days'),
         (SELECT MAX(number) FROM optimism.blocks WHERE "time" > NOW() - interval '1 week')
         );
 $$)
