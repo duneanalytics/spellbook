@@ -26,15 +26,15 @@ with unit_tests as
 (
     select
         case
-            when test_data.token_a_amount = us_trades.token_a_amount
-                and test_data.token_b_amount = us_trades.token_b_amount
+            when test_data.token_a_amount = us_trades.token_bought_amount
+                and test_data.token_b_amount = us_trades.token_sold_amount
             then True
             else False
         end as price_test
     from {{ ref('uniswap_trades') }} us_trades
     join {{ ref('uniswap_v1_ethereum_trades_postgres') }} test_data
         on test_data.tx_hash = us_trades.tx_hash
-    where us_trades.blockchain = 'ethereum' and us_trades.version = 'v1'
+    where us_trades.blockchain = 'ethereum' and us_trades.version = '1'
 )
 select
     count(
