@@ -120,8 +120,9 @@ SELECT
     INNER JOIN {{ source('ethereum', 'transactions') }} tx ON trades.tx_hash = tx.hash and trades.block_time = tx.block_time
     LEFT JOIN niftygateway_erc_subsets erc ON erc.evt_tx_hash = trades.tx_hash
     LEFT JOIN {{ ref('tokens_ethereum_nft') }} as tokens ON tokens.contract_address = trades.nft_contract_address
-    LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', trades.block_time)
+    LEFT JOIN {{ source('prices', 'usd') }} p ON  p.minute = date_trunc('minute', trades.block_time)
         AND p.contract_address = trades.currency_token
+        AND p.blockchain = 'ethereum'
     LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20 ON erc20.contract_address = trades.currency_token
 
 
