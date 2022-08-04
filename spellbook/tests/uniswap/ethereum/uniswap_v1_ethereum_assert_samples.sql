@@ -31,7 +31,7 @@ with unit_tests as
             then True
             else False
         end as price_test
-    from {{ ref('uniswap_trades') }} us_trades
+    from {{ ref('uniswap_v1_ethereum_trades') }} us_trades
     join {{ ref('uniswap_v1_ethereum_trades_postgres') }} test_data
         on test_data.tx_hash = us_trades.tx_hash
     where us_trades.blockchain = 'ethereum' and us_trades.version = '1'
