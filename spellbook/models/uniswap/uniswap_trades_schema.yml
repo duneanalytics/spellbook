@@ -3,7 +3,7 @@ version: 2
 models:
   - name: uniswap_trades
     meta:
-      blockchain: cross-chain
+      blockchain: ethereum
       sector: dex
       project: uniswap
       contributors: jeff-dude, masquot, soispoke
