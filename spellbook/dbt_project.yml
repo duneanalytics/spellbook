@@ -28,6 +28,9 @@ models:
     ens:
       +schema: ens
       +materialized: view
+    dex:
+      +schema: dex
+      +materialized: view
     nft:
       +schema: nft
       ethereum:
