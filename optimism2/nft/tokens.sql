@@ -152,6 +152,11 @@ COPY nft.tokens (contract_address, project_name) FROM stdin;
 \\xcb2a50bebe8e118c260867a813e5ed3752b12f29	OptiKitties
 \\x7b95fe8957387FCa48ac7c94Ca073a56A471fD2a	Aetherwarden
 \\x9b66424ad77a243f4b3cc5b59b236162b39f5b02	Optimistic Dishes #1
+\\x5c9D55b78FEBCC2061715BA4f57EcF8EA2711F2c	motorheadz
+\\x76c9fb6ae4151e00bbdbf9B771CF84DE42a31636	Oppa Bear Pixel
+\\x0f027dD51D793b91e630AdFb268a61A54fe1c7Bc	Goblin Town Hero
+\\x81b30ff521D1fEB67EDE32db726D95714eb00637	Optimistic Explorer
+\\x72294ea069FCafB98a960CAdF80B2452360e44E1	Silly Seals
 \.
 
 COMMIT;
