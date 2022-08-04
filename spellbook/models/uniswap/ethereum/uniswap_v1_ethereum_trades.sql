@@ -7,36 +7,9 @@
     unique_key = 'unique_trade_id'
     )
 }}
-SELECT
-    'ethereum' AS blockchain
-    ,'uniswap' AS project
-    ,'1' AS version
-    ,dexs.block_time
-    ,erc20a.symbol AS token_bought_symbol
-    ,erc20b.symbol AS token_sold_symbol
-    ,'' AS token_pair --todo: determine value here
-    ,dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount
-    ,dexs.token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount
-    ,dexs.token_bought_amount_raw
-    ,dexs.token_sold_amount_raw
-    ,coalesce(
-        dexs.amount_usd
-        ,(dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
-        ,(dexs.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
-    ) AS amount_usd
-    ,dexs.token_bought_address
-    ,dexs.token_sold_address
-    ,coalesce(dexs.taker, tx.from) AS taker -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
-    ,dexs.maker
-    ,dexs.project_contract_address
-    ,dexs.tx_hash
-    ,tx.from AS tx_from
-    ,tx.to AS tx_to
-    ,dexs.trace_address
-    ,dexs.evt_index
-    ,'uniswap' ||'-'|| '1' ||'-'|| dexs.tx_hash ||'-'|| IFNULL(dexs.evt_index, '') ||'-'|| IFNULL(dexs.trace_address, '') AS unique_trade_id
-FROM (
-    -- Uniswap v1 TokenPurchase
+WITH dexs AS
+(
+        -- Uniswap v1 TokenPurchase
     SELECT
         t.evt_block_time AS block_time
         ,t.buyer AS taker
@@ -81,7 +54,36 @@ FROM (
     {% if is_incremental() %}
     WHERE t.evt_block_time >= (SELECT COALESCE(MAX(block_time), '1900-01-01 00:00') FROM {{ this }})
     {% endif %}
-) dexs
+)
+SELECT
+    'ethereum' AS blockchain
+    ,'uniswap' AS project
+    ,'1' AS version
+    ,dexs.block_time
+    ,erc20a.symbol AS token_bought_symbol
+    ,erc20b.symbol AS token_sold_symbol
+    ,'' AS token_pair --todo: determine value here
+    ,dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount
+    ,dexs.token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount
+    ,dexs.token_bought_amount_raw
+    ,dexs.token_sold_amount_raw
+    ,coalesce(
+        dexs.amount_usd
+        ,(dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
+        ,(dexs.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
+    ) AS amount_usd
+    ,dexs.token_bought_address
+    ,dexs.token_sold_address
+    ,coalesce(dexs.taker, tx.from) AS taker -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
+    ,dexs.maker
+    ,dexs.project_contract_address
+    ,dexs.tx_hash
+    ,tx.from AS tx_from
+    ,tx.to AS tx_to
+    ,dexs.trace_address
+    ,dexs.evt_index
+    ,'uniswap' ||'-'|| '1' ||'-'|| dexs.tx_hash ||'-'|| IFNULL(dexs.evt_index, '') ||'-'|| IFNULL(dexs.trace_address, '') AS unique_trade_id
+FROM dexs
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON dexs.tx_hash = tx.hash
     {% if is_incremental() %}
