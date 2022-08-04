@@ -2,10 +2,10 @@
 
 with unit_tests as (
     select count(*)
-    from {{ ref('safes_ethereum') }}
-    where creation_time between '2022-08-02' and '2022-08-03'
+    from {{ ref('safe_ethereum_safes') }}
+    where creation_time between '2022-01-01' and '2022-08-03'
 )
 
-select case when count(*) = 206 then true else false end as test
+select case when count(*) = 43704 then true else false end as test
 from unit_tests
 where test = false

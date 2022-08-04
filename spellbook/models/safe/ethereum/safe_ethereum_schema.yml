@@ -1,11 +1,10 @@
 version: 2
 
 models:
-  - name: safes_ethereum
+  - name: safe_ethereum_safes
     meta:
       blockchain: ethereum
-      sector: safe
-      project: safes
+      project: safe
       contibutors: scherbovich, tschubotz
     freshness:
       warn_after: { count: 12, period: hour }

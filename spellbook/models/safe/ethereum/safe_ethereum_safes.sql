@@ -20,9 +20,9 @@ select
     end as creation_version,
     et.block_time as creation_time,
     et.tx_hash
-from ethereum.traces et 
+from {{ source('ethereum', 'traces') }} et 
 where et.success = true
-    and et.call_type = 'delegatecall' -- The delegate call to the master copy is the Safe address
+    and et.call_type = 'delegatecall' -- the delegate call to the master copy is the Safe address    
     and (
             (substring(et.input, 0, 10) = '0x0ec78d9e' -- setup methods of v0.1.0
                 and et.to = '0x8942595A2dC5181Df0465AF0D7be08c8f23C93af') -- mastercopy v0.1.0
