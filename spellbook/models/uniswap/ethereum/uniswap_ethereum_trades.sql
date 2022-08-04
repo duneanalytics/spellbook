@@ -1,7 +1,6 @@
- {{
-        config(
-               alias='trades'
-               )
+ {{ config(
+       alias='trades'
+       )
 }}
 
 SELECT *
