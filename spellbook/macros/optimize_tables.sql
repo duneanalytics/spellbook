@@ -56,8 +56,20 @@ OPTIMIZE nft.burns;
 OPTIMIZE nft.fees;
 {% endset %}
 
-{% set uniswap_trades %}
+{% set uniswap_v1_ethereum_trades %}
 OPTIMIZE uniswap_v1_ethereum.trades;
+{% endset %}
+
+{% set uniswap_ethereum_trades %}
+OPTIMIZE uniswap_ethereum.trades;
+{% endset %}
+
+{% set uniswap_trades %}
+OPTIMIZE uniswap.trades;
+{% endset %}
+
+{% set dex_trades %}
+OPTIMIZE dex.trades;
 {% endset %}
 
 {% do run_query(transfers_ethereum_erc20_agg_hour) %}
@@ -75,6 +87,9 @@ OPTIMIZE uniswap_v1_ethereum.trades;
 {% do run_query(nft_burns) %}
 {% do run_query(nft_fees) %}
 {% do run_query(uniswap_v1_ethereum_trades) %}
+{% do run_query(uniswap_ethereum_trades) %}
+{% do run_query(uniswap_trades) %}
+{% do run_query(dex_trades) %}
 
 
 {% do log("Tables Optimized", info=True) %}
