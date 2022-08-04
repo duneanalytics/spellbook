@@ -3782,6 +3782,7 @@ FROM (VALUES
           ('0xcafe001067cdef266afb7eb5a286dcfd277f3de5', 'PSP', 18),
           ('0xe3fedaecd47aa8eab6b23227b0ee56f092c967a9', 'PST', 18),
           ('0x519c1001d550c0a1dae7d1fc220f7d14c2a521bb', 'PSWAP', 18),
+          ('0xdd4d117723C257CEe402285D3aCF218E9A8236E1', 'PTaUSDC', 6),
           ('0x51bb9c623226ce781f4a54fc8f4a530a47142b6b', 'PTE', 18),
           ('0x02eca910cb3a7d43ebc7e8028652ed5c6b70259b', 'PTERIA', 18),
           ('0xc57d533c50bc22247d49a368880fb49a1caa39f7', 'PTF', 18),
