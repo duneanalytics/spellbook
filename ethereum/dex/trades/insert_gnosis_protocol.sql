@@ -76,11 +76,11 @@ WITH rows AS (
 
         UNION ALL
 
-        -- V2
+        -- V2 - Formerly Gnosis Protocol (renamed CoW Protocol)
         SELECT
             t.evt_block_time AS block_time,
-            'Gnosis Protocol' AS project,
-            '2' AS version,
+            'CoW Protocol' AS project,
+            '1' AS version,
             'Aggregator' AS category,
             t.owner AS trader_a,
             NULL::bytea AS trader_b,
@@ -162,15 +162,15 @@ WHERE NOT EXISTS (
     FROM dex.trades
     WHERE block_time > '2021-01-01'
     AND block_time <= now() - interval '20 minutes'
-    AND project = 'Gnosis Protocol'
+    AND project = 'CoW Protocol'
 );
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
     SELECT dex.insert_gnosis_protocol(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Gnosis Protocol'),
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='CoW Protocol'),
         (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Gnosis Protocol')),
+        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='CoW Protocol')),
         (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
