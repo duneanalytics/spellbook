@@ -11,7 +11,7 @@
 
 select 
     s.address,
-    date_trunc('day', et.block_time) as day,
+    et.block_time,
     -value as amount_raw
 from {{ source('ethereum', 'traces') }} et
 join {{ ref('safe_ethereum_safes') }} s on et.from = s.address
@@ -27,7 +27,7 @@ union all
     
 select 
     s.address, 
-    date_trunc('day', et.block_time) as day,
+    et.block_time,
     value as amount_raw
 from {{ source('ethereum', 'traces') }} et
 join {{ ref('safe_ethereum_safes') }} s on et.to = s.address

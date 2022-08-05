@@ -36,7 +36,7 @@ models:
     columns:
       - name: address
         description: "Safe contract address"
-      - name: date
+      - name: block_time
         description: "Date of Eth transfer"
       - name: amount_raw
         description: "Raw amount of transfered Eth"
