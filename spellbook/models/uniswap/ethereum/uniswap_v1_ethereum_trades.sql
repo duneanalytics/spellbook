@@ -60,7 +60,7 @@ SELECT
     'ethereum' AS blockchain
     ,'uniswap' AS project
     ,'1' AS version
-    ,date_trunc('YEAR', dexs.block_time) AS block_date
+    ,date_trunc('DAY', dexs.block_time) AS block_date
     ,dexs.block_time
     ,erc20a.symbol AS token_bought_symbol
     ,erc20b.symbol AS token_sold_symbol
