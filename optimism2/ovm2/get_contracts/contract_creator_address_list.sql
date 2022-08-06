@@ -309,6 +309,7 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x000061c160273811279508582A4AfaBc263D98d2	Project Galaxy
 \\x985A29E88E75394DbDaE41a269409f701ccf6a43	QiDao
 \\x7E8A8b130272430008eCa062419ACD8B423d339D	Rango Exchange
+\\xC7f8D87734aB2cbf70030aC8aa82abfe3e8126cb	Premia
 \.
 
 COMMIT;
