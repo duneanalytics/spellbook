@@ -1,3 +1,6 @@
+CREATE SCHEMA IF NOT EXISTS opensea
+;
+
 CREATE TABLE IF NOT EXISTS opensea.trades (
     block_time timestamptz
    ,nft_contract_address bytea
