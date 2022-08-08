@@ -559,3 +559,8 @@
   id: babydoge-baby-doge-coin
   name: babydoge_baby_doge_coin
   symbol: BabyDoge
+- address: '0x9798dF2f5d213a872c787bD03b2b91F54D0D04A1'
+  decimals: 18
+  id: tbc-terablock
+  name: TeraBlock Token
+  symbol: TBC
