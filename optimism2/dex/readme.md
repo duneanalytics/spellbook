@@ -21,12 +21,7 @@ Since we do not yet have price feeds for Optimism tokens, these tables pull USD 
 #### Remaining to be added
 Want to contribute to building dex.trades on Optimism? Here are some examples of DEXs and Aggregators that need insert queries built:
 - _**DEXs:** Kromatika, etc_
-- _**Aggregators:** Slingshot_
+- _**Aggregators:** Slingshot, Firebird, KyberSwap_
 
-_Other Cases (how to handle this - TBD)_
-
-To be figured out if these should belong in dex.trades or their own abstraction layers
-- _**Perpetuals:** Perpetual Protocol, Pika Protocol, Kewnta (Synthetix)_
-- _**Options:** Lyra, Thales_
 
 [OP DeFi Apps List](https://www.optimism.io/apps/defi)
