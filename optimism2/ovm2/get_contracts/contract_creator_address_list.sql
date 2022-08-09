@@ -136,7 +136,7 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x8602ee2f8aaeb671e409b26d48e36dd8cc3b7ed7	ZipSwap
 \\xf7c1daf7443d7307df13c81f5f0328d4c7803e7b	BoringDAO
 \\x38e63793993ae54be374d129f34a3faf2c382e97	TokenFunder
-\\xbb6e024b9cffacb947a71991e386681b1cd1477d	Tornado Cash
+\\xbb6e024b9cffacb947a71991e386681b1cd1477d	NULL
 \\x512472840327530ea03cce6f58966b221f3a8b6a	Perpetual Protocol
 \\x56cf1fa9185e42e90205e955e299f33b6204da59	DoraHacks
 \\x6336cf6f9a7abb9efa86c04ac29541f015dd58b1	XmasBook
