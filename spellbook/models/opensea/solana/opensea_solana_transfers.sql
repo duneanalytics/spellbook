@@ -20,16 +20,15 @@ with iv_raw as (
                 else instructions[7]
            end inst
       from {{ source('solana','transactions') }}
-     where 1=1
-       and success
-{% if is_incremental() %}
--- this filter will only be applied on an incremental run
-       AND block_date > now() - interval 2 days
-{% endif %} 
-       and block_date > '2022-04-06'
-       AND block_slot > 128251864
-       and array_contains(account_keys, '3o9d13qUvEuuauhFrVom1vuCzgNsJifeaBYDPquaT73Y') -- opensea auction house
-       and array_contains(log_messages, 'Program log: Instruction: ExecuteSale')
+      where 1=1
+      and success
+      {% if is_incremental() %}
+      AND block_date > (select max(block_time) from {{ this }}) - interval 2 days
+      {% endif %} 
+      and block_date > '2022-04-06'
+      AND block_slot > 128251864
+      and array_contains(account_keys, '3o9d13qUvEuuauhFrVom1vuCzgNsJifeaBYDPquaT73Y') -- opensea auction house
+      and array_contains(log_messages, 'Program log: Instruction: ExecuteSale')
 )
 ,iv_raw2 as (
     select a.*
@@ -126,8 +125,12 @@ with iv_raw as (
            ,royalty_list
            ,id as unique_trade_id
       from iv_raw2 a
-           left join {{ source('prices', 'usd') }} p on p.minute = date_trunc('minute', block_time)
-                                  and p.symbol = 'SOL'
+      left join {{ source('prices', 'usd') }} p on p.minute = date_trunc('minute', block_time)
+            and p.symbol = 'SOL'
+            {% if is_incremental() %}
+            AND p.minute > (select max(block_time) from {{ this }}) - interval 2 days
+            {% endif %}
 )
 select *
-  from iv_nft_trades
+from iv_nft_trades
+;
