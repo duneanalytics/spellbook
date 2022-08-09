@@ -86,7 +86,7 @@ WITH
         SELECT 
             *
         FROM {{ source('ethereum','transactions') }}
-    )
+    ),
 
     tokens_ethereum_nft as (
         SELECT 
@@ -105,7 +105,7 @@ WITH
             *
         FROM {{ source('prices','usd') }}
         WHERE symbol = 'WETH'
-    )
+    ),
 
 --logic CTEs
     swaps_w_fees as (
@@ -115,6 +115,7 @@ WITH
             SELECT
                 call_tx_hash
                 , call_block_time
+                , call_block_number
                 , contract_address as pair_address
                 , call_trace_address
                 , ownerfee 
@@ -181,7 +182,6 @@ WITH
             , call_block_time as block_time 
             , call_block_number as block_number
             , token_id
-            , tokens.name AS collection
             , 'ERC721' as token_standard
             , cardinality(token_id) as number_of_items
             , CASE WHEN cardinality(token_id) > 1 THEN 'Bundle Trade'
@@ -201,8 +201,6 @@ WITH
             -- amount_usd
             , nftcontractaddress as nft_contract_address
             , '0xb16c1342e617a5b6e4b631eb114483fdb289c0a4' as project_contract_address --not sure what this is? I put their main factory for now
-            , null as aggregator_name --todo after at least one aggregator integrates
-            , null as aggregator_address --todo after at least one aggregator integrates
             , call_tx_hash as tx_hash
             , null as evt_index --we didn't use events in our case for decoding, so this will be null until we find a way to tie it together.
             , base_price*protocolfee as platform_fee_amount_raw
@@ -215,23 +213,27 @@ WITH
             , pair_address as royalty_fee_receive_address
             , 'ETH' as royalty_fee_currency_symbol
         FROM swaps_w_traces
-        LEFT JOIN tokens_ethereum_nft tokens ON nftcontractaddress = tokens.contract_address
     ),
 
     swaps_cleaned_w_metadata as (
         SELECT 
             sc.*
+            , tokens.name AS collection
+            , agg.name as aggregator_name
+            , agg.contract_address as aggregator_address
             , sc.amount_original*pu.price as amount_usd 
             , sc.royalty_fee_amount*pu.price as royalty_fee_amount_usd
             , sc.platform_fee_amount*pu.price as platform_fee_amount_usd
             , tx.from 
             , tx.to 
-            , 'sudoswap-' || sc.tx_hash || '-' || sc.nft_contract_address || sc.token_id || '-' || sc.seller || '-' || sc.amount_original || 'Trade' AS unique_trade_id
+            , 'sudoswap-' || sc.tx_hash || '-' || sc.nft_contract_address || sc.token_id::string || '-' || sc.seller || '-' || sc.amount_original::string || 'Trade' AS unique_trade_id
         FROM swaps_cleaned sc
         LEFT JOIN prices_usd_eth pu ON pu.blockchain='ethereum'
             AND date_trunc('minute', pu.minute)=date_trunc('minute', sc.block_time)
             --add in `pu.contract_address = sc.currency_address` in the future when ERC20 pairs are added in.
         LEFT JOIN eth_transactions tx ON tx.hash=sc.tx_hash
+        LEFT JOIN nft_ethereum_aggregators agg ON agg.contract_address = tx.to --assumes aggregator is the top level call. Will need to change this to check for agg calls in internal traces later on.
+        LEFT JOIN tokens_ethereum_nft tokens ON nft_contract_address = tokens.contract_address
     )
 
 --final SELECT CTE
