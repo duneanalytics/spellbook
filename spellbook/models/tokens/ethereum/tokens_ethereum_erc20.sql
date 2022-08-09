@@ -6546,5 +6546,17 @@ FROM (VALUES
           ('0x952B771bfd71A370391DD072bEce8C3E843FBb54', 'MIKASA', 18),
           ('0x9af28adEd262b48E7bF3396388a6aC71dE95053F', 'SUNSET', 9),
           ('0xAFCdd4f666c84Fed1d8BD825aA762e3714F652c9', 'VINU', 18),
-          ('0x8CC0F052fff7eaD7f2EdCCcaC895502E884a8a71', 'ARTH', 18)
+          ('0x8CC0F052fff7eaD7f2EdCCcaC895502E884a8a71', 'ARTH', 18),
+          ('0x014550a34149231b8432b8dd210fadd81b1d2668', 'SHEESH', 18),
+          ('0x29ec87adb799d33ae8dd27deda38422a2e02cf82', 'Shards', 18),
+          ('0x30dcba0405004cf124045793e1933c798af9e66a', 'YDF', 18),
+          ('0x3f45c49d6a2ab9ebad00557652f8c5b310688793', 'PRT', 18),
+          ('0x4828c56d35a82c9cc5329fed06224ac836982a22', 'TSYGAN', 18),
+          ('0x5b46d3611d992cde2381a7c43e75c1ea6d999238', 'UFO2', 18),
+          ('0x691401ff2f304091d5891e28639b7eed4c4201f9', 'CMON', 18),
+          ('0x6a80c25f6ef3c24e3059a1d1d6e92e123af7cbde', 'PERITAS', 9),
+          ('0x7316db052aea5330255edff41b8577dd7ad2f855', 'SCAM', 9),
+          ('0x78d9a9355a7823887868492c47368956ea473618', 'BASTARD', 18),
+          ('0x9c354503c38481a7a7a51629142963f98ecc12d0', 'OGV', 18),
+          ('0xc55126051b22ebb829d00368f4b12bde432de5da', 'BTRFLY', 18)
      ) AS temp_table (contract_address, symbol, decimals)
