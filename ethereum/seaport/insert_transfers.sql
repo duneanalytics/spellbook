@@ -696,6 +696,7 @@ with p1_call as (
                           ,a.*
                       from p4_call a
                     ) a
+             where nft_transfer_count > 0  -- some of trades without NFT happens in match_order
             ) a
 )
 ,p4_transfer_level as (

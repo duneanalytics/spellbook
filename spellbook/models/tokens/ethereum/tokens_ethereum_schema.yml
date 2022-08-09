@@ -39,7 +39,7 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: dot2dotseurat, hildobby
+      contributors: dot2dotseurat, hildobby, 0xbitfly
     config:
       tags: ['tokens', 'ethereum', 'nft', 'erc721']
     description: >

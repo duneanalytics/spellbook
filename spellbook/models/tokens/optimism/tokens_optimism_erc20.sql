@@ -187,5 +187,6 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0xb12c13e66AdE1F72f71834f2FC5082Db8C091358','ROOBEE', 18)
 ,('0xC22885e06cd8507c5c74a948C59af853AEd1Ea5C','USDD', 18)
 ,('0xd6909e9e702024eb93312B989ee46794c0fB1C9D','BICO', 18)
+,('0x62BB4fc73094c83B5e952C2180B23fA7054954c4','PTaOptUSDC', 6)
   
 ) AS temp_table (contract_address, symbol, decimals)

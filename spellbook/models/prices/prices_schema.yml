@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: usd_latest
+    meta:
+      sector: prices
+      contributors: hildobby
+    config:
+      tags: ['prices', 'usd', 'latest']
+    description: "Latest prices table across blockchains"
+    columns:
+      - name: minute
+        description: "UTC event block time truncated to the minute mark"
+      - name: blockchain
+        description: "Native blockchain of the token"
+      - name: contract_address
+        description: "Contract address of the token"
+      - name: symbol
+        description: "Token symbol"
+      - name: price
+        description: "USD price of a token"

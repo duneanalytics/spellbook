@@ -398,12 +398,12 @@ WHERE NOT EXISTS (
 );
 
 
--- INSERT INTO cron.job (schedule, command)
--- VALUES ('14,29,44,59 * * * *', $$
---  SELECT ovm2.insert_get_contracts(
---         (SELECT MAX("created_time") FROM ovm2.get_contracts WHERE block_time > NOW() - interval '1 month')::timestamptz,
---         (SELECT MAX("time") FROM optimism.blocks WHERE "time" > NOW() - interval '1 week')::timestamptz,
--- 	 NULL::bytea[]
---         );
--- $$)
--- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+INSERT INTO cron.job (schedule, command)
+VALUES ('14,29,44,59 * * * *', $$
+ SELECT ovm2.insert_get_contracts(
+        (SELECT MAX("created_time") FROM ovm2.get_contracts)::timestamptz,
+        (SELECT MAX("time") FROM optimism.blocks WHERE "time" > NOW() - interval '1 month')::timestamptz,
+	 NULL::bytea[]
+        );
+$$)
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
