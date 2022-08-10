@@ -344,7 +344,7 @@ ALTER TABLE uniswap_v1_ethereum.trades SET TBLPROPERTIES('dune.public'='true',
 {% endset %}
 
 {% set uniswap_ethereum_trades %}
-ALTER TABLE uniswap_ethereum.trades SET TBLPROPERTIES('dune.public'='true',
+ALTER VIEW uniswap_ethereum.trades SET TBLPROPERTIES('dune.public'='true',
                                                         'dune.data_explorer.blockchains'='["ethereum"]',
                                                         'dune.data_explorer.category'='abstraction',
                                                         'dune.data_explorer.abstraction.type'='project',
@@ -353,7 +353,7 @@ ALTER TABLE uniswap_ethereum.trades SET TBLPROPERTIES('dune.public'='true',
 {% endset %}
 
 {% set uniswap_trades %}
-ALTER TABLE uniswap.trades SET TBLPROPERTIES('dune.public'='true',
+ALTER VIEW uniswap.trades SET TBLPROPERTIES('dune.public'='true',
                                                 'dune.data_explorer.blockchains'='["ethereum"]',
                                                 'dune.data_explorer.category'='abstraction',
                                                 'dune.data_explorer.abstraction.type'='project',
@@ -362,7 +362,7 @@ ALTER TABLE uniswap.trades SET TBLPROPERTIES('dune.public'='true',
 {% endset %}
 
 {% set dex_trades %}
-ALTER TABLE dex.trades SET TBLPROPERTIES('dune.public'='true',
+ALTER VIEW dex.trades SET TBLPROPERTIES('dune.public'='true',
                                             'dune.data_explorer.blockchains'='["ethereum"]',
                                             'dune.data_explorer.category'='abstraction',
                                             'dune.data_explorer.abstraction.type'='sector',
