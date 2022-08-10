@@ -20,7 +20,7 @@ WITH
         FROM {{ source('sudo_amm_ethereum','LSSVMPairFactory_call_createPairETH') }}
         WHERE call_success
     ),
-    
+
     swaps as (
         SELECT 
             * 
@@ -72,6 +72,7 @@ WITH
             where call_block_time >= (select max(block_time) from {{ this }})
             {% endif %}
         ) s
+        WHERE call_success
     ),
 
     owner_fee_update as (

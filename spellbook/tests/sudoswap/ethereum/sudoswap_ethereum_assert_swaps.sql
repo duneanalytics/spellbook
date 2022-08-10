@@ -61,6 +61,7 @@ WITH
                     join pairs_created pc ON s3.contract_address = pc.pair_address
                     where call_block_time >= '2022-07-10' AND call_block_time <= '2022-08-10'
                 ) s
+                WHERE call_success
             )
 
         SELECT 
