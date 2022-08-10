@@ -224,7 +224,7 @@ WITH
             AND symbol = 'WETH'
             AND pu.minute > (SELECT min(call_block_time) FROM swaps)
             --add in `pu.contract_address = sc.currency_address` in the future when ERC20 pairs are added in.
-        LEFT JOIN eth_transactions tx ON tx.hash=sc.tx_hash AND tx.block_time > (SELECT min(call_block_time) FROM swaps)
+        LEFT JOIN {{ source('ethereum', 'transactions') }} tx ON tx.hash=sc.tx_hash AND tx.block_time > (SELECT min(call_block_time) FROM swaps)
         LEFT JOIN nft_ethereum_aggregators agg ON agg.contract_address = tx.to --assumes aggregator is the top level call. Will need to change this to check for agg calls in internal traces later on.
         LEFT JOIN tokens_ethereum_nft tokens ON nft_contract_address = tokens.contract_address
     )
