@@ -17,10 +17,10 @@
     --remove bad data
     DELETE FROM prices.approx_prices_from_dex_data
     WHERE hour > '2022-03-16'::date;
+    --cron should pick up new prices
     
-    --insert new data
-    SELECT prices.insert_approx_prices_from_dex_data(
-            '2022-03-16'::date,
-            (SELECT max_time FROM ovm2.view_last_updated)
-        );
-
+--dex trades
+    --remove bad data
+    DELETE FROM dex.trades
+    WHERE hour > '2022-03-16'::date;
+    --cron should pick up new trades
