@@ -1,10 +1,5 @@
 {{ config(
-        alias ='trades',
-        partition_by = ['block_date'],
-        materialized ='incremental',
-        file_format ='delta',
-        incremental_strategy='merge',
-        unique_key='unique_trade_id'
+        alias ='trades'
         )
 }}
 
@@ -37,9 +32,6 @@ FROM
                 ,evt_index
                 ,unique_trade_id
         FROM {{ ref('uniswap_v1_ethereum_trades') }}
-        {% if is_incremental() %}
-        WHERE block_time > now() - interval 2 days -- this filter will only be applied on an incremental run
-        {% endif %} 
        -- UNION
        -- SELECT
                 -- blockchain
@@ -67,9 +59,6 @@ FROM
                 -- ,evt_index
                 -- ,unique_trade_id
        -- FROM {{ ref('uniswap_v2_ethereum_trades') }}
-       --  {% if is_incremental() %}
-       --  WHERE block_time > now() - interval 2 days -- this filter will only be applied on an incremental run
-       --  {% endif %} 
        -- UNION
        -- SELECT
                 -- blockchain
@@ -97,7 +86,4 @@ FROM
                 -- ,evt_index
                 -- ,unique_trade_id
        -- FROM {{ ref('uniswap_v3_ethereum_trades') }}
-       --  {% if is_incremental() %}
-       --  WHERE block_time > now() - interval 2 days -- this filter will only be applied on an incremental run
-       --  {% endif %} 
 )
