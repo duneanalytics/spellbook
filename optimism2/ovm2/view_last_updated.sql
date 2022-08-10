@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW ovm2.op_last_updated AS (
+CREATE OR REPLACE VIEW ovm2.view_last_updated AS (
 
     SELECT
     MAX(block_time) max_time,
