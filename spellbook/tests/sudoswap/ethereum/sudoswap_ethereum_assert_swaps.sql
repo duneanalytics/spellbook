@@ -32,6 +32,7 @@ WITH
                     FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapNFTsForToken') }} s1
                     join pairs_created pc ON s1.contract_address = pc.pair_address
                     where call_block_time >= '2022-07-10' AND call_block_time <= '2022-08-10'
+                    AND call_success = true
 
                     UNION ALL
                     SELECT 
@@ -46,6 +47,7 @@ WITH
                     FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapTokenForAnyNFTs') }} s2
                     join pairs_created pc ON s2.contract_address = pc.pair_address
                     where call_block_time >= '2022-07-10' AND call_block_time <= '2022-08-10'
+                    AND call_success = true
 
                     UNION ALL
                     SELECT
@@ -60,8 +62,8 @@ WITH
                     FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapTokenForSpecificNFTs') }} s3
                     join pairs_created pc ON s3.contract_address = pc.pair_address
                     where call_block_time >= '2022-07-10' AND call_block_time <= '2022-08-10'
+                    AND call_success = true
                 ) s
-                WHERE call_success
             )
 
         SELECT 

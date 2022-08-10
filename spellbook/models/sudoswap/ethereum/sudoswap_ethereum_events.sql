@@ -35,9 +35,10 @@ WITH
                 , tokenRecipient as call_from
                 , 'Sell' as trade_category 
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapNFTsForToken') }}
+            WHERE call_success = true
             {% if is_incremental() %}
             -- this filter will only be applied on an incremental run. We only want to update with new swaps.
-            where call_block_time >= (select max(block_time) from {{ this }})
+            AND call_block_time >= (select max(block_time) from {{ this }})
             {% endif %}
 
             UNION ALL
@@ -51,9 +52,10 @@ WITH
                 , nftRecipient as call_from
                 , 'Buy' as trade_category 
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapTokenForAnyNFTs') }}
+            WHERE call_success = true
             {% if is_incremental() %}
             -- this filter will only be applied on an incremental run. We only want to update with new swaps.
-            where call_block_time >= (select max(block_time) from {{ this }})
+            AND call_block_time >= (select max(block_time) from {{ this }})
             {% endif %}
 
             UNION ALL
@@ -67,12 +69,12 @@ WITH
                 , nftRecipient as call_from
                 , 'Buy' as trade_category 
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapTokenForSpecificNFTs') }}
+            WHERE call_success = true
             {% if is_incremental() %}
             -- this filter will only be applied on an incremental run. We only want to update with new swaps.
-            where call_block_time >= (select max(block_time) from {{ this }})
+            AND call_block_time >= (select max(block_time) from {{ this }})
             {% endif %}
         ) s
-        WHERE call_success
     ),
 
     owner_fee_update as (
