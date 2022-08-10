@@ -10,11 +10,11 @@
 }}
 WITH dexs AS
 (
-        -- Uniswap v1 TokenPurchase
+    -- Uniswap v1 TokenPurchase
     SELECT
         t.evt_block_time AS block_time
         ,t.buyer AS taker
-        ,NULL AS maker
+        ,'' AS maker
         ,t.tokens_bought AS token_bought_amount_raw
         ,t.eth_sold AS token_sold_amount_raw
         ,NULL AS amount_usd
@@ -22,7 +22,7 @@ WITH dexs AS
         ,'0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS token_sold_address --Using WETH for easier joining with USD price table
         ,t.contract_address AS project_contract_address
         ,t.evt_tx_hash AS tx_hash
-        ,NULL AS trace_address
+        ,'' AS trace_address
         ,t.evt_index
     FROM
         {{ source('uniswap_ethereum', 'Exchange_evt_TokenPurchase') }} t
@@ -38,7 +38,7 @@ WITH dexs AS
     SELECT
         t.evt_block_time AS block_time
         ,t.buyer AS taker
-        ,NULL AS maker
+        ,'' AS maker
         ,t.eth_bought AS token_bought_amount_raw
         ,t.tokens_sold AS token_sold_amount_raw
         ,NULL AS amount_usd
@@ -46,7 +46,7 @@ WITH dexs AS
         ,f.token AS token_sold_address
         ,t.contract_address AS project_contract_address
         ,t.evt_tx_hash AS tx_hash
-        ,NULL AS trace_address
+        ,'' AS trace_address
         ,t.evt_index
     FROM
         {{ source('uniswap_ethereum', 'Exchange_evt_EthPurchase') }} t
@@ -60,7 +60,7 @@ SELECT
     'ethereum' AS blockchain
     ,'uniswap' AS project
     ,'1' AS version
-    ,date_trunc('DAY', dexs.block_time) AS block_date
+    ,TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
     ,dexs.block_time
     ,erc20a.symbol AS token_bought_symbol
     ,erc20b.symbol AS token_sold_symbol
