@@ -9,7 +9,7 @@ SELECT chainlink.insert_price_feeds(
 ;
 --overall prices
 SELECT prices.insert_approx_prices_from_dex_data(
-        	'2022-03-16'::date,
-        	(SELECT max_time FROM ovm2.view_last_updated)
-    	);
+        '2022-03-16'::date,
+        (SELECT max_time FROM ovm2.view_last_updated)
+    );
 
