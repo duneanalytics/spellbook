@@ -156,13 +156,17 @@ seeds:
     ens:
       +enabled: true
       +schema: test_data
-    uniswap:
-      ethereum:
-        +enabled: true
-        +schema: test_data
-        uniswap_v1_ethereum_trades_postgres:
-          +column_types:
-            block_time: timestamp
-            tx_hash: string
-            token_a_amount: float #tbd if valid data type, maybe double or just string
-            token_b_amount: float #tbd if valid data type, maybe double or just string
+    dex:
+      +enabled: true
+      +schema: test_data
+      trades:
+        +column_types:
+          blockchain: string
+          project: string
+          version: string
+          block_time: timestamp
+          tx_hash: string
+          token_bought_address: string
+          token_bought_amount: float #tbd if valid data type, maybe double or just string
+          token_sold_address: string
+          token_sold_amount: float #tbd if valid data type, maybe double or just string
