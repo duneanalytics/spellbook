@@ -23,6 +23,11 @@ WITH
                 , tokenRecipient as call_from
                 , 'Sell' as trade_category 
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapNFTsForToken') }}
+            {% if is_incremental() %}
+            -- this filter will only be applied on an incremental run. We only want to update with new swaps.
+            where call_block_time >= (select max(block_time) from {{ this }})
+            {% endif %}
+
             UNION ALL
             SELECT 
                 contract_address
@@ -34,6 +39,11 @@ WITH
                 , nftRecipient as call_from
                 , 'Buy' as trade_category 
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapTokenForAnyNFTs') }}
+            {% if is_incremental() %}
+            -- this filter will only be applied on an incremental run. We only want to update with new swaps.
+            where call_block_time >= (select max(block_time) from {{ this }})
+            {% endif %}
+
             UNION ALL
             SELECT
                 contract_address
@@ -45,11 +55,11 @@ WITH
                 , nftRecipient as call_from
                 , 'Buy' as trade_category 
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapTokenForSpecificNFTs') }}
+            {% if is_incremental() %}
+            -- this filter will only be applied on an incremental run. We only want to update with new swaps.
+            where call_block_time >= (select max(block_time) from {{ this }})
+            {% endif %}
         ) s
-        {% if is_incremental() %}
-        -- this filter will only be applied on an incremental run. We only want to update with new swaps.
-        AND s.call_block_time >= (select max(block_time) from {{ this }})
-        {% endif %}
     ),
 
     pairs_created as (
@@ -76,18 +86,6 @@ WITH
         FROM {{ source('sudo_amm_ethereum','LSSVMPairFactory_evt_ProtocolFeeMultiplierUpdate') }}
     ),
 
-    eth_traces as (
-        SELECT 
-            * 
-        FROM {{ source('ethereum', 'traces') }}
-    ),
-
-    eth_transactions as (
-        SELECT 
-            *
-        FROM {{ source('ethereum','transactions') }}
-    ),
-
     tokens_ethereum_nft as (
         SELECT 
             *
@@ -98,13 +96,6 @@ WITH
         SELECT 
             *
         FROM {{ ref('nft_ethereum_aggregators') }}
-    ),
-
-    prices_usd_eth as (
-        SELECT 
-            *
-        FROM {{ source('prices','usd') }}
-        WHERE symbol = 'WETH'
     ),
 
 --logic CTEs
@@ -162,8 +153,8 @@ WITH
             , sb.ownerfee
             , sb.protocolfee
         FROM swaps_w_fees sb 
-        LEFT JOIN eth_traces tr 
-            ON tr.block_time > '2022-04-23' --when sudoswap was first deployed
+        LEFT JOIN {{ source('ethereum', 'traces') }} tr 
+            ON tr.block_time > (SELECT min(call_block_time) FROM swaps)
             AND tr.type = 'call'
             AND tr.call_type = 'call'
             AND tr.tx_hash = sb.call_tx_hash
@@ -228,10 +219,12 @@ WITH
             , tx.to 
             , 'sudoswap-' || sc.tx_hash || '-' || sc.nft_contract_address || sc.token_id::string || '-' || sc.seller || '-' || sc.amount_original::string || 'Trade' AS unique_trade_id
         FROM swaps_cleaned sc
-        LEFT JOIN prices_usd_eth pu ON pu.blockchain='ethereum'
+        LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain='ethereum'
             AND date_trunc('minute', pu.minute)=date_trunc('minute', sc.block_time)
+            AND symbol = 'WETH'
+            AND pu.minute > (SELECT min(call_block_time) FROM swaps)
             --add in `pu.contract_address = sc.currency_address` in the future when ERC20 pairs are added in.
-        LEFT JOIN eth_transactions tx ON tx.hash=sc.tx_hash
+        LEFT JOIN eth_transactions tx ON tx.hash=sc.tx_hash AND tx.block_time > (SELECT min(call_block_time) FROM swaps)
         LEFT JOIN nft_ethereum_aggregators agg ON agg.contract_address = tx.to --assumes aggregator is the top level call. Will need to change this to check for agg calls in internal traces later on.
         LEFT JOIN tokens_ethereum_nft tokens ON nft_contract_address = tokens.contract_address
     )
