@@ -1,3 +1,6 @@
+/*
+--comment out until ready
+
 {{config(schema = 'uniswap_v3_ethereum', 
         alias='trades')
 }}
@@ -52,3 +55,4 @@ SELECT
     LEFT JOIN {{ source('prices', 'usd') }} pb ON pb.minute = date_trunc('minute', dex.block_time)
         AND pb.contract_address = dex.token_b_address
         AND pb.blockchain = 'ethereum'
+*/

@@ -11,7 +11,7 @@
 SELECT *
 FROM
 (
-       SELECT
+        SELECT
                 blockchain
                 ,project
                 ,version
@@ -36,7 +36,7 @@ FROM
                 ,trace_address
                 ,evt_index
                 ,unique_trade_id
-       FROM {{ ref('uniswap_v1_ethereum_trades') }}
+        FROM {{ ref('uniswap_v1_ethereum_trades') }}
         {% if is_incremental() %}
         WHERE block_time > now() - interval 2 days -- this filter will only be applied on an incremental run
         {% endif %} 
