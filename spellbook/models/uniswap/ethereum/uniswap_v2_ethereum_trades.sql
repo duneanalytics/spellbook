@@ -1,8 +1,4 @@
-/*
---comment out until ready
-
- {{
-  config(
+ {{config(
         schema = 'uniswap_v2_ethereum', 
         alias='trades'
   )
@@ -63,4 +59,3 @@ LEFT JOIN {{ source('prices', 'usd') }} pa ON pa.minute = date_trunc('minute', d
 LEFT JOIN {{ source('prices', 'usd') }} pb ON pb.minute = date_trunc('minute', dex.block_time)
     AND pb.contract_address = dex.token_b_address
     AND pb.blockchain = 'ethereum'
-*/
