@@ -14,4 +14,3 @@ with unit_test as
 select *
 from unit_test
 where token_bought_test = True
-;
