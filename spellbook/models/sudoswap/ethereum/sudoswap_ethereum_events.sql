@@ -9,6 +9,18 @@
 
 --base table CTEs
 WITH 
+    pairs_created as (
+        SELECT 
+            _nft as nftcontractaddress
+            , _initialNFTIDs as nft_ids
+            , _fee as initialfee
+            , _assetRecipient as asset_recip
+            , output_pair as pair_address
+            , call_block_time as block_time
+        FROM {{ source('sudo_amm_ethereum','LSSVMPairFactory_call_createPairETH') }}
+        WHERE call_success
+    ),
+    
     swaps as (
         SELECT 
             * 
@@ -60,18 +72,6 @@ WITH
             where call_block_time >= (select max(block_time) from {{ this }})
             {% endif %}
         ) s
-    ),
-
-    pairs_created as (
-        SELECT 
-            _nft as nftcontractaddress
-            , _initialNFTIDs as nft_ids
-            , _fee as initialfee
-            , _assetRecipient as asset_recip
-            , output_pair as pair_address
-            , call_block_time as block_time
-        FROM {{ source('sudo_amm_ethereum','LSSVMPairFactory_call_createPairETH') }}
-        WHERE call_success
     ),
 
     owner_fee_update as (
