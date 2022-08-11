@@ -20,7 +20,10 @@ models:
         description: "Project name of the DEX"  
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project"  
+        description: "Version of the contract built and deployed by the DEX project"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each DEX trade"
       - &block_time
         name: block_time
         description: "UTC event block time of each DEX trade"
@@ -101,6 +104,7 @@ models:
   #     - *blockchain
   #     - *project
   #     - *version  
+  #     - *block_date
   #     - *block_time
   #     - *token_bought_symbol
   #     - *token_sold_symbol
@@ -136,6 +140,7 @@ models:
   #     - *blockchain
   #     - *project
   #     - *version  
+  #     - *block_date
   #     - *block_time
   #     - *token_bought_symbol
   #     - *token_sold_symbol
@@ -171,6 +176,7 @@ models:
       - *blockchain
       - *project
       - *version  
+      - *block_date
       - *block_time
       - *token_bought_symbol
       - *token_sold_symbol
@@ -191,4 +197,5 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
-      - *unique_trade_id
+      - name: unique_trade_id
+        description: "Unique trade ID built to track merge incremental strategy in the model"
