@@ -88,7 +88,7 @@ models:
         name: unique_trade_id
         description: "Unique trade ID built to track merge incremental strategy in the model"
         tests:
-          - unique
+          - is_unique_filtered
 
   # - name: uniswap_v2_ethereum_trades
   #   meta:
