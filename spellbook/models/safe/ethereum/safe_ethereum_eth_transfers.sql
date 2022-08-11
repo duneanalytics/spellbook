@@ -20,7 +20,7 @@ join {{ ref('safe_ethereum_safes') }} s on et.from = s.address
     and (lower(call_type) not in ('delegatecall', 'callcode', 'staticcall') or call_type is null)
     {% if is_incremental() %}
     -- to prevent potential counterfactual safe deployment issues we take a bigger interval
-    and et.block_time > (select max(day) from {{ this }}) - interval '10 days'
+    and et.block_time > (select max(block_time) from {{ this }}) - interval '10 days'
     {% endif %}
         
 union all
@@ -36,5 +36,5 @@ join {{ ref('safe_ethereum_safes') }} s on et.to = s.address
     and (lower(call_type) not in ('delegatecall', 'callcode', 'staticcall') or call_type is null)
     {% if is_incremental() %}
     -- to prevent potential counterfactual safe deployment issues we take a bigger interval
-    and et.block_time > (select max(day) from {{ this }}) - interval '10 days'
+    and et.block_time > (select max(block_time) from {{ this }}) - interval '10 days'
     {% endif %}
