@@ -2,21 +2,7 @@
 -- Also manually check etherscan info for the first 5 rows
 WITH 
     raw_swaps as (
-        WITH
-            pairs_created as (
-                SELECT 
-                    _nft as nftcontractaddress
-                    , _initialNFTIDs as nft_ids
-                    , _fee as initialfee
-                    , _assetRecipient as asset_recip
-                    , output_pair as pair_address
-                    , call_block_time as block_time
-                FROM {{ source('sudo_amm_ethereum','LSSVMPairFactory_call_createPairETH') }}
-                WHERE call_success
-                AND _nft = lower('0xeF1a89cbfAbE59397FfdA11Fc5DF293E9bC5Db90') --here just so the test runs faster
-            ),
-
-            swaps as (
+        with fil_swaps as (
                 SELECT 
                     * 
                 FROM (
@@ -30,9 +16,9 @@ WITH
                         , tokenRecipient as call_from
                         , 'Sell' as trade_category 
                     FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapNFTsForToken') }} s1
-                    join pairs_created pc ON s1.contract_address = pc.pair_address
                     where call_block_time >= '2022-07-10' AND call_block_time <= '2022-08-10'
                     AND call_success = true
+                    AND contract_address = '0xef1a89cbfabe59397ffda11fc5df293e9bc5db90'
 
                     UNION ALL
                     SELECT 
@@ -45,9 +31,9 @@ WITH
                         , nftRecipient as call_from
                         , 'Buy' as trade_category 
                     FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapTokenForAnyNFTs') }} s2
-                    join pairs_created pc ON s2.contract_address = pc.pair_address
                     where call_block_time >= '2022-07-10' AND call_block_time <= '2022-08-10'
                     AND call_success = true
+                    AND contract_address = '0xef1a89cbfabe59397ffda11fc5df293e9bc5db90'
 
                     UNION ALL
                     SELECT
@@ -60,16 +46,16 @@ WITH
                         , nftRecipient as call_from
                         , 'Buy' as trade_category 
                     FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapTokenForSpecificNFTs') }} s3
-                    join pairs_created pc ON s3.contract_address = pc.pair_address
                     where call_block_time >= '2022-07-10' AND call_block_time <= '2022-08-10'
                     AND call_success = true
+                    AND contract_address = '0xef1a89cbfabe59397ffda11fc5df293e9bc5db90'
                 ) s
             )
 
         SELECT 
             COUNT(*) as num_trades
             , COUNT(distinct call_tx_hash) as num_txs
-        FROM swaps
+        FROM fil_swaps
     ),
 
     abstractions_swaps as

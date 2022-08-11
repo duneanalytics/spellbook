@@ -134,12 +134,6 @@ WITH
         ) b
         WHERE ordering = 1 --we want to keep the most recent ownerfee and protocol fee for each individual call (trade)
     ),
-    
-    -- @todo: fix when we find a fix lol
-    -- swaps_private_w_traces as (
-    --     --join traces where call_trace_address cardinality is 0
-    --     --manually search through the trace for the exact function calls and ETH transfers?
-    -- )
 
     swaps_w_traces as (
         -- we traces to get NFT and ETH transfer data because sudoswap doesn't emit any data in events for swaps, so we have to piece it together manually based on trace_address.
@@ -147,7 +141,7 @@ WITH
             sb.call_block_time
             , sb.call_block_number
             , sb.trade_category
-            , CASE WHEN sb.trade_category = 'buy' THEN SUM(value)/(1+sb.ownerfee+sb.protocolfee)
+            , CASE WHEN sb.trade_category = 'Buy' THEN SUM(value)/(1+sb.ownerfee+sb.protocolfee)
                 ELSE SUM(value)/(1-sb.ownerfee-sb.protocolfee)
                 END as base_price
             , SUM(value) as trade_price_eth --should give total value of the trade (buy or sell)
@@ -164,7 +158,10 @@ WITH
             ON tr.type = 'call'
             AND tr.call_type = 'call'
             AND tr.tx_hash = sb.call_tx_hash
-            AND sb.call_trace_address[0] = tr.trace_address[0]
+            AND (
+                (sb.call_trace_address[0] = tr.trace_address[0] AND cardinality(call_trace_address) != 0) --either a normal tx where trace address helps us narrow down which subtraces to look at for ETH transfers or NFT transfers.
+                OR cardinality(call_trace_address) = 0 --or a private tx, in which case we assume its a single swap to the router (like 0x34a52a94fce15c090cc16adbd6824948c731ecb19a39350633590a9cd163658b). if multiple swaps happen in a private tx we will need a different workaround (as values will duplicate)
+                )
             AND tr.to != '0xb16c1342e617a5b6e4b631eb114483fdb289c0a4' --we don't want duplicates from protocol fee transfer to show up in table. This needs to be most up to date funding recipient in the future, but should just be pair address for now.
             AND tr.to != asset_recip --we don't want duplicates where eth is transferred to asset recipient instead of pool in the case it isn't a trade pool
             {% if is_incremental() %}
