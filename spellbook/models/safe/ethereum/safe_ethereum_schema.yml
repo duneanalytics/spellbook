@@ -13,13 +13,17 @@ models:
       tags: ['safe', 'ethereum']
     description: "Safe addresses"
     columns:
-      - name: address
+      - &address
+        name: address
         description: "Safe contract address"
-      - name: creation_version
+      - &creation_version
+        name: creation_version
         description: "Version of initially created safe"
-      - name: creation_date
+      - &creation_date
+        name: creation_date
         description: "Date of safe creation"
-      - name: tx_hash
+      - &tx_hash
+        name: tx_hash
         description: "Safe creation transaction hash"
   
   - name: safe_ethereum_eth_transfers
@@ -34,10 +38,10 @@ models:
       tags: ['safe', 'transfers', 'ethereum']
     description: "Eth transfers for safes"
     columns:
-      - name: address
-        description: "Safe contract address"
-      - name: block_time
+      - *address        
+      - &block_time
+        name: block_time
         description: "Date of Eth transfer"
-      - name: amount_raw
+      - &amount_raw
+        name: amount_raw
         description: "Raw amount of transfered Eth"
-      

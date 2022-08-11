@@ -48,7 +48,7 @@ select contract_address as address,
     '1.3.0' as creation_version, 
     evt_block_time as creation_time, 
     evt_tx_hash as tx_hash
-from gnosis_safe_ethereum.GnosisSafev1_3_0_evt_SafeSetup
+from {{ source('gnosis_safe_ethereum', 'GnosisSafev1_3_0_evt_SafeSetup') }}
 {% if is_incremental() %}
 where evt_block_time > (select max(creation_time) from {{ this }}) - interval '1 day'
 {% endif %}
