@@ -54,7 +54,6 @@ WITH
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapTokenForAnyNFTs') }}
             WHERE call_success = true
             {% if is_incremental() %}
-            -- this filter will only be applied on an incremental run. We only want to update with new swaps.
             AND call_block_time >= (select max(block_time) from {{ this }})
             {% endif %}
 
@@ -71,7 +70,6 @@ WITH
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapTokenForSpecificNFTs') }}
             WHERE call_success = true
             {% if is_incremental() %}
-            -- this filter will only be applied on an incremental run. We only want to update with new swaps.
             AND call_block_time >= (select max(block_time) from {{ this }})
             {% endif %}
         ) s
@@ -136,6 +134,12 @@ WITH
         ) b
         WHERE ordering = 1 --we want to keep the most recent ownerfee and protocol fee for each individual call (trade)
     ),
+    
+    -- @todo: fix when we find a fix lol
+    -- swaps_private_w_traces as (
+    --     --join traces where call_trace_address cardinality is 0
+    --     --manually search through the trace for the exact function calls and ETH transfers?
+    -- )
 
     swaps_w_traces as (
         -- we traces to get NFT and ETH transfer data because sudoswap doesn't emit any data in events for swaps, so we have to piece it together manually based on trace_address.
@@ -157,13 +161,18 @@ WITH
             , sb.protocolfee
         FROM swaps_w_fees sb 
         LEFT JOIN {{ source('ethereum', 'traces') }} tr 
-            ON tr.block_time > (SELECT min(call_block_time) FROM swaps)
-            AND tr.type = 'call'
+            ON tr.type = 'call'
             AND tr.call_type = 'call'
             AND tr.tx_hash = sb.call_tx_hash
             AND sb.call_trace_address[0] = tr.trace_address[0]
             AND tr.to != '0xb16c1342e617a5b6e4b631eb114483fdb289c0a4' --we don't want duplicates from protocol fee transfer to show up in table. This needs to be most up to date funding recipient in the future, but should just be pair address for now.
             AND tr.to != asset_recip --we don't want duplicates where eth is transferred to asset recipient instead of pool in the case it isn't a trade pool
+            {% if is_incremental() %}
+            AND tr.block_time >= (select max(block_time) from {{ this }})
+            {% endif %}
+            {% if not is_incremental() %}
+            AND tr.block_time >= '2022-4-1'
+            {% endif %}
         GROUP BY 1,2,3,7,8,9,10,11,12
     ),
 
@@ -192,7 +201,6 @@ WITH
             , trade_price_eth as amount_raw
             , trade_price_eth/1e18 as amount_original
             , '0x0000000000000000000000000000000000000000' as currency_contract --ETH
-            -- amount_usd
             , nftcontractaddress as nft_contract_address
             , '0xb16c1342e617a5b6e4b631eb114483fdb289c0a4' as project_contract_address --not sure what this is? I put their main factory for now
             , call_tx_hash as tx_hash
@@ -200,7 +208,7 @@ WITH
             , base_price*protocolfee as platform_fee_amount_raw
             , (base_price*protocolfee)/1e18 as platform_fee_amount
             , protocolfee as platform_fee_percentage
-            --royalties don't technically exist on AMM, but there are owner fees for the pool that can be routed as royalties in the future.
+            --royalties don't technically exist on AMM, but there are owner fees for the pool that can be treated as royalties in the future.
             , base_price*ownerfee as royalty_fee_amount_raw
             , (base_price*ownerfee)/1e18 as royalty_fee_amount
             , ownerfee as royalty_fee_percentage
@@ -225,9 +233,21 @@ WITH
         LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain='ethereum'
             AND date_trunc('minute', pu.minute)=date_trunc('minute', sc.block_time)
             AND symbol = 'WETH'
-            AND pu.minute > (SELECT min(call_block_time) FROM swaps)
+            {% if is_incremental() %}
+            AND pu.minute >= (select max(block_time) from {{ this }})
+            {% endif %}
+            {% if not is_incremental() %}
+            AND pu.minute >= '2022-4-1'
+            {% endif %}
             --add in `pu.contract_address = sc.currency_address` in the future when ERC20 pairs are added in.
-        LEFT JOIN {{ source('ethereum', 'transactions') }} tx ON tx.hash=sc.tx_hash AND tx.block_time > (SELECT min(call_block_time) FROM swaps)
+        LEFT JOIN {{ source('ethereum', 'transactions') }} tx 
+            ON tx.hash=sc.tx_hash 
+            {% if is_incremental() %}
+            AND tx.block_time >= (select max(block_time) from {{ this }})
+            {% endif %}
+            {% if not is_incremental() %}
+            AND tx.block_time >= '2022-4-1'
+            {% endif %}
         LEFT JOIN nft_ethereum_aggregators agg ON agg.contract_address = tx.to --assumes aggregator is the top level call. Will need to change this to check for agg calls in internal traces later on.
         LEFT JOIN tokens_ethereum_nft tokens ON nft_contract_address = tokens.contract_address
     )
