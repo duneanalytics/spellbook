@@ -310,6 +310,8 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x985A29E88E75394DbDaE41a269409f701ccf6a43	QiDao
 \\x7E8A8b130272430008eCa062419ACD8B423d339D	Rango Exchange
 \\xC7f8D87734aB2cbf70030aC8aa82abfe3e8126cb	Premia
+\\xDa2d96eADAb3671D9DFC6b2901aA85E99F8f0EB3	Ripae
+\\x952e9c6391d9C0f6C6174D395Aa9B4eC1030335A	Tarot Finance
 \.
 
 COMMIT;
