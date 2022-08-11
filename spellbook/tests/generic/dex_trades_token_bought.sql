@@ -11,7 +11,8 @@
         from {{ model }} m
         join {{ dex_trades_seed }} seed
             on m.tx_hash = seed.tx_hash
-            and date_trunc('day',m.block_time) = date_trunc('day',seed.block_time)
+            and m.block_date = seed.block_date
+        where m.block_date >= (select (coalesce(max(block_date), '1900-01-01 00:00') - interval 2 days) from {{ model }})
     )
     select *
     from unit_test
