@@ -103,6 +103,13 @@ models:
       ethereum:
         +schema: transfers_ethereum
         +materialized: view
+    
+    sudoswap:
+      +schema: sudoswap
+      +materialized: view
+      ethereum:
+        +schema: sudoswap_ethereum
+        +materialized: view
 
 seeds:
   spellbook:
@@ -153,10 +160,4 @@ seeds:
     ens:
       +enabled: true
       +schema: test_data
-    sudoswap:
-      +schema: sudoswap
-      +materialized: view
-      ethereum:
-        +schema: sudoswap_ethereum
-        +materialized: view
 
