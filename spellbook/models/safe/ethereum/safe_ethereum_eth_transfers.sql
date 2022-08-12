@@ -2,7 +2,8 @@
     config(
         materialized='incremental',
         alias='eth_transfers',
-        unique_key = 'tx_hash',
+        partition_by = ['block_date'],
+        unique_key = ['block_date', 'tx_hash'],
         on_schema_change='fail',
         file_format ='delta',
         incremental_strategy='merge'
@@ -11,32 +12,36 @@
 
 select 
     s.address,
+    try_cast(date_trunc('day', et.block_time) as date) as block_date,
     et.block_time,
     -value as amount_raw,
     et.tx_hash
 from {{ source('ethereum', 'traces') }} et
 join {{ ref('safe_ethereum_safes') }} s on et.from = s.address
-    and et.block_time > '2018-11-24' -- for initial query optimisation
     and success = true
     and (lower(call_type) not in ('delegatecall', 'callcode', 'staticcall') or call_type is null)
-    {% if is_incremental() %}
-    -- to prevent potential counterfactual safe deployment issues we take a bigger interval
-    and et.block_time > (select max(block_time) from {{ this }}) - interval '10 days'
-    {% endif %}
+    and try_cast(date_trunc('day', et.block_time) as date) = s.block_date
+where et.block_time > '2018-11-24' -- for initial query optimisation
+{% if is_incremental() %}
+-- to prevent potential counterfactual safe deployment issues we take a bigger interval
+and et.block_time > (select max(block_time) from {{ this }}) - interval '10 days'
+{% endif %}
         
 union all
     
 select 
     s.address, 
+    try_cast(date_trunc('day', et.block_time) as date) as block_date,
     et.block_time,
     value as amount_raw,
     et.tx_hash
 from {{ source('ethereum', 'traces') }} et
 join {{ ref('safe_ethereum_safes') }} s on et.to = s.address
-    and et.block_time > '2018-11-24' -- for initial query optimisation
     and success = true
     and (lower(call_type) not in ('delegatecall', 'callcode', 'staticcall') or call_type is null)
-    {% if is_incremental() %}
-    -- to prevent potential counterfactual safe deployment issues we take a bigger interval
-    and et.block_time > (select max(block_time) from {{ this }}) - interval '10 days'
-    {% endif %}
+    and try_cast(date_trunc('day', et.block_time) as date) = s.block_date
+where et.block_time > '2018-11-24' -- for initial query optimisation
+{% if is_incremental() %}
+-- to prevent potential counterfactual safe deployment issues we take a bigger interval
+and et.block_time > (select max(block_time) from {{ this }}) - interval '10 days'
+{% endif %}
