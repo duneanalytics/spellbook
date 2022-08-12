@@ -24,5 +24,5 @@
 --dex trades
     --remove bad data
     DELETE FROM dex.trades
-    WHERE hour > '2022-03-16'::date;
+    WHERE block_time > '2022-03-16'::date;
     --cron should pick up new trades
