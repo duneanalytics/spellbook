@@ -2,7 +2,8 @@
     config(
         materialized='incremental',
         alias='safes',
-        unique_key = 'address',
+        partition_by = ['block_date'],
+        unique_key = ['block_date', 'address'],
         on_schema_change='fail',
         file_format ='delta',
         incremental_strategy='merge'
@@ -18,10 +19,12 @@ select
         when et.to = '0x34cfac646f301356faa8b21e94227e3583fe3f5f' then '1.1.1'
         when et.to = '0x6851d6fdfafd08c0295c392436245e5bc78b0185' then '1.2.0'
     end as creation_version,
+    try_cast(date_trunc('day', et.block_time) as date) as block_date,
     et.block_time as creation_time,
     et.tx_hash
 from {{ source('ethereum', 'traces') }} et 
 where et.success = true
+    and et.block_time > '2018-11-24' -- for initial query optimisation    
     and et.call_type = 'delegatecall' -- the delegate call to the master copy is the Safe address    
     and (
             (substring(et.input, 0, 10) = '0x0ec78d9e' -- setup methods of v0.1.0
@@ -46,9 +49,11 @@ union all
     
 select contract_address as address, 
     '1.3.0' as creation_version, 
+    try_cast(date_trunc('day', evt_block_time) as date) as block_date,
     evt_block_time as creation_time, 
     evt_tx_hash as tx_hash
 from {{ source('gnosis_safe_ethereum', 'GnosisSafev1_3_0_evt_SafeSetup') }}
+where evt_block_time > '2018-11-24' -- for initial query optimisation  
 {% if is_incremental() %}
-where evt_block_time > (select max(creation_time) from {{ this }}) - interval '1 day'
+and evt_block_time > (select max(creation_time) from {{ this }}) - interval '1 day'
 {% endif %}
