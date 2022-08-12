@@ -175,7 +175,7 @@ WITH rows AS (
             evt_index
         FROM
             dodoex."DVM_evt_DODOSwap"
-        WHERE trader <> '\xa356867fdcea8e71aeaf87805808803806231fdc'
+        WHERE trader <> '\x813fddeccd0401c4fa73b092b074802440544e52'
             AND evt_block_time >= start_ts
             AND evt_block_time < end_ts
 
