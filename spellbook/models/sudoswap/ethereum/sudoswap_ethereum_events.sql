@@ -1,9 +1,10 @@
 {{ config(
-        alias ='events',
-        materialized ='incremental',
-        file_format ='delta',
-        incremental_strategy='merge',
-        unique_key='unique_trade_id'
+        alias = 'events',
+        partition_by = ['block_date'],
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['block_date', 'unique_trade_id']
         )
 }}
 
@@ -145,7 +146,7 @@ WITH
                 ELSE SUM(value)/(1-sb.ownerfee-sb.protocolfee)
                 END as base_price
             , SUM(value) as trade_price_eth --should give total value of the trade (buy or sell)
-            , ARRAY_AGG(distinct CASE WHEN substring(input,1,10)='0x42842e0e' THEN bytea2numeric_v2(substring(input,139,64))::int ELSE null END) 
+            , ARRAY_AGG(distinct CASE WHEN substring(input,1,10)='0x42842e0e' THEN bytea2numeric_v2(substring(input,139,64))::int ELSE '' END) 
                 as token_id
             , sb.call_tx_hash
             , sb.call_from
@@ -179,6 +180,7 @@ WITH
             'ethereum' as blockchain 
             , 'sudoswap' as project 
             , 'v1' as version
+            , TRY_CAST(date_trunc('DAY', call_block_time) AS date) AS block_date
             , call_block_time as block_time 
             , call_block_number as block_number
             , token_id
@@ -201,7 +203,7 @@ WITH
             , nftcontractaddress as nft_contract_address
             , '0xb16c1342e617a5b6e4b631eb114483fdb289c0a4' as project_contract_address --not sure what this is? I put their main factory for now
             , call_tx_hash as tx_hash
-            , null as evt_index --we didn't use events in our case for decoding, so this will be null until we find a way to tie it together.
+            , '' as evt_index --we didn't use events in our case for decoding, so this will be null until we find a way to tie it together.
             , base_price*protocolfee as platform_fee_amount_raw
             , (base_price*protocolfee)/1e18 as platform_fee_amount
             , protocolfee as platform_fee_percentage
