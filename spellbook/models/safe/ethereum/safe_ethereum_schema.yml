@@ -48,3 +48,5 @@ models:
         name: amount_raw
         description: "Raw amount of transfered Eth"
       - *tx_hash
+      - &trace_address
+        name: trace_address
