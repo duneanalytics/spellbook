@@ -2,7 +2,7 @@
     config(
         materialized='incremental',
         alias='eth_transfers',
-        unique_key = 'address',
+        unique_key = 'tx_hash',
         on_schema_change='fail',
         file_format ='delta',
         incremental_strategy='merge'
@@ -12,7 +12,8 @@
 select 
     s.address,
     et.block_time,
-    -value as amount_raw
+    -value as amount_raw,
+    et.tx_hash
 from {{ source('ethereum', 'traces') }} et
 join {{ ref('safe_ethereum_safes') }} s on et.from = s.address
     and et.block_time > '2018-11-24' -- for initial query optimisation
@@ -28,7 +29,8 @@ union all
 select 
     s.address, 
     et.block_time,
-    value as amount_raw
+    value as amount_raw,
+    et.tx_hash
 from {{ source('ethereum', 'traces') }} et
 join {{ ref('safe_ethereum_safes') }} s on et.to = s.address
     and et.block_time > '2018-11-24' -- for initial query optimisation
