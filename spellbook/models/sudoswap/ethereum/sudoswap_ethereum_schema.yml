@@ -41,6 +41,8 @@ models:
       - &number_of_items
         name: number_of_items
         description:  "Number of items traded"
+        tests:
+          - not_null
       - &trade_category
         name: trade_category
         description:  "How was this NFT traded ? (Direct buy, auction, etc...)"
@@ -56,6 +58,8 @@ models:
       - &amount_original
         name: amount_original
         description:  "Traded amount in original currency"
+        tests:
+          - not_null
       - &amount_raw
         name: amount_raw
         description:   "Traded amount in original currency before decimals correction"

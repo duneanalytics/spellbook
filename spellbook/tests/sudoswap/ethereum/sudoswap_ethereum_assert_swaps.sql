@@ -1,5 +1,4 @@
--- Bootstrapped correctness test against legacy Postgres values.
--- Also manually check etherscan info for the first 5 rows
+-- test to see if # trades in raw = # trades in processed.
 WITH 
     raw_swaps as (
         WITH
@@ -29,7 +28,7 @@ WITH
                         , call_success
                         , tokenRecipient as call_from
                         , 'Sell' as trade_category 
-                    FROM sudo_amm_ethereum.LSSVMPair_general_call_swapNFTsForToken
+                    FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapNFTsForToken') }}
                     join pairs_created pc ON contract_address = pc.pair_address
                     where call_block_time >= '2022-07-10' AND call_block_time <= '2022-08-10'
                     AND call_success = true
@@ -44,7 +43,7 @@ WITH
                         , call_success
                         , nftRecipient as call_from
                         , 'Buy' as trade_category 
-                    FROM sudo_amm_ethereum.LSSVMPair_general_call_swapTokenForAnyNFTs s2
+                    FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapTokenForAnyNFTs') }}
                     join pairs_created pc ON contract_address = pc.pair_address
                     where call_block_time >= '2022-07-10' AND call_block_time <= '2022-08-10'
                     AND call_success = true
@@ -59,7 +58,7 @@ WITH
                         , call_success
                         , nftRecipient as call_from
                         , 'Buy' as trade_category 
-                    FROM sudo_amm_ethereum.LSSVMPair_general_call_swapTokenForSpecificNFTs s3
+                    FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapTokenForSpecificNFTs') }}
                     join pairs_created pc ON contract_address = pc.pair_address
                     where call_block_time >= '2022-07-10' AND call_block_time <= '2022-08-10'
                     AND call_success = true
