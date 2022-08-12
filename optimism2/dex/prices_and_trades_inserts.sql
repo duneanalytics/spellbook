@@ -27,7 +27,6 @@ VALUES ('15,30,45,59 * * * *', $$
 	SELECT dex.insert_beethoven_x( (SELECT max(block_time) - interval '1 hour' FROM dex.trades WHERE project='Beethoven X'), (SELECT max_time FROM ovm2.view_last_updated) );
 	SELECT dex.insert_sushiswap( (SELECT max(block_time) - interval '1 hour' FROM dex.trades WHERE project='Sushiswap'), (SELECT max_time FROM ovm2.view_last_updated) );
 	SELECT dex.insert_slingshot( (SELECT max(block_time) - interval '1 hour' FROM dex.trades WHERE project='Slingshot'), (SELECT max_time FROM ovm2.view_last_updated) );
-    );
 	--ADD REMAINING DEX INSERTS HERE
 --END DEX Inserts
 ----------
