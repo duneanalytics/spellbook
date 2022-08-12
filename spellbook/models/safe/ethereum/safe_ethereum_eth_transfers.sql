@@ -3,7 +3,7 @@
         materialized='incremental',
         alias='eth_transfers',
         partition_by = ['block_date'],
-        unique_key = ['block_date', 'tx_hash'],
+        unique_key = ['block_date', 'tx_hash', 'trace_address'],
         on_schema_change='fail',
         file_format ='delta',
         incremental_strategy='merge'
@@ -15,7 +15,8 @@ select
     try_cast(date_trunc('day', et.block_time) as date) as block_date,
     et.block_time,
     -value as amount_raw,
-    et.tx_hash
+    et.tx_hash,
+    array_join(et.trace_address, ',') as trace_address
 from {{ source('ethereum', 'traces') }} et
 join {{ ref('safe_ethereum_safes') }} s on et.from = s.address
     and success = true
@@ -34,7 +35,8 @@ select
     try_cast(date_trunc('day', et.block_time) as date) as block_date,
     et.block_time,
     value as amount_raw,
-    et.tx_hash
+    et.tx_hash,
+    array_join(et.trace_address, ',') as trace_address
 from {{ source('ethereum', 'traces') }} et
 join {{ ref('safe_ethereum_safes') }} s on et.to = s.address
     and success = true
