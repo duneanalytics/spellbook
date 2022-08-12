@@ -13,7 +13,7 @@
 select
     et.from as address,
     case 
-        when et.to = '0x8942595A2dC5181Df0465AF0D7be08c8f23C93af' then '0.1.0'
+        when et.to = '0x8942595a2dc5181df0465af0d7be08c8f23c93af' then '0.1.0'
         when et.to = '0xb6029ea3b2c51d09a50b53ca8012feeb05bda35a' then '1.0.0'
         when et.to = '0xae32496491b53841efb51829d6f886387708f99b' then '1.1.0'
         when et.to = '0x34cfac646f301356faa8b21e94227e3583fe3f5f' then '1.1.1'
@@ -28,7 +28,7 @@ where et.success = true
     and et.call_type = 'delegatecall' -- the delegate call to the master copy is the Safe address    
     and (
             (substring(et.input, 0, 10) = '0x0ec78d9e' -- setup methods of v0.1.0
-                and et.to = '0x8942595A2dC5181Df0465AF0D7be08c8f23C93af') -- mastercopy v0.1.0
+                and et.to = '0x8942595a2dc5181df0465af0d7be08c8f23c93af') -- mastercopy v0.1.0
             or
             (substring(et.input, 0, 10) = '0xa97ab18a' -- setup methods of v1.0.0
                 and et.to = '0xb6029ea3b2c51d09a50b53ca8012feeb05bda35a') -- mastercopy v1.0.0

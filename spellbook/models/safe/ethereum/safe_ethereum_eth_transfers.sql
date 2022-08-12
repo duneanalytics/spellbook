@@ -21,8 +21,7 @@ from {{ source('ethereum', 'traces') }} et
 join {{ ref('safe_ethereum_safes') }} s on et.from = s.address
     and et.from != et.to -- exclude calls to self to guarantee unique key property
     and success = true
-    and (lower(call_type) not in ('delegatecall', 'callcode', 'staticcall') or call_type is null)
-    and try_cast(date_trunc('day', et.block_time) as date) = s.block_date
+    and (lower(call_type) not in ('delegatecall', 'callcode', 'staticcall') or call_type is null)    
 where et.block_time > '2018-11-24' -- for initial query optimisation
 {% if is_incremental() %}
 -- to prevent potential counterfactual safe deployment issues we take a bigger interval
@@ -43,7 +42,6 @@ join {{ ref('safe_ethereum_safes') }} s on et.to = s.address
     and et.from != et.to -- exclude calls to self to guarantee unique key property
     and success = true
     and (lower(call_type) not in ('delegatecall', 'callcode', 'staticcall') or call_type is null)
-    and try_cast(date_trunc('day', et.block_time) as date) = s.block_date
 where et.block_time > '2018-11-24' -- for initial query optimisation
 {% if is_incremental() %}
 -- to prevent potential counterfactual safe deployment issues we take a bigger interval
