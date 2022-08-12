@@ -79,6 +79,7 @@ WITH
         FROM {{ ref('nft_trades') }} nft
         WHERE blockchain = 'ethereum' AND project = 'sudoswap' and version = 'v1'
         AND block_time >= '2022-07-10' AND block_time <= '2022-08-10'
+        AND nft_contract_address = '0xef1a89cbfabe59397ffda11fc5df293e9bc5db90'
     )
 
 SELECT 
