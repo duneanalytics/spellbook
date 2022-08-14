@@ -343,6 +343,15 @@ ALTER TABLE uniswap_v1_ethereum.trades SET TBLPROPERTIES('dune.public'='true',
                                                             'dune.data_explorer.contributors'='["jeff-dude"]');
 {% endset %}
 
+{% set uniswap_v2_ethereum_trades %}
+ALTER TABLE uniswap_v2_ethereum.trades SET TBLPROPERTIES('dune.public'='true',
+                                                            'dune.data_explorer.blockchains'='["ethereum"]',
+                                                            'dune.data_explorer.category'='abstraction',
+                                                            'dune.data_explorer.abstraction.type'='project',
+                                                            'dune.data_explorer.abstraction.name'='uniswap_v2',
+                                                            'dune.data_explorer.contributors'='["jeff-dude"]');
+{% endset %}
+
 {% set uniswap_ethereum_trades %}
 ALTER VIEW uniswap_ethereum.trades SET TBLPROPERTIES('dune.public'='true',
                                                         'dune.data_explorer.blockchains'='["ethereum"]',
@@ -503,6 +512,7 @@ ALTER TABLE safe.eth_transfers  SET TBLPROPERTIES ('dune.public'='true',
 {% do run_query(nft_burns) %}
 {% do run_query(nft_fees) %}
 {% do run_query(uniswap_v1_ethereum_trades) %}
+{% do run_query(uniswap_v2_ethereum_trades) %}
 {% do run_query(uniswap_ethereum_trades) %}
 {% do run_query(uniswap_trades) %}
 {% do run_query(dex_trades) %}
