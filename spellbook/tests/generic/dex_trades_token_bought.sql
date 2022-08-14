@@ -11,7 +11,11 @@
         from {{ model }} m
         join {{ dex_trades_seed }} seed
             on m.tx_hash = seed.tx_hash
+            and m.evt_index = seed.evt_index
             and m.block_date = seed.block_date
+            and m.blockchain = seed.blockchain
+            and m.project = seed.project
+            and m.version = seed.version
         where m.block_date >= (select coalesce(max(block_date), '1900-01-01 00:00') from {{ model }})
     )
     select *
