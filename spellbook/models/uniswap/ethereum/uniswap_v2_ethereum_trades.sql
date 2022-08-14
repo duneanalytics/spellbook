@@ -1,7 +1,12 @@
- {{config(
-        schema = 'uniswap_v2_ethereum', 
-        alias='trades'
-  )
+{{ config(
+    schema = 'uniswap_v2_ethereum',
+    alias = 'trades',
+    partition_by = ['block_date'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'unique_trade_id']
+    )
 }}
 
 SELECT DISTINCT
