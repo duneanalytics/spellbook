@@ -97,3 +97,8 @@
   symbol: stSOL
   address: 7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj
   decimals: 9
+- name: dust-protocol 
+  id: dust-protocol 
+  symbol: DUST 
+  address: DUSTawucrTsGU8hcqRdHDCbuYhCPADMLM2VcCb8VnFnQ 
+  decimals: 9
