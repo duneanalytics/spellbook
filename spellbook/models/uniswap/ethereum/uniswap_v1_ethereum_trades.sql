@@ -87,12 +87,12 @@ SELECT
     ,'uniswap' ||'-'|| '1' ||'-'|| dexs.tx_hash ||'-'|| IFNULL(dexs.evt_index, '') ||'-'|| IFNULL(dexs.trace_address, '') AS unique_trade_id
 FROM dexs
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
-    ON dexs.tx_hash = tx.hash
+    ON tx.hash = dexs.tx_hash
     {% if not is_incremental() %}
     AND tx.block_time >= (SELECT MIN(block_time) FROM dexs)
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= (SELECT MAX(block_time) FROM {{ this }})
+    AND TRY_CAST(date_trunc('DAY', tx.block_time) AS date) = TRY_CAST(date_trunc('DAY', dexs.block_time) AS date)
     {% endif %}
 LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20a ON erc20a.contract_address = dexs.token_bought_address
 LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20b ON erc20b.contract_address = dexs.token_sold_address
