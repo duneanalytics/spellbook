@@ -171,9 +171,10 @@ seeds:
           blockchain: string
           project: string
           version: string
-          block_time: timestamp
+          block_date: date
           tx_hash: string
+          evt_index: int
           token_bought_address: string
-          token_bought_amount: float #tbd if valid data type, maybe double or just string
+          token_bought_amount: float
           token_sold_address: string
-          token_sold_amount: float #tbd if valid data type, maybe double or just string
+          token_sold_amount: float
