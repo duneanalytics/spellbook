@@ -425,7 +425,7 @@ ALTER VIEW prices.usd_latest  SET TBLPROPERTIES ('dune.public'='true',
 {% endset %}
 
 {% set safe_safes %}
-ALTER TABLE safe.safes  SET TBLPROPERTIES ('dune.public'='true',
+ALTER TABLE safe.safes SET TBLPROPERTIES ('dune.public'='true',
                                             'dune.data_explorer.blockchains'='["ethereum"]',
                                             'dune.data_explorer.category'='abstraction',
                                             'dune.data_explorer.abstraction.type'='project',
@@ -434,12 +434,20 @@ ALTER TABLE safe.safes  SET TBLPROPERTIES ('dune.public'='true',
 {% endset %}
 
 {% set safe_eth_transfers %}
-ALTER TABLE safe.eth_transfers  SET TBLPROPERTIES ('dune.public'='true',
+ALTER TABLE safe.eth_transfers SET TBLPROPERTIES ('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='project',
                                                     'dune.data_explorer.abstraction.name'='safe',
                                                     'dune.data_explorer.contributors'='["sche"]');
+{% endset %}
+{% set prices_tokens %}
+ALTER VIEW prices.tokens SET TBLPROPERTIES ('dune.public'='true',
+                                                'dune.data_explorer.blockchains'='["ethereum", "bnb", "solana"]',
+                                                'dune.data_explorer.category'='abstraction',
+                                                'dune.data_explorer.abstraction.type'='sector',
+                                                'dune.data_explorer.abstraction.name'='prices',
+                                                'dune.data_explorer.contributors'='["aalan3", "jeff-dude"]');
 {% endset %}
 
 {% do run_query(balances_ethereum_erc20_day) %}
@@ -491,6 +499,7 @@ ALTER TABLE safe.eth_transfers  SET TBLPROPERTIES ('dune.public'='true',
 {% do run_query(prices_usd_latest) %}
 {% do run_query(safe_safes) %}
 {% do run_query(safe_eth_transfers) %}
+{% do run_query(prices_tokens) %}
 
 {% do log("Tables generated", info=True) %}
 {%- else -%}
