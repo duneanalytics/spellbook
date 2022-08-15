@@ -1,7 +1,25 @@
 version: 2
 
 models:
-  - name: usd_latest
+  - name: prices_tokens
+    meta:
+      blockchain: ethereum, bnb, solana
+      sector: prices
+      contibutors: aalan3
+    config:
+      tags: ['prices', 'tokens', 'usd']
+    description: "Price tokens"
+    columns:
+      - name: token_id
+      - name: blockchain
+        description: "Native blockchain of the token, if any"
+      - name: contract_address
+        description: "Contract address of the token, if any"
+      - name: symbol
+        description: "Token symbol"
+      - name: decimals
+        description: "Number of decimals for the token contract"
+  - name: prices_latest
     meta:
       sector: prices
       contributors: hildobby
