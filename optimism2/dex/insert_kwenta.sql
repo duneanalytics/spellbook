@@ -55,7 +55,7 @@ WITH rows AS (
         evt_index,
         row_number() OVER (PARTITION BY project, tx_hash, evt_index, trace_address ORDER BY version, category) AS trade_id
     FROM (
-        --Kwenta - MintableSynthetix_evt_SynthExchange
+        --Kwenta - MintableSynthetix_evt_SynthExchange - renamed to SNX_evt_SynthExchange
         SELECT
             se.evt_block_time AS block_time,
             'Kwenta' AS project,
@@ -74,7 +74,7 @@ WITH rows AS (
             NULL::integer[] AS trace_address,
             se.evt_index
         --Synthetix event uses hash keys for tokens, so we pull ERC20 transfers instead
-        FROM synthetix."MintableSynthetix_evt_SynthExchange" se
+        FROM synthetix."SNX_evt_SynthExchange" se
         -- to-do: Find a way to validate that this is the Synthetix token and not a token with the same symbol
         LEFT JOIN erc20.tokens send
             ON send."symbol" = split_part(encode("fromCurrencyKey", 'escape'),'\',1)

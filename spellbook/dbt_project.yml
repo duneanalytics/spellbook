@@ -111,6 +111,13 @@ models:
         +schema: sudoswap_ethereum
         +materialized: view
 
+    safe:
+      +schema: safe
+      +materialized: view
+      ethereum:
+        +schema: safe_ethereum
+        +materialized: view
+
 seeds:
   spellbook:
     balances:

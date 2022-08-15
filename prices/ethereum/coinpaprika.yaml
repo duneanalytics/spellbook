@@ -2184,3 +2184,13 @@
   symbol: MAHA
   address: 0xb4d930279552397bba2ee473229f89ec245bc365
   decimals: 18
+- name: Stakeborg DAO
+  id: standard-stakeborg-dao
+  symbol: STANDARD
+  address: 0xda0c94c73d127ee191955fb46bacd7ff999b2bcd
+  decimals: 18
+- name: DeFiChain Token
+  id: dfi-defi-chain
+  symbol: DFI
+  address: 0x8Fc8f8269ebca376D046Ce292dC7eaC40c8D358A
+  decimals: 8
