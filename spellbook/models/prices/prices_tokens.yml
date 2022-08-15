@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: tokens
+    meta:
+      sector: prices
+      contributors: aalan3
+    config:
+      tags: ['prices', 'tokens']
+    description: "Price tokens"
+    columns:
+      - name: token_id
+        description: "UTC event block time truncated to the minute mark"
+      - name: blockchain
+        description: "Native blockchain of the token, if any"
+      - name: contract_address
+        description: "Contract address of the token, if any"
+      - name: symbol
+        description: "Token symbol"
+      - name: decimals
+        description: "Number of decimals for the token contract"
