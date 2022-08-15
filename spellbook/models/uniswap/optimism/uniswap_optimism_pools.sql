@@ -17,7 +17,6 @@ with uniswap_v3_poolcreated as (
   select 
     explode(
       from_json(
-        -- Copy and Paste From the json file in https://tokenlists.org/token-list?url=https://yearn.science/static/tokenlist.json
         '[
           {
             "oldAddress": "0x2e9c575206288f2219409289035facac0b670c2f",
