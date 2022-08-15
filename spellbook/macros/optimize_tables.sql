@@ -60,6 +60,10 @@ OPTIMIZE nft.fees;
 OPTIMIZE uniswap.trades;
 {% endset %}
 
+{% set sudoswap_ethereum_events %}
+OPTIMIZE sudoswap_ethereum.events;
+{% endset %}
+
 {% do run_query(transfers_ethereum_erc20_agg_hour) %}
 {% do run_query(transfers_ethereum_erc20_agg_day) %}
 {% do run_query(transfers_ethereum_erc721_agg_hour) %}
@@ -75,6 +79,7 @@ OPTIMIZE uniswap.trades;
 {% do run_query(nft_burns) %}
 {% do run_query(nft_fees) %}
 {% do run_query(uniswap_trades) %}
+{% do run_query(sudoswap_ethereum_events) %}
 
 
 {% do log("Tables Optimized", info=True) %}
