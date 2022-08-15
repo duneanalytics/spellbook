@@ -160,7 +160,7 @@ WITH
             AND tr.call_type = 'call'
             AND tr.tx_hash = sb.call_tx_hash
             AND (
-                (sb.call_trace_address[0] = tr.trace_address[0] AND cardinality(call_trace_address) != 0) --either a normal tx where trace address helps us narrow down which subtraces to look at for ETH transfers or NFT transfers.
+                (cardinality(call_trace_address) != 0 AND call_trace_address = slice(tr.trace_address,1,cardinality(call_trace_address))) --either a normal tx where trace address helps us narrow down which subtraces to look at for ETH transfers or NFT transfers.
                 OR cardinality(call_trace_address) = 0 --or a private tx, in which case we assume its a single swap to the router (like 0x34a52a94fce15c090cc16adbd6824948c731ecb19a39350633590a9cd163658b). if multiple swaps happen in a private tx we will need a different workaround (as values will duplicate)
                 )
             AND tr.to != '0xb16c1342e617a5b6e4b631eb114483fdb289c0a4' --we don't want duplicates from protocol fee transfer to show up in table. This needs to be most up to date funding recipient in the future, but should just be pair address for now.
