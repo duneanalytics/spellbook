@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: uniswap_v3_optimism_pools
+  - name: uniswap_optimism_pools
     meta:
       blockchain: optimism
       project: uniswap
