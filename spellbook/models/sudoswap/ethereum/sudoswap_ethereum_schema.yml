@@ -60,6 +60,9 @@ models:
         description:  "Traded amount in original currency"
         tests:
           - not_null
+      - &currency_symbol
+        name: currency_symbol
+        description:  "Symbol of original currency used for payment"
       - &currency_contract
         name: currency_contract
         description:  "Contract address of original token used for payment, with ETH contract address swapped for WETH"
