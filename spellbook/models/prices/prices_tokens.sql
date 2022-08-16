@@ -27,6 +27,7 @@ VALUES
     ("mona-monacoin", null, "MONA", null, null),
     ("neo-neo", null, "NEO", null, null),
     ("ont-ontology", null, "ONT", null, null),
+    ("op-optimism", null, "OP", null, null),
     ("sol-solana", null, "SOL", null, null),
     ("stx-blockstack", null, "STX", null, null),
     ("thr-thorecoin", null, "THR", null, null),
@@ -38,6 +39,17 @@ VALUES
     ("xrp-xrp", null, "XRP", null, null),
     ("xtz-tezos", null, "XTZ", null, null),
     ("zec-zcash", null, "ZEC", null, null),
+
+    ("dai-dai", "arbitrum", "DAI", "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1", 18),
+    ("usdc-usd-coin", "arbitrum", "USDC", "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8", 6),
+    ("usdt-tether", "arbitrum", "USDT", "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9", 6),
+    ("wbtc-wrapped-bitcoin", "arbitrum", "WBTC", "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f", 8),
+
+    ("dai-dai", "avalanche_c", "DAI", "0xd586e7f844cea2f87f50152665bcbc2c279d8d70", 18),
+    ("usdc-usd-coin", "avalanche_c", "USDC", "0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e", 6),
+    ("usdt-tether", "avalanche_c", "USDT", "0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7", 6),
+    ("wbtc-wrapped-bitcoin", "avalanche_c", "WBTC", "0x50b7545627a5162f82a992c33b87adc75187b218", 8),
+
     ("1inch-1inch", "bnb", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
     ("aave-aave-token", "bnb", "AAVE", "0xfb6115445bff7b52feb98650c87f44907e58f802", 18),
     ("abnbc-abnbc", "bnb", "ABNBC", "0xe85afccdafbe7f2b096f268e31cce3da8da2990a", 18),
@@ -150,6 +162,7 @@ VALUES
     ("zel-zelcash", "bnb", "FLUX", "0x1ab6478b47270ff05af11a012ac17b098758e193", 18),
     ("zil-zilliqa", "bnb", "ZIL", "0xb86abcb37c3a4b64f74f59301aff131a1becc787", 12),
     ("znn-zenon", "bnb", "Znn", "0x84b174628911896a3b87fa6980d05dbc2ee74836", 8),
+
     ("0xbtc-0xbitcoin", "ethereum", "0xBTC", "0xb6ed7644c69416d67b522e20bc294a9a9b405b31", 8),
     ("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
     ("aave-new", "ethereum", "AAVE", "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9", 18),
@@ -556,6 +569,17 @@ VALUES
     ("zil-zilliqa", "ethereum", "ZIL", "0x05f4a42e251f2d52b8ed15e9fedaacfcef1fad27", 12),
     ("zora-zoracles", "ethereum", "ZORA", "0xd8e3fb3b08eba982f2754988d70d57edc0055ae6", 9),
     ("zrx-0x", "ethereum", "ZRX", "0xe41d2489571d322189246dafa5ebde1f4699f498", 18),
+
+    ("dai-dai", "gnosis", "WXDAI", "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18),
+    ("usdc-usd-coin", "gnosis", "USDC", "0xddafbb505ad214d7b80b1f830fccc89b60fb7a83", 6),
+    ("usdt-tether", "gnosis", "USDT", "0x4ecaba5870353805a9f068101a40e0f32ed605c6", 6),
+    ("wbtc-wrapped-bitcoin", "gnosis", "WBTC", "0x8e5bbbb09ed1ebde8674cda39a0c169401db4252", 8),
+
+    ("dai-dai", "optimism", "DAI", "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1", 18),
+    ("usdc-usd-coin", "optimism", "USDC", "0x7f5c764cbc14f9669b88837ca1490cca17c31607", 6),
+    ("usdt-tether", "optimism", "USDT", "0x94b008aa00579c1307b0ef2c499ad98a8ce58e58", 6),
+    ("wbtc-wrapped-bitcoin", "optimism", "WBTC", "0x68f180fcce6836688e9084f035309e29bf0a2095", 8),
+
     ("aury-aurory", "solana", "AURY", "AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP", 9),
     ("btc-bitcoin", "solana", "BTC", "9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E", 6),
     ("cope-cope", "solana", "COPE", "8HGyAAB1yoM1ttS7pXjHMa3dukTFGQggnFFH3hJZgzQh", 6),
