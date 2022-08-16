@@ -124,5 +124,3 @@ SELECT
         AND p.contract_address = trades.currency_token
         AND p.blockchain = 'ethereum'
     LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20 ON erc20.contract_address = trades.currency_token
-
-
