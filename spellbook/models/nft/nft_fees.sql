@@ -1,5 +1,6 @@
 {{ config(
         alias ='fees'
+)
 }}
 
 SELECT *
@@ -29,8 +30,6 @@ FROM
                 evt_type,
                 seller,
                 buyer,
-                currency_symbol,
-                currency_contract,
                 nft_contract_address,
                 project_contract_address,
                 aggregator_name,
@@ -66,8 +65,6 @@ FROM
                 evt_type,
                 seller,
                 buyer,
-                currency_symbol,
-                currency_contract,
                 nft_contract_address,
                 project_contract_address,
                 aggregator_name,
@@ -103,8 +100,6 @@ FROM
                 evt_type,
                 seller,
                 buyer,
-                currency_symbol,
-                currency_contract,
                 nft_contract_address,
                 project_contract_address,
                 aggregator_name,
@@ -140,8 +135,6 @@ FROM
                 evt_type,
                 seller,
                 buyer,
-                currency_symbol,
-                currency_contract,
                 nft_contract_address,
                 project_contract_address,
                 aggregator_name,
