@@ -199,6 +199,7 @@ WITH
                 END as buyer
             , trade_price_eth as amount_raw
             , trade_price_eth/1e18 as amount_original
+            , 'ETH' as currency_symbol
             , '0x0000000000000000000000000000000000000000' as currency_contract --ETH
             , nftcontractaddress as nft_contract_address
             , '0xb16c1342e617a5b6e4b631eb114483fdb289c0a4' as project_contract_address --not sure what this is? I put their main factory for now

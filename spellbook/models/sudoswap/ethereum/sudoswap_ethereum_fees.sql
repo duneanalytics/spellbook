@@ -20,6 +20,7 @@ SELECT
       royalty_fee_percentage,
       royalty_fee_receive_address,
       royalty_fee_currency_symbol,
+      currency_symbol,
       token_standard,
       trade_type,
       number_of_items,
