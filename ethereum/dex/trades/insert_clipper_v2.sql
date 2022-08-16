@@ -74,6 +74,27 @@ WITH rows AS (
             t.evt_index
         FROM
             clipper."ClipperCaravelExchange_evt_Swapped" t
+        UNION
+        --- Clipper v3 "VerifiedCaravel" on ETH Mainnet
+        SELECT
+            t.evt_block_time AS block_time,
+            'Clipper' AS project,
+            '3' AS version,
+            'DEX' AS category,
+            t."recipient" AS trader_a,
+            NULL::bytea AS trader_b,
+            "inAmount" AS token_b_amount_raw,
+            "outAmount" AS token_a_amount_raw,
+            NULL::numeric AS usd_amount,
+            "inAsset" AS token_b_address,
+            "outAsset" AS token_a_address,
+            t.contract_address AS exchange_contract_address,
+            t.evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            t.evt_index
+        FROM
+            clipper."ClipperVerifiedCaravelExchange_evt_Swapped" t
+
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
@@ -120,9 +141,9 @@ WHERE NOT EXISTS (
 INSERT INTO cron.job (schedule, command)
 VALUES ('*/10 * * * *', $$
     SELECT dex.insert_clipper_v2(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Clipper' AND version='2'),
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Clipper' AND version='3'),
         (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Clipper' AND version='2')),
+        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Clipper' AND version='3')),
         (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
 $$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
