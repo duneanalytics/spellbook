@@ -15,6 +15,8 @@ SELECT * FROM {{ ref('magiceden_trades') }}
 SELECT * FROM {{ ref('looksrare_ethereum_trades') }}
          UNION
 SELECT * FROM {{ ref('x2y2_ethereum_trades') }}
+         UNION
+SELECT * FROM {{ ref('sudoswap_ethereum_trades') }}
 )
 
 {% if is_incremental() %}

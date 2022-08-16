@@ -5,9 +5,9 @@ models:
     meta:
       blockchain: ethereum, solana
       sector: nft
-      contributors: soispoke, hildobby
+      contributors: soispoke, hildobby, ilemi
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'ethereum', 'solana', 'events']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'ethereum', 'solana', 'events']
     description: >
         NFT events
     columns:
@@ -127,9 +127,9 @@ models:
     meta:
       blockchain: ethereum, solana
       sector: nft
-      contributors: soispoke, hildobby
+      contributors: soispoke, hildobby, ilemi
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'ethereum', 'solana', 'trades']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'ethereum', 'solana', 'trades']
     description: >
         NFT trades
     columns:
@@ -241,9 +241,9 @@ models:
     meta:
       blockchain: ethereum, solana
       sector: nft
-      contributors: soispoke, hildobby
+      contributors: soispoke, hildobby, ilemi
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'ethereum', 'solana', 'fees']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'ethereum', 'solana', 'fees']
     description: >
         NFT fees
     columns:

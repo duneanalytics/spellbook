@@ -15,6 +15,8 @@ SELECT * FROM {{ ref('magiceden_events') }}
 SELECT * FROM {{ ref('looksrare_ethereum_events') }}
          UNION
 SELECT * FROM {{ ref('x2y2_ethereum_events') }}
+         UNION
+SELECT * FROM {{ ref('sudoswap_ethereum_events') }}
 )
 
 {% if is_incremental() %}
