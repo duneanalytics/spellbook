@@ -30,6 +30,7 @@ models:
       +materialized: view
     nft:
       +schema: nft
+      +materialized: view
       ethereum:
         +schema: nft_ethereum
         +materialized: view
