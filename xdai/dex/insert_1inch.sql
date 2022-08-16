@@ -251,3 +251,27 @@ SELECT count(*) INTO r from rows;
 RETURN r;
 END
 $function$;
+
+-- fill 2022
+SELECT dex.insert_oneinch(
+    '2021-01-01',
+    now(),
+    (SELECT max(number) FROM xdai.blocks WHERE time < '2021-01-01'),
+    (SELECT MAX(number) FROM xdai.blocks where time < '2022-01-01')
+)
+WHERE NOT EXISTS (
+    SELECT *
+    FROM dex.trades
+    WHERE block_time > '2021-01-01'
+    AND block_time < '2022-01-01'
+);
+
+INSERT INTO cron.job (schedule, command)
+VALUES ('*/14 * * * *', $$
+    SELECT dex.insert_oneinch(
+        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE (project='1inch' OR project='1inch Limit Order Protocol')),
+        (SELECT now() - interval '20 minutes'),
+        (SELECT max(number) FROM bsc.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE (project='1inch'OR project='1inch Limit Order Protocol'))),
+        (SELECT MAX(number) FROM bsc.blocks where time < now() - interval '20 minutes'));
+$$)
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
