@@ -24,7 +24,8 @@ insert into aztec_v2.contract_labels
 ('Aztec RollupProcessor','Rollup',           '1.0',     'Prod Aztec Rollup',            '\xFF1F2B4ADb9dF6FC8eAFecDcbF96A2B351680455'::bytea),
 ('Element',              'Bridge',           '1.0',     'Prod Element Bridge',          '\xaeD181779A8AAbD8Ce996949853FEA442C2CDB47'::bytea),
 ('Lido',                 'Bridge',           '1.0',     'Prod Lido Bridge',             '\x381abF150B53cc699f0dBBBEF3C5c0D1fA4B3Efd'::bytea),
-('AceOfZK',              'Bridge',           '1.0',     'Ace Of ZK NFT - nonfunctional','\x0eb7f9464060289fe4fddfde2258f518c6347a70'::bytea)
+('AceOfZK',              'Bridge',           '1.0',     'Ace Of ZK NFT - nonfunctional','\x0eb7f9464060289fe4fddfde2258f518c6347a70'::bytea),
+('Curve',                'Bridge',           '1.0',     'CurveStEth Bridge',            '\x0031130c56162e00a7e9c01ee4147b11cbac8776'::bytea)
 ;
 
 alter table aztec_v2.contract_labels add contract_creator bytea;

@@ -11,6 +11,7 @@ with tokens as (
   select distinct contract_address as token_address
   from aztec_v2.view_rollup_bridge_transfers
   -- from dune_user_generated.aztec_v2_rollup_bridge_transfers
+  where contract_address <> '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'::bytea -- exclude ETH from the initial price feed
 )
 , tokens_from_paprika as (
   select distinct contract_address as token_address
@@ -145,6 +146,15 @@ with tokens as (
   select * from paprika_price_feed
   union 
   select * from dex_price_feed
+  union
+  select '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'::bytea as token_address
+    , 'ETH' as symbol
+    , date
+    , 'prices.layer1_usd' as data_source
+    , eth_price as avg_price_usd
+    , eth_price
+    , 1 as avg_price_eth
+  from daily_eth_price_usd
   
   on conflict(token_address, date) do update set
     data_source = excluded.data_source
@@ -158,6 +168,10 @@ select count(*) into r from rows;
 RETURN r;
 END
 $function$;
+
+-- truncate the table before backfilling everything
+truncate table aztec_v2.daily_token_prices;
+
 
 -- backfill starting '2022-05-13'
 SELECT aztec_v2.insert_daily_token_prices('2022-05-13', now());

@@ -7,7 +7,12 @@
         )
 }}
 
-SELECT * FROM {{ ref('opensea_fees') }} 
+SELECT * FROM
+(SELECT * FROM {{ ref('opensea_fees') }} 
+UNION
+SELECT * FROM {{ ref('looksrare_ethereum_fees') }}
+UNION
+SELECT * FROM {{ ref('x2y2_ethereum_fees') }})
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
 WHERE block_time > now() - interval 2 days

@@ -127,6 +127,95 @@ ALTER VIEW opensea.fees SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["soispoke"]');
 {% endset %}
 
+{% set looksrare_ethereum_events %}
+ALTER TABLE looksrare_ethereum.events SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='project',
+                                                    'dune.data_explorer.abstraction.name'='looksrare',
+                                                    'dune.data_explorer.contributors'='["soispoke"]');
+{% endset %}
+
+{% set looksrare_ethereum_trades %}
+ALTER VIEW looksrare_ethereum.trades SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='project',
+                                                    'dune.data_explorer.abstraction.name'='looksrare',
+                                                    'dune.data_explorer.contributors'='["soispoke"]');
+{% endset %}
+
+{% set looksrare_ethereum_mints %}
+ALTER VIEW looksrare_ethereum.mints SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='project',
+                                                    'dune.data_explorer.abstraction.name'='looksrare',
+                                                    'dune.data_explorer.contributors'='["soispoke"]');
+{% endset %}
+
+{% set looksrare_ethereum_burns %}
+ALTER VIEW looksrare_ethereum.burns SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='project',
+                                                    'dune.data_explorer.abstraction.name'='looksrare',
+                                                    'dune.data_explorer.contributors'='["soispoke"]');
+{% endset %}
+
+{% set looksrare_ethereum_fees %}
+ALTER VIEW looksrare_ethereum.fees SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='project',
+                                                    'dune.data_explorer.abstraction.name'='looksrare',
+                                                    'dune.data_explorer.contributors'='["soispoke"]');
+{% endset %}
+
+{% set x2y2_ethereum_events %}
+ALTER TABLE x2y2_ethereum.events SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='project',
+                                                    'dune.data_explorer.abstraction.name'='x2y2',
+                                                    'dune.data_explorer.contributors'='["hildobby","soispoke"]');
+{% endset %}
+
+{% set x2y2_ethereum_trades %}
+ALTER VIEW x2y2_ethereum.trades SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='project',
+                                                    'dune.data_explorer.abstraction.name'='x2y2',
+                                                    'dune.data_explorer.contributors'='["hildobby","soispoke"]');
+{% endset %}
+
+{% set x2y2_ethereum_mints %}
+ALTER VIEW x2y2_ethereum.mints SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='project',
+                                                    'dune.data_explorer.abstraction.name'='x2y2',
+                                                    'dune.data_explorer.contributors'='["hildobby","soispoke"]');
+{% endset %}
+
+{% set x2y2_ethereum_burns %}
+ALTER VIEW x2y2_ethereum.burns SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='project',
+                                                    'dune.data_explorer.abstraction.name'='x2y2',
+                                                    'dune.data_explorer.contributors'='["hildobby","soispoke"]');
+{% endset %}
+
+{% set x2y2_ethereum_fees %}
+ALTER VIEW x2y2_ethereum.fees SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='project',
+                                                    'dune.data_explorer.abstraction.name'='x2y2',
+                                                    'dune.data_explorer.contributors'='["hildobby","soispoke"]');
+{% endset %}
 
 {% set magiceden_events %}
 ALTER TABLE magiceden.events SET TBLPROPERTIES('dune.public'='true',
@@ -148,6 +237,15 @@ ALTER VIEW magiceden.trades SET TBLPROPERTIES('dune.public'='true',
 
 {% set magiceden_mints %}
 ALTER VIEW magiceden.mints SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["solana"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='project',
+                                                    'dune.data_explorer.abstraction.name'='magiceden',
+                                                    'dune.data_explorer.contributors'='["soispoke"]');
+{% endset %}
+
+{% set magiceden_fees %}
+ALTER VIEW magiceden.fees SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["solana"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='project',
@@ -200,6 +298,15 @@ ALTER TABLE nft.fees SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["soispoke"]');
 {% endset %}
 
+{% set nft_ethereum_aggregators %}
+ALTER VIEW nft_ethereum.aggregators SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='nft',
+                                                    'dune.data_explorer.contributors'='["hildobby","soispoke"]');
+{% endset %}
+
 {% set tokens_ethereum_erc20 %}
 ALTER VIEW tokens_ethereum.erc20 SET TBLPROPERTIES ('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum"]',
@@ -245,6 +352,15 @@ ALTER VIEW seaport_ethereum.view_transactions SET TBLPROPERTIES('dune.public'='t
                                                     'dune.data_explorer.contributors'='["sohawk","soispoke"]');
 {% endset %}
 
+{% set seaport_ethereum_transfers %}
+ALTER TABLE seaport_ethereum.transfers SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='project',
+                                                    'dune.data_explorer.abstraction.name'='seaport',
+                                                    'dune.data_explorer.contributors'='["sohawk","soispoke"]');
+{% endset %}
+
 {% set ens_view_expirations %}
 ALTER VIEW ens.view_expirations SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum"]',
@@ -281,6 +397,59 @@ ALTER VIEW ens.view_renewals SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["antonio-mendes","mewwts"]');
 {% endset %}
 
+{% set cex_addresses %}
+ALTER VIEW cex.addresses SET TBLPROPERTIES ('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='cex',
+                                                    'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set nomad_bridge_transactions %}
+ALTER VIEW nomad_ethereum.view_bridge_transactions SET TBLPROPERTIES ('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='project',
+                                                    'dune.data_explorer.abstraction.name'='nomad',
+                                                    'dune.data_explorer.contributors'='["springzh"]');
+{% endset %}
+
+{% set prices_usd_latest %}
+ALTER VIEW prices.usd_latest  SET TBLPROPERTIES ('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='prices',
+                                                    'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set safe_safes %}
+ALTER TABLE safe.safes SET TBLPROPERTIES ('dune.public'='true',
+                                            'dune.data_explorer.blockchains'='["ethereum"]',
+                                            'dune.data_explorer.category'='abstraction',
+                                            'dune.data_explorer.abstraction.type'='project',
+                                            'dune.data_explorer.abstraction.name'='safe',
+                                            'dune.data_explorer.contributors'='["sche"]');
+{% endset %}
+
+{% set safe_eth_transfers %}
+ALTER TABLE safe.eth_transfers SET TBLPROPERTIES ('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='project',
+                                                    'dune.data_explorer.abstraction.name'='safe',
+                                                    'dune.data_explorer.contributors'='["sche"]');
+{% endset %}
+{% set prices_tokens %}
+ALTER VIEW prices.tokens SET TBLPROPERTIES ('dune.public'='true',
+                                                'dune.data_explorer.blockchains'='["ethereum", "bnb", "solana"]',
+                                                'dune.data_explorer.category'='abstraction',
+                                                'dune.data_explorer.abstraction.type'='sector',
+                                                'dune.data_explorer.abstraction.name'='prices',
+                                                'dune.data_explorer.contributors'='["aalan3", "jeff-dude"]');
+{% endset %}
+
 {% do run_query(balances_ethereum_erc20_day) %}
 {% do run_query(balances_ethereum_erc20_hour) %}
 {% do run_query(balances_ethereum_erc20_latest) %}
@@ -295,23 +464,42 @@ ALTER VIEW ens.view_renewals SET TBLPROPERTIES('dune.public'='true',
 {% do run_query(opensea_mints) %}
 {% do run_query(opensea_burns) %}
 {% do run_query(opensea_fees) %}
+{% do run_query(looksrare_ethereum_events) %}
+{% do run_query(looksrare_ethereum_trades) %}
+{% do run_query(looksrare_ethereum_mints) %}
+{% do run_query(looksrare_ethereum_burns) %}
+{% do run_query(looksrare_ethereum_fees) %}
+{% do run_query(x2y2_ethereum_events) %}
+{% do run_query(x2y2_ethereum_trades) %}
+{% do run_query(x2y2_ethereum_mints) %}
+{% do run_query(x2y2_ethereum_burns) %}
+{% do run_query(x2y2_ethereum_fees) %}
 {% do run_query(magiceden_events) %}
 {% do run_query(magiceden_trades) %}
 {% do run_query(magiceden_mints) %}
+{% do run_query(magiceden_fees) %}
 {% do run_query(nft_events) %}
 {% do run_query(nft_trades) %}
 {% do run_query(nft_mints) %}
 {% do run_query(nft_burns) %}
 {% do run_query(nft_fees) %}
+{% do run_query(nft_ethereum_aggregators) %}
 {% do run_query(tokens_ethereum_erc20) %}
 {% do run_query(transfers_ethereum_erc20) %}
 {% do run_query(tokens_ethereum_nft) %}
 {% do run_query(seaport_ethereum_view_transactions) %}
+{% do run_query(seaport_ethereum_transfers) %}
 {% do run_query(uniswap_trades) %}
 {% do run_query(ens_view_expirations) %}
 {% do run_query(ens_view_registrations) %}
 {% do run_query(ens_view_registries) %}
 {% do run_query(ens_view_renewals) %}
+{% do run_query(cex_addresses) %}
+{% do run_query(nomad_bridge_transactions) %}
+{% do run_query(prices_usd_latest) %}
+{% do run_query(safe_safes) %}
+{% do run_query(safe_eth_transfers) %}
+{% do run_query(prices_tokens) %}
 
 {% do log("Tables generated", info=True) %}
 {%- else -%}

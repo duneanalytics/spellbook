@@ -48,11 +48,29 @@ models:
       solana:
         +schema: opensea_solana
         +materialized: view
+    looksrare:
+      +schema: looksrare
+      +materialized: view
+      ethereum:
+        +schema: looksrare_ethereum
+        +materialized: view
+    x2y2:
+      +schema: x2y2
+      +materialized: view
+      ethereum:
+        +schema: x2y2_ethereum
+        +materialized: view
     magiceden:
       +schema: magiceden
       +materialized: view
       solana:
         +schema: magiceden_solana
+        +materialized: view
+    nomad:
+      +schema: nomad
+      +materialized: view
+      ethereum:
+        +schema: nomad_ethereum
         +materialized: view
 
     seaport:
@@ -75,12 +93,22 @@ models:
       ethereum:
         +schema: tokens_ethereum
         +materialized: view
+      optimism:
+        +schema: tokens_optimism
+        +materialized: view
     
     transfers:
       +schema: transfers
       +materialized: view
       ethereum:
         +schema: transfers_ethereum
+        +materialized: view
+
+    safe:
+      +schema: safe
+      +materialized: view
+      ethereum:
+        +schema: safe_ethereum
         +materialized: view
 
 seeds:

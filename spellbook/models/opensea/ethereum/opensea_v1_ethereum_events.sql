@@ -144,8 +144,8 @@ SELECT DISTINCT
   wa.project_contract_address, 
   agg.name as aggregator_name,
   agg.contract_address as aggregator_address,
-  wa.call_tx_hash AS tx_hash,
   tx.block_number,
+  wa.call_tx_hash AS tx_hash,
   tx.from as tx_from,
   tx.to as tx_to,
   ROUND((2.5*(wa.amount_original)/100),7) AS platform_fee_amount_raw,
@@ -158,7 +158,7 @@ SELECT DISTINCT
   (wa.fees / wa.amount_original * 100)::string  AS royalty_fee_percentage, 
   wa.fee_receive_address as royalty_fee_receive_address,
   wa.fee_currency_symbol as royalty_fee_currency_symbol,
-  wa.call_tx_hash || '-' || coalesce(wa.token_id, token_id_erc, '') || '-' ||  wa.seller || '-' || coalesce(evt_index::string, '') || '-' || coalesce(wa.call_trace_address::string,'') as unique_trade_id
+  'opensea' || '-' || wa.call_tx_hash || '-' || coalesce(wa.token_id, token_id_erc, '') || '-' ||  wa.seller || '-' || coalesce(evt_index::string, '') || '-' || coalesce(wa.call_trace_address::string,'') as unique_trade_id
 FROM wyvern_all wa
 LEFT JOIN {{ source('ethereum','transactions') }} tx ON wa.call_tx_hash = tx.hash
 LEFT JOIN erc_transfers ON erc_transfers.evt_tx_hash = wa.call_tx_hash AND (wa.token_id = erc_transfers.token_id_erc

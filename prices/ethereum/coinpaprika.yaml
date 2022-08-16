@@ -1765,11 +1765,6 @@
   symbol: XYZ
   address: 0x618679df9efcd19694bb1daa8d00718eacfa2883
   decimals: 18
-- name: dao_gamedao
-  id: dao-gamedao
-  symbol: DAO
-  address: 0x0f51bb10119727a7e5ea3538074fb341f56b09ad
-  decimals: 18
 - name: tcr_tracer_dao
   id: tcr-tracer-dao
   symbol: TCR
@@ -2174,3 +2169,28 @@
   symbol: wstETH
   address: 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
   decimals: 18
+- name: StakeWise Liquid Staked Ether
+  id: seth2
+  symbol: sETH2
+  address: 0xfe2e637202056d30016725477c5da089ab0a043a
+  decimals: 18
+- name: StakeWise Token
+  id: stakewise-swise-token
+  symbol: SWISE
+  address: 0x48c3399719b582dd63eb5aadf12a40b4c3f52fa2
+  decimals: 18
+- name: MahaDao
+  id: maha-mahadao
+  symbol: MAHA
+  address: 0xb4d930279552397bba2ee473229f89ec245bc365
+  decimals: 18
+- name: Stakeborg DAO
+  id: standard-stakeborg-dao
+  symbol: STANDARD
+  address: 0xda0c94c73d127ee191955fb46bacd7ff999b2bcd
+  decimals: 18
+- name: DeFiChain Token
+  id: dfi-defi-chain
+  symbol: DFI
+  address: 0x8Fc8f8269ebca376D046Ce292dC7eaC40c8D358A
+  decimals: 8

@@ -10,7 +10,12 @@
 SELECT * FROM (
 SELECT * FROM {{ ref('opensea_mints') }} 
          UNION
-SELECT * FROM {{ ref('magiceden_mints') }})
+SELECT * FROM {{ ref('magiceden_mints') }}
+         UNION
+SELECT * FROM {{ ref('looksrare_ethereum_mints') }}
+         UNION
+SELECT * FROM {{ ref('x2y2_ethereum_mints') }}
+)
 
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
