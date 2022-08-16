@@ -138,9 +138,7 @@ models:
       - *blockchain
       - *project
       - *version
-      - *block_date
       - *block_time
-      - *block_number
       - *token_id
       - *collection
       - *amount_usd
@@ -155,13 +153,14 @@ models:
       - name: amount_original
         description:  "Traded amount in original currency"
       - *amount_raw
+      - *currency_symbol
       - *currency_contract
       - *nft_contract_address
       - *project_contract_address
       - *aggregator_name
       - *aggregator_address
       - *tx_hash
-      - *evt_index
+      - *block_number
       - *tx_from
       - *tx_to
       - *unique_trade_id
@@ -179,9 +178,7 @@ models:
       - *blockchain
       - *project
       - *version
-      - *block_date
       - *block_time
-      - *block_number
       - *token_id
       - *collection
       - *platform_fee_amount_raw
@@ -207,7 +204,7 @@ models:
       - *aggregator_name
       - *aggregator_address
       - *tx_hash
-      - *evt_index
+      - *block_number
       - *tx_from
       - *tx_to
       - *unique_trade_id
