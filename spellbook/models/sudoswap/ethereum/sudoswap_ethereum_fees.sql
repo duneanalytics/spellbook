@@ -7,9 +7,7 @@ SELECT
       blockchain,
       project,
       version,
-      block_date,
       block_time,
-      block_number,
       token_id,
       collection,
       platform_fee_amount_raw,
@@ -34,7 +32,7 @@ SELECT
       aggregator_name,
       aggregator_address,
       tx_hash,
-      evt_index,
+      block_number,
       tx_from,
       tx_to,
       unique_trade_id
