@@ -101,6 +101,12 @@ models:
       - &platform_fee_percentage
         name: platform_fee_amount_usd
         description:  "Platform fee in % of the amount paid for a given trade"
+      - &royalty_fee_receive_address
+        name: royalty_fee_receive_address
+        description:  "Wallet addresses receiving fees from the transaction"
+      - &royalty_fee_currency_symbol
+        name: royalty_fee_currency_symbol
+        description: "Symbol of the token in which fees are paid out"
       - &royalty_fee_amount_raw
         name: royalty_fee_amount_raw
         description:  "Raw numerical amount for royalty fees"
@@ -113,12 +119,6 @@ models:
       - &royalty_fee_percentage
         name: royalty_fee_percentage
         description:  "Royalty fee in % of the amount paid for a given trade"
-      - &royalty_fee_receive_address
-        name: royalty_fee_receive_address
-        description:  "Wallet addresses receiving fees from the transaction"
-      - &royalty_fee_currency_symbol
-        name: royalty_fee_currency_symbol
-        description: "Symbol of the token in which fees are paid out"
       - &unique_trade_id
         name: unique_trade_id
         description:  "Unique trade ID"
