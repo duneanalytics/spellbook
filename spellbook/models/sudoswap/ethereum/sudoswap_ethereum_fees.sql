@@ -35,7 +35,7 @@ SELECT
       aggregator_address,
       tx_hash,
       evt_index,
-      from,
-      to,
+      tx_from,
+      tx_to,
       unique_trade_id
 FROM ({{ ref('sudoswap_ethereum_events') }})

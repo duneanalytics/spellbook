@@ -225,8 +225,8 @@ WITH
             , sc.amount_original*pu.price as amount_usd 
             , sc.royalty_fee_amount*pu.price as royalty_fee_amount_usd
             , sc.platform_fee_amount*pu.price as platform_fee_amount_usd
-            , tx.from 
-            , tx.to 
+            , tx.from as tx_from
+            , tx.to as tx_to
             , 'sudoswap-' || sc.tx_hash || '-' || sc.nft_contract_address || sc.token_id::string || '-' || sc.seller || '-' || sc.amount_original::string || 'Trade' AS unique_trade_id
         FROM swaps_cleaned sc
         LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain='ethereum'
