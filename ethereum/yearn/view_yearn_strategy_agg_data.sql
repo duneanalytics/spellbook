@@ -1,7 +1,7 @@
 BEGIN;
 DROP VIEW IF EXISTS yearn."view_yearn_strategy_agg_data" cascade;
 
-CREATE MATERIALIZED VIEW dune_user_generated."view_yearn_strategy_agg_data" AS (
+CREATE MATERIALIZED VIEW yearn."view_yearn_strategy_agg_data" AS (
   SELECT
     strategy,
     COUNT(evt_tx_hash) as harvest_count,
@@ -20,7 +20,7 @@ CREATE MATERIALIZED VIEW dune_user_generated."view_yearn_strategy_agg_data" AS (
         ) harvested_ago,
         gas_used
       FROM
-        dune_user_generated."view_stitch_yearn_harvests" hvst
+        yearn."view_stitch_yearn_harvests" hvst
         INNER JOIN ethereum.transactions tx ON hvst.evt_tx_hash = tx.hash
     ) df
   GROUP BY
