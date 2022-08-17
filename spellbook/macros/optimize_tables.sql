@@ -64,6 +64,10 @@ OPTIMIZE uniswap_v1_ethereum.trades;
 OPTIMIZE uniswap_v2_ethereum.trades;
 {% endset %}
 
+{% set sudoswap_ethereum_events %}
+OPTIMIZE sudoswap_ethereum.events;
+{% endset %}
+
 {% set safe_safes %}
 OPTIMIZE safe.safes;
 {% endset %}
@@ -88,6 +92,7 @@ OPTIMIZE safe.eth_transfers;
 {% do run_query(nft_fees) %}
 {% do run_query(uniswap_v1_ethereum_trades) %}
 {% do run_query(uniswap_v2_ethereum_trades) %}
+{% do run_query(sudoswap_ethereum_events) %}
 {% do run_query(safe_safes) %}
 {% do run_query(safe_eth_transfers) %}
 
