@@ -103,6 +103,9 @@ models:
       ethereum:
         +schema: transfers_ethereum
         +materialized: view
+      optimism:
+        +schema: transfers_optimism
+        +materialized: view
 
     safe:
       +schema: safe
