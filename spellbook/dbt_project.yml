@@ -160,3 +160,4 @@ seeds:
     ens:
       +enabled: true
       +schema: test_data
+
