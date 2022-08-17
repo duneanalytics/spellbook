@@ -56,8 +56,12 @@ OPTIMIZE nft.burns;
 OPTIMIZE nft.fees;
 {% endset %}
 
-{% set uniswap_trades %}
-OPTIMIZE uniswap.trades;
+{% set uniswap_v1_ethereum_trades %}
+OPTIMIZE uniswap_v1_ethereum.trades;
+{% endset %}
+
+{% set uniswap_v2_ethereum_trades %}
+OPTIMIZE uniswap_v2_ethereum.trades;
 {% endset %}
 
 {% set safe_safes %}
@@ -82,7 +86,8 @@ OPTIMIZE safe.eth_transfers;
 {% do run_query(nft_mints) %}
 {% do run_query(nft_burns) %}
 {% do run_query(nft_fees) %}
-{% do run_query(uniswap_trades) %}
+{% do run_query(uniswap_v1_ethereum_trades) %}
+{% do run_query(uniswap_v2_ethereum_trades) %}
 {% do run_query(safe_safes) %}
 {% do run_query(safe_eth_transfers) %}
 

@@ -13,6 +13,8 @@ models:
     columns:
       - name: contract_address
         description: "ERC20 token contract address"
+        tests:
+          - unique
       - name: symbol
         description: "ERC20 token symbol"
       - name: decimals
