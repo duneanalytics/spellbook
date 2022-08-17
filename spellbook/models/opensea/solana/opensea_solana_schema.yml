@@ -76,56 +76,46 @@ models:
       project: opensea
       contributors: sohwak
     config:
-      tags: ['opensea','solana','events']
+      tags: ['opensea','solana','transfers']
     description: >
         OpenSea transfers on Solana
     columns:
-      - name: blockchain
-        description: "Blockchain"
+      - *blockchain
       - name: project
         description: "Project"
       - name: version
         description: "Project version"
-      - name: block_time
-        description: "UTC event block time"
+      - *block_time
       - name: token_id
         description: "NFT Token ID"
       - name: collection
         description: "NFT collection name"
-      - name: amount_usd
-        description:  "USD value of the trade at time of execution"
-      - name: token_standard
-        description:  "Token standard"
+      - *amount_usd
+      - *token_standard
       - name: trade_type
         description: "Identify whether it was a single NFT trade or multiple NFTs traded"
       - name: number_of_items
         description:  "Number of items traded"
       - name: trade_category
         description:  "How was this NFT traded ? (Direct buy, auction, etc...)"
-      - name: evt_type
-        description:  "Event type (Trade, Mint, Burn)"
+      - *evt_type
       - name: seller
         description:  "Seller wallet address"
       - name: buyer
         description:  "Buyer wallet address"
-      - name: amount_original
-        description:  "Traded amount in original currency"
+      - *amount_original
       - name: amount_raw
         description:   "Traded amount in original currency before decimals correction"
-      - name: currency_symbol
-        description:  "Symbol of original currency used for payment"
-      - name: currency_contract
-        description:  "Contract address of original token used for payment, with ETH contract address swapped for WETH"
+      - *currency_symbol
+      - *currency_contract
       - name: nft_contract_address
         description:  "NFT contract address, only if 1 nft was transacted"
-      - name: project_contract_address
-        description:  "Contract address used by the project, in this case wyvern contract"
+      - *project_contract_address
       - name: aggregator_name
         description:  "If the trade was performed via an aggregator, displays aggregator name"
       - name: aggregator_address
         description:  "If the trade was performed via an aggregator, displays aggregator address"
-      - name: tx_hash
-        description:  "Transaction hash"
+      - *tx_hash
       - name: block_number
         description: "Block number in which the transaction was executed "
       - name: tx_from
@@ -156,5 +146,4 @@ models:
         description:  "Number of Royalty fee addressess because royalty can be paid to multiple addresses"
       - name: royalty_list
         description:  "Array list of royalty data consist of royalty_receive_address and fee_amount_raw"
-      - name: unique_trade_id
-        description:  "Unique trade ID"
+      - *unique_trade_id
