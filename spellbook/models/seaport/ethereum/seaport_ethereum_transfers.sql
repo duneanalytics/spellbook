@@ -8,12 +8,13 @@
 -- ##     : seaport."Seaport_call_matchAdvancedOrders"
 
 {{ config(
-        alias ='transfers',
-        materialized ='incremental',
-        file_format ='delta',
-        incremental_strategy='merge',
-        unique_key='unique_trade_id'
-        )
+    alias = 'transfers',
+    partition_by = ['block_date'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'unique_trade_id']
+    )
 }}
 
 with p1_call as (
@@ -155,6 +156,7 @@ with p1_call as (
           'ethereum' as blockchain
           ,'seaport' as project
           ,'v1' as version
+          ,TRY_CAST(date_trunc('DAY', a.block_time) AS date) AS block_date
           ,a.block_time
           ,a.block_number
           ,a.nft_token_id as token_id
@@ -345,6 +347,7 @@ with p1_call as (
           'ethereum' as blockchain
           ,'seaport' as project
           ,'v1' as version
+          ,TRY_CAST(date_trunc('DAY', a.block_time) AS date) AS block_date
           ,a.block_time
           ,a.block_number
           ,a.nft_token_id as token_id
@@ -556,6 +559,7 @@ with p1_call as (
           'ethereum' as blockchain
           ,'seaport' as project
           ,'v1' as version
+          ,TRY_CAST(date_trunc('DAY', a.block_time) AS date) AS block_date
           ,a.block_time
           ,a.block_number
           ,a.nft_token_id as token_id
@@ -745,6 +749,7 @@ with p1_call as (
           'ethereum' as blockchain
           ,'seaport' as project
           ,'v1' as version
+          ,TRY_CAST(date_trunc('DAY', a.block_time) AS date) AS block_date
           ,a.block_time
           ,a.block_number
           ,a.nft_token_id as token_id

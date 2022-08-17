@@ -1,10 +1,11 @@
 {{ config(
-        alias ='events',
-        materialized ='incremental',
-        file_format ='delta',
-        incremental_strategy='merge',
-        unique_key='unique_trade_id'
-        )
+    alias = 'events',
+    partition_by = ['block_date'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'unique_trade_id']
+    )
 }}
 
 SELECT 
@@ -12,6 +13,7 @@ SELECT
   'opensea' as project,
   'v1' as version,
   signatures[0] as tx_hash, 
+  block_date,
   block_time,
   block_slot::string as block_number,
   abs(post_balances[0] / 1e9 - pre_balances[0] / 1e9) * p.price AS amount_usd,
@@ -36,5 +38,5 @@ AND block_slot > 128251864
 
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-AND block_date > now() - interval 2 days
+AND block_date >= (select max(block_date) from {{ this }})
 {% endif %} 
