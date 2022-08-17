@@ -574,3 +574,18 @@
   id: dec-dark-energy-crystals
   name: DarkEnergyCrystals
   symbol: DEC
+- address: '0x829c09fCc46D9fd31967272ABA245BEF9f727F93'
+  decimals: 18
+  id: usdex-usdex
+  name: USDEX
+  symbol: USDEX
+- address: '0xf4914E6D97a75f014AcFcF4072f11be5CfFc4cA6'
+  decimals: 18
+  id: dexshare-dexshare
+  name: dexSHARE
+  symbol: DEXSHARE
+- address: '0x147E07976E1ae78287c33aAFAab87760d32E50A5'
+  decimals: 18
+  id: dex-dexira
+  name: dexIRA
+  symbol: DEX
