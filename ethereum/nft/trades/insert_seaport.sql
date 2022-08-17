@@ -179,6 +179,7 @@ with p1_call as (
           ,case when a.zone in ('\xf397619df7bfd4d1657ea9bdd9df7ff888731a11'
                               ,'\x9b814233894cd227f561b78cc65891aa55c62ad2'
                               ,'\x004c00500000ad104d7dbd00e3ae0a5c00560c00'
+                              ,'\x110b2b128a9ed1be5ef3232d8e4e41640df5c2cd'
                               )
                 then 'OpenSea'
            end as platform
@@ -371,6 +372,7 @@ with p1_call as (
           ,case when a.zone in ('0xf397619df7bfd4d1657ea9bdd9df7ff888731a11'
                               ,'0x9b814233894cd227f561b78cc65891aa55c62ad2'
                               ,'0x004c00500000ad104d7dbd00e3ae0a5c00560c00'
+                              ,'0x110b2b128a9ed1be5ef3232d8e4e41640df5c2cd'
                               )
                 then 'OpenSea' 
            end as platform
@@ -587,6 +589,7 @@ with p1_call as (
           ,case when a.zone in ('\xf397619df7bfd4d1657ea9bdd9df7ff888731a11'
                               ,'\x9b814233894cd227f561b78cc65891aa55c62ad2'
                               ,'\x004c00500000ad104d7dbd00e3ae0a5c00560c00'
+                              ,'\x110b2b128a9ed1be5ef3232d8e4e41640df5c2cd'
                               )
                 then 'OpenSea'
            end as platform
@@ -777,6 +780,7 @@ with p1_call as (
           ,case when a.zone in ('0xf397619df7bfd4d1657ea9bdd9df7ff888731a11'
                               ,'0x9b814233894cd227f561b78cc65891aa55c62ad2'
                               ,'0x004c00500000ad104d7dbd00e3ae0a5c00560c00'
+                              ,'0x110b2b128a9ed1be5ef3232d8e4e41640df5c2cd'
                               )
                 then 'OpenSea' 
            end as platform
