@@ -33,6 +33,7 @@ models:
       +materialized: view
     nft:
       +schema: nft
+      +materialized: view
       ethereum:
         +schema: nft_ethereum
         +materialized: view
@@ -105,6 +106,13 @@ models:
       +materialized: view
       ethereum:
         +schema: transfers_ethereum
+        +materialized: view
+    
+    sudoswap:
+      +schema: sudoswap
+      +materialized: view
+      ethereum:
+        +schema: sudoswap_ethereum
         +materialized: view
 
     safe:
