@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: uniswap_v1_ethereum_trades
+  - name: uniswap_trades
     meta:
       blockchain: ethereum
       sector: dex
-      project: uniswap_v1
+      project: uniswap
       contributors: jeff-dude, masquot, soispoke
     config:
-      tags: ['ethereum','uniswap_v1','trades', 'uniswap','dex']
+      tags: ['ethereum','uniswap','trades', 'dex', 'jeff-dude','cross-chain']
     description: >
-        Uniswap V1 contract trades on Ethereum
+        Uniswap trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
       - &blockchain
         name: blockchain
@@ -20,7 +20,7 @@ models:
         description: "Project name of the DEX"  
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project"
+        description: "Version of the contract built and deployed by the DEX project"  
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
@@ -54,9 +54,6 @@ models:
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of the token bought"
-        tests:
-          - dex_trades_token_bought:
-              dex_trades_seed: ref('dex_trades_seed')
       - &token_sold_address
         name: token_sold_address
         description: "Contract address of the token sold"
@@ -86,80 +83,4 @@ models:
         description: ""
       - &unique_trade_id
         name: unique_trade_id
-        description: "Unique trade ID built to track merge incremental strategy in the model"
-        tests:
-          - is_unique_filtered
-
-  - name: uniswap_v2_ethereum_trades
-    meta:
-      blockchain: ethereum
-      sector: dex
-      project: uniswap_v2
-      contributors: jeff-dude, masquot, soispoke
-    config:
-      tags: ['ethereum','uniswap_v2','trades', 'uniswap','dex']
-    description: >
-        Uniswap V2 contract trades on Ethereum
-    columns:
-      - *blockchain
-      - *project
-      - *version  
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index
-      - *unique_trade_id
-
-  - name: uniswap_ethereum_trades
-    meta:
-      blockchain: ethereum
-      sector: dex
-      project: uniswap
-      contributors: jeff-dude, masquot, soispoke
-    config:
-      tags: ['ethereum','dex','trades', 'uniswap', 'jeff-dude']
-    description: >
-        Uniswap trades on Ethereum across all contracts and versions. This table will load dex trades downstream.
-    columns:
-      - *blockchain
-      - *project
-      - *version  
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - name: token_bought_address # since object is a view, avoid test repeat with '*' usage
-        description: "Contract address of the token bought"
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index
-      - name: unique_trade_id # since object is a view, avoid test repeat with '*' usage
         description: "Unique trade ID built to track merge incremental strategy in the model"

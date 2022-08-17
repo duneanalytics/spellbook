@@ -2,7 +2,6 @@
         alias ='trades'
         )
 }}
-
 SELECT *
 FROM
 (
@@ -31,7 +30,7 @@ FROM
                 ,trace_address
                 ,evt_index
                 ,unique_trade_id
-        FROM {{ ref('uniswap_ethereum_trades') }}
+        FROM {{ ref('uniswap_trades') }}
         /*
         UNION
         <add future protocols here>
