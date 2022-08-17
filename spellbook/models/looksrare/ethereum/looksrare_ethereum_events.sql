@@ -159,7 +159,9 @@ SELECT DISTINCT
     'looksrare' || '-' || tx_hash || '-' ||  token_id::string || '-' ||  seller::string || '-' || COALESCE(erc.contract_address, nft_contract_address) || '-' || looks_rare.evt_index::string || '-' || COALESCE(evt_type::string, 'Other')  || '-' || COALESCE(case when erc.value_unique::string is null then '0' ELSE '1' end, '1') as unique_trade_id
 FROM looks_rare
 INNER JOIN {{ source('ethereum','transactions') }} tx ON tx_hash = tx.hash
-AND tx.block_time > '2022-01-01'
+    {% if not is_incremental() %}
+    AND tx.block_time > '2022-01-01'
+    {% endif %}
     {% if is_incremental() %}
     AND TRY_CAST(date_trunc('DAY', tx.block_time) AS date) = TRY_CAST(date_trunc('DAY', looks_rare.block_time) AS date)
     {% endif %}

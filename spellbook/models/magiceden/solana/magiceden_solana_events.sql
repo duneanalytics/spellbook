@@ -96,13 +96,16 @@ FROM {{ source('solana','transactions') }}
 LEFT JOIN prices.usd p 
   ON p.minute = date_trunc('minute', block_time)
   AND p.symbol = 'SOL'        
-WHERE (array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K') -- magic eden v2
-OR array_contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb'))
-AND success = 'True'
-AND block_date > '2022-01-05'
-AND block_slot > 114980355
-
-{% if is_incremental() %}
--- this filter will only be applied on an incremental run
-AND block_date >= (select max(block_date) from {{ this }})
-{% endif %} 
+WHERE (
+     array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K') -- magic eden v2
+     OR array_contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb')
+     )
+     AND success = 'True'
+     {% if not is_incremental() %}
+     AND block_date > '2022-01-05'
+     AND block_slot > 114980355
+     {% endif %} 
+     {% if is_incremental() %}
+     -- this filter will only be applied on an incremental run
+     AND block_date >= (select max(block_date) from {{ this }})
+     {% endif %}

@@ -209,9 +209,11 @@ with p1_call as (
           a.zone
       from p1_txn_level a
           left join ethereum.transactions tx on tx.hash = a.tx_hash 
+                                              {% if not is_incremental() %}
                                               and tx.block_number > 14801608
-                                              {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-                                              and tx.block_time >= (select max(block_time) from {{ this }}) 
+                                              {% endif %}
+                                              {% if is_incremental() %}
+                                              and TRY_CAST(date_trunc('DAY', tx.block_time) AS date) = TRY_CAST(date_trunc('DAY', a.block_time) AS date)
                                               {% endif %}
           left join nft_ethereum.aggregators agg ON agg.contract_address = tx.to
           left join tokens_ethereum.nft n on n.contract_address = nft_contract_address
@@ -399,9 +401,11 @@ with p1_call as (
           a.zone
       from p2_transfer_level a
           left join ethereum.transactions tx on tx.hash = a.tx_hash 
+                                              {% if not is_incremental() %}
                                               and tx.block_number > 14801608
-                                              {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-                                              and tx.block_time >= (select max(block_time) from {{ this }}) 
+                                              {% endif %}
+                                              {% if is_incremental() %}
+                                              and TRY_CAST(date_trunc('DAY', tx.block_time) AS date) = TRY_CAST(date_trunc('DAY', a.block_time) AS date)
                                               {% endif %}
           left join nft_ethereum.aggregators agg ON agg.contract_address = tx.to
           left join tokens_ethereum.nft n on n.contract_address = concat('0x',substr(a.nft_address,3,40))
@@ -613,9 +617,11 @@ with p1_call as (
           a.zone
       from p3_txn_level a
           left join ethereum.transactions tx on tx.hash = a.tx_hash 
+                                              {% if not is_incremental() %}
                                               and tx.block_number > 14801608
-                                              {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-                                              and tx.block_time >= (select max(block_time) from {{ this }}) 
+                                              {% endif %}
+                                              {% if is_incremental() %}
+                                              and TRY_CAST(date_trunc('DAY', tx.block_time) AS date) = TRY_CAST(date_trunc('DAY', a.block_time) AS date)
                                               {% endif %}
           left join nft_ethereum.aggregators agg ON agg.contract_address = tx.to
           left join tokens_ethereum.nft n on n.contract_address = nft_contract_address
@@ -803,9 +809,11 @@ with p1_call as (
           a.zone
       from p4_transfer_level a
           left join ethereum.transactions tx on tx.hash = a.tx_hash 
+                                              {% if not is_incremental() %}
                                               and tx.block_number > 14801608
-                                              {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-                                              and tx.block_time >= (select max(block_time) from {{ this }}) 
+                                              {% endif %}
+                                              {% if is_incremental() %}
+                                              and TRY_CAST(date_trunc('DAY', tx.block_time) AS date) = TRY_CAST(date_trunc('DAY', a.block_time) AS date)
                                               {% endif %}
           left join nft_ethereum.aggregators agg ON agg.contract_address = tx.to
           left join tokens_ethereum.nft n on n.contract_address = concat('0x',substr(a.nft_address,3,40))

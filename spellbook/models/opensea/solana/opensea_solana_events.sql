@@ -33,10 +33,10 @@ LEFT JOIN {{ source('prices', 'usd') }} p
   AND p.symbol = 'SOL'
 WHERE (array_contains(account_keys, '3o9d13qUvEuuauhFrVom1vuCzgNsJifeaBYDPquaT73Y')
        OR array_contains(account_keys, 'pAHAKoTJsAAe2ZcvTZUxoYzuygVAFAmbYmJYdWT886r'))
+{% if not is_incremental() %}
 AND block_date > '2022-04-06'
 AND block_slot > 128251864
-
+{% endif %} 
 {% if is_incremental() %}
--- this filter will only be applied on an incremental run
 AND block_date >= (select max(block_date) from {{ this }})
 {% endif %} 
