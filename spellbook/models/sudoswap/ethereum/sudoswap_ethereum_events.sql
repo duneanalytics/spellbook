@@ -146,7 +146,7 @@ WITH
                 ELSE SUM(value)/(1-sb.ownerfee-sb.protocolfee)
                 END as base_price
             , SUM(value) as trade_price_eth --should give total value of the trade (buy or sell)
-            , ARRAY_AGG(distinct CASE WHEN substring(input,1,10)='0x42842e0e' THEN bytea2numeric_v2(substring(input,139,64))::int ELSE '' END) 
+            , ARRAY_AGG(distinct CASE WHEN substring(input,1,10)='0x42842e0e' THEN bytea2numeric_v2(substring(input,139,64))::int ELSE null END) 
                 as token_id
             , sb.call_tx_hash
             , sb.call_from
