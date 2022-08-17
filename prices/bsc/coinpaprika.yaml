@@ -564,3 +564,13 @@
   id: tbc-terablock
   name: TeraBlock Token
   symbol: TBC
+- address: '0x1633b7157e7638c4d6593436111bf125ee74703f'
+  decimals: 18
+  id: sps-splintershards
+  name: Splintershards
+  symbol: SPS
+- address: '0xE9D7023f2132D55cbd4Ee1f78273CB7a3e74F10A'
+  decimals: 3
+  id: dec-dark-energy-crystals
+  name: DarkEnergyCrystals
+  symbol: DEC
