@@ -1,3 +1,6 @@
+DROP TABLE IF EXISTS keep3r_network.job_data
+;
+
 CREATE TABLE keep3r_network.job_data (
     job,
     job_name

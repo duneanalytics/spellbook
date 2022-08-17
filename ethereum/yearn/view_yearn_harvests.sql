@@ -15,7 +15,7 @@ CREATE VIEW yearn."view_yearn_harvests" AS(
   yct."yvault_deposit_token_symbol"
 
   FROM yearn."view_stitch_yearn_harvests" hvst
-  LEFT JOIN yearn."view_yearn_contract_strategy" cs ON hvst."contract_address" = cs."strategy"
+  LEFT JOIN yearn."view_yearn_contract_strategy" cs ON hvst."strategy" = cs."strategy"
   LEFT JOIN yearn."view_yearn_contract_tokens" yct ON cs."yvault_contract" = yct."yvault_contract"
   WHERE
   "yvault_deposit_token_symbol" is not null

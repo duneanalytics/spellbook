@@ -1,5 +1,5 @@
 BEGIN;
-DROP VIEW IF EXISTS yearn."view_yearn_strategy_agg_data" cascade;
+DROP MATERIALIZED VIEW IF EXISTS yearn."view_yearn_strategy_agg_data" cascade;
 
 CREATE MATERIALIZED VIEW yearn."view_yearn_strategy_agg_data" AS (
   SELECT
