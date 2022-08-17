@@ -183,7 +183,7 @@ FROM
                 buyer,
                 amount_original,
                 amount_raw,
-                '' AS currency_symbol,
+                currency_symbol,
                 currency_contract,
                 nft_contract_address,
                 project_contract_address,
