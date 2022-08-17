@@ -4,7 +4,7 @@
     (
         select
             case
-                when m.{{ column_name }} = seed.token_bought_address
+                when m.{{ column_name }} = seed.{{ column_name }}
                     then True
                 else False
             end as token_bought_test
@@ -16,7 +16,6 @@
             and m.blockchain = seed.blockchain
             and m.project = seed.project
             and m.version = seed.version
-            and m.block_date = seed.block_date
     )
     select *
     from unit_test
