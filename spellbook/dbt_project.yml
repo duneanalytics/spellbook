@@ -1,11 +1,11 @@
 #Welcome to your Spellbook!
 
-name: "spellbook"
-version: "1.0.0"
+name: 'spellbook'
+version: '1.0.0'
 config-version: 2
 
 # This setting configures which "profile" dbt uses for this project.
-profile: "spellbook"
+profile: 'spellbook'
 
 # These configurations specify where dbt should look for different types of files.
 # You don't need to change these!
@@ -16,8 +16,8 @@ seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 
-target-path: "target" # directory which will store compiled SQL files
-clean-targets: # directories to be removed by `dbt clean`
+target-path: "target"  # directory which will store compiled SQL files
+clean-targets:         # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
 
@@ -96,7 +96,7 @@ models:
       optimism:
         +schema: tokens_optimism
         +materialized: view
-
+    
     transfers:
       +schema: transfers
       +materialized: view
