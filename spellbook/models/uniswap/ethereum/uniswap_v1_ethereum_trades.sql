@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'uniswap_v2_ethereum',
+    schema = 'uniswap_v1_ethereum',
     alias = 'trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -10,36 +10,56 @@
 }}
 WITH dexs AS
 (
-    -- Uniswap v2
+    -- Uniswap v1 TokenPurchase
     SELECT
         t.evt_block_time AS block_time
-        ,t.to AS taker
+        ,t.buyer AS taker
         ,'' AS maker
-        ,CASE WHEN amount0Out = 0 THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw
-        ,CASE WHEN amount0In = 0 OR amount1Out = 0 THEN amount1In ELSE amount0In END AS token_sold_amount_raw
+        ,t.tokens_bought AS token_bought_amount_raw
+        ,t.eth_sold AS token_sold_amount_raw
         ,NULL AS amount_usd
-        ,CASE WHEN amount0Out = 0 THEN f.token1 ELSE f.token0 END AS token_bought_address
-        ,CASE WHEN amount0In = 0 OR amount1Out = 0 THEN f.token1 ELSE f.token0 END AS token_sold_address
+        ,f.token AS token_bought_address
+        ,'0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS token_sold_address --Using WETH for easier joining with USD price table
         ,t.contract_address AS project_contract_address
         ,t.evt_tx_hash AS tx_hash
         ,'' AS trace_address
         ,t.evt_index
     FROM
-        {{ source('uniswap_v2_ethereum', 'Pair_evt_Swap') }} t
-    INNER JOIN {{ source('uniswap_v2_ethereum', 'Factory_evt_PairCreated') }} f
-        ON f.pair = t.contract_address
-    WHERE t.contract_address NOT IN (
-        '\xed9c854cb02de75ce4c9bba992828d6cb7fd5c71', -- remove WETH-UBOMB wash trading pair
-        '\xf9c1fA7d41bf44ADe1dd08D37CC68f67Ae75bF92', -- remove WETH-WETH wash trading pair 
-        '\x854373387e41371ac6e307a1f29603c6fa10d872' ) -- remove FEG/ETH token pair
+        {{ source('uniswap_ethereum', 'Exchange_evt_TokenPurchase') }} t
+    INNER JOIN {{ source('uniswap_ethereum', 'Factory_evt_NewExchange') }} f
+        ON f.exchange = t.contract_address
     {% if is_incremental() %}
-    AND t.evt_block_time >= (SELECT MAX(block_time) FROM {{ this }})
+    WHERE t.evt_block_time >= (SELECT MAX(block_time) FROM {{ this }})
+    {% endif %}
+
+    UNION ALL
+
+    -- Uniswap v1 EthPurchase
+    SELECT
+        t.evt_block_time AS block_time
+        ,t.buyer AS taker
+        ,'' AS maker
+        ,t.eth_bought AS token_bought_amount_raw
+        ,t.tokens_sold AS token_sold_amount_raw
+        ,NULL AS amount_usd
+        ,'0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS token_bought_address --Using WETH for easier joining with USD price table
+        ,f.token AS token_sold_address
+        ,t.contract_address AS project_contract_address
+        ,t.evt_tx_hash AS tx_hash
+        ,'' AS trace_address
+        ,t.evt_index
+    FROM
+        {{ source('uniswap_ethereum', 'Exchange_evt_EthPurchase') }} t
+    INNER JOIN {{ source('uniswap_ethereum', 'Factory_evt_NewExchange') }} f
+        ON f.exchange = t.contract_address
+    {% if is_incremental() %}
+    WHERE t.evt_block_time >= (SELECT MAX(block_time) FROM {{ this }})
     {% endif %}
 )
 SELECT
     'ethereum' AS blockchain
     ,'uniswap' AS project
-    ,'2' AS version
+    ,'1' AS version
     ,TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
     ,dexs.block_time
     ,erc20a.symbol AS token_bought_symbol
@@ -67,7 +87,7 @@ SELECT
     ,tx.to AS tx_to
     ,dexs.trace_address
     ,dexs.evt_index
-    ,'uniswap' ||'-'|| '2' ||'-'|| dexs.tx_hash ||'-'|| IFNULL(dexs.evt_index, '') ||'-'|| IFNULL(dexs.trace_address, '') AS unique_trade_id
+    ,'uniswap' ||'-'|| '1' ||'-'|| dexs.tx_hash ||'-'|| IFNULL(dexs.evt_index, '') ||'-'|| IFNULL(dexs.trace_address, '') AS unique_trade_id
 FROM dexs
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
