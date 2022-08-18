@@ -589,3 +589,8 @@
   id: dex-dexira
   name: dexIRA
   symbol: DEX
+- address: '0x8E3BCC334657560253B83f08331d85267316e08a'
+  decimals: 18
+  id: rbc-rubic
+  name: Rubic
+  symbol: RBC

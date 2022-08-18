@@ -85,6 +85,18 @@ models:
       - &platform_fee_percentage
         name: platform_fee_amount_usd
         description:  "Platform fee in % of the amount paid for a given trade"
+      - &owner_fee_amount_raw
+        name: owner_fee_amount_raw
+        description:  "Raw numerical amount for owner fees"
+      - &owner_fee_amount
+        name: owner_fee_amount
+        description:  "Royalty fee amount in original token currency (properly formatted in decimals)"
+      - &owner_fee_percentage
+        name: owner_fee_percentage
+        description:  "Royalty fee in % of the amount paid for a given trade"
+      - &owner_fee_amount_usd 
+        name: owner_fee_amount_usd
+        description:  "owner fee amount in USD"
       - &royalty_fee_amount_raw
         name: royalty_fee_amount_raw
         description:  "Raw numerical amount for royalty fees"
