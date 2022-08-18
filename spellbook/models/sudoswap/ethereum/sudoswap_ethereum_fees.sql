@@ -8,13 +8,12 @@ SELECT
       project,
       version,
       block_time,
-      explode(token_id) as token_id,
+      token_id,
       collection,
-      platform_fee_amount_raw/cardinality(token_id) as platform_fee_amount_raw,
-      platform_fee_amount/cardinality(token_id) as platform_fee_amount,
-      platform_fee_amount_usd/cardinality(token_id) as platform_fee_amount_usd,
+      platform_fee_amount_raw,
+      platform_fee_amount,
+      platform_fee_amount_usd,
       platform_fee_percentage,
-      --royalty fees are null so no need to divide
       royalty_fee_amount_raw,
       royalty_fee_amount,
       royalty_fee_amount_usd,
@@ -23,7 +22,7 @@ SELECT
       royalty_fee_currency_symbol,
       token_standard,
       trade_type,
-      number_of_items/cardinality(token_id),
+      number_of_items,
       trade_category,
       evt_type,
       seller,
@@ -36,5 +35,5 @@ SELECT
       block_number,
       tx_from,
       tx_to,
-      concat(token_id::string, '-', unique_trade_id) as unique_trade_id
+      unique_trade_id
 FROM ({{ ref('sudoswap_ethereum_events') }})

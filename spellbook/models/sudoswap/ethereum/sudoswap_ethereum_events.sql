@@ -236,7 +236,6 @@ WITH
             , sc.platform_fee_amount*pu.price as platform_fee_amount_usd
             , tx.from as tx_from
             , tx.to as tx_to
-            , 'sudoswap-' || sc.tx_hash || '-' || sc.nft_contract_address || sc.token_id::string || '-' || sc.seller || '-' || sc.amount_original::string || 'Trade' AS unique_trade_id
         FROM swaps_cleaned sc
         LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain='ethereum'
             AND date_trunc('minute', pu.minute)=date_trunc('minute', sc.block_time)
@@ -258,7 +257,56 @@ WITH
             {% endif %}
         LEFT JOIN nft_ethereum_aggregators agg ON agg.contract_address = tx.to --assumes aggregator is the top level call. Will need to change this to check for agg calls in internal traces later on.
         LEFT JOIN tokens_ethereum_nft tokens ON nft_contract_address = tokens.contract_address
+    ),
+
+    swaps_exploded as (
+        SELECT 
+            blockchain
+            , project
+            , version
+            , block_date
+            , block_time 
+            , block_number
+            , explode(token_id) as token_id --nft.trades prefers each token id be its own row
+            , token_standard
+            , number_of_items/number_of_items as number_of_items
+            , trade_type
+            , trade_category
+            , evt_type
+            , seller
+            , buyer 
+            , amount_raw/number_of_items as amount_raw
+            , amount_original/number_of_items as amount_original
+            , amount_usd/number_of_items as amount_usd
+            , currency_symbol
+            , currency_contract 
+            , project_contract_address
+            , nft_contract_address
+            , collection 
+            , tx_hash
+            , tx_from 
+            , tx_to 
+            , aggregator_address
+            , aggregator_name
+            , platform_fee_amount/number_of_items as platform_fee_amount
+            , platform_fee_amount_raw/number_of_items as platform_fee_amount_raw
+            , platform_fee_amount_usd/number_of_items as platform_fee_amount_usd
+            , platform_fee_percentage
+            , owner_fee_amount/number_of_items as owner_fee_amount
+            , owner_fee_amount_raw/number_of_items as owner_fee_amount_raw
+            , owner_fee_amount_usd/number_of_items as owner_fee_amount_usd
+            , owner_fee_percentage
+            --below are null
+            , royalty_fee_amount
+            , royalty_fee_amount_raw
+            , royalty_fee_amount_usd
+            , royalty_fee_currency_symbol
+            , royalty_fee_receive_address
+        FROM swaps_cleaned_w_metadata
     )
 
 --final SELECT CTE
-SELECT * FROM swaps_cleaned_w_metadata
+SELECT 
+    * 
+    , 'sudoswap-' || sc.tx_hash || '-' || sc.nft_contract_address || sc.token_id::string || '-' || sc.seller || '-' || sc.amount_original::string || 'Trade' AS unique_trade_id
+FROM swaps_cleaned_w_metadata
