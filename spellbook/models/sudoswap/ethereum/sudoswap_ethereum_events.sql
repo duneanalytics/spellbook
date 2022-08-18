@@ -308,5 +308,5 @@ WITH
 --final SELECT CTE
 SELECT 
     * 
-    , 'sudoswap-' || sc.tx_hash || '-' || sc.nft_contract_address || sc.token_id::string || '-' || sc.seller || '-' || sc.amount_original::string || 'Trade' AS unique_trade_id
-FROM swaps_cleaned_w_metadata
+    , 'sudoswap-' || tx_hash || '-' || nft_contract_address || token_id::string || '-' || seller || '-' || amount_original::string || 'Trade' AS unique_trade_id
+FROM swaps_exploded
