@@ -145,7 +145,7 @@ WITH
             , CASE WHEN sb.trade_category = 'Buy' THEN SUM(value)/(1+sb.ownerfee+sb.protocolfee)
                 ELSE SUM(value)/(1-sb.ownerfee-sb.protocolfee)
                 END as base_price
-            , SUM(value) as trade_price_eth --should give total value of the trade (buy or sell)
+            , SUM(value) as trade_price --should give total value of the trade (buy or sell)
             , ARRAY_AGG(distinct CASE WHEN substring(input,1,10)='0x42842e0e' THEN bytea2numeric_v2(substring(input,139,64))::int ELSE null END) 
                 as token_id
             , sb.call_tx_hash
@@ -197,8 +197,12 @@ WITH
             , CASE WHEN trade_category = 'Sell' THEN pair_address --AMM is buying if an NFT is being sold
                 ELSE call_from
                 END as buyer
-            , trade_price_eth as amount_raw
-            , trade_price_eth/1e18 as amount_original
+            , CASE WHEN trade_category = 'Buy' THEN trade_price --purchases add fee, so we're fine here
+                ELSE trade_price + base_price*protocolfee --sales remove fee from total
+                END as amount_raw
+            , CASE WHEN trade_category = 'Buy' THEN trade_price/1e18 --purchases add fee, so we're fine here
+                ELSE (trade_price + base_price*protocolfee)/1e18 --sales remove fee from total
+                END as amount_original
             , 'ETH' as currency_symbol
             , '0x0000000000000000000000000000000000000000' as currency_contract --ETH
             , nftcontractaddress as nft_contract_address
@@ -211,9 +215,16 @@ WITH
             --royalties don't technically exist on AMM, but there are owner fees for the pool that can be treated as royalties in the future.
             , base_price*ownerfee as royalty_fee_amount_raw
             , (base_price*ownerfee)/1e18 as royalty_fee_amount
-            , ownerfee as royalty_fee_percentage
-            , pair_address as royalty_fee_receive_address
-            , 'ETH' as royalty_fee_currency_symbol
+            --royalties don't technically exist on AMM, but there are owner fees for the pool that can be treated as royalties in the future.
+            , base_price*ownerfee as owner_fee_amount_raw
+            , (base_price*ownerfee)/1e18 as owner_fee_amount
+            , ownerfee as owner_fee_percentage
+            , null as royalty_fee_amount_raw
+            , null as royalty_fee_amount
+            , null as royalty_fee_percentage
+            , null as royalty_fee_receive_address
+            , null as royalty_fee_amount_usd
+            , null as royalty_fee_currency_symbol
         FROM swaps_w_traces
     ),
 
@@ -224,7 +235,7 @@ WITH
             , agg.name as aggregator_name
             , agg.contract_address as aggregator_address
             , sc.amount_original*pu.price as amount_usd 
-            , sc.royalty_fee_amount*pu.price as royalty_fee_amount_usd
+            , sc.owner_fee_amount*pu.price as owner_fee_amount_usd
             , sc.platform_fee_amount*pu.price as platform_fee_amount_usd
             , tx.from as tx_from
             , tx.to as tx_to
