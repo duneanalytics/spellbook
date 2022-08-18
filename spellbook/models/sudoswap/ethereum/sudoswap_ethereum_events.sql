@@ -146,7 +146,7 @@ WITH
                 ELSE SUM(value)/(1-sb.ownerfee-sb.protocolfee)
                 END as base_price
             , SUM(value) as trade_price --should give total value of the trade (buy or sell)
-            , ARRAY_AGG(distinct CASE WHEN substring(input,1,10)='0x42842e0e' THEN bytea2numeric_v2(substring(input,139,64))::int ELSE null END) 
+            , ARRAY_AGG(distinct CASE WHEN substring(input,1,10)='0x42842e0e' THEN bytea2numeric_v2(substring(input,139,64))::int ELSE null::int END) 
                 as token_id
             , sb.call_tx_hash
             , sb.call_from
@@ -216,12 +216,12 @@ WITH
             , base_price*ownerfee as owner_fee_amount_raw
             , (base_price*ownerfee)/1e18 as owner_fee_amount
             , ownerfee as owner_fee_percentage
-            , null as royalty_fee_amount_raw
-            , null as royalty_fee_amount
-            , null as royalty_fee_percentage
-            , null as royalty_fee_receive_address
-            , null as royalty_fee_amount_usd
-            , null as royalty_fee_currency_symbol
+            , null::double as royalty_fee_amount_raw
+            , null::double as royalty_fee_amount
+            , null::double as royalty_fee_percentage
+            , null::string as royalty_fee_receive_address
+            , null::double as royalty_fee_amount_usd
+            , null::string as royalty_fee_currency_symbol
         FROM swaps_w_traces
     ),
 
