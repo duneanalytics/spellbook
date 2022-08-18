@@ -213,9 +213,6 @@ WITH
             , (base_price*protocolfee)/1e18 as platform_fee_amount
             , protocolfee as platform_fee_percentage
             --royalties don't technically exist on AMM, but there are owner fees for the pool that can be treated as royalties in the future.
-            , base_price*ownerfee as royalty_fee_amount_raw
-            , (base_price*ownerfee)/1e18 as royalty_fee_amount
-            --royalties don't technically exist on AMM, but there are owner fees for the pool that can be treated as royalties in the future.
             , base_price*ownerfee as owner_fee_amount_raw
             , (base_price*ownerfee)/1e18 as owner_fee_amount
             , ownerfee as owner_fee_percentage
