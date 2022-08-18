@@ -300,6 +300,7 @@ WITH
             , royalty_fee_amount
             , royalty_fee_amount_raw
             , royalty_fee_amount_usd
+            , royalty_fee_percentage
             , royalty_fee_currency_symbol
             , royalty_fee_receive_address
         FROM swaps_cleaned_w_metadata
