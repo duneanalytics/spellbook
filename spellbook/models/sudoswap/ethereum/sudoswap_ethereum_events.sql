@@ -145,8 +145,8 @@ WITH
             , CASE WHEN sb.trade_category = 'Buy' THEN SUM(value)/(1+sb.ownerfee+sb.protocolfee)
                 ELSE SUM(value)/(1-sb.ownerfee-sb.protocolfee)
                 END as base_price
-            , SUM(value) as trade_price_eth --should give total value of the trade (buy or sell)
-            , ARRAY_AGG(distinct CASE WHEN substring(input,1,10)='0x42842e0e' THEN bytea2numeric_v2(substring(input,139,64))::int ELSE null END) 
+            , SUM(value) as trade_price --should give total value of the trade (buy or sell)
+            , ARRAY_AGG(distinct CASE WHEN substring(input,1,10)='0x42842e0e' THEN bytea2numeric_v2(substring(input,139,64))::int ELSE null::int END) 
                 as token_id
             , sb.call_tx_hash
             , sb.call_from
@@ -197,8 +197,12 @@ WITH
             , CASE WHEN trade_category = 'Sell' THEN pair_address --AMM is buying if an NFT is being sold
                 ELSE call_from
                 END as buyer
-            , trade_price_eth as amount_raw
-            , trade_price_eth/1e18 as amount_original
+            , CASE WHEN trade_category = 'Buy' THEN trade_price --purchases add fee, so we're fine here
+                ELSE trade_price + base_price*protocolfee --sales remove fee from total
+                END as amount_raw
+            , CASE WHEN trade_category = 'Buy' THEN trade_price/1e18 --purchases add fee, so we're fine here
+                ELSE (trade_price + base_price*protocolfee)/1e18 --sales remove fee from total
+                END as amount_original
             , 'ETH' as currency_symbol
             , '0x0000000000000000000000000000000000000000' as currency_contract --ETH
             , nftcontractaddress as nft_contract_address
@@ -209,11 +213,15 @@ WITH
             , (base_price*protocolfee)/1e18 as platform_fee_amount
             , protocolfee as platform_fee_percentage
             --royalties don't technically exist on AMM, but there are owner fees for the pool that can be treated as royalties in the future.
-            , base_price*ownerfee as royalty_fee_amount_raw
-            , (base_price*ownerfee)/1e18 as royalty_fee_amount
-            , ownerfee as royalty_fee_percentage
-            , pair_address as royalty_fee_receive_address
-            , 'ETH' as royalty_fee_currency_symbol
+            , base_price*ownerfee as owner_fee_amount_raw
+            , (base_price*ownerfee)/1e18 as owner_fee_amount
+            , ownerfee as owner_fee_percentage
+            , null::double as royalty_fee_amount_raw
+            , null::double as royalty_fee_amount
+            , null::double as royalty_fee_percentage
+            , null::string as royalty_fee_receive_address
+            , null::double as royalty_fee_amount_usd
+            , null::string as royalty_fee_currency_symbol
         FROM swaps_w_traces
     ),
 
@@ -224,11 +232,10 @@ WITH
             , agg.name as aggregator_name
             , agg.contract_address as aggregator_address
             , sc.amount_original*pu.price as amount_usd 
-            , sc.royalty_fee_amount*pu.price as royalty_fee_amount_usd
+            , sc.owner_fee_amount*pu.price as owner_fee_amount_usd
             , sc.platform_fee_amount*pu.price as platform_fee_amount_usd
             , tx.from as tx_from
             , tx.to as tx_to
-            , 'sudoswap-' || sc.tx_hash || '-' || sc.nft_contract_address || sc.token_id::string || '-' || sc.seller || '-' || sc.amount_original::string || 'Trade' AS unique_trade_id
         FROM swaps_cleaned sc
         LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain='ethereum'
             AND date_trunc('minute', pu.minute)=date_trunc('minute', sc.block_time)
@@ -250,7 +257,57 @@ WITH
             {% endif %}
         LEFT JOIN nft_ethereum_aggregators agg ON agg.contract_address = tx.to --assumes aggregator is the top level call. Will need to change this to check for agg calls in internal traces later on.
         LEFT JOIN tokens_ethereum_nft tokens ON nft_contract_address = tokens.contract_address
+    ),
+
+    swaps_exploded as (
+        SELECT 
+            blockchain
+            , project
+            , version
+            , block_date
+            , block_time 
+            , block_number
+            , explode(token_id) as token_id --nft.trades prefers each token id be its own row
+            , token_standard
+            , number_of_items/number_of_items as number_of_items
+            , trade_type
+            , trade_category
+            , evt_type
+            , seller
+            , buyer 
+            , amount_raw/number_of_items as amount_raw
+            , amount_original/number_of_items as amount_original
+            , amount_usd/number_of_items as amount_usd
+            , currency_symbol
+            , currency_contract 
+            , project_contract_address
+            , nft_contract_address
+            , collection 
+            , tx_hash
+            , tx_from 
+            , tx_to 
+            , aggregator_address
+            , aggregator_name
+            , platform_fee_amount/number_of_items as platform_fee_amount
+            , platform_fee_amount_raw/number_of_items as platform_fee_amount_raw
+            , platform_fee_amount_usd/number_of_items as platform_fee_amount_usd
+            , platform_fee_percentage
+            , owner_fee_amount/number_of_items as owner_fee_amount
+            , owner_fee_amount_raw/number_of_items as owner_fee_amount_raw
+            , owner_fee_amount_usd/number_of_items as owner_fee_amount_usd
+            , owner_fee_percentage
+            --below are null
+            , royalty_fee_amount
+            , royalty_fee_amount_raw
+            , royalty_fee_amount_usd
+            , royalty_fee_percentage
+            , royalty_fee_currency_symbol
+            , royalty_fee_receive_address
+        FROM swaps_cleaned_w_metadata
     )
 
 --final SELECT CTE
-SELECT * FROM swaps_cleaned_w_metadata
+SELECT 
+    * 
+    , 'sudoswap-' || tx_hash || '-' || nft_contract_address || token_id::string || '-' || seller || '-' || amount_original::string || 'Trade' AS unique_trade_id
+FROM swaps_exploded
