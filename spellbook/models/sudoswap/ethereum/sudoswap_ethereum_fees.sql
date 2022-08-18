@@ -36,5 +36,5 @@ SELECT
       block_number,
       tx_from,
       tx_to,
-      unique_trade_id
+      concat(token_id::string, '-', unique_trade_id) as unique_trade_id
 FROM ({{ ref('sudoswap_ethereum_events') }})
