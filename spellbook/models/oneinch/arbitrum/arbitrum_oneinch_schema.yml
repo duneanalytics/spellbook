@@ -8,7 +8,7 @@ models:
       project: oneinch
       contributors: jacubcub
     config:
-      tags: ['arbitrum','oneinch','1inch, 'aggregator']
+      tags: ['arbitrum','oneinch','1inch','aggregator']
     description: >
         1inch V3 and V4 aggregator swaps on Arbitrum
     columns:

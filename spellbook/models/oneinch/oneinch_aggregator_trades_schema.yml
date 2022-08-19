@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: uniswap_trades
+  - name: oneinch_aggregator_trades
     meta:
       sector: aggregator
       project: oneinch
@@ -83,4 +83,3 @@ models:
       - &unique_trade_id
         name: unique_trade_id
         description: "Unique trade ID built to track merge incremental strategy in the model"
-        
