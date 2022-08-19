@@ -31,7 +31,7 @@ FROM
                 ,trace_address
                 ,evt_index
                 ,unique_trade_id
-        FROM {{ ref('oneinch_arbitrum_aggregator_trades') }}
+        FROM {{ ref('oneinch_aggregator_arbitrum_trades') }}
         /*
         UNION
         <add future protocols here>

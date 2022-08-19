@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: oneinch_arbitrum_aggregator_trades
+  - name: oneinch_aggregator_arbitrum_v3_trades
     meta:
       blockchain: arbitrum
       sector: dex
       project: oneinch
-      contributors: jacubcub
+      contributors: jeff-dude, jacubcub
     config:
       tags: ['arbitrum','oneinch','1inch','aggregator']
     description: >
-        1inch V3 and V4 aggregator swaps on Arbitrum
+        1inch V3 aggregator swaps on Arbitrum
     columns:
       - &blockchain
         name: blockchain
@@ -83,4 +83,42 @@ models:
         description: ""
       - &unique_trade_id
         name: unique_trade_id
+        description: "Unique trade ID built to track merge incremental strategy in the model"
+
+  - name: oneinch_aggregator_arbitrum_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: oneinch
+      contributors: jacubcub
+    config:
+      tags: ['arbitrum','oneinch','1inch','aggregator']
+    description: >
+        1inch aggregator swaps on Arbitrum across all contracts and versions. This table will load dex_aggregator trades downstream.
+    columns:
+      - *blockchain
+      - *project
+      - *version  
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - name: token_bought_address # since object is a view, avoid test repeat with '*' usage
+        description: "Contract address of the token bought"
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *trace_address
+      - *evt_index
+      - name: unique_trade_id # since object is a view, avoid test repeat with '*' usage
         description: "Unique trade ID built to track merge incremental strategy in the model"
