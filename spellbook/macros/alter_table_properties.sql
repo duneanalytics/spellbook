@@ -334,13 +334,49 @@ ALTER VIEW tokens_ethereum.nft SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["dot2dotseurat","soispoke"]');
 {% endset %}
 
+{% set uniswap_v1_ethereum_trades %}
+ALTER TABLE uniswap_v1_ethereum.trades SET TBLPROPERTIES('dune.public'='true',
+                                                            'dune.data_explorer.blockchains'='["ethereum"]',
+                                                            'dune.data_explorer.category'='abstraction',
+                                                            'dune.data_explorer.abstraction.type'='project',
+                                                            'dune.data_explorer.abstraction.name'='uniswap_v1',
+                                                            'dune.data_explorer.contributors'='["jeff-dude"]');
+{% endset %}
+
+{% set uniswap_v2_ethereum_trades %}
+ALTER TABLE uniswap_v2_ethereum.trades SET TBLPROPERTIES('dune.public'='true',
+                                                            'dune.data_explorer.blockchains'='["ethereum"]',
+                                                            'dune.data_explorer.category'='abstraction',
+                                                            'dune.data_explorer.abstraction.type'='project',
+                                                            'dune.data_explorer.abstraction.name'='uniswap_v2',
+                                                            'dune.data_explorer.contributors'='["jeff-dude"]');
+{% endset %}
+
+{% set uniswap_ethereum_trades %}
+ALTER VIEW uniswap_ethereum.trades SET TBLPROPERTIES('dune.public'='true',
+                                                        'dune.data_explorer.blockchains'='["ethereum"]',
+                                                        'dune.data_explorer.category'='abstraction',
+                                                        'dune.data_explorer.abstraction.type'='project',
+                                                        'dune.data_explorer.abstraction.name'='uniswap',
+                                                        'dune.data_explorer.contributors'='["jeff-dude"]');
+{% endset %}
+
 {% set uniswap_trades %}
-ALTER TABLE uniswap.trades SET TBLPROPERTIES('dune.public'='true',
-                                                    'dune.data_explorer.blockchains'='["ethereum"]',
-                                                    'dune.data_explorer.category'='abstraction',
-                                                    'dune.data_explorer.abstraction.type'='project',
-                                                    'dune.data_explorer.abstraction.name'='uniswap',
-                                                    'dune.data_explorer.contributors'='["soispoke"]');
+ALTER VIEW uniswap.trades SET TBLPROPERTIES('dune.public'='true',
+                                                'dune.data_explorer.blockchains'='["ethereum"]',
+                                                'dune.data_explorer.category'='abstraction',
+                                                'dune.data_explorer.abstraction.type'='project',
+                                                'dune.data_explorer.abstraction.name'='uniswap',
+                                                'dune.data_explorer.contributors'='["jeff-dude"]');
+{% endset %}
+
+{% set dex_trades %}
+ALTER VIEW dex.trades SET TBLPROPERTIES('dune.public'='true',
+                                            'dune.data_explorer.blockchains'='["ethereum"]',
+                                            'dune.data_explorer.category'='abstraction',
+                                            'dune.data_explorer.abstraction.type'='sector',
+                                            'dune.data_explorer.abstraction.name'='dex',
+                                            'dune.data_explorer.contributors'='["jeff-dude"]');
 {% endset %}
 
 {% set seaport_ethereum_view_transactions %}
@@ -424,8 +460,35 @@ ALTER VIEW prices.usd_latest  SET TBLPROPERTIES ('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["hildobby"]');
 {% endset %}
 
+{% set sudoswap_ethereum_events %}
+ALTER TABLE sudoswap_ethereum.events  SET TBLPROPERTIES ('dune.public'='true',
+                                                        'dune.data_explorer.blockchains'='["ethereum"]',
+                                                        'dune.data_explorer.category'='abstraction',
+                                                        'dune.data_explorer.abstraction.type'='project',
+                                                        'dune.data_explorer.abstraction.name'='sudoswap',
+                                                        'dune.data_explorer.contributors'='["ilemi"]');
+{% endset %}
+
+{% set sudoswap_ethereum_trades %}
+ALTER VIEW sudoswap_ethereum.trades  SET TBLPROPERTIES ('dune.public'='true',
+                                                            'dune.data_explorer.blockchains'='["ethereum"]',
+                                                            'dune.data_explorer.category'='abstraction',
+                                                            'dune.data_explorer.abstraction.type'='project',
+                                                            'dune.data_explorer.abstraction.name'='sudoswap',
+                                                            'dune.data_explorer.contributors'='["ilemi"]');
+{% endset %}
+
+{% set sudoswap_ethereum_fees %}
+ALTER VIEW sudoswap_ethereum.fees  SET TBLPROPERTIES ('dune.public'='true',
+                                                        'dune.data_explorer.blockchains'='["ethereum"]',
+                                                        'dune.data_explorer.category'='abstraction',
+                                                        'dune.data_explorer.abstraction.type'='project',
+                                                        'dune.data_explorer.abstraction.name'='sudoswap',
+                                                        'dune.data_explorer.contributors'='["ilemi"]');
+{% endset %}
+
 {% set safe_safes %}
-ALTER TABLE safe.safes  SET TBLPROPERTIES ('dune.public'='true',
+ALTER TABLE safe.safes SET TBLPROPERTIES ('dune.public'='true',
                                             'dune.data_explorer.blockchains'='["ethereum"]',
                                             'dune.data_explorer.category'='abstraction',
                                             'dune.data_explorer.abstraction.type'='project',
@@ -434,12 +497,20 @@ ALTER TABLE safe.safes  SET TBLPROPERTIES ('dune.public'='true',
 {% endset %}
 
 {% set safe_eth_transfers %}
-ALTER TABLE safe.eth_transfers  SET TBLPROPERTIES ('dune.public'='true',
+ALTER TABLE safe.eth_transfers SET TBLPROPERTIES ('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='project',
                                                     'dune.data_explorer.abstraction.name'='safe',
                                                     'dune.data_explorer.contributors'='["sche"]');
+{% endset %}
+{% set prices_tokens %}
+ALTER VIEW prices.tokens SET TBLPROPERTIES ('dune.public'='true',
+                                                'dune.data_explorer.blockchains'='["ethereum", "bnb", "solana"]',
+                                                'dune.data_explorer.category'='abstraction',
+                                                'dune.data_explorer.abstraction.type'='sector',
+                                                'dune.data_explorer.abstraction.name'='prices',
+                                                'dune.data_explorer.contributors'='["aalan3", "jeff-dude"]');
 {% endset %}
 
 {% do run_query(balances_ethereum_erc20_day) %}
@@ -475,6 +546,11 @@ ALTER TABLE safe.eth_transfers  SET TBLPROPERTIES ('dune.public'='true',
 {% do run_query(nft_mints) %}
 {% do run_query(nft_burns) %}
 {% do run_query(nft_fees) %}
+{% do run_query(uniswap_v1_ethereum_trades) %}
+{% do run_query(uniswap_v2_ethereum_trades) %}
+{% do run_query(uniswap_ethereum_trades) %}
+{% do run_query(uniswap_trades) %}
+{% do run_query(dex_trades) %}
 {% do run_query(nft_ethereum_aggregators) %}
 {% do run_query(tokens_ethereum_erc20) %}
 {% do run_query(transfers_ethereum_erc20) %}
@@ -489,8 +565,12 @@ ALTER TABLE safe.eth_transfers  SET TBLPROPERTIES ('dune.public'='true',
 {% do run_query(cex_addresses) %}
 {% do run_query(nomad_bridge_transactions) %}
 {% do run_query(prices_usd_latest) %}
+{% do run_query(sudoswap_ethereum_events) %}
+{% do run_query(sudoswap_ethereum_trades) %}
+{% do run_query(sudoswap_ethereum_fees) %}
 {% do run_query(safe_safes) %}
 {% do run_query(safe_eth_transfers) %}
+{% do run_query(prices_tokens) %}
 
 {% do log("Tables generated", info=True) %}
 {%- else -%}

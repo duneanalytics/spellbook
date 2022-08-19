@@ -1,10 +1,11 @@
 {{ config(
-        alias ='events',
-        materialized ='incremental',
-        file_format ='delta',
-        incremental_strategy='merge',
-        unique_key='unique_trade_id'
-        )
+    alias = 'events',
+    partition_by = ['block_date'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'unique_trade_id']
+    )
 }}
 
 SELECT 
@@ -14,6 +15,7 @@ SELECT
   WHEN (array_contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb')) THEN 'launchpad_v3'
   END as version,
   signatures[0] as tx_hash, 
+  block_date,
   block_time,
   block_slot::string as block_number,
   abs(post_balances[0] / 1e9 - pre_balances[0] / 1e9) * p.price AS amount_usd,
@@ -94,13 +96,16 @@ FROM {{ source('solana','transactions') }}
 LEFT JOIN prices.usd p 
   ON p.minute = date_trunc('minute', block_time)
   AND p.symbol = 'SOL'        
-WHERE (array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K') -- magic eden v2
-OR array_contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb'))
-AND success = 'True'
-AND block_date > '2022-01-05'
-AND block_slot > 114980355
-
-{% if is_incremental() %}
--- this filter will only be applied on an incremental run
-AND block_date >= (select max(block_time) from {{ this }})
-{% endif %} 
+WHERE (
+     array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K') -- magic eden v2
+     OR array_contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb')
+     )
+     AND success = 'True'
+     {% if not is_incremental() %}
+     AND block_date > '2022-01-05'
+     AND block_slot > 114980355
+     {% endif %} 
+     {% if is_incremental() %}
+     -- this filter will only be applied on an incremental run
+     AND block_date >= (select max(block_date) from {{ this }})
+     {% endif %}

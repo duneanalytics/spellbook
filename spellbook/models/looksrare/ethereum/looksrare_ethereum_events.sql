@@ -1,10 +1,11 @@
 {{ config(
-        alias ='events',
-        materialized ='incremental',
-        file_format ='delta',
-        incremental_strategy='merge',
-        unique_key='unique_trade_id'
-        )
+    alias = 'events',
+    partition_by = ['block_date'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'unique_trade_id']
+    )
 }}
 
 WITH looks_rare AS (
@@ -104,6 +105,7 @@ SELECT DISTINCT
     'ethereum' as blockchain,
     'looksrare' as project,
     'v1' as version,
+    TRY_CAST(date_trunc('DAY', looks_rare.block_time) AS date) AS block_date,
     looks_rare.block_time,
     token_id,
     tokens.name AS collection,
@@ -157,7 +159,12 @@ SELECT DISTINCT
     'looksrare' || '-' || tx_hash || '-' ||  token_id::string || '-' ||  seller::string || '-' || COALESCE(erc.contract_address, nft_contract_address) || '-' || looks_rare.evt_index::string || '-' || COALESCE(evt_type::string, 'Other')  || '-' || COALESCE(case when erc.value_unique::string is null then '0' ELSE '1' end, '1') as unique_trade_id
 FROM looks_rare
 INNER JOIN {{ source('ethereum','transactions') }} tx ON tx_hash = tx.hash
-AND tx.block_time > '2022-01-01'
+    {% if not is_incremental() %}
+    AND tx.block_time > '2022-01-01'
+    {% endif %}
+    {% if is_incremental() %}
+    AND TRY_CAST(date_trunc('DAY', tx.block_time) AS date) = TRY_CAST(date_trunc('DAY', looks_rare.block_time) AS date)
+    {% endif %}
 LEFT JOIN erc_transfers erc ON erc.evt_tx_hash = tx_hash AND erc.token_id_erc = token_id
 LEFT JOIN {{ ref('tokens_ethereum_nft') }} tokens ON tokens.contract_address =  nft_contract_address
 LEFT JOIN  {{ ref('nft_ethereum_aggregators') }} agg ON agg.contract_address = tx.to
