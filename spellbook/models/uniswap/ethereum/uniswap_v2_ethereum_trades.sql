@@ -29,9 +29,9 @@ WITH dexs AS
     INNER JOIN {{ source('uniswap_v2_ethereum', 'Factory_evt_PairCreated') }} f
         ON f.pair = t.contract_address
     WHERE t.contract_address NOT IN (
-        '\xed9c854cb02de75ce4c9bba992828d6cb7fd5c71', -- remove WETH-UBOMB wash trading pair
-        '\xf9c1fA7d41bf44ADe1dd08D37CC68f67Ae75bF92', -- remove WETH-WETH wash trading pair 
-        '\x854373387e41371ac6e307a1f29603c6fa10d872' ) -- remove FEG/ETH token pair
+        '0xed9c854cb02de75ce4c9bba992828d6cb7fd5c71', -- remove WETH-UBOMB wash trading pair
+        '0xf9c1fa7d41bf44ade1dd08d37cc68f67ae75bf92', -- remove WETH-WETH wash trading pair
+        '0x854373387e41371ac6e307a1f29603c6fa10d872' ) -- remove FEG/ETH token pair
     {% if is_incremental() %}
     AND t.evt_block_time >= (SELECT MAX(block_time) FROM {{ this }})
     {% endif %}
