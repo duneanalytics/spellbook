@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'oneinch_aggregator_v3_arbitrum_trades',
+    schema = 'oneinch_aggregator_v4_arbitrum_trades',
     alias = 'trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -10,22 +10,22 @@
 }}
 WITH aggregators AS
 (
-    -- 1inch Aggregator V3
+    -- 1inch Aggregator V4
     SELECT
-        t.evt_block_time AS block_time
-        ,t.sender AS taker
+        t.call_block_time AS block_time
+        ,get_json_object(t.`desc`, '$.dstReceiver') AS taker
         ,'' AS maker
-        ,t.returnAmount AS token_bought_amount_raw
-        ,t.spentAmount AS token_sold_amount_raw
+        ,t.output_returnAmount AS token_bought_amount_raw
+        ,get_json_object(t.`desc`, '$.amount') AS token_sold_amount_raw
         ,NULL AS amount_usd
-        ,t.dstToken AS token_bought_address
-        ,t.srcToken AS token_sold_address
+        ,get_json_object(t.`desc`, '$.dstToken') AS token_bought_address
+        ,get_json_object(t.`desc`, '$.srcToken') AS token_sold_address
         ,t.contract_address AS project_contract_address
-        ,t.evt_tx_hash AS tx_hash
-        ,'' AS trace_address
-        ,t.evt_index
+        ,t.call_tx_hash AS tx_hash
+        ,t.call_trace_address AS trace_address
+        ,NULL AS evt_index
     FROM
-        {{ source('oneinch_arbitrum', 'AggregationRouterV3_evt_Swapped') }} t
+        {{ source('oneinch_arbitrum', 'AggregationRouterV4_call_swap') }} t
     {% if is_incremental() %}
     WHERE t.evt_block_time >= (SELECT MAX(block_time) FROM {{ this }})
     {% endif %}
@@ -33,7 +33,7 @@ WITH aggregators AS
 SELECT
     'arbitrum' AS blockchain
     ,'1inch' AS project
-    ,'3' AS version
+    ,'4' AS version
     ,TRY_CAST(date_trunc('DAY', aggregators.block_time) AS date) AS block_date
     ,aggregators.block_time
     ,erc20a.symbol AS token_bought_symbol
