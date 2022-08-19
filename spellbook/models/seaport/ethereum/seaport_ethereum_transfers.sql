@@ -51,7 +51,8 @@ with p1_call as (
           (select *, posexplode(offer) as (offer_idx, offer2) from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }}
                {% if is_incremental() %} -- this filter will only be applied on an incremental run 
                where evt_block_time >= (select max(block_time) from {{ this }}) 
-               {% endif %}) e 
+               {% endif %}
+            ) e 
           inner join p1_call c on c.tx_hash = e.evt_tx_hash
                       union all
     select c.main_type
@@ -74,7 +75,8 @@ with p1_call as (
         (select *, posexplode(consideration) as (consideration_idx, consideration2) from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }}
             {% if is_incremental() %} -- this filter will only be applied on an incremental run 
             where evt_block_time >= (select max(block_time) from {{ this }}) 
-            {% endif %}) e 
+            {% endif %}
+            ) e 
         inner join p1_call c on c.tx_hash = e.evt_tx_hash
      )
        
@@ -208,25 +210,32 @@ with p1_call as (
           string) as unique_trade_id,
           a.zone
       from p1_txn_level a
-          left join ethereum.transactions tx on tx.hash = a.tx_hash 
-                                              {% if not is_incremental() %}
-                                              and tx.block_number > 14801608
-                                              {% endif %}
-                                              {% if is_incremental() %}
-                                              and TRY_CAST(date_trunc('DAY', tx.block_time) AS date) = TRY_CAST(date_trunc('DAY', a.block_time) AS date)
-                                              {% endif %}
-          left join nft_ethereum.aggregators agg ON agg.contract_address = tx.to
-          left join tokens_ethereum.nft n on n.contract_address = nft_contract_address
-                    left join tokens_ethereum.erc20 t1 on t1.contract_address = 
-          case when a.original_currency_contract = '0x0000000000000000000000000000000000000000' then 
-          '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-               else a.original_currency_contract end                                
-          left join prices.usd p1 on p1.contract_address = 
-          case when a.original_currency_contract = '0x0000000000000000000000000000000000000000' then 
-          '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-               else a.original_currency_contract end
-          and p1.minute = date_trunc('minute', a.block_time)
-          and p1.blockchain = 'ethereum')
+        left join {{ source('ethereum','transactions') }} tx
+            on tx.hash = a.tx_hash
+            {% if not is_incremental() %}
+            and tx.block_number > 14801608
+            {% endif %}
+            {% if is_incremental() %}
+            and TRY_CAST(date_trunc('DAY', tx.block_time) AS date) = TRY_CAST(date_trunc('DAY', a.block_time) AS date)
+            {% endif %}
+        left join {{ ref('nft_ethereum_aggregators') }} agg
+            ON agg.contract_address = tx.to
+        left join {{ ref('tokens_ethereum_nft') }} n
+            on n.contract_address = nft_contract_address
+        left join {{ ref('tokens_ethereum_erc20') }} t1
+            on t1.contract_address = 
+                case when a.original_currency_contract = '0x0000000000000000000000000000000000000000'
+                then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                else a.original_currency_contract 
+                end                                
+          left join {{ source('prices', 'usd') }} p1
+            on p1.contract_address = 
+                case when a.original_currency_contract = '0x0000000000000000000000000000000000000000'
+                then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                else a.original_currency_contract
+                end
+            and p1.minute = date_trunc('minute', a.block_time)
+            and p1.blockchain = 'ethereum')
           
 ,p2_call as (
     select 'available_advanced_orders' as main_type
@@ -250,7 +259,8 @@ with p1_call as (
       from (select *, posexplode(advancedOrders) as (idx, each) from {{ source('seaport_ethereum','Seaport_call_fulfillAvailableAdvancedOrders') }}
       {% if is_incremental() %} -- this filter will only be applied on an incremental run 
       where call_block_time >= (select max(block_time) from {{ this }}) 
-      {% endif %}) c
+      {% endif %}
+      ) c
        where call_success
 
                                                   union all
@@ -275,7 +285,8 @@ with p1_call as (
       from (select *, posexplode(orders) as (idx, each) from {{ source('seaport_ethereum','Seaport_call_fulfillAvailableOrders') }}
       {% if is_incremental() %} -- this filter will only be applied on an incremental run 
       where call_block_time >= (select max(block_time) from {{ this }}) 
-      {% endif %}) c
+      {% endif %}
+      ) c
       where call_success 
 )
 ,p2_evt as (
@@ -400,25 +411,32 @@ with p1_call as (
           string) as unique_trade_id,
           a.zone
       from p2_transfer_level a
-          left join ethereum.transactions tx on tx.hash = a.tx_hash 
-                                              {% if not is_incremental() %}
-                                              and tx.block_number > 14801608
-                                              {% endif %}
-                                              {% if is_incremental() %}
-                                              and TRY_CAST(date_trunc('DAY', tx.block_time) AS date) = TRY_CAST(date_trunc('DAY', a.block_time) AS date)
-                                              {% endif %}
-          left join nft_ethereum.aggregators agg ON agg.contract_address = tx.to
-          left join tokens_ethereum.nft n on n.contract_address = concat('0x',substr(a.nft_address,3,40))
-          left join tokens_ethereum.erc20 t1 on t1.contract_address = case when 
-          concat('0x',substr(a.price_token,3,40)) = '0x0000000000000000000000000000000000000000' then 
-          '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-          else concat('0x',substr(a.price_token,3,40)) end                                
-          left join prices.usd p1 on p1.contract_address = case when 
-          concat('0x',substr(a.price_token,3,40)) = '0x0000000000000000000000000000000000000000' then 
-          '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-          else concat('0x',substr(a.price_token,3,40)) end
-          and p1.minute = date_trunc('minute', a.block_time)
-          and p1.blockchain = 'ethereum')
+        left join {{ source('ethereum','transactions') }} tx
+            on tx.hash = a.tx_hash 
+            {% if not is_incremental() %}
+            and tx.block_number > 14801608
+            {% endif %}
+            {% if is_incremental() %}
+            and TRY_CAST(date_trunc('DAY', tx.block_time) AS date) = TRY_CAST(date_trunc('DAY', a.block_time) AS date)
+            {% endif %}
+        left join {{ ref('nft_ethereum_aggregators') }} agg
+            ON agg.contract_address = tx.to
+        left join {{ ref('tokens_ethereum_nft') }} n
+            on n.contract_address = concat('0x',substr(a.nft_address,3,40))
+        left join {{ ref('tokens_ethereum_erc20') }} t1
+            on t1.contract_address =
+                case when concat('0x',substr(a.price_token,3,40)) = '0x0000000000000000000000000000000000000000'
+                then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                else concat('0x',substr(a.price_token,3,40))
+                end             
+          left join {{ source('prices', 'usd') }} p1
+            on p1.contract_address = 
+                case when concat('0x',substr(a.price_token,3,40)) = '0x0000000000000000000000000000000000000000'
+                then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                else concat('0x',substr(a.price_token,3,40))
+                end
+            and p1.minute = date_trunc('minute', a.block_time)
+            and p1.blockchain = 'ethereum')
                                   
 ,p3_call as (select 'order' as main_type
           ,call_tx_hash as tx_hash
@@ -443,50 +461,53 @@ with p1_call as (
       group by 1,2,3,4)
  
 ,p3_evt as (select c.main_type
-          ,c.tx_hash
-          ,c.block_time
-          ,c.block_number
-          ,c.order_type_id
-          ,'offer' as sub_type
-          ,offer_idx as sub_idx
-          ,e.offerer as sender
-          ,e.recipient as receiver
-          ,e.zone
-          ,concat('0x',substr(get_json_object(offer2, "$.token"),3,40)) as token_contract_address 
-          ,get_json_object(offer2, "$.amount") as original_amount
-          ,get_json_object(offer2, "$.itemType") as item_type
-          ,get_json_object(offer2, "$.identifier") as token_id
-          ,e.contract_address as exchange_contract_address
-          ,e.evt_index
-          from 
-          (select *, posexplode(offer) as (offer_idx, offer2) from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }}
+            ,c.tx_hash
+            ,c.block_time
+            ,c.block_number
+            ,c.order_type_id
+            ,'offer' as sub_type
+            ,offer_idx as sub_idx
+            ,e.offerer as sender
+            ,e.recipient as receiver
+            ,e.zone
+            ,concat('0x',substr(get_json_object(offer2, "$.token"),3,40)) as token_contract_address 
+            ,get_json_object(offer2, "$.amount") as original_amount
+            ,get_json_object(offer2, "$.itemType") as item_type
+            ,get_json_object(offer2, "$.identifier") as token_id
+            ,e.contract_address as exchange_contract_address
+            ,e.evt_index
+        from 
+        (select *, posexplode(offer) as (offer_idx, offer2) from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }}
+        {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+        where evt_block_time >= (select max(block_time) from {{ this }}) 
+        {% endif %}
+        ) e 
+        inner join p3_call c on c.tx_hash = e.evt_tx_hash
+        union all
+        select c.main_type
+            ,c.tx_hash
+            ,c.block_time
+            ,c.block_number
+            ,c.order_type_id
+            ,'consideration' as sub_type
+            ,consideration_idx as sub_idx
+            ,e.recipient as sender 
+            ,concat('0x',substr(get_json_object(consideration2, "$.recipient"),3,40)) as receiver
+            ,e.zone 
+            ,concat('0x',substr(get_json_object(consideration2, "$.token"),3,40)) as token_contract_address 
+            ,get_json_object(consideration2, "$.amount") as original_amount
+            ,get_json_object(consideration2, "$.itemType") as item_type
+            ,get_json_object(consideration2, "$.identifier") as token_id
+            ,e.contract_address as exchange_contract_address
+            ,e.evt_index
+        from 
+        (select *, posexplode(consideration) as (consideration_idx, consideration2) from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }}
           {% if is_incremental() %} -- this filter will only be applied on an incremental run 
           where evt_block_time >= (select max(block_time) from {{ this }}) 
-          {% endif %}) e 
-          inner join p3_call c on c.tx_hash = e.evt_tx_hash
-                              union all
-    select c.main_type
-          ,c.tx_hash
-          ,c.block_time
-          ,c.block_number
-          ,c.order_type_id
-          ,'consideration' as sub_type
-          ,consideration_idx as sub_idx
-          ,e.recipient as sender 
-          ,concat('0x',substr(get_json_object(consideration2, "$.recipient"),3,40)) as receiver
-          ,e.zone 
-          ,concat('0x',substr(get_json_object(consideration2, "$.token"),3,40)) as token_contract_address 
-          ,get_json_object(consideration2, "$.amount") as original_amount
-          ,get_json_object(consideration2, "$.itemType") as item_type
-          ,get_json_object(consideration2, "$.identifier") as token_id
-          ,e.contract_address as exchange_contract_address
-          ,e.evt_index
-          from 
-          (select *, posexplode(consideration) as (consideration_idx, consideration2) from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }}
-          {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-          where evt_block_time >= (select max(block_time) from {{ this }}) 
-          {% endif %}) e
-          inner join p3_call c on c.tx_hash = e.evt_tx_hash)
+          {% endif %}
+          ) e
+        inner join p3_call c on c.tx_hash = e.evt_tx_hash
+        )
           
 
 ,p3_add_rn as (select (max(case when purchase_method = 'Offer Accepted' and sub_type = 'offer' and sub_idx = 0 then token_contract_address::string
@@ -616,25 +637,32 @@ with p1_call as (
           string) as unique_trade_id,
           a.zone
       from p3_txn_level a
-          left join ethereum.transactions tx on tx.hash = a.tx_hash 
-                                              {% if not is_incremental() %}
-                                              and tx.block_number > 14801608
-                                              {% endif %}
-                                              {% if is_incremental() %}
-                                              and TRY_CAST(date_trunc('DAY', tx.block_time) AS date) = TRY_CAST(date_trunc('DAY', a.block_time) AS date)
-                                              {% endif %}
-          left join nft_ethereum.aggregators agg ON agg.contract_address = tx.to
-          left join tokens_ethereum.nft n on n.contract_address = nft_contract_address
-          left join tokens_ethereum.erc20 t1 on t1.contract_address = case when 
-          a.original_currency_contract = '0x0000000000000000000000000000000000000000' then 
-          '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-          else a.original_currency_contract end                                
-          left join prices.usd p1 on p1.contract_address = case when 
-          a.original_currency_contract = '0x0000000000000000000000000000000000000000' then 
-          '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-          else a.original_currency_contract end
-          and p1.minute = date_trunc('minute', a.block_time)
-          and p1.blockchain = 'ethereum')
+        left join {{ source('ethereum','transactions') }} tx
+            on tx.hash = a.tx_hash 
+            {% if not is_incremental() %}
+            and tx.block_number > 14801608
+            {% endif %}
+            {% if is_incremental() %}
+            and TRY_CAST(date_trunc('DAY', tx.block_time) AS date) = TRY_CAST(date_trunc('DAY', a.block_time) AS date)
+            {% endif %}
+        left join {{ ref('nft_ethereum_aggregators') }} agg
+            ON agg.contract_address = tx.to
+        left join {{ ref('tokens_ethereum_nft') }} n
+            on n.contract_address = nft_contract_address
+        left join {{ ref('tokens_ethereum_erc20') }} t1
+            on t1.contract_address =
+                case when a.original_currency_contract = '0x0000000000000000000000000000000000000000'
+                then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                else a.original_currency_contract
+                end             
+          left join {{ source('prices', 'usd') }} p1
+            on p1.contract_address = 
+                case when a.original_currency_contract = '0x0000000000000000000000000000000000000000'
+                then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                else a.original_currency_contract
+                end
+            and p1.minute = date_trunc('minute', a.block_time)
+            and p1.blockchain = 'ethereum')
                                   
 ,p4_call as (select 'match_orders' as main_type
           ,'match_orders' as sub_type
@@ -653,8 +681,9 @@ with p1_call as (
      from (select *, posexplode(output_executions) as (idx, each) from {{ source('seaport_ethereum','Seaport_call_matchOrders') }}
      {% if is_incremental() %} -- this filter will only be applied on an incremental run 
      where call_block_time >= (select max(block_time) from {{ this }}) 
-     {% endif %}) c 
-     where call_success
+     {% endif %}
+     ) c 
+    where call_success
      
     union all
     select 'match_advanced_orders' as main_type
@@ -671,10 +700,11 @@ with p1_call as (
           ,c.call_block_time as block_time
           ,c.call_block_number as block_number
           ,c.contract_address as exchange_contract_address
-      from (select *, posexplode(output_executions) as (idx, each) from {{ source('seaport_ethereum','Seaport_call_matchAdvancedOrders') }}  
-     {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-     where call_block_time >= (select max(block_time) from {{ this }}) 
-     {% endif %}) c
+    from (select *, posexplode(output_executions) as (idx, each) from {{ source('seaport_ethereum','Seaport_call_matchAdvancedOrders') }}  
+    {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+    where call_block_time >= (select max(block_time) from {{ this }}) 
+    {% endif %}
+    ) c
     where call_success)
 
      
@@ -807,26 +837,33 @@ with p1_call as (
           ,a.tx_hash || '-' || a.nft_token_id || '-' || a.attempt_amount::string || '-' || concat('0x',substr(seller,3,40)) || '-' || cast(row_number () over (partition by tx_hash order by sub_idx) as 
           string) as unique_trade_id,
           a.zone
-      from p4_transfer_level a
-          left join ethereum.transactions tx on tx.hash = a.tx_hash 
-                                              {% if not is_incremental() %}
-                                              and tx.block_number > 14801608
-                                              {% endif %}
-                                              {% if is_incremental() %}
-                                              and TRY_CAST(date_trunc('DAY', tx.block_time) AS date) = TRY_CAST(date_trunc('DAY', a.block_time) AS date)
-                                              {% endif %}
-          left join nft_ethereum.aggregators agg ON agg.contract_address = tx.to
-          left join tokens_ethereum.nft n on n.contract_address = concat('0x',substr(a.nft_address,3,40))
-          left join tokens_ethereum.erc20 t1 on t1.contract_address = case when 
-          concat('0x',substr(a.price_token,3,40)) = '0x0000000000000000000000000000000000000000' then 
-          '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-          else concat('0x',substr(a.price_token,3,40)) end                                
-          left join prices.usd p1 on p1.contract_address = case when 
-          concat('0x',substr(a.price_token,3,40)) = '0x0000000000000000000000000000000000000000' then 
-          '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-          else concat('0x',substr(a.price_token,3,40)) end
-          and p1.minute = date_trunc('minute', a.block_time)
-          and p1.blockchain = 'ethereum')
+    from p4_transfer_level a
+    left join {{ source('ethereum','transactions') }} tx
+        on tx.hash = a.tx_hash 
+        {% if not is_incremental() %}
+        and tx.block_number > 14801608
+        {% endif %}
+        {% if is_incremental() %}
+        and TRY_CAST(date_trunc('DAY', tx.block_time) AS date) = TRY_CAST(date_trunc('DAY', a.block_time) AS date)
+        {% endif %}
+    left join {{ ref('nft_ethereum_aggregators') }} agg
+        ON agg.contract_address = tx.to
+    left join {{ ref('tokens_ethereum_nft') }} n
+        on n.contract_address = concat('0x',substr(a.nft_address,3,40))
+    left join {{ ref('tokens_ethereum_erc20') }} t1
+        on t1.contract_address =
+            case when concat('0x',substr(a.price_token,3,40)) = '0x0000000000000000000000000000000000000000'
+            then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            else concat('0x',substr(a.price_token,3,40))
+            end             
+        left join {{ source('prices', 'usd') }} p1
+        on p1.contract_address = 
+            case when concat('0x',substr(a.price_token,3,40)) = '0x0000000000000000000000000000000000000000'
+            then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            else concat('0x',substr(a.price_token,3,40))
+            end
+        and p1.minute = date_trunc('minute', a.block_time)
+        and p1.blockchain = 'ethereum')
                           
 select * from p1_seaport_transfers
     union all
