@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: nft_avalanche_aggregators
+    meta:
+      blockchain: avalanche
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: ['nft', 'avalanche', 'aggregators']
+    description: >
+        NFT aggregators
+    columns:
+      - name: contract_address
+        description: "Aggregator project's contract address"
+      - name: name
+        description: "Aggregator project's name"
