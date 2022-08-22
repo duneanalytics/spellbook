@@ -211,27 +211,3 @@ FROM
         , tc.evt_index
         FROM {{ source('tornado_cash_arbitrum','ETHTornado_evt_Deposit') }} tc
         LEFT JOIN {{ source('arbitrum','transactions') }} at ON at.hash=tc.evt_tx_hash
-        /* UNCOMMENT THIS BLOCK WHEN POLYGON DATA IS LIVE ON DUNE V2
-
-        UNION
-
-        -- Polygon
-        SELECT tc.evt_block_time AS block_time
-        , '0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0' AS currency_contract
-        , 'MATIC' AS currency_symbol
-        , 'Polygon' AS blockchain
-        , 'Classic' AS tornado_version
-        , pt.from AS depositor
-        , tc.contract_address AS contract_address
-        , CASE WHEN tc.contract_address='0x1e34a77868e19a6647b1f2f47b51ed72dede95dd' THEN 100
-            WHEN tc.contract_address='0xdf231d99ff8b6c6cbf4e9b9a945cbacef9339178' THEN 1000
-            WHEN tc.contract_address='0xaf4c0b70b2ea9fb7487c7cbb37ada259579fe040' THEN 10000
-            WHEN tc.contract_address='0xa5c2254e4253490c54cef0a4347fddb8f75a4998' THEN 100000
-            END AS amount
-        , tc.evt_tx_hash AS tx_hash
-        , tc.leafIndex AS leaf_index
-        , tc.evt_index
-        FROM {{ source('tornado_cash_polygon','ETHTornado_evt_Deposit') }} tc
-        LEFT JOIN {{ source('polygon','transactions') }} pt ON pt.hash=tc.evt_tx_hash
-        */
-)
