@@ -68,6 +68,6 @@ models:
       - name: recipient
         description: "Recipient of the withdrawn currency"
       - *contract_address
-      - *amount
-      - *tx_hash
+      - name: amount
+      - name: tx_hash
       - *evt_index
