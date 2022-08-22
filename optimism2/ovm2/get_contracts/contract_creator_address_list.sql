@@ -312,6 +312,8 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\xC7f8D87734aB2cbf70030aC8aa82abfe3e8126cb	Premia
 \\xDa2d96eADAb3671D9DFC6b2901aA85E99F8f0EB3	Ripae
 \\x952e9c6391d9C0f6C6174D395Aa9B4eC1030335A	Tarot Finance
+\\x6A6B51FcB0217521601237227FA2E43a95eC06b0	KyberSwap
+\\x1BA608D6a354fbEb41FD7cC799e7f09b2612AB26	Iron Bank
 \.
 
 COMMIT;

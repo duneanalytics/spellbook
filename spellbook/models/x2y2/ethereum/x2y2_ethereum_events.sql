@@ -1,10 +1,11 @@
 {{ config(
-        alias ='events',
-        materialized ='incremental',
-        file_format ='delta',
-        incremental_strategy='merge',
-        unique_key='unique_trade_id'
-        )
+    alias = 'events',
+    partition_by = ['block_date'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'unique_trade_id']
+    )
 }}
 
 WITH aggregator_routed_x2y2_txs AS (
@@ -132,6 +133,7 @@ WITH aggregator_routed_x2y2_txs AS (
 SELECT 'ethereum' AS blockchain
 , 'X2Y2' AS project
 , 'v1' AS version
+, TRY_CAST(date_trunc('DAY', txs.block_time) AS date) AS block_date
 , txs.block_time
 , txs.block_number
 , txs.token_id
@@ -192,11 +194,10 @@ LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain='ethereum'
     AND (pu.contract_address=txs.currency_contract
         OR (pu.contract_address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AND txs.currency_contract='0x0000000000000000000000000000000000000000'))
 LEFT JOIN {{ source('ethereum','transactions') }} et ON et.hash=txs.tx_hash
+    {% if is_incremental() %}
+    AND TRY_CAST(date_trunc('DAY', et.block_time) AS date) = TRY_CAST(date_trunc('DAY', txs.block_time) AS date)
+    {% endif %}
 LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct ON txs.project_contract_address=erct.contract_address
     AND erct.evt_tx_hash=txs.tx_hash
     AND erct.tokenId=txs.token_id
     AND erct.from=txs.seller
-{% if is_incremental() %}
--- this filter will only be applied on an incremental run
-WHERE et.block_time >= (select max(block_time) from {{ this }})
-{% endif %} 

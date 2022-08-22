@@ -1,125 +1,165 @@
 version: 2
 
 models:
-  - name: uniswap_ethereum_trades
+  - name: uniswap_v1_ethereum_trades
     meta:
       blockchain: ethereum
-      project: uniswap
-      contributors: masquot, soispoke
+      sector: dex
+      project: uniswap_v1
+      contributors: jeff-dude, masquot, soispoke
     config:
-      tags: ['ethereum','uniswap','trades']
+      tags: ['ethereum','uniswap_v1','trades', 'uniswap','dex']
     description: >
-        Uniswap V1 trades on Ethereum
+        Uniswap V1 contract trades on Ethereum
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain"
+        description: "Blockchain which the DEX is deployed"
       - &project 
         name: project
-        description:  "Project name"  
+        description: "Project name of the DEX"  
       - &version
         name: version
-        description:  "Version"  
+        description: "Version of the contract built and deployed by the DEX project"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each DEX trade"
       - &block_time
         name: block_time
-        description: "UTC event block time"
-      - &token_a_symbol
-        name: token_a_symbol
-        description: "Symbol for first token traded"
-      - &token_b_symbol
-        name: token_b_symbol
-        description: "Symbol for second token traded"
-      - &token_a_amount
-        name: token_a_amount
-        description: "Value of the trade at time of execution in the original currency for the first token"
-      - &token_b_amount
-        name: token_b_amount
-        description: "Value of the trade at time of execution in the original currency for the second token"
-      - &trader_a
-        name: trader_a
-        description: "Address of trader A"
-      - &trader_b
-        name: trader_b
-        description: "Address of trader B"
+        description: "UTC event block time of each DEX trade"
+      - &token_bought_symbol
+        name: token_bought_symbol
+        description: "Token symbol for token bought in the transaction"
+      - &token_sold_symbol
+        name: token_sold_symbol
+        description: "Token symbol for token sold in the transaction"
+      - &token_pair
+        name: token_pair
+        description: "Token symbol pair for each token involved in the transaction"
+      - &token_bought_amount
+        name: token_bought_amount
+        description: "Value of the token bought at time of execution in the original currency"
+      - &token_sold_amount
+        name: token_sold_amount
+        description: "Value of the token sold at time of execution in the original currency"
+      - &token_bought_amount_raw
+        name: token_bought_amount_raw
+        description: "Raw value of the token bought at time of execution in the original currency"
+      - &token_sold_amount_raw
+        name: token_sold_amount_raw
+        description: "Raw value of the token sold at time of execution in the original currency"
       - &amount_usd
         name: amount_usd
-        description:  "USD value of the trade at time of execution"
-      - &token_a_address
-        name: token_a_address
-        description: "Contract address of first token traded"
-      - &token_b_address
-        name: token_b_address
-        description: "Contract address of second token traded"
-      - &exchange_contract_address
-        name: exchange_contract_address
-        description:  "Exchange contract address"
+        description: "USD value of the trade at time of execution"
+      - &token_bought_address
+        name: token_bought_address
+        description: "Contract address of the token bought"
+        tests:
+          - dex_trades_token_bought:
+              dex_trades_seed: ref('dex_trades_seed')
+      - &token_sold_address
+        name: token_sold_address
+        description: "Contract address of the token sold"
+      - &taker
+        name: taker
+        description: "Address of trader who purchased a token"
+      - &maker
+        name: maker
+        description: "Address of trader who sold a token"
+      - &project_contract_address
+        name: project_contract_address
+        description: "Project contract address which executed the trade on the blockchain"
       - &tx_hash
         name: tx_hash
-        description:  "Transaction hash"
+        description: "Unique transaction hash value tied to each transaction on the DEX"
       - &tx_from
         name: tx_from
-        description:  "Initiated this transaction"
+        description: "Address which initiated the transaction"
       - &tx_to
         name: tx_to
-        description:  "Receive this transaction"   
+        description: "Address which received the transaction"
+      - &trace_address
+        name: trace_address
+        description: ""
+      - &evt_index
+        name: evt_index
+        description: ""
       - &unique_trade_id
         name: unique_trade_id
-        description:  "Unique trade ID (derived from tx_hash and evt_index for ethereum dex trades)"
+        description: "Unique trade ID built to track merge incremental strategy in the model"
+        tests:
+          - is_unique_filtered
 
   - name: uniswap_v2_ethereum_trades
     meta:
       blockchain: ethereum
+      sector: dex
       project: uniswap_v2
-      contributors: masquot, soispoke
+      contributors: jeff-dude, masquot, soispoke
     config:
-      tags: ['ethereum','uniswap_v2','trades', 'uniswap']
+      tags: ['ethereum','uniswap_v2','trades', 'uniswap','dex']
     description: >
-        Uniswap V2 trades on Ethereum
+        Uniswap V2 contract trades on Ethereum
     columns:
-      - *unique_trade_id
       - *blockchain
       - *project
       - *version  
+      - *block_date
       - *block_time
-      - *token_a_symbol
-      - *token_b_symbol
-      - *token_a_amount
-      - *token_b_amount
-      - *trader_a
-      - *trader_b
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
       - *amount_usd
-      - *token_a_address
-      - *token_b_address
-      - *exchange_contract_address
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
       - *tx_hash
       - *tx_from
       - *tx_to
+      - *trace_address
+      - *evt_index
+      - *unique_trade_id
 
-  - name: uniswap_v3_ethereum_trades
+  - name: uniswap_ethereum_trades
     meta:
       blockchain: ethereum
-      project: uniswap_v3
-      contributors: masquot, soispoke
+      sector: dex
+      project: uniswap
+      contributors: jeff-dude, masquot, soispoke
     config:
-      tags: ['ethereum','uniswap_v3', 'trades', 'uniswap']
+      tags: ['ethereum','dex','trades', 'uniswap', 'jeff-dude']
     description: >
-        Uniswap V3 trades on Ethereum
+        Uniswap trades on Ethereum across all contracts and versions. This table will load dex trades downstream.
     columns:
-      - *unique_trade_id
       - *blockchain
       - *project
       - *version  
+      - *block_date
       - *block_time
-      - *token_a_symbol
-      - *token_b_symbol
-      - *token_a_amount
-      - *token_b_amount
-      - *trader_a
-      - *trader_b
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
       - *amount_usd
-      - *token_a_address
-      - *token_b_address
-      - *exchange_contract_address
+      - name: token_bought_address # since object is a view, avoid test repeat with '*' usage
+        description: "Contract address of the token bought"
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
       - *tx_hash
       - *tx_from
       - *tx_to
+      - *trace_address
+      - *evt_index
+      - name: unique_trade_id # since object is a view, avoid test repeat with '*' usage
+        description: "Unique trade ID built to track merge incremental strategy in the model"
