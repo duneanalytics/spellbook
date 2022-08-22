@@ -307,6 +307,33 @@ ALTER VIEW nft_ethereum.aggregators SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["hildobby","soispoke"]');
 {% endset %}
 
+{% set nft_bnb_aggregators %}
+ALTER VIEW nft_bnb.aggregators SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["bnb"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='nft',
+                                                    'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set nft_avalanche_aggregators %}
+ALTER VIEW nft_avalanche.aggregators SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["avalanche"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='nft',
+                                                    'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set nft_polygon_aggregators %}
+ALTER VIEW nft_polygon.aggregators SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["polygon"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='nft',
+                                                    'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
 {% set tokens_ethereum_erc20 %}
 ALTER VIEW tokens_ethereum.erc20 SET TBLPROPERTIES ('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum"]',
