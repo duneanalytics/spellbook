@@ -1,0 +1,30 @@
+# "events" is a map between Github events and rules.
+# possible event names can be seen at https://docs.github.com/en/actions/reference/events-that-trigger-workflows
+events:
+  # 'pull_request' is the Github event name.
+  pull_request: &config
+
+    # Authorize any user when anything under .github folder was not changed.
+    - trustAnyone: true
+      paths:
+        disallowed:
+          - ".github/**"
+          - ".github/workflows/**"
+          - ".github/protected-workflows.yml"
+
+
+  # Reference the "pull_request" anchor to reuse its configuration
+  # Read about "pull_request_target" in this blog post:
+  # https://github.blog/2020-08-03-github-actions-improvements-for-fork-and-pull-request-workflows/
+  pull_request_target: *config
+
+  # Reference the "pull_request" anchor to reuse its configuration
+  push: *config
+
+# 'anyEvent' value is a rule, and will be used when an event specific configuration is not set.
+# It is automatically added in case it was not explicitly set, and it does not support the 'paths' property.
+anyEvent:
+  trustAnyone: false
+  trustCollaborators: false
+  #trustOrgMembers: true
+  trustedUserNames: []
