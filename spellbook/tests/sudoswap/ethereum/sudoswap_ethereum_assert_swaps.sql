@@ -74,14 +74,12 @@ WITH
           ) s
       )
     SELECT
-      COUNT(*) as num_trades,
       COUNT(distinct call_tx_hash) as num_txs
     FROM
       fil_swaps
   ),
   abstractions_swaps as (
     SELECT
-      COUNT(*) as num_trades,
       COUNT(distinct tx_hash) as num_txs
     FROM
         {{ ref('nft_trades') }} nft
@@ -95,17 +93,6 @@ WITH
   ),
   test as (
     SELECT
-      (
-        SELECT
-          num_trades
-        FROM
-          abstractions_swaps
-      ) - (
-        SELECT
-          num_trades
-        FROM
-          raw_swaps
-      ) as trades_mismatch,
       (
         SELECT
           num_txs
@@ -123,7 +110,4 @@ SELECT
 FROM
   test
 WHERE
-  (
-    trades_mismatch > 0
-    OR txs_mismatch > 0
-  )
+  txs_mismatch > 0
