@@ -580,6 +580,9 @@ ALTER VIEW prices.tokens SET TBLPROPERTIES ('dune.public'='true',
 {% do run_query(uniswap_trades) %}
 {% do run_query(dex_trades) %}
 {% do run_query(nft_ethereum_aggregators) %}
+{% do run_query(nft_bnb_aggregators) %}
+{% do run_query(nft_avalanche_aggregators) %}
+{% do run_query(nft_polygon_aggregators) %}
 {% do run_query(tokens_ethereum_erc20) %}
 {% do run_query(transfers_ethereum_erc20) %}
 {% do run_query(tokens_ethereum_nft) %}
