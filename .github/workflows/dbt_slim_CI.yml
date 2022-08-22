@@ -3,7 +3,7 @@ name: dbt slim ci
 
 on:
   pull_request:
-  workflow_dispatch:
+  workflow_distpach:
   push:
     branches:
       - 'main'
@@ -16,16 +16,10 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
 
-      - name: Fetch latest run_id
-        env:
-          URL: 'https://cloud.getdbt.com/api/v2/accounts/58579/runs/?job_definition_id=81672&order_by=-finished_at&limit=2'
-        run : |
-          GITHUB_ENV=$(curl -s --header '@/root/.headers' $URL | jq .data[1].id)
-      - name: Fetch latest manifest.json
-        env:
-          URL: 'https://cloud.getdbt.com/api/v2/accounts/58579/runs/62469111/artifacts/manifest.json'
-        run: |
-          curl -s -o spellbook/manifest.json --url $URL -header '@/root/.headers'
+      - name: Get latest manifest
+        working-directory: ./spellbook
+        run: "pipenv run python fetch_latest_manifest.py --dbt_api_token $(curl -s --header '@/root/.headers' $URL | jq .data[1].id)"
+
       - name: dbt compile to create manifest to compare to
         working-directory: ./spellbook
         run: "dbt compile"
