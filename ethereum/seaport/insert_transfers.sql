@@ -102,6 +102,7 @@ with p1_call as (
                           ,a.*
                       from p1_evt a
                     ) a
+             where nft_transfer_count > 0  -- some of trades without NFT happens in match_order
             ) a
 )
 ,p1_txn_level as (
@@ -512,6 +513,7 @@ with p1_call as (
                           ,a.*
                       from p3_evt a
                     ) a
+             where nft_transfer_count > 0  -- some of trades without NFT happens in match_order
             ) a
 )
 ,p3_txn_level as (
