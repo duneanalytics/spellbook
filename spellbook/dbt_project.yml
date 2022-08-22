@@ -28,8 +28,12 @@ models:
     ens:
       +schema: ens
       +materialized: view
+    dex:
+      +schema: dex
+      +materialized: view
     nft:
       +schema: nft
+      +materialized: view
       ethereum:
         +schema: nft_ethereum
         +materialized: view
@@ -54,12 +58,26 @@ models:
       ethereum:
         +schema: looksrare_ethereum
         +materialized: view
+    x2y2:
+      +schema: x2y2
+      +materialized: view
+      ethereum:
+        +schema: x2y2_ethereum
+        +materialized: view
     magiceden:
       +schema: magiceden
       +materialized: view
       solana:
         +schema: magiceden_solana
         +materialized: view
+
+    nomad:
+      +schema: nomad
+      +materialized: view
+      ethereum:
+        +schema: nomad_ethereum
+        +materialized: view
+
     seaport:
       +schema: seaport
       +materialized: view
@@ -80,12 +98,29 @@ models:
       ethereum:
         +schema: tokens_ethereum
         +materialized: view
+      optimism:
+        +schema: tokens_optimism
+        +materialized: view
     
     transfers:
       +schema: transfers
       +materialized: view
       ethereum:
         +schema: transfers_ethereum
+        +materialized: view
+    
+    sudoswap:
+      +schema: sudoswap
+      +materialized: view
+      ethereum:
+        +schema: sudoswap_ethereum
+        +materialized: view
+
+    safe:
+      +schema: safe
+      +materialized: view
+      ethereum:
+        +schema: safe_ethereum
         +materialized: view
 
 seeds:
@@ -137,4 +172,18 @@ seeds:
     ens:
       +enabled: true
       +schema: test_data
-
+    dex:
+      +enabled: true
+      +schema: test_data
+      trades:
+        +column_types:
+          blockchain: string
+          project: string
+          version: string
+          block_date: date
+          tx_hash: string
+          evt_index: int
+          token_bought_address: string
+          token_bought_amount: float
+          token_sold_address: string
+          token_sold_amount: float

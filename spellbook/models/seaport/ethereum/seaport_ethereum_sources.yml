@@ -14,6 +14,8 @@ sources:
         loaded_at_field: call_block_time
       - name: Seaport_call_fulfillBasicOrder
         loaded_at_field: call_block_time
+      - name: Seaport_call_matchAdvancedOrders
+        loaded_at_field: call_block_time
       - name: Seaport_call_fulfillAdvancedOrder
         loaded_at_field: call_block_time
       - name: Seaport_call_fulfillAvailableOrders

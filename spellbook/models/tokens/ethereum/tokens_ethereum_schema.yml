@@ -13,6 +13,8 @@ models:
     columns:
       - name: contract_address
         description: "ERC20 token contract address"
+        tests:
+          - unique
       - name: symbol
         description: "ERC20 token symbol"
       - name: decimals
@@ -39,7 +41,7 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: dot2dotseurat, hildobby
+      contributors: dot2dotseurat, hildobby, 0xbitfly
     config:
       tags: ['tokens', 'ethereum', 'nft', 'erc721']
     description: >
