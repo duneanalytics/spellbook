@@ -210,4 +210,4 @@ FROM
         , tc.leafIndex AS leaf_index
         , tc.evt_index
         FROM {{ source('tornado_cash_arbitrum','ETHTornado_evt_Deposit') }} tc
-        LEFT JOIN {{ source('arbitrum','transactions') }} at ON at.hash=tc.evt_tx_hash
+        LEFT JOIN {{ source('arbitrum','transactions') }} at ON at.hash=tc.evt_tx_hash)

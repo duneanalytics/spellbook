@@ -7,10 +7,20 @@ models:
     meta:
       blockchain: ethereum, bnb, avalanche, gnosis, optimism, arbitrum #, polygon
       project: tornado_cash
-      contibutors: hildobby
+      contibutors: [hildobby, dot2dotseurat]
     config:
       tags: ['tornado_cash', 'deposits', 'ethereum', 'bnb', 'avalanche', 'gnosis', 'optimism', 'arbitrum']
     description: "Tornado Cash Deposits"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - depositor
+            - amount
+            - blockchain
+            - currency_contract
+            - currency_symbol
+            - block_time
+            - evt_index
     columns:
       - &block_time
         name: block_time
@@ -49,10 +59,20 @@ models:
     meta:
       blockchain: ethereum, bnb, avalanche, gnosis, optimism, arbitrum #, polygon
       project: tornado_cash
-      contibutors: hildobby
+      contibutors:  [hildobby, dot2dotseurat]
     config:
-      tags: ['tornado_cash', 'withdrawals', 'ethereum', 'bnb', avalanche', 'gnosis', optimism', 'arbitrum']
+      tags: ['tornado_cash', 'withdrawals', 'ethereum', 'bnb', 'avalanche', 'gnosis', 'optimism', 'arbitrum']
     description: "Tornado Cash Withdrawals"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - recipient
+            - tx_from
+            - blockchain
+            - currency_contract
+            - currency_symbol
+            - block_time
+            - evt_index
     columns:
       - *block_time
       - *currency_contract

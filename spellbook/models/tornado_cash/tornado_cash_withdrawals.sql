@@ -231,4 +231,4 @@ FROM
         , tc.evt_tx_hash AS tx_hash
         , tc.evt_index
         FROM {{ source('tornado_cash_arbitrum','ETHTornado_evt_Withdrawal') }} tc
-        LEFT JOIN {{ source('arbitrum','transactions') }} at ON at.hash=tc.evt_tx_hash
+        LEFT JOIN {{ source('arbitrum','transactions') }} at ON at.hash=tc.evt_tx_hash)
