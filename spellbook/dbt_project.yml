@@ -100,6 +100,9 @@ models:
       optimism:
         +schema: tokens_optimism
         +materialized: view
+      arbitrum:
+        +schema: tokens_arbitrum
+        +materialized: view
     
     transfers:
       +schema: transfers
