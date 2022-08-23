@@ -7,7 +7,7 @@ models:
       project: opensea
       contributors: rchen8, soispoke
     config:
-      tags: ['solana','opensea','transfers']
+      tags: ['solana','opensea','events']
     description: >
         OpenSea events on Solana
     columns:
