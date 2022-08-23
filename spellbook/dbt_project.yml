@@ -43,6 +43,9 @@ models:
       ethereum:
         +schema: uniswap_ethereum
         +materialized: view
+      optimism:
+        +schema: uniswap_optimism
+        +materialized: view
     opensea:
       +schema: opensea
       +materialized: view
