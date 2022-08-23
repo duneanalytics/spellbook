@@ -15,4 +15,5 @@ FROM
     , ('0x00000000a50bb64b4bbeceb18715748dface08af', 'Gem') -- Gem Single Contract Checkout 3
     , ('0xae9c73fd0fd237c1c6f66fe009d24ce969e98704', 'Gem') -- Gem Protection Enabled Address
     , ('0x56dd5bbede9bfdb10a2845c4d70d4a2950163044', 'X2Y2') -- X2Y2's OpenSea Sniper
+    , ('0x69cf8871f61fb03f540bc519dd1f1d4682ea0bf6', 'Element') -- Element NFT Marketplace Aggregator
   ) AS temp_table (contract_address, name)
