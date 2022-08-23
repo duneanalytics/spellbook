@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: uniswap_optimism_pools
+    meta:
+      blockchain: optimism
+      project: uniswap
+      contributors: MSilb7, chuxinh
+    config:
+      tags: ['optimism','uniswap','pools']
+    description: >
+        A canonical table containing all Uniswap pools created on Optimism.
+    columns:
+      - &pool
+        name: pool
+        description: "Uniswap liquidity pool contract address"
+        tests:
+          - unique
+      - &token0
+        name: token0
+        description:  "Token0 contract address"  
+      - &token1
+        name: token1
+        description:  "Token1 contract address" 
+      - &fee
+        name: fee
+        description:  "Swap fee of a Uniswap liquidity pool. Divide by 1e6 or power(10,6) to get the fee percentage"
