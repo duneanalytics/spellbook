@@ -10,12 +10,12 @@ models:
       tags: ['optimism','uniswap','pools']
     description: >
         A canonical table containing all Uniswap pools created on Optimism.
-        tests:
-          - unique
     columns:
       - &pool
         name: pool
         description: "Uniswap liquidity pool contract address"
+        tests:
+          - unique
       - &token0
         name: token0
         description:  "Token0 contract address"  
