@@ -28,16 +28,32 @@ models:
     ens:
       +schema: ens
       +materialized: view
+    dex:
+      +schema: dex
+      +materialized: view
     nft:
       +schema: nft
+      +materialized: view
       ethereum:
         +schema: nft_ethereum
+        +materialized: view
+      bnb:
+        +schema: nft_bnb
+        +materialized: view
+      avalanche:
+        +schema: nft_avalanche
+        +materialized: view
+      polygon:
+        +schema: nft_polygon
         +materialized: view
     uniswap:
       +schema: uniswap
       +materialized: view
       ethereum:
         +schema: uniswap_ethereum
+        +materialized: view
+      optimism:
+        +schema: uniswap_optimism
         +materialized: view
     opensea:
       +schema: opensea
@@ -103,6 +119,15 @@ models:
       ethereum:
         +schema: transfers_ethereum
         +materialized: view
+      optimism:
+        +schema: transfers_optimism
+    
+    sudoswap:
+      +schema: sudoswap
+      +materialized: view
+      ethereum:
+        +schema: sudoswap_ethereum
+        +materialized: view
 
     safe:
       +schema: safe
@@ -160,4 +185,18 @@ seeds:
     ens:
       +enabled: true
       +schema: test_data
-
+    dex:
+      +enabled: true
+      +schema: test_data
+      trades:
+        +column_types:
+          blockchain: string
+          project: string
+          version: string
+          block_date: date
+          tx_hash: string
+          evt_index: int
+          token_bought_address: string
+          token_bought_amount: float
+          token_sold_address: string
+          token_sold_amount: float

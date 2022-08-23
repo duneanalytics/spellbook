@@ -5,9 +5,9 @@ models:
     meta:
       blockchain: ethereum, solana
       sector: nft
-      contributors: soispoke, hildobby
+      contributors: soispoke, hildobby, ilemi
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'ethereum', 'solana', 'events']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'ethereum', 'solana', 'events']
     description: >
         NFT events
     columns:
@@ -101,6 +101,12 @@ models:
       - &platform_fee_percentage
         name: platform_fee_amount_usd
         description:  "Platform fee in % of the amount paid for a given trade"
+      - &royalty_fee_receive_address
+        name: royalty_fee_receive_address
+        description:  "Wallet addresses receiving fees from the transaction"
+      - &royalty_fee_currency_symbol
+        name: royalty_fee_currency_symbol
+        description: "Symbol of the token in which fees are paid out"
       - &royalty_fee_amount_raw
         name: royalty_fee_amount_raw
         description:  "Raw numerical amount for royalty fees"
@@ -113,12 +119,6 @@ models:
       - &royalty_fee_percentage
         name: royalty_fee_percentage
         description:  "Royalty fee in % of the amount paid for a given trade"
-      - &royalty_fee_receive_address
-        name: royalty_fee_receive_address
-        description:  "Wallet addresses receiving fees from the transaction"
-      - &royalty_fee_currency_symbol
-        name: royalty_fee_currency_symbol
-        description: "Symbol of the token in which fees are paid out"
       - &unique_trade_id
         name: unique_trade_id
         description:  "Unique trade ID"
@@ -127,9 +127,9 @@ models:
     meta:
       blockchain: ethereum, solana
       sector: nft
-      contributors: soispoke, hildobby
+      contributors: soispoke, hildobby, ilemi
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'ethereum', 'solana', 'trades']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'ethereum', 'solana', 'trades']
     description: >
         NFT trades
     columns:
@@ -241,9 +241,9 @@ models:
     meta:
       blockchain: ethereum, solana
       sector: nft
-      contributors: soispoke, hildobby
+      contributors: soispoke, hildobby, ilemi
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'ethereum', 'solana', 'fees']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'ethereum', 'solana', 'fees']
     description: >
         NFT fees
     columns:
@@ -270,8 +270,6 @@ models:
       - *evt_type
       - *seller
       - *buyer
-      - *currency_symbol
-      - *currency_contract
       - *nft_contract_address
       - *project_contract_address
       - *aggregator_name

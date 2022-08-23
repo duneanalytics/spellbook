@@ -1,9 +1,18 @@
- {{ config(schema = 'opensea_v1_ethereum', 
-alias='events') }}
+{{ config(
+    schema = 'opensea_v1_ethereum',
+    alias = 'events',
+    partition_by = ['block_date'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'unique_trade_id']
+    )
+}}
 
 WITH wyvern_call_data as (
 SELECT 
   call_tx_hash,
+  call_block_time,
   CASE WHEN contains('0x68f0bcaa', substring(calldataBuy,1,4)) THEN 'Bundle Trade'
         ELSE 'Single Item Trade'
   END AS trade_type,
@@ -56,6 +65,7 @@ wyvern_all as
 (
 SELECT 
   call_tx_hash,
+  call_block_time,
   trade_type,
   token_standard,
   project_contract_address,
@@ -104,6 +114,7 @@ SELECT DISTINCT
   'ethereum' as blockchain,
   'opensea' as project,
   'v1' as version,
+  TRY_CAST(date_trunc('DAY', wa.call_block_time) AS date) AS block_date,
   tx.block_time,
   coalesce(token_id_erc, wa.token_id) as token_id, 
   tokens_nft.name AS collection,
@@ -161,6 +172,9 @@ SELECT DISTINCT
   'opensea' || '-' || wa.call_tx_hash || '-' || coalesce(wa.token_id, token_id_erc, '') || '-' ||  wa.seller || '-' || coalesce(evt_index::string, '') || '-' || coalesce(wa.call_trace_address::string,'') as unique_trade_id
 FROM wyvern_all wa
 LEFT JOIN {{ source('ethereum','transactions') }} tx ON wa.call_tx_hash = tx.hash
+    {% if is_incremental() %}
+    AND TRY_CAST(date_trunc('DAY', tx.block_time) AS date) = TRY_CAST(date_trunc('DAY', wa.call_block_time) AS date)
+    {% endif %}
 LEFT JOIN erc_transfers ON erc_transfers.evt_tx_hash = wa.call_tx_hash AND (wa.token_id = erc_transfers.token_id_erc
 OR wa.token_id = null)
 LEFT JOIN {{ ref('tokens_ethereum_nft') }} tokens_nft ON tokens_nft.contract_address = wa.nft_contract_address 
