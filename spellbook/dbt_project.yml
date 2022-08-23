@@ -107,6 +107,8 @@ models:
       ethereum:
         +schema: transfers_ethereum
         +materialized: view
+      optimism:
+        +schema: transfers_optimism
     
     sudoswap:
       +schema: sudoswap
