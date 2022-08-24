@@ -574,7 +574,7 @@ VALUES
     ("btc-bitcoin", "solana", "BTC", "9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E", 6),
     ("cope-cope", "solana", "COPE", "8HGyAAB1yoM1ttS7pXjHMa3dukTFGQggnFFH3hJZgzQh", 6),
     ("dfl-defi-land", "solana", "DFL", "DFL1zNkaGPWm1BqAVqRjCZvHmwTFrEaJtbzJWgseoNJh", 9),
-    ("dust-dust-protocol ", "solana", "DUST", "DUSTawucrTsGU8hcqRdHDCbuYhCPADMLM2VcCb8VnFnQ", 9),
+    ("dust-dust-protocol", "solana", "DUST", "DUSTawucrTsGU8hcqRdHDCbuYhCPADMLM2VcCb8VnFnQ", 9),
     ("eth-ethereum", "solana", "ETH", "7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs", 8),
     ("eth-ethereum", "solana", "soETH", "2FPyTwcZLUg1MDrwsyoP4D6s1tM7hAkHYRjkNb5w6Pxk", 6),
     ("gst-gst", "solana", "GST", "AFbX8oGjGpmVFywbVouvhQSRmiW2aR1mohfahi4Y2AdB", 9),
