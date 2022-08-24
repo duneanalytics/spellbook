@@ -8,7 +8,7 @@ models:
       project: erc20
       contibutors: 0xManny
     config:
-      tags: ['table', 'erc20', 'avalanche']
+      tags: ['tokens', 'erc20', 'avalanche']
     description: "ERC20 Token Addresses, Symbols and Decimals"
     columns:
       - name: contract_address
