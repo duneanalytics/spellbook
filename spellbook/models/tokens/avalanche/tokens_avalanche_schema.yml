@@ -38,3 +38,13 @@ models:
         description: "NFT project name"
       - name: symbol
         description: "NFT project symbol"
+      - name: standard
+        tests:
+          - accepted_values:
+              values: ['erc721', 'erc1155', 'unknown']
+        description: >
+            The token standard. This is the set of rules that the contract must respect 
+            to be compatible with the common standards. Accepted values are presently standards represented.
+            If you are adding a token with a new standard, remember to add it the accepted valeus list.
+      - name: category
+        description: "NFT Collection Category"
