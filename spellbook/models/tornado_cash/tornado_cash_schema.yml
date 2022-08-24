@@ -53,16 +53,6 @@ models:
     config:
       tags: ['tornado_cash', 'withdrawals', 'ethereum', 'bnb', 'avalanche', 'gnosis', 'optimism', 'arbitrum']
     description: "Tornado Cash Withdrawals"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - recipient
-            - tx_from
-            - blockchain
-            - currency_contract
-            - currency_symbol
-            - block_time
-            - evt_index
     columns:
       - *block_time
       - *currency_contract
