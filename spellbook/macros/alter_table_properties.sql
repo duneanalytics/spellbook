@@ -541,6 +541,24 @@ ALTER VIEW prices.tokens SET TBLPROPERTIES ('dune.public'='true',
                                                 'dune.data_explorer.contributors'='["aalan3", "jeff-dude"]');
 {% endset %}
 
+{% set tokens_avalanche_erc20 %}
+ALTER VIEW tokens_avalanche.erc20 SET TBLPROPERTIES ('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["avalanche_c"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='tokens',
+                                                    'dune.data_explorer.contributors'='["0xManny"]');
+{% endset %}
+
+{% set tokens_avalanche_nft %}
+ALTER VIEW tokens_avalanche.nft SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["avalanche_c"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='tokens',
+                                                    'dune.data_explorer.contributors'='["0xManny"]');
+{% endset %}
+
 {% do run_query(balances_ethereum_erc20_day) %}
 {% do run_query(balances_ethereum_erc20_hour) %}
 {% do run_query(balances_ethereum_erc20_latest) %}
@@ -602,6 +620,8 @@ ALTER VIEW prices.tokens SET TBLPROPERTIES ('dune.public'='true',
 {% do run_query(safe_safes) %}
 {% do run_query(safe_eth_transfers) %}
 {% do run_query(prices_tokens) %}
+{% do run_query(tokens_avalanche_erc20) %}
+{% do run_query(tokens_avalanche_nft) %}
 
 {% do log("Tables generated", info=True) %}
 {%- else -%}
