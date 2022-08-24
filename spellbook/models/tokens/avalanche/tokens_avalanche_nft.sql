@@ -1497,5 +1497,5 @@ FROM (VALUES
       ('0x36801f736362bbe4bf7e39058ca03c21b15759f6', 'AvaBots', 'AVB', 'erc721', ''),
       ('0xa86a6e8531e9abe98db00dd1f2a90d2efbca2cbd', 'H', 'H0', 'erc721', ''),
       ('0x3d6def4b0417614b22abac43dea1a81f31bb8cc2', 'ljljl', 'lkjlk', 'erc721', ''),
-      ('0x66b5543c25424574a3b9a8e07c310db2362e99ca', 'Animated Feelings', 'AFEEL', 'erc721', ''),
-  ) AS temp_table (contract_address, name, symbol)
+      ('0x66b5543c25424574a3b9a8e07c310db2362e99ca', 'Animated Feelings', 'AFEEL', 'erc721', '')
+  ) AS temp_table (contract_address, name, symbol, standard, category)
