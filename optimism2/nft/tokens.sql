@@ -171,6 +171,7 @@ COPY nft.tokens (contract_address, project_name) FROM stdin;
 \\xd88FB5809a51d5C42fEcF0e69055EEAC0C70b23C	CattoPunk
 \\x6f0F15A58363E076a671B4d4165Cd3e53E507B83	Steampunk Foxes
 \\x2b9d798a02ce6e559e143934b0c0674e59b9e6cb	AIApE
+\\xb82b7887f0a92ca07907e7c01d9ffbbebe95daf4	The Vintract
 \.
 
 COMMIT;
