@@ -1,12 +1,19 @@
-# spellbook
 <img width="799" alt="Screen Shot 2022-05-28 at 7 54 26 AM" src="https://user-images.githubusercontent.com/9472574/170824402-9ab683b5-b04e-434f-b19e-6fb626d2d64f.png">
 
 Welcome to your [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation to tame the blockchain.
 
-Check out our first Spellbook [tutorial](https://docs.dune.com/dune-engine-v2-beta/abstractions-in-dunev2/how-to-contribute-a-spell). More tk. 
+## Intro
+
+Write SQL to transform blockchain data into curated datasets on [dune.com](https://dune.com/home).
+
+First-time visitor? Check out how to [get started](##-getting-started) below and visit the Spellbook [tutorial](https://docs.dune.com/dune-engine-v2-beta/abstractions-in-dunev2/how-to-contribute-a-spell). More tk.
+
+Been here before? An archive of intermediate datasets that were contributed for for Dune v1 can be consulted [here](deprecated-dune-v1-abstractions).
+
+## Getting Started
 
 ### Prerequisites
-- Fork this repo and clone your fork locally. See Github's [guide](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) on contributing to projects. 
+- Fork this repo and clone your fork locally. See Github's [guide](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) on contributing to projects.
 - python 3.9 installed. Our recommendation is to follow the [Hitchhiker's Guide to Python](https://docs.python-guide.org/starting/installation/)
 - [pip](https://pip.pypa.io/en/stable/installation/) installed
 - [pipenv](https://pypi.org/project/pipenv/) installed
@@ -17,8 +24,8 @@ You can watch the video version of this if you scroll down a bit.
 
 Navigate to the abstraction repo within your CLI (Command line interface).
 ```
-cd user\directory\github\abstractions 
-#change this to whereever abstractions are stored locally on your machine
+cd user\directory\github\spellbook
+#change this to whereever spellbook are stored locally on your machine
 ```
 Use the pipfile to create a pipenv.
 ```
@@ -30,26 +37,26 @@ Our script is looking for a static python version, the likelihood of an error fo
 ```
 py --version
 ```
-Now use any text editor program to change the python version in the pipfile within the abstractions directory to your python version. You need to have at least python 3.9.
+Now use any text editor program to change the python version in the pipfile within the spellbook directory to your python version. You need to have at least python 3.9.
 If you have changed the python version in the pipfile, run `pipenv install` again.
 
 You are now ready to activate this project's virtual environment.
-Use: 
+Use:
 ```
 pipenv shell
 ```
 You have now created a virtual environment for this project. You can read more about virtual environments [here](https://realpython.com/pipenv-guide/).
 
-Navigate to the spellbook directory with:
-```
-cd spellbook
-```
 To initiate the dbt project run:
 ```
 dbt init
 ```
-Select Databricks, then enter `.` or other placeholders for the host, HTTP path, and token. This will not connect to the database but you have access to some dbt actions.
-**When you are prompted to choose a profile, please enter `wizard` so we know you are an external contributor.**
+Enter the values as shown below:
+
+![dbt init values for wizards](.github/user-images/dbt-init-for-wizards.png).
+
+This will not connect to the database but you have access to some dbt actions.
+**When you are prompted to choose a schema, please enter `wizard` so we know you are an external contributor.**
 Should you make an error during this process (not entering `wizard` being the only one you can make), simply quit the CLI and start over.
 
 Then, run the following command:
@@ -60,29 +67,26 @@ dbt compile will compile the JINJA and SQL templated SQL into plain SQL which ca
 If you haven't made changes to the directory beforehand, you can now start adding, editing or deleting files within the repository.
 Afterwards simply run `dbt compile` again once you are finished with your work in the directory and test the plain language sql queries on dune.com.
 
-https://user-images.githubusercontent.com/9472574/172207409-731a54a0-f1c2-4a57-93a7-6e7934567caa.mov
 ### Coming back
-If you have done these installation on your machine once, to get back into dbt, simply navigate to the abstractions repo, run `pipenv shell`, navigate to spellbook directory with `cd spellbook` and you can run `dbt compile` again.
+If you have done these installation on your machine once, to get back into dbt, simply navigate to the spellbook repo, run `pipenv shell`, and you can run `dbt compile` again.
 
 ### What did I just do?
-You now have the ability to compile your dbt model statements and test statements into plain SQL. This allows you to test those queries on the usual dune.com environment and should therefore lead to a better experience while developing abstractions. Running the queries will immediately give you feedback on typos, logical errors or mismatches.
-This in turn will help us deploy these abstractions faster and avoid any potential mistakes.
+You now have the ability to compile your dbt model statements and test statements into plain SQL. This allows you to test those queries on the usual dune.com environment and should therefore lead to a better experience while developing spells. Running the queries will immediately give you feedback on typos, logical errors or mismatches.
+This in turn will help us deploy these spells faster and avoid any potential mistakes.
 
 We are thinking about better solutions to make more dbt actions available directly but we also have to consider security.
 
+### How to use dbt to create spells
 
-
-### How to use dbt to create abstractions
-
-There's a couple new concepts to consider when making abstractions in dbt. The most common ones wizards will encounter are refs, sources, freshness, and tests. 
+There's a couple new concepts to consider when making spells in dbt. The most common ones wizards will encounter are refs, sources, freshness, and tests.
 
 In the body of each query, tables are referred to either as refs, ex `{{ ref('1inch_ethereum') }}` or sources, ex `{{ source('ethereum', 'traces') }}`. Refs refer to other dbt models and they should refer to the file name like `1inch_ethereum.sql`, even if the model itself is aliased. Sources refer to "raw" data or tables/views not generated by dbt. Using refs and sources allows us to automatically build dependency trees.
 
-Sources and models are defined in schema.yml files where tests and other attributes are defined. 
+Sources and models are defined in schema.yml files where tests and other attributes are defined.
 
-Best practice is to add tests unique and non_null tests to the primary key for every new model. Similarly, a freshness check should be added to every new source (although we will try not to re-test freshness if the source is used elsewhere). 
+Best practice is to add tests unique and non_null tests to the primary key for every new model. Similarly, a freshness check should be added to every new source (although we will try not to re-test freshness if the source is used elsewhere).
 
-Adding descriptions to tables and columns will help people find and use your tables. 
+Adding descriptions to tables and columns will help people find and use your tables.
 
 ```
 models:
@@ -94,7 +98,7 @@ models:
         tests:
           - unique
           - not_null
- 
+
   sources:
   - name: ethereum
     freshness:
@@ -105,22 +109,22 @@ models:
         loaded_at_field: block_time
 ```
 
-See links to more docs on dbt below. 
+See links to more docs on dbt below.
 
 ### Generating and serving documentation:
 To generate documentation and view it as a website, run the following commands:
 - `dbt docs generate`
-- `dbt docs serve` 
-You must have set up dbt with `dbt init` but you don't need database credentials to run these commands. 
+- `dbt docs serve`
+You must have set up dbt with `dbt init` but you don't need database credentials to run these commands.
 
-See [dbt docs documentation](https://docs.getdbt.com/docs/building-a-dbt-project/documentation) for more information on 
-how to contribute to documentation. 
+See [dbt docs documentation](https://docs.getdbt.com/docs/building-a-dbt-project/documentation) for more information on
+how to contribute to documentation.
 
 As a preview, you can do [things](https://docs.getdbt.com/reference/resource-properties/description) like:
 - Write simple one or many line descriptions of models or columns.
 - Write longer descriptions as code blocks using markdown.
-- Link to other models in your descriptions. 
-- Add images / project logos from the repo into descriptions. 
+- Link to other models in your descriptions.
+- Add images / project logos from the repo into descriptions.
 - Use HTML in your description.
 
 
