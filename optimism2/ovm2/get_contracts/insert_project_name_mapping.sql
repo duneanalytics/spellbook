@@ -56,6 +56,7 @@ Ironbank	Iron Bank
 iron_bank	Iron Bank
 Iron_bank	Iron Bank
 bluesweep	BlueSweep
+hidden_hand Hidden Hand
 \.
 COMMIT;
 CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS dune_name_mapped_name_uniq_idx ON ovm2.project_name_mappings (dune_name);
