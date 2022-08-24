@@ -316,6 +316,7 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x1BA608D6a354fbEb41FD7cC799e7f09b2612AB26	Iron Bank
 \\x725Bd51dCCD08272C63eFdC1a5112002da0C5540	Velodrome
 \\x1826316Aec2F2D400086B3cAdfCb291238010efA	Homora V2
+\\xf8Bf80beB4cEe030d8C60e5942CA3749aE6beDF1	BlueSweep
 \.
 
 COMMIT;
