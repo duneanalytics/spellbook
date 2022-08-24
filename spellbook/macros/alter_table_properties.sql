@@ -514,8 +514,8 @@ ALTER VIEW sudoswap_ethereum.fees  SET TBLPROPERTIES ('dune.public'='true',
                                                         'dune.data_explorer.contributors'='["ilemi"]');
 {% endset %}
 
-{% set safe_safes %}
-ALTER TABLE safe.safes SET TBLPROPERTIES ('dune.public'='true',
+{% set safe_ethereum_safes %}
+ALTER TABLE safe_ethereum.safes SET TBLPROPERTIES ('dune.public'='true',
                                             'dune.data_explorer.blockchains'='["ethereum"]',
                                             'dune.data_explorer.category'='abstraction',
                                             'dune.data_explorer.abstraction.type'='project',
@@ -523,8 +523,8 @@ ALTER TABLE safe.safes SET TBLPROPERTIES ('dune.public'='true',
                                             'dune.data_explorer.contributors'='["sche"]');
 {% endset %}
 
-{% set safe_eth_transfers %}
-ALTER TABLE safe.eth_transfers SET TBLPROPERTIES ('dune.public'='true',
+{% set safe_ethereum_eth_transfers %}
+ALTER TABLE safe_ethereum.eth_transfers SET TBLPROPERTIES ('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='project',
@@ -608,8 +608,8 @@ ALTER TABLE airdrop_optimism.addresses SET TBLPROPERTIES ('dune.public'='true',
 {% do run_query(sudoswap_ethereum_events) %}
 {% do run_query(sudoswap_ethereum_trades) %}
 {% do run_query(sudoswap_ethereum_fees) %}
-{% do run_query(safe_safes) %}
-{% do run_query(safe_eth_transfers) %}
+{% do run_query(safe_ethereum_safes) %}
+{% do run_query(safe_ethereum_eth_transfers) %}
 {% do run_query(prices_tokens) %}
 {% do run_query(airdrop_optimism_addresses) %}
 
