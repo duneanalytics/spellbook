@@ -541,6 +541,15 @@ ALTER VIEW prices.tokens SET TBLPROPERTIES ('dune.public'='true',
                                                 'dune.data_explorer.contributors'='["aalan3", "jeff-dude"]');
 {% endset %}
 
+{% set airdrop_optimism_addresses %}
+ALTER TABLE airdrop_optimism.addresses SET TBLPROPERTIES ('dune.public'='true',
+                                                'dune.data_explorer.blockchains'='["optimism"]',
+                                                'dune.data_explorer.category'='abstraction',
+                                                'dune.data_explorer.abstraction.type'='sector',
+                                                'dune.data_explorer.abstraction.name'='airdrop',
+                                                'dune.data_explorer.contributors'='["msilb7"]');
+{% endset %}
+
 {% do run_query(balances_ethereum_erc20_day) %}
 {% do run_query(balances_ethereum_erc20_hour) %}
 {% do run_query(balances_ethereum_erc20_latest) %}
@@ -602,6 +611,7 @@ ALTER VIEW prices.tokens SET TBLPROPERTIES ('dune.public'='true',
 {% do run_query(safe_safes) %}
 {% do run_query(safe_eth_transfers) %}
 {% do run_query(prices_tokens) %}
+{% do run_query(airdrop_optimism_addresses) %}
 
 {% do log("Tables generated", info=True) %}
 {%- else -%}
