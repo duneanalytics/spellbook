@@ -4,11 +4,11 @@ Welcome to your [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incant
 
 ## Intro
 
-Write SQL to transform blockchain data into curated datasets [dune.com](https://dune.com/home).
+Write SQL to transform blockchain data into curated datasets on [dune.com](https://dune.com/home).
 
 First-time visitor? Check out how to [get started](##-getting-started) below and visit the Spellbook [tutorial](https://docs.dune.com/dune-engine-v2-beta/abstractions-in-dunev2/how-to-contribute-a-spell). More tk.
 
-Been here before? An archive of intermediate datasets that were contributed for for Dune v1 can be consulted [here](https://github.com/duneanalytics/spellbook/tree/main/deprecated-dune-v1-abstractions).
+Been here before? An archive of intermediate datasets that were contributed for for Dune v1 can be consulted [here](deprecated-dune-v1-abstractions).
 
 ## Getting Started
 
@@ -51,8 +51,12 @@ To initiate the dbt project run:
 ```
 dbt init
 ```
-Select Databricks, then enter `.` or other placeholders for the host, HTTP path, and token. This will not connect to the database but you have access to some dbt actions.
-**When you are prompted to choose a profile, please enter `wizard` so we know you are an external contributor.**
+Enter the values as shown below:
+
+![dbt init values for wizards](.github/user-images/dbt-init-for-wizards.png).
+
+This will not connect to the database but you have access to some dbt actions.
+**When you are prompted to choose a schema, please enter `wizard` so we know you are an external contributor.**
 Should you make an error during this process (not entering `wizard` being the only one you can make), simply quit the CLI and start over.
 
 Then, run the following command:
@@ -63,7 +67,6 @@ dbt compile will compile the JINJA and SQL templated SQL into plain SQL which ca
 If you haven't made changes to the directory beforehand, you can now start adding, editing or deleting files within the repository.
 Afterwards simply run `dbt compile` again once you are finished with your work in the directory and test the plain language sql queries on dune.com.
 
-https://user-images.githubusercontent.com/9472574/172207409-731a54a0-f1c2-4a57-93a7-6e7934567caa.mov
 ### Coming back
 If you have done these installation on your machine once, to get back into dbt, simply navigate to the spellbook repo, run `pipenv shell`, and you can run `dbt compile` again.
 
