@@ -175,4 +175,3 @@ sources:
         - *to
         - name: value
           description: "Amount of ERC20 token transferred" 
->>>>>>> master
