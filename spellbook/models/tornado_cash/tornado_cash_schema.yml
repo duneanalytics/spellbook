@@ -21,6 +21,7 @@ models:
             - currency_symbol
             - block_time
             - evt_index
+            - tx_hash
     columns:
       - &block_time
         name: block_time
