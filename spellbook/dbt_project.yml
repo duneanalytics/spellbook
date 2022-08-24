@@ -37,11 +37,23 @@ models:
       ethereum:
         +schema: nft_ethereum
         +materialized: view
+      bnb:
+        +schema: nft_bnb
+        +materialized: view
+      avalanche:
+        +schema: nft_avalanche
+        +materialized: view
+      polygon:
+        +schema: nft_polygon
+        +materialized: view
     uniswap:
       +schema: uniswap
       +materialized: view
       ethereum:
         +schema: uniswap_ethereum
+        +materialized: view
+      optimism:
+        +schema: uniswap_optimism
         +materialized: view
     opensea:
       +schema: opensea
@@ -107,6 +119,8 @@ models:
       ethereum:
         +schema: transfers_ethereum
         +materialized: view
+      optimism:
+        +schema: transfers_optimism
     
     sudoswap:
       +schema: sudoswap

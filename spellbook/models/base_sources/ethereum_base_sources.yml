@@ -23,7 +23,7 @@ sources:
             description: "Timestamp for block event time in UTC"
           - &value
             name: value
-            description: "Amount of ETH transfered from sender to recipient"
+            description: "Amount of ETH transferred from sender to recipient"
           - &block_number
             name: block_number
             description: "Block number"
@@ -45,7 +45,7 @@ sources:
             description: "Transaction index"
           - &success
             name: success
-            description: "Whether the transaction was completed sucessfully"
+            description: "Whether the transaction was completed successfully"
           - &from
             name: from
             description: "Wallet address that initiated the transaction"
@@ -81,7 +81,7 @@ sources:
             description: "Number of gas units used by the trace"
           - *block_hash
           - name: success
-            description: "Whether the trace was completed sucessfully"
+            description: "Whether the trace was completed successfully"
           - &tx_index
             name: tx_index
             description: "Transaction index"
@@ -168,7 +168,7 @@ sources:
         - *from
         - *to
         - name: value
-          description: "Amount of ERC20 token transfered" 
+          description: "Amount of ERC20 token transferred" 
       
   - name: erc1155_ethereum
     description: "Transfers events for ERC1155 tokens."
@@ -190,7 +190,7 @@ sources:
         - name: id
           description: "ERC1155 token ID"  
         - name: value
-          description: "Amount of ERC1155 token transfered" 
+          description: "Amount of ERC1155 token transferred" 
           
       - name: evt_transferbatch
         loaded_at_field: evt_block_time
@@ -209,7 +209,7 @@ sources:
         - name: ids
           description: "ERC1155 token IDs"  
         - name: values
-          description: "Amounts of ERC1155 token transfered" 
+          description: "Amounts of ERC1155 token transferred" 
 
   - name: erc721_ethereum
     description: "Transfers events for ERC721 tokens."

@@ -594,3 +594,8 @@
   id: rbc-rubic
   name: Rubic
   symbol: RBC
+- address: '0x48378891d6E459ca9a56B88b406E8F4eAB2e39bF'
+  decimals: 18
+  id: fur-furio
+  name: Furio
+  symbol: $FUR
