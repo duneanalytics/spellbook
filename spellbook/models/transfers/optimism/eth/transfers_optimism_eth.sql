@@ -57,7 +57,7 @@ with eth_transfers as (
         and t.success
         and r.value > 0 
         {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-        and r.block_time >= (select max(tx_block_time) - interval 2 days from {{ this }}) 
+        and r.evt_block_time >= (select max(tx_block_time) - interval 2 days from {{ this }})
         {% endif %}
 )
 select * from eth_transfers order by tx_block_time
