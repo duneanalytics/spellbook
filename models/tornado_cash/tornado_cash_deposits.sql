@@ -29,10 +29,19 @@ FROM
         , tc.evt_index
         , date_trunc(tc.evt_block_time, 'day') as block_date
         FROM {{ source('tornado_cash_ethereum','eth_evt_Deposit') }} tc
-        LEFT JOIN {{ source('ethereum','transactions_0006') }} et ON et.hash=tc.evt_tx_hash
+        LEFT JOIN {{ source('ethereum','transactions_0006') }} et
+                ON et.hash=tc.evt_tx_hash
+                {% if not is_incremental() %}
+                AND et.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_ethereum','eth_evt_Deposit') }})
+                {% endif %}
+                {% if is_incremental() %}
+                AND et.block_time >= (select max(block_time) from {{ this }})
+                {% endif %}
+        {% if not is_incremental() %}
+        WHERE tc.evt_block_time >= (select min(evt_block_time) from {{ source('tornado_cash_ethereum','eth_evt_Deposit') }})
+        {% endif %}
         {% if is_incremental() %}
-        -- this filter will only be applied on an incremental run
-        AND tc.evt_block_time >= (select max(block_time) from {{ this }})
+        WHERE tc.evt_block_time >= (select max(block_time) from {{ this }})
         {% endif %}
 
         UNION
@@ -117,10 +126,19 @@ FROM
         , tc.evt_index
         , date_trunc(tc.evt_block_time, 'day') as block_date
         FROM {{ source('tornado_cash_ethereum','erc20_evt_Deposit') }} tc
-        LEFT JOIN {{ source('ethereum','transactions_0006') }} et ON et.hash=tc.evt_tx_hash
+        LEFT JOIN {{ source('ethereum','transactions_0006') }} et
+                ON et.hash=tc.evt_tx_hash
+                {% if not is_incremental() %}
+                AND et.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_ethereum','erc20_evt_Deposit') }})
+                {% endif %}
+                {% if is_incremental() %}
+                AND et.block_time >= (select max(block_time) from {{ this }})
+                {% endif %}
+        {% if not is_incremental() %}
+        WHERE tc.evt_block_time >= (select min(evt_block_time) from {{ source('tornado_cash_ethereum','erc20_evt_Deposit') }})
+        {% endif %}
         {% if is_incremental() %}
-        -- this filter will only be applied on an incremental run
-        AND tc.evt_block_time >= (select max(block_time) from {{ this }})
+        WHERE tc.evt_block_time >= (select max(block_time) from {{ this }})
         {% endif %}
 
         UNION
@@ -143,10 +161,19 @@ FROM
         , tc.evt_index
         , date_trunc(tc.evt_block_time, 'day') as block_date
         FROM {{ source('tornado_cash_bnb','TornadoCashBNB_evt_Deposit') }} tc
-        LEFT JOIN {{ source('bnb','transactions') }} bt ON bt.hash=tc.evt_tx_hash
+        LEFT JOIN {{ source('bnb','transactions') }} bt
+                ON bt.hash=tc.evt_tx_hash
+                {% if not is_incremental() %}
+                AND bt.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_bnb','TornadoCashBNB_evt_Deposit') }})
+                {% endif %}
+                {% if is_incremental() %}
+                AND bt.block_time >= (select max(block_time) from {{ this }})
+                {% endif %}
+        {% if not is_incremental() %}
+        WHERE tc.evt_block_time >= (select min(evt_block_time) from {{ source('tornado_cash_bnb','TornadoCashBNB_evt_Deposit') }})
+        {% endif %}
         {% if is_incremental() %}
-        -- this filter will only be applied on an incremental run
-        AND tc.evt_block_time >= (select max(block_time) from {{ this }})
+        WHERE tc.evt_block_time >= (select max(block_time) from {{ this }})
         {% endif %}
 
         UNION
@@ -169,10 +196,19 @@ FROM
         , tc.evt_index
         , date_trunc(tc.evt_block_time, 'day') as block_date
         FROM {{ source('tornado_cash_gnosis','eth_evt_Deposit') }} tc
-        LEFT JOIN {{ source('gnosis','transactions') }} gt ON gt.hash=tc.evt_tx_hash
+        LEFT JOIN {{ source('gnosis','transactions') }} gt
+                ON gt.hash=tc.evt_tx_hash
+                {% if not is_incremental() %}
+                AND gt.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_gnosis','eth_evt_Deposit') }})
+                {% endif %}
+                {% if is_incremental() %}
+                AND gt.block_time >= (select max(block_time) from {{ this }})
+                {% endif %}
+        {% if not is_incremental() %}
+        WHERE tc.evt_block_time >= (select min(evt_block_time) from {{ source('tornado_cash_gnosis','eth_evt_Deposit') }})
+        {% endif %}
         {% if is_incremental() %}
-        -- this filter will only be applied on an incremental run
-        AND tc.evt_block_time >= (select max(block_time) from {{ this }})
+        WHERE tc.evt_block_time >= (select max(block_time) from {{ this }})
         {% endif %}
 
         UNION
@@ -194,11 +230,20 @@ FROM
         , tc.leafIndex AS leaf_index
         , tc.evt_index
         , date_trunc(tc.evt_block_time, 'day') as block_date
-        FROM  {{ source('tornado_cash_optimism','ETHTornado_evt_Deposit') }} tc
-        LEFT JOIN {{ source('optimism','transactions') }} ot ON ot.hash=tc.evt_tx_hash
+        FROM {{ source('tornado_cash_optimism','ETHTornado_evt_Deposit') }} tc
+        LEFT JOIN {{ source('optimism','transactions') }} ot
+                ON ot.hash=tc.evt_tx_hash
+                {% if not is_incremental() %}
+                AND ot.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_optimism','ETHTornado_evt_Deposit') }})
+                {% endif %}
+                {% if is_incremental() %}
+                AND ot.block_time >= (select max(block_time) from {{ this }})
+                {% endif %}
+        {% if not is_incremental() %}
+        WHERE tc.evt_block_time >= (select min(evt_block_time) from {{ source('tornado_cash_optimism','ETHTornado_evt_Deposit') }})
+        {% endif %}
         {% if is_incremental() %}
-        -- this filter will only be applied on an incremental run
-        AND tc.evt_block_time >= (select max(block_time) from {{ this }})
+        WHERE tc.evt_block_time >= (select max(block_time) from {{ this }})
         {% endif %}
 
         UNION
@@ -220,10 +265,19 @@ FROM
         , tc.evt_index
         , date_trunc(tc.evt_block_time, 'day') as block_date
         FROM {{ source('tornado_cash_avalanche_c','ETHTornado_evt_Deposit') }} tc
-        LEFT JOIN {{ source('avalanche_c','transactions') }} at ON at.hash=tc.evt_tx_hash
+        LEFT JOIN {{ source('avalanche_c','transactions') }} at
+                ON at.hash=tc.evt_tx_hash
+                {% if not is_incremental() %}
+                AND at.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_avalanche_c','ETHTornado_evt_Deposit') }})
+                {% endif %}
+                {% if is_incremental() %}
+                AND at.block_time >= (select max(block_time) from {{ this }})
+                {% endif %}
+        {% if not is_incremental() %}
+        WHERE tc.evt_block_time >= (select min(evt_block_time) from {{ source('tornado_cash_avalanche_c','ETHTornado_evt_Deposit') }})
+        {% endif %}
         {% if is_incremental() %}
-        -- this filter will only be applied on an incremental run
-        AND tc.evt_block_time >= (select max(block_time) from {{ this }})
+        WHERE tc.evt_block_time >= (select max(block_time) from {{ this }})
         {% endif %}
 
         UNION
@@ -246,8 +300,18 @@ FROM
         , tc.evt_index
         , date_trunc(tc.evt_block_time, 'day') as block_date
         FROM {{ source('tornado_cash_arbitrum','ETHTornado_evt_Deposit') }} tc
-        LEFT JOIN {{ source('arbitrum','transactions') }} at ON at.hash=tc.evt_tx_hash
+        LEFT JOIN {{ source('arbitrum','transactions') }} at
+                ON at.hash=tc.evt_tx_hash
+                {% if not is_incremental() %}
+                AND at.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_arbitrum','ETHTornado_evt_Deposit') }})
+                {% endif %}
+                {% if is_incremental() %}
+                AND at.block_time >= (select max(block_time) from {{ this }})
+                {% endif %}
+        {% if not is_incremental() %}
+        WHERE tc.evt_block_time >= (select min(evt_block_time) from {{ source('tornado_cash_arbitrum','ETHTornado_evt_Deposit') }})
+        {% endif %}
         {% if is_incremental() %}
-        -- this filter will only be applied on an incremental run
-        AND tc.evt_block_time >= (select max(block_time) from {{ this }})
-        {% endif %})
+        WHERE tc.evt_block_time >= (select max(block_time) from {{ this }})
+        {% endif %}
+)
