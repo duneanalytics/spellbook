@@ -162,6 +162,8 @@ VALUES
     ("zel-zelcash", "bnb", "FLUX", "0x1ab6478b47270ff05af11a012ac17b098758e193", 18),
     ("zil-zilliqa", "bnb", "ZIL", "0xb86abcb37c3a4b64f74f59301aff131a1becc787", 12),
     ("znn-zenon", "bnb", "Znn", "0x84b174628911896a3b87fa6980d05dbc2ee74836", 8),
+    ("azy-amazy", "bnb", "AZY", "0x7b665B2F633d9363b89A98b094B1F9E732Bd8F86", 18),
+    ("amt-amazy", "bnb", "AMT", "0xf625069dce62df95b4910f83446954b871f0fc4f", 18),
 
     ("0xbtc-0xbitcoin", "ethereum", "0xBTC", "0xb6ed7644c69416d67b522e20bc294a9a9b405b31", 8),
     ("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
