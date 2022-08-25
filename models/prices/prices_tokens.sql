@@ -44,6 +44,7 @@ VALUES
     ("usdc-usd-coin", "arbitrum", "USDC", "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8", 6),
     ("usdt-tether", "arbitrum", "USDT", "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9", 6),
     ("wbtc-wrapped-bitcoin", "arbitrum", "WBTC", "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f", 8),
+    ("magic-magic-arbitrum", "arbitrum", "MAGIC", "0xb0c7a3ba49c7a6eaba6cd4a96c55a1391070ac9a", 18),
 
     ("dai-dai", "avalanche_c", "DAI", "0xd586e7f844cea2f87f50152665bcbc2c279d8d70", 18),
     ("usdc-usd-coin", "avalanche_c", "USDC", "0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e", 6),
