@@ -4,7 +4,7 @@
         partition_by='block_date',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['block_time', 'tx_hash', 'evt_index', 'blockchain']
+        unique_key = ['block_date', 'tx_hash', 'evt_index', 'blockchain']
         )
 }}
 
@@ -30,7 +30,7 @@ FROM
                 END AS amount
         , tc.evt_tx_hash AS tx_hash
         , tc.evt_index
-        , date_trunc(tc.evt_block_time, 'day') as block_date
+        , TRY_CAST(date_trunc('DAY', tc.evt_block_time) AS date) AS block_date
         FROM {{ source('tornado_cash_ethereum','eth_evt_Withdrawal') }} tc
         LEFT JOIN {{ source('ethereum','transactions_0006') }} et
                 ON et.hash=tc.evt_tx_hash
@@ -130,7 +130,7 @@ FROM
                 END AS amount
         , tc.evt_tx_hash AS tx_hash
         , tc.evt_index
-        , date_trunc(tc.evt_block_time, 'day') as block_date
+        , TRY_CAST(date_trunc('DAY', tc.evt_block_time) AS date) AS block_date
         FROM {{ source('tornado_cash_ethereum','erc20_evt_Withdrawal') }} tc
         LEFT JOIN {{ source('ethereum','transactions_0006') }} et
                 ON et.hash=tc.evt_tx_hash
@@ -168,7 +168,7 @@ FROM
                 END AS amount
         , tc.evt_tx_hash AS tx_hash
         , tc.evt_index
-        , date_trunc(tc.evt_block_time, 'day') as block_date
+        , TRY_CAST(date_trunc('DAY', tc.evt_block_time) AS date) AS block_date
         FROM {{ source('tornado_cash_bnb','TornadoCashBNB_evt_Withdrawal') }} tc
         LEFT JOIN {{ source('bnb','transactions') }} bt
                 ON bt.hash=tc.evt_tx_hash
@@ -206,7 +206,7 @@ FROM
                 END AS amount
         , tc.evt_tx_hash AS tx_hash
         , tc.evt_index
-        , date_trunc(tc.evt_block_time, 'day') as block_date
+        , TRY_CAST(date_trunc('DAY', tc.evt_block_time) AS date) AS block_date
         FROM {{ source('tornado_cash_gnosis','eth_evt_Withdrawal') }} tc
         LEFT JOIN {{ source('gnosis','transactions') }} gt
                 ON gt.hash=tc.evt_tx_hash
@@ -244,7 +244,7 @@ FROM
                 END AS amount
         , tc.evt_tx_hash AS tx_hash
         , tc.evt_index
-        , date_trunc(tc.evt_block_time, 'day') as block_date
+        , TRY_CAST(date_trunc('DAY', tc.evt_block_time) AS date) AS block_date
         FROM {{ source('tornado_cash_optimism','ETHTornado_evt_Withdrawal') }} tc
         LEFT JOIN {{ source('optimism','transactions') }} ot
                 ON ot.hash=tc.evt_tx_hash
@@ -281,7 +281,7 @@ FROM
                 END AS amount
         , tc.evt_tx_hash AS tx_hash
         , tc.evt_index
-        , date_trunc(tc.evt_block_time, 'day') as block_date
+        , TRY_CAST(date_trunc('DAY', tc.evt_block_time) AS date) AS block_date
         FROM {{ source('tornado_cash_avalanche_c','ETHTornado_evt_Withdrawal') }} tc
         LEFT JOIN {{ source('avalanche_c','transactions') }} at
                 ON at.hash=tc.evt_tx_hash
@@ -319,7 +319,7 @@ FROM
                 END AS amount
         , tc.evt_tx_hash AS tx_hash
         , tc.evt_index
-        , date_trunc(tc.evt_block_time, 'day') as block_date
+        , TRY_CAST(date_trunc('DAY', tc.evt_block_time) AS date) AS block_date
         FROM {{ source('tornado_cash_arbitrum','ETHTornado_evt_Withdrawal') }} tc
         LEFT JOIN {{ source('arbitrum','transactions') }} at
                 ON at.hash=tc.evt_tx_hash
