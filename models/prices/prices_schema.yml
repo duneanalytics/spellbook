@@ -7,7 +7,7 @@ models:
       sector: prices
       contibutors: aalan3
     config:
-      tags: ['prices', 'tokens', 'usd']
+      tags: ['prices', 'tokens', 'usd', 'metadata']
     description: "Price tokens"
     columns:
       - name: token_id

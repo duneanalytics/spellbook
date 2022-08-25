@@ -7,7 +7,7 @@ models:
       sector: nft
       contributors: hildobby
     config:
-      tags: ['nft', 'polygon', 'aggregators']
+      tags: ['nft', 'polygon', 'aggregators', 'metadata']
     description: >
         NFT aggregators
     columns:

@@ -8,7 +8,7 @@ models:
       project: addresses
       contibutors: hildobby
     config:
-      tags: ['table', 'cex', 'addresses', 'ethereum']
+      tags: ['table', 'cex', 'addresses', 'ethereum', 'metadata']
     description: "Known centralised exchange addresses"
     columns:
       - name: address

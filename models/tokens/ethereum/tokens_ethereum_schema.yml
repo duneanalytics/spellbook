@@ -8,7 +8,7 @@ models:
       project: erc20
       contibutors: soispoke, dot2dotseurat
     config:
-      tags: ['table', 'erc20']
+      tags: ['table', 'erc20', 'metadata']
     description: "ERC20 Token Addresses, Symbols and Decimals"
     columns:
       - name: contract_address
@@ -27,7 +27,7 @@ models:
       project: erc20
       contibutors: dot2dotseurat
     config:
-      tags: ['table', 'erc20', 'rebase']
+      tags: ['table', 'erc20', 'rebase', 'metadata']
     description: >
       Ethereum Rebase Token Addresses and Symbols. 
       A Rebase Token is a cryptocurrency with an algorithmically adjusted supply that controls its price.
@@ -43,7 +43,7 @@ models:
       sector: nft
       contributors: dot2dotseurat, hildobby, 0xbitfly
     config:
-      tags: ['tokens', 'ethereum', 'nft', 'erc721']
+      tags: ['tokens', 'ethereum', 'nft', 'erc721', 'metadata']
     description: >
         Selection of NFT token addresses.
     columns:
