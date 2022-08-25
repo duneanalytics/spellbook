@@ -171,10 +171,10 @@ WITH
                 THEN (
                     CASE WHEN tr.from = sb.call_from THEN value -- amount of ETH payed
                     WHEN (tr.to = sb.call_from AND sb.call_from != sb.asset_recip) THEN -value --refunds unless the caller is also the asset recipient, no way to discriminate there.
-                    END 0 )
+                    ELSE 0 END)
                 ELSE ( -- caller sells, AMM buys
                     CASE WHEN tr.from = sb.pair_address THEN value -- all ETH leaving the pool, nothing should be coming in on a sell.
-                    ELSE 0 )
+                    ELSE 0 END)
                 END ) as trade_price -- what the buyer paid (incl all fees)
             , SUM(
                 CASE WHEN (tr.to = sb.protocolfee_recipient) THEN value
