@@ -278,7 +278,6 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x0c36A5b01E1668C867A5e58f23bb6cb4d83a4cc8	Rainbow
 \\x3A893A7525C4263052c3C04f9C32d919c75cb8e0	Symphony Finance
 \\x939c8d89ebc11fa45e576215e2353673ad0ba18a	OpenSea
-\\x0000000000FFe8B47B3e2130213B802212439497	OpenSea
 \\x7c9c773e41a3b68924b3b4924df8fffcf7ae7e18	Naga DAO
 \\x24bD918b03dB3f16557942A15c92b6859510c4dc	Diamond Protocol
 \\x9143743c4a54fdCF81f38e2370A4e9819E98797c	Diamond Protocol
