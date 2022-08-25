@@ -1,6 +1,6 @@
 {{ 
     config(
-        alias ='transfers_optimism_eth', 
+        alias ='eth', 
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
