@@ -1,0 +1,23 @@
+version: 2
+
+models:
+ - name: aave_ethereum_interest_rates
+   meta:
+     blockchain: ethereum
+     sector: interest
+     project: aave
+     contibutors: batwayne, nosugar
+   config:
+     tags: ['interest', 'ethereum', 'aave', 'batwayne']
+   description: "Hourly aave interest rates on ethereum"
+   columns:
+     - name: reserve
+       description: "Aave reserve contract address"
+     - name: hour
+       description: "Block timestamp truncated to hours"
+     - name: deposit_apy
+       description: "Hourly deposit interest rate value of the reserve"
+     - name: stable_borrow_apy
+       description: "Hourly stable borrow interest rate value of the reserve" 
+     - name: variable_borrow_apy
+       description: "Hourly variable borrow interest rate value of the reserve"  
