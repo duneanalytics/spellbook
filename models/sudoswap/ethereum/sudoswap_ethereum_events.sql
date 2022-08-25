@@ -35,7 +35,8 @@ WITH
                 , call_block_number
                 , call_success
                 , tokenRecipient as trade_recipient
-                , 'Sell' as trade_category 
+                , 'Sell' as trade_category
+                , 'isRouter' as called_from_router
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapNFTsForToken') }}
             WHERE call_success = true
             {% if is_incremental() %}
@@ -52,7 +53,8 @@ WITH
                 , call_block_number
                 , call_success
                 , nftRecipient as trade_recipient
-                , 'Buy' as trade_category 
+                , 'Buy' as trade_category
+                , 'isRouter' as called_from_router
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapTokenForAnyNFTs') }}
             WHERE call_success = true
             {% if is_incremental() %}
@@ -68,7 +70,8 @@ WITH
                 , call_block_number
                 , call_success
                 , nftRecipient as trade_recipient
-                , 'Buy' as trade_category 
+                , 'Buy' as trade_category
+                , 'isRouter' as called_from_router
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapTokenForSpecificNFTs') }}
             WHERE call_success = true
             {% if is_incremental() %}
@@ -81,6 +84,7 @@ WITH
     , swaps_with_calldata as (
         select s.*
         , tr.from as call_from
+        , CASE WHEN called_from_router THEN tr.from ELSE tr.to END as project_contract_address -- either the router or the pool if called directly
         from swaps s
         left join {{ source('ethereum', 'traces') }} tr
         ON s.call_block_number = tr.block_number and s.call_tx_hash = tr.tx_hash and s.call_trace_address = tr.trace_address and tr.success
@@ -136,6 +140,7 @@ WITH
                 , nftcontractaddress
                 , asset_recip
                 , trade_recipient
+                , project_contract_address
                 , row_number() OVER (partition by call_tx_hash, contract_address, call_trace_address order by fee_update_time desc, protocolfee_update_time desc, asset_recip_update_time desc) as ordering
             FROM (
                 SELECT 
@@ -188,6 +193,7 @@ WITH
             , sb.nftcontractaddress
             , sb.ownerfee
             , sb.protocolfee
+            , project_contract_address
         FROM swaps_w_fees sb 
         LEFT JOIN {{ source('ethereum', 'traces') }} tr 
             ON tr.type = 'call'
@@ -204,7 +210,7 @@ WITH
             {% if not is_incremental() %}
             AND tr.block_time >= '2022-4-1'
             {% endif %}
-        GROUP BY 1,2,3,7,8,9,10,11,12
+        GROUP BY 1,2,3,7,8,9,10,11,12,13
     )
 
     ,swaps_cleaned as (
@@ -235,7 +241,7 @@ WITH
             , 'ETH' as currency_symbol
             , '0x0000000000000000000000000000000000000000' as currency_contract --ETH
             , nftcontractaddress as nft_contract_address
-            , '0xb16c1342e617a5b6e4b631eb114483fdb289c0a4' as project_contract_address --not sure what this is? I put their main factory for now
+            , project_contract_address -- This is either the router or the pool address if called directly
             , call_tx_hash as tx_hash
             , '' as evt_index --we didn't use events in our case for decoding, so this will be null until we find a way to tie it together.
             , protocol_fee_amount as platform_fee_amount_raw
