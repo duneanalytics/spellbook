@@ -17,5 +17,7 @@ sources:
         loaded_at_field: call_block_time
       - name: LSSVMPair_general_evt_FeeUpdate
         loaded_at_field: evt_block_time
+      - name: LSSVMPair_general_evt_AssetRecipientChange
+        loaded_at_field: evt_block_time
       - name: LSSVMPairFactory_evt_ProtocolFeeMultiplierUpdate
         loaded_at_field: evt_block_time
