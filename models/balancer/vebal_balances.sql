@@ -1,13 +1,13 @@
 WITH base_locks AS (
         SELECT d.provider, ts AS locked_at, locktime AS unlocked_at, ts AS updated_at
-        FROM balancer."veBAL_call_create_lock" l
-        JOIN balancer."veBAL_evt_Deposit" d
+        FROM {{ source('balancer_ethereum', 'veBAL_call_create_lock') }} l  
+        JOIN {{ source('balancer_ethereum', 'veBAL_evt_Deposit') }} d
         ON d.evt_tx_hash = l.call_tx_hash
         
         UNION ALL
         
         SELECT provider, null::numeric AS locked_at, locktime AS unlocked_at, ts AS updated_at
-        FROM balancer."veBAL_evt_Deposit"
+        FROM {{ source('balancer_ethereum', 'veBAL_evt_Deposit') }}
         WHERE value = 0
     ),
     
@@ -32,7 +32,7 @@ WITH base_locks AS (
             provider,
             date_trunc('day', evt_block_time) AS day,
             SUM(value/1e18) AS delta_bpt
-        FROM balancer."veBAL_evt_Deposit"
+        FROM {{ source('balancer_ethereum', 'veBAL_evt_Deposit') }}
         GROUP BY 1, 2
     ),
     
@@ -41,7 +41,7 @@ WITH base_locks AS (
             provider,
             date_trunc('day', evt_block_time) AS day,
             -SUM(value/1e18) AS delta_bpt
-        FROM balancer."veBAL_evt_Withdraw"
+        FROM {{ source('balancer_ethereum', 'veBAL_evt_Withdraw') }}
         GROUP BY 1, 2
     ),
     
