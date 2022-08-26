@@ -14,7 +14,6 @@ WITH
         SELECT 
             _nft as nftcontractaddress
             , _initialNFTIDs as nft_ids
-            , _fee as initialfee
             , _assetRecipient as asset_recip
             , output_pair as pair_address
             , call_block_time as block_time
@@ -93,13 +92,6 @@ WITH
         ON s.call_block_number = tr.block_number and s.call_tx_hash = tr.tx_hash and s.call_trace_address = tr.trace_address and tr.success
     )
 
-
-    ,owner_fee_update as (
-        SELECT 
-            *
-        FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_evt_FeeUpdate') }}
-    )
-
     ,protocol_fee_update as (
         SELECT
             *
@@ -137,7 +129,6 @@ WITH
                 , call_trace_address
                 , call_from
                 , router_caller
-                , ownerfee 
                 , protocolfee
                 , protocolfee_recipient
                 , trade_category
@@ -145,12 +136,10 @@ WITH
                 , asset_recip
                 , trade_recipient
                 , project_contract_address
-                , row_number() OVER (partition by call_tx_hash, contract_address, call_trace_address order by fee_update_time desc, protocolfee_update_time desc, asset_recip_update_time desc) as ordering
+                , row_number() OVER (partition by call_tx_hash, contract_address, call_trace_address order by protocolfee_update_time desc, asset_recip_update_time desc) as ordering
             FROM (
                 SELECT 
                     swaps.*
-                    , COALESCE(fu.newfee, pc.initialfee)/1e18 as ownerfee --most recent ownerfee, depends on bonding curve to implement it correctly. See explanation in fee table schema.
-                    , COALESCE(fu.evt_block_time, pc.block_time) as fee_update_time
                     , pfu.newMultiplier/1e18 as protocolfee --most recent protocolfee, depends on bonding curve to implement it correctly. See explanation in fee table schema.
                     , pfu.evt_block_time as protocolfee_update_time
                     , pc.protocolfee_recipient
@@ -161,12 +150,11 @@ WITH
                 JOIN pairs_created pc ON pc.pair_address = contract_address --remember swaps from other NFT addresses won't appear!
                 -- we might need to do these joins separately since we're exploding into a lot of rows..
                 -- should not matter a lot since # of changes per pool should be small
-                LEFT JOIN owner_fee_update fu ON swaps.call_block_time >= fu.evt_block_time AND swaps.contract_address = fu.contract_address
                 LEFT JOIN protocol_fee_update pfu ON swaps.call_block_time >= pfu.evt_block_time
                 LEFT JOIN asset_recipient_update aru on swaps.call_block_time >= aru.evt_block_time AND swaps.contract_address = aru.contract_address
             ) a
         ) b
-        WHERE ordering = 1 --we want to keep the most recent ownerfee and protocol fee for each individual call (trade)
+        WHERE ordering = 1 --we want to keep the most recent protocol fee and asset recipient for each individual call (trade)
     )
 
     ,swaps_w_traces as (
@@ -188,14 +176,13 @@ WITH
             , SUM(
                 CASE WHEN (tr.to = sb.protocolfee_recipient) THEN value
                 ELSE 0 END
-                 ) as protocol_fee_amount -- what the buyer paid
+                 ) as protocol_fee_amount -- what the protocol received
             , ARRAY_AGG(distinct CASE WHEN substring(input,1,10)='0x42842e0e' THEN bytea2numeric_v2(substring(input,139,64))::int ELSE null::int END) 
                 as token_id
             , sb.call_tx_hash
             , sb.trade_recipient
             , sb.pair_address
             , sb.nftcontractaddress
-            , sb.ownerfee
             , sb.protocolfee
             , project_contract_address
             -- these 2 are used for matching the aggregator address, dropped later
@@ -217,7 +204,7 @@ WITH
             {% if not is_incremental() %}
             AND tr.block_time >= '2022-4-1'
             {% endif %}
-        GROUP BY 1,2,3,7,8,9,10,11,12,13,14,15
+        GROUP BY 1,2,3,7,8,9,10,11,12,13,14
     )
 
     ,swaps_cleaned as (
@@ -254,10 +241,6 @@ WITH
             , protocol_fee_amount as platform_fee_amount_raw
             , protocol_fee_amount/1e18 as platform_fee_amount
             , protocolfee as platform_fee_percentage
-             -- trade_price = baseprice + (baseprice*ownerfee) + (baseprice*protocolfee)
-            , (trade_price-protocol_fee_amount)/(1+ownerfee)*ownerfee as owner_fee_amount_raw
-            , (trade_price-protocol_fee_amount)/(1+ownerfee)*ownerfee/1e18 as owner_fee_amount
-            , ownerfee as owner_fee_percentage
             -- royalties don't currently exist on the AMM,
             , null::double as royalty_fee_amount_raw
             , null::double as royalty_fee_amount
@@ -277,8 +260,7 @@ WITH
             , tokens.name AS collection
             , agg.name as aggregator_name
             , agg.contract_address as aggregator_address
-            , sc.amount_original*pu.price as amount_usd 
-            , sc.owner_fee_amount*pu.price as owner_fee_amount_usd
+            , sc.amount_original*pu.price as amount_usd
             , sc.platform_fee_amount*pu.price as platform_fee_amount_usd
             , tx.from as tx_from
             , tx.to as tx_to
@@ -339,10 +321,6 @@ WITH
             , platform_fee_amount_raw/number_of_items as platform_fee_amount_raw
             , platform_fee_amount_usd/number_of_items as platform_fee_amount_usd
             , platform_fee_percentage
-            , owner_fee_amount/number_of_items as owner_fee_amount
-            , owner_fee_amount_raw/number_of_items as owner_fee_amount_raw
-            , owner_fee_amount_usd/number_of_items as owner_fee_amount_usd
-            , owner_fee_percentage
             --below are null
             , royalty_fee_amount/number_of_items as royalty_fee_amount
             , royalty_fee_amount_raw/number_of_items as royalty_fee_amount_raw
