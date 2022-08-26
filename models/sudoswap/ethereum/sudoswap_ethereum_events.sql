@@ -37,6 +37,7 @@ WITH
                 , tokenRecipient as trade_recipient
                 , 'Sell' as trade_category
                 , 'isRouter' as called_from_router
+                , "routerCaller" as router_caller
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapNFTsForToken') }}
             WHERE call_success = true
             {% if is_incremental() %}
@@ -55,6 +56,7 @@ WITH
                 , nftRecipient as trade_recipient
                 , 'Buy' as trade_category
                 , 'isRouter' as called_from_router
+                , "routerCaller" as router_caller
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapTokenForAnyNFTs') }}
             WHERE call_success = true
             {% if is_incremental() %}
@@ -72,6 +74,7 @@ WITH
                 , nftRecipient as trade_recipient
                 , 'Buy' as trade_category
                 , 'isRouter' as called_from_router
+                , "routerCaller" as router_caller
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapTokenForSpecificNFTs') }}
             WHERE call_success = true
             {% if is_incremental() %}
@@ -84,7 +87,7 @@ WITH
     , swaps_with_calldata as (
         select s.*
         , tr.from as call_from
-        , CASE WHEN called_from_router THEN tr.from ELSE tr.to END as project_contract_address -- either the router or the pool if called directly
+        , CASE WHEN called_from_router = true THEN tr.from ELSE tr.to END as project_contract_address -- either the router or the pool if called directly
         from swaps s
         left join {{ source('ethereum', 'traces') }} tr
         ON s.call_block_number = tr.block_number and s.call_tx_hash = tr.tx_hash and s.call_trace_address = tr.trace_address and tr.success
@@ -133,6 +136,7 @@ WITH
                 , contract_address as pair_address
                 , call_trace_address
                 , call_from
+                , router_caller
                 , ownerfee 
                 , protocolfee
                 , protocolfee_recipient
@@ -194,6 +198,7 @@ WITH
             , sb.ownerfee
             , sb.protocolfee
             , project_contract_address
+            , router_caller
         FROM swaps_w_fees sb 
         LEFT JOIN {{ source('ethereum', 'traces') }} tr 
             ON tr.type = 'call'
@@ -210,7 +215,7 @@ WITH
             {% if not is_incremental() %}
             AND tr.block_time >= '2022-4-1'
             {% endif %}
-        GROUP BY 1,2,3,7,8,9,10,11,12,13
+        GROUP BY 1,2,3,7,8,9,10,11,12,13,14
     )
 
     ,swaps_cleaned as (
@@ -258,6 +263,9 @@ WITH
             , null::string as royalty_fee_receive_address
             , null::double as royalty_fee_amount_usd
             , null::string as royalty_fee_currency_symbol
+            -- these 2 are used for matching the aggregator address, dropped later
+            , router_caller
+            , call_from
         FROM swaps_w_traces
     )
 
@@ -291,7 +299,8 @@ WITH
             {% if not is_incremental() %}
             AND tx.block_time >= '2022-4-1'
             {% endif %}
-        LEFT JOIN nft_ethereum_aggregators agg ON agg.contract_address = tx.to --assumes aggregator is the top level call. Will need to change this to check for agg calls in internal traces later on.
+        LEFT JOIN nft_ethereum_aggregators agg
+        ON (agg.contract_address = sc.call_from OR agg.contract_address = sc.router_caller) -- aggregator will either call pool directly or call the router
         LEFT JOIN tokens_ethereum_nft tokens ON nft_contract_address = tokens.contract_address
     )
 
