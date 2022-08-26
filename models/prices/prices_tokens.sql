@@ -46,11 +46,13 @@ VALUES
     ("wbtc-wrapped-bitcoin", "arbitrum", "WBTC", "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f", 8),
     ("magic-magic-arbitrum", "arbitrum", "MAGIC", "0x539bde0d7dbd336b79148aa742883198bbf60342", 18),
 
+    ("wavax-wavax", "avalanche_c", "WAVAX", "0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7", 18),
     ("dai-dai", "avalanche_c", "DAI", "0xd586e7f844cea2f87f50152665bcbc2c279d8d70", 18),
     ("usdc-usd-coin", "avalanche_c", "USDC", "0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e", 6),
     ("usdt-tether", "avalanche_c", "USDT", "0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7", 6),
     ("wbtc-wrapped-bitcoin", "avalanche_c", "WBTC", "0x50b7545627a5162f82a992c33b87adc75187b218", 8),
 
+    ("wbnb-wbnb", "bnb", "WBNB", "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c", 18),
     ("1inch-1inch", "bnb", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
     ("aave-aave-token", "bnb", "AAVE", "0xfb6115445bff7b52feb98650c87f44907e58f802", 18),
     ("abnbc-abnbc", "bnb", "ABNBC", "0xe85afccdafbe7f2b096f268e31cce3da8da2990a", 18),
