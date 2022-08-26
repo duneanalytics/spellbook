@@ -216,7 +216,7 @@ with p1_call as (
             and tx.block_number > 14801608
             {% endif %}
             {% if is_incremental() %}
-            and TRY_CAST(date_trunc('DAY', tx.block_time) AS date) = TRY_CAST(date_trunc('DAY', a.block_time) AS date)
+            and tx.block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         left join {{ ref('nft_ethereum_aggregators') }} agg
             ON agg.contract_address = tx.to
@@ -235,7 +235,11 @@ with p1_call as (
                 else a.original_currency_contract
                 end
             and p1.minute = date_trunc('minute', a.block_time)
-            and p1.blockchain = 'ethereum')
+            and p1.blockchain = 'ethereum'
+            {% if is_incremental() %}
+                and p1.minute >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
+            )
 
 ,p2_call as (
     select 'available_advanced_orders' as main_type
@@ -417,7 +421,7 @@ with p1_call as (
             and tx.block_number > 14801608
             {% endif %}
             {% if is_incremental() %}
-            and TRY_CAST(date_trunc('DAY', tx.block_time) AS date) = TRY_CAST(date_trunc('DAY', a.block_time) AS date)
+            and tx.block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         left join {{ ref('nft_ethereum_aggregators') }} agg
             ON agg.contract_address = tx.to
@@ -436,7 +440,11 @@ with p1_call as (
                 else concat('0x',substr(a.price_token,3,40))
                 end
             and p1.minute = date_trunc('minute', a.block_time)
-            and p1.blockchain = 'ethereum')
+            and p1.blockchain = 'ethereum'
+            {% if is_incremental() %}
+                and p1.minute >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
+            )
 
 ,p3_call as (select 'order' as main_type
           ,call_tx_hash as tx_hash
@@ -643,7 +651,7 @@ with p1_call as (
             and tx.block_number > 14801608
             {% endif %}
             {% if is_incremental() %}
-            and TRY_CAST(date_trunc('DAY', tx.block_time) AS date) = TRY_CAST(date_trunc('DAY', a.block_time) AS date)
+            and tx.block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         left join {{ ref('nft_ethereum_aggregators') }} agg
             ON agg.contract_address = tx.to
@@ -662,7 +670,11 @@ with p1_call as (
                 else a.original_currency_contract
                 end
             and p1.minute = date_trunc('minute', a.block_time)
-            and p1.blockchain = 'ethereum')
+            and p1.blockchain = 'ethereum'
+            {% if is_incremental() %}
+                and p1.minute >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
+            )
 
 ,p4_call as (select 'match_orders' as main_type
           ,'match_orders' as sub_type
@@ -844,7 +856,7 @@ with p1_call as (
         and tx.block_number > 14801608
         {% endif %}
         {% if is_incremental() %}
-        and TRY_CAST(date_trunc('DAY', tx.block_time) AS date) = TRY_CAST(date_trunc('DAY', a.block_time) AS date)
+        and tx.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     left join {{ ref('nft_ethereum_aggregators') }} agg
         ON agg.contract_address = tx.to
@@ -863,7 +875,11 @@ with p1_call as (
             else concat('0x',substr(a.price_token,3,40))
             end
         and p1.minute = date_trunc('minute', a.block_time)
-        and p1.blockchain = 'ethereum')
+        and p1.blockchain = 'ethereum'
+            {% if is_incremental() %}
+                and p1.minute >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
+            )
 
 select * from p1_seaport_transfers
     union all
