@@ -173,7 +173,7 @@ SELECT DISTINCT
 FROM wyvern_all wa
 LEFT JOIN {{ source('ethereum','transactions') }} tx ON wa.call_tx_hash = tx.hash
     {% if is_incremental() %}
-    AND TRY_CAST(date_trunc('DAY', tx.block_time) AS date) = TRY_CAST(date_trunc('DAY', wa.call_block_time) AS date)
+    and tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN erc_transfers ON erc_transfers.evt_tx_hash = wa.call_tx_hash AND (wa.token_id = erc_transfers.token_id_erc
 OR wa.token_id = null)
@@ -182,6 +182,9 @@ LEFT JOIN {{ ref('nft_ethereum_aggregators') }} agg ON agg.contract_address = tx
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', tx.block_time)
     AND p.contract_address = wa.currency_contract
     AND p.blockchain ='ethereum'
+    {% if is_incremental() %}
+    AND p.minute >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20 ON erc20.contract_address = wa.currency_contract
   WHERE wa.call_tx_hash not in (
     SELECT
