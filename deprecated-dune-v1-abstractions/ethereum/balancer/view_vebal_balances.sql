@@ -97,13 +97,9 @@ SELECT
     b.provider,
     bpt_balance,
     lock_period,
-    GREATEST(
-        COALESCE((bpt_balance *
-        (lock_period / (365*86400)) *
-        ((unlocked_at - (FLOOR(EXTRACT(EPOCH FROM b.day))+86400)) / lock_period)), 0),
-        
-        0
-     ) AS vebal
+    COALESCE((bpt_balance *
+    (lock_period / (365*86400)) *
+    ((unlocked_at - (FLOOR(EXTRACT(EPOCH FROM b.day))+86400)) / lock_period)), 0) AS vebal
 FROM running_balances b
 LEFT JOIN locks_info l
 ON l.provider = b.provider
