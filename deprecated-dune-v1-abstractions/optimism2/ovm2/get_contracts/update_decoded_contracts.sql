@@ -1,10 +1,9 @@
--- SELECT * FROM ovm2."get_contracts" WHERE "contract_address" = '\xbbbBbbBE843515689f3182B748B5671665541E58'
 CREATE OR REPLACE FUNCTION ovm2.update_decoded_contracts() RETURNS integer
 LANGUAGE plpgsql AS $function$
 DECLARE r integer;
 BEGIN
 WITH rows AS (
-    INSERT INTO ovm2."get_contracts" (
+    INSERT INTO ovm2.get_contracts (
       contract_address,
       contract_project
     )
