@@ -97,11 +97,14 @@ WITH base_locks AS (
             bpt_balance,
             updated_at,
             lock_period as lock_time,
-            COALESCE(
-                bpt_balance *
-                (lock_period / (365*86400)) *
-                ((unlocked_at - (unix_timestamp(b.day)+86400)) / lock_period)
-                , 0) AS vebal_balance
+            GREATEST(
+                COALESCE(
+                    bpt_balance *
+                    (lock_period / (365*86400)) *
+                    ((unlocked_at - (unix_timestamp(b.day)+86400)) / lock_period)
+                    , 0),
+                0
+             ) AS vebal_balance
         FROM running_balances b
         LEFT JOIN locks_info l
         ON l.provider = b.provider
