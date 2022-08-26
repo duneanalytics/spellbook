@@ -198,7 +198,9 @@ WITH
             , sb.ownerfee
             , sb.protocolfee
             , project_contract_address
+            -- these 2 are used for matching the aggregator address, dropped later
             , router_caller
+            , call_from
         FROM swaps_w_fees sb 
         LEFT JOIN {{ source('ethereum', 'traces') }} tr 
             ON tr.type = 'call'
@@ -215,7 +217,7 @@ WITH
             {% if not is_incremental() %}
             AND tr.block_time >= '2022-4-1'
             {% endif %}
-        GROUP BY 1,2,3,7,8,9,10,11,12,13,14
+        GROUP BY 1,2,3,7,8,9,10,11,12,13,14,15
     )
 
     ,swaps_cleaned as (
