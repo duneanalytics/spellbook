@@ -56,7 +56,8 @@ WITH base_locks AS (
     ),
     
     calendar AS (
-        SELECT generate_series(MIN(day), CURRENT_DATE, '1 day'::interval) AS day
+        SELECT 
+          explode(sequence(MIN(day), CURRENT_DATE, interval 1 day)) AS day
         FROM bpt_locked_balance
     ),
     
