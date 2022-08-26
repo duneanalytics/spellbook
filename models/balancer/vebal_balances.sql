@@ -1,7 +1,3 @@
-DROP VIEW IF EXISTS balancer.view_vebal_balances;
-
-CREATE VIEW balancer.view_vebal_balances AS
-
 WITH base_locks AS (
         SELECT d.provider, ts AS locked_at, locktime AS unlocked_at, ts AS updated_at
         FROM balancer."veBAL_call_create_lock" l
