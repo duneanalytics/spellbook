@@ -1,0 +1,5 @@
+version: 2
+
+seeds:
+  - name: balancer_ethereum_vebal_balances_day_20220825
+    description: veBAL balances on 25/08/2022 as reported by V1's view_veBAL_balances on 26/08/2022
