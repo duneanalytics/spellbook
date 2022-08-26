@@ -44,6 +44,7 @@ VALUES
     ("usdc-usd-coin", "arbitrum", "USDC", "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8", 6),
     ("usdt-tether", "arbitrum", "USDT", "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9", 6),
     ("wbtc-wrapped-bitcoin", "arbitrum", "WBTC", "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f", 8),
+    ("magic-magic-arbitrum", "arbitrum", "MAGIC", "0x539bde0d7dbd336b79148aa742883198bbf60342", 18),
 
     ("dai-dai", "avalanche_c", "DAI", "0xd586e7f844cea2f87f50152665bcbc2c279d8d70", 18),
     ("usdc-usd-coin", "avalanche_c", "USDC", "0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e", 6),
@@ -162,6 +163,8 @@ VALUES
     ("zel-zelcash", "bnb", "FLUX", "0x1ab6478b47270ff05af11a012ac17b098758e193", 18),
     ("zil-zilliqa", "bnb", "ZIL", "0xb86abcb37c3a4b64f74f59301aff131a1becc787", 12),
     ("znn-zenon", "bnb", "Znn", "0x84b174628911896a3b87fa6980d05dbc2ee74836", 8),
+    ("azy-amazy", "bnb", "AZY", "0x7b665B2F633d9363b89A98b094B1F9E732Bd8F86", 18),
+    ("amt-amazy", "bnb", "AMT", "0xf625069dce62df95b4910f83446954b871f0fc4f", 18),
 
     ("0xbtc-0xbitcoin", "ethereum", "0xBTC", "0xb6ed7644c69416d67b522e20bc294a9a9b405b31", 8),
     ("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
