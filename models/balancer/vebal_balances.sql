@@ -88,22 +88,38 @@ WITH base_locks AS (
         LEFT JOIN cumulative_balances b
         ON b.day <= c.day
         AND c.day < b.day_of_next_change
+    ),
+    
+    double_counting AS (
+        SELECT
+            day,
+            b.provider,
+            bpt_balance,
+            updated_at,
+            lock_period,
+            COALESCE(
+                bpt_balance *
+                (lock_period / (365*86400)) *
+                ((unlocked_at - (unix_timestamp(b.day)+86400)) / lock_period)
+                , 0) AS vebal
+        FROM running_balances b
+        LEFT JOIN locks_info l
+        ON l.provider = b.provider
+        AND l.updated_at <= unix_timestamp(b.day) + 86400
+    ),
+    
+    max_updated_at AS (
+        SELECT 
+            day,
+            provider,
+            max(updated_at) AS updated_at
+        FROM double_counting
+        GROUP BY 1,2
     )
-SELECT
-    day,
-    b.provider,
-    bpt_balance,
-    lock_period,
-    COALESCE((bpt_balance *
-    (lock_period / (365*86400)) *
-    ((unlocked_at - (FLOOR(EXTRACT(EPOCH FROM b.day))+86400)) / lock_period)), 0) AS vebal
-FROM running_balances b
-LEFT JOIN locks_info l
-ON l.provider = b.provider
-AND l.updated_at = (
-    SELECT MAX(updated_at)
-    FROM locks_info
-    WHERE updated_at <= (FLOOR(EXTRACT(EPOCH FROM b.day))+86400)
-    AND provider = b.provider
-)
-;
+    
+SELECT a.*
+FROM double_counting a
+INNER JOIN max_updated_at b
+ON a.day = b.day
+AND a.provider = b.provider
+AND a.updated_at = b.updated_at
