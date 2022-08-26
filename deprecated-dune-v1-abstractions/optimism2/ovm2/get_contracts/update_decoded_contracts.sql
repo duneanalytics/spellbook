@@ -49,5 +49,5 @@ RETURN r;
 END
 $function$;
 
---This insert follows the standard insert_get_contracts to enforce ordering.
+--This insert is in the insert_updated_contract_info.sql file to enforce ordering.
 --SELECT ovm2.update_decoded_contracts();
