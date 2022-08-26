@@ -560,7 +560,7 @@ ALTER TABLE transfers_optimism.eth SET TBLPROPERTIES ('dune.public'='true',
 {% endset %}
 
 {% set uniswap_v3_optimism_pools %}
-ALTER TABLE uniswap_v3_optimism.pools SET TBLPROPERTIES ('dune.public'='true',
+ALTER VIEW uniswap_v3_optimism.pools SET TBLPROPERTIES ('dune.public'='true',
                                                 'dune.data_explorer.blockchains'='["optimism"]',
                                                 'dune.data_explorer.category'='abstraction',
                                                 'dune.data_explorer.abstraction.type'='project',
