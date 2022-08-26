@@ -93,15 +93,15 @@ WITH base_locks AS (
     double_counting AS (
         SELECT
             day,
-            b.provider,
+            b.provider as wallet_address,
             bpt_balance,
             updated_at,
-            lock_period,
+            lock_period as lock_time,
             COALESCE(
                 bpt_balance *
                 (lock_period / (365*86400)) *
                 ((unlocked_at - (unix_timestamp(b.day)+86400)) / lock_period)
-                , 0) AS vebal
+                , 0) AS vebal_balance
         FROM running_balances b
         LEFT JOIN locks_info l
         ON l.provider = b.provider
@@ -111,15 +111,20 @@ WITH base_locks AS (
     max_updated_at AS (
         SELECT 
             day,
-            provider,
+            wallet_address,
             max(updated_at) AS updated_at
         FROM double_counting
         GROUP BY 1,2
     )
     
-SELECT a.*
+SELECT 
+    a.day,
+    a.wallet_address,
+    a.bpt_balance,
+    a.vebal_balance,
+    a.lock_time
 FROM double_counting a
 INNER JOIN max_updated_at b
 ON a.day = b.day
-AND a.provider = b.provider
+AND a.wallet_address = b.wallet_address
 AND a.updated_at = b.updated_at
