@@ -42,8 +42,8 @@ WITH rows AS (
         token_b_amount_raw,
         coalesce(
             usd_amount,
-            token_a_amount_raw / 10 ^ erc20a.decimals * pa.price,
-            token_b_amount_raw / 10 ^ erc20b.decimals * pb.price,
+            token_a_amount_raw / 10 ^ erc20a.decimals * pa.median_price,
+            token_b_amount_raw / 10 ^ erc20b.decimals * pb.median_price,
             0
         ) as usd_amount,
         token_a_address,
@@ -81,6 +81,8 @@ WITH rows AS (
             t.evt_index
         FROM
             clipper."ClipperCove_evt_CoveSwapped" t
+        WHERE t.evt_block_time >= start_ts
+            AND t.evt_block_time < end_ts
     ) dexs
     INNER JOIN optimism.transactions tx
         ON dexs.tx_hash = tx.hash
@@ -98,8 +100,6 @@ WITH rows AS (
         AND pb.contract_address = dexs.token_b_address
         AND pb.hour >= start_ts
         AND pb.hour < end_ts
-    WHERE dexs.block_time >= start_ts
-    AND dexs.block_time < end_ts
     ON CONFLICT DO NOTHING
     RETURNING 1
 )
