@@ -11,10 +11,10 @@ sources:
         loaded_at_field: call_block_time
         description: "Function to create a veBAL lock"
         columns:
-          - &_unlock_time
+          - _unlock_time
             name: _unlock_time
             description: "Epoch time when tokens unlock; this is the user's request, but the actual unlock time will be rounded down to a Thursday"
-          - &value
+          - value
             name: value
             description: "Amount to deposit"
             # tests: # TODO
@@ -23,16 +23,16 @@ sources:
         loaded_at_field: evt_block_time
         description: "Emitted when user deposits tokens in their lock or extends its unlock time"
         columns:
-          - &locktime
+          - locktime
             name: locktime
             description: "Epoch time when tokens unlock"
-          - &provider
+          - provider
             name: provider
             description: "The wallet address of the lock's owner"
-          - &ts
+          - ts
             name: ts
             description: "Block timestamp"
-          - &type
+          - type
             name: type
             tests:
               - accepted_values:
@@ -42,19 +42,19 @@ sources:
               CREATE_LOCK_TYPE: 1
               INCREASE_LOCK_AMOUNT: 2
               INCREASE_UNLOCK_TIME: 3
-          - &value
+          - value
             name: value
             description: "Amount of base tokens added to the lock"
       - name: veBAL_evt_Withdraw
         loaded_at_field: evt_block_time
         description: "Emitted when user withdraws tokens from their lock"
         columns:
-          - &provider
+          - provider
             name: provider
             description: "The wallet address of the lock's owner"
-          - &value
+          - value
             name: value
             description: "Amount of base tokens withdrawn from the lock"
-          - &ts
+          - ts
             name: ts
             description: "Block timestamp"

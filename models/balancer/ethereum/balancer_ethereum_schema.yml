@@ -12,18 +12,18 @@ models:
         Daily balances of veBAL per wallet
         Depends on veBAL_call_create_lock, veBAL_evt_Deposit and veBAL_evt_Withdraw
     columns:
-      - &day
+      - day
         name: day
         description: "Blockchain"
-      - &wallet_address
+      - wallet_address
         name: wallet_address
         description: "Address of the wallet holding the veBAL"
-      - &bpt_balance
+      - bpt_balance
         name: bpt_balance
         description: "Amount of BPT held in the veBAL lock"
-      - &vebal_balance
+      - vebal_balance
         name: vebal_balance
         description: "Amount of veBAL"
-      - &lock_time
+      - lock_time
         name: lock_time
         description: "Amount of time the BPT was locked for at the last time the lock was updated"
