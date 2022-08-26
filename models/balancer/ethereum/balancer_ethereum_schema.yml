@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: vebal_balances_day
+  - name: balancer_ethereum_vebal_balances_day
     meta:
       blockchain: ethereum
       project: balancer
