@@ -237,7 +237,7 @@ with p1_call as (
             and p1.minute = date_trunc('minute', a.block_time)
             and p1.blockchain = 'ethereum'
             {% if is_incremental() %}
-                and p1.minute >= date_trunc("day", now() - interval '1 week')
+            and p1.minute >= date_trunc("day", now() - interval '1 week')
             {% endif %}
             )
 
@@ -442,7 +442,7 @@ with p1_call as (
             and p1.minute = date_trunc('minute', a.block_time)
             and p1.blockchain = 'ethereum'
             {% if is_incremental() %}
-                and p1.minute >= date_trunc("day", now() - interval '1 week')
+            and p1.minute >= date_trunc("day", now() - interval '1 week')
             {% endif %}
             )
 
@@ -672,7 +672,7 @@ with p1_call as (
             and p1.minute = date_trunc('minute', a.block_time)
             and p1.blockchain = 'ethereum'
             {% if is_incremental() %}
-                and p1.minute >= date_trunc("day", now() - interval '1 week')
+            and p1.minute >= date_trunc("day", now() - interval '1 week')
             {% endif %}
             )
 
@@ -876,9 +876,9 @@ with p1_call as (
             end
         and p1.minute = date_trunc('minute', a.block_time)
         and p1.blockchain = 'ethereum'
-            {% if is_incremental() %}
-                and p1.minute >= date_trunc("day", now() - interval '1 week')
-            {% endif %}
+        {% if is_incremental() %}
+        and p1.minute >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
             )
 
 select * from p1_seaport_transfers
