@@ -21,10 +21,3 @@ sources:
         loaded_at_field: evt_block_time
       - name: CurveFactoryV2_evt_LiquidityGaugeDeployed
         loaded_at_field: evt_block_time
-  - name: ethereum
-    freshness:
-      warn_after: { count: 1, period: day }
-      error_after: { count: 3, period: day }
-    tables:
-      - name: contracts
-        loaded_at_field: created_at
