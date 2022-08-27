@@ -137,7 +137,7 @@ models:
         +materialized: view
 
     curvefi:
-      +schema: safe
+      +schema: curvefi
       +materialized: view
       ethereum:
         +schema: curvefi_ethereum
