@@ -20,4 +20,5 @@ models:
      - name: stable_borrow_apy
        description: "Hourly stable borrow interest rate value of the reserve" 
      - name: variable_borrow_apy
-       description: "Hourly variable borrow interest rate value of the reserve"  
+       description: "Hourly variable borrow interest rate value of the reserve" 
+       
