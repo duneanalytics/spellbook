@@ -6,7 +6,8 @@ models:
      blockchain: ethereum
      sector: interest
      project: aave
-     contibutors: batwayne, nosugar
+     contibutors: batwayne, chuxinh
+
    config:
      tags: ['interest', 'ethereum', 'aave', 'batwayne']
    description: "Hourly aave interest rates on ethereum"
