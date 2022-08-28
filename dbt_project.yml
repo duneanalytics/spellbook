@@ -112,8 +112,8 @@ models:
       optimism:
         +schema: tokens_optimism
         +materialized: view
-      avalanche:
-        +schema: tokens_avalanche
+      avalanche_c:
+        +schema: tokens_avalanche_c
         +materialized: view
     
     transfers:

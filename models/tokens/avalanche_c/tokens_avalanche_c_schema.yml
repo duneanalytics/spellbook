@@ -1,18 +1,18 @@
 version: 2
 
 models:
-  - name: tokens_avalanche_erc20
+  - name: tokens_avalanche_c_erc20
     meta:
-      blockchain: avalanche
+      blockchain: avalanche_c
       sector: tokens
       project: erc20
       contibutors: 0xManny
     config:
-      tags: ['tokens', 'erc20', 'avalanche']
+      tags: ['tokens', 'erc20', 'avalanche_c']
     description: "ERC20 Token Addresses, Symbols and Decimals"
     columns:
       - name: contract_address
-        description: "ERC20 token contract address on avalanche"
+        description: "ERC20 token contract address on avalanche c chain"
         tests:
           - unique
       - name: symbol
@@ -20,18 +20,18 @@ models:
       - name: decimals
         description: "Number of decimals, refers to how divisible an ERC20 token can be"
 
-  - name: tokens_avalanche_nft
+  - name: tokens_avalanche_c_nft
     meta:
-      blockchain: avalanche
+      blockchain: avalanche_c
       sector: nft
       contributors: 0xManny
     config:
-      tags: ['tokens', 'avalanche', 'nft', 'erc721', 'erc1155']
+      tags: ['tokens', 'avalanche_c', 'nft', 'erc721', 'erc1155']
     description: >
         Selection of NFT token addresses.
     columns:
       - name: contract_address
-        description: "The contract address is the unique address of where the NFTs are stored on avalanche."
+        description: "The contract address is the unique address of where the NFTs are stored on avalanche c chain."
         tests:
           - unique
       - name: name
