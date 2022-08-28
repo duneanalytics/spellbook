@@ -2,7 +2,8 @@ version: 2
 
 sources:
   - name: aave_v2_ethereum
-    description: "Decoded contracts for aave v2 on eth."
+    description: "Decoded contracts for aave v2 on Ethereum"
+
     tables:
       - name: LendingPool_evt_ReserveDataUpdated
         loaded_at_field: evt_block_time
