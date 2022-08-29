@@ -22,6 +22,8 @@ models:
       tags: ['ethereum','opensea','v1','fees']
     description: OpenSea v1 fees on Ethereum
     columns:
+      - name: block_time
+        description: "Block time of transaction"
       - name: trace_address
         description: "Trace address for fees"
       - name: tx_hash
