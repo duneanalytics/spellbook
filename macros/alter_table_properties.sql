@@ -343,6 +343,15 @@ ALTER VIEW tokens_ethereum.erc20 SET TBLPROPERTIES ('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["soispoke","dot2dotseurat"]');
 {% endset %}
 
+{% set tokens_bnb_bep20 %}
+ALTER VIEW tokens_bnb.bep20 SET TBLPROPERTIES ('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["bnb"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='tokens',
+                                                    'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
 {% set transfers_ethereum_erc20 %}
 ALTER VIEW transfers_ethereum.erc20 SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum"]',
@@ -630,6 +639,7 @@ ALTER VIEW tokens_optimism.erc20 SET TBLPROPERTIES('dune.public'='true',
 {% do run_query(nft_avalanche_aggregators) %}
 {% do run_query(nft_polygon_aggregators) %}
 {% do run_query(tokens_ethereum_erc20) %}
+{% do run_query(tokens_bnb_bep20) %}
 {% do run_query(transfers_ethereum_erc20) %}
 {% do run_query(tokens_ethereum_nft) %}
 {% do run_query(seaport_ethereum_view_transactions) %}

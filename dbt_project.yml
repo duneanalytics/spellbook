@@ -112,6 +112,9 @@ models:
       optimism:
         +schema: tokens_optimism
         +materialized: view
+      bnb:
+        +schema: tokens_bnb
+        +materialized: view
     
     transfers:
       +schema: transfers
