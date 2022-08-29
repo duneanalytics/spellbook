@@ -1,6 +1,6 @@
 version: 2
 
-sources: 
+sources:
   - name: x2y2_ethereum
     freshness:
       warn_after: { count: 12, period: hour }

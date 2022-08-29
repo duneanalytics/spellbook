@@ -2,7 +2,7 @@
         alias ='mints'
         )
 }}
- 
+
 SELECT blockchain,
 project,
 version,
