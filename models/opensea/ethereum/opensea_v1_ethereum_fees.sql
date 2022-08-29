@@ -1,5 +1,3 @@
-
-SELECT
 {{ config(schema = 'opensea_v1_ethereum',
 alias='fees') }}
 
