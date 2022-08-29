@@ -1,0 +1,5 @@
+- name: sfm-safemoon
+  id: sfm-safemoon    # the id from above
+  symbol: SFM 				      # the asset ticker
+  address: 0x42981d0bfbaf196529376ee702f2a9eb9092fcb5       # the contract address
+  decimals: 9              # the number of decimals the token contract uses
