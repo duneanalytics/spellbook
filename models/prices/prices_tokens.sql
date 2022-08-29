@@ -167,6 +167,10 @@ VALUES
     ("znn-zenon", "bnb", "Znn", "0x84b174628911896a3b87fa6980d05dbc2ee74836", 8),
     ("azy-amazy", "bnb", "AZY", "0x7b665B2F633d9363b89A98b094B1F9E732Bd8F86", 18),
     ("amt-amazy", "bnb", "AMT", "0xf625069dce62df95b4910f83446954b871f0fc4f", 18),
+    ("tbc-terablock", "bnb", "TBC", "0x9798df2f5d213a872c787bd03b2b91f54d0d04a1", 18),
+    ("sps-splintershards", "bnb", "SPS", "0x1633b7157e7638c4d6593436111bf125ee74703f", 18),
+    ("dec-dark-energy-crystals", "bnb", "DEC", "0xe9d7023f2132d55cbd4ee1f78273cb7a3e74f10a", 3),
+
 
     ("0xbtc-0xbitcoin", "ethereum", "0xBTC", "0xb6ed7644c69416d67b522e20bc294a9a9b405b31", 8),
     ("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
