@@ -92,10 +92,12 @@ FROM dexs
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
     {% if not is_incremental() %}
-    AND tx.block_time >= (SELECT MIN(block_time) FROM dexs)
+    -- The date below is derrived from `select min(evt_block_time) from uniswap_ethereum.Factory_evt_NewExchange;`
+    -- If dexs above is changed then this will also need to be changed.
+    AND tx.block_time >= "2018-11-01 00:00:00"
     {% endif %}
     {% if is_incremental() %}
-    AND TRY_CAST(date_trunc('DAY', tx.block_time) AS date) = TRY_CAST(date_trunc('DAY', dexs.block_time) AS date)
+    AND tx.block_time = date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20a ON erc20a.contract_address = dexs.token_bought_address
 LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20b ON erc20b.contract_address = dexs.token_sold_address
@@ -103,17 +105,21 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.minute = date_trunc
     AND p_bought.contract_address = dexs.token_bought_address
     AND p_bought.blockchain = 'ethereum'
     {% if not is_incremental() %}
-    AND p_bought.minute >= (SELECT MIN(block_time) FROM dexs)
+    -- The date below is derrived from `select min(evt_block_time) from uniswap_ethereum.Factory_evt_NewExchange;`
+    -- If dexs above is changed then this will also need to be changed.
+    AND p_bought.minute >= "2018-11-01 00:00:00"
     {% endif %}
     {% if is_incremental() %}
-    AND p_bought.minute >= (SELECT MAX(block_time) FROM {{ this }})
+    AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.minute = date_trunc('minute', dexs.block_time)
     AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = 'ethereum'
     {% if not is_incremental() %}
-    AND p_sold.minute >= (SELECT MIN(block_time) FROM dexs)
+    -- The date below is derrived from `select min(evt_block_time) from uniswap_ethereum.Factory_evt_NewExchange;`
+    -- If dexs above is changed then this will also need to be changed.
+    AND p_sold.minute >= "2018-11-01 00:00:00"
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= (SELECT MAX(block_time) FROM {{ this }})
+    AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
