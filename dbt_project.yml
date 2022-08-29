@@ -112,6 +112,8 @@ models:
       optimism:
         +schema: tokens_optimism
         +materialized: view
+      avalanche_c:
+        +schema: tokens_avalanche_c
       bnb:
         +schema: tokens_bnb
         +materialized: view
