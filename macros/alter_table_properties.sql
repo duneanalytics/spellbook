@@ -334,6 +334,15 @@ ALTER VIEW nft_polygon.aggregators SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["hildobby"]');
 {% endset %}
 
+{% set nft_linked_addresses %}
+ALTER VIEW nft.linked_addresses SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum","solana"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='nft',
+                                                    'dune.data_explorer.contributors'='["springzh"]');
+{% endset %}
+
 {% set tokens_ethereum_erc20 %}
 ALTER VIEW tokens_ethereum.erc20 SET TBLPROPERTIES ('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum"]',
@@ -629,6 +638,7 @@ ALTER VIEW tokens_optimism.erc20 SET TBLPROPERTIES('dune.public'='true',
 {% do run_query(nft_bnb_aggregators) %}
 {% do run_query(nft_avalanche_aggregators) %}
 {% do run_query(nft_polygon_aggregators) %}
+{% do run_query(nft_linked_addresses) %}
 {% do run_query(tokens_ethereum_erc20) %}
 {% do run_query(transfers_ethereum_erc20) %}
 {% do run_query(tokens_ethereum_nft) %}
