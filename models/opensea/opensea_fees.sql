@@ -2,7 +2,7 @@
         alias ='fees'
         )
 }}
- 
+
 SELECT blockchain,
 project,
 version,

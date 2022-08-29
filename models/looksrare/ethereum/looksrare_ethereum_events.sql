@@ -30,18 +30,18 @@ WITH looks_rare AS (
         ask.evt_block_number AS block_number,
         ask.evt_index AS evt_index,
         roy.evt_index as roy_event_index,
-        CASE -- CATEGORIZE Collection Wide Offers Accepted 
+        CASE -- CATEGORIZE Collection Wide Offers Accepted
             WHEN strategy = '0x86f909f70813cdb1bc733f4d97dc6b03b8e7e8f3' THEN 'Collection Offer Accepted'
-            ELSE 'Offer Accepted' 
-            END AS category    
+            ELSE 'Offer Accepted'
+            END AS category
     FROM {{ source('looksrare_ethereum','looksrareexchange_evt_takerask') }} ask
     LEFT JOIN {{ source('looksrare_ethereum','looksrareexchange_evt_royaltypayment') }} roy ON roy.evt_tx_hash = ask.evt_tx_hash
     AND ask.evt_index - 2 = roy.evt_index
-     {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-     WHERE ask.evt_block_time >= (select max(block_time) from {{ this }}) 
+     {% if is_incremental() %} -- this filter will only be applied on an incremental run
+     WHERE ask.evt_block_time >= (select max(block_time) from {{ this }})
      {% endif %}
                             UNION
-    SELECT 
+    SELECT
         bid.evt_block_time AS block_time,
         bid.tokenId::string AS token_id,
         bid.amount AS number_of_items,
@@ -66,8 +66,8 @@ WITH looks_rare AS (
     FROM {{ source('looksrare_ethereum','looksrareexchange_evt_takerbid') }} bid
     LEFT JOIN {{ source('looksrare_ethereum','looksrareexchange_evt_royaltypayment') }} roy ON roy.evt_tx_hash = bid.evt_tx_hash
     AND roy.evt_index = bid.evt_index - 4
-     {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-     WHERE bid.evt_block_time >= (select max(block_time) from {{ this }}) 
+     {% if is_incremental() %} -- this filter will only be applied on an incremental run
+     WHERE bid.evt_block_time >= (select max(block_time) from {{ this }})
      {% endif %}
     ),
 
@@ -79,8 +79,8 @@ erc_transfers as
         cardinality(collect_list(value)) as count_erc,
         value as value_unique,
         CASE WHEN erc1155.from = '0x0000000000000000000000000000000000000000' THEN 'Mint'
-        WHEN erc1155.to = '0x0000000000000000000000000000000000000000' 
-        OR erc1155.to = '0x000000000000000000000000000000000000dead' THEN 'Burn' 
+        WHEN erc1155.to = '0x0000000000000000000000000000000000000000'
+        OR erc1155.to = '0x000000000000000000000000000000000000dead' THEN 'Burn'
         ELSE 'Trade' END AS evt_type,
         evt_index
         FROM {{ source('erc1155_ethereum','evt_transfersingle') }} erc1155
@@ -93,8 +93,8 @@ SELECT evt_tx_hash,
         COUNT(tokenId) as count_erc,
         NULL as value_unique,
         CASE WHEN erc721.from = '0x0000000000000000000000000000000000000000' THEN 'Mint'
-        WHEN erc721.to = '0x0000000000000000000000000000000000000000' 
-        OR erc721.to = '0x000000000000000000000000000000000000dead' THEN 'Burn' 
+        WHEN erc721.to = '0x0000000000000000000000000000000000000000'
+        OR erc721.to = '0x000000000000000000000000000000000000dead' THEN 'Burn'
         ELSE 'Trade' END AS evt_type,
         evt_index
         FROM {{ source('erc721_ethereum','evt_transfer') }} erc721
@@ -111,7 +111,7 @@ SELECT DISTINCT
     tokens.name AS collection,
     looks_rare.price / power(10,erc20.decimals) * p.price AS amount_usd,
     tokens.standard AS token_standard,
-    CASE 
+    CASE
         WHEN agg.name is NULL AND erc.value_unique = 1 OR erc.count_erc = 1 THEN 'Single Item Trade'
         WHEN agg.name is NULL AND erc.value_unique > 1 OR erc.count_erc > 1 THEN 'Bundle Trade'
     ELSE 'Single Item Trade' END AS trade_type,
@@ -124,7 +124,7 @@ SELECT DISTINCT
                 count(1)::bigint cnt
             FROM {{ source('erc721_ethereum','evt_transfer') }} erc721
             WHERE erc721.evt_tx_hash = tx_hash
-            ) +    
+            ) +
             (SELECT
                 count(1)::bigint cnt
             FROM {{ source('erc1155_ethereum','evt_transfersingle') }} erc1155
@@ -176,4 +176,4 @@ WHERE number_of_items >= 1
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
 AND looks_rare.block_time >= (select max(block_time) from {{ this }})
-{% endif %} 
+{% endif %}
