@@ -36,8 +36,8 @@ WITH
                 , call_success
                 , tokenRecipient as trade_recipient
                 , 'Sell' as trade_category
-                , 'isRouter' as called_from_router
-                , "routerCaller" as router_caller
+                , isRouter as called_from_router
+                , routerCaller as router_caller
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapNFTsForToken') }}
             WHERE call_success = true
             {% if is_incremental() %}
@@ -55,8 +55,8 @@ WITH
                 , call_success
                 , nftRecipient as trade_recipient
                 , 'Buy' as trade_category
-                , 'isRouter' as called_from_router
-                , "routerCaller" as router_caller
+                , isRouter as called_from_router
+                , routerCaller as router_caller
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapTokenForAnyNFTs') }}
             WHERE call_success = true
             {% if is_incremental() %}
@@ -73,8 +73,8 @@ WITH
                 , call_success
                 , nftRecipient as trade_recipient
                 , 'Buy' as trade_category
-                , 'isRouter' as called_from_router
-                , "routerCaller" as router_caller
+                , isRouter as called_from_router
+                , routerCaller as router_caller
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapTokenForSpecificNFTs') }}
             WHERE call_success = true
             {% if is_incremental() %}
