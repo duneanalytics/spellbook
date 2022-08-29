@@ -2,11 +2,11 @@
         alias ='events'
 )
 }}
- 
+
 SELECT *
 FROM
 (
-        SELECT 
+        SELECT
                 blockchain,
                 project,
                 version,
@@ -43,7 +43,7 @@ FROM
                 royalty_fee_percentage,
                 royalty_fee_receive_address,
                 royalty_fee_currency_symbol,
-                unique_trade_id 
+                unique_trade_id
         FROM ({{ ref('opensea_v1_ethereum_events') }})
         UNION
         SELECT
@@ -83,6 +83,6 @@ FROM
                 royalty_fee_percentage,
                 royalty_fee_receive_address,
                 royalty_fee_currency_symbol,
-                unique_trade_id 
+                unique_trade_id
         FROM ({{ ref('opensea_v3_ethereum_events') }})
 )

@@ -94,7 +94,7 @@ models:
       - &owner_fee_percentage
         name: owner_fee_percentage
         description:  "Royalty fee in % of the amount paid for a given trade"
-      - &owner_fee_amount_usd 
+      - &owner_fee_amount_usd
         name: owner_fee_amount_usd
         description:  "owner fee amount in USD"
       - &royalty_fee_amount_raw

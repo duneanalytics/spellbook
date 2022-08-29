@@ -9,9 +9,9 @@
 }}
 
 --base table CTEs
-WITH 
+WITH
     pairs_created as (
-        SELECT 
+        SELECT
             _nft as nftcontractaddress
             , _initialNFTIDs as nft_ids
             , _fee as initialfee
@@ -23,10 +23,10 @@ WITH
     ),
 
     swaps as (
-        SELECT 
-            * 
+        SELECT
+            *
         FROM (
-            SELECT 
+            SELECT
                 contract_address
                 , call_tx_hash
                 , call_trace_address
@@ -34,7 +34,7 @@ WITH
                 , call_block_number
                 , call_success
                 , tokenRecipient as call_from
-                , 'Sell' as trade_category 
+                , 'Sell' as trade_category
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapNFTsForToken') }}
             WHERE call_success = true
             {% if is_incremental() %}
@@ -43,7 +43,7 @@ WITH
             {% endif %}
 
             UNION ALL
-            SELECT 
+            SELECT
                 contract_address
                 , call_tx_hash
                 , call_trace_address
@@ -51,7 +51,7 @@ WITH
                 , call_block_number
                 , call_success
                 , nftRecipient as call_from
-                , 'Buy' as trade_category 
+                , 'Buy' as trade_category
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapTokenForAnyNFTs') }}
             WHERE call_success = true
             {% if is_incremental() %}
@@ -67,7 +67,7 @@ WITH
                 , call_block_number
                 , call_success
                 , nftRecipient as call_from
-                , 'Buy' as trade_category 
+                , 'Buy' as trade_category
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapTokenForSpecificNFTs') }}
             WHERE call_success = true
             {% if is_incremental() %}
@@ -77,7 +77,7 @@ WITH
     ),
 
     owner_fee_update as (
-        SELECT 
+        SELECT
             *
         FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_evt_FeeUpdate') }}
     ),
@@ -89,20 +89,20 @@ WITH
     ),
 
     tokens_ethereum_nft as (
-        SELECT 
+        SELECT
             *
         FROM {{ ref('tokens_ethereum_nft') }}
     ),
 
     nft_ethereum_aggregators as (
-        SELECT 
+        SELECT
             *
         FROM {{ ref('nft_ethereum_aggregators') }}
     ),
 
 --logic CTEs
     swaps_w_fees as (
-        SELECT 
+        SELECT
             *
         FROM (
             SELECT
@@ -111,15 +111,15 @@ WITH
                 , call_block_number
                 , contract_address as pair_address
                 , call_trace_address
-                , ownerfee 
-                , protocolfee 
+                , ownerfee
+                , protocolfee
                 , trade_category
                 , nftcontractaddress
                 , asset_recip
                 , call_from
                 , row_number() OVER (partition by call_tx_hash, contract_address, call_trace_address order by fee_update_time desc, protocolfee_updatetime desc) as ordering
             FROM (
-                SELECT 
+                SELECT
                     swaps.*
                     , COALESCE(fu.newfee, pc.initialfee)/1e18 as ownerfee --most recent ownerfee, depends on bonding curve to implement it correctly. See explanation in fee table schema.
                     , COALESCE(fu.evt_block_time, pc.block_time) as fee_update_time
@@ -146,7 +146,7 @@ WITH
                 ELSE SUM(value)/(1-sb.ownerfee-sb.protocolfee)
                 END as base_price
             , SUM(value) as trade_price --should give total value of the trade (buy or sell)
-            , ARRAY_AGG(distinct CASE WHEN substring(input,1,10)='0x42842e0e' THEN bytea2numeric_v2(substring(input,139,64))::int ELSE null::int END) 
+            , ARRAY_AGG(distinct CASE WHEN substring(input,1,10)='0x42842e0e' THEN bytea2numeric_v2(substring(input,139,64))::int ELSE null::int END)
                 as token_id
             , sb.call_tx_hash
             , sb.call_from
@@ -154,8 +154,8 @@ WITH
             , sb.nftcontractaddress
             , sb.ownerfee
             , sb.protocolfee
-        FROM swaps_w_fees sb 
-        LEFT JOIN {{ source('ethereum', 'traces') }} tr 
+        FROM swaps_w_fees sb
+        LEFT JOIN {{ source('ethereum', 'traces') }} tr
             ON tr.type = 'call'
             AND tr.call_type = 'call'
             AND tr.tx_hash = sb.call_tx_hash
@@ -176,24 +176,24 @@ WITH
 
     swaps_cleaned as (
         --formatting swaps for sudoswap_ethereum_events defined schema
-        SELECT 
-            'ethereum' as blockchain 
-            , 'sudoswap' as project 
+        SELECT
+            'ethereum' as blockchain
+            , 'sudoswap' as project
             , 'v1' as version
             , TRY_CAST(date_trunc('DAY', call_block_time) AS date) AS block_date
-            , call_block_time as block_time 
+            , call_block_time as block_time
             , call_block_number as block_number
             , token_id
             , 'ERC721' as token_standard
             , cardinality(token_id) as number_of_items
             , CASE WHEN cardinality(token_id) > 1 THEN 'Bundle Trade'
-                ELSE 'Single Item Trade' 
+                ELSE 'Single Item Trade'
                END as trade_type
             , trade_category
             , 'Trade' as evt_type
             , CASE WHEN trade_category = 'Buy' THEN pair_address --AMM is selling if an NFT is being bought
                 ELSE call_from
-                END as seller 
+                END as seller
             , CASE WHEN trade_category = 'Sell' THEN pair_address --AMM is buying if an NFT is being sold
                 ELSE call_from
                 END as buyer
@@ -226,12 +226,12 @@ WITH
     ),
 
     swaps_cleaned_w_metadata as (
-        SELECT 
+        SELECT
             sc.*
             , tokens.name AS collection
             , agg.name as aggregator_name
             , agg.contract_address as aggregator_address
-            , sc.amount_original*pu.price as amount_usd 
+            , sc.amount_original*pu.price as amount_usd
             , sc.owner_fee_amount*pu.price as owner_fee_amount_usd
             , sc.platform_fee_amount*pu.price as platform_fee_amount_usd
             , tx.from as tx_from
@@ -247,8 +247,8 @@ WITH
             AND pu.minute >= '2022-4-1'
             {% endif %}
             --add in `pu.contract_address = sc.currency_address` in the future when ERC20 pairs are added in.
-        LEFT JOIN {{ source('ethereum', 'transactions') }} tx 
-            ON tx.hash=sc.tx_hash 
+        LEFT JOIN {{ source('ethereum', 'transactions') }} tx
+            ON tx.hash=sc.tx_hash
             {% if is_incremental() %}
             AND tx.block_time >= (select max(block_time) from {{ this }})
             {% endif %}
@@ -260,12 +260,12 @@ WITH
     ),
 
     swaps_exploded as (
-        SELECT 
+        SELECT
             blockchain
             , project
             , version
             , block_date
-            , block_time 
+            , block_time
             , block_number
             , explode(token_id) as token_id --nft.trades prefers each token id be its own row
             , token_standard
@@ -274,18 +274,18 @@ WITH
             , trade_category
             , evt_type
             , seller
-            , buyer 
+            , buyer
             , amount_raw/number_of_items as amount_raw
             , amount_original/number_of_items as amount_original
             , amount_usd/number_of_items as amount_usd
             , currency_symbol
-            , currency_contract 
+            , currency_contract
             , project_contract_address
             , nft_contract_address
-            , collection 
+            , collection
             , tx_hash
-            , tx_from 
-            , tx_to 
+            , tx_from
+            , tx_to
             , aggregator_address
             , aggregator_name
             , platform_fee_amount/number_of_items as platform_fee_amount
@@ -307,7 +307,7 @@ WITH
     )
 
 --final SELECT CTE
-SELECT 
-    * 
+SELECT
+    *
     , 'sudoswap-' || tx_hash || '-' || nft_contract_address || token_id::string || '-' || seller || '-' || amount_original::string || 'Trade' AS unique_trade_id
 FROM swaps_exploded
