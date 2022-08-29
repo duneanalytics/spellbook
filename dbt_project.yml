@@ -141,6 +141,10 @@ models:
         +schema: safe_ethereum
         +materialized: view
 
+    tornado_cash:
+      +schema: tornado_cash
+      +materialized: view
+
 seeds:
   spellbook:
     balances:
