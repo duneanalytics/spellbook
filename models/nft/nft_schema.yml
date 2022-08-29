@@ -290,12 +290,10 @@ models:
     description: >
         NFT linked addresses. Addresses that buy and sell NFTs from each other.
     columns:
-      - blockchain
-        name: blockchain
-        description: "Blockchain"
-      - master_address
-        name: master_address
+      - *blockchain
+      - name: master_address
         description: "Master address"
-      - alternative_address
-        name: alternative_address
+      - name: alternative_address
         description: "Alternative address"
+      - name: linked_address_id
+        description: "Unique linked address id"
