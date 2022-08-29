@@ -2,7 +2,7 @@
         alias ='burns'
         )
 }}
- 
+
 SELECT blockchain,
 project,
 version,
