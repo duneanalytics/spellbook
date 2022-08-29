@@ -94,7 +94,7 @@ WITH
     )
 
 
-    ,owner_fee_update as (
+    ,pool_fee_update as (
         SELECT 
             *
         FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_evt_FeeUpdate') }}
@@ -137,7 +137,7 @@ WITH
                 , call_trace_address
                 , call_from
                 , router_caller
-                , ownerfee 
+                , pool_fee
                 , protocolfee
                 , protocolfee_recipient
                 , trade_category
@@ -149,7 +149,7 @@ WITH
             FROM (
                 SELECT 
                     swaps.*
-                    , COALESCE(fu.newfee, pc.initialfee)/1e18 as ownerfee --most recent ownerfee, depends on bonding curve to implement it correctly. See explanation in fee table schema.
+                    , COALESCE(fu.newfee, pc.initialfee)/1e18 as pool_fee --most recent pool_fee, depends on bonding curve to implement it correctly. See explanation in fee table schema.
                     , COALESCE(fu.evt_block_time, pc.block_time) as fee_update_time
                     , pfu.newMultiplier/1e18 as protocolfee --most recent protocolfee, depends on bonding curve to implement it correctly. See explanation in fee table schema.
                     , pfu.evt_block_time as protocolfee_update_time
@@ -161,12 +161,12 @@ WITH
                 JOIN pairs_created pc ON pc.pair_address = contract_address --remember swaps from other NFT addresses won't appear!
                 -- we might need to do these joins separately since we're exploding into a lot of rows..
                 -- should not matter a lot since # of changes per pool should be small
-                LEFT JOIN owner_fee_update fu ON swaps.call_block_time >= fu.evt_block_time AND swaps.contract_address = fu.contract_address
+                LEFT JOIN pool_fee_update fu ON swaps.call_block_time >= fu.evt_block_time AND swaps.contract_address = fu.contract_address
                 LEFT JOIN protocol_fee_update pfu ON swaps.call_block_time >= pfu.evt_block_time
                 LEFT JOIN asset_recipient_update aru on swaps.call_block_time >= aru.evt_block_time AND swaps.contract_address = aru.contract_address
             ) a
         ) b
-        WHERE ordering = 1 --we want to keep the most recent ownerfee and protocol fee for each individual call (trade)
+        WHERE ordering = 1 --we want to keep the most recent pool_fee and protocol fee for each individual call (trade)
     )
 
     ,swaps_w_traces as (
@@ -195,7 +195,7 @@ WITH
             , sb.trade_recipient
             , sb.pair_address
             , sb.nftcontractaddress
-            , sb.ownerfee
+            , sb.pool_fee
             , sb.protocolfee
             , project_contract_address
             -- these 2 are used for matching the aggregator address, dropped later
@@ -254,10 +254,10 @@ WITH
             , protocol_fee_amount as platform_fee_amount_raw
             , protocol_fee_amount/1e18 as platform_fee_amount
             , protocolfee as platform_fee_percentage
-             -- trade_price = baseprice + (baseprice*ownerfee) + (baseprice*protocolfee)
-            , (trade_price-protocol_fee_amount)/(1+ownerfee)*ownerfee as owner_fee_amount_raw
-            , (trade_price-protocol_fee_amount)/(1+ownerfee)*ownerfee/1e18 as owner_fee_amount
-            , ownerfee as owner_fee_percentage
+             -- trade_price = baseprice + (baseprice*pool_fee) + (baseprice*protocolfee)
+            , (trade_price-protocol_fee_amount)/(1+pool_fee)*pool_fee as pool_fee_amount_raw
+            , (trade_price-protocol_fee_amount)/(1+pool_fee)*pool_fee/1e18 as pool_fee_amount
+            , pool_fee as pool_fee_percentage
             -- royalties don't currently exist on the AMM,
             , null::double as royalty_fee_amount_raw
             , null::double as royalty_fee_amount
@@ -278,7 +278,7 @@ WITH
             , agg.name as aggregator_name
             , agg.contract_address as aggregator_address
             , sc.amount_original*pu.price as amount_usd 
-            , sc.owner_fee_amount*pu.price as owner_fee_amount_usd
+            , sc.pool_fee_amount*pu.price as pool_fee_amount_usd
             , sc.platform_fee_amount*pu.price as platform_fee_amount_usd
             , tx.from as tx_from
             , tx.to as tx_to
@@ -339,10 +339,10 @@ WITH
             , platform_fee_amount_raw/number_of_items as platform_fee_amount_raw
             , platform_fee_amount_usd/number_of_items as platform_fee_amount_usd
             , platform_fee_percentage
-            , owner_fee_amount/number_of_items as owner_fee_amount
-            , owner_fee_amount_raw/number_of_items as owner_fee_amount_raw
-            , owner_fee_amount_usd/number_of_items as owner_fee_amount_usd
-            , owner_fee_percentage
+            , pool_fee_amount/number_of_items as pool_fee_amount
+            , pool_fee_amount_raw/number_of_items as pool_fee_amount_raw
+            , pool_fee_amount_usd/number_of_items as pool_fee_amount_usd
+            , pool_fee_percentage
             --below are null
             , royalty_fee_amount/number_of_items as royalty_fee_amount
             , royalty_fee_amount_raw/number_of_items as royalty_fee_amount_raw
