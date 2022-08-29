@@ -85,6 +85,15 @@ models:
       - &platform_fee_percentage
         name: platform_fee_percentage
         description:  "Platform fee in % of the amount paid for a given trade"
+      - &owner_fee_amount_raw
+        name: owner_fee_amount_raw
+        description:  "Raw numerical amount for pool owner fees"
+      - &owner_fee_amount
+        name: owner_fee_amount
+        description:  "pool owner fee amount in original token currency (properly formatted in decimals)"
+      - &owner_fee_percentage
+        name: owner_fee_percentage
+        description:  "pool owner fee in % of the amount paid for a given trade"
       - &royalty_fee_amount_raw
         name: royalty_fee_amount_raw
         description:  "Raw numerical amount for royalty fees"
@@ -118,6 +127,9 @@ models:
       - &platform_fee_amount_usd
         name: platform_fee_amount_usd
         description:  "Platform fee amount in USD"
+      - &owner_fee_amount_usd
+          name: owner_fee_amount_usd
+          description: "pool owner fee amount in USD"
       - &tx_from
         name: tx_from
         description:  "Address that initiated the transaction"
