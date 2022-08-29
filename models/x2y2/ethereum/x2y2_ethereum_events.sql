@@ -58,7 +58,7 @@ WITH aggregator_routed_x2y2_txs AS (
     , COALESCE(get_json_object(inv.item, '$.price')*get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.percentage')/1e6, 0) AS royalty_fee_amount_raw
     , COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.percentage')/1e6, 0) AS royalty_fee_percentage
     , get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.to') AS royalty_fee_receive_address
-    FROM  {{ source('x2y2_ethereum','X2Y2_r1_evt_EvProfit') }} prof 
+    FROM  {{ source('x2y2_ethereum','X2Y2_r1_evt_EvProfit') }} prof
     INNER JOIN {{ source('x2y2_ethereum','X2Y2_r1_evt_EvInventory') }} inv ON inv.itemHash=prof.itemHash
     LEFT JOIN {{ ref('tokens_ethereum_nft') }} tokens ON ('0x' || substring(get_json_object(inv.item, '$.data'), 155, 40)) = tokens.contract_address
     WHERE taker NOT IN (SELECT contract_address FROM {{ ref('nft_ethereum_aggregators') }})

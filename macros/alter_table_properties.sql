@@ -343,6 +343,15 @@ ALTER VIEW tokens_ethereum.erc20 SET TBLPROPERTIES ('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["soispoke","dot2dotseurat"]');
 {% endset %}
 
+{% set tokens_bnb_bep20 %}
+ALTER VIEW tokens_bnb.bep20 SET TBLPROPERTIES ('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["bnb"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='tokens',
+                                                    'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
 {% set transfers_ethereum_erc20 %}
 ALTER VIEW transfers_ethereum.erc20 SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum"]',
@@ -550,6 +559,24 @@ ALTER TABLE airdrop_optimism.addresses SET TBLPROPERTIES ('dune.public'='true',
                                                 'dune.data_explorer.contributors'='["msilb7"]');
 {% endset %}
 
+{% set tokens_avalanche_c_erc20 %}
+ALTER VIEW tokens_avalanche_c.erc20 SET TBLPROPERTIES ('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["avalanche_c"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='tokens',
+                                                    'dune.data_explorer.contributors'='["0xManny"]');
+{% endset %}
+
+{% set tokens_avalanche_c_nft %}
+ALTER VIEW tokens_avalanche_c.nft SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["avalanche_c"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='tokens',
+                                                    'dune.data_explorer.contributors'='["0xManny"]');
+{% endset %}
+
 {% set transfers_optimism_eth %}
 ALTER TABLE transfers_optimism.eth SET TBLPROPERTIES ('dune.public'='true',
                                                 'dune.data_explorer.blockchains'='["optimism"]',
@@ -630,6 +657,7 @@ ALTER VIEW tokens_optimism.erc20 SET TBLPROPERTIES('dune.public'='true',
 {% do run_query(nft_avalanche_aggregators) %}
 {% do run_query(nft_polygon_aggregators) %}
 {% do run_query(tokens_ethereum_erc20) %}
+{% do run_query(tokens_bnb_bep20) %}
 {% do run_query(transfers_ethereum_erc20) %}
 {% do run_query(tokens_ethereum_nft) %}
 {% do run_query(seaport_ethereum_view_transactions) %}
@@ -649,6 +677,8 @@ ALTER VIEW tokens_optimism.erc20 SET TBLPROPERTIES('dune.public'='true',
 {% do run_query(safe_ethereum_eth_transfers) %}
 {% do run_query(prices_tokens) %}
 {% do run_query(airdrop_optimism_addresses) %}
+{% do run_query(tokens_avalanche_c_erc20) %}
+{% do run_query(tokens_avalanche_c_nft) %}
 {% do run_query(transfers_optimism_eth) %}
 {% do run_query(uniswap_v3_optimism_pools) %}
 {% do run_query(tokens_optimism_nft) %}
