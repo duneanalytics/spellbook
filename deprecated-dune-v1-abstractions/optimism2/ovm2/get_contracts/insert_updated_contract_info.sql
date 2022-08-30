@@ -46,17 +46,18 @@ SELECT gc.creator_address, MIN(created_time) AS min_created_time, MAX(created_ti
 ;
 
 
--- INSERT INTO cron.job (schedule, command)
--- VALUES ('11,44 * * * *', $$
+INSERT INTO cron.job (schedule, command)
+VALUES ('11,44 * * * *', $$
 
---  SELECT ovm2.insert_get_contracts(
--- 	(SELECT MIN(min_created_time) FROM  ovm2.view_get_contracts_contracts_to_update), --start time
---         (SELECT MAX(max_created_time) FROM  ovm2.view_get_contracts_contracts_to_update), --end time (max time)
--- 	(SELECT array_agg(creator_address) FROM ovm2.view_get_contracts_contracts_to_update LIMIT 1)
--- 	)
--- 	WHERE EXISTS (
--- 		SELECT * FROM ovm2.view_get_contracts_contracts_to_update LIMIT 1 --only run if there are contracts to update.
--- 	);
+ SELECT ovm2.insert_get_contracts(
+	(SELECT MIN(min_created_time) FROM  ovm2.view_get_contracts_contracts_to_update), --start time
+        (SELECT MAX(max_created_time) FROM  ovm2.view_get_contracts_contracts_to_update), --end time (max time)
+	(SELECT array_agg(creator_address) FROM ovm2.view_get_contracts_contracts_to_update LIMIT 1)
+	)
+	WHERE EXISTS (
+		SELECT * FROM ovm2.view_get_contracts_contracts_to_update LIMIT 1 --only run if there are contracts to update.
+	);
+SELECT ovm2.update_decoded_contracts();
 	
--- $$)
--- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+$$)
+ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

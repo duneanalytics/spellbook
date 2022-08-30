@@ -163,7 +163,7 @@ INNER JOIN {{ source('ethereum','transactions') }} tx ON tx_hash = tx.hash
     AND tx.block_time > '2022-01-01'
     {% endif %}
     {% if is_incremental() %}
-    AND TRY_CAST(date_trunc('DAY', tx.block_time) AS date) = TRY_CAST(date_trunc('DAY', looks_rare.block_time) AS date)
+    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN erc_transfers erc ON erc.evt_tx_hash = tx_hash AND erc.token_id_erc = token_id
 LEFT JOIN {{ ref('tokens_ethereum_nft') }} tokens ON tokens.contract_address =  nft_contract_address
@@ -171,6 +171,9 @@ LEFT JOIN  {{ ref('nft_ethereum_aggregators') }} agg ON agg.contract_address = t
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', looks_rare.block_time)
     AND p.contract_address = currency_contract
     AND p.blockchain ='ethereum'
+    {% if is_incremental() %}
+    AND p.minute >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20 ON erc20.contract_address = currency_contract
 WHERE number_of_items >= 1
 {% if is_incremental() %}
