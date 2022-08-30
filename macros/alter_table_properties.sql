@@ -335,7 +335,7 @@ ALTER VIEW nft_polygon.aggregators SET TBLPROPERTIES('dune.public'='true',
 {% endset %}
 
 {% set nft_linked_addresses %}
-ALTER VIEW nft.linked_addresses SET TBLPROPERTIES('dune.public'='true',
+ALTER TABLE nft.linked_addresses SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum","solana"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='sector',
