@@ -155,7 +155,7 @@ WITH
             , sb.ownerfee
             , sb.protocolfee
         FROM swaps_w_fees sb
-        LEFT JOIN {{ source('ethereum', 'traces') }} tr
+        INNER JOIN {{ source('ethereum', 'traces') }} tr
             ON tr.type = 'call'
             AND tr.call_type = 'call'
             AND tr.tx_hash = sb.call_tx_hash
