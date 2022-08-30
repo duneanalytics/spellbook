@@ -15,9 +15,6 @@ sources:
           error_after: { count: 24, period: hour }
         loaded_at_field: call_block_time
       - name: LSSVMPair_general_call_swapTokenForAnyNFTs
-        freshness:
-          warn_after: { count: 12, period: hour }
-          error_after: { count: 24, period: hour }
         loaded_at_field: call_block_time
       - name: LSSVMPair_general_call_swapTokenForSpecificNFTs
         freshness:
