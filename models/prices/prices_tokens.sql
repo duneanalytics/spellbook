@@ -232,6 +232,7 @@ VALUES
     ("chsb-swissborg", "ethereum", "CHSB", "0xba9d4199fab4f26efe3551d490e3821486f135ba", 8),
     ("chz-chiliz", "ethereum", "CHZ", "0x3506424f91fd33084466f402d5d97f05f8e3b4af", 18),
     ("cnd-cindicator", "ethereum", "CND", "0xd4c435f5b09f855c3317c8524cb1f586e42795fa", 18),
+    ("cndl-candle", "ethereum", "CNDL", "0x3D97EdB1c1D87C0cBf098a0D2230d7380d4b1432", 18),
     ("cocos-cocos-bcx", "ethereum", "COCOS", "0x0c6f5f7d555e7518f6841a79436bd2b1eef03381", 18),
     ("comp-compoundd", "ethereum", "COMP", "0xc00e94cb662c3520282e6f5717214004a7f26888", 18),
     ("cow-cow-protocol-token", "ethereum", "COW", "0xdef1ca1fb7fbcdc777520aa7f396b4e015f497ab", 18),
