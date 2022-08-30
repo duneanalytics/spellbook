@@ -8,11 +8,11 @@
     )
 }}
 
-SELECT 
+SELECT
   'solana' as blockchain,
   'opensea' as project,
   'v1' as version,
-  signatures[0] as tx_hash, 
+  signatures[0] as tx_hash,
   block_date,
   block_time,
   block_slot::string as block_number,
@@ -23,20 +23,24 @@ SELECT
   p.contract_address as currency_contract,
   'metaplex' as token_standard,
   CASE WHEN (array_contains(account_keys, '3o9d13qUvEuuauhFrVom1vuCzgNsJifeaBYDPquaT73Y')) THEN '3o9d13qUvEuuauhFrVom1vuCzgNsJifeaBYDPquaT73Y'
-  WHEN (array_contains(account_keys, 'pAHAKoTJsAAe2ZcvTZUxoYzuygVAFAmbYmJYdWT886r')) THEN 'pAHAKoTJsAAe2ZcvTZUxoYzuygVAFAmbYmJYdWT886r' 
+  WHEN (array_contains(account_keys, 'pAHAKoTJsAAe2ZcvTZUxoYzuygVAFAmbYmJYdWT886r')) THEN 'pAHAKoTJsAAe2ZcvTZUxoYzuygVAFAmbYmJYdWT886r'
   END as project_contract_address,
   'Trade' as evt_type,
   signatures[0] || '-' || id as unique_trade_id
 FROM {{ source('solana','transactions') }}
-LEFT JOIN {{ source('prices', 'usd') }} p 
+LEFT JOIN {{ source('prices', 'usd') }} p
   ON p.minute = date_trunc('minute', block_time)
+  AND p.blockchain is null
   AND p.symbol = 'SOL'
+  {% if is_incremental() %}
+  AND p.minute >= date_trunc("day", now() - interval '1 week')
+  {% endif %}
 WHERE (array_contains(account_keys, '3o9d13qUvEuuauhFrVom1vuCzgNsJifeaBYDPquaT73Y')
        OR array_contains(account_keys, 'pAHAKoTJsAAe2ZcvTZUxoYzuygVAFAmbYmJYdWT886r'))
 {% if not is_incremental() %}
 AND block_date > '2022-04-06'
 AND block_slot > 128251864
-{% endif %} 
+{% endif %}
 {% if is_incremental() %}
-AND block_date >= (select max(block_date) from {{ this }})
-{% endif %} 
+AND block_date >= date_trunc("day", now() - interval '1 week')
+{% endif %}

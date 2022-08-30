@@ -1,0 +1,32 @@
+version: 2
+
+sources:
+# Base Tables
+  - name: avalanche_c
+    description: "avalanche_c raw tables"
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: transactions
+        loaded_at_field: block_time
+        columns:
+          - name: block_time
+          - name: value
+          - name: block_number
+          - name: gas_limit
+          - name: gas_price
+          - name: gas_used
+          - name: max_fee_per_gas
+          - name: max_priority_fee_per_gas
+          - name: priority_fee_per_gas
+          - name: nonce
+          - name: index
+          - name: success
+          - name: from
+          - name: to
+          - name: block_hash
+          - name: data
+          - name: hash
+          - name: type
+          - name: access_list
