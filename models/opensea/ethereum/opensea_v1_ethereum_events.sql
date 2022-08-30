@@ -177,7 +177,7 @@ SELECT DISTINCT
   wa.fee_currency_symbol as royalty_fee_currency_symbol,
   'opensea' || '-' || wa.call_tx_hash || '-' || coalesce(wa.token_id, token_id_erc, '') || '-' ||  wa.seller || '-' || coalesce(evt_index::string, '') || '-' || coalesce(wa.call_trace_address::string,'') as unique_trade_id
 FROM wyvern_all wa
-LEFT JOIN {{ source('ethereum','transactions') }} tx ON wa.call_tx_hash = tx.hash
+INNER JOIN {{ source('ethereum','transactions') }} tx ON wa.call_tx_hash = tx.hash
     {% if is_incremental() %}
     and tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}

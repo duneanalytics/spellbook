@@ -210,7 +210,7 @@ with p1_call as (
           string) as unique_trade_id,
           a.zone
       from p1_txn_level a
-        left join {{ source('ethereum','transactions') }} tx
+        inner join {{ source('ethereum','transactions') }} tx
             on tx.hash = a.tx_hash
             {% if not is_incremental() %}
             and tx.block_number > 14801608
@@ -415,7 +415,7 @@ with p1_call as (
           string) as unique_trade_id,
           a.zone
       from p2_transfer_level a
-        left join {{ source('ethereum','transactions') }} tx
+        inner join {{ source('ethereum','transactions') }} tx
             on tx.hash = a.tx_hash
             {% if not is_incremental() %}
             and tx.block_number > 14801608
@@ -645,7 +645,7 @@ with p1_call as (
           string) as unique_trade_id,
           a.zone
       from p3_txn_level a
-        left join {{ source('ethereum','transactions') }} tx
+        inner join {{ source('ethereum','transactions') }} tx
             on tx.hash = a.tx_hash
             {% if not is_incremental() %}
             and tx.block_number > 14801608
@@ -850,7 +850,7 @@ with p1_call as (
           string) as unique_trade_id,
           a.zone
     from p4_transfer_level a
-    left join {{ source('ethereum','transactions') }} tx
+    inner join {{ source('ethereum','transactions') }} tx
         on tx.hash = a.tx_hash
         {% if not is_incremental() %}
         and tx.block_number > 14801608
