@@ -166,7 +166,7 @@ WITH
             AND tr.to != '0xb16c1342e617a5b6e4b631eb114483fdb289c0a4' --we don't want duplicates from protocol fee transfer to show up in table. This needs to be most up to date funding recipient in the future, but should just be pair address for now.
             AND tr.to != asset_recip --we don't want duplicates where eth is transferred to asset recipient instead of pool in the case it isn't a trade pool
             {% if is_incremental() %}
-            AND tr.block_time >= (select max(block_time) from {{ this }})
+            AND tr.block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
             {% if not is_incremental() %}
             AND tr.block_time >= '2022-4-1'
@@ -241,7 +241,7 @@ WITH
             AND date_trunc('minute', pu.minute)=date_trunc('minute', sc.block_time)
             AND symbol = 'WETH'
             {% if is_incremental() %}
-            AND pu.minute >= (select max(block_time) from {{ this }})
+            AND pu.minute >= date_trunc("day", now() - interval '1 week')
             {% endif %}
             {% if not is_incremental() %}
             AND pu.minute >= '2022-4-1'
@@ -250,7 +250,7 @@ WITH
         LEFT JOIN {{ source('ethereum', 'transactions') }} tx
             ON tx.hash=sc.tx_hash
             {% if is_incremental() %}
-            AND tx.block_time >= (select max(block_time) from {{ this }})
+            AND tx.block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
             {% if not is_incremental() %}
             AND tx.block_time >= '2022-4-1'

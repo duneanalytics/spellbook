@@ -559,6 +559,24 @@ ALTER TABLE airdrop_optimism.addresses SET TBLPROPERTIES ('dune.public'='true',
                                                 'dune.data_explorer.contributors'='["msilb7"]');
 {% endset %}
 
+{% set tornado_cash_deposits %}
+ALTER VIEW tornado_cash.deposits SET TBLPROPERTIES ('dune.public'='true',
+                                                'dune.data_explorer.blockchains'='["ethereum", "bnb", "avalanche", "gnosis", "optimism", "arbitrum"]',
+                                                'dune.data_explorer.category'='abstraction',
+                                                'dune.data_explorer.abstraction.type'='sector',
+                                                'dune.data_explorer.abstraction.name'='tornado_cash',
+                                                'dune.data_explorer.contributors'='["hildobby", "dot2dotseurat"]');
+{% endset %}
+
+{% set tornado_cash_withdrawals %}
+ALTER VIEW tornado_cash.withdrawals SET TBLPROPERTIES ('dune.public'='true',
+                                                'dune.data_explorer.blockchains'='["ethereum", "bnb", "avalanche", "gnosis", "optimism", "arbitrum"]',
+                                                'dune.data_explorer.category'='abstraction',
+                                                'dune.data_explorer.abstraction.type'='sector',
+                                                'dune.data_explorer.abstraction.name'='tornado_cash',
+                                                'dune.data_explorer.contributors'='["hildobby", "dot2dotseurat"]');
+{% endset %}
+
 {% set tokens_avalanche_c_erc20 %}
 ALTER VIEW tokens_avalanche_c.erc20 SET TBLPROPERTIES ('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["avalanche_c"]',
@@ -677,6 +695,8 @@ ALTER VIEW tokens_optimism.erc20 SET TBLPROPERTIES('dune.public'='true',
 {% do run_query(safe_ethereum_eth_transfers) %}
 {% do run_query(prices_tokens) %}
 {% do run_query(airdrop_optimism_addresses) %}
+{% do run_query(tornado_cash_deposits) %}
+{% do run_query(tornado_cash_withdrawals) %}
 {% do run_query(tokens_avalanche_c_erc20) %}
 {% do run_query(tokens_avalanche_c_nft) %}
 {% do run_query(transfers_optimism_eth) %}
