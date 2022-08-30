@@ -1,5 +1,4 @@
 {% macro optimize_tables() %}
-{%- if flags.full_refresh -%}
 {% set transfers_ethereum_erc20_agg_hour %}
 OPTIMIZE transfers_ethereum.erc20_agg_hour;
 {% endset %}
@@ -98,6 +97,4 @@ OPTIMIZE safe.eth_transfers;
 
 
 {% do log("Tables Optimized", info=True) %}
-{%- else -%}
-{%- endif -%}
 {% endmacro %}
