@@ -252,7 +252,7 @@ FROM
         SELECT tc.evt_block_time AS block_time
         , '0x85f138bfEE4ef8e540890CFb48F620571d67Eda3' AS currency_contract
         , 'AVAX' AS currency_symbol
-        , 'avalanche' AS blockchain
+        , 'avalanche_c' AS blockchain
         , 'classic' AS tornado_version
         , at.from AS depositor
         , tc.contract_address AS contract_address
