@@ -38,7 +38,7 @@ WITH looks_rare AS (
     LEFT JOIN {{ source('looksrare_ethereum','looksrareexchange_evt_royaltypayment') }} roy ON roy.evt_tx_hash = ask.evt_tx_hash
     AND ask.evt_index - 2 = roy.evt_index
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
-     WHERE ask.evt_block_time >= (select max(block_time) from {{ this }})
+     WHERE ask.evt_block_time >= date_trunc("day", now() - interval '1 week')
      {% endif %}
                             UNION
     SELECT
@@ -67,7 +67,7 @@ WITH looks_rare AS (
     LEFT JOIN {{ source('looksrare_ethereum','looksrareexchange_evt_royaltypayment') }} roy ON roy.evt_tx_hash = bid.evt_tx_hash
     AND roy.evt_index = bid.evt_index - 4
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
-     WHERE bid.evt_block_time >= (select max(block_time) from {{ this }})
+     WHERE bid.evt_block_time >= date_trunc("day", now() - interval '1 week')
      {% endif %}
     ),
 

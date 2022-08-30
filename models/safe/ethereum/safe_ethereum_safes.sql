@@ -42,7 +42,7 @@ where et.success = true
         )
     and et.gas_used > 0  -- to ensure the setup call was successful
     {% if is_incremental() %}
-    and et.block_time > (select max(creation_time) from {{ this }}) - interval '1 day'
+    and et.block_time > date_trunc("day", now() - interval '1 week')
     {% endif %}
         
 union all
@@ -55,5 +55,5 @@ select contract_address as address,
 from {{ source('gnosis_safe_ethereum', 'GnosisSafev1_3_0_evt_SafeSetup') }}
 where evt_block_time > '2018-11-24' -- for initial query optimisation  
 {% if is_incremental() %}
-and evt_block_time > (select max(creation_time) from {{ this }}) - interval '1 day'
+and evt_block_time > date_trunc("day", now() - interval '1 week')
 {% endif %}

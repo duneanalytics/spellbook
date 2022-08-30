@@ -39,7 +39,7 @@ WITH
             WHERE call_success = true
             {% if is_incremental() %}
             -- this filter will only be applied on an incremental run. We only want to update with new swaps.
-            AND call_block_time >= (select max(block_time) from {{ this }})
+            AND call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
             UNION ALL
@@ -55,7 +55,7 @@ WITH
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapTokenForAnyNFTs') }}
             WHERE call_success = true
             {% if is_incremental() %}
-            AND call_block_time >= (select max(block_time) from {{ this }})
+            AND call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
             UNION ALL
@@ -71,7 +71,7 @@ WITH
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapTokenForSpecificNFTs') }}
             WHERE call_success = true
             {% if is_incremental() %}
-            AND call_block_time >= (select max(block_time) from {{ this }})
+            AND call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         ) s
     ),
