@@ -18,10 +18,10 @@ WITH trades as (
     , case when (t.platform_fee_amount = ex.platform_fee_amount) then true else false end as correct_platform_fee
     , case when (t.pool_fee_amount = ex.pool_fee_amount) then true else false end as correct_pool_fee
     from trades t
-    outer join examples ex
+    join examples ex
     on ex.block_number = t.block_number and ex.tx_hash=t.tx_hash
     and ex.nft_contract_address=t.nft_contract_address and ex.token_id=t.token_id
 )
 
 select * from matched
-where not (correct_amt_orig and correct_platform_fee and correct_pool_fee
+where not (correct_amt_orig and correct_platform_fee and correct_pool_fee)
