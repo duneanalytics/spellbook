@@ -95,7 +95,10 @@ WITH
         ON tr.success and s.call_block_number = tr.block_number and s.call_tx_hash = tr.tx_hash and s.call_trace_address = tr.trace_address
         {% if is_incremental() %}
         -- this filter will only be applied on an incremental run. We only want to update with new swaps.
-        WHERE tr.block_time >= date_trunc("day", now() - interval '1 week')
+        AND tr.block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+        {% if not is_incremental() %}
+        AND tr.block_time >= '2022-4-1'
         {% endif %}
     )
 
