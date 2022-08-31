@@ -91,7 +91,7 @@ WITH
         , tr.from as call_from
         , CASE WHEN called_from_router = true THEN tr.from ELSE tr.to END as project_contract_address -- either the router or the pool if called directly
         from swaps s
-        left join {{ source('ethereum', 'traces') }} tr
+        inner join {{ source('ethereum', 'traces') }} tr
         ON tr.success and s.call_block_number = tr.block_number and s.call_tx_hash = tr.tx_hash and s.call_trace_address = tr.trace_address
         {% if is_incremental() %}
         -- this filter will only be applied on an incremental run. We only want to update with new swaps.
