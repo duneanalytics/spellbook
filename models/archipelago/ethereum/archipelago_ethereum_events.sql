@@ -225,12 +225,3 @@ SELECT
     , royalty_fee_percentage
     , unique_trade_id
 from trades_enhanced
-
-
-
-
-
-
-
-
-
