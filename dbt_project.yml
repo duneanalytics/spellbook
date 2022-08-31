@@ -46,6 +46,12 @@ models:
       polygon:
         +schema: nft_polygon
         +materialized: view
+    balancer:
+      +schema: balancer
+      +materialized: view
+      ethereum:
+        +schema: balancer_ethereum
+        +materialized: view
     uniswap:
       +schema: uniswap
       +materialized: view
@@ -156,6 +162,17 @@ seeds:
             token_symbol: string
             amount_raw: string
             amount: string
+    balancer:
+      ethereum:
+        +enabled: true
+        +schema: test_data
+        balancer_ethereum_vebal_balances_day_20220825:
+          +column_types:
+            day: timestamp
+            provider: string
+            bpt_balance: float
+            lock_period: int
+            vebal: float
     opensea:
       ethereum:
         +enabled: true
