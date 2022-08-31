@@ -9,9 +9,9 @@
 }}
 
 --base table CTEs
-WITH 
+WITH
     pairs_created as (
-        SELECT 
+        SELECT
             _nft as nftcontractaddress
             , _initialNFTIDs as nft_ids
             , _fee as initialfee
@@ -23,11 +23,11 @@ WITH
         WHERE call_success
     )
 
-    , swaps as (
-        SELECT 
-            * 
+   , swaps as (
+        SELECT
+            *
         FROM (
-            SELECT 
+            SELECT
                 contract_address
                 , call_tx_hash
                 , call_trace_address
@@ -46,7 +46,7 @@ WITH
             {% endif %}
 
             UNION ALL
-            SELECT 
+            SELECT
                 contract_address
                 , call_tx_hash
                 , call_trace_address
@@ -95,7 +95,7 @@ WITH
 
 
     ,pool_fee_update as (
-        SELECT 
+        SELECT
             *
         FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_evt_FeeUpdate') }}
     )
@@ -113,20 +113,20 @@ WITH
     )
 
     ,tokens_ethereum_nft as (
-        SELECT 
+        SELECT
             *
         FROM {{ ref('tokens_ethereum_nft') }}
     )
 
     ,nft_ethereum_aggregators as (
-        SELECT 
+        SELECT
             *
         FROM {{ ref('nft_ethereum_aggregators') }}
     )
 
 --logic CTEs
     ,swaps_w_fees as (
-        SELECT 
+        SELECT
             *
         FROM (
             SELECT
@@ -147,7 +147,7 @@ WITH
                 , project_contract_address
                 , row_number() OVER (partition by call_tx_hash, contract_address, call_trace_address order by fee_update_time desc, protocolfee_update_time desc, asset_recip_update_time desc) as ordering
             FROM (
-                SELECT 
+                SELECT
                     swaps.*
                     , COALESCE(fu.newfee, pc.initialfee)/1e18 as pool_fee --most recent pool_fee, depends on bonding curve to implement it correctly. See explanation in fee table schema.
                     , COALESCE(fu.evt_block_time, pc.block_time) as fee_update_time
@@ -189,7 +189,7 @@ WITH
                 CASE WHEN (tr.to = sb.protocolfee_recipient) THEN value
                 ELSE 0 END
                  ) as protocol_fee_amount -- what the buyer paid
-            , ARRAY_AGG(distinct CASE WHEN substring(input,1,10)='0x42842e0e' THEN bytea2numeric_v2(substring(input,139,64))::int ELSE null::int END) 
+            , ARRAY_AGG(distinct CASE WHEN substring(input,1,10)='0x42842e0e' THEN bytea2numeric_v2(substring(input,139,64))::int ELSE null::int END)
                 as token_id
             , sb.call_tx_hash
             , sb.trade_recipient
@@ -201,8 +201,8 @@ WITH
             -- these 2 are used for matching the aggregator address, dropped later
             , router_caller
             , call_from
-        FROM swaps_w_fees sb 
-        LEFT JOIN {{ source('ethereum', 'traces') }} tr 
+        FROM swaps_w_fees sb
+        INNER JOIN {{ source('ethereum', 'traces') }} tr
             ON tr.type = 'call'
             AND tr.call_type = 'call'
             AND success
@@ -212,7 +212,7 @@ WITH
                 OR cardinality(call_trace_address) = 0 -- In this case the swap function was called directly, all traces are thus subtraces of that call (like 0x34a52a94fce15c090cc16adbd6824948c731ecb19a39350633590a9cd163658b).
                 )
             {% if is_incremental() %}
-            AND tr.block_time >= (select max(block_time) from {{ this }})
+            AND tr.block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
             {% if not is_incremental() %}
             AND tr.block_time >= '2022-4-1'
@@ -222,24 +222,24 @@ WITH
 
     ,swaps_cleaned as (
         --formatting swaps for sudoswap_ethereum_events defined schema
-        SELECT 
-            'ethereum' as blockchain 
-            , 'sudoswap' as project 
+        SELECT
+            'ethereum' as blockchain
+            , 'sudoswap' as project
             , 'v1' as version
             , TRY_CAST(date_trunc('DAY', call_block_time) AS date) AS block_date
-            , call_block_time as block_time 
+            , call_block_time as block_time
             , call_block_number as block_number
             , token_id
             , 'ERC721' as token_standard
             , cardinality(token_id) as number_of_items
             , CASE WHEN cardinality(token_id) > 1 THEN 'Bundle Trade'
-                ELSE 'Single Item Trade' 
+                ELSE 'Single Item Trade'
                END as trade_type
             , trade_category
             , 'Trade' as evt_type
             , CASE WHEN trade_category = 'Buy' THEN pair_address --AMM is selling if an NFT is being bought
                 ELSE trade_recipient
-                END as seller 
+                END as seller
             , CASE WHEN trade_category = 'Sell' THEN pair_address --AMM is buying if an NFT is being sold
                 ELSE trade_recipient
                 END as buyer
@@ -272,47 +272,47 @@ WITH
     )
 
     ,swaps_cleaned_w_metadata as (
-        SELECT 
+        SELECT
             sc.*
             , tokens.name AS collection
             , agg.name as aggregator_name
             , agg.contract_address as aggregator_address
-            , sc.amount_original*pu.price as amount_usd 
+            , sc.amount_original*pu.price as amount_usd
             , sc.pool_fee_amount*pu.price as pool_fee_amount_usd
             , sc.platform_fee_amount*pu.price as platform_fee_amount_usd
             , tx.from as tx_from
             , tx.to as tx_to
         FROM swaps_cleaned sc
+        INNER JOIN {{ source('ethereum', 'transactions') }} tx
+            ON tx.block_number=sc.block_number and tx.hash=sc.tx_hash
+            {% if is_incremental() %}
+            AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
+            {% if not is_incremental() %}
+            AND tx.block_time >= '2022-4-1'
+            {% endif %}
         LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain='ethereum'
             AND date_trunc('minute', pu.minute)=date_trunc('minute', sc.block_time)
             AND symbol = 'WETH'
             {% if is_incremental() %}
-            AND pu.minute >= (select max(block_time) from {{ this }})
+            AND pu.minute >= date_trunc("day", now() - interval '1 week')
             {% endif %}
             {% if not is_incremental() %}
             AND pu.minute >= '2022-4-1'
             {% endif %}
             --add in `pu.contract_address = sc.currency_address` in the future when ERC20 pairs are added in.
-        LEFT JOIN {{ source('ethereum', 'transactions') }} tx 
-            ON tx.hash=sc.tx_hash 
-            {% if is_incremental() %}
-            AND tx.block_time >= (select max(block_time) from {{ this }})
-            {% endif %}
-            {% if not is_incremental() %}
-            AND tx.block_time >= '2022-4-1'
-            {% endif %}
         LEFT JOIN nft_ethereum_aggregators agg
-        ON (agg.contract_address = sc.call_from OR agg.contract_address = sc.router_caller) -- aggregator will either call pool directly or call the router
+            ON (agg.contract_address = sc.call_from OR agg.contract_address = sc.router_caller) -- aggregator will either call pool directly or call the router
         LEFT JOIN tokens_ethereum_nft tokens ON nft_contract_address = tokens.contract_address
     )
 
     ,swaps_exploded as (
-        SELECT 
+        SELECT
             blockchain
             , project
             , version
             , block_date
-            , block_time 
+            , block_time
             , block_number
             , explode(token_id) as token_id --nft.trades prefers each token id be its own row
             , token_standard
@@ -321,18 +321,18 @@ WITH
             , trade_category
             , evt_type
             , seller
-            , buyer 
+            , buyer
             , amount_raw/number_of_items as amount_raw
             , amount_original/number_of_items as amount_original
             , amount_usd/number_of_items as amount_usd
             , currency_symbol
-            , currency_contract 
+            , currency_contract
             , project_contract_address
             , nft_contract_address
-            , collection 
+            , collection
             , tx_hash
-            , tx_from 
-            , tx_to 
+            , tx_from
+            , tx_to
             , aggregator_address
             , aggregator_name
             , platform_fee_amount/number_of_items as platform_fee_amount
@@ -354,7 +354,7 @@ WITH
     )
 
 --final SELECT CTE
-SELECT 
-    * 
+SELECT
+    *
     , 'sudoswap-' || tx_hash || '-' || nft_contract_address || token_id::string || '-' || seller || '-' || amount_original::string || 'Trade' AS unique_trade_id
 FROM swaps_exploded

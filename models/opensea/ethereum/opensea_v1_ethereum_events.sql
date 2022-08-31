@@ -59,6 +59,9 @@ WHERE
 (addrs[3] = '0x5b3256965e7c3cf26e11fcaf296dfc8807c01073'
         OR addrs[10] = '0x5b3256965e7c3cf26e11fcaf296dfc8807c01073')
 AND call_success = true
+{% if is_incremental() %}
+AND call_block_time >= date_trunc("day", now() - interval '1 week')
+{% endif %}
 ),
 
 wyvern_all as
@@ -83,7 +86,14 @@ SELECT
   fees.fee_currency_symbol,
   call_trace_address
   FROM wyvern_call_data wc
-  LEFT JOIN {{ ref('opensea_v1_ethereum_fees') }} fees ON fees.tx_hash = wc.call_tx_hash AND fees.trace_address = wc.call_trace_address),
+  LEFT JOIN {{ ref('opensea_v1_ethereum_fees') }} fees ON
+    fees.tx_hash = wc.call_tx_hash
+    AND fees.trace_address = wc.call_trace_address
+    {% if is_incremental() %}
+    AND fees.block_time >= date_trunc("day", now() - interval '1 week')
+  WHERE wc.call_block_time >= date_trunc("day", now() - interval '1 week')
+  {% endif %}
+),
 
 erc_transfers as
 (SELECT evt_tx_hash,
@@ -171,7 +181,7 @@ SELECT DISTINCT
   wa.fee_currency_symbol as royalty_fee_currency_symbol,
   'opensea' || '-' || wa.call_tx_hash || '-' || coalesce(wa.token_id, token_id_erc, '') || '-' ||  wa.seller || '-' || coalesce(evt_index::string, '') || '-' || coalesce(wa.call_trace_address::string,'') as unique_trade_id
 FROM wyvern_all wa
-LEFT JOIN {{ source('ethereum','transactions') }} tx ON wa.call_tx_hash = tx.hash
+INNER JOIN {{ source('ethereum','transactions') }} tx ON wa.call_tx_hash = tx.hash
     {% if is_incremental() %}
     and tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}

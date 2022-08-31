@@ -112,6 +112,14 @@ models:
       optimism:
         +schema: tokens_optimism
         +materialized: view
+      avalanche_c:
+        +schema: tokens_avalanche_c
+      bnb:
+        +schema: tokens_bnb
+        +materialized: view
+      gnosis:
+        +schema: tokens_gnosis
+        +materialized: view
     
     transfers:
       +schema: transfers
@@ -135,6 +143,10 @@ models:
       ethereum:
         +schema: safe_ethereum
         +materialized: view
+
+    tornado_cash:
+      +schema: tornado_cash
+      +materialized: view
 
 seeds:
   spellbook:
