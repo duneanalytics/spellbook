@@ -42,7 +42,7 @@ WITH
             WHERE call_success = true
             {% if is_incremental() %}
             -- this filter will only be applied on an incremental run. We only want to update with new swaps.
-            AND call_block_time >= (select max(block_time) from {{ this }})
+            AND call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
             UNION ALL
@@ -60,7 +60,8 @@ WITH
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapTokenForAnyNFTs') }}
             WHERE call_success = true
             {% if is_incremental() %}
-            AND call_block_time >= (select max(block_time) from {{ this }})
+            -- this filter will only be applied on an incremental run. We only want to update with new swaps.
+            AND call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
             UNION ALL
@@ -78,7 +79,8 @@ WITH
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapTokenForSpecificNFTs') }}
             WHERE call_success = true
             {% if is_incremental() %}
-            AND call_block_time >= (select max(block_time) from {{ this }})
+            -- this filter will only be applied on an incremental run. We only want to update with new swaps.
+            AND call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         ) s
     )
@@ -90,7 +92,11 @@ WITH
         , CASE WHEN called_from_router = true THEN tr.from ELSE tr.to END as project_contract_address -- either the router or the pool if called directly
         from swaps s
         left join {{ source('ethereum', 'traces') }} tr
-        ON s.call_block_number = tr.block_number and s.call_tx_hash = tr.tx_hash and s.call_trace_address = tr.trace_address and tr.success
+        ON tr.success and s.call_block_number = tr.block_number and s.call_tx_hash = tr.tx_hash and s.call_trace_address = tr.trace_address
+        {% if is_incremental() %}
+        -- this filter will only be applied on an incremental run. We only want to update with new swaps.
+        WHERE tr.block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     )
 
 
