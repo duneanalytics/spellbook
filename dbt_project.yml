@@ -120,7 +120,7 @@ models:
       gnosis:
         +schema: tokens_gnosis
         +materialized: view
-    
+
     transfers:
       +schema: transfers
       +materialized: view
@@ -129,7 +129,7 @@ models:
         +materialized: view
       optimism:
         +schema: transfers_optimism
-    
+
     sudoswap:
       +schema: sudoswap
       +materialized: view
@@ -147,6 +147,13 @@ models:
     tornado_cash:
       +schema: tornado_cash
       +materialized: view
+
+    archipelago:
+      +schema: archipelago
+      +materialized: view
+      ethereum:
+        +schema: archipelago_ethereum
+        +materialized: view
 
 seeds:
   spellbook:
