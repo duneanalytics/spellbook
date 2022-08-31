@@ -212,6 +212,7 @@ WITH
             ON tr.type = 'call'
             AND tr.call_type = 'call'
             AND success
+            AND tr.block_number = sb.call_block_number
             AND tr.tx_hash = sb.call_tx_hash
             AND (
                 (cardinality(call_trace_address) != 0 AND call_trace_address = slice(tr.trace_address,1,cardinality(call_trace_address))) --either a normal tx where trace address helps us narrow down which subtraces to look at for ETH transfers or NFT transfers.
