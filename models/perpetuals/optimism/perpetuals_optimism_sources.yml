@@ -1,0 +1,88 @@
+version: 2
+
+sources:
+  - name: perp_v2_optimism
+    description: Optimism decoded tables related to Perpetual v2
+    tables:
+      - name: ClearingHouse_evt_PositionChanged
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        loaded_at_field: evt_block_time
+        description: "Details the perpetuals trades/swaps"
+      - name: Vault_call_getFreeCollateralByRatio
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        loaded_at_field: call_block_time
+        description: "Stores information on the margins per trade"
+      - name: MarketRegistry_evt_PoolAdded
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        loaded_at_field: evt_block_time
+        description: "Details the asset markets"
+
+  - name: synthetix_optimism
+    description: Optimism decoded tables related to Synthetix/Kwenta
+    tables:
+      - name: FuturesMarket_evt_PositionModified
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        loaded_at_field: evt_block_time
+        description: "Details the perpetuals trades/swaps"
+      - name: FuturesMarketManager_evt_MarketAdded
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        loaded_at_field: evt_block_time
+        description: "Details the asset markets"
+
+  - name: pika_perp_optimism
+    description: Optimism decoded tables related to Pika Protocol v1
+    tables:
+      - name: PikaPerpV2_evt_NewPosition
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        loaded_at_field: evt_block_time
+        description: "Details the new positions opened"
+      - name: PikaPerpV2_evt_ClosePosition
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        loaded_at_field: evt_block_time
+        description: "Details the swaps to close existing positions"
+
+  - name: pika_perp_v2_optimism
+    description: Optimism decoded tables related to Pika Protocol v1
+    tables:
+      - name: PikaPerpV2_evt_NewPosition
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        loaded_at_field: evt_block_time
+        description: "Details the new positions opened"
+      - name: PikaPerpV2_evt_ClosePosition
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        loaded_at_field: evt_block_time
+        description: "Details the swaps to close existing positions"
+        
+  - name: pika_perp_v3_optimism
+    description: Optimism decoded tables related to Pika Protocol v1
+    tables:
+      - name: PikaPerpV3_evt_NewPosition
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        loaded_at_field: evt_block_time
+        description: "Details the new positions opened"
+      - name: PikaPerpV3_evt_ClosePosition
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        loaded_at_field: evt_block_time
+        description: "Details the swaps to close existing positions"
