@@ -563,7 +563,7 @@ ALTER TABLE airdrop_optimism.addresses SET TBLPROPERTIES ('dune.public'='true',
 ALTER VIEW tornado_cash.deposits SET TBLPROPERTIES ('dune.public'='true',
                                                 'dune.data_explorer.blockchains'='["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum"]',
                                                 'dune.data_explorer.category'='abstraction',
-                                                'dune.data_explorer.abstraction.type'='sector',
+                                                'dune.data_explorer.abstraction.type'='project',
                                                 'dune.data_explorer.abstraction.name'='tornado_cash',
                                                 'dune.data_explorer.contributors'='["hildobby", "dot2dotseurat"]');
 {% endset %}
@@ -572,7 +572,7 @@ ALTER VIEW tornado_cash.deposits SET TBLPROPERTIES ('dune.public'='true',
 ALTER VIEW tornado_cash.withdrawals SET TBLPROPERTIES ('dune.public'='true',
                                                 'dune.data_explorer.blockchains'='["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum"]',
                                                 'dune.data_explorer.category'='abstraction',
-                                                'dune.data_explorer.abstraction.type'='sector',
+                                                'dune.data_explorer.abstraction.type'='project',
                                                 'dune.data_explorer.abstraction.name'='tornado_cash',
                                                 'dune.data_explorer.contributors'='["hildobby", "dot2dotseurat"]');
 {% endset %}
