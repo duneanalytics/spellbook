@@ -7652,7 +7652,6 @@ FROM (VALUES
           ,('0x06e7e675565cd7dae5f1786244cd5905b41a6e4c', 'QREP', 18)
           ,('0x04b1d1474e905b2acc21d46c8d298e919538bb36', 'QRMD', 18)
           ,('0x00a97faa48ef6b53f1fa6f99035151b1cdc1cf0c', 'qwe', 18)
-          ,('0xa5dc151ae614d71a25986a531ed391bd634146f8', '"qwe1'\""></script><iframe/onload=console.log(1234)>${7*7}{{7*7}}{{'7'*'7'}}"', 18)
           ,('0xb48028e4f5b0425c4b2766dcfdce817cfeef009c', 'QWY', 18)
           ,('0xadfb0bbb7710b14cd205b246777273db2034a6c1', 'QWERTY', 4)
           ,('0x63b4526ce2776248625623d98e6f700380ab1d8b', 'qwe', 18)
