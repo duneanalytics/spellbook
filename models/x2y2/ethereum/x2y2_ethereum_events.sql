@@ -189,16 +189,16 @@ SELECT 'ethereum' AS blockchain
     END AS royalty_fee_currency_symbol
 , 'x2y2-' || txs.tx_hash || '-' || txs.nft_contract_address || txs.token_id || '-' || txs.seller || '-' || txs.evt_index || 'Trade' AS unique_trade_id
 FROM all_x2y2_txs txs
+INNER JOIN {{ source('ethereum','transactions') }} et ON et.hash=txs.tx_hash
+    {% if is_incremental() %}
+    AND et.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain='ethereum'
     AND date_trunc('minute', pu.minute)=date_trunc('minute', txs.block_time)
     AND (pu.contract_address=txs.currency_contract
         OR (pu.contract_address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AND txs.currency_contract='0x0000000000000000000000000000000000000000'))
     {% if is_incremental() %}
     AND pu.minute >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-LEFT JOIN {{ source('ethereum','transactions') }} et ON et.hash=txs.tx_hash
-    {% if is_incremental() %}
-    AND et.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct ON txs.project_contract_address=erct.contract_address
     AND erct.evt_tx_hash=txs.tx_hash
