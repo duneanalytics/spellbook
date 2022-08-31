@@ -120,7 +120,7 @@ models:
       gnosis:
         +schema: tokens_gnosis
         +materialized: view
-    
+
     transfers:
       +schema: transfers
       +materialized: view
@@ -129,7 +129,7 @@ models:
         +materialized: view
       optimism:
         +schema: transfers_optimism
-    
+
     sudoswap:
       +schema: sudoswap
       +materialized: view
@@ -217,7 +217,7 @@ seeds:
       +schema: test_data
       sudoswap_ethereum_example_trades:
         +column_types:
-          block_number: string
+          block_number: long
           tx_hash: string
           trade_category: string
           nft_contract_address: string
