@@ -16,5 +16,3 @@ I've checked that:
 * [ ] if joining to base table (i.e. ethereum transactions or traces), I looked to make it an inner join if possible
 * [ ] if joining to base table (i.e. ethereum transactions or traces), I applied join condition where block_time >= date_trunc("day", now() - interval '1 week')
 * [ ] if joining to prices view, I applied join condition where minute >= date_trunc("day", now() - interval '1 week')
-
-When you are ready for a review, tag duneanalytics/data-experience. We will re-open your forked pull request as an internal pull request. Then your spells will run in dbt and the logs will be avaiable in Github Actions DBT Slim CI. This job will only run the models and tests changed by your PR compared to the production project.
