@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS seaport.transfers (
    ,order_type text
    ,purchase_method text
    ,trade_type text
-   ,nft_item_count int8
+   ,nft_item_count numeric
    ,seller bytea
    ,buyer bytea
    ,original_currency_contract bytea
