@@ -318,7 +318,7 @@ ALTER VIEW nft_bnb.aggregators SET TBLPROPERTIES('dune.public'='true',
 
 {% set nft_avalanche_aggregators %}
 ALTER VIEW nft_avalanche.aggregators SET TBLPROPERTIES('dune.public'='true',
-                                                    'dune.data_explorer.blockchains'='["avalanche"]',
+                                                    'dune.data_explorer.blockchains'='["avalanche_c"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='sector',
                                                     'dune.data_explorer.abstraction.name'='nft',
