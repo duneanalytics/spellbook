@@ -318,7 +318,7 @@ ALTER VIEW nft_bnb.aggregators SET TBLPROPERTIES('dune.public'='true',
 
 {% set nft_avalanche_aggregators %}
 ALTER VIEW nft_avalanche.aggregators SET TBLPROPERTIES('dune.public'='true',
-                                                    'dune.data_explorer.blockchains'='["avalanche"]',
+                                                    'dune.data_explorer.blockchains'='["avalanche_c"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='sector',
                                                     'dune.data_explorer.abstraction.name'='nft',
@@ -346,6 +346,24 @@ ALTER VIEW tokens_ethereum.erc20 SET TBLPROPERTIES ('dune.public'='true',
 {% set tokens_bnb_bep20 %}
 ALTER VIEW tokens_bnb.bep20 SET TBLPROPERTIES ('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["bnb"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='tokens',
+                                                    'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set tokens_gnosis_erc20 %}
+ALTER VIEW tokens_gnosis.erc20 SET TBLPROPERTIES ('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["gnosis"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='tokens',
+                                                    'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set tokens_gnosis_nft %}
+ALTER VIEW tokens_gnosis.nft SET TBLPROPERTIES ('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["gnosis"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='sector',
                                                     'dune.data_explorer.abstraction.name'='tokens',
@@ -561,7 +579,7 @@ ALTER TABLE airdrop_optimism.addresses SET TBLPROPERTIES ('dune.public'='true',
 
 {% set tornado_cash_deposits %}
 ALTER TABLE tornado_cash.deposits SET TBLPROPERTIES ('dune.public'='true',
-                                                'dune.data_explorer.blockchains'='["ethereum", "bnb", "avalanche", "gnosis", "optimism", "arbitrum"]',
+                                                'dune.data_explorer.blockchains'='["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum"]',
                                                 'dune.data_explorer.category'='abstraction',
                                                 'dune.data_explorer.abstraction.type'='project',
                                                 'dune.data_explorer.abstraction.name'='tornado_cash',
@@ -570,7 +588,7 @@ ALTER TABLE tornado_cash.deposits SET TBLPROPERTIES ('dune.public'='true',
 
 {% set tornado_cash_withdrawals %}
 ALTER TABLE tornado_cash.withdrawals SET TBLPROPERTIES ('dune.public'='true',
-                                                'dune.data_explorer.blockchains'='["ethereum", "bnb", "avalanche", "gnosis", "optimism", "arbitrum"]',
+                                                'dune.data_explorer.blockchains'='["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum"]',
                                                 'dune.data_explorer.category'='abstraction',
                                                 'dune.data_explorer.abstraction.type'='project',
                                                 'dune.data_explorer.abstraction.name'='tornado_cash',

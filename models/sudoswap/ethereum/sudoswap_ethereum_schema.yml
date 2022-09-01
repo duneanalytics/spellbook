@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       project: sudoswap
-      contributors: [ilemi]
+      contributors: [ilemi, 0xRob]
     config:
       tags: ['ethereum','sudoswap','v1','events']
     description: >
@@ -71,7 +71,7 @@ models:
         description:  "NFT contract address, only if 1 nft was transacted"
       - &project_contract_address
         name: project_contract_address
-        description:  "Contract address used by the project, in this case wyvern contract"
+        description:  "Contract address used by the project, in this case the router or pair contract"
       - &tx_hash
         name: tx_hash
       - &evt_index
@@ -83,20 +83,17 @@ models:
         name: platform_fee_amount
         description:  "Platform fee amount in original token currency (properly formatted in decimals)"
       - &platform_fee_percentage
-        name: platform_fee_amount_usd
+        name: platform_fee_percentage
         description:  "Platform fee in % of the amount paid for a given trade"
-      - &owner_fee_amount_raw
-        name: owner_fee_amount_raw
-        description:  "Raw numerical amount for owner fees"
-      - &owner_fee_amount
-        name: owner_fee_amount
-        description:  "Royalty fee amount in original token currency (properly formatted in decimals)"
-      - &owner_fee_percentage
-        name: owner_fee_percentage
-        description:  "Royalty fee in % of the amount paid for a given trade"
-      - &owner_fee_amount_usd
-        name: owner_fee_amount_usd
-        description:  "owner fee amount in USD"
+      - &pool_fee_amount_raw
+        name: pool_fee_amount_raw
+        description:  "Raw numerical amount for pool owner fees"
+      - &pool_fee_amount
+        name: pool_fee_amount
+        description:  "pool owner fee amount in original token currency (properly formatted in decimals)"
+      - &pool_fee_percentage
+        name: pool_fee_percentage
+        description:  "pool owner fee in % of the amount paid for a given trade"
       - &royalty_fee_amount_raw
         name: royalty_fee_amount_raw
         description:  "Raw numerical amount for royalty fees"
@@ -108,7 +105,7 @@ models:
         description:  "Royalty fee in % of the amount paid for a given trade"
       - &royalty_fee_receive_address
         name: royalty_fee_receive_address
-        description:  "Wallet addresses receiving fees from the transaction"
+        description:  "Wallet addresses receiving royalty fees from the transaction"
       - &royalty_fee_currency_symbol
         name: royalty_fee_currency_symbol
         description: "Symbol of the token in which fees are paid out"
@@ -130,6 +127,9 @@ models:
       - &platform_fee_amount_usd
         name: platform_fee_amount_usd
         description:  "Platform fee amount in USD"
+      - &pool_fee_amount_usd
+          name: pool_fee_amount_usd
+          description: "pool owner fee amount in USD"
       - &tx_from
         name: tx_from
         description:  "Address that initiated the transaction"
@@ -144,7 +144,7 @@ models:
     meta:
       blockchain: ethereum
       project: sudoswap
-      contributors: [ilemi]
+      contributors: [ilemi, 0xRob]
     config:
       tags: ['ethereum','sudoswap','trades']
     description: >
@@ -184,7 +184,7 @@ models:
     meta:
       blockchain: ethereum
       project: sudoswap
-      contributors: [ilemi]
+      contributors: [ilemi, 0xRob]
     config:
       tags: ['ethereum','sudoswap','fees']
     description: >
