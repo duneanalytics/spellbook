@@ -109,16 +109,16 @@ models:
       static_labels:
         +schema: static_labels
         +materialized: view
-        ethereum:
-          +schema: static_labels_ethereum
-          +materialized: view
       query_labels:
         +schema: query_labels
         +materialized: view
-        ethereum:
-          +schema: query_labels_ethereum
+        nft:
+          +schema: query_labels_nft
           +materialized: view
-
+        safe:
+          +schema: query_labels_safe
+          +materialized: view
+          
     tokens:
       +schema: tokens
       +materialized: view

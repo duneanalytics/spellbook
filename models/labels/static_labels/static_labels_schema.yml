@@ -1,22 +1,22 @@
 version: 2
 
 models:
-  - name: static_labels_ethereum_cex
+  - name: static_labels_all
     meta:
       blockchain: ethereum
       sector: labels
-      project: cex
+      category: cex
       contibutors: hildobby, soispoke
     config:
       tags: ['static', 'labels', 'ethereum', 'cex']
-    description: "Known centralised exchange addresses on Ethereum"
+    description: "All static labels across chains and categories"
     columns:
       - name: blockchain
         description: "Blockchain"   
       - name: address
-        description: "Address of known CEX"
+        description: "Label address"
       - name: name
-        description: "Label name of centralised exchange"
+        description: "Label name"
       - name: category
         description: "Label category"
       - name: contributor
