@@ -358,7 +358,7 @@ FROM (VALUES
     -- Cashierest
     , ('ethereum', '0x72bcfa6932feacd91cb2ea44b0731ed8ae04d0d3', 'Cashierest 1', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0x72bcfa6932feacd91cb2ea44b0731ed8ae04d0d3
     -- Bibox
-    , ('ethereum', '0xf73c3c65bde10bf26c2e1763104e609a41702efe', 'Bibox', 'Bibox 1', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0xf73c3c65bde10bf26c2e1763104e609a41702efe
+    , ('ethereum', '0xf73c3c65bde10bf26c2e1763104e609a41702efe', 'Bibox 1', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0xf73c3c65bde10bf26c2e1763104e609a41702efe
     -- Coinhako, Source: https://etherscan.io/accounts/label/coinhako
     , ('ethereum', '0xd4bddf5e3d0435d7a6214a0b949c7bb58621f37c', 'Coinhako 1', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28')
     , ('ethereum', '0xf2d4766ad705e3a5c9ba5b0436b473085f82f82f', 'Coinhako Hot Wallet', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28')
