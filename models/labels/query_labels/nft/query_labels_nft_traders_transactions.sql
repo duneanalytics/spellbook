@@ -18,7 +18,7 @@ FROM {{ ref('nft_trades') }}
 total as (
 SELECT
 address,
-COUNT(DISTINCT tx_hash) AS total_count
+COUNT(tx_hash) AS total_count
 FROM nft_trades
 GROUP BY 1
 )
@@ -34,7 +34,8 @@ SELECT
          THEN 'Top 5% NFT Transactions Trader'
          WHEN ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) < 1 
          THEN 'Top 1% NFT Transactions Trader'
-         ELSE 'NFT Trader' END AS name,
+         WHEN ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) > 10 
+         THEN 'NFT Trader' END AS name,
     'nft' AS category,
     'soispoke' AS contributor,
     'query' AS source,

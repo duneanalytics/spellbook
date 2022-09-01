@@ -4,7 +4,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['address', 'name'],
-    partition_by = ['name']
+    partition_by = ['address', 'name']
     )
 }}
 
