@@ -280,7 +280,7 @@ FROM (VALUES
     , ('ethereum', '0x0211f3cedbef3143223d3acf0e589747933e8527', 'MEXC 2', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0x0211f3cedbef3143223d3acf0e589747933e8527
     , ('ethereum', '0x3cc936b795a188f0e246cbb2d74c5bd190aecf18', 'MEXC 3', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0x3cc936b795a188f0e246cbb2d74c5bd190aecf18
     -- Yobit
-    , ('ethereum', '0xf5bec430576ff1b82e44ddb5a1c93f6f9d0884f3', 'Yobit', 'Yobit 1', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0xf5bec430576ff1b82e44ddb5a1c93f6f9d0884f3
+    , ('ethereum', '0xf5bec430576ff1b82e44ddb5a1c93f6f9d0884f3', 'Yobit 1', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0xf5bec430576ff1b82e44ddb5a1c93f6f9d0884f3
     -- Paribu, Source: https://etherscan.io/accounts/label/paribu
     , ('ethereum', '0xbd8ef191caa1571e8ad4619ae894e07a75de0c35', 'Paribu 1', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28')
     , ('ethereum', '0x2bb97b6cf6ffe53576032c11711d59bd056830ee', 'Paribu 2', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28')
@@ -307,7 +307,7 @@ FROM (VALUES
     , ('ethereum', '0xb9ee1e551f538a464e8f8c41e9904498505b49b0', 'CoinEx 1', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0xb9ee1e551f538a464e8f8c41e9904498505b49b0
     , ('ethereum', '0x33ddd548fe3a082d753e5fe721a26e1ab43e3598', 'CoinEx 2', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0x33ddd548fe3a082d753e5fe721a26e1ab43e3598
     -- CoinExchange
-    , ('ethereum', '0x4b01721f0244e7c5b5f63c20942850e447f5a5ee', 'CoinExchange', 'CoinExchange 1', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0x4b01721f0244e7c5b5f63c20942850e447f5a5ee
+    , ('ethereum', '0x4b01721f0244e7c5b5f63c20942850e447f5a5ee', 'CoinExchange 1', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0x4b01721f0244e7c5b5f63c20942850e447f5a5ee
     -- AscendEX (formerly BitMax), Source: https://etherscan.io/accounts/label/ascendex
     , ('ethereum', '0x03bdf69b1322d623836afbd27679a1c0afa067e9', 'AscendEX 1', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28')
     , ('ethereum', '0x4b1a99467a284cc690e3237bc69105956816f762', 'AscendEX 2', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28')
@@ -321,7 +321,7 @@ FROM (VALUES
     , ('ethereum', '0x3613ef1125a078ef96ffc898c4ec28d73c5b8c52', 'Tidex 1', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28')
     , ('ethereum', '0x0a73573cf2903d2d8305b1ecb9e9730186a312ae', 'Tidex 2', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28')
     -- OTCBTC
-    , ('ethereum', '0xaeec6f5aca72f3a005af1b3420ab8c8c7009bac8', 'OTCBTC', 'OTCBTC 1', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0xaeec6f5aca72f3a005af1b3420ab8c8c7009bac8
+    , ('ethereum', '0xaeec6f5aca72f3a005af1b3420ab8c8c7009bac8', 'OTCBTC 1', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0xaeec6f5aca72f3a005af1b3420ab8c8c7009bac8
     -- ShapeShift, Source: https://etherscan.io/accounts/label/shapeshift 
     , ('ethereum', '0x120a270bbc009644e35f0bb6ab13f95b8199c4ad', 'ShapeShift 1', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28')
     , ('ethereum', '0x9e6316f44baeeee5d41a1070516cc5fa47baf227', 'ShapeShift 2', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28')
