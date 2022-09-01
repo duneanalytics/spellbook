@@ -33,7 +33,6 @@ WITH all_foundation_trades AS (
     , f.creatorFee/POWER(10, 18) royalty_fee_amount
     FROM {{ source('foundation_ethereum','market_evt_ReserveAuctionFinalized') }} f
     LEFT JOIN {{ source('foundation_ethereum','market_evt_ReserveAuctionCreated') }} c ON c.auctionId=f.auctionId AND c.evt_block_time<=f.evt_block_time
-    WHERE f.evt_block_time > NOW() - interval '1 week'
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
      WHERE f.evt_block_time >= (select max(block_time) from {{ this }})
      {% endif %}
@@ -61,7 +60,6 @@ WITH all_foundation_trades AS (
     , creatorFee AS royalty_fee_amount_raw
     , creatorFee/POWER(10, 18) AS royalty_fee_amount
     FROM {{ source('foundation_ethereum','market_evt_BuyPriceAccepted') }} f
-    WHERE evt_block_time > NOW() - interval '1 week'
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
      WHERE f.evt_block_time >= (select max(block_time) from {{ this }})
      {% endif %}
@@ -89,7 +87,6 @@ WITH all_foundation_trades AS (
     , creatorFee AS royalty_fee_amount_raw
     , creatorFee/POWER(10, 18) AS royalty_fee_amount
     FROM {{ source('foundation_ethereum','market_evt_OfferAccepted') }} f
-    WHERE evt_block_time > NOW() - interval '1 week'
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
      WHERE f.evt_block_time >= (select max(block_time) from {{ this }})
      {% endif %}
@@ -117,7 +114,6 @@ WITH all_foundation_trades AS (
     , creatorFee AS royalty_fee_amount_raw
     , creatorFee/POWER(10, 18) AS royalty_fee_amount
     FROM {{ source('foundation_ethereum','market_evt_PrivateSaleFinalized') }} f
-    WHERE evt_block_time > NOW() - interval '1 week'
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
      WHERE f.evt_block_time >= (select max(block_time) from {{ this }})
      {% endif %}
