@@ -24,7 +24,7 @@ WITH trades as (
     , t.pool_fee_amount as reported_pool_fee_amount
     , ex.pool_fee_amount as seed_pool_fee_amount
     from trades t
-    outer join examples ex
+    full outer join examples ex
     on ex.block_number = t.block_number and ex.tx_hash=t.tx_hash
     and ex.nft_contract_address=t.nft_contract_address and ex.token_id=t.token_id
 )
