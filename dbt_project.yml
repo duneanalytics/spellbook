@@ -103,6 +103,22 @@ models:
         +schema: balances_ethereum
         +materialized: view
 
+    labels:
+      +schema: labels
+      +materialized: view
+      static_labels:
+        +schema: static_labels
+        +materialized: view
+        ethereum:
+          +schema: static_labels_ethereum
+          +materialized: view
+      query_labels:
+        +schema: query_labels
+        +materialized: view
+        ethereum:
+          +schema: query_labels_ethereum
+          +materialized: view
+
     tokens:
       +schema: tokens
       +materialized: view
