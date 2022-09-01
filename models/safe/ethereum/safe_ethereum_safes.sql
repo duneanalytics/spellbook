@@ -24,7 +24,6 @@ select
     et.tx_hash
 from {{ source('ethereum', 'traces') }} et 
 where et.success = true
-    and et.block_time > '2018-11-24' -- for initial query optimisation    
     and et.call_type = 'delegatecall' -- the delegate call to the master copy is the Safe address    
     and (
             (substring(et.input, 0, 10) = '0x0ec78d9e' -- setup methods of v0.1.0
@@ -41,8 +40,11 @@ where et.success = true
                 )
         )
     and et.gas_used > 0  -- to ensure the setup call was successful
+    {% if not is_incremental() %}
+    and et.block_time > '2018-11-24' -- for initial query optimisation    
+    {% endif %}
     {% if is_incremental() %}
-    and et.block_time > (select max(creation_time) from {{ this }}) - interval '1 day'
+    and et.block_time > date_trunc("day", now() - interval '1 week')
     {% endif %}
         
 union all
@@ -53,7 +55,9 @@ select contract_address as address,
     evt_block_time as creation_time, 
     evt_tx_hash as tx_hash
 from {{ source('gnosis_safe_ethereum', 'GnosisSafev1_3_0_evt_SafeSetup') }}
-where evt_block_time > '2018-11-24' -- for initial query optimisation  
+{% if not is_incremental() %}
+where evt_block_time > '2018-11-24' -- for initial query optimisation 
+{% endif %} 
 {% if is_incremental() %}
-and evt_block_time > (select max(creation_time) from {{ this }}) - interval '1 day'
+where evt_block_time > date_trunc("day", now() - interval '1 week')
 {% endif %}
