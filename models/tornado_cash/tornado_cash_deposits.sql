@@ -29,7 +29,7 @@ FROM
         , tc.evt_index
         , TRY_CAST(date_trunc('DAY', tc.evt_block_time) AS date) AS block_date
         FROM {{ source('tornado_cash_ethereum','eth_evt_Deposit') }} tc
-        LEFT JOIN {{ source('ethereum','transactions_0006') }} et
+        LEFT JOIN {{ source('ethereum','transactions') }} et
                 ON et.hash=tc.evt_tx_hash
                 {% if not is_incremental() %}
                 AND et.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_ethereum','eth_evt_Deposit') }})
@@ -126,7 +126,7 @@ FROM
         , tc.evt_index
         , TRY_CAST(date_trunc('DAY', tc.evt_block_time) AS date) AS block_date
         FROM {{ source('tornado_cash_ethereum','erc20_evt_Deposit') }} tc
-        LEFT JOIN {{ source('ethereum','transactions_0006') }} et
+        LEFT JOIN {{ source('ethereum','transactions') }} et
                 ON et.hash=tc.evt_tx_hash
                 {% if not is_incremental() %}
                 AND et.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_ethereum','erc20_evt_Deposit') }})
