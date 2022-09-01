@@ -38,7 +38,7 @@ WITH looks_rare AS (
     LEFT JOIN {{ source('looksrare_ethereum','looksrareexchange_evt_royaltypayment') }} roy ON roy.evt_tx_hash = ask.evt_tx_hash
     AND ask.evt_index - 2 = roy.evt_index
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
-     WHERE ask.evt_block_time >= (select max(block_time) from {{ this }})
+     WHERE ask.evt_block_time >= date_trunc("day", now() - interval '1 week')
      {% endif %}
                             UNION
     SELECT
@@ -67,7 +67,7 @@ WITH looks_rare AS (
     LEFT JOIN {{ source('looksrare_ethereum','looksrareexchange_evt_royaltypayment') }} roy ON roy.evt_tx_hash = bid.evt_tx_hash
     AND roy.evt_index = bid.evt_index - 4
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
-     WHERE bid.evt_block_time >= (select max(block_time) from {{ this }})
+     WHERE bid.evt_block_time >= date_trunc("day", now() - interval '1 week')
      {% endif %}
     ),
 
@@ -84,7 +84,12 @@ erc_transfers as
         ELSE 'Trade' END AS evt_type,
         evt_index
         FROM {{ source('erc1155_ethereum','evt_transfersingle') }} erc1155
+        {% if not is_incremental() %} -- this filter will only be applied on an incremental run
         WHERE erc1155.evt_block_time > '2022-01-01'
+        {% endif %}
+        {% if is_incremental() %} -- this filter will only be applied on an incremental run
+        WHERE erc1155.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
         GROUP BY evt_tx_hash,value,id,evt_index, erc1155.from, erc1155.to, erc1155.contract_address
             UNION
 SELECT evt_tx_hash,
@@ -98,7 +103,12 @@ SELECT evt_tx_hash,
         ELSE 'Trade' END AS evt_type,
         evt_index
         FROM {{ source('erc721_ethereum','evt_transfer') }} erc721
+        {% if not is_incremental() %} -- this filter will only be applied on an incremental run
         WHERE erc721.evt_block_time > '2022-01-01'
+        {% endif %}
+        {% if is_incremental() %} -- this filter will only be applied on an incremental run
+        WHERE erc721.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
         GROUP BY evt_tx_hash,tokenId,evt_index, erc721.from, erc721.to, erc721.contract_address)
 
 SELECT DISTINCT
@@ -178,5 +188,5 @@ LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20 ON erc20.contract_address = c
 WHERE number_of_items >= 1
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-AND looks_rare.block_time >= (select max(block_time) from {{ this }})
+AND looks_rare.block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}

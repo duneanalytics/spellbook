@@ -29,7 +29,7 @@ WITH dexs AS
     INNER JOIN {{ source('uniswap_ethereum', 'Factory_evt_NewExchange') }} f
         ON f.exchange = t.contract_address
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= (SELECT MAX(block_time) FROM {{ this }})
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 
     UNION ALL
@@ -53,7 +53,7 @@ WITH dexs AS
     INNER JOIN {{ source('uniswap_ethereum', 'Factory_evt_NewExchange') }} f
         ON f.exchange = t.contract_address
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= (SELECT MAX(block_time) FROM {{ this }})
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
 SELECT
