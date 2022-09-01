@@ -13,6 +13,8 @@ models:
     columns:
       - name: contract_address
         description: "ERC20 token contract address on Optimism"
+        tests:
+          - unique
       - name: symbol
         description: "ERC20 token symbol"
       - name: decimals
@@ -30,5 +32,7 @@ models:
     columns:
       - name: contract_address
         description: "The contract address is the unique address of where the NFTs are stored on Optimism."
+        tests:
+          - unique
       - name: name
         description: "NFT Project Name"
