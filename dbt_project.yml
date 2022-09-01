@@ -120,7 +120,7 @@ models:
       gnosis:
         +schema: tokens_gnosis
         +materialized: view
-    
+
     transfers:
       +schema: transfers
       +materialized: view
@@ -129,7 +129,7 @@ models:
         +materialized: view
       optimism:
         +schema: transfers_optimism
-    
+
     sudoswap:
       +schema: sudoswap
       +materialized: view
@@ -212,3 +212,16 @@ seeds:
           token_bought_amount: float
           token_sold_address: string
           token_sold_amount: float
+    sudoswap:
+      +enabled: true
+      +schema: test_data
+      sudoswap_ethereum_example_trades:
+        +column_types:
+          block_number: long
+          tx_hash: string
+          trade_category: string
+          nft_contract_address: string
+          token_id: string
+          amount_original: double
+          platform_fee_amount: double
+          pool_fee_amount: double
