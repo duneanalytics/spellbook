@@ -10,15 +10,21 @@ WITH trades as (
 
 , matched as (
     select
-    t.block_number
-    ,t.tx_hash
-    ,t.nft_contract_address
-    ,t.token_id
+    coalesce(t.block_number, ex.block_number)
+    , coalesce(t.tx_hash, ex.tx_hash)
+    , coalesce(t.nft_contract_address, ex.nft_contract_address)
+    , coalesce(t.token_id, ex.token_id)
     , case when (t.amount_original = ex.amount_original) then true else false end as correct_amt_orig
     , case when (t.platform_fee_amount = ex.platform_fee_amount) then true else false end as correct_platform_fee
     , case when (t.pool_fee_amount = ex.pool_fee_amount) then true else false end as correct_pool_fee
+    , t.amount_original as reported_amount_original
+    , ex.amount_original as seed_amount_original
+    , t.platform_fee_amount as reported_platform_fee_amount
+    , ex.platform_fee_amount as seed_platform_fee_amount
+    , t.pool_fee_amount as reported_pool_fee_amount
+    , ex.pool_fee_amount as seed_pool_fee_amount
     from trades t
-    join examples ex
+    outer join examples ex
     on ex.block_number = t.block_number and ex.tx_hash=t.tx_hash
     and ex.nft_contract_address=t.nft_contract_address and ex.token_id=t.token_id
 )
