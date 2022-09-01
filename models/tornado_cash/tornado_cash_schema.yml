@@ -5,11 +5,11 @@ version: 2
 models:
   - name: tornado_cash_deposits
     meta:
-      blockchain: ethereum, bnb, avalanche, gnosis, optimism, arbitrum #, polygon
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum #, polygon
       project: tornado_cash
       contibutors: [hildobby, dot2dotseurat]
     config:
-      tags: ['tornado_cash', 'deposits', 'ethereum', 'bnb', 'avalanche', 'gnosis', 'optimism', 'arbitrum']
+      tags: ['tornado_cash', 'deposits', 'ethereum', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum']
     description: "Tornado Cash Deposits"
     columns:
       - &block_time
@@ -25,13 +25,13 @@ models:
         name: blockchain
         tests:
           - accepted_values:
-              values: ['Ethereum', 'BNB', 'Avalanche', 'Gnosis', 'Optimism', 'Arbitrum', 'Polygon']
+              values: ['ethereum', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'polygon']
         description: "Blockchain"
       - &tornado_version
         name: tornado_version
         tests:
           - accepted_values:
-              values: ['Classic', 'Nova']
+              values: ['classic', 'nova']
         description: "Version of Tornado Cash used for this transaction"
       - &depositor
         name: depositor
