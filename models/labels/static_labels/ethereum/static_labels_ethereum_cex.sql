@@ -1,4 +1,4 @@
-{{config(schema='static_labels_ethereum', alias='cex', 'hildobby', 'static', '2022-08-28', '2022-08-28')}}
+{{config(schema='static_labels_ethereum', alias='cex')}}
 
 SELECT blockchain, address, name, category, contributor, source, created_at, updated_at
 FROM (VALUES
