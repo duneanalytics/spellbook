@@ -443,7 +443,7 @@ FROM (VALUES
     , ('ethereum', '0xcacc694840ecebadd9b4c419e5b7f1d73fedf999', 'Panda Exchange Hot Wallet 1', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0xcacc694840ecebadd9b4c419e5b7f1d73fedf999
     , ('ethereum', '0xb709d82f0706476457ae6bad7c3534fbf424382c', 'Panda Exchange Hot Wallet 2', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0xb709d82f0706476457ae6bad7c3534fbf424382c
     -- IDAX
-    , ('ethereum', '0x3c11c3025ce387d76c2eddf1493ec55a8cc2a0f7', 'IDAX', 'IDAX', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0x3c11c3025ce387d76c2eddf1493ec55a8cc2a0f7
+    , ('ethereum', '0x3c11c3025ce387d76c2eddf1493ec55a8cc2a0f7', 'IDAX', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0x3c11c3025ce387d76c2eddf1493ec55a8cc2a0f7
     -- FlataExchange
     , ('ethereum', '0x14301566b9669b672878d86ff0b1d18dd58054e9', 'FlataExchange', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0x14301566b9669b672878d86ff0b1d18dd58054e9
     -- XT.com Exchange
@@ -456,8 +456,8 @@ FROM (VALUES
     , ('ethereum', '0xaf4ff15c9809e246111802f04a6acc7160992fef', 'KickEX Hot Wallet 1', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0xaf4ff15c9809e246111802f04a6acc7160992fef
     , ('ethereum', '0xc153121042832ac11587ebe361b8dc3ccd90e9e4', 'KickEX Cold Wallet', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0xc153121042832ac11587ebe361b8dc3ccd90e9e4
     -- Coinbene
-    , ('ethereum', '0x9539e0b14021a43cde41d9d45dc34969be9c7cb0', 'Coinbene', 'Coinbene 1', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0x9539e0b14021a43cde41d9d45dc34969be9c7cb0
-    , ('ethereum', '0x33683b94334eebc9bd3ea85ddbda4a86fb461405', 'Coinbene', 'Coinbene Cold Wallet 1', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0x33683b94334eebc9bd3ea85ddbda4a86fb461405
+    , ('ethereum', '0x9539e0b14021a43cde41d9d45dc34969be9c7cb0', 'Coinbene 1', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0x9539e0b14021a43cde41d9d45dc34969be9c7cb0
+    , ('ethereum', '0x33683b94334eebc9bd3ea85ddbda4a86fb461405', 'Coinbene Cold Wallet 1', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0x33683b94334eebc9bd3ea85ddbda4a86fb461405
     -- QuantaEx
     , ('ethereum', '0xd344539efe31f8b6de983a0cab4fb721fc69c547', 'QuantaEx 1', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0xd344539efe31f8b6de983a0cab4fb721fc69c547
     , ('ethereum', '0x5ca39c42f4dee3a5ba8fec3ad4902157d48700bf', 'QuantaEx 2', 'cex', 'hildobby', 'static', '2022-08-28', '2022-08-28') -- https://etherscan.io/address/0x5ca39c42f4dee3a5ba8fec3ad4902157d48700bf
