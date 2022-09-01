@@ -1,4 +1,4 @@
-{{ config(
+{{ config(schema = 'token_gnosis',
         alias='nft'
         )
 }}
@@ -1238,13 +1238,13 @@ FROM
   (CAST('0x0e3c31d0c0bd3198187c5d53f97fd257b1e8a71d' AS string),CAST('Test Token' AS string),CAST('TST' AS string),CAST('ERC-721' AS string)),
   (CAST('0x996e7171bf61eba0369c438da14aeb6f48fc41b9' AS string),CAST('Web3Board' AS string),CAST('KEY' AS string),CAST('ERC-721' AS string)),
   (CAST('0xd7ec4d1f7c66867800052318ee9102017c3aef5a' AS string),CAST('Yaku' AS string),CAST('KTC' AS string),CAST('ERC-721' AS string)),
-  (CAST('0x53009edcf9c16ed8b50949ab619f7894c727ef13' AS string),CAST("Ch'ien" AS string),CAST('CHIEN' AS string),CAST('ERC-721' AS string)),
-  (CAST('0x11a70a6604207fcde31ac4be865fcc62f2d42315' AS string),CAST("Ch'ien" AS string),CAST('CHIEN' AS string),CAST('ERC-721' AS string)),
-  (CAST('0xfeff2d972e618e5e27e52b8e69494b46e2a1e61e' AS string),CAST("Ch'ien" AS string),CAST('CHIEN' AS string),CAST('ERC-721' AS string)),
-  (CAST('0x99461acbdb4997471f8bef75de0423e56b39e19b' AS string),CAST("Ch'ien" AS string),CAST('CHIEN' AS string),CAST('ERC-721' AS string)),
-  (CAST('0x944343038ad4590bc30128546661c3da979ad8ca' AS string),CAST("Ch'ien" AS string),CAST('CHIEN' AS string),CAST('ERC-721' AS string)),
-  (CAST('0x0ca49f3e951c7d99753a77d06dc5d2094d833c77' AS string),CAST("Ch'ien" AS string),CAST('CHIEN' AS string),CAST('ERC-721' AS string)),
-  (CAST('0xc0f22c7abdc35b939cd413ef1f458ad28efc188a' AS string),CAST("WHAT'S GOOD?" AS string),CAST('WTGD' AS string),CAST('ERC-721' AS string)),
-  (CAST('0xf149f7f8a5af5db86908eaf4490207306b7c6266' AS string),CAST("Movement DAO's Ascended Ape Collection from Mainnet" AS string),CAST('MAPE-1420' AS string),CAST('ERC-721' AS string)),
-  (CAST('0x75f525f8c9bc57bf8099b6658750cfdd795177ff' AS string),CAST("Alec's NFT's" AS string),CAST('' AS string),CAST('ERC-721' AS string))
+  (CAST('0x53009edcf9c16ed8b50949ab619f7894c727ef13' AS string),CAST("Chien" AS string),CAST('CHIEN' AS string),CAST('ERC-721' AS string)),
+  (CAST('0x11a70a6604207fcde31ac4be865fcc62f2d42315' AS string),CAST("Chien" AS string),CAST('CHIEN' AS string),CAST('ERC-721' AS string)),
+  (CAST('0xfeff2d972e618e5e27e52b8e69494b46e2a1e61e' AS string),CAST("Chien" AS string),CAST('CHIEN' AS string),CAST('ERC-721' AS string)),
+  (CAST('0x99461acbdb4997471f8bef75de0423e56b39e19b' AS string),CAST("Chien" AS string),CAST('CHIEN' AS string),CAST('ERC-721' AS string)),
+  (CAST('0x944343038ad4590bc30128546661c3da979ad8ca' AS string),CAST("Chien" AS string),CAST('CHIEN' AS string),CAST('ERC-721' AS string)),
+  (CAST('0x0ca49f3e951c7d99753a77d06dc5d2094d833c77' AS string),CAST("Chien" AS string),CAST('CHIEN' AS string),CAST('ERC-721' AS string)),
+  (CAST('0xc0f22c7abdc35b939cd413ef1f458ad28efc188a' AS string),CAST("WHATS GOOD?" AS string),CAST('WTGD' AS string),CAST('ERC-721' AS string)),
+  (CAST('0xf149f7f8a5af5db86908eaf4490207306b7c6266' AS string),CAST("Movement DAOs Ascended Ape Collection from Mainnet" AS string),CAST('MAPE-1420' AS string),CAST('ERC-721' AS string)),
+  (CAST('0x75f525f8c9bc57bf8099b6658750cfdd795177ff' AS string),CAST("Alecs NFTs" AS string),CAST('' AS string),CAST('ERC-721' AS string))
   ) as temp_table (contract_address, name, symbol, standard)
