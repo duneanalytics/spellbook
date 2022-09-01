@@ -3,7 +3,7 @@ version: 2
 models:
   - name: nft_avalanche_aggregators
     meta:
-      blockchain: avalanche
+      blockchain: avalanche_c
       sector: nft
       contributors: hildobby
     config:
