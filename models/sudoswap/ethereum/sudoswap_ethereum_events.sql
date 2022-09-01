@@ -155,7 +155,7 @@ WITH
             , sb.ownerfee
             , sb.protocolfee
         FROM swaps_w_fees sb
-        LEFT JOIN {{ source('ethereum', 'traces') }} tr
+        INNER JOIN {{ source('ethereum', 'traces') }} tr
             ON tr.type = 'call'
             AND tr.call_type = 'call'
             AND tr.tx_hash = sb.call_tx_hash
@@ -237,6 +237,14 @@ WITH
             , tx.from as tx_from
             , tx.to as tx_to
         FROM swaps_cleaned sc
+        INNER JOIN {{ source('ethereum', 'transactions') }} tx
+            ON tx.hash=sc.tx_hash
+            {% if is_incremental() %}
+            AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
+            {% if not is_incremental() %}
+            AND tx.block_time >= '2022-4-1'
+            {% endif %}
         LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain='ethereum'
             AND date_trunc('minute', pu.minute)=date_trunc('minute', sc.block_time)
             AND symbol = 'WETH'
@@ -247,14 +255,6 @@ WITH
             AND pu.minute >= '2022-4-1'
             {% endif %}
             --add in `pu.contract_address = sc.currency_address` in the future when ERC20 pairs are added in.
-        LEFT JOIN {{ source('ethereum', 'transactions') }} tx
-            ON tx.hash=sc.tx_hash
-            {% if is_incremental() %}
-            AND tx.block_time >= date_trunc("day", now() - interval '1 week')
-            {% endif %}
-            {% if not is_incremental() %}
-            AND tx.block_time >= '2022-4-1'
-            {% endif %}
         LEFT JOIN nft_ethereum_aggregators agg ON agg.contract_address = tx.to --assumes aggregator is the top level call. Will need to change this to check for agg calls in internal traces later on.
         LEFT JOIN tokens_ethereum_nft tokens ON nft_contract_address = tokens.contract_address
     ),

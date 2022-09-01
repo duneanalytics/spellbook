@@ -123,6 +123,9 @@ models:
       bnb:
         +schema: tokens_bnb
         +materialized: view
+      gnosis:
+        +schema: tokens_gnosis
+        +materialized: view
     
     transfers:
       +schema: transfers
