@@ -6,8 +6,8 @@ CREATE TABLE IF NOT EXISTS seaport.transactions (
     ,order_type text  
     ,purchase_method text  
     ,trade_type text  
-    ,nft_transfer_count int8  
-    ,nft_item_count int8  
+    ,nft_transfer_count numeric  
+    ,nft_item_count numeric  
     ,seller bytea  
     ,buyer bytea  
     ,original_currency_contract bytea  
@@ -24,10 +24,10 @@ CREATE TABLE IF NOT EXISTS seaport.transactions (
     ,royalty_amount numeric  
     ,royalty_amount_raw numeric  
     ,royalty_usd_amount numeric  
-    ,erc721_transfer_count int8  
-    ,erc1155_transfer_count int8  
-    ,erc721_item_count int8  
-    ,erc1155_item_count int8  
+    ,erc721_transfer_count numeric  
+    ,erc1155_transfer_count numeric  
+    ,erc721_item_count numeric  
+    ,erc1155_item_count numeric  
     ,exchange_contract_address bytea  
     ,zone_address bytea  
     ,platform text  
