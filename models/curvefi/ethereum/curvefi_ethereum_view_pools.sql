@@ -137,9 +137,9 @@ meta_pools_deployed AS (
         output_0 AS deposit_contract,
         _coin AS coin0,
         CASE
-            WHEN _base_pool = '0xbEbc44782C7dB0a1A60Cb6fe97d0b483032FF1C7' THEN '0x6c3F90f043a72FA612cbac8115EE7e52BDe6E490' --changing from swap to token contract
-            WHEN _base_pool = '0x7fc77b5c7614e1533320ea6ddc2eb61fa00a9714' THEN '0x075b1bb99792c9E1041bA13afEf80C91a1e70fB3' --changing from swap to token contract
-            WHEN _base_pool = '0x93054188d876f558f4a66b2ef1d97d16edf0895b' THEN '0x49849C98ae39Fff122806C06791Fa73784FB3675' --changing from swap to token contract
+            WHEN _base_pool = '{{ var("curvefi_ethereum_DAI_USDC_USDT_pool_contract") }}' THEN '{{ var("3CRV_ethereum_token") }}' --changing from swap to token contract
+            WHEN _base_pool = '{{ var("curvefi_ethereum_sBTC_swap_contract") }}' THEN '{{ var("sbtcCRV_ethereum_token") }}' --changing from swap to token contract
+            WHEN _base_pool = '{{ var("curvefi_ethereum_REN_swap_contract") }}' THEN '{{ var("renCRV_ethereum_token") }}' --changing from swap to token contract
         END AS coin1,
         CAST(
             NULL AS STRING
@@ -150,18 +150,18 @@ meta_pools_deployed AS (
         _coin AS undercoin0,
         --Listing underlying coins for the ExchangeUnderlying function
         CASE
-            WHEN _base_pool = '0xbEbc44782C7dB0a1A60Cb6fe97d0b483032FF1C7' THEN '0x6b175474e89094c44da98b954eedeac495271d0f'
-            WHEN _base_pool = '0x7fc77b5c7614e1533320ea6ddc2eb61fa00a9714' THEN '0xeb4c2781e4eba804ce9a9803c67d0893436bb27d'
-            WHEN _base_pool = '0x93054188d876f558f4a66b2ef1d97d16edf0895b' THEN '0xeb4c2781e4eba804ce9a9803c67d0893436bb27d'
+            WHEN _base_pool = '{{ var("curvefi_ethereum_DAI_USDC_USDT_pool_contract") }}' THEN '{{ var("DAI_ethereum_token") }}'
+            WHEN _base_pool = '{{ var("curvefi_ethereum_sBTC_swap_contract") }}' THEN '{{ var("renBTC_ethereum_token") }}'
+            WHEN _base_pool = '{{ var("curvefi_ethereum_REN_swap_contract") }}' THEN '{{ var("renBTC_ethereum_token") }}'
         END AS undercoin1,
         CASE
-            WHEN _base_pool = '0xbEbc44782C7dB0a1A60Cb6fe97d0b483032FF1C7' THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-            WHEN _base_pool = '0x7fc77b5c7614e1533320ea6ddc2eb61fa00a9714' THEN '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'
-            WHEN _base_pool = '0x93054188d876f558f4a66b2ef1d97d16edf0895b' THEN '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'
+            WHEN _base_pool = '{{ var("curvefi_ethereum_DAI_USDC_USDT_pool_contract") }}' THEN '{{ var("USDC_ethereum_token") }}'
+            WHEN _base_pool = '{{ var("curvefi_ethereum_sBTC_swap_contract") }}' THEN '{{ var("WBTC_ethereum_token") }}'
+            WHEN _base_pool = '{{ var("curvefi_ethereum_REN_swap_contract") }}' THEN '{{ var("WBTC_ethereum_token") }}'
         END AS undercoin2,
         CASE
-            WHEN _base_pool = '0xbEbc44782C7dB0a1A60Cb6fe97d0b483032FF1C7' THEN '0xdac17f958d2ee523a2206206994597c13d831ec7'
-            WHEN _base_pool = '0x7fc77b5c7614e1533320ea6ddc2eb61fa00a9714' THEN '0xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6'
+            WHEN _base_pool = '{{ var("curvefi_ethereum_DAI_USDC_USDT_pool_contract") }}' THEN '{{ var("USDT_ethereum_token") }}'
+            WHEN _base_pool = '{{ var("curvefi_ethereum_sBTC_swap_contract") }}' THEN '{{ var("sBTC_ethereum_token") }}'
         END AS undercoin3
     FROM
         meta_calls

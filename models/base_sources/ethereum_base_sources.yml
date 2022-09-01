@@ -166,6 +166,9 @@ sources:
             description: "Boolean indicating whether the contract is a factory contract or not"
           - name: detection_source
             description: "Detection source: 'factory', 'base', or 'dynamic'"
+            tests:
+              - accepted_values:
+                  values: ["factory", "base", "dynamic"]
           - name: created_at
             description: "Timestamp for contract creation"
 
