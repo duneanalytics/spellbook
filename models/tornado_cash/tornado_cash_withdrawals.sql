@@ -15,8 +15,8 @@ FROM
         SELECT tc.evt_block_time AS block_time
         , '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS currency_contract
         , 'ETH' AS currency_symbol
-        , 'Ethereum' AS blockchain
-        , 'Classic' AS tornado_version
+        , 'ethereum' AS blockchain
+        , 'classic' AS tornado_version
         , et.from AS tx_from
         , tc.nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
@@ -32,19 +32,19 @@ FROM
         , tc.evt_index
         , TRY_CAST(date_trunc('DAY', tc.evt_block_time) AS date) AS block_date
         FROM {{ source('tornado_cash_ethereum','eth_evt_Withdrawal') }} tc
-        LEFT JOIN {{ source('ethereum','transactions_0006') }} et
+        INNER JOIN {{ source('ethereum','transactions') }} et
                 ON et.hash=tc.evt_tx_hash
                 {% if not is_incremental() %}
                 AND et.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_ethereum','eth_evt_Withdrawal') }})
                 {% endif %}
                 {% if is_incremental() %}
-                AND et.block_time >= (select max(block_time) from {{ this }})
+                AND et.block_time >= date_trunc("day", now() - interval '1 week')
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= (select min(evt_block_time) from {{ source('tornado_cash_ethereum','eth_evt_Withdrawal') }})
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= (select max(block_time) from {{ this }})
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
         UNION
@@ -97,8 +97,8 @@ FROM
                 WHEN tc.contract_address='0x610b717796ad172b316836ac95a2ffad065ceab4' THEN 'WBTC'
                 WHEN tc.contract_address='0xbb93e510bbcd0b7beb5a853875f9ec60275cf498' THEN 'WBTC'
                 END AS currency_symbol
-        , 'Ethereum' AS blockchain
-        , 'Classic' AS tornado_version
+        , 'ethereum' AS blockchain
+        , 'classic' AS tornado_version
         , et.from AS tx_from
         , tc.nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
@@ -132,19 +132,19 @@ FROM
         , tc.evt_index
         , TRY_CAST(date_trunc('DAY', tc.evt_block_time) AS date) AS block_date
         FROM {{ source('tornado_cash_ethereum','erc20_evt_Withdrawal') }} tc
-        LEFT JOIN {{ source('ethereum','transactions_0006') }} et
+        INNER JOIN {{ source('ethereum','transactions') }} et
                 ON et.hash=tc.evt_tx_hash
                 {% if not is_incremental() %}
                 AND et.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_ethereum','erc20_evt_Withdrawal') }})
                 {% endif %}
                 {% if is_incremental() %}
-                AND et.block_time >= (select max(block_time) from {{ this }})
+                AND et.block_time >= date_trunc("day", now() - interval '1 week')
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= (select min(evt_block_time) from {{ source('tornado_cash_ethereum','erc20_evt_Withdrawal') }})
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= (select max(block_time) from {{ this }})
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
         UNION
@@ -153,8 +153,8 @@ FROM
         SELECT tc.evt_block_time AS block_time
         , '0xb8c77482e45f1f44de1745f52c74426c631bdd52' AS currency_contract
         , 'BNB' AS currency_symbol
-        , 'BNB' AS blockchain
-        , 'Classic' AS tornado_version
+        , 'bnb' AS blockchain
+        , 'classic' AS tornado_version
         , bt.from AS tx_from
         , tc.nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
@@ -170,19 +170,19 @@ FROM
         , tc.evt_index
         , TRY_CAST(date_trunc('DAY', tc.evt_block_time) AS date) AS block_date
         FROM {{ source('tornado_cash_bnb','TornadoCashBNB_evt_Withdrawal') }} tc
-        LEFT JOIN {{ source('bnb','transactions') }} bt
+        INNER JOIN {{ source('bnb','transactions') }} bt
                 ON bt.hash=tc.evt_tx_hash
                 {% if not is_incremental() %}
                 AND bt.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_bnb','TornadoCashBNB_evt_Withdrawal') }})
                 {% endif %}
                 {% if is_incremental() %}
-                AND bt.block_time >= (select max(block_time) from {{ this }})
+                AND bt.block_time >= date_trunc("day", now() - interval '1 week')
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= (select min(evt_block_time) from {{ source('tornado_cash_bnb','TornadoCashBNB_evt_Withdrawal') }})
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= (select max(block_time) from {{ this }})
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
         UNION
@@ -191,8 +191,8 @@ FROM
         SELECT tc.evt_block_time AS block_time
         , '0x6b175474e89094c44da98b954eedeac495271d0f' AS currency_contract
         , 'xDAI' AS currency_symbol
-        , 'Gnosis' AS blockchain
-        , 'Classic' AS tornado_version
+        , 'gnosis' AS blockchain
+        , 'classic' AS tornado_version
         , gt.from AS tx_from
         , nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
@@ -208,19 +208,19 @@ FROM
         , tc.evt_index
         , TRY_CAST(date_trunc('DAY', tc.evt_block_time) AS date) AS block_date
         FROM {{ source('tornado_cash_gnosis','eth_evt_Withdrawal') }} tc
-        LEFT JOIN {{ source('gnosis','transactions') }} gt
+        INNER JOIN {{ source('gnosis','transactions') }} gt
                 ON gt.hash=tc.evt_tx_hash
                 {% if not is_incremental() %}
                 AND gt.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_gnosis','eth_evt_Withdrawal') }})
                 {% endif %}
                 {% if is_incremental() %}
-                AND gt.block_time >= (select max(block_time) from {{ this }})
+                AND gt.block_time >= date_trunc("day", now() - interval '1 week')
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= (select min(evt_block_time) from {{ source('tornado_cash_gnosis','eth_evt_Withdrawal') }})
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= (select max(block_time) from {{ this }})
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
         UNION
@@ -229,8 +229,8 @@ FROM
         SELECT tc.evt_block_time AS block_time
         , '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS currency_contract
         , 'ETH' AS currency_symbol
-        , 'Optimism' AS blockchain
-        , 'Classic' AS tornado_version
+        , 'optimism' AS blockchain
+        , 'classic' AS tornado_version
         , ot.from AS tx_from
         , tc.nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
@@ -246,19 +246,19 @@ FROM
         , tc.evt_index
         , TRY_CAST(date_trunc('DAY', tc.evt_block_time) AS date) AS block_date
         FROM {{ source('tornado_cash_optimism','ETHTornado_evt_Withdrawal') }} tc
-        LEFT JOIN {{ source('optimism','transactions') }} ot
+        INNER JOIN {{ source('optimism','transactions') }} ot
                 ON ot.hash=tc.evt_tx_hash
                 {% if not is_incremental() %}
                 AND ot.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_optimism','ETHTornado_evt_Withdrawal') }})
                 {% endif %}
                 {% if is_incremental() %}
-                AND ot.block_time >= (select max(block_time) from {{ this }})
+                AND ot.block_time >= date_trunc("day", now() - interval '1 week')
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= (select min(evt_block_time) from {{ source('tornado_cash_optimism','ETHTornado_evt_Withdrawal') }})
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= (select max(block_time) from {{ this }})
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
         UNION
@@ -267,8 +267,8 @@ FROM
         SELECT tc.evt_block_time AS block_time
         , '0x85f138bfEE4ef8e540890CFb48F620571d67Eda3' AS currency_contract
         , 'AVAX' AS currency_symbol
-        , 'Avalanche' AS blockchain
-        , 'Classic' AS tornado_version
+        , 'avalanche_c' AS blockchain
+        , 'classic' AS tornado_version
         , at.from AS tx_from
         , tc.nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
@@ -283,19 +283,19 @@ FROM
         , tc.evt_index
         , TRY_CAST(date_trunc('DAY', tc.evt_block_time) AS date) AS block_date
         FROM {{ source('tornado_cash_avalanche_c','ETHTornado_evt_Withdrawal') }} tc
-        LEFT JOIN {{ source('avalanche_c','transactions') }} at
+        INNER JOIN {{ source('avalanche_c','transactions') }} at
                 ON at.hash=tc.evt_tx_hash
                 {% if not is_incremental() %}
                 AND at.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_avalanche_c','ETHTornado_evt_Withdrawal') }})
                 {% endif %}
                 {% if is_incremental() %}
-                AND at.block_time >= (select max(block_time) from {{ this }})
+                AND at.block_time >= date_trunc("day", now() - interval '1 week')
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= (select min(evt_block_time) from {{ source('tornado_cash_avalanche_c','ETHTornado_evt_Withdrawal') }})
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= (select max(block_time) from {{ this }})
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
         UNION
@@ -304,8 +304,8 @@ FROM
         SELECT tc.evt_block_time AS block_time
         , '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS currency_contract
         , 'ETH' AS currency_symbol
-        , 'Arbitrum' AS blockchain
-        , 'Classic' AS tornado_version
+        , 'arbitrum' AS blockchain
+        , 'classic' AS tornado_version
         , at.from AS tx_from
         , tc.nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
@@ -321,18 +321,18 @@ FROM
         , tc.evt_index
         , TRY_CAST(date_trunc('DAY', tc.evt_block_time) AS date) AS block_date
         FROM {{ source('tornado_cash_arbitrum','ETHTornado_evt_Withdrawal') }} tc
-        LEFT JOIN {{ source('arbitrum','transactions') }} at
+        INNER JOIN {{ source('arbitrum','transactions') }} at
                 ON at.hash=tc.evt_tx_hash
                 {% if not is_incremental() %}
                 AND at.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_arbitrum','ETHTornado_evt_Withdrawal') }})
                 {% endif %}
                 {% if is_incremental() %}
-                AND at.block_time >= (select max(block_time) from {{ this }})
+                AND at.block_time >= date_trunc("day", now() - interval '1 week')
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= (select min(evt_block_time) from {{ source('tornado_cash_arbitrum','ETHTornado_evt_Withdrawal') }})
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= (select max(block_time) from {{ this }})
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 )
