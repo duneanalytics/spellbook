@@ -21,6 +21,9 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
 
+      - name: pip install dbt
+        run: "pip install dbt-databricks==1.2.1"
+
       - name: Set environment variables
         run: |
           echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-8)" >> $GITHUB_ENV
