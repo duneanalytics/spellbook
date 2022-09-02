@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       project: archipelago
-      contributors: [0xRob]
+      contributors: 0xRob
     config:
       tags: ['ethereum','archipelago','v1','events']
     description: >
@@ -130,7 +130,7 @@ models:
     meta:
       blockchain: ethereum
       project: archipelago
-      contributors: [0xRob]
+      contributors: 0xRob
     config:
       tags: ['ethereum','archipelago','trades']
     description: >
@@ -168,7 +168,7 @@ models:
     meta:
       blockchain: ethereum
       project: archipelago
-      contributors: [0xRob]
+      contributors: 0xRob
     config:
       tags: ['ethereum','archipelago','fees']
     description: >

@@ -9,7 +9,7 @@ WITH raw_events AS (
         AND evt_block_time < now() - interval '1 day' -- allow some head desync
 )
 
-WITH processed_events AS (
+, processed_events AS (
     SELECT
       block_time as processed_block_time
       , tx_hash as processed_tx_hash
