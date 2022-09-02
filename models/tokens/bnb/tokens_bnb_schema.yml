@@ -13,6 +13,8 @@ models:
     columns:
       - name: contract_address
         description: "BEP20 token contract address on BNB"
+        tests:
+          - unique
       - name: symbol
         description: "BEP20 token symbol"
       - name: decimals
