@@ -26,6 +26,9 @@ WITH positions AS (
 		,evt_block_number
 		,'1' AS version
 	FROM {{ source('pika_perp_optimism', 'PikaPerpV2_evt_NewPosition') }}
+	{% if is_incremental() %}
+	WHERE evt_block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
+	{% endif %}
 
 	UNION ALL
 	--closing positions
@@ -46,6 +49,9 @@ WITH positions AS (
 		,evt_block_number
 		,'1' AS version
 	FROM {{ source('pika_perp_optimism', 'PikaPerpV2_evt_ClosePosition') }}
+	{% if is_incremental() %}
+	WHERE evt_block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
+	{% endif %}
 ),
 
 perps AS (
@@ -118,6 +124,9 @@ perps AS (
 		,evt_tx_hash AS tx_hash
 		,evt_index
 	FROM positions
+	{% if is_incremental() %}
+	WHERE evt_block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
+	{% endif %}
 )
 
 SELECT
@@ -144,8 +153,8 @@ FROM perps
 INNER JOIN {{ source('optimism', 'transactions') }} AS tx
 	ON perps.tx_hash = tx.hash
 	{% if not is_incremental() %}
-	AND tx.block_time >= (SELECT MIN(block_time) FROM perps)
+	AND tx.block_time >= '2021-11-22'::DATE
 	{% endif %}
 	{% if is_incremental() %}
-	AND TRY_CAST(DATE_TRUNC('DAY', tx.block_time) AS date) = TRY_CAST(date_trunc('DAY', perps.block_time) AS date)
+	AND tx.block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
 	{% endif %}

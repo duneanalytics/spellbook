@@ -33,7 +33,7 @@ WITH perps AS (
 	LEFT JOIN {{ source('perp_v2_optimism', 'Vault_call_getFreeCollateralByRatio') }} AS co
 		ON p.evt_tx_hash = co.call_tx_hash
 	{% if is_incremental() %}
-	WHERE p.evt_block_time >= (SELECT MAX(block_time) FROM {{ this }})
+	WHERE p.evt_block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
 	{% endif %}
 	LEFT JOIN {{ source('perp_v2_optimism', 'MarketRegistry_evt_PoolAdded') }} AS pp
 		ON p.baseToken = pp.baseToken
@@ -66,8 +66,8 @@ LEFT JOIN {{ ref('tokens_optimism_erc20') }} AS e
 INNER JOIN {{ source('optimism', 'transactions') }} AS tx
 	ON perps.tx_hash = tx.hash
 	{% if not is_incremental() %}
-	AND tx.block_time >= (SELECT MIN(block_time) FROM perps)
+	AND tx.block_time >= '2021-11-22'::DATE
 	{% endif %}
 	{% if is_incremental() %}
-	AND TRY_CAST(DATE_TRUNC('DAY', tx.block_time) AS date) = TRY_CAST(date_trunc('DAY', perps.block_time) AS date)
+	AND tx.block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
 	{% endif %}
