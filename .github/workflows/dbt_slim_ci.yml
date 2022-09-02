@@ -20,10 +20,12 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
 
+      - name: Set environment variables
+        run: |
+          echo "GIT_SHA=${github.sha::7}" >> $GITHUB_ENV
+
       - name: Add git_sha to schema
-        env:
-          GIT_SHA: ${{ github.ref }}
-        run: sed -ie 's!^\(\s*schema:\)[^.]*!\1 git_$GIT_SHA!' profiles.yml
+        run: "/runner/change_schema.sh git_$GIT_SHA"
 
       - name: Get latest manifest
         env:
