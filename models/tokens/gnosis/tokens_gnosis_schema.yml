@@ -32,6 +32,8 @@ models:
     columns:
       - name: contract_address
         description: "The contract address is the unique address of where the NFTs are stored."
+        tests:
+          - unique
       - name: name
         description: "NFT Project Name"
       - name: symbol
