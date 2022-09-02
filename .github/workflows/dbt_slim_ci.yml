@@ -20,6 +20,11 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
 
+      - name: Add git_sha to schema
+        env:
+          GIT_SHA: ${{ github.ref }}
+        run: sed -ie 's!^\(\s*schema:\)[^.]*!\1 git_$GIT_SHA!' profiles.yml
+
       - name: Get latest manifest
         env:
           JOB_ID: "123193"

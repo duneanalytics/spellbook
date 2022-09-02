@@ -5,7 +5,7 @@
 
         {{ custom_schema_name | trim }}
 
-    {%- elif target.schema == "github_actions" -%}
+    {%- elif target.schema.startswith("git_") -%}
 
         {{ 'test_schema' }}
 
