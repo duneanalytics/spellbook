@@ -3,6 +3,9 @@ name: dbt slim ci (in beta)
 
 on:
   workflow_dispatch:
+  pull_request:
+    paths-ignore:
+      - 'deprecated-dune-v1-abstractions/**'
   push:
     branches:
       - 'main'
