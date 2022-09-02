@@ -31,21 +31,16 @@ jobs:
       - name: Get latest manifest
         env:
           JOB_ID: "123193"
-        working-directory: ./spellbook
         run: "/runner/fetch_latest_manifest.py --dbt_job_id $JOB_ID"
 
       - name: dbt compile to create manifest to compare to
-        working-directory: ./spellbook
         run: "dbt compile"
 
       - name: DBT seed
-        working-directory: ./spellbook
         run: "dbt seed --select state:modified --state ."
 
       - name: DBT run
-        working-directory: ./spellbook
         run: "dbt run --select state:modified --state ."
 
       - name: DBT test
-        working-directory: ./spellbook
         run: "dbt test --select state:new state:modified --state ."
