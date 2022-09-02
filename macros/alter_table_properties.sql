@@ -370,6 +370,24 @@ ALTER VIEW tokens_gnosis.nft SET TBLPROPERTIES ('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["hildobby"]');
 {% endset %}
 
+{% set tokens_candle_erc20 %}
+ALTER VIEW tokens_candle.erc20 SET TBLPROPERTIES ('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["candle"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='tokens',
+                                                    'dune.data_explorer.contributors'='["cndl"]');
+{% endset %}
+
+{% set tokens_candle_nft %}
+ALTER VIEW tokens_candle.nft SET TBLPROPERTIES ('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["candle"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='tokens',
+                                                    'dune.data_explorer.contributors'='["cndl"]');
+{% endset %}
+
 {% set transfers_ethereum_erc20 %}
 ALTER VIEW transfers_ethereum.erc20 SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum"]',

@@ -106,6 +106,9 @@ models:
     tokens:
       +schema: tokens
       +materialized: view
+      candle:
+        +schema: tokens_candle
+        +materialized: view
       ethereum:
         +schema: tokens_ethereum
         +materialized: view
