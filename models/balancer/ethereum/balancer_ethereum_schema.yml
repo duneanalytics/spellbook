@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: balancer_ethereum_balances
+    meta:
+      blockchain: ethereum
+      sector: balancer
+      contributors: dot2dotseurat
+    config:
+      tags: ['ethereum','balancer']
+    description: >
+        Spellbook workshop demo migration

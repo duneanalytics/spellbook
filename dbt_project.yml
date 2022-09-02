@@ -148,6 +148,13 @@ models:
       +schema: tornado_cash
       +materialized: view
 
+    balancer:
+      +schema: balancer
+      +materialized: view
+      ethereum:
+        +schema: balancer_ethereum
+        +materialized: view
+
 seeds:
   spellbook:
     balances:

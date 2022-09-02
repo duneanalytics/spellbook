@@ -1,3 +1,8 @@
+{{ config(
+        alias ='balances'
+        )
+}}
+
 WITH pools AS (
     SELECT distinct pool as pools
     FROM {{ source('balancer_ethereum','BFactory_evt_LOG_NEW_POOL') }}
@@ -7,7 +12,7 @@ WITH pools AS (
      joins AS (
          SELECT p.pools as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, SUM(value) AS amount
          FROM {{ source('erc20_ethereum','evt_transfer') }} e
-        INNER JOIN pools p ON e.`to` = p.pools
+             INNER JOIN pools p ON e.`to` = p.pools
          GROUP BY 1, 2, 3
 
          UNION ALL
@@ -22,7 +27,7 @@ WITH pools AS (
      exits AS (
          SELECT p.pools as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, -SUM(value) AS amount
          FROM {{ source('erc20_ethereum','evt_transfer') }} e
-        INNER JOIN pools p ON e.`from` = p.pools
+             INNER JOIN pools p ON e.`from` = p.pools
          GROUP BY 1, 2, 3
 
          UNION ALL
@@ -54,8 +59,8 @@ WITH pools AS (
      ),
 
      calendar AS (
-        select explode(sequence(to_date('2022-01-01'), current_date, interval 1 day)) as day
-              ),
+         select explode(sequence(to_date('2022-01-01'), current_date, interval 1 day)) as day
+     ),
 
      running_cumulative_balance_by_token AS (
          SELECT c.day, pool, token, cumulative_amount
