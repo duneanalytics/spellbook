@@ -3,6 +3,7 @@
 SELECT address, cex_name, distinct_name
 FROM (VALUES
     -- Binance, Source: https://etherscan.io/accounts/label/binance
+     ('0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be', 'TEST', 'Binance 1')
     ('0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be', 'Binance', 'Binance 1')
     , ('0xd551234ae421e3bcba99a0da6d736074f22192ff', 'Binance', 'Binance 2')
     , ('0x564286362092d8e7936f0549571a803b203aaced', 'Binance', 'Binance 3')
