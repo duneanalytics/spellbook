@@ -23,7 +23,7 @@ jobs:
 
       - name: Set environment variables
         run: |
-          echo "GIT_SHA=${github.sha::7}" >> $GITHUB_ENV
+          echo "GIT_SHA=${github.sha}" >> $GITHUB_ENV
 
       - name: Add git_sha to schema
         run: "/runner/change_schema.sh git_$GIT_SHA"
