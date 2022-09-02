@@ -2,11 +2,10 @@
 name: dbt slim ci (in beta)
 
 on:
-  push:
   workflow_dispatch:
-#  push:
-#    branches:
-#      - 'main'
+  push:
+    branches:
+      - 'main'
 
 concurrency:
   group: ${{ github.ref }}
