@@ -6,8 +6,6 @@ on:
   pull_request:
     paths-ignore:
       - 'deprecated-dune-v1-abstractions/**'
-    paths-ignore:
-      - 'deprecated-dune-v1-abstractions/**'
   push:
     branches:
       - 'main'
