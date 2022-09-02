@@ -3,9 +3,9 @@ version: 2
 models:
   - name: prices_tokens
     meta:
-      blockchain: ethereum, bnb, solana
+      blockchain: ethereum, bnb, solana, candle
       sector: prices
-      contibutors: aalan3
+      contibutors: aalan3, cndl
     config:
       tags: ['prices', 'tokens', 'usd']
     description: "Price tokens"
