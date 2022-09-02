@@ -33,6 +33,9 @@ jobs:
           JOB_ID: "123193"
         run: "/runner/fetch_latest_manifest.py --dbt_job_id $JOB_ID"
 
+      - name: dbt dependencies
+        run: "dbt deps"
+
       - name: dbt compile to create manifest to compare to
         run: "dbt compile"
 
