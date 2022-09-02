@@ -332,7 +332,7 @@ WITH
             , evt_type
             , seller
             , buyer
-            , amount_raw/number_of_items as amount_raw
+            , cast(amount_raw/number_of_items as double) as amount_raw
             , amount_original/number_of_items as amount_original
             , amount_usd/number_of_items as amount_usd
             , currency_symbol
