@@ -1,0 +1,48 @@
+# .github/workflows/app.yaml
+name: dbt slim ci (in beta)
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dbt-test:
+    runs-on: [ self-hosted, linux, spellbook ]
+    timeout-minutes: 60
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Set environment variables
+        run: |
+          echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-8)" >> $GITHUB_ENV
+
+      - name: Add git_sha to schema
+        run: "/runner/change_schema.sh git_$GIT_SHA"
+
+      - name: Get latest manifest
+        env:
+          JOB_ID: "123193"
+        run: "/runner/fetch_latest_manifest.py --dbt_job_id $JOB_ID"
+
+      - name: dbt dependencies
+        run: "dbt deps"
+
+      - name: dbt compile to create manifest to compare to
+        run: "dbt compile"
+
+      - name: DBT seed
+        run: "dbt seed --select state:modified --state ."
+
+      - name: DBT run
+        run: "dbt run --select state:modified --state ."
+
+      - name: DBT test
+        run: "dbt test --select state:new state:modified --state ."
