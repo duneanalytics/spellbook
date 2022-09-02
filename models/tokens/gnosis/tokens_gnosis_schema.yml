@@ -23,7 +23,7 @@ models:
   - name: tokens_gnosis_nft
     meta:
       blockchain: gnosis
-      sector: nft
+      sector: tokens
       contributors: hildobby
     config:
       tags: ['tokens', 'metadata', 'gnosis', 'nft', 'erc721']

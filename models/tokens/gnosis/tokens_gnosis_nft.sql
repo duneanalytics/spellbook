@@ -1,4 +1,4 @@
-{{ config(schema = 'token_gnosis',
+{{ config(schema = 'tokens_gnosis',
         alias='nft'
         )
 }}
