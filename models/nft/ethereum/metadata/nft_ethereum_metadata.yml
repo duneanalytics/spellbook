@@ -1,3 +1,5 @@
+version: 2
+
 models:
   - name: nft_ethereum_metadata_ringers
     meta:
