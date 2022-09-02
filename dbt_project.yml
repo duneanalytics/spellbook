@@ -40,8 +40,8 @@ models:
       bnb:
         +schema: nft_bnb
         +materialized: view
-      avalanche:
-        +schema: nft_avalanche
+      avalanche_c:
+        +schema: nft_avalanche_c
         +materialized: view
       polygon:
         +schema: nft_polygon
