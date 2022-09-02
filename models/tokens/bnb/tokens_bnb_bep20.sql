@@ -5,6 +5,7 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
   
 ('0x111111111117dc0aa78b770fa6a738034120c302', '1INCH', 18)
 ,('0xfb6115445bff7b52feb98650c87f44907e58f802', 'AAVE', 18)
+,('0x3ee2200efb3400fabb9aacf31297cbdd1d435d47', 'TEST', 18)
 ,('0x3ee2200efb3400fabb9aacf31297cbdd1d435d47', 'ADA', 18)
 ,('0x6bff4fb161347ad7de4a625ae5aa3a1ca7077819', 'ADX', 18)
 ,('0xAC51066d7bEC65Dc4589368da368b212745d63E8', 'ALICE', 6)
