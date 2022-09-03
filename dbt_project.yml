@@ -112,12 +112,6 @@ models:
       query_labels:
         +schema: query_labels
         +materialized: view
-        nft:
-          +schema: query_labels_nft
-          +materialized: view
-        safe:
-          +schema: query_labels_safe
-          +materialized: view
           
     tokens:
       +schema: tokens
@@ -153,11 +147,11 @@ models:
         +schema: sudoswap_ethereum
         +materialized: view
 
-    gnosis_safe:
-      +schema: gnosis_safe
+    safe:
+      +schema: safe
       +materialized: view
       ethereum:
-        +schema: gnosis_safe_ethereum
+        +schema: safe_ethereum
         +materialized: view
 
     tornado_cash:

@@ -28,7 +28,35 @@ models:
         description: "When were labels created"
       - name: updated_at
         description: "When were labels updated for the last time ?"
-
+  
+  - name: query_labels_nft_users_platforms
+    meta:
+      blockchain: ethereum, solana
+      sector: labels
+      category: nft
+      project: ['query','labels','opensea', 'looksrare', 'x2y2', 'magiceden']
+      contibutors: soispoke
+    config:
+      tags: ['query', 'labels', 'nft_traders', 'ethereum', 'solana', 'opensea', 'looksrare', 'x2y2', 'magiceden']
+    description: "NFT Platforms users across chains"   
+    columns:
+      - name: blockchain
+        description: "Blockchain"   
+      - name: address
+        description: "Address of NFT platforms users"
+      - name: name
+        description: "Label name (NFT Platform User)"
+      - name: category
+        description: "Label category (NFT here)"
+      - name: contributor
+        description: "Wizard(s) contributing to labels"
+      - name: source
+        description: "How were labels generated (could be static or query)"
+      - name: created_at
+        description: "When were labels created"
+      - name: updated_at
+        description: "When were labels updated for the last time ?"
+        
   - name: query_labels_nft_traders_transactions
     meta:
       blockchain: ethereum, solana

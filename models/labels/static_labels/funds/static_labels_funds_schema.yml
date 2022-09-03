@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: static_labels_funds
+    meta:
+      blockchain: ethereum
+      sector: labels
+      project: funds
+      contibutors: soispoke
+    config:
+      tags: ['static', 'labels', 'ethereum', 'funds']
+    description: "Known funds addresses across chains"
+    columns:
+      - name: blockchain
+        description: "Blockchain"   
+      - name: address
+        description: "Address of known Funds"
+      - name: name
+        description: "Label name for funds"
+      - name: category
+        description: "Label category"
+      - name: contributor
+        description: "Wizard(s) contributing to labels"
+      - name: source
+        description: "How were labels generated (could be static or query)"
+      - name: created_at
+        description: "When were labels created"
+      - name: updated_at
+        description: "When were labels updated for the last time ?"
+
+  - name: static_labels_funds_ethereum
+    meta:
+      blockchain: ethereum
+      sector: labels
+      project: funds
+      contibutors: hildobby, soispoke
+    config:
+      tags: ['static', 'labels', 'ethereum', 'funds']
+    description: "Known funds addresses on Ethereum"
+    columns:
+      - name: blockchain
+        description: "Blockchain"   
+      - name: address
+        description: "Address of known funds"
+      - name: name
+        description: "Label name of funds"
+      - name: category
+        description: "Label category"
+      - name: contributor
+        description: "Wizard(s) contributing to labels"
+      - name: source
+        description: "How were labels generated (could be static or query)"
+      - name: created_at
+        description: "When were labels created"
+      - name: updated_at
+        description: "When were labels updated for the last time ?"

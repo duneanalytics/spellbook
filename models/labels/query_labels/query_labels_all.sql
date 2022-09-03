@@ -4,6 +4,6 @@
 
 SELECT * FROM {{ ref('query_labels_nft') }}
 UNION
-SELECT * FROM {{ ref('query_labels_safe_ethereum') }}
+SELECT * FROM {{ ref('query_labels_gnosis_safe_ethereum') }}
 UNION
 SELECT * FROM {{ ref('query_labels_decoded_contracts') }}
