@@ -8,7 +8,7 @@ models:
       category: cex, nft
       contibutors: hildobby, soispoke
     config:
-      tags: ['static','query', 'labels', 'ethereum', 'solana', 'cex', 'nft']
+      tags: ['labels', 'ethereum', 'solana', 'cex', 'nft']
     description: "All labels across chains and categories"
     columns:
       - name: blockchain

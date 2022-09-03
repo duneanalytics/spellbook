@@ -4,6 +4,16 @@
     file_format = 'delta')
 }}
 
-SELECT * FROM {{ ref('static_labels_all') }}
+-- Static Labels
+SELECT * FROM {{ ref('labels_cex') }}
 UNION
-SELECT * FROM {{ ref('query_labels_all') }}
+SELECT * FROM {{ ref('labels_funds') }}
+UNION
+SELECT * FROM {{ ref('labels_submitted_contracts') }}
+UNION
+-- Query Labels
+SELECT * FROM {{ ref('labels_nft') }}
+UNION
+SELECT * FROM {{ ref('labels_gnosis_safe_ethereum') }}
+UNION
+SELECT * FROM {{ ref('labels_tornado_cash') }}

@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: query_labels_tornado_cash
+  - name: labels_tornado_cash
     meta:
       blockchain: ethereum
       sector: labels
@@ -9,7 +9,7 @@ models:
       project: ['tornado_cash']
       contibutors: soispoke
     config:
-      tags: ['query', 'labels', 'tornado_cash', 'ethereum', 'arbitrum','bnb','avalanche_c','optimism','gnosis']
+      tags: ['labels', 'tornado_cash', 'ethereum', 'arbitrum','bnb','avalanche_c','optimism','gnosis']
     description: "Tornado Cash depositors and recipients query labels across chains"   
     columns:
       - name: blockchain
@@ -29,7 +29,7 @@ models:
       - name: updated_at
         description: "When were labels updated for the last time ?"
 
-  - name: query_labels_tornado_cash_depositors
+  - name: labels_tornado_cash_depositors
     meta:
       blockchain: ethereum
       sector: labels
@@ -37,7 +37,7 @@ models:
       project: ['tornado_cash']
       contibutors: soispoke
     config:
-      tags: ['query', 'labels', 'tornado_cash', 'ethereum', 'arbitrum','bnb','avalanche_c','optimism','gnosis']
+      tags: ['labels', 'tornado_cash', 'ethereum', 'arbitrum','bnb','avalanche_c','optimism','gnosis']
     description: "Tornado Cash depositors query labels across chains"   
     columns:
       - name: blockchain
@@ -57,7 +57,7 @@ models:
       - name: updated_at
         description: "When were labels updated for the last time ?"
 
-  - name: query_labels_tornado_cash_recipients
+  - name: labels_tornado_cash_recipients
     meta:
       blockchain: ethereum
       sector: labels
@@ -65,7 +65,7 @@ models:
       project: ['tornado_cash']
       contibutors: soispoke
     config:
-      tags: ['query', 'labels', 'tornado_cash', 'ethereum', 'arbitrum','bnb','avalanche_c','optimism','gnosis']
+      tags: ['labels', 'tornado_cash', 'ethereum', 'arbitrum','bnb','avalanche_c','optimism','gnosis']
     description: "Tornado Cash recipients query labels across chains"   
     columns:
       - name: blockchain

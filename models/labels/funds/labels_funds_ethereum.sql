@@ -1,6 +1,4 @@
-{{config(alias='funds_ethereum',
-    materialized = 'table',
-    file_format = 'delta')}}
+{{config(alias='funds_ethereum')}}
 
 SELECT blockchain, address, name, category, contributor, source, created_at, updated_at
 FROM (VALUES

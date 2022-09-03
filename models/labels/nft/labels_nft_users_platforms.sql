@@ -1,6 +1,4 @@
-{{config(alias='nft_users_platforms',
-    materialized = 'table',
-    file_format = 'delta')}}
+{{config(alias='nft_users_platforms')}}
 
 WITH nft_trades AS (
 SELECT
@@ -27,4 +25,4 @@ SELECT
     now() as updated_at
 FROM nft_trades
 WHERE address is not null
-GROUP BY address, project
+GROUP BY address

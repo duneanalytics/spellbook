@@ -1,14 +1,14 @@
 version: 2
 
 models:
-  - name: static_labels_funds
+  - name: labels_funds
     meta:
       blockchain: ethereum
       sector: labels
       project: funds
       contibutors: soispoke
     config:
-      tags: ['static', 'labels', 'ethereum', 'funds']
+      tags: ['labels', 'ethereum', 'funds']
     description: "Known funds addresses across chains"
     columns:
       - name: blockchain
@@ -28,14 +28,14 @@ models:
       - name: updated_at
         description: "When were labels updated for the last time ?"
 
-  - name: static_labels_funds_ethereum
+  - name: labels_funds_ethereum
     meta:
       blockchain: ethereum
       sector: labels
       project: funds
       contibutors: hildobby, soispoke
     config:
-      tags: ['static', 'labels', 'ethereum', 'funds']
+      tags: ['labels', 'ethereum', 'funds']
     description: "Known funds addresses on Ethereum"
     columns:
       - name: blockchain

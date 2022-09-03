@@ -1,6 +1,4 @@
-{{config(alias='cex_ethereum',
-    materialized = 'table',
-    file_format = 'delta')}}
+{{config(alias='cex_ethereum')}}
 
 SELECT blockchain, address, name, category, contributor, source, created_at, updated_at
 FROM (VALUES

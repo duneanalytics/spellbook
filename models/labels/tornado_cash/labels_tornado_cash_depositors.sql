@@ -1,6 +1,4 @@
-{{config(alias='tornado_cash_depositors',
-    materialized = 'table',
-    file_format = 'delta')}}
+{{config(alias='tornado_cash_depositors')}}
 
 SELECT
     array(blockchain) as blockchain,

@@ -1,7 +1,5 @@
 
-{{config(alias='nft_traders_transactions',
-    materialized = 'table',
-    file_format = 'delta')}}
+{{config(alias='nft_traders_transactions')}}
 
 WITH nft_trades AS (
 SELECT

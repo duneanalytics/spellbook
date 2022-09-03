@@ -1,6 +1,4 @@
-{{config(alias='gnosis_safe_ethereum',
-    materialized = 'table',
-    file_format = 'delta')}}
+{{config(alias='gnosis_safe_ethereum')}}
 
 SELECT
     array('ethereum') as blockchain,
