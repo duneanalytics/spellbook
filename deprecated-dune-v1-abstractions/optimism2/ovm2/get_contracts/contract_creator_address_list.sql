@@ -317,6 +317,9 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x1826316Aec2F2D400086B3cAdfCb291238010efA	Homora V2
 \\xf8Bf80beB4cEe030d8C60e5942CA3749aE6beDF1	BlueSweep
 \\x94B90d0362D32AA14314D666A8968e1247508dfC	Hidden Hand
+\\xa3102370655EfE1b29De7898A85bF7Fef3f1fB8a	OptimismPad
+\\x1a86596A4F3398B6c44232ba1716e20e88205A40	OptimismPrime
+\\x685723b9dc89bdf28ba5f98f9a8c0ac899bd6e77	Jarvis Network
 \.
 
 COMMIT;

@@ -23,10 +23,12 @@ join {{ ref('safe_ethereum_safes') }} s on et.from = s.address
     and et.success = true
     and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
     and et.value > 0 -- exclue 0 value traces
-where et.block_time > '2018-11-24' -- for initial query optimisation
+{% if not is_incremental() %}
+where et.block_time > '2018-11-24' -- for initial query optimisation    
+{% endif %}
 {% if is_incremental() %}
 -- to prevent potential counterfactual safe deployment issues we take a bigger interval
-and et.block_time > (select max(block_time) from {{ this }}) - interval '10 days'
+where et.block_time > date_trunc("day", now() - interval '10 days')
 {% endif %}
         
 union all
@@ -44,8 +46,10 @@ join {{ ref('safe_ethereum_safes') }} s on et.to = s.address
     and et.success = true
     and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
     and et.value > 0 -- exclue 0 value traces
-where et.block_time > '2018-11-24' -- for initial query optimisation
+{% if not is_incremental() %}
+where et.block_time > '2018-11-24' -- for initial query optimisation    
+{% endif %}
 {% if is_incremental() %}
 -- to prevent potential counterfactual safe deployment issues we take a bigger interval
-and et.block_time > (select max(block_time) from {{ this }}) - interval '10 days'
+where et.block_time > date_trunc("day", now() - interval '10 days')
 {% endif %}
