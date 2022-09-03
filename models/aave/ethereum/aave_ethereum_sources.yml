@@ -39,17 +39,3 @@ sources:
         - name: variableBorrowRate
           description: "Variable borrow rate value of the reserve"     
           
-  - name: tokens_ethereum
-    description: "Decoded contracts related for ERC20 tokens on Ethereum"  
-    
-    tables:
-      - name: erc20
-        loaded_at_field: contract_address
-        description: "Provides the contract_address, symbole and decimals for ERC20 tokens."
-        columns: 
-        - name: contract_address
-          description: "ERC20 token contract address" 
-        - name: symbol
-          description: "ERC20 token symbol"
-        - name: decimals
-          description: "Number of decimals, refers to how divisible an ERC20 token can be" 
