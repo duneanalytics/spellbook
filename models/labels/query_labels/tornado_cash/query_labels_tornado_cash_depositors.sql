@@ -3,7 +3,7 @@
     file_format = 'delta')}}
 
 SELECT
-    array_agg(blockchain) as blockchain,
+    array(blockchain) as blockchain,
     depositor as address,
     'Tornado Cash Depositor' AS name,
     'tornado_cash' AS category,
