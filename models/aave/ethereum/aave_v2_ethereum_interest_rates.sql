@@ -8,6 +8,6 @@ select
   avg(a.stableBorrowRate) / 1e27 as stable_borrow_apy, 
   avg(a.variableBorrowRate) / 1e27 as variable_borrow_apy
 from {{ source('aave_v2_ethereum', 'LendingPool_evt_ReserveDataUpdated') }} a
-left join {{ ref('tokens_ethereum','erc20') }} t
+left join {{ ref('tokens_ethereum_erc20') }} t
 on a.reserve=t.contract_address
 group by 1,2,3
