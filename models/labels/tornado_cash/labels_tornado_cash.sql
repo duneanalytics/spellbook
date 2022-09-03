@@ -2,14 +2,14 @@
 
 WITH tornado_addresses AS (
 SELECT
-    blockchain,
+    lower(blockchain),
     tx_hash,
     depositor AS address,
     'Depositor' as name
 FROM {{ ref('tornado_cash_deposits') }}
 UNION
 SELECT
-    blockchain,
+    lower(blockchain),
     tx_hash,
     recipient AS address,
     'Recipient' as name

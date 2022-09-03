@@ -26,13 +26,13 @@ GROUP BY 1
 SELECT
     collect_set(nft_trades.blockchain) as blockchain,
     nft_trades.address,
-    CASE WHEN ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) < 10 
-              AND ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) >5 
+    CASE WHEN ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) =< 10 
+              AND ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) > 5 
             THEN 'Top 10% NFT Trader (Transaction)'
-         WHEN ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) < 5 
-              AND ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) >1 
+         WHEN ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) =< 5 
+              AND ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) > 1 
             THEN 'Top 5% NFT Trader (Transactions)'
-         WHEN ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) < 1 
+         WHEN ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) =< 1 
             THEN 'Top 1% NFT Trader (Transactions)' END AS name,
     'nft' AS category,
     'soispoke' AS contributor,
