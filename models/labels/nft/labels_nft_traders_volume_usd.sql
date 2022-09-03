@@ -23,7 +23,7 @@ GROUP BY 1
 )
 
 SELECT
-    array_agg(DISTINCT nft_trades.blockchain) as blockchain,
+    collect_set(nft_trades.blockchain) as blockchain,
     nft_trades.address,
     CASE WHEN ((ROW_NUMBER() OVER(ORDER BY SUM(amount_usd) DESC)) / total_count * 100) < 10 
               AND ((ROW_NUMBER() OVER(ORDER BY SUM(amount_usd) DESC)) / total_count * 100) > 5 

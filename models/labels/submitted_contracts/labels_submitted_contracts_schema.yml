@@ -3,7 +3,7 @@ version: 2
 models:
   - name: labels_submitted_contracts
     meta:
-      blockchain: ethereum
+      blockchain: ethereum, arbitrum, gnosis, optimism, bnb, avalanche_c
       sector: labels
       category: submitted_contracts
       contibutors:  soispoke

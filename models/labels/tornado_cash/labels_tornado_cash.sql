@@ -1,5 +1,29 @@
 {{config(alias='tornado_cash')}}
 
-SELECT * FROM {{ ref('labels_tornado_cash_depositors') }}
+WITH tornado_addresses AS (
+SELECT
+    blockchain,
+    tx_hash,
+    depositor AS address,
+    'Depositor' as name
+FROM {{ ref('tornado_cash_deposits') }}
 UNION
-SELECT * FROM {{ ref('labels_tornado_cash_recipients') }}
+SELECT
+    blockchain,
+    tx_hash,
+    recipient AS address,
+    'Recipient' as name
+FROM {{ ref('tornado_cash_withdrawals') }}
+)
+
+SELECT
+    collect_set(blockchain) as blockchain,
+    address,
+    array_join(collect_set(name),' and ') AS name,
+    'tornado_cash' AS category,
+    'soispoke' AS contributor,
+    'query' AS source,
+    timestamp('2022-10-01') as created_at,
+    now() as updated_at
+FROM tornado_addresses
+GROUP BY address
