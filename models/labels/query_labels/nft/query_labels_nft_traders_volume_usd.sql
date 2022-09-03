@@ -1,4 +1,3 @@
-
 {{config(alias='nft_traders_volume_usd')}}
 
 WITH nft_trades AS (
@@ -26,17 +25,16 @@ GROUP BY 1
 SELECT
     array_agg(DISTINCT nft_trades.blockchain) as blockchain,
     nft_trades.address,
-    CASE 
-        WHEN ((ROW_NUMBER() OVER(ORDER BY SUM(amount_usd) DESC)) / total_count * 100) > 10 
-            THEN 'NFT Trader'
-        WHEN ((ROW_NUMBER() OVER(ORDER BY SUM(amount_usd) DESC)) / total_count * 100) < 10 
+    CASE WHEN ((ROW_NUMBER() OVER(ORDER BY SUM(amount_usd) DESC)) / total_count * 100) < 10 
               AND ((ROW_NUMBER() OVER(ORDER BY SUM(amount_usd) DESC)) / total_count * 100) > 5 
             THEN 'Top 10% NFT Volume Trader'
          WHEN ((ROW_NUMBER() OVER(ORDER BY SUM(amount_usd) DESC)) / total_count * 100) < 5 
               AND ((ROW_NUMBER() OVER(ORDER BY SUM(amount_usd) DESC)) / total_count * 100) > 1 
             THEN 'Top 5% NFT Volume Trader'
          WHEN ((ROW_NUMBER() OVER(ORDER BY SUM(amount_usd) DESC)) / total_count * 100) < 1 
-            THEN 'Top 1% NFT Volume Trader' END AS name,
+            THEN 'Top 1% NFT Volume Trader'
+         WHEN ((ROW_NUMBER() OVER(ORDER BY SUM(amount_usd) DESC)) / total_count * 100) > 10 
+            THEN 'NFT Trader' END AS name,
     'nft' AS category,
     'soispoke' AS contributor,
     'query' AS source,
