@@ -1,5 +1,7 @@
 
-{{config(alias='nft_traders_transactions')}}
+{{config(alias='nft_traders_transactions',
+    materialized = 'table',
+    file_format = 'delta')}}
 
 WITH nft_trades AS (
 SELECT
@@ -28,14 +30,12 @@ SELECT
     nft_trades.address,
     CASE WHEN ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) < 10 
               AND ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) >5 
-         THEN 'Top 10% NFT Transactions Trader'
+            THEN 'Top 10% NFT Trader (Transaction)'
          WHEN ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) < 5 
               AND ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) >1 
-         THEN 'Top 5% NFT Transactions Trader'
+            THEN 'Top 5% NFT Trader (Transactions)'
          WHEN ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) < 1 
-         THEN 'Top 1% NFT Transactions Trader'
-         WHEN ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) > 10 
-         THEN 'NFT Trader' END AS name,
+            THEN 'Top 1% NFT Trader (Transactions)' END AS name,
     'nft' AS category,
     'soispoke' AS contributor,
     'query' AS source,

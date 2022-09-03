@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: query_labels_safe_ethereum
+  - name: query_labels_gnosis_safe_ethereum
     meta:
       blockchain: ethereum
       sector: labels

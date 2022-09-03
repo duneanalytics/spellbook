@@ -1,4 +1,6 @@
-{{config(alias='nft_traders_volume_usd')}}
+{{config(alias='nft_traders_volume_usd',
+    materialized = 'table',
+    file_format = 'delta')}}
 
 WITH nft_trades AS (
 SELECT
@@ -27,14 +29,12 @@ SELECT
     nft_trades.address,
     CASE WHEN ((ROW_NUMBER() OVER(ORDER BY SUM(amount_usd) DESC)) / total_count * 100) < 10 
               AND ((ROW_NUMBER() OVER(ORDER BY SUM(amount_usd) DESC)) / total_count * 100) > 5 
-            THEN 'Top 10% NFT Volume Trader'
+            THEN 'Top 10% NFT Trader (Volume in $USD)'
          WHEN ((ROW_NUMBER() OVER(ORDER BY SUM(amount_usd) DESC)) / total_count * 100) < 5 
               AND ((ROW_NUMBER() OVER(ORDER BY SUM(amount_usd) DESC)) / total_count * 100) > 1 
-            THEN 'Top 5% NFT Volume Trader'
+            THEN 'Top 5% NFT Trader (Volume in $USD)'
          WHEN ((ROW_NUMBER() OVER(ORDER BY SUM(amount_usd) DESC)) / total_count * 100) < 1 
-            THEN 'Top 1% NFT Volume Trader'
-         WHEN ((ROW_NUMBER() OVER(ORDER BY SUM(amount_usd) DESC)) / total_count * 100) > 10 
-            THEN 'NFT Trader' END AS name,
+            THEN 'Top 1% NFT Trader (Volume in $USD)' END AS name,
     'nft' AS category,
     'soispoke' AS contributor,
     'query' AS source,

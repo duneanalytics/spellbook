@@ -153,11 +153,11 @@ models:
         +schema: sudoswap_ethereum
         +materialized: view
 
-    safe:
-      +schema: safe
+    gnosis_safe:
+      +schema: gnosis_safe
       +materialized: view
       ethereum:
-        +schema: safe_ethereum
+        +schema: gnosis_safe_ethereum
         +materialized: view
 
     tornado_cash:

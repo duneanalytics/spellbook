@@ -1,4 +1,6 @@
-{{config(alias='nft')}}
+{{config(alias='nft',
+    materialized = 'table',
+    file_format = 'delta')}}
 
 SELECT * FROM {{ ref('query_labels_nft_traders_transactions') }}
 UNION
