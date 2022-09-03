@@ -5,6 +5,10 @@
 
         {{ custom_schema_name | trim }}
 
+    {%- elif target.schema.startswith("git_") -%}
+
+        {{ 'test_schema' }}
+
     {%- elif custom_schema_name is none -%}
 
         {{ default_schema }}
