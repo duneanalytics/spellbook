@@ -1,4 +1,5 @@
 --Fix project display names where the dune decoding doesn't match up (i.e. Perp vs Perp v2, Lyra vs Lyra v1)
+--Mapping are forced to lowercase, so we don't have to care about case-sensitivity
 
 CREATE SCHEMA IF NOT EXISTS ovm2;
 
@@ -23,10 +24,10 @@ uniswap_v3	Uniswap V3
 Uniswap V3	Uniswap V3
 oneinch	1inch
 pika_perp_v2	Pika Protocol
-quixotic_v1	Quixotic
-quixotic_v2	Quixotic
-quixotic_v3	Quixotic
-quixotic_v4	Quixotic
+quixotic_v1	Quix
+quixotic_v2	Quix
+quixotic_v3	Quix
+quixotic_v4	Quix
 across_v2	Across
 openocean_v2	OpenOcean
 setprotocol_v2	Set Protocol
@@ -39,7 +40,7 @@ bitbtc	Bitbtc Protocol
 teleportr	Teleportr/ Warp Speed
 balancer_v2	Beethoven X
 stargate	Stargate Finance
-quixotic_v5	Quixotic
+quixotic_v5	Quix
 lyra_avalon	Lyra
 Lyra Avalon	Lyra
 Unlock	Unlock Protocol
@@ -55,6 +56,7 @@ ironbank	Iron Bank
 iron_bank	Iron Bank
 bluesweep	BlueSweep
 hidden_hand	Hidden Hand
+quixotic	Quix
 \.
 
 COMMIT;
