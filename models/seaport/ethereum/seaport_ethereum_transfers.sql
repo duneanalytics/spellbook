@@ -82,10 +82,10 @@ with p1_call as (
 
 
 ,p1_add_rn as (select (max(case when purchase_method = 'Offer Accepted' and sub_type = 'offer' and sub_idx = 0 then token_contract_address
-                     when purchase_method = 'Buy Now' and sub_type = 'consideration' then token_contract_address
+                     when purchase_method = 'Buy' and sub_type = 'consideration' then token_contract_address
                 end) over (partition by tx_hash, evt_index)) as avg_original_currency_contract
           ,sum(case when purchase_method = 'Offer Accepted' and sub_type = 'offer' and sub_idx = 0 then original_amount
-                    when purchase_method = 'Buy Now' and sub_type = 'consideration' then original_amount
+                    when purchase_method = 'Buy' and sub_type = 'consideration' then original_amount
                end) over (partition by tx_hash, evt_index)
            / nft_transfer_count as avg_original_amount
           ,sum(case when fee_royalty_yn = 'fee' then original_amount end) over (partition by tx_hash, evt_index) / nft_transfer_count as avg_fee_amount
@@ -95,19 +95,19 @@ with p1_call as (
           ,a.*
       from (select case when purchase_method = 'Offer Accepted' and sub_type = 'consideration' and fee_royalty_idx = 1 then 'fee'
                         when purchase_method = 'Offer Accepted' and sub_type = 'consideration' and fee_royalty_idx = 2 then 'royalty'
-                        when purchase_method = 'Buy Now' and sub_type = 'consideration' and fee_royalty_idx = 2 then 'fee'
-                        when purchase_method = 'Buy Now' and sub_type = 'consideration' and fee_royalty_idx = 3 then 'royalty'
+                        when purchase_method = 'Buy' and sub_type = 'consideration' and fee_royalty_idx = 2 then 'fee'
+                        when purchase_method = 'Buy' and sub_type = 'consideration' and fee_royalty_idx = 3 then 'royalty'
                    end as fee_royalty_yn
                   ,case when purchase_method = 'Offer Accepted' and main_type = 'order' then 'Individual Offer'
                         when purchase_method = 'Offer Accepted' and main_type = 'basic_order' then 'Individual Offer'
                         when purchase_method = 'Offer Accepted' and main_type = 'advanced_order' then 'Collection/Trait Offers'
-                        else 'Buy Now'
+                        else 'Buy'
                    end as order_type
                   ,a.*
               from (select (count(case when item_type in ('2','3') then 1 end) over (partition by tx_hash, evt_index)) as nft_transfer_count
                           ,(sum(case when item_type in ('0','1') then 1 end) over (partition by tx_hash, evt_index, sub_type order by sub_idx)) as fee_royalty_idx
                           ,case when max(case when (sub_type,sub_idx,item_type) in (('offer',0,'1')) then 1 else 0 end) over (partition by tx_hash) = 1 then 'Offer Accepted'
-                                else 'Buy Now'
+                                else 'Buy'
                            end as purchase_method
                           ,a.*
                       from p1_evt a
@@ -356,7 +356,7 @@ with p1_call as (
           ,case when evt_tx_hash is null then true else false end as reverted
           ,'Bulk Purchase' as trade_type
           ,'Bulk Purchase' as order_type
-          ,'Buy Now' as purchase_method
+          ,'Buy' as purchase_method
       from p2_evt a
 )
 
@@ -519,10 +519,10 @@ with p1_call as (
 
 
 ,p3_add_rn as (select (max(case when purchase_method = 'Offer Accepted' and sub_type = 'offer' and sub_idx = 0 then token_contract_address::string
-                     when purchase_method = 'Buy Now' and sub_type = 'consideration' then token_contract_address::string
+                     when purchase_method = 'Buy' and sub_type = 'consideration' then token_contract_address::string
                 end) over (partition by tx_hash, evt_index)) as avg_original_currency_contract
           ,sum(case when purchase_method = 'Offer Accepted' and sub_type = 'offer' and sub_idx = 0 then original_amount
-                    when purchase_method = 'Buy Now' and sub_type = 'consideration' then original_amount
+                    when purchase_method = 'Buy' and sub_type = 'consideration' then original_amount
                end) over (partition by tx_hash, evt_index)
            / nft_transfer_count as avg_original_amount
           ,sum(case when fee_royalty_yn = 'fee' then original_amount end) over (partition by tx_hash, evt_index) / nft_transfer_count as avg_fee_amount
@@ -532,19 +532,19 @@ with p1_call as (
           ,a.*
       from (select case when purchase_method = 'Offer Accepted' and sub_type = 'consideration' and fee_royalty_idx = 1 then 'fee'
                         when purchase_method = 'Offer Accepted' and sub_type = 'consideration' and fee_royalty_idx = 2 then 'royalty'
-                        when purchase_method = 'Buy Now' and sub_type = 'consideration' and fee_royalty_idx = 2 then 'fee'
-                        when purchase_method = 'Buy Now' and sub_type = 'consideration' and fee_royalty_idx = 3 then 'royalty'
+                        when purchase_method = 'Buy' and sub_type = 'consideration' and fee_royalty_idx = 2 then 'fee'
+                        when purchase_method = 'Buy' and sub_type = 'consideration' and fee_royalty_idx = 3 then 'royalty'
                    end as fee_royalty_yn
                   ,case when purchase_method = 'Offer Accepted' and main_type = 'order' then 'Individual Offer'
                         when purchase_method = 'Offer Accepted' and main_type = 'basic_order' then 'Individual Offer'
                         when purchase_method = 'Offer Accepted' and main_type = 'advanced_order' then 'Collection/Trait Offers'
-                        else 'Buy Now'
+                        else 'Buy'
                    end as order_type
                   ,a.*
               from (select count(case when item_type in ('2','3') then 1 end) over (partition by tx_hash, evt_index) as nft_transfer_count
                           ,sum(case when item_type in ('0','1') then 1 end) over (partition by tx_hash, evt_index, sub_type order by sub_idx) as fee_royalty_idx
                           ,case when max(case when (sub_type,sub_idx,item_type) in (('offer',0,'1')) then 1 else 0 end) over (partition by tx_hash) = 1 then 'Offer Accepted'
-                                else 'Buy Now'
+                                else 'Buy'
                            end as purchase_method
                           ,a.*
                       from p3_evt a
@@ -786,7 +786,7 @@ with p1_call as (
           ,false as reverted
           ,'' as offer_order_type
           ,'Private Sales' as order_type
-          ,'Buy Now' as purchase_method
+          ,'Buy' as purchase_method
           ,nft_transfer_count
       from p4_add_rn a
      where offer_item_type in ('2','3')
