@@ -320,6 +320,9 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\xa3102370655EfE1b29De7898A85bF7Fef3f1fB8a	OptimismPad
 \\x1a86596A4F3398B6c44232ba1716e20e88205A40	OptimismPrime
 \\x685723b9dc89bdf28ba5f98f9a8c0ac899bd6e77	Jarvis Network
+\\x1e7b390149Abb3B891e0a7027E111188032D4540	RadioShack Swap
+\\x4C3490dF15edFa178333445ce568EC6D99b5d71c	Reaper Farm
+\\xf0974c239b7d08b7240b690b69ec3dd8ae783efc	Apetimism Launchapd
 \.
 
 COMMIT;
