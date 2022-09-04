@@ -134,7 +134,7 @@ WITH aggregator_routed_x2y2_txs AS (
     )
 
 SELECT 'ethereum' AS blockchain
-, 'X2Y2' AS project
+, 'x2y2' AS project
 , 'v1' AS version
 , TRY_CAST(date_trunc('DAY', txs.block_time) AS date) AS block_date
 , txs.block_time
