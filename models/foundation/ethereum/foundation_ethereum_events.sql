@@ -153,7 +153,7 @@ SELECT t.blockchain
 , t.platform_fee_amount_raw
 , t.platform_fee_amount
 , t.platform_fee_amount*pu.price AS platform_fee_amount_usd
-, ROUND(t.platform_fee_amount/t.amount_original, 2) AS platform_fee_percentage
+, 100.0*ROUND(t.platform_fee_amount/t.amount_original, 2) AS platform_fee_percentage
 , CASE WHEN t.royalty_fee_amount/t.amount_original < 0.5 THEN t.royalty_fee_amount_raw
     ELSE 0
     END AS royalty_fee_amount_raw
@@ -163,7 +163,7 @@ SELECT t.blockchain
 , CASE WHEN t.royalty_fee_amount/t.amount_original < 0.5 THEN t.royalty_fee_amount*pu.price
     ELSE 0
     END AS royalty_fee_amount_usd
-, CASE WHEN t.royalty_fee_amount/t.amount_original < 0.5 THEN ROUND(t.royalty_fee_amount/t.amount_original, 2)
+, CASE WHEN t.royalty_fee_amount/t.amount_original < 0.5 THEN 100.0*ROUND(t.royalty_fee_amount/t.amount_original, 2)
     ELSE 0
     END AS royalty_fee_percentage
 , ett.to AS royalty_fee_receive_address
