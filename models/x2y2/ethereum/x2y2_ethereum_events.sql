@@ -11,6 +11,7 @@
 WITH aggregator_routed_x2y2_txs AS (
     SELECT inv.evt_block_time AS block_time
     , inv.evt_block_number AS block_number
+    , inv.taker AS buyer
     , prof.to AS seller
     , ROUND(bytea2numeric_v2(substring(get_json_object(inv.item, '$.data'), 195,64)),0) AS token_id
     , get_json_object(inv.item, '$.price') AS amount_raw
@@ -42,7 +43,7 @@ WITH aggregator_routed_x2y2_txs AS (
 , direct_x2y2_txs AS (
     SELECT inv.evt_block_time AS block_time
     , inv.evt_block_number AS block_number
-    , CASE WHEN inv.currency = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' THEN maker ELSE taker END AS buyer
+    , inv.taker AS buyer
     , prof.to AS seller
     , ROUND(bytea2numeric_v2(substring(get_json_object(inv.item, '$.data'), 195,64)),0) AS token_id
     , get_json_object(inv.item, '$.price') AS amount_raw
@@ -73,7 +74,7 @@ WITH aggregator_routed_x2y2_txs AS (
 , aggregator_routed_x2y2_txs_formatted AS (
     SELECT block_time
     , block_number
-    , e721.to AS buyer
+    , buyer
     , seller
     , ROUND(token_id, 0) AS token_id
     , amount_raw
