@@ -11,6 +11,7 @@
 WITH aggregator_routed_x2y2_txs AS (
     SELECT inv.evt_block_time AS block_time
     , inv.evt_block_number AS block_number
+    , inv.taker AS buyer
     , prof.to AS seller
     , ROUND(bytea2numeric_v2(substring(get_json_object(inv.item, '$.data'), 195,64)),0) AS token_id
     , get_json_object(inv.item, '$.price') AS amount_raw
@@ -28,7 +29,8 @@ WITH aggregator_routed_x2y2_txs AS (
     , COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.percentage')/1e6, 0) AS royalty_fee_percentage
     , get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.to') AS royalty_fee_receive_address
     FROM {{ source('x2y2_ethereum','X2Y2_r1_evt_EvProfit') }} prof
-    INNER JOIN {{ source('x2y2_ethereum','X2Y2_r1_evt_EvInventory') }} inv ON inv.itemHash = prof.itemHash
+    INNER JOIN {{ source('x2y2_ethereum','X2Y2_r1_evt_EvInventory') }} inv  ON inv.evt_block_time=prof.evt_block_time
+        AND inv.itemHash = prof.itemHash
     LEFT JOIN {{ ref('tokens_ethereum_nft') }} tokens ON ('0x' || substring(get_json_object(inv.item, '$.data'), 155, 40)) = tokens.contract_address
     LEFT JOIN {{ ref('nft_ethereum_aggregators') }} agg ON agg.contract_address=taker
     WHERE taker IN (SELECT contract_address FROM {{ ref('nft_ethereum_aggregators') }})
@@ -41,7 +43,7 @@ WITH aggregator_routed_x2y2_txs AS (
 , direct_x2y2_txs AS (
     SELECT inv.evt_block_time AS block_time
     , inv.evt_block_number AS block_number
-    , CASE WHEN inv.currency = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' THEN maker ELSE taker END AS buyer
+    , inv.taker AS buyer
     , prof.to AS seller
     , ROUND(bytea2numeric_v2(substring(get_json_object(inv.item, '$.data'), 195,64)),0) AS token_id
     , get_json_object(inv.item, '$.price') AS amount_raw
@@ -59,7 +61,8 @@ WITH aggregator_routed_x2y2_txs AS (
     , COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.percentage')/1e6, 0) AS royalty_fee_percentage
     , get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.to') AS royalty_fee_receive_address
     FROM  {{ source('x2y2_ethereum','X2Y2_r1_evt_EvProfit') }} prof
-    INNER JOIN {{ source('x2y2_ethereum','X2Y2_r1_evt_EvInventory') }} inv ON inv.itemHash=prof.itemHash
+    INNER JOIN {{ source('x2y2_ethereum','X2Y2_r1_evt_EvInventory') }} inv  ON inv.evt_block_time=prof.evt_block_time
+        AND inv.itemHash=prof.itemHash
     LEFT JOIN {{ ref('tokens_ethereum_nft') }} tokens ON ('0x' || substring(get_json_object(inv.item, '$.data'), 155, 40)) = tokens.contract_address
     WHERE taker NOT IN (SELECT contract_address FROM {{ ref('nft_ethereum_aggregators') }})
     {% if is_incremental() %}
@@ -71,9 +74,9 @@ WITH aggregator_routed_x2y2_txs AS (
 , aggregator_routed_x2y2_txs_formatted AS (
     SELECT block_time
     , block_number
-    , e721.to AS buyer
+    , buyer
     , seller
-    , token_id
+    , CAST(token_id AS int) AS token_id
     , amount_raw
     , currency_contract
     , project_contract_address
@@ -90,8 +93,9 @@ WITH aggregator_routed_x2y2_txs AS (
     , royalty_fee_percentage
     , royalty_fee_receive_address
     FROM aggregator_routed_x2y2_txs txs
-    LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} e721 ON txs.tx_hash = e721.evt_tx_hash
-        AND txs.token_id = e721.tokenId
+    LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} e721 ON txs.block_time = e721.evt_block_time
+        AND txs.tx_hash = e721.evt_tx_hash
+        AND CAST(txs.token_id AS int) = e721.tokenId
         AND e721.contract_address = txs.project_contract_address
         AND to NOT IN (SELECT contract_address FROM {{ ref('nft_ethereum_aggregators') }})
     {% if is_incremental() %}
@@ -105,7 +109,7 @@ WITH aggregator_routed_x2y2_txs AS (
     , block_number
     , buyer
     , seller
-    , token_id
+    , CAST(token_id AS int) AS token_id
     , amount_raw
     , currency_contract
     , project_contract_address
@@ -131,7 +135,7 @@ WITH aggregator_routed_x2y2_txs AS (
     )
 
 SELECT 'ethereum' AS blockchain
-, 'X2Y2' AS project
+, 'x2y2' AS project
 , 'v1' AS version
 , TRY_CAST(date_trunc('DAY', txs.block_time) AS date) AS block_date
 , txs.block_time
@@ -174,7 +178,7 @@ SELECT 'ethereum' AS blockchain
 , CASE WHEN currency_contract='0x0000000000000000000000000000000000000000' THEN pu.price*platform_fee_amount_raw/POWER(10, 18)
     ELSE pu.price*platform_fee_amount_raw/POWER(10, pu.decimals)
     END AS platform_fee_amount_usd
-, platform_fee_percentage
+, platform_fee_percentage*100 AS platform_fee_percentage
 , royalty_fee_amount_raw
 , CASE WHEN currency_contract='0x0000000000000000000000000000000000000000' THEN royalty_fee_amount_raw/POWER(10, 18)
     ELSE royalty_fee_amount_raw/POWER(10, pu.decimals)
@@ -182,14 +186,15 @@ SELECT 'ethereum' AS blockchain
 , CASE WHEN currency_contract='0x0000000000000000000000000000000000000000' THEN pu.price*royalty_fee_amount_raw/POWER(10, 18)
     ELSE pu.price*royalty_fee_amount_raw/POWER(10, pu.decimals)
     END AS royalty_fee_amount_usd
-, royalty_fee_percentage
+, royalty_fee_percentage*100 AS royalty_fee_percentage
 , royalty_fee_receive_address
 , CASE WHEN currency_contract='0x0000000000000000000000000000000000000000' THEN 'ETH'
     ELSE pu.symbol
     END AS royalty_fee_currency_symbol
 , 'x2y2-' || txs.tx_hash || '-' || txs.nft_contract_address || txs.token_id || '-' || txs.seller || '-' || txs.evt_index || 'Trade' AS unique_trade_id
 FROM all_x2y2_txs txs
-INNER JOIN {{ source('ethereum','transactions') }} et ON et.hash=txs.tx_hash
+INNER JOIN {{ source('ethereum','transactions') }} et ON et.block_time=txs.block_time
+    AND et.hash=txs.tx_hash
     {% if is_incremental() %}
     AND et.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
@@ -200,7 +205,8 @@ LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain='ethereum'
     {% if is_incremental() %}
     AND pu.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct ON txs.project_contract_address=erct.contract_address
+LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct ON erct.evt_block_time=txs.block_time
+    AND txs.nft_contract_address=erct.contract_address
     AND erct.evt_tx_hash=txs.tx_hash
     AND erct.tokenId=txs.token_id
     AND erct.from=txs.seller
