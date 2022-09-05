@@ -33,7 +33,7 @@ WITH dexs AS
         '0xf9c1fa7d41bf44ade1dd08d37cc68f67ae75bf92', -- remove WETH-WETH wash trading pair
         '0x854373387e41371ac6e307a1f29603c6fa10d872' ) -- remove FEG/ETH token pair
     {% if is_incremental() %}
-    AND t.evt_block_time >= (SELECT MAX(block_time) FROM {{ this }})
+    AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
 SELECT
