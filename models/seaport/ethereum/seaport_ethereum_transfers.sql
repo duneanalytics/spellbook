@@ -227,7 +227,8 @@ with p1_call as (
                 case when a.original_currency_contract = '0x0000000000000000000000000000000000000000'
                 then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                 else a.original_currency_contract
-                end and t1.blockchain = 'ethereum'
+                end 
+            and t1.blockchain = 'ethereum'
           left join {{ source('prices', 'usd') }} p1
             on p1.contract_address =
                 case when a.original_currency_contract = '0x0000000000000000000000000000000000000000'
@@ -662,7 +663,8 @@ with p1_call as (
                 case when a.original_currency_contract = '0x0000000000000000000000000000000000000000'
                 then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                 else a.original_currency_contract
-                end and t1.blockchain = 'ethereum'
+                end 
+            and t1.blockchain = 'ethereum'
           left join {{ source('prices', 'usd') }} p1
             on p1.contract_address =
                 case when a.original_currency_contract = '0x0000000000000000000000000000000000000000'
@@ -862,12 +864,13 @@ with p1_call as (
         ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
     left join {{ ref('tokens_nft') }} n
         on n.contract_address = concat('0x',substr(a.nft_address,3,40)) and n.blockchain = 'ethereum'
-    left join {{ ref('tokens_ethereum_erc20') }} t1
+    left join {{ ref('tokens_erc20') }} t1
         on t1.contract_address =
             case when concat('0x',substr(a.price_token,3,40)) = '0x0000000000000000000000000000000000000000'
             then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
             else concat('0x',substr(a.price_token,3,40))
-            end and t1.blockchain = 'ethereum'
+            end 
+        and t1.blockchain = 'ethereum'
         left join {{ source('prices', 'usd') }} p1
         on p1.contract_address =
             case when concat('0x',substr(a.price_token,3,40)) = '0x0000000000000000000000000000000000000000'
