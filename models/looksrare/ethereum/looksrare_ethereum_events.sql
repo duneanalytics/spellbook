@@ -176,7 +176,7 @@ INNER JOIN {{ source('ethereum','transactions') }} tx ON tx_hash = tx.hash
     AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN erc_transfers erc ON erc.evt_tx_hash = tx_hash AND erc.token_id_erc = token_id
-LEFT JOIN {{ ref('tokens_ethereum_nft') }} tokens ON tokens.contract_address =  nft_contract_address
+LEFT JOIN {{ ref('tokens_nft') }} tokens ON tokens.contract_address =  nft_contract_address AND tokens.blockchain = 'ethereum'
 LEFT JOIN  {{ ref('nft_aggregators') }} agg ON agg.contract_address = tx.to and agg.blockchain = 'ethereum'
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', looks_rare.block_time)
     AND p.contract_address = currency_contract
@@ -184,7 +184,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', loo
     {% if is_incremental() %}
     AND p.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20 ON erc20.contract_address = currency_contract
+LEFT JOIN {{ ref('tokens_erc20') }} erc20 ON erc20.contract_address = currency_contract AND erc20.blockchain = 'ethereum'
 WHERE number_of_items >= 1
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run

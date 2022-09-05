@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: tokens_erc20
+    meta:
+      blockchain: avalanche_c, bnb, ethereum, gnosis, optimism
+      sector: tokens
+      contributors: hildobby, 0xManny, dot2dotseurat, soispoke
+    config:
+      tags: ['tokens','erc20', 'avalanche_c', 'bnb','ethereum', 'gnosis','optimism']
+    description: >
+        Crosschain ERC20 tokens
+    columns:
+      - name: contract_address
+        description: "ERC20 Token's contract address"
+      - name: symbol
+        description: "ERC20 Token's symbol"
+      - name: decimals
+        description: "ERC20 Token's number of decimals"
+  
+  - name: tokens_nft
+    meta:
+      blockchain: avalanche_c, bnb, ethereum, gnosis, optimism
+      sector: tokens
+      contributors: hildobby, 0xManny, dot2dotseurat, soispoke
+    config:
+      tags: ['tokens','nft', 'avalanche_c', 'bnb','ethereum', 'gnosis','optimism']
+    description: >
+        Crosschain NFT (ERC721 and ERC1155) tokens
+    columns:
+      - name: contract_address
+        description: "NFT Token's contract address"
+      - name: symbol
+        description: "NFT Token's symbol"
+      - name: decimals
+        description: "NFT Token's number of decimals"
