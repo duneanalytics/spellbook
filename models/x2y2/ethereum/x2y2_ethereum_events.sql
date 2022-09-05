@@ -76,7 +76,7 @@ WITH aggregator_routed_x2y2_txs AS (
     , block_number
     , buyer
     , seller
-    , ROUND(token_id, 0) AS token_id
+    , CAST(token_id AS int) AS token_id
     , amount_raw
     , currency_contract
     , project_contract_address
@@ -109,7 +109,7 @@ WITH aggregator_routed_x2y2_txs AS (
     , block_number
     , buyer
     , seller
-    , ROUND(token_id, 0) AS token_id
+    , CAST(token_id AS int) AS token_id
     , amount_raw
     , currency_contract
     , project_contract_address
