@@ -22,9 +22,4 @@ left join {{ ref('tokens_ethereum_erc20') }} t on t.contract_address = tr.token_
 -- this filter will only be applied on an incremental run
 where date_trunc('day', tr.evt_block_time) > now() - interval 2 days
 {% endif %}
-group by
-    date_trunc('day', tr.evt_block_time),
-  tr.wallet_address,
-  tr.token_address,
-  t.symbol,
-  tr.wallet_address || '-' || tr.token_address || '-' || date_trunc('day', tr.evt_block_time)
+group by 1, 2, 3, 4, 5, 6
