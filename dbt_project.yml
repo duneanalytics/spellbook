@@ -154,7 +154,7 @@ models:
       ethereum:
         +schema: archipelago_ethereum
         +materialized: view
-
+                
     integration_test:
       +schema: integration_test
       +materialized: view
