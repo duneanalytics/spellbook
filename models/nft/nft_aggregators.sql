@@ -3,10 +3,10 @@
 )
 }}
 
-SELECT * FROM  {{ ref('nft_avalanche_c_aggregators') }}
+SELECT 'avalanche_c' as blockchain, * FROM  {{ ref('nft_avalanche_c_aggregators') }}
 UNION
-SELECT * FROM  {{ ref('nft_bnb_aggregators') }}
+SELECT 'bnb' as blockchain, * FROM  {{ ref('nft_bnb_aggregators') }}
 UNION
-SELECT * FROM  {{ ref('nft_ethereum_aggregators') }}
+SELECT 'ethereum' as blockchain, * FROM  {{ ref('nft_ethereum_aggregators') }}
 UNION
-SELECT * FROM  {{ ref('nft_polygon_aggregators') }}
+SELECT 'polygon' as blockchain, * FROM  {{ ref('nft_polygon_aggregators') }}

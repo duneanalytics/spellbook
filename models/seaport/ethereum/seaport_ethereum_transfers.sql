@@ -218,8 +218,8 @@ with p1_call as (
             {% if is_incremental() %}
             and tx.block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
-        left join {{ ref('nft_ethereum_aggregators') }} agg
-            ON agg.contract_address = tx.to
+        left join {{ ref('nft_aggregators') }} agg
+            ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
         left join {{ ref('tokens_ethereum_nft') }} n
             on n.contract_address = nft_contract_address
         left join {{ ref('tokens_ethereum_erc20') }} t1
@@ -423,8 +423,8 @@ with p1_call as (
             {% if is_incremental() %}
             and tx.block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
-        left join {{ ref('nft_ethereum_aggregators') }} agg
-            ON agg.contract_address = tx.to
+        left join {{ ref('nft_aggregators') }} agg
+            ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
         left join {{ ref('tokens_ethereum_nft') }} n
             on n.contract_address = concat('0x',substr(a.nft_address,3,40))
         left join {{ ref('tokens_ethereum_erc20') }} t1
@@ -653,8 +653,8 @@ with p1_call as (
             {% if is_incremental() %}
             and tx.block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
-        left join {{ ref('nft_ethereum_aggregators') }} agg
-            ON agg.contract_address = tx.to
+        left join {{ ref('nft_aggregators') }} agg
+            ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
         left join {{ ref('tokens_ethereum_nft') }} n
             on n.contract_address = nft_contract_address
         left join {{ ref('tokens_ethereum_erc20') }} t1
@@ -858,8 +858,8 @@ with p1_call as (
         {% if is_incremental() %}
         and tx.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    left join {{ ref('nft_ethereum_aggregators') }} agg
-        ON agg.contract_address = tx.to
+    left join {{ ref('nft_aggregators') }} agg
+        ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
     left join {{ ref('tokens_ethereum_nft') }} n
         on n.contract_address = concat('0x',substr(a.nft_address,3,40))
     left join {{ ref('tokens_ethereum_erc20') }} t1
