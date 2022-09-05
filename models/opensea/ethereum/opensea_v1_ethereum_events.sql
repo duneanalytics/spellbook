@@ -187,7 +187,7 @@ INNER JOIN {{ source('ethereum','transactions') }} tx ON wa.call_tx_hash = tx.ha
     {% endif %}
 LEFT JOIN erc_transfers ON erc_transfers.evt_tx_hash = wa.call_tx_hash AND (wa.token_id = erc_transfers.token_id_erc
 OR wa.token_id = null)
-LEFT JOIN {{ ref('tokens_ethereum_nft') }} tokens_nft ON tokens_nft.contract_address = wa.nft_contract_address
+LEFT JOIN {{ ref('tokens_nft') }} tokens_nft ON tokens_nft.contract_address = wa.nft_contract_address and tokens_nft.blockchain = 'ethereum'
 LEFT JOIN {{ ref('nft_aggregators') }} agg ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', tx.block_time)
     AND p.contract_address = wa.currency_contract
@@ -195,7 +195,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', tx.
     {% if is_incremental() %}
     AND p.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20 ON erc20.contract_address = wa.currency_contract
+LEFT JOIN {{ ref('tokens_erc20') }} erc20 ON erc20.contract_address = wa.currency_contract and erc20.blockchain = 'ethereum'
   WHERE wa.call_tx_hash not in (
     SELECT
       *
