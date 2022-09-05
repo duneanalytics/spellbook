@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: nft_avalanche_aggregators
+  - name: nft_avalanche_c_aggregators
     meta:
       blockchain: avalanche_c
       sector: nft
       contributors: hildobby
     config:
-      tags: ['nft', 'avalanche', 'aggregators']
+      tags: ['nft', 'avalanche_c', 'aggregators']
     description: >
         NFT aggregators
     columns:
