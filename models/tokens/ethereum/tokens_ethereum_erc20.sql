@@ -6587,7 +6587,7 @@ FROM (VALUES
           ('0xcbccbb06f572df174a7da47684cdc28121fec421', 'OSAKU', 9),
           ('0x06d5ca7c9accd15a87d4993a421b7e702bdbab20', 'X7m105', 18),
           ('0x9e980d7bdab85f0d58b3d5823a24d84879451ab4', 'PLSS', 18),
-          ('0x79a06acb8bdd138beeecce0f1605971f3ac7c09b', '$LSVR', 18)
+          ('0x79a06acb8bdd138beeecce0f1605971f3ac7c09b', '$LSVR', 18),
           ('0xe0eebce5e3c5d6489bc47d060bb61386309c6bce', 'KJI', 18),
           ('0x7b4328c127b85369d9f82ca0503b000d09cf9180', 'DC', 18),
           ('0x7b4bc0f9567a3db0b900e2078982986c451e7393', 'NGMI', 18),
@@ -6619,5 +6619,5 @@ FROM (VALUES
           ('0xc669928185dbce49d2230cc9b0979be6dc797957', 'BTT', 18),
           ('0x93b743fb12a2677adb13093f8ea8464a436da008', 'SNACK', 18),
           ('0x14079e63e492bb7df6aeb4fe4e48cb4f18f3488a', 'BARK', 18),
-          ('0x2ec3275f7ace4044e499823f511cd58250be8e3d', 'PRVG', 8),
+          ('0x2ec3275f7ace4044e499823f511cd58250be8e3d', 'PRVG', 8)
      ) AS temp_table (contract_address, symbol, decimals)
