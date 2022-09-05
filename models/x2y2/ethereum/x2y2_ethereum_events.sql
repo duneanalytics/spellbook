@@ -29,7 +29,7 @@ WITH aggregator_routed_x2y2_txs AS (
     , get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.to') AS royalty_fee_receive_address
     FROM {{ source('x2y2_ethereum','X2Y2_r1_evt_EvProfit') }} prof
     INNER JOIN {{ source('x2y2_ethereum','X2Y2_r1_evt_EvInventory') }} inv ON inv.itemHash = prof.itemHash
-    LEFT JOIN {{ ref('tokens_ethereum_nft') }} tokens ON ('0x' || substring(get_json_object(inv.item, '$.data'), 155, 40)) = tokens.contract_address
+    LEFT JOIN {{ ref('tokens_nft') }} tokens ON ('0x' || substring(get_json_object(inv.item, '$.data'), 155, 40)) = tokens.contract_address AND tokens.blockchain = 'ethereum'
     LEFT JOIN {{ ref('nft_ethereum_aggregators') }} agg ON agg.contract_address=taker
     WHERE taker IN (SELECT contract_address FROM {{ ref('nft_ethereum_aggregators') }})
     {% if is_incremental() %}
@@ -60,7 +60,7 @@ WITH aggregator_routed_x2y2_txs AS (
     , get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.to') AS royalty_fee_receive_address
     FROM  {{ source('x2y2_ethereum','X2Y2_r1_evt_EvProfit') }} prof
     INNER JOIN {{ source('x2y2_ethereum','X2Y2_r1_evt_EvInventory') }} inv ON inv.itemHash=prof.itemHash
-    LEFT JOIN {{ ref('tokens_ethereum_nft') }} tokens ON ('0x' || substring(get_json_object(inv.item, '$.data'), 155, 40)) = tokens.contract_address
+    LEFT JOIN {{ ref('tokens_nft') }} tokens ON ('0x' || substring(get_json_object(inv.item, '$.data'), 155, 40)) = tokens.contract_address AND tokens.blockchain = 'ethereum'
     WHERE taker NOT IN (SELECT contract_address FROM {{ ref('nft_ethereum_aggregators') }})
     {% if is_incremental() %}
     -- this filter will only be applied on an incremental run
