@@ -111,5 +111,5 @@ WHERE (
      {% endif %}
      {% if is_incremental() %}
      -- this filter will only be applied on an incremental run
-     AND block_date >= date_trunc("day", now() - interval '1 week')
+     AND block_time >= date_trunc("day", now() - interval '1 week')
      {% endif %}
