@@ -177,7 +177,7 @@ INNER JOIN {{ source('ethereum','transactions') }} tx ON tx_hash = tx.hash
     {% endif %}
 LEFT JOIN erc_transfers erc ON erc.evt_tx_hash = tx_hash AND erc.token_id_erc = token_id
 LEFT JOIN {{ ref('tokens_ethereum_nft') }} tokens ON tokens.contract_address =  nft_contract_address
-LEFT JOIN  {{ ref('nft_ethereum_aggregators') }} agg ON agg.contract_address = tx.to
+LEFT JOIN  {{ ref('nft_aggregators') }} agg ON agg.contract_address = tx.to and agg.blockchain = 'ethereum'
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', looks_rare.block_time)
     AND p.contract_address = currency_contract
     AND p.blockchain ='ethereum'
