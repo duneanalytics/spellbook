@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       project: seaport
-      contributors: sohwak, soispoke
+      contributors: sohwak, soispoke, hildobby
     config:
       tags: ['ethereum','seaport','opensea','transaction']
     description: >
@@ -81,7 +81,7 @@ models:
     meta:
       blockchain: ethereum
       project: seaport
-      contributors: soispoke, sohwak
+      contributors: soispoke, sohwak, hildobby
     config:
       tags: ['ethereum','seaport','transfers']
     description: >
