@@ -95,7 +95,7 @@ WITH aggregator_routed_x2y2_txs AS (
     FROM aggregator_routed_x2y2_txs txs
     LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} e721 ON txs.block_time = e721.evt_block_time
         AND txs.tx_hash = e721.evt_tx_hash
-        AND ROUND(txs.token_id, 0) = e721.tokenId
+        AND CAST(txs.token_id AS int) = e721.tokenId
         AND e721.contract_address = txs.project_contract_address
         AND to NOT IN (SELECT contract_address FROM {{ ref('nft_ethereum_aggregators') }})
     {% if is_incremental() %}
