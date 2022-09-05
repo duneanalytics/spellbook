@@ -334,7 +334,7 @@ WITH
             , evt_type
             , seller
             , buyer
-            , amount_raw/number_of_items as amount_raw
+            , cast(amount_raw/number_of_items as double) as amount_raw
             , amount_original/number_of_items as amount_original
             , amount_usd/number_of_items as amount_usd
             , currency_symbol
@@ -348,7 +348,7 @@ WITH
             , aggregator_address
             , aggregator_name
             , platform_fee_amount/number_of_items as platform_fee_amount
-            , platform_fee_amount_raw/number_of_items as platform_fee_amount_raw
+            , cast(platform_fee_amount_raw/number_of_items as double) as platform_fee_amount_raw
             , platform_fee_amount_usd/number_of_items as platform_fee_amount_usd
             , platform_fee_percentage
             , pool_fee_amount/number_of_items as pool_fee_amount
