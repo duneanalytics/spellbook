@@ -641,6 +641,33 @@ ALTER VIEW tokens_optimism.erc20 SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["msilb7", "chuxinh"]');
 {% endset %}
 
+{% set archipelago_ethereum_events %}
+ALTER TABLE archipelago_ethereum.events  SET TBLPROPERTIES ('dune.public'='true',
+                                                        'dune.data_explorer.blockchains'='["ethereum"]',
+                                                        'dune.data_explorer.category'='abstraction',
+                                                        'dune.data_explorer.abstraction.type'='project',
+                                                        'dune.data_explorer.abstraction.name'='archipelago',
+                                                        'dune.data_explorer.contributors'='["0xRob"]');
+{% endset %}
+
+{% set archipelago_ethereum_trades %}
+ALTER VIEW archipelago_ethereum.trades  SET TBLPROPERTIES ('dune.public'='true',
+                                                            'dune.data_explorer.blockchains'='["ethereum"]',
+                                                            'dune.data_explorer.category'='abstraction',
+                                                            'dune.data_explorer.abstraction.type'='project',
+                                                            'dune.data_explorer.abstraction.name'='archipelago',
+                                                            'dune.data_explorer.contributors'='["0xRob"]');
+{% endset %}
+
+{% set archipelago_ethereum_fees %}
+ALTER VIEW archipelago_ethereum.fees  SET TBLPROPERTIES ('dune.public'='true',
+                                                        'dune.data_explorer.blockchains'='["ethereum"]',
+                                                        'dune.data_explorer.category'='abstraction',
+                                                        'dune.data_explorer.abstraction.type'='project',
+                                                        'dune.data_explorer.abstraction.name'='archipelago',
+                                                        'dune.data_explorer.contributors'='["0xRob"]');
+{% endset %}
+
 
 {% do run_query(balances_ethereum_erc20_day) %}
 {% do run_query(balances_ethereum_erc20_hour) %}
@@ -712,6 +739,9 @@ ALTER VIEW tokens_optimism.erc20 SET TBLPROPERTIES('dune.public'='true',
 {% do run_query(uniswap_v3_optimism_pools) %}
 {% do run_query(tokens_optimism_nft) %}
 {% do run_query(tokens_optimism_erc20) %}
+{% do run_query(archipelago_ethereum_events) %}
+{% do run_query(archipelago_ethereum_trades) %}
+{% do run_query(archipelago_ethereum_fees) %}
 
 {% do log("Tables generated", info=True) %}
 {%- else -%}
