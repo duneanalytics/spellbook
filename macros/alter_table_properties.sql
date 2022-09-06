@@ -397,6 +397,15 @@ ALTER TABLE seaport_ethereum.transfers SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["sohawk","soispoke"]');
 {% endset %}
 
+{% set airdrop_optimism_addresses_1 %}
+ALTER TABLE airdrop_optimism.addresses_1 SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["optimism"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='airdrop',
+                                                    'dune.data_explorer.contributors'='["soispoke"]');
+{% endset %}
+
 {% set ens_view_expirations %}
 ALTER VIEW ens.view_expirations SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum"]',
