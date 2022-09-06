@@ -76,13 +76,15 @@ WITH
     tokens_ethereum_nft as (
         SELECT
             *
-        FROM {{ ref('tokens_ethereum_nft') }}
+        FROM {{ ref('tokens_nft') }}
+        WHERE blockchain = 'ethereum'
     ),
 
     nft_ethereum_aggregators as (
         SELECT
             *
-        FROM {{ ref('nft_ethereum_aggregators') }}
+        FROM {{ ref('nft_aggregators') }}
+        WHERE blockchain = 'ethereum'
     ),
 
     -- enrichments

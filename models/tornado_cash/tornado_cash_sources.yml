@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: tornado_cash_bnb
     freshness:
-      warn_after: { count: 12, period: hour }
+      warn_after: { count: 7, period: day }
     tables:
       - name: TornadoCashBNB_evt_Deposit
         loaded_at_field: evt_block_time
@@ -30,7 +30,7 @@ sources:
 
   - name: tornado_cash_arbitrum
     freshness:
-      warn_after: { count: 12, period: hour }
+      warn_after: { count: 7, period: day }
     tables:
       - name: ETHTornado_evt_Deposit
         loaded_at_field: evt_block_time
@@ -58,7 +58,7 @@ sources:
 
   - name: tornado_cash_optimism
     freshness:
-      warn_after: { count: 12, period: hour }
+      warn_after: { count: 7, period: day }
     tables:
       - name: ETHTornado_evt_Deposit
         loaded_at_field: evt_block_time
@@ -86,7 +86,7 @@ sources:
 
   - name: tornado_cash_avalanche_c
     freshness:
-      warn_after: { count: 12, period: hour }
+      warn_after: { count: 7, period: day }
     tables:
       - name: ETHTornado_evt_Deposit
         loaded_at_field: evt_block_time
@@ -114,7 +114,7 @@ sources:
 
   - name: tornado_cash_ethereum
     freshness:
-      warn_after: { count: 12, period: hour }
+      warn_after: { count: 7, period: day }
     tables:
       - name: erc20_evt_Deposit
         loaded_at_field: evt_block_time
@@ -161,7 +161,7 @@ sources:
 
   - name: tornado_cash_gnosis
     freshness:
-      warn_after: { count: 12, period: hour }
+      warn_after: { count: 7, period: day }
     tables:
       - name: eth_evt_Deposit
         loaded_at_field: evt_block_time

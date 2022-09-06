@@ -4,7 +4,6 @@ sources:
   - name: gnosis_safe_ethereum
     freshness:
       warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     tables:
       - name: GnosisSafev1_3_0_evt_SafeSetup
         loaded_at_field: evt_block_time

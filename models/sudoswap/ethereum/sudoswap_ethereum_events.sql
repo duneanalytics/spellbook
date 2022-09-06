@@ -124,7 +124,8 @@ WITH
     ,tokens_ethereum_nft as (
         SELECT
             *
-        FROM {{ ref('tokens_ethereum_nft') }}
+        FROM {{ ref('tokens_nft') }}
+        WHERE blockchain = 'ethereum'
     )
 
     ,nft_ethereum_aggregators as (
