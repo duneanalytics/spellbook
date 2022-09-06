@@ -652,6 +652,7 @@ ALTER VIEW archipelago_ethereum.fees  SET TBLPROPERTIES ('dune.public'='true',
 {% do run_query(safe_ethereum_safes) %}
 {% do run_query(safe_ethereum_eth_transfers) %}
 {% do run_query(prices_tokens) %}
+{% do run_query(airdrop_optimism_addresses_1) %}
 {% do run_query(airdrop_optimism_addresses) %}
 {% do run_query(tornado_cash_deposits) %}
 {% do run_query(tornado_cash_withdrawals) %}
