@@ -191,7 +191,6 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0x66e8617d1df7ab523a316a6c01d16aa5bed93681','SHACK', 18)
 ,('0x00a35fd824c717879bf370e70ac6868b95870dfb','IB', 18)
 ,('0xf899e3909b4492859d44260e1de41a9e663e70f5','RADIO', 18)
-,('0xf899e3909b4492859d44260e1de41a9e663e70f5','RADIO', 18)
 ,('0xd1917629b3e6a72e6772aab5dbe58eb7fa3c2f33','ZRX', 18)
 ,('0x7ae97042a4a0eb4d1eb370c34bfec71042a056b7','UNLOCK', 18)
 ,('0xd52f94df742a6f4b4c8b033369fe13a41782bf44','L2DAO', 18)
