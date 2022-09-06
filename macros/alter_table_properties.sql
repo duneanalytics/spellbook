@@ -399,7 +399,7 @@ ALTER TABLE seaport_ethereum.transfers SET TBLPROPERTIES('dune.public'='true',
 
 {% set airdrop_optimism_addresses_1 %}
 ALTER TABLE airdrop_optimism.addresses_1 SET TBLPROPERTIES('dune.public'='true',
-                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.blockchains'='["optimism"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='sector',
                                                     'dune.data_explorer.abstraction.name'='airdrop',
