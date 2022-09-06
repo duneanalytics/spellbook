@@ -40,8 +40,8 @@ models:
       bnb:
         +schema: nft_bnb
         +materialized: view
-      avalanche:
-        +schema: nft_avalanche
+      avalanche_c:
+        +schema: nft_avalanche_c
         +materialized: view
       polygon:
         +schema: nft_polygon
@@ -106,7 +106,7 @@ models:
     labels:
       +schema: labels
       +materialized: view
-          
+
     tokens:
       +schema: tokens
       +materialized: view
@@ -152,6 +152,13 @@ models:
       +schema: tornado_cash
       +materialized: view
 
+    archipelago:
+      +schema: archipelago
+      +materialized: view
+      ethereum:
+        +schema: archipelago_ethereum
+        +materialized: view
+                
     integration_test:
       +schema: integration_test
       +materialized: view
@@ -206,7 +213,7 @@ seeds:
       +enabled: true
       +schema: test_data
     dex:
-      +enabled: true
+      +enabled: truea
       +schema: test_data
       trades:
         +column_types:
@@ -220,6 +227,7 @@ seeds:
           token_bought_amount: float
           token_sold_address: string
           token_sold_amount: float
+
     sudoswap:
       +enabled: true
       +schema: test_data
