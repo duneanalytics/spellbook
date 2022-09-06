@@ -263,7 +263,7 @@ ALTER VIEW nft.events SET TBLPROPERTIES('dune.public'='true',
 {% endset %}
 
 {% set nft_trades %}
-ALTER VIEW nft.trades SET TBLPROPERTIES('dune.public'='true',
+ALTER TABLE nft.trades SET TBLPROPERTIES('dune.public'='true',
                                         'dune.data_explorer.blockchains'='["ethereum","solana"]',
                                         'dune.data_explorer.category'='abstraction',
                                         'dune.data_explorer.abstraction.type'='sector',
@@ -272,7 +272,7 @@ ALTER VIEW nft.trades SET TBLPROPERTIES('dune.public'='true',
 {% endset %}
 
 {% set nft_mints %}
-ALTER VIEW nft.mints SET TBLPROPERTIES('dune.public'='true',
+ALTER TABLE nft.mints SET TBLPROPERTIES('dune.public'='true',
                                         'dune.data_explorer.blockchains'='["ethereum","solana"]',
                                         'dune.data_explorer.category'='abstraction',
                                         'dune.data_explorer.abstraction.type'='sector',
@@ -281,7 +281,7 @@ ALTER VIEW nft.mints SET TBLPROPERTIES('dune.public'='true',
 {% endset %}
 
 {% set nft_burns %}
-ALTER VIEW nft.burns SET TBLPROPERTIES('dune.public'='true',
+ALTER TABLE nft.burns SET TBLPROPERTIES('dune.public'='true',
                                         'dune.data_explorer.blockchains'='["ethereum","solana"]',
                                         'dune.data_explorer.category'='abstraction',
                                         'dune.data_explorer.abstraction.type'='sector',
@@ -290,7 +290,7 @@ ALTER VIEW nft.burns SET TBLPROPERTIES('dune.public'='true',
 {% endset %}
 
 {% set nft_fees %}
-ALTER VIEW nft.fees SET TBLPROPERTIES('dune.public'='true',
+ALTER TABLE nft.fees SET TBLPROPERTIES('dune.public'='true',
                                         'dune.data_explorer.blockchains'='["ethereum","solana"]',
                                         'dune.data_explorer.category'='abstraction',
                                         'dune.data_explorer.abstraction.type'='sector',
@@ -371,7 +371,7 @@ ALTER VIEW uniswap.trades SET TBLPROPERTIES('dune.public'='true',
 {% endset %}
 
 {% set dex_trades %}
-ALTER VIEW dex.trades SET TBLPROPERTIES('dune.public'='true',
+ALTER TABLE dex.trades SET TBLPROPERTIES('dune.public'='true',
                                             'dune.data_explorer.blockchains'='["ethereum"]',
                                             'dune.data_explorer.category'='abstraction',
                                             'dune.data_explorer.abstraction.type'='sector',

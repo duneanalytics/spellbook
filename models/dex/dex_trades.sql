@@ -1,7 +1,13 @@
 {{ config(
-        alias ='trades'
-        )
+    alias = 'trades',
+    partition_by = ['block_date'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'unique_trade_id']
+    )
 }}
+
 SELECT *
 FROM
 (
@@ -31,6 +37,9 @@ FROM
                 ,evt_index
                 ,unique_trade_id
         FROM {{ ref('uniswap_trades') }}
+        {% if is_incremental() %}
+        WHERE block_date >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
         /*
         UNION
         <add future protocols here>

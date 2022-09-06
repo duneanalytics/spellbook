@@ -1,6 +1,11 @@
 {{ config(
-        alias ='events'
-)
+    alias = 'events',
+    partition_by = ['block_time'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_time', 'unique_trade_id']
+    )
 }}
 
 SELECT *
@@ -45,6 +50,9 @@ FROM
                 royalty_fee_percentage,
                 unique_trade_id
         FROM {{ ref('opensea_events') }}
+        {% if is_incremental() %}
+        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
         UNION
         SELECT
                 blockchain,
@@ -85,6 +93,9 @@ FROM
                 royalty_fee_percentage,
                 unique_trade_id
         FROM {{ ref('magiceden_events') }}
+        {% if is_incremental() %}
+        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
         UNION
         SELECT
                 blockchain,
@@ -125,6 +136,9 @@ FROM
                 royalty_fee_percentage,
                 unique_trade_id
         FROM {{ ref('looksrare_ethereum_events') }}
+        {% if is_incremental() %}
+        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
         UNION
         SELECT
                 blockchain,
@@ -165,6 +179,9 @@ FROM
                 royalty_fee_percentage,
                 unique_trade_id
         FROM {{ ref('x2y2_ethereum_events') }}
+        {% if is_incremental() %}
+        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
         UNION
         SELECT
                 blockchain,
@@ -205,6 +222,9 @@ FROM
                 royalty_fee_percentage,
                 unique_trade_id
         FROM {{ ref('sudoswap_ethereum_events') }}
+        {% if is_incremental() %}
+        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
         UNION
         SELECT
                 blockchain,
@@ -245,4 +265,7 @@ FROM
                 royalty_fee_percentage,
                 unique_trade_id
         FROM {{ ref('archipelago_ethereum_events') }}
+        {% if is_incremental() %}
+        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 )
