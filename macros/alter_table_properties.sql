@@ -523,15 +523,6 @@ ALTER VIEW prices.tokens SET TBLPROPERTIES ('dune.public'='true',
                                                 'dune.data_explorer.contributors'='["aalan3", "jeff-dude"]');
 {% endset %}
 
-{% set airdrop_optimism_addresses %}
-ALTER TABLE airdrop_optimism.addresses SET TBLPROPERTIES ('dune.public'='true',
-                                                'dune.data_explorer.blockchains'='["optimism"]',
-                                                'dune.data_explorer.category'='abstraction',
-                                                'dune.data_explorer.abstraction.type'='sector',
-                                                'dune.data_explorer.abstraction.name'='airdrop',
-                                                'dune.data_explorer.contributors'='["msilb7"]');
-{% endset %}
-
 {% set tornado_cash_deposits %}
 ALTER TABLE tornado_cash.deposits SET TBLPROPERTIES ('dune.public'='true',
                                                 'dune.data_explorer.blockchains'='["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum"]',
@@ -652,7 +643,7 @@ ALTER VIEW archipelago_ethereum.fees  SET TBLPROPERTIES ('dune.public'='true',
 {% do run_query(safe_ethereum_safes) %}
 {% do run_query(safe_ethereum_eth_transfers) %}
 {% do run_query(prices_tokens) %}
-{% do run_query(airdrop_optimism_addresses) %}
+{% do run_query(airdrop_optimism_addresses_1) %}
 {% do run_query(tornado_cash_deposits) %}
 {% do run_query(tornado_cash_withdrawals) %}
 {% do run_query(tokens_erc20) %}
