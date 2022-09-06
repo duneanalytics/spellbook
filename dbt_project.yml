@@ -28,6 +28,12 @@ models:
     ens:
       +schema: ens
       +materialized: view
+    airdrop:
+      +schema: airdrop
+      +materialized: table
+      optimism:
+        +schema: airdrop_optimism
+        +materialized: table
     dex:
       +schema: dex
       +materialized: view
