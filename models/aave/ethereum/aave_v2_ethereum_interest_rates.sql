@@ -1,4 +1,4 @@
-{{ config(materialized='view', alias='aave_interest') }}
+{{ config(materialized='view', alias='interest') }}
 
 select 
   a.reserve, 
