@@ -15,7 +15,7 @@ with nft_trade_address as (
         and seller is not null
         and blockchain is not null
     {% if is_incremental() %}
-    where t.block_time >= date_trunc("day", now() - interval '1 week')
+    and block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     union all
 
@@ -25,7 +25,7 @@ with nft_trade_address as (
         and seller is not null
         and blockchain is not null
     {% if is_incremental() %}
-    where t.block_time >= date_trunc("day", now() - interval '1 week')
+    and block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 ),
 
