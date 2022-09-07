@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-# Base Tables
+  # Base Tables
   - name: ethereum
     description: "Ethereum raw tables including transactions, traces and logs."
     freshness:
@@ -89,7 +89,7 @@ sources:
           - name: error
             description: "Error log"
           - name: tx_success
-            description: "Whether the transaction was completed sucessfully"    
+            description: "Whether the transaction was completed sucessfully"
           - &tx_hash
             name: tx_hash
             description: "Primary key of the transaction"
@@ -127,19 +127,52 @@ sources:
           - name: topic1
             description: "Topics are 32-byte (256 bit) “words” that are used to describe what’s going on in an event. The first topic usually consists of the signature of the name of the event that occurred, including the types (uint256, string, etc.) of its parameters."
           - name: topic2
-            description: "Second topic"    
+            description: "Second topic"
           - name: topic3
-            description: "Third topic"   
+            description: "Third topic"
           - name: topic4
-            description: "Fourth topic"   
+            description: "Fourth topic"
           - name: data
-            description: "Additional data for the log. Data is not searchable (while topics are), but is a lot cheaper and can include large or complicated data like arrays or strings." 
+            description: "Additional data for the log. Data is not searchable (while topics are), but is a lot cheaper and can include large or complicated data like arrays or strings."
           - *tx_hash
           - name: index
-            description: "Log index" 
+            description: "Log index"
           - *tx_index
 
-# ERC Transfer Tables
+      - name: contracts
+        freshness:
+          warn_after: { count: 1, period: day }
+          error_after: { count: 3, period: day }
+        loaded_at_field: created_at
+        description: "A view keeping track of what contracts are decoded on Dune on Ethereum; contains information associated with the decoded contract such as namespace, name, address, ABI."
+        columns:
+          - name: abi
+            description: "ABI of the decoded contract"
+          - name: address
+            description: "Address of the decoded contract"
+          - name: from
+            description: "Address that created/deployed this contract"
+          - name: code
+            description: "Code for contract creation"
+          - name: name
+            description: "Name of the decoded contract"
+          - name: namespace
+            description: "Namesapce of the decoded contract"
+          - name: dynamic
+            description: "Boolean indicating whether the contract is dynamic or not"
+          - name: base
+            description: "Boolean indicating whether the contract is the base contract or not"
+          - name: factory
+            description: "Boolean indicating whether the contract is a factory contract or not"
+          - name: detection_source
+            description: "Detection source: 'factory', 'base', or 'dynamic'"
+            tests:
+              - accepted_values:
+                  values: ["factory", "base", "dynamic"]
+          - name: created_at
+            description: "Timestamp for contract creation"
+
+  # ERC Transfer Tables
   - name: erc20_ethereum
     description: "Transfers events for ERC20 tokens."
     tables:
@@ -150,25 +183,25 @@ sources:
           warn_after: { count: 12, period: hour }
           error_after: { count: 24, period: hour }
         columns:
-        - name: contract_address
-          description: "ERC20 token contract address"       
-        - &evt_tx_hash
-          name: evt_tx_hash
-          description: "Transaction hash of the event"
-        - &evt_index
-          name: evt_index
-          description: "Event index"   
-        - &evt_block_time
-          name: evt_block_time
-          description: "Timestamp for block event time in UTC"
-        - &evt_block_number
-          name: evt_block_number
-          description: "Event block number"  
-        - *from
-        - *to
-        - name: value
-          description: "Amount of ERC20 token transferred" 
-      
+          - name: contract_address
+            description: "ERC20 token contract address"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Transaction hash of the event"
+          - &evt_index
+            name: evt_index
+            description: "Event index"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Event block number"
+          - *from
+          - *to
+          - name: value
+            description: "Amount of ERC20 token transferred"
+
   - name: erc1155_ethereum
     description: "Transfers events for ERC1155 tokens."
     tables:
@@ -176,39 +209,39 @@ sources:
         loaded_at_field: evt_block_time
         description: "Single transfers events for ERC1155 tokens."
         columns:
-        - name: contract_address
-          description: "ERC1155 token contract address"  
-        - *evt_tx_hash
-        - *evt_index
-        - *evt_block_time
-        - *evt_block_number
-        - name: operator
-          description: "Addresses authorized (or approved) by a NFT owner to spend all of his token Ids."  
-        - *from
-        - *to
-        - name: id
-          description: "ERC1155 token ID"  
-        - name: value
-          description: "Amount of ERC1155 token transferred" 
-          
+          - name: contract_address
+            description: "ERC1155 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: operator
+            description: "Addresses authorized (or approved) by a NFT owner to spend all of his token Ids."
+          - *from
+          - *to
+          - name: id
+            description: "ERC1155 token ID"
+          - name: value
+            description: "Amount of ERC1155 token transferred"
+
       - name: evt_transferbatch
         loaded_at_field: evt_block_time
         description: "Batch transfers events for ERC1155 tokens."
         columns:
-        - name: contract_address
-          description: "ERC1155 token contract address"  
-        - *evt_tx_hash
-        - *evt_index
-        - *evt_block_time
-        - *evt_block_number
-        - name: operator
-          description: "Addresses authorized (or approved) by a NFT owner to spend all of his token Ids."  
-        - *from
-        - *to
-        - name: ids
-          description: "ERC1155 token IDs"  
-        - name: values
-          description: "Amounts of ERC1155 token transferred" 
+          - name: contract_address
+            description: "ERC1155 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: operator
+            description: "Addresses authorized (or approved) by a NFT owner to spend all of his token Ids."
+          - *from
+          - *to
+          - name: ids
+            description: "ERC1155 token IDs"
+          - name: values
+            description: "Amounts of ERC1155 token transferred"
 
   - name: erc721_ethereum
     description: "Transfers events for ERC721 tokens."
@@ -217,14 +250,14 @@ sources:
         loaded_at_field: evt_block_time
         description: "Transfers events for ERC721 tokens."
         columns:
-        - &contract_address
-          name: contract_address
-          description: "ERC721 token contract address"  
-        - *evt_tx_hash
-        - *evt_index
-        - *evt_block_time
-        - *evt_block_number 
-        - *from
-        - *to
-        - name: tokenId
-          description: "ERC721 token ID."
+          - &contract_address
+            name: contract_address
+            description: "ERC721 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *from
+          - *to
+          - name: tokenId
+            description: "ERC721 token ID."

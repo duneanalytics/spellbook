@@ -1,11 +1,11 @@
 #Welcome to your Spellbook!
 
-name: 'spellbook'
-version: '1.0.0'
+name: "spellbook"
+version: "1.0.0"
 config-version: 2
 
 # This setting configures which "profile" dbt uses for this project.
-profile: 'spellbook'
+profile: "spellbook"
 
 # These configurations specify where dbt should look for different types of files.
 # You don't need to change these!
@@ -16,8 +16,8 @@ seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 
-target-path: "target"  # directory which will store compiled SQL files
-clean-targets:         # directories to be removed by `dbt clean`
+target-path: "target" # directory which will store compiled SQL files
+clean-targets: # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
 
@@ -166,10 +166,17 @@ models:
       ethereum:
         +schema: archipelago_ethereum
         +materialized: view
-                
+
     integration_test:
       +schema: integration_test
       +materialized: view
+
+    curvefi:
+      +schema: curvefi
+      +materialized: view
+      ethereum:
+        +schema: curvefi_ethereum
+        +materialized: view
 
 seeds:
   spellbook:
@@ -249,6 +256,11 @@ seeds:
           amount_original: double
           platform_fee_amount: double
           pool_fee_amount: double
+
+    curvefi:
+      ethereum:
+        +enabled: true
+        +schema: test_data
 
     nft:
       +enabled: true
