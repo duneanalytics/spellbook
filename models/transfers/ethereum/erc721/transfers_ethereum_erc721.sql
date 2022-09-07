@@ -7,7 +7,7 @@ with
             contract_address as token_address,
             evt_block_time,
             tokenId,
-            1 as amount
+            -1 as amount
         from
             {{ source('erc721_ethereum', 'evt_transfer') }}
     )
@@ -19,7 +19,7 @@ with
             contract_address as token_address,
             evt_block_time,
             tokenId,
-            -1 as amount
+            1 as amount
         from
             {{ source('erc721_ethereum', 'evt_transfer') }}
     )

@@ -17,8 +17,7 @@ select
 from {{ ref('transfers_ethereum_erc721') }}
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-where date_trunc('day', evt_block_time) > now() - interval 2 days
+where evt_block_time >= date_trunc('hour', now() - interval '1 week')
 {% endif %}
-group by
-    date_trunc('day', evt_block_time), wallet_address, token_address, tokenId,unique_tx_id
+group by 1,2,3,4,5,unique_tx_id
 having sum(amount) = 1
