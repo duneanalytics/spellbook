@@ -26,7 +26,7 @@ models:
       - name: created_at
         description: "When were labels created"
       - name: updated_at
-        description: "When were labels updated for the last time ?"
+        description: "When were labels updated for the last time"
 
   - name: labels_funds_ethereum
     meta:
@@ -53,4 +53,4 @@ models:
       - name: created_at
         description: "When were labels created"
       - name: updated_at
-        description: "When were labels updated for the last time ?"
+        description: "When were labels updated for the last time"
