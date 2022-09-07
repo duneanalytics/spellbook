@@ -219,7 +219,7 @@ seeds:
       +enabled: true
       +schema: test_data
     dex:
-      +enabled: truea
+      +enabled: true
       +schema: test_data
       trades:
         +column_types:
