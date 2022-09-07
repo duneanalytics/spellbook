@@ -250,3 +250,10 @@ seeds:
           platform_fee_amount: double
           pool_fee_amount: double
 
+    nft:
+      +enabled: true
+      +schema: test_data
+      nft_linked_addresses_postgres:
+        +column_types:
+          master_address: string
+          alternative_address: string
