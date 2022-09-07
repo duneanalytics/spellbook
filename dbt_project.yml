@@ -25,6 +25,12 @@ clean-targets:         # directories to be removed by `dbt clean`
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
   spellbook:
+    aave:
+      +schema: aave
+      +materialized: view
+      ethereum:
+        +schema: aave_ethereum
+        +materialized: view
     ens:
       +schema: ens
       +materialized: view
@@ -243,3 +249,4 @@ seeds:
           amount_original: double
           platform_fee_amount: double
           pool_fee_amount: double
+
