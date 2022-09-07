@@ -1,0 +1,23 @@
+version: 2
+
+sources:
+  - name: curvefi_ethereum
+    description: "decoded events and function calls for curve.fi on ethereum"
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: CurveFactory_call_deploy_plain_pool
+        loaded_at_field: call_block_time
+      - name: CurveFactory_call_deploy_metapool
+        loaded_at_field: call_block_time
+      - name: CurveFactory_call_deploy_gauge
+        loaded_at_field: call_block_time
+      - name: CurveFactoryV2_evt_CryptoPoolDeployed
+        loaded_at_field: evt_block_time
+      - name: CurveFactoryV2_call_deploy_pool
+        loaded_at_field: call_block_time
+      - name: CurveFactory_evt_LiquidityGaugeDeployed
+        loaded_at_field: evt_block_time
+      - name: CurveFactoryV2_evt_LiquidityGaugeDeployed
+        loaded_at_field: evt_block_time

@@ -49,6 +49,8 @@ known_solver_metadata (address, environment, name) as (
                  ('0xc9ec550BEA1C64D779124b23A26292cc223327b6', 'prod', 'Otex'),
                  ('0x149d0f9282333681Ee41D30589824b2798E9fb47', 'prod', 'PLM'),
                  ('0xe18B5632DF2Ec339228DD65e4D9F004eF59653d3', 'prod', 'Atlas'),
+                 ('0xA21740833858985e4D801533a808786d3647Fb83', 'prod', 'Laertes'),
+                 ('0x0a308697e1d3a91dcB1e915C51F8944AaEc9015F', 'barn', 'Laertes'),
                  ('0x8567351D6989d83513D3BC3ad951CcCe363941e3', 'barn', 'Atlas'),
                  ('0x109BF9E0287Cc95cc623FBE7380dD841d4bdEb03', 'barn', 'Otex'),
                  ('0x70f3c870b6e7e1d566e40c41e2e3d6e895fcee23', 'barn', 'QuasiModo'),
