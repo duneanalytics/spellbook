@@ -27,7 +27,7 @@ models:
       - name: created_at
         description: "When were labels created"
       - name: updated_at
-        description: "When were labels updated for the last time ?"
+        description: "When were labels updated for the last time"
   
   - name: labels_nft_users_platforms
     meta:
@@ -55,7 +55,7 @@ models:
       - name: created_at
         description: "When were labels created"
       - name: updated_at
-        description: "When were labels updated for the last time ?"
+        description: "When were labels updated for the last time"
         
   - name: labels_nft_traders_transactions
     meta:
@@ -83,7 +83,7 @@ models:
       - name: created_at
         description: "When were labels created"
       - name: updated_at
-        description: "When were labels updated for the last time ?"
+        description: "When were labels updated for the last time"
 
   - name: labels_nft_traders_volume_usd
     meta:
@@ -110,4 +110,4 @@ models:
       - name: created_at
         description: "When were labels created"
       - name: updated_at
-        description: "When were labels updated for the last time ?"
+        description: "When were labels updated for the last time"
