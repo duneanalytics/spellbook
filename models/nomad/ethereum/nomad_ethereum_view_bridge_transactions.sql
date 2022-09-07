@@ -38,7 +38,7 @@ with nomad_bridge_domains(domain_id, domain_name, domain_type) as (
           ,'0x0000000000000000000000000000000000000000' as liquidity_provider
       from {{ source('nomad_ethereum','BridgeRouter_evt_Send') }} s
       inner join nomad_bridge_domains d on d.domain_id = s.toDomain
-      left join {{ ref('tokens_ethereum_erc20') }} e1 on e1.contract_address = s.token
+      left join {{ ref('tokens_erc20') }} e1 on e1.contract_address = s.token and e1.blockchain = 'ethereum'
       left join {{ source('prices', 'usd') }} p1 on p1.contract_address = s.token
             and p1.minute = date_trunc('minute', s.evt_block_time)
             and p1.minute >= '2022-01-01'
@@ -68,7 +68,7 @@ with nomad_bridge_domains(domain_id, domain_name, domain_type) as (
             and r.evt_tx_hash = t.hash
             and t.block_time >= '2022-01-01'
       inner join nomad_bridge_domains d on d.domain_id = left(originAndNonce, 8)
-      left join {{ ref('tokens_ethereum_erc20') }} e1 on e1.contract_address = r.token
+      left join {{ ref('tokens_erc20') }} e1 on e1.contract_address = r.token and e1.blockchain = 'ethereum'
       left join {{ source('prices', 'usd') }} p1 on p1.contract_address = r.token
             and p1.minute = date_trunc('minute', r.evt_block_time)
             and p1.minute >= '2022-01-01'
