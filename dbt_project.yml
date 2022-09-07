@@ -28,6 +28,12 @@ models:
     ens:
       +schema: ens
       +materialized: view
+    airdrop:
+      +schema: airdrop
+      +materialized: table
+      optimism:
+        +schema: airdrop_optimism
+        +materialized: table
     dex:
       +schema: dex
       +materialized: view
@@ -40,8 +46,8 @@ models:
       bnb:
         +schema: nft_bnb
         +materialized: view
-      avalanche:
-        +schema: nft_avalanche
+      avalanche_c:
+        +schema: nft_avalanche_c
         +materialized: view
       polygon:
         +schema: nft_polygon
@@ -148,6 +154,17 @@ models:
       +schema: tornado_cash
       +materialized: view
 
+    archipelago:
+      +schema: archipelago
+      +materialized: view
+      ethereum:
+        +schema: archipelago_ethereum
+        +materialized: view
+                
+    integration_test:
+      +schema: integration_test
+      +materialized: view
+
 seeds:
   spellbook:
     balances:
@@ -212,13 +229,7 @@ seeds:
           token_bought_amount: float
           token_sold_address: string
           token_sold_amount: float
-    nft:
-      +enabled: true
-      +schema: test_data
-      nft_linked_addresses_postgres:
-        +column_types:
-          master_address: string
-          alternative_address: string
+
     sudoswap:
       +enabled: true
       +schema: test_data
@@ -232,3 +243,11 @@ seeds:
           amount_original: double
           platform_fee_amount: double
           pool_fee_amount: double
+
+    nft:
+      +enabled: true
+      +schema: test_data
+      nft_linked_addresses_postgres:
+        +column_types:
+          master_address: string
+          alternative_address: string
