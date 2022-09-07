@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: labels_balances
+    meta:
+      blockchain: ethereum
+      sector: labels
+      category: balances
+      project: ['erc20']
+      contibutors: soispoke
+    config:
+      tags: ['labels', 'balances', 'ethereum', 'erc20', 'latest']
+    description: "Token millionaires and billionaires query labels on Ethereum"   
+
+  
