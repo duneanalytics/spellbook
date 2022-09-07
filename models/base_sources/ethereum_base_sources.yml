@@ -6,7 +6,6 @@ sources:
     description: "Ethereum raw tables including transactions, traces and logs."
     freshness:
       warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     tables:
       - name: transactions_0006
         description: "underlying transactions table. ethereum.transactions is an exposed view of this table."
