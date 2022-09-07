@@ -10,7 +10,7 @@ sources:
       - name: transactions
         tests:
           - unique:
-              column_name: "(tx_hash || '-' || hash || '-' || block_number)"
+              column_name: "(hash || '-' || block_number)"
         loaded_at_field: block_time
         description: "An Optimism transaction refers to an action initiated by an externally-owned account (i.e., an account managed by a human, not a contract)."
         columns:
