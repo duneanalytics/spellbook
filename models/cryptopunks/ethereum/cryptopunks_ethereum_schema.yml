@@ -51,14 +51,14 @@ models:
         name: seller
         description: "Seller wallet address"
         tests:
-          - nft_trades_buys_vs_bids:
-              nft_trades_seed: ref('cryptopunks_trades_buys_bids_seed')
+          - compare_column_values_to_seed_values:
+              seed_file_location: ref('cryptopunks_trades_buys_bids_seed')
       - &buyer
         name: buyer
         description: "Buyer wallet address"
         tests:
-          - nft_trades_buys_vs_bids:
-              nft_trades_seed: ref('cryptopunks_trades_buys_bids_seed')
+          - compare_column_values_to_seed_values:
+              seed_file_location: ref('cryptopunks_trades_buys_bids_seed')
       - &amount_original
         name: amount_original
         description: "Traded amount in original currency"
@@ -66,8 +66,8 @@ models:
         name: amount_raw
         description: "Traded amount in original currency before decimals correction"
         tests:
-          - nft_trades_buys_vs_bids:
-              nft_trades_seed: ref('cryptopunks_trades_buys_bids_seed')
+          - compare_column_values_to_seed_values:
+              seed_file_location: ref('cryptopunks_trades_buys_bids_seed')
       - &currency_symbol
         name: currency_symbol
         description: "Symbol of original currency used for payment"

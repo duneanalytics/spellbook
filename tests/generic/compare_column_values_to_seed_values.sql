@@ -1,4 +1,4 @@
-{% test nft_trades_buys_vs_bids(model, column_name, nft_trades_seed) %}
+{% test compare_column_values_to_seed_values(model, column_name, seed_file_location) %}
 
     with unit_test as
     (
@@ -10,7 +10,7 @@
                 else False
             end as generic_column_test
         from {{ model }} m
-        join {{ nft_trades_seed }} seed
+        join {{ seed_file_location }} seed
             on m.tx_hash = seed.tx_hash
             and m.block_number = seed.block_number
     )

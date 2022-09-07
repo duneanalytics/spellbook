@@ -112,7 +112,7 @@ SELECT
     NULL::string as royalty_fee_currency_symbol,
     "cryptopunks" || '-' || buys.evt_tx_hash || '-' || buys.punkIndex || '-' ||  buys.from || '-' || buys.evt_index || '-' || "" as unique_trade_id
 FROM buys
-LEFT JOIN {{ source('ethereum','transactions') }} tx ON buys.evt_tx_hash = tx.hash
+INNER JOIN {{ source('ethereum','transactions') }} tx ON buys.evt_tx_hash = tx.hash
 LEFT JOIN {{ ref('nft_ethereum_aggregators') }} agg ON agg.contract_address = tx.to
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', buys.evt_block_time)
     AND p.contract_address = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
