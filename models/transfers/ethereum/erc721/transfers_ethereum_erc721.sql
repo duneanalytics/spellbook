@@ -1,8 +1,8 @@
 {{ config(materialized='view', alias='erc721') }}
 
 with
-    sent_transfers as (
-        select 'send' || '-' ||  evt_tx_hash || '-' || evt_index || '-' || `to` as unique_tx_id,
+    received_transfers as (
+        select 'receive' || '-' ||  evt_tx_hash || '-' || evt_index || '-' || `to` as unique_tx_id,
             to as wallet_address,
             contract_address as token_address,
             evt_block_time,
@@ -13,8 +13,8 @@ with
     )
 
     ,
-    received_transfers as (
-        select 'receive' || '-' || evt_tx_hash || '-' || evt_index || '-' || `from` as unique_tx_id,
+    sent_transfers as (
+        select 'send' || '-' || evt_tx_hash || '-' || evt_index || '-' || `from` as unique_tx_id,
             from as wallet_address,
             contract_address as token_address,
             evt_block_time,
@@ -25,7 +25,7 @@ with
     )
     
 select 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, tokenId, amount, unique_tx_id
-from sent_transfers
+from received_transfers
 union
 select 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, tokenId, amount, unique_tx_id
-from received_transfers
+from sent_transfers
