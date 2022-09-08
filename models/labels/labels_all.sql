@@ -14,6 +14,6 @@ UNION
 -- Query Labels
 SELECT * FROM {{ ref('labels_nft') }}
 UNION
-SELECT * FROM {{ ref('labels_gnosis_safe_ethereum') }}
+SELECT * FROM {{ ref('labels_safe_ethereum') }}
 UNION
 SELECT * FROM {{ ref('labels_tornado_cash') }}
