@@ -307,6 +307,15 @@ ALTER VIEW nft.aggregators SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["hildobby","soispoke"]');
 {% endset %}
 
+{% set nft_linked_addresses %}
+ALTER TABLE nft.linked_addresses SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum","solana"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='nft',
+                                                    'dune.data_explorer.contributors'='["springzh"]');
+{% endset %}
+
 {% set tokens_erc20 %}
 ALTER VIEW tokens.erc20 SET TBLPROPERTIES ('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["avalanche_c","bnb","ethereum","optimism", "gnosis"]',
@@ -395,6 +404,15 @@ ALTER TABLE seaport_ethereum.transfers SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.abstraction.type'='project',
                                                     'dune.data_explorer.abstraction.name'='seaport',
                                                     'dune.data_explorer.contributors'='["sohawk","soispoke"]');
+{% endset %}
+
+{% set airdrop_optimism_addresses_1 %}
+ALTER TABLE airdrop_optimism.addresses_1 SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["optimism"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='airdrop',
+                                                    'dune.data_explorer.contributors'='["soispoke"]');
 {% endset %}
 
 {% set ens_view_expirations %}
@@ -514,15 +532,6 @@ ALTER VIEW prices.tokens SET TBLPROPERTIES ('dune.public'='true',
                                                 'dune.data_explorer.contributors'='["aalan3", "jeff-dude"]');
 {% endset %}
 
-{% set airdrop_optimism_addresses %}
-ALTER TABLE airdrop_optimism.addresses SET TBLPROPERTIES ('dune.public'='true',
-                                                'dune.data_explorer.blockchains'='["optimism"]',
-                                                'dune.data_explorer.category'='abstraction',
-                                                'dune.data_explorer.abstraction.type'='sector',
-                                                'dune.data_explorer.abstraction.name'='airdrop',
-                                                'dune.data_explorer.contributors'='["msilb7"]');
-{% endset %}
-
 {% set tornado_cash_deposits %}
 ALTER TABLE tornado_cash.deposits SET TBLPROPERTIES ('dune.public'='true',
                                                 'dune.data_explorer.blockchains'='["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum"]',
@@ -626,6 +635,7 @@ ALTER VIEW archipelago_ethereum.fees  SET TBLPROPERTIES ('dune.public'='true',
 {% do run_query(uniswap_trades) %}
 {% do run_query(dex_trades) %}
 {% do run_query(nft_aggregators) %}
+{% do run_query(nft_linked_addresses) %}
 {% do run_query(transfers_ethereum_erc20) %}
 {% do run_query(seaport_ethereum_view_transactions) %}
 {% do run_query(seaport_ethereum_transfers) %}
@@ -643,7 +653,7 @@ ALTER VIEW archipelago_ethereum.fees  SET TBLPROPERTIES ('dune.public'='true',
 {% do run_query(safe_ethereum_safes) %}
 {% do run_query(safe_ethereum_eth_transfers) %}
 {% do run_query(prices_tokens) %}
-{% do run_query(airdrop_optimism_addresses) %}
+{% do run_query(airdrop_optimism_addresses_1) %}
 {% do run_query(tornado_cash_deposits) %}
 {% do run_query(tornado_cash_withdrawals) %}
 {% do run_query(tokens_erc20) %}
