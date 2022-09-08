@@ -177,6 +177,22 @@ seeds:
             evt_block_time: timestamp
             evt_tx_hash: string
             price: string
+        opensea_unit_tests_seed:
+          +column_types:
+            test_description: string
+            blockchain: string
+            project: string
+            version: string
+            block_number: string
+            block_date: date
+            tx_hash: string
+            token_standard: string
+            nft_contract_address: string
+            token_id: string
+            seller: string
+            buyer: string
+            amount_raw: string
+            currency_contract: string
       solana:
         +enabled: true
         +schema: test_data
