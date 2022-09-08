@@ -1,3 +1,7 @@
+{{ config(
+    alias = 'pool_details'
+) }}
+
 SELECT
     version,
     `name`,
