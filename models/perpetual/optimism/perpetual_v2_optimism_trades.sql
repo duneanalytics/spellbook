@@ -1,16 +1,22 @@
 {{ config(
 	schema = 'perpetual_v2_optimism',
-	partition_by = ['block_time'],
+	alias ='trades',
+	partition_by = ['block_date'],
 	materialized = 'incremental',
 	file_format = 'delta',
 	incremental_strategy = 'merge',
-	unique_key = ['block_time', 'trade_id']
+	unique_key = ['block_time', 'project', 'version', 'tx_hash', 'evt_index']
 	)
 }}
+
+{% set project_start_date = '2021-11-22' %}
 
 WITH perps AS (
 	SELECT
 		p.evt_block_time AS block_time
+    	,"" AS virtual_asset
+    	,"" AS underlying_asset
+    	,"" AS market
 		,p.baseToken
 		,pp.pool AS market_address
 		,ABS(p.exchangedPositionNotional)/1e18 AS volume_usd
@@ -32,16 +38,20 @@ WITH perps AS (
 	FROM {{ source('perp_v2_optimism', 'ClearingHouse_evt_PositionChanged') }} AS p
 	LEFT JOIN {{ source('perp_v2_optimism', 'Vault_call_getFreeCollateralByRatio') }} AS co
 		ON p.evt_tx_hash = co.call_tx_hash
+		AND co.call_success = true
+		{% if is_incremental() %}
+		AND co.call_block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
+		{% endif %}
+	LEFT JOIN {{ source('perp_v2_optimism', 'MarketRegistry_evt_PoolAdded') }} AS pp
+		ON p.baseToken = pp.baseToken
 	{% if is_incremental() %}
 	WHERE p.evt_block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
 	{% endif %}
-	LEFT JOIN {{ source('perp_v2_optimism', 'MarketRegistry_evt_PoolAdded') }} AS pp
-		ON p.baseToken = pp.baseToken
-	WHERE co.call_success = true
 )
 
 SELECT
 	'optimism' AS blockchain
+    ,TRY_CAST(date_trunc('DAY', perps.block_time) AS date) AS block_date
 	,perps.block_time
 	,perps.virtual_asset
 	,perps.underlying_asset
@@ -59,14 +69,13 @@ SELECT
 	,tx.from AS tx_from
 	,tx.to AS tx_to
 	,perps.evt_index
-	,perps.project || perps.version || perps.tx_hash || perps.evt_index AS trade_id
 FROM perps
 LEFT JOIN {{ ref('tokens_optimism_erc20') }} AS e
 	ON perps.baseToken = e.contract_address
 INNER JOIN {{ source('optimism', 'transactions') }} AS tx
 	ON perps.tx_hash = tx.hash
 	{% if not is_incremental() %}
-	AND tx.block_time >= '2021-11-22'::DATE
+	AND tx.block_time >= '{{project_start_date}}'
 	{% endif %}
 	{% if is_incremental() %}
 	AND tx.block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')

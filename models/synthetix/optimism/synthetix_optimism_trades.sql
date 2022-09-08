@@ -1,12 +1,14 @@
 {{ config(
-	schema = 'synthetix_optimism',
-	partition_by = ['block_time'],
+	alias ='trades',
+	partition_by = ['block_date'],
 	materialized = 'incremental',
 	file_format = 'delta',
 	incremental_strategy = 'merge',
-	unique_key = ['block_time', 'trade_id']
+	unique_key = ['block_time', 'project', 'version', 'tx_hash', 'evt_index']
 	)
 }}
+
+{% set project_start_date = '2021-11-22' %}
 
 WITH asset_price AS (
 	SELECT
@@ -73,7 +75,7 @@ perps AS (
 		END AS trade
 
 		,'Synthetix' AS project
-		,1 AS version
+		,'1' AS version
 		,s.account AS trader
 		,s.tradeSize AS volume_raw
 		,s.evt_tx_hash AS tx_hash
@@ -92,6 +94,7 @@ perps AS (
 
 SELECT
 	'optimism' AS blockchain
+    ,TRY_CAST(date_trunc('DAY', perps.block_time) AS date) AS block_date
 	,perps.block_time
 	,perps.virtual_asset
 	,perps.underlying_asset
@@ -109,12 +112,11 @@ SELECT
 	,tx.from AS tx_from
 	,tx.to AS tx_to
 	,perps.evt_index
-	,perps.project || perps.version || perps.tx_hash || perps.evt_index AS trade_id
 FROM perps
 INNER JOIN {{ source('optimism', 'transactions') }} AS tx
 	ON perps.tx_hash = tx.hash
 	{% if not is_incremental() %}
-	AND tx.block_time >= '2021-11-22'::DATE
+	AND tx.block_time >= '{{project_start_date}}'
 	{% endif %}
 	{% if is_incremental() %}
 	AND tx.block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')

@@ -148,6 +148,27 @@ models:
       +schema: tornado_cash
       +materialized: view
 
+    perpetual:
+      +schema: perpetual
+      +materialized: view
+      optimism:
+        +schema: perpetual_optimism
+        +materialized: view
+
+    pika:
+      +schema: pika
+      +materialized: view
+      optimism:
+        +schema: pika_optimism
+        +materialized: view
+
+    synthetix:
+      +schema: synthetix
+      +materialized: view
+      optimism:
+        +schema: synthetix_optimism
+        +materialized: view
+
 seeds:
   spellbook:
     balances:

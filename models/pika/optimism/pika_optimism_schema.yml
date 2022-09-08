@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: perpetuals_optimism_trades
+  - name: pika_optimism_trades
     meta:
       blockchain: optimism
-      sector: perpetuals
+      sector: perpetual
       contributors: MSilb7, drethereum, rplust
     config:
-      tags: ['optimism', 'perpetuals', 'perps']
+      tags: ['optimism', 'perpetuals', 'perps', 'pika']
     description: >
       Perpetual swaps/trades table on Optimism
     columns:
@@ -65,85 +65,20 @@ models:
       - &evt_index
         name: evt_index
         description: "Event index number"
-      - &trade_id
-        name: trade_id
-        description: "Unique trade_id based on the project, version, tx_hash, and evt_index"
-        tests:
-          - unique
-          - not_null
 
-  - name: perpetual_v2_optimism
+  - name: pika_v1_optimism_trades
     meta:
       blockchain: optimism
-      sector: perpetuals
-      project: perpetual_v2
-      contributors: MSilb7, drethereum, rplust
-    config:
-      tags: ['optimism', 'perpetual', 'perpetuals', 'perps']
-    description: >
-      Perpetual v2 perpetuals trades/swaps on Optimism
-    columns:
-      - *blockchain
-      - *block_time
-      - *virtual_asset
-      - *underlying_asset
-      - *market
-      - *market_address
-      - *volume_usd
-      - *fee_usd
-      - *margin_usd
-      - *trade
-      - *project
-      - *version
-      - *trader
-      - *volume_raw
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *evt_index
-      - *trade_id
-
-  - name: synthetix_optimism
-    meta:
-      blockchain: optimism
-      sector: perpetuals
-      project: synthetix
-      contributors: MSilb7, drethereum, rplust
-    config:
-      tags: ['optimism', 'synthetix', 'kwenta', 'perpetuals', 'perps']
-    description: >
-      Kwenta/Synthetix perpetuals trades/swaps on Optimism
-    columns:
-      - *blockchain
-      - *block_time
-      - *virtual_asset
-      - *underlying_asset
-      - *market
-      - *market_address
-      - *volume_usd
-      - *fee_usd
-      - *margin_usd
-      - *trade
-      - *project
-      - *version
-      - *trader
-      - *volume_raw
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *evt_index
-      - *trade_id
-
-  - name: pika_v1_optimism
-    meta:
-      blockchain: optimism
-      sector: perpetuals
+      sector: perpetual
       project: pika_v1
       contributors: MSilb7, drethereum, rplust
     config:
       tags: ['optimism', 'pika, pika_v1', 'perpetuals', 'perps']
     description: >
       Pika_v1 perpetuals trades/swaps on Optimism
+    tests:
+      - unique:
+          column_name: "(block_time || '-' || project || '-' || version || '-' || tx_hash || '-' || evt_index)"
     columns:
       - *blockchain
       - *block_time
@@ -163,18 +98,20 @@ models:
       - *tx_from
       - *tx_to
       - *evt_index
-      - *trade_id
 
-  - name: pika_v2_optimism
+  - name: pika_v2_optimism_trades
     meta:
       blockchain: optimism
-      sector: perpetuals
+      sector: perpetual
       project: pika_v2
       contributors: MSilb7, drethereum, rplust
     config:
       tags: ['optimism', 'pika, pika_v2', 'perpetuals', 'perps']
     description: >
       Pika_v2 perpetuals trades/swaps on Optimism
+    tests:
+      - unique:
+          column_name: "(block_time || '-' || project || '-' || version || '-' || tx_hash || '-' || evt_index)"
     columns:
       - *blockchain
       - *block_time
@@ -194,18 +131,20 @@ models:
       - *tx_from
       - *tx_to
       - *evt_index
-      - *trade_id
     
-  - name: pika_v3_optimism
+  - name: pika_v3_optimism_trades
     meta:
       blockchain: optimism
-      sector: perpetuals
+      sector: perpetual
       project: pika_v3
       contributors: MSilb7, drethereum, rplust
     config:
       tags: ['optimism', 'pika, pika_v3', 'perpetuals', 'perps']
     description: >
       Pika_v3 perpetuals trades/swaps on Optimism
+    tests:
+      - unique:
+          column_name: "(block_time || '-' || project || '-' || version || '-' || tx_hash || '-' || evt_index)"
     columns:
       - *blockchain
       - *block_time
@@ -225,4 +164,3 @@ models:
       - *tx_from
       - *tx_to
       - *evt_index
-      - *trade_id

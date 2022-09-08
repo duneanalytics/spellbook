@@ -1,5 +1,4 @@
 {{ config(
-	schema = 'perpetuals_trades',
 	alias = 'trades'
 	)
 }}
@@ -23,5 +22,4 @@ SELECT
 	,tx_from
 	,tx_to
 	,evt_index
-	,trade_id
-FROM {{ ref('perpetuals_optimism_trades') }}
+FROM {{ ref('perpetual_optimism_trades') }}
