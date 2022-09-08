@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: labels_cex
+    meta:
+      blockchain: ethereum
+      sector: labels
+      project: cex
+      contibutors: hildobby, soispoke
+    config:
+      tags: ['labels', 'ethereum', 'cex']
+    description: "Known centralised exchange addresses across chains"
+    columns:
+      - name: blockchain
+        description: "Blockchain"   
+      - name: address
+        description: "Address of known CEX"
+      - name: name
+        description: "Label name of centralised exchange"
+      - name: category
+        description: "Label category"
+      - name: contributor
+        description: "Wizard(s) contributing to labels"
+      - name: source
+        description: "How were labels generated (could be static or query)"
+      - name: created_at
+        description: "When were labels created"
+      - name: updated_at
+        description: "When were labels updated for the last time ?"
+
+  - name: labels_cex_ethereum
+    meta:
+      blockchain: ethereum
+      sector: labels
+      project: cex
+      contibutors: hildobby, soispoke
+    config:
+      tags: ['labels', 'ethereum', 'cex']
+    description: "Known centralised exchange addresses on Ethereum"
+    columns:
+      - name: blockchain
+        description: "Blockchain"   
+      - name: address
+        description: "Address of known CEX"
+      - name: name
+        description: "Label name of centralised exchange"
+      - name: category
+        description: "Label category"
+      - name: contributor
+        description: "Wizard(s) contributing to labels"
+      - name: source
+        description: "How were labels generated (could be static or query)"
+      - name: created_at
+        description: "When were labels created"
+      - name: updated_at
+        description: "When were labels updated for the last time ?"

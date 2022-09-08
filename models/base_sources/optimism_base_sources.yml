@@ -8,6 +8,9 @@ sources:
       warn_after: { count: 12, period: hour }
     tables:
       - name: transactions
+        tests:
+          - unique:
+              column_name: "(hash || '-' || block_number)"
         loaded_at_field: block_time
         description: "An Optimism transaction refers to an action initiated by an externally-owned account (i.e., an account managed by a human, not a contract)."
         columns:
@@ -53,7 +56,6 @@ sources:
           - name: hash
             description: "Primary key of the transaction"
             tests:
-              - unique
               - not_null
           - name: type
             description: "Transaction type"
