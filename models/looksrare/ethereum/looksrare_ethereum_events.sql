@@ -120,7 +120,7 @@ SELECT DISTINCT
     token_id,
     tokens.name AS collection,
     looks_rare.price / power(10,erc20.decimals) * p.price AS amount_usd,
-    tokens.standard AS token_standard,
+    CASE WHEN erct4.evt_block_time IS NOT NULL THEN 'erc721' ELSE 'erc1155' END AS token_standard,
     CASE
         WHEN agg.name is NULL AND erc.value_unique = 1 OR erc.count_erc = 1 THEN 'Single Item Trade'
         WHEN agg.name is NULL AND erc.value_unique > 1 OR erc.count_erc > 1 THEN 'Bundle Trade'
@@ -128,22 +128,14 @@ SELECT DISTINCT
     -- Count number of items traded for different trade types and erc standards
     CASE WHEN agg.name is NULL AND erc.value_unique > 1 THEN erc.value_unique
         WHEN agg.name is NULL AND erc.value_unique is NULL AND erc.count_erc > 1 THEN erc.count_erc
-        WHEN tokens.standard = 'erc1155' THEN erc.value_unique
-        WHEN tokens.standard = 'erc721' THEN erc.count_erc
-        ELSE COALESCE((SELECT
-                count(1)::bigint cnt
-            FROM {{ source('erc721_ethereum','evt_transfer') }} erc721
-            WHERE erc721.evt_tx_hash = tx_hash
-            ) +
-            (SELECT
-                count(1)::bigint cnt
-            FROM {{ source('erc1155_ethereum','evt_transfersingle') }} erc1155
-            WHERE erc1155.evt_tx_hash = tx_hash
-            ), 0) END AS number_of_items,
-    looks_rare.category as trade_category,
+        WHEN erct4.to IS NOT NULL THEN erc.count_erc
+        ELSE erc.value_unique
+        END AS number_of_items,
     CASE WHEN evt_type is NULL THEN 'Other' ELSE evt_type END as evt_type,
     seller,
-    buyer,
+    CASE WHEN looks_rare.buyer=agg.contract_address AND erct2.to IS NOT NULL THEN erct2.to
+        WHEN looks_rare.buyer=agg.contract_address AND erct3.to IS NOT NULL THEN erct3.to
+        ELSE looks_rare.buyer END AS buyer,
     looks_rare.price / power(10,erc20.decimals) AS amount_original,
     looks_rare.price AS amount_raw,
     CASE WHEN looks_rare.currency_contract_original = '0x0000000000000000000000000000000000000000' THEN 'ETH' ELSE erc20.symbol END AS currency_symbol,
@@ -160,10 +152,10 @@ SELECT DISTINCT
     ROUND((2*(looks_rare.price / power(10,erc20.decimals))/100),7) platform_fee_amount,
     ROUND((2*(looks_rare.price / power(10,erc20.decimals) * p.price)/100),7) as  platform_fee_amount_usd,
     '2' as platform_fee_percentage,
-    royalty_fee as royalty_fee_amount_raw,
-    royalty_fee / power(10,erc20.decimals) as royalty_fee_amount,
-    royalty_fee * p.price/ power(10,erc20.decimals) as royalty_fee_amount_usd,
-    royalty_fee / looks_rare.price * 100 as royalty_fee_percentage,
+    COALESCE(royalty_fee, 0) as royalty_fee_amount_raw,
+    COALESCE(royalty_fee / power(10,erc20.decimals), 0) as royalty_fee_amount,
+    COALESCE(royalty_fee * p.price/ power(10,erc20.decimals), 0) as royalty_fee_amount_usd,
+    COALESCE(royalty_fee / looks_rare.price * 100, 0) as royalty_fee_percentage,
     royalty_fee_receive_address,
     royalty_fee_currency_symbol,
     'looksrare' || '-' || tx_hash || '-' ||  token_id::string || '-' ||  seller::string || '-' || COALESCE(erc.contract_address, nft_contract_address) || '-' || looks_rare.evt_index::string || '-' || COALESCE(evt_type::string, 'Other')  || '-' || COALESCE(case when erc.value_unique::string is null then '0' ELSE '1' end, '1') as unique_trade_id
@@ -185,6 +177,21 @@ LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', loo
     AND p.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20 ON erc20.contract_address = currency_contract AND erc20.blockchain = 'ethereum'
+LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct2 ON erct2.evt_block_time=looks_rare.block_time
+    AND looks_rare.nft_contract_address=erct2.contract_address
+    AND erct2.evt_tx_hash=looks_rare.tx_hash
+    AND erct2.tokenId=looks_rare.token_id
+    AND erct2.from=looks_rare.buyer
+LEFT JOIN {{ source('erc1155_ethereum','evt_transfersingle') }} erct3 ON erct3.evt_block_time=looks_rare.block_time
+    AND looks_rare.nft_contract_address=erct3.contract_address
+    AND erct3.evt_tx_hash=looks_rare.tx_hash
+    AND erct3.id=looks_rare.token_id
+    AND erct3.from=looks_rare.buyer
+LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct4 ON erct4.evt_block_time=looks_rare.block_time
+    AND looks_rare.nft_contract_address=erct4.contract_address
+    AND erct4.evt_tx_hash=looks_rare.tx_hash
+    AND erct4.tokenId=looks_rare.token_id
+    AND erct4.from=looks_rare.seller
 WHERE number_of_items >= 1
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run

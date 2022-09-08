@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       project: looksrare
-      contributors: soispoke
+      contributors: [soispoke, hildobby]
     config:
       tags: ['ethereum','looksrare','v1','events']
     description: >
@@ -127,7 +127,7 @@ models:
     meta:
       blockchain: ethereum
       project: looksrare
-      contributors: soispoke
+      contributors: [soispoke, hildobby]
     config:
       tags: ['ethereum','looksrare','trades']
     description: >
@@ -165,7 +165,7 @@ models:
     meta:
       blockchain: ethereum
       project: looksrare
-      contributors: soispoke
+      contributors: [soispoke, hildobby]
     config:
       tags: ['ethereum','looksrare','mints']
     description: >
@@ -203,7 +203,7 @@ models:
     meta:
       blockchain: ethereum
       project: looksrare
-      contributors: soispoke
+      contributors: [soispoke, hildobby]
     config:
       tags: ['ethereum','looksrare','burns']
     description: >
@@ -241,7 +241,7 @@ models:
     meta:
       blockchain: ethereum
       project: looksrare
-      contributors: soispoke
+      contributors: [soispoke, hildobby]
     config:
       tags: ['ethereum','looksrare','fees']
     description: >
