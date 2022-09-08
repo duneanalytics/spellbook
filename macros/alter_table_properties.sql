@@ -327,7 +327,7 @@ ALTER VIEW tokens.erc20 SET TBLPROPERTIES ('dune.public'='true',
 
 {% set tokens_nft %}
 ALTER VIEW tokens.nft SET TBLPROPERTIES ('dune.public'='true',
-                                                    'dune.data_explorer.blockchains'='["avalanche_c","ethereum","optimism", "gnosis"]',
+                                                    'dune.data_explorer.blockchains'='["avalanche_c","bnb","ethereum","optimism", "gnosis"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='sector',
                                                     'dune.data_explorer.abstraction.name'='tokens',
