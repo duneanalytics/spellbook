@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: labels_all
+    meta:
+      blockchain: ethereum, solana
+      sector: labels
+      category: cex
+      contibutors: hildobby, soispoke
+    config:
+      tags: ['labels', 'ethereum', 'cex']
+    description: "All labels across chains and categories"
+    columns:
+      - name: blockchain
+        description: "Blockchain"   
+      - name: address
+        description: "Label address"
+      - name: name
+        description: "Label name"
+      - name: category
+        description: "Label category"
+      - name: contributor
+        description: "Wizard(s) contributing to labels"
+      - name: source
+        description: "How were labels generated (could be static or query)"
+      - name: created_at
+        description: "When were labels created"
+      - name: updated_at
+        description: "When were labels updated for the last time ?"
