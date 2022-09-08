@@ -119,6 +119,10 @@ models:
       +schema: labels
       +materialized: view
 
+    labels:
+      +schema: labels
+      +materialized: view    
+
     tokens:
       +schema: tokens
       +materialized: view

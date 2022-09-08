@@ -5,10 +5,10 @@ models:
     meta:
       blockchain: ethereum, solana
       sector: labels
-      category: cex
+      category: nft, cex
       contibutors: hildobby, soispoke
     config:
-      tags: ['labels', 'ethereum', 'cex']
+      tags: ['labels', 'ethereum', 'solana', 'nft', 'cex']
     description: "All labels across chains and categories"
     columns:
       - name: blockchain
@@ -26,4 +26,4 @@ models:
       - name: created_at
         description: "When were labels created"
       - name: updated_at
-        description: "When were labels updated for the last time ?"
+        description: "When were labels updated for the last time"
