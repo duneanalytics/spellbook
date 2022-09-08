@@ -159,7 +159,8 @@ models:
       - *day
       - *user_address
 
-      - &name: tx_type
+      - &tx_type
+        name: tx_type
         description: "Transaction type"
 
 
