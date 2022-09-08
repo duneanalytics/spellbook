@@ -1,10 +1,16 @@
 {{ config(
-	alias = 'trades'
+	alias ='trades',
+	partition_by = ['block_date'],
+	materialized = 'incremental',
+	file_format = 'delta',
+	incremental_strategy = 'merge',
+	unique_key = ['block_time', 'project', 'version', 'tx_hash', 'evt_index']
 	)
 }}
 
 SELECT
 	blockchain
+	,block_date
 	,block_time
 	,virtual_asset
 	,underlying_asset
@@ -23,3 +29,6 @@ SELECT
 	,tx_to
 	,evt_index
 FROM {{ ref('perpetual_optimism_trades') }}
+{% if is_incremental() %}
+WHERE block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
+{% endif %}

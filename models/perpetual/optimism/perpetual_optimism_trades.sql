@@ -7,6 +7,7 @@ SELECT *
 FROM (
 	SELECT
 		blockchain
+		,block_date
 		,block_time
 		,virtual_asset
 		,underlying_asset
@@ -30,6 +31,7 @@ FROM (
 
 	SELECT
 		blockchain
+		,block_date
 		,block_time
 		,virtual_asset
 		,underlying_asset
@@ -53,6 +55,7 @@ FROM (
 
 	SELECT
 		blockchain
+		,block_date
 		,block_time
 		,virtual_asset
 		,underlying_asset
