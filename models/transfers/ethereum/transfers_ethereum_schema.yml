@@ -142,7 +142,7 @@ models:
         name: wallet_address
         description: "Wallet address of sender or receiver."
       - &token_address_erc721
-        name: token_address_erc721
+        name: token_address
       - name: symbol
         description: "ERC721 token symbol"
       - *evt_block_time
@@ -163,8 +163,8 @@ models:
     columns:
       - *blockchain
       - *hour
-      - *wallet_address
-      - *token_address
+      - *wallet_address_erc721
+      - *token_address_erc721
       - *tokenId
       - name: unique_transfer_id
         description: "Unique ID, used in order to apply the merge into incremental strategy"
@@ -182,8 +182,8 @@ models:
     columns:
       - *blockchain
       - *hour
-      - *wallet_address
-      - *token_address
+      - *wallet_address_erc721
+      - *token_address_erc721
       - *tokenId
       - name: updated_at
         description: "UTC timestamp when table was last updated"
@@ -201,8 +201,8 @@ models:
     columns:
       - *blockchain
       - *day
-      - *wallet_address
-      - *token_address
+      - *wallet_address_erc721
+      - *token_address_erc721
       - *tokenId
       - name: unique_transfer_id
         description: "Unique ID, used in order to apply the merge into incremental strategy"
@@ -220,8 +220,8 @@ models:
     columns:
       - *blockchain
       - *day
-      - *wallet_address
-      - *token_address
+      - *wallet_address_erc721
+      - *token_address_erc721
       - *tokenId
       - name: updated_at
         description: "UTC timestamp when table was last updated"
