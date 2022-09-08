@@ -119,9 +119,15 @@ models:
       +schema: labels
       +materialized: view
 
-    labels:
-      +schema: labels
-      +materialized: view    
+    addresses: 
+      +schema: addresses
+      +materialized: table
+      ethereum: 
+        +schema: addresses_ethereum
+        +materialized: table
+      optimism: 
+        +schema: addresses_optimism
+        +materialized: table
 
     tokens:
       +schema: tokens
