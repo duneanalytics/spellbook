@@ -12,7 +12,7 @@ WITH buys AS (
     `type`,
     punkIndex,
     CASE
-      WHEN buy_value = 0 THEN lag(bid_value) OVER (
+      WHEN (buy_value = 0 AND `to` = '0x0000000000000000000000000000000000000000') THEN lag(bid_value) OVER (
         PARTITION BY punkIndex
         ORDER BY
           evt_block_number ASC,
@@ -23,7 +23,7 @@ WITH buys AS (
     `from`,
     `bid_from`,
     CASE
-      WHEN `to` = '0x0000000000000000000000000000000000000000' THEN lag(`bid_from`) OVER (
+      WHEN (buy_value = 0 AND `to` = '0x0000000000000000000000000000000000000000') THEN lag(`bid_from`) OVER (
         PARTITION BY punkIndex
         ORDER BY
           evt_block_number ASC,
