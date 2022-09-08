@@ -37,7 +37,7 @@ SELECT
     'nft' AS category,
     'soispoke' AS contributor,
     'query' AS source,
-    timestamp('2022-09-24') as created_at,
+    timestamp('2022-08-24') as created_at,
     now() as updated_at
 FROM nft_trades
   JOIN total on total.address = nft_trades.address

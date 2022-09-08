@@ -307,6 +307,15 @@ ALTER VIEW nft.aggregators SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["hildobby","soispoke"]');
 {% endset %}
 
+{% set nft_linked_addresses %}
+ALTER TABLE nft.linked_addresses SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum","solana"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='nft',
+                                                    'dune.data_explorer.contributors'='["springzh"]');
+{% endset %}
+
 {% set tokens_erc20 %}
 ALTER VIEW tokens.erc20 SET TBLPROPERTIES ('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["avalanche_c","bnb","ethereum","optimism", "gnosis"]',
@@ -626,6 +635,7 @@ ALTER VIEW archipelago_ethereum.fees  SET TBLPROPERTIES ('dune.public'='true',
 {% do run_query(uniswap_trades) %}
 {% do run_query(dex_trades) %}
 {% do run_query(nft_aggregators) %}
+{% do run_query(nft_linked_addresses) %}
 {% do run_query(transfers_ethereum_erc20) %}
 {% do run_query(seaport_ethereum_view_transactions) %}
 {% do run_query(seaport_ethereum_transfers) %}

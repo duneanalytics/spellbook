@@ -21,7 +21,7 @@ SELECT
     'nft' AS category,
     'soispoke' AS contributor,
     'query' AS source,
-    timestamp('2022-10-03') as created_at,
+    timestamp('2022-09-03') as created_at,
     now() as updated_at
 FROM nft_trades
 WHERE address is not null

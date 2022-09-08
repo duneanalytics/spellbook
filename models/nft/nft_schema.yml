@@ -294,3 +294,21 @@ models:
       - *tx_from
       - *tx_to
       - *unique_trade_id
+
+  - name: nft_linked_addresses
+    meta:
+      blockchain: ethereum, solana
+      sector: nft
+      contributors: springzh
+    config:
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'ethereum', 'solana', 'address']
+    description: >
+        NFT linked addresses. Addresses that buy and sell NFTs from each other.
+    columns:
+      - *blockchain
+      - name: master_address
+        description: "Master address"
+      - name: alternative_address
+        description: "Alternative address"
+      - name: linked_address_id
+        description: "Unique linked address id"
