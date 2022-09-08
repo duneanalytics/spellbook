@@ -14,9 +14,9 @@
 WITH perps AS (
 	SELECT
 		p.evt_block_time AS block_time
-    	,"" AS virtual_asset
-    	,"" AS underlying_asset
-    	,"" AS market
+		,"" AS virtual_asset
+		,"" AS underlying_asset
+		,"" AS market
 		,p.baseToken
 		,pp.pool AS market_address
 		,ABS(p.exchangedPositionNotional)/1e18 AS volume_usd
