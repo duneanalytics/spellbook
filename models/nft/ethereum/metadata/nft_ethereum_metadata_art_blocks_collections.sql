@@ -1,6 +1,6 @@
 
 {{ config(
-        alias = 'art_blocks_collections',
+        alias = 'metadata_art_blocks_collections',
         partition_by = ['art_blocks_project_id'],
         materialized = 'view',
         unique_key = ['art_blocks_project_id']
