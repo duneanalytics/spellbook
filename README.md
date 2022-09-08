@@ -130,7 +130,15 @@ As a preview, you can do [things](https://docs.getdbt.com/reference/resource-pro
 
 ### Troubleshooting
 
-If you fail to run `dbt compile` with `Could not find profile named 'spellbook'` as the error message, check `~/.dbt/profiles.yml` and make sure there is a profile named `spellbook`. When you run `dbt init` to initiate a project, a profile gets created. Inside `spellbook` you cannot initiate a project called the same name, so you need to run `dbt init spellbook` outside the project so it creates the profile, or create one with a different name and then manually edit the `profiles.yml` file.
+If you fail to run `dbt compile`, here are some common error messages:
+
+- `Could not find profile named 'spellbook'` <br> Check `~/.dbt/profiles.yml` and make sure there is a profile named `spellbook`. When you run `dbt init` to initiate a project, a profile gets created. Inside `spellbook` you cannot initiate a project called the same name, so you need to run `dbt init spellbook` outside the project so it creates the profile, or create one with a different name and then manually edit the `profiles.yml` file.
+-  ```
+   Credentials in profile "spellbook", target "dev" invalid: Runtime Error
+    http connection method requires additional dependencies.
+    Install the additional required dependencies with pip install dbt-spark[PyHive]
+   ```
+   You've probably selected the `spark` option instead of the `databricks` option when running `dbt init`. Rerun `dbt init`, overwrite the profile and select the `databricks` option.
 
 ### DBT Resources:
 - Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
