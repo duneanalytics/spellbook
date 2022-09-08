@@ -9,4 +9,5 @@ SELECT distinct
     nft_tokens.name as collection,
     updated_at
 FROM {{ ref('transfers_ethereum_erc721_rolling_hour') }}
-LEFT JOIN {{ ref('tokens_ethereum_nft') }} nft_tokens ON nft_tokens.contract_address = token_address
+LEFT JOIN {{ ref('tokens_nft') }} nft_tokens ON nft_tokens.contract_address = token_address
+AND nft_tokens.blockchain = 'ethereum'

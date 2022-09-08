@@ -1,11 +1,26 @@
 version: 2
 
 models:
+  - name: nft_aggregators
+    meta:
+      blockchain: avalanche_c, bnb, ethereum, polygon
+      sector: nft
+      contributors: hildobby, soispoke
+    config:
+      tags: ['nft','aggregators', 'avalanche_c', 'bnb','ethereum', 'polygon']
+    description: >
+        NFT aggregators
+    columns:
+      - name: contract_address
+        description: "Aggregator project's contract address"
+      - name: name
+        description: "Aggregator project's name"
+
   - name: nft_events
     meta:
       blockchain: ethereum, solana
       sector: nft
-      contributors: soispoke, hildobby, ilemi
+      contributors: soispoke, hildobby, ilemi, 0xRob
     config:
       tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'ethereum', 'solana', 'events']
     description: >
@@ -99,7 +114,7 @@ models:
         name: platform_fee_amount_usd
         description:  "Platform fee amount in USD"
       - &platform_fee_percentage
-        name: platform_fee_amount_usd
+        name: platform_fee_percentage
         description:  "Platform fee in % of the amount paid for a given trade"
       - &royalty_fee_receive_address
         name: royalty_fee_receive_address
@@ -279,3 +294,21 @@ models:
       - *tx_from
       - *tx_to
       - *unique_trade_id
+
+  - name: nft_linked_addresses
+    meta:
+      blockchain: ethereum, solana
+      sector: nft
+      contributors: springzh
+    config:
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'ethereum', 'solana', 'address']
+    description: >
+        NFT linked addresses. Addresses that buy and sell NFTs from each other.
+    columns:
+      - *blockchain
+      - name: master_address
+        description: "Master address"
+      - name: alternative_address
+        description: "Alternative address"
+      - name: linked_address_id
+        description: "Unique linked address id"
