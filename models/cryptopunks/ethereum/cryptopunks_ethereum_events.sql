@@ -100,25 +100,27 @@ SELECT
     buys.evt_tx_hash AS tx_hash,
     tx.from as tx_from,
     tx.to as tx_to,
-    "0" AS platform_fee_amount_raw,
-    "0" AS platform_fee_amount,
-    "0" AS platform_fee_amount_usd,
-    "0" AS platform_fee_percentage,
-    "0" AS royalty_fee_amount_raw,
-    "0" AS royalty_fee_amount,
-    "0" AS royalty_fee_amount_usd,
-    "0"  AS royalty_fee_percentage,
+    NULL::double AS platform_fee_amount_raw,
+    NULL::double AS platform_fee_amount,
+    NULL::double AS platform_fee_amount_usd,
+    NULL::double AS platform_fee_percentage,
+    NULL::double AS royalty_fee_amount_raw,
+    NULL::double AS royalty_fee_amount,
+    NULL::double AS royalty_fee_amount_usd,
+    NULL::double  AS royalty_fee_percentage,
     NULL::string as royalty_fee_receive_address,
     NULL::string as royalty_fee_currency_symbol,
     "cryptopunks" || '-' || buys.evt_tx_hash || '-' || buys.punkIndex || '-' ||  buys.from || '-' || buys.evt_index || '-' || "" as unique_trade_id
 FROM buys
 INNER JOIN {{ source('ethereum','transactions') }} tx ON buys.evt_tx_hash = tx.hash
+{% if is_incremental() %}
+    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+{% endif %}
 LEFT JOIN {{ ref('nft_ethereum_aggregators') }} agg ON agg.contract_address = tx.to
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', buys.evt_block_time)
     AND p.contract_address = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
     AND p.blockchain = "ethereum"
-WHERE buys.type = "PunkBought"
--- this filter will only be applied on an incremental run 
 {% if is_incremental() %}
-AND buys.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    AND p.minute >= date_trunc("day", now() - interval '1 week')
 {% endif %}
+WHERE buys.type = "PunkBought"
