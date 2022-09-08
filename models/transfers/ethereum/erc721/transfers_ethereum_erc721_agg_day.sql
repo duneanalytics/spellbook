@@ -13,7 +13,7 @@ select
     wallet_address,
     token_address,
     tokenId,
-    date_trunc('day', evt_block_time) || '-' || token_address || '-' || tokenId as unique_transfer_id
+    wallet_address || '-' || date_trunc('day', evt_block_time) || '-' || token_address || '-' || tokenId as unique_transfer_id
 from {{ ref('transfers_ethereum_erc721') }}
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
