@@ -5,10 +5,10 @@ models:
     meta:
       blockchain: ethereum, solana
       sector: labels
-      category: nft
+      category: nft, cex
       contibutors: hildobby, soispoke
     config:
-      tags: ['labels', 'ethereum', 'solana', 'nft']
+      tags: ['labels', 'ethereum', 'solana', 'nft', 'cex']
     description: "All labels across chains and categories"
     columns:
       - name: blockchain
