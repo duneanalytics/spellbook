@@ -115,7 +115,7 @@ models:
         +schema: balances_ethereum
         +materialized: view
 
-  labels:
+    labels:
       +schema: labels
       +materialized: view
 
