@@ -10,10 +10,12 @@ models:
       tags: ["optimism", "ovm1", "contracts"]
     description: "Contracts deployed on OVM1."
     columns:
-      - &name: contract_address
+      - &contract_address
+        name: contract_address
         description: "Address of the smart contract"
 
-      - &name: contract_name
+      - &contract_name
+        name: contract_name
         description: "Name of the smart contract"
     
       - name: erc20_address
@@ -35,12 +37,14 @@ models:
       tags: ["optimism", "ovm1", "erc20"]
     description: "Records of erc20 balances per wallet address per token"
     columns:
-      - &name: user_address
+      - &user_address
+        name: user_address
         description: "Hashes of user wallet address"
 
       - *contract_address
 
-      - &name: value
+      - &value
+        name: value
         description: "Balance of a token"
 
 
@@ -53,16 +57,20 @@ models:
       tags: ["optimism", "ovm1", "transactions"]
     description: "Partial OVM1 records of daily transactions per address"
     columns:
-      - &name: day
+      - &day
+        name: day
         description: "The date of transactions"
 
-      - &name: from_address
+      - &from_address
+        name: from_address
         description: "Hashes of the address from which transactions were initiated"
 
-      - &name: method_id
+      - &method_id
+        name: method_id
         description: "The first 4 bytes of calldata that specifies which function to call"
 
-      - &name: num_transactions
+      - &num_transactions
+        name: num_transactions
         description: "Number of transactions that took place in a give date"
 
 
@@ -167,7 +175,8 @@ models:
       - *user_address
       - *tx_type
 
-      - &name: first_transaction
+      - &first_transaction
+        name: first_transaction
         description: "Timestamp of the first transaction on OVM1"
 
 
