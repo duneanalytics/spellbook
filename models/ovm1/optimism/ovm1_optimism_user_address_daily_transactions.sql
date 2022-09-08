@@ -1,4 +1,4 @@
-{{ config(alias='user_address_daily_transactions') }}
+{{ config(alias='user_address_daily_transactions', materialized = 'table') }}
 select 
   *
 from ({{ ref('ovm1_q1_user_address_daily_transactions') }})

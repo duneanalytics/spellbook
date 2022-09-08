@@ -595,7 +595,7 @@ ALTER VIEW archipelago_ethereum.fees  SET TBLPROPERTIES ('dune.public'='true',
                                                         'dune.data_explorer.contributors'='["0xRob"]');
 {% endset %}
 
-{% set optimism_ovm1_erc20_balances %}
+{% set ovm1_optimism_erc20_balances %}
 ALTER TABLE ovm1_optimism.erc20_balances SET TBLPROPERTIES ('dune.public'='true',
                                                 'dune.data_explorer.blockchains'='["optimism"]',
                                                 'dune.data_explorer.category'='abstraction',
@@ -604,8 +604,8 @@ ALTER TABLE ovm1_optimism.erc20_balances SET TBLPROPERTIES ('dune.public'='true'
                                                 'dune.data_explorer.contributors'='["msilb7", "chuxinh]');
 {% endset %}
 
-{% set optimism_ovm1_op_contracts %}
-ALTER TABLE ovm1_optimism.op_contracts SET TBLPROPERTIES ('dune.public'='true',
+{% set ovm1_optimism_contracts %}
+ALTER TABLE ovm1_optimism.contracts SET TBLPROPERTIES ('dune.public'='true',
                                                 'dune.data_explorer.blockchains'='["optimism"]',
                                                 'dune.data_explorer.category'='abstraction',
                                                 'dune.data_explorer.abstraction.type'='sector',
@@ -613,7 +613,7 @@ ALTER TABLE ovm1_optimism.op_contracts SET TBLPROPERTIES ('dune.public'='true',
                                                 'dune.data_explorer.contributors'='["msilb7", "chuxinh]');
 {% endset %}
 
-{% set optimism_ovm1_synthetix_genesis_contracts %}
+{% set ovm1_optimism_synthetix_genesis_contracts %}
 ALTER TABLE ovm1_optimism.synthetix_genesis_contracts SET TBLPROPERTIES ('dune.public'='true',
                                                 'dune.data_explorer.blockchains'='["optimism"]',
                                                 'dune.data_explorer.category'='abstraction',
@@ -622,7 +622,7 @@ ALTER TABLE ovm1_optimism.synthetix_genesis_contracts SET TBLPROPERTIES ('dune.p
                                                 'dune.data_explorer.contributors'='["msilb7", "chuxinh]');
 {% endset %}
 
-{% set optimism_ovm1_user_address_activity_last_30_days %}
+{% set ovm1_optimism_user_address_activity_last_30_days %}
 ALTER TABLE ovm1_optimism.user_address_activity_last_30_days SET TBLPROPERTIES ('dune.public'='true',
                                                 'dune.data_explorer.blockchains'='["optimism"]',
                                                 'dune.data_explorer.category'='abstraction',
@@ -631,7 +631,7 @@ ALTER TABLE ovm1_optimism.user_address_activity_last_30_days SET TBLPROPERTIES (
                                                 'dune.data_explorer.contributors'='["msilb7", "chuxinh]');
 {% endset %}
 
-{% set optimism_ovm1_user_address_daily_transactions %}
+{% set ovm1_optimism_user_address_daily_transactions %}
 ALTER TABLE ovm1_optimism.user_address_daily_transactions SET TBLPROPERTIES ('dune.public'='true',
                                                 'dune.data_explorer.blockchains'='["optimism"]',
                                                 'dune.data_explorer.category'='abstraction',
@@ -640,7 +640,7 @@ ALTER TABLE ovm1_optimism.user_address_daily_transactions SET TBLPROPERTIES ('du
                                                 'dune.data_explorer.contributors'='["msilb7", "chuxinh]');
 {% endset %}
 
-{% set optimism_ovm1_user_addresses %}
+{% set ovm1_optimism_user_addresses %}
 ALTER TABLE ovm1_optimism.user_addresses SET TBLPROPERTIES ('dune.public'='true',
                                                 'dune.data_explorer.blockchains'='["optimism"]',
                                                 'dune.data_explorer.category'='abstraction',
@@ -649,7 +649,7 @@ ALTER TABLE ovm1_optimism.user_addresses SET TBLPROPERTIES ('dune.public'='true'
                                                 'dune.data_explorer.contributors'='["msilb7", "chuxinh]');
 {% endset %}
 
-{% set optimism_ovm1_user_addresses_by_tx_type %}
+{% set ovm1_optimism_user_addresses_by_tx_type %}
 ALTER TABLE ovm1_optimism.user_addresses_by_tx_type SET TBLPROPERTIES ('dune.public'='true',
                                                 'dune.data_explorer.blockchains'='["optimism"]',
                                                 'dune.data_explorer.category'='abstraction',
@@ -658,7 +658,7 @@ ALTER TABLE ovm1_optimism.user_addresses_by_tx_type SET TBLPROPERTIES ('dune.pub
                                                 'dune.data_explorer.contributors'='["msilb7", "chuxinh]');
 {% endset %}
 
-{% set optimism_ovm1_user_addresses_weekly_active_cohorts %}
+{% set ovm1_optimism_user_addresses_weekly_active_cohorts %}
 ALTER TABLE ovm1_optimism.user_addresses_weekly_active_cohorts SET TBLPROPERTIES ('dune.public'='true',
                                                 'dune.data_explorer.blockchains'='["optimism"]',
                                                 'dune.data_explorer.category'='abstraction',

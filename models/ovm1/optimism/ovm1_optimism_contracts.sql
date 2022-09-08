@@ -1,4 +1,4 @@
-{{ config(alias='op_contracts', materialized = 'table', file_format = 'delta') }}
+{{ config(alias='contracts', materialized = 'table', file_format = 'delta') }}
 
 select contract_address, contract_name, erc20_address, created_time, creator_address
 from (values
