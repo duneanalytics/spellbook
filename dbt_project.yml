@@ -103,25 +103,21 @@ models:
       ethereum:
         +schema: nomad_ethereum
         +materialized: view
-
     seaport:
       +schema: seaport
       +materialized: view
       ethereum:
         +schema: seaport_ethereum
         +materialized: view
-
     balances:
       +schema: balances
       +materialized: view
       ethereum:
         +schema: balances_ethereum
         +materialized: view
-  
     labels:
       +schema: labels
       +materialized: view
-
     tokens:
       +schema: tokens
       +materialized: view
@@ -139,7 +135,6 @@ models:
       gnosis:
         +schema: tokens_gnosis
         +materialized: view
-
     transfers:
       +schema: transfers
       +materialized: view
@@ -148,43 +143,42 @@ models:
         +materialized: view
       optimism:
         +schema: transfers_optimism
-
     sudoswap:
       +schema: sudoswap
       +materialized: view
       ethereum:
         +schema: sudoswap_ethereum
         +materialized: view
-
     safe:
       +schema: safe
       +materialized: view
       ethereum:
         +schema: safe_ethereum
         +materialized: view
-
+    cryptopunks:
+      +schema: cryptopunks
+      +materialized: view
+      ethereum:
+        +schema: cryptopunks_ethereum
+        +materialized: view
     tornado_cash:
       +schema: tornado_cash
       +materialized: view
-
     archipelago:
       +schema: archipelago
       +materialized: view
       ethereum:
         +schema: archipelago_ethereum
         +materialized: view
-
     integration_test:
       +schema: integration_test
       +materialized: view
-
     curvefi:
       +schema: curvefi
       +materialized: view
       ethereum:
         +schema: curvefi_ethereum
         +materialized: view
-
 seeds:
   spellbook:
     balances:
@@ -249,7 +243,6 @@ seeds:
           token_bought_amount: float
           token_sold_address: string
           token_sold_amount: float
-
     sudoswap:
       +enabled: true
       +schema: test_data
@@ -263,12 +256,27 @@ seeds:
           amount_original: double
           platform_fee_amount: double
           pool_fee_amount: double
-
+    cryptopunks:
+      +enabled: true
+      +schema: test_data
+      cryptopunks_trades_buys_bids_seed:
+        +column_types:
+          test_description: string
+          blockchain: string
+          project: string
+          version: string
+          block_number: string
+          block_date: date
+          tx_hash: string
+          token_id: string
+          seller: string
+          buyer: string
+          amount_raw: string
+          currency_contract: string
     curvefi:
       ethereum:
         +enabled: true
         +schema: test_data
-
     nft:
       +enabled: true
       +schema: test_data
