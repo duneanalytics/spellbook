@@ -49,6 +49,9 @@ models:
       ethereum:
         +schema: nft_ethereum
         +materialized: view
+        metadata:
+          +schema: nft_ethereum_metadata
+          +materialized: view
       bnb:
         +schema: nft_bnb
         +materialized: view
