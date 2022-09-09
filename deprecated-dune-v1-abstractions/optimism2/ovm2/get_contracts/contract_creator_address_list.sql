@@ -323,6 +323,8 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x1e7b390149Abb3B891e0a7027E111188032D4540	RadioShack Swap
 \\x4C3490dF15edFa178333445ce568EC6D99b5d71c	Reaper Farm
 \\xf0974c239b7d08b7240b690b69ec3dd8ae783efc	Apetimism Launchapd
+\\x5cb01385d3097b6a189d1ac8ba3364d900666445	Overnight
+\\xA52fECFe3F0D4a77A572dec9B72277abC5dFD9c6	NEX
 \.
 
 COMMIT;
