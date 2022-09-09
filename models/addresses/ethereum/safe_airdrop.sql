@@ -1,4 +1,4 @@
-{{ config(alias='gnosis_safe_airdrop', materialized = 'table', file_format = 'delta') }}
+{{ config(alias='safe_airdrop', materialized = 'table', file_format = 'delta') }}
 
 SELECT address, token_amount
 FROM (

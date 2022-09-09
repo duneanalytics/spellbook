@@ -37,9 +37,6 @@ models:
     airdrop:
       +schema: airdrop
       +materialized: table
-      ethereum:
-        +schema: airdrop_ethereum
-        +materialized: table
       optimism:
         +schema: airdrop_optimism
         +materialized: table
@@ -121,6 +118,13 @@ models:
     labels:
       +schema: labels
       +materialized: view
+
+    addresses:
+      +schema: addresses
+      +materialized: table
+      ethereum:
+        +schema: addresses_ethereum
+        +materialized: table
 
     tokens:
       +schema: tokens
