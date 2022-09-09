@@ -9,11 +9,11 @@
     )
 }}
 
-WITH (
+WITH dexs as (
         -- Sushiswap
         SELECT
             t.evt_block_time AS block_time,
-            t."to" AS taker,
+            t.to AS taker,
             '' AS maker,
             CASE WHEN "amount0Out" = 0 THEN "amount1Out" ELSE "amount0Out" END AS token_bought_amount_raw,
             CASE WHEN "amount0In" = 0 THEN "amount1In" ELSE "amount0In" END AS token_sold_amount_raw,
@@ -25,9 +25,9 @@ WITH (
             '' AS trace_address,
             t.evt_index
         FROM
-            {{ source('sushiswap_ethereum', 'Pair_evt_Swap') }} t
-        INNER JOIN {{ source('sushiswap_ethereum', 'Factory_evt_PairCreated') }} f ON f.pair = t.contract_address
-    ) as dexs
+            {{ source('sushi_ethereum', 'Pair_evt_Swap') }} t
+        INNER JOIN {{ source('sushi_ethereum', 'Factory_evt_PairCreated') }} f ON f.pair = t.contract_address
+    )
 
     SELECT
         'ethereum' as blockchain,
@@ -37,8 +37,6 @@ WITH (
         dexs.block_time,
         erc20a.symbol AS token_bought_symbol,
         erc20b.symbol AS token_sold_symbol,
-        token_bought_amount_raw / 10 ^ erc20a.decimals AS token_bought_amount,
-        token_sold_amount_raw / 10 ^ erc20b.decimals AS token_sold_amount,
         case
             when lower(erc20a.symbol) > lower(erc20b.symbol) then concat(erc20b.symbol, '-', erc20a.symbol)
             else concat(erc20a.symbol, '-', erc20b.symbol)
@@ -84,14 +82,12 @@ WITH (
         {% if is_incremental() %}
         AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    LEFT JOIN {{ source('prices', 'usd') }} p_sold ON pb.minute = date_trunc('minute', dexs.block_time)
+    LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.minute = date_trunc('minute', dexs.block_time)
         AND p_sold.contract_address = dexs.token_sold_address
         {% if not is_incremental() %}
         -- TODO: Determine minimum date for SS (using directional date of mainnet launch for SS)
-        AND p_bought.minute >= "2020-09-04 10:00:00"
+        AND p_sold.minute >= "2020-09-04 10:00:00"
         {% endif %}
         {% if is_incremental() %}
-        AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
+        AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    WHERE dexs.block_time >= start_ts
-    AND dexs.block_time < end_ts
