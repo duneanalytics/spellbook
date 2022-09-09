@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       project: nft
-      contributors: [cat]
+      contributors: cat
     config:
       tags: [‘ethereum’,’nft’,’metadata’]
     description: >
@@ -56,3 +56,26 @@ models:
       - &dark_mode
         name: dark_mode
         description: “Dark mode?”
+
+  - name: nft_ethereum_metadata_art_blocks_collections
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: cat
+    config:
+      tags: ['nft', 'ethereum', 'art_blocks']
+    description: >
+        All art blocks collections and details (project id, project type, name, artist)
+    columns:
+      - name: contract_address
+        description: "Collection contract address"
+      - name: art_blocks_project_id
+        description: "Project ID. Can use to join with token_ids on contract address"
+      - name: art_blocks_curated_season
+        description: "If Curated collection, season it was launched in. Else N/A"
+      - name: art_blocks_project_type
+        description: "Curated, Playground, Factory"
+      - name: collection_name
+        description: "Name of collection"
+      - name: artist_name
+        description: "Name of artist"
