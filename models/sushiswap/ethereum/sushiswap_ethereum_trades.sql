@@ -68,7 +68,7 @@ WITH (
         ON dexs.tx_hash = tx.hash
         {% if not is_incremental() %}
         -- TODO: Determine minimum date for SS (using directional date of mainnet launch for SS)
-        AND tx.block_time >= "2020-08-01 00:00:00"
+        AND tx.block_time >= "2020-09-04 10:00:00"
         {% endif %}
         {% if is_incremental() %}
         AND tx.block_time >= date_trunc("day", now() - interval '1 week')
@@ -78,9 +78,8 @@ WITH (
     LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.minute = date_trunc('minute', dexs.block_time)
         AND p_bought.contract_address = dexs.token_bought_address
         {% if not is_incremental() %}
-        -- The date below is derrived from `select min(evt_block_time) from uniswap_v2_ethereum.Factory_evt_PairCreated;`
-        -- If dexs above is changed then this will also need to be changed.
-        AND p_bought.minute >= "2020-05-05 00:00:00"
+        -- TODO: Determine minimum date for SS (using directional date of mainnet launch for SS)
+        AND p_bought.minute >= "2020-09-04 10:00:00"
         {% endif %}
         {% if is_incremental() %}
         AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
@@ -88,9 +87,8 @@ WITH (
     LEFT JOIN {{ source('prices', 'usd') }} p_sold ON pb.minute = date_trunc('minute', dexs.block_time)
         AND p_sold.contract_address = dexs.token_sold_address
         {% if not is_incremental() %}
-        -- The date below is derrived from `select min(evt_block_time) from uniswap_v2_ethereum.Factory_evt_PairCreated;`
-        -- If dexs above is changed then this will also need to be changed.
-        AND p_bought.minute >= "2020-05-05 00:00:00"
+        -- TODO: Determine minimum date for SS (using directional date of mainnet launch for SS)
+        AND p_bought.minute >= "2020-09-04 10:00:00"
         {% endif %}
         {% if is_incremental() %}
         AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
