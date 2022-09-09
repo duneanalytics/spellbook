@@ -28,6 +28,12 @@ models:
     ens:
       +schema: ens
       +materialized: view
+    airdrop:
+      +schema: airdrop
+      +materialized: table
+      optimism:
+        +schema: airdrop_optimism
+        +materialized: table
     dex:
       +schema: dex
       +materialized: view
@@ -40,8 +46,8 @@ models:
       bnb:
         +schema: nft_bnb
         +materialized: view
-      avalanche:
-        +schema: nft_avalanche
+      avalanche_c:
+        +schema: nft_avalanche_c
         +materialized: view
       polygon:
         +schema: nft_polygon
@@ -148,6 +154,13 @@ models:
       +schema: tornado_cash
       +materialized: view
 
+    archipelago:
+      +schema: archipelago
+      +materialized: view
+      ethereum:
+        +schema: archipelago_ethereum
+        +materialized: view
+                
     integration_test:
       +schema: integration_test
       +materialized: view
@@ -216,6 +229,7 @@ seeds:
           token_bought_amount: float
           token_sold_address: string
           token_sold_amount: float
+
     sudoswap:
       +enabled: true
       +schema: test_data

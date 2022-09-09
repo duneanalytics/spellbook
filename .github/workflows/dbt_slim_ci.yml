@@ -45,7 +45,7 @@ jobs:
         run: "dbt seed --select state:modified --state ."
 
       - name: DBT run
-        run: "dbt run --select state:modified --state ."
+        run: "dbt run --select +state:modified --state ."
 
       - name: DBT test
         run: "dbt test --select state:new state:modified --state ."

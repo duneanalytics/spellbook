@@ -153,7 +153,7 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x74f85fe5538dbfcf3b46399e121c3ba83f695f91	TokenPocket
 \\xcf85a70d88d14d157c50aa61999f7808027a15d6	Animal Coloring Books
 \\x2596b971ee0de4532566c59fa394c0d29f21d224	OE Ape
-\\xec1557a67d4980c948cd473075293204f4d280fd	Quixotic
+\\xec1557a67d4980c948cd473075293204f4d280fd	Quix
 \\x7856f2a12a7a18b4a115d295f548434a9b078fa1	Aelin
 \\xdbeabb16b017d321cbaa00c7412ce76d08ec2fc1	BitBTC Protocol
 \\xc22834581ebc8527d974f8a1c97e1bea4ef910bc	Gnosis Safe
@@ -284,7 +284,7 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\xF6c5B9c0B57590A5be6f16380D68eAC6fd9d0Fac	Ooki
 \\x90899D3Cc800C0a9196AeC83DA43e46582cB7435	Ren
 \\x3Fc25fB2fbd5b1Ae1c9528Fe5Be8c7EF91fCD95b	Holozaki
-\\x4856e043a1F2CAA8aCEfd076328b4981Aca91000	Quixotic
+\\x4856e043a1F2CAA8aCEfd076328b4981Aca91000	Quix
 \\xd7f73cbf2b6ac915976cc96706b76d6425fbc234	PoolTogether
 \\x4D40eb12430A57965cEe3015348d490C6156dF20	PoolTogether
 \\xAE75B29ADe678372D77A8B41225654138a7E6ff1	Brahma
@@ -320,6 +320,9 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\xa3102370655EfE1b29De7898A85bF7Fef3f1fB8a	OptimismPad
 \\x1a86596A4F3398B6c44232ba1716e20e88205A40	OptimismPrime
 \\x685723b9dc89bdf28ba5f98f9a8c0ac899bd6e77	Jarvis Network
+\\x1e7b390149Abb3B891e0a7027E111188032D4540	RadioShack Swap
+\\x4C3490dF15edFa178333445ce568EC6D99b5d71c	Reaper Farm
+\\xf0974c239b7d08b7240b690b69ec3dd8ae783efc	Apetimism Launchapd
 \.
 
 COMMIT;

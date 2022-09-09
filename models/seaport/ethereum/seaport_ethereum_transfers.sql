@@ -82,10 +82,10 @@ with p1_call as (
 
 
 ,p1_add_rn as (select (max(case when purchase_method = 'Offer Accepted' and sub_type = 'offer' and sub_idx = 0 then token_contract_address
-                     when purchase_method = 'Buy Now' and sub_type = 'consideration' then token_contract_address
+                     when purchase_method = 'Buy' and sub_type = 'consideration' then token_contract_address
                 end) over (partition by tx_hash, evt_index)) as avg_original_currency_contract
           ,sum(case when purchase_method = 'Offer Accepted' and sub_type = 'offer' and sub_idx = 0 then original_amount
-                    when purchase_method = 'Buy Now' and sub_type = 'consideration' then original_amount
+                    when purchase_method = 'Buy' and sub_type = 'consideration' then original_amount
                end) over (partition by tx_hash, evt_index)
            / nft_transfer_count as avg_original_amount
           ,sum(case when fee_royalty_yn = 'fee' then original_amount end) over (partition by tx_hash, evt_index) / nft_transfer_count as avg_fee_amount
@@ -95,19 +95,19 @@ with p1_call as (
           ,a.*
       from (select case when purchase_method = 'Offer Accepted' and sub_type = 'consideration' and fee_royalty_idx = 1 then 'fee'
                         when purchase_method = 'Offer Accepted' and sub_type = 'consideration' and fee_royalty_idx = 2 then 'royalty'
-                        when purchase_method = 'Buy Now' and sub_type = 'consideration' and fee_royalty_idx = 2 then 'fee'
-                        when purchase_method = 'Buy Now' and sub_type = 'consideration' and fee_royalty_idx = 3 then 'royalty'
+                        when purchase_method = 'Buy' and sub_type = 'consideration' and fee_royalty_idx = 2 then 'fee'
+                        when purchase_method = 'Buy' and sub_type = 'consideration' and fee_royalty_idx = 3 then 'royalty'
                    end as fee_royalty_yn
                   ,case when purchase_method = 'Offer Accepted' and main_type = 'order' then 'Individual Offer'
                         when purchase_method = 'Offer Accepted' and main_type = 'basic_order' then 'Individual Offer'
                         when purchase_method = 'Offer Accepted' and main_type = 'advanced_order' then 'Collection/Trait Offers'
-                        else 'Buy Now'
+                        else 'Buy'
                    end as order_type
                   ,a.*
               from (select (count(case when item_type in ('2','3') then 1 end) over (partition by tx_hash, evt_index)) as nft_transfer_count
                           ,(sum(case when item_type in ('0','1') then 1 end) over (partition by tx_hash, evt_index, sub_type order by sub_idx)) as fee_royalty_idx
                           ,case when max(case when (sub_type,sub_idx,item_type) in (('offer',0,'1')) then 1 else 0 end) over (partition by tx_hash) = 1 then 'Offer Accepted'
-                                else 'Buy Now'
+                                else 'Buy'
                            end as purchase_method
                           ,a.*
                       from p1_evt a
@@ -218,16 +218,17 @@ with p1_call as (
             {% if is_incremental() %}
             and tx.block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
-        left join {{ ref('nft_ethereum_aggregators') }} agg
-            ON agg.contract_address = tx.to
-        left join {{ ref('tokens_ethereum_nft') }} n
-            on n.contract_address = nft_contract_address
-        left join {{ ref('tokens_ethereum_erc20') }} t1
+        left join {{ ref('nft_aggregators') }} agg
+            ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
+        left join {{ ref('tokens_nft') }} n
+            on n.contract_address = nft_contract_address and n.blockchain = 'ethereum'
+        left join {{ ref('tokens_erc20') }} t1
             on t1.contract_address =
                 case when a.original_currency_contract = '0x0000000000000000000000000000000000000000'
                 then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                 else a.original_currency_contract
-                end
+                end 
+            and t1.blockchain = 'ethereum'
           left join {{ source('prices', 'usd') }} p1
             on p1.contract_address =
                 case when a.original_currency_contract = '0x0000000000000000000000000000000000000000'
@@ -356,7 +357,7 @@ with p1_call as (
           ,case when evt_tx_hash is null then true else false end as reverted
           ,'Bulk Purchase' as trade_type
           ,'Bulk Purchase' as order_type
-          ,'Buy Now' as purchase_method
+          ,'Buy' as purchase_method
       from p2_evt a
 )
 
@@ -423,16 +424,16 @@ with p1_call as (
             {% if is_incremental() %}
             and tx.block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
-        left join {{ ref('nft_ethereum_aggregators') }} agg
-            ON agg.contract_address = tx.to
-        left join {{ ref('tokens_ethereum_nft') }} n
-            on n.contract_address = concat('0x',substr(a.nft_address,3,40))
-        left join {{ ref('tokens_ethereum_erc20') }} t1
+        left join {{ ref('nft_aggregators') }} agg
+            ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
+        left join {{ ref('tokens_nft') }} n
+            on n.contract_address = concat('0x',substr(a.nft_address,3,40)) and n.blockchain = 'ethereum'
+        left join {{ ref('tokens_erc20') }} t1
             on t1.contract_address =
                 case when concat('0x',substr(a.price_token,3,40)) = '0x0000000000000000000000000000000000000000'
                 then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                 else concat('0x',substr(a.price_token,3,40))
-                end
+                end and t1.blockchain = 'ethereum'
           left join {{ source('prices', 'usd') }} p1
             on p1.contract_address =
                 case when concat('0x',substr(a.price_token,3,40)) = '0x0000000000000000000000000000000000000000'
@@ -519,10 +520,10 @@ with p1_call as (
 
 
 ,p3_add_rn as (select (max(case when purchase_method = 'Offer Accepted' and sub_type = 'offer' and sub_idx = 0 then token_contract_address::string
-                     when purchase_method = 'Buy Now' and sub_type = 'consideration' then token_contract_address::string
+                     when purchase_method = 'Buy' and sub_type = 'consideration' then token_contract_address::string
                 end) over (partition by tx_hash, evt_index)) as avg_original_currency_contract
           ,sum(case when purchase_method = 'Offer Accepted' and sub_type = 'offer' and sub_idx = 0 then original_amount
-                    when purchase_method = 'Buy Now' and sub_type = 'consideration' then original_amount
+                    when purchase_method = 'Buy' and sub_type = 'consideration' then original_amount
                end) over (partition by tx_hash, evt_index)
            / nft_transfer_count as avg_original_amount
           ,sum(case when fee_royalty_yn = 'fee' then original_amount end) over (partition by tx_hash, evt_index) / nft_transfer_count as avg_fee_amount
@@ -532,19 +533,19 @@ with p1_call as (
           ,a.*
       from (select case when purchase_method = 'Offer Accepted' and sub_type = 'consideration' and fee_royalty_idx = 1 then 'fee'
                         when purchase_method = 'Offer Accepted' and sub_type = 'consideration' and fee_royalty_idx = 2 then 'royalty'
-                        when purchase_method = 'Buy Now' and sub_type = 'consideration' and fee_royalty_idx = 2 then 'fee'
-                        when purchase_method = 'Buy Now' and sub_type = 'consideration' and fee_royalty_idx = 3 then 'royalty'
+                        when purchase_method = 'Buy' and sub_type = 'consideration' and fee_royalty_idx = 2 then 'fee'
+                        when purchase_method = 'Buy' and sub_type = 'consideration' and fee_royalty_idx = 3 then 'royalty'
                    end as fee_royalty_yn
                   ,case when purchase_method = 'Offer Accepted' and main_type = 'order' then 'Individual Offer'
                         when purchase_method = 'Offer Accepted' and main_type = 'basic_order' then 'Individual Offer'
                         when purchase_method = 'Offer Accepted' and main_type = 'advanced_order' then 'Collection/Trait Offers'
-                        else 'Buy Now'
+                        else 'Buy'
                    end as order_type
                   ,a.*
               from (select count(case when item_type in ('2','3') then 1 end) over (partition by tx_hash, evt_index) as nft_transfer_count
                           ,sum(case when item_type in ('0','1') then 1 end) over (partition by tx_hash, evt_index, sub_type order by sub_idx) as fee_royalty_idx
                           ,case when max(case when (sub_type,sub_idx,item_type) in (('offer',0,'1')) then 1 else 0 end) over (partition by tx_hash) = 1 then 'Offer Accepted'
-                                else 'Buy Now'
+                                else 'Buy'
                            end as purchase_method
                           ,a.*
                       from p3_evt a
@@ -653,16 +654,17 @@ with p1_call as (
             {% if is_incremental() %}
             and tx.block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
-        left join {{ ref('nft_ethereum_aggregators') }} agg
-            ON agg.contract_address = tx.to
-        left join {{ ref('tokens_ethereum_nft') }} n
-            on n.contract_address = nft_contract_address
-        left join {{ ref('tokens_ethereum_erc20') }} t1
+        left join {{ ref('nft_aggregators') }} agg
+            ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
+        left join {{ ref('tokens_nft') }} n
+            on n.contract_address = nft_contract_address and n.blockchain = 'ethereum'
+        left join {{ ref('tokens_erc20') }} t1
             on t1.contract_address =
                 case when a.original_currency_contract = '0x0000000000000000000000000000000000000000'
                 then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                 else a.original_currency_contract
-                end
+                end 
+            and t1.blockchain = 'ethereum'
           left join {{ source('prices', 'usd') }} p1
             on p1.contract_address =
                 case when a.original_currency_contract = '0x0000000000000000000000000000000000000000'
@@ -786,7 +788,7 @@ with p1_call as (
           ,false as reverted
           ,'' as offer_order_type
           ,'Private Sales' as order_type
-          ,'Buy Now' as purchase_method
+          ,'Buy' as purchase_method
           ,nft_transfer_count
       from p4_add_rn a
      where offer_item_type in ('2','3')
@@ -858,16 +860,17 @@ with p1_call as (
         {% if is_incremental() %}
         and tx.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    left join {{ ref('nft_ethereum_aggregators') }} agg
-        ON agg.contract_address = tx.to
-    left join {{ ref('tokens_ethereum_nft') }} n
-        on n.contract_address = concat('0x',substr(a.nft_address,3,40))
-    left join {{ ref('tokens_ethereum_erc20') }} t1
+    left join {{ ref('nft_aggregators') }} agg
+        ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
+    left join {{ ref('tokens_nft') }} n
+        on n.contract_address = concat('0x',substr(a.nft_address,3,40)) and n.blockchain = 'ethereum'
+    left join {{ ref('tokens_erc20') }} t1
         on t1.contract_address =
             case when concat('0x',substr(a.price_token,3,40)) = '0x0000000000000000000000000000000000000000'
             then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
             else concat('0x',substr(a.price_token,3,40))
-            end
+            end 
+        and t1.blockchain = 'ethereum'
         left join {{ source('prices', 'usd') }} p1
         on p1.contract_address =
             case when concat('0x',substr(a.price_token,3,40)) = '0x0000000000000000000000000000000000000000'
