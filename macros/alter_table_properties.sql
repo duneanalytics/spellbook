@@ -379,6 +379,24 @@ ALTER VIEW uniswap.trades SET TBLPROPERTIES('dune.public'='true',
                                                 'dune.data_explorer.contributors'='["jeff-dude"]');
 {% endset %}
 
+{% set sushiswap_ethereum_trades %}
+ALTER VIEW uniswap_ethereum.trades SET TBLPROPERTIES('dune.public'='true',
+                                                        'dune.data_explorer.blockchains'='["ethereum"]',
+                                                        'dune.data_explorer.category'='abstraction',
+                                                        'dune.data_explorer.abstraction.type'='project',
+                                                        'dune.data_explorer.abstraction.name'='sushiswap',
+                                                        'dune.data_explorer.contributors'='["jeff-dude", "augustog"]');
+{% endset %}
+
+{% set sushiswap_trades %}
+ALTER VIEW uniswap.trades SET TBLPROPERTIES('dune.public'='true',
+                                                'dune.data_explorer.blockchains'='["ethereum"]',
+                                                'dune.data_explorer.category'='abstraction',
+                                                'dune.data_explorer.abstraction.type'='project',
+                                                'dune.data_explorer.abstraction.name'='sushiswap',
+                                                'dune.data_explorer.contributors'='["jeff-dude", "augustog"]');
+{% endset %}
+
 {% set dex_trades %}
 ALTER VIEW dex.trades SET TBLPROPERTIES('dune.public'='true',
                                             'dune.data_explorer.blockchains'='["ethereum"]',

@@ -83,6 +83,10 @@ OPTIMIZE uniswap_v1_ethereum.trades;
 OPTIMIZE uniswap_v2_ethereum.trades;
 {% endset %}
 
+{% set sushiswap_ethereum_trades %}
+OPTIMIZE sushiswap_ethereum.trades;
+{% endset %}
+
 {% set x2y2_ethereum_events %}
 OPTIMIZE x2y2_ethereum.events;
 {% endset %}
@@ -111,6 +115,7 @@ OPTIMIZE archipelago_ethereum.events;
 {% do run_query(transfers_ethereum_erc1155_agg_day) %}
 {% do run_query(uniswap_v1_ethereum_trades) %}
 {% do run_query(uniswap_v2_ethereum_trades) %}
+{% do run_query(sushiswap_ethereum_trades) %}
 {% do run_query(x2y2_ethereum_events) %}
 {% do run_query(archipelago_ethereum_events) %}
 {% do log("Tables Optimized", info=True) %}
