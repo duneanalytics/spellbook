@@ -115,9 +115,6 @@ models:
     labels:
       +schema: labels
       +materialized: view
-    labels:
-      +schema: labels
-      +materialized: view
     tokens:
       +schema: tokens
       +materialized: view
@@ -248,7 +245,7 @@ seeds:
       +schema: test_data
       sudoswap_ethereum_example_trades:
         +column_types:
-          block_number: long
+          blocknumber: long
           tx_hash: string
           trade_category: string
           nft_contract_address: string
