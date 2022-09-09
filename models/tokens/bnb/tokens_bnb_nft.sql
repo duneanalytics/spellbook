@@ -4,7 +4,7 @@
 }}
 
 SELECT
-  name, contract_address
+  name, contract_address, standard
 FROM
   (
     VALUES
@@ -305,4 +305,4 @@ FROM
   ,(CAST('StarArk' AS string), CAST('0xd4fcaf215cf55828148d64677c58277177acf49e' AS string))
   ,(CAST('FateOrigin BOX NFT' AS string), CAST('0x8b0b26b97aa4b907dd8dfe71fd0b602d71bb7df4' AS string))
   ,(CAST('PAD Pack' AS string), CAST('0xf18b9cdd3083eb1d84ee3cdcca418923ceb5455d' AS string))
-    ) AS temp_table (name, contract_address)
+    ) AS temp_table (name, contract_address, standard)
