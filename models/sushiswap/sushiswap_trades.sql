@@ -1,5 +1,5 @@
 {{ config(
-        alias ='trades' /* TODO: Verify namespace is isolated from uniswap */
+        alias ='trades'
         )
 }}
 
