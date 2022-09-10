@@ -14,9 +14,6 @@
 WITH perps AS (
 	SELECT
 		p.evt_block_time AS block_time
-		,"" AS virtual_asset
-		,"" AS underlying_asset
-		,"" AS market
 		,p.baseToken
 		,pp.pool AS market_address
 		,ABS(p.exchangedPositionNotional)/1e18 AS volume_usd
@@ -53,9 +50,9 @@ SELECT
 	'optimism' AS blockchain
     ,TRY_CAST(date_trunc('DAY', perps.block_time) AS date) AS block_date
 	,perps.block_time
-	,perps.virtual_asset
-	,perps.underlying_asset
-	,perps.market
+	,COALESCE(e.symbol, CAST(perps.baseToken AS STRING)) AS virtual_asset
+	,SUBSTRING(e.symbol, 2) AS underlying_asset
+	,CONCAT(e.symbol, '-', 'USD') AS market
 	,perps.market_address
 	,perps.volume_usd
 	,perps.fee_usd
