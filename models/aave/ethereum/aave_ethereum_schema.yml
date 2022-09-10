@@ -1,0 +1,27 @@
+version: 2
+
+models:
+ - name: aave_v2_ethereum_interest_rates
+   meta:
+     blockchain: ethereum
+     sector: dex
+     project: aave_v2
+     contibutors: batwayne, chuxinh
+
+   config:
+     tags: ['ethereum', 'aave_v2', 'interest', 'aave', 'dex']
+   description: "Hourly aave interest rates on ethereum"
+   columns:
+     - name: reserve
+       description: "Aave reserve contract address"
+     - name: symbol
+       description: "Symbol of the reserve"
+     - name: hour
+       description: "Block timestamp truncated to hours"
+     - name: deposit_apy
+       description: "Hourly deposit interest rate value of the reserve"
+     - name: stable_borrow_apy
+       description: "Hourly stable borrow interest rate value of the reserve" 
+     - name: variable_borrow_apy
+       description: "Hourly variable borrow interest rate value of the reserve" 
+       

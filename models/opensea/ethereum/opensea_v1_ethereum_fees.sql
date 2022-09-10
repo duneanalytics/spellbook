@@ -27,7 +27,7 @@ SELECT
     to,
     erc20.symbol as fee_currency_symbol
    FROM {{ source('erc20_ethereum', 'evt_transfer') }} erc
-   LEFT JOIN  {{ ref('tokens_ethereum_erc20') }} erc20 ON erc20.contract_address =  erc.contract_address
+   LEFT JOIN  {{ ref('tokens_erc20') }} erc20 ON erc20.contract_address =  erc.contract_address and erc20.blockchain = 'ethereum'
    WHERE to = '0x5b3256965e7c3cf26e11fcaf296dfc8807c01073'
    AND evt_tx_hash = '0xaa68c271a72a2a280eb06d89506d1feb3de6a84f6f19d1aa001885d783d5b9c7'
 GROUP BY 1,2,3,5,6
