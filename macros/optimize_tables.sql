@@ -103,10 +103,6 @@ OPTIMIZE element_avalanche_c.events;
 OPTIMIZE archipelago_ethereum.events;
 {% endset %}
 
-{% set foundation_ethereum_events %}
-OPTIMIZE foundation_ethereum.events;
-{% endset %}
-
 
 {% do run_query(looksrare_ethereum_events) %}
 {% do run_query(magiceden_solana_events) %}
@@ -132,6 +128,5 @@ OPTIMIZE foundation_ethereum.events;
 {% do run_query(uniswap_v2_ethereum_trades) %}
 {% do run_query(x2y2_ethereum_events) %}
 {% do run_query(archipelago_ethereum_events) %}
-{% do run_query(foundation_ethereum_events) %}
 {% do log("Tables Optimized", info=True) %}
 {% endmacro %}
