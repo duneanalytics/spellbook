@@ -25,6 +25,9 @@ WITH element_txs AS (
         , ee.evt_tx_hash AS tx_hash
         , ee.evt_block_number AS block_number
         FROM {{ source('element_ex_avalanche_c','ERC721OrdersFeature_evt_ERC721SellOrderFilled') }} ee
+        {% if is_incremental() %}
+        AND ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
         
         UNION
         
@@ -49,6 +52,9 @@ WITH element_txs AS (
         , ee.evt_tx_hash AS tx_hash
         , ee.evt_block_number AS block_number
         FROM {{ source('element_ex_avalanche_c','ERC721OrdersFeature_evt_ERC721BuyOrderFilled') }} ee
+        {% if is_incremental() %}
+        AND ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
         
         UNION
         
@@ -73,6 +79,9 @@ WITH element_txs AS (
         , ee.evt_tx_hash AS tx_hash
         , ee.evt_block_number AS block_number
         FROM {{ source('element_ex_avalanche_c','ERC1155OrdersFeature_evt_ERC1155SellOrderFilled') }} ee
+        {% if is_incremental() %}
+        AND ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
         
         UNION
         
@@ -97,6 +106,9 @@ WITH element_txs AS (
         , ee.evt_tx_hash AS tx_hash
         , ee.evt_block_number AS block_number
         FROM {{ source('element_ex_avalanche_c','ERC1155OrdersFeature_evt_ERC1155BuyOrderFilled') }} ee
+        {% if is_incremental() %}
+        AND ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
         )
     
 SELECT alet.blockchain
@@ -141,5 +153,11 @@ LEFT JOIN {{ ref('tokens_erc20') }} ava_erc20_tokens ON ava_erc20_tokens.contrac
 LEFT JOIN {{ ref('tokens_nft') }} ava_nft_tokens ON ava_nft_tokens.contract_address=alet.currency_contract AND ava_nft_tokens.blockchain='avalanche_c'
 LEFT JOIN {{ source('prices', 'usd') }} prices ON prices.minute=date_trunc('minute', alet.block_time)
     AND prices.contract_address=alet.currency_contract AND prices.blockchain='avalanche_c'
+        {% if is_incremental() %}
+        AND prices.minute >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 LEFT JOIN {{ source('avalanche_c','transactions') }} at ON at.hash=alet.tx_hash
     AND at.block_time=alet.block_time
+        {% if is_incremental() %}
+        AND at.block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
