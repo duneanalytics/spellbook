@@ -127,6 +127,186 @@ ALTER VIEW opensea.fees SET TBLPROPERTIES('dune.public'='true',
                                             'dune.data_explorer.contributors'='["soispoke"]');
 {% endset %}
 
+{% set element_ethereum_events %}
+ALTER VIEW element.events SET TBLPROPERTIES('dune.public'='true',
+                                            'dune.data_explorer.blockchains'='["ethereum"]',
+                                            'dune.data_explorer.category'='abstraction',
+                                            'dune.data_explorer.abstraction.type'='project',
+                                            'dune.data_explorer.abstraction.name'='element',
+                                            'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set element_ethereum_trades %}
+ALTER VIEW element.trades SET TBLPROPERTIES('dune.public'='true',
+                                            'dune.data_explorer.blockchains'='["ethereum"]',
+                                            'dune.data_explorer.category'='abstraction',
+                                            'dune.data_explorer.abstraction.type'='project',
+                                            'dune.data_explorer.abstraction.name'='element',
+                                            'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set element_ethereum_mints %}
+ALTER VIEW element.mints SET TBLPROPERTIES('dune.public'='true',
+                                            'dune.data_explorer.blockchains'='["ethereum"]',
+                                            'dune.data_explorer.category'='abstraction',
+                                            'dune.data_explorer.abstraction.type'='project',
+                                            'dune.data_explorer.abstraction.name'='element',
+                                            'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set element_ethereum_burns %}
+ALTER VIEW element.burns SET TBLPROPERTIES('dune.public'='true',
+                                            'dune.data_explorer.blockchains'='["ethereum"]',
+                                            'dune.data_explorer.category'='abstraction',
+                                            'dune.data_explorer.abstraction.type'='project',
+                                            'dune.data_explorer.abstraction.name'='element',
+                                            'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set element_ethereum_fees %}
+ALTER VIEW element.fees SET TBLPROPERTIES('dune.public'='true',
+                                            'dune.data_explorer.blockchains'='["ethereum"]',
+                                            'dune.data_explorer.category'='abstraction',
+                                            'dune.data_explorer.abstraction.type'='project',
+                                            'dune.data_explorer.abstraction.name'='element',
+                                            'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set element_bnb_events %}
+ALTER VIEW element.events SET TBLPROPERTIES('dune.public'='true',
+                                            'dune.data_explorer.blockchains'='["bnb"]',
+                                            'dune.data_explorer.category'='abstraction',
+                                            'dune.data_explorer.abstraction.type'='project',
+                                            'dune.data_explorer.abstraction.name'='element',
+                                            'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set element_bnb_trades %}
+ALTER VIEW element.trades SET TBLPROPERTIES('dune.public'='true',
+                                            'dune.data_explorer.blockchains'='["bnb"]',
+                                            'dune.data_explorer.category'='abstraction',
+                                            'dune.data_explorer.abstraction.type'='project',
+                                            'dune.data_explorer.abstraction.name'='element',
+                                            'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set element_bnb_mints %}
+ALTER VIEW element.mints SET TBLPROPERTIES('dune.public'='true',
+                                            'dune.data_explorer.blockchains'='["bnb"]',
+                                            'dune.data_explorer.category'='abstraction',
+                                            'dune.data_explorer.abstraction.type'='project',
+                                            'dune.data_explorer.abstraction.name'='element',
+                                            'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set element_bnb_burns %}
+ALTER VIEW element.burns SET TBLPROPERTIES('dune.public'='true',
+                                            'dune.data_explorer.blockchains'='["bnb"]',
+                                            'dune.data_explorer.category'='abstraction',
+                                            'dune.data_explorer.abstraction.type'='project',
+                                            'dune.data_explorer.abstraction.name'='element',
+                                            'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set element_bnb_fees %}
+ALTER VIEW element.fees SET TBLPROPERTIES('dune.public'='true',
+                                            'dune.data_explorer.blockchains'='["bnb"]',
+                                            'dune.data_explorer.category'='abstraction',
+                                            'dune.data_explorer.abstraction.type'='project',
+                                            'dune.data_explorer.abstraction.name'='element',
+                                            'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set element_avalanche_c_events %}
+ALTER VIEW element.events SET TBLPROPERTIES('dune.public'='true',
+                                            'dune.data_explorer.blockchains'='["avalanche_c"]',
+                                            'dune.data_explorer.category'='abstraction',
+                                            'dune.data_explorer.abstraction.type'='project',
+                                            'dune.data_explorer.abstraction.name'='element',
+                                            'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set element_avalanche_c_trades %}
+ALTER VIEW element.trades SET TBLPROPERTIES('dune.public'='true',
+                                            'dune.data_explorer.blockchains'='["avalanche_c"]',
+                                            'dune.data_explorer.category'='abstraction',
+                                            'dune.data_explorer.abstraction.type'='project',
+                                            'dune.data_explorer.abstraction.name'='element',
+                                            'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set element_avalanche_c_mints %}
+ALTER VIEW element.mints SET TBLPROPERTIES('dune.public'='true',
+                                            'dune.data_explorer.blockchains'='["avalanche_c"]',
+                                            'dune.data_explorer.category'='abstraction',
+                                            'dune.data_explorer.abstraction.type'='project',
+                                            'dune.data_explorer.abstraction.name'='element',
+                                            'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set element_avalanche_c_burns %}
+ALTER VIEW element.burns SET TBLPROPERTIES('dune.public'='true',
+                                            'dune.data_explorer.blockchains'='["avalanche_c"]',
+                                            'dune.data_explorer.category'='abstraction',
+                                            'dune.data_explorer.abstraction.type'='project',
+                                            'dune.data_explorer.abstraction.name'='element',
+                                            'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set element_avalanche_c_fees %}
+ALTER VIEW element.fees SET TBLPROPERTIES('dune.public'='true',
+                                            'dune.data_explorer.blockchains'='["avalanche_c"]',
+                                            'dune.data_explorer.category'='abstraction',
+                                            'dune.data_explorer.abstraction.type'='project',
+                                            'dune.data_explorer.abstraction.name'='element',
+                                            'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set element_events %}
+ALTER VIEW element.events SET TBLPROPERTIES('dune.public'='true',
+                                            'dune.data_explorer.blockchains'='["ethereum","bnb","avalanche_c"]',
+                                            'dune.data_explorer.category'='abstraction',
+                                            'dune.data_explorer.abstraction.type'='project',
+                                            'dune.data_explorer.abstraction.name'='element',
+                                            'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set element_trades %}
+ALTER VIEW element.trades SET TBLPROPERTIES('dune.public'='true',
+                                            'dune.data_explorer.blockchains'='["ethereum","bnb","avalanche_c"]',
+                                            'dune.data_explorer.category'='abstraction',
+                                            'dune.data_explorer.abstraction.type'='project',
+                                            'dune.data_explorer.abstraction.name'='element',
+                                            'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set element_mints %}
+ALTER VIEW element.mints SET TBLPROPERTIES('dune.public'='true',
+                                            'dune.data_explorer.blockchains'='["ethereum","bnb","avalanche_c"]',
+                                            'dune.data_explorer.category'='abstraction',
+                                            'dune.data_explorer.abstraction.type'='project',
+                                            'dune.data_explorer.abstraction.name'='element',
+                                            'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set element_burns %}
+ALTER VIEW element.burns SET TBLPROPERTIES('dune.public'='true',
+                                            'dune.data_explorer.blockchains'='["ethereum","bnb","avalanche_c"]',
+                                            'dune.data_explorer.category'='abstraction',
+                                            'dune.data_explorer.abstraction.type'='project',
+                                            'dune.data_explorer.abstraction.name'='element',
+                                            'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set element_fees %}
+ALTER VIEW element.fees SET TBLPROPERTIES('dune.public'='true',
+                                            'dune.data_explorer.blockchains'='["ethereum","bnb","avalanche_c"]',
+                                            'dune.data_explorer.category'='abstraction',
+                                            'dune.data_explorer.abstraction.type'='project',
+                                            'dune.data_explorer.abstraction.name'='element',
+                                            'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
 {% set looksrare_ethereum_events %}
 ALTER TABLE looksrare_ethereum.events SET TBLPROPERTIES('dune.public'='true',
                                                         'dune.data_explorer.blockchains'='["ethereum"]',
@@ -628,6 +808,26 @@ ALTER VIEW archipelago_ethereum.fees  SET TBLPROPERTIES ('dune.public'='true',
 {% do run_query(opensea_mints) %}
 {% do run_query(opensea_burns) %}
 {% do run_query(opensea_fees) %}
+{% do run_query(element_ethereum_events) %}
+{% do run_query(element_ethereum_trades) %}
+{% do run_query(element_ethereum_mints) %}
+{% do run_query(element_ethereum_burns) %}
+{% do run_query(element_ethereum_fees) %}
+{% do run_query(element_bnb_events) %}
+{% do run_query(element_bnb_trades) %}
+{% do run_query(element_bnb_mints) %}
+{% do run_query(element_bnb_burns) %}
+{% do run_query(element_bnb_fees) %}
+{% do run_query(element_avalanche_c_events) %}
+{% do run_query(element_avalanche_c_trades) %}
+{% do run_query(element_avalanche_c_mints) %}
+{% do run_query(element_avalanche_c_burns) %}
+{% do run_query(element_avalanche_c_fees) %}
+{% do run_query(element_events) %}
+{% do run_query(element_trades) %}
+{% do run_query(element_mints) %}
+{% do run_query(element_burns) %}
+{% do run_query(element_fees) %}
 {% do run_query(looksrare_ethereum_events) %}
 {% do run_query(looksrare_ethereum_trades) %}
 {% do run_query(looksrare_ethereum_mints) %}
