@@ -87,6 +87,18 @@ OPTIMIZE uniswap_v2_ethereum.trades;
 OPTIMIZE x2y2_ethereum.events;
 {% endset %}
 
+{% set element_ethereum_events %}
+OPTIMIZE element_ethereum.events;
+{% endset %}
+
+{% set element_bnb_events %}
+OPTIMIZE element_bnb.events;
+{% endset %}
+
+{% set element_avalanche_c_events %}
+OPTIMIZE element_avalanche_c.events;
+{% endset %}
+
 {% set archipelago_ethereum_events %}
 OPTIMIZE archipelago_ethereum.events;
 {% endset %}
@@ -101,6 +113,9 @@ OPTIMIZE archipelago_ethereum.events;
 {% do run_query(seaport_ethereum_transfers) %}
 {% do run_query(sudoswap_ethereum_events) %}
 {% do run_query(cryptopunks_ethereum_events) %}
+{% do run_query(element_ethereum_events) %}
+{% do run_query(element_bnb_events) %}
+{% do run_query(element_avalanche_c_events) %}
 {% do run_query(tornado_cash_deposits) %}
 {% do run_query(tornado_cash_withdrawals) %}
 {% do run_query(transfers_ethereum_erc20_agg_hour) %}
