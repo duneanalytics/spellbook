@@ -2,6 +2,9 @@ version: 2
 
 models:
   - name: labels_all
+    tests:
+    - unique:
+        column_name: "(address || '-' || name || '-' || blockchain::string)"
     meta:
       blockchain: ethereum, solana
       sector: labels
