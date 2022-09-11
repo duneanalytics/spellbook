@@ -613,6 +613,25 @@ ALTER VIEW archipelago_ethereum.fees  SET TBLPROPERTIES ('dune.public'='true',
                                                         'dune.data_explorer.contributors'='["0xRob"]');
 {% endset %}
 
+{% set aave_v2_ethereum_interest_rates %}
+ALTER VIEW aave_ethereum.interest  SET TBLPROPERTIES ('dune.public'='true',
+                                                        'dune.data_explorer.blockchains'='["ethereum"]',
+                                                        'dune.data_explorer.category'='abstraction',
+                                                        'dune.data_explorer.abstraction.type'='project',
+                                                        'dune.data_explorer.abstraction.name'='aave',
+                                                        'dune.data_explorer.contributors'='["batwayne","chuxinh"]');
+{% endset %}
+
+{% set aave_v3_optimism_interest_rates %}
+ALTER VIEW aave_optimism.interest  SET TBLPROPERTIES ('dune.public'='true',
+                                                        'dune.data_explorer.blockchains'='["optimism"]',
+                                                        'dune.data_explorer.category'='abstraction',
+                                                        'dune.data_explorer.abstraction.type'='project',
+                                                        'dune.data_explorer.abstraction.name'='aave',
+                                                        'dune.data_explorer.contributors'='["batwayne","chuxinh"]');
+{% endset %}
+
+
 
 {% do run_query(balances_ethereum_erc20_day) %}
 {% do run_query(balances_ethereum_erc20_hour) %}
@@ -683,6 +702,8 @@ ALTER VIEW archipelago_ethereum.fees  SET TBLPROPERTIES ('dune.public'='true',
 {% do run_query(archipelago_ethereum_events) %}
 {% do run_query(archipelago_ethereum_trades) %}
 {% do run_query(archipelago_ethereum_fees) %}
+{% do run_query(aave_v2_ethereum_interest_rates) %}
+{% do run_query(aave_v3_optimism_interest_rates) %}
 
 {% do log("Tables generated", info=True) %}
 {%- else -%}
