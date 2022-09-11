@@ -304,7 +304,7 @@ ALTER VIEW labels.all SET TBLPROPERTIES('dune.public'='true',
                                         'dune.data_explorer.category'='abstraction',
                                         'dune.data_explorer.abstraction.type'='sector',
                                         'dune.data_explorer.abstraction.name'='labels',
-                                        'dune.data_explorer.contributors'='["soispoke"]');
+                                        'dune.data_explorer.contributors'='["soispoke","hildobby"]');
 {% endset %}
 
 {% set nft_aggregators %}
