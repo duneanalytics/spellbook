@@ -334,8 +334,8 @@ ALTER VIEW labels.nft SET TBLPROPERTIES('dune.public'='true',
                                         'dune.data_explorer.contributors'='["soispoke"]');
 {% endset %}
 
-{% set labels_safe_ethereum %}
-ALTER VIEW labels.safe_ethereum SET TBLPROPERTIES('dune.public'='true',
+{% set labels_safe %}
+ALTER VIEW labels.safe SET TBLPROPERTIES('dune.public'='true',
                                         'dune.data_explorer.blockchains'='["ethereum"]',
                                         'dune.data_explorer.category'='abstraction',
                                         'dune.data_explorer.abstraction.type'='sector',
@@ -723,7 +723,7 @@ ALTER VIEW archipelago_ethereum.fees  SET TBLPROPERTIES ('dune.public'='true',
 {% do run_query(labels_cex) %}
 {% do run_query(labels_funds) %}
 {% do run_query(labels_nft) %}
-{% do run_query(labels_safe_ethereum) %}
+{% do run_query(labels_safe) %}
 {% do run_query(labels_submitted_contracts) %}
 {% do run_query(labels_tornado_cash) %}
 {% do run_query(uniswap_v1_ethereum_trades) %}
