@@ -415,6 +415,15 @@ ALTER TABLE airdrop_optimism.addresses_1 SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["soispoke"]');
 {% endset %}
 
+{% set addresses_ethereum_safe_airdrop %}
+ALTER TABLE addresses_ethereum.safe_airdrop SET TBLPROPERTIES('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='addresses',
+                                                    'dune.data_explorer.contributors'='["springzh"]');
+{% endset %}
+
 {% set ens_view_expirations %}
 ALTER VIEW ens.view_expirations SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum"]',
@@ -674,6 +683,7 @@ ALTER VIEW archipelago_ethereum.fees  SET TBLPROPERTIES ('dune.public'='true',
 {% do run_query(safe_ethereum_eth_transfers) %}
 {% do run_query(prices_tokens) %}
 {% do run_query(airdrop_optimism_addresses_1) %}
+{% do run_query(addresses_ethereum_safe_airdrop) %}
 {% do run_query(tornado_cash_deposits) %}
 {% do run_query(tornado_cash_withdrawals) %}
 {% do run_query(tokens_erc20) %}
