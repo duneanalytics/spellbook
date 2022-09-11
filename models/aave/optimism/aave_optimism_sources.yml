@@ -37,4 +37,5 @@ sources:
         - name: variableBorrowIndex
           description: "Variable borrow index value of the reserve"
         - name: variableBorrowRate
-          description: "Variable borrow rate value of the reserve"     
+          description: "Variable borrow rate value of the reserve"   
+          
