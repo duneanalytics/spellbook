@@ -299,7 +299,7 @@ ALTER VIEW nft.fees SET TBLPROPERTIES('dune.public'='true',
 {% endset %}
 
 {% set labels_all %}
-ALTER VIEW labels.all SET TBLPROPERTIES('dune.public'='true',
+ALTER TABLE labels.all SET TBLPROPERTIES('dune.public'='true',
                                         'dune.data_explorer.blockchains'='["ethereum","solana"]',
                                         'dune.data_explorer.category'='abstraction',
                                         'dune.data_explorer.abstraction.type'='sector',
