@@ -91,6 +91,14 @@ OPTIMIZE x2y2_ethereum.events;
 OPTIMIZE archipelago_ethereum.events;
 {% endset %}
 
+{% set aave_v2_ethereum_interest_rates %}
+OPTIMIZE aave_ethereum.interest;
+{% endset %}
+
+{% set aave_v3_optimism_interest_rates %}
+OPTIMIZE aave_optimism.interest;
+{% endset %}
+
 
 {% do run_query(looksrare_ethereum_events) %}
 {% do run_query(magiceden_solana_events) %}
@@ -113,5 +121,7 @@ OPTIMIZE archipelago_ethereum.events;
 {% do run_query(uniswap_v2_ethereum_trades) %}
 {% do run_query(x2y2_ethereum_events) %}
 {% do run_query(archipelago_ethereum_events) %}
+{% do run_query(aave_v2_ethereum_interest_rates) %}
+{% do run_query(aave_v3_optimism_interest_rates) %}
 {% do log("Tables Optimized", info=True) %}
 {% endmacro %}
