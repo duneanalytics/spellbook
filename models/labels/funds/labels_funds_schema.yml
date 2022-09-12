@@ -1,25 +1,25 @@
 version: 2
 
 models:
-  - name: labels_cex
+  - name: labels_funds
     meta:
       blockchain: ethereum
       sector: labels
-      project: cex
-      contibutors: hildobby, soispoke
+      project: funds
+      contibutors: soispoke
     config:
-      tags: ['labels', 'ethereum', 'cex']
-    description: "Known centralised exchange addresses across chains"
+      tags: ['labels', 'ethereum', 'funds']
+    description: "Known funds addresses across chains"
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain"   
       - &address
         name: address
-        description: "Address of known CEX"
+        description: "Address of known Funds"
       - &name
         name: name
-        description: "Label name of centralised exchange"
+        description: "Label name for funds"
       - &category
         name: category
         description: "Label category"
@@ -36,15 +36,15 @@ models:
         name: updated_at
         description: "When were labels updated for the last time"
 
-  - name: labels_cex_ethereum
+  - name: labels_funds_ethereum
     meta:
       blockchain: ethereum
       sector: labels
-      project: cex
+      project: funds
       contibutors: hildobby, soispoke
     config:
-      tags: ['labels', 'ethereum', 'cex']
-    description: "Known centralised exchange addresses on Ethereum"
+      tags: ['labels', 'ethereum', 'funds']
+    description: "Known funds addresses on Ethereum"
     columns:
       - *blockchain
       - *address
