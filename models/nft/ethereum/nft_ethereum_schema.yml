@@ -15,3 +15,4 @@ models:
         description: "Aggregator project's contract address"
       - name: name
         description: "Aggregator project's name"
+
