@@ -121,9 +121,18 @@ models:
       ethereum:
         +schema: balances_ethereum
         +materialized: view
+
     labels:
       +schema: labels
       +materialized: view
+
+    addresses:
+      +schema: addresses
+      +materialized: table
+      ethereum:
+        +schema: addresses_ethereum
+        +materialized: table
+
     tokens:
       +schema: tokens
       +materialized: view

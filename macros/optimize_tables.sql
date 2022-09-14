@@ -95,6 +95,10 @@ OPTIMIZE x2y2_ethereum.events;
 OPTIMIZE archipelago_ethereum.events;
 {% endset %}
 
+{% set labels_all %}
+OPTIMIZE labels.all;
+{% endset %}
+
 
 {% do run_query(looksrare_ethereum_events) %}
 {% do run_query(magiceden_solana_events) %}
@@ -118,5 +122,6 @@ OPTIMIZE archipelago_ethereum.events;
 {% do run_query(sushiswap_ethereum_trades) %}
 {% do run_query(x2y2_ethereum_events) %}
 {% do run_query(archipelago_ethereum_events) %}
+{% do run_query(labels_all) %}
 {% do log("Tables Optimized", info=True) %}
 {% endmacro %}
