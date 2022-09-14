@@ -569,6 +569,7 @@ VALUES
     ("zil-zilliqa", "ethereum", "ZIL", "0x05f4a42e251f2d52b8ed15e9fedaacfcef1fad27", 12),
     ("zora-zoracles", "ethereum", "ZORA", "0xd8e3fb3b08eba982f2754988d70d57edc0055ae6", 9),
     ("zrx-0x", "ethereum", "ZRX", "0xe41d2489571d322189246dafa5ebde1f4699f498", 18),
+    ("seth2-stakewise", "ethereum", "SETH2", "0xfe2e637202056d30016725477c5da089ab0a043a", 18),
 
     ("dai-dai", "gnosis", "WXDAI", "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18),
     ("usdc-usd-coin", "gnosis", "USDC", "0xddafbb505ad214d7b80b1f830fccc89b60fb7a83", 6),
@@ -597,8 +598,9 @@ VALUES
     ("srm-serum", "solana", "SRM", "SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt", 6),
     ("steth-lido-staked-ether", "solana", "wstETH", "ZScHuTtqZukUrtZS43teTKGs2VqkKL8k4QCouR2n6Uo", 8),
     ("stsol-lido-staked-sol", "solana", "stSOL", "7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj", 9),
+    ("sol-solana", "solana", "SOL", "So11111111111111111111111111111111111111112", 9),
+    ("ust-terrausd", "solana", "UST", "9vMJfxuKxXBoEa7rM12mYLMwTacLMLDJqHozw96WQL8i", 6),
     ("usdc-usd-coin", "solana", "USDC", "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", 6),
-    ("usdt-tether", "solana", "USDT", "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", 6),
-    ("seth2-stakewise", "ethereum", "SETH2", "0xfe2e637202056d30016725477c5da089ab0a043a", 18)
+    ("usdt-tether", "solana", "USDT", "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 
