@@ -5,7 +5,7 @@ SELECT array('ethereum') as blockchain,
        name || '_' || namespace as name,
        'submitted_contracts' as category,
        'soispoke' as contributor,
-       'static' AS source,
+       'query' AS source,
        date('2022-09-23') as created_at,
        now() as modified_at
 FROM {{ source('ethereum','contracts_submitted') }} 
@@ -15,7 +15,7 @@ SELECT array('gnosis') as blockchain,
        name || '_' || namespace as name,
        'submitted_contracts' as category,
        'soispoke' as contributor,
-       'static' AS source,
+       'query' AS source,
        date('2022-09-23') as created_at,
        now() as modified_at
 FROM {{ source('gnosis','contracts_submitted') }} 
@@ -25,7 +25,7 @@ SELECT array('avalanche_c') as blockchain,
        name || '_' || namespace as name,
        'submitted_contracts' as category,
        'soispoke' as contributor,
-       'static' AS source,
+       'query' AS source,
        date('2022-09-23') as created_at,
        now() as modified_at
 FROM {{ source('avalanche_c','contracts_submitted') }} 
@@ -35,7 +35,7 @@ SELECT array('arbitrum') as blockchain,
        name || '_' || namespace as name,
        'submitted_contracts' as category,
        'soispoke' as contributor,
-       'static' AS source,
+       'query' AS source,
        date('2022-09-23') as created_at,
        now() as modified_at
 FROM {{ source('arbitrum','contracts_submitted') }} 
@@ -45,7 +45,7 @@ SELECT array('bnb') as blockchain,
        name || '_' || namespace as name,
        'submitted_contracts' as category,
        'soispoke' as contributor,
-       'static' AS source,
+       'query' AS source,
        date('2022-09-23') as created_at,
        now() as modified_at
 FROM {{ source('bnb','contracts_submitted') }} 
@@ -55,7 +55,7 @@ SELECT array('optimism') as blockchain,
        name || '_' || namespace as name,
        'submitted_contracts' as category,
        'soispoke' as contributor,
-       'static' AS source,
+       'query' AS source,
        date('2022-09-23') as created_at,
        now() as modified_at
 FROM {{ source('optimism','contracts_submitted') }} 
