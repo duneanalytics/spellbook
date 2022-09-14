@@ -601,6 +601,9 @@ VALUES
     ("sol-solana", "solana", "SOL", "So11111111111111111111111111111111111111112", 9),
     ("ust-terrausd", "solana", "UST", "9vMJfxuKxXBoEa7rM12mYLMwTacLMLDJqHozw96WQL8i", 6),
     ("usdc-usd-coin", "solana", "USDC", "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", 6),
-    ("usdt-tether", "solana", "USDT", "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", 6)
+    ("usdt-tether", "solana", "USDT", "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", 6),
+    ("seth2-stakewise", "ethereum", "SETH2", "0xfe2e637202056d30016725477c5da089ab0a043a", 18),
+    ("knight-citadao","ethereum","KNIGHT","0x3541A5C1b04AdABA0B83F161747815cd7B1516bC",18)
+
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 
