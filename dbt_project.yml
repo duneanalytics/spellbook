@@ -120,11 +120,14 @@ models:
       +schema: labels
       +materialized: view
 
-    addresses:
+    addresses: 
       +schema: addresses
       +materialized: table
-      ethereum:
+      ethereum: 
         +schema: addresses_ethereum
+        +materialized: table
+      optimism: 
+        +schema: addresses_optimism
         +materialized: table
 
     tokens:

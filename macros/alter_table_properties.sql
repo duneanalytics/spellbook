@@ -469,13 +469,13 @@ ALTER TABLE seaport_ethereum.transfers SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["sohawk","soispoke"]');
 {% endset %}
 
-{% set airdrop_optimism_addresses_1 %}
-ALTER TABLE airdrop_optimism.addresses_1 SET TBLPROPERTIES('dune.public'='true',
+{% set addresses_optimism_airdrop_1 %}
+ALTER TABLE addresses_optimism.airdrop_1 SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["optimism"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='sector',
-                                                    'dune.data_explorer.abstraction.name'='airdrop',
-                                                    'dune.data_explorer.contributors'='["soispoke"]');
+                                                    'dune.data_explorer.abstraction.name'='airdrop_1',
+                                                    'dune.data_explorer.contributors'='["Msilb7","soispoke"]');
 {% endset %}
 
 {% set addresses_ethereum_safe_airdrop %}
@@ -523,8 +523,8 @@ ALTER VIEW ens.view_renewals SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["antonio-mendes","mewwts"]');
 {% endset %}
 
-{% set cex_addresses %}
-ALTER VIEW cex.addresses SET TBLPROPERTIES ('dune.public'='true',
+{% set addresses_ethereum_cex %}
+ALTER VIEW addresses_ethereum.cex SET TBLPROPERTIES ('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='sector',
