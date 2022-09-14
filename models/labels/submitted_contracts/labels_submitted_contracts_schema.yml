@@ -1,25 +1,22 @@
 version: 2
 
 models:
-  - name: labels_all
-    tests:
-    - unique:
-        column_name: "(address || '-' || name || '-' || blockchain::string)"
+  - name: labels_submitted_contracts
     meta:
-      blockchain: ethereum, solana
+      blockchain: ethereum, arbitrum, gnosis, optimism, bnb, avalanche_c
       sector: labels
-      category: cex, nft
-      contibutors: hildobby, soispoke
+      category: submitted_contracts
+      contibutors:  soispoke
     config:
-      tags: ['labels', 'ethereum', 'solana', 'cex', 'nft']
-    description: "All labels across chains and categories"
+      tags: ['query', 'labels', 'ethereum', 'submitted_contracts']
+    description: "Dune submitted contracts query labels across chains"
     columns:
       - name: blockchain
         description: "Blockchain"   
       - name: address
         description: "Label address"
       - name: name
-        description: "Label name"
+        description: "Label name (name and namespace) of the submitted contract"
       - name: category
         description: "Label category"
       - name: contributor
