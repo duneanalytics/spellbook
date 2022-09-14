@@ -124,13 +124,15 @@ WITH
     ,tokens_ethereum_nft as (
         SELECT
             *
-        FROM {{ ref('tokens_ethereum_nft') }}
+        FROM {{ ref('tokens_nft') }}
+        WHERE blockchain = 'ethereum'
     )
 
     ,nft_ethereum_aggregators as (
         SELECT
             *
-        FROM {{ ref('nft_ethereum_aggregators') }}
+        FROM {{ ref('nft_aggregators') }}
+        WHERE blockchain = 'ethereum'
     )
 
 --logic CTEs
@@ -311,8 +313,9 @@ WITH
             AND pu.minute >= '2022-4-1'
             {% endif %}
             --add in `pu.contract_address = sc.currency_address` in the future when ERC20 pairs are added in.
-        LEFT JOIN nft_ethereum_aggregators agg
+        LEFT JOIN {{ ref('nft_aggregators') }} agg
             ON (agg.contract_address = sc.call_from OR agg.contract_address = sc.router_caller) -- aggregator will either call pool directly or call the router
+            AND agg.blockchain = 'ethereum'
         LEFT JOIN tokens_ethereum_nft tokens ON nft_contract_address = tokens.contract_address
     )
 
@@ -346,7 +349,7 @@ WITH
             , aggregator_address
             , aggregator_name
             , platform_fee_amount/number_of_items as platform_fee_amount
-            , platform_fee_amount_raw/number_of_items as platform_fee_amount_raw
+            , cast(platform_fee_amount_raw/number_of_items as double) as platform_fee_amount_raw
             , platform_fee_amount_usd/number_of_items as platform_fee_amount_usd
             , platform_fee_percentage
             , pool_fee_amount/number_of_items as pool_fee_amount

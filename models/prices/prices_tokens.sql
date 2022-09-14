@@ -171,6 +171,7 @@ VALUES
     ("sps-splintershards", "bnb", "SPS", "0x1633b7157e7638c4d6593436111bf125ee74703f", 18),
     ("dec-dark-energy-crystals", "bnb", "DEC", "0xe9d7023f2132d55cbd4ee1f78273cb7a3e74f10a", 3),
     ("sfm-safemoon", "bnb", "SFM", "0x42981d0bfbaf196529376ee702f2a9eb9092fcb5", 9),
+    ("mnft-marvelous-nfts", "bnb", "MNFT", "0x33be7644c0e489b3a0c639d103392d4f3e338158", 18),
 
     ("0xbtc-0xbitcoin", "ethereum", "0xBTC", "0xb6ed7644c69416d67b522e20bc294a9a9b405b31", 8),
     ("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
@@ -568,6 +569,7 @@ VALUES
     ("zil-zilliqa", "ethereum", "ZIL", "0x05f4a42e251f2d52b8ed15e9fedaacfcef1fad27", 12),
     ("zora-zoracles", "ethereum", "ZORA", "0xd8e3fb3b08eba982f2754988d70d57edc0055ae6", 9),
     ("zrx-0x", "ethereum", "ZRX", "0xe41d2489571d322189246dafa5ebde1f4699f498", 18),
+    ("seth2-stakewise", "ethereum", "SETH2", "0xfe2e637202056d30016725477c5da089ab0a043a", 18),
 
     ("dai-dai", "gnosis", "WXDAI", "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18),
     ("usdc-usd-coin", "gnosis", "USDC", "0xddafbb505ad214d7b80b1f830fccc89b60fb7a83", 6),
@@ -596,7 +598,12 @@ VALUES
     ("srm-serum", "solana", "SRM", "SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt", 6),
     ("steth-lido-staked-ether", "solana", "wstETH", "ZScHuTtqZukUrtZS43teTKGs2VqkKL8k4QCouR2n6Uo", 8),
     ("stsol-lido-staked-sol", "solana", "stSOL", "7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj", 9),
+    ("sol-solana", "solana", "SOL", "So11111111111111111111111111111111111111112", 9),
+    ("ust-terrausd", "solana", "UST", "9vMJfxuKxXBoEa7rM12mYLMwTacLMLDJqHozw96WQL8i", 6),
     ("usdc-usd-coin", "solana", "USDC", "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", 6),
-    ("usdt-tether", "solana", "USDT", "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", 6)
+    ("usdt-tether", "solana", "USDT", "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", 6),
+    ("seth2-stakewise", "ethereum", "SETH2", "0xfe2e637202056d30016725477c5da089ab0a043a", 18),
+    ("ethw-ethereum-pow-iou", "trx-tron", "ETHW", "TKqaZCWo6g4cY5P2pkykHQNBpo5GyVQrrn", 18)
+    ("knight-citadao","ethereum","KNIGHT","0x3541A5C1b04AdABA0B83F161747815cd7B1516bC",18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 

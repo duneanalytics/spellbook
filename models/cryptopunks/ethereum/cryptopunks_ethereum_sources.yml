@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: cryptopunks_ethereum
+    freshness:
+      warn_after: { count: 48, period: hour }
+      error_after: { count: 96, period: hour }
+    tables:
+      - name: CryptoPunksMarket_evt_PunkBought
+        loaded_at_field: evt_block_time
+      - name: CryptoPunksMarket_evt_PunkBidEntered
+        loaded_at_field: evt_block_time

@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: archipelago_ethereum
+    freshness:
+      warn_after: { count: 12, period: hour }
+#      Safer just to be warned for now in case the underlying table isn't refreshed - @soispoke
+#      error_after: { count: 24, period: hour }
+    tables:
+      - name: ArchipelagoMarket_evt_Trade
+        loaded_at_field: evt_block_time
+      - name: ArchipelagoMarket_evt_TokenTrade
+        loaded_at_field: evt_block_time
+      - name: ArchipelagoMarket_evt_RoyaltyPayment
+        loaded_at_field: evt_block_time
