@@ -605,5 +605,6 @@ VALUES
     ("seth2-stakewise", "ethereum", "SETH2", "0xfe2e637202056d30016725477c5da089ab0a043a", 18),
     ("ethw-ethereum-pow-iou", "trx-tron", "ETHW", "TKqaZCWo6g4cY5P2pkykHQNBpo5GyVQrrn", 18),
     ("knight-citadao","ethereum","KNIGHT","0x3541A5C1b04AdABA0B83F161747815cd7B1516bC",18)
+
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 
