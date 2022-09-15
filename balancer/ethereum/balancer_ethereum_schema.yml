@@ -7,11 +7,24 @@ models:
       project: balancer
       contributors: Scoffie
     config: 
-      tags: ['balances']
+      tags: ['balances', 'balancer']
     description: >
         Balances on Balancer, an automated portfolio manager and trading platform on Ethereum
     columns:
-      -name: pool 
+      -name: day
+      description: > 
+        Specific day 
+      -name: pool_contract_address
+      description: >
+        Contract address of the a specific pool in balancer
+      -name: token_contract_address
+        description: >  
+          Address of the assest added or removed from a specific pool
+      -name: cumulative_amount
+      description: > 
+        changes in balances of a specific pool by day
+
+           
       ...
        tests:
         -not_null

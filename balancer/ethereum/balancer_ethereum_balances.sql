@@ -29,7 +29,7 @@ WITH pools AS (
 
         SELECT e.`from` as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, -SUM(value) AS amount
         FROM source{{'erc20_ethereum', '.evt_Transfer '}} e
-        WHERE e.`from` = '\xBA12222222228d8Ba445958a75a0704d566BF2C8'
+        WHERE e.`from` = lower('0xBA12222222228d8Ba445958a75a0704d566BF2C8')
         GROUP BY 1, 2, 3
     )
     
@@ -58,7 +58,10 @@ WITH pools AS (
     
     )
     ,running_cumulative_balance_by_token AS (
-        SELECT c.day, pool, token, cumulative_amount 
+        SELECT c.day, 
+        pool as pool_contract_address, 
+        token as token_contract_address, 
+        cumulative_amount 
         FROM calendar c
         LEFT JOIN cumulative_balance_by_token b ON b.day <= c.day AND c.day < b.day_of_next_change
     )
