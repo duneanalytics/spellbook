@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  -name: balancer balances
+   meta:
+      blockchain: ethereum
+      project: balancer
+      contributors: Scoffie
+    config: 
+      tags: ['balances']
+    description: >
+        Balances on Balancer, an automated portfolio manager and trading platform on Ethereum
+    columns:
+      -name: pool 
+      ...
+       tests:
+        -not_null
