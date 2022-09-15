@@ -216,6 +216,9 @@ models:
       ethereum:
         +schema: ironbank_ethereum
         +materialized: view
+      optimism:
+        +schema: ironbank_optimism
+        +materialized: view
 seeds:
   spellbook:
     balances:
