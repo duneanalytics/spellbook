@@ -210,6 +210,12 @@ models:
         +schema: cow_protocol_ethereum
         +materialized: view
 
+    ironbank:
+      +schema: ironbank
+      +materialized: view
+      ethereum:
+        +schema: ironbank_ethereum
+        +materialized: view
 seeds:
   spellbook:
     balances:
