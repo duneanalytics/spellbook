@@ -139,6 +139,14 @@ OPTIMIZE perpetual.trades;
 OPTIMIZE foundation_ethereum.events;
 {% endset %}
 
+{% set ironbank_ethereum_borrow %}
+OPTIMIZE ironbank_ethereum.borrow;
+{% endset %}
+
+{% set ironbank_optimism_borrow %}
+OPTIMIZE ironbank_optimism.borrow;
+{% endset %}
+
 {% set labels_all %}
 OPTIMIZE labels.all;
 {% endset %}
