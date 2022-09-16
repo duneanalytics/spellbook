@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: balancer_balances
+    meta:
+      blockchain: ethereum
+      project: balancer
+      contributors: dhr2323
+    config:
+      tags: ['balances']
+    description: >
+      Balances on Balancer, an automated portfolio manager and trade platform on Ethereum.
+    columns:
+      - name: day
+        description: "Date"
+      - name: pool
+        description: "Contract Address of Pool"
+      - name: token
+        description: "Contract Address Of Token Traded"
+      - name: cumulative_amount
+        description: "View Cumulative balances"
+        tests:
+          - not_null
