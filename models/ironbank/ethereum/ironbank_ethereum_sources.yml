@@ -2,15 +2,42 @@ version: 2
 
 sources:
   - name: ironbank_ethereum
-    description: "decoded events and function calls for ironbank on ethereum"
+    description: "decoded events for ironbank on ethereum"
     tables:
-      - name: CErc20Delegator_evt_AccrueInterest
-        loaded_at_field: call_block_time
-      - name: CErc20Delegator_evt_Mint
-        loaded_at_field: call_block_time
+      - name: CErc20Delegator_evt_Borrow
+        loaded_at_field: evt_block_time
+        description: "" # to-do
+        columns:
+          - &contract_address
+            name: contract_address
+            description: "Ethereum address for the liquidity pool used in transaction"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block number which processed the unique transaction hash"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_index
+            name: evt_index
+            description: "Index value of the transaction"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Primary key of the transaction"
+          - &borrower
+            name: borrower
+            description: "Borrower Ethereum wallet address"
+          - &borrowAmount
+            name: borrowAmount
+            description: "The amount of the underlying asset to borrow"
+          - &accountBorrows
+            name: accountBorrows
+            description: "The borrow balance of the account"
+          - &totalBorrows
+            name: totalBorrows
+            description: "The total borrows with interest"
       - name: CErc20Delegator_evt_Redeem
         loaded_at_field: call_block_time
-      - name: CErc20Delegator_evt_Borrow
+      - name: CErc20Delegator_evt_Mint
         loaded_at_field: call_block_time
       - name: CErc20Delegator_evt_RepayBorrow
         loaded_at_field: call_block_time
