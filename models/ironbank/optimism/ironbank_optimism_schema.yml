@@ -82,3 +82,27 @@ models:
       - &borrow_amount
         name: borrow_amount
         description: "The amount which was borrowed"
+  - name: ironbank_optimism_mint
+    meta:
+      blockchain: optimism
+      sector: lending
+      project: ironbank
+      contributors: michael
+    config:
+      tags: ['optimism','ironbank','view','mint']
+    description: "Mint data on optimism"
+    columns:
+      - *project
+      - *version
+      - *block_number
+      - *block_time
+      - *tx_hash
+      - *evt_index
+      - *trace_address
+      - &minter
+        name: minter
+        description: "The account which minted the asset"
+      - *asset_address
+      - &mint_amount
+        name: mint_amount
+        description: "The amount which was minted"
