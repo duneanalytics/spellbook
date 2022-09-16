@@ -164,11 +164,11 @@ OPTIMIZE ironbank_ethereum.repay;
 OPTIMIZE ironbank_optimism.repay;
 {% endset %}
 
-{% set ironbank_ethereum_redeem_underlying %}
+{% set ironbank_ethereum_redeem %}
 OPTIMIZE ironbank_ethereum.redeem_underlying;
 {% endset %}
 
-{% set ironbank_optimism_redeem_underlying %}
+{% set ironbank_optimism_redeem %}
 OPTIMIZE ironbank_optimism.redeem_underlying;
 {% endset %}
 
