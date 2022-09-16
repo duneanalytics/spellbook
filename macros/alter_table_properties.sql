@@ -757,7 +757,7 @@ ALTER VIEW ironbank_optimism.repay  SET TBLPROPERTIES ('dune.public'='true',
                                                         'dune.data_explorer.contributors'='["michael"]');
 {% endset %}
 
-{% set ironbank_ethereum_redeem_underlying %}
+{% set ironbank_ethereum_redeem %}
 ALTER VIEW ironbank_ethereum.redeem_underlying  SET TBLPROPERTIES ('dune.public'='true',
                                                         'dune.data_explorer.blockchains'='["ethereum"]',
                                                         'dune.data_explorer.category'='abstraction',
@@ -766,7 +766,7 @@ ALTER VIEW ironbank_ethereum.redeem_underlying  SET TBLPROPERTIES ('dune.public'
                                                         'dune.data_explorer.contributors'='["michael"]');
 {% endset %}
 
-{% set ironbank_optimism_redeem_underlying %}
+{% set ironbank_optimism_redeem %}
 ALTER VIEW ironbank_optimism.redeem_underlying  SET TBLPROPERTIES ('dune.public'='true',
                                                         'dune.data_explorer.blockchains'='["optimism"]',
                                                         'dune.data_explorer.category'='abstraction',
@@ -877,8 +877,8 @@ ALTER VIEW ironbank_optimism.liquidation  SET TBLPROPERTIES ('dune.public'='true
 {% do run_query(ironbank_optimism_mint) %}
 {% do run_query(ironbank_ethereum_repay) %}
 {% do run_query(ironbank_optimism_repay) %}
-{% do run_query(ironbank_ethereum_redeem_underlying) %}
-{% do run_query(ironbank_optimism_redeem_underlying) %}
+{% do run_query(ironbank_ethereum_redeem) %}
+{% do run_query(ironbank_optimism_redeem) %}
 {% do run_query(ironbank_ethereum_liquidation) %}
 {% do run_query(ironbank_optimism_liquidation) %}
 

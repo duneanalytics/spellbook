@@ -158,7 +158,7 @@ models:
       - &debt_to_cover_amount
         name: debt_to_cover_amount
         description: "The amount which was repaid"
-  - name: ironbank_ethereum_redeem_underlying
+  - name: ironbank_ethereum_redeem
     meta:
       blockchain: ethereum
       sector: lending

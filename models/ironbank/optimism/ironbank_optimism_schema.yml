@@ -157,7 +157,7 @@ models:
       - &debt_to_cover_amount
         name: debt_to_cover_amount
         description: "The amount which was repaid"
-  - name: ironbank_optimism_redeem_underlying
+  - name: ironbank_optimism_redeem
     meta:
       blockchain: optimism
       sector: lending
