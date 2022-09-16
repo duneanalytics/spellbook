@@ -75,7 +75,23 @@ sources:
           - *accountBorrows
           - *totalBorrows
       - name: CErc20Delegator_evt_Redeem
-        loaded_at_field: call_block_time
+        loaded_at_field: evt_block_time
+        description: "" # to-do
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &redeemer
+            name: redeemer
+            description: "Redeemer wallet address"
+          - &redeemAmount
+            name: redeemAmount
+            description: "The amount of underlying to receive from redeeming iTokens"
+          - &redeemTokens
+            name: redeemTokens
+            description: "The number of iTokens to redeem into underlying"
       - name: CErc20Delegator_evt_LiquidateBorrow
         loaded_at_field: evt_block_time
         description: "" # to-do
