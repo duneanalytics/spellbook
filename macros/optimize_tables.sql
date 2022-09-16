@@ -143,6 +143,39 @@ OPTIMIZE ironbank_ethereum.borrow;
 OPTIMIZE ironbank_optimism.borrow;
 {% endset %}
 
+
+{% set ironbank_ethereum_mint %}
+OPTIMIZE ironbank_ethereum.mint;
+{% endset %}
+
+{% set ironbank_optimism_mint %}
+OPTIMIZE ironbank_optimism.mint;
+{% endset %}
+
+{% set ironbank_ethereum_repay %}
+OPTIMIZE ironbank_ethereum.repay;
+{% endset %}
+
+{% set ironbank_optimism_repay %}
+OPTIMIZE ironbank_optimism.repay;
+{% endset %}
+
+{% set ironbank_ethereum_redeem_underlying %}
+OPTIMIZE ironbank_ethereum.redeem_underlying;
+{% endset %}
+
+{% set ironbank_optimism_redeem_underlying %}
+OPTIMIZE ironbank_optimism.redeem_underlying;
+{% endset %}
+
+{% set ironbank_ethereum_liquidation %}
+OPTIMIZE ironbank_ethereum.liquidation;
+{% endset %}
+
+{% set ironbank_optimism_liquidation %}
+OPTIMIZE ironbank_optimism.liquidation;
+{% endset %}
+
 {% set labels_all %}
 OPTIMIZE labels.all;
 {% endset %}
