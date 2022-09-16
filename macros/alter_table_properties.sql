@@ -712,6 +712,15 @@ ALTER VIEW ironbank_ethereum.borrow  SET TBLPROPERTIES ('dune.public'='true',
                                                         'dune.data_explorer.contributors'='["michael"]');
 {% endset %}
 
+{% set ironbank_optimism_borrow %}
+ALTER VIEW ironbank_optimism.borrow  SET TBLPROPERTIES ('dune.public'='true',
+                                                        'dune.data_explorer.blockchains'='["optimism"]',
+                                                        'dune.data_explorer.category'='abstraction',
+                                                        'dune.data_explorer.abstraction.type'='project',
+                                                        'dune.data_explorer.abstraction.name'='ironbank',
+                                                        'dune.data_explorer.contributors'='["michael"]');
+{% endset %}
+
 {% do run_query(balances_ethereum_erc20_day) %}
 {% do run_query(balances_ethereum_erc20_hour) %}
 {% do run_query(balances_ethereum_erc20_latest) %}
@@ -791,6 +800,7 @@ ALTER VIEW ironbank_ethereum.borrow  SET TBLPROPERTIES ('dune.public'='true',
 {% do run_query(ironbank_ethereum_itokens) %}
 {% do run_query(ironbank_optmism_itokens) %}
 {% do run_query(ironbank_ethereum_borrow) %}
+{% do run_query(ironbank_optimism_borrow) %}
 
 {% do log("Tables generated", info=True) %}
 {%- else -%}
