@@ -1,6 +1,6 @@
 {{ config(alias='contracts', materialized = 'table', file_format = 'delta') }}
 
-select contract_address, contract_name, erc20_address, created_time, creator_address
+select contract_address, contract_project, contract_name, erc20_address, created_time, creator_address
 from (values
 ('0x96db852d93c2fea0f447d6ec22e146e4e09caee6', NULL, NULL, '0x4a505943', NULL, NULL)
 ,('0x000a2c01f114b89952749359922d85e27edda38d', 'Lyra V1', 'PoolHedger', NULL, '2021-08-21T07:24:41Z', '0x932607335869cff6349ef450e74c83a3b871a9ff')
@@ -316,4 +316,4 @@ from (values
 ,('0xff21e82a4bc305bce591530a68628192b5b6b6fd', 'Hop Protocol', NULL, NULL, '2021-08-21T20:22:40Z', '0x924ac9910c09a0215b06458653b30471a152022f')
 ,('0xff4287311138ad3bd051f84524b2ea3a682944a5', 'Synthetix', NULL, NULL, '2021-10-12T21:03:08Z', '0x3c05b1239b223c969540fefc0270227a2b00e047')
 ,('0xffbd695bf246c514110f5dae3fa88b8c2f42c411', 'Rubicon', 'BathToken', '0x6261746855534454', '2021-09-29T20:50:11Z', '0x3204ac6f848e05557c6c7876e09059882e07962f')
-) as temp_table (contract_address, contract_name, erc20_address, created_time, creator_address)
+) as temp_table (contract_address, contract_project, contract_name, erc20_address, created_time, creator_address)
