@@ -721,6 +721,78 @@ ALTER VIEW ironbank_optimism.borrow  SET TBLPROPERTIES ('dune.public'='true',
                                                         'dune.data_explorer.contributors'='["michael"]');
 {% endset %}
 
+{% set ironbank_ethereum_mint %}
+ALTER VIEW ironbank_ethereum.borrow  SET TBLPROPERTIES ('dune.public'='true',
+                                                        'dune.data_explorer.blockchains'='["ethereum"]',
+                                                        'dune.data_explorer.category'='abstraction',
+                                                        'dune.data_explorer.abstraction.type'='project',
+                                                        'dune.data_explorer.abstraction.name'='ironbank',
+                                                        'dune.data_explorer.contributors'='["michael"]');
+{% endset %}
+
+{% set ironbank_optimism_mint %}
+ALTER VIEW ironbank_optimism.mint  SET TBLPROPERTIES ('dune.public'='true',
+                                                        'dune.data_explorer.blockchains'='["optimism"]',
+                                                        'dune.data_explorer.category'='abstraction',
+                                                        'dune.data_explorer.abstraction.type'='project',
+                                                        'dune.data_explorer.abstraction.name'='ironbank',
+                                                        'dune.data_explorer.contributors'='["michael"]');
+{% endset %}
+
+{% set ironbank_ethereum_repay %}
+ALTER VIEW ironbank_ethereum.repay  SET TBLPROPERTIES ('dune.public'='true',
+                                                        'dune.data_explorer.blockchains'='["ethereum"]',
+                                                        'dune.data_explorer.category'='abstraction',
+                                                        'dune.data_explorer.abstraction.type'='project',
+                                                        'dune.data_explorer.abstraction.name'='ironbank',
+                                                        'dune.data_explorer.contributors'='["michael"]');
+{% endset %}
+
+{% set ironbank_optimism_repay %}
+ALTER VIEW ironbank_optimism.repay  SET TBLPROPERTIES ('dune.public'='true',
+                                                        'dune.data_explorer.blockchains'='["optimism"]',
+                                                        'dune.data_explorer.category'='abstraction',
+                                                        'dune.data_explorer.abstraction.type'='project',
+                                                        'dune.data_explorer.abstraction.name'='ironbank',
+                                                        'dune.data_explorer.contributors'='["michael"]');
+{% endset %}
+
+{% set ironbank_ethereum_redeem_underlying %}
+ALTER VIEW ironbank_ethereum.redeem_underlying  SET TBLPROPERTIES ('dune.public'='true',
+                                                        'dune.data_explorer.blockchains'='["ethereum"]',
+                                                        'dune.data_explorer.category'='abstraction',
+                                                        'dune.data_explorer.abstraction.type'='project',
+                                                        'dune.data_explorer.abstraction.name'='ironbank',
+                                                        'dune.data_explorer.contributors'='["michael"]');
+{% endset %}
+
+{% set ironbank_optimism_redeem_underlying %}
+ALTER VIEW ironbank_optimism.redeem_underlying  SET TBLPROPERTIES ('dune.public'='true',
+                                                        'dune.data_explorer.blockchains'='["optimism"]',
+                                                        'dune.data_explorer.category'='abstraction',
+                                                        'dune.data_explorer.abstraction.type'='project',
+                                                        'dune.data_explorer.abstraction.name'='ironbank',
+                                                        'dune.data_explorer.contributors'='["michael"]');
+{% endset %}
+
+{% set ironbank_ethereum_liquidation %}
+ALTER VIEW ironbank_ethereum.liquidation  SET TBLPROPERTIES ('dune.public'='true',
+                                                        'dune.data_explorer.blockchains'='["ethereum"]',
+                                                        'dune.data_explorer.category'='abstraction',
+                                                        'dune.data_explorer.abstraction.type'='project',
+                                                        'dune.data_explorer.abstraction.name'='ironbank',
+                                                        'dune.data_explorer.contributors'='["michael"]');
+{% endset %}
+
+{% set ironbank_optimism_liquidation %}
+ALTER VIEW ironbank_optimism.liquidation  SET TBLPROPERTIES ('dune.public'='true',
+                                                        'dune.data_explorer.blockchains'='["optimism"]',
+                                                        'dune.data_explorer.category'='abstraction',
+                                                        'dune.data_explorer.abstraction.type'='project',
+                                                        'dune.data_explorer.abstraction.name'='ironbank',
+                                                        'dune.data_explorer.contributors'='["michael"]');
+{% endset %}
+
 {% do run_query(balances_ethereum_erc20_day) %}
 {% do run_query(balances_ethereum_erc20_hour) %}
 {% do run_query(balances_ethereum_erc20_latest) %}
@@ -801,6 +873,14 @@ ALTER VIEW ironbank_optimism.borrow  SET TBLPROPERTIES ('dune.public'='true',
 {% do run_query(ironbank_optmism_itokens) %}
 {% do run_query(ironbank_ethereum_borrow) %}
 {% do run_query(ironbank_optimism_borrow) %}
+{% do run_query(ironbank_ethereum_mint) %}
+{% do run_query(ironbank_optimism_mint) %}
+{% do run_query(ironbank_ethereum_repay) %}
+{% do run_query(ironbank_optimism_repay) %}
+{% do run_query(ironbank_ethereum_redeem_underlying) %}
+{% do run_query(ironbank_optimism_redeem_underlying) %}
+{% do run_query(ironbank_ethereum_liquidation) %}
+{% do run_query(ironbank_optimism_liquidation) %}
 
 {% do log("Tables generated", info=True) %}
 {%- else -%}
