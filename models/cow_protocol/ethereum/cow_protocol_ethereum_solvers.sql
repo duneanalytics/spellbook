@@ -6,10 +6,10 @@ WITH
 -- with true/false for adds/removes respectively
 solver_activation_events as (
     select solver, evt_block_number, evt_index, True as activated
-    from {{ source('gnosis_protocol_v2', 'GPv2AllowListAuthentication_evt_SolverAdded') }}
+    from {{ source('gnosis_protocol_v2_ethereum', 'GPv2AllowListAuthentication_evt_SolverAdded') }}
     union
     select solver, evt_block_number, evt_index, False as activated
-    from {{ source('gnosis_protocol_v2', 'GPv2AllowListAuthentication_evt_SolverRemoved') }}
+    from {{ source('gnosis_protocol_v2_ethereum', 'GPv2AllowListAuthentication_evt_SolverRemoved') }}
 ),
 -- Sorting by (evt_block_number, evt_index) allows us to pick the most recent activation status of each unique solver
 registered_solvers as (
