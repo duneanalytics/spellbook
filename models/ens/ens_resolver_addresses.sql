@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'ens',
+    alias = 'resolver_addresses',
     materialized = 'incremental',
     unique_key = ['address']
     )
