@@ -6,7 +6,7 @@
 SELECT *
 FROM
 (
-        SELECT
+       /*SELECT
                 blockchain,
                 project,
                 version,
@@ -64,7 +64,7 @@ FROM
                 tx_from,
                 tx_to,
                 unique_trade_id
-        FROM {{ ref('magiceden_trades') }}
+        FROM {{ ref('magiceden_trades') }} */
         UNION
         SELECT
                 blockchain,
