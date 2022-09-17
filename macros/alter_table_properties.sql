@@ -523,6 +523,15 @@ ALTER VIEW ens.view_renewals SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["antonio-mendes","mewwts"]');
 {% endset %}
 
+{% set ens_resolver_addresses %}
+ALTER VIEW ens.resolver_addresses SET TBLPROPERTIES ('dune.public'='true',
+                                                'dune.data_explorer.blockchains'='["ethereum"]',
+                                                'dune.data_explorer.category'='abstraction',
+                                                'dune.data_explorer.abstraction.type'='project',
+                                                'dune.data_explorer.abstraction.name'='ens',
+                                                'dune.data_explorer.contributors'='["hildobby", "danning.sui", "msilb7", "danner_eth"]');
+{% endset %}
+
 {% set addresses_ethereum_cex %}
 ALTER VIEW addresses_ethereum.cex SET TBLPROPERTIES ('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum"]',
@@ -813,6 +822,7 @@ ALTER TABLE ovm1_optimism.user_addresses_weekly_active_cohorts SET TBLPROPERTIES
 {% do run_query(ens_view_registrations) %}
 {% do run_query(ens_view_registries) %}
 {% do run_query(ens_view_renewals) %}
+{% do run_query(ens_resolver_addresses) %}
 {% do run_query(nomad_bridge_transactions) %}
 {% do run_query(prices_usd_latest) %}
 {% do run_query(sudoswap_ethereum_events) %}
