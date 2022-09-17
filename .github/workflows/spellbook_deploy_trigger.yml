@@ -2,8 +2,8 @@ name: Trigger Spellbook Deploy to update the spellbook site
 
 on:
   push:
-    paths:
-      - 'spellbook/**'
+    branches:
+      - 'main'
 
 jobs:
   notify:
