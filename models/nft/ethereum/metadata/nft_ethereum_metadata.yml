@@ -79,3 +79,71 @@ models:
         description: "Name of collection"
       - name: artist_name
         description: "Name of artist"
+
+  - name: nft_ethereum_metadata_bright_moments
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: cat
+    config:
+      tags: ['nft', 'ethereum', 'bright_moments']
+    description: >
+        Details for collections created on MOMENTS contract (project id, city, name, artist)
+    columns:
+      - name: contract_address
+        description: "Collection contract address"
+      - name: bright_momoments_project_id
+        description: "Project ID. Can use to join with token_ids on contract address"
+      - name: bright_moments_city
+        description: "City collection launched in, if applicable"
+      - name: collection_name
+        description: "Name of collection"
+      - name: artist_name
+        description: "Name of artist"
+
+
+  - name: nft_ethereum_metadata_proof_grails_i
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: cat
+    config:
+      tags: ['nft', 'ethereum', 'proof_collective', 'proof_grails']
+    description: >
+        Details for PROOF Grails I contract (token id, edition name, artist)
+    columns:
+      - name: contract_address
+        description: "Collection contract address"
+      - name: token_id
+        description: "Token ID"
+      - name: grails_season
+        description: "PROOF Grails Season"
+      - name: edition_name
+        description: "Name of edition"
+      - name: artist_name
+        description: "Name of artist"
+      - name: grail_id 
+        description: "Grail ID pre-reveal"
+
+  - name: nft_ethereum_metadata_proof_grails_ii
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: cat
+    config:
+      tags: ['nft', 'ethereum', 'proof_collective', 'proof_grails']
+    description: >
+        Details for PROOF Grails I contract (token id, edition name, artist)
+    columns:
+      - name: contract_address
+        description: "Collection contract address"
+      - name: token_id
+        description: "Token ID"
+      - name: grails_season
+        description: "PROOF Grails Season"
+      - name: edition_name
+        description: "Name of edition"
+      - name: artist_name
+        description: "Name of artist"
+      - name: grail_id 
+        description: "Grail ID pre-reveal"
