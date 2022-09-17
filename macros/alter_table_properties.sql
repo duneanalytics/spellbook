@@ -834,7 +834,7 @@ ALTER TABLE ovm1_optimism.user_addresses_weekly_active_cohorts SET TBLPROPERTIES
 {% do run_query(archipelago_ethereum_events) %}
 {% do run_query(archipelago_ethereum_trades) %}
 {% do run_query(archipelago_ethereum_fees) %}
-{% do run_query(optimism_ovm1_erc20_balances) %}
+{% do run_query(ovm1_optimism_erc20_balances) %}
 {% do run_query(ovm1_optimism_contracts) %}
 {% do run_query(ovm1_optimism_synthetix_genesis_contracts) %}
 {% do run_query(ovm1_optimism_user_address_activity_last_30_days) %}
