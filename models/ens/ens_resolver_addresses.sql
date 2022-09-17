@@ -125,4 +125,4 @@ FROM
         ) lastone
     ) fin
 WHERE name_rank = 1
-AND !(ens_name regexp '.*\\..+\\..*')
+AND !(name regexp '.*\\..+\\..*')
