@@ -111,7 +111,7 @@ WHERE latest_ens = 1
         ) names
 )
 
-SELECT address
+SELECT distinct address
 , name as ens_name
 , tx_hash as latest_tx
 , block_time as latest_tx_block_time
@@ -125,3 +125,4 @@ FROM
         ) lastone
     ) fin
 WHERE name_rank = 1
+AND !(ens_name regexp '.*\\..+\\..*')
