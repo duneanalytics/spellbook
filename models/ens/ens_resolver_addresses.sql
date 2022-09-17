@@ -46,28 +46,15 @@ WHERE latest_ens = 1
     FROM (
         SELECT name || '.eth' AS name, evt_tx_hash, evt_block_time, owner
             FROM {{source('ethereumnameservice_ethereum', 'ETHRegistrarController_1_evt_NameRegistered')}}
-            WHERE 1 =
-                (CASE WHEN input_ens = 'All Addresses' THEN 1
-            WHEN name || '.eth' = input_ens THEN 1
-            ELSE 0
-            END)
         UNION ALL
         SELECT name || '.eth' AS name, evt_tx_hash, evt_block_time, owner
             FROM {{source('ethereumnameservice_ethereum', 'ETHRegistrarController_2_evt_NameRegistered')}}
-            WHERE 1 =
-                (CASE WHEN input_ens = 'All Addresses' THEN 1
-            WHEN name || '.eth' = input_ens THEN 1
-            ELSE 0
-            END)
         UNION ALL
         SELECT name || '.eth' AS name, evt_tx_hash, evt_block_time, owner
             FROM {{source('ethereumnameservice_ethereum', 'ETHRegistrarController_3_evt_NameRegistered')}}
-            WHERE 1 =
-                (CASE WHEN input_ens = 'All Addresses' THEN 1
-            WHEN name || '.eth' = input_ens THEN 1
-            ELSE 0
-            END)
         ) r
+    LEFT JOIN {{source('ethereumnameservice_ethereum', 'OldBaseRegistrar_evt_NameRegistered')}} nr
+        ON nr.evt_tx_hash = r.evt_tx_hash
     LEFT JOIN {{source('ethereumnameservice_ethereum', 'BaseRegistrarImplementation_evt_NameRegistered')}} bnr
         ON bnr.evt_tx_hash = r.evt_tx_hash
     )
@@ -80,7 +67,7 @@ WHERE latest_ens = 1
             AND rcc.call_block_time >= r.evt_block_time
         )
     ,get_nodes AS (
-    SELECT *
+    SELECT DISTINCT *
     FROM (
         SELECT r.name, r.evt_tx_hash, r. evt_block_time, ac.node 
             FROM {{source('ethereumnameservice_ethereum', 'PublicResolver_evt_AddrChanged')}} ac
@@ -94,11 +81,10 @@ WHERE latest_ens = 1
             INNER JOIN regs r
                 ON r.evt_tx_hash = aac.evt_tx_hash
         ) r
-        GROUP BY 1,2,3,4 --remove dupes
     )
     
     ,address_changes AS ( --similar to getting nodes, but using those nodes to pull the latest address changes
-    SELECT *
+    SELECT DISTINCT *
     FROM (
         SELECT n.name, ac.a AS owner, ac.evt_tx_hash, ac. evt_block_time, ac.node
         FROM {{source('ethereumnameservice_ethereum', 'PublicResolver_evt_AddrChanged')}} ac
@@ -113,7 +99,6 @@ WHERE latest_ens = 1
                 ON n.node = aac.node
             WHERE coinType ='60' --Only care about eth, but we could change this if we wanted: https://github.com/satoshilabs/slips/blob/master/slip-0044.md
         ) chg
-        GROUP BY 1,2,3,4,5 --remove dupes
     )
         
     SELECT *, ROW_NUMBER() OVER (PARTITION BY name ORDER BY block_time DESC)
@@ -127,7 +112,7 @@ WHERE latest_ens = 1
 )
 
 SELECT address
-, ens_name
+, name as ens_name
 , tx_hash as latest_tx
 , block_time as latest_tx_block_time
 FROM

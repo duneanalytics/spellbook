@@ -48,3 +48,5 @@ sources:
         loaded_at_field: evt_block_time
       - name: PublicResolver_evt_AddressChanged
         loaded_at_field: evt_block_time
+      - name: OldBaseRegistrar_evt_NameRegistered
+        loaded_at_field: evt_block_time
