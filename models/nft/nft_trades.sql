@@ -6,7 +6,7 @@
 SELECT *
 FROM
 (
-       /*SELECT
+        SELECT
                 blockchain,
                 project,
                 version,
