@@ -191,6 +191,14 @@ models:
       ethereum:
         +schema: curvefi_ethereum
         +materialized: view
+
+    ovm1:
+      +schema: ovm1
+      +materialized: table
+      optimism:
+        +schema: omv1_optimism
+        +materialized: table
+
 seeds:
   spellbook:
     balances:
