@@ -578,7 +578,9 @@ with p1_call as (
           ,token_id as nft_token_id
           ,nft_transfer_count
           ,original_amount as nft_item_count
-          ,coalesce(avg_original_amount,0) + coalesce(avg_fee_amount,0) + coalesce(avg_royalty_amount,0) as attempt_amount
+--         quickfix for Issue #1510 that results in double counting of fees
+--        ,coalesce(avg_original_amount,0) + coalesce(avg_fee_amount,0) + coalesce(avg_royalty_amount,0) as attempt_amount
+          ,coalesce(avg_original_amount,0) as attempt_amount
           ,0 as revert_amount
           ,false as reverted
           ,case when nft_transfer_count > 1 then true else false end as price_estimated
