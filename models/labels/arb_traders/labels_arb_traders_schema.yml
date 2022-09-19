@@ -8,7 +8,7 @@ models:
       category: arb_traders
       contibutors: alexth
     config:
-      tags: ['labels', 'ethereum', 'arbitrage', 'dex']
+      tags: ['labels', 'ethereum', 'arbitrage', 'dex', 'arb_traders']
     description: "Known arbitrage trader addresses across chains"
     columns:
       - &blockchain
@@ -17,6 +17,24 @@ models:
       - &address
         name: address
         description: "Address of known arbitrage trader"
+      - &name
+        name: name
+        description: "Label name (Arbitrage Trader)"
+      - &category
+        name: category
+        description: "Label category (arb_traders)"
+      - &contributor
+        name: contributor
+        description: "Wizard(s) contributing to labels"
+      - &source
+        name: source
+        description: "How were labels generated (could be static or query)"
+      - &created_at
+        name: created_at
+        description: "When were labels created"
+      - &updated_at
+        name: updated_at
+        description: "When were labels updated for the last time"
 
   - name: labels_arb_traders_ethereum
     meta:
@@ -25,8 +43,14 @@ models:
       category: arb_traders
       contibutors: alexth
     config:
-      tags: ['labels', 'ethereum', 'arbitrage', 'dex']
+      tags: ['labels', 'ethereum', 'arbitrage', 'dex', 'arb_traders']
     description: "Known arbitrage trader addresses on Ethereum"
     columns:
       - *blockchain
       - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at

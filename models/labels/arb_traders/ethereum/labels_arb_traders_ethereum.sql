@@ -11,7 +11,7 @@ with
     WHERE
       t1.blockchain = 'ethereum'
       AND t2.blockchain = 'ethereum'
-      AND t1.block_date >= date_trunc('day', now() - interval '180 days')
+      -- AND t1.block_date >= date_trunc('day', now() - interval '180 days')
       AND t1.token_sold_address = t2.token_bought_address
       AND t1.token_bought_address = t2.token_sold_address
       AND t1.evt_index != t2.evt_index
@@ -23,7 +23,7 @@ with
 select
   "ethereum" as blockchain,
   address,
-  "arb trader" AS name,
+  "Arbitrage Trader" AS name,
   "arb_traders" AS category,
   "alexth" AS contributor,
   "query" AS source,
