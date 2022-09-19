@@ -26,14 +26,14 @@ You can watch the video version of this if you scroll down a bit.
 
 Navigate to the abstraction repo within your CLI (Command line interface).
 
-```
+```console
 cd user\directory\github\spellbook
 #change this to whereever spellbook are stored locally on your machine
 ```
 
 Use the pipfile to create a pipenv.
 
-```
+```console
 pipenv install
 ```
 
@@ -41,7 +41,7 @@ If the env is created successfully, skip ahead to `pipenv shell`.
 
 Our script is looking for a static python version, the likelihood of an error for a wrong python version is pretty high. If that error occurs, check your python version with:
 
-```
+```console
 py --version
 ```
 
@@ -51,21 +51,43 @@ If you have changed the python version in the pipfile, run `pipenv install` agai
 You are now ready to activate this project's virtual environment.
 Use:
 
-```
+```console
 pipenv shell
 ```
 
 You have now created a virtual environment for this project. You can read more about virtual environments [here](https://realpython.com/pipenv-guide/).
 
+To pull the dbt project dependencies run:
+
+```console
+dbt deps
+```
+
 To initiate the dbt project run:
 
-```
+```console
 dbt init
 ```
 
 Enter the values as shown below:
 
-![dbt init values for wizards](.github/user-images/dbt-init-for-wizards.png).
+```console
+Which database would you like to use?
+[1] databricks
+[2] spark
+
+(Don't see the one you want? https://docs.getdbt.com/docs/available-adapters)
+
+Enter a number: 1
+host (yourorg.databricks.com): .
+http_path (HTTP Path): .
+token (dapiXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX):
+[1] use Unity Catalog
+[2] not use Unity Catalog
+Desired unity catalog option (enter a number): 2
+schema (default schema that dbt will build objects in): wizard
+threads (1 or more) [1]: 2
+```
 
 This will not connect to the database but you have access to some dbt actions.
 **When you are prompted to choose a schema, please enter `wizard` so we know you are an external contributor.**
@@ -73,7 +95,7 @@ Should you make an error during this process (not entering `wizard` being the on
 
 Then, run the following command:
 
-```
+```console
 dbt compile
 ```
 
@@ -104,7 +126,7 @@ Best practice is to add tests unique and non_null tests to the primary key for e
 
 Adding descriptions to tables and columns will help people find and use your tables.
 
-```
+```yaml
 models:
   - name: 1inch_ethereum
     description: "Trades on 1inch, a DEX aggregator"
