@@ -8,7 +8,8 @@ from string import Template
 class PRJobDepedencyManager:
     def __init__(self, pr_schema: str):
         self.pr_schema = pr_schema
-        self.manifest_dict = json.load(open(Path('../target/manifest.json')))
+        self.manifest_dict = {"key":"value"}
+        # self.manifest_dict = json.load(open(Path('../target/manifest.json')))
         self.nodes = self.manifest_dict['nodes']
 
     def fetch_modified_object_keys(self, object_type) -> list[str]:
