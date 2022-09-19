@@ -12,24 +12,24 @@ class PRJobDepedencyManager:
         # self.manifest_dict = json.load(open(Path('../target/manifest.json')))
         self.nodes = self.manifest_dict["key"]
 
-    def fetch_modified_object_keys(self, object_type) -> list[str]:
-        """
-        Collected keys for modified objects
-        :param object_type:  accepted inputs: [model, test, seed]
-        :return: modified_objects
-        """
-        if object_type == 'test':
-            test_filter = "--select test_type:singular"
-        else:
-            test_filter = ''
-        bash_response = subprocess.run(f'dbt list --output name --resource-type {object_type} --select state:modified --state  . {test_filter}', capture_output=True, shell=True).stdout.decode("utf-8")
-        if 'No nodes selected!' in bash_response:
-            modified_objects = []
-        else:
-            modified_names = bash_response.split('\n')
-            modified_names.remove('')
-            modified_objects = [f"{object_type}.spellbook.{name}" for name in modified_names]
-        return modified_objects
+    # def fetch_modified_object_keys(self, object_type) -> list[str]:
+    #     """
+    #     Collected keys for modified objects
+    #     :param object_type:  accepted inputs: [model, test, seed]
+    #     :return: modified_objects
+    #     """
+    #     if object_type == 'test':
+    #         test_filter = "--select test_type:singular"
+    #     else:
+    #         test_filter = ''
+    #     bash_response = subprocess.run(f'dbt list --output name --resource-type {object_type} --select state:modified --state  . {test_filter}', capture_output=True, shell=True).stdout.decode("utf-8")
+    #     if 'No nodes selected!' in bash_response:
+    #         modified_objects = []
+    #     else:
+    #         modified_names = bash_response.split('\n')
+    #         modified_names.remove('')
+    #         modified_objects = [f"{object_type}.spellbook.{name}" for name in modified_names]
+    #     return modified_objects
 
     def fetch_modified_node_keys(self) -> list[str]:
        models =  self.fetch_modified_object_keys(object_type="model")
@@ -122,7 +122,7 @@ SELECT * FROM $prod_name;
         f.close()
 
     def main(self):
-        modified_node_keys = self.fetch_modified_node_keys()
+        # modified_node_keys = self.fetch_modified_node_keys()
         modified_nodes = self.parse_manifest_for_nodes(modified_node_keys)
         refs = self.fetch_required_refs(modified_nodes)
         prod_names = self.compile_ref_production_names(refs)
