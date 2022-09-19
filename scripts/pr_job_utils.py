@@ -10,7 +10,7 @@ class PRJobDepedencyManager:
         self.pr_schema = pr_schema
         self.manifest_dict = {"key":"value"}
         # self.manifest_dict = json.load(open(Path('../target/manifest.json')))
-        self.nodes = self.manifest_dict['nodes']
+        self.nodes = self.manifest_dict["key"]
 
     def fetch_modified_object_keys(self, object_type) -> list[str]:
         """
