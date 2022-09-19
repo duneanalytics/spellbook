@@ -34,6 +34,12 @@ models:
       optimism:
         +schema: airdrop_optimism
         +materialized: table
+    balancer:
+      +schema: balancer
+      +materialized: view
+      ethereum:
+        +schema: balancer_ethereum
+        +materialized: view
     dex:
       +schema: dex
       +materialized: view
