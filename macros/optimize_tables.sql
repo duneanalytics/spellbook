@@ -117,6 +117,7 @@ OPTIMIZE perpetual_protocol_v2_optimism.trades;
 
 {% set perpetual_trades %}
 OPTIMIZE perpetual.trades;
+{% endset %}
 
 {% set labels_all %}
 OPTIMIZE labels.all;
