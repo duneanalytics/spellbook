@@ -631,6 +631,15 @@ ALTER VIEW pika_optimism.trades SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.contributors'='["MSilb7", "drethereum", "rplust"]');
 {% endset %}
 
+{% set pika_trades %}
+ALTER VIEW pika.trades SET TBLPROPERTIES('dune.public'='true',
+                                        'dune.data_explorer.blockchains'='["optimism"]',
+                                        'dune.data_explorer.category'='abstraction',
+                                        'dune.data_explorer.abstraction.type'='project',
+                                        'dune.data_explorer.abstraction.name'='pika',
+                                        'dune.data_explorer.contributors'='["MSilb7", "drethereum", "rplust"]');
+{% endset %}
+
 {% set synthetix_optimism_trades %}
 ALTER TABLE synthetix_optimism.trades SET TBLPROPERTIES('dune.public'='true',
                                                         'dune.data_explorer.blockchains'='["optimism"]',
@@ -640,21 +649,39 @@ ALTER TABLE synthetix_optimism.trades SET TBLPROPERTIES('dune.public'='true',
                                                         'dune.data_explorer.contributors'='["MSilb7", "drethereum", "rplust"]');
 {% endset %}
 
-{% set perpetual_v2_optimism_trades %}
-ALTER TABLE perpetual_v2_optimism.trades SET TBLPROPERTIES('dune.public'='true',
-                                                            'dune.data_explorer.blockchains'='["optimism"]',
-                                                            'dune.data_explorer.category'='abstraction',
-                                                            'dune.data_explorer.abstraction.type'='project',
-                                                            'dune.data_explorer.abstraction.name'='perpetual_v2',
-                                                            'dune.data_explorer.contributors'='["MSilb7", "drethereum", "rplust"]');
+{% set synthetix_trades %}
+ALTER VIEW synthetix.trades SET TBLPROPERTIES('dune.public'='true',
+                                            'dune.data_explorer.blockchains'='["optimism"]',
+                                            'dune.data_explorer.category'='abstraction',
+                                            'dune.data_explorer.abstraction.type'='project',
+                                            'dune.data_explorer.abstraction.name'='synthetix',
+                                            'dune.data_explorer.contributors'='["MSilb7", "drethereum", "rplust"]');
 {% endset %}
 
-{% set perpetual_optimism_trades %}
-ALTER VIEW perpetual_optimism.trades SET TBLPROPERTIES('dune.public'='true',
+{% set perpetual_protocol_v2_optimism_trades %}
+ALTER TABLE perpetual_protocol_v2_optimism.trades SET TBLPROPERTIES('dune.public'='true',
+                                                                    'dune.data_explorer.blockchains'='["optimism"]',
+                                                                    'dune.data_explorer.category'='abstraction',
+                                                                    'dune.data_explorer.abstraction.type'='project',
+                                                                    'dune.data_explorer.abstraction.name'='perpetual_protocol_v2',
+                                                                    'dune.data_explorer.contributors'='["MSilb7", "drethereum", "rplust"]');
+{% endset %}
+
+{% set perpetual_protocol_optimism_trades %}
+ALTER VIEW perpetual_protocol_optimism.trades SET TBLPROPERTIES('dune.public'='true',
+                                                                'dune.data_explorer.blockchains'='["optimism"]',
+                                                                'dune.data_explorer.category'='abstraction',
+                                                                'dune.data_explorer.abstraction.type'='project',
+                                                                'dune.data_explorer.abstraction.name'='perpetual_protocol',
+                                                                'dune.data_explorer.contributors'='["MSilb7", "drethereum", "rplust"]');
+{% endset %}
+
+{% set perpetual_protocol_trades %}
+ALTER VIEW perpetual_protocol.trades SET TBLPROPERTIES('dune.public'='true',
                                                         'dune.data_explorer.blockchains'='["optimism"]',
                                                         'dune.data_explorer.category'='abstraction',
                                                         'dune.data_explorer.abstraction.type'='project',
-                                                        'dune.data_explorer.abstraction.name'='perpetual',
+                                                        'dune.data_explorer.abstraction.name'='perpetual_protocol',
                                                         'dune.data_explorer.contributors'='["MSilb7", "drethereum", "rplust"]');
 {% endset %}
 
@@ -739,9 +766,12 @@ ALTER TABLE perpetual.trades SET TBLPROPERTIES('dune.public'='true',
 {% do run_query(pika_v2_optimism_trades) %}
 {% do run_query(pika_v3_optimism_trades) %}
 {% do run_query(pika_optimism_trades) %}
+{% do run_query(pika_trades) %}
 {% do run_query(synthetix_optimism_trades) %}
-{% do run_query(perpetual_v2_optimism_trades) %}
-{% do run_query(perpetual_optimism_trades) %}
+{% do run_query(synthetix_trades) %}
+{% do run_query(perpetual_protocol_v2_optimism_trades) %}
+{% do run_query(perpetual_protocol_optimism_trades) %}
+{% do run_query(perpetual_protocol_trades) %}
 {% do run_query(perpetual_trades) %}
 
 {% do log("Tables generated", info=True) %}

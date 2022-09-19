@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: perpetual_optimism_trades
+  - name: perpetual_protocol_optimism_trades
     meta:
       blockchain: optimism
       sector: perpetual
@@ -14,6 +14,9 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain where the perpetuals market is deployed"
+      - &block_date
+        name: block_date
+        description: "Date of the transaction"
       - &block_time
         name: block_time
         description: "Time of the transaction"
@@ -66,7 +69,7 @@ models:
         name: evt_index
         description: "Event index number"
 
-  - name: perpetual_v2_optimism_trades
+  - name: perpetual_protocol_v2_optimism_trades
     meta:
       blockchain: optimism
       sector: perpetual
@@ -81,6 +84,7 @@ models:
           column_name: "(block_time || '-' || project || '-' || version || '-' || tx_hash || '-' || evt_index)"
     columns:
       - *blockchain
+      - *block_date
       - *block_time
       - *virtual_asset
       - *underlying_asset

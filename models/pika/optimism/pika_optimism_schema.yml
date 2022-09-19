@@ -14,6 +14,9 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain where the perpetuals market is deployed"
+      - &block_date
+        name: block_date
+        description: "Date of the transaction"
       - &block_time
         name: block_time
         description: "Time of the transaction"

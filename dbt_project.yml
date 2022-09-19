@@ -167,8 +167,12 @@ models:
     perpetual:
       +schema: perpetual
       +materialized: view
+
+    perpetual_protocol:
+      +schema: perpetual_protocol
+      +materialized: view
       optimism:
-        +schema: perpetual_optimism
+        +schema: perpetual_protocol_optimism
         +materialized: view
 
     pika:

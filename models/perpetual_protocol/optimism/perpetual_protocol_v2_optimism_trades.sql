@@ -1,5 +1,5 @@
 {{ config(
-	schema = 'perpetual_v2_optimism',
+	schema = 'perpetual_protocol_v2_optimism',
 	alias ='trades',
 	partition_by = ['block_date'],
 	materialized = 'incremental',

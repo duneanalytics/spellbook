@@ -7,13 +7,16 @@ models:
       sector: perpetual
       contributors: MSilb7, drethereum, rplust
     config:
-      tags: ['optimism', 'perpetuals', 'perps']
+      tags: ['optimism', 'perpetuals', 'perps', 'cross-chain', 'pika', 'perpetual-protocol', 'synthetix']
     description: >
       Perpetual swaps/trades table
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain where the perpetuals market is deployed"
+      - &block_date
+        name: block_date
+        description: "Date of the transaction"
       - &block_time
         name: block_time
         description: "Time of the transaction"

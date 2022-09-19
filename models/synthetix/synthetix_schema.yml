@@ -1,19 +1,16 @@
 version: 2
 
 models:
-  - name: synthetix_optimism_trades
+  - name: synthetix_trades
     meta:
       blockchain: optimism
       sector: perpetual
       project: synthetix
       contributors: MSilb7, drethereum, rplust
     config:
-      tags: ['optimism', 'synthetix', 'kwenta', 'perpetuals', 'perps']
+      tags: ['optimism', 'synthetix', 'kwenta', 'perpetuals', 'perps','cross-chain']
     description: >
-      Kwenta/Synthetix perpetuals trades/swaps on Optimism
-    tests:
-      - unique:
-          column_name: "(block_time || '-' || project || '-' || version || '-' || tx_hash || '-' || evt_index)"
+      Kwenta/Synthetix perpetuals trades/swaps
     columns:
       - &blockchain
         name: blockchain

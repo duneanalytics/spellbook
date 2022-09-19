@@ -103,8 +103,8 @@ OPTIMIZE pika_v3_optimism.trades;
 OPTIMIZE synthetix_optimism.trades;
 {% endset %}
 
-{% set perpetual_v2_optimism_trades %}
-OPTIMIZE perpetual_v2_optimism.trades;
+{% set perpetual_protocol_v2_optimism_trades %}
+OPTIMIZE perpetual_protocol_v2_optimism.trades;
 {% endset %}
 
 {% set perpetual_trades %}
@@ -136,7 +136,7 @@ OPTIMIZE perpetual.trades;
 {% do run_query(pika_v2_optimism_trades) %}
 {% do run_query(pika_v3_optimism_trades) %}
 {% do run_query(synthetix_optimism_trades) %}
-{% do run_query(perpetual_v2_optimism_trades) %}
+{% do run_query(perpetual_protocol_v2_optimism_trades) %}
 {% do run_query(perpetual_trades) %}
 {% do log("Tables Optimized", info=True) %}
 {% endmacro %}
