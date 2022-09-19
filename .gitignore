@@ -1,6 +1,8 @@
 .DS_Store
 .vscode
 manifest.json
+macros/dune/create_views_of_dependencies.sql
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
