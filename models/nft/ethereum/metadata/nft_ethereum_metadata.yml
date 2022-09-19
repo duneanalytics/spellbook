@@ -146,7 +146,7 @@ models:
         description: "Name of artist"
       - name: grail_id 
         description: "Grail ID pre-reveal"
-
+        
   - name: nft_ethereum_metadata_braindrops
       meta:
         blockchain: ethereum
