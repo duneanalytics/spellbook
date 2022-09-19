@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       project: cow_protocol
-      contributors: [CoW Protocol]
+      contributors: gentrexha, bh2smith
     config:
       tags: ['ethereum','cow_protocol','solver']
     description: >
