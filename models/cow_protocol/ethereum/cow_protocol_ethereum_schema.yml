@@ -23,3 +23,82 @@ models:
       - &active
         name: active
         description: "Solver's active status according to the events emitted by GPv2AllowListAuthentication. True if solver has been 'added' and not yet removed, False when the solver has been 'removed'."
+  - name: cow_protocol_ethereum_trades
+    meta:
+      blockchain: ethereum
+      project: cow_protocol
+      contributors: bh2smith, gentrexha
+    config:
+      tags: ['ethereum','cow_protocol','trades']
+    description: >
+      CoW Protocol enriched trades list on Ethereum
+    columns:
+      - &block_time
+        name: block_time
+        description: "Timestamp for block event time in UTC"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash of trade"
+      - &order_uid
+        name: order_uid
+        description: "Unique identifier of order involved in trade. Note that partially fillable orders can be touched multiple times so this is not a unique ID for trade events."
+      - &trader
+        name: trader
+        description: "Owner of the order being traded (aka trader)"
+      - &sell_token_address
+        name: sell_token_address
+        description: "Ethereum address of Sell Token"
+      - &sell_token
+        name: sell_token
+        description: "Symbol of Sell Token"
+      - &buy_token_address
+        name: buy_token_address
+        description: "Ethereum address of Buy Token"
+      - &buy_token
+        name: buy_token
+        description: "Symbol of Buy Token"
+      - &token_pair
+        name: token_pair
+        description: "Ordered concatenation of Buy/Sell token symbols involved in trade"
+      - &units_sold
+        name: units_sold
+        description: "Units of sell token sold (incorporates token decimals)."
+      - &atoms_sold
+        name: atoms_sold
+        description: "Amount (in atoms) of the sell token sold"
+      - &units_bought
+        name: units_bought
+        description: "Units of buy token bought (incorporates token decimals)."
+      - &atoms_bought
+        name: atoms_bought
+        description: "Amount (in atoms) of the buy token bought"
+      - &usd_value
+        name: usd_value
+        description: "USD value of trade (taken as the max of buy value, sell value when both available, otherwise whichever is known)"
+      - &buy_price
+        name: buy_price
+        description: "USD price of buy token at the time of trade"
+      - &buy_value_usd
+        name: buy_value_usd
+        description: "USD value of buy token amount"
+      - &sell_price
+        name: sell_price
+        description: "USD price of sell token at the time of trade"
+      - &sell_value_usd
+        name: sell_value_usd
+        description: "USD value of sell token amount"
+      - &fee
+        name: fee
+        description: "Unit of fee taken (in sell token) - incorporating token decimals"
+      - &fee_atoms
+        name: fee_atoms
+        description: "Amount (in atoms) of fee - taken in sell token"
+      - &fee_usd
+        name: fee_usd
+        description: "USD value of trade fee"
+      - &app_data
+        name: app_data
+        description: "Hashed metadata related to trade event (full content available on IPFS)"
+      - &receiver
+        name: receiver
+        description: "Recipient of trades buy token"
