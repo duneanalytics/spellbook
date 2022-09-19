@@ -1,6 +1,6 @@
 {{ config(materialized='view', alias='solvers')}}
 
-
+-- Find the PoC Query here: https://dune.com/queries/1276806
 WITH
 -- Aggregate the solver added and removed events into a single table
 -- with true/false for adds/removes respectively
@@ -12,10 +12,19 @@ solver_activation_events as (
     from {{ source('gnosis_protocol_v2_ethereum', 'GPv2AllowListAuthentication_evt_SolverRemoved') }}
 ),
 -- Sorting by (evt_block_number, evt_index) allows us to pick the most recent activation status of each unique solver
-registered_solvers as (
-    select distinct on (solver) solver, activated as active
+ranked_solver_events as (
+    select
+        rank() over (partition by solver order by evt_block_number desc, evt_index desc) as rk,
+        solver,
+        evt_block_number,
+        evt_index,
+        activated as active
     from solver_activation_events
-    order by solver, evt_block_number desc, evt_index desc
+),
+registered_solvers as (
+    select solver, active
+    from ranked_solver_events
+    where rk = 1
 ),
 -- Manually inserting environment and name for each "known" solver
 known_solver_metadata (address, environment, name) as (
@@ -81,16 +90,8 @@ known_solver_metadata (address, environment, name) as (
 )
 -- Combining the metadata with current activation status for final table
 select solver as address,
-       case when environment is not null then environment else 'new' end as environment,
-       case when name is not null then name else 'Uncatalogued' end      as name,
-       active
-from registered_solvers left outer join known_solver_metadata on solver = replace(address, '0x', '\x')::bytea;
-
--- CREATE UNIQUE INDEX IF NOT EXISTS view_solvers_address_unique_idx ON gnosis_protocol_v2.view_solvers (address);
---
--- COMMIT;
---
--- -- This job updates the view every half day to capture any new (but currently uncatalogued solvers)
--- INSERT INTO cron.job (schedule, command)
--- VALUES ('0 */12 * * *', 'REFRESH MATERIALIZED VIEW CONCURRENTLY gnosis_protocol_v2.view_solvers')
--- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+      case when environment is not null then environment else 'new' end as environment,
+      case when name is not null then name else 'Uncatalogued' end      as name,
+      active
+from registered_solvers
+    left outer join known_solver_metadata on solver = lower(address);
