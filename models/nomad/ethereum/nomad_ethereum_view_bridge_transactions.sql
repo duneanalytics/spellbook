@@ -1,17 +1,13 @@
 {{
+  -- Expose Spells macro: 
+  -- => expose_spells(["blockchains"], 'project'/'sector','name', ["contributors"])
   config(
       alias='view_bridge_transactions',
-      post_hook = "
-      {%- if target.name == 'prod'-%} 
-      ALTER VIEW {{ this }} SET TBLPROPERTIES ('dune.public'='true',
-      'dune.data_explorer.blockchains'='[\"ethereum\"]',
-      'dune.data_explorer.category'='abstraction',
-      'dune.data_explorer.abstraction.type'='project',
-      'dune.data_explorer.abstraction.name'='nomad',
-      'dune.data_explorer.contributors'='[\"springzh\"]')
-      {%- else -%}
-      {%- endif -%}
-      ")
+      post_hook="{{ expose_spells('[\"ethereum\"]', 
+                                    'project',
+                                    'nomad',
+                                    '[\"soispoke\",\"jeff_dude\"]') }}" 
+      )
 }}
 
 with nomad_bridge_domains(domain_id, domain_name, domain_type) as (
