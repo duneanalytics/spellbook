@@ -1,4 +1,4 @@
-{{ config(alias='balances') }}
+{{ config(alias='balancer_balances') }}
 
 WITH pools AS (
     SELECT pool as pools
