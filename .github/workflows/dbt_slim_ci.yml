@@ -42,7 +42,8 @@ jobs:
         run: "dbt compile"
 
       - name: create macro to define dependencies
-        run: "scripts/pr_job_utils.py --pr_schema git_$GIT_SHA"
+        run: |
+           python scripts/pr_job_utils.py --pr_schema git_$GIT_SHA
 
       - name: dbt create views of dependencies
         run: "dbt run-operation create_views_of_dependencies"
