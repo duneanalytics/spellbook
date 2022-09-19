@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: cow_protocol_ethereum_events
+  - name: cow_protocol_ethereum_solvers
     meta:
       blockchain: ethereum
       project: cow_protocol
