@@ -31,6 +31,10 @@ OPTIMIZE seaport_ethereum.transfers;
 OPTIMIZE sudoswap_ethereum.events;
 {% endset %}
 
+{% set cryptopunks_ethereum_events %}
+OPTIMIZE cryptopunks_ethereum.events;
+{% endset %}
+
 {% set tornado_cash_deposits %}
 OPTIMIZE tornado_cash.deposits;
 {% endset %}
@@ -83,6 +87,10 @@ OPTIMIZE uniswap_v2_ethereum.trades;
 OPTIMIZE x2y2_ethereum.events;
 {% endset %}
 
+{% set ens_resolver_addresses %}
+OPTIMIZE ens.resolver_addresses;
+{% endset %}
+
 {% set archipelago_ethereum_events %}
 OPTIMIZE archipelago_ethereum.events;
 {% endset %}
@@ -109,6 +117,9 @@ OPTIMIZE perpetual_protocol_v2_optimism.trades;
 
 {% set perpetual_trades %}
 OPTIMIZE perpetual.trades;
+
+{% set labels_all %}
+OPTIMIZE labels.all;
 {% endset %}
 
 
@@ -118,8 +129,10 @@ OPTIMIZE perpetual.trades;
 {% do run_query(opensea_v1_ethereum_events) %}
 {% do run_query(safe_ethereum_eth_transfers) %}
 {% do run_query(safe_ethereum_safes) %}
+{% do run_query(ens_resolver_addresses) %}
 {% do run_query(seaport_ethereum_transfers) %}
 {% do run_query(sudoswap_ethereum_events) %}
+{% do run_query(cryptopunks_ethereum_events) %}
 {% do run_query(tornado_cash_deposits) %}
 {% do run_query(tornado_cash_withdrawals) %}
 {% do run_query(transfers_ethereum_erc20_agg_hour) %}
@@ -138,5 +151,7 @@ OPTIMIZE perpetual.trades;
 {% do run_query(synthetix_optimism_trades) %}
 {% do run_query(perpetual_protocol_v2_optimism_trades) %}
 {% do run_query(perpetual_trades) %}
+{% do run_query(labels_all) %}
+
 {% do log("Tables Optimized", info=True) %}
 {% endmacro %}

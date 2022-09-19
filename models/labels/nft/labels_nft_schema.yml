@@ -12,21 +12,29 @@ models:
       tags: ['labels', 'nft', 'ethereum', 'solana', 'opensea', 'looksrare', 'x2y2', 'magiceden']
     description: "NFT query labels"   
     columns:
-      - name: blockchain
-        description: "Blockchain on which NFT trades have been made"   
-      - name: address
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"    
+      - &address
+        name: address
         description: "Address of NFT traders"
-      - name: name
+      - &name
+        name: name
         description: "Label name NFT trader (Top 1, 5, 10% or simply NFT Trader when an address has traded NFTs but is not in top top 10 or above)"
-      - name: category
+      - &category
+        name: category
         description: "Label category (NFT here)"
-      - name: contributor
+      - &contributor
+        name: contributor
         description: "Wizard(s) contributing to labels"
-      - name: source
+      - &source
+        name: source
         description: "How were labels generated (could be static or query)"
-      - name: created_at
+      - &created_at
+        name: created_at
         description: "When were labels created"
-      - name: updated_at
+      - &updated_at
+        name: updated_at
         description: "When were labels updated for the last time"
   
   - name: labels_nft_users_platforms
@@ -40,22 +48,16 @@ models:
       tags: ['labels', 'nft_traders', 'ethereum', 'solana', 'opensea', 'looksrare', 'x2y2', 'magiceden']
     description: "NFT Platforms users across chains"   
     columns:
-      - name: blockchain
-        description: "Blockchain"   
+      - *blockchain
       - name: address
         description: "Address of NFT platforms users"
       - name: name
         description: "Label name (NFT Platform User)"
-      - name: category
-        description: "Label category (NFT here)"
-      - name: contributor
-        description: "Wizard(s) contributing to labels"
-      - name: source
-        description: "How were labels generated (could be static or query)"
-      - name: created_at
-        description: "When were labels created"
-      - name: updated_at
-        description: "When were labels updated for the last time"
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
         
   - name: labels_nft_traders_transactions
     meta:
@@ -68,22 +70,16 @@ models:
       tags: ['labels', 'nft_traders', 'ethereum', 'solana', 'opensea', 'looksrare', 'x2y2', 'magiceden']
     description: "Top NFT traders based on the number of transactions across chains"   
     columns:
-      - name: blockchain
-        description: "Blockchain on which NFT trades have been made"   
+      - *blockchain
       - name: address
         description: "Address of NFT traders"
       - name: name
         description: "Label name NFT trader (Top 1, 5, 10% or simply NFT Trader when an address has traded NFTs but is not in top top 10 or above)"
-      - name: category
-        description: "Label category (NFT here)"
-      - name: contributor
-        description: "Wizard(s) contributing to labels"
-      - name: source
-        description: "How were labels generated (could be static or query)"
-      - name: created_at
-        description: "When were labels created"
-      - name: updated_at
-        description: "When were labels updated for the last time"
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
 
   - name: labels_nft_traders_volume_usd
     meta:
@@ -95,19 +91,13 @@ models:
       tags: ['labels', 'nft_traders', 'ethereum', 'solana', 'opensea', 'looksrare', 'x2y2', 'magiceden']
     description: "Top NFT traders based on volume in USD across chains"   
     columns:
-      - name: blockchain
-        description: "Blockchain on which NFT trades have been made"   
+      - *blockchain
       - name: address
         description: "Address of NFT traders"
       - name: name
         description: "Label name NFT trader (Top 1, 5, 10% or simply NFT Trader when an address has traded NFTs but is not in top top 10 or above)"
-      - name: category
-        description: "Label category (NFT here)"
-      - name: contributor
-        description: "Wizard(s) contributing to labels"
-      - name: source
-        description: "How were labels generated (could be static or query)"
-      - name: created_at
-        description: "When were labels created"
-      - name: updated_at
-        description: "When were labels updated for the last time"
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
