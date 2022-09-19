@@ -18,6 +18,7 @@ class PRJobDepedencyManager:
         :return: modified_objects
         """
         bash_response = subprocess.run(f'dbt list --resource-type {object_type} --select state:modified --state  .', capture_output=True, shell=True).stdout.decode("utf-8")
+        print(bash_response)
         if 'No nodes selected!' in bash_response:
             modified_objects = []
         else:
@@ -128,5 +129,5 @@ SELECT * FROM $prod_name;
 parser = argparse.ArgumentParser()
 parser.add_argument('--pr_schema', type=str, help='must match dbt schema defined in profiles.yml file')
 args = parser.parse_args()
-manager = PRJobDepedencyManager(pr_schema=args.pr_schema)
+manager = PRJobDepedencyManager(pr_schema=str(args.pr_schema))
 manager.main()
