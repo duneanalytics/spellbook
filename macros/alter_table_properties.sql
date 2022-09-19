@@ -767,7 +767,7 @@ ALTER TABLE ovm1_optimism.user_addresses_weekly_active_cohorts SET TBLPROPERTIES
 {% endset %}
 
 {% set cow_protocol_ethereum_solvers %}
-ALTER TABLE cow_protocol_ethereum.solvers SET TBLPROPERTIES ('dune.public'='true',
+ALTER VIEW cow_protocol_ethereum.solvers SET TBLPROPERTIES ('dune.public'='true',
                                                 'dune.data_explorer.blockchains'='["ethereum"]',
                                                 'dune.data_explorer.category'='abstraction',
                                                 'dune.data_explorer.abstraction.type'='project',
