@@ -25,10 +25,10 @@ trades_with_prices AS (
            ps.price                  as sell_price,
            pb.price                  as buy_price
     FROM {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }}
-             LEFT OUTER JOIN {{ ref('prices_usd') }} as ps
+             LEFT OUTER JOIN {{ source('prices', 'usd') }} as ps
                              ON sellToken = ps.contract_address
                                  AND ps.minute = date_trunc('minute', evt_block_time)
-             LEFT OUTER JOIN {{ ref('prices_usd') }} as pb
+             LEFT OUTER JOIN {{ source('prices', 'usd') }} as pb
                              ON pb.contract_address = (
                                  CASE
                                      WHEN buyToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
