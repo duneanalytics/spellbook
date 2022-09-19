@@ -2,15 +2,12 @@
     
     WITH pools AS (
         SELECT pool as pools
-        -- FROM balancer_ethereum.BFactory_evt_LOG_NEW_POOL
         FROM {{ source('balancer_ethereum', 'BFactory_evt_LOG_NEW_POOL') }}
     ),
     
     joins AS (
         SELECT p.pools as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, SUM(value) AS amount
         FROM {{ source('erc20_ethereum', 'evt_transfer') }} e
-        -- FROM erc20_ethereum.evt_transfer e
-        -- FROM erc20_ethereum.evt_transfer_sample e --for testing
         INNER JOIN pools p ON e.to = p.pools
         GROUP BY 1, 2, 3
 
@@ -18,8 +15,6 @@
 
         SELECT e.`to` as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, SUM(value) AS amount
         FROM {{ source('erc20_ethereum', 'evt_transfer') }} e
-        -- FROM erc20_ethereum.evt_transfer e
-        -- FROM erc20_ethereum.evt_transfer_sample e --for testing
         WHERE e.`to` = lower('0xBA12222222228d8Ba445958a75a0704d566BF2C8')
         GROUP BY 1, 2, 3
 
@@ -28,8 +23,6 @@
     exits AS (
         SELECT p.pools as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, -SUM(value) AS amount
         FROM {{ source('erc20_ethereum', 'evt_transfer') }} e
-        -- FROM erc20_ethereum.evt_transfer e
-        -- FROM erc20_ethereum.evt_transfer_sample e --for testing
         INNER JOIN pools p ON e.`from` = p.pools   
         GROUP BY 1, 2, 3
 
@@ -37,8 +30,6 @@
 
         SELECT e.`from` as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, -SUM(value) AS amount
         FROM {{ source('erc20_ethereum', 'evt_transfer') }} e
-        -- FROM erc20_ethereum.evt_transfer e
-        -- FROM erc20_ethereum.evt_transfer_sample e --for testing
         WHERE e.`from` = lower('0xBA12222222228d8Ba445958a75a0704d566BF2C8')
         GROUP BY 1, 2, 3
     ),
