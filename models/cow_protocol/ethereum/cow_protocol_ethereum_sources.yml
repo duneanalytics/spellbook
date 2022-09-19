@@ -65,3 +65,34 @@ sources:
           - &sellToken
             name: sellToken
             description: "Contract address of token sold in trade."
+      - name: GPv2Settlement_call_settle
+        description: "Contains all calls to the settle method of GPv2Settlement (both successful and failed)"
+        columns:
+          - &call_block_number
+            name: call_block_number
+            description: "Block number on which the method was called"
+          - &call_block_time
+            name: call_block_time
+            description: "UTC timestamp at which the method was called"
+          - &call_success
+            name: call_success
+            description: "Whether or not the call resulted in a successful transaction"
+          - &call_trace_address
+            name: call_trace_address
+            description: "Trace address of the call"
+          - &call_tx_hash
+            name: call_tx_hash
+            description: "Transaction hash of call (if successful, will result in a real transaction hash)."
+          - &clearingPrices
+            name: clearingPrices
+            description: "An array of relative token prices (matched with `tokens` by index)"
+          - *contract_address
+          - &interactions
+            name: interactions
+            description: "An array of internal contract interactions"
+          - &tokens
+            name: tokens
+            description: "An array of token addresses (to be matched by index on `clearingPrices`)"
+          - &trades
+            name: trades
+            description: "An array of order data for the trades being executed"
