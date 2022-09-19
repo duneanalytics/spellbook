@@ -1,9 +1,6 @@
-{{
-    config(
-        materialized='incremental',
+{{  config(
         alias='trades',
-        -- technically it is possible that the same order could be touched twice in a single block...
-        -- but this is the best we can do without keeping the event index
+        materialized='incremental',
         unique_key = ['tx_hash', 'order_uid'],
         on_schema_change='fail',
         file_format ='delta',
@@ -16,15 +13,15 @@ WITH
 -- First subquery joins buy and sell token prices from prices.usd.
 -- Also deducts fee from sell amount.
 trades_with_prices AS (
-    SELECT evt_block_time           as block_time,
-           evt_tx_hash              as tx_hash,
-           owner                    as trader,
-           orderUid                 as order_uid,
-           sellToken                as sell_token,
-           buyToken                 as buy_token,
-           (sellAmount - feeAmount) as sell_amount,
-           buyAmount                as buy_amount,
-           feeAmount                as fee_amount,
+    SELECT evt_block_time            as block_time,
+           evt_tx_hash               as tx_hash,
+           owner                     as trader,
+           orderUid                  as order_uid,
+           sellToken                 as sell_token,
+           buyToken                  as buy_token,
+           (sellAmount - feeAmount)  as sell_amount,
+           buyAmount                 as buy_amount,
+           feeAmount                 as fee_amount,
            ps.price                  as sell_price,
            pb.price                  as buy_price
     FROM {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }}
