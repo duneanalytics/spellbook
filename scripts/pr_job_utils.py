@@ -31,7 +31,7 @@ class PRJobDepedencyManager:
     #         modified_objects = [f"{object_type}.spellbook.{name}" for name in modified_names]
     #     return modified_objects
 
-    def fetch_modified_node_keys(self) -> list[str]:
+    def fetch_modified_node_keys(self):
        models =  self.fetch_modified_object_keys(object_type="model")
        seeds =  self.fetch_modified_object_keys(object_type="seed")
        tests =  self.fetch_modified_object_keys(object_type="test")
