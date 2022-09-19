@@ -570,6 +570,11 @@ VALUES
     ("zora-zoracles", "ethereum", "ZORA", "0xd8e3fb3b08eba982f2754988d70d57edc0055ae6", 9),
     ("zrx-0x", "ethereum", "ZRX", "0xe41d2489571d322189246dafa5ebde1f4699f498", 18),
     ("seth2-stakewise", "ethereum", "SETH2", "0xfe2e637202056d30016725477c5da089ab0a043a", 18),
+    ("knight-citadao","ethereum", "KNIGHT", "0x3541A5C1b04AdABA0B83F161747815cd7B1516bC", 18),
+    ("monerium-eur-money", "ethereum", "EURe", "0x3231Cb76718CDeF2155FC47b5286d82e6eDA273f", 18),
+    ("forta", "ethereum", "FORT", "0x41545f8b9472D758bB669ed8EaEEEcD7a9C4Ec29", 18),
+    ("coin-capsule", "ethereum", "CAPS", "0x03be5c903c727ee2c8c4e9bc0acc860cca4715e2", 18),
+    ("strips-finance", "ethereum", "STRP", "0x97872eafd79940c7b24f7bcc1eadb1457347adc9", 18),    
 
     ("dai-dai", "gnosis", "WXDAI", "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18),
     ("usdc-usd-coin", "gnosis", "USDC", "0xddafbb505ad214d7b80b1f830fccc89b60fb7a83", 6),
@@ -601,9 +606,7 @@ VALUES
     ("sol-solana", "solana", "SOL", "So11111111111111111111111111111111111111112", 9),
     ("ust-terrausd", "solana", "UST", "9vMJfxuKxXBoEa7rM12mYLMwTacLMLDJqHozw96WQL8i", 6),
     ("usdc-usd-coin", "solana", "USDC", "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", 6),
-    ("usdt-tether", "solana", "USDT", "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", 6),
-    ("seth2-stakewise", "ethereum", "SETH2", "0xfe2e637202056d30016725477c5da089ab0a043a", 18),
-    ("knight-citadao","ethereum","KNIGHT","0x3541A5C1b04AdABA0B83F161747815cd7B1516bC",18)
+    ("usdt-tether", "solana", "USDT", "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", 6)
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 
