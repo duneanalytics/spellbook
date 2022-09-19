@@ -42,8 +42,9 @@ jobs:
 #        run: "dbt compile"
 
       - name: create macro to define dependencies
+        working-directory: scripts
         run: |
-           python3 scripts/pr_job_utils.py --pr_schema test
+           python3 pr_job_utils.py --pr_schema test
 
       - name: dbt create views of dependencies
         run: "dbt run-operation create_views_of_dependencies"
