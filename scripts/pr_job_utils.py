@@ -17,14 +17,17 @@ class PRJobDepedencyManager:
         :param object_type:  accepted inputs: [model, test, seed]
         :return: modified_objects
         """
-        bash_response = subprocess.run(f'dbt list --resource-type {object_type} --select state:modified --state  .', capture_output=True, shell=True).stdout.decode("utf-8")
-        print(bash_response)
+        if object_type == 'test':
+            test_filter = "--select test_type:singular"
+        else:
+            test_filter = ''
+        bash_response = subprocess.run(f'dbt list --output name --resource-type {object_type} --select state:modified --state  . {test_filter}', capture_output=True, shell=True).stdout.decode("utf-8")
         if 'No nodes selected!' in bash_response:
             modified_objects = []
         else:
-            modified_filepaths = bash_response.split('\n')
-            modified_filepaths.remove('')
-            modified_objects = [f"{object_type}.spellbook.{filepath.split('.')[-1]}" for filepath in modified_filepaths]
+            modified_names = bash_response.split('\n')
+            modified_names.remove('')
+            modified_objects = [f"{object_type}.spellbook.{name}" for name in modified_names]
         return modified_objects
 
     def fetch_modified_node_keys(self) -> list[str]:
