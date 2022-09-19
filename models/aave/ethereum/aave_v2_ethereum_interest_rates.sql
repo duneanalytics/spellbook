@@ -1,7 +1,8 @@
 {{ config(materialized='view', alias='interest') }}
 
 select 
-  a.reserve, 
+  a.reserve,
+  b.test_column_remove_me,
   t.symbol,
   date_trunc('hour',a.evt_block_time) as hour, 
   avg(a.liquidityRate) / 1e27 as deposit_apy, 

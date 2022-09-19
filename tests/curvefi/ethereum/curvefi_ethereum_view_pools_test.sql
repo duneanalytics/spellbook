@@ -14,7 +14,7 @@ WITH unit_tests AS (
             ELSE FALSE
         END AS name_test
     FROM
-        {{ ref('curvefi_ethereum_view_pools') }} AS curvefi_view_pools
+        {{ ref('curvefi_ethereum_view_pools') }} AS curvefi_view_poolss
         INNER JOIN {{ ref('curvefi_ethereum_view_pools_postgres') }} AS test_data
         ON LOWER(
             test_data.pool_address
