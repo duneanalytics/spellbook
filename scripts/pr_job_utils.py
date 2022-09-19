@@ -132,5 +132,7 @@ SELECT * FROM $prod_name;
 parser = argparse.ArgumentParser()
 parser.add_argument('--pr_schema', type=str, help='must match dbt schema defined in profiles.yml file')
 args = parser.parse_args()
+print(args.pr_schema)
+print('hi')
 manager = PRJobDepedencyManager(pr_schema=str(args.pr_schema))
 manager.main()
