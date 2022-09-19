@@ -101,7 +101,6 @@ models:
       - name: artist_name
         description: "Name of artist"
 
-
   - name: nft_ethereum_metadata_proof_grails_i
     meta:
       blockchain: ethereum
@@ -148,42 +147,42 @@ models:
       - name: grail_id 
         description: "Grail ID pre-reveal"
 
-- name: nft_ethereum_metadata_braindrops
-    meta:
-      blockchain: ethereum
-      sector: nft
-      contributors: cat
-    config:
-      tags: ['nft', 'ethereum', 'braindrops']
-    description: >
-        Details for BrainDrops collections (project id, collection name, artist)
-    columns:
-      - name: contract_address
-        description: "Collection contract address"
-      - name: braindrops_project_id
-        description: "Project ID -- can be used to join with token IDs"
-      - name: collection_name
-        description: "Name of collection"
-      - name: artist_name
-        description: "Name of artist"
+  - name: nft_ethereum_metadata_braindrops
+      meta:
+        blockchain: ethereum
+        sector: nft
+        contributors: cat
+      config:
+        tags: ['nft', 'ethereum', 'braindrops']
+      description: >
+          Details for BrainDrops collections (project id, collection name, artist)
+      columns:
+        - name: contract_address
+          description: "Collection contract address"
+        - name: braindrops_project_id
+          description: "Project ID -- can be used to join with token IDs"
+        - name: collection_name
+          description: "Name of collection"
+        - name: artist_name
+          description: "Name of artist"
 
-- name: nft_ethereum_metadata_mirage_gallery_curated
-    meta:
-      blockchain: ethereum
-      sector: nft
-      contributors: cat
-    config:
-      tags: ['nft', 'ethereum', 'mirage gallery curated']
-    description: >
-        Details for Mirage Gallery Curated collections (project id, collection name, artist)
-    columns:
-      - name: contract_address
-        description: "Collection contract address"
-      - name: mirage_gallery_curated_project_id
-        description: "Project ID -- can be used to join with token IDs"
-      - name: drop_name
-        description: "Mirage Gallery Curated Drop"
-      - name: project_name
-        description: "Name of project"
-      - name: artist_name
-        description: "Name of artist"
+  - name: nft_ethereum_metadata_mirage_gallery_curated
+      meta:
+        blockchain: ethereum
+        sector: nft
+        contributors: cat
+      config:
+        tags: ['nft', 'ethereum', 'mirage gallery curated']
+      description: >
+          Details for Mirage Gallery Curated collections (project id, collection name, artist)
+      columns:
+        - name: contract_address
+          description: "Collection contract address"
+        - name: mirage_gallery_curated_project_id
+          description: "Project ID -- can be used to join with token IDs"
+        - name: drop_name
+          description: "Mirage Gallery Curated Drop"
+        - name: project_name
+          description: "Name of project"
+        - name: artist_name
+          description: "Name of artist"
