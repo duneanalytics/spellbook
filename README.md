@@ -57,12 +57,6 @@ pipenv shell
 
 You have now created a virtual environment for this project. You can read more about virtual environments [here](https://realpython.com/pipenv-guide/).
 
-To pull the dbt project dependencies run:
-
-```console
-dbt deps
-```
-
 To initiate the dbt project run:
 
 ```console
@@ -92,6 +86,12 @@ threads (1 or more) [1]: 2
 This will not connect to the database but you have access to some dbt actions.
 **When you are prompted to choose a schema, please enter `wizard` so we know you are an external contributor.**
 Should you make an error during this process (not entering `wizard` being the only one you can make), simply quit the CLI and start over.
+
+To pull the dbt project dependencies run:
+
+```console
+dbt deps
+```
 
 Then, run the following command:
 
