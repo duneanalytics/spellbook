@@ -8,9 +8,8 @@ from string import Template
 class PRJobDepedencyManager:
     def __init__(self, pr_schema: str):
         self.pr_schema = pr_schema
-        self.manifest_dict = {"key":"value"}
-        # self.manifest_dict = json.load(open(Path('../target/manifest.json')))
-        self.nodes = self.manifest_dict["key"]
+        self.manifest_dict = json.load(open(Path('../target/manifest.json')))
+        self.nodes = self.manifest_dict["nodes"]
 
     def fetch_modified_object_keys(self, object_type):
         """
@@ -133,7 +132,5 @@ SELECT * FROM $prod_name;
 parser = argparse.ArgumentParser()
 parser.add_argument('--pr_schema', help='must match dbt schema defined in profiles.yml file')
 args = parser.parse_args()
-print(args.pr_schema)
-print('hi')
 manager = PRJobDepedencyManager(pr_schema=args.pr_schema)
 manager.main()
