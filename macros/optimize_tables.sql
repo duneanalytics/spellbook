@@ -87,6 +87,10 @@ OPTIMIZE uniswap_v2_ethereum.trades;
 OPTIMIZE x2y2_ethereum.events;
 {% endset %}
 
+{% set ens_resolver_addresses %}
+OPTIMIZE ens.resolver_addresses;
+{% endset %}
+
 {% set archipelago_ethereum_events %}
 OPTIMIZE archipelago_ethereum.events;
 {% endset %}
@@ -102,6 +106,7 @@ OPTIMIZE labels.all;
 {% do run_query(opensea_v1_ethereum_events) %}
 {% do run_query(safe_ethereum_eth_transfers) %}
 {% do run_query(safe_ethereum_safes) %}
+{% do run_query(ens_resolver_addresses) %}
 {% do run_query(seaport_ethereum_transfers) %}
 {% do run_query(sudoswap_ethereum_events) %}
 {% do run_query(cryptopunks_ethereum_events) %}
