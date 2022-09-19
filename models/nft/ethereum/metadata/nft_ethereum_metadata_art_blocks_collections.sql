@@ -79,6 +79,7 @@ from (VALUES
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270',336,'8','Curated','Polychrome Music','Rafaël Rozendaal & Danny Wolfers (Legowelt)')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270',337,'8','Curated','FAKE IT TILL YOU MAKE IT','Maya Man')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270',341,'8','Curated','RASTER','itsgalo')
+        , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270',364,'8','Curated','Act of Emotion','Kelly Milligan')
 
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270',6,'N/A','Playground','View Card','Jeff Davis')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270',14,'N/A','Playground','Cyber Cities','pxlq')
@@ -364,8 +365,9 @@ from (VALUES
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270',359,'N/A','Factory','Ode to Untitled','artplusbrad')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270',355,'N/A','Factory','Thoughts of Meadow','Eric Davidson')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270',354,'N/A','Factory','Interferences','Juan Pedro Vallejo')
+        , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270',358,'N/A','Factory','Arcadia','Zachariah Watson')
 
--- Note: There are currently no projects with IDs 128, 148, 155, 176, 186, 243, 299, 306, 325, 349, 350, 357, 358
+-- Note: There are currently no projects with IDs 128, 148, 155, 176, 186, 243, 299, 306, 325, 349, 350, 357
 
 ) as temp_table (contract_address, art_blocks_project_id, art_blocks_curated_season, art_blocks_project_type, collection_name, artist_name)
 

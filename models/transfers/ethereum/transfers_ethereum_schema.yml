@@ -130,7 +130,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc721
-      contibutors: soispoke, dot2dotseurat, hildobby
+      contibutors: soispoke, dot2dotseurat, hildobby, 0xRob
     config:
       tags: ['transfers', 'ethereum', 'erc721', 'soispoke', 'dot2dotseurat', 'hildobby']
     description: "ERC721 Token Transfers on Ethereum. This table is updated every 30 minutes."
@@ -142,7 +142,7 @@ models:
         name: wallet_address
         description: "Wallet address of sender or receiver."
       - &token_address_erc721
-        name: token_address_erc721
+        name: token_address
       - name: symbol
         description: "ERC721 token symbol"
       - *evt_block_time
@@ -157,7 +157,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc721
-      contibutors: soispoke, dot2dotseurat, hildobby
+      contibutors: soispoke, dot2dotseurat, hildobby, 0xRob
     config:
       tags: ['transfers', 'ethereum', 'erc721', 'agg_hour', 'soispoke', 'dot2dotseurat', 'hildobby']
     columns:
@@ -166,13 +166,17 @@ models:
       - *wallet_address_erc721
       - *token_address_erc721
       - *tokenId
+      - name: unique_transfer_id
+        description: "Unique ID, used in order to apply the merge into incremental strategy"
+        tests:
+          - unique
 
   - name: transfers_ethereum_erc721_rolling_hour
     meta:
       blockchain: ethereum
       sector: transfers
       project: erc721
-      contibutors: soispoke, dot2dotseurat, hildobby
+      contibutors: soispoke, dot2dotseurat, hildobby, 0xRob
     config:
       tags: ['transfers', 'ethereum', 'erc721', 'rolling_hour', 'soispoke', 'dot2dotseurat', 'hildobby']
     columns:
@@ -191,7 +195,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc721
-      contibutors: soispoke, dot2dotseurat, hildobby
+      contibutors: soispoke, dot2dotseurat, hildobby, 0xRob
     config:
       tags: ['transfers', 'ethereum', 'erc721', 'agg_hour', 'soispoke', 'dot2dotseurat', 'hildobby']
     columns:
@@ -200,13 +204,17 @@ models:
       - *wallet_address_erc721
       - *token_address_erc721
       - *tokenId
+      - name: unique_transfer_id
+        description: "Unique ID, used in order to apply the merge into incremental strategy"
+        tests:
+          - unique
 
   - name: transfers_ethereum_erc721_rolling_day
     meta:
       blockchain: ethereum
       sector: transfers
       project: erc721
-      contibutors: soispoke, dot2dotseurat, hildobby
+      contibutors: soispoke, dot2dotseurat, hildobby, 0xRob
     config:
       tags: ['transfers', 'ethereum', 'erc721', 'rolling_day', 'soispoke', 'dot2dotseurat', 'hildobby']
     columns:
