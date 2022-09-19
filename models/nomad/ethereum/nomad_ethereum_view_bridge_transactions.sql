@@ -1,13 +1,17 @@
 {{
   config(
-            alias='view_bridge_transactions',
-            post_hook = "ALTER VIEW {{ this }} SET TBLPROPERTIES ('dune.public'='true',
-            'dune.data_explorer.blockchains'='[ethereum,solana]',
-            'dune.data_explorer.category'='abstraction',
-            'dune.data_explorer.abstraction.type'='project',
-            'dune.data_explorer.abstraction.name'='nomad',
-            'dune.data_explorer.contributors'='[hey]')"
-        )
+      alias='view_bridge_transactions',
+      post_hook = "
+      {%- if target.name == 'prod'-%} 
+      ALTER VIEW {{ this }} SET TBLPROPERTIES ('dune.public'='true',
+      'dune.data_explorer.blockchains'='[\"ethereum\"]',
+      'dune.data_explorer.category'='abstraction',
+      'dune.data_explorer.abstraction.type'='project',
+      'dune.data_explorer.abstraction.name'='nomad',
+      'dune.data_explorer.contributors'='[\"springzh\"]')
+      {%- else -%}
+      {%- endif -%}
+      ")
 }}
 
 with nomad_bridge_domains(domain_id, domain_name, domain_type) as (
