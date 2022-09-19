@@ -86,7 +86,7 @@ models:
       sector: nft
       contributors: cat
     config:
-      tags: ['nft', 'ethereum', 'bright_moments']
+      tags: ['nft', 'ethereum', 'bright_moments', 'metadata']
     description: >
         Details for collections created on MOMENTS contract (project id, city, name, artist)
     columns:
@@ -107,7 +107,7 @@ models:
       sector: nft
       contributors: cat
     config:
-      tags: ['nft', 'ethereum', 'proof_collective', 'proof_grails']
+      tags: ['nft', 'ethereum', 'proof_collective', 'proof_grails', 'metadata']
     description: >
         Details for PROOF Grails I contract (token id, edition name, artist)
     columns:
@@ -130,7 +130,7 @@ models:
       sector: nft
       contributors: cat
     config:
-      tags: ['nft', 'ethereum', 'proof_collective', 'proof_grails']
+      tags: ['nft', 'ethereum', 'proof_collective', 'proof_grails', 'metadata']
     description: >
         Details for PROOF Grails I contract (token id, edition name, artist)
     columns:
@@ -153,7 +153,7 @@ models:
       sector: nft
       contributors: cat
     config:
-      tags: ['nft', 'ethereum', 'braindrops']
+      tags: ['nft', 'ethereum', 'braindrops', 'metadata']
     description: >
         Details for BrainDrops collections (project id, collection name, artist)
     columns:
@@ -172,7 +172,7 @@ models:
       sector: nft
       contributors: cat
     config:
-      tags: ['nft', 'ethereum', 'mirage gallery curated']
+      tags: ['nft', 'ethereum', 'mirage gallery curated', 'metadata']
     description: >
         Details for Mirage Gallery Curated collections (project id, collection name, artist)
     columns:
