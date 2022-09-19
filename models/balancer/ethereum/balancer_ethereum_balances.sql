@@ -11,7 +11,7 @@ joins AS (
     UNION ALL
     SELECT e.`to` as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, SUM(value) AS amount
     FROM erc20_ethereum.evt_transfer e
-    WHERE e.`to` = '0xBA12222222228d8Ba445958a75a0704d566BF2C8'
+    WHERE e.`to` = '0xba12222222228d8ba445958a75a0704d566bf2c8'
     GROUP BY 1, 2, 3
 ),
 exits AS (
@@ -22,7 +22,7 @@ exits AS (
     UNION ALL
     SELECT e.`from` as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, -SUM(value) AS amount
     FROM erc20_ethereum.evt_transfer e
-    WHERE e.`from` = '0xBA12222222228d8Ba445958a75a0704d566BF2C8'
+    WHERE e.`from` = '0xba12222222228d8ba445958a75a0704d566bf2c8'
     GROUP BY 1, 2, 3
 ),
 
