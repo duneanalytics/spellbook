@@ -329,3 +329,17 @@ seeds:
         +column_types:
           master_address: string
           alternative_address: string
+    perpetual:
+      +enabled: true
+      +schema: test_data
+      trades:
+        +column_types:
+          blockchain: string
+          block_time: timestamp
+          underlying_asset: string
+          market: string
+          market_address: string
+          trade: string
+          project: string
+          version: string
+          tx_hash: string
