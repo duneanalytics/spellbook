@@ -307,6 +307,15 @@ ALTER TABLE labels.all SET TBLPROPERTIES('dune.public'='true',
                                         'dune.data_explorer.contributors'='["soispoke","hildobby"]');
 {% endset %}
 
+{% set labels_arb_traders %}
+ALTER VIEW labels.nft SET TBLPROPERTIES('dune.public'='true',
+                                        'dune.data_explorer.blockchains'='["ethereum"]',
+                                        'dune.data_explorer.category'='abstraction',
+                                        'dune.data_explorer.abstraction.type'='sector',
+                                        'dune.data_explorer.abstraction.name'='labels',
+                                        'dune.data_explorer.contributors'='["alexth"]');
+{% endset %}
+
 {% set labels_cex %}
 ALTER VIEW labels.cex SET TBLPROPERTIES('dune.public'='true',
                                         'dune.data_explorer.blockchains'='["ethereum"]',
