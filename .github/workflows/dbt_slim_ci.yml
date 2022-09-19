@@ -20,8 +20,8 @@ jobs:
     timeout-minutes: 60
 
     steps:
-#      - name: Check out repository code
-#        uses: actions/checkout@v2
+      - name: Check out repository code
+        uses: actions/checkout@v2
 #
 #      - name: Set environment variables
 #        run: |
