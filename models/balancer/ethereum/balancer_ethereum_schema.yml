@@ -14,16 +14,16 @@ models:
       - name: day
         description: "UTC event block time truncated to the day mark"
         tests:
-     	    - not_null
+          - not_null
       - name: pool
         description: "Balancer pool contract address"
         tests:
-     	    - not_null
+          - not_null
       - name: token
         description: "Token contract address"
         tests:
-     	    - not_null
+          - not_null
       - name: cumulative_amount
         description: "Balance of a token"
         tests:
-     	    - not_null
+          - not_null
