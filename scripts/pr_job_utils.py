@@ -22,6 +22,8 @@ class PRJobDepedencyManager:
         else:
             test_filter = ''
         bash_response = subprocess.run(f'dbt list --output name --resource-type {object_type} --select state:modified --state  . {test_filter}', capture_output=True, shell=True).stdout.decode("utf-8")
+        if "Runtime Error" in bash_response:
+            raise Exception(bash_response)
         if 'No nodes selected!' in bash_response:
             modified_objects = []
         else:
