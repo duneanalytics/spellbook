@@ -191,6 +191,12 @@ models:
       ethereum:
         +schema: curvefi_ethereum
         +materialized: view
+    cow_protocol:
+      +schema: cow_protocol
+      +materialized: view
+      ethereum:
+        +schema: cow_protocol_ethereum
+        +materialized: view
 seeds:
   spellbook:
     balances:
