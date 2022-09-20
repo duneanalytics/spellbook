@@ -9,7 +9,7 @@ models:
     config:
       tags: ["balances"]
     description: >
-      Balances on Balancer.
+      Balances on Balancer, an automated portfolio manager and trading platform.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
