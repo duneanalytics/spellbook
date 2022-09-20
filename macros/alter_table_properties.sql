@@ -691,7 +691,7 @@ ALTER VIEW labels.aztec_v2_contracts SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='sector',
                                                     'dune.data_explorer.abstraction.name'='labels',
-                                                'dune.data_explorer.contributors'='[" jackieP00"]');
+                                                'dune.data_explorer.contributors'='["jackieP00"]');
 {% endset %}
 
 
