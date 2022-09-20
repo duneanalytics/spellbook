@@ -17,6 +17,6 @@ sources:
           - name: evt_block_time
           - name: evt_block_number
           - name: caller
-            description: "Caller addresses that created the Balancer pool"
+            description: "Caller address that created the Balancer pool"
           - name: pool
             description: "Balancer pool contract address"
