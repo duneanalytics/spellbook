@@ -325,6 +325,7 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\xf0974c239b7d08b7240b690b69ec3dd8ae783efc	Apetimism Launchapd
 \\x5cb01385d3097b6a189d1ac8ba3364d900666445	Overnight
 \\xA52fECFe3F0D4a77A572dec9B72277abC5dFD9c6	NEX
+\\xb98d4d4e205aff4d4755e9df19bd0b8bd4e0f148	Fuji Finance
 \.
 
 COMMIT;
