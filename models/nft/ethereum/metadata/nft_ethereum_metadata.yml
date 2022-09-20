@@ -140,20 +140,24 @@ models:
     config:
       tags: ['nft', 'ethereum', 'proof_collective', 'proof_grails', 'metadata']
     description: >
-        Details for PROOF Grails I contract (token id, edition name, artist)
+        Details for PROOF Grails II contract (token id, edition name, artist)
     columns:
       - name: contract_address
         description: "Collection contract address"
-      - name: token_id
+      - name: project_id
         description: "Token ID"
-      - name: grails_season
-        description: "PROOF Grails Season"
-      - name: edition_name
+      - name: project_id_base_value
+        description: "Value used to join on other tables"
+      - name: collection_name
         description: "Name of edition"
       - name: artist_name
         description: "Name of artist"
+      - name: grails_season
+        description: "PROOF Grails Season"
       - name: grail_id 
         description: "Grail ID pre-reveal"
+      - name: art_collection_unique_id
+        description: "Unique identifier - contract address and project id"
         
   - name: nft_ethereum_metadata_braindrops
     meta:
