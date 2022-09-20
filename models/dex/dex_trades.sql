@@ -32,7 +32,7 @@ FROM
                 ,unique_trade_id
         FROM {{ ref('uniswap_trades') }}
 
-        UNION ALL
+        UNION
 
         SELECT
                 blockchain

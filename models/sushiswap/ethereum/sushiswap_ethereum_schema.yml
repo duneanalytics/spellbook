@@ -10,7 +10,7 @@ models:
     config:
       tags: ['ethereum','sushiswap','trades','dex']
     description: >
-        Uniswap V1 contract trades on Ethereum
+        Sushiswap contract trades on Ethereum
     columns:
       - &blockchain
         name: blockchain
