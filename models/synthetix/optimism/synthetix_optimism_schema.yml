@@ -12,8 +12,13 @@ models:
     description: >
       Kwenta/Synthetix perpetuals trades/swaps on Optimism
     tests:
-      - unique:
-          column_name: "(block_time || '-' || project || '-' || version || '-' || tx_hash || '-' || evt_index)"
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - project
+            - version
+            - tx_hash
+            - evt_index
     columns:
       - &blockchain
         name: blockchain

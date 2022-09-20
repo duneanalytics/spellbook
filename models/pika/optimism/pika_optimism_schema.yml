@@ -12,8 +12,13 @@ models:
     description: >
       Pika_v1 perpetuals trades/swaps on Optimism
     tests:
-      - unique:
-          column_name: "(block_time || '-' || project || '-' || version || '-' || tx_hash || '-' || evt_index)"
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - project
+            - version
+            - tx_hash
+            - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -87,8 +92,13 @@ models:
     description: >
       Pika_v2 perpetuals trades/swaps on Optimism
     tests:
-      - unique:
-          column_name: "(block_time || '-' || project || '-' || version || '-' || tx_hash || '-' || evt_index)"
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - project
+            - version
+            - tx_hash
+            - evt_index
     columns:
       - *blockchain
       - *block_time
@@ -120,8 +130,13 @@ models:
     description: >
       Pika_v3 perpetuals trades/swaps on Optimism
     tests:
-      - unique:
-          column_name: "(block_time || '-' || project || '-' || version || '-' || tx_hash || '-' || evt_index)"
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - project
+            - version
+            - tx_hash
+            - evt_index
     columns:
       - *blockchain
       - *block_time
