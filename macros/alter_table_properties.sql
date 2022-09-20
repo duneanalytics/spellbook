@@ -776,7 +776,7 @@ ALTER VIEW cow_protocol_ethereum.solvers SET TBLPROPERTIES ('dune.public'='true'
 {% endset %}
 
 {% set cow_protocol_ethereum_trades %}
-ALTER VIEW cow_protocol_ethereum.trades SET TBLPROPERTIES ('dune.public'='true',
+ALTER TABLE cow_protocol_ethereum.trades SET TBLPROPERTIES ('dune.public'='true',
     'dune.data_explorer.blockchains'='["ethereum"]',
     'dune.data_explorer.category'='abstraction',
     'dune.data_explorer.abstraction.type'='project',
