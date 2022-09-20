@@ -125,10 +125,7 @@ OPTIMIZE labels.all;
 {% do run_query(uniswap_v2_ethereum_trades) %}
 {% do run_query(x2y2_ethereum_events) %}
 {% do run_query(archipelago_ethereum_events) %}
-<<<<<<< HEAD
 {% do run_query(foundation_ethereum_events) %}
-=======
 {% do run_query(labels_all) %}
->>>>>>> master
 {% do log("Tables Optimized", info=True) %}
 {% endmacro %}
