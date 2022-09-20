@@ -11,6 +11,8 @@ SELECT * FROM {{ ref('labels_funds') }}
 UNION
 SELECT * FROM {{ ref('labels_submitted_contracts') }}
 UNION
+SELECT * FROM {{ ref('labels_ofac') }}
+UNION
 -- Query Labels
 SELECT * FROM {{ ref('labels_nft') }}
 UNION

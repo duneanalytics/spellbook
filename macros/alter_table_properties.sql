@@ -334,6 +334,15 @@ ALTER VIEW labels.nft SET TBLPROPERTIES('dune.public'='true',
                                         'dune.data_explorer.contributors'='["soispoke"]');
 {% endset %}
 
+{% set labels_ofac_sanction %}
+ALTER VIEW labels.ofac_sanction SET TBLPROPERTIES('dune.public'='true',
+                                        'dune.data_explorer.blockchains'='["ethereum"]',
+                                        'dune.data_explorer.category'='abstraction',
+                                        'dune.data_explorer.abstraction.type'='sector',
+                                        'dune.data_explorer.abstraction.name'='labels',
+                                        'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
 {% set labels_safe %}
 ALTER VIEW labels.safe SET TBLPROPERTIES('dune.public'='true',
                                         'dune.data_explorer.blockchains'='["ethereum"]',
@@ -538,6 +547,15 @@ ALTER VIEW addresses_ethereum.cex SET TBLPROPERTIES ('dune.public'='true',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='sector',
                                                     'dune.data_explorer.abstraction.name'='cex',
+                                                    'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set addresses_ofac_sanctioned %}
+ALTER VIEW addresses.ofac_sanctioned SET TBLPROPERTIES ('dune.public'='true',
+                                                    'dune.data_explorer.blockchains'='["ethereum"]',
+                                                    'dune.data_explorer.category'='abstraction',
+                                                    'dune.data_explorer.abstraction.type'='sector',
+                                                    'dune.data_explorer.abstraction.name'='ofac_sanctioned',
                                                     'dune.data_explorer.contributors'='["hildobby"]');
 {% endset %}
 
@@ -816,6 +834,7 @@ ALTER VIEW cow_protocol_ethereum.solvers SET TBLPROPERTIES ('dune.public'='true'
 {% do run_query(labels_safe) %}
 {% do run_query(labels_submitted_contracts) %}
 {% do run_query(labels_tornado_cash) %}
+{% do run_query(labels_ofac_sanction) %}
 {% do run_query(uniswap_v1_ethereum_trades) %}
 {% do run_query(uniswap_v2_ethereum_trades) %}
 {% do run_query(uniswap_ethereum_trades) %}
@@ -844,6 +863,7 @@ ALTER VIEW cow_protocol_ethereum.solvers SET TBLPROPERTIES ('dune.public'='true'
 {% do run_query(prices_tokens) %}
 {% do run_query(addresses_optimism_airdrop_1) %}
 {% do run_query(addresses_ethereum_safe_airdrop) %}
+{% do run_query(addresses_ofac_sanctioned) %}
 {% do run_query(tornado_cash_deposits) %}
 {% do run_query(tornado_cash_withdrawals) %}
 {% do run_query(tokens_erc20) %}
