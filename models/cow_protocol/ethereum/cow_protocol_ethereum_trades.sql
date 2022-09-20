@@ -78,29 +78,46 @@ trades_with_token_units as (
                                     END)
 ),
 -- This, independent, aggregation defines a mapping of order_uid and trade
-order_id_and_trade as (
+order_ids as (
+    select evt_tx_hash, collect_list(orderUid) as order_ids
+    from (  select orderUid, evt_tx_hash, evt_index
+            from {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }}
+                     sort by evt_index
+         ) as _
+    group by evt_tx_hash
+),
+
+exploded_order_ids as (
+    select evt_tx_hash, posexplode(order_ids)
+    from order_ids
+),
+
+reduced_order_ids as (
     select
-        orderUid as order_id,
-        explode(trades) as trade
+        col as order_id,
+        -- This is a dirty hack!
+        collect_list(evt_tx_hash)[0] as evt_tx_hash,
+        collect_list(pos)[0] as pos
+    from exploded_order_ids
+    group by order_id
+),
+
+trade_data as (
+    select call_tx_hash,
+           posexplode(trades)
     from {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_call_settle') }}
-     join (
-        select evt_tx_hash, evt_index, orderUid
-        from {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }}
-                 distribute by evt_tx_hash
-            sort by evt_index
-        ) as _
-    on call_tx_hash = evt_tx_hash
-    {% if is_incremental() %}
-    where call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+    where call_success = true
 ),
 
 uid_to_app_id as (
     select
-        distinct order_id as uid, -- remove duplicate occurrences of order_id (when order is partially fillable)
-                 get_json_object(trade, '$.appData') as app_data,
-                 get_json_object(trade, '$.receiver') as receiver
-    from order_id_and_trade
+        order_id,
+        get_json_object(trades.col, '$.appData') as app_data,
+        get_json_object(trades.col, '$.receiver') as receiver
+    from reduced_order_ids order_ids
+             join trade_data trades
+                  on evt_tx_hash = call_tx_hash
+                      and order_ids.pos = trades.pos
 ),
 
 valued_trades as (
