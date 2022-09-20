@@ -28,6 +28,7 @@ trades_with_prices AS (
              LEFT OUTER JOIN {{ source('prices', 'usd') }} as ps
                              ON sellToken = ps.contract_address
                                  AND ps.minute = date_trunc('minute', evt_block_time)
+                                 AND ps.blockchain = 'ethereum'
              LEFT OUTER JOIN {{ source('prices', 'usd') }} as pb
                              ON pb.contract_address = (
                                  CASE
@@ -36,6 +37,7 @@ trades_with_prices AS (
                                      ELSE buyToken
                                      END)
                                  AND pb.minute = date_trunc('minute', evt_block_time)
+                                 AND pb.blockchain = 'ethereum'
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
