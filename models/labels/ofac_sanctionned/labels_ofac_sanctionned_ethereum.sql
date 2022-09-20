@@ -1,4 +1,4 @@
-{{config(alias='ofac_sanctioned')}}
+{{config(alias='ofac_sanctioned_ethereum')}}
 
 SELECT blockchain, address, name, category, contributor, source, created_at, updated_at
 FROM (VALUES
