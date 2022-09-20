@@ -9,7 +9,7 @@ sources:
     tables:
       - name: BFactory_evt_LOG_NEW_POOL
         description: >
-          Decoded tables related to the Balancer BFactory contract.
+          Decoded table related to the Balancer BFactory contract.
         loaded_at_field: evt_block_time
         columns:
           - name: contract_address
