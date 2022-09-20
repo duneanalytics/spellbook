@@ -1,8 +1,8 @@
 {{ config(
         alias = 'proof_grails_i',
-        partition_by = ['token_id'],
+        partition_by = ['project_id'],
         materialized = 'view',
-        unique_key = ['token_id']
+        unique_key = ['project_id']
         )
 }}
 select contract_address, project_id, project_id_base_value, collection_name, artist_name, grails_season, grail_id, art_collection_unique_id
