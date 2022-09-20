@@ -96,14 +96,18 @@ models:
     columns:
       - name: contract_address
         description: "Collection contract address"
-      - name: bright_momoments_project_id
+      - name: project_id
         description: "Project ID. Can use to join with token_ids on contract address"
-      - name: bright_moments_city
-        description: "City collection launched in, if applicable"
+      - name: project_id_base_value
+        description: "Value used to join on other tables"
       - name: collection_name
         description: "Name of collection"
       - name: artist_name
         description: "Name of artist"
+      - name: bright_moments_city
+        description: "City collection launched in, if applicable"
+      - name: art_collection_unique_id
+        description: "Unique identifier - contract address and project id"
 
   - name: nft_ethereum_metadata_proof_grails_i
     meta:
