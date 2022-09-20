@@ -35,3 +35,12 @@ CAST(NULL as STRING) as symbol,
 CAST(NULL as STRING) as standard, 
 CAST(NULL as STRING) as category 
 FROM  {{ ref('tokens_optimism_nft') }}
+            UNION
+SELECT
+'bnb' as blockchain, 
+contract_address, 
+name, 
+CAST(NULL as STRING) as symbol,
+standard, 
+CAST(NULL as STRING) as category 
+FROM  {{ ref('tokens_bnb_nft') }}
