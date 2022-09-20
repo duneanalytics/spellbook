@@ -89,12 +89,12 @@ order_id_and_trade as (
                  distribute by evt_tx_hash
             sort by evt_index
         ) as _
-    {% if is_incremental() %}
-    WHERE call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
     on call_tx_hash = evt_tx_hash
+    {% if is_incremental() %}
+    where call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 ),
--- TODO - replace this with abstraction `cow_protocol_ethereum_order_id_app_data_map
+
 uid_to_app_id as (
     select
         distinct order_id as uid, -- remove duplicate occurrences of order_id (when order is partially fillable)
@@ -102,7 +102,6 @@ uid_to_app_id as (
                  get_json_object(trade, '$.receiver') as receiver
     from order_id_and_trade
 ),
-
 
 valued_trades as (
     SELECT block_time,
@@ -155,5 +154,5 @@ valued_trades as (
              JOIN uid_to_app_id
                   ON uid = order_uid
 )
+
 select * from valued_trades
-order by block_time desc
