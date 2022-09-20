@@ -1,4 +1,4 @@
-{{config(alias='ofac'}}
+{{config(alias='sanctioned_addresses')}}
     
     SELECT address, protocol, description, blockchain, currency_contract, currency_symbol
     FROM (VALUES
