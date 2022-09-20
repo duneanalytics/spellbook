@@ -1,9 +1,4 @@
-{{ config(materialized='view', alias='solvers',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "cow_protocol",
-                                    \'["bh2smith", "gentrexha"]\') }}'
-)}}
+{{ config(materialized='view', alias='solvers')}}
 
 -- Find the PoC Query here: https://dune.com/queries/1276806
 WITH

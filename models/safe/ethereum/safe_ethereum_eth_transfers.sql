@@ -6,11 +6,7 @@
         unique_key = ['block_date', 'tx_hash', 'trace_address', 'amount_raw'],
         on_schema_change='fail',
         file_format ='delta',
-        incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "safe",
-                                    \'["sche"]\') }}'
+        incremental_strategy='merge'
     ) 
 }}
 

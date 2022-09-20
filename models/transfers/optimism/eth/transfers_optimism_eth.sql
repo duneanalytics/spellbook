@@ -4,11 +4,7 @@
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
-        unique_key='unique_transfer_id',
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "sector",
-                                    "transfers",
-                                    \'["msilb7", "chuxinh"]\') }}'
+        unique_key='unique_transfer_id'
     )
 }}
 with eth_transfers as (

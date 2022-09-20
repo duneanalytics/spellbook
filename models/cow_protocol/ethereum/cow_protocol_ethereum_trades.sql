@@ -4,11 +4,7 @@
         unique_key = ['tx_hash', 'order_uid'],
         on_schema_change='fail',
         file_format ='delta',
-        incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "cow_protocol",
-                                    \'["bh2smith", "gentrexha"]\') }}'
+        incremental_strategy='merge'
     )
 }}
 

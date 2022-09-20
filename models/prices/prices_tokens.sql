@@ -1,10 +1,6 @@
 {{ config(
         schema='prices',
-        alias ='tokens',
-        post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c"]\',
-                                    "sector",
-                                    "prices",
-                                    \'["aalan3", "jeff-dude"]\') }}'
+        alias ='tokens'
         )
 }}
 SELECT token_id, blockchain, symbol, contract_address, decimals from (

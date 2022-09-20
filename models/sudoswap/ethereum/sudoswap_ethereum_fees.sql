@@ -1,10 +1,6 @@
  {{
   config(
-        alias='fees',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "sudoswap",
-                                    \'["ilemi"]\') }}')
+        alias='fees')
 }}
 
 SELECT

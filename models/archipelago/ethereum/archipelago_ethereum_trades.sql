@@ -1,10 +1,6 @@
  {{
   config(
-        alias='trades',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "archipelago",
-                                    \'["0xRob"]\') }}')
+        alias='trades')
 }}
 
 SELECT
