@@ -21,8 +21,6 @@ sources:
         loaded_at_field: evt_block_time
       - name: CurveFactoryV2_evt_LiquidityGaugeDeployed
         loaded_at_field: evt_block_time
-      - name: CurveFactoryV2_evt_LiquidityGaugeDeployed
-        loaded_at_field: evt_block_time
       - name: susd_swap_evt_TokenExchange
         loaded_at_field: evt_block_time
       - name: susd_swap_evt_TokenExchangeUnderlying

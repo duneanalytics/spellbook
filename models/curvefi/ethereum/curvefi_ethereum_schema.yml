@@ -90,7 +90,7 @@ models:
       project: curvefi
       contributors: [dsalv, yulesa]
     config:
-      tags: ["ethereum", "curvefi", 'trades','dex']]
+      tags: ["ethereum", "curvefi", 'trades','dex']
     description: >
       Curve contract trades on Ethereum
     columns:
