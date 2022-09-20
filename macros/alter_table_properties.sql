@@ -474,7 +474,7 @@ ALTER TABLE addresses_optimism.airdrop_1 SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["optimism"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='sector',
-                                                    'dune.data_explorer.abstraction.name'='airdrop_1',
+                                                    'dune.data_explorer.abstraction.name'='addresses',
                                                     'dune.data_explorer.contributors'='["Msilb7","soispoke"]');
 {% endset %}
 
