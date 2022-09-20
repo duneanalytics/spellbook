@@ -686,7 +686,7 @@ ALTER VIEW archipelago_ethereum.fees  SET TBLPROPERTIES ('dune.public'='true',
 {% endset %}
 
 {% set aztec_v2_contract_labels %}
-ALTER VIEW labels.aztec_v2_contracts SET TBLPROPERTIES('dune.public'='true',
+ALTER VIEW labels.aztec_v2_contracts_ethereum SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='sector',
@@ -771,7 +771,7 @@ ALTER VIEW labels.aztec_v2_contracts SET TBLPROPERTIES('dune.public'='true',
 {% do run_query(archipelago_ethereum_events) %}
 {% do run_query(archipelago_ethereum_trades) %}
 {% do run_query(archipelago_ethereum_fees) %}
-{% do run_query(aztec_v2_contract_labels) %}
+{% do run_query(labels_aztec_v2_contracts_ethereum) %}
 
 {% do log("Tables generated", info=True) %}
 {%- else -%}
