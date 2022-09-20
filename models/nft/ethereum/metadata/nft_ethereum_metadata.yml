@@ -171,12 +171,16 @@ models:
     columns:
       - name: contract_address
         description: "Collection contract address"
-      - name: braindrops_project_id
+      - name: project_id
         description: "Project ID -- can be used to join with token IDs"
+      - name: project_id_base_value
+        description: "Value used to join on other tables"
       - name: collection_name
         description: "Name of collection"
       - name: artist_name
         description: "Name of artist"
+      - name: art_collection_unique_id
+        description: "Unique identifier - contract address and project id"
 
   - name: nft_ethereum_metadata_mirage_gallery_curated
     meta:
