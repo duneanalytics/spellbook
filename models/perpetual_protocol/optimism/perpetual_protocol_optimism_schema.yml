@@ -1,15 +1,19 @@
 version: 2
 
 models:
-  - name: perpetual_protocol_optimism_trades
+  - name: perpetual_protocol_v2_optimism_trades
     meta:
       blockchain: optimism
       sector: perpetual
+      project: perpetual_v2
       contributors: MSilb7, drethereum, rplust
     config:
-      tags: ['optimism', 'perpetuals', 'perps']
+      tags: ['optimism', 'perpetual', 'perpetuals', 'perps']
     description: >
-      Perpetual swaps/trades table on Optimism
+      Perpetual v2 perpetuals trades/swaps on Optimism
+    tests:
+      - unique:
+          column_name: "(block_time || '-' || project || '-' || version || '-' || tx_hash || '-' || evt_index)"
     columns:
       - &blockchain
         name: blockchain
@@ -32,6 +36,9 @@ models:
       - &market_address
         name: market_address
         description: "Contract address of the market"
+        tests:
+          - perpetual_trades_market_address:
+              perpetual_trades_seed: ref('perpetual_trades_seed')
       - &volume_usd
         name: volume_usd
         description: "The size of the position taken for the swap in USD; already in absolute value and decimal normalized"
@@ -69,19 +76,15 @@ models:
         name: evt_index
         description: "Event index number"
 
-  - name: perpetual_protocol_v2_optimism_trades
+  - name: perpetual_protocol_optimism_trades
     meta:
       blockchain: optimism
       sector: perpetual
-      project: perpetual_v2
       contributors: MSilb7, drethereum, rplust
     config:
-      tags: ['optimism', 'perpetual', 'perpetuals', 'perps']
+      tags: ['optimism', 'perpetuals', 'perps']
     description: >
-      Perpetual v2 perpetuals trades/swaps on Optimism
-    tests:
-      - unique:
-          column_name: "(block_time || '-' || project || '-' || version || '-' || tx_hash || '-' || evt_index)"
+      Perpetual swaps/trades table on Optimism
     columns:
       - *blockchain
       - *block_date
@@ -89,7 +92,8 @@ models:
       - *virtual_asset
       - *underlying_asset
       - *market
-      - *market_address
+      - name: market_address # since object is a view, avoid test repeat with '*' usage
+        description: "Contract address of the market"
       - *volume_usd
       - *fee_usd
       - *margin_usd

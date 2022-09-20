@@ -1,15 +1,19 @@
 version: 2
 
 models:
-  - name: pika_optimism_trades
+  - name: pika_v1_optimism_trades
     meta:
       blockchain: optimism
       sector: perpetual
+      project: pika_v1
       contributors: MSilb7, drethereum, rplust
     config:
-      tags: ['optimism', 'perpetuals', 'perps', 'pika']
+      tags: ['optimism', 'pika, pika_v1', 'perpetuals', 'perps']
     description: >
-      Perpetual swaps/trades table on Optimism
+      Pika_v1 perpetuals trades/swaps on Optimism
+    tests:
+      - unique:
+          column_name: "(block_time || '-' || project || '-' || version || '-' || tx_hash || '-' || evt_index)"
     columns:
       - &blockchain
         name: blockchain
@@ -32,6 +36,9 @@ models:
       - &market_address
         name: market_address
         description: "Contract address of the market"
+        tests:
+          - perpetual_trades_market_address:
+              perpetual_trades_seed: ref('perpetual_trades_seed')
       - &volume_usd
         name: volume_usd
         description: "The size of the position taken for the swap in USD; already in absolute value and decimal normalized"
@@ -68,39 +75,6 @@ models:
       - &evt_index
         name: evt_index
         description: "Event index number"
-
-  - name: pika_v1_optimism_trades
-    meta:
-      blockchain: optimism
-      sector: perpetual
-      project: pika_v1
-      contributors: MSilb7, drethereum, rplust
-    config:
-      tags: ['optimism', 'pika, pika_v1', 'perpetuals', 'perps']
-    description: >
-      Pika_v1 perpetuals trades/swaps on Optimism
-    tests:
-      - unique:
-          column_name: "(block_time || '-' || project || '-' || version || '-' || tx_hash || '-' || evt_index)"
-    columns:
-      - *blockchain
-      - *block_time
-      - *virtual_asset
-      - *underlying_asset
-      - *market
-      - *market_address
-      - *volume_usd
-      - *fee_usd
-      - *margin_usd
-      - *trade
-      - *project
-      - *version
-      - *trader
-      - *volume_raw
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *evt_index
 
   - name: pika_v2_optimism_trades
     meta:
@@ -155,6 +129,36 @@ models:
       - *underlying_asset
       - *market
       - *market_address
+      - *volume_usd
+      - *fee_usd
+      - *margin_usd
+      - *trade
+      - *project
+      - *version
+      - *trader
+      - *volume_raw
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+
+  - name: pika_optimism_trades
+    meta:
+      blockchain: optimism
+      sector: perpetual
+      contributors: MSilb7, drethereum, rplust
+    config:
+      tags: ['optimism', 'perpetuals', 'perps', 'pika']
+    description: >
+      Perpetual swaps/trades table on Optimism
+    columns:
+      - *blockchain
+      - *block_time
+      - *virtual_asset
+      - *underlying_asset
+      - *market
+      - name: market_address # since object is a view, avoid test repeat with '*' usage
+        description: "Contract address of the market"
       - *volume_usd
       - *fee_usd
       - *margin_usd

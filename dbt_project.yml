@@ -335,7 +335,7 @@ seeds:
       trades:
         +column_types:
           blockchain: string
-          block_time: timestamp
+          block_date: date
           underlying_asset: string
           market: string
           market_address: string
