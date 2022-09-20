@@ -41,11 +41,19 @@ jobs:
       - name: dbt compile to create manifest to compare to
         run: "dbt compile"
 
-      - name: DBT seed
+      - name: create macro to define dependencies
+        working-directory: scripts
+        run: |
+           python3 pr_job_utils.py --pr_schema git_$GIT_SHA
+
+      - name: dbt create views of dependencies
+        run: "dbt run-operation create_views_of_dependencies"
+
+      - name: dbt seed
         run: "dbt seed --select state:modified --state ."
 
-      - name: DBT run
-        run: "dbt run --select +state:modified --state ."
+      - name: dbt run
+        run: "dbt run --select state:modified --state ."
 
-      - name: DBT test
+      - name: dbt test
         run: "dbt test --select state:new state:modified --state ."
