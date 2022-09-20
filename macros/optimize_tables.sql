@@ -97,6 +97,7 @@ OPTIMIZE archipelago_ethereum.events;
 
 {% set foundation_ethereum_events %}
 OPTIMIZE foundation_ethereum.events;
+{% endset %}
 
 {% set labels_all %}
 OPTIMIZE labels.all;
