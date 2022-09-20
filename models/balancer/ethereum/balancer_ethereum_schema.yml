@@ -10,6 +10,12 @@ models:
       tags: ["balances"]
     description: >
       Balances on Balancer, an automated portfolio manager and trading platform on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool
+            - token
     columns:
       - name: day
         description: "UTC event block time truncated to the day mark"
