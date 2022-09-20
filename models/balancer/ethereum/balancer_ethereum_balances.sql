@@ -44,7 +44,7 @@ cumulative_balance_by_token AS (
         pool, 
         token, 
         day, 
-        LEAD(day, 1, now()) OVER (PARTITION BY token, pool ORDER BY day) AS day_of_next_change,
+        LEAD(day, 1, now()) OVER (PARTITION BY pool, token ORDER BY day) AS day_of_next_change,
         SUM(amount) OVER (PARTITION BY pool, token ORDER BY day ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS cumulative_amount
     FROM daily_delta_balance_by_token
 ),
