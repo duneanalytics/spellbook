@@ -28,7 +28,7 @@ Navigate to the abstraction repo within your CLI (Command line interface).
 
 ```console
 cd user\directory\github\spellbook
-# change this to wherever spellbook are stored locally on your machine
+# Change this to wherever spellbooks are stored locally on your machine.
 ```
 
 Use the pipfile to create a pipenv.
