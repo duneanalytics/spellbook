@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: balancer_balances
+  - name: balancer_ethereum_balances
     meta:
       blockchain: ethereum
       project: balancer
