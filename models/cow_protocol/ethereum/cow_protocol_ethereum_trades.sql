@@ -68,9 +68,9 @@ trades_with_token_units as (
            buy_price
     FROM trades_with_prices
              LEFT OUTER JOIN {{ ref('tokens_erc20') }} ts
-                             ON s.contract_address = sell_token
+                             ON ts.contract_address = sell_token
              LEFT OUTER JOIN {{ ref('tokens_erc20') }} tb
-                             ON b.contract_address =
+                             ON tb.contract_address =
                                 (CASE
                                      WHEN buy_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
                                          THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
