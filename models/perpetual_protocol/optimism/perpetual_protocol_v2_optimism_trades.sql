@@ -18,7 +18,7 @@ WITH perps AS (
 		,pp.pool AS market_address
 		,ABS(p.exchangedPositionNotional)/1e18 AS volume_usd
 		,p.fee/1e18 AS fee_usd
-		,co.output_0/1e6 AS margin_usd
+		,MAX(co.output_0)/1e6 AS margin_usd
 
 		,CASE
 		WHEN CAST(p.exchangedPositionSize AS DOUBLE) > 0 THEN 'long'
@@ -44,6 +44,7 @@ WITH perps AS (
 	{% if is_incremental() %}
 	WHERE p.evt_block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
 	{% endif %}
+	GROUP BY 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13
 )
 
 SELECT
