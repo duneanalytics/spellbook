@@ -198,11 +198,15 @@ models:
     columns:
       - name: contract_address
         description: "Collection contract address"
-      - name: mirage_gallery_curated_project_id
+      - name: project_id
         description: "Project ID -- can be used to join with token IDs"
-      - name: drop_name
+      - name: project_id_base_value
+        description: "Value used to join on other tables"
+      - name: collection_name
         description: "Mirage Gallery Curated Drop"
-      - name: project_name
-        description: "Name of project"
       - name: artist_name
         description: "Name of artist"
+      - name: mirage_project_name
+        description: "Name of project"
+      - name: art_collection_unique_id
+        description: "Unique identifier - contract address and project id"
