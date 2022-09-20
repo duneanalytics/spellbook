@@ -1,13 +1,11 @@
 -- Expose Spells macro:
 -- => expose_spells(["blockchains"], 'project'/'sector','name', ["contributors"])
 {{
-  config(
-      alias='view_bridge_transactions',
-      post_hook='{{ expose_spells(["ethereum"],
-                                    "project",
-                                    "nomad",
-                                    ["soispoke", "jeff_dude"]) }}'
-      )
+  config(alias='view_bridge_transactions',
+         post_hook='{{ expose_spells(\'["ethereum"]\',
+                                      "project",
+                                      "nomad",
+                                    \'["springzh"]\') }}')
 }}
 
 with nomad_bridge_domains(domain_id, domain_name, domain_type) as (
