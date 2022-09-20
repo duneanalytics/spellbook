@@ -11,9 +11,9 @@ models:
     description: >
       a dictionary view of pool details for a lot of regular pools on Curve.fi on Ethereum
     columns:
-      - &version
+      - &version_pool
         name: version
-        description: "Versions of the pool: Regular, Factory V1 Plain, Factory V1 Meta, Favtory V2"
+        description: "Versions of the pool: Regular, Factory V1 Plain, Factory V1 Meta, Factory V2"
         tests:
           - not_null
       - &name
@@ -76,7 +76,7 @@ models:
     description: >
       view details of pools for Curve.fi on Ethereum
     columns:
-      - *version
+      - *version_pool
       - *name
       - *symbol
       - *pool_address
@@ -103,7 +103,7 @@ models:
       - *undercoin2
       - *undercoin3
       - *gauge_contract
-      
+ 
   - name: curvefi_ethereum_trades
     meta:
       blockchain: ethereum
@@ -158,7 +158,7 @@ models:
         description: "Contract address of the token bought"
         tests:
           - dex_trades_token_bought:
-              dex_trades_seed: ref('dex_trades_seed')
+              dex_trades_seed: ref('curvefi_ethereum_trades_seed')
       - &token_sold_address
         name: token_sold_address
         description: "Contract address of the token sold"
