@@ -1,5 +1,5 @@
 {{ config(
-        alias = 'metadata_proof_grails_ii',
+        alias = 'proof_grails_ii',
         partition_by = ['token_id'],
         materialized = 'view',
         unique_key = ['token_id']

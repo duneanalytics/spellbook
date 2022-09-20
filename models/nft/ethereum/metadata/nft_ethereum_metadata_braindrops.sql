@@ -1,5 +1,5 @@
 {{ config(
-        alias = 'metadata_braindrops',
+        alias = 'braindrops',
         partition_by = ['braindrops_project_id'],
         materialized = 'view',
         unique_key = ['braindrops_project_id']

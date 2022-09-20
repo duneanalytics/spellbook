@@ -1,5 +1,5 @@
 {{ config(
-        alias = 'metadata_mirage_gallery_curated',
+        alias = 'mirage_gallery_curated',
         partition_by = ['mirage_gallery_curated_project_id'],
         materialized = 'view',
         unique_key = ['mirage_gallery_curated_project_id']
