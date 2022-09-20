@@ -126,11 +126,14 @@ models:
       +schema: labels
       +materialized: view
 
-    addresses:
+    addresses: 
       +schema: addresses
       +materialized: table
-      ethereum:
+      ethereum: 
         +schema: addresses_ethereum
+        +materialized: table
+      optimism: 
+        +schema: addresses_optimism
         +materialized: table
 
     tokens:
@@ -194,6 +197,19 @@ models:
       ethereum:
         +schema: curvefi_ethereum
         +materialized: view
+    ovm1:
+      +schema: ovm1
+      +materialized: table
+      optimism:
+        +schema: omv1_optimism
+        +materialized: table
+    cow_protocol:
+      +schema: cow_protocol
+      +materialized: view
+      ethereum:
+        +schema: cow_protocol_ethereum
+        +materialized: view
+
 seeds:
   spellbook:
     balances:
