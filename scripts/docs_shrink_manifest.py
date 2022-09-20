@@ -6,7 +6,7 @@ from pathlib import Path
 
 class ManifestEditor:
     def __init__(self):
-        self.manifest_dict = json.load(open(Path('/work/spellbook-deploy/spellbook-deploy/target/manifest.json')))
+        self.manifest_dict = json.load(open(Path('../target/manifest.json')))
 
     @staticmethod
     def filter_large_raw_sql(node, max_lines=500):
