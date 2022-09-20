@@ -1,8 +1,4 @@
-{{ config(alias='synthetix_genesis_contracts', materialized = 'table', file_format = 'delta',
-          post_hook='{{ expose_spells(\'["optimism"]\',
-                                        "sector",
-                                        "ovm1",
-                                        \'["msilb7", "chuxinh"]\') }}') }}
+{{ config(alias='synthetix_genesis_contracts', materialized = 'table', file_format = 'delta') }}
 
 select contract_address, contract_name
 from (values
