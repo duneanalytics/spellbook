@@ -5,11 +5,11 @@ models:
     meta:
       blockchain: ethereum
       project: balancer
-      contributors: "Jacek Trociński"
+      contributors: jacektrocinski
     config:
-      tags: ['balances']
+      tags: ["balances"]
     description: >
-        Balances on Balancer, an automated portfolio manager and trading platform on Ethereum.
+      Balances on Balancer, an automated portfolio manager and trading platform on Ethereum
     columns:
       - name: day
         description: "UTC event block time truncated to the day mark"
@@ -17,13 +17,7 @@ models:
           - not_null
       - name: pool
         description: "Balancer pool contract address"
-        tests:
-          - not_null
       - name: token
         description: "Token contract address"
-        tests:
-          - not_null
       - name: cumulative_amount
         description: "Balance of a token"
-        tests:
-          - not_null
