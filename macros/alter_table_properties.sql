@@ -474,7 +474,7 @@ ALTER TABLE addresses_optimism.airdrop_1 SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["optimism"]',
                                                     'dune.data_explorer.category'='abstraction',
                                                     'dune.data_explorer.abstraction.type'='sector',
-                                                    'dune.data_explorer.abstraction.name'='airdrop_1',
+                                                    'dune.data_explorer.abstraction.name'='addresses',
                                                     'dune.data_explorer.contributors'='["Msilb7","soispoke"]');
 {% endset %}
 
@@ -539,15 +539,6 @@ ALTER VIEW addresses_ethereum.cex SET TBLPROPERTIES ('dune.public'='true',
                                                     'dune.data_explorer.abstraction.type'='sector',
                                                     'dune.data_explorer.abstraction.name'='cex',
                                                     'dune.data_explorer.contributors'='["hildobby"]');
-{% endset %}
-
-{% set nomad_bridge_transactions %}
-ALTER VIEW nomad_ethereum.view_bridge_transactions SET TBLPROPERTIES ('dune.public'='true',
-                                                    'dune.data_explorer.blockchains'='["ethereum"]',
-                                                    'dune.data_explorer.category'='abstraction',
-                                                    'dune.data_explorer.abstraction.type'='project',
-                                                    'dune.data_explorer.abstraction.name'='nomad',
-                                                    'dune.data_explorer.contributors'='["springzh"]');
 {% endset %}
 
 {% set prices_usd_latest %}
@@ -874,6 +865,14 @@ ALTER VIEW cow_protocol_ethereum.solvers SET TBLPROPERTIES ('dune.public'='true'
                                                 'dune.data_explorer.contributors'='["bh2smith", "gentrexha"]');
 {% endset %}
 
+{% set cow_protocol_ethereum_trades %}
+ALTER TABLE cow_protocol_ethereum.trades SET TBLPROPERTIES ('dune.public'='true',
+    'dune.data_explorer.blockchains'='["ethereum"]',
+    'dune.data_explorer.category'='abstraction',
+    'dune.data_explorer.abstraction.type'='project',
+    'dune.data_explorer.abstraction.name'='cow_protocol',
+    'dune.data_explorer.contributors'='["bh2smith", "gentrexha"]');
+{% endset %}
 
 {% do run_query(balances_ethereum_erc20_day) %}
 {% do run_query(balances_ethereum_erc20_hour) %}
@@ -931,7 +930,6 @@ ALTER VIEW cow_protocol_ethereum.solvers SET TBLPROPERTIES ('dune.public'='true'
 {% do run_query(ens_view_registries) %}
 {% do run_query(ens_view_renewals) %}
 {% do run_query(ens_resolver_addresses) %}
-{% do run_query(nomad_bridge_transactions) %}
 {% do run_query(prices_usd_latest) %}
 {% do run_query(sudoswap_ethereum_events) %}
 {% do run_query(sudoswap_ethereum_trades) %}
@@ -972,6 +970,7 @@ ALTER VIEW cow_protocol_ethereum.solvers SET TBLPROPERTIES ('dune.public'='true'
 {% do run_query(ovm1_optimism_user_addresses_by_tx_type) %}
 {% do run_query(ovm1_optimism_user_addresses_weekly_active_cohorts) %}
 {% do run_query(cow_protocol_ethereum_solvers) %}
+{% do run_query(cow_protocol_ethereum_trades) %}
 
 {% do log("Tables generated", info=True) %}
 {%- else -%}

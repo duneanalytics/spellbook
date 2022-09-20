@@ -2,7 +2,7 @@
 
 SELECT array('ethereum') as blockchain,
        address, 
-       name || '_' || namespace as name,
+       concat(upper(substring(namespace,1,1)),substring(namespace,2)) || ': ' || name as name,
        'submitted_contracts' as category,
        'soispoke' as contributor,
        'query' AS source,
@@ -12,7 +12,7 @@ FROM {{ source('ethereum','contracts_submitted') }}
 UNION 
 SELECT array('gnosis') as blockchain,
        address, 
-       name || '_' || namespace as name,
+       concat(upper(substring(namespace,1,1)),substring(namespace,2)) || ': ' || name as name,
        'submitted_contracts' as category,
        'soispoke' as contributor,
        'query' AS source,
@@ -22,7 +22,7 @@ FROM {{ source('gnosis','contracts_submitted') }}
 UNION 
 SELECT array('avalanche_c') as blockchain,
        address, 
-       name || '_' || namespace as name,
+       concat(upper(substring(namespace,1,1)),substring(namespace,2)) || ': ' || name as name,
        'submitted_contracts' as category,
        'soispoke' as contributor,
        'query' AS source,
@@ -32,7 +32,7 @@ FROM {{ source('avalanche_c','contracts_submitted') }}
 UNION 
 SELECT array('arbitrum') as blockchain,
        address, 
-       name || '_' || namespace as name,
+       concat(upper(substring(namespace,1,1)),substring(namespace,2)) || ': ' || name as name,
        'submitted_contracts' as category,
        'soispoke' as contributor,
        'query' AS source,
@@ -42,7 +42,7 @@ FROM {{ source('arbitrum','contracts_submitted') }}
 UNION 
 SELECT array('bnb') as blockchain,
        address, 
-       name || '_' || namespace as name,
+       concat(upper(substring(namespace,1,1)),substring(namespace,2)) || ': ' || name as name,
        'submitted_contracts' as category,
        'soispoke' as contributor,
        'query' AS source,
@@ -52,7 +52,7 @@ FROM {{ source('bnb','contracts_submitted') }}
 UNION 
 SELECT array('optimism') as blockchain,
        address, 
-       name || '_' || namespace as name,
+       concat(upper(substring(namespace,1,1)),substring(namespace,2)) || ': ' || name as name,
        'submitted_contracts' as category,
        'soispoke' as contributor,
        'query' AS source,
