@@ -29,5 +29,4 @@ FROM
 WHERE
     version_test = FALSE
     OR symbol_test = FALSE
-
     OR name_test = FALSE

@@ -1,7 +1,7 @@
 {{ config(materialized='view', alias='interest') }}
 
 select 
-  a.reserve,
+  a.reserve, 
   t.symbol,
   date_trunc('hour',a.evt_block_time) as hour, 
   avg(a.liquidityRate) / 1e27 as deposit_apy, 
@@ -10,5 +10,4 @@ select
 from {{ source('aave_v2_ethereum', 'LendingPool_evt_ReserveDataUpdated') }} a
 left join {{ ref('tokens_ethereum_erc20') }} t
 on a.reserve=t.contract_address
-
 group by 1,2,3
