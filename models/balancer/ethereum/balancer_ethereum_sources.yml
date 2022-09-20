@@ -4,6 +4,8 @@ sources:
   - name: balancer_ethereum
     freshness:
       warn_after: { count: 12, period: hour }
+    description: >
+      Balances on Balancer, an automated portfolio manager and trading platform on Ethereum.
     tables:
       - name: BFactory_evt_LOG_NEW_POOL
         loaded_at_field: evt_block_time
