@@ -1,5 +1,9 @@
 {{ config(
-        alias ='trades'
+        alias='trades',
+        post_hook='{{ expose_spells(\'["ethereum"]\'),
+                        "project",
+                        "sushiswap",
+                        \'["augustog"]\' }}'
         )
 }}
 
@@ -34,6 +38,6 @@ FROM
         FROM {{ ref('sushiswap_ethereum_trades') }}
         /*
         UNION
-        <add future protocols here>
+        <add future protocols versions here>
         */
 )

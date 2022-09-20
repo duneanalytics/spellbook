@@ -95,7 +95,7 @@ models:
       +schema: sushiswap
       +materialized: view
       ethereum:
-        +schema: sushiswap
+        +schema: sushiswap_ethereum
         +materialized: view
 
     opensea:
