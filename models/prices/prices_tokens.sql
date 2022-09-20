@@ -572,7 +572,7 @@ VALUES
     ("seth2-stakewise", "ethereum", "SETH2", "0xfe2e637202056d30016725477c5da089ab0a043a", 18),
     ("knight-citadao","ethereum", "KNIGHT", "0x3541A5C1b04AdABA0B83F161747815cd7B1516bC", 18),
     ("eure-monerium-eur-emoney", "ethereum", "EURe", "0x3231Cb76718CDeF2155FC47b5286d82e6eDA273f", 18),
-    ("fort-forta", "ethereum", "ethereum", "FORT", "0x41545f8b9472D758bB669ed8EaEEEcD7a9C4Ec29", 18),
+    ("fort-forta", "ethereum", "FORT", "0x41545f8b9472D758bB669ed8EaEEEcD7a9C4Ec29", 18),
     ("caps-ternoa", "ethereum", "CAPS", "0x03be5c903c727ee2c8c4e9bc0acc860cca4715e2", 18),
     ("strp-strips-finance", "ethereum", "STRP", "0x97872eafd79940c7b24f7bcc1eadb1457347adc9", 18),    
 
