@@ -97,6 +97,7 @@ OPTIMIZE element_bnb.events;
 
 {% set element_avalanche_c_events %}
 OPTIMIZE element_avalanche_c.events;
+{% endset %}
 
 {% set ens_resolver_addresses %}
 OPTIMIZE ens.resolver_addresses;
