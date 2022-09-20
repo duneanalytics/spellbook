@@ -19,3 +19,27 @@ models:
         description: "BEP20 token symbol"
       - name: decimals
         description: "Number of decimals, refers to how divisible an BEP20 token can be"
+  - name: tokens_bnb_nft
+    meta:
+      blockchain: bnb
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: ['tokens', 'bnb', 'nft', 'erc721', 'erc1155']
+    description: >
+        Selection of NFT token addresses.
+    columns:
+      - name: name
+        description: "NFT Project Name"
+      - name: contract_address
+        description: "The contract address is the unique address of where the NFTs are stored."
+        tests:
+          - unique
+      - name: standard
+        tests:
+          - accepted_values:
+              values: ['erc721', 'erc1155' , 'erc20', 'cryptopunks','superrare', 'unknown']
+        description: >
+            The token standard. This is the set of rules that the contract must respect 
+            to be compatible with the common standards. Accepted values are presently standards represented.
+            If you are adding a token with a new standard, remember to add it the accepted valeus list.

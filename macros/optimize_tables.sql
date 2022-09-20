@@ -87,12 +87,19 @@ OPTIMIZE uniswap_v2_ethereum.trades;
 OPTIMIZE x2y2_ethereum.events;
 {% endset %}
 
+{% set ens_resolver_addresses %}
+OPTIMIZE ens.resolver_addresses;
+{% endset %}
+
 {% set archipelago_ethereum_events %}
 OPTIMIZE archipelago_ethereum.events;
 {% endset %}
 
 {% set foundation_ethereum_events %}
 OPTIMIZE foundation_ethereum.events;
+
+{% set labels_all %}
+OPTIMIZE labels.all;
 {% endset %}
 
 
@@ -102,6 +109,7 @@ OPTIMIZE foundation_ethereum.events;
 {% do run_query(opensea_v1_ethereum_events) %}
 {% do run_query(safe_ethereum_eth_transfers) %}
 {% do run_query(safe_ethereum_safes) %}
+{% do run_query(ens_resolver_addresses) %}
 {% do run_query(seaport_ethereum_transfers) %}
 {% do run_query(sudoswap_ethereum_events) %}
 {% do run_query(cryptopunks_ethereum_events) %}
@@ -117,6 +125,10 @@ OPTIMIZE foundation_ethereum.events;
 {% do run_query(uniswap_v2_ethereum_trades) %}
 {% do run_query(x2y2_ethereum_events) %}
 {% do run_query(archipelago_ethereum_events) %}
+<<<<<<< HEAD
 {% do run_query(foundation_ethereum_events) %}
+=======
+{% do run_query(labels_all) %}
+>>>>>>> master
 {% do log("Tables Optimized", info=True) %}
 {% endmacro %}
