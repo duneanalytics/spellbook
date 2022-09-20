@@ -9,7 +9,7 @@ models:
     config:
       tags: ["balances"]
     description: >
-        Decoded tables related to the Balancer Protocol contract.
+      Balances on Balancer, an automated portfolio manager and trading platform on Ethereum.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
