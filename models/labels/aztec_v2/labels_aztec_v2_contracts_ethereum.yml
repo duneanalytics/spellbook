@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: aztec_v2_contract_labels
+  - name: labels_aztec_v2_contracts_ethereum
     meta:
       blockchain: ethereum
       sector: labels

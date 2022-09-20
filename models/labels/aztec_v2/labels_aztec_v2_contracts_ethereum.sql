@@ -1,4 +1,4 @@
-{{config(alias='aztec_v2_contract_labels')}}
+{{config(alias='labels_aztec_v2_contracts_ethereum')}}
 
 with contract_labels as (
     SELECT array('ethereum') as blockchain,
