@@ -5,6 +5,7 @@ from pathlib import Path
 
 from string import Template
 
+
 class PRJobDepedencyManager:
     def __init__(self, pr_schema: str):
         self.pr_schema = pr_schema
@@ -21,7 +22,9 @@ class PRJobDepedencyManager:
             test_filter = "--select test_type:singular"
         else:
             test_filter = ''
-        bash_response = subprocess.run(f'dbt list --output name --resource-type {object_type} --select state:modified --state  . {test_filter}', capture_output=True, shell=True).stdout.decode("utf-8")
+        bash_response = subprocess.run(
+            f'dbt list --output name --resource-type {object_type} --select state:modified --state  . {test_filter}',
+            capture_output=True, shell=True).stdout.decode("utf-8")
         if "Runtime Error" in bash_response:
             raise Exception(bash_response)
         if 'No nodes selected!' in bash_response:
@@ -33,11 +36,11 @@ class PRJobDepedencyManager:
         return modified_objects
 
     def fetch_modified_node_keys(self):
-       models =  self.fetch_modified_object_keys(object_type="model")
-       seeds =  self.fetch_modified_object_keys(object_type="seed")
-       tests =  self.fetch_modified_object_keys(object_type="test")
-       modified_node_keys = models + seeds + tests
-       return modified_node_keys
+        models = self.fetch_modified_object_keys(object_type="model")
+        seeds = self.fetch_modified_object_keys(object_type="seed")
+        tests = self.fetch_modified_object_keys(object_type="test")
+        modified_node_keys = models + seeds + tests
+        return modified_node_keys
 
     def parse_manifest_for_nodes(self, models):
         """
@@ -58,7 +61,7 @@ class PRJobDepedencyManager:
         """
         ref_names = []
         for node in modifed_nodes:
-             ref_names.extend(node['depends_on']['nodes'])
+            ref_names.extend(node['depends_on']['nodes'])
         ref_names = [ref_name for ref_name in ref_names if 'source' not in ref_name]
         return ref_names
 
@@ -117,7 +120,8 @@ SELECT * FROM $prod_name;
                           
 {% do run_query($var) %}
 """)
-            view_command = view_template.substitute(var=prod_name.replace('.', ''), prod_name=prod_name, pr_name=pr_name)
+            view_command = view_template.substitute(var=prod_name.replace('.', ''), prod_name=prod_name,
+                                                    pr_name=pr_name)
             f.write(view_command)
         f.write("{% endmacro %}")
         f.close()
