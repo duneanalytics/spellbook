@@ -78,6 +78,7 @@ trades_with_token_units as (
                                     END)
 ),
 -- This, independent, aggregation defines a mapping of order_uid and trade
+-- TODO - create a view for the following block mapping uid to app_data
 order_ids as (
     select evt_tx_hash, collect_list(orderUid) as order_ids
     from (  select orderUid, evt_tx_hash, evt_index
@@ -111,7 +112,7 @@ trade_data as (
 
 uid_to_app_id as (
     select
-        order_id,
+        order_id as uid,
         get_json_object(trades.col, '$.appData') as app_data,
         get_json_object(trades.col, '$.receiver') as receiver
     from reduced_order_ids order_ids
