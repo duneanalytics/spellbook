@@ -111,14 +111,6 @@ OPTIMIZE cow_protocol_ethereum.trades;
 OPTIMIZE cow_protocol_ethereum.batches;
 {% endset %}
 
-{% set aave_v2_ethereum_interest_rates %}
-OPTIMIZE aave_ethereum.interest;
-{% endset %}
-
-{% set aave_v3_optimism_interest_rates %}
-OPTIMIZE aave_optimism.interest;
-{% endset %}
-
 
 {% do run_query(looksrare_ethereum_events) %}
 {% do run_query(magiceden_solana_events) %}
@@ -146,7 +138,5 @@ OPTIMIZE aave_optimism.interest;
 {% do run_query(labels_all) %}
 {% do run_query(cow_protocol_ethereum_trades) %}
 {% do run_query(cow_protocol_ethereum_batches) %}
-{% do run_query(aave_v2_ethereum_interest_rates) %}
-{% do run_query(aave_v3_optimism_interest_rates) %}
 {% do log("Tables Optimized", info=True) %}
 {% endmacro %}
