@@ -196,7 +196,11 @@ LEFT JOIN {{ source('ethereum','traces') }} ett ON ett.block_time=t.block_time
     AND ett.to!=t.project_contract_address
     AND t.royalty_fee_amount/t.amount_original < 0.5
     AND ROUND((t.royalty_fee_amount/t.amount_original)/POWER(10, 18), 2) = ROUND(ett.value/POWER(10, 18), 2)
+    {% if is_incremental() %}
+    -- this filter will only be applied on an incremental run
+    AND ett.block_time >= (select max(block_time) from {{ this }})
+    {% endif %}
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-AND all_foundation_trades.block_time >= (select max(block_time) from {{ this }})
+AND t.block_time >= (select max(block_time) from {{ this }})
 {% endif %}
