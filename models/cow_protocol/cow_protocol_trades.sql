@@ -33,7 +33,7 @@ FROM
             receiver AS tx_to,
             '' AS trace_address,
             evt_index,
-            'cow_protocol' ||'-'|| tx_hash ||'-'|| IFNULL(evt_index, '') AS unique_trade_id
+            'cow_protocol' ||'-'|| tx_hash ||'-'|| order_uid AS unique_trade_id
         FROM {{ ref('cow_protocol_ethereum_trades') }}
         /*
         UNION
