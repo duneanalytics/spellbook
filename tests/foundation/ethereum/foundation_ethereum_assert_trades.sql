@@ -4,33 +4,37 @@ WITH raw_events AS (
   , f.evt_tx_hash AS raw_tx_hash
   , c.nftContract AS raw_nft_contract_address
   , c.tokenId AS raw_token_id
+  , f.evt_tx_hash || '-' || c.nftContract || '-' || c.tokenId AS raw_unique_trade_id
   FROM {{ source('foundation_ethereum','market_evt_ReserveAuctionFinalized') }} f
   LEFT JOIN {{ source('foundation_ethereum','market_evt_ReserveAuctionCreated') }} c ON c.auctionId=f.auctionId AND c.evt_block_time<=f.evt_block_time
-  WHERE f.evt_block_time >= --'2022-04-15'
+  WHERE f.evt_block_time >= '2022-04-15'
   AND f.evt_block_time < NOW() - interval '1 day' -- allow some head desync
   UNION
   SELECT f.evt_block_time AS raw_block_time
   , f.evt_tx_hash AS raw_tx_hash
   , f.nftContract AS raw_nft_contract_address
   , f.tokenId AS raw_token_id
+  , f.evt_tx_hash || '-' || f.nftContract || '-' || f.tokenId AS raw_unique_trade_id
     FROM {{ source('foundation_ethereum','market_evt_BuyPriceAccepted') }} f
-  WHERE f.evt_block_time >= --'2022-04-15'
+  WHERE f.evt_block_time >= '2022-04-15'
   AND f.evt_block_time < NOW() - interval '1 day' -- allow some head desync
   UNION
   SELECT f.evt_block_time AS raw_block_time
   , f.evt_tx_hash AS raw_tx_hash
   , f.nftContract AS raw_nft_contract_address
   , f.tokenId AS raw_token_id
+  , f.evt_tx_hash || '-' || f.nftContract || '-' || f.tokenId AS raw_unique_trade_id
     FROM {{ source('foundation_ethereum','market_evt_OfferAccepted') }} f
-  WHERE f.evt_block_time >= --'2022-04-15'
+  WHERE f.evt_block_time >= '2022-04-15'
   AND f.evt_block_time < NOW() - interval '1 day' -- allow some head desync
   UNION
   SELECT f.evt_block_time AS raw_block_time
   , f.evt_tx_hash AS raw_tx_hash
   , f.nftContract AS raw_nft_contract_address
   , f.tokenId AS raw_token_id
+  , f.evt_tx_hash || '-' || f.nftContract || '-' || f.tokenId AS raw_unique_trade_id
     FROM {{ source('foundation_ethereum','market_evt_PrivateSaleFinalized') }} f
-  WHERE f.evt_block_time >= --'2022-04-15'
+  WHERE f.evt_block_time >= '2022-04-15'
   AND f.evt_block_time < NOW() - interval '1 day' -- allow some head desync
   )
 
@@ -39,7 +43,8 @@ WITH raw_events AS (
   , tx_hash AS processed_tx_hash
   , nft_contract_address AS processed_nft_contract_address
   , token_id AS processed_token_id
-  FROM {{ ref('nft_trades') }}
+  , tx_hash || '-' || nft_contract_address || '-' || token_id AS processed_trade_id
+  FROM {{ ref('foundation_ethereum_events') }}
   WHERE blockchain = 'ethereum'
     AND project = 'foundation'
     AND version = 'v1'
