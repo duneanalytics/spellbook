@@ -102,3 +102,22 @@ models:
         description: "Block time UTC of latest registry for node" 
       - name: count
         description: "Total number of node registries"
+
+  - name: ens_resolver_addresses
+    meta:
+      blockchain: ethereum
+      project: ethereum_name_service
+      contributors: hildobby, danning.sui, msilb7, danner_eth
+    config:
+      tags: ['ethereum','ens','ethereum_name_service','ethereumnameservice']
+    description: >
+        View ENS reverse record
+    columns:
+      - name: address
+        description: "The resolver address of that ENS name"
+      - name: ens_name
+        description: "ENS name"
+      - name: latest_tx
+        description: "Latest transaction hash"
+      - name: latest_tx_block_time
+        description: "Block time of the latest transaction hash"

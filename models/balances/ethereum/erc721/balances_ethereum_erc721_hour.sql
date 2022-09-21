@@ -1,5 +1,9 @@
 {{ config(
-        alias='erc721_hour'
+        alias='erc721_hour',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                            "sector",
+                                            "balances",
+                                            \'["hildobby","soispoke","dot2dotseurat"]\') }}'
         )
 }}
 
@@ -19,7 +23,7 @@ with
     token_address,
     tokenId,
     hour,
-    lead(hour, 1, now()) OVER (PARTITION BY token_address, wallet_address ORDER BY hour) AS next_hour
+    lead(hour, 1, now()) OVER (PARTITION BY token_address, tokenId ORDER BY hour) AS next_hour
     FROM {{ ref('transfers_ethereum_erc721_rolling_hour') }})
 
 SELECT distinct

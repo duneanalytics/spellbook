@@ -1,4 +1,8 @@
-{{config(alias='view_registries')}}
+{{config(alias='view_registries',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "project",
+                                    "ens",
+                                    \'["antonio-mendes","mewwts"]\') }}')}}
 SELECT 
   node,
   label,

@@ -2,7 +2,7 @@
 
 WITH unit_tests AS (
     SELECT CASE WHEN pu.minute IS NOT NULL THEN true ELSE false END AS presence_test
-    FROM {{ ref('prices_latest') }} latest
+    FROM {{ ref('prices_usd_latest') }} latest
     LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain=latest.blockchain
         AND pu.contract_address=latest.contract_address
     )

@@ -1,7 +1,11 @@
  {{
   config(
         schema = 'uniswap_v3_optimism', 
-        alias='pools'
+        alias='pools',
+        post_hook='{{ expose_spells(\'["optimism"]\',
+                                    "project",
+                                    "uniswap_v3",
+                                    \'["msilb7", "chuxinh"]\') }}'
   )
 }}
 with uniswap_v3_poolcreated as (

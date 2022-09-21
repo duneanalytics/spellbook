@@ -6619,5 +6619,6 @@ FROM (VALUES
           ('0xc669928185dbce49d2230cc9b0979be6dc797957', 'BTT', 18),
           ('0x93b743fb12a2677adb13093f8ea8464a436da008', 'SNACK', 18),
           ('0x14079e63e492bb7df6aeb4fe4e48cb4f18f3488a', 'BARK', 18),
-          ('0x2ec3275f7ace4044e499823f511cd58250be8e3d', 'PRVG', 8)
+          ('0x2ec3275f7ace4044e499823f511cd58250be8e3d', 'PRVG', 8),
+          ('0x3231Cb76718CDeF2155FC47b5286d82e6eDA273f', 'EURe', 18)
      ) AS temp_table (contract_address, symbol, decimals)
