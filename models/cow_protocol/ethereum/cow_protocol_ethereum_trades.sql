@@ -15,6 +15,8 @@ WITH
 trades_with_prices AS (
     SELECT evt_block_time            as block_time,
            evt_tx_hash               as tx_hash,
+           evt_index,
+           contract_address          as project_contract_address,
            owner                     as trader,
            orderUid                  as order_uid,
            sellToken                 as sell_token,
@@ -46,6 +48,8 @@ trades_with_prices AS (
 trades_with_token_units as (
     SELECT block_time,
            tx_hash,
+           evt_index,
+           project_contract_address,
            order_uid,
            trader,
            sell_token                        as sell_token_address,
@@ -126,6 +130,8 @@ uid_to_app_id as (
 valued_trades as (
     SELECT block_time,
            tx_hash,
+           evt_index,
+           project_contract_address,
            order_uid,
            trader,
            sell_token_address,
