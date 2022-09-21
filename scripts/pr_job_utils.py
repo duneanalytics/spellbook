@@ -136,7 +136,7 @@ class PRJobDepedencyManager:
 CREATE OR REPLACE VIEW $pr_name AS
 SELECT * FROM $prod_name;
 {% endset %}
-                          
+
 {% do run_query($var) %}
 """)
             view_command = view_template.substitute(var=prod_name.replace('.', ''), prod_name=prod_name,
