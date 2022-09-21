@@ -4,7 +4,7 @@
         unique_key = ['tx_hash'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
-        incremental_strategy='delete+insert'
+        incremental_strategy='merge'
     )
 }}
 
