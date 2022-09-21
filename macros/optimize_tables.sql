@@ -107,6 +107,10 @@ OPTIMIZE labels.all;
 OPTIMIZE cow_protocol_ethereum.trades;
 {% endset %}
 
+{% set cow_protocol_ethereum_batches %}
+OPTIMIZE cow_protocol_ethereum.batches;
+{% endset %}
+
 
 {% do run_query(looksrare_ethereum_events) %}
 {% do run_query(magiceden_solana_events) %}
@@ -133,5 +137,6 @@ OPTIMIZE cow_protocol_ethereum.trades;
 {% do run_query(foundation_ethereum_events) %}
 {% do run_query(labels_all) %}
 {% do run_query(cow_protocol_ethereum_trades) %}
+{% do run_query(cow_protocol_ethereum_batches) %}
 {% do log("Tables Optimized", info=True) %}
 {% endmacro %}
