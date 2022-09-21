@@ -9,6 +9,7 @@
 }}
 
 WITH
+-- Find the PoC Query here: https://dune.com/queries/1290518
 batch_counts as (
     select s.evt_block_time,
            s.evt_tx_hash,
@@ -28,6 +29,10 @@ batch_counts as (
             on i.evt_tx_hash = s.evt_tx_hash
         join cow_protocol_ethereum.solvers
             on solver = address
+    {% if is_incremental() %}
+    WHERE s.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    AND i.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     group by s.evt_tx_hash, solver, s.evt_block_time, name
 ),
 
@@ -38,11 +43,14 @@ batch_values as (
         sum(usd_value)  as batch_value,
         sum(fee_usd)    as fee_value,
         price           as eth_price
-    from ref('cow_protocol_ethereum_trades')
+    from {{ ref('cow_protocol_ethereum_trades') }}
         join {{ source('prices', 'usd') }} as p
             on p.contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
             and p.minute = date_trunc('minute', block_time)
             and blockchain = 'ethereum'
+    {% if is_incremental() %}
+    WHERE block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     group by tx_hash, price
 ),
 
@@ -76,6 +84,9 @@ combined_batch_info as (
             on b.evt_tx_hash = t.tx_hash
         inner join {{ source('ethereum', 'transactions') }} tx
             on evt_tx_hash = hash
+            {% if is_incremental() %}
+            AND block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
     where num_trades > 0 --! Exclude Withdraw Batches
 )
 
