@@ -1,5 +1,9 @@
 {{ config(
-        alias ='burns'
+        alias ='burns',
+        post_hook='{{ expose_spells(\'["ethereum","solana"]\',
+                                            "project",
+                                            "opensea",
+                                            \'["soispoke"]\') }}'
         )
 }}
 

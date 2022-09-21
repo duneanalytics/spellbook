@@ -1,4 +1,8 @@
-{{ config(materialized='view', alias='erc20') }}
+{{ config(materialized='view', alias='erc20',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "sector",
+                                    "transfers",
+                                    \'["soispoke","dot2dotseurat"]\') }}') }}
 
 with
     sent_transfers as (
