@@ -4,7 +4,11 @@
         partition_by='block_date',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['block_date', 'tx_hash', 'evt_index', 'blockchain']
+        unique_key = ['block_date', 'tx_hash', 'evt_index', 'blockchain'],
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum"]\',
+                                    "project",
+                                    "tornado_cash",
+                                    \'["hildobby", "dot2dotseurat"]\') }}'
         )
 }}
 
@@ -222,6 +226,7 @@ FROM
         , ot.from AS depositor
         , tc.contract_address AS contract_address
         , CASE WHEN tc.contract_address='0x84443cfd09a48af6ef360c6976c5392ac5023a1f' THEN 0.1
+                WHEN tc.contract_address='0xb529a618ffedefe5cfa4df8dbb0b32d8c29ca2e8' THEN 0.1
                 WHEN tc.contract_address='0xd47438c816c9e7f2e2888e060936a499af9582b3' THEN 1
                 WHEN tc.contract_address='0x330bdfade01ee9bf63c209ee33102dd334618e0a' THEN 10
                 WHEN tc.contract_address='0x1e34a77868e19a6647b1f2f47b51ed72dede95dd' THEN 100

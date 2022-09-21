@@ -1,4 +1,8 @@
-{{ config( alias='erc20')}}
+{{ config( alias='erc20',
+        post_hook='{{ expose_spells(\'["avalanche_c","bnb","ethereum","optimism", "gnosis"]\',
+                                    "sector",
+                                    "tokens",
+                                    \'["0xManny","hildobby","soispoke","dot2dotseurat"]\') }}')}}
 
 SELECT 'avalanche_c' as blockchain, * FROM  {{ ref('tokens_avalanche_c_erc20') }}
 UNION

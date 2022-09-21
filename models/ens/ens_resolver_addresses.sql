@@ -1,7 +1,11 @@
 {{ config(
     alias = 'resolver_addresses',
     materialized = 'incremental',
-    unique_key = ['address']
+    unique_key = ['address'],
+    post_hook='{{ expose_spells(\'["ethereum"]\',
+                            "project",
+                            "ens",
+                            \'["hildobby", "danning.sui", "msilb7", "danner_eth"]\') }}'
     )
 }}
 

@@ -85,6 +85,12 @@ models:
       ethereum:
         +schema: looksrare_ethereum
         +materialized: view
+    foundation:
+      +schema: foundation
+      +materialized: view
+      ethereum:
+        +schema: foundation_ethereum
+        +materialized: view
     x2y2:
       +schema: x2y2
       +materialized: view
@@ -191,13 +197,18 @@ models:
       ethereum:
         +schema: curvefi_ethereum
         +materialized: view
-
     ovm1:
       +schema: ovm1
       +materialized: table
       optimism:
         +schema: omv1_optimism
         +materialized: table
+    cow_protocol:
+      +schema: cow_protocol
+      +materialized: view
+      ethereum:
+        +schema: cow_protocol_ethereum
+        +materialized: view
 
 seeds:
   spellbook:
