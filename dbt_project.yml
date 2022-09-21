@@ -182,12 +182,21 @@ models:
     tornado_cash:
       +schema: tornado_cash
       +materialized: view
+
+    balancer:
+      +schema: balancer
+      +materialized: view
+      ethereum:
+        +schema: balancer_ethereum
+        +materialized: view
+
     archipelago:
       +schema: archipelago
       +materialized: view
       ethereum:
         +schema: archipelago_ethereum
         +materialized: view
+
     integration_test:
       +schema: integration_test
       +materialized: view

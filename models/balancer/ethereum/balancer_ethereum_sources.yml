@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+ - name: balancer_ethereum
+   tables:
+     - name: BFactory_evt_LOG_NEW_POOL
