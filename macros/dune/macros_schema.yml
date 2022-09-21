@@ -20,3 +20,6 @@ macros:
       - name: node
         type: column name or expression
         description: "Node"
+
+  - name: create_views_of_dependencies
+    description: "Creates views under expected names of all dependencies needed in dbt pr job"

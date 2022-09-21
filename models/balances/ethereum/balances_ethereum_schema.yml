@@ -110,7 +110,7 @@ models:
       blockchain: ethereum
       sector: balances
       project: erc721
-      contibutors: soispoke, dot2dotseurat, hildobby
+      contibutors: soispoke, dot2dotseurat, hildobby, 0xRob
     config:
       tags: ['balances', 'ethereum', 'erc721', 'day', 'soispoke', 'dot2dotseurat', 'hildobby']
     description: >
@@ -140,7 +140,7 @@ models:
       blockchain: ethereum
       sector: balances
       project: erc721
-      contibutors: soispoke, dot2dotseurat, hildobby
+      contibutors: soispoke, dot2dotseurat, hildobby, 0xRob
     config:
       tags: ['balances', 'ethereum', 'erc721', 'hour', 'soispoke', 'dot2dotseurat', 'hildobby']
     description: >
@@ -160,7 +160,7 @@ models:
       blockchain: ethereum
       sector: balances
       project: erc721
-      contibutors: soispoke, dot2dotseurat, hildobby
+      contibutors: soispoke, dot2dotseurat, hildobby, 0xRob
     config:
       tags: ['balances', 'ethereum', 'erc721', 'latest', 'soispoke', 'dot2dotseurat', 'hildobby']
     description: >
@@ -169,8 +169,8 @@ models:
     columns:
       - *blockchain
       - *last_updated
-      - *wallet_address
-      - *token_address
+      - *wallet_address_erc721
+      - *token_address_erc721
       - *tokenId
       - *collection
       - *category
@@ -191,10 +191,10 @@ models:
       - *day
       - &wallet_address_erc1155
         name: wallet_address
-        description: "Address of the wallet holding this ERC721 token"
+        description: "Address of the wallet holding this ERC1155 tokens"
       - &token_address_erc1155
         name: token_address
-        description: "Contract address for the ERC721 token"
+        description: "Contract address for the ERC1155 tokens"
       - &tokenId_erc1155
         name: tokenId
         description: "ID of this ERC721 token"
@@ -239,8 +239,8 @@ models:
     columns:
       - *blockchain
       - *last_updated
-      - *wallet_address
-      - *token_address
+      - *wallet_address_erc1155
+      - *token_address_erc1155
       - *tokenId_erc1155
       - *amount_erc1155
       - *collection
