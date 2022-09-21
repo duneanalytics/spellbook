@@ -1,6 +1,10 @@
 {{ config(
         schema='prices',
-        alias ='tokens'
+        alias ='tokens',
+        post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c"]\',
+                                    "sector",
+                                    "prices",
+                                    \'["aalan3", "jeff-dude"]\') }}'
         )
 }}
 SELECT token_id, blockchain, symbol, contract_address, decimals from (
@@ -85,7 +89,9 @@ VALUES
     ("comp-compoundd", "bnb", "COMP", "0x52ce071bd9b1c4b00a0b92d298c512478cad67e8", 18),
     ("cummies-cumrocket", "bnb", "CUMMIES", "0x27ae27110350b98d564b9a3eed31baebc82d878d", 18),
     ("dai-dai", "bnb", "DAI", "0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3", 18),
+    ("dex-dexira", "bnb", "DEX", "0x147e07976e1ae78287c33aafaab87760d32e50a5", 18),
     ("dexe-dexe", "bnb", "DEXE", "0x039cb485212f996a9dbb85a9a75d898f94d38da6", 18),
+    ("dexshare-dexshare", "bnb", "DEXSHARE", "0xf4914e6d97a75f014acfcf4072f11be5cffc4ca6", 18), 
     ("dg-decentral-games", "bnb", "DG", "0x9fdc3ae5c814b79dca2556564047c5e7e5449c19", 18),
     ("dodo-dodo", "bnb", "DODO", "0x67ee3cb086f8a16f34bee3ca72fad36f7db929e2", 18),
     ("doge-dogecoin", "bnb", "DOGE", "0x4206931337dc273a630d328da6441786bfad668f", 8),
@@ -150,6 +156,7 @@ VALUES
     ("tusd-trueusd", "bnb", "TUSD", "0x14016e85a25aeb13065688cafb43044c2ef86784", 18),
     ("uni-uniswap", "bnb", "UNI", "0xbf5140a22578168fd562dccf235e5d43a02ce9b1", 18),
     ("usdc-usd-coin", "bnb", "USDC", "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d", 18),
+    ("usdex-usdex", "bnb", "USDEX", "0x829c09fcc46d9fd31967272aba245bef9f727f93", 18), 
     ("usdt-tether", "bnb", "USDT", "0x55d398326f99059ff775485246999027b3197955", 18),
     ("ust-terrausd", "bnb", "UST", "0x23396cf899ca06c4472205fc903bdb4de249d6fc", 18),
     ("ust-ust-wormhole", "bnb", "UST", "0x3d4350cd54aef9f9b2c29435e0fa809957b3f30a", 6),
@@ -571,10 +578,10 @@ VALUES
     ("zrx-0x", "ethereum", "ZRX", "0xe41d2489571d322189246dafa5ebde1f4699f498", 18),
     ("seth2-stakewise", "ethereum", "SETH2", "0xfe2e637202056d30016725477c5da089ab0a043a", 18),
     ("knight-citadao","ethereum", "KNIGHT", "0x3541A5C1b04AdABA0B83F161747815cd7B1516bC", 18),
-    ("monerium-eur-money", "ethereum", "EURe", "0x3231Cb76718CDeF2155FC47b5286d82e6eDA273f", 18),
-    ("forta", "ethereum", "FORT", "0x41545f8b9472D758bB669ed8EaEEEcD7a9C4Ec29", 18),
-    ("coin-capsule", "ethereum", "CAPS", "0x03be5c903c727ee2c8c4e9bc0acc860cca4715e2", 18),
-    ("strips-finance", "ethereum", "STRP", "0x97872eafd79940c7b24f7bcc1eadb1457347adc9", 18),    
+    ("eure-monerium-eur-emoney", "ethereum", "EURe", "0x3231Cb76718CDeF2155FC47b5286d82e6eDA273f", 18),
+    ("fort-forta", "ethereum", "FORT", "0x41545f8b9472D758bB669ed8EaEEEcD7a9C4Ec29", 18),
+    ("caps-ternoa", "ethereum", "CAPS", "0x03be5c903c727ee2c8c4e9bc0acc860cca4715e2", 18),
+    ("strp-strips-finance", "ethereum", "STRP", "0x97872eafd79940c7b24f7bcc1eadb1457347adc9", 18),    
 
     ("dai-dai", "gnosis", "WXDAI", "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18),
     ("usdc-usd-coin", "gnosis", "USDC", "0xddafbb505ad214d7b80b1f830fccc89b60fb7a83", 6),
