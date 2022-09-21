@@ -172,6 +172,51 @@ ALTER VIEW looksrare_ethereum.fees SET TBLPROPERTIES('dune.public'='true',
                                                         'dune.data_explorer.contributors'='["soispoke"]');
 {% endset %}
 
+{% set foundation_ethereum_events %}
+ALTER TABLE foundation_ethereum.events SET TBLPROPERTIES('dune.public'='true',
+                                                        'dune.data_explorer.blockchains'='["ethereum"]',
+                                                        'dune.data_explorer.category'='abstraction',
+                                                        'dune.data_explorer.abstraction.type'='project',
+                                                        'dune.data_explorer.abstraction.name'='foundation',
+                                                        'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set foundation_ethereum_trades %}
+ALTER VIEW foundation_ethereum.trades SET TBLPROPERTIES('dune.public'='true',
+                                                        'dune.data_explorer.blockchains'='["ethereum"]',
+                                                        'dune.data_explorer.category'='abstraction',
+                                                        'dune.data_explorer.abstraction.type'='project',
+                                                        'dune.data_explorer.abstraction.name'='foundation',
+                                                        'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set foundation_ethereum_mints %}
+ALTER VIEW foundation_ethereum.mints SET TBLPROPERTIES('dune.public'='true',
+                                                        'dune.data_explorer.blockchains'='["ethereum"]',
+                                                        'dune.data_explorer.category'='abstraction',
+                                                        'dune.data_explorer.abstraction.type'='project',
+                                                        'dune.data_explorer.abstraction.name'='foundation',
+                                                        'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set foundation_ethereum_burns %}
+ALTER VIEW foundation_ethereum.burns SET TBLPROPERTIES('dune.public'='true',
+                                                        'dune.data_explorer.blockchains'='["ethereum"]',
+                                                        'dune.data_explorer.category'='abstraction',
+                                                        'dune.data_explorer.abstraction.type'='project',
+                                                        'dune.data_explorer.abstraction.name'='foundation',
+                                                        'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
+{% set foundation_ethereum_fees %}
+ALTER VIEW foundation_ethereum.fees SET TBLPROPERTIES('dune.public'='true',
+                                                        'dune.data_explorer.blockchains'='["ethereum"]',
+                                                        'dune.data_explorer.category'='abstraction',
+                                                        'dune.data_explorer.abstraction.type'='project',
+                                                        'dune.data_explorer.abstraction.name'='foundation',
+                                                        'dune.data_explorer.contributors'='["hildobby"]');
+{% endset %}
+
 {% set x2y2_ethereum_events %}
 ALTER TABLE x2y2_ethereum.events SET TBLPROPERTIES('dune.public'='true',
                                                     'dune.data_explorer.blockchains'='["ethereum"]',
@@ -794,6 +839,11 @@ ALTER TABLE cow_protocol_ethereum.trades SET TBLPROPERTIES ('dune.public'='true'
 {% do run_query(looksrare_ethereum_mints) %}
 {% do run_query(looksrare_ethereum_burns) %}
 {% do run_query(looksrare_ethereum_fees) %}
+{% do run_query(foundation_ethereum_events) %}
+{% do run_query(foundation_ethereum_trades) %}
+{% do run_query(foundation_ethereum_mints) %}
+{% do run_query(foundation_ethereum_burns) %}
+{% do run_query(foundation_ethereum_fees) %}
 {% do run_query(x2y2_ethereum_events) %}
 {% do run_query(x2y2_ethereum_trades) %}
 {% do run_query(x2y2_ethereum_mints) %}
