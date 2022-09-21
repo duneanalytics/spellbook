@@ -2,13 +2,16 @@ version: 2
 
 models:
   - name: labels_all
+    tests:
+    - unique:
+        column_name: "(address || '-' || name || '-' || blockchain::string)"
     meta:
       blockchain: ethereum, solana
       sector: labels
-      category: nft, cex
+      category: cex, nft
       contibutors: hildobby, soispoke
     config:
-      tags: ['labels', 'ethereum', 'solana', 'nft', 'cex']
+      tags: ['labels', 'ethereum', 'solana', 'cex', 'nft']
     description: "All labels across chains and categories"
     columns:
       - name: blockchain

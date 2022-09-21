@@ -1,0 +1,216 @@
+version: 2
+
+models:
+  - name: ovm1_optimism_contracts
+    meta:
+      blockchain: optimism
+      project: ovm1
+      contibutors: MSilb7, chuxinh
+    config:
+      tags: ["optimism", "ovm1", "contracts"]
+    description: "Contracts deployed on OVM1."
+    columns:
+      - &contract_address
+        name: contract_address
+        description: "Address of the smart contract"
+
+      - &contract_name
+        name: contract_name
+        description: "Name of the smart contract"
+    
+      - name: erc20_address
+        description: "ERC 20 address"
+
+      - name: created_time
+        description: "Timestamp at which the contract was created"
+
+      - name: creator_address
+        description: "Contract creator address"
+
+
+  - name: ovm1_optimism_erc20_balances
+    meta:
+      blockchain: optimism
+      project: ovm1
+      contibutors: MSilb7, chuxinh
+    config:
+      tags: ["optimism", "ovm1", "erc20"]
+    description: "Records of erc20 balances per wallet address per token"
+    columns:
+      - *contract_address
+      
+      - &user_address
+        name: user_address
+        description: "Hashes of user wallet address"
+
+      - &value
+        name: value
+        description: "Balance of a token"
+
+
+  - name: ovm1_optimism_q1_user_address_daily_transactions
+    meta:
+      blockchain: optimism
+      project: ovm1
+      contibutors: MSilb7, chuxinh
+    config:
+      tags: ["optimism", "ovm1", "transactions"]
+    description: "Partial OVM1 records of daily transactions per address"
+    columns:
+      - &day
+        name: day
+        description: "The date of transactions"
+
+      - &from_address
+        name: from_address
+        description: "Hashes of the address from which transactions were initiated"
+
+      - &method_id
+        name: method_id
+        description: "The first 4 bytes of calldata that specifies which function to call"
+
+      - &num_transactions
+        name: num_transactions
+        description: "Number of transactions that took place in a give date"
+
+
+  - name: ovm1_optimism_q2_user_address_daily_transactions
+    meta:
+      blockchain: optimism
+      project: ovm1
+      contibutors: MSilb7, chuxinh
+    config:
+      tags: ["optimism", "ovm1", "transactions"]
+    description: "Partial OVM1 records of daily transactions per address"
+    columns:
+      - *day
+      - *from_address
+      - *method_id
+      - *num_transactions
+
+
+  - name: ovm1_optimism_q3_user_address_daily_transactions
+    meta:
+      blockchain: optimism
+      project: ovm1
+      contibutors: MSilb7, chuxinh
+    config:
+      tags: ["optimism", "ovm1", "transactions"]
+    description: "Partial OVM1 records of daily transactions per address"
+    columns:
+      - *day
+      - *from_address
+      - *method_id
+      - *num_transactions
+
+
+  - name: ovm1_optimism_q4_user_address_daily_transactions
+    meta:
+      blockchain: optimism
+      project: ovm1
+      contibutors: MSilb7, chuxinh
+    config:
+      tags: ["optimism", "ovm1", "transactions"]
+    description: "Partial OVM1 records of daily transactions per address"
+    columns:
+      - *day
+      - *from_address
+      - *method_id
+      - *num_transactions
+
+
+  - name: ovm1_optimism_user_address_daily_transactions
+    meta:
+      blockchain: optimism
+      project: ovm1
+      contibutors: MSilb7, chuxinh
+    config:
+      tags: ["optimism", "ovm1", "transactions"]
+    description: "OVM1 records of daily transactions per address"
+    columns:
+      - *day
+      - *from_address
+      - *method_id
+      - *num_transactions
+    
+
+  - name: ovm1_optimism_synthetix_genesis_contracts
+    meta:
+      blockchain: optimism
+      project: ovm1
+      contibutors: MSilb7, chuxinh
+    config:
+      tags: ["optimism", "ovm1", "synthetix"]
+    description: "OVM1 Synthetix genesis contracts"
+    columns:
+      - *contract_address
+      - *contract_name
+
+
+  - name: ovm1_optimism_user_address_activity_last_30_days
+    meta:
+      blockchain: optimism
+      project: ovm1
+      contibutors: MSilb7, chuxinh
+    config:
+      tags: ["optimism", "ovm1"]
+    description: "OVM1 user wallet address activities in last 30 days"
+    columns:
+      - *day
+      - *user_address
+
+      - &tx_type
+        name: tx_type
+        description: "Transaction type"
+
+
+  - name: ovm1_optimism_user_addresses_by_tx_type
+    meta:
+      blockchain: optimism
+      project: ovm1
+      contibutors: MSilb7, chuxinh
+    config:
+      tags: ["optimism", "ovm1"]
+    description: "OVM1 user wallet address and first transaction type"
+    columns:
+      - *user_address
+      - *tx_type
+
+      - &first_transaction
+        name: first_transaction
+        description: "Timestamp of the first transaction on OVM1"
+
+
+  - name: ovm1_optimism_user_addresses_weekly_active_cohorts
+    meta:
+      blockchain: optimism
+      project: ovm1
+      contibutors: MSilb7, chuxinh
+    config:
+      tags: ["optimism", "ovm1"]
+    description: "OVM1 user weekly active cohorts"
+    columns:
+      - *user_address
+      - *num_transactions
+
+      - name: week_active
+        description: "Timestamp of the week in which a user was active"
+
+      - name: first_week_cohort
+        description: "Timestamp of the first week that a wallet was active"
+
+      - name: num_weeks_elapsed
+        description: "Number of weeks elapsed since first week cohort"
+
+
+  - name: ovm1_optimism_user_addresses
+    meta:
+      blockchain: optimism
+      project: ovm1
+      contibutors: MSilb7, chuxinh
+    config:
+      tags: ["optimism", "ovm1"]
+    description: "OVM1 user wallet address and first transaction date"
+    columns:
+      - *user_address
+      - *first_transaction
