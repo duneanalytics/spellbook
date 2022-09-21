@@ -1,5 +1,9 @@
 {{ config(
-        alias ='mints'
+        alias ='mints',
+        post_hook='{{ expose_spells(\'["solana"]\',
+                                    "project",
+                                    "magiceden",
+                                    \'["soispoke"]\') }}'
         )
 }}
  

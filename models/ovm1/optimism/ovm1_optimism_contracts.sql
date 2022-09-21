@@ -1,4 +1,8 @@
-{{ config(alias='contracts', materialized = 'table', file_format = 'delta') }}
+{{ config(alias='contracts', materialized = 'table', file_format = 'delta',
+          post_hook='{{ expose_spells(\'["optimism"]\',
+                                        "sector",
+                                        "ovm1",
+                                        \'["msilb7", "chuxinh"]\') }}') }}
 
 select contract_address, contract_project, contract_name, erc20_address, created_time, creator_address
 from (values

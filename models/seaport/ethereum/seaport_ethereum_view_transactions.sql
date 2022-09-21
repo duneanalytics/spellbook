@@ -1,6 +1,10 @@
 {{
   config(
-        alias='view_transactions'
+        alias='view_transactions',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                "project",
+                                "seaport",
+                                \'["sohawk","soispoke"]\') }}'
   )
 }}
 

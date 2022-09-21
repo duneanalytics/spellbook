@@ -20,7 +20,7 @@ models:
         description: "Token symbol"
       - name: decimals
         description: "Number of decimals for the token contract"
-  - name: prices_latest
+  - name: prices_usd_latest
     meta:
       sector: prices
       contributors: hildobby
