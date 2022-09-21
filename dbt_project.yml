@@ -85,6 +85,12 @@ models:
       ethereum:
         +schema: looksrare_ethereum
         +materialized: view
+    foundation:
+      +schema: foundation
+      +materialized: view
+      ethereum:
+        +schema: foundation_ethereum
+        +materialized: view
     x2y2:
       +schema: x2y2
       +materialized: view
