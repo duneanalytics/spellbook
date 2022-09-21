@@ -1,4 +1,12 @@
-{{ config(materialized='view', alias='interest') }}
+{{ config(
+  materialized='view'
+  , alias='interest'
+  , post_hook='{{ expose_spells(\'["optimism"]\',
+                                  "project",
+                                  "aave_v3",
+                                  \'["batwayne", "chuxinh"]\') }}'
+  )
+}}
 
 select 
   a.reserve, 
