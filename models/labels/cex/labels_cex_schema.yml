@@ -11,22 +11,30 @@ models:
       tags: ['labels', 'ethereum', 'cex']
     description: "Known centralised exchange addresses across chains"
     columns:
-      - name: blockchain
+      - &blockchain
+        name: blockchain
         description: "Blockchain"   
-      - name: address
+      - &address
+        name: address
         description: "Address of known CEX"
-      - name: name
+      - &name
+        name: name
         description: "Label name of centralised exchange"
-      - name: category
+      - &category
+        name: category
         description: "Label category"
-      - name: contributor
+      - &contributor
+        name: contributor
         description: "Wizard(s) contributing to labels"
-      - name: source
+      - &source
+        name: source
         description: "How were labels generated (could be static or query)"
-      - name: created_at
+      - &created_at
+        name: created_at
         description: "When were labels created"
-      - name: updated_at
-        description: "When were labels updated for the last time ?"
+      - &updated_at
+        name: updated_at
+        description: "When were labels updated for the last time"
 
   - name: labels_cex_ethereum
     meta:
@@ -38,19 +46,11 @@ models:
       tags: ['labels', 'ethereum', 'cex']
     description: "Known centralised exchange addresses on Ethereum"
     columns:
-      - name: blockchain
-        description: "Blockchain"   
-      - name: address
-        description: "Address of known CEX"
-      - name: name
-        description: "Label name of centralised exchange"
-      - name: category
-        description: "Label category"
-      - name: contributor
-        description: "Wizard(s) contributing to labels"
-      - name: source
-        description: "How were labels generated (could be static or query)"
-      - name: created_at
-        description: "When were labels created"
-      - name: updated_at
-        description: "When were labels updated for the last time ?"
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
