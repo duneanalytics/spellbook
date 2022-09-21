@@ -147,6 +147,7 @@ SELECT alet.blockchain
 , 0 AS royalty_fee_percentage
 , 0 AS royalty_fee_receive_address
 , 0 AS royalty_fee_currency_symbol
+, alet.blockchain || alet.project || alet.version || alet.tx_hash || alet.seller  || alet.buyer || alet.nft_contract_address || alet.token_id AS unique_trade_id
 FROM element_txs alet
 LEFT JOIN {{ ref('nft_aggregators') }} agg ON alet.buyer=agg.contract_address AND agg.blockchain='bnb'
 LEFT JOIN {{ ref('tokens_erc20') }} bnb_bep20_tokens ON bnb_bep20_tokens.contract_address=alet.currency_contract AND bnb_bep20_tokens.blockchain='bnb'

@@ -147,6 +147,7 @@ SELECT alet.blockchain
 , 0 AS royalty_fee_percentage
 , 0 AS royalty_fee_receive_address
 , 0 AS royalty_fee_currency_symbol
+, alet.blockchain || alet.project || alet.version || alet.tx_hash || alet.seller  || alet.buyer || alet.nft_contract_address || alet.token_id AS unique_trade_id
 FROM element_txs alet
 LEFT JOIN {{ ref('nft_aggregators') }} agg ON alet.buyer=agg.contract_address AND agg.blockchain='avalanche_c'
 LEFT JOIN {{ ref('tokens_erc20') }} ava_erc20_tokens ON ava_erc20_tokens.contract_address=alet.currency_contract AND ava_erc20_tokens.blockchain='avalanche_c'
