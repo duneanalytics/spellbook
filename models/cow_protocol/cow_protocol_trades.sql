@@ -9,7 +9,7 @@ FROM
             'ethereum' AS blockchain,
             'CoW Protocol' AS project,
             '1' AS version,
-            TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date,
+            TRY_CAST(date_trunc('DAY', block_time) AS date) AS block_date,
             block_time,
             buy_token AS token_bought_symbol,
             sell_token AS token_sold_symbol,
