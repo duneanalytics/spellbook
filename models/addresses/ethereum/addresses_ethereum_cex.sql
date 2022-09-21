@@ -1,4 +1,8 @@
-{{config(alias='cex')}}
+{{config(alias='cex',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "sector",
+                                    "addresses",
+                                    \'["hildobby"]\') }}')}}
 
 SELECT address, cex_name, distinct_name
 FROM (VALUES
