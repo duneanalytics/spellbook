@@ -9,6 +9,7 @@ FROM (VALUES
     -- Binance, Source: https://etherscan.io/accounts/label/binance
     (array('ethereum'),'0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be', 'Binance 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0xd551234ae421e3bcba99a0da6d736074f22192ff', 'Binance 2', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
+    , (array('ethereum'), '0x564286362092d8e7936f0549571a803b203aaced', 'Binance 3', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x0681d8db095565fe8a346fa0277bffde9c0edbbf', 'Binance 4', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0xfe9e8709d3215310075d67e3ed32a380ccf451c8', 'Binance 5', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x4e9ce36e442e55ecd9025b9a6e0d88485d628a67', 'Binance 6', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
