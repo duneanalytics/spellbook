@@ -821,6 +821,15 @@ ALTER TABLE cow_protocol_ethereum.trades SET TBLPROPERTIES ('dune.public'='true'
     'dune.data_explorer.contributors'='["bh2smith", "gentrexha"]');
 {% endset %}
 
+{% set cow_protocol_ethereum_batches %}
+ALTER TABLE cow_protocol_ethereum.batches SET TBLPROPERTIES ('dune.public'='true',
+    'dune.data_explorer.blockchains'='["ethereum"]',
+    'dune.data_explorer.category'='abstraction',
+    'dune.data_explorer.abstraction.type'='project',
+    'dune.data_explorer.abstraction.name'='cow_protocol',
+    'dune.data_explorer.contributors'='["bh2smith", "gentrexha"]');
+{% endset %}
+
 {% set aave_v2_ethereum_interest_rates %}
 ALTER VIEW aave_ethereum.interest  SET TBLPROPERTIES ('dune.public'='true',
                                                         'dune.data_explorer.blockchains'='["ethereum"]',
@@ -931,6 +940,7 @@ ALTER VIEW aave_optimism.interest  SET TBLPROPERTIES ('dune.public'='true',
 {% do run_query(ovm1_optimism_user_addresses_weekly_active_cohorts) %}
 {% do run_query(cow_protocol_ethereum_solvers) %}
 {% do run_query(cow_protocol_ethereum_trades) %}
+{% do run_query(cow_protocol_ethereum_batches) %}
 {% do run_query(aave_v2_ethereum_interest_rates) %}
 {% do run_query(aave_v3_optimism_interest_rates) %}
 
