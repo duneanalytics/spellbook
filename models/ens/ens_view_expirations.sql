@@ -1,4 +1,8 @@
-{{config(alias='view_expirations')}}
+{{config(alias='view_expirations',
+    post_hook='{{ expose_spells(\'["ethereum"]\',
+                            "project",
+                            "ens",
+                            \'["antonio-mendes","mewwts"]\') }}')}}
 SELECT
     label,
     TO_TIMESTAMP(min(expires)) AS min_expires,
