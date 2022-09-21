@@ -2,9 +2,9 @@
         alias='batches',
         materialized='incremental',
         unique_key = ['tx_hash'],
-        on_schema_change='fail',
+        on_schema_change='sync_all_columns',
         file_format ='delta',
-        incremental_strategy='merge'
+        incremental_strategy='delete+insert'
     )
 }}
 
