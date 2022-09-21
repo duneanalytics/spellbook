@@ -1,4 +1,8 @@
-{{config(alias='ofac_sanctioned_ethereum')}}
+{{config(alias='ofac_sanctioned_ethereum',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "sector",
+                                    "labels",
+                                    \'["hildobby"]\') }}')}}
 
 SELECT blockchain, address, name, category, contributor, source, created_at, updated_at
 FROM (VALUES
