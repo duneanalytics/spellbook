@@ -813,11 +813,20 @@ ALTER VIEW cow_protocol_ethereum.solvers SET TBLPROPERTIES ('dune.public'='true'
 
 {% set cow_protocol_ethereum_trades %}
 ALTER TABLE cow_protocol_ethereum.trades SET TBLPROPERTIES ('dune.public'='true',
-    'dune.data_explorer.blockchains'='["ethereum"]',
-    'dune.data_explorer.category'='abstraction',
-    'dune.data_explorer.abstraction.type'='project',
-    'dune.data_explorer.abstraction.name'='cow_protocol',
-    'dune.data_explorer.contributors'='["bh2smith", "gentrexha"]');
+                                                'dune.data_explorer.blockchains'='["ethereum"]',
+                                                'dune.data_explorer.category'='abstraction',
+                                                'dune.data_explorer.abstraction.type'='project',
+                                                'dune.data_explorer.abstraction.name'='cow_protocol',
+                                                'dune.data_explorer.contributors'='["bh2smith", "gentrexha"]');
+{% endset %}
+
+{% set cow_protocol_trades %}
+ALTER VIEW cow_protocol.trades SET TBLPROPERTIES('dune.public'='true',
+                                                'dune.data_explorer.blockchains'='["ethereum"]',
+                                                'dune.data_explorer.category'='abstraction',
+                                                'dune.data_explorer.abstraction.type'='project',
+                                                'dune.data_explorer.abstraction.name'='cow_protocol',
+                                                'dune.data_explorer.contributors'='["bh2smith", "gentrexha"]');
 {% endset %}
 
 {% do run_query(balances_ethereum_erc20_day) %}
@@ -875,7 +884,6 @@ ALTER TABLE cow_protocol_ethereum.trades SET TBLPROPERTIES ('dune.public'='true'
 {% do run_query(transfers_ethereum_erc20) %}
 {% do run_query(seaport_ethereum_view_transactions) %}
 {% do run_query(seaport_ethereum_transfers) %}
-{% do run_query(uniswap_trades) %}
 {% do run_query(ens_view_expirations) %}
 {% do run_query(ens_view_registrations) %}
 {% do run_query(ens_view_registries) %}
@@ -911,6 +919,7 @@ ALTER TABLE cow_protocol_ethereum.trades SET TBLPROPERTIES ('dune.public'='true'
 {% do run_query(ovm1_optimism_user_addresses_weekly_active_cohorts) %}
 {% do run_query(cow_protocol_ethereum_solvers) %}
 {% do run_query(cow_protocol_ethereum_trades) %}
+{% do run_query(cow_protocol_trades) %}
 
 {% do log("Tables generated", info=True) %}
 {%- else -%}
