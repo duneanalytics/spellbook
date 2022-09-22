@@ -9,17 +9,25 @@ models:
     config:
       tags: [ 'ethereum','balances' ]
     description: >
-      An auto-portfolio balancer, shows daily balances of the address on Ethereum during the given period (from 2022-01-01 to current date).
+      Balances on Balancer, an automated portfolio manager and trading platform on Ethereum.
     columns:
       - &day
         name: day
         description: "Block time UTC represented by day"
+        tests:
+          - not_null
       - &pool
         name: pool
         description: "Pool contract address"
+        tests:
+          - not_null
       - &token
         name: token
         description: "Token contract address"
+        tests:
+          - not_null
       - &cumulative_amount
         name: cumulative_amount
         description: "Cumulative token value amount"
+        tests:
+          - not_null

@@ -106,4 +106,9 @@ running_cumulative_balance_by_token as (
     where to_date('2022-01-01') <= b.day and b.bay <= current_date
 )
 
-select * from running_cumulative_balance_by_token
+select
+    `day`,
+    pool,
+    token,
+    coalesce(cumulative_amount, 0) as cumulative_amount
+from running_cumulative_balance_by_token
