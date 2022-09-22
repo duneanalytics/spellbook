@@ -134,8 +134,8 @@ models:
       +schema: balancer
       +materialized: view
       ethereum:
-        +enabled: true
         +schema: balancer_ethereum
+        +materialized: view
     balances:
       +schema: balances
       +materialized: view
