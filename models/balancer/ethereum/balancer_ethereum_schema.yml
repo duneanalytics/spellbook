@@ -15,7 +15,7 @@ models:
         name: day
         description: "UTC event block time truncated to the day mark."
         tests:
-          - unique
+          - not_null
       - &pool
         name: pool
         description: "Pool Contract address for Balancer V1 and vault contract for Balancer V2"
