@@ -212,12 +212,6 @@ models:
       ethereum:
         +schema: curvefi_ethereum
         +materialized: view
-    ovm1:
-      +schema: ovm1
-      +materialized: table
-      optimism:
-        +schema: omv1_optimism
-        +materialized: table
     cow_protocol:
       +schema: cow_protocol
       +materialized: view
