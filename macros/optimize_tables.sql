@@ -99,14 +99,6 @@ OPTIMIZE archipelago_ethereum.events;
 OPTIMIZE foundation_ethereum.events;
 {% endset %}
 
-{% set ironbank_ethereum_itokens %}
-OPTIMIZE ironbank_ethereum.itokens;
-{% endset %}
-
-{% set ironbank_optimism_itokens %}
-OPTIMIZE ironbank_optimism.itokens;
-{% endset %}
-
 {% set labels_all %}
 OPTIMIZE labels.all;
 {% endset %}
@@ -143,8 +135,6 @@ OPTIMIZE cow_protocol_ethereum.batches;
 {% do run_query(x2y2_ethereum_events) %}
 {% do run_query(archipelago_ethereum_events) %}
 {% do run_query(foundation_ethereum_events) %}
-{% do run_query(ironbank_ethereum_itokens) %}
-{% do run_query(ironbank_optimism_itokens) %}
 {% do run_query(labels_all) %}
 {% do run_query(cow_protocol_ethereum_trades) %}
 {% do run_query(cow_protocol_ethereum_batches) %}

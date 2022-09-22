@@ -1,6 +1,9 @@
 {{ config(
-    materialized = 'view',
-    alias = 'itokens'
+    alias = 'itokens',
+    post_hook='{{ expose_spells(\'["ethereum"]\',
+                                "project",
+                                "ironbank",
+                                \'["michael-ironbank"]\') }}'
 ) }}
 
 SELECT

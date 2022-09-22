@@ -730,24 +730,6 @@ ALTER VIEW archipelago_ethereum.fees  SET TBLPROPERTIES ('dune.public'='true',
                                                         'dune.data_explorer.contributors'='["0xRob"]');
 {% endset %}
 
-{% set ironbank_ethereum_itokens %}
-ALTER VIEW ironbank_ethereum.itokens  SET TBLPROPERTIES ('dune.public'='true',
-                                                        'dune.data_explorer.blockchains'='["ethereum"]',
-                                                        'dune.data_explorer.category'='abstraction',
-                                                        'dune.data_explorer.abstraction.type'='project',
-                                                        'dune.data_explorer.abstraction.name'='ironbank',
-                                                        'dune.data_explorer.contributors'='["michael"]');
-{% endset %}
-
-{% set ironbank_optmism_itokens %}
-ALTER VIEW ironbank_optimism.itokens  SET TBLPROPERTIES ('dune.public'='true',
-                                                        'dune.data_explorer.blockchains'='["optimism"]',
-                                                        'dune.data_explorer.category'='abstraction',
-                                                        'dune.data_explorer.abstraction.type'='project',
-                                                        'dune.data_explorer.abstraction.name'='ironbank',
-                                                        'dune.data_explorer.contributors'='["michael"]');
-{% endset %}
-
 {% set ovm1_optimism_erc20_balances %}
 ALTER TABLE ovm1_optimism.erc20_balances SET TBLPROPERTIES ('dune.public'='true',
                                                 'dune.data_explorer.blockchains'='["optimism"]',
@@ -837,24 +819,6 @@ ALTER TABLE cow_protocol_ethereum.trades SET TBLPROPERTIES ('dune.public'='true'
     'dune.data_explorer.abstraction.name'='cow_protocol',
     'dune.data_explorer.contributors'='["bh2smith", "gentrexha"]');
 {% endset %}
-{% set ironbank_ethereum_itokens %}
-ALTER VIEW ironbank_ethereum.itokens  SET TBLPROPERTIES ('dune.public'='true',
-                                                        'dune.data_explorer.blockchains'='["ethereum"]',
-                                                        'dune.data_explorer.category'='abstraction',
-                                                        'dune.data_explorer.abstraction.type'='project',
-                                                        'dune.data_explorer.abstraction.name'='ironbank',
-                                                        'dune.data_explorer.contributors'='["michael"]');
-{% endset %}
-
-{% set ironbank_optmism_itokens %}
-ALTER VIEW ironbank_optimism.itokens  SET TBLPROPERTIES ('dune.public'='true',
-                                                        'dune.data_explorer.blockchains'='["optimism"]',
-                                                        'dune.data_explorer.category'='abstraction',
-                                                        'dune.data_explorer.abstraction.type'='project',
-                                                        'dune.data_explorer.abstraction.name'='ironbank',
-                                                        'dune.data_explorer.contributors'='["michael"]');
-{% endset %}
-
 
 {% set cow_protocol_ethereum_batches %}
 ALTER TABLE cow_protocol_ethereum.batches SET TBLPROPERTIES ('dune.public'='true',
@@ -957,8 +921,6 @@ ALTER TABLE cow_protocol_ethereum.batches SET TBLPROPERTIES ('dune.public'='true
 {% do run_query(cow_protocol_ethereum_solvers) %}
 {% do run_query(cow_protocol_ethereum_trades) %}
 {% do run_query(cow_protocol_ethereum_batches) %}
-{% do run_query(ironbank_ethereum_itokens) %}
-{% do run_query(ironbank_optmism_itokens) %}
 
 {% do log("Tables generated", info=True) %}
 {%- else -%}
