@@ -54,5 +54,5 @@ WITH raw_events AS (
 SELECT *
 FROM raw_events
 OUTER JOIN processed_events n ON raw_block_time = processed_block_time
-  AND raw_unique_trade_id = processed_trade_id
-WHERE NOT raw_unique_trade_id = processed_trade_id
+  AND raw_unique_trade_id = processed_unique_trade_id
+WHERE NOT raw_unique_trade_id = processed_unique_trade_id
