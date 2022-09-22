@@ -4,6 +4,7 @@ WITH raw_events AS (
   , evt_tx_hash AS raw_tx_hash
   , erc721Token AS raw_nft_contract_address
   , erc721TokenId AS raw_token_id
+  , evt_tx_hash || erc721Token || erc721TokenId AS raw_unique_trade_id
   FROM {{ source('element_ex_avalanche_c','ERC721OrdersFeature_evt_ERC721SellOrderFilled') }}
   WHERE evt_block_time >= '2022-04-15'
   AND evt_block_time < NOW() - interval '1 day' -- allow some head desync
@@ -12,6 +13,7 @@ WITH raw_events AS (
   , evt_tx_hash AS raw_tx_hash
   , erc721Token AS raw_nft_contract_address
   , erc721TokenId AS raw_token_id
+  , evt_tx_hash || erc721Token || erc721TokenId AS raw_unique_trade_id
   FROM {{ source('element_ex_avalanche_c','ERC721OrdersFeature_evt_ERC721BuyOrderFilled') }}
   WHERE evt_block_time >= '2022-04-15'
   AND evt_block_time < NOW() - interval '1 day' -- allow some head desync
@@ -20,6 +22,7 @@ WITH raw_events AS (
   , evt_tx_hash AS raw_tx_hash
   , erc1155Token AS raw_nft_contract_address
   , erc1155TokenId AS raw_token_id
+  , evt_tx_hash || erc1155Token || erc1155TokenId AS raw_unique_trade_id
   FROM {{ source('element_ex_avalanche_c','ERC1155OrdersFeature_evt_ERC1155SellOrderFilled') }}
   WHERE evt_block_time >= '2022-04-15'
   AND evt_block_time < NOW() - interval '1 day' -- allow some head desync
@@ -28,6 +31,7 @@ WITH raw_events AS (
   , evt_tx_hash AS raw_tx_hash
   , erc1155Token AS raw_nft_contract_address
   , erc1155TokenId AS raw_token_id
+  , evt_tx_hash || erc1155Token || erc1155TokenId AS raw_unique_trade_id
   FROM {{ source('element_ex_avalanche_c','ERC1155OrdersFeature_evt_ERC1155BuyOrderFilled') }}
   WHERE evt_block_time >= '2022-04-15'
   AND evt_block_time < NOW() - interval '1 day' -- allow some head desync
@@ -38,6 +42,7 @@ WITH raw_events AS (
   , tx_hash AS processed_tx_hash
   , nft_contract_address AS processed_nft_contract_address
   , token_id AS processed_token_id
+  , tx_hash || nft_contract_address || token_id AS processed_unique_trade_id
   FROM {{ ref('nft_trades') }}
   WHERE blockchain = 'avalanche_c'
     AND project = 'element'
