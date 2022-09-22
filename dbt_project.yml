@@ -31,6 +31,9 @@ models:
       ethereum:
         +schema: aave_ethereum
         +materialized: view
+      optimism:
+        +schema: aave_optimism
+        +materialized: view
 
     balancer:
       +schema: balancer
@@ -42,7 +45,7 @@ models:
     ens:
       +schema: ens
       +materialized: view
-  
+
     airdrop:
       +schema: airdrop
       +materialized: table
@@ -92,12 +95,30 @@ models:
       solana:
         +schema: opensea_solana
         +materialized: view
+    element:
+      +schema: element
+      +materialized: view
+      ethereum:
+        +schema: element_ethereum
+        +materialized: view
+      bnb:
+        +schema: element_bnb
+        +materialized: view
+      avalanche_c:
+        +schema: element_avalanche_c
+        +materialized: view
 
     looksrare:
       +schema: looksrare
       +materialized: view
       ethereum:
         +schema: looksrare_ethereum
+        +materialized: view
+    foundation:
+      +schema: foundation
+      +materialized: view
+      ethereum:
+        +schema: foundation_ethereum
         +materialized: view
 
     x2y2:
@@ -139,13 +160,13 @@ models:
       +schema: labels
       +materialized: view
 
-    addresses: 
+    addresses:
       +schema: addresses
       +materialized: table
-      ethereum: 
+      ethereum:
         +schema: addresses_ethereum
         +materialized: table
-      optimism: 
+      optimism:
         +schema: addresses_optimism
         +materialized: table
 
@@ -182,7 +203,7 @@ models:
       ethereum:
         +schema: sudoswap_ethereum
         +materialized: view
-  
+
     safe:
       +schema: safe
       +materialized: view
@@ -231,6 +252,15 @@ models:
         +schema: cow_protocol_ethereum
         +materialized: view
 
+    ironbank:
+      +schema: ironbank
+      +materialized: view
+      ethereum:
+        +schema: ironbank_ethereum
+        +materialized: view
+      optimism:
+        +schema: ironbank_optimism
+        +materialized: view
 seeds:
   spellbook:
     balances:

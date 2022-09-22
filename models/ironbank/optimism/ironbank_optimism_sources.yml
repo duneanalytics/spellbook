@@ -1,0 +1,37 @@
+version: 2
+
+sources:
+  - name: ironbank_optimism
+    description: "decoded events and function calls for ironbank on optimism"
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: CErc20Delegator_evt_AccrueInterest
+        loaded_at_field: call_block_time
+      - name: CErc20Delegator_evt_Mint
+        loaded_at_field: call_block_time
+      - name: CErc20Delegator_evt_Redeem
+        loaded_at_field: call_block_time
+      - name: CErc20Delegator_evt_Borrow
+        loaded_at_field: call_block_time
+      - name: CErc20Delegator_evt_RepayBorrow
+        loaded_at_field: call_block_time
+      - name: CErc20Delegator_evt_LiquidateBorrow
+        loaded_at_field: call_block_time
+      - name: CErc20Delegator_evt_NewReserveFactor
+        loaded_at_field: call_block_time
+      - name: CErc20Delegator_evt_ReservesAdded
+        loaded_at_field: call_block_time
+      - name: CErc20Delegator_evt_ReservesReduced
+        loaded_at_field: call_block_time
+      - name: CErc20Delegator_evt_Transfer
+        loaded_at_field: call_block_time
+      - name: CErc20Delegator_evt_NewComptroller
+        loaded_at_field: call_block_time
+      - name: CErc20Delegator_evt_NewCollateralCap
+        loaded_at_field: call_block_time
+      - name: CErc20Delegator_evt_Flashloan
+        loaded_at_field: call_block_time
+      - name: CErc20Delegator_evt_UserCollateralChanged
+        loaded_at_field: call_block_time
