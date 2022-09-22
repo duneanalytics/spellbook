@@ -81,7 +81,7 @@ class PRJobDepedencyManager:
         ref_names = [ref_name for ref_name in ref_names if 'source' not in ref_name]
         new_refs = self.fetch_new_object_keys(object_type='model')
         for new_ref in new_refs:
-            ref_names.remove(new_ref)
+            ref_names = [ref for ref in ref_names if ref != new_ref]
         return ref_names
 
     @staticmethod
@@ -136,7 +136,7 @@ class PRJobDepedencyManager:
 CREATE OR REPLACE VIEW $pr_name AS
 SELECT * FROM $prod_name;
 {% endset %}
-                          
+
 {% do run_query($var) %}
 """)
             view_command = view_template.substitute(var=prod_name.replace('.', ''), prod_name=prod_name,
