@@ -124,6 +124,12 @@ models:
       ethereum:
         +schema: balances_ethereum
         +materialized: view
+    balancer:
+      +schema: balancer
+      +materialized: view
+      ethereum:
+        +schema: balancer_ethereum
+        +materialized: view
 
     labels:
       +schema: labels
