@@ -35,6 +35,9 @@ trades_with_prices AS (
                              ON sellToken = ps.contract_address
                                  AND ps.minute = date_trunc('minute', evt_block_time)
                                  AND ps.blockchain = 'ethereum'
+                                 {% if is_incremental() %}
+                                 AND ps.minute >= date_trunc("day", now() - interval '1 week')
+                                 {% endif %}
              LEFT OUTER JOIN {{ source('prices', 'usd') }} as pb
                              ON pb.contract_address = (
                                  CASE
@@ -44,6 +47,9 @@ trades_with_prices AS (
                                      END)
                                  AND pb.minute = date_trunc('minute', evt_block_time)
                                  AND pb.blockchain = 'ethereum'
+                                 {% if is_incremental() %}
+                                 AND pb.minute >= date_trunc("day", now() - interval '1 week')
+                                 {% endif %}
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
@@ -94,6 +100,9 @@ order_ids as (
     from (  select orderUid, evt_tx_hash, evt_index
             from {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }}
                      sort by evt_index
+             {% if is_incremental() %}
+             AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+             {% endif %}
          ) as _
     group by evt_tx_hash
 ),
@@ -118,6 +127,9 @@ trade_data as (
            posexplode(trades)
     from {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_call_settle') }}
     where call_success = true
+    {% if is_incremental() %}
+    AND call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 ),
 
 uid_to_app_id as (
