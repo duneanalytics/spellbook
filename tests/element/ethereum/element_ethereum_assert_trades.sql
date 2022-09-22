@@ -43,7 +43,7 @@ WITH raw_events AS (
   , nft_contract_address AS processed_nft_contract_address
   , token_id AS processed_token_id
   , tx_hash || nft_contract_address || token_id AS processed_unique_trade_id
-  FROM {{ ref('nft_trades') }}
+  FROM {{ ref('element_ethereum_events') }}
   WHERE blockchain = 'ethereum'
     AND project = 'element'
     AND version = 'v1'
