@@ -12,8 +12,6 @@ models:
         Balances on Balancer, an automated portfolio manager and trading platform on Ethereum.
    columns:
     - name: day
-      tests:
-      - not_null
       description: Block time per day
     - name: pool
       description: Pool contract address
