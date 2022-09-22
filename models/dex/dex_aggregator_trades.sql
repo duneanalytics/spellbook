@@ -26,8 +26,7 @@ FROM
 --             token_bought_address,
 --             token_sold_address,
 --             taker,
--- -- I don't believe this is necessary here... unless for 1inch, the maker is the router contract..
---             NULL as maker,
+--             maker,
 --             project_contract_address,
 --             tx_hash,
 --             tx_from,
