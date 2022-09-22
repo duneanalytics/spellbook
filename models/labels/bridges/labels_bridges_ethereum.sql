@@ -1,4 +1,4 @@
-{{config(alias='cex_ethereum',
+{{config(alias='bridges_ethereum',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",
