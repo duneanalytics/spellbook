@@ -28,7 +28,6 @@ FROM (VALUES
     , (array('ethereum'), '0xa3a7b6f88361f48403514059f1f16c8e78d60eec', 'Arbitrum One: L1 ERC20 Gateway', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
     , (array('ethereum'), '0x72ce9c846789fdb6fc1f34ac4ad25dd9ef7031ef', 'Arbitrum One: L1 Gateway Router', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
     , (array('ethereum'), '0xd92023e9d9911199a6711321d1277285e6d4e2db', 'Arbitrum One: Wrapped Ether Gateway', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
-    , (array('ethereum'), '0x8315177ab297ba92a06054ce80a67ed4dbd7ed3a', 'Arbitrum: Bridge', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
     , (array('ethereum'), '0xa10c7ce4b876998858b1a9e12b10092229539400', 'Arbitrum: DAI L1 Escrow', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
     , (array('ethereum'), '0x4dbd4fc535ac27206064b68ffcf827b0a60bab3f', 'Arbitrum: Delayed Inbox', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
     , (array('ethereum'), '0x667e23abd27e623c11d4cc00ca3ec4d0bd63337a', 'Arbitrum: Outbox', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
