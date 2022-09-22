@@ -1,6 +1,12 @@
 {{ config(
-        alias ='events'
-)
+    schema = 'element_bnb',
+    alias = 'events',
+    partition_by = ['block_date'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'unique_trade_id']
+    )
 }}
 
 WITH element_txs AS (
