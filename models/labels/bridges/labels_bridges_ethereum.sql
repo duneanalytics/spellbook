@@ -114,4 +114,4 @@ FROM (VALUES
     , (array('ethereum'), '0x43298f9f91a4545df64748e78a2c777c580573d6', 'Across Protocol: Badger Bridge Pool', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
     , (array('ethereum'), '0x30b44c676a05f1264d1de9cc31db5f2a945186b6', 'Across Protocol: Bridge Admin', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
     , (array('ethereum'), '0xdfe0ec39291e3b60aca122908f86809c9ee64e90', 'Across Protocol: UMA Bridge Pool', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
-    ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at)
+    ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at);
