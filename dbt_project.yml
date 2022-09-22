@@ -82,6 +82,18 @@ models:
       solana:
         +schema: opensea_solana
         +materialized: view
+    element:
+      +schema: element
+      +materialized: view
+      ethereum:
+        +schema: element_ethereum
+        +materialized: view
+      bnb:
+        +schema: element_bnb
+        +materialized: view
+      avalanche_c:
+        +schema: element_avalanche_c
+        +materialized: view
     looksrare:
       +schema: looksrare
       +materialized: view
