@@ -1,0 +1,22 @@
+models:
+  - name: balancer_ethereum_balances_daily
+    meta:
+      blockchain: ethereum
+      project: balancer
+      contributors: 1chioku
+    config:
+      tags: ['ethereum','balancer','balances','erc20']
+    description: >
+        Daily aggregated balances or ERC20 tokens on the Balancer DeFi protocol on Ethereum.
+    columns:
+      - &label
+        name: day
+        description: "UTC event block time truncated to the day mark."
+      - name: pool
+        description: "Pool Contract address for Balancer V1 and vault contract for Balancer V2"
+        tests:
+        - not_null
+      - name: token
+        description: "Contract address for token"
+      - name: cumulative_amount
+        description: "Cumulative amount of ERC20 token held before taking into account token decimals"
