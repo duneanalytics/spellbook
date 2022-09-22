@@ -130,6 +130,12 @@ models:
       ethereum:
         +schema: seaport_ethereum
         +materialized: view
+    balancer:
+      +schema: balancer
+      +materialized: view
+      ethereum:
+        +enabled: true
+        +schema: balancer_ethereum
     balances:
       +schema: balances
       +materialized: view
@@ -230,12 +236,6 @@ models:
         +materialized: view
 seeds:
   spellbook:
-    balancer:
-      +schema: balancer
-      +materialized: view
-      ethereum:
-        +enabled: true
-        +schema: balancer_ethereum
     balances:
       ethereum:
         +enabled: true
