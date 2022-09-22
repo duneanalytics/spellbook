@@ -80,30 +80,16 @@ cumulative_balance_by_token as (
     from daily_delta_balance_by_token
 ),
 
-calendar as (
-    select explode(sequence(to_date('2022-01-01'), current_date, interval 1 day))
-),
-
-running_cumulative_balance_by_token_deprecated as (
-    select
-        c.day,
-        pool,
-        token,
-        cumulative_amount
-    from calendar c
-    left join cumulative_balance_by_token b on b.day <= c.day and c.day < b.day_of_next_change
-),
-
 running_cumulative_balance_by_token as (
     select
-        dateadd(b.day, i) as `day`,
+        date_format(date_add(b.`day`, i), 'yyyy-MM-dd') as `day`,
         pool,
         token,
         cumulative_amount
     from cumulative_balance_by_token b
         lateral view outer
-        posexplode(split(space(datediff(day_of_next_change, b.day)), ' ')) temp as i,x
-    where to_date('2022-01-01') <= b.day and b.bay <= current_date
+        posexplode(split(space(datediff(day_of_next_change, b.`day`)), ' ')) temp as i,x
+    where to_date('2022-01-01') <= b.day and b.day <= current_date
 )
 
 select
