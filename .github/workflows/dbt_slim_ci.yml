@@ -29,6 +29,9 @@ jobs:
         with:
           name: partial_parse
 
+      - name: dbt dependencies
+        run: "dbt deps"
+
       - name: make manifest against main
         run: "dbt compile --target-path . "
 
