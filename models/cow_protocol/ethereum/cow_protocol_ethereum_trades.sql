@@ -1,7 +1,7 @@
 {{  config(
         alias='trades',
         materialized='incremental',
-        unique_key = ['tx_hash', 'order_uid'],
+        unique_key = ['tx_hash', 'order_uid', 'evt_index'],
         on_schema_change='fail',
         file_format ='delta',
         incremental_strategy='merge',
