@@ -1,5 +1,0 @@
-sources:
-- name: erc20_ethereum
-  description: "Transfers events for ERC20 tokens."
-   tables:
-     - name: evt_transfer
