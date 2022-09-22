@@ -1,0 +1,28 @@
+version: 2
+sources:
+  - name : balancer_ethereum
+    
+    tables:
+      - name: BFactory_evt_LOG_NEW_POOL
+        description: "Events that are emitted every time a new pool is created."
+        freshness:
+          warn after: { count: 12, period: hour}
+          error_after: {count: 24, period: hour}
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address 
+            description: "The factory contract address that creates pools"
+          - name: evt_tx_hash
+            description: "Specific identifier hash of a pool created transaction"
+          - name: evt_index
+            description: "Denotes a function signatures chronological position under a transaction hash."
+          - name: evt_block_time
+            description: "A timestamp of when the events occurr in UTC" 
+          - name: caller
+            description: "User proxy contract that signs the transaction  to create a pool" 
+          - name: pool
+            description: "Contract_address of the pool created"
+          - name: evt_block_number
+            description: "The block number within which the pool creation event happened" 
+
+
