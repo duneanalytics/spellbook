@@ -19,11 +19,11 @@ class PRJobDepedencyManager:
         :return: modified_objects
         """
         if object_type == 'test':
-            test_filter = "--select test_type:singular"
+            test_filter = "test_type:singular"
         else:
             test_filter = ''
         bash_response = subprocess.run(
-            f'dbt list --output name --resource-type {object_type} --select state:{state} --state  . {test_filter}',
+            f'dbt list --output name --resource-type {object_type} --select state:{state} {test_filter} --state  .',
             capture_output=True, shell=True).stdout.decode("utf-8")
         if "Runtime Error" in bash_response:
             raise Exception(bash_response)
