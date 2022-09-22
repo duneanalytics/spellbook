@@ -23,9 +23,6 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
 
-      - name: automatic rebase
-        uses: cirrus-actions/rebase@1.5
-
       - uses: actions/download-artifact@v3
         continue-on-error: true
         with:

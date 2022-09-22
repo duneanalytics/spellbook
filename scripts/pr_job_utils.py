@@ -33,6 +33,7 @@ class PRJobDepedencyManager:
             modified_names = bash_response.split('\n')
             modified_names.remove('')
             modified_objects = [f"{object_type}.spellbook.{name}" for name in modified_names]
+        print(modified_objects)
         return modified_objects
 
     def fetch_new_object_keys(self, object_type):
