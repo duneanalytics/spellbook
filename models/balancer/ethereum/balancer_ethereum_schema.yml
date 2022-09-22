@@ -1,0 +1,26 @@
+version: 2
+
+models:
+ - name: balancer_ethereum_balances
+   meta:
+     blockchain: ethereum
+     project: balancer
+     contributors: spiritbro1
+   config:
+     tags: ['balances','ethereum','balancer']
+   description: >
+        Balances on Balancer, an automated portfolio manager and trading platform on Ethereum.
+   columns:
+    - name: day
+      tests:
+      - not_null
+      description: Block time per day
+    - name: pool
+      description: Pool contract address
+    - name: token
+      description: Token contract address
+    - name: cumulative_amount
+      description: Cumulative amount of token
+
+
+  
