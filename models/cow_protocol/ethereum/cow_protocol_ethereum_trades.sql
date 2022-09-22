@@ -99,10 +99,10 @@ order_ids as (
     select evt_tx_hash, collect_list(orderUid) as order_ids
     from (  select orderUid, evt_tx_hash, evt_index
             from {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }}
-                     sort by evt_index
              {% if is_incremental() %}
-             AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+             where evt_block_time >= date_trunc("day", now() - interval '1 week')
              {% endif %}
+                     sort by evt_index
          ) as _
     group by evt_tx_hash
 ),
