@@ -7,7 +7,7 @@ models:
       sector: dex
       contributors: jeff-dude, bh2smith
     config:
-      tags: ['ethereum', 'trades', 'dexes', 'aggregators', 'cross-chain']
+      tags: ['ethereum', 'trades', 'amm', 'dex', 'aggregator', 'cross-chain']
     description: >
       DEX trades on all chains across all contracts and versions including both AMM and aggregator trades
     columns:
@@ -92,7 +92,7 @@ models:
       sector: dex
       contributors: jeff-dude
     config:
-      tags: ['ethereum','trades', 'dex','cross-chain']
+      tags: ['ethereum', 'trades', 'amm', 'dex','cross-chain']
     description: >
         AMM trades on all chains across all contracts and versions
     columns:
@@ -138,7 +138,7 @@ models:
       sector: dex
       contributors: bh2smith
     config:
-      tags: ['ethereum','dex','trades', 'aggregator','cross-chain']
+      tags: ['ethereum', 'aggregator', 'dex', 'trades', 'cross-chain']
     description: >
       Aggregator trades on all chains across all contracts and versions
     columns:
