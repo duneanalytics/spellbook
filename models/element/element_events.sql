@@ -1,5 +1,9 @@
 {{ config(
-        alias ='events'
+        alias ='events',
+        post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c"]\',
+                                            "project",
+                                            "element",
+                                            \'["hildobby"]\') }}'
 )
 }}
 
