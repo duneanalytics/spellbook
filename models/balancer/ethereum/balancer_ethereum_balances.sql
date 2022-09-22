@@ -1,5 +1,6 @@
 {{config(
       alias='balances'
+     
 )}}
 
 WITH
@@ -17,7 +18,7 @@ WITH
       e.contract_address AS token,
       value as amount
     FROM
-      {{ source( 'erc20_ethereum', 'evt_Transfer') }} e
+      {{ source('erc20_ethereum', 'evt_Transfer') }} e
       INNER JOIN pools_list p ON e.`to` = p.pools
     WHERE
       evt_block_time >= to_date('2020-02-27') -- first pool creation date V1
@@ -29,7 +30,7 @@ WITH
       e.contract_address AS token,
       value as amount
     FROM
-    {{ source( 'erc20_ethereum', 'evt_Transfer') }} e
+    {{ source('erc20_ethereum', 'evt_Transfer') }} e
     WHERE
       e.evt_block_time >= to_date('2021-04-19 ') --first date the Balancer V2 Vault contract was deployed
       AND e.`to` = lower('0xBA12222222228d8Ba445958a75a0704d566BF2C8')
@@ -41,7 +42,7 @@ WITH
       e.contract_address AS token,
       - value as amount
     FROM
-      {{ source( 'erc20_ethereum' ,'evt_Transfer') }} e
+      {{ source('erc20_ethereum' ,'evt_Transfer') }} e
       INNER JOIN pools_list p ON e.`from` = p.pools
     WHERE
       evt_block_time >= to_date('2020-02-28')
