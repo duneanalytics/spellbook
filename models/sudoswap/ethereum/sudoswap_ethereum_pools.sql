@@ -1,7 +1,7 @@
 {{
  config(
        alias='pools',
-       partition_by = ['block_date'],
+       partition_by = ['pool_address'],
        materialized = 'incremental',
        file_format = 'delta',
        incremental_strategy = 'merge',
@@ -12,6 +12,8 @@
                                    \'["niftytable"]\') }}'
       )
 }}
+
+{% set project_start_date = '2022-04-23' %}
 
 WITH
   pairs_created AS (
@@ -41,10 +43,6 @@ WITH
       INNER JOIN {{ source('ethereum','transactions') }} tx ON tx.hash = cre.call_tx_hash
     WHERE
       call_success
-    {% if is_incremental() %}
-    -- this filter will only be applied on an incremental run. We only want to update with new transactions.
-    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
   ),
   most_recent_spot_delta AS (
     SELECT
@@ -127,14 +125,15 @@ WITH
         FROM
           {{ source('ethereum','traces') }} tr
           JOIN pairs_created pc ON pc.pair_address = tr.to
-        WHERE
-          tr.block_time > '2022-04-23'
-          AND tr.success = true
+        WHERE tr.success = true
           AND tr.type = 'call'
           AND (
             tr.call_type NOT IN ('delegatecall', 'callcode', 'staticcall')
             OR tr.call_type IS null
           )
+          {% if not is_incremental() %}
+          AND tr.block_time > '{{project_start_date}}'
+          {% endif %}
           {% if is_incremental() %}
           -- this filter will only be applied on an incremental run. We only want to update with new traces.
           AND tr.block_time >= date_trunc("day", now() - interval '1 week')
@@ -149,14 +148,15 @@ WITH
         FROM
           {{ source('ethereum','traces') }} tr
           JOIN pairs_created pc ON pc.pair_address = tr.FROM
-        WHERE
-          tr.block_time > '2022-04-23'
-          AND tr.success = true
+        WHERE tr.success = true
           AND tr.type = 'call'
           AND (
             tr.call_type NOT IN ('delegatecall', 'callcode', 'staticcall')
             OR tr.call_type IS null
           )
+          {% if not is_incremental() %}
+          AND tr.block_time > '{{project_start_date}}'
+          {% endif %}
           {% if is_incremental() %}
           -- this filter will only be applied on an incremental run. We only want to update with new traces.
           AND tr.block_time >= date_trunc("day", now() - interval '1 week')
@@ -245,6 +245,10 @@ WITH
             FROM
               pairs_created
           )
+          {% if is_incremental() %}
+          -- this filter will only be applied on an incremental run. We only want to update with new traces.
+          AND block_time >= date_trunc("day", now() - interval '1 week')
+          {% endif %}
       ) a
     GROUP BY
       1
