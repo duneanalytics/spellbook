@@ -111,6 +111,17 @@ OPTIMIZE cow_protocol_ethereum.trades;
 OPTIMIZE cow_protocol_ethereum.batches;
 {% endset %}
 
+{% set balancer_ethereum_balances %}
+ALTER VIEW balancer_ethereum.balances SET TBLPROPERTIES('dune.public'='true',
+                                                   'dune.data_explorer.blockchains'='["ethereum"]',
+                                                   'dune.data_explorer.category'='abstraction',
+                                                   'dune.data_explorer.abstraction.type'='project',
+                                                   'dune.data_explorer.abstraction.name'='balancer',
+                                                   'dune.data_explorer.contributors'='["Hosuke"]');
+{% endset %}
+
+
+{% do run_query(balancer_ethereum_balances) %}
 
 {% do run_query(looksrare_ethereum_events) %}
 {% do run_query(magiceden_solana_events) %}
