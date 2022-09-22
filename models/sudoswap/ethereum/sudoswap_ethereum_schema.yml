@@ -223,3 +223,54 @@ models:
       - *tx_from
       - *tx_to
       - *unique_trade_id
+
+  - name: sudoswap_ethereum_pools
+    meta:
+      blockchain: ethereum
+      project: sudoswap
+      contributors: [niftytable]
+    config:
+      tags: ['ethereum','sudoswap','pools']
+    description: >
+        sudoswap pools on Ethereum
+    columns:
+      - name: pool_address
+        description: "Address of the pool"
+      - name: nftcontractaddress
+        description: "Contract of the NFT collection"
+      - name: creator_address
+        description: "Address of the pool creator"
+      - name: spotprice
+        description: "Current price of a swap"
+      - name: nft_balance
+        description: "Number of NFTs in the pool"
+      - name: eth_balance
+        description: "Amount of ETH in the pool"
+      - name: eth_volume
+        description: "ETH trading volume of the pool"
+      - name: nfts_traded
+        description: "Number of NFTs traded by the pool"
+      - name: usd_volume
+        description: "USD trading volume of the pool"
+      - name: owner_fee_volume_eth
+        description: "Fees collected by pool owner"
+      - name: platform_fee_volume_eth
+        description: "Fees collected by the protocol"
+      - name: pooltype
+        description: "Type of pool"
+      - name: pricing_type
+        description: "Type of pricing"
+      - name: delta
+        description: "Change in price caused by one trade"
+      - name: days_passed
+        description: "Days since pool was created"
+      - name: initial_price
+        description: "Initial spot price of the pool"
+      - name: initial_nft_count
+        description: "Initial NFT balance of the pool"
+      - name: initial_eth
+        description: "Initial ETH balance of the pool"
+      - name: eth_change_trading
+        description: "Change in ETH balance caused by trading"
+      - name: nft_change_trading
+        description: "Change in NFT balance caused by trading"
