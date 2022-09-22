@@ -80,8 +80,12 @@ class PRJobDepedencyManager:
             ref_names.extend(node['depends_on']['nodes'])
         ref_names = [ref_name for ref_name in ref_names if 'source' not in ref_name]
         new_refs = self.fetch_new_object_keys(object_type='model')
-        for new_ref in new_refs:
+        modifed_refs = self.fetch_modified_object_keys(object_type='model')
+        # Remove any dependencies that are created in the pr
+        for new_ref in (new_refs + modifed_refs):
             ref_names = [ref for ref in ref_names if ref != new_ref]
+        # Deduplicate refs
+        ref_names = list(set(ref_names))
         return ref_names
 
     @staticmethod
