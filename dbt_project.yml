@@ -31,6 +31,9 @@ models:
       ethereum:
         +schema: aave_ethereum
         +materialized: view
+      optimism:
+        +schema: aave_optimism
+        +materialized: view
     ens:
       +schema: ens
       +materialized: view

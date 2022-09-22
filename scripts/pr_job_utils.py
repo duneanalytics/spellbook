@@ -12,9 +12,9 @@ class PRJobDepedencyManager:
         self.manifest_dict = json.load(open(Path('../target/manifest.json')))
         self.nodes = self.manifest_dict["nodes"]
 
-    def fetch_modified_object_keys(self, object_type):
+    def fetch_object_keys_by_state(self, object_type, state):
         """
-        Collected keys for modified objects
+        Collected keys for objects by state
         :param object_type:  accepted inputs: [model, test, seed]
         :return: modified_objects
         """
@@ -23,7 +23,7 @@ class PRJobDepedencyManager:
         else:
             test_filter = ''
         bash_response = subprocess.run(
-            f'dbt list --output name --resource-type {object_type} --select state:modified --state  . {test_filter}',
+            f'dbt list --output name --resource-type {object_type} --select state:{state} --state  . {test_filter}',
             capture_output=True, shell=True).stdout.decode("utf-8")
         if "Runtime Error" in bash_response:
             raise Exception(bash_response)
@@ -34,6 +34,22 @@ class PRJobDepedencyManager:
             modified_names.remove('')
             modified_objects = [f"{object_type}.spellbook.{name}" for name in modified_names]
         return modified_objects
+
+    def fetch_new_object_keys(self, object_type):
+        """
+        Collected keys for new objects
+        :param object_type:  accepted inputs: [model, test, seed]
+        :return: modified_objects
+        """
+        return self.fetch_object_keys_by_state(object_type, state='new')
+
+    def fetch_modified_object_keys(self, object_type):
+        """
+        Collected keys for modified objects
+        :param object_type:  accepted inputs: [model, test, seed]
+        :return: modified_objects
+        """
+        return self.fetch_object_keys_by_state(object_type, state='modified')
 
     def fetch_modified_node_keys(self):
         models = self.fetch_modified_object_keys(object_type="model")
@@ -63,6 +79,9 @@ class PRJobDepedencyManager:
         for node in modifed_nodes:
             ref_names.extend(node['depends_on']['nodes'])
         ref_names = [ref_name for ref_name in ref_names if 'source' not in ref_name]
+        new_refs = self.fetch_new_object_keys(object_type='model')
+        for new_ref in new_refs:
+            ref_names = [ref for ref in ref_names if ref != new_ref]
         return ref_names
 
     @staticmethod
@@ -117,7 +136,7 @@ class PRJobDepedencyManager:
 CREATE OR REPLACE VIEW $pr_name AS
 SELECT * FROM $prod_name;
 {% endset %}
-                          
+
 {% do run_query($var) %}
 """)
             view_command = view_template.substitute(var=prod_name.replace('.', ''), prod_name=prod_name,
@@ -132,6 +151,7 @@ SELECT * FROM $prod_name;
         refs = self.fetch_required_refs(modified_nodes)
         prod_names = self.compile_ref_production_names(refs)
         pr_names = self.compile_pr_job_names(refs, modified_nodes)
+
         self.generate_views_file(prod_names, pr_names)
 
 
