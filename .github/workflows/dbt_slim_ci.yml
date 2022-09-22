@@ -41,6 +41,10 @@ jobs:
       - name: dbt compile to create manifest to compare to
         run: "dbt compile"
 
+      - name: baseline
+        run: |
+          ls -la 
+
       - uses: actions/upload-artifact@v3
         with:
           name: partial_parse
