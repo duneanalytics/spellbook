@@ -1,8 +1,0 @@
---- 
-sources: 
-  - 
-    name: erc20_ethereum
-    tables: 
-      - 
-        name: evt_transfer
-version: 2
