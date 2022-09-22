@@ -11,7 +11,7 @@ General checks:
 * [ ] each sql file is a select statement and has only one view, table or function defined  
 * [ ] column names are `lowercase_snake_cased`
 * [ ] if adding a new model, I edited the dbt project YAML file with new directory path for both models and seeds (if applicable)
-* [ ] if adding a new model, I edited the alter table macro to display new database object (table or view) in UI explorer
+* [ ] if wanting to expose a model in the UI (Dune data explorer), I added a post-hook in the JINJA config to add metadata (blockchains, sector/project, name and contributors)
 * [ ] if adding a new materialized table, I edited the optimize table macro
 
 Join logic:

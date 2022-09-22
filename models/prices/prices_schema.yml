@@ -11,6 +11,7 @@ models:
     description: "Price tokens"
     columns:
       - name: token_id
+        description: "Id of the token at coinpaprika. This id is required to pull the price feed data. NOTE: Not all tokens are listed at coinpaprika - consider using price data from DEX sources in this case or submit a listing request at coinpaprika."
       - name: blockchain
         description: "Native blockchain of the token, if any"
       - name: contract_address
@@ -19,7 +20,7 @@ models:
         description: "Token symbol"
       - name: decimals
         description: "Number of decimals for the token contract"
-  - name: prices_latest
+  - name: prices_usd_latest
     meta:
       sector: prices
       contributors: hildobby
