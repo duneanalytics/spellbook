@@ -31,6 +31,7 @@ jobs:
         run: "/runner/change_schema.sh git_$GIT_SHA"
 
       - uses: actions/download-artifact@v3
+        continue-on-error: true
         with:
           name: partial_parse
 
