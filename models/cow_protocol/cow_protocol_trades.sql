@@ -1,5 +1,5 @@
 {{ config(
-        alias ='trades'
+        alias ='trades',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cow_protocol",
