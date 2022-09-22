@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+ - name: balancer_ethereum
+   description: "Transfers events for ERC20 tokens."
+   tables:
+     - name: bfactory_evt_log_new_pool
+       loaded_at_field: evt_block_time
+       freshness:
+         warn_after: { count: 12, period: hour }
+         error_after: { count: 24, period: hour }
+       columns:
+       - name: contract_address
+         description: "ERC20 token contract address"

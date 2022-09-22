@@ -230,6 +230,12 @@ models:
         +materialized: view
 seeds:
   spellbook:
+    balancer:
+      +schema: balancer
+      +materialized: view
+      ethereum:
+        +enabled: true
+        +schema: balancer_ethereum
     balances:
       ethereum:
         +enabled: true
