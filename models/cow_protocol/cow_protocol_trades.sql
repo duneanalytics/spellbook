@@ -26,7 +26,7 @@ FROM
             buy_token_address AS token_bought_address,
             sell_token_address AS token_sold_address,
             trader AS taker,
-            '' AS maker,
+            NULL AS maker,
             project_contract_address,
             tx_hash,
             trader AS tx_from,
