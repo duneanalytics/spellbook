@@ -143,9 +143,8 @@ models:
       ethereum:
         +schema: balancer_ethereum
         +materialized: view
-      optimism:
-        +schema: aave_optimism
-        +materialized: view
+
+    
 
     labels:
       +schema: labels
