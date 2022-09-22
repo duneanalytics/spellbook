@@ -97,9 +97,10 @@ WITH
         FROM
           {{ source('erc721_ethereum','evt_transfer') }}
         WHERE
-          to IN (
+          evt_block_time > '2022-04-23'
+        AND (contract_address, to) IN (
             SELECT
-              pair_address
+              (nftcontractaddress, pair_address)
             FROM
               pairs_created
           )
@@ -113,10 +114,11 @@ WITH
         FROM
           {{ source('erc721_ethereum','evt_transfer') }}
         WHERE
-        FROM
+          evt_block_time > '2022-04-23'
+        AND (contract_address, from)
           IN (
             SELECT
-              pair_address
+              (nftcontractaddress, pair_address)
             FROM
               pairs_created
           )
