@@ -32,7 +32,7 @@ WITH
       tx.value / 1e18 AS initial_eth
     FROM
       {{ source('sudo_amm_ethereum','LSSVMPairFactory_call_createPairETH') }} cre
-      LEFT JOIN {{ source('ethereum','transactions') }} tx ON tx.hash = cre.call_tx_hash
+      INNER JOIN {{ source('ethereum','transactions') }} tx ON tx.hash = cre.call_tx_hash
     WHERE
       call_success
   ),
