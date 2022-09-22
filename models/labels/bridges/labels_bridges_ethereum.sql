@@ -107,11 +107,4 @@ FROM (VALUES
     , (array('ethereum'), '0x4e67df0f232c3bc985f8a63326d80ce3d9a40400', 'Multichain: Shiden Network Bridge', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
     , (array('ethereum'), '0x8cc49fe67a4bd7a15674c4ffd4e969d94304bbbf', 'Multichain: Syscoin Bridge', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
     , (array('ethereum'), '0x57ed6bd35a6ce815079855cd0b21331d1d5d0a0e', 'Multichain: Telos Bridge', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
-    , (array('ethereum'), '0x8ed95d1746bf1e4dab58d8ed4724f1ef95b20db0', '0x: Erc20 Bridge Proxy', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
-    , (array('ethereum'), '0x0ac2d6f5f5afc669d3ca38f830dad2b4f238ad3f', '0x: Eth2Dai Bridge', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
-    , (array('ethereum'), '0xa6baaed2053058a3c8f11e0c7a9716304454b09e', '0x: Uniswap Bridge', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
-    , (array('ethereum'), '0x96e471b5945373de238963b4e032d3574be4d195', '0xHabitat: Rollup Bridge', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
-    , (array('ethereum'), '0x43298f9f91a4545df64748e78a2c777c580573d6', 'Across Protocol: Badger Bridge Pool', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
-    , (array('ethereum'), '0x30b44c676a05f1264d1de9cc31db5f2a945186b6', 'Across Protocol: Bridge Admin', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
-    , (array('ethereum'), '0xdfe0ec39291e3b60aca122908f86809c9ee64e90', 'Across Protocol: UMA Bridge Pool', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
     ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at);
