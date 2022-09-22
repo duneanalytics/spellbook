@@ -151,8 +151,10 @@ SELECT * FROM $prod_name;
 
     def main(self):
         modified_node_keys = self.fetch_modified_node_keys()
+        print(f"modified nodes: {modified_node_keys}")
         modified_nodes = self.parse_manifest_for_nodes(modified_node_keys)
         refs = self.fetch_required_refs(modified_nodes)
+        print(f"refs to build: {refs}")
         prod_names = self.compile_ref_production_names(refs)
         pr_names = self.compile_pr_job_names(refs, modified_nodes)
 

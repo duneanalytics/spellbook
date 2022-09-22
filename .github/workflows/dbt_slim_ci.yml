@@ -27,7 +27,7 @@ jobs:
         run: |
           echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-8)" >> $GITHUB_ENV
 
-      - name: Add git_sha to schema
+      - name: Add git_sha to dbt schema
         run: "/runner/change_schema.sh git_$GIT_SHA"
 
       - uses: actions/download-artifact@v3
