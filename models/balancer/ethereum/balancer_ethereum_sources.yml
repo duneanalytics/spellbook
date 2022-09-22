@@ -1,8 +1,8 @@
 --- 
 sources: 
   - 
-    description: "Creation events for new Balancer V1 pools."
     name: balancer_ethereum
     tables: 
       - 
         name: BFactory_evt_LOG_NEW_POOL
+version: 2

@@ -1,6 +1,8 @@
-version: 2
- 
+--- 
 sources: 
-  - name: erc20_ethereum
+  - 
+    name: erc20_ethereum
     tables: 
-      - name: evt_transfer
+      - 
+        name: evt_transfer
+version: 2
