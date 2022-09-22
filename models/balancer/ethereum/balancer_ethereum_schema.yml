@@ -12,6 +12,8 @@ models:
     description: >
         Balances on Balancer, an automated portfolio manager and trading platform on Ethereum.
     columns:
+      - name: cumulative_amount
+        description: "Net token amount as of the given day"
       - name: day
         tests:
           - not_null
@@ -19,6 +21,4 @@ models:
       - name: pool
         description: "Contract address of pool"
       - name: token
-        descripton: "Contract address of token transferred"
-      - name: cumulative_amount
-        description: "Net amount transferred as of the given day"
+        descripton: "Contract address of token"
