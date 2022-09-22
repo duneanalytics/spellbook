@@ -3,11 +3,10 @@
                                     "sector",
                                     "addresses",
                                     \'["hildobby"]\') }}')}}
+-- Source: https://etherscan.io/accounts/label/bridge
 
 SELECT address, bridge_name, description
-FROM (VALUES
-    -- Source: https://etherscan.io/accounts/label/bridge
-    	('0x8ed95d1746bf1e4dab58d8ed4724f1ef95b20db0', '0x', 'Erc20 Bridge Proxy')
+FROM (VALUES ('0x8ed95d1746bf1e4dab58d8ed4724f1ef95b20db0', '0x', 'Erc20 Bridge Proxy')
     , ('0x0ac2d6f5f5afc669d3ca38f830dad2b4f238ad3f', '0x', 'Eth2Dai Bridge')
     , ('0xa6baaed2053058a3c8f11e0c7a9716304454b09e', '0x', 'Uniswap Bridge')
     , ('0x96e471b5945373de238963b4e032d3574be4d195', '0xHabitat', 'Rollup Bridge')
