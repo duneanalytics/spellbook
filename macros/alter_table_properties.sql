@@ -686,14 +686,7 @@ ALTER VIEW archipelago_ethereum.fees  SET TBLPROPERTIES ('dune.public'='true',
 {% endset %}
 
 
-{% set balancer_ethereum_balances %}
-ALTER VIEW balancer_ethereum_balances SET TBLPROPERTIES ('dune.public'='true',
-                                                        'dune.data_explorer.blockchains'='["ethereum"]',
-                                                        'dune.data_explorer.category'='abstraction',
-                                                        'dune.data_explorer.abstraction.type'='project',
-                                                        'dune.data_explorer.abstraction.name'='balancer',
-                                                        'dune.data_explorer.contributors'='["scoffie"]');
-{% endset %}
+
 
 
 {% do run_query(balances_ethereum_erc20_day) %}
@@ -772,7 +765,7 @@ ALTER VIEW balancer_ethereum_balances SET TBLPROPERTIES ('dune.public'='true',
 {% do run_query(archipelago_ethereum_events) %}
 {% do run_query(archipelago_ethereum_trades) %}
 {% do run_query(archipelago_ethereum_fees) %}
-{% do run_query(balancer_ethereum_balances) %}
+
 
 {% do log("Tables generated", info=True) %}
 {%- else -%}
