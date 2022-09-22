@@ -48,7 +48,7 @@ jobs:
 
       - name: Get latest manifest
         env:
-          JOB_ID: "123193"
+          JOB_ID: "151797"
         run: "/runner/fetch_latest_manifest.py --dbt_job_id $JOB_ID"
 
       - name: create macro to define dependencies
