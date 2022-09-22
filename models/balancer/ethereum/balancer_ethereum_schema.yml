@@ -20,5 +20,9 @@ models:
         description: "Date we're reporting the cumulative amount until (inclusive)"
       - name: pool
         description: "Contract address of pool"
+        tests:
+          - not_null
       - name: token
         descripton: "Contract address of token"
+        tests:
+          - not_null
