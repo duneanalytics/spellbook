@@ -20,6 +20,18 @@ jobs:
     timeout-minutes: 60
 
     steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - uses: actions/download-artifact@v3
+        continue-on-error: true
+        with:
+          name: partial_parse
+
+      - name: make manifest against main
+        run: "dbt compile --target-path . "
+
       - name: Check out repository code
         uses: actions/checkout@v2
 
@@ -30,20 +42,23 @@ jobs:
       - name: Add git_sha to dbt schema
         run: "/runner/change_schema.sh git_$GIT_SHA"
 
-      - uses: actions/download-artifact@v3
-        continue-on-error: true
-        with:
-          name: partial_parse
-
       - name: dbt dependencies
         run: "dbt deps"
 
-      - name: dbt compile to create manifest to compare to
+      - name: create manifest against branch
         run: "dbt compile"
 
       - name: baseline
         run: |
           ls -la 
+
+      - name: baseline
+        run: |
+          ls -la target/
+
+      - name: baseline
+        run: |
+          pwd
 
       - uses: actions/upload-artifact@v3
         with:
