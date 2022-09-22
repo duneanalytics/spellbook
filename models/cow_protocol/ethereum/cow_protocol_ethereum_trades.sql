@@ -20,7 +20,7 @@ trades_with_prices AS (
     SELECT evt_block_time            as block_time,
            evt_tx_hash               as tx_hash,
            evt_index,
-           contract_address          as project_contract_address,
+           settlement.contract_address          as project_contract_address,
            owner                     as trader,
            orderUid                  as order_uid,
            sellToken                 as sell_token,
@@ -30,7 +30,7 @@ trades_with_prices AS (
            feeAmount                 as fee_amount,
            ps.price                  as sell_price,
            pb.price                  as buy_price
-    FROM {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }}
+    FROM {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }} settlement
              LEFT OUTER JOIN {{ source('prices', 'usd') }} as ps
                              ON sellToken = ps.contract_address
                                  AND ps.minute = date_trunc('minute', evt_block_time)
