@@ -236,11 +236,11 @@ models:
     columns:
       - name: pool_address
         description: "Address of the pool"
-      - name: nftcontractaddress
+      - name: nft_contract_address
         description: "Contract of the NFT collection"
       - name: creator_address
         description: "Address of the pool creator"
-      - name: spotprice
+      - name: spot_price
         description: "Current price of a swap"
       - name: nft_balance
         description: "Number of NFTs in the pool"
@@ -256,7 +256,7 @@ models:
         description: "Fees collected by pool owner"
       - name: platform_fee_volume_eth
         description: "Fees collected by the protocol"
-      - name: pooltype
+      - name: pool_type
         description: "Type of pool"
       - name: pricing_type
         description: "Type of pricing"

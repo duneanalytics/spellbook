@@ -1,10 +1,16 @@
 {{
  config(
        alias='pools',
+       partition_by = ['block_date'],
+       materialized = 'incremental',
+       file_format = 'delta',
+       incremental_strategy = 'merge',
+       unique_key = ['pool_address', 'nft_contract_address', 'creator_address'],
        post_hook='{{ expose_spells(\'["ethereum"]\',
                                    "project",
                                    "sudoswap",
-                                   \'["niftytable"]\') }}')
+                                   \'["niftytable"]\') }}'
+      )
 }}
 
 WITH
@@ -19,9 +25,9 @@ WITH
         WHEN _poolType = 0 THEN 'token'
         WHEN _poolType = 1 THEN 'nft'
         WHEN _poolType = 2 THEN 'trade'
-      END AS pooltype,
-      _spotPrice / 1e18 AS spotprice,
-      _nft AS nftcontractaddress,
+      END AS pool_type,
+      _spotPrice / 1e18 AS spot_price,
+      _nft AS nft_contract_address,
       _initialNFTIDs AS nft_ids,
       _fee AS initialfee,
       output_pair AS pair_address,
@@ -35,12 +41,16 @@ WITH
       INNER JOIN {{ source('ethereum','transactions') }} tx ON tx.hash = cre.call_tx_hash
     WHERE
       call_success
+    {% if is_incremental() %}
+    -- this filter will only be applied on an incremental run. We only want to update with new transactions.
+    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
   ),
   most_recent_spot_delta AS (
     SELECT
       COALESCE(del.contract_address, spot.contract_address) AS pair_address,
       del.delta,
-      spot.spotprice
+      spot.spot_price
     FROM
       (
         SELECT
@@ -70,7 +80,7 @@ WITH
           (
             SELECT
               contract_address,
-              newSpotPrice / 1e18 AS spotprice,
+              newSpotPrice / 1e18 AS spot_price,
               row_number() over (
                 PARTITION BY
                   contract_address
@@ -96,11 +106,15 @@ WITH
       ) AS tokens_held
     FROM
       {{ source('erc721_ethereum','evt_transfer') }} et
-      INNER JOIN pairs_created p ON p.nftcontractaddress = et.contract_address
+      INNER JOIN pairs_created p ON p.nft_contract_address = et.contract_address
       AND (
         et.to = p.pair_address
         OR et.from = p.pair_address
       )
+    {% if is_incremental() %}
+    -- this filter will only be applied on an incremental run. We only want to update with new transfers.
+    WHERE et.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     GROUP BY
       1
   ),
@@ -121,6 +135,10 @@ WITH
             tr.call_type NOT IN ('delegatecall', 'callcode', 'staticcall')
             OR tr.call_type IS null
           )
+          {% if is_incremental() %}
+          -- this filter will only be applied on an incremental run. We only want to update with new traces.
+          AND tr.block_time >= date_trunc("day", now() - interval '1 week')
+          {% endif %}
         GROUP BY
           1
       ),
@@ -139,6 +157,10 @@ WITH
             tr.call_type NOT IN ('delegatecall', 'callcode', 'staticcall')
             OR tr.call_type IS null
           )
+          {% if is_incremental() %}
+          -- this filter will only be applied on an incremental run. We only want to update with new traces.
+          AND tr.block_time >= date_trunc("day", now() - interval '1 week')
+          {% endif %}
         GROUP BY
           1
       )
@@ -154,18 +176,18 @@ WITH
   all_pairs_cleaned AS (
     SELECT
       pricing_type,
-      pooltype,
-      nftcontractaddress,
+      pool_type,
+      nft_contract_address,
       creator_address,
       COALESCE(mr.delta, pc.delta) AS delta --if delta was never updated, just keep original deploy delta
 ,
-      round(COALESCE(mr.spotprice, pc.spotprice), 4) as spotprice --same logic as above
+      round(COALESCE(mr.spot_price, pc.spot_price), 4) as spot_price --same logic as above
 ,
       nft_bal.tokens_held,
       round(COALESCE(eth_bal.eth_balance, 0), 4) as eth_balance,
       pc.pair_address AS raw_pair_address,
       days_passed,
-      pc.spotprice AS initial_price,
+      pc.spot_price AS initial_price,
       pc.initial_nft_count,
       pc.initial_eth
     FROM
@@ -229,9 +251,9 @@ WITH
   )
 SELECT
   acc.raw_pair_address AS pool_address,
-  nftcontractaddress,
+  nft_contract_address,
   creator_address,
-  spotprice,
+  spot_price,
   COALESCE(tokens_held, 0) AS nft_balance,
   COALESCE(eth_balance, 0) AS eth_balance,
   COALESCE(trade.eth_volume, 0) AS eth_volume,
@@ -239,7 +261,7 @@ SELECT
   COALESCE(trade.usd_volume, 0) AS usd_volume,
   COALESCE(trade.owner_fee_volume_eth, 0) AS owner_fee_volume_eth,
   COALESCE(trade.platform_fee_volume_eth, 0) as platform_fee_volume_eth,
-  pooltype,
+  pool_type,
   pricing_type,
   delta,
   days_passed,
