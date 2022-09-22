@@ -34,5 +34,5 @@ tx_hash,
 tx_from,
 tx_to,
 unique_trade_id
-FROM ({{ ref('x2y2_ethereum_events') }})
+FROM {{ ref('x2y2_ethereum_events') }}
 WHERE evt_type = 'Trade'

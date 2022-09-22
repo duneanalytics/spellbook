@@ -5,22 +5,22 @@
                                         \'["msilb7", "chuxinh"]\') }}') }}
 select 
   *
-from ({{ ref('ovm1_optimism_q1_user_address_daily_transactions') }})
+from {{ ref('ovm1_optimism_q1_user_address_daily_transactions') }}
 
 union all 
 
 select 
   *
-from ({{ ref('ovm1_optimism_q1_user_address_daily_transactions') }})
+from {{ ref('ovm1_optimism_q1_user_address_daily_transactions') }}
 
 union all
 
 select 
   *
-from ({{ ref('ovm1_optimism_q1_user_address_daily_transactions') }})
+from {{ ref('ovm1_optimism_q1_user_address_daily_transactions') }}
 
 union all
 
 select 
   *
-from ({{ ref('ovm1_optimism_q1_user_address_daily_transactions') }})
+from {{ ref('ovm1_optimism_q1_user_address_daily_transactions') }}
