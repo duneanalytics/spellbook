@@ -9,7 +9,7 @@ models:
     config: 
       tags: ['ethereum', 'balances' ]
     description: >
-        ERC20 Token balances on pools in Balancer per day; an automated portfolio manager and trading platform on Ethereum
+        ERC20 Token balances on pools in Balancer (an automated portfolio manager and trading platform on Ethereum) Per Day
     columns:
       - &day
         name: day

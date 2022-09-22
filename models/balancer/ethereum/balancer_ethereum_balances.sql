@@ -1,14 +1,14 @@
 {{config(
       alias='balances'
      
-)}}
+) }}
 
 WITH
   pools_list as ( -- This CTE lists all the pools contained in the Balancer protocol
     SELECT
       pool as pools
     FROM
-       {{source('balancer_ethereum', 'BFactory_evt_LOG_NEW_POOL') }}
+       {{ source('balancer_ethereum', 'BFactory_evt_LOG_NEW_POOL') }}
   ),
   transfer_details AS ( --This CTE details the inflows and outflows of ERC20 tokens into and out of the differenct balancer pools and vault
     SELECT
@@ -42,7 +42,6 @@ WITH
       e.contract_address AS token,
       - value as amount
     FROM
-      {{ source('erc20_ethereum' ,'evt_Transfer') }} e
       INNER JOIN pools_list p ON e.`from` = p.pools
     WHERE
       evt_block_time >= to_date('2020-02-28')
@@ -52,9 +51,9 @@ WITH
       e.`from` as pool,
       e.evt_block_time,
       e.contract_address AS token,
-      - value AS amount
+      -value AS amount
     FROM
-      {{ source( 'erc20_ethereum', 'evt_Transfer') }} e
+      {{ source('erc20_ethereum', 'evt_Transfer') }} e
     WHERE
       e.evt_block_time >= to_date('2021-04-19')
       AND e.`from` = lower('0xBA12222222228d8Ba445958a75a0704d566BF2C8')
@@ -98,7 +97,7 @@ WITH
   calendar AS (
     SELECT
       explode(
-        sequence(to_date('2020-02-27'), current_date, interval 1 day) -- the day the first balancer pool was created V1 and hence generate a series from there
+        sequence(to_date('2020-02-27'), current_date(), interval 1 day) -- the day the first balancer pool was created V1 and hence generate a series from there
       ) as day
   )
 , running_cumulative_balance_by_token_with_group AS ( --This CTE checks for tokens inside pools and if there are no transactions on a specfic day , maps the cumulative_amount                                                 -- from the previous day of last transaction
