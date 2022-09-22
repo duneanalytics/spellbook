@@ -32,7 +32,7 @@ WITH element_txs AS (
         , ee.evt_block_number AS block_number
         FROM {{ source('element_ex_avalanche_c','ERC721OrdersFeature_evt_ERC721SellOrderFilled') }} ee
         {% if is_incremental() %}
-        AND ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         
         UNION
@@ -59,7 +59,7 @@ WITH element_txs AS (
         , ee.evt_block_number AS block_number
         FROM {{ source('element_ex_avalanche_c','ERC721OrdersFeature_evt_ERC721BuyOrderFilled') }} ee
         {% if is_incremental() %}
-        AND ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         
         UNION
@@ -86,7 +86,7 @@ WITH element_txs AS (
         , ee.evt_block_number AS block_number
         FROM {{ source('element_ex_avalanche_c','ERC1155OrdersFeature_evt_ERC1155SellOrderFilled') }} ee
         {% if is_incremental() %}
-        AND ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         
         UNION
@@ -113,7 +113,7 @@ WITH element_txs AS (
         , ee.evt_block_number AS block_number
         FROM {{ source('element_ex_avalanche_c','ERC1155OrdersFeature_evt_ERC1155BuyOrderFilled') }} ee
         {% if is_incremental() %}
-        AND ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         )
     
