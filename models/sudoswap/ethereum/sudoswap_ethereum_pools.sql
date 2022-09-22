@@ -87,44 +87,20 @@ WITH
   ),
   erc721_balances AS (
     SELECT
-      holder_address,
-      sum(value) AS tokens_held
+      pair_address AS holder_address,
+      SUM(
+        CASE
+          WHEN et.to = p.pair_address THEN 1
+          ELSE -1
+        END
+      ) AS tokens_held
     FROM
-      (
-        SELECT
-          to AS holder_address,
-          count(evt_tx_hash) AS value
-        FROM
-          {{ source('erc721_ethereum','evt_transfer') }}
-        WHERE
-          evt_block_time > '2022-04-23'
-        AND (contract_address, to) IN (
-            SELECT
-              (nftcontractaddress, pair_address)
-            FROM
-              pairs_created
-          )
-        GROUP BY
-          1
-        union all
-        SELECT
-        FROM
-          AS holder_address,
-          count(evt_tx_hash) * -1 as value
-        FROM
-          {{ source('erc721_ethereum','evt_transfer') }}
-        WHERE
-          evt_block_time > '2022-04-23'
-        AND (contract_address, from)
-          IN (
-            SELECT
-              (nftcontractaddress, pair_address)
-            FROM
-              pairs_created
-          )
-        GROUP BY
-          1
-      ) a
+      {{ source('erc721_ethereum','evt_transfer') }} et
+      INNER JOIN pairs_created p ON p.nftcontractaddress = et.contract_address
+      AND (
+        et.to = p.pair_address
+        OR et.from = p.pair_address
+      )
     GROUP BY
       1
   ),
