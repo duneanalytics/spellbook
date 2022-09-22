@@ -3,7 +3,7 @@ version: 2
 models:
   - name: element_events
     meta:
-      blockchain: ethereum, solana
+      blockchain: ethereum, bnb, avalanche_c
       project: element
       contributors: hildobby
     config:
@@ -125,7 +125,7 @@ models:
 
   - name: element_trades
     meta:
-      blockchain: ethereum, solana
+      blockchain: ethereum, bnb, avalanche_c
       project: element
       contributors: hildobby
     config:
@@ -163,7 +163,7 @@ models:
 
   - name: element_mints
     meta:
-      blockchain: ethereum, solana
+      blockchain: ethereum, bnb, avalanche_c
       project: element
       contributors: hildobby
     config:
