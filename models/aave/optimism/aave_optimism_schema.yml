@@ -1,0 +1,27 @@
+version: 2
+
+models:
+ - name: aave_v3_optimism_interest_rates
+   meta:
+     blockchain: optimism
+     sector: dex
+     project: aave_v3
+     contibutors: batwayne, chuxinh
+
+   config:
+     tags: ['optimism', 'aave_v3', 'interest', 'aave', 'dex']
+   description: "Hourly aave interest rates on optimism"
+   columns:
+     - name: reserve
+       description: "Aave reserve contract address"
+     - name: symbol
+       description: "Symbol of the reserve"
+     - name: hour
+       description: "Block timestamp truncated to hours"
+     - name: deposit_apy
+       description: "Hourly deposit interest rate value of the reserve"
+     - name: stable_borrow_apy
+       description: "Hourly stable borrow interest rate value of the reserve" 
+     - name: variable_borrow_apy
+       description: "Hourly variable borrow interest rate value of the reserve" 
+       
