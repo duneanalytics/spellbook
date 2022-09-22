@@ -50,7 +50,7 @@ FROM (VALUES
     , ('0x74af8a878317e0f6e72e302fbcdf5f3009186398', 'Counterstake', 'Bridge')
     , ('0x4add6ab943e7908bb51e7878755d0ca322c898d6', 'Counterstake', 'USDC Bridge')
     , ('0x3be8a7d4aa3e9b723a718e1b83fe8a8b5c37871c', 'Counterstake', 'WBTC Bridge')
-    , ('0x43de2d77bf8027e25dbd179b491e8d64f38398aa', 'deBridgeGate')
+    , ('0x43de2d77bf8027e25dbd179b491e8d64f38398aa', 'deBridgeGate', NULL)
     , ('0x5d22045daceab03b158031ecb7d9d06fad24609b', 'DeversiFi', 'Bridge')
     , ('0xd54f502e184b6b739d7d27a6410a67dc462d69c8', 'dYdX', 'L2 Perpetual Smart Contract')
     , ('0x9280e0ffdfae4ec895fdf4d4978c9e1b869eb774', 'Evo DeFi', 'Bridge')
