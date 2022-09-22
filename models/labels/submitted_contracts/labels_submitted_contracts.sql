@@ -1,4 +1,9 @@
-{{config(alias='submitted_contracts')}}
+{{config(alias='submitted_contracts',
+        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c"]\',
+                                    "sector",
+                                    "labels",
+                                    \'["soispoke"]\') }}')
+}}
 
 SELECT array('ethereum') as blockchain,
        address, 

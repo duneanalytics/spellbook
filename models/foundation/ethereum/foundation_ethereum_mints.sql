@@ -1,6 +1,10 @@
  {{
   config(
-        alias='mints')
+        alias='mints',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "project",
+                                    "foundation",
+                                    \'["hildobby"]\') }}')
 }}
 
 SELECT blockchain,

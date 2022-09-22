@@ -1,5 +1,9 @@
 {{ config(
-        alias='erc1155_latest'
+        alias='erc1155_latest',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                            "sector",
+                                            "balances",
+                                            \'["soispoke"]\') }}'
         )
 }}
 SELECT

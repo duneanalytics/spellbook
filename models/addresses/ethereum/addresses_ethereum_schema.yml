@@ -17,3 +17,25 @@ models:
         description: "Name of centralised exchange"
       - name: distinct_name
         description: "Distinct name of centralised exchange address"
+  - name: addresses_ethereum_ofac_sanctioned
+    meta:
+      blockchain: ethereum
+      sector: ofac
+      project: addresses
+      contibutors: hildobby
+    config:
+      tags: ['table', 'ofac', 'sanctioned', 'addresses', 'ethereum']
+    description: "Known list of OFAC sanctioned addresses"
+    columns:
+      - name: address
+        description: "OFAC sanctioned address"
+      - name: protocol
+        description: "Name of protocol behind this OFAC sanctioned address"
+      - name: description
+        description: "Address description"
+      - name: blockchain
+        description: "Blockchain on which this address has been sanctioned by OFAC"
+      - name: currency_contract
+        description: "Contract address of OFAC sanctioned currency"
+      - name: currency_name
+        description: "Currency symbol of OFAC sanctioned currency"
