@@ -212,7 +212,7 @@ WITH
       sum(
         CASE
           WHEN trade_category = 'Sell' THEN -1 * amount_original
-          ELSE amount_original
+          ELSE (amount_original-platform_fee_amount)
         END
       ) AS eth_change_trading,
       sum(
