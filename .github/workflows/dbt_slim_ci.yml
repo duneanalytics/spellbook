@@ -30,16 +30,25 @@ jobs:
       - name: Add git_sha to schema
         run: "/runner/change_schema.sh git_$GIT_SHA"
 
-      - name: Get latest manifest
-        env:
-          JOB_ID: "123193"
-        run: "/runner/fetch_latest_manifest.py --dbt_job_id $JOB_ID"
+      - uses: actions/download-artifact@v3
+        with:
+          name: partial_parse
 
       - name: dbt dependencies
         run: "dbt deps"
 
       - name: dbt compile to create manifest to compare to
         run: "dbt compile"
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: partial_parse
+          path: /runner/target/partial_parse.msgpack
+
+      - name: Get latest manifest
+        env:
+          JOB_ID: "123193"
+        run: "/runner/fetch_latest_manifest.py --dbt_job_id $JOB_ID"
 
       - name: create macro to define dependencies
         working-directory: scripts
