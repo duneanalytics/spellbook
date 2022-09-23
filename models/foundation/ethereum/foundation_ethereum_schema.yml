@@ -2,6 +2,9 @@ version: 2
 
 models:
   - name: foundation_ethereum_events
+    tests:
+      - unique:
+          column_name: "(block_time || '-' || unique_trade_id)"
     meta:
       blockchain: ethereum
       project: foundation
@@ -122,8 +125,6 @@ models:
       - &unique_trade_id
         name: unique_trade_id
         description:  "Unique trade ID"
-        tests:
-          - unique
 
   - name: foundation_ethereum_trades
     meta:
