@@ -137,7 +137,7 @@ WITH raw_events AS (
   WHERE blockchain = 'ethereum'
     AND project = 'zora'
     AND version IN ('v1', 'v2', 'v3')
-    AND evt_block_time >= '2021-01-30'
+    AND block_time >= '2021-01-30'
     AND block_time < NOW() - interval '1 day' -- allow some head desync
   )
 
