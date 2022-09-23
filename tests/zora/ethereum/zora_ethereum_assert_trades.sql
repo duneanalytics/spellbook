@@ -5,7 +5,7 @@ WITH raw_events AS (
   , tokenContract AS raw_nft_contract_address
   , tokenId AS raw_token_id
   , evt_tx_hash || tokenContract || tokenId AS raw_unique_trade_id
-  FROM {{ source('zora_v3_ethereum','OffersV1_evt_ExchangeExecuted') }}
+  FROM {{ source('zora_v3_ethereum','OffersV1_evt_OfferFilled') }}
   WHERE evt_block_time >= '2021-01-30'
   AND evt_block_time < NOW() - interval '1 day' -- allow some head desync
   UNION
@@ -14,7 +14,7 @@ WITH raw_events AS (
   , tokenContract AS raw_nft_contract_address
   , tokenId AS raw_token_id
   , evt_tx_hash || tokenContract || tokenId AS raw_unique_trade_id
-  FROM {{ source('zora_v3_ethereum','AsksV1_0_evt_ExchangeExecuted') }}
+  FROM {{ source('zora_v3_ethereum','AsksV1_0_evt_AskFilled') }}
   WHERE evt_block_time >= '2021-01-30'
   AND evt_block_time < NOW() - interval '1 day' -- allow some head desync
   UNION
@@ -23,7 +23,7 @@ WITH raw_events AS (
   , tokenContract AS raw_nft_contract_address
   , tokenId AS raw_token_id
   , evt_tx_hash || tokenContract || tokenId AS raw_unique_trade_id
-  FROM {{ source('zora_v3_ethereum','AsksV1_1_evt_ExchangeExecuted') }}
+  FROM {{ source('zora_v3_ethereum','AsksV1_1_evt_AskFilled') }}
   WHERE evt_block_time >= '2021-01-30'
   AND evt_block_time < NOW() - interval '1 day' -- allow some head desync
   UNION
