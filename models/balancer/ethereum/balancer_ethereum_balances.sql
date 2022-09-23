@@ -105,7 +105,6 @@ balancer_outflows AS -- This CTE returns all the outflows of ERC20 from Balancer
         WHERE evt_block_time >= '2021-04-21 00:00' -- 2021-04-21 is the day on which the first Balancer V2 inbound transaction was effected
         ) e
     WHERE e.address = '0xba12222222228d8ba445958a75a0704d566bf2c8' -- Balancer V2 vault contract
-    -- AND e.contract_address IN (SELECT * FROM balancer_supported_ERC20) -- This is a temporary placeholder for an ERC20 filter
     GROUP BY 1, 2, 3
     ) ,
 
