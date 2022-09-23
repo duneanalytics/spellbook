@@ -278,6 +278,7 @@ SELECT 'ethereum' AS blockchain
     , 'zora' AS project
     , zt.version
     , zt.block_time
+    , date_trunc('day', zt.block_time) AS block_date
     , zt.block_number
     , zt.token_id
     , nft.name AS collection
