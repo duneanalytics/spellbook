@@ -13,8 +13,6 @@
             on m.tx_hash = seed.tx_hash
             and m.block_date = seed.block_date
             and m.blockchain = seed.blockchain
-            and m.underlying_asset = seed.underlying_asset
-            and m.market = seed.market
             and m.project = seed.project
             and m.version = seed.version
     )
