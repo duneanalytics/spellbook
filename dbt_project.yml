@@ -224,6 +224,26 @@ models:
     tornado_cash:
       +schema: tornado_cash
       +materialized: view
+    perpetual:
+      +schema: perpetual
+      +materialized: view
+    perpetual_protocol:
+      +schema: perpetual_protocol
+      +materialized: view
+      optimism:
+        +schema: perpetual_protocol_optimism
+        +materialized: view
+    pika:
+      +schema: pika
+      +materialized: view
+      optimism:
+        +schema: pika_optimism
+        +materialized: view
+    synthetix:
+      +schema: synthetix
+      +materialized: view
+      optimism:
+        +schema: synthetix_optimism
 
     archipelago:
       +schema: archipelago
