@@ -175,7 +175,7 @@ SELECT t.blockchain
 , t.blockchain || t.project || t.version || t.tx_hash || t.project_contract_address || t.token_id || t.buyer || t.seller AS unique_trade_id
 FROM all_foundation_trades t
 LEFT JOIN {{ ref('tokens_ethereum_nft') }} nft ON t.nft_contract_address=nft.contract_address
-LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} nft_t ON nft_t.evt_block_time=t.block_time
+INNER JOIN {{ source('erc721_ethereum','evt_transfer') }} nft_t ON nft_t.evt_block_time=t.block_time
     AND nft_t.evt_tx_hash=t.tx_hash
     AND nft_t.tokenId=t.token_id
     AND nft_t.from=t.seller
