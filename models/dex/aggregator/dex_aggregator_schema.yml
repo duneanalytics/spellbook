@@ -1,22 +1,22 @@
 version: 2
 
 models:
-  - name: dex_trades
+  - name: dex_aggregator_trades
     meta:
       blockchain: ethereum
       sector: dex
-      contributors: jeff-dude, bh2smith
+      contributors: bh2smith
     config:
-      tags: ['ethereum', 'trades', 'amm', 'dex', 'cross-chain']
+      tags: ['ethereum', 'aggregator', 'dex', 'trades', 'cross-chain']
     description: >
-      DEX trades on all chains across all contracts and versions including both AMM and aggregator trades
+      Aggregator trades on all chains across all contracts and versions
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain which the DEX project is deployed"
+        description: "Blockchain which the aggregator project is deployed"
       - &project
         name: project
-        description: "Name of DEX project"
+        description: "Name of aggregator project"
       - &version
         name: version
         description: "Version of the contract built and deployed by the project"
