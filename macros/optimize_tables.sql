@@ -107,6 +107,30 @@ OPTIMIZE ens.resolver_addresses;
 OPTIMIZE archipelago_ethereum.events;
 {% endset %}
 
+{% set pika_v1_optimism_trades %}
+OPTIMIZE pika_v1_optimism.trades;
+{% endset %}
+
+{% set pika_v2_optimism_trades %}
+OPTIMIZE pika_v2_optimism.trades;
+{% endset %}
+
+{% set pika_v3_optimism_trades %}
+OPTIMIZE pika_v3_optimism.trades;
+{% endset %}
+
+{% set synthetix_optimism_trades %}
+OPTIMIZE synthetix_optimism.trades;
+{% endset %}
+
+{% set perpetual_protocol_v2_optimism_trades %}
+OPTIMIZE perpetual_protocol_v2_optimism.trades;
+{% endset %}
+
+{% set perpetual_trades %}
+OPTIMIZE perpetual.trades;
+{% endset %}
+
 {% set foundation_ethereum_events %}
 OPTIMIZE foundation_ethereum.events;
 {% endset %}
@@ -149,6 +173,12 @@ OPTIMIZE cow_protocol_ethereum.batches;
 {% do run_query(uniswap_v2_ethereum_trades) %}
 {% do run_query(x2y2_ethereum_events) %}
 {% do run_query(archipelago_ethereum_events) %}
+{% do run_query(pika_v1_optimism_trades) %}
+{% do run_query(pika_v2_optimism_trades) %}
+{% do run_query(pika_v3_optimism_trades) %}
+{% do run_query(synthetix_optimism_trades) %}
+{% do run_query(perpetual_protocol_v2_optimism_trades) %}
+{% do run_query(perpetual_trades) %}
 {% do run_query(foundation_ethereum_events) %}
 {% do run_query(labels_all) %}
 {% do run_query(cow_protocol_ethereum_trades) %}
