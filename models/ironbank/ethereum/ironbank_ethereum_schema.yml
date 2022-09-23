@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: ironbank_ethereum_itokens
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: ironbank
+      contributors: michael
+    config:
+      tags: ['ethereum','ironbank','view']
+    description: >
+        IronBank itokens on Ethereum
+    columns:
+      - &symbol
+        name: symbol
+        description: "The symbol of the itoken"
+        tests:
+          - not_null
+      - &contract_address
+        name: contract_address
+        description: "The contract address of the itoken"
+        tests:
+          - not_null
+      - &decimals
+        name: decimals
+        description: "The decimals of the itoken"
+        tests:
+          - not_null
+      - &underlying_token_address
+        name: underlying_token_address
+        description: "The underlying address of the itoken"
+        tests:
+          - not_null
+      - &underlying_decimals
+        name: underlying_decimals
+        description: "The underlying decimals of the itoken"
+        tests:
+          - not_null
+      - &underlying_symbol
+        name: underlying_symbol
+        description: "The underlying symbol of the itoken"
+        tests:
+          - not_null
