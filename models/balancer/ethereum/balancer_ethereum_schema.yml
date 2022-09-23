@@ -29,3 +29,5 @@ models:
       - &cumulative_amount
         name: cumulative_amount
         description: "Cumulative amount of ERC20 token held before taking into account token decimals"
+        tests:
+          - not_null
