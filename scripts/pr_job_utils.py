@@ -93,7 +93,10 @@ class PRJobDepedencyManager:
         ref_names = []
         for node in modifed_nodes:
             ref_names.extend(node['depends_on']['nodes'])
-        ref_names = [ref_name for ref_name in ref_names if 'source' not in ref_name]
+        # remove sources
+        ref_names = [ref_name for ref_name in ref_names  if 'source' not in ref_name]
+        # remove seeds
+        ref_names = [ref_name for ref_name in ref_names  if 'seed' not in ref_name]
         new_refs = self.fetch_new_object_keys(object_type='model')
         modifed_refs = self.fetch_modified_object_keys(object_type='model')
         # Remove any dependencies that are created in the pr
