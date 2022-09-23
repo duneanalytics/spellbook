@@ -12,6 +12,45 @@
     )
 }}
 
+
+{% set project_start_date = '2017-09-27 00:00:00' %}
+
+{% set dai_ethereum_token = "0x6b175474e89094c44da98b954eedeac495271d0f" %}
+{% set usdc_ethereum_token = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48" %}
+{% set usdt_ethereum_token = "0xdac17f958d2ee523a2206206994597c13d831ec7" %}
+{% set proxy_susd_token = "0x57ab1ec28d129707052df4df418d58a2d46d5f51" %}
+
+{% set tusd_token = "0x0000000000085d4780b73119b644ae5ecd22b376" %}
+{% set busd_token = "0x4fabb145d64652a948d72533023f6e7a623c7c53" %}
+
+{% set ysusd_token = "0xf61718057901f84c4eec4339ef8f0d86d2b45600" %}
+{% set ycrv_token = "0xdf5e0e81dff6faf3a7e52ba697820c5e32d806a8" %}
+
+{% set cdai_token = "0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643" %}
+{% set cusdc_token = "0x39aa39c021dfbae8fac545936693ac917d5e7563" %}
+
+{% set ydai_token = "0x16de59092dae5ccf4a1e6439d611fd0653f0bd01" %}
+{% set yusdc_token = "0xd6ad7a6750a7593e092a9b218d66c0a814a3436e" %}
+{% set yusdt_token = "0x83f798e925bcd4017eb265844fddabb448f1707d" %}
+{% set ytusd_token = "0x73a052500105205d34daf004eab301916da8190f" %}
+
+{% set ydai_token3 = "0xc2cb1040220768554cf699b0d863a3cd4324ce32" %}
+{% set yusdc_token3 = "0x26ea744e5b887e5205727f55dfbe8685e3b21951" %}
+{% set yusdt_token3 = "0xe6354ed5bc4b393a5aad09f21c46e101e692d447" %}
+{% set ybusd_token = "0x04bc0ab673d88ae9dbc9da2380cb6b79c4bca9ae" %}
+
+{% set ycdai_token = "0x99d1fa417f94dcd62bfe781a1213c092a47041bc" %}
+{% set ycusdc_token3 = "0x9777d7e2b60bb01759d0e2f8be2095df444cb07e" %}
+{% set ycusdt_token3 = "0x1be5d71f2da660bfdee8012ddc58d024448a0a59" %}
+{% set usdp_token = "0x8e870d67f660d95d5be530380d0ec0bd388289e1" %}
+
+{% set renBTC_ethereum_token = "0xeb4c2781e4eba804ce9a9803c67d0893436bb27d" %}
+{% set wbtc_ethereum_token = "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599" %}
+{% set sBTC_ethereum_token = "0xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6" %}
+
+{% set weth_contract = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" %}
+{% set steth_contract = "0xae7ab96520de3a18e5e111b5eaab095312d7fe84" %}
+
 WITH dexs AS
 (
     -- Curvefi TokenExchange
@@ -24,16 +63,16 @@ WITH dexs AS
         tokens_sold AS token_sold_amount_raw,
         NULL AS amount_usd,
         CASE
-            WHEN bought_id = 0 THEN '0x6b175474e89094c44da98b954eedeac495271d0f'
-            WHEN bought_id = 1 THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-            WHEN bought_id = 2 THEN '0xdac17f958d2ee523a2206206994597c13d831ec7'
-            WHEN bought_id = 3 THEN '0x57ab1ec28d129707052df4df418d58a2d46d5f51'
+            WHEN bought_id = 0 THEN '{{dai_ethereum_token}}'
+            WHEN bought_id = 1 THEN '{{usdc_ethereum_token}}'
+            WHEN bought_id = 2 THEN '{{usdt_ethereum_token}}'
+            WHEN bought_id = 3 THEN '{{proxy_susd_token}}'
         END as token_bought_address,
         CASE
-            WHEN sold_id = 0 THEN '0x6b175474e89094c44da98b954eedeac495271d0f'
-            WHEN sold_id = 1 THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-            WHEN sold_id = 2 THEN '0xdac17f958d2ee523a2206206994597c13d831ec7'
-            WHEN sold_id = 3 THEN '0x57ab1ec28d129707052df4df418d58a2d46d5f51'
+            WHEN sold_id = 0 THEN '{{dai_ethereum_token}}'
+            WHEN sold_id = 1 THEN '{{usdc_ethereum_token}}'
+            WHEN sold_id = 2 THEN '{{usdt_ethereum_token}}'
+            WHEN sold_id = 3 THEN '{{proxy_susd_token}}'
         END as token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
@@ -53,16 +92,16 @@ WITH dexs AS
         tokens_sold AS token_sold_amount_raw,
         NULL AS amount_usd,
         CASE
-            WHEN bought_id = 0 THEN '0x6b175474e89094c44da98b954eedeac495271d0f'
-            WHEN bought_id = 1 THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-            WHEN bought_id = 2 THEN '0xdac17f958d2ee523a2206206994597c13d831ec7'
-            WHEN bought_id = 3 THEN '0x57ab1ec28d129707052df4df418d58a2d46d5f51'
+            WHEN bought_id = 0 THEN '{{dai_ethereum_token}}'
+            WHEN bought_id = 1 THEN '{{usdc_ethereum_token}}'
+            WHEN bought_id = 2 THEN '{{usdt_ethereum_token}}'
+            WHEN bought_id = 3 THEN '{{proxy_susd_token}}'
         END as token_bought_address,
         CASE
-            WHEN sold_id = 0 THEN '0x6b175474e89094c44da98b954eedeac495271d0f'
-            WHEN sold_id = 1 THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-            WHEN sold_id = 2 THEN '0xdac17f958d2ee523a2206206994597c13d831ec7'
-            WHEN sold_id = 3 THEN '0x57ab1ec28d129707052df4df418d58a2d46d5f51'
+            WHEN sold_id = 0 THEN '{{dai_ethereum_token}}'
+            WHEN sold_id = 1 THEN '{{usdc_ethereum_token}}'
+            WHEN sold_id = 2 THEN '{{usdt_ethereum_token}}'
+            WHEN sold_id = 3 THEN '{{proxy_susd_token}}'
         END as token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
@@ -81,12 +120,12 @@ WITH dexs AS
         tokens_sold AS token_sold_amount_raw,
         NULL AS amount_usd,
         CASE
-            WHEN bought_id = 0 THEN '0xf61718057901f84c4eec4339ef8f0d86d2b45600'
-            WHEN bought_id = 1 THEN '0xdf5e0e81dff6faf3a7e52ba697820c5e32d806a8'
+            WHEN bought_id = 0 THEN '{{ysusd_token}}'
+            WHEN bought_id = 1 THEN '{{ycrv_token}}'
         END as token_bought_address,
         CASE
-            WHEN sold_id = 0 THEN '0xf61718057901f84c4eec4339ef8f0d86d2b45600'
-            WHEN sold_id = 1 THEN '0xdf5e0e81dff6faf3a7e52ba697820c5e32d806a8'
+            WHEN sold_id = 0 THEN '{{ysusd_token}}'
+            WHEN sold_id = 1 THEN '{{ycrv_token}}'
         END as token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
@@ -105,12 +144,12 @@ WITH dexs AS
         tokens_sold AS token_sold_amount_raw,
         NULL AS amount_usd,
         CASE
-            WHEN bought_id = 0 THEN '0xf61718057901f84c4eec4339ef8f0d86d2b45600'
-            WHEN bought_id = 1 THEN '0xdf5e0e81dff6faf3a7e52ba697820c5e32d806a8'
+            WHEN bought_id = 0 THEN '{{ysusd_token}}'
+            WHEN bought_id = 1 THEN '{{ycrv_token}}'
         END as token_bought_address,
         CASE
-            WHEN sold_id = 0 THEN '0xf61718057901f84c4eec4339ef8f0d86d2b45600'
-            WHEN sold_id = 1 THEN '0xdf5e0e81dff6faf3a7e52ba697820c5e32d806a8'
+            WHEN sold_id = 0 THEN '{{ysusd_token}}'
+            WHEN sold_id = 1 THEN '{{ycrv_token}}'
         END as token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
@@ -129,12 +168,12 @@ WITH dexs AS
         tokens_sold AS token_sold_amount_raw,
         NULL AS amount_usd,
         CASE
-            WHEN bought_id = 0 THEN '0x5d3a536e4d6dbd6114cc1ead35777bab948e3643'
-            WHEN bought_id = 1 THEN '0x39aa39c021dfbae8fac545936693ac917d5e7563'
+            WHEN bought_id = 0 THEN '{{cdai_token}}'
+            WHEN bought_id = 1 THEN '{{cusdc_token}}'
         END as token_bought_address,
         CASE
-            WHEN sold_id = 0 THEN '0x5d3a536e4d6dbd6114cc1ead35777bab948e3643'
-            WHEN sold_id = 1 THEN '0x39aa39c021dfbae8fac545936693ac917d5e7563'
+            WHEN sold_id = 0 THEN '{{cdai_token}}'
+            WHEN sold_id = 1 THEN '{{cusdc_token}}'
         END as token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
@@ -153,12 +192,12 @@ WITH dexs AS
         tokens_sold AS token_sold_amount_raw,
         NULL AS amount_usd,
         CASE
-            WHEN bought_id = 0 THEN '0x5d3a536e4d6dbd6114cc1ead35777bab948e3643'
-            WHEN bought_id = 1 THEN '0x39aa39c021dfbae8fac545936693ac917d5e7563'
+            WHEN bought_id = 0 THEN '{{cdai_token}}'
+            WHEN bought_id = 1 THEN '{{cusdc_token}}'
         END as token_bought_address,
         CASE
-            WHEN sold_id = 0 THEN '0x5d3a536e4d6dbd6114cc1ead35777bab948e3643'
-            WHEN sold_id = 1 THEN '0x39aa39c021dfbae8fac545936693ac917d5e7563'
+            WHEN sold_id = 0 THEN '{{cdai_token}}'
+            WHEN sold_id = 1 THEN '{{cusdc_token}}'
         END as token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
@@ -177,12 +216,12 @@ WITH dexs AS
         tokens_sold AS token_sold_amount_raw,
         NULL AS amount_usd,
         CASE
-            WHEN bought_id = 0 THEN '0x6b175474e89094c44da98b954eedeac495271d0f'
-            WHEN bought_id = 1 THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+            WHEN bought_id = 0 THEN '{{dai_ethereum_token}}'
+            WHEN bought_id = 1 THEN '{{usdc_ethereum_token}}'
         END as token_bought_address,
         CASE
-            WHEN sold_id = 0 THEN '0x6b175474e89094c44da98b954eedeac495271d0f'
-            WHEN sold_id = 1 THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+            WHEN sold_id = 0 THEN '{{dai_ethereum_token}}'
+            WHEN sold_id = 1 THEN '{{usdc_ethereum_token}}'
         END as token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
@@ -201,12 +240,12 @@ WITH dexs AS
         tokens_sold AS token_sold_amount_raw,
         NULL AS amount_usd,
         CASE
-            WHEN bought_id = 0 THEN '0x5d3a536e4d6dbd6114cc1ead35777bab948e3643'
-            WHEN bought_id = 1 THEN '0x39aa39c021dfbae8fac545936693ac917d5e7563'
+            WHEN bought_id = 0 THEN '{{cdai_token}}'
+            WHEN bought_id = 1 THEN '{{cusdc_token}}'
         END as token_bought_address,
         CASE
-            WHEN sold_id = 0 THEN '0x5d3a536e4d6dbd6114cc1ead35777bab948e3643'
-            WHEN sold_id = 1 THEN '0x39aa39c021dfbae8fac545936693ac917d5e7563'
+            WHEN sold_id = 0 THEN '{{cdai_token}}'
+            WHEN sold_id = 1 THEN '{{cusdc_token}}'
         END as token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
@@ -225,12 +264,12 @@ WITH dexs AS
         tokens_sold AS token_sold_amount_raw,
         NULL AS amount_usd,
         CASE
-            WHEN bought_id = 0 THEN '0x6b175474e89094c44da98b954eedeac495271d0f'
-            WHEN bought_id = 1 THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+            WHEN bought_id = 0 THEN '{{dai_ethereum_token}}'
+            WHEN bought_id = 1 THEN '{{usdc_ethereum_token}}'
         END as token_bought_address,
         CASE
-            WHEN sold_id = 0 THEN '0x6b175474e89094c44da98b954eedeac495271d0f'
-            WHEN sold_id = 1 THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+            WHEN sold_id = 0 THEN '{{dai_ethereum_token}}'
+            WHEN sold_id = 1 THEN '{{usdc_ethereum_token}}'
         END as token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
@@ -249,14 +288,14 @@ WITH dexs AS
         tokens_sold AS token_sold_amount_raw,
         NULL AS amount_usd,
         CASE
-            WHEN bought_id = 0 THEN '0x5d3a536e4d6dbd6114cc1ead35777bab948e3643'
-            WHEN bought_id = 1 THEN '0x39aa39c021dfbae8fac545936693ac917d5e7563'
-            WHEN bought_id = 2 THEN '0xdac17f958d2ee523a2206206994597c13d831ec7'
+            WHEN bought_id = 0 THEN '{{cdai_token}}'
+            WHEN bought_id = 1 THEN '{{cusdc_token}}'
+            WHEN bought_id = 2 THEN '{{usdt_ethereum_token}}'
         END as token_bought_address,
         CASE
-            WHEN sold_id = 0 THEN '0x5d3a536e4d6dbd6114cc1ead35777bab948e3643'
-            WHEN sold_id = 1 THEN '0x39aa39c021dfbae8fac545936693ac917d5e7563'
-            WHEN sold_id = 2 THEN '0xdac17f958d2ee523a2206206994597c13d831ec7'
+            WHEN sold_id = 0 THEN '{{cdai_token}}'
+            WHEN sold_id = 1 THEN '{{cusdc_token}}'
+            WHEN sold_id = 2 THEN '{{usdt_ethereum_token}}'
         END as token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
@@ -275,14 +314,14 @@ WITH dexs AS
         tokens_sold AS token_sold_amount_raw,
         NULL AS amount_usd,
         CASE
-            WHEN bought_id = 0 THEN '0x6b175474e89094c44da98b954eedeac495271d0f'
-            WHEN bought_id = 1 THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-            WHEN bought_id = 2 THEN '0xdac17f958d2ee523a2206206994597c13d831ec7'
+            WHEN bought_id = 0 THEN '{{dai_ethereum_token}}'
+            WHEN bought_id = 1 THEN '{{usdc_ethereum_token}}'
+            WHEN bought_id = 2 THEN '{{usdt_ethereum_token}}'
         END as token_bought_address,
         CASE
-            WHEN sold_id = 0 THEN '0x6b175474e89094c44da98b954eedeac495271d0f'
-            WHEN sold_id = 1 THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-            WHEN sold_id = 2 THEN '0xdac17f958d2ee523a2206206994597c13d831ec7'
+            WHEN sold_id = 0 THEN '{{dai_ethereum_token}}'
+            WHEN sold_id = 1 THEN '{{usdc_ethereum_token}}'
+            WHEN sold_id = 2 THEN '{{usdt_ethereum_token}}'
         END as token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
@@ -301,16 +340,16 @@ WITH dexs AS
         tokens_sold AS token_sold_amount_raw,
         NULL AS amount_usd,
         CASE
-            WHEN bought_id = 0 THEN '0x16de59092dae5ccf4a1e6439d611fd0653f0bd01'
-            WHEN bought_id = 1 THEN '0xd6ad7a6750a7593e092a9b218d66c0a814a3436e'
-            WHEN bought_id = 2 THEN '0x83f798e925bcd4017eb265844fddabb448f1707d'
-            WHEN bought_id = 3 THEN '0x73a052500105205d34daf004eab301916da8190f'
+            WHEN bought_id = 0 THEN '{{ydai_token}}'
+            WHEN bought_id = 1 THEN '{{yusdc_token}}'
+            WHEN bought_id = 2 THEN '{{yusdt_token}}'
+            WHEN bought_id = 3 THEN '{{ytusd_token}}'
         END as token_bought_address,
         CASE
-            WHEN sold_id = 0 THEN '0x16de59092dae5ccf4a1e6439d611fd0653f0bd01'
-            WHEN sold_id = 1 THEN '0xd6ad7a6750a7593e092a9b218d66c0a814a3436e'
-            WHEN sold_id = 2 THEN '0x83f798e925bcd4017eb265844fddabb448f1707d'
-            WHEN sold_id = 3 THEN '0x73a052500105205d34daf004eab301916da8190f'
+            WHEN sold_id = 0 THEN '{{ydai_token}}'
+            WHEN sold_id = 1 THEN '{{yusdc_token}}'
+            WHEN sold_id = 2 THEN '{{yusdt_token}}'
+            WHEN sold_id = 3 THEN '{{ytusd_token}}'
         END as token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
@@ -329,16 +368,16 @@ WITH dexs AS
         tokens_sold AS token_sold_amount_raw,
         NULL AS amount_usd,
         CASE
-            WHEN bought_id = 0 THEN '0x6b175474e89094c44da98b954eedeac495271d0f'
-            WHEN bought_id = 1 THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-            WHEN bought_id = 2 THEN '0xdac17f958d2ee523a2206206994597c13d831ec7'
-            WHEN bought_id = 3 THEN '0x0000000000085d4780b73119b644ae5ecd22b376'
+            WHEN bought_id = 0 THEN '{{dai_ethereum_token}}'
+            WHEN bought_id = 1 THEN '{{usdc_ethereum_token}}'
+            WHEN bought_id = 2 THEN '{{usdt_ethereum_token}}'
+            WHEN bought_id = 3 THEN '{{tusd_token}}'
         END as token_bought_address,
         CASE
-            WHEN sold_id = 0 THEN '0x6b175474e89094c44da98b954eedeac495271d0f'
-            WHEN sold_id = 1 THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-            WHEN sold_id = 2 THEN '0xdac17f958d2ee523a2206206994597c13d831ec7'
-            WHEN sold_id = 3 THEN '0x0000000000085d4780b73119b644ae5ecd22b376'
+            WHEN sold_id = 0 THEN '{{dai_ethereum_token}}'
+            WHEN sold_id = 1 THEN '{{usdc_ethereum_token}}'
+            WHEN sold_id = 2 THEN '{{usdt_ethereum_token}}'
+            WHEN sold_id = 3 THEN '{{tusd_token}}'
         END as token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
@@ -357,16 +396,16 @@ WITH dexs AS
         tokens_sold AS token_sold_amount_raw,
         NULL AS amount_usd,
         CASE
-            WHEN bought_id = 0 THEN '0xc2cb1040220768554cf699b0d863a3cd4324ce32'
-            WHEN bought_id = 1 THEN '0x26ea744e5b887e5205727f55dfbe8685e3b21951'
-            WHEN bought_id = 2 THEN '0xe6354ed5bc4b393a5aad09f21c46e101e692d447'
-            WHEN bought_id = 3 THEN '0x04bc0ab673d88ae9dbc9da2380cb6b79c4bca9ae'
+            WHEN bought_id = 0 THEN '{{ydai_token3}}'
+            WHEN bought_id = 1 THEN '{{yusdc_token3}}'
+            WHEN bought_id = 2 THEN '{{yusdt_token3}}'
+            WHEN bought_id = 3 THEN '{{ybusd_token}}'
         END as token_bought_address,
         CASE
-            WHEN sold_id = 0 THEN '0xc2cb1040220768554cf699b0d863a3cd4324ce32'
-            WHEN sold_id = 1 THEN '0x26ea744e5b887e5205727f55dfbe8685e3b21951'
-            WHEN sold_id = 2 THEN '0xe6354ed5bc4b393a5aad09f21c46e101e692d447'
-            WHEN sold_id = 3 THEN '0x04bc0ab673d88ae9dbc9da2380cb6b79c4bca9ae'
+            WHEN sold_id = 0 THEN '{{ydai_token3}}'
+            WHEN sold_id = 1 THEN '{{yusdc_token3}}'
+            WHEN sold_id = 2 THEN '{{yusdt_token3}}'
+            WHEN sold_id = 3 THEN '{{ybusd_token}}'
         END as token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
@@ -385,16 +424,16 @@ WITH dexs AS
         tokens_sold AS token_sold_amount_raw,
         NULL AS amount_usd,
         CASE
-            WHEN bought_id = 0 THEN '0x6b175474e89094c44da98b954eedeac495271d0f'
-            WHEN bought_id = 1 THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-            WHEN bought_id = 2 THEN '0xdac17f958d2ee523a2206206994597c13d831ec7'
-            WHEN bought_id = 3 THEN '0x4fabb145d64652a948d72533023f6e7a623c7c53'
+            WHEN bought_id = 0 THEN '{{dai_ethereum_token}}'
+            WHEN bought_id = 1 THEN '{{usdc_ethereum_token}}'
+            WHEN bought_id = 2 THEN '{{usdt_ethereum_token}}'
+            WHEN bought_id = 3 THEN '{{busd_token}}'
         END as token_bought_address,
         CASE
-            WHEN sold_id = 0 THEN '0x6b175474e89094c44da98b954eedeac495271d0f'
-            WHEN sold_id = 1 THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-            WHEN sold_id = 2 THEN '0xdac17f958d2ee523a2206206994597c13d831ec7'
-            WHEN sold_id = 3 THEN '0x4fabb145d64652a948d72533023f6e7a623c7c53'
+            WHEN sold_id = 0 THEN '{{dai_ethereum_token}}'
+            WHEN sold_id = 1 THEN '{{usdc_ethereum_token}}'
+            WHEN sold_id = 2 THEN '{{usdt_ethereum_token}}'
+            WHEN sold_id = 3 THEN '{{busd_token}}'
         END as token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
@@ -413,16 +452,16 @@ WITH dexs AS
         tokens_sold AS token_sold_amount_raw,
         NULL AS amount_usd,
         CASE
-            WHEN bought_id = 0 THEN '0x99d1fa417f94dcd62bfe781a1213c092a47041bc'
-            WHEN bought_id = 1 THEN '0x9777d7e2b60bb01759d0e2f8be2095df444cb07e'
-            WHEN bought_id = 2 THEN '0x1be5d71f2da660bfdee8012ddc58d024448a0a59'
-            WHEN bought_id = 3 THEN '0x8e870d67f660d95d5be530380d0ec0bd388289e1'
+            WHEN bought_id = 0 THEN '{{ycdai_token}}'
+            WHEN bought_id = 1 THEN '{{ycusdc_token3}}'
+            WHEN bought_id = 2 THEN '{{ycusdt_token3}}'
+            WHEN bought_id = 3 THEN '{{usdp_token}}'
         END as token_bought_address,
         CASE
-            WHEN sold_id = 0 THEN '0x99d1fa417f94dcd62bfe781a1213c092a47041bc'
-            WHEN sold_id = 1 THEN '0x9777d7e2b60bb01759d0e2f8be2095df444cb07e'
-            WHEN sold_id = 2 THEN '0x1be5d71f2da660bfdee8012ddc58d024448a0a59'
-            WHEN sold_id = 3 THEN '0x8e870d67f660d95d5be530380d0ec0bd388289e1'
+            WHEN sold_id = 0 THEN '{{ycdai_token}}'
+            WHEN sold_id = 1 THEN '{{ycusdc_token3}}'
+            WHEN sold_id = 2 THEN '{{ycusdt_token3}}'
+            WHEN sold_id = 3 THEN '{{usdp_token}}'
         END as token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
@@ -441,16 +480,16 @@ WITH dexs AS
         tokens_sold AS token_sold_amount_raw,
         NULL AS amount_usd,
         CASE
-            WHEN bought_id = 0 THEN '0x6b175474e89094c44da98b954eedeac495271d0f'
-            WHEN bought_id = 1 THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-            WHEN bought_id = 2 THEN '0xdac17f958d2ee523a2206206994597c13d831ec7'
-            WHEN bought_id = 3 THEN '0x8e870d67f660d95d5be530380d0ec0bd388289e1'
+            WHEN bought_id = 0 THEN '{{dai_ethereum_token}}'
+            WHEN bought_id = 1 THEN '{{usdc_ethereum_token}}'
+            WHEN bought_id = 2 THEN '{{usdt_ethereum_token}}'
+            WHEN bought_id = 3 THEN '{{usdp_token}}'
         END as token_bought_address,
         CASE
-            WHEN sold_id = 0 THEN '0x6b175474e89094c44da98b954eedeac495271d0f'
-            WHEN sold_id = 1 THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-            WHEN sold_id = 2 THEN '0xdac17f958d2ee523a2206206994597c13d831ec7'
-            WHEN sold_id = 3 THEN '0x8e870d67f660d95d5be530380d0ec0bd388289e1'
+            WHEN sold_id = 0 THEN '{{dai_ethereum_token}}'
+            WHEN sold_id = 1 THEN '{{usdc_ethereum_token}}'
+            WHEN sold_id = 2 THEN '{{usdt_ethereum_token}}'
+            WHEN sold_id = 3 THEN '{{usdp_token}}'
         END as token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
@@ -469,12 +508,12 @@ WITH dexs AS
         tokens_sold AS token_sold_amount_raw,
         NULL AS amount_usd,
         CASE
-            WHEN bought_id = 0 THEN '0xeb4c2781e4eba804ce9a9803c67d0893436bb27d'
-            WHEN bought_id = 1 THEN '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'
+            WHEN bought_id = 0 THEN '{{renBTC_ethereum_token}}'
+            WHEN bought_id = 1 THEN '{{wbtc_ethereum_token}}'
         END as token_bought_address,
         CASE
-            WHEN sold_id = 0 THEN '0xeb4c2781e4eba804ce9a9803c67d0893436bb27d'
-            WHEN sold_id = 1 THEN '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'
+            WHEN sold_id = 0 THEN '{{renBTC_ethereum_token}}'
+            WHEN sold_id = 1 THEN '{{wbtc_ethereum_token}}'
         END as token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
@@ -493,14 +532,14 @@ WITH dexs AS
         tokens_sold AS token_sold_amount_raw,
         NULL AS amount_usd,
         CASE
-            WHEN bought_id = 0 THEN '0xeb4c2781e4eba804ce9a9803c67d0893436bb27d'
-            WHEN bought_id = 1 THEN '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'
-            WHEN bought_id = 2 THEN '0xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6'
+            WHEN bought_id = 0 THEN '{{renBTC_ethereum_token}}'
+            WHEN bought_id = 1 THEN '{{wbtc_ethereum_token}}'
+            WHEN bought_id = 2 THEN '{{sBTC_ethereum_token}}'
         END as token_bought_address,
         CASE
-            WHEN sold_id = 0 THEN '0xeb4c2781e4eba804ce9a9803c67d0893436bb27d'
-            WHEN sold_id = 1 THEN '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'
-            WHEN sold_id = 2 THEN '0xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6'
+            WHEN sold_id = 0 THEN '{{renBTC_ethereum_token}}'
+            WHEN sold_id = 1 THEN '{{wbtc_ethereum_token}}'
+            WHEN sold_id = 2 THEN '{{sBTC_ethereum_token}}'
         END as token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
@@ -520,13 +559,13 @@ WITH dexs AS
         NULL AS amount_usd,
         CASE
             --change address back to renBTC's, right now Dune only tracks WBTC price
-            WHEN bought_id = 0 THEN '0xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6'
-            WHEN bought_id = 1 THEN '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'
+            WHEN bought_id = 0 THEN '{{sBTC_ethereum_token}}'
+            WHEN bought_id = 1 THEN '{{wbtc_ethereum_token}}'
         END as token_bought_address,
         CASE
             --change address back to renBTC's, right now Dune only tracks WBTC price
-            WHEN sold_id = 0 THEN '0xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6'
-            WHEN sold_id = 1 THEN '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'
+            WHEN sold_id = 0 THEN '{{sBTC_ethereum_token}}'
+            WHEN sold_id = 1 THEN '{{wbtc_ethereum_token}}'
         END as token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
@@ -545,14 +584,14 @@ WITH dexs AS
         tokens_sold AS token_sold_amount_raw,
         NULL AS amount_usd,
         CASE
-            WHEN bought_id = 0 THEN '0x6b175474e89094c44da98b954eedeac495271d0f'
-            WHEN bought_id = 1 THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-            WHEN bought_id = 2 THEN '0xdac17f958d2ee523a2206206994597c13d831ec7'
+            WHEN bought_id = 0 THEN '{{dai_ethereum_token}}'
+            WHEN bought_id = 1 THEN '{{usdc_ethereum_token}}'
+            WHEN bought_id = 2 THEN '{{usdt_ethereum_token}}'
         END as token_bought_address,
         CASE
-            WHEN sold_id = 0 THEN '0x6B175474E89094C44Da98b954EedeAC495271d0F'
-            WHEN sold_id = 1 THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-            WHEN sold_id = 2 THEN '0xdac17f958d2ee523a2206206994597c13d831ec7'
+            WHEN sold_id = 0 THEN '{{dai_ethereum_token}}'
+            WHEN sold_id = 1 THEN '{{usdc_ethereum_token}}'
+            WHEN sold_id = 2 THEN '{{usdt_ethereum_token}}'
         END as token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
@@ -571,12 +610,12 @@ WITH dexs AS
         tokens_sold AS token_sold_amount_raw,
         NULL AS amount_usd,
         CASE
-            WHEN bought_id = 0 THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-            WHEN bought_id = 1 THEN '0xae7ab96520de3a18e5e111b5eaab095312d7fe84'
+            WHEN bought_id = 0 THEN '{{weth_contract}}'
+            WHEN bought_id = 1 THEN '{{steth_contract}}'
         END as token_bought_address,
         CASE
-            WHEN sold_id = 0 THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-            WHEN sold_id = 1 THEN '0xae7ab96520de3a18e5e111b5eaab095312d7fe84'
+            WHEN sold_id = 0 THEN '{{weth_contract}}'
+            WHEN sold_id = 1 THEN '{{steth_contract}}'
         END as token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
@@ -595,14 +634,14 @@ WITH dexs AS
         tokens_sold AS token_sold_amount_raw,
         NULL AS amount_usd,
         CASE
-            WHEN bought_id = 0 THEN '0xdac17f958d2ee523a2206206994597c13d831ec7'
-            WHEN bought_id = 1 THEN '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'
-            WHEN bought_id = 2 THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            WHEN bought_id = 0 THEN '{{usdt_ethereum_token}}'
+            WHEN bought_id = 1 THEN '{{wbtc_ethereum_token}}'
+            WHEN bought_id = 2 THEN '{{weth_contract}}'
         END as token_bought_address,
         CASE
-            WHEN sold_id = 0 THEN '0xdac17f958d2ee523a2206206994597c13d831ec7'
-            WHEN sold_id = 1 THEN '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'
-            WHEN sold_id = 2 THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            WHEN sold_id = 0 THEN '{{usdt_ethereum_token}}'
+            WHEN sold_id = 1 THEN '{{wbtc_ethereum_token}}'
+            WHEN sold_id = 2 THEN '{{weth_contract}}'
         END as token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
@@ -621,14 +660,14 @@ WITH dexs AS
         tokens_sold AS token_sold_amount_raw,
         NULL AS amount_usd,
         CASE
-            WHEN bought_id = 0 THEN '0xdac17f958d2ee523a2206206994597c13d831ec7'
-            WHEN bought_id = 1 THEN '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'
-            WHEN bought_id = 2 THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            WHEN bought_id = 0 THEN '{{usdt_ethereum_token}}'
+            WHEN bought_id = 1 THEN '{{wbtc_ethereum_token}}'
+            WHEN bought_id = 2 THEN '{{weth_contract}}'
         END as token_bought_address,
         CASE
-            WHEN sold_id = 0 THEN '0xdac17f958d2ee523a2206206994597c13d831ec7'
-            WHEN sold_id = 1 THEN '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'
-            WHEN sold_id = 2 THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            WHEN sold_id = 0 THEN '{{usdt_ethereum_token}}'
+            WHEN sold_id = 1 THEN '{{wbtc_ethereum_token}}'
+            WHEN sold_id = 2 THEN '{{weth_contract}}'
         END as token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
@@ -675,7 +714,7 @@ INNER JOIN {{ source('ethereum', 'transactions') }} tx
     {% if not is_incremental() %}
     -- The date below is derrived from `select min(evt_block_time) from uniswap_ethereum.Factory_evt_NewExchange;`
     -- If dexs above is changed then this will also need to be changed.
-    AND tx.block_time >= "2018-11-01 00:00:00"
+    AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND tx.block_time = date_trunc("day", now() - interval '1 week')
@@ -688,7 +727,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.minute = date_trunc
     {% if not is_incremental() %}
     -- The date below is derrived from `select min(evt_block_time) from uniswap_ethereum.Factory_evt_NewExchange;`
     -- If dexs above is changed then this will also need to be changed.
-    AND p_bought.minute >= "2018-11-01 00:00:00"
+    AND p_bought.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
@@ -699,7 +738,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.minute = date_trunc('mi
     {% if not is_incremental() %}
     -- The date below is derrived from `select min(evt_block_time) from uniswap_ethereum.Factory_evt_NewExchange;`
     -- If dexs above is changed then this will also need to be changed.
-    AND p_sold.minute >= "2018-11-01 00:00:00"
+    AND p_sold.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
