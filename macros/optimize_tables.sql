@@ -152,6 +152,7 @@ OPTIMIZE cow_protocol_ethereum.batches;
 {% do run_query(uniswap_v1_ethereum_trades) %}
 {% do run_query(uniswap_v2_ethereum_trades) %}
 {% do run_query(x2y2_ethereum_events) %}
+{% do run_query(zora_ethereum_events) %}
 {% do run_query(archipelago_ethereum_events) %}
 {% do run_query(foundation_ethereum_events) %}
 {% do run_query(labels_all) %}
