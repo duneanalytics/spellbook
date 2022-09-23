@@ -19,15 +19,17 @@ class PRJobDepedencyManager:
         :return: modified_objects
         """
         if object_type == 'test':
-            test_filter = "--select test_type:singular"
+            test_filter = "--exclude test_type:generic"
         else:
             test_filter = ''
         bash_response = subprocess.run(
-            f'dbt list --output name --resource-type {object_type} --select state:{state} --state  . {test_filter}',
+            f'dbt list --output name --resource-type {object_type} --select state:{state} {test_filter} --state  .',
             capture_output=True, shell=True).stdout.decode("utf-8")
         if "Runtime Error" in bash_response:
             raise Exception(bash_response)
         if 'No nodes selected!' in bash_response:
+            modified_objects = []
+        elif 'does not match any nodes' in bash_response:
             modified_objects = []
         else:
             modified_names = bash_response.split('\n')
@@ -80,8 +82,12 @@ class PRJobDepedencyManager:
             ref_names.extend(node['depends_on']['nodes'])
         ref_names = [ref_name for ref_name in ref_names if 'source' not in ref_name]
         new_refs = self.fetch_new_object_keys(object_type='model')
-        for new_ref in new_refs:
+        modifed_refs = self.fetch_modified_object_keys(object_type='model')
+        # Remove any dependencies that are created in the pr
+        for new_ref in (new_refs + modifed_refs):
             ref_names = [ref for ref in ref_names if ref != new_ref]
+        # Deduplicate refs
+        ref_names = list(set(ref_names))
         return ref_names
 
     @staticmethod
