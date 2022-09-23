@@ -1,7 +1,11 @@
 {{
     config(
         alias='balancer_balances',
-        materialized ='table'
+        materialized ='table',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "project",
+                                    "balancer",
+                                    \'["jacektrocinski"]\') }}'
     ) 
 }}
 
