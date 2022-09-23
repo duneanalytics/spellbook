@@ -1,31 +1,31 @@
 version: 2
 
 models:
-  - name: dex_trades
+  - name: dex_aggregator_trades
     meta:
       blockchain: ethereum
       sector: dex
-      contributors: jeff-dude
+      contributors: bh2smith
     config:
-      tags: ['ethereum', 'amm', 'trades', 'dex', 'cross-chain']
+      tags: ['ethereum', 'aggregator', 'dex', 'trades', 'cross-chain']
     description: >
-      DEX trades on all chains across all contracts and versions
+      Aggregator trades on all chains across all contracts and versions
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain which the DEX is deployed"
+        description: "Blockchain which the aggregator project is deployed"
       - &project
         name: project
-        description: "Project name of the DEX"
+        description: "Name of aggregator project"
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project"
+        description: "Version of the contract built and deployed by the project"
       - &block_date
         name: block_date
-        description: "UTC event block date of each DEX trade"
+        description: "UTC event block date of the trade"
       - &block_time
         name: block_time
-        description: "UTC event block time of each DEX trade"
+        description: "UTC event block time of the trade"
       - &token_bought_symbol
         name: token_bought_symbol
         description: "Token symbol for token bought in the trade"
@@ -67,7 +67,7 @@ models:
         description: "Project contract address which executed the trade on the blockchain"
       - &tx_hash
         name: tx_hash
-        description: "Unique transaction hash value tied to each transaction on the DEX"
+        description: "Transaction hash of the trade's settlement"
       - &tx_from
         name: tx_from
         description: "Address which initiated the trade"
