@@ -5,7 +5,11 @@
 	materialized = 'incremental',
 	file_format = 'delta',
 	incremental_strategy = 'merge',
-	unique_key = ['block_time', 'project', 'version', 'tx_hash', 'evt_index']
+	unique_key = ['block_time', 'project', 'version', 'tx_hash', 'evt_index'],
+    post_hook='{{ expose_spells(\'["optimism"]\',
+                                "project",
+                                "perpetual",
+                                \'["MSilb7", "drethereum", "rplust"]\') }}'
 	)
 }}
 

@@ -1,5 +1,9 @@
 {{ config(
-	alias = 'trades'
+	alias = 'trades',
+    post_hook='{{ expose_spells(\'["optimism"]\',
+                                "project",
+                                "perpetual",
+                                \'["MSilb7", "drethereum", "rplust"]\') }}'
 	)
 }}
 
