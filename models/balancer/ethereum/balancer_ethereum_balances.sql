@@ -41,7 +41,7 @@ WITH
       e.evt_block_time,
       e.contract_address AS token,
       - value as amount
-    FROM
+    FROM  {{ source('erc20_ethereum', 'evt_Transfer') }} e
       INNER JOIN pools_list p ON e.`from` = p.pools
     WHERE
       evt_block_time >= to_date('2020-02-28')
