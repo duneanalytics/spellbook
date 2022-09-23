@@ -116,15 +116,6 @@ WITH raw_events AS (
   FROM {{ source('zora_ethereum','Market_evt_BidFinalized') }}
   WHERE evt_block_time >= '2021-01-30'
   AND evt_block_time < NOW() - interval '1 day' -- allow some head desync
-  UNION
-  SELECT evt_block_time AS raw_block_time
-  , evt_tx_hash AS raw_tx_hash
-  , tokenContract AS raw_nft_contract_address
-  , tokenId AS raw_token_id
-  , evt_tx_hash || tokenContract || tokenId AS raw_unique_trade_id
-  FROM 
-  WHERE evt_block_time >= '2021-01-30'
-  AND evt_block_time < NOW() - interval '1 day' -- allow some head desync
   )
 
 , processed_events AS (
