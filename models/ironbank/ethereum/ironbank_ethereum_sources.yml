@@ -108,20 +108,4 @@ sources:
             description: "The market in which to seize collateral from the borrower"
           - &seizeTokens
             name: seizeTokens
-            description: "The number of iTokens to seize"
-      - name: CErc20Delegator_evt_NewReserveFactor
-        loaded_at_field: call_block_time
-      - name: CErc20Delegator_evt_ReservesAdded
-        loaded_at_field: call_block_time
-      - name: CErc20Delegator_evt_ReservesReduced
-        loaded_at_field: call_block_time
-      - name: CErc20Delegator_evt_Transfer
-        loaded_at_field: call_block_time
-      - name: CErc20Delegator_evt_NewComptroller
-        loaded_at_field: call_block_time
-      - name: CErc20Delegator_evt_NewCollateralCap
-        loaded_at_field: call_block_time
-      - name: CErc20Delegator_evt_Flashloan
-        loaded_at_field: call_block_time
-      - name: CErc20Delegator_evt_UserCollateralChanged
-        loaded_at_field: call_block_time
+            description: "The number of cTokens to seize"
