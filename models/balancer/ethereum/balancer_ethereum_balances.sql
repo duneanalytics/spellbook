@@ -84,7 +84,6 @@ balancer_outflows AS -- This CTE returns all the outflows of ERC20 from Balancer
         ) e
     INNER JOIN balancer_v1_pools p
         ON e.address = p.pools
-    -- WHERE e.contract_address IN (SELECT * FROM balancer_supported_ERC20) -- This is a temporary placeholder for an ERC20 filter
     GROUP BY 1, 2, 3
 
     UNION ALL
