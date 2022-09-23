@@ -19,7 +19,7 @@ class PRJobDepedencyManager:
         :return: modified_objects
         """
         if object_type == 'test':
-            test_filter = "test_type:singular"
+            test_filter = "--exclude test_type:generic"
         else:
             test_filter = ''
         bash_response = subprocess.run(
