@@ -29,7 +29,7 @@ class PRJobDepedencyManager:
             raise Exception(bash_response)
         if 'No nodes selected!' in bash_response:
             modified_objects = []
-        if 'does not match any nodes' in bash_response:
+        elif 'does not match any nodes' in bash_response:
             modified_objects = []
         else:
             modified_names = bash_response.split('\n')
