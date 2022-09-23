@@ -1,5 +1,5 @@
 {{ config(
-        alias ='aggregator_trades',
+        alias ='trades',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",
                                 "dex",
