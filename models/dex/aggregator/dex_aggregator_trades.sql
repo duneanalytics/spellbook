@@ -3,7 +3,7 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",
                                 "dex",
-                                \'["jeff-dude"]\') }}'
+                                \'["bh2smith"]\') }}'
         )
 }}
 SELECT *
@@ -34,7 +34,7 @@ FROM
             trace_address,
             evt_index,
             unique_trade_id
-        FROM {{ ref('uniswap_trades') }}
+        FROM {{ ref('cow_protocol_trades') }}
         /*
         UNION
         <add future protocols here>
