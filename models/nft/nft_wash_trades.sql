@@ -29,7 +29,7 @@ SELECT nftt.blockchain
 , CASE WHEN COUNT(distinct filter_baf.block_number) > 0 THEN true ELSE false END AS back_and_forth_trade
 , CASE WHEN COUNT(distinct filter_bought_3x.block_number) > 2 THEN true ELSE false END AS bought_it_three_times_within_a_week
 , CASE WHEN (filter_funding_buyer.first_funded_by = filter_funding_seller.first_funded_by
-    AND filter_funding_buyer.first_funded_by NOT IN (SELECT address FROM {{ ref('addresses_ethereum_bridge') }})
+    AND filter_funding_buyer.first_funded_by NOT IN (SELECT address FROM {{ ref('addresses_ethereum_bridges') }})
     AND filter_funding_buyer.first_funded_by NOT IN (SELECT address FROM {{ ref('addresses_ethereum_cex') }}))
     OR filter_funding_buyer.first_funded_by = nftt.seller
     OR filter_funding_seller.first_funded_by = nftt.buyer
@@ -38,7 +38,7 @@ SELECT nftt.blockchain
 , CASE WHEN COUNT(filter_baf.block_number) > 0
     OR COUNT(filter_bought_3x.block_number) > 2
     OR (filter_funding_buyer.first_funded_by = filter_funding_seller.first_funded_by
-    AND filter_funding_buyer.first_funded_by NOT IN (SELECT address FROM {{ ref('addresses_ethereum_bridge') }})
+    AND filter_funding_buyer.first_funded_by NOT IN (SELECT address FROM {{ ref('addresses_ethereum_bridges') }})
     AND filter_funding_buyer.first_funded_by NOT IN (SELECT address FROM {{ ref('addresses_ethereum_cex') }}))
     OR filter_funding_buyer.first_funded_by = nftt.seller
     OR filter_funding_seller.first_funded_by = nftt.buyer
