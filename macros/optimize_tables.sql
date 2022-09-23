@@ -87,6 +87,10 @@ OPTIMIZE uniswap_v2_ethereum.trades;
 OPTIMIZE x2y2_ethereum.events;
 {% endset %}
 
+{% set zora_ethereum_events %}
+OPTIMIZE zora_ethereum.events;
+{% endset %}
+
 {% set element_ethereum_events %}
 OPTIMIZE element_ethereum.events;
 {% endset %}
