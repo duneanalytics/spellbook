@@ -33,4 +33,4 @@ models:
         name: cumulative_amount
         description: Cumulative amount of ERC20 token balances of a specific pool by day"
         tests:
-         - not_null
+         - unique
