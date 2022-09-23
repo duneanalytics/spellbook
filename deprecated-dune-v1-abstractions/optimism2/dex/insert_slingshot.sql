@@ -84,7 +84,9 @@ SELECT
             l."tx_index" AS evt_index
         FROM
             optimism.logs l
-        WHERE contract_address = '\x00c0184c0b5d42fba6b7ca914b31239b419ab80b' --Slingshot Contract
+        WHERE contract_address IN ('\x00c0184c0b5d42fba6b7ca914b31239b419ab80b' --Slingshot Contract through 9/11/22
+				   '\xeDd118e091eee0E7FA9EEb9b4Db717518F56Cb15'	--Slingshot Contract post-9/11/22
+				   )
         AND topic1 = '\x899a8968d68f840cf01fdaf129bf72e96ca51b8ecad8c4f7566938e7a2ba6bcf' --swap
 
 	AND l.block_time >= start_ts AND l.block_time < end_ts
