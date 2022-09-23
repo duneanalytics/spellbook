@@ -5,7 +5,11 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'unique_trade_id']
+    unique_key = ['block_date', 'unique_trade_id'],
+    post_hook='{{ expose_spells(\'["ethereum"]\',
+                                "project",
+                                "uniswap_v2",
+                                \'["jeff-dude"]\') }}'
     )
 }}
 WITH dexs AS

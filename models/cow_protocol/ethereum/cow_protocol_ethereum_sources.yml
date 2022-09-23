@@ -37,7 +37,7 @@ sources:
           - *evt_index
           - *evt_tx_hash
       - name: GPv2Settlement_evt_Trade
-        description: "Trade events emitted by GPv2Settlement_evt_Trade"
+        description: "Trade events emitted by GPv2Settlement"
         columns:
           - &feeAmount
             name: feeAmount
@@ -96,3 +96,29 @@ sources:
           - &trades
             name: trades
             description: "An array of order data for the trades being executed"
+      - name: GPv2Settlement_evt_Settlement
+        description: "Settlement events emitted by GPv2Settlement"
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *solver
+      - name: GPv2Settlement_evt_Interaction
+        description: "Contract Interaction events emitted by GPv2Settlement"
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &selector
+            name: selector
+            description: Method ID of the contract being interacted with
+          - &target
+            name: target
+            description: Target contract address of the interaction
+          - &value
+            name: value
+            description: ETH amount (in WEI) being passed into contract interaction
