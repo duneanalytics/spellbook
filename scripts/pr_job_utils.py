@@ -10,21 +10,10 @@ class PRJobDepedencyManager:
     def __init__(self, pr_schema: str):
         self.pr_schema = pr_schema
         self.manifest_dict = json.load(open(Path('../target/manifest.json')))
-        self.nodes = self.manifest_dict["nodes"]
+        self.nodes = {'.'.join(k.split('.')[0:3]):v for k,v in self.manifest_dict["nodes"].items()}
 
-    def fetch_object_keys_by_state(self, object_type, state):
-        """
-        Collected keys for objects by state
-        :param object_type:  accepted inputs: [model, test, seed]
-        :return: modified_objects
-        """
-        if object_type == 'test':
-            test_filter = "--exclude test_type:generic"
-        else:
-            test_filter = ''
-        bash_response = subprocess.run(
-            f'dbt list --output name --resource-type {object_type} --select state:{state} {test_filter} --state  .',
-            capture_output=True, shell=True).stdout.decode("utf-8")
+    @staticmethod
+    def get_names_from_bash(bash_response, object_type):
         if "Runtime Error" in bash_response:
             raise Exception(bash_response)
         if 'No nodes selected!' in bash_response:
@@ -35,6 +24,30 @@ class PRJobDepedencyManager:
             modified_names = bash_response.split('\n')
             modified_names.remove('')
             modified_objects = [f"{object_type}.spellbook.{name}" for name in modified_names]
+        return modified_objects
+
+    def fetch_object_keys_by_state(self, object_type, state):
+        """
+        Collected keys for objects by state
+        :param object_type:  accepted inputs: [model, seed]
+        :return: modified_objects
+        """
+        # Test fork is messy because I have not found the syntax to apply two selectors at once using dbt list
+        if object_type == 'test':
+            bash_response_all_modified = subprocess.run(
+                f'dbt list --output name --resource-type test --select state:{state} --state  .',
+                capture_output=True, shell=True).stdout.decode("utf-8")
+            modified_tests = self.get_names_from_bash(bash_response_all_modified, object_type)
+            bash_response_test_that_use_seeds = subprocess.run(
+                f'dbt list --output name --resource-type test  --select config.materialized:seed',
+                capture_output=True, shell=True).stdout.decode("utf-8")
+            test_that_use_seeds = self.get_names_from_bash(bash_response_test_that_use_seeds, object_type)
+            modified_objects = list(set(modified_tests).intersection(set(test_that_use_seeds)))
+        else:
+            bash_response = subprocess.run(
+                f'dbt list --output name --resource-type {object_type} --select state:{state} --state  .',
+                capture_output=True, shell=True).stdout.decode("utf-8")
+            modified_objects = self.get_names_from_bash(bash_response, object_type)
         return modified_objects
 
     def fetch_new_object_keys(self, object_type):
