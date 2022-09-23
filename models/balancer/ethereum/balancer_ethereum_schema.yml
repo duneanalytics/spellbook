@@ -7,9 +7,9 @@ models:
       project: balancer
       contributors: jacektrocinski
     config:
-      tags: ["balances"]
+      tags: ['ethereum', 'balances']
     description: >
-      Balances on Balancer, an automated portfolio manager and trading platform.
+      ERC20 token rolling sum balances on Balancer, an automated portfolio manager and trading platform.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -17,13 +17,17 @@ models:
             - pool
             - token
     columns:
-      - name: day
-        description: "UTC event block time truncated to the day mark"
+      - &day
+        name: day
+        description: 'UTC event block time truncated to the day mark'
         tests:
           - not_null
-      - name: pool
-        description: "Balancer pool contract address"
-      - name: token
-        description: "Token contract address"
-      - name: cumulative_amount
-        description: "Balance of a token"
+      - &pool
+        name: pool
+        description: 'Balancer pool contract address'
+      - &token
+        name: token
+        description: 'Token contract address'
+      - &cumulative_amount
+        name: cumulative_amount
+        description: 'Balance of a token'
