@@ -46,6 +46,9 @@ models:
     dex:
       +schema: dex
       +materialized: view
+      aggregator:
+        +schema: dex_aggregator
+        +materialized: view
     nft:
       +schema: nft
       +materialized: view
