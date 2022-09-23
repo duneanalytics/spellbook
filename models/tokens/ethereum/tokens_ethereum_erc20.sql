@@ -6621,4 +6621,12 @@ FROM (VALUES
           ('0x14079e63e492bb7df6aeb4fe4e48cb4f18f3488a', 'BARK', 18),
           ('0x2ec3275f7ace4044e499823f511cd58250be8e3d', 'PRVG', 8),
           ('0x3231Cb76718CDeF2155FC47b5286d82e6eDA273f', 'EURe', 18)
+          ('0xc0c293ce456ff0ed870add98a0828dd4d2903dbf', 'AURA', 18)
+          ('0x41d5d79431a913c4ae7d69a668ecdfe5ff9dfb68', 'INV',  18)
+          ('0x30d20208d987713f46dfd34ef128bb16c404d10f', 'SD',  18)
+          ('0x43d4a3cd90ddd2f8f4f693170c9c8098163502ad', 'D2D', 18)
+          ('0xed1480d12be41d92f36f5f7bdd88212e381a3677', 'FDT', 18)
+          ('0xd33526068d116ce69f19a9ee46f0bd304f21a51f', 'RPL', 18)
+          ('0x6f80310ca7f2c654691d1383149fa1a57d8ab1f8', 'Silo', 18)
+      
      ) AS temp_table (contract_address, symbol, decimals)
