@@ -138,6 +138,14 @@ WITH
       running_cumulative_balance_by_token_with_group
   )
 SELECT
-  *
+  day 
+  ,pool_contract_address 
+  ,token_contract_address 
+  ,cumulative_amount
 FROM
   running_cumulative_balance_by_token
+
+  WHERE 1 is not null 
+  AND 2 is not null 
+  AND 3 is not null
+  AND 4 is not null
