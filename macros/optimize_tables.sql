@@ -111,6 +111,10 @@ OPTIMIZE archipelago_ethereum.events;
 OPTIMIZE foundation_ethereum.events;
 {% endset %}
 
+{% set nft_wash_trades %}
+OPTIMIZE nft.wash_trades;
+{% endset %}
+
 {% set labels_all %}
 OPTIMIZE labels.all;
 {% endset %}
@@ -151,6 +155,7 @@ OPTIMIZE cow_protocol_ethereum.batches;
 {% do run_query(archipelago_ethereum_events) %}
 {% do run_query(foundation_ethereum_events) %}
 {% do run_query(labels_all) %}
+{% do run_query(nft_wash_trades) %}
 {% do run_query(cow_protocol_ethereum_trades) %}
 {% do run_query(cow_protocol_ethereum_batches) %}
 {% do log("Tables Optimized", info=True) %}

@@ -150,6 +150,13 @@ models:
       optimism: 
         +schema: addresses_optimism
         +materialized: table
+    
+    addresses_events: 
+      +schema: addresses
+      +materialized: table
+      ethereum: 
+        +schema: addresses_ethereum
+        +materialized: table
 
     tokens:
       +schema: tokens
