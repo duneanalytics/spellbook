@@ -16,21 +16,22 @@ models:
         description: "Truncated date timestamp in UTC"
         tests:
           - not_null
+          
 
       - &pool_contract_address
         name: pool_contract_address
         description: "Contract address of the  specific pool in balancer" 
-        tests: 
-          - not_null
+
+        
 
       - &token_contract_address
         name: token_contract_address
         description: "Address of the asset added or removed from a specific pool"
-        tests:
-         - not_null
+
+         
 
       - &cumulative_amount
         name: cumulative_amount
         description: Cumulative amount of ERC20 token balances of a specific pool by day"
-        tests:
-         - unique
+
+      
