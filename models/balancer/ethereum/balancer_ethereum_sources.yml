@@ -13,7 +13,7 @@ sources:
         - name: caller
           description: "User address"       
         - name: contract_address
-          description: "Event block number"  
+          description: "Event contract address"  
         - name: evt_block_number
           description: "Event block number"
         - name: evt_block_time
