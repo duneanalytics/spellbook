@@ -1,5 +1,9 @@
 {{ config(
-        alias='erc721_day'
+        alias='erc721_day',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                            "sector",
+                                            "balances",
+                                            \'["hildobby","soispoke","dot2dotseurat"]\') }}'
         )
 }}
 

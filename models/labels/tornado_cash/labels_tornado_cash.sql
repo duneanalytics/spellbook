@@ -1,4 +1,9 @@
-{{config(alias='tornado_cash')}}
+{{config(alias='tornado_cash',
+        post_hook='{{ expose_spells(\'["ethereum", "arbitrum","bnb","avalanche_c","optimism","gnosis"]\',
+                                    "sector",
+                                    "labels",
+                                    \'["soispoke"]\') }}'
+)}}
 
 WITH tornado_addresses AS (
 SELECT

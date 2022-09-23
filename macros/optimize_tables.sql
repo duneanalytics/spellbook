@@ -87,6 +87,18 @@ OPTIMIZE uniswap_v2_ethereum.trades;
 OPTIMIZE x2y2_ethereum.events;
 {% endset %}
 
+{% set element_ethereum_events %}
+OPTIMIZE element_ethereum.events;
+{% endset %}
+
+{% set element_bnb_events %}
+OPTIMIZE element_bnb.events;
+{% endset %}
+
+{% set element_avalanche_c_events %}
+OPTIMIZE element_avalanche_c.events;
+{% endset %}
+
 {% set ens_resolver_addresses %}
 OPTIMIZE ens.resolver_addresses;
 {% endset %}
@@ -119,12 +131,20 @@ OPTIMIZE perpetual_protocol_v2_optimism.trades;
 OPTIMIZE perpetual.trades;
 {% endset %}
 
+{% set foundation_ethereum_events %}
+OPTIMIZE foundation_ethereum.events;
+{% endset %}
+
 {% set labels_all %}
 OPTIMIZE labels.all;
 {% endset %}
 
-{% set cow_protocol_ethereum_table_optimizer %}
+{% set cow_protocol_ethereum_trades %}
 OPTIMIZE cow_protocol_ethereum.trades;
+{% endset %}
+
+{% set cow_protocol_ethereum_batches %}
+OPTIMIZE cow_protocol_ethereum.batches;
 {% endset %}
 
 
@@ -138,6 +158,9 @@ OPTIMIZE cow_protocol_ethereum.trades;
 {% do run_query(seaport_ethereum_transfers) %}
 {% do run_query(sudoswap_ethereum_events) %}
 {% do run_query(cryptopunks_ethereum_events) %}
+{% do run_query(element_ethereum_events) %}
+{% do run_query(element_bnb_events) %}
+{% do run_query(element_avalanche_c_events) %}
 {% do run_query(tornado_cash_deposits) %}
 {% do run_query(tornado_cash_withdrawals) %}
 {% do run_query(transfers_ethereum_erc20_agg_hour) %}
@@ -158,6 +181,9 @@ OPTIMIZE cow_protocol_ethereum.trades;
 {% do run_query(perpetual_trades) %}
 {% do run_query(labels_all) %}
 {% do run_query(cow_protocol_ethereum_table_optimizer) %}
-
+{% do run_query(foundation_ethereum_events) %}
+{% do run_query(labels_all) %}
+{% do run_query(cow_protocol_ethereum_trades) %}
+{% do run_query(cow_protocol_ethereum_batches) %}
 {% do log("Tables Optimized", info=True) %}
 {% endmacro %}
