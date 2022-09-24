@@ -13,10 +13,9 @@ evt_block_number AS block_number,
 evt_block_time AS block_time,
 evt_tx_hash AS tx_hash,
 evt_index,
-NULL::integer[] AS trace_address,
 redeemer,
-i."underlying_token_address" AS asset_address,
-"redeemAmount" AS redeem_amount
+i.underlying_token_address AS asset_address,
+redeemAmount AS redeem_amount
 FROM (
 SELECT * FROM {{ source('ironbank_optimism', 'CErc20Delegator_evt_Redeem') }}
 ) ironbank_redeem
