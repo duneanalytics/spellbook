@@ -232,7 +232,7 @@ models:
     config:
       tags: ['ethereum','sudoswap','pools']
     description: >
-        sudoswap pools on Ethereum
+        sudoswap pool stats on Ethereum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -240,43 +240,123 @@ models:
             - nft_contract_address
             - creator_address
     columns:
-      - name: pool_address
+      - &pool_address
+        name: pool_address
         description: "Address of the pool"
-      - name: nft_contract_address
-        description: "Contract of the NFT collection"
-      - name: creator_address
+      - *nft_contract_address
+      - &creator_address
+        name: creator_address
         description: "Address of the pool creator"
-      - name: spot_price
+      - &spot_price
+        name: spot_price
         description: "Current price of a swap"
-      - name: nft_balance
+      - &nft_balance
+        name: nft_balance
         description: "Number of NFTs in the pool"
-      - name: eth_balance
+      - &eth_balance
+        name: eth_balance
         description: "Amount of ETH in the pool"
-      - name: eth_volume
+      - &eth_volume
+        name: eth_volume
         description: "ETH trading volume of the pool"
-      - name: nfts_traded
+      - &nfts_traded
+        name: nfts_traded
         description: "Number of NFTs traded by the pool"
-      - name: usd_volume
+      - &usd_volume
+        name: usd_volume
         description: "USD trading volume of the pool"
-      - name: owner_fee_volume_eth
+      - &owner_fee_volume_eth
+        name: owner_fee_volume_eth
         description: "Fees collected by pool owner"
-      - name: platform_fee_volume_eth
+      - &platform_fee_volume_eth
+        name: platform_fee_volume_eth
         description: "Fees collected by the protocol"
-      - name: pool_type
+      - &pool_type
+        name: pool_type
         description: "Type of pool"
-      - name: pricing_type
+      - &pricing_type
+        name: pricing_type
         description: "Type of pricing"
-      - name: delta
+      - &delta
+        name: delta
         description: "Change in price caused by one trade"
-      - name: days_passed
-        description: "Days since pool was created"
-      - name: initial_price
+      - &day_created
+        name: day_created
+        description: "Day the pool was created"
+      - &initial_price
+        name: initial_price
         description: "Initial spot price of the pool"
-      - name: initial_nft_count
+      - &initial_nft_count
+        name: initial_nft_count
         description: "Initial NFT balance of the pool"
-      - name: initial_eth
+      - &initial_eth
+        name: initial_eth
         description: "Initial ETH balance of the pool"
-      - name: eth_change_trading
+      - &eth_change_trading
+        name: eth_change_trading
         description: "Change in ETH balance caused by trading"
-      - name: nft_change_trading
+      - &nft_change_trading
+        name: nft_change_trading
         description: "Change in NFT balance caused by trading"
+
+  - name: sudoswap_ethereum_pool_trades
+    meta:
+      blockchain: ethereum
+      project: sudoswap
+      contributors: [niftytable]
+    config:
+      tags: ['ethereum','sudoswap','pool_trades']
+    description: >
+        sudoswap pool trades on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_address
+    columns:
+      - &day
+        name: day
+        description: "Day"
+      - *pool_address
+      - *eth_volume
+      - *usd_volume
+      - *nfts_traded
+      - *owner_fee_volume_eth
+      - *platform_fee_volume_eth
+      - *eth_change_trading
+      - *nft_change_trading
+
+  - name: sudoswap_ethereum_pool_balance_changes
+    meta:
+      blockchain: ethereum
+      project: sudoswap
+      contributors: [niftytable]
+    config:
+      tags: ['ethereum','sudoswap','pool_balance_changes']
+    description: >
+        sudoswap pool balance changes on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - nft_contract_address
+            - pool_address
+    columns:
+      - *day
+      - *pool_address
+      - &eth_balance_change
+        name: eth_balance_change
+        description: "Change in eth balance of the pool"
+      - &nft_balance_change
+        name: nft_balance_change
+        description: "Change in nft balance of the pool"
+      - *pricing_type
+      - *pool_type
+      - *nft_contract_address
+      - *creator_address
+      - *initial_price
+      - *initial_nft_count
+      - *initial_eth
+      - *day_created
+      - *delta
+      - *spot_price
