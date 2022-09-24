@@ -583,8 +583,7 @@ VALUES
     ("caps-ternoa", "ethereum", "CAPS", "0x03be5c903c727ee2c8c4e9bc0acc860cca4715e2", 18),
     ("strp-strips-finance", "ethereum", "STRP", "0x97872eafd79940c7b24f7bcc1eadb1457347adc9", 18), 
     ("aura-aura-finance",  "ethereum", "AURA", "0xc0c293ce456ff0ed870add98a0828dd4d2903dbf", 18),
-    ("inv-inv", "ethereum", "INV", "0x41d5d79431a913c4ae7d69a668ecdfe5ff9dfb68", 18),
-    ("d2d-prime", "ethereum", "D2D", "0x43d4a3cd90ddd2f8f4f693170c9c8098163502ad", 18), 
+    ("inv-inv", "ethereum", "INV", "0x41d5d79431a913c4ae7d69a668ecdfe5ff9dfb68", 18),    
     ("fdt-fiat-dao-token", "ethereum", "FDT", "0xed1480d12be41d92f36f5f7bdd88212e381a3677", 18),      
     ("silo-silo-finance", "ethereum", "Silo", "0x6f80310ca7f2c654691d1383149fa1a57d8ab1f8", 18),    
 
