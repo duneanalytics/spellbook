@@ -127,7 +127,7 @@ WITH
         OR tr.call_type IS null
       )
       {% if not is_incremental() %}
-      tr.block_time > '{{project_start_date}}'
+      AND tr.block_time > '{{project_start_date}}'
       {% endif %}
       {% if is_incremental() %}
       -- this filter will only be applied on an incremental run. We only want to update with new transfers.

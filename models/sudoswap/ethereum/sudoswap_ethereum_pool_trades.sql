@@ -62,7 +62,7 @@ WITH
         platform_fee_amount
       FROM
         {{ ref('sudoswap_ethereum_events') }} se
-      INNER JOIN pairs_created p ON ((p.nftcontractaddress = se.nft_contract_address)
+      INNER JOIN pairs_created p ON ((p.nft_contract_address = se.nft_contract_address)
       AND (se.buyer = p.pair_address OR se.seller = p.pair_address))
       {% if is_incremental() %}
       -- this filter will only be applied on an incremental run. We only want to update with new swaps.
