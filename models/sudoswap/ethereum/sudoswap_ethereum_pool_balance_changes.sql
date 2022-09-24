@@ -120,8 +120,7 @@ WITH
     FROM
       {{ source('ethereum','traces') }} tr
       INNER JOIN pairs_created pc ON (pc.pair_address = tr.to OR pc.pair_address = tr.from)
-    WHERE
-      AND tr.success = true
+    WHERE tr.success = true
       AND tr.type = 'call'
       AND (
         tr.call_type NOT IN ('delegatecall', 'callcode', 'staticcall')

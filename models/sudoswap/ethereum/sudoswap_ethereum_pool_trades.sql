@@ -23,7 +23,7 @@ WITH
       {{ source('sudo_amm_ethereum','LSSVMPairFactory_call_createPairETH') }} cre
     WHERE
       call_success
-  ),
+  )
 
   SELECT
     day,
