@@ -1,3 +1,13 @@
+{{ config(
+  materialized='view'
+  , alias='borrow'
+  , post_hook='{{ expose_spells(\'["ethereum"]\',
+                                  "project",
+                                  "aave_v2",
+                                  \'["batwayne", "chuxinh"]\') }}'
+  )
+}}
+
 SELECT
       version,
       transaction_type,
