@@ -1,0 +1,3 @@
+- name : balancer_ethereum
+    tables;
+    - name: view_balances
