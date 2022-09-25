@@ -63,7 +63,7 @@ models:
      - name: evt_block_number
        description: "Event block number"
        
-- name: aave_v2_borrow
+ - name: aave_v2_borrow
    meta:
      blockchain: ethereum
      sector: dex
