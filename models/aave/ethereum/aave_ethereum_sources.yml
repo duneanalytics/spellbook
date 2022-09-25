@@ -100,6 +100,42 @@ sources:
           description: "Shows if the liquidator will receive atokens or not"
         - *user
         
+      - name: LendingPool_evt_Borrow
+        loaded_at_field: evt_block_time
+        description: "Contians all the transactions involving borrows for aave v2 on ethereum"
+        columns:
+        - *reserve
+        - *user
+        - *amount     
+        - name: borrowRate
+          description: "The rate at which the tokens are borrowed"
+        - name: borrowRateMode
+          description: "The borrowing mode of the dept"  
+        - *contract_address 
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index
+        - *evt_tx_hash 
+        - name: onBehalfOf
+          description: "The user wallet address if the token is borrowed on behalf of another wallet"
+        - name: referral
+          description: "Borrow referral number"  
+          
+      - name: LendingPool_evt_Repay
+        loaded_at_field: evt_block_time
+        description: "Contians all the transactions involving repays for aave v2 on ethereum"
+        columns:
+        - *amount     
+        - *contract_address 
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index
+        - *evt_tx_hash
+        - name: repayer
+          description: "Wallet address of the repayer" 
+        - *reserve
+        - *user       
+        
   - name: aave_ethereum
     description: "Decoded contracts for aave v2 on Ethereum"
 
@@ -156,4 +192,49 @@ sources:
         - *evt_block_time
         - *evt_index
         - *evt_tx_hash           
+        
+      - name: LendingPool_evt_Borrow
+        loaded_at_field: evt_block_time
+        description: "Contians all the transactions involving borrows for aave v1 on ethereum"
+        columns:
+        - *_amount
+        - &_borrowBalanceIncrease
+          name: _borrowBalanceIncrease 
+          description: "Amount of increase in the total dept"  
+        - name: _borrowRate 
+          description: "The rate at which dept is borrowed"   
+        - name: _borrowRateMode 
+          description: "The borrowing mode"   
+        - name: _originationFee
+          description: "Origination fee of the dept"  
+        - *_referral  
+        - *_reserve
+        - *_timestamp
+        - *_user
+        - *contract_address 
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index
+        - *evt_tx_hash           
+        
+      - name: LendingPool_evt_Repay
+        loaded_at_field: evt_block_time
+        description: "Contians all the transactions involving repays for aave v1 on ethereum"
+        columns:
+        - name: _amountMinusFees
+          description: "The borrowed amount minus fees"  
+        - *_borrowBalanceIncrease 
+        - name: _fees
+          description: "The fees for the given dept"   
+        - name: _repayer 
+          description: "Wallet address of the repayer"   
+        - *_reserve
+        - *_timestamp
+        - *_user
+        - *contract_address 
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index
+        - *evt_tx_hash              
+        
        
