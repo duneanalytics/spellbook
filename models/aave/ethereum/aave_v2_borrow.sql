@@ -127,7 +127,7 @@ SELECT
     evt_index,
     evt_block_time,
     evt_block_number
-FROM {{ source('aave_v2_ethereum'.'LendingPool_evt_LiquidationCall') }}
+FROM {{ source('aave_v2_ethereum','LendingPool_evt_LiquidationCall') }}
 ) borrow
 LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20
     ON borrow.token = erc20.contract_address
