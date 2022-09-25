@@ -118,7 +118,7 @@ FROM {{ source('aave_v2_ethereum','LendingPool_evt_LiquidationCall') }}
 ) deposit
 LEFT JOIN {{ ref(tokens_ethereum_erc20) }} erc20
     ON deposit.token = erc20.contract_address
-LEFT JOIN {{ ref(prices_usd) }} p 
+LEFT JOIN {{ source('prices','usd') }} p 
     ON p.minute = date_trunc('minute', deposit.evt_block_time) 
     AND p.contract_address = deposit.token 
     
