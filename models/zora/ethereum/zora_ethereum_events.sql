@@ -274,7 +274,7 @@ WITH zora_trades AS (
     WHERE get_json_object(z1_bf.bid, '$.bidder') != '0xe468ce99444174bd3bbbed09209577d25d1ad673'
     )
 
-SELECT 'ethereum' AS blockchain
+SELECT distinct 'ethereum' AS blockchain
     , 'zora' AS project
     , zt.version
     , zt.block_time
