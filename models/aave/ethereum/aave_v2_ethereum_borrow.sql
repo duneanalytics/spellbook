@@ -32,7 +32,7 @@ SELECT
         WHEN _borrowRateMode = '2' THEN 'variable'
     END AS loan_type,
     CASE
-        WHEN _reserve = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
+        WHEN _reserve = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
         ELSE _reserve
     END AS token,
     _user AS borrower,
@@ -50,7 +50,7 @@ SELECT
     'repay' AS transaction_type,
     NULL AS loan_type,
     CASE
-        WHEN _reserve = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
+        WHEN _reserve = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
         ELSE _reserve
     END AS token,
     _user AS borrower,
@@ -101,7 +101,7 @@ SELECT
     'borrow_liquidation' AS transaction_type,
     NULL AS loan_type,
     CASE
-        WHEN _reserve = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
+        WHEN _reserve = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
         ELSE _reserve
     END AS token,
     _user AS borrower,
