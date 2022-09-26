@@ -328,6 +328,7 @@ LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erc721 ON erc721.evt_bl
     AND erc721.evt_tx_hash=zt.tx_hash
     AND erc721.contract_address=zt.nft_contract_address
     AND erc721.tokenId=zt.token_id
+    AND erc721.to=zt.buyer
 LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain='ethereum'
     AND pu.minute=date_trunc('minute', zt.block_time)
     AND (pu.contract_address=zt.currency_contract
