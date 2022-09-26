@@ -46,6 +46,9 @@ models:
     dex:
       +schema: dex
       +materialized: view
+      aggregator:
+        +schema: dex_aggregator
+        +materialized: view
     nft:
       +schema: nft
       +materialized: view
@@ -203,6 +206,26 @@ models:
     tornado_cash:
       +schema: tornado_cash
       +materialized: view
+    perpetual:
+      +schema: perpetual
+      +materialized: view
+    perpetual_protocol:
+      +schema: perpetual_protocol
+      +materialized: view
+      optimism:
+        +schema: perpetual_protocol_optimism
+        +materialized: view
+    pika:
+      +schema: pika
+      +materialized: view
+      optimism:
+        +schema: pika_optimism
+        +materialized: view
+    synthetix:
+      +schema: synthetix
+      +materialized: view
+      optimism:
+        +schema: synthetix_optimism
     archipelago:
       +schema: archipelago
       +materialized: view
@@ -339,3 +362,17 @@ seeds:
         +column_types:
           master_address: string
           alternative_address: string
+    perpetual:
+      +enabled: true
+      +schema: test_data
+      trades:
+        +column_types:
+          blockchain: string
+          block_date: date
+          underlying_asset: string
+          market: string
+          market_address: string
+          trade: string
+          project: string
+          version: string
+          tx_hash: string
