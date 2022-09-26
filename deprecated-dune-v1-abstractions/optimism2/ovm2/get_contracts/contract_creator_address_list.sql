@@ -326,6 +326,8 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\x5cb01385d3097b6a189d1ac8ba3364d900666445	Overnight
 \\xA52fECFe3F0D4a77A572dec9B72277abC5dFD9c6	NEX
 \\xb98d4d4e205aff4d4755e9df19bd0b8bd4e0f148	Fuji Finance
+\\xFb59Ce8986943163F14C590755b29dB2998F2322	Sonne Finance
+\\x5bd973c3841b754386963abb117ffc796041aecf	OpenXProject
 \.
 
 COMMIT;
