@@ -4,8 +4,6 @@ sources:
 # Base Tables
   - name: ovm1_optimism
     description: "OVM1 Optimism Large tables"
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: contracts
         columns:
