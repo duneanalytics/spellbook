@@ -27,7 +27,7 @@ FROM (
     '1' AS version,
     'deposit' AS transaction_type,
     CASE
-        WHEN _reserve = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
+        WHEN _reserve = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
         ELSE _reserve
     END AS token,
     _user AS depositor, 
@@ -44,7 +44,7 @@ SELECT
     '1' AS version,
     'withdraw' AS transaction_type,
     CASE
-        WHEN _reserve = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
+        WHEN _reserve = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
         ELSE _reserve
     END AS token,
     _user AS depositor,
@@ -89,7 +89,7 @@ SELECT
     '1' AS version,
     'deposit_liquidation' AS transaction_type,
     CASE
-        WHEN _collateral = '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' THEN '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
+        WHEN _collateral = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
         ELSE _collateral
     END AS token,
     _user AS depositor,
