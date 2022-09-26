@@ -1,0 +1,66 @@
+version: 2
+
+sources:
+  - name: balancer_ethereum
+    description: "Ethereum decoded tables related to Balancer V1"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: BPool_evt_LOG_SWAP
+        loaded_at_field: evt_block_time
+        columns:
+          - &caller
+            name: caller
+          - &contract_address
+            name: contract_address
+          - &evt_block_number
+            name: evt_block_number
+          - &evt_block_time
+            name: evt_block_time
+          - &evt_index
+            name: evt_index
+          - &evt_tx_hash
+            name: evt_tx_hash
+            tests:
+              - not_null
+          - &tokenAmountIn
+            name: tokenAmountIn
+          - &tokenAmountOut
+            name: tokenAmountOut
+          - &tokenIn
+            name: tokenIn
+          - &tokenOut
+            name: tokenOut
+      - name: BFactory_evt_LOG_NEW_POOL
+        loaded_at_field: evt_block_time
+        columns:
+          - *caller
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &pool
+            name: pool
+
+  - name: balancer_v2_ethereum
+    description: "Ethereum decoded tables related to Balancer V2"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: Vault_evt_Swap
+        loaded_at_field: evt_block_time
+        columns:
+          - &amountIn
+            name: amountIn
+          - &amountOut
+            name: amountOut
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &poolId
+            name: poolId
+          - *tokenIn
+          - *tokenOut

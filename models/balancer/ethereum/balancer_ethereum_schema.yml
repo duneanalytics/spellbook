@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       sector: dex
-      project: balancer_v1
+      project: balancer
       contributors: mendesfabio
     config:
       tags: ["ethereum", "balancer", "balancer_v1", "dex", "trades"]
