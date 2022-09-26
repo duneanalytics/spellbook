@@ -61,7 +61,7 @@ LEFT JOIN {{ ref('nft_trades') }} filter_bought_3x ON filter_bought_3x.nft_contr
     {% if is_incremental() %}
     AND filter_bought_3x.block_time >= date_trunc("day", NOW() - interval '2 weeks')
     {% endif %}
-LEFT JOIN {{ ref('addresses_events_ethereum_first_funded_by') }} first_funded_by_example_sample filter_funding_buyer ON filter_funding_buyer.address=nftt.buyer
+LEFT JOIN {{ ref('addresses_events_ethereum_first_funded_by') }} filter_funding_buyer ON filter_funding_buyer.address=nftt.buyer
 LEFT JOIN {{ ref('addresses_events_ethereum_first_funded_by') }} filter_funding_seller ON filter_funding_seller.address=nftt.seller
 WHERE nftt.blockchain='ethereum'
 {% if is_incremental() %}
