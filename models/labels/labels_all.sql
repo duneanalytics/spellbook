@@ -13,7 +13,7 @@ SELECT * FROM {{ ref('labels_cex') }}
 UNION
 SELECT * FROM {{ ref('labels_funds') }}
 UNION
-SELECT * FROM {{ ref('labels_submitted_contracts') }}
+SELECT * FROM {{ ref('labels_contracts') }}
 UNION
 SELECT * FROM {{ ref('labels_bridges') }}
 UNION
