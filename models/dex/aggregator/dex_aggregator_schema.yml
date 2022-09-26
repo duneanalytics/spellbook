@@ -1,32 +1,31 @@
 version: 2
 
 models:
-  - name: cow_protocol_trades
+  - name: dex_aggregator_trades
     meta:
       blockchain: ethereum
-      sector: dex
-      project: cow_protocol
-      contributors: bh2smith, gentrexha
+      sector: dex_aggregator
+      contributors: bh2smith
     config:
-      tags: ['ethereum','cow_protocol','trades','dex','aggregator','cross-chain']
+      tags: ['ethereum', 'aggregator', 'dex', 'trades', 'cross-chain']
     description: >
-        CoW Protocol trades on all chains across all contracts and versions. This table will load dex trades downstream.
+      Aggregator trades on all chains across all contracts and versions
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain which the project is deployed"
-      - &project 
+        description: "Blockchain which the aggregator project is deployed"
+      - &project
         name: project
-        description: "Project name"
+        description: "Name of aggregator project"
       - &version
         name: version
         description: "Version of the contract built and deployed by the project"
       - &block_date
         name: block_date
-        description: "UTC event block date of each trade"
+        description: "UTC event block date of the trade"
       - &block_time
         name: block_time
-        description: "UTC event block time of each trade"
+        description: "UTC event block time of the trade"
       - &token_bought_symbol
         name: token_bought_symbol
         description: "Token symbol for token bought in the trade"
@@ -68,13 +67,13 @@ models:
         description: "Project contract address which executed the trade on the blockchain"
       - &tx_hash
         name: tx_hash
-        description: "Unique transaction hash value tied to each transaction on the DEX"
+        description: "Transaction hash of the trade's settlement"
       - &tx_from
         name: tx_from
-        description: "Trader address owning the order being filled"
+        description: "Address which initiated the trade"
       - &tx_to
         name: tx_to
-        description: "Address which received the token bought"
+        description: "Address which received the trade"
       - &trace_address
         name: trace_address
         description: ""
