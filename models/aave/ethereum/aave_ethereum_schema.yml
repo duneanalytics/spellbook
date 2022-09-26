@@ -25,7 +25,7 @@ models:
      - name: variable_borrow_apy
        description: "Hourly variable borrow interest rate value of the reserve" 
        
- - name: aave_v2_supply
+ - name: aave_v2_ethereum_supply
    meta:
      blockchain: ethereum
      sector: dex
@@ -63,7 +63,7 @@ models:
      - name: evt_block_number
        description: "Event block number"
        
- - name: aave_v2_borrow
+ - name: aave_v2_ethereum_borrow
    meta:
      blockchain: ethereum
      sector: dex
