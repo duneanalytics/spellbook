@@ -1,6 +1,6 @@
 {{
     config(
-        alias='balancer_balances',
+        alias='balances',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "balancer",
