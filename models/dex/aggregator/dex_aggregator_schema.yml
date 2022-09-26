@@ -4,7 +4,7 @@ models:
   - name: dex_aggregator_trades
     meta:
       blockchain: ethereum
-      sector: dex
+      sector: dex_aggregator
       contributors: bh2smith
     config:
       tags: ['ethereum', 'aggregator', 'dex', 'trades', 'cross-chain']
