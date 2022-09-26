@@ -1,6 +1,7 @@
 {{  config(
         alias='trades',
         materialized='incremental',
+        partition_by = ['block_date'],
         unique_key = ['tx_hash', 'order_uid', 'evt_index'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
@@ -17,7 +18,8 @@ WITH
 -- First subquery joins buy and sell token prices from prices.usd.
 -- Also deducts fee from sell amount.
 trades_with_prices AS (
-    SELECT evt_block_time            as block_time,
+    SELECT try_cast(date_trunc('day', evt_block_time) as date) as block_date,
+           evt_block_time            as block_time,
            evt_tx_hash               as tx_hash,
            evt_index,
            settlement.contract_address          as project_contract_address,
@@ -56,7 +58,8 @@ trades_with_prices AS (
 ),
 -- Second subquery gets token symbol and decimals from tokens.erc20 (to display units bought and sold)
 trades_with_token_units as (
-    SELECT block_time,
+    SELECT block_date,
+           block_time,
            tx_hash,
            evt_index,
            project_contract_address,
@@ -144,7 +147,8 @@ uid_to_app_id as (
 ),
 
 valued_trades as (
-    SELECT block_time,
+    SELECT block_date,
+           block_time,
            tx_hash,
            evt_index,
            project_contract_address,

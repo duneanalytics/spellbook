@@ -2,7 +2,7 @@
         alias ='trades',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",
-                                "dex",
+                                "dex_aggregator",
                                 \'["bh2smith"]\') }}'
         )
 }}
