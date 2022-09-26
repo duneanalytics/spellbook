@@ -62,6 +62,7 @@ batch_values as (
 
 combined_batch_info as (
     select
+        block_date,
         evt_block_time                                 as block_time,
         num_trades,
         CASE
