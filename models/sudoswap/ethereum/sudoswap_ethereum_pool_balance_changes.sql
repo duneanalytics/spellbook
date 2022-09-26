@@ -13,12 +13,13 @@
 }}
 
 {% set project_start_date = '2022-04-23' %}
+{% set linear_bonding_address = '0x5b6ac51d9b1cede0068a1b26533cace807f883ee' %}
 
 WITH
   pairs_created AS (
     SELECT
       CASE
-        WHEN _bondingCurve = '0x5b6ac51d9b1cede0068a1b26533cace807f883ee' THEN 'linear_bonding'
+        WHEN _bondingCurve = '{{linear_bonding_address}}' THEN 'linear_bonding'
         ELSE 'exp_bonding'
       END as pricing_type,
       _delta / 1e18 as delta,
@@ -39,6 +40,12 @@ WITH
     FROM
       {{ source('sudo_amm_ethereum','LSSVMPairFactory_call_createPairETH') }} cre
       INNER JOIN {{ source('ethereum','transactions') }} tx ON tx.hash = cre.call_tx_hash
+        {% if not is_incremental() %}
+        AND tx.block_time >= '{{project_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+        AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     WHERE
       call_success
   ),
@@ -103,10 +110,12 @@ WITH
       {{ source('erc721_ethereum','evt_transfer') }} et
       INNER JOIN pairs_created p ON p.nft_contract_address = et.contract_address
       AND (et.to = p.pair_address OR et.from = p.pair_address)
-      {% if is_incremental() %}
-      -- this filter will only be applied on an incremental run. We only want to update with new transfers.
-      WHERE et.evt_block_time >= date_trunc("day", now() - interval '1 week')
-      {% endif %}
+    {% if not is_incremental() %}
+    WHERE et.evt_block_time >= '{{project_start_date}}'
+    {% endif %}
+    {% if is_incremental() %}
+    WHERE et.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     GROUP BY
       1,2
   ),
@@ -130,7 +139,6 @@ WITH
       AND tr.block_time > '{{project_start_date}}'
       {% endif %}
       {% if is_incremental() %}
-      -- this filter will only be applied on an incremental run. We only want to update with new transfers.
       AND tr.block_time >= date_trunc("day", now() - interval '1 week')
       {% endif %}
     GROUP BY
@@ -168,3 +176,4 @@ WITH
     ) bal
   INNER JOIN pairs_created pc ON pc.pair_address = bal.pair_address
   LEFT JOIN most_recent_spot_delta mr ON mr.pair_address = bal.pair_address
+  ;
