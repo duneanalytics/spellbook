@@ -18,3 +18,51 @@ sources:
         loaded_at_field: evt_block_time
       - name: CurveFactoryV2_evt_LiquidityGaugeDeployed
         loaded_at_field: evt_block_time
+      - name: susd_swap_evt_TokenExchange
+        loaded_at_field: evt_block_time
+      - name: susd_swap_evt_TokenExchangeUnderlying
+        loaded_at_field: evt_block_time
+      - name: susd_evt_TokenExchange
+        loaded_at_field: evt_block_time
+      - name: susd_evt_TokenExchangeUnderlying
+        loaded_at_field: evt_block_time
+      - name: compound_evt_TokenExchange
+        loaded_at_field: evt_block_time
+      - name: compound_v2_evt_TokenExchange
+        loaded_at_field: evt_block_time
+      - name: compound_v2_evt_TokenExchangeUnderlying
+        loaded_at_field: evt_block_time
+      - name: compound_swap_evt_TokenExchange
+        loaded_at_field: evt_block_time
+      - name: compound_swap_evt_TokenExchangeUnderlying
+        loaded_at_field: evt_block_time
+      - name: usdt_swap_evt_TokenExchange
+        loaded_at_field: evt_block_time
+      - name: usdt_swap_evt_TokenExchangeUnderlying
+        loaded_at_field: evt_block_time
+      - name: y_swap_evt_TokenExchange
+        loaded_at_field: evt_block_time
+      - name: y_swap_evt_TokenExchangeUnderlying
+        loaded_at_field: evt_block_time
+      - name: busd_swap_evt_TokenExchange
+        loaded_at_field: evt_block_time
+      - name: busd_swap_evt_TokenExchangeUnderlying
+        loaded_at_field: evt_block_time
+      - name: pax_swap_evt_TokenExchange
+        loaded_at_field: evt_block_time
+      - name: pax_swap_evt_TokenExchangeUnderlying
+        loaded_at_field: evt_block_time
+      - name: ren_swap_evt_TokenExchange
+        loaded_at_field: evt_block_time
+      - name: sbtc_swap_evt_TokenExchange
+        loaded_at_field: evt_block_time
+      - name: hbtc_swap_evt_TokenExchange
+        loaded_at_field: evt_block_time
+      - name: threepool_swap_evt_TokenExchange
+        loaded_at_field: evt_block_time
+      - name: steth_swap_evt_TokenExchange
+        loaded_at_field: evt_block_time
+      - name: tricrypto_swap_evt_TokenExchange
+        loaded_at_field: evt_block_time
+      - name: tricrypto2_swap_evt_TokenExchange
+        loaded_at_field: evt_block_time
