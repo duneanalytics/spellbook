@@ -121,4 +121,5 @@ LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20
 LEFT JOIN {{ source('prices','usd') }} p 
     ON p.minute = date_trunc('minute', deposit.evt_block_time) 
     AND p.contract_address = deposit.token 
+    AND p.blockchain = 'ethereum'
     
