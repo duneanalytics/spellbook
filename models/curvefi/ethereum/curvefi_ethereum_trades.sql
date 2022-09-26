@@ -79,6 +79,9 @@ WITH dexs AS
         '' AS trace_address,
         evt_index
     FROM {{ source('curvefi_ethereum', 'susd_swap_evt_TokenExchange') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION
 
@@ -108,6 +111,9 @@ WITH dexs AS
         '' AS trace_address,
         evt_index
     FROM {{ source('curvefi_ethereum', 'susd_swap_evt_TokenExchangeUnderlying') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION
 
@@ -132,6 +138,9 @@ WITH dexs AS
         '' AS trace_address,
         evt_index
     FROM {{ source('curvefi_ethereum', 'susd_evt_TokenExchange') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION
 
@@ -156,6 +165,9 @@ WITH dexs AS
         '' AS trace_address,
         evt_index
     FROM {{ source('curvefi_ethereum', 'susd_evt_TokenExchangeUnderlying') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION
 
@@ -180,6 +192,9 @@ WITH dexs AS
         '' AS trace_address,
         evt_index
     FROM {{ source('curvefi_ethereum', 'compound_evt_TokenExchange') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION
 
@@ -204,6 +219,9 @@ WITH dexs AS
         '' AS trace_address,
         evt_index
     FROM {{ source('curvefi_ethereum', 'compound_v2_evt_TokenExchange') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION
 
@@ -228,6 +246,9 @@ WITH dexs AS
         '' AS trace_address,
         evt_index
     FROM {{ source('curvefi_ethereum', 'compound_v2_evt_TokenExchangeUnderlying') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION
 
@@ -252,6 +273,9 @@ WITH dexs AS
         '' AS trace_address,
         evt_index
     FROM {{ source('curvefi_ethereum', 'compound_swap_evt_TokenExchange') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION
 
@@ -276,6 +300,9 @@ WITH dexs AS
         '' AS trace_address,
         evt_index
     FROM {{ source('curvefi_ethereum', 'compound_swap_evt_TokenExchangeUnderlying') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION
 
@@ -302,6 +329,9 @@ WITH dexs AS
         '' AS trace_address,
         evt_index
     FROM {{ source('curvefi_ethereum', 'usdt_swap_evt_TokenExchange') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION
 
@@ -328,6 +358,9 @@ WITH dexs AS
         '' AS trace_address,
         evt_index
     FROM {{ source('curvefi_ethereum', 'usdt_swap_evt_TokenExchangeUnderlying') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION
 
@@ -356,6 +389,9 @@ WITH dexs AS
         '' AS trace_address,
         evt_index
     FROM {{ source('curvefi_ethereum', 'y_swap_evt_TokenExchange') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION
 
@@ -384,6 +420,9 @@ WITH dexs AS
         '' AS trace_address,
         evt_index
     FROM {{ source('curvefi_ethereum', 'y_swap_evt_TokenExchangeUnderlying') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION
 
@@ -412,6 +451,9 @@ WITH dexs AS
         '' AS trace_address,
         evt_index
     FROM {{ source('curvefi_ethereum', 'busd_swap_evt_TokenExchange') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION
 
@@ -440,6 +482,9 @@ WITH dexs AS
         '' AS trace_address,
         evt_index
     FROM {{ source('curvefi_ethereum', 'busd_swap_evt_TokenExchangeUnderlying') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION
 
@@ -468,6 +513,9 @@ WITH dexs AS
         '' AS trace_address,
         evt_index
     FROM {{ source('curvefi_ethereum', 'pax_swap_evt_TokenExchange') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION
 
@@ -496,6 +544,9 @@ WITH dexs AS
         '' AS trace_address,
         evt_index
     FROM {{ source('curvefi_ethereum', 'pax_swap_evt_TokenExchangeUnderlying') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION
 
@@ -520,6 +571,9 @@ WITH dexs AS
         '' AS trace_address,
         evt_index
     FROM {{ source('curvefi_ethereum', 'ren_swap_evt_TokenExchange') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION
 
@@ -546,6 +600,9 @@ WITH dexs AS
         '' AS trace_address,
         evt_index
     FROM {{ source('curvefi_ethereum', 'sbtc_swap_evt_TokenExchange') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION
 
@@ -572,6 +629,9 @@ WITH dexs AS
         '' AS trace_address,
         evt_index
     FROM {{ source('curvefi_ethereum', 'hbtc_swap_evt_TokenExchange') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION
 
@@ -598,6 +658,9 @@ WITH dexs AS
         '' AS trace_address,
         evt_index
     FROM {{ source('curvefi_ethereum', 'threepool_swap_evt_TokenExchange') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION
 
@@ -622,6 +685,9 @@ WITH dexs AS
         '' AS trace_address,
         evt_index
     FROM {{ source('curvefi_ethereum', 'steth_swap_evt_TokenExchange') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION
 
@@ -648,6 +714,9 @@ WITH dexs AS
         '' AS trace_address,
         evt_index
     FROM {{ source('curvefi_ethereum', 'tricrypto_swap_evt_TokenExchange') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION
 
@@ -674,6 +743,9 @@ WITH dexs AS
         '' AS trace_address,
         evt_index
     FROM {{ source('curvefi_ethereum', 'tricrypto2_swap_evt_TokenExchange') }}   
+        {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 )
 
 SELECT
