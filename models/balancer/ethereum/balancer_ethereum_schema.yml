@@ -6,7 +6,7 @@ models:
       blockchain: ethereum
       sector: dex
       project: balancer
-      contributors: mendesfabio
+      contributors: mendesfabio, markusbkoch
     config:
       tags: ["ethereum", "balancer", "balancer_v1", "dex", "trades"]
     description: >
@@ -95,7 +95,7 @@ models:
       blockchain: ethereum
       sector: dex
       project: balancer_v2
-      contributors: mendesfabio
+      contributors: mendesfabio, markusbkoch
     config:
       tags: ["ethereum", "balancer", "balancer_v2", "dex", "trades"]
     description: >
@@ -131,7 +131,7 @@ models:
       blockchain: ethereum
       sector: dex
       project: balancer
-      contributors: mendesfabio
+      contributors: mendesfabio, markusbkoch
     config:
       tags:
         ["ethereum", "balancer", "balancer_v1", "balancer_v2", "dex", "trades"]
