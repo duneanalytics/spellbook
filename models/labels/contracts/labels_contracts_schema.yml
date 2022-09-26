@@ -1,22 +1,22 @@
 version: 2
 
 models:
-  - name: labels_submitted_contracts
+  - name: labels_contracts
     meta:
       blockchain: ethereum, arbitrum, gnosis, optimism, bnb, avalanche_c
       sector: labels
-      category: submitted_contracts
+      category: contracts
       contibutors:  soispoke
     config:
-      tags: ['query', 'labels', 'ethereum', 'submitted_contracts']
-    description: "Dune submitted contracts query labels across chains"
+      tags: ['query', 'labels', 'ethereum', 'contracts']
+    description: "Dune contracts query labels across chains"
     columns:
       - name: blockchain
         description: "Blockchain"   
       - name: address
         description: "Label address"
       - name: name
-        description: "Label name (name and namespace) of the submitted contract"
+        description: "Label name (name and namespace) of the contract"
       - name: category
         description: "Label category"
       - name: contributor
