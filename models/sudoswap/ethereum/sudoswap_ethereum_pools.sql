@@ -76,3 +76,4 @@ FROM
   pool_stats ps
 INNER JOIN pool_balance pb ON pb.pool_address = ps.pool_address
 INNER JOIN pool_trades pt ON pt.pool_address = ps.pool_address
+;
