@@ -63,11 +63,14 @@ WITH
       FROM
         {{ ref('sudoswap_ethereum_events') }} se
       INNER JOIN pairs_created p ON ((p.nft_contract_address = se.nft_contract_address)
-      AND (se.buyer = p.pair_address OR se.seller = p.pair_address))
+        AND (se.buyer = p.pair_address OR se.seller = p.pair_address))
+      {% if not is_incremental() %}
+      WHERE se.block_date >= '{{project_start_date}}'
+      {% endif %}
       {% if is_incremental() %}
-      -- this filter will only be applied on an incremental run. We only want to update with new swaps.
-      WHERE block_date >= date_trunc("day", now() - interval '1 week')
+      WHERE se.block_date >= date_trunc("day", now() - interval '1 week')
       {% endif %}
     ) a
   GROUP BY
     1,2
+    ;
