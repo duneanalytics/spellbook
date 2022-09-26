@@ -581,7 +581,10 @@ VALUES
     ("eure-monerium-eur-emoney", "ethereum", "EURe", "0x3231Cb76718CDeF2155FC47b5286d82e6eDA273f", 18),
     ("fort-forta", "ethereum", "FORT", "0x41545f8b9472D758bB669ed8EaEEEcD7a9C4Ec29", 18),
     ("caps-ternoa", "ethereum", "CAPS", "0x03be5c903c727ee2c8c4e9bc0acc860cca4715e2", 18),
-    ("strp-strips-finance", "ethereum", "STRP", "0x97872eafd79940c7b24f7bcc1eadb1457347adc9", 18),    
+    ("strp-strips-finance", "ethereum", "STRP", "0x97872eafd79940c7b24f7bcc1eadb1457347adc9", 18),
+    ("wsteth-wrapped-liquid-staked-ether-20", "ethereum", "wstETH", "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0", 18),
+    ("reth-rocket-pool-eth", "ethereum", "rETH", "0xae78736cd615f374d3085123a210448e74fc6393", 18),
+    ("temple-templedao", "ethereum", "TEMPLE", "0x470ebf5f030ed85fc1ed4c2d36b9dd02e77cf1b7", 18),
 
     ("dai-dai", "gnosis", "WXDAI", "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18),
     ("usdc-usd-coin", "gnosis", "USDC", "0xddafbb505ad214d7b80b1f830fccc89b60fb7a83", 6),
