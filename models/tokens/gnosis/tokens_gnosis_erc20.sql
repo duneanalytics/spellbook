@@ -1,6 +1,6 @@
 {{ config( alias='erc20')}}
 
-SELECT contract_address, symbol, decimals
+SELECT LOWER(contract_address) as contract_address, symbol, decimals
 FROM (VALUES
           ('0x3f9463bdb502ec2079bf39da6c924d4022ff9f4c', 'biubiu.tools', 18)
           ,('0xdbf3ea6f5bee45c02255b2c26a16f300502f68da', 'BZZ', 16)
