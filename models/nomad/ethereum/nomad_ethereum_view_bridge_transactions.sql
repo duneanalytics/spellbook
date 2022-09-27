@@ -1,7 +1,11 @@
+-- Expose Spells macro:
+-- => expose_spells(["blockchains"], 'project'/'sector','name', ["contributors"])
 {{
-  config(
-        alias='view_bridge_transactions'
-  )
+  config(alias='view_bridge_transactions',
+         post_hook='{{ expose_spells(\'["ethereum"]\',
+                                      "project",
+                                      "nomad",
+                                    \'["springzh"]\') }}')
 }}
 
 with nomad_bridge_domains(domain_id, domain_name, domain_type) as (
@@ -15,10 +19,10 @@ with nomad_bridge_domains(domain_id, domain_name, domain_type) as (
       (10906210, 'Milkomeda C1', 'Inflow'),
       (1635148152, 'Avalanche', 'Outflow'),
       (70229078, 'Avalanche', 'Inflow'),
-      (2019844457, 'Gnosis Chain (xdai)', 'Outflow') 
+      (2019844457, 'Gnosis Chain (xdai)', 'Outflow')
 )
 
-,nomad_bridge_transactions as ( 
+,nomad_bridge_transactions as (
       select evt_block_time as block_time
           ,evt_block_number as block_number
           ,evt_tx_hash as tx_hash
@@ -63,7 +67,7 @@ with nomad_bridge_domains(domain_id, domain_name, domain_type) as (
           ,d.domain_name as domain_name
           ,false as fast_liquidity_enabled
           ,liquidityProvider as liquidity_provider
-      from {{ source('nomad_ethereum','BridgeRouter_evt_Receive') }} r
+      from {{ source('nomad_ethereum', 'BridgeRouter_evt_Receive') }} r
       inner join {{ source('ethereum','transactions') }} t on r.evt_block_number = t.block_number
             and r.evt_tx_hash = t.hash
             and t.block_time >= '2022-01-01'

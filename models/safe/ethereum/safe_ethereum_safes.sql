@@ -6,7 +6,11 @@
         unique_key = ['block_date', 'address'],
         on_schema_change='fail',
         file_format ='delta',
-        incremental_strategy='merge'
+        incremental_strategy='merge',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "project",
+                                    "safe",
+                                    \'["sche"]\') }}'
     ) 
 }}
 
