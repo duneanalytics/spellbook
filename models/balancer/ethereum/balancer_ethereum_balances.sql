@@ -12,7 +12,7 @@
 
 WITH pools AS (
     SELECT pool as pools
-    FROM {{ source('balancer_ethereum', 'BFactory_evt_LOG_NEW_POOL') }}
+    FROM {{ source('balancer_v1_ethereum', 'BFactory_evt_LOG_NEW_POOL') }}
 ),
 
 joins AS (

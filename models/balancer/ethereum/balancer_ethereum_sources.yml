@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: balancer_ethereum
+  - name: balancer_v1_ethereum
     description: >
       Decoded tables related to Balancer, an automated portfolio manager and trading platform.
     tables:
