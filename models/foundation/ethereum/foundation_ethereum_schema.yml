@@ -8,7 +8,7 @@ models:
     meta:
       blockchain: ethereum
       project: foundation
-      contributors: hildobby
+      contributors: hildobby, soispoke
     config:
       tags: ['ethereum','foundation','v1','events']
     description: >
@@ -130,7 +130,7 @@ models:
     meta:
       blockchain: ethereum
       project: foundation
-      contributors: hildobby
+      contributors: hildobby, soispoke
     config:
       tags: ['ethereum','foundation','trades']
     description: >
@@ -168,7 +168,7 @@ models:
     meta:
       blockchain: ethereum
       project: foundation
-      contributors: hildobby
+      contributors: hildobby, soispoke
     config:
       tags: ['ethereum','foundation','mints']
     description: >
@@ -206,7 +206,7 @@ models:
     meta:
       blockchain: ethereum
       project: foundation
-      contributors: hildobby
+      contributors: hildobby, soispoke
     config:
       tags: ['ethereum','foundation','burns']
     description: >
@@ -244,7 +244,7 @@ models:
     meta:
       blockchain: ethereum
       project: foundation
-      contributors: hildobby
+      contributors: hildobby, soispoke
     config:
       tags: ['ethereum','foundation','fees']
     description: >
