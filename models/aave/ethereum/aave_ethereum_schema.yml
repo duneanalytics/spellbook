@@ -4,12 +4,12 @@ models:
  - name: aave_v2_ethereum_interest_rates
    meta:
      blockchain: ethereum
-     sector: dex
+     sector: lending
      project: aave_v2
      contibutors: batwayne, chuxinh
 
    config:
-     tags: ['ethereum', 'aave_v2', 'interest', 'aave', 'dex']
+     tags: ['ethereum', 'aave_v2', 'interest', 'aave', 'lending']
    description: "Hourly aave interest rates on ethereum"
    columns:
      - name: reserve
@@ -28,12 +28,12 @@ models:
  - name: aave_v2_ethereum_supply
    meta:
      blockchain: ethereum
-     sector: dex
+     sector: lending
      project: aave_v2
      contibutors: batwayne, chuxinh
 
    config:
-     tags: ['ethereum', 'aave_v2', 'supply', 'aave', 'dex']
+     tags: ['ethereum', 'aave_v2', 'supply', 'aave', 'lending']
    description: "All aave v1 and v2 transactions involving supply transactions on ethereum"
    columns:
      - name: version
@@ -66,12 +66,12 @@ models:
  - name: aave_v2_ethereum_borrow
    meta:
      blockchain: ethereum
-     sector: dex
+     sector: lending
      project: aave_v2
      contibutors: batwayne, chuxinh
 
    config:
-     tags: ['ethereum', 'aave_v2', 'borrow', 'aave', 'dex']
+     tags: ['ethereum', 'aave_v2', 'borrow', 'aave', 'lending']
    description: "All aave v1 and v2 transactions involving borrow transactions on ethereum"
    columns:
      - name: version
