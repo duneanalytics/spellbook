@@ -227,7 +227,7 @@ WITH rarible_all_trades AS (
     AND get_json_object(s.rightAsset, '$.assetClass') IN ('0x973bb640', '0x73ad2146')
     )
 
-SELECT distinct 'ethereum' AS blockchain
+SELECT 'ethereum' AS blockchain
 , 'rarible' AS project
 , rat.version
 , date_trunc('day', rat.block_time) AS block_date
@@ -313,3 +313,6 @@ LEFT JOIN {{ source('erc20_ethereum','evt_transfer') }} erc_roy ON erc_roy.evt_b
     {% if is_incremental() %}
     AND erc_roy.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+GROUP BY rat.version, rat.block_time, rat.block_number, rat.token_id, nft.name, rat.amount_original, pu.price, rat.token_standard, agg.name, rat.number_of_items
+, rat.trade_category, rat.evt_type, rat.seller, rat.buyer, rat.amount_original, rat.amount_raw, rat.currency_symbol, rat.currency_contract, rat.project_contract_address
+, rat.nft_contract_address, agg.contract_address, rat.tx_hash, et.from, et.to, tok.decimals
