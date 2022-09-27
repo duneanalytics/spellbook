@@ -224,13 +224,13 @@ models:
       - *tx_to
       - *unique_trade_id
 
-  - name: sudoswap_ethereum_pools
+  - name: sudoswap_ethereum_pool_view
     meta:
       blockchain: ethereum
       project: sudoswap
-      contributors: [niftytable]
+      contributors: [niftytable, 0xRob]
     config:
-      tags: ['ethereum','sudoswap','pools']
+      tags: ['ethereum','sudoswap','pool_view']
     description: >
         sudoswap pool stats on Ethereum
     columns:
@@ -285,7 +285,7 @@ models:
       - &pool_fee
         name: pool_fee
         description: "Current price of a swap"
-      - &initial_price
+      - &initial_spot_price
         name: initial_price
         description: "Initial spot price of the pool"
       - &initial_nft_balance

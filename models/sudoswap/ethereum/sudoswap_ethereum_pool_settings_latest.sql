@@ -127,8 +127,8 @@ with
 
 , full_settings_backfilled as (
     select
-    ,coalesce(t1.pool_address,t3.pool_address) as pool_address
-    ,coalesce(t2.bonding_curve, t3.bonding_curve)
+     coalesce(t1.pool_address,t3.pool_address) as pool_address
+    ,coalesce(t2.bonding_curve, t3.bonding_curve) as bonding_curve
     ,coalesce(t1.pool_fee, t2.pool_fee, t3.pool_fee) as pool_fee
     ,coalesce(t1.delta, t2.delta, t3.delta) as delta
     ,coalesce(t1.spot_price, t2.spot_price, t3.spot_price) as spot_price
