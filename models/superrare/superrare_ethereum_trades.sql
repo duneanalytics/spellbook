@@ -1,10 +1,10 @@
 {{ config(
     alias = 'trades',
-    partition_by = ['block_date'],
+    partition_by = ['block_time'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'unique_trade_id'],
+    unique_key = ['block_time', 'unique_trade_id'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "superrare",
