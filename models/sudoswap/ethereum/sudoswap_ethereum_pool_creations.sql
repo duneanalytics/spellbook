@@ -8,7 +8,7 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "sudoswap",
-                                    \'["niftytable, 0xRob"]\') }}'
+                                    \'["niftytable","0xRob"]\') }}'
         )
 }}
 
@@ -18,7 +18,7 @@
 
 
 WITH
-  pairs_created AS (
+  pool_creations AS (
     SELECT
       output_pair AS pool_address,
       _nft AS nft_contract_address,
@@ -38,9 +38,9 @@ WITH
       _fee AS pool_fee,
       coalesce(cardinality(_initialNFTIDs),0) AS initial_nft_balance,
       coalesce(tx.value / 1e18,0) AS initial_eth_balance,
-      contract_address as pool_factory
+      contract_address as pool_factory,
       call_block_time AS creation_block_time,
-      call_tx_hash as creation_tx_hash,
+      call_tx_hash as creation_tx_hash
     FROM
       {{ source('sudo_amm_ethereum','LSSVMPairFactory_call_createPairETH') }} cre
       INNER JOIN {{ source('ethereum','transactions') }} tx ON tx.hash = cre.call_tx_hash
@@ -53,3 +53,5 @@ WITH
     WHERE
       call_success
   ),
+
+SELECT * FROM pool_creations

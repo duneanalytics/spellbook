@@ -101,8 +101,8 @@ with
     ,spot_price
     coalesce(t1.update_time, t2.update_time, t3.update_time) as latest_update_time
     from latest_spot_price t1
-    outer join latest_delta t2 on t1.pool_address = t2.pool_address
-    outer join latest_fee t3 on t1.pool_address = t3.pool_address and t2.pool_address = t3.pool_address
+    full join latest_delta t2 on t1.pool_address = t2.pool_address
+    full join latest_fee t3 on t1.pool_address = t3.pool_address and t2.pool_address = t3.pool_address
 )
 
 , initial_settings as (
@@ -145,4 +145,4 @@ with
     ON t1.pool_address = t3.pool_address
 )
 
-select * from full_settings_backfilled_with_old_state
+select * from full_settings_backfilled
