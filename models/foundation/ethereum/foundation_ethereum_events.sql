@@ -181,6 +181,10 @@ INNER JOIN {{ source('erc721_ethereum','evt_transfer') }} nft_t ON nft_t.evt_blo
     AND nft_t.from=t.seller
     AND nft_t.to=t.buyer
     AND nft_t.contract_address = t.nft_contract_address
+    {% if is_incremental() %}
+    -- this filter will only be applied on an incremental run
+    AND nft_t.evt_block_time >=  date_trunc("day", now() - interval '1 week')
+    {% endif %}
 LEFT JOIN {{ source('ethereum','transactions') }} et ON et.block_time=t.block_time
     AND et.hash=t.tx_hash
     {% if not is_incremental() %}
@@ -204,9 +208,9 @@ LEFT JOIN {{ source('ethereum','traces') }} ett ON ett.block_time=t.block_time
     AND t.royalty_fee_amount/t.amount_original < 0.5
     {% if is_incremental() %}
     -- this filter will only be applied on an incremental run
-    AND ett.block_time >= (select max(block_time) from {{ this }})
+    AND ett.block_time >=  date_trunc("day", now() - interval '1 week')
     {% endif %}
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-AND t.block_time >= (select max(block_time) from {{ this }})
+AND t.block_time >=  date_trunc("day", now() - interval '1 week')
 {% endif %}
