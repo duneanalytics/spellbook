@@ -16,106 +16,111 @@ WITH rarible_all_trades AS (
     -- Get data from various Rarible contracts deployed over time
     -- October 2019 -> Summer 2020
     SELECT 'v1' AS version
-    , evt_block_time AS block_time
-    , evt_block_time AS block_number
-    , tokenId AS token_id
+    , r.evt_block_time AS block_time
+    , r.evt_block_number AS block_number
+    , r.tokenId AS token_id
     , 'erc721' AS token_standard
     , 1 AS number_of_items
     , 'Buy' AS trade_category
     , 'Trade' AS evt_type
-    , seller
-    , buyer
-    , price/POWER(10, 18) AS amount_original
-    , price AS amount_raw
+    , r.seller
+    , r.buyer
+    , r.price/POWER(10, 18) AS amount_original
+    , r.price AS amount_raw
     , 'ETH' AS currency_symbol
     , '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS currency_contract
-    , contract_address AS project_contract_address
-    , token AS nft_contract_address
-    , evt_tx_hash AS tx_hash
-    FROM {{ source('rarible_ethereum','TokenSale_evt_Buy') }}
+    , r.contract_address AS project_contract_address
+    , r.token AS nft_contract_address
+    , r.evt_tx_hash AS tx_hash
+    FROM {{ source('rarible_ethereum','TokenSale_evt_Buy') }} r
+    WHERE r.evt_block_time >= '2019-10-24' AND r.evt_block_time <= '2020-08-31'
     UNION
     -- May 2020 -> September 2020
     SELECT 'v1' AS version
-    , evt_block_time AS block_time
-    , evt_block_time AS block_number
-    , tokenId AS token_id
+    , r.evt_block_time AS block_time
+    , r.evt_block_number AS block_number
+    , r.tokenId AS token_id
     , 'erc1155' AS token_standard
     , 1 AS number_of_items
     , 'Buy' AS trade_category
     , 'Trade' AS evt_type
     , owner AS seller
-    , buyer
-    , price/POWER(10, 18) AS amount_original
-    , price AS amount_raw
+    , r.buyer
+    , r.price/POWER(10, 18) AS amount_original
+    , r.price AS amount_raw
     , 'ETH' AS currency_symbol
     , '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS currency_contract
-    , contract_address AS project_contract_address
-    , token AS nft_contract_address
-    , evt_tx_hash AS tx_hash
-    FROM {{ source('rarible_v1_ethereum','ERC1155Sale_v1_evt_Buy') }}
+    , r.contract_address AS project_contract_address
+    , r.token AS nft_contract_address
+    , r.evt_tx_hash AS tx_hash
+    FROM {{ source('rarible_v1_ethereum','ERC1155Sale_v1_evt_Buy') }} r
+    WHERE r.evt_block_time >= '2020-05-28' AND r.evt_block_time <= '2020-09-09'
     UNION
     SELECT 'v1' AS version
-    , evt_block_time AS block_time
-    , evt_block_time AS block_number
-    , tokenId AS token_id
+    , r.evt_block_time AS block_time
+    , r.evt_block_number AS block_number
+    , r.tokenId AS token_id
     , 'erc721' AS token_standard
     , 1 AS number_of_items
     , 'Buy' AS trade_category
     , 'Trade' AS evt_type
-    , seller
-    , buyer
-    , price/POWER(10, 18) AS amount_original
-    , price AS amount_raw
+    , r.seller
+    , r.buyer
+    , r.price/POWER(10, 18) AS amount_original
+    , r.price AS amount_raw
     , 'ETH' AS currency_symbol
     , '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS currency_contract
-    , contract_address AS project_contract_address
-    , token AS nft_contract_address
-    , evt_tx_hash AS tx_hash
-    FROM {{ source('rarible_v1_ethereum','ERC721Sale_v1_evt_Buy') }}
+    , r.contract_address AS project_contract_address
+    , r.token AS nft_contract_address
+    , r.evt_tx_hash AS tx_hash
+    FROM {{ source('rarible_v1_ethereum','ERC721Sale_v1_evt_Buy') }} r
+    WHERE r.evt_block_time >= '2020-05-28' AND r.evt_block_time <= '2020-09-03'
     UNION
     -- September 2020 -> November 2020
     SELECT 'v1' AS version
-    , evt_block_time AS block_time
-    , evt_block_time AS block_number
-    , tokenId AS token_id
+    , r.evt_block_time AS block_time
+    , r.evt_block_number AS block_number
+    , r.tokenId AS token_id
     , 'erc721' AS token_standard
     , 1 AS number_of_items
     , 'Buy' AS trade_category
     , 'Trade' AS evt_type
-    , seller
-    , buyer
-    , price/POWER(10, 18) AS amount_original
-    , price AS amount_raw
+    , r.seller
+    , r.buyer
+    , r.price/POWER(10, 18) AS amount_original
+    , r.price AS amount_raw
     , 'ETH' AS currency_symbol
     , '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS currency_contract
-    , contract_address AS project_contract_address
-    , token AS nft_contract_address
-    , evt_tx_hash AS tx_hash
-    FROM {{ source('rarible_v1_ethereum','ERC721Sale_v2_evt_Buy') }}
+    , r.contract_address AS project_contract_address
+    , r.token AS nft_contract_address
+    , r.evt_tx_hash AS tx_hash
+    FROM {{ source('rarible_v1_ethereum','ERC721Sale_v2_evt_Buy') }} r
+    WHERE r.evt_block_time >= '2020-09-03' AND r.evt_block_time <= '2021-01-22'
     UNION
     SELECT 'v1' AS version
-    , evt_block_time AS block_time
-    , evt_block_time AS block_number
-    , tokenId AS token_id
+    , r.evt_block_time AS block_time
+    , r.evt_block_number AS block_number
+    , r.tokenId AS token_id
     , 'erc1155' AS token_standard
     , 1 AS number_of_items
     , 'Buy' AS trade_category
     , 'Trade' AS evt_type
     , owner AS seller
-    , buyer
-    , price/POWER(10, 18) AS amount_original
-    , price AS amount_raw
+    , r.buyer
+    , r.price/POWER(10, 18) AS amount_original
+    , r.price AS amount_raw
     , 'ETH' AS currency_symbol
     , '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS currency_contract
-    , contract_address AS project_contract_address
-    , token AS nft_contract_address
-    , evt_tx_hash AS tx_hash
-    FROM {{ source('rarible_v1_ethereum','ERC1155Sale_v2_evt_Buy') }}
+    , r.contract_address AS project_contract_address
+    , r.token AS nft_contract_address
+    , r.evt_tx_hash AS tx_hash
+    FROM {{ source('rarible_v1_ethereum','ERC1155Sale_v2_evt_Buy') }} r
+    WHERE r.evt_block_time >= '2020-09-03' AND r.evt_block_time <= '2021-06-05'
     UNION
     -- November 2020 -> June 2021
     SELECT 'v1' AS version
     , s.evt_block_time AS block_time
-    , s.evt_block_time AS block_number
+    , s.evt_block_number AS block_number
     , s.selltokenId AS token_id
     , CASE WHEN nft.evt_index IS NOT NULL THEN 'erc721' ELSE 'erc1155' END AS token_standard
     , 1 AS number_of_items
@@ -144,7 +149,7 @@ WITH rarible_all_trades AS (
     -- June 2021 onwards (ETH Buys)
     SELECT 'v2' AS version
     , s.evt_block_time AS block_time
-    , s.evt_block_time AS block_number
+    , s.evt_block_number AS block_number
     , ROUND(bytea2numeric_v2(substring(get_json_object(s.leftAsset, '$.data'), 67, 64)), 0) AS token_id
     , CASE WHEN nft.evt_index IS NOT NULL THEN 'erc721' ELSE 'erc1155' END AS token_standard
     , 1 AS number_of_items
@@ -170,7 +175,7 @@ WITH rarible_all_trades AS (
     -- June 2021 onwards (ERC20 Accepted Offers)
     SELECT 'v2' AS version
     , s.evt_block_time AS block_time
-    , s.evt_block_time AS block_number
+    , s.evt_block_number AS block_number
     , ROUND(bytea2numeric_v2(substring(get_json_object(s.leftAsset, '$.data'), 67, 64)), 0) AS token_id
     , CASE WHEN nft.evt_index IS NOT NULL THEN 'erc721' ELSE 'erc1155' END AS token_standard
     , 1 AS number_of_items
@@ -197,7 +202,7 @@ WITH rarible_all_trades AS (
     -- June 2021 onwards (ERC20s Buy)
     SELECT 'v2' AS version
     , s.evt_block_time AS block_time
-    , s.evt_block_time AS block_number
+    , s.evt_block_number AS block_number
     , ROUND(bytea2numeric_v2(substring(get_json_object(s.leftAsset, '$.data'), 67, 64)), 0) AS token_id
     , CASE WHEN nft.evt_index IS NOT NULL THEN 'erc721' ELSE 'erc1155' END AS token_standard
     , 1 AS number_of_items
@@ -249,14 +254,14 @@ SELECT distinct 'ethereum' AS blockchain
 , rat.tx_hash
 , et.from AS tx_from
 , et.to AS tx_to
-, COALESCE(SUM(traces.value), SUM(erc.value)) AS platform_fee_amount_raw
-, COALESCE(SUM(traces.value)/POWER(10, 18), SUM(erc.value)/POWER(10, tok.decimals)) AS platform_fee_amount
-, COALESCE(pu.price*SUM(traces.value)/POWER(10, 18), pu.price*SUM(erc.value)/POWER(10, tok.decimals)) AS platform_fee_amount_usd
-, COALESCE(SUM(traces.value), SUM(erc.value))/rat.amount_raw platform_fee_percentage
-, NULL AS royalty_fee_amount_raw
-, NULL AS royalty_fee_amount
-, NULL AS royalty_fee_amount_usd
-, NULL AS royalty_fee_percentage
+, COALESCE(SUM(traces_plat.value), SUM(erc_plat.value)) AS platform_fee_amount_raw
+, COALESCE(SUM(traces_plat.value)/POWER(10, 18), SUM(erc_plat.value)/POWER(10, tok.decimals)) AS platform_fee_amount
+, COALESCE(pu.price*SUM(traces_plat.value)/POWER(10, 18), pu.price*SUM(erc_plat.value)/POWER(10, tok.decimals)) AS platform_fee_amount_usd
+, COALESCE(SUM(traces_plat.value), SUM(erc_plat.value))/rat.amount_raw platform_fee_percentage
+, COALESCE(SUM(traces_roy.value), SUM(erc_roy.value)) AS royalty_fee_amount_raw
+, COALESCE(SUM(traces_roy.value)/POWER(10, 18), SUM(erc_roy.value)/POWER(10, tok.decimals)) AS royalty_fee_amount
+, COALESCE(pu.price*SUM(traces_roy.value)/POWER(10, 18), pu.price*SUM(erc_roy.value)/POWER(10, tok.decimals)) AS royalty_fee_amount_usd
+, COALESCE(SUM(traces_roy.value), SUM(erc_roy.value))/rat.amount_raw AS royalty_fee_percentage
 , NULL AS royalty_fee_receive_address
 , NULL AS royalty_fee_currency_symbol
 , 'ethereumrarible' || rat.version || rat.tx_hash || rat.nft_contract_address || rat.token_id || rat.seller || rat.buyer AS unique_trade_id
@@ -272,11 +277,39 @@ AND pu.minute >= date_trunc("day", now() - interval '1 week')
 {% endif %}
 LEFT JOIN {{ ref('tokens_ethereum_nft') }} nft ON nft.contract_address=rat.nft_contract_address
 LEFT JOIN {{ ref('tokens_ethereum_erc20') }} tok ON tok.contract_address=rat.nft_contract_address
-LEFT JOIN {{ source('ethereum','traces') }} traces ON traces.block_time=rat.block_time AND traces.tx_hash=rat.tx_hash AND traces.to='0x1cf0df2a5a20cd61d68d4489eebbf85b8d39e18a'
-{% if is_incremental() %}
-AND traces.block_time >= date_trunc("day", now() - interval '1 week')
-{% endif %}
-LEFT JOIN {{ source('erc20_ethereum','evt_transfer') }} erc ON erc.evt_block_time=rat.block_time AND erc.evt_tx_hash=rat.tx_hash AND erc.to='0x1cf0df2a5a20cd61d68d4489eebbf85b8d39e18a'
-{% if is_incremental() %}
-AND erc.evt_block_time >= date_trunc("day", now() - interval '1 week')
-{% endif %}
+LEFT JOIN {{ source('ethereum','traces') }} traces_plat ON traces_plat.block_time=rat.block_time
+    AND traces_plat.tx_hash=rat.tx_hash
+    AND traces_plat.from=et.from
+    AND traces_plat.to!=rat.seller
+    AND traces_plat.to!=rat.buyer
+    AND traces_plat.to IN ('0xb3dc72ada453547a3dec51867f4e1cce24d5d597', '0x1cf0df2a5a20cd61d68d4489eebbf85b8d39e18a', '0xe627243104a101ca59a2c629adbcd63a782e837f')
+    {% if is_incremental() %}
+    AND traces_plat.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+LEFT JOIN {{ source('ethereum','traces') }} traces_roy ON traces_roy.block_time=rat.block_time
+    AND traces_roy.tx_hash=rat.tx_hash
+    AND traces_roy.from=et.from
+    AND traces_roy.to!=rat.seller
+    AND traces_roy.to!=rat.buyer
+    AND traces_roy.to NOT IN ('0xb3dc72ada453547a3dec51867f4e1cce24d5d597', '0x1cf0df2a5a20cd61d68d4489eebbf85b8d39e18a', '0xe627243104a101ca59a2c629adbcd63a782e837f')
+    {% if is_incremental() %}
+    AND traces_roy.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+LEFT JOIN {{ source('erc20_ethereum','evt_transfer') }} erc_plat ON erc_plat.evt_block_time=rat.block_time
+    AND erc_plat.evt_tx_hash=rat.tx_hash
+    AND erc_plat.from=et.from
+    AND erc_plat.to IN ('0xb3dc72ada453547a3dec51867f4e1cce24d5d597', '0x1cf0df2a5a20cd61d68d4489eebbf85b8d39e18a', '0xe627243104a101ca59a2c629adbcd63a782e837f')
+    AND erc_plat.to!=rat.seller
+    AND erc_plat.to!=rat.buyer
+    {% if is_incremental() %}
+    AND erc_plat.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+LEFT JOIN {{ source('erc20_ethereum','evt_transfer') }} erc_roy ON erc_roy.evt_block_time=rat.block_time
+    AND erc_roy.evt_tx_hash=rat.tx_hash
+    AND erc_roy.from=et.from
+    AND erc_roy.to NOT IN ('0xb3dc72ada453547a3dec51867f4e1cce24d5d597', '0x1cf0df2a5a20cd61d68d4489eebbf85b8d39e18a', '0xe627243104a101ca59a2c629adbcd63a782e837f')
+    AND erc_roy.to!=rat.seller
+    AND erc_roy.to!=rat.buyer
+    {% if is_incremental() %}
+    AND erc_roy.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
