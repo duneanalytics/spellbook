@@ -15,6 +15,10 @@ OPTIMIZE opensea_solana.events;
 OPTIMIZE opensea_v1_ethereum.events;
 {% endset %}
 
+{% set rarible_ethereum_events %}
+OPTIMIZE rarible_ethereum.events;
+{% endset %}
+
 {% set safe_ethereum_eth_transfers %}
 OPTIMIZE safe_ethereum.eth_transfers;
 {% endset %}
@@ -152,6 +156,7 @@ OPTIMIZE cow_protocol_ethereum.batches;
 {% do run_query(magiceden_solana_events) %}
 {% do run_query(opensea_solana_events) %}
 {% do run_query(opensea_v1_ethereum_events) %}
+{% do run_query(rarible_ethereum_events) %}
 {% do run_query(safe_ethereum_eth_transfers) %}
 {% do run_query(safe_ethereum_safes) %}
 {% do run_query(ens_resolver_addresses) %}
