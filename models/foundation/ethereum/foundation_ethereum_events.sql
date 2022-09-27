@@ -132,10 +132,9 @@ SELECT t.blockchain
 , t.token_id
 , nft.name AS collection
 , t.amount_original*pu.price AS amount_usd
--- , CASE WHEN nft_t.contract_address IS NOT NULL THEN 'erc721'
---    ELSE 'erc1155'
---    END AS token_standard
-, NULL::string AS token_standard
+, CASE WHEN nft_t.contract_address IS NOT NULL THEN 'erc721'
+    ELSE 'erc1155'
+    END AS token_standard
 , CASE WHEN agg.contract_address IS NOT NULL THEN 'Bundle Trade'
     ELSE 'Single Item Purchase'
     END AS trade_type
@@ -176,11 +175,11 @@ SELECT t.blockchain
 , t.blockchain || t.project || t.version || t.tx_hash || t.project_contract_address || t.token_id || t.buyer || t.seller AS unique_trade_id
 FROM all_foundation_trades t
 LEFT JOIN {{ ref('tokens_ethereum_nft') }} nft ON t.nft_contract_address=nft.contract_address
---INNER JOIN {{ source('erc721_ethereum','evt_transfer') }} nft_t ON nft_t.evt_block_time=t.block_time
---    AND nft_t.evt_tx_hash=t.tx_hash
---    AND nft_t.tokenId=t.token_id
---    AND nft_t.from=t.seller
---    AND nft_t.to=t.buyer
+INNER JOIN {{ source('erc721_ethereum','evt_transfer') }} nft_t ON nft_t.evt_block_time=t.block_time
+    AND nft_t.evt_tx_hash=t.tx_hash
+    AND nft_t.tokenId=t.token_id
+    AND nft_t.from=t.seller
+    AND nft_t.to=t.buyer
 LEFT JOIN {{ source('ethereum','transactions') }} et ON et.block_time=t.block_time
     AND et.hash=t.tx_hash
     {% if not is_incremental() %}
