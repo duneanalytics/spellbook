@@ -33,12 +33,18 @@ models:
     description: >
       CoW Protocol enriched trades list on Ethereum
     columns:
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each trade"
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"
       - &tx_hash
         name: tx_hash
         description: "Transaction hash of trade"
+      - &evt_index
+        name: evt_index
+        description: "Index of the corresponding trade event"
       - &order_uid
         name: order_uid
         description: "Unique identifier of order involved in trade. Note that partially fillable orders can be touched multiple times so this is not a unique ID for trade events."
@@ -112,6 +118,7 @@ models:
     description: >
       CoW Protocol enriched batches table on Ethereum
     columns:
+      - *block_date
       - *block_time
       - &num_trades
         name: num_trades
