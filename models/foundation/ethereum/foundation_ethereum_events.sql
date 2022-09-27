@@ -170,7 +170,7 @@ SELECT DISTINCT t.blockchain
 , CASE WHEN t.royalty_fee_amount/t.amount_original < 0.5 THEN 100.0*ROUND(t.royalty_fee_amount/t.amount_original, 2)
     ELSE 0
     END AS royalty_fee_percentage
-, ett.to AS royalty_fee_receive_address
+, CASE WHEN t.royalty_fee_amount_raw = 0 THEN cast(NULL as string) ELSE ett.to END AS royalty_fee_receive_address
 , t.currency_symbol AS royalty_fee_currency_symbol
 , t.blockchain || t.project || t.version || t.tx_hash || t.project_contract_address || t.token_id || t.buyer || t.seller AS unique_trade_id
 FROM all_foundation_trades t
