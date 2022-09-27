@@ -233,6 +233,13 @@ models:
       tags: ['ethereum','sudoswap','pool_view']
     description: >
         sudoswap pool stats on Ethereum
+    tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('sudoswap_ethereum_pool_creations')
+      - dbt_utils.equality:
+          compare_model: ref('sudoswap_ethereum_pool_creations')
+          compare_columns:
+            - pool_address
     columns:
       - &pool_address
         name: pool_address
@@ -396,6 +403,13 @@ models:
       tags: [ 'ethereum','sudoswap','pool_settings_latest' ]
     description: >
       sudoswap pool internal parameters
+    tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('sudoswap_ethereum_pool_creations')
+      - dbt_utils.equality:
+          compare_model: ref('sudoswap_ethereum_pool_creations')
+          compare_columns:
+            - pool_address
     columns:
       - *pool_address
       - *bonding_curve

@@ -125,6 +125,8 @@ with
     {% endif %}
 )
 
+-- we need to backfill columns from the existing data in order to have the full data
+{% if is_incremental() %}
 , full_settings_backfilled as (
     select
      coalesce(t1.pool_address,t3.pool_address) as pool_address
@@ -135,14 +137,26 @@ with
     ,coalesce(t1.latest_update_time,t3.creation_block_time) as latest_update_time
     from latest_settings t1
     left join {{ this }} t2 ON
-    {% if not is_incremental() %}
-        false
-    {% endif %}
-    {% if is_incremental() %}
         t1.pool_address = t2.pool_address
-    {% endif %}
     left join initial_settings t3
     ON t1.pool_address = t3.pool_address
 )
+{% endif %}
+
+{% if not is_incremental() %}
+, full_settings_backfilled as (
+    select
+     coalesce(t1.pool_address,t3.pool_address) as pool_address
+    ,coalesce(t3.bonding_curve) as bonding_curve
+    ,coalesce(t1.pool_fee,t3.pool_fee) as pool_fee
+    ,coalesce(t1.delta, t3.delta) as delta
+    ,coalesce(t1.spot_price,t3.spot_price) as spot_price
+    ,coalesce(t1.latest_update_time,t3.creation_block_time) as latest_update_time
+    from latest_settings t1
+    left join initial_settings t3
+    ON t1.pool_address = t3.pool_address
+)
+{% endif %}
+
 
 select * from full_settings_backfilled
