@@ -4,7 +4,7 @@ config(
       post_hook='{{ expose_spells(\'["ethereum"]\',
                                   "project",
                                   "sudoswap",
-                                  \'["niftytable"]\') }}')
+                                  \'["niftytable", "0xRob"]\') }}')
 }}
 
 WITH
