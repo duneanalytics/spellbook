@@ -25,6 +25,8 @@ WITH
       SUM(nfts_traded) AS nfts_traded,
       SUM(usd_volume) AS usd_volume,
       SUM(pool_fee_volume_eth) AS pool_fee_volume_eth,
+      SUM(pool_fee_bid_volume_eth) as pool_fee_bid_volume_eth,
+      SUM(pool_fee_ask_volume_eth) as pool_fee_ask_volume_eth,
       SUM(platform_fee_volume_eth) as platform_fee_volume_eth,
       SUM(eth_change_trading) AS eth_change_trading,
       SUM(nft_change_trading) AS nft_change_trading
