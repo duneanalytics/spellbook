@@ -123,7 +123,7 @@ WITH all_foundation_trades AS (
      {% endif %}
     )
 
-SELECT t.blockchain
+SELECT DISTINCT t.blockchain
 , t.project
 , version
 , date_trunc('day', t.block_time) AS block_date
@@ -180,6 +180,7 @@ INNER JOIN {{ source('erc721_ethereum','evt_transfer') }} nft_t ON nft_t.evt_blo
     AND nft_t.tokenId=t.token_id
     AND nft_t.from=t.seller
     AND nft_t.to=t.buyer
+    AND nft_t.contract_address = t.nft_contract_address
 LEFT JOIN {{ source('ethereum','transactions') }} et ON et.block_time=t.block_time
     AND et.hash=t.tx_hash
     {% if not is_incremental() %}
