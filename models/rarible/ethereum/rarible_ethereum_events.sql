@@ -137,6 +137,9 @@ WITH rarible_all_trades AS (
     FROM {{ source('rarible_ethereum','ExchangeV1_evt_Buy') }} s
     LEFT JOIN {{ ref('tokens_ethereum_erc20') }} t ON (s.buyToken='0x0000000000000000000000000000000000000000' AND t.contract_address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2') OR (t.contract_address=s.buyToken)
     LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} nft ON nft.evt_block_time=s.evt_block_time AND nft.evt_tx_hash=s.evt_tx_hash AND nft.contract_address=s.sellToken AND nft.tokenId=s.selltokenId
+    {% if is_incremental() %}
+    AND nft.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     UNION
     -- June 2021 onwards (ETH Buys)
     SELECT 'v2' AS version
@@ -158,6 +161,9 @@ WITH rarible_all_trades AS (
     , s.evt_tx_hash AS tx_hash
     FROM {{ source('rarible_ethereum','ExchangeV2_evt_Match') }} s
     LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} nft ON nft.evt_block_time=s.evt_block_time AND nft.evt_tx_hash=s.evt_tx_hash AND nft.contract_address='0x' || substring(get_json_object(s.leftAsset, '$.data'), 27, 40)
+    {% if is_incremental() %}
+    AND nft.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     WHERE get_json_object(s.rightAsset, '$.assetClass') = '0xaaaebeba' -- ETH
     AND get_json_object(s.leftAsset, '$.assetClass') IN ('0x973bb640', '0x73ad2146')
     UNION
@@ -182,6 +188,9 @@ WITH rarible_all_trades AS (
     FROM {{ source('rarible_ethereum','ExchangeV2_evt_Match') }} s
     LEFT JOIN {{ ref('tokens_ethereum_erc20') }} t ON t.contract_address='0x' || substring(get_json_object(s.leftAsset, '$.data'), 27, 40)
     LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} nft ON nft.evt_block_time=s.evt_block_time AND nft.evt_tx_hash=s.evt_tx_hash AND nft.contract_address='0x' || substring(get_json_object(s.rightAsset, '$.data'), 27, 40)
+    {% if is_incremental() %}
+    AND nft.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     WHERE get_json_object(s.leftAsset, '$.assetClass') = '0x8ae85d84'
     AND get_json_object(s.rightAsset, '$.assetClass') IN ('0x973bb640', '0x73ad2146')
     UNION
@@ -206,6 +215,9 @@ WITH rarible_all_trades AS (
     FROM {{ source('rarible_ethereum','ExchangeV2_evt_Match') }} s
     LEFT JOIN {{ ref('tokens_ethereum_erc20') }} t ON t.contract_address='0x' || substring(get_json_object(s.leftAsset, '$.data'), 27, 40)
     LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} nft ON nft.evt_block_time=s.evt_block_time AND nft.evt_tx_hash=s.evt_tx_hash AND nft.contract_address='0x' || substring(get_json_object(s.rightAsset, '$.data'), 27, 40)
+    {% if is_incremental() %}
+    AND nft.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     WHERE get_json_object(s.leftAsset, '$.assetClass') = '0x8ae85d84'
     AND get_json_object(s.rightAsset, '$.assetClass') IN ('0x973bb640', '0x73ad2146')
     )
@@ -250,9 +262,21 @@ SELECT distinct 'ethereum' AS blockchain
 , 'ethereumrarible' || rat.version || rat.tx_hash || rat.nft_contract_address || rat.token_id || rat.seller || rat.buyer AS unique_trade_id
 FROM rarible_all_trades rat
 LEFT JOIN {{ source('ethereum','transactions') }} et ON et.block_time=rat.block_time AND et.hash=rat.tx_hash
+{% if is_incremental() %}
+AND et.block_time >= date_trunc("day", now() - interval '1 week')
+{% endif %}
 LEFT JOIN {{ ref('nft_ethereum_aggregators') }} agg ON et.to=agg.contract_address
 LEFT JOIN {{ source('prices','usd') }} pu ON pu.minute=date_trunc('minute', rat.block_time) AND pu.contract_address=rat.currency_contract
+{% if is_incremental() %}
+AND pu.minute >= date_trunc("day", now() - interval '1 week')
+{% endif %}
 LEFT JOIN {{ ref('tokens_ethereum_nft') }} nft ON nft.contract_address=rat.nft_contract_address
 LEFT JOIN {{ ref('tokens_ethereum_erc20') }} tok ON tok.contract_address=rat.nft_contract_address
 LEFT JOIN {{ source('ethereum','traces') }} traces ON traces.block_time=rat.block_time AND traces.tx_hash=rat.tx_hash AND traces.to='0x1cf0df2a5a20cd61d68d4489eebbf85b8d39e18a'
+{% if is_incremental() %}
+AND traces.block_time >= date_trunc("day", now() - interval '1 week')
+{% endif %}
 LEFT JOIN {{ source('erc20_ethereum','evt_transfer') }} erc ON erc.evt_block_time=rat.block_time AND erc.evt_tx_hash=rat.tx_hash AND erc.to='0x1cf0df2a5a20cd61d68d4489eebbf85b8d39e18a'
+{% if is_incremental() %}
+AND erc.evt_block_time >= date_trunc("day", now() - interval '1 week')
+{% endif %}
