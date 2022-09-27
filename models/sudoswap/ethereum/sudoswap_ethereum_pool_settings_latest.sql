@@ -14,7 +14,7 @@
 
 {% set project_start_date = '2022-04-23' %}
 {% set linear_bonding_address = '0x5b6ac51d9b1cede0068a1b26533cace807f883ee' %}
-{% set exponential_bonding_address = 'x432f962D8209781da23fB37b6B59ee15dE7d9841' %}
+{% set exponential_bonding_address = '0x432f962d8209781da23fb37b6b59ee15de7d9841' %}
 
 
 with
@@ -51,9 +51,9 @@ with
         FROM (
             SELECT
                 contract_address as pool_address
-                ,newDelta as delta
+                ,newDelta/1e18 as delta
                 ,evt_block_time as update_time
-                ,row_number() over (partition by contract_address order by evt_block_number, desc tx.index desc) as ordering
+                ,row_number() over (partition by contract_address order by evt_block_number desc, tx.index desc) as ordering
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_evt_DeltaUpdate') }} evt
             INNER JOIN {{ source('ethereum','transactions') }} tx ON tx.hash = evt.evt_tx_hash
             {% if not is_incremental() %}
@@ -76,9 +76,9 @@ with
         FROM (
             SELECT
                 contract_address as pool_address
-                ,newSpotPrice as spot_price
+                ,newSpotPrice/1e18 as spot_price
                 ,evt_block_time as update_time
-                ,row_number() over (partition by contract_address order by evt_block_number, desc tx.index desc) as ordering
+                ,row_number() over (partition by contract_address order by evt_block_number desc, tx.index desc) as ordering
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_evt_SpotPriceUpdate') }} evt
             INNER JOIN {{ source('ethereum','transactions') }} tx ON tx.hash = evt.evt_tx_hash
             {% if not is_incremental() %}
@@ -95,14 +95,14 @@ with
 
 , latest_settings as (
     select
-    coalesce(t1.pool_address, t2.pool_address, t3.pool_address) as pool_address
-    ,pool_fee
-    ,delta
-    ,spot_price
-    coalesce(t1.update_time, t2.update_time, t3.update_time) as latest_update_time
+        coalesce(t1.pool_address, t2.pool_address, t3.pool_address) as pool_address
+        ,pool_fee
+        ,delta
+        ,spot_price
+        ,coalesce(t1.update_time, t2.update_time, t3.update_time) as latest_update_time
     from latest_spot_price t1
     full join latest_delta t2 on t1.pool_address = t2.pool_address
-    full join latest_fee t3 on t1.pool_address = t3.pool_address and t2.pool_address = t3.pool_address
+    full join latest_pool_fee t3 on t1.pool_address = t3.pool_address and t2.pool_address = t3.pool_address
 )
 
 , initial_settings as (

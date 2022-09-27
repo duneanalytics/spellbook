@@ -14,7 +14,7 @@
 
 {% set project_start_date = '2022-04-23' %}
 {% set linear_bonding_address = '0x5b6ac51d9b1cede0068a1b26533cace807f883ee' %}
-{% set exponential_bonding_address = 'x432f962D8209781da23fB37b6B59ee15dE7d9841' %}
+{% set exponential_bonding_address = '0x432f962d8209781da23fb37b6b59ee15de7d9841' %}
 
 
 WITH
