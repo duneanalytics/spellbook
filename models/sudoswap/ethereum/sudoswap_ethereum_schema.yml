@@ -340,7 +340,7 @@ models:
       project: sudoswap
       contributors: [niftytable, 0xRob]
     config:
-      tags: ['ethereum','sudoswap','pool_trade_stats_day']
+      tags: ['ethereum','sudoswap','pool_trades_agg_day']
     description: >
         sudoswap pool trades on Ethereum
     tests:
