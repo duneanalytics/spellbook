@@ -147,6 +147,37 @@ sources:
             description: "Log index" 
           - *tx_index
 
+      - name: contracts
+        freshness:
+          warn_after: { count: 1, period: day }
+        loaded_at_field: created_at
+        description: "A view keeping track of what contracts are decoded on Dune on Optimism; contains information associated with the decoded contract such as namespace, name, address, ABI."
+        columns:
+          - name: abi
+            description: "ABI of the decoded contract"
+          - name: address
+            description: "Address of the decoded contract"
+          - name: from
+            description: "Address that created/deployed this contract"
+          - name: code
+            description: "Code for contract creation"
+          - name: name
+            description: "Name of the decoded contract"
+          - name: namespace
+            description: "Namesapce of the decoded contract"
+          - name: dynamic
+            description: "Boolean indicating whether the contract is dynamic or not"
+          - name: base
+            description: "Boolean indicating whether the contract is the base contract or not"
+          - name: factory
+            description: "Boolean indicating whether the contract is a factory contract or not"
+          - name: detection_source
+            description: "Detection source: 'factory', 'base', or 'dynamic'"
+            tests:
+              - accepted_values:
+                  values: ["factory", "base", "dynamic"]
+          - name: created_at
+
 # ERC Transfer Tables
   - name: erc20_optimism
     description: "Transfers events for ERC20 tokens on Optimism."
