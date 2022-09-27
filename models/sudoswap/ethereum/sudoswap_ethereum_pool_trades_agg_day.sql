@@ -25,8 +25,8 @@ SELECT
     sum(amount_usd) AS usd_volume,
     sum(number_of_items) AS nfts_traded,
     sum(pool_fee_amount) AS pool_fee_volume_eth,
-    sum(pool_fee_amount) filter (where trade_category='Sell') AS pool_fee_bid_volume_eth,
-    sum(pool_fee_amount) filter (where trade_category='Buy') AS pool_fee_ask_volume_eth,
+    coalesce(sum(pool_fee_amount) filter (where trade_category='Sell'),0) AS pool_fee_bid_volume_eth,
+    coalesce(sum(pool_fee_amount) filter (where trade_category='Buy'),0) AS pool_fee_ask_volume_eth,
     sum(platform_fee_amount) AS platform_fee_volume_eth,
     sum(
       CASE

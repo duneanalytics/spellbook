@@ -26,7 +26,7 @@ WITH
     SELECT
       date_trunc('day', et.evt_block_time) AS day,
       pool_address,
-      SUM(CASE WHEN et.to = p.pool_address THEN 1 ELSE -1 END) AS nft_balance_change,
+      SUM(CASE WHEN et.to = p.pool_address THEN 1 ELSE -1 END) AS nft_balance_change
     FROM
       {{ source('erc721_ethereum','evt_transfer') }} et
       INNER JOIN pools p ON p.nft_contract_address = et.contract_address
@@ -45,7 +45,7 @@ WITH
     SELECT
       date_trunc('day',tr.block_time) AS day,
       pool_address,
-      SUM(CASE WHEN tr.to = pc.pool_address THEN tr.value/1e18 ELSE -1*tr.value/1e18 END) AS eth_balance_change,
+      SUM(CASE WHEN tr.to = pc.pool_address THEN tr.value/1e18 ELSE -1*tr.value/1e18 END) AS eth_balance_change
     FROM
       {{ source('ethereum','traces') }} tr
       INNER JOIN pools pc ON (pc.pool_address = tr.to OR pc.pool_address = tr.from)
@@ -67,7 +67,7 @@ WITH
 
 SELECT
     COALESCE(e.day, n.day) as day,
-    COALESCE(e.pool_address,n.pool_address) as pool_address
+    COALESCE(e.pool_address,n.pool_address) as pool_address,
     COALESCE(e.eth_balance_change, 0) as eth_balance_change,
     COALESCE(n.nft_balance_change,0) as nft_balance_change
 FROM eth_deltas e

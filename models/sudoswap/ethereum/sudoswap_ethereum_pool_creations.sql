@@ -52,6 +52,6 @@ WITH
         {% endif %}
     WHERE
       call_success
-  ),
+  )
 
 SELECT * FROM pool_creations

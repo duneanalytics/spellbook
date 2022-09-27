@@ -28,7 +28,7 @@ with
                 contract_address as pool_address
                 ,newFee as pool_fee
                 ,evt_block_time as update_time
-                ,row_number() over (partition by contract_address, order by evt_block_number desc tx.index desc) as ordering
+                ,row_number() over (partition by contract_address order by evt_block_number desc, tx.index desc) as ordering
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_evt_FeeUpdate') }} evt
             INNER JOIN {{ source('ethereum','transactions') }} tx ON tx.hash = evt.evt_tx_hash
             {% if not is_incremental() %}
@@ -53,7 +53,7 @@ with
                 contract_address as pool_address
                 ,newDelta as delta
                 ,evt_block_time as update_time
-                ,row_number() over (partition by contract_address, order by evt_block_number desc tx.index desc) as ordering
+                ,row_number() over (partition by contract_address order by evt_block_number, desc tx.index desc) as ordering
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_evt_DeltaUpdate') }} evt
             INNER JOIN {{ source('ethereum','transactions') }} tx ON tx.hash = evt.evt_tx_hash
             {% if not is_incremental() %}
@@ -78,7 +78,7 @@ with
                 contract_address as pool_address
                 ,newSpotPrice as spot_price
                 ,evt_block_time as update_time
-                ,row_number() over (partition by contract_address, order by evt_block_number desc tx.index desc) as ordering
+                ,row_number() over (partition by contract_address order by evt_block_number, desc tx.index desc) as ordering
             FROM {{ source('sudo_amm_ethereum','LSSVMPair_general_evt_SpotPriceUpdate') }} evt
             INNER JOIN {{ source('ethereum','transactions') }} tx ON tx.hash = evt.evt_tx_hash
             {% if not is_incremental() %}
