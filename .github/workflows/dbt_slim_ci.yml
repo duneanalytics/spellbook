@@ -47,7 +47,7 @@ jobs:
            python3 pr_job_utils.py --pr_schema git_$GIT_SHA
 
       - name: dbt create views of dependencies
-        run: "dbt run-operation create_views_of_dependencies --exclude foundation_ethereum_events"
+        run: "dbt run-operation create_views_of_dependencies"
 
       - name: dbt seed
         run: "dbt seed --select state:modified --state ."
