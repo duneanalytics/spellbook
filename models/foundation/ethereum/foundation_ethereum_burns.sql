@@ -4,7 +4,7 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "foundation",
-                                    \'["hildobby"]\') }}')
+                                    \'["hildobby", "soispoke"]\') }}')
 }}
 
 SELECT blockchain,
