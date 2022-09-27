@@ -63,5 +63,4 @@ FROM {{ ref('sudoswap_ethereum_pool_creations') }} p
 INNER JOIN {{ ref('sudoswap_ethereum_pool_settings_latest') }} s
     ON p.pool_address = s.pool_address
 INNER JOIN pool_balance b ON p.pool_address = b.pool_address
-INNER JOIN pool_trades t ON p.pool_address = t.pool_address
-;
+INNER JOIN pool_trade_stats t ON p.pool_address = t.pool_address
