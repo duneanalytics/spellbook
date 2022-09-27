@@ -125,7 +125,7 @@ with
     {% endif %}
 )
 
--- we need to backfill columns from the existing data in order to have the full data
+-- we need to backfill columns from the existing data in order to have full rows
 {% if is_incremental() %}
 , full_settings_backfilled as (
     select

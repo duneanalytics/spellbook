@@ -16,7 +16,7 @@ WITH
     FROM
       {{ ref('sudoswap_ethereum_pool_balance_agg_day') }}
     GROUP BY pool_address
-),
+)
 
 , pool_trade_stats AS (
     SELECT
