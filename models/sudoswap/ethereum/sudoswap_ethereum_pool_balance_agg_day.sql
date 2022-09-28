@@ -1,6 +1,6 @@
 {{ config(
         alias = 'pool_balance_changes',
-        partition_by = ['day'],
+        partition_by = ['pool_address'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
