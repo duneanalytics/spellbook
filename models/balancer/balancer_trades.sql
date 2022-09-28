@@ -1,5 +1,5 @@
 {{ config(
-        alias ='all_trades'
+        alias ='trades'
         )
 }}
 

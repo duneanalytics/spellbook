@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'balancer_ethereum',
+    schema = 'balancer_v1_ethereum',
     alias = 'trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -23,8 +23,8 @@ WITH dexs AS (
         t.evt_tx_hash AS tx_hash,
         '' AS trace_address,
         t.evt_index
-    FROM {{ source('balancer_ethereum', 'BPool_evt_LOG_SWAP') }} t
-    INNER JOIN {{ source('balancer_ethereum', 'BFactory_evt_LOG_NEW_POOL') }} f
+    FROM {{ source('balancer_v1_ethereum', 'BPool_evt_LOG_SWAP') }} t
+    INNER JOIN {{ source('balancer_v1_ethereum', 'BFactory_evt_LOG_NEW_POOL') }} f
     ON f.pool = t.contract_address
     {% if is_incremental() %}
     AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')

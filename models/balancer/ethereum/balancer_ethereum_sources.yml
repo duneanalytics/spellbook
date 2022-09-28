@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: balancer_ethereum
+  - name: balancer_v1_ethereum
     description: "Ethereum decoded tables related to Balancer V1"
     freshness:
       warn_after: { count: 12, period: hour }
