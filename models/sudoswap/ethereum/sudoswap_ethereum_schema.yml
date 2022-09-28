@@ -233,17 +233,10 @@ models:
       tags: ['ethereum','sudoswap','pool_view']
     description: >
         sudoswap pool stats on Ethereum
-    tests:
-      - dbt_utils.equal_rowcount:
-          compare_model: ref('sudoswap_ethereum_pool_creations')
-      - dbt_utils.equality:
-          compare_model: ref('sudoswap_ethereum_pool_creations')
-          compare_columns:
-            - pool_address
     columns:
-      - &pool_address
-        name: pool_address
+      - name: pool_address
         description: "Address of the pool"
+        test: unique
       - *nft_contract_address
       - &creator_address
         name: creator_address
@@ -325,7 +318,10 @@ models:
     description: >
       sudoswap pool creations on Ethereum
     columns:
-      - *pool_address # unique + partition key
+      - name: pool_address # unique + partition key
+        description: 'Address of the pool'
+        test:
+          - unique
       - *nft_contract_address
       - *creator_address
       - *bonding_curve
@@ -357,7 +353,9 @@ models:
       - &day
         name: day
         description: "Day"
-      - *pool_address
+      - &pool_address
+        name: pool_address
+        description: 'Address of the pool'
       - *eth_volume
       - *usd_volume
       - *nfts_traded
@@ -385,11 +383,9 @@ models:
     columns:
       - *day
       - *pool_address
-      - &eth_balance_change
-        name: eth_balance_change
+      - name: eth_balance_change
         description: "Change in eth balance of the pool"
-      - &nft_balance_change
-        name: nft_balance_change
+      - name: nft_balance_change
         description: "Change in nft balance of the pool"
 
   - name: sudoswap_ethereum_pool_settings_latest
@@ -401,19 +397,14 @@ models:
       tags: [ 'ethereum','sudoswap','pool_settings_latest' ]
     description: >
       sudoswap pool internal parameters
-    tests:
-      - dbt_utils.equal_rowcount:
-          compare_model: ref('sudoswap_ethereum_pool_creations')
-      - dbt_utils.equality:
-          compare_model: ref('sudoswap_ethereum_pool_creations')
-          compare_columns:
-            - pool_address
     columns:
-      - *pool_address
+      - name: pool_address # unique + partition key
+        description: 'Address of the pool'
+        test:
+          - unique
       - *bonding_curve
       - *spot_price
       - *delta
       - *pool_fee
-      - &latest_update_time
-        name: latest_update_time
+      - name: latest_update_time
         description: "time of the latest update"
