@@ -262,8 +262,8 @@ SELECT 'ethereum' AS blockchain
 , COALESCE(SUM(traces_roy.value)/POWER(10, 18), SUM(erc_roy.value)/POWER(10, tok.decimals)) AS royalty_fee_amount
 , COALESCE(pu.price*SUM(traces_roy.value)/POWER(10, 18), pu.price*SUM(erc_roy.value)/POWER(10, tok.decimals)) AS royalty_fee_amount_usd
 , 100.0*COALESCE(SUM(traces_roy.value), SUM(erc_roy.value))/rat.amount_raw AS royalty_fee_percentage
-, NULL AS royalty_fee_receive_address
-, NULL AS royalty_fee_currency_symbol
+, '' AS royalty_fee_receive_address
+, '' AS royalty_fee_currency_symbol
 , 'ethereumrarible' || rat.version || rat.tx_hash || rat.nft_contract_address || rat.token_id || rat.seller || rat.buyer AS unique_trade_id
 FROM rarible_all_trades rat
 LEFT JOIN {{ source('ethereum','transactions') }} et ON et.block_time=rat.block_time AND et.hash=rat.tx_hash
