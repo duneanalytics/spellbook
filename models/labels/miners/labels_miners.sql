@@ -5,7 +5,7 @@
                                     \'["soispoke"]\') }}')
 }}
 
-SELECT array('ethereum') as blockchain,
+SELECT DISTINCT array('ethereum') as blockchain,
        miner, 
        'Ethereum Miner' as name,
        'contracts' as category,
@@ -15,7 +15,7 @@ SELECT array('ethereum') as blockchain,
        now() as modified_at
 FROM {{ source('ethereum','blocks') }} 
 UNION 
-SELECT array('gnosis') as blockchain,
+SELECT DISTINCT array('gnosis') as blockchain,
        miner, 
        'Gnosis Miner' as name,
        'contracts' as category,
@@ -25,7 +25,7 @@ SELECT array('gnosis') as blockchain,
        now() as modified_at
 FROM {{ source('gnosis','blocks') }} 
 UNION 
-SELECT array('avalanche_c') as blockchain,
+SELECT DISTINCT array('avalanche_c') as blockchain,
        miner, 
        'Avalanche Miner' as name,
        'contracts' as category,
@@ -35,7 +35,7 @@ SELECT array('avalanche_c') as blockchain,
        now() as modified_at
 FROM {{ source('avalanche_c','blocks') }} 
 UNION 
-SELECT array('arbitrum') as blockchain,
+SELECT DISTINCT array('arbitrum') as blockchain,
        miner, 
        'Arbitrum Miner' as name,
        'contracts' as category,
@@ -45,7 +45,7 @@ SELECT array('arbitrum') as blockchain,
        now() as modified_at
 FROM {{ source('arbitrum','blocks') }} 
 UNION 
-SELECT array('bnb') as blockchain,
+SELECT DISTINCT array('bnb') as blockchain,
        miner, 
        'BNB Chain Miner' as name,
        'contracts' as category,
@@ -55,7 +55,7 @@ SELECT array('bnb') as blockchain,
        now() as modified_at
 FROM {{ source('bnb','blocks') }} 
 UNION 
-SELECT array('optimism') as blockchain,
+SELECT DISTINCT array('optimism') as blockchain,
        miner, 
        'Optimism Miner' as name,
        'contracts' as category,
