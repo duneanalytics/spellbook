@@ -57,6 +57,8 @@ iron_bank	Iron Bank
 bluesweep	BlueSweep
 hidden_hand	Hidden Hand
 quixotic	Quix
+project galaxy	Galxe
+project_galaxy	Galxe
 \.
 
 COMMIT;
