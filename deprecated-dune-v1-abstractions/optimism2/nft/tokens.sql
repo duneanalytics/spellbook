@@ -198,6 +198,7 @@ COPY nft.tokens (contract_address, project_name) FROM stdin;
 \\x22Cd0e2680f4B9aE140E3b9AbFA3463532e290Ff	Execution Layer Bear
 \\x672f466b13ee1856c32f8bd956730d8eff28bf16	Good Mornings
 \\xfa14e1157f35e1dad95dc3f822a9d18c40e360e2	Optimism Quests
+\\xa7f7de387425036fa189f90a3d9b0d2b5835fc51	OpenSeaOnOptimism
 \.
 
 COMMIT;
