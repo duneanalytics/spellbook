@@ -102,7 +102,7 @@ with
         ,coalesce(t1.update_time, t2.update_time, t3.update_time) as latest_update_time
     from latest_spot_price t1
     full join latest_delta t2 on t1.pool_address = t2.pool_address
-    full join latest_pool_fee t3 on t1.pool_address = t3.pool_address and t2.pool_address = t3.pool_address
+    full join latest_pool_fee t3 on t1.pool_address = t3.pool_address or t2.pool_address = t3.pool_address
 )
 
 , initial_settings as (
@@ -125,36 +125,42 @@ with
     {% endif %}
 )
 
+-- incremental update:
 -- we need to backfill columns from the existing data in order to have full rows
 {% if is_incremental() %}
 , full_settings_backfilled as (
-    select
-     coalesce(t1.pool_address,t3.pool_address) as pool_address
-    ,coalesce(t2.bonding_curve, t3.bonding_curve) as bonding_curve
-    ,coalesce(t1.pool_fee, t2.pool_fee, t3.pool_fee) as pool_fee
-    ,coalesce(t1.delta, t2.delta, t3.delta) as delta
-    ,coalesce(t1.spot_price, t2.spot_price, t3.spot_price) as spot_price
-    ,coalesce(t1.latest_update_time,t3.creation_block_time) as latest_update_time
-    from latest_settings t1
-    left join {{ this }} t2 ON
-        t1.pool_address = t2.pool_address
-    left join initial_settings t3
-    ON t1.pool_address = t3.pool_address
+    select * from(
+        select
+         coalesce(t1.pool_address,t3.pool_address) as pool_address
+        ,coalesce(t2.bonding_curve, t3.bonding_curve) as bonding_curve
+        ,coalesce(t1.pool_fee, t2.pool_fee, t3.pool_fee) as pool_fee
+        ,coalesce(t1.delta, t2.delta, t3.delta) as delta
+        ,coalesce(t1.spot_price, t2.spot_price, t3.spot_price) as spot_price
+        ,coalesce(t1.latest_update_time,t3.creation_block_time) as latest_update_time
+        from latest_settings t1
+        full outer join initial_settings t3
+            ON t1.pool_address = t3.pool_address
+        left join {{ this }} t2
+            ON t1.pool_address = t2.pool_address
+    ) foo
+    where bonding_curve is not null --temp hack to exclude updates form erc20 pools
 )
 {% endif %}
 
+
+-- This happens on a full refresh, no backfill necesarry.
 {% if not is_incremental() %}
 , full_settings_backfilled as (
     select
-     coalesce(t1.pool_address,t3.pool_address) as pool_address
-    ,coalesce(t3.bonding_curve) as bonding_curve
-    ,coalesce(t1.pool_fee,t3.pool_fee) as pool_fee
-    ,coalesce(t1.delta, t3.delta) as delta
-    ,coalesce(t1.spot_price,t3.spot_price) as spot_price
-    ,coalesce(t1.latest_update_time,t3.creation_block_time) as latest_update_time
-    from latest_settings t1
-    left join initial_settings t3
-    ON t1.pool_address = t3.pool_address
+     coalesce(new.pool_address,old.pool_address) as pool_address
+    ,coalesce(old.bonding_curve) as bonding_curve
+    ,coalesce(new.pool_fee,old.pool_fee) as pool_fee
+    ,coalesce(new.delta, old.delta) as delta
+    ,coalesce(new.spot_price,old.spot_price) as spot_price
+    ,coalesce(new.latest_update_time,old.creation_block_time) as latest_update_time
+    from initial_settings old
+    left join latest_settings new
+    ON new.pool_address = new.pool_address
 )
 {% endif %}
 
