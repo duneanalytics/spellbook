@@ -19,4 +19,4 @@ mintAmount AS mint_amount
 FROM (
     SELECT * FROM {{ source('ironbank_optimism', 'CErc20Delegator_evt_Mint') }}
 ) events
-LEFT JOIN ironbank_optimism.itokens i ON events.contract_address = i.contract_address
+LEFT JOIN {{ ref('ironbank_optimism_itokens') }} i ON events.contract_address = i.contract_address

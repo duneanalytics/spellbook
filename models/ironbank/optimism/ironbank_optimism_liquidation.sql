@@ -22,7 +22,7 @@ FROM (
 ) i
 LEFT JOIN (SELECT contract_address as collateral_contract_address, 
                     underlying_token_address as collateral_underlying_token_address
-            FROM ironbank_optimism.itokens) i_collateral ON i.cTokenCollateral = i_collateral.collateral_contract_address
+            FROM {{ ref('ironbank_optimism_itokens') }} ) i_collateral ON i.cTokenCollateral = i_collateral.collateral_contract_address
 LEFT JOIN (SELECT contract_address as asset_contract_address, 
                     underlying_token_address as asset_underlying_token_address
-            FROM ironbank_optimism.itokens) i_asset ON i.contract_address = i_asset.asset_contract_address
+            FROM {{ ref('ironbank_optimism_itokens') }} ) i_asset ON i.contract_address = i_asset.asset_contract_address

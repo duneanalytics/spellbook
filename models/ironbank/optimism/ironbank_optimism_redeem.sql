@@ -19,4 +19,4 @@ redeemAmount AS redeem_amount
 FROM (
 SELECT * FROM {{ source('ironbank_optimism', 'CErc20Delegator_evt_Redeem') }}
 ) ironbank_redeem
-LEFT JOIN ironbank_optimism.itokens i ON ironbank_redeem.contract_address = i.contract_address
+LEFT JOIN {{ ref('ironbank_optimism_itokens') }} i ON ironbank_redeem.contract_address = i.contract_address
