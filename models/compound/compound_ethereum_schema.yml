@@ -1,0 +1,46 @@
+version: 2
+
+#need models for most recent base config and assets config too
+
+models:
+  - name: compound_v3_user_principals
+    meta:
+      blockchain: ethereum
+      sector: lendingpool
+      project: compound_v3
+      contibutors: ilemi
+    config:
+      tags: ['table', 'cex', 'addresses', 'ethereum']
+    description: "borrowing and lending across compound v3 pools"
+    columns:
+      - name: comet
+        description: "Address of comet proxy"
+      - name: date
+        description: "Date of balance"
+      - name: user_address
+        description: "Address of user borrowing/lending"
+      - name: borrow_diff
+        description: "Amount of base token (comet) borrowed on date"
+      - name: supply_diff
+        description: "Amount of base token (comet) supplied on date"
+      - name: principal_diff
+        description: "Amount supplied minus amount borrowed on date"
+      - name: principal_total
+        description: "Tracking user principal with window function over principal_diff"
+      - name: user_unique
+        description: "Unique row id"
+      - name: test_macro
+        description: "test macro column"
+      # # macro generates columns below here
+      # - name: pv_principal
+      #   description: "present value of principal"
+      # - name: total_borrow
+      #   description: "total borrow base"
+      # - name: total_supply
+      #   description: "total supply base"
+      # - name: utilization_rate
+      #   description: "all users utilization rate"
+      # - name: borrow_rate
+      #   description: "all users borrow rate"
+      # - name: supply_rate
+      #   description: "all users supply rate"

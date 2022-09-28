@@ -1,0 +1,35 @@
+version: 2
+
+sources:
+  - name: compound_v3_ethereum
+    tables:
+      - name: Configurator_evt_SetConfiguration
+        description: "initial set config on deploy"
+        loaded_at_field: evt_block_time
+      - name: Comet_evt_Withdraw
+        freshness:
+          warn_after: { count: 12, period: hour }
+        description: "withdraw base called"
+        loaded_at_field: evt_block_time
+      - name: Comet_evt_Supply
+        freshness:
+          warn_after: { count: 12, period: hour }
+        description: "supply base called"
+        loaded_at_field: evt_block_time
+      - name: Comet_evt_Transfer
+        freshness:
+          warn_after: { count: 12, period: hour }
+        description: "transfer ctoken called"
+        loaded_at_field: evt_block_time
+      - name: Comet_call_transfer
+        description: "transfer collateral/base called"
+        loaded_at_field: call_block_time
+      - name: Comet_call_transferAsset
+        description: "transfer collateral/base called"
+        loaded_at_field: call_block_time
+      - name: Comet_call_transferAssetFrom
+        description: "transfer collateral/base called"
+        loaded_at_field: call_block_time
+      - name: Comet_evt_AbsorbDebt
+        description: "liquidation called"
+        loaded_at_field: evt_block_time
