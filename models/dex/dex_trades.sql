@@ -32,8 +32,7 @@ FROM
                 tx_from,
                 tx_to,
                 trace_address,
-                evt_index,
-                unique_trade_id
+                evt_index
         FROM {{ ref('uniswap_trades') }}
         
         UNION
@@ -61,7 +60,6 @@ FROM
                 tx_from,
                 tx_to,
                 trace_address,
-                evt_index,
-                unique_trade_id
+                evt_index
         FROM {{ ref('curvefi_ethereum_trades') }}
 )
