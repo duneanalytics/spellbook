@@ -135,8 +135,7 @@ sources:
             name: liquidity
           - &recipient
             name: recipient
-          - &sender
-            name: sender
+          - *sender
           - &sqrtPriceX96
             name: sqrtPriceX96
           - &tick
