@@ -13,8 +13,6 @@ SELECT * FROM {{ ref('labels_cex') }}
 UNION
 SELECT * FROM {{ ref('labels_funds') }}
 UNION
-SELECT * FROM {{ ref('labels_contracts') }}
-UNION
 SELECT * FROM {{ ref('labels_bridges') }}
 UNION
 SELECT * FROM {{ ref('labels_ofac_sanctionned_ethereum') }}
@@ -27,3 +25,7 @@ UNION
 SELECT * FROM {{ ref('labels_safe_ethereum') }}
 UNION
 SELECT * FROM {{ ref('labels_tornado_cash') }}
+UNION
+SELECT * FROM {{ ref('labels_contracts') }}
+UNION
+SELECT * FROM {{ ref('labels_miners') }}
