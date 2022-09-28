@@ -41,20 +41,20 @@ SELECT
   creator_address,
   eth_balance,
   nft_balance,
-  eth_volume,
-  usd_volume,
-  nfts_traded,
-  pool_fee_volume_eth,
-  pool_fee_bid_volume_eth,
-  pool_fee_ask_volume_eth,
-  platform_fee_volume_eth,
+  coalesce(eth_volume,0),
+  coalesce(usd_volume,0),
+  coalesce(nfts_traded,0),
+  coalesce(pool_fee_volume_eth,0),
+  coalesce(pool_fee_bid_volume_eth,0),
+  coalesce(pool_fee_ask_volume_eth,0),
+  coalesce(platform_fee_volume_eth,0),
   pool_type,
   p.bonding_curve,
   s.spot_price,
   s.delta,
   s.pool_fee,
-  eth_change_trading,
-  nft_change_trading,
+  coalesce(eth_change_trading,0),
+  coalesce(nft_change_trading,0),
   p.spot_price as initial_spot_price,
   initial_nft_balance,
   initial_eth_balance,
@@ -65,4 +65,4 @@ FROM {{ ref('sudoswap_ethereum_pool_creations') }} p
 INNER JOIN {{ ref('sudoswap_ethereum_pool_settings_latest') }} s
     ON p.pool_address = s.pool_address
 INNER JOIN pool_balance b ON p.pool_address = b.pool_address
-INNER JOIN pool_trade_stats t ON p.pool_address = t.pool_address
+LEFT JOIN pool_trade_stats t ON p.pool_address = t.pool_address
