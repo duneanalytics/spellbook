@@ -19,6 +19,8 @@ SELECT * FROM {{ ref('labels_bridges') }}
 UNION
 SELECT * FROM {{ ref('labels_ofac_sanctionned_ethereum') }}
 UNION
+SELECT * FROM {{ ref('labels_multisig_ethereum') }}
+UNION
 -- Query Labels
 SELECT * FROM {{ ref('labels_nft') }}
 UNION
