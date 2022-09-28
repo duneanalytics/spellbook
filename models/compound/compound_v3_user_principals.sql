@@ -24,11 +24,11 @@ with
             , get_json_object(newconfiguration, '$.borrowPerYearInterestRateSlopeLow')/1e18 as borrowLowRate
             , get_json_object(newconfiguration, '$.borrowPerYearInterestRateSlopeHigh')/1e18 as borrowHighRate
             FROM {{ source('compound_v3_ethereum','Configurator_evt_SetConfiguration') }}
-            where cometProxy = '{{comet proxy}}'
+            where cometProxy = '{{comet}}'
    ),
     
     decimals_base as (
-        SELECT decimals FROM {{ ref('tokens','erc20') }} 
+        SELECT decimals FROM {{ ref('tokens_ethereum_erc20') }} 
         WHERE contract_address = (SELECT base FROM config)
     ),
     
@@ -36,22 +36,22 @@ with
         --cUSDCv3 0xc3d688B66703497DAA19211EEdff47f25384cdc3
         with c_minted as (
             SELECT 
-                date_trunc('{{time granularity}}', evt_block_time) as date 
+                date_trunc('{{time_granularity}}', evt_block_time) as date 
                 , to as user
                 , sum(value/pow(10,(SELECT decimals FROM decimals_base))) as minted
-            FROM {{ ref('erc20_ethereum', 'evt_Transfer') }}
-            WHERE contract_address = '{{comet proxy}}'
+            FROM {{ source('erc20_ethereum', 'evt_transfer') }}
+            WHERE contract_address = '{{comet}}'
             AND from = '0x0000000000000000000000000000000000000000'
             GROUP BY 1,2
         ), 
         
         c_burned as (
             SELECT
-                date_trunc('{{time granularity}}', evt_block_time) as date 
+                date_trunc('{{time_granularity}}', evt_block_time) as date 
                 , from as user
                 , sum(value/pow(10,(SELECT decimals FROM decimals_base))) as burned
-            FROM {{ ref('erc20_ethereum', 'evt_Transfer') }}
-            WHERE contract_address = '{{comet proxy}}'
+            FROM {{ source('erc20_ethereum', 'evt_transfer') }}
+            WHERE contract_address = '{{comet}}'
             AND to = '0x0000000000000000000000000000000000000000'
             GROUP BY 1,2
         )
@@ -68,7 +68,7 @@ with
         with withdrawn as (
         --totalBorrowBase is changed on withdraw where excess becomes borrow
             SELECT 
-                date_trunc('{{time granularity}}', w.evt_block_time) as date 
+                date_trunc('{{time_granularity}}', w.evt_block_time) as date 
                 , w.to as user
                 , SUM(w.amount/pow(10,(SELECT decimals FROM decimals_base))) 
                     - SUM(COALESCE(tr.amount,0)/pow(10,(SELECT decimals FROM decimals_base))) as borrowed 
@@ -79,14 +79,14 @@ with
                 ON tr.evt_tx_hash = w.evt_tx_hash
                 AND w.evt_index + 1 = tr.evt_index --we only want the next emitted transfer. sometimes this might be an issue if next transfer is unrelated somehow.
                 AND tr.to = '0x0000000000000000000000000000000000000000'
-            WHERE w.contract_address = '{{comet proxy}}'
+            WHERE w.contract_address = '{{comet}}'
             GROUP BY 1, 2
         ),
         
         repay as (
         --totalBorrowBase is changed on supply (in case supplier is borrower too) as well as withdraw
             SELECT 
-                date_trunc('{{time granularity}}', w.evt_block_time) as date 
+                date_trunc('{{time_granularity}}', w.evt_block_time) as date 
                 , w.from as user
                 , SUM(w.amount/pow(10,(SELECT decimals FROM decimals_base))) 
                     - SUM(COALESCE(tr.amount,0)/pow(10,(SELECT decimals FROM decimals_base))) as repayed 
@@ -97,14 +97,14 @@ with
                 ON tr.evt_tx_hash = w.evt_tx_hash
                 AND w.evt_index + 1 = tr.evt_index
                 AND tr.from = '0x0000000000000000000000000000000000000000'
-            WHERE w.contract_address = '{{comet proxy}}'
+            WHERE w.contract_address = '{{comet}}'
             GROUP BY 1,2
         ),
         
         transferrepay as (
         --check transferBase for repay case (how much was transferred versus actually minted to dst)
             SELECT 
-                date_trunc('{{time granularity}}', call_block_time) as date 
+                date_trunc('{{time_granularity}}', call_block_time) as date 
                 , dst as user
                 , SUM(transferbase.amount/pow(10,(SELECT decimals FROM decimals_base))) 
                     - SUM(COALESCE(tr.amount,0)/pow(10,(SELECT decimals FROM decimals_base))) as tr_repayed
@@ -122,17 +122,17 @@ with
                 --in the case there are multiple transfers here, there's no way to detect to connect Transfer evt to the function call (I think?)
                 AND tr.from = '0x0000000000000000000000000000000000000000'
                 AND tr.to = dst
-            WHERE transferbase.contract_address = '{{comet proxy}}'
+            WHERE transferbase.contract_address = '{{comet}}'
             GROUP BY 1, 2
         ),
         
         absorbed as (
             SELECT 
-                date_trunc('{{time granularity}}', evt_block_time) as date
+                date_trunc('{{time_granularity}}', evt_block_time) as date
                 , borrower as user
                 , SUM(basePaidOut/pow(10,(SELECT decimals FROM decimals_base))) as debt_absorbed
             FROM {{ source('compound_v3_ethereum','Comet_evt_AbsorbDebt') }}
-            WHERE contract_address = '{{comet proxy}}'
+            WHERE contract_address = '{{comet}}'
             GROUP BY 1, 2
         )
         
@@ -155,7 +155,7 @@ with
     
     dates as (
         SELECT 
-            explode(sequence(to_date('2022-08-22'), now(), interval '1 {{time granularity}}')) as date
+            explode(sequence(to_date('2022-08-22'), now(), interval '1 {{time_granularity}}')) as date
     ),
     
     supply_borrow_combined as (
