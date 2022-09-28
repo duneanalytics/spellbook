@@ -244,8 +244,6 @@ models:
       - &pool_address
         name: pool_address
         description: "Address of the pool"
-        tests:
-          - unique
       - *nft_contract_address
       - &creator_address
         name: creator_address
