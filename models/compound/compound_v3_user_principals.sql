@@ -182,8 +182,8 @@ with
 
     {{ log(principal_df[1]) }}
 
-    {{ interest_rate_test(principal_df) }}
-    
+    {{ log(interest_rate_test(principal_df)) }}
+
     SELECT 
         *
     FROM supply_borrow_combined
