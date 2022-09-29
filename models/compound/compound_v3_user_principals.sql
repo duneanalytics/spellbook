@@ -184,6 +184,7 @@ with
 
     SELECT 
         {{ interest_rate_test(principal_df) }}
+    FROM 1
 
     --@macro here
     --apply last day rates to principal to get pv_principal
