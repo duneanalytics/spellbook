@@ -1,5 +1,11 @@
 {{ config(
-    alias ='airswap_trades'
+    schema = 'airswap_ethereum',
+    alias ='airswap_trades',
+    partition_by = ['block_date'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'unique_trade_id']
     )
 }}
 
@@ -93,7 +99,16 @@ WITH dexs AS
     ) dexs
     INNER JOIN {{ source('ethereum', 'transactions') }} tx
         ON dexs.tx_hash = tx.hash
-        AND tx.block_time >= "2022-05-05 00:00:00"
+        {% if not is_incremental() %}
+        -- airswap_ethereum.Swap_v3_evt_Swap min(evt_block_time) is 2022-04-07 08:00
+        -- airswap_ethereum.swap_evt_Swap min(evt_block_time) is 2019-12-20 20:24
+        -- airswap_ethereum.Light_evt_Swap min(evt_block_time) is 2021-03-17 17:04
+        -- The date below is derrived from `select min(evt_block_time) from airswap_ethereum.swap_evt_Swap;`
+        AND tx.block_time >= "2019-12-20 20:00"
+        {% endif %}
+        {% if is_incremental() %}
+        AND tx.block_time = date_trunc("day", now() - interval '1 week')
+        {% endif %}
         AND tx.block_time < current_timestamp()
         AND tx.block_number >= 0
         AND tx.block_number < 9e18
@@ -101,13 +116,25 @@ WITH dexs AS
     LEFT JOIN {{ ref('tokens_erc20') }} erc20b ON erc20b.contract_address = dexs.token_b_address
     LEFT JOIN {{ source('prices', 'usd') }} pa ON pa.minute = date_trunc('minute', dexs.block_time)
         AND pa.contract_address = dexs.token_a_address
-        AND pa.minute >= "2022-05-05 00:00:00"
+        {% if not is_incremental() %}
+        -- The date below is derrived from `select min(evt_block_time) from airswap_ethereum.swap_evt_Swap;`
+        AND pa.minute >= "2019-12-20 20:00"
+        {% endif %}
+        {% if is_incremental() %}
+        AND pa.minute >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
         AND pa.minute < current_timestamp()
     LEFT JOIN prices.usd pb ON pb.minute = date_trunc('minute', dexs.block_time)
         AND pb.contract_address = dexs.token_b_address
-        AND pb.minute >= "2022-05-05 00:00:00"
+        {% if not is_incremental() %}
+        -- The date below is derrived from `select min(evt_block_time) from airswap_ethereum.swap_evt_Swap;`
+        AND pb.minute >= "2019-12-20 20:00"
+        {% endif %}
+        {% if is_incremental() %}
+        AND pb.minute >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
         AND pb.minute < current_timestamp()
-    WHERE dexs.block_time >= "2022-05-05 00:00:00"
+    WHERE dexs.block_time >= "2019-12-20 20:00"
     AND dexs.block_time < current_timestamp()
 
 )
