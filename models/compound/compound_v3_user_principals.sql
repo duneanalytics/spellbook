@@ -179,10 +179,11 @@ with
     {% set principal_df %}
         select * from supply_borrow_combined limit 10
     {% endset %}
-    
+
+    {% log principal_df[1] %}
+
     SELECT 
-        *
-    FROM {{ interest_rate_test(principal_df) }}
+        {{ interest_rate_test(principal_df) }}
 
     --@macro here
     --apply last day rates to principal to get pv_principal
