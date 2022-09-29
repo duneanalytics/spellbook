@@ -180,7 +180,7 @@ with
         select * from supply_borrow_combined limit 10
     {% endset %}
 
-    {{ log principal_df[1] %}}
+    {{ log(principal_df[1]) %}}
 
     SELECT 
         {{ interest_rate_test(principal_df) }}
