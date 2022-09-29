@@ -176,17 +176,19 @@ with
     )
 
 
-    {% set principal_df %}
+    {% set get_query %}
         select * from supply_borrow_combined limit 10
     {% endset %}
 
-    {{ log(principal_df[1]) }}
+    {% set new_actions = run_query(get_query) %}
 
-    {{ log(interest_rate_test(principal_df)) }}
+    {{ log(new_actions[1]) }}
+
+    {{ log(interest_rate_test(new_actions)) }}
 
     SELECT 
         *
-        , {{ interest_rate_test(principal_df) }} as test_macro
+        -- , {{ interest_rate_test(principal_df) }} as test_macro
     FROM supply_borrow_combined
 
     --@macro here
