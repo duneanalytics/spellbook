@@ -2,7 +2,7 @@
         {{ log('running macro') }}
         {% set final_values = [] %}
 
-        {% for row in new_events_list -%}
+        {% for row in principal_df -%}
                 {{ log(row) }}
                 {{ final_values.append(row) }}
         {% endfor %}

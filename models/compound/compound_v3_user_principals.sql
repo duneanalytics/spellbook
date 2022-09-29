@@ -186,6 +186,7 @@ with
 
     SELECT 
         *
+        , {{ "'" + interest_rate_test(principal_df) "'" }} as test_macro
     FROM supply_borrow_combined
 
     --@macro here
