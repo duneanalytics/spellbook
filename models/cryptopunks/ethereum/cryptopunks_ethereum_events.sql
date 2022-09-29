@@ -3,7 +3,11 @@
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
-        unique_key='unique_trade_id'
+        unique_key='unique_trade_id',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "project",
+                                    "cryptopunks",
+                                    \'["masquot"]\') }}'
         )
 }}
 
@@ -86,7 +90,7 @@ SELECT
     NULL::string AS number_of_items,
     buys.trade_category,
     buys.from AS seller,
-    CASE WHEN buys.`enhanced_to`= agg.contract_address THEN erc.to
+    CASE WHEN buys.`enhanced_to`= agg.contract_address THEN NULL::string --erc.to
       ELSE buys.`enhanced_to` END AS buyer,
     "Trade" as evt_type,
     buys.enhanced_buy_value / power(10,18) AS amount_original,
@@ -124,11 +128,4 @@ LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', buy
 {% if is_incremental() %}
     AND p.minute >= date_trunc("day", now() - interval '1 week')
 {% endif %}
-LEFT JOIN {{ source('erc20_ethereum','evt_transfer') }} erc ON erc.evt_block_time=buys.evt_block_time
-    AND erc.contract_address="0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb"
-    AND erc.evt_tx_hash=buys.evt_tx_hash
-    AND erc.from=buys.`enhanced_to`
-    {% if is_incremental() %}
-    AND erc.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
 WHERE buys.type = "PunkBought"

@@ -1,5 +1,9 @@
 {{ config(
-        alias='erc721_latest'
+        alias='erc721_latest',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                            "sector",
+                                            "balances",
+                                            \'["hildobby","soispoke","dot2dotseurat"]\') }}'
         )
 }}
 SELECT distinct

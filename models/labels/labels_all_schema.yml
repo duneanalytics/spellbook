@@ -2,13 +2,19 @@ version: 2
 
 models:
   - name: labels_all
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - name
+            - blockchain
     meta:
       blockchain: ethereum, solana
       sector: labels
-      category: nft, cex
+      category: cex, nft
       contibutors: hildobby, soispoke
     config:
-      tags: ['labels', 'ethereum', 'solana', 'nft', 'cex']
+      tags: ['labels', 'ethereum', 'solana', 'cex', 'nft']
     description: "All labels across chains and categories"
     columns:
       - name: blockchain
