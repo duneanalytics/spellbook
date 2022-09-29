@@ -106,14 +106,14 @@ class PRJobDepedencyManager:
         new_refs = self.fetch_new_object_keys(object_type='model') + self.fetch_new_object_keys(object_type='seed')
         modifed_refs = self.fetch_modified_object_keys(object_type='model') + self.fetch_modified_object_keys(object_type='seed')
 
+        # Add seeds back in
+        ref_names = ref_names + list(set(seed_names))
+
         # Remove any dependencies that are created in the pr
         for new_ref in (new_refs + modifed_refs):
             ref_names = [ref for ref in ref_names if ref != new_ref]
         # Deduplicate refs
         ref_names = list(set(ref_names))
-
-        # Add seeds back in
-        ref_names = ref_names + list(set(seed_names))
 
         return ref_names
 
