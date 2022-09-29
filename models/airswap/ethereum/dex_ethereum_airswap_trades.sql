@@ -5,14 +5,14 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trade_id']
     )
 }}
 
 WITH dexs AS
 (
     SELECT
-        dexs.block_time,
+        udexs.block_time,
         erc20a.symbol AS token_a_symbol,
         erc20b.symbol AS token_b_symbol,
         token_a_amount_raw / power(10, erc20a.decimals) AS token_a_amount,
@@ -37,7 +37,7 @@ WITH dexs AS
         tx.`to` AS tx_to,
         trace_address,
         evt_index,
-        row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address ORDER BY evt_index) AS trade_id
+        row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address ORDER BY udexs.block_time) AS trade_id
     FROM (
         SELECT
             evt_block_time AS block_time,
@@ -56,6 +56,9 @@ WITH dexs AS
             NULL AS usd_amount,
             evt_index
         FROM {{ source('airswap_ethereum', 'Light_evt_Swap')}} e
+        {% if is_incremental() %}
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 
         UNION ALL
 
@@ -76,6 +79,9 @@ WITH dexs AS
             NULL AS usd_amount,
             evt_index
         FROM {{ source('airswap_ethereum', 'swap_evt_Swap')}} e
+        {% if is_incremental() %}
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 
         UNION ALL
 
@@ -96,9 +102,12 @@ WITH dexs AS
             NULL AS usd_amount,
             evt_index
         FROM {{ source('airswap_ethereum', 'Swap_v3_evt_Swap')}} e
-    ) dexs
+        {% if is_incremental() %}
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+    ) udexs
     INNER JOIN {{ source('ethereum', 'transactions') }} tx
-        ON dexs.tx_hash = tx.hash
+        ON udexs.tx_hash = tx.hash
         {% if not is_incremental() %}
         -- airswap_ethereum.Swap_v3_evt_Swap min(evt_block_time) is 2022-04-07 08:00
         -- airswap_ethereum.swap_evt_Swap min(evt_block_time) is 2019-12-20 20:24
@@ -112,10 +121,10 @@ WITH dexs AS
         AND tx.block_time < current_timestamp()
         AND tx.block_number >= 0
         AND tx.block_number < 9e18
-    LEFT JOIN {{ ref('tokens_erc20') }} erc20a ON erc20a.contract_address = dexs.token_a_address
-    LEFT JOIN {{ ref('tokens_erc20') }} erc20b ON erc20b.contract_address = dexs.token_b_address
-    LEFT JOIN {{ source('prices', 'usd') }} pa ON pa.minute = date_trunc('minute', dexs.block_time)
-        AND pa.contract_address = dexs.token_a_address
+    LEFT JOIN {{ ref('tokens_erc20') }} erc20a ON erc20a.contract_address = udexs.token_a_address
+    LEFT JOIN {{ ref('tokens_erc20') }} erc20b ON erc20b.contract_address = udexs.token_b_address
+    LEFT JOIN {{ source('prices', 'usd') }} pa ON pa.minute = date_trunc('minute', udexs.block_time)
+        AND pa.contract_address = udexs.token_a_address
         {% if not is_incremental() %}
         -- The date below is derrived from `select min(evt_block_time) from airswap_ethereum.swap_evt_Swap;`
         AND pa.minute >= "2019-12-20 20:00"
@@ -124,8 +133,8 @@ WITH dexs AS
         AND pa.minute >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         AND pa.minute < current_timestamp()
-    LEFT JOIN prices.usd pb ON pb.minute = date_trunc('minute', dexs.block_time)
-        AND pb.contract_address = dexs.token_b_address
+    LEFT JOIN prices.usd pb ON pb.minute = date_trunc('minute', udexs.block_time)
+        AND pb.contract_address = udexs.token_b_address
         {% if not is_incremental() %}
         -- The date below is derrived from `select min(evt_block_time) from airswap_ethereum.swap_evt_Swap;`
         AND pb.minute >= "2019-12-20 20:00"
@@ -134,8 +143,8 @@ WITH dexs AS
         AND pb.minute >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         AND pb.minute < current_timestamp()
-    WHERE dexs.block_time >= "2019-12-20 20:00"
-    AND dexs.block_time < current_timestamp()
+    WHERE udexs.block_time >= "2019-12-20 20:00"
+    AND udexs.block_time < current_timestamp()
 
 )
 
@@ -165,5 +174,6 @@ SELECT
     tx_from,
     tx_to,
     trace_address,
-    evt_index
+    evt_index,
+    trade_id
 FROM dexs
