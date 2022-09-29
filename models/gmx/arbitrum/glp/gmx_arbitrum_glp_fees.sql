@@ -1,5 +1,5 @@
 {{ config(
-        alias = 'fees',
+        alias = 'glp_fees',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

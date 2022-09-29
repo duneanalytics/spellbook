@@ -1,5 +1,5 @@
 {{ config(
-        alias = 'balances',
+        alias = 'vault_balances',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

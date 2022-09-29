@@ -1,5 +1,5 @@
 {{ config(
-        alias = 'aum',
+        alias = 'glp_aum',
         materialized = 'view',
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "project",

@@ -1,5 +1,5 @@
 {{ config(
-        alias = 'exposure',
+        alias = 'glp_exposure',
         materialized = 'view',
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "project",

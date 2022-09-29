@@ -1,5 +1,5 @@
 {{ config(
-        alias = 'components',
+        alias = 'glp_components',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
