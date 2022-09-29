@@ -160,27 +160,30 @@ with
     
     supply_borrow_combined as (
         SELECT 
-            d.date
-            , COALESCE(sb.user, bb.user) as user
-            , COALESCE(sb.supply_diff, 0) as supply_diff
-            , COALESCE(bb.borrow_diff,0) as borrow_diff
-            , COALESCE(sb.supply_diff,0)- COALESCE(bb.borrow_diff,0) as principal_diff
-        FROM dates d 
-        LEFT JOIN supplied_base sb ON d.date = sb.date
-        FULL OUTER JOIN borrow_base bb ON d.date = bb.date AND sb.user = bb.user
+            *
+            , sum(principal_diff) OVER (partition by user order by date asc) as principal_total
+        FROM (
+            SELECT
+                d.date
+                , COALESCE(sb.user, bb.user) as user
+                , COALESCE(sb.supply_diff, 0) as supply_diff
+                , COALESCE(bb.borrow_diff,0) as borrow_diff
+                , COALESCE(sb.supply_diff,0)- COALESCE(bb.borrow_diff,0) as principal_diff
+            FROM dates d 
+            LEFT JOIN supplied_base sb ON d.date = sb.date
+            FULL OUTER JOIN borrow_base bb ON d.date = bb.date AND sb.user = bb.user
+        ) a
     )
 
-    SELECT 
-        date
-        , user 
-        , sum(principal_diff) OVER (partition by user order by date asc) as principal_total
-        , supply_diff
-        , borrow_diff
-        , principal_diff
-        , {{ "'" + interest_rate_test(1) + "'" }} as test_macro
-        , concat(date::string, user, principal_diff::string) as user_unique
-    FROM supply_borrow_combined
+
+    {% set principal_df %}
+        select * from supply_borrow_combined limit 10
+    {% endset %}
     
+    SELECT 
+        *
+    FROM {{ interest_rate_test(principal_df) }}
+
     --@macro here
     --apply last day rates to principal to get pv_principal
     --apply pv_principal totals to utilization rate and interest rate
