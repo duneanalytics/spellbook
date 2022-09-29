@@ -1,0 +1,48 @@
+version: 2
+
+sources:
+  - name: airswap_ethereum
+    description: >
+      Decoded tables related to Airswap dex trades.
+    tables:
+      - name: Light_evt_Swap
+        description: >
+          Decoded table related to the Light swap events.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'Ethereum address for the liquidity pool used in transaction'
+          - name: evt_tx_hash
+            description: 'Transaction hash of the event'
+          - name: evt_index
+            description: 'Event index'
+          - name: evt_block_time
+            description: 'Timestamp for block event time in UTC'
+
+      - name: swap_evt_Swap
+        description: >
+          Decoded table related to the swap events.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'Ethereum address for the liquidity pool used in transaction'
+          - name: evt_tx_hash
+            description: 'Transaction hash of the event'
+          - name: evt_index
+            description: 'Event index'
+          - name: evt_block_time
+            description: 'Timestamp for block event time in UTC'
+
+      - name: Swap_v3_evt_Swap
+        description: >
+          Decoded table related to the Swap_v3 swap events.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'Ethereum address for the liquidity pool used in transaction'
+          - name: evt_tx_hash
+            description: 'Transaction hash of the event'
+          - name: evt_index
+            description: 'Event index'
+          - name: evt_block_time
+            description: 'Timestamp for block event time in UTC'
