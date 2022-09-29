@@ -33,3 +33,5 @@ UNION
 SELECT * FROM {{ ref('labels_contracts') }}
 UNION
 SELECT * FROM {{ ref('labels_miners') }}
+UNION
+SELECT * FROM {{ ref('labels_airdrop_1_receivers_optimism') }}
