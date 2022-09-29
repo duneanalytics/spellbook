@@ -165,12 +165,14 @@ class PRJobDepedencyManager:
         f.write("{% macro create_views_of_dependencies() %}")
         for prod_name, pr_name in list(zip(prod_names, pr_names)):
             view_template = Template("""
+{% set $var_1 %}   
+DROP TABLE IF EXISTS $pr_name;      
+{% endset %}
 {% set $var %}
-DROP TABLE IF EXISTS $pr_name;
 CREATE OR REPLACE VIEW $pr_name AS
 SELECT * FROM $prod_name;
 {% endset %}
-
+{% do run_query($var_1) %}
 {% do run_query($var) %}
 """)
             view_command = view_template.substitute(var=prod_name.replace('.', ''), prod_name=prod_name,
