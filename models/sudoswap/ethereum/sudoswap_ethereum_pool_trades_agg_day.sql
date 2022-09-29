@@ -48,3 +48,4 @@ FROM {{ ref('sudoswap_ethereum_events') }}
     WHERE block_date >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 GROUP BY 1,2
+;
