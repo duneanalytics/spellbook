@@ -1,6 +1,7 @@
 name: Trigger Spellbook Deploy to update the spellbook site
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - 'main'
