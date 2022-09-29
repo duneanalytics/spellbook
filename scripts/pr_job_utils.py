@@ -166,7 +166,7 @@ class PRJobDepedencyManager:
         for prod_name, pr_name in list(zip(prod_names, pr_names)):
             view_template = Template("""
 {% set $var %}
-DROP TABLE IF EXISTS $pr_name
+DROP TABLE IF EXISTS $pr_name;
 CREATE OR REPLACE VIEW $pr_name AS
 SELECT * FROM $prod_name;
 {% endset %}
