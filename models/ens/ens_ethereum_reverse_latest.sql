@@ -23,6 +23,7 @@ with node_names as (
         ,call_tx_hash as tx_hash
         ,row_number() over (partition by node order by call_block_time desc) as ordering --in theory we should also order by tx_index here
         from {{ source('ethereumnameservice_ethereum', 'DefaultReverseResolver_call_setName') }}
+        where call_success
         {% if is_incremental() %}
         AND call_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
