@@ -113,6 +113,16 @@ models:
       tags: ["ethereum", "curvefi", 'trades','dex']
     description: >
       Curve contract trades on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
     columns:
       - &blockchain
         name: blockchain
@@ -186,9 +196,3 @@ models:
       - &evt_index
         name: evt_index
         description: ""
-      - &unique_trade_id
-        name: unique_trade_id
-        description: "Unique trade ID built to track merge incremental strategy in the model"
-        tests:
-          - is_unique_filtered
-      

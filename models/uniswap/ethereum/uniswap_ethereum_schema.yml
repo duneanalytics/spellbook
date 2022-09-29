@@ -11,6 +11,16 @@ models:
       tags: ['ethereum','uniswap_v1','trades', 'uniswap','dex']
     description: >
         Uniswap V1 contract trades on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
     columns:
       - &blockchain
         name: blockchain
@@ -84,11 +94,6 @@ models:
       - &evt_index
         name: evt_index
         description: ""
-      - &unique_trade_id
-        name: unique_trade_id
-        description: "Unique trade ID built to track merge incremental strategy in the model"
-        tests:
-          - is_unique_filtered
 
   - name: uniswap_v2_ethereum_trades
     meta:
@@ -100,6 +105,16 @@ models:
       tags: ['ethereum','uniswap_v2','trades', 'uniswap','dex']
     description: >
         Uniswap V2 contract trades on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
     columns:
       - *blockchain
       - *project
@@ -124,7 +139,51 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
-      - *unique_trade_id
+
+  - name: uniswap_v3_ethereum_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: uniswap_v3
+      contributors: jeff-dude, masquot, soispoke
+    config:
+      tags: ['ethereum','uniswap_v3','trades', 'uniswap','dex']
+    description: >
+        Uniswap V3 contract trades on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+    columns:
+      - *blockchain
+      - *project
+      - *version  
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *trace_address
+      - *evt_index
 
   - name: uniswap_ethereum_trades
     meta:
@@ -150,7 +209,7 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount_raw
       - *amount_usd
-      - name: token_bought_address # since object is a view, avoid test repeat with '*' usage
+      - name: token_bought_address # since object is a view, avoid test repeat with dbt '*' usage
         description: "Contract address of the token bought"
       - *token_sold_address
       - *taker
@@ -161,5 +220,3 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
-      - name: unique_trade_id # since object is a view, avoid test repeat with '*' usage
-        description: "Unique trade ID built to track merge incremental strategy in the model"
