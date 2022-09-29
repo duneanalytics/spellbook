@@ -320,7 +320,7 @@ models:
     columns:
       - name: pool_address # unique + partition key
         description: 'Address of the pool'
-        test:
+        tests:
           - unique
       - *nft_contract_address
       - *creator_address
@@ -400,7 +400,7 @@ models:
     columns:
       - name: pool_address # unique + partition key
         description: 'Address of the pool'
-        test:
+        tests:
           - unique
       - *bonding_curve
       - *spot_price
