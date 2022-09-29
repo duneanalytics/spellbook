@@ -177,7 +177,7 @@ with
         , supply_diff
         , borrow_diff
         , principal_diff
-        , {{ interest_rate_test(1) }} as test_macro
+        , {{ "'" + interest_rate_test(1) + "'" }} as test_macro
         , concat(date::string, user, principal_diff::string) as user_unique
     FROM supply_borrow_combined
     
