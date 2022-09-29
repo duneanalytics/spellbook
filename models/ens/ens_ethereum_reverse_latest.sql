@@ -26,7 +26,7 @@ with node_names as (
         {% if is_incremental() %}
         AND call_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    )
+    ) foo
     where ordering = 1
 )
 
