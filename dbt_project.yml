@@ -123,6 +123,13 @@ models:
       ethereum:
         +schema: foundation_ethereum
         +materialized: view
+    
+    gmx:
+      +schema: gmx
+      +materialized: view
+      arbitrum:
+        +schema: gmx_arbitrum
+        +materialized: view
 
     x2y2:
       +schema: x2y2
