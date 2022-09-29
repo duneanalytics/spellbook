@@ -53,7 +53,7 @@ fglp_balances AS -- This CTE returns the accuals of WETH tokens in the Fee GLP c
 SELECT
     a.minute AS minute,
     COALESCE(b.fees_weth,0) AS fees_weth, -- Removes null values
-    c.weth_current_price AS weth_current_price
+    last(c.weth_current_price, true) OVER (ORDER BY a.minute ASC) AS weth_current_price  -- extrapolation for differential is data table syncing
 FROM minute a    
 LEFT JOIN
     (

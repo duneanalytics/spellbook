@@ -232,7 +232,7 @@ models:
         tests: 
           - not_null
       - &link_exposure
-        name: link_aum
+        name: link_exposure
         description: "Net long exposure of the pool to LINK"
         tests: 
           - not_null
