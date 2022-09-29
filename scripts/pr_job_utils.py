@@ -175,7 +175,7 @@ SELECT * FROM $prod_name;
 {% do run_query($var_1) %}
 {% do run_query($var) %}
 """)
-            view_command = view_template.substitute(var=prod_name.replace('.', ''), prod_name=prod_name,
+            view_command = view_template.substitute(var_1=prod_name.replace('.', '_1'), var=prod_name.replace('.', ''), prod_name=prod_name,
                                                     pr_name=pr_name)
             f.write(view_command)
         f.write("{% endmacro %}")
