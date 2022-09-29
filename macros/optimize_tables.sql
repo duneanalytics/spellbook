@@ -159,6 +159,14 @@ OPTIMIZE sudoswap_ethereum.pool_balance_changes;
 OPTIMIZE sudoswap_ethereum.pool_trades;
 {% endset %}
 
+{% set balancer_v1_ethereum_trades %}
+OPTIMIZE balancer_v1_ethereum.trades;
+{% endset %}
+
+{% set balancer_v2_ethereum_trades %}
+OPTIMIZE balancer_v2_ethereum.trades;
+{% endset %}
+
 
 {% do run_query(looksrare_ethereum_events) %}
 {% do run_query(magiceden_solana_events) %}
@@ -198,5 +206,7 @@ OPTIMIZE sudoswap_ethereum.pool_trades;
 {% do run_query(cow_protocol_ethereum_batches) %}
 {% do run_query(sudoswap_ethereum_pool_balance_changes) %}
 {% do run_query(sudoswap_ethereum_pool_trades) %}
+{% do run_query(balancer_v1_ethereum_trades) %}
+{% do run_query(balancer_v2_ethereum_trades) %}
 {% do log("Tables Optimized", info=True) %}
 {% endmacro %}
