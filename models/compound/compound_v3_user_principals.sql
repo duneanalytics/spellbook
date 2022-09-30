@@ -11,6 +11,8 @@
 {% set time_granularity = 'day' %}
 {% set comet = '0xc3d688b66703497daa19211eedff47f25384cdc3' %}
 
+--we wrap all the main logic to get user actions in a set jinja function before feeding to macro
+{% set get_query %}
 with
     config as (
         SELECT 
@@ -175,9 +177,8 @@ with
         ) a
     )
 
-
-    {% set get_query %}
-        select * from supply_borrow_combined limit 10
+    select * from supply_borrow_combined 
+    limit 10
     {% endset %}
 
     {% set new_actions = run_query(get_query) %}
@@ -188,7 +189,7 @@ with
 
     SELECT 
         *
-        -- , {{ interest_rate_test(principal_df) }} as test_macro
+        , {{ interest_rate_test(principal_df) }} as test_macro
     FROM supply_borrow_combined
 
     --@macro here
