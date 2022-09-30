@@ -182,7 +182,7 @@ with
 
     {% set new_actions = run_query(get_query) %}
 
-    {{ log(new_actions[1]) }}
+    {{ log(new_actions) }}
 
     {{ log(interest_rate_test(new_actions)) }}
 

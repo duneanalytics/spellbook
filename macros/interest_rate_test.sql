@@ -6,5 +6,5 @@
                 {{ log(row) }}
                 {{ final_values.append(row) }}
         {% endfor %}
-        {{ return(final_values) }}
+        -- {{ return(final_values) }}
 {%- endmacro -%}
