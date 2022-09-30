@@ -187,10 +187,8 @@ with
 
     {{ log(interest_rate_test(new_actions)) }}
 
-    SELECT 
-        *
-        , {{ interest_rate_test(principal_df) }} as test_macro
-    FROM supply_borrow_combined
+    SELECT
+        1 as test_macro
 
     --@macro here
     --apply last day rates to principal to get pv_principal
