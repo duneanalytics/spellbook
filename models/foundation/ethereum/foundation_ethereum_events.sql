@@ -8,7 +8,7 @@
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "foundation",
-                                \'["hildobby"]\') }}'
+                                \'["hildobby", "soispoke"]\') }}'
     )
 }}
 
@@ -123,7 +123,7 @@ WITH all_foundation_trades AS (
      {% endif %}
     )
 
-SELECT t.blockchain
+SELECT DISTINCT t.blockchain
 , t.project
 , version
 , date_trunc('day', t.block_time) AS block_date
@@ -170,7 +170,7 @@ SELECT t.blockchain
 , CASE WHEN t.royalty_fee_amount/t.amount_original < 0.5 THEN 100.0*ROUND(t.royalty_fee_amount/t.amount_original, 2)
     ELSE 0
     END AS royalty_fee_percentage
-, ett.to AS royalty_fee_receive_address
+, CASE WHEN t.royalty_fee_amount_raw = 0 THEN cast(NULL as string) ELSE ett.to END AS royalty_fee_receive_address
 , t.currency_symbol AS royalty_fee_currency_symbol
 , t.blockchain || t.project || t.version || t.tx_hash || t.project_contract_address || t.token_id || t.buyer || t.seller AS unique_trade_id
 FROM all_foundation_trades t
@@ -180,6 +180,11 @@ LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} nft_t ON nft_t.evt_bloc
     AND nft_t.tokenId=t.token_id
     AND nft_t.from=t.seller
     AND nft_t.to=t.buyer
+    AND nft_t.contract_address = t.nft_contract_address
+    {% if is_incremental() %}
+    -- this filter will only be applied on an incremental run
+    AND nft_t.evt_block_time >=  date_trunc("day", now() - interval '1 week')
+    {% endif %}
 LEFT JOIN {{ source('ethereum','transactions') }} et ON et.block_time=t.block_time
     AND et.hash=t.tx_hash
     {% if not is_incremental() %}
@@ -197,14 +202,16 @@ LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.minute=date_trunc('minute', t.b
     {% endif %}
 LEFT JOIN {{ source('ethereum','traces') }} ett ON ett.block_time=t.block_time
     AND ett.tx_hash=t.tx_hash
+    AND ett.from = t.project_contract_address
+    AND cast(ett.value as string) = cast(t.royalty_fee_amount_raw as string)
     AND ett.to!=t.project_contract_address
     AND t.royalty_fee_amount/t.amount_original < 0.5
-    AND ROUND((t.royalty_fee_amount/t.amount_original)/POWER(10, 18), 2) = ROUND(ett.value/POWER(10, 18), 2)
+    and ett.success = true
     {% if is_incremental() %}
     -- this filter will only be applied on an incremental run
-    AND ett.block_time >= (select max(block_time) from {{ this }})
+    AND ett.block_time >=  date_trunc("day", now() - interval '1 week')
     {% endif %}
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-AND t.block_time >= (select max(block_time) from {{ this }})
+AND t.block_time >=  date_trunc("day", now() - interval '1 week')
 {% endif %}

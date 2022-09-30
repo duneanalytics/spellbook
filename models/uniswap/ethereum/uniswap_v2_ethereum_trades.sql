@@ -5,13 +5,19 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'unique_trade_id'],
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "uniswap_v2",
-                                \'["jeff-dude"]\') }}'
+                                \'["jeff-dude", "markusbkoch", "masquot", "milkyklim", "0xBoxer", "mewwts", "hagaetc"]\') }}'
     )
 }}
+
+{% set project_start_date = '2020-05-05' %}
+{% set weth_ubomb_wash_trading_pair = '0xed9c854cb02de75ce4c9bba992828d6cb7fd5c71' %}
+{% set weth_weth_wash_trading_pair = '0xf9c1fa7d41bf44ade1dd08d37cc68f67ae75bf92' %}
+{% set feg_eth_wash_trading_pair = '0x854373387e41371ac6e307a1f29603c6fa10d872' %}
+
 WITH dexs AS
 (
     -- Uniswap v2
@@ -33,9 +39,9 @@ WITH dexs AS
     INNER JOIN {{ source('uniswap_v2_ethereum', 'Factory_evt_PairCreated') }} f
         ON f.pair = t.contract_address
     WHERE t.contract_address NOT IN (
-        '0xed9c854cb02de75ce4c9bba992828d6cb7fd5c71', -- remove WETH-UBOMB wash trading pair
-        '0xf9c1fa7d41bf44ade1dd08d37cc68f67ae75bf92', -- remove WETH-WETH wash trading pair
-        '0x854373387e41371ac6e307a1f29603c6fa10d872' ) -- remove FEG/ETH token pair
+        '{{weth_ubomb_wash_trading_pair}}',
+        '{{weth_weth_wash_trading_pair}}',
+        '{{feg_eth_wash_trading_pair}}' )
     {% if is_incremental() %}
     AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
@@ -71,39 +77,39 @@ SELECT
     ,tx.to AS tx_to
     ,dexs.trace_address
     ,dexs.evt_index
-    ,'uniswap' ||'-'|| '2' ||'-'|| dexs.tx_hash ||'-'|| IFNULL(dexs.evt_index, '') ||'-'|| IFNULL(dexs.trace_address, '') AS unique_trade_id
 FROM dexs
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
     {% if not is_incremental() %}
-    -- The date below is derrived from `select min(evt_block_time) from uniswap_v2_ethereum.Factory_evt_PairCreated;`
-    -- If dexs above is changed then this will also need to be changed.
-    AND tx.block_time >= "2020-05-05 00:00:00"
+    AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ ref('tokens_erc20') }} erc20a ON erc20a.contract_address = dexs.token_bought_address AND erc20a.blockchain = 'ethereum'
-LEFT JOIN {{ ref('tokens_erc20') }} erc20b ON erc20b.contract_address = dexs.token_sold_address  AND erc20b.blockchain = 'ethereum'
-LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.minute = date_trunc('minute', dexs.block_time)
+LEFT JOIN {{ ref('tokens_erc20') }} erc20a
+    ON erc20a.contract_address = dexs.token_bought_address
+    AND erc20a.blockchain = 'ethereum'
+LEFT JOIN {{ ref('tokens_erc20') }} erc20b
+    ON erc20b.contract_address = dexs.token_sold_address
+    AND erc20b.blockchain = 'ethereum'
+LEFT JOIN {{ source('prices', 'usd') }} p_bought
+    ON p_bought.minute = date_trunc('minute', dexs.block_time)
     AND p_bought.contract_address = dexs.token_bought_address
     AND p_bought.blockchain = 'ethereum'
     {% if not is_incremental() %}
-    -- The date below is derrived from `select min(evt_block_time) from uniswap_v2_ethereum.Factory_evt_PairCreated;`
-    -- If dexs above is changed then this will also need to be changed.
-    AND p_bought.minute >= "2020-05-05 00:00:00"
+    AND p_bought.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.minute = date_trunc('minute', dexs.block_time)
+LEFT JOIN {{ source('prices', 'usd') }} p_sold
+    ON p_sold.minute = date_trunc('minute', dexs.block_time)
     AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = 'ethereum'
     {% if not is_incremental() %}
-    -- The date below is derrived from `select min(evt_block_time) from uniswap_v2_ethereum.Factory_evt_PairCreated;`
-    -- If dexs above is changed then this will also need to be changed.
-    AND p_sold.minute >= "2020-05-05 00:00:00"
+    AND p_sold.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+;
