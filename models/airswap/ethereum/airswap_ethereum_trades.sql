@@ -56,8 +56,8 @@ WITH dexs AS
             `signerToken` AS token_b_address,
             contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
-            NULL AS trace_address,
-            NULL AS usd_amount,
+            '' AS trace_address,
+            cast(NULL as double) AS usd_amount,
             evt_index
         FROM {{ source('airswap_ethereum', 'Light_evt_Swap')}} e
         {% if is_incremental() %}
