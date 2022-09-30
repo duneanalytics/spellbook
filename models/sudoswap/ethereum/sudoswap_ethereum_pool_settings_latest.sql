@@ -1,6 +1,5 @@
 {{ config(
         alias = 'pool_settings_latest',
-        partition_by = ['pool_address'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

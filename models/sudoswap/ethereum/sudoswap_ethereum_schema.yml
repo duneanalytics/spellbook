@@ -318,7 +318,7 @@ models:
     description: >
       sudoswap pool creations on Ethereum
     columns:
-      - name: pool_address # unique + partition key
+      - name: pool_address # unique
         description: 'Address of the pool'
         tests:
           - unique
@@ -398,7 +398,7 @@ models:
     description: >
       sudoswap pool internal parameters
     columns:
-      - name: pool_address # unique + partition key (test)
+      - name: pool_address # unique
         description: 'Address of the pool'
         tests:
           - unique
