@@ -176,3 +176,79 @@ models:
        description: "Timestamp for block event time in UTC"
      - name: evt_block_number
        description: "Event block number" 
+       
+ - name: aave_ethereum_supply
+   meta:
+     blockchain: ethereum
+     sector: lending
+     project: aave
+     contibutors: batwayne, chuxinh
+
+   config:
+     tags: ['ethereum', 'aave', 'supply', 'aave', 'lending']
+   description: "All aave transactions involving supply transactions on ethereum"
+   columns:
+     - name: version
+       description: "Aave version"
+     - name: transaction_type
+       description: "The transaction type"
+     - name: symbol
+       description: "Symbol of the reserve"
+     - name: token_address
+       description: "Aave reserve contract address"  
+     - name: depositor
+       description: "Depositor wallet address"
+     - name: withdrawn_to
+       description: "The wallet address where the tokens are withdrawn"
+     - name: liquidator
+       description: "Liquidator wallet address"
+     - name: amount
+       description: "Token amount" 
+     - name: usd_amount
+       description: "Token amount in USD" 
+     - name: evt_tx_hash
+       description: "Transaction hash of the event"
+     - name: evt_index
+       description: "Event index"   
+     - name: evt_block_time
+       description: "Timestamp for block event time in UTC"
+     - name: evt_block_number
+       description: "Event block number"   
+       
+ - name: aave_ethereum_borrow
+   meta:
+     blockchain: ethereum
+     sector: lending
+     project: aave
+     contibutors: batwayne, chuxinh
+
+   config:
+     tags: ['ethereum', 'aave', 'borrow', 'aave', 'lending']
+   description: "All aave v1 transactions involving borrow transactions on ethereum"
+   columns:
+     - name: version
+       description: "Aave version"
+     - name: transaction_type
+       description: "The transaction type"
+     - name: symbol
+       description: "Symbol of the reserve"
+     - name: token_address
+       description: "Aave reserve contract address"  
+     - name: borrower
+       description: "Borrower wallet address"
+     - name: repayer
+       description: "Repayer wallet address"
+     - name: liquidator
+       description: "Liquidator wallet address"
+     - name: amount
+       description: "Token amount" 
+     - name: usd_amount
+       description: "Token amount in USD" 
+     - name: evt_tx_hash
+       description: "Transaction hash of the event"
+     - name: evt_index
+       description: "Event index"   
+     - name: evt_block_time
+       description: "Timestamp for block event time in UTC"
+     - name: evt_block_number
+       description: "Event block number"        
