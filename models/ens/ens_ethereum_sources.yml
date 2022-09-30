@@ -1,6 +1,6 @@
 version: 2
 
-sources: 
+sources:
   - name: ethereumnameservice_ethereum
     freshness:
     tables:
@@ -42,7 +42,7 @@ sources:
         loaded_at_field: call_block_time
       - name: ReverseRegistrar_v1_call_setName
         loaded_at_field: call_block_time
-      - name: BaseRegistrarImplementation_call_reclaim 
+      - name: BaseRegistrarImplementation_call_reclaim
         loaded_at_field: call_block_time
       - name: PublicResolver_evt_AddrChanged
         loaded_at_field: evt_block_time
