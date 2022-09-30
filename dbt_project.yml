@@ -285,6 +285,14 @@ models:
       optimism:
         +schema: ironbank_optimism
         +materialized: view
+
+    airswap:
+      +schema: airswap
+      +materialized: view
+      ethereum:
+        +schema: airswap_ethereum
+        +materialized: view
+
 seeds:
   spellbook:
     balances:
