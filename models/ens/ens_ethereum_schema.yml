@@ -115,12 +115,14 @@ models:
     columns:
       - name: address
         description: "The ETH address"
-        tests: unique
+        tests:
+          - unique
       - name: name
         description: "The reverse ENS name"
       - name: address_node
         description: "The node (namehash) of the address reverse record"
-        tests: unique
+        tests:
+          - unique
       - name: latest_tx_hash
         description: "Latest transaction hash setting the reverse ENS"
       - name: latest_tx_block_time
