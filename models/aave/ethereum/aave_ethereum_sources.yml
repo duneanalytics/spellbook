@@ -84,10 +84,10 @@ sources:
         - name: collateralAsset
           description: "Token address of the collateral asset"      
         - *contract_address 
-        - name: deptAsset
-          description: "Token address of the dept asset"
-        - name: deptToCover
-          description: "Amount of dept to be covered through liquidation"  
+        - name: debtAsset
+          description: "Token address of the debt asset"
+        - name: debtToCover
+          description: "Amount of debt to be covered through liquidation"  
         - *evt_block_number
         - *evt_block_time
         - *evt_index
@@ -110,7 +110,7 @@ sources:
         - name: borrowRate
           description: "The rate at which the tokens are borrowed"
         - name: borrowRateMode
-          description: "The borrowing mode of the dept"  
+          description: "The borrowing mode of the debt"  
         - *contract_address 
         - *evt_block_number
         - *evt_block_time
@@ -137,7 +137,7 @@ sources:
         - *user       
         
   - name: aave_ethereum
-    description: "Decoded contracts for aave v2 on Ethereum"
+    description: "Decoded contracts for aave v1 on Ethereum"
 
     tables:
       - name: LendingPool_evt_Deposit
@@ -200,13 +200,13 @@ sources:
         - *_amount
         - &_borrowBalanceIncrease
           name: _borrowBalanceIncrease 
-          description: "Amount of increase in the total dept"  
+          description: "Amount of increase in the total debt"  
         - name: _borrowRate 
-          description: "The rate at which dept is borrowed"   
+          description: "The rate at which debt is borrowed"   
         - name: _borrowRateMode 
           description: "The borrowing mode"   
         - name: _originationFee
-          description: "Origination fee of the dept"  
+          description: "Origination fee of the debt"  
         - *_referral  
         - *_reserve
         - *_timestamp
@@ -236,5 +236,3 @@ sources:
         - *evt_block_time
         - *evt_index
         - *evt_tx_hash              
-        
-       
