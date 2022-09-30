@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'uniswap_v1_ethereum',
+    schema = 'uniswap_v3_ethereum',
     alias = 'trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -8,58 +8,33 @@
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
-                                "uniswap_v1",
+                                "uniswap_v3",
                                 \'["jeff-dude", "markusbkoch", "masquot", "milkyklim", "0xBoxer", "mewwts", "hagaetc"]\') }}'
     )
 }}
 
-{% set project_start_date = '2018-11-01' %}
-{% set weth_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' %}
+{% set project_start_date = '2021-05-04' %}
 
 WITH dexs AS
 (
-    -- Uniswap v1 TokenPurchase
+    --Uniswap v3
     SELECT
         t.evt_block_time AS block_time
-        ,t.buyer AS taker
+        ,t.recipient AS taker
         ,'' AS maker
-        ,t.tokens_bought AS token_bought_amount_raw
-        ,t.eth_sold AS token_sold_amount_raw
+        ,CASE WHEN amount0 < '0' THEN abs(amount0) ELSE abs(amount1) END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
+        ,CASE WHEN amount0 < '0' THEN abs(amount1) ELSE abs(amount0) END AS token_sold_amount_raw
         ,NULL AS amount_usd
-        ,f.token AS token_bought_address
-        ,'{{weth_address}}' AS token_sold_address --Using WETH for easier joining with USD price table
-        ,t.contract_address AS project_contract_address
+        ,CASE WHEN amount0 < '0' THEN f.token0 ELSE f.token1 END AS token_bought_address
+        ,CASE WHEN amount0 < '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
+        ,CAST(t.contract_address as string) as project_contract_address
         ,t.evt_tx_hash AS tx_hash
         ,'' AS trace_address
         ,t.evt_index
     FROM
-        {{ source('uniswap_ethereum', 'Exchange_evt_TokenPurchase') }} t
-    INNER JOIN {{ source('uniswap_ethereum', 'Factory_evt_NewExchange') }} f
-        ON f.exchange = t.contract_address
-    {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-
-    UNION ALL
-
-    -- Uniswap v1 EthPurchase
-    SELECT
-        t.evt_block_time AS block_time
-        ,t.buyer AS taker
-        ,'' AS maker
-        ,t.eth_bought AS token_bought_amount_raw
-        ,t.tokens_sold AS token_sold_amount_raw
-        ,NULL AS amount_usd
-        ,'{{weth_address}}' AS token_bought_address --Using WETH for easier joining with USD price table
-        ,f.token AS token_sold_address
-        ,t.contract_address AS project_contract_address
-        ,t.evt_tx_hash AS tx_hash
-        ,'' AS trace_address
-        ,t.evt_index
-    FROM
-        {{ source('uniswap_ethereum', 'Exchange_evt_EthPurchase') }} t
-    INNER JOIN {{ source('uniswap_ethereum', 'Factory_evt_NewExchange') }} f
-        ON f.exchange = t.contract_address
+        {{ source('uniswap_v3_ethereum', 'Pair_evt_Swap') }} t
+    INNER JOIN {{ source('uniswap_v3_ethereum', 'Factory_evt_PoolCreated') }} f
+        ON f.pool = t.contract_address
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
@@ -67,7 +42,7 @@ WITH dexs AS
 SELECT
     'ethereum' AS blockchain
     ,'uniswap' AS project
-    ,'1' AS version
+    ,'3' AS version
     ,TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
     ,dexs.block_time
     ,erc20a.symbol AS token_bought_symbol
@@ -102,10 +77,10 @@ INNER JOIN {{ source('ethereum', 'transactions') }} tx
     AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time = date_trunc("day", now() - interval '1 week')
+    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
-    ON erc20a.contract_address = dexs.token_bought_address
+    ON erc20a.contract_address = dexs.token_bought_address 
     AND erc20a.blockchain = 'ethereum'
 LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     ON erc20b.contract_address = dexs.token_sold_address

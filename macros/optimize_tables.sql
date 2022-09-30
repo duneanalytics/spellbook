@@ -83,6 +83,10 @@ OPTIMIZE uniswap_v1_ethereum.trades;
 OPTIMIZE uniswap_v2_ethereum.trades;
 {% endset %}
 
+{% set uniswap_v3_ethereum_trades %}
+OPTIMIZE uniswap_v3_ethereum.trades;
+{% endset %}
+
 {% set curvefi_ethereum_trades %}
 OPTIMIZE curvefi_ethereum.trades;
 {% endset %}
@@ -103,8 +107,8 @@ OPTIMIZE element_bnb.events;
 OPTIMIZE element_avalanche_c.events;
 {% endset %}
 
-{% set ens_resolver_addresses %}
-OPTIMIZE ens.resolver_addresses;
+{% set ens_ethereum_reverse_latest %}
+OPTIMIZE ens_ethereum.reverse_latest;
 {% endset %}
 
 {% set archipelago_ethereum_events %}
@@ -170,7 +174,7 @@ OPTIMIZE dex_ethereum_airswap_trades;
 {% do run_query(opensea_v1_ethereum_events) %}
 {% do run_query(safe_ethereum_eth_transfers) %}
 {% do run_query(safe_ethereum_safes) %}
-{% do run_query(ens_resolver_addresses) %}
+{% do run_query(ens_ethereum_reverse_latest) %}
 {% do run_query(seaport_ethereum_transfers) %}
 {% do run_query(sudoswap_ethereum_events) %}
 {% do run_query(cryptopunks_ethereum_events) %}
@@ -187,6 +191,7 @@ OPTIMIZE dex_ethereum_airswap_trades;
 {% do run_query(transfers_ethereum_erc1155_agg_day) %}
 {% do run_query(uniswap_v1_ethereum_trades) %}
 {% do run_query(uniswap_v2_ethereum_trades) %}
+{% do run_query(uniswap_v3_ethereum_trades) %}
 {% do run_query(curvefi_ethereum_trades) %}
 {% do run_query(x2y2_ethereum_events) %}
 {% do run_query(archipelago_ethereum_events) %}
