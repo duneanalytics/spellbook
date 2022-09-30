@@ -103,7 +103,7 @@ models:
       - name: count
         description: "Total number of node registries"
 
-  - name: ens_ethereum_reverse_latest
+  - name: ens_reverse_latest
     meta:
       blockchain: ethereum
       project: ethereum_name_service
