@@ -23,40 +23,6 @@ SELECT
       evt_block_time,
       evt_block_number 
 FROM (
- SELECT 
-    '1' AS version,
-    'deposit' AS transaction_type,
-    CASE
-        WHEN _reserve = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
-        ELSE _reserve
-    END AS token,
-    _user AS depositor, 
-    NULL::string AS withdrawn_to,
-    NULL::string AS liquidator,
-    _amount AS amount,
-    evt_tx_hash,
-    evt_index,
-    evt_block_time,
-    evt_block_number
-FROM {{ source('aave_ethereum','LendingPool_evt_Deposit') }}
-UNION ALL 
-SELECT 
-    '1' AS version,
-    'withdraw' AS transaction_type,
-    CASE
-        WHEN _reserve = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
-        ELSE _reserve
-    END AS token,
-    _user AS depositor,
-    _user AS withdrawn_to,
-    NULL::string AS liquidator,
-    - _amount AS amount,
-    evt_tx_hash,
-    evt_index,
-    evt_block_time,
-    evt_block_number
-FROM {{ source('aave_ethereum','LendingPool_evt_RedeemUnderlying') }}
-UNION ALL 
 SELECT 
     '2' AS version,
     'deposit' AS transaction_type,
@@ -84,23 +50,6 @@ SELECT
     evt_block_time,
     evt_block_number
 FROM {{ source('aave_v2_ethereum','LendingPool_evt_Withdraw') }}
-UNION ALL
-SELECT 
-    '1' AS version,
-    'deposit_liquidation' AS transaction_type,
-    CASE
-        WHEN _collateral = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
-        ELSE _collateral
-    END AS token,
-    _user AS depositor,
-    _liquidator AS withdrawn_to,
-    _liquidator AS liquidator,
-    - _liquidatedCollateralAmount AS amount,
-    evt_tx_hash,
-    evt_index,
-    evt_block_time,
-    evt_block_number
-FROM {{ source('aave_ethereum','LendingPool_evt_LiquidationCall') }}
 UNION ALL
 SELECT 
     '2' AS version,
