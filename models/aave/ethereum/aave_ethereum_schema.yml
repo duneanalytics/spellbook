@@ -51,7 +51,7 @@ models:
      - name: liquidator
        description: "Liquidator wallet address"
      - name: amount
-       description: "Token amount" 
+       description: "Token amount present in the transaction. Note: withdraw amounts may be more than deposited amounts due to interest" 
      - name: usd_amount
        description: "Token amount in USD" 
      - name: evt_tx_hash
@@ -89,7 +89,7 @@ models:
      - name: liquidator
        description: "Liquidator wallet address"
      - name: amount
-       description: "Token amount" 
+       description: "Token amount present in the transaction. Note: repay amounts may be more than borrow amounts due to interest"  
      - name: usd_amount
        description: "Token amount in USD" 
      - name: evt_tx_hash
@@ -127,7 +127,7 @@ models:
      - name: liquidator
        description: "Liquidator wallet address"
      - name: amount
-       description: "Token amount" 
+       description: "Token amount present in the transaction. Note: withdraw amounts may be more than deposited amounts due to interest" 
      - name: usd_amount
        description: "Token amount in USD" 
      - name: evt_tx_hash
@@ -165,7 +165,7 @@ models:
      - name: liquidator
        description: "Liquidator wallet address"
      - name: amount
-       description: "Token amount" 
+       description: "Token amount present in the transaction. Note: repay amounts may be more than borrow amounts due to interest"
      - name: usd_amount
        description: "Token amount in USD" 
      - name: evt_tx_hash
@@ -203,7 +203,7 @@ models:
      - name: liquidator
        description: "Liquidator wallet address"
      - name: amount
-       description: "Token amount" 
+       description: "Token amount present in the transaction. Note: withdraw amounts may be more than deposited amounts due to interest" 
      - name: usd_amount
        description: "Token amount in USD" 
      - name: evt_tx_hash
@@ -241,7 +241,7 @@ models:
      - name: liquidator
        description: "Liquidator wallet address"
      - name: amount
-       description: "Token amount" 
+       description: "Token amount present in the transaction. Note: repay amounts may be more than borrow amounts due to interest"
      - name: usd_amount
        description: "Token amount in USD" 
      - name: evt_tx_hash
