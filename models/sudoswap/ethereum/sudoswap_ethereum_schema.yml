@@ -398,7 +398,7 @@ models:
     description: >
       sudoswap pool internal parameters
     columns:
-      - name: pool_address # unique + partition key
+      - name: pool_address # unique + partition key (test)
         description: 'Address of the pool'
         tests:
           - unique
