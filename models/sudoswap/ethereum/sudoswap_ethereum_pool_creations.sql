@@ -42,7 +42,8 @@ WITH
       call_tx_hash as creation_tx_hash
     FROM
       {{ source('sudo_amm_ethereum','LSSVMPairFactory_call_createPairETH') }} cre
-      INNER JOIN {{ source('ethereum','transactions') }} tx ON tx.hash = cre.call_tx_hash
+      INNER JOIN {{ source('ethereum','transactions') }} tx ON tx.block_time = cre.call_block_time
+        AND tx.hash = cre.call_tx_hash
         {% if not is_incremental() %}
         AND tx.block_time >= '{{project_start_date}}'
         {% endif %}
