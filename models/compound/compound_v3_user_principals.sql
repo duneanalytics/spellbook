@@ -11,8 +11,10 @@
 {% set time_granularity = 'day' %}
 {% set comet = '0xc3d688b66703497daa19211eedff47f25384cdc3' %}
 
---we wrap all the main logic to get user actions in a set jinja function before feeding to macro
-{% set get_query %}
+
+-- Meghan: I think you don't need this get query part.
+-- --we wrap all the main logic to get user actions in a set jinja function before feeding to macro
+-- {% set get_query %}
 with
     config as (
         SELECT 
@@ -177,18 +179,19 @@ with
         ) a
     )
 
-    select * from supply_borrow_combined 
+    select interest_rate_test(*) from supply_borrow_combined
     limit 10
-    {% endset %}
 
-    {% set new_actions = run_query(get_query) %}
+--     {% endset %}
 
-    {{ log(new_actions) }}
+--     {% set new_actions = run_query(get_query) %}
+--
+--     {{ log(new_actions) }}
+--
+--     {{ log(interest_rate_test(new_actions)) }}
 
-    {{ log(interest_rate_test(new_actions)) }}
-
-    SELECT
-        1 as test_macro
+--     SELECT
+--         1 as test_macro
 
     --@macro here
     --apply last day rates to principal to get pv_principal
