@@ -9,9 +9,18 @@
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "airswap",
-                                    \'["hosuke"]\') }}'
+                                    \'["jeff-dude", "hosuke", "soispoke"]\') }}'
     )
 }}
+
+-- airswap_ethereum.Swap_v3_evt_Swap min(evt_block_time) is 2022-04-07 08:00
+-- airswap_ethereum.swap_evt_Swap min(evt_block_time) is 2019-12-20 20:24
+-- airswap_ethereum.Light_evt_Swap min(evt_block_time) is 2021-03-17 17:04
+-- The date below is derrived from `select min(evt_block_time) from airswap_ethereum.swap_evt_Swap;`
+{% set project_start_date = '2019-12-20' %}
+{% set query_start_block_number = 0 %}
+{% set query_end_block_number = 9e18 %}
+
 
 WITH dexs AS
 (
@@ -79,8 +88,8 @@ WITH dexs AS
             `signerToken` AS token_b_address,
             contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
-            NULL AS trace_address,
-            NULL AS usd_amount,
+            '' AS trace_address,
+            cast(NULL as double) AS usd_amount,
             evt_index
         FROM {{ source('airswap_ethereum', 'swap_evt_Swap')}} e
         {% if is_incremental() %}
@@ -102,8 +111,8 @@ WITH dexs AS
             `signerToken` AS token_b_address,
             contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
-            NULL AS trace_address,
-            NULL AS usd_amount,
+            '' AS trace_address,
+            cast(NULL as double) AS usd_amount,
             evt_index
         FROM {{ source('airswap_ethereum', 'Swap_v3_evt_Swap')}} e
         {% if is_incremental() %}
@@ -113,25 +122,20 @@ WITH dexs AS
     INNER JOIN {{ source('ethereum', 'transactions') }} tx
         ON udexs.tx_hash = tx.hash
         {% if not is_incremental() %}
-        -- airswap_ethereum.Swap_v3_evt_Swap min(evt_block_time) is 2022-04-07 08:00
-        -- airswap_ethereum.swap_evt_Swap min(evt_block_time) is 2019-12-20 20:24
-        -- airswap_ethereum.Light_evt_Swap min(evt_block_time) is 2021-03-17 17:04
-        -- The date below is derrived from `select min(evt_block_time) from airswap_ethereum.swap_evt_Swap;`
-        AND tx.block_time >= "2019-12-20 20:00"
+        AND tx.block_time >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         AND tx.block_time = date_trunc("day", now() - interval '1 week')
         {% endif %}
         AND tx.block_time < current_timestamp()
-        AND tx.block_number >= 0
-        AND tx.block_number < 9e18
+        AND tx.block_number >= {{query_start_block_number}}
+        AND tx.block_number < {{query_end_block_number}}
     LEFT JOIN {{ ref('tokens_erc20') }} erc20a ON erc20a.contract_address = udexs.token_a_address
     LEFT JOIN {{ ref('tokens_erc20') }} erc20b ON erc20b.contract_address = udexs.token_b_address
     LEFT JOIN {{ source('prices', 'usd') }} pa ON pa.minute = date_trunc('minute', udexs.block_time)
         AND pa.contract_address = udexs.token_a_address
         {% if not is_incremental() %}
-        -- The date below is derrived from `select min(evt_block_time) from airswap_ethereum.swap_evt_Swap;`
-        AND pa.minute >= "2019-12-20 20:00"
+        AND pa.minute >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         AND pa.minute >= date_trunc("day", now() - interval '1 week')
@@ -140,14 +144,13 @@ WITH dexs AS
     LEFT JOIN prices.usd pb ON pb.minute = date_trunc('minute', udexs.block_time)
         AND pb.contract_address = udexs.token_b_address
         {% if not is_incremental() %}
-        -- The date below is derrived from `select min(evt_block_time) from airswap_ethereum.swap_evt_Swap;`
-        AND pb.minute >= "2019-12-20 20:00"
+        AND pb.minute >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         AND pb.minute >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         AND pb.minute < current_timestamp()
-    WHERE udexs.block_time >= "2019-12-20 20:00"
+    WHERE udexs.block_time >= '{{project_start_date}}'
     AND udexs.block_time < current_timestamp()
 
 )
