@@ -65,7 +65,7 @@ perps AS (
 				), 'UTF-8'
 			) AS market
 		,s.contract_address AS market_address
-		,ABS(s.tradeSize)/1e18 * p.price AS volume_usd
+		,ABS(s.tradeSize) * p.price AS volume_usd
 		,s.fee/1e18 AS fee_usd
 		,s.margin/1e18 AS margin_usd
 		,(ABS(s.tradeSize)/1e18 * p.price) / (s.margin/1e18) AS leverage_ratio
