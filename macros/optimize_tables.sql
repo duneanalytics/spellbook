@@ -27,11 +27,23 @@ OPTIMIZE safe_ethereum.safes;
 OPTIMIZE seaport_ethereum.transfers;
 {% endset %}
 
-{% set sudoswap_ethereum %}
+{% set sudoswap_ethereum_events %}
 OPTIMIZE sudoswap_ethereum.events;
+{% endset %}
+
+{% set sudoswap_ethereum_pool_creations %}
 OPTIMIZE sudoswap_ethereum.pool_creations;
+{% endset %}
+
+{% set sudoswap_ethereum_pool_settings_latest %}
 OPTIMIZE sudoswap_ethereum.pool_settings_latest;
+{% endset %}
+
+{% set sudoswap_ethereum_pool_balance_agg_day %}
 OPTIMIZE sudoswap_ethereum.pool_balance_agg_day;
+{% endset %}
+
+{% set sudoswap_ethereum_pool_trades_agg_day %}
 OPTIMIZE sudoswap_ethereum.pool_trades_agg_day;
 {% endset %}
 
@@ -164,7 +176,6 @@ OPTIMIZE cow_protocol_ethereum.batches;
 {% do run_query(safe_ethereum_safes) %}
 {% do run_query(ens_resolver_addresses) %}
 {% do run_query(seaport_ethereum_transfers) %}
-{% do run_query(sudoswap_ethereum) %}
 {% do run_query(cryptopunks_ethereum_events) %}
 {% do run_query(element_ethereum_events) %}
 {% do run_query(element_bnb_events) %}
@@ -192,5 +203,10 @@ OPTIMIZE cow_protocol_ethereum.batches;
 {% do run_query(labels_all) %}
 {% do run_query(cow_protocol_ethereum_trades) %}
 {% do run_query(cow_protocol_ethereum_batches) %}
+{% do run_query(sudoswap_ethereum_events) %}
+{% do run_query(sudoswap_ethereum_pool_creations) %}
+{% do run_query(sudoswap_ethereum_pool_settings_latest) %}
+{% do run_query(sudoswap_ethereum_pool_balance_agg_day) %}
+{% do run_query(sudoswap_ethereum_pool_trades_agg_day) %}
 {% do log("Tables Optimized", info=True) %}
 {% endmacro %}
