@@ -25,45 +25,6 @@ SELECT
       evt_block_number   
 FROM (
 SELECT 
-    '1' AS version,
-    'borrow' AS transaction_type,
-    CASE 
-        WHEN _borrowRateMode = '1' THEN 'stable'
-        WHEN _borrowRateMode = '2' THEN 'variable'
-    END AS loan_type,
-    CASE
-        WHEN _reserve = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
-        ELSE _reserve
-    END AS token,
-    _user AS borrower,
-    NULL::string AS repayer,
-    NULL::string AS liquidator,
-    _amount AS amount, 
-    evt_tx_hash,
-    evt_index,
-    evt_block_time,
-    evt_block_number
-FROM {{ source('aave_ethereum','LendingPool_evt_Borrow') }} 
-UNION ALL 
-SELECT 
-    '1' AS version,
-    'repay' AS transaction_type,
-    NULL AS loan_type,
-    CASE
-        WHEN _reserve = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
-        ELSE _reserve
-    END AS token,
-    _user AS borrower,
-    _repayer AS repayer,
-    NULL::string AS liquidator,
-    - _amountMinusFees AS amount,
-    evt_tx_hash,
-    evt_index,
-    evt_block_time,
-    evt_block_number
-FROM {{ source('aave_ethereum','LendingPool_evt_Repay') }}
-UNION ALL 
-SELECT 
     '2' AS version,
     'borrow' AS transaction_type,
     CASE 
@@ -95,24 +56,6 @@ SELECT
     evt_block_time,
     evt_block_number
 FROM {{ source('aave_v2_ethereum','LendingPool_evt_Repay') }}
-UNION ALL
-SELECT 
-    '1' AS version,
-    'borrow_liquidation' AS transaction_type,
-    NULL AS loan_type,
-    CASE
-        WHEN _reserve = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
-        ELSE _reserve
-    END AS token,
-    _user AS borrower,
-    _liquidator AS repayer,
-    _liquidator AS liquidator,
-    - _purchaseAmount AS amount,
-    evt_tx_hash,
-    evt_index,
-    evt_block_time,
-    evt_block_number
-FROM {{ source('aave_ethereum','LendingPool_evt_LiquidationCall') }}
 UNION ALL
 SELECT 
     '2' AS version,
