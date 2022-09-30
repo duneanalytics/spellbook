@@ -225,7 +225,7 @@ sources:
           description: "The borrowed amount minus fees"  
         - *_borrowBalanceIncrease 
         - name: _fees
-          description: "The fees for the given dept"   
+          description: "The fees for the given debt"   
         - name: _repayer 
           description: "Wallet address of the repayer"   
         - *_reserve
