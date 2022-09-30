@@ -7,7 +7,7 @@ with unit_test1
         where  token_address = '0x514910771af9ca656af840dff83e8264ecf986ca'
                and depositor = '0x4767192455266e422386d14991d697a418c63225'
                and evt_block_time = '2022-09-21 18:09'\
-               and evt_tx_hash = '0x5be7cab6a33b1f1a050858e18a0a3140092440fbeb9e431c88103762f23d5305'  ),
+               and evt_tx_hash = '0x5be7cab6a33b1f1a050858e18a0a3140092440fbeb9e431c88103762f23d5305'),
     unit_test2
     as (select case
                  when amount = 250 then true
