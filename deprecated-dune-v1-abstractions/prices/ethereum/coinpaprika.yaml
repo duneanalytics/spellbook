@@ -2194,3 +2194,13 @@
   symbol: DFI
   address: 0x8Fc8f8269ebca376D046Ce292dC7eaC40c8D358A
   decimals: 8
+- name: Rocket Pool
+  id: rpl-rocket-pool
+  symbol: RPL
+  address: 0xD33526068D116cE69F19A9ee46F0bd304F21A51f
+  decimals: 18
+- name: Wrapped Liquid Staked Ether 2.0
+  id: wsteth-wrapped-liquid-staked-ether-20
+  symbol: wstETH
+  address: 0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0
+  decimals: 18  

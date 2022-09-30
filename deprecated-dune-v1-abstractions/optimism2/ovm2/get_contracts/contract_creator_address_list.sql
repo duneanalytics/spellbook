@@ -329,6 +329,7 @@ COPY ovm2.contract_creator_address_list (creator_address,project) FROM stdin;
 \\xFb59Ce8986943163F14C590755b29dB2998F2322	Sonne Finance
 \\x5bd973c3841b754386963abb117ffc796041aecf	OpenXProject
 \\xB32D9aa786E4f53f9484539cF44B1E092F94D483	Quest3
+\\x7a6468F8161ef39d7639c67DfA5637BA1b7ba74B	Alchemix
 \.
 
 COMMIT;
