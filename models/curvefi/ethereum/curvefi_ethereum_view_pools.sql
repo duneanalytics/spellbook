@@ -1,7 +1,12 @@
 {{ config(
     materialized = 'view',
-    alias = 'view_pools'
-) }}
+    alias = 'view_pools',
+    post_hook='{{ expose_spells(\'["ethereum"]\',
+                                "project",
+                                "curvefi",
+                                \'["yulesa", "agaperste"]\') }}'
+    )
+ }}
 
 {% set curvefi_ethereum_DAI_USDC_USDT_pool_contract = "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7" %}
 {% set curvefi_ethereum_sBTC_swap_contract = "0x7fc77b5c7614e1533320ea6ddc2eb61fa00a9714" %}

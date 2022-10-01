@@ -128,6 +128,12 @@ models:
       ethereum:
         +schema: rarible_ethereum
         +materialized: view
+    gmx:
+      +schema: gmx
+      +materialized: view
+      arbitrum:
+        +schema: gmx_arbitrum
+        +materialized: view
     x2y2:
       +schema: x2y2
       +materialized: view
@@ -281,6 +287,14 @@ models:
       optimism:
         +schema: ironbank_optimism
         +materialized: view
+
+    airswap:
+      +schema: airswap
+      +materialized: view
+      ethereum:
+        +schema: airswap_ethereum
+        +materialized: view
+
 seeds:
   spellbook:
     balances:

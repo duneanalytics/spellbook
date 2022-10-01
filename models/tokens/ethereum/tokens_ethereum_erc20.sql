@@ -6648,5 +6648,12 @@ FROM (VALUES
           ('0xd909c5862cdb164adb949d92622082f0092efc3d', 'IPT', 18),
           ('0xe4b4c008ff36e3c50c4299c223504a480de9c833', 'SS', 9),
           ('0xf0b692ace03ffb689628e68d4919f91723d1c5a2', 'SED', 18),
-          ('0xf57b152de454abc13aee9c1ecce9097eb922fd7f', 'SUDORUG', 9)
+          ('0xf57b152de454abc13aee9c1ecce9097eb922fd7f', 'SUDORUG', 9),
+          ('0x0e74417b5a86bb99e6bd27cd4ef8772c8eea8310', 'EON', 18),
+          ('0x2321537fd8ef4644bacdceec54e5f35bf44311fa', 'n00d', 18),
+          ('0x5006192340d83bfa47ee2f28edd0fd16a56d5b5e', '3gg', 18),
+          ('0x6b32022693210cd2cfc466b9ac0085de8fc34ea6', 'DECI', 8),
+          ('0x9daef41e08bc88183572b03796c96a7ace1ec9d4', 'KOYO', 18),
+          ('0xcc15942528cefe08531e83e6e738c4de3634c125', 'FUKU', 18),
+          ('0xea5edef1287afdf9eb8a46f9773abfc10820c61c', 'EASE', 18)
      ) AS temp_table (contract_address, symbol, decimals)

@@ -42,3 +42,142 @@ models:
         description: "The underlying symbol of the itoken"
         tests:
           - not_null
+  - name: ironbank_optimism_borrow
+    meta:
+      blockchain: optimism
+      sector: lending
+      project: ironbank
+      contributors: michael
+    config:
+      tags: ['optimism','ironbank','view','borrow']
+    description: "Borrow data on optimism"
+    columns:
+      - &project
+        name: project
+        description: "Project name"
+      - &version
+        name: version
+        description: "Protocol version"
+      - &block_number
+        name: block_number
+        description: "Block number in which the transaction was executed"
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction"
+      - &evt_index
+        name: evt_index
+        description: ""
+      - &trace_address
+        name: trace_address
+        description: ""
+      - &borrower
+        name: borrower
+        description: "The account which borrowed the asset"
+      - &asset_address
+        name: asset_address
+        description: "The address of Underlying token"
+      - &borrow_amount
+        name: borrow_amount
+        description: "The amount which was borrowed"
+  - name: ironbank_optimism_mint
+    meta:
+      blockchain: optimism
+      sector: lending
+      project: ironbank
+      contributors: michael
+    config:
+      tags: ['optimism','ironbank','view','mint']
+    description: "Mint data on optimism"
+    columns:
+      - *project
+      - *version
+      - *block_number
+      - *block_time
+      - *tx_hash
+      - *evt_index
+      - *trace_address
+      - &minter
+        name: minter
+        description: "The account which minted the asset"
+      - *asset_address
+      - &mint_amount
+        name: mint_amount
+        description: "The amount which was minted"
+  - name: ironbank_optimism_repay
+    meta:
+      blockchain: optimism
+      sector: lending
+      project: ironbank
+      contributors: michael
+    config:
+      tags: ['optimism','ironbank','view','repay']
+    description: "Repay data on optimism"
+    columns:
+      - *project
+      - *version
+      - *block_number
+      - *block_time
+      - *tx_hash
+      - *evt_index
+      - *trace_address
+      - *borrower
+      - *asset_address
+      - &repay_amount
+        name: repay_amount
+        description: "The amount which was repaid"
+  - name: ironbank_optimism_liquidation
+    meta:
+      blockchain: optimism
+      sector: lending
+      project: ironbank
+      contributors: michael
+    config:
+      tags: ['optimism','ironbank','view','liquidation']
+    description: "Liquidation data on optimism"
+    columns:
+      - *project
+      - *version
+      - *block_number
+      - *block_time
+      - *tx_hash
+      - *evt_index
+      - *trace_address
+      - &liquidated_borrower
+        name: liquidated_borrower
+        description: "The account who was liquidated"
+      - &debt_to_cover_asset_address
+        name: debt_to_cover_asset_address
+        description: "The address of underlying token which was liquidated"
+      - &collateral_asset_address
+        name: collateral_asset_address
+        description: "The address of collateral token"
+      - &debt_to_cover_amount
+        name: debt_to_cover_amount
+        description: "The amount which was repaid"
+  - name: ironbank_optimism_redeem
+    meta:
+      blockchain: optimism
+      sector: lending
+      project: ironbank
+      contributors: michael
+    config:
+      tags: ['optimism','ironbank','view','redeem underlying']
+    description: "Redeem data on optimism"
+    columns:
+      - *project
+      - *version
+      - *block_number
+      - *block_time
+      - *tx_hash
+      - *evt_index
+      - *trace_address
+      - &redeemer
+        name: redeemer
+        description: "The account which redeemed the asset"
+      - *asset_address
+      - &redeem_amount
+        name: redeem_amount
+        description: "The amount which was redeemed"
