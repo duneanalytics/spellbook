@@ -1,6 +1,7 @@
 -- https://dune.com/queries/874721
 -- prototype alias table for Aztec V2
-drop table if exists aztec_v2.contract_labels cascade;
+
+-- drop table if exists aztec_v2.contract_labels cascade;
 
 create table if not exists aztec_v2.contract_labels
 (
@@ -26,6 +27,13 @@ insert into aztec_v2.contract_labels
 ('Lido',                 'Bridge',           '1.0',     'Prod Lido Bridge',             '\x381abF150B53cc699f0dBBBEF3C5c0D1fA4B3Efd'::bytea),
 ('AceOfZK',              'Bridge',           '1.0',     'Ace Of ZK NFT - nonfunctional','\x0eb7f9464060289fe4fddfde2258f518c6347a70'::bytea),
 ('Curve',                'Bridge',           '1.0',     'CurveStEth Bridge',            '\x0031130c56162e00a7e9c01ee4147b11cbac8776'::bytea)
+;
+
+insert into aztec_v2.contract_labels 
+(protocol,               contract_type,      version,   description,                   contract_address) values
+('Aztec',                'Bridge',           '1.0',     'Subsidy Manager',              '\xABc30E831B5Cc173A9Ed5941714A7845c909e7fA'::bytea),
+('Yearn',                'Bridge',           '1.0',     'Yearn Deposits',               '\xE71A50a78CcCff7e20D8349EED295F12f0C8C9eF'::bytea),
+('Aztec',                'Bridge',           '1.0',     'ERC4626 Tokenized Vault',      '\x3578D6D5e1B4F07A48bb1c958CBfEc135bef7d98'::bytea)
 ;
 
 alter table aztec_v2.contract_labels add contract_creator bytea;
