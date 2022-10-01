@@ -81,14 +81,14 @@ with
                 '0x3578D6D5e1B4F07A48bb1c958CBfEc135bef7d98'
               ),
               (
-                'Unknown1',
+                'Curve',
                 'Bridge',
                 '1.0',
-                'DataProvider',
-                '0xB4319947947781FFe91dDf96A32aF2D4693FEf64'
+                'CurveStEth Bridge V2',
+                '0xe09801dA4C74e62fB42DFC8303a1C1BD68073D1a'
               ),
               (
-                'Unknown5',
+                'Uniswap',
                 'Bridge',
                 '1.0',
                 'UniswapDCABridge',
