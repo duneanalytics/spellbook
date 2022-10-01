@@ -79,6 +79,20 @@ with
                 '1.0',
                 'ERC4626 Tokenized Vault',
                 '0x3578D6D5e1B4F07A48bb1c958CBfEc135bef7d98'
+              ),
+              (
+                'Unknown1',
+                'Bridge',
+                '1.0',
+                'DataProvider',
+                '0xB4319947947781FFe91dDf96A32aF2D4693FEf64'
+              ),
+              (
+                'Unknown2',
+                'Bridge',
+                '1.0',
+                'UniswapDCABridge',
+                '0x94679A39679ffE53B53b6a1187aa1c649A101321'
               )
           ) AS x (
             protocol,
