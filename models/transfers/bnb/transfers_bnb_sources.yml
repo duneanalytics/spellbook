@@ -7,14 +7,14 @@ sources:
     tables:
       - name: WBNB_evt_Deposit
         loaded_at_field: evt_block_time
-        description: "wBNB deposits"
+        description: "WBNB deposits"
         columns:
           - &contract_address
             name: contract_address
             description: "Contract address for token"
           - &dst
             name: dst
-            description: "Wallet address for wBNB deposits"
+            description: "Wallet address for WBNB deposits"
           - &evt_block_number
             name: evt_block_number
             description: "Block event number"
@@ -38,7 +38,19 @@ sources:
           - *contract_address
           - &src
             name: src
-            description: "Wallet address for WBNB withdrawals"
+            description: "Wallet address for WBNB withdrawals from"
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *wad
+      - name: WBNB_evt_Transfer
+        loaded_at_field: evt_block_time
+        description: "BNB transfer events"
+        columns:
+          - *contract_address
+          - *dst
+          - *src
           - *evt_block_number
           - *evt_block_time
           - *evt_index
