@@ -7,14 +7,14 @@ sources:
     tables:
       - name: WBNB_evt_Deposit
         loaded_at_field: evt_block_time
-        description: "wBNB deposits"
+        description: "WBNB deposits"
         columns:
           - &contract_address
             name: contract_address
             description: "Contract address for token"
           - &dst
             name: dst
-            description: "Wallet address for wBNB deposits"
+            description: "Wallet address for WBNB deposits"
           - &evt_block_number
             name: evt_block_number
             description: "Block event number"
@@ -30,17 +30,56 @@ sources:
           - &wad
             name: wad
             description: "Raw amount of WBNB"
-
       - name: WBNB_evt_Withdrawal
         loaded_at_field: evt_block_time
-        description: "WBNB withdrawals"
+        description: "BNB withdrawals"
         columns:
-          - *contract_address
+          - &contract_address
+            name: contract_address
+            description: "Contract address for token"
+          - &dst
+            name: dst
+            description: "Wallet address for WBNB withdrawals"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block event number"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_index
+            name: evt_index
+            description: "Event index"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Event transaction hash"
+          - &wad
+            name: wad
+            description: "Raw amount of WBNB"
+      - name: WBNB_evt_Transfer
+        loaded_at_field: evt_block_time
+        description: "BNB transfer events"
+        columns:
+          - &contract_address
+            name: contract_address
+            description: "Contract address for token"
+          - &dst
+            name: dst
+            description: "Wallet address for WBNB transfer to"
           - &src
             name: src
-            description: "Wallet address for WBNB withdrawals"
-          - *evt_block_number
-          - *evt_block_time
-          - *evt_index
-          - *evt_tx_hash
-          - *wad
+            description: "Wallet address for WBNB transfer from"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block event number"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_index
+            name: evt_index
+            description: "Event index"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Event transaction hash"
+          - &wad
+            name: wad
+            description: "Raw amount of WBNB"
