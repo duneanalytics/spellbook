@@ -173,7 +173,7 @@ SELECT
     token_b_amount_raw AS token_sold_amount_raw,
     usd_amount AS amount_usd,
     token_a_address AS token_bought_address,
-    token_a_address AS token_sold_address,
+    token_b_address AS token_sold_address,
     trader_a AS taker,
     trader_b AS maker,
     exchange_contract_address AS project_contract_address,
