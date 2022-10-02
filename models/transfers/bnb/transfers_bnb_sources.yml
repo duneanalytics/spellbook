@@ -6,6 +6,41 @@ sources:
       warn_after: { count: 12, period: hour }
     tables:
       - name: WBNB_evt_Deposit
-        # TODO
+        loaded_at_field: evt_block_time
+        description: "wBNB deposits"
+        columns:
+          - &contract_address
+            name: contract_address
+            description: "Contract address for token"
+          - &dst
+            name: dst
+            description: "Wallet address for wBNB deposits"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block event number"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_index
+            name: evt_index
+            description: "Event index"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Event transaction hash"
+          - &wad
+            name: wad
+            description: "Raw amount of WBNB"
+
       - name: WBNB_evt_Withdrawal
-        # TODO
+        loaded_at_field: evt_block_time
+        description: "WBNB withdrawals"
+        columns:
+          - *contract_address
+          - &src
+            name: src
+            description: "Wallet address for WBNB withdrawals"
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *wad
