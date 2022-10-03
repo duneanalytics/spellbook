@@ -25,6 +25,9 @@ clean-targets: # directories to be removed by `dbt clean`
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
   spellbook:
+    +post-hook:
+      sql: "{{ optimize_spell(this, model.config.materialized) }}"
+      transaction: true
     aave:
       +schema: aave
       +materialized: view
@@ -122,6 +125,13 @@ models:
       +materialized: view
       ethereum:
         +schema: foundation_ethereum
+        +materialized: view
+    
+    gmx:
+      +schema: gmx
+      +materialized: view
+      arbitrum:
+        +schema: gmx_arbitrum
         +materialized: view
 
     x2y2:
@@ -278,6 +288,14 @@ models:
       optimism:
         +schema: ironbank_optimism
         +materialized: view
+
+    airswap:
+      +schema: airswap
+      +materialized: view
+      ethereum:
+        +schema: airswap_ethereum
+        +materialized: view
+
 seeds:
   spellbook:
     balances:
