@@ -137,11 +137,11 @@ models:
       ethereum:
         +schema: balances_ethereum
         +materialized: view
-    balancer:
-      +schema: balancer
+    dodo:
+      +schema: dodo
       +materialized: view
       ethereum:
-        +schema: balancer_ethereum
+        +schema: dodo_ethereum
         +materialized: view
 
     
