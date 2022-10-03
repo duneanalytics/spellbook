@@ -67,6 +67,14 @@ OPTIMIZE transfers_ethereum.erc1155_agg_day;
 OPTIMIZE transfers_ethereum.erc1155_agg_hour;
 {% endset %}
 
+{% set transfers_bnb_agg_day %}
+OPTIMIZE transfers_bnb.bnb_agg_day;
+{% endset %}
+
+{% set transfers_bnb_agg_hour %}
+OPTIMIZE transfers_bnb.bnb_agg_hour;
+{% endset %}
+
 {% set uniswap_v1_ethereum_trades %}
 OPTIMIZE uniswap_v1_ethereum.trades;
 {% endset %}
@@ -189,6 +197,8 @@ OPTIMIZE airswap_ethereum.trades;
 {% do run_query(transfers_ethereum_erc721_agg_day) %}
 {% do run_query(transfers_ethereum_erc1155_agg_hour) %}
 {% do run_query(transfers_ethereum_erc1155_agg_day) %}
+{% do run_query(transfers_bnb_agg_hour) %}
+{% do run_query(transfers_bnb_agg_day) %}
 {% do run_query(uniswap_v1_ethereum_trades) %}
 {% do run_query(uniswap_v2_ethereum_trades) %}
 {% do run_query(uniswap_v3_ethereum_trades) %}

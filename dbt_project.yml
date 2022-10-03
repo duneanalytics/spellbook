@@ -206,6 +206,9 @@ models:
         +materialized: view
       optimism:
         +schema: transfers_optimism
+      bnb:
+        +schema: transfers_bnb
+        +materialized: view
 
     sudoswap:
       +schema: sudoswap
