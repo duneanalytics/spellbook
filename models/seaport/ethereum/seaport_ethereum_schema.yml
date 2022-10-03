@@ -195,3 +195,5 @@ models:
         description: "Symbol of the token in which fees are paid out"
       - name: unique_trade_id
         description:  "Unique trade ID"
+        tests:
+          - unique
