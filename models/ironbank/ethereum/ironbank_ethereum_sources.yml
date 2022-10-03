@@ -89,3 +89,23 @@ sources:
           - &redeemTokens
             name: redeemTokens
             description: "The number of iTokens to redeem into underlying"
+      - name: CErc20Delegator_evt_LiquidateBorrow
+        loaded_at_field: evt_block_time
+        description: "" # to-do
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &liquidator
+            name: liquidator
+            description: "The address repaying the borrow and seizing collateral"
+          - *borrower
+          - *repayAmount
+          - &cTokenCollateral
+            name: cTokenCollateral
+            description: "The market in which to seize collateral from the borrower"
+          - &seizeTokens
+            name: seizeTokens
+            description: "The number of iTokens to seize"

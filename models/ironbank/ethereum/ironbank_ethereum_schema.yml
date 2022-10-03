@@ -152,3 +152,32 @@ models:
       - &redeem_amount
         name: redeem_amount
         description: "The amount which was redeemed"
+  - name: ironbank_ethereum_liquidation
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: ironbank
+      contributors: michael
+    config:
+      tags: ['ethereum','ironbank','view','liquidation']
+    description: "Liquidation data on ethereum"
+    columns:
+      - *project
+      - *version
+      - *block_number
+      - *block_time
+      - *tx_hash
+      - *evt_index
+      - *trace_address
+      - &liquidated_borrower
+        name: liquidated_borrower
+        description: "The account who was liquidated"
+      - &debt_to_cover_asset_address
+        name: debt_to_cover_asset_address
+        description: "The address of underlying token which was liquidated"
+      - &collateral_asset_address
+        name: collateral_asset_address
+        description: "The address of collateral token"
+      - &debt_to_cover_amount
+        name: debt_to_cover_amount
+        description: "The amount which was repaid"
