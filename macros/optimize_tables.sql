@@ -167,6 +167,10 @@ OPTIMIZE sudoswap_ethereum.pool_trades;
 OPTIMIZE airswap_ethereum.trades;
 {% endset %}
 
+{% set uniswap_v3_optimism_trades %}
+OPTIMIZE uniswap_v3_optimism_trades;
+{% endset %}
+
 
 {% do run_query(looksrare_ethereum_events) %}
 {% do run_query(magiceden_solana_events) %}
