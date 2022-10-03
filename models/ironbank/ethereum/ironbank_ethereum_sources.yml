@@ -53,3 +53,21 @@ sources:
           - &mintTokens
             name: mintTokens
             description: "the number of iTokens to be minted"
+      - name: CErc20Delegator_evt_RepayBorrow
+        loaded_at_field: evt_block_time
+        description: "" # to-do
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &payer
+            name: payer
+            description: "Payer wallet address"
+          - *borrower
+          - &repayAmount
+            name: repayAmount
+            description: "The amount of underlying tokens being returned"
+          - *accountBorrows
+          - *totalBorrows

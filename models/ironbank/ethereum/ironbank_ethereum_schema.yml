@@ -106,3 +106,25 @@ models:
       - &mint_amount
         name: mint_amount
         description: "The amount which was minted"
+  - name: ironbank_ethereum_repay
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: ironbank
+      contributors: michael
+    config:
+      tags: ['ethereum','ironbank','view','repay']
+    description: "Repay data on ethereum"
+    columns:
+      - *project
+      - *version
+      - *block_number
+      - *block_time
+      - *tx_hash
+      - *evt_index
+      - *trace_address
+      - *borrower
+      - *asset_address
+      - &repay_amount
+        name: repay_amount
+        description: "The amount which was repaid"
