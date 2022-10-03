@@ -223,7 +223,7 @@ with p1_call as (
             and tx.block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         left join {{ source('ethereum','traces') }} ett
-            ON a.block_time = ett.block_time AND a.tx_hash = ett.tx_hash 
+            ON a.block_time = ett.block_time AND a.tx_hash = ett.tx_hash AND right(ett.input, 8)='72db8c0b'
             {% if is_incremental() %}
             and ett.block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
@@ -434,7 +434,7 @@ with p1_call as (
             and tx.block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         left join {{ source('ethereum','traces') }} ett
-            ON a.block_time = ett.block_time AND a.tx_hash = ett.tx_hash 
+            ON a.block_time = ett.block_time AND a.tx_hash = ett.tx_hash AND right(ett.input, 8)='72db8c0b'
             {% if is_incremental() %}
             and ett.block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
@@ -673,7 +673,7 @@ with p1_call as (
         left join {{ ref('nft_aggregators') }} agg
             ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
         left join {{ source('ethereum','traces') }} ett
-            ON a.block_time = ett.block_time AND a.tx_hash = ett.tx_hash 
+            ON a.block_time = ett.block_time AND a.tx_hash = ett.tx_hash AND right(ett.input, 8)='72db8c0b'
             {% if is_incremental() %}
             and ett.block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
@@ -882,7 +882,7 @@ with p1_call as (
         and tx.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     left join {{ source('ethereum','traces') }} ett
-        ON a.block_time = ett.block_time AND a.tx_hash = ett.tx_hash 
+        ON a.block_time = ett.block_time AND a.tx_hash = ett.tx_hash AND right(ett.input, 8)='72db8c0b'
         {% if is_incremental() %}
         and ett.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
