@@ -19,6 +19,7 @@ FROM
     , ('0xae9c73fd0fd237c1c6f66fe009d24ce969e98704', 'Gem') -- Gem Protection Enabled Address
     , ('0x56dd5bbede9bfdb10a2845c4d70d4a2950163044', 'X2Y2') -- X2Y2's OpenSea Sniper
     , ('0x69cf8871f61fb03f540bc519dd1f1d4682ea0bf6', 'Element') -- Element NFT Marketplace Aggregator
+    , ('0xb4e7b8946fa2b35912cc0581772cccd69a33000c', 'Element') -- Element NFT Marketplace Aggregator 2
     , ('0x39da41747a83aee658334415666f3ef92dd0d541', 'Blur') -- Blur
     , ('0x7f6cdf5869bd780ea351df4d841f68d73cbcc16b', 'NFTInit') -- NFTInit.com
     , ('0x92701d42e1504ef9fce6d66a2054218b048dda43', 'OKX') -- OKX
@@ -28,6 +29,7 @@ FROM
     , ('0x8005488ff4f8982d2d8c1d602e6d747b1428dd41', 'Reservoir') -- Reservoir v4
     , ('0x9ebfb53fa8526906738856848a27cb11b0285c3f', 'Reservoir') -- Reservoir v5
     , ('0x39b6862c4783db2651d64bc160349dc9a15f1fb7', 'Rarity Garden') -- Rarity Garden v2
+    , ('0x9d0a89bc35fb160a076de0341d9280830d3013ca', 'Rarity Garden') -- Rarity Garden v1.02
     , ('0x603d022611bfe6a101dcdab207d96c527f1d4d8e', 'BitKeep') -- BitKeep
     , ('0x2a7251d1e7d708c507b1b0d3ff328007beecce5d', 'Rarible') -- Rarible
   ) AS temp_table (contract_address, name)

@@ -1,14 +1,11 @@
 {{  config(
         alias='trades',
         materialized='incremental',
-        unique_key = ['tx_hash', 'order_uid'],
-        on_schema_change='fail',
+        partition_by = ['block_date'],
+        unique_key = ['tx_hash', 'order_uid', 'evt_index'],
+        on_schema_change='sync_all_columns',
         file_format ='delta',
-        incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "cow_protocol",
-                                    \'["bh2smith", "gentrexha"]\') }}'
+        incremental_strategy='merge'
     )
 }}
 
@@ -17,8 +14,11 @@ WITH
 -- First subquery joins buy and sell token prices from prices.usd.
 -- Also deducts fee from sell amount.
 trades_with_prices AS (
-    SELECT evt_block_time            as block_time,
+    SELECT try_cast(date_trunc('day', evt_block_time) as date) as block_date,
+           evt_block_time            as block_time,
            evt_tx_hash               as tx_hash,
+           evt_index,
+           settlement.contract_address          as project_contract_address,
            owner                     as trader,
            orderUid                  as order_uid,
            sellToken                 as sell_token,
@@ -28,11 +28,14 @@ trades_with_prices AS (
            feeAmount                 as fee_amount,
            ps.price                  as sell_price,
            pb.price                  as buy_price
-    FROM {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }}
+    FROM {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }} settlement
              LEFT OUTER JOIN {{ source('prices', 'usd') }} as ps
                              ON sellToken = ps.contract_address
                                  AND ps.minute = date_trunc('minute', evt_block_time)
                                  AND ps.blockchain = 'ethereum'
+                                 {% if is_incremental() %}
+                                 AND ps.minute >= date_trunc("day", now() - interval '1 week')
+                                 {% endif %}
              LEFT OUTER JOIN {{ source('prices', 'usd') }} as pb
                              ON pb.contract_address = (
                                  CASE
@@ -42,14 +45,20 @@ trades_with_prices AS (
                                      END)
                                  AND pb.minute = date_trunc('minute', evt_block_time)
                                  AND pb.blockchain = 'ethereum'
+                                 {% if is_incremental() %}
+                                 AND pb.minute >= date_trunc("day", now() - interval '1 week')
+                                 {% endif %}
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 ),
 -- Second subquery gets token symbol and decimals from tokens.erc20 (to display units bought and sold)
 trades_with_token_units as (
-    SELECT block_time,
+    SELECT block_date,
+           block_time,
            tx_hash,
+           evt_index,
+           project_contract_address,
            order_uid,
            trader,
            sell_token                        as sell_token_address,
@@ -89,6 +98,9 @@ order_ids as (
     select evt_tx_hash, collect_list(orderUid) as order_ids
     from (  select orderUid, evt_tx_hash, evt_index
             from {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }}
+             {% if is_incremental() %}
+             where evt_block_time >= date_trunc("day", now() - interval '1 week')
+             {% endif %}
                      sort by evt_index
          ) as _
     group by evt_tx_hash
@@ -114,6 +126,9 @@ trade_data as (
            posexplode(trades)
     from {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_call_settle') }}
     where call_success = true
+    {% if is_incremental() %}
+    AND call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 ),
 
 uid_to_app_id as (
@@ -128,8 +143,11 @@ uid_to_app_id as (
 ),
 
 valued_trades as (
-    SELECT block_time,
+    SELECT block_date,
+           block_time,
            tx_hash,
+           evt_index,
+           project_contract_address,
            order_uid,
            trader,
            sell_token_address,

@@ -223,3 +223,140 @@ models:
       - *tx_from
       - *tx_to
       - *unique_trade_id
+
+  - name: sudoswap_ethereum_pools
+    meta:
+      blockchain: ethereum
+      project: sudoswap
+      contributors: [niftytable]
+    config:
+      tags: ['ethereum','sudoswap','pools']
+    description: >
+        sudoswap pool stats on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_address
+            - nft_contract_address
+            - creator_address
+    columns:
+      - &pool_address
+        name: pool_address
+        description: "Address of the pool"
+      - *nft_contract_address
+      - &creator_address
+        name: creator_address
+        description: "Address of the pool creator"
+      - &spot_price
+        name: spot_price
+        description: "Current price of a swap"
+      - &nft_balance
+        name: nft_balance
+        description: "Number of NFTs in the pool"
+      - &eth_balance
+        name: eth_balance
+        description: "Amount of ETH in the pool"
+      - &eth_volume
+        name: eth_volume
+        description: "ETH trading volume of the pool"
+      - &nfts_traded
+        name: nfts_traded
+        description: "Number of NFTs traded by the pool"
+      - &usd_volume
+        name: usd_volume
+        description: "USD trading volume of the pool"
+      - &owner_fee_volume_eth
+        name: owner_fee_volume_eth
+        description: "Fees collected by pool owner"
+      - &platform_fee_volume_eth
+        name: platform_fee_volume_eth
+        description: "Fees collected by the protocol"
+      - &pool_type
+        name: pool_type
+        description: "Type of pool"
+      - &pricing_type
+        name: pricing_type
+        description: "Type of pricing"
+      - &delta
+        name: delta
+        description: "Change in price caused by one trade"
+      - &day_created
+        name: day_created
+        description: "Day the pool was created"
+      - &initial_price
+        name: initial_price
+        description: "Initial spot price of the pool"
+      - &initial_nft_count
+        name: initial_nft_count
+        description: "Initial NFT balance of the pool"
+      - &initial_eth
+        name: initial_eth
+        description: "Initial ETH balance of the pool"
+      - &eth_change_trading
+        name: eth_change_trading
+        description: "Change in ETH balance caused by trading"
+      - &nft_change_trading
+        name: nft_change_trading
+        description: "Change in NFT balance caused by trading"
+
+  - name: sudoswap_ethereum_pool_trades
+    meta:
+      blockchain: ethereum
+      project: sudoswap
+      contributors: [niftytable]
+    config:
+      tags: ['ethereum','sudoswap','pool_trades']
+    description: >
+        sudoswap pool trades on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_address
+    columns:
+      - &day
+        name: day
+        description: "Day"
+      - *pool_address
+      - *eth_volume
+      - *usd_volume
+      - *nfts_traded
+      - *owner_fee_volume_eth
+      - *platform_fee_volume_eth
+      - *eth_change_trading
+      - *nft_change_trading
+
+  - name: sudoswap_ethereum_pool_balance_changes
+    meta:
+      blockchain: ethereum
+      project: sudoswap
+      contributors: [niftytable]
+    config:
+      tags: ['ethereum','sudoswap','pool_balance_changes']
+    description: >
+        sudoswap pool balance changes on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - nft_contract_address
+            - pool_address
+    columns:
+      - *day
+      - *pool_address
+      - &eth_balance_change
+        name: eth_balance_change
+        description: "Change in eth balance of the pool"
+      - &nft_balance_change
+        name: nft_balance_change
+        description: "Change in nft balance of the pool"
+      - *pricing_type
+      - *pool_type
+      - *nft_contract_address
+      - *creator_address
+      - *initial_price
+      - *initial_nft_count
+      - *initial_eth
+      - *day_created
+      - *delta
+      - *spot_price

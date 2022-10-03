@@ -1,48 +1,68 @@
 #Welcome to your Spellbook!
 
-name: "spellbook"
-version: "1.0.0"
+name: 'spellbook'
+version: '1.0.0'
 config-version: 2
 
 # This setting configures which "profile" dbt uses for this project.
-profile: "spellbook"
+profile: 'spellbook'
 
 # These configurations specify where dbt should look for different types of files.
 # You don't need to change these!
-model-paths: ["models"]
-analysis-paths: ["analyses"]
-test-paths: ["tests"]
-seed-paths: ["seeds"]
-macro-paths: ["macros"]
-snapshot-paths: ["snapshots"]
+model-paths: ['models']
+analysis-paths: ['analyses']
+test-paths: ['tests']
+seed-paths: ['seeds']
+macro-paths: ['macros']
+snapshot-paths: ['snapshots']
 
-target-path: "target" # directory which will store compiled SQL files
+target-path: 'target' # directory which will store compiled SQL files
 clean-targets: # directories to be removed by `dbt clean`
-  - "target"
-  - "dbt_packages"
+  - 'target'
+  - 'dbt_packages'
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
   spellbook:
+    +post-hook:
+      sql: "{{ optimize_spell(this, model.config.materialized) }}"
+      transaction: true
     aave:
       +schema: aave
       +materialized: view
       ethereum:
         +schema: aave_ethereum
         +materialized: view
+      optimism:
+        +schema: aave_optimism
+        +materialized: view
+
+    balancer:
+      +schema: balancer
+      +materialized: view
+      ethereum:
+        +schema: balancer_ethereum
+        +materialized: view
+
     ens:
       +schema: ens
       +materialized: view
+
     airdrop:
       +schema: airdrop
       +materialized: table
       optimism:
         +schema: airdrop_optimism
         +materialized: table
+
     dex:
       +schema: dex
       +materialized: view
+      aggregator:
+        +schema: dex_aggregator
+        +materialized: view
+
     nft:
       +schema: nft
       +materialized: view
@@ -61,6 +81,7 @@ models:
       polygon:
         +schema: nft_polygon
         +materialized: view
+
     uniswap:
       +schema: uniswap
       +materialized: view
@@ -70,6 +91,7 @@ models:
       optimism:
         +schema: uniswap_optimism
         +materialized: view
+
     opensea:
       +schema: opensea
       +materialized: view
@@ -79,6 +101,19 @@ models:
       solana:
         +schema: opensea_solana
         +materialized: view
+    element:
+      +schema: element
+      +materialized: view
+      ethereum:
+        +schema: element_ethereum
+        +materialized: view
+      bnb:
+        +schema: element_bnb
+        +materialized: view
+      avalanche_c:
+        +schema: element_avalanche_c
+        +materialized: view
+
     looksrare:
       +schema: looksrare
       +materialized: view
@@ -91,30 +126,42 @@ models:
       ethereum:
         +schema: foundation_ethereum
         +materialized: view
+    
+    gmx:
+      +schema: gmx
+      +materialized: view
+      arbitrum:
+        +schema: gmx_arbitrum
+        +materialized: view
+
     x2y2:
       +schema: x2y2
       +materialized: view
       ethereum:
         +schema: x2y2_ethereum
         +materialized: view
+
     magiceden:
       +schema: magiceden
       +materialized: view
       solana:
         +schema: magiceden_solana
         +materialized: view
+
     nomad:
       +schema: nomad
       +materialized: view
       ethereum:
         +schema: nomad_ethereum
         +materialized: view
+
     seaport:
       +schema: seaport
       +materialized: view
       ethereum:
         +schema: seaport_ethereum
         +materialized: view
+
     balances:
       +schema: balances
       +materialized: view
@@ -126,13 +173,13 @@ models:
       +schema: labels
       +materialized: view
 
-    addresses: 
+    addresses:
       +schema: addresses
       +materialized: table
-      ethereum: 
+      ethereum:
         +schema: addresses_ethereum
         +materialized: table
-      optimism: 
+      optimism:
         +schema: addresses_optimism
         +materialized: table
 
@@ -153,6 +200,7 @@ models:
       gnosis:
         +schema: tokens_gnosis
         +materialized: view
+
     transfers:
       +schema: transfers
       +materialized: view
@@ -161,53 +209,91 @@ models:
         +materialized: view
       optimism:
         +schema: transfers_optimism
+
     sudoswap:
       +schema: sudoswap
       +materialized: view
       ethereum:
         +schema: sudoswap_ethereum
         +materialized: view
+
     safe:
       +schema: safe
       +materialized: view
       ethereum:
         +schema: safe_ethereum
         +materialized: view
+
     cryptopunks:
       +schema: cryptopunks
       +materialized: view
       ethereum:
         +schema: cryptopunks_ethereum
         +materialized: view
+
     tornado_cash:
       +schema: tornado_cash
       +materialized: view
+    perpetual:
+      +schema: perpetual
+      +materialized: view
+    perpetual_protocol:
+      +schema: perpetual_protocol
+      +materialized: view
+      optimism:
+        +schema: perpetual_protocol_optimism
+        +materialized: view
+    pika:
+      +schema: pika
+      +materialized: view
+      optimism:
+        +schema: pika_optimism
+        +materialized: view
+    synthetix:
+      +schema: synthetix
+      +materialized: view
+      optimism:
+        +schema: synthetix_optimism
+
     archipelago:
       +schema: archipelago
       +materialized: view
       ethereum:
         +schema: archipelago_ethereum
         +materialized: view
+
     integration_test:
       +schema: integration_test
       +materialized: view
+
     curvefi:
       +schema: curvefi
       +materialized: view
       ethereum:
         +schema: curvefi_ethereum
         +materialized: view
-    ovm1:
-      +schema: ovm1
-      +materialized: table
-      optimism:
-        +schema: omv1_optimism
-        +materialized: table
     cow_protocol:
       +schema: cow_protocol
       +materialized: view
       ethereum:
         +schema: cow_protocol_ethereum
+        +materialized: view
+
+    ironbank:
+      +schema: ironbank
+      +materialized: view
+      ethereum:
+        +schema: ironbank_ethereum
+        +materialized: view
+      optimism:
+        +schema: ironbank_optimism
+        +materialized: view
+
+    airswap:
+      +schema: airswap
+      +materialized: view
+      ethereum:
+        +schema: airswap_ethereum
         +materialized: view
 
 seeds:
@@ -315,3 +401,17 @@ seeds:
         +column_types:
           master_address: string
           alternative_address: string
+    perpetual:
+      +enabled: true
+      +schema: test_data
+      trades:
+        +column_types:
+          blockchain: string
+          block_date: date
+          underlying_asset: string
+          market: string
+          market_address: string
+          trade: string
+          project: string
+          version: string
+          tx_hash: string
