@@ -104,7 +104,7 @@ SELECT
 	,TRY_CAST(date_trunc('DAY', perps.block_time) AS date) AS block_date
 	,perps.block_time
 	,perps.virtual_asset
-	,perps.underlying_asset
+	,cast(perps.underlying_asset as string)
 	,perps.market
 	,perps.market_address
 	,perps.volume_usd
