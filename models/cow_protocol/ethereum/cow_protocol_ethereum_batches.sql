@@ -1,6 +1,7 @@
 {{  config(
         alias='batches',
         materialized='incremental',
+        partition_by = ['block_date'],
         unique_key = ['tx_hash'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
@@ -15,7 +16,8 @@
 WITH
 -- Find the PoC Query here: https://dune.com/queries/1290518
 batch_counts as (
-    select s.evt_block_time,
+    select try_cast(date_trunc('day', s.evt_block_time) as date) as block_date,
+           s.evt_block_time,
            s.evt_tx_hash,
            solver,
            name,
@@ -60,6 +62,7 @@ batch_values as (
 
 combined_batch_info as (
     select
+        block_date,
         evt_block_time                                 as block_time,
         num_trades,
         CASE

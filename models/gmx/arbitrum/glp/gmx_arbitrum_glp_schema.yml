@@ -1,0 +1,261 @@
+version: 2
+
+models:
+  - name: gmx_arbitrum_glp_components
+    meta:
+      blockchain: arbitrum
+      project: gmx
+      contributors: 1chioku
+    config:
+      tags: ['arbitrum','gmx','glp']
+    description: >
+        View components used in deriving GLP AUM data.
+    columns:
+      - &minute
+        name: minute
+        description: "UTC event block time truncated to the minute"
+        tests: 
+          - unique
+          - not_null
+      - &frax_available_assets
+        name: frax_available_assets
+        description: "FRAX tokens in poolAmounts"
+        tests: 
+          - not_null
+      - &frax_current_price
+        name: frax_current_price
+        description: "Current price of FRAX as calculated per the GMX smart contract"
+        tests: 
+          - not_null
+      - &usdt_available_assets
+        name: usdt_available_assets
+        description: "USDT tokens in poolAmounts"
+        tests: 
+          - not_null
+      - &usdt_current_price
+        name: usdt_current_price
+        description: "Current price of USDT as calculated per the GMX smart contract"
+        tests: 
+          - not_null
+      - &wbtc_available_assets
+        name: wbtc_available_assets
+        description: "WBTC tokens that are available for taking long positions against the pool, calculated as poolAmounts minus reservedAmounts"
+        tests: 
+          - not_null
+      - &wbtc_longs
+        name: wbtc_longs
+        description: "Net value of WBTC longs in USDG"
+        tests: 
+          - not_null
+      - &wbtc_current_price
+        name: wbtc_current_price
+        description: "Current price of WBTC as calculated per the GMX smart contract"
+        tests: 
+          - not_null
+      - &wbtc_shorts_entry_price
+        name: wbtc_shorts_entry_price
+        description: "Average price (volume weighted) of all WBTC shorts"
+        tests: 
+          - not_null
+      - &wbtc_shorts_outstanding_notional
+        name: wbtc_shorts_outstanding_notional
+        description: "Sum of all WBTC shorts in USDG"
+        tests: 
+          - not_null
+      - &usdc_available_assets
+        name: usdc_available_assets
+        description: "USDC tokens in poolAmounts"
+        tests: 
+          - not_null
+      - &usdc_current_price
+        name: usdc_current_price
+        description: "Current price of USDC as calculated per the GMX smart contract"
+        tests: 
+          - not_null
+      - &uni_available_assets
+        name: uni_available_assets
+        description: "UNI tokens that are available for taking long positions against the pool, calculated as poolAmounts minus reservedAmounts"
+        tests: 
+          - not_null
+      - &uni_longs
+        name: uni_longs
+        description: "Net value of UNI longs in USDG"
+        tests: 
+          - not_null
+      - &uni_current_price
+        name: uni_current_price
+        description: "Current price of UNI as calculated per the GMX smart contract"
+        tests: 
+          - not_null
+      - &uni_shorts_entry_price
+        name: uni_shorts_entry_price
+        description: "Average price (volume weighted) of all UNI shorts"
+        tests: 
+          - not_null
+      - &uni_shorts_outstanding_notional
+        name: uni_shorts_outstanding_notional
+        description: "Sum of all UNI shorts in USDG"
+        tests: 
+          - not_null
+      - &link_available_assets
+        name: link_available_assets
+        description: "LINK tokens that are available for taking long positions against the pool, calculated as poolAmounts minus reservedAmounts"
+        tests: 
+          - not_null
+      - &link_longs
+        name: link_longs
+        description: "Net value of LINK longs in USDG"
+        tests: 
+          - not_null
+      - &link_current_price
+        name: link_current_price
+        description: "Current price of LINK as calculated per the GMX smart contract"
+        tests: 
+          - not_null
+      - &link_shorts_entry_price
+        name: link_shorts_entry_price
+        description: "Average price (volume weighted) of all LINK shorts"
+        tests: 
+          - not_null
+      - &link_shorts_outstanding_notional
+        name: link_shorts_outstanding_notional
+        description: "Sum of all LINK shorts in USDG"
+        tests: 
+          - not_null
+      - &weth_available_assets
+        name: weth_available_assets
+        description: "WETH tokens that are available for taking long positions against the pool, calculated as poolAmounts minus reservedAmounts"
+        tests: 
+          - not_null
+      - &weth_longs
+        name: weth_longs
+        description: "Net value of WETH longs in USDG"
+        tests: 
+          - not_null
+      - &weth_current_price
+        name: weth_current_price
+        description: "Current price of WETH as calculated per the GMX smart contract"
+        tests: 
+          - not_null
+      - &weth_shorts_entry_price
+        name: weth_shorts_entry_price
+        description: "Average price (volume weighted) of all WETH shorts"
+        tests: 
+          - not_null
+      - &weth_shorts_outstanding_notional
+        name: weth_shorts_outstanding_notional
+        description: "Sum of all WETH shorts in USDG"
+        tests: 
+          - not_null
+      - &dai_available_assets
+        name: dai_available_assets
+        description: "DAI tokens in poolAmounts"
+        tests: 
+          - not_null
+      - &dai_current_price
+        name: dai_current_price
+        description: "Current price of DAI as calculated per the GMX smart contract"
+        tests: 
+          - not_null
+
+  - name: gmx_arbitrum_glp_aum
+    meta:
+      blockchain: arbitrum
+      project: gmx
+      contributors: 1chioku
+    config:
+      tags: ['arbitrum','gmx','glp']
+    description: >
+        View GLP net AUM by pools.
+    columns:
+      - *minute
+      - &frax_aum
+        name: frax_aum
+        description: "Net asset under management for the FRAX pool"
+        tests: 
+          - not_null
+      - &usdt_aum
+        name: usdt_aum
+        description: "Net asset under management for the USDT pool"
+        tests: 
+          - not_null
+      - &wbtc_aum
+        name: wbtc_aum
+        description: "Net asset under management for the WETH pool"
+        tests: 
+          - not_null
+      - &usdc_aum
+        name: usdc_aum
+        description: "Net asset under management for the USDC pool"
+        tests: 
+          - not_null
+      - &uni_aum
+        name: uni_aum
+        description: "Net asset under management for the UNI pool"
+        tests: 
+          - not_null
+      - &link_aum
+        name: link_aum
+        description: "Net asset under management for the LINK pool"
+        tests: 
+          - not_null
+      - &weth_aum
+        name: weth_aum
+        description: "Net asset under management for the WETH pool"
+        tests: 
+          - not_null
+      - &dai_aum
+        name: dai_aum
+        description: "Net asset under management for the DAI pool"
+        tests: 
+          - not_null
+
+  - name: gmx_arbitrum_glp_exposure
+    meta:
+      blockchain: arbitrum
+      project: gmx
+      contributors: 1chioku
+    config:
+      tags: ['arbitrum','gmx','glp']
+    description: >
+        View net GLP long exposure by directional token.
+    columns:
+      - *minute
+      - &wbtc_exposure
+        name: wbtc_exposure
+        description: "Net long exposure of the pool to WBTC"
+        tests: 
+          - not_null
+      - &uni_exposure
+        name: uni_exposure
+        description: "Net long exposure of the pool to UNI"
+        tests: 
+          - not_null
+      - &link_exposure
+        name: link_exposure
+        description: "Net long exposure of the pool to LINK"
+        tests: 
+          - not_null
+      - &weth_exposure
+        name: weth_exposure
+        description: "Net long exposure of the pool to WETH"
+        tests: 
+          - not_null
+
+  - name: gmx_arbitrum_glp_fees
+    meta:
+      blockchain: arbitrum
+      project: gmx
+      contributors: 1chioku
+    config:
+      tags: ['arbitrum','gmx','glp']
+    description: >
+        View GLP fee accrued in the Fee GLP contract.
+    columns:
+      - *minute
+      - &fees_weth
+        name: fees_weth
+        description: "Cumulative accrued fees in WETH"
+        tests: 
+          - not_null
+      - *weth_current_price
