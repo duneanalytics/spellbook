@@ -170,6 +170,9 @@ OPTIMIZE airswap_ethereum.trades;
 {% set dodo_ethereum_trades %}
 OPTIMIZE dodo_ethereum_trades;
 {% endset %}
+{% set uniswap_v3_optimism_trades %}
+OPTIMIZE uniswap_v3_optimism_trades;
+{% endset %}
 
 
 {% do run_query(looksrare_ethereum_events) %}

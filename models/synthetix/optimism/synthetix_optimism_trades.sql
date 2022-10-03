@@ -35,43 +35,38 @@ WITH asset_price AS (
 
 synthetix_markets AS (
 	SELECT DISTINCT
-		asset
+		--finds the position of the first occurence '00' in the hex string which indicates null characters/padded zeroes
+		--characters before this position should be taken to get the asset's hex name; use 'unhex' to get the readable text
+
+		--if the position is on an even number, that means the first '0' is part of the hexed version of the asset's last letter
+		--in this case, this zero should be included in the hex characters to be unhexed to get the complete asset's name
+
+		--substring starts on 3 to skip the '0x' at the beginning of the string
+		CASE
+			WHEN MOD(POSITION('00' IN SUBSTRING(asset, 3)), 2) = 0 THEN UNHEX(SUBSTRING(asset, 3, POSITION('00' IN SUBSTRING(asset, 3))))
+			ELSE UNHEX(SUBSTRING(asset, 3, POSITION('00' IN SUBSTRING(asset, 3))-1))
+		END AS asset
+		
 		,market
-		,marketKey
+		
+		,CASE
+			WHEN MOD(POSITION('00' IN SUBSTRING(marketKey, 3)), 2) = 0 THEN UNHEX(SUBSTRING(marketKey, 3, POSITION('00' IN SUBSTRING(marketKey, 3))))
+			ELSE UNHEX(SUBSTRING(asset, 3, POSITION('00' IN SUBSTRING(marketKey, 3))-1))
+		END AS marketKey
 	FROM {{ source('synthetix_optimism', 'FuturesMarketManager_evt_MarketAdded') }}
 ),
 
 perps AS (
 	SELECT
 		s.evt_block_time AS block_time
-		,DECODE(
-			UNHEX(
-				SUBSTRING(sm.asset, 3)
-				), 'UTF-8'
-			) AS virtual_asset
-		--gets the last element in an array that is formed by splitting the asset name from the synthetic indicator, 's'
-		,ELEMENT_AT(
-			SPLIT(
-				DECODE(
-					UNHEX(
-						SUBSTRING(sm.asset, 3)
-						), 'UTF-8'
-					), '[s]'
-				),
-			--the asset will always be the last element of the array split (including none synthetic assets) so we need the array size
-				ARRAY_SIZE(
-					SPLIT(
-						DECODE(
-							UNHEX(
-								SUBSTRING(sm.asset, 3)
-								), 'UTF-8'
-							), '[s]'
-						))) AS underlying_asset
-		,DECODE(
-			UNHEX(
-				SUBSTRING(sm.marketKey, 3)
-				), 'UTF-8'
-			) AS market
+		,DECODE(sm.asset, 'UTF-8') AS virtual_asset
+		
+		,CASE
+			WHEN LEFT(sm.asset, 1) = 's' THEN SUBSTRING(sm.asset, 2) --removes 's' indicator from synthetic assets
+			ELSE sm.asset
+		END AS underlying_asset
+
+		,DECODE(sm.marketKey, 'UTF-8') AS market
 		,s.contract_address AS market_address
 		,ABS(s.tradeSize)/1e18 * p.price AS volume_usd
 		,s.fee/1e18 AS fee_usd
