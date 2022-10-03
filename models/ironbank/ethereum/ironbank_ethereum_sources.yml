@@ -35,3 +35,21 @@ sources:
           - &totalBorrows
             name: totalBorrows
             description: "The total borrows with interest"
+      - name: CErc20Delegator_evt_Mint
+        loaded_at_field: evt_block_time
+        description: "" # to-do
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &minter
+            name: minter
+            description: "Minter wallet address"
+          - &mintAmount
+            name: mintAmount
+            description: "The amount of the underlying asset to supply"
+          - &mintTokens
+            name: mintTokens
+            description: "the number of iTokens to be minted"
