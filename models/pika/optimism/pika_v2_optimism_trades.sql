@@ -136,7 +136,7 @@ perps AS (
 
 SELECT
 	'optimism' AS blockchain
-    ,TRY_CAST(date_trunc('DAY', perps.block_time) AS date) AS block_date
+	,TRY_CAST(date_trunc('DAY', perps.block_time) AS date) AS block_date
 	,perps.block_time
 	,perps.virtual_asset
 	,perps.underlying_asset
