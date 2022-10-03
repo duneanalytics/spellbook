@@ -42,3 +42,43 @@ models:
         description: "The underlying symbol of the itoken"
         tests:
           - not_null
+  - name: ironbank_ethereum_borrow
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: ironbank
+      contributors: michael
+    config:
+      tags: ['ethereum','ironbank','view','borrow']
+    description: "Borrow data on ethereum"
+    columns:
+      - &project
+        name: project
+        description: "Project name"
+      - &version
+        name: version
+        description: "Protocol version"
+      - &block_number
+        name: block_number
+        description: "Block number in which the transaction was executed"
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction"
+      - &evt_index
+        name: evt_index
+        description: ""
+      - &trace_address
+        name: trace_address
+        description: ""
+      - &borrower
+        name: borrower
+        description: "The account which borrowed the asset"
+      - &asset_address
+        name: asset_address
+        description: "The address of Underlying token"
+      - &borrow_amount
+        name: borrow_amount
+        description: "The amount which was borrowed"
