@@ -137,12 +137,12 @@ SELECT DISTINCT
         ELSE COALESCE((SELECT
                 count(1)::bigint cnt
             FROM {{ source('erc721_ethereum','evt_transfer') }} erc721
-            WHERE erc721.evt_tx_hash = tx_hash
+            WHERE erc721.evt_tx_hash = looks_rare.tx_hash
             ) +
             (SELECT
                 count(1)::bigint cnt
             FROM {{ source('erc1155_ethereum','evt_transfersingle') }} erc1155
-            WHERE erc1155.evt_tx_hash = tx_hash
+            WHERE erc1155.evt_tx_hash = looks_rare.tx_hash
             ), 0) END AS number_of_items,
     looks_rare.category as trade_category,
     CASE WHEN evt_type is NULL THEN 'Other' ELSE evt_type END as evt_type,
