@@ -11,6 +11,13 @@ models:
     config:
       tags: ['tornado_cash', 'deposits', 'ethereum', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum']
     description: "Tornado Cash Deposits"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+            - blockchain
     columns:
       - &block_time
         name: block_time
@@ -53,6 +60,13 @@ models:
     config:
       tags: ['tornado_cash', 'withdrawals', 'ethereum', 'bnb', 'avalanche', 'gnosis', 'optimism', 'arbitrum']
     description: "Tornado Cash Withdrawals"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+            - blockchain
     columns:
       - *block_time
       - *currency_contract
