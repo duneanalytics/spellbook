@@ -44,7 +44,7 @@ FROM
                 royalty_fee_receive_address,
                 royalty_fee_currency_symbol,
                 unique_trade_id
-        FROM ({{ ref('opensea_v1_ethereum_events') }})
+        FROM {{ ref('opensea_v1_ethereum_events') }}
         UNION
         SELECT
                 blockchain,
@@ -84,5 +84,5 @@ FROM
                 royalty_fee_receive_address,
                 royalty_fee_currency_symbol,
                 unique_trade_id
-        FROM ({{ ref('opensea_v3_ethereum_events') }})
+        FROM {{ ref('opensea_v3_ethereum_events') }}
 )
