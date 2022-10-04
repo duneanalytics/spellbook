@@ -40,4 +40,4 @@ SELECT
       tx_from,
       tx_to,
       unique_trade_id
-FROM ({{ ref('archipelago_ethereum_events') }})
+FROM {{ ref('archipelago_ethereum_events') }}
