@@ -4,11 +4,11 @@
                                     "addresses_events",
                                     \'["hildobby"]\') }}') }}
 
-SELECT a.to AS address
-, a.from AS first_funded_by
-, a.block_time
-, a.block_number
-, a.tx_hash
+SELECT b.to AS address
+, MIN(a.from) AS first_funded_by
+, MIN(a.block_time) AS block_time
+, MIN(a.block_number) AS block_number
+, MIN(a.tx_hash) AS tx_hash
 FROM {{ source('ethereum', 'traces') }} a
 JOIN (
     SELECT to
@@ -22,3 +22,4 @@ JOIN (
 WHERE a.success
 AND (a.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR a.call_type IS NULL)
 AND a.value > 0
+GROUP BY b.to
