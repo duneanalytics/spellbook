@@ -3,8 +3,11 @@ version: 2
 models:
   - name: labels_all
     tests:
-    - unique:
-        column_name: "(address || '-' || name || '-' || blockchain::string)"
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - name
+            - blockchain
     meta:
       blockchain: ethereum, solana
       sector: labels
