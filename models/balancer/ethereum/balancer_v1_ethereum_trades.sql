@@ -5,13 +5,15 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'unique_trade_id'],
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "balancer_v1",
                                 \'["mendesfabio"]\') }}'
     )
 }}
+
+{% set project_start_date = '2021-04-20' %}
 
 WITH dexs AS (
     SELECT
@@ -20,7 +22,7 @@ WITH dexs AS (
         '' AS maker,
         t.tokenAmountOut AS token_bought_amount_raw,
         t.tokenAmountIn AS token_sold_amount_raw,
-        NULL AS amount_usd,
+        CAST(NULL as double) AS amount_usd,
         t.tokenOut AS token_bought_address,
         t.tokenIn AS token_sold_address,
         t.contract_address AS project_contract_address,
@@ -65,40 +67,40 @@ SELECT
     tx.from AS tx_from,
     tx.to AS tx_to,
     dexs.trace_address,
-    dexs.evt_index,
-    'balancer' ||'-'|| '1' ||'-'|| dexs.tx_hash ||'-'|| IFNULL(dexs.evt_index, '') ||'-'|| IFNULL(dexs.trace_address, '') AS unique_trade_id
+    dexs.evt_index
 FROM dexs
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
     {% if not is_incremental() %}
-    -- The date below is derrived from `select min(evt_block_time) from balancer_ethereum.BPool_evt_LOG_SWAP;`
-    -- If dexs above is changed then this will also need to be changed.
-    AND tx.block_time >= "2021-04-20 00:00:00"
+    AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ ref('tokens_erc20') }} erc20a ON erc20a.contract_address = dexs.token_bought_address AND erc20a.blockchain = 'ethereum'
-LEFT JOIN {{ ref('tokens_erc20') }} erc20b ON erc20b.contract_address = dexs.token_sold_address  AND erc20b.blockchain = 'ethereum'
-LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.minute = date_trunc('minute', dexs.block_time)
+LEFT JOIN {{ ref('tokens_erc20') }} erc20a
+    ON erc20a.contract_address = dexs.token_bought_address
+    AND erc20a.blockchain = 'ethereum'
+LEFT JOIN {{ ref('tokens_erc20') }} erc20b
+    ON erc20b.contract_address = dexs.token_sold_address
+    AND erc20b.blockchain = 'ethereum'
+LEFT JOIN {{ source('prices', 'usd') }} p_bought
+    ON p_bought.minute = date_trunc('minute', dexs.block_time)
     AND p_bought.contract_address = dexs.token_bought_address
     AND p_bought.blockchain = 'ethereum'
     {% if not is_incremental() %}
-    -- The date below is derrived from `select min(evt_block_time) from balancer_ethereum.BPool_evt_LOG_SWAP;`
-    -- If dexs above is changed then this will also need to be changed.
-    AND p_bought.minute >= "2021-04-20 00:00:00"
+    AND p_bought.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.minute = date_trunc('minute', dexs.block_time)
+LEFT JOIN {{ source('prices', 'usd') }} p_sold
+    ON p_sold.minute = date_trunc('minute', dexs.block_time)
     AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = 'ethereum'
     {% if not is_incremental() %}
-    -- The date below is derrived from `select min(evt_block_time) from balancer_ethereum.BPool_evt_LOG_SWAP;`
-    -- If dexs above is changed then this will also need to be changed.
-    AND p_sold.minute >= "2021-04-20 00:00:00"
+    AND p_sold.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+;

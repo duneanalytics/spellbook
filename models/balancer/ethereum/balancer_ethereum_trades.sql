@@ -1,6 +1,6 @@
 {{ config(
         alias ='trades'
-        )
+)
 }}
 
 SELECT *
@@ -30,7 +30,6 @@ FROM
                 ,tx_to
                 ,trace_address
                 ,evt_index
-                ,unique_trade_id
         FROM {{ ref('balancer_v1_ethereum_trades') }}
         UNION
         SELECT
@@ -57,6 +56,5 @@ FROM
                 ,tx_to
                 ,trace_address
                 ,evt_index
-                ,unique_trade_id
         FROM {{ ref('balancer_v2_ethereum_trades') }}
 )

@@ -3,8 +3,6 @@ version: 2
 sources:
   - name: balancer_v1_ethereum
     description: "Ethereum decoded tables related to Balancer V1"
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: BFactory_evt_LOG_NEW_POOL
         description: >
@@ -33,6 +31,8 @@ sources:
             name: pool
             description: "Balancer pool contract address"
       - name: BPool_evt_LOG_SWAP
+        freshness:
+          warn_after: { count: 12, period: hour }
         loaded_at_field: evt_block_time
         columns:
           - *caller

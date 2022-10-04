@@ -11,6 +11,16 @@ models:
       tags: ["ethereum", "balancer", "balancer_v1", "dex", "trades"]
     description: >
       Balancer V1 contract trades on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
     columns:
       - &blockchain
         name: blockchain
@@ -80,15 +90,8 @@ models:
         description: "Address which received the transaction"
       - &trace_address
         name: trace_address
-        description: ""
       - &evt_index
         name: evt_index
-        description: ""
-      - &unique_trade_id
-        name: unique_trade_id
-        description: "Unique trade ID built to track merge incremental strategy in the model"
-        tests:
-          - is_unique_filtered
 
   - name: balancer_v2_ethereum_trades
     meta:
@@ -100,6 +103,16 @@ models:
       tags: ["ethereum", "balancer", "balancer_v2", "dex", "trades"]
     description: >
       Balancer V2 contract trades on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
     columns:
       - *blockchain
       - *project
@@ -124,7 +137,6 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
-      - *unique_trade_id
 
   - name: balancer_ethereum_trades
     meta:
@@ -162,8 +174,6 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
-      - name: unique_trade_id # since object is a view, avoid test repeat with '*' usage
-        description: "Unique trade ID built to track merge incremental strategy in the model"
 
   - name: balancer_ethereum_balances
     meta:

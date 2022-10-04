@@ -34,6 +34,5 @@ FROM
                 ,tx_to
                 ,trace_address
                 ,evt_index
-                ,unique_trade_id
         FROM {{ ref('balancer_ethereum_trades') }}
 )
