@@ -4,7 +4,7 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "foundation",
-                                    \'["hildobby"]\') }}')
+                                    \'["hildobby", "soispoke"]\') }}')
 }}
 
 SELECT blockchain,
@@ -34,5 +34,5 @@ tx_hash,
 tx_from,
 tx_to,
 unique_trade_id
-FROM ({{ ref('foundation_ethereum_events') }})
+FROM {{ ref('foundation_ethereum_events') }}
 WHERE evt_type = 'Burn'

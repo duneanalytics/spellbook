@@ -22,8 +22,12 @@ sources:
           - name: nonce
           - name: index
           - name: success
-          - name: from
-          - name: to
+          - &from
+            name: from
+            description: "Wallet address that initiated the transaction"
+          - &to
+            name: to
+            description: "Wallet address that received the transaction"
           - name: block_hash
           - name: data
           - name: hash
@@ -31,6 +35,25 @@ sources:
           - name: access_list
           - name: effective_gas_price
           - name: gas_used_for_l1
+
+      - name: blocks
+        freshness:
+          warn_after: { count: 1, period: day }
+        loaded_at_field: time
+        description: "Blocks are batches of transactions with a hash of the previous block in the chain. This links blocks together (in a chain) because hashes are cryptographically derived from the block data."
+        columns:
+          - name: base_fee_per_gas
+          - name: difficulty
+          - name: gas_limit
+          - name: gas_used
+          - name: hash
+          - name: miner
+          - name: nonce
+          - name: number
+          - name: parent_hash
+          - name: size
+          - name: time
+          - name: total_difficulty
 
       - name: contracts
         freshness:
@@ -62,3 +85,33 @@ sources:
               - accepted_values:
                   values: ["factory", "base", "dynamic"]
           - name: created_at
+
+# ERC Transfer Tables
+  - name: erc20_arbitrum
+    description: "Transfers events for ERC20 tokens on Arbitrum."
+    tables:
+      - name: evt_transfer
+        loaded_at_field: evt_block_time
+        description: "Transfers events for ERC20 tokens."
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        columns:
+          - name: contract_address
+            description: "ERC20 token contract address"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Transaction hash of the event"
+          - &evt_index
+            name: evt_index
+            description: "Event index"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Event block number"
+          - *from
+          - *to
+          - name: value
+            description: "Amount of ERC20 token transferred"
