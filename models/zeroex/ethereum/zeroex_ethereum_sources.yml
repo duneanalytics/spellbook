@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: zeroex_ethereum
+    description: "decoded events and function calls for 0x on ethereum"
+    tables:
+      - name: ExchangeProxy_evt_LimitOrderFilled
+        loaded_at_field: evt_block_time
+  - name: zeroex_v2_ethereum
+    description: "decoded events and function calls for 0x on ethereum"
+    tables:
+      - name: Exchange2_0_evt_Fill
+        loaded_at_field: call_block_time
+      - name: Exchange2_1_evt_Fill
+        loaded_at_field: evt_block_time
+  - name: zeroex_v3_ethereum
+    description: "decoded events and function calls for 0x on ethereum"
+    tables:
+      - name: Exchange_evt_Fill
+        loaded_at_field: evt_block_time

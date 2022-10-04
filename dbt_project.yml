@@ -241,6 +241,13 @@ models:
       ethereum:
         +schema: cow_protocol_ethereum
         +materialized: view
+    oneinch:
+      +schema: oneinch
+      +materialized: view
+      ethereum:
+        +schema: oneinch_ethereum
+        +materialized: view
+
 
     ironbank:
       +schema: ironbank
