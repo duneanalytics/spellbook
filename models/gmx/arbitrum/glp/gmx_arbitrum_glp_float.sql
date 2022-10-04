@@ -1,9 +1,6 @@
 {{ config(
         alias = 'glp_float',
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['minute'],
+        materialized = 'view',
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "project",
                                     "gmx",
