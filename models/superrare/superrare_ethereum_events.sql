@@ -22,8 +22,8 @@ with all_superrare_sales as (
             , `_amount`
             , evt_tx_hash
             , '' as `_currencyAddress`
-    from superrare_ethereum.SuperRareMarketAuction_evt_Sold
-
+    -- from superrare_ethereum.SuperRareMarketAuction_evt_Sold
+    from {{ source('superrare_ethereum','SuperRareMarketAuction_evt_Sold') }}
     union all 
     
     select evt_block_time
@@ -34,7 +34,8 @@ with all_superrare_sales as (
             , `_amount`
             , evt_tx_hash  
             , '' as `_currencyAddress`
-    from superrare_ethereum.SuperRare_evt_Sold
+    -- from superrare_ethereum.SuperRare_evt_Sold
+    from {{ source('superrare_ethereum','SuperRare_evt_Sold') }}
 
     union all 
     
@@ -46,7 +47,8 @@ with all_superrare_sales as (
             , `_amount`
             , evt_tx_hash 
             , '' as `_currencyAddress`
-    from superrare_ethereum.SuperRareMarketAuction_evt_AcceptBid
+    -- from superrare_ethereum.SuperRareMarketAuction_evt_AcceptBid
+    from {{ source('superrare_ethereum','SuperRareMarketAuction_evt_AcceptBid') }}
       
     union all 
     
@@ -58,7 +60,8 @@ with all_superrare_sales as (
             , `_amount`
             , evt_tx_hash 
             , '' as `_currencyAddress`
-    from superrare_ethereum.SuperRare_evt_AcceptBid
+    -- from superrare_ethereum.SuperRare_evt_AcceptBid
+    from {{ source('superrare_ethereum','SuperRare_evt_AcceptBid') }}
     
     union all 
     
@@ -70,7 +73,8 @@ with all_superrare_sales as (
             , `_amount`
             , evt_tx_hash 
             , `_currencyAddress`
-    from superrare_ethereum.SuperRareBazaar_evt_AcceptOffer
+    -- from superrare_ethereum.SuperRareBazaar_evt_AcceptOffer
+    from {{ source('superrare_ethereum','SuperRareBazaar_evt_AcceptOffer') }}
 
     union all 
     
@@ -82,7 +86,8 @@ with all_superrare_sales as (
             , `_amount`
             , evt_tx_hash 
             , `_currencyAddress`
-    from superrare_ethereum.SuperRareBazaar_evt_AuctionSettled
+    -- from superrare_ethereum.SuperRareBazaar_evt_AuctionSettled
+    from {{ source('superrare_ethereum','SuperRareBazaar_evt_AuctionSettled') }}
 
     union all 
     
@@ -94,7 +99,8 @@ with all_superrare_sales as (
             , `_amount`
             , evt_tx_hash 
             , `_currencyAddress`
-    from superrare_ethereum.SuperRareBazaar_evt_Sold
+    -- from superrare_ethereum.SuperRareBazaar_evt_Sold
+    from {{ source('superrare_ethereum','SuperRareBazaar_evt_Sold') }}
 
     union all 
     
@@ -106,7 +112,8 @@ with all_superrare_sales as (
             , bytea2numeric_v2(substring(data from 67 for 64)) as amount
             , tx_hash
             , '' as `_currencyAddress`
-    from ethereum.logs
+    -- from ethereum.logs
+    from {{ source('ethereum','logs') }}
     where contract_address = lower('0x8c9f364bf7a56ed058fc63ef81c6cf09c833e656')
         and topic1 = lower('0xea6d16c6bfcad11577aef5cc6728231c9f069ac78393828f8ca96847405902a9')
 
@@ -120,7 +127,8 @@ with all_superrare_sales as (
             , bytea2numeric_v2(substring(data from 3 for 64)) as amount
             , tx_hash
             , '' as `_currencyAddress`
-    from ethereum.logs
+    -- from ethereum.logs
+    from {{ source('ethereum','logs') }}
     where contract_address = lower('0x65b49f7aee40347f5a90b714be4ef086f3fe5e2c')
         and topic1 in (lower('0x2a9d06eec42acd217a17785dbec90b8b4f01a93ecd8c127edd36bfccf239f8b6')
                         , lower('0x5764dbcef91eb6f946584f4ea671217c686fa7e858ce4f9f42d08422b86556a9'))
@@ -138,7 +146,8 @@ with all_superrare_sales as (
                 , case when token_bought_symbol like '%ETH%' then token_bought_amount*1.0/nullif(token_sold_amount,0) 
                     else  token_sold_amount*1.0/nullif(token_bought_amount,0)
                 end as eth_per_rare
-        from dex.trades
+        -- from dex.trades
+        from {{ source('dex','trades') }}
         where   -- RARE trades
                 (token_bought_address = lower('0xba5bde662c17e2adff1075610382b9b691296350') or token_sold_address = lower('0xba5bde662c17e2adff1075610382b9b691296350'))
             and (token_bought_symbol like '%ETH%' or token_sold_symbol like '%ETH%')    
@@ -173,7 +182,8 @@ with all_superrare_sales as (
             , `tokenId`
             , evt_tx_hash
             , `to` 
-    from erc721_ethereum.evt_Transfer
+    -- from erc721_ethereum.evt_Transfer
+    from {{ source('erc721_ethereum','evt_Transfer') }}
     where contract_address in (select distinct contract_address from all_superrare_sales)
     and `tokenId` in (select distinct `_tokenId` from all_superrare_sales)
     and `from` = '0x0000000000000000000000000000000000000000'
@@ -181,7 +191,8 @@ with all_superrare_sales as (
     inner join 
     ( select `from` 
             , hash 
-    from ethereum.transactions
+    -- from ethereum.transactions
+    from {{ source('ethereum','transactions') }}
     ) b 
     on a.evt_tx_hash = b.hash
 )
@@ -189,7 +200,8 @@ with all_superrare_sales as (
     select contract_address
             , `value` as `tokenId`
             , `to` as mint_address 
-    from erc20_ethereum.evt_Transfer
+    -- from erc20_ethereum.evt_Transfer
+    from {{ source('erc20_ethereum','evt_Transfer') }}
     where contract_address in (select distinct contract_address from all_superrare_sales)
     and `value` in (select distinct `_tokenId` from all_superrare_sales)
     and `from` = '0x0000000000000000000000000000000000000000'
@@ -213,7 +225,8 @@ with all_superrare_sales as (
                         then 'To Auction House'
                 else '' end as auction_house_flag
             , ROW_NUMBER() OVER (PARTITION BY contract_address, `tokenId` ORDER BY evt_block_time DESC) AS transaction_rank
-    from erc721_ethereum.evt_Transfer
+    -- from erc721_ethereum.evt_Transfer
+    from {{ source('erc721_ethereum','evt_Transfer') }}
     where contract_address in (select distinct contract_address from token_sold_from_auction)
     and `tokenId` in (select distinct `_tokenId` from token_sold_from_auction)
     order by 1, 2, 8
@@ -303,14 +316,29 @@ SELECT  'ethereum' as blockchain,
 
 from all_superrare_sales a
 
-left outer join (select minute, price from prices.usd where blockchain = 'ethereum' and symbol = 'WETH' ) ep 
+left outer join (select minute, price 
+                -- from prices.usd 
+                from {{ source('prices','usd') }}
+                where blockchain = 'ethereum' and symbol = 'WETH' ) ep 
 on date_trunc('minute', a.evt_block_time) = ep.minute
 
 left outer join rare_token_price_eth rp
 on date_trunc('week', a.evt_block_time) = rp.week
 
-left outer join ethereum.transactions t 
+-- left outer join ethereum.transactions t 
+left outer join  {{ source('ethereum','transactions') }} t
 on a.evt_tx_hash = t.hash
+
+left outer join mint_address_details_per_token_id ma721 -- erc721 - who minted and where it got sent 
+on a.contract_address = ma721.contract_address
+and a.`_tokenId` = ma721.`tokenId`
+
+left outer join mint_address_per_token_20 ma20
+on a.contract_address = ma20.contract_address
+and a.`_tokenId` = ma20.`tokenId`
+
+left outer join transfers_for_tokens_sold_from_auction po -- if sold from auction house previous owner 
+on a.evt_tx_hash = po.evt_tx_hash
 
 where (a.`_amount`/1e18) > 0 
 order by evt_block_time desc
