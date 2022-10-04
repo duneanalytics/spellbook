@@ -162,7 +162,7 @@ with
     ,coalesce(new.latest_update_time,old.creation_block_time) as latest_update_time
     from initial_settings old
     left join latest_settings new
-    ON new.pool_address = new.pool_address
+    ON old.pool_address = new.pool_address
 )
 {% endif %}
 
