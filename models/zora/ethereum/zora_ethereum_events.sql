@@ -380,3 +380,4 @@ LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain='ethereum'
     {% endif %}
 LEFT JOIN {{ ref('tokens_nft') }}  nft ON nft.blockchain='ethereum'
     AND nft.contract_address=zt.nft_contract_address
+GROUP BY blockchain, zt.version, zt.block_time, zt.block_number, zt.token_id, nft.name, pu.price, erc721.evt_index, agg.name, zt.trade_category, zt.seller, zt.buyer, zt.amount_raw, pu.decimals, pu.symbol, zt.currency_contract, zt.nft_contract_address, zt.project_contract_address, agg.name, agg.contract_address, zt.tx_hash, et.from, et.to
