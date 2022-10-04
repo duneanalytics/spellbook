@@ -344,13 +344,13 @@ SELECT distinct 'ethereum' AS blockchain
     , 0 AS platform_fee_amount
     , 0 AS platform_fee_amount_usd
     , 0 AS platform_fee_percentage
-    , zt.royalty_fee_amount_raw
-    , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN COALESCE(zt.royalty_fee_amount_raw/POWER(10, 18), 0)
-        ELSE COALESCE(zt.royalty_fee_amount_raw/POWER(10, pu.decimals), 0) END AS royalty_fee_amount
-    , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN COALESCE(zt.royalty_fee_amount_raw/POWER(10, 18)*pu.price, 0)
-        ELSE COALESCE(zt.royalty_fee_amount_raw/POWER(10, pu.decimals)*pu.price, 0) END AS royalty_fee_amount_usd
-    , COALESCE(100.0*zt.royalty_fee_amount_raw/zt.amount_raw, 0) AS royalty_fee_percentage
-    , zt.royalty_fee_receive_address
+    , SUM(zt.royalty_fee_amount_raw) AS royalty_fee_amount_raw
+    , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN COALESCE(SUM(zt.royalty_fee_amount_raw)/POWER(10, 18), 0)
+        ELSE COALESCE(SUM(zt.royalty_fee_amount_raw)/POWER(10, pu.decimals), 0) END AS royalty_fee_amount
+    , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN COALESCE(SUM(zt.royalty_fee_amount_raw)/POWER(10, 18)*pu.price, 0)
+        ELSE COALESCE(SUM(zt.royalty_fee_amount_raw)/POWER(10, pu.decimals)*pu.price, 0) END AS royalty_fee_amount_usd
+    , COALESCE(100.0*SUM(zt.royalty_fee_amount_raw)/zt.amount_raw, 0) AS royalty_fee_percentage
+    , FIRST(zt.royalty_fee_receive_address) AS royalty_fee_receive_address
     , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN 'ETH'
         ELSE pu.symbol END AS royalty_fee_currency_symbol
     , 'ethereumzora' || version || zt.tx_hash || zt.nft_contract_address || zt.token_id || zt.buyer || zt.seller AS unique_trade_id
