@@ -164,7 +164,7 @@ OPTIMIZE sudoswap_ethereum.pool_trades;
 {% endset %}
 
 {% set airswap_ethereum_trades %}
-OPTIMIZE airswap_ethereum_trades;
+OPTIMIZE airswap_ethereum.trades;
 {% endset %}
 
 
