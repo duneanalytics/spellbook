@@ -140,7 +140,12 @@ models:
       ethereum:
         +schema: x2y2_ethereum
         +materialized: view
-
+    zora:
+      +schema: zora
+      +materialized: view
+      ethereum:
+        +schema: zora_ethereum
+        +materialized: view
     magiceden:
       +schema: magiceden
       +materialized: view
