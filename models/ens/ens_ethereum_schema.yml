@@ -99,25 +99,31 @@ models:
       - name: min_evt_block_time
         description: "Block time UTC of first registry for node"
       - name: max_evt_block_time
-        description: "Block time UTC of latest registry for node" 
+        description: "Block time UTC of latest registry for node"
       - name: count
         description: "Total number of node registries"
 
-  - name: ens_resolver_addresses
+  - name: ens_reverse_latest
     meta:
       blockchain: ethereum
       project: ethereum_name_service
-      contributors: hildobby, danning.sui, msilb7, danner_eth
+      contributors: 0xRob
     config:
-      tags: ['ethereum','ens','ethereum_name_service','ethereumnameservice']
+      tags: [ 'ethereum','ens','ethereum_name_service','ethereumnameservice','reverse','latest']
     description: >
-        View ENS reverse record
+      View the latest ENS reverse records
     columns:
       - name: address
-        description: "The resolver address of that ENS name"
-      - name: ens_name
-        description: "ENS name"
-      - name: latest_tx
-        description: "Latest transaction hash"
+        description: "The ETH address"
+        tests:
+          - unique
+      - name: name
+        description: "The reverse ENS name"
+      - name: address_node
+        description: "The node (namehash) of the address reverse record"
+        tests:
+          - unique
+      - name: latest_tx_hash
+        description: "Latest transaction hash setting the reverse ENS"
       - name: latest_tx_block_time
-        description: "Block time of the latest transaction hash"
+        description: "Block time of the latest transaction hash setting the reverse ENS"
