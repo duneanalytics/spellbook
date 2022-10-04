@@ -1,0 +1,109 @@
+version: 2
+
+models:
+  - name: keep3r_network_ethereum_view_job_liquidity_log
+    meta:
+      blockchain: ethereum
+      project: keep3r_network
+      contributors: [agaperste, wei3erHase]
+    config:
+      tags: ["ethereum", "keep3r_network", "view"]
+    description: >
+      a view logging jobs related to liquidty on Keep3r Network on Ethereum
+    columns:
+      - &amount
+        name: amount
+        description: "Amount of token for the job"
+      - &event
+        name: event
+        description: "Type of event: LiquidityAddition, LiquidityWithdrawal, CreditsReward, KeeperWork, JobMigrationIn, JobMigrationOut"
+      - &evt_index
+        name: evt_index
+        description: "Index of the event"
+        tests:
+          - not_null
+      - &job
+        name: job
+        description: "The smart contract that wishes an external entity to perform an action"
+        tests:
+          - not_null
+      - &keep3r
+        name: keep3r
+        description: "Contract address for keep3r"
+      - &timestamp
+        name: timestamp
+        description: "Time when the job was called"
+        tests:
+          - unique
+          - not_null
+      - &token
+        name: token
+        description: "The token in which the amount for the job is paid"
+        tests:
+          - not_null
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash for the transaction in which the job was called"
+        tests:
+          - unique
+          - not_null
+  - name: keep3r_network_ethereum_view_job_credits_log
+    meta:
+      blockchain: ethereum
+      project: keep3r_network
+      contributors: [agaperste, wei3erHase]
+    config:
+      tags: ["ethereum", "keep3r_network", "view"]
+    description: >
+      a view logging jobs related to credits on Keep3r Network on Ethereum
+    columns:
+      - *amount
+      - *event
+      - *evt_index
+      - *job
+      - *keep3r
+      - &keeper
+        name: keeper
+        description: "An external address that executes a job. Keepers are bots, scripts, other contracts, or simply EOA accounts that trigger events."
+      - &period_credits
+        name: period_credits
+        description: "Credits in this reward period"
+      - *timestamp
+      - *token
+      - *tx_hash
+  - name: keep3r_network_ethereum_view_job_migrations
+    meta:
+      blockchain: ethereum
+      project: keep3r_network
+      contributors: [agaperste, wei3erHase]
+    config:
+      tags: ["ethereum", "keep3r_network", "view"]
+    description: >
+      a view logging jobs migrations on Keep3r Network on Ethereum
+    columns:
+      - *event
+      - *evt_index
+      - *job
+      - *keep3r
+      - *timestamp
+      - *tx_hash
+  - name: keep3r_network_ethereum_view_job_log
+    meta:
+      blockchain: ethereum
+      project: keep3r_network
+      contributors: [agaperste, wei3erHase]
+    config:
+      tags: ["ethereum", "keep3r_network", "view"]
+    description: >
+      a view logging details about jobs on Keep3r Network on Ethereum
+    columns:
+      - *amount
+      - *event
+      - *evt_index
+      - *job
+      - *keep3r
+      - *keeper
+      - *period_credits
+      - *timestamp
+      - *token
+      - *tx_hash
