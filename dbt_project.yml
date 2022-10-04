@@ -25,6 +25,9 @@ clean-targets: # directories to be removed by `dbt clean`
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
   spellbook:
+    +post-hook:
+      sql: "{{ optimize_spell(this, model.config.materialized) }}"
+      transaction: true
     aave:
       +schema: aave
       +materialized: view
