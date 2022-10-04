@@ -1,12 +1,15 @@
 {{ config(
-  materialized='view'
-  , alias='supply'
-  , post_hook='{{ expose_spells(\'["ethereum"]\',
+    schema = 'aave_v1_ethereum'
+    , alias='supply'
+    , post_hook='{{ expose_spells(\'["ethereum"]\',
                                   "project",
                                   "aave_v1",
                                   \'["batwayne", "chuxinh"]\') }}'
   )
 }}
+
+{% set aave_mock_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
+{% set weth_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' %}
 
 SELECT 
       version,
@@ -27,7 +30,7 @@ FROM (
     '1' AS version,
     'deposit' AS transaction_type,
     CASE
-        WHEN _reserve = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' --Using WETH instead of Aave "mock" address 
+        WHEN _reserve = '{{aave_mock_address}}' THEN '{{weth_address}}' --Using WETH instead of Aave "mock" address
         ELSE _reserve
     END AS token,
     _user AS depositor, 
@@ -44,7 +47,7 @@ SELECT
     '1' AS version,
     'withdraw' AS transaction_type,
     CASE
-        WHEN _reserve = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' --Using WETH instead of Aave "mock" address
+        WHEN _reserve = '{{aave_mock_address}}' THEN '{{weth_address}}' --Using WETH instead of Aave "mock" address
         ELSE _reserve
     END AS token,
     _user AS depositor,
@@ -61,7 +64,7 @@ SELECT
     '1' AS version,
     'deposit_liquidation' AS transaction_type,
     CASE
-        WHEN _collateral = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' --Using WETH instead of Aave "mock" address
+        WHEN _reserve = '{{aave_mock_address}}' THEN '{{weth_address}}' --Using WETH instead of Aave "mock" address
         ELSE _collateral
     END AS token,
     _user AS depositor,
@@ -80,3 +83,4 @@ LEFT JOIN {{ source('prices','usd') }} p
     ON p.minute = date_trunc('minute', deposit.evt_block_time) 
     AND p.contract_address = deposit.token 
     AND p.blockchain = 'ethereum'
+;

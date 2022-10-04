@@ -1,5 +1,5 @@
 {{ config(
-  materialized='view'
+  schema = 'aave_v2_ethereum'
   , alias='interest'
   , post_hook='{{ expose_spells(\'["ethereum"]\',
                                   "project",
@@ -19,3 +19,4 @@ from {{ source('aave_v2_ethereum', 'LendingPool_evt_ReserveDataUpdated') }} a
 left join {{ ref('tokens_ethereum_erc20') }} t
 on a.reserve=t.contract_address
 group by 1,2,3
+;

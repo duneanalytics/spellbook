@@ -1,7 +1,7 @@
 {{ config(
-  materialized='view'
-  , alias='borrow'
-  , post_hook='{{ expose_spells(\'["ethereum"]\',
+    schema = 'aave_v2_ethereum'
+    , alias='borrow'
+    , post_hook='{{ expose_spells(\'["ethereum"]\',
                                   "project",
                                   "aave_v2",
                                   \'["batwayne", "chuxinh"]\') }}'
@@ -78,3 +78,4 @@ LEFT JOIN {{ source('prices','usd') }} p
     ON p.minute = date_trunc('minute', borrow.evt_block_time) 
     AND p.contract_address = borrow.token
     AND p.blockchain = 'ethereum'
+;
