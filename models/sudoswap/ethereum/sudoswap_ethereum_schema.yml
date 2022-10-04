@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       project: sudoswap
-      contributors: [ilemi, 0xRob]
+      contributors: [ilemi, 0xRob, hildobby]
     config:
       tags: ['ethereum','sudoswap','v1','events']
     description: >
@@ -144,7 +144,7 @@ models:
     meta:
       blockchain: ethereum
       project: sudoswap
-      contributors: [ilemi, 0xRob]
+      contributors: [ilemi, 0xRob, hildobby]
     config:
       tags: ['ethereum','sudoswap','trades']
     description: >
@@ -184,7 +184,7 @@ models:
     meta:
       blockchain: ethereum
       project: sudoswap
-      contributors: [ilemi, 0xRob]
+      contributors: [ilemi, 0xRob, hildobby]
     config:
       tags: ['ethereum','sudoswap','fees']
     description: >
