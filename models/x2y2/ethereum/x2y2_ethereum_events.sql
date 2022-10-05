@@ -219,3 +219,5 @@ LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct ON erct.evt_block_
     AND erct.evt_tx_hash=txs.tx_hash
     AND erct.tokenId=txs.token_id
     AND erct.from=txs.seller
+-- Temporary patch
+WHERE txs.nft_contract_address != '0xf4b6f2ab709703aa1a3e47fa0183ec700017c62b'
