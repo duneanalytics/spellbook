@@ -22,6 +22,6 @@ sources:
       - name: Vault_call_globalShortSizes
         loaded_at_field: call_block_time
       - name: GlpManager_evt_AddLiquidity
-        loaded_at_field: call_block_time
+        loaded_at_field: evt_block_time
       - name: GlpManager_evt_RemoveLiquidity
-        loaded_at_field: call_block_time
+        loaded_at_field: evt_block_time
