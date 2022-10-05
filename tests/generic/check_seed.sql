@@ -15,7 +15,7 @@
     -- check if the matching columns return singular results
     with matching_count_test as (
         select
-        'mathing count' as test_description,
+        'matched records count' as test_description,
         count(model.{{seed_matching_columns[0]}}) as result,
         1 as expected,
         {%- for column_name in seed_matching_columns %}
@@ -37,7 +37,7 @@
     (
         {%- for checked_column in seed_check_columns %}
         select
-        'equality test for column: {{checked_column}}' as test_description
+        'equality test: {{checked_column}}' as test_description
         ,test.*
         from (
             select
