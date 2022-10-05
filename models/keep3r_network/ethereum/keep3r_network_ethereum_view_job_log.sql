@@ -4,8 +4,6 @@
     post_hook = '{{ expose_spells(\'["ethereum"]\', "project", "keep3r", \'["wei3erHase", "agaperste"]\') }}'
 ) }}
 
-WITH
-
 SELECT
     `timestamp`,
     tx_hash,
