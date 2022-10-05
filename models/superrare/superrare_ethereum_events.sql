@@ -24,6 +24,10 @@ with all_superrare_sales as (
             , '' as `_currencyAddress`
     -- from superrare_ethereum.SuperRareMarketAuction_evt_Sold
     from {{ source('superrare_ethereum','SuperRareMarketAuction_evt_Sold') }}
+    {% if is_incremental() %} -- this filter will only be applied on an incremental run
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+
     union all 
     
     select evt_block_time
@@ -36,6 +40,9 @@ with all_superrare_sales as (
             , '' as `_currencyAddress`
     -- from superrare_ethereum.SuperRare_evt_Sold
     from {{ source('superrare_ethereum','SuperRare_evt_Sold') }}
+    {% if is_incremental() %} -- this filter will only be applied on an incremental run
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     union all 
     
@@ -49,7 +56,10 @@ with all_superrare_sales as (
             , '' as `_currencyAddress`
     -- from superrare_ethereum.SuperRareMarketAuction_evt_AcceptBid
     from {{ source('superrare_ethereum','SuperRareMarketAuction_evt_AcceptBid') }}
-      
+    {% if is_incremental() %} -- this filter will only be applied on an incremental run
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}    
+
     union all 
     
     select evt_block_time
@@ -62,7 +72,10 @@ with all_superrare_sales as (
             , '' as `_currencyAddress`
     -- from superrare_ethereum.SuperRare_evt_AcceptBid
     from {{ source('superrare_ethereum','SuperRare_evt_AcceptBid') }}
-    
+    {% if is_incremental() %} -- this filter will only be applied on an incremental run
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+
     union all 
     
     select evt_block_time
@@ -75,6 +88,9 @@ with all_superrare_sales as (
             , `_currencyAddress`
     -- from superrare_ethereum.SuperRareBazaar_evt_AcceptOffer
     from {{ source('superrare_ethereum','SuperRareBazaar_evt_AcceptOffer') }}
+    {% if is_incremental() %} -- this filter will only be applied on an incremental run
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     union all 
     
@@ -88,6 +104,9 @@ with all_superrare_sales as (
             , `_currencyAddress`
     -- from superrare_ethereum.SuperRareBazaar_evt_AuctionSettled
     from {{ source('superrare_ethereum','SuperRareBazaar_evt_AuctionSettled') }}
+    {% if is_incremental() %} -- this filter will only be applied on an incremental run
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     union all 
     
@@ -101,6 +120,9 @@ with all_superrare_sales as (
             , `_currencyAddress`
     -- from superrare_ethereum.SuperRareBazaar_evt_Sold
     from {{ source('superrare_ethereum','SuperRareBazaar_evt_Sold') }}
+    {% if is_incremental() %} -- this filter will only be applied on an incremental run
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     union all 
     
@@ -116,6 +138,9 @@ with all_superrare_sales as (
     from {{ source('ethereum','logs') }}
     where contract_address = lower('0x8c9f364bf7a56ed058fc63ef81c6cf09c833e656')
         and topic1 = lower('0xea6d16c6bfcad11577aef5cc6728231c9f069ac78393828f8ca96847405902a9')
+    {% if is_incremental() %} -- this filter will only be applied on an incremental run
+    and block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     union all 
     
@@ -132,6 +157,9 @@ with all_superrare_sales as (
     where contract_address = lower('0x65b49f7aee40347f5a90b714be4ef086f3fe5e2c')
         and topic1 in (lower('0x2a9d06eec42acd217a17785dbec90b8b4f01a93ecd8c127edd36bfccf239f8b6')
                         , lower('0x5764dbcef91eb6f946584f4ea671217c686fa7e858ce4f9f42d08422b86556a9'))
+    {% if is_incremental() %} -- this filter will only be applied on an incremental run
+    and block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
 )
 
@@ -147,7 +175,7 @@ with all_superrare_sales as (
                     else  token_sold_amount*1.0/nullif(token_bought_amount,0)
                 end as eth_per_rare
         -- from dex.trades
-        from {{ source('dex','trades') }}
+        from {{ ref('dex_trades') }}
         where   -- RARE trades
                 (token_bought_address = lower('0xba5bde662c17e2adff1075610382b9b691296350') or token_sold_address = lower('0xba5bde662c17e2adff1075610382b9b691296350'))
             and (token_bought_symbol like '%ETH%' or token_sold_symbol like '%ETH%')    
@@ -183,7 +211,7 @@ with all_superrare_sales as (
             , evt_tx_hash
             , `to` 
     -- from erc721_ethereum.evt_Transfer
-    from {{ source('erc721_ethereum','evt_Transfer') }}
+    from {{ source('erc721_ethereum','evt_transfer') }}
     where contract_address in (select distinct contract_address from all_superrare_sales)
     and `tokenId` in (select distinct `_tokenId` from all_superrare_sales)
     and `from` = '0x0000000000000000000000000000000000000000'
@@ -201,7 +229,7 @@ with all_superrare_sales as (
             , `value` as `tokenId`
             , `to` as mint_address 
     -- from erc20_ethereum.evt_Transfer
-    from {{ source('erc20_ethereum','evt_Transfer') }}
+    from {{ source('erc20_ethereum','evt_transfer') }}
     where contract_address in (select distinct contract_address from all_superrare_sales)
     and `value` in (select distinct `_tokenId` from all_superrare_sales)
     and `from` = '0x0000000000000000000000000000000000000000'
@@ -226,7 +254,7 @@ with all_superrare_sales as (
                 else '' end as auction_house_flag
             , ROW_NUMBER() OVER (PARTITION BY contract_address, `tokenId` ORDER BY evt_block_time DESC) AS transaction_rank
     -- from erc721_ethereum.evt_Transfer
-    from {{ source('erc721_ethereum','evt_Transfer') }}
+    from {{ source('erc721_ethereum','evt_transfer') }}
     where contract_address in (select distinct contract_address from token_sold_from_auction)
     and `tokenId` in (select distinct `_tokenId` from token_sold_from_auction)
     order by 1, 2, 8

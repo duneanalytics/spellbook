@@ -287,5 +287,5 @@ FROM
                 tx_from,
                 tx_to,
                 unique_trade_id
-        FROM {{ ref('superrare_fees') }}
+        FROM {{ ref('superrare_ethereum_fees') }}
 )

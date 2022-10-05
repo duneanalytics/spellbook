@@ -407,5 +407,5 @@ FROM
                 royalty_fee_amount_usd,
                 royalty_fee_percentage,
                 unique_trade_id
-        FROM {{ ref('superrare_events') }}
+        FROM {{ ref('superrare_ethereum_events') }}
 )

@@ -307,5 +307,5 @@ FROM
                 tx_from,
                 tx_to,
                 unique_trade_id
-        FROM {{ ref('superrare_trades') }}
+        FROM {{ ref('superrare_ethereum_trades') }}
 )

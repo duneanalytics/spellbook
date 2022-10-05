@@ -125,6 +125,8 @@ models:
       - &unique_trade_id
         name: unique_trade_id
         description:  "Unique trade ID"
+        tests:
+          - unique
 
   - name: superrare_ethereum_trades
     meta:
