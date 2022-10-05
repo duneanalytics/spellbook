@@ -31,13 +31,11 @@ models:
         name: timestamp
         description: "Time when the job was called"
         tests:
-          - unique
           - not_null
       - &tx_hash
         name: tx_hash
         description: "Transaction hash for the transaction in which the job was called"
         tests:
-          - unique
           - not_null
   - name: keep3r_network_ethereum_view_job_liquidity_log
     meta:

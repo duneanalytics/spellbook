@@ -30,7 +30,7 @@ WITH unit_tests AS (
                 token.job
             ) THEN TRUE
             ELSE FALSE
-        END AS token_test,
+        END AS token_test
     FROM
         {{ ref('keep3r_network_ethereum_view_job_log') }} AS actual
         INNER JOIN {{ ref('keep3r_network_ethereum_view_job_log_postgres') }} AS test
