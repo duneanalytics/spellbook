@@ -1,4 +1,4 @@
-WITH unit_tests AS (
+WITH unit_test AS (
     SELECT
         CASE
             WHEN test.amount = ROUND(
@@ -7,14 +7,6 @@ WITH unit_tests AS (
             ) THEN TRUE
             ELSE FALSE
         END AS amount_test,
-        CASE
-            WHEN LOWER(
-                test.job
-            ) = LOWER(
-                actual.job
-            ) THEN TRUE
-            ELSE FALSE
-        END AS job_test,
         CASE
             WHEN LOWER(
                 test.keeper
@@ -35,17 +27,16 @@ WITH unit_tests AS (
         {{ ref('keep3r_network_ethereum_view_job_log') }} AS actual
         INNER JOIN {{ ref('keep3r_network_ethereum_view_job_log_postgres') }} AS test
         ON LOWER(
-            test.tx_hash
-        ) = LOWER(
             actual.tx_hash
+        ) = LOWER(
+            test.tx_hash
         )
 )
 SELECT
     *
 FROM
-    unit_tests
+    unit_test
 WHERE
     amount_test = FALSE
-    OR job_test = FALSE
     OR keeper_test = FALSE
     OR token_test = FALSE
