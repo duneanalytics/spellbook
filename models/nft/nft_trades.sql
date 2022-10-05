@@ -307,10 +307,7 @@ FROM
                 tx_from,
                 tx_to,
                 unique_trade_id
-<<<<<<< HEAD
         FROM {{ ref('superrare_ethereum_trades') }}
-=======
-        FROM {{ ref('superrare_trades') }}
         UNION
         SELECT
                 blockchain,
@@ -341,5 +338,4 @@ FROM
                 tx_to,
                 unique_trade_id
         FROM {{ ref('zora_ethereum_trades') }}
->>>>>>> 0bf1e27d029654b36ec47f0e222c070038cd2512
 )

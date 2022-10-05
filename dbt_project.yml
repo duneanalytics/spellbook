@@ -114,6 +114,12 @@ models:
         +schema: element_avalanche_c
         +materialized: view
 
+    superrare:
+      +schema: superrare
+      +materialized: view
+      ethereum:
+        +schema: superrare_ethereum
+        +materialized: view
     looksrare:
       +schema: looksrare
       +materialized: view

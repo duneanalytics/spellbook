@@ -407,10 +407,7 @@ FROM
                 royalty_fee_amount_usd,
                 royalty_fee_percentage,
                 unique_trade_id
-<<<<<<< HEAD
         FROM {{ ref('superrare_ethereum_events') }}
-=======
-        FROM {{ ref('superrare_events') }}
         UNION
         SELECT
                 blockchain,
@@ -451,5 +448,4 @@ FROM
                 royalty_fee_percentage,
                 unique_trade_id
         FROM {{ ref('zora_ethereum_events') }}
->>>>>>> 0bf1e27d029654b36ec47f0e222c070038cd2512
 )
