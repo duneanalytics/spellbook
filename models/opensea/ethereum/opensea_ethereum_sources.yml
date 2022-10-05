@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: opensea_ethereum
+    tables:
+      - name: wyvernexchange_call_atomicmatch_
+        loaded_at_field: call_block_time
+      - name: wyvernexchange_evt_ordersmatched
+        loaded_at_field: evt_block_time

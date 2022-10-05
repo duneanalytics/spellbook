@@ -1,0 +1,117 @@
+version: 2
+
+sources:
+# Base Tables
+  - name: arbitrum
+    description: "Arbitrum raw tables"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: transactions
+        loaded_at_field: block_time
+        columns:
+          - name: block_time
+          - name: value
+          - name: block_number
+          - name: gas_limit
+          - name: gas_price
+          - name: gas_used
+          - name: max_fee_per_gas
+          - name: max_priority_fee_per_gas
+          - name: priority_fee_per_gas
+          - name: nonce
+          - name: index
+          - name: success
+          - &from
+            name: from
+            description: "Wallet address that initiated the transaction"
+          - &to
+            name: to
+            description: "Wallet address that received the transaction"
+          - name: block_hash
+          - name: data
+          - name: hash
+          - name: type
+          - name: access_list
+          - name: effective_gas_price
+          - name: gas_used_for_l1
+
+      - name: blocks
+        freshness:
+          warn_after: { count: 1, period: day }
+        loaded_at_field: time
+        description: "Blocks are batches of transactions with a hash of the previous block in the chain. This links blocks together (in a chain) because hashes are cryptographically derived from the block data."
+        columns:
+          - name: base_fee_per_gas
+          - name: difficulty
+          - name: gas_limit
+          - name: gas_used
+          - name: hash
+          - name: miner
+          - name: nonce
+          - name: number
+          - name: parent_hash
+          - name: size
+          - name: time
+          - name: total_difficulty
+
+      - name: contracts
+        freshness:
+          warn_after: { count: 1, period: day }
+        loaded_at_field: created_at
+        description: "A view keeping track of what contracts are decoded on Dune on Arbitrum; contains information associated with the decoded contract such as namespace, name, address, ABI."
+        columns:
+          - name: abi
+            description: "ABI of the decoded contract"
+          - name: address
+            description: "Address of the decoded contract"
+          - name: from
+            description: "Address that created/deployed this contract"
+          - name: code
+            description: "Code for contract creation"
+          - name: name
+            description: "Name of the decoded contract"
+          - name: namespace
+            description: "Namesapce of the decoded contract"
+          - name: dynamic
+            description: "Boolean indicating whether the contract is dynamic or not"
+          - name: base
+            description: "Boolean indicating whether the contract is the base contract or not"
+          - name: factory
+            description: "Boolean indicating whether the contract is a factory contract or not"
+          - name: detection_source
+            description: "Detection source: 'factory', 'base', or 'dynamic'"
+            tests:
+              - accepted_values:
+                  values: ["factory", "base", "dynamic"]
+          - name: created_at
+
+# ERC Transfer Tables
+  - name: erc20_arbitrum
+    description: "Transfers events for ERC20 tokens on Arbitrum."
+    tables:
+      - name: evt_transfer
+        loaded_at_field: evt_block_time
+        description: "Transfers events for ERC20 tokens."
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        columns:
+          - name: contract_address
+            description: "ERC20 token contract address"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Transaction hash of the event"
+          - &evt_index
+            name: evt_index
+            description: "Event index"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Event block number"
+          - *from
+          - *to
+          - name: value
+            description: "Amount of ERC20 token transferred"
