@@ -8,7 +8,7 @@
 --    {%- set seed_check_columns = dbt_utils.get_filtered_columns_in_relation(from=seed_file, except=unique_columns) -%}
 --    {%- set seed_matching_columns = dbt_utils.get_filtered_columns_in_relation(from=seed_file, except=seed_check_columns) -%}
     --jinja comment #}
-
+    {{ config(severity = 'warn') }}
     {%- set seed_check_columns = check_columns -%}
     {%- set seed_matching_columns = match_columns -%}
 
