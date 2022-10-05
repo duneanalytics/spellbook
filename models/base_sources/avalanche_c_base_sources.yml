@@ -29,6 +29,25 @@ sources:
           - name: hash
           - name: type
           - name: access_list
+          
+      - name: blocks
+        freshness:
+          warn_after: { count: 1, period: day }
+        loaded_at_field: time
+        description: "Blocks are batches of transactions with a hash of the previous block in the chain. This links blocks together (in a chain) because hashes are cryptographically derived from the block data."
+        columns:
+          - name: base_fee_per_gas
+          - name: difficulty
+          - name: gas_limit
+          - name: gas_used
+          - name: hash
+          - name: miner
+          - name: nonce
+          - name: number
+          - name: parent_hash
+          - name: size
+          - name: time
+          - name: total_difficulty
 
       - name: contracts
         freshness:

@@ -122,6 +122,8 @@ models:
       - &unique_trade_id
         name: unique_trade_id
         description:  "Unique trade ID"
+        tests:
+          - unique
 
   - name: x2y2_ethereum_trades
     meta:
