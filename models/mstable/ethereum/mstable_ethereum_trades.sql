@@ -59,19 +59,19 @@ WITH dexs AS
             '1' AS version,
             'DEX' AS category,
             swapper AS trader_a, 
-            NULL::bytea AS trader_b, 
-            "outputAmount" AS token_a_amount_raw,
-            NULL::numeric AS token_b_amount_raw,
-            CASE WHEN "output" = '\x0000000000000000000000000000000000000000' THEN 
-                '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'::bytea ELSE "output"
+            cast(NULL as string) AS trader_b,
+            'outputAmount' AS token_a_amount_raw,
+            cast(NULL as double) AS token_b_amount_raw,
+            CASE WHEN "output" = lower('0x0000000000000000000000000000000000000000') THEN 
+                lower('0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') ELSE "output"
                 END AS token_a_address,
-            CASE WHEN "input" = '\x0000000000000000000000000000000000000000' THEN
-                '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'::bytea ELSE "input" 
+            CASE WHEN "input" = lower('0x0000000000000000000000000000000000000000') THEN 
+                lower('0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') ELSE "input" 
                 END AS token_b_address,
             contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
-            NULL::integer[] AS trace_address,
-            NULL::numeric AS usd_amount,
+            '' AS trace_address,
+            cast(NULL as double) AS usd_amount,
             evt_index
         FROM {{ source('mstable_ethereum', 'Masset_evt_Swapped')}} e
         {% if is_incremental() %}
@@ -88,19 +88,19 @@ WITH dexs AS
             '1' AS version,
             'DEX' AS category,
             swapper AS trader_a,
-            NULL::bytea AS trader_b,
-            "outputAmount" AS token_a_amount_raw,
-            NULL::numeric AS token_b_amount_raw,
-            CASE WHEN "output" = '\x0000000000000000000000000000000000000000' THEN 
-                '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'::bytea ELSE "output"
+            cast(NULL as string) AS trader_b,
+            'outputAmount' AS token_a_amount_raw,
+            cast(NULL as double) AS token_b_amount_raw,
+            CASE WHEN 'output' = lower('0x0000000000000000000000000000000000000000') THEN 
+                lower('0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') ELSE 'output'
                 END AS token_a_address,
-            CASE WHEN "input" = '\x0000000000000000000000000000000000000000' THEN
-                '\xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'::bytea ELSE "input" 
+            CASE WHEN 'input' = lower('0x0000000000000000000000000000000000000000') THEN 
+                lower('0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') ELSE 'input' 
                 END AS token_b_address,
             contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
-            NULL::integer[] AS trace_address,
-            NULL::numeric AS usd_amount,
+            '' AS trace_address,
+            cast(NULL as double) AS usd_amount,
             evt_index
         FROM {{ source('mstable_ethereum', 'FeederPool_evt_Swapped')}} e
         {% if is_incremental() %}
