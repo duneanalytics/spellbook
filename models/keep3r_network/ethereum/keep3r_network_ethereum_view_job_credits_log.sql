@@ -1,0 +1,123 @@
+{{ config (
+    materialized = 'view',
+    alias = 'view_job_credits_log',
+    post_hook = '{{ expose_spells(\'["ethereum"]\', "project", "keep3r", \'["wei3erHase", "agaperste"]\') }}'
+) }}
+
+WITH work_evt AS (
+
+    SELECT
+        evt_block_time AS TIMESTAMP,
+        evt_tx_hash AS tx_hash,
+        evt_index,
+        'KeeperWork' AS event,
+        contract_address AS keep3r,
+        _job AS job,
+        _keeper AS keeper,
+        _credit AS token,
+        _amount / 1e18 AS amount
+    FROM
+        (
+            SELECT
+                evt_block_time,
+                evt_tx_hash,
+                evt_index,
+                contract_address,
+                _job,
+                _keeper,
+                _credit,
+                _amount
+            FROM
+                {{ source(
+                    'keep3r_network_ethereum',
+                    'Keep3r_evt_KeeperWork'
+                ) }}
+            UNION
+            SELECT
+                evt_block_time,
+                evt_tx_hash,
+                evt_index,
+                contract_address,
+                _job,
+                _keeper,
+                _credit,
+                _payment
+            FROM
+                {{ source(
+                    'keep3r_network_ethereum',
+                    'Keep3r_v2_evt_KeeperWork'
+                ) }}
+        ) keep3rWork
+    WHERE
+        _credit = LOWER('0x1ceb5cb57c4d4e2b2433641b95dd330a33185a44')
+),
+reward_evt AS (
+    SELECT
+        CASE
+            WHEN LENGTH(_rewardedAt) = 10 THEN _rewardedAt :: INT :: TIMESTAMP
+            ELSE _rewardedAt
+        END AS TIMESTAMP,
+        evt_tx_hash AS tx_hash,
+        evt_index,
+        'CreditsReward' AS event,
+        contract_address AS keep3r,
+        _job AS job,
+        NULL AS keeper,
+        '0x1ceb5cb57c4d4e2b2433641b95dd330a33185a44' AS token,
+        _currentCredits / 1e18 AS amount,
+        _periodCredits / 1e18 AS period_credits
+    FROM
+        (
+            SELECT
+                _rewardedAt,
+                evt_tx_hash,
+                evt_index,
+                contract_address,
+                _job,
+                _currentCredits,
+                _periodCredits
+            FROM
+                {{ source(
+                    'keep3r_network_ethereum',
+                    'Keep3r_evt_LiquidityCreditsReward'
+                ) }}
+            UNION
+            SELECT
+                _rewardedAt,
+                evt_tx_hash,
+                evt_index,
+                contract_address,
+                _job,
+                _currentCredits,
+                _periodCredits
+            FROM
+                {{ source(
+                    'keep3r_network_ethereum',
+                    'Keep3r_v2_evt_LiquidityCreditsReward'
+                ) }}
+        ) rewards
+)
+SELECT
+    *,
+    NULL AS period_credits
+FROM
+    work_evt
+UNION
+SELECT
+    *
+FROM
+    reward_evt
+UNION
+SELECT
+    `timestamp`,
+    tx_hash,
+    evt_index,
+    event,
+    keep3r,
+    job,
+    NULL AS keeper,
+    '0x1ceb5cb57c4d4e2b2433641b95dd330a33185a44' AS token,
+    NULL AS amount,
+    NULL AS period_credits
+FROM
+    {{ ref('keep3r_network_ethereum_view_job_migrations') }}
