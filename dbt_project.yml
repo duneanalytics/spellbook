@@ -301,6 +301,13 @@ models:
         +schema: airswap_ethereum
         +materialized: view
 
+    mstable:
+      +schema: mstable
+      +materialized: view
+      ethereum:
+        +schema: mstable_ethereum
+        +materialized: view
+
 seeds:
   spellbook:
     balances:
