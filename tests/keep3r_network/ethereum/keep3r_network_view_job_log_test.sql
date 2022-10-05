@@ -17,17 +17,17 @@ WITH unit_tests AS (
         END AS job_test,
         CASE
             WHEN LOWER(
-                keeper.job
+                test.keeper
             ) = LOWER(
-                keeper.job
+                actual.keeper
             ) THEN TRUE
             ELSE FALSE
         END AS keeper_test,
         CASE
             WHEN LOWER(
-                token.job
+                test.token
             ) = LOWER(
-                token.job
+                actual.token
             ) THEN TRUE
             ELSE FALSE
         END AS token_test
