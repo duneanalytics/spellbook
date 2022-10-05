@@ -103,7 +103,7 @@ models:
       - *undercoin2
       - *undercoin3
       - *gauge_contract
- 
+
   - name: curvefi_ethereum_trades
     meta:
       blockchain: ethereum
@@ -127,9 +127,9 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project 
+      - &project
         name: project
-        description: "Project name of the DEX"  
+        description: "Project name of the DEX"
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
@@ -166,9 +166,6 @@ models:
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of the token bought"
-        tests:
-          - dex_trades_token_bought:
-              dex_trades_seed: ref('dex_trades_seed')
       - &token_sold_address
         name: token_sold_address
         description: "Contract address of the token sold"
