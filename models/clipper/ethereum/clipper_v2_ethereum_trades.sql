@@ -26,6 +26,13 @@ WITH event_data as (
         '' AS trace_address,
         evt_index
     FROM  {{ source('clipper_ethereum', 'ClipperCaravelExchange_evt_Swapped') }}
+    WHERE 1=1
+    {% if not is_incremental() %}
+    AND tx.block_time >= '{{project_start_date}}'
+    {% endif %}
+    {% if is_incremental() %}
+    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 )
 
 SELECT
