@@ -14,7 +14,7 @@ select
   null as version,
   trf.evt_block_time as block_time,
   trf.tokenId as token_id,
-  t.name as collection,
+  tk.name as collection,
   0 as amount_usd, -- to do
   'erc721' as token_standard,
   'Single Item Trade' as trade_type, -- to verify
@@ -34,7 +34,7 @@ select
   trf.evt_tx_hash as tx_hash,
   trf.evt_block_number as block_number,
   trf.`from` as tx_from,
-  trf.`to` as tx_to
+  trf.`to` as tx_to,
   'TODO' as unique_trade_id -- to do
 from
   erc721_ethereum.evt_Transfer as trf
