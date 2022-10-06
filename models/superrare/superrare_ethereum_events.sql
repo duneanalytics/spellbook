@@ -154,7 +154,7 @@ with all_superrare_sales as (
             , '' as `_currencyAddress`
     -- from ethereum.logs
     from {{ source('ethereum','logs') }}
-    where contract_address = lower('0x65b49f7aee40347f5a90b714be4ef086f3fe5e2c')
+    where contract_address =  lower('0x65b49f7aee40347f5a90b714be4ef086f3fe5e2c')
         and topic1 in (lower('0x2a9d06eec42acd217a17785dbec90b8b4f01a93ecd8c127edd36bfccf239f8b6')
                         , lower('0x5764dbcef91eb6f946584f4ea671217c686fa7e858ce4f9f42d08422b86556a9'))
     {% if is_incremental() %} -- this filter will only be applied on an incremental run
