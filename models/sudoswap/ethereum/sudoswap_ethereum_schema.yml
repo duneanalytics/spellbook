@@ -236,7 +236,8 @@ models:
     columns:
       - name: pool_address
         description: "Address of the pool"
-        test: unique
+        tests:
+          - unique
       - *nft_contract_address
       - &creator_address
         name: creator_address
