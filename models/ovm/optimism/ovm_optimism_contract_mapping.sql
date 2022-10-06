@@ -118,7 +118,7 @@ with base_level as (
 )
 {%- endfor %}
 
--- ,creator_contracts as (
+,creator_contracts as (
   select 
     f.creator_address
     ,f.contract_factory
