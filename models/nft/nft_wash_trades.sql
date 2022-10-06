@@ -87,12 +87,24 @@ WHERE nftt.blockchain='ethereum'
     AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
     {% endif %}
 GROUP BY
-    nftt.block_time
-    , nftt.block_number
+    nftt.blockchain
     , nftt.project
+    , nftt.version
+    , nftt.nft_contract_address
+    , nftt.token_id
+    , nftt.token_standard
+    , nftt.trade_category
+    , nftt.buyer
+    , nftt.seller
+    , nftt.project_contract_address
+    , nftt.aggregator_name
+    , nftt.aggregator_address
+    , nftt.tx_from
+    , nftt.tx_to
+    , nftt.block_time
+    , nftt.block_number
     , nftt.tx_hash
     , nftt.unique_trade_id
     , filter_funding_buyer.first_funded_by
     , filter_funding_seller.first_funded_by
-    , nftt.seller
-    , nftt.buyer
+;
