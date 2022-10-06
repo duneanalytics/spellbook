@@ -12,14 +12,15 @@
     {%- set seed_check_columns = check_columns -%}
     {%- set seed_matching_columns = match_columns -%}
 
-    -- check if the matching columns return singular results
-    with matching_count_test as (
+    with matched_records as (
         select
-        'matched records count' as test_description,
-        count(model.{{seed_matching_columns[0]}}) as result,
-        1 as expected,
         {%- for column_name in seed_matching_columns %}
-        seed.{{column_name}} {% if not loop.last %},{% endif %}
+        seed.{{column_name}} as seed_{{column_name}},
+        model.{{column_name}} as model_{{column_name}},
+        {% endfor -%}
+        {%- for column_name in seed_check_columns %}
+        seed.{{column_name}} as seed_{{column_name}},
+        model.{{column_name}} as model_{{column_name}} {% if not loop.last %},{% endif %}
         {% endfor -%}
         from {{seed_file}} seed
         left join {{model}} model
@@ -27,9 +28,21 @@
         {%- for column_name in seed_matching_columns %}
         AND seed.{{column_name}} = model.{{column_name}}
         {% endfor -%}
+    ),
+
+    -- check if the matching columns return singular results
+    matching_count_test as (
+        select
+        'matched records count' as test_description,
+        count(model_{{seed_matching_columns[0]}}) as `result (model)`,
+        1 as `expected (seed)`,
+        {%- for column_name in seed_matching_columns %}
+        seed_{{column_name}} as {{column_name}}{% if not loop.last %},{% endif %}
+        {% endfor -%}
+        from matched_records
         GROUP BY
         {%- for column_name in seed_matching_columns %}
-        seed.{{column_name}} {% if not loop.last %},{% endif %}
+        seed_{{column_name}} {% if not loop.last %},{% endif %}
         {% endfor -%}
     ) ,
 
@@ -41,24 +54,17 @@
         ,test.*
         from (
             select
-            model.{{checked_column}} as result,
-            seed.{{checked_column}} as expected,
+            model_{{checked_column}} as `result (model)`,
+            seed_{{checked_column}} as `expected (seed)`,
             {%- for column_name in seed_matching_columns %}
-            seed.{{column_name}} {% if not loop.last %},{% endif %}
+            seed_{{column_name}} {% if not loop.last %},{% endif %}
             {% endfor -%}
-
-            from {{seed_file}} seed
-            left join {{model}} model
-            ON 1=1
-            {%- for column_name in seed_matching_columns %}
-            AND seed.{{column_name}} = model.{{column_name}}
-            {% endfor -%}
+            from matched_records
         ) test
         {%- if not loop.last %}
         UNION ALL
         {% endif -%}
         {% endfor -%}
-
     )
 
 
@@ -69,5 +75,5 @@
         select *
         from equality_tests
     ) all
-    where result != expected
+    where `result (model)` != `expected (seed)`
 {% endtest %}
