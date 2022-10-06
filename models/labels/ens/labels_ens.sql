@@ -42,6 +42,4 @@ SELECT array('ethereum') as blockchain,
        date('2022-10-06') as created_at,
        now() as modified_at
 FROM {{ ref('ens_reverse_latest') }}
-UNION
-
 
