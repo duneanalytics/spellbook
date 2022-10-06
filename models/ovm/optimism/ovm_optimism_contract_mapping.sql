@@ -15,6 +15,17 @@
 
 -- set max number of levels to trace root contract
 {% set max_levels = 5 %}
+-- set column names to loop through
+{% set cols = [
+    "contract_project"
+    ,"token_symbol"
+    ,"contract_name"
+    ,"creator_address"
+    ,"created_time"
+    ,"contract_factory"
+    ,"is_self_destruct"
+    ,"creation_tx_hash"
+] %}
 
 with base_level as (
     select 
@@ -121,12 +132,12 @@ with base_level as (
     on f.contract_factory = ccf.creator_address
   where f.contract_address is not null
 )
-,get_contracts as (
+,combine as (
   select 
     cc.creator_address
     ,cc.contract_factory
     ,cc.contract_address
-    ,coalesce(cc.project, oc.namespace) as project 
+    ,coalesce(cc.project, oc.namespace) as contract_project 
     ,oc.name as contract_name 
     ,cc.created_time
     ,coalesce(cc.is_self_destruct, false) as is_self_destruct
@@ -143,7 +154,7 @@ with base_level as (
     NULL as creator_address
     ,NULL as contract_factory
     ,oc.address as contract_address
-    ,oc.namespace as project
+    ,oc.namespace as contract_project
     ,oc.name as contract_name
     ,oc.created_at as created_time
     ,coalesce(cc.is_self_destruct, false) as is_self_destruct
@@ -162,6 +173,109 @@ with base_level as (
   -- ovm 1.0 contracts
 
   select 
-  from {{ source('optimism', 'contracts') }}
+    creator_address
+    ,NULL as contract_factory
+    ,contract_address
+    ,contract_project
+    ,contract_name
+    ,to_timestamp(created_time) as created_time
+    ,false as is_self_destruct
+    ,'ovm1 contracts' as source
+    NULL as creation_tx_hash
+  from {{ source('ovm1_optimism', 'contracts') }} as c
+  where 
+    not exists (
+      select 1
+      from {{ this }} as gc
+      where 
+        gc.contract_address = c.contract_address
+        and (
+          (gc.contract_project = c.contract_project) or (gc.contract_project is NULL)
+        )
+    )
+    or c.contract_address in (select contract_address from creator_contracts)
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9
 
+  union all 
+  --synthetix genesis contracts
+
+  select 
+    NULL as creator_address
+    ,NULL as contract_factory
+    ,snx.contract_address
+    ,'Synthetix' as contract_project
+    ,contract_name
+    ,to_timestamp('2021-07-06 00:00:00') as created_time
+    ,false as is_self_destruct
+    ,'synthetix contracts' as source
+    ,NULL as creation_tx_hash
+  from {{ source('ovm1_optimism', 'synthetix_genesis_contractscontracts') }} as snx
+  where 
+    not exists (
+      select 1 
+      from {{ this }} as gc
+      where 
+        gc.contract_address = snx.contract_address
+        and gc.contract_project = 'Synthetix'
+    )
+    or snx.contract_address in (select contract_address from creator_contracts)
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9
 )
+,get_contracts as (
+  select 
+    c.contract_address
+    ,c.contract_factory
+    ,c.contract_project
+    ,t.symbol as token_symbol
+    ,c.contract_name
+    ,c.creator_address
+    ,c.created_time 
+    ,c.is_self_destruct
+    c.creation_tx_hash
+  from combine as c 
+  left join tokens as t 
+    on c.contract_address = tokens.contract_address
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9
+)
+,cleanup as (
+--grab the first non-null value for each, i.e. if we have the contract via both contract mapping and optimism.contracts
+  select 
+    contract_address
+    {% for col in cols %}
+    (array_agg({{ col }}) filter (where {{ col }} is not NULL))[1] as {{ col }}
+    {% if not loop.last %}
+        ,
+    {% endif %}
+    {% endfor %}
+  from get_contracts
+  where contract_address is not NULL 
+)
+select 
+  c.contract_address
+  ,initcap(
+      replace(
+      -- priority order: Override name, Mapped vs Dune, Raw/Actual names
+        coalesce(
+          co.project
+          ,dnm.maapped_name
+          ,c.contract_project
+          ,ovm1c.contract_project
+        ),
+      '-',
+      ' '
+    )
+   ) as contract_project
+  ,c.token_symbol
+  ,coalesce(co.contract_name, c.contract_name) as contract_name
+  ,coalesce(c.creator_address, ovm1c.creator_address) as creator_address
+  ,coalesce(c.created_time, to_timestamp(ovm1c.created_time)) as created_time
+  ,contract_factory as contract_creator_if_factory
+  ,coalesce(is_self_destruct, false) as is_self_destruct
+  ,creation_tx_hash
+from cleanup as c 
+left join {{ source('ovm1_optimism', 'contracts') }} as ovm1c
+  on c.contract_address = ovm1c.contract_address --fill in any missing contract creators
+left join {{ source('ovm_optimism', 'project_name_mappings') }} as dnm -- fix names for decoded contracts
+  on lower(c.contract_project) = lower(dnm.dune_name)
+left join {{ source('ovm_optimism', 'contract_overrides') }} as co --override contract maps
+  on c.contract_address = co.contract_address
