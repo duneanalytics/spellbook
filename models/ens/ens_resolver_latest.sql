@@ -24,7 +24,7 @@ select
         ,evt_block_time as block_time
         ,evt_tx_hash as tx_hash
         ,evt_index
-        ,row_number() over (partition by node order by block_time desc, evt_index desc) as ordering
+        ,row_number() over (partition by node order by evt_block_time desc, evt_index desc) as ordering
         from {{ source('ethereumnameservice_ethereum','PublicResolver_evt_AddrChanged') }}
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
