@@ -21,7 +21,7 @@ with
       {{ ref('nft_ethereum_native_mints') }}
     where
       1 = 1
-      and contract_address = '0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85' -- ENS
+      and nft_contract_address = '0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85' -- ENS
       and block_time < now() - interval '1 day' -- allow some head desync
   )
 select
