@@ -47,19 +47,23 @@ with registrations as (
 , matching as (
     select *
     from (
-        select
-        r.*
-        ,n.address
-        ,n.node
-        ,row_number() over (partition by r.tx_hash order by (r.evt_index - n.evt_index) asc) as ordering
-        ,row_number() over (partition by n.node order by r.block_time desc, r.evt_index desc) as ordering2
-        from registrations r
-        inner join node_info n
-        ON r.block_number = n.block_number
-        AND r.tx_hash = n.tx_hash
-        AND r.evt_index > n.evt_index --register event comes after node event
+        select *
+        ,row_number() over (partition by node order by block_time desc, evt_index desc) as ordering2
+        from (
+            select
+            r.*
+            ,n.address
+            ,n.node
+            ,row_number() over (partition by r.tx_hash order by (r.evt_index - n.evt_index) asc) as ordering
+            from registrations r
+            inner join node_info n
+            ON r.block_number = n.block_number
+            AND r.tx_hash = n.tx_hash
+            AND r.evt_index > n.evt_index --register event comes after node event
+        )
+        where ordering = 1
     )
-    where ordering = 1 and ordering2 = 1
+    where ordering2 = 1
 )
 
 select
