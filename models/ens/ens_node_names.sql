@@ -71,7 +71,7 @@ select
     ,concat(label_name,'.eth') as name
     ,label_name
     ,label_hash
-    ,initial_address
+    ,address as initial_address
     ,tx_hash
     ,block_number
     ,block_time
