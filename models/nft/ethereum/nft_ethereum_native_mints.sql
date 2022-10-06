@@ -1,5 +1,8 @@
 {{ config(
-        alias ='events',
+        alias ='native_mints',
+		materialized = 'incremental',
+		file_format = 'delta',
+		incremental_strategy = 'merge',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "nft",
@@ -79,11 +82,15 @@ from
   and prc.blockchain = 'ethereum'
 where
   erc721.`from` = '0x0000000000000000000000000000000000000000'
+  -- and erc721.contract_address = '0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85' -- ENS (for debugging)
+  {% if is_incremental() %}
+  and erc721.evt_block_time >= date_trunc("day", now() - interval '1 week')
+  and tx.block_time >= date_trunc("day", now() - interval '1 week')
+  and prc.minute >= date_trunc("day", now() - interval '1 week')
+  {% endif %}
 --limit
 --  1000
 
--- to do: make incremental
-
--- to do: where to include in tranform pipelin leading to nft.mints?
+-- to do: where to include in tranform pipeline leading to nft.mints?
 --			a) in nft_mints
 --			b) in nft_ethereum_events
