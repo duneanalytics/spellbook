@@ -117,9 +117,6 @@ models:
     superrare:
       +schema: superrare
       +materialized: view
-      ethereum:
-        +schema: superrare_ethereum
-        +materialized: view
     looksrare:
       +schema: looksrare
       +materialized: view

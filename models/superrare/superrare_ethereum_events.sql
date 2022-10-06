@@ -176,8 +176,11 @@ with all_superrare_sales as (
                 end as eth_per_rare
         -- from dex.trades
         from {{ ref('dex_trades') }}
-        where   -- RARE trades
-                (token_bought_address = lower('0xba5bde662c17e2adff1075610382b9b691296350') or token_sold_address = lower('0xba5bde662c17e2adff1075610382b9b691296350'))
+        {% if is_incremental() %} -- this filter will only be applied on an incremental run
+        where block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+        -- RARE trades
+            and (token_bought_address = lower('0xba5bde662c17e2adff1075610382b9b691296350') or token_sold_address = lower('0xba5bde662c17e2adff1075610382b9b691296350'))
             and (token_bought_symbol like '%ETH%' or token_sold_symbol like '%ETH%')    
         order by block_time desc 
     )
@@ -215,12 +218,18 @@ with all_superrare_sales as (
     where contract_address in (select distinct contract_address from all_superrare_sales)
     and `tokenId` in (select distinct `_tokenId` from all_superrare_sales)
     and `from` = '0x0000000000000000000000000000000000000000'
+    {% if is_incremental() %} -- this filter will only be applied on an incremental run
+    and evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     ) a 
     inner join 
     ( select `from` 
             , hash 
     -- from ethereum.transactions
     from {{ source('ethereum','transactions') }}
+    {% if is_incremental() %} -- this filter will only be applied on an incremental run
+    where block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     ) b 
     on a.evt_tx_hash = b.hash
 )
@@ -233,6 +242,10 @@ with all_superrare_sales as (
     where contract_address in (select distinct contract_address from all_superrare_sales)
     and `value` in (select distinct `_tokenId` from all_superrare_sales)
     and `from` = '0x0000000000000000000000000000000000000000'
+    {% if is_incremental() %} -- this filter will only be applied on an incremental run
+    and evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+
 )
 , token_sold_from_auction as (
     select contract_address
@@ -257,6 +270,9 @@ with all_superrare_sales as (
     from {{ source('erc721_ethereum','evt_transfer') }}
     where contract_address in (select distinct contract_address from token_sold_from_auction)
     and `tokenId` in (select distinct `_tokenId` from token_sold_from_auction)
+    {% if is_incremental() %} -- this filter will only be applied on an incremental run
+    and evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}    
     order by 1, 2, 8
 )
 
@@ -347,7 +363,11 @@ from all_superrare_sales a
 left outer join (select minute, price 
                 -- from prices.usd 
                 from {{ source('prices','usd') }}
-                where blockchain = 'ethereum' and symbol = 'WETH' ) ep 
+                where blockchain = 'ethereum' and symbol = 'WETH' 
+                {% if is_incremental() %} -- this filter will only be applied on an incremental run
+                and minute >= date_trunc("day", now() - interval '1 week')
+                {% endif %}
+                ) ep 
 on date_trunc('minute', a.evt_block_time) = ep.minute
 
 left outer join rare_token_price_eth rp
@@ -356,6 +376,9 @@ on date_trunc('week', a.evt_block_time) = rp.week
 -- left outer join ethereum.transactions t 
 left outer join  {{ source('ethereum','transactions') }} t
 on a.evt_tx_hash = t.hash
+{% if is_incremental() %} -- this filter will only be applied on an incremental run
+and t.block_time >= date_trunc("day", now() - interval '1 week')
+{% endif %}
 
 left outer join mint_address_details_per_token_id ma721 -- erc721 - who minted and where it got sent 
 on a.contract_address = ma721.contract_address
