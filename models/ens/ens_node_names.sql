@@ -61,16 +61,19 @@ with registrations as (
     where ordering = 1
 )
 
+,window as (partition by node order by block_time asc,evt_index asc)
+
 select
     node
     ,concat(label_name,'.eth') as name
     ,label_name
     ,label_hash
-    ,address as initial_address
-    ,tx_hash
-    ,block_number
-    ,block_time
-    ,evt_index
+    ,last(address,true) over window as initial_address
+    ,last(tx_hash,true) over window as tx_hash
+    ,last(block_number,true) over window as block_number
+    ,last(block_time,true) over window as block_time
+    ,last(evt_index,true) over window as evt_index
 from matching
+group by 1,2,3,4
 
 
