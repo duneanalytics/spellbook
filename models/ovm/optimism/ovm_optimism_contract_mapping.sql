@@ -39,7 +39,7 @@ with base_level as (
       ,ct.tx_hash as creation_tx_hash
 -- TODO CHUXIN: creation_traces does not have trace_address
 -- we might need to swtich back to look at traces?
-    from {{ source('optimism', 'creation_traces') }} as ct 
+    from {{ source('optimism', 'traces') }} as ct 
     where 
       true
     {% if is_incremental() %} -- this filter will only be applied on an incremental run 
@@ -217,7 +217,7 @@ with base_level as (
     ,false as is_self_destruct
     ,'synthetix contracts' as source
     ,NULL as creation_tx_hash
-  from {{ source('ovm1_optimism', 'synthetix_genesis_contractscontracts') }} as snx
+  from {{ source('ovm1_optimism', 'synthetix_genesis_contracts') }} as snx
   where 
     not exists (
       select 1 
@@ -283,7 +283,7 @@ select
 from cleanup as c 
 left join {{ source('ovm1_optimism', 'contracts') }} as ovm1c
   on c.contract_address = ovm1c.contract_address --fill in any missing contract creators
-left join {{ source('ovm_optimism', 'project_name_mappings') }} as dnm -- fix names for decoded contracts
+left join {{ ref('project_name_mappings') }} as dnm -- fix names for decoded contracts
   on lower(c.contract_project) = lower(dnm.dune_name)
-left join {{ source('ovm_optimism', 'contract_overrides') }} as co --override contract maps
+left join {{ ref('contract_overrides') }} as co --override contract maps
   on c.contract_address = co.contract_address
