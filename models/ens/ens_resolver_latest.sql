@@ -34,7 +34,7 @@ select
    )
 
 select
-    ,n.name
+    n.name
     ,r.address
     ,r.node
     ,r.block_time as latest_tx_block_time
