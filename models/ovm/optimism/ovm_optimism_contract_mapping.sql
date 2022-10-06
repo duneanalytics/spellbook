@@ -26,31 +26,38 @@
     ,"is_self_destruct"
     ,"creation_tx_hash"
 ] %}
-
+-- TODO CHUXIN: ask how the backfilling of creator_rows work
 with base_level as (
+  select 
+    *
+  from (
     select 
       ct.`from` as creator_address
       ,NULL::string as contract_factory
       ,ct.address as contract_address
       ,ct.block_time as created_time
-      ,ct.tx_hash
+      ,ct.tx_hash as creation_tx_hash
+-- TODO CHUXIN: creation_traces does not have trace_address
+-- we might need to swtich back to look at traces?
     from {{ source('optimism', 'creation_traces') }} as ct 
     where 
       true
-      {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+    {% if is_incremental() %} -- this filter will only be applied on an incremental run 
       and block_time >= date_trunc('day', now() - interval '1 week')
-      {% endif %}
 
     -- to get existing history of contract mapping
     union all 
-
+    -- TODO CHUXIN: ask what are the joins to creator_row about
     select 
       creator_address
-      ,contract_factory
+      ,contract_creator_if_factory as contract_factory
       ,contract_address
       ,created_time
-      ,tx_hash
+      ,creation_tx_hash
     from {{ this }}
+    {% endif %}
+  ) as x
+  group by 1, 2, 3, 4, 5
 )
 ,tokens as (
   select 
@@ -89,15 +96,16 @@ with base_level as (
       end as contract_factory
       {% endif %}
       ,b.contract_address
-      ,b.block_time
-      ,b.tx_hash
-      ,b.trace_element
-    from base_level as b
+      ,b.created_time
+      ,b.creation_tx_hash
+      -- ,b.trace_element
     {% if loop.first -%}
+    from base_level as b
     left join base_level as b1
       on b.creator_address = b1.contract_address
     {% else -%}
-    left join level{{i-1}} as b1
+    from level{{i-1}} as b
+    left join base_level as b1
       on b.creator_address = b1.contract_address
     {% endif %}
 )
