@@ -1,5 +1,6 @@
 {{ config(
     alias = 'fees',
+    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -8,6 +9,7 @@
 }}
 
 SELECT 
+     date_trunc('week', block_time) AS block_date,
      block_time,
      block_number,
      txns.hash AS tx_hash,
