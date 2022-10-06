@@ -29,7 +29,11 @@
 -- TODO CHUXIN: ask how the backfilling of creator_rows work
 with base_level as (
   select 
-    *
+    creator_address
+    ,contract_factory
+    ,contract_address
+    ,created_time
+    ,creation_tx_hash
   from (
     select 
       ct.`from` as creator_address
@@ -39,7 +43,7 @@ with base_level as (
       ,ct.tx_hash as creation_tx_hash
 -- TODO CHUXIN: creation_traces does not have trace_address
 -- we might need to swtich back to look at traces?
-    from {{ source('optimism', 'traces') }} as ct 
+    from {{ source('optimism', 'creation_traces') }} as ct 
     where 
       true
     {% if is_incremental() %} -- this filter will only be applied on an incremental run 
@@ -65,20 +69,20 @@ with base_level as (
     ,t.symbol
   from base_level as bl 
   join {{ ref('tokens_optimism_erc20') }} as t
-    on bl."contract_address" = t."contract_address"
+    on bl.contract_address = t.contract_address
   group by 1, 2
 
   union all 
 
   select 
     bl.contract_address
-    ,t.project_name as symbol
+    ,t.name as symbol
   from base_level as bl 
   join {{ ref('tokens_optimism_nft') }} as t
-    on bl."contract_address" = t."contract_address"
+    on bl.contract_address = t.contract_address
   group by 1, 2
 )
-
+-- starting from 0 
 {% for i in range(max_levels) -%}
 ,level{{i}} as (
     select
