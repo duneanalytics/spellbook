@@ -25,7 +25,7 @@ with all_superrare_sales as (
     -- from superrare_ethereum.SuperRareMarketAuction_evt_Sold
     from {{ source('superrare_ethereum','SuperRareMarketAuction_evt_Sold') }}
     {% if is_incremental() %} -- this filter will only be applied on an incremental run
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    where evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 
     union all 
@@ -41,7 +41,7 @@ with all_superrare_sales as (
     -- from superrare_ethereum.SuperRare_evt_Sold
     from {{ source('superrare_ethereum','SuperRare_evt_Sold') }}
     {% if is_incremental() %} -- this filter will only be applied on an incremental run
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    where evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 
     union all 
@@ -57,7 +57,7 @@ with all_superrare_sales as (
     -- from superrare_ethereum.SuperRareMarketAuction_evt_AcceptBid
     from {{ source('superrare_ethereum','SuperRareMarketAuction_evt_AcceptBid') }}
     {% if is_incremental() %} -- this filter will only be applied on an incremental run
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    where evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}    
 
     union all 
@@ -73,7 +73,7 @@ with all_superrare_sales as (
     -- from superrare_ethereum.SuperRare_evt_AcceptBid
     from {{ source('superrare_ethereum','SuperRare_evt_AcceptBid') }}
     {% if is_incremental() %} -- this filter will only be applied on an incremental run
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    where evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 
     union all 
@@ -89,7 +89,7 @@ with all_superrare_sales as (
     -- from superrare_ethereum.SuperRareBazaar_evt_AcceptOffer
     from {{ source('superrare_ethereum','SuperRareBazaar_evt_AcceptOffer') }}
     {% if is_incremental() %} -- this filter will only be applied on an incremental run
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    where evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 
     union all 
@@ -105,7 +105,7 @@ with all_superrare_sales as (
     -- from superrare_ethereum.SuperRareBazaar_evt_AuctionSettled
     from {{ source('superrare_ethereum','SuperRareBazaar_evt_AuctionSettled') }}
     {% if is_incremental() %} -- this filter will only be applied on an incremental run
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    where evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 
     union all 
@@ -121,7 +121,7 @@ with all_superrare_sales as (
     -- from superrare_ethereum.SuperRareBazaar_evt_Sold
     from {{ source('superrare_ethereum','SuperRareBazaar_evt_Sold') }}
     {% if is_incremental() %} -- this filter will only be applied on an incremental run
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    where evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 
     union all 
@@ -138,9 +138,9 @@ with all_superrare_sales as (
     from {{ source('ethereum','logs') }}
     where contract_address = lower('0x8c9f364bf7a56ed058fc63ef81c6cf09c833e656')
         and topic1 = lower('0xea6d16c6bfcad11577aef5cc6728231c9f069ac78393828f8ca96847405902a9')
-    {% if is_incremental() %} -- this filter will only be applied on an incremental run
-    and block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+        {% if is_incremental() %} -- this filter will only be applied on an incremental run
+        and block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 
     union all 
     
@@ -156,11 +156,11 @@ with all_superrare_sales as (
     from {{ source('ethereum','logs') }}
     where contract_address =  lower('0x65b49f7aee40347f5a90b714be4ef086f3fe5e2c')
         and topic1 in (lower('0x2a9d06eec42acd217a17785dbec90b8b4f01a93ecd8c127edd36bfccf239f8b6')
-                        , lower('0x5764dbcef91eb6f946584f4ea671217c686fa7e858ce4f9f42d08422b86556a9'))
-    {% if is_incremental() %} -- this filter will only be applied on an incremental run
-    and block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-
+                        , lower('0x5764dbcef91eb6f946584f4ea671217c686fa7e858ce4f9f42d08422b86556a9')
+                      )
+        {% if is_incremental() %} -- this filter will only be applied on an incremental run
+        and block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 )
 
 -- some items are sold in RARE currency on superrare. not available on coinpaprika, so using dex data to be able to convert to USD. usuing weekly average since dex data isn't fully populated on v2 right now (~1/8 of data vs. v1). switch back to daily once full data is available
@@ -176,12 +176,13 @@ with all_superrare_sales as (
                 end as eth_per_rare
         -- from dex.trades
         from {{ ref('dex_trades') }}
-        {% if is_incremental() %} -- this filter will only be applied on an incremental run
-        where block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-        -- RARE trades
-            and (token_bought_address = lower('0xba5bde662c17e2adff1075610382b9b691296350') or token_sold_address = lower('0xba5bde662c17e2adff1075610382b9b691296350'))
-            and (token_bought_symbol like '%ETH%' or token_sold_symbol like '%ETH%')    
+        where  -- RARE trades
+               (token_bought_address = lower('0xba5bde662c17e2adff1075610382b9b691296350') or token_sold_address = lower('0xba5bde662c17e2adff1075610382b9b691296350'))
+                and (token_bought_symbol like '%ETH%' or token_sold_symbol like '%ETH%')   
+            {% if is_incremental() %} -- this filter will only be applied on an incremental run
+            and block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
+        
         order by block_time desc 
     )
     , all_days as (
