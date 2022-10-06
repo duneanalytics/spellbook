@@ -128,32 +128,6 @@ models:
       - name: latest_tx_block_time
         description: "Block time of the latest transaction hash setting the reverse ENS"
 
-
-  - name: ens_reverse_latest
-    meta:
-      blockchain: ethereum
-      project: ethereum_name_service
-      contributors: 0xRob
-    config:
-      tags: [ 'ethereum','ens','ethereum_name_service','ethereumnameservice','reverse','latest','0xRob']
-    description: >
-      View the latest ENS reverse records
-    columns:
-      - name: address
-        description: "The ETH address"
-        tests:
-          - unique
-      - name: name
-        description: "The reverse ENS name"
-      - name: address_node
-        description: "The node (namehash) of the address reverse record"
-        tests:
-          - unique
-      - name: latest_tx_hash
-        description: "Latest transaction hash setting the reverse ENS"
-      - name: latest_tx_block_time
-        description: "Block time of the latest transaction hash setting the reverse ENS"
-
   - name: ens_node_names
     meta:
       blockchain: ethereum
