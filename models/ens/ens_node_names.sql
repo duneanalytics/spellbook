@@ -52,28 +52,26 @@ with registrations as (
         ,n.address
         ,n.node
         ,row_number() over (partition by r.tx_hash order by (r.evt_index - n.evt_index) asc) as ordering
+        ,row_number() over (partition by n.node order by r.block_time desc, r.evt_index desc) as ordering2
         from registrations r
         inner join node_info n
         ON r.block_number = n.block_number
         AND r.tx_hash = n.tx_hash
         AND r.evt_index > n.evt_index --register event comes after node event
     )
-    where ordering = 1
+    where ordering = 1 and ordering2 = 1
 )
-
-,window as (partition by node order by block_time asc,evt_index asc)
 
 select
     node
     ,concat(label_name,'.eth') as name
     ,label_name
     ,label_hash
-    ,last(address,true) over window as initial_address
-    ,last(tx_hash,true) over window as tx_hash
-    ,last(block_number,true) over window as block_number
-    ,last(block_time,true) over window as block_time
-    ,last(evt_index,true) over window as evt_index
+    ,initial_address
+    ,tx_hash
+    ,block_number
+    ,block_time
+    ,evt_index
 from matching
-group by 1,2,3,4
 
 
