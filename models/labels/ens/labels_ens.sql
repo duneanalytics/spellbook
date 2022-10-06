@@ -19,7 +19,7 @@ FROM (
        date('2022-10-06') as created_at,
        now() as modified_at
     FROM {{ ref('ens_resolver_latest') }} res
-    OUTER JOIN {{ ref('ens_reverse_latest') }} rev
+    FULL OUTER JOIN {{ ref('ens_reverse_latest') }} rev
     ON res.address = rev.address
 ) ens
 UNION
