@@ -350,7 +350,7 @@ with p1_call as (
           ,'Buy Now' as purchase_method
       from p2_evt a
      group by 1,2,3,4,5
-     having count(distinct evt_price_token) > 1 -- execlude more than 2 currencies used in single txns
+     having count(distinct evt_price_token) = 1 -- execlude more than 2 currencies used in single txns
 )
 ,p2_nft_trades as ( 
     select a.block_time
