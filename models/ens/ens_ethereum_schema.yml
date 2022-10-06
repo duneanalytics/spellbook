@@ -205,7 +205,7 @@ models:
           - unique
       - name: address
         description: "The resolver address of the ENS name"
-      - name: block_time
+      - name: latest_tx_block_time
         description: "block time of last update"
-      - name: tx_hash
+      - name: latest_tx_hash
         description: "transaction hash of last update"

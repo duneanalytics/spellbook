@@ -37,8 +37,8 @@ select
     ,n.name
     ,r.address
     ,r.node
-    ,r.block_time
-    ,r.tx_hash
+    ,r.block_time as latest_tx_block_time
+    ,r.tx_hash as latest_tx_hash
 from latest_resolver_records r
 inner join {{ ref('ens_node_names')}} n
 ON r.node = n.node
