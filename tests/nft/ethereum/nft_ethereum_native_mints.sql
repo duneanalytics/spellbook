@@ -17,7 +17,7 @@ with
 	  and block_time >= date_trunc("day", now() - interval '1 week')
 	  {% endif %}
 	  {% if not is_incremental() %}
-	  and tx.block_number > 14801608
+	  and block_number > 14801608
 	  {% endif %}
   ),
   eth_native_mints_ctn as (
