@@ -60,4 +60,5 @@ AND p.symbol = 'WETH'
 AND p.minute >= date_trunc("day", now() - interval '1 week')
 WHERE block_time >= date_trunc("day", now() - interval '1 week')
 AND blocks.time >= date_trunc("day", now() - interval '1 week')
+AND p.minute >= date_trunc("day", now() - interval '1 week')
 {% endif %}
