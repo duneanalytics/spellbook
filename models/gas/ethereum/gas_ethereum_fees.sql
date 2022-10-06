@@ -48,11 +48,14 @@ SELECT
 FROM ethereum.transactions txns
 JOIN ethereum.blocks blocks ON blocks.number = txns.block_number
 {% if is_incremental() %}
-AND txns.block_time >= date_trunc("day", now() - interval '1 week')
+AND block_time >= date_trunc("day", now() - interval '1 week')
+AND blocks.time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
 LEFT JOIN prices.usd p ON p.minute = date_trunc('minute', block_time)
 AND p.blockchain = 'ethereum'
 AND p.symbol = 'WETH'
 {% if is_incremental() %}
 AND p.minute >= date_trunc("day", now() - interval '1 week')
+WHERE block_time >= date_trunc("day", now() - interval '1 week')
+AND blocks.time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
