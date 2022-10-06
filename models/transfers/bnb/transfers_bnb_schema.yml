@@ -1,0 +1,127 @@
+version: 2
+
+models:
+  - name: transfers_bnb
+    meta:
+      blockchain: bnb
+      sector: transfers
+      project: bep20
+      contibutors: hosuke
+    config:
+      tags: [ 'transfers', 'bnb', 'hosuke' ]
+    description: "Transfers on BNB smart chain."
+    columns:
+      - name: unique_transfer_id
+        description: "Unique transfer ID (used for testing for duplicates)"
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &wallet_address
+        name: wallet_address
+        description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
+      - &token_address
+        name: token_address
+        description: "Contract address for token"
+      - &evt_block_time
+        name: evt_block_time
+        description: "Timestamp for block event time in UTC"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of BNB token held *before* taking into account token decimals"
+
+  - name: transfers_bnb_agg_hour
+    meta:
+      blockchain: bnb
+      sector: transfers
+      project: bep20
+      contibutors: hosuke
+    config:
+      tags: ['transfers', 'bnb', 'bep20', 'agg_hour', 'hosuke']
+    columns:
+      - *blockchain
+      - &hour
+        name: hour
+        description: "UTC event block time truncated to the hour mark."
+      - *wallet_address
+      - *token_address
+      - name: symbol
+        description: "BEP20 token symbol"
+      - *amount_raw
+      - name: amount
+        description: "Raw amount of BEP20 token held *after* taking into account token decimals"
+      - name: unique_transfer_id
+        description: "Unique ID, used in order to apply the merge into incremental strategy"
+        tests:
+          - unique
+
+  - name: transfers_bnb_agg_day
+    meta:
+      blockchain: bnb
+      sector: transfers
+      project: bep20
+      contibutors: hosuke
+    config:
+      tags: ['transfers', 'bnb', 'bep20', 'agg_day', 'hosuke']
+    columns:
+      - *blockchain
+      - &day
+        name: day
+        description: "UTC event block time truncated to the day mark."
+      - *wallet_address
+      - *token_address
+      - name: symbol
+        description: "BEP20 token symbol"
+      - *amount_raw
+      - name: amount
+        description: "Raw amount of BEP20 token held *after* taking into account token decimals"
+      - name: unique_transfer_id
+        description: "Unique ID, used in order to apply the merge into incremental strategy"
+        tests:
+          - unique
+
+  - name: transfers_bnb_rolling_hour
+    meta:
+      blockchain: bnb
+      sector: transfers
+      project: bep20
+      contibutors: hosuke
+    config:
+      tags: [ 'transfers', 'bnb', 'bep20', 'rolling_hour', 'hosuke' ]
+    columns:
+      - *blockchain
+      - *hour
+      - *wallet_address
+      - *token_address
+      - name: symbol
+        description: "BEP20 token symbol"
+      - *amount_raw
+      - name: amount
+        description: "Rolling sum of raw amount of BEP20 token held *after* taking into account token decimals"
+      - name: updated_at
+        description: "UTC timestamp when table was last updated"
+      - name: recency_index
+        description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
+
+  - name: transfers_bnb_rolling_day
+    meta:
+      blockchain: bnb
+      sector: transfers
+      project: bep20
+      contibutors: hosuke
+    config:
+      tags: [ 'transfers', 'bnb', 'bep20', 'rolling_day', 'hosuke' ]
+    columns:
+      - *blockchain
+      - *day
+      - *wallet_address
+      - *token_address
+      - name: symbol
+        description: "BEP20 token symbol"
+      - *amount_raw
+      - name: amount
+        description: "Rolling sum of raw amount of BEP20 token held *after* taking into account token decimals"
+      - name: last_updated
+        description: "UTC timestamp when table was last updated"
+      - name: recency_index
+        description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
+
