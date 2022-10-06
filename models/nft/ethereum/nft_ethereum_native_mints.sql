@@ -30,8 +30,17 @@ select
   ) / power(10, prc.decimals) as amount_usd,
   'erc721' as token_standard,
   'Single Item Trade' as trade_type,
-  1 as number_of_items, -- to verify: # items in this mint (ie: 1 for erc721), or # items in tx (possibly more than 1 also for erc721)
-  'Buy' as trade_category, -- to verify
+  sum(
+    case
+        when erc721.`from` = '0x0000000000000000000000000000000000000000' then 1
+        else 0
+    end
+  ) over (
+    partition by
+      erc721.contract_address,
+      erc721.evt_tx_hash
+  ) as number_of_items,
+  'Buy' as trade_category,
   'Mint' as evt_type,
   erc721.`from` as seller,
   erc721.`to` as buyer,
@@ -88,7 +97,7 @@ where
   and tx.block_time >= date_trunc("day", now() - interval '1 week')
   and prc.minute >= date_trunc("day", now() - interval '1 week')
   {% endif %}
---limit
+--limit (for debugging)
 --  1000
 
 -- to do: where to include in tranform pipeline leading to nft.mints?
