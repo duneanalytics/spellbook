@@ -15,16 +15,43 @@ select
   erc721.evt_block_time as block_time,
   erc721.tokenId as token_id,
   tokens_nft.name as collection,
-  0 as amount_usd, -- to do
+  prc.price * tx.value / sum(
+    case
+        when erc721.`from` = '0x0000000000000000000000000000000000000000' then 1
+        else 0
+    end
+  ) over (
+    partition by
+      erc721.contract_address,
+      erc721.evt_tx_hash
+  ) / power(10, prc.decimals) as amount_usd,
   'erc721' as token_standard,
   'Single Item Trade' as trade_type,
-  1 as number_of_items,
+  1 as number_of_items, -- to verify: # items in this mint (ie: 1 for erc721), or # items in tx (possibly more than 1 also for erc721)
   'Buy' as trade_category, -- to verify
   'Mint' as evt_type,
   erc721.`from` as seller,
   erc721.`to` as buyer,
-  0 as amount_original, -- to do
-  0 as amount_raw, -- to do
+  tx.value / sum(
+    case
+        when erc721.`from` = '0x0000000000000000000000000000000000000000' then 1
+        else 0
+    end
+  ) over (
+    partition by
+      erc721.contract_address,
+      erc721.evt_tx_hash
+  ) / power(10, prc.decimals) as amount_original,
+  tx.value / sum(
+    case
+        when erc721.`from` = '0x0000000000000000000000000000000000000000' then 1
+        else 0
+    end
+  ) over (
+    partition by
+      erc721.contract_address,
+      erc721.evt_tx_hash
+  )  as amount_raw,
   'ETH' as currency_symbol,
   '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' as currency_contract,
   erc721.contract_address as nft_contract_address,
@@ -35,12 +62,23 @@ select
   erc721.evt_block_number as block_number,
   erc721.`from` as tx_from,
   erc721.`to` as tx_to,
-  erc721.contract_address || '-' || erc721.evt_tx_hash || '-' || erc721.tokenId || '-' || erc721.`from` as unique_trade_id -- to verify
+  erc721.contract_address || '-' || erc721.evt_tx_hash || '-' || erc721.tokenId || '-' || erc721.`from` || '-' || cast(rank(*) over (
+    partition by
+      erc721.contract_address,
+      erc721.evt_tx_hash
+    order by
+      erc721.tokenId
+  ) as string)
+  as unique_trade_id
 from
   {{ source('erc721_ethereum','evt_transfer') }} erc721
   left join {{ ref('tokens_nft') }} tokens_nft on erc721.contract_address = tokens_nft.contract_address
+  inner join {{ source('ethereum','transactions') }} tx on erc721.evt_tx_hash = tx.hash
+  left join {{ source('prices','usd') }} prc on prc.contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+  and prc.minute = date_trunc('minute', erc721.evt_block_time)
+  and prc.blockchain = 'ethereum'
 where
-  `from` = '0x0000000000000000000000000000000000000000'
+  erc721.`from` = '0x0000000000000000000000000000000000000000'
 --limit
 --  1000
 
@@ -49,10 +87,3 @@ where
 -- to do: where to include in tranform pipelin leading to nft.mints?
 --			a) in nft_mints
 --			b) in nft_ethereum_events
-
--- to do: get amount_original, amount_raw
---			-> join on eth.tx; then amount_raw = value/(#mints in tx) ? 
---			-> amount_original = amount_raw / 10e18 ?
-
--- to do: get amount_usd
---			-> join on prices table by block_time?
