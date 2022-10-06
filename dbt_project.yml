@@ -126,6 +126,13 @@ models:
       ethereum:
         +schema: foundation_ethereum
         +materialized: view
+        
+    gas:
+      +schema: gas
+      +materialized: view
+      ethereum:
+        +schema: gas_ethereum
+        +materialized: view
     
     gmx:
       +schema: gmx
