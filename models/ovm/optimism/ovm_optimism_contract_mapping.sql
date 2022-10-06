@@ -36,16 +36,18 @@ with base_level as (
     ,creation_tx_hash
   from (
     select 
-      ct.`from` as creator_address
+      `from` as creator_address
       ,NULL::string as contract_factory
-      ,ct.address as contract_address
-      ,ct.block_time as created_time
-      ,ct.tx_hash as creation_tx_hash
--- TODO CHUXIN: creation_traces does not have trace_address
--- we might need to swtich back to look at traces?
-    from {{ source('optimism', 'creation_traces') }} as ct 
+      ,address as contract_address
+      ,block_time as created_time
+      ,tx_hash as creation_tx_hash
+      ,trace_address[1] as trace_element
+    from {{ source('optimism', 'traces') }} as ct 
     where 
       true
+      and success
+      and tx_success
+      and type = 'create'
     {% if is_incremental() %} -- this filter will only be applied on an incremental run 
       and block_time >= date_trunc('day', now() - interval '1 week')
 
@@ -58,10 +60,11 @@ with base_level as (
       ,contract_address
       ,created_time
       ,creation_tx_hash
+      ,trace_element
     from {{ this }}
     {% endif %}
   ) as x
-  group by 1, 2, 3, 4, 5
+  group by 1, 2, 3, 4, 5, 6
 )
 ,tokens as (
   select 
@@ -115,35 +118,36 @@ with base_level as (
 )
 {%- endfor %}
 
-,creator_contracts as (
+-- ,creator_contracts as (
   select 
     f.creator_address
     ,f.contract_factory
     ,f.contract_address
     ,coalesce(cc.project, ccf.project) as project 
     ,f.created_time
+    -- check if the contract is an immediate self-destruct contract
     ,case 
       when exists (
         select 1 
         from {{ source('optimism', 'traces') }} as sd 
         where 
-          f.tx_hash = sd.tx_hash
-          -- and f.trace_element = sd.trace_address[1]
-          and sd."type" = 'suicide'
+          f.creation_tx_hash = sd.tx_hash
+          and f.trace_element = sd.trace_address[1]
+          and sd.type = 'suicide'
           {% if is_incremental() %} -- this filter will only be applied on an incremental run 
           and sd.block_time >= date_trunc('day', now() - interval '1 week')
           {% endif %}
       ) then true 
       else false 
     end as is_self_destruct
-    ,f.tx_hash as creation_tx_hash 
+    ,f.creation_tx_hash 
   from level{{max_levels}} as f
   left join {{ ref('contract_creator_address_list') }} as cc 
     on f.creator_address = cc.creator_address
   left join {{ ref('contract_creator_address_list') }} as ccf
     on f.contract_factory = ccf.creator_address
   where f.contract_address is not null
-)
+-- )
 ,combine as (
   select 
     cc.creator_address
