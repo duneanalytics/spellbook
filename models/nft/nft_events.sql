@@ -3,7 +3,7 @@
         post_hook='{{ expose_spells(\'["ethereum","solana"]\',
                                     "sector",
                                     "nft",
-                                    \'["soispoke"]\') }}')
+                                    \'["soispoke"], ["umer_h_adil"]\') }}')
 }}
 
 SELECT *
@@ -408,4 +408,47 @@ FROM
                 royalty_fee_percentage,
                 unique_trade_id
         FROM {{ ref('zora_ethereum_events') }}
+        UNION
+        SELECT
+                blockchain,
+                project,
+                version,
+                block_time,
+                token_id,
+                collection,
+                amount_usd,
+                token_standard,
+                trade_type,
+                number_of_items,
+                trade_category,
+                evt_type,
+                seller,
+                buyer,
+                amount_original,
+                amount_raw,
+                currency_symbol,
+                currency_contract,
+                nft_contract_address,
+                project_contract_address,
+                aggregator_name,
+                aggregator_address,
+                tx_hash,
+                block_number,
+                tx_from,
+                tx_to,
+                null as platform_fee_amount_raw,
+                null as platform_fee_amount,
+                null as platform_fee_amount_usd,
+                null as platform_fee_percentage,
+                null as royalty_fee_receive_address,
+                null as royalty_fee_currency_symbol,
+                null as royalty_fee_amount_raw,
+                null as royalty_fee_amount,
+                null as royalty_fee_amount_usd,
+                null as royalty_fee_percentage,
+                unique_trade_id
+        FROM {{ ref('nft_ethereum_native_mints') }}
+		-- CryptoPunks has it's own spell, which is included in the pipeline building up to nft_events.
+		-- To prevent duplicates in nft_events, we'll ignore it here.
+		WHERE nft_contract_address <> '0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb' 
 )

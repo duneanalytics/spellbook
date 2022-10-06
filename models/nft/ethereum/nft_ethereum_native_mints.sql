@@ -3,13 +3,12 @@
 		materialized = 'incremental',
 		file_format = 'delta',
 		incremental_strategy = 'merge',
+        unique_key='unique_trade_id',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "nft",
                                     \'["umer_h_adil"]\') }}')
 }}
--- to verify: should this intermediate table be exposed?
-
 
 select
   'ethereum' as blockchain,
@@ -102,7 +101,3 @@ where
   {% endif %}
 --limit (for debugging)
 --  1000
-
--- to do: where to include in tranform pipeline leading to nft.mints?
---			a) in nft_mints
---			b) in nft_ethereum_events
