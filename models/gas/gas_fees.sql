@@ -2,7 +2,7 @@
         alias ='fees',
         post_hook='{{ expose_spells(\'["ethereum","bnb"]\',
                                 "sector",
-                                "dex",
+                                "gas",
                                 \'["soispoke"]\') }}'
         )
 }}
@@ -13,6 +13,7 @@ FROM
                 blockchain,
                 block_number,
                 block_time,
+                block_date,
                 tx_amount_native,
                 tx_amount_usd,
                 tx_fee_native,
@@ -32,6 +33,7 @@ FROM
                 blockchain,
                 block_number,
                 block_time,
+                block_date,
                 tx_amount_native,
                 tx_amount_usd,
                 tx_fee_native,
