@@ -1,7 +1,7 @@
 {{ config(alias='nft') }}
 
 SELECT
-  LOWER(contract_address) AS contract_address, name
+  LOWER(contract_address) AS contract_address, name, standard
 FROM
   (VALUES 
  ('0xb8df6cc3050cc02f967db1ee48330ba23276a492',	'OptiPunk','erc721')
@@ -199,4 +199,4 @@ FROM
 ,('0x0244f5c52bda3fd44fc5c2a6bf6c30a2ac1bd019','GIVnaut NFT (GiveStation)','erc721')
 ,('0xba4e052b56c2ca1ddc17ad615dafe02c9522852f','Optimism x Galxe Twitter Spaces NFTs','erc721')
 
-) as temp_table (contract_address, name)
+) as temp_table (contract_address, name,standard)
