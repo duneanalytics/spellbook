@@ -136,6 +136,9 @@ models:
       ethereum:
         +schema: gas_ethereum
         +materialized: view
+      bnb:
+        +schema: gas_bnb
+        +materialized: view
     
     gmx:
       +schema: gmx

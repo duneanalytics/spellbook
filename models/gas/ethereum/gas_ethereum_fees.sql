@@ -11,8 +11,8 @@
 SELECT 
      'ethereum' as blockchain,
      date_trunc('day', block_time) AS block_date,
-     block_time,
      block_number,
+     block_time,
      txns.hash AS tx_hash,
      'ETH' as native_token_symbol,
      value/1e18 AS tx_amount_native,
@@ -41,13 +41,13 @@ SELECT
      txns.gas_used / txns.gas_limit * 100 AS gas_usage_percent,
      difficulty,
      type AS transaction_type
-FROM ethereum.transactions txns
-JOIN ethereum.blocks blocks ON blocks.number = txns.block_number
+FROM {{ source('ethereum','transactions') }} txns
+JOIN {{ source('ethereum','blocks') }} blocks ON blocks.number = txns.block_number
 {% if is_incremental() %}
 AND block_time >= date_trunc("day", now() - interval '1 week')
 AND blocks.time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
-LEFT JOIN prices.usd p ON p.minute = date_trunc('minute', block_time)
+LEFT JOIN {{ source('prices','usd') }} p ON p.minute = date_trunc('minute', block_time)
 AND p.blockchain = 'ethereum'
 AND p.symbol = 'WETH'
 {% if is_incremental() %}

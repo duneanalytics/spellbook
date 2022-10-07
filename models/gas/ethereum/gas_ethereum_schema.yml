@@ -11,38 +11,42 @@ models:
     description: >
         Gas Fees on Ethereum
     columns:
+      - &blokchain
+        name: blockchain
+        description: "Blockchain name"    
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"
       - &block_number
         name: block_number
         description: "Block number"
-      - name: tx_hash
+      - &tx_hash
+        name: tx_hash
         description: "Primary key of the transaction"
         tests:
           - unique
           - not_null
-      - &tx_amount_eth
-        name: tx_amount_eth
-        description: "Amount of ETH transferred from sender to recipient"
+      - &tx_amount_native
+        name: tx_amount_native
+        description: "Amount of native tokens (ETH) transferred from sender to recipient"
       - &tx_amount_usd
         name: tx_amount_usd
         description: "Amount of $USD transferred from sender to recipient"
-      - &tx_fee_eth
-        name: tx_fee_eth
-        description: "Total amount of ETH paid in gas fees -- Pre EIP 1559: Gas Price * Gas Used; Post EIP 1559: Gas Price * Gas Used ; Base fee + Priority fee) * Gas used"
+      - &tx_fee_native
+        name: tx_fee_native
+        description: "Total amount of native tokens (ETH) paid in gas fees -- Pre EIP 1559: Gas Price * Gas Used; Post EIP 1559: Gas Price * Gas Used ; Base fee + Priority fee) * Gas used"
       - &tx_fee_usd
         name: tx_fee_usd
         description: "Total amount of $USD paid in gas fees"
-      - &burned_eth
-        name: burned_eth
-        description: "Total amount of ETH burned for this transaction, Post EIP 1559: Is equal to the Base Fee"
+      - &burned_native
+        name: burned_native
+        description: "Total amount of native tokens (ETH) burned for this transaction, Post EIP 1559: Is equal to the Base Fee"
       - &burned_usd
         name: burned_usd
         description: "Total amount of $USD burned for this transaction"   
-      - &tx_savings_eth
-        name: tx_savings_eth
-        description: "Total amount of ETH refunded to the user if the max fee exceeded the total transaction fee after the transaction execution"
+      - &tx_savings_native
+        name: tx_savings_native
+        description: "Total amount of native tokens (ETH) refunded to the user if the max fee exceeded the total transaction fee after the transaction execution"
       - &tx_savings_usd
         name: tx_savings_usd
         description: "Total amount of $USD refunded to the user"  
