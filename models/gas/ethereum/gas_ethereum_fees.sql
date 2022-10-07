@@ -21,18 +21,10 @@ SELECT
      CASE WHEN type = 'Legacy' THEN (gas_price * txns.gas_used)/1e18 * p.price 
           WHEN type = 'DynamicFee' THEN ((base_fee_per_gas + priority_fee_per_gas) * txns.gas_used)/1e18 * p.price 
           END AS tx_fee_usd,
-     CASE WHEN type = 'Legacy' THEN NULL::double 
-          WHEN type = 'DynamicFee' THEN ((base_fee_per_gas) * txns.gas_used)/1e18 
-          END AS burned_eth, 
-     CASE WHEN type = 'Legacy' THEN NULL::double 
-          WHEN type = 'DynamicFee' THEN (((base_fee_per_gas) * txns.gas_used)/1e18) * p.price 
-          END AS burned_usd,
-     CASE WHEN type = 'Legacy' THEN NULL::double 
-          WHEN type = 'DynamicFee' THEN ((max_fee_per_gas - priority_fee_per_gas - base_fee_per_gas) * txns.gas_used)/1e18 
-          END AS tx_savings_eth,
-     CASE WHEN type = 'Legacy' THEN NULL::double 
-          WHEN type = 'DynamicFee' THEN (((max_fee_per_gas - priority_fee_per_gas - base_fee_per_gas) * txns.gas_used)/1e18) * p.price 
-          END AS tx_savings_usd,
+     ((base_fee_per_gas) * txns.gas_used)/1e18 AS burned_eth, 
+     (((base_fee_per_gas) * txns.gas_used)/1e18) * p.price AS burned_usd,
+     ((max_fee_per_gas - priority_fee_per_gas - base_fee_per_gas) * txns.gas_used)/1e18 AS tx_savings_eth,
+     (((max_fee_per_gas - priority_fee_per_gas - base_fee_per_gas) * txns.gas_used)/1e18) * p.price AS tx_savings_usd,
      miner AS validator, -- or block_proposer since Proposer Builder Separation (PBS) happened ?
      max_fee_per_gas / 1e9 AS max_fee_gwei,
      max_fee_per_gas / 1e18 * p.price AS max_fee_usd,
