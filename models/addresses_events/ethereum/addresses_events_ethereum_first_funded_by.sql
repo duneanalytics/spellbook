@@ -7,6 +7,7 @@
                                     "sector",
                                     "addresses_events",
                                     \'["hildobby"]\') }}'
+    , unique_key = ['address']
 )
 }}
 
