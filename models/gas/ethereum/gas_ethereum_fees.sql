@@ -9,6 +9,7 @@
 }}
 
 SELECT 
+     'ethereum' as blockchain,
      date_trunc('day', block_time) AS block_date,
      block_time,
      block_number,
