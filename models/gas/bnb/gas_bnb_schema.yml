@@ -26,6 +26,9 @@ models:
         tests:
           - unique
           - not_null
+      - &native_token_symbol
+        name: native_token_symbol
+        description: "Symbol of native token (BNB) for the BNB chain"
       - &tx_amount_native
         name: tx_amount_native
         description: "Amount of native tokens (BNB) transferred from sender to recipient"
