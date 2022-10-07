@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_time','tx_hash','tx_amount_eth']
+    unique_key = ['block_time','tx_hash','tx_amount_native']
     )
 }}
 
@@ -13,17 +13,18 @@ SELECT
      block_time,
      block_number,
      txns.hash AS tx_hash,
-     value/1e18 AS tx_amount_eth,
+     'ETH' as native_token_symbol,
+     value/1e18 AS tx_amount_native,
      value/1e18 * p.price AS tx_amount_usd,
      CASE WHEN type = 'Legacy' THEN (gas_price * txns.gas_used)/1e18
           WHEN type = 'DynamicFee' THEN ((base_fee_per_gas + priority_fee_per_gas) * txns.gas_used)/1e18 
-          END AS tx_fee_eth, 
+          END AS tx_fee_native, 
      CASE WHEN type = 'Legacy' THEN (gas_price * txns.gas_used)/1e18 * p.price 
           WHEN type = 'DynamicFee' THEN ((base_fee_per_gas + priority_fee_per_gas) * txns.gas_used)/1e18 * p.price 
           END AS tx_fee_usd,
-     ((base_fee_per_gas) * txns.gas_used)/1e18 AS burned_eth, 
+     ((base_fee_per_gas) * txns.gas_used)/1e18 AS burned_native, 
      (((base_fee_per_gas) * txns.gas_used)/1e18) * p.price AS burned_usd,
-     ((max_fee_per_gas - priority_fee_per_gas - base_fee_per_gas) * txns.gas_used)/1e18 AS tx_savings_eth,
+     ((max_fee_per_gas - priority_fee_per_gas - base_fee_per_gas) * txns.gas_used)/1e18 AS tx_savings_native,
      (((max_fee_per_gas - priority_fee_per_gas - base_fee_per_gas) * txns.gas_used)/1e18) * p.price AS tx_savings_usd,
      miner AS validator, -- or block_proposer since Proposer Builder Separation (PBS) happened ?
      max_fee_per_gas / 1e9 AS max_fee_gwei,
