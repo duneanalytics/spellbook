@@ -17,8 +17,8 @@ SELECT
     'BNB' as native_token_symbol,
     value/1e18 AS tx_amount_native,
     value/1e18 * p.price AS tx_amount_usd,
-    (gas_price * txns.gas_used)/1e18 AS txn_fee_native, 
-    (gas_price * txns.gas_used)/1e18 * p.price  AS txn_fee_usd,
+    (gas_price * txns.gas_used)/1e18 AS tx_fee_native, 
+    (gas_price * txns.gas_used)/1e18 * p.price  AS tx_fee_usd,
     CASE WHEN block_number >= 13082000 THEN value/1e18 * 10 / 100 
         ELSE NULL::double END AS burned_native, -- change after BEP95
     CASE WHEN block_number >= 13082000 THEN value/1e18 * 10 / 100 * p.price 
