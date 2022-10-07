@@ -42,7 +42,7 @@ from (
     ,('Xtoken', 'xToken')
     ,('Instadapp', 'InstaDapp')
     ,('Lifi', 'LiFi')
-    ,('Optimistic Exporer',	'Optimistic Explorer - Get Started NFT')
+    ,('Optimistic Exporer', 'Optimistic Explorer - Get Started NFT')
     ,('ironbank', 'Iron Bank')
     ,('iron_bank', 'Iron Bank')
     ,('bluesweep', 'BlueSweep')
