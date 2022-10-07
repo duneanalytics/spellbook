@@ -9,7 +9,7 @@
 }}
 
 SELECT 
-     date_trunc('week', block_time) AS block_date,
+     date_trunc('day', block_time) AS block_date,
      block_time,
      block_number,
      txns.hash AS tx_hash,
