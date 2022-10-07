@@ -12,7 +12,7 @@ FROM (
        SELECT
        array('ethereum') as blockchain,
        coalesce(rev.address, res.address) as address,
-       coalesce(rev.name, last(res.name,true) over (order by res.latest_tx_block_time asc)) as name,
+       coalesce(rev.name, last(res.name,true) over (order by res.block_time asc)) as name,
        'ENS' as category,
        '0xRob' as contributor,
        'query' AS source,
