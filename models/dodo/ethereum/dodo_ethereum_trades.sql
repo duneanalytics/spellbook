@@ -264,7 +264,7 @@ SELECT
     ,coalesce(dexs.taker, tx.from) AS taker -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
     ,dexs.maker
     ,dexs.project_contract_address
-    ,dexs.tx_hash
+    ,DISTINCT dexs.tx_hash
     ,tx.from AS tx_from
     ,tx.to AS tx_to
     ,dexs.trace_address
