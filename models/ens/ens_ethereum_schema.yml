@@ -159,6 +159,29 @@ models:
       - name: evt_index
         description: "event index of the registration event"
 
+  - name: ens_resolver_records
+    meta:
+      blockchain: ethereum
+      project: ethereum_name_service
+      contributors: 0xRob
+    config:
+      tags: [ 'ethereum','ens','ethereum_name_service','ethereumnameservice','resolver_records','0xRob' ]
+    description: >
+      A table that shows the resolver addresses for known ENS names.
+    columns:
+      - name: name
+        description: "The ENS name"
+      - name: node
+        description: "The node, the namehash of the ENS name"
+      - name: address
+        description: "The resolver address of the ENS name"
+      - name: block_time
+        description: "block time of update"
+      - name: tx_hash
+        description: "transaction hash update"
+      - name: evt_index
+        description: "event index of node record update"
+
   - name: ens_resolver_latest
     meta:
       blockchain: ethereum
@@ -179,7 +202,9 @@ models:
           - unique
       - name: address
         description: "The resolver address of the ENS name"
-      - name: latest_tx_block_time
+      - name: block_time
         description: "block time of last update"
-      - name: latest_tx_hash
+      - name: tx_hash
         description: "transaction hash of last update"
+      - name: evt_index
+        description: "event index of node record update"
