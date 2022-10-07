@@ -111,7 +111,7 @@ with base_level as (
       ,b.created_time
       ,b.creation_tx_hash
       ,b.trace_element
-      b.is_self_destruct
+      ,b.is_self_destruct
     {% if loop.first -%}
     from base_level as b
     left join base_level as u

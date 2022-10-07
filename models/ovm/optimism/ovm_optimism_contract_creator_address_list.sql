@@ -322,4 +322,4 @@ from
     ,('0x5bd973c3841b754386963abb117ffc796041aecf', 'OpenXProject')
     ,('0xB32D9aa786E4f53f9484539cF44B1E092F94D483', 'Quest3')
     ,('0x7a6468F8161ef39d7639c67DfA5637BA1b7ba74B', 'Alchemix')
-) as temp_table (creator_address, project)
+) as temp_table (creator_address, contract_project)
