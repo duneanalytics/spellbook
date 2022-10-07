@@ -153,6 +153,7 @@ with p1_call as (
           ,max(purchase_method) as purchase_method
       from p1_evt_add a
      group by 1,2,3,4,5,6
+     having count(distinct price_token) = 1  -- execlude more than 2 currencies used in single txns
 )
 ,p1_nft_trades as ( 
     select a.block_time
@@ -351,6 +352,7 @@ with p1_call as (
           ,'Buy Now' as purchase_method
       from p2_evt a
      group by 1,2,3,4,5
+     having count(distinct evt_price_token) = 1 -- execlude more than 2 currencies used in single txns
 )
 ,p2_nft_trades as ( 
     select a.block_time
@@ -548,6 +550,9 @@ with p1_call as (
           ,max(order_type_id) as order_type_id
       from p3_add_rn a
      group by 1,2,3,4,5
+     having count(distinct case when purchase_method = 'Offer Accepted' and sub_type = 'offer' and sub_idx = 1 then token_contract_address::text
+                                when purchase_method = 'Buy Now' and sub_type = 'consideration' then token_contract_address::text
+                           end) = 1  -- execlude more than 2 currencies used in single txns
 )
 ,p3_nft_trades as (
     select a.block_time
@@ -745,6 +750,7 @@ with p1_call as (
       from p4_add_rn a
      where offer_item_type in ('2','3')
      group by 1,2,3,4,5,6
+     having count(distinct price_token) = 1  -- execlude more than 2 currencies used in single txns
 )
 ,p4_nft_trades as ( 
     select a.block_time
