@@ -207,7 +207,7 @@ with base_level as (
     ,to_timestamp(created_time) as created_time
     ,false as is_self_destruct
     ,'ovm1 contracts' as source
-    NULL as creation_tx_hash
+    ,NULL as creation_tx_hash
     ,NULL as trace_element
   from {{ source('ovm1_optimism', 'contracts') }} as c
   where 
