@@ -27,7 +27,7 @@ SELECT
     , nftt.tx_from
     , nftt.tx_to
     , nftt.block_time
-    , nftt.block_date
+    , date_trunc('day', nftt.block_time) AS block_date
     , nftt.block_number
     , nftt.tx_hash
     , nftt.unique_trade_id
