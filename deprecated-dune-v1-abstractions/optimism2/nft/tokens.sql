@@ -191,6 +191,19 @@ COPY nft.tokens (contract_address, project_name) FROM stdin;
 \\xe51C6089bd0d8D6A25fcD11eC409D2A1AAC5e632	OptiGhost Town
 \\x17F74d4166abfceD865a44F231aAe55279752384	PolyEgg
 \\xB96113B576d58F848382a501c7F3b532a8EdC3E8	Alpha Gal
+\\xac3B9b3f5956b52c448158c0a07DDFA9D5c53a3B	OP Delegatooors
+\\xBf2794ADAF7A48A2a24EB344a7bA221A52fe2171	OP Orcas
+\\xfb3999711d4f309F6B71504268F79b3fD578DA6F	Consensus Layer Bear
+\\x63D29F9c28Ce781DacB284A99b1239A25E3e2159	Merge Bear
+\\x22Cd0e2680f4B9aE140E3b9AbFA3463532e290Ff	Execution Layer Bear
+\\x672f466b13ee1856c32f8bd956730d8eff28bf16	Good Mornings
+\\xfa14e1157f35e1dad95dc3f822a9d18c40e360e2	Optimism Quests
+\\xa7f7de387425036fa189f90a3d9b0d2b5835fc51	OpenSeaOnOptimism
+\\x7ceee88e71f5c3614f6d0153e922871ae402d1d1	Rekt Frens
+\\x8964e71578e6e6a7552692d3e1d0a576711298e6	Draconic Egg
+\\xfce1aff7b9590ef204116660a960192625e7544d	hobbits house
+\\x0244f5c52bda3fd44fc5c2a6bf6c30a2ac1bd019	GIVnaut NFT (GiveStation)
+\\xba4e052b56c2ca1ddc17ad615dafe02c9522852f	Optimism x Galxe Twitter Spaces NFTs
 \.
 
 COMMIT;

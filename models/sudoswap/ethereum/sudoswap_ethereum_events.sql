@@ -246,7 +246,7 @@ WITH
             , call_block_time as block_time
             , call_block_number as block_number
             , token_id
-            , 'ERC721' as token_standard
+            , 'erc721' as token_standard
             , cardinality(token_id) as number_of_items
             , CASE WHEN cardinality(token_id) > 1 THEN 'Bundle Trade'
                 ELSE 'Single Item Trade'
