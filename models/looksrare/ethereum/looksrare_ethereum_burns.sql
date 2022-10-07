@@ -34,5 +34,5 @@ tx_hash,
 tx_from,
 tx_to,
 unique_trade_id
-FROM ({{ ref('looksrare_ethereum_events') }})
+FROM {{ ref('looksrare_ethereum_events') }}
 WHERE evt_type = 'Burn'

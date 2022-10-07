@@ -25,7 +25,9 @@ clean-targets: # directories to be removed by `dbt clean`
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
   spellbook:
-   
+    +post-hook:
+      sql: "{{ optimize_spell(this, model.config.materialized) }}"
+      transaction: true
     aave:
       +schema: aave
       +materialized: view
@@ -112,6 +114,9 @@ models:
         +schema: element_avalanche_c
         +materialized: view
 
+    superrare:
+      +schema: superrare
+      +materialized: view
     looksrare:
       +schema: looksrare
       +materialized: view
@@ -138,7 +143,12 @@ models:
       ethereum:
         +schema: x2y2_ethereum
         +materialized: view
-
+    zora:
+      +schema: zora
+      +materialized: view
+      ethereum:
+        +schema: zora_ethereum
+        +materialized: view
     magiceden:
       +schema: magiceden
       +materialized: view
