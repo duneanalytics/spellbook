@@ -10,7 +10,7 @@
 
 SELECT 
     'bnb' as blockchain,
-     date_trunc('day', block_time) AS block_date,
+    date_trunc('day', block_time) AS block_date,
     block_number,
     block_time,
     txns.hash AS tx_hash,
@@ -24,8 +24,8 @@ SELECT
     CASE WHEN block_number >= 13082000 THEN value/1e18 * 10 / 100 * p.price 
         ELSE NULL::double END AS burned_usd, -- change after BEP95
     miner AS validator,
-    gas_price /1e9 AS gas_price_in_gwei,
-    gas_price / 1e18 * p.price AS gas_price_in_usd,
+    gas_price /1e9 AS gas_price_gwei,
+    gas_price / 1e18 * p.price AS gas_price_usd,
     txns.gas_used,
     txns.gas_used / txns.gas_limit * 100 AS gas_usage_percent,
     txns.gas_limit,
