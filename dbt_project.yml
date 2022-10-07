@@ -176,14 +176,13 @@ models:
       ethereum:
         +schema: balances_ethereum
         +materialized: view
+        
     dodo:
       +schema: dodo
       +materialized: view
       ethereum:
         +schema: dodo_ethereum
         +materialized: view
-
-    
 
     labels:
       +schema: labels
