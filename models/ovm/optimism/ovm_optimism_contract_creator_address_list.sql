@@ -1,7 +1,7 @@
 {{ config(alias='contract_creator_address_list') }}
 select 
   lower(creator_address) as creator_address
-  ,name
+  ,contract_project
 from 
     (values
     ('0x932607335869cff6349ef450e74c83a3b871a9ff', 'Lyra V1')

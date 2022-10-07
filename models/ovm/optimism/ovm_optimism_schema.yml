@@ -62,8 +62,7 @@ models:
     description: "A list of contract creator addresses and corresponding names."
     columns:
       - *creator_address
-      - name: name
-        description: "Name of the creator address"
+      - *contract_project
 
 
   - name: ovm_optimism_contract_overrides

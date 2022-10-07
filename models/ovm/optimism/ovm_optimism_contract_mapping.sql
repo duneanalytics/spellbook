@@ -25,8 +25,9 @@
     ,"contract_factory"
     ,"is_self_destruct"
     ,"creation_tx_hash"
+    ,"trace_element"
 ] %}
--- TODO CHUXIN: ask how the backfilling of creator_rows work
+
 with base_level as (
   select 
     creator_address
@@ -34,6 +35,8 @@ with base_level as (
     ,contract_address
     ,created_time
     ,creation_tx_hash
+    ,trace_element
+    ,is_self_destruct
   from (
     select 
       `from` as creator_address
@@ -42,6 +45,7 @@ with base_level as (
       ,block_time as created_time
       ,tx_hash as creation_tx_hash
       ,trace_address[1] as trace_element
+      ,NULL as is_self_destruct
     from {{ source('optimism', 'traces') }} as ct 
     where 
       true
@@ -53,7 +57,7 @@ with base_level as (
 
     -- to get existing history of contract mapping
     union all 
-    -- TODO CHUXIN: ask what are the joins to creator_row about
+
     select 
       creator_address
       ,contract_creator_if_factory as contract_factory
@@ -61,10 +65,11 @@ with base_level as (
       ,created_time
       ,creation_tx_hash
       ,trace_element
+      ,is_self_destruct
     from {{ this }}
     {% endif %}
   ) as x
-  group by 1, 2, 3, 4, 5, 6
+  group by 1, 2, 3, 4, 5, 6, 7
 )
 ,tokens as (
   select 
@@ -90,15 +95,15 @@ with base_level as (
 ,level{{i}} as (
     select
       {{i}} as level 
-      ,coalesce(b1.creator_address, b.creator_address) as creator_address
+      ,coalesce(u.creator_address, b.creator_address) as creator_address
       {% if loop.first -%}
       ,case
-        when b1.creator_address is NULL then NULL
+        when u.creator_address is NULL then NULL
         else b.creator_address
       end as contract_factory
       {% else -%}
       ,case
-        when b1.creator_address is NULL then b.contract_factory
+        when u.creator_address is NULL then b.contract_factory
         else b.creator_address
       end as contract_factory
       {% endif %}
@@ -106,14 +111,15 @@ with base_level as (
       ,b.created_time
       ,b.creation_tx_hash
       ,b.trace_element
+      b.is_self_destruct
     {% if loop.first -%}
     from base_level as b
-    left join base_level as b1
-      on b.creator_address = b1.contract_address
+    left join base_level as u
+      on b.creator_address = u.contract_address
     {% else -%}
     from level{{i-1}} as b
-    left join base_level as b1
-      on b.creator_address = b1.contract_address
+    left join base_level as u
+      on b.creator_address = u.contract_address
     {% endif %}
 )
 {%- endfor %}
@@ -123,42 +129,45 @@ with base_level as (
     f.creator_address
     ,f.contract_factory
     ,f.contract_address
-    ,coalesce(cc.project, ccf.project) as project 
+    ,coalesce(cc.contract_project, ccf.contract_project) as contract_project 
     ,f.created_time
     -- check if the contract is an immediate self-destruct contract
-    ,case 
-      when exists (
-        select 1 
-        from {{ source('optimism', 'traces') }} as sd 
-        where 
-          f.creation_tx_hash = sd.tx_hash
-          and f.trace_element = sd.trace_address[1]
-          and sd.type = 'suicide'
-          {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-          and sd.block_time >= date_trunc('day', now() - interval '1 week')
-          {% endif %}
-      ) then true 
+    ,coalesce(f.is_self_destruct, 
+      case 
+        when exists (
+          select 1 
+          from {{ source('optimism', 'traces') }} as sd 
+          where 
+            f.creation_tx_hash = sd.tx_hash
+            and f.trace_element = sd.trace_address[1]
+            and sd.type = 'suicide'
+            {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+            and sd.block_time >= date_trunc('day', now() - interval '1 week')
+            {% endif %}
+        ) then true 
       else false 
-    end as is_self_destruct
-    ,f.creation_tx_hash 
+    end) as is_self_destruct
+    ,f.creation_tx_hash
+    ,f.trace_element 
   from level{{max_levels}} as f
   left join {{ ref('contract_creator_address_list') }} as cc 
     on f.creator_address = cc.creator_address
   left join {{ ref('contract_creator_address_list') }} as ccf
     on f.contract_factory = ccf.creator_address
   where f.contract_address is not null
--- )
+ )
 ,combine as (
   select 
     cc.creator_address
     ,cc.contract_factory
     ,cc.contract_address
-    ,coalesce(cc.project, oc.namespace) as contract_project 
+    ,coalesce(cc.contract_project, oc.namespace) as contract_project 
     ,oc.name as contract_name 
     ,cc.created_time
     ,coalesce(cc.is_self_destruct, false) as is_self_destruct
     ,'creator contracts' as source
     ,cc.creation_tx_hash
+    ,cc.trace_element
   from creator_contracts as cc 
   left join {{ source('optimism', 'contracts') }} as oc 
     on cc.contract_address = oc.address 
@@ -176,6 +185,7 @@ with base_level as (
     ,coalesce(cc.is_self_destruct, false) as is_self_destruct
     ,'decoded contracts' as source
     ,cc.creation_tx_hash
+    ,cc.trace_element
   from {{ source('optimism', 'contracts') }} as oc 
   join creator_contracts as cc 
     on oc.address = cc.contract_address
@@ -198,8 +208,11 @@ with base_level as (
     ,false as is_self_destruct
     ,'ovm1 contracts' as source
     NULL as creation_tx_hash
+    ,NULL as trace_element
   from {{ source('ovm1_optimism', 'contracts') }} as c
   where 
+    true
+    {% if is_incremental() %} -- this filter will only be applied on an incremental run 
     not exists (
       select 1
       from {{ this }} as gc
@@ -209,7 +222,8 @@ with base_level as (
           (gc.contract_project = c.contract_project) or (gc.contract_project is NULL)
         )
     )
-    or c.contract_address in (select contract_address from creator_contracts)
+    {% endif %}
+    -- or c.contract_address in (select contract_address from creator_contracts)
     group by 1, 2, 3, 4, 5, 6, 7, 8, 9
 
   union all 
@@ -225,8 +239,11 @@ with base_level as (
     ,false as is_self_destruct
     ,'synthetix contracts' as source
     ,NULL as creation_tx_hash
+    ,NULL as trace_element
   from {{ source('ovm1_optimism', 'synthetix_genesis_contracts') }} as snx
   where 
+    true
+    {% if is_incremental() %} -- this filter will only be applied on an incremental run 
     not exists (
       select 1 
       from {{ this }} as gc
@@ -234,8 +251,9 @@ with base_level as (
         gc.contract_address = snx.contract_address
         and gc.contract_project = 'Synthetix'
     )
-    or snx.contract_address in (select contract_address from creator_contracts)
-    group by 1, 2, 3, 4, 5, 6, 7, 8, 9
+    {% endif %}
+    -- or snx.contract_address in (select contract_address from creator_contracts)
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 )
 ,get_contracts as (
   select 
@@ -248,23 +266,22 @@ with base_level as (
     ,c.created_time 
     ,c.is_self_destruct
     c.creation_tx_hash
+    ,c.trace_element
   from combine as c 
   left join tokens as t 
     on c.contract_address = tokens.contract_address
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 )
 ,cleanup as (
 --grab the first non-null value for each, i.e. if we have the contract via both contract mapping and optimism.contracts
   select 
     contract_address
     {% for col in cols %}
-    (array_agg({{ col }}) filter (where {{ col }} is not NULL))[1] as {{ col }}
-    {% if not loop.last %}
-        ,
-    {% endif %}
+    ,(array_agg({{ col }}) filter (where {{ col }} is not NULL))[1] as {{ col }}
     {% endfor %}
   from get_contracts
   where contract_address is not NULL 
+  group by 1
 )
 select 
   c.contract_address
@@ -288,6 +305,7 @@ select
   ,contract_factory as contract_creator_if_factory
   ,coalesce(is_self_destruct, false) as is_self_destruct
   ,creation_tx_hash
+  ,trace_element
 from cleanup as c 
 left join {{ source('ovm1_optimism', 'contracts') }} as ovm1c
   on c.contract_address = ovm1c.contract_address --fill in any missing contract creators
