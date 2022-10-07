@@ -265,11 +265,11 @@ with base_level as (
     ,c.creator_address
     ,c.created_time 
     ,c.is_self_destruct
-    c.creation_tx_hash
+    ,c.creation_tx_hash
     ,c.trace_element
   from combine as c 
   left join tokens as t 
-    on c.contract_address = tokens.contract_address
+    on c.contract_address = t.contract_address
   group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 )
 ,cleanup as (
@@ -289,8 +289,8 @@ select
       replace(
       -- priority order: Override name, Mapped vs Dune, Raw/Actual names
         coalesce(
-          co.project
-          ,dnm.maapped_name
+          co.contract_project
+          ,dnm.mapped_name
           ,c.contract_project
           ,ovm1c.contract_project
         ),
@@ -298,14 +298,14 @@ select
       ' '
     )
    ) as contract_project
-  ,c.token_symbol
+  ,t.token_symbol
   ,coalesce(co.contract_name, c.contract_name) as contract_name
   ,coalesce(c.creator_address, ovm1c.creator_address) as creator_address
   ,coalesce(c.created_time, to_timestamp(ovm1c.created_time)) as created_time
-  ,contract_factory as contract_creator_if_factory
-  ,coalesce(is_self_destruct, false) as is_self_destruct
-  ,creation_tx_hash
-  ,trace_element
+  ,c.contract_factory as contract_creator_if_factory
+  ,coalesce(c.is_self_destruct, false) as is_self_destruct
+  ,c.creation_tx_hash
+  ,c.trace_element
 from cleanup as c 
 left join {{ source('ovm1_optimism', 'contracts') }} as ovm1c
   on c.contract_address = ovm1c.contract_address --fill in any missing contract creators
