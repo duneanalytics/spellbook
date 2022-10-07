@@ -105,7 +105,7 @@ with base_level as (
       ,b.contract_address
       ,b.created_time
       ,b.creation_tx_hash
-      -- ,b.trace_element
+      ,b.trace_element
     {% if loop.first -%}
     from base_level as b
     left join base_level as b1
