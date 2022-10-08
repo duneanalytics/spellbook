@@ -42,7 +42,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
     -- dodo v1 sell
         SELECT
             s.evt_block_time AS block_time,
-            s.evt_block_number as block_number
+            s.evt_block_number as block_number,
             'DODO' AS project,
             '1' AS version,
             s.seller AS taker,
@@ -70,7 +70,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         -- dodo v1 buy
         SELECT
             b.evt_block_time AS block_time,
-            b.evt_block_number as block_number
+            b.evt_block_number as block_number,
             'DODO' AS project,
             '1' AS version,
             b.buyer AS taker,
@@ -98,7 +98,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         -- dodov1 proxy01
         SELECT
             evt_block_time AS block_time,
-            evt_block_number as block_number
+            evt_block_number as block_number,
             'DODO' AS project,
             '1' AS version,
             sender AS taker,
