@@ -62,7 +62,6 @@ SELECT pos AS tokenid, col AS token, pool
     FROM (
         SELECT 
         posexplode(_coins), output_0 AS pool
-        FROM curvefi_optimism.PoolFactory_call_deploy_plain_pool
         FROM {{ source('curvefi_optimism', 'PoolFactory_call_deploy_plain_pool') }}
         WHERE call_success
         {% if is_incremental() %}
@@ -74,11 +73,11 @@ SELECT pos AS tokenid, col AS token, pool
 
 
 SELECT * FROM (
-    SELECT 'Base Pool' AS pool_type, tokenid, token, pool FROM base_pools
+    SELECT 'Base Pool' AS version, tokenid, token, pool FROM base_pools
     UNION ALL
-    SELECT 'Meta Pool' AS pool_type, tokenid, token, pool FROM meta_pools
+    SELECT 'Meta Pool' AS version, tokenid, token, pool FROM meta_pools
     UNION ALL
-    SELECT 'Basic Pool' AS pool_type, tokenid, token, pool FROM basic_pools
+    SELECT 'Basic Pool' AS version, tokenid, token, pool FROM basic_pools
     ) a
 GROUP BY 1,2,3,4 --unique
 -- ORDER BY pool ASC, tokenid ASC

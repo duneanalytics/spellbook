@@ -1,40 +1,57 @@
 version: 2
 
 models:
-  - name: uniswap_optimism_pools
+- name: curvefi_optimism_pools
     meta:
       blockchain: optimism
-      project: uniswap
-      contributors: MSilb7, chuxinh
+      project: curvefi
+      contributors: msilb7
     config:
-      tags: ['optimism','uniswap','pools']
+      tags: ['optimism','curvefi','curve','dex']
     description: >
-        A canonical table containing all Uniswap pools created on Optimism. Pools from OVM1 will be missing from factory_evt_poolcreated, so we use this table to get pool information.
+        A table containing all known pools of curvefi on optimism (i.e. metapool, basicpool). Additional types should be monitored to ensure they're accurately shown.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - version
+              - tokenid
+              - token
+              - pool
     columns:
+      - &version
+        name: version
+        description: "Versions of the pool: Basic Pool, Meta Pool, etc"
+        tests:
+          - not_null
+      - &token_id
+        name: token_id
+        description: "ID of the token in the pool"
+        tests:
+          - not_null
+      - &token
+        name: token
+        description: "Token Address"
+        tests:
+          - not_null
       - &pool
         name: pool
-        description: "Uniswap liquidity pool contract address"
+        description: "Pool contract address"
         tests:
-          - unique
-      - &token0
-        name: token0
-        description:  "Token0 contract address"  
-      - &token1
-        name: token1
-        description:  "Token1 contract address" 
-      - &fee
-        name: fee
-        description:  "Swap fee of a Uniswap liquidity pool. Divide by 1e6 or power(10,6) to get the fee percentage"
+          - not_null
+      - &token_address
+        name: token_address
+        description: "Address for the pool token"
 
-  - name: uniswap_v3_optimism_trades
+
+  - name: curvefi_optimism_trades
     meta:
       blockchain: optimism
-      project: uniswap
-      contributors: 0xboxer, jeff-dude
+      project: curvefi
+      contributors: msilb7
     config:
-      tags: ['optimism','uniswap','dex']
+      tags: ['optimism','curvefi','curve','dex']
     description: >
-        A table containing all trades of uniswap v3 on optimism
+        A table containing all trades of curvefi on optimism
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -118,36 +135,3 @@ models:
       - &evt_index
         name: evt_index
         description: ""
-  - name: uniswap_optimism_trades
-    meta:
-      blockchain: optimism
-      project: uniswap
-      contributors: 0xboxer, jeff-dude
-    config:
-      tags: ['optimism','uniswap','dex.trades']
-    description: >
-        A table containing all trades of uniswap on optimism. future proof for more protocol version on this chain
-    columns:
-      - *blockchain
-      - *project
-      - *version  
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index

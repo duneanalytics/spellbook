@@ -1,40 +1,15 @@
 version: 2
 
 models:
-  - name: uniswap_optimism_pools
+  - name: velodrome_optimism_trades
     meta:
       blockchain: optimism
-      project: uniswap
-      contributors: MSilb7, chuxinh
+      project: velodrome
+      contributors: msilb7
     config:
-      tags: ['optimism','uniswap','pools']
+      tags: ['optimism','velodrome','velo','dex']
     description: >
-        A canonical table containing all Uniswap pools created on Optimism. Pools from OVM1 will be missing from factory_evt_poolcreated, so we use this table to get pool information.
-    columns:
-      - &pool
-        name: pool
-        description: "Uniswap liquidity pool contract address"
-        tests:
-          - unique
-      - &token0
-        name: token0
-        description:  "Token0 contract address"  
-      - &token1
-        name: token1
-        description:  "Token1 contract address" 
-      - &fee
-        name: fee
-        description:  "Swap fee of a Uniswap liquidity pool. Divide by 1e6 or power(10,6) to get the fee percentage"
-
-  - name: uniswap_v3_optimism_trades
-    meta:
-      blockchain: optimism
-      project: uniswap
-      contributors: 0xboxer, jeff-dude
-    config:
-      tags: ['optimism','uniswap','dex']
-    description: >
-        A table containing all trades of uniswap v3 on optimism
+        A table containing all trades of velodrome on optimism
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -118,36 +93,3 @@ models:
       - &evt_index
         name: evt_index
         description: ""
-  - name: uniswap_optimism_trades
-    meta:
-      blockchain: optimism
-      project: uniswap
-      contributors: 0xboxer, jeff-dude
-    config:
-      tags: ['optimism','uniswap','dex.trades']
-    description: >
-        A table containing all trades of uniswap on optimism. future proof for more protocol version on this chain
-    columns:
-      - *blockchain
-      - *project
-      - *version  
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index

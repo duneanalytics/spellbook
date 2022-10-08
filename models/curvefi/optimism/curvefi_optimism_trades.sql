@@ -136,11 +136,11 @@ SELECT DISTINCT
         INNER JOIN {{ ref('curvefi_optimism_pools') }} ta
             ON t.contract_address = ta.pool
             AND bytea2numeric_v2(substring(data,3+64*3,64))::int = ta.tokenid --t.bought_id = ta.tokenid
-            AND ta.pool_type = 'Basic Pool'
+            AND ta.version = 'Basic Pool'
         INNER JOIN {{ ref('curvefi_optimism_pools') }} tb
             ON t.contract_address = tb.pool
             AND bytea2numeric_v2(substring(data,3+64*1,64))::int = tb.tokenid --t.sold_id = tb.tokenid
-            AND tb.pool_type = 'Basic Pool'
+            AND tb.version = 'Basic Pool'
     WHERE topic1 = '0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140'
     {% if is_incremental() %}
         AND l.block_time >= date_trunc("day", now() - interval '1 week')

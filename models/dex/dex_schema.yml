@@ -3,11 +3,11 @@ version: 2
 models:
   - name: dex_trades
     meta:
-      blockchain: ethereum
+      blockchain: ethereum, optimism
       sector: dex
       contributors: jeff-dude
     config:
-      tags: ['ethereum', 'amm', 'trades', 'dex', 'cross-chain']
+      tags: ['ethereum', 'amm', 'trades', 'dex', 'cross-chain','optimism']
     description: >
       DEX trades on all chains across all contracts and versions
     columns:
