@@ -1,7 +1,7 @@
 version: 2
 
 models:
-- name: curvefi_optimism_pools
+  - name: curvefi_optimism_pools
     meta:
       blockchain: optimism
       project: curvefi
@@ -18,7 +18,7 @@ models:
               - token
               - pool
     columns:
-      - &version
+      - &version_pool
         name: version
         description: "Versions of the pool: Basic Pool, Meta Pool, etc"
         tests:

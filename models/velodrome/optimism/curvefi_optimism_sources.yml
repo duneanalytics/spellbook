@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: velodrome_optimism
+    description: "decoded events and function calls for velodrome on optimism"
+    tables:
+      - name: Pair_evt_Swap
+        loaded_at_field: evt_block_time
+      - name: factory_evt_poolcreated
+        loaded_at_field: evt_block_time
