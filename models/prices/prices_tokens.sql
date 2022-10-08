@@ -3,7 +3,7 @@
         alias ='tokens'
         )
 }}
-SELECT token_id, blockchain, symbol, lower(contract_address) AS contract_address, decimals from (
+SELECT token_id, blockchain, symbol, contract_address, decimals from (
 VALUES
     ("ada-cardano", null, "ADA", null, null),
     ("ae-aeternity", null, "AE", null, null),
@@ -27,7 +27,7 @@ VALUES
     ("mona-monacoin", null, "MONA", null, null),
     ("neo-neo", null, "NEO", null, null),
     ("ont-ontology", null, "ONT", null, null),
-    ("op-optimism", "optimism", "OP", "0x4200000000000000000000000000000000000042", 18),
+    ("op-optimism", null, "OP", null, null),
     ("sol-solana", null, "SOL", null, null),
     ("stx-blockstack", null, "STX", null, null),
     ("thr-thorecoin", null, "THR", null, null),
@@ -573,11 +573,12 @@ VALUES
     ("usdc-usd-coin", "gnosis", "USDC", "0xddafbb505ad214d7b80b1f830fccc89b60fb7a83", 6),
     ("usdt-tether", "gnosis", "USDT", "0x4ecaba5870353805a9f068101a40e0f32ed605c6", 6),
     ("wbtc-wrapped-bitcoin", "gnosis", "WBTC", "0x8e5bbbb09ed1ebde8674cda39a0c169401db4252", 8),
-    
+
     ("dai-dai", "optimism", "DAI", "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1", 18),
     ("usdc-usd-coin", "optimism", "USDC", "0x7f5c764cbc14f9669b88837ca1490cca17c31607", 6),
     ("usdt-tether", "optimism", "USDT", "0x94b008aa00579c1307b0ef2c499ad98a8ce58e58", 6),
     ("wbtc-wrapped-bitcoin", "optimism", "WBTC", "0x68f180fcce6836688e9084f035309e29bf0a2095", 8),
+<<<<<<< HEAD
     ("weth-weth","optimism","WETH","0x4200000000000000000000000000000000000006",18)
     ("hav-havven","optimism","SNX","0x8700daec35af8ff88c16bdf0418774cb3d7599b4",18)
     ("link-chainlink","optimism","LINK","0x350a791bfc2c21f9ed5d10980dad2e2638ffa7f6",18)
@@ -641,6 +642,8 @@ VALUES
     ("mim-magic-internet-money","optimism","MIM","0xB153FB3d196A8eB25522705560ac152eeEc57901",18)
     ("wsteth-wrapped-liquid-staked-ether-20","optimism","wstETH","0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb",18)
     ("ldo-lido-dao","optimism","LDO","0xFdb794692724153d1488CcdBE0C56c252596735F",18)
+=======
+>>>>>>> parent of bcdc9b96 (update op tokens and prices in spellbook)
 
     ("aury-aurory", "solana", "AURY", "AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP", 9),
     ("btc-bitcoin", "solana", "BTC", "9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E", 6),

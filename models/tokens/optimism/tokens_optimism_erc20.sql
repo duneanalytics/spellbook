@@ -188,6 +188,7 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0xC22885e06cd8507c5c74a948C59af853AEd1Ea5C','USDD', 18)
 ,('0xd6909e9e702024eb93312B989ee46794c0fB1C9D','BICO', 18)
 ,('0x62BB4fc73094c83B5e952C2180B23fA7054954c4','PTaOptUSDC', 6)
+<<<<<<< HEAD
 ,('0x375488F097176507e39B9653b88FDc52cDE736Bf','TAROT',18)
 ,('0xD1917629B3E6A72E6772Aab5dBe58Eb7FA3C2F33','ZRX',18)
 ,('0x395ae52bb17aef68c2888d941736a71dc6d4e125','POOL',18)
@@ -216,5 +217,7 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0xB153FB3d196A8eB25522705560ac152eeEc57901','MIM',18)
 ,('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb','wstETH',18)
 ,('0xFdb794692724153d1488CcdBE0C56c252596735F','LDO',18)
+=======
+>>>>>>> parent of bcdc9b96 (update op tokens and prices in spellbook)
   
 ) AS temp_table (contract_address, symbol, decimals)
