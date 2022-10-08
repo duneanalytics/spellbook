@@ -216,5 +216,10 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0xB153FB3d196A8eB25522705560ac152eeEc57901','MIM',18)
 ,('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb','wstETH',18)
 ,('0xFdb794692724153d1488CcdBE0C56c252596735F','LDO',18)
+,('0xd52f94df742a6f4b4c8b033369fe13a41782bf44','L2DAO', 18)
+,('0x85f6583762bc76d775eab9a7456db344f12409f7','renBTC', 8)
+,('0xde48b1b5853cc63b1d05e507414d3e02831722f8','stkLYRA', 18)
+,('0x9e5aac1ba1a2e6aed6b32689dfcf62a509ca96f3','DF', 18)
+,('0x9485aca5bbbe1667ad97c7fe7c4531a624c8b1ed','agEUR', 18)
 
 ) AS temp_table (contract_address, symbol, decimals)
