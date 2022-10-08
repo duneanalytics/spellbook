@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'curvefi_optimism',
     alias = 'pools',
     materialized = 'incremental',
     file_format = 'delta',

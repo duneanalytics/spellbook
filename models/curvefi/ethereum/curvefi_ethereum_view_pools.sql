@@ -1,5 +1,6 @@
 {{ config(
     materialized = 'view',
+    schema = 'curvefi_ethereum',
     alias = 'view_pools',
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
