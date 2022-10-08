@@ -48,7 +48,7 @@ GROUP BY 1,2,3,4 --unique
     
     ) mps
     -- the exchange address appears as an erc20 minted to itself (not in the deploymeny event)
-    INNER JOIN {{ ref('transfers_optimism_erc20') }} et
+    INNER JOIN {{ source('erc20_optimism','evt_Transfer') }} et
         ON et.evt_tx_hash = mps.evt_tx_hash
         AND et.`from` = '0x0000000000000000000000000000000000000000'
         AND et.`to` = et.`contract_address`
