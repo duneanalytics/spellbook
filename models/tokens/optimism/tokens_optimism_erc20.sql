@@ -213,5 +213,8 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0xa5974bd897B48C957CC7Cd93DB680045315d596d','OPrint',18)
 ,('0x2513486f18eee1498d7b6281f668b955181dd0d9','xOpenx',18)
 ,('0x39d36cF934aAE9Fcf4c5112648a016B8A7127B35','dETH',18)
+,('0xB153FB3d196A8eB25522705560ac152eeEc57901','MIM',18)
+,('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb','wstETH',18)
+,('0xFdb794692724153d1488CcdBE0C56c252596735F','LDO',18)
   
 ) AS temp_table (contract_address, symbol, decimals)
