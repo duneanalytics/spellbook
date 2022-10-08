@@ -280,7 +280,7 @@ SELECT
 FROM dexs
 INNER JOIN {{ source('ethereum', 'transactions')}} tx
     ON dexs.tx_hash = tx.hash
-    ON dexs.block_number=tx.block_number
+    AND dexs.block_number=tx.block_number
     {% if not is_incremental() %}
     AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
