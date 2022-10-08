@@ -42,6 +42,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
     -- dodo v1 sell
         SELECT
             s.evt_block_time AS block_time,
+            s.evt_block_number as block_number
             'DODO' AS project,
             '1' AS version,
             s.seller AS taker,
@@ -69,6 +70,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         -- dodo v1 buy
         SELECT
             b.evt_block_time AS block_time,
+            b.evt_block_number as block_number
             'DODO' AS project,
             '1' AS version,
             b.buyer AS taker,
@@ -96,6 +98,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         -- dodov1 proxy01
         SELECT
             evt_block_time AS block_time,
+            evt_block_number as block_number
             'DODO' AS project,
             '1' AS version,
             sender AS taker,
@@ -120,6 +123,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         -- dodov1 proxy04
         SELECT
             evt_block_time AS block_time,
+            evt_block_number as block_number,
             'DODO' AS project,
             '1' AS version,
             sender AS taker,
@@ -144,6 +148,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         -- dodov2 proxy02
         SELECT
             evt_block_time AS block_time,
+            evt_block_number as block_number,
             'DODO' AS project,
             '2' AS version,
             sender AS taker,
@@ -168,6 +173,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         -- dodov2 dvm
         SELECT
             evt_block_time AS block_time,
+            evt_block_number as block_number,
             'DODO' AS project,
             '2' AS version,
             trader AS taker,
@@ -193,6 +199,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         -- dodov2 dpp
         SELECT
             evt_block_time AS block_time,
+            evt_block_number as block_number,
             'DODO' AS project,
             '2' AS version,
             trader AS taker,
@@ -218,6 +225,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         -- dodov2 dsp
         SELECT
             evt_block_time AS block_time,
+            evt_block_number as block_number,
             'DODO' AS project,
             '2' AS version,
             trader AS taker,
@@ -264,7 +272,7 @@ SELECT
     ,coalesce(dexs.taker, tx.from) AS taker -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
     ,dexs.maker
     ,dexs.project_contract_address
-    ,DISTINCT dexs.tx_hash
+    ,dexs.tx_hash
     ,tx.from AS tx_from
     ,tx.to AS tx_to
     ,dexs.trace_address
@@ -272,6 +280,7 @@ SELECT
 FROM dexs
 INNER JOIN {{ source('ethereum', 'transactions')}} tx
     ON dexs.tx_hash = tx.hash
+    ON dexs.block_number=tx.block_number
     {% if not is_incremental() %}
     AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
