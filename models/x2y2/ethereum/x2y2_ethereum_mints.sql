@@ -1,6 +1,10 @@
  {{
   config(
-        alias='mints')
+        alias='mints',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "project",
+                                    "x2y2",
+                                    \'["hildobby","soispoke"]\') }}')
 }}
 
 SELECT blockchain,
@@ -30,5 +34,5 @@ tx_hash,
 tx_from,
 tx_to,
 unique_trade_id
-FROM ({{ ref('x2y2_ethereum_events') }})
+FROM {{ ref('x2y2_ethereum_events') }}
 WHERE evt_type = 'Mint'

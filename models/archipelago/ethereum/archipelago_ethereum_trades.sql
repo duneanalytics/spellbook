@@ -1,6 +1,10 @@
  {{
   config(
-        alias='trades')
+        alias='trades',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "project",
+                                    "archipelago",
+                                    \'["0xRob"]\') }}')
 }}
 
 SELECT
@@ -31,4 +35,4 @@ SELECT
       tx_from,
       tx_to,
       unique_trade_id
-FROM ({{ ref('archipelago_ethereum_events') }})
+FROM {{ ref('archipelago_ethereum_events') }}

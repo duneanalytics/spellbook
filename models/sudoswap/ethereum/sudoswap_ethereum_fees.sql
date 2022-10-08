@@ -1,6 +1,10 @@
  {{
   config(
-        alias='fees')
+        alias='fees',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "project",
+                                    "sudoswap",
+                                    \'["ilemi"]\') }}')
 }}
 
 SELECT
@@ -36,4 +40,4 @@ SELECT
       tx_from,
       tx_to,
       unique_trade_id
-FROM ({{ ref('sudoswap_ethereum_events') }})
+FROM {{ ref('sudoswap_ethereum_events') }}

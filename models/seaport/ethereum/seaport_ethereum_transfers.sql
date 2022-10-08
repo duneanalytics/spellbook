@@ -13,7 +13,11 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'unique_trade_id']
+    unique_key = ['block_date', 'unique_trade_id'],
+    post_hook='{{ expose_spells(\'["ethereum"]\',
+                            "project",
+                            "seaport",
+                            \'["sohawk","soispoke"]\') }}'
     )
 }}
 
@@ -187,7 +191,7 @@ with p1_call as (
            end as currency_contract
           ,nft_contract_address
           ,a.exchange_contract_address as project_contract_address
-          ,agg.name as aggregator_name
+          ,case when right(ett.input, 8)='72db8c0b' then 'Gem' else agg.name end as aggregator_name
           ,agg.contract_address as aggregator_address
           ,a.tx_hash
           ,tx.from as tx_from
@@ -206,7 +210,7 @@ with p1_call as (
                 when royalty_amount > 0 then t1.symbol
           end as royalty_fee_currency_symbol
           ,a.tx_hash || '-' || a.nft_token_id || '-' || a.original_amount::string || '-' ||  concat('0x',substr(seller,3,40)) || '-' ||
-          order_type_id::string || '-' || cast(row_number () over (partition by tx_hash order by sub_idx) as
+          order_type_id::string || '-' || cast(row_number () over (partition by a.tx_hash order by sub_idx) as
           string) as unique_trade_id,
           a.zone
       from p1_txn_level a
@@ -217,6 +221,11 @@ with p1_call as (
             {% endif %}
             {% if is_incremental() %}
             and tx.block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
+        left join {{ source('ethereum','traces') }} ett
+            ON a.block_time = ett.block_time AND a.tx_hash = ett.tx_hash AND right(ett.input, 8)='72db8c0b'
+            {% if is_incremental() %}
+            and ett.block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         left join {{ ref('nft_aggregators') }} agg
             ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
@@ -392,7 +401,7 @@ with p1_call as (
            end as currency_contract
           ,concat('0x',substr(a.nft_address,3,40)) as nft_contract_address
           ,a.exchange_contract_address as project_contract_address
-          ,agg.name as aggregator_name
+          ,case when right(ett.input, 8)='72db8c0b' then 'Gem' else agg.name end as aggregator_name
           ,agg.contract_address as aggregator_address
           ,a.tx_hash
           ,tx.from as tx_from
@@ -412,7 +421,7 @@ with p1_call as (
                 when evt_royalty_amount > 0 then t1.symbol
           end as royalty_fee_currency_symbol
           ,a.tx_hash || '-' || a.nft_token_id || '-' || a.attempt_amount::string || '-' ||  concat('0x',substr(seller,3,40)) || '-' ||
-          cast(row_number () over (partition by tx_hash order by sub_idx) as
+          cast(row_number () over (partition by a.tx_hash order by sub_idx) as
           string) as unique_trade_id,
           a.zone
       from p2_transfer_level a
@@ -423,6 +432,11 @@ with p1_call as (
             {% endif %}
             {% if is_incremental() %}
             and tx.block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
+        left join {{ source('ethereum','traces') }} ett
+            ON a.block_time = ett.block_time AND a.tx_hash = ett.tx_hash AND right(ett.input, 8)='72db8c0b'
+            {% if is_incremental() %}
+            and ett.block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         left join {{ ref('nft_aggregators') }} agg
             ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
@@ -578,7 +592,9 @@ with p1_call as (
           ,token_id as nft_token_id
           ,nft_transfer_count
           ,original_amount as nft_item_count
-          ,coalesce(avg_original_amount,0) + coalesce(avg_fee_amount,0) + coalesce(avg_royalty_amount,0) as attempt_amount
+--         quickfix for Issue #1510 that results in double counting of fees
+--        ,coalesce(avg_original_amount,0) + coalesce(avg_fee_amount,0) + coalesce(avg_royalty_amount,0) as attempt_amount
+          ,coalesce(avg_original_amount,0) as attempt_amount
           ,0 as revert_amount
           ,false as reverted
           ,case when nft_transfer_count > 1 then true else false end as price_estimated
@@ -622,7 +638,7 @@ with p1_call as (
            end as currency_contract
           ,nft_contract_address
           ,a.exchange_contract_address as project_contract_address
-          ,agg.name as aggregator_name
+          ,case when right(ett.input, 8)='72db8c0b' then 'Gem' else agg.name end as aggregator_name
           ,agg.contract_address as aggregator_address
           ,a.tx_hash
           ,tx.from as tx_from
@@ -642,7 +658,7 @@ with p1_call as (
           when royalty_amount > 0 then t1.symbol
           end as royalty_fee_currency_symbol
           ,a.tx_hash || '-' || a.attempt_amount::string || '-' || a.nft_token_id || '-' ||  concat('0x',substr(seller,3,40)) || '-' ||
-          order_type_id::string || '-' || cast(row_number () over (partition by tx_hash order by sub_idx) as
+          order_type_id::string || '-' || cast(row_number () over (partition by a.tx_hash order by sub_idx) as
           string) as unique_trade_id,
           a.zone
       from p3_txn_level a
@@ -656,6 +672,11 @@ with p1_call as (
             {% endif %}
         left join {{ ref('nft_aggregators') }} agg
             ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
+        left join {{ source('ethereum','traces') }} ett
+            ON a.block_time = ett.block_time AND a.tx_hash = ett.tx_hash AND right(ett.input, 8)='72db8c0b'
+            {% if is_incremental() %}
+            and ett.block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
         left join {{ ref('tokens_nft') }} n
             on n.contract_address = nft_contract_address and n.blockchain = 'ethereum'
         left join {{ ref('tokens_erc20') }} t1
@@ -829,7 +850,7 @@ with p1_call as (
            end as currency_contract
           ,concat('0x',substr(a.nft_address,3,40)) as nft_contract_address
           ,a.exchange_contract_address as project_contract_address
-          ,agg.name as aggregator_name
+          ,case when right(ett.input, 8)='72db8c0b' then 'Gem' else agg.name end as aggregator_name
           ,agg.contract_address as aggregator_address
           ,a.tx_hash
           ,tx.from as tx_from
@@ -848,7 +869,7 @@ with p1_call as (
           '0x0000000000000000000000000000000000000000' then 'ETH'
                 when evt_royalty_amount > 0 then t1.symbol
           end as royalty_fee_currency_symbol
-          ,a.tx_hash || '-' || a.nft_token_id || '-' || a.attempt_amount::string || '-' || concat('0x',substr(seller,3,40)) || '-' || cast(row_number () over (partition by tx_hash order by sub_idx) as
+          ,a.tx_hash || '-' || a.nft_token_id || '-' || a.attempt_amount::string || '-' || concat('0x',substr(seller,3,40)) || '-' || cast(row_number () over (partition by a.tx_hash order by sub_idx) as
           string) as unique_trade_id,
           a.zone
     from p4_transfer_level a
@@ -859,6 +880,11 @@ with p1_call as (
         {% endif %}
         {% if is_incremental() %}
         and tx.block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+    left join {{ source('ethereum','traces') }} ett
+        ON a.block_time = ett.block_time AND a.tx_hash = ett.tx_hash AND right(ett.input, 8)='72db8c0b'
+        {% if is_incremental() %}
+        and ett.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     left join {{ ref('nft_aggregators') }} agg
         ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'

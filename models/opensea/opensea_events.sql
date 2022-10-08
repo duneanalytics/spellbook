@@ -1,5 +1,9 @@
 {{ config(
-        alias ='events'
+        alias ='events',
+        post_hook='{{ expose_spells(\'["ethereum","solana"]\',
+                                            "project",
+                                            "opensea",
+                                            \'["rchen8","soispoke"]\') }}'
 )
 }}
 

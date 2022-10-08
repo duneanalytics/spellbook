@@ -20,9 +20,9 @@ models:
     meta:
       blockchain: ethereum, solana
       sector: nft
-      contributors: soispoke, hildobby, ilemi, 0xRob
+      contributors: soispoke, hildobby, ilemi, 0xRob, cat
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'ethereum', 'solana', 'events']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'events']
     description: >
         NFT events
     columns:
@@ -142,9 +142,9 @@ models:
     meta:
       blockchain: ethereum, solana
       sector: nft
-      contributors: soispoke, hildobby, ilemi
+      contributors: soispoke, hildobby, ilemi, cat
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'ethereum', 'solana', 'trades']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'trades','superrare']
     description: >
         NFT trades
     columns:
@@ -182,7 +182,7 @@ models:
       sector: nft
       contributors: soispoke, hildobby
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'ethereum', 'solana', 'mints']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'mints']
     description: >
         NFT mints
     columns:
@@ -220,7 +220,7 @@ models:
       sector: nft
       contributors: soispoke, hildobby
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'ethereum', 'solana', 'burns']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'burns']
     description: >
         NFT burns
     columns:
@@ -256,9 +256,9 @@ models:
     meta:
       blockchain: ethereum, solana
       sector: nft
-      contributors: soispoke, hildobby, ilemi
+      contributors: soispoke, hildobby, ilemi, cat
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'ethereum', 'solana', 'fees']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'fees','superrare']
     description: >
         NFT fees
     columns:
@@ -294,3 +294,21 @@ models:
       - *tx_from
       - *tx_to
       - *unique_trade_id
+
+  - name: nft_linked_addresses
+    meta:
+      blockchain: ethereum, solana
+      sector: nft
+      contributors: springzh
+    config:
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'ethereum', 'solana', 'address']
+    description: >
+        NFT linked addresses. Addresses that buy and sell NFTs from each other.
+    columns:
+      - *blockchain
+      - name: master_address
+        description: "Master address"
+      - name: alternative_address
+        description: "Alternative address"
+      - name: linked_address_id
+        description: "Unique linked address id"

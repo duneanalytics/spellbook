@@ -1,6 +1,9 @@
 {{ config(
-        alias ='aggregators'
-)
+        alias ='aggregators',
+        post_hook='{{ expose_spells(\'["avalanche_c","bnb","ethereum","polygon"]\',
+                                    "sector",
+                                    "nft",
+                                    \'["soispoke","hildobby"]\') }}')
 }}
 
 SELECT 'avalanche_c' as blockchain, * FROM  {{ ref('nft_avalanche_c_aggregators') }}

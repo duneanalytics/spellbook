@@ -10,9 +10,9 @@ SELECT gc.creator_address, MIN(created_time) AS min_created_time, MAX(created_ti
         ON cc."creator_address" = gc.creator_address
 		OR cc."creator_address" = gc.contract_creator_if_factory
 	LEFT JOIN ovm2.project_name_mappings pnmc
-	ON pnmc.mapped_name = gc.contract_project
+	ON LOWER(pnmc.mapped_name) = LOWER(gc.contract_project)
 	LEFT JOIN ovm2.project_name_mappings pnm
-	ON pnm.dune_name = gc.contract_project
+	ON LOWER(pnm.dune_name) = LOWER(gc.contract_project)
     
     WHERE
 	is_self_destruct = false

@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: balancer_ethereum_balances
+    meta:
+      blockchain: ethereum
+      project: balancer
+      contributors: jacektrocinski
+    config:
+      tags: ['ethereum', 'balances']
+    description: >
+      ERC20 token rolling sum balances on Balancer, an automated portfolio manager and trading platform.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool
+            - token
+    columns:
+      - &day
+        name: day
+        description: 'UTC event block time truncated to the day mark'
+        tests:
+          - not_null
+      - &pool
+        name: pool
+        description: 'Balancer pool contract address'
+      - &token
+        name: token
+        description: 'Token contract address'
+      - &cumulative_amount
+        name: cumulative_amount
+        description: 'Balance of a token'
