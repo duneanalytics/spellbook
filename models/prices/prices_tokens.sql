@@ -639,6 +639,8 @@ VALUES
     ("ib-iron-bank","optimism","IB","0x00a35fd824c717879bf370e70ac6868b95870dfb",18)
     ("bifi-beefyfinance","optimism","BIFI","0x4e720dd3ac5cfe1e1fbde4935f386bb1c66f4642",18)
     ("mim-magic-internet-money","optimism","MIM","0xB153FB3d196A8eB25522705560ac152eeEc57901",18)
+    ("wsteth-wrapped-liquid-staked-ether-20","optimism","wstETH","0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb",18)
+    ("ldo-lido-dao","optimism","LDO","0xFdb794692724153d1488CcdBE0C56c252596735F",18)
 
     ("aury-aurory", "solana", "AURY", "AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP", 9),
     ("btc-bitcoin", "solana", "BTC", "9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E", 6),
