@@ -6,5 +6,5 @@ sources:
     tables:
       - name: Pair_evt_Swap
         loaded_at_field: evt_block_time
-      - name: factory_evt_poolcreated
+      - name: PairFactory_evt_PairCreated
         loaded_at_field: evt_block_time

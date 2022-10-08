@@ -23,12 +23,12 @@ SELECT DISTINCT
     1 AS version,
     TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date,
     dexs.block_time,
-    erc20a.symbol AS token_bought_symbol,
-    erc20b.symbol AS token_sold_symbol,
+    COALESCE(erc20a.symbol,pa.symbol)AS token_bought_symbol,
+    COALESCE(erc20b.symbol,pb.symbol) AS token_sold_symbol
     ,case
-        when lower(erc20a.symbol) > lower(erc20b.symbol) then concat(erc20b.symbol, '-', erc20a.symbol)
-        else concat(erc20a.symbol, '-', erc20b.symbol)
-    end as token_pair
+        when lower(COALESCE(erc20a.symbol,pa.symbol)) > lower(COALESCE(erc20b.symbol,pb.symbol)) then concat(COALESCE(erc20b.symbol,pb.symbol), '-', COALESCE(erc20a.symbol,pa.symbol))
+        else concat(COALESCE(erc20a.symbol,pa.symbol), '-', COALESCE(erc20b.symbol,pb.symbol))
+    end as token_pair,
     --metapools seem to always use the added coin's decimals if it's the one that's bought - even if the other token has less decimals (i.e. USDC)
     token_a_amount_raw / POWER(10 , (CASE WHEN pool_type = 'meta' AND bought_id = 0 THEN underlying_decimals ELSE COALESCE(erc20a.decimals,pa.decimals) END) ) AS token_bought_amount,
     token_b_amount_raw / POWER(10 , (CASE WHEN pool_type = 'meta' AND bought_id = 0 THEN underlying_decimals ELSE COALESCE(erc20b.decimals,pb.decimals) END) )  AS token_sold_amount,
@@ -43,12 +43,12 @@ SELECT DISTINCT
 
     token_a_address AS token_bought_address,
     token_b_address AS token_sold_address,
-    coalesce(trader_a, tx."from") as taker, -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
+    coalesce(trader_a, tx.`from`) as taker, -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
     trader_b AS maker,
     exchange_contract_address AS project_contract_address,
     tx_hash,
-    tx."from" as tx_from,
-    tx."to" as tx_to,
+    tx.`from` as tx_from,
+    tx.`to` as tx_to,
     trace_address,
     evt_index
     -- row_number() OVER (PARTITION BY project, tx_hash, dexs.evt_index, trace_address ORDER BY version, category) AS trade_id
@@ -98,7 +98,7 @@ SELECT DISTINCT
         t.evt_tx_hash AS tx_hash,
         CAST(NULL AS ARRAY<INT>) AS trace_address,
         t.evt_index, bought_id, sold_id,
-        CASE WHEN bought_id = 0 THEN COALESCE(ea.decimals,pa.decimals) ELSE COALESCE(eb.decimals,pb.decimals) END AS underlying_decimals --used if meta
+        CASE WHEN bought_id = 0 THEN ea.decimals ELSE eb.decimals END AS underlying_decimals --used if meta
     FROM {{ source('curvefi_optimism', 'MetaPoolSwap_evt_TokenExchangeUnderlying') }} t
         INNER JOIN {{ ref('curvefi_optimism_pools') }} ta
             ON t.contract_address = ta.pool
@@ -129,17 +129,17 @@ SELECT DISTINCT
     CAST(NULL AS ARRAY<INT>) AS trace_address,
     bytea2numeric_v2(substring(data,3,64))::int as tokena,--1st sold
     bytea2numeric_v2(substring(data,3+64*1,64)) as tokena_amount, --1st sold
-    DENSE_RANK() (PARTITION BY tx_index ORDER BY index) AS evt_index,
+    index AS evt_index,
     bytea2numeric_v2(substring(data,3+64*3,64))::int AS bought_id,
     bytea2numeric_v2(substring(data,3+64*1,64))::int AS sold_id
 
-    FROM {{ source('ethereum', 'logs') }} l
+    FROM {{ source('optimism', 'logs') }} l
         INNER JOIN {{ ref('curvefi_optimism_pools') }} ta
-            ON t.contract_address = ta.pool
+            ON l.contract_address = ta.pool
             AND bytea2numeric_v2(substring(data,3+64*3,64))::int = ta.tokenid --t.bought_id = ta.tokenid
             AND ta.version = 'Basic Pool'
         INNER JOIN {{ ref('curvefi_optimism_pools') }} tb
-            ON t.contract_address = tb.pool
+            ON l.contract_address = tb.pool
             AND bytea2numeric_v2(substring(data,3+64*1,64))::int = tb.tokenid --t.sold_id = tb.tokenid
             AND tb.version = 'Basic Pool'
     WHERE topic1 = '0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140'
@@ -148,7 +148,7 @@ SELECT DISTINCT
     {% endif %}
     
     ) dexs
-    INNER JOIN {{ source('ethereum', 'transactions') }} tx
+    INNER JOIN {{ source('optimism', 'transactions') }} tx
         ON dexs.tx_hash = tx.hash
         AND dexs.evt_block_number = tx.block_number
         {% if is_incremental() %}
@@ -158,14 +158,16 @@ SELECT DISTINCT
     LEFT JOIN {{ ref('tokens_optimism_erc20') }} erc20a ON erc20a.contract_address = dexs.token_a_address
     LEFT JOIN {{ ref('tokens_optimism_erc20') }} erc20b ON erc20b.contract_address = dexs.token_b_address
     LEFT JOIN {{ source('prices', 'usd') }} pa
-      ON pa.hour = date_trunc('minute', dexs.block_time)
+      ON pa.minute = date_trunc('minute', dexs.block_time)
         AND pa.contract_address = dexs.token_a_address
+        AND pa.blockchain = 'optimism'
         {% if is_incremental() %}
         AND pa.minute >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     LEFT JOIN {{ source('prices', 'usd') }} pb
-      ON pb.hour = date_trunc('minute', dexs.block_time)
+      ON pb.minute = date_trunc('minute', dexs.block_time)
         AND pb.contract_address = dexs.token_b_address
+        AND pa.blockchain = 'optimism'
         {% if is_incremental() %}
         AND pb.minute >= date_trunc("day", now() - interval '1 week')
         {% endif %}
