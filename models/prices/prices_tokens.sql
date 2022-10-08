@@ -1031,6 +1031,8 @@ VALUES
     ("usdt-tether", "gnosis", "USDT", "0x4ecaba5870353805a9f068101a40e0f32ed605c6", 6),
     ("wbtc-wrapped-bitcoin", "gnosis", "WBTC", "0x8e5bbbb09ed1ebde8674cda39a0c169401db4252", 8),
 
+    ("eth-ethereum", "optimism", "ETH", "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", 18),
+    ("eth-ethereum", "optimism","ETH", "0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000",18),
     ("dai-dai", "optimism", "DAI", "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1", 18),
     ("usdc-usd-coin", "optimism", "USDC", "0x7f5c764cbc14f9669b88837ca1490cca17c31607", 6),
     ("usdt-tether", "optimism", "USDT", "0x94b008aa00579c1307b0ef2c499ad98a8ce58e58", 6),
@@ -1046,7 +1048,6 @@ VALUES
     ("seth-seth","optimism","sETH","0xe405de8f52ba7559f9df3c368500b6e6ae6cee49",18),
     -- ("NULL","optimism","sLINK","0xc5db22719a06418028a40a9b5e9a7c02959d0d08",18),
     -- ("NULL","optimism","sBTC","0x298b9b95708152ff6968aafd889c6586e9169f1d",18),
-    ("eth-ethereum","optimism","ETH","0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000",18),
     ("reth-rocket-pool-eth","optimism","rETH","0x9bcef72be871e61ed4fbbc7630889bee758eb81d",18),
     ("lusd-liquity-usd","optimism","LUSD","0xc40f949f8a4e094d1b49a23ea9241d289b7b2819",18),
     ("syn-synapse","optimism","SYN","0x5a5fff6f753d7c11a56a52fe47a177a87e431655",18),
