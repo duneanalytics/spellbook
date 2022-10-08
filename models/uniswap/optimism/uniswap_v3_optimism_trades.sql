@@ -12,15 +12,15 @@
                                 \'["jeff-dude", "markusbkoch", "masquot", "milkyklim", "0xBoxer", "mewwts", "hagaetc"]\') }}'
     )
 }}
--- derived from
--- Select min(evt_block_time) from uniswap_v3_optimism.pair_evt_swap
-{% set project_start_date = '2021-12-14' %}
+-- OVM 1 Launch 06-23-21
+{% set project_start_date = '2021-06-23' %}
 
 WITH dexs AS
 (
     --Uniswap v3
     SELECT
         t.evt_block_time AS block_time
+        t.evt_block_number
         ,t.recipient AS taker
         ,'' AS maker
         ,CASE WHEN amount0 < '0' THEN abs(amount0) ELSE abs(amount1) END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
@@ -74,6 +74,7 @@ SELECT
 FROM dexs
 INNER JOIN {{ source('optimism', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
+    AND tx.block_number = dexs.evt_block_number
     {% if not is_incremental() %}
     AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
