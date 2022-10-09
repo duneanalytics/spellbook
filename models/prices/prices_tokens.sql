@@ -1099,6 +1099,18 @@ VALUES
     ("mim-magic-internet-money","optimism","MIM","0xB153FB3d196A8eB25522705560ac152eeEc57901",18),
     ("wsteth-wrapped-liquid-staked-ether-20","optimism","wstETH","0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb",18),
     ("ldo-lido-dao","optimism","LDO","0xFdb794692724153d1488CcdBE0C56c252596735F",18),
+    ("sdl-saddle-finance", "optimism", "SDL", "0xAe31207aC34423C41576Ff59BFB4E036150f9cF7", 18),
+    ("xchf-cryptofranc", "optimism", "XCHF", "0xe4f27b04cc7729901876b44f4eaa5102ec150265", 18),
+    ("wad-warden", "optimism", "WAD", "0x703D57164CA270b0B330A87FD159CfEF1490c0a5", 18),
+    ("ust-terrausd-wormhole", "optimism", "UST", "0xBA28feb4b6A6b81e3F26F08b83a19E715C4294fd", 6),
+    ("usdd-usdd", "optimism", "USDD", "0x7113370218f31764C1B6353BDF6004d86fF6B9cc", 18),
+    ("ubi-universal-basic-income", "optimism", "UBI", "0xbb586ed34974b15049a876fd5366a4c2d1203115", 18),
+    ("premia-premia", "optimism", "PREMIA", "0x374Ad0f47F4ca39c78E5Cc54f1C9e426FF8f231A", 18),
+    ("krom-kromatikafinance", "optimism", "KROM", "0xf98dcd95217e15e05d8638da4c91125e59590b07", 18),
+    ("knc-kyber-network", "optimism", "KNC", "0xa00E3A3511aAC35cA78530c85007AFCd31753819", 18),
+    ('dht-dhedge', 'optimism', 'DHT', '0xAF9fE3B5cCDAe78188B1F8b9a49Da7ae9510F151', 18),
+    ("crv-curve-dao-token", "optimism", "CRV", "0x0994206dfe8de6ec6920ff4d779b0d950605fb53", 18),
+    
 
 
     ("aury-aurory", "solana", "AURY", "AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP", 9),
