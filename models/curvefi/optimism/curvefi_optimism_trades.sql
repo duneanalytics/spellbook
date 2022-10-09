@@ -123,24 +123,24 @@ SELECT DISTINCT
     ta.token as token_a_amount_raw, --2nd bought
     tb.token as token_b_amount_raw, --1st sold
     NULL AS usd_amount,
-    bytea2numeric_v2(substring(data,3+64*2,64))::int as token_a_address, --2nd bought
-    bytea2numeric_v2(substring(data,3+64*2,64))::int as token_b_address, --2nd bought
+    conv(substring(data,3+64*2,64),16,10) as token_a_address, --2nd bought
+    conv(substring(data,3+64*2,64),16,10) as token_b_address, --2nd bought
     contract_address AS exchange_contract_address,
     CAST(NULL AS ARRAY<INT>) AS trace_address,
-    bytea2numeric_v2(substring(data,3,64))::int as tokena,--1st sold
-    bytea2numeric_v2(substring(data,3+64*1,64)) as tokena_amount, --1st sold
+    conv(substring(data,3,64),16,10) as tokena,--1st sold
+    conv(substring(data,3+64*1,64)) as tokena_amount, --1st sold
     index AS evt_index,
-    bytea2numeric_v2(substring(data,3+64*3,64))::int AS bought_id,
-    bytea2numeric_v2(substring(data,3+64*1,64))::int AS sold_id
+    conv(substring(data,3+64*3,64),16,10) AS bought_id,
+    conv(substring(data,3+64*1,64),16,10) AS sold_id
 
     FROM {{ source('optimism', 'logs') }} l
         INNER JOIN {{ ref('curvefi_optimism_pools') }} ta
             ON l.contract_address = ta.pool
-            AND bytea2numeric_v2(substring(data,3+64*3,64))::int = ta.tokenid --t.bought_id = ta.tokenid
+            AND conv(substring(data,3+64*3,64),16,10) = ta.tokenid --t.bought_id = ta.tokenid
             AND ta.version = 'Basic Pool'
         INNER JOIN {{ ref('curvefi_optimism_pools') }} tb
             ON l.contract_address = tb.pool
-            AND bytea2numeric_v2(substring(data,3+64*1,64))::int = tb.tokenid --t.sold_id = tb.tokenid
+            AND conv(substring(data,3+64*1,64),16,10) = tb.tokenid --t.sold_id = tb.tokenid
             AND tb.version = 'Basic Pool'
     WHERE topic1 = '0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140'
     {% if is_incremental() %}
