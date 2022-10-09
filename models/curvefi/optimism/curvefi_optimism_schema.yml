@@ -24,7 +24,7 @@ models:
         tests:
           - not_null
       - &token_id
-        name: token_id
+        name: tokenid
         description: "ID of the token in the pool"
         tests:
           - not_null
