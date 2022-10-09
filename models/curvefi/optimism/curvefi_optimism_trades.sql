@@ -68,7 +68,7 @@ SELECT DISTINCT
         tb.token AS token_b_address,
         t.contract_address as exchange_contract_address,
         t.evt_tx_hash AS tx_hash,
-        NULL /*CAST(NULL AS ARRAY<INT>)*/ AS trace_address,
+        '' AS trace_address,
         t.evt_index, bought_id, sold_id,
         NULL AS underlying_decimals --used for metaswaps
     FROM {{ source('curvefi_optimism', 'StableSwap_evt_TokenExchange') }} t
@@ -98,7 +98,7 @@ SELECT DISTINCT
         tb.token AS token_b_address,
         t.contract_address as exchange_contract_address,
         t.evt_tx_hash AS tx_hash,
-        NULL /*CAST(NULL AS ARRAY<INT>)*/ AS trace_address,
+        '' AS trace_address,
         t.evt_index, bought_id, sold_id,
         CASE WHEN bought_id = 0 THEN ea.decimals ELSE eb.decimals END AS underlying_decimals --used if meta
     FROM {{ source('curvefi_optimism', 'MetaPoolSwap_evt_TokenExchangeUnderlying') }} t
@@ -130,7 +130,7 @@ SELECT DISTINCT
     conv(substring(data,3+64*2,64),16,10) as token_b_address, --2nd bought
     contract_address AS exchange_contract_address,
     l.tx_hash,
-    NULL /*CAST(NULL AS ARRAY<INT>)*/ AS trace_address,
+    '' AS trace_address,
     index AS evt_index,
     conv(substring(data,3+64*3,64),16,10) AS bought_id,
     conv(substring(data,3+64*1,64),16,10) AS sold_id,
