@@ -57,6 +57,7 @@ SELECT DISTINCT
      SELECT
         'stable' AS pool_type, -- has implications for decimals for curve
         t.evt_block_time AS block_time,
+        t.evt_block_number,
         t.buyer AS trader_a,
         NULL AS trader_b,
         -- when amount0 is negative it means trader_a is buying token0 from the pool
@@ -67,7 +68,7 @@ SELECT DISTINCT
         tb.token AS token_b_address,
         t.contract_address as exchange_contract_address,
         t.evt_tx_hash AS tx_hash,
-        CAST(NULL AS ARRAY<INT>) AS trace_address,
+        NULL /*CAST(NULL AS ARRAY<INT>)*/ AS trace_address,
         t.evt_index, bought_id, sold_id,
         NULL AS underlying_decimals --used for metaswaps
     FROM {{ source('curvefi_optimism', 'StableSwap_evt_TokenExchange') }} t
@@ -86,6 +87,7 @@ SELECT DISTINCT
     SELECT
     'meta' AS pool_type, -- has implications for decimals for curve
         t.evt_block_time AS block_time,
+        t.evt_block_number,
         t.buyer AS trader_a,
         NULL AS trader_b,
         -- when amount0 is negative it means trader_a is buying token0 from the pool
@@ -96,7 +98,7 @@ SELECT DISTINCT
         tb.token AS token_b_address,
         t.contract_address as exchange_contract_address,
         t.evt_tx_hash AS tx_hash,
-        CAST(NULL AS ARRAY<INT>) AS trace_address,
+        NULL /*CAST(NULL AS ARRAY<INT>)*/ AS trace_address,
         t.evt_index, bought_id, sold_id,
         CASE WHEN bought_id = 0 THEN ea.decimals ELSE eb.decimals END AS underlying_decimals --used if meta
     FROM {{ source('curvefi_optimism', 'MetaPoolSwap_evt_TokenExchangeUnderlying') }} t
@@ -118,6 +120,7 @@ SELECT DISTINCT
     SELECT
     'basic' as pool_type,
     block_time,
+    block_number,
     substring(topic2,25,40) AS trader_a,
     NULL AS trader_b,
     ta.token as token_a_amount_raw, --2nd bought
@@ -126,7 +129,7 @@ SELECT DISTINCT
     conv(substring(data,3+64*2,64),16,10) as token_a_address, --2nd bought
     conv(substring(data,3+64*2,64),16,10) as token_b_address, --2nd bought
     contract_address AS exchange_contract_address,
-    CAST(NULL AS ARRAY<INT>) AS trace_address,
+    NULL /*CAST(NULL AS ARRAY<INT>)*/ AS trace_address,
     conv(substring(data,3,64),16,10) as tokena,--1st sold
     conv(substring(data,3+64*1,64),16,10) as tokena_amount, --1st sold
     index AS evt_index,
