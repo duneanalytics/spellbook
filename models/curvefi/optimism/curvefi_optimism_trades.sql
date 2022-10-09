@@ -173,10 +173,10 @@ SELECT DISTINCT
         AND pa.contract_address = dexs.token_a_address
         AND pa.blockchain = 'optimism'
         {% if not is_incremental() %}
-        AND pb.minute >= '{{project_start_date}}'
+        AND pa.minute >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND pb.minute >= date_trunc('day', now() - interval '1 week')
+        AND pa.minute >= date_trunc('day', now() - interval '1 week')
         {% endif %}
 
     LEFT JOIN {{ source('prices', 'usd') }} pb
