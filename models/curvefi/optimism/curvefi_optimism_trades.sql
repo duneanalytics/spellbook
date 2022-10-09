@@ -129,12 +129,12 @@ SELECT DISTINCT
     conv(substring(data,3+64*2,64),16,10) as token_a_address, --2nd bought
     conv(substring(data,3+64*2,64),16,10) as token_b_address, --2nd bought
     contract_address AS exchange_contract_address,
+    l.tx_hash,
     NULL /*CAST(NULL AS ARRAY<INT>)*/ AS trace_address,
-    conv(substring(data,3,64),16,10) as tokena,--1st sold
-    conv(substring(data,3+64*1,64),16,10) as tokena_amount, --1st sold
     index AS evt_index,
     conv(substring(data,3+64*3,64),16,10) AS bought_id,
-    conv(substring(data,3+64*1,64),16,10) AS sold_id
+    conv(substring(data,3+64*1,64),16,10) AS sold_id,
+    NULL AS underlying_decimals
 
     FROM {{ source('optimism', 'logs') }} l
         INNER JOIN {{ ref('curvefi_optimism_pools') }} ta
