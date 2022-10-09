@@ -14,8 +14,13 @@
 }}
 
 -- This should depend on 'curvefi_optimism_pools' running first
-
 -- Original Ref - Dune v1 Abstraction: https://github.com/duneanalytics/spellbook/blob/main/deprecated-dune-v1-abstractions/optimism2/dex/insert_curve.sql
+-- Start Time
+-- SELECT MIN(evt_block_time) FROM curvefi_optimism.StableSwap_evt_TokenExchange
+-- UNION ALL
+-- SELECT MIN(evt_block_time) FROM curvefi_optimism.MetaPoolSwap_evt_TokenExchange
+{% set project_start_date = '2022-01-17' %}
+
 
 SELECT DISTINCT
     'optimism' AS blockchain,
@@ -164,13 +169,20 @@ SELECT DISTINCT
       ON pa.minute = date_trunc('minute', dexs.block_time)
         AND pa.contract_address = dexs.token_a_address
         AND pa.blockchain = 'optimism'
-        {% if is_incremental() %}
-        AND pa.minute >= date_trunc('day', now() - interval '1 week')
+        {% if not is_incremental() %}
+        AND pb.minute >= '{{project_start_date}}'
         {% endif %}
+        {% if is_incremental() %}
+        AND pb.minute >= date_trunc('day', now() - interval '1 week')
+        {% endif %}
+
     LEFT JOIN {{ source('prices', 'usd') }} pb
       ON pb.minute = date_trunc('minute', dexs.block_time)
         AND pb.contract_address = dexs.token_b_address
         AND pa.blockchain = 'optimism'
+        {% if not is_incremental() %}
+        AND pb.minute >= '{{project_start_date}}'
+        {% endif %}
         {% if is_incremental() %}
         AND pb.minute >= date_trunc('day', now() - interval '1 week')
         {% endif %}
