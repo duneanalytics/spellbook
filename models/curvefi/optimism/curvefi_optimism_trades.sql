@@ -37,8 +37,8 @@ SELECT DISTINCT
     coalesce(
         usd_amount,
 	--metapools seem to always use the added coin's decimals if it's the one that's bought - even if the other token has less decimals (i.e. USDC)
-        token_a_amount_raw / 10 ^ (CASE WHEN pool_type = 'meta' AND bought_id = 0 THEN underlying_decimals ELSE COALESCE(erc20a.decimals,pa.decimals) END) * pa.price,
-        token_b_amount_raw / 10 ^ (CASE WHEN pool_type = 'meta' AND bought_id = 0 THEN underlying_decimals ELSE COALESCE(erc20b.decimals,pb.decimals) END) * pb.price
+        token_a_amount_raw / POWER(10 , CASE WHEN pool_type = 'meta' AND bought_id = 0 THEN underlying_decimals ELSE COALESCE(erc20a.decimals,pa.decimals) END) * pa.price,
+        token_b_amount_raw / POWER(10 , CASE WHEN pool_type = 'meta' AND bought_id = 0 THEN underlying_decimals ELSE COALESCE(erc20b.decimals,pb.decimals) END) * pb.price
     ) as usd_amount,
 
     token_a_address AS token_bought_address,
