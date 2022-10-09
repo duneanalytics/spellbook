@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_id'],
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trade_id'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "dodo",
@@ -278,7 +278,7 @@ SELECT
     ,tx.to AS tx_to
     ,dexs.trace_address
     ,dexs.evt_index
-    ,row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address ORDER BY dexs.block_time) AS trace_id
+    ,row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address ORDER BY dexs.block_time) AS trade_id
 FROM dexs
 INNER JOIN {{ source('ethereum', 'transactions')}} tx
     ON dexs.tx_hash = tx.hash
