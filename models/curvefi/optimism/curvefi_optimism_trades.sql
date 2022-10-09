@@ -159,6 +159,9 @@ SELECT DISTINCT
     INNER JOIN {{ source('optimism', 'transactions') }} tx
         ON dexs.tx_hash = tx.hash
         AND dexs.evt_block_number = tx.block_number
+        {% if not is_incremental() %}
+        AND tx.block_time >= '{{project_start_date}}'
+        {% endif %}
         {% if is_incremental() %}
         AND tx.block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}

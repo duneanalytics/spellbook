@@ -13,14 +13,20 @@
 }}
 
 -- Original Ref - Dune v1 Abstraction: https://github.com/duneanalytics/spellbook/blob/main/deprecated-dune-v1-abstractions/optimism2/dex/insert_curve.sql
+-- Start Time
+-- SELECT MIN(call_block_time) FROM curvefi_optimism.StableSwap_call_coins
+{% set project_start_date = '2022-01-17' %}
+
 
 WITH base_pools AS (
+    --Need all base pools because the meta pools reference them
     SELECT `arg0` AS tokenid, output_0 AS token, contract_address AS pool
         FROM {{ source('curvefi_optimism', 'StableSwap_call_coins') }}
         WHERE call_success
     GROUP BY 1,2,3 --unique
     )
 , meta_pools AS (
+    -- Meta Pools are "Base Pools" + 1 extra token (i.e. sUSD + 3pool = sUSD Metapool)
 SELECT tokenid, token, et.`contract_address` AS pool
 FROM (
     SELECT mp.evt_tx_hash, bp.tokenid + 1 AS tokenid, bp.token, mp.evt_block_number
@@ -53,6 +59,12 @@ GROUP BY 1,2,3,4 --unique
         AND et.`from` = '0x0000000000000000000000000000000000000000'
         AND et.`to` = et.`contract_address`
         AND et.evt_block_number = mps.evt_block_number
+        {% if not is_incremental() %}
+        AND et.evt_block_time >= '{{project_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+        AND et.evt_block_time >= date_trunc('day', now() - interval '1 week')
+        {% endif %}
         
         
     GROUP BY 1,2,3
