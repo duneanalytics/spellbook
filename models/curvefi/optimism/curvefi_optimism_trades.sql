@@ -128,7 +128,7 @@ SELECT DISTINCT
     contract_address AS exchange_contract_address,
     CAST(NULL AS ARRAY<INT>) AS trace_address,
     conv(substring(data,3,64),16,10) as tokena,--1st sold
-    conv(substring(data,3+64*1,64)) as tokena_amount, --1st sold
+    conv(substring(data,3+64*1,64),16,10) as tokena_amount, --1st sold
     index AS evt_index,
     conv(substring(data,3+64*3,64),16,10) AS bought_id,
     conv(substring(data,3+64*1,64),16,10) AS sold_id
