@@ -20,7 +20,7 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
+            - trace_id
     columns:
       - &blockchain
         name: blockchain
