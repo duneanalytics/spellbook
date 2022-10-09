@@ -157,7 +157,7 @@ SELECT DISTINCT
   wa.buyer AS buyer,
   CASE WHEN buyer=agg.contract_address AND erct2.to IS NOT NULL THEN erct2.to
     WHEN buyer=agg.contract_address AND erct3.to IS NOT NULL THEN erct3.to
-    ELSE buyer END AS buyer
+    ELSE buyer END AS buyer,
   CASE WHEN shared_storefront_address = '0x495f947276749ce646f68ac8c248420045cb7b5e' THEN 'Mint'
   WHEN evt_type is not NULL THEN evt_type ELSE 'Trade' END as evt_type,
   wa.amount_original / power(10,erc20.decimals) AS amount_original,
