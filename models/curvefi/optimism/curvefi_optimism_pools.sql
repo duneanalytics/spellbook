@@ -29,7 +29,7 @@ FROM (
         ON mp.base_pool = bp.pool
 
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
     
 GROUP BY 1,2,3,4 --unique
@@ -41,7 +41,7 @@ GROUP BY 1,2,3,4 --unique
         ON mp.base_pool = bp.pool
     
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
     
 GROUP BY 1,2,3,4 --unique
@@ -66,7 +66,7 @@ SELECT pos AS tokenid, col AS token, pool
         FROM {{ source('curvefi_optimism', 'PoolFactory_call_deploy_plain_pool') }}
         WHERE call_success
         {% if is_incremental() %}
-        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND call_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
         ) a
     GROUP BY 1,2,3

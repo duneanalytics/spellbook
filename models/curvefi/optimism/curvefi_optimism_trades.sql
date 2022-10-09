@@ -61,8 +61,8 @@ SELECT DISTINCT
         t.buyer AS trader_a,
         NULL AS trader_b,
         -- when amount0 is negative it means trader_a is buying token0 from the pool
-        "tokens_bought" AS token_a_amount_raw,
-        "tokens_sold" AS token_b_amount_raw,
+        `tokens_bought` AS token_a_amount_raw,
+        `tokens_sold` AS token_b_amount_raw,
         NULL AS usd_amount,
         ta.token AS token_a_address,
         tb.token AS token_b_address,
@@ -79,7 +79,7 @@ SELECT DISTINCT
             ON t.contract_address = tb.pool
             AND t.sold_id = tb.tokenid
     {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
     
     UNION ALL
@@ -91,8 +91,8 @@ SELECT DISTINCT
         t.buyer AS trader_a,
         NULL AS trader_b,
         -- when amount0 is negative it means trader_a is buying token0 from the pool
-        "tokens_bought" AS token_a_amount_raw,
-        "tokens_sold" AS token_b_amount_raw,
+        `tokens_bought` AS token_a_amount_raw,
+        `tokens_sold` AS token_b_amount_raw,
         NULL AS usd_amount,
         ta.token AS token_a_address,
         tb.token AS token_b_address,
@@ -111,7 +111,7 @@ SELECT DISTINCT
         LEFT JOIN {{ ref('tokens_optimism_erc20') }} ea ON ea.contract_address = ta.token
         LEFT JOIN {{ ref('tokens_optimism_erc20') }} eb ON eb.contract_address = tb.token
     {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
     
     UNION ALL
@@ -147,7 +147,7 @@ SELECT DISTINCT
             AND tb.version = 'Basic Pool'
     WHERE topic1 = '0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140'
     {% if is_incremental() %}
-        AND l.block_time >= date_trunc("day", now() - interval '1 week')
+        AND l.block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
     
     ) dexs
@@ -155,7 +155,7 @@ SELECT DISTINCT
         ON dexs.tx_hash = tx.hash
         AND dexs.evt_block_number = tx.block_number
         {% if is_incremental() %}
-        AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+        AND tx.block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
 
     LEFT JOIN {{ ref('tokens_optimism_erc20') }} erc20a ON erc20a.contract_address = dexs.token_a_address
@@ -165,12 +165,12 @@ SELECT DISTINCT
         AND pa.contract_address = dexs.token_a_address
         AND pa.blockchain = 'optimism'
         {% if is_incremental() %}
-        AND pa.minute >= date_trunc("day", now() - interval '1 week')
+        AND pa.minute >= date_trunc('day', now() - interval '1 week')
         {% endif %}
     LEFT JOIN {{ source('prices', 'usd') }} pb
       ON pb.minute = date_trunc('minute', dexs.block_time)
         AND pb.contract_address = dexs.token_b_address
         AND pa.blockchain = 'optimism'
         {% if is_incremental() %}
-        AND pb.minute >= date_trunc("day", now() - interval '1 week')
+        AND pb.minute >= date_trunc('day', now() - interval '1 week')
         {% endif %}
