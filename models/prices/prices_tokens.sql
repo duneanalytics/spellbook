@@ -1110,6 +1110,8 @@ VALUES
     ("knc-kyber-network", "optimism", "KNC", "0xa00E3A3511aAC35cA78530c85007AFCd31753819", 18),
     ('dht-dhedge', 'optimism', 'DHT', '0xAF9fE3B5cCDAe78188B1F8b9a49Da7ae9510F151', 18),
     ("crv-curve-dao-token", "optimism", "CRV", "0x0994206dfe8de6ec6920ff4d779b0d950605fb53", 18),
+    ("oath-oath", "optimism", "OATH", "0x39FdE572a18448F8139b7788099F0a0740f51205", 18),
+    
     
 
 
