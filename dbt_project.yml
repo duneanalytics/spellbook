@@ -310,6 +310,11 @@ models:
         +schema: airswap_ethereum
         +materialized: view
 
+    velodrome:
+      optimism:
+        +schema: velodrome_optimism
+        +materialized: view
+
 seeds:
   spellbook:
     balances:
@@ -430,10 +435,3 @@ seeds:
           project: string
           version: string
           tx_hash: string
-          
-    velodrome:
-      +schema: velodrome
-      +materialized: view
-      optimism:
-        +schema: velodrome_optimism
-        +materialized: view
