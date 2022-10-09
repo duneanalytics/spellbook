@@ -101,6 +101,7 @@ models:
       solana:
         +schema: opensea_solana
         +materialized: view
+
     element:
       +schema: element
       +materialized: view
@@ -257,6 +258,7 @@ models:
       optimism:
         +schema: pika_optimism
         +materialized: view
+
     synthetix:
       +schema: synthetix
       +materialized: view
@@ -280,6 +282,10 @@ models:
       ethereum:
         +schema: curvefi_ethereum
         +materialized: view
+      optimism:
+        +schema: curvefi_optimism
+        +materialized: view
+
     cow_protocol:
       +schema: cow_protocol
       +materialized: view
@@ -409,6 +415,7 @@ seeds:
         +column_types:
           master_address: string
           alternative_address: string
+
     perpetual:
       +enabled: true
       +schema: test_data
@@ -423,3 +430,10 @@ seeds:
           project: string
           version: string
           tx_hash: string
+          
+    velodrome:
+      +schema: velodrome
+      +materialized: view
+      optimism:
+        +schema: velodrome_optimism
+        +materialized: view
