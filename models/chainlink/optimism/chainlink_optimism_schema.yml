@@ -10,14 +10,6 @@ models:
       tags: ['optimism','chainlink','oralce']
     description: >
         Table pulling price updates for known Chainlink oracle addresses
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - blockchain
-              - block_time
-              - proxy_address
-              - aggregator_address
-              - underlying_token_address
     columns:
       - &blockchain
         name: blockchain
@@ -59,6 +51,7 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+              - blockchain
               - hour
               - proxy_address
               - aggregator_address
