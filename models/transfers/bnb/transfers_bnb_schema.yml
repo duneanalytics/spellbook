@@ -37,6 +37,14 @@ models:
       contibutors: hosuke
     config:
       tags: ['transfers', 'bnb', 'bep20', 'agg_hour', 'hosuke']
+    description: >
+      WBNB transfers on bnb smart chain aggregated by hour. (Will update to BEP20 tokens transfers in future)
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet_address
+            - token_address
+            - hour
     columns:
       - *blockchain
       - &hour
@@ -49,10 +57,6 @@ models:
       - *amount_raw
       - name: amount
         description: "Raw amount of BEP20 token held *after* taking into account token decimals"
-      - name: unique_transfer_id
-        description: "Unique ID, used in order to apply the merge into incremental strategy"
-        tests:
-          - unique
 
   - name: transfers_bnb_bep20_agg_day
     meta:
@@ -62,22 +66,38 @@ models:
       contibutors: hosuke
     config:
       tags: ['transfers', 'bnb', 'bep20', 'agg_day', 'hosuke']
+    description: >
+      WBNB transfers on bnb smart chain aggregated by day. (Will update to BEP20 tokens transfers in future)
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet_address
+            - token_address
+            - day
     columns:
       - *blockchain
       - &day
         name: day
         description: "UTC event block time truncated to the day mark."
-      - *wallet_address
-      - *token_address
+      - name: wallet_address
+        tests:
+          - compare_column_values_to_seed_values:
+              seed_file_location: ref('transfers_bnb_bep20_agg_day_v2')
+      - name: token_address
+        tests:
+          - compare_column_values_to_seed_values:
+              seed_file_location: ref('transfers_bnb_bep20_agg_day_v2')
       - name: symbol
         description: "BEP20 token symbol"
+        tests:
+          - compare_column_values_to_seed_values:
+              seed_file_location: ref('transfers_bnb_bep20_agg_day_v2')
       - *amount_raw
       - name: amount
         description: "Raw amount of BEP20 token held *after* taking into account token decimals"
-      - name: unique_transfer_id
-        description: "Unique ID, used in order to apply the merge into incremental strategy"
         tests:
-          - unique
+          - compare_column_values_to_seed_values:
+              seed_file_location: ref('transfers_bnb_bep20_agg_day_v2')
 
   - name: transfers_bnb_bep20_rolling_hour
     meta:

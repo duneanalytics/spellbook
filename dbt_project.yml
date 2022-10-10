@@ -423,3 +423,16 @@ seeds:
           project: string
           version: string
           tx_hash: string
+    transfers:
+      +enabled: true
+      +schema: test_data
+      transfers_bnb_bep20_agg_day_v2:
+        +column_types:
+          blockchain: string
+          day: date
+          wallet_address: string
+          token_address: string
+          symbol: string
+          amount_raw: double
+          amount: doube
+          tx_num: long
