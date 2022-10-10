@@ -23,14 +23,14 @@ FROM (
     explode(sequence(
         DATE_TRUNC('hour', 
             {% if not is_incremental() %}
-                '{{project_start_date}}'
+                '{{project_start_date}}'::date
             {% endif %}
             {% if is_incremental() %}
                 date_trunc('hour', now() - interval '1 week')
             {% endif %}
         ),
         DATE_TRUNC('hour', NOW() ),
-        '1 hour'
+        '1' hour
         ) 
     ) AS hr
     , `feed_name`
