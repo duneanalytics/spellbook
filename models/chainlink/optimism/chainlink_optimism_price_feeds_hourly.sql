@@ -47,14 +47,14 @@ hour, DATE_TRUNC('day',hour) AS block_date,
 feed_name, proxy_address, aggregator_address, underlying_token_address, oracle_price_avg, underlying_token_price_avg
 FROM (
     SELECT hr AS hour, feed_name, proxy_address, aggregator_address, underlying_token_address
-    , first_value(oracle_price_avg) OVER (PARTITION BY feed_name, proxy_address, grp ORDER BY hr) AS oracle_price_avg
-    , first_value(underlying_token_price_avg) OVER (PARTITION BY feed_name, proxy_address, grp ORDER BY hr) AS underlying_token_price_avg
+    , first_value(oracle_price_avg) OVER (PARTITION BY feed_name, proxy_address, aggregator_address, underlying_token_address, grp ORDER BY hr) AS oracle_price_avg
+    , first_value(underlying_token_price_avg) OVER (PARTITION BY feed_name, proxy_address, aggregator_address, underlying_token_address, grp ORDER BY hr) AS underlying_token_price_avg
 
     FROM (
         SELECT hr, feed_name,
             proxy_address, aggregator_address, oracle_price_avg,
             underlying_token_address, underlying_token_price_avg,
-            count(oracle_price_avg) OVER (PARTITION BY feed_name, proxy_address ORDER BY hr) AS grp
+            count(oracle_price_avg) OVER (PARTITION BY feed_name, proxy_address, aggregator_address, underlying_token_address ORDER BY hr) AS grp
         FROM (
             SELECT gs.hr, gs.feed_name,
                     gs.proxy_address, gs.aggregator_address,
