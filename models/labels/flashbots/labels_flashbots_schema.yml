@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: labels_flashbots_users_ethereum
+  - name: labels_flashbots_ethereum
     meta:
       blockchain: ethereum
       sector: labels
-      project: flashbots_users
+      project: flashbots
       contibutors: hildobby
     config:
       tags: ['labels', 'ethereum', 'MEV', 'Flashbots']
-    description: "Known Flashbots users wallets on Ethereum"
+    description: "Known Flashbots wallets on Ethereum"
     columns:
       - &blockchain
         name: blockchain

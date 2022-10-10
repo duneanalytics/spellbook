@@ -1,4 +1,4 @@
-{{config(alias='flashbots_users_ethereum',
+{{config(alias='flashbots_ethereum',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",
@@ -6,8 +6,8 @@
 
 SELECT DISTINCT array('ethereum') AS blockchain
 , account_address AS address
-, 'Flashbots user' AS name
-, 'flashbots_user' AS category
+, 'Flashbots' AS name
+, 'flashbots' AS category
 , 'hildobby' AS contributor
 , 'query' AS source
 , date('2022-10-08') AS created_at
