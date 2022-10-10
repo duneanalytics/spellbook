@@ -17,7 +17,7 @@
 
 
 WITH gs AS (
-SELECT hr, oa.feed_name, oa.address, oa.proxy, `underlying_token_address`
+SELECT hr, oa.feed_name, oa.proxy_address, oa.aggregator_address, `underlying_token_address`
 FROM (
     SELECT
     explode(sequence(
