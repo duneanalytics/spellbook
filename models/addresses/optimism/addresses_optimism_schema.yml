@@ -31,8 +31,8 @@ models:
         description: "Overlap Bonus"
       - name: total_op_eligible_to_claim
         description: "Total $OP tokens eligible to claim"
-        
-  - name: addresses_ethereum_cex
+
+  - name: addresses_optimism_cex
     meta:
       blockchain: optimism
       sector: cex
