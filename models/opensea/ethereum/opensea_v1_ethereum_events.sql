@@ -154,7 +154,6 @@ SELECT DISTINCT
         ) END AS number_of_items,
   'Buy' AS trade_category,
   wa.seller AS seller,
-  wa.buyer AS buyer,
   CASE WHEN buyer=agg.contract_address AND erct2.to IS NOT NULL THEN erct2.to
     WHEN buyer=agg.contract_address AND erct3.to IS NOT NULL THEN erct3.to
     ELSE buyer END AS buyer,
