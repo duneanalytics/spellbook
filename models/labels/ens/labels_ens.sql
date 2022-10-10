@@ -1,4 +1,7 @@
 {{config(alias='ens',
+        materialized = 'table',
+        file_format = 'delta',
+        unique_key = ['blockchain','address']
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",
@@ -22,24 +25,26 @@ FROM (
     FULL OUTER JOIN {{ ref('ens_reverse_latest') }} rev
     ON res.address = rev.address
 ) ens
-UNION
-SELECT array('ethereum') as blockchain,
-       address,
-       name,
-       'ENS resolver' as category,
-       '0xRob' as contributor,
-       'query' AS source,
-       date('2022-10-06') as created_at,
-       now() as modified_at
-FROM {{ ref('ens_resolver_latest') }}
-UNION
-SELECT array('ethereum') as blockchain,
-       address,
-       name,
-       'ENS reverse' as category,
-       '0xRob' as contributor,
-       'query' AS source,
-       date('2022-10-06') as created_at,
-       now() as modified_at
-FROM {{ ref('ens_reverse_latest') }}
+
+-- For now, we want to limit the amount of ENS labels to 1
+--UNION
+--SELECT array('ethereum') as blockchain,
+--       address,
+--       name,
+--       'ENS resolver' as category,
+--       '0xRob' as contributor,
+--       'query' AS source,
+--       date('2022-10-06') as created_at,
+--       now() as modified_at
+--FROM {{ ref('ens_resolver_latest') }}
+--UNION
+--SELECT array('ethereum') as blockchain,
+--       address,
+--       name,
+--       'ENS reverse' as category,
+--       '0xRob' as contributor,
+--       'query' AS source,
+--       date('2022-10-06') as created_at,
+--       now() as modified_at
+--FROM {{ ref('ens_reverse_latest') }}
 
