@@ -1,7 +1,7 @@
 {{config(alias='ens',
         materialized = 'table',
         file_format = 'delta',
-        unique_key = ['blockchain','address']
+        unique_key = ['blockchain','address'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",
