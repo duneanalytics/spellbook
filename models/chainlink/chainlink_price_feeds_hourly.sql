@@ -13,6 +13,7 @@ FROM
         SELECT
                 blockchain,
                 hour,
+                block_date,
                 feed_name,
                 proxy_address,
                 aggregator_address,
