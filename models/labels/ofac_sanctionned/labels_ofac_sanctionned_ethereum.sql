@@ -22,7 +22,6 @@ FROM (VALUES
     , (array('ethereum'), '0xba214c1c1928a32bffe790263e38b4af9bfcd659', 'Tornado Cash: 50000 cDAI Pool', 'ofac_sanction', 'hildobby', 'static', TIMESTAMP('2022-09-20'), NOW())
     , (array('ethereum'), '0xb1c8094b234dce6e03f10a5b673c1d8c69739a00', 'Tornado Cash: 500000 cDAI Pool', 'ofac_sanction', 'hildobby', 'static', TIMESTAMP('2022-09-20'), NOW())
     , (array('ethereum'), '0x527653ea119f3e6a1f5bd18fbf4714081d7b31ce', 'Tornado Cash: Trees', 'ofac_sanction', 'hildobby', 'static', TIMESTAMP('2022-09-20'), NOW())
-    , (array('ethereum'), '0x58e8dcc13be9780fc42e8723d8ead4cf46943df2', 'Tornado Cash: Relayer Registry', 'ofac_sanction', 'hildobby', 'static', TIMESTAMP('2022-09-20'), NOW())
     , (array('ethereum'), '0xd691f27f38b395864ea86cfc7253969b409c362d', 'Tornado Cash: 10000 USDC Pool', 'ofac_sanction', 'hildobby', 'static', TIMESTAMP('2022-09-20'), NOW())
     , (array('ethereum'), '0xaeaac358560e11f52454d997aaff2c5731b6f8a6', 'Tornado Cash: 5000 cUSDC Pool', 'ofac_sanction', 'hildobby', 'static', TIMESTAMP('2022-09-20'), NOW())
     , (array('ethereum'), '0x1356c899d8c9467c7f71c195612f8a395abf2f0a', 'Tornado Cash: 50000 cUSDC Pool', 'ofac_sanction', 'hildobby', 'static', TIMESTAMP('2022-09-20'), NOW())
