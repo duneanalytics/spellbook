@@ -6,7 +6,7 @@
 WITH job_liquidities AS (
 
     SELECT
-        ad.evt_block_time AS TIMESTAMP,
+        ad.evt_block_time AS `timestamp`,
         ad.evt_tx_hash AS tx_hash,
         ad.evt_index,
         'LiquidityAddition' AS event,
@@ -46,7 +46,7 @@ WITH job_liquidities AS (
         ) ad
     UNION ALL
     SELECT
-        rm.evt_block_time AS TIMESTAMP,
+        rm.evt_block_time AS `timestamp`,
         rm.evt_tx_hash AS tx_hash,
         rm.evt_index,
         'LiquidityWithdrawal' AS event,
@@ -86,7 +86,7 @@ WITH job_liquidities AS (
 ),
 df AS (
     SELECT
-        TIMESTAMP,
+        `timestamp`,
         tx_hash,
         evt_index,
         event,

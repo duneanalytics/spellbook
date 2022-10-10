@@ -98,13 +98,30 @@ reward_evt AS (
         ) rewards
 )
 SELECT
-    *,
+    `timestamp`,
+    tx_hash,
+    evt_index,
+    event,
+    keep3r,
+    job,
+    keeper,
+    token,
+    amount,
     NULL AS period_credits
 FROM
     work_evt
 UNION
 SELECT
-    *
+    `timestamp`,
+    tx_hash,
+    evt_index,
+    event,
+    keep3r,
+    job,
+    keeper,
+    token,
+    amount,
+    period_credits
 FROM
     reward_evt
 UNION

@@ -18,16 +18,16 @@ FROM
     {{ ref('keep3r_network_ethereum_view_job_liquidity_log') }}
 UNION ALL
 SELECT
-    amount,
-    event,
-    evt_index,
-    job,
-    keep3r,
-    keeper,
-    period_credits,
     `timestamp`,
+    tx_hash,
+    evt_index,
+    event,
+    keep3r,
+    job,
+    keeper,
     token,
-    tx_hash
+    amount,
+    period_credits
 FROM
     {{ ref('keep3r_network_ethereum_view_job_credits_log') }}
 ORDER BY
