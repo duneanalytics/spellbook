@@ -21,7 +21,7 @@ SELECT * FROM {{ ref('labels_multisig_ethereum') }}
 UNION
 SELECT * FROM {{ ref('labels_hackers_ethereum') }}
 UNION
-SELECT * FROM {{ ref('labels_mev_bots_ethereum') }}
+SELECT * FROM {{ ref('labels_mev_ethereum') }}
 UNION
 SELECT blockchain, address, name, category, contributor, source, created_at, updated_at FROM {{ ref('labels_aztec_v2_contracts_ethereum') }}
 UNION

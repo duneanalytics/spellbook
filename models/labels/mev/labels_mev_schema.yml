@@ -1,25 +1,25 @@
 version: 2
 
 models:
-  - name: labels_mev_bots_ethereum
+  - name: labels_mev_ethereum
     meta:
       blockchain: ethereum
       sector: labels
-      project: mev_bots
+      project: mev
       contibutors: hildobby
     config:
-      tags: ['labels', 'ethereum', 'MEV', 'bots']
-    description: "Known MEV bots' wallets on Ethereum"
+      tags: ['labels', 'ethereum', 'MEV']
+    description: "Known MEV wallets on Ethereum"
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain"   
       - &address
         name: address
-        description: "Address of known MEV bot wallet"
+        description: "Address of known MEV wallet"
       - &name
         name: name
-        description: "Label name of MEV bot address"
+        description: "Label name of MEV address"
       - &category
         name: category
         description: "Label category"

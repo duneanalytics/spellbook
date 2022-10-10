@@ -1,4 +1,4 @@
-{{config(alias='mev_bots',
+{{config(alias='mev',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "addresses",
