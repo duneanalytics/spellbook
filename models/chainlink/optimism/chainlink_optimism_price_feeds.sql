@@ -24,7 +24,10 @@ FROM (
 	block_time
     , DATE_TRUNC('day',block_time) AS block_date
 	, feed_name
-	, conv(topic2,16,10) / POWER(10,decimals) AS oracle_price
+	, conv(
+            substring(topic2,3,64) 
+            ,16,10)
+        / POWER(10,decimals) AS oracle_price
 	,`proxy_address`, `aggregator_address`
 	FROM {{ source('optimism', 'logs') }} l
 	INNER JOIN {{ ref('chainlink_optimism_oracle_addresses') }} cfa
