@@ -18,7 +18,7 @@
 
 SELECT
 'optimism' as blockchain, block_time, block_date, c.feed_name, c.oracle_price, c.proxy_address, c.aggregator_address, underlying_token_address
-, c.price / POWER(10 , extra_decimals) AS underlying_token_price
+, c.oracle_price / POWER(10 , extra_decimals) AS underlying_token_price
 FROM (
 	SELECT
 	block_time
