@@ -3,9 +3,9 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "addresses",
-                                    \'["hildobby"]\') }}') }}
+                                    \'["hildobby","msilb7"]\') }}') }}
 
-SELECT address, bridge_name, description
+SELECT lower(address) AS address, bridge_name, description
 FROM (VALUES
       ('0x8ed95d1746bf1e4dab58d8ed4724f1ef95b20db0', '0x', 'Erc20 Bridge Proxy')
     , ('0x0ac2d6f5f5afc669d3ca38f830dad2b4f238ad3f', '0x', 'Eth2Dai Bridge')
@@ -114,4 +114,16 @@ FROM (VALUES
     , ('0x43298f9f91a4545df64748e78a2c777c580573d6', 'Across Protocol', 'Badger Bridge Pool')
     , ('0x30b44c676a05f1264d1de9cc31db5f2a945186b6', 'Across Protocol', 'Bridge Admin')
     , ('0xdfe0ec39291e3b60aca122908f86809c9ee64e90', 'Across Protocol', 'UMA Bridge Pool')
+    , ('0xcd9d4988c0ae61887b075ba77f08cbfad2b65068', 'Optimism', 'Synthetix: L2 Deposit')
+    , ('0x5fd79d46eba7f351fe49bff9e87cdea6c821ef9f', 'Optimism', 'Synthetix: L2 Deposit Escrow')
+    , ('0x99c9fc46f92e8a1c0dec1b1747d010903e884be1', 'Optimism', 'Optimism: Gateway')
+    , ('0xf20c38fcddf0c790319fd7431d17ea0c2bc9959c', 'Optimism', 'Optimism: Legacy Bridge')
+    , ('0xe681f80966a8b1ffadecf8068bd6f99034791c95', 'Optimism', 'Optimism: Legacy Bridge')
+    , ('0xc51f137e19f1ae6944887388fd12b2b6dfd12594', 'Optimism', 'Synthetix: Legacy Optimism Bridge')
+    , ('0x10e6593cdda8c58a1d0f14c5164b376352a55f2f', 'Optimism', 'Optimism: DAI Bridge')
+    , ('0xaba2c5f108f7e820c049d5af70b16ac266c8f128', 'Optimism', 'Optimism: BITANT Bridge')
+    , ('0xc5b1ec605738ef73a4efc562274c1c0b6609cf59', 'Optimism', 'Optimism: dForce Bridge')
+    , ('0x045e507925d2e05d114534d0810a1abd94aca8d6', 'Optimism', 'Synthetix: Legacy L2 Bridge')
+    , ('0x467194771dae2967aef3ecbedd3bf9a310c76c65', 'Optimism', 'Optimism: DAI L1 Escrow')
+
     ) AS x (address, bridge_name, description)
