@@ -29,6 +29,4 @@ FROM (VALUES
     ,('0x1bf7f994cf93c4eaab5f785d712668e2d6fff9d6', 'Binance', 'Binance 13') -- verified
     ,('0xb22ffd456ab4efc3863be8299f4a404d813b92be', 'Binance', 'Binance 14') -- verified
     ,('0xef7fb88f709ac6148c07d070bc71d252e8e13b92', 'Binance', 'Binance 15') --seems likely
-    
-   
     ) AS x (address, cex_name, distinct_name)
