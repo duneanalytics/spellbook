@@ -1,10 +1,9 @@
---Sourced from decoded contracts - some submitters may be missing. Please add any you notice are missing!
 {{ config(alias='l2_batch_submitters',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "addresses",
-                                    \'["msilb7"]\') }}') }}
-                                    
+                                    \'["msilb7"]\') }}') }}          
+                                                             
 SELECT lower(address) AS address, protocol_name, submitter_type, role_type, version, description
 FROM (VALUES
        ('0x5e4e65926ba27467555eb562121fac00d24e9dd2', 'Optimism', 'Canonical Transaction Chain','to_address','2','Optimism: Canonical Transaction Chain')
