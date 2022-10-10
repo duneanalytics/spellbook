@@ -124,8 +124,8 @@ sources:
         - *evt_block_time
         - *evt_index
         - *evt_tx_hash 
-        - name: interestRateMode
-          description: "The borrowing mode of the debt"
+        - name: interestRateMode                            
+          description: "The borrowing mode of the debt (1 for stable mode, 2 for variable mode)"
         - name: onBehalfOf
           description: "The user wallet address if the token is borrowed on behalf of another wallet"
         - name: referralCode
