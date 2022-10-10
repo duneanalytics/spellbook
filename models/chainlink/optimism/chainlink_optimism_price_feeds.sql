@@ -41,5 +41,5 @@ FROM (
     {% endif %}
 
 	) c
-LEFT JOIN chainlink.oracle_token_mapping o
+LEFT JOIN {{ ref('chainlink_optimism_oracle_token_mapping') }} o
 	ON c.proxy_address = o.proxy_address
