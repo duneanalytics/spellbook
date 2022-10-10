@@ -42,7 +42,9 @@ LEFT JOIN {{ ref('chainlink_optimism_oracle_token_mapping') }} c
 ON c.proxy_address = oa.proxy_address
 )
 
-SELECT 'optimism' as blockchain, hour, feed_name, proxy_address, aggregator_address, underlying_token_address, oracle_price_avg, underlying_token_price_avg
+SELECT 'optimism' as blockchain,
+hour, DATE_TRUNC('day',hour) AS block_date,
+feed_name, proxy_address, aggregator_address, underlying_token_address, oracle_price_avg, underlying_token_price_avg
 FROM (
     SELECT hr AS hour, feed_name, proxy_address, aggregator_address, underlying_token_address
     , first_value(oracle_price_avg) OVER (PARTITION BY feed_name, proxy_address, grp ORDER BY hr) AS oracle_price_avg
