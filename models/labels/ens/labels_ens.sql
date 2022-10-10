@@ -1,4 +1,7 @@
 {{config(alias='ens',
+        materialized = 'table',
+        file_format = 'delta',
+        unique_key = ['blockchain','address'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",
@@ -12,34 +15,45 @@ FROM (
        SELECT
        array('ethereum') as blockchain,
        coalesce(rev.address, res.address) as address,
-       coalesce(rev.name, last(res.name,true) over (order by res.block_time asc)) as name,
+       coalesce(rev.name, res.name) as name,
        'ENS' as category,
        '0xRob' as contributor,
        'query' AS source,
        date('2022-10-06') as created_at,
        now() as modified_at
-    FROM {{ ref('ens_resolver_latest') }} res
+    FROM (
+        select *
+        from (
+            select
+                address,
+                 name
+                 ,row_number() over (partition by address order by block_time asc) as ordering
+            from {{ ref('ens_resolver_latest') }}
+        ) where ordering = 1
+    ) res
     FULL OUTER JOIN {{ ref('ens_reverse_latest') }} rev
     ON res.address = rev.address
 ) ens
-UNION
-SELECT array('ethereum') as blockchain,
-       address,
-       name,
-       'ENS resolver' as category,
-       '0xRob' as contributor,
-       'query' AS source,
-       date('2022-10-06') as created_at,
-       now() as modified_at
-FROM {{ ref('ens_resolver_latest') }}
-UNION
-SELECT array('ethereum') as blockchain,
-       address,
-       name,
-       'ENS reverse' as category,
-       '0xRob' as contributor,
-       'query' AS source,
-       date('2022-10-06') as created_at,
-       now() as modified_at
-FROM {{ ref('ens_reverse_latest') }}
+
+-- For now, we want to limit the amount of ENS labels to 1
+--UNION
+--SELECT array('ethereum') as blockchain,
+--       address,
+--       name,
+--       'ENS resolver' as category,
+--       '0xRob' as contributor,
+--       'query' AS source,
+--       date('2022-10-06') as created_at,
+--       now() as modified_at
+--FROM {{ ref('ens_resolver_latest') }}
+--UNION
+--SELECT array('ethereum') as blockchain,
+--       address,
+--       name,
+--       'ENS reverse' as category,
+--       '0xRob' as contributor,
+--       'query' AS source,
+--       date('2022-10-06') as created_at,
+--       now() as modified_at
+--FROM {{ ref('ens_reverse_latest') }}
 
