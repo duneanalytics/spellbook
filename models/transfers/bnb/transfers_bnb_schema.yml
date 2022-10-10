@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: transfers_bnb
+  - name: transfers_bnb_bep20
     meta:
       blockchain: bnb
       sector: transfers
@@ -29,7 +29,7 @@ models:
         name: amount_raw
         description: "Raw amount of BNB token held *before* taking into account token decimals"
 
-  - name: transfers_bnb_agg_hour
+  - name: transfers_bnb_bep20_agg_hour
     meta:
       blockchain: bnb
       sector: transfers
@@ -54,7 +54,7 @@ models:
         tests:
           - unique
 
-  - name: transfers_bnb_agg_day
+  - name: transfers_bnb_bep20_agg_day
     meta:
       blockchain: bnb
       sector: transfers
@@ -79,7 +79,7 @@ models:
         tests:
           - unique
 
-  - name: transfers_bnb_rolling_hour
+  - name: transfers_bnb_bep20_rolling_hour
     meta:
       blockchain: bnb
       sector: transfers
@@ -102,7 +102,7 @@ models:
       - name: recency_index
         description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
 
-  - name: transfers_bnb_rolling_day
+  - name: transfers_bnb_bep20_rolling_day
     meta:
       blockchain: bnb
       sector: transfers

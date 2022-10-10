@@ -1,5 +1,5 @@
 {{ config(
-        alias ='bnb_rolling_day')
+        alias ='bep20_rolling_day')
 }}
 
 select
@@ -16,4 +16,4 @@ select
     sum(amount) over (
         partition by token_address, wallet_address order by day
     ) as amount
-from {{ ref('transfers_bnb_agg_day') }}
+from {{ ref('transfers_bnb_bep20_agg_day') }}

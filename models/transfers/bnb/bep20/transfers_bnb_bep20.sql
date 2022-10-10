@@ -1,6 +1,6 @@
 {{ config(
     materialized='view',
-    alias='bnb',
+    alias='bep20',
     post_hook='{{ expose_spells(\'["bnb"]\',
                                     "sector",
                                     "transfers",
@@ -9,28 +9,6 @@
 
 
 with
-    sent_transactions as (
-        select
-            'send' || '-' || hash || '-' || index || '-' || `to` as unique_transfer_id,
-            `to` as wallet_address,
-            block_time as evt_block_time,
-            value as amount_raw
-        from
-            {{ source('bnb', 'transactions') }}
-    )
-
-    ,
-    received_transactions as (
-        select
-        'receive' || '-' || hash || '-' || index || '-' || `from` as unique_transfer_id,
-        `from` as wallet_address,
-        block_time as evt_block_time,
-        - value as amount_raw
-        from
-            {{ source('bnb', 'transactions') }}
-    )
-
-    ,
     sent_transfers as (
         select
             'send' || '-' || evt_tx_hash || '-' || evt_index || '-' || dst as unique_transfer_id,

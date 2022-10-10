@@ -46,7 +46,7 @@ sources:
           - *wad
       - name: WBNB_evt_Transfer
         loaded_at_field: evt_block_time
-        description: "BNB transfer events"
+        description: "WBNB transfer events"
         columns:
           - *contract_address
           - *dst

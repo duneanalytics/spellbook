@@ -1,5 +1,5 @@
 {{ config(
-        alias ='bnb_rolling_hour'
+        alias ='bep20_rolling_hour'
         )
 }}
 
@@ -17,4 +17,4 @@ select
     sum(amount) over (
         partition by token_address, wallet_address order by hour
     ) as amount
-from {{ ref('transfers_bnb_agg_hour') }}
+from {{ ref('transfers_bnb_bep20_agg_hour') }}
