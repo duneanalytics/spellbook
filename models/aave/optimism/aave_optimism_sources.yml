@@ -44,6 +44,9 @@ sources:
       - name: Pool_evt_Supply
         loaded_at_field: evt_block_time
         description: "Contians all the transactions involving deposits for aave v3 on optimism"
+        freshness:
+          warn_after: { count: 24, period: hour }
+          error_after: { count: 48, period: hour }
         columns:
         - &amount
           name: amount
@@ -65,6 +68,9 @@ sources:
       - name: Pool_evt_Withdraw
         loaded_at_field: evt_block_time
         description: "Contians all the transactions involving withdrawals for aave v3 on optimism"
+        freshness:
+          warn_after: { count: 24, period: hour }
+          error_after: { count: 48, period: hour }
         columns:
         - *amount       
         - *contract_address 
@@ -80,6 +86,9 @@ sources:
       - name: Pool_evt_LiquidationCall
         loaded_at_field: evt_block_time
         description: "Contians all the transactions involving liquidation for aave v3 on optimism"
+        freshness:
+          warn_after: { count: 24, period: hour }
+          error_after: { count: 48, period: hour }
         columns:
         - name: collateralAsset
           description: "Token address of the collateral asset"      
@@ -103,6 +112,9 @@ sources:
       - name: Pool_evt_Borrow
         loaded_at_field: evt_block_time
         description: "Contians all the transactions involving borrows for aave v3 on optimism"
+        freshness:
+          warn_after: { count: 24, period: hour }
+          error_after: { count: 48, period: hour }
         columns:
         - *amount     
         - name: borrowRate
@@ -124,6 +136,9 @@ sources:
       - name: Pool_evt_Repay
         loaded_at_field: evt_block_time
         description: "Contians all the transactions involving repays for aave v3 on optimism"
+        freshness:
+          warn_after: { count: 24, period: hour }
+          error_after: { count: 48, period: hour }
         columns:    
         - *evt_block_number
         - *evt_block_time
