@@ -1,4 +1,9 @@
-{{ config(alias='contract_creator_address_list') }}
+{{ 
+  config(
+    alias='contract_creator_address_list'
+    ) 
+    
+}}
 select 
   lower(creator_address) as creator_address
   ,contract_project
