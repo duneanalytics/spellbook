@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trade_id'],
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "dodo",
@@ -42,7 +42,6 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
     -- dodo v1 sell
         SELECT
             s.evt_block_time AS block_time,
-            s.evt_block_number as block_number,
             'DODO' AS project,
             '1' AS version,
             s.seller AS taker,
@@ -70,7 +69,6 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         -- dodo v1 buy
         SELECT
             b.evt_block_time AS block_time,
-            b.evt_block_number as block_number,
             'DODO' AS project,
             '1' AS version,
             b.buyer AS taker,
@@ -98,7 +96,6 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         -- dodov1 proxy01
         SELECT
             evt_block_time AS block_time,
-            evt_block_number as block_number,
             'DODO' AS project,
             '1' AS version,
             sender AS taker,
@@ -123,7 +120,6 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         -- dodov1 proxy04
         SELECT
             evt_block_time AS block_time,
-            evt_block_number as block_number,
             'DODO' AS project,
             '1' AS version,
             sender AS taker,
@@ -148,7 +144,6 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         -- dodov2 proxy02
         SELECT
             evt_block_time AS block_time,
-            evt_block_number as block_number,
             'DODO' AS project,
             '2' AS version,
             sender AS taker,
@@ -173,7 +168,6 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         -- dodov2 dvm
         SELECT
             evt_block_time AS block_time,
-            evt_block_number as block_number,
             'DODO' AS project,
             '2' AS version,
             trader AS taker,
@@ -199,7 +193,6 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         -- dodov2 dpp
         SELECT
             evt_block_time AS block_time,
-            evt_block_number as block_number,
             'DODO' AS project,
             '2' AS version,
             trader AS taker,
@@ -225,7 +218,6 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         -- dodov2 dsp
         SELECT
             evt_block_time AS block_time,
-            evt_block_number as block_number,
             'DODO' AS project,
             '2' AS version,
             trader AS taker,
@@ -246,7 +238,6 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         AND evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 )
-
 SELECT
     'ethereum' AS blockchain
     ,project
@@ -265,8 +256,8 @@ SELECT
     ,dexs.token_sold_amount_raw
     ,coalesce(
         dexs.amount_usd
-        ,(dexs.token_bought_amount_raw / power(10, (CASE dexs.token_bought_address WHEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 18 ELSE p_bought.decimals END))) * (CASE token_bought_address WHEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN  p_eth.price ELSE p_bought.price END)
-        ,(dexs.token_sold_amount_raw / power(10, (CASE dexs.token_sold_address WHEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 18 ELSE p_sold.decimals END))) * (CASE token_sold_address WHEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN  p_eth.price ELSE p_sold.price END)
+        ,(dexs.token_bought_amount_raw / power(10, (CASE dexs.token_bought_address WHEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 18 ELSE p_bought.decimals END))) * (CASE dexs.token_bought_address WHEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN  p_eth.price ELSE p_bought.price END)
+        ,(dexs.token_sold_amount_raw / power(10, (CASE dexs.token_sold_address WHEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 18 ELSE p_sold.decimals END))) * (CASE dexs.token_sold_address WHEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN  p_eth.price ELSE p_sold.price END)
     ) as amount_usd
     ,dexs.token_bought_address
     ,dexs.token_sold_address
@@ -278,11 +269,9 @@ SELECT
     ,tx.to AS tx_to
     ,dexs.trace_address
     ,dexs.evt_index
-    ,row_number() OVER (PARTITION BY tx_hash, evt_index, trace_address ORDER BY dexs.block_time) AS trade_id
 FROM dexs
 INNER JOIN {{ source('ethereum', 'transactions')}} tx
     ON dexs.tx_hash = tx.hash
-    AND dexs.block_number=tx.block_number
     {% if not is_incremental() %}
     AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
@@ -316,6 +305,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
 LEFT JOIN {{ source('prices', 'usd') }} p_eth
     ON p_eth.minute = date_trunc('minute', dexs.block_time)
     AND p_eth.blockchain is null
+    AND p_eth.symbol = 'ETH'
     {% if not is_incremental() %}
     AND p_eth.minute >= '{{project_start_date}}'
     {% endif %}
