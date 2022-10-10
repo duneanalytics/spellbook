@@ -1,6 +1,5 @@
 {{ config (
-    materialized = 'view',
-    alias = 'view_job_migrations',
+    alias = 'job_migrations',
     post_hook = '{{ expose_spells(\'["ethereum"]\', "project", "keep3r", \'["wei3erHase", "agaperste"]\') }}'
 ) }}
 

@@ -25,7 +25,7 @@ WITH unit_test AS (
         END AS token_test
     FROM
         {{ ref('keep3r_network_ethereum_view_job_log') }} AS actual
-        INNER JOIN {{ ref('keep3r_network_ethereum_view_job_log_postgres') }} AS test
+        INNER JOIN {{ ref('keep3r_network_ethereum_view_job_log_test_data') }} AS test
         ON LOWER(
             actual.tx_hash
         ) = LOWER(

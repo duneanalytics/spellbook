@@ -1,6 +1,5 @@
 {{ config (
-    materialized = 'view',
-    alias = 'view_job_liquidity_log',
+    alias = 'job_liquidity_log',
     post_hook = '{{ expose_spells(\'["ethereum"]\', "project", "keep3r", \'["wei3erHase", "agaperste"]\') }}'
 ) }}
 
@@ -99,7 +98,12 @@ df AS (
         job_liquidities
     UNION
     SELECT
-        migs.*,
+        migs.event,
+        migs.evt_index,
+        migs.job,
+        migs.keep3r,
+        migs.timestamp,
+        migs.tx_hash,
         liqs.token AS token,
         NULL AS amount
     FROM

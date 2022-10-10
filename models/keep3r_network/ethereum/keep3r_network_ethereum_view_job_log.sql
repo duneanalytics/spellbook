@@ -1,6 +1,5 @@
 {{ config (
-    materialized = 'view',
-    alias = 'view_job_log',
+    alias = 'job_log',
     post_hook = '{{ expose_spells(\'["ethereum"]\', "project", "keep3r", \'["wei3erHase", "agaperste"]\') }}'
 ) }}
 
@@ -19,7 +18,16 @@ FROM
     {{ ref('keep3r_network_ethereum_view_job_liquidity_log') }}
 UNION ALL
 SELECT
-    *
+    amount,
+    event,
+    evt_index,
+    job,
+    keep3r,
+    keeper,
+    period_credits,
+    `timestamp`,
+    token,
+    tx_hash
 FROM
     {{ ref('keep3r_network_ethereum_view_job_credits_log') }}
 ORDER BY

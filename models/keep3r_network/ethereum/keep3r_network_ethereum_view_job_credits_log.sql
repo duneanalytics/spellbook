@@ -1,13 +1,13 @@
 {{ config (
-    materialized = 'view',
-    alias = 'view_job_credits_log',
+    alias = 'job_credits_log',
     post_hook = '{{ expose_spells(\'["ethereum"]\', "project", "keep3r", \'["wei3erHase", "agaperste"]\') }}'
 ) }}
 
+{% set kp3r_token = "0x1ceb5cb57c4d4e2b2433641b95dd330a33185a44" %}
 WITH work_evt AS (
 
     SELECT
-        evt_block_time AS TIMESTAMP,
+        evt_block_time :: TIMESTAMP AS `timestamp`,
         evt_tx_hash AS tx_hash,
         evt_index,
         'KeeperWork' AS event,
@@ -49,21 +49,21 @@ WITH work_evt AS (
                 ) }}
         ) keep3rWork
     WHERE
-        _credit = LOWER('0x1ceb5cb57c4d4e2b2433641b95dd330a33185a44')
+        _credit = LOWER('{{KP3R_token}}')
 ),
 reward_evt AS (
     SELECT
         CASE
             WHEN LENGTH(_rewardedAt) = 10 THEN _rewardedAt :: INT :: TIMESTAMP
-            ELSE _rewardedAt
-        END AS TIMESTAMP,
+            ELSE _rewardedAt :: TIMESTAMP
+        END AS `timestamp`,
         evt_tx_hash AS tx_hash,
         evt_index,
         'CreditsReward' AS event,
         contract_address AS keep3r,
         _job AS job,
         NULL AS keeper,
-        '0x1ceb5cb57c4d4e2b2433641b95dd330a33185a44' AS token,
+        '{{KP3R_token}}' AS token,
         _currentCredits / 1e18 AS amount,
         _periodCredits / 1e18 AS period_credits
     FROM
@@ -109,14 +109,14 @@ FROM
     reward_evt
 UNION
 SELECT
-    `timestamp`,
+    `timestamp` :: TIMESTAMP,
     tx_hash,
     evt_index,
     event,
     keep3r,
     job,
     NULL AS keeper,
-    '0x1ceb5cb57c4d4e2b2433641b95dd330a33185a44' AS token,
+    '{{KP3R_token}}' AS token,
     NULL AS amount,
     NULL AS period_credits
 FROM
