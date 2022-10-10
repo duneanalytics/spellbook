@@ -75,4 +75,4 @@ FROM (
             ) a
         ) b
     ) c
-WHERE orcale_price_avg IS NOT NULL --don't overwrite where we don't have a value
+WHERE oracle_price_avg IS NOT NULL --don't overwrite where we don't have a value
