@@ -37,3 +37,5 @@ UNION
 SELECT * FROM {{ ref('labels_airdrop_1_receivers_optimism') }}
 UNION
 SELECT * FROM {{ ref('flashbots_users_ethereum') }}
+UNION
+SELECT * FROM {{ ref('labels_ens') }}
