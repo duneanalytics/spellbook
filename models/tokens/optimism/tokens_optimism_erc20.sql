@@ -181,5 +181,4 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0xf390830DF829cf22c53c8840554B98eafC5dCBc2','anyUSDC',6)
 ,('0x965f84d915a9efa2dd81b653e3ae736555d945f4','anyWETH',18)
 ,('0x1ccca1ce62c62f7be95d4a67722a8fdbed6eecb4','Multichain alETH',18)
-  
 ) AS temp_table (contract_address, symbol, decimals)
