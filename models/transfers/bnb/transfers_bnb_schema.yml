@@ -54,9 +54,15 @@ models:
       - *token_address
       - name: symbol
         description: "BEP20 token symbol"
+        tests:
+          - transfer_bnb_hour_wallet_token:
+              seed_file_location: ref('transfers_bnb_bep20_agg_hour_v2')
       - *amount_raw
       - name: amount
         description: "Raw amount of BEP20 token held *after* taking into account token decimals"
+        tests:
+          - transfer_bnb_hour_wallet_token:
+              seed_file_location: ref('transfers_bnb_bep20_agg_hour_v2')
 
   - name: transfers_bnb_bep20_agg_day
     meta:
@@ -79,24 +85,18 @@ models:
       - &day
         name: day
         description: "UTC event block time truncated to the day mark."
-      - name: wallet_address
-        tests:
-          - compare_column_values_to_seed_values:
-              seed_file_location: ref('transfers_bnb_bep20_agg_day_v2')
-      - name: token_address
-        tests:
-          - compare_column_values_to_seed_values:
-              seed_file_location: ref('transfers_bnb_bep20_agg_day_v2')
+      - *wallet_address
+      - *token_address
       - name: symbol
         description: "BEP20 token symbol"
         tests:
-          - compare_column_values_to_seed_values:
+          - transfer_bnb_day_wallet_token:
               seed_file_location: ref('transfers_bnb_bep20_agg_day_v2')
       - *amount_raw
       - name: amount
         description: "Raw amount of BEP20 token held *after* taking into account token decimals"
         tests:
-          - compare_column_values_to_seed_values:
+          - transfer_bnb_day_wallet_token:
               seed_file_location: ref('transfers_bnb_bep20_agg_day_v2')
 
   - name: transfers_bnb_bep20_rolling_hour
