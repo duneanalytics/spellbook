@@ -24,10 +24,10 @@ FROM (
 	block_time
     , DATE_TRUNC('day',block_time) AS block_date
 	, feed_name
-	, conv(
+	, AVG( conv( --handle for multiple updates in the same block
             substring(topic2,3,64) 
             ,16,10)
-        / POWER(10,decimals) AS oracle_price
+        / POWER(10,decimals) ) AS oracle_price
 	,`proxy_address`, `aggregator_address`
 	FROM {{ source('optimism', 'logs') }} l
 	INNER JOIN {{ ref('chainlink_optimism_oracle_addresses') }} cfa
@@ -39,6 +39,7 @@ FROM (
     {% if is_incremental() %}
     AND l.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+    GROUP BY block_time, block_date, feed_name, proxy_address, aggregator_address
 
 	) c
 LEFT JOIN {{ ref('chainlink_optimism_oracle_token_mapping') }} o
