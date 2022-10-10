@@ -125,5 +125,4 @@ FROM (VALUES
     , ('0xc5b1ec605738ef73a4efc562274c1c0b6609cf59', 'Optimism', 'Optimism: dForce Bridge')
     , ('0x045e507925d2e05d114534d0810a1abd94aca8d6', 'Optimism', 'Synthetix: Legacy L2 Bridge')
     , ('0x467194771dae2967aef3ecbedd3bf9a310c76c65', 'Optimism', 'Optimism: DAI L1 Escrow')
-
     ) AS x (address, bridge_name, description)
