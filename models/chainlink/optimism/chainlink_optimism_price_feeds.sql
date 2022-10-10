@@ -28,7 +28,7 @@ FROM (
 	,`proxy_address`, `aggregator_address`
 	FROM {{ source('optimism', 'logs') }} l
 	INNER JOIN {{ ref('chainlink_optimism_oracle_addresses') }} cfa
-	    ON l.contract_address = cfa.address
+	    ON l.contract_address = cfa.aggregator_address
 	WHERE topic1 = '0x0559884fd3a460db3073b7fc896cc77986f16e378210ded43186175bf646fc5f' --Answer Updated
 	{% if not is_incremental() %}
     AND l.block_time >= '{{project_start_date}}'
@@ -39,4 +39,4 @@ FROM (
 
 	) c
 LEFT JOIN chainlink.oracle_token_mapping o
-	ON c.proxy = o.proxy
+	ON c.proxy_address = o.proxy_address
