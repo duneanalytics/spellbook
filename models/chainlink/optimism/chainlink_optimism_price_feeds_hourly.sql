@@ -30,7 +30,7 @@ FROM (
             {% endif %}
         ),
         DATE_TRUNC('hour', NOW() ),
-        '1' hour
+        interval '1 hour'
         ) 
     ) AS hr
     , `feed_name`
