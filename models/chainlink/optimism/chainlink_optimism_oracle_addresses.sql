@@ -12,7 +12,7 @@
 SELECT 'optimism' as blockchain, feed_name, CAST(decimals AS numeric) AS decimals, LOWER(proxy_address) AS proxy_address, LOWER(aggregator_address) AS aggregator_address
 
 FROM (
-,('AAVE / USD',8,'0x338ed6787f463394D24813b297401B9F05a8C9d1','0x81cc0c227bf9bfb8088b14755dfca65f7892203b')
+ ('AAVE / USD',8,'0x338ed6787f463394D24813b297401B9F05a8C9d1','0x81cc0c227bf9bfb8088b14755dfca65f7892203b')
 ,('BTC / USD',8,'0xD702DD976Fb76Fffc2D3963D037dfDae5b04E593','0x0c1272d2ac652d10d03bb4deb0d31f15ea3eab2b')
 ,('CRV / USD',8,'0xbD92C6c284271c227a1e0bF1786F468b539f51D9','0x7c56d3650f9acd992b3aa635c04a311c54ad264c')
 ,('DAI / USD',8,'0x8dBa75e83DA73cc766A7e5a0ee71F656BAb470d6','0xbce7579e241e5d676c2371dc21891489dacda250')
