@@ -434,5 +434,5 @@ seeds:
           token_address: string
           symbol: string
           amount_raw: double
-          amount: doube
+          amount: double
           tx_num: long
