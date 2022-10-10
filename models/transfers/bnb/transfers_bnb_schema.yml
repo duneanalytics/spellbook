@@ -60,9 +60,6 @@ models:
       - *amount_raw
       - name: amount
         description: "Raw amount of BEP20 token held *after* taking into account token decimals"
-        tests:
-          - transfer_bnb_hour_wallet_token:
-              seed_file_location: ref('transfers_bnb_bep20_agg_hour_v2')
 
   - name: transfers_bnb_bep20_agg_day
     meta:
@@ -95,9 +92,6 @@ models:
       - *amount_raw
       - name: amount
         description: "Raw amount of BEP20 token held *after* taking into account token decimals"
-        tests:
-          - transfer_bnb_day_wallet_token:
-              seed_file_location: ref('transfers_bnb_bep20_agg_day_v2')
 
   - name: transfers_bnb_bep20_rolling_hour
     meta:
