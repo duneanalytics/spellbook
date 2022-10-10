@@ -128,6 +128,11 @@ models:
       tags: ['optimism','chainlink','oralce']
     description: >
         Manually updated table for mapping chainlink feeds to proxy addresses and the aggregator addresses (where updates read to)
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - proxy_address
+              - aggregator_address
     columns:
       - &blockchain_omap
         name: blockchain
