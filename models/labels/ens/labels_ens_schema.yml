@@ -1,29 +1,22 @@
 version: 2
 
 models:
-  - name: labels_all
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
-            - name
-            - category
-            - blockchain
+  - name: labels_ens
     meta:
-      blockchain: ethereum, solana
+      blockchain: ethereum
       sector: labels
-      category: cex, nft
-      contibutors: hildobby, soispoke
+      category: ens
+      contibutors:  0xRob
     config:
-      tags: ['labels', 'ethereum', 'solana', 'cex', 'nft']
-    description: "All labels across chains and categories"
+      tags: ['query','labels', 'ethereum', 'ens', 'ENS resolver', 'ENS reverse']
+    description: "ENS labels"
     columns:
       - name: blockchain
         description: "Blockchain"
       - name: address
         description: "Label address"
       - name: name
-        description: "Label name"
+        description: "Label name (ENS name)"
       - name: category
         description: "Label category"
       - name: contributor

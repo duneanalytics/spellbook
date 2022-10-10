@@ -127,3 +127,84 @@ models:
         description: "Latest transaction hash setting the reverse ENS"
       - name: latest_tx_block_time
         description: "Block time of the latest transaction hash setting the reverse ENS"
+
+  - name: ens_node_names
+    meta:
+      blockchain: ethereum
+      project: ethereum_name_service
+      contributors: 0xRob
+    config:
+      tags: [ 'ethereum','ens','ethereum_name_service','ethereumnameservice','node_names','0xRob' ]
+    description: >
+      A table that links a node (namehash) to a readable ENS name.
+    columns:
+      - name: node
+        description: "The node, the namehash of the ENS name"
+        tests:
+          - unique
+      - name: name
+        description: "The ENS name"
+      - name: label_name
+        description: "The name of the ENS label"
+      - name: label_hash
+        description: "The namehash of the ENS label"
+      - name: initial_address
+        description: "The initial resolver address when registering the ENS"
+      - name: tx_hash
+        description: "transaction hash"
+      - name: block_number
+        description: "block number"
+      - name: block_time
+        description: "block time"
+      - name: evt_index
+        description: "event index of the registration event"
+
+  - name: ens_resolver_records
+    meta:
+      blockchain: ethereum
+      project: ethereum_name_service
+      contributors: 0xRob
+    config:
+      tags: [ 'ethereum','ens','ethereum_name_service','ethereumnameservice','resolver_records','0xRob' ]
+    description: >
+      A table that shows the resolver addresses for known ENS names.
+    columns:
+      - name: name
+        description: "The ENS name"
+      - name: node
+        description: "The node, the namehash of the ENS name"
+      - name: address
+        description: "The resolver address of the ENS name"
+      - name: block_time
+        description: "block time of update"
+      - name: tx_hash
+        description: "transaction hash update"
+      - name: evt_index
+        description: "event index of node record update"
+
+  - name: ens_resolver_latest
+    meta:
+      blockchain: ethereum
+      project: ethereum_name_service
+      contributors: 0xRob
+    config:
+      tags: [ 'ethereum','ens','ethereum_name_service','ethereumnameservice','resolver_latest','0xRob' ]
+    description: >
+      A table that shows the latest resolver addresses for known ENS names.
+    columns:
+      - name: name
+        description: "The ENS name"
+        tests:
+          - unique
+      - name: node
+        description: "The node, the namehash of the ENS name"
+        tests:
+          - unique
+      - name: address
+        description: "The resolver address of the ENS name"
+      - name: block_time
+        description: "block time of last update"
+      - name: tx_hash
+        description: "transaction hash of last update"
+      - name: evt_index
+        description: "event index of node record update"
