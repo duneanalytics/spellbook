@@ -68,7 +68,6 @@ models:
       tags: ['table', 'L2', 'batch submitters', 'addresses', 'ethereum']
     description: "Known L2 Batch Submitter Addresses"
     columns:
-      address, protocol_name, submitter_type, role_type, version, description
       - name: address
         description: "Address of known L2 Batch Submitter"
       - name: protocol_name
