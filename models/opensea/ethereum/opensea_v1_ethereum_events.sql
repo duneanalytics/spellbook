@@ -196,7 +196,7 @@ LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct2 ON erct2.evt_bloc
     AND wa.nft_contract_address=erct2.contract_address
     AND erct2.evt_tx_hash=wa.call_tx_hash
     AND erct2.tokenId=coalesce(token_id_erc, wa.token_id)
-    AND erct2.from=.buyer
+    AND erct2.from=buyer
     {% if is_incremental() %}
     and erct2.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
