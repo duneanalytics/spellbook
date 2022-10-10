@@ -3,9 +3,9 @@
                                     "sector",
                                     "addresses",
                                     \'["msilb7"]\') }}') }}
-                                    
- SELECT lower(address) AS address, protocol_name, submitter_type, role_type, version, description
- FROM (VALUES
+
+SELECT address, protocol_name, submitter_type, role_type, version, description
+FROM (VALUES
        ('0x5e4e65926ba27467555eb562121fac00d24e9dd2', 'Optimism', 'Canonical Transaction Chain','to_address','2','Optimism: Canonical Transaction Chain')
       ,('0xbe5dab4a2e9cd0f27300db4ab94bee3a233aeb19', 'Optimism', 'State Commitment Chain','to_address','2','Optimism: State Commitment Chain')
       ,('0x4bf681894abec828b212c906082b444ceb2f6cf6', 'Optimism', 'Canonical Transaction Chain','to_address','1','Optimism: OVM Canonical Transaction Chain')
