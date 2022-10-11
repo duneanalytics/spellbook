@@ -304,6 +304,15 @@ models:
         +schema: airswap_ethereum
         +materialized: view
 
+    TODO: Since this file is edited by many, this is likely to cause merge conflicts.
+          Sync with main and re-add this snippet which defines your model's schema.
+    kyber:
+      +schema: kyber
+      +materialized: view
+      polygon:
+        +schema: kyber_polygon
+        +materialized: view
+
 seeds:
   spellbook:
     balances:

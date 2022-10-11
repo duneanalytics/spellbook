@@ -1,15 +1,27 @@
 version: 2
 
 models:
-  - name: dex_trades
+  - name: kyber_polygon_trades
     meta:
-      blockchain: ethereum
-      sector: dex
-      contributors: jeff-dude
+      blockchain: polygon
+      project: looksrare
+      contributors: TODO migrators name
     config:
-      tags: ['ethereum', 'amm', 'trades', 'dex', 'cross-chain', 'polygon']
+      tags: ['polygon','kyber', 'trades']
     description: >
-      DEX trades on all chains across all contracts and versions
+        "![Kyber Logo](https://kyber.network/app/images/kyber-logo.svg)"
+        Polygon trades on Kyber Network, a multi-chain crypto trading and liquidity hub that connects liquidity from 
+        different sources to enable trades at the best rates.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
     columns:
       - &blockchain
         name: blockchain

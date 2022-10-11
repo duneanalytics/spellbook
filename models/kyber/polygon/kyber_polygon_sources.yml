@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: kyber_polygon
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - TODO: to be completed by migrator.
