@@ -57,6 +57,19 @@ models:
         description: "Contract address of OFAC sanctioned currency"
       - name: currency_name
         description: "Currency symbol of OFAC sanctioned currency"
+
+  - name: addresses_ethereum_mev_blots
+    meta:
+      blockchain: ethereum
+      sector: mev
+      project: addresses
+      contibutors: hildobby
+    config:
+      tags: ['table', 'MEV', 'addresses', 'ethereum']
+    description: "Known MEV addresses"
+    columns:
+      - name: address
+        description: "Address of known MEV users"
   
   - name: addresses_ethereum_l2_batch_submitters
     meta:
