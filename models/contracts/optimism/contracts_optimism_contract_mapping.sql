@@ -229,7 +229,7 @@ with base_level as (
   select 
     contract_address
     {% for col in cols %}
-    ,(array_agg({{ col }}) filter (where {{ col }} is not NULL))[0]] as {{ col }}
+    ,(array_agg({{ col }}) filter (where {{ col }} is not NULL))[0] as {{ col }}
     {% endfor %}
   from get_contracts
   where contract_address is not NULL 
