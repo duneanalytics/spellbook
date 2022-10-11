@@ -3,11 +3,11 @@ version: 2
 models:
   - name: gas_fees
     meta:
-      blockchain: ethereum, bnb
+      blockchain: ethereum, bnb, avalanche_c
       sector: gas
       contributors: soispoke
     config:
-      tags: ['ethereum', 'bnb', 'gas', 'fees']
+      tags: ['ethereum', 'bnb', 'avalanche_c', 'gas', 'fees']
     description: >
         Gas Fees across chains
     columns:
