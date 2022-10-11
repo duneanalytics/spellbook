@@ -32,4 +32,5 @@ FROM
     , ('0x9d0a89bc35fb160a076de0341d9280830d3013ca', 'Rarity Garden') -- Rarity Garden v1.02
     , ('0x603d022611bfe6a101dcdab207d96c527f1d4d8e', 'BitKeep') -- BitKeep
     , ('0x2a7251d1e7d708c507b1b0d3ff328007beecce5d', 'Rarible') -- Rarible
+    , ('0x2c45af926d5f62c5935278106800a03eb565778e', 'Rarible') -- Rarible
   ) AS temp_table (contract_address, name)
