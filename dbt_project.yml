@@ -296,6 +296,12 @@ models:
         +schema: airswap_ethereum
         +materialized: view
 
+    contracts:
+      +schema: contracts
+      +materialized: view
+      optimism:
+        +schema: contracts_optimism
+
 seeds:
   spellbook:
     balances:
