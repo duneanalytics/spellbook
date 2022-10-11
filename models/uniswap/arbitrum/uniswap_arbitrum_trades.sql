@@ -1,5 +1,5 @@
 {{ config(
-        alias ='arbitrum_trades'
+        alias ='trades'
         )
 }}
 
@@ -31,3 +31,4 @@ FROM
                 ,trace_address
                 ,evt_index
         FROM {{ ref('uniswap_v3_arbitrum_trades') }}
+)
