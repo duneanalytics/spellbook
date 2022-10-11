@@ -166,7 +166,7 @@ models:
     config:
       tags: ['arbitrum','gmx','glp']
     description: >
-        View GLP net AUM by pools.
+        View GLP net AUM for stablecoins; and the AUM of long and neutral exposure for directional tokens.
     columns:
       - *minute
       - &frax_aum
@@ -179,9 +179,14 @@ models:
         description: "Net asset under management for the USDT pool"
         tests: 
           - not_null
-      - &wbtc_aum
-        name: wbtc_aum
-        description: "Net asset under management for the WETH pool"
+      - &wbtc_long_exposure_aum
+        name: wbtc_long_exposure_aum
+        description: "Net asset under management of long exposures for the WBTC pool"
+        tests: 
+          - not_null
+      - &wbtc_neutral_exposure_aum
+        name: wbtc_neutral_exposure_aum
+        description: "Net asset under management of neutral exposures for the WBTC pool"
         tests: 
           - not_null
       - &usdc_aum
@@ -189,56 +194,39 @@ models:
         description: "Net asset under management for the USDC pool"
         tests: 
           - not_null
-      - &uni_aum
-        name: uni_aum
-        description: "Net asset under management for the UNI pool"
+      - &uni_long_exposure_aum
+        name: uni_long_exposure_aum
+        description: "Net asset under management of long exposures for the UNI pool"
         tests: 
           - not_null
-      - &link_aum
-        name: link_aum
-        description: "Net asset under management for the LINK pool"
+      - &uni_neutral_exposure_aum
+        name: uni_neutral_exposure_aum
+        description: "Net asset under management of neutral exposures for the UNI pool"
         tests: 
           - not_null
-      - &weth_aum
-        name: weth_aum
-        description: "Net asset under management for the WETH pool"
+      - &link_long_exposure_aum
+        name: link_long_exposure_aum
+        description: "Net asset under management of long exposures for the LINK pool"
+        tests: 
+          - not_null
+      - &link_neutral_exposure_aum
+        name: link_neutral_exposure_aum
+        description: "Net asset under management of neutral exposures for the LINK pool"
+        tests: 
+          - not_null
+      - &weth_long_exposure_aum
+        name: weth_long_exposure_aum
+        description: "Net asset under management of long exposures for the WETH pool"
+        tests: 
+          - not_null
+      - &weth_neutral_exposure_aum
+        name: weth_neutral_exposure_aum
+        description: "Net asset under management of neutral exposures for the WETH pool"
         tests: 
           - not_null
       - &dai_aum
         name: dai_aum
         description: "Net asset under management for the DAI pool"
-        tests: 
-          - not_null
-
-  - name: gmx_arbitrum_glp_exposure
-    meta:
-      blockchain: arbitrum
-      project: gmx
-      contributors: 1chioku
-    config:
-      tags: ['arbitrum','gmx','glp']
-    description: >
-        View net GLP long exposure by directional token.
-    columns:
-      - *minute
-      - &wbtc_exposure
-        name: wbtc_exposure
-        description: "Net long exposure of the pool to WBTC"
-        tests: 
-          - not_null
-      - &uni_exposure
-        name: uni_exposure
-        description: "Net long exposure of the pool to UNI"
-        tests: 
-          - not_null
-      - &link_exposure
-        name: link_exposure
-        description: "Net long exposure of the pool to LINK"
-        tests: 
-          - not_null
-      - &weth_exposure
-        name: weth_exposure
-        description: "Net long exposure of the pool to WETH"
         tests: 
           - not_null
 
