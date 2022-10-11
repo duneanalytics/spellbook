@@ -29,7 +29,7 @@ with creates as (
       {% endif %}
 )
 select
-  created_time, 
+  created_time 
   ,creation_tx_hash 
   ,contract_address 
   ,trace_element
