@@ -1,5 +1,4 @@
 {{ config(
-        schema = 'clipper_ethereum_trades',
         alias ='trades',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",

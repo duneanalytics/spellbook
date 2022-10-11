@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: clipper_v1-3_ethereum
+  - name: clipper_v1_ethereum_trades
     meta:
       blockchain: ethereum
       sector: dex
@@ -11,6 +11,16 @@ models:
       tags: [ 'ethereum','dex','trades', 'clipper', '0xRob' ]
     description: >
       Clipper trades on Ethereum on a specific contract/version.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
     columns:
       - &blockchain
         name: blockchain
@@ -54,6 +64,9 @@ models:
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of the token bought"
+        tests:
+          - dex_trades_token_bought:
+              dex_trades_seed: ref('dex_trades_seed')
       - &token_sold_address
         name: token_sold_address
         description: "Contract address of the token sold"
@@ -81,6 +94,97 @@ models:
       - &evt_index
         name: evt_index
         description: ""
+
+  - name: clipper_v2_ethereum_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: clipper
+      contributors: 0xRob
+    config:
+      tags: [ 'ethereum','dex','trades', 'clipper', '0xRob' ]
+    description: >
+      Clipper trades on Ethereum on a specific contract/version.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *trace_address
+      - *evt_index
+
+
+  - name: clipper_v3_ethereum_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: clipper
+      contributors: 0xRob
+    config:
+      tags: [ 'ethereum','dex','trades', 'clipper', '0xRob' ]
+    description: >
+      Clipper trades on Ethereum on a specific contract/version.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *trace_address
+      - *evt_index
 
 
   - name: clipper_ethereum_trades
@@ -117,11 +221,7 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount_raw
       - *amount_usd
-      - name: token_bought_address
-        description: "Contract address of the token bought"
-        tests:
-          - dex_trades_token_bought:
-              dex_trades_seed: ref('dex_trades_seed')
+      - *token_bought_address
       - *token_sold_address
       - *taker
       - *maker

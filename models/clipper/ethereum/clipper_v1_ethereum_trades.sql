@@ -1,6 +1,5 @@
 {{ config(
-    schema = 'clipper_v1-3_ethereum',
-    alias = 'trades_v1',
+    alias = 'trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -39,7 +38,7 @@ WITH event_data as (
 SELECT
     'ethereum' AS blockchain
     ,'clipper' AS project
-    ,'v1' AS version
+    ,'1' AS version
     ,TRY_CAST(date_trunc('DAY', e.block_time) AS date) AS block_date
     ,e.block_time
     ,t_bought.symbol AS token_bought_symbol
