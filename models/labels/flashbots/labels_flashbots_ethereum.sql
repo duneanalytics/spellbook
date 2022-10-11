@@ -6,7 +6,7 @@
 
 SELECT DISTINCT array('ethereum') AS blockchain
 , account_address AS address
-, 'Flashbots' AS name
+, 'Flashbots User' AS name
 , 'flashbots' AS category
 , 'hildobby' AS contributor
 , 'query' AS source
