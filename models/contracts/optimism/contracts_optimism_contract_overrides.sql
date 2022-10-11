@@ -1,6 +1,6 @@
 {{ 
   config(
-    schema = 'ovm_optimism', 
+    schema = 'contracts_optimism', 
     alias='contract_overrides',
     post_hook='{{ expose_spells(\'["optimism"]\',
                               "sector",

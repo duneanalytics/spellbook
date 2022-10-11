@@ -1,6 +1,6 @@
 {{ 
   config(
-    schema = 'ovm_optimism', 
+    schema = 'contracts_optimism', 
     alias='project_name_mappings',
     post_hook='{{ expose_spells(\'["optimism"]\',
                               "sector",
