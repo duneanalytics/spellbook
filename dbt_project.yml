@@ -129,7 +129,7 @@ models:
       ethereum:
         +schema: foundation_ethereum
         +materialized: view
-    
+
     gmx:
       +schema: gmx
       +materialized: view
@@ -302,6 +302,13 @@ models:
       +materialized: view
       ethereum:
         +schema: airswap_ethereum
+        +materialized: view
+
+    clipper:
+      +schema: clipper
+      +materialized: view
+      ethereum:
+        +schema: clipper_ethereum
         +materialized: view
 
 seeds:
