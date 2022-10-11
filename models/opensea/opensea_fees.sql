@@ -39,4 +39,4 @@ tx_hash,
 tx_from,
 tx_to,
 unique_trade_id
-FROM ({{ ref('opensea_ethereum_fees') }})
+FROM {{ ref('opensea_ethereum_fees') }}
