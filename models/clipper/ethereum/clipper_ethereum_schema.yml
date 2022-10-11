@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       sector: dex
-      project: clipper
+      project: clipper_v1
       contributors: 0xRob
     config:
       tags: [ 'ethereum','dex','trades', 'clipper', '0xRob' ]
@@ -99,7 +99,7 @@ models:
     meta:
       blockchain: ethereum
       sector: dex
-      project: clipper
+      project: clipper_v2
       contributors: 0xRob
     config:
       tags: [ 'ethereum','dex','trades', 'clipper', '0xRob' ]
@@ -145,7 +145,7 @@ models:
     meta:
       blockchain: ethereum
       sector: dex
-      project: clipper
+      project: clipper_v3
       contributors: 0xRob
     config:
       tags: [ 'ethereum','dex','trades', 'clipper', '0xRob' ]
