@@ -200,7 +200,6 @@ with base_level as (
         )
     )
     {% endif %}
-    -- or c.contract_address in (select contract_address from creator_contracts)
     group by 1, 2, 3, 4, 5, 6, 7, 8, 9
 
   union all 
@@ -229,7 +228,6 @@ with base_level as (
         and gc.contract_project = 'Synthetix'
     )
     {% endif %}
-    -- or snx.contract_address in (select contract_address from creator_contracts)
     group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 )
 ,get_contracts as (
