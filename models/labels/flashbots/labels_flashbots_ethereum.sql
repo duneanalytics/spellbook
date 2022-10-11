@@ -12,4 +12,4 @@ SELECT DISTINCT array('ethereum') AS blockchain
 , 'query' AS source
 , date('2022-10-08') AS created_at
 , NOW() AS modified_at
-FROM {{ ref('flashbots_arbitrages') }}
+FROM {{ source('flashbots','arbitrages') }}
