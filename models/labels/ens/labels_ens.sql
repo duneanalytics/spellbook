@@ -34,7 +34,17 @@ FROM (
     FULL OUTER JOIN {{ ref('ens_reverse_latest') }} rev
     ON res.address = rev.address
 ) ens
-
+UNION
+SELECT
+array('ethereum') as blockchain,
+address,
+ens_name as name,
+'ENS' as category,
+'soispoke' as contributor,
+'static' AS source,
+date('2022-10-10') as created_at,
+now() as modified_at
+FROM  {{ source('ens','old_preimages') }}
 -- For now, we want to limit the amount of ENS labels to 1
 --UNION
 --SELECT array('ethereum') as blockchain,

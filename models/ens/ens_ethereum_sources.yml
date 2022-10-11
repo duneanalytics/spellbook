@@ -1,6 +1,14 @@
 version: 2
 
 sources:
+  - name: ens
+    description: "Old ENS preimages"
+    tables:
+      - name: old_preimages
+        columns:
+        - name: address
+        - name: ens_name
+
   - name: ethereumnameservice_ethereum
     freshness:
     tables:
@@ -40,3 +48,5 @@ sources:
         loaded_at_field: evt_block_time
       - name: PublicResolver_evt_AddressChanged
       - name: OldBaseRegistrar_evt_NameRegistered
+
+
