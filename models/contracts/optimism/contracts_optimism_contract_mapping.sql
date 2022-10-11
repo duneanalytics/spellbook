@@ -263,4 +263,4 @@ left join {{ source('ovm1_optimism', 'contracts') }} as ovm1c
 left join {{ ref('contracts_optimism_project_name_mappings') }} as dnm -- fix names for decoded contracts
   on lower(c.contract_project) = lower(dnm.dune_name)
 left join {{ ref('contracts_optimism_contract_overrides') }} as co --override contract maps
-  on c.contract_address = co.contract_address
+  on lower(c.contract_address) = lower(co.contract_address)

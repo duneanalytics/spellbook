@@ -2,6 +2,7 @@
   config(
     schema = 'contracts_optimism', 
     alias='contract_creator_address_list',
+    unique_key='creator_address',
     post_hook='{{ expose_spells(\'["optimism"]\',
                               "sector",
                               "contracts",

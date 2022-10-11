@@ -2,6 +2,7 @@
   config(
     schema = 'contracts_optimism', 
     alias='contract_overrides',
+    unique_key='contract_address',
     post_hook='{{ expose_spells(\'["optimism"]\',
                               "sector",
                               "contracts",
@@ -10,7 +11,7 @@
 }}
 
 select 
-  contract_address
+  lower(contract_address) as contract_address
   ,contract_project
   ,contract_name
 from 

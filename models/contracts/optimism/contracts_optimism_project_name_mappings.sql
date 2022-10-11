@@ -2,6 +2,7 @@
   config(
     schema = 'contracts_optimism', 
     alias='project_name_mappings',
+    unique_key='dune_name',
     post_hook='{{ expose_spells(\'["optimism"]\',
                               "sector",
                               "contracts",
