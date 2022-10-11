@@ -149,7 +149,7 @@ with base_level as (
     end) as is_self_destruct
     ,f.creation_tx_hash
     ,f.trace_element 
-  from level{{max_levels}} as f
+  from level{{max_levels - 1}} as f
   left join {{ ref('contracts_optimism_contract_creator_address_list') }} as cc 
     on f.creator_address = cc.creator_address
   left join {{ ref('contracts_optimism_contract_creator_address_list') }} as ccf
