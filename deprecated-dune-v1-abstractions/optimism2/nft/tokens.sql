@@ -199,6 +199,11 @@ COPY nft.tokens (contract_address, project_name) FROM stdin;
 \\x672f466b13ee1856c32f8bd956730d8eff28bf16	Good Mornings
 \\xfa14e1157f35e1dad95dc3f822a9d18c40e360e2	Optimism Quests
 \\xa7f7de387425036fa189f90a3d9b0d2b5835fc51	OpenSeaOnOptimism
+\\x7ceee88e71f5c3614f6d0153e922871ae402d1d1	Rekt Frens
+\\x8964e71578e6e6a7552692d3e1d0a576711298e6	Draconic Egg
+\\xfce1aff7b9590ef204116660a960192625e7544d	hobbits house
+\\x0244f5c52bda3fd44fc5c2a6bf6c30a2ac1bd019	GIVnaut NFT (GiveStation)
+\\xba4e052b56c2ca1ddc17ad615dafe02c9522852f	Optimism x Galxe Twitter Spaces NFTs
 \.
 
 COMMIT;
