@@ -150,9 +150,9 @@ with base_level as (
     ,f.creation_tx_hash
     ,f.trace_element 
   from level{{max_levels}} as f
-  left join {{ ref('contract_creator_address_list') }} as cc 
+  left join {{ ref('contracts_optimism_contract_creator_address_list') }} as cc 
     on f.creator_address = cc.creator_address
-  left join {{ ref('contract_creator_address_list') }} as ccf
+  left join {{ ref('contracts_optimism_contract_creator_address_list') }} as ccf
     on f.contract_factory = ccf.creator_address
   where f.contract_address is not null
  )
@@ -309,7 +309,7 @@ select
 from cleanup as c 
 left join {{ source('ovm1_optimism', 'contracts') }} as ovm1c
   on c.contract_address = ovm1c.contract_address --fill in any missing contract creators
-left join {{ ref('project_name_mappings') }} as dnm -- fix names for decoded contracts
+left join {{ ref('contracts_optimism_project_name_mappings') }} as dnm -- fix names for decoded contracts
   on lower(c.contract_project) = lower(dnm.dune_name)
-left join {{ ref('contract_overrides') }} as co --override contract maps
+left join {{ ref('contracts_optimism_contract_overrides') }} as co --override contract maps
   on c.contract_address = co.contract_address
