@@ -197,16 +197,6 @@ models:
       tags: ['ethereum','clipper','trades','dex','0xRob']
     description: >
         Clipper trades on Ethereum
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
     columns:
       - *blockchain
       - *project
@@ -221,7 +211,8 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount_raw
       - *amount_usd
-      - *token_bought_address
+      - name: token_bought_address  # avoid '*' usage to prevent running test on view
+        description: "Contract address of the token bought"
       - *token_sold_address
       - *taker
       - *maker
