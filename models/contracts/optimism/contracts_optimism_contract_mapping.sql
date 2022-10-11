@@ -137,9 +137,10 @@ with base_level as (
         when exists (
           select 1 
           from {{ source('optimism', 'traces') }} as sd 
-          where 
-            f.creation_tx_hash = sd.tx_hash
+          join level{{max_levels - 1}} as f
+            on f.creation_tx_hash = sd.tx_hash
             and f.trace_element = sd.trace_address[1]
+            and f.created_time = sd.block_time
             and sd.type = 'suicide'
             {% if is_incremental() %} -- this filter will only be applied on an incremental run 
             and sd.block_time >= date_trunc('day', now() - interval '1 week')
