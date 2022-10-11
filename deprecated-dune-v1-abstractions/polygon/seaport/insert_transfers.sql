@@ -822,13 +822,14 @@ $function$
 ;
 
 -- backfill
-SELECT seaport.insert_transfers('2022-07-01', (SELECT current_timestamp - interval '20 minutes'));
+delete from seaport.transfers where block_time >= '2022-10-01';
+SELECT seaport.insert_transfers('2022-10-01', (SELECT current_timestamp - interval '20 minutes'));
 
--- cronjob
-INSERT INTO cron.job (schedule, command)
-VALUES ('*/20 * * * *', 
-$$SELECT seaport.insert_transfers((SELECT date_trunc('day',MAX(block_time)) FROM seaport.transfers)
-                                            ,(SELECT current_timestamp - interval '20 minutes'));$$
-       )
-ON CONFLICT (command) 
-DO UPDATE SET schedule=EXCLUDED.schedule;
+-- -- cronjob
+-- INSERT INTO cron.job (schedule, command)
+-- VALUES ('*/20 * * * *', 
+-- $$SELECT seaport.insert_transfers((SELECT date_trunc('day',MAX(block_time)) FROM seaport.transfers)
+--                                             ,(SELECT current_timestamp - interval '20 minutes'));$$
+--        )
+-- ON CONFLICT (command) 
+-- DO UPDATE SET schedule=EXCLUDED.schedule;
