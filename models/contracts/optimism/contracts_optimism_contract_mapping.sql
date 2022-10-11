@@ -44,7 +44,7 @@ with base_level as (
       ,address as contract_address
       ,block_time as created_time
       ,tx_hash as creation_tx_hash
-      ,trace_address[1] as trace_element
+      ,trace_address[0] as trace_element
       ,NULL as is_self_destruct
     from {{ source('optimism', 'traces') }} as ct 
     where 
@@ -139,7 +139,7 @@ with base_level as (
           from {{ source('optimism', 'traces') }} as sd 
           join level{{max_levels - 1}} as f4
             on f4.creation_tx_hash = sd.tx_hash
-            and f4.trace_element = sd.trace_address[1]
+            and f4.trace_element = sd.trace_address[0]
             and f4.created_time = sd.block_time
             and sd.type = 'suicide'
             {% if is_incremental() %} -- this filter will only be applied on an incremental run 
@@ -253,7 +253,7 @@ with base_level as (
   select 
     contract_address
     {% for col in cols %}
-    ,(array_agg({{ col }}) filter (where {{ col }} is not NULL))[1] as {{ col }}
+    ,(array_agg({{ col }}) filter (where {{ col }} is not NULL))[0]] as {{ col }}
     {% endfor %}
   from get_contracts
   where contract_address is not NULL 
