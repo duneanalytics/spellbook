@@ -94,7 +94,6 @@ WITH
         select s.*
         , tr.from as call_from
         , CASE WHEN called_from_router = true THEN tr.from ELSE tr.to END as project_contract_address -- either the router or the pool if called directly
-        , substr(input, -8) as caller_domainhash
         from swaps s
         inner join {{ source('ethereum', 'traces') }} tr
         ON tr.success and s.call_block_number = tr.block_number and s.call_tx_hash = tr.tx_hash and s.call_trace_address = tr.trace_address
@@ -153,7 +152,6 @@ WITH
                 , call_trace_address
                 , call_from
                 , router_caller
-                , caller_domainhash
                 , pool_fee
                 , protocolfee
                 , protocolfee_recipient
@@ -218,7 +216,6 @@ WITH
             -- these 2 are used for matching the aggregator address, dropped later
             , router_caller
             , call_from
-            , caller_domainhash
         FROM swaps_w_fees sb
         INNER JOIN {{ source('ethereum', 'traces') }} tr
             ON tr.type = 'call'
@@ -236,7 +233,7 @@ WITH
             {% if not is_incremental() %}
             AND tr.block_time >= '2022-4-1'
             {% endif %}
-        GROUP BY 1,2,3,7,8,9,10,11,12,13,14,15,16
+        GROUP BY 1,2,3,7,8,9,10,11,12,13,14,15
     )
 
     ,swaps_cleaned as (
@@ -287,7 +284,6 @@ WITH
             -- these 2 are used for matching the aggregator address, dropped later
             , router_caller
             , call_from
-            , caller_domainhash
         FROM swaps_w_traces
     )
 
@@ -295,7 +291,7 @@ WITH
         SELECT
             sc.*
             , tokens.name AS collection
-            , case when caller_domainhash = '72db8c0b' then 'Gem' else agg.name end as aggregator_name
+            , case when lower(right(tx.input, 8)) = '72db8c0b' then 'Gem' else agg.name end as aggregator_name
             , agg.contract_address as aggregator_address
             , sc.amount_original*pu.price as amount_usd
             , sc.pool_fee_amount*pu.price as pool_fee_amount_usd
