@@ -25,7 +25,6 @@
     ,"contract_factory"
     ,"is_self_destruct"
     ,"creation_tx_hash"
-    ,"trace_element"
 ] %}
 
 with base_level as (
@@ -35,25 +34,25 @@ with base_level as (
     ,contract_address
     ,created_time
     ,creation_tx_hash
-    ,trace_element
     ,is_self_destruct
   from (
     select 
-      `from` as creator_address
+      ct.`from` as creator_address
       ,NULL::string as contract_factory
-      ,address as contract_address
-      ,block_time as created_time
-      ,tx_hash as creation_tx_hash
-      ,trace_address[0] as trace_element
-      ,NULL as is_self_destruct
-    from {{ source('optimism', 'traces') }} as ct 
+      ,ct.address as contract_address
+      ,ct.block_time as created_time
+      ,ct.tx_hash as creation_tx_hash
+      ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
+    from {{ source('optimism', 'creation_traces') }} as ct 
+    left join {{ ref('contracts_optimism_self_destruct_contracts') }} as sd 
+      on ct.address = sd.contract_address
+      and ct.tx_hash = sd.creation_tx_hash
+      and ct.block_time = sd.created_time
     where 
       true
-      and success
-      and tx_success
-      and type = 'create'
     {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-      and block_time >= date_trunc('day', now() - interval '1 week')
+      and ct.block_time >= date_trunc('day', now() - interval '1 week')
+      and sd.created_time >= date_trunc('day', now() - interval '1 week')
 
     -- to get existing history of contract mapping
     union all 
@@ -64,12 +63,11 @@ with base_level as (
       ,contract_address
       ,created_time
       ,creation_tx_hash
-      ,trace_element
       ,is_self_destruct
     from {{ this }}
     {% endif %}
   ) as x
-  group by 1, 2, 3, 4, 5, 6, 7
+  group by 1, 2, 3, 4, 5, 6
 )
 ,tokens as (
   select 
@@ -110,7 +108,6 @@ with base_level as (
       ,b.contract_address
       ,b.created_time
       ,b.creation_tx_hash
-      ,b.trace_element
       ,b.is_self_destruct
     {% if loop.first -%}
     from base_level as b
@@ -131,25 +128,8 @@ with base_level as (
     ,f.contract_address
     ,coalesce(cc.contract_project, ccf.contract_project) as contract_project 
     ,f.created_time
-    -- check if the contract is an immediate self-destruct contract
-    ,coalesce(f.is_self_destruct, 
-      case 
-        when exists (
-          select 1 
-          from {{ source('optimism', 'traces') }} as sd 
-          join level{{max_levels - 1}} as f4
-            on f4.creation_tx_hash = sd.tx_hash
-            and f4.trace_element = sd.trace_address[0]
-            and f4.created_time = sd.block_time
-            and sd.type = 'suicide'
-            {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-            and sd.block_time >= date_trunc('day', now() - interval '1 week')
-            {% endif %}
-        ) then true 
-      else false 
-    end) as is_self_destruct
+    ,f.is_self_destruct
     ,f.creation_tx_hash
-    ,f.trace_element 
   from level{{max_levels - 1}} as f
   left join {{ ref('contracts_optimism_contract_creator_address_list') }} as cc 
     on f.creator_address = cc.creator_address
@@ -168,7 +148,6 @@ with base_level as (
     ,coalesce(cc.is_self_destruct, false) as is_self_destruct
     ,'creator contracts' as source
     ,cc.creation_tx_hash
-    ,cc.trace_element
   from creator_contracts as cc 
   left join {{ source('optimism', 'contracts') }} as oc 
     on cc.contract_address = oc.address 
@@ -186,12 +165,11 @@ with base_level as (
     ,false as is_self_destruct
     ,'ovm1 contracts' as source
     ,NULL as creation_tx_hash
-    ,NULL as trace_element
   from {{ source('ovm1_optimism', 'contracts') }} as c
   where 
     true
     {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-    not exists (
+    and not exists (
       select 1
       from {{ this }} as gc
       where 
@@ -216,12 +194,11 @@ with base_level as (
     ,false as is_self_destruct
     ,'synthetix contracts' as source
     ,NULL as creation_tx_hash
-    ,NULL as trace_element
   from {{ source('ovm1_optimism', 'synthetix_genesis_contracts') }} as snx
   where 
     true
     {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-    not exists (
+    and not exists (
       select 1 
       from {{ this }} as gc
       where 
@@ -229,7 +206,7 @@ with base_level as (
         and gc.contract_project = 'Synthetix'
     )
     {% endif %}
-    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9
 )
 ,get_contracts as (
   select 
@@ -242,11 +219,10 @@ with base_level as (
     ,c.created_time 
     ,c.is_self_destruct
     ,c.creation_tx_hash
-    ,c.trace_element
   from combine as c 
   left join tokens as t 
     on c.contract_address = t.contract_address
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9
 )
 ,cleanup as (
 --grab the first non-null value for each, i.e. if we have the contract via both contract mapping and optimism.contracts
@@ -281,7 +257,6 @@ select
   ,c.contract_factory as contract_creator_if_factory
   ,coalesce(c.is_self_destruct, false) as is_self_destruct
   ,c.creation_tx_hash
-  ,c.trace_element
 from cleanup as c 
 left join {{ source('ovm1_optimism', 'contracts') }} as ovm1c
   on c.contract_address = ovm1c.contract_address --fill in any missing contract creators
