@@ -8,7 +8,7 @@
         unique_key='contract_address',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
-                                    "addresses",
+                                    "contracts",
                                     \'["msilb7", "chuxinh"]\') }}'
   )
 }}

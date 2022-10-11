@@ -1,8 +1,12 @@
 {{ 
   config(
-    alias='contract_creator_address_list'
-    ) 
-    
+    schema = 'ovm_optimism', 
+    alias='contract_creator_address_list',
+    post_hook='{{ expose_spells(\'["optimism"]\',
+                              "sector",
+                              "contracts",
+                              \'["msilb7", "chuxinh"]\') }}'
+    )  
 }}
 select 
   lower(creator_address) as creator_address

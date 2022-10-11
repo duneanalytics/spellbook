@@ -1,4 +1,13 @@
-{{ config(alias='project_name_mappings') }}
+{{ 
+  config(
+    schema = 'ovm_optimism', 
+    alias='project_name_mappings',
+    post_hook='{{ expose_spells(\'["optimism"]\',
+                              "sector",
+                              "contracts",
+                              \'["msilb7", "chuxinh"]\') }}'
+    )  
+}}
 
 select 
   dune_name

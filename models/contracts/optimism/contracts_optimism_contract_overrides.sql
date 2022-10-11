@@ -1,4 +1,13 @@
-{{ config(alias='contract_overrides') }}
+{{ 
+  config(
+    schema = 'ovm_optimism', 
+    alias='contract_overrides',
+    post_hook='{{ expose_spells(\'["optimism"]\',
+                              "sector",
+                              "contracts",
+                              \'["msilb7", "chuxinh"]\') }}'
+    ) 
+}}
 
 select 
   contract_address
