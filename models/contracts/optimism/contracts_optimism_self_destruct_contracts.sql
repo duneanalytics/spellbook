@@ -30,8 +30,8 @@ with creates as (
 )
 select
   created_time, 
-  ,creation_tx_hash, 
-  ,contract_address, 
+  ,creation_tx_hash 
+  ,contract_address 
   ,trace_element
 from creates as cr
 join {{ source('optimism', 'traces') }} as sd
