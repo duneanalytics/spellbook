@@ -8,7 +8,7 @@ models:
       project: bep20
       contibutors: hosuke
     config:
-      tags: [ 'transfers', 'bnb', 'hosuke' ]
+      tags: [ 'transfers', 'bnb', 'bep20', 'hosuke' ]
     description: "Transfers on BNB smart chain."
     columns:
       - name: unique_transfer_id
@@ -27,7 +27,7 @@ models:
         description: "Timestamp for block event time in UTC"
       - &amount_raw
         name: amount_raw
-        description: "Raw amount of BNB token held *before* taking into account token decimals"
+        description: "Raw amount of BEP20 token held *before* taking into account token decimals"
 
   - name: transfers_bnb_bep20_agg_hour
     meta:
@@ -38,7 +38,7 @@ models:
     config:
       tags: ['transfers', 'bnb', 'bep20', 'agg_hour', 'hosuke']
     description: >
-      WBNB transfers on bnb smart chain aggregated by hour. (Will update to BEP20 tokens transfers in future)
+      BEP20 tokens' transfers on bnb smart chain aggregated by hour.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -70,7 +70,7 @@ models:
     config:
       tags: ['transfers', 'bnb', 'bep20', 'agg_day', 'hosuke']
     description: >
-      WBNB transfers on bnb smart chain aggregated by day. (Will update to BEP20 tokens transfers in future)
+      BEP20 tokens' transfers on bnb smart chain aggregated by day.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
