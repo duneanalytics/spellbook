@@ -172,29 +172,6 @@ with base_level as (
   left join {{ source('optimism', 'contracts') }} as oc 
     on cc.contract_address = oc.address 
 
-  union all 
-
-  -- CHUXIN: is this part necessary?
-  select 
-    NULL as creator_address
-    ,NULL as contract_factory
-    ,oc.address as contract_address
-    ,oc.namespace as contract_project
-    ,oc.name as contract_name
-    ,oc.created_at as created_time
-    ,coalesce(cc.is_self_destruct, false) as is_self_destruct
-    ,'decoded contracts' as source
-    ,cc.creation_tx_hash
-    ,cc.trace_element
-  from {{ source('optimism', 'contracts') }} as oc 
-  join creator_contracts as cc 
-    on oc.address = cc.contract_address
-  where 
-    true
-    {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-    and created_at >= date_trunc('day', now() - interval '1 week')
-    {% endif %}
-
   union all
   -- ovm 1.0 contracts
 
