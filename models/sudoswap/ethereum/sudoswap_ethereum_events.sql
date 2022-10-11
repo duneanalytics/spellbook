@@ -291,7 +291,7 @@ WITH
         SELECT
             sc.*
             , tokens.name AS collection
-            , agg.name as aggregator_name
+            , case when right(ett.input, 8)='72db8c0b' then 'Gem' else agg.name end as aggregator_name
             , agg.contract_address as aggregator_address
             , sc.amount_original*pu.price as amount_usd
             , sc.pool_fee_amount*pu.price as pool_fee_amount_usd
@@ -307,6 +307,8 @@ WITH
             {% if not is_incremental() %}
             AND tx.block_time >= '2022-4-1'
             {% endif %}
+        LEFT JOIN {{ source('ethereum','traces') }} ett
+            ON sc.block_number = ett.block_number AND sc.tx_hash = ett.tx_hash AND right(ett.input, 8)='72db8c0b'
         LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain='ethereum'
             AND date_trunc('minute', pu.minute)=date_trunc('minute', sc.block_time)
             AND symbol = 'WETH'
