@@ -118,7 +118,7 @@ FROM (VALUES
     , (array('ethereum'), '0xc5b1ec605738ef73a4efc562274c1c0b6609cf59', 'Optimism: dForce Bridge', 'bridge', 'msilb7', 'static', timestamp('2022-10-12'), now())
     , (array('ethereum'), '0x045e507925d2e05d114534d0810a1abd94aca8d6', 'Optimism: Synthetix Legacy L2 Bridge', 'bridge', 'msilb7', 'static', timestamp('2022-10-12'), now())
     , (array('ethereum'), '0x467194771dae2967aef3ecbedd3bf9a310c76c65', 'Optimism: DAI L1 Escrow', 'bridge', 'msilb7', 'static', timestamp('2022-10-12'), now())
-    , (array('ethereum'), '0x76943c0d61395d8f2edf9060e1533529cae05de6', 'Optimsim: Lido Bridge', 'bridge', 'msilb7', 'static', timestamp('2022-10-12'), now())
-    , (array('ethereum'), '0x324c7ec7fb2bc61646ac2f22f6d06ab29b6c87a3', 'Optimsim: Teleportr v1', 'bridge', 'msilb7', 'static', timestamp('2022-10-12'), now())
-    , (array('ethereum'), '0x52ec2f3d7c5977a8e558c8d9c6000b615098e8fc', 'Optimsim: Teleportr v2', 'bridge', 'msilb7', 'static', timestamp('2022-10-12'), now())
+    , (array('ethereum'), '0x76943c0d61395d8f2edf9060e1533529cae05de6', 'Optimism: Lido Bridge', 'bridge', 'msilb7', 'static', timestamp('2022-10-12'), now())
+    , (array('ethereum'), '0x324c7ec7fb2bc61646ac2f22f6d06ab29b6c87a3', 'Optimism: Teleportr v1', 'bridge', 'msilb7', 'static', timestamp('2022-10-12'), now())
+    , (array('ethereum'), '0x52ec2f3d7c5977a8e558c8d9c6000b615098e8fc', 'Optimism: Teleportr v2', 'bridge', 'msilb7', 'static', timestamp('2022-10-12'), now())
     ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at);
