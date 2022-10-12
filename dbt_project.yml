@@ -211,6 +211,9 @@ models:
       gnosis:
         +schema: tokens_gnosis
         +materialized: view
+      arbitrum:
+        +schema: tokens_arbitrum
+        +materialized: view
 
     transfers:
       +schema: transfers
