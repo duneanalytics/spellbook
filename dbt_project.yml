@@ -129,7 +129,7 @@ models:
       ethereum:
         +schema: foundation_ethereum
         +materialized: view
-        
+
     gas:
       +schema: gas
       +materialized: view
@@ -139,7 +139,7 @@ models:
       bnb:
         +schema: gas_bnb
         +materialized: view
-    
+
     gmx:
       +schema: gmx
       +materialized: view
@@ -312,6 +312,13 @@ models:
       +materialized: view
       ethereum:
         +schema: airswap_ethereum
+        +materialized: view
+
+    clipper:
+      +schema: clipper
+      +materialized: view
+      ethereum:
+        +schema: clipper_ethereum
         +materialized: view
 
 seeds:
