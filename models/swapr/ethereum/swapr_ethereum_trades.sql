@@ -69,7 +69,7 @@ SELECT
     tx.`from` AS tx_from,
     tx.`to` AS tx_to,
     dexs.trace_address,
-    dexs.evt_index,
+    dexs.evt_index
 FROM dexs
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON dexs.tx_hash = tx.hash
