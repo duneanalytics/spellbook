@@ -34,7 +34,7 @@ FROM (VALUES
     , (array('ethereum'), '0x0b9857ae2d4a3dbe74ffe1d7df045bb7f96e4840', 'Arbitrum: Outbox 4', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
     , (array('ethereum'), '0x14797f5432f699cb4d4db04df599b74952d78d7b', 'Arbitrum: Outbox Entry', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
     , (array('ethereum'), '0x1c479675ad559dc151f6ec7ed3fbf8cee79582b6', 'Arbitrum: Sequencer Inbox', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
-    , (array('ethereum'), '0x0f25c1dc2a9922304f2eac71dca9b07e310e8e5a', 'Arbitrum: Lido: Arbitrum L1 ERC20 Token Gateway', 'bridge', 'msilb7', 'static', timestamp('2022-10-12'), now())
+    , (array('ethereum'), '0x0f25c1dc2a9922304f2eac71dca9b07e310e8e5a', 'Arbitrum One: Lido L1 ERC20 Token Gateway', 'bridge', 'msilb7', 'static', timestamp('2022-10-12'), now())
     , (array('ethereum'), '0xdac7bb7ce4ff441a235f08408e632fa1d799a147', 'Avalanche: Avalanche-Ethereum Bridge', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
     , (array('ethereum'), '0x8eb8a3b98659cce290402893d0123abb75e3ab28', 'Avalanche: Bridge', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
     , (array('ethereum'), '0xe78388b4ce79068e89bf8aa7f218ef6b9ab0e9d0', 'Avalanche: Old Bridge', 'bridge', 'hildobby', 'static', timestamp('2022-09-22'), now())
