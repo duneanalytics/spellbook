@@ -94,7 +94,7 @@ combined_batch_info as (
             {% if is_incremental() %}
             AND block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
-    where num_trades > 0 --! Exclude Withdraw Batches
+    where num_trades > 0 --! Exclude Withdraw Batchess
 )
 
 select * from combined_batch_info
