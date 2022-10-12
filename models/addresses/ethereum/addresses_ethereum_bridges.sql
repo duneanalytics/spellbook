@@ -33,6 +33,7 @@ FROM (VALUES ("0x8ed95d1746bf1e4dab58d8ed4724f1ef95b20db0", "0x", "Erc20 Bridge 
   ,("0x0b9857ae2d4a3dbe74ffe1d7df045bb7f96e4840", "Arbitrum", "Outbox 4")
   ,("0x14797f5432f699cb4d4db04df599b74952d78d7b", "Arbitrum", "Outbox Entry")
   ,("0x1c479675ad559dc151f6ec7ed3fbf8cee79582b6", "Arbitrum", "Sequencer Inbox")
+  ,('0x0F25c1DC2a9922304f2eac71DCa9B07E310e8E5a", "Arbitrum", "Lido: Arbitrum L1 ERC20 Token Gateway")
   ,("0xdac7bb7ce4ff441a235f08408e632fa1d799a147", "Avalanche", "Avalanche-Ethereum Bridge")
   ,("0x8eb8a3b98659cce290402893d0123abb75e3ab28", "Avalanche", "Bridge")
   ,("0xe78388b4ce79068e89bf8aa7f218ef6b9ab0e9d0", "Avalanche", "Old Bridge")
