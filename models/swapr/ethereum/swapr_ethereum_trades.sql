@@ -33,8 +33,8 @@ WITH dexs AS
     FROM
         {{ source('swapr_ethereum', 'DXswapPair_evt_Swap') }} t
     INNER JOIN {{ source('swapr_ethereum', 'DXswapFactory_evt_PairCreated') }}f ON f.pair = t.contract_address
-    WHERE 
     {% if is_incremental() %}
+    WHERE
     t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
