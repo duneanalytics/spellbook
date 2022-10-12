@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_time','tx_hash','tx_amount_native']
+    unique_key = ['tx_hash']
     )
 }}
 
@@ -44,15 +44,15 @@ SELECT
 FROM {{ source('ethereum','transactions') }} txns
 JOIN {{ source('ethereum','blocks') }} blocks ON blocks.number = txns.block_number
 {% if is_incremental() %}
-AND block_time >= date_trunc("day", now() - interval '1 week')
-AND blocks.time >= date_trunc("day", now() - interval '1 week')
+AND block_time >= date_trunc("day", now() - interval '2 days')
+AND blocks.time >= date_trunc("day", now() - interval '2 days')
 {% endif %}
 LEFT JOIN {{ source('prices','usd') }} p ON p.minute = date_trunc('minute', block_time)
 AND p.blockchain = 'ethereum'
 AND p.symbol = 'WETH'
 {% if is_incremental() %}
-AND p.minute >= date_trunc("day", now() - interval '1 week')
-WHERE block_time >= date_trunc("day", now() - interval '1 week')
-AND blocks.time >= date_trunc("day", now() - interval '1 week')
-AND p.minute >= date_trunc("day", now() - interval '1 week')
+AND p.minute >= date_trunc("day", now() - interval '2 days')
+WHERE block_time >= date_trunc("day", now() - interval '2 days')
+AND blocks.time >= date_trunc("day", now() - interval '2 days')
+AND p.minute >= date_trunc("day", now() - interval '2 days')
 {% endif %}
