@@ -40,6 +40,8 @@ SELECT * FROM {{ ref('labels_miners') }}
 UNION
 SELECT * FROM {{ ref('labels_airdrop_1_receivers_optimism') }}
 UNION
+SELECT * FROM {{ ref('labels_arbitrage_traders')}}
+UNION
 SELECT * FROM {{ ref('labels_flashbots_ethereum') }}
 UNION
 SELECT * FROM {{ ref('labels_ens') }}
