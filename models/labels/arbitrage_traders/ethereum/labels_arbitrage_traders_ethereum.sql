@@ -65,7 +65,7 @@ with
       )
   )
 select
-  "ethereum" as blockchain,
+  array("ethereum") as blockchain,
   address,
   "Arbitrage Trader" AS name,
   "arbitrage_traders" AS category,
