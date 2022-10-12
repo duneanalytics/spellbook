@@ -12,7 +12,7 @@
 
 select
   'ethereum' as blockchain,
-  null as project,
+  ec.namespace as project,
   null as version,
   erc721.evt_block_time as block_time,
   erc721.tokenId as token_id,
@@ -66,7 +66,7 @@ select
   'ETH' as currency_symbol,
   '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' as currency_contract,
   erc721.contract_address as nft_contract_address,
-  null as project_contract_address,
+  erc721.to as project_contract_address,
   null as aggregator_name,
   null as aggregator_address,
   erc721.evt_tx_hash as tx_hash,
@@ -88,6 +88,7 @@ from
   left join {{ source('prices','usd') }} prc on prc.contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
   and prc.minute = date_trunc('minute', erc721.evt_block_time)
   and prc.blockchain = 'ethereum'
+  left join {{ source('ethereum','contracts') }} ec ON ec.address = erc721.to
 where
   erc721.`from` = '0x0000000000000000000000000000000000000000'
   -- and erc721.contract_address = '0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85' -- ENS (for debugging)
