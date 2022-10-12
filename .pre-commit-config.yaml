@@ -12,6 +12,3 @@ repos:
   - id: check-model-has-meta-keys
     args: ['--meta-keys', 'blockchain', 'project', 'contributors', '--']
   - id: check-model-has-properties-file
-
-
-
