@@ -20,7 +20,7 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trade_id
+            - trace_address
     columns:
       - &blockchain
         name: blockchain
@@ -91,6 +91,3 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the corresponding trade event"
-      - &trade_id
-        name: trade_id
-        description: "Ranked record id for the same trade event"
