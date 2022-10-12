@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: airswap_ethereum_trades
+  - name: swapr_ethereum_trades
     meta:
       blockchain: ethereum
       sector: dex
