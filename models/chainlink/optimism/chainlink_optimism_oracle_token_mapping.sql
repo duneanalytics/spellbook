@@ -1,7 +1,7 @@
 {{
   config(
         schema = 'chainlink_optimism', 
-        alias='oracle_to_token_mapping',
+        alias='chainlink_optimism_oracle_token_mapping',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "chainlink",
