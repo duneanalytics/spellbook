@@ -76,5 +76,5 @@ LEFT JOIN {{ ref('tokens_optimism_erc20') }} erc20
     ON borrow.token = erc20.contract_address
 LEFT JOIN {{ source('prices','usd') }} p 
     ON p.minute = date_trunc('minute', borrow.evt_block_time) 
-    AND p.contract_address = borrow.token
-    AND p.blockchain = 'optimism'
+    AND p.symbol = erc20.symbol 
+    AND p.blockchain = 'ethereum' -- Using ETH tokens for USD prices as price data is not available for OP tokens
