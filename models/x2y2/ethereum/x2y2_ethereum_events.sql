@@ -200,7 +200,7 @@ SELECT 'ethereum' AS blockchain
 , CASE WHEN currency_contract='0x0000000000000000000000000000000000000000' THEN 'ETH'
     ELSE pu.symbol
     END AS royalty_fee_currency_symbol
-, 'x2y2-' || txs.tx_hash || '-' || txs.nft_contract_address || txs.token_id || '-' || txs.seller || '-' || txs.evt_index || 'Trade' AS unique_trade_id
+, 'x2y2-' || txs.tx_hash || '-' || txs.nft_contract_address || txs.token_id || '-' || txs.seller || '-' || txs.evt_index || erct.evt_index || 'Trade' AS unique_trade_id
 FROM all_x2y2_txs txs
 INNER JOIN {{ source('ethereum','transactions') }} et ON et.block_time=txs.block_time
     AND et.hash=txs.tx_hash
@@ -219,5 +219,3 @@ LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct ON erct.evt_block_
     AND erct.evt_tx_hash=txs.tx_hash
     AND erct.tokenId=txs.token_id
     AND erct.from=txs.seller
--- Temporary patch
-WHERE txs.nft_contract_address != '0xf4b6f2ab709703aa1a3e47fa0183ec700017c62b'
