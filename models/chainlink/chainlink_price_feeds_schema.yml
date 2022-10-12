@@ -47,3 +47,4 @@ models:
       - &underlying_token_price_all
         name: underlying_token_price_avg
         description: "Price of the underlying token, with extra decimal adjustments if needed"
+        
