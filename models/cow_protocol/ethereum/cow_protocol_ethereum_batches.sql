@@ -33,7 +33,7 @@ batch_counts as (
     from {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Settlement') }} s
         left outer join {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Interaction') }} i
             on i.evt_tx_hash = s.evt_tx_hash
-        join  {{ ref('cow_protocol_ethereum_solvers') }}
+        join cow_protocol_ethereum.solvers
             on solver = address
     {% if is_incremental() %}
     WHERE s.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -84,6 +84,7 @@ combined_batch_info as (
         (gas_price * gas_used * eth_price) / pow(10, 18) as tx_cost_usd,
         fee_value,
         length(data)::decimal / 1024                     as call_data_size,
+        unwraps,
         token_approvals
     from batch_counts b
         join batch_values t
