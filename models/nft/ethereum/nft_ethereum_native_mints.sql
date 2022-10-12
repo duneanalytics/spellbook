@@ -90,7 +90,9 @@ from
   and prc.blockchain = 'ethereum'
   left join {{ source('ethereum','contracts') }} ec ON ec.address = erc721.to
 where
-  erc721.`from` = '0x0000000000000000000000000000000000000000'
+  erc721.from = '0x0000000000000000000000000000000000000000'
+  -- We're intersted in collectible NFTs (e.g. BAYC), not functional NFTs (e.g. Uniswap LP), so we exclude NFTs originated in DeFi 
+  and ec.to not in (select address from {{ ref('addresses_ethereum_defi') }})
   -- and erc721.contract_address = '0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85' -- ENS (for debugging)
   {% if is_incremental() %}
   and erc721.evt_block_time >= date_trunc("day", now() - interval '1 week')
