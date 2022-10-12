@@ -1,7 +1,7 @@
 {{
   config(
         schema = 'chainlink_optimism', 
-        alias='oracle_addresses_mapping',
+        alias='chainlink_optimism_oracle_addresses',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "chainlink",
