@@ -5,7 +5,7 @@
                                     \'["bh2smith", "gentrexha"]\') }}'
 )}}
 
--- Find the PoC Query here: https://dune.com/queries/1276806
+-- Find the PoC Query here: https://dune.com/queries/1399494
 WITH
 -- Aggregate the solver added and removed events into a single table
 -- with true/false for adds/removes respectively
