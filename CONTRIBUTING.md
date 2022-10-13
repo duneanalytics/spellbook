@@ -98,17 +98,23 @@ You should add a description for your model to the schema.yml file in the model'
 
 By default, tables or views are not publicly accessible. In complex cases, you may build multiple models and only expose the final one. 
 
-To make your final model publicly accessible on dune.com, you'll need tblproperties set to `dune.public = true` and define the `dune.data_explorer` settings. These are defined in macros under alter_tblproperties. (One file per model)
-```sql
-{% macro alter_tblproperties_mock_tbl() -%}
-{%- if target.name == 'prod'-%}
-alter view mock.mock_tbl set tblproperties ('dune.public'='true',
-                                            'dune.data_explorer.blockchains'='["tutorial"]',
-                                            'dune.data_explorer.category'='abstraction',
-                                            'dune.data_explorer.abstraction.type'='tutorial',
-                                            'dune.data_explorer.abstraction.name'='tutorial');
-{%- else -%}
-{%- endif -%}
-{%- endmacro %}
+To make your final model publicly accessible on dune.com, you'll need to use the expose_spells macro in your model's config. 
 
+Define the following information in expose_spells:
 ```
+expose_spells(\'["*blockchain*"]\',
+                  "*sector or project*",
+                   "*schema name*",
+                   \'[*"contributor list"*]\')
+```
+ 
+Example from dex_trades.sql
+```
+{{ config(
+        alias ='trades',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                "sector",
+                                "dex",
+                                \'["jeff-dude", "hosuke", "0xRob"]\') }}'
+        )
+ ```

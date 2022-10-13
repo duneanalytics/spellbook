@@ -1,25 +1,25 @@
 #Welcome to your Spellbook!
 
-name: 'spellbook'
-version: '1.0.0'
+name: "spellbook"
+version: "1.0.0"
 config-version: 2
 
 # This setting configures which "profile" dbt uses for this project.
-profile: 'spellbook'
+profile: "spellbook"
 
 # These configurations specify where dbt should look for different types of files.
 # You don't need to change these!
-model-paths: ['models']
-analysis-paths: ['analyses']
-test-paths: ['tests']
-seed-paths: ['seeds']
-macro-paths: ['macros']
-snapshot-paths: ['snapshots']
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
 
-target-path: 'target' # directory which will store compiled SQL files
+target-path: "target" # directory which will store compiled SQL files
 clean-targets: # directories to be removed by `dbt clean`
-  - 'target'
-  - 'dbt_packages'
+  - "target"
+  - "dbt_packages"
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
@@ -128,6 +128,19 @@ models:
       +materialized: view
       ethereum:
         +schema: foundation_ethereum
+        +materialized: view
+
+    gas:
+      +schema: gas
+      +materialized: view
+      ethereum:
+        +schema: gas_ethereum
+        +materialized: view
+      bnb:
+        +schema: gas_bnb
+        +materialized: view
+      avalanche_c:
+        +schema: gas_avalanche_c
         +materialized: view
 
     gmx:
@@ -300,6 +313,13 @@ models:
         +schema: ironbank_optimism
         +materialized: view
 
+    keep3r_network:
+      +schema: keep3r_network
+      +materialized: view
+      ethereum:
+        +schema: keep3r_network_ethereum
+        +materialized: view
+
     airswap:
       +schema: airswap
       +materialized: view
@@ -383,7 +403,7 @@ seeds:
       +schema: test_data
       sudoswap_ethereum_example_trades:
         +column_types:
-          blocknumber: long
+          block_number: long
           tx_hash: string
           trade_category: string
           nft_contract_address: string
