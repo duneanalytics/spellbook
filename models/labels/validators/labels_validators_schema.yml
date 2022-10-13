@@ -55,14 +55,33 @@ models:
       - *created_at
       - *updated_at
 
-  - name: labels_validators
+  - name: labels_validators_solana
     meta:
-      blockchain: ethereum, bnb
+      blockchain: bnb
       sector: labels
       project: validators
       contibutors: soispoke
     config:
-      tags: ['labels', 'ethereum', 'bnb', 'validators']
+      tags: ['labels', 'solana', 'validators']
+    description: "Known validators exchange addresses on Solana"
+    columns:
+      - *blockchain 
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+
+  - name: labels_validators
+    meta:
+      blockchain: ethereum, bnb, solana
+      sector: labels
+      project: validators
+      contibutors: soispoke
+    config:
+      tags: ['labels', 'ethereum', 'bnb', 'solana', 'validators']
     description: "Known validators exchange addresses across blockchains"
     columns:
       - *blockchain 
