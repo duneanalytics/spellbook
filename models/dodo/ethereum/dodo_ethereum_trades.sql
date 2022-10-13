@@ -63,8 +63,8 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         {% if is_incremental() %}
         AND s.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-       
-        UNION ALL
+    
+        UNION 
 
         -- dodo v1 buy
         SELECT
@@ -91,7 +91,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         AND b.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
-        UNION ALL
+        UNION 
 
         -- dodov1 proxy01
         SELECT
@@ -115,7 +115,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
-        UNION ALL
+        UNION 
 
         -- dodov1 proxy04
         SELECT
@@ -139,7 +139,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
-        UNION ALL
+        UNION 
 
         -- dodov2 proxy02
         SELECT
@@ -163,7 +163,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
-        UNION ALL
+        UNION 
 
         -- dodov2 dvm
         SELECT
@@ -188,7 +188,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         AND evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
-        UNION ALL
+        UNION 
 
         -- dodov2 dpp
         SELECT
@@ -213,7 +213,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         AND evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
-        UNION ALL
+        UNION 
 
         -- dodov2 dsp
         SELECT
