@@ -132,13 +132,13 @@ models:
 
     gitcoin:
       +schema: gitcoin
-      +materialized: view
+      +materialized: table
       ethereum:
         +schema: gitcoin_ethereum
-        +materialized: view
+        +materialized: table
       polygon:
         +schema: gitcoin_polygon
-        +materialized: view
+        +materialized: table
     
     gmx:
       +schema: gmx
