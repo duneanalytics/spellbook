@@ -11,8 +11,6 @@ models:
       tags: [ 'transfers', 'bnb', 'bep20', 'hosuke' ]
     description: "Transfers on BNB smart chain."
     columns:
-      - name: unique_transfer_id
-        description: "Unique transfer ID (used for testing for duplicates)"
       - &blockchain
         name: blockchain
         description: "Blockchain"
