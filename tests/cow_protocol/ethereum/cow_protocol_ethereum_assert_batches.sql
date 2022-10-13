@@ -1,4 +1,4 @@
-
+-- Try it out here: https://dune.com/queries/1389623
 with batches_with_trade_count as (
     select
         s.evt_tx_hash,
