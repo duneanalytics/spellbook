@@ -115,11 +115,6 @@ models:
         description: "The number of contributors"
         tests: 
           - not_null
-      - &description
-        name: description
-        description: "The description of the grant"
-        tests: 
-          - not_null
       - &website
         name: website
         description: "The website of the grant (not gitcoin page)"
