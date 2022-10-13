@@ -1,5 +1,6 @@
 {{ config(
-        alias ='bep20_rolling_day')
+        alias ='bep20_rolling_day'
+        )
 }}
 
 select
@@ -17,3 +18,4 @@ select
         partition by token_address, wallet_address order by day
     ) as amount
 from {{ ref('transfers_bnb_bep20_agg_day') }}
+;

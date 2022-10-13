@@ -470,7 +470,7 @@ seeds:
         transfers_bnb_bep20_agg_hour_v2:
           +column_types:
             blockchain: string
-            hour: date
+            hour: timestamp
             wallet_address: string
             token_address: string
             symbol: string

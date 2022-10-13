@@ -18,3 +18,4 @@ select
         partition by token_address, wallet_address order by hour
     ) as amount
 from {{ ref('transfers_bnb_bep20_agg_hour') }}
+;

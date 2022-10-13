@@ -1,32 +1,6 @@
 version: 2
 
 models:
-  - name: transfers_bnb_bep20
-    meta:
-      blockchain: bnb
-      sector: transfers
-      project: bep20
-      contibutors: hosuke
-    config:
-      tags: [ 'transfers', 'bnb', 'bep20', 'hosuke' ]
-    description: "Transfers on BNB smart chain."
-    columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain"
-      - &wallet_address
-        name: wallet_address
-        description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
-      - &token_address
-        name: token_address
-        description: "Contract address for token"
-      - &evt_block_time
-        name: evt_block_time
-        description: "Timestamp for block event time in UTC"
-      - &amount_raw
-        name: amount_raw
-        description: "Raw amount of BEP20 token held *before* taking into account token decimals"
-
   - name: transfers_bnb_bep20_agg_hour
     meta:
       blockchain: bnb
@@ -44,19 +18,28 @@ models:
             - token_address
             - hour
     columns:
-      - *blockchain
+      - &blockchain
+        name: blockchain
       - &hour
         name: hour
         description: "UTC event block time truncated to the hour mark."
-      - *wallet_address
-      - *token_address
+      - &wallet_address
+        name: wallet_address
+        description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
+      - &token_address
+        name: token_address
+        description: "Contract address for token"
       - name: symbol
         description: "BEP20 token symbol"
         tests:
-          - transfer_bnb_hour_wallet_token:
+          - transfers_wallet_token:
               seed_file_location: ref('transfers_bnb_bep20_agg_hour_v2')
-      - *amount_raw
-      - name: amount
+              agg_grouping: 'hour'
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of BEP20 token held *before* taking into account token decimals"
+      - &amount
+        name: amount
         description: "Raw amount of BEP20 token held *after* taking into account token decimals"
 
   - name: transfers_bnb_bep20_agg_day
@@ -85,11 +68,11 @@ models:
       - name: symbol
         description: "BEP20 token symbol"
         tests:
-          - transfer_bnb_day_wallet_token:
+          - transfers_wallet_token:
               seed_file_location: ref('transfers_bnb_bep20_agg_day_v2')
+              agg_grouping: 'day'
       - *amount_raw
-      - name: amount
-        description: "Raw amount of BEP20 token held *after* taking into account token decimals"
+      - *amount
 
   - name: transfers_bnb_bep20_rolling_hour
     meta:
@@ -104,14 +87,16 @@ models:
       - *hour
       - *wallet_address
       - *token_address
-      - name: symbol
+      - &symbol
+        name: symbol
         description: "BEP20 token symbol"
       - *amount_raw
-      - name: amount
-        description: "Rolling sum of raw amount of BEP20 token held *after* taking into account token decimals"
-      - name: updated_at
+      - *amount
+      - &last_updated
+        name: last_updated
         description: "UTC timestamp when table was last updated"
-      - name: recency_index
+      - &recency_index
+        name: recency_index
         description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
 
   - name: transfers_bnb_bep20_rolling_day
@@ -127,13 +112,8 @@ models:
       - *day
       - *wallet_address
       - *token_address
-      - name: symbol
-        description: "BEP20 token symbol"
+      - *symbol
       - *amount_raw
-      - name: amount
-        description: "Rolling sum of raw amount of BEP20 token held *after* taking into account token decimals"
-      - name: last_updated
-        description: "UTC timestamp when table was last updated"
-      - name: recency_index
-        description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
-
+      - *amount
+      - *last_updated
+      - *recency_index
