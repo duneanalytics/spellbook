@@ -27,7 +27,6 @@ FROM (
     {% if is_incremental() %}
     WHERE minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-    GROUP BY blockchain, contract_address
     ) pusd
 INNER JOIN {{ source('prices', 'usd') }} peth
     ON peth.blockchain IS NULL
