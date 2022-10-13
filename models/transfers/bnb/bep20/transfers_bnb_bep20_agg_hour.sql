@@ -21,9 +21,6 @@ with
             value as amount_raw
         from
             {{ source('erc20_bnb', 'evt_Transfer') }}
-        {% if not is_incremental() %}
-        where evt_block_time >= date_trunc('day', now() - interval '1 month')
-        {% endif %}
         {% if is_incremental() %}
         where evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
@@ -37,9 +34,6 @@ with
             - value as amount_raw
         from
             {{ source('erc20_bnb', 'evt_Transfer') }}
-        {% if not is_incremental() %}
-        where evt_block_time >= date_trunc('day', now() - interval '1 month')
-        {% endif %}
         {% if is_incremental() %}
         where evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
@@ -53,9 +47,6 @@ with
             wad as amount_raw
         from
             {{ source('bnb_bnb', 'WBNB_evt_Deposit') }}
-        {% if not is_incremental() %}
-        where evt_block_time >= date_trunc('day', now() - interval '1 month')
-        {% endif %}
         {% if is_incremental() %}
         where evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
@@ -69,9 +60,6 @@ with
             - wad as amount_raw
         from
             {{ source('bnb_bnb', 'WBNB_evt_Withdrawal') }}
-        {% if not is_incremental() %}
-        where evt_block_time >= date_trunc('day', now() - interval '1 month')
-        {% endif %}
         {% if is_incremental() %}
         where evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
