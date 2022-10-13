@@ -58,7 +58,7 @@ models:
       - name: currency_name
         description: "Currency symbol of OFAC sanctioned currency"
 
-  - name: addresses_ethereum_mev_blots
+  - name: addresses_ethereum_mev
     meta:
       blockchain: ethereum
       sector: mev
