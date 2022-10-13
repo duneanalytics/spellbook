@@ -20,31 +20,31 @@ models:
               - aggregator_address
               - underlying_token_address
     columns:
-      - &blockchain_all
+      - &blockchain
         name: blockchain
         description: "Blockchain of the oracle update"
-      - &hour_all
+      - &hour
         name: hour
         description: "Block time of the oracle update - truncated to hour"
-      - &block_date_all
+      - &block_date
         name: block_date
         description: "Block time of the oracle update - truncated to date"
-      - &feed_name_all
+      - &feed_name
         name: feed_name
         description: "Feed name from Chainlink docs"  
-      - &oracle_price_all
+      - &oracle_price
         name: orcale_price_avg
         description:  "Price returned by Chainlink oracle update" 
-      - &proxy_address_all
+      - &proxy_address
         name: proxy_address
         description: "Address of the proxy contract for the Chainlink oracle"
-      - &aggregator_address_all
+      - &aggregator_address
         name: aggregator_address
         description: "Address of the aggregator contract tied to the proxy for the Chainlink oracle (via Read Contract)"
-      - &underlying_token_address_all
+      - &underlying_token_address
         name: underlying_token_address
         description: "Address of any underlying tokens associated with the Chainlink oracle (i.e. AAVE, sAAVE)"
-      - &underlying_token_price_all
+      - &underlying_token_price
         name: underlying_token_price_avg
         description: "Price of the underlying token, with extra decimal adjustments if needed"
         
