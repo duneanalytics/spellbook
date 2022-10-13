@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: test_udf
+    meta:
+      blockchain: ethereum
+      sector: test
+      contributors: 0xRob
+    config:
+      tags: ['test','udf']
+    description: >
+        test a python UDF
+    columns:
+      - name: hex
+      - name: dec

@@ -1,0 +1,5 @@
+version: 2
+
+macros:
+  - name: register_test_udf
+    description: "register a test python UDF"
