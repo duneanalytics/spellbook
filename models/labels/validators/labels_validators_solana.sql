@@ -2,7 +2,7 @@
 
 SELECT distinct
     array('solana') as blockchain,
-    from AS address,
+    recipient AS address,
     'Solana Validator' as name,
     'validators' AS category,
     'soispoke' AS contributor,
