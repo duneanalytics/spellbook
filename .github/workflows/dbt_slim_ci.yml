@@ -57,3 +57,9 @@ jobs:
 
       - name: dbt test
         run: "dbt test --select state:new state:modified --state ."
+
+      - name: dbt run
+        run: "dbt run --select state:modified,config.materialized:incremental"
+
+      - name: dbt test
+        run: "dbt test --select state:new,config.materialized:incremental state:modified,config.materialized:incremental"
