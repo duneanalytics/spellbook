@@ -38,3 +38,39 @@ models:
         description: "Token symbol"
       - name: price
         description: "USD price of a token"
+  - name: prices_eth
+    meta:
+      sector: prices
+      contributors: msilb7
+    config:
+      tags: ['prices', 'eth', 'latest']
+    description: "Token prices in ETH"
+    columns:
+      - name: minute
+        description: "UTC event block time truncated to the minute mark"
+      - name: blockchain
+        description: "Native blockchain of the token"
+      - name: contract_address
+        description: "Contract address of the token"
+      - name: symbol
+        description: "Token symbol"
+      - name: price_eth
+        description: "ETH price of a token"
+  - name: prices_eth_latest
+    meta:
+      sector: prices
+      contributors: msilb7
+    config:
+      tags: ['prices', 'eth', 'latest']
+    description: "Latest prices table across blockchains in ETH"
+    columns:
+      - name: minute
+        description: "UTC event block time truncated to the minute mark"
+      - name: blockchain
+        description: "Native blockchain of the token"
+      - name: contract_address
+        description: "Contract address of the token"
+      - name: symbol
+        description: "Token symbol"
+      - name: price
+        description: "ETH price of a token"
