@@ -139,6 +139,9 @@ models:
       bnb:
         +schema: gas_bnb
         +materialized: view
+      avalanche_c:
+        +schema: gas_avalanche_c
+        +materialized: view
 
     gmx:
       +schema: gmx
