@@ -12,6 +12,9 @@ models:
     columns:
       - name: dune_name
         description: "Contract name decoded by Dune"
+        tests:
+          - unique
+          - not_null
       - name: mapped_name
         description: "Mapped contract name"
 
@@ -63,7 +66,11 @@ models:
       tags: ['optimism', 'contracts', 'addresses']
     description: "A list of contract creator addresses and corresponding names."
     columns:
-      - *creator_address
+      - name: creator_address
+        description: "Contract creator address"
+        tests:
+          - unique
+          - not_null
       - *contract_project
 
 
