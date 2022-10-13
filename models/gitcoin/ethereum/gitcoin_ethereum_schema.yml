@@ -62,7 +62,6 @@ models:
         tests: 
           - not_null
 
-models:
   - name: gitcoin_ethereum_gr15_grants
     meta:
       blockchain: ethereum
