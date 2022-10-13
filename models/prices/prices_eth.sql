@@ -23,6 +23,8 @@ FROM (
     , contract_address
     , minute
     , price
+    , decimals
+    , symbol
     FROM {{ source('prices', 'usd') }}
     {% if is_incremental() %}
     WHERE minute >= date_trunc("day", now() - interval '1 week')
