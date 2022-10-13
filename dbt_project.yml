@@ -129,7 +129,7 @@ models:
       ethereum:
         +schema: foundation_ethereum
         +materialized: view
-    
+
     gmx:
       +schema: gmx
       +materialized: view
@@ -304,6 +304,13 @@ models:
         +schema: airswap_ethereum
         +materialized: view
 
+    clipper:
+      +schema: clipper
+      +materialized: view
+      ethereum:
+        +schema: clipper_ethereum
+        +materialized: view
+
 seeds:
   spellbook:
     balances:
@@ -373,7 +380,7 @@ seeds:
       +schema: test_data
       sudoswap_ethereum_example_trades:
         +column_types:
-          blocknumber: long
+          block_number: long
           tx_hash: string
           trade_category: string
           nft_contract_address: string
