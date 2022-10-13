@@ -9,7 +9,7 @@ models:
     config:
       tags: ['polygon', 'gitcoin', 'dataset']
     description: >
-        description: "Dataset of Gitcoin contributions on polygon.
+        description: Dataset of Gitcoin contributions on polygon.
     columns:
       - &txn_id
         name: txn_id
