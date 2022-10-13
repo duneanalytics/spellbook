@@ -65,33 +65,17 @@ models:
               - aggregator_address
               - underlying_token_address
     columns:
-      - &blockchain_hr
-        name: blockchain
-        description: "Blockchain of the oracle update"
+      - *blockchain
       - &hour
         name: hour
         description: "Block time of the oracle update - truncated to hour"
-      - &block_date_hr
-        name: block_date
-        description: "Block time of the oracle update - truncated to date"
-      - &feed_name_hr
-        name: feed_name
-        description:  "Feed name from Chainlink docs"  
-      - &oracle_price_hr
-        name: oracle_price
-        description:  "Price returned by Chainlink oracle update" 
-      - &proxy_address_hr
-        name: proxy_address
-        description:  "Address of the proxy contract for the Chainlink oracle"
-      - &aggregator_address_hr
-        name: aggregator_address
-        description:  "Address of the aggregator contract tied to the proxy for the Chainlink oracle (via Read Contract)"
-      - &underlying_token_address_hr
-        name: underlying_token_address
-        description:  "Address of any underlying tokens associated with the Chainlink oracle (i.e. AAVE, sAAVE)"
-      - &underlying_token_price_hr
-        name: underlying_token_price
-        description:  "Price of the underlying token, with extra decimal adjustments if needed"
+      - *block_date
+      - *feed_name
+      - *oracle_price
+      - *proxy_address
+      - *aggregator_address
+      - *underlying_token_address
+      - *underlying_token_price
 
   - name: chainlink_optimism_oracle_token_mapping
     meta:
@@ -103,18 +87,12 @@ models:
     description: >
         Manually updated table for mapping chainlink oracle addresses to underlying ERC20 token addresses.
     columns:
-      - &blockchain_map
-        name: blockchain
-        description: "Blockchain of the oracle update"
-      - &feed_name_map
-        name: feed_name
-        description:  "Feed name from Chainlink docs"  
-      - &proxy_address_map
-        name: proxy_address
-        description:  "Address of the proxy contract for the Chainlink oracle"
-      - &underlying_token_address_map
-        name: underlying_token_address
-        description:  "Address of any underlying tokens associated with the Chainlink oracle (i.e. AAVE, sAAVE)"
+      - *blockchain
+      - *feed_name
+      - *oracle_price
+      - *proxy_address
+      - *aggregator_address
+      - *underlying_token_address
       - &extra_decimals
         name: extra_decimals
         description:  "Additional decimals needed to adjust the Chainlink oracle answer to the underlying token (most often this is 0)"
@@ -134,18 +112,10 @@ models:
               - proxy_address
               - aggregator_address
     columns:
-      - &blockchain_omap
-        name: blockchain
-        description: "Blockchain of the oracle update"
-      - &feed_name_omap
-        name: feed_name
-        description:  "Feed name from Chainlink docs"  
-      - &decimals_omap
+      - *blockchain
+      - *feed_name 
+      - &decimals
         name: decimals
         description: "Decimal adjustment for the oracle answer"
-      - &proxy_address_omap
-        name: proxy_address
-        description:  "Address of the proxy contract for the Chainlink oracle"
-      - &aggregator_address_omap
-        name: aggregator_address
-        description:  "Address of the aggregator contract tied to the proxy for the Chainlink oracle (via Read Contract)"
+      - *proxy_address
+      - *aggregator_address
