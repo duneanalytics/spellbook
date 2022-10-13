@@ -89,7 +89,7 @@ combined_batch_info as (
     from batch_counts b
         join batch_values t
             on b.evt_tx_hash = t.tx_hash
-        inner join ethereum.transactions tx
+        inner join {{ source('ethereum', 'transactions') }} tx
             on evt_tx_hash = hash
             {% if is_incremental() %}
             AND block_time >= date_trunc("day", now() - interval '1 week')
