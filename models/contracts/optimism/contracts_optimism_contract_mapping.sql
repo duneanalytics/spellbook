@@ -1,6 +1,5 @@
  {{
   config(
-        schema = 'contracts_optimism', 
         alias='contract_mapping',
         materialized ='incremental',
         file_format ='delta',
@@ -48,11 +47,13 @@ with base_level as (
       on ct.address = sd.contract_address
       and ct.tx_hash = sd.creation_tx_hash
       and ct.block_time = sd.created_time
+      {% if is_incremental() %}
+      and sd.created_time >= date_trunc('day', now() - interval '1 week')
+      {% endif %}
     where 
       true
-    {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+    {% if is_incremental() %}
       and ct.block_time >= date_trunc('day', now() - interval '1 week')
-      and sd.created_time >= date_trunc('day', now() - interval '1 week')
 
     -- to get existing history of contract mapping
     union all 

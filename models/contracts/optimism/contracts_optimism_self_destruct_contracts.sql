@@ -1,6 +1,5 @@
  {{
   config(
-        schema = 'contracts_optimism', 
         alias='self_destruct_contracts',
         materialized ='incremental',
         file_format ='delta',
@@ -24,22 +23,23 @@ with creates as (
       type = 'create'
       and success
       and tx_success
-      {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+      {% if is_incremental() %}
       and block_time >= date_trunc('day', now() - interval '1 week')
       {% endif %}
 )
 select
-  created_time 
-  ,creation_tx_hash 
-  ,contract_address 
-  ,trace_element
+  cr.created_time 
+  ,cr.creation_tx_hash 
+  ,cr.contract_address 
+  ,cr.trace_element
 from creates as cr
 join {{ source('optimism', 'traces') }} as sd
   on cr.creation_tx_hash = sd.tx_hash
   and cr.created_time = sd.block_time
   and cr.trace_element = sd.trace_address[0]
   and sd.`type` = 'suicide'
-  {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-  and block_time >= date_trunc('day', now() - interval '1 week')
+  {% if is_incremental() %}
+  and sd.block_time >= date_trunc('day', now() - interval '1 week')
   {% endif %}
 group by 1, 2, 3, 4
+;
