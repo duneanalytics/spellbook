@@ -1,21 +1,20 @@
 version: 2
 
 models:
-  - name: gitcoin_polygon_contribution_dataset
+  - name: gitcoin_ethereum_contribution_dataset
     meta:
-      blockchain: polygon
+      blockchain: ethereum
       project: gitcoin
       contributors: 1chioku
     config:
-      tags: ['polygon', 'gitcoin', 'dataset']
+      tags: ['ethereum', 'gitcoin', 'dataset']
     description: >
-        description: "Dataset of Gitcoin contributions on polygon.
+        description: "Dataset of Gitcoin contributions on Ethereum.
     columns:
       - &txn_id
         name: txn_id
         description: "An internal ID for a contribution (off-chain)"
         tests: 
-          - unique
           - not_null
       - &user_id
         name: user_id
