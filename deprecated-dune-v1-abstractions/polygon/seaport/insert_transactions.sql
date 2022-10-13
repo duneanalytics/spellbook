@@ -153,6 +153,7 @@ with p1_call as (
           ,max(purchase_method) as purchase_method
       from p1_evt_add a
      group by 1,2,3,4,5,6
+     having count(distinct price_token) = 1  -- execlude more than 2 currencies used in single txns
 )
 ,p1_nft_trades as ( 
     select a.block_time
@@ -315,11 +316,11 @@ with p1_call as (
           ,max(offer_order_type) as offer_order_type
           ,max(offer_identifier) as nft_token_id
           ,count(evt_tx_hash) as nft_transfer_cnt
-          ,max(price_token) as price_token
-          ,max(price_item_type) as price_item_type
-          ,sum(price_amount) as price_amount
-          ,sum(fee_amount) as fee_amount
-          ,sum(royalty_amount) as royalty_amount
+          ,max(evt_price_token) as price_token
+          ,max(evt_price_item_type) as price_item_type
+          ,sum(evt_price_amount) as price_amount
+          ,sum(evt_fee_amount) as fee_amount
+          ,sum(evt_royalty_amount) as royalty_amount
           ,sum(evt_price_amount) as evt_price_amount
           ,sum(evt_fee_amount) as evt_fee_amount
           ,sum(evt_royalty_amount) as evt_royalty_amount
@@ -337,9 +338,9 @@ with p1_call as (
           ,count(1) as attempt_cnt
           ,count(evt_tx_hash) as trade_cnt
           ,count(1) - count(evt_tx_hash) as revert_cnt
-          ,coalesce(sum(coalesce(price_amount,0) + coalesce(fee_amount,0) + coalesce(royalty_amount,0)),0) as attempt_amount
-          ,coalesce(sum(case when evt_tx_hash is not null then coalesce(price_amount,0) + coalesce(fee_amount,0) + coalesce(royalty_amount,0) end),0) as trade_amount
-          ,coalesce(sum(case when evt_tx_hash is null then coalesce(price_amount,0) + coalesce(fee_amount,0) + coalesce(royalty_amount,0) end),0) as revert_amount
+          ,coalesce(sum(coalesce(evt_price_amount,0) + coalesce(evt_fee_amount,0) + coalesce(evt_royalty_amount,0)),0) as attempt_amount
+          ,coalesce(sum(case when evt_tx_hash is not null then coalesce(evt_price_amount,0) + coalesce(evt_fee_amount,0) + coalesce(evt_royalty_amount,0) end),0) as trade_amount
+          ,coalesce(sum(case when evt_tx_hash is null then coalesce(evt_price_amount,0) + coalesce(evt_fee_amount,0) + coalesce(evt_royalty_amount,0) end),0) as revert_amount
           ,count(case when offer_item_type = '2' then evt_token_amount end) as erc721_transfer_count 
           ,count(case when offer_item_type = '3' then evt_token_amount end) as erc1155_transfer_count 
           ,count(case when offer_item_type in ('2','3') then evt_token_amount end) as nft_transfer_count 
@@ -351,6 +352,7 @@ with p1_call as (
           ,'Buy Now' as purchase_method
       from p2_evt a
      group by 1,2,3,4,5
+     having count(distinct evt_price_token) = 1 -- execlude more than 2 currencies used in single txns
 )
 ,p2_nft_trades as ( 
     select a.block_time
@@ -548,6 +550,9 @@ with p1_call as (
           ,max(order_type_id) as order_type_id
       from p3_add_rn a
      group by 1,2,3,4,5
+     having count(distinct case when purchase_method = 'Offer Accepted' and sub_type = 'offer' and sub_idx = 1 then token_contract_address::text
+                                when purchase_method = 'Buy Now' and sub_type = 'consideration' then token_contract_address::text
+                           end) = 1  -- execlude more than 2 currencies used in single txns
 )
 ,p3_nft_trades as (
     select a.block_time
@@ -745,6 +750,7 @@ with p1_call as (
       from p4_add_rn a
      where offer_item_type in ('2','3')
      group by 1,2,3,4,5,6
+     having count(distinct price_token) = 1  -- execlude more than 2 currencies used in single txns
 )
 ,p4_nft_trades as ( 
     select a.block_time
@@ -842,13 +848,14 @@ $function$
 ;
 
 -- backfill
-SELECT seaport.insert_transactions('2022-07-01', (SELECT current_timestamp - interval '20 minutes'));
+delete from seaport.transactions where block_time >= '2022-10-01';
+SELECT seaport.insert_transactions('2022-10-01', (SELECT current_timestamp - interval '20 minutes'));
 
--- cronjob
-INSERT INTO cron.job (schedule, command)
-VALUES ('*/20 * * * *', 
-$$SELECT seaport.insert_transactions((SELECT date_trunc('day',MAX(block_time)) FROM seaport.transactions)
-                                            ,(SELECT current_timestamp - interval '20 minutes'));$$
-       )
-ON CONFLICT (command) 
-DO UPDATE SET schedule=EXCLUDED.schedule;
+-- -- cronjob
+-- INSERT INTO cron.job (schedule, command)
+-- VALUES ('*/20 * * * *', 
+-- $$SELECT seaport.insert_transactions((SELECT date_trunc('day',MAX(block_time)) FROM seaport.transactions)
+--                                             ,(SELECT current_timestamp - interval '20 minutes'));$$
+--        )
+-- ON CONFLICT (command) 
+-- DO UPDATE SET schedule=EXCLUDED.schedule;

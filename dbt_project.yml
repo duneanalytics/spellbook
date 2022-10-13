@@ -114,6 +114,9 @@ models:
         +schema: element_avalanche_c
         +materialized: view
 
+    superrare:
+      +schema: superrare
+      +materialized: view
     looksrare:
       +schema: looksrare
       +materialized: view
@@ -125,6 +128,19 @@ models:
       +materialized: view
       ethereum:
         +schema: foundation_ethereum
+        +materialized: view
+
+    gas:
+      +schema: gas
+      +materialized: view
+      ethereum:
+        +schema: gas_ethereum
+        +materialized: view
+      bnb:
+        +schema: gas_bnb
+        +materialized: view
+      avalanche_c:
+        +schema: gas_avalanche_c
         +materialized: view
 
     gmx:
@@ -308,6 +324,13 @@ models:
         +schema: airswap_ethereum
         +materialized: view
 
+    clipper:
+      +schema: clipper
+      +materialized: view
+      ethereum:
+        +schema: clipper_ethereum
+        +materialized: view
+
 seeds:
   spellbook:
     balances:
@@ -377,7 +400,7 @@ seeds:
       +schema: test_data
       sudoswap_ethereum_example_trades:
         +column_types:
-          blocknumber: long
+          block_number: long
           tx_hash: string
           trade_category: string
           nft_contract_address: string
