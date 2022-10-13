@@ -130,6 +130,16 @@ models:
         +schema: foundation_ethereum
         +materialized: view
 
+    gitcoin:
+      +schema: gitcoin
+      +materialized: view
+      ethereum:
+        +schema: gitcoin_ethereum
+        +materialized: view
+      polygon:
+        +schema: gitcoin_polygon
+        +materialized: view
+    
     gmx:
       +schema: gmx
       +materialized: view
