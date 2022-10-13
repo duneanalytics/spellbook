@@ -309,6 +309,7 @@ models:
       +materialized: view
       optimism:
         +schema: contracts_optimism
+        +materialized: view
 
     clipper:
       +schema: clipper
