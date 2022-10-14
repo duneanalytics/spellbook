@@ -1,4 +1,4 @@
-{{ config(materialized='view', alias='solvers',
+{{ config(alias='solvers',
         post_hook='{{ expose_spells(\'["gnosis"]\',
                                     "project",
                                     "cow_protocol",
