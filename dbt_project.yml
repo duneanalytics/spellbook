@@ -302,6 +302,9 @@ models:
       ethereum:
         +schema: cow_protocol_ethereum
         +materialized: view
+      gnosis:
+        +schema: cow_protocol_gnosis
+        +materialized: view
 
     ironbank:
       +schema: ironbank
