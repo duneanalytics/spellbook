@@ -63,8 +63,7 @@ SELECT
     tx.from AS tx_from,
     tx.to AS tx_to,
     dexs.trace_address,
-    dexs.evt_index,
-    'sushiswap' ||'-'|| dexs.tx_hash ||'-'|| IFNULL(dexs.evt_index, '') ||'-'|| IFNULL(dexs.trace_address, '') AS unique_trade_id
+    dexs.evt_index
 FROM dexs
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON dexs.tx_hash = tx.hash
