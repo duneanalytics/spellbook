@@ -1,7 +1,6 @@
 {{ config(
         alias = 'vault_balances',
         materialized = 'view',
-        unique_key = ['minute'],
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "project",
                                     "gmx",
@@ -36,7 +35,6 @@ vault_balances_frax AS -- This CTE returns the balance of FRAX tokens in the GMX
             FROM {{ source('erc20_arbitrum', 'evt_transfer') }}
             WHERE `to` = '0x489ee077994b6658eafa855c308275ead8097c4a' -- GMX Arbitrum Vault Address
             AND `contract_address` = '0x17fc002b466eec40dae837fc4be5c67993ddbd6f' -- FRAX Arbitrum Smart Contract
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
     
             UNION ALL
                                     
@@ -46,7 +44,6 @@ vault_balances_frax AS -- This CTE returns the balance of FRAX tokens in the GMX
             FROM {{ source('erc20_arbitrum', 'evt_transfer') }}
             WHERE `from` = '0x489ee077994b6658eafa855c308275ead8097c4a' -- GMX Arbitrum Vault Address
             AND `contract_address` = '0x17fc002b466eec40dae837fc4be5c67993ddbd6f' -- FRAX Arbitrum Smart Contract
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
             ) a
         GROUP BY a.minute
         ) b
@@ -70,7 +67,6 @@ vault_balances_usdt AS -- This CTE returns the balance of USDT tokens in the GMX
             FROM {{ source('erc20_arbitrum', 'evt_transfer') }}
             WHERE `to` = '0x489ee077994b6658eafa855c308275ead8097c4a' -- GMX Arbitrum Vault Address
             AND `contract_address` = '0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9' -- USDT Arbitrum Smart Contract
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
 
             UNION ALL
                                     
@@ -80,7 +76,6 @@ vault_balances_usdt AS -- This CTE returns the balance of USDT tokens in the GMX
             FROM {{ source('erc20_arbitrum', 'evt_transfer') }}
             WHERE `from` = '0x489ee077994b6658eafa855c308275ead8097c4a' -- GMX Arbitrum Vault Address
             AND `contract_address` = '0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9' -- USDT Arbitrum Smart Contract
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
             ) a
         GROUP BY a.minute
         ) b
@@ -104,7 +99,6 @@ vault_balances_wbtc AS -- This CTE returns the balance of WBTC tokens in the GMX
             FROM {{ source('erc20_arbitrum', 'evt_transfer') }}
             WHERE `to` = '0x489ee077994b6658eafa855c308275ead8097c4a' -- GMX Arbitrum Vault Address
             AND `contract_address` = '0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f' -- WBTC Arbitrum Smart Contract
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
 
             UNION ALL
                                     
@@ -114,7 +108,6 @@ vault_balances_wbtc AS -- This CTE returns the balance of WBTC tokens in the GMX
             FROM {{ source('erc20_arbitrum', 'evt_transfer') }}
             WHERE `from` = '0x489ee077994b6658eafa855c308275ead8097c4a' -- GMX Arbitrum Vault Address
             AND `contract_address` = '0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f' -- WBTC Arbitrum Smart Contract
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
             ) a
         GROUP BY a.minute
         ) b
@@ -138,7 +131,6 @@ vault_balances_usdc AS -- This CTE returns the balance of USDC tokens in the GMX
             FROM {{ source('erc20_arbitrum', 'evt_transfer') }}
             WHERE `to` = '0x489ee077994b6658eafa855c308275ead8097c4a' -- GMX Arbitrum Vault Address
             AND `contract_address` = '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8' -- USDC Arbitrum Smart Contract
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
 
             UNION ALL
                                     
@@ -148,7 +140,6 @@ vault_balances_usdc AS -- This CTE returns the balance of USDC tokens in the GMX
             FROM {{ source('erc20_arbitrum', 'evt_transfer') }}
             WHERE `from` = '0x489ee077994b6658eafa855c308275ead8097c4a' -- GMX Arbitrum Vault Address
             AND `contract_address` = '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8' -- USDC Arbitrum Smart Contract
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
             ) a
         GROUP BY a.minute
         ) b
@@ -172,7 +163,6 @@ vault_balances_uni AS -- This CTE returns the balance of UNI tokens in the GMX A
             FROM {{ source('erc20_arbitrum', 'evt_transfer') }}
             WHERE `to` = '0x489ee077994b6658eafa855c308275ead8097c4a' -- GMX Arbitrum Vault Address
             AND `contract_address` = '0xfa7f8980b0f1e64a2062791cc3b0871572f1f7f0' -- UNI Arbitrum Smart Contract
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
 
             UNION ALL
                                     
@@ -182,7 +172,6 @@ vault_balances_uni AS -- This CTE returns the balance of UNI tokens in the GMX A
             FROM {{ source('erc20_arbitrum', 'evt_transfer') }}
             WHERE `from` = '0x489ee077994b6658eafa855c308275ead8097c4a' -- GMX Arbitrum Vault Address
             AND `contract_address` = '0xfa7f8980b0f1e64a2062791cc3b0871572f1f7f0' -- UNI Arbitrum Smart Contract
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
             ) a
         GROUP BY a.minute
         ) b
@@ -206,7 +195,6 @@ vault_balances_link AS -- This CTE returns the balance of LINK tokens in the GMX
             FROM {{ source('erc20_arbitrum', 'evt_transfer') }}
             WHERE `to` = '0x489ee077994b6658eafa855c308275ead8097c4a' -- GMX Arbitrum Vault Address
             AND `contract_address` = '0xf97f4df75117a78c1a5a0dbb814af92458539fb4' -- LINK Arbitrum Smart Contract
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
 
             UNION ALL
                                     
@@ -216,7 +204,6 @@ vault_balances_link AS -- This CTE returns the balance of LINK tokens in the GMX
             FROM {{ source('erc20_arbitrum', 'evt_transfer') }}
             WHERE `from` = '0x489ee077994b6658eafa855c308275ead8097c4a'-- GMX Arbitrum Vault Address
             AND `contract_address` = '0xf97f4df75117a78c1a5a0dbb814af92458539fb4' -- LINK Arbitrum Smart Contract
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
             ) a
         GROUP BY a.minute
         ) b
@@ -240,7 +227,6 @@ vault_balances_weth AS -- This CTE returns the balance of WETH tokens in the GMX
             FROM {{ source('erc20_arbitrum', 'evt_transfer') }}
             WHERE `to` = '0x489ee077994b6658eafa855c308275ead8097c4a' -- GMX Arbitrum Vault Address
             AND `contract_address` = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1' -- WETH Arbitrum Smart Contract
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
 
             UNION ALL
                                     
@@ -250,7 +236,6 @@ vault_balances_weth AS -- This CTE returns the balance of WETH tokens in the GMX
             FROM {{ source('erc20_arbitrum', 'evt_transfer') }}
             WHERE `from` = '0x489ee077994b6658eafa855c308275ead8097c4a' -- GMX Arbitrum Vault Address
             AND `contract_address` = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1' -- WETH Arbitrum Smart Contract
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
             ) a
         GROUP BY a.minute
         ) b
@@ -274,7 +259,6 @@ vault_balances_dai AS -- This CTE returns the balance of DAI tokens in the GMX A
             FROM {{ source('erc20_arbitrum', 'evt_transfer') }}
             WHERE `to` = '0x489ee077994b6658eafa855c308275ead8097c4a' -- GMX Arbitrum Vault Address
             AND `contract_address` = '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1' -- DAI Arbitrum Smart Contract
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
 
             UNION ALL
                                     
@@ -284,7 +268,6 @@ vault_balances_dai AS -- This CTE returns the balance of DAI tokens in the GMX A
             FROM {{ source('erc20_arbitrum', 'evt_transfer') }}
             WHERE `from` = '0x489ee077994b6658eafa855c308275ead8097c4a' --- GMX Arbitrum Vault Address
             AND `contract_address` = '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1' -- DAI Arbitrum Smart Contract
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
             ) a
         GROUP BY a.minute
         ) b
