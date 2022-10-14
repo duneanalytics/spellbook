@@ -45,3 +45,5 @@ UNION
 SELECT * FROM {{ ref('labels_flashbots_ethereum') }}
 UNION
 SELECT * FROM {{ ref('labels_ens') }}
+UNION
+SELECT * FROM {{ ref('labels_sandwich_attackers') }}
