@@ -14,7 +14,7 @@
 {% set project_start_date = '2022-04-23' %}
 {% set linear_bonding_address = '0x5b6ac51d9b1cede0068a1b26533cace807f883ee' %}
 {% set exponential_bonding_address = '0x432f962d8209781da23fb37b6b59ee15de7d9841' %}
-
+{% set xyk_bonding_address = '0x7942e264e21c5e6cbba45fe50785a15d3beb1da0' %}
 
 WITH
   pool_creations AS (
@@ -23,8 +23,9 @@ WITH
       _nft AS nft_contract_address,
       tx.from AS creator_address,
       CASE
-        WHEN _bondingCurve = '{{linear_bonding_address}}' THEN 'linear'
-        WHEN _bondingCurve = '{{exponential_bonding_address}}' THEN 'exponential'
+        WHEN lower(_bondingCurve) = '{{linear_bonding_address}}' THEN 'linear'
+        WHEN lower(_bondingCurve) = '{{exponential_bonding_address}}' THEN 'exponential'
+        WHEN lower(_bondingCurve) = '{{xyk_bonding_address}}' THEN 'xyk'
         ELSE 'other'
       END as bonding_curve,
       CASE
