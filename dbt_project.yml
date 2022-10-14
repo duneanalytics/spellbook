@@ -26,7 +26,7 @@ clean-targets: # directories to be removed by `dbt clean`
 models:
   spellbook:
     +post-hook:
-      sql: "{{ optimize_spell(this, model.config.materialized) }}"
+      sql: "{{ optimize_and_cache_spell(this, model.config.materialized) }}"
       transaction: true
     aave:
       +schema: aave
@@ -240,6 +240,9 @@ models:
         +materialized: view
       optimism:
         +schema: transfers_optimism
+      bnb:
+        +schema: transfers_bnb
+        +materialized: view
 
     sudoswap:
       +schema: sudoswap
@@ -308,6 +311,9 @@ models:
       +materialized: view
       ethereum:
         +schema: cow_protocol_ethereum
+        +materialized: view
+      gnosis:
+        +schema: cow_protocol_gnosis
         +materialized: view
 
     ironbank:
@@ -460,3 +466,27 @@ seeds:
           project: string
           version: string
           tx_hash: string
+    transfers:
+      bnb:
+        +enabled: true
+        +schema: test_data
+        transfers_bnb_bep20_agg_day_v2:
+          +column_types:
+            blockchain: string
+            day: date
+            wallet_address: string
+            token_address: string
+            symbol: string
+            amount_raw: double
+            amount: double
+            tx_num: long
+        transfers_bnb_bep20_agg_hour_v2:
+          +column_types:
+            blockchain: string
+            hour: timestamp
+            wallet_address: string
+            token_address: string
+            symbol: string
+            amount_raw: double
+            amount: double
+            tx_num: long
