@@ -230,6 +230,9 @@ models:
         +materialized: view
       optimism:
         +schema: transfers_optimism
+      bnb:
+        +schema: transfers_bnb
+        +materialized: view
 
     sudoswap:
       +schema: sudoswap
@@ -450,3 +453,27 @@ seeds:
           project: string
           version: string
           tx_hash: string
+    transfers:
+      bnb:
+        +enabled: true
+        +schema: test_data
+        transfers_bnb_bep20_agg_day_v2:
+          +column_types:
+            blockchain: string
+            day: date
+            wallet_address: string
+            token_address: string
+            symbol: string
+            amount_raw: double
+            amount: double
+            tx_num: long
+        transfers_bnb_bep20_agg_hour_v2:
+          +column_types:
+            blockchain: string
+            hour: timestamp
+            wallet_address: string
+            token_address: string
+            symbol: string
+            amount_raw: double
+            amount: double
+            tx_num: long
