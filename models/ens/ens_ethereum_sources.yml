@@ -6,9 +6,11 @@ sources:
     tables:
       - name: old_preimages
         columns:
-        - name: address
-        - name: ens_name
-
+        - name: name
+        - name: label
+        - name: node
+        - name: labelhash
+        
   - name: ethereumnameservice_ethereum
     freshness:
     tables:
