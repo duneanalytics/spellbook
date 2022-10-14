@@ -143,6 +143,16 @@ models:
         +schema: gas_avalanche_c
         +materialized: view
 
+    gitcoin:
+      +schema: gitcoin
+      +materialized: table
+      ethereum:
+        +schema: gitcoin_ethereum
+        +materialized: table
+      polygon:
+        +schema: gitcoin_polygon
+        +materialized: table
+
     gmx:
       +schema: gmx
       +materialized: view
