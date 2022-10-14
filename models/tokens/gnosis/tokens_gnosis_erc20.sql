@@ -8949,4 +8949,16 @@ FROM (VALUES
           ,('0x71ee8c46d222dd0f1f50b76f5fbf809bb944105f', '50USDC-50WXDAI', 18)
           ,('0xaad67ea4740237d803347d2979c216a7971d89f1', 'XLP', 18)
           ,('0x3e4bb4baf1d21cdfead6afa50afeda54e960059b', 'XCAS', 18)
+          ,('0x1b86ad8974662af64e663a4cd799310c249889a7', 'CRC', 18),
+            ('0x2e42b0a16971b776f8c635988428eb2085c5b77f', 'WagTest9USDC', 6),
+            ('0x2e81b4dc4d6aa27fd9c153f1b12984a5d2a098e4', 'WagTest6USDC', 6),
+            ('0x55b702c10044ce03f712eb7a07c70bfb5c338649', 'CRC', 18),
+            ('0x685b01e3cf8107c8e4dd3043e6098f4f050b3949', 'CRC', 18),
+            ('0x939b2731997922f21ab0a0bab500a949c0fc3550', 'ECRC', 18),
+            ('0x97bbadf33804bb9065091eb455b969d1c42b6a60', 'WagTest6WXDAI', 18),
+            ('0x9ae18af73c10daa6c5159299ccef0b943bd0b5aa', 'CRC', 18),
+            ('0xa8edb428d303b02fb9b6ff35137a3fa040b873e6', 'CRC', 18),
+            ('0xd5084760914184d78a9e21cd7aa3da9015fd59bd', 'CRC', 18),
+            ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', 'ETH', 18),
+            ('0xf9a797b40dbc6c92aaa69aba169b1e68a5722037', 'WagTest9WXDAI', 18)
      ) AS temp_table (contract_address, symbol, decimals)
