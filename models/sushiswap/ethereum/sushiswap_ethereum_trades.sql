@@ -15,33 +15,34 @@
 
 {% set project_start_date = '2020-09-04' %}
 
-WITH dexs as (
+with dexs as (
         -- Sushiswap
-        SELECT
-            t.evt_block_time AS block_time,
-            t.to AS taker,
-            '' AS maker,
-            CASE WHEN amount0Out  = 0 THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw,
-            CASE WHEN amount0In = 0 THEN amount1In ELSE amount0In END AS token_sold_amount_raw,
-            NULL AS amount_usd,
-            CASE WHEN amount0Out  = 0 THEN f.token1 ELSE f.token0 END AS token_bought_address,
-            CASE WHEN amount0In = 0 THEN f.token1 ELSE f.token0 END AS token_sold_address,
-            t.contract_address AS project_contract_address,
-            t.evt_tx_hash AS tx_hash,
-            '' AS trace_address,
+        select
+            t.evt_block_time as block_time,
+            t.to as taker,
+            '' as maker,
+            case when amount0Out  = 0 then amount1Out else amount0Out end as token_bought_amount_raw,
+            case when amount0In = 0 then amount1In else amount0In end as token_sold_amount_raw,
+            null as amount_usd,
+            case when amount0Out  = 0 then f.token1 else f.token0 end as token_bought_address,
+            case when amount0In = 0 then f.token1 else f.token0 end as token_sold_address,
+            t.contract_address as project_contract_address,
+            t.evt_tx_hash as tx_hash,
+            '' as trace_address,
             t.evt_index
-        FROM
+        from
             {{ source('sushi_ethereum', 'Pair_evt_Swap') }} t
-        INNER JOIN {{ source('sushi_ethereum', 'Factory_evt_PairCreated') }} f ON f.pair = t.contract_address
+            inner join {{ source('sushi_ethereum', 'Factory_evt_PairCreated') }} f 
+                on f.pair = t.contract_address
 )
-SELECT
+select
     'ethereum' as blockchain,
     'sushiswap' as project,
     '1' as version,
-    TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date,
+    try_cast(date_trunc('DAY', dexs.block_time) as date) as block_date,
     dexs.block_time,
-    erc20a.symbol AS token_bought_symbol,
-    erc20b.symbol AS token_sold_symbol,
+    erc20a.symbol as token_bought_symbol,
+    erc20b.symbol as token_sold_symbol,
     case
         when lower(erc20a.symbol) > lower(erc20b.symbol) then concat(erc20b.symbol, '-', erc20a.symbol)
         else concat(erc20a.symbol, '-', erc20b.symbol)
@@ -65,33 +66,39 @@ SELECT
     tx.to AS tx_to,
     dexs.trace_address,
     dexs.evt_index
-FROM dexs
-INNER JOIN {{ source('ethereum', 'transactions') }} tx
-    ON dexs.tx_hash = tx.hash
+from dexs
+inner join {{ source('ethereum', 'transactions') }} tx
+    on dexs.tx_hash = tx.hash
     {% if not is_incremental() %}
-    -- TODO: Determine minimum date for SS (using directional date of mainnet launch for SS)
-    AND tx.block_time >= '{{project_start_date}}'
+    and tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+    and tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ ref('tokens_erc20') }} erc20a ON erc20a.contract_address = dexs.token_bought_address AND erc20a.blockchain = 'ethereum'
-LEFT JOIN {{ ref('tokens_erc20') }} erc20b ON erc20b.contract_address = dexs.token_sold_address AND erc20b.blockchain = 'ethereum'
-LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.minute = date_trunc('minute', dexs.block_time)
-    AND p_bought.contract_address = dexs.token_bought_address
+left join {{ ref('tokens_erc20') }} erc20a 
+    on erc20a.contract_address = dexs.token_bought_address 
+    and erc20a.blockchain = 'ethereum'
+left join {{ ref('tokens_erc20') }} erc20b 
+    on erc20b.contract_address = dexs.token_sold_address 
+    and erc20b.blockchain = 'ethereum'
+left join {{ source('prices', 'usd') }} p_bought 
+    on p_bought.minute = date_trunc('minute', dexs.block_time)
+    and p_bought.contract_address = dexs.token_bought_address
+    and p_bought.blockchain = 'ethereum'
     {% if not is_incremental() %}
-    -- TODO: Determine minimum date for SS (using directional date of mainnet launch for SS)
-    AND p_bought.minute >= '{{project_start_date}}'
+    and p_bought.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
+    and p_bought.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.minute = date_trunc('minute', dexs.block_time)
-    AND p_sold.contract_address = dexs.token_sold_address
+left join {{ source('prices', 'usd') }} p_sold 
+    on p_sold.minute = date_trunc('minute', dexs.block_time)
+    and p_sold.contract_address = dexs.token_sold_address
+    and p_sold.blockchain = 'ethereum'
     {% if not is_incremental() %}
-    -- TODO: Determine minimum date for SS (using directional date of mainnet launch for SS)
-    AND p_sold.minute >= '{{project_start_date}}'
+    and p_sold.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
+    and p_sold.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+    
