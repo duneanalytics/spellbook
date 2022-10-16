@@ -21,3 +21,4 @@ sources:
             description: "Token symbol"
           - name: decimals
             description: "amount of decimals"
+            
