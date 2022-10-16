@@ -337,6 +337,14 @@ models:
         +schema: clipper_ethereum
         +materialized: view
 
+    pancakeswap:
+      +schema: pancakeswap
+      +materialized: view
+      bnb:
+        +schema: pancakeswap_bnb
+        +materialized: view
+
+
 seeds:
   spellbook:
     balances:
