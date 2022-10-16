@@ -7,22 +7,24 @@
 ) }}
 
 SELECT
-'ironbank' AS project,
-'1' AS version,
 evt_block_number AS block_number,
 evt_block_time AS block_time,
 evt_tx_hash AS tx_hash,
-evt_index,
-borrower AS liquidated_borrower,
-i_asset.asset_underlying_token_address AS debt_to_cover_asset_address,
-i_collateral.collateral_underlying_token_address AS collateral_asset_address,
-repayAmount AS debt_to_cover_amount
-FROM (
-    SELECT * FROM {{ source('ironbank_ethereum', 'CErc20Delegator_evt_LiquidateBorrow') }}
-) i
+evt_index AS `index`,
+borrower,
+itokens.symbol,
+itokens.underlying_symbol,
+i_asset.asset_underlying_token_address AS underlying_address,
+i_collateral.collateral_underlying_token_address AS collateral_address,
+repayAmount / power(10,itokens.underlying_decimals) AS repay_amount,
+repayAmount / power(10,itokens.underlying_decimals)*p.price AS repay_usd
+FROM {{ source('ironbank_ethereum', 'CErc20Delegator_evt_LiquidateBorrow') }} liquidation
 LEFT JOIN (SELECT contract_address as collateral_contract_address, 
                     underlying_token_address as collateral_underlying_token_address
-            FROM {{ ref('ironbank_ethereum_itokens') }} ) i_collateral ON i.cTokenCollateral = i_collateral.collateral_contract_address
+            FROM {{ ref('ironbank_ethereum_itokens') }} ) i_collateral ON liquidation.cTokenCollateral = i_collateral.collateral_contract_address
 LEFT JOIN (SELECT contract_address as asset_contract_address, 
                     underlying_token_address as asset_underlying_token_address
-            FROM {{ ref('ironbank_ethereum_itokens') }} ) i_asset ON i.contract_address = i_asset.asset_contract_address
+            FROM {{ ref('ironbank_ethereum_itokens') }} ) i_asset ON liquidation.contract_address = i_asset.asset_contract_address
+LEFT JOIN {{ ref('ironbank_ethereum_itokens') }} itokens ON liquidation.contract_address = itokens.contract_address
+LEFT JOIN prices.usd p ON p.minute = date_trunc('minute', liquidation.evt_block_time) AND p.contract_address = itokens.underlying_token_address
+WHERE p.blockchain = 'ethereum'
