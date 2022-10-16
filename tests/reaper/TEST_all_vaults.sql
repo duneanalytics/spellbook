@@ -6,5 +6,5 @@ with unit_test as(
     inner join {{'reaper_optimism_all_vaults_postgres'}} as test
         on lower(actual.contract_address) = lower(test.contract_address)
 )
-select * from unit test
+select * from unit_test
 where symbol_test = false or decimal_test = false
