@@ -334,6 +334,13 @@ models:
         +schema: clipper_ethereum
         +materialized: view
 
+    reaper:
+      +schema: raeper
+      +materialized: view
+      optimism:
+        +schema: reaper_optimism
+        +materialized: view
+
 seeds:
   spellbook:
     balances:
