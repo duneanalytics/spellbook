@@ -344,6 +344,13 @@ models:
         +schema: clipper_ethereum
         +materialized: view
 
+    shibaswap:
+      +schema: shibaswap
+      +materialized: view
+      ethereum:
+        +schema: shibaswap_ethereum
+        +materialized: view
+
 seeds:
   spellbook:
     balances:
