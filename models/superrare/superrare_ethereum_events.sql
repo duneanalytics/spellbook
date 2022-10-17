@@ -311,35 +311,6 @@ SELECT
     else 'ETH' -- only RARE and ETH possible
     end as royalty_fee_currency_symbol,
     'superrare' || '-' || a.evt_tx_hash || '-' || a.tokenId:: string || '-' || a.seller:: string || '-' || COALESCE(a.contract_address) || '-' || 'Trade' as unique_trade_id
-from
-    all_superrare_sales a
-    left outer join (
-    select
-        minute,
-        price
-    from
-        prices.usd
-    where
-        blockchain = 'ethereum'
-        and symbol = 'WETH'
-        and minute >= date_trunc("day", now() - interval '3 month')
-    ) ep on date_trunc('minute', a.evt_block_time) = ep.minute
-    left outer join rare_token_price_eth rp on date_trunc('week', a.evt_block_time) = rp.week
-    inner join ethereum.transactions t on a.evt_tx_hash = t.hash
-    and t.block_time >= date_trunc("day", now() - interval '3 month')
-    left join erc721_ethereum.evt_transfer evt on evt.contract_address = a.contract_address
-    and evt.tokenId = a.tokenId
-    and evt.from = '0x0000000000000000000000000000000000000000'
-    and evt.evt_block_time >= date_trunc("day", now() - interval '3 month')
-    left join erc20_ethereum.evt_transfer erc20 on erc20.contract_address = a.contract_address
-    and erc20.value = a.tokenId
-    and erc20.from = '0x0000000000000000000000000000000000000000'
-    and erc20.evt_block_time >= date_trunc("day", now() - interval '3 month')
-    left outer join transfers_for_tokens_sold_from_auction po -- if sold from auction house previous owner
-    on a.evt_tx_hash = po.evt_tx_hash
-where
-    (a.amount / 1e18) > 0
-
 from all_superrare_sales a
 left outer join
     (
