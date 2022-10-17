@@ -60,7 +60,6 @@ WHERE
 (addrs[3] = '0x5b3256965e7c3cf26e11fcaf296dfc8807c01073'
         OR addrs[10] = '0x5b3256965e7c3cf26e11fcaf296dfc8807c01073')
 AND call_success = true
--- AND call_block_number = 12395486 -- for debugging
 {% if is_incremental() %}
 AND call_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
@@ -111,7 +110,6 @@ erc_transfers as
         ELSE 'Trade' END AS evt_type,
         evt_index
         FROM {{ source('erc1155_ethereum','evt_transfersingle') }} erc1155
-		-- WHERE evt_block_number = 12395486 -- for debugging
         GROUP BY evt_tx_hash,value,id,evt_index, erc1155.from, erc1155.to
             UNION ALL
 SELECT evt_tx_hash,
@@ -127,7 +125,6 @@ SELECT evt_tx_hash,
         ELSE 'Trade' END AS evt_type,
         evt_index
         FROM {{ source('erc721_ethereum','evt_transfer') }} erc721
-		-- WHERE evt_block_number = 12395486 -- for debugging
         GROUP BY evt_tx_hash,tokenId,evt_index, erc721.from, erc721.to)
 
 SELECT DISTINCT
@@ -195,7 +192,6 @@ INNER JOIN {{ source('ethereum','transactions') }} tx ON wa.call_tx_hash = tx.ha
     {% if is_incremental() %}
     and tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-	-- and tx.block_number =  12395486 -- for debugging
 LEFT JOIN erc_transfers ON erc_transfers.evt_tx_hash = wa.call_tx_hash AND (wa.token_id = erc_transfers.token_id_erc
 OR wa.token_id = null)
 LEFT JOIN {{ ref('tokens_nft') }} tokens_nft ON tokens_nft.contract_address = wa.nft_contract_address and tokens_nft.blockchain = 'ethereum'
