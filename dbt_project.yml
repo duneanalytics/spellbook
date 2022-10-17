@@ -86,6 +86,9 @@ models:
     uniswap:
       +schema: uniswap
       +materialized: view
+      arbitrum:
+        +schema: uniswap_arbitrum
+        +materialized: view
       ethereum:
         +schema: uniswap_ethereum
         +materialized: view
@@ -221,6 +224,9 @@ models:
         +materialized: view
       gnosis:
         +schema: tokens_gnosis
+        +materialized: view
+      arbitrum:
+        +schema: tokens_arbitrum
         +materialized: view
 
     transfers:
