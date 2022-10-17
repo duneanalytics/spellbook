@@ -158,13 +158,8 @@ WHERE
 
 INSERT INTO cron.job (schedule, command)
 VALUES ('1 0 * * *',$$
-    BEGIN;
-
-DELETE FROM nxm.quotation_trades
-WHERE evt_block_time >= (SELECT DATE_TRUNC('day', now()) - INTERVAL '3 months');
-
 SELECT nxm.insert_quotation_trades(
-    (SELECT DATE_TRUNC('day', now()) - INTERVAL '3 months')
-  );
-$$) 
+    (SELECT DATE_TRUNC('day', now()) - INTERVAL '1 days'),
+    (SELECT DATE_TRUNC('day', now())));
+$$)
 ON CONFLICT (command) DO UPDATE SET schedule = EXCLUDED.schedule;
