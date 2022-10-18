@@ -31,11 +31,4 @@ jobs:
           output: ' '
       - uses: docker-practice/actions-setup-docker@master
       - run: docker pull offbi/pre-commit-dbt:v1.0.0
-      - uses: offbi/pre-commit-dbt@v1.0.0
-
-        env:
-          DB_PASSWORD: .
-        with:
-         args: run --files ${{ steps.file_changes.outputs.files}}
-
 
