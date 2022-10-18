@@ -4,7 +4,6 @@ repos:
 - repo: https://github.com/offbi/pre-commit-dbt
   rev: v1.0.0
   hooks:
-  - id: dbt-compile
   - id: check-script-ref-and-source
   - id: check-model-has-description
   - id: check-model-has-meta-keys
