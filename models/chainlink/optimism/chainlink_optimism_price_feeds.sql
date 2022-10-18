@@ -24,7 +24,7 @@ SELECT
     , c.oracle_price
     , c.proxy_address
     , c.aggregator_address
-    , o.underlying_token_address
+    , COALESCE(o.underlying_token_address, 'n/a') AS underlying_token_address
     , c.oracle_price / POWER(10 , o.extra_decimals) AS underlying_token_price
 FROM
 (
