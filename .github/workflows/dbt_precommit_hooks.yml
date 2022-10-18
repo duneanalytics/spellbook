@@ -22,12 +22,6 @@ jobs:
     timeout-minutes: 60
 
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-      - id: file_changes
-        uses: trilom/file-changes-action@v1.2.4
-        with:
-          output: ' '
-      - run: docker pull offbi/pre-commit-dbt:v1.0.0
-
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+      - uses: pre-commit/action@v3.0.0
