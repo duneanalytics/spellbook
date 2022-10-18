@@ -19,7 +19,6 @@ models:
               - proxy_address
               - aggregator_address
               - underlying_token_address
-              - oracle_price
     columns:
       - &blockchain
         name: blockchain
