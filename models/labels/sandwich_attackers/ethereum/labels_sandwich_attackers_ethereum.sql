@@ -3,7 +3,7 @@
 with 
  eth_sandwich_attackers as (
     select 
-        distinct buy.tx_to as address,
+        distinct buy.tx_to as address
     from dex.trades buy
     inner join dex.trades sell 
         on sell.block_time = buy.block_time
