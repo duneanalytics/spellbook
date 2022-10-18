@@ -9,6 +9,8 @@ sources:
         loaded_at_field: evt_block_time
       - name: ExchangeV1_evt_Buy
         loaded_at_field: evt_block_time
+      - name: ExchangeV1_1_evt_Buy
+        loaded_at_field: evt_block_time
       - name: ExchangeV2_evt_Match
         loaded_at_field: evt_block_time
   - name: rarible_v1_ethereum
