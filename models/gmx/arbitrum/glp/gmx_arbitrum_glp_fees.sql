@@ -12,6 +12,7 @@
 
 WITH minute AS  -- This CTE generates a series of minute values
     (
+<<<<<<< HEAD
     SELECT *
     FROM
         (
@@ -21,6 +22,18 @@ WITH minute AS  -- This CTE generates a series of minute values
     WHERE minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     ),
+=======
+        SELECT
+            *
+        FROM
+        (
+            SELECT explode(sequence(TIMESTAMP '2021-08-31 08:13', CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute -- 2021-08-31 08:13 is the timestamp of the first vault transaction
+        )
+        {% if is_incremental() %}
+        WHERE minute >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+    ) ,
+>>>>>>> 42b2c924d321e6f0595a8c968617b3d6b0c718bf
 
 /*
 GLP fees accrued to the Fee GLP contract and can be claimed by invoking function_claim()
@@ -82,6 +95,9 @@ FROM
             minute,
             weth_current_price
         FROM {{ref('gmx_arbitrum_glp_components')}}
+        {% if is_incremental() %}
+        WHERE minute >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
         ) c 
         ON a.minute = c.minute
     ) x

@@ -12,6 +12,7 @@
 
 WITH minute AS  -- This CTE generates a series of minute values
     (
+<<<<<<< HEAD
     SELECT *
     FROM
         (
@@ -21,6 +22,18 @@ WITH minute AS  -- This CTE generates a series of minute values
     WHERE minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     ),
+=======
+        SELECT
+            *
+        FROM
+        (
+            SELECT explode(sequence(TIMESTAMP '2021-08-31 08:13', CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute -- 2021-08-31 08:13 is the timestamp of the first vault transaction
+        )
+        {% if is_incremental() %}
+        WHERE minute >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+    ) ,
+>>>>>>> 42b2c924d321e6f0595a8c968617b3d6b0c718bf
 
 /*
 GMX vault address is: https://arbiscan.io/address/0x489ee077994B6658eAfA855C308275EAd8097C4A
