@@ -172,10 +172,12 @@ INNER JOIN {{ source('optimism', 'transactions') }} tx
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ ref('tokens_optimism_erc20') }} erc20a
+LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address
-LEFT JOIN {{ ref('tokens_optimism_erc20') }} erc20b
+    AND erc20a.blockchain = 'optimism'
+LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     ON erc20b.contract_address = dexs.token_sold_address
+    AND erc20b.blockchain = 'optimism'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
     ON p_bought.minute = date_trunc('minute', dexs.block_time)
     AND p_bought.contract_address = dexs.token_bought_address
