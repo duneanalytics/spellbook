@@ -28,4 +28,4 @@ jobs:
           echo "FILES=$(echo ${{ steps.abc.outputs.added_modified }})" >> $GITHUB_ENV
       - uses: pre-commit/action@v3.0.0
         with:
-          extra_args: --hook-stage manual --files  $FILES
+          extra_args: "--hook-stage manual --files $FILES"
