@@ -30,10 +30,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Set modfied and added files as arg
         run: |
-          echo "FILES=$(echo for changed_file in ${{ steps.files.outputs.all }}; do
-            echo "Do something with this ${changed_file}."
-          done)" >> $GITHUB_ENV
-      - run: echo "$FILES"
+          echo "FILES=$(echo ${{ steps.abc.outputs.added_modified }})" >> $GITHUB_ENV
       - name: dbt dependencies
         run: "dbt deps"
       - uses: pre-commit/action@v3.0.0
