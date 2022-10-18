@@ -372,6 +372,8 @@ models:
         +materialized: view
 
     velodrome:
+      +schema: velodrome
+      +materialized: view
       optimism:
         +schema: velodrome_optimism
         +materialized: view
