@@ -1,5 +1,4 @@
 {{ config(
-    schema = 'velodrome_optimism',
     alias = 'trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -24,11 +23,11 @@ WITH dexs AS
         ,t.`to` AS taker
         ,'' AS maker
         -- logic from ethereum/dex/trades/insert_uniswap_v2
-	    ,CASE WHEN `amount0Out` = 0 THEN `amount1Out` ELSE `amount0Out` END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
-	    ,CASE WHEN `amount0In` = 0 OR `amount1Out` = 0 THEN `amount1In` ELSE `amount0In` END AS token_sold_amount_raw
+	    ,CASE WHEN `amount0Out` = '0' THEN `amount1Out` ELSE `amount0Out` END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
+	    ,CASE WHEN `amount0In` = '0' OR `amount1Out` = '0' THEN `amount1In` ELSE `amount0In` END AS token_sold_amount_raw
         ,NULL AS amount_usd
-        ,CASE WHEN `amount0Out` = 0 THEN token1 ELSE token0 END AS token_bought_address
-	    ,CASE WHEN `amount0In` = 0 OR `amount1Out` = 0 THEN token1 ELSE token0 END AS token_sold_address
+        ,CASE WHEN `amount0Out` = '0' THEN token1 ELSE token0 END AS token_bought_address
+	    ,CASE WHEN `amount0In` = '0' OR `amount1Out` = '0' THEN token1 ELSE token0 END AS token_sold_address
         ,CAST(t.contract_address as string) as project_contract_address
         ,t.evt_tx_hash AS tx_hash
         ,'' AS trace_address
@@ -73,7 +72,6 @@ SELECT
     ,dexs.trace_address
     ,dexs.evt_index
 FROM dexs
-
 INNER JOIN {{ source('optimism', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
     AND tx.block_number = dexs.evt_block_number
@@ -83,15 +81,12 @@ INNER JOIN {{ source('optimism', 'transactions') }} tx
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
-
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address 
     AND erc20a.blockchain = 'optimism'
-
 LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     ON erc20b.contract_address = dexs.token_sold_address
     AND erc20b.blockchain = 'optimism'
-
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
     ON p_bought.minute = date_trunc('minute', dexs.block_time)
     AND p_bought.contract_address = dexs.token_bought_address
@@ -102,7 +97,6 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     {% if is_incremental() %}
     AND p_bought.minute >= date_trunc('day', now() - interval '1 week')
     {% endif %}
-
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
     AND p_sold.contract_address = dexs.token_sold_address
