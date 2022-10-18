@@ -37,7 +37,5 @@ jobs:
         if: |
           ${{ contains(steps.abc.outputs.added_modified, 'models') }}
           or ${{ contains(steps.abc.outputs.added_modified, 'tests') }}
-          or ${{ contains(steps.abc.outputs.added_modified, 'seeds') }}
-          or ${{ contains(steps.abc.outputs.added_modified, 'macros') }}
         with:
           extra_args: "--hook-stage manual --files $FILES"
