@@ -33,39 +33,37 @@ SELECT
     , nftt.unique_trade_id
     , filter_funding_buyer.first_funded_by AS buyer_first_funded_by
     , filter_funding_seller.first_funded_by AS seller_first_funded_by
-    , count(1)
-    -- , CASE WHEN COUNT(distinct filter_baf.block_number) > 0
-    --     THEN true
-    --     ELSE false 
-    --     END AS back_and_forth_trade
-    -- , CASE WHEN COUNT(distinct filter_bought_3x.block_number) > 2
-    --     THEN true
-    --     ELSE false
-    --     END AS bought_it_three_times_within_a_week
-    -- , CASE WHEN 
-    --     (
-    --         filter_funding_buyer.first_funded_by = filter_funding_seller.first_funded_by
-    --         AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM labels.bridges)
-    --         AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM labels.cex)
-    --     )
-    --     OR filter_funding_buyer.first_funded_by = nftt.seller
-    --     OR filter_funding_seller.first_funded_by = nftt.buyer
-    --     THEN true
-    --     ELSE false
-    --     END AS funded_by_same_wallet
-    -- , CASE WHEN COUNT(filter_baf.block_number) > 0
-    --     OR COUNT(filter_bought_3x.block_number) > 2
-    --     OR
-    --     (
-    --         filter_funding_buyer.first_funded_by = filter_funding_seller.first_funded_by
-    --         AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM labels.bridges)
-    --         AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM labels.cex)
-    --     )
-    --     OR filter_funding_buyer.first_funded_by = nftt.seller
-    --     OR filter_funding_seller.first_funded_by = nftt.buyer
-    --     THEN true
-    --     ELSE false
-    --     END AS is_wash_trade
+    , CASE WHEN nftt.buyer=nftt.seller
+        THEN true
+        ELSE false 
+        END AS same_buyer_seller
+    , CASE WHEN COUNT(distinct filter_baf.block_number) > 0
+        THEN true
+        ELSE false 
+        END AS back_and_forth_trade
+    , CASE WHEN COUNT(distinct filter_bought_3x.block_number) > 2
+        THEN true
+        ELSE false
+        END AS bought_it_three_times_within_a_week
+    , CASE WHEN (filter_funding_buyer.first_funded_by = filter_funding_seller.first_funded_by
+            AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM labels.bridges)
+            AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM labels.cex))
+        OR filter_funding_buyer.first_funded_by = nftt.seller
+        OR filter_funding_seller.first_funded_by = nftt.buyer
+        THEN true
+        ELSE false
+        END AS funded_by_same_wallet
+    , CASE WHEN nftt.buyer=nftt.seller
+        OR COUNT(filter_baf.block_number) > 0
+        OR COUNT(filter_bought_3x.block_number) > 2
+        OR (filter_funding_buyer.first_funded_by = filter_funding_seller.first_funded_by
+            AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM labels.bridges)
+            AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM labels.cex))
+        OR filter_funding_buyer.first_funded_by = nftt.seller
+        OR filter_funding_seller.first_funded_by = nftt.buyer
+        THEN true
+        ELSE false
+        END AS is_wash_trade
 FROM nft.trades nftt
 LEFT JOIN nft.trades filter_baf
     ON filter_baf.seller=nftt.buyer
@@ -108,5 +106,3 @@ GROUP BY
     , nftt.unique_trade_id
     , filter_funding_buyer.first_funded_by
     , filter_funding_seller.first_funded_by
- order by count(1) desc
- ;
