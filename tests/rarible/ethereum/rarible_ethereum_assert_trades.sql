@@ -46,30 +46,54 @@ WITH raw_events AS (
   , selltokenId AS raw_token_id
   , evt_tx_hash || sellToken || selltokenId AS raw_unique_trade_id
   FROM {{ source('rarible_ethereum','ExchangeV1_evt_Buy') }}
-  WHERE evt_block_time < NOW() - interval '1 day' -- allow some head desync
+  WHERE buyTokenId = 0
+  AND evt_block_time < NOW() - interval '1 day' -- allow some head desync
   UNION
   SELECT evt_block_time AS raw_block_time
   , evt_tx_hash AS raw_tx_hash
-  , '0x' || substring(get_json_object(s.leftAsset, '$.data'), 27, 40) AS raw_nft_contract_address
-  , ROUND(bytea2numeric_v2(substring(get_json_object(s.leftAsset, '$.data'), 67, 64)), 0) AS raw_token_id
-  , evt_tx_hash || '0x' || substring(get_json_object(s.leftAsset, '$.data'), 27, 40) || ROUND(bytea2numeric_v2(substring(get_json_object(s.leftAsset, '$.data'), 67, 64)), 0) AS raw_unique_trade_id
-  FROM {{ source('rarible_ethereum','ExchangeV2_evt_Match') }} s
-  WHERE evt_block_time < NOW() - interval '1 day' -- allow some head desync
+  , buyToken AS raw_nft_contract_address
+  , buytokenId AS raw_token_id
+  , evt_tx_hash || buyToken || buytokenId AS raw_unique_trade_id
+  FROM {{ source('rarible_ethereum','ExchangeV1_1_evt_Buy') }}
+  WHERE sellTokenId = 0
+  AND evt_block_time < NOW() - interval '1 day' -- allow some head desync
   UNION
   SELECT evt_block_time AS raw_block_time
   , evt_tx_hash AS raw_tx_hash
-  , '0x' || substring(get_json_object(s.rightAsset, '$.data'), 27, 40) AS raw_nft_contract_address
-  , ROUND(bytea2numeric_v2(substring(get_json_object(s.leftAsset, '$.data'), 67, 64)), 0) AS raw_token_id
-  , evt_tx_hash || '0x' || substring(get_json_object(s.rightAsset, '$.data'), 27, 40) || ROUND(bytea2numeric_v2(substring(get_json_object(s.leftAsset, '$.data'), 67, 64)), 0) AS raw_unique_trade_id
-  FROM {{ source('rarible_ethereum','ExchangeV2_evt_Match') }} s
-  WHERE evt_block_time < NOW() - interval '1 day' -- allow some head desync
+  , sellToken AS raw_nft_contract_address
+  , selltokenId AS raw_token_id
+  , evt_tx_hash || sellToken || selltokenId AS raw_unique_trade_id
+  FROM {{ source('rarible_ethereum','ExchangeV1_1_evt_Buy') }}
+  WHERE buyTokenId = 0
+  AND evt_block_time < NOW() - interval '1 day' -- allow some head desync
   UNION
   SELECT evt_block_time AS raw_block_time
   , evt_tx_hash AS raw_tx_hash
-  , '0x' || substring(get_json_object(s.rightAsset, '$.data'), 27, 40) AS raw_nft_contract_address
-  , ROUND(bytea2numeric_v2(substring(get_json_object(s.leftAsset, '$.data'), 67, 64)), 0) AS raw_token_id
-  , evt_tx_hash || '0x' || substring(get_json_object(s.rightAsset, '$.data'), 27, 40) || ROUND(bytea2numeric_v2(substring(get_json_object(s.leftAsset, '$.data'), 67, 64)), 0) AS raw_unique_trade_id
-  FROM {{ source('rarible_ethereum','ExchangeV2_evt_Match') }} s
+  , buyToken AS raw_nft_contract_address
+  , buytokenId AS raw_token_id
+  , evt_tx_hash || buyToken || buytokenId AS raw_unique_trade_id
+  FROM {{ source('rarible_ethereum','ExchangeV1_evt_Buy') }}
+  WHERE sellTokenId = 0
+  AND evt_block_time < NOW() - interval '1 day' -- allow some head desync
+  UNION
+  SELECT evt_block_time AS raw_block_time
+  , evt_tx_hash AS raw_tx_hash
+  , CASE WHEN get_json_object(s.rightAsset, '$.assetClass') IN ('0xaaaebeba', '0x8ae85d84') THEN '0x' || substring(get_json_object(s.leftAsset, '$.data'), 27, 40)
+        ELSE '0x' || substring(get_json_object(s.rightAsset, '$.data'), 27, 40)
+        END AS raw_nft_contract_address
+  , CASE WHEN get_json_object(s.rightAsset, '$.assetClass') IN ('0xaaaebeba', '0x8ae85d84') THEN ROUND(bytea2numeric_v2(substring(get_json_object(s.leftAsset, '$.data'), 67, 64)), 0)
+        ELSE ROUND(bytea2numeric_v2(substring(get_json_object(s.rightAsset, '$.data'), 67, 64)), 0)
+        END AS raw_token_id
+  , CASE WHEN get_json_object(s.rightAsset, '$.assetClass') IN ('0xaaaebeba', '0x8ae85d84') AND get_json_object(s.rightAsset, '$.assetClass') IN ('0xaaaebeba', '0x8ae85d84')
+      THEN evt_tx_hash || '0x' || substring(get_json_object(s.leftAsset, '$.data'), 27, 40) || ROUND(bytea2numeric_v2(substring(get_json_object(s.leftAsset, '$.data'), 67, 64)), 0)
+    WHEN get_json_object(s.rightAsset, '$.assetClass') IN ('0xaaaebeba', '0x8ae85d84') AND get_json_object(s.rightAsset, '$.assetClass') NOT IN ('0xaaaebeba', '0x8ae85d84')
+      THEN evt_tx_hash || '0x' || substring(get_json_object(s.leftAsset, '$.data'), 27, 40) || ROUND(bytea2numeric_v2(substring(get_json_object(s.rightAsset, '$.data'), 67, 64)), 0)
+    WHEN get_json_object(s.rightAsset, '$.assetClass') NOT IN ('0xaaaebeba', '0x8ae85d84') AND get_json_object(s.rightAsset, '$.assetClass') IN ('0xaaaebeba', '0x8ae85d84')
+      THEN evt_tx_hash || '0x' || substring(get_json_object(s.rightAsset, '$.data'), 27, 40) || ROUND(bytea2numeric_v2(substring(get_json_object(s.leftAsset, '$.data'), 67, 64)), 0)
+    WHEN get_json_object(s.rightAsset, '$.assetClass') NOT IN ('0xaaaebeba', '0x8ae85d84') AND get_json_object(s.rightAsset, '$.assetClass') NOT IN ('0xaaaebeba', '0x8ae85d84')
+      THEN evt_tx_hash || '0x' || substring(get_json_object(s.rightAsset, '$.data'), 27, 40) || ROUND(bytea2numeric_v2(substring(get_json_object(s.rightAsset, '$.data'), 67, 64)), 0)
+    END AS raw_unique_trade_id
+  FROM {{ source('rarible_ethereum','ExchangeV2_evt_Match') }}
   WHERE evt_block_time < NOW() - interval '1 day' -- allow some head desync
   )
 

@@ -210,7 +210,7 @@ WITH rarible_all_trades AS (
     , s.contract_address AS project_contract_address
     , s.sellToken AS nft_contract_address
     , s.evt_tx_hash AS tx_hash
-    FROM {{ source('rarible_ethereum','ExchangeV1_evt_Buy') }} s
+    FROM {{ source('rarible_ethereum','ExchangeV1_1_evt_Buy') }} s
     LEFT JOIN {{ ref('tokens_ethereum_erc20') }} t ON (s.buyToken='0x0000000000000000000000000000000000000000' AND t.contract_address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2') OR (t.contract_address=s.buyToken)
     LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} nft ON nft.evt_block_time=s.evt_block_time AND nft.evt_tx_hash=s.evt_tx_hash AND nft.contract_address=s.sellToken AND nft.tokenId=s.selltokenId
     WHERE buyTokenId = 0
