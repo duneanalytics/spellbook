@@ -11,9 +11,8 @@ on:
       - 'main'
 
 concurrency:
-  group: ${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
 
 
 jobs:
@@ -22,10 +21,8 @@ jobs:
     timeout-minutes: 60
 
     steps:
-      - name: Adding markdown
-        run: echo '### Hello world! :rocket:' >> $GITHUB_STEP_SUMMARY
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
       - uses: pre-commit/action@v3.0.0
       - name: run hooks
-        run: "pre-commit run --hook-stage manual"
+        run: echo "pre-commit run --hook-stage manual" >> $GITHUB_STEP_SUMMARY
