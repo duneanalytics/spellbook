@@ -12,11 +12,15 @@
 
 WITH minute AS  -- This CTE generates a series of minute values
     (
-    SELECT explode(sequence(TIMESTAMP '2021-08-31 08:13', CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute -- 2021-08-31 08:13 is the timestamp of the first vault transaction
+    SELECT *
+    FROM
+        (
+        SELECT explode(sequence(TIMESTAMP '2021-08-31 08:13', CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute -- 2021-08-31 08:13 is the timestamp of the first vault transaction
+        )
     {% if is_incremental() %}
     WHERE minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-    ) ,
+    ),
 
 /*
 GLP tokens are minted and burned by the GLP Manager contract by invoking addLiquidity() and removeLiquidity()

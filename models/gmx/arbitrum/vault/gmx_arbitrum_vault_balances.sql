@@ -10,13 +10,17 @@
         )
 }}
 
-WITH minute AS -- This CTE generates a series of minute values
+WITH minute AS  -- This CTE generates a series of minute values
     (
-    SELECT explode(sequence(TIMESTAMP '2021-08-31 08:13', CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute -- 2021-08-31 08:13 is the timestamp of the first vault transaction
+    SELECT *
+    FROM
+        (
+        SELECT explode(sequence(TIMESTAMP '2021-08-31 08:13', CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute -- 2021-08-31 08:13 is the timestamp of the first vault transaction
+        )
     {% if is_incremental() %}
     WHERE minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-    ) ,
+    ),
 
 /*
 GMX vault address is: https://arbiscan.io/address/0x489ee077994B6658eAfA855C308275EAd8097C4A
