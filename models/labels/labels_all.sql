@@ -45,5 +45,5 @@ UNION
 SELECT * FROM {{ ref('labels_ens') }}
 UNION
 SELECT * FROM {{ ref('labels_validators') }}
-union
+UNION
 SELECT * FROM {{ ref('labels_sandwich_attackers') }}
