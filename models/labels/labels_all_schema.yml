@@ -7,6 +7,7 @@ models:
           combination_of_columns:
             - address
             - name
+            - category
             - blockchain
     meta:
       blockchain: ethereum, solana
@@ -18,7 +19,7 @@ models:
     description: "All labels across chains and categories"
     columns:
       - name: blockchain
-        description: "Blockchain"   
+        description: "Blockchain"
       - name: address
         description: "Label address"
       - name: name
