@@ -10,97 +10,127 @@
                                     \'["umer_h_adil"]\') }}')
 }}
 
+with ercs as (
+select
+  evt_block_time,
+  evt_block_number,
+  evt_tx_hash,
+  tokenId,
+  from,
+  to,
+  contract_address,
+  'erc721' as token_standard,
+  'Single Item Trade' as trade_type,
+  1 as number_of_items
+ from {{ source('erc721_ethereum','evt_transfer') }}
+ where from = '0x0000000000000000000000000000000000000000'
+	union
+select
+  evt_block_time,
+  evt_block_number,
+  evt_tx_hash,
+  id as tokenId,
+  from,
+  to,
+  contract_address,
+  'erc1155' as token_standard,
+  case
+	when value > 1 then 'Bundle Trade'
+	else 'Single Item Trade'
+  end as trade_type,
+  value as number_of_items
+ from {{ source('erc1155_ethereum','evt_transfersingle') }}
+ where from = '0x0000000000000000000000000000000000000000'
+)
 select
   'ethereum' as blockchain,
   ec.namespace as project,
   null as version,
-  erc721.evt_block_time as block_time,
-  erc721.tokenId as token_id,
+  ercs.evt_block_time as block_time,
+  ercs.tokenId as token_id,
   tokens_nft.name as collection,
   prc.price * tx.value / sum(
     case
-        when erc721.`from` = '0x0000000000000000000000000000000000000000' then 1
+        when ercs.`from` = '0x0000000000000000000000000000000000000000' then 1
         else 0
     end
   ) over (
     partition by
-      erc721.contract_address,
-      erc721.evt_tx_hash
+      ercs.contract_address,
+      ercs.evt_tx_hash
   ) / power(10, prc.decimals) as amount_usd,
-  'erc721' as token_standard,
-  'Single Item Trade' as trade_type,
+  token_standard,
+  trade_type,
   sum(
     case
-        when erc721.`from` = '0x0000000000000000000000000000000000000000' then 1
+        when ercs.`from` = '0x0000000000000000000000000000000000000000' then 1
         else 0
     end
   ) over (
     partition by
-      erc721.contract_address,
-      erc721.evt_tx_hash
+      ercs.contract_address,
+      ercs.evt_tx_hash
   ) as number_of_items,
   'Buy' as trade_category,
   'Mint' as evt_type,
-  erc721.`from` as seller,
-  erc721.`to` as buyer,
+  ercs.`from` as seller,
+  ercs.`to` as buyer,
   tx.value / sum(
     case
-        when erc721.`from` = '0x0000000000000000000000000000000000000000' then 1
+        when ercs.`from` = '0x0000000000000000000000000000000000000000' then 1
         else 0
     end
   ) over (
     partition by
-      erc721.contract_address,
-      erc721.evt_tx_hash
+      ercs.contract_address,
+      ercs.evt_tx_hash
   ) / power(10, prc.decimals) as amount_original,
   tx.value / sum(
     case
-        when erc721.`from` = '0x0000000000000000000000000000000000000000' then 1
+        when ercs.`from` = '0x0000000000000000000000000000000000000000' then 1
         else 0
     end
   ) over (
     partition by
-      erc721.contract_address,
-      erc721.evt_tx_hash
+      ercs.contract_address,
+      ercs.evt_tx_hash
   )  as amount_raw,
   'ETH' as currency_symbol,
   '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' as currency_contract,
-  erc721.contract_address as nft_contract_address,
-  erc721.to as project_contract_address,
+  ercs.contract_address as nft_contract_address,
+  ercs.to as project_contract_address,
   null as aggregator_name,
   null as aggregator_address,
-  erc721.evt_tx_hash as tx_hash,
-  erc721.evt_block_number as block_number,
-  erc721.`from` as tx_from,
-  erc721.`to` as tx_to,
-  erc721.contract_address || '-' || erc721.evt_tx_hash || '-' || erc721.tokenId || '-' || erc721.`from` || '-' || cast(rank(*) over (
+  ercs.evt_tx_hash as tx_hash,
+  ercs.evt_block_number as block_number,
+  ercs.`from` as tx_from,
+  ercs.`to` as tx_to,
+  ercs.contract_address || '-' || ercs.evt_tx_hash || '-' || ercs.tokenId || '-' || ercs.`from` || '-' || cast(rank(*) over (
     partition by
-      erc721.contract_address,
-      erc721.evt_tx_hash
+      ercs.contract_address,
+      ercs.evt_tx_hash
     order by
-      erc721.tokenId
+      ercs.tokenId
   ) as string)
   as unique_trade_id
 from
-  {{ source('erc721_ethereum','evt_transfer') }} erc721
-  left join {{ ref('tokens_nft') }} tokens_nft on erc721.contract_address = tokens_nft.contract_address
-  inner join {{ source('ethereum','transactions') }} tx on erc721.evt_tx_hash = tx.hash
+  ercs
+  left join {{ ref('tokens_nft') }} tokens_nft on ercs.contract_address = tokens_nft.contract_address
+  inner join {{ source('ethereum','transactions') }} tx on ercs.evt_tx_hash = tx.hash
   left join {{ source('prices','usd') }} prc on prc.contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-  and prc.minute = date_trunc('minute', erc721.evt_block_time)
+  and prc.minute = date_trunc('minute', ercs.evt_block_time)
   and prc.blockchain = 'ethereum'
-  left join {{ source('ethereum','contracts') }} ec ON ec.address = erc721.to
+  left join {{ source('ethereum','contracts') }} ec ON ec.address = ercs.to
 where
-  erc721.from = '0x0000000000000000000000000000000000000000'
   -- We're intersted in collectible NFTs (e.g. BAYC), not functional NFTs (e.g. Uniswap LP), so we exclude NFTs originated in DeFi 
-  and erc721.to not in (select address from {{ ref('addresses_ethereum_defi') }})
-  -- and erc721.contract_address = '0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85' -- ENS (for debugging)
+  ercs.to not in (select address from {{ ref('addresses_ethereum_defi') }})
   {% if is_incremental() %}
-  and erc721.evt_block_time >= date_trunc("day", now() - interval '1 week')
+  and ercs.evt_block_time >= date_trunc("day", now() - interval '1 week')
   and tx.block_time >= date_trunc("day", now() - interval '1 week')
   and prc.minute >= date_trunc("day", now() - interval '1 week')
   {% endif %}
   {% if not is_incremental() %}
   and tx.block_number > 14801608
   {% endif %}
---limit (for debugging)
---  1000
+--limit -- (for debugging)
+--  10
