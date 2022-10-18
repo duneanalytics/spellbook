@@ -33,8 +33,7 @@ jobs:
           echo "FILES=$(echo ${{ steps.abc.outputs.added_modified }})" >> $GITHUB_ENV
       - name: dbt dependencies
         run: "dbt deps"
-      - name: dbt compile
-        run: "dbt compile"
       - uses: pre-commit/action@v3.0.0
+        if: contains("$FILES", "models")
         with:
           extra_args: "--hook-stage manual --files $FILES"
