@@ -34,10 +34,9 @@ select
   to,
   contract_address,
   'erc1155' as token_standard,
-  case
-	when value > 1 then 'Bundle Trade'
-	else 'Single Item Trade'
-  end as trade_type,
+  -- with an TransferSingle event only one item type is traded
+  'Single Item Trade' as trade_type,
+  -- of that item type any number of items can be traded
   value as number_of_items
  from {{ source('erc1155_ethereum','evt_transfersingle') }}
  where from = '0x0000000000000000000000000000000000000000'
