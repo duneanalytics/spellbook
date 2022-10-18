@@ -31,8 +31,13 @@ jobs:
       - name: Set modfied and added files as arg
         run: |
           echo "FILES=$(echo ${{ steps.abc.outputs.added_modified }})" >> $GITHUB_ENV
+      - run: |
+          for changed_file in ${{ steps.abc.outputs.added_modified }}; do
+            echo "Do something with this ${changed_file}."
+          done
       - name: dbt dependencies
         run: "dbt deps"
       - uses: pre-commit/action@v3.0.0
+        if:  ${{ ' steps.abc.outputs.added_modified }}
         with:
           extra_args: "--hook-stage manual --files $FILES"
