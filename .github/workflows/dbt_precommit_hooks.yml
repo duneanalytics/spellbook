@@ -29,7 +29,7 @@ jobs:
         uses: trilom/file-changes-action@v1.2.4
         with:
           output: ' '
-      - uses: offbi/pre-commit-dbt@v1.0.0
+      - uses: offbi/pre-commit-dbt
         env:
           DB_PASSWORD: .
         with:
