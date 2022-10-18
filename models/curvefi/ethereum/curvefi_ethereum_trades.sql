@@ -1,5 +1,4 @@
 {{ config(
-    schema = 'curvefi_ethereum',
     alias = 'trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
