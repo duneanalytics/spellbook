@@ -4,8 +4,8 @@ with
  eth_sandwich_attackers as (
     select 
         distinct buy.tx_to as address
-    from dex.trades buy
-    inner join dex.trades sell 
+    from {{ref('dex_trades'}} buy
+    inner join {{ref('dex_trades')}} sell 
         on sell.block_time = buy.block_time
             and sell.tx_hash != buy.tx_hash
             and buy.`tx_from` = sell.`tx_from`
@@ -14,9 +14,9 @@ with
             and buy.token_bought_address = sell.token_sold_address
             and buy.token_sold_address = sell.token_bought_address
             and buy.token_bought_amount_raw = sell.token_sold_amount_raw
-    inner join ethereum.transactions et_buy
+    inner join {{ref('ethereum_transactions')}} et_buy
         on et_buy.hash = buy.tx_hash
-    inner join ethereum.transactions et_sell
+    inner join {{ref('ethereum_transactions')}} et_sell
         on et_sell.hash = sell.tx_hash
     where 
         buy.blockchain = 'ethereum'
