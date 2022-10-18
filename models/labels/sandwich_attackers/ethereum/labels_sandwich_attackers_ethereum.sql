@@ -3,21 +3,27 @@
 with 
  eth_sandwich_attackers as (
     select 
-        distinct buy.tx_to as address
-    from {{ref('dex_trades')}} buy
-    inner join {{ref('dex_trades')}} sell 
+        distinct buy.tx_to as address,
+    from dex.trades buy
+    inner join dex.trades sell 
         on sell.block_time = buy.block_time
             and sell.tx_hash != buy.tx_hash
             and buy.`tx_from` = sell.`tx_from`
             and buy.`tx_to` = sell.`tx_to`
             and buy.project_contract_address = sell.project_contract_address
-            and buy.amount_usd <= sell.amount_usd
             and buy.token_bought_address = sell.token_sold_address
             and buy.token_sold_address = sell.token_bought_address
             and buy.token_bought_amount_raw = sell.token_sold_amount_raw
-    where buy.blockchain = 'ethereum'
-        and sell.blockchain = 'ethereum' 
-        and buy.tx_to != '0x7a250d5630b4cf539739df2c5dacb4c659f2488d' -- uniswap v2 router
+    inner join ethereum.transactions et_buy
+        on et_buy.hash = buy.tx_hash
+    inner join ethereum.transactions et_sell
+        on et_sell.hash = sell.tx_hash
+    where 
+        buy.blockchain = 'ethereum'
+        and sell.blockchain = 'ethereum'
+        and (et_sell.index >= et_buy.index + 2 -- buy first
+        or et_buy.index >= et_sell.index + 2) -- sell first
+        and buy.tx_to != '0x7a250d5630b4cf539739df2c5dacb4c659f2488d' -- uniswap v2 routers 
   )
 select
   array("ethereum") as blockchain,
