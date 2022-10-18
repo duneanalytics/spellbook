@@ -14,18 +14,13 @@ concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
 
+
+
 jobs:
   dbt-precommit-hooks:
     runs-on: [ self-hosted, linux, spellbook ]
-  steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-    - id: file_changes
-      uses: trilom/file-changes-action@v1.2.4
-      with:
-        output: ' '
-    - uses: offbi/pre-commit-dbt@v1.0.0
-      env:
-        DB_PASSWORD: ${{ secrets.SuperSecret }}
-      with:
-       args: run --files ${{ steps.file_changes.outputs.files}}
+    timeout-minutes: 60
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
