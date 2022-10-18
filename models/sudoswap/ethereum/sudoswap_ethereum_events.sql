@@ -246,7 +246,7 @@ WITH
             , call_block_time as block_time
             , call_block_number as block_number
             , token_id
-            , 'ERC721' as token_standard
+            , 'erc721' as token_standard
             , cardinality(token_id) as number_of_items
             , CASE WHEN cardinality(token_id) > 1 THEN 'Bundle Trade'
                 ELSE 'Single Item Trade'
@@ -291,7 +291,7 @@ WITH
         SELECT
             sc.*
             , tokens.name AS collection
-            , agg.name as aggregator_name
+            , case when lower(right(tx.data, 8)) = '72db8c0b' then 'Gem' else agg.name end as aggregator_name
             , agg.contract_address as aggregator_address
             , sc.amount_original*pu.price as amount_usd
             , sc.pool_fee_amount*pu.price as pool_fee_amount_usd
