@@ -29,6 +29,5 @@ jobs:
         uses: trilom/file-changes-action@v1.2.4
         with:
           output: ' '
-      - uses: docker-practice/actions-setup-docker@master
       - run: docker pull offbi/pre-commit-dbt:v1.0.0
 
