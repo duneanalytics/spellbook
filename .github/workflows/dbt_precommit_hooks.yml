@@ -22,8 +22,8 @@ jobs:
     timeout-minutes: 60
 
     steps:
-      - id: step1
-        run: echo "test=hello" >> $GITHUB_OUTPUT
+      - name: Adding markdown
+        run: echo '### Hello world! :rocket:' >> $GITHUB_STEP_SUMMARY
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
       - uses: pre-commit/action@v3.0.0
