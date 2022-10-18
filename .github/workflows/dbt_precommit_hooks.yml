@@ -35,9 +35,9 @@ jobs:
         run: "dbt deps"
       - uses: pre-commit/action@v3.0.0
         if: >
-        ${{ contains(steps.abc.outputs.added_modified, 'models') ||  
-        contains(steps.abc.outputs.added_modified, 'tests') ||
-        contains(steps.abc.outputs.added_modified, 'seeds') ||
-        contains(steps.abc.outputs.added_modified, 'macros') }}
+          ${{ contains(steps.abc.outputs.added_modified, 'models') ||  
+          contains(steps.abc.outputs.added_modified, 'tests') ||
+          contains(steps.abc.outputs.added_modified, 'seeds') ||
+          contains(steps.abc.outputs.added_modified, 'macros') }}
         with:
           extra_args: "--hook-stage manual --files $FILES"
