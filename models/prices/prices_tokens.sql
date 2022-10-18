@@ -500,6 +500,7 @@ VALUES
     ("ohm-olympus-v1", "ethereum", "OHM", "0x383518188c0c6d7730d91b2c03a03c837814a899", 9),
     ("ohmv2-olympus-v2", "ethereum", "OHM", "0x64aa3364f17a4d01c6f1751fd97c2bd3d7e7f1d5", 9),
     ("okb-okb", "ethereum", "OKB", "0x75231f58b43240c9718dd58b4967c5114342a86c", 18),
+    ("ole-openleverage", "ethereum", "OLE", "0x92cfbec26c206c90aee3b7c66a9ae673754fab7e", 18),
     ("omg-omisego", "ethereum", "OMG", "0xd26114cd6ee289accf82350c8d8487fedb8a0c07", 18),
     ("one-harmony", "ethereum", "ONE", "0x799a4202c12ca952cb311598a024c80ed371a41e", 18),
     ("orbs-orbs", "ethereum", "ORBS", "0xff56cc6b1e6ded347aa0b7676c85ab0b3d08b0fa", 18),
