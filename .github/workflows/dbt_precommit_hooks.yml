@@ -34,6 +34,6 @@ jobs:
       - name: dbt dependencies
         run: "dbt deps"
       - uses: pre-commit/action@v3.0.0
-        if: contains(steps.abc.outputs.added_modified, "models")
+        if: contains(steps.abc.outputs.added_modified, 'models')
         with:
           extra_args: "--hook-stage manual --files $FILES"
