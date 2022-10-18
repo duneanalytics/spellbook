@@ -14,9 +14,9 @@ with
             and buy.token_bought_address = sell.token_sold_address
             and buy.token_sold_address = sell.token_bought_address
             and buy.token_bought_amount_raw = sell.token_sold_amount_raw
-    inner join {{ref('ethereum_transactions')}} et_buy
+    inner join {{source('ethereum', 'transactions')}} et_buy
         on et_buy.hash = buy.tx_hash
-    inner join {{ref('ethereum_transactions')}} et_sell
+    inner join {{source('ethereum','transactions')}} et_sell
         on et_sell.hash = sell.tx_hash
     where 
         buy.blockchain = 'ethereum'
