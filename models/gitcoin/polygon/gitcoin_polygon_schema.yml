@@ -1,0 +1,63 @@
+version: 2
+
+models:
+  - name: gitcoin_polygon_contribution_dataset
+    meta:
+      blockchain: polygon
+      project: gitcoin
+      contributors: 1chioku
+    config:
+      tags: ['polygon', 'gitcoin', 'dataset']
+    description: >
+        description: Dataset of Gitcoin contributions on polygon.
+    columns:
+      - &txn_id
+        name: txn_id
+        description: "An internal ID for a contribution (off-chain)"
+        tests: 
+          - not_null
+      - &user_id
+        name: user_id
+        description: "An internal ID for a contributor (off-chain)"
+        tests: 
+          - not_null
+      - &address
+        name: address
+        description: "The wallet address used to contribute"
+        tests: 
+          - not_null
+      - &grant_id
+        name: grant_id
+        description: "The ID of a grant on gitcoin (off-chain)"
+        tests: 
+          - not_null
+      - &chain
+        name: chain
+        description: "The chain used for the contribution"
+        tests: 
+          - not_null
+      - &txn_hash
+        name: txn_hash
+        description: "The hash of the transaction"
+        tests: 
+          - not_null
+      - &network
+        name: network
+        description: "Mainnet or testnet"
+        tests: 
+          - not_null
+      - &token
+        name: token
+        description: "The token contributed"
+        tests: 
+          - not_null
+      - &amount_in_usdt
+        name: amount_in_usdt
+        description: "The equivalent amount contributed in usdt"
+        tests: 
+          - not_null
+      - &timestamp
+        name: timestamp
+        description: "The time of the contribution"
+        tests: 
+          - not_null
