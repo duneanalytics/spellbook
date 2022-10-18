@@ -16,11 +16,3 @@ sources:
         loaded_at_field: evt_block_time
       - name: MetaPoolSwap_evt_TokenExchangeUnderlying
         loaded_at_field: evt_block_time
-  - name: erc20_optimism
-    description: "ERC20 Transfers"
-    freshness:
-      warn_after: { count: 12, period: hour }
-    tables:
-      - name: evt_Transfer
-        loaded_at_field: evt_block_time
-
