@@ -19,9 +19,12 @@
 
 WITH base_pools AS (
     --Need all base pools because the meta pools reference them
-    SELECT `arg0` AS tokenid, output_0 AS token, contract_address AS pool
-        FROM {{ source('curvefi_optimism', 'StableSwap_call_coins') }}
-        WHERE call_success
+    SELECT
+        `arg0` AS tokenid
+        , output_0 AS token
+        , contract_address AS pool
+    FROM {{ source('curvefi_optimism', 'StableSwap_call_coins') }}
+    WHERE call_success
     GROUP BY 1,2,3 --unique
 )
 , meta_pools AS (
@@ -34,7 +37,7 @@ WITH base_pools AS (
     (
         SELECT
             mp.evt_tx_hash
-            , bp.tokenid + 1 AS tokenid
+            , (bp.tokenid + 1) AS tokenid
             , bp.token
             , mp.evt_block_number
         FROM {{ source('curvefi_optimism', 'PoolFactory_evt_MetaPoolDeployed') }} mp
@@ -61,7 +64,7 @@ WITH base_pools AS (
         GROUP BY 1,2,3,4 --unique
     ) mps
     -- the exchange address appears as an erc20 minted to itself (not in the deploymeny event)
-    INNER JOIN {{ source('erc20_optimism','evt_Transfer') }} et
+    INNER JOIN {{ source('erc20_optimism','evt_transfer') }} et
         ON et.evt_tx_hash = mps.evt_tx_hash
         AND et.`from` = '0x0000000000000000000000000000000000000000'
         AND et.`to` = et.`contract_address`

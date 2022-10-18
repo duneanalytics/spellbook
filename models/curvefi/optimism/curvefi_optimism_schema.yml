@@ -18,12 +18,12 @@ models:
               - token
               - pool
     columns:
-      - &version_pool
+      - &version
         name: version
         description: "Versions of the pool: Basic Pool, Meta Pool, etc"
         tests:
           - not_null
-      - &token_id
+      - &tokenid
         name: tokenid
         description: "ID of the token in the pool"
         tests:
@@ -38,9 +38,6 @@ models:
         description: "Pool contract address"
         tests:
           - not_null
-      - &token_address
-        name: token_address
-        description: "Address for the pool token"
 
 
   - name: curvefi_optimism_trades
@@ -69,8 +66,7 @@ models:
       - &project 
         name: project
         description: "Project name of the DEX"  
-      - &version
-        name: version
+      - name: version
         description: "Version of the contract built and deployed by the DEX project"
       - &block_date
         name: block_date
