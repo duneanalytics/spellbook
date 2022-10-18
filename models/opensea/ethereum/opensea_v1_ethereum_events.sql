@@ -36,13 +36,14 @@ SELECT
   addrs [1] as buyer,
   addrs [8] AS seller,
   -- Temporary fix for token ID until we implement a UDF equivalent for bytea2numeric that works for numbers higher than 64 bits
-  CASE WHEN contains('0xfb16a595', substring(calldataBuy,1,4)) AND conv(substr(calldataBuy,203,64),16,10)::string = '18446744073709551615'
+  -- We check if token ID in hex is longer than 16, because 2**64 can be represented in hex with 16 digits (log_16(2**64) = 16).  
+  CASE WHEN contains('0xfb16a595', substring(calldataBuy,1,4)) AND length(ltrim('0', substr(calldataBuy,203,64))) > 16
   THEN 'Token ID is larger than 64 bits and can not be displayed'
-  WHEN contains('0x96809f90', substring(calldataBuy,1,4)) AND conv(substr(calldataBuy,203,64),16,10)::string = '18446744073709551615'
+  WHEN contains('0x96809f90', substring(calldataBuy,1,4)) AND length(ltrim('0', substr(calldataBuy,203,64))) > 16
   THEN 'Token ID is larger than 64 bits and can not be displayed'
-  WHEN contains('0x23b872dd', substring(calldataBuy,1,4)) AND conv(substr(calldataBuy,139,64),16,10)::string = '18446744073709551615'
+  WHEN contains('0x23b872dd', substring(calldataBuy,1,4)) AND length(ltrim('0', substr(calldataBuy,139,64))) > 16
   THEN 'Token ID is larger than 64 bits and can not be displayed'
-  WHEN contains('0xf242432a', substring(calldataBuy,1,4)) AND conv(substr(calldataBuy,139,64),16,10)::string = '18446744073709551615'
+  WHEN contains('0xf242432a', substring(calldataBuy,1,4)) AND length(ltrim('0', substr(calldataBuy,139,64))) > 16
   THEN 'Token ID is larger than 64 bits and can not be displayed'
   WHEN contains('0xfb16a595', substring(calldataBuy,1,4)) THEN conv(substr(calldataBuy,203,64),16,10)::string
   WHEN contains('0x96809f90', substring(calldataBuy,1,4)) THEN conv(substr(calldataBuy,203,64),16,10)::string
@@ -97,7 +98,10 @@ SELECT
 
 erc_transfers as
 (SELECT evt_tx_hash,
+        -- token_id_erc will be used for joining. It may be 'Token ID is larger than 64 bits and can not be displayed'
+        -- token_id_erc_uncapped will be used for displaying the token_id after joining
         CASE WHEN length(id::string) > 64 THEN 'Token ID is larger than 64 bits and can not be displayed' ELSE id::string END as token_id_erc,
+        id::string as token_id_erc_uncapped,
         cardinality(collect_list(value)) as count_erc,
         value as value_unique,
         CASE WHEN erc1155.from = '0x0000000000000000000000000000000000000000' THEN 'Mint'
@@ -109,7 +113,10 @@ erc_transfers as
         GROUP BY evt_tx_hash,value,id,evt_index, erc1155.from, erc1155.to
             UNION ALL
 SELECT evt_tx_hash,
+        -- token_id_erc will be used for joining. It may be 'Token ID is larger than 64 bits and can not be displayed'
+        -- token_id_erc_uncapped will be used for displaying the token_id after joining
         CASE WHEN length(tokenId::string) > 64 THEN 'Token ID is larger than 64 bits and can not be displayed' ELSE tokenId::string END as token_id_erc,
+		tokenId::string as token_id_erc_uncapped,							 
         COUNT(tokenId) as count_erc,
         NULL as value_unique,
         CASE WHEN erc721.from = '0x0000000000000000000000000000000000000000' THEN 'Mint'
@@ -126,7 +133,7 @@ SELECT DISTINCT
   'v1' as version,
   TRY_CAST(date_trunc('DAY', wa.call_block_time) AS date) AS block_date,
   tx.block_time,
-  coalesce(token_id_erc, wa.token_id) as token_id,
+  coalesce(token_id_erc_uncapped, wa.token_id) as token_id,
   tokens_nft.name AS collection,
   wa.amount_original / power(10,erc20.decimals) * p.price AS amount_usd,
   CASE WHEN erc_transfers.value_unique >= 1 THEN 'erc1155'
@@ -179,7 +186,7 @@ SELECT DISTINCT
   (wa.fees / wa.amount_original * 100)::string  AS royalty_fee_percentage,
   wa.fee_receive_address as royalty_fee_receive_address,
   wa.fee_currency_symbol as royalty_fee_currency_symbol,
-  'opensea' || '-' || wa.call_tx_hash || '-' || coalesce(wa.token_id, token_id_erc, '') || '-' ||  wa.seller || '-' || coalesce(evt_index::string, '') || '-' || coalesce(wa.call_trace_address::string,'') as unique_trade_id
+  'opensea' || '-' || wa.call_tx_hash || '-' || coalesce(token_id_erc_uncapped, wa.token_id, '') || '-' ||  wa.seller || '-' || coalesce(evt_index::string, '') || '-' || coalesce(wa.call_trace_address::string,'') as unique_trade_id
 FROM wyvern_all wa
 INNER JOIN {{ source('ethereum','transactions') }} tx ON wa.call_tx_hash = tx.hash
     {% if is_incremental() %}
