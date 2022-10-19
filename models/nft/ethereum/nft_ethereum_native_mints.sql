@@ -138,13 +138,7 @@ select
   ercs.evt_block_number as block_number,
   ercs.`from` as tx_from,
   ercs.`to` as tx_to,
-  ercs.contract_address || '-' || ercs.evt_tx_hash || '-' || ercs.tokenId || '-' || ercs.`from` || '-' || cast(rank(*) over (
-    partition by
-      ercs.contract_address,
-      ercs.evt_tx_hash
-    order by
-      ercs.tokenId
-  ) as string)
+  ercs.contract_address || '-' || ercs.evt_tx_hash || '-' || coalesce(ercs.tokenId, '') || '-' || ercs.`from` || '-' || ercs.evt_index
   as unique_trade_id,
   -- Temporary fix: {{ source('ethereum','contracts') }} can contain duplicates, which would result in duplicate mints.
   -- We therefore take the most recent entry in {{ source('ethereum','contracts') }}
