@@ -157,7 +157,7 @@ WHERE
   );
 
 INSERT INTO cron.job (schedule, command)
-VALUES ('1 0 * * *',$$
+VALUES ('0 0 * * *',$$
 SELECT nxm.insert_quotation_trades(
     (SELECT DATE_TRUNC('day', now()) - INTERVAL '1 days'),
     (SELECT DATE_TRUNC('day', now())));
