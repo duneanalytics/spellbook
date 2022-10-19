@@ -96,6 +96,13 @@ models:
         +schema: uniswap_optimism
         +materialized: view
 
+    sushiswap:
+      +schema: sushiswap
+      +materialized: view
+      ethereum:
+        +schema: sushiswap_ethereum
+        +materialized: view
+        
     opensea:
       +schema: opensea
       +materialized: view
