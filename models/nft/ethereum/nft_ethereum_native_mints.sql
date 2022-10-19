@@ -48,7 +48,7 @@ select
   case
     -- if only one item type was traded: use it's id
 	when size(ids) = 1 then ids[0]
-    -- otherwise there's meaningful id to display
+    -- otherwise there's no meaningful id to display
 	when size(ids) > 1 then ''
 	else null
   end as tokenId,
