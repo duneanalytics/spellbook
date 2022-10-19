@@ -33,6 +33,8 @@ jobs:
           echo "FILES=$(echo ${{ steps.abc.outputs.added_modified }})" >> $GITHUB_ENV
       - name: dbt dependencies
         run: "dbt deps"
+      - name: dbt compile
+        run: "dbt compile"
       - uses: pre-commit/action@v3.0.0
         # Apologies for the hideously long line. Tried to get the Action to respect a multiline if but no dice.
         if: ${{ contains(steps.abc.outputs.added_modified, 'models') || contains(steps.abc.outputs.added_modified, 'test') || contains(steps.abc.outputs.added_modified, 'seeds') || contains(steps.abc.outputs.added_modified, 'macros')}}
