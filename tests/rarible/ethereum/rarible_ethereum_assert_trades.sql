@@ -93,7 +93,7 @@ WITH raw_events AS (
     WHEN get_json_object(s.rightAsset, '$.assetClass') NOT IN ('0xaaaebeba', '0x8ae85d84') AND get_json_object(s.rightAsset, '$.assetClass') NOT IN ('0xaaaebeba', '0x8ae85d84')
       THEN evt_tx_hash || '0x' || substring(get_json_object(s.rightAsset, '$.data'), 27, 40) || ROUND(bytea2numeric_v2(substring(get_json_object(s.rightAsset, '$.data'), 67, 64)), 0)
     END AS raw_unique_trade_id
-  FROM {{ source('rarible_ethereum','ExchangeV2_evt_Match') }}
+  FROM {{ source('rarible_ethereum','ExchangeV2_evt_Match') }} s
   WHERE evt_block_time < NOW() - interval '1 day' -- allow some head desync
   )
 
