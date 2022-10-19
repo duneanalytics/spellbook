@@ -2,6 +2,9 @@
 
 Welcome to your [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation to tame the blockchain.
 
+#### Heads up
+Working on something new? Open a draft PR to let other wizards know you're working on it to help minimize duplicated work. 
+
 ## Intro
 
 Write SQL to transform blockchain data into curated datasets on [dune.com](https://dune.com/home).
