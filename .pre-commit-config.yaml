@@ -8,5 +8,5 @@ repos:
   - id: check-script-ref-and-source
   - id: check-model-has-description
   - id: check-model-has-meta-keys
-    args: ['--meta-keys', 'blockchain', 'project', 'contributors', '--']
+    args: ['--meta-keys', 'blockchain', 'contributors', '--']
   - id: check-model-has-properties-file
