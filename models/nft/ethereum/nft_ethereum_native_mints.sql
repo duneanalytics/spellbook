@@ -15,6 +15,7 @@ select
   evt_block_time,
   evt_block_number,
   evt_tx_hash,
+  evt_index,
   tokenId,
   from,
   to,
@@ -29,6 +30,7 @@ select
   evt_block_time,
   evt_block_number,
   evt_tx_hash,
+  evt_index,
   id as tokenId,
   from,
   to,
@@ -45,6 +47,7 @@ select
   evt_block_time,
   evt_block_number,
   evt_tx_hash,
+  evt_index,
   case
     -- if only one item type was traded: use it's id
 	when size(ids) = 1 then ids[0]
@@ -70,7 +73,8 @@ select
   size(values) as number_of_items
 from {{ source('erc1155_ethereum','evt_transferbatch') }}
 where from = '0x0000000000000000000000000000000000000000'
-)
+),
+results_with_possible_duplicates as (
 select
   'ethereum' as blockchain,
   ec.namespace as project,
@@ -141,10 +145,14 @@ select
     order by
       ercs.tokenId
   ) as string)
-  as unique_trade_id
+  as unique_trade_id,
+  -- Temporary fix: {{ source('ethereum','contracts') }} can contain duplicates, which would result in duplicate mints.
+  -- We therefore take the most recent entry in {{ source('ethereum','contracts') }}
+  ec.created_at as contract_name_created_at,
+  max(ec.created_at) over (partition by ercs.contract_address, ercs.evt_tx_hash, ercs.tokenId, ercs.`from`, ercs.evt_index) as max_contract_name_created_at
 from
   ercs
-  left join {{ ref('tokens_nft') }} tokens_nft on ercs.contract_address = tokens_nft.contract_address
+  left join {{ ref('tokens_nft') }} tokens_nft on ercs.contract_address = tokens_nft.contract_address and tokens_nft.blockchain = 'ethereum'
   inner join {{ source('ethereum','transactions') }} tx on ercs.evt_tx_hash = tx.hash
   left join {{ source('prices','usd') }} prc on prc.contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
   and prc.minute = date_trunc('minute', ercs.evt_block_time)
@@ -161,3 +169,36 @@ where
   {% if not is_incremental() %}
   and tx.block_number > 14801608
   {% endif %}
+)
+select
+  blockchain,
+  project,
+  version,
+  block_time,
+  token_id,
+  collection,
+  amount_usd,
+  token_standard,
+  trade_type,
+  number_of_items,
+  trade_category,
+  evt_type,
+  seller,
+  buyer,
+  amount_original,
+  amount_raw,
+  currency_symbol,
+  currency_contract,
+  nft_contract_address,
+  project_contract_address,
+  aggregator_name,
+  aggregator_address,
+  tx_hash,
+  block_number,
+  tx_from,
+  tx_to,
+  unique_trade_id
+from
+  results_with_possible_duplicates
+where
+  max_contract_name_created_at = contract_name_created_at

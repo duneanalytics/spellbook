@@ -1,4 +1,4 @@
-{{config(alias='cex',
+{{config(alias='defi',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "addresses",
