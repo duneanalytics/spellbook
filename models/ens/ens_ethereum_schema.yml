@@ -208,3 +208,26 @@ models:
         description: "transaction hash of last update"
       - name: evt_index
         description: "event index of node record update"
+
+  - name: ens_poapid_devcon6
+    meta:
+      blockchain: ethereum
+      project: ethereum_name_service
+      contributors: makoto
+    config:
+      tags: [ 'ethereum','ens','ethereum_name_service','ethereumnameservice','makoto', 'poap' ]
+    description: >
+      A table that shows the list of poap ids issued under ENS names during Devcon6 
+    columns:
+      - name: poap_id
+        description: "Poap ID"
+      - name: created_at
+        description: "When the poap id was registered"
+      - name: address
+        description: "Ethereum address"
+      - name: name
+        description: "ENS name with tld"
+      - name: label
+        description: "ENS name for .eth users without .eth (excludes subdomain users)"
+      - name: printed_at
+        description: "When the poap card was printed"
