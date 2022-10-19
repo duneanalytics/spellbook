@@ -26,7 +26,6 @@ models:
     description: >
         NFT native (i.e., non-platform) mints
         
-    # Can column definition of nft_events (which is in superfolder) be used by reference (eg *blockchain)?
     columns:
       - name: blockchain
         description: "Blockchain"
@@ -102,3 +101,5 @@ models:
         description:  "Royalty fee in % of the amount paid for a given trade"
       - name: unique_trade_id
         description:  "Unique trade ID"
+        tests:
+          - unique

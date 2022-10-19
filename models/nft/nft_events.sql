@@ -6,7 +6,7 @@
                     \'["soispoke"], ["umer_h_adil"]\') }}')
 }}
 
-WITH project_specific_events AS (
+WITH project_events AS (
     SELECT
         blockchain,
         project,
@@ -447,7 +447,7 @@ WITH project_specific_events AS (
         unique_trade_id
     FROM {{ ref('zora_ethereum_events') }}
 ),
-general_mints AS (
+native_mints AS (
     SELECT
         blockchain,
         project,
@@ -487,8 +487,8 @@ general_mints AS (
         null as royalty_fee_percentage,
         unique_trade_id
     FROM {{ ref('nft_ethereum_native_mints') }}
-	WHERE tx_hash NOT IN (SELECT tx_hash FROM project_specific_events)
+	WHERE tx_hash NOT IN (SELECT tx_hash FROM project_events)
 )
-SELECT * FROM project_specific_events
+SELECT * FROM project_events
 UNION
-SELECT * FROM general_mints
+SELECT * FROM native_mints
