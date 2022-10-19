@@ -569,7 +569,6 @@ VALUES
     ("srm-serum", "ethereum", "SRM", "0x476c5e26a75bd202a9683ffd34359c0cc15be0ff", 6),
     ("srn-sirin-labs-token", "ethereum", "SRN", "0x68d57c9a1c35f63e2c83ee8e49a64e9d70528d25", 18),
     ("stake-xdai-stake", "ethereum", "STAKE", "0x0ae055097c6d159879521c384f1d2123d1f195e6", 18),
-    ("starl-starlink", "ethereum", "STARL", "0x8e6cd950ad6ba651f6dd608dc70e5886b1aa6b24", 18),
     ("steth-lido-staked-ether", "ethereum", "stETH", "0xae7ab96520de3a18e5e111b5eaab095312d7fe84", 18),
     ("storj-storj", "ethereum", "STORJ", "0xb64ef51c888972c908cfacf59b47c1afbc0ab8ac", 8),
     ("stpt-stpt", "ethereum", "STPT", "0xde7d85157d9714eadf595045cc12ca4a5f3e2adb", 18),

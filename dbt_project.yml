@@ -336,6 +336,13 @@ models:
       ethereum:
         +schema: airswap_ethereum
         +materialized: view
+        
+    chainlink:
+      +schema: chainlink
+      +materialized: view
+      optimism:
+        +schema: chainlink_optimism
+        +materialized: view
 
     contracts:
       +schema: contracts
