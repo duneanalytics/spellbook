@@ -9,6 +9,7 @@
 
 {% set dex_trade_models = [
 'uniswap_trades',
+'sushiswap_trades',
 'curvefi_ethereum_trades',
 'airswap_ethereum_trades',
 'clipper_ethereum_trades',
