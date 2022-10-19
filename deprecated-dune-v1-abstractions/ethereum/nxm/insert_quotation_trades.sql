@@ -165,7 +165,7 @@ VALUES ('1 0 * * *',$$
 
   SELECT nxm.insert_quotation_trades(
     (SELECT DATE_TRUNC('day', now()) - INTERVAL '3 months')
-    (SELECT DATE_TRUNC('day', now())));
+  );
 
   COMMIT;
 $$) 
