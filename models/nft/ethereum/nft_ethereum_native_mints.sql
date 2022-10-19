@@ -22,8 +22,8 @@ select
   'erc721' as token_standard,
   'Single Item Trade' as trade_type,
   1 as number_of_items
- from {{ source('erc721_ethereum','evt_transfer') }}
- where from = '0x0000000000000000000000000000000000000000'
+from {{ source('erc721_ethereum','evt_transfer') }}
+where from = '0x0000000000000000000000000000000000000000'
 	union
 select
   evt_block_time,
@@ -38,8 +38,38 @@ select
   'Single Item Trade' as trade_type,
   -- of that item type any number of items can be traded
   value as number_of_items
- from {{ source('erc1155_ethereum','evt_transfersingle') }}
- where from = '0x0000000000000000000000000000000000000000'
+from {{ source('erc1155_ethereum','evt_transfersingle') }}
+where from = '0x0000000000000000000000000000000000000000'
+	union
+select
+  evt_block_time,
+  evt_block_number,
+  evt_tx_hash,
+  case
+    -- if only one item type was traded: use it's id
+	when size(ids) = 1 then ids[0]
+    -- otherwise there's meaningful id to display
+	when size(ids) > 1 then ''
+	else null
+  end as tokenId,
+  from,
+  to,
+  contract_address,
+  'erc1155' as token_standard,
+  case
+	when size(ids) > 1 then 'Bundle Trade'
+	when size(ids) = 1 then 'Single Item Trade'
+	else null
+  end as trade_type,
+  -- take the number of unique items as number_of_items
+  -- -- example:
+  -- -- --   ids = ["id_1", "id_2", "id_3"], values = ["1", "1", "2"] => number_of_items = 3
+  -- technically, it should be the sum of values (e.g. 4 in the example),
+  -- but in almost all erc1155 bundle transactions only one of each item type is transferred
+  -- so this implementation almost always be correct 
+  size(values) as number_of_items
+from {{ source('erc1155_ethereum','evt_transferbatch') }}
+where from = '0x0000000000000000000000000000000000000000'
 )
 select
   'ethereum' as blockchain,
@@ -131,5 +161,3 @@ where
   {% if not is_incremental() %}
   and tx.block_number > 14801608
   {% endif %}
---limit -- (for debugging)
---  10
