@@ -1,3 +1,9 @@
+{{config(alias='cex',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "sector",
+                                    "addresses",
+                                    \'["umer_h_adil"]\') }}')}}
+
 SELECT address, project, project_type
 FROM (VALUES
 	-- dexes
