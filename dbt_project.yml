@@ -365,6 +365,13 @@ models:
         +schema: clipper_ethereum
         +materialized: view
 
+    dfx:
+      +schema: dfx
+      +materialized: view
+      ethereum:
+        +schema: dfx_ethereum
+        +materialized: view
+
     shibaswap:
       +schema: shibaswap
       +materialized: view
