@@ -10,6 +10,11 @@ models:
       tags: ['ethereum', 'bnb', 'avalanche_c', 'gas', 'fees']
     description: >
         Gas Fees across chains
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
     columns:
       - &blokchain
         name: blockchain
@@ -23,9 +28,6 @@ models:
       - &tx_hash
         name: tx_hash
         description: "Primary key of the transaction"
-        tests:
-          - unique
-          - not_null
       - &tx_sender
         name: tx_sender
         description: "Initiated the transaction"

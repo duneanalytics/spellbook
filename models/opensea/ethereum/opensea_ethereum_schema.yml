@@ -41,7 +41,7 @@ models:
     meta:
       blockchain: ethereum
       project: opensea
-      contributors: [soispoke, hildobby]
+      contributors: soispoke, umer_h_adil, hildobby
     config:
       tags: ['ethereum','opensea','v1','events']
     description: >
