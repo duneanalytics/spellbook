@@ -188,7 +188,7 @@ SELECT DISTINCT
   (wa.fees / wa.amount_original * 100)::string  AS royalty_fee_percentage,
   wa.fee_receive_address as royalty_fee_receive_address,
   wa.fee_currency_symbol as royalty_fee_currency_symbol,
-  'opensea' || '-' || wa.call_tx_hash || '-' || coalesce(token_id_erc_uncapped, wa.token_id, '') || '-' ||  wa.seller || '-' || coalesce(evt_index::string, '') || '-' || coalesce(wa.call_trace_address::string,'') as unique_trade_id
+  'opensea' || '-' || wa.call_tx_hash || '-' || coalesce(token_id_erc_uncapped, wa.token_id, '') || '-' ||  wa.seller || '-' || coalesce(erc_transfers.evt_index::string, '') || '-' || coalesce(wa.call_trace_address::string,'') as unique_trade_id
 FROM wyvern_all wa
 INNER JOIN {{ source('ethereum','transactions') }} tx ON wa.call_tx_hash = tx.hash
     {% if is_incremental() %}
