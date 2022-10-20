@@ -38,4 +38,4 @@ from
   inner join eth_native_mints_ctn c2 on c1.dummy = c2.dummy
 where
   -- pass test when difference in result rows is less than 0.01%
-  (c1.ctn / c2.ctn) < 0.0001
+  (c1.ctn / c2.ctn) > 0.0001
