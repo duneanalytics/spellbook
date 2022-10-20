@@ -216,10 +216,10 @@ models:
         +materialized: table
     
     addresses_events: 
-      +schema: addresses
+      +schema: addresses_events
       +materialized: table
       ethereum: 
-        +schema: addresses_ethereum
+        +schema: addresses_events_ethereum
         +materialized: table
 
     tokens:
