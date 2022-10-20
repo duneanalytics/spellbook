@@ -21,7 +21,7 @@ Materialized view names should be prefxied by `view_`, same as normal views.
 Additionally, a materialized view must specify at what interval it should be refreshed. This is done by adding the following block to the end of the declaration:
 ```sql
 INSERT INTO cron.job(schedule, command)
-VALUES ('* 1 * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY x.view_y$$)
+VALUES ('0 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY x.view_y$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 ```
 Note that the preferred way to refresh a materialized view is using the `CONCURRENTLY` keyword, and that this mandates the existence of a `UNIQUE` index on the materialized view. See more info [here](https://www.postgresql.org/docs/12/sql-refreshmaterializedview.html).
@@ -30,7 +30,7 @@ Note that the preferred way to refresh a materialized view is using the `CONCURR
 Tables are declared without any prefix in the name. If the table `x.y` needs to be periodically updated, the convention is to create a companion function `x.insert_y(from timestamptz, to timestamptz=now())`. It is then customary to do
 ```sql
 INSERT INTO cron.job (schedule, command)
-VALUES ('* 1 * * *', $$SELECT x.insert_y((SELECT max(block_time) - interval '1 days' FROM x.y));$$)
+VALUES ('0 * * * *', $$SELECT x.insert_y((SELECT max(block_time) - interval '1 days' FROM x.y));$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 ```
 
