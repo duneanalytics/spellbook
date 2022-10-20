@@ -45,4 +45,4 @@ from
 where
   -- pass test when difference in result rows is less than 0.01%
   -- i.e., 0 rows with c1.ctn / c2.ctn larger than  0.01%
-  (c1.ctn / c2.ctn) > 0.0001
+  (1 - (c1.ctn / c2.ctn)) > 0.0001
