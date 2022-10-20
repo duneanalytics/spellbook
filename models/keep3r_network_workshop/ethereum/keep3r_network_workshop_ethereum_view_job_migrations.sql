@@ -29,7 +29,7 @@ FROM
             _toJob
         FROM
             {{ source(
-                'keep3r_network_ethereum',
+                'keep3r_network_workshop_ethereum',
                 'Keep3r_evt_JobMigrationSuccessful'
             ) }}
         UNION
@@ -42,7 +42,7 @@ FROM
             _toJob
         FROM
             {{ source(
-                'keep3r_network_ethereum',
+                'keep3r_network_workshop_ethereum',
                 'Keep3r_v2_evt_JobMigrationSuccessful'
             ) }}
     ) AS m

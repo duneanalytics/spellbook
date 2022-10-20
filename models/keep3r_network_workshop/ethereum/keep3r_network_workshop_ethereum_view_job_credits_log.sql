@@ -29,7 +29,7 @@ WITH work_evt AS (
                 _amount
             FROM
                 {{ source(
-                    'keep3r_network_ethereum',
+                    'keep3r_network_workshop_ethereum',
                     'Keep3r_evt_KeeperWork'
                 ) }}
             UNION
@@ -44,7 +44,7 @@ WITH work_evt AS (
                 _payment
             FROM
                 {{ source(
-                    'keep3r_network_ethereum',
+                    'keep3r_network_workshop_ethereum',
                     'Keep3r_v2_evt_KeeperWork'
                 ) }}
         ) keep3rWork
@@ -78,7 +78,7 @@ reward_evt AS (
                 _periodCredits
             FROM
                 {{ source(
-                    'keep3r_network_ethereum',
+                    'keep3r_network_workshop_ethereum',
                     'Keep3r_evt_LiquidityCreditsReward'
                 ) }}
             UNION
@@ -92,7 +92,7 @@ reward_evt AS (
                 _periodCredits
             FROM
                 {{ source(
-                    'keep3r_network_ethereum',
+                    'keep3r_network_workshop_ethereum',
                     'Keep3r_v2_evt_LiquidityCreditsReward'
                 ) }}
         ) rewards
