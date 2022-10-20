@@ -15,7 +15,7 @@ FROM (
        SELECT
        array('ethereum') as blockchain,
        coalesce(rev.address, res.address) as address,
-       coalesce(rev.name, res.name) as name,
+       encode(coalesce(rev.name, res.name),'utf8') as name,
        'ENS' as category,
        '0xRob' as contributor,
        'query' AS source,
