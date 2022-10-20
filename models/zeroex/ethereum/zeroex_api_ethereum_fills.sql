@@ -412,6 +412,11 @@ SELECT
         COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price) AS volume_usd
 FROM all_tx
 INNER JOIN {{ source('ethereum', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
+
+{% if is_incremental() %}
+AND tx.block_time >= date_trunc('day', now() - interval '1 week')
+{% endif %}
+
 LEFT JOIN {{ source('prices', 'usd') }} tp ON date_trunc('minute', all_tx.block_time) = tp.minute
 AND CASE
         WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
@@ -420,7 +425,7 @@ AND CASE
 AND tp.blockchain = 'ethereum'
 
 {% if is_incremental() %}
-AND tp.minute >= date_trunc("day", now() - interval '1 week')
+AND tp.minute >= date_trunc('day', now() - interval '1 week')
 {% endif %}
 
 LEFT JOIN {{ source('prices', 'usd') }} mp ON DATE_TRUNC('minute', all_tx.block_time) = mp.minute
@@ -431,5 +436,5 @@ AND CASE
 AND mp.blockchain = 'ethereum'
 
 {% if is_incremental() %}
-AND mp.minute >= date_trunc("day", now() - interval '1 week')
+AND mp.minute >= date_trunc('day', now() - interval '1 week')
 {% endif %}
