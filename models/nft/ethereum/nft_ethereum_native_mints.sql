@@ -153,7 +153,7 @@ from
   and prc.blockchain = 'ethereum'
   left join {{ source('ethereum','contracts') }} ec ON ec.address = ercs.to
 where
-  -- We're intersted in collectible NFTs (e.g. BAYC), not functional NFTs (e.g. Uniswap LP), so we exclude NFTs originated in DeFi 
+  -- We're interested in collectible NFTs (e.g. BAYC), not functional NFTs (e.g. Uniswap LP), so we exclude NFTs originated in DeFi 
   ercs.to not in (select address from {{ ref('addresses_ethereum_defi') }})
   {% if is_incremental() %}
   and ercs.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -195,4 +195,7 @@ select
 from
   results_with_possible_duplicates
 where
+  -- {{ source('ethereum','contracts') }} has duplicates. To prevent duplicates in this table, take only most recent contract
   max_contract_name_created_at = contract_name_created_at
+  -- but don't exclude the mint if it has no associated contract name
+  or max_contract_name_created_at is null
