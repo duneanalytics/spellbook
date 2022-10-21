@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "swapr",
@@ -28,7 +28,7 @@ WITH dexs AS
         CASE WHEN amount0In = 0 OR amount1Out = 0 THEN f.token1 ELSE f.token0 END AS token_sold_address,
         t.contract_address AS project_contract_address,
         t.evt_tx_hash AS tx_hash,
-        NULL AS trace_address,
+        '' AS trace_address,
         t.evt_index AS evt_index
     FROM
         {{ source('swapr_ethereum', 'DXswapPair_evt_Swap') }} t
