@@ -13,7 +13,8 @@
 'curvefi_ethereum_trades',
 'airswap_ethereum_trades',
 'clipper_ethereum_trades',
-'shibaswap_ethereum_trades'
+'shibaswap_ethereum_trades',
+'swapr_ethereum_trades'
 ] %}
 
 
