@@ -124,7 +124,6 @@ models:
       avalanche_c:
         +schema: element_avalanche_c
         +materialized: view
-
     superrare:
       +schema: superrare
       +materialized: view
@@ -140,7 +139,12 @@ models:
       ethereum:
         +schema: foundation_ethereum
         +materialized: view
-
+    rarible:
+      +schema: rarible
+      +materialized: view
+      ethereum:
+        +schema: rarible_ethereum
+        +materialized: view
     gas:
       +schema: gas
       +materialized: view
@@ -160,7 +164,6 @@ models:
       arbitrum:
         +schema: gmx_arbitrum
         +materialized: view
-
     x2y2:
       +schema: x2y2
       +materialized: view

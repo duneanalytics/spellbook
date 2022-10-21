@@ -1,0 +1,27 @@
+version: 2
+
+sources:
+  - name: rarible_ethereum
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: TokenSale_evt_Buy
+        loaded_at_field: evt_block_time
+      - name: ExchangeV1_evt_Buy
+        loaded_at_field: evt_block_time
+      - name: ExchangeV1_1_evt_Buy
+        loaded_at_field: evt_block_time
+      - name: ExchangeV2_evt_Match
+        loaded_at_field: evt_block_time
+  - name: rarible_v1_ethereum
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: ERC1155Sale_v1_evt_Buy
+        loaded_at_field: evt_block_time
+      - name: ERC721Sale_v1_evt_Buy
+        loaded_at_field: evt_block_time
+      - name: ERC721Sale_v2_evt_Buy
+        loaded_at_field: evt_block_time
+      - name: ERC1155Sale_v2_evt_Buy
+        loaded_at_field: evt_block_time

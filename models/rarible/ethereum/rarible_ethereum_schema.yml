@@ -1,30 +1,15 @@
 version: 2
 
 models:
-  - name: nft_aggregators
+  - name: rarible_ethereum_events
     meta:
-      blockchain: avalanche_c, bnb, ethereum, polygon
-      sector: nft
-      contributors: hildobby, soispoke
+      blockchain: ethereum
+      project: rarible
+      contributors: hildobby
     config:
-      tags: ['nft','aggregators', 'avalanche_c', 'bnb','ethereum', 'polygon']
+      tags: ['ethereum','rarible','v1','v2','events']
     description: >
-        NFT aggregators
-    columns:
-      - name: contract_address
-        description: "Aggregator project's contract address"
-      - name: name
-        description: "Aggregator project's name"
-
-  - name: nft_events
-    meta:
-      blockchain: ethereum, solana
-      sector: nft
-      contributors: soispoke, hildobby, ilemi, 0xRob, cat
-    config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'rarible', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'events']
-    description: >
-        NFT events
+        Rarible v1 events on Ethereum
     columns:
       - &blockchain
         name: blockchain
@@ -114,14 +99,8 @@ models:
         name: platform_fee_amount_usd
         description:  "Platform fee amount in USD"
       - &platform_fee_percentage
-        name: platform_fee_percentage
+        name: platform_fee_amount_usd
         description:  "Platform fee in % of the amount paid for a given trade"
-      - &royalty_fee_receive_address
-        name: royalty_fee_receive_address
-        description:  "Wallet addresses receiving fees from the transaction"
-      - &royalty_fee_currency_symbol
-        name: royalty_fee_currency_symbol
-        description: "Symbol of the token in which fees are paid out"
       - &royalty_fee_amount_raw
         name: royalty_fee_amount_raw
         description:  "Raw numerical amount for royalty fees"
@@ -134,19 +113,27 @@ models:
       - &royalty_fee_percentage
         name: royalty_fee_percentage
         description:  "Royalty fee in % of the amount paid for a given trade"
+      - &royalty_fee_receive_address
+        name: royalty_fee_receive_address
+        description:  "Wallet addresses receiving fees from the transaction"
+      - &royalty_fee_currency_symbol
+        name: royalty_fee_currency_symbol
+        description: "Symbol of the token in which fees are paid out"
       - &unique_trade_id
         name: unique_trade_id
         description:  "Unique trade ID"
+        tests:
+          - unique
 
-  - name: nft_trades
+  - name: rarible_ethereum_trades
     meta:
-      blockchain: ethereum, solana
-      sector: nft
-      contributors: soispoke, hildobby, ilemi, cat
+      blockchain: ethereum
+      project: rarible
+      contributors: hildobby
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'rarible', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'trades','superrare']
+      tags: ['ethereum','rarible','trades']
     description: >
-        NFT trades
+        Rarible trades on Ethereum
     columns:
       - *blockchain
       - *project
@@ -176,15 +163,15 @@ models:
       - *tx_to
       - *unique_trade_id
 
-  - name: nft_mints
+  - name: rarible_ethereum_mints
     meta:
-      blockchain: ethereum, solana
-      sector: nft
-      contributors: soispoke, hildobby
+      blockchain: ethereum
+      project: rarible
+      contributors: hildobby
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'foundation', 'element', 'zora', 'rarible', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'mints']
+      tags: ['ethereum','rarible','mints']
     description: >
-        NFT mints
+        Rarible mints on Ethereum
     columns:
       - *blockchain
       - *project
@@ -214,15 +201,15 @@ models:
       - *tx_to
       - *unique_trade_id
 
-  - name: nft_burns
+  - name: rarible_ethereum_burns
     meta:
-      blockchain: ethereum, solana
-      sector: nft
-      contributors: soispoke, hildobby
+      blockchain: ethereum
+      project: rarible
+      contributors: hildobby
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'foundation', 'element', 'zora', 'rarible', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'burns']
+      tags: ['ethereum','rarible','burns']
     description: >
-        NFT burns
+        Rarible burns on Ethereum
     columns:
       - *blockchain
       - *project
@@ -252,15 +239,15 @@ models:
       - *tx_to
       - *unique_trade_id
 
-  - name: nft_fees
+  - name: rarible_ethereum_fees
     meta:
-      blockchain: ethereum, solana
-      sector: nft
-      contributors: soispoke, hildobby, ilemi, cat
+      blockchain: ethereum
+      project: rarible
+      contributors: hildobby
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'rarible', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'fees','superrare']
+      tags: ['ethereum','rarible','fees']
     description: >
-        NFT fees
+        Rarible fees on Ethereum
     columns:
       - *blockchain
       - *project
@@ -285,6 +272,8 @@ models:
       - *evt_type
       - *seller
       - *buyer
+      - *currency_symbol
+      - *currency_contract
       - *nft_contract_address
       - *project_contract_address
       - *aggregator_name
@@ -294,21 +283,3 @@ models:
       - *tx_from
       - *tx_to
       - *unique_trade_id
-
-  - name: nft_linked_addresses
-    meta:
-      blockchain: ethereum, solana
-      sector: nft
-      contributors: springzh
-    config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'ethereum', 'solana', 'address']
-    description: >
-        NFT linked addresses. Addresses that buy and sell NFTs from each other.
-    columns:
-      - *blockchain
-      - name: master_address
-        description: "Master address"
-      - name: alternative_address
-        description: "Alternative address"
-      - name: linked_address_id
-        description: "Unique linked address id"
