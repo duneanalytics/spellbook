@@ -140,8 +140,10 @@ select
   ercs.`to` as tx_to,
   ercs.contract_address || '-' || ercs.evt_tx_hash || '-' || coalesce(ercs.tokenId, '') || '-' || ercs.`from` || '-' || ercs.evt_index
   as unique_trade_id,
-  -- Temporary fix: {{ source('ethereum','contracts') }} can contain duplicates, which would result in duplicate mints.
-  -- We therefore take the most recent entry in {{ source('ethereum','contracts') }}
+  -- {{ source('ethereum','contracts') }} can contain duplicates, i.e., for one address there might be multiple names
+  -- This is a bug and will be fixed. 
+  -- In the meanwhile, to prevent duplicate mints in our table, we implement a temporary fix by taking the most recent entry in {{ source('ethereum','contracts') }}
+  -- This fix can be removed as soon as {{ source('ethereum','contracts') }} is fixed.
   ec.created_at as contract_name_created_at,
   max(ec.created_at) over (partition by ercs.contract_address, ercs.evt_tx_hash, ercs.tokenId, ercs.`from`, ercs.evt_index) as max_contract_name_created_at
 from
@@ -195,7 +197,9 @@ select
 from
   results_with_possible_duplicates
 where
-  -- {{ source('ethereum','contracts') }} has duplicates. To prevent duplicates in this table, take only most recent contract
+  -- {{ source('ethereum','contracts') }} can contain duplicates, i.e., for one address there might be multiple names
+  -- This is a bug and will be fixed. 
+  -- In the meanwhile, to prevent duplicate mints in our table, we implement a temporary fix by taking the most recent entry in {{ source('ethereum','contracts') }}
   max_contract_name_created_at = contract_name_created_at
   -- but don't exclude the mint if it has no associated contract name
   or max_contract_name_created_at is null
