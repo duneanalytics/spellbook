@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "defiswap",
@@ -21,27 +21,26 @@ WITH dexs AS
         t.evt_block_time AS block_time
         ,t.`to` AS taker
         ,t.contract_address AS maker
-        ,CASE WHEN amount0Out = 0 THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw
-        ,CASE WHEN amount0In = 0 OR amount1Out = 0 THEN amount1In ELSE amount0In END AS token_sold_amount_raw
+        ,CASE WHEN amount0Out = '0' THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw
+        ,CASE WHEN amount0In = '0' OR amount1Out = '0' THEN amount1In ELSE amount0In END AS token_sold_amount_raw
         ,NULL AS amount_usd
-        ,CASE WHEN amount0Out = 0 THEN f.token1 ELSE f.token0 END AS token_bought_address
-        ,CASE WHEN amount0In = 0 OR amount1Out = 0 THEN f.token1 ELSE f.token0 END AS token_sold_address
+        ,CASE WHEN amount0Out = '0' THEN f.token1 ELSE f.token0 END AS token_bought_address
+        ,CASE WHEN amount0In = '0' OR amount1Out = '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
         ,t.contract_address AS project_contract_address
         ,t.evt_tx_hash AS tx_hash
-        ,NULL AS trace_address
+        ,'' AS trace_address
         ,t.evt_index AS evt_index
     FROM
         {{ source('defiswap_ethereum', 'CroDefiSwapPair_evt_Swap') }} t
     INNER JOIN {{ source('crodefi_ethereum', 'CroDefiSwapFactory_evt_PairCreated') }} f ON f.pair = t.contract_address
     {% if is_incremental() %}
-    WHERE
-    t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
 
 SELECT
     'ethereum' AS blockchain
-    ,'Defi Swap' AS project
+    ,'defiswap' AS project
     ,'1' AS version
     ,TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
     ,dexs.block_time
@@ -105,3 +104,4 @@ LEFT JOIN {{ source('prices', 'usd') }} pb
     {% if is_incremental() %}
     AND pb.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+;
