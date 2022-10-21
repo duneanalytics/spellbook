@@ -170,7 +170,7 @@ SELECT DISTINCT
     royalty_fee / looks_rare.price * 100 as royalty_fee_percentage,
     royalty_fee_receive_address,
     royalty_fee_currency_symbol,
-    'looksrare' || '-' || looks_rare.tx_hash || '-' ||  token_id::string || '-' ||  seller::string || '-' || COALESCE(erc.contract_address, nft_contract_address) || '-' || looks_rare.evt_index::string || '-' || COALESCE(evt_type::string, 'Other')  || '-' || COALESCE(case when erc.value_unique::string is null then '0' ELSE '1' end, '1') as unique_trade_id
+    'looksrare' || '-' || COALESCE(looks_rare.tx_hash, '-1') || '-' ||  COALESCE(token_id::string, '-1') || '-' ||  COALESCE(seller::string, '-1') || '-' || COALESCE(erc.contract_address, nft_contract_address) || '-' || COALESCE(looks_rare.evt_index::string, '-1') || '-' || COALESCE(evt_type::string, 'Other')  || '-' || COALESCE(erc.evt_index, '-1')  || '-' || COALESCE(case when erc.value_unique::string is null then '0' ELSE '1' end, '1') as unique_trade_id
 FROM looks_rare
 INNER JOIN {{ source('ethereum','transactions') }} tx ON looks_rare.tx_hash = tx.hash
     {% if not is_incremental() %}
