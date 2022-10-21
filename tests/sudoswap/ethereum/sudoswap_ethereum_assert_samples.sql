@@ -10,7 +10,7 @@ WITH trades as (
 
 , matched as (
     select
-    coalesce(t.block_number, ex.blocknumber)
+    coalesce(t.block_number, ex.block_number)
     , coalesce(t.tx_hash, ex.tx_hash)
     , coalesce(t.nft_contract_address, ex.nft_contract_address)
     , coalesce(t.token_id, ex.token_id)
@@ -25,7 +25,7 @@ WITH trades as (
     , ex.pool_fee_amount as seed_pool_fee_amount
     from trades t
     full outer join examples ex
-    on ex.blocknumber = t.block_number and ex.tx_hash=t.tx_hash
+    on ex.block_number = t.block_number and ex.tx_hash=t.tx_hash
     and ex.nft_contract_address=t.nft_contract_address and ex.token_id=t.token_id
 )
 

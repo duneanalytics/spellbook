@@ -1,25 +1,26 @@
 #Welcome to your Spellbook!
 
-name: 'spellbook'
-version: '1.0.0'
+name: "spellbook"
+version: "1.0.0"
 config-version: 2
 
 # This setting configures which "profile" dbt uses for this project.
-profile: 'spellbook'
+profile: "spellbook"
 
 # These configurations specify where dbt should look for different types of files.
 # You don't need to change these!
-model-paths: ['models']
-analysis-paths: ['analyses']
-test-paths: ['tests']
-seed-paths: ['seeds']
-macro-paths: ['macros']
-snapshot-paths: ['snapshots']
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+docs-paths: ["docs"]
 
-target-path: 'target' # directory which will store compiled SQL files
+target-path: "target" # directory which will store compiled SQL files
 clean-targets: # directories to be removed by `dbt clean`
-  - 'target'
-  - 'dbt_packages'
+  - "target"
+  - "dbt_packages"
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
@@ -85,6 +86,9 @@ models:
     uniswap:
       +schema: uniswap
       +materialized: view
+      arbitrum:
+        +schema: uniswap_arbitrum
+        +materialized: view
       ethereum:
         +schema: uniswap_ethereum
         +materialized: view
@@ -92,6 +96,13 @@ models:
         +schema: uniswap_optimism
         +materialized: view
 
+    sushiswap:
+      +schema: sushiswap
+      +materialized: view
+      ethereum:
+        +schema: sushiswap_ethereum
+        +materialized: view
+        
     opensea:
       +schema: opensea
       +materialized: view
@@ -128,6 +139,19 @@ models:
       +materialized: view
       ethereum:
         +schema: foundation_ethereum
+        +materialized: view
+
+    gas:
+      +schema: gas
+      +materialized: view
+      ethereum:
+        +schema: gas_ethereum
+        +materialized: view
+      bnb:
+        +schema: gas_bnb
+        +materialized: view
+      avalanche_c:
+        +schema: gas_avalanche_c
         +materialized: view
 
     gmx:
@@ -208,6 +232,9 @@ models:
       gnosis:
         +schema: tokens_gnosis
         +materialized: view
+      arbitrum:
+        +schema: tokens_arbitrum
+        +materialized: view
 
     transfers:
       +schema: transfers
@@ -217,6 +244,9 @@ models:
         +materialized: view
       optimism:
         +schema: transfers_optimism
+      bnb:
+        +schema: transfers_bnb
+        +materialized: view
 
     sudoswap:
       +schema: sudoswap
@@ -286,6 +316,9 @@ models:
       ethereum:
         +schema: cow_protocol_ethereum
         +materialized: view
+      gnosis:
+        +schema: cow_protocol_gnosis
+        +materialized: view
 
     ironbank:
       +schema: ironbank
@@ -297,11 +330,32 @@ models:
         +schema: ironbank_optimism
         +materialized: view
 
+    keep3r_network:
+      +schema: keep3r_network
+      +materialized: view
+      ethereum:
+        +schema: keep3r_network_ethereum
+        +materialized: view
+
     airswap:
       +schema: airswap
       +materialized: view
       ethereum:
         +schema: airswap_ethereum
+        +materialized: view
+        
+    chainlink:
+      +schema: chainlink
+      +materialized: view
+      optimism:
+        +schema: chainlink_optimism
+        +materialized: view
+
+    contracts:
+      +schema: contracts
+      +materialized: view
+      optimism:
+        +schema: contracts_optimism
         +materialized: view
 
     clipper:
@@ -316,6 +370,13 @@ models:
       +materialized: view
       ethereum:
         +schema: swapr_ethereum
+        +materialized: view
+
+    shibaswap:
+      +schema: shibaswap
+      +materialized: view
+      ethereum:
+        +schema: shibaswap_ethereum
         +materialized: view
 
 seeds:
@@ -387,7 +448,7 @@ seeds:
       +schema: test_data
       sudoswap_ethereum_example_trades:
         +column_types:
-          blocknumber: long
+          block_number: long
           tx_hash: string
           trade_category: string
           nft_contract_address: string
@@ -437,3 +498,27 @@ seeds:
           project: string
           version: string
           tx_hash: string
+    transfers:
+      bnb:
+        +enabled: true
+        +schema: test_data
+        transfers_bnb_bep20_agg_day_v2:
+          +column_types:
+            blockchain: string
+            day: date
+            wallet_address: string
+            token_address: string
+            symbol: string
+            amount_raw: double
+            amount: double
+            tx_num: long
+        transfers_bnb_bep20_agg_hour_v2:
+          +column_types:
+            blockchain: string
+            hour: timestamp
+            wallet_address: string
+            token_address: string
+            symbol: string
+            amount_raw: double
+            amount: double
+            tx_num: long
