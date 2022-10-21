@@ -364,6 +364,13 @@ models:
       ethereum:
         +schema: clipper_ethereum
         +materialized: view
+    
+    defiswap:
+      +schema: defiswap
+      +materialized: view
+      ethereum:
+        +schema: defiswap_ethereum
+        +materialized: view
      
     swapr:
       +schema: swapr
