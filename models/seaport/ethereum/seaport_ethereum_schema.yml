@@ -197,3 +197,79 @@ models:
         description:  "Unique trade ID"
         tests:
           - unique
+
+  - name: seaport_ethereum_base_pairs
+    meta:
+      blockchain: ethereum
+      project: seaport
+      contributors: sohwak
+    config:
+      tags: ['ethereum','seaport','opensea','base_pair']
+    description: >
+        Seaport transactions on Ethereum
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "UTC event block time"
+      - name: block_number
+        description: 
+      - name: tx_hash
+        description: 
+      - name: evt_index
+        description: 
+      - name: sub_type
+        description: 
+      - name: sub_idx
+        description: 
+      - name: offer_first_item_type
+        description: 
+      - name: consideration_first_item_type
+        description: 
+      - name: sender
+        description: 
+      - name: receiver
+        description: 
+      - name: zone
+        description: 
+      - name: token_contract_address
+        description: 
+      - name: original_amount
+        description: 
+      - name: item_type
+        description: 
+      - name: token_id
+        description: 
+      - name: exchange_contract_address
+        description: 
+      - name: offer_cnt
+        description: 
+      - name: consideration_cnt
+        description: 
+      - name: is_private
+        description: 
+      - name: eth_erc_idx
+        description: 
+      - name: nft_cnt
+        description: 
+      - name: erc721_cnt
+        description: 
+      - name: erc1155_cnt
+        description: 
+      - name: order_type
+        description: 
+      - name: is_price
+        description: 
+      - name: is_netprice
+        description: 
+      - name: is_platform_fee
+        description: 
+      - name: is_creator_fee
+        description: 
+      - name: creator_fee_idx
+        description: 
+      - name: is_traded_nft
+        description: 
+      - name: is_moved_nft
+        description: 
