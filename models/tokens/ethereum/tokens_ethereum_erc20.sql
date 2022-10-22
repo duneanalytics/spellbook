@@ -6673,5 +6673,18 @@ FROM (VALUES
           ('0xe1e44e6918c283a0481037a03056b416f4347b28', 'DAZU', 9),
           ('0xe5f55a3b74874531a99359b833b92866a6609f6b', 'ATS', 4),
           ('0xe9f84d418b008888a992ff8c6d22389c2c3504e0', 'BASE', 8),
+          ('0x06b884e60794ce02aafab13791b59a2e6a07442f', 'UNBNK', 18),
+          ('0x0cba60ca5ef4d42f92a5070a8fedd13be93e2861', 'THE', 18),
+          ('0x3ac9e6134766a1c7dc680014c1ec9a5e7f2aad74', 'WHY', 9),
+          ('0x7b39ad9338df46c644db926376c87fa5ea6bb7b7', 'RYUKAI', 18),
+          ('0x96b00208911d72ea9f10c3303ff319427a7884c9', 'BLUE', 18),
+          ('0xb3ad645db386d7f6d753b2b9c3f4b853da6890b8', 'CTR', 18),
+          ('0xb5f1457d6fba1956fb8d31b0b7caca14bde0be4b', 'STILT', 9),
+          ('0xdb25ca703181e7484a155dd612b06f57e12be5f0', 'yvYFI', 18),
+          ('0xe0a189c975e4928222978a74517442239a0b86ff', 'KEYS', 9),
+          ('0xe1240ac7bb51333510cbf37efd678ca46137f84b', 'RED', 18),
+          ('0xea5edef1287afdf9eb8a46f9773abfc10820c61c', 'EASE', 18),
+          ('0xfafc423ab2c1ab07e07378631d218117b4eb0e51', 'Yokai', 18),
+          ('0xfcc5c47be19d06bf83eb04298b026f81069ff65b', 'yCRV', 18),
           ('0xfa372ff1547fa1a283b5112a4685f1358ce5574d', 'BDAMM', 18)
      ) AS temp_table (contract_address, symbol, decimals)
