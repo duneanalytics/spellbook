@@ -205,6 +205,10 @@ models:
       +schema: labels
       +materialized: view
 
+    daos:
+      +schema: daos
+      +materialized: view
+
     addresses:
       +schema: addresses
       +materialized: table
