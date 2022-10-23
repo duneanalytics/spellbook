@@ -228,12 +228,12 @@ WITH aggregators AS
             call_trace_address AS trace_address,
             CAST(NULL as integer) AS evt_index
         FROM (
-            -- select output_returnAmount, amount, srcToken, "_3" as pools, call_tx_hash, call_trace_address, call_block_time, contract_address 
-            -- from {{ source('oneinch_v3_ethereum', 'AggregationRouterV3_call_unoswap') }}
-            -- where call_success 
-            --     and call_block_time >= '{{project_start_date}}'
+            select output_returnAmount, amount, srcToken, _0 as pools, call_tx_hash, call_trace_address, call_block_time, contract_address 
+            from {{ source('oneinch_v3_ethereum', 'AggregationRouterV3_call_unoswap') }}
+            where call_success 
+                and call_block_time >= '{{project_start_date}}'
                
-            -- union all
+            union all
             select output_returnAmount, amount, srcToken, pools, call_tx_hash, call_trace_address, call_block_time, contract_address 
             from {{ source('oneinch_v3_ethereum', 'AggregationRouterV3_call_unoswapWithPermit') }}
             where call_success
@@ -255,7 +255,7 @@ WITH aggregators AS
         left join {{ source('ethereum', 'traces') }} t on us.call_tx_hash = t.tx_hash and us.call_trace_address = t.trace_address
             and t.block_time >= '{{project_start_date}}'
         LEFT JOIN {{ source('ethereum', 'traces') }} tr ON tr.tx_hash = us.call_tx_hash 
-            AND tr.trace_address = us.call_trace_address[0:SIZE(us.call_trace_address)-1]
+            -- AND tr.trace_address = us.call_trace_address[0:SIZE(us.call_trace_address)-1]
             and tr.block_time >= '{{project_start_date}}'
         LEFT JOIN {{ source('ethereum', 'traces') }} ll ON ll.tx_hash = us.call_tx_hash 
             -- AND ll.trace_address = (
