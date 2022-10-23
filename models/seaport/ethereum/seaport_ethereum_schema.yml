@@ -11,8 +11,7 @@ models:
     description: >
         Seaport transactions on Ethereum
     columns:
-      - &blockchain
-        name: blockchain
+      - name: blockchain
         description: "Blockchain"
       - name: block_time
         description: "UTC event block time"
@@ -87,7 +86,9 @@ models:
     description: >
         Seaport transfers on Ethereum
     columns:
-      - *blockchain
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
       - &project
         name: project
         description: "Project"
@@ -204,72 +205,71 @@ models:
       project: seaport
       contributors: sohwak
     config:
-      tags: ['ethereum','seaport','opensea','base_pair']
+      tags: ['ethereum','seaport','base_pairs','sohwak']
     description: >
-        Seaport transactions on Ethereum
+        Exploded table from Seaport trade events with `offer` and `consideration` array columns
     columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain"
       - name: block_time
-        description: "UTC event block time"
+        description: "Block time in UTC"
       - name: block_number
-        description: 
+        description: "Block number of transaction"
       - name: tx_hash
-        description: 
+        description: "Hash ID of transaction" 
       - name: evt_index
-        description: 
+        description: "Event log index"
       - name: sub_type
-        description: 
+        description: "Exploded column : `offer`|`consideration`"
       - name: sub_idx
-        description: 
+        description: "Index number of `sub_type`" 
       - name: offer_first_item_type
-        description: 
+        description: "First item_type of offer in this trade : `native`|`erc20`|`erc721`|`erc1155`"
       - name: consideration_first_item_type
-        description: 
+        description: "First item_type of consideration in this trade : `native`|`erc20`|`erc721`|`erc1155`"
       - name: sender
-        description: 
+        description: "Item sender"
       - name: receiver
-        description: 
+        description: "Item receiver"
       - name: zone
-        description: 
+        description: "Zone address"
       - name: token_contract_address
-        description: 
+        description: "Item contract address"
       - name: original_amount
-        description: 
+        description: "Number of Items"
       - name: item_type
-        description: 
+        description: "`native`|`erc20`|`erc721`|`erc1155`"
       - name: token_id
-        description: 
-      - name: exchange_contract_address
-        description: 
+        description: "Item token_id"
+      - name: platform_contract_address
+        description: "platform's contract_address"
       - name: offer_cnt
-        description: 
+        description: "Total number of offer items"
       - name: consideration_cnt
-        description: 
+        description: "Total number of consideration items"
       - name: is_private
-        description: 
+        description: "If trade is private sale then boolean `true` else `false`"
       - name: eth_erc_idx
-        description: 
+        description: "Sequencial number of native or erc20 tokens only"
       - name: nft_cnt
-        description: 
+        description: "Total number of traded NFT in this trade"
       - name: erc721_cnt
-        description: 
+        description: "Total number of traded erc721 in this trade"
       - name: erc1155_cnt
-        description: 
+        description: "Total number of traded erc1155 in this trade"
       - name: order_type
-        description: 
+        description: "Direction of trade. `buy` or `offer accepted` only (lowercase)"
       - name: is_price
-        description: 
+        description: "Part of volume or not. `true` makes volume of this trade"
       - name: is_netprice
-        description: 
+        description: "Change of `price - platform_fee - creator_fee`, (but might not be used)"
       - name: is_platform_fee
-        description: 
+        description: "Platform fee if `true`"
       - name: is_creator_fee
-        description: 
+        description: "Creator fee if `true`"
       - name: creator_fee_idx
-        description: 
+        description: "Sequencial number only for creator fee"
       - name: is_traded_nft
-        description: 
+        description: "Traded NFT if `true`, because it is traded or just transferred."
       - name: is_moved_nft
-        description: 
+        description: "Transferred NFT if `true`, because it is traded or just transferred."
+
+
