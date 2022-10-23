@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'unique_trade_id'],
+    unique_key = ['tx_hash','evt_index'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                             "project",
                             "seaport",
@@ -12,47 +12,116 @@
     )
 }}
 
--- base페어에 price, platform, creator를 붙여봅시다.
-with iv_volume as (
+with iv_base_pairs_priv as (
+    select a.block_time
+          ,a.block_number
+          ,a.tx_hash
+          ,a.evt_index
+          ,a.sub_type
+          ,a.sub_idx
+          ,a.offer_first_item_type
+          ,a.consideration_first_item_type
+          ,a.sender
+          ,a.receiver
+          ,a.zone
+          ,a.token_contract_address
+          ,a.original_amount
+          ,a.item_type
+          ,a.token_id
+          ,a.platform_contract_address
+          ,a.offer_cnt
+          ,a.consideration_cnt
+          ,a.is_private
+          ,a.eth_erc_idx
+          ,a.nft_cnt
+          ,a.erc721_cnt
+          ,a.erc1155_cnt
+          ,a.order_type
+          ,a.is_price
+          ,a.is_netprice
+          ,a.is_platform_fee
+          ,a.is_creator_fee
+          ,a.creator_fee_idx
+          ,a.is_traded_nft
+          ,a.is_moved_nft
+      from {{ ref('seaport_ethereum_base_pairs') }} a
+     where 1=1 
+       {% if is_incremental() %}
+       and block_time >= (select max(block_time) from {{ this }})
+       {% endif %}     
+       and not a.is_private
+    union all
+    select a.block_time
+          ,a.block_number
+          ,a.tx_hash
+          ,a.evt_index
+          ,a.sub_type
+          ,a.sub_idx
+          ,a.offer_first_item_type
+          ,a.consideration_first_item_type
+          ,a.sender
+          ,case when b.tx_hash is not null then b.receiver
+                else a.receiver
+           end as receiver
+          ,a.zone
+          ,a.token_contract_address
+          ,a.original_amount
+          ,a.item_type
+          ,a.token_id
+          ,a.platform_contract_address
+          ,a.offer_cnt
+          ,a.consideration_cnt
+          ,a.is_private
+          ,a.eth_erc_idx
+          ,a.nft_cnt
+          ,a.erc721_cnt
+          ,a.erc1155_cnt
+          ,a.order_type
+          ,a.is_price
+          ,a.is_netprice
+          ,a.is_platform_fee
+          ,a.is_creator_fee
+          ,a.creator_fee_idx
+          ,a.is_traded_nft
+          ,a.is_moved_nft
+      from {{ ref('seaport_ethereum_base_pairs') }} a
+           left join {{ ref('seaport_ethereum_base_pairs') }} b on b.tx_hash = a.tx_hash
+                                  and b.evt_index = a.evt_index
+                                  and b.block_time = a.block_time -- for performance
+                                  and b.token_contract_address = a.token_contract_address
+                                  and b.token_id = a.token_id
+                                  and b.original_amount = a.original_amount
+                                  and b.is_moved_nft
+     where 1=1
+       {% if is_incremental() %}
+       and block_time >= (select max(block_time) from {{ this }})
+       {% endif %}     
+       and a.is_private
+       and not a.is_moved_nft
+       and a.consideration_cnt > 0
+) 
+,iv_volume as (
     select block_time
           ,tx_hash
           ,evt_index
-          ,max(token_contract_address::text) as token_contract_address 
+          ,max(token_contract_address) as token_contract_address 
           ,sum(case when is_price then original_amount end) as price_amount_raw
           ,sum(case when is_platform_fee then original_amount end) as platform_fee_amount_raw
-          ,max(case when is_platform_fee then receiver::text end) as platform_fee_receiver
+          ,max(case when is_platform_fee then receiver end) as platform_fee_receiver
           ,sum(case when is_creator_fee then original_amount end) as creator_fee_amount_raw
           ,sum(case when is_creator_fee and creator_fee_idx = 1 then original_amount end) as creator_fee_amount_1_raw
           ,sum(case when is_creator_fee and creator_fee_idx = 2 then original_amount end) as creator_fee_amount_2_raw
           ,sum(case when is_creator_fee and creator_fee_idx = 3 then original_amount end) as creator_fee_amount_3_raw
           ,sum(case when is_creator_fee and creator_fee_idx = 4 then original_amount end) as creator_fee_amount_4_raw
-          ,max(case when is_creator_fee and creator_fee_idx = 1 then receiver::text end) as creator_fee_receiver_1_raw
-          ,max(case when is_creator_fee and creator_fee_idx = 2 then receiver::text end) as creator_fee_receiver_2_raw
-          ,max(case when is_creator_fee and creator_fee_idx = 3 then receiver::text end) as creator_fee_receiver_3_raw
-          ,max(case when is_creator_fee and creator_fee_idx = 4 then receiver::text end) as creator_fee_receiver_4_raw
-      from dune_user_generated.sohwak_os_s10_base_pair_3 a
+          ,max(case when is_creator_fee and creator_fee_idx = 1 then receiver end) as creator_fee_receiver_1_raw
+          ,max(case when is_creator_fee and creator_fee_idx = 2 then receiver end) as creator_fee_receiver_2_raw
+          ,max(case when is_creator_fee and creator_fee_idx = 3 then receiver end) as creator_fee_receiver_3_raw
+          ,max(case when is_creator_fee and creator_fee_idx = 4 then receiver end) as creator_fee_receiver_4_raw
+      from iv_base_pairs_priv a
      where 1=1
        and eth_erc_idx > 0
-    --   and tx_hash = '\xa9cb862c5a172319dd403f72e5ba806708d7bb8774a2f61d55ea169d27923a19' -- multi buy
-    --   and tx_hash = '\x067494c3c2e1dfc68d4806e51ebb76d89f7be369f752fcaa1df4e7d91acbbda8' -- bundle trade
-    --   and tx_hash = '\x08eba6fac7c403068b8ed13bd2fc37e9717a29929581a66c9e88ca88fa206a3d' -- multitrade
-    --   and tx_hash = '\x0001e6fd67badfda25f85364215572173b1eff29ff11362987562b23b730fb47' -- offer_accepted, 1 nft
-    --   and tx_hash = '\x8cd79572bb14ee10a07a149644b4e5f37f62cb5d029ea23713107094f53ff68c' -- offer_accepted, 20 nft, weth
-    --   and tx_hash = '\x0b836ca871e15048c48c4143c243d7c7f35323fd20ecd394ce004fe48101edc6' -- offer_accepted, 2x creator fee 
-    --   and tx_hash = '\xd95bfa3251c5971ca7dec1b1cbde9ffb8637074810fafbdda4cfacf32e2698c9' -- TOWNSTAR + ETH
-    --   and tx_hash = '\xa9cb862c5a172319dd403f72e5ba806708d7bb8774a2f61d55ea169d27923a19' -- same seller, token_contract, token_id but 4 transfers 
-    --   and tx_hash = '\x3c86aa7172ff0971b3d2450f2aa09e2aa99492b774403bfd036113accaccdcc2' -- MEV
-    --   and tx_hash = '\x4ac895a0975574084899a93496b08e2d05808d39189d3a27ce8ac3935679aa15' -- 2nft, buy and move, and no price
-    --   and tx_hash = '\x287ee2e4dfa7feee4b7c3c54f74013088fd7fe87c382103c45562e050019cc20' -- 3 erc1155, buy, move item so erc20->erc1155 
-    --  and tx_hash = '\x698024deef22eace175e3a5fe81ec7219970aa13af1efada75df8813d9c06f4e' -- self wash trade -- very rare and bad case
-    --  and tx_hash =  '\x79f2ca6153e03b186cd6ec1d7bc96f50309f0e8a86cc302de48d805d076c3fe2' -- buy 1 simul and send them all to another wallet
-    --  and tx_hash = '\x5022f60c36cb85b777f4e0ce5768465234b496030a1909d17ab5a6b8f514d759' -- buy 3 simul and send them all to another wallet
      group by 1,2,3
 )
--- select *
---   from iv_volume
---  order by 
---  block_time, tx_hash, evt_index 
 ,iv_nfts as (
     select a.block_time
           ,a.tx_hash
@@ -70,10 +139,10 @@ with iv_volume as (
           ,a.zone
           ,a.exchange_contract_address
           ,b.token_contract_address 
-          ,price_amount_raw / nft_cnt as price_amount_raw
-          ,platform_fee_amount_raw / nft_cnt as platform_fee_amount_raw
+          ,round(price_amount_raw / nft_cnt) as price_amount_raw  -- to truncate the odd number of decimal places 
+          ,round(platform_fee_amount_raw / nft_cnt) as platform_fee_amount_raw
           ,platform_fee_receiver
-          ,creator_fee_amount_raw / nft_cnt as creator_fee_amount_raw
+          ,round(creator_fee_amount_raw / nft_cnt) as creator_fee_amount_raw  
           ,creator_fee_amount_1_raw / nft_cnt as creator_fee_amount_1_raw
           ,creator_fee_amount_2_raw / nft_cnt as creator_fee_amount_2_raw
           ,creator_fee_amount_3_raw / nft_cnt as creator_fee_amount_3_raw
@@ -85,47 +154,50 @@ with iv_volume as (
           ,case when nft_cnt > 1 then true
                 else false
            end as estimated_price
-      from dune_user_generated.sohwak_os_s10_base_pair_3 a
+          ,is_private
+    from iv_base_pairs_priv a
            left join iv_volume b on b.block_time = a.block_time  -- tx_hash and evt_index is PK, but for performance, block_time is included
                                  and b.tx_hash = a.tx_hash
                                  and b.evt_index = a.evt_index
      where 1=1
        and a.is_traded_nft
-    --   and a.tx_hash = '\xa9cb862c5a172319dd403f72e5ba806708d7bb8774a2f61d55ea169d27923a19' -- multi buy
-    --   and a.tx_hash = '\x067494c3c2e1dfc68d4806e51ebb76d89f7be369f752fcaa1df4e7d91acbbda8' -- bundle trade
-    --   and a.tx_hash = '\x08eba6fac7c403068b8ed13bd2fc37e9717a29929581a66c9e88ca88fa206a3d' -- multitrade, different zone so different platform fees
-    --   and a.tx_hash = '\x0001e6fd67badfda25f85364215572173b1eff29ff11362987562b23b730fb47' -- offer_accepted, 1 nft
-    --   and a.tx_hash = '\x8cd79572bb14ee10a07a149644b4e5f37f62cb5d029ea23713107094f53ff68c' -- offer_accepted, 20 nft, weth
-    --   and a.tx_hash = '\x0b836ca871e15048c48c4143c243d7c7f35323fd20ecd394ce004fe48101edc6' -- offer_accepted, 2x creator fee 
-    --   and a.tx_hash = '\xd95bfa3251c5971ca7dec1b1cbde9ffb8637074810fafbdda4cfacf32e2698c9' -- TOWNSTAR + ETH
-    --   and a.tx_hash = '\xa9cb862c5a172319dd403f72e5ba806708d7bb8774a2f61d55ea169d27923a19' -- same seller, token_contract, token_id but 4 transfers 
-    --   and a.tx_hash = '\x3c86aa7172ff0971b3d2450f2aa09e2aa99492b774403bfd036113accaccdcc2' -- MEV arbitrage, but self?
-    --   and a.tx_hash = '\x4ac895a0975574084899a93496b08e2d05808d39189d3a27ce8ac3935679aa15' -- 2nft, buy and move, and no price
-    --   and a.tx_hash = '\x287ee2e4dfa7feee4b7c3c54f74013088fd7fe87c382103c45562e050019cc20' -- 3 erc1155, buy, move item so erc20->erc1155 
-    --  and a.tx_hash = '\x698024deef22eace175e3a5fe81ec7219970aa13af1efada75df8813d9c06f4e' -- self wash trade -- very rare and bad case
-    --  and a.tx_hash =  '\x79f2ca6153e03b186cd6ec1d7bc96f50309f0e8a86cc302de48d805d076c3fe2' -- buy 1 simul and send them all to another wallet
-    --  and a.tx_hash = '\x5022f60c36cb85b777f4e0ce5768465234b496030a1909d17ab5a6b8f514d759' -- buy 3 simul and send them all to another wallet
-    --  and a.tx_hash = '\xe1efb363d1d6a726c033d902da2e9ed3330486e9544086bb24c5315d5660b2f0' -- private1
-    --  and a.tx_hash = '\xe1efb363d1d6a726c033d902da2e9ed3330486e9544086bb24c5315d5660b2f0' -- private2 -- no cost
-    --  and a.tx_hash = '\x69a51f105786c9aa4afa15fcb91148c52e97cd1a3a87065c0d5b7b7f3f8eae1c' -- private3
-    --  group by 1,2,3
 )
-select 
-    --   sum(price_amount_raw)
-    --   ,sum(platform_fee_amount_raw)
-       *
-  from iv_nfts
- limit 1000
-
-
--- select block_time
---       ,tx_hash
---       ,evt_index
---       ,token_contract_address
---       ,
---   from dune_user_generated.sohwak_os_s10_base_pair a
---  where 1=1
---   and is_traded_nft 
---   and tx_hash = '\xa9cb862c5a172319dd403f72e5ba806708d7bb8774a2f61d55ea169d27923a19' -- multi buy
-   
+,iv_trades(
+    select a.*
+          ,t.`from` as tx_from
+          ,t.`to` as tx_to
+          ,right(t.data,8) as right_hash
+          ,case when a.token_contract_address = '0x0000000000000000000000000000000000000000' then 'ETH'
+                else e.symbol
+           end as token_symbol
+          ,a.price_amount_raw / power(10, e.decimals) as price_amount
+          ,a.price_amount_raw / power(10, e.decimals) * p.price as price_amount_usd
+          ,a.platform_fee_amount_raw / power(10, e.decimals) as platform_fee_amount
+          ,a.platform_fee_amount_raw / power(10, e.decimals) * p.price as platform_fee_amount_usd
+          ,a.creator_fee_amount_raw / power(10, e.decimals) as creator_fee_amount
+          ,a.creator_fee_amount_raw / power(10, e.decimals) * p.price as creator_fee_amount_usd
+          ,tx_hash || '-' || evt_index as unique_trade_id
+      from iv_nfts a
+           inner join {{ source('ethereum','transactions') }} t on t.hash = a.tx_hash
+                                                        {% if not is_incremental() %}
+                                                        and t.block_number > 14801608
+                                                        {% endif %}
+                                                        {% if is_incremental() %}
+                                                        and t.block_time >= date_trunc("day", now() - interval '1 week')
+                                                        {% endif %}
+           left join {{ ref('tokens_nft') }} n on n.contract_address = nft_contract_address 
+                                               and n.blockchain = 'ethereum'
+           left join {{ ref('tokens_erc20') }} e on e.contract_address = a.token_contract_address
+                                                 and e.blockchain = 'ethereum'
+           left join {{ source('prices', 'usd') }} p on p.contract_address = case when a.token_contract_address = '0x0000000000000000000000000000000000000000' then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                                                                                  else a.token_contract_address
+                                                                             end
+                                                    and p.minute = date_trunc('minute', a.block_time)
+                                                    and p.blockchain = 'ethereum'
+                                                    {% if is_incremental() %} 
+                                                    and p1.minute >= date_trunc("day", now() - interval '1 week')
+                                                    {% endif %}       
+)
+select *
+  from iv_trades
    

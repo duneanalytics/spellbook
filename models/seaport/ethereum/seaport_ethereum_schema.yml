@@ -272,4 +272,18 @@ models:
       - name: is_moved_nft
         description: "Transferred NFT if `true`, because it is traded or just transferred."
 
+  - name: seaport_ethereum_trades
+    meta:
+      blockchain: ethereum
+      project: seaport
+      contributors: sohwak
+    config:
+      tags: ['ethereum','seaport','base_pairs','sohwak']
+    description: >
+        Exploded table from Seaport trade events with `offer` and `consideration` array columns
+    columns:
+      - name: block_time
+        description: "Block time in UTC"
+      - name: block_number
+        description: "Block number of transaction"
 

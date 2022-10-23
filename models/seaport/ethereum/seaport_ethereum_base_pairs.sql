@@ -1,7 +1,6 @@
 {{ config(
-    alias = 'base_pairs',
-    materialized = 'view'
-   )
+     alias = 'base_pairs'
+     )
 }}
 
 with iv_offer_consideration as (
