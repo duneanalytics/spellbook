@@ -1,0 +1,104 @@
+version: 2
+
+models:
+  - name: contracts_optimism_project_name_mappings
+    meta:
+      blockchain: optimism
+      sector: contracts
+      contibutors: chuxinh, msilb7
+    config:
+      tags: ['optimism', 'contracts', 'addresses']
+    description: "A list of contract name mapping from Dune name to cleaned name."
+    columns:
+      - name: dune_name
+        description: "Contract name decoded by Dune"
+        tests:
+          - unique
+          - not_null
+      - name: mapped_name
+        description: "Mapped contract name"
+
+
+  - name: contracts_optimism_contract_mapping
+    meta:
+      blockchain: optimism
+      sector: contracts
+      contibutors: chuxinh, msilb7
+    config:
+      tags: ['optimism', 'contracts', 'addresses']
+    description: "Mapping of contracts to its creators and names on Optimism."
+    columns:
+      - &contract_address
+        name: contract_address
+        description: "Address of the contract"
+        tests:
+          - unique
+          - not_null
+      - &contract_project
+        name: contract_project
+        description: "Project name of the contract"
+      - name: token_symbol
+        description: "Token symbol of the contract, if any"
+      - &contract_name
+        name: contract_name
+        description: "Contract name"
+      - &creator_address
+        name: creator_address
+        description: "Contract creator address"
+      - &created_time
+        name: created_time
+        description: "contract creation time"
+      - name: contract_creator_if_factory
+        description: "Contract creator address if it is a factory contract"
+      - name: is_self_destruct
+        description: "Flag if it is a self destruct contract"
+      - &creation_tx_hash
+        name: creation_tx_hash
+        description: "Contract creation transaction hash"
+
+
+  - name: contracts_optimism_contract_creator_address_list
+    meta:
+      blockchain: optimism
+      sector: contracts
+      contibutors: chuxinh, msilb7
+    config:
+      tags: ['optimism', 'contracts', 'addresses']
+    description: "A list of contract creator addresses and corresponding names."
+    columns:
+      - name: creator_address
+        description: "Contract creator address"
+        tests:
+          - unique
+          - not_null
+      - *contract_project
+
+
+  - name: contracts_optimism_contract_overrides
+    meta:
+      blockchain: optimism
+      sector: contracts
+      contibutors: chuxinh, msilb7
+    config:
+      tags: ['optimism', 'contracts', 'addresses']
+    description: "A list of contracts where we know their mapping, but their creator is not deterministic and the contracts are not verified."
+    columns:
+      - *contract_address
+      - *contract_project
+      - *contract_name
+
+
+  - name: contracts_optimism_self_destruct_contracts
+    meta:
+      blockchain: optimism
+      sector: contracts
+      contibutors: chuxinh, msilb7
+    config:
+      tags: ['optimism', 'contracts', 'addresses']
+    description: "A list of contracts that are self-destruct."
+    columns:
+      - *created_time
+      - *creation_tx_hash
+      - *contract_address
+      - name: trace_element
+        description: "First item in the `trace_address` array"

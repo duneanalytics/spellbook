@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: labels_validators_bnb
+  - name: labels_validators_ethereum
     meta:
-      blockchain: bnb
+      blockchain: ethereum
       sector: labels
       project: validators
       contibutors: soispoke
     config:
-      tags: ['labels', 'bnb', 'validators']
-    description: "Known validators exchange addresses across chains"
+      tags: ['labels', 'ethereum', 'validators']
+    description: "Known validators exchange addresses on Ethereum"
     columns:
       - &blockchain
         name: blockchain
@@ -35,3 +35,60 @@ models:
       - &updated_at
         name: updated_at
         description: "When were labels updated for the last time"
+
+  - name: labels_validators_bnb
+    meta:
+      blockchain: bnb
+      sector: labels
+      project: validators
+      contibutors: soispoke
+    config:
+      tags: ['labels', 'bnb', 'validators']
+    description: "Known validators exchange addresses on BNB chain"
+    columns:
+      - *blockchain 
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+
+  - name: labels_validators_solana
+    meta:
+      blockchain: bnb
+      sector: labels
+      project: validators
+      contibutors: soispoke
+    config:
+      tags: ['labels', 'solana', 'validators']
+    description: "Known validators exchange addresses on Solana"
+    columns:
+      - *blockchain 
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+
+  - name: labels_validators
+    meta:
+      blockchain: ethereum, bnb, solana
+      sector: labels
+      project: validators
+      contibutors: soispoke
+    config:
+      tags: ['labels', 'ethereum', 'bnb', 'solana', 'validators']
+    description: "Known validators exchange addresses across blockchains"
+    columns:
+      - *blockchain 
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
