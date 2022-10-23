@@ -319,7 +319,12 @@ models:
       gnosis:
         +schema: cow_protocol_gnosis
         +materialized: view
-
+    oneinch:
+      +schema: oneinch
+      +materialized: view
+      ethereum:
+        +schema: oneinch_ethereum
+        +materialized: view
 
     ironbank:
       +schema: ironbank
