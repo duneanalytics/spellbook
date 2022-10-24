@@ -33,11 +33,11 @@ FROM (
         burned_native,
         burned_usd,
         validator,
-        gas_price_gwei,
-        gas_price_usd,
-        gas_used,
-        gas_limit,
-        gas_usage_percent,
+        l1_gas_price_gwei,
+        l1_gas_price_usd,
+        l1_gas_used,
+        l1_gas_limit,
+        l1_gas_usage_percent,
         transaction_type
     FROM {{ ref(gas_model) }}
     {% if not loop.last %}
