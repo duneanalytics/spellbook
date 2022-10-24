@@ -64,15 +64,6 @@ models:
         description: "Gas price (per gas unit) denoted in $USD"
       - &gas_used
         name: gas_used
-        description: "Amount of gas units consumed by the transaction"
-      - &gas_price_gwei
-        name: gas_price_gwei
-        description: "L2 gas price (per gas unit) denoted in gwei"
-      - &gas_price_usd
-        name: gas_price_usd
-        description: "L2 gas price (per gas unit) denoted in $USD"
-      - &gas_used
-        name: gas_used
         description: "Amount of L2 gas units consumed by the transaction"
       - &gas_limit
         name: gas_limit
