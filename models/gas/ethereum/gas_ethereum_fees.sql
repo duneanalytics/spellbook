@@ -36,11 +36,11 @@ SELECT
      base_fee_per_gas / 1e18 * p.price AS base_fee_usd,
      priority_fee_per_gas / 1e9 AS priority_fee_gwei,
      priority_fee_per_gas / 1e18 * p.price AS priority_fee_usd,
-     gas_price /1e9 AS l1_gas_price_gwei,
-     gas_price / 1e18 * p.price AS l1_gas_price_usd,
-     txns.gas_used as l1_gas_used,
-     txns.gas_limit as l1_gas_limit,
-     txns.gas_used / txns.gas_limit * 100 AS l1_gas_usage_percent,
+     gas_price /1e9 AS gas_price_gwei,
+     gas_price / 1e18 * p.price AS gas_price_usd,
+     txns.gas_used,
+     txns.gas_limit,
+     txns.gas_used / txns.gas_limit * 100 AS gas_usage_percent,
      difficulty,
      type AS transaction_type
 FROM {{ source('ethereum','transactions') }} txns
