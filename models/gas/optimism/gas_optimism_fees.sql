@@ -24,15 +24,15 @@ SELECT
      cast(NULL as double) AS burned_native, -- Not applicable for L2s
      cast(NULL as double) AS burned_usd, -- Not applicable for L2s
      cast(NULL as string) as validator, -- Not applicable for L2s
-     l1_gas_price/1e9 as gas_price_gwei,
-     l1_gas_price/1e18 * p.price as gas_price_usd,
-     txns.gas_used,
-     l1_fee_scalar,
+     l1_gas_price/1e9 as l1_gas_price_gwei,
+     l1_gas_price/1e18 * p.price as l1_gas_price_usd,
+     txns.gas_used as l1_gas_used,
+     l1_fee_scalar as l1_gas_used,
      txns.gas_price/1e9 as l2_gas_price_gwei,
      txns.gas_price/1e18 * p.price as l2_gas_price_usd,
      txns.gas_used as l2_gas_used,
-     cast(NULL as bigint) as gas_limit, --Not applicable for L2s
-     cast(NULL as double) as gas_usage_percent, --Not applicable for L2s
+     cast(NULL as bigint) as l1_gas_limit, --Not applicable for L2s
+     cast(NULL as double) as l1_gas_usage_percent, --Not applicable for L2s
      type AS transaction_type
 FROM {{ source('optimism','transactions') }} txns
 JOIN {{ source('optimism','blocks') }} blocks ON blocks.number = txns.block_number

@@ -80,21 +80,21 @@ models:
       - &priority_fee_usd
         name: priority_fee_usd
         description: "Maximum amount of gas (in $USD) to be included as a tip to the miner/validator"
-      - &gas_price_gwei
-        name: gas_price_gwei
-        description: "Gas price (per gas unit) denoted in gwei"
-      - &gas_price_usd
-        name: gas_price_usd
-        description: "Gas price (per gas unit) denoted in $USD"
-      - &gas_used
-        name: gas_used
-        description: "Amount of gas units consumed by the transaction"
-      - &gas_limit
-        name: gas_limit
-        description: "Maximum amount of gas units that can be consumed by the transaction"
-      - &gas_usage_percent
-        name: gas_usage_percent
-        description: "Percentage of Gas Used relative to the gas limit"
+      - &l1_gas_price_gwei
+        name: l1_gas_price_gwei
+        description: "Gas price (per gas unit) denoted in gwei on Ethereum Layer 1"
+      - &l1_gas_price_usd
+        name: l1_gas_price_usd
+        description: "Gas price (per gas unit) denoted in $USD on Ethereum Layer 1"
+      - &l1_gas_used
+        name: l1_gas_used
+        description: "Amount of gas units consumed by the transaction on Ethereum Layer 1"
+      - &l1_gas_limit
+        name: l1_gas_limit
+        description: "Maximum amount of gas units that can be consumed by the transaction on Ethereum Layer 1"
+      - &l1_gas_usage_percent
+        name: l1_gas_usage_percent
+        description: "Percentage of Gas Used relative to the gas limit on Ethereum Layer 1"
       - &difficulty
         name: difficulty
         description: "Maximum amount of gas units that can be consumed by the transaction"

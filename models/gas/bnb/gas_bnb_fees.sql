@@ -26,11 +26,11 @@ SELECT
     CASE WHEN block_number >= 13082000 THEN value/1e18 * 10 / 100 * p.price 
         ELSE NULL::double END AS burned_usd, -- change after BEP95
     miner AS validator,
-    gas_price /1e9 AS gas_price_gwei,
-    gas_price / 1e18 * p.price AS gas_price_usd,
-    txns.gas_used,
-    txns.gas_used / txns.gas_limit * 100 AS gas_usage_percent,
-    txns.gas_limit,
+    gas_price /1e9 AS l1_gas_price_gwei,
+    gas_price / 1e18 * p.price AS l1_gas_price_usd,
+    txns.gas_used as l1_gas_used,
+    txns.gas_limit as l1_gas_limit,
+    txns.gas_used / txns.gas_limit * 100 AS l1_gas_usage_percent,
     difficulty,
     type AS transaction_type
 FROM {{ source('bnb','transactions') }} txns
