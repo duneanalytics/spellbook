@@ -157,6 +157,10 @@ inputAssetIdA bytea;
 outputAssetIdA bytea;
 inputAssetIdB bytea;
 outputAssetIdB bytea;
+inputAssetIdBSubstring bytea;
+outputAssetIdBSubstring bytea;
+inputAssetIdBValue numeric;
+outputAssetIdBValue numeric;
 auxData bytea;
 bitConfig bytea;
 secondInputInUse boolean;
@@ -188,42 +192,52 @@ for i in 0..NUM_BRIDGE_CALLS_PER_BLOCK - 1
 loop 
   bridgeId = substring(data, startIndex + 1, 32);
   bridgeNum = bytea2numeric(substring(bridgeId, length(bridgeId) - 3, 4), false)::bigint & ((1::bigint << 32) - 1);
-  
+
  -- currently hardcoded here but should be able to fetch dynamically from aztec_v2.RollupProcessor_call_getSupportedBridge
  case bridgeNum
-   when 1
-   then 
+  when 1, 9
+  then 
      bridgeName = 'ElementBridge';
-   when 2, 3
-   then
+  when 2, 3
+  then
      bridgeName = 'LidoBridge';
-   when 4
-   then 
+  when 4
+  then 
      bridgeName = 'AceOfZkBridge';
   when 5
   then
      bridgeName = 'CurveStEthBridge';
+ when 6, 7, 8
+ then
+    bridgeName = 'YearnBridge';
+when 10
+then
+    bridgeName = 'ERC4626Bridge';
   else
      bridgeName = 'N/A';
  end case;
-  
+
   inputAssetIdA = aztec_v2.f_bytea_rshift(bridgeId, 32);
   outputAssetIdA = aztec_v2.f_bytea_rshift(bridgeId, 92);
   inputAssetIdB = aztec_v2.f_bytea_rshift(bridgeId, 62);
   outputAssetIdB = aztec_v2.f_bytea_rshift(bridgeId, 122);
   auxData = aztec_v2.f_bytea_rshift(bridgeId, 184);
-  bitConfig = aztec_v2.f_bytea_rshift(bridgeId, 152);
+  bitConfig = substring(aztec_v2.f_bytea_rshift(bridgeId, 152), 32, 1);
   
   if (get_bit(bitConfig, 0) = 1) then
     secondInputInUse = true;
+    inputAssetIdBValue = bytea2numeric(substring(inputAssetIdB, 32, 8), false)::bigint & (((1::bigint << 30) - 1));
   else
+    inputAssetIdBValue = 0;
     secondInputInUse = false;
   end if;
   
   if (get_bit(bitConfig, 1) = 1) then
     secondOutputInUse = true;
+    outputAssetIdBValue = bytea2numeric(substring(outputAssetIdB, 32, 8), false)::bigint & (((1::bigint << 30) - 1));
   else
     secondOutputInUse = false;
+    outputAssetIdBValue = 0;
   end if;
  
   select
@@ -232,13 +246,13 @@ loop
   -- bridgeName: text
     bridgeName,
   --   inputAssetIdA: numeric
-    bytea2numeric(substring(inputAssetIdA, length(inputAssetIdA) - 7, 8), false)::bigint & (((1::bigint << 30) - 1)),
+    bytea2numeric(substring(inputAssetIdA, 32, 8), false)::bigint & ((1::bigint << 30) - 1),
   --   outputAssetIdA: numeric
-    bytea2numeric(substring(outputAssetIdA, length(outputAssetIdA) - 7, 8), false)::bigint & (((1::bigint << 30) - 1)),
+    bytea2numeric(substring(outputAssetIdA, 32, 8), false)::bigint & ((1::bigint << 30) - 1),
   --   inputAssetIdB: numeric,
-    bytea2numeric(substring(inputAssetIdB, length(inputAssetIdB) - 7, 8), false)::bigint & (((1::bigint << 30) - 1)),
+    inputAssetIdBValue,
   --   outputAssetIdB: numeric,
-    bytea2numeric(substring(outputAssetIdB, length(outputAssetIdB) - 7, 8), false)::bigint & (((1::bigint << 30) - 1)),
+    outputAssetIdBValue,
   --   auxData: numeric    
     bytea2numeric(substring(auxData, length(auxData) - 7, 8), false)::bigint & (((1::bigint << 62) - 1)),
   --  secondInputInUse: boolean
@@ -460,28 +474,3 @@ RETURN proofData;
 end;
 
 $$LANGUAGE PLPGSQL;
-
--- select
---   "call_block_time",
--- --   "_0",
--- (
---     select
---       rollupid
---     from
---       aztec_v2.fn_process_aztec_block("_0")
---   ),
---   (
---     select
---       assetIds
---     from
---       aztec_v2.fn_process_aztec_block("_0")
---   ),
---   (
---     select
---       totalTxFees
---     from
---       aztec_v2.fn_process_aztec_block("_0")
---   )
-  
--- from
---   aztec_v2."RollupProcessor_call_processRollup"
