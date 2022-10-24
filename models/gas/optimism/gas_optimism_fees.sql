@@ -1,4 +1,3 @@
-
 {{ config(
     alias = 'fees',
     partition_by = ['block_date'],
