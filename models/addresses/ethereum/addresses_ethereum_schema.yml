@@ -57,6 +57,23 @@ models:
         description: "Contract address of OFAC sanctioned currency"
       - name: currency_name
         description: "Currency symbol of OFAC sanctioned currency"
+        
+  - name: addresses_ethereum_defi
+    meta:
+      blockchain: ethereum
+      sector: dex, defi
+      project: addresses
+      contibutors: umer_h_adil
+    config:
+      tags: ['table', 'dex', 'defi', 'addresses', 'ethereum']
+    description: "Known DeFi addresses"
+    columns:
+      - name: address
+        description: "Address of DeFi protocol"
+      - name: project
+        description: "Name of DeFi protocol"
+      - name: project_type
+        description: "Type of DeFi protocol (e.g. Dex, Lending, ...)"
 
   - name: addresses_ethereum_mev
     meta:

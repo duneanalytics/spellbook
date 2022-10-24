@@ -3,7 +3,7 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",
                                 "dex",
-                                \'["jeff-dude", "hosuke", "0xRob", "henrystats"]\') }}'
+                                \'["jeff-dude", "hosuke", "0xRob", "pandajackson42", "henrystats"]\') }}'
         )
 }}
 
@@ -14,6 +14,8 @@
 'airswap_ethereum_trades',
 'clipper_ethereum_trades',
 'shibaswap_ethereum_trades',
+'swapr_ethereum_trades',
+'defiswap_ethereum_trades', 
 'dfx_ethereum_trades'
 ] %}
 
