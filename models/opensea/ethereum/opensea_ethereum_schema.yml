@@ -41,7 +41,7 @@ models:
     meta:
       blockchain: ethereum
       project: opensea
-      contributors: soispoke, umer_h_adil
+      contributors: soispoke, umer_h_adil, hildobby
     config:
       tags: ['ethereum','opensea','v1','events']
     description: >
@@ -162,7 +162,7 @@ models:
     meta:
       blockchain: ethereum
       project: opensea
-      contributors: soispoke, sohwak
+      contributors: [soispoke, sohwak, hildobby]
     config:
       tags: ['ethereum','opensea','v3','events']
     description: >
@@ -212,7 +212,7 @@ models:
     meta:
       blockchain: ethereum
       project: opensea
-      contributors: soispoke
+      contributors: [soispoke, hildobby]
     config:
       tags: ['ethereum','opensea','events']
     description: >
@@ -258,7 +258,7 @@ models:
     meta:
       blockchain: ethereum
       project: opensea
-      contributors: soispoke
+      contributors: [soispoke, hildobby]
     config:
       tags: ['ethereum','opensea','trades']
     description: >
