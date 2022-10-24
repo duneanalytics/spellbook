@@ -43,7 +43,7 @@ models:
         description: "Amount of $USD transferred from sender to recipient"
       - &tx_fee_native
         name: tx_fee_native
-        description: "Total amount of native tokens (ETH) paid in gas fees -- Pre EIP 1559: Gas Price * Gas Used; Post EIP 1559: Gas Price * Gas Used ; Base fee + Priority fee) * Gas used"
+        description: "Total amount of native tokens (ETH) paid in gas fees"
       - &tx_fee_usd
         name: tx_fee_usd
         description: "Total amount of $USD paid in gas fees"
@@ -94,19 +94,19 @@ models:
         description: "Dynamic Overhead implemented by Optimism to serve as a buffer in case L1 prices rapidly increase."
       - &tx_fee_equivalent_on_l1_native
         name: tx_fee_equivalent_on_l1_native
-        description: ""
+        description: "Total amount of ETH that would have been paid in gas fees on Ethereum L1"
       - &tx_fee_equivalent_on_l1_usd
         name: tx_fee_equivalent_on_l1_usd
-        description: ""
+        description:  "Total amount of USD that would have been paid in gas fees on Ethereum L1"
       - &num_zero_bytes
         name: num_zero_bytes
-        description: ""
+        description: "Count of zero bytes for this transaction, can be used to understand calldata costs"
       - &num_nonzero_bytes
         name: num_nonzero_bytes
-        description: ""
+        description: "Count of non-zero bytes for this transaction, can be used to understand calldata costs"
       - &calldata_gas
         name: calldata_gas
-        description: ""
+        description: "Call data gas computed using costs for zero and non zero bytes included in the transaction"
       - &type
         name: type
         description: "Transaction type: Legacy (Pre EIP 1559) or DynamicFee (Post EIP-1559)"
