@@ -1,0 +1,88 @@
+version: 2
+
+models:
+  - name: gas_optimism_fees
+    meta:
+      blockchain: optimism
+      sector: gas
+      contributors: soispoke
+    config:
+      tags: ['optimism', 'gas', 'fees']
+    description: >
+        Gas Fees on Optimism rollup Layer 2
+    columns:
+      - &blokchain
+        name: blockchain
+        description: "Blockchain name"    
+      - &block_time
+        name: block_time
+        description: "Timestamp for block event time in UTC"
+      - &block_number
+        name: block_number
+        description: "Block number"
+      - &tx_hash
+        name: tx_hash
+        description: "Primary key of the transaction"
+        tests:
+          - unique
+          - not_null
+      - &tx_sender
+        name: tx_sender
+        description: "Initiated the transaction"
+      - &tx_receiver
+        name: tx_receiver
+        description: "Received the transaction"
+      - &native_token_symbol
+        name: native_token_symbol
+        description: "Symbol of native token (ETH) for the Ethereum Blockchain"
+      - &tx_amount_native
+        name: tx_amount_native
+        description: "Amount of native tokens (ETH) transferred from sender to recipient"
+      - &tx_amount_usd
+        name: tx_amount_usd
+        description: "Amount of $USD transferred from sender to recipient"
+      - &tx_fee_native
+        name: tx_fee_native
+        description: "Total amount of native tokens (ETH) paid in gas fees -- Pre EIP 1559: Gas Price * Gas Used; Post EIP 1559: Gas Price * Gas Used ; Base fee + Priority fee) * Gas used"
+      - &tx_fee_usd
+        name: tx_fee_usd
+        description: "Total amount of $USD paid in gas fees"
+      - &burned_native
+        name: burned_native
+        description: "Total amount of native tokens (ETH) burned for this transaction, not applicable to L2 because transactionsonly indirectly burn gas on L1"
+      - &burned_usd
+        name: burned_usd
+        description: "Total amount of $USD burned for this transaction, not applicable to L2 because transactionsonly indirectly burn gas on L1"    
+      - &validator
+        name: validator
+        description: "Address of blockchain validator for this transaction within the block, also referred to as miner before the Merge when Ethereum's consensus mechanism was PoW"  
+      - &gas_price_gwei
+        name: gas_price_gwei
+        description: "Gas price (per gas unit) denoted in gwei"
+      - &gas_price_usd
+        name: gas_price_usd
+        description: "Gas price (per gas unit) denoted in $USD"
+      - &gas_used
+        name: gas_used
+        description: "Amount of gas units consumed by the transaction"
+      - &l1_fee_scalar
+        name: l1_fee_scalar
+        description: "Dynamic Overhead implemented by Optimism to serve as a buffer in case L1 prices rapidly increase."
+      - &l2_gas_price_gwei
+        name: l2_gas_price_gwei
+        description: "L2 gas price (per gas unit) denoted in gwei"
+      - &l2_gas_price_usd
+        name: l2_gas_price_usd
+        description: "L2 gas price (per gas unit) denoted in $USD"
+      - &l2_gas_used
+        name: l2_gas_used
+        description: "Amount of L2 gas units consumed by the transaction"
+      - &gas_limit
+        name: gas_limit
+        description: "Not applicable to Optimism L2"
+      - &gas_usage_percent
+        name: gas_usage_percent
+        description: "Not applicable to Optimism L2"
+      - &type
+        name: type
+        description: "Transaction type: Legacy (Pre EIP 1559) or DynamicFee (Post EIP-1559)"
