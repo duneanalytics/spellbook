@@ -20,7 +20,7 @@ models:
     meta:
       blockchain: ethereum, solana
       sector: nft
-      contributors: soispoke, hildobby, ilemi, 0xRob, cat
+      contributors: soispoke, hildobby, ilemi, 0xRob, cat, umer_h_adil
     config:
       tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'events']
     description: >
@@ -180,7 +180,7 @@ models:
     meta:
       blockchain: ethereum, solana
       sector: nft
-      contributors: soispoke, hildobby
+      contributors: soispoke, hildobby, umer_h_adil
     config:
       tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'mints']
     description: >
