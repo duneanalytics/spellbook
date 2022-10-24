@@ -162,9 +162,6 @@ where
   and tx.block_time >= date_trunc("day", now() - interval '1 week')
   and prc.minute >= date_trunc("day", now() - interval '1 week')
   {% endif %}
-  {% if not is_incremental() %}
-  and tx.block_number > 14801608
-  {% endif %}
 )
 select
   blockchain,
