@@ -32,8 +32,17 @@ SELECT
      txns.gas_price/1e18 * p.price as l2_gas_price_usd,
      txns.gas_used as l2_gas_used,
      cast(NULL as bigint) as l1_gas_limit, --Not applicable for L2s
+     txns.gas_limit as l2_gas_limit,
      cast(NULL as double) as l1_gas_usage_percent, --Not applicable for L2s
-     type AS transaction_type
+     txns.gas_used / txns.gas_limit * 100 as l2_gas_usage_percent,
+     (l1_gas_price * gas_used)/1e18 as tx_fee_equivalent_on_l1_native,
+     (l1_gas_price * gas_used)/1e18 * p.price as tx_fee_equivalent_on_l1_usd,
+     (length( decode(unhex(substring(data,3)), 'US-ASCII') ) - length(replace(decode(unhex(substring(data,3)), 'US-ASCII') , chr(0), ''))) as num_zero_bytes,
+     (length( replace(decode(unhex(substring(data,3)), 'US-ASCII'), chr(0), '')) ) as num_nonzero_bytes,
+     16 * (length( replace( decode(unhex(substring(data,3)), 'US-ASCII') , chr(0), ''))) --16 * nonzero bytes
+     + 4 * ( length( decode(unhex(substring(data,3)), 'US-ASCII') ) - length(replace( decode(unhex(substring(data,3)), 'US-ASCII') , chr(0), '')) ) --4 * zero bytes
+     as calldata_gas,
+     type as transaction_type
 FROM {{ source('optimism','transactions') }} txns
 JOIN {{ source('optimism','blocks') }} blocks ON blocks.number = txns.block_number
 {% if is_incremental() %}
