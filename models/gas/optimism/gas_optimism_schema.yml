@@ -23,9 +23,6 @@ models:
       - &tx_hash
         name: tx_hash
         description: "Primary key of the transaction"
-        tests:
-          - unique
-          - not_null
       - &tx_sender
         name: tx_sender
         description: "Initiated the transaction"
