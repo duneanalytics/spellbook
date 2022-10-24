@@ -110,6 +110,7 @@ END
 $function$;
 
 -- fill histroy
+-- delete from opensea.trades WHERE platform='OpenSea' AND platform_version = '1';
 SELECT opensea.insert_trades('2021-06-01','2021-07-01');
 SELECT opensea.insert_trades('2021-07-01','2021-08-01');
 SELECT opensea.insert_trades('2021-08-01','2021-09-01');
@@ -125,6 +126,7 @@ SELECT opensea.insert_trades('2022-05-01','2022-06-01');
 SELECT opensea.insert_trades('2022-06-01','2022-07-01');
 SELECT opensea.insert_trades('2022-07-01','2022-08-01');
 SELECT opensea.insert_trades('2022-08-01','2022-09-01');
+SELECT opensea.insert_trades('2022-09-01',NOW() - interval '20 minutes');
 
 -- cronjob
 INSERT INTO cron.job (schedule, command)
