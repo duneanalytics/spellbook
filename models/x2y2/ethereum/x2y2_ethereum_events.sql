@@ -164,7 +164,9 @@ SELECT 'ethereum' AS blockchain
     END AS trade_category
 , 'Trade' AS evt_type
 , txs.seller
-, txs.buyer
+, CASE WHEN txs.buyer=txs.aggregator_address AND erct2.to IS NOT NULL THEN erct2.to
+    WHEN txs.buyer=txs.aggregator_address AND erct3.to IS NOT NULL THEN erct3.to
+    ELSE txs.buyer END AS buyer
 , CASE WHEN currency_contract='0x0000000000000000000000000000000000000000' THEN txs.amount_raw/POWER(10, 18)
     ELSE txs.amount_raw/POWER(10, pu.decimals)
     END AS amount_original
@@ -172,7 +174,10 @@ SELECT 'ethereum' AS blockchain
 , CASE WHEN currency_contract='0x0000000000000000000000000000000000000000' THEN 'ETH'
     ELSE pu.symbol
     END AS currency_symbol
-, txs.currency_contract
+, CASE WHEN txs.currency_contract='0x0000000000000000000000000000000000000000' THEN
+    '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+    ELSE txs.currency_contract
+    END AS currency_contract
 , txs.project_contract_address
 , txs.nft_contract_address
 , aggregator_name
@@ -219,3 +224,22 @@ LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct ON erct.evt_block_
     AND erct.evt_tx_hash=txs.tx_hash
     AND erct.tokenId=txs.token_id
     AND erct.from=txs.seller
+    {% if is_incremental() %}
+    AND erct.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct2 ON erct2.evt_block_time=txs.block_time
+    AND txs.nft_contract_address=erct2.contract_address
+    AND erct2.evt_tx_hash=txs.tx_hash
+    AND erct2.tokenId=txs.token_id
+    AND erct2.from=txs.buyer
+    {% if is_incremental() %}
+    AND erct2.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+LEFT JOIN {{ source('erc1155_ethereum','evt_transfersingle') }} erct3 ON erct3.evt_block_time=txs.block_time
+    AND txs.nft_contract_address=erct3.contract_address
+    AND erct3.evt_tx_hash=txs.tx_hash
+    AND erct3.id=txs.token_id
+    AND erct3.from=txs.buyer
+    {% if is_incremental() %}
+    AND erct3.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
