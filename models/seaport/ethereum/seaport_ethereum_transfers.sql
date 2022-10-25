@@ -179,7 +179,8 @@ with p1_call as (
           ,a.purchase_method as trade_category
           ,'Trade' as evt_type
           ,concat('0x',substr(seller,3,40)) as seller
-          ,concat('0x',substr(buyer,3,40)) as buyer
+          , CASE WHEN concat('0x',substr(buyer,3,40))=agg.contract_address THEN COALESCE(erct2.to, erct3.to)
+            ELSE concat('0x',substr(buyer,3,40)) END AS buyer
           ,a.original_amount / power(10,t1.decimals) as amount_original
           ,a.original_amount as amount_raw
           ,case when a.original_currency_contract = '0x0000000000000000000000000000000000000000' then 'ETH'
@@ -231,6 +232,28 @@ with p1_call as (
             ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
         left join {{ ref('tokens_nft') }} n
             on n.contract_address = nft_contract_address and n.blockchain = 'ethereum'
+        LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct2 ON erct2.evt_block_time=a.block_time
+            AND nft_contract_address=erct2.contract_address
+            AND erct2.evt_tx_hash=a.tx_hash
+            AND erct2.tokenId=a.nft_token_id
+            AND erct2.from=concat('0x',substr(buyer,3,40))
+            {% if not is_incremental() %}
+            and erct2.evt_block_number > 14801608
+            {% endif %}
+            {% if is_incremental() %}
+            and erct2.evt_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
+        LEFT JOIN {{ source('erc1155_ethereum','evt_transfersingle') }} erct3 ON erct3.evt_block_time=a.block_time
+            AND nft_contract_address=erct3.contract_address
+            AND erct3.evt_tx_hash=a.tx_hash
+            AND erct3.id=a.nft_token_id
+            AND erct3.from=concat('0x',substr(buyer,3,40))
+            {% if not is_incremental() %}
+            and erct3.evt_block_number > 14801608
+            {% endif %}
+            {% if is_incremental() %}
+            and erct3.evt_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
         left join {{ ref('tokens_erc20') }} t1
             on t1.contract_address =
                 case when a.original_currency_contract = '0x0000000000000000000000000000000000000000'
@@ -388,7 +411,8 @@ with p1_call as (
           ,a.purchase_method as trade_category
           ,'Trade' as evt_type
           ,concat('0x',substr(seller,3,40)) as seller
-          ,concat('0x',substr(buyer,3,40)) as buyer
+          , CASE WHEN concat('0x',substr(buyer,3,40))=agg.contract_address THEN COALESCE(erct2.to, erct3.to)
+            ELSE concat('0x',substr(buyer,3,40)) END AS buyer
           ,a.attempt_amount / power(10,t1.decimals) as amount_original
           ,a.attempt_amount as amount_raw
           ,case when concat('0x',substr(a.price_token,3,40)) =
@@ -432,6 +456,28 @@ with p1_call as (
             {% endif %}
             {% if is_incremental() %}
             and tx.block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
+        LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct2 ON erct2.evt_block_time=a.block_time
+            AND concat('0x',substr(a.nft_address,3,40))=erct2.contract_address
+            AND erct2.evt_tx_hash=a.tx_hash
+            AND erct2.tokenId=a.nft_token_id
+            AND erct2.from=concat('0x',substr(buyer,3,40))
+            {% if not is_incremental() %}
+            and erct2.evt_block_number > 14801608
+            {% endif %}
+            {% if is_incremental() %}
+            and erct2.evt_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
+        LEFT JOIN {{ source('erc1155_ethereum','evt_transfersingle') }} erct3 ON erct3.evt_block_time=a.block_time
+            AND concat('0x',substr(a.nft_address,3,40))=erct3.contract_address
+            AND erct3.evt_tx_hash=a.tx_hash
+            AND erct3.id=a.nft_token_id
+            AND erct3.from=concat('0x',substr(buyer,3,40))
+            {% if not is_incremental() %}
+            and erct3.evt_block_number > 14801608
+            {% endif %}
+            {% if is_incremental() %}
+            and erct3.evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         left join {{ source('ethereum','traces') }} ett
             ON a.block_time = ett.block_time AND a.tx_hash = ett.tx_hash AND right(ett.input, 8)='72db8c0b'
@@ -626,7 +672,8 @@ with p1_call as (
           ,a.purchase_method as trade_category
           ,'Trade' as evt_type
           ,concat('0x',substr(seller,3,40)) as seller
-          ,concat('0x',substr(buyer,3,40)) as buyer
+          , CASE WHEN concat('0x',substr(buyer,3,40))=agg.contract_address THEN COALESCE(erct2.to, erct3.to)
+            ELSE concat('0x',substr(buyer,3,40)) END AS buyer
           ,a.attempt_amount / power(10,t1.decimals) as amount_original
           ,a.attempt_amount as amount_raw
           ,case when a.original_currency_contract = '0x0000000000000000000000000000000000000000' then 'ETH'
@@ -679,6 +726,28 @@ with p1_call as (
             {% endif %}
         left join {{ ref('tokens_nft') }} n
             on n.contract_address = nft_contract_address and n.blockchain = 'ethereum'
+        LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct2 ON erct2.evt_block_time=a.block_time
+            AND nft_contract_address=erct2.contract_address
+            AND erct2.evt_tx_hash=a.tx_hash
+            AND erct2.tokenId=a.nft_token_id
+            AND erct2.from=concat('0x',substr(buyer,3,40))
+            {% if not is_incremental() %}
+            and erct2.evt_block_number > 14801608
+            {% endif %}
+            {% if is_incremental() %}
+            and erct2.evt_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
+        LEFT JOIN {{ source('erc1155_ethereum','evt_transfersingle') }} erct3 ON erct3.evt_block_time=a.block_time
+            AND nft_contract_address=erct3.contract_address
+            AND erct3.evt_tx_hash=a.tx_hash
+            AND erct3.id=a.nft_token_id
+            AND erct3.from=concat('0x',substr(buyer,3,40))
+            {% if not is_incremental() %}
+            and erct3.evt_block_number > 14801608
+            {% endif %}
+            {% if is_incremental() %}
+            and erct3.evt_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
         left join {{ ref('tokens_erc20') }} t1
             on t1.contract_address =
                 case when a.original_currency_contract = '0x0000000000000000000000000000000000000000'
@@ -837,7 +906,8 @@ with p1_call as (
           ,a.purchase_method as trade_category
           ,'Trade' as evt_type
           ,concat('0x',substr(seller,3,40)) as seller
-          ,concat('0x',substr(buyer,3,40)) as buyer
+          , CASE WHEN concat('0x',substr(buyer,3,40))=agg.contract_address THEN COALESCE(erct2.to, erct3.to)
+            ELSE concat('0x',substr(buyer,3,40)) END AS buyer
           ,a.attempt_amount / power(10,t1.decimals) as amount_original
           ,a.attempt_amount as amount_raw
           ,case when concat('0x',substr(a.price_token,3,40)) =
@@ -880,6 +950,28 @@ with p1_call as (
         {% endif %}
         {% if is_incremental() %}
         and tx.block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+    LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct2 ON erct2.evt_block_time=a.block_time
+        AND concat('0x',substr(a.nft_address,3,40))=erct2.contract_address
+        AND erct2.evt_tx_hash=a.tx_hash
+        AND erct2.tokenId=a.nft_token_id
+        AND erct2.from=concat('0x',substr(buyer,3,40))
+        {% if not is_incremental() %}
+        and erct2.evt_block_number > 14801608
+        {% endif %}
+        {% if is_incremental() %}
+        and erct2.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+    LEFT JOIN {{ source('erc1155_ethereum','evt_transfersingle') }} erct3 ON erct3.evt_block_time=a.block_time
+        AND concat('0x',substr(a.nft_address,3,40))=erct3.contract_address
+        AND erct3.evt_tx_hash=a.tx_hash
+        AND erct3.id=a.nft_token_id
+        AND erct3.from=concat('0x',substr(buyer,3,40))
+        {% if not is_incremental() %}
+        and erct3.evt_block_number > 14801608
+        {% endif %}
+        {% if is_incremental() %}
+        and erct3.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     left join {{ source('ethereum','traces') }} ett
         ON a.block_time = ett.block_time AND a.tx_hash = ett.tx_hash AND right(ett.input, 8)='72db8c0b'
