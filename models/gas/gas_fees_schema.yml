@@ -10,12 +10,6 @@ models:
       tags: ['ethereum', 'bnb', 'avalanche_c', 'optimism','gas', 'fees']
     description: >
         Gas Fees across chains
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_number
-            - tx_hash
     columns:
       - &blokchain
         name: blockchain

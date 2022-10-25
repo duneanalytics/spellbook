@@ -10,6 +10,11 @@ models:
       tags: ['optimism', 'gas', 'fees']
     description: >
         Gas Fees on Optimism rollup Layer 2
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_hash
     columns:
       - &blokchain
         name: blockchain
