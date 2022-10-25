@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: blur_ethereum
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: BlurExchange_evt_OrdersMatched
+        loaded_at_field: evt_block_time
