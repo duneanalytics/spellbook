@@ -154,7 +154,7 @@ models:
         +schema: gas_avalanche_c
         +materialized: view
       optimism:
-        +schema: optimism
+        +schema: gas_optimism
         +materialized: view
 
     gmx:
