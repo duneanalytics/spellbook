@@ -140,6 +140,12 @@ models:
       ethereum:
         +schema: foundation_ethereum
         +materialized: view
+    blur:
+      +schema: blur
+      +materialized: view
+      ethereum:
+        +schema: blur_ethereum
+        +materialized: view
 
     gas:
       +schema: gas
