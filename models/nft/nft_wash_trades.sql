@@ -44,9 +44,7 @@ SELECT nftt.blockchain
         THEN true
         ELSE false
         END AS bought_it_three_times_within_a_week
-    , CASE WHEN (filter_funding_buyer.first_funded_by = filter_funding_seller.first_funded_by
-            AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM labels.bridges)
-            AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM labels.cex))
+    , CASE WHEN filter_funding_buyer.first_funded_by = filter_funding_seller.first_funded_by
         OR filter_funding_buyer.first_funded_by = nftt.seller
         OR filter_funding_seller.first_funded_by = nftt.buyer
         THEN true
@@ -55,9 +53,7 @@ SELECT nftt.blockchain
     , CASE WHEN nftt.buyer=nftt.seller
         OR COUNT(filter_baf.block_number) > 0
         OR COUNT(filter_bought_3x.block_number) > 2
-        OR (filter_funding_buyer.first_funded_by = filter_funding_seller.first_funded_by
-            AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM labels.bridges)
-            AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM labels.cex))
+        OR filter_funding_buyer.first_funded_by = filter_funding_seller.first_funded_by
         OR filter_funding_buyer.first_funded_by = nftt.seller
         OR filter_funding_seller.first_funded_by = nftt.buyer
         THEN true
@@ -86,11 +82,17 @@ LEFT JOIN {{ ref('nft_trades') }} filter_bought_3x
     {% endif %}
 LEFT JOIN {{ ref('addresses_events_ethereum_first_funded_by') }} filter_funding_buyer
     ON filter_funding_buyer.address=nftt.buyer
+    AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM labels.bridges)
+    AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM labels.cex)
+    AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT contract_address FROM tornado_cash_ethereum.withdrawals)
     {% if is_incremental() %}
     AND filter_funding_buyer.block_time >= date_trunc("day", NOW() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ ref('addresses_events_ethereum_first_funded_by') }} filter_funding_seller
     ON filter_funding_seller.address=nftt.seller
+    AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT address FROM labels.bridges)
+    AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT address FROM labels.cex)
+    AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT contract_address FROM tornado_cash_ethereum.withdrawals)
     {% if is_incremental() %}
     AND filter_funding_seller.block_time >= date_trunc("day", NOW() - interval '1 week')
     {% endif %}
