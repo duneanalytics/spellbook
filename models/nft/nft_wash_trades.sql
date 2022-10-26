@@ -84,7 +84,7 @@ LEFT JOIN {{ ref('addresses_events_ethereum_first_funded_by') }} filter_funding_
     ON filter_funding_buyer.address=nftt.buyer
     AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_bridges') }})
     AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_cex') }})
-    AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT contract_address FROM {{ ref('tornado_cash_ethereum_withdrawals') }})
+    AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT contract_address FROM {{ ref('tornado_cash_withdrawals') }})
     {% if is_incremental() %}
     AND filter_funding_buyer.block_time >= date_trunc("day", NOW() - interval '1 week')
     {% endif %}
@@ -92,7 +92,7 @@ LEFT JOIN {{ ref('addresses_events_ethereum_first_funded_by') }} filter_funding_
     ON filter_funding_seller.address=nftt.seller
     AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_bridges') }})
     AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_cex') }})
-    AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT contract_address FROM {{ ref('tornado_cash_ethereum_withdrawals') }})
+    AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT contract_address FROM {{ ref('tornado_cash_withdrawals') }})
     {% if is_incremental() %}
     AND filter_funding_seller.block_time >= date_trunc("day", NOW() - interval '1 week')
     {% endif %}
