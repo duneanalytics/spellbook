@@ -393,6 +393,13 @@ models:
         +schema: shibaswap_ethereum
         +materialized: view
 
+    zigzag:
+      +schema: zigzag
+      +materialized: view
+      arbitrum:
+        +schema: zigzag_arbitrum
+        +materialized: view
+
 seeds:
   spellbook:
     balances:
