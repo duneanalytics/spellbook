@@ -30,7 +30,7 @@ WITH dexs AS
         ,'{{weth_address}}' AS token_sold_address --Using WETH for easier joining with USD price table
         ,t.contract_address AS project_contract_address
         ,t.evt_tx_hash AS tx_hash
-        ,'' AS trace_address
+        ,'test' AS trace_address
         ,t.evt_index
     FROM
         {{ source('uniswap_ethereum', 'Exchange_evt_TokenPurchase') }} t
