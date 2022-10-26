@@ -1,51 +1,15 @@
 version: 2
 
 models:
-  - name: opensea_v1_ethereum_excluded_txns
+  - name: blur_ethereum_events
     meta:
       blockchain: ethereum
-      project: opensea
-      contributors: soispoke
+      project: blur
+      contributors: [hildobby]
     config:
-      tags: ['ethereum','opensea','v1','view']
-    description: Excluded OpenSea transactions on Ethereum
-    columns:
-      - name: call_tx_hash
-        description: "Transactions hash of excluded OpenSea transactions"
-
-  - name: opensea_v1_ethereum_fees
-    meta:
-      blockchain: ethereum
-      project: opensea
-      contributors: soispoke
-    config:
-      tags: ['ethereum','opensea','v1','fees']
-    description: OpenSea v1 fees on Ethereum
-    columns:
-      - name: block_time
-        description: "Block time of transaction"
-      - name: trace_address
-        description: "Trace address for fees"
-      - name: tx_hash
-        description: "Transaction hash"
-      - name: fees
-        description: "Amount of fees in original currency"
-      - name: from
-        description: "Wallet address that sent fees"
-      - name: to
-        description: "Wallet address that received fees"
-      - name: fee_currency_symbol
-        description: "Currency symbol in which fees were paid"
-
-  - name: opensea_v1_ethereum_events
-    meta:
-      blockchain: ethereum
-      project: opensea
-      contributors: soispoke, umer_h_adil, hildobby
-    config:
-      tags: ['ethereum','opensea','v1','events']
+      tags: ['ethereum','blur','v1','events']
     description: >
-        OpenSea v1 trades on Ethereum
+        Blur v1 events on Ethereum
     columns:
       - &blockchain
         name: blockchain
@@ -155,114 +119,21 @@ models:
       - &royalty_fee_currency_symbol
         name: royalty_fee_currency_symbol
         description: "Symbol of the token in which fees are paid out"
-      - name: unique_trade_id
-        description:  "Unique trade ID"
-
-  - name: opensea_v3_ethereum_events
-    meta:
-      blockchain: ethereum
-      project: opensea
-      contributors: [soispoke, sohwak, hildobby]
-    config:
-      tags: ['ethereum','opensea','v3','events']
-    description: >
-        OpenSea V3 events on Ethereum
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_time
-      - *token_id
-      - *collection
-      - *amount_usd
-      - *token_standard
-      - *trade_type
-      - *number_of_items
-      - *trade_category
-      - *evt_type
-      - *seller
-      - *buyer
-      - *amount_original
-      - *amount_raw
-      - *currency_symbol
-      - *currency_contract
-      - *nft_contract_address
-      - *project_contract_address
-      - *aggregator_name
-      - *aggregator_address
-      - *tx_hash
-      - *block_number
-      - *tx_from
-      - *tx_to
-      - *platform_fee_amount_raw
-      - *platform_fee_amount
-      - *platform_fee_amount_usd
-      - *royalty_fee_amount_raw
-      - *royalty_fee_amount
-      - *royalty_fee_amount_usd
-      - *royalty_fee_receive_address
-      - *royalty_fee_currency_symbol
       - &unique_trade_id
         name: unique_trade_id
         description:  "Unique trade ID"
         tests:
           - unique
 
-  - name: opensea_ethereum_events
+  - name: blur_ethereum_trades
     meta:
       blockchain: ethereum
-      project: opensea
-      contributors: [soispoke, hildobby]
+      project: blur
+      contributors: [hildobby]
     config:
-      tags: ['ethereum','opensea','events']
+      tags: ['ethereum','blur','trades']
     description: >
-        OpenSea events on Ethereum
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_time
-      - *token_id
-      - *collection
-      - *amount_usd
-      - *token_standard
-      - *trade_type
-      - *number_of_items
-      - *trade_category
-      - *evt_type
-      - *seller
-      - *buyer
-      - *amount_original
-      - *amount_raw
-      - *currency_symbol
-      - *currency_contract
-      - *nft_contract_address
-      - *project_contract_address
-      - *aggregator_name
-      - *aggregator_address
-      - *tx_hash
-      - *block_number
-      - *tx_from
-      - *tx_to
-      - *platform_fee_amount_raw
-      - *platform_fee_amount
-      - *platform_fee_amount_usd
-      - *royalty_fee_amount_raw
-      - *royalty_fee_amount
-      - *royalty_fee_amount_usd
-      - *royalty_fee_receive_address
-      - *royalty_fee_currency_symbol
-      - *unique_trade_id
-
-  - name: opensea_ethereum_trades
-    meta:
-      blockchain: ethereum
-      project: opensea
-      contributors: [soispoke, hildobby]
-    config:
-      tags: ['ethereum','opensea','trades']
-    description: >
-        OpenSea trades on Ethereum
+        Blur trades on Ethereum
     columns:
       - *blockchain
       - *project
@@ -292,15 +163,15 @@ models:
       - *tx_to
       - *unique_trade_id
 
-  - name: opensea_ethereum_mints
+  - name: blur_ethereum_mints
     meta:
       blockchain: ethereum
-      project: opensea
-      contributors: soispoke
+      project: blur
+      contributors: [hildobby]
     config:
-      tags: ['ethereum','opensea','mints']
+      tags: ['ethereum','blur','mints']
     description: >
-        OpenSea mints on Ethereum
+        Blur mints on Ethereum
     columns:
       - *blockchain
       - *project
@@ -330,15 +201,15 @@ models:
       - *tx_to
       - *unique_trade_id
 
-  - name: opensea_ethereum_burns
+  - name: blur_ethereum_burns
     meta:
       blockchain: ethereum
-      project: opensea
-      contributors: soispoke
+      project: blur
+      contributors: [hildobby]
     config:
-      tags: ['ethereum','opensea','burns']
+      tags: ['ethereum','blur','burns']
     description: >
-        OpenSea burns on Ethereum
+        Blur burns on Ethereum
     columns:
       - *blockchain
       - *project
@@ -368,15 +239,15 @@ models:
       - *tx_to
       - *unique_trade_id
 
-  - name: opensea_ethereum_fees
+  - name: blur_ethereum_fees
     meta:
       blockchain: ethereum
-      project: opensea
-      contributors: soispoke
+      project: blur
+      contributors: [hildobby]
     config:
-      tags: ['ethereum','opensea','fees']
+      tags: ['ethereum','blur','fees']
     description: >
-        OpenSea fees on Ethereum
+        Blur fees on Ethereum
     columns:
       - *blockchain
       - *project
@@ -411,5 +282,4 @@ models:
       - *block_number
       - *tx_from
       - *tx_to
-      - name: unique_trade_id
-        description:  "Unique trade ID"
+      - *unique_trade_id
