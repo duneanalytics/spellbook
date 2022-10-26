@@ -202,7 +202,7 @@ SELECT
     , token_standard
     , 1 as number_of_items
     , 'Single Item Trade' as trade_type
-    , case when tx_from = seller then 'Sell' else 'Buy' end as trade_category
+    , case when tx_from = seller then 'Offer Accepted' else 'Buy' end as trade_category
     , 'Trade' as evt_type
     , seller
     , buyer
