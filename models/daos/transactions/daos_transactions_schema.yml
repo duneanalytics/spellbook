@@ -50,3 +50,9 @@ models:
       - &tx_index
         name: tx_index
         description: "transaction index"
+      - &trace_address
+        name: trace_address
+        description: "trace address from traces table, empty for erc20 txs"
+      - &address_interacted_with
+        name: address_interacted_with
+        description: "address the dao wallet interacted with"

@@ -20,6 +20,11 @@ models:
             - dao_wallet_address
             - tx_hash 
             - tx_index
+            - tx_type
+            - trace_address
+            - address_interacted_with
+            - value 
+            - asset 
     columns:
       - &blockchain
         name: blockchain
@@ -60,6 +65,12 @@ models:
       - &tx_index
         name: tx_index
         description: "transaction index"
+      - &trace_address
+        name: trace_address
+        description: "trace address from traces table, empty for erc20 txs"
+      - &address_interacted_with
+        name: address_interacted_with
+        description: "address the dao wallet interacted with"
 
   - name: daos_transactions_gnosis_eth 
     meta:
@@ -80,6 +91,11 @@ models:
             - dao_wallet_address
             - tx_hash 
             - tx_index
+            - tx_type
+            - trace_address
+            - address_interacted_with
+            - value 
+            - asset 
     columns:
       - *blockchain
       - *dao_creator_tool
@@ -94,3 +110,5 @@ models:
       - *usd_value
       - *tx_hash
       - *tx_index
+      - *trace_address
+      - *address_interacted_with

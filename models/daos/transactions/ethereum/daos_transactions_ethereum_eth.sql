@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'dao_creator_tool', 'dao', 'dao_wallet_address', 'tx_hash', 'tx_index']
+    unique_key = ['block_date', 'blockchain', 'dao_creator_tool', 'dao', 'dao_wallet_address', 'tx_hash', 'tx_index', 'token', 'tx_type', 'trace_address', 'address_interacted_with']
     )
 }}
 
@@ -30,7 +30,9 @@ transactions as (
             value as value, 
             to as dao_wallet_address, 
             'Tx In' as tx_type, 
-            tx_index 
+            tx_index,
+            from as address_interacted_with,
+            trace_address
         FROM 
         {{ source('ethereum', 'traces') }}
         {% if not is_incremental() %}
@@ -53,7 +55,9 @@ transactions as (
             value as value, 
             from as dao_wallet_address, 
             'Tx Out' as tx_type,
-            tx_index 
+            tx_index,
+            to as address_interacted_with,
+            trace_address
         FROM 
         {{ source('ethereum', 'traces') }}
         {% if not is_incremental() %}
@@ -81,7 +85,9 @@ SELECT
     t.value/POW(10, COALESCE(er.decimals, 18)) as value, 
     t.value/POW(10, COALESCE(er.decimals, 18)) * p.price as usd_value, 
     t.tx_hash, 
-    t.tx_index
+    t.tx_index,
+    t.address_interacted_with,
+    t.trace_address
 FROM 
 transactions t 
 INNER JOIN 
