@@ -7,7 +7,7 @@ models:
       project: aragon
       contributors: henrystats 
     config:
-      tags: [ 'ethereum', 'daos', 'aragon', dao creator tools', 'henrystats' ]
+      tags: [ 'ethereum', 'daos', 'aragon', 'dao creator tools', 'henrystats' ]
     description: >
       wallet addresses of daos created on aragon 
     tests:
@@ -44,9 +44,9 @@ models:
       project: daohaus
       contributors: henrystats 
     config:
-      tags: [ 'ethereum', 'daos', 'daohaus', dao creator tools', 'henrystats' ]
+      tags: [ 'ethereum', 'daos', 'daohaus', 'dao creator tools', 'henrystats' ]
     description: >
-      wallet addresses of daos created on daohaus 
+      wallet addresses of daos created on daohaus
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -56,24 +56,12 @@ models:
             - dao
             - dao_wallet_address
     columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain which the DAO is deployed"
-      - &dao_creator_tool
-        name: dao_creator_tool
-        description: "Name of creator tool used to create DAO"
-      - &dao
-        name: dao
-        description: "address of the dao deployed"
-      - &dao_wallet_address
-        name: dao_wallet_address
-        desciption: "wallet address used by DAO to receive & transfer funds"
-      - &created_date
-        name: created_date
-        description: "UTC event block date of DAO creation"
-      - &created_block_time
-        name: created_block_time
-        description: "UTC event block time of DAO creation"
+      - *blockchain
+      - *dao_creator_tool
+      - *dao
+      - *dao_wallet_address
+      - *created_date
+      - *created_block_time
 
   - name: daos_addresses_ethereum_zodiac
     meta:
@@ -81,7 +69,7 @@ models:
       project: zodiac
       contributors: henrystats 
     config:
-      tags: [ 'ethereum', 'daos', 'zodiac', dao creator tools', 'henrystats' ]
+      tags: [ 'ethereum', 'daos', 'zodiac', 'dao creator tools', 'henrystats' ]
     description: >
       wallet addresses of daos created on zodiac 
     tests:
@@ -93,24 +81,12 @@ models:
             - dao
             - dao_wallet_address
     columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain which the DAO is deployed"
-      - &dao_creator_tool
-        name: dao_creator_tool
-        description: "Name of creator tool used to create DAO"
-      - &dao
-        name: dao
-        description: "address of the dao deployed"
-      - &dao_wallet_address
-        name: dao_wallet_address
-        desciption: "wallet address used by DAO to receive & transfer funds"
-      - &created_date
-        name: created_date
-        description: "UTC event block date of DAO creation"
-      - &created_block_time
-        name: created_block_time
-        description: "UTC event block time of DAO creation"
+      - *blockchain
+      - *dao_creator_tool
+      - *dao
+      - *dao_wallet_address
+      - *created_date
+      - *created_block_time
 
   - name: daos_addresses_ethereum
     meta:
@@ -118,25 +94,13 @@ models:
       sector: daos
       contributors: henrystats 
     config:
-      tags: [ 'ethereum', 'daos', 'aragon', 'zodiac', 'daohaus' dao creator tools', 'henrystats' ]
+      tags: [ 'ethereum', 'daos', 'aragon', 'zodiac', 'daohaus', 'dao creator tools', 'henrystats' ]
     description: >
       wallet addresses of daos created on ethereum across all dao creator tools
     columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain which the DAO is deployed"
-      - &dao_creator_tool
-        name: dao_creator_tool
-        description: "Name of creator tool used to create DAO"
-      - &dao
-        name: dao
-        description: "address of the dao deployed"
-      - &dao_wallet_address
-        name: dao_wallet_address
-        desciption: "wallet address used by DAO to receive & transfer funds"
-      - &created_date
-        name: created_date
-        description: "UTC event block date of DAO creation"
-      - &created_block_time
-        name: created_block_time
-        description: "UTC event block time of DAO creation"
+      - *blockchain
+      - *dao_creator_tool
+      - *dao
+      - *dao_wallet_address
+      - *created_date
+      - *created_block_time
