@@ -7,17 +7,16 @@
 ) }}
 
 SELECT
-evt_block_number AS block_number,
-evt_block_time AS block_time,
-evt_tx_hash AS tx_hash,
-evt_index AS `index`,
-borrower,
-itokens.symbol,
-itokens.underlying_symbol,
-itokens.underlying_token_address AS underlying_address,
-repayAmount / power(10,itokens.underlying_decimals) AS repay_amount,
-repayAmount / power(10,itokens.underlying_decimals)*p.price AS repay_usd
-FROM {{ source('ironbank_optimism', 'CErc20Delegator_evt_RepayBorrow') }} repay
-LEFT JOIN {{ ref('ironbank_optimism_itokens') }} itokens ON itokens.contract_address = repay.contract_address
-LEFT JOIN prices.usd p ON p.minute = date_trunc('minute', repay.evt_block_time) AND p.contract_address = itokens.underlying_token_address
-WHERE p.blockchain = 'optimism'
+r.evt_block_number AS block_number,
+r.evt_block_time AS block_time,
+r.evt_tx_hash AS tx_hash,
+r.evt_index AS `index`,
+r.borrower,
+i.symbol,
+i.underlying_symbol,
+i.underlying_token_address AS underlying_address,
+r.repayAmount / power(10,i.underlying_decimals) AS repay_amount,
+r.repayAmount / power(10,i.underlying_decimals)*p.price AS repay_usd
+FROM {{ source('ironbank_optimism', 'CErc20Delegator_evt_RepayBorrow') }} r
+LEFT JOIN {{ ref('ironbank_optimism_itokens') }} i ON i.contract_address = r.contract_address
+LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', r.evt_block_time) AND p.contract_address = i.underlying_token_address AND p.blockchain = 'optimism'
