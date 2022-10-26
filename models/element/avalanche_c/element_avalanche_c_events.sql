@@ -19,7 +19,7 @@ WITH element_txs AS (
         , 'erc721' AS token_standard
         , 'Single Item Trade' AS trade_type
         , 1 AS number_of_items
-        , 'Sell' AS trade_category
+        , 'Offer Accepted' AS trade_category
         , ee.maker AS seller
         , ee.taker AS buyer
         , ee.erc20TokenAmount AS amount_raw
@@ -73,7 +73,7 @@ WITH element_txs AS (
         , 'erc1155' AS token_standard
         , 'Single Item Trade' AS trade_type
         , 1 AS number_of_items
-        , 'Sell' AS trade_category
+        , 'Offer Accepted' AS trade_category
         , ee.maker AS seller
         , ee.taker AS buyer
         , ee.erc20FillAmount AS amount_raw
