@@ -140,7 +140,7 @@ models:
       ethereum:
         +schema: foundation_ethereum
         +materialized: view
-    foundation:
+    blur:
       +schema: blur
       +materialized: view
       ethereum:
