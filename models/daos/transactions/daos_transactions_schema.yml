@@ -10,40 +10,43 @@ models:
       tags: [ 'ethereum','gnosis','daos', 'dao creator tools', 'henrystats' ]
     description: >
       transactions from DAO wallets 
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date 
-            - blockchain
-            - dao_creator_tool
-            - dao
-            - dao_wallet_address
-            - tx_hash 
-            - tx_index
     columns:
-      - name: blockchain
+      - &blockchain
+        name: blockchain
         description: "Blockchain which transaction happened"
-      - name: dao_creator_tool
+      - &dao_creator_tool
+        name: dao_creator_tool
         description: "Name of creator tool used to create DAO"
-      - name: dao
+      - &dao
+        name: dao
         description: "address of the dao deployed"
-      - name: dao_wallet_address
+      - &dao_wallet_address
+        name: dao_wallet_address
         desciption: "wallet address used by DAO to receive & transfer funds"
-      - name: block_date
+      - &block_date
+        name: block_date
         description: "UTC event block date of tramsaction"
-      - name: block_time
+      - &block_time
+        name: block_time
         description: "UTC event block time of transaction"
-      - name: tx_type
+      - &tx_type
+        name: tx_type
         description: "transaction type (deposit or withdrawal)"
-      - name: asset
+      - &asset
+        name: asset
         description: "token or asset transferred or received"
-      - name: raw_value
+      - &raw_value
+        name: raw_value
         description: "raw value of asset/token transferred"
-      - name: value 
+      - &value
+        name: value 
         description: "converted value of asset/token transferred"
-      - name: usd_value
+      - &usd_value
+        name: usd_value
         description: "usd value of asset/token transferred"
-      - name: tx_hash
+      - &tx_hash
+        name: tx_hash
         description: "transaction hash"
-      - name: tx_index
+      - &tx_index
+        name: tx_index
         description: "transaction index"
