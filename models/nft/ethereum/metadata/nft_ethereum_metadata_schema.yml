@@ -11,9 +11,8 @@ models:
     description: >
         Metadata for Ringers by Dmitri Cherniak - Art Blocks Curated. Data provided by Dmmitri - spreadsheet shared in Art Blocks Discord
     columns:
-      - &token_id
-        name: token_id
-        description: “Token ID”
+      - name: token_id
+        description: "Token ID"
       - &token_id_short
         name: token_id_short
         description: “Token ID as shown in collection (i.e. Ringer number excluding Art Blocks project code)”
@@ -67,9 +66,8 @@ models:
     description: >
         Metadata for Chromie Squiggle by Snowfro - Art Blocks Curated
     columns:
-      - &token_id
-        name: token_id
-        description: “Token ID”
+      - name: token_id
+        description: "Token ID"
       - &color_direction 
         name: color_direction
         description: "Color direction"
@@ -114,9 +112,8 @@ models:
     description: >
         Metadata for Terraforms by Mathcastles
     columns:
-      - &token_id
-        name: token_id
-        description: “Token ID”
+      - name: token_id
+        description: "Token ID"
       - &mode
         name: mode
         description: "Mode - Origin"
@@ -164,9 +161,8 @@ models:
     description: >
         Metadata for Cryptodickbutts S3 collection 
     columns:
-      - &token_id
-        name: token_id
-        description: “Token ID”
+      - name: token_id
+        description: "Token ID"
       - &background
         name: background
         description: "background"
