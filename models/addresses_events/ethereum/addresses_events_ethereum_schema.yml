@@ -13,6 +13,8 @@ models:
     columns:
       - name: address
         description: "Concerned Ethereum address"
+        tests:
+          - unique
       - name: first_funded_by
         description: "Which Ethereum address first funded the address with ETH"
       - name: block_time
