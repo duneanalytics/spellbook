@@ -18,8 +18,7 @@ models:
         description: “Token ID as shown in collection (i.e. Ringer number excluding Art Blocks project code)”
       - name: background
         description: “Ringer background color”
-      - &body
-        name: body
+      - name: body
         description: “Ringer body color”
       - &extra_color
         name: extra_color
@@ -164,8 +163,7 @@ models:
         description: "Token ID"
       - name: background
         description: "background"
-      - &body
-        name: body
+      - name: body
         description: "body"
       - &butt
         name: butt
