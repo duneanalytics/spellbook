@@ -57,6 +57,103 @@ models:
         name: dark_mode
         description: “Dark mode?”
 
+  - name: nft_ethereum_metadata_chromie_squiggle
+    meta:
+      blockchain: ethereum
+      project: nft
+      contributors: cat
+    config:
+      tags: [‘ethereum’,’nft’,’metadata’]
+    description: >
+        Metadata for Chromie Squiggle by Snowfro - Art Blocks Curated
+    columns:
+      - &token_id
+        name: token_id
+        description: "Chromie Squiggle token ID"
+      - &color_direction 
+        name: color_direction
+        description: "Color direction"
+      - &color_spread
+        name: color_spread
+        description: "Color spread"
+      - &end_color
+        name: end_color
+        description: "End color"
+      - &height
+        name: height
+        description: "Height"
+      - &segments
+        name: segments
+        description: "Segments"
+      - &spectrum
+        name: spectrum
+        description: "Spectrum"
+      - &start_color
+        name: start_color
+        description: "Start color"
+      - &steps_between
+        name: steps_between
+        description: "Steps between"
+      - &squiggle_type
+        name: squiggle_type
+        description: "Squiggle type"
+      - &day_zero
+        name: day_zero
+        description: "Day Zero?"
+      - &harmonic
+        name: harmonic
+        description: "Harmoninc?"
+
+  - name: nft_ethereum_metadata_terraforms
+    meta:
+      blockchain: ethereum
+      project: nft
+      contributors: cat
+    config:
+      tags: [‘ethereum’,’nft’,’metadata’]
+    description: >
+        Metadata for Terraforms by Mathcastles
+    columns:
+      - &token_id
+        name: token_id
+        description: "Token ID"
+      - &mode
+        name: mode
+        description: "Mode - Origin"
+      - &chroma
+        name: chroma
+        description: "Chroma"        
+      - &biome
+        name: biome
+        description: "Biome"        
+      - &terraform_zone
+        name: terraform_zone
+        description: "Zone"        
+      - &x_coordinate
+        name: x_coordinate
+        description: "X Coordinate"     
+      - &y_coordinate
+        name: y_coordinate
+        description: "Y Coordinate"   
+      - &terraform_level
+        name: terraform_level
+        description: "Level"    
+      - &question_marks
+        name: question_marks
+        description: "??? Value"    
+      - &x_seed
+        name: x_seed
+        description: "X Seed"    
+      - &y_seed
+        name: y_seed
+        description: "Y Seed"    
+      - &lith0
+        name: lith0
+        description: "Lith0"    
+      - &spine
+        name: spine
+        description: "Spine parcels"    
+
   - name: nft_ethereum_metadata_art_blocks_collections
     meta:
       blockchain: ethereum
