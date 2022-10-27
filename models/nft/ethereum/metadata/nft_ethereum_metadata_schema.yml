@@ -16,8 +16,7 @@ models:
       - &token_id_short
         name: token_id_short
         description: “Token ID as shown in collection (i.e. Ringer number excluding Art Blocks project code)”
-      - &background
-        name: background
+      - name: background
         description: “Ringer background color”
       - &body
         name: body
@@ -163,8 +162,7 @@ models:
     columns:
       - name: token_id
         description: "Token ID"
-      - &background
-        name: background
+      - name: background
         description: "background"
       - &body
         name: body
