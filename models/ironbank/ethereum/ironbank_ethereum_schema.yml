@@ -67,21 +67,21 @@ models:
       - &tx_hash
         name: tx_hash
         description: "Unique transaction hash value tied to each transaction"
-      - &evt_index
-        name: evt_index
-        description: ""
-      - &trace_address
-        name: trace_address
+      - &index
+        name: index
         description: ""
       - &borrower
         name: borrower
         description: "The account which borrowed the asset"
-      - &asset_address
-        name: asset_address
+      - &underlying_address
+        name: underlying_address
         description: "The address of Underlying token"
       - &borrow_amount
         name: borrow_amount
         description: "The amount which was borrowed"
+      - &borrow_usd
+        name: borrow_usd
+        description: "The usd amount which was borrowed"
   - name: ironbank_ethereum_mint
     meta:
       blockchain: ethereum
@@ -92,20 +92,22 @@ models:
       tags: ['ethereum','ironbank','view','mint']
     description: "Mint data on ethereum"
     columns:
-      - *project
-      - *version
       - *block_number
       - *block_time
       - *tx_hash
-      - *evt_index
-      - *trace_address
+      - *index
       - &minter
         name: minter
         description: "The account which minted the asset"
-      - *asset_address
+      - *symbol
+      - *underlying_symbol
+      - *underlying_address
       - &mint_amount
         name: mint_amount
         description: "The amount which was minted"
+      - &mint_usd
+        name: mint_usd
+        description: "The usd amount which was minted"
   - name: ironbank_ethereum_repay
     meta:
       blockchain: ethereum
@@ -116,18 +118,20 @@ models:
       tags: ['ethereum','ironbank','view','repay']
     description: "Repay data on ethereum"
     columns:
-      - *project
-      - *version
       - *block_number
       - *block_time
       - *tx_hash
-      - *evt_index
-      - *trace_address
+      - *index
       - *borrower
-      - *asset_address
+      - *symbol
+      - *underlying_symbol
+      - *underlying_address
       - &repay_amount
         name: repay_amount
         description: "The amount which was repaid"
+      - &repay_usd
+        name: repay_usd
+        description: "The usd amount which was repaid"
   - name: ironbank_ethereum_redeem
     meta:
       blockchain: ethereum
@@ -138,20 +142,22 @@ models:
       tags: ['ethereum','ironbank','view','redeem underlying']
     description: "Redeem data on ethereum"
     columns:
-      - *project
-      - *version
       - *block_number
       - *block_time
       - *tx_hash
-      - *evt_index
-      - *trace_address
+      - *index
       - &redeemer
         name: redeemer
         description: "The account which redeemed the asset"
-      - *asset_address
+      - *symbol
+      - *underlying_symbol
+      - *underlying_address
       - &redeem_amount
         name: redeem_amount
         description: "The amount which was redeemed"
+      - &redeem_usd
+        name: redeem_usd
+        description: "The usd amount which was redeemed"
   - name: ironbank_ethereum_liquidation
     meta:
       blockchain: ethereum
@@ -162,22 +168,16 @@ models:
       tags: ['ethereum','ironbank','view','liquidation']
     description: "Liquidation data on ethereum"
     columns:
-      - *project
-      - *version
       - *block_number
       - *block_time
       - *tx_hash
-      - *evt_index
-      - *trace_address
-      - &liquidated_borrower
-        name: liquidated_borrower
-        description: "The account who was liquidated"
-      - &debt_to_cover_asset_address
-        name: debt_to_cover_asset_address
-        description: "The address of underlying token which was liquidated"
-      - &collateral_asset_address
-        name: collateral_asset_address
+      - *index
+      - *borrower
+      - *symbol
+      - *underlying_symbol
+      - *underlying_address
+      - &collateral_address
+        name: collateral_address
         description: "The address of collateral token"
-      - &debt_to_cover_amount
-        name: debt_to_cover_amount
-        description: "The amount which was repaid"
+      - *repay_amount
+      - *repay_usd
