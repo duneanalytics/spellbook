@@ -96,4 +96,5 @@ FROM (VALUES
         ('0x0e15258734300290a651fdbae8deb039a8e7a2fa', 'ALCH', 18),
         ('0xd14c03a985a7b09af1a08640e5f6aff806dc8249', 'iBTCV', 18),
         ('0xa0459edcad5aac14dc32775d22ff7bd33027cac7', 'WIS', 18)
+        ('0xada42bb73b42e0472a994218fb3799dfcda21237', 'ZZ', 18)
      ) AS temp_table (contract_address, symbol, decimals)
