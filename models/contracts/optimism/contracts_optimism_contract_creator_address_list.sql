@@ -342,7 +342,7 @@ FROM (
 ) f
 
 --filter out creators that we never want to map
-WHERE contract_address NOT IN (
+WHERE creator_address NOT IN (
   LOWER('0xbb6e024b9cffacb947a71991e386681b1cd1477d')
 )
 
