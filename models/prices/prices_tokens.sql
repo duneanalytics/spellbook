@@ -403,7 +403,6 @@ VALUES
     ("gtc-gitcoin", "ethereum", "GTC", "0xde30da39c46104798bb5aa3fe8b9e0e1f348163f", 18),
     ("gto-gifto", "ethereum", "GTO", "0xc5bbae50781be1669306b9e001eff57a2957b09d", 5),
     ("gusd-gemini-dollar", "ethereum", "GUSD", "0x056fd409e1d7a124bd7017459dfea2f387b6d5cd", 2),
-    ("hav-havven", "ethereum", "SNX", "0xc011a72400e58ecd99ee497cf89e3775d4bd732f", 18),
     ("hav-havven", "ethereum", "SNX", "0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f", 18),
     ("hedg-hedgetrade", "ethereum", "HEDG", "0xf1290473e210b2108a85237fbcd7b6eb42cc654f", 18),
     ("hegic-hegic", "ethereum", "HEGIC", "0x584bc13c7d411c00c01a62e8019472de68768430", 18),
