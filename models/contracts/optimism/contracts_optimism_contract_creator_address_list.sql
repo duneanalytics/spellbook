@@ -336,6 +336,7 @@ FROM (
       ,('0x7a6468F8161ef39d7639c67DfA5637BA1b7ba74B', 'Alchemix')
       ,('0xC6387E937Bcef8De3334f80EDC623275d42457ff', 'Yearn')
       ,('0x4B9f696c998f9549485a3a85DcA692Fd6CCE491F', 'Flashstake')
+      ,('0x652c46a302060B324A02d2d3e4a56e3DA07FA91b', 'Kwenta')
   ) as temp_table (creator_address, contract_project)
 
 ) f
