@@ -70,7 +70,7 @@ SELECT
     ,dexs.trace_address
     ,dexs.evt_index
 from dexs
-INNER JOIN {{ source('ethereum', 'transactions') }} tx
+INNER JOIN {{ source('arbitrum', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
     {% if not is_incremental() %}
     AND tx.block_time >= '{{project_start_date}}'
