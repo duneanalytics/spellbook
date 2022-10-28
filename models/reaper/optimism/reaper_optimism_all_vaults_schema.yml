@@ -11,11 +11,11 @@ models:
     description: "List of all Reaper Vaults"
     columns:
       - &contract_address
-      - name: contract_address
+        name: contract_address
         description: "ERC20 token contract address"
       - &symbol
-      - name: symbol
+        name: symbol
         description: "Token symbol"
       - &decimals
-      - name: decimals
+        name: decimals
         description: "amount of decimals"
