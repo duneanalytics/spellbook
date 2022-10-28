@@ -5,7 +5,8 @@ select
     count(*) as n_records
 
 from {{ model }}
-where block_date >= NOW() - interval '2 days'
+where {{ column_name }} is not null
+    and block_date >= NOW() - interval '2 days'
 group by {{ column_name }}
 having count(*) > 1
 
