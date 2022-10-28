@@ -1,5 +1,0 @@
-version: 2
-
-sources: 
-  - name: reaper_optimism
-    description: "list of all Reaper vaults on optimism"
