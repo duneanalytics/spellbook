@@ -2689,7 +2689,6 @@ FROM (VALUES
     (array('ethereum'),'0x4d18f8f2ae19f1e166c97793cceeb70680a2b6d2', '0304twenty', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now()),
     (array('ethereum'),'0x87d6d536cd7e353d1075256187a891170ccfdd14', 'shadowalterego', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now()),
     (array('ethereum'),'0x409c9f9dc413d7b026c677512aae81323b2c76a9', 'gernge', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now()),
-    (array('ethereum'),'3.41e+47', 'drgempire', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now()),
     (array('ethereum'),'0x98d633d2df5e70b6b93936f225fcc16106383aa2', 'antagonist4ever_v1', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now()),
     (array('ethereum'),'0x96e32dd09ff875fac038d41181cfbb2224a4573a', 'meoldchina', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now()),
     (array('ethereum'),'0x36273803306a3c22bc848f8db761e974697ece0d', 'alcibiades', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now()),
@@ -7206,7 +7205,6 @@ FROM (VALUES
     (array('ethereum'),'0xaedf9424b9ecbd73dc9ca3d4608e34b8acda5a84', 'dubois2', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now()),
     (array('ethereum'),'0xf8845124f73a88dea5e7f4d5480388725fc2d722', 'melroseparkllc', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now()),
     (array('ethereum'),'0x6e17a416e2db86732b829e0eb82aa5bd2f0be50f', 'icecoldbeer', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now()),
-    (array('ethereum'),'1.25e+47', 'claudia_hart', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now()),
     (array('ethereum'),'0x5fae9d4b591f213b3ba75287f2cfac0883d17f7a', 'jscrilla', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now()),
     (array('ethereum'),'0x620f761d45a8b2f9b81079758ec002aeb8d92489', 'ayybee_vault', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now()),
     (array('ethereum'),'0xc136f93985b60455ec6d0ed8bc05f29861cea04a', 'audreyeth', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now()),
@@ -7506,5 +7504,6 @@ FROM (VALUES
     (array('ethereum'),'0x141e08f7bb3c4171187a82c169c14b973db43e94', 'juliasky', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now()),
     (array('ethereum'),'0xccc7072c2e1502d7ffd37fd03e7d815530fa635c', 'eux', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now()),
     (array('ethereum'),'0xf57c198a7f337867b7c2d5f591e8965622ad1491', 'phaed', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now())
+
 
  ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at)
