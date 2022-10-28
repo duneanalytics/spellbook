@@ -140,6 +140,12 @@ models:
       ethereum:
         +schema: foundation_ethereum
         +materialized: view
+    blur:
+      +schema: blur
+      +materialized: view
+      ethereum:
+        +schema: blur_ethereum
+        +materialized: view
 
     gas:
       +schema: gas
@@ -379,12 +385,27 @@ models:
         +schema: swapr_ethereum
         +materialized: view
 
+    dfx:
+      +schema: dfx
+      +materialized: view
+      ethereum:
+        +schema: dfx_ethereum
+        +materialized: view
+
     shibaswap:
       +schema: shibaswap
       +materialized: view
       ethereum:
         +schema: shibaswap_ethereum
         +materialized: view
+
+    pancakeswap:
+      +schema: pancakeswap
+      +materialized: view
+      bnb:
+        +schema: pancakeswap_bnb
+        +materialized: view
+
 
 seeds:
   spellbook:
