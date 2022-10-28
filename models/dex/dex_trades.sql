@@ -1,9 +1,9 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
+        post_hook='{{ expose_spells(\'["ethereum","arbitrum"]\',
                                 "sector",
                                 "dex",
-                                \'["jeff-dude", "hosuke", "0xRob", "pandajackson42", "Henrystats"]\') }}'
+                                \'["jeff-dude", "hosuke", "0xRob", "pandajackson42", "Henrystats","mtitus6"]\') }}'
         )
 }}
 
@@ -16,7 +16,8 @@
 'shibaswap_ethereum_trades',
 'swapr_ethereum_trades',
 'defiswap_ethereum_trades', 
-'dfx_ethereum_trades'
+'dfx_ethereum_trades',
+'zigzag_trades'
 ] %}
 
 
