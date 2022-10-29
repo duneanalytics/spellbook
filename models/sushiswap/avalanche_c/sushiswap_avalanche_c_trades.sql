@@ -13,7 +13,7 @@
     )
 }}
 
-{% set project_start_date = '2020-01-07' %}
+{% set project_start_date = '2022-01-07' %}
 
 WITH sushiswap_decodes AS (
 
@@ -164,7 +164,7 @@ sushiswap_decodes_with_log AS (
         call_block_time,
         call_trace_address,
         call_tx_hash,
-        contract_address,
+        t.contract_address,
         `to`
     FROM sushiswap_decodes t
     INNER JOIN {{ source('avalanche_c', 'logs') }} l
