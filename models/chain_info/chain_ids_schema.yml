@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  - name: chain_ids
+    meta:
+      blockchain: ethereum
+      project: chain_ids
+      contributors: msilb7
+    config:
+      tags: ['chains','cross-chain']
+    description: >
+        Tbale mapping chain IDs to names
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - chain_id
+              - network_id
+    columns:
+      - &chain_name
+        name: chain_name
+        description: "Full name of the Blockchain"
+      - &chain_shortname
+        name: chain_shortname
+        description: "Short name of the Blockchain"
+      - &native_currency_symbol
+        name: native_currency_symbol
+        description: "Symbol of the chain's native currency"
+      - &chain_id
+        name: chain_id
+        description:  "ID of the chain per EIP155"  
+      - &network_id
+        name: network_id
+        description:  "ID of the network (usually the same as the Chain ID" 
+      - &info_url
+        name: info_url
+        description:  "URL with information about the blockchain" 
+      - &explorers
+        name: explorers
+        description:  "JSON with information about each chain's block explorers" 

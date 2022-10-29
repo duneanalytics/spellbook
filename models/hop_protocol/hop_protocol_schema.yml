@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: hop_bridge_addresses
+    meta:
+      project: hop_protocol
+      contributors: msilb7
+    config:
+      tags: ['bridges','hop_protocol','cross-chain']
+    description: >
+        Table storing address mapping inoformation for Hop's bridge addresses and underlying tokens.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - l2CanonicalToken
+              - l2Bridge
+              - l2HopBridgeToken
+              - l2SaddleSwap
+              - l2SaddleLpToken
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain of the bridge contract"
+      - &l2CanonicalToken
+        name: l2CanonicalToken
+        description:  "Underlying L2 Token address (i.e. USDC)"
+      - &l2Bridge
+        name: l2Bridge
+        description:  "Bridge contract address"
+      - &l2HopBridgeToken
+        name: l2HopBridgeToken
+        description:  "hToken address (i.e. hUSDC)"
+      - &l2SaddleSwap
+        name: l2SaddleSwap
+        description:  "Swap token address"
+      - &l2SaddleLpToken
+        name: l2SaddleLpToken
+        description:  "LP Token Address"
+      - &bridgeDeployedBlockNumber
+        name: bridgeDeployedBlockNumber
+        description:  "Block number when the bridge contract was deployed on the specified blockchain."
