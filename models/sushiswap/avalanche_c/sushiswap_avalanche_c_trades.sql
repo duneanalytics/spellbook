@@ -18,7 +18,6 @@
 WITH sushiswap_decodes AS (
 
     SELECT
-        call_block_number,
         call_block_time,
         call_trace_address,
         call_tx_hash,
@@ -33,7 +32,6 @@ WITH sushiswap_decodes AS (
     UNION ALL
 
     SELECT
-        call_block_number,
         call_block_time,
         call_trace_address,
         call_tx_hash,
@@ -48,7 +46,6 @@ WITH sushiswap_decodes AS (
     UNION ALL
 
     SELECT
-        call_block_number,
         call_block_time,
         call_trace_address,
         call_tx_hash,
@@ -63,7 +60,6 @@ WITH sushiswap_decodes AS (
     UNION ALL
 
     SELECT
-        call_block_number,
         call_block_time,
         call_trace_address,
         call_tx_hash,
@@ -78,7 +74,6 @@ WITH sushiswap_decodes AS (
     UNION ALL
 
     SELECT
-        call_block_number,
         call_block_time,
         call_trace_address,
         call_tx_hash,
@@ -93,7 +88,6 @@ WITH sushiswap_decodes AS (
     UNION ALL
 
     SELECT
-        call_block_number,
         call_block_time,
         call_trace_address,
         call_tx_hash,
@@ -108,7 +102,6 @@ WITH sushiswap_decodes AS (
     UNION ALL
 
     SELECT
-        call_block_number,
         call_block_time,
         call_trace_address,
         call_tx_hash,
@@ -123,7 +116,6 @@ WITH sushiswap_decodes AS (
     UNION ALL
 
     SELECT
-        call_block_number,
         call_block_time,
         call_trace_address,
         call_tx_hash,
@@ -138,7 +130,6 @@ WITH sushiswap_decodes AS (
     UNION ALL
 
     SELECT
-        call_block_number,
         call_block_time,
         call_trace_address,
         call_tx_hash,
@@ -160,7 +151,6 @@ sushiswap_decodes_with_log AS (
         l.index                                                    AS evt_index,
         p.token0                                                   AS token0,
         p.token1                                                   AS token1,
-        call_block_number,
         call_block_time,
         call_trace_address,
         call_tx_hash,
