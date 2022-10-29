@@ -11,16 +11,27 @@ sources:
         description: ""
         columns:
           - &contract_address
+            name: contract_address
           - &call_success
+            name: call_success
           - &call_tx_hash
+            name: call_tx_hash
           - &call_trace_address
+            name: call_trace_address
           - &call_block_time
+            name: call_block_time
           - &call_block_number
+            name: call_block_number
           - &amountOut
+            name: amountOut
           - &deadline
+            name: deadline
           - &output_amounts
+            name: output_amounts
           - &path
+            name: path
           - &to
+            name: to
       - name: SushiSwapRouter_call_swapExactETHForTokens
         freshness:
           warn_after: { count: 12, period: hour }
@@ -34,6 +45,7 @@ sources:
           - *call_block_time
           - *call_block_number
           - &amountOutMin
+            name: amountOutMin
           - *deadline
           - *output_amounts
           - *path
@@ -67,6 +79,7 @@ sources:
           - *call_block_time
           - *call_block_number
           - &amountIn
+            name: amountIn
           - *amountOutMin
           - *deadline
           - *output_amounts
@@ -137,6 +150,7 @@ sources:
           - *call_block_time
           - *call_block_number
           - &amountInMax
+            name: amountInMax
           - *amountOut
           - *deadline
           - *output_amounts
