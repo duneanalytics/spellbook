@@ -29,7 +29,7 @@ transactions as (
             LOWER('0xe91d153e0b41518a2ce8dd3d7944fa863463a97d') as token, 
             value as value, 
             to as dao_wallet_address, 
-            'Tx In' as tx_type, 
+            'tx-in' as tx_type, 
             tx_index, 
             from as address_interacted_with,
             trace_address
@@ -54,7 +54,7 @@ transactions as (
             LOWER('0xe91d153e0b41518a2ce8dd3d7944fa863463a97d') as token, 
             value as value, 
             from as dao_wallet_address, 
-            'Tx Out' as tx_type, 
+            'tx_out' as tx_type, 
             tx_index,
             to as address_interacted_with,
             trace_address

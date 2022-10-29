@@ -31,6 +31,9 @@ models:
       - &dao_wallet_address
         name: dao_wallet_address
         desciption: "wallet address used by DAO to receive & transfer funds"
+        tests:
+          - daos_addresses_dao_wallet_address:
+              daos_addresses_seed: ref('daos_addresses_seed')
       - &created_date
         name: created_date
         description: "UTC event block date of DAO creation"
@@ -88,6 +91,31 @@ models:
       - *created_date
       - *created_block_time
 
+  - name: daos_addresses_ethereum_syndicate
+    meta:
+      blockchain: ethereum
+      project: syndicate
+      contributors: henrystats 
+    config:
+      tags: [ 'ethereum', 'daos', 'syndicate', 'dao creator tools', 'henrystats' ]
+    description: >
+      wallet addresses of daos created on syndicate 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - created_date
+            - blockchain
+            - dao_creator_tool
+            - dao
+            - dao_wallet_address
+    columns:
+      - *blockchain
+      - *dao_creator_tool
+      - *dao
+      - *dao_wallet_address
+      - *created_date
+      - *created_block_time
+
   - name: daos_addresses_ethereum
     meta:
       blockchain: ethereum
@@ -101,6 +129,7 @@ models:
       - *blockchain
       - *dao_creator_tool
       - *dao
-      - *dao_wallet_address
+      - name: dao_wallet_address # avoid '*' usage to prevent running test on view 
+        description: "wallet addresses used by DAO to receive * transfer funds"
       - *created_date
       - *created_block_time

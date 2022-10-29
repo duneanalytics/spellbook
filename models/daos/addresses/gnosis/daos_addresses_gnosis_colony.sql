@@ -12,7 +12,7 @@
 
 WITH -- dune query here - https://dune.com/queries/1435493
 
-get_colony_wallets as (
+get_colony_wallets as ( -- getting colonies created through colony 
         SELECT 
             block_time as created_block_time, 
             date_trunc('day', block_time) as created_date, 
@@ -25,15 +25,15 @@ get_colony_wallets as (
         {% if is_incremental() %}
         WHERE block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-        AND topic1 = '0x1904953a6126b2f999ad2661494642bfc63346430965de35cdcd7b5d4e6787ae'
-        AND contract_address = '0x78163f593d1fa151b4b7cacd146586ad2b686294'
+        AND topic1 = '0x1904953a6126b2f999ad2661494642bfc63346430965de35cdcd7b5d4e6787ae' -- colony added event that is emitted when a colony is created 
+        AND contract_address = '0x78163f593d1fa151b4b7cacd146586ad2b686294' -- colony factory contract address 
 )
 
 SELECT 
     'gnosis' as blockchain, 
     'colony' as dao_creator_tool, 
     colony as dao, 
-    colony as dao_wallet_address, 
+    colony as dao_wallet_address, -- the colony address is also the address that receives & sends funds 
     created_block_time, 
     created_date
 FROM 

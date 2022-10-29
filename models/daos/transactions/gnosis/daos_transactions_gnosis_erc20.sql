@@ -29,7 +29,7 @@ transactions as (
             contract_address as token, 
             value as value, 
             to as dao_wallet_address, 
-            'Tx In' as tx_type, 
+            'tx_in' as tx_type, 
             evt_index as tx_index,
             from as address_interacted_with,
             array('') as trace_address
@@ -51,7 +51,7 @@ transactions as (
             contract_address as token, 
             value as value, 
             from as dao_wallet_address, 
-            'Tx Out' as tx_type, 
+            'tx_out' as tx_type, 
             evt_index as tx_index,
             to as address_interacted_with,
             array('') as trace_address

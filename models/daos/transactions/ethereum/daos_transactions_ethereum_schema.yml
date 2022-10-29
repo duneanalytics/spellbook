@@ -60,8 +60,11 @@ models:
         name: usd_value
         description: "usd value of asset/token transferred"
       - &tx_hash
-        name: tx_hash
-        description: "transaction hash"
+        name: tx_hash 
+        desciption: "transaction hash"
+        tests:
+          - daos_transactions_tx_hash:
+              daos_transactions_seed: ref('daos_transactions_seed')
       - &tx_index
         name: tx_index
         description: "transaction index"

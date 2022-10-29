@@ -12,7 +12,7 @@
 
 {% set minion_start_date = '2021-09-13' %}
 
-
+-- this code follows the same logic as dao_addresses_ethereum_daohaus, Refer to that for comments on code.
 
 WITH -- dune query here - https://dune.com/queries/1434676
 
@@ -69,8 +69,8 @@ mapped_wallets as (
             'dao-haus' as dao_creator_tool, 
             dao, 
             dao_wallet as dao_wallet_address, 
-            created_date, 
-            created_block_time 
+            created_block_time, 
+            created_date
         FROM 
         get_daohaus_wallets
 
@@ -81,8 +81,8 @@ mapped_wallets as (
             'dao-haus' as dao_creator_tool, 
             dao, 
             minion_wallet as dao_wallet_address,
-            created_date, 
-            created_block_time 
+            created_block_time, 
+            created_date 
         FROM 
         get_daohaus_wallets
 )

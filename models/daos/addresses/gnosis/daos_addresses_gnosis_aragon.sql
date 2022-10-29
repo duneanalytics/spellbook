@@ -12,6 +12,8 @@
 
 WITH  -- dune query here - https://dune.com/queries/1435985
 
+-- this code follows the same logic as dao_addresses_ethereum_aragon, Refer to that for comments on code.
+
 aragon_daos as (
         SELECT 
             block_time as created_block_time, 
@@ -25,7 +27,7 @@ aragon_daos as (
         {% if is_incremental() %}
         WHERE block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-        AND topic1 = '0x3a7eb042a769adf51e9be78b68ed7af0ad7b379246536efc376ed2ca01238282'
+        AND topic1 = '0x3a7eb042a769adf51e9be78b68ed7af0ad7b379246536efc376ed2ca01238282' -- deploy dao event on aragon 
 ), 
 
 app_ids (app_id) as (
@@ -36,11 +38,7 @@ app_ids (app_id) as (
             (LOWER('0xbf8491150dafc5dcaee5b861414dca922de09ccffa344964ae167212e8c673ae')), -- finance 
             (LOWER('0x5c9918c99c4081ca9459c178381be71d9da40e49e151687da55099c49a4237f1')), -- finance 
             (LOWER('0xa9efdd08ab8a16b35803b9887d721f0b9cf17df8ff66b9e57f23bbe4ae5f18ba')), -- finance 
-            (LOWER('0xc568f11b5218b4d75fdc69c471ebdcffcb59025cc9119abfb35ed6d0efcbc4ff')), -- token manager 
-            (LOWER('0x6b20a3010614eeebf2138ccec99f028a61c811b3b1a3343b6ff635985c75c91f')), -- token manager 
-            (LOWER('0xcd567bdf93dd0f6acc3bc7f2155f83244d56a65abbfbefb763e015420102c67b')), -- token manager 
-            (LOWER('0xfd4babb3d2ffdffa99ad9e8a8c8e587cc360b2ea27ce9b25ec03d1fe86447a43')), -- token manager 
-            (LOWER('0xbd002182b8b92d98313fc0d97d08e224506828e46b6ff9b5903536efeeec65cc')) -- token manager 
+            (LOWER('0x7e852e0fcfce6551c13800f1e7476f982525c2b5277ba14b24339c68416336d1')) -- vault 
 ), 
 
 get_aragon_wallets as (
