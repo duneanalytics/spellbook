@@ -6,7 +6,7 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: sushiswap
-      contributors: hosuke
+      contributors: hosuke, zhongyiio
     config:
       tags: ['avalanche_c','sushiswap','trades','dex','hosuke']
     description: >
