@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: avalanche_c
+    description: "Avalanche (C-Chain) raw data"
+    tables:
+      - name: logs
+  - name: fraxswap_avalanche_c
+    description: "Avalanche (C-Chain) decoded tables related to Fraxswap contract"
+    tables:
+      - name: FraxswapFactory_evt_PairCreated
+      - name: FraxswapRouter_call_swapETHForExactTokens
+      - name: FraxswapRouter_call_swapExactETHForTokens
+      - name: FraxswapRouter_call_swapExactETHForTokensSupportingFeeOnTransferTokens
+      - name: FraxswapRouter_call_swapExactTokensForETH
+      - name: FraxswapRouter_call_swapExactTokensForETHSupportingFeeOnTransferTokens
+      - name: FraxswapRouter_call_swapExactTokensForTokens
+      - name: FraxswapRouter_call_swapExactTokensForTokensSupportingFeeOnTransferTokens
+      - name: FraxswapRouter_call_swapTokensForExactETH
+      - name: FraxswapRouter_call_swapTokensForExactTokens
