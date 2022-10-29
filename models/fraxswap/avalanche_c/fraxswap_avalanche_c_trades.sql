@@ -226,36 +226,36 @@ SELECT
     ,tx.to                                                              AS tx_to
     ,fraxswap_dex.trace_address
     ,fraxswap_dex.evt_index
-from fraxswap_dex
-inner join {{ source('avalanche_c', 'transactions') }} tx
-    on fraxswap_dex.tx_hash = tx.hash
+FROM fraxswap_dex
+INNER JOIN {{ source('avalanche_c', 'transactions') }} tx
+    ON fraxswap_dex.tx_hash = tx.hash
     {% if is_incremental() %}
-    and tx.block_time >= date_trunc("day", now() - interval '1 week')
+    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% else %}
-    and tx.block_time >= '{{project_start_date}}'
+    AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
-left join {{ ref('tokens_erc20') }} erc20a
-    on erc20a.contract_address = fraxswap_dex.token_bought_address
+LEFT JOIN {{ ref('tokens_erc20') }} erc20a
+    ON erc20a.contract_address = fraxswap_dex.token_bought_address
     and erc20a.blockchain = 'avalanche_c'
-left join {{ ref('tokens_erc20') }} erc20b
-    on erc20b.contract_address = fraxswap_dex.token_sold_address
-    and erc20b.blockchain = 'avalanche_c'
-left join {{ source('prices', 'usd') }} p_bought
-    on p_bought.minute = date_trunc('minute', fraxswap_dex.block_time)
-    and p_bought.contract_address = fraxswap_dex.token_bought_address
-    and p_bought.blockchain = 'avalanche_c'
+LEFT JOIN {{ ref('tokens_erc20') }} erc20b
+    ON erc20b.contract_address = fraxswap_dex.token_sold_address
+    AND erc20b.blockchain = 'avalanche_c'
+LEFT JOIN {{ source('prices', 'usd') }} p_bought
+    ON p_bought.minute = date_trunc('minute', fraxswap_dex.block_time)
+    AND p_bought.contract_address = fraxswap_dex.token_bought_address
+    AND p_bought.blockchain = 'avalanche_c'
     {% if is_incremental() %}
-    and p_bought.minute >= date_trunc("day", now() - interval '1 week')
+    AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
     {% else %}
-    and p_bought.minute >= '{{project_start_date}}'
+    AND p_bought.minute >= '{{project_start_date}}'
     {% endif %}
-left join {{ source('prices', 'usd') }} p_sold
-    on p_sold.minute = date_trunc('minute', fraxswap_dex.block_time)
-    and p_sold.contract_address = fraxswap_dex.token_sold_address
-    and p_sold.blockchain = 'avalanche_c'
+LEFT JOIN {{ source('prices', 'usd') }} p_sold
+    ON p_sold.minute = date_trunc('minute', fraxswap_dex.block_time)
+    AND p_sold.contract_address = fraxswap_dex.token_sold_address
+    AND p_sold.blockchain = 'avalanche_c'
     {% if is_incremental() %}
-    and p_sold.minute >= date_trunc("day", now() - interval '1 week')
+    AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
     {% else %}
-    and p_sold.minute >= '{{project_start_date}}'
+    AND p_sold.minute >= '{{project_start_date}}'
     {% endif %}
 ;
