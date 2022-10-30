@@ -57,8 +57,8 @@ models:
         name: value 
         description: "converted value of asset/token transferred"
         tests:
-          - compare_column_values_to_seed_values:
-              seed_file_location: ref('daos_transactions_seed')
+          - daos_transactions_value:
+              daos_transactions_seed: ref('daos_transactions_seed')
       - &usd_value
         name: usd_value
         description: "usd value of asset/token transferred"
