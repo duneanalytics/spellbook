@@ -30,7 +30,6 @@ syndicatev1_daos as ( -- getting investment clubs created on dune v1
             block_time, 
             CONCAT('0x', RIGHT(topic2, 40)) as dao 
         FROM 
-        ethereum.logs
         {{ source('ethereum', 'logs') }}
         {% if not is_incremental() %}
         WHERE block_time >= '{{project_start_date}}'
