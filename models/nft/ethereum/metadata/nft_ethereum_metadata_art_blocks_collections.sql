@@ -367,6 +367,11 @@
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 367, 1000000, 'Fontana', 'Harvey Rayner', 'Curated', '8', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-367')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 368, 1000000, 'Primitives', 'Aranda\Lasch', 'Curated', '8', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-368')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 370, 1000000, 'Rectangles (for Herbert)', 'Jeff Davis', 'Playground', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-370')
+        , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 371, 1000000, 'JPEG', 'Jan Robert Leegte', 'Presents', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-371')
+        , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 376, 1000000, 'Tide Predictor', 'LoVid', 'Curated', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-376')
+        , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 381, 1000000, 'Structures', 'Hevey', 'Presents', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-381')
+
+        , ('0x942bc2d3e7a589fe5bd4a5c6ef9727dfd82f5c8a',0,1000000,'Friendship Bracelets','Alexis André','Explorations','N/A','0x942bc2d3e7a589fe5bd4a5c6ef9727dfd82f5c8a-0')
 
     ) as temp_table (contract_address, project_id, project_id_base_value, collection_name, artist_name, art_blocks_project_type, art_blocks_curated_season, art_collection_unique_id)
     
