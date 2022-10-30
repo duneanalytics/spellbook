@@ -18,8 +18,7 @@
 WITH fraxswap_decodes AS (
 
     SELECT
-        call_block_number
-        ,call_block_time
+        call_block_time
         ,call_trace_address
         ,call_tx_hash
         ,contract_address
@@ -33,8 +32,7 @@ WITH fraxswap_decodes AS (
     UNION ALL
 
     SELECT
-        call_block_number
-        ,call_block_time
+        call_block_time
         ,call_trace_address
         ,call_tx_hash
         ,contract_address
@@ -48,8 +46,7 @@ WITH fraxswap_decodes AS (
     UNION ALL
 
     SELECT
-        call_block_number
-        ,call_block_time
+        call_block_time
         ,call_trace_address
         ,call_tx_hash
         ,contract_address
@@ -63,8 +60,7 @@ WITH fraxswap_decodes AS (
     UNION ALL
 
     SELECT
-        call_block_number
-        ,call_block_time
+        call_block_time
         ,call_trace_address
         ,call_tx_hash
         ,contract_address
@@ -78,8 +74,7 @@ WITH fraxswap_decodes AS (
     UNION ALL
 
     SELECT
-        call_block_number
-        ,call_block_time
+        call_block_time
         ,call_trace_address
         ,call_tx_hash
         ,contract_address
@@ -93,8 +88,7 @@ WITH fraxswap_decodes AS (
     UNION ALL
 
     SELECT
-        call_block_number
-        ,call_block_time
+        call_block_time
         ,call_trace_address
         ,call_tx_hash
         ,contract_address
@@ -108,8 +102,7 @@ WITH fraxswap_decodes AS (
     UNION ALL
 
     SELECT
-        call_block_number
-        ,call_block_time
+        call_block_time
         ,call_trace_address
         ,call_tx_hash
         ,contract_address
@@ -123,8 +116,7 @@ WITH fraxswap_decodes AS (
     UNION ALL
 
     SELECT
-        call_block_number
-        ,call_block_time
+        call_block_time
         ,call_trace_address
         ,call_tx_hash
         ,contract_address
@@ -138,8 +130,7 @@ WITH fraxswap_decodes AS (
     UNION ALL
 
     SELECT
-        call_block_number
-        ,call_block_time
+        call_block_time
         ,call_trace_address
         ,call_tx_hash
         ,contract_address
@@ -160,7 +151,6 @@ fraxswap_decodes_with_log AS (
         ,l.index                                                    AS evt_index
         ,p.token0                                                   AS token0
         ,p.token1                                                   AS token1
-        ,t.call_block_number
         ,t.call_block_time
         ,t.call_trace_address
         ,t.call_tx_hash
@@ -191,7 +181,7 @@ fraxswap_dex AS (
         ,CASE WHEN amount0In = 0 THEN token1 ELSE token0 END          AS token_sold_address
         ,contract_address                                             AS project_contract_address
         ,call_tx_hash                                                 AS tx_hash
-        ,''                                                           AS trace_address
+        ,call_trace_address                                           AS trace_address
         ,evt_index
     FROM fraxswap_decodes_with_log
 )
