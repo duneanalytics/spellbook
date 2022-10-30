@@ -181,7 +181,7 @@ fraxswap_dex AS (
         ,CASE WHEN amount0In = 0 THEN token1 ELSE token0 END          AS token_sold_address
         ,contract_address                                             AS project_contract_address
         ,call_tx_hash                                                 AS tx_hash
-        ,call_trace_address                                           AS trace_address
+        ,''                                                           AS trace_address
         ,evt_index
     FROM fraxswap_decodes_with_log
 )
