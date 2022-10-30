@@ -129,7 +129,7 @@ models:
       - *blockchain
       - *dao_creator_tool
       - *dao
-      - name: dao_wallet_address # avoid '*' usage to prevent running test on view 
+      - name: dao_wallet_address
         description: "wallet addresses used by DAO to receive * transfer funds"
       - *created_date
       - *created_block_time
