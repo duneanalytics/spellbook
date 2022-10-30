@@ -15,7 +15,7 @@ WITH  -- dune query here https://dune.com/queries/1433654
 get_zodiac_wallets as ( -- getting the gnosis safes created using zodiac's reality.eth module
         SELECT 
             block_time as created_block_time, 
-            date_trunc('day', block_time) as created_date, 
+            TRY_CAST(date_trunc('day', block_time) as DATE) as created_date, 
             CONCAT('0x', RIGHT(topic3, 40)) as dao
         FROM 
         {{ source('ethereum', 'logs') }}

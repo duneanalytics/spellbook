@@ -19,7 +19,7 @@ WITH -- dune query here - https://dune.com/queries/1434676
 get_daohaus_molochs as (
         SELECT 
             block_time as created_block_time, 
-            date_trunc('day', block_time) as created_date, 
+            TRY_CAST(date_trunc('day', block_time) as DATE) as created_date, 
             CONCAT('0x', RIGHT(topic2, 40)) as moloch
         FROM 
         {{ source('gnosis', 'logs') }}

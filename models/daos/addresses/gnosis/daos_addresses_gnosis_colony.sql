@@ -35,6 +35,6 @@ SELECT
     colony as dao, 
     colony as dao_wallet_address, -- the colony address is also the address that receives & sends funds 
     created_block_time, 
-    created_date
+    TRY_CAST(created_date as DATE) as created_date
 FROM 
 get_colony_wallets
