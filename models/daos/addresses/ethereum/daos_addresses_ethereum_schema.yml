@@ -32,8 +32,8 @@ models:
         name: dao_wallet_address
         desciption: "wallet address used by DAO to receive & transfer funds"
         tests:
-          - daos_addresses_dao_wallet_address:
-              daos_addresses_seed: ref('daos_addresses_seed')
+          - compare_column_values_to_seed_values:
+              seed_file_location: ref('daos_addresses_seed')
       - &created_date
         name: created_date
         description: "UTC event block date of DAO creation"
