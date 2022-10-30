@@ -17,7 +17,7 @@ WITH  -- dune query here - https://dune.com/queries/1433790
 get_daohaus_molochs as ( -- molochs are daos and this is getting a list of molochs created through daohaus 
         SELECT 
             block_time as created_block_time, 
-            TRY_CAST(date_trunc('day', block_time), as DATE) as created_date, 
+            TRY_CAST(date_trunc('day', block_time) as DATE) as created_date, 
             CONCAT('0x', RIGHT(topic2, 40)) as moloch
         FROM 
         {{ source('ethereum', 'logs') }}
