@@ -10,8 +10,7 @@
             end as wallet_address_test 
         from {{ model }} m
         inner join {{ daos_addresses_seed }} seed
-            on m.dao = seed.dao
-            and m.created_date = seed.created_date
+            on m.created_date = seed.created_date
             and m.blockchain = seed.blockchain
             and m.dao_creator_tool = seed.dao_creator_tool
     )

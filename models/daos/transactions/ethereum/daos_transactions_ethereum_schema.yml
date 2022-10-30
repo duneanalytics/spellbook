@@ -65,9 +65,6 @@ models:
       - &tx_hash
         name: tx_hash 
         desciption: "transaction hash"
-        tests:
-          - compare_column_values_to_seed_values:
-              seed_file_location: ref('daos_transactions_seed')
       - &tx_index
         name: tx_index
         description: "transaction index"
