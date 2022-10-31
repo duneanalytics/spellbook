@@ -28,9 +28,12 @@ FROM
     , ('0x7c9733b19e14f37aca367fbd78922c098c55c874', 'Reservoir') -- Reservoir v3
     , ('0x8005488ff4f8982d2d8c1d602e6d747b1428dd41', 'Reservoir') -- Reservoir v4
     , ('0x9ebfb53fa8526906738856848a27cb11b0285c3f', 'Reservoir') -- Reservoir v5
+    , ('0x178a86d36d89c7fdebea90b739605da7b131ff6a', 'Reservoir') -- Reservoir v6
     , ('0x39b6862c4783db2651d64bc160349dc9a15f1fb7', 'Rarity Garden') -- Rarity Garden v2
     , ('0x9d0a89bc35fb160a076de0341d9280830d3013ca', 'Rarity Garden') -- Rarity Garden v1.02
     , ('0x603d022611bfe6a101dcdab207d96c527f1d4d8e', 'BitKeep') -- BitKeep
     , ('0x2a7251d1e7d708c507b1b0d3ff328007beecce5d', 'Rarible') -- Rarible
     , ('0x2c45af926d5f62c5935278106800a03eb565778e', 'Rarible') -- Rarible
+    , ('0x1ee3151cff01321059e3865214379b85c79ca984', 'Magic Eden') -- Magic Eden
+    , ('0x141efc30c4093bc0f8204accb8afa6643fddecf2', 'Alpha Sharks') -- Alpha Sharks
   ) AS temp_table (contract_address, name)
