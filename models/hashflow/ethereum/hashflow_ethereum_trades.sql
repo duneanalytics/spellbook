@@ -347,7 +347,7 @@ new_pool as (
                 l.`baseTokenAmount`/power(10, tp.decimals) * tp.price,
                 l.`quoteTokenAmount`/power(10, mp.decimals) * mp.price) as amount_usd
     from hashflow_pool_evt_trade l
-    join ethereum_transactions tx on tx.hash = l.evt_tx_hash
+    inner join ethereum_transactions tx on tx.hash = l.evt_tx_hash
     left join prices_usd tp on tp.minute = date_trunc('minute', tx.block_time)
         and tp.contract_address =
             case when l.`baseToken` = '0x0000000000000000000000000000000000000000'
@@ -358,6 +358,23 @@ new_pool as (
                 then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' else l.`quoteToken` end
     WHERE l.evt_block_time > '2022-04-08' -- necessary filter to only include new trades
 ),
+
+
+{% if is_incremental() %}
+{% else %}
+
+dedupe_new_router as ( -- since new_router and new_pool have overlapping trades, we remove them from new_router here
+    select new_router.*
+    from new_router
+    left join new_pool
+    on new_router.block_time = new_pool.block_time
+        and new_router.composite_index = new_pool.composite_index
+        and new_router.tx_hash = new_pool.tx_hash
+    where new_pool.tx_hash is null
+
+),
+
+{% endif %}
 
 all_trades as (
     select
@@ -381,7 +398,7 @@ all_trades as (
 
     union all
 
-    select * from new_router
+    select * from dedupe_new_router
 
     {% endif %}
 )
