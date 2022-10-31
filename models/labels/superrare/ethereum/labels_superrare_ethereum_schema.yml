@@ -8,7 +8,7 @@ models:
       project: superrare
       contibutors: cat
     config:
-      tags: ['labels', 'ethereum']
+      tags: ['labels', 'ethereum', 'superrare']
     description: "SuperRare usernames"
     columns:
       - &blockchain
