@@ -17,7 +17,7 @@
 with ethereum_traces as (
     select *
     from {{ source('ethereum', 'traces') }}
-    where `to` in ('0x455a3B3Be6e7C8843f2b03A1cA22A5a5727ef5C4','0x9d4fc735e1a596420d24a266b7b5402fe4ec153c',
+    where `to` in ('0x455a3b3be6e7c8843f2b03a1ca22a5a5727ef5c4','0x9d4fc735e1a596420d24a266b7b5402fe4ec153c',
                    '0x2405cb057a9baf85daa11ce9832baed839b6871c','0x043389f397ad72619d05946f5f35426a7ace6613',
                    '0xa18607ca4a3804cc3cd5730eafefcc47a7641643', '0x6ad3dac99c9a4a480748c566ce7b3503506e3d71')
         and block_time >= '{{ project_start_date }}'
