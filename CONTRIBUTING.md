@@ -19,6 +19,8 @@ Contributions in the form of issues and pull requests are very much welcome here
 We are testing out adding pre-push hooks to our workflow. The goal is to catch common errors before code is pushed and
 streamline the pull request review process. 
 
+If you are a Github Desktop user, this flow might not work for you! If you are a Github CLI user, please give this a shot. We will incorperate a github action for the Desktop users.
+
 You may be familiar with [pre-commit hooks](https://pre-commit.com/) which run checks every time you commit new code. 
 Because dbt compile is required for the more meaningful checks, we have decided to only apply these tests when 
 pushing code to minimize the waiting time. If any of these checks fail, the git push will fail. 
