@@ -369,6 +369,7 @@
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 368, 1000000, 'Primitives', 'Aranda\Lasch', 'Curated', '8', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-368')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 370, 1000000, 'Rectangles (for Herbert)', 'Jeff Davis', 'Playground', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-370')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 371, 1000000, 'JPEG', 'Jan Robert Leegte', 'Presents', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-371')
+        , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 373, 1000000, 'Intersections', 'Rafaël Rozendaal', 'Presents', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-373')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 376, 1000000, 'Tide Predictor', 'LoVid', 'Curated', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-376')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 381, 1000000, 'Structures', 'Hevey', 'Presents', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-381')
 
