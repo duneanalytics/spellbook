@@ -47,5 +47,3 @@ UNION
 SELECT * FROM {{ ref('labels_validators') }}
 UNION
 SELECT * FROM {{ ref('labels_sandwich_attackers') }}
-UNION 
-SELECT * FROM {{ ref('labels_superrare_ethereum') }}
