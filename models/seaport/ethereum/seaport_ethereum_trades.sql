@@ -23,7 +23,7 @@ with source_ethereum_transactions as (
       from {{ source('ethereum','transactions') }}
      where block_time > date '{{c_seaport_first_date}}'  -- seaport first txn
     {% if is_incremental() %}
-      and t.block_time >= date_trunc('day', current_date - interval '1 week')
+       and t.block_time >= current_date - interval '1 week'
     {% endif %}
 )
 ,ref_seaport_ethereum_base_pairs as (
@@ -32,7 +32,7 @@ with source_ethereum_transactions as (
       from {{ ref('seaport_ethereum_base_pairs') }}
      where 1=1
      {% if is_incremental() %}
-      and block_time >= date_trunc('day', current_date - interval '1 week')
+       and block_time >= current_date - interval '1 week'
      {% endif %}     
 )
 ,ref_tokens_nft as (
@@ -59,7 +59,7 @@ with source_ethereum_transactions as (
       from {{ source('prices', 'usd') }}
      where blockchain = 'ethereum'
      {% if is_incremental() %} 
-      and minute >= date_trunc('day', current_date - interval '1 week')
+       and minute >= current_date - interval '1 week'
      {% endif %}
 )
 ,iv_base_pairs_priv as (
@@ -153,14 +153,14 @@ with source_ethereum_transactions as (
           ,sum(case when is_platform_fee then original_amount end) as platform_fee_amount_raw
           ,max(case when is_platform_fee then receiver end) as platform_fee_receiver
           ,sum(case when is_creator_fee then original_amount end) as creator_fee_amount_raw
-          ,sum(case when is_creator_fee and creator_fee_idx = 1 then original_amount end) as creator_fee_amount_1_raw
-          ,sum(case when is_creator_fee and creator_fee_idx = 2 then original_amount end) as creator_fee_amount_2_raw
-          ,sum(case when is_creator_fee and creator_fee_idx = 3 then original_amount end) as creator_fee_amount_3_raw
-          ,sum(case when is_creator_fee and creator_fee_idx = 4 then original_amount end) as creator_fee_amount_4_raw
-          ,max(case when is_creator_fee and creator_fee_idx = 1 then receiver end) as creator_fee_receiver_1_raw
-          ,max(case when is_creator_fee and creator_fee_idx = 2 then receiver end) as creator_fee_receiver_2_raw
-          ,max(case when is_creator_fee and creator_fee_idx = 3 then receiver end) as creator_fee_receiver_3_raw
-          ,max(case when is_creator_fee and creator_fee_idx = 4 then receiver end) as creator_fee_receiver_4_raw
+          ,sum(case when is_creator_fee and creator_fee_idx = 1 then original_amount end) as creator_fee_amount_raw_1
+          ,sum(case when is_creator_fee and creator_fee_idx = 2 then original_amount end) as creator_fee_amount_raw_2
+          ,sum(case when is_creator_fee and creator_fee_idx = 3 then original_amount end) as creator_fee_amount_raw_3
+          ,sum(case when is_creator_fee and creator_fee_idx = 4 then original_amount end) as creator_fee_amount_raw_4
+          ,max(case when is_creator_fee and creator_fee_idx = 1 then receiver end) as creator_fee_receiver_1
+          ,max(case when is_creator_fee and creator_fee_idx = 2 then receiver end) as creator_fee_receiver_2
+          ,max(case when is_creator_fee and creator_fee_idx = 3 then receiver end) as creator_fee_receiver_3
+          ,max(case when is_creator_fee and creator_fee_idx = 4 then receiver end) as creator_fee_receiver_4
       from iv_base_pairs_priv a
      where 1=1
        and eth_erc_idx > 0
@@ -173,7 +173,7 @@ with source_ethereum_transactions as (
           ,a.sender as seller
           ,a.receiver as buyer
           ,case when nft_cnt > 1 then 'bundle trade' 
-                else 'single trade'
+                else 'single item trade'
            end as trade_type
           ,a.order_type
           ,a.token_contract_address as nft_contract_address
@@ -187,14 +187,14 @@ with source_ethereum_transactions as (
           ,round(platform_fee_amount_raw / nft_cnt) as platform_fee_amount_raw
           ,platform_fee_receiver
           ,round(creator_fee_amount_raw / nft_cnt) as creator_fee_amount_raw  
-          ,creator_fee_amount_1_raw / nft_cnt as creator_fee_amount_1_raw
-          ,creator_fee_amount_2_raw / nft_cnt as creator_fee_amount_2_raw
-          ,creator_fee_amount_3_raw / nft_cnt as creator_fee_amount_3_raw
-          ,creator_fee_amount_4_raw / nft_cnt as creator_fee_amount_4_raw
-          ,creator_fee_receiver_1_raw
-          ,creator_fee_receiver_2_raw
-          ,creator_fee_receiver_3_raw
-          ,creator_fee_receiver_4_raw
+          ,creator_fee_amount_raw_1 / nft_cnt as creator_fee_amount_raw_1
+          ,creator_fee_amount_raw_2 / nft_cnt as creator_fee_amount_raw_2
+          ,creator_fee_amount_raw_3 / nft_cnt as creator_fee_amount_raw_3
+          ,creator_fee_amount_raw_4 / nft_cnt as creator_fee_amount_raw_4
+          ,creator_fee_receiver_1
+          ,creator_fee_receiver_2
+          ,creator_fee_receiver_3
+          ,creator_fee_receiver_4
           ,case when nft_cnt > 1 then true
                 else false
            end as estimated_price
@@ -206,14 +206,20 @@ with source_ethereum_transactions as (
      where 1=1
        and a.is_traded_nft
 )
-,iv_trades(
+,iv_trades as (
     select a.*
+          ,try_cast(date_trunc('day', a.block_time) as date) as block_date
+          ,n.name AS nft_token_name
           ,t.`from` as tx_from
           ,t.`to` as tx_to
           ,right(t.data,8) as right_hash
           ,case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_native_symbol}}'
                 else e.symbol
            end as token_symbol
+          ,case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_alternative_token_address}}'
+                else a.token_contract_address
+           end as token_alternative_symbol
+          ,e.decimals as price_token_decimals
           ,a.price_amount_raw / power(10, e.decimals) as price_amount
           ,a.price_amount_raw / power(10, e.decimals) * p.price as price_amount_usd
           ,a.platform_fee_amount_raw / power(10, e.decimals) as platform_fee_amount
@@ -229,12 +235,90 @@ with source_ethereum_transactions as (
       from iv_nfts a
            inner join source_ethereum_transactions t on t.hash = a.tx_hash
            left join ref_tokens_nft n on n.contract_address = nft_contract_address 
-           left join ref_tokens_erc20 e on e.contract_address = a.token_contract_address
+           left join ref_tokens_erc20 e on e.contract_address = case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_alternative_token_address}}'
+                                                                     else a.token_contract_address
+                                                                end
            left join source_prices_usd p on p.contract_address = case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_alternative_token_address}}'
                                                                       else a.token_contract_address
                                                                  end
                                          and p.minute = date_trunc('minute', a.block_time)
            left join ref_nft_aggregators agg on agg.contract_address = t.to                                          
 )
+,iv_columns as (
+    -- Rename column to align other *.trades tables
+    -- But the columns ordering is according to convenience.
+    -- initcap the code value if needed 
+    select 
+          -- basic info
+           'ethereum' as blockchain
+          ,'seaport' as project
+          ,'v1' as version
+
+          -- order info
+          ,block_date
+          ,block_time
+          ,seller
+          ,buyer
+          ,initcap(trade_type) as trade_type
+          ,initcap(order_type) as trade_category -- Buy / Offer Accepted
+          ,'Trade' as evt_type
+
+          -- nft token info
+          ,nft_contract_address
+          ,nft_token_name as collection
+          ,nft_token_id as token_id
+          ,nft_token_amount as number_of_items
+          ,nft_token_standard as token_standard
+          
+          -- price info          
+          ,price_amount as amount_original
+          ,price_amount_raw as amount_raw
+          ,price_amount_usd as amount_usd
+          ,token_symbol as currency_symbol
+          ,token_alternative_symbol as currency_contract
+          ,token_contract_address as original_currency_contract
+          ,price_token_decimals as currency_decimals   -- in case calculating royalty1~4
+
+          -- project info (platform or exchange)
+          ,platform_contract_address as project_contract_address
+          ,platform_fee_receiver as platform_fee_receive_address
+          ,platform_fee_amount_raw
+          ,platform_fee_amount
+          ,platform_fee_amount_usd
+
+          -- royalty info
+          ,creator_fee_receiver_1 as royalty_fee_receive_address
+          ,creator_fee_amount_raw as royalty_fee_amount_raw
+          ,creator_fee_amount as royalty_fee_amount
+          ,creator_fee_amount_usd as royalty_fee_amount_usd
+          ,creator_fee_receiver_1 as royalty_fee_receive_address_1
+          ,creator_fee_receiver_2 as royalty_fee_receive_address_2
+          ,creator_fee_receiver_3 as royalty_fee_receive_address_3
+          ,creator_fee_receiver_4 as royalty_fee_receive_address_4
+          ,creator_fee_amount_raw_1 as royalty_fee_amount_raw_1
+          ,creator_fee_amount_raw_2 as royalty_fee_amount_raw_2
+          ,creator_fee_amount_raw_3 as royalty_fee_amount_raw_3
+          ,creator_fee_amount_raw_4 as royalty_fee_amount_raw_4
+
+          -- aggregator
+          ,aggregator_name
+          ,aggregator_address
+
+          -- tx
+          ,tx_hash
+          ,evt_index
+          ,tx_from
+          ,tx_to
+          ,right_hash
+          
+          -- seaport etc
+          ,zone as zone_address
+          ,estimated_price
+          ,is_private
+          
+          -- unique key    
+          ,unique_trade_id
+      from iv_trades
+)
 select *
-  from iv_trades
+  from iv_columns
