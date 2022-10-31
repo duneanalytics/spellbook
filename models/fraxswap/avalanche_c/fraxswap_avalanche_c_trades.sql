@@ -15,175 +15,25 @@
 
 {% set project_start_date = '2022-05-23' %}
 
-WITH fraxswap_decodes AS (
-
-    SELECT
-        call_block_time
-        ,call_trace_address
-        ,call_tx_hash
-        ,contract_address
-        ,`to`
-    FROM {{ source('fraxswap_avalanche_c', 'FraxswapRouter_call_swapETHForExactTokens') }}
-    WHERE call_success = true
-    {% if is_incremental() %}
-    AND call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-
-    UNION ALL
-
-    SELECT
-        call_block_time
-        ,call_trace_address
-        ,call_tx_hash
-        ,contract_address
-        ,`to`
-    FROM {{ source('fraxswap_avalanche_c', 'FraxswapRouter_call_swapExactETHForTokens') }}
-    WHERE call_success = true
-    {% if is_incremental() %}
-    AND call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-
-    UNION ALL
-
-    SELECT
-        call_block_time
-        ,call_trace_address
-        ,call_tx_hash
-        ,contract_address
-        ,`to`
-    FROM {{ source('fraxswap_avalanche_c', 'FraxswapRouter_call_swapExactTokensForETH') }}
-    WHERE call_success = true
-    {% if is_incremental() %}
-    AND call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-
-    UNION ALL
-
-    SELECT
-        call_block_time
-        ,call_trace_address
-        ,call_tx_hash
-        ,contract_address
-        ,`to`
-    FROM {{ source('fraxswap_avalanche_c', 'FraxswapRouter_call_swapExactTokensForTokens') }}
-    WHERE call_success = true
-    {% if is_incremental() %}
-    AND call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-
-    UNION ALL
-
-    SELECT
-        call_block_time
-        ,call_trace_address
-        ,call_tx_hash
-        ,contract_address
-        ,`to`
-    FROM {{ source('fraxswap_avalanche_c', 'FraxswapRouter_call_swapTokensForExactETH') }}
-    WHERE call_success = true
-    {% if is_incremental() %}
-    AND call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-
-    UNION ALL
-
-    SELECT
-        call_block_time
-        ,call_trace_address
-        ,call_tx_hash
-        ,contract_address
-        ,`to`
-    FROM {{ source('fraxswap_avalanche_c', 'FraxswapRouter_call_swapTokensForExactTokens') }}
-    WHERE call_success = true
-    {% if is_incremental() %}
-    AND call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-
-    UNION ALL
-
-    SELECT
-        call_block_time
-        ,call_trace_address
-        ,call_tx_hash
-        ,contract_address
-        ,`to`
-    FROM {{ source('fraxswap_avalanche_c', 'FraxswapRouter_call_swapExactETHForTokensSupportingFeeOnTransferTokens') }}
-    WHERE call_success = true
-    {% if is_incremental() %}
-    AND call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-
-    UNION ALL
-
-    SELECT
-        call_block_time
-        ,call_trace_address
-        ,call_tx_hash
-        ,contract_address
-        ,`to`
-    FROM {{ source('fraxswap_avalanche_c', 'FraxswapRouter_call_swapExactTokensForETHSupportingFeeOnTransferTokens') }}
-    WHERE call_success = true
-    {% if is_incremental() %}
-    AND call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-
-    UNION ALL
-
-    SELECT
-        call_block_time
-        ,call_trace_address
-        ,call_tx_hash
-        ,contract_address
-        ,`to`
-    FROM {{ source('fraxswap_avalanche_c', 'FraxswapRouter_call_swapExactTokensForTokensSupportingFeeOnTransferTokens') }}
-    WHERE call_success = true
-    {% if is_incremental() %}
-    AND call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-),
-
-fraxswap_decodes_with_log AS (
-    SELECT
-        bytea2numeric_v2(substr(l.data, 3, 64))                     AS amount0In
-        ,bytea2numeric_v2(substr(l.data, 3 + 64, 64))               AS amount1In
-        ,bytea2numeric_v2(substr(l.data, 3 + 64 + 64, 64))          AS amount0Out
-        ,bytea2numeric_v2(substr(l.data, 3 + 64 + 64 + 64 + 1, 64)) AS amount1Out
-        ,l.index                                                    AS evt_index
-        ,p.token0                                                   AS token0
-        ,p.token1                                                   AS token1
-        ,t.call_block_time
-        ,t.call_trace_address
-        ,t.call_tx_hash
-        ,t.contract_address
-        ,t.`to`
-    FROM fraxswap_decodes t
-    INNER JOIN {{ source('avalanche_c', 'logs') }} l
-        ON t.call_tx_hash = l.tx_hash
-        AND l.topic1 = "0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822"
-        {% if is_incremental() %}
-        AND l.block_time >= date_trunc("day", now() - interval '1 week')
-        {% else %}
-        AND l.block_time >= '{{ project_start_date }}'
-        {% endif %}
-    INNER JOIN {{ source('fraxswap_avalanche_c', 'FraxswapFactory_evt_PairCreated') }} p
-        ON l.contract_address = p.pair
-),
+WITH
 
 fraxswap_dex AS (
     SELECT
-        call_block_time                                               AS block_time
-        ,`to`                                                         AS taker
-        ,''                                                           AS maker
-        ,CASE WHEN amount0Out = 0 THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw
-        ,CASE WHEN amount0In = 0 THEN amount1In ELSE amount0In END    AS token_sold_amount_raw
-        ,cast(NULL as double)                                         AS amount_usd
-        ,CASE WHEN amount0Out = 0 THEN token1 ELSE token0 END         AS token_bought_address
-        ,CASE WHEN amount0In = 0 THEN token1 ELSE token0 END          AS token_sold_address
-        ,contract_address                                             AS project_contract_address
-        ,call_tx_hash                                                 AS tx_hash
-        ,''                                                           AS trace_address
-        ,evt_index
-    FROM fraxswap_decodes_with_log
+        t.evt_block_time                                                    AS block_time
+        ,t.`to`                                                             AS taker
+        ,''                                                                 AS maker
+        ,CASE WHEN t.amount0Out = 0 THEN t.amount1Out ELSE t.amount0Out END AS token_bought_amount_raw
+        ,CASE WHEN t.amount0In = 0 THEN t.amount1In ELSE t.amount0In END    AS token_sold_amount_raw
+        ,cast(NULL as double)                                               AS amount_usd
+        ,CASE WHEN t.amount0Out = 0 THEN p.token1 ELSE p.token0 END         AS token_bought_address
+        ,CASE WHEN t.amount0In = 0 THEN p.token1 ELSE p.token0 END          AS token_sold_address
+        ,t.contract_address                                                 AS project_contract_address
+        ,t.evt_tx_hash                                                      AS tx_hash
+        ,''                                                                 AS trace_address
+        ,t.evt_index
+    FROM {{ source('fraxswap_avalanche_c', 'FraxswapPair_evt_Swap') }} t
+    INNER JOIN {{ source('fraxswap_avalanche_c', 'FraxswapFactory_evt_PairCreated') }} p
+        ON t.contract_address = p.pair
 )
 
 SELECT

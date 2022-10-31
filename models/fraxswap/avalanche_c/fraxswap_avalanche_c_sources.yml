@@ -9,12 +9,4 @@ sources:
     description: "Avalanche (C-Chain) decoded tables related to Fraxswap contract"
     tables:
       - name: FraxswapFactory_evt_PairCreated
-      - name: FraxswapRouter_call_swapETHForExactTokens
-      - name: FraxswapRouter_call_swapExactETHForTokens
-      - name: FraxswapRouter_call_swapExactETHForTokensSupportingFeeOnTransferTokens
-      - name: FraxswapRouter_call_swapExactTokensForETH
-      - name: FraxswapRouter_call_swapExactTokensForETHSupportingFeeOnTransferTokens
-      - name: FraxswapRouter_call_swapExactTokensForTokens
-      - name: FraxswapRouter_call_swapExactTokensForTokensSupportingFeeOnTransferTokens
-      - name: FraxswapRouter_call_swapTokensForExactETH
-      - name: FraxswapRouter_call_swapTokensForExactTokens
+      - name: FraxswapPair_evt_Swap
