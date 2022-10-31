@@ -226,6 +226,10 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0xc5102fE9359FD9a28f877a67E36B0F050d81a3CC', 'HOP', 18)
 ,('0xB0B195aEFA3650A6908f15CdaC7D92F8a5791B0B', 'BOB', 18)
 ,('0x86bEA60374f220dE9769b2fEf2db725bc1cDd335', 'FLASH', 18)
-
+,('0xec6adef5e1006bb305bb1975333e8fc4071295bf', 'CTSI', 18)
+,('0x0e49ca6ea763190084c846d3fc18f28bc2ac689a', 'DUCK', 18)
+,('0x50bce64397c75488465253c0a034b8097fea6578', 'HAN', 18)
+,('0xe3ab61371ecc88534c522922a026f2296116c109', 'SPELL', 18)
+,('0x29FAF5905bfF9Cfcc7CF56a5ed91E0f091F8664B', 'BANK', 18)
 
 ) AS temp_table (contract_address, symbol, decimals)

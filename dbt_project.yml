@@ -15,7 +15,6 @@ test-paths: ["tests"]
 seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
-docs-paths: ["docs"]
 
 target-path: "target" # directory which will store compiled SQL files
 clean-targets: # directories to be removed by `dbt clean`
@@ -159,6 +158,9 @@ models:
       avalanche_c:
         +schema: gas_avalanche_c
         +materialized: view
+      optimism:
+        +schema: gas_optimism
+        +materialized: view
 
     gmx:
       +schema: gmx
@@ -206,6 +208,13 @@ models:
       ethereum:
         +schema: balances_ethereum
         +materialized: view
+        
+    dodo:
+      +schema: dodo
+      +materialized: view
+      ethereum:
+        +schema: dodo_ethereum
+        +materialized: view
 
     labels:
       +schema: labels
@@ -219,6 +228,13 @@ models:
         +materialized: table
       optimism:
         +schema: addresses_optimism
+        +materialized: table
+    
+    addresses_events: 
+      +schema: addresses_events
+      +materialized: table
+      ethereum: 
+        +schema: addresses_events_ethereum
         +materialized: table
 
     tokens:
@@ -369,6 +385,13 @@ models:
       +materialized: view
       ethereum:
         +schema: clipper_ethereum
+        +materialized: view
+        
+    reaper:
+      +schema: reaper
+      +materialized: view
+      optimism:
+        +schema: reaper_optimism
         +materialized: view
     
     defiswap:

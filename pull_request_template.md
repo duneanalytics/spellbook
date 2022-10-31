@@ -13,6 +13,10 @@ General checks:
 * [ ] if adding a new model, I edited the dbt project YAML file with new directory path for both models and seeds (if applicable)
 * [ ] if wanting to expose a model in the UI (Dune data explorer), I added a post-hook in the JINJA config to add metadata (blockchains, sector/project, name and contributors)
 
+Pricing checks:
+* [ ] `coin_id` represents the ID of the coin on coinpaprika.com
+* [ ] all the coins are active on coinpaprika.com (please remove inactive ones)
+
 Join logic:
 * [ ] if joining to base table (i.e. ethereum transactions or traces), I looked to make it an inner join if possible
 
