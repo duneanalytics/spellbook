@@ -426,6 +426,12 @@ models:
       bnb:
         +schema: pancakeswap_bnb
         +materialized: view
+    bancor:
+      +schema: bancor
+      +materialized: view
+      bnb:
+        +schema: bancor_ethereum
+        +materialized: view
 
 
 seeds:
