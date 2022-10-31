@@ -47,6 +47,12 @@ with source_ethereum_transactions as (
       from {{ ref('tokens_erc20') }}
      where blockchain = 'ethereum'
 )
+,ref_nft_aggregators as (
+    select *
+      -- from nft.aggregators
+      from {{ ref('nft_ethereum_aggregators') }}
+     where blockchain = 'ethereum'
+)
 ,source_prices_usd as (
     select *
     --   from prices.usd
@@ -214,6 +220,11 @@ with source_ethereum_transactions as (
           ,a.platform_fee_amount_raw / power(10, e.decimals) * p.price as platform_fee_amount_usd
           ,a.creator_fee_amount_raw / power(10, e.decimals) as creator_fee_amount
           ,a.creator_fee_amount_raw / power(10, e.decimals) * p.price as creator_fee_amount_usd
+          ,case when right(t.data,8) = '72db8c0b' then 'Gem'
+                when right(t.data,8) = '332d1229' THEN 'Blur'
+                else agg.name
+           end as aggregator_name
+          ,agg.contract_address AS aggregator_address
           ,tx_hash || '-' || evt_index as unique_trade_id
       from iv_nfts a
            inner join source_ethereum_transactions t on t.hash = a.tx_hash
@@ -223,6 +234,7 @@ with source_ethereum_transactions as (
                                                                       else a.token_contract_address
                                                                  end
                                          and p.minute = date_trunc('minute', a.block_time)
+           left join ref_nft_aggregators agg on agg.contract_address = t.to                                          
 )
 select *
   from iv_trades
