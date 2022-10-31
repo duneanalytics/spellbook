@@ -51,7 +51,6 @@ with source_ethereum_transactions as (
     select *
       -- from nft.aggregators
       from {{ ref('nft_ethereum_aggregators') }}
-     where blockchain = 'ethereum'
 )
 ,source_prices_usd as (
     select *
