@@ -43,7 +43,7 @@ transactions as (
         {% endif %}
         AND to IN (SELECT dao_wallet_address FROM dao_tmp)
         AND LOWER(call_type) NOT IN ('delegatecall', 'callcode', 'staticcall') 
-        AND tx_success = true 
+        AND success = true 
         AND value <> 0 
 
         UNION ALL 
@@ -68,7 +68,7 @@ transactions as (
         {% endif %}
         AND from IN (SELECT dao_wallet_address FROM dao_tmp)
         AND LOWER(call_type) NOT IN ('delegatecall', 'callcode', 'staticcall') 
-        AND tx_success = true 
+        AND success = true 
         AND value <> 0 
 )
 
