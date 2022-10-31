@@ -13,6 +13,8 @@ models:
     columns:
       - name: token_id
         description: "Token ID"
+        tests:
+          - unique
       - &token_id_short
         name: token_id_short
         description: “Token ID as shown in collection (i.e. Ringer number excluding Art Blocks project code)”
@@ -66,6 +68,8 @@ models:
     columns:
       - name: token_id
         description: "Token ID"
+        tests:
+          - unique
       - &color_direction 
         name: color_direction
         description: "Color direction"
@@ -112,6 +116,8 @@ models:
     columns:
       - name: token_id
         description: "Token ID"
+        tests:
+          - unique
       - &mode
         name: mode
         description: "Mode - Origin"
@@ -161,6 +167,8 @@ models:
     columns:
       - name: token_id
         description: "Token ID"
+        tests:
+          - unique
       - name: background
         description: "background"
       - name: body
@@ -228,6 +236,8 @@ models:
         description: "If Curated collection, season it was launched in. Else N/A"
       - name: art_collection_unique_id
         description: "Unique identifier - contract address and project id"
+        tests:
+          - unique
 
   - name: nft_ethereum_metadata_bright_moments
     meta:
@@ -253,6 +263,8 @@ models:
         description: "City collection launched in, if applicable"
       - name: art_collection_unique_id
         description: "Unique identifier - contract address and project id"
+        tests:
+          - unique
 
   - name: nft_ethereum_metadata_proof_grails_i
     meta:
@@ -267,7 +279,7 @@ models:
       - name: contract_address
         description: "Collection contract address"
       - name: project_id
-        description: "Token ID"
+        description: "Project ID. Can use to join with token_ids on contract address"
       - name: project_id_base_value
         description: "Value used to join on other tables"
       - name: collection_name
@@ -280,6 +292,8 @@ models:
         description: "Grail ID pre-reveal"
       - name: art_collection_unique_id
         description: "Unique identifier - contract address and project id"
+        tests:
+          - unique
 
   - name: nft_ethereum_metadata_proof_grails_ii
     meta:
@@ -294,7 +308,7 @@ models:
       - name: contract_address
         description: "Collection contract address"
       - name: project_id
-        description: "Token ID"
+        description: "Project ID. Can use to join with token_ids on contract address"
       - name: project_id_base_value
         description: "Value used to join on other tables"
       - name: collection_name
@@ -307,6 +321,8 @@ models:
         description: "Grail ID pre-reveal"
       - name: art_collection_unique_id
         description: "Unique identifier - contract address and project id"
+        tests:
+          - unique
         
   - name: nft_ethereum_metadata_braindrops
     meta:
@@ -330,6 +346,8 @@ models:
         description: "Name of artist"
       - name: art_collection_unique_id
         description: "Unique identifier - contract address and project id"
+        tests:
+          - unique
 
   - name: nft_ethereum_metadata_mirage_gallery_curated
     meta:
@@ -355,6 +373,8 @@ models:
         description: "Name of project"
       - name: art_collection_unique_id
         description: "Unique identifier - contract address and project id"
+        tests:
+          - unique
 
   - name: nft_ethereum_metadata_art_platform_collections
     meta:

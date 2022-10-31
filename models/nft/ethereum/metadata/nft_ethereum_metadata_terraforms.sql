@@ -1,8 +1,5 @@
 {{ config(
-        alias = 'terraforms',
-        partition_by = ['token_id'],
-        materialized = 'view',
-        unique_key = ['token_id']
+        alias = 'terraforms'
         )
 }}
 

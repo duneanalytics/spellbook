@@ -1,8 +1,5 @@
 {{ config(
-        alias = 'chromie_squiggle',
-        partition_by = ['token_id'],
-        materialized = 'view',
-        unique_key = ['token_id']
+        alias = 'chromie_squiggle'
         )
 }}
 

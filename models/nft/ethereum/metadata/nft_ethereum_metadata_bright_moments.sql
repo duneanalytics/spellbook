@@ -1,8 +1,5 @@
 {{ config(
-        alias = 'bright_moments',
-        partition_by = ['project_id'],
-        materialized = 'view',
-        unique_key = ['project_id']
+        alias = 'bright_moments'
         )
 }}
 
