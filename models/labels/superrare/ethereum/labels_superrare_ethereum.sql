@@ -7511,5 +7511,4 @@ FROM (VALUES
     (array('ethereum'),'0xb379b56bcacdd58ae0768654763881849bfaad94', '6529szn4', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now())
     (array('ethereum'),'0xd7dd9612a21f7c249fb7f33e9c2e9144345e162b', 'fred_dot_jpg', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now())
 
-
  ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at)
