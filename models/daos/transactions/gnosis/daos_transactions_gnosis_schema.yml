@@ -32,6 +32,9 @@ models:
       - &dao_creator_tool
         name: dao_creator_tool
         description: "Name of creator tool used to create DAO"
+        tests:
+          - daos_transactions_creator_tool:
+              daos_transactions_seed: ref('daos_transactions_seed')
       - &dao
         name: dao
         description: "address of the dao deployed"
@@ -56,9 +59,6 @@ models:
       - &value
         name: value 
         description: "converted value of asset/token transferred"
-        tests:
-          - daos_transactions_value:
-              daos_transactions_seed: ref('daos_transactions_seed')
       - &usd_value
         name: usd_value
         description: "usd value of asset/token transferred"

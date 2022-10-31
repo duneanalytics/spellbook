@@ -25,6 +25,9 @@ models:
       - &dao_creator_tool
         name: dao_creator_tool
         description: "Name of creator tool used to create DAO"
+        tests:
+          - daos_addresses_creator_tool:
+              daos_addresses_seed: ref('daos_addresses_seed')
       - &dao
         name: dao
         description: "address of the dao deployed"
@@ -99,7 +102,8 @@ models:
       wallet addresses of daos created on gnosis across all dao creator tools
     columns:
       - *blockchain
-      - *dao_creator_tool
+      - name: dao_creator_tool
+        description: "Name of creator tool used to create DAO"
       - *dao
       - *dao_wallet_address
       - *created_date

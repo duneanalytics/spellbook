@@ -25,15 +25,15 @@ models:
       - &dao_creator_tool
         name: dao_creator_tool
         description: "Name of creator tool used to create DAO"
+        tests:
+          - daos_addresses_creator_tool:
+              daos_addresses_seed: ref('daos_addresses_seed')
       - &dao
         name: dao
         description: "address of the dao deployed"
       - &dao_wallet_address
         name: dao_wallet_address
         desciption: "wallet address used by DAO to receive & transfer funds"
-        tests:
-          - daos_addresses_wallet_address:
-              daos_addresses_seed: ref('daos_addresses_seed')
       - &created_date
         name: created_date
         description: "UTC event block date of DAO creation"
@@ -127,9 +127,9 @@ models:
       wallet addresses of daos created on ethereum across all dao creator tools
     columns:
       - *blockchain
-      - *dao_creator_tool
+      - name: dao_creator_tool
+        description: "Name of creator tool used to create DAO"
       - *dao
-      - name: dao_wallet_address
-        description: "wallet addresses used by DAO to receive * transfer funds"
+      - *dao_wallet_address
       - *created_date
       - *created_block_time

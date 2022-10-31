@@ -1,4 +1,4 @@
-{% test daos_addresses_wallet_address(model, column_name, daos_addresses_seed) %}
+{% test daos_addresses_creator_tool(model, column_name, daos_addresses_seed) %}
 
     with unit_test as
     (
@@ -7,17 +7,16 @@
                 when lower(m.{{ column_name }}) = lower(seed.{{ column_name }})
                     then True
                 else False
-            end as wallet_address_test 
+            end as creator_tool_test 
         from {{ model }} m
         inner join {{ daos_addresses_seed }} seed
             on m.created_date = seed.created_date
             and m.dao = seed.dao
             and m.dao_wallet_address = seed.dao_wallet_address
             and m.blockchain = seed.blockchain
-            and m.dao_creator_tool = seed.dao_creator_tool
     )
     select *
     from unit_test
-    where wallet_address_test = False
+    where creator_tool_test  = False
 
 {% endtest %}
