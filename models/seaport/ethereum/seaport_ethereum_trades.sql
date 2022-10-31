@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['tx_hash','evt_index'],
+    unique_key = ['tx_hash','evt_index','nft_contract_address','token_id'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                             "project",
                             "seaport",
@@ -230,7 +230,7 @@ with source_ethereum_transactions as (
                 else agg.name
            end as aggregator_name
           ,agg.contract_address AS aggregator_address
-          ,tx_hash || '-' || evt_index as unique_trade_id
+          ,'seaport-' || tx_hash || '-' || evt_index || '-' || nft_contract_address || '-' || token_id as unique_trade_id
       from iv_nfts a
            inner join source_ethereum_transactions t on t.hash = a.tx_hash
            left join ref_tokens_nft n on n.contract_address = nft_contract_address 
