@@ -3,7 +3,12 @@
      )
 }}
 
-with iv_offer_consideration as (
+with decode_Seaport_evt_OrderFulfilled as (
+    select *
+    --   from seaport_ethereum.Seaport_evt_OrderFulfilled
+      from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }} 
+)
+,iv_offer_consideration as (
     select evt_block_time as block_time
           ,evt_block_number as block_number
           ,evt_tx_hash as tx_hash
@@ -37,7 +42,7 @@ with iv_offer_consideration as (
                 else 'etc' 
            end as item_type
           ,offer_item:identifier as token_id
-          ,contract_address as exchange_contract_address
+          ,contract_address as platform_contract_address
           ,size(offer) as offer_cnt
           ,size(consideration) as consideration_cnt
           ,case when recipient = '0x0000000000000000000000000000000000000000' then true
@@ -45,8 +50,8 @@ with iv_offer_consideration as (
            end as is_private
       from (select *
                   ,posexplode(offer) as (offer_idx, offer_item)
-              from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }} 
-           )          
+              from decode_Seaport_evt_OrderFulfilled   
+           )
     union all
     select evt_block_time as block_time
           ,evt_block_number as block_number
@@ -89,7 +94,7 @@ with iv_offer_consideration as (
            end as is_private
       from (select *
                   ,posexplode(consideration) as (consideration_idx, consideration_item)
-              from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }} 
+              from decode_Seaport_evt_OrderFulfilled
            )
 )
 ,iv_base_pairs as (
