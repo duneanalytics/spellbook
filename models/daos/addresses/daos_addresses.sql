@@ -2,7 +2,7 @@
     alias = 'addresses',
     materialized = 'table',
     file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum", gnosis"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "gnosis"]\',
                                 "sector",
                                 "daos",
                                 \'["henrystats"]\') }}')

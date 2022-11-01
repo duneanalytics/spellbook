@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'daos_addresses_ethereum_aragon',
+    alias = 'addresses_ethereum_aragon',
     partition_by = ['created_date'],
     materialized = 'incremental',
     file_format = 'delta',

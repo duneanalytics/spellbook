@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'daos_addresses_ethereum_zodiac',
+    alias = 'addresses_ethereum_zodiac',
     partition_by = ['created_date'],
     materialized = 'incremental',
     file_format = 'delta',

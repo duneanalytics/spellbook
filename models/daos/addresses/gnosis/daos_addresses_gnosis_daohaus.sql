@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'daos_addresses_gnosis_daohaus',
+    alias = 'addresses_gnosis_daohaus',
     partition_by = ['created_date'],
     materialized = 'incremental',
     file_format = 'delta',

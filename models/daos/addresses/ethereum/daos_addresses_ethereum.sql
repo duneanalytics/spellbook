@@ -1,4 +1,4 @@
-{{config(alias='daos_addresses_ethereum')}}
+{{config(alias='addresses_ethereum')}}
 
 WITH 
 
