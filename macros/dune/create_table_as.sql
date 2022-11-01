@@ -1,5 +1,7 @@
 
 {% macro databricks__create_table_as(temporary, relation, compiled_code, language='sql') -%}
+{% set s3_bucket = env_var('DBT_ENV_S3_BUCKET', var('DBT_ENV_S3_BUCKET', 'local')) %}
+
   {%- if language == 'sql' -%}
     {%- if temporary -%}
       {{ create_temporary_view(relation, compiled_code) }}
@@ -9,7 +11,11 @@
       {% else %}
         create table {{ relation }}
       {% endif %}
-      {{ file_format_clause() }} location "{{ 's3a://REPLACE_ME/' +  relation | replace(".","/") | replace("_","-") }}"
+            {% if s3_bucket != 'local' %}
+                {{ file_format_clause() }} location "{{ 's3a://'+ s3_bucket + '/' +  relation | replace(".","/") | replace("_","-") }}"
+             {% else %}
+                {{ file_format_clause() }}
+            {% endif %}
       {{ options_clause() }}
       {{ partition_cols(label="partitioned by") }}
       {{ clustered_cols(label="clustered by") }}

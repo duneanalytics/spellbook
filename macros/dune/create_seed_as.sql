@@ -1,6 +1,7 @@
 {% macro databricks__create_csv_table(model, agate_table) %}
   {%- set column_override = model['config'].get('column_types', {}) -%}
   {%- set quote_seed_column = model['config'].get('quote_columns', None) -%}
+  {% set s3_bucket = env_var('DBT_ENV_S3_BUCKET', var('DBT_ENV_S3_BUCKET', 'local')) %}
 
   {% set sql %}
     create table {{ this.render() }} (
@@ -11,7 +12,11 @@
             {{ adapter.quote_seed_column(column_name, quote_seed_column) }} {{ type }} {%- if not loop.last -%}, {%- endif -%}
         {%- endfor -%}
     )
-    {{ file_format_clause() }} location "{{ 's3a://REPLACE_ME/' +  this.render() | replace(".","/") | replace("_","-") }}"
+    {% if s3_bucket != 'local' %}
+        {{ file_format_clause() }} location "{{ 's3a://'+ s3_bucket + '/' +  this.render() | replace(".","/") | replace("_","-") }}"
+    {% else %}
+        {{ file_format_clause() }}
+    {% endif %}
     {{ partition_cols(label="partitioned by") }}
     {{ clustered_cols(label="clustered by") }}
     {{ location_clause() }}
