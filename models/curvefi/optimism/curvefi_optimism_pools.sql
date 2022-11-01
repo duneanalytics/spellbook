@@ -3,7 +3,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['version', 'tokenid', 'token', 'pool'],
+    unique_key = ['tokenid', 'token', 'pool'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "curvefi",
