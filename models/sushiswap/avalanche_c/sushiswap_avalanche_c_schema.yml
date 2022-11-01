@@ -8,7 +8,7 @@ models:
       project: sushiswap
       contributors: hosuke, zhongyiio
     config:
-      tags: ['avalanche_c','sushiswap','trades','dex','hosuke']
+      tags: ['avalanche_c','sushiswap','trades','dex']
     description: >
         Sushiswap contract trades on Avalanche (C-Chain)
     tests:
