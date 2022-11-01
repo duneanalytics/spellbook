@@ -1,201 +1,56 @@
 version: 2
 
 sources:
-  - name: avalanche_c
-    description: "Avalanche (C-Chain) raw data"
-    tables:
-      - name: logs
   - name: sushiswap_v2_avalanche_c
     description: "Avalanche (C-Chain) decoded tables related to SushiSwap contract"
     tables:
+      - name: Pair_evt_Swap
+        loaded_at_field: evt_block_time
+        description: "Sushiswap swap events table on Avalanche C chain"
+        columns:
+          - &amount0In
+            name: amount0In
+          - &amount0Out
+            name: amount0Out
+          - &amount1In
+            name: amount1In
+          - &amount1Out
+            name: amount1Out
+          - &contract_address
+            name: contract_address
+            description: "Avalanche C-Chain address for the liquidity pool used in transaction"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block number which processed the unique transaction hash"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_index
+            name: evt_index
+            description: "Index value of the transaction"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Primary key of the transaction"
+            tests:
+              - not_null
+          - &sender
+            name: sender
+          - &to
+            name: to
       - name: SushiV2Factory_evt_PairCreated
         loaded_at_field: evt_block_time
         description: "SushiSwap Pool created events table"
         columns:
           - &_0
             name: _0
-          - &contract_address
-            name: contract_address
-          - &evt_block_number
-            name: evt_block_number
-          - &evt_block_time
-            name: evt_block_time
-          - &evt_index
-            name: evt_index
-          - &evt_tx_hash
-            name: evt_tx_hash
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
           - &pair
             name: pair
           - &token0
             name: token0
           - &token1
             name: token1
-      - name: SushiSwapRouter_call_swapETHForExactTokens
-        freshness:
-          warn_after: { count: 12, period: hour }
-        loaded_at_field: call_block_time
-        description: ""
-        columns:
-          - *contract_address
-          - &call_success
-            name: call_success
-          - &call_tx_hash
-            name: call_tx_hash
-          - &call_trace_address
-            name: call_trace_address
-          - &call_block_time
-            name: call_block_time
-          - &call_block_number
-            name: call_block_number
-          - &amountOut
-            name: amountOut
-          - &deadline
-            name: deadline
-          - &output_amounts
-            name: output_amounts
-          - &path
-            name: path
-          - &to
-            name: to
-      - name: SushiSwapRouter_call_swapExactETHForTokens
-        freshness:
-          warn_after: { count: 12, period: hour }
-        loaded_at_field: call_block_time
-        description: ""
-        columns:
-          - *contract_address
-          - *call_success
-          - *call_tx_hash
-          - *call_trace_address
-          - *call_block_time
-          - *call_block_number
-          - &amountOutMin
-            name: amountOutMin
-          - *deadline
-          - *output_amounts
-          - *path
-          - *to
-      - name: SushiSwapRouter_call_swapExactETHForTokensSupportingFeeOnTransferTokens
-        freshness:
-          warn_after: { count: 12, period: hour }
-        loaded_at_field: call_block_time
-        description: ""
-        columns:
-          - *contract_address
-          - *call_success
-          - *call_tx_hash
-          - *call_trace_address
-          - *call_block_time
-          - *call_block_number
-          - *amountOutMin
-          - *deadline
-          - *path
-          - *to
-      - name: SushiSwapRouter_call_swapExactTokensForETH
-        freshness:
-          warn_after: { count: 12, period: hour }
-        loaded_at_field: call_block_time
-        description: ""
-        columns:
-          - *contract_address
-          - *call_success
-          - *call_tx_hash
-          - *call_trace_address
-          - *call_block_time
-          - *call_block_number
-          - &amountIn
-            name: amountIn
-          - *amountOutMin
-          - *deadline
-          - *output_amounts
-          - *path
-      - name: SushiSwapRouter_call_swapExactTokensForETHSupportingFeeOnTransferTokens
-        freshness:
-          warn_after: { count: 12, period: hour }
-        loaded_at_field: call_block_time
-        description: ""
-        columns:
-          - *contract_address
-          - *call_success
-          - *call_tx_hash
-          - *call_trace_address
-          - *call_block_time
-          - *call_block_number
-          - *amountIn
-          - *amountOutMin
-          - *deadline
-          - *path
-          - *to
-      - name: SushiSwapRouter_call_swapExactTokensForTokens
-        freshness:
-          warn_after: { count: 12, period: hour }
-        loaded_at_field: call_block_time
-        description: ""
-        columns:
-          - *contract_address
-          - *call_success
-          - *call_tx_hash
-          - *call_trace_address
-          - *call_block_time
-          - *call_block_number
-          - *amountIn
-          - *amountOutMin
-          - *deadline
-          - *output_amounts
-          - *path
-          - *to
-      - name: SushiSwapRouter_call_swapExactTokensForTokensSupportingFeeOnTransferTokens
-        freshness:
-          warn_after: { count: 12, period: hour }
-        loaded_at_field: call_block_time
-        description: ""
-        columns:
-          - *contract_address
-          - *call_success
-          - *call_tx_hash
-          - *call_trace_address
-          - *call_block_time
-          - *call_block_number
-          - *amountIn
-          - *amountOutMin
-          - *deadline
-          - *output_amounts
-          - *path
-          - *to
-      - name: SushiSwapRouter_call_swapTokensForExactETH
-        freshness:
-          warn_after: { count: 12, period: hour }
-        loaded_at_field: call_block_time
-        description: ""
-        columns:
-          - *contract_address
-          - *call_success
-          - *call_tx_hash
-          - *call_trace_address
-          - *call_block_time
-          - *call_block_number
-          - &amountInMax
-            name: amountInMax
-          - *amountOut
-          - *deadline
-          - *output_amounts
-          - *path
-          - *to
-      - name: SushiSwapRouter_call_swapTokensForExactTokens
-        freshness:
-          warn_after: { count: 12, period: hour }
-        loaded_at_field: call_block_time
-        description: ""
-        columns:
-          - *contract_address
-          - *call_success
-          - *call_tx_hash
-          - *call_trace_address
-          - *call_block_time
-          - *call_block_number
-          - *amountInMax
-          - *amountOut
-          - *deadline
-          - *output_amounts
-          - *path
-          - *to
