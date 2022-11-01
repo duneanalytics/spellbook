@@ -1,6 +1,6 @@
 
 {% macro databricks__create_table_as(temporary, relation, compiled_code, language='sql') -%}
-{% set s3_bucket = env_var('DBT_ENV_S3_BUCKET', var('DBT_ENV_S3_BUCKET', 'local')) %}
+  {% set s3_bucket = var('DBT_ENV_S3_BUCKET', 'local') %}
 
   {%- if language == 'sql' -%}
     {%- if temporary -%}
