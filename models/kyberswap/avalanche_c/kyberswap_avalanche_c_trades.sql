@@ -34,6 +34,11 @@ kyberswap_dex AS (
     FROM {{ source('kyber_avalanche_c', 'DMMPool_evt_Swap') }} t
     INNER JOIN {{ source('kyber_avalanche_c', 'DMMFactory_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
+        {% if is_incremental() %}
+        AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% else %}
+        AND t.evt_block_time >= '{{ project_start_date }}'
+        {% endif %}
 
     UNION ALL
 
@@ -51,6 +56,12 @@ kyberswap_dex AS (
         ,''                                                                AS trace_address
         ,evt_index
     FROM {{ source('kyber_avalanche_c', 'AggregationRouter_evt_Swapped') }}
+    WHERE
+        {% if is_incremental() %}
+        t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% else %}
+        t.evt_block_time >= '{{ project_start_date }}'
+        {% endif %}
 
     UNION ALL
 
@@ -68,6 +79,12 @@ kyberswap_dex AS (
         ,''                                                                AS trace_address
         ,evt_index
     FROM {{ source('kyber_avalanche_c', 'MetaAggregationRouter_evt_Swapped') }}
+    WHERE
+        {% if is_incremental() %}
+        t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% else %}
+        t.evt_block_time >= '{{ project_start_date }}'
+        {% endif %}
 )
 
 SELECT
