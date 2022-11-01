@@ -1,8 +1,5 @@
 {{ config(
-        alias = 'bright_moments',
-        partition_by = ['project_id'],
-        materialized = 'view',
-        unique_key = ['project_id']
+        alias = 'bright_moments'
         )
 }}
 
@@ -23,6 +20,8 @@ from (VALUES
         , ('0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676', 12, 1000000, 'translucent panes', 'fingacode', 'London', '0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676-12')
         , ('0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676', 13, 1000000, 'Wirwar', 'Bart Simons', 'Venice', '0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676-13')
         , ('0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676', 14, 1000000, 'KERNELS', 'Julian Hespenheide', 'All', '0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676-14')
+        , ('0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676', 15, 1000000, 'Brise Soleil', 'Jorge Ledezma', 'Venice','0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676-15')
+
 
 ) as temp_table (contract_address, project_id, project_id_base_value, collection_name, artist_name, bright_moments_city, art_collection_unique_id)
     
