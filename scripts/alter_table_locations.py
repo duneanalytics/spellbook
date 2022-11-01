@@ -1,21 +1,18 @@
 import argparse
-import ast
 import json
 import subprocess
-from pathlib import Path
 
 from string import Template
 
 
 class TableLocationManager:
+    """
+    Quick script to hopefully be used a single time to generate a macro to move tables to s3 locations.
+    """
     def __init__(self, s3_base: str):
         self.s3_base = s3_base
 
     def fetch_tables_dict(self):
-        """
-        Use dbt ls commands to find json representations of all tables (incremental, static, seeds) that are models
-        :return: tables_dict {"model_name": {node dictionary}}
-        """
         bash_response = subprocess.run(
             f'dbt list --output json --select config.materialized:incremental config.materialized:table --exclude resource_type:test',
             capture_output=True, shell=True).stdout.decode("utf-8")
@@ -42,7 +39,7 @@ class TableLocationManager:
     def get_alter_command(self, table_dict):
         table_name = f"{table_dict['config']['schema']}.{table_dict['config'].get('alias', table_dict['name'])}"
         s3_path = self.get_s3_location(table_dict)
-        partition= self.get_partitions(table_dict)
+        partition = self.get_partitions(table_dict)
         alter_template = Template("""
         {% set $var %}
         ALTER TABLE $table_name $partition SET LOCATION $s3_path;
