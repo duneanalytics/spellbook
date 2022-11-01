@@ -34,6 +34,11 @@ fraxswap_dex AS (
     FROM {{ source('fraxswap_avalanche_c', 'FraxswapPair_evt_Swap') }} t
     INNER JOIN {{ source('fraxswap_avalanche_c', 'FraxswapFactory_evt_PairCreated') }} p
         ON t.contract_address = p.pair
+        {% if is_incremental() %}
+        AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% else %}
+        AND t.evt_block_time >= '{{ project_start_date }}'
+        {% endif %}
 )
 
 SELECT
@@ -44,10 +49,10 @@ SELECT
     ,fraxswap_dex.block_time
     ,erc20a.symbol                                                      AS token_bought_symbol
     ,erc20b.symbol                                                      AS token_sold_symbol
-    ,case
-         when lower(erc20a.symbol) > lower(erc20b.symbol) then concat(erc20b.symbol, '-', erc20a.symbol)
-         else concat(erc20a.symbol, '-', erc20b.symbol)
-     end                                                                AS token_pair
+    ,CASE
+         WHEN lower(erc20a.symbol) > lower(erc20b.symbol) THEN concat(erc20b.symbol, '-', erc20a.symbol)
+         ELSE concat(erc20a.symbol, '-', erc20b.symbol)
+     END                                                                AS token_pair
     ,fraxswap_dex.token_bought_amount_raw / power(10, erc20a.decimals)  AS token_bought_amount
     ,fraxswap_dex.token_sold_amount_raw / power(10, erc20b.decimals)    AS token_sold_amount
     ,fraxswap_dex.token_bought_amount_raw

@@ -1,10 +1,6 @@
 version: 2
 
 sources:
-  - name: avalanche_c
-    description: "Avalanche (C-Chain) raw data"
-    tables:
-      - name: logs
   - name: fraxswap_avalanche_c
     description: "Avalanche (C-Chain) decoded tables related to Fraxswap contract"
     tables:
