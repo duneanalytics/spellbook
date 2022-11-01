@@ -673,7 +673,7 @@ VALUES
     ("x2y2-x2y2token", "ethereum", "X2Y2", "0x1e4ede388cbc9f4b5c79681b7f94d36a11abebc9", 18),
     ("tcr-tracer-dao", "ethereum", "TCR", "0x9c4a4204b79dd291d6b6571c5be8bbcd0622f050", 18),
     ("tsuka-dejitaru-tsuka", "ethereum", "TSUKA", "0xc5fb36dd2fb59d3b98deff88425a3f425ee469ed", 9),
-    ("caw-a-hunters-dream", "ethereum", "CAW", "0xf3b9569f82b18aef890de263b84189bd33ebe452", 18),
+    -- ("caw-a-hunters-dream", "ethereum", "CAW", "0xf3b9569f82b18aef890de263b84189bd33ebe452", 18), Removed until feed fixed by cp
     ("inu-inu", "ethereum", "INU", "0x050d94685c6b0477e1fc555888af6e2bb8dfbda5", 18),
     ("metis-metis-token", "ethereum", "METIS", "0x9e32b13ce7f2e80a01932b42553652e053d6ed8e", 18),
     ("note-notional", "ethereum", "NOTE", "0xcfeaead4947f0705a14ec42ac3d44129e1ef3ed5", 8),
