@@ -217,8 +217,68 @@ WITH rows AS (
             evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             evt_index AS evt_index
-        FROM kyber."AggregationRouterV2_evt_Swapped"
+        FROM kyber."AggregationRouter_evt_Swapped"
         WHERE evt_block_time >= start_ts AND evt_block_time < end_ts
+
+        UNION ALL
+        SELECT
+            evt_block_time AS block_time,
+            'Kyber' AS project,
+            'dmm' AS version,
+            'Aggregator' AS category,
+            sender AS trader_a,
+            NULL::bytea AS trader_b,
+            "spentAmount" token_a_amount_raw,
+            "returnAmount" token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            "srcToken" token_a_address,
+            "dstToken" token_b_address,
+            contract_address AS exchange_contract_address,
+            evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index AS evt_index
+        FROM kyber."AggregationRouterV2_evt_Swapped"
+        WHERE evt_block_time >= start_ts AND evt_block_time < end_t
+
+        UNION ALL
+        SELECT
+            evt_block_time AS block_time,
+            'Kyber' AS project,
+            'dmm' AS version,
+            'Aggregator' AS category,
+            sender AS trader_a,
+            NULL::bytea AS trader_b,
+            "spentAmount" token_a_amount_raw,
+            "returnAmount" token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            "srcToken" token_a_address,
+            "dstToken" token_b_address,
+            contract_address AS exchange_contract_address,
+            evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index AS evt_index
+        FROM kyber."AggregationRouterV3_evt_Swapped"
+        WHERE evt_block_time >= start_ts AND evt_block_time < end_t
+
+        UNION ALL
+        SELECT
+            evt_block_time AS block_time,
+            'Kyber' AS project,
+            'dmm' AS version,
+            'Aggregator' AS category,
+            sender AS trader_a,
+            NULL::bytea AS trader_b,
+            "spentAmount" token_a_amount_raw,
+            "returnAmount" token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            "srcToken" token_a_address,
+            "dstToken" token_b_address,
+            contract_address AS exchange_contract_address,
+            evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index AS evt_index
+        FROM kyber.""
+        WHERE evt_block_time >= start_ts AND evt_block_time < end_t
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
