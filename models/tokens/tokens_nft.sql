@@ -47,7 +47,7 @@ name,
 symbol,
 standard, 
 category 
-FROM  {{ ref('tokens_optimism_nft_bridged') }}
+FROM  {{ ref('tokens_optimism_nft_bridged_mapping') }}
             UNION
 SELECT
 'bnb' as blockchain, 

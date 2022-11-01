@@ -37,7 +37,7 @@ models:
       - name: name
         description: "NFT Project Name"
 
-  - name: tokens_optimism_nft_bridged
+  - name: tokens_optimism_nft_bridged_mapping
     meta:
       blockchain: optimism
       sector: nft
