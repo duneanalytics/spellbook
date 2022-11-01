@@ -55,7 +55,10 @@ WITH aggregator_routed_x2y2_txs AS (
     , prof.contract_address AS project_contract_address
     , '0x' || substring(get_json_object(inv.item, '$.data'), 155, 40) AS nft_contract_address
     , tokens.name AS collection
-    , CASE WHEN right(ett.input, 8)='72db8c0b' THEN 'Gem' ELSE NULL END AS aggregator_name
+    , CASE WHEN right(ett.input, 8)='72db8c0b' THEN 'Gem'
+        WHEN right(ett.input, 8)='332d1229' THEN 'Blur'
+        ELSE NULL
+        END AS aggregator_name
     , NULL AS aggregator_address
     , inv.evt_tx_hash AS tx_hash
     , prof.evt_index
