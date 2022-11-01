@@ -15,7 +15,6 @@ test-paths: ["tests"]
 seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
-docs-paths: ["docs"]
 
 target-path: "target" # directory which will store compiled SQL files
 clean-targets: # directories to be removed by `dbt clean`
@@ -96,6 +95,13 @@ models:
         +schema: uniswap_optimism
         +materialized: view
 
+    sushiswap:
+      +schema: sushiswap
+      +materialized: view
+      ethereum:
+        +schema: sushiswap_ethereum
+        +materialized: view
+        
     opensea:
       +schema: opensea
       +materialized: view
@@ -134,6 +140,12 @@ models:
       ethereum:
         +schema: foundation_ethereum
         +materialized: view
+    blur:
+      +schema: blur
+      +materialized: view
+      ethereum:
+        +schema: blur_ethereum
+        +materialized: view
 
     gas:
       +schema: gas
@@ -146,6 +158,9 @@ models:
         +materialized: view
       avalanche_c:
         +schema: gas_avalanche_c
+        +materialized: view
+      optimism:
+        +schema: gas_optimism
         +materialized: view
 
     gmx:
@@ -194,9 +209,20 @@ models:
       ethereum:
         +schema: balances_ethereum
         +materialized: view
+        
+    dodo:
+      +schema: dodo
+      +materialized: view
+      ethereum:
+        +schema: dodo_ethereum
+        +materialized: view
 
     labels:
       +schema: labels
+      +materialized: view
+
+    daos:
+      +schema: daos
       +materialized: view
 
     addresses:
@@ -207,6 +233,13 @@ models:
         +materialized: table
       optimism:
         +schema: addresses_optimism
+        +materialized: table
+    
+    addresses_events: 
+      +schema: addresses_events
+      +materialized: table
+      ethereum: 
+        +schema: addresses_events_ethereum
         +materialized: table
 
     tokens:
@@ -363,6 +396,34 @@ models:
       ethereum:
         +schema: clipper_ethereum
         +materialized: view
+        
+    reaper:
+      +schema: reaper
+      +materialized: view
+      optimism:
+        +schema: reaper_optimism
+        +materialized: view
+    
+    defiswap:
+      +schema: defiswap
+      +materialized: view
+      ethereum:
+        +schema: defiswap_ethereum
+        +materialized: view
+     
+    swapr:
+      +schema: swapr
+      +materialized: view
+      ethereum:
+        +schema: swapr_ethereum
+        +materialized: view
+
+    dfx:
+      +schema: dfx
+      +materialized: view
+      ethereum:
+        +schema: dfx_ethereum
+        +materialized: view
 
     shibaswap:
       +schema: shibaswap
@@ -377,6 +438,14 @@ models:
       optimism:
         +schema: velodrome_optimism
         +materialized: view
+
+    pancakeswap:
+      +schema: pancakeswap
+      +materialized: view
+      bnb:
+        +schema: pancakeswap_bnb
+        +materialized: view
+
 
 seeds:
   spellbook:
@@ -472,6 +541,26 @@ seeds:
           buyer: string
           amount_raw: string
           currency_contract: string
+    daos:
+      +enabled: true 
+      +schema: test_data
+      daos_addresses_seed:
+        +column_types:
+          blockchain: string
+          dao_creator_tool: string
+          dao: string
+          dao_wallet_address: string
+          created_date: date 
+      daos_transactions_seed:
+        +column_types:
+          blockchain: string
+          dao_creator_tool: string
+          dao: string
+          dao_wallet_address: string
+          value: float
+          block_date: date
+          tx_type: string
+          tx_hash: string
     curvefi:
       ethereum:
         +enabled: true

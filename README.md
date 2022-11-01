@@ -9,7 +9,7 @@ Working on something new? Open a draft PR to let other wizards know you're worki
 
 Write SQL to transform blockchain data into curated datasets on [dune.com](https://dune.com/home).
 
-First-time visitor? Check out how to [get started](#getting-started) below and visit the Spellbook [tutorial](https://docs.dune.com/dune-engine-v2-beta/abstractions-in-dunev2/how-to-contribute-a-spell). More tk.
+First-time visitor? Check out how to [get started](#getting-started) below and visit the [Spellbook Getting Started Guide](https://dune.com/docs/spellbook/getting-started/). More tk.
 
 Been here before? An archive of intermediate datasets that were contributed to Dune v1 can be consulted [here](deprecated-dune-v1-abstractions).
 
