@@ -1,4 +1,4 @@
-{{config(alias='daos_addresses_gnosis')}}
+{{config(alias='addresses_gnosis')}}
 
 WITH 
 

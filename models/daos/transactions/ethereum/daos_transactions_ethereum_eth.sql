@@ -1,10 +1,10 @@
 {{ config(
-    alias = 'daos_transactions_ethereum_eth',
+    alias = 'transactions_ethereum_eth',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'dao_creator_tool', 'dao', 'dao_wallet_address', 'tx_hash', 'tx_index', 'token', 'tx_type', 'trace_address', 'address_interacted_with']
+    unique_key = ['block_date', 'blockchain', 'dao_creator_tool', 'dao', 'dao_wallet_address', 'tx_hash', 'tx_index', 'tx_type', 'trace_address', 'address_interacted_with']
     )
 }}
 
