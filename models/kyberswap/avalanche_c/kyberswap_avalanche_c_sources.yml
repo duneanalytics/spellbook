@@ -6,3 +6,6 @@ sources:
     tables:
       - name: DMMPool_evt_Swap
       - name: DMMFactory_evt_PoolCreated
+      - name: Elastic_Pool_evt_Swap
+      - name: AggregationRouter_evt_Swapped
+      - name: MetaAggregationRouter_evt_Swapped
