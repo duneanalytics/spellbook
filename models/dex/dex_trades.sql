@@ -3,7 +3,7 @@
         post_hook='{{ expose_spells(\'["ethereum", "bnb"]\',
                                 "sector",
                                 "dex",
-                                \'["jeff-dude", "hosuke", "0xRob", "pandajackson42", "Henrystats"]\') }}'
+                                \'["jeff-dude", "hosuke", "0xRob", "pandajackson42", "Henrystats", "scoffie"]\') }}'
         )
 }}
 
@@ -18,6 +18,7 @@
 ,'defiswap_ethereum_trades'
 ,'dfx_ethereum_trades'
 ,'pancakeswap_trades'
+,'dodo_ethereum_trades'
 ] %}
 
 

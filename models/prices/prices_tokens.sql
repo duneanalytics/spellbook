@@ -127,6 +127,8 @@ VALUES
     ("usdc-usd-coin", "avalanche_c", "USDC", "0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e", 6),
     ("usdt-tether", "avalanche_c", "USDT", "0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7", 6),
     ("wbtc-wrapped-bitcoin", "avalanche_c", "WBTC", "0x50b7545627a5162f82a992c33b87adc75187b218", 8),
+    ("bets-betswirl", "avalanche_c", "BETS", "0xc763f8570A48c4c00C80B76107cbE744dDa67b79", 18),
+    ("thor-thor", "avalanche_c", "THOR", "0x8f47416cae600bccf9530e9f3aeaa06bdd1caa79", 18),
 
     ("1inch-1inch", "bnb", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
     ("aave-aave-token", "bnb", "AAVE", "0xfb6115445bff7b52feb98650c87f44907e58f802", 18),
@@ -250,6 +252,7 @@ VALUES
     ("dec-dark-energy-crystals", "bnb", "DEC", "0xe9d7023f2132d55cbd4ee1f78273cb7a3e74f10a", 3),
     ("sfm-safemoon", "bnb", "SFM", "0x42981d0bfbaf196529376ee702f2a9eb9092fcb5", 9),
     ("mnft-marvelous-nfts", "bnb", "MNFT", "0x33be7644c0e489b3a0c639d103392d4f3e338158", 18),
+    ("bets-betswirl", "bnb", "BETS", "0x3e0a7c7db7bb21bda290a80c9811de6d47781671", 18),
 
     ("0xbtc-0xbitcoin", "ethereum", "0xBTC", "0xb6ed7644c69416d67b522e20bc294a9a9b405b31", 8),
     ("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
@@ -670,7 +673,7 @@ VALUES
     ("x2y2-x2y2token", "ethereum", "X2Y2", "0x1e4ede388cbc9f4b5c79681b7f94d36a11abebc9", 18),
     ("tcr-tracer-dao", "ethereum", "TCR", "0x9c4a4204b79dd291d6b6571c5be8bbcd0622f050", 18),
     ("tsuka-dejitaru-tsuka", "ethereum", "TSUKA", "0xc5fb36dd2fb59d3b98deff88425a3f425ee469ed", 9),
-    ("caw-a-hunters-dream", "ethereum", "CAW", "0xf3b9569f82b18aef890de263b84189bd33ebe452", 18),
+    -- ("caw-a-hunters-dream", "ethereum", "CAW", "0xf3b9569f82b18aef890de263b84189bd33ebe452", 18), Removed until feed fixed by cp
     ("inu-inu", "ethereum", "INU", "0x050d94685c6b0477e1fc555888af6e2bb8dfbda5", 18),
     ("metis-metis-token", "ethereum", "METIS", "0x9e32b13ce7f2e80a01932b42553652e053d6ed8e", 18),
     ("note-notional", "ethereum", "NOTE", "0xcfeaead4947f0705a14ec42ac3d44129e1ef3ed5", 8),
@@ -1558,7 +1561,6 @@ VALUES
     ("usdt-tether", "optimism", "USDT", "0x94b008aa00579c1307b0ef2c499ad98a8ce58e58", 6),
     ("wbtc-wrapped-bitcoin", "optimism", "WBTC", "0x68f180fcce6836688e9084f035309e29bf0a2095", 8),
     ("weth-weth","optimism","WETH","0x4200000000000000000000000000000000000006",18),
-    ("hav-havven","optimism","SNX","0x8700daec35af8ff88c16bdf0418774cb3d7599b4",18),
     ("link-chainlink","optimism","LINK","0x350a791bfc2c21f9ed5d10980dad2e2638ffa7f6",18),
     ("rgt-rari-governance-token","optimism","RGT","0xb548f63d4405466b36c0c0ac3318a22fdcec711a",18),
     ("mkr-maker","optimism","MKR","0xab7badef82e9fe11f6f33f87bc9bc2aa27f2fcb5",18),
@@ -1593,6 +1595,7 @@ VALUES
     -- ("NULL","optimism","sAAVE","0x00b8d5a5e1ac97cb4341c4bc4367443c8776e8d9",18),
     -- ("NULL","optimism","sUNI","0xf5a6115aa582fd1beea22bc93b7dc7a785f60d03",18),
     -- ("seur-seur","optimism","sEUR","0xfbc4198702e81ae77c06d58f81b629bdf36f0a71",18),
+    ("seur-seur","optimism","sEUR","0xfbc4198702e81ae77c06d58f81b629bdf36f0a71",18),
     ("stg-stargatetoken","optimism","STG","0x296f55f8fb28e498b858d0bcda06d955b2cb3f97",18),
     -- ("socks-unisocks","optimism","SOCKS","0x514832a97f0b440567055a73fe03aa160017b990",18),
     -- ("NULL","optimism","MAI","0xdfa46478f9e5ea86d57387849598dbfb2e964b02",18),
@@ -1632,9 +1635,19 @@ VALUES
     ("crv-curve-dao-token", "optimism", "CRV", "0x0994206dfe8de6ec6920ff4d779b0d950605fb53", 18),
     ("oath-oath", "optimism", "OATH", "0x39FdE572a18448F8139b7788099F0a0740f51205", 18),
     ("hop-hop-protocol", "optimism", "HOP", "0xc5102fE9359FD9a28f877a67E36B0F050d81a3CC", 18),
-    
-    
-
+    ("0xbtc-0xbitcoin", "optimism", "0xBTC", "0xe0bb0d3de8c10976511e5030ca403dbf4c25165b", 8),
+    -- ("bitbtc-bitbtc", "optimism", "BitBTC", "0xc98b98d17435aa00830c87ea02474c5007e1f272", 18),
+    ("ctsi-cartesi", "optimism", "CTSI", "0xec6adef5e1006bb305bb1975333e8fc4071295bf", 18),
+    ("duck-dlp-duck-token", "optimism", "DUCK", "0x0e49ca6ea763190084c846d3fc18f28bc2ac689a", 18),
+    ("eqz-equalizer", "optimism", "EQZ", "0x81ab7e0d570b01411fcc4afd3d50ec8c241cb74b", 18),
+    ("gysr-geyser", "optimism", "GYSR", "0x117cfd9060525452db4a34d51c0b3b7599087f05", 18),
+    ("han-hanchain", "optimism", "HAN", "0x50bce64397c75488465253c0a034b8097fea6578", 18),
+    -- ("hnd-hundred-finance", "optimism", "HND", "0x10010078a54396f62c96df8532dc2b4847d47ed3", 18),
+    ("spell-spell-token", "optimism", "SPELL", "0xe3ab61371ecc88534c522922a026f2296116c109", 18),
+    ("suku-suku", "optimism", "SUKU", "0xef6301da234fc7b0545c6e877d3359fe0b9e50a4", 18),
+    ("snx-synthetix-network-token", "optimism", "SNX", "0x8700daec35af8ff88c16bdf0418774cb3d7599b4", 18),
+    ("unlock-unlock", "optimism", "UNLOCK", "0x7ae97042a4a0eb4d1eb370c34bfec71042a056b7", 18),
+    ("bank-bankless-dao", "optimism", "BANK", "0x29FAF5905bfF9Cfcc7CF56a5ed91E0f091F8664B", 18),
 
     ("aury-aurory", "solana", "AURY", "AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP", 9),
     ("btc-bitcoin", "solana", "BTC", "9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E", 6),
