@@ -1,4 +1,4 @@
-{{config(alias='superrare_ethereum')}}
+{{config(alias='labels')}}
 
 
 SELECT blockchain, address, name, category, contributor, source, created_at, updated_at
