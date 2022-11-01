@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'daos_transactions_gnosis_eth',
+    alias = 'transactions_gnosis_eth',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
