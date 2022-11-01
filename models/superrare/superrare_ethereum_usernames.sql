@@ -1,4 +1,4 @@
-{{config(alias='labels')}}
+{{config(alias='usernames')}}
 
 
 SELECT blockchain, address, name, category, contributor, source, created_at, updated_at
