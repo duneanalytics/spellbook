@@ -127,6 +127,8 @@ VALUES
     ("usdc-usd-coin", "avalanche_c", "USDC", "0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e", 6),
     ("usdt-tether", "avalanche_c", "USDT", "0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7", 6),
     ("wbtc-wrapped-bitcoin", "avalanche_c", "WBTC", "0x50b7545627a5162f82a992c33b87adc75187b218", 8),
+    ("bets-betswirl", "avalanche_c", "BETS", "0xc763f8570A48c4c00C80B76107cbE744dDa67b79", 18),
+    ("thor-thor", "avalanche_c", "THOR", "0x8f47416cae600bccf9530e9f3aeaa06bdd1caa79", 18),
 
     ("1inch-1inch", "bnb", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
     ("aave-aave-token", "bnb", "AAVE", "0xfb6115445bff7b52feb98650c87f44907e58f802", 18),
@@ -250,6 +252,7 @@ VALUES
     ("dec-dark-energy-crystals", "bnb", "DEC", "0xe9d7023f2132d55cbd4ee1f78273cb7a3e74f10a", 3),
     ("sfm-safemoon", "bnb", "SFM", "0x42981d0bfbaf196529376ee702f2a9eb9092fcb5", 9),
     ("mnft-marvelous-nfts", "bnb", "MNFT", "0x33be7644c0e489b3a0c639d103392d4f3e338158", 18),
+    ("bets-betswirl", "bnb", "BETS", "0x3e0a7c7db7bb21bda290a80c9811de6d47781671", 18),
 
     ("0xbtc-0xbitcoin", "ethereum", "0xBTC", "0xb6ed7644c69416d67b522e20bc294a9a9b405b31", 8),
     ("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
