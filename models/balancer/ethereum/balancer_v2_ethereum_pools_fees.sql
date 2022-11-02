@@ -1,7 +1,13 @@
-{{ config (schema = 'balancer_v2_ethereum', alias = 'pool_fees', post_hook = '{{ expose_spells(\'["ethereum"]\',
+{{
+    config(
+        schema = 'balancer_v2_ethereum',
+        alias='pools_fees',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "balancer_v2",
-                                    \'["masquot", "jacektrocinski"]\') }}') }}
+                                    \'["masquot", "jacektrocinski"]\') }}'
+    ) 
+}}
 
 {% set event_signature = "0xa9ba3ffe0b6c366b81232caab38605a0699ad5398d6cce76f91ee809e322dafc" %}
 
