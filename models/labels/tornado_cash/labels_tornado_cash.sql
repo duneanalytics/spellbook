@@ -12,7 +12,7 @@ SELECT
     depositor AS address,
     'Depositor' as name
 FROM {{ ref('tornado_cash_deposits') }}
-UNION
+UNION ALL
 SELECT
     lower(blockchain) as blockchain,
     tx_hash,

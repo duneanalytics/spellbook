@@ -38,7 +38,7 @@ select
   1 as number_of_items
 from {{ source('erc721_ethereum','evt_transfer') }}
 where from = '0x0000000000000000000000000000000000000000'
-	union
+	union all
 select
   evt_block_time,
   evt_block_number,
@@ -55,7 +55,7 @@ select
   value as number_of_items
 from {{ source('erc1155_ethereum','evt_transfersingle') }}
 where from = '0x0000000000000000000000000000000000000000'
-	union
+	union all
 select
   evt_block_time,
   evt_block_number,

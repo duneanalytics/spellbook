@@ -44,7 +44,7 @@ WITH looks_rare AS (
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
      WHERE ask.evt_block_time >= date_trunc("day", now() - interval '1 week')
      {% endif %}
-                            UNION
+    UNION ALL
     SELECT
         bid.evt_block_time AS block_time,
         bid.tokenId::string AS token_id,
@@ -95,7 +95,7 @@ erc_transfers as
         WHERE erc1155.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         GROUP BY evt_tx_hash,value,id,evt_index, erc1155.from, erc1155.to, erc1155.contract_address
-            UNION
+UNION ALL
 SELECT evt_tx_hash,
         contract_address,
         tokenId::string as token_id_erc,

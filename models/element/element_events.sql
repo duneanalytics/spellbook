@@ -49,7 +49,7 @@ FROM
                 royalty_fee_currency_symbol,
                 unique_trade_id
         FROM {{ ref('element_ethereum_events') }}
-        UNION
+        UNION ALL
         SELECT
                 blockchain,
                 project,
@@ -89,7 +89,7 @@ FROM
                 royalty_fee_currency_symbol,
                 unique_trade_id
         FROM {{ ref('element_bnb_events') }}
-        UNION
+        UNION ALL
         SELECT
                 blockchain,
                 project,

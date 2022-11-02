@@ -7,7 +7,7 @@ SELECT
     tx_hash,
     buyer AS address
 FROM {{ ref('nft_trades') }}
-        UNION
+        UNION ALL
 SELECT
     blockchain,
     tx_hash,

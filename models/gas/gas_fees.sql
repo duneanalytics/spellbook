@@ -41,7 +41,7 @@ FROM (
         transaction_type
     FROM {{ ref(gas_model) }}
     {% if not loop.last %}
-    UNION
+    UNION ALL
     {% endif %}
     {% endfor %}
 )

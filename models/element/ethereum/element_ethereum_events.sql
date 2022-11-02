@@ -35,7 +35,7 @@ WITH element_txs AS (
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         
-        UNION
+        UNION ALL
         
         -- Ethereum ERC721 Buys
         SELECT 'ethereum' AS blockchain
@@ -62,7 +62,7 @@ WITH element_txs AS (
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         
-        UNION
+        UNION ALL
         
         -- Ethereum ERC1155 Sells
         SELECT 'ethereum' AS blockchain
@@ -89,7 +89,7 @@ WITH element_txs AS (
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         
-        UNION
+        UNION ALL
         
         -- Ethereum ERC1155 Buys
         SELECT 'ethereum' AS blockchain

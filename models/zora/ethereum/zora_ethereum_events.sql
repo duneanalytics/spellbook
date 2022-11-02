@@ -35,7 +35,7 @@ WITH zora_trades AS (
         {% if is_incremental() %}
         AND z3_o1_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    UNION
+    UNION ALL
     SELECT 'v3' AS version
     , z3_a0_ee.evt_block_time AS block_time
     , z3_a0_ee.evt_block_number AS block_number
@@ -58,7 +58,7 @@ WITH zora_trades AS (
         {% if is_incremental() %}
         AND z3_a0_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    UNION
+    UNION ALL
     SELECT 'v3' AS version
     , z3_a1_ee.evt_block_time AS block_time
     , z3_a1_ee.evt_block_number AS block_number
@@ -81,7 +81,7 @@ WITH zora_trades AS (
         {% if is_incremental() %}
         AND z3_a1_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    UNION
+    UNION ALL
     SELECT 'v3' AS version
     , z3_rafe_ae.evt_block_time AS block_time
     , z3_rafe_ae.evt_block_number AS block_number
@@ -104,7 +104,7 @@ WITH zora_trades AS (
         {% if is_incremental() %}
         AND z3_rafe_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    UNION
+    UNION ALL
     SELECT 'v3' AS version
     , z3_ape_af.evt_block_time AS block_time
     , z3_ape_af.evt_block_number AS block_number
@@ -127,7 +127,7 @@ WITH zora_trades AS (
         {% if is_incremental() %}
         AND z3_ape_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    UNION
+    UNION ALL
     SELECT 'v3' AS version
     , z3_ace_af.evt_block_time AS block_time
     , z3_ace_af.evt_block_number AS block_number
@@ -150,7 +150,7 @@ WITH zora_trades AS (
         {% if is_incremental() %}
         AND z3_ace_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    UNION
+    UNION ALL
     SELECT 'v3' AS version
     , z3_race_ae.evt_block_time AS block_time
     , z3_race_ae.evt_block_number AS block_number
@@ -173,7 +173,7 @@ WITH zora_trades AS (
         {% if is_incremental() %}
         AND z3_race_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    UNION
+    UNION ALL
     SELECT 'v3' AS version
     , z3_racerc_ae.evt_block_time AS block_time
     , z3_racerc_ae.evt_block_number AS block_number
@@ -196,7 +196,7 @@ WITH zora_trades AS (
         {% if is_incremental() %}
         AND z3_racerc_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    UNION
+    UNION ALL
     SELECT 'v3' AS version
     , z3_raferc_ae.evt_block_time AS block_time
     , z3_raferc_ae.evt_block_number AS block_number
@@ -219,7 +219,7 @@ WITH zora_trades AS (
         {% if is_incremental() %}
         AND z3_raferc_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    UNION
+    UNION ALL
     SELECT 'v3' AS version
     , z3_rale_ae.evt_block_time AS block_time
     , z3_rale_ae.evt_block_number AS block_number
@@ -242,7 +242,7 @@ WITH zora_trades AS (
         {% if is_incremental() %}
         AND z3_rale_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    UNION
+    UNION ALL
     SELECT 'v3' AS version
     , z3_rale_ae.evt_block_time AS block_time
     , z3_rale_ae.evt_block_number AS block_number
@@ -265,7 +265,7 @@ WITH zora_trades AS (
         {% if is_incremental() %}
         AND z3_rale_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    UNION
+    UNION ALL
     SELECT 'v2' AS version
     , z2_ae.evt_block_time AS block_time
     , z2_ae.evt_block_number AS block_number
@@ -284,7 +284,7 @@ WITH zora_trades AS (
     {% if is_incremental() %}
     WHERE z2_ae.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-    UNION
+    UNION ALL
     SELECT 'v1' AS version
     , z1_bf.evt_block_time AS block_time
     , z1_bf.evt_block_number AS block_number

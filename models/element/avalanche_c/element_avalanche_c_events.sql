@@ -35,7 +35,7 @@ WITH element_txs AS (
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         
-        UNION
+        UNION ALL
         
         -- Avalanche ERC721 Buys
         SELECT 'avalanche_c' AS blockchain
@@ -62,7 +62,7 @@ WITH element_txs AS (
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         
-        UNION
+        UNION ALL
         
         -- Avalanche ERC1155 Sells
         SELECT 'avalanche_c' AS blockchain
@@ -89,7 +89,7 @@ WITH element_txs AS (
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         
-        UNION
+        UNION ALL
         
         -- Avalanche ERC1155 Buys
         SELECT 'avalanche_c' AS blockchain

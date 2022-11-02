@@ -14,7 +14,7 @@ SELECT array('ethereum') as blockchain,
        date('2022-09-26') as created_at,
        now() as modified_at
 FROM {{ source('ethereum','contracts') }} 
-UNION 
+UNION ALL
 SELECT array('gnosis') as blockchain,
        address, 
        concat(upper(substring(namespace,1,1)),substring(namespace,2)) || ': ' || name as name,
@@ -24,7 +24,7 @@ SELECT array('gnosis') as blockchain,
        date('2022-09-26') as created_at,
        now() as modified_at
 FROM {{ source('gnosis','contracts') }} 
-UNION 
+UNION ALL
 SELECT array('avalanche_c') as blockchain,
        address, 
        concat(upper(substring(namespace,1,1)),substring(namespace,2)) || ': ' || name as name,
@@ -34,7 +34,7 @@ SELECT array('avalanche_c') as blockchain,
        date('2022-09-26') as created_at,
        now() as modified_at
 FROM {{ source('avalanche_c','contracts') }} 
-UNION 
+UNION ALL
 SELECT array('arbitrum') as blockchain,
        address, 
        concat(upper(substring(namespace,1,1)),substring(namespace,2)) || ': ' || name as name,
@@ -44,7 +44,7 @@ SELECT array('arbitrum') as blockchain,
        date('2022-09-26') as created_at,
        now() as modified_at
 FROM {{ source('arbitrum','contracts') }} 
-UNION 
+UNION ALL
 SELECT array('bnb') as blockchain,
        address, 
        concat(upper(substring(namespace,1,1)),substring(namespace,2)) || ': ' || name as name,
@@ -54,7 +54,7 @@ SELECT array('bnb') as blockchain,
        date('2022-09-26') as created_at,
        now() as modified_at
 FROM {{ source('bnb','contracts') }} 
-UNION 
+UNION ALL
 SELECT array('optimism') as blockchain,
        address, 
        concat(upper(substring(namespace,1,1)),substring(namespace,2)) || ': ' || name as name,

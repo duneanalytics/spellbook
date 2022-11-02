@@ -5,7 +5,7 @@
                                     \'["soispoke"]\') }}')}}
 
 SELECT * FROM  {{ ref('labels_validators_ethereum') }}
-UNION
+UNION ALL
 SELECT * FROM  {{ ref('labels_validators_bnb') }}
-UNION
+UNION ALL
 SELECT * FROM  {{ ref('labels_validators_solana') }}

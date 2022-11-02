@@ -45,7 +45,7 @@ FROM
                 royalty_fee_currency_symbol,
                 unique_trade_id
         FROM {{ ref('opensea_v1_ethereum_events') }}
-        UNION
+        UNION ALL
         SELECT
                 blockchain,
                 'opensea' as project,

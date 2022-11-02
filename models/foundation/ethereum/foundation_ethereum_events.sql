@@ -40,7 +40,7 @@ WITH all_foundation_trades AS (
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
      WHERE f.evt_block_time >= (select max(block_time) from {{ this }})
      {% endif %}
-    UNION
+    UNION ALL
     SELECT 'ethereum' AS blockchain
     , 'foundation' AS project
     , 'v1' AS version
@@ -67,7 +67,7 @@ WITH all_foundation_trades AS (
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
      WHERE f.evt_block_time >= (select max(block_time) from {{ this }})
      {% endif %}
-    UNION
+    UNION ALL
     SELECT 'ethereum' AS blockchain
     , 'foundation' AS project
     , 'v1' AS version
@@ -94,7 +94,7 @@ WITH all_foundation_trades AS (
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
      WHERE f.evt_block_time >= (select max(block_time) from {{ this }})
      {% endif %}
-    UNION
+    UNION ALL
     SELECT 'ethereum' AS blockchain
     , 'foundation' AS project
     , 'v1' AS version
