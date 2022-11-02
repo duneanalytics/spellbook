@@ -62,12 +62,9 @@ jobs:
         run: |
           echo "INC_MODEL_COUNT=$(echo dbt ls --select state:modified,config.materialized:incremental --state . --resource-type model  | wc -l)" >> $GITHUB_ENV
 
-      - name: Echo variable
-        run: echo "$INC_MODEL_COUNT"
-
-      # - name: dbt run incremental model(s) if applicable
-      #   if: ${{ $INC_MODEL_COUNT > 0 }}
-      #   run: "dbt run --select state:modified,config.materialized:incremental --state ."
+      - name: dbt run incremental model(s) if applicable
+        if: "$INC_MODEL_COUNT > 0"
+        run: "dbt run --select state:modified,config.materialized:incremental --state ."
 
       # - name: dbt test incremental model(s) if applicable
       #   if: ${{ $INC_MODEL_COUNT > 0 }}
