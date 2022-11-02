@@ -20,7 +20,7 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: umer_h_adil
+      contributors: umer_h_adil, hildobby
     config:
       tags: ['nft','ethereum']
     description: >
@@ -35,6 +35,8 @@ models:
         description: "Project version"
       - name: block_time
         description: "UTC event block time"
+      - name: block_date
+        description: "Date in which the transaction was executed"
       - name: token_id
         description: "NFT Token ID"
       - name: collection
@@ -74,7 +76,7 @@ models:
       - name: tx_hash
         description:  "Transaction hash"
       - name: block_number
-        description: "Block number in which the transaction was executed "
+        description: "Block number in which the transaction was executed"
       - name: tx_from
         description:  "Address that initiated the transaction"
       - name: tx_to
