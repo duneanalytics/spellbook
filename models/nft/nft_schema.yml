@@ -295,6 +295,55 @@ models:
       - *tx_to
       - *unique_trade_id
 
+  - name: nft_wash_trades
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'sudoswap', 'ethereum', 'wash_trades']
+    description: >
+        NFT wash trades labelling
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *token_id
+      - *token_standard
+      - *trade_category
+      - *seller
+      - *buyer
+      - *nft_contract_address
+      - *project_contract_address
+      - *aggregator_name
+      - *aggregator_address
+      - *tx_hash
+      - *block_number
+      - *tx_from
+      - *tx_to
+      - name: unique_trade_id
+        tests:
+          - is_unique_filtered
+      - &buyer_first_funded_by
+        name: buyer_first_funded_by
+        description: "Which wallet first funded the buyer's wallet in ETH"
+      - &seller_first_funded_by
+        name: seller_first_funded_by
+        description: "Which wallet first funded the seller's wallet in ETH"
+      - &back_and_forth_trade
+        name: back_and_forth_trade
+        description: "Was the NFT traded the other way around at some point (buyer<>seller)"
+      - &bought_it_three_times_within_a_week
+        name: bought_it_three_times_within_a_week
+        description: ""
+      - &funded_by_same_wallet
+        name: funded_by_same_wallet
+        description: ""
+      - &is_wash_trade
+        name: is_wash_trade
+        description: ""
+
   - name: nft_linked_addresses
     meta:
       blockchain: ethereum, solana
