@@ -1,7 +1,7 @@
 
 with trades as (
     select
-		evt_block_time,
+		block_time,
 		token_bought_amount_raw,
 		token_sold_amount_raw,
 		tx_hash,
@@ -36,7 +36,7 @@ with trades as (
 
 , matched as (
     select
-    coalesce(t.evt_block_time, ex.block_time)
+    coalesce(t.block_time, ex.block_time)
     , coalesce(t.tx_hash, ex.tx_hash)
 	, coalesce(t.evt_index, ex.evt_index)
 	
@@ -45,7 +45,7 @@ with trades as (
 
     from trades t
     full outer join examples ex
-		on t.evt_block_time=ex.block_time and t.tx_hash=ex.tx_hash and t.evt_index=ex.evt_index
+		on t.block_time=ex.block_time and t.tx_hash=ex.tx_hash and t.evt_index=ex.evt_index
 )
 
 select * from matched
