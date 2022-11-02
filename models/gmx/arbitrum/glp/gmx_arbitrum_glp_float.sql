@@ -1,8 +1,6 @@
 {{ config(
         alias = 'glp_float',
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
+        materialized = 'table',
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "project",
                                     "gmx",
@@ -17,9 +15,6 @@ WITH minute AS  -- This CTE generates a series of minute values
         (
         SELECT explode(sequence(TIMESTAMP '2021-08-31 08:13', CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute -- 2021-08-31 08:13 is the timestamp of the first vault transaction
         )
-    {% if is_incremental() %}
-    WHERE minute >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
     ),
 
 /*
@@ -44,18 +39,12 @@ glp_balances AS -- This CTE returns the accuals of WETH tokens in the Fee GLP co
                 date_trunc('minute', evt_block_time) AS minute,
                 mintAmount/1e18 AS mint_burn_value
             FROM {{source('gmx_arbitrum', 'GlpManager_evt_AddLiquidity')}}
-            {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-            {% endif %}
 
             UNION
             SELECT
                 date_trunc('minute', evt_block_time) AS minute,
                 (-1 * glpAmount)/1e18 AS mint_burn_value
             FROM {{source('gmx_arbitrum', 'GlpManager_evt_RemoveLiquidity')}}
-            {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-            {% endif %}
             ) a
         GROUP BY a.minute
         ) b

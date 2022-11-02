@@ -1,8 +1,6 @@
 {{ config(
         alias = 'glp_fees',
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
+        materialized = 'table',
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "project",
                                     "gmx",
@@ -17,9 +15,6 @@ WITH minute AS  -- This CTE generates a series of minute values
         (
         SELECT explode(sequence(TIMESTAMP '2021-08-31 08:13', CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute -- 2021-08-31 08:13 is the timestamp of the first vault transaction
         )
-    {% if is_incremental() %}
-    WHERE minute >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
     ),
 
 /*
@@ -46,9 +41,6 @@ fglp_balances AS -- This CTE returns the accuals of WETH tokens in the Fee GLP c
             FROM {{ source('erc20_arbitrum', 'evt_transfer') }}
             WHERE `to` = '0x4e971a87900b931ff39d1aad67697f49835400b6' -- Fee GLP contract
             AND `contract_address` = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1' -- WETH Arbitrum Smart Contract
-            {% if is_incremental() %}
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
-            {% endif %}
             ) a
         GROUP BY a.minute
         ) b
@@ -82,9 +74,6 @@ FROM
             minute,
             weth_current_price
         FROM {{ref('gmx_arbitrum_glp_components')}}
-        {% if is_incremental() %}
-        WHERE minute >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
         ) c 
         ON a.minute = c.minute
     ) x
