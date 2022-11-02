@@ -204,7 +204,7 @@ WITH rows AS (
         SELECT
             evt_block_time AS block_time,
             'Kyber' AS project,
-            'dmm' AS version,
+            'v1' AS version,
             'Aggregator' AS category,
             sender AS trader_a,
             NULL::bytea AS trader_b,
@@ -224,7 +224,7 @@ WITH rows AS (
         SELECT
             evt_block_time AS block_time,
             'Kyber' AS project,
-            'dmm' AS version,
+            'v2' AS version,
             'Aggregator' AS category,
             sender AS trader_a,
             NULL::bytea AS trader_b,
@@ -244,7 +244,7 @@ WITH rows AS (
         SELECT
             evt_block_time AS block_time,
             'Kyber' AS project,
-            'dmm' AS version,
+            'v3' AS version,
             'Aggregator' AS category,
             sender AS trader_a,
             NULL::bytea AS trader_b,
@@ -264,7 +264,7 @@ WITH rows AS (
         SELECT
             evt_block_time AS block_time,
             'Kyber' AS project,
-            'dmm' AS version,
+            'v4' AS version,
             'Aggregator' AS category,
             sender AS trader_a,
             NULL::bytea AS trader_b,
@@ -277,7 +277,7 @@ WITH rows AS (
             evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
             evt_index AS evt_index
-        FROM kyber.""
+        FROM kyber."MetaAggregationRouter_evt_Swapped"
         WHERE evt_block_time >= start_ts AND evt_block_time < end_t
     ) dexs
     INNER JOIN ethereum.transactions tx

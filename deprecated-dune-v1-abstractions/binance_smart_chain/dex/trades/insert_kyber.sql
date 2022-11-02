@@ -82,7 +82,7 @@ WITH rows AS (
         SELECT
             evt_block_time AS block_time,
             'Kyber' AS project,
-            'dmm' AS version,
+            'v1' AS version,
             'Aggregator' AS category,
             sender AS trader_a,
             NULL::bytea AS trader_b,
@@ -102,7 +102,7 @@ WITH rows AS (
         SELECT
             evt_block_time AS block_time,
             'Kyber' AS project,
-            'dmm' AS version,
+            'v2' AS version,
             'Aggregator' AS category,
             sender AS trader_a,
             NULL::bytea AS trader_b,
@@ -122,7 +122,7 @@ WITH rows AS (
         SELECT
             evt_block_time AS block_time,
             'Kyber' AS project,
-            'dmm' AS version,
+            'v3' AS version,
             'Aggregator' AS category,
             sender AS trader_a,
             NULL::bytea AS trader_b,
@@ -142,7 +142,7 @@ WITH rows AS (
         SELECT
             evt_block_time AS block_time,
             'Kyber' AS project,
-            'dmm' AS version,
+            'v4' AS version,
             'Aggregator' AS category,
             sender AS trader_a,
             NULL::bytea AS trader_b,
