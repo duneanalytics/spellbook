@@ -6,6 +6,13 @@ with pools as (
 
     union all
 
+    select c."poolId" as pool_id, unnest(cc.tokens) as token_address, unnest(cc."normalizedWeights")/1e18 as normalized_weight, cc.symbol, 'WP' as pool_type
+    from balancer_v2."Vault_evt_PoolRegistered" c
+    inner join balancer_v2."WeightedPoolV2Factory_call_create" cc
+    on c.evt_tx_hash = cc.call_tx_hash
+
+    union all
+
     select c."poolId" as pool_id, unnest(cc.tokens) as token_address, unnest(cc.weights)/1e18 as normalized_weight, cc.symbol, 'WP2T' as pool_type
     from balancer_v2."Vault_evt_PoolRegistered" c
     inner join balancer_v2."WeightedPool2TokensFactory_call_create" cc
@@ -37,6 +44,13 @@ with pools as (
     select c."poolId" as pool_id, unnest(cc.tokens) as token_address, NULL as normalized_weight, cc.symbol, 'SP' as pool_type
     from balancer_v2."Vault_evt_PoolRegistered" c
     inner join balancer_v2."StablePhantomPoolFactory_call_create" cc
+    on c.evt_tx_hash = cc.call_tx_hash
+
+    union all
+
+    select c."poolId" as pool_id, unnest(cc.tokens) as token_address, NULL as normalized_weight, cc.symbol, 'SP' as pool_type
+    from balancer_v2."Vault_evt_PoolRegistered" c
+    inner join balancer_v2."ComposableStablePoolFactory_call_create" cc
     on c.evt_tx_hash = cc.call_tx_hash
 
     union all
