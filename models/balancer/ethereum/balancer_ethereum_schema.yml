@@ -10,6 +10,12 @@ models:
       tags: ['ethereum', 'balancer', 'pools_fees']
     description: >
       Lorem ipsum dolor sit amet.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_hash
+            - index
     columns:
       - &contract_address
         name: contract_address
