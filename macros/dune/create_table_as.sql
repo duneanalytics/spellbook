@@ -38,6 +38,7 @@
 {%- endmacro -%}
 
 {%- macro spark__create_table_as(temporary, relation, compiled_code, language='sql') -%}
+  {% set s3_bucket = var('DBT_ENV_CUSTOM_ENV_S3_BUCKET', 'local') %}
   {%- if language == 'sql' -%}
     {%- if temporary -%}
       {{ create_temporary_view(relation, compiled_code) }}
