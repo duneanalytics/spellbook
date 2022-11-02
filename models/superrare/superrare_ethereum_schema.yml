@@ -210,3 +210,35 @@ models:
       - *tx_from
       - *tx_to
       - *unique_trade_id
+
+  - name: superrare_ethereum_usernames
+    meta:
+      blockchain: ethereum
+      project: superrare
+      contibutors: cat
+    config:
+      tags: ['usernames', 'ethereum', 'superrare']
+    description: "SuperRare usernames"
+    columns:
+      - *blockchain
+      - &address
+        name: address
+        description: "Address of user"
+      - &name
+        name: name
+        description: "Label name of SuperRare username"
+      - &category
+        name: category
+        description: "Label category"
+      - &contributor
+        name: contributor
+        description: "Wizard(s) contributing to labels"
+      - &source
+        name: source
+        description: "How were labels generated (could be static or query)"
+      - &created_at
+        name: created_at
+        description: "When were labels created"
+      - &updated_at
+        name: updated_at
+        description: "When were labels updated for the last time"

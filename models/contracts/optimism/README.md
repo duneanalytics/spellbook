@@ -1,3 +1,5 @@
+{% docs optimism_contract_mapping %}
+
 # Optimism Contract Mapping
 This repository contains all the source code for `contracts_optimism.contract_mapping` that you can use to join contract addresses on Optimism to pull our mapped project names in the `contract_project` field.
 
@@ -27,3 +29,5 @@ order by 2 desc
 2. If you want to enforce consistent project name mapping other than Dune's decoded contract one, then add the name mapping to `contracts_optimism_project_name_mappings.sql`
 3. Submit the pull request (PR) and tag [@MSilb7](https://github.com/MSilb7) or [@chuxinh](https://github.com/chuxinh) if there's any question
 4. Once the PR is merged, check on Dune if your work is correctly reflected 🔴✨
+
+{% enddocs %}

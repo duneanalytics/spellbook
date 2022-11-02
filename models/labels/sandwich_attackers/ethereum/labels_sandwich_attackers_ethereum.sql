@@ -23,7 +23,8 @@ with
         and sell.blockchain = 'ethereum'
         and (et_sell.index >= et_buy.index + 2 -- buy first
         or et_buy.index >= et_sell.index + 2) -- sell first
-        and buy.tx_to != '0x7a250d5630b4cf539739df2c5dacb4c659f2488d' -- uniswap v2 routers 
+        and buy.tx_to != '0x7a250d5630b4cf539739df2c5dacb4c659f2488d' -- uniswap v2 router 
+        and buy.tx_to != '0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45' -- uniswap v3 router
   )
 select
   array("ethereum") as blockchain,
