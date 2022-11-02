@@ -50,7 +50,7 @@ WITH nft_mints AS (
     )
 
 , namespaces AS (
-    SELECT address,
+    SELECT address
     , FIRST(namespace) AS namespace
 	FROM {{ source('ethereum','contracts') }}
 	GROUP BY address
