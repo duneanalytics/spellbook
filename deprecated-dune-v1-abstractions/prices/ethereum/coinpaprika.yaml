@@ -1780,11 +1780,6 @@
   symbol: ARCH
   address: 0x1f3f9d3068568f8040775be2e8c03c103c61f3af
   decimals: 18
-- name: starl_starlink
-  id: starl-starlink
-  symbol: STARL
-  address: 0x8e6cd950ad6ba651f6dd608dc70e5886b1aa6b24
-  decimals: 18
 - name: torn_tornado_cash
   id: torn-tornado-cash
   symbol: TORN

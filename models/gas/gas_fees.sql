@@ -1,6 +1,6 @@
 {{ config(
         alias ='fees',
-        post_hook='{{ expose_spells(\'["ethereum","bnb"]\',
+        post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c","optimism"]\',
                                 "sector",
                                 "gas",
                                 \'["soispoke"]\') }}'
@@ -11,6 +11,7 @@
 'gas_ethereum_fees',
 'gas_bnb_fees',
 'gas_avalanche_c_fees',
+'gas_optimism_fees'
 ] %}
 
 SELECT *
@@ -22,6 +23,8 @@ FROM (
         block_time,
         block_date,
         tx_hash,
+        tx_sender, 
+        tx_receiver,
         native_token_symbol,
         tx_amount_native,
         tx_amount_usd,
