@@ -1,27 +1,13 @@
 version: 2
 
 models:
-  - name: nft_bnb_aggregators
+  - name: nft_arbitrum_transfers
     meta:
-      blockchain: bnb
+      blockchain: arbitrum
       sector: nft
       contributors: hildobby
     config:
-      tags: ['nft', 'bnb', 'aggregators']
-    description: >
-        NFT aggregators
-    columns:
-      - name: contract_address
-        description: "Aggregator project's contract address"
-      - name: name
-        description: "Aggregator project's name"
-  - name: nft_bnb_transfers
-    meta:
-      blockchain: bnb
-      sector: nft
-      contributors: hildobby
-    config:
-      tags: ['nft', 'bnb', 'transfers']
+      tags: ['nft', 'arbitrum', 'transfers']
     description: >
         NFT transfers
     columns:
@@ -32,7 +18,7 @@ models:
       - name: token_standard
         tests:
           - accepted_values:
-              values: ['bep721', 'bep1155']
+              values: ['erc721', 'erc1155']
         description: "Token standard"
       - name: transfer_type
         tests:
