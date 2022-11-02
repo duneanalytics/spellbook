@@ -3,11 +3,11 @@ version: 2
 models:
   - name: gas_fees
     meta:
-      blockchain: ethereum, bnb, avalanche_c
+      blockchain: ethereum, bnb, avalanche_c, optimism
       sector: gas
       contributors: soispoke
     config:
-      tags: ['ethereum', 'bnb', 'avalanche_c', 'gas', 'fees']
+      tags: ['ethereum', 'bnb', 'avalanche_c', 'optimism','gas', 'fees']
     description: >
         Gas Fees across chains
     columns:
@@ -23,9 +23,12 @@ models:
       - &tx_hash
         name: tx_hash
         description: "Primary key of the transaction"
-        tests:
-          - unique
-          - not_null
+      - &tx_sender
+        name: tx_sender
+        description: "Initiated the transaction"
+      - &tx_receiver
+        name: tx_receiver
+        description: "Received the transaction"
       - &native_token_symbol
         name: native_token_symbol
         description: "Symbol of native token for the blockchain"
