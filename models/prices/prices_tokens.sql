@@ -1,7 +1,7 @@
 {{ config(
         schema='prices',
         alias ='tokens',
-        post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon"]\',
                                     "sector",
                                     "prices",
                                     \'["aalan3", "jeff-dude"]\') }}'
