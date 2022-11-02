@@ -142,7 +142,7 @@ WITH aggregator_routed_x2y2_txs AS (
 
 , all_x2y2_txs AS (
     SELECT * FROM aggregator_routed_x2y2_txs_formatted
-    UNION ALL
+    UNION
     SELECT * FROM direct_x2y2_txs_formated
     )
 
