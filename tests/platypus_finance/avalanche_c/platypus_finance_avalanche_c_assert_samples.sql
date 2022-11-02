@@ -33,20 +33,19 @@ with trades as (
 , examples as (
     select * from {{ ref('platypus_finance_avalanche_c_example_trades') }}
 )
-
 , matched as (
     select
-    coalesce(t.block_time, ex.block_time)
-    , coalesce(t.tx_hash, ex.tx_hash)
-	, coalesce(t.evt_index, ex.evt_index)
-	
-    , case when (t.token_bought_amount_raw = ex.token_bought_amount_raw) then true else false end as correct_bought_amount
-    , case when (t.token_sold_amount_raw = ex.token_sold_amount_raw) then true else false end as correct_sold_amount
-
-    from trades t
+		tr.tx_hash as tr_tx_hash
+		, ex.tx_hash as ex_tx_hash
+		, '|' as sep1
+		, tr.evt_index as tr_evt_index
+		, ex.evt_index as ex_evt_index
+		, '|' as sep2
+		, case when (tr.token_bought_amount_raw = ex.token_bought_amount_raw) then true else false end as correct_bought_amount
+		, case when (tr.token_sold_amount_raw = ex.token_sold_amount_raw) then true else false end as correct_sold_amount
+    from trades tr
     full outer join examples ex
-		on t.block_time=ex.block_time and t.tx_hash=ex.tx_hash and t.evt_index=ex.evt_index
+		on tr.tx_hash=ex.tx_hash and tr.evt_index=ex.evt_index
 )
-
 select * from matched
 where not (correct_bought_amount and correct_sold_amount)
