@@ -20,7 +20,7 @@ WITH dexs AS
 (
     -- Uniswap v1 TokenPurchase
     SELECT
-        t.evt_block_time AS block_time
+        t.evt_block_time AS block_time --test comment, to be removed, more comment
         ,t.buyer AS taker
         ,'' AS maker
         ,t.tokens_bought AS token_bought_amount_raw
@@ -30,15 +30,13 @@ WITH dexs AS
         ,'{{weth_address}}' AS token_sold_address --Using WETH for easier joining with USD price table
         ,t.contract_address AS project_contract_address
         ,t.evt_tx_hash AS tx_hash
-        ,'test' AS trace_address
+        ,'' AS trace_address
         ,t.evt_index
     FROM
         {{ source('uniswap_ethereum', 'Exchange_evt_TokenPurchase') }} t
     INNER JOIN {{ source('uniswap_ethereum', 'Factory_evt_NewExchange') }} f
         ON f.exchange = t.contract_address
-    {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
 
     UNION ALL
 
@@ -60,9 +58,7 @@ WITH dexs AS
         {{ source('uniswap_ethereum', 'Exchange_evt_EthPurchase') }} t
     INNER JOIN {{ source('uniswap_ethereum', 'Factory_evt_NewExchange') }} f
         ON f.exchange = t.contract_address
-    {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
 )
 SELECT
     'ethereum' AS blockchain
@@ -98,12 +94,7 @@ SELECT
 FROM dexs
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
-    {% if not is_incremental() %}
-    AND tx.block_time >= '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
     AND tx.block_time = date_trunc("day", now() - interval '1 week')
-    {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address
     AND erc20a.blockchain = 'ethereum'
@@ -114,20 +105,10 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     ON p_bought.minute = date_trunc('minute', dexs.block_time)
     AND p_bought.contract_address = dexs.token_bought_address
     AND p_bought.blockchain = 'ethereum'
-    {% if not is_incremental() %}
-    AND p_bought.minute >= '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
     AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
     AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = 'ethereum'
-    {% if not is_incremental() %}
-    AND p_sold.minute >= '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
     AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
 ;
