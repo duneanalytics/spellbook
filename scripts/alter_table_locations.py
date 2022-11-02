@@ -14,7 +14,7 @@ class TableLocationManager:
 
     def fetch_tables_dict(self):
         bash_response = subprocess.run(
-            f'dbt list --output json --select config.materialized:incremental config.materialized:table --exclude resource_type:test',
+            f'dbt list --output json --select config.materialized:table',
             capture_output=True, shell=True).stdout.decode("utf-8")
         table_strings = bash_response.split('\n')[:-1]
         tables_dict = {}
@@ -28,36 +28,59 @@ class TableLocationManager:
         s3_location = f's3a://{self.s3_base}/{schema}/{name}'
         return s3_location
 
-    @staticmethod
-    def get_partitions(table_dict):
-        partition = table_dict['config'].get('partition_by')
-        if partition is not None:
-            return f"PARTITIONED BY ({' '.join(partition)})"
-        else:
-            return ""
 
     def get_alter_command(self, table_dict):
         table_name = f"{table_dict['config']['schema']}.{table_dict['config'].get('alias', table_dict['name'])}"
         s3_path = self.get_s3_location(table_dict)
-        partition = self.get_partitions(table_dict)
         alter_template = Template("""
         {% set $var %}
-        ALTER TABLE $table_name $partition SET LOCATION $s3_path;
+        CREATE TABLE $clone_name DEEP CLONE $table_name LOCATION "$s3_path";
         {% endset %}
         {% do run_query($var) %}
         """)
         alter_command = alter_template.substitute(var=table_dict['name'].replace('.', ''),
+                                                  clone_name=table_name+'_clone',
                                                   table_name=table_name,
-                                                  partition=partition,
                                                   s3_path=s3_path)
         return alter_command
+
+    def get_delete_command(self, table_dict):
+        table_name = f"{table_dict['config']['schema']}.{table_dict['config'].get('alias', table_dict['name'])}"
+        s3_path = self.get_s3_location(table_dict)
+        drop_template = Template("""
+        {% set $var %}
+        DROP TABLE $table_name;
+        {% endset %}
+        {% do run_query($var) %}
+        """)
+        drop_command = drop_template.substitute(var=table_dict['name'].replace('.', '')+'_drop',
+                                                  table_name=table_name,
+                                                  s3_path=s3_path)
+        return drop_command
+
+    def get_rename_command(self, table_dict):
+        table_name = f"{table_dict['config']['schema']}.{table_dict['config'].get('alias', table_dict['name'])}"
+        rename_template = Template("""
+        {% set $var %}
+        ALTER TABLE $clone_name RENAME TO $table_name;
+        {% endset %}
+        {% do run_query($var) %}
+        """)
+        rename_command = rename_template.substitute(var=table_dict['name'].replace('.', '')+'_rename',
+                                                  clone_name=table_name+'_clone',
+                                                  table_name=table_name)
+        return rename_command
 
     def generate_macro_file(self, tables_dict):
         f = open("../macros/dune/alter_table_locations.sql", 'w')
         f.write("{% macro alter_table_locations() %}")
         for table, table_dict in tables_dict.items():
-            alter_command = self.get_alter_command(table_dict)
-            f.write(alter_command)
+            # alter_command = self.get_alter_command(table_dict)
+            # f.write(alter_command)
+            drop_command = self.get_delete_command(table_dict)
+            f.write(drop_command)
+            rename_command = self.get_rename_command(table_dict)
+            f.write(rename_command)
         f.write("{% endmacro %}")
         f.close()
 
