@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: impossible_bnb_vesting
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: impossible_finance
+      contributors: kartod
+    config:
+      tags: ['bnb','impossible_finance','impossible', 'vesting', 'dex']
+    description: >
+        Transactions for Impossible finance vesting contract (vIDIA) on BNB smart chain
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain in which transactions occur"
+      - &block_time
+       name: block_time
+       description: "Block timestamp"
+      - &user
+       name: user
+       description: "User wallet address"
+      - &action
+       name: action
+       description: "Transaction assignment (vesting/unvesting/rewards)"
+      - &amount
+       name: amount
+       description: "Amount of IDIA"
+      - &evt_tx_hash
+       name: evt_tx_hash
+       description: "Transaction hash of the event"
+      - &fees
+       name: fees
+       description: "The amount of fees depending on the action"
