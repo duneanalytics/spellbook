@@ -59,7 +59,7 @@ jobs:
         run: "dbt test --select state:new state:modified --state ."
 
       - name: test dbt ls output
-        run: "dbt ls --select state:modified,config.materialized:incremental --state ."
+        run: "dbt ls --select state:modified,config.materialized:incremental --state . --resource-type model"
 
       # - name: Set environment variable for incremental model count
       #   run: |
