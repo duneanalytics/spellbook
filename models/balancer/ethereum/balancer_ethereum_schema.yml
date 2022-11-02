@@ -1,13 +1,54 @@
 version: 2
 
 models:
+  - name: balancer_v2_ethereum_pools_fees
+    meta:
+      blockchain: ethereum
+      project: balancer_v2
+      contributors: jacektrocinski
+    config:
+      tags: ['ethereum', 'balancer', 'pools_fees']
+    description: >
+      Lorem ipsum dolor sit amet.
+    columns:
+      - &contract_address
+        name: contract_address
+        description: ''
+        tests:
+          - not_null
+      - &tx_hash
+        name: tx_hash
+        description: ''
+        tests:
+          - not_null
+      - &tx_index
+        name: tx_index
+        description: ''
+        tests:
+          - not_null
+      - &block_time
+        name: block_time
+        description: ''
+        tests:
+          - not_null
+      - &block_number
+        name: block_number
+        description: ''
+        tests:
+          - not_null
+      - &swap_fee_percentage
+        name: swap_fee_percentage
+        description: ''
+        tests:
+          - not_null
+
   - name: balancer_ethereum_balances
     meta:
       blockchain: ethereum
       project: balancer
       contributors: jacektrocinski
     config:
-      tags: ['ethereum', 'balances']
+      tags: ['ethereum', 'balancer', 'balances']
     description: >
       ERC20 token rolling sum balances on Balancer, an automated portfolio manager and trading platform.
     tests:
