@@ -258,6 +258,13 @@ models:
         +schema: tokens_arbitrum
         +materialized: view
 
+    trader_joe:
+      +schema: trader_joe
+      +materialized: view
+      avalanche_c:
+        +schema: trader_joe_avalanche_c
+        +materialized: view
+    
     transfers:
       +schema: transfers
       +materialized: view

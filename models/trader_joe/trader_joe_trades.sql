@@ -1,6 +1,6 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["avalanche"]\',
+        post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                 "project",
                                 "trader_joe",
                                 \'["jeff-dude","mtitus6"]\') }}'
@@ -34,7 +34,7 @@ FROM
                 ,tx_to
                 ,trace_address
                 ,evt_index
-        FROM {{ ref('trader_joe_avalanche_trades') }}
+        FROM {{ ref('trader_joe_avalanche_c_trades') }}
         /*
         UNION
         <add future blockchains here>
