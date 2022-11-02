@@ -2,6 +2,10 @@
     config(
         schema = 'balancer_v2_ethereum',
         alias='pools_fees',
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['block_number', 'tx_hash', 'index'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "balancer_v2",
@@ -22,11 +26,17 @@ SELECT
     logs.contract_address,
     logs.tx_hash,
     logs.tx_index,
+    logs.index,
     logs.block_time,
     logs.block_number,
     bytea2numeric_v2 (SUBSTRING(logs.data FROM 32 FOR 64)) * 1 AS swap_fee_percentage
 FROM
     {{ source ('ethereum', 'logs') }}
     INNER JOIN registered_pools ON registered_pools.pool_address = logs.contract_address
-        AND logs.topic1 = '{{ event_signature }}';
+        AND logs.topic1 = '{{ event_signature }}'
+{% if is_incremental() %}
+WHERE
+    logs.block_time >= DATE_TRUNC('day', NOW() - interval '1 week')
+{% endif %}
+;
 

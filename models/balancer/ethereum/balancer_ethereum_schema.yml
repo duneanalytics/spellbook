@@ -21,6 +21,11 @@ models:
         description: ''
         tests:
           - not_null
+      - &index
+        name: index
+        description: ''
+        tests:
+          - not_null
       - &tx_index
         name: tx_index
         description: ''
