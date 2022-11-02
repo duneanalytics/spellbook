@@ -1,7 +1,7 @@
 version: 2
 
 sources: 
-  - name: bancornetwork_ethereum
+  - name: bancor_ethereum
     description: "Ethereum decoded tables related to Bancor Network contract"
     tables:
       - name: BancorNetwork_v6_evt_Conversion
