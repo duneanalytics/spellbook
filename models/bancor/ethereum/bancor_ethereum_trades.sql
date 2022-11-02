@@ -18,31 +18,31 @@
 
 WITH conversions AS (
     SELECT *
-    FROM {{ source('bancornetwork_ethereum', 'BancorNetwork_v6_evt_Conversion') }} t
+    FROM {{ source('bancor_ethereum', 'BancorNetwork_v6_evt_Conversion') }} t
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     UNION ALL
     SELECT *
-    FROM {{ source('bancornetwork_ethereum', 'BancorNetwork_v7_evt_Conversion') }} t
+    FROM {{ source('bancor_ethereum', 'BancorNetwork_v7_evt_Conversion') }} t
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     UNION ALL
     SELECT *
-    FROM {{ source('bancornetwork_ethereum', 'BancorNetwork_v8_evt_Conversion') }} t
+    FROM {{ source('bancor_ethereum', 'BancorNetwork_v8_evt_Conversion') }} t
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     UNION ALL
     SELECT *
-    FROM {{ source('bancornetwork_ethereum', 'BancorNetwork_v9_evt_Conversion') }} t
+    FROM {{ source('bancor_ethereum', 'BancorNetwork_v9_evt_Conversion') }} t
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     UNION ALL
     SELECT *
-    FROM {{ source('bancornetwork_ethereum', 'BancorNetwork_v10_evt_Conversion') }} t
+    FROM {{ source('bancor_ethereum', 'BancorNetwork_v10_evt_Conversion') }} t
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
