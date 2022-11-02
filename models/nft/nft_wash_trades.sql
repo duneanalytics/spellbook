@@ -96,6 +96,9 @@ LEFT JOIN {{ ref('addresses_events_ethereum_first_funded_by') }} filter_funding_
     {% if is_incremental() %}
     AND filter_funding_seller.block_time >= date_trunc("day", NOW() - interval '1 week')
     {% endif %}
+{% if is_incremental() %}
+LEFT ANTI JOIN {{this}} nft_wtf ON nftt.unique_trade_id = nft_wtf.trade_unique_id
+{% endif %}
 WHERE nftt.blockchain='ethereum'
     {% if is_incremental() %}
     AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
@@ -120,4 +123,9 @@ GROUP BY nftt.blockchain
     , nftt.unique_trade_id
     , filter_funding_buyer.first_funded_by
     , filter_funding_seller.first_funded_by
+    , same_buyer_seller
+    , back_and_forth_trade
+    , bought_it_three_times_within_a_week
+    , funded_by_same_wallet
+    , is_wash_trade
 ;
