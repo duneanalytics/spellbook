@@ -428,7 +428,12 @@ models:
       bnb:
         +schema: pancakeswap_bnb
         +materialized: view
-
+    kyberswap:
+      +schema: kyberswap
+      +materialized: view
+      avalanche_c:
+        +schema: kyberswap_avalanche_c
+        +materialized: view
 
 seeds:
   spellbook:
