@@ -43,6 +43,30 @@ kyberswap_dex AS (
     UNION ALL
 
     SELECT
+        t.evt_block_time                                                               AS block_time
+        ,t.sender                                                                      AS taker
+        ,t.recipient                                                                   AS maker
+        ,if(startswith(t.deltaQty0, '-'), t.deltaQty1, t.deltaQty0)                    AS token_bought_amount_raw
+        ,replace(if(startswith(t.deltaQty0, '-'), t.deltaQty0, t.deltaQty1), '-', '')  AS token_sold_amount_raw
+        ,cast(NULL as double)                                                          AS amount_usd
+        ,if(startswith(t.deltaQty0, '-'), p.token1, p.token0)                          AS token_bought_address
+        ,if(startswith(t.deltaQty0, '-'), p.token0, p.token1)                          AS token_sold_address
+        ,t.contract_address                                                            AS project_contract_address
+        ,t.evt_tx_hash                                                                 AS tx_hash
+        ,''                                                                            AS trace_address
+        ,t.evt_index
+    FROM {{ source('kyber_avalanche_c', 'Elastic_Pool_evt_swap') }} t
+    INNER JOIN {{ source('kyber_avalanche_c', 'Elastic_Factory_evt_PoolCreated') }} p
+        ON t.contract_address = p.pool
+        {% if is_incremental() %}
+        AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% else %}
+        AND t.evt_block_time >= '{{ project_start_date }}'
+        {% endif %}
+
+    UNION ALL
+
+    SELECT
         evt_block_time                                                     AS block_time
         ,sender                                                            AS taker
         ,''                                                                AS maker
@@ -58,9 +82,9 @@ kyberswap_dex AS (
     FROM {{ source('kyber_avalanche_c', 'AggregationRouter_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
-        t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% else %}
-        t.evt_block_time >= '{{ project_start_date }}'
+        evt_block_time >= '{{ project_start_date }}'
         {% endif %}
 
     UNION ALL
@@ -81,9 +105,9 @@ kyberswap_dex AS (
     FROM {{ source('kyber_avalanche_c', 'MetaAggregationRouter_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
-        t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% else %}
-        t.evt_block_time >= '{{ project_start_date }}'
+        evt_block_time >= '{{ project_start_date }}'
         {% endif %}
 )
 
