@@ -1,3 +1,8 @@
+
+
+
+
+
 -- Check if all ENS mints are taken into account
 with
   ens_mints_ctn as (
