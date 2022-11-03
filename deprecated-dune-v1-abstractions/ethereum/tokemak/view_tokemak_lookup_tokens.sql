@@ -91,6 +91,10 @@ CREATE MATERIALIZED VIEW tokemak.view_tokemak_lookup_tokens
     UNION
     SELECT 'tGAMMA' as symbol, 'Tokemak-tGAMMA' as display_name, '\x2Fc6e9c1b2C07E18632eFE51879415a580AD22E1'::bytea as address,'\x6BeA7CFEF803D1e3d5f7C0103f7ded065644e197'::bytea as pricing_contract,  18::numeric as decimals, false, true, true, false
     UNION
+    SELECT 'MYC' as symbol, 'MYC' as display_name,'\x4b13006980acb09645131b91d259eaa111eaf5ba'::bytea as address,''::bytea as pricing_contract,  18::numeric as decimals, false, true, false, false
+    UNION
+    SELECT 'tMYC' as symbol, 'Tokemak-tMYC' as display_name,'\x061aee9ab655e73719577EA1df116D7139b2A7E7'::bytea as address,'\x4b13006980acb09645131b91d259eaa111eaf5ba'::bytea as pricing_contract,  18::numeric as decimals, false, true, true, false
+    UNION
     SELECT 'tgOHM' as symbol, 'Tokemak-tgOHM' as display_name, '\x41f6a95Bacf9bC43704c4A4902BA5473A8B00263'::bytea as address,'\x0ab87046fbb341d058f17cbc4c1133f25a20a52f'::bytea as pricing_contract,  18::numeric as decimals, false, true, true, false
     UNION
     SELECT 'tFEI' as symbol, 'Tokemak-tFEI' as display_name, '\x03DccCd17CC36eE61f9004BCfD7a85F58B2D360D'::bytea as address,'\x956f47f50a910163d8bf957cf5846d573e7f87ca'::bytea as pricing_contract,  18::numeric as decimals, false, true, true, true
@@ -134,6 +138,8 @@ CREATE MATERIALIZED VIEW tokemak.view_tokemak_lookup_tokens
     SELECT 'TOKEETH-f' as symbol, 'Curve.fi Factory Crypto Pool: TOKE/ETH' as display_name,'\x7ea4aD8C803653498bF6AC1D2dEbc04DCe8Fd2aD'::bytea as address,''::bytea as pricing_contract, 18::numeric as decimals, true, true, false, false
     UNION
     SELECT 'tGAMMA-f' as symbol, 'Curve.fi Factory Plain Pool: Tokemak tGAMMA/GAMMA' as display_name,'\x9462F2b3C9bEeA8afc334Cdb1D1382B072e494eA'::bytea as address,''::bytea as pricing_contract, 18::numeric as decimals, true, true, false, false
+    UNION
+    SELECT 'tMYC-f' as symbol, 'Curve.fi Factory Plain Pool: Tokemak tMYC/MYC' as display_name,'\x83D78bf3f861e898cCA47BD076b3839Ab5469d70'::bytea as address,''::bytea as pricing_contract, 18::numeric as decimals, true, true, false, false
     UNION
     SELECT 'tSNX-f' as symbol, 'Curve.fi Factory Plain Pool: Tokemak tSNX/SNX' as display_name,'\x50B0D9171160d6EB8Aa39E090Da51E7e078E81c4'::bytea as address,''::bytea as pricing_contract, 18::numeric as decimals, true, true, false, false
     UNION
