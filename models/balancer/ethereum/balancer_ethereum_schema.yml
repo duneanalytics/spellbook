@@ -9,7 +9,7 @@ models:
     config:
       tags: ['ethereum', 'balancer', 'pools_fees']
     description: >
-      Lorem ipsum dolor sit amet.
+      Balancer v2 swap fees stored at the pool level.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -19,7 +19,7 @@ models:
     columns:
       - &contract_address
         name: contract_address
-        description: ''
+        description: 'Ethereum address for the liquidity pool used in transaction'
         tests:
           - not_null
       - &tx_hash
@@ -49,7 +49,7 @@ models:
           - not_null
       - &swap_fee_percentage
         name: swap_fee_percentage
-        description: ''
+        description: 'Swap fees for the pool, values are returned with 18 decimals'
         tests:
           - not_null
 
