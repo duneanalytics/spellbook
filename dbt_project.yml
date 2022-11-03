@@ -435,6 +435,7 @@ models:
       bnb:
         +schema: pancakeswap_bnb
         +materialized: view
+
     kyberswap:
       +schema: kyberswap
       +materialized: view

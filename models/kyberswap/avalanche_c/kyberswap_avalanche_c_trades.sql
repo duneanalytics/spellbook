@@ -42,6 +42,8 @@ kyberswap_dex AS (
 
     UNION ALL
 
+    -- https://docs.kyberswap.com/contract/implement-a-swap
+    -- deltaQty0 and deltaQty1, Negative numbers represent the sold amount, and positive numbers represent the buy amount
     SELECT
         t.evt_block_time                                                               AS block_time
         ,t.sender                                                                      AS taker
