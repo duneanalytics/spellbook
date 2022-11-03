@@ -6705,5 +6705,15 @@ FROM (VALUES
           ('0xc9ae50c6434718fc08bb26d691dc0828c2dd23a1', '$EXAMPLE', 9),
           ('0xd56d03745cf123869a03e36362dff5b298f2d034', 'SoFi', 18),
           ('0xd890ae3065efeac7359e0ef33394b27b8713845a', 'TDX', 18),
+          ('0x2de509bf0014ddf697b220be628213034d320ece', 'DBI', 18),
+          ('0x4fadc7a98f2dc96510e42dd1a74141eeae0c1543', 'WAR', 12),
+          ('0x72953a5c32413614d24c29c84a66ae4b59581bbf', 'CLEV', 18),
+          ('0x9565c2036963697786705120fc59310f747bcfd0', 'PP', 18),
+          ('0xa01710ca98e4d66fd8d2044b3437c024e7a64d76', '$TRUMP', 9),
+          ('0xb1636ccf21151eb8a47d44e7d333cc71c99b85b2', 'BIRD', 9),
+          ('0xb2cabf797bc907b049e4ccb5b84d13be3a8cfc21', 'ACRE', 18),
+          ('0xba41ddf06b7ffd89d1267b5a93bfef2424eb2003', 'MYTH', 18),
+          ('0xf05e58fcea29ab4da01a495140b349f8410ba904', 'clevCVX', 18),
+          ('0xf55cd1e399e1cc3d95303048897a680be3313308', 'TRIO', 8),
           ('0xff709449528b6fb6b88f557f7d93dece33bca78d', 'ApeUSD', 18)
      ) AS temp_table (contract_address, symbol, decimals)
