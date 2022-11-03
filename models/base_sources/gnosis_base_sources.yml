@@ -162,15 +162,79 @@ sources:
         columns:
           - name: contract_address
             description: "ERC20 token contract address"
-          - name: evt_tx_hash
+          - &evt_tx_hash
+            name: evt_tx_hash
             description: "Transaction hash of the event"
-          - name: evt_index
+          - &evt_index
+            name: evt_index
             description: "Event index"
-          - name: evt_block_time
+          - &evt_block_time
+            name: evt_block_time
             description: "Timestamp for block event time in UTC"
-          - name: evt_block_number
+          - &evt_block_number
+            name: evt_block_number
             description: "Event block number"
-          - name: from
-          - name: to
+          - *from
+          - *to
           - name: value
             description: "Amount of ERC20 token transferred"
+
+  - name: erc1155_gnosis
+    description: "Transfers events for ERC1155 tokens."
+    tables:
+      - name: evt_transfersingle
+        loaded_at_field: evt_block_time
+        description: "Single transfers events for ERC1155 tokens."
+        columns:
+          - name: contract_address
+            description: "ERC1155 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: operator
+            description: "Addresses authorized (or approved) by a NFT owner to spend all of his token Ids."
+          - *from
+          - *to
+          - name: id
+            description: "ERC1155 token ID"
+          - name: value
+            description: "Amount of ERC1155 token transferred"
+
+      - name: evt_transferbatch
+        loaded_at_field: evt_block_time
+        description: "Batch transfers events for ERC1155 tokens."
+        columns:
+          - name: contract_address
+            description: "ERC1155 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: operator
+            description: "Addresses authorized (or approved) by a NFT owner to spend all of his token Ids."
+          - *from
+          - *to
+          - name: ids
+            description: "ERC1155 token IDs"
+          - name: values
+            description: "Amounts of ERC1155 token transferred"
+
+  - name: erc721_gnosis
+    description: "Transfers events for ERC721 tokens."
+    tables:
+      - name: evt_transfer
+        loaded_at_field: evt_block_time
+        description: "Transfers events for ERC721 tokens."
+        columns:
+          - &contract_address
+            name: contract_address
+            description: "ERC721 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *from
+          - *to
+          - name: tokenId
+            description: "ERC721 token ID."

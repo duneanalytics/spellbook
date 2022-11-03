@@ -79,3 +79,93 @@ sources:
               - accepted_values:
                   values: ["factory", "base", "dynamic"]
           - name: created_at
+
+  # BEP Transfer Tables
+  - name: erc20_bnb
+    description: "Transfers events for BEP20 tokens on BNB."
+    tables:
+      - name: evt_transfer
+        loaded_at_field: evt_block_time
+        description: "Transfers events for BEP20 tokens on BNB."
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        columns:
+          - name: contract_address
+            description: "BEP20 token contract address"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Transaction hash of the event"
+          - &evt_index
+            name: evt_index
+            description: "Event index"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Event block number"
+          - *from
+          - *to
+          - name: value
+            description: "Amount of BEP20 token transferred"
+
+  - name: erc1155_bnb
+    description: "Transfers events for BEP1155 tokens on BNB."
+    tables:
+      - name: evt_transfersingle
+        loaded_at_field: evt_block_time
+        description: "Single transfers events for BEP1155 tokens on BNB."
+        columns:
+          - name: contract_address
+            description: "BEP1155 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: operator
+            description: "Addresses authorized (or approved) by a NFT owner to spend all of his token Ids."
+          - *from
+          - *to
+          - name: id
+            description: "BEP1155 token ID"
+          - name: value
+            description: "Amount of BEP1155 token transferred"
+
+      - name: evt_transferbatch
+        loaded_at_field: evt_block_time
+        description: "Batch transfers events for BEP1155 tokens on BNB."
+        columns:
+          - name: contract_address
+            description: "BEP1155 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: operator
+            description: "Addresses authorized (or approved) by a NFT owner to spend all of his token Ids."
+          - *from
+          - *to
+          - name: ids
+            description: "BEP1155 token IDs"
+          - name: values
+            description: "Amounts of BEP1155 token transferred"
+
+  - name: erc721_bnb
+    description: "Transfers events for BEP721 tokens on BNB."
+    tables:
+      - name: evt_transfer
+        loaded_at_field: evt_block_time
+        description: "Transfers events for BEP721 tokens on BNB."
+        columns:
+          - &contract_address
+            name: contract_address
+            description: "BEP721 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *from
+          - *to
+          - name: tokenId
+            description: "BEP721 token ID."
