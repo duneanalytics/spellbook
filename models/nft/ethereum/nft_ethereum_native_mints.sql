@@ -12,7 +12,7 @@
 
 
 WITH nft_mints AS (
-    SELECT evt_block_time, evt_block_number, evt_tx_hash, contract_address, from, to, tokenId AS token_id, 'erc721' AS standard
+    SELECT evt_block_time, evt_block_number, evt_tx_hash, contract_address, from, to, tokenId AS token_id, 'erc721' AS standard, evt_index
     , 1 AS amount
     FROM {{ source('erc721_ethereum','evt_transfer') }}
     WHERE from='0x0000000000000000000000000000000000000000'
@@ -21,7 +21,7 @@ WITH nft_mints AS (
     AND evt_block_time >= date_trunc("day", NOW() - interval '1 week')
     {% endif %}
     UNION
-    SELECT evt_block_time, evt_block_number, evt_tx_hash, contract_address, from, to, id AS token_id, 'erc1155' AS standard
+    SELECT evt_block_time, evt_block_number, evt_tx_hash, contract_address, from, to, id AS token_id, 'erc1155' AS standard, evt_index
     , value AS amount
     FROM {{ source('erc1155_ethereum','evt_transfersingle') }}
     WHERE from='0x0000000000000000000000000000000000000000'
@@ -32,7 +32,7 @@ WITH nft_mints AS (
     UNION
     SELECT evt_block_time, evt_block_number, evt_tx_hash, contract_address, from, to
     , ids_and_count.ids AS token_id
-    , 'erc1155' AS standard
+    , 'erc1155' AS standard, evt_index
     , ids_and_count.values AS amount
     FROM (
         SELECT evt_block_time, evt_block_number, evt_tx_hash, contract_address, from, to, evt_index
@@ -102,7 +102,7 @@ SELECT 'ethereum' AS blockchain
 , 0 AS royalty_fee_amount
 , 0 AS royalty_fee_amount_usd
 , 0 AS royalty_fee_percentage
-, 'ethereum' || '-' || COALESCE(ec.namespace, 'Unknown') || '-Mint-' || nft_mints.evt_tx_hash || '-' || nft_mints.to || '-' ||  nft_mints.contract_address || '-' || nft_mints.token_id AS unique_trade_id
+, 'ethereum' || '-' || COALESCE(ec.namespace, 'Unknown') || '-Mint-' || COALESCE(nft_mints.evt_tx_hash, '-1') || '-' || COALESCE(nft_mints.to, '-1') || '-' ||  COALESCE(nft_mints.contract_address, '-1') || '-' || COALESCE(nft_mints.token_id, '-1') || COALESCE(nft_mints.evt_index, '-1') AS unique_trade_id
 FROM nft_mints nft_mints
 LEFT JOIN nfts_per_tx nft_count ON nft_count.evt_tx_hash=nft_mints.evt_tx_hash
 LEFT JOIN {{ source('ethereum','traces') }} et ON et.block_time=nft_mints.evt_block_time
