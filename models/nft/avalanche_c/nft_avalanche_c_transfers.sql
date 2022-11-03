@@ -1,6 +1,7 @@
  {{ config( alias='transfers') }}
 
  SELECT evt_block_time AS block_time
+, date_trunc('day', evt_block_time) AS block_date
 , evt_block_number AS block_number
 , 'erc721' AS token_standard
 , 'single' AS transfer_type
@@ -18,6 +19,7 @@ WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
 UNION
 SELECT evt_block_time AS block_time
+, date_trunc('day', evt_block_time) AS block_date
 , evt_block_number AS block_number
 , 'erc1155' AS token_standard
 , 'single' AS transfer_type
@@ -35,6 +37,7 @@ WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
 UNION
 SELECT evt_block_time AS block_time
+, date_trunc('day', evt_block_time) AS block_date
 , evt_block_number AS block_number
 , 'erc1155' AS token_standard
 , 'batch' AS transfer_type
