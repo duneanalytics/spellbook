@@ -184,6 +184,10 @@ RETURN r;
 END
 $function$;
 
+-- in rebuild, drop data prior to refresh
+DELETE FROM dex.trades WHERE project='Kyber'
+;
+
 -- fill 2019
 SELECT dex.insert_kyber(
     '2019-01-01',
@@ -191,13 +195,7 @@ SELECT dex.insert_kyber(
     (SELECT max(number) FROM bsc.blocks WHERE time < '2019-01-01'),
     (SELECT max(number) FROM bsc.blocks WHERE time <= '2020-01-01')
 )
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2019-01-01'
-    AND block_time <= '2020-01-01'
-    AND project = 'Kyber'
-);
+;
 
 -- fill 2020
 SELECT dex.insert_kyber(
@@ -206,35 +204,32 @@ SELECT dex.insert_kyber(
     (SELECT max(number) FROM bsc.blocks WHERE time < '2020-01-01'),
     (SELECT max(number) FROM bsc.blocks WHERE time <= '2021-01-01')
 )
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2020-01-01'
-    AND block_time <= '2021-01-01'
-    AND project = 'Kyber'
-);
+;
 
 -- fill 2021
 SELECT dex.insert_kyber(
     '2021-01-01',
-    now(),
+    '2022-01-01',
     (SELECT max(number) FROM bsc.blocks WHERE time < '2021-01-01'),
+    (SELECT max(number) FROM bsc.blocks WHERE time <= '2022-01-01')
+)
+;
+
+-- fill 2022
+SELECT dex.insert_kyber(
+    '2022-01-01',
+    now(),
+    (SELECT max(number) FROM bsc.blocks WHERE time < '2022-01-01'),
     (SELECT MAX(number) FROM bsc.blocks where time < now() - interval '20 minutes')
 )
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2021-01-01'
-    AND block_time <= now() - interval '20 minutes'
-    AND project = 'Kyber'
-);
+;
 
-INSERT INTO cron.job (schedule, command)
-VALUES ('*/10 * * * *', $$
-    SELECT dex.insert_kyber(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Kyber'),
-        (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM bsc.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Kyber')),
-        (SELECT MAX(number) FROM bsc.blocks where time < now() - interval '20 minutes'));
-$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+-- INSERT INTO cron.job (schedule, command)
+-- VALUES ('*/10 * * * *', $$
+--     SELECT dex.insert_kyber(
+--         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Kyber'),
+--         (SELECT now() - interval '20 minutes'),
+--         (SELECT max(number) FROM bsc.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Kyber')),
+--         (SELECT MAX(number) FROM bsc.blocks where time < now() - interval '20 minutes'));
+-- $$)
+-- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
