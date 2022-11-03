@@ -26,7 +26,7 @@ models:
       contibutors: chuxinh, msilb7
     config:
       tags: ['optimism', 'contracts', 'addresses']
-    description: "Mapping of contracts to its creators and names on Optimism."
+    description: "Mapping of contracts to its creators and names on Optimism. {{ doc('optimism_contract_mapping') }}"
     columns:
       - &contract_address
         name: contract_address
