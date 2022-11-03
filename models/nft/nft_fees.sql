@@ -43,7 +43,7 @@ FROM
                 tx_to,
                 unique_trade_id
         FROM {{ ref('opensea_fees') }}
-        UNION
+        UNION ALL
         SELECT
                 blockchain,
                 project,
@@ -78,7 +78,7 @@ FROM
                 tx_to,
                 unique_trade_id
         FROM {{ ref('looksrare_ethereum_fees') }}
-        UNION
+        UNION ALL
         SELECT
                 blockchain,
                 project,
@@ -113,7 +113,7 @@ FROM
                 tx_to,
                 unique_trade_id
         FROM {{ ref('x2y2_ethereum_fees') }}
-        UNION
+        UNION ALL
         SELECT
                 blockchain,
                 project,
@@ -148,7 +148,7 @@ FROM
                 tx_to,
                 unique_trade_id
         FROM {{ ref('sudoswap_ethereum_fees') }}
-        UNION
+        UNION ALL
         SELECT
                 blockchain,
                 project,
@@ -183,7 +183,7 @@ FROM
                 tx_to,
                 unique_trade_id
         FROM {{ ref('foundation_ethereum_fees') }}
-        UNION
+        UNION ALL
         SELECT
                 blockchain,
                 project,
@@ -218,7 +218,7 @@ FROM
                 tx_to,
                 unique_trade_id
         FROM {{ ref('archipelago_ethereum_fees') }}
-        UNION
+        UNION ALL
         SELECT
                 blockchain,
                 project,
@@ -253,7 +253,7 @@ FROM
                 tx_to,
                 unique_trade_id
         FROM {{ ref('element_fees') }}
-        UNION
+        UNION ALL
         SELECT
                 blockchain,
                 project,
@@ -288,7 +288,7 @@ FROM
                 tx_to,
                 unique_trade_id
         FROM {{ ref('superrare_ethereum_fees') }}
-        UNION
+        UNION ALL
         SELECT
                 blockchain,
                 project,
@@ -323,7 +323,7 @@ FROM
                 tx_to,
                 unique_trade_id
         FROM {{ ref('zora_ethereum_fees') }}
-        UNION
+        UNION ALL
         SELECT
                 blockchain,
                 project,

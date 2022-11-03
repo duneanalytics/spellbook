@@ -36,7 +36,7 @@ WITH project_mints AS (
         tx_to,
         unique_trade_id
     FROM {{ ref('opensea_mints') }} 
-    UNION
+    UNION ALL
     SELECT
         blockchain,
         project,
@@ -66,7 +66,7 @@ WITH project_mints AS (
         tx_to,
         unique_trade_id
     FROM {{ ref('magiceden_mints') }}
-    UNION
+    UNION ALL
     SELECT
         blockchain,
         project,
@@ -96,7 +96,7 @@ WITH project_mints AS (
         tx_to,
         unique_trade_id
     FROM {{ ref('looksrare_ethereum_mints') }}
-    UNION
+    UNION ALL
     SELECT
         blockchain,
         project,
@@ -126,7 +126,7 @@ WITH project_mints AS (
         tx_to,
         unique_trade_id
     FROM {{ ref('x2y2_ethereum_mints') }}
-    UNION
+    UNION ALL
     SELECT
         blockchain,
         project,
@@ -156,7 +156,7 @@ WITH project_mints AS (
         tx_to,
         unique_trade_id
     FROM {{ ref('element_mints') }}
-    UNION
+    UNION ALL
     SELECT
         blockchain,
         project,
@@ -186,7 +186,7 @@ WITH project_mints AS (
         tx_to,
         unique_trade_id
     FROM {{ ref('foundation_ethereum_mints') }}
-    UNION
+    UNION ALL
     SELECT
         blockchain,
         project,
@@ -216,7 +216,7 @@ WITH project_mints AS (
         tx_to,
         unique_trade_id
     FROM {{ ref('zora_ethereum_mints') }}
-    UNION
+    UNION ALL
     SELECT
         blockchain,
         project,
@@ -280,5 +280,5 @@ native_mints AS (
 	WHERE tx_hash NOT IN (SELECT tx_hash FROM project_mints)
 )
 SELECT * FROM project_mints
-UNION
+UNION ALL
 SELECT * FROM native_mints
