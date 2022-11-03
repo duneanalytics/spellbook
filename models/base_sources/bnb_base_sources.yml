@@ -32,8 +32,6 @@ sources:
             description: "Maximum amount of gas willing to be paid for the transaction"
           - name: max_priority_fee_per_gas
             description: "Maximum amount of gas to be included as a tip to the miner"
-          - name: base_fee_per_gas
-            description: "Market price for gas"
           - name: nonce
             description: "Number of confirmed transactions previously sent by this account"
           - name: index

@@ -12,7 +12,7 @@
 , to
 , evt_tx_hash AS tx_hash
 , 'arbitrum' || evt_tx_hash || '-erc721-' || contract_address || '-' || tokenId || '-' || from || '-' || to || '-' || '1' || '-' || evt_index AS unique_transfer_id
-FROM {{ source('erc721_arbitrum','evt_Transfer') }}
+FROM {{ source('erc721_arbitrum','evt_transfer') }}
 {% if is_incremental() %}
 WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
@@ -29,7 +29,7 @@ SELECT evt_block_time AS block_time
 , to
 , evt_tx_hash AS tx_hash
 , 'arbitrum' || evt_tx_hash || '-erc721-' || contract_address || '-' || id || '-' || from || '-' || to || '-' || value || '-' || evt_index AS unique_transfer_id
-FROM {{ source('erc1155_arbitrum','evt_TransferSingle') }}
+FROM {{ source('erc1155_arbitrum','evt_transfersingle') }}
 {% if is_incremental() %}
 WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
@@ -49,7 +49,7 @@ SELECT evt_block_time AS block_time
 FROM (
     SELECT evt_block_time, evt_block_number, evt_tx_hash, contract_address, from, to, evt_index
     , explode(arrays_zip(values, ids)) AS ids_and_count
-    FROM {{ source('erc1155_arbitrum', 'evt_TransferBatch') }}
+    FROM {{ source('erc1155_arbitrum', 'evt_transferbatch') }}
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
