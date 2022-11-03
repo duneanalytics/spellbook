@@ -204,7 +204,27 @@ WITH rows AS (
         SELECT
             evt_block_time AS block_time,
             'Kyber' AS project,
-            'dmm' AS version,
+            'v1' AS version,
+            'Aggregator' AS category,
+            sender AS trader_a,
+            NULL::bytea AS trader_b,
+            "spentAmount" token_a_amount_raw,
+            "returnAmount" token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            "srcToken" token_a_address,
+            "dstToken" token_b_address,
+            contract_address AS exchange_contract_address,
+            evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index AS evt_index
+        FROM kyber."AggregationRouter_evt_Swapped"
+        WHERE evt_block_time >= start_ts AND evt_block_time < end_ts
+
+        UNION ALL
+        SELECT
+            evt_block_time AS block_time,
+            'Kyber' AS project,
+            'v2' AS version,
             'Aggregator' AS category,
             sender AS trader_a,
             NULL::bytea AS trader_b,
@@ -218,6 +238,46 @@ WITH rows AS (
             NULL::integer[] AS trace_address,
             evt_index AS evt_index
         FROM kyber."AggregationRouterV2_evt_Swapped"
+        WHERE evt_block_time >= start_ts AND evt_block_time < end_ts
+
+        UNION ALL
+        SELECT
+            evt_block_time AS block_time,
+            'Kyber' AS project,
+            'v3' AS version,
+            'Aggregator' AS category,
+            sender AS trader_a,
+            NULL::bytea AS trader_b,
+            "spentAmount" token_a_amount_raw,
+            "returnAmount" token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            "srcToken" token_a_address,
+            "dstToken" token_b_address,
+            contract_address AS exchange_contract_address,
+            evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index AS evt_index
+        FROM kyber."AggregationRouterV3_evt_Swapped"
+        WHERE evt_block_time >= start_ts AND evt_block_time < end_ts
+
+        UNION ALL
+        SELECT
+            evt_block_time AS block_time,
+            'Kyber' AS project,
+            'v4' AS version,
+            'Aggregator' AS category,
+            sender AS trader_a,
+            NULL::bytea AS trader_b,
+            "spentAmount" token_a_amount_raw,
+            "returnAmount" token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            "srcToken" token_a_address,
+            "dstToken" token_b_address,
+            contract_address AS exchange_contract_address,
+            evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            evt_index AS evt_index
+        FROM kyber."MetaAggregationRouter_evt_Swapped"
         WHERE evt_block_time >= start_ts AND evt_block_time < end_ts
     ) dexs
     INNER JOIN ethereum.transactions tx
@@ -246,6 +306,10 @@ RETURN r;
 END
 $function$;
 
+-- in rebuild, drop data prior to refresh
+DELETE FROM dex.trades WHERE project='Kyber'
+;
+
 -- fill 2019
 SELECT dex.insert_kyber(
     '2019-01-01',
@@ -253,13 +317,7 @@ SELECT dex.insert_kyber(
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'),
     (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-01-01')
 )
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2019-01-01'
-    AND block_time <= '2020-01-01'
-    AND project = 'Kyber'
-);
+;
 
 -- fill 2020
 SELECT dex.insert_kyber(
@@ -268,35 +326,32 @@ SELECT dex.insert_kyber(
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
     (SELECT max(number) FROM ethereum.blocks WHERE time <= '2021-01-01')
 )
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2020-01-01'
-    AND block_time <= '2021-01-01'
-    AND project = 'Kyber'
-);
+;
 
 -- fill 2021
 SELECT dex.insert_kyber(
     '2021-01-01',
-    now(),
+    '2022-01-01',
     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
+    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2022-01-01')
+)
+;
+
+-- fill 2022
+SELECT dex.insert_kyber(
+    '2022-01-01',
+    now(),
+    (SELECT max(number) FROM ethereum.blocks WHERE time < '2022-01-01'),
     (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes')
 )
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2021-01-01'
-    AND block_time <= now() - interval '20 minutes'
-    AND project = 'Kyber'
-);
+;
 
-INSERT INTO cron.job (schedule, command)
-VALUES ('*/10 * * * *', $$
-    SELECT dex.insert_kyber(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Kyber'),
-        (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Kyber')),
-        (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
-$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+-- INSERT INTO cron.job (schedule, command)
+-- VALUES ('*/10 * * * *', $$
+--     SELECT dex.insert_kyber(
+--         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Kyber'),
+--         (SELECT now() - interval '20 minutes'),
+--         (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Kyber')),
+--         (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
+-- $$)
+-- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
