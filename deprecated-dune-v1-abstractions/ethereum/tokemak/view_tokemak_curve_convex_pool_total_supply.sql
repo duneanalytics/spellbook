@@ -563,6 +563,41 @@ WITH calendar AS
                     INNER JOIN tokemak."view_tokemak_lookup_tokens" tl ON tl.address = contract_address
                     GROUP BY symbol, contract_address,  "date"
             ) as t GROUP BY  symbol, contract_address,  "date")
+            --myc
+            UNION
+            (SELECT symbol, contract_address, "date", MAX(total_supply) as total_supply FROM (
+                SELECT symbol
+                    , contract_address                    
+                    , date_trunc('day', evt_block_time) ::date as "date"
+                    , MAX(ARRAY[evt_block_number, evt_index, token_supply/10^tl.decimals]) AS total_supply 
+                    FROM curvefi."tMYC_evt_AddLiquidity" 
+                    INNER JOIN tokemak."view_tokemak_lookup_tokens" tl ON tl.address = contract_address
+                    GROUP BY symbol, contract_address,  "date"
+                UNION 
+                SELECT symbol
+                    , contract_address                    
+                    , date_trunc('day', evt_block_time) ::date as "date"
+                    , MAX(ARRAY[evt_block_number, evt_index, token_supply/10^tl.decimals]) AS total_supply 
+                    FROM curvefi."tMYC_evt_RemoveLiquidity" 
+                    INNER JOIN tokemak."view_tokemak_lookup_tokens" tl ON tl.address = contract_address
+                    GROUP BY symbol, contract_address,  "date"
+                UNION
+                SELECT symbol
+                    , contract_address                    
+                    , date_trunc('day', evt_block_time) ::date as "date"
+                    , MAX(ARRAY[evt_block_number, evt_index, token_supply/10^tl.decimals]) AS total_supply 
+                    FROM curvefi."tMYC_evt_RemoveLiquidityImbalance" 
+                    INNER JOIN tokemak."view_tokemak_lookup_tokens" tl ON tl.address = contract_address
+                    GROUP BY symbol, contract_address,  "date"
+                UNION
+                SELECT symbol
+                    , contract_address                    
+                    , date_trunc('day', evt_block_time) ::date as "date"
+                    , MAX(ARRAY[evt_block_number, evt_index, token_supply/10^tl.decimals]) AS total_supply 
+                    FROM curvefi."tMYC_evt_RemoveLiquidityOne" 
+                    INNER JOIN tokemak."view_tokemak_lookup_tokens" tl ON tl.address = contract_address
+                    GROUP BY symbol, contract_address, "date"
+            ) as t GROUP BY  symbol, contract_address, "date")
         ) as t order by "date" desc )
 
     , temp_table AS ( 

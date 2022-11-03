@@ -273,7 +273,25 @@ WITH   pools_and_constituents As
        INNER JOIN tokemak."view_tokemak_lookup_tokens" m ON m.address = t.token_address
        CROSS JOIN tokemak."view_tokemak_lookup_tokens" p WHERE p.address = '\x9462F2b3C9bEeA8afc334Cdb1D1382B072e494eA'
        AND qty>0 
-      UNION
+    UNION  
+    --MYC
+        SELECT"date", token_address, p.symbol as pool_symbol,p.address as pool_address, m.symbol as token_symbol, (qty/10^m.decimals) as qty FROM (
+            SELECT"date", token_address, SUM(qty) OVER (PARTITION BY token_address ORDER BY"date") as qty FROM
+            (
+                SELECT
+                    DATE_TRUNC('day', evt_block_time) as "date",
+                     contract_address as token_address,
+                    SUM(CASE WHEN "to" = '\x83D78bf3f861e898cCA47BD076b3839Ab5469d70' THEN value ELSE value *-1 END) as qty 
+                FROM erc20."ERC20_evt_Transfer" 
+                WHERE ("to" = '\x83D78bf3f861e898cCA47BD076b3839Ab5469d70' OR "from" = '\x83D78bf3f861e898cCA47BD076b3839Ab5469d70')
+                AND NOT ("to" = "from")
+                GROUP BY 1,2 --ORDER BY"date" desc
+            ) as tt
+       )as t 
+       INNER JOIN tokemak."view_tokemak_lookup_tokens" m ON m.address = t.token_address
+       CROSS JOIN tokemak."view_tokemak_lookup_tokens" p WHERE p.address = '\x83D78bf3f861e898cCA47BD076b3839Ab5469d70'
+       AND qty>0
+    UNION    
     --WETH
         SELECT"date", token_address,p.symbol as pool_symbol,p.address as pool_address, m.symbol as token_symbol, (qty/10^m.decimals) as qty  FROM (
             SELECT"date",token_address,SUM(qty) OVER (PARTITION BY token_address ORDER BY"date")as qty FROM
