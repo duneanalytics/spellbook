@@ -72,17 +72,17 @@ SELECT hash_marker
 , LENGTH(hash_marker) AS hash_marker_size
 FROM reservoir
 UNION ALL
-SELECT '72db8c0b' AS hash
+SELECT '72db8c0b' AS hash_marker
 , 'Gem' AS aggregator_name
 , NULL AS router_name
 , LENGTH('72db8c0b') AS hash_marker_size
 UNION ALL
-SELECT '332d1229' AS hash
+SELECT '332d1229' AS hash_marker
 , 'Blur' AS aggregator_name
 , NULL AS router_name
 , LENGTH('332d1229') AS hash_marker_size
 UNION ALL
-SELECT '9616c6c64617461' AS hash
+SELECT '9616c6c64617461' AS hash_marker
 , 'Rarible' AS aggregator_name
 , NULL AS router_name
 , LENGTH('9616c6c64617461') AS hash_marker_size
