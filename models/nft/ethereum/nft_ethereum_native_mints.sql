@@ -132,6 +132,6 @@ AND  pu_erc20s.minute >= date_trunc("day", now() - interval '1 week')
 AND  etxs.block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
 GROUP BY nft_mints.evt_block_time, nft_mints.evt_block_number, nft_mints.token_id, nft_mints.standard
-, nft_mints.amount, nft_mints.from, nft_mints.to, nft_mints.contract_address, etxs.to
+, nft_mints.amount, nft_mints.from, nft_mints.to, nft_mints.contract_address, etxs.to, nft_mints.evt_index
 , nft_mints.evt_tx_hash, etxs.from, ec.namespace, tok.name, pu_erc20s.decimals, pu_eth.price, pu_erc20s.price
 , agg.name, agg.contract_address, nft_count.nfts_minted_in_tx, pu_erc20s.symbol, erc20s.contract_address, et.success
