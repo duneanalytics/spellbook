@@ -41,7 +41,7 @@ WITH sushiswap_dex AS (
 SELECT
     'avalanche_c'                                                      AS blockchain,
     'sushiswap'                                                        AS project,
-    '2'                                                                AS version,
+    '1'                                                                AS version,
     try_cast(date_trunc('DAY', sushiswap_dex.block_time) AS date)      AS block_date,
     sushiswap_dex.block_time,
     erc20a.symbol                                                      AS token_bought_symbol,
