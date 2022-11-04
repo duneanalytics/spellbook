@@ -436,6 +436,13 @@ models:
         +schema: pancakeswap_bnb
         +materialized: view
 
+    fraxswap:
+      +schema: fraxswap
+      +materialized: view
+      avalanche_c:
+        +schema: fraxswap_avalanche_c
+        +materialized: view
+
 
 seeds:
   spellbook:

@@ -118,6 +118,8 @@ VALUES
     ("wis-experty-wisdom-token","arbitrum","WIS","0xa0459edcad5aac14dc32775d22ff7bd33027cac7",18),
     ("yfi-yearnfinance","arbitrum","YFI","0x82e3a8f066a6989666b031d916c43672085b1582",18),
 
+    ("frax-frax", "avalanche_c", "FRAX", "0xd24c2ad096400b6fbcd2ad8b24e7acbc21a1da64", 18),
+    ("fxs-frax-share", "avalanche_c", "FXS", "0x214db107654ff987ad859f34125307783fc8e387", 18),
     ("avax-avalanche", "avalanche_c", "WAVAX", "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7", 18),
     ("dai-dai", "avalanche_c", "DAI", "0xd586e7f844cea2f87f50152665bcbc2c279d8d70", 18),
     ("usdc-usd-coin", "avalanche_c", "USDC", "0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e", 6),
