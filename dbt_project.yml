@@ -104,7 +104,13 @@ models:
       ethereum:
         +schema: sushiswap_ethereum
         +materialized: view
-        
+      avalanche_c:
+        +schema: sushiswap_avalanche_c
+        +materialized: view
+      gnosis:
+        +schema: sushiswap_gnosis
+        +materialized: view
+
     opensea:
       +schema: opensea
       +materialized: view
