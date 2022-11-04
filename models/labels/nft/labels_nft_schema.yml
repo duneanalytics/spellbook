@@ -7,7 +7,7 @@ models:
       sector: labels
       category: nft
       project: ['opensea', 'looksrare', 'x2y2', 'magiceden']
-      contibutors: soispoke
+      contributors: soispoke
     config:
       tags: ['labels', 'nft', 'ethereum', 'solana', 'opensea', 'looksrare', 'x2y2', 'magiceden']
     description: "NFT query labels"   
@@ -43,7 +43,7 @@ models:
       sector: labels
       category: nft
       project: ['labels','opensea', 'looksrare', 'x2y2', 'magiceden']
-      contibutors: soispoke
+      contributors: soispoke
     config:
       tags: ['labels', 'nft_traders', 'ethereum', 'solana', 'opensea', 'looksrare', 'x2y2', 'magiceden']
     description: "NFT Platforms users across chains"   
@@ -65,7 +65,7 @@ models:
       sector: labels
       category: nft
       project: ['labels','opensea', 'looksrare', 'x2y2', 'magiceden']
-      contibutors: soispoke
+      contributors: soispoke
     config:
       tags: ['labels', 'nft_traders', 'ethereum', 'solana', 'opensea', 'looksrare', 'x2y2', 'magiceden']
     description: "Top NFT traders based on the number of transactions across chains"   
@@ -86,7 +86,7 @@ models:
       blockchain: ethereum, solana
       sector: labels
       project: ['labels','opensea', 'looksrare', 'x2y2', 'magiceden']
-      contibutors: soispoke
+      contributors: soispoke
     config:
       tags: ['labels', 'nft_traders', 'ethereum', 'solana', 'opensea', 'looksrare', 'x2y2', 'magiceden']
     description: "Top NFT traders based on volume in USD across chains"   

@@ -7,7 +7,7 @@ models:
     meta:
       blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum #, polygon
       project: tornado_cash
-      contibutors: [hildobby, dot2dotseurat]
+      contributors: [hildobby, dot2dotseurat]
     config:
       tags: ['tornado_cash', 'deposits', 'ethereum', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum']
     description: "Tornado Cash Deposits"
@@ -56,7 +56,7 @@ models:
     meta:
       blockchain: ethereum, bnb, avalanche, gnosis, optimism, arbitrum #, polygon
       project: tornado_cash
-      contibutors:  [hildobby, dot2dotseurat]
+      contributors:  [hildobby, dot2dotseurat]
     config:
       tags: ['tornado_cash', 'withdrawals', 'ethereum', 'bnb', 'avalanche', 'gnosis', 'optimism', 'arbitrum']
     description: "Tornado Cash Withdrawals"

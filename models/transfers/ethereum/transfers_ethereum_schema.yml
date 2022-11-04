@@ -6,7 +6,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc20
-      contibutors: soispoke, dot2dotseurat
+      contributors: soispoke, dot2dotseurat
     config:
       tags: ['transfers', 'ethereum', 'erc20', 'soispoke', 'dot2dotseurat']
     description: "ERC20 Token Transfers on Ethereum. This table is updated every 30 minutes."
@@ -34,7 +34,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc20
-      contibutors: soispoke, dot2dotseurat
+      contributors: soispoke, dot2dotseurat
     config:
       tags: ['transfers', 'ethereum', 'erc20', 'agg_hour', 'soispoke', 'dot2dotseurat']
     columns:
@@ -59,7 +59,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc20
-      contibutors: soispoke, dot2dotseurat
+      contributors: soispoke, dot2dotseurat
     config:
       tags: ['transfers', 'ethereum', 'erc20', 'rolling_hour', 'soispoke', 'dot2dotseurat']
     columns:
@@ -82,7 +82,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc20
-      contibutors: soispoke, dot2dotseurat
+      contributors: soispoke, dot2dotseurat
     config:
       tags: ['transfers', 'ethereum', 'erc20', 'agg_day', 'soispoke', 'dot2dotseurat']
     columns:
@@ -107,7 +107,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc20
-      contibutors: soispoke, dot2dotseurat
+      contributors: soispoke, dot2dotseurat
     config:
       tags: ['transfers', 'ethereum', 'erc20', 'rolling_day', 'soispoke', 'dot2dotseurat']
     columns:
@@ -130,7 +130,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc721
-      contibutors: soispoke, dot2dotseurat, hildobby, 0xRob
+      contributors: soispoke, dot2dotseurat, hildobby, 0xRob
     config:
       tags: ['transfers', 'ethereum', 'erc721', 'soispoke', 'dot2dotseurat', 'hildobby']
     description: "ERC721 Token Transfers on Ethereum. This table is updated every 30 minutes."
@@ -157,7 +157,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc721
-      contibutors: soispoke, dot2dotseurat, hildobby, 0xRob
+      contributors: soispoke, dot2dotseurat, hildobby, 0xRob
     config:
       tags: ['transfers', 'ethereum', 'erc721', 'agg_hour', 'soispoke', 'dot2dotseurat', 'hildobby']
     columns:
@@ -176,7 +176,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc721
-      contibutors: soispoke, dot2dotseurat, hildobby, 0xRob
+      contributors: soispoke, dot2dotseurat, hildobby, 0xRob
     config:
       tags: ['transfers', 'ethereum', 'erc721', 'rolling_hour', 'soispoke', 'dot2dotseurat', 'hildobby']
     columns:
@@ -195,7 +195,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc721
-      contibutors: soispoke, dot2dotseurat, hildobby, 0xRob
+      contributors: soispoke, dot2dotseurat, hildobby, 0xRob
     config:
       tags: ['transfers', 'ethereum', 'erc721', 'agg_hour', 'soispoke', 'dot2dotseurat', 'hildobby']
     columns:
@@ -214,7 +214,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc721
-      contibutors: soispoke, dot2dotseurat, hildobby, 0xRob
+      contributors: soispoke, dot2dotseurat, hildobby, 0xRob
     config:
       tags: ['transfers', 'ethereum', 'erc721', 'rolling_day', 'soispoke', 'dot2dotseurat', 'hildobby']
     columns:
@@ -233,7 +233,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc1155
-      contibutors: soispoke
+      contributors: soispoke
     config:
       tags: ['transfers', 'ethereum', 'erc1155', 'soispoke']
     description: "ERC1155 Token Transfers on Ethereum. This table is updated every 30 minutes."
@@ -259,7 +259,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc1155
-      contibutors: soispoke
+      contributors: soispoke
     config:
       tags: ['transfers', 'ethereum', 'erc1155', 'agg_hour', 'soispoke']
     columns:
@@ -275,7 +275,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc1155
-      contibutors: soispoke
+      contributors: soispoke
     config:
       tags: ['transfers', 'ethereum', 'erc1155', 'rolling_hour', 'soispoke']
     columns:
@@ -295,7 +295,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc1155
-      contibutors: soispoke, dot2dotseurat, hildobby
+      contributors: soispoke, dot2dotseurat, hildobby
     config:
       tags: ['transfers', 'ethereum', 'erc1155', 'agg_hour', 'soispoke']
     columns:
@@ -312,7 +312,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc1155
-      contibutors: soispoke, dot2dotseurat, hildobby
+      contributors: soispoke, dot2dotseurat, hildobby
     config:
       tags: ['transfers', 'ethereum', 'erc1155', 'rolling_day', 'soispoke']
     columns:

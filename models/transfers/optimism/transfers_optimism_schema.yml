@@ -6,7 +6,7 @@ models:
       blockchain: optimism
       sector: transfers
       project: eth
-      contibutors: MSilb7, chuxinh
+      contributors: MSilb7, chuxinh
     config:
       tags: ["transfers", "optimism", "eth"]
     description: "Events of native ETH transfers on Ethereum."

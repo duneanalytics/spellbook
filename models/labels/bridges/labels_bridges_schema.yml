@@ -6,7 +6,7 @@ models:
       blockchain: ethereum
       sector: labels
       project: bridges
-      contibutors: hildobby
+      contributors: hildobby
     config:
       tags: ['labels', 'ethereum', 'bridges']
     description: "Known bridges addresses across chains"
@@ -41,7 +41,7 @@ models:
       blockchain: ethereum
       sector: labels
       project: bridges
-      contibutors: hildobby, soispoke
+      contributors: hildobby, soispoke
     config:
       tags: ['labels', 'ethereum', 'bridges']
     description: "Known bridges addresses on Ethereum"

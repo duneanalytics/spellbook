@@ -6,7 +6,7 @@ models:
       blockchain: ethereum
       sector: labels
       category: sandwich_attackers
-      contibutors: alexth
+      contributors: alexth
     config:
       tags: ['labels', 'sandwich', 'bot','sandwich_attackers', 'dex']
     description: "{{ doc('sandwich_attackers') }}"
@@ -41,7 +41,7 @@ models:
       blockchain: ethereum
       sector: labels
       category: sandwich_attackers
-      contibutors: alexth
+      contributors: alexth
     config:
       tags: ['labels', 'ethereum', 'sandwich', 'bot','sandwich_attackers', 'dex']
     description:  "{{ doc('sandwich_attackers') }}"

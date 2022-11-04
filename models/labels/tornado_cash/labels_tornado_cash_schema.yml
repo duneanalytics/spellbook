@@ -7,7 +7,7 @@ models:
       sector: labels
       category: tornado_cash
       project: ['tornado_cash']
-      contibutors: soispoke
+      contributors: soispoke
     config:
       tags: ['labels', 'tornado_cash', 'ethereum', 'arbitrum','bnb','avalanche_c','optimism','gnosis']
     description: "Tornado Cash depositors and recipients query labels across chains"   
