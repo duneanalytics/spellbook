@@ -1,4 +1,12 @@
- {{ config( alias='aggregators_markers') }}
+{{ config(
+        alias ='aggregators_markers',
+		materialized = 'view',
+        unique_key='hash_marker',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "sector",
+                                    "nft",
+                                    \'["hildobby"]\') }}')
+}}
 
  WITH reservoir AS (
     SELECT distinct substring(unhex(regexp_replace(data, '^.*00', '')), 2, length(unhex(regexp_replace(data, '^.*00', '')))-2) AS router_website
