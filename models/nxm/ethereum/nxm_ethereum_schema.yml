@@ -13,7 +13,9 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - evt_block_number
+            - block_date
+            - cover_block_number
+            - statusNum
             - evt_tx_hash
             - evt_index
     columns:
