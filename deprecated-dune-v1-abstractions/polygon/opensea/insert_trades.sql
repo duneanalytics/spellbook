@@ -13,14 +13,14 @@ with iv_raw as (
                 else 'erc721' -- 138
            end as erc_standard
           ,'Single Item Trade' as trade_type
-          ,(a."rightOrder"->>'makerAddress')::bytea as seller
-          ,(a."leftOrder"->>'makerAddress')::bytea as buyer
+          ,concat('\x',substr(a."rightOrder"->>'makerAddress',3,40))::bytea as seller
+          ,concat('\x',substr(a."leftOrder"->>'makerAddress',3,40))::bytea as buyer
           ,"paymentTokenAddress" as currency_contract
-          ,least("output_matchedFillResults"->'left'->'takerFeePaid', "output_matchedFillResults"->'right'->'makerFeePaid')::numeric as nft_item_count
-          ,least("output_matchedFillResults"->'left'->'makerFeePaid', "output_matchedFillResults"->'right'->'takerFeePaid')::numeric as original_amount_raw
-          ,("feeData"->0->>'recipient')::bytea as fee_receive_address
+          ,least("output_matchedFillResults"->'left'->>'takerFeePaid', "output_matchedFillResults"->'right'->>'makerFeePaid')::numeric as nft_item_count
+          ,least("output_matchedFillResults"->'left'->>'makerFeePaid', "output_matchedFillResults"->'right'->>'takerFeePaid')::numeric as original_amount_raw
+          ,concat('\x',substr("feeData"->0->>'recipient',3,40))::bytea as fee_receive_address
           ,("feeData"->0->>'paymentTokenAmount')::numeric as fee_amount_raw
-          ,("feeData"->1->>'recipient')::bytea as royalty_receive_address
+          ,concat('\x',substr("feeData"->1->>'recipient',3,40))::bytea as royalty_receive_address
           ,("feeData"->1->>'paymentTokenAmount')::numeric as royalty_amount_raw
           ,a.call_tx_hash as tx_hash
           ,a.call_block_number as block_number
@@ -110,6 +110,7 @@ END
 $function$;
 
 -- fill histroy
+-- delete from opensea.trades WHERE platform='OpenSea' AND platform_version = '1';
 SELECT opensea.insert_trades('2021-06-01','2021-07-01');
 SELECT opensea.insert_trades('2021-07-01','2021-08-01');
 SELECT opensea.insert_trades('2021-08-01','2021-09-01');
@@ -125,6 +126,7 @@ SELECT opensea.insert_trades('2022-05-01','2022-06-01');
 SELECT opensea.insert_trades('2022-06-01','2022-07-01');
 SELECT opensea.insert_trades('2022-07-01','2022-08-01');
 SELECT opensea.insert_trades('2022-08-01','2022-09-01');
+SELECT opensea.insert_trades('2022-09-01',NOW() - interval '20 minutes');
 
 -- cronjob
 INSERT INTO cron.job (schedule, command)
