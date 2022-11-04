@@ -35,6 +35,7 @@ with trades as (
 )
 , matched as (
     select
+		-- bla bla <-- this change is only intended to trigger a GitHub action test, so I can better analyze why the tests fail
 		tr.tx_hash as tr_tx_hash
 		, ex.tx_hash as ex_tx_hash
 		, '|' as sep1
