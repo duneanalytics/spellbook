@@ -734,6 +734,8 @@ WITH dexs AS (
             {% if is_incremental() %}
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
+        
+        UNION ALL 
 
         -- mai tokenexchange  underlying
         SELECT
