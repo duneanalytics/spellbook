@@ -2,8 +2,8 @@
 with trades as (
     select
 		block_time,
-		token_bought_amount_raw,
-		token_sold_amount_raw,
+		token_bought_amount,
+		token_sold_amount,
 		tx_hash,
 		evt_index
     from {{ ref('platypus_finance_avalanche_c_trades') }}
@@ -37,12 +37,17 @@ with trades as (
     select
 		tr.tx_hash as tr_tx_hash
 		, ex.tx_hash as ex_tx_hash
-		, '|' as sep1
+		, '|' as `|1|`
 		, tr.evt_index as tr_evt_index
 		, ex.evt_index as ex_evt_index
-		, '|' as sep2
-		, case when (tr.token_bought_amount_raw = ex.token_bought_amount_raw) then true else false end as correct_bought_amount
-		, case when (tr.token_sold_amount_raw = ex.token_sold_amount_raw) then true else false end as correct_sold_amount
+		, '|' as `|2|`
+		, case when (tr.token_bought_amount = ex.token_bought_amount) then true else false end as correct_bought_amount
+		, tr.token_bought_amount as tr_token_bought_amount 
+		, ex.token_bought_amount as ex_token_bought_amount
+		, '|' as `|3|`
+		, case when (tr.token_sold_amount = ex.token_sold_amount) then true else false end as correct_sold_amount
+		, tr.token_sold_amount as tr_token_sold_amount
+		, ex.token_sold_amount as ex_token_sold_amount
     from trades tr
     full outer join examples ex
 		on tr.tx_hash=ex.tx_hash and tr.evt_index=ex.evt_index
