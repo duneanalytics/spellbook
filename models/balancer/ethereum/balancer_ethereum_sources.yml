@@ -10,9 +10,8 @@ sources:
           Decoded table of registered pools on the Balancer Vault contract.
         loaded_at_field: evt_block_time
         columns:
-          - &contract_address
-            name: contract_address
-            description: 'Ethereum address for the Balancer Vault contract used in transaction'
+          - name: contract_address
+            description: 'Balancer v2 Vault contract address'
           - &evt_tx_hash
             name: evt_tx_hash
             description: 'Primary key of the transaction'
@@ -41,7 +40,8 @@ sources:
           Decoded table related to the Balancer BFactory contract.
         loaded_at_field: evt_block_time
         columns:
-          - *contract_address
+          - name: contract_address
+            description: 'Balancer v1 BFactory contract address'
           - *evt_tx_hash
           - *evt_index
           - *evt_block_time
