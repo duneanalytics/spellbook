@@ -113,10 +113,12 @@ models:
       tags: ['nft','ethereum', 'aggregators']
     description: >
         List of NFT aggregators hash markers used to identify NFT direct trades routed by an aggregator
+        
+    columns:
       - name: hash_marker
         tests:
           - unique
-        description: "Hash used to mark the transaction as aggregator-routed"
+        description: "Hash used to mark the transaction as aggregator routed"
       - name: aggregator_name
         description: "Name of aggregator used in transaction"
       - name: router_name
