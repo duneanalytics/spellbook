@@ -12,6 +12,9 @@
 }}
 
 {% set project_start_date = '2022-04-23' %}
+{% set linear_bonding_address = '0x5b6ac51d9b1cede0068a1b26533cace807f883ee' %}
+{% set exponential_bonding_address = '0x432f962d8209781da23fb37b6b59ee15de7d9841' %}
+
 
 with
   latest_pool_fee as (
@@ -106,16 +109,21 @@ with
 
 , initial_settings as (
     SELECT
-      pool_address,
-      bonding_curve,
-      spot_price,
-      delta,
-      pool_fee,
-      creation_block_time
+      output_pair AS pool_address,
+      CASE
+        WHEN _bondingCurve = '{{linear_bonding_address}}' THEN 'linear'
+        WHEN _bondingCurve = '{{exponential_bonding_address}}' THEN 'exponential'
+        ELSE 'other'
+      END as bonding_curve,
+      _spotPrice / 1e18 AS spot_price,
+      _delta / 1e18 as delta,
+      _fee AS pool_fee
+      ,call_block_time as creation_block_time
     FROM
-      {{ ref('sudoswap_ethereum_pool_creations') }}
+      {{ source('sudo_amm_ethereum','LSSVMPairFactory_call_createPairETH') }}
+    WHERE call_success
     {% if is_incremental() %}
-    WHERE creation_block_time >= date_trunc("day", now() - interval '1 week')
+    AND call_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
 

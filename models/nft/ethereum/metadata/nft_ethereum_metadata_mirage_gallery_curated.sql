@@ -1,5 +1,8 @@
 {{ config(
-        alias = 'mirage_gallery_curated'
+        alias = 'mirage_gallery_curated',
+        partition_by = ['project_id'],
+        materialized = 'view',
+        unique_key = ['project_id']
         )
 }}
 

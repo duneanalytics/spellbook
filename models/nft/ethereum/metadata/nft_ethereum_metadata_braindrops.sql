@@ -1,5 +1,8 @@
 {{ config(
-        alias = 'braindrops'
+        alias = 'braindrops',
+        partition_by = ['project_id'],
+        materialized = 'view',
+        unique_key = ['project_id']
         )
 }}
 

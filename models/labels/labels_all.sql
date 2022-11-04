@@ -21,7 +21,7 @@ SELECT * FROM {{ ref('labels_multisig_ethereum') }}
 UNION
 SELECT * FROM {{ ref('labels_hackers_ethereum') }}
 UNION
-SELECT * FROM {{ ref('labels_mev_ethereum') }}
+SELECT * FROM {{ ref('labels_validators_bnb') }}
 UNION
 SELECT blockchain, address, name, category, contributor, source, created_at, updated_at FROM {{ ref('labels_aztec_v2_contracts_ethereum') }}
 UNION
@@ -38,12 +38,4 @@ SELECT * FROM {{ ref('labels_miners') }}
 UNION
 SELECT * FROM {{ ref('labels_airdrop_1_receivers_optimism') }}
 UNION
-SELECT * FROM {{ ref('labels_arbitrage_traders')}}
-UNION
-SELECT * FROM {{ ref('labels_flashbots_ethereum') }}
-UNION
 SELECT * FROM {{ ref('labels_ens') }}
-UNION
-SELECT * FROM {{ ref('labels_validators') }}
-UNION
-SELECT * FROM {{ ref('labels_sandwich_attackers') }}

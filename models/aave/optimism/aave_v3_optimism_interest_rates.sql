@@ -1,5 +1,5 @@
 {{ config(
-  schema = 'aave_v3_optimism'
+  materialized='view'
   , alias='interest'
   , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
