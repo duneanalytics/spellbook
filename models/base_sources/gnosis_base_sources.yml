@@ -79,3 +79,98 @@ sources:
               - accepted_values:
                   values: ["factory", "base", "dynamic"]
           - name: created_at
+
+      - name: traces
+        loaded_at_field: block_time
+        description: "A Gnosis trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide."
+        columns:
+          - name: block_time
+          - name: block_number
+          - name: value
+          - name: gas
+            description: "Amount of gas consumed by the trace"
+          - name: gas_used
+            description: "Number of gas units used by the trace"
+          - name: block_hash
+          - name: success
+            description: "Whether the trace was completed successfully"
+          - name: tx_index
+            description: "Transaction index"
+          - name: subtraces
+            description: "Number of subtraces (i.e, number of calls at a particular level within a transaction)"
+          - name: error
+            description: "Error log"
+          - name: tx_success
+            description: "Whether the transaction was completed sucessfully"
+          - name: tx_hash
+            description: "Primary key of the transaction"
+          - name: from
+            description: "Wallet address that initiated the trace"
+          - name: to
+            description: "Wallet address that received the trace"
+          - name: trace_address
+            description: "All returned traces, gives the exact location in the call trace"
+          - name: type
+            description: "Type of trace (e.g., call, create, suicide)"
+          - name: address
+            description: "Address of the trace creator"
+          - name: code
+            description: "Raw EVM code for the trace"
+          - name: call_type
+            description: "Hexadecimal representations of the trace's call type"
+          - name: input
+            description: "Input data for the trace"
+          - name: output
+            description: "Output data for the trace"
+          - name: refund_address
+            description: "Refund Address"
+
+      - name: logs
+        loaded_at_field: block_time
+        description: "An Ethereum log can be used to describe an event within a smart contract, like a token transfer or a change of ownership."
+        columns:
+          - name: block_time
+          - name: block_number
+          - name: block_hash
+          - name: contract_address
+            description: "Address of the ethereum smart contract generating the log"
+          - name: topic1
+            description: "Topics are 32-byte (256 bit) “words” that are used to describe what’s going on in an event. The first topic usually consists of the signature of the name of the event that occurred, including the types (uint256, string, etc.) of its parameters."
+          - name: topic2
+            description: "Second topic"
+          - name: topic3
+            description: "Third topic"
+          - name: topic4
+            description: "Fourth topic"
+          - name: data
+            description: "Additional data for the log. Data is not searchable (while topics are), but is a lot cheaper and can include large or complicated data like arrays or strings."
+          - name: tx_hash
+          - name: index
+            description: "Log index"
+          - name: tx_index
+
+  # ERC Transfer Tables
+  - name: erc20_gnosis
+    description: "Transfers events for ERC20 tokens."
+    tables:
+      - name: evt_transfer
+        loaded_at_field: evt_block_time
+        description: "Transfers events for ERC20 tokens."
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        columns:
+          - name: contract_address
+            description: "ERC20 token contract address"
+          - name: evt_tx_hash
+            description: "Transaction hash of the event"
+          - name: evt_index
+            description: "Event index"
+          - name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - name: evt_block_number
+            description: "Event block number"
+          - name: from
+          - name: to
+          - name: value
+            description: "Amount of ERC20 token transferred"

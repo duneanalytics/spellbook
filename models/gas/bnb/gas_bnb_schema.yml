@@ -1,0 +1,76 @@
+version: 2
+
+models:
+  - name: gas_bnb_fees
+    meta:
+      blockchain: bnb
+      sector: gas
+      contributors: soispoke
+    config:
+      tags: ['bnb', 'gas', 'fees']
+    description: >
+        Gas Fees on BNB chain
+    columns:
+      - &blokchain
+        name: blockchain
+        description: "Blockchain name"    
+      - &block_number
+        name: block_number
+        description: "Block number"
+      - &block_time
+        name: block_time
+        description: "Timestamp for block event time in UTC"
+      - &tx_hash
+        name: tx_hash
+        description: "Primary key of the transaction"
+        tests:
+          - unique
+          - not_null
+      - &tx_sender
+        name: tx_sender
+        description: "Initiated the transaction"
+      - &tx_receiver
+        name: tx_receiver
+        description: "Received the transaction"
+      - &native_token_symbol
+        name: native_token_symbol
+        description: "Symbol of native token (BNB) for the BNB chain"
+      - &tx_amount_native
+        name: tx_amount_native
+        description: "Amount of native tokens (BNB) transferred from sender to recipient"
+      - &tx_amount_usd
+        name: tx_amount_usd
+        description: "Amount of $USD transferred from sender to recipient"
+      - &tx_fee_native
+        name: tx_fee_native
+        description: "Total amount of native tokens (BNB) paid in gas fees -- Gas Price * Gas Used"
+      - &tx_fee_usd
+        name: tx_fee_usd
+        description: "Total amount of $USD paid in gas fees"
+      - &burned_native
+        name: burned_native
+        description: "Total amount of native tokens (BNB) burned for this transaction, Post BEP-95: 10% of transaction fee"
+      - &burned_usd
+        name: burned_usd
+        description: "Total amount of $USD burned for this transaction, Post BEP-95: 10% of transaction fee"   
+      - &validator
+        name: validator
+        description: "Address of blockchain validator for this transaction within the block"  
+      - &gas_price_gwei
+        name: gas_price_gwei
+        description: "Gas price (per gas unit) denoted in gwei"
+      - &gas_price_usd
+        name: gas_price_usd
+        description: "Gas price (per gas unit) denoted in $USD"
+      - &gas_used
+        name: gas_used
+        description: "Amount of gas units consumed by the transaction"
+      - &gas_limit
+        name: gas_limit
+        description: "Maximum amount of gas units that can be consumed by the transaction"
+      - &gas_usage_percent
+        name: gas_usage_percent
+        description: "Percentage of Gas Used relative to the gas limit"
+      - &transaction_type
+        name: transaction_type
+        description: "Transaction type"

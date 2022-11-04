@@ -55,7 +55,10 @@ WITH aggregator_routed_x2y2_txs AS (
     , prof.contract_address AS project_contract_address
     , '0x' || substring(get_json_object(inv.item, '$.data'), 155, 40) AS nft_contract_address
     , tokens.name AS collection
-    , CASE WHEN right(ett.input, 8)='72db8c0b' THEN 'Gem' ELSE NULL END AS aggregator_name
+    , CASE WHEN right(ett.input, 8)='72db8c0b' THEN 'Gem'
+        WHEN right(ett.input, 8)='332d1229' THEN 'Blur'
+        ELSE NULL
+        END AS aggregator_name
     , NULL AS aggregator_address
     , inv.evt_tx_hash AS tx_hash
     , prof.evt_index
@@ -164,7 +167,9 @@ SELECT 'ethereum' AS blockchain
     END AS trade_category
 , 'Trade' AS evt_type
 , txs.seller
-, txs.buyer
+, CASE WHEN txs.buyer=txs.aggregator_address AND erct2.to IS NOT NULL THEN erct2.to
+    WHEN txs.buyer=txs.aggregator_address AND erct3.to IS NOT NULL THEN erct3.to
+    ELSE txs.buyer END AS buyer
 , CASE WHEN currency_contract='0x0000000000000000000000000000000000000000' THEN txs.amount_raw/POWER(10, 18)
     ELSE txs.amount_raw/POWER(10, pu.decimals)
     END AS amount_original
@@ -172,7 +177,10 @@ SELECT 'ethereum' AS blockchain
 , CASE WHEN currency_contract='0x0000000000000000000000000000000000000000' THEN 'ETH'
     ELSE pu.symbol
     END AS currency_symbol
-, txs.currency_contract
+, CASE WHEN txs.currency_contract='0x0000000000000000000000000000000000000000' THEN
+    '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+    ELSE txs.currency_contract
+    END AS currency_contract
 , txs.project_contract_address
 , txs.nft_contract_address
 , aggregator_name
@@ -200,7 +208,7 @@ SELECT 'ethereum' AS blockchain
 , CASE WHEN currency_contract='0x0000000000000000000000000000000000000000' THEN 'ETH'
     ELSE pu.symbol
     END AS royalty_fee_currency_symbol
-, 'x2y2-' || txs.tx_hash || '-' || txs.nft_contract_address || txs.token_id || '-' || txs.seller || '-' || txs.evt_index || erct.evt_index || 'Trade' AS unique_trade_id
+, 'x2y2-' || COALESCE(txs.tx_hash, -1) || '-' || COALESCE(txs.nft_contract_address, -1) || COALESCE(txs.token_id, -1) || '-' || COALESCE(txs.seller, -1) || '-' || COALESCE(txs.evt_index, -1) || COALESCE(erct.evt_index, -1) || 'Trade' AS unique_trade_id
 FROM all_x2y2_txs txs
 INNER JOIN {{ source('ethereum','transactions') }} et ON et.block_time=txs.block_time
     AND et.hash=txs.tx_hash
@@ -219,3 +227,22 @@ LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct ON erct.evt_block_
     AND erct.evt_tx_hash=txs.tx_hash
     AND erct.tokenId=txs.token_id
     AND erct.from=txs.seller
+    {% if is_incremental() %}
+    AND erct.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct2 ON erct2.evt_block_time=txs.block_time
+    AND txs.nft_contract_address=erct2.contract_address
+    AND erct2.evt_tx_hash=txs.tx_hash
+    AND erct2.tokenId=txs.token_id
+    AND erct2.from=txs.buyer
+    {% if is_incremental() %}
+    AND erct2.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+LEFT JOIN {{ source('erc1155_ethereum','evt_transfersingle') }} erct3 ON erct3.evt_block_time=txs.block_time
+    AND txs.nft_contract_address=erct3.contract_address
+    AND erct3.evt_tx_hash=txs.tx_hash
+    AND erct3.id=txs.token_id
+    AND erct3.from=txs.buyer
+    {% if is_incremental() %}
+    AND erct3.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
