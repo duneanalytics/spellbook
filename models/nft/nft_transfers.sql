@@ -7,7 +7,7 @@
                                     "sector",
                                     "nft",
                                     \'["hildobby"]\') }}',
-        unique_key = ['unique_trade_id']
+        unique_key = ['unique_transfer_id']
 )
 }}
 
