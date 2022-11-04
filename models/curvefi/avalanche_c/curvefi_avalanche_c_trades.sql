@@ -1129,7 +1129,7 @@ WITH dexs AS (
 SELECT
     'avalanche_c' as blockchain, 
     'curve' as project, 
-    '1' as version, 
+    '2' as version, 
     TRY_CAST(date_trunc('DAY', dexs.block_time) as date) as block_date, 
     dexs.block_time, 
     erc20a.symbol as token_bought_symbol, 
