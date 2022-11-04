@@ -1,6 +1,5 @@
 {{ config(
-    schema = 'sushiswap_gnosis'
-    ,alias = 'trades'
+    alias = 'trades'
     ,partition_by = ['block_date']
     ,materialized = 'incremental'
     ,file_format = 'delta'
@@ -31,11 +30,11 @@ WITH sushiswap_dex AS (
     FROM {{ source('sushiswap_gnosis', 'UniswapV2Pair_evt_Swap') }} t
     INNER JOIN {{ source('sushiswap_gnosis', 'UniswapV2Factory_evt_PairCreated') }} f
         ON f.pair = t.contract_address
-        {% if is_incremental() %}
-        AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% else %}
-        AND t.evt_block_time >= '{{ project_start_date }}'
-        {% endif %}
+    {% if is_incremental() %}
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% else %}
+    WHERE t.evt_block_time >= '{{ project_start_date }}'
+    {% endif %}
 )
 
 SELECT
