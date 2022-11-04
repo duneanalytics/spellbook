@@ -1,5 +1,4 @@
 {{ config(
-    schema = 'fraxswap_avalanche_c',
     alias = 'trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -34,11 +33,11 @@ fraxswap_dex AS (
     FROM {{ source('fraxswap_avalanche_c', 'FraxswapPair_evt_Swap') }} t
     INNER JOIN {{ source('fraxswap_avalanche_c', 'FraxswapFactory_evt_PairCreated') }} p
         ON t.contract_address = p.pair
-        {% if is_incremental() %}
-        AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% else %}
-        AND t.evt_block_time >= '{{ project_start_date }}'
-        {% endif %}
+    {% if is_incremental() %}
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% else %}
+    WHERE t.evt_block_time >= '{{ project_start_date }}'
+    {% endif %}
 )
 
 SELECT

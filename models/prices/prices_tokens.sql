@@ -120,7 +120,6 @@ VALUES
 
     ("frax-frax", "avalanche_c", "FRAX", "0xd24c2ad096400b6fbcd2ad8b24e7acbc21a1da64", 18),
     ("fxs-frax-share", "avalanche_c", "FXS", "0x214db107654ff987ad859f34125307783fc8e387", 18),
-    ("wavax-wavax", "avalanche_c", "WAVAX", "0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7", 18),
     ("dai-dai", "avalanche_c", "DAI", "0xd586e7f844cea2f87f50152665bcbc2c279d8d70", 18),
     ("usdc-usd-coin", "avalanche_c", "USDC", "0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e", 6),
     ("usdt-tether", "avalanche_c", "USDT", "0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7", 6),
