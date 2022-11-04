@@ -90,8 +90,6 @@ WITH rows AS (
             "spentAmount" token_a_amount_raw,
             "returnAmount" token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            "srcToken" token_a_address,
-            "dstToken" token_b_address,
             (CASE WHEN "srcToken" = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '\x0000000000000000000000000000000000001010' ELSE "srcToken" END) AS token_a_address,
             (CASE WHEN "dstToken" = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '\x0000000000000000000000000000000000001010' ELSE "dstToken" END) AS token_b_address,
             contract_address AS exchange_contract_address,
@@ -179,10 +177,7 @@ WITH rows AS (
         AND pb.minute < end_ts
     WHERE dexs.block_time >= start_ts
     AND dexs.block_time < end_ts
-    ON CONFLICT DO UPDATE SET 
-        token_a_address = EXCLUDED.token_a_address,
-        token_b_address = EXCLUDED.token_b_address,
-        usd_amount = EXCLUDED.usd_amount
+    ON CONFLICT DO NOTHING
     RETURNING 1
 )
 SELECT count(*) INTO r from rows;
