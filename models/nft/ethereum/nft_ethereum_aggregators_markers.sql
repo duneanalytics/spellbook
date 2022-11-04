@@ -75,7 +75,7 @@ SELECT hash_marker
     WHEN router_website='nounish.market' THEN 'Nounish Market'
     WHEN router_website='dev.evaluate.xyz' THEN 'Evaluate Market'
     WHEN router_website='market.cosmoskidznft.com' THEN 'Cosmos Kidz'
-    ELSE router_website
+    ELSE router_website::string
     END AS router_name
 , LENGTH(hash_marker) AS hash_marker_size
 FROM reservoir
