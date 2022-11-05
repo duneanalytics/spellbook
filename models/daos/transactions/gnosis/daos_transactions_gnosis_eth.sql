@@ -81,6 +81,7 @@ SELECT
     TRY_CAST(date_trunc('day', t.block_time) as DATE) as block_date, 
     t.block_time, 
     t.tx_type,
+    t.token as asset_contract_address,
     COALESCE(er.symbol, t.token) as asset,
     t.value as raw_value, 
     t.value/POW(10, COALESCE(er.decimals, 18)) as value, 

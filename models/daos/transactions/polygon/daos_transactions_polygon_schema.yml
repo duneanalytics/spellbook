@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: daos_transactions_gnosis_erc20 
+  - name: daos_transactions_polygon_erc20 
     meta:
-      blockchain: gnosis
+      blockchain: polygon
       sector: daos
       contributors: henrystats 
     config:
-      tags: [ 'gnosis','erc20','daos', 'dao creator tools', 'henrystats' ]
+      tags: [ 'polygon','erc20','daos', 'dao creator tools', 'henrystats' ]
     description: >
       erc20 transactions of DAO wallets 
     tests:
@@ -66,8 +66,8 @@ models:
         name: usd_value
         description: "usd value of asset/token transferred"
       - &tx_hash
-        name: tx_hash
-        description: "transaction hash"
+        name: tx_hash 
+        desciption: "transaction hash"
       - &tx_index
         name: tx_index
         description: "transaction index"
@@ -78,13 +78,13 @@ models:
         name: address_interacted_with
         description: "address the dao wallet interacted with"
 
-  - name: daos_transactions_gnosis_eth 
+  - name: daos_transactions_polygon_eth 
     meta:
-      blockchain: gnosis
+      blockchain: ethereum
       sector: daos
       contributors: henrystats 
     config:
-      tags: [ 'gnosis','eth','daos', 'dao creator tools', 'henrystats' ]
+      tags: [ 'polygon','eth','daos', 'dao creator tools', 'henrystats' ]
     description: >
       eth transactions of DAO wallets 
     tests:

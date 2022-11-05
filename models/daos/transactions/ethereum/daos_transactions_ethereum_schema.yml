@@ -50,6 +50,9 @@ models:
       - &tx_type
         name: tx_type
         description: "transaction type (deposit or withdrawal)"
+      - &asset_contract_address
+        name: asset_contract_address
+        description: "contract address of token transferred or received"
       - &asset
         name: asset
         description: "token or asset transferred or received"
@@ -107,6 +110,7 @@ models:
       - *block_date
       - *block_time
       - *tx_type
+      - *asset_contract_address
       - *asset
       - *raw_value
       - *value

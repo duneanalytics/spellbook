@@ -2,7 +2,7 @@
     alias = 'transactions',
     materialized = 'view',
     file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum", "gnosis"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon"]\',
                                 "sector",
                                 "daos",
                                 \'["henrystats"]\') }}')
@@ -25,3 +25,10 @@ UNION ALL
 
 SELECT * FROM {{ ref('daos_transactions_gnosis_eth') }}
 
+UNION ALL 
+
+SELECT * FROM {{ ref('daos_transactions_polygon_erc20') }}
+
+UNION ALL 
+
+SELECT * FROM {{ ref('daos_transactions_polygon_eth') }}
