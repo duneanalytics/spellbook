@@ -720,7 +720,7 @@ with p1_call as (
             AND erct2.tokenId=a.nft_token_id
             AND erct2.from=concat('0x',substr(buyer,3,40))
             {% if not is_incremental() %}
-            and erct2.evt_block_number > 14801608
+            and erct2.evt_block_number > 16581908
             {% endif %}
             {% if is_incremental() %}
             and erct2.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -731,7 +731,7 @@ with p1_call as (
             AND erct3.id=a.nft_token_id
             AND erct3.from=concat('0x',substr(buyer,3,40))
             {% if not is_incremental() %}
-            and erct3.evt_block_number > 14801608
+            and erct3.evt_block_number > 16581908
             {% endif %}
             {% if is_incremental() %}
             and erct3.evt_block_time >= date_trunc("day", now() - interval '1 week')
