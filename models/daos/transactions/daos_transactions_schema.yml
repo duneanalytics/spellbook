@@ -34,7 +34,7 @@ models:
         description: "transaction type (deposit or withdrawal)"
       - &asset_contract_address
         name: asset
-        description: "contract address of token transferred or received"
+        description: "contract address of token/asset transferred or received"
       - &asset
         name: asset
         description: "token or asset transferred or received"
