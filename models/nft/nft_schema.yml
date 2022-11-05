@@ -3,11 +3,11 @@ version: 2
 models:
   - name: nft_aggregators
     meta:
-      blockchain: avalanche_c, bnb, ethereum, polygon
+      blockchain: avalanche_c, bnb, ethereum, polygon, optimism
       sector: nft
-      contributors: hildobby, soispoke
+      contributors: hildobby, soispoke, chuxinh
     config:
-      tags: ['nft','aggregators', 'avalanche_c', 'bnb','ethereum', 'polygon']
+      tags: ['nft','aggregators', 'avalanche_c', 'bnb','ethereum', 'polygon', 'optimism']
     description: >
         NFT aggregators
     columns:
