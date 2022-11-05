@@ -42,8 +42,8 @@ WITH rows AS (
         token_b_amount_raw,
         coalesce(
             usd_amount,
-            token_a_amount_raw / 10 ^ pa.decimals * pa.price,
-            token_b_amount_raw / 10 ^ pb.decimals * pb.price
+            token_a_amount_raw / 10 ^ erc20a.decimals * pa.median_price,
+            token_b_amount_raw / 10 ^ erc20b.decimals * pb.median_price,
         ) as usd_amount,
         token_a_address,
         token_b_address,
@@ -89,8 +89,8 @@ WITH rows AS (
             "spentAmount" token_a_amount_raw,
             "returnAmount" token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            "srcToken" token_a_address,
-            "dstToken" token_b_address,
+            CASE WHEN "srcToken" = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'::bytea ELSE "srcToken" END AS token_a_address,
+            CASE WHEN "dstToken" = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'::bytea ELSE "dstToken" END AS token_b_address,
             contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
@@ -109,8 +109,8 @@ WITH rows AS (
             "spentAmount" token_a_amount_raw,
             "returnAmount" token_b_amount_raw,
             NULL::numeric AS usd_amount,
-            "srcToken" token_a_address,
-            "dstToken" token_b_address,
+            CASE WHEN "srcToken" = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'::bytea ELSE "srcToken" END AS token_a_address,
+            CASE WHEN "dstToken" = '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '\xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'::bytea ELSE "dstToken" END AS token_b_address,
             contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
             NULL::integer[] AS trace_address,
@@ -126,17 +126,22 @@ WITH rows AS (
         AND tx.block_number < end_block
     LEFT JOIN erc20.tokens erc20a ON erc20a.contract_address = dexs.token_a_address
     LEFT JOIN erc20.tokens erc20b ON erc20b.contract_address = dexs.token_b_address
-    LEFT JOIN prices.usd pa ON pa.minute = date_trunc('minute', dexs.block_time)
+    LEFT JOIN prices.approx_prices_from_dex_data pa
+      ON pa.hour = date_trunc('hour', dexs.block_time)
         AND pa.contract_address = dexs.token_a_address
-        AND pa.minute >= start_ts
-        AND pa.minute < end_ts
-    LEFT JOIN prices.usd pb ON pb.minute = date_trunc('minute', dexs.block_time)
+        AND pa.hour >= start_ts
+        AND pa.hour < end_ts
+    LEFT JOIN prices.approx_prices_from_dex_data pb
+      ON pb.hour = date_trunc('hour', dexs.block_time)
         AND pb.contract_address = dexs.token_b_address
-        AND pb.minute >= start_ts
-        AND pb.minute < end_ts
+        AND pb.hour >= start_ts
+        AND pb.hour < end_ts
     WHERE dexs.block_time >= start_ts
     AND dexs.block_time < end_ts
-    ON CONFLICT DO NOTHING
+    ON CONFLICT DO UPDATE SET 
+        token_a_address = EXCLUDED.token_a_address,
+        token_b_address = EXCLUDED.token_b_address,
+        usd_amount = EXCLUDED.usd_amount 
     RETURNING 1
 )
 SELECT count(*) INTO r from rows;
