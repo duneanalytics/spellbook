@@ -367,10 +367,24 @@
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 370, 1000000, 'Rectangles (for Herbert)', 'Jeff Davis', 'Playground', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-370')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 371, 1000000, 'JPEG', 'Jan Robert Leegte', 'Presents', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-371')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 373, 1000000, 'Intersections', 'Rafaël Rozendaal', 'Presents', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-373')
-        , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 376, 1000000, 'Tide Predictor', 'LoVid', 'Curated', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-376')
-        , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 381, 1000000, 'Structures', 'Hevey', 'Presents', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-381')
+        
+        
+        -- switch to new contracts in October 2022
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 376, 1000000, 'Tide Predictor', 'LoVid', 'Curated', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-376')
+        
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 375, 1000000, 'Wabi Sabi', 'Kazuhiro Tanimoto', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-375')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 378, 1000000, 'Fleur', 'AnaPet', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-378')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 380, 1000000, 'Seedlings', 'VES3L', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-380')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 381, 1000000, 'Structures', 'Hevey', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-381')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 384, 1000000, 'VOXΞL', 'JEANVASCRIPT', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-384')
 
+        -- explorations
         , ('0x942bc2d3e7a589fe5bd4a5c6ef9727dfd82f5c8a',0,1000000,'Friendship Bracelets','Alexis André','Explorations','N/A','0x942bc2d3e7a589fe5bd4a5c6ef9727dfd82f5c8a-0')
+
+        -- collaborations
+        , ('0x64780ce53f6e966e18a22af13a2f97369580ec11',0,1000000,'Petro National','John Gerrard','Art Blocks x Pace','N/A','0x64780ce53f6e966e18a22af13a2f97369580ec11-0')
+        , ('0x64780ce53f6e966e18a22af13a2f97369580ec11',2,1000000,'QWERTY','Tara Donovan','Art Blocks x Pace','N/A','0x64780ce53f6e966e18a22af13a2f97369580ec11-2')
+        , ('0x64780ce53f6e966e18a22af13a2f97369580ec11',3,1000000,'Contractions','Loie Hollowell','Art Blocks x Pace','N/A','0x64780ce53f6e966e18a22af13a2f97369580ec11-3')
 
     ) as temp_table (contract_address, project_id, project_id_base_value, collection_name, artist_name, art_blocks_project_type, art_blocks_curated_season, art_collection_unique_id)
     
