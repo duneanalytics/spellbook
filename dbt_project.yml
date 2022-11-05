@@ -452,11 +452,11 @@ models:
         +schema: fraxswap_avalanche_c
         +materialized: view
 
-+    quix:
-+      +schema: quix
-+      +materialized: view
-+      optimism:
-+        +schema: quix_optimism
+    quix:
+      +schema: quix
+      +materialized: view
+      optimism:
+        +schema: quix_optimism
 
 
 seeds:
