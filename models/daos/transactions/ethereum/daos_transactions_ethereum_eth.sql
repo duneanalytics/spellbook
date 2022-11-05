@@ -20,6 +20,7 @@ dao_tmp as (
             dao_wallet_address
         FROM 
         {{ ref('daos_addresses_ethereum') }}
+        WHERE dao_wallet_address IS NOT NULL
 ), 
 
 transactions as (

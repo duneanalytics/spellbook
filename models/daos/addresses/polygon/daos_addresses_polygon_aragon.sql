@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'addresses_gnosis_aragon',
+    alias = 'addresses_polygon_aragon',
     partition_by = ['created_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -8,29 +8,25 @@
     )
 }}
 
-{% set project_start_date = '2020-05-24' %}
+{% set project_start_date = '2021-09-01' %}
 
-WITH  -- dune query here - https://dune.com/queries/1435985
+WITH -- dune query here  https://dune.com/queries/1527621
 
--- this code follows the same logic as dao_addresses_ethereum_aragon, Refer to that for comments on code.
-
-aragon_daos as (
+aragon_daos as ( -- decoded table for aragon on dune that returns the address of daos deployed on polygon
         SELECT 
-            block_time as created_block_time, 
-            date_trunc('day', block_time) as created_date, 
-            CONCAT('0x', SUBSTRING(data, 27, 40)) as dao
-        FROM 
-        {{ source('gnosis', 'logs') }}
+            evt_block_time as created_block_time, 
+            date_trunc('day', evt_block_time) as created_date, 
+            dao 
+        FROM {{ source('aragon_polygon', 'dao_factory_evt_DeployDAO') }}
         {% if not is_incremental() %}
-        WHERE block_time >= '{{project_start_date}}'
+        WHERE evt_block_time >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-        AND topic1 = '0x3a7eb042a769adf51e9be78b68ed7af0ad7b379246536efc376ed2ca01238282' -- deploy dao event on aragon 
 ), 
 
-app_ids (app_id) as (
+app_ids (app_id) as ( -- aragon apps that allow daos to manage funds 
         VALUES 
             (LOWER('0x9ac98dc5f995bf0211ed589ef022719d1487e5cb2bab505676f0d084c07cf89a')), -- agent 
             (LOWER('0x701a4fd1f5174d12a0f1d9ad2c88d0ad11ab6aad0ac72b7d9ce621815f8016a9')), -- agent 
@@ -41,24 +37,25 @@ app_ids (app_id) as (
             (LOWER('0x7e852e0fcfce6551c13800f1e7476f982525c2b5277ba14b24339c68416336d1')) -- vault 
 ), 
 
-get_aragon_wallets as (
+get_aragon_wallets as ( -- this is getting the app address that is deployed for daos and used to manage the apps above 
         SELECT 
             contract_address as dao, 
-            CONCAT('0x', SUBSTRING(data, 27, 40)) as dao_wallet_address 
+            CONCAT('0x', SUBSTRING(data, 27, 40)) as dao_wallet_address -- app address 
         FROM 
-        {{ source('gnosis', 'logs') }}
+        {{ source('polygon', 'logs') }}
         {% if not is_incremental() %}
         WHERE block_time >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         WHERE block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-        AND topic1 = LOWER('0xd880e726dced8808d727f02dd0e6fdd3a945b24bfee77e13367bcbe61ddbaf47')
-        AND CONCAT('0x', SUBSTRING(data, 131, 64)) IN (SELECT app_id FROM app_ids)
+        AND topic1 = LOWER('0xd880e726dced8808d727f02dd0e6fdd3a945b24bfee77e13367bcbe61ddbaf47') -- aragon apps deployment event 
+        AND contract_address IN (SELECT dao FROM aragon_daos)
+        AND CONCAT('0x', SUBSTRING(data, 131, 64)) IN (SELECT app_id FROM app_ids) -- app id 
 )
 
 SELECT 
-    'gnosis' as blockchain, 
+    'polygon' as blockchain, 
     'aragon' as dao_creator_tool, 
     ad.dao, 
     gw.dao_wallet_address, 
@@ -67,5 +64,5 @@ SELECT
 FROM 
 aragon_daos ad 
 LEFT JOIN 
-get_aragon_wallets gw 
+get_aragon_wallets gw  -- left join to get the dao address mapped to the app address
     ON ad.dao = gw.dao 

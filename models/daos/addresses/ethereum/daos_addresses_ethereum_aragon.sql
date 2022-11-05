@@ -63,6 +63,6 @@ SELECT
     TRY_CAST(ad.created_date as DATE) as created_date
 FROM 
 aragon_daos ad 
-INNER JOIN 
-get_aragon_wallets gw  -- inner join to get the dao address mapped to the app address
+LEFT JOIN 
+get_aragon_wallets gw  -- left join to get the dao address mapped to the app address
     ON ad.dao = gw.dao 

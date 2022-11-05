@@ -3,11 +3,11 @@ version: 2
 models:
   - name: daos_addresses
     meta:
-      blockchain: ethereum, gnosis
+      blockchain: ethereum, gnosis, polygon
       sector: daos
       contributors: henrystats 
     config:
-      tags: [ 'ethereum','gnosis','daos', 'dao creator tools', 'henrystats' ]
+      tags: [ 'ethereum','gnosis', 'polygon', 'daos', 'dao creator tools', 'henrystats' ]
     description: >
       wallet addresses of daos created using popular dao creator tools 
     columns:
