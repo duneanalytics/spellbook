@@ -779,7 +779,8 @@ with p1_call as (
 
     union all
 
-    select 'match_advanced_orders' as main_type
+    select 
+    'match_advanced_orders' as main_type
           ,'match_advanced_orders' as sub_type
           ,idx as sub_idx
           ,get_json_object(get_json_object(c.advancedOrders[0], "$.parameters"), "$.zone") as zone
