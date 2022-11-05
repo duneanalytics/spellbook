@@ -7,7 +7,7 @@ SELECT
         WHEN dao_creator_tool = 'aragon' THEN 'DAOs: Aragon'
         WHEN dao_creator_tool = 'colony' THEN 'DAOs: Colony'
         WHEN dao_creator_tool = 'dao-haus' THEN 'DAOs: DAO Haus'
-        WHEN dao_creator_tool = 'syndicate' THEN 'DAOs: Syndicate Investment Club',
+        WHEN dao_creator_tool = 'syndicate' THEN 'DAOs: Syndicate Investment Club'
     END as name,
     'daos' as category,
     'henrystats' as contributor,
