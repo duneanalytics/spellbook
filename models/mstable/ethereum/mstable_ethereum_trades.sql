@@ -63,10 +63,10 @@ WITH dexs AS
             `outputAmount` AS token_a_amount_raw,
             cast(NULL as double) AS token_b_amount_raw,
             CASE WHEN `output` = lower('0x0000000000000000000000000000000000000000') THEN 
-                lower('0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') ELSE `output`
+                lower('0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2') ELSE `output`
                 END AS token_a_address,
             CASE WHEN `input` = lower('0x0000000000000000000000000000000000000000') THEN 
-                lower('0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') ELSE `input` 
+                lower('0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2') ELSE `input` 
                 END AS token_b_address,
             contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
@@ -92,10 +92,10 @@ WITH dexs AS
             `outputAmount` AS token_a_amount_raw,
             cast(NULL as double) AS token_b_amount_raw,
             CASE WHEN `output` = lower('0x0000000000000000000000000000000000000000') THEN 
-                lower('0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') ELSE `output`
+                lower('0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2') ELSE `output`
                 END AS token_a_address,
             CASE WHEN `input` = lower('0x0000000000000000000000000000000000000000') THEN 
-                lower('0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') ELSE `input` 
+                lower('0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2') ELSE `input` 
                 END AS token_b_address,
             contract_address AS exchange_contract_address,
             evt_tx_hash AS tx_hash,
