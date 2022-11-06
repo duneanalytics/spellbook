@@ -635,6 +635,6 @@ seeds:
             maker_token_amount_raw: double
             type: string
             affiliate_address: string
-            swap_flag: bool
-            matcha_limit_order_flag: bool
+            swap_flag: boolean
+            matcha_limit_order_flag: boolean
             volume_usd: double
