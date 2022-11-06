@@ -1,3 +1,6 @@
+{% test zeroex_api_ethereum_fills_test(model, column_name, zeroex_api_ethereum_fills_sample) %}
+
+
 WITH unit_tests AS
 (SELECT CASE WHEN fills.taker_token_amount = fills_sample.taker_token_amount 
     AND fills.maker_token_amount = fills_sample.maker_token_amount
@@ -12,3 +15,6 @@ FROM {{ ref('zeroex_api_ethereum_fills') }} fills
 SELECT count(CASE WHEN amount_test = false THEN 1 ELSE NULL END)/count(*) AS pct_mismatch, count(*) AS COUNT_ROWS
 FROM unit_tests
 HAVING count(CASE WHEN amount_test = false THEN 1 ELSE NULL END) > count(*)*0.05
+
+
+{% endtest %}
