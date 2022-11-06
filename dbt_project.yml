@@ -520,7 +520,7 @@ seeds:
       ethereum:
         +enabled: true
         +schema: test_data
-        zeroex_ethereum_transactions:
+        zeroex_api_ethereum_fills_sample:
           +column_types:
             tx_hash: string
             evt_index: int
