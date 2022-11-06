@@ -1,3 +1,13 @@
+{{
+    config(
+        alias='view_bpt_prices',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "project",
+                                    "balancer",
+                                    \'["victorstefenon"]\') }}'
+    )
+}}
+
 WITH bpt_trades AS (
     SELECT
         block_time,
