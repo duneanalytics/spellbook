@@ -26,13 +26,13 @@ WITH bpt_trades AS (
                 WHEN t.tokenIn = SUBSTRING(t.poolId, 0, 42) THEN t.amountOut
                 ELSE t.amountIn
             END AS token_amount_raw
-        FROM balancer_v2_ethereum.Vault_evt_Swap t
+        FROM {{ source('balancer_v2_ethereum', 'Vault_evt_Swap') }} t
         WHERE t.tokenIn = SUBSTRING(t.poolId, 0, 42)
         OR t.tokenOut = SUBSTRING(t.poolId, 0, 42)
     ) dexs
-    JOIN tokens.erc20 erc20a ON erc20a.contract_address = dexs.bpt_address
-    JOIN tokens.erc20 erc20b ON erc20b.contract_address = dexs.token_address
-    LEFT JOIN prices.usd p ON p.minute = date_trunc('minute', dexs.block_time)
+    JOIN {{ ref('tokens_erc20') }} erc20a ON erc20a.contract_address = dexs.bpt_address
+    JOIN {{ ref('tokens_erc20') }}  erc20b ON erc20b.contract_address = dexs.token_address
+    LEFT JOIN {{ ref('prices_usd_latest') }} p ON p.minute = date_trunc('minute', dexs.block_time)
     AND p.contract_address = dexs.token_address
 ),
 
