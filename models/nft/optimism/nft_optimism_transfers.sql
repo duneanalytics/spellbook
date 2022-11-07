@@ -1,4 +1,15 @@
- {{ config( alias='transfers') }}
+{{ config(
+        alias ='transfers',
+        partition_by='block_date',
+        materialized='incremental',
+        file_format = 'delta',
+        post_hook='{{ expose_spells(\'["optimism"]\',
+                                    "sector",
+                                    "nft",
+                                    \'["hildobby"]\') }}',
+        unique_key = ['unique_transfer_id']
+)
+}}
 
  SELECT evt_block_time AS block_time
 , date_trunc('day', evt_block_time) AS block_date
