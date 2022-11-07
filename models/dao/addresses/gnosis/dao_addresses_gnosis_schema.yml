@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: daos_addresses_ethereum_aragon
+  - name: dao_addresses_gnosis_aragon
     meta:
-      blockchain: ethereum
+      blockchain: gnosis
       project: aragon
       contributors: henrystats 
     config:
-      tags: [ 'ethereum', 'daos', 'aragon', 'dao creator tools', 'henrystats' ]
+      tags: [ 'gnosis', 'daos', 'aragon', 'dao creator tools', 'henrystats' ]
     description: >
       wallet addresses of daos created on aragon 
     tests:
@@ -26,8 +26,8 @@ models:
         name: dao_creator_tool
         description: "Name of creator tool used to create DAO"
         tests:
-          - daos_addresses_creator_tool:
-              daos_addresses_seed: ref('daos_addresses_seed')
+          - dao_addresses_creator_tool:
+              dao_addresses_seed: ref('dao_addresses_seed')
       - &dao
         name: dao
         description: "address of the dao deployed"
@@ -41,15 +41,15 @@ models:
         name: created_block_time
         description: "UTC event block time of DAO creation"
 
-  - name: daos_addresses_ethereum_daohaus
+  - name: dao_addresses_gnosis_daohaus
     meta:
-      blockchain: ethereum
+      blockchain: gnosis
       project: daohaus
       contributors: henrystats 
     config:
-      tags: [ 'ethereum', 'daos', 'daohaus', 'dao creator tools', 'henrystats' ]
+      tags: [ 'gnosis', 'daos', 'daohaus', 'dao creator tools', 'henrystats' ]
     description: >
-      wallet addresses of daos created on daohaus
+      wallet addresses of daos created on daohaus 
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -66,15 +66,15 @@ models:
       - *created_date
       - *created_block_time
 
-  - name: daos_addresses_ethereum_zodiac
+  - name: dao_addresses_gnosis_colony
     meta:
-      blockchain: ethereum
-      project: zodiac
+      blockchain: gnosis
+      project: colony
       contributors: henrystats 
     config:
-      tags: [ 'ethereum', 'daos', 'zodiac', 'dao creator tools', 'henrystats' ]
+      tags: [ 'gnosis', 'daos', 'colony', 'dao creator tools', 'henrystats' ]
     description: >
-      wallet addresses of daos created on zodiac 
+      wallet addresses of daos created on colony
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -91,40 +91,15 @@ models:
       - *created_date
       - *created_block_time
 
-  - name: daos_addresses_ethereum_syndicate
+  - name: dao_addresses_gnosis 
     meta:
-      blockchain: ethereum
-      project: syndicate
+      blockchain: gnosis
+      sector: dao
       contributors: henrystats 
     config:
-      tags: [ 'ethereum', 'daos', 'syndicate', 'dao creator tools', 'henrystats' ]
+      tags: [ 'gnosis', 'daos', 'aragon', 'colony', 'daohaus', 'dao creator tools', 'henrystats' ]
     description: >
-      wallet addresses of daos created on syndicate 
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - created_date
-            - blockchain
-            - dao_creator_tool
-            - dao
-            - dao_wallet_address
-    columns:
-      - *blockchain
-      - *dao_creator_tool
-      - *dao
-      - *dao_wallet_address
-      - *created_date
-      - *created_block_time
-
-  - name: daos_addresses_ethereum
-    meta:
-      blockchain: ethereum
-      sector: daos
-      contributors: henrystats 
-    config:
-      tags: [ 'ethereum', 'daos', 'aragon', 'zodiac', 'daohaus', 'dao creator tools', 'henrystats' ]
-    description: >
-      wallet addresses of daos created on ethereum across all dao creator tools
+      wallet addresses of daos created on gnosis across all dao creator tools
     columns:
       - *blockchain
       - name: dao_creator_tool

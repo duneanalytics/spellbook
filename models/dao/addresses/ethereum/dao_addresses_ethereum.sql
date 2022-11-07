@@ -4,22 +4,22 @@ WITH
 
 mapping as (
         SELECT blockchain, dao_creator_tool, dao, dao_wallet_address, created_block_time, created_date
-        FROM {{ ref('daos_addresses_ethereum_aragon') }}
+        FROM {{ ref('dao_addresses_ethereum_aragon') }}
 
         UNION ALL 
 
         SELECT blockchain, dao_creator_tool, dao, dao_wallet_address, created_block_time, created_date
-        FROM {{ ref('daos_addresses_ethereum_daohaus') }}
+        FROM {{ ref('dao_addresses_ethereum_daohaus') }}
 
         UNION ALL 
 
         SELECT blockchain, dao_creator_tool, dao, dao_wallet_address, created_block_time, created_date
-        FROM {{ ref('daos_addresses_ethereum_zodiac') }}
+        FROM {{ ref('dao_addresses_ethereum_zodiac') }}
 
         UNION ALL 
 
         SELECT blockchain, dao_creator_tool, dao, dao_wallet_address, created_block_time, created_date
-        FROM {{ ref('daos_addresses_ethereum_syndicate') }}
+        FROM {{ ref('dao_addresses_ethereum_syndicate') }}
 
 
 )

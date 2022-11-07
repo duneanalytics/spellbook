@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'transactions_gnosis_eth',
+    alias = 'transactions_ethereum_erc20',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -8,7 +8,7 @@
     )
 }}
 
-{% set transactions_start_date = '2020-05-24' %}
+{% set transactions_start_date = '2018-10-27' %}
 
 WITH 
 
@@ -19,58 +19,52 @@ dao_tmp as (
             dao, 
             dao_wallet_address
         FROM 
-        {{ ref('daos_addresses_gnosis') }}
-        WHERE dao_wallet_address IS NOT NULL
+        {{ ref('dao_addresses_ethereum') }}
+        WHERE dao_wallet_address IS NOT NULL 
 ), 
 
 transactions as (
         SELECT 
-            block_time, 
-            tx_hash, 
-            LOWER('0xe91d153e0b41518a2ce8dd3d7944fa863463a97d') as token, 
+            evt_block_time as block_time, 
+            evt_tx_hash as tx_hash, 
+            contract_address as token, 
             value as value, 
             to as dao_wallet_address, 
-            'tx-in' as tx_type, 
-            tx_index, 
+            'tx_in' as tx_type,
+            evt_index as tx_index,
             from as address_interacted_with,
-            trace_address
+            array('') as trace_address
         FROM 
-        {{ source('gnosis', 'traces') }}
+        {{ source('erc20_ethereum', 'evt_transfer') }}
         {% if not is_incremental() %}
-        WHERE block_time >= '{{transactions_start_date}}'
+        WHERE evt_block_time >= '{{transactions_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         AND to IN (SELECT dao_wallet_address FROM dao_tmp)
-        AND LOWER(call_type) NOT IN ('delegatecall', 'callcode', 'staticcall') 
-        AND success = true 
-        AND value <> 0 
 
         UNION ALL 
 
         SELECT 
-            block_time, 
-            tx_hash, 
-            LOWER('0xe91d153e0b41518a2ce8dd3d7944fa863463a97d') as token, 
+            evt_block_time as block_time, 
+            evt_tx_hash as tx_hash, 
+            contract_address as token, 
             value as value, 
             from as dao_wallet_address, 
             'tx_out' as tx_type, 
-            tx_index,
+            evt_index as tx_index, 
             to as address_interacted_with,
-            trace_address
+            array('') as trace_address
         FROM 
-        {{ source('gnosis', 'traces') }}
+        {{ source('erc20_ethereum', 'evt_transfer') }}
         {% if not is_incremental() %}
-        WHERE block_time >= '{{transactions_start_date}}'
+        WHERE evt_block_time >= '{{transactions_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         AND from IN (SELECT dao_wallet_address FROM dao_tmp)
-        AND LOWER(call_type) NOT IN ('delegatecall', 'callcode', 'staticcall') 
-        AND success = true 
-        AND value <> 0 
 )
 
 SELECT 
@@ -98,15 +92,16 @@ dao_tmp dt
 LEFT JOIN 
 {{ ref('tokens_erc20') }} er 
     ON t.token = er.contract_address
-    AND er.blockchain = 'gnosis'
+    AND er.blockchain = 'ethereum'
 LEFT JOIN 
 {{ source('prices', 'usd') }} p 
     ON p.minute = date_trunc('minute', t.block_time)
     AND p.contract_address = t.token
-    AND p.blockchain = 'gnosis'
+    AND p.blockchain = 'ethereum'
     {% if not is_incremental() %}
     AND p.minute >= '{{transactions_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND p.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+

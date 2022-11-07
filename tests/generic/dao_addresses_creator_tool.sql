@@ -1,4 +1,4 @@
-{% test daos_addresses_creator_tool(model, column_name, daos_addresses_seed) %}
+{% test dao_addresses_creator_tool(model, column_name, dao_addresses_seed) %}
 
     with unit_test as
     (
@@ -9,7 +9,7 @@
                 else False
             end as creator_tool_test 
         from {{ model }} m
-        inner join {{ daos_addresses_seed }} seed
+        inner join {{ dao_addresses_seed }} seed
             on m.created_date = seed.created_date
             and m.dao = seed.dao
             and m.dao_wallet_address = seed.dao_wallet_address

@@ -1,10 +1,10 @@
 version: 2
 
 models:
-  - name: daos_transactions
+  - name: dao_transactions
     meta:
       blockchain: ethereum, gnosis, polygon 
-      sector: daos
+      sector: dao
       contributors: henrystats 
     config:
       tags: [ 'ethereum','gnosis', 'polygon', 'daos', 'dao creator tools', 'henrystats' ]

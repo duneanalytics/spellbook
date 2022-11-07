@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'transactions_gnosis_erc20',
+    alias = 'transactions_polygon_erc20',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -8,7 +8,7 @@
     )
 }}
 
-{% set transactions_start_date = '2020-05-24' %}
+{% set transactions_start_date = '2021-09-01' %}
 
 WITH 
 
@@ -19,8 +19,8 @@ dao_tmp as (
             dao, 
             dao_wallet_address
         FROM 
-        {{ ref('daos_addresses_gnosis') }}
-        WHERE dao_wallet_address IS NOT NULL
+        {{ ref('dao_addresses_polygon') }}
+        WHERE dao_wallet_address IS NOT NULL 
 ), 
 
 transactions as (
@@ -30,12 +30,12 @@ transactions as (
             contract_address as token, 
             value as value, 
             to as dao_wallet_address, 
-            'tx_in' as tx_type, 
+            'tx_in' as tx_type,
             evt_index as tx_index,
             from as address_interacted_with,
             array('') as trace_address
         FROM 
-        {{ source('erc20_gnosis', 'evt_transfer') }}
+        {{ source('erc20_polygon', 'evt_transfer') }}
         {% if not is_incremental() %}
         WHERE evt_block_time >= '{{transactions_start_date}}'
         {% endif %}
@@ -53,11 +53,11 @@ transactions as (
             value as value, 
             from as dao_wallet_address, 
             'tx_out' as tx_type, 
-            evt_index as tx_index,
+            evt_index as tx_index, 
             to as address_interacted_with,
             array('') as trace_address
         FROM 
-        {{ source('erc20_gnosis', 'evt_transfer') }}
+        {{ source('erc20_polygon', 'evt_transfer') }}
         {% if not is_incremental() %}
         WHERE evt_block_time >= '{{transactions_start_date}}'
         {% endif %}
@@ -75,7 +75,7 @@ SELECT
     TRY_CAST(date_trunc('day', t.block_time) as DATE) as block_date, 
     t.block_time, 
     t.tx_type,
-    t.token as asset_contract_address,
+    t.token as asset_contract_address, 
     COALESCE(er.symbol, t.token) as asset,
     t.value as raw_value, 
     t.value/POW(10, COALESCE(er.decimals, 18)) as value, 
@@ -92,12 +92,12 @@ dao_tmp dt
 LEFT JOIN 
 {{ ref('tokens_erc20') }} er 
     ON t.token = er.contract_address
-    AND er.blockchain = 'gnosis'
+    AND er.blockchain = 'polygon'
 LEFT JOIN 
 {{ source('prices', 'usd') }} p 
     ON p.minute = date_trunc('minute', t.block_time)
     AND p.contract_address = t.token
-    AND p.blockchain = 'gnosis'
+    AND p.blockchain = 'polygon'
     {% if not is_incremental() %}
     AND p.minute >= '{{transactions_start_date}}'
     {% endif %}

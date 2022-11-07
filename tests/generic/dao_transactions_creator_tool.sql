@@ -1,4 +1,4 @@
-{% test daos_transactions_creator_tool(model, column_name, daos_transactions_seed) %}
+{% test dao_transactions_creator_tool(model, column_name, dao_transactions_seed) %}
 
     with unit_test as
     (
@@ -9,7 +9,7 @@
                 else False
             end as creator_tool_test 
         from {{ model }} m
-        inner join {{ daos_transactions_seed }} seed
+        inner join {{ dao_transactions_seed }} seed
             on m.tx_hash = seed.tx_hash
             and m.block_date = seed.block_date
             and m.dao = seed.dao 

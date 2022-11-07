@@ -19,7 +19,7 @@ dao_tmp as (
             dao, 
             dao_wallet_address
         FROM 
-        {{ ref('daos_addresses_polygon') }}
+        {{ ref('dao_addresses_polygon') }}
         WHERE dao_wallet_address IS NOT NULL
 ), 
 

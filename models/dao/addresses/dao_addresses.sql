@@ -4,17 +4,17 @@
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon"]\',
                                 "sector",
-                                "daos",
+                                "dao",
                                 \'["henrystats"]\') }}')
 }}
 
 
-SELECT * FROM {{ ref('daos_addresses_ethereum') }}
+SELECT * FROM {{ ref('dao_addresses_ethereum') }}
 
 UNION ALL 
 
-SELECT * FROM {{ ref('daos_addresses_gnosis') }}
+SELECT * FROM {{ ref('dao_addresses_gnosis') }}
 
 UNION ALL 
 
-SELECT * FROM {{ ref('daos_addresses_polygon') }}
+SELECT * FROM {{ ref('dao_addresses_polygon') }}
