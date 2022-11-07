@@ -43,7 +43,7 @@ SELECT 'bnb' AS blockchain
 , unique_transfer_id
 FROM {{ ref('nft_bnb_transfers') }}
 UNION
-SELECT 'avalanche' AS blockchain
+SELECT 'avalanche_c' AS blockchain
 , block_time
 , block_date
 , block_number
