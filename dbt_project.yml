@@ -210,6 +210,9 @@ models:
       ethereum:
         +schema: seaport_ethereum
         +materialized: view
+      bnb:
+        +schema: seaport_bnb
+        +materialized: view
 
     balances:
       +schema: balances
