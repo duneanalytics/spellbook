@@ -7,7 +7,7 @@ sources:
     freshness:
       warn_after: { count: 12, period: hour }
     tables:
-      - name: transactions_0006
+      - name: transactions
         description: "underlying transactions table. gnosis.transactions is an exposed view of this table."
         loaded_at_field: block_time
       - name: transactions
