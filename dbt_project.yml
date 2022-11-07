@@ -210,6 +210,9 @@ models:
       ethereum:
         +schema: seaport_ethereum
         +materialized: view
+      polygon:
+        +schema: seaport_polygon
+        +materialized: view
 
     balances:
       +schema: balances
