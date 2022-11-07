@@ -10,6 +10,8 @@
 
 -- Static Labels
 SELECT * FROM {{ ref('labels_cex') }}
+UNION 
+SELECT * FROM {{ ref('labels_alameda') }}
 UNION
 SELECT * FROM {{ ref('labels_funds') }}
 UNION
