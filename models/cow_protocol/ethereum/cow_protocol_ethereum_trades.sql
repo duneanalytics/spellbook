@@ -11,8 +11,8 @@
 
 -- Find the PoC Query here: https://dune.com/queries/1283229
 WITH
--- First subquery joins buy and sell token prices from prices.usd.
--- Also deducts fee from sell amount.
+-- First subquery joins buy and sell token prices from prices.usd
+-- Also deducts fee from sell amount
 trades_with_prices AS (
     SELECT try_cast(date_trunc('day', evt_block_time) as date) as block_date,
            evt_block_time            as block_time,
