@@ -3,7 +3,7 @@ version: 2
 models:
   - name: labels_alameda
     meta:
-      blockchain: ethereum
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','bnb','gnosis']
       sector: labels
       category: alameda
       project: ['alameda']
