@@ -1,0 +1,12 @@
+version: 2
+
+macros:
+  - name: get_explorer_base_url
+    description: "Converts a link and text to the clickable href link"
+    arguments:
+      - name: link
+        type: string
+        description: "link you want to point new tab to"
+      - name: text
+        type: string
+        description: "text you want to display"
