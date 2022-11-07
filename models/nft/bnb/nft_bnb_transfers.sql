@@ -26,7 +26,7 @@
 , 'bnb' || t.evt_tx_hash || '-bep721-' || t.contract_address || '-' || t.tokenId || '-' || t.from || '-' || t.to || '-' || '1' || '-' || t.evt_index AS unique_transfer_id
 FROM {{ source('erc721_bnb','evt_transfer') }} t
 {% if is_incremental() %}
-    LEFT ANTI JOIN {{this}} anti
+    ANTI JOIN {{this}} anti
         ON t.evt_tx_hash = anti.tx_hash
     {% endif %}
 {% if is_incremental() %}
@@ -48,7 +48,7 @@ SELECT t.evt_block_time AS block_time
 , 'bnb' || t.evt_tx_hash || '-bep721-' || t.contract_address || '-' || t.id || '-' || t.from || '-' || t.to || '-' || t.value || '-' || t.evt_index AS unique_transfer_id
 FROM {{ source('erc1155_bnb','evt_transfersingle') }} t
 {% if is_incremental() %}
-    LEFT ANTI JOIN {{this}} anti
+    ANTI JOIN {{this}} anti
         ON t.evt_tx_hash = anti.tx_hash
     {% endif %}
 {% if is_incremental() %}
@@ -73,7 +73,7 @@ FROM (
     , explode(arrays_zip(t.values, t.ids)) AS ids_and_count
     FROM {{ source('erc1155_bnb', 'evt_transferbatch') }} t
     {% if is_incremental() %}
-        LEFT ANTI JOIN {{this}} anti
+        ANTI JOIN {{this}} anti
             ON t.evt_tx_hash = anti.tx_hash
     {% endif %}
     {% if is_incremental() %}
