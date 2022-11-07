@@ -24,6 +24,10 @@ models:
       tags: ['nft', 'avalanche_c', 'transfers']
     description: >
         NFT transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - unique_transfer_id
     columns:
       - name: block_time
         description: "UTC event block time"
