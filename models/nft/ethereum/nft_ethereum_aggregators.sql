@@ -17,6 +17,8 @@ FROM
     , ('0x0000000035634b55f3d99b071b5a354f48e10bef', 'Gem') -- Gem Single Contract Checkout 2
     , ('0x00000000a50bb64b4bbeceb18715748dface08af', 'Gem') -- Gem Single Contract Checkout 3
     , ('0xae9c73fd0fd237c1c6f66fe009d24ce969e98704', 'Gem') -- Gem Protection Enabled Address
+    , ('0x9e97195f937c9372fe5fda5e3b86e9b88cbefed7', 'Gem') -- Gem's X2Y2 Batch Buys
+    , ('0xf22007700b8c443bcb36a39580f7804bffdb1169', 'Gem') -- Gem's Blur Batch Buys
     , ('0x56dd5bbede9bfdb10a2845c4d70d4a2950163044', 'X2Y2') -- X2Y2's OpenSea Sniper
     , ('0x69cf8871f61fb03f540bc519dd1f1d4682ea0bf6', 'Element') -- Element NFT Marketplace Aggregator
     , ('0xb4e7b8946fa2b35912cc0581772cccd69a33000c', 'Element') -- Element NFT Marketplace Aggregator 2

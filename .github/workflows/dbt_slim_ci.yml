@@ -52,8 +52,20 @@ jobs:
       - name: dbt seed
         run: "dbt seed --select state:modified --state ."
 
-      - name: dbt run
+      - name: dbt run initial model(s)
         run: "dbt run --select state:modified --state ."
 
-      - name: dbt test
+      - name: dbt test initial model(s)
         run: "dbt test --select state:new state:modified --state ."
+
+      - name: Set environment variable for incremental model count
+        run: |
+          echo "INC_MODEL_COUNT=$(echo dbt ls --select state:modified,config.materialized:incremental --state . --resource-type model  | wc -l)" >> $GITHUB_ENV
+
+      - name: dbt run incremental model(s) if applicable
+        if: env.INC_MODEL_COUNT > 0
+        run: "dbt run --select state:modified,config.materialized:incremental --state ."
+
+      - name: dbt test incremental model(s) if applicable
+        if: env.INC_MODEL_COUNT > 0
+        run: "dbt test --select state:modified,config.materialized:incremental --state ."

@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: reaper_optimism_all_vaults
+    meta:
+      blockchain: optimism
+      project: reaper
+      contributors: tollywood, miso
+    config:
+      tags: ['optimism', 'reaper','vaults','tollywood','miso']
+    description: "List of all Reaper Vaults"
+    columns:
+      - &contract_address
+        name: contract_address
+        description: "ERC20 token contract address"
+        tests:
+          - unique
+      - &symbol
+        name: symbol
+        description: "Token symbol"
+      - &decimals
+        name: decimals
+        description: "amount of decimals"
