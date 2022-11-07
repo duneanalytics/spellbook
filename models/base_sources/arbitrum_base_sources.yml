@@ -58,13 +58,12 @@ sources:
             description: "Any binary data payload"
           - name: hash
             description: "Primary key of the transaction"
-            tests:
-              - unique
-              - not_null
           - name: type
             description: "Transaction type"
           - name: access_list
             description: "Specifies a list of addresses and storage keys"
+          - name: effective_gas_price
+          - name: gas_used_for_l1
 
       - name: traces
         loaded_at_field: block_time
