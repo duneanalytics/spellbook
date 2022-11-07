@@ -1,0 +1,9 @@
+version: 2
+
+sources: 
+  - name: opensea_optimism
+    freshness:
+      warn_after: { count: 24, period: hour }
+    tables:
+      - name: Seaport_evt_OrderFulfilled
+        loaded_at_field: evt_block_time
