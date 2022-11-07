@@ -11,6 +11,16 @@ models:
       tags: ['avalanche_c', 'trades', 'dex', 'umer_h_adil']
     description: >
         Platypus Finance trades (which is only on Avalanche C-Chain). This table loads into dex.trades downstream.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
     columns:
       - &blockchain
         name: blockchain
