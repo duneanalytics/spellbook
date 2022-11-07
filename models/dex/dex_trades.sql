@@ -1,9 +1,9 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["ethereum", "bnb"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism"]\',
                                 "sector",
                                 "dex",
-                                \'["jeff-dude", "hosuke", "0xRob", "pandajackson42", "Henrystats", "scoffie"]\') }}'
+                                \'["jeff-dude", "hosuke", "0xRob", "pandajackson42", "Henrystats", "scoffie", "zhongyiio"]\') }}'
         )
 }}
 
@@ -11,6 +11,7 @@
 'uniswap_trades'
 ,'sushiswap_trades'
 ,'curvefi_trades'
+,'fraxswap_trades'
 ,'airswap_ethereum_trades'
 ,'clipper_ethereum_trades'
 ,'shibaswap_ethereum_trades'
