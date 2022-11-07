@@ -16,7 +16,7 @@ models:
         description: "Blockchain which the DAO is deployed"
       - &dao_creator_tool
         name: dao_creator_tool
-        description: "Name of creator tool used to create DAO"
+        description: "Name of creator tool used to create dao"
       - &dao
         name: dao
         description: "address of the dao deployed"
