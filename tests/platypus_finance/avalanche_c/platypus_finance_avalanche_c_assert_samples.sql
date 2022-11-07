@@ -31,7 +31,8 @@ with trades as (
 		or (tx_hash='0x9e982c5f221d878d5c30291f3b1af3bb4896a0d15ecc305ff4d4e63936ed191e' and evt_index='64')
 )
 , examples as (
-    select * from {{ ref('platypus_finance_avalanche_c_example_trades') }}
+    select * from {{ ref('dex_trades_seed') }}
+	where blockchain = 'avalanche_c' and project='platypus_finance' and version='1'
 )
 , matched as (
     select
