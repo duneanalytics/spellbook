@@ -448,6 +448,13 @@ models:
       avalanche_c:
         +schema: fraxswap_avalanche_c
         +materialized: view
+        
+    impossible_finance:
+      +schema: impossible_finance
+      +materialized: view
+      bnb:
+        +schema: impossible_bnb
+        +materialized: view
 
 
 seeds:
