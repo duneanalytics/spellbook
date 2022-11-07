@@ -3,7 +3,7 @@
         partition_by='block_date',
         materialized='incremental',
         file_format = 'delta',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon"]\',
                                     "sector",
                                     "nft",
                                     \'["hildobby"]\') }}',
