@@ -456,7 +456,6 @@ models:
         +schema: impossible_bnb
         +materialized: view
 
-
 seeds:
   spellbook:
     balances:
