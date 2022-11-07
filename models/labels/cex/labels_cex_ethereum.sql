@@ -49,6 +49,8 @@ FROM (VALUES
     -- FTX, Source: https://etherscan.io/accounts/label/ftx
     , (array('ethereum'), '0x2faf487a4414fe77e2327f0bf4ae2a264a776ad2', 'FTX 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0xc098b2a3aa256d2140208c3de6543aaef5cd3a94', 'FTX 2', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
+    -- FTX US, Source: https://twitter.com/lawmaster/status/1589510088875642881?s=20&t=6c-qunbJWh0k6_f0TQ9KAw
+    , (array('ethereum'), '0x7abe0ce388281d2acf297cb089caef3819b13448', 'FTX US', 'cex', '1chioku', 'static', timestamp('2022-11-07'), now())
     -- Coinbase, Source: https://etherscan.io/accounts/label/coinbase
     , (array('ethereum'), '0x71660c4005ba85c37ccec55d0c4493e66fe775d3', 'Coinbase 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x503828976d22510aad0201ac7ec88293211d23da', 'Coinbase 2', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
