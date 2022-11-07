@@ -2,4 +2,4 @@ version: 2
 
 macros:
   - name: allEVMchains
-    description: "gets string list of all EVM chains"
+    description: "gets array list of all EVM chains"
