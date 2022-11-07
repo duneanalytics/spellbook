@@ -26,7 +26,7 @@ SELECT 'ethereum' AS blockchain
 , tx_hash
 , unique_transfer_id
 FROM {{ ref('nft_ethereum_transfers') }}
-UNION
+UNION ALL
 SELECT 'bnb' AS blockchain
 , block_time
 , block_date
@@ -42,7 +42,7 @@ SELECT 'bnb' AS blockchain
 , tx_hash
 , unique_transfer_id
 FROM {{ ref('nft_bnb_transfers') }}
-UNION
+UNION ALL
 SELECT 'avalanche_c' AS blockchain
 , block_time
 , block_date
@@ -58,7 +58,7 @@ SELECT 'avalanche_c' AS blockchain
 , tx_hash
 , unique_transfer_id
 FROM {{ ref('nft_avalanche_c_transfers') }}
-UNION
+UNION ALL
 SELECT 'gnosis' AS blockchain
 , block_time
 , block_date
@@ -74,7 +74,7 @@ SELECT 'gnosis' AS blockchain
 , tx_hash
 , unique_transfer_id
 FROM {{ ref('nft_gnosis_transfers') }}
-UNION
+UNION ALL
 SELECT 'optimism' AS blockchain
 , block_time
 , block_date
@@ -90,7 +90,7 @@ SELECT 'optimism' AS blockchain
 , tx_hash
 , unique_transfer_id
 FROM {{ ref('nft_optimism_transfers') }}
-UNION
+UNION ALL
 SELECT 'arbitrum' AS blockchain
 , block_time
 , block_date
@@ -106,7 +106,7 @@ SELECT 'arbitrum' AS blockchain
 , tx_hash
 , unique_transfer_id
 FROM {{ ref('nft_arbitrum_transfers') }}
-UNION
+UNION ALL
 SELECT 'polygon' AS blockchain
 , block_time
 , block_date
