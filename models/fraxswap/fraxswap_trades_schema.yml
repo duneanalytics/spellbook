@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: sushiswap_trades
+  - name: fraxswap_trades
     meta:
-      blockchain: ethereum
+      blockchain: avalanche_c
       sector: dex
-      project: sushiswap
-      contributors: jeff-dude, masquot, soispoke, augustog, hosuke
+      project: fraxswap
+      contributors: zhongyiio
     config:
-      tags: ['ethereum','sushiswap','trades', 'dex', 'jeff-dude','cross-chain']
+      tags: ['avalanche_c', 'trades', 'dex', 'fraxswap', 'zhongyiio', 'hosuke']
     description: >
-        Sushiswap trades on all chains across all contracts and versions. This table will load dex trades downstream.
+        Fraxswap trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
       - &blockchain
         name: blockchain
@@ -77,7 +77,7 @@ models:
         description: "Address which received the transaction"
       - &trace_address
         name: trace_address
-        description: ""
+        description: "address of the trace within the call graph forest"
       - &evt_index
         name: evt_index
-        description: ""
+        description: "the position of this event log within this transaction"
