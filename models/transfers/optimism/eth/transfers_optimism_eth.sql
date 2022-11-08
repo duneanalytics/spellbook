@@ -8,7 +8,7 @@
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "transfers",
-                                    \'["msilb7", "chuxinh"]\') }}'
+                                    \'["msilb7", "chuxin"]\') }}'
     )
 }}
 with eth_transfers as (

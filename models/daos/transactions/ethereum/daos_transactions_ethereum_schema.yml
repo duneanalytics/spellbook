@@ -5,9 +5,9 @@ models:
     meta:
       blockchain: ethereum
       sector: daos
-      contributors: henrystats 
+      contributors: Henrystats 
     config:
-      tags: [ 'ethereum','erc20','daos', 'dao creator tools', 'henrystats' ]
+      tags: [ 'ethereum','erc20','daos', 'dao creator tools', 'Henrystats' ]
     description: >
       erc20 transactions of DAO wallets 
     tests:
@@ -79,9 +79,9 @@ models:
     meta:
       blockchain: ethereum
       sector: daos
-      contributors: henrystats 
+      contributors: Henrystats 
     config:
-      tags: [ 'ethereum','eth','daos', 'dao creator tools', 'henrystats' ]
+      tags: [ 'ethereum','eth','daos', 'dao creator tools', 'Henrystats' ]
     description: >
       eth transactions of DAO wallets 
     tests:

@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: optimism
       project: uniswap
-      contributors: MSilb7, chuxinh
+      contributors: msilb7, chuxin
     config:
       tags: ['optimism','uniswap','pools']
     description: >
@@ -30,7 +30,7 @@ models:
     meta:
       blockchain: optimism
       project: uniswap
-      contributors: 0xboxer, jeff-dude
+      contributors: 0xBoxer, jeff-dude
     config:
       tags: ['optimism','uniswap','dex']
     description: >
@@ -122,7 +122,7 @@ models:
     meta:
       blockchain: optimism
       project: uniswap
-      contributors: 0xboxer, jeff-dude
+      contributors: 0xBoxer, jeff-dude
     config:
       tags: ['optimism','uniswap','dex.trades']
     description: >

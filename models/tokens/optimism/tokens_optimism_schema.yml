@@ -41,7 +41,7 @@ models:
     meta:
       blockchain: optimism
       sector: nft
-      contributors: chuxinh
+      contributors: chuxin
     config:
       tags: ['tokens', 'optimism', 'nft', 'erc721']
     description: >
