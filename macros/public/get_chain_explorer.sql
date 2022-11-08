@@ -20,9 +20,9 @@
    {% if execute %}
     {% set results = runner.rows.values() %}
     {% else %}
-    {% results_list = [] %}
+    {% set results = [] %}
    {% endif %}
-   
+
    {{ results }}
    
 {% endmacro %}
