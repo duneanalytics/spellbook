@@ -17,6 +17,6 @@
 
    {% set results = run_query(query) %}
 
-   {{ results['explorer_url'] }}
+   {{ results }}
    
 {% endmacro %}
