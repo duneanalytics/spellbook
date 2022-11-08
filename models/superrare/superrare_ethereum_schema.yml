@@ -215,7 +215,7 @@ models:
     meta:
       blockchain: ethereum
       project: superrare
-      contibutors: cat
+      contributors: cat
     config:
       tags: ['usernames', 'ethereum', 'superrare']
     description: "SuperRare usernames"
