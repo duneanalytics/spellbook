@@ -131,4 +131,4 @@ tfers_categorized as (
   LEFT JOIN aztec_v2_contract_labels from_contract on t.tx_from = from_contract.contract_address
 )
 
-SELECT * FROM tfers_raw
+SELECT * FROM tfers_categorized
