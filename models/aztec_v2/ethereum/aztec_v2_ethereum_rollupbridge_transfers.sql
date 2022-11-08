@@ -48,7 +48,7 @@ aztec_v2_contract_labels as (
         SELECT 
             DISTINCT t.*
         FROM 
-        ethereum.traces t 
+        {{ source('ethereum', 'traces') }} t 
         INNER JOIN 
         aztec_v2_contract_labels ats
             ON t.`from` = ats.address
