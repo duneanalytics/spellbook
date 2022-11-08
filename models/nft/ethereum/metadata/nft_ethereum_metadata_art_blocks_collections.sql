@@ -1,9 +1,6 @@
 
 {{ config(
-        alias = 'art_blocks_collections',
-        partition_by = ['project_id'],
-        materialized = 'view',
-        unique_key = ['project_id']
+        alias = 'art_blocks_collections'
         )
 }}
 
@@ -349,15 +346,45 @@
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 346, 1000000, '80s Pop Variety Pack - for experts only 🕹', 'Daniel Catt', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-346')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 347, 1000000, 'Avalon', 'r0zk0', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-347')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 348, 1000000, 'CryptoCountries: The Unpublished Archives of a Mythical World Traveler', 'Michael G Devereux', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-348')
+        , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 349, 1000000, 'Totem of Taste', 'Hannah Yan', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-349')
+        , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 350, 1000000, 'Departed', 'Alexis André', 'Playground', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-350')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 351, 1000000, 'Staccato', 'Philip Bell', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-351')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 352, 1000000, 'The Inner World', 'Dominikus', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-352')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 353, 1000000, 'Pointila', 'Phaust', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-353')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 354, 1000000, 'Interferences', 'Juan Pedro Vallejo', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-354')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 355, 1000000, 'Thoughts of Meadow', 'Eric Davidson', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-355')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 356, 1000000, 'Essenza', 'Stefano Contiero', 'Playground', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-356')
+        , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 357, 1000000, 'D-D-Dots', 'tuplart', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-357')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 358, 1000000, 'Arcadia', 'Zachariah Watson', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-358')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 359, 1000000, 'Ode to Untitled', 'artplusbrad', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-359')
+        , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 361, 1000000, 'flora, fauna, false gods & floods', 'Ryan Green', 'Presents', 'N/A','0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-361')
+        , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 362, 1000000, 'Erratic', 'Owen Moore', 'Playground', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-362')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 364, 1000000, 'Act of Emotion', 'Kelly Milligan', 'Curated', '8', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-364')
+        , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 365, 1000000, 'Stains on a Canvas', 'Omar Lobato', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-365')
+        , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 366, 1000000, 'Sandaliya', 'Melissa Wiederrecht', 'Playground', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-366')
+        , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 367, 1000000, 'Fontana', 'Harvey Rayner', 'Curated', '8', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-367')
+        , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 368, 1000000, 'Primitives', 'Aranda\Lasch', 'Curated', '8', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-368')
+        , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 370, 1000000, 'Rectangles (for Herbert)', 'Jeff Davis', 'Playground', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-370')
+        , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 371, 1000000, 'JPEG', 'Jan Robert Leegte', 'Presents', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-371')
+        , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 373, 1000000, 'Intersections', 'Rafaël Rozendaal', 'Presents', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-373')
+        
+        
+        -- switch to new contracts in October 2022
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 376, 1000000, 'Tide Predictor', 'LoVid', 'Curated', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-376')
+        
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 375, 1000000, 'Wabi Sabi', 'Kazuhiro Tanimoto', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-375')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 378, 1000000, 'Fleur', 'AnaPet', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-378')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 380, 1000000, 'Seedlings', 'VES3L', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-380')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 381, 1000000, 'Structures', 'Hevey', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-381')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 384, 1000000, 'VOXΞL', 'JEANVASCRIPT', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-384')
+
+        -- explorations
+        , ('0x942bc2d3e7a589fe5bd4a5c6ef9727dfd82f5c8a',0,1000000,'Friendship Bracelets','Alexis André','Explorations','N/A','0x942bc2d3e7a589fe5bd4a5c6ef9727dfd82f5c8a-0')
+
+        -- collaborations
+        , ('0x64780ce53f6e966e18a22af13a2f97369580ec11',0,1000000,'Petro National','John Gerrard','Art Blocks x Pace','N/A','0x64780ce53f6e966e18a22af13a2f97369580ec11-0')
+        , ('0x64780ce53f6e966e18a22af13a2f97369580ec11',2,1000000,'QWERTY','Tara Donovan','Art Blocks x Pace','N/A','0x64780ce53f6e966e18a22af13a2f97369580ec11-2')
+        , ('0x64780ce53f6e966e18a22af13a2f97369580ec11',3,1000000,'Contractions','Loie Hollowell','Art Blocks x Pace','N/A','0x64780ce53f6e966e18a22af13a2f97369580ec11-3')
 
     ) as temp_table (contract_address, project_id, project_id_base_value, collection_name, artist_name, art_blocks_project_type, art_blocks_curated_season, art_collection_unique_id)
     

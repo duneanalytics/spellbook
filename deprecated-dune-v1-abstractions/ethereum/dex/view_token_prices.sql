@@ -47,6 +47,6 @@ CREATE MATERIALIZED VIEW dex.view_token_prices AS (
 CREATE UNIQUE INDEX IF NOT EXISTS dex_token_prices_unique ON dex.view_token_prices (hour, contract_address);
 
 INSERT INTO cron.job(schedule, command)
-VALUES ('* 1 * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY dex.view_token_prices$$)
+VALUES ('0 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY dex.view_token_prices$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;
