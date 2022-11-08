@@ -18,5 +18,5 @@
 
 --    {% set results = run_query(query) %}
 
---    return({{ results.rows.values()[column]}})
+--    return({{ results }})
 -- {% endmacro %}
