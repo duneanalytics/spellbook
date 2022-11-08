@@ -17,6 +17,8 @@
 
    {% set results = run_query(query) %}
 
-   return({{ results.rows.values()["explorer_url"] }})
+   {{log(results)}}
+
+   return({{ results.rows.values() }})
    
 {% endmacro %}
