@@ -18,9 +18,9 @@
    {% set runner = run_query(query) %}
 
    {% if execute %}
-    {% set results = runner.rows.values() %}
+    {% set results = runner.rows[0] %}
    {% endif %}
 
-   {{ results["explorer_url"] }}
+   {{ results }}
    
 {% endmacro %}
