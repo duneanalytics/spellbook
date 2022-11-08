@@ -37,8 +37,6 @@ sources:
           - &output_matchedFillResults
             name: output_matchedFillResults
             description: "Dictionary containing information about the fulfilled swap"
-            tests:
-              - not_null
           - &takerOrder
             name: takerOrder
             description: "Dictionary containing information about the taker swap response"
