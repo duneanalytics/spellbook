@@ -57,7 +57,7 @@ rollup_balance_changes as (
 , token_prices_token as (
     SELECT 
         date_trunc('day', p.minute) as day, 
-        p.contract_address as p.token_address, 
+        p.contract_address as token_address, 
         p.symbol, 
         AVG(p.price) as price
     FROM 
