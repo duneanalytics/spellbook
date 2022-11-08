@@ -127,6 +127,11 @@ VALUES
     ("wbtc-wrapped-bitcoin", "avalanche_c", "WBTC", "0x50b7545627a5162f82a992c33b87adc75187b218", 8),
     ("bets-betswirl", "avalanche_c", "BETS", "0xc763f8570A48c4c00C80B76107cbE744dDa67b79", 18),
     ("thor-thor", "avalanche_c", "THOR", "0x8f47416cae600bccf9530e9f3aeaa06bdd1caa79", 18),
+    ("weth.e-wrapped-ether", "avalanche_c", "WETH.e", "0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab", 18),
+    ("btc.b-brigded-bitcoin", "avalanche_c", "BTC.b", "0x152b9d0FdC40C096757F570A51E494bd4b943E50", 8),
+    ("woo.e-woo-network", "avalanche_c", "WOO.e", "0xaBC9547B534519fF73921b1FBA6E672b5f58D083", 18),
+    ("usdt.e-bridged-tether", "avalanche_c", "USDT.e", "0xc7198437980c041c805a1edcba50c1ce5db95118", 6),
+    ("usdc.e-bridged-usd-coin", "avalanche_c", "USDC.e", "0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664", 6),
 
     ("1inch-1inch", "bnb", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
     ("aave-aave-token", "bnb", "AAVE", "0xfb6115445bff7b52feb98650c87f44907e58f802", 18),

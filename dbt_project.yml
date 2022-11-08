@@ -449,6 +449,13 @@ models:
         +schema: fraxswap_avalanche_c
         +materialized: view
 
+    woofi:
+      +schema: woofi
+      +materialized: view
+      avalanche_c:
+        +schema: woofi_avalanche_c
+        +materialized: view
+
 
 seeds:
   spellbook:

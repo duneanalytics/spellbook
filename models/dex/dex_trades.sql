@@ -20,6 +20,7 @@
 ,'dfx_ethereum_trades'
 ,'pancakeswap_trades'
 ,'dodo_ethereum_trades'
+,'woofi_avalanche_c_trades'
 ] %}
 
 
