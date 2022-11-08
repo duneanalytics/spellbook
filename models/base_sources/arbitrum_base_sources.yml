@@ -274,5 +274,22 @@ sources:
           - *evt_block_number
           - *from
           - *to
-          - name: tokenId
+          - &tokenId
+            name: tokenId
             description: "ERC721 token ID."
+
+  - name: erc721_arbitrum
+    description: "Transfers events for ERC721 tokens on Arbitrum."
+    tables:
+      - name: evt_transfer
+        loaded_at_field: evt_block_time
+        description: "Transfers events for ERC721 tokens on Arbitrum."
+        columns:
+          - *contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *from
+          - *to
+          - *tokenId
