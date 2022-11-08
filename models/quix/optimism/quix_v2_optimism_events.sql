@@ -73,7 +73,7 @@ select
     ,n.name as collection
     ,er.amount_raw / power(10, t1.decimals) * p1.price as amount_usd
     ,'erc721' as token_standard
-                -- ,trade_tyoe
+                -- ,trade_type
                 -- ,number_of_items
                 -- ,trade_category
     ,'Trade' as evt_type
@@ -102,10 +102,10 @@ select
     ,er.block_number
     ,tx.from as tx_from
     ,tx.to as tx_to
-                -- platform_fee_amount_raw,
-                -- platform_fee_amount,
-                -- platform_fee_amount_usd,
-                -- platform_fee_percentage,
+    ,ROUND((2.5*(er.amount_raw)/100),7) as platform_fee_amount_raw
+    ,ROUND((2.5*((er.amount_raw / power(10,t1.decimals)))/100),7) AS platform_fee_amount
+    ,ROUND((2.5*((er.amount_raw / power(10,t1.decimals)* p1.price))/100),7) AS platform_fee_amount_usd
+    ,'2.5' as platform_fee_percentage
                 -- royalty_fee_amount_raw,
                 -- royalty_fee_amount,
                 -- royalty_fee_amount_usd,
