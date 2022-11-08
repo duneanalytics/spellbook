@@ -39,4 +39,4 @@ tx_hash,
 tx_from,
 tx_to,
 unique_trade_id
-FROM ({{ ref('superrare_ethereum_events') }})
+FROM {{ ref('superrare_ethereum_events') }}
