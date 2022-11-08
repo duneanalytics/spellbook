@@ -13,7 +13,7 @@ WITH bpt_trades AS (
         block_time,
         bpt_address,
         bpt_amount_raw,
-        bpt_amount_raw / POWER(10, erc20a.decimals) AS bpt_amount,
+        bpt_amount_raw / POWER(10, COALESCE(erc20a.decimals, 18)) AS bpt_amount,
         token_amount_raw,
         token_amount_raw / POWER(10, erc20b.decimals) AS token_amount,
         p.price * token_amount_raw / POWER(10, erc20b.decimals) AS usd_amount
@@ -40,7 +40,7 @@ WITH bpt_trades AS (
         WHERE t.tokenIn = SUBSTRING(t.poolId, 0, 42)
         OR t.tokenOut = SUBSTRING(t.poolId, 0, 42)
     ) dexs
-    JOIN {{ ref('tokens_erc20') }} erc20a ON erc20a.contract_address = dexs.bpt_address
+    LEFT JOIN {{ ref('tokens_erc20') }} erc20a ON erc20a.contract_address = dexs.bpt_address
     AND erc20a.blockchain = "ethereum"
     JOIN {{ ref('tokens_erc20') }}  erc20b ON erc20b.contract_address = dexs.token_address
     AND erc20b.blockchain = "ethereum"
