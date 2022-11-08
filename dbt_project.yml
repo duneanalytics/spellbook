@@ -444,7 +444,7 @@ models:
     bancor:
       +schema: bancor
       +materialized: view
-      bnb:
+      ethereum:
         +schema: bancor_ethereum
         +materialized: view
 
