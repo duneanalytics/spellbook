@@ -19,6 +19,6 @@
 
    {{log(results)}}
 
-   return({{ results["explorer_url"] }})
+   return({{ results[0] }})
    
 {% endmacro %}
