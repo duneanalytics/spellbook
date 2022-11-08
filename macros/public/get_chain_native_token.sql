@@ -15,8 +15,11 @@
       WHERE chain = '{{ chain }}' 
    {% endset %}
 
+   {% set runner = run_query(query) %}
 
-   {% set results = run_query(query) %}
+   {% if execute %} --required to await for results  
+      {% set results = runner.rows[0][0] %} --get first row and then first element
+   {% endif %}
 
-   return({{ results }})
+   '{{ results }}' --return with quotes
 {% endmacro %}
