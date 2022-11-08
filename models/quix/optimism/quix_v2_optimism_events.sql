@@ -13,10 +13,11 @@ with events_raw as (
       *
     from (
         select
-            evt_block_number as block_time
+            evt_block_number as block_number
             ,tokenId as token_id
             ,contract_address as project_contract_address
             ,evt_tx_hash as tx_hash
+            ,evt_block_time as block_time
             ,buyer
             ,seller
             ,erc721address as nft_contract_address
@@ -29,10 +30,11 @@ with events_raw as (
         union all 
 
         select
-            evt_block_number as block_time
+            evt_block_number as block_number
             ,tokenId as token_id
             ,contract_address as project_contract_address
             ,evt_tx_hash as tx_hash
+            ,evt_block_time as block_time
             ,buyer
             ,seller
             ,erc721address as nft_contract_address
@@ -45,10 +47,11 @@ with events_raw as (
         union all 
 
         select
-            evt_block_number as block_time
+            evt_block_number as block_number
             ,tokenId as token_id
             ,contract_address as project_contract_address
             ,evt_tx_hash as tx_hash
+            ,evt_block_time as block_time
             ,buyer
             ,seller
             ,erc721address as nft_contract_address
@@ -107,7 +110,7 @@ select
                 -- royalty_fee_percentage,
                 -- royalty_fee_receive_address,
                 -- royalty_fee_currency_symbol,
-                -- unique_trade_id
+            -- unique_trade_id
 
 from events_raw as er 
 join {{ source('optimism','transactions') }} as tx 
