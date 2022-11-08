@@ -1,6 +1,6 @@
 {% macro get_chain_native_token(chain, column) %}
    SELECT
-      SELECT {{ column }} --should be either symbol, prices_symbol, prices_address
+      {{ column }} --should be either symbol, prices_symbol, prices_address
    FROM (VALUES
      ('ethereum', 'ETH', 'WETH', '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', timestamp('2022-11-07'), now())
     , ('optimism', 'ETH', 'WETH', '0x4200000000000000000000000000000000000006', timestamp('2022-11-07'), now())
