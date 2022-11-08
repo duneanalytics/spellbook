@@ -1,7 +1,7 @@
 {{ config(
     schema = 'element_ethereum',
     alias = 'events',
-    partition_by = ['block_time'],
+    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -121,6 +121,7 @@ SELECT alet.blockchain
 , alet.project
 , alet.version
 , alet.block_time
+, date_trunc('day', alet.block_time) AS block_date
 , alet.token_id
 , eth_nft_tokens.name AS collection
 , alet.amount_raw/POWER(10, eth_erc20_tokens.decimals)*prices.price AS amount_usd

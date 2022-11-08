@@ -3,7 +3,7 @@
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism"]\',
                                 "sector",
                                 "dex",
-                                \'["jeff-dude", "hosuke", "0xRob", "pandajackson42", "Henrystats", "scoffie", "zhongyiio", "umer_h_adil"]\') }}'
+                                \'["jeff-dude", "hosuke", "0xRob", "pandajackson42", "Henrystats", "scoffie", "zhongyiio", "justabi", "umer_h_adil"]\') }}'
         )
 }}
 
@@ -21,6 +21,7 @@
 ,'pancakeswap_trades'
 ,'dodo_ethereum_trades'
 ,'platypus_finance_avalanche_c_trades'
+,'hashflow_ethereum_trades'
 ] %}
 
 
