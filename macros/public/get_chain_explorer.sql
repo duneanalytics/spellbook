@@ -17,6 +17,6 @@
 
    {% set results = run_query(query) %}
 
-   results
+   {{ results }}
    
 {% endmacro %}
