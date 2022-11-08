@@ -82,14 +82,16 @@ select
       when er.buyer = agg.contract_address then erct2.to
       else er.buyer 
     end as buyer
-    ,er.amount_raw / power(10, t1.decimals) as amount_original
+    ,er.amount_raw / coalesce(power(10, t1.decimals), power(10, 18)) as amount_original
     ,er.amount_raw
     ,case 
-      when erc20.contract_address = '0x0000000000000000000000000000000000000000' then 'ETH'
+      when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
+        then 'ETH'
         else t1.symbol
       end as currency_symbol
     ,case 
-      when erc20.contract_address = '0x0000000000000000000000000000000000000000' then '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
+      when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null) 
+        then '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
         else erc20.contract_address
       end as currency_contract
     ,er.nft_contract_address
