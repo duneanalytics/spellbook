@@ -99,8 +99,7 @@ with
             contract_type,
             version,
             description,
-            contract_address,
-            contract_creator
+            contract_address
           )
       )
   )
