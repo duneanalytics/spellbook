@@ -436,17 +436,17 @@ FROM
         , tc.leafIndex AS leaf_index
         , tc.evt_index
         , TRY_CAST(date_trunc('DAY', tc.evt_block_time) AS date) AS block_date
-        FROM {{ source('tornado_cash_polygon','ETHTornado_evt_Deposit') }} tc
+        FROM {{ source('tornado_cash_polygon','TornadoCashMatic_evt_Deposit') }} tc
         INNER JOIN {{ source('polygon','transactions') }} pt
                 ON pt.hash=tc.evt_tx_hash
                 {% if not is_incremental() %}
-                AND pt.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_polygon','ETHTornado_evt_Deposit') }})
+                AND pt.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_polygon','TornadoCashMatic_evt_Deposit') }})
                 {% endif %}
                 {% if is_incremental() %}
                 AND pt.block_time >= date_trunc("day", now() - interval '1 week')
                 {% endif %}
         {% if not is_incremental() %}
-        WHERE tc.evt_block_time >= (select min(evt_block_time) from {{ source('tornado_cash_polygon','ETHTornado_evt_Deposit') }})
+        WHERE tc.evt_block_time >= (select min(evt_block_time) from {{ source('tornado_cash_polygon','TornadoCashMatic_evt_Deposit') }})
         {% endif %}
         {% if is_incremental() %}
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')

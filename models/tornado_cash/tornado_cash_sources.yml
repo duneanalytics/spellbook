@@ -199,7 +199,7 @@ sources:
 
   - name: tornado_cash_polygon
     tables:
-      - name: ETHTornado_evt_Deposit
+      - name: TornadoCashMatic_evt_Deposit
         loaded_at_field: evt_block_time
         columns:
           - name: contract_address
@@ -210,7 +210,7 @@ sources:
           - name: commitment
           - name: leafIndex
           - name: timestamp
-      - name: ETHTornado_evt_Withdrawal
+      - name: TornadoCashMatic_evt_Withdrawal
         loaded_at_field: evt_block_time
         columns:
           - name: contract_address
