@@ -140,7 +140,7 @@ Define the following information in expose_spells:
 expose_spells(\'["*blockchain*"]\',
                   "*sector or project*",
                    "*schema name*",
-                   \'[*"contributor list"*]\')
+                   \'[*"contributor Dune username"*]\')
 ```
  
 Example from dex_trades.sql
