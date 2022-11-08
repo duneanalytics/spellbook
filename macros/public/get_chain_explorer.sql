@@ -1,7 +1,7 @@
 {% macro get_chain_explorer(chain) %}
    {% set query %}
       SELECT
-         explorer_url
+         *
       FROM (VALUES
       ('ethereum', 'https://etherscan.io', timestamp('2022-11-07'), now())
       , ('optimism', 'https://optimistic.etherscan.io', timestamp('2022-11-07'), now())
@@ -17,8 +17,6 @@
 
    {% set results = run_query(query) %}
 
-   {{log(results)}}
-
-   return({{ results[0] }})
+   return({{ results.values() }})
    
 {% endmacro %}
