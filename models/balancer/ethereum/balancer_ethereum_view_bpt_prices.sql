@@ -1,6 +1,6 @@
 {{
     config(
-        alias='view_bpt_prices',
+        alias='ethereum_view_bpt_prices',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "balancer",
