@@ -23,6 +23,6 @@
     {% set results = [] %}
    {% endif %}
 
-   {{ results['explorer_url'] }}
+   {{ results.rows.values() }}
    
 {% endmacro %}
