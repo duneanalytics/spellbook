@@ -48,7 +48,7 @@ FROM
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
-        UNION ALL
+        UNION
 
         -- Ethereum (ERC20s Part 1)
         SELECT tc.evt_block_time AS block_time
@@ -145,7 +145,7 @@ FROM
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
-        UNION ALL
+        UNION
 
         -- Ethereum (ERC20s Part 2)
         SELECT tc.evt_block_time AS block_time
@@ -242,7 +242,7 @@ FROM
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
-        UNION ALL
+        UNION
 
         -- BNB
         SELECT tc.evt_block_time AS block_time
@@ -277,7 +277,7 @@ FROM
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
-        UNION ALL
+        UNION
 
         -- Gnosis
         SELECT tc.evt_block_time AS block_time
@@ -312,7 +312,7 @@ FROM
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
-        UNION ALL
+        UNION
 
         -- Optimism
         SELECT tc.evt_block_time AS block_time
@@ -348,7 +348,7 @@ FROM
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
-        UNION ALL
+        UNION
 
         -- Avalanche
         SELECT tc.evt_block_time AS block_time
@@ -382,7 +382,7 @@ FROM
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
-        UNION ALL
+        UNION
 
         -- Arbitrum
         SELECT tc.evt_block_time AS block_time
@@ -417,7 +417,7 @@ FROM
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         
-        UNION ALL
+        UNION
 
         -- Polygon
         SELECT tc.evt_block_time AS block_time
