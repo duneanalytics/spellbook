@@ -7,6 +7,9 @@ config-version: 2
 # This setting configures which "profile" dbt uses for this project.
 profile: "spellbook"
 
+vars:
+  DBT_ENV_CUSTOM_ENV_S3_BUCKET: "{{ env_var('DBT_ENV_CUSTOM_ENV_S3_BUCKET', 'local') }}"
+
 # These configurations specify where dbt should look for different types of files.
 # You don't need to change these!
 model-paths: ["models"]
@@ -15,7 +18,6 @@ test-paths: ["tests"]
 seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
-docs-paths: ["docs"]
 
 target-path: "target" # directory which will store compiled SQL files
 clean-targets: # directories to be removed by `dbt clean`
@@ -102,7 +104,13 @@ models:
       ethereum:
         +schema: sushiswap_ethereum
         +materialized: view
-        
+      avalanche_c:
+        +schema: sushiswap_avalanche_c
+        +materialized: view
+      gnosis:
+        +schema: sushiswap_gnosis
+        +materialized: view
+
     opensea:
       +schema: opensea
       +materialized: view
@@ -158,6 +166,9 @@ models:
         +materialized: view
       avalanche_c:
         +schema: gas_avalanche_c
+        +materialized: view
+      optimism:
+        +schema: gas_optimism
         +materialized: view
 
     gmx:
@@ -216,6 +227,10 @@ models:
 
     labels:
       +schema: labels
+      +materialized: view
+
+    daos:
+      +schema: daos
       +materialized: view
 
     addresses:
@@ -433,6 +448,13 @@ models:
         +schema: bancor_ethereum
         +materialized: view
 
+    fraxswap:
+      +schema: fraxswap
+      +materialized: view
+      avalanche_c:
+        +schema: fraxswap_avalanche_c
+        +materialized: view
+
 
 seeds:
   spellbook:
@@ -528,6 +550,26 @@ seeds:
           buyer: string
           amount_raw: string
           currency_contract: string
+    daos:
+      +enabled: true 
+      +schema: test_data
+      daos_addresses_seed:
+        +column_types:
+          blockchain: string
+          dao_creator_tool: string
+          dao: string
+          dao_wallet_address: string
+          created_date: date 
+      daos_transactions_seed:
+        +column_types:
+          blockchain: string
+          dao_creator_tool: string
+          dao: string
+          dao_wallet_address: string
+          value: float
+          block_date: date
+          tx_type: string
+          tx_hash: string
     curvefi:
       ethereum:
         +enabled: true
