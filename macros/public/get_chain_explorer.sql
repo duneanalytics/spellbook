@@ -1,7 +1,7 @@
 {% macro get_chain_explorer(chain) %}
    {% set query %}
       SELECT
-         *
+         explorer_url
       FROM (VALUES
       ('ethereum', 'https://etherscan.io', timestamp('2022-11-07'), now())
       , ('optimism', 'https://optimistic.etherscan.io', timestamp('2022-11-07'), now())
@@ -12,7 +12,7 @@
       , ('bnb', 'https://bscscan.com', timestamp('2022-11-07'), now())
       , ('solana', 'https://solscan.io', timestamp('2022-11-07'), now())
       ) AS x (chain, explorer_url, created_at, updated_at)
-      WHERE chain = '{{ chain }}'
+      WHERE chain = {{ chain }}
    {% endset %}
 
    {% set results = run_query(query) %}
