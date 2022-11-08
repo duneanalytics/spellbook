@@ -34,18 +34,29 @@ class PRJobDepedencyManager:
         """
         # Test fork is messy because I have not found the syntax to apply two selectors at once using dbt list
         if object_type == 'test':
+
+            #Select all tests so we can intersect with tests that require seeds
             bash_response_all_modified = subprocess.run(
                 f'dbt list --output name --resource-type test --select state:{state} --state  .',
                 capture_output=True, shell=True).stdout.decode("utf-8")
             modified_tests = self.get_names_from_bash(bash_response_all_modified, object_type)
+
+            #Seclect generic tests that use seeds
             bash_response_test_that_use_seeds = subprocess.run(
                 f'dbt list --output name --resource-type test  --select config.materialized:seed',
                 capture_output=True, shell=True).stdout.decode("utf-8")
             test_that_use_seeds = self.get_names_from_bash(bash_response_test_that_use_seeds, object_type)
-            modified_objects = list(set(modified_tests).intersection(set(test_that_use_seeds)))
+
+            # Select only custom tests
+            bash_response_custom_modified = subprocess.run(
+                f'dbt list --output name --resource-type test --select state:{state} --state  .  --exclude  test_type:generic',
+                capture_output=True, shell=True).stdout.decode("utf-8")
+            modified_custom_tests = self.get_names_from_bash(bash_response_custom_modified, object_type)
+
+            modified_objects = list(set(modified_tests).intersection(set(test_that_use_seeds)).union(modified_custom_tests))
         else:
             bash_response = subprocess.run(
-                f'dbt list --output name --resource-type {object_type} --select state:{state} --state  .',
+                f'dbt list --output name --resource-type {object_type} --select state:{state} --state  .  --exclude  test_type:generic',
                 capture_output=True, shell=True).stdout.decode("utf-8")
             modified_objects = self.get_names_from_bash(bash_response, object_type)
         return modified_objects
@@ -103,8 +114,12 @@ class PRJobDepedencyManager:
         # remove seeds
         ref_names = [ref_name for ref_name in ref_names if 'seed' not in ref_name]
 
-        new_refs = self.fetch_new_object_keys(object_type='model') + self.fetch_new_object_keys(object_type='seed')
-        modifed_refs = self.fetch_modified_object_keys(object_type='model') + self.fetch_modified_object_keys(object_type='seed')
+        new_refs = self.fetch_new_object_keys(object_type='model') + \
+                   self.fetch_new_object_keys(object_type='seed') + \
+                   self.fetch_new_object_keys(object_type='test')
+        modifed_refs = self.fetch_modified_object_keys(object_type='model') + \
+                       self.fetch_modified_object_keys(object_type='seed') + \
+                       self.fetch_modified_object_keys(object_type='test')
 
         # Add seeds back in
         ref_names = ref_names + list(set(seed_names))
