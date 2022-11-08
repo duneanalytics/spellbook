@@ -101,7 +101,7 @@ with events_raw as (
     join {{ source('erc20_optimism','evt_transfer') }} as erc20 
       on er.tx_hash = erc20.evt_tx_hash 
       and er.block_number = erc20.evt_block_number 
-      and erc20.value > 0 
+      and erc20.value is not null 
       and erc20.to not in (
         lower('0xec1557a67d4980c948cd473075293204f4d280fd') --qx platform fee address
         ,er.seller
