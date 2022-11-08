@@ -216,7 +216,7 @@ LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct4 ON erct4.evt_bloc
     AND erct4.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ ref('nft_ethereum_aggregators_markers') }} agg_m
-        ON et.data LIKE '%' || agg_m.hash_marker || '%'
+        ON tx.data LIKE '%' || agg_m.hash_marker || '%'
 WHERE number_of_items >= 1
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run

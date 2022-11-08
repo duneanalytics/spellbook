@@ -69,7 +69,7 @@ WITH aggregator_routed_x2y2_txs AS (
         AND inv.itemHash=prof.itemHash
     LEFT JOIN {{ ref('tokens_nft') }} tokens ON ('0x' || substring(get_json_object(inv.item, '$.data'), 155, 40)) = tokens.contract_address AND tokens.blockchain = 'ethereum'
     LEFT JOIN {{ source('ethereum','transactions') }} et ON inv.evt_block_time = et.block_time
-        AND inv.evt_tx_hash = ett.tx_hash
+        AND inv.evt_tx_hash = et.hash
         {% if is_incremental() %}
         and ett.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
