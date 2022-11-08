@@ -125,3 +125,4 @@ models:
           - unique
       - name: zone
         description:  "A zone is an account (usually a contract) that performs additional validation prior to fulfillment, and that can cancel the listing on behalf of the offerer. "
+

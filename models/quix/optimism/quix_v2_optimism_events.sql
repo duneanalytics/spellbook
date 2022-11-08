@@ -114,7 +114,6 @@ with events_raw as (
       and erc20.evt_block_time >= date_trunc("day", now() - interval '1 week')
       {% endif %}
 )
-
 select
     'optimism' as blockchain
     ,'quix' as project
@@ -167,7 +166,7 @@ select
         then case when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null) 
             then 'ETH' else t1.symbol end
         end as royalty_fee_currency_symbol
-    -- unique_trade_id
+    ,'quix' || '-' || er.tx_hash || '-' || er.token_id || '-' || er.seller || '-' || coalesce(erct2.evt_index::string, '') as unique_trade_id   
 from events_raw as er 
 join {{ source('optimism','transactions') }} as tx 
     on er.tx_hash = tx.hash
