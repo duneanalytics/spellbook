@@ -20,7 +20,7 @@
 ,'dfx_ethereum_trades'
 ,'pancakeswap_trades'
 ,'dodo_ethereum_trades'
-,'hashflow_ethereum_dex_trades'
+,'hashflow_ethereum_trades'
 ] %}
 
 

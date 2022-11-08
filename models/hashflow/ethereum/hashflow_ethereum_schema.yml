@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: hashflow_ethereum_trades
+  - name: hashflow_ethereum_raw_trades
     meta:
       blockchain: ethereum
       project: hashflow
@@ -68,7 +68,7 @@ models:
         name: amount_usd
         description: "USD value of the trade at time of execution"
 
-  - name: hashflow_ethereum_dex_trades
+  - name: hashflow_ethereum_trades
     meta:
       blockchain: ethereum
       sector: dex
