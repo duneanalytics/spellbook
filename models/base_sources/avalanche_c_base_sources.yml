@@ -1,14 +1,15 @@
 version: 2
 
 sources:
-# Base Tables
+  # Base Tables
   - name: avalanche_c
-    description: "avalanche_c raw tables"
+    description: "Avalanche_c raw tables including transactions, traces and logs."
     freshness:
       warn_after: { count: 12, period: hour }
     tables:
       - name: transactions
         loaded_at_field: block_time
+        description: "An Avalanche_c transaction refers to an action initiated by an externally-owned account (i.e., an account managed by a human, not a contract)."
         columns:
           - &block_date
             name: block_date
@@ -64,7 +65,7 @@ sources:
 
       - name: traces
         loaded_at_field: block_time
-        description: "An Avalanche C-Chain trace is a small atomic action that modify the internal state of the Avalanche's Ethereum Virtual Machine. The three main trace types are call, create, and suicide."
+        description: "An Avalanche_c trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide."
         columns:
           - *block_date
           - *block_time
@@ -109,7 +110,32 @@ sources:
             description: "Output data for the trace"
           - name: refund_address
             description: "Refund Address"
-          
+
+      - name: logs
+        loaded_at_field: block_time
+        description: "An Avalanche_c log can be used to describe an event within a smart contract, like a token transfer or a change of ownership."
+        columns:
+          - *block_date
+          - *block_time
+          - *block_number
+          - *block_hash
+          - name: contract_address
+            description: "Address of the avalanche_c smart contract generating the log"
+          - name: topic1
+            description: "Topics are 32-byte (256 bit) “words” that are used to describe what’s going on in an event. The first topic usually consists of the signature of the name of the event that occurred, including the types (uint256, string, etc.) of its parameters."
+          - name: topic2
+            description: "Second topic"
+          - name: topic3
+            description: "Third topic"
+          - name: topic4
+            description: "Fourth topic"
+          - name: data
+            description: "Additional data for the log. Data is not searchable (while topics are), but is a lot cheaper and can include large or complicated data like arrays or strings."
+          - *tx_hash
+          - name: index
+            description: "Log index"
+          - *tx_index
+
       - name: blocks
         freshness:
           warn_after: { count: 1, period: day }
@@ -131,9 +157,10 @@ sources:
 
       - name: contracts
         freshness:
-          warn_after: { count: 7, period: day }
+          warn_after: { count: 1, period: day }
+          error_after: { count: 3, period: day }
         loaded_at_field: created_at
-        description: "A view keeping track of what contracts are decoded on Dune on Avalanche; contains information associated with the decoded contract such as namespace, name, address, ABI."
+        description: "A view keeping track of what contracts are decoded on Dune on Avalanche_c; contains information associated with the decoded contract such as namespace, name, address, ABI."
         columns:
           - name: abi
             description: "ABI of the decoded contract"
@@ -161,38 +188,13 @@ sources:
           - name: created_at
             description: "Timestamp for contract creation"
 
-      - name: logs
-        loaded_at_field: block_time
-        description: "An Avalanche C-Chain log can be used to describe an event within a smart contract, like a token transfer or a change of ownership."
-        columns:
-          - *block_date
-          - *block_time
-          - *block_number
-          - *block_hash
-          - name: contract_address
-            description: "Address of the avalanche c-chain smart contract generating the log"
-          - name: topic1
-            description: "Topics are 32-byte (256 bit) “words” that are used to describe what’s going on in an event. The first topic usually consists of the signature of the name of the event that occurred, including the types (uint256, string, etc.) of its parameters."
-          - name: topic2
-            description: "Second topic"
-          - name: topic3
-            description: "Third topic"
-          - name: topic4
-            description: "Fourth topic"
-          - name: data
-            description: "Additional data for the log. Data is not searchable (while topics are), but is a lot cheaper and can include large or complicated data like arrays or strings."
-          - *tx_hash
-          - name: index
-            description: "Log index"
-          - *tx_index
-
   # ERC Transfer Tables
   - name: erc20_avalanche_c
-    description: "Transfers events for ERC20 tokens."
+    description: "Transfers events for ERC20 tokens on Avalanche_c."
     tables:
       - name: evt_transfer
         loaded_at_field: evt_block_time
-        description: "Transfers events for ERC20 tokens."
+        description: "Transfers events for ERC20 tokens on Avalanche_c."
         freshness:
           warn_after: { count: 12, period: hour }
           error_after: { count: 24, period: hour }
@@ -217,11 +219,11 @@ sources:
             description: "Amount of ERC20 token transferred"
 
   - name: erc1155_avalanche_c
-    description: "Transfers events for ERC1155 tokens."
+    description: "Transfers events for ERC1155 tokens on Avalanche_c."
     tables:
       - name: evt_transfersingle
         loaded_at_field: evt_block_time
-        description: "Single transfers events for ERC1155 tokens."
+        description: "Single transfers events for ERC1155 tokens on Avalanche_c."
         columns:
           - name: contract_address
             description: "ERC1155 token contract address"
@@ -240,7 +242,7 @@ sources:
 
       - name: evt_transferbatch
         loaded_at_field: evt_block_time
-        description: "Batch transfers events for ERC1155 tokens."
+        description: "Batch transfers events for ERC1155 tokens on Avalanche_c."
         columns:
           - name: contract_address
             description: "ERC1155 token contract address"
@@ -258,11 +260,11 @@ sources:
             description: "Amounts of ERC1155 token transferred"
 
   - name: erc721_avalanche_c
-    description: "Transfers events for ERC721 tokens."
+    description: "Transfers events for ERC721 tokens on Avalanche_c."
     tables:
       - name: evt_transfer
         loaded_at_field: evt_block_time
-        description: "Transfers events for ERC721 tokens."
+        description: "Transfers events for ERC721 tokens on Avalanche_c."
         columns:
           - &contract_address
             name: contract_address
