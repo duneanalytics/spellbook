@@ -23,6 +23,6 @@
     {% set results = [] %}
    {% endif %}
 
-   {{ results[1] }}
+   {{ results.values() }}
    
 {% endmacro %}
