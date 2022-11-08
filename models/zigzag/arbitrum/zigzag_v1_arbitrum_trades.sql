@@ -1,5 +1,4 @@
 {{ config(
-    schema = 'zigzag_v1_arbitrum',
     alias = 'trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -8,7 +7,7 @@
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
     post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
-                                "zigzag_v1",
+                                "zigzag",
                                 \'["mtitus6"]\') }}'
     )
 }}
@@ -33,16 +32,16 @@ with
     from
     {{ source('zigzag_test_v6_arbitrum', 'zigzag_settelment_call_matchOrders') }} zzmo
     where
-      call_success = true
-    {% if is_incremental() %}
-    AND zzmo.call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+        call_success = true
+        {% if is_incremental() %}
+        AND zzmo.call_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
   )
 SELECT
     'arbitrum' as blockchain
-    , 'zigzag' as project
-    , '1' as version
-        ,TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
+    ,'zigzag' as project
+    ,'1' as version
+    ,TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
     ,dexs.block_time
     ,erc20a.symbol AS token_bought_symbol
     ,erc20b.symbol AS token_sold_symbol
@@ -104,3 +103,4 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+;

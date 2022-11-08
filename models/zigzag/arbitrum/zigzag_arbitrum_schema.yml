@@ -5,10 +5,10 @@ models:
     meta:
       blockchain: arbitrum
       sector: dex
-      project: zigzag_v1
+      project: zigzag
       contributors: jeff-dude, masquot, soispoke, mtitus6
     config:
-      tags: ['arbitrum','zigzag_v1','trades', 'zigzag','dex']
+      tags: ['arbitrum','trades', 'zigzag','dex']
     description: >
         Zigzag V1 contract trades on Arbitrum
     tests:
