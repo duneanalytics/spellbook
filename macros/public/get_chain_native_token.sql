@@ -18,5 +18,5 @@
 
    {% set results = run_query(query) %}
 
-   return({{ results[column][0] }})
+   return({{ results.rows.values()[column]}})
 {% endmacro %}
