@@ -6715,5 +6715,20 @@ FROM (VALUES
           ('0xba41ddf06b7ffd89d1267b5a93bfef2424eb2003', 'MYTH', 18),
           ('0xf05e58fcea29ab4da01a495140b349f8410ba904', 'clevCVX', 18),
           ('0xf55cd1e399e1cc3d95303048897a680be3313308', 'TRIO', 8),
-          ('0xff709449528b6fb6b88f557f7d93dece33bca78d', 'ApeUSD', 18)
+          ('0xff709449528b6fb6b88f557f7d93dece33bca78d', 'ApeUSD', 18),
+          ('0x0a41e6d4d4897e8cec819ce7d10b2d7cda61dc94', 'SYC', 18),
+          ('0x12fcd6463e66974cf7bbc24ffc4d40d6be458283', 'GBX', 8),
+          ('0x141d747c237de7bcce3f2ea776e280235e1e06e0', 'Dream', 18),
+          ('0x1ae7e1d0ce06364ced9ad58225a1705b3e5db92b', 'LMEOW', 9),
+          ('0x27b5739e22ad9033bcbf192059122d163b60349d', 'st-yCRV', 18),
+          ('0x4db2c02831c9ac305ff9311eb661f80f1df61e07', 'oneICHI', 18),
+          ('0x4dd28568d05f09b02220b09c2cb307bfd837cb95', 'PRINTS', 18),
+          ('0x600000000a36f3cd48407e35eb7c5c910dc1f7a8', 'GOO', 18),
+          ('0x600d003febc6c2b503621060cbd371dce1c8ef1e', 'wGOO', 18),
+          ('0x8916187112fd6e3624a80c42fa354cd9756e695f', 'Shird', 9),
+          ('0xab78f098b3ca1a0fbc5fc611b22d739f5add13dd', 'Lit', 18),
+          ('0xb3207935ff56120f3499e8ad08461dd403bf16b8', 'DAMM', 18),
+          ('0xb3999f658c0391d94a37f7ff328f3fec942bcadc', 'HFT', 18),
+          ('0xd1b5651e55d4ceed36251c61c50c889b36f6abb5', 'sdCRV', 18),
+          ('0xe5d2e173b120341face9e9970889c9fe64081ffd', 'BLU', 18)
      ) AS temp_table (contract_address, symbol, decimals)
