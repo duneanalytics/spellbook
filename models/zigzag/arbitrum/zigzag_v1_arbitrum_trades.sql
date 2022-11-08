@@ -27,7 +27,7 @@ with
       zzmo.takerOrder:user as taker,
       call_tx_hash as tx_hash,
       '' AS trace_address,
-      '' AS evt_index,
+      cast(NULL as int) AS evt_index,
       contract_address as project_contract_address
     from
     {{ source('zigzag_test_v6_arbitrum', 'zigzag_settelment_call_matchOrders') }} zzmo
