@@ -1,7 +1,7 @@
 version: 2
 
 macros:
-  - name: get_explorer_base_url
+  - name: get_href_schema
     description: "Converts a link and text to the clickable href link"
     arguments:
       - name: link
