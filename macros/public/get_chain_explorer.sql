@@ -17,10 +17,10 @@
 
    {% set runner = run_query(query) %}
 
-   {% if execute %}
-    {% set results = runner.rows[0][0] %}
+   {% if execute %} --required to await for results  
+      {% set results = runner.rows[0][0] %} --get first row and then first element
    {% endif %}
 
-   {{ results }}
+   {{ "'" + results "'" }}
    
 {% endmacro %}
