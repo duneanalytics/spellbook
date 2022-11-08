@@ -13,7 +13,7 @@ models:
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain which the DAO is deployed"
+        description: "Blockchain which the DAO is deployed on"
       - &dao_creator_tool
         name: dao_creator_tool
         description: "Name of creator tool used to create dao"
