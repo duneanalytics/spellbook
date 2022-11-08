@@ -90,7 +90,7 @@ select
       end as currency_symbol
     ,case 
       when erc20.contract_address = '0x0000000000000000000000000000000000000000' then '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
-        else a.original_currency_contract
+        else erc20.contract_address
       end as currency_contract
     ,er.nft_contract_address
     ,er.project_contract_address
