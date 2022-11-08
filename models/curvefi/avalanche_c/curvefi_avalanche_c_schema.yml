@@ -86,7 +86,7 @@ models:
         description: "Address which initiated the transaction"
       - &tx_to
         name: tx_to
-        description: "Address which received the transaction"
+        description: "Address which received  the transaction"
       - &trace_address
         name: trace_address
         description: ""
