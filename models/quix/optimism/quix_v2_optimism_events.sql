@@ -140,7 +140,7 @@ with events_raw as (
             when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
                 then 'ETH'
                 else t1.symbol
-            end as royalty_fee_currency_symbol,
+            end as royalty_fee_currency_symbol
         -- unique_trade_id
 
     from events_raw as er 
