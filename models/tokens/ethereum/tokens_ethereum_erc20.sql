@@ -2974,6 +2974,7 @@ FROM (VALUES
           ('0xc3e2de0b661cf58f66bde8e896905399ded58af5', 'MAC', 0),
           ('0xb119ce94d098c18fe380904c24e358bd887f00be', 'MACH', 18),
           ('0x5b09a0371c1da44a8e24d36bf5deb1141a84d875', 'MAD', 18),
+          ('0x36F8d0D0573ae92326827C4a82Fe4CE4C244cAb6', 'maDAI', 18),
           ('0x4889f721f80c5e9fade6ea9b85835d405d79a4f4', 'MAFI', 18),
           ('0xb0c7a3ba49c7a6eaba6cd4a96c55a1391070ac9a', 'MAGIC', 18),
           ('0xb4d930279552397bba2ee473229f89ec245bc365', 'MAHA', 18),
