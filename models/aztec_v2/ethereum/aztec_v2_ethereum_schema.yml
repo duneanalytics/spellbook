@@ -19,7 +19,7 @@ models:
     columns:
         - &tx_from
           name: tx_from
-          description: "Transaction Initiator"
+          description: "transaction Initiator"
         - &tx_to
           name: tx_to
           description: "Contract where transaction was sent to"
