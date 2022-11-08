@@ -82,7 +82,7 @@ select
       when er.buyer = agg.contract_address then erct2.to
       else er.buyer 
     end as buyer
-    ,er.amount_raw / coalesce(power(10, t1.decimals), power(10, 18)) as amount_original
+    ,er.amount_raw / power(10, t1.decimals) as amount_original
     ,er.amount_raw
     ,case 
       when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
@@ -157,14 +157,14 @@ left join {{ source('erc20_optimism','evt_transfer') }} as erc20
     {% endif %}
 left join {{ ref('tokens_erc20') }} as t1
     on t1.contract_address =
-        case when erc20.contract_address = '0x0000000000000000000000000000000000000000'
+        case when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
         then '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
         else erc20.contract_address
         end 
     and t1.blockchain = 'optimism'
     left join {{ source('prices', 'usd') }} as p1
     on p1.contract_address =
-        case when erc20.contract_address = '0x0000000000000000000000000000000000000000'
+        case when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
         then '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
         else erc20.contract_address
         end
