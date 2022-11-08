@@ -125,9 +125,9 @@ select
     ,n.name as collection
     ,er.amount_raw / power(10, t1.decimals) * p1.price as amount_usd
     ,'erc721' as token_standard
-                -- ,trade_type
-                -- ,number_of_items
-                -- ,trade_category
+    ,'Single Item Trade' as trade_type
+    ,cast(1 as bigint) as number_of_items
+    ,'Buy' as trade_category
     ,'Trade' as evt_type
     ,er.seller
     ,case 
