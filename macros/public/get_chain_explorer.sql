@@ -15,8 +15,14 @@
       -- WHERE chain = 
    {% endset %}
 
-   {% set results = run_query(query) %}
+   {% set runner = run_query(query) %}
 
+   {% if execute %}
+    {% set results = runner.rows.values() %}
+    {% else %}
+    {% results_list = [] %}
+   {% endif %}
+   
    {{ results }}
    
 {% endmacro %}
