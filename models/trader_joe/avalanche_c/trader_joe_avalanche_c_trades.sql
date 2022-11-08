@@ -33,13 +33,9 @@ WITH dexs AS
     FROM
         {{ source('trader_joe_avalanche_c', 'JoePair_evt_Swap') }} t
     INNER JOIN {{ source('trader_joe_avalanche_c', 'JoeFactory_evt_PairCreated') }} f
-        ON f.pair = t.contract_address
-    WHERE t.contract_address NOT IN (
-        '{{weth_ubomb_wash_trading_pair}}',
-        '{{weth_weth_wash_trading_pair}}',
-        '{{feg_eth_wash_trading_pair}}' )
+        ON f.pair = t.contract_address 
     {% if is_incremental() %}
-    AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
 SELECT
@@ -74,7 +70,7 @@ SELECT
     ,dexs.trace_address
     ,dexs.evt_index
 FROM dexs
-INNER JOIN {{ source('ethereum', 'transactions') }} tx
+INNER JOIN {{ source('avalanche_c', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
     {% if not is_incremental() %}
     AND tx.block_time >= '{{project_start_date}}'
@@ -101,7 +97,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
     AND p_sold.contract_address = dexs.token_sold_address
-    AND p_sold.blockchain = 'ethereum'
+    AND p_sold.blockchain = 'avalanche_c'
     {% if not is_incremental() %}
     AND p_sold.minute >= '{{project_start_date}}'
     {% endif %}
