@@ -41,13 +41,12 @@ token_prices_token as (
         date_trunc('day', p.minute) as day, 
         p.contract_address as p.token_address, 
         p.symbol, 
-        AVG(p.price) as price, 
-
+        AVG(p.price) as price
     FROM 
     token_addresses ta 
     INNER JOIN 
     {{ source('prices', 'usd') }} p 
-        ON ta.token_address = p.token_address
+        ON ta.token_address = p.contract_address
         AND p.blockchain = 'ethereum'
         {% if not is_incremental() %}
         AND p.minute >= '{{first_transfer_date}}'
