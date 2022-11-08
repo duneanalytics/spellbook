@@ -19,6 +19,6 @@
 
    {{log(results)}}
 
-   return({{ results.rows.values() }})
+   return({{ results }})
    
 {% endmacro %}
