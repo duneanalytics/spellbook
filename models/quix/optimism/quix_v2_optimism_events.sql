@@ -17,7 +17,6 @@ with events_raw as (
             ,tokenId as token_id
             ,contract_address as project_contract_address
             ,evt_tx_hash as tx_hash
-            ,evt_block_time as block_time
             ,buyer
             ,seller
             ,erc721address as nft_contract_address
@@ -34,7 +33,6 @@ with events_raw as (
             ,tokenId as token_id
             ,contract_address as project_contract_address
             ,evt_tx_hash as tx_hash
-            ,evt_block_time as block_time
             ,buyer
             ,seller
             ,erc721address as nft_contract_address
@@ -51,7 +49,6 @@ with events_raw as (
             ,tokenId as token_id
             ,contract_address as project_contract_address
             ,evt_tx_hash as tx_hash
-            ,evt_block_time as block_time
             ,buyer
             ,seller
             ,erc721address as nft_contract_address
