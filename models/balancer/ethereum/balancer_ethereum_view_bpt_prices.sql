@@ -41,9 +41,11 @@ WITH bpt_trades AS (
         OR t.tokenOut = SUBSTRING(t.poolId, 0, 42)
     ) dexs
     JOIN {{ ref('tokens_erc20') }} erc20a ON erc20a.contract_address = dexs.bpt_address
+    AND erc20a.blockchain = "ethereum"
     JOIN {{ ref('tokens_erc20') }}  erc20b ON erc20b.contract_address = dexs.token_address
-    LEFT JOIN {{ ref('prices_usd_latest') }} p ON p.minute = date_trunc('minute', dexs.block_time)
-    AND p.contract_address = dexs.token_address
+    AND erc20b.blockchain = "ethereum"
+    LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', dexs.block_time)
+    AND p.contract_address = dexs.token_address AND p.blockchain = "ethereum"
 ),
 
 bpt_estimated_prices AS (
