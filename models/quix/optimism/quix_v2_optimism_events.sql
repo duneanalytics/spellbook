@@ -63,115 +63,147 @@ with events_raw as (
     ) as x 
     where nft_contract_address != lower('0xbe81eabdbd437cba43e4c1c330c63022772c2520') -- --exploit contract
 )
-select
-    'optimism' as blockchain
-    ,'quix' as project
-    ,'v2' as version
-    ,TRY_CAST(date_trunc('DAY', er.block_time) AS date) AS block_date
-    ,er.block_time
-    ,er.token_id 
-    ,n.name as collection
-    ,er.amount_raw / power(10, t1.decimals) * p1.price as amount_usd
-    ,'erc721' as token_standard
-                -- ,trade_type
-                -- ,number_of_items
-                -- ,trade_category
-    ,'Trade' as evt_type
-    ,er.seller
-    ,case 
-      when er.buyer = agg.contract_address then erct2.to
-      else er.buyer 
-    end as buyer
-    ,er.amount_raw / power(10, t1.decimals) as amount_original
-    ,er.amount_raw
-    ,case 
-      when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
-        then 'ETH'
-        else t1.symbol
-      end as currency_symbol
-    ,case 
-      when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null) 
-        then '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
-        else erc20.contract_address
-      end as currency_contract
-    ,er.nft_contract_address
-    ,er.project_contract_address
-    ,agg.name as aggregator_name
-    ,agg.contract_address as aggregator_address
-    ,er.tx_hash
-    ,er.block_number
-    ,tx.from as tx_from
-    ,tx.to as tx_to
-    ,ROUND((2.5*(er.amount_raw)/100),7) as platform_fee_amount_raw
-    ,ROUND((2.5*((er.amount_raw / power(10,t1.decimals)))/100),7) AS platform_fee_amount
-    ,ROUND((2.5*((er.amount_raw / power(10,t1.decimals)* p1.price))/100),7) AS platform_fee_amount_usd
-    ,'2.5' as platform_fee_percentage
-                -- royalty_fee_amount_raw,
-                -- royalty_fee_amount,
-                -- royalty_fee_amount_usd,
-                -- royalty_fee_percentage,
-                -- royalty_fee_receive_address,
-                -- royalty_fee_currency_symbol,
-            -- unique_trade_id
+,traces as (
+    select 
+      tr.block_number
+      ,tr.block_time
+      ,tr.tx_hash 
+      ,tr.value
+      ,tr.to
+    from events_raw as er 
+    join {{ source('optimism','traces') }} as tr 
+      on er.tx_hash = tr.tx_hash 
+      and er.block_number = tr.block_number
+      and tr.value > 0 
+      and tr.gas is null -- only include internal transactions
+      and tr.tx_success
+      and tr.to != lower('0xec1557a67d4980c948cd473075293204f4d280fd') --qx platform fee address
+      {% if not is_incremental() %}
+      -- smallest block number for source tables above
+      and tr.block_number > 2753613
+      {% endif %}
+      {% if is_incremental() %}
+      and tr.block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
+    
+)
+,trade_summary as (
+    select
+        'optimism' as blockchain
+        ,'quix' as project
+        ,'v2' as version
+        ,TRY_CAST(date_trunc('DAY', er.block_time) AS date) AS block_date
+        ,er.block_time
+        ,er.token_id 
+        ,n.name as collection
+        ,er.amount_raw / power(10, t1.decimals) * p1.price as amount_usd
+        ,'erc721' as token_standard
+                    -- ,trade_type
+                    -- ,number_of_items
+                    -- ,trade_category
+        ,'Trade' as evt_type
+        ,er.seller
+        ,case 
+        when er.buyer = agg.contract_address then erct2.to
+        else er.buyer 
+        end as buyer
+        ,er.amount_raw / power(10, t1.decimals) as amount_original
+        ,er.amount_raw
+        ,case 
+            when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
+                then 'ETH'
+                else t1.symbol
+            end as currency_symbol
+        ,case 
+            when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null) 
+                then '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
+                else erc20.contract_address
+            end as currency_contract
+        ,er.nft_contract_address
+        ,er.project_contract_address
+        ,agg.name as aggregator_name
+        ,agg.contract_address as aggregator_address
+        ,er.tx_hash
+        ,er.block_number
+        ,tx.from as tx_from
+        ,tx.to as tx_to
+        ,ROUND((2.5*(er.amount_raw)/100),7) as platform_fee_amount_raw
+        ,ROUND((2.5*((er.amount_raw / power(10,t1.decimals)))/100),7) AS platform_fee_amount
+        ,ROUND((2.5*((er.amount_raw / power(10,t1.decimals)* p1.price))/100),7) AS platform_fee_amount_usd
+        ,'2.5' as platform_fee_percentage
+        ,tr.value as royalty_fee_amount_raw
+        ,tr.value / power(10, t1.decimals) as royalty_fee_amount 
+        ,tr.value / power(10, t1.decimals) * p1.price as royalty_fee_amount_usd
+        ,(tr.value / er.amount_raw * 100) as royalty_fee_percentage
+        ,tr.to as royalty_fee_receive_address
+        ,case 
+            when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
+                then 'ETH'
+                else t1.symbol
+            end as royalty_fee_currency_symbol,
+        -- unique_trade_id
 
-from events_raw as er 
-join {{ source('optimism','transactions') }} as tx 
-    on er.tx_hash = tx.hash
-    and er.block_number = tx.block_number
-    {% if not is_incremental() %}
-    -- smallest block number for source tables above
-    and tx.block_number > 2753613
-    {% endif %}
-    {% if is_incremental() %}
-    and tx.block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-left join {{ ref('nft_aggregators') }} as agg
-    on agg.contract_address = tx.to 
-    and agg.blockchain = 'optimism'
-left join {{ ref('tokens_nft') }} n
-    on n.contract_address = er.nft_contract_address 
-    and n.blockchain = 'optimism'
-left join {{ source('erc721_optimism','evt_transfer') }} as erct2 
-    on erct2.evt_block_time=er.block_time
-    and er.nft_contract_address=erct2.contract_address
-    and erct2.evt_tx_hash=er.tx_hash
-    and erct2.tokenId=er.token_id
-    and erct2.from=er.buyer
-    {% if not is_incremental() %}
-    -- smallest block number for source tables above
-    and erct2.evt_block_number > 2753613
-    {% endif %}
-    {% if is_incremental() %}
-    and erct2.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-left join {{ source('erc20_optimism','evt_transfer') }} as erc20 
-    on erc20.evt_block_time=er.block_time
-    and erc20.evt_tx_hash=er.tx_hash
-    and erc20.to=er.seller
-    {% if not is_incremental() %}
-    -- smallest block number for source tables above
-    and erc20.evt_block_number > 2753613
-    {% endif %}
-    {% if is_incremental() %}
-    and erc20.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-left join {{ ref('tokens_erc20') }} as t1
-    on t1.contract_address =
-        case when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
-        then '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
-        else erc20.contract_address
-        end 
-    and t1.blockchain = 'optimism'
-    left join {{ source('prices', 'usd') }} as p1
-    on p1.contract_address =
-        case when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
-        then '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
-        else erc20.contract_address
-        end
-    and p1.minute = date_trunc('minute', er.block_time)
-    and p1.blockchain = 'optimism'
-    {% if is_incremental() %}
-    and p1.minute >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-
-  
+    from events_raw as er 
+    join {{ source('optimism','transactions') }} as tx 
+        on er.tx_hash = tx.hash
+        and er.block_number = tx.block_number
+        {% if not is_incremental() %}
+        -- smallest block number for source tables above
+        and tx.block_number > 2753613
+        {% endif %}
+        {% if is_incremental() %}
+        and tx.block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+    left join {{ ref('nft_aggregators') }} as agg
+        on agg.contract_address = tx.to 
+        and agg.blockchain = 'optimism'
+    left join {{ ref('tokens_nft') }} n
+        on n.contract_address = er.nft_contract_address 
+        and n.blockchain = 'optimism'
+    left join {{ source('erc721_optimism','evt_transfer') }} as erct2 
+        on erct2.evt_block_time=er.block_time
+        and er.nft_contract_address=erct2.contract_address
+        and erct2.evt_tx_hash=er.tx_hash
+        and erct2.tokenId=er.token_id
+        and erct2.from=er.buyer
+        {% if not is_incremental() %}
+        -- smallest block number for source tables above
+        and erct2.evt_block_number > 2753613
+        {% endif %}
+        {% if is_incremental() %}
+        and erct2.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+    left join {{ source('erc20_optimism','evt_transfer') }} as erc20 
+        on erc20.evt_block_time=er.block_time
+        and erc20.evt_tx_hash=er.tx_hash
+        and erc20.to=er.seller
+        {% if not is_incremental() %}
+        -- smallest block number for source tables above
+        and erc20.evt_block_number > 2753613
+        {% endif %}
+        {% if is_incremental() %}
+        and erc20.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+    left join {{ ref('tokens_erc20') }} as t1
+        on t1.contract_address =
+            case when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
+            then '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
+            else erc20.contract_address
+            end 
+        and t1.blockchain = 'optimism'
+        left join {{ source('prices', 'usd') }} as p1
+        on p1.contract_address =
+            case when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
+            then '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
+            else erc20.contract_address
+            end
+        and p1.minute = date_trunc('minute', er.block_time)
+        and p1.blockchain = 'optimism'
+        {% if is_incremental() %}
+        and p1.minute >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+    left join traces as tr 
+      on tr.tx_hash = er.tx_hash 
+      and tr.block_number = er.block_number
+      and tr.to != er.seller -- to find out the royalty receiver address
+)
