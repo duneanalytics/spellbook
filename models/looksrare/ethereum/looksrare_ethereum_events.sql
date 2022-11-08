@@ -156,7 +156,9 @@ SELECT DISTINCT
     currency_contract,
     COALESCE(erc.contract_address, nft_contract_address) AS nft_contract_address,
     looks_rare.contract_address AS project_contract_address,
-    CASE WHEN right(ett.input, 8)='72db8c0b' THEN 'Gem' ELSE agg.name END as aggregator_name,
+    CASE WHEN right(ett.input, 8)='72db8c0b' THEN 'Gem'
+        WHEN right(ett.input, 8)='332d1229' THEN 'Blur'
+        ELSE agg.name END as aggregator_name,
     agg.contract_address AS aggregator_address,
     looks_rare.block_number,
     looks_rare.tx_hash,
@@ -216,7 +218,7 @@ LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct4 ON erct4.evt_bloc
     AND erct4.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ source('ethereum','traces') }} ett
-        ON looks_rare.block_time = ett.block_time AND looks_rare.tx_hash = ett.tx_hash AND right(ett.input, 8)='72db8c0b'
+        ON looks_rare.block_time = ett.block_time AND looks_rare.tx_hash = ett.tx_hash AND right(ett.input, 8) IN ('72db8c0b', '332d1229')
         {% if is_incremental() %}
         and ett.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}

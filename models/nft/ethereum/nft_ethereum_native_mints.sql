@@ -10,7 +10,20 @@
                                     \'["umer_h_adil"]\') }}')
 }}
 
-with ercs as (
+with 
+-- ethereum.contracts can contain duplicates, i.e., for one address there might be multiple names
+-- This is a bug and will be fixed. 
+-- In the meanwhile, to prevent duplicate mints in our table, we implement a temporary fix by taking the most recent entry in ethereum.contracts
+-- This fix can be removed as soon as ethereum.contracts is fixed.
+contract_names_without_duplicates as (
+	select
+		address,
+		first(namespace) as namespace
+	from {{ source('ethereum','contracts') }}
+	group by
+		address
+),
+ercs as (
 select
   evt_block_time,
   evt_block_number,
@@ -73,8 +86,7 @@ select
   size(values) as number_of_items
 from {{ source('erc1155_ethereum','evt_transferbatch') }}
 where from = '0x0000000000000000000000000000000000000000'
-),
-results_with_possible_duplicates as (
+)
 select
   'ethereum' as blockchain,
   ec.namespace as project,
@@ -139,13 +151,7 @@ select
   ercs.`from` as tx_from,
   ercs.`to` as tx_to,
   ercs.contract_address || '-' || ercs.evt_tx_hash || '-' || coalesce(ercs.tokenId, '') || '-' || ercs.`from` || '-' || ercs.evt_index
-  as unique_trade_id,
-  -- {{ source('ethereum','contracts') }} can contain duplicates, i.e., for one address there might be multiple names
-  -- This is a bug and will be fixed. 
-  -- In the meanwhile, to prevent duplicate mints in our table, we implement a temporary fix by taking the most recent entry in {{ source('ethereum','contracts') }}
-  -- This fix can be removed as soon as {{ source('ethereum','contracts') }} is fixed.
-  ec.created_at as contract_name_created_at,
-  max(ec.created_at) over (partition by ercs.contract_address, ercs.evt_tx_hash, ercs.tokenId, ercs.`from`, ercs.evt_index) as max_contract_name_created_at
+  as unique_trade_id
 from
   ercs
   left join {{ ref('tokens_nft') }} tokens_nft on ercs.contract_address = tokens_nft.contract_address and tokens_nft.blockchain = 'ethereum'
@@ -153,7 +159,7 @@ from
   left join {{ source('prices','usd') }} prc on prc.contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
   and prc.minute = date_trunc('minute', ercs.evt_block_time)
   and prc.blockchain = 'ethereum'
-  left join {{ source('ethereum','contracts') }} ec ON ec.address = ercs.to
+  left join contract_names_without_duplicates ec ON ec.address = ercs.to
 where
   -- We're interested in collectible NFTs (e.g. BAYC), not functional NFTs (e.g. Uniswap LP), so we exclude NFTs originated in DeFi 
   ercs.to not in (select address from {{ ref('addresses_ethereum_defi') }})
@@ -162,44 +168,3 @@ where
   and tx.block_time >= date_trunc("day", now() - interval '1 week')
   and prc.minute >= date_trunc("day", now() - interval '1 week')
   {% endif %}
-  {% if not is_incremental() %}
-  and tx.block_number > 14801608
-  {% endif %}
-)
-select
-  blockchain,
-  project,
-  version,
-  block_time,
-  token_id,
-  collection,
-  amount_usd,
-  token_standard,
-  trade_type,
-  number_of_items,
-  trade_category,
-  evt_type,
-  seller,
-  buyer,
-  amount_original,
-  amount_raw,
-  currency_symbol,
-  currency_contract,
-  nft_contract_address,
-  project_contract_address,
-  aggregator_name,
-  aggregator_address,
-  tx_hash,
-  block_number,
-  tx_from,
-  tx_to,
-  unique_trade_id
-from
-  results_with_possible_duplicates
-where
-  -- {{ source('ethereum','contracts') }} can contain duplicates, i.e., for one address there might be multiple names
-  -- This is a bug and will be fixed. 
-  -- In the meanwhile, to prevent duplicate mints in our table, we implement a temporary fix by taking the most recent entry in {{ source('ethereum','contracts') }}
-  max_contract_name_created_at = contract_name_created_at
-  -- but don't exclude the mint if it has no associated contract name
-  or max_contract_name_created_at is null
