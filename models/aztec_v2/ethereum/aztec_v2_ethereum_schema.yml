@@ -23,6 +23,8 @@ models:
             - evt_index
             - to_type
             - from_type
+            - value_norm
+            - contract_address
     columns:
         - &tx_from
           name: tx_from
