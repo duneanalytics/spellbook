@@ -5,7 +5,7 @@ version: 2
 models:
   - name: tornado_cash_deposits
     meta:
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum #, polygon
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum , polygon
       project: tornado_cash
       contibutors: [hildobby, dot2dotseurat]
     config:
@@ -54,7 +54,7 @@ models:
 
   - name: tornado_cash_withdrawals
     meta:
-      blockchain: ethereum, bnb, avalanche, gnosis, optimism, arbitrum #, polygon
+      blockchain: ethereum, bnb, avalanche, gnosis, optimism, arbitrum , polygon
       project: tornado_cash
       contibutors:  [hildobby, dot2dotseurat]
     config:

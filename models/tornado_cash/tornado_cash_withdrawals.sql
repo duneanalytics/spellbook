@@ -446,8 +446,8 @@ FROM
         SELECT tc.evt_block_time AS block_time
         , '0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0' AS currency_contract
         , 'MATIC' AS currency_symbol
-        , 'Polygon' AS blockchain
-        , 'Classic' AS tornado_version
+        , 'polygon' AS blockchain
+        , 'classic' AS tornado_version
         , pt.from AS tx_from
         , tc.nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
