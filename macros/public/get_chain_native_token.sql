@@ -11,7 +11,7 @@
       , ('gnosis', 'xDAI', 'WXDAI', '0xe91d153e0b41518a2ce8dd3d7944fa863463a97d', timestamp('2022-11-07'), now())
       , ('bnb', 'BNB', 'WBNB', '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c', timestamp('2022-11-07'), now())
       , ('solana', 'SOL', 'SOL', 'so11111111111111111111111111111111111111112', timestamp('2022-11-07'), now())
-      ) AS x (chain, prices_symbol, prices_address, created_at, updated_at)
+      ) AS x (chain, symbol, prices_symbol, prices_address, created_at, updated_at)
       WHERE chain = {{ chain }} 
    {% endset %}
 
