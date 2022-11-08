@@ -304,6 +304,13 @@ models:
         +schema: cryptopunks_ethereum
         +materialized: view
 
+    aztec_v2:
+      +schema: aztec_v2
+      +materialized: view
+      ethereum:
+        +schema: aztec_v2_ethereum
+        +materialized: view
+
     tornado_cash:
       +schema: tornado_cash
       +materialized: view
