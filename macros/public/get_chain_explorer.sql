@@ -1,6 +1,6 @@
 {% macro get_chain_explorer(chain) %}
    SELECT
-      SELECT chain, explorer_url, created_at, updated_at
+      explorer_url
    FROM (VALUES
      ('ethereum', 'https://etherscan.io', timestamp('2022-11-07'), now())
     , ('optimism', 'https://optimistic.etherscan.io', timestamp('2022-11-07'), now())
