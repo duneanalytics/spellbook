@@ -17,6 +17,6 @@
 
    {% set results = run_query(query) %}
 
-   return({{ results.values() }})
+   return({{ results }})
    
 {% endmacro %}
