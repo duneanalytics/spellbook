@@ -158,12 +158,12 @@ select
     ,ROUND((2.5*((er.amount_raw / power(10,t1.decimals)))/100),7) AS platform_fee_amount
     ,ROUND((2.5*((er.amount_raw / power(10,t1.decimals)* p1.price))/100),7) AS platform_fee_amount_usd
     ,'2.5' as platform_fee_percentage
-    ,case when (tr.value is not null and tr.value >0) then tr.value end as royalty_fee_amount_raw
-    ,case when (tr.value is not null and tr.value >0) then tr.value / power(10, t1.decimals) end as royalty_fee_amount 
-    ,case when (tr.value is not null and tr.value >0) then tr.value / power(10, t1.decimals) * p1.price end as royalty_fee_amount_usd
-    ,case when (tr.value is not null and tr.value >0) then (tr.value / er.amount_raw * 100) end as royalty_fee_percentage
-    ,case when (tr.value is not null and tr.value >0) then tr.to end as royalty_fee_receive_address
-    ,case when (tr.value is not null and tr.value >0)
+    ,tr.value as royalty_fee_amount_raw
+    ,tr.value / power(10, t1.decimals) as royalty_fee_amount 
+    ,tr.value / power(10, t1.decimals) * p1.price as royalty_fee_amount_usd
+    ,(tr.value / er.amount_raw * 100) as royalty_fee_percentage
+    ,case when tr.value is not null then tr.to end as royalty_fee_receive_address
+    ,case when tr.value is not null
         then case when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null) 
             then 'ETH' else t1.symbol end
         end as royalty_fee_currency_symbol
