@@ -6,7 +6,7 @@ models:
       blockchain: ethereum
       sector: labels
       project: ofac_sanction
-      contibutors: hildobby
+      contributors: hildobby
     config:
       tags: ['labels', 'ethereum', 'ofac_sanction']
     description: "Known OFAC sanctioned addresses across chains"
