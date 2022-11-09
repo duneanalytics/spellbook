@@ -7,7 +7,7 @@ models:
       sector: dao
       contributors: henrystats 
     config:
-      tags: [ 'ethereum','gnosis', 'polygon', 'daos', 'dao creator tools', 'henrystats' ]
+      tags: [ 'ethereum','gnosis', 'polygon', 'dao', 'dao creator tools', 'henrystats' ]
     description: >
       transactions from DAO wallets 
     columns:
