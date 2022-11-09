@@ -10,16 +10,16 @@ class ManifestEditor:
 
     @staticmethod
     def filter_large_raw_sql(node, max_lines=500):
-        raw_sql = node.get('raw_sql', '')
-        compiled_sql = node.get('compiled_sql', '')
+        raw_code = node.get('raw_code', '')
+        compiled_code = node.get('compiled_code', '')
 
-        if raw_sql.count('\n') > max_lines:
-            node['raw_sql'] = ''.join(
-                raw_sql.split('\n')[0:max_lines])
+        if raw_code.count('\n') > max_lines:
+            node['raw_code'] = ''.join(
+                raw_code.split('\n')[0:max_lines])
 
-        if compiled_sql.count('\n') > max_lines:
-            node['compiled_sql'] = ''.join(
-                compiled_sql.split('\n')[0:max_lines])
+        if compiled_code.count('\n') > max_lines:
+            node['compiled_code'] = ''.join(
+                compiled_code.split('\n')[0:max_lines])
 
         return node
 
