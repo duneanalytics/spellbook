@@ -67,7 +67,7 @@ jobs:
           echo "INC_MODEL_COUNT=$(echo dbt ls --select state:modified,config.materialized:incremental --state . --resource-type model)" >> $GITHUB_ENV
 
       - name: dbt run incremental model(s) if applicable
-        if: contains(env.INC_MODEL_COUNT, 'does not match any nodes') == false
+        if: contains(env.INC_MODEL_COUNT, 'spellbook')
         run: "dbt run --select state:modified,config.materialized:incremental --state ."
 
       # - name: dbt test incremental model(s) if applicable
