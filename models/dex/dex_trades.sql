@@ -21,7 +21,6 @@
 ,'pancakeswap_trades'
 ,'dodo_ethereum_trades'
 ,'hashflow_ethereum_trades'
-,'kyberswap_ethereum_trades'
 ,'balancer_ethereum_trades'
 ,'paraswap_trades'
 ] %}
