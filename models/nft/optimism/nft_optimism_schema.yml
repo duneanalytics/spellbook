@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: optimism
       sector: nft
-      contributors: chuxinh
+      contributors: chuxin
     config:
       tags: ['nft', 'optimism', 'aggregators']
     description: >
