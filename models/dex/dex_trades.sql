@@ -18,6 +18,7 @@
 ,'defiswap_ethereum_trades'
 ,'dfx_ethereum_trades'
 ,'pancakeswap_trades'
+,'balancer_trades'
 ] %}
 
 

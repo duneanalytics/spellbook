@@ -2,25 +2,72 @@ version: 2
 
 sources:
   - name: balancer_v1_ethereum
-    description: >
-      Decoded tables related to Balancer, an automated portfolio manager and trading platform.
+    description: "Ethereum decoded tables related to Balancer V1"
     tables:
       - name: BFactory_evt_LOG_NEW_POOL
         description: >
           Decoded table related to the Balancer BFactory contract.
         loaded_at_field: evt_block_time
         columns:
-          - name: contract_address
-            description: 'Balancer BFactory contract address'
-          - name: evt_tx_hash
-            description: 'Transaction hash of the event'
-          - name: evt_index
-            description: 'Event index'
-          - name: evt_block_time
-            description: 'Timestamp for block event time in UTC'
-          - name: evt_block_number
-            description: 'Event block number'
-          - name: caller
-            description: 'Caller address that created the Balancer pool'
-          - name: pool
-            description: 'Balancer pool contract address'
+          - &contract_address
+            name: contract_address
+            description: "Balancer BFactory contract address"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Transaction hash of the event"
+          - &evt_index
+            name: evt_index
+            description: "Event index"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Event block number"
+          - &caller
+            name: caller
+            description: "Caller address that created the Balancer pool"
+          - &pool
+            name: pool
+            description: "Balancer pool contract address"
+      - name: BPool_evt_LOG_SWAP
+        freshness:
+          warn_after: { count: 12, period: hour }
+        loaded_at_field: evt_block_time
+        columns:
+          - *caller
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &tokenAmountIn
+            name: tokenAmountIn
+          - &tokenAmountOut
+            name: tokenAmountOut
+          - &tokenIn
+            name: tokenIn
+          - &tokenOut
+            name: tokenOut
+
+  - name: balancer_v2_ethereum
+    description: "Ethereum decoded tables related to Balancer V2"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: Vault_evt_Swap
+        loaded_at_field: evt_block_time
+        columns:
+          - &amountIn
+            name: amountIn
+          - &amountOut
+            name: amountOut
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &poolId
+            name: poolId
+          - *tokenIn
+          - *tokenOut
