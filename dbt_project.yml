@@ -450,6 +450,13 @@ models:
         +materialized: view
 
 
+    hashflow:
+      +schema: hashflow
+      +materialized: view
+      ethereum:
+        +schema: hashflow_ethereum
+        +materialized: view
+
 seeds:
   spellbook:
     balances:
