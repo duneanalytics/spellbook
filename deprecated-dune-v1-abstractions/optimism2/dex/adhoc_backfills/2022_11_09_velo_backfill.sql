@@ -3,4 +3,4 @@ SELECT dex.insert_velodrome(
     now(),
     0,
     (SELECT MAX(number) FROM optimism.blocks where time < now() - interval '20 minutes')
-)
+);
