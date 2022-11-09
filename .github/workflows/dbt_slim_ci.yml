@@ -60,10 +60,12 @@ jobs:
 
       - name: test output of incremental model count
         run: |
-          dbt ls --select state:modified,config.materialized:incremental --state . --resource-type model
-          dbt ls --select state:modified,config.materialized:view --state . --resource-type model
-      #    echo "INC_MODEL_COUNT=$(echo dbt ls --select state:modified,config.materialized:view --state . --resource-type model  | wc -l)" >> $GITHUB_ENV
-      #    echo $INC_MODEL_COUNT
+         echo "INC_MODEL_COUNT=$(echo dbt ls --select state:modified,config.materialized:incremental --state . --resource-type model)" >> $GITHUB_ENV
+         echo $INC_MODEL_COUNT
+
+      #       22:08:54  The selection criterion 'state:modified,config.materialized:incremental' does not match any nodes
+      # 22:08:54  No nodes selected!
+      # spellbook.tokens.arbitrum.tokens_arbitrum_erc20
 
       # - name: Set environment variable for incremental model count
       #   run: |
