@@ -229,8 +229,8 @@ models:
       +schema: labels
       +materialized: view
 
-    daos:
-      +schema: daos
+    dao:
+      +schema: dao
       +materialized: view
 
     addresses:
@@ -551,17 +551,17 @@ seeds:
           buyer: string
           amount_raw: string
           currency_contract: string
-    daos:
+    dao:
       +enabled: true 
       +schema: test_data
-      daos_addresses_seed:
+      dao_addresses_seed:
         +column_types:
           blockchain: string
           dao_creator_tool: string
           dao: string
           dao_wallet_address: string
           created_date: date 
-      daos_transactions_seed:
+      dao_transactions_seed:
         +column_types:
           blockchain: string
           dao_creator_tool: string
