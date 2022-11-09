@@ -26,6 +26,9 @@ SELECT 'ethereum' AS blockchain
 , tx_hash
 , unique_transfer_id
 FROM {{ ref('nft_ethereum_transfers') }}
+{% if is_incremental() %}
+WHERE block_time >= date_trunc("day", now() - interval '1 week')
+{% endif %}
 UNION ALL
 SELECT 'bnb' AS blockchain
 , block_time
@@ -42,6 +45,9 @@ SELECT 'bnb' AS blockchain
 , tx_hash
 , unique_transfer_id
 FROM {{ ref('nft_bnb_transfers') }}
+{% if is_incremental() %}
+WHERE block_time >= date_trunc("day", now() - interval '1 week')
+{% endif %}
 UNION ALL
 SELECT 'avalanche_c' AS blockchain
 , block_time
@@ -58,6 +64,9 @@ SELECT 'avalanche_c' AS blockchain
 , tx_hash
 , unique_transfer_id
 FROM {{ ref('nft_avalanche_c_transfers') }}
+{% if is_incremental() %}
+WHERE block_time >= date_trunc("day", now() - interval '1 week')
+{% endif %}
 UNION ALL
 SELECT 'gnosis' AS blockchain
 , block_time
@@ -74,6 +83,9 @@ SELECT 'gnosis' AS blockchain
 , tx_hash
 , unique_transfer_id
 FROM {{ ref('nft_gnosis_transfers') }}
+{% if is_incremental() %}
+WHERE block_time >= date_trunc("day", now() - interval '1 week')
+{% endif %}
 UNION ALL
 SELECT 'optimism' AS blockchain
 , block_time
@@ -90,6 +102,9 @@ SELECT 'optimism' AS blockchain
 , tx_hash
 , unique_transfer_id
 FROM {{ ref('nft_optimism_transfers') }}
+{% if is_incremental() %}
+WHERE block_time >= date_trunc("day", now() - interval '1 week')
+{% endif %}
 UNION ALL
 SELECT 'arbitrum' AS blockchain
 , block_time
@@ -106,6 +121,9 @@ SELECT 'arbitrum' AS blockchain
 , tx_hash
 , unique_transfer_id
 FROM {{ ref('nft_arbitrum_transfers') }}
+{% if is_incremental() %}
+WHERE block_time >= date_trunc("day", now() - interval '1 week')
+{% endif %}
 UNION ALL
 SELECT 'polygon' AS blockchain
 , block_time
@@ -122,3 +140,6 @@ SELECT 'polygon' AS blockchain
 , tx_hash
 , unique_transfer_id
 FROM {{ ref('nft_polygon_transfers') }}
+{% if is_incremental() %}
+WHERE block_time >= date_trunc("day", now() - interval '1 week')
+{% endif %}
