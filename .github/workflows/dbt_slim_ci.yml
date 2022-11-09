@@ -60,9 +60,9 @@ jobs:
 
       - name: test output of incremental model count
         run: |
-          dbt ls --select state:modified,config.materialized:incremental --state . --resource-type model
-          dbt ls --select state:modified,config.materialized:incremental --state . --resource-type model  | wc -l
-          echo "INC_MODEL_COUNT=$(echo dbt ls --select state:modified,config.materialized:incremental --state . --resource-type model  | wc -l)" >> $GITHUB_ENV
+          dbt ls --select state:modified,config.materialized:view --state . --resource-type model
+          dbt ls --select state:modified,config.materialized:view --state . --resource-type model  | wc -l
+          echo "INC_MODEL_COUNT=$(echo dbt ls --select state:modified,config.materialized:view --state . --resource-type model  | wc -l)" >> $GITHUB_ENV
           echo $INC_MODEL_COUNT
 
       # - name: Set environment variable for incremental model count
