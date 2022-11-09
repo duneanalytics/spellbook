@@ -64,19 +64,13 @@ jobs:
 
       - name: Set environment variable for incremental model count
         run: |
-          echo "INC_MODEL_COUNT=$(echo dbt ls --select state:modified,config.materialized:incremental --state . --resource-type model)" >> $GITHUB_ENV
+          echo "INC_MODEL_COUNT=$(echo dbt ls --select state:modified,config.materialized:incremental --state . --resource-type model | wc)" >> $GITHUB_ENV
 
       - name: view variable
         run: echo "$INC_MODEL_COUNT"
 
       - name: view variable attempt 2
         run: echo $INC_MODEL_COUNT
-
-      - name: view variable attempt 3
-        run: echo "env.INC_MODEL_COUNT"
-
-      - name: view variable attempt 4
-        run: echo env.INC_MODEL_COUNT
 
       - name: dbt run incremental model(s) if applicable
         if: contains(env.INC_MODEL_COUNT, 'does not match any nodes')
