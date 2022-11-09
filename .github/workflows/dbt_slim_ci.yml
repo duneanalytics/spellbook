@@ -23,6 +23,12 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
 
+      - name: dbt dependencies
+        run: "dbt deps"
+
+      - name: dbt compile to create manifest to compare to
+        run: "dbt compile"
+
       - name: test output of incremental model count
         run: |
           dbt ls --select state:modified,config.materialized:incremental --state . --resource-type model
