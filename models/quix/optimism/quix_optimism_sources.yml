@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: quixotic_v2_optimism
+    freshness:
+      warn_after: { count: 24, period: hour }
+    tables:
+      - name: ExchangeV2_evt_BuyOrderFilled
+        loaded_at_field: evt_block_time
+
+      - name: ExchangeV2_evt_DutchAuctionFilled
+        loaded_at_field: evt_block_time
+
+      - name: ExchangeV2_evt_SellOrderFilled
+        loaded_at_field: evt_block_time
