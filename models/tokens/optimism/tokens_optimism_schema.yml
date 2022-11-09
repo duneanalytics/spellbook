@@ -6,7 +6,7 @@ models:
       blockchain: optimism
       sector: tokens
       project: erc20
-      contibutors: msilb7
+      contributors: msilb7
     config:
       tags: ['table', 'erc20', 'optimism']
     description: "ERC20 Token Addresses, Symbols and Decimals"
@@ -41,7 +41,7 @@ models:
     meta:
       blockchain: optimism
       sector: nft
-      contributors: chuxinh
+      contributors: chuxin
     config:
       tags: ['tokens', 'optimism', 'nft', 'erc721']
     description: >
