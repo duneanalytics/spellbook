@@ -112,13 +112,13 @@ WITH conversions AS (
 
 dexs AS (
 SELECT
-    '' AS version,
+    '1' AS version,
     t.evt_block_time AS block_time,
     t._trader AS taker,
     '' AS maker,
     t._toAmount AS token_bought_amount_raw,
     t._fromAmount AS token_sold_amount_raw,
-    NULL AS amount_usd,
+    CAST(NULL as double) AS amount_usd,
     CASE
         WHEN t._toToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '{{weth_address}}'
         ELSE t._toToken
