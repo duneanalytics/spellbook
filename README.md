@@ -1,5 +1,5 @@
 ![spellbook-logo@10x](https://user-images.githubusercontent.com/2520869/200791687-76f1bc4f-05d0-4384-a753-e3b5da0e7a4a.png#gh-light-mode-only)
-![spellbook-logo-negative@3x](https://user-images.githubusercontent.com/2520869/200798254-6409446b-37a3-4d3e-be19-e3ace38fb495.png#gh-dark-mode-only)
+![spellbook-logo-negative@10x (1)](https://user-images.githubusercontent.com/2520869/200799738-faa0252d-fc28-4251-aa9e-19881df2e2cd.png#gh-dark-mode-only)
 
 Welcome to your [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation to tame the blockchain.
 
