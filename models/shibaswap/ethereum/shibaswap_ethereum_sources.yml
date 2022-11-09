@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: shibaswap_ethereum
+    description: "Ethereum decoded tables related to Shibaswap DEX trades"
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated

@@ -4,7 +4,7 @@
     (
         select
             case
-                when m.{{ column_name }} = seed.{{ column_name }}
+                when lower(m.{{ column_name }}) = lower(seed.{{ column_name }})
                     then True
                 else False
             end as token_bought_test

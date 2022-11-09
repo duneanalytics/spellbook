@@ -143,5 +143,6 @@ FROM (VALUES
         ('0x39cf1bd5f15fb22ec3d9ff86b0727afc203427cc', 'SUSHI', 18),
         ('0x4fbf0429599460d327bd5f55625e30e4fc066095', 'TSD', 18),
         ('0xabc9547b534519ff73921b1fba6e672b5f58d083', 'WOO.e', 18),
-        ('0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab', 'WETH.e', 18)
+        ('0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab', 'WETH.e', 18),
+        ('0x9c9e5fd8bbc25984b178fdce6117defa39d2db39', 'BUSD', 18)
     ) AS temp_table (contract_address, symbol, decimals)

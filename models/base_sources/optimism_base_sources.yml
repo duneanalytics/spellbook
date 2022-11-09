@@ -168,7 +168,7 @@ sources:
 
       - name: contracts
         freshness:
-          warn_after: { count: 1, period: day }
+          warn_after: { count: 7, period: day }
         loaded_at_field: created_at
         description: "A view keeping track of what contracts are decoded on Dune on Optimism; contains information associated with the decoded contract such as namespace, name, address, ABI."
         columns:

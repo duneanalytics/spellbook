@@ -204,6 +204,8 @@ COPY nft.tokens (contract_address, project_name) FROM stdin;
 \\xfce1aff7b9590ef204116660a960192625e7544d	hobbits house
 \\x0244f5c52bda3fd44fc5c2a6bf6c30a2ac1bd019	GIVnaut NFT (GiveStation)
 \\xba4e052b56c2ca1ddc17ad615dafe02c9522852f	Optimism x Galxe Twitter Spaces NFTs
+\\x0deaAc29d8A3d4EbBAAa3eCd3cC97C9deF00f720	OaycNFT
+\\x56FE60179c13B6492c6501D36e77CCD9FB86d7c2	Tally Ho Optimissions
 \.
 
 COMMIT;

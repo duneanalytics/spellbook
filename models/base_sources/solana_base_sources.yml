@@ -59,3 +59,24 @@ sources:
             description: "Signers" 
           - name: success
             description: "Success" 
+
+      - name: rewards
+        loaded_at_field: block_time
+        description: "A Solana transaction contains a compact-array of signatures, followed by a message. Each item in the signatures array is a digital signature of the given message.."
+        columns:
+          - *block_date
+          - *block_hash
+          - *block_slot
+          - *block_time
+          - name: lamports
+            description: "Number of reward lamports credited or debited by the account" 
+          - name: post_balances
+            description: "Account balance in lamports after the reward was applied" 
+          - name: pre_balances
+            description: "Account balance in lamports before the reward was applied" 
+          - name: recipient
+            description: "The public key, as base-58 encoded string, of the account that received the reward" 
+          - name: reward_type
+            description: "Type of reward: 'Fee', 'Rent', 'Voting', 'Staking'"
+          - name: commission
+            description: "Vote account commission when the reward was credited, only present for voting and staking rewards"

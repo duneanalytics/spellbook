@@ -50,6 +50,8 @@ known_solver_metadata (address, environment, name) as (
                  ('0x149d0f9282333681Ee41D30589824b2798E9fb47', 'prod', 'PLM'),
                  ('0xe18B5632DF2Ec339228DD65e4D9F004eF59653d3', 'prod', 'Atlas'),
                  ('0xA21740833858985e4D801533a808786d3647Fb83', 'prod', 'Laertes'),
+                 ('0x398890BE7c4FAC5d766E1AEFFde44B2EE99F38EF', 'prod', 'Seasolver'),
+                 ('0x8a4e90e9AFC809a69D2a3BDBE5fff17A12979609', 'barn', 'Seasolver'),
                  ('0x0a308697e1d3a91dcB1e915C51F8944AaEc9015F', 'barn', 'Laertes'),
                  ('0x8567351D6989d83513D3BC3ad951CcCe363941e3', 'barn', 'Atlas'),
                  ('0x109BF9E0287Cc95cc623FBE7380dD841d4bdEb03', 'barn', 'Otex'),

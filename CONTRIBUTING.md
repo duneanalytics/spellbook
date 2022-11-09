@@ -8,12 +8,47 @@ Contributions in the form of issues and pull requests are very much welcome here
 ## At a glance:
 - We are working in SQL + JINJA templating and using dbt-core to compile and build abstractions henceforth models.
 - Models live in the model's directory and can be materialized as views, tables, and incremental tables.
+- [BETA] We use pre-push hooks (similar to pre-commit hooks) to catch common errors before pushing changes.
 
 ## Guidelines and conventions
 - Each file should only contain one table, view, incremental table, or macro.
 - Each SQL file should be a SELECT statement. 
 - We default to building a view and consider switching to a table or incremental table if performance becomes an issue.
 
+## [BETA] Pre-push hooks 
+We are testing out adding pre-push hooks to our workflow. The goal is to catch common errors before code is pushed and
+streamline the pull request review process. 
+
+If you are a Github Desktop user, this flow might not work for you! If you are a Github CLI user, please give this a shot. We will incorperate a github action for the Desktop users.
+
+You may be familiar with [pre-commit hooks](https://pre-commit.com/) which run checks every time you commit new code. 
+Because dbt compile is required for the more meaningful checks, we have decided to only apply these tests when 
+pushing code to minimize the waiting time. If any of these checks fail, the git push will fail. 
+
+To install pre-push hooks, follow these steps:
+- If your pipenv is activated, exit it with `exit`.
+- Reinstall your pipenv with `pipenv install` from the root of spellbook.
+- Enter your pipenv with `pipenv shell`.
+- If you're paranoid like me, run `pip freeze` and check to see if pre-commit is installed.
+- Install the prepush hooks with `pre-commit install --hook-type pre-push`.
+
+To use pre-push hooks: 
+Manually
+- If you want to manually run the checks, stage your changed files on git e.g. `git add {file_name.sql}`.
+- Run `pre-commit run --hook-stage manual`.
+- Resolve any errors and re-add your files to git.
+- Rerun `pre-commit run --hook-stage manual`.
+
+On push
+- Add and commit your changes to git, as you would normally.
+- Push your code.
+- Pre-push hooks (if they are installed correctly) will run and return check results.
+- Resolve any errors and re-add your files to git.
+- Try pushing again.
+- If all the checks pass, your code will be pushed to Github. If any checks fail, the push will fail.
+- If you cannot resolve the error, run `git push --no-verify` and paste the output of the failed checks in your PR. 
+
+Please reach out to meghan@dune.com if you need help or have feedback on this BETA feature. 
 
 ## Contributing your first abstraction
 We can't grant access to run dbt-core directly to our database. But you can set up dbt-core without a database connection. See the [README](https://github.com/duneanalytics/spellbook/blob/main/README.md) for instructions. 
@@ -98,17 +133,23 @@ You should add a description for your model to the schema.yml file in the model'
 
 By default, tables or views are not publicly accessible. In complex cases, you may build multiple models and only expose the final one. 
 
-To make your final model publicly accessible on dune.com, you'll need tblproperties set to `dune.public = true` and define the `dune.data_explorer` settings. These are defined in macros under alter_tblproperties. (One file per model)
-```sql
-{% macro alter_tblproperties_mock_tbl() -%}
-{%- if target.name == 'prod'-%}
-alter view mock.mock_tbl set tblproperties ('dune.public'='true',
-                                            'dune.data_explorer.blockchains'='["tutorial"]',
-                                            'dune.data_explorer.category'='abstraction',
-                                            'dune.data_explorer.abstraction.type'='tutorial',
-                                            'dune.data_explorer.abstraction.name'='tutorial');
-{%- else -%}
-{%- endif -%}
-{%- endmacro %}
+To make your final model publicly accessible on dune.com, you'll need to use the expose_spells macro in your model's config. 
 
+Define the following information in expose_spells:
 ```
+expose_spells(\'["*blockchain*"]\',
+                  "*sector or project*",
+                   "*schema name*",
+                   \'[*"contributor list"*]\')
+```
+ 
+Example from dex_trades.sql
+```
+{{ config(
+        alias ='trades',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                "sector",
+                                "dex",
+                                \'["jeff-dude", "hosuke", "0xRob"]\') }}'
+        )
+ ```

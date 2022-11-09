@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: cow_protocol_gnosis_solvers
+    meta:
+      blockchain: gnosis
+      project: cow_protocol
+      contributors: bh2smith, gentrexha
+    config:
+      tags: ['gnosis_chain','cow_protocol','solver']
+    description: >
+      CoW Protocol solvers list on Gnosis Chain
+    columns:
+      - &address
+        name: address
+        description: "Solver's wallet address"
+      - &environment
+        name: environment
+        description: "Solver's environment"
+      - &name
+        name: name
+        description: "Solver's name"
+      - &active
+        name: active
+        description: "Solver's active status according to the events emitted by GPv2AllowListAuthentication. True if solver has been 'added' and not yet removed, False when the solver has been 'removed'."

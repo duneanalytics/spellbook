@@ -13,7 +13,7 @@ WITH element_txs AS (
         -- Ethereum ERC721 Sells
         SELECT 'ethereum' AS blockchain
         , 'element' AS project
-        , '1' AS version
+        , 'v1' AS version
         , ee.evt_block_time AS block_time
         , ee.erc721TokenId AS token_id
         , 'erc721' AS token_standard
@@ -40,7 +40,7 @@ WITH element_txs AS (
         -- Ethereum ERC721 Buys
         SELECT 'ethereum' AS blockchain
         , 'element' AS project
-        , '1' AS version
+        , 'v1' AS version
         , ee.evt_block_time AS block_time
         , ee.erc721TokenId AS token_id
         , 'erc721' AS token_standard
@@ -67,7 +67,7 @@ WITH element_txs AS (
         -- Ethereum ERC1155 Sells
         SELECT 'ethereum' AS blockchain
         , 'element' AS project
-        , '1' AS version
+        , 'v1' AS version
         , ee.evt_block_time AS block_time
         , ee.erc1155TokenId AS token_id
         , 'erc1155' AS token_standard
@@ -94,7 +94,7 @@ WITH element_txs AS (
         -- Ethereum ERC1155 Buys
         SELECT 'ethereum' AS blockchain
         , 'element' AS project
-        , '1' AS version
+        , 'v1' AS version
         , ee.evt_block_time AS block_time
         , ee.erc1155TokenId AS token_id
         , 'erc1155' AS token_standard

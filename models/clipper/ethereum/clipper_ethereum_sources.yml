@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: clipper_ethereum
+    description: "Ethereum decoded tables related to Clipper DEX"
+    tables:
+      - name: ClipperExchangeInterface_evt_Swapped
+      - name: ClipperCaravelExchange_evt_Swapped
+      - name: ClipperVerifiedCaravelExchange_evt_Swapped

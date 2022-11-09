@@ -162,6 +162,7 @@ FROM (VALUES
     , (array('ethereum'), '0xda9dfa130df4de4673b89022ee50ff26f6ea73cf', 'Kraken 13', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0xe9f7ecae3a53d2a67105292894676b00d1fab785', 'Kraken Hot Wallet', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     -- Bitfinex, Source: https://etherscan.io/accounts/label/bitfinex
+    , (array('ethereum'), '0x77134cbc06cb00b66f4c7e623d5fdbf6777635ec', 'Bitfinex: Hot Wallet', 'cex', 'soispoke', 'static', timestamp('2022-10-19'), now())
     , (array('ethereum'), '0x1151314c646ce4e0efd76d1af4760ae66a9fe30f', 'Bitfinex 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x742d35cc6634c0532925a3b844bc454e4438f44e', 'Bitfinex 2', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x876eabf441b2ee5b5b0554fd502a8e0600950cfa', 'Bitfinex 3', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())

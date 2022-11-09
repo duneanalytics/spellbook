@@ -57,3 +57,56 @@ models:
         description: "Contract address of OFAC sanctioned currency"
       - name: currency_name
         description: "Currency symbol of OFAC sanctioned currency"
+        
+  - name: addresses_ethereum_defi
+    meta:
+      blockchain: ethereum
+      sector: dex, defi
+      project: addresses
+      contibutors: umer_h_adil
+    config:
+      tags: ['table', 'dex', 'defi', 'addresses', 'ethereum']
+    description: "Known DeFi addresses"
+    columns:
+      - name: address
+        description: "Address of DeFi protocol"
+      - name: project
+        description: "Name of DeFi protocol"
+      - name: project_type
+        description: "Type of DeFi protocol (e.g. Dex, Lending, ...)"
+
+  - name: addresses_ethereum_mev
+    meta:
+      blockchain: ethereum
+      sector: mev
+      project: addresses
+      contibutors: hildobby
+    config:
+      tags: ['table', 'MEV', 'addresses', 'ethereum']
+    description: "Known MEV addresses"
+    columns:
+      - name: address
+        description: "Address of known MEV users"
+  
+  - name: addresses_ethereum_l2_batch_submitters
+    meta:
+      blockchain: ethereum
+      sector: l2_batch_submitters
+      project: addresses
+      contibutors: msilb7
+    config:
+      tags: ['table', 'L2', 'batch submitters', 'addresses', 'ethereum']
+    description: "Known L2 Batch Submitter Addresses"
+    columns:
+      - name: address
+        description: "Address of known L2 Batch Submitter"
+      - name: protocol_name
+        description: "Protocol Name"
+      - name: submitter_type
+        description: "Submitter Type (i.e. state vs transaction batch)"
+      - name: role_type
+        description: "Batch sender (from_address) or receiver (to_address)"
+      - name: version
+        description: "Version of the batch submitter"
+      - name: description
+        description: "Additional descriptiors of the address"

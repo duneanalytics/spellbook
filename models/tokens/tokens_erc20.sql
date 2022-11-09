@@ -1,9 +1,11 @@
 {{ config( alias='erc20',
-        post_hook='{{ expose_spells(\'["avalanche_c","bnb","ethereum","optimism", "gnosis"]\',
+        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis"]\',
                                     "sector",
                                     "tokens",
-                                    \'["0xManny","hildobby","soispoke","dot2dotseurat"]\') }}')}}
+                                    \'["0xManny","hildobby","soispoke","dot2dotseurat","mtitus6"]\') }}')}}
 
+SELECT 'arbitrum' as blockchain, * FROM  {{ ref('tokens_arbitrum_erc20') }}
+UNION
 SELECT 'avalanche_c' as blockchain, * FROM  {{ ref('tokens_avalanche_c_erc20') }}
 UNION
 SELECT 'bnb' as blockchain, * FROM  {{ ref('tokens_bnb_bep20') }}

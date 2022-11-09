@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: flashbots
+    tables:
+      - name: arbitrages
+        columns:
+          - name: account_address
+          - name: block_number
+          - name: end_amount
+          - name: error
+          - name: id
+          - name: profit_amount
+          - name: profit_token_address
+          - name: protocols
+          - name: start_amount
+          - name: transaction_hash
+

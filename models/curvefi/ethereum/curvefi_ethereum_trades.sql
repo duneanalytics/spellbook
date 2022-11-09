@@ -750,7 +750,7 @@ WITH dexs AS
 
 SELECT
     'ethereum' AS blockchain
-    ,'Curve' AS project
+    ,'curve' AS project
     ,dexs.version AS version
     ,TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
     ,dexs.block_time
