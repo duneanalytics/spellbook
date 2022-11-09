@@ -1,5 +1,4 @@
 {{ config(
-    schema = 'bancor_ethereum',
     alias = 'trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -22,11 +21,17 @@ WITH conversions AS (
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+    {% if not is_incremental() %}
+    WHERE t.evt_block_time >= '{{project_start_date}}'
+    {% endif %}
     UNION ALL
     SELECT *
     FROM {{ source('bancornetwork_ethereum', 'BancorNetwork_v7_evt_Conversion') }} t
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+    {% if not is_incremental() %}
+    WHERE t.evt_block_time >= '{{project_start_date}}'
     {% endif %}
     UNION ALL
     SELECT *
@@ -34,17 +39,26 @@ WITH conversions AS (
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+    {% if not is_incremental() %}
+    WHERE t.evt_block_time >= '{{project_start_date}}'
+    {% endif %}
     UNION ALL
     SELECT *
     FROM {{ source('bancornetwork_ethereum', 'BancorNetwork_v9_evt_Conversion') }} t
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+    {% if not is_incremental() %}
+    WHERE t.evt_block_time >= '{{project_start_date}}'
+    {% endif %}
     UNION ALL
     SELECT *
     FROM {{ source('bancornetwork_ethereum', 'BancorNetwork_v10_evt_Conversion') }} t
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+    {% if not is_incremental() %}
+    WHERE t.evt_block_time >= '{{project_start_date}}'
     {% endif %}
 ),
 
@@ -79,7 +93,7 @@ SELECT
     '' AS maker,
     t.targetAmount AS token_bought_amount_raw,
     t.sourceAmount AS token_sold_amount_raw,
-    NULL AS amount_usd,
+    CAST(NULL as double) AS amount_usd,
     CASE
         WHEN t.targetToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '{{weth_address}}'
         ELSE t.targetToken
@@ -96,6 +110,9 @@ FROM
     bancor3_ethereum.BancorNetwork_evt_TokensTraded t
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+    {% if not is_incremental() %}
+    WHERE t.evt_block_time >= '{{project_start_date}}'
     {% endif %}
 )
 
