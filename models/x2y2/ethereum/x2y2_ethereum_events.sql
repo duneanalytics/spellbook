@@ -71,7 +71,7 @@ WITH aggregator_routed_x2y2_txs AS (
     LEFT JOIN {{ source('ethereum','transactions') }} et ON inv.evt_block_time = et.block_time
         AND inv.evt_tx_hash = et.hash
         {% if is_incremental() %}
-        and ett.block_time >= date_trunc("day", now() - interval '1 week')
+        and et.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     LEFT JOIN {{ ref('nft_ethereum_aggregators_markers') }} agg_m
         ON LEFT(et.data, CHARINDEX(agg_m.hash_marker, et.data) + LENGTH(agg_m.hash_marker)) LIKE '%' || agg_m.hash_marker
