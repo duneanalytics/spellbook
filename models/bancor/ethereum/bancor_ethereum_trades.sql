@@ -16,7 +16,15 @@
 {% set weth_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' %}
 
 WITH conversions AS (
-    SELECT *
+    SELECT  t.evt_block_time,
+            t._trader,
+            t._toAmount,
+            t._fromAmount,
+            t._toToken,
+            t._fromToken,
+            t.contract_address,
+            t.evt_tx_hash,
+            t.evt_index
     FROM {{ source('bancornetwork_ethereum', 'BancorNetwork_v6_evt_Conversion') }} t
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -24,8 +32,18 @@ WITH conversions AS (
     {% if not is_incremental() %}
     WHERE t.evt_block_time >= '{{project_start_date}}'
     {% endif %}
+
     UNION ALL
-    SELECT *
+
+    SELECT  t.evt_block_time,
+            t._trader,
+            t._toAmount,
+            t._fromAmount,
+            t._toToken,
+            t._fromToken,
+            t.contract_address,
+            t.evt_tx_hash,
+            t.evt_index
     FROM {{ source('bancornetwork_ethereum', 'BancorNetwork_v7_evt_Conversion') }} t
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -33,8 +51,18 @@ WITH conversions AS (
     {% if not is_incremental() %}
     WHERE t.evt_block_time >= '{{project_start_date}}'
     {% endif %}
+
     UNION ALL
-    SELECT *
+
+    SELECT  t.evt_block_time,
+            t._trader,
+            t._toAmount,
+            t._fromAmount,
+            t._toToken,
+            t._fromToken,
+            t.contract_address,
+            t.evt_tx_hash,
+            t.evt_index
     FROM {{ source('bancornetwork_ethereum', 'BancorNetwork_v8_evt_Conversion') }} t
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -42,8 +70,18 @@ WITH conversions AS (
     {% if not is_incremental() %}
     WHERE t.evt_block_time >= '{{project_start_date}}'
     {% endif %}
+
     UNION ALL
-    SELECT *
+
+    SELECT  t.evt_block_time,
+            t._trader,
+            t._toAmount,
+            t._fromAmount,
+            t._toToken,
+            t._fromToken,
+            t.contract_address,
+            t.evt_tx_hash,
+            t.evt_index
     FROM {{ source('bancornetwork_ethereum', 'BancorNetwork_v9_evt_Conversion') }} t
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -51,8 +89,18 @@ WITH conversions AS (
     {% if not is_incremental() %}
     WHERE t.evt_block_time >= '{{project_start_date}}'
     {% endif %}
+
     UNION ALL
-    SELECT *
+
+    SELECT  t.evt_block_time,
+            t._trader,
+            t._toAmount,
+            t._fromAmount,
+            t._toToken,
+            t._fromToken,
+            t.contract_address,
+            t.evt_tx_hash,
+            t.evt_index
     FROM {{ source('bancornetwork_ethereum', 'BancorNetwork_v10_evt_Conversion') }} t
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -85,7 +133,9 @@ SELECT
     t.evt_index
 FROM
     conversions t
+
 UNION
+
 SELECT
     '3' AS version,
     t.evt_block_time AS block_time,
