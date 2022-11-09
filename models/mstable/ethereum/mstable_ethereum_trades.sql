@@ -68,33 +68,36 @@ WITH dexs AS
 )
 SELECT
     'ethereum' AS blockchain,
-    project,
-    version,
+    dexs.project,
+    dexs.version,
     TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date,
     dexs.block_time,
     erc20a.symbol AS token_bought_symbol,
     erc20b.symbol AS token_sold_symbol,
-    token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount,
-    token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount,
-    project,
-    version,
-    coalesce(taker, tx.`from`) AS taker, -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
-    maker,
-    token_bought_amount_raw,
-    token_sold_amount_raw,
+    case
+        when lower(erc20a.symbol) > lower(erc20b.symbol) then concat(erc20b.symbol, '-', erc20a.symbol)
+        else concat(erc20a.symbol, '-', erc20b.symbol)
+    end as token_pair,
+    dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount,
+    dexs.token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount,
+    dexs.token_bought_amount_raw,
+    dexs.token_sold_amount_raw,
     coalesce(
-        amount_usd,
-        token_bought_amount_raw / power(10, p_bought.decimals) * p_bought.price,
-        token_sold_amount_raw / power(10, p_sold.decimals) * p_sold.price
+        dexs.amount_usd,
+        dexs.token_bought_amount_raw / power(10, p_bought.decimals) * p_bought.price,
+        dexs.token_sold_amount_raw / power(10, p_sold.decimals) * p_sold.price
     ) AS amount_usd,
-    token_bought_address,
-    token_sold_address,
-    project_contract_address,
-    tx_hash,
+    dexs.token_bought_address,
+    dexs.token_sold_address,
+    coalesce(dexs.taker, tx.`from`) AS taker, -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
+    dexs.maker,
+    dexs.project_contract_address,
+    dexs.tx_hash,
     tx.`from` AS tx_from,
     tx.`to` AS tx_to,
-    trace_address,
-    evt_index
+    dexs.trace_address,
+    dexs.evt_index
+FROM dexs
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON dexs.tx_hash = tx.hash
     {% if not is_incremental() %}
