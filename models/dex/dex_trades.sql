@@ -20,7 +20,11 @@
 ,'dfx_ethereum_trades'
 ,'pancakeswap_trades'
 ,'dodo_ethereum_trades'
+<<<<<<< HEAD
+,'woofi_avalanche_c_trades'
+=======
 ,'hashflow_ethereum_trades'
+>>>>>>> main
 ] %}
 
 
