@@ -224,7 +224,7 @@ with p1_call as (
             and tx.block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         left join {{ ref('nft_ethereum_aggregators_markers') }} agg_m
-                ON tx.data LIKE '%' || agg_m.hash_marker || '%'
+                ON LEFT(tx.data, CHARINDEX(agg_m.hash_marker, tx.data) + LENGTH(agg_m.hash_marker)) LIKE '%' || agg_m.hash_marker
         left join {{ ref('nft_aggregators') }} agg
             ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
         left join {{ ref('tokens_nft') }} n
@@ -477,7 +477,7 @@ with p1_call as (
             and erct3.evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         left join {{ ref('nft_ethereum_aggregators_markers') }} agg_m
-                ON tx.data LIKE '%' || agg_m.hash_marker || '%'
+                ON LEFT(tx.data, CHARINDEX(agg_m.hash_marker, tx.data) + LENGTH(agg_m.hash_marker)) LIKE '%' || agg_m.hash_marker
         left join {{ ref('nft_aggregators') }} agg
             ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
         left join {{ ref('tokens_nft') }} n
@@ -714,7 +714,7 @@ with p1_call as (
         left join {{ ref('nft_aggregators') }} agg
             ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
         left join {{ ref('nft_ethereum_aggregators_markers') }} agg_m
-                ON tx.data LIKE '%' || agg_m.hash_marker || '%'
+                ON LEFT(tx.data, CHARINDEX(agg_m.hash_marker, tx.data) + LENGTH(agg_m.hash_marker)) LIKE '%' || agg_m.hash_marker
         left join {{ ref('tokens_nft') }} n
             on n.contract_address = nft_contract_address and n.blockchain = 'ethereum'
         LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct2 ON erct2.evt_block_time=a.block_time
@@ -965,7 +965,7 @@ with p1_call as (
         and erct3.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         left join {{ ref('nft_ethereum_aggregators_markers') }} agg_m
-                ON tx.data LIKE '%' || agg_m.hash_marker || '%'
+                ON LEFT(tx.data, CHARINDEX(agg_m.hash_marker, tx.data) + LENGTH(agg_m.hash_marker)) LIKE '%' || agg_m.hash_marker
     left join {{ ref('nft_aggregators') }} agg
         ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
     left join {{ ref('tokens_nft') }} n

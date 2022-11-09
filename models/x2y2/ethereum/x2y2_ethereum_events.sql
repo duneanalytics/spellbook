@@ -74,7 +74,7 @@ WITH aggregator_routed_x2y2_txs AS (
         and ett.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     LEFT JOIN {{ ref('nft_ethereum_aggregators_markers') }} agg_m
-        ON et.data LIKE '%' || agg_m.hash_marker || '%'
+        ON LEFT(et.data, CHARINDEX(agg_m.hash_marker, et.data) + LENGTH(agg_m.hash_marker)) LIKE '%' || agg_m.hash_marker
     WHERE taker NOT IN (SELECT contract_address FROM {{ ref('nft_ethereum_aggregators') }})
     {% if is_incremental() %}
     -- this filter will only be applied on an incremental run
