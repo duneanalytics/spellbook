@@ -3,7 +3,7 @@
         post_hook='{{ expose_spells(\'["avalanche_c","bnb","ethereum","polygon", "optimism"]\',
                                     "sector",
                                     "nft",
-                                    \'["soispoke","hildobby", "chuxinh"]\') }}')
+                                    \'["soispoke","hildobby", "chuxin"]\') }}')
 }}
 
 SELECT 'avalanche_c' as blockchain, * FROM  {{ ref('nft_avalanche_c_aggregators') }}
