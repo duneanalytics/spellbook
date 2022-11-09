@@ -7,7 +7,7 @@ models:
       project: aztec_v2
       contributors: jackie, henrystats
     config:
-      tags: ['ethereum','aztec']
+      tags: ['ethereum','aztec', 'bridge']
     description: "View aztec rollup bridge transactions"
     tests:
       - dbt_utils.unique_combination_of_columns:
