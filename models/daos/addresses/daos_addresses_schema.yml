@@ -5,9 +5,9 @@ models:
     meta:
       blockchain: ethereum, gnosis
       sector: daos
-      contributors: henrystats 
+      contributors: Henrystats 
     config:
-      tags: [ 'ethereum','gnosis','daos', 'dao creator tools', 'henrystats' ]
+      tags: [ 'ethereum','gnosis','daos', 'dao creator tools', 'Henrystats' ]
     description: >
       wallet addresses of daos created using popular dao creator tools 
     columns:

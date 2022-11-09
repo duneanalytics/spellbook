@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: optimism
       sector: contracts
-      contibutors: chuxinh, msilb7
+      contributors: chuxin, msilb7
     config:
       tags: ['optimism', 'contracts', 'addresses']
     description: "A list of contract name mapping from Dune name to cleaned name."
@@ -23,7 +23,7 @@ models:
     meta:
       blockchain: optimism
       sector: contracts
-      contibutors: chuxinh, msilb7
+      contributors: chuxin, msilb7
     config:
       tags: ['optimism', 'contracts', 'addresses']
     description: "Mapping of contracts to its creators and names on Optimism. {{ doc('optimism_contract_mapping') }}"
@@ -61,7 +61,7 @@ models:
     meta:
       blockchain: optimism
       sector: contracts
-      contibutors: chuxinh, msilb7
+      contributors: chuxin, msilb7
     config:
       tags: ['optimism', 'contracts', 'addresses']
     description: "A list of contract creator addresses and corresponding names."
@@ -78,7 +78,7 @@ models:
     meta:
       blockchain: optimism
       sector: contracts
-      contibutors: chuxinh, msilb7
+      contributors: chuxin, msilb7
     config:
       tags: ['optimism', 'contracts', 'addresses']
     description: "A list of contracts where we know their mapping, but their creator is not deterministic and the contracts are not verified."
@@ -92,7 +92,7 @@ models:
     meta:
       blockchain: optimism
       sector: contracts
-      contibutors: chuxinh, msilb7
+      contributors: chuxin, msilb7
     config:
       tags: ['optimism', 'contracts', 'addresses']
     description: "A list of contracts that are self-destruct."
