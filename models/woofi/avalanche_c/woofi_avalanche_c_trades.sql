@@ -137,7 +137,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
 LEFT JOIN {{ source('prices', 'usd') }} p_avx
     ON p_avx.minute = date_trunc('minute', dexs.block_time)
     AND p_avx.blockchain='avalanche_c'
-    AND p_avx.symbol = 'WAVAX'
+    AND p_avx.symbol = 'AVAX'
     {% if not is_incremental() %}
     AND p_avx.minute >= '{{project_start_date}}'
     {% endif %}
