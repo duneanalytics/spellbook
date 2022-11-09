@@ -58,16 +58,12 @@ jobs:
       - name: dbt test initial model(s)
         run: "dbt test --select state:new state:modified --state ."
 
-      #       22:08:54  
-      # 22:08:54  No nodes selected!
-      # spellbook.tokens.arbitrum.tokens_arbitrum_erc20
-
       - name: Set environment variable for incremental model count
         run: |
           echo "INC_MODEL_COUNT=$(echo dbt ls --select state:modified,config.materialized:incremental --state . --resource-type model)" >> $GITHUB_ENV
 
       - name: dbt run incremental model(s) if applicable
-        if: contains(env.INC_MODEL_COUNT, 'spellbook')
+        if: contains(env.INC_MODEL_COUNT, 'No nodes selected!')
         run: "dbt run --select state:modified,config.materialized:incremental --state ."
 
       # - name: dbt test incremental model(s) if applicable
