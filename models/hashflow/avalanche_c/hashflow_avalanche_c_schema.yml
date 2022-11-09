@@ -8,7 +8,7 @@ models:
       project: hashflow
       contributors: hosuke
     config:
-      tags: ['avalanche_c','hashflow','trades','dex']
+      tags: ['avalanche_c','hashflow','trades','dex','hosuke']
     description: >
         Hashflow contract trades on Avalanche C-Chain
     tests:
