@@ -2,7 +2,7 @@
 
 SELECT LOWER(contract_address) as contract_address, symbol, decimals
 FROM (VALUES
-        ('0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9', 'USDT', 6),
+        ('0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9', 'test', 6),
         ('0xff970a61a04b1ca14834a43f5de4533ebddb5cc8', 'USDC', 6),
         ('0xda10009cbd5d07dd0cecc66161fc93d7c9000da1', 'DAI', 18),
         ('0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f', 'WBTC', 18),
