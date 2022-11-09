@@ -218,6 +218,7 @@ WITH rows AS (
         FROM
             kyber."Elastic_Pool_evt_Swap" t
         INNER JOIN kyber."Elastic_Factory_evt_PoolCreated" f ON f.pool = t.contract_address 
+        AND t.evt_block_time >= start_ts AND t.evt_block_time < end_ts
 
         UNION ALL
 
