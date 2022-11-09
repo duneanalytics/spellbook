@@ -25,6 +25,9 @@ models:
       - &contract_address
         name: contract_address
         description: "contract_address"
+        tests:
+          - nxm_trades_column_values:
+              seed_file_location: ref('nxm_ethereum_trades_seed')
       - &symbol
         name: symbol
         description: "symbol"
@@ -40,6 +43,9 @@ models:
       - &premium
         name: premium
         description: "premium"
+        tests:
+          - nxm_trades_column_values:
+              seed_file_location: ref('nxm_ethereum_trades_seed')
       - &pre_amount
         name: pre_amount
         description: "pre_amount"
