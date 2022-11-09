@@ -8,6 +8,10 @@
     unique_key = ['block_date', 'unique_trade_id']
     )
 }}
+{% set quix_fee_address_address = "0xec1557a67d4980c948cd473075293204f4d280fd" %}
+{% set min_block_number = 2753613 %}
+
+
 with events_raw as (
     select 
       *
@@ -64,6 +68,7 @@ with events_raw as (
     where nft_contract_address != lower('0xbe81eabdbd437cba43e4c1c330c63022772c2520') -- --exploit contract
 )
 ,transfers as (
+    -- eth royalities
     select 
       tr.block_number
       ,tr.block_time
@@ -71,19 +76,18 @@ with events_raw as (
       ,tr.value
       ,tr.to
     from events_raw as er 
-    join {{ source('optimism','traces') }} as tr 
+    join {{ ref('transfers_optimism','eth') }} as tr 
       on er.tx_hash = tr.tx_hash 
-      and er.block_number = tr.block_number
-      and tr.value > 0 
-      and tr.gas is null -- only include internal transactions
-      and tr.tx_success
+      and er.block_number = tr.tx_block_number
+      and tr.value_decimal > 0
       and tr.to not in (
-        lower('0xec1557a67d4980c948cd473075293204f4d280fd') --qx platform fee address
+        lower('{{quix_fee_address_address}}') --qx platform fee address
         ,er.seller
+        ,er.project_contract_address
       )
       {% if not is_incremental() %}
       -- smallest block number for source tables above
-      and tr.block_number > 2753613
+      and tr.block_number > '{{min_block_number}}'
       {% endif %}
       {% if is_incremental() %}
       and tr.block_time >= date_trunc("day", now() - interval '1 week')
@@ -91,6 +95,7 @@ with events_raw as (
 
     union all
 
+    -- erc20 royalities
     select 
       erc20.evt_block_number as block_number
       ,erc20.evt_block_time as block_time
@@ -103,12 +108,13 @@ with events_raw as (
       and er.block_number = erc20.evt_block_number 
       and erc20.value is not null 
       and erc20.to not in (
-        lower('0xec1557a67d4980c948cd473075293204f4d280fd') --qx platform fee address
+        lower('{{quix_fee_address_address}}') --qx platform fee address
         ,er.seller
+        ,er.project_contract_address
       )
       {% if not is_incremental() %}
       -- smallest block number for source tables above
-      and erc20.evt_block_number > 2753613
+      and erc20.evt_block_number > '{{min_block_number}}'
       {% endif %}
       {% if is_incremental() %}
       and erc20.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -173,7 +179,7 @@ join {{ source('optimism','transactions') }} as tx
     and er.block_number = tx.block_number
     {% if not is_incremental() %}
     -- smallest block number for source tables above
-    and tx.block_number > 2753613
+    and tx.block_number > '{{min_block_number}}'
     {% endif %}
     {% if is_incremental() %}
     and tx.block_time >= date_trunc("day", now() - interval '1 week')
@@ -192,7 +198,7 @@ left join {{ source('erc721_optimism','evt_transfer') }} as erct2
     and erct2.from=er.buyer
     {% if not is_incremental() %}
     -- smallest block number for source tables above
-    and erct2.evt_block_number > 2753613
+    and erct2.evt_block_number > '{{min_block_number}}'
     {% endif %}
     {% if is_incremental() %}
     and erct2.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -203,7 +209,7 @@ left join {{ source('erc20_optimism','evt_transfer') }} as erc20
     and erc20.to=er.seller
     {% if not is_incremental() %}
     -- smallest block number for source tables above
-    and erc20.evt_block_number > 2753613
+    and erc20.evt_block_number > '{{min_block_number}}'
     {% endif %}
     {% if is_incremental() %}
     and erc20.evt_block_time >= date_trunc("day", now() - interval '1 week')
