@@ -457,6 +457,12 @@ models:
         +schema: hashflow_ethereum
         +materialized: view
 
+    quix:
+      +schema: quix
+      +materialized: view
+      optimism:
+        +schema: quix_optimism
+
 seeds:
   spellbook:
     balances:
