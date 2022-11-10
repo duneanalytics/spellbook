@@ -7,7 +7,7 @@
 	unique_key = ['block_date', 'cover_block_number', 'status_num', 'evt_tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
-                                "nxm",
+                                "nexusmutual",
                                 \'["sharkxff"]\') }}'
 	)
 }}
@@ -42,11 +42,11 @@ SELECT quo_evt.cid,
        quo_evt.evt_tx_hash,
        quo_evt.curr,
        quo_evt.premium,
-       quo_evt.premium * power(10, erc20.decimals)                 AS pre_amount,
-       quo_evt.premiumNXM,
-       quo_evt.premiumNXM * power(10, erc20.decimals)              AS preNXM_amount,
-       quo_evt.scAdd,
-       quo_evt.sumAssured,
+       quo_evt.premium * power(10, erc20.decimals)                  AS pre_amount,
+       quo_evt.premiumNXM                                           AS premium_nxm,
+       quo_evt.premiumNXM * power(10, erc20.decimals)               AS pre_nxm_amount,
+       quo_evt.scAdd                                                AS sc_add,
+       quo_evt.sumAssured                                           AS sum_assured,
        tx.block_hash,
        tx.nonce,
        tx.gas_limit,
@@ -69,15 +69,21 @@ SELECT quo_evt.cid,
 FROM quo_evt
 INNER JOIN {{ source('ethereum','transactions') }} tx
     ON quo_evt.evt_tx_hash = tx.hash
-INNER JOIN {{ ref('tokens_erc20') }} erc20 on quo_evt.token = erc20.contract_address
+    {% if not is_incremental() %}
+    AND tx.block_time >= '{{project_start_date}}'
+    {% endif %}
+    {% if is_incremental() %}
+    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+INNER JOIN {{ ref('tokens_erc20') }} erc20
+    ON quo_evt.token = erc20.contract_address
+    AND erc20.blockchain = 'ethereum'
 LEFT JOIN {{ source('nexusmutual_ethereum', 'QuotationData_evt_CoverStatusEvent') }} cse
     ON quo_evt.cid = cse.cid
-{% if is_incremental() %}
-WHERE cse.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
-{% endif %}
-{% if not is_incremental() %}
-WHERE cse.evt_block_time >= '{{project_start_date}}'
-    AND tx.block_time >= '{{project_start_date}}'
-{% endif %}
+    {% if not is_incremental() %}
+    AND cse.evt_block_time >= '{{project_start_date}}'
+    {% endif %}
+    {% if is_incremental() %}
+    AND cse.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 ;
