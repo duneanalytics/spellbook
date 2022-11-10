@@ -12,7 +12,7 @@
       , ('bnb', 'https://bscscan.com', timestamp('2022-11-07'), now())
       , ('solana', 'https://solscan.io', timestamp('2022-11-07'), now())
       ) AS x (chain, explorer_url, created_at, updated_at)
-      WHERE chain = replace('{{chain}}',"'".'')
+      WHERE chain = replace('{{chain}}',"'",'')
    {% endset %}
 
    {% set runner = run_query(query) %}
