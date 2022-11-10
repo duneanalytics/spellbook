@@ -198,6 +198,7 @@ with source_ethereum_transactions as (
               else false
           end as estimated_price
         ,is_private
+        ,sub_idx
   from iv_base_pairs_priv a
   left join iv_volume b on b.block_time = a.block_time  -- tx_hash and evt_index is PK, but for performance, block_time is included
     and b.tx_hash = a.tx_hash
@@ -225,12 +226,9 @@ with source_ethereum_transactions as (
           ,a.platform_fee_amount_raw / power(10, e.decimals) * p.price as platform_fee_amount_usd
           ,a.creator_fee_amount_raw / power(10, e.decimals) as creator_fee_amount
           ,a.creator_fee_amount_raw / power(10, e.decimals) * p.price as creator_fee_amount_usd
-          ,case when right(t.data,8) = '72db8c0b' then 'Gem'
-                when right(t.data,8) = '332d1229' THEN 'Blur'
-                else agg.name
-           end as aggregator_name
+          ,agg.name as aggregator_name
           ,agg.contract_address AS aggregator_address
-          ,'seaport-' || tx_hash || '-' || evt_index || '-' || nft_contract_address || '-' || nft_token_id as unique_trade_id
+          ,'seaport-' || tx_hash || '-' || evt_index || '-' || nft_contract_address || '-' || nft_token_id || '-' || sub_idx as unique_trade_id
   from iv_nfts a
   inner join source_ethereum_transactions t on t.hash = a.tx_hash
   left join ref_tokens_nft n on n.contract_address = nft_contract_address 
