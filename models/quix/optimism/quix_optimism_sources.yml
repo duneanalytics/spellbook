@@ -48,27 +48,29 @@ sources:
       - name: ExchangeV2_evt_DutchAuctionFilled
         loaded_at_field: evt_block_time
         description: "Events emitted from DutchAuctionFilled."
-        - *buyer
-        - *contract_address
-        - *erc721address
-        - *evt_block_number
-        - *evt_block_time
-        - *evt_index
-        - *evt_tx_hash
-        - *price
-        - *seller
-        - *tokenId
+        columns:
+          - *buyer
+          - *contract_address
+          - *erc721address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *price
+          - *seller
+          - *tokenId
 
       - name: ExchangeV2_evt_SellOrderFilled
         loaded_at_field: evt_block_time
         description: "Events emitted from SellOrderFilled."
-        - *buyer
-        - *contract_address
-        - *erc721address
-        - *evt_block_number
-        - *evt_block_time
-        - *evt_index
-        - *evt_tx_hash
-        - *price
-        - *seller
-        - *tokenId
+        columns:
+          - *buyer
+          - *contract_address
+          - *erc721address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *price
+          - *seller
+          - *tokenId
