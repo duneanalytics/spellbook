@@ -357,6 +357,9 @@ models:
       ethereum:
         +schema: curvefi_ethereum
         +materialized: view
+      avalanche_c:
+        +schema: curvefi_avalanche_c
+        +materialized: view
     cow_protocol:
       +schema: cow_protocol
       +materialized: view
