@@ -102,7 +102,7 @@ df AS (
         migs.evt_index,
         migs.job,
         migs.keep3r,
-        migs.timestamp,
+        migs.`timestamp`,
         migs.tx_hash,
         liqs.token AS token,
         NULL AS amount

@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: nft_optimism_aggregators
+    meta:
+      blockchain: optimism
+      sector: nft
+      contributors: chuxin
+    config:
+      tags: ['nft', 'optimism', 'aggregators']
+    description: >
+        NFT aggregators
+    columns:
+      - name: contract_address
+        description: "Aggregator project's contract address"
+      - name: name
+        description: "Aggregator project's name"
