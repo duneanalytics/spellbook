@@ -15,7 +15,7 @@ FROM {{ model }} fills
     left JOIN {{ seed_file }} fills_sample 
     ON fills.tx_hash = fills_sample.tx_hash
     AND fills.evt_index = fills_sample.evt_index
-group by 1, 2
+group by 1, 2 order by 3 desc limit 10
 -- )
 -- select *
 --     from unit_tests
