@@ -600,8 +600,12 @@ seeds:
           +column_types:
             evt_tx_hash: string
             block_date: date
-            #TODO Please fill in column name and its type for the seed
-
+            evt_block_number: string
+            nonce: string
+            curr: string
+            sumAssured: string
+            premium: string
+            premiumNXM: string
     perpetual:
       +enabled: true
       +schema: test_data
