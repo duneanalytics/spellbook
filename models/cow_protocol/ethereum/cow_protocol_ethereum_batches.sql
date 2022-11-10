@@ -33,11 +33,13 @@ batch_counts as (
     from {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Settlement') }} s
         left outer join {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Interaction') }} i
             on i.evt_tx_hash = s.evt_tx_hash
+            {% if is_incremental() %}
+            AND i.evt_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
         join cow_protocol_ethereum.solvers
             on solver = address
     {% if is_incremental() %}
     WHERE s.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    AND i.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     group by s.evt_tx_hash, solver, s.evt_block_time, name
 ),
@@ -50,7 +52,7 @@ batch_values as (
         sum(fee_usd)    as fee_value,
         price           as eth_price
     from {{ ref('cow_protocol_ethereum_trades') }}
-        join {{ source('prices', 'usd') }} as p
+        left outer join {{ source('prices', 'usd') }} as p
             on p.contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
             and p.minute = date_trunc('minute', block_time)
             and blockchain = 'ethereum'

@@ -6,7 +6,7 @@ models:
       blockchain: bnb
       sector: transfers
       project: bep20
-      contibutors: hosuke
+      contributors: hosuke
     config:
       tags: ['transfers', 'bnb', 'bep20', 'agg_hour', 'hosuke']
     description: >
@@ -47,7 +47,7 @@ models:
       blockchain: bnb
       sector: transfers
       project: bep20
-      contibutors: hosuke
+      contributors: hosuke
     config:
       tags: ['transfers', 'bnb', 'bep20', 'agg_day', 'hosuke']
     description: >
@@ -79,7 +79,7 @@ models:
       blockchain: bnb
       sector: transfers
       project: bep20
-      contibutors: hosuke
+      contributors: hosuke
     config:
       tags: [ 'transfers', 'bnb', 'bep20', 'rolling_hour', 'hosuke' ]
     columns:
@@ -104,7 +104,7 @@ models:
       blockchain: bnb
       sector: transfers
       project: bep20
-      contibutors: hosuke
+      contributors: hosuke
     config:
       tags: [ 'transfers', 'bnb', 'bep20', 'rolling_day', 'hosuke' ]
     columns:
