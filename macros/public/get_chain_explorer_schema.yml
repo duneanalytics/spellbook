@@ -5,5 +5,4 @@ macros:
     description: "Converts chain to explorer base url"
     arguments:
       - name: chain
-        type: a valid chain in dune
         description: "any of the v2 engine chain names, so polygon, arbitrum, avalanche_c, ethereum, gnosis, bnb, optimism, solana..."

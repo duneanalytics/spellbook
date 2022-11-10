@@ -12,15 +12,17 @@
       , ('bnb', 'https://bscscan.com', timestamp('2022-11-07'), now())
       , ('solana', 'https://solscan.io', timestamp('2022-11-07'), now())
       ) AS x (chain, explorer_url, created_at, updated_at)
-      WHERE chain = '{{chain}}'
+      WHERE chain = replace('{{chain}}',"'".'')
    {% endset %}
 
    {% set runner = run_query(query) %}
 
-   {% if execute %} --required to await for results  
-      {% set results = runner.rows[0][0] %} --get first row and then first element
+   {% if execute %}
+      {% set results = runner.rows[0][0] %}
    {% endif %}
 
-   '{{ results }}' --return with quotes
+   {{ log('hello') }}
+
+   '{{ results }}'
    
 {% endmacro %}
