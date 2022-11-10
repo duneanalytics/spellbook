@@ -13,6 +13,8 @@
     )
 }}
 
+{% set zeroex_v3_start_date = '2019-12-01' %}
+{% set zeroex_v4_start_date = '2021-01-06' %}
 
 -- Test Query here: https://dune.com/queries/1330551
 WITH zeroex_tx AS (
@@ -33,6 +35,9 @@ WITH zeroex_tx AS (
 
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '1 week')
+        {% endif %}
+        {% if not is_incremental() %}
+        AND evt_block_time >= '{{zeroex_v3_start_date}}'
         {% endif %}
 
     UNION 
@@ -64,6 +69,9 @@ WITH zeroex_tx AS (
             {% if is_incremental() %}
             AND block_time >= date_trunc('day', now() - interval '1 week') 
             {% endif %}
+            {% if not is_incremental() %}
+            AND block_time >= '{{zeroex_v3_start_date}}'
+            {% endif %}
 
 ),
 v3_fills_no_bridge AS (
@@ -82,14 +90,17 @@ v3_fills_no_bridge AS (
             COALESCE(zeroex_tx.affiliate_address, fills.feeRecipientAddress) AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             (fills.feeRecipientAddress = '0x86003b044f70dac0abc80ac8957305b6370893ed') AS matcha_limit_order_flag
-   FROM {{ source('zeroex_v3_ethereum', 'Exchange_evt_Fill') }} fills
-   LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
-   WHERE (SUBSTRING(makerAssetData, 1, 10) != '0xdc1600f3')
-     AND (zeroex_tx.tx_hash IS NOT NULL
-          OR fills.feeRecipientAddress = '0x86003b044f70dac0abc80ac8957305b6370893ed')
+    FROM {{ source('zeroex_v3_ethereum', 'Exchange_evt_Fill') }} fills
+    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+    WHERE (SUBSTRING(makerAssetData, 1, 10) != '0xdc1600f3')
+        AND (zeroex_tx.tx_hash IS NOT NULL
+        OR fills.feeRecipientAddress = '0x86003b044f70dac0abc80ac8957305b6370893ed')
 
     {% if is_incremental() %}
      AND evt_block_time >= date_trunc('day', now() - interval '1 week') 
+    {% endif %}
+    {% if not is_incremental() %}
+     AND evt_block_time >= '{{zeroex_v3_start_date}}'
     {% endif %}
 
 ),
@@ -109,11 +120,14 @@ v4_rfq_fills_no_bridge AS (
             zeroex_tx.affiliate_address AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE AS matcha_limit_order_flag
-   FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
-   LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+    FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
+    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
     {% if is_incremental() %}
-   WHERE evt_block_time >= date_trunc('day', now() - interval '1 week') 
+    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
+    {% endif %}
+    {% if not is_incremental() %}
+    WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
     {% endif %}
 ),
 v4_limit_fills_no_bridge AS (
@@ -132,11 +146,14 @@ v4_limit_fills_no_bridge AS (
             COALESCE(zeroex_tx.affiliate_address, fills.feeRecipient) AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             (fills.feeRecipient = '0x86003b044f70dac0abc80ac8957305b6370893ed') AS matcha_limit_order_flag
-   FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
-   LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+    FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
+    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
     {% if is_incremental() %}
-   WHERE evt_block_time >= date_trunc('day', now() - interval '1 week') 
+    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
+    {% endif %}
+    {% if not is_incremental() %}
+    WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
     {% endif %}
 ),
 otc_fills AS (
@@ -155,11 +172,14 @@ otc_fills AS (
             zeroex_tx.affiliate_address AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE AS matcha_limit_order_flag
-   FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
-   LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+    FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
+    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
     {% if is_incremental() %}
-   WHERE evt_block_time >= date_trunc('day', now() - interval '1 week') 
+    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
+    {% endif %}
+    {% if not is_incremental() %}
+    WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
     {% endif %}
 
 ),
@@ -179,12 +199,15 @@ ERC20BridgeTransfer AS (
             zeroex_tx.affiliate_address AS affiliate_address,
             TRUE AS swap_flag,
             FALSE AS matcha_limit_order_flag
-   FROM {{ source('ethereum', 'logs') }} logs
-   JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
-   WHERE topic1 = '0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9'
+    FROM {{ source('ethereum', 'logs') }} logs
+    JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
+    WHERE topic1 = '0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9'
 
     {% if is_incremental() %}
-     AND block_time >= date_trunc('day', now() - interval '1 week') 
+    AND block_time >= date_trunc('day', now() - interval '1 week')
+    {% endif %}
+    {% if not is_incremental() %}
+    AND block_time >= '{{zeroex_v3_start_date}}'
     {% endif %}
 
 ),
@@ -204,14 +227,17 @@ BridgeFill AS (
             zeroex_tx.affiliate_address AS affiliate_address,
             TRUE AS swap_flag,
             FALSE AS matcha_limit_order_flag
-   FROM {{ source('ethereum', 'logs') }} logs
-   JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
-   WHERE topic1 = '0xff3bc5e46464411f331d1b093e1587d2d1aa667f5618f98a95afc4132709d3a9'
-     AND contract_address = '0x22f9dcf4647084d6c31b2765f6910cd85c178c18'
+    FROM {{ source('ethereum', 'logs') }} logs
+    JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
+    WHERE topic1 = '0xff3bc5e46464411f331d1b093e1587d2d1aa667f5618f98a95afc4132709d3a9'
+        AND contract_address = '0x22f9dcf4647084d6c31b2765f6910cd85c178c18'
 
-    {% if is_incremental() %}
-     AND block_time >= date_trunc('day', now() - interval '1 week') 
-    {% endif %}
+        {% if is_incremental() %}
+        AND block_time >= date_trunc('day', now() - interval '1 week')
+        {% endif %}
+        {% if not is_incremental() %}
+        AND block_time >= '{{zeroex_v3_start_date}}'
+        {% endif %}
 ),
 NewBridgeFill AS (
     SELECT 
@@ -229,14 +255,17 @@ NewBridgeFill AS (
             zeroex_tx.affiliate_address AS affiliate_address,
             TRUE AS swap_flag,
             FALSE AS matcha_limit_order_flag
-   FROM {{ source('ethereum' ,'logs') }} logs
-   JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
-   WHERE topic1 = '0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8'
-     AND contract_address = '0x22f9dcf4647084d6c31b2765f6910cd85c178c18'
+    FROM {{ source('ethereum' ,'logs') }} logs
+    JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
+    WHERE topic1 = '0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8'
+        AND contract_address = '0x22f9dcf4647084d6c31b2765f6910cd85c178c18'
 
-    {% if is_incremental() %}
-     AND block_time >= date_trunc('day', now() - interval '1 week') 
-    {% endif %}
+        {% if is_incremental() %}
+        AND block_time >= date_trunc('day', now() - interval '1 week')
+        {% endif %}
+        {% if not is_incremental() %}
+        AND block_time >= '{{zeroex_v3_start_date}}'
+        {% endif %}
 ),
 direct_PLP AS (
     SELECT 
@@ -254,11 +283,14 @@ direct_PLP AS (
             zeroex_tx.affiliate_address AS affiliate_address,
             TRUE AS swap_flag,
             FALSE AS matcha_limit_order_flag
-   FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_LiquidityProviderSwap') }} plp
-   JOIN zeroex_tx ON zeroex_tx.tx_hash = plp.evt_tx_hash
+    FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_LiquidityProviderSwap') }} plp
+    JOIN zeroex_tx ON zeroex_tx.tx_hash = plp.evt_tx_hash
 
     {% if is_incremental() %}
-   WHERE evt_block_time >= date_trunc('day', now() - interval '1 week') 
+    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
+    {% endif %}
+    {% if not is_incremental() %}
+    WHERE evt_block_time >= '{{zeroex_v3_start_date}}'
     {% endif %}
 
 ),
@@ -290,14 +322,17 @@ direct_uniswapv2 AS (
             zeroex_tx.affiliate_address AS affiliate_address,
             TRUE AS swap_flag,
             FALSE AS matcha_limit_order_flag
-   FROM {{ source('uniswap_v2_ethereum', 'Pair_evt_Swap') }} swap
-   LEFT JOIN {{ source('uniswap_v2_ethereum', 'Factory_evt_PairCreated') }} pair ON pair.pair = swap.contract_address
-   JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
-   WHERE sender = '0xdef1c0ded9bec7f1a1670819833240f027b25eff'
+    FROM {{ source('uniswap_v2_ethereum', 'Pair_evt_Swap') }} swap
+    LEFT JOIN {{ source('uniswap_v2_ethereum', 'Factory_evt_PairCreated') }} pair ON pair.pair = swap.contract_address
+    JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
+    WHERE sender = '0xdef1c0ded9bec7f1a1670819833240f027b25eff'
 
-    {% if is_incremental() %}
-     AND swap.evt_block_time >= date_trunc('day', now() - interval '1 week') 
-    {% endif %}
+        {% if is_incremental() %}
+        AND swap.evt_block_time >= date_trunc('day', now() - interval '1 week')
+        {% endif %}
+        {% if not is_incremental() %}
+        AND swap.evt_block_time >= '{{zeroex_v3_start_date}}'
+        {% endif %}
 
 ),
 direct_sushiswap AS (
@@ -333,9 +368,12 @@ direct_sushiswap AS (
    JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
    WHERE sender = '0xdef1c0ded9bec7f1a1670819833240f027b25eff'
 
-    {% if is_incremental() %}
-     AND swap.evt_block_time >= date_trunc('day', now() - interval '1 week') 
-    {% endif %}
+        {% if is_incremental() %}
+        AND swap.evt_block_time >= date_trunc('day', now() - interval '1 week')
+        {% endif %}
+        {% if not is_incremental() %}
+        AND swap.evt_block_time >= '{{zeroex_v3_start_date}}'
+        {% endif %}
 ),
 direct_uniswapv3 AS (
     SELECT 
@@ -358,9 +396,12 @@ direct_uniswapv3 AS (
    JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
    WHERE sender = '0xdef1c0ded9bec7f1a1670819833240f027b25eff'
 
-    {% if is_incremental() %}
-     AND swap.evt_block_time >= date_trunc('day', now() - interval '1 week') 
-    {% endif %}
+        {% if is_incremental() %}
+        AND swap.evt_block_time >= date_trunc('day', now() - interval '1 week')
+        {% endif %}
+        {% if not is_incremental() %}
+        AND swap.evt_block_time >= '{{zeroex_v3_start_date}}'
+        {% endif %}
 
 ),
 all_tx AS (
@@ -416,6 +457,9 @@ INNER JOIN {{ source('ethereum', 'transactions')}} tx ON all_tx.tx_hash = tx.has
 {% if is_incremental() %}
 AND tx.block_time >= date_trunc('day', now() - interval '1 week')
 {% endif %}
+{% if not is_incremental() %}
+AND tx.block_time >= '{{zeroex_v3_start_date}}'
+{% endif %}
 
 LEFT JOIN {{ source('prices', 'usd') }} tp ON date_trunc('minute', all_tx.block_time) = tp.minute
 AND CASE
@@ -427,6 +471,9 @@ AND tp.blockchain = 'ethereum'
 {% if is_incremental() %}
 AND tp.minute >= date_trunc('day', now() - interval '1 week')
 {% endif %}
+{% if not is_incremental() %}
+AND tp.minute >= '{{zeroex_v3_start_date}}'
+{% endif %}
 
 LEFT JOIN {{ source('prices', 'usd') }} mp ON DATE_TRUNC('minute', all_tx.block_time) = mp.minute
 AND CASE
@@ -437,4 +484,7 @@ AND mp.blockchain = 'ethereum'
 
 {% if is_incremental() %}
 AND mp.minute >= date_trunc('day', now() - interval '1 week')
+{% endif %}
+{% if not is_incremental() %}
+AND mp.minute >= '{{zeroex_v3_start_date}}'
 {% endif %}

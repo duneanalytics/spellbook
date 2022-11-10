@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       project: zeroex
-      contributors: sui414, bakabhai993, Hosuke
+      contributors: sui414, bakabhai993, hosuke
     config:
       tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -17,7 +17,6 @@ models:
             - evt_index
     
     columns:
-
       - &tx_hash
         name: tx_hash
         description: "Transaction hash of the fill"
