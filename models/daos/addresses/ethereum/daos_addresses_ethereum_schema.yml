@@ -5,9 +5,9 @@ models:
     meta:
       blockchain: ethereum
       project: aragon
-      contributors: henrystats 
+      contributors: Henrystats 
     config:
-      tags: [ 'ethereum', 'daos', 'aragon', 'dao creator tools', 'henrystats' ]
+      tags: [ 'ethereum', 'daos', 'aragon', 'dao creator tools', 'Henrystats' ]
     description: >
       wallet addresses of daos created on aragon 
     tests:
@@ -45,9 +45,9 @@ models:
     meta:
       blockchain: ethereum
       project: daohaus
-      contributors: henrystats 
+      contributors: Henrystats 
     config:
-      tags: [ 'ethereum', 'daos', 'daohaus', 'dao creator tools', 'henrystats' ]
+      tags: [ 'ethereum', 'daos', 'daohaus', 'dao creator tools', 'Henrystats' ]
     description: >
       wallet addresses of daos created on daohaus
     tests:
@@ -70,9 +70,9 @@ models:
     meta:
       blockchain: ethereum
       project: zodiac
-      contributors: henrystats 
+      contributors: Henrystats 
     config:
-      tags: [ 'ethereum', 'daos', 'zodiac', 'dao creator tools', 'henrystats' ]
+      tags: [ 'ethereum', 'daos', 'zodiac', 'dao creator tools', 'Henrystats' ]
     description: >
       wallet addresses of daos created on zodiac 
     tests:
@@ -95,9 +95,9 @@ models:
     meta:
       blockchain: ethereum
       project: syndicate
-      contributors: henrystats 
+      contributors: Henrystats 
     config:
-      tags: [ 'ethereum', 'daos', 'syndicate', 'dao creator tools', 'henrystats' ]
+      tags: [ 'ethereum', 'daos', 'syndicate', 'dao creator tools', 'Henrystats' ]
     description: >
       wallet addresses of daos created on syndicate 
     tests:
@@ -120,9 +120,9 @@ models:
     meta:
       blockchain: ethereum
       sector: daos
-      contributors: henrystats 
+      contributors: Henrystats 
     config:
-      tags: [ 'ethereum', 'daos', 'aragon', 'zodiac', 'daohaus', 'dao creator tools', 'henrystats' ]
+      tags: [ 'ethereum', 'daos', 'aragon', 'zodiac', 'daohaus', 'dao creator tools', 'Henrystats' ]
     description: >
       wallet addresses of daos created on ethereum across all dao creator tools
     columns:
