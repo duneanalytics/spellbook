@@ -10,26 +10,26 @@
 
 
 {% set labels_all_models = [
- 'labels_cex'
-,'labels_funds'
-,'labels_bridges'
-,'labels_ofac_sanctionned_ethereum'
-,'labels_multisig_ethereum'
-,'labels_hackers_ethereum'
-,'labels_mev_ethereum'
-,'labels_aztec_v2_contracts_ethereum'
+ 'labels_cex',
+ 'labels_funds',
+ 'labels_bridges'
+ 'labels_ofac_sanctionned_ethereum'
+ 'labels_multisig_ethereum',
+ 'labels_hackers_ethereum',
+ 'labels_mev_ethereum',
+ 'labels_aztec_v2_contracts_ethereum',
 
-,'labels_nft'
-,'labels_safe_ethereum'
-,'labels_tornado_cash'
-,'labels_contracts'
-,'labels_miners'
-,'labels_airdrop_1_receivers_optimism'
-,'labels_arbitrage_traders'
-,'labels_flashbots_ethereum'
-,'labels_ens'
-,'labels_validators'
-,'labels_sandwich_attackers'
+ 'labels_nft',
+ 'labels_safe_ethereum',
+ 'labels_tornado_cash',
+ 'labels_contracts',
+ 'labels_miners',
+ 'labels_airdrop_1_receivers_optimism',
+ 'labels_arbitrage_traders',
+ 'labels_flashbots_ethereum',
+ 'labels_ens',
+ 'labels_validators',
+ 'labels_sandwich_attackers'
 ] %}
 
 
