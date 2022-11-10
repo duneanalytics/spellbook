@@ -291,3 +291,11 @@ sources:
           - *to
           - name: tokenId
             description: "ERC721 token ID."
+
+  - name: transfers_optimism
+    description: 
+    freshness:
+      warn_after: { count: 24, period: hour }
+    tables: 
+      - name: eth
+        loaded_at_field: tx_block_time
