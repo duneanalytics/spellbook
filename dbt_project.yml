@@ -469,7 +469,7 @@ models:
         +schema: hashflow_ethereum
         +materialized: view
 
-    nomad:
+    nxm:
       +schema: nexusmutual
       +materialized: view
       ethereum:
