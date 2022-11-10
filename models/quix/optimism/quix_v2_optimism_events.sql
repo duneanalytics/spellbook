@@ -70,8 +70,8 @@ with events_raw as (
 ,transfers as (
     -- eth royalities
     select 
-      tr.tx_block_number
-      ,tr.tx_block_time
+      tr.tx_block_number as block_number
+      ,tr.tx_block_time as block_time
       ,tr.tx_hash 
       ,tr.value
       ,tr.to
