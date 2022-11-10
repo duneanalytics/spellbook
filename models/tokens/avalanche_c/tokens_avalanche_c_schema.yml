@@ -6,7 +6,7 @@ models:
       blockchain: avalanche_c
       sector: tokens
       project: erc20
-      contibutors: 0xManny
+      contributors: 0xManny
     config:
       tags: ['tokens', 'erc20', 'avalanche_c']
     description: "ERC20 Token Addresses, Symbols and Decimals"
