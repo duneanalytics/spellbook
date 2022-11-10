@@ -208,7 +208,7 @@ SELECT 'ethereum' AS blockchain
 , CASE WHEN currency_contract='0x0000000000000000000000000000000000000000' THEN 'ETH'
     ELSE pu.symbol
     END AS royalty_fee_currency_symbol
-, 'x2y2-' || txs.tx_hash || '-' || txs.nft_contract_address || txs.token_id || '-' || txs.seller || '-' || txs.evt_index || erct.evt_index || 'Trade' AS unique_trade_id
+, 'x2y2-' || COALESCE(txs.tx_hash, -1) || '-' || COALESCE(txs.nft_contract_address, -1) || COALESCE(txs.token_id, -1) || '-' || COALESCE(txs.seller, -1) || '-' || COALESCE(txs.evt_index, -1) || COALESCE(erct.evt_index, -1) || 'Trade' AS unique_trade_id
 FROM all_x2y2_txs txs
 INNER JOIN {{ source('ethereum','transactions') }} et ON et.block_time=txs.block_time
     AND et.hash=txs.tx_hash

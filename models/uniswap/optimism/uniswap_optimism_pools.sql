@@ -5,7 +5,7 @@
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "uniswap_v3",
-                                    \'["msilb7", "chuxinh"]\') }}'
+                                    \'["msilb7", "chuxin"]\') }}'
   )
 }}
 with uniswap_v3_poolcreated as (

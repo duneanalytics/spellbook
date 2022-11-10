@@ -1,4 +1,4 @@
-{{config(alias='superrare_ethereum')}}
+{{config(alias='usernames')}}
 
 
 SELECT blockchain, address, name, category, contributor, source, created_at, updated_at
@@ -7503,7 +7503,12 @@ FROM (VALUES
     (array('ethereum'),'0x8d66c24fa1bb208482145e32a7d7586cc34a2e3e', 'wukki15', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now()),
     (array('ethereum'),'0x141e08f7bb3c4171187a82c169c14b973db43e94', 'juliasky', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now()),
     (array('ethereum'),'0xccc7072c2e1502d7ffd37fd03e7d815530fa635c', 'eux', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now()),
-    (array('ethereum'),'0xf57c198a7f337867b7c2d5f591e8965622ad1491', 'phaed', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now())
-
+    (array('ethereum'),'0xf57c198a7f337867b7c2d5f591e8965622ad1491', 'phaed', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now()),
+    (array('ethereum'),'0x7e8fcd1046ae351af66c12b75b051fe550afe71e', 'studio137_', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now()),
+    (array('ethereum'),'0xf2c6f9ef74d9f0b9d504b17a5812b1decbaa27ff', 'phfu', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now()),
+    (array('ethereum'),'0x5d93cfa7fa4c8838a79e7510b1d870f92f8c08ec', 'trustcollection', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now()),
+    (array('ethereum'),'0x51ed164d8073f33ba630db5f8f91bace573f214c', '6529capital4', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now()),
+    (array('ethereum'),'0xb379b56bcacdd58ae0768654763881849bfaad94', '6529szn4', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now()),
+    (array('ethereum'),'0xd7dd9612a21f7c249fb7f33e9c2e9144345e162b', 'fred_dot_jpg', 'superrare', 'cat', 'static', timestamp('2022-10-01'), now())
 
  ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at)
