@@ -24,6 +24,10 @@ sources:
           - &evt_block_number
             name: evt_block_number
             description: "Block number"   
+
+          - &evt_block_time
+            name: evt_block_time
+            description: "Block time"  
           
           - &evt_index
             name: evt_index
