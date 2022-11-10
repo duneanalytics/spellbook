@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum, bnb, solana
       sector: prices
-      contibutors: aalan3
+      contributors: aalan3
     config:
       tags: ['prices', 'tokens', 'usd']
     description: "Price tokens"
