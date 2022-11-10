@@ -34,7 +34,7 @@ SELECT
     '{{dao_address}}' as dao_address,
     vc.proposalId as proposal_id,
     votes/1e18 as votes,
-    (votes/1e18) * (100) / (sum_votes) as votes_shares,
+    (votes/1e18) * (100) / (sum_votes) as votes_share,
     'UNI' as token_symbol,
     p.contract_address as token_address, 
     votes/1e18 * p.price as votes_value_usd,
