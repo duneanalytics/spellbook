@@ -13,16 +13,16 @@ models:
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain which the DEX is deployed"
+        description: "Blockchain which the DAO is deployed"
       - &project
         name: project
-        description: "Project name of the DEX"
+        description: "Project name of the DAO"
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project"
+        description: "Version of the contract built and deployed by the DAO project"
       - &block_time
         name: block_time
-        description: "UTC event block time of each DEX trade"
+        description: "UTC event block time of each DAO vote"
       - &tx_hash
         name: tx_hash
         description: "Unique transaction hash value tied to each transaction on the DEX"
