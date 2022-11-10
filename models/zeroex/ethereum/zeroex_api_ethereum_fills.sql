@@ -236,7 +236,7 @@ BridgeFill AS (
         AND block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
         {% if not is_incremental() %}
-        AND block_time >= '{{zeroex_v3_start_date}}'
+        AND block_time >= '{{zeroex_v4_start_date}}'
         {% endif %}
 ),
 NewBridgeFill AS (
@@ -264,7 +264,7 @@ NewBridgeFill AS (
         AND block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
         {% if not is_incremental() %}
-        AND block_time >= '{{zeroex_v3_start_date}}'
+        AND block_time >= '{{zeroex_v4_start_date}}'
         {% endif %}
 ),
 direct_PLP AS (
@@ -400,7 +400,7 @@ direct_uniswapv3 AS (
         AND swap.evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
         {% if not is_incremental() %}
-        AND swap.evt_block_time >= '{{zeroex_v3_start_date}}'
+        AND swap.evt_block_time >= '{{zeroex_v4_start_date}}'
         {% endif %}
 
 ),
