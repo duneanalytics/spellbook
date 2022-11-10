@@ -22,6 +22,9 @@ WITH namespaces AS (
     SELECT tx_hash
     , COUNT(*) AS nfts_minted_in_tx
     FROM {{ ref('nft_ethereum_transfers') }}
+    {% if is_incremental() %}
+    WHERE block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     GROUP BY tx_hash
     )
 
@@ -86,9 +89,9 @@ LEFT JOIN {{ source('ethereum','transactions') }} etxs ON etxs.block_time=nft_mi
 LEFT JOIN {{ ref('nft_ethereum_aggregators') }} agg ON etxs.to=agg.contract_address
 LEFT JOIN {{ ref('tokens_nft') }} tok ON tok.contract_address=nft_mints.contract_address
 LEFT JOIN namespaces ec ON etxs.to=ec.address
-{% if is_incremental() %}
 WHERE nft_mints.from='0x0000000000000000000000000000000000000000'
 AND nft_mints.to NOT IN (SELECT address FROM addresses_ethereum.defi)
+{% if is_incremental() %}
 AND nft_mints.block_time >= date_trunc("day", now() - interval '1 week')
 AND  et.block_time >= date_trunc("day", now() - interval '1 week')
 AND  pu_eth.minute >= date_trunc("day", now() - interval '1 week')
