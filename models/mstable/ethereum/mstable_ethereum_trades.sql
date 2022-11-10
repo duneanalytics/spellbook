@@ -8,7 +8,7 @@
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "mstable",
-                                    \'["ripple3"]\') }}'
+                                    \'["dbustos20"]\') }}'
     )
 }}
 
@@ -19,7 +19,7 @@ WITH dexs AS
     SELECT
         evt_block_time AS block_time,
         'mStable' AS project,
-        '1' AS version,
+        'masset' AS version,
         swapper AS taker,
         cast(NULL as string) AS maker,
         `outputAmount` AS token_bought_amount_raw,
@@ -45,7 +45,7 @@ WITH dexs AS
     SELECT
         evt_block_time AS block_time,
         'mStable' AS project,
-        '1' AS version,
+        'feederpool' AS version,
         swapper AS taker,
         cast(NULL as string) AS maker,
         `outputAmount` AS token_bought_amount_raw,
