@@ -97,7 +97,7 @@ models:
       - &tx_value
         name: tx_value
         description: "tx_value"
-      - &statusNum
+      - &status_num
         name: status_num
         description: "status_num"
       - &cover_block_number
