@@ -592,6 +592,16 @@ seeds:
         +column_types:
           master_address: string
           alternative_address: string
+    nxm:
+      +enabled: true
+      +schema: test_data
+      ethererum:
+        nxm_ethereum_trades_seed:
+          +column_types:
+            evt_tx_hash: string
+            block_date: date
+            #TODO Please fill in column name and its type for the seed
+
     perpetual:
       +enabled: true
       +schema: test_data
