@@ -69,17 +69,26 @@ models:
     nft:
       +schema: nft
       +materialized: view
+      arbitrum:
+        +schema: nft_arbitrum
+        +materialized: view
+      avalanche_c:
+        +schema: nft_avalanche_c
+        +materialized: view
+      bnb:
+        +schema: nft_bnb
+        +materialized: view
       ethereum:
         +schema: nft_ethereum
         +materialized: view
         metadata:
           +schema: nft_ethereum_metadata
           +materialized: view
-      bnb:
-        +schema: nft_bnb
+      gnosis:
+        +schema: nft_gnosis
         +materialized: view
-      avalanche_c:
-        +schema: nft_avalanche_c
+      optimism:
+        +schema: nft_optimism
         +materialized: view
       polygon:
         +schema: nft_polygon
