@@ -15,7 +15,7 @@ models:
           combination_of_columns:
             - block_date
             - cover_block_number
-            - statusNum
+            - status_num
             - evt_tx_hash
             - evt_index
     columns:
