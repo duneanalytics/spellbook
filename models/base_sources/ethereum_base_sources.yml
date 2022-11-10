@@ -193,11 +193,11 @@ sources:
 
   # ERC Transfer Tables
   - name: erc20_ethereum
-    description: "Transfers events for ERC20 tokens."
+    description: "Transfers events for ERC20 tokens on Ethereum."
     tables:
       - name: evt_transfer
         loaded_at_field: evt_block_time
-        description: "Transfers events for ERC20 tokens."
+        description: "Transfers events for ERC20 tokens on Ethereum."
         freshness:
           warn_after: { count: 12, period: hour }
           error_after: { count: 24, period: hour }
@@ -222,11 +222,11 @@ sources:
             description: "Amount of ERC20 token transferred"
 
   - name: erc1155_ethereum
-    description: "Transfers events for ERC1155 tokens."
+    description: "Transfers events for ERC1155 tokens on Ethereum."
     tables:
       - name: evt_transfersingle
         loaded_at_field: evt_block_time
-        description: "Single transfers events for ERC1155 tokens."
+        description: "Single transfers events for ERC1155 tokens on Ethereum."
         columns:
           - name: contract_address
             description: "ERC1155 token contract address"
@@ -245,7 +245,7 @@ sources:
 
       - name: evt_transferbatch
         loaded_at_field: evt_block_time
-        description: "Batch transfers events for ERC1155 tokens."
+        description: "Batch transfers events for ERC1155 tokens on Ethereum."
         columns:
           - name: contract_address
             description: "ERC1155 token contract address"
@@ -263,11 +263,11 @@ sources:
             description: "Amounts of ERC1155 token transferred"
 
   - name: erc721_ethereum
-    description: "Transfers events for ERC721 tokens."
+    description: "Transfers events for ERC721 tokens on Ethereum."
     tables:
       - name: evt_transfer
         loaded_at_field: evt_block_time
-        description: "Transfers events for ERC721 tokens."
+        description: "Transfers events for ERC721 tokens on Ethereum."
         columns:
           - &contract_address
             name: contract_address

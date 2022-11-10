@@ -1,6 +1,6 @@
 {{ config(
         alias ='fees',
-        post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche"]\',
+        post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c","optimism"]\',
                                 "sector",
                                 "gas",
                                 \'["soispoke"]\') }}'
@@ -11,6 +11,7 @@
 'gas_ethereum_fees',
 'gas_bnb_fees',
 'gas_avalanche_c_fees',
+'gas_optimism_fees'
 ] %}
 
 SELECT *

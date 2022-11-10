@@ -6,10 +6,10 @@ models:
       blockchain: ethereum
       sector: labels
       category: sandwich_attackers
-      contibutors: alexth
+      contributors: alexth
     config:
       tags: ['labels', 'sandwich', 'bot','sandwich_attackers', 'dex']
-    description: "Known sandwich attacker contracts across chains"
+    description: "{{ doc('sandwich_attackers') }}"
     columns:
       - &blockchain
         name: blockchain
@@ -41,10 +41,10 @@ models:
       blockchain: ethereum
       sector: labels
       category: sandwich_attackers
-      contibutors: alexth
+      contributors: alexth
     config:
       tags: ['labels', 'ethereum', 'sandwich', 'bot','sandwich_attackers', 'dex']
-    description: "Known sandwich attacker addresses on Ethereum"
+    description:  "{{ doc('sandwich_attackers') }}"
     columns:
       - *blockchain
       - *address

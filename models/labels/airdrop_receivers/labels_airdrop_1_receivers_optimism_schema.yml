@@ -7,7 +7,7 @@ models:
       sector: labels
       category: airdrop
       project: ['optimism']
-      contibutors: soispoke
+      contributors: soispoke
     config:
       tags: ['labels', 'airdrop', 'optimism']
     description: "$OP Airdrop 1 receivers query labels"   
