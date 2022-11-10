@@ -1,11 +1,11 @@
 version: 2
 
 models:
-  - name: labels_daos
+  - name: labels_dao
     meta:
       blockchain: ethereum, polygon, gnosis
       sector: labels
-      project: daos
+      project: dao
       contibutors: henrystats 
     config:
       tags: ['labels', 'ethereum', 'gnosis', 'polygon', 'daos']
@@ -17,6 +17,8 @@ models:
       - &address
         name: address
         description: "DAO Address"
+        tests:
+          - unique
       - &name
         name: name
         description: "custom name determined by tool used to create dao"
