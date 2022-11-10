@@ -7,9 +7,68 @@ sources:
     tables:
       - name: ExchangeV2_evt_BuyOrderFilled
         loaded_at_field: evt_block_time
+        description: "Events emitted from BuyOrderFilled."
+        columns:
+          - &buyer
+            name: buyer
+            description: "Buyer wallet address."
+
+          - &contract_address
+            name: contract_address
+            description: "Contract address."
+
+          - &erc721address
+            name: erc721address
+            description: "ERC-721 address of the NFT collection."
+
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block number"   
+          
+          - &evt_index
+            name: evt_index
+            description: "Event index."   
+
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Transaction hash."   
+
+          - &price
+            name: price
+            description: "Price of the NFT token."   
+
+          - &seller
+            name: seller
+            description: "Seller wallet address" 
+
+          - &tokenId
+            name: tokenId
+            description: "Token id." 
 
       - name: ExchangeV2_evt_DutchAuctionFilled
         loaded_at_field: evt_block_time
+        description: "Events emitted from DutchAuctionFilled."
+        - *buyer
+        - *contract_address
+        - *erc721address
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index
+        - *evt_tx_hash
+        - *price
+        - *seller
+        - *tokenId
 
       - name: ExchangeV2_evt_SellOrderFilled
         loaded_at_field: evt_block_time
+        description: "Events emitted from SellOrderFilled."
+        - *buyer
+        - *contract_address
+        - *erc721address
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index
+        - *evt_tx_hash
+        - *price
+        - *seller
+        - *tokenId
