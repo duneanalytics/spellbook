@@ -460,7 +460,13 @@ models:
       avalanche_c:
         +schema: fraxswap_avalanche_c
         +materialized: view
-
+        
+    platypus_finance:
+      +schema: platypus_finance
+      +materialized: view
+      avalanche_c:
+        +schema: platypus_finance_avalanche_c
+        +materialized: view
 
     hashflow:
       +schema: hashflow
