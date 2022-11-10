@@ -16,17 +16,31 @@
         select
         {%- for column_name in seed_matching_columns %}
         seed.{{column_name}} as seed_{{column_name}},
-        model.{{column_name}} as model_{{column_name}},
+        model_sample.{{column_name}} as model_{{column_name}},
         {% endfor -%}
         {%- for column_name in seed_check_columns %}
         seed.{{column_name}} as seed_{{column_name}},
-        model.{{column_name}} as model_{{column_name}} {% if not loop.last %},{% endif %}
+        model_sample.{{column_name}} as model_{{column_name}} {% if not loop.last %},{% endif %}
         {% endfor -%}
         from {{seed_file}} seed
-        left join {{model}} model
+        left join (
+            select
+            {%- for column_name in seed_matching_columns %}
+            model.{{column_name}},
+            {% endfor -%}
+            {%- for column_name in seed_check_columns %}
+            model.{{column_name}} {% if not loop.last %},{% endif %}
+            {% endfor -%}
+            from  {{seed_file}} seed
+            inner join {{model}} model
+                ON 1=1
+                {%- for column_name in seed_matching_columns %}
+                AND seed.{{column_name}} = model.{{column_name}}
+                {% endfor -%}
+            ) model_sample
         ON 1=1
         {%- for column_name in seed_matching_columns %}
-        AND seed.{{column_name}} = model.{{column_name}}
+        AND seed.{{column_name}} = model_sample.{{column_name}}
         {% endfor -%}
     ),
 
