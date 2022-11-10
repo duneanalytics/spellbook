@@ -5,11 +5,11 @@ version: 2
 models:
   - name: tornado_cash_deposits
     meta:
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum #, polygon
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum , polygon
       project: tornado_cash
       contributors: [hildobby, dot2dotseurat]
     config:
-      tags: ['tornado_cash', 'deposits', 'ethereum', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum']
+      tags: ['tornado_cash', 'deposits', 'ethereum', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'polygon']
     description: "Tornado Cash Deposits"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -54,11 +54,11 @@ models:
 
   - name: tornado_cash_withdrawals
     meta:
-      blockchain: ethereum, bnb, avalanche, gnosis, optimism, arbitrum #, polygon
+      blockchain: ethereum, bnb, avalanche, gnosis, optimism, arbitrum , polygon
       project: tornado_cash
       contributors:  [hildobby, dot2dotseurat]
     config:
-      tags: ['tornado_cash', 'withdrawals', 'ethereum', 'bnb', 'avalanche', 'gnosis', 'optimism', 'arbitrum']
+      tags: ['tornado_cash', 'withdrawals', 'ethereum', 'bnb', 'avalanche', 'gnosis', 'optimism', 'arbitrum', 'polygon']
     description: "Tornado Cash Withdrawals"
     tests:
       - dbt_utils.unique_combination_of_columns:
