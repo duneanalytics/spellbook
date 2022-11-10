@@ -37,10 +37,10 @@ aztec_v2_contract_labels as (
             ON t.`from` = ats.address
             OR t.`to` = ats.address 
             {% if not is_incremental() %}
-            AND t.evt_block_time >= '{{first_transfer_date}}'
+            WHERE t.evt_block_time >= '{{first_transfer_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+            WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
  ), 
  
@@ -51,13 +51,13 @@ aztec_v2_contract_labels as (
         {{ source('ethereum', 'traces') }} t 
         INNER JOIN 
         aztec_v2_contract_labels ats
-            ON t.`from` = ats.address
-            OR t.`to` = ats.address 
+            ON t.`from` = ats.contract_address
+            OR t.`to` = ats.contract_address 
             {% if not is_incremental() %}
-            AND t.block_time >= '{{first_transfer_date}}'
+            WHERE t.block_time >= '{{first_transfer_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND t.block_time >= date_trunc("day", now() - interval '1 week')
+            WHERE t.block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
  ), 
  
