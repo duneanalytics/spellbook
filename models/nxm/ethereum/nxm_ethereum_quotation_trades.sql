@@ -4,7 +4,7 @@
 	materialized = 'incremental',
 	file_format = 'delta',
 	incremental_strategy = 'merge',
-	unique_key = ['block_date', 'cover_block_number', 'statusNum', 'evt_tx_hash', 'evt_index'],
+	unique_key = ['block_date', 'cover_block_number', 'status_num', 'evt_tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "nxm",
@@ -58,7 +58,7 @@ SELECT quo_evt.cid,
        tx.success,
        tx.type                                                     AS tx_type,
        tx.value                                                    AS tx_value,
-       cse.statusNum,
+       cse.statusNum                                               AS status_num,
        cse.evt_block_number                                        AS cover_block_number,
        cse.evt_block_time                                          AS cover_block_time,
        quo_evt.evt_block_number                                    AS evt_block_number,
@@ -75,7 +75,8 @@ LEFT JOIN {{ source('nexusmutual_ethereum', 'QuotationData_evt_CoverStatusEvent'
 {% if is_incremental() %}
 WHERE cse.evt_block_time >= date_trunc("day", now() - interval '1 week')
     AND tx.block_time >= date_trunc("day", now() - interval '1 week')
-{% else %}
+{% endif %}
+{% if not is_incremental() %}
 WHERE cse.evt_block_time >= '{{project_start_date}}'
     AND tx.block_time >= '{{project_start_date}}'
 {% endif %}
