@@ -87,10 +87,10 @@ with events_raw as (
       )
       {% if not is_incremental() %}
       -- smallest block number for source tables above
-      and tr.block_number > '{{min_block_number}}'
+      and tr.tx_block_number > '{{min_block_number}}'
       {% endif %}
       {% if is_incremental() %}
-      and tr.block_time >= date_trunc("day", now() - interval '1 week')
+      and tr.tx_block_time >= date_trunc("day", now() - interval '1 week')
       {% endif %}
 
     union all
