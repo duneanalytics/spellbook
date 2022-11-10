@@ -12,7 +12,7 @@
 {% set labels_all_models = [
  'labels_cex',
  'labels_funds',
- 'labels_bridges'
+ 'labels_bridges',
  'labels_ofac_sanctionned_ethereum',
  'labels_multisig_ethereum',
  'labels_hackers_ethereum',
