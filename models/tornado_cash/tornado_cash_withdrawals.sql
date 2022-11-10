@@ -12,6 +12,16 @@
         )
 }}
 
+{% set ethereum_start_date = '2019-12-16' %}
+{% set eth_erc20_pt1_start_date = '2019-12-16' %}
+{% set eth_erc20_pt2_start_date = '2021-04-02' %}
+{% set bnb_start_date = '2021-06-10' %}
+{% set gnosis_start_date = '2021-08-25' %}
+{% set optimism_start_date = '2021-12-14' %}
+{% set avalanche_start_date = '2021-09-17' %}
+{% set arbitrum_start_date = '2021-11-29' %}
+{% set polygon_start_date = '2021-06-28' %}
+
 SELECT *
 FROM
 (
@@ -39,13 +49,13 @@ FROM
         INNER JOIN {{ source('ethereum','transactions') }} et
                 ON et.hash=tc.evt_tx_hash
                 {% if not is_incremental() %}
-                AND et.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_ethereum','eth_evt_Withdrawal') }})
+                AND et.block_time >= '{{ethereum_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
                 AND et.block_time >= date_trunc("day", now() - interval '1 week')
                 {% endif %}
         {% if not is_incremental() %}
-        WHERE tc.evt_block_time >= (select min(evt_block_time) from {{ source('tornado_cash_ethereum','eth_evt_Withdrawal') }})
+        WHERE tc.evt_block_time >= '{{ethereum_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -139,13 +149,13 @@ FROM
         INNER JOIN {{ source('ethereum','transactions') }} et
                 ON et.hash=tc.evt_tx_hash
                 {% if not is_incremental() %}
-                AND et.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_ethereum','erc20_evt_Withdrawal') }})
+                AND et.block_time >= '{{eth_erc20_pt1_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
                 AND et.block_time >= date_trunc("day", now() - interval '1 week')
                 {% endif %}
         {% if not is_incremental() %}
-        WHERE tc.evt_block_time >= (select min(evt_block_time) from {{ source('tornado_cash_ethereum','erc20_evt_Withdrawal') }})
+        WHERE tc.evt_block_time >= '{{eth_erc20_pt1_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -239,13 +249,13 @@ FROM
         INNER JOIN {{ source('ethereum','transactions') }} et
                 ON et.hash=tc.evt_tx_hash
                 {% if not is_incremental() %}
-                AND et.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_ethereum','ERC20Tornado_evt_Withdrawal') }})
+                AND et.block_time >= '{{eth_erc20_pt2_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
                 AND et.block_time >= date_trunc("day", now() - interval '1 week')
                 {% endif %}
         {% if not is_incremental() %}
-        WHERE tc.evt_block_time >= (select min(evt_block_time) from {{ source('tornado_cash_ethereum','ERC20Tornado_evt_Withdrawal') }})
+        WHERE tc.evt_block_time >= '{{eth_erc20_pt2_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -277,13 +287,13 @@ FROM
         INNER JOIN {{ source('bnb','transactions') }} bt
                 ON bt.hash=tc.evt_tx_hash
                 {% if not is_incremental() %}
-                AND bt.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_bnb','TornadoCashBNB_evt_Withdrawal') }})
+                AND bt.block_time >= '{{bnb_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
                 AND bt.block_time >= date_trunc("day", now() - interval '1 week')
                 {% endif %}
         {% if not is_incremental() %}
-        WHERE tc.evt_block_time >= (select min(evt_block_time) from {{ source('tornado_cash_bnb','TornadoCashBNB_evt_Withdrawal') }})
+        WHERE tc.evt_block_time >= '{{bnb_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -315,13 +325,13 @@ FROM
         INNER JOIN {{ source('gnosis','transactions') }} gt
                 ON gt.hash=tc.evt_tx_hash
                 {% if not is_incremental() %}
-                AND gt.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_gnosis','eth_evt_Withdrawal') }})
+                AND gt.block_time >= '{{gnosis_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
                 AND gt.block_time >= date_trunc("day", now() - interval '1 week')
                 {% endif %}
         {% if not is_incremental() %}
-        WHERE tc.evt_block_time >= (select min(evt_block_time) from {{ source('tornado_cash_gnosis','eth_evt_Withdrawal') }})
+        WHERE tc.evt_block_time >= '{{gnosis_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -353,13 +363,13 @@ FROM
         INNER JOIN {{ source('optimism','transactions') }} ot
                 ON ot.hash=tc.evt_tx_hash
                 {% if not is_incremental() %}
-                AND ot.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_optimism','ETHTornado_evt_Withdrawal') }})
+                AND ot.block_time >= '{{optimism_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
                 AND ot.block_time >= date_trunc("day", now() - interval '1 week')
                 {% endif %}
         {% if not is_incremental() %}
-        WHERE tc.evt_block_time >= (select min(evt_block_time) from {{ source('tornado_cash_optimism','ETHTornado_evt_Withdrawal') }})
+        WHERE tc.evt_block_time >= '{{optimism_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -390,13 +400,13 @@ FROM
         INNER JOIN {{ source('avalanche_c','transactions') }} at
                 ON at.hash=tc.evt_tx_hash
                 {% if not is_incremental() %}
-                AND at.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_avalanche_c','ETHTornado_evt_Withdrawal') }})
+                AND at.block_time >= '{{avalanche_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
                 AND at.block_time >= date_trunc("day", now() - interval '1 week')
                 {% endif %}
         {% if not is_incremental() %}
-        WHERE tc.evt_block_time >= (select min(evt_block_time) from {{ source('tornado_cash_avalanche_c','ETHTornado_evt_Withdrawal') }})
+        WHERE tc.evt_block_time >= '{{avalanche_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -428,13 +438,13 @@ FROM
         INNER JOIN {{ source('arbitrum','transactions') }} at
                 ON at.hash=tc.evt_tx_hash
                 {% if not is_incremental() %}
-                AND at.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_arbitrum','ETHTornado_evt_Withdrawal') }})
+                AND at.block_time >= '{{arbitrum_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
                 AND at.block_time >= date_trunc("day", now() - interval '1 week')
                 {% endif %}
         {% if not is_incremental() %}
-        WHERE tc.evt_block_time >= (select min(evt_block_time) from {{ source('tornado_cash_arbitrum','ETHTornado_evt_Withdrawal') }})
+        WHERE tc.evt_block_time >= '{{arbitrum_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -466,13 +476,13 @@ FROM
         INNER JOIN {{ source('polygon','transactions') }} pt
                 ON pt.hash=tc.evt_tx_hash
                 {% if not is_incremental() %}
-                AND pt.block_time >= (select min(evt_block_time) from {{ source('tornado_cash_polygon','TornadoCashMatic_evt_Withdrawal') }})
+                AND pt.block_time >= '{{polygon_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
                 AND pt.block_time >= date_trunc("day", now() - interval '1 week')
                 {% endif %}
         {% if not is_incremental() %}
-        WHERE tc.evt_block_time >= (select min(evt_block_time) from {{ source('tornado_cash_polygon','TornadoCashMatic_evt_Withdrawal') }})
+        WHERE tc.evt_block_time >= '{{polygon_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
