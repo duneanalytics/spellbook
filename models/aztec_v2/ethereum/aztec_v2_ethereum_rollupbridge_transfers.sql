@@ -107,7 +107,7 @@ tfers_raw as (
             et.value, 
             '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' as contract_address,
             et.tx_hash as evt_tx_hash,
-            NULL::bigint as evt_index,
+            et.tx_index as evt_index,
             et.block_time as evt_block_time,
             et.block_number as evt_block_number,
             et.trace_address
