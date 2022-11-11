@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'cover_block_number', 'status_num', 'evt_tx_hash', 'evt_index', 'cid', 'token_address'],
+    unique_key = ['block_date',  'evt_tx_hash', 'evt_index', 'cid', 'token_address'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "nexusmutual",
@@ -36,20 +36,6 @@ WITH quo_evt AS (
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-),
-quo_cse_data as (
-    select * FROM (
-        select  *,
-            row_number() over(partition by cid order by evt_block_time desc) as time_rank
-        FROM {{ source('nexusmutual_ethereum', 'QuotationData_evt_CoverStatusEvent') }}
-    ) as quo_cse
-    WHERE time_rank = 1
-    {% if not is_incremental() %}
-    AND evt_block_time >= '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    AND evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
 )
 SELECT quo_evt.cid,
        quo_evt.contract_address,
@@ -75,9 +61,6 @@ SELECT quo_evt.cid,
        tx.success,
        tx.type                                                     AS tx_type,
        tx.value                                                    AS tx_value,
-       cse.statusNum                                               AS status_num,
-       cse.evt_block_number                                        AS cover_block_number,
-       cse.evt_block_time                                          AS cover_block_time,
        quo_evt.evt_block_number                                    AS evt_block_number,
        quo_evt.evt_block_time                                      AS evt_block_time,
        quo_evt.expiry                                              AS evt_expiry,
@@ -95,6 +78,4 @@ INNER JOIN {{ source('ethereum','transactions') }} tx
 LEFT JOIN {{ ref('tokens_erc20') }} erc20
     ON quo_evt.token = erc20.contract_address
     AND erc20.blockchain = 'ethereum'
-LEFT JOIN quo_cse_data cse
-    ON quo_evt.cid = cse.cid
 ;
