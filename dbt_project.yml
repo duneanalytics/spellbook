@@ -282,6 +282,9 @@ models:
       arbitrum:
         +schema: tokens_arbitrum
         +materialized: view
+      polygon:
+        +schema: tokens_polygon
+        +materialized: view
 
     transfers:
       +schema: transfers
