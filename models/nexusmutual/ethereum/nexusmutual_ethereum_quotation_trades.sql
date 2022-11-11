@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date',  'evt_tx_hash', 'evt_index', 'cid', 'token_address'],
+    unique_key = ['block_date',  'evt_tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "nexusmutual",
@@ -69,6 +69,7 @@ SELECT quo_evt.cid,
 FROM quo_evt
 INNER JOIN {{ source('ethereum','transactions') }} tx
     ON quo_evt.evt_tx_hash = tx.hash
+    AND tx.success is TRUE
     {% if not is_incremental() %}
     AND tx.block_time >= '{{project_start_date}}'
     {% endif %}

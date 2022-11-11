@@ -16,8 +16,6 @@ models:
             - block_date
             - evt_tx_hash
             - evt_index
-            - cid
-            - token_address
     columns:
       - &cid
         name: cid
