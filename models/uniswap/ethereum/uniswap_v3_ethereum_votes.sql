@@ -1,6 +1,7 @@
 {{ config(
     schema = 'uniswap_v3_ethereum',
     alias = 'votes',
+    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -22,13 +23,14 @@ WITH cte_sum_votes as
 (SELECT sum(votes/1e18) as sum_votes, 
         proposalId
 FROM {{ source('uniswap_v3_ethereum', 'GovernorBravoDelegate_evt_VoteCast') }}
-GROUP BY 2)
+GROUP BY proposalId)
 
 SELECT 
     '{{blockchain}}' as blockchain,
     '{{project}}' as project,
     '{{project_version}}' as version,
     evt_block_time as block_time,
+    date_trunc('DAY', evt_block_time) AS block_date,
     evt_tx_hash as tx_hash,
     '{{dao_name}}' as dao_name,
     '{{dao_address}}' as dao_address,
@@ -43,7 +45,7 @@ SELECT
          WHEN support = 1 THEN 'for'
          WHEN support = 2 THEN 'abstain'
          END AS support,
-    reason
+    reason as reason
 FROM {{ source('uniswap_v3_ethereum', 'GovernorBravoDelegate_evt_VoteCast') }} vc
 LEFT JOIN cte_sum_votes csv ON vc.proposalId = csv.proposalId
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', evt_block_time)
