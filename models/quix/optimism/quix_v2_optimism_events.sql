@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'tx_hash', 'token_id', 'seller']
+    unique_key = ['block_date', 'tx_hash', 'token_id', 'seller',  coalesce(evt_index::string, '')]
     )
 }}
 {% set quix_fee_address_address = "0xec1557a67d4980c948cd473075293204f4d280fd" %}
