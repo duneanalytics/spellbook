@@ -112,7 +112,7 @@ rollup_balance_changes as (
     , b.symbol
     , b.token_address
     , b.balance
-    , b.balance * COALESCE(p.price_usd, b.eth_price) as tvl_usd
+    , b.balance * COALESCE(p.price_usd, bb.eth_price) as tvl_usd
     , b.balance * COALESCE(p.price_eth, 1) as tvl_eth
   from token_balances_filled b
   inner join token_prices p on b.date = p.day and b.token_address = p.token_address
