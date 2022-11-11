@@ -54,9 +54,11 @@ FROM
                 ,a.collection
                 ,a.amount_usd
                 ,a.token_standard
-                ,a.trade_type
+                ,case when a.trade_type <> 'Bundle Trade' and count(1) over (partition by tx_hash) > 1 then 'Bulk Purchase'
+                      else a.trade_type
+                 end as trade_type
                 ,a.number_of_items
-                ,a.trade_category
+                ,case when a.is_private then 'Private Sale' else a.trade_category end as trade_category -- Private sale can be purchasd by Buy/Offer accepted, but we surpress when it is Private sale here 
                 ,a.evt_type
                 ,a.seller
                 ,a.buyer
@@ -69,7 +71,7 @@ FROM
                 ,a.aggregator_name
                 ,a.aggregator_address
                 ,a.tx_hash
-                ,b.block_number
+                ,a.block_number
                 ,a.tx_from
                 ,a.tx_to
                 ,a.platform_fee_amount_raw
@@ -84,5 +86,4 @@ FROM
                 ,a.currency_symbol as royalty_fee_currency_symbol
                 ,a.unique_trade_id
           from {{ ref('opensea_v3_ethereum_events') }}
-                 inner join ethereum.transactions b on b.hash = a.tx_hash  -- oh dear. forgot to derive block_number
 )
