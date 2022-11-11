@@ -10,6 +10,14 @@ models:
       tags: ['optimism','quix', 'v2', 'events']
     description: >
         Quix v2 trades on Optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - token_id
+            - seller
+            - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -80,6 +88,8 @@ models:
       - &tx_hash
         name: tx_hash
         description:  "Transaction hash"
+      - &evt_index
+        name: evt_index
       - &block_number
         name: block_number
         description: "Block number in which the transaction was executed "

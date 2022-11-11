@@ -156,6 +156,7 @@ select
     ,agg.name as aggregator_name
     ,agg.contract_address as aggregator_address
     ,er.tx_hash
+    ,coalesce(erct2.evt_index,1) as evt_index
     ,er.block_number
     ,tx.from as tx_from
     ,tx.to as tx_to
@@ -172,7 +173,6 @@ select
         then case when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null) 
             then 'ETH' else t1.symbol end
         end as royalty_fee_currency_symbol
-    ,'quix' || '-' || er.tx_hash || '-' || er.token_id || '-' || er.seller || '-' || coalesce(erct2.evt_index::string, '') as unique_trade_id   
 from events_raw as er 
 join {{ source('optimism','transactions') }} as tx 
     on er.tx_hash = tx.hash
@@ -235,3 +235,4 @@ left join {{ ref('tokens_erc20') }} as t1
 left join transfers as tr 
     on tr.tx_hash = er.tx_hash 
     and tr.block_number = er.block_number
+;
