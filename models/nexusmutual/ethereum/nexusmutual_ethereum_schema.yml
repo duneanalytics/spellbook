@@ -14,8 +14,6 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
-            - cover_block_number
-            - status_num
             - evt_tx_hash
             - evt_index
             - cid
@@ -76,12 +74,6 @@ models:
         name: tx_type
       - &tx_value
         name: tx_value
-      - &status_num
-        name: status_num
-      - &cover_block_number
-        name: cover_block_number
-      - &cover_block_time
-        name: cover_block_time
       - &evt_block_number
         name: evt_block_number
       - &evt_block_time
