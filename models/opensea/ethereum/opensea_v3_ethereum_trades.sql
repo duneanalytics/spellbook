@@ -48,6 +48,7 @@ select blockchain
       ,royalty_fee_amount_raw_4
       ,aggregator_name
       ,aggregator_address
+      ,block_number
       ,tx_hash
       ,evt_index
       ,tx_from
