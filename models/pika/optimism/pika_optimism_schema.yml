@@ -6,7 +6,7 @@ models:
       blockchain: optimism
       sector: perpetual
       project: pika_v1
-      contributors: MSilb7, drethereum, rplust
+      contributors: msilb7, drethereum, rplust
     config:
       tags: ['optimism', 'pika, pika_v1', 'perpetuals', 'perps']
     description: >
@@ -86,7 +86,7 @@ models:
       blockchain: optimism
       sector: perpetual
       project: pika_v2
-      contributors: MSilb7, drethereum, rplust
+      contributors: msilb7, drethereum, rplust
     config:
       tags: ['optimism', 'pika, pika_v2', 'perpetuals', 'perps']
     description: >
@@ -124,7 +124,7 @@ models:
       blockchain: optimism
       sector: perpetual
       project: pika_v3
-      contributors: MSilb7, drethereum, rplust
+      contributors: msilb7, drethereum, rplust
     config:
       tags: ['optimism', 'pika, pika_v3', 'perpetuals', 'perps']
     description: >
@@ -161,7 +161,7 @@ models:
     meta:
       blockchain: optimism
       sector: perpetual
-      contributors: MSilb7, drethereum, rplust
+      contributors: msilb7, drethereum, rplust
     config:
       tags: ['optimism', 'perpetuals', 'perps', 'pika']
     description: >
