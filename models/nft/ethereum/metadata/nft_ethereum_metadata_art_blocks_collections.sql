@@ -324,7 +324,7 @@
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 323, 1000000, 'GHOST IN THE CODE', 'Kazuhiro Tanimoto', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-323')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 324, 1000000, 'Woah La Coaster', 'Blockwares', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-324')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 326, 1000000, 'Total Strangers', 'Artem Verkhovskiy x Andy Shaw', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-326')
-        , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 327, 1000000, '0.138194444444444', 'Santiago.', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-327')
+        , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 327, 1000000, '3:19', 'Santiago.', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-327')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 328, 1000000, 'Sudfah', 'Melissa Wiederrecht', 'Curated', '7', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-328')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 329, 1000000, 'Latent Spirits', 'Robert Hodgin', 'Playground', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-329')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 330, 1000000, 'Squares', 'Martin Grasser', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-330')
@@ -371,6 +371,7 @@
         
         -- switch to new contracts in October 2022
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 376, 1000000, 'Tide Predictor', 'LoVid', 'Curated', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-376')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 379, 1000000, 'ORI', 'James Merrill', 'Curated', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-379')
         
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 375, 1000000, 'Wabi Sabi', 'Kazuhiro Tanimoto', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-375')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 377, 1000000, 'Ingress', 'Paweł Dudko', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-377')
