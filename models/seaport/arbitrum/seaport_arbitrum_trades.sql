@@ -169,6 +169,7 @@ with source_ethereum_transactions as (
   select a.block_time
         ,a.tx_hash
         ,a.evt_index
+        ,a.block_number
         ,a.sender as seller
         ,a.receiver as buyer
         ,case when nft_cnt > 1 then 'bundle trade' 
@@ -302,6 +303,7 @@ with source_ethereum_transactions as (
     ,aggregator_address
 
     -- tx
+    ,block_number
     ,tx_hash
     ,evt_index
     ,tx_from
