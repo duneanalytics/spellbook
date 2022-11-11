@@ -26,6 +26,7 @@ models:
             - value_norm
             - spec_txn_type
             - contract_address
+            - trace_address 
     columns:
         - &tx_from
           name: tx_from
@@ -90,6 +91,9 @@ models:
         - &evt_block_date
           name: evt_block_date
           description: "Blockchain Transaction Block Time date trunced"
+        - &trace_address
+          name: trace_address
+          description: "trace address from traces table, empty for erc20 txs"
 
   - name: aztec_v2_ethereum_deposit_assets 
     meta:
