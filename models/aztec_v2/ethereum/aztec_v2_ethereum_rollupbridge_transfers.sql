@@ -59,10 +59,10 @@ eth_tfers as (
         FROM 
         {{ source('ethereum', 'traces') }}
         {% if not is_incremental() %}
-        WHERE evt_block_time >= '{{first_transfer_date}}'
+        WHERE block_time >= '{{first_transfer_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         AND `from` IN (SELECT contract_address FROM all_bridges)
         AND (LOWER(call_type) NOT IN ('delegatecall', 'callcode', 'staticcall') or call_type IS NULL)
@@ -75,10 +75,10 @@ eth_tfers as (
         FROM 
         {{ source('ethereum', 'traces') }}
         {% if not is_incremental() %}
-        WHERE evt_block_time >= '{{first_transfer_date}}'
+        WHERE block_time >= '{{first_transfer_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         AND `to` IN (SELECT contract_address FROM all_bridges)
         AND (LOWER(call_type) NOT IN ('delegatecall', 'callcode', 'staticcall') or call_type IS NULL)
