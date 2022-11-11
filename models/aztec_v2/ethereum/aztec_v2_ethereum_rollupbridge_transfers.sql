@@ -152,8 +152,7 @@ tfers_categorized as (
                 WHEN from_contract.contract_type = 'Bridge' THEN from_contract.version
                 ELSE NULL 
             END as bridge_version,
-            date_trunc('day', t.evt_block_time) as evt_block_date, -- for partitioning
-            t.trace_address
+            date_trunc('day', t.evt_block_time) as evt_block_date -- for partitioning
         FROM tfers_raw t
         LEFT JOIN {{ref('tokens_erc20')}} tk on t.contract_address = tk.contract_address AND tk.blockchain = 'ethereum'
         LEFT JOIN all_bridges to_contract on t.tx_to = to_contract.contract_address
