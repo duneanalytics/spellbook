@@ -94,7 +94,7 @@ v3_fills_no_bridge AS (
             SUBSTRING(fills.makerAssetData, 34, 40)                                    AS maker_token,
             fills.takerAssetFilledAmount                                               AS taker_token_amount_raw,
             fills.makerAssetFilledAmount                                               AS maker_token_amount_raw,
-            'Fill'                                                                     AS TYPE,
+            'Fill'                                                                     AS type,
             COALESCE(zeroex_tx.affiliate_address, fills.feeRecipientAddress)           AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL)                                            AS swap_flag,
             (fills.feeRecipientAddress = '0x86003b044f70dac0abc80ac8957305b6370893ed') AS matcha_limit_order_flag
@@ -124,7 +124,7 @@ v4_rfq_fills_no_bridge AS (
             fills.makerToken                AS maker_token,
             fills.takerTokenFilledAmount    AS taker_token_amount_raw,
             fills.makerTokenFilledAmount    AS maker_token_amount_raw,
-            'RfqOrderFilled'                AS TYPE,
+            'RfqOrderFilled'                AS type,
             zeroex_tx.affiliate_address     AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
@@ -150,7 +150,7 @@ v4_limit_fills_no_bridge AS (
             fills.makerToken AS maker_token,
             fills.takerTokenFilledAmount AS taker_token_amount_raw,
             fills.makerTokenFilledAmount AS maker_token_amount_raw,
-            'LimitOrderFilled' AS TYPE,
+            'LimitOrderFilled' AS type,
             COALESCE(zeroex_tx.affiliate_address, fills.feeRecipient) AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             (fills.feeRecipient = '0x86003b044f70dac0abc80ac8957305b6370893ed') AS matcha_limit_order_flag
@@ -176,7 +176,7 @@ otc_fills AS (
             fills.makerToken                AS maker_token,
             fills.takerTokenFilledAmount    AS taker_token_amount_raw,
             fills.makerTokenFilledAmount    AS maker_token_amount_raw,
-            'OtcOrderFilled'                AS TYPE,
+            'OtcOrderFilled'                AS type,
             zeroex_tx.affiliate_address     AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
@@ -203,7 +203,7 @@ ERC20BridgeTransfer AS (
             '0x' || substring(DATA, 91, 40)         AS maker_token,
             bytea2numeric(substring(DATA, 155, 40)) AS taker_token_amount_raw,
             bytea2numeric(substring(DATA, 219, 40)) AS maker_token_amount_raw,
-            'ERC20BridgeTransfer'                   AS TYPE,
+            'ERC20BridgeTransfer'                   AS type,
             zeroex_tx.affiliate_address             AS affiliate_address,
             TRUE                                    AS swap_flag,
             FALSE                                   AS matcha_limit_order_flag
@@ -231,7 +231,7 @@ BridgeFill AS (
             '0x' || substring(DATA, 155, 40)                AS maker_token,
             bytea2numeric('0x' || substring(DATA, 219, 40)) AS taker_token_amount_raw,
             bytea2numeric('0x' || substring(DATA, 283, 40)) AS maker_token_amount_raw,
-            'BridgeFill'                                    AS TYPE,
+            'BridgeFill'                                    AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
             FALSE                                           AS matcha_limit_order_flag
@@ -259,7 +259,7 @@ NewBridgeFill AS (
             '0x' || substring(DATA, 155, 40)                AS maker_token,
             bytea2numeric('0x' || substring(DATA, 219, 40)) AS taker_token_amount_raw,
             bytea2numeric('0x' || substring(DATA, 283, 40)) AS maker_token_amount_raw,
-            'NewBridgeFill'                                 AS TYPE,
+            'NewBridgeFill'                                 AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
             FALSE                                           AS matcha_limit_order_flag
@@ -287,7 +287,7 @@ direct_PLP AS (
             outputToken                 AS maker_token,
             inputTokenAmount            AS taker_token_amount_raw,
             outputTokenAmount           AS maker_token_amount_raw,
-            'LiquidityProviderSwap'     AS TYPE,
+            'LiquidityProviderSwap'     AS type,
             zeroex_tx.affiliate_address AS affiliate_address,
             TRUE                        AS swap_flag,
             FALSE                       AS matcha_limit_order_flag
@@ -326,7 +326,7 @@ direct_uniswapv2 AS (
                 WHEN swap.amount0In > swap.amount0Out THEN swap.amount1Out - swap.amount1In
                 ELSE swap.amount0Out - swap.amount0In
             END AS maker_token_amount_raw,
-            'Uniswap V2 Direct' AS TYPE,
+            'Uniswap V2 Direct' AS type,
             zeroex_tx.affiliate_address AS affiliate_address,
             TRUE AS swap_flag,
             FALSE AS matcha_limit_order_flag
@@ -367,7 +367,7 @@ direct_sushiswap AS (
                 WHEN swap.amount0In > swap.amount0Out THEN swap.amount1Out - swap.amount1In
                 ELSE swap.amount0Out - swap.amount0In
             END AS maker_token_amount_raw,
-            'Sushiswap Direct' AS TYPE,
+            'Sushiswap Direct' AS type,
             zeroex_tx.affiliate_address AS affiliate_address,
             TRUE AS swap_flag,
             FALSE AS matcha_limit_order_flag
@@ -399,7 +399,7 @@ direct_uniswapv3 AS (
             CASE
                 WHEN amount0 < '0' THEN abs(swap.amount0)
                 ELSE abs(swap.amount1) END                                                          AS maker_token_amount_raw,
-            'Uniswap V3 Direct'                                                                     AS TYPE,
+            'Uniswap V3 Direct'                                                                     AS type,
             zeroex_tx.affiliate_address                                                             AS affiliate_address,
             TRUE                                                                                    AS swap_flag,
             FALSE                                                                                   AS matcha_limit_order_flag
