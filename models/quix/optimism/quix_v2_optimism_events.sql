@@ -9,7 +9,7 @@
     )
 }}
 {% set quix_fee_address_address = "0xec1557a67d4980c948cd473075293204f4d280fd" %}
-{% set min_block_number = 2753613 %}
+{% set min_block_number = 2753614 %}
 
 
 with events_raw as (
@@ -87,7 +87,7 @@ with events_raw as (
       )
       {% if not is_incremental() %}
       -- smallest block number for source tables above
-      and tr.tx_block_number > '{{min_block_number}}'
+      and tr.tx_block_number >= '{{min_block_number}}'
       {% endif %}
       {% if is_incremental() %}
       and tr.tx_block_time >= date_trunc("day", now() - interval '1 week')
@@ -114,7 +114,7 @@ with events_raw as (
       )
       {% if not is_incremental() %}
       -- smallest block number for source tables above
-      and erc20.evt_block_number > '{{min_block_number}}'
+      and erc20.evt_block_number >= '{{min_block_number}}'
       {% endif %}
       {% if is_incremental() %}
       and erc20.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -179,7 +179,7 @@ join {{ source('optimism','transactions') }} as tx
     and er.block_number = tx.block_number
     {% if not is_incremental() %}
     -- smallest block number for source tables above
-    and tx.block_number > '{{min_block_number}}'
+    and tx.block_number >= '{{min_block_number}}'
     {% endif %}
     {% if is_incremental() %}
     and tx.block_time >= date_trunc("day", now() - interval '1 week')
@@ -198,7 +198,7 @@ left join {{ source('erc721_optimism','evt_transfer') }} as erct2
     and erct2.from=er.buyer
     {% if not is_incremental() %}
     -- smallest block number for source tables above
-    and erct2.evt_block_number > '{{min_block_number}}'
+    and erct2.evt_block_number >= '{{min_block_number}}'
     {% endif %}
     {% if is_incremental() %}
     and erct2.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -209,7 +209,7 @@ left join {{ source('erc20_optimism','evt_transfer') }} as erc20
     and erc20.to=er.seller
     {% if not is_incremental() %}
     -- smallest block number for source tables above
-    and erc20.evt_block_number > '{{min_block_number}}'
+    and erc20.evt_block_number >= '{{min_block_number}}'
     {% endif %}
     {% if is_incremental() %}
     and erc20.evt_block_time >= date_trunc("day", now() - interval '1 week')
