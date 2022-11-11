@@ -337,12 +337,18 @@ FROM (
       ,('0xC6387E937Bcef8De3334f80EDC623275d42457ff', 'Yearn')
       ,('0x4B9f696c998f9549485a3a85DcA692Fd6CCE491F', 'Flashstake')
       ,('0x652c46a302060B324A02d2d3e4a56e3DA07FA91b', 'Kwenta')
+      ,('0x5E28ffE6700C6643747f51349d7246202F1a3F25', 'Odos')
+      ,('0x2cc7A5c9D8AcA37395155cB200C98bA3b3516952', 'Atlantis World')
+      ,('0x810973bdC95221817c4Ca7999A78aFD25F6d0F6d', 'KyberSwap')
+      ,('0xC42e9476b0a458097087336e2395Dbf45B0BdC12', 'Pyth')
+
   ) as temp_table (creator_address, contract_project)
 
 ) f
 
 --filter out creators that we never want to map
 WHERE f.creator_address NOT IN (
-  LOWER('0xbb6e024b9cffacb947a71991e386681b1cd1477d')
+  LOWER('0xbb6e024b9cffacb947a71991e386681b1cd1477d') --gnosis singleton
+  ,LOWER('0xce0042B868300000d44A59004Da54A005ffdcf9f') --gnosis singleton
 )
 ;
