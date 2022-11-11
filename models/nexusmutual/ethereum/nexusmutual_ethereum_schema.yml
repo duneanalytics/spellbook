@@ -19,6 +19,7 @@ models:
             - evt_tx_hash
             - evt_index
             - cid
+            - blockchain
     columns:
       - &cid
         name: cid
