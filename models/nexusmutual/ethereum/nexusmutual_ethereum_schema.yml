@@ -18,8 +18,7 @@ models:
             - status_num
             - evt_tx_hash
             - evt_index
-            - curr
-            - premium
+            - block_hash
     columns:
       - &cid
         name: cid
