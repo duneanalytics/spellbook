@@ -46,44 +46,44 @@ FROM
                 unique_trade_id
         FROM {{ ref('opensea_v1_ethereum_events') }}
         UNION ALL
-        select   a.blockchain
-                ,a.project
-                ,a.version
-                ,a.block_time
-                ,a.token_id
-                ,a.collection
-                ,a.amount_usd
-                ,a.token_standard
-                ,case when a.trade_type <> 'Bundle Trade' and count(1) over (partition by tx_hash) > 1 then 'Bulk Purchase'
-                      else a.trade_type
+        SELECT   blockchain
+                ,project
+                ,version
+                ,block_time
+                ,token_id
+                ,collection
+                ,amount_usd
+                ,token_standard
+                ,case when trade_type <> 'Bundle Trade' and count(1) over (partition by tx_hash) > 1 then 'Bulk Purchase'
+                      else trade_type
                  end as trade_type
-                ,a.number_of_items
-                ,case when a.is_private then 'Private Sale' else a.trade_category end as trade_category -- Private sale can be purchasd by Buy/Offer accepted, but we surpress when it is Private sale here 
-                ,a.evt_type
-                ,a.seller
-                ,a.buyer
-                ,a.amount_original
-                ,a.amount_raw
-                ,a.currency_symbol
-                ,a.currency_contract
-                ,a.nft_contract_address
-                ,a.project_contract_address
-                ,a.aggregator_name
-                ,a.aggregator_address
-                ,a.tx_hash
-                ,a.block_number
-                ,a.tx_from
-                ,a.tx_to
-                ,a.platform_fee_amount_raw
-                ,a.platform_fee_amount
-                ,a.platform_fee_amount_usd
-                ,case when a.amount_raw > 0 then a.platform_fee_amount_raw / a.amount_raw * 100 end platform_fee_percentage
-                ,a.royalty_fee_amount_raw
-                ,a.royalty_fee_amount
-                ,a.royalty_fee_amount_usd
-                ,case when a.amount_raw > 0 then a.royalty_fee_amount_raw / a.amount_raw * 100 end royalty_fee_percentage
-                ,a.royalty_fee_receive_address
-                ,a.currency_symbol as royalty_fee_currency_symbol
-                ,a.unique_trade_id
-          from {{ ref('opensea_v3_ethereum_events') }}
+                ,number_of_items
+                ,case when is_private then 'Private Sale' else trade_category end as trade_category -- Private sale can be purchasd by Buy/Offer accepted, but we surpress when it is Private sale here 
+                ,evt_type
+                ,seller
+                ,buyer
+                ,amount_original
+                ,amount_raw
+                ,currency_symbol
+                ,currency_contract
+                ,nft_contract_address
+                ,project_contract_address
+                ,aggregator_name
+                ,aggregator_address
+                ,tx_hash
+                ,block_number
+                ,tx_from
+                ,tx_to
+                ,platform_fee_amount_raw
+                ,platform_fee_amount
+                ,platform_fee_amount_usd
+                ,case when amount_raw > 0 then platform_fee_amount_raw / amount_raw * 100 end platform_fee_percentage
+                ,royalty_fee_amount_raw
+                ,royalty_fee_amount
+                ,royalty_fee_amount_usd
+                ,case when amount_raw > 0 then royalty_fee_amount_raw / amount_raw * 100 end royalty_fee_percentage
+                ,royalty_fee_receive_address
+                ,currency_symbol as royalty_fee_currency_symbol
+                ,unique_trade_id
+          FROM {{ ref('opensea_v3_ethereum_events') }}
 )
