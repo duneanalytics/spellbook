@@ -24,6 +24,7 @@ models:
             - to_type
             - from_type
             - value_norm
+            - spec_txn_type
             - contract_address
     columns:
         - &tx_from
