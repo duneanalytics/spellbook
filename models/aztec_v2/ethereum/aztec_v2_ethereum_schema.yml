@@ -254,3 +254,5 @@ models:
           description: "bridge type, used to include aztec rollup, other spells depend on this"
         - name: contract_address
           description: "bridge address"
+          tests:
+            - unique
