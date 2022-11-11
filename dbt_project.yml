@@ -464,7 +464,6 @@ models:
         +schema: fraxswap_avalanche_c
         +materialized: view
 
-
     mstable:
       +schema: mstable
       +materialized: view
