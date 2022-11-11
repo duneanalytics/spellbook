@@ -33,8 +33,15 @@ WITH quo_evt AS (
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+),
+quo_cse_data as (
+    select * from (
+        select  *,
+            row_number() over(partition by cid order by evt_block_time desc) as time_rank
+        from {{ source('nexusmutual_ethereum', 'QuotationData_evt_CoverStatusEvent') }}
+    ) as quo_cse
+    where time_rank = 1
 )
-
 SELECT quo_evt.cid,
        quo_evt.contract_address,
        erc20.symbol,
@@ -75,10 +82,10 @@ INNER JOIN {{ source('ethereum','transactions') }} tx
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-INNER JOIN {{ ref('tokens_erc20') }} erc20
+LEFT JOIN {{ ref('tokens_erc20') }} erc20
     ON quo_evt.token = erc20.contract_address
     AND erc20.blockchain = 'ethereum'
-LEFT JOIN {{ source('nexusmutual_ethereum', 'QuotationData_evt_CoverStatusEvent') }} cse
+LEFT JOIN quo_cse_data cse
     ON quo_evt.cid = cse.cid
     {% if not is_incremental() %}
     AND cse.evt_block_time >= '{{project_start_date}}'
