@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'cover_block_number', 'status_num', 'evt_tx_hash', 'evt_index', 'cid', 'blockchain'],
+    unique_key = ['block_date', 'cover_block_number', 'status_num', 'evt_tx_hash', 'evt_index', 'cid', 'token_address'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "nexusmutual",
@@ -53,6 +53,7 @@ quo_cse_data as (
 )
 SELECT quo_evt.cid,
        quo_evt.contract_address,
+       quo_evt.token                                                AS token_address,
        erc20.symbol,
        quo_evt.evt_index,
        quo_evt.evt_tx_hash,
