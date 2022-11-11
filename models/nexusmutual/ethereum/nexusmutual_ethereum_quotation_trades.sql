@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'cover_block_number', 'status_num', 'evt_tx_hash', 'evt_index', 'curr', 'premium'],
+    unique_key = ['block_date', 'cover_block_number', 'status_num', 'evt_tx_hash', 'evt_index', 'block_hash'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "nexusmutual",
