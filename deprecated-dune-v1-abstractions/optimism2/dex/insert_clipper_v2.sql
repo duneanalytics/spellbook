@@ -103,16 +103,16 @@ RETURN r;
 END
 $function$;
 
--- fill 2022
-SELECT dex.insert_clipper_v2(
-    '2022-01-01',
-    now()
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2022-01-01'
-    AND block_time <= now() - interval '20 minutes'
-    AND project = 'Clipper'
-    AND version = '2'
-);
+-- -- fill 2022
+-- SELECT dex.insert_clipper_v2(
+--     '2022-01-01',
+--     now()
+-- )
+-- WHERE NOT EXISTS (
+--     SELECT *
+--     FROM dex.trades
+--     WHERE block_time > '2022-01-01'
+--     AND block_time <= now() - interval '20 minutes'
+--     AND project = 'Clipper'
+--     AND version = '2'
+-- );

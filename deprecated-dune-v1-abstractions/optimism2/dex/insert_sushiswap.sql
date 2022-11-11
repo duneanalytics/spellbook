@@ -122,18 +122,18 @@ RETURN r;
 END
 $function$;
 
--- launched may 13, 2022 - give a buffer for testing
-SELECT dex.insert_sushiswap(
-    '2022-05-01',
-    now()
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2022-05-01'
-    AND block_time <= now()
-    AND project = 'Sushiswap'
-);
+-- -- launched may 13, 2022 - give a buffer for testing
+-- SELECT dex.insert_sushiswap(
+--     '2022-05-01',
+--     now()
+-- )
+-- WHERE NOT EXISTS (
+--     SELECT *
+--     FROM dex.trades
+--     WHERE block_time > '2022-05-01'
+--     AND block_time <= now()
+--     AND project = 'Sushiswap'
+-- );
 /*
 INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$

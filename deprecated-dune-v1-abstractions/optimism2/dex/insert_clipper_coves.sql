@@ -110,24 +110,24 @@ RETURN r;
 END
 $function$;
 
--- fill 2022
-SELECT dex.insert_clipper_coves(
-    '2022-01-01',
-    now()
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2022-01-01'
-    AND block_time <= now() - interval '20 minutes'
-    AND project = 'Clipper'
-    AND version = 'coves1'
-);
+-- -- fill 2022
+-- SELECT dex.insert_clipper_coves(
+--     '2022-01-01',
+--     now()
+-- )
+-- WHERE NOT EXISTS (
+--     SELECT *
+--     FROM dex.trades
+--     WHERE block_time > '2022-01-01'
+--     AND block_time <= now() - interval '20 minutes'
+--     AND project = 'Clipper'
+--     AND version = 'coves1'
+-- );
 
-INSERT INTO cron.job (schedule, command)
-VALUES ('*/10 * * * *', $$
-    SELECT dex.insert_clipper_coves(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Clipper' AND version='coves1'),
-        (SELECT now() - interval '20 minutes'));
-$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+-- INSERT INTO cron.job (schedule, command)
+-- VALUES ('*/10 * * * *', $$
+--     SELECT dex.insert_clipper_coves(
+--         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Clipper' AND version='coves1'),
+--         (SELECT now() - interval '20 minutes'));
+-- $$)
+-- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

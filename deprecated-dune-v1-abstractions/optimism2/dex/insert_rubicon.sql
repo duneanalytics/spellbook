@@ -112,18 +112,18 @@ RETURN r;
 END
 $function$;
 
--- fill 2021 (post-regenesis 11-11)
-SELECT dex.insert_rubicon(
-    '2021-11-10',
-    now()
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2021-11-10'
-    AND block_time <= now() - interval '20 minutes'
-    AND project = 'Rubicon'
-);
+-- -- fill 2021 (post-regenesis 11-11)
+-- SELECT dex.insert_rubicon(
+--     '2021-11-10',
+--     now()
+-- )
+-- WHERE NOT EXISTS (
+--     SELECT *
+--     FROM dex.trades
+--     WHERE block_time > '2021-11-10'
+--     AND block_time <= now() - interval '20 minutes'
+--     AND project = 'Rubicon'
+-- );
 /*
 
 INSERT INTO cron.job (schedule, command)

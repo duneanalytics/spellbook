@@ -127,18 +127,18 @@ RETURN r;
 END
 $function$;
 
--- get started
-SELECT dex.insert_slingshot(
-    '2021-11-11',
-    now()
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2021-11-11'
-    AND block_time <= now()
-    AND project = 'Slingshot'
-);
+-- -- get started
+-- SELECT dex.insert_slingshot(
+--     '2021-11-11',
+--     now()
+-- )
+-- WHERE NOT EXISTS (
+--     SELECT *
+--     FROM dex.trades
+--     WHERE block_time > '2021-11-11'
+--     AND block_time <= now()
+--     AND project = 'Slingshot'
+-- );
 /*
 INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$

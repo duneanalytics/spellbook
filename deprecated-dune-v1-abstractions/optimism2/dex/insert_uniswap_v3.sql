@@ -117,18 +117,18 @@ RETURN r;
 END
 $function$;
 
--- fill 2021 (post-regenesis 11-11)
-SELECT dex.insert_uniswap_v3(
-    '2021-11-10',
-    now()
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2021-11-10'
-    AND block_time <= now() - interval '20 minutes'
-    AND project = 'Uniswap' AND version = '3'
-);
+-- -- fill 2021 (post-regenesis 11-11)
+-- SELECT dex.insert_uniswap_v3(
+--     '2021-11-10',
+--     now()
+-- )
+-- WHERE NOT EXISTS (
+--     SELECT *
+--     FROM dex.trades
+--     WHERE block_time > '2021-11-10'
+--     AND block_time <= now() - interval '20 minutes'
+--     AND project = 'Uniswap' AND version = '3'
+-- );
 /*
 
 INSERT INTO cron.job (schedule, command)

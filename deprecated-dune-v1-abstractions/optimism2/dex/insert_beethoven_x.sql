@@ -116,18 +116,18 @@ RETURN r;
 END
 $function$;
 
--- launched may, 2022 - give a buffer for testing
-SELECT dex.insert_beethoven_x(
-    '2022-05-01',
-    now()
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2022-05-01'
-    AND block_time <= now()
-    AND project = 'Beethoven X'
-);
+-- -- launched may, 2022 - give a buffer for testing
+-- SELECT dex.insert_beethoven_x(
+--     '2022-05-01',
+--     now()
+-- )
+-- WHERE NOT EXISTS (
+--     SELECT *
+--     FROM dex.trades
+--     WHERE block_time > '2022-05-01'
+--     AND block_time <= now()
+--     AND project = 'Beethoven X'
+-- );
 /*
 INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$
