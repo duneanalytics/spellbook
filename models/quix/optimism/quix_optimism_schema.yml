@@ -129,8 +129,3 @@ models:
       - &royalty_fee_currency_symbol
         name: royalty_fee_currency_symbol
         description: "Symbol of the token in which fees are paid out"
-      - &unique_trade_id
-        name: unique_trade_id
-        description:  "Unique trade ID"
-        tests:
-          - unique
