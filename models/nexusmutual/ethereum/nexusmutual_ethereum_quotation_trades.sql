@@ -1,15 +1,15 @@
 {{ config(
-	alias ='trades',
-	partition_by = ['block_date'],
-	materialized = 'incremental',
-	file_format = 'delta',
-	incremental_strategy = 'merge',
-	unique_key = ['block_date', 'cover_block_number', 'status_num', 'evt_tx_hash', 'evt_index'],
+    alias ='trades',
+    partition_by = ['block_date'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'cover_block_number', 'status_num', 'evt_tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "nexusmutual",
                                 \'["sharkxff"]\') }}'
-	)
+    )
 }}
 
 {% set project_start_date = '2019-07-12' %}
