@@ -206,5 +206,8 @@ FROM
 ,('0xefc0403c2d7ad01bc1595164be5cf595f2053419', 'BabyDinos', 'erc721')
 ,('0x3e7e82fb003caa50930f288c165f8e895f02117b', 'Opti Azuki Club', 'erc721')
 ,('0x7e6ae1bc06e329826e50aeebe1ff1b62bca412d4', 'Optigladiator', 'erc721')
+,('0xD6be31243599B2E5Bc650109cf8bB81EA8d6c150','Optimism City Pathfinder','erc721')
+,('0x5a72C065DFE67D1C4e2951Fff292b8714a98CF68','OP Bridgooor','erc721')
+,('0xc0FA2864749409e95bf76969Fbe7E3bD73c077Ca','Metaverse Cards','erc721')
 
 ) as temp_table (contract_address, name, standard)
