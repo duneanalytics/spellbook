@@ -6,15 +6,15 @@ FROM (VALUES
         ,('0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7', 'USDt', 6)
         ,('0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664', 'USDC.e', 6)
         ,('0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e', 'USDC', 6)
-        ,('0x19860ccb0a68fd4213ab9d8266f7bbf05a8dde98', 'BUSD.e', 18),
-        ,('0x02d980a0d7af3fb7cf7df8cb35d9edbcf355f665', 'SHIB.e', 18),
+        ,('0x19860ccb0a68fd4213ab9d8266f7bbf05a8dde98', 'BUSD.e', 18)
+        ,('0x02d980a0d7af3fb7cf7df8cb35d9edbcf355f665', 'SHIB.e', 18)
         ,('0xd586e7f844cea2f87f50152665bcbc2c279d8d70', 'DAI.e', 18)
         ,('0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7', 'WAVAX', 18)
         ,('0x50b7545627a5162f82a992c33b87adc75187b218', 'WBTC.e', 8)
         ,('0x8ebaf22b6f053dffeaf46f4dd9efa95d89ba8580', 'UNI.e', 18)
-        ,('0x5947bb275c521040051d82396192181b413227a3', 'LINK.e', 18),
+        ,('0x5947bb275c521040051d82396192181b413227a3', 'LINK.e', 18)
         ,('0xd24c2ad096400b6fbcd2ad8b24e7acbc21a1da64', 'FRAX', 18)
-        ,('0x63a72806098bd3d9520cc43356dd78afe5d386d9', 'AAVE.e', 18),
+        ,('0x63a72806098bd3d9520cc43356dd78afe5d386d9', 'AAVE.e', 18)
         ,('0x1c20e891bab6b1727d14da358fae2984ed9b59eb', 'TUSD', 18)
         ,('0xcf799767d366d789e8b446981c2d578e241fa25c', 'USDD', 18)
         ,('0x88128fd4b259552a9a1d457f435a6527aab72d42', 'MKR.e', 18)
