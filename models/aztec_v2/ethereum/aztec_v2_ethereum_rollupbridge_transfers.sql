@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['bridge_protocol', 'bridge_address', 'tx_from', 'tx_to', 'broad_txn_type', 'to_type', 'from_type', 'bridge_version', 'evt_block_time', 'evt_tx_hash', 'evt_index', 'value_norm', 'contract_address', 'spec_txn_type', 'trace_address'],
+    unique_key = ['tx_from', 'tx_to', 'value', 'contract_address', 'evt_tx_hash', 'evt_index', 'broad_txn_type', 'spec_txn_type', 'to_protocol', 'from_protocol', 'bridge_address', 'trace_address'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "aztec_v2",
@@ -118,6 +118,7 @@ tfers_raw as (
 tfers_categorized as (
         SELECT 
             t.*, 
+            date_trunc('day', t.evt_block_time) as evt_block_date,
             tk.symbol, 
             tk.decimals, 
             t.value / POW(10, coalesce(tk.decimals, 18)) as value_norm,
@@ -151,10 +152,9 @@ tfers_categorized as (
                 WHEN to_contract.contract_type = 'Bridge' THEN to_contract.version
                 WHEN from_contract.contract_type = 'Bridge' THEN from_contract.version
                 ELSE NULL 
-            END as bridge_version,
-            date_trunc('day', t.evt_block_time) as evt_block_date -- for partitioning
+            END as bridge_version
         FROM tfers_raw t
-        LEFT JOIN {{ref('tokens_erc20')}} tk on t.contract_address = tk.contract_address AND tk.blockchain = 'ethereum'
+        LEFT JOIN {{ref('tokens_erc20')}}  tk on t.contract_address = tk.contract_address AND tk.blockchain = 'ethereum'
         LEFT JOIN all_bridges to_contract on t.tx_to = to_contract.contract_address
         LEFT JOIN all_bridges from_contract on t.tx_from = from_contract.contract_address
 )
