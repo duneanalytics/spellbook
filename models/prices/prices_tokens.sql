@@ -127,7 +127,7 @@ VALUES
     ("wbtc-wrapped-bitcoin", "avalanche_c", "WBTC", "0x50b7545627a5162f82a992c33b87adc75187b218", 8),
     ("bets-betswirl", "avalanche_c", "BETS", "0xc763f8570A48c4c00C80B76107cbE744dDa67b79", 18),
     ("thor-thor", "avalanche_c", "THOR", "0x8f47416cae600bccf9530e9f3aeaa06bdd1caa79", 18),
-    ("usdte-tether-usde","avalanche_c","USDT.e","0xc7198437980c041c805a1edcba50c1ce5db95118",6)
+    ("usdte-tether-usde","avalanche_c","USDT.e","0xc7198437980c041c805a1edcba50c1ce5db95118",6),
     ("usdce-usd-coine","avalanche_c","USDC.e","0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664",6),
     ("tusd-trueusd","avalanche_c","TUSD","0x1c20e891bab6b1727d14da358fae2984ed9b59eb",18),
     ("usdd-usdd","avalanche_c","USDD","0xcf799767d366d789e8b446981c2d578e241fa25c",18),
