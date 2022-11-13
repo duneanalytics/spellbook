@@ -15,7 +15,7 @@
 {% set project_start_date = '2020-05-28' %}
 
 WITH dexs AS
-(     - "Masset_evt_Swapped"
+(     
     SELECT
         evt_block_time AS block_time,
         'mStable' AS project,
