@@ -18,7 +18,7 @@ WITH dexs AS
 (     
     SELECT
         evt_block_time AS block_time,
-        'mStable' AS project,
+        'mstable' AS project,
         'masset' AS version,
         swapper AS taker,
         cast(NULL as string) AS maker,
@@ -44,7 +44,7 @@ WITH dexs AS
 
     SELECT
         evt_block_time AS block_time,
-        'mStable' AS project,
+        'mstable' AS project,
         'feederpool' AS version,
         swapper AS taker,
         cast(NULL as string) AS maker,
