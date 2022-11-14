@@ -55,5 +55,5 @@ LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', evt
     AND p.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 {% if is_incremental() %}
-WHERE evt_block_time > (select max(evt_block_time) from {{ this }})
+WHERE evt_block_time > (select max(block_time) from {{ this }})
 {% endif %}

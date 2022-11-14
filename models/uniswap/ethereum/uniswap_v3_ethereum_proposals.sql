@@ -69,5 +69,5 @@ LEFT JOIN {{ source('uniswap_v3_ethereum', 'GovernorBravoDelegate_evt_ProposalCa
 LEFT JOIN {{ source('uniswap_v3_ethereum', 'GovernorBravoDelegate_evt_ProposalExecuted') }} pex ON pex.id = pcr.id
 LEFT JOIN {{ source('uniswap_v3_ethereum', 'GovernorBravoDelegate_evt_ProposalQueued') }} pqu ON pex.id = pcr.id
 {% if is_incremental() %}
-WHERE pcr.evt_block_time > (select max(pcr.evt_block_time) from {{ this }})
+WHERE pcr.evt_block_time > (select max(created_at) from {{ this }})
 {% endif %}
