@@ -147,7 +147,6 @@ models:
             - token_id
             - seller
             - evt_index
-
     columns:
        - *blockchain
        - *project
@@ -156,7 +155,7 @@ models:
        - *token_id
        - *collection
        - *amount_usd
-       - *standard
+       - *token_standard
        - *trade_type
        - *number_of_items
        - *trade_category
