@@ -289,14 +289,9 @@ models:
         description: "UTC event block time of each DAO vote"
       - name: tx_hash
         description: "Unique transaction hash value tied to each vote on the DAO"
-      - &dao_name
-        name: dao_name
-        description: "DAO name"
-      - &dao_address
-        name: dao_address
-        description: "DAO wallet address"
-      - &proposal_id
-        name: proposal_id
+      - *dao_name
+      - *dao_address
+      - *proposal_id
       - &votes_for
         name: votes_for
       - &votes_against
