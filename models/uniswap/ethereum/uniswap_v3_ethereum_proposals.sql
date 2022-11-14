@@ -55,8 +55,8 @@ SELECT
     csv.votes_total,
     csv.number_of_voters,
     csv.votes_total / 1e9 * 100 AS participation, -- Total votes / Total supply (1B for Uniswap)
-    pcr.start_block,
-    pcr.end_block,
+    pcr.startBlock as start_block,
+    pcr.endBlock as end_block,
     CASE WHEN now() > pqu.evt_block_time AND startBlock > pcr.evt_block_number THEN 'Queued'
          WHEN pcr.startBlock < pcr.evt_block_number < pcr.endBlock THEN 'Active'
          WHEN pex.id is not null and now() > pex.evt_block_time THEN 'Executed' 
