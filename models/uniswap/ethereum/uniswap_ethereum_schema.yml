@@ -260,7 +260,7 @@ models:
         name: token_address
       - &votes_value_usd
         name: votes_value_usd
-        description: "Value in USD corresponding to the governance tokens used to vote on a given proposal"
+        description: "USD amount of governance tokens used at the time of the vote"
       - &voter_address
         name: voter_address
       - &support
