@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: addresses_optimism_airdrop_1
+  - name: airdrop_optimism_addresses_1
     meta:
       blockchain: optimism
       sector: cex
