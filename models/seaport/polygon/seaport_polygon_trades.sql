@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'tx_hash','evt_index','nft_contract_address','token_id'],
+    unique_key = ['block_date', 'tx_hash', 'evt_index', 'nft_contract_address', 'token_id', 'sub_idx'],
     post_hook='{{ expose_spells(\'["polygon"]\',
                             "project",
                             "seaport",
@@ -229,6 +229,7 @@ with source_ethereum_transactions as (
           ,a.creator_fee_amount_raw / power(10, e.decimals) * p.price as creator_fee_amount_usd
           ,agg.name as aggregator_name
           ,agg.contract_address AS aggregator_address
+          ,sub_idx
           ,'seaport-' || tx_hash || '-' || evt_index || '-' || nft_contract_address || '-' || nft_token_id || '-' || sub_idx as unique_trade_id
   from iv_nfts a
   inner join source_ethereum_transactions t on t.hash = a.tx_hash
@@ -314,6 +315,7 @@ with source_ethereum_transactions as (
     ,zone as zone_address
     ,estimated_price
     ,is_private
+    ,sub_idx
 
     -- unique key    
     ,unique_trade_id
