@@ -10,6 +10,14 @@ models:
       tags: ['polygon','seaport','base_pairs','sohwak']
     description: >
         Exploded table from Seaport trade events with `offer` and `consideration` array columns
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+            - sub_type
+            - sub_idx
     columns:
       - &block_time    
         name: block_time
