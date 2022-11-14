@@ -285,10 +285,10 @@ models:
         description: "Project name of the DAO"
       - name: version
         description: "Version of the contract built and deployed by the DAO project"
-      - name: block_time
-        description: "UTC event block time of each DAO vote"
+      - name: created_at
+        description: "UTC event block time at which the proposal was created"
       - name: tx_hash
-        description: "Unique transaction hash value tied to each vote on the DAO"
+        description: "Unique transaction hash value tied to each DAO proposal"
       - *dao_name
       - *dao_address
       - *proposal_id
@@ -298,7 +298,7 @@ models:
         name: votes_against
       - &votes_total
         name: votes_total
-        description: "Total number of governance tokens used to vote on a given proposal"
+        description: "Total number of governance tokens used to vote on a given DAO proposal"
       - &number_of_voters
         name: number_of_voters
       - &participation

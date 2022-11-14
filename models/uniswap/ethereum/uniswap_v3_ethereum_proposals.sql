@@ -42,7 +42,7 @@ SELECT
     '{{blockchain}}' as blockchain,
     '{{project}}' as project,
     '{{project_version}}' as version,
-    pcr.evt_block_time as block_time,
+    pcr.evt_block_time as created_at,
     date_trunc('DAY', pcr.evt_block_time) AS block_date,
     pcr.evt_tx_hash as tx_hash, -- Proposal Created tx hash
     '{{dao_name}}' as dao_name,
