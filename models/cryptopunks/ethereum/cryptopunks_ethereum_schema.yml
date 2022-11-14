@@ -202,3 +202,20 @@ models:
         description: "Number of attributes"
       - name: attribute_list 
         description: "Attribute list"
+
+  - name: cryptopunks_ethereum_current_listings
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [cat]
+    config:
+      tags: ['ethereum', 'cryptopunks', 'listings']
+    description: > 
+        CryptoPunks currently open listings
+    columns:
+      - name: punk_id
+        description: "CryptoPunk ID #"
+      - name: listed_price
+        description: "Listed price (ETH)"
+      - name: listing_created_at
+        description: "Time listings was created"

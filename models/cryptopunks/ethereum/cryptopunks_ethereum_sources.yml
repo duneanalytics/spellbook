@@ -10,3 +10,9 @@ sources:
         loaded_at_field: evt_block_time
       - name: CryptoPunksMarket_evt_PunkBidEntered
         loaded_at_field: evt_block_time
+      - name: CryptoPunksMarket_evt_PunkOffered
+        loaded_at_field: evt_block_time
+      - name: CryptoPunksMarket_evt_PunkNoLongerForSale
+        loaded_at_field: evt_block_time
+      - name: CryptoPunksMarket_evt_PunkTransfer
+        loaded_at_field: evt_block_time
