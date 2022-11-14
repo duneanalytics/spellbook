@@ -97,11 +97,13 @@ WITH rows AS (
         AND pa.contract_address = dexs.token_a_address
         AND pa.hour >= start_ts
         AND pa.hour < end_ts
+        AND pa.symbol NOT IN (SELECT symbol FROM prices.prices_exclude_tokens)
     LEFT JOIN prices.approx_prices_from_dex_data pb
       ON pb.hour = date_trunc('hour', dexs.block_time)
         AND pb.contract_address = dexs.token_b_address
         AND pb.hour >= start_ts
         AND pb.hour < end_ts
+        AND pb.symbol NOT IN (SELECT symbol FROM prices.prices_exclude_tokens)
 
     -- update if we have new info on prices or the erc20
     ON CONFLICT (project, tx_hash, evt_index, trade_id)
@@ -118,19 +120,19 @@ RETURN r;
 END
 $function$;
 
--- fill 2021 (post-regenesis 11-11)
-delete FROM dex.trades WHERE project='Kwenta';
-SELECT dex.insert_kwenta(
-    '2021-11-10',
-    now()
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2021-11-10'
-    AND block_time <= now()
-    AND project = 'Kwenta'
-);
+-- -- fill 2021 (post-regenesis 11-11)
+-- delete FROM dex.trades WHERE project='Kwenta';
+-- SELECT dex.insert_kwenta(
+--     '2021-11-10',
+--     now()
+-- )
+-- WHERE NOT EXISTS (
+--     SELECT *
+--     FROM dex.trades
+--     WHERE block_time > '2021-11-10'
+--     AND block_time <= now()
+--     AND project = 'Kwenta'
+-- );
 /*
 
 INSERT INTO cron.job (schedule, command)
