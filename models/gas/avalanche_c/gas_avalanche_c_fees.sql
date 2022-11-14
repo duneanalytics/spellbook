@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'avalanche_c_fees',
+    alias = 'fees',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

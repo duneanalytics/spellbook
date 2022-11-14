@@ -1,7 +1,7 @@
 {{ config(
     schema = 'element_bnb',
     alias = 'events',
-    partition_by = ['block_time'],
+    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -19,7 +19,7 @@ WITH element_txs AS (
         , 'erc721' AS token_standard
         , 'Single Item Trade' AS trade_type
         , 1 AS number_of_items
-        , 'Sell' AS trade_category
+        , 'Offer Accepted' AS trade_category
         , ee.maker AS seller
         , ee.taker AS buyer
         , ee.erc20TokenAmount AS amount_raw
@@ -73,7 +73,7 @@ WITH element_txs AS (
         , 'erc1155' AS token_standard
         , 'Single Item Trade' AS trade_type
         , 1 AS number_of_items
-        , 'Sell' AS trade_category
+        , 'Offer Accepted' AS trade_category
         , ee.maker AS seller
         , ee.taker AS buyer
         , ee.erc20FillAmount AS amount_raw
@@ -121,6 +121,7 @@ SELECT alet.blockchain
 , alet.project
 , alet.version
 , alet.block_time
+, date_trunc('day', alet.block_time) AS block_date
 , alet.token_id
 , bnb_nft_tokens.name AS collection
 , alet.amount_raw/POWER(10, bnb_bep20_tokens.decimals)*prices.price AS amount_usd
