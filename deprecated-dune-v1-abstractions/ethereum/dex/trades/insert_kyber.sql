@@ -199,6 +199,28 @@ WITH rows AS (
         AND t.evt_block_time >= start_ts AND t.evt_block_time < end_ts
 
         UNION ALL
+        SELECT
+            t.evt_block_time AS block_time,
+            'Kyber' AS project,
+            'elastic' AS version,
+            'DEX' AS category,
+            t."sender" AS trader_a,
+            t."recipient" AS trader_b,
+            CASE WHEN "deltaQty0" < 0 THEN -1*"deltaQty0" ELSE "deltaQty0" END AS token_a_amount_raw,
+            CASE WHEN "deltaQty1" < 0 THEN -1*"deltaQty1" ELSE "deltaQty1" END AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            f.token0 AS token_a_address,
+            f.token1 AS token_b_address,
+            t.contract_address AS exchange_contract_address,
+            t.evt_tx_hash AS tx_hash,
+            NULL::integer[] AS trace_address,
+            t.evt_index
+        FROM
+            kyber."Elastic_Pool_evt_Swap" t
+        INNER JOIN kyber."Elastic_Factory_evt_PoolCreated" f ON f.pool = t.contract_address 
+        AND t.evt_block_time >= start_ts AND t.evt_block_time < end_ts
+
+        UNION ALL
 
         -- from Aggregator 
         SELECT

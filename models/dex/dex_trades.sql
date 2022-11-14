@@ -3,7 +3,7 @@
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism"]\',
                                 "sector",
                                 "dex",
-                                \'["jeff-dude", "hosuke", "0xRob", "pandajackson42", "Henrystats", "scoffie","tian7", "zhongyiio", "justabi"]\') }}'
+                                \'["jeff-dude", "hosuke", "0xRob", "pandajackson42", "Henrystats", "scoffie","tian7", "zhongyiio", "justabi", "umer_h_adil"]\') }}'
         )
 }}
 
@@ -11,7 +11,7 @@
 'uniswap_trades'
 ,'sushiswap_trades'
 ,'fraxswap_trades'
-,'curvefi_ethereum_trades'
+,'curvefi_trades'
 ,'airswap_ethereum_trades'
 ,'clipper_ethereum_trades'
 ,'shibaswap_ethereum_trades'
@@ -21,6 +21,7 @@
 ,'pancakeswap_trades'
 ,'dodo_ethereum_trades'
 ,'bancor_ethereum_trades'
+,'platypus_finance_avalanche_c_trades'
 ,'hashflow_ethereum_trades'
 ] %}
 
