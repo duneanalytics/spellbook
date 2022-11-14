@@ -4,7 +4,7 @@
                                     "labels",
                                     \'["hildobby","soispoke"]\') }}')}}
 
-SELECT blockchain, lower(address), name, category, contributor, source, created_at, updated_at
+SELECT blockchain, lower(address) as address, name, category, contributor, source, created_at, updated_at
 FROM (VALUES
     -- Binance, Source: https://etherscan.io/accounts/label/binance
     (array('ethereum'),'0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be', 'Binance 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
