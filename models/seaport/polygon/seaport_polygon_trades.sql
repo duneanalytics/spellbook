@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['tx_hash','evt_index','nft_contract_address','token_id'],
+    unique_key = ['block_date', 'tx_hash','evt_index','nft_contract_address','token_id'],
     post_hook='{{ expose_spells(\'["polygon"]\',
                             "project",
                             "seaport",
