@@ -156,8 +156,7 @@ SELECT
     t.evt_tx_hash AS tx_hash,
     '' AS trace_address,
     t.evt_index
-FROM
-    bancor3_ethereum.BancorNetwork_evt_TokensTraded t
+FROM {{ source('bancor3_ethereum', 'BancorNetwork_evt_TokensTraded') }} t
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
