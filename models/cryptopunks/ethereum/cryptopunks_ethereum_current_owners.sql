@@ -317,7 +317,7 @@ from
         select  evt_block_time 
                 , `from` as wallet
                 , -1 as punk_balance
-        from {{ ref('transfers_ethereum_erc20') }}
+        from {{ source('erc20_ethereum','evt_transfer') }}
         where contract_address = lower('0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB') -- cryptopunks
         
         union all 
@@ -325,7 +325,7 @@ from
         select  evt_block_time
                 , `to` as wallet
                 , 1 as punk_balance
-        from {{ ref('transfers_ethereum_erc20') }}
+        from {{ source('erc20_ethereum','evt_transfer') }}
         where contract_address = lower('0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB') -- cryptopunks
     ) a
     group by 1 
