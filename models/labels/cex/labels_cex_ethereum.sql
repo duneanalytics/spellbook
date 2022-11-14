@@ -2,9 +2,9 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",
-                                    \'["hildobby"]\') }}')}}
+                                    \'["hildobby","soispoke"]\') }}')}}
 
-SELECT blockchain, address, name, category, contributor, source, created_at, updated_at
+SELECT blockchain, lower(address), name, category, contributor, source, created_at, updated_at
 FROM (VALUES
     -- Binance, Source: https://etherscan.io/accounts/label/binance
     (array('ethereum'),'0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be', 'Binance 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
@@ -39,6 +39,7 @@ FROM (VALUES
     , (array('ethereum'), '0x141fef8cd8397a390afe94846c8bd6f4ab981c48', 'Binance 32', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x50d669f43b484166680ecc3670e4766cdb0945ce', 'Binance 33', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x2f7e209e0f5f645c7612d7610193fe268f118b28', 'Binance 34', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
+    , (array('ethereum'), '0x5a52E96BAcdaBb82fd05763E25335261B270Efcb', 'Binance 36', 'cex', 'soispoke', 'static', timestamp('2022-11-14'), now())
     , (array('ethereum'), '0x8b99f3660622e21f2910ecca7fbe51d654a1517d', 'Binance Charity', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0xab83d182f3485cf1d6ccdd34c7cfef95b4c08da4', 'Binance JEX', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0xc365c3315cf926351ccaf13fa7d19c8c4058c8e1', 'Binance Pool', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
@@ -46,6 +47,11 @@ FROM (VALUES
     , (array('ethereum'), '0x4fabb145d64652a948d72533023f6e7a623c7c53', 'Binance USD', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x2f47a1c2db4a3b78cda44eade915c3b19107ddcc', 'Binance Eth2 Depositor', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0xb3f923eabaf178fc1bd8e13902fc5c61d3ddef5b', 'Wintermute Binance Deposit', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
+    , (array('ethereum'), '0xf977814e90da44bfa03b6295a0616a897441acec', 'Binance: BTC Proof of Assets', 'cex', 'soispoke', 'static', timestamp('2022-11-14'), now())
+    , (array('ethereum'), '0x47ac0fb4F2d84898e4d9e7b4dab3c24507a6d503', 'Binance: Stablecoin Proof of Assets', 'cex', 'soispoke', 'static', timestamp('2022-11-14'), now())
+    , (array('ethereum'), '0x9be89d2a4cd102d8fecc6bf9da793be995c22541', 'Binance: ETH and ERC20 tokens Proof of Assets', 'cex', 'soispoke', 'static', timestamp('2022-11-14'), now())
+    , (array('ethereum'), '0x7884f51dc1410387371ce61747cb6264e1daee0b', 'Binance: DOT Proof of Assets', 'cex', 'soispoke', 'static', timestamp('2022-11-14'), now())
+    , (array('ethereum'), '0xff0a024b66739357c4ed231fb3dbc0c8c22749f5', 'Binance: WRX Proof of Assets', 'cex', 'soispoke', 'static', timestamp('2022-11-14'), now())
     -- FTX, Source: https://etherscan.io/accounts/label/ftx
     , (array('ethereum'), '0x2faf487a4414fe77e2327f0bf4ae2a264a776ad2', 'FTX 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0xc098b2a3aa256d2140208c3de6543aaef5cd3a94', 'FTX 2', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
@@ -196,6 +202,9 @@ FROM (VALUES
     -- Crypto.com, Source: https://etherscan.io/accounts/label/crypto-com
     , (array('ethereum'), '0x6262998ced04146fa42253a5c0af90ca02dfd2a3', 'Crypto.com 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x46340b20830761efd32832a74d7169b29feb9758', 'Crypto.com 2', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
+    , (array('ethereum'), '0x72A53cDBBcc1b9efa39c834A540550e23463AAcB', 'Crypto.com 3', 'cex', 'soispoke', 'static', timestamp('2022-11-14'), now())
+    , (array('ethereum'), '0x7758e507850da48cd47df1fb5f875c23e3340c50', 'Crypto.com 4', 'cex', 'soispoke', 'static', timestamp('2022-11-14'), now())
+    , (array('ethereum'), '0xcffad3200574698b78f32232aa9d63eabd290703', 'Crypto.com 5', 'cex', 'soispoke', 'static', timestamp('2022-11-14'), now())
     -- Gemini, Source: https://etherscan.io/accounts/label/gemini
     , (array('ethereum'), '0xd24400ae8bfebb18ca49be86258a3c749cf46853', 'Gemini 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x6fc82a5fe25a5cdb58bc74600a40a69c065263f8', 'Gemini 2', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
