@@ -114,6 +114,13 @@ models:
       tags: ['polygon','seaport','base_pairs','sohwak']
     description: >
         Seaport trades on Polygon
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - nft_contract_address
+            - token_id
     columns:
       - &blockchain
         name: blockchain
