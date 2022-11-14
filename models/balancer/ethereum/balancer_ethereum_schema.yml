@@ -31,3 +31,32 @@ models:
       - &cumulative_amount
         name: cumulative_amount
         description: 'Balance of a token'
+
+  - name: balancer_ethereum_view_bpt_prices
+    meta:
+      blockchain: ethereum
+      project: balancer
+      contributors: victorstefenon
+    config:
+      tags: ['ethereum', 'bpt', 'prices']
+    description: >
+      Balancer Pool Token (BPT) hourly median price by pool on Balancer, an automated portfolio manager and trading platform.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - hour
+            - contract_address
+    columns:
+      - &hour
+        name: hour
+        description: 'UTC event block time truncated to the hour mark'
+        tests:
+          - not_null
+      - &contract_address
+        name: contract_address
+        description: 'Balancer pool contract address'
+        tests:
+          - not_null
+      - &median_price
+        name: median_price
+        description: 'BPT median price'
