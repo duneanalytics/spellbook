@@ -38,7 +38,7 @@ SELECT COUNT(DISTINCT voter) as number_of_voters,
 from cte_support
 GROUP BY proposalId)
 
-SELECT 
+SELECT DISTINCT
     '{{blockchain}}' as blockchain,
     '{{project}}' as project,
     '{{project_version}}' as version,
@@ -57,10 +57,11 @@ SELECT
     csv.votes_total / 1e9 * 100 AS participation, -- Total votes / Total supply (1B for Uniswap)
     pcr.startBlock as start_block,
     pcr.endBlock as end_block,
-    CASE WHEN now() > pqu.evt_block_time AND startBlock > pcr.evt_block_number THEN 'Queued'
-         WHEN pcr.startBlock < pcr.evt_block_number < pcr.endBlock THEN 'Active'
+    CASE 
          WHEN pex.id is not null and now() > pex.evt_block_time THEN 'Executed' 
          WHEN pca.id is not null and now() > pca.evt_block_time THEN 'Canceled'
+         WHEN pcr.startBlock < pcr.evt_block_number < pcr.endBlock THEN 'Active'
+         WHEN now() > pqu.evt_block_time AND startBlock > pcr.evt_block_number THEN 'Queued'
          ELSE 'Defeated' END AS status,
     description as description
 FROM  {{ source('uniswap_v3_ethereum', 'GovernorBravoDelegate_evt_ProposalCreated') }} pcr

@@ -294,7 +294,9 @@ models:
         description: "Unique transaction hash value tied to each DAO proposal"
       - *dao_name
       - *dao_address
-      - *proposal_id
+      - name: proposal_id
+        tests:
+          - unique
       - &votes_for
         name: votes_for
       - &votes_against
