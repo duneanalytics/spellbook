@@ -70,7 +70,9 @@ models:
       - *blockchain
       - *project
       - *version
-      - *block_time
+      - &create_at
+        name: created_at
+        description: "UTC event block time at which the proposal was created"
       - *tx_hash
       - *dao_name
       - *dao_address

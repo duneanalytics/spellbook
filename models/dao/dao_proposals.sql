@@ -18,7 +18,7 @@ FROM (
         blockchain,
         project,
         version,
-        block_time,
+        created_at,
         tx_hash,
         dao_name,
         dao_address,
