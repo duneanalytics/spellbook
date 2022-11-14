@@ -58,6 +58,14 @@ FROM
                  collection_name, 
                  artist_name, 
                  art_collection_unique_id
-        FROM {{ ref('nft_ethereum_metadata_proof_grails_ii') }}           
-
+        FROM {{ ref('nft_ethereum_metadata_proof_grails_ii') }}    
+        UNION
+        SELECT
+                 contract_address, 
+                 project_id, 
+                 project_id_base_value, 
+                 collection_name, 
+                 artist_name, 
+                 art_collection_unique_id
+        FROM {{ ref('nft_ethereum_metadata_verse') }}    
 )
