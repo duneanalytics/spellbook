@@ -4,7 +4,7 @@
                                     "labels",
                                     \'["soispoke"]\') }}')}}
 
-SELECT blockchain, lower(address), name, category, contributor, source, created_at, updated_at
+SELECT blockchain, lower(address) as address, name, category, contributor, source, created_at, updated_at
 FROM (VALUES
     -- Binance
     (array('bnb'), '0x631Fc1EA2270e98fbD9D92658eCe0F5a269Aa161', 'Binance 1', 'cex', 'soispoke', 'static', timestamp('2022-08-28'), now()),
