@@ -15,7 +15,7 @@
 
 {% set zeroex_v4_nft_start_date = '2022-03-01' %}
 
---sample query on dune v2: https://dune.com/queries/1606793
+--sample query on dune v2: https://dune.com/queries/1607746 
 WITH tbl_cte_transaction AS
 (
     SELECT  evt_block_time
