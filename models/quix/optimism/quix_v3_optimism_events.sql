@@ -24,7 +24,7 @@ with events_raw as (
             ,evt_block_time as block_time
             ,buyer
             ,seller
-            ,erc721address as nft_contract_address
+            ,contractAddress as nft_contract_address
             ,price as amount_raw
         from {{ source('quixotic_v3_optimism','ExchangeV3_evt_BuyOrderFilled') }}
         {% if is_incremental() %} -- this filter will only be applied on an incremental run
@@ -41,7 +41,7 @@ with events_raw as (
             ,evt_block_time as block_time
             ,buyer
             ,seller
-            ,erc721address as nft_contract_address
+            ,contractAddress as nft_contract_address
             ,price as amount_raw
         from {{ source('quixotic_v3_optimism','ExchangeV3_evt_DutchAuctionFilled') }}
         {% if is_incremental() %} -- this filter will only be applied on an incremental run
@@ -58,7 +58,7 @@ with events_raw as (
             ,evt_block_time as block_time
             ,buyer
             ,seller
-            ,erc721address as nft_contract_address
+            ,contractAddress as nft_contract_address
             ,price as amount_raw
         from {{ source('quixotic_v3_optimism','ExchangeV3_evt_SellOrderFilled') }}
         {% if is_incremental() %} -- this filter will only be applied on an incremental run
