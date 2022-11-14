@@ -54,3 +54,22 @@ models:
       - *source
       - *created_at
       - *updated_at
+
+  - name: labels_cex_bnb
+    meta:
+      blockchain: bnb
+      sector: labels
+      project: cex
+      contributors: soispoke
+    config:
+      tags: ['labels', 'bnb', 'cex']
+    description: "Known centralised exchange addresses on BNB chain"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
