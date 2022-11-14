@@ -21,8 +21,7 @@
       {% set results = runner.rows[0][0] %}
    {% endif %}
 
-   {{ log('hello') }}
-
+   {{ log('hello world', info=True) }}
    '{{ results }}'
    
 {% endmacro %}
