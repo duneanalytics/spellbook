@@ -43,7 +43,7 @@ WITH rows AS (
         coalesce(
             usd_amount,
             token_a_amount_raw / 10 ^ erc20a.decimals * pa.median_price,
-            token_b_amount_raw / 10 ^ erc20b.decimals * pb.median_price,
+            token_b_amount_raw / 10 ^ erc20b.decimals * pb.median_price
         ) as usd_amount,
         token_a_address,
         token_b_address,
@@ -131,11 +131,13 @@ WITH rows AS (
         AND pa.contract_address = dexs.token_a_address
         AND pa.hour >= start_ts
         AND pa.hour < end_ts
+        AND pa.symbol NOT IN (SELECT symbol FROM prices.prices_exclude_tokens)
     LEFT JOIN prices.approx_prices_from_dex_data pb
       ON pb.hour = date_trunc('hour', dexs.block_time)
         AND pb.contract_address = dexs.token_b_address
         AND pb.hour >= start_ts
         AND pb.hour < end_ts
+        AND pb.symbol NOT IN (SELECT symbol FROM prices.prices_exclude_tokens)
     WHERE dexs.block_time >= start_ts
     AND dexs.block_time < end_ts
     ON CONFLICT DO UPDATE SET 
@@ -149,27 +151,27 @@ RETURN r;
 END
 $function$;
 
--- fill 2021
-SELECT dex.insert_kyber(
-    '2021-01-01',
-    now(),
-    (SELECT max(number) FROM bsc.blocks WHERE time < '2021-01-01'),
-    (SELECT MAX(number) FROM bsc.blocks where time < now() - interval '20 minutes')
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2021-01-01'
-    AND block_time <= now() - interval '20 minutes'
-    AND project = 'Kyber'
-);
+-- -- fill 2021
+-- SELECT dex.insert_kyber(
+--     '2021-01-01',
+--     now(),
+--     (SELECT max(number) FROM bsc.blocks WHERE time < '2021-01-01'),
+--     (SELECT MAX(number) FROM bsc.blocks where time < now() - interval '20 minutes')
+-- )
+-- WHERE NOT EXISTS (
+--     SELECT *
+--     FROM dex.trades
+--     WHERE block_time > '2021-01-01'
+--     AND block_time <= now() - interval '20 minutes'
+--     AND project = 'Kyber'
+-- );
 
-INSERT INTO cron.job (schedule, command)
-VALUES ('*/10 * * * *', $$
-    SELECT dex.insert_kyber(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Kyber'),
-        (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM bsc.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Kyber')),
-        (SELECT MAX(number) FROM bsc.blocks where time < now() - interval '20 minutes'));
-$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+-- INSERT INTO cron.job (schedule, command)
+-- VALUES ('*/10 * * * *', $$
+--     SELECT dex.insert_kyber(
+--         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Kyber'),
+--         (SELECT now() - interval '20 minutes'),
+--         (SELECT max(number) FROM bsc.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='Kyber')),
+--         (SELECT MAX(number) FROM bsc.blocks where time < now() - interval '20 minutes'));
+-- $$)
+-- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;

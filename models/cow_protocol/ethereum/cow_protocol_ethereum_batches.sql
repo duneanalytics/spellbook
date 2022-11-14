@@ -33,11 +33,13 @@ batch_counts as (
     from {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Settlement') }} s
         left outer join {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Interaction') }} i
             on i.evt_tx_hash = s.evt_tx_hash
+            {% if is_incremental() %}
+            AND i.evt_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
         join cow_protocol_ethereum.solvers
             on solver = address
     {% if is_incremental() %}
     WHERE s.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    AND i.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     group by s.evt_tx_hash, solver, s.evt_block_time, name
 ),
