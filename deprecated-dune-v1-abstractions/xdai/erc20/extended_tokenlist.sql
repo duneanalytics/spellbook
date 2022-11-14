@@ -270,6 +270,11 @@ WITH token_extention
                      ('HOGE', 9, decode('DfF7fcF6a86F7Dc86E7facECA502851f82a349A6', 'hex')),
                      ('vTERC', 18, decode('e4Cb7cfD027C024AcA339026b1E70ff68f82305B', 'hex')),
                      ('WagTest9WXDAI', 18, decode('F9A797B40Dbc6c92aAa69AbA169b1e68a5722037', 'hex')),
+                     ('mUSD', 18, decode('7300AaFC0Ef0d47Daeb850f8b6a1931b40aCab33', 'hex')),
+                      ('HOP', 18, decode('c5102fE9359FD9a28f877a67E36B0F050d81a3CC', 'hex')),
+                      ('TKN', 8, decode('D1B11356464Ac5B48172fa6bD14Ac2417631BEDa', 'hex')),
+                      ('O3', 18, decode('Ee9801669C6138E84bD50dEB500827b776777d28', 'hex')),
+                      ('MLN', 18, decode('f0dd817FF483535f4059781441596AEa4F32a4B9', 'hex')),
                      ('yvCurve-3pool', 18, decode('Ffe9fa48A805AC26eEF9DC750765C4dFB530f70b', 'hex'))
              ) as unlisted (symbol, decimals, contract_address)
     )
