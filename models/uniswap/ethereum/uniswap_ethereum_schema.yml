@@ -266,6 +266,9 @@ models:
       - &support
         name: support
         description: "For, Against or Abstain votes"
+        tests:
+        - accepted_values:
+            values: ['for', 'against', 'abstain']
       - &reason
         name: reason
         description: "Optional onchain commments to explain votes"
@@ -307,6 +310,9 @@ models:
       - &status
         name: status
         description: "Proposal status: Queued, Active, Executed, Canceled or Defeated"
+        tests:
+          - accepted_values:
+              values: ['Queued', 'Active', 'Executed', 'Canceled']
       - &description
         name: description
         description: "Description of the proposal"
