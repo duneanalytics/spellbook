@@ -37,7 +37,7 @@ models:
         description: "buyer of the nft"
       - &matcher
         name: matcher
-        description: ""
+        description: "address/bot that brings two public quotes(from buy as well as frop sell side) together"
       - &nft_address
         name: nft_address
         description: "NFT project address"
