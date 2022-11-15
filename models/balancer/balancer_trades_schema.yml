@@ -3,12 +3,12 @@ version: 2
 models:
   - name: balancer_trades
     meta:
-      blockchain: ethereum
+      blockchain: ethereum, arbitrum, optimism, polygon
       sector: dex
       project: balancer
       contributors: mendesfabio
     config:
-      tags: ["ethereum", "balancer", "trades", "dex"]
+      tags: ["ethereum", "arbitrum", "optimism", "polygon", "balancer", "trades", "dex"]
     description: >
       Balancer trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
