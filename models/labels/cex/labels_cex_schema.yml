@@ -3,12 +3,12 @@ version: 2
 models:
   - name: labels_cex
     meta:
-      blockchain: ethereum
+      blockchain: ethereum, bnb
       sector: labels
       project: cex
       contributors: hildobby, soispoke
     config:
-      tags: ['labels', 'ethereum', 'cex']
+      tags: ['labels', 'ethereum', 'bnb', 'cex']
     description: "Known centralised exchange addresses across chains"
     columns:
       - &blockchain
@@ -45,6 +45,25 @@ models:
     config:
       tags: ['labels', 'ethereum', 'cex']
     description: "Known centralised exchange addresses on Ethereum"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+
+  - name: labels_cex_bnb
+    meta:
+      blockchain: bnb
+      sector: labels
+      project: cex
+      contributors: soispoke
+    config:
+      tags: ['labels', 'bnb', 'cex']
+    description: "Known centralised exchange addresses on BNB chain"
     columns:
       - *blockchain
       - *address
