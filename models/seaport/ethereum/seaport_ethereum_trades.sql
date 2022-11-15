@@ -47,7 +47,8 @@ with source_ethereum_transactions as (
 )
 ,ref_nft_aggregators as (
     select *
-    from {{ ref('nft_ethereum_aggregators') }}
+    from {{ ref('nft_aggregators') }}
+    where blockchain = 'ethereum'
 )
 ,source_prices_usd as (
     select *
@@ -168,6 +169,7 @@ with source_ethereum_transactions as (
   select a.block_time
         ,a.tx_hash
         ,a.evt_index
+        ,a.block_number
         ,a.sender as seller
         ,a.receiver as buyer
         ,case when nft_cnt > 1 then 'bundle trade' 
@@ -197,6 +199,7 @@ with source_ethereum_transactions as (
               else false
           end as estimated_price
         ,is_private
+        ,sub_idx
   from iv_base_pairs_priv a
   left join iv_volume b on b.block_time = a.block_time  -- tx_hash and evt_index is PK, but for performance, block_time is included
     and b.tx_hash = a.tx_hash
@@ -229,7 +232,7 @@ with source_ethereum_transactions as (
                 else agg.name
            end as aggregator_name
           ,agg.contract_address AS aggregator_address
-          ,'seaport-' || tx_hash || '-' || evt_index || '-' || nft_contract_address || '-' || nft_token_id as unique_trade_id
+          ,'seaport-' || tx_hash || '-' || evt_index || '-' || nft_contract_address || '-' || nft_token_id || '-' || sub_idx as unique_trade_id
   from iv_nfts a
   inner join source_ethereum_transactions t on t.hash = a.tx_hash
   left join ref_tokens_nft n on n.contract_address = nft_contract_address 
@@ -303,6 +306,7 @@ with source_ethereum_transactions as (
     ,aggregator_address
 
     -- tx
+    ,block_number
     ,tx_hash
     ,evt_index
     ,tx_from
