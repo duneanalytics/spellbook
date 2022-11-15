@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: balancer_v1_ethereum_trades
+  - name: balancer_v2_ethereum_trades
     meta:
       blockchain: ethereum
       sector: dex
-      project: balancer
-      contributors: mendesfabio, markusbkoch, jacektrocinski
+      project: balancer_v2
+      contributors: mendesfabio, markusbkoch
     config:
-      tags: ['ethereum', 'balancer', 'balancer_v1', 'dex', 'trades']
+      tags: ['ethereum', 'balancer', 'balancer_v2', 'dex', 'trades']
     description: >
-      Balancer V1 contract trades on Ethereum
+      Balancer V2 contract trades on Ethereum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -96,51 +96,6 @@ models:
         name: trace_address
       - &evt_index
         name: evt_index
-
-  - name: balancer_v2_ethereum_trades
-    meta:
-      blockchain: ethereum
-      sector: dex
-      project: balancer_v2
-      contributors: mendesfabio, markusbkoch
-    config:
-      tags: ['ethereum', 'balancer', 'balancer_v2', 'dex', 'trades']
-    description: >
-      Balancer V2 contract trades on Ethereum
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index
 
   - name: balancer_ethereum_trades
     meta:
