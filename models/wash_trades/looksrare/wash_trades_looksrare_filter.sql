@@ -285,7 +285,7 @@ filtered_trades as (
         LEFT JOIN
         circular_seller cs 
             ON t.nft_contract_address = cs.nft_contract_address
-            AND t.buyer = cs.buyer
+            AND t.seller = cs.seller
             AND t.nft_token_id = cs.nft_token_id
 )
 
