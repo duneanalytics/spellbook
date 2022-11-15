@@ -26,7 +26,8 @@ sources:
             description: 'Block number which processed the unique transaction hash'
           - name: poolAddress
             description: 'Ethereum address for the liquidity pool used in transaction'
-          - name: poolId
+          - &poolId
+            name: poolId
             description: 'Unique encoded identifier that refers to each pool'
           - name: specialization
             description: 'Pool specialization'
@@ -47,9 +48,9 @@ sources:
             description: ''
           - *poolId
           - name: tokenIn
-          - description: ''
+            description: ''
           - name: tokenOut
-          - description: ''
+            description: ''
 
   - name: balancer_v1_ethereum
     description: >
@@ -66,7 +67,8 @@ sources:
           - *evt_index
           - *evt_block_time
           - *evt_block_number
-          - name: caller
+          - &caller
+            name: caller
             description: 'Caller address that created the Balancer pool'
           - name: pool
             description: 'Balancer pool contract address'
@@ -75,15 +77,13 @@ sources:
           Decoded table of swaps on the Balancer BPool contract.
         loaded_at_field: evt_block_time
         columns:
-          - *caller
           - name: contract_address
             description: 'Balancer v1 BPool contract address'
           - *evt_tx_hash
           - *evt_index
           - *evt_block_time
           - *evt_block_number
-          - name: caller
-            description: ''
+          - *caller
           - name: tokenAmountIn
             description: ''
           - name: tokenAmountOut
