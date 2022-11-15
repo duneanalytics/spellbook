@@ -6,7 +6,7 @@ models:
       blockchain: ethereum
       sector: dex
       project: balancer_v2
-      contributors: mendesfabio, markusbkoch
+      contributors: mendesfabio, markusbkoch, jacektrocinski
     config:
       tags: ['ethereum', 'balancer', 'balancer_v2', 'dex', 'trades']
     description: >
@@ -102,7 +102,7 @@ models:
       blockchain: ethereum
       sector: dex
       project: balancer
-      contributors: mendesfabio, markusbkoch
+      contributors: mendesfabio, markusbkoch, jacektrocinski
     config:
       tags:
         ['ethereum', 'balancer', 'balancer_v1', 'balancer_v2', 'dex', 'trades']
@@ -138,7 +138,7 @@ models:
     meta:
       blockchain: ethereum
       project: balancer_v2
-      contributors: jacektrocinski
+      contributors: mendesfabio, markusbkoch, jacektrocinski
     config:
       tags: ['ethereum', 'balancer', 'pools_fees']
     description: >
@@ -181,7 +181,7 @@ models:
     meta:
       blockchain: ethereum
       project: balancer
-      contributors: jacektrocinski
+      contributors: mendesfabio, markusbkoch, jacektrocinski
     config:
       tags: ['ethereum', 'balancer', 'balances']
     description: >
