@@ -1,12 +1,12 @@
 version: 2
 
 sources: 
-  - name: uniswap_v3_arbitrum
-    description: "Arbitrum decoded tables related to Uniswap v3 contract"
+  - name: uniswap_v3_polygon
+    description: "Polygon decoded tables related to Uniswap v3 contract"
     freshness:
       warn_after: { count: 12, period: hour }
     tables:
-      - name: Pair_evt_Swap
+      - name: UniswapV3Pool_evt_Swap
         loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
@@ -17,7 +17,7 @@ sources:
             name: amount0
             description: "The delta of the token0 balance of the pool"
           - name: contract_address
-            description: "Arbitrum address for the liquidity pool used in transaction"
+            description: "Polygon address for the liquidity pool used in transaction"
           - &evt_block_number
             name: evt_block_number
             description: "Block number which processed the unique transaction hash"
@@ -47,7 +47,7 @@ sources:
           - &tick
             name: tick
             description: the log base 1.0001 of price of the pool after the swap"
-      - name: UniswapV3Factory_evt_PoolCreated
+      - name: factory_polygon_evt_PoolCreated
         loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
@@ -62,7 +62,7 @@ sources:
             description: "The pools fee in hundredths of a bip i.e. 1e-6"
           - &pool
             name: pool
-            description: "Arbitrum address for the liquidity pool created"
+            description: "Polygon address for the liquidity pool created"
           - &tickSpacing
             name: tickSpacing
             description: "The pool tick spacing.  Ticks can only be used at multiples of this value, minimum of 1 and always positive"

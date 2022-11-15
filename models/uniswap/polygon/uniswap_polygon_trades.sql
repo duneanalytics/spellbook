@@ -30,5 +30,5 @@ FROM
                 ,tx_to
                 ,trace_address
                 ,evt_index
-        FROM {{ ref('uniswap_v3_arbitrum_trades') }}
+        FROM {{ ref('uniswap_v3_polygon_trades') }}
 )

@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: uniswap_v3_arbitrum_trades
+  - name: uniswap_v3_polygon_trades
     meta:
-      blockchain: arbitrum
+      blockchain: polygon
       sector: dex
       project: uniswap_v3
-      contributors: jeff-dude, masquot, soispoke, mtitus6
+      contributors: henrystats
     config:
-      tags: ['arbitrum','uniswap_v3','trades', 'uniswap','dex']
+      tags: ['polygon','uniswap_v3','trades', 'uniswap','dex']
     description: >
-        Uniswap V3 contract trades on Arbitrum
+        Uniswap V3 contract trades on polygon
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -95,16 +95,16 @@ models:
         name: evt_index
         description: ""
 
-  - name: uniswap_arbitrum_trades
+  - name: uniswap_polygon_trades
     meta:
-      blockchain: arbitrum
+      blockchain: polygon
       sector: dex
       project: uniswap
-      contributors: jeff-dude, masquot, soispoke, mtitus6
+      contributors: henrystats
     config:
-      tags: ['arbitrum','dex','trades', 'uniswap']
+      tags: ['polygon','dex','trades', 'uniswap']
     description: >
-        Uniswap trades on Arbitrum across all contracts and versions. This table will load dex trades downstream.
+        Uniswap trades on Polygon across all contracts and versions. This table will load dex trades downstream.
     columns:
       - *blockchain
       - *project
