@@ -51,10 +51,6 @@ funders as (
         {{ ref('wash_trades_wallet_funders_wallets') }} wl 
         ON et.to = wl.wallet 
         {% if is_incremental() %}
-        LEFT ANTI JOIN {{this}} ffb
-        ON et.to = ffb.address
-        {% endif %}
-        {% if is_incremental() %}
         AND et.block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
         LEFT JOIN aggregators agg ON et.from = agg.aggregator_address
