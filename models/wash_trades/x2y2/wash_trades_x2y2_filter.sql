@@ -19,9 +19,10 @@ trades as (
         SELECT 
             * 
         FROM 
+        WHERE 1 = 1
         {{ ref('nft_trades') }}
         {% if is_incremental() %}
-        WHERE block_time >= date_trunc('day', now() - interval '1 week')
+        AND block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
         AND project IN ('opensea', 'x2y2')
         AND blockchain = 'ethereum'
@@ -190,7 +191,7 @@ trades_enrich as (
             AND p.minute >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND p.minute >= date_trunc("day", now() - interval '1 week')
+            AND p.minute >= date_trunc('day', now() - interval '1 week')
             {% endif %}
         LEFT JOIN 
         {{ ref('tokens_erc20') }} erc20 
