@@ -199,6 +199,7 @@ with source_ethereum_transactions as (
               else false
           end as estimated_price
         ,is_private
+        ,sub_type
         ,sub_idx
   from iv_base_pairs_priv a
   left join iv_volume b on b.block_time = a.block_time  -- tx_hash and evt_index is PK, but for performance, block_time is included
