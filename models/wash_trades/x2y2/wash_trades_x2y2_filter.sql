@@ -36,7 +36,7 @@ royal_settings as (
         (
         SELECT 
             *, 
-            ROW_NUMER() OVER (PARTITION BY collection ORDER BY evt_block_time DESC) as ordering 
+            ROW_NUMBER() OVER (PARTITION BY collection ORDER BY evt_block_time DESC) as ordering 
         FROM 
         (
         SELECT 
