@@ -117,6 +117,7 @@ VALUES
     ("weth-weth","arbitrum","WETH","0x82af49447d8a07e3bd95bd0d56f35241523fbab1",18),
     ("wis-experty-wisdom-token","arbitrum","WIS","0xa0459edcad5aac14dc32775d22ff7bd33027cac7",18),
     ("yfi-yearnfinance","arbitrum","YFI","0x82e3a8f066a6989666b031d916c43672085b1582",18),
+    ("zz-zigzag","arbitrum","ZZ","0xada42bb73b42e0472a994218fb3799dfcda21237",18),
 
     ("frax-frax", "avalanche_c", "FRAX", "0xd24c2ad096400b6fbcd2ad8b24e7acbc21a1da64", 18),
     ("fxs-frax-share", "avalanche_c", "FXS", "0x214db107654ff987ad859f34125307783fc8e387", 18),
@@ -132,6 +133,8 @@ VALUES
     ("woo-wootrade", "avalanche_c", "WOO", "0xabc9547b534519ff73921b1fba6e672b5f58d083", 18),
     ("usdte-tether-usde", "avalanche_c", "USDT.e", "0xc7198437980c041c805a1edcba50c1ce5db95118", 6),
     ("usdce-usd-coine", "avalanche_c", "USDC.e", "0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664", 6),
+    ("savax-benqi-liquid-staked-avax", "avalanche_c", "sAVAX", "0x2b2c81e08f1af8835a78bb2a90ae924ace0ea4be", 18),
+    ("mimatic-mimatic", "avalanche_c", "MIMATIC", "0x3b55e45fd6bd7d4724f5c47e0d1bcaedd059263e", 18),
 
     ("1inch-1inch", "bnb", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
     ("aave-aave-token", "bnb", "AAVE", "0xfb6115445bff7b52feb98650c87f44907e58f802", 18),
