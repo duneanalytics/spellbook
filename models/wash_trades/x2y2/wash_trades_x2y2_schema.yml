@@ -72,6 +72,12 @@ models:
       - &wf_filter
         name: wf_filter
         description: "wallet funder filter"
+      - &cb_filter
+        name: cb_filter
+        description: "circular buyer filter"
+      - &cs_filter
+        name: cs_filter
+        description: "circular seller filter"
       - &wash_filters
         name: wash_filters
         description: "array with all filters"

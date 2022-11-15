@@ -167,6 +167,48 @@ wf_filter as (
         OR (f1.funder = t.seller OR f2.funder = t.buyer)
 ),
 
+circular_buyer as (
+        SELECT 
+            *, 
+            'circular_buyer' as filter 
+        FROM 
+        (
+        SELECT 
+            COUNT(*) as cnt, 
+            token_id as nft_token_id,
+            nft_contract_address,
+            buyer 
+        FROM 
+        trades t 
+        WHERE t.project = 'x2y2'
+        AND token_standard = 'erc721'
+        AND buyer <> LOWER('0x39da41747a83aee658334415666f3ef92dd0d541')
+        GROUP BY 2, 3, 4 
+        ) foo 
+        WHERE cnt >= 2 
+),
+
+circular_seller as (
+        SELECT 
+            *, 
+            'circular_seller' as filter 
+        FROM 
+        (
+        SELECT 
+            COUNT(*) as cnt, 
+            token_id as nft_token_id,
+            nft_contract_address,
+            seller 
+        FROM 
+        trades t 
+        WHERE t.project = 'x2y2'
+        AND token_standard = 'erc721'
+        AND buyer <> LOWER('0x39da41747a83aee658334415666f3ef92dd0d541')
+        GROUP BY 2, 3, 4 
+        ) foo 
+        WHERE cnt >= 2 
+),
+
 trades_enrich as (
         SELECT 
             date_trunc('day', t.block_time) as day, 
@@ -209,7 +251,9 @@ filtered_trades as (
             CASE WHEN lv.filter IS NOT NULL THEN true ELSE FALSE END as lv_filter,
             CASE WHEN hp.filter IS NOT NULL THEN true ELSE FALSE END as hp_filter,
             CASE WHEN wf.filter IS NOT NULL THEN true ELSE FALSE END as wf_filter,
-            FILTER(array(mt.filter, sb.filter, lv.filter, hp.filter, wf.filter), x -> x IS NOT NULL) as wash_filters
+            CASE WHEN cb.filter IS NOT NULL THEN true ELSE FALSE END as cb_filter,
+            CASE WHEN cs.filter IS NOT NULL THEN true ELSE FALSE END as cs_filter,
+            FILTER(array(mt.filter, sb.filter, lv.filter, hp.filter, wf.filter, cb.filter, cs.filter), x -> x IS NOT NULL) as wash_filters
         FROM 
         trades_enrich t 
         LEFT JOIN 
@@ -233,6 +277,16 @@ filtered_trades as (
         wf_filter wf 
             ON wf.buyer = t.buyer 
             AND wf.seller = t.seller 
+        LEFT JOIN 
+        circular_buyer cb 
+            ON t.nft_contract_address = cb.nft_contract_address
+            AND t.buyer = cb.buyer
+            AND t.nft_token_id = cb.nft_token_id
+        LEFT JOIN
+        circular_seller cs 
+            ON t.nft_contract_address = cs.nft_contract_address
+            AND t.buyer = cs.buyer
+            AND t.nft_token_id = cs.nft_token_id
 )
 
 SELECT 
