@@ -501,17 +501,26 @@ models:
         +schema: hashflow_ethereum
         +materialized: view
 
+    nexusmutual:
+      +schema: nexusmutual
+      +materialized: view
+      ethereum:
+        +schema: nexusmutual_ethereum
+        +materialized: view
+
     quix:
       +schema: quix
       +materialized: view
       optimism:
         +schema: quix_optimism
+        +materialized: view
 
     zeroex:
       +schema: zeroex
       +materialized: view
       ethereum:
         +schema: zeroex_ethereum
+        +materialized: view
 
 seeds:
   spellbook:
@@ -638,6 +647,20 @@ seeds:
         +column_types:
           master_address: string
           alternative_address: string
+    nexusmutual:
+      ethereum:
+        +enabled: true
+        +schema: test_data
+        nexusmutual_ethereum_trades_seed:
+          +column_types:
+            evt_tx_hash: string
+            block_date: date
+            evt_block_number: string
+            nonce: string
+            curr: string
+            sum_assured: string
+            premium: string
+            premium_nxm: string
     perpetual:
       +enabled: true
       +schema: test_data
