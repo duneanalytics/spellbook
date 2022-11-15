@@ -17,32 +17,32 @@
 
 WITH dexs AS (
     SELECT
-        vault_evt_swap.evt_block_time AS block_time,
+        vault_swap.evt_block_time AS block_time,
         '' AS taker,
         '' AS maker,
-        vault_evt_swap.amountOut AS token_bought_amount_raw,
-        vault_evt_swap.amountIn AS token_sold_amount_raw,
+        vault_swap.amountOut AS token_bought_amount_raw,
+        vault_swap.amountIn AS token_sold_amount_raw,
         CAST(NULL as double) AS amount_usd,
-        vault_evt_swap.tokenOut AS token_bought_address,
-        vault_evt_swap.tokenIn AS token_sold_address,
-        vault_evt_swap.poolId AS project_contract_address,
-        vault_evt_swap.evt_tx_hash AS tx_hash,
+        vault_swap.tokenOut AS token_bought_address,
+        vault_swap.tokenIn AS token_sold_address,
+        vault_swap.poolId AS project_contract_address,
+        vault_swap.evt_tx_hash AS tx_hash,
         '' AS trace_address,
-        vault_evt_swap.evt_index
-    FROM {{ source('balancer_v2_ethereum', 'Vault_evt_Swap') }} vault_evt_swap
+        vault_swap.evt_index
+    FROM {{ source('balancer_v2_ethereum', 'Vault_evt_Swap') }} vault_swap
     LEFT JOIN {{ ref('balancer_v2_ethereum_pools_fees') }} pools_fees
-        ON pools_fees.contract_address = SUBSTRING(vault_evt_swap.poolId, 0, 42)
-        AND vault_evt_swap.evt_block_time = (
+        ON pools_fees.contract_address = SUBSTRING(vault_swap.poolId, 0, 42)
+        AND vault_swap.evt_block_time = (
             SELECT MAX(block_time)
             FROM balancer_v2.view_pools_fees
-            WHERE block_time <= t.evt_block_time
-            AND contract_address = SUBSTRING(t.`poolId` from 0 for 21)
+            WHERE block_time <= vault_swap.evt_block_time
+            AND contract_address = SUBSTRING(vault_swap.`poolId` from 0 for 21)
         )
     WHERE
-        vault_evt_swap.tokenIn != SUBSTRING(vault_evt_swap.`poolId`, 0, 42)
-        AND vault_evt_swap.tokenOut != SUBSTRING(vault_evt_swap.`poolId`, 0, 42)
+        vault_swap.tokenIn != SUBSTRING(vault_swap.`poolId`, 0, 42)
+        AND vault_swap.tokenOut != SUBSTRING(vault_swap.`poolId`, 0, 42)
         {% if is_incremental() %}
-        AND vault_evt_swap.evt_block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
+        AND vault_swap.evt_block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
 )
 SELECT
