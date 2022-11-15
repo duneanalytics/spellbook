@@ -317,6 +317,7 @@ with source_ethereum_transactions as (
     ,estimated_price
     ,is_private
     ,sub_idx
+    ,sub_type
 
     -- unique key    
     ,unique_trade_id
