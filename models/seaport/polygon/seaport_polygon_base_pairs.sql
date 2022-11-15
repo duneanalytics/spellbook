@@ -125,7 +125,7 @@ with iv_offer_consideration as (
             , evt_index
             , evt_tx_hash
             , offer
-            , offerer
+            -- , offerer
             -- , orderHash
             , recipient
             , zone

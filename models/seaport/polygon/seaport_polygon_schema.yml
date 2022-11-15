@@ -130,6 +130,7 @@ models:
             - evt_index
             - nft_contract_address
             - token_id
+            - sub_type
             - sub_idx
     columns:
       - &blockchain
