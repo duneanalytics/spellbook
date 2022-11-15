@@ -2,6 +2,7 @@
 .vscode
 manifest.json
 macros/dune/create_views_of_dependencies.sql
+macros/dune/alter_table_locations.sql
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

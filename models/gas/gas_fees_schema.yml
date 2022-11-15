@@ -3,18 +3,13 @@ version: 2
 models:
   - name: gas_fees
     meta:
-      blockchain: ethereum, bnb, avalanche_c
+      blockchain: ethereum, bnb, avalanche_c, optimism
       sector: gas
       contributors: soispoke
     config:
-      tags: ['ethereum', 'bnb', 'avalanche_c', 'gas', 'fees']
+      tags: ['ethereum', 'bnb', 'avalanche_c', 'optimism','gas', 'fees']
     description: >
         Gas Fees across chains
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
     columns:
       - &blokchain
         name: blockchain
