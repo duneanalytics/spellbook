@@ -453,6 +453,13 @@ models:
         +schema: shibaswap_ethereum
         +materialized: view
 
+    zigzag:
+      +schema: zigzag
+      +materialized: view
+      arbitrum:
+        +schema: zigzag_arbitrum
+        +materialized: view
+
     pancakeswap:
       +schema: pancakeswap
       +materialized: view
