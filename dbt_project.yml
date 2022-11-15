@@ -473,7 +473,14 @@ models:
       ethereum:
         +schema: mstable_ethereum
         +materialized: view
-        
+            woofi:
+      +schema: woofi
+      +materialized: view
+      avalanche_c:
+        +schema: woofi_avalanche_c
+        +materialized: view
+
+
     platypus_finance:
       +schema: platypus_finance
       +materialized: view

@@ -7,7 +7,7 @@ models:
       project: woofi
       contributors: scoffie
     config:
-      tags: ['avalanche_c','dex','trades', 'woofi', 'woo']
+      tags: ['avalanche_c','dex','trades', 'woofi',]
     description: >
         Woofi trades on Avalanche (C-Chain) across two contracts. This table will load dex trades downstream.
     tests:
