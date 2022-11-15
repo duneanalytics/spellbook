@@ -26,10 +26,10 @@ models:
   - name: wash_trades_wallet_funders_wallets
     meta:
       blockchain: ethereum
-      project: waash_trades
+      project: wash_trades
       contributors: henrystats
     config:
-      tags: ['table', 'funded by', 'wash traders', 'ethereum']
+      tags: ['table', 'wash traders', 'ethereum']
     description: "Wallet address of x2y2, blur & looksrare nft traders"
     columns:
       - name: wallet
