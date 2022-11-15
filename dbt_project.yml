@@ -256,13 +256,13 @@ models:
 
     addresses:
       +schema: addresses
-      +materialized: table
+      +materialized: view
       ethereum:
         +schema: addresses_ethereum
-        +materialized: table
+        +materialized: view
       optimism:
         +schema: addresses_optimism
-        +materialized: table
+        +materialized: view
     
     addresses_events: 
       +schema: addresses_events
@@ -474,6 +474,13 @@ models:
       +materialized: view
       avalanche_c:
         +schema: fraxswap_avalanche_c
+        +materialized: view
+
+    mstable:
+      +schema: mstable
+      +materialized: view
+      ethereum:
+        +schema: mstable_ethereum
         +materialized: view
         
     platypus_finance:
