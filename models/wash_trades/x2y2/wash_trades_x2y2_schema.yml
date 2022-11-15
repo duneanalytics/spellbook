@@ -19,6 +19,7 @@ models:
             - nft_token_id 
             - tx_hash 
             - wash_filters
+            - unique_trade_id
     columns:
       - &day
         name: day
@@ -77,3 +78,6 @@ models:
       - &any_filter
         name: any_filter
         description: "classification of trade"
+      - &unique_trade_id 
+        name: unique_trade_id
+        description: "Unique txid of trade"

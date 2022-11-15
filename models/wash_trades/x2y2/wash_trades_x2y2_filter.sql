@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['day', 'block_time', 'nft_contract_address', 'nft_token_id', 'tx_hash', 'wash_filters'],
+    unique_key = ['day', 'block_time', 'nft_contract_address', 'nft_token_id', 'tx_hash', 'wash_filters', 'unique_trade_id'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",
                                 "wash_trades",
@@ -180,7 +180,8 @@ trades_enrich as (
             p.price as usd_price, 
             t.amount_raw / POW(10, erc20.decimals) * p.price as usd_amount, 
             t.buyer,
-            t.seller 
+            t.seller,
+            t.unique_trade_id 
         FROM 
         trades t 
         LEFT JOIN {{ source('prices', 'usd') }} p 
