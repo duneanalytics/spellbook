@@ -150,16 +150,11 @@ models:
             - tx_hash
             - index
     columns:
-      - &contract_address
-        name: contract_address
+      - name: contract_address
         description: 'Optimism address for the liquidity pool used in transaction'
         tests:
           - not_null
-      - &tx_hash
-        name: tx_hash
-        description: ''
-        tests:
-          - not_null
+      - *tx_hash
       - &index
         name: index
         description: ''
@@ -170,11 +165,7 @@ models:
         description: ''
         tests:
           - not_null
-      - &block_time
-        name: block_time
-        description: ''
-        tests:
-          - not_null
+      - *block_time
       - &block_number
         name: block_number
         description: ''

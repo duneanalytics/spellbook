@@ -26,7 +26,8 @@ sources:
             description: 'Block number which processed the unique transaction hash'
           - name: poolAddress
             description: 'Optimism address for the liquidity pool used in transaction'
-          - name: poolId
+          - &poolId
+            name: poolId
             description: 'Unique encoded identifier that refers to each pool'
           - name: specialization
             description: 'Pool specialization'
