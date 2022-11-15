@@ -6,7 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
-    post_hook='{{ expose_spells(\'["ethereum"]\',
+    post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "project",
                                     "woofi",
                                     \'["scoffie"]\') }}'
@@ -154,7 +154,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_avx
     ON p_avx.minute = date_trunc('minute', dexs.block_time)
-    AND p_avx.blockchain='avalanche_c'
+    AND p_avx.blockchain is null
     AND p_avx.symbol = 'AVAX'
     {% if not is_incremental() %}
     AND p_avx.minute >= '{{project_start_date}}'
@@ -162,4 +162,4 @@ LEFT JOIN {{ source('prices', 'usd') }} p_avx
     {% if is_incremental() %}
     AND p_avx.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-
+;
