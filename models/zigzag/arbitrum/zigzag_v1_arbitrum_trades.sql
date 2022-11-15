@@ -27,7 +27,7 @@ with
       zzmo.takerOrder:user as taker,
       call_tx_hash as tx_hash,
       '' AS trace_address,
-      1 AS evt_index,
+      row_number() OVER(PARTITION BY call_tx_hash ORDER BY zzmo.makerOrder) AS evt_index, --prevent duplicates
       contract_address as project_contract_address
     from
     {{ source('zigzag_test_v6_arbitrum', 'zigzag_settelment_call_matchOrders') }} zzmo
