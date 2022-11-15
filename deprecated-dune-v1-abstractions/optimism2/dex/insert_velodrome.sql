@@ -90,11 +90,13 @@ SELECT
         AND pa.contract_address = dexs.token_a_address
         AND pa.hour >= start_ts
         AND pa.hour < end_ts
+	AND pa.symbol NOT IN (SELECT symbol FROM prices.prices_exclude_tokens)
     LEFT JOIN prices.approx_prices_from_dex_data pb
       ON pb.hour = date_trunc('hour', dexs.block_time)
         AND pb.contract_address = dexs.token_b_address
         AND pb.hour >= start_ts
         AND pb.hour < end_ts
+	AND pb.symbol NOT IN (SELECT symbol FROM prices.prices_exclude_tokens)
 
     -- update if we have new info on prices or the erc20
     ON CONFLICT (project, tx_hash, evt_index, trade_id)
@@ -111,18 +113,18 @@ RETURN r;
 END
 $function$;
 
--- launched may 31, 2022 - give a buffer for testing
-SELECT dex.insert_velodrome(
-    '2022-05-01',
-    now()
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2022-05-01'
-    AND block_time <= now()
-    AND project = 'Velodrome'
-);
+-- -- launched may 31, 2022 - give a buffer for testing
+-- SELECT dex.insert_velodrome(
+--     '2022-05-01',
+--     now()
+-- )
+-- WHERE NOT EXISTS (
+--     SELECT *
+--     FROM dex.trades
+--     WHERE block_time > '2022-05-01'
+--     AND block_time <= now()
+--     AND project = 'Velodrome'
+-- );
 /*
 INSERT INTO cron.job (schedule, command)
 VALUES ('15,45 * * * *', $$

@@ -88,11 +88,13 @@ WITH rows AS (
         AND pa.contract_address = dexs.token_a_address
         AND pa.hour >= start_ts
         AND pa.hour < end_ts
+        AND pa.symbol NOT IN (SELECT symbol FROM prices.prices_exclude_tokens)
     LEFT JOIN prices.approx_prices_from_dex_data pb
       ON pb.hour = date_trunc('hour', dexs.block_time)
         AND pb.contract_address = dexs.token_b_address
         AND pb.hour >= start_ts
         AND pb.hour < end_ts
+        AND pb.symbol NOT IN (SELECT symbol FROM prices.prices_exclude_tokens)
     ON CONFLICT DO NOTHING
     RETURNING 1
 )
@@ -101,16 +103,16 @@ RETURN r;
 END
 $function$;
 
--- fill 2022
-SELECT dex.insert_clipper_v2(
-    '2022-01-01',
-    now()
-)
-WHERE NOT EXISTS (
-    SELECT *
-    FROM dex.trades
-    WHERE block_time > '2022-01-01'
-    AND block_time <= now() - interval '20 minutes'
-    AND project = 'Clipper'
-    AND version = '2'
-);
+-- -- fill 2022
+-- SELECT dex.insert_clipper_v2(
+--     '2022-01-01',
+--     now()
+-- )
+-- WHERE NOT EXISTS (
+--     SELECT *
+--     FROM dex.trades
+--     WHERE block_time > '2022-01-01'
+--     AND block_time <= now() - interval '20 minutes'
+--     AND project = 'Clipper'
+--     AND version = '2'
+-- );

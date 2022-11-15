@@ -247,13 +247,13 @@ models:
 
     addresses:
       +schema: addresses
-      +materialized: table
+      +materialized: view
       ethereum:
         +schema: addresses_ethereum
-        +materialized: table
+        +materialized: view
       optimism:
         +schema: addresses_optimism
-        +materialized: table
+        +materialized: view
     
     addresses_events: 
       +schema: addresses_events
@@ -281,6 +281,9 @@ models:
         +materialized: view
       arbitrum:
         +schema: tokens_arbitrum
+        +materialized: view
+      polygon:
+        +schema: tokens_polygon
         +materialized: view
 
     transfers:
@@ -470,6 +473,13 @@ models:
       avalanche_c:
         +schema: fraxswap_avalanche_c
         +materialized: view
+
+    mstable:
+      +schema: mstable
+      +materialized: view
+      ethereum:
+        +schema: mstable_ethereum
+        +materialized: view
         
     platypus_finance:
       +schema: platypus_finance
@@ -484,6 +494,18 @@ models:
       ethereum:
         +schema: hashflow_ethereum
         +materialized: view
+
+    quix:
+      +schema: quix
+      +materialized: view
+      optimism:
+        +schema: quix_optimism
+
+    zeroex:
+      +schema: zeroex
+      +materialized: view
+      ethereum:
+        +schema: zeroex_ethereum
 
 seeds:
   spellbook:
@@ -648,3 +670,28 @@ seeds:
             amount_raw: double
             amount: double
             tx_num: long
+
+    zeroex:
+      ethereum:
+        +enabled: true
+        +schema: test_data
+        zeroex_api_ethereum_fills_sample:
+          +column_types:
+            tx_hash: string
+            evt_index: int
+            contract_address: string
+            block_time: timestamp
+            block_date: date
+            maker: string
+            taker: string
+            taker_token: string
+            maker_token: string
+            taker_token_amount: double
+            taker_token_amount_raw: double
+            maker_token_amount: double
+            maker_token_amount_raw: double
+            type: string
+            affiliate_address: string
+            swap_flag: boolean
+            matcha_limit_order_flag: boolean
+            volume_usd: double
