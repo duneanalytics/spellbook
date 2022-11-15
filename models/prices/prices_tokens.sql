@@ -128,6 +128,8 @@ VALUES
     ("wbtc-wrapped-bitcoin", "avalanche_c", "WBTC", "0x50b7545627a5162f82a992c33b87adc75187b218", 8),
     ("bets-betswirl", "avalanche_c", "BETS", "0xc763f8570A48c4c00C80B76107cbE744dDa67b79", 18),
     ("thor-thor", "avalanche_c", "THOR", "0x8f47416cae600bccf9530e9f3aeaa06bdd1caa79", 18),
+    ("savax-benqi-liquid-staked-avax", "avalanche_c", "sAVAX", "0x2b2c81e08f1af8835a78bb2a90ae924ace0ea4be", 18),
+    ("mimatic-mimatic", "avalanche_c", "MIMATIC", "0x3b55e45fd6bd7d4724f5c47e0d1bcaedd059263e", 18),
 
     ("1inch-1inch", "bnb", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
     ("aave-aave-token", "bnb", "AAVE", "0xfb6115445bff7b52feb98650c87f44907e58f802", 18),

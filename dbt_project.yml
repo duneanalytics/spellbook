@@ -473,6 +473,13 @@ models:
         +schema: bancor_ethereum
         +materialized: view
 
+    kyberswap:
+      +schema: kyberswap
+      +materialized: view
+      avalanche_c:
+        +schema: kyberswap_avalanche_c
+        +materialized: view
+
     fraxswap:
       +schema: fraxswap
       +materialized: view
