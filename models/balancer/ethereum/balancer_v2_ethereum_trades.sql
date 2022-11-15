@@ -50,7 +50,7 @@ SELECT
     'ethereum' AS blockchain,
     'balancer' AS project,
     '2' AS version,
-    TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date,
+    TRY_CAST(date_trunc('DAY', dexs.block_time) AS DATE) AS block_date,
     dexs.block_time,
     erc20a.symbol AS token_bought_symbol,
     erc20b.symbol AS token_sold_symbol,
