@@ -17,10 +17,10 @@ WITH
 
 trades as (
         SELECT 
-            * 
+            t.* 
         FROM 
-        WHERE 1 = 1
         {{ ref('nft_trades') }} t 
+        WHERE 1 = 1
         {% if is_incremental() %}
         AND t.block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
