@@ -8963,5 +8963,6 @@ FROM (VALUES ('0x3f9463bdb502ec2079bf39da6c924d4022ff9f4c', 'biubiu.tools', 18),
              ('0xa8edb428d303b02fb9b6ff35137a3fa040b873e6', 'CRC', 18),
              ('0xd5084760914184d78a9e21cd7aa3da9015fd59bd', 'CRC', 18),
              ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', 'ETH', 18),
+             ('0xc5102fe9359fd9a28f877a67e36b0f050d81a3cc', 'HOP', 18),
              ('0xf9a797b40dbc6c92aaa69aba169b1e68a5722037', 'WagTest9WXDAI', 18)
      ) AS temp_table (contract_address, symbol, decimals)
