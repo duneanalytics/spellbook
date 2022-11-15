@@ -14,7 +14,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day 
-            - blocktime 
+            - block_time 
             - nft_contract_address 
             - nft_token_id 
             - tx_hash 
