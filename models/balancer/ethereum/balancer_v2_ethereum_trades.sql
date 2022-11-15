@@ -45,7 +45,6 @@ WITH dexs AS (
         AND vault_evt_swap.evt_block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
 )
-
 SELECT
     'ethereum' AS blockchain,
     'balancer' AS project,
