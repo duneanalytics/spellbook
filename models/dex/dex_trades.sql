@@ -24,8 +24,6 @@
 ,'platypus_finance_avalanche_c_trades'
 ,'hashflow_ethereum_trades'
 ,'mstable_ethereum_trades'
-
-
 ] %}
 
 

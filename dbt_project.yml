@@ -488,8 +488,6 @@ models:
         +schema: woofi_avalanche_c
         +materialized: view
 
-
-
     hashflow:
       +schema: hashflow
       +materialized: view
