@@ -72,24 +72,3 @@ sources:
             description: 'Caller address that created the Balancer pool'
           - name: pool
             description: 'Balancer pool contract address'
-      - name: BPool_evt_LOG_SWAP
-        description: >
-          Decoded table of swaps on the Balancer BPool contract.
-        loaded_at_field: evt_block_time
-        columns:
-          - name: contract_address
-            description: 'Balancer v1 BPool contract address'
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
-          - *caller
-          - name: tokenAmountIn
-            description: ''
-          - name: tokenAmountOut
-            description: ''
-          - name: tokenIn
-            description: ''
-          - name: tokenOut
-            description: ''
-
