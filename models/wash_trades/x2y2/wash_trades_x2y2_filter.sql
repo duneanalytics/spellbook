@@ -128,7 +128,7 @@ hp_filter as (
         (
         SELECT 
             x2.nft_address,
-            10 * MAX(os.amount_usd) as highprice_cutoff 
+            10 * MAX(t.amount_usd) as highprice_cutoff 
         FROM 
         (
         SELECT 
