@@ -312,6 +312,10 @@ models:
         +schema: safe_ethereum
         +materialized: view
 
+    wash_trades:
+      +schema: wash_trades
+      +materialized: view
+
     cryptopunks:
       +schema: cryptopunks
       +materialized: view
