@@ -102,7 +102,7 @@ lv_filter as (
         (
         SELECT 
             x2.nft_address,
-            SUM(o.amount_usd) as os_vol 
+            SUM(t.amount_usd) as os_vol 
         FROM 
         (
         SELECT 
