@@ -49,13 +49,13 @@ SELECT
     'ethereum' AS blockchain,
     'balancer' AS project,
     '2' AS version,
-    TRY_CAST(date_trunc('DAY', dexs.block_time) AS DATE) AS block_date,
+    TRY_CAST(DATE_TRUNC('DAY', dexs.block_time) AS DATE) AS block_date,
     dexs.block_time,
     erc20a.symbol AS token_bought_symbol,
     erc20b.symbol AS token_sold_symbol,
     CASE
-        WHEN lower(erc20a.symbol) > LOWER(erc20b.symbol) THEN CONCAT(erc20b.symbol, '-', erc20a.symbol)
-        ELSE concat(erc20a.symbol, '-', erc20b.symbol)
+        WHEN LOWER(erc20a.symbol) > LOWER(erc20b.symbol) THEN CONCAT(erc20b.symbol, '-', erc20a.symbol)
+        ELSE CONCAT(erc20a.symbol, '-', erc20b.symbol)
     END AS token_pair,
     dexs.token_bought_amount_raw / POWER(10, erc20a.decimals) AS token_bought_amount,
     dexs.token_sold_amount_raw / POWER(10, erc20b.decimals) AS token_sold_amount,
