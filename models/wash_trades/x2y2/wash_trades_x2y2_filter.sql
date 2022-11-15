@@ -20,12 +20,12 @@ trades as (
             * 
         FROM 
         WHERE 1 = 1
-        {{ ref('nft_trades') }}
+        {{ ref('nft_trades') }} t 
         {% if is_incremental() %}
-        AND block_time >= date_trunc('day', now() - interval '1 week')
+        AND t.block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
-        AND project IN ('opensea', 'x2y2')
-        AND blockchain = 'ethereum'
+        AND t.project IN ('opensea', 'x2y2')
+        AND t.blockchain = 'ethereum'
 ), 
 
 royal_settings as (
