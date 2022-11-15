@@ -247,13 +247,13 @@ models:
 
     addresses:
       +schema: addresses
-      +materialized: table
+      +materialized: view
       ethereum:
         +schema: addresses_ethereum
-        +materialized: table
+        +materialized: view
       optimism:
         +schema: addresses_optimism
-        +materialized: table
+        +materialized: view
     
     addresses_events: 
       +schema: addresses_events
@@ -451,6 +451,13 @@ models:
       +materialized: view
       ethereum:
         +schema: shibaswap_ethereum
+        +materialized: view
+
+    zigzag:
+      +schema: zigzag
+      +materialized: view
+      arbitrum:
+        +schema: zigzag_arbitrum
         +materialized: view
 
     pancakeswap:
