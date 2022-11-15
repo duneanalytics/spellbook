@@ -1,5 +1,4 @@
 {{ config(
-    schema = 'kyberswap_avalanche_c',
     alias = 'trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -34,11 +33,11 @@ kyberswap_dex AS (
     FROM {{ source('kyber_avalanche_c', 'DMMPool_evt_Swap') }} t
     INNER JOIN {{ source('kyber_avalanche_c', 'DMMFactory_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
-        {% if is_incremental() %}
-        AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% else %}
-        AND t.evt_block_time >= '{{ project_start_date }}'
-        {% endif %}
+    {% if is_incremental() %}
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% else %}
+    WHERE t.evt_block_time >= '{{ project_start_date }}'
+    {% endif %}
 
     UNION ALL
 
@@ -60,11 +59,11 @@ kyberswap_dex AS (
     FROM {{ source('kyber_avalanche_c', 'Elastic_Pool_evt_swap') }} t
     INNER JOIN {{ source('kyber_avalanche_c', 'Elastic_Factory_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
-        {% if is_incremental() %}
-        AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% else %}
-        AND t.evt_block_time >= '{{ project_start_date }}'
-        {% endif %}
+    {% if is_incremental() %}
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% else %}
+    WHERE t.evt_block_time >= '{{ project_start_date }}'
+    {% endif %}
 
     UNION ALL
 
