@@ -467,12 +467,27 @@ models:
         +schema: fraxswap_avalanche_c
         +materialized: view
 
+    mstable:
+      +schema: mstable
+      +materialized: view
+      ethereum:
+        +schema: mstable_ethereum
+        +materialized: view
+        
+    platypus_finance:
+      +schema: platypus_finance
+      +materialized: view
+      avalanche_c:
+        +schema: platypus_finance_avalanche_c
+        +materialized: view
+        
     woofi:
       +schema: woofi
       +materialized: view
       avalanche_c:
         +schema: woofi_avalanche_c
         +materialized: view
+
 
 
     hashflow:
