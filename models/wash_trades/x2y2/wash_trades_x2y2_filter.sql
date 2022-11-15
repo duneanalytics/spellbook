@@ -208,7 +208,7 @@ filtered_trades as (
             CASE WHEN lv.filter IS NOT NULL THEN true ELSE FALSE END as lv_filter,
             CASE WHEN hp.filter IS NOT NULL THEN true ELSE FALSE END as hp_filter,
             CASE WHEN wf.filter IS NOT NULL THEN true ELSE FALSE END as wf_filter,
-            COALESCE(FILTER(array(mt.filter, sb.filter, lv.filter, hp.filter, wf.filter), x -> x IS NOT NULL), '{}') as wash_filters
+            FILTER(array(mt.filter, sb.filter, lv.filter, hp.filter, wf.filter), x -> x IS NOT NULL) as wash_filters
         FROM 
         trades_enrich t 
         LEFT JOIN 
@@ -236,6 +236,6 @@ filtered_trades as (
 
 SELECT 
 *, 
-CASE WHEN cardinality(wash_filters) > 0 THEN true ELSE false END as any_filter 
+CASE WHEN cardinality(wash_filters) > 0 AND wash_filters IS NOT NULL THEN true ELSE false END as any_filter 
 FROM 
 filtered_trades
