@@ -10,9 +10,7 @@ with
     select
         distinct tx_hash
     from {{ ref('cow_protocol_ethereum_trades') }}
-    where
-        blockchain = 'ethereum'
-        and token_pair in (
+    where token_pair in (
             'USDT-DAI',
             'USDT-USDC',
             'USDT-BUSD',
