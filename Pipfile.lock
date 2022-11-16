@@ -845,4 +845,7 @@
             ],
             "markers": "python_version >= '3.7'",
             "version": "==2.1.2"
-        }
+        }        
+    },
+    "develop": {}
+}
