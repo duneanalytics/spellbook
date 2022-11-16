@@ -1,4 +1,4 @@
-{% test nft_trades_column_values_matching(model, nft_trades_seed, match_columns=[], check_columns=[]) %}
+{% test nft_trades_column_values_matching(model, seed, match_columns=[], check_columns=[]) %}
 
     -- test idea from pr/1707
     {% set seed_check_columns = check_columns %}
