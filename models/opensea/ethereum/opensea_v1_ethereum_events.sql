@@ -214,7 +214,7 @@ LEFT JOIN ethereum.traces erct3 ON erct3.block_time = tx.block_time
     AND slice(erct3.trace_address,1,2) = wa.call_trace_address
     AND substring(erct3.input,0,10) = '0xf242432a'
     {% if is_incremental() %}
-    and erct3.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    and erct3.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     -- as we don't currently decode calls to erc1155 contracts, and wyvern doesn't trigger events
     -- joining directly to traces matching the call signature is the only way we can avoid duplicates on this level
