@@ -473,6 +473,13 @@ models:
         +schema: bancor_ethereum
         +materialized: view
 
+    kyberswap:
+      +schema: kyberswap
+      +materialized: view
+      avalanche_c:
+        +schema: kyberswap_avalanche_c
+        +materialized: view
+
     fraxswap:
       +schema: fraxswap
       +materialized: view
@@ -492,6 +499,13 @@ models:
       +materialized: view
       avalanche_c:
         +schema: platypus_finance_avalanche_c
+        +materialized: view
+        
+    woofi:
+      +schema: woofi
+      +materialized: view
+      avalanche_c:
+        +schema: woofi_avalanche_c
         +materialized: view
 
     hashflow:

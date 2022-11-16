@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: kyber_avalanche_c
+    description: "Avalanche (C-Chain) decoded tables related to Kyberswap contract"
+    tables:
+      - name: DMMPool_evt_Swap
+      - name: DMMFactory_evt_PoolCreated
+      - name: Elastic_Pool_evt_swap
+      - name: Elastic_Factory_evt_PoolCreated
+      - name: AggregationRouter_evt_Swapped
+      - name: MetaAggregationRouter_evt_Swapped
