@@ -8,10 +8,10 @@
 with
  stable_to_stable_trades as (
     select
-        distinct t.tx_hash
+        distinct tx_hash
     from {{ ref('cow_protocol_ethereum_trades') }}
     where
-        t.blockchain = 'ethereum'
+        blockchain = 'ethereum'
         and token_pair in (
             'USDT-DAI',
             'USDT-USDC',
