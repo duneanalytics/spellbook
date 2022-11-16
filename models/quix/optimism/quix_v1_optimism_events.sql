@@ -27,7 +27,7 @@ with events_raw as (
     {% if is_incremental() %} -- this filter will only be applied on an incremental run
     where evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-    where nft_contract_address != lower('0xbe81eabdbd437cba43e4c1c330c63022772c2520') -- --exploit contract
+    where erc721address != lower('0xbe81eabdbd437cba43e4c1c330c63022772c2520') -- --exploit contract
 )
 ,transfers as (
     -- eth royalities
