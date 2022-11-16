@@ -1,0 +1,44 @@
+version: 2
+
+sources: 
+  - name: balancer_v2_arbitrum
+    description: "Arbitrum decoded tables related to Balancer contract"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: Vault_evt_Swap
+        loaded_at_field: evt_block_time
+        description: "Main swap event table for Balancer V2" # to-do
+        columns:
+          - &amountIn
+            name: amountIn
+            description: "The amount of tokenIn added to the pool"
+          - &amountOut
+            name: amountOut
+            description: "The amount of tokenIn removed to the pool"
+          - &contract_address
+            name: contract_address
+            description: "Main Balance vault contract"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block number which processed the unique transaction hash"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_index
+            name: evt_index
+            description: "Index value of the transaction"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Primary key of the transaction"
+            tests:
+              - not_null
+          - &poolId
+            name: poolId
+            description: "Arbitrum address for the liquidity pool used in transaction"
+          - &tokenIn
+            name: tokenIn
+            description: "Arbitrum address of token sold"
+          - &tokenOut
+            name: tokenOut
+            description: "Arbitrum address of token bought"

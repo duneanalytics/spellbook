@@ -1,7 +1,24 @@
+{{ config(
+    schema = 'balancer_v2_arbitrum',
+    alias = 'trades',
+    partition_by = ['block_date'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
+    post_hook='{{ expose_spells(\'["arbitrum"]\',
+                                "project",
+                                "balancer_v2",
+                                \'["mtitus6"]\') }}'
+    )
+}}
+
+{% set project_start_date = '2021-08-27' %}
+
 with dexs as (
     SELECT
         t.evt_block_time AS block_time,
-        NULL AS taker, -- this relies on the outer query coalescing to tx."from"
+        NULL AS taker, 
         NULL AS maker,
         t.amountOut AS token_bought_amount_raw,
         t.amountIn AS token_sold_amount_raw,
@@ -13,7 +30,10 @@ with dexs as (
         '' AS trace_address,
         t.evt_index
     FROM
-        balancer_v2_arbitrum.Vault_evt_Swap t
+        {{ source('balancer_v2_arbitrum', 'Vault_evt_Swap') }} t
+    {% if is_incremental() %}
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     )
 SELECT 
     'Balancer' AS project,
@@ -23,7 +43,7 @@ SELECT
     erc20b.symbol AS token_sold_symbol,
     dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount,
     dexs.token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount,
-    tx.from as taker, -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
+    tx.from as taker, 
     maker,
     token_bought_amount_raw,
     token_sold_amount_raw,
@@ -41,11 +61,38 @@ SELECT
     trace_address,
     evt_index
     FROM dexs
-    INNER JOIN arbitrum.transactions tx
-        ON dexs.tx_hash = tx.hash
-    LEFT JOIN tokens.erc20 erc20a ON erc20a.contract_address = dexs.token_bought_address and erc20a.blockchain = 'arbitrum'
-    LEFT JOIN tokens.erc20 erc20b ON erc20b.contract_address = dexs.token_sold_address and erc20b.blockchain = 'arbitrum'
-    LEFT JOIN prices.usd p_bought ON p_bought.minute = date_trunc('minute', dexs.block_time)
-        AND p_bought.contract_address = dexs.token_bought_address
-    LEFT JOIN prices.usd p_sold ON p_sold.minute = date_trunc('minute', dexs.block_time)
-        AND p_sold.contract_address = dexs.token_sold_address
+    INNER JOIN 
+    {{ source('arbitrum', 'transactions') }} tx
+    ON tx.hash = dexs.tx_hash
+    {% if not is_incremental() %}
+    AND tx.block_time >= '{{project_start_date}}'
+    {% endif %}
+    {% if is_incremental() %}
+    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+LEFT JOIN {{ ref('tokens_erc20') }} erc20a
+    ON erc20a.contract_address = dexs.token_bought_address 
+    AND erc20a.blockchain = 'arbitrum'
+LEFT JOIN {{ ref('tokens_erc20') }} erc20b
+    ON erc20b.contract_address = dexs.token_sold_address
+    AND erc20b.blockchain = 'arbitrum'
+LEFT JOIN {{ source('prices', 'usd') }} p_bought
+    ON p_bought.minute = date_trunc('minute', dexs.block_time)
+    AND p_bought.contract_address = dexs.token_bought_address
+    AND p_bought.blockchain = 'arbitrum'
+    {% if not is_incremental() %}
+    AND p_bought.minute >= '{{project_start_date}}'
+    {% endif %}
+    {% if is_incremental() %}
+    AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+LEFT JOIN {{ source('prices', 'usd') }} p_sold
+    ON p_sold.minute = date_trunc('minute', dexs.block_time)
+    AND p_sold.contract_address = dexs.token_sold_address
+    AND p_sold.blockchain = 'arbitrum'
+    {% if not is_incremental() %}
+    AND p_sold.minute >= '{{project_start_date}}'
+    {% endif %}
+    {% if is_incremental() %}
+    AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
