@@ -17,7 +17,7 @@
 {% set c_native_symbol = "MATIC" %}
 {% set c_seaport_first_date = "2022-06-01" %}
 
-with source_ethereum_transactions as (
+with source_polygon_transactions as (
     select *
     from {{ source('polygon','transactions') }}
     {% if not is_incremental() %}
@@ -27,7 +27,7 @@ with source_ethereum_transactions as (
     where block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
-,ref_seaport_ethereum_base_pairs as (
+,ref_seaport_polygon_base_pairs as (
       select *
       from {{ ref('seaport_polygon_base_pairs') }}
       where 1=1
@@ -93,7 +93,7 @@ with source_ethereum_transactions as (
         ,a.creator_fee_idx
         ,a.is_traded_nft
         ,a.is_moved_nft
-  from ref_seaport_ethereum_base_pairs a
+  from ref_seaport_polygon_base_pairs a
   where 1=1 
     and not a.is_private
   union all
@@ -130,8 +130,8 @@ with source_ethereum_transactions as (
         ,a.creator_fee_idx
         ,a.is_traded_nft
         ,a.is_moved_nft
-  from ref_seaport_ethereum_base_pairs a
-  left join ref_seaport_ethereum_base_pairs b on b.tx_hash = a.tx_hash
+  from ref_seaport_polygon_base_pairs a
+  left join ref_seaport_polygon_base_pairs b on b.tx_hash = a.tx_hash
     and b.evt_index = a.evt_index
     and b.block_time = a.block_time -- for performance
     and b.token_contract_address = a.token_contract_address
@@ -233,7 +233,7 @@ with source_ethereum_transactions as (
           ,sub_idx
           ,'seaport-' || tx_hash || '-' || evt_index || '-' || nft_contract_address || '-' || nft_token_id || '-' || sub_idx as unique_trade_id
   from iv_nfts a
-  inner join source_ethereum_transactions t on t.hash = a.tx_hash
+  inner join source_polygon_transactions t on t.hash = a.tx_hash
   left join ref_tokens_nft n on n.contract_address = nft_contract_address 
   left join ref_tokens_erc20 e on e.contract_address = case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_alternative_token_address}}'
                                                             else a.token_contract_address
