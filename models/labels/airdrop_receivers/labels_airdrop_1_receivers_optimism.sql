@@ -9,4 +9,4 @@ SELECT
     'query' AS source,
     timestamp('2022-09-29') as created_at,
     now() as updated_at
-FROM {{ ref('addresses_optimism_airdrop_1') }}
+FROM {{ ref('airdrop_optimism_addresses_1') }}
