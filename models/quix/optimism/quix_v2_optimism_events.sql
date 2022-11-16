@@ -195,7 +195,7 @@ left join {{ source('erc721_optimism','evt_transfer') }} as erct2
     and er.nft_contract_address=erct2.contract_address
     and erct2.evt_tx_hash=er.tx_hash
     and erct2.tokenId=er.token_id
-    and erct2.from=er.buyer
+    and erct2.to=er.buyer
     {% if not is_incremental() %}
     -- smallest block number for source tables above
     and erct2.evt_block_number >= '{{min_block_number}}'
