@@ -84,6 +84,7 @@ with events_raw as (
         lower('{{quix_fee_address_address}}') --qx platform fee address
         ,er.seller
         ,er.project_contract_address
+        ,lower('0x0000000000000000000000000000000000000000') -- v3 first few txs misconfigured to send fee to null address
       )
       {% if not is_incremental() %}
       -- smallest block number for source tables above
@@ -111,6 +112,7 @@ with events_raw as (
         lower('{{quix_fee_address_address}}') --qx platform fee address
         ,er.seller
         ,er.project_contract_address
+        ,lower('0x0000000000000000000000000000000000000000') -- v3 first few txs misconfigured to send fee to null address
       )
       {% if not is_incremental() %}
       -- smallest block number for source tables above
@@ -129,14 +131,17 @@ select
     ,er.token_id 
     ,n.name as collection
     ,er.amount_raw / power(10, t1.decimals) * p1.price as amount_usd
-    ,'erc721' as token_standard
+    ,case 
+      when erct2.evt_tx_hash is not null then 'erc721'
+      when erc1155.evt_tx_hash is not null then 'erc1155' 
+     end as token_standard
     ,'Single Item Trade' as trade_type
     ,cast(1 as bigint) as number_of_items
     ,'Buy' as trade_category
     ,'Trade' as evt_type
     ,er.seller
     ,case 
-    when er.buyer = agg.contract_address then erct2.to
+    when er.buyer = agg.contract_address then coalesce(erct2.to, erc1155.to)
     else er.buyer 
     end as buyer
     ,er.amount_raw / power(10, t1.decimals) as amount_original
@@ -156,7 +161,7 @@ select
     ,agg.name as aggregator_name
     ,agg.contract_address as aggregator_address
     ,er.tx_hash
-    ,coalesce(erct2.evt_index,1) as evt_index
+    ,coalesce(erct2.evt_index,erc1155.evt_index, 1) as evt_index
     ,er.block_number
     ,tx.from as tx_from
     ,tx.to as tx_to
@@ -207,7 +212,7 @@ left join {{ source('erc1155_optimism','evt_transfersingle') }} as erc1155
     on erc1155.evt_block_time=er.block_time
     and er.nft_contract_address=erc1155.contract_address
     and erc1155.evt_tx_hash=er.tx_hash
-    and erc1155.tokenId=er.token_id
+    and erc1155.id=er.token_id
     and erc1155.from=er.buyer
     {% if not is_incremental() %}
     -- smallest block number for source tables above
