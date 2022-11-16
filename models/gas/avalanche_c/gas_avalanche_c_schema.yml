@@ -26,6 +26,12 @@ models:
         tests:
           - unique
           - not_null
+      - &tx_sender
+        name: tx_sender
+        description: "Initiated the transaction"
+      - &tx_receiver
+        name: tx_receiver
+        description: "Received the transaction"
       - &native_token_symbol
         name: native_token_symbol
         description: "Symbol of native token (AVAX) for the Avalanche Blockchain"

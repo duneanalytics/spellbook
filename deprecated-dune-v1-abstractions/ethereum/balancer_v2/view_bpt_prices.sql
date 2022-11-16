@@ -61,6 +61,6 @@ CREATE MATERIALIZED VIEW balancer_v2.view_bpt_prices AS (
 CREATE UNIQUE INDEX IF NOT EXISTS dex_token_prices_unique ON balancer_v2.view_bpt_prices (hour, contract_address);
 
 INSERT INTO cron.job(schedule, command)
-VALUES ('* 1 * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY balancer_v2.view_bpt_prices$$)
+VALUES ('0 * * * *', $$REFRESH MATERIALIZED VIEW CONCURRENTLY balancer_v2.view_bpt_prices$$)
 ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
 COMMIT;

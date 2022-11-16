@@ -161,7 +161,9 @@ SELECT DISTINCT
         ) END AS number_of_items,
   'Buy' AS trade_category,
   wa.seller AS seller,
-  wa.buyer AS buyer,
+  CASE WHEN buyer=agg.contract_address AND erct2.to IS NOT NULL THEN erct2.to
+    WHEN buyer=agg.contract_address AND erct3.to IS NOT NULL THEN erct3.to
+    ELSE buyer END AS buyer,
   CASE WHEN shared_storefront_address = '0x495f947276749ce646f68ac8c248420045cb7b5e' THEN 'Mint'
   WHEN evt_type is not NULL THEN evt_type ELSE 'Trade' END as evt_type,
   wa.amount_original / power(10,erc20.decimals) AS amount_original,
@@ -186,7 +188,7 @@ SELECT DISTINCT
   (wa.fees / wa.amount_original * 100)::string  AS royalty_fee_percentage,
   wa.fee_receive_address as royalty_fee_receive_address,
   wa.fee_currency_symbol as royalty_fee_currency_symbol,
-  'opensea' || '-' || wa.call_tx_hash || '-' || coalesce(token_id_erc_uncapped, wa.token_id, '') || '-' ||  wa.seller || '-' || coalesce(evt_index::string, '') || '-' || coalesce(wa.call_trace_address::string,'') as unique_trade_id
+  'opensea' || '-' || wa.call_tx_hash || '-' || coalesce(token_id_erc_uncapped, wa.token_id, '') || '-' ||  wa.seller || '-' || coalesce(erc_transfers.evt_index::string, '') || '-' || coalesce(wa.call_trace_address::string,'') as unique_trade_id
 FROM wyvern_all wa
 INNER JOIN {{ source('ethereum','transactions') }} tx ON wa.call_tx_hash = tx.hash
     {% if is_incremental() %}
@@ -196,6 +198,22 @@ LEFT JOIN erc_transfers ON erc_transfers.evt_tx_hash = wa.call_tx_hash AND (wa.t
 OR wa.token_id = null)
 LEFT JOIN {{ ref('tokens_nft') }} tokens_nft ON tokens_nft.contract_address = wa.nft_contract_address and tokens_nft.blockchain = 'ethereum'
 LEFT JOIN {{ ref('nft_aggregators') }} agg ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
+LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct2 ON erct2.evt_block_time=tx.block_time
+    AND wa.nft_contract_address=erct2.contract_address
+    AND erct2.evt_tx_hash=wa.call_tx_hash
+    AND erct2.tokenId=coalesce(token_id_erc, wa.token_id)
+    AND erct2.from=buyer
+    {% if is_incremental() %}
+    and erct2.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+LEFT JOIN {{ source('erc1155_ethereum','evt_transfersingle') }} erct3 ON erct3.evt_block_time=tx.block_time
+    AND wa.nft_contract_address=erct3.contract_address
+    AND erct3.evt_tx_hash=wa.call_tx_hash
+    AND erct3.id=coalesce(token_id_erc, wa.token_id)
+    AND erct3.from=buyer
+    {% if is_incremental() %}
+    and erct3.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', tx.block_time)
     AND p.contract_address = wa.currency_contract
     AND p.blockchain ='ethereum'
@@ -208,3 +226,4 @@ LEFT JOIN {{ ref('tokens_erc20') }} erc20 ON erc20.contract_address = wa.currenc
       *
     FROM
       {{ ref('opensea_v1_ethereum_excluded_txns') }})
+;

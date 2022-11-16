@@ -1,8 +1,5 @@
 {{ config(
-        alias = 'ringers',
-        partition_by = ['token_id'],
-        materialized = 'view',
-        unique_key = ['token_id']
+        alias = 'ringers'
         )
 }}
 

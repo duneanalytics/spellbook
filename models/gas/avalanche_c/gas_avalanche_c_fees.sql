@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'avalanche_c_fees',
+    alias = 'fees',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -15,6 +15,8 @@ SELECT
      block_number,
      block_time,
      txns.hash AS tx_hash,
+     txns.from AS tx_sender, 
+     txns.to AS tx_receiver,
      'AVAX' as native_token_symbol,
      value/1e18 AS tx_amount_native,
      value/1e18 * p.price AS tx_amount_usd,

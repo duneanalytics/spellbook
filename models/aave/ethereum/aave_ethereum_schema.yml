@@ -6,7 +6,7 @@ models:
      blockchain: ethereum
      sector: lending
      project: aave_v2
-     contibutors: batwayne, chuxinh
+     contributors: batwayne, chuxin
    config:
      tags: ['ethereum', 'aave_v2', 'interest', 'aave', 'lending']
    description: "Hourly aave interest rates on ethereum"
@@ -35,7 +35,7 @@ models:
      blockchain: ethereum
      sector: lending
      project: aave
-     contibutors: batwayne, chuxinh
+     contributors: batwayne, chuxin
    config:
      tags: ['ethereum', 'aave_v2', 'interest', 'aave', 'lending']
    description: "Hourly aave interest rates on ethereum"
@@ -52,7 +52,7 @@ models:
      blockchain: ethereum
      sector: lending
      project: aave_v2
-     contibutors: batwayne, chuxinh
+     contributors: batwayne, chuxin
    config:
      tags: ['ethereum', 'aave_v2', 'supply', 'aave', 'lending']
    description: "All aave v2 transactions involving supply transactions on ethereum"
@@ -100,7 +100,7 @@ models:
      blockchain: ethereum
      sector: lending
      project: aave_v1
-     contibutors: batwayne, chuxinh
+     contributors: batwayne, chuxin
    config:
      tags: ['ethereum', 'aave_v1', 'supply', 'aave', 'lending']
    description: "All aave v1 transactions involving supply transactions on ethereum"
@@ -124,7 +124,7 @@ models:
      blockchain: ethereum
      sector: lending
      project: aave_v2
-     contibutors: batwayne, chuxinh
+     contributors: batwayne, chuxin
    config:
      tags: ['ethereum', 'aave_v2', 'borrow', 'aave', 'lending']
    description: "All aave v2 transactions involving borrow transactions on ethereum"
@@ -152,7 +152,7 @@ models:
      blockchain: ethereum
      sector: lending
      project: aave_v1
-     contibutors: batwayne, chuxinh
+     contributors: batwayne, chuxin
    config:
      tags: ['ethereum', 'aave_v1', 'borrow', 'aave', 'lending']
    description: "All aave v1 transactions involving borrow transactions on ethereum"
@@ -176,7 +176,7 @@ models:
      blockchain: ethereum
      sector: lending
      project: aave
-     contibutors: batwayne, chuxinh
+     contributors: batwayne, chuxin
    config:
      tags: ['ethereum', 'aave', 'supply', 'aave', 'lending']
    description: "All aave transactions involving supply transactions on ethereum"
@@ -200,7 +200,7 @@ models:
      blockchain: ethereum
      sector: lending
      project: aave
-     contibutors: batwayne, chuxinh
+     contributors: batwayne, chuxin
    config:
      tags: ['ethereum', 'aave', 'borrow', 'aave', 'lending']
    description: "All aave v1 transactions involving borrow transactions on ethereum"
