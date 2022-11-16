@@ -206,14 +206,20 @@ LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct2 ON erct2.evt_bloc
     {% if is_incremental() %}
     and erct2.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ source('erc1155_ethereum','evt_transfersingle') }} erct3 ON erct3.evt_block_time=tx.block_time
-    AND wa.nft_contract_address=erct3.contract_address
-    AND erct3.evt_tx_hash=wa.call_tx_hash
-    AND erct3.id=coalesce(token_id_erc, wa.token_id)
-    AND erct3.from=buyer
+
+LEFT JOIN ethereum.traces erct3 ON erct3.block_time = tx.block_time
+    AND wa.nft_contract_address = erct3.to
+    AND erct3.tx_hash = wa.call_tx_hash
+    AND bytea2numeric_v2((substring(erct3.input,139, 63))/1e18) = coalesce(token_id_erc, wa.token_id)
+    AND slice(erct3.trace_address,1,2) = wa.call_trace_address
+    AND substring(erct3.input,0,10) = '0xf242432a'
     {% if is_incremental() %}
     and erct3.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+    -- as we don't currently decode calls to erc1155 contracts, and wyvern doesn't trigger events
+    -- joining directly to traces matching the call signature is the only way we can avoid duplicates on this level
+    -- infinte kudos to @0xBoxer for figuring this out
+    
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', tx.block_time)
     AND p.contract_address = wa.currency_contract
     AND p.blockchain ='ethereum'
