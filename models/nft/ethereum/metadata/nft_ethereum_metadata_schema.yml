@@ -349,6 +349,54 @@ models:
         tests:
           - unique
 
+  - name: nft_ethereum_metadata_verse
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: cat
+    config:
+      tags: ['nft', 'ethereum', 'verse', 'metadata']
+    description: >
+        Details for Verse collections (project id, collection name, artist)
+    columns:
+      - name: contract_address
+        description: "Collection contract address"
+      - name: project_id
+        description: "Project ID -- can be used to join with token IDs"
+      - name: project_id_base_value
+        description: "Value used to join on other tables"
+      - name: collection_name
+        description: "Name of collection"
+      - name: artist_name
+        description: "Name of artist"
+      - name: art_collection_unique_id
+        description: "Unique identifier - contract address and project id"
+        tests:
+          - unique
+
+  - name: nft_ethereum_metadata_fellowship_gallery
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: cat
+    config:
+      tags: ['nft', 'ethereum', 'fellowship', 'metadata']
+    description: >
+        Details for collections minted with Fellowship Gallery (collection address, collection name, artist)
+    columns:
+      - name: contract_address
+        description: "Collection contract address"
+        tests:
+          - unique        
+      - name: collection_name
+        description: "Name of collection"
+      - name: artist_name
+        description: "Name of artist"
+      - name: platform
+        description: "Name of platform minted on"
+      - name: website
+        description: "Link to collection"
+          
   - name: nft_ethereum_metadata_mirage_gallery_curated
     meta:
       blockchain: ethereum

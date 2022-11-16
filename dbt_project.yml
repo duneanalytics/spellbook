@@ -285,6 +285,9 @@ models:
       arbitrum:
         +schema: tokens_arbitrum
         +materialized: view
+      polygon:
+        +schema: tokens_polygon
+        +materialized: view
 
     transfers:
       +schema: transfers
@@ -359,6 +362,9 @@ models:
       +materialized: view
       ethereum:
         +schema: curvefi_ethereum
+        +materialized: view
+      avalanche_c:
+        +schema: curvefi_avalanche_c
         +materialized: view
     cow_protocol:
       +schema: cow_protocol
@@ -463,7 +469,13 @@ models:
       avalanche_c:
         +schema: fraxswap_avalanche_c
         +materialized: view
-
+        
+    platypus_finance:
+      +schema: platypus_finance
+      +materialized: view
+      avalanche_c:
+        +schema: platypus_finance_avalanche_c
+        +materialized: view
 
     hashflow:
       +schema: hashflow
@@ -471,6 +483,18 @@ models:
       ethereum:
         +schema: hashflow_ethereum
         +materialized: view
+
+    quix:
+      +schema: quix
+      +materialized: view
+      optimism:
+        +schema: quix_optimism
+
+    zeroex:
+      +schema: zeroex
+      +materialized: view
+      ethereum:
+        +schema: zeroex_ethereum
 
 seeds:
   spellbook:
@@ -635,3 +659,28 @@ seeds:
             amount_raw: double
             amount: double
             tx_num: long
+
+    zeroex:
+      ethereum:
+        +enabled: true
+        +schema: test_data
+        zeroex_api_ethereum_fills_sample:
+          +column_types:
+            tx_hash: string
+            evt_index: int
+            contract_address: string
+            block_time: timestamp
+            block_date: date
+            maker: string
+            taker: string
+            taker_token: string
+            maker_token: string
+            taker_token_amount: double
+            taker_token_amount_raw: double
+            maker_token_amount: double
+            maker_token_amount_raw: double
+            type: string
+            affiliate_address: string
+            swap_flag: boolean
+            matcha_limit_order_flag: boolean
+            volume_usd: double
