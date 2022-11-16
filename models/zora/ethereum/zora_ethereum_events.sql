@@ -109,7 +109,7 @@ WITH zora_trades AS (
     , z3_ape_af.evt_block_time AS block_time
     , z3_ape_af.evt_block_number AS block_number
     , z3_ape_af.tokenId AS token_id
-    , 'Private Buy' AS trade_category
+    , 'Private Sale' AS trade_category
     , get_json_object(z3_ape_af.ask, '$.seller') AS seller
     , get_json_object(z3_ape_af.ask, '$.buyer') AS buyer
     , get_json_object(z3_ape_af.ask, '$.price') AS amount_raw
