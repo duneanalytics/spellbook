@@ -162,7 +162,7 @@ SELECT DISTINCT
   'Buy' AS trade_category,
   wa.seller AS seller,
   CASE WHEN buyer=agg.contract_address AND erct2.to IS NOT NULL THEN erct2.to
-    WHEN buyer=agg.contract_address AND erct3.to IS NOT NULL THEN erct3.to
+    WHEN buyer=agg.contract_address AND concat('0x', substring(erct3.input,99, 40)) IS NOT NULL THEN concat('0x', substring(erct3.input,99, 40))
     ELSE buyer END AS buyer,
   CASE WHEN shared_storefront_address = '0x495f947276749ce646f68ac8c248420045cb7b5e' THEN 'Mint'
   WHEN evt_type is not NULL THEN evt_type ELSE 'Trade' END as evt_type,
@@ -218,7 +218,6 @@ LEFT JOIN ethereum.traces erct3 ON erct3.block_time = tx.block_time
     {% endif %}
     -- as we don't currently decode calls to erc1155 contracts, and wyvern doesn't trigger events
     -- joining directly to traces matching the call signature is the only way we can avoid duplicates on this level
-    -- infinte kudos to @0xBoxer for figuring this out
     
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', tx.block_time)
     AND p.contract_address = wa.currency_contract
