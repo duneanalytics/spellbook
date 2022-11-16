@@ -185,7 +185,7 @@ models:
        - *royalty_fee_receive_address
        - *royalty_fee_currency_symbol
 
- - name: quix_v1_optimism_events
+  - name: quix_v1_optimism_events
     meta:
       blockchain: optimism
       project: quix
