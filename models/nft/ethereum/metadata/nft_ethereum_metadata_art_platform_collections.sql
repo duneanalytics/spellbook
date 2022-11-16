@@ -14,7 +14,7 @@ FROM
                  artist_name, 
                  art_collection_unique_id
         FROM {{ ref('nft_ethereum_metadata_art_blocks_collections') }}
-        UNION
+        UNION ALL
         SELECT
                  contract_address, 
                  project_id, 
@@ -23,7 +23,7 @@ FROM
                  artist_name, 
                  art_collection_unique_id
         FROM {{ ref('nft_ethereum_metadata_braindrops') }}
-        UNION
+        UNION ALL
         SELECT
                  contract_address, 
                  project_id, 
@@ -32,7 +32,7 @@ FROM
                  artist_name, 
                  art_collection_unique_id
         FROM {{ ref('nft_ethereum_metadata_bright_moments') }}
-        UNION
+        UNION ALL
         SELECT
                  contract_address, 
                  project_id, 
@@ -41,7 +41,7 @@ FROM
                  artist_name, 
                  art_collection_unique_id
         FROM {{ ref('nft_ethereum_metadata_mirage_gallery_curated') }}        
-        UNION
+        UNION ALL
         SELECT
                  contract_address, 
                  project_id, 
@@ -50,7 +50,7 @@ FROM
                  artist_name, 
                  art_collection_unique_id
         FROM {{ ref('nft_ethereum_metadata_proof_grails_i') }}              
-        UNION
+        UNION ALL
         SELECT
                  contract_address, 
                  project_id, 
