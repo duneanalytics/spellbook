@@ -720,7 +720,7 @@ seeds:
     seaport:
       +enabled: true
       +schema: test_data
-      seaport_nft_trades:
+      seaport_nft_trades_seed:
         +column_types:
           blockchain: string
           project: string

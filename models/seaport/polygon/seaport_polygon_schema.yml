@@ -135,7 +135,7 @@ models:
       - nft_trades_column_values_matching:
           match_columns: ['block_date', 'tx_hash', 'evt_index', 'nft_contract_address', 'token_id', 'sub_type', 'sub_idx']
           check_columns: ['buyer', 'seller']
-          seed: ref('seaport_nft_trades')
+          seed_file: ref('seaport_nft_trades_seed')
     columns:
       - &blockchain
         name: blockchain
