@@ -36,7 +36,7 @@ models:
         name: updated_at
         description: "When were labels updated for the last time"
 
-  - name: cow_protocol_tx_hash_labels_stable_to_stable
+  - name: cow_protocol_tx_hash_labels_stable_to_stable_ethereum
     meta:
       blockchain: ethereum
       sector: labels
