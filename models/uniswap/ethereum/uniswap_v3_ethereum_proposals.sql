@@ -36,7 +36,7 @@ SELECT COUNT(DISTINCT voter) as number_of_voters,
        SUM(votes_for) + SUM(votes_against) + SUM(votes_abstain) as votes_total,
        proposalId
 from cte_support
-GROUP BY proposalId)s
+GROUP BY proposalId)
 
 SELECT DISTINCT
     '{{blockchain}}' as blockchain,
