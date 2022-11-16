@@ -36,7 +36,7 @@ with dexs as (
     {% endif %}
     )
 SELECT 
-    'Balancer' AS project,
+    'balancer' AS project,
     '2' AS version,
     dexs.block_time,
     erc20a.symbol AS token_bought_symbol,
