@@ -203,6 +203,19 @@ left join {{ source('erc721_optimism','evt_transfer') }} as erct2
     {% if is_incremental() %}
     and erct2.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+left join {{ source('erc1155_optimism','evt_transfersingle') }} as erc1155 
+    on erc1155.evt_block_time=er.block_time
+    and er.nft_contract_address=erc1155.contract_address
+    and erc1155.evt_tx_hash=er.tx_hash
+    and erc1155.tokenId=er.token_id
+    and erc1155.from=er.buyer
+    {% if not is_incremental() %}
+    -- smallest block number for source tables above
+    and erc1155.evt_block_number >= '{{min_block_number}}'
+    {% endif %}
+    {% if is_incremental() %}
+    and erc1155.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 left join {{ source('erc20_optimism','evt_transfer') }} as erc20 
     on erc20.evt_block_time=er.block_time
     and erc20.evt_tx_hash=er.tx_hash
