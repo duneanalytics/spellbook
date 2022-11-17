@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: tigristrade_arbitrum
+    description: "tigris trade arbitrum decoded events"
+    tables:
+      - name: PairsContract_evt_AssetAdded
+        loaded_at_field: evt_block_time
+      - name: TradingV2_evt_PositionOpened
+        loaded_at_field: evt_block_time
+      - name: TradingV3_evt_PositionOpened
+        loaded_at_field: evt_block_time
+      - name: TradingV4_evt_PositionOpened
+        loaded_at_field: evt_block_time
+      - name: TradingV2_evt_AddToPosition
+        loaded_at_field: evt_block_time
+      - name: TradingV3_evt_AddToPosition
+        loaded_at_field: evt_block_time
+      - name: TradingV4_evt_AddToPosition
+        loaded_at_field: evt_block_time
