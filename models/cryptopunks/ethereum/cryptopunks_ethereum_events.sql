@@ -228,7 +228,7 @@ left join {{ source('prices', 'usd') }} p on p.minute = date_trunc('minute', a.e
     and p.minute >= date_trunc("day", now() - interval '1 week')
 {% endif %}
 
-left join {{ ref('nft_ethereum_aggregators') }} agg on agg.blockchain = 'ethereum' and agg.contract_address = tx.to
+left join {{ ref('nft_ethereum_aggregators') }} agg on agg.contract_address = tx.to
 
 where a.evt_tx_hash not in ('0x92488a00dfa0746c300c66a716e6cc11ba9c0f9d40d8c58e792cc7fcebf432d0' -- flash loan https://twitter.com/cryptopunksnfts/status/1453903818308083720
                          )
