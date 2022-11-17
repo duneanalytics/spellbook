@@ -86,6 +86,7 @@ with events_raw as (
         ,er.seller
         ,er.project_contract_address
         ,lower('0x0000000000000000000000000000000000000000') 
+        ,lower('0x942f9ce5d9a33a82f88d233aeb3292e680230348') -- v4 there are txs via Ambire Wallet Contract Deployer to be excluded 
       )
       {% if not is_incremental() %}
       -- smallest block number for source tables above
@@ -115,6 +116,7 @@ with events_raw as (
         ,er.seller
         ,er.project_contract_address
         ,lower('0x0000000000000000000000000000000000000000') -- v4 first few txs misconfigured to send fee to null address
+        ,lower('0x942f9ce5d9a33a82f88d233aeb3292e680230348') -- v4 there are txs via Ambire Wallet Contract Deployer to be excluded 
       )
       {% if not is_incremental() %}
       -- smallest block number for source tables above
