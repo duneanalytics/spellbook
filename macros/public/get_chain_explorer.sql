@@ -1,27 +1,17 @@
-{% macro get_chain_explorer(chain) %}
-   {% set query %}
-      SELECT
-         explorer_url
-      FROM (VALUES
-      ('ethereum', 'https://etherscan.io', timestamp('2022-11-07'), now())
-      , ('optimism', 'https://optimistic.etherscan.io', timestamp('2022-11-07'), now())
-      , ('polygon', 'https://polygonscan.com', timestamp('2022-11-07'), now())
-      , ('arbitrum', 'https://arbiscan.io', timestamp('2022-11-07'), now())
-      , ('avalanche_c', 'https://avascan.io', timestamp('2022-11-07'), now())
-      , ('gnosis', 'https://gnosisscan.io', timestamp('2022-11-07'), now())
-      , ('bnb', 'https://bscscan.com', timestamp('2022-11-07'), now())
-      , ('solana', 'https://solscan.io', timestamp('2022-11-07'), now())
-      ) AS x (chain, explorer_url, created_at, updated_at)
-      WHERE chain = replace('{{chain}}',"'",'')
-   {% endset %}
-
-   {% set runner = run_query(query) %}
-
-   {% if execute %}
-      {% set results = runner.rows[0][0] %}
-   {% endif %}
-
-   {{ log('hello world', info=True) }}
-   '{{ results }}'
-   
+{% macro get_chain_explorer() %}
+   create or replace function get_chain_explorer(chain_ STRING)
+   returns STRING
+   return
+   SELECT
+      case 
+         when 'ethereum' = chain_ then 'https://etherscan.io'
+         when 'optimism' = chain_ then 'https://optimistic.etherscan.io'
+         when 'polygon' = chain_ then 'https://polygonscan.com'
+         when 'arbitrum' = chain_ then 'https://arbiscan.io'
+         when 'avalanche_c' = chain_ then 'https://avascan.io'
+         when 'gnosis' = chain_ then 'https://gnosisscan.io'
+         when 'bnb' = chain_ then 'https://bscscan.com'
+         when 'solana' = chain_ then 'https://solscan.io'
+         else 'https://etherscan.io'
+      end as explorer_url;
 {% endmacro %}
