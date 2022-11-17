@@ -190,6 +190,13 @@ models:
         +schema: gmx_arbitrum
         +materialized: view
 
+    tigris:
+      +schema: tigris
+      +materialized: view
+      arbitrum:
+        +schema: tigris_arbitrum
+        +materialized: view
+
     x2y2:
       +schema: x2y2
       +materialized: view

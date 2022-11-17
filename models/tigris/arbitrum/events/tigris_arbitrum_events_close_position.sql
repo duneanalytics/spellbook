@@ -1,75 +1,75 @@
 {{ config(
-    alias = 'modify_margin',
+    alias = 'close_position',
     partition_by = ['day'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['evt_block_time', 'evt_tx_hash', 'position_id', 'trader', 'margin', 'leverage']
+    unique_key = ['evt_block_time', 'evt_tx_hash', 'position_id', 'trader', 'price', 'payout', 'perc_closed']
     )
 }}
 
 WITH 
 
-modify_margin_v2 as (
+close_position_v2 as (
         SELECT 
             date_trunc('day', evt_block_time) as day, 
             evt_tx_hash,
             evt_index,
             evt_block_time,
             _id as position_id,
-            _isMarginAdded as modify_type, 
-            _newMargin/1e18 as margin, 
-            _newLeverage/1e18 as leverage, 
+            _closePrice/1e18 as price, 
+            _payout/1e18 as payout, 
+            _percent/1e18 as perc_closed, 
             _trader as trader 
         FROM 
-        {{ source('tigristrade_arbitrum', 'TradingV2_evt_MarginModified') }}
+        {{ source('tigristrade_arbitrum', 'TradingV2_evt_PositionClosed') }}
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
-modify_margin_v3 as (
+close_position_v3 as (
         SELECT 
             date_trunc('day', evt_block_time) as day, 
             evt_tx_hash,
             evt_index,
             evt_block_time,
             _id as position_id,
-            _isMarginAdded as type, 
-            _newMargin/1e18 as margin, 
-            _newLeverage/1e18 as leverage, 
+            _closePrice/1e18 as price, 
+            _payout/1e18 as payout, 
+            _percent/1e18 as perc_closed, 
             _trader as trader 
         FROM 
-        {{ source('tigristrade_arbitrum', 'TradingV3_evt_MarginModified') }}
+        {{ source('tigristrade_arbitrum', 'TradingV3_evt_PositionClosed') }}
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
-modify_margin_v4 as (
+close_position_v4 as (
         SELECT 
             date_trunc('day', evt_block_time) as day, 
             evt_tx_hash,
             evt_index,
             evt_block_time,
             _id as position_id,
-            _isMarginAdded as type, 
-            _newMargin/1e18 as margin, 
-            _newLeverage/1e18 as leverage, 
+            _closePrice/1e18 as price, 
+            _payout/1e18 as payout, 
+            _percent/1e18 as perc_closed, 
             _trader as trader 
         FROM 
-        {{ source('tigristrade_arbitrum', 'TradingV4_evt_MarginModified') }}
+        {{ source('tigristrade_arbitrum', 'TradingV4_evt_PositionClosed') }}
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 )
 
-SELECT *, 'v2' as version FROM modify_margin_v2
+SELECT *, 'v2' as version FROM close_position_v2
 
 UNION 
 
-SELECT *, 'v3' as version FROM modify_margin_v3
+SELECT *, 'v3' as version FROM close_position_v3
 
 UNION 
 
-SELECT *, 'v4' as version FROM modify_margin_v4
+SELECT *, 'v4' as version FROM close_position_v4
