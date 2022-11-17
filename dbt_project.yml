@@ -497,8 +497,8 @@ models:
     platypus_finance:
       +schema: platypus_finance
       +materialized: view
-      ethereum:
-        +schema: mstable_ethereum
+      avalanche_c:
+        +schema: platypus_finance_avalanche_c
         +materialized: view
         
     woofi:
