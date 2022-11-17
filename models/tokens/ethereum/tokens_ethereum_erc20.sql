@@ -6731,5 +6731,18 @@ FROM (VALUES
           ('0xb3207935ff56120f3499e8ad08461dd403bf16b8', 'DAMM', 18),
           ('0xb3999f658c0391d94a37f7ff328f3fec942bcadc', 'HFT', 18),
           ('0xd1b5651e55d4ceed36251c61c50c889b36f6abb5', 'sdCRV', 18),
-          ('0xe5d2e173b120341face9e9970889c9fe64081ffd', 'BLU', 18)
+          ('0xe5d2e173b120341face9e9970889c9fe64081ffd', 'BLU', 18),
+          ('0x2a7e415c169ce3a580c6f374dc26f6aaad1eccfe', 'HACHI', 18),
+          ('0x34f797e7190c131cf630524655a618b5bd8738e7', 'BACON', 18),
+          ('0x378cb52b00f9d0921cb46dfc099cff73b42419dc', 'yvLUSD', 18),
+          ('0x466a756e9a7401b5e2444a3fcb3c2c12fbea0a54', 'PUSd', 18),
+          ('0x6de498741fcd717b6217168c420cb39b25b698ed', 'CRONU', 18),
+          ('0x97b41a4af406971f19e9e4f97567c5fff9784c65', 'SOLC', 18),
+          ('0x9d93692e826a4bd9e903e2a27d7fbd1e116efdad', 'POLY', 9),
+          ('0xb7135877cd5d40aa3b086ac6f21c51bbafbbb41f', 'AUSD', 18),
+          ('0xd9f6724f250f4da8453e3dd97d718872bf72c1da', 'FTTC', 18),
+          ('0xeb3585922c9b1b27d288c4b606865642b17e2a73', 'FTTINU', 9),
+          ('0xf8640b0b79c236b0c14f67344b4d203ffcedc712', 'MONK', 18),
+          ('0xf98ab0874b13a7fdc39d7295dedd49850a5d426b', 'KIRA', 8),
+          ('0xfc383f9c7b5c8c97f118d8c25c8f84e3c656b6da', 'FCNG', 18)
      ) AS temp_table (contract_address, symbol, decimals)
