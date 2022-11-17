@@ -166,7 +166,7 @@ with source_polygon_transactions as (
   from iv_base_pairs_priv a
   where 1=1
     and eth_erc_idx > 0
-  group by 1,2,3
+  group by 1,2,3,4
 )
 ,iv_nfts as (
   select a.block_date
