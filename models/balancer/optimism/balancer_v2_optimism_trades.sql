@@ -33,9 +33,9 @@ WITH dexs AS (
     LEFT JOIN {{ ref('balancer_v2_optimism_pools_fees') }} pools_fees
         ON pools_fees.contract_address = SUBSTRING(vault_swap.poolId, 0, 42)
         AND vault_swap.evt_block_time = (
-            SELECT MAX(block_time)
+            SELECT MAX(evt_block_time)
             FROM balancer_v2.view_pools_fees
-            WHERE block_time <= vault_swap.evt_block_time
+            WHERE evt_block_time <= vault_swap.evt_block_time
             AND contract_address = SUBSTRING(vault_swap.`poolId` from 0 for 21)
         )
     WHERE
