@@ -240,13 +240,13 @@ models:
        - *royalty_fee_receive_address
        - *royalty_fee_currency_symbol
 
- - name: quix_v4_optimism_events
+  - name: quix_v4_optimism_events
     meta:
       blockchain: optimism
       project: quix
       contributors: chuxinh
     config:
-      tags: ['optimism','quix', 'v1', 'events']
+      tags: ['optimism','quix', 'v4', 'events']
     description: >
         Quix v4 trades on Optimism
     tests:
