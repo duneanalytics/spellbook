@@ -3,7 +3,7 @@ version: 2
 sources: 
   - name: seaport_ethereum
     freshness:
-      warn_after: { count: 12, period: hour }
+      warn_after: { count: 24, period: hour }
     tables:
       - name: Seaport_call_fulfillAvailableAdvancedOrders
         loaded_at_field: call_block_time
@@ -14,7 +14,6 @@ sources:
       - name: Seaport_call_fulfillBasicOrder
         loaded_at_field: call_block_time
       - name: Seaport_call_matchAdvancedOrders
-        loaded_at_field: call_block_time
       - name: Seaport_call_fulfillAdvancedOrder
         loaded_at_field: call_block_time
       - name: Seaport_call_fulfillAvailableOrders

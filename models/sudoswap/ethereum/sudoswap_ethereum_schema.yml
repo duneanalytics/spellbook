@@ -224,32 +224,24 @@ models:
       - *tx_to
       - *unique_trade_id
 
-  - name: sudoswap_ethereum_pools
+  - name: sudoswap_ethereum_pool_view
     meta:
       blockchain: ethereum
       project: sudoswap
-      contributors: [niftytable]
+      contributors: [niftytable, 0xRob]
     config:
-      tags: ['ethereum','sudoswap','pools']
+      tags: ['ethereum','sudoswap','pool_view']
     description: >
         sudoswap pool stats on Ethereum
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool_address
-            - nft_contract_address
-            - creator_address
     columns:
-      - &pool_address
-        name: pool_address
+      - name: pool_address
         description: "Address of the pool"
+        tests:
+          - unique
       - *nft_contract_address
       - &creator_address
         name: creator_address
         description: "Address of the pool creator"
-      - &spot_price
-        name: spot_price
-        description: "Current price of a swap"
       - &nft_balance
         name: nft_balance
         description: "Number of NFTs in the pool"
@@ -265,32 +257,41 @@ models:
       - &usd_volume
         name: usd_volume
         description: "USD trading volume of the pool"
-      - &owner_fee_volume_eth
-        name: owner_fee_volume_eth
+      - &pool_fee_volume_eth
+        name: pool_fee_volume_eth
         description: "Fees collected by pool owner"
+      - &pool_fee_bid_volume_eth
+        name: pool_fee_bid_volume_eth
+        description: "Fees collected by pool owner from ask side fills"
+      - &pool_fee_ask_volume_eth
+        name: pool_fee_ask_volume_eth
+        description: "Fees collected by pool owner from bid side fills"
       - &platform_fee_volume_eth
         name: platform_fee_volume_eth
         description: "Fees collected by the protocol"
       - &pool_type
         name: pool_type
         description: "Type of pool"
-      - &pricing_type
-        name: pricing_type
-        description: "Type of pricing"
+      - &bonding_curve
+        name: bonding_curve
+        description: "Type of bonding curve"
       - &delta
         name: delta
         description: "Change in price caused by one trade"
-      - &day_created
-        name: day_created
-        description: "Day the pool was created"
-      - &initial_price
+      - &spot_price
+        name: spot_price
+        description: "Current price of a swap"
+      - &pool_fee
+        name: pool_fee
+        description: "Current price of a swap"
+      - &initial_spot_price
         name: initial_price
         description: "Initial spot price of the pool"
-      - &initial_nft_count
-        name: initial_nft_count
+      - &initial_nft_balance
+        name: initial_nft_balance
         description: "Initial NFT balance of the pool"
-      - &initial_eth
-        name: initial_eth
+      - &initial_eth_balance
+        name: initial_eth_balance
         description: "Initial ETH balance of the pool"
       - &eth_change_trading
         name: eth_change_trading
@@ -298,14 +299,50 @@ models:
       - &nft_change_trading
         name: nft_change_trading
         description: "Change in NFT balance caused by trading"
+      - &pool_factory
+        name: pool_factory
+        description: "the factory used to create the pool"
+      - &creation_block_time
+        name: creation_block_time
+        description: "time the pool was created"
+      - &creation_tx_hash
+        name: creation_tx_hash
+        description: "hash of the tx the pool was created"
 
-  - name: sudoswap_ethereum_pool_trades
+  - name: sudoswap_ethereum_pool_creations
     meta:
       blockchain: ethereum
       project: sudoswap
-      contributors: [niftytable]
+      contributors: [ niftytable, 0xRob ]
     config:
-      tags: ['ethereum','sudoswap','pool_trades']
+      tags: [ 'ethereum','sudoswap','pool_creations' ]
+    description: >
+      sudoswap pool creations on Ethereum
+    columns:
+      - name: pool_address # unique
+        description: 'Address of the pool'
+        tests:
+          - unique
+      - *nft_contract_address
+      - *creator_address
+      - *bonding_curve
+      - *pool_type
+      - *spot_price
+      - *delta
+      - *pool_fee
+      - *initial_nft_balance
+      - *initial_eth_balance
+      - *pool_factory
+      - *creation_block_time
+      - *creation_tx_hash
+
+  - name: sudoswap_ethereum_pool_trades_agg_day
+    meta:
+      blockchain: ethereum
+      project: sudoswap
+      contributors: [niftytable, 0xRob]
+    config:
+      tags: ['ethereum','sudoswap','pool_trades_agg_day']
     description: >
         sudoswap pool trades on Ethereum
     tests:
@@ -317,46 +354,58 @@ models:
       - &day
         name: day
         description: "Day"
-      - *pool_address
+      - &pool_address
+        name: pool_address
+        description: 'Address of the pool'
       - *eth_volume
       - *usd_volume
       - *nfts_traded
-      - *owner_fee_volume_eth
+      - *pool_fee_volume_eth
+      - *pool_fee_bid_volume_eth
+      - *pool_fee_ask_volume_eth
       - *platform_fee_volume_eth
       - *eth_change_trading
       - *nft_change_trading
 
-  - name: sudoswap_ethereum_pool_balance_changes
+  - name: sudoswap_ethereum_pool_balance_agg_day
     meta:
       blockchain: ethereum
       project: sudoswap
       contributors: [niftytable]
     config:
-      tags: ['ethereum','sudoswap','pool_balance_changes']
+      tags: ['ethereum','sudoswap','pool_balance_agg_day']
     description: >
         sudoswap pool balance changes on Ethereum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
-            - nft_contract_address
             - pool_address
     columns:
       - *day
       - *pool_address
-      - &eth_balance_change
-        name: eth_balance_change
+      - name: eth_balance_change
         description: "Change in eth balance of the pool"
-      - &nft_balance_change
-        name: nft_balance_change
+      - name: nft_balance_change
         description: "Change in nft balance of the pool"
-      - *pricing_type
-      - *pool_type
-      - *nft_contract_address
-      - *creator_address
-      - *initial_price
-      - *initial_nft_count
-      - *initial_eth
-      - *day_created
-      - *delta
+
+  - name: sudoswap_ethereum_pool_settings_latest
+    meta:
+      blockchain: ethereum
+      project: sudoswap
+      contributors: [ 0xRob ]
+    config:
+      tags: [ 'ethereum','sudoswap','pool_settings_latest' ]
+    description: >
+      sudoswap pool internal parameters
+    columns:
+      - name: pool_address # unique
+        description: 'Address of the pool'
+        tests:
+          - unique
+      - *bonding_curve
       - *spot_price
+      - *delta
+      - *pool_fee
+      - name: latest_update_time
+        description: "time of the latest update"

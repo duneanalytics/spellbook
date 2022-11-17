@@ -1,7 +1,7 @@
 {{ config(
     schema = 'element_ethereum',
     alias = 'events',
-    partition_by = ['block_time'],
+    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -13,13 +13,13 @@ WITH element_txs AS (
         -- Ethereum ERC721 Sells
         SELECT 'ethereum' AS blockchain
         , 'element' AS project
-        , '1' AS version
+        , 'v1' AS version
         , ee.evt_block_time AS block_time
         , ee.erc721TokenId AS token_id
         , 'erc721' AS token_standard
         , 'Single Item Trade' AS trade_type
         , 1 AS number_of_items
-        , 'Sell' AS trade_category
+        , 'Offer Accepted' AS trade_category
         , ee.maker AS seller
         , ee.taker AS buyer
         , ee.erc20TokenAmount AS amount_raw
@@ -40,7 +40,7 @@ WITH element_txs AS (
         -- Ethereum ERC721 Buys
         SELECT 'ethereum' AS blockchain
         , 'element' AS project
-        , '1' AS version
+        , 'v1' AS version
         , ee.evt_block_time AS block_time
         , ee.erc721TokenId AS token_id
         , 'erc721' AS token_standard
@@ -67,13 +67,13 @@ WITH element_txs AS (
         -- Ethereum ERC1155 Sells
         SELECT 'ethereum' AS blockchain
         , 'element' AS project
-        , '1' AS version
+        , 'v1' AS version
         , ee.evt_block_time AS block_time
         , ee.erc1155TokenId AS token_id
         , 'erc1155' AS token_standard
         , 'Single Item Trade' AS trade_type
         , 1 AS number_of_items
-        , 'Sell' AS trade_category
+        , 'Offer Accepted' AS trade_category
         , ee.maker AS seller
         , ee.taker AS buyer
         , ee.erc20FillAmount AS amount_raw
@@ -94,7 +94,7 @@ WITH element_txs AS (
         -- Ethereum ERC1155 Buys
         SELECT 'ethereum' AS blockchain
         , 'element' AS project
-        , '1' AS version
+        , 'v1' AS version
         , ee.evt_block_time AS block_time
         , ee.erc1155TokenId AS token_id
         , 'erc1155' AS token_standard
@@ -121,6 +121,7 @@ SELECT alet.blockchain
 , alet.project
 , alet.version
 , alet.block_time
+, date_trunc('day', alet.block_time) AS block_date
 , alet.token_id
 , eth_nft_tokens.name AS collection
 , alet.amount_raw/POWER(10, eth_erc20_tokens.decimals)*prices.price AS amount_usd

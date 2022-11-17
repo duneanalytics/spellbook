@@ -1,4 +1,5 @@
 #!/bin/bash
+### DEPRECATED IN FAVOR OF GITHUB ACTION ON SELF HOSTED RUNNER
 ### For Dune employees.
 ### This script fetches a branch from a forked repo, opens a new internal branch, and opens a pull request
 ### Example usage:

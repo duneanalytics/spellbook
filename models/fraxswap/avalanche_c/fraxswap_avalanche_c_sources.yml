@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: fraxswap_avalanche_c
+    description: "Avalanche (C-Chain) decoded tables related to Fraxswap contract"
+    tables:
+      - name: FraxswapFactory_evt_PairCreated
+      - name: FraxswapPair_evt_Swap

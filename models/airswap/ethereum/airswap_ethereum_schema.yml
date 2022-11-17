@@ -6,7 +6,7 @@ models:
       blockchain: ethereum
       sector: dex
       project: airswap
-      contributors: hosuke
+      contributors: hosuke, jeff-dude
     config:
       tags: ['ethereum','airswap','trades', 'dex']
     description: >
@@ -20,7 +20,7 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trade_id
+            - trace_address
     columns:
       - &blockchain
         name: blockchain
@@ -64,6 +64,9 @@ models:
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of the token bought"
+        tests:
+          - dex_trades_token_bought:
+              dex_trades_seed: ref('dex_trades_seed')
       - &token_sold_address
         name: token_sold_address
         description: "Contract address of the token sold"
@@ -91,6 +94,3 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the corresponding trade event"
-      - &trade_id
-        name: trade_id
-        description: "Ranked record id for the same trade event"
