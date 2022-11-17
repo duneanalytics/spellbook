@@ -198,3 +198,22 @@ sources:
           - *price
           - *seller
           - *tokenId
+
+  - name: quixotic_v5_optimism
+    freshness:
+      warn_after: { count: 24, period: hour }
+    tables:
+      - name: ExchangeV5_evt_SellOrderFilled
+        loaded_at_field: evt_block_time
+        description: "Events emitted from SellOrderFilled."
+        columns:
+          - *buyer
+          - *contract_address
+          - *contractAddress
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *price
+          - *seller
+          - *tokenId
