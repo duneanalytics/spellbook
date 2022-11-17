@@ -22,7 +22,7 @@ with dexs as (
         NULL AS maker,
         t.amountOut AS token_bought_amount_raw,
         t.amountIn AS token_sold_amount_raw,
-        NULL AS amount_usd,
+        cast(NULL as double) AS amount_usd,
         t.tokenOut AS token_bought_address,
         t.tokenIn AS token_sold_address,
         t.poolId AS project_contract_address,
@@ -35,7 +35,8 @@ with dexs as (
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     )
-SELECT 
+SELECT
+    'arbitrum' AS blockchain,
     'balancer' AS project,
     '2' AS version,
     TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date,
