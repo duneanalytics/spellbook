@@ -13,7 +13,7 @@
         {%- endfor -%}
     )
     {% if s3_bucket != 'local' %}
-        {{ file_format_clause() }} location "{{ 's3a://'+ s3_bucket + '/' +  this.render() | replace(".","/") | replace("_","-") }}"
+        {{ file_format_clause() }} location "{{ 's3a://'+ s3_bucket + '/' +  this.render() | replace(".","/") }}"
     {% else %}
         {{ file_format_clause() }}
     {% endif %}
@@ -46,7 +46,7 @@
         {%- endfor -%}
     )
     {% if s3_bucket != 'local' %}
-        {{ file_format_clause() }} location "{{ 's3a://'+ s3_bucket + '/' +  this.render() | replace(".","/") | replace("_","-") }}"
+        {{ file_format_clause() }} location "{{ 's3a://'+ s3_bucket + '/' +  this.render() | replace(".","/") }}"
     {% else %}
         {{ file_format_clause() }}
     {% endif %}    {{ partition_cols(label="partitioned by") }}
