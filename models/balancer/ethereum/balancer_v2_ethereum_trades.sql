@@ -41,7 +41,7 @@ dexs AS (
         swap.`tokenOut` AS token_bought_address,
         swap.`tokenIn` AS token_sold_address,
         swap.`poolId` AS project_contract_address,
-        pools_fees.swap_fee_percentage AS swap_fee,
+        pools_fees.swap_fee_percentage  / POWER(10, 18) AS swap_fee,
         swap.evt_tx_hash AS tx_hash,
         NULL AS trace_address,
         swap.evt_index
