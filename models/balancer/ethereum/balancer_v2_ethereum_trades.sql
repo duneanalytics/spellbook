@@ -24,8 +24,8 @@ WITH swap_fees AS (
         swap.evt_block_time,
         MAX(fees.evt_block_time) AS max_fee_evt_block_time
     FROM
-        balancer_v2."Vault_evt_Swap" swap
-        LEFT JOIN balancer_v2.view_pools_fees fees
+        {{ source ('balancer_v2_ethereum', 'Vault_evt_Swap') }} swap
+        LEFT JOIN {{ ref('balancer_v2_ethereum_pools_fees') }} fees
             ON fees.contract_address = SUBSTRING(swap.`poolId`, 0, 42)
             AND fees.evt_block_time <= swap.evt_block_time
     GROUP BY 1, 2, 3, 4, 5
