@@ -18,8 +18,8 @@
 with dexs as (
     SELECT
         t.evt_block_time AS block_time,
-        NULL AS taker, 
-        NULL AS maker,
+        '' AS taker,
+        '' AS maker,
         t.amountOut AS token_bought_amount_raw,
         t.amountIn AS token_sold_amount_raw,
         cast(NULL as double) AS amount_usd,
