@@ -10,7 +10,6 @@ profile: "spellbook"
 vars:
   DBT_ENV_CUSTOM_ENV_S3_BUCKET: "{{ env_var('DBT_ENV_CUSTOM_ENV_S3_BUCKET', 'local') }}"
 
-# # pre-run hooks for macros that create UDFs. commenting out for now.
 # on-run-start:
 #   - '{{ get_href() }}'
 
