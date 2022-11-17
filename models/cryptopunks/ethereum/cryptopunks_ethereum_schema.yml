@@ -219,3 +219,35 @@ models:
         description: "Listed price (ETH)"
       - name: listing_created_at
         description: "Time listings was created"
+
+  - name: cryptopunks_ethereum_current_owners_per_token
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [cat]
+    config:
+      tags: ['ethereum', 'cryptopunks', 'owners']
+    description: > 
+        CryptoPunks current owners per token id 
+    columns:
+      - name: punk_id
+        description: "CryptoPunk ID #"
+      - name: current_owner
+        description: "Wallet that currently holds each CryptoPunk ID #"
+      - name: last_transfer_time
+        description: "Last recorded transfer"
+
+  - name: cryptopunks_ethereum_listings_over_time
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [cat]
+    config:
+      tags: ['ethereum', 'cryptopunks', 'listings']
+    description: > 
+        CryptoPunks listings count per day over time
+    columns:
+      - name: day
+        description: "Day"
+      - name: listed_count
+        description: "# Punks listed for sale that day"
