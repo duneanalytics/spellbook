@@ -20,13 +20,13 @@ WITH swap_fees AS (
         swap.evt_block_number,
         swap.evt_tx_hash,
         swap.evt_index,
-        SUBSTRING(swap."poolId" FROM 0 FOR 21) AS contract_address,
+        SUBSTRING(swap.`poolId`, 0, 42) AS contract_address,
         swap.evt_block_time,
         MAX(fees.evt_block_time) AS max_fee_evt_block_time
     FROM
         balancer_v2."Vault_evt_Swap" swap
         LEFT JOIN balancer_v2.view_pools_fees fees
-            ON fees.contract_address = SUBSTRING(swap."poolId" FROM 0 FOR 21)
+            ON fees.contract_address = SUBSTRING(swap.`poolId`, 0, 42)
             AND fees.evt_block_time <= swap.evt_block_time
     GROUP BY 1, 2, 3, 4, 5
 ),
@@ -35,12 +35,12 @@ dexs AS (
         swap.evt_block_time AS block_time,
         NULL AS taker,
         NULL AS maker,
-        swap.amountOut AS token_bought_amount_raw,
-        swap.amountIn AS token_sold_amount_raw,
+        swap.`amountOut` AS token_bought_amount_raw,
+        swap.`amountIn` AS token_sold_amount_raw,
         NULL AS amount_usd,
-        swap.tokenOut AS token_bought_address,
-        swap.tokenIn AS token_sold_address,
-        swap.poolId AS project_contract_address,
+        swap.`tokenOut` AS token_bought_address,
+        swap.`tokenIn` AS token_sold_address,
+        swap.`poolId` AS project_contract_address,
         pools_fees.swap_fee_percentage AS swap_fee,
         swap.evt_tx_hash AS tx_hash,
         NULL AS trace_address,
@@ -55,8 +55,8 @@ dexs AS (
             ON pools_fees.contract_address = swap_fees.contract_address
             AND pools_fees.evt_block_time = swap_fees.max_fee_evt_block_time
     WHERE
-        swap.tokenIn != SUBSTRING(vault_swap. `poolId`, 0, 42)
-        AND swap.tokenOut != SUBSTRING(vault_swap. `poolId`, 0, 42)
+        swap.tokenIn != swap_fees.contract_address
+        AND swap.tokenOut != swap_fees.contract_address
         -- Incremental logic.
         {% if is_incremental() %}
         AND swap.evt_block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
