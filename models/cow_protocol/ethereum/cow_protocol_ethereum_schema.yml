@@ -102,8 +102,8 @@ models:
       - &fee_usd
         name: fee_usd
         description: "USD value of trade fee"
-      - &app_data
-        name: app_data
+      - &app_hash
+        name: app_hash
         description: "Hashed metadata related to trade event (full content available on IPFS)"
       - &receiver
         name: receiver
@@ -153,3 +153,21 @@ models:
       - &token_approvals
         name: token_approvals
         description: Number of ERC20 token approvals made within the settlement
+  - name: cow_protocol_ethereum_raw_app_data
+    meta:
+      blockchain: ethereum
+      project: cow_protocol
+      contributors: bh2smith
+    config:
+      tags: ['ethereum','cow_protocol','orders', 'dex', 'aggregator', 'app_data', 'ipfs_content']
+    description: >
+      CoW Protocol App Data corresponding to "appData" as contained in `trade` parameter 
+      of contract calls to gnosis_protocol_v2_ethereum.GPv2Settlement_call_settle
+    columns:
+      - *app_hash
+      - &first_seen_block
+        name: first_block_seen
+        description: Block Number of the first onchain occurrence of `app_hash`
+      - &content
+        name: content
+        description: JSON content corresponding to `app_hash` - fetched from IPFS
