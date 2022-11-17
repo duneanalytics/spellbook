@@ -169,21 +169,6 @@ models:
       - *tx_to
       - *unique_trade_id
 
-  - name: cryptopunks_ethereum_current_owners
-    meta:
-      blockchain: ethereum
-      project: cryptopunks
-      contributors: [cat]
-    config:
-      tags: ['ethereum', 'cryptopunks', 'owners']
-    description: >
-        Current CryptoPunks owners
-    columns:
-      - name: wallet
-        description: "Collector wallet address"
-      - name: currently_holding
-        description: "Number of CryptoPunks currently held"
-
   - name: cryptopunks_ethereum_metadata
     meta:
       blockchain: ethereum
