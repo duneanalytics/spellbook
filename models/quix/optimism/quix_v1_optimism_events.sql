@@ -24,10 +24,10 @@ with events_raw as (
         ,erc721address as nft_contract_address
         ,price as amount_raw
     from {{ source('quixotic_optimism','Exchange_evt_SellOrderFilled') }}
-    {% if is_incremental() %} -- this filter will only be applied on an incremental run
-    where evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
     where erc721address != lower('0xbe81eabdbd437cba43e4c1c330c63022772c2520') -- --exploit contract
+    {% if is_incremental() %} -- this filter will only be applied on an incremental run
+    and evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 )
 ,transfers as (
     -- eth royalities
