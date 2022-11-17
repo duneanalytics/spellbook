@@ -38,7 +38,7 @@ FROM
                 tx_to,
                 unique_trade_id
         FROM {{ ref('opensea_trades') }}
-        UNION
+        UNION ALL
         SELECT
                 blockchain,
                 project,
@@ -68,7 +68,7 @@ FROM
                 tx_to,
                 unique_trade_id
         FROM {{ ref('magiceden_trades') }}
-        UNION
+        UNION ALL
         SELECT
                 blockchain,
                 project,
@@ -98,7 +98,7 @@ FROM
                 tx_to,
                 unique_trade_id
         FROM {{ ref('looksrare_ethereum_trades') }}
-        UNION
+        UNION ALL
         SELECT
                 blockchain,
                 project,
@@ -128,7 +128,7 @@ FROM
                 tx_to,
                 unique_trade_id
         FROM {{ ref('x2y2_ethereum_trades') }}
-        UNION
+        UNION ALL
         SELECT
                 blockchain,
                 project,
@@ -158,7 +158,7 @@ FROM
                 tx_to,
                 unique_trade_id
         FROM {{ ref('sudoswap_ethereum_trades') }}
-        UNION
+        UNION ALL
         SELECT
                 blockchain,
                 project,
@@ -188,7 +188,7 @@ FROM
                 tx_to,
                 unique_trade_id
         FROM {{ ref('foundation_ethereum_trades') }}
-        UNION
+        UNION ALL
         SELECT
                 blockchain,
                 project,
@@ -218,7 +218,7 @@ FROM
                 tx_to,
                 unique_trade_id
         FROM {{ ref('archipelago_ethereum_trades') }}
-        UNION
+        UNION ALL
         SELECT
                 blockchain,
                 project,
@@ -248,7 +248,7 @@ FROM
                 tx_to,
                 unique_trade_id
         FROM {{ ref('cryptopunks_ethereum_trades') }}
-        UNION
+        UNION ALL
         SELECT
                 blockchain,
                 project,
@@ -278,7 +278,7 @@ FROM
                 tx_to,
                 unique_trade_id
         FROM {{ ref('element_trades') }}
-        UNION
+        UNION ALL
         SELECT
                 blockchain,
                 project,
@@ -308,7 +308,7 @@ FROM
                 tx_to,
                 unique_trade_id
         FROM {{ ref('superrare_ethereum_trades') }}
-        UNION
+        UNION ALL
         SELECT
                 blockchain,
                 project,
@@ -338,7 +338,7 @@ FROM
                 tx_to,
                 unique_trade_id
         FROM {{ ref('zora_ethereum_trades') }}
-        UNION
+        UNION ALL
         SELECT
                 blockchain,
                 project,
