@@ -473,6 +473,13 @@ models:
       ethereum:
         +schema: mstable_ethereum
         +materialized: view
+        
+    platypus_finance:
+      +schema: platypus_finance
+      +materialized: view
+      ethereum:
+        +schema: mstable_ethereum
+        +materialized: view
 
     hashflow:
       +schema: hashflow
