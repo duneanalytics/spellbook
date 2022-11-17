@@ -18,3 +18,5 @@ sources:
         loaded_at_field: evt_block_time
       - name: CryptoPunksMarket_evt_PunkBidWithdrawn
         loaded_at_field: evt_block_time
+      - name: CryptoPunksMarket_evt_Transfer
+        loaded_at_field: evt_block_time
