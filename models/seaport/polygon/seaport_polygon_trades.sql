@@ -62,7 +62,8 @@ with source_polygon_transactions as (
     {% endif %}
 )
 ,iv_base_pairs_priv as (
-  select a.block_time
+  select a.block_date
+        ,a.block_time
         ,a.block_number
         ,a.tx_hash
         ,a.evt_index
@@ -97,7 +98,8 @@ with source_polygon_transactions as (
   where 1=1 
     and not a.is_private
   union all
-  select a.block_time
+  select a.block_date
+        ,a.block_time
         ,a.block_number
         ,a.tx_hash
         ,a.evt_index
@@ -133,7 +135,7 @@ with source_polygon_transactions as (
   from ref_seaport_polygon_base_pairs a
   left join ref_seaport_polygon_base_pairs b on b.tx_hash = a.tx_hash
     and b.evt_index = a.evt_index
-    and b.block_time = a.block_time -- for performance
+    and b.block_date = a.block_date -- for performance
     and b.token_contract_address = a.token_contract_address
     and b.token_id = a.token_id
     and b.original_amount = a.original_amount
@@ -144,7 +146,8 @@ with source_polygon_transactions as (
     and a.consideration_cnt > 0
 ) 
 ,iv_volume as (
-  select block_time
+  select block_date
+        ,block_time
         ,tx_hash
         ,evt_index
         ,max(token_contract_address) as token_contract_address 
@@ -166,7 +169,8 @@ with source_polygon_transactions as (
   group by 1,2,3
 )
 ,iv_nfts as (
-  select a.block_time
+  select a.block_date
+        ,a.block_time
         ,a.tx_hash
         ,a.evt_index
         ,a.block_number
@@ -202,7 +206,7 @@ with source_polygon_transactions as (
         ,sub_type
         ,sub_idx
   from iv_base_pairs_priv a
-  left join iv_volume b on b.block_time = a.block_time  -- tx_hash and evt_index is PK, but for performance, block_time is included
+  left join iv_volume b on b.block_date = a.block_date  -- tx_hash and evt_index is PK, but for performance, block_time is included
     and b.tx_hash = a.tx_hash
     and b.evt_index = a.evt_index
   where 1=1
@@ -210,7 +214,6 @@ with source_polygon_transactions as (
 )
 ,iv_trades as (
   select a.*
-          ,try_cast(date_trunc('day', a.block_time) as date) as block_date
           ,n.name AS nft_token_name
           ,t.`from` as tx_from
           ,t.`to` as tx_to
@@ -231,7 +234,6 @@ with source_polygon_transactions as (
           ,agg.name as aggregator_name
           ,agg.contract_address AS aggregator_address
           ,sub_idx
-          ,'seaport-' || tx_hash || '-' || evt_index || '-' || nft_contract_address || '-' || nft_token_id || '-' || sub_idx as unique_trade_id
   from iv_nfts a
   inner join source_polygon_transactions t on t.hash = a.tx_hash
   left join ref_tokens_nft n on n.contract_address = nft_contract_address 
@@ -318,9 +320,6 @@ with source_polygon_transactions as (
     ,is_private
     ,sub_idx
     ,sub_type
-
-    -- unique key    
-    ,unique_trade_id
   from iv_trades
 )
 select *
