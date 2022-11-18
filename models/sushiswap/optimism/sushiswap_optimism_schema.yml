@@ -6,11 +6,11 @@ models:
       blockchain: optimism
       sector: dex
       project: sushiswap
-      contributors: hosuke
+      contributors: hosuke, codingsh
     config:
       tags: ['optimism','sushiswap','trades','dex']
     description: >
-        Sushiswap contract trades on optimism
+        Sushiswap contract trades on Optimistic 
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

@@ -119,14 +119,14 @@ models:
       avalanche_c:
         +schema: sushiswap_avalanche_c
         +materialized: view
-      optimism:
-        +schema: sushiswap_optmism
-        +materialized: view
       polygon:
         +schema: sushiswap_polygon
         +materialized: view
       bnb:
         +schema: sushiswap_bnb
+        +materialized: view
+      optimism:
+        +schema: sushiswap_optimism
         +materialized: view
       gnosis:
         +schema: sushiswap_gnosis
