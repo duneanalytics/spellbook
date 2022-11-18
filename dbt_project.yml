@@ -242,7 +242,8 @@ models:
 
     labels:
       +schema: labels
-      +materialized: view
+      +materialized: table
+      +file_format: delta
 
     dao:
       +schema: dao
@@ -516,6 +517,9 @@ models:
       +materialized: view
       ethereum:
         +schema: hashflow_ethereum
+        +materialized: view
+      avalanche_c:
+        +schema: hashflow_avalanche_c
         +materialized: view
 
     nexusmutual:
