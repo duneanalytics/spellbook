@@ -265,7 +265,7 @@ models:
         name: voter_address
       - &support
         name: support
-        description: "For, Against or Abstain votes"
+        description: "0 = Against, 1 = For, 2 = Abstain votes"
         tests:
         - accepted_values:
             values: ['for', 'against', 'abstain']
