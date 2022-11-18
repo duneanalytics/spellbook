@@ -233,7 +233,7 @@
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 229, 1000000, 'Attraction', 'Jos Vromans', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-229')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 230, 1000000, 'Glow', 'Jason Ting', 'Playground', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-230')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 231, 1000000, 'Cushions', 'Devi Parikh', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-231')
-        , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 232, 1000000, 'Jiometory No Compute - ジオメトリ ハ ケイサンサレマセン', 'Samsy', 'Curated', '5', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-232')
+        , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 232, 1000000, 'Jiometory No Compute', 'Samsy', 'Curated', '5', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-232') -- Jiometory No Compute - ジオメトリ ハ ケイサンサレマセン is full collection name - chracters not supported 
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 233, 1000000, 'Chimera', 'mpkoz', 'Curated', '6', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-233')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 234, 1000000, 'The Wrapture', 'Dmitri Cherniak', 'Playground', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-234')
         , ('0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', 235, 1000000, 'Maps for grief', 'Louis-André Labadie', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-235')
