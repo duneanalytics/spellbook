@@ -1,17 +1,18 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum"]\',
                                 "sector",
                                 "dex",
-                                \'["jeff-dude", "hosuke", "0xRob", "pandajackson42", "Henrystats", "scoffie", "zhongyiio", "justabi", "ripple3"]\') }}'
+                                \'["jeff-dude", "hosuke", "0xRob", "pandajackson42", "Henrystats", "scoffie", "zhongyiio", "justabi", "umer_h_adil", "mtitus6", "dbustos20", "tian7"]\') }}'
         )
 }}
 
 {% set dex_trade_models = [
 'uniswap_trades'
 ,'sushiswap_trades'
+,'kyberswap_trades'
 ,'fraxswap_trades'
-,'curvefi_ethereum_trades'
+,'curvefi_trades'
 ,'airswap_ethereum_trades'
 ,'clipper_ethereum_trades'
 ,'shibaswap_ethereum_trades'
@@ -20,8 +21,12 @@
 ,'dfx_ethereum_trades'
 ,'pancakeswap_trades'
 ,'dodo_ethereum_trades'
+,'woofi_avalanche_c_trades'
+,'bancor_ethereum_trades'
+,'platypus_finance_avalanche_c_trades'
 ,'hashflow_ethereum_trades'
 ,'mstable_ethereum_trades'
+,'zigzag_trades'
 ] %}
 
 
