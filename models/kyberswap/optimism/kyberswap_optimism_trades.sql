@@ -5,10 +5,10 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
-    post_hook='{{ expose_spells(\'["avalanche_c"]\',
+    post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "kyberswap",
-                                \'["zhongyiio", "hosuke"]\') }}'
+                                \'["zhongyiio", "hosuke", "duc.le@kyber.network"]\') }}'
     )
 }}
 
@@ -31,8 +31,8 @@ kyberswap_dex AS (
         ,t.evt_tx_hash                                                      AS tx_hash
         ,''                                                                 AS trace_address
         ,t.evt_index
-    FROM {{ source('kyber_avalanche_c', 'DMMPool_evt_Swap') }} t
-    INNER JOIN {{ source('kyber_avalanche_c', 'DMMFactory_evt_PoolCreated') }} p
+    FROM {{ source('kyber_optimism', 'DMMPool_evt_Swap') }} t
+    INNER JOIN {{ source('kyber_optimism', 'DMMFactory_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -58,8 +58,8 @@ kyberswap_dex AS (
         ,t.evt_tx_hash                                                                 AS tx_hash
         ,''                                                                            AS trace_address
         ,t.evt_index
-    FROM {{ source('kyber_avalanche_c', 'Elastic_Pool_evt_swap') }} t
-    INNER JOIN {{ source('kyber_avalanche_c', 'Elastic_Factory_evt_PoolCreated') }} p
+    FROM {{ source('kyber_optimism', 'Elastic_Pool_evt_swap') }} t
+    INNER JOIN {{ source('kyber_optimism', 'Elastic_Factory_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -83,7 +83,7 @@ kyberswap_dex AS (
         ,evt_tx_hash                                                       AS tx_hash
         ,''                                                                AS trace_address
         ,evt_index
-    FROM {{ source('kyber_avalanche_c', 'AggregationRouter_evt_Swapped') }}
+    FROM {{ source('kyber_optimism', 'AggregationRouter_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
         evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -107,7 +107,7 @@ kyberswap_dex AS (
         ,evt_tx_hash                                                       AS tx_hash
         ,''                                                                AS trace_address
         ,evt_index
-    FROM {{ source('kyber_avalanche_c', 'AggregationRouterV2_evt_Swapped') }}
+    FROM {{ source('kyber_optimism', 'AggregationRouterV2_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
         evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -131,7 +131,7 @@ kyberswap_dex AS (
         ,evt_tx_hash                                                       AS tx_hash
         ,''                                                                AS trace_address
         ,evt_index
-    FROM {{ source('kyber_avalanche_c', 'AggregationRouterV3_evt_Swapped') }}
+    FROM {{ source('kyber_optimism', 'AggregationRouterV3_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
         evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -155,7 +155,7 @@ kyberswap_dex AS (
         ,evt_tx_hash                                                       AS tx_hash
         ,''                                                                AS trace_address
         ,evt_index
-    FROM {{ source('kyber_avalanche_c', 'MetaAggregationRouter_evt_Swapped') }}
+    FROM {{ source('kyber_optimism', 'MetaAggregationRouter_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
         evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -165,7 +165,7 @@ kyberswap_dex AS (
 )
 
 SELECT
-    'avalanche_c'                                                         AS blockchain
+    'optimism'                                                         AS blockchain
     ,'kyberswap'                                                          AS project
     ,kyberswap_dex.version                                                AS version
     ,try_cast(date_trunc('DAY', kyberswap_dex.block_time) AS date)        AS block_date
@@ -195,7 +195,7 @@ SELECT
     ,kyberswap_dex.trace_address
     ,kyberswap_dex.evt_index
 FROM kyberswap_dex
-INNER JOIN {{ source('avalanche_c', 'transactions') }} tx
+INNER JOIN {{ source('optimism', 'transactions') }} tx
     ON kyberswap_dex.tx_hash = tx.hash
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc("day", now() - interval '1 week')
@@ -204,14 +204,14 @@ INNER JOIN {{ source('avalanche_c', 'transactions') }} tx
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = kyberswap_dex.token_bought_address
-    and erc20a.blockchain = 'avalanche_c'
+    and erc20a.blockchain = 'optimism'
 LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     ON erc20b.contract_address = kyberswap_dex.token_sold_address
-    AND erc20b.blockchain = 'avalanche_c'
+    AND erc20b.blockchain = 'optimism'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
     ON p_bought.minute = date_trunc('minute', kyberswap_dex.block_time)
     AND p_bought.contract_address = kyberswap_dex.token_bought_address
-    AND p_bought.blockchain = 'avalanche_c'
+    AND p_bought.blockchain = 'optimism'
     {% if is_incremental() %}
     AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
     {% else %}
@@ -220,7 +220,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', kyberswap_dex.block_time)
     AND p_sold.contract_address = kyberswap_dex.token_sold_address
-    AND p_sold.blockchain = 'avalanche_c'
+    AND p_sold.blockchain = 'optimism'
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
     {% else %}
