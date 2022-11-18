@@ -45,7 +45,6 @@ from (VALUES
         ('0xf656b98d6fdb1c403fa9c7f7628f57005447f946','Exploded Views','Kevin Cooley','Foundation','https://foundation.app/collection/evkc'),
         ('0xfbd960e3f689962c3440fd0d553f4d7eeeb22608','Laszlo Moholy Nagy','Laszlo Moholy Nagy','SuperRare','https://www.superrare.com/laszlomoholynagy'),
         ('0x9eea8d2379c5073133dda015c48bd7047fc72048','Laurie Simmons','Laurie Simmons','SuperRare','https://www.superrare.com/lauriesimmons'),
-        ('0x56c733709e780e566aa8b994d736e1d6000dc06a','Man Ray','Man Ray','Foundation','https://foundation.app/collection/mr-10d1'),
         ('0xa280da59cae87b4e2fe17b276210745748496c84','Mauricio Alejo','Mauricio Alejo','Foundation','https://foundation.app/collection/ma-0ae2'),
         ('0xe0d742e4a5fe8b1519c73a32c7d6612f9bd5853d','Margins of Excess','Max Pinckers','Foundation','https://foundation.app/collection/mpme'),
         ('0x6c0f41bf543d4db04550bffc8fea285b129f868c','Mitch Epstein','Mitch Epstein','SuperRare','https://www.superrare.com/mitchepstein'),
@@ -59,12 +58,11 @@ from (VALUES
         ('0x987f91abce9158fd86818808505c67842b9ed3eb','Uncrowded Fields','Pelle Cass','Foundation','https://foundation.app/collection/pcuf'),
         ('0xf38b61deb728f25358066370b07a7e9629e5804c','Pieter Hugo','Pieter Hugo','SuperRare','https://www.superrare.com/pieterhugo'),
         ('0xbdd090bb91638ec0972f5f34480c300a6825a15d','Prisca Munkeni Monnier','Prisca Munkeni Monnier','Foundation','https://foundation.app/collection/pmm'),
-        ('0xf2a0b64d7a096ed94fa3bfb1aa4573760a25d1f1','My Dakota','Rebecca Webb','Foundation','https://foundation.app/collection/rwmd'),
-        ('0x17e369660f01c9065305aa06d458d3acb928effb','Shadow Chamber','Roger Ballen','Foundation','https://foundation.app/collection/rbsc'),
         ('0x4f67a5572bb4bc0413acd99462c53afa0d733b09','Relief for Ukraine (SSU)','Stephen Shore','Foundation','https://foundation.app/collection/stephenshoreru'),
         ('0x28398a2c1459119efa3e6699e928612ea4909a13','Our Life in The Shadows','Tania Franco Klein','SuperRare','https://superrare.com/taniafrancoklein'),
         ('0x23e3f2ea133f2c80558e181c4f78f4da3bc7c477','House Hunting','Todd Hido','Foundation','https://foundation.app/collection/thhh'),
         ('0xb8c55c77b3617ef22a4f552f9a47503e021c6623','Roaming','Todd Hido','Foundation','https://foundation.app/collection/thr-00f3')
+        , ('0x49e6b0cfb1880fd7afb69c062613238049a4b56b','By Accident - The Negatives',' Marcel De Baer','Foundation','https://foundation.app/collection/ngtvs')
 
 ) as temp_table (contract_address, collection_name, artist_name, platform, website)
     

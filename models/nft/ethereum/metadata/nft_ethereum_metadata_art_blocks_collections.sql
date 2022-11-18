@@ -378,6 +378,7 @@
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 378, 1000000, 'Fleur', 'AnaPet', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-378')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 380, 1000000, 'Seedlings', 'VES3L', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-380')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 381, 1000000, 'Structures', 'Hevey', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-381')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 382, 1000000, 'Metaphysics', 'Jinyao Lin', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-382')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 384, 1000000, 'VOXΞL', 'JEANVASCRIPT', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-384')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 386, 1000000, 'Ego Death', 'electralina', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-386')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 388, 1000000, 'Your Story', 'encapsuled', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-388')
