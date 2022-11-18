@@ -80,15 +80,15 @@ models:
         description:  "Event index of the transaction"
 
   - name: jarvis_network_polygon_jfiat_address_mapping 
-      meta:
-        blockchain: polygon
-        sector: forex
-        project: jarvis_network
-        contributors: 0xroll
-      config:
-        tags: ['polygon','synthereum','currencies','forex', 'Jarvis Network', '0xroll']
-      description: >
-          Manually updated table for mapping jarvis synthetic currencies related contracts
+    meta:
+      blockchain: polygon
+      sector: forex
+      project: jarvis_network
+      contributors: 0xroll
+    config:
+      tags: ['polygon','synthereum','currencies','forex', 'Jarvis Network', '0xroll']
+    description: >
+        Manually updated table for mapping jarvis synthetic currencies related contracts
 
       columns:
       - &jfiat_symbol
@@ -114,15 +114,15 @@ models:
         description:  "Contract version"
 
   - name: jarvis_network_polygon_jfiat_collateral_mapping 
-      meta:
-        blockchain: polygon
-        sector: forex
-        project: jarvis_network
-        contributors: 0xroll
-      config:
-        tags: ['polygon','synthereum','currencies','forex', 'Jarvis Network', '0xroll']
-      description: >
-          Manually updated table for mapping collateral information for jarvis synthetic tokens
+    meta:
+      blockchain: polygon
+      sector: forex
+      project: jarvis_network
+      contributors: 0xroll
+    config:
+      tags: ['polygon','synthereum','currencies','forex', 'Jarvis Network', '0xroll']
+    description: >
+        Manually updated table for mapping collateral information for jarvis synthetic tokens
 
       columns:
       - *jfiat_collateral_pool_address
