@@ -89,7 +89,8 @@ models:
       tags: ['polygon','synthereum','currencies','forex', 'Jarvis Network', '0xroll']
     description: >
         Manually updated table for mapping jarvis synthetic currencies related contracts
-      columns:
+
+    columns:
       - &jfiat_symbol
         name: jfiat_symbol
         description: "Jarvis synthetic currency token symbol" 
@@ -122,7 +123,8 @@ models:
       tags: ['polygon','synthereum','currencies','forex', 'Jarvis Network', '0xroll']
     description: >
         Manually updated table for mapping collateral information for jarvis synthetic tokens
-      columns:
+
+    columns:
       - *jfiat_collateral_pool_address
       - &jfiat_collateral_symbol
         name: jfiat_collateral_symbol
