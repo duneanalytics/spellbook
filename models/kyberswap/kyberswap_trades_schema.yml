@@ -3,7 +3,6 @@ version: 2
 models:
   - name: kyberswap_trades
     meta:
-      blockchain: avalanche_c
       sector: dex
       project: kyberswap
       contributors: zhongyiio
@@ -21,6 +20,9 @@ models:
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"  
+      - &category
+        name: category
+        description: "Category: Kyberswap Pool or Kyberswap Aggregator"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"

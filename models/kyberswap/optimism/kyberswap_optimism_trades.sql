@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'trades',
+    alias = 'optimism_trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -165,9 +165,12 @@ kyberswap_dex AS (
 )
 
 SELECT
-    'optimism'                                                         AS blockchain
+    'optimism'                                                            AS blockchain
     ,'kyberswap'                                                          AS project
     ,kyberswap_dex.version                                                AS version
+    ,SELECT (CASE
+    WHEN (kyberswap_dev.version = 'dmm' or kyberswap_dev.version = 'elastic' ) then 'dex'
+    ELSE 'aggregator' END)                                                AS category
     ,try_cast(date_trunc('DAY', kyberswap_dex.block_time) AS date)        AS block_date
     ,kyberswap_dex.block_time
     ,erc20a.symbol                                                        AS token_bought_symbol
@@ -183,15 +186,15 @@ SELECT
     ,coalesce(kyberswap_dex.amount_usd
             ,(kyberswap_dex.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
             ,(kyberswap_dex.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
-     )                                                                   AS amount_usd
+     )                                                                    AS amount_usd
     ,kyberswap_dex.token_bought_address
     ,kyberswap_dex.token_sold_address
-    ,coalesce(kyberswap_dex.taker, tx.from)                              AS taker
+    ,coalesce(kyberswap_dex.taker, tx.from)                               AS taker
     ,kyberswap_dex.maker
     ,kyberswap_dex.project_contract_address
     ,kyberswap_dex.tx_hash
-    ,tx.from                                                             AS tx_from
-    ,tx.to                                                               AS tx_to
+    ,tx.from                                                              AS tx_from
+    ,tx.to                                                                AS tx_to
     ,kyberswap_dex.trace_address
     ,kyberswap_dex.evt_index
 FROM kyberswap_dex

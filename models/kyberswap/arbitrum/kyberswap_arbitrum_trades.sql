@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'trades',
+    alias = 'arbitrum_trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -165,19 +165,22 @@ kyberswap_dex AS (
 )
 
 SELECT
-    'arbitrum'                                                         AS blockchain
-    ,'kyberswap'                                                          AS project
-    ,kyberswap_dex.version                                                AS version
-    ,try_cast(date_trunc('DAY', kyberswap_dex.block_time) AS date)        AS block_date
-    ,kyberswap_dex.block_time
-    ,erc20a.symbol                                                        AS token_bought_symbol
-    ,erc20b.symbol                                                        AS token_sold_symbol
-    ,CASE
-         WHEN lower(erc20a.symbol) > lower(erc20b.symbol) THEN concat(erc20b.symbol, '-', erc20a.symbol)
-         ELSE concat(erc20a.symbol, '-', erc20b.symbol)
-     END                                                                  AS token_pair
-    ,kyberswap_dex.token_bought_amount_raw / power(10, erc20a.decimals)   AS token_bought_amount
-    ,kyberswap_dex.token_sold_amount_raw / power(10, erc20b.decimals)     AS token_sold_amount
+    'arbitrum'                                                           AS blockchain
+    ,'kyberswap'                                                         AS project
+    ,kyberswap_dex.version                                               AS version
+    ,SELECT (CASE
+    WHEN (kyberswap_dev.version = 'dmm' or kyberswap_dev.version = 'elastic' ) then 'dex'
+    ELSE 'aggregator' END)                                               AS category
+        ,try_cast(date_trunc('DAY', kyberswap_dex.block_time) AS date)   AS block_date
+        ,kyberswap_dex.block_time
+        ,erc20a.symbol                                                   AS token_bought_symbol
+        ,erc20b.symbol                                                   AS token_sold_symbol
+        ,CASE
+    WHEN lower(erc20a.symbol) > lower(erc20b.symbol) THEN concat(erc20b.symbol, '-', erc20a.symbol)
+    ELSE concat(erc20a.symbol, '-', erc20b.symbol)
+END                                                                      AS token_pair
+    ,kyberswap_dex.token_bought_amount_raw / power(10, erc20a.decimals)  AS token_bought_amount
+    ,kyberswap_dex.token_sold_amount_raw / power(10, erc20b.decimals)    AS token_sold_amount
     ,kyberswap_dex.token_bought_amount_raw
     ,kyberswap_dex.token_sold_amount_raw
     ,coalesce(kyberswap_dex.amount_usd

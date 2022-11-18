@@ -28,6 +28,9 @@ models:
       - &project
         name: project
         description: "Project name of the DEX"
+      - &category
+        name: category
+        description: "Category: Kyberswap Pool or Kyberswap Aggregator"
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
