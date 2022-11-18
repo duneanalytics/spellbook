@@ -101,6 +101,14 @@ lv_filter as (
         FROM 
         (
         SELECT 
+            day, 
+            nft_address,
+            os_vol, 
+            SUM(os_vol) OVER (PARTITION BY nft_address ORDER BY day ROWS BETWEEN 30 PRECEDING AND CURRENT ROW) 30d_vol 
+        FROM
+        (
+        SELECT 
+            date_trunc('day', t.block_time) as day
             x2.nft_address,
             SUM(t.amount_usd) as os_vol 
         FROM 
@@ -114,10 +122,11 @@ lv_filter as (
         LEFT JOIN trades t 
             ON x2.nft_address = t.nft_contract_address
         WHERE t.project = 'opensea'
-        GROUP BY 1 
+        GROUP BY 1, 2 
         ) foo 
+        ) foo2 
         WHERE true 
-        AND os_vol < 100 
+        AND 30d_vol < 100 
 ),
 
 hp_filter as (
@@ -127,8 +136,23 @@ hp_filter as (
         FROM 
         (
         SELECT 
+            day, 
+            nft_address,
+            high_price,
+            10 * highprice_cutoff as highprice_cutoff
+        FROM
+        (
+        SELECT 
+            day, 
+            nft_address, 
+            highprice_cutoff as high_price, 
+            MAX(highprice_cutoff) OVER (PARTITION BY nft_address ORDER BY day ROWS BETWEEN 30 PRECEDING AND CURRENT ROW) as highprice_cutoff
+        FROM
+        (
+        SELECT 
+            date_trunc('day', t.block_time) as day, 
             x2.nft_address,
-            10 * MAX(t.amount_usd) as highprice_cutoff 
+            MAX(t.amount_usd) as highprice_cutoff 
         FROM 
         (
         SELECT 
@@ -139,13 +163,15 @@ hp_filter as (
         royal_settings r 
             ON t.nft_contract_address = r.collection 
             AND r.fee = 0 
-        WHERE t.project = 'x2y2'
+        WHERE t.project = 'xzy2'
         ) x2 
         LEFT JOIN trades t 
             ON x2.nft_address = t.nft_contract_address
         WHERE t.project = 'opensea'
-        GROUP BY 1 
+        GROUP BY 1, 2 
         ) foo 
+        ) foo2 
+        ) foo3 
 ),
 
 wf_filter as (
@@ -269,9 +295,11 @@ filtered_trades as (
         LEFT JOIN 
         lv_filter lv 
             ON lv.nft_address = t.nft_contract_address
+            AND lv.day = t.day 
         LEFT JOIN 
         hp_filter hp 
             ON t.nft_contract_address = hp.nft_address
+            AND t.day = hp.day 
             AND t.usd_amount > hp.highprice_cutoff
         LEFT JOIN 
         wf_filter wf 
