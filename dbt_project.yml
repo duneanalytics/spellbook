@@ -182,12 +182,9 @@ models:
       optimism:
         +schema: gas_optimism
         +materialized: view
-<<<<<<< Updated upstream
-=======
       arbitrum:
         +schema: gas_arbitrum
         +materialized: view
->>>>>>> Stashed changes
 
     gmx:
       +schema: gmx
@@ -358,6 +355,10 @@ models:
       ethereum:
         +schema: archipelago_ethereum
         +materialized: view
+  
+    integration_test:
+      +schema: integration_test
+      +materialized: view
 
     curvefi:
       +schema: curvefi
@@ -605,10 +606,6 @@ seeds:
           token_bought_amount: float
           token_sold_address: string
           token_sold_amount: float
-
-    integration_test:
-      +schema: integration_test
-      +materialized: view
 
     sudoswap:
       +enabled: true
