@@ -247,13 +247,13 @@ models:
 
     addresses:
       +schema: addresses
-      +materialized: table
+      +materialized: view
       ethereum:
         +schema: addresses_ethereum
-        +materialized: table
+        +materialized: view
       optimism:
         +schema: addresses_optimism
-        +materialized: table
+        +materialized: view
     
     addresses_events: 
       +schema: addresses_events
@@ -453,11 +453,31 @@ models:
         +schema: shibaswap_ethereum
         +materialized: view
 
+    zigzag:
+      +schema: zigzag
+      +materialized: view
+      arbitrum:
+        +schema: zigzag_arbitrum
+        +materialized: view
+
     pancakeswap:
       +schema: pancakeswap
       +materialized: view
       bnb:
         +schema: pancakeswap_bnb
+        +materialized: view
+    bancor:
+      +schema: bancor
+      +materialized: view
+      ethereum:
+        +schema: bancor_ethereum
+        +materialized: view
+
+    kyberswap:
+      +schema: kyberswap
+      +materialized: view
+      avalanche_c:
+        +schema: kyberswap_avalanche_c
         +materialized: view
 
     fraxswap:
@@ -479,6 +499,20 @@ models:
       avalanche_c:
         +schema: platypus_finance_avalanche_c
         +materialized: view
+        
+    platypus_finance:
+      +schema: platypus_finance
+      +materialized: view
+      ethereum:
+        +schema: mstable_ethereum
+        +materialized: view
+        
+    woofi:
+      +schema: woofi
+      +materialized: view
+      avalanche_c:
+        +schema: woofi_avalanche_c
+        +materialized: view
 
     hashflow:
       +schema: hashflow
@@ -487,17 +521,26 @@ models:
         +schema: hashflow_ethereum
         +materialized: view
 
+    nexusmutual:
+      +schema: nexusmutual
+      +materialized: view
+      ethereum:
+        +schema: nexusmutual_ethereum
+        +materialized: view
+
     quix:
       +schema: quix
       +materialized: view
       optimism:
         +schema: quix_optimism
+        +materialized: view
 
     zeroex:
       +schema: zeroex
       +materialized: view
       ethereum:
         +schema: zeroex_ethereum
+        +materialized: view
 
 seeds:
   spellbook:
@@ -624,6 +667,20 @@ seeds:
         +column_types:
           master_address: string
           alternative_address: string
+    nexusmutual:
+      ethereum:
+        +enabled: true
+        +schema: test_data
+        nexusmutual_ethereum_trades_seed:
+          +column_types:
+            evt_tx_hash: string
+            block_date: date
+            evt_block_number: string
+            nonce: string
+            curr: string
+            sum_assured: string
+            premium: string
+            premium_nxm: string
     perpetual:
       +enabled: true
       +schema: test_data
