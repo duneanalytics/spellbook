@@ -1,10 +1,17 @@
 {{
-  config(alias='view_transactions',
-         post_hook='{{ expose_spells(\'["polygon"]\',
+  config(
+    alias='synthereum_transactions',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    post_hook='{{ expose_spells(\'["polygon"]\',
                                       "project",
                                       "jarvis_network",
                                     \'["0xroll"]\') }}')
 }}
+
+{% set project_start_date = '2021-08-16' %}
+
 
 SELECT 
 'polygon' as blockchain,
@@ -53,6 +60,11 @@ SELECT
     evt_tx_hash,
     evt_index
 FROM {{ source('jarvis_network_polygon','SynthereumMultiLpLiquidityPool_evt_Minted') }}
+{% if is_incremental() %}
+WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+{% else %}
+WHERE evt_block_time >= '{{ project_start_date }}'
+{% endif %}
 
 UNION ALL
 
@@ -85,6 +97,11 @@ SELECT
     evt_tx_hash,
     evt_index
 FROM {{ source('jarvis_network_polygon','SynthereumPoolOnChainPriceFeed_evt_Mint') }} 
+{% if is_incremental() %}
+WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+{% else %}
+WHERE evt_block_time >= '{{ project_start_date }}'
+{% endif %}
 
 UNION ALL
 
@@ -101,6 +118,11 @@ UNION ALL
     evt_tx_hash,
     evt_index
 FROM {{ source('jarvis_network_polygon','SynthereumPoolOnChainPriceFeed_evt_Redeem') }}
+{% if is_incremental() %}
+WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+{% else %}
+WHERE evt_block_time >= '{{ project_start_date }}'
+{% endif %}
 
 UNION ALL
 
@@ -117,6 +139,11 @@ UNION ALL
     evt_tx_hash,
     evt_index
 FROM {{ source('jarvis_network_polygon','SynthereumPoolOnChainPriceFeed_evt_Exchange') }}
+{% if is_incremental() %}
+WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+{% else %}
+WHERE evt_block_time >= '{{ project_start_date }}'
+{% endif %}
 ) x 
 INNER JOIN {{ ref('jarvis_network_polygon_jfiat_addresses_mapping') }} am ON (contract_address = jfiat_collateral_pool_address)
 LEFT JOIN  {{ ref('jarvis_network_polygon_jfiat_collateral_mapping') }} cm USING (jfiat_collateral_pool_address)
