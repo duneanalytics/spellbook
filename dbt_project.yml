@@ -243,6 +243,7 @@ models:
     labels:
       +schema: labels
       +materialized: table
+      +file_format: delta
 
     dao:
       +schema: dao
