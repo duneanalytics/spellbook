@@ -121,7 +121,7 @@ SELECT DISTINCT
     'v1' as version,
     TRY_CAST(date_trunc('DAY', looks_rare.block_time) AS date) AS block_date,
     looks_rare.block_time,
-    token_id,
+    looks_rare.token_id,
     tokens.name AS collection,
     looks_rare.price / power(10,erc20.decimals) * p.price AS amount_usd,
     CASE WHEN erct4.evt_block_time IS NOT NULL THEN 'erc721' ELSE 'erc1155' END AS token_standard,
