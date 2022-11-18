@@ -33,17 +33,17 @@ WITH swap_fees AS (
 dexs AS (
     SELECT
         swap.evt_block_time AS block_time,
-        NULL AS taker,
-        NULL AS maker,
+        '' AS taker,
+        '' AS maker,
         swap.`amountOut` AS token_bought_amount_raw,
         swap.`amountIn` AS token_sold_amount_raw,
-        NULL AS amount_usd,
+        CAST(NULL as DOUBLE) AS amount_usd,
         swap.`tokenOut` AS token_bought_address,
         swap.`tokenIn` AS token_sold_address,
         swap.`poolId` AS project_contract_address,
         pools_fees.swap_fee_percentage  / POWER(10, 18) AS swap_fee,
         swap.evt_tx_hash AS tx_hash,
-        NULL AS trace_address,
+        '' AS trace_address,
         swap.evt_index
     FROM
         swap_fees
