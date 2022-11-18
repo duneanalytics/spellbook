@@ -65,8 +65,6 @@ LEFT JOIN {{ ref('nft_trades') }} filter_baf
     AND filter_baf.buyer=nftt.seller
     AND filter_baf.nft_contract_address=nftt.nft_contract_address
     AND filter_baf.token_id=nftt.token_id
-    AND (filter_baf.block_time BETWEEN nftt.block_time - interval '1 week' AND nftt.block_time + interval '1 week')
-    AND filter_baf.block_time >= date_trunc("day", NOW() - interval '2 weeks')
     {% if is_incremental() %}
     AND filter_baf.block_time >= date_trunc("day", NOW() - interval '1 week')
     {% endif %}
@@ -75,8 +73,6 @@ LEFT JOIN {{ ref('nft_trades') }} filter_bought_3x
     AND filter_bought_3x.token_id=nftt.token_id
     AND filter_bought_3x.buyer=nftt.buyer
     AND filter_bought_3x.token_standard IN ('erc721', 'erc20')
-    AND (filter_bought_3x.block_time BETWEEN nftt.block_time - interval '1 week' AND nftt.block_time + interval '1 week')
-    AND filter_bought_3x.block_time >= date_trunc("day", NOW() - interval '2 weeks')
     {% if is_incremental() %}
     AND filter_bought_3x.block_time >= date_trunc("day", NOW() - interval '1 week')
     {% endif %}

@@ -46,7 +46,7 @@ WITH project_events AS (
         royalty_fee_percentage,
         unique_trade_id
     FROM {{ ref('opensea_events') }}
-    UNION
+    UNION ALL
     SELECT
         blockchain,
         project,
@@ -86,7 +86,7 @@ WITH project_events AS (
         royalty_fee_percentage,
         unique_trade_id
     FROM {{ ref('magiceden_events') }}
-    UNION
+    UNION ALL
     SELECT
         blockchain,
         project,
@@ -126,7 +126,7 @@ WITH project_events AS (
         royalty_fee_percentage,
         unique_trade_id
     FROM {{ ref('looksrare_ethereum_events') }}
-    UNION
+    UNION ALL
     SELECT
         blockchain,
         project,
@@ -166,7 +166,7 @@ WITH project_events AS (
         royalty_fee_percentage,
         unique_trade_id
     FROM {{ ref('x2y2_ethereum_events') }}
-    UNION
+    UNION ALL
     SELECT
         blockchain,
         project,
@@ -206,7 +206,7 @@ WITH project_events AS (
         royalty_fee_percentage,
         unique_trade_id
     FROM {{ ref('sudoswap_ethereum_events') }}
-    UNION
+    UNION ALL
     SELECT
         blockchain,
         project,
@@ -246,7 +246,7 @@ WITH project_events AS (
         royalty_fee_percentage,
         unique_trade_id
     FROM {{ ref('foundation_ethereum_events') }}
-    UNION
+    UNION ALL
     SELECT
         blockchain,
         project,
@@ -286,7 +286,7 @@ WITH project_events AS (
         royalty_fee_percentage,
         unique_trade_id
     FROM {{ ref('archipelago_ethereum_events') }}
-    UNION
+    UNION ALL
     SELECT
         blockchain,
         project,
@@ -326,7 +326,7 @@ WITH project_events AS (
         royalty_fee_percentage,
         unique_trade_id
     FROM {{ ref('cryptopunks_ethereum_events') }}
-    UNION
+    UNION ALL
     SELECT
         blockchain,
         project,
@@ -366,7 +366,7 @@ WITH project_events AS (
         royalty_fee_percentage,
         unique_trade_id
     FROM {{ ref('element_events') }}
-    UNION
+    UNION ALL
     SELECT
         blockchain,
         project,
@@ -406,7 +406,7 @@ WITH project_events AS (
         royalty_fee_percentage,
         unique_trade_id
     FROM {{ ref('superrare_ethereum_events') }}
-    UNION
+    UNION ALL
     SELECT
         blockchain,
         project,
@@ -446,7 +446,7 @@ WITH project_events AS (
         royalty_fee_percentage,
         unique_trade_id
     FROM {{ ref('zora_ethereum_events') }}
-    UNION
+    UNION ALL
     SELECT
         blockchain,
         project,
@@ -530,5 +530,5 @@ native_mints AS (
 	WHERE tx_hash NOT IN (SELECT tx_hash FROM project_events)
 )
 SELECT * FROM project_events
-UNION
+UNION ALL
 SELECT * FROM native_mints
