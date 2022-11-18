@@ -43,9 +43,9 @@ transactions as (
         WHERE block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         AND to IN (SELECT dao_wallet_address FROM dao_tmp)
-        AND LOWER(call_type) NOT IN ('delegatecall', 'callcode', 'staticcall') 
+        AND (LOWER(call_type) NOT IN ('delegatecall', 'callcode', 'staticcall') or call_type IS NULL)
         AND success = true 
-        AND value <> 0 
+        AND CAST(value as decimal(38,0)) != 0 
 
         UNION ALL 
 
@@ -68,9 +68,9 @@ transactions as (
         WHERE block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         AND from IN (SELECT dao_wallet_address FROM dao_tmp)
-        AND LOWER(call_type) NOT IN ('delegatecall', 'callcode', 'staticcall') 
+        AND (LOWER(call_type) NOT IN ('delegatecall', 'callcode', 'staticcall') or call_type IS NULL)
         AND success = true 
-        AND value <> 0 
+        AND CAST(value as decimal(38,0)) != 0 
 )
 
 SELECT 
