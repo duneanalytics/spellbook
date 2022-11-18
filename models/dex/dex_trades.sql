@@ -10,6 +10,9 @@
 {% set dex_trade_models = [
 'uniswap_trades'
 ,'sushiswap_trades'
+,'sushiswap_bnb_trades'
+,'sushiswap_optimism_trades'
+,'sushiswap_polygon_trades'
 ,'kyberswap_trades'
 ,'fraxswap_trades'
 ,'curvefi_trades'
