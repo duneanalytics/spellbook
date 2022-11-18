@@ -79,7 +79,6 @@ models:
         name: evt_index
         description:  "Event index of the transaction"
 
-
   - name: jarvis_network_polygon_jfiat_address_mapping 
       meta:
         blockchain: polygon
@@ -113,7 +112,6 @@ models:
       - &contract_version
         name: contract_version
         description:  "Contract version"
-
 
   - name: jarvis_network_polygon_jfiat_collateral_mapping 
       meta:
