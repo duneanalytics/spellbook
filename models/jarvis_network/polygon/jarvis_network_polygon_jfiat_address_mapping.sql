@@ -1,6 +1,6 @@
 {{
   config(
-        alias='jfiat_addresses_mapping',
+        alias='jarvis_network_polygon_jfiat_addresses_mapping',
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "project",
                                     "jarvis_network",

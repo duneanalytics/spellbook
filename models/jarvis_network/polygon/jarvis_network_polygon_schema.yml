@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: jarvis_network_polygon_synthereum_transactions 
+  - name: synthereum_transactions 
     meta:
       blockchain: polygon
       sector: forex
