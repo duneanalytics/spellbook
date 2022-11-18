@@ -1,0 +1,80 @@
+version: 1
+
+models:
+  - name: jarvis_network_polygon_synthereum_transactions 
+    meta:
+      blockchain: polygon
+      sector: forex
+      project: jarvis_network
+      contributors: 0xroll
+    config:
+      tags: ['polygon','synthereum','currencies','forex', 'Jarvis Network', '0xroll']
+    description: >
+        Jarvis Network Synthereum transactions on Polygon across all contracts and versions. This table will load all synthereum activities downstream.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - action
+            - user
+            - jfiat_token_symbol
+            - jfiat_token_amount
+            - collateral_symbol
+            - collateral_token_amount
+            - net_collateral_amount
+            - net_amount_usd
+            - fee_amount_usd
+            - evt_tx_hash
+            - evt_index
+
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the contract is deployed" 
+      - &evt_block_time
+        name: evt_block_time
+        description: "UTC event block date of each transaction"
+      - &action
+        name: action
+        description:  "Transaction description (Mint,Redeem,Exchange)"
+      - &user
+        name: user
+        description:  "Address of the sender"
+      - &recipient
+        name: recipient
+        description:  "Address of the recipient"
+      - &jfiat_token_symbol
+        name: jfiat_token_symbol
+        description:  "Token symbol of jarvis synthetic currency"
+      - &jfiat_token_amount
+        name: jfiat_token_amount
+        description:  "Amount of jarvis synthetic currency token"
+      - &collateral_symbol
+        name: collateral_symbol
+        description:  "Token symbol of collateral"
+      - &collateral_token_amount
+        name: collateral_token_amount,
+        description:  "Collateral token amount"
+      - &net_collateral_amount
+        name: net_collateral_amount
+        description:  "Net Collateral token amount"
+      - &fee_amount
+        name: fee_amount
+        description:  "Fee amount"
+      - &collateral_token_amount_usd
+        name: collateral_token_amount_usd
+        description:  "Collateral token amount in USD"
+      - &net_collateral_amount_usd
+        name: net_collateral_amount_usd
+        description:  "Net collateral amount in USD"
+      - &net_amount_usd
+        name: net_amount_usd
+        description:  "Transaction net amount in usd"
+      - &fee_amount_usd
+        name: fee_amount_usd
+        description:  "Transaction fee in usd"
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description:  "Transaction Hash"
+      - &evt_index
+        name: evt_index
+        description:  "Event index of the transaction"

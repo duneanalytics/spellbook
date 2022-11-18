@@ -1,0 +1,120 @@
+version: 1
+
+sources:
+  - name: jarvis_network_polygon
+    description:  "Decoded events and function calls for Jarvis Network contracts (V1 and V2) On Polygon"
+    tables:
+      - name: SynthereumMultiLpLiquidityPool_evt_Minted
+        loaded_at_field:  evt_block_time
+        description: "Minting synthetic fiat currencies V2"
+        columns:
+          - &contract_address
+            name: contract_address
+            description:  "Address of the liquidity pool"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block number which processed the unique transaction hash"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_index
+            name: evt_index
+            description: "Event index value of the transaction"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description:  "Transaction hash"
+          - &mintvalues
+            name: mintvalues
+            description:  "All mint related values which consist of total collateral,exchange amount,fee amount and number of tokens"
+          - &user
+            name: user
+            description:  "Address that minted synthetic fiat currencies"
+          - &recipient
+            name: recipient
+            description:  "Address that received token"
+
+      - name: SynthereumMultiLpLiquidityPool_evt_Redeemed
+        loaded_at_field:  evt_block_time
+        description:  "Redemption of synthetic fiat currencies V2"
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &redeemvalues
+            name: redeemvalues
+            description:  "All redemption values which consist of collateral amount,exchange amount,fee amount and number of tokens"
+          - &user
+            name: user
+            description:  "Address that redeemed synthetic fiat currencies for collateral"
+          - *recipient
+          
+      - name: SynthereumPoolOnChainPriceFeed_evt_Mint
+        loaded_at_field:  evt_block_time
+        description:  "Minting synthetic fiat currencies V1"
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &feePaid
+            name: feePaid
+            description:  "Fees paid"
+          - &account
+            name: account
+            description:  "Address that minted synthetic fiat currencies"
+          - collateralSent
+            name: collateralSent
+            description:  "Amount of collateral sent"
+          - numTokensReceived
+            name: numTokensReceived
+            description:  "Amount of tokens received"
+          - pool
+            name: pool
+            description:  "Address of collateral pool"
+          - *recipient
+
+      - name: SynthereumPoolOnChainPriceFeed_evt_Redeem
+        loaded_at_field:  evt_block_time
+        description:  "Redemption of synthetic fiat currencies V1"
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *account
+          - collateralReceived
+            name: collateralReceived
+            description:  "Amount of collateral received"
+          - *feePaid
+          - numTokensSent
+            name: numTokensSent
+            description:  "Amount of synthetic fiat currency tokens sent"
+          - *pool
+
+      - name: SynthereumPoolOnChainPriceFeed_evt_Exchange
+        loaded_at_field:  evt_block_time
+        description:  "Exchange of synthetic fiat currencies V1"
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *account
+          - destNumTokensReceived
+            name: destNumTokensReceived
+            description:  "Amount of synthetic fiat currency received"
+          - destPool
+            name: destPool
+            description:  "Address of collateral pool of currency received"
+          - *feePaid
+          - *numTokensSent
+          - *recipient
+          - sourcePool
+            name: sourcePool
+            description:  "Address of collateral pool of currency sent"
+
