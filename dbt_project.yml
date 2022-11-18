@@ -196,6 +196,12 @@ models:
       ethereum:
         +schema: x2y2_ethereum
         +materialized: view
+    rarible:
+      +schema: rarible
+      +materialized: view
+      ethereum:
+        +schema: rarible_ethereum
+        +materialized: view
     zora:
       +schema: zora
       +materialized: view
