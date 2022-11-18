@@ -242,7 +242,7 @@ models:
 
     labels:
       +schema: labels
-      +materialized: view
+      +materialized: table
 
     dao:
       +schema: dao
