@@ -172,7 +172,7 @@ SELECT DISTINCT
     COALESCE(royalty_fee / looks_rare.price * 100, 0) as royalty_fee_percentage,
     royalty_fee_receive_address,
     royalty_fee_currency_symbol,
-    'looksrare' || '-' || COALESCE(looks_rare.tx_hash, '-1') || '-' ||  COALESCE(token_id::string, '-1') || '-' ||  COALESCE(seller::string, '-1') || '-' || COALESCE(erc.contract_address, nft_contract_address) || '-' || COALESCE(looks_rare.evt_index::string, '-1') || '-' || COALESCE(evt_type::string, 'Other')  || '-' || COALESCE(erc.evt_index, '-1')  || '-' || COALESCE(case when erc.value_unique::string is null then '0' ELSE '1' end, '1') as unique_trade_id
+    'looksrare' || '-' || COALESCE(looks_rare.tx_hash, '-1') || '-' ||  COALESCE(looks_rare.token_id::string, '-1') || '-' ||  COALESCE(seller::string, '-1') || '-' || COALESCE(erc.contract_address, nft_contract_address) || '-' || COALESCE(looks_rare.evt_index::string, '-1') || '-' || COALESCE(evt_type::string, 'Other')  || '-' || COALESCE(erc.evt_index, '-1')  || '-' || COALESCE(case when erc.value_unique::string is null then '0' ELSE '1' end, '1') as unique_trade_id
 FROM looks_rare
 INNER JOIN {{ source('ethereum','transactions') }} tx ON looks_rare.tx_hash = tx.hash
     {% if not is_incremental() %}
@@ -181,7 +181,7 @@ INNER JOIN {{ source('ethereum','transactions') }} tx ON looks_rare.tx_hash = tx
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN erc_transfers erc ON erc.evt_tx_hash = looks_rare.tx_hash AND erc.token_id_erc = token_id
+LEFT JOIN erc_transfers erc ON erc.evt_tx_hash = looks_rare.tx_hash AND erc.token_id_erc = looks_rare.token_id
 LEFT JOIN {{ ref('tokens_nft') }} tokens ON tokens.contract_address =  nft_contract_address AND tokens.blockchain = 'ethereum'
 LEFT JOIN  {{ ref('nft_aggregators') }} agg ON agg.contract_address = tx.to and agg.blockchain = 'ethereum'
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', looks_rare.block_time)
