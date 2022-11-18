@@ -1,5 +1,4 @@
 {{ config(
-    schema = 'trader_joe_avalanche_c',
     alias = 'trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -9,7 +8,7 @@
     post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                 "project",
                                 "trader_joe",
-                                \'["jeff-dude", "markusbkoch", "masquot", "milkyklim", "0xBoxer", "mewwts", "hagaetc","mtitus6"]\') }}'
+                                \'["jeff-dude","mtitus6"]\') }}'
     )
 }}
 
@@ -23,7 +22,7 @@ WITH dexs AS
         ,'' AS maker
         ,CASE WHEN amount0Out = 0 THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw
         ,CASE WHEN amount0In = 0 OR amount1Out = 0 THEN amount1In ELSE amount0In END AS token_sold_amount_raw
-        ,NULL AS amount_usd
+        ,cast(NULL as double)  AS amount_usd
         ,CASE WHEN amount0Out = 0 THEN f.token1 ELSE f.token0 END AS token_bought_address
         ,CASE WHEN amount0In = 0 OR amount1Out = 0 THEN f.token1 ELSE f.token0 END AS token_sold_address
         ,t.contract_address AS project_contract_address
