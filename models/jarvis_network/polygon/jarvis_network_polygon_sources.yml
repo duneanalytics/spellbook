@@ -63,13 +63,13 @@ sources:
           - &account
             name: account
             description:  "Address that minted synthetic fiat currencies"
-          - collateralSent
+          - &collateralSent
             name: collateralSent
             description:  "Amount of collateral sent"
-          - numTokensReceived
+          - &numTokensReceived
             name: numTokensReceived
             description:  "Amount of tokens received"
-          - pool
+          - &pool
             name: pool
             description:  "Address of collateral pool"
           - *recipient
@@ -84,11 +84,11 @@ sources:
           - *evt_index
           - *evt_tx_hash
           - *account
-          - collateralReceived
+          - &collateralReceived
             name: collateralReceived
             description:  "Amount of collateral received"
           - *feePaid
-          - numTokensSent
+          - &numTokensSent
             name: numTokensSent
             description:  "Amount of synthetic fiat currency tokens sent"
           - *pool
@@ -103,16 +103,16 @@ sources:
           - *evt_index
           - *evt_tx_hash
           - *account
-          - destNumTokensReceived
+          - &destNumTokensReceived
             name: destNumTokensReceived
             description:  "Amount of synthetic fiat currency received"
-          - destPool
+          - &destPool
             name: destPool
             description:  "Address of collateral pool of currency received"
           - *feePaid
           - *numTokensSent
           - *recipient
-          - sourcePool
+          - &sourcePool
             name: sourcePool
             description:  "Address of collateral pool of currency sent"
 
