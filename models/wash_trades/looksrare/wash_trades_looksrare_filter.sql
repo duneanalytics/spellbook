@@ -108,7 +108,7 @@ lv_filter as (
         FROM
         (
         SELECT 
-            date_trunc('day', t.block_time) as day
+            date_trunc('day', t.block_time) as day,
             x2.nft_address,
             SUM(t.amount_usd) as os_vol 
         FROM 
