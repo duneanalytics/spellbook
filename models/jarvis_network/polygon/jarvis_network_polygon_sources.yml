@@ -1,4 +1,4 @@
-version: 1
+version: 2
 
 sources:
   - name: jarvis_network_polygon
@@ -28,7 +28,7 @@ sources:
             description:  "All mint related values which consist of total collateral,exchange amount,fee amount and number of tokens"
           - &user
             name: user
-            description:  "Address that minted synthetic fiat currencies"
+            description:  "Address of sender"
           - &recipient
             name: recipient
             description:  "Address that received token"
@@ -45,9 +45,7 @@ sources:
           - &redeemvalues
             name: redeemvalues
             description:  "All redemption values which consist of collateral amount,exchange amount,fee amount and number of tokens"
-          - &user
-            name: user
-            description:  "Address that redeemed synthetic fiat currencies for collateral"
+          - *user
           - *recipient
           
       - name: SynthereumPoolOnChainPriceFeed_evt_Mint
