@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: synthereum_transactions 
+  - name: jarvis_network_view_all_transactions 
     meta:
       blockchain: polygon
       sector: forex
@@ -78,3 +78,66 @@ models:
       - &evt_index
         name: evt_index
         description:  "Event index of the transaction"
+
+
+- name: jarvis_network_polygon_jfiat_address_mapping 
+    meta:
+      blockchain: polygon
+      sector: forex
+      project: jarvis_network
+      contributors: 0xroll
+    config:
+      tags: ['polygon','synthereum','currencies','forex', 'Jarvis Network', '0xroll']
+    description: >
+        Manually updated table for mapping jarvis synthetic currencies related contracts
+
+    columns:
+      - &jfiat_symbol
+        name: jfiat_symbol
+        description: "Jarvis synthetic currency token symbol" 
+      - &decimals
+        name: decimals
+        description:  "Token decimals"
+      - &jfiat_token_address
+        name: jfiat_token_address
+        description:  "Jarvis synthetic currency token contract address"
+      - &jfiat_liquidity_address
+        name: jfiat_liquidity_address
+        description:  "Jarvis synthetic currency token liquidity address"
+      - &jfiat_collateral_pool_address
+        name: jfiat_collateral_pool_address
+        description:  "Jarvis synthetic currency token collateral pool address"
+      - &jfiat_chainlink_address
+        name: jfiat_chainlink_address
+        description:  "Chainlink address for synthetic token"
+      - &contract_version
+        name: contract_version
+        description:  "Contract version"
+
+
+- name: jarvis_network_polygon_jfiat_collateral_mapping 
+    meta:
+      blockchain: polygon
+      sector: forex
+      project: jarvis_network
+      contributors: 0xroll
+    config:
+      tags: ['polygon','synthereum','currencies','forex', 'Jarvis Network', '0xroll']
+    description: >
+        Manually updated table for mapping collateral information for jarvis synthetic tokens
+
+    columns:
+      - *jfiat_collateral_pool_address
+      - &jfiat_collateral_symbol
+        name: jfiat_collateral_symbol
+        description:  "Collateral token symbol"
+      - *decimals
+      - &jfiat_collateral_token_address
+        name: jfiat_collateral_token_address
+        description:  "Collateral token contract address"
+      
+
+
+
+
+
