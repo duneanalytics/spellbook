@@ -1,7 +1,7 @@
 {{ config( alias='erc20')}}
 
 SELECT LOWER(contract_address) AS contract_address, symbol, decimals
-  FROM (VALUES 
+  FROM (VALUES
 
 ('0x8f3cf7ad23cd3cadbd9735aff958023239c6a063', 'DAI', 18)
 ,('0x0000000000000000000000000000000000001010', 'MATIC', 18)
@@ -10,5 +10,27 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6', 'WBTC', 8)
 ,('0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', 'WETH', 18)
 ,('0x2c89bbc92bd86f8075d1decc58c7f4e0107f286b', 'WAVAX', 18)
-        
+,('0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270', 'WMATIC', 18)
+,('0xd6df932a45c0f255f85145f286ea0b292b21c90b', 'AAVE', 18)
+,('0xa3fa99a148fa48d14ed51d610c367c61876997f1', 'miMATIC', 18)
+,('0x431cd3c9ac9fc73644bf68bf5691f4b83f9e104f', 'RBW', 18)
+,('0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4', 'stMATIC', 18)
+,('0xe2aa7db6da1dae97c5f5c6914d285fbfcc32a128', 'PAR', 18)
+,('0x64060ab139feaae7f06ca4e63189d86adeb51691', 'UNIM', 18)
+,('0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b', 'BOB', 18)
+,('0xb33eaad8d922b1083446dc23f610c2567fb5180f', 'UNI', 18)
+,('0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39', 'LINK', 18)
+,('0x431d5dff03120afa4bdf332c61a6e1766ef37bdb', 'JPYC', 18)
+,('0x7ff54b5c384c9f3a3fece70e150d2ce2d70da6f7', 'TBAC', 8)
+,('0x6d802ac662b898622f7a13e1f4cb1a50c7085b6e', 'MOV', 18)
+,('0x6ae7dfc73e0dde2aa99ac063dcf7e8a63265108c', 'JPYC', 18)
+,('0x769434dca303597c8fc4997bf3dab233e961eda2', 'XSGD', 6)
+,('0x172370d5cd63279efa6d502dab29171933a610af', 'CRV', 18)
+,('0xf287d97b6345bad3d88856b26fb7c0ab3f2c7976', 'MATIC2x-FLI-P', 18)
+,('0x7f36c54da31b2dd355caffec0249f26da41e3fcd', 'ENO', 18)
+,('0x94f98d16c6ba5c2f649d6d7efb9767b14b0f325b', 'TBAC', 8)
+,('0xedcfb6984a3c70501baa8b7f5421ae795ecc1496', 'META', 8)
+,('0xa1c57f48f0deb89f569dfbe6e2b7f46d33606fd4', 'MANA', 18)
+,('0x45c32fa6df82ead1e2ef74d17b76547eddfaff89', 'FRAX', 18)
+
 ) AS temp_table (contract_address, symbol, decimals)
