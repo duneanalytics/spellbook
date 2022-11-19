@@ -108,7 +108,7 @@ models:
         description:  "Jarvis synthetic currency token collateral pool address"
       - &jfiat_chainlink_address
         name: jfiat_chainlink_address
-        description:  "Chainlink address for synthetic token"
+        description:  "Chainlink oracle address for synthetic token"
       - &contract_version
         name: contract_version
         description:  "Contract version"

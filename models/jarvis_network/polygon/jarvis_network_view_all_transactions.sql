@@ -1,6 +1,6 @@
 {{
   config(
-    alias='synthereum_transactions',
+    alias='view_all_transactions',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
