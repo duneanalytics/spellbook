@@ -35,24 +35,26 @@ SELECT nftt.blockchain
     , CASE WHEN nftt.buyer=nftt.seller
         THEN true
         ELSE false 
-        END AS same_buyer_seller
-    , CASE WHEN COUNT(distinct filter_baf.block_number) > 0
+        END AS filter1_same_buyer_seller
+    , CASE WHEN COUNT(filter_baf.block_number) > 0
         THEN true
         ELSE false 
-        END AS back_and_forth_trade
-    , CASE WHEN COUNT(distinct filter_bought_3x.block_number) > 2
+        END AS filter2_back_and_forth_trade
+    , CASE WHEN COUNT(filter_bought_3x.block_number) >= 3
+        OR COUNT(filter_sold_3x.block_number) >= 3
         THEN true
         ELSE false
-        END AS bought_it_three_times_within_a_week
+        END AS filter3_bought_or_sold_3x
     , CASE WHEN filter_funding_buyer.first_funded_by = filter_funding_seller.first_funded_by
         OR filter_funding_buyer.first_funded_by = nftt.seller
         OR filter_funding_seller.first_funded_by = nftt.buyer
         THEN true
         ELSE false
-        END AS funded_by_same_wallet
+        END AS filter4_first_funded_by_same_wallet
     , CASE WHEN nftt.buyer=nftt.seller
         OR COUNT(filter_baf.block_number) > 0
         OR COUNT(filter_bought_3x.block_number) > 2
+        OR COUNT(filter_sold_3x.block_number) >= 3
         OR filter_funding_buyer.first_funded_by = filter_funding_seller.first_funded_by
         OR filter_funding_buyer.first_funded_by = nftt.seller
         OR filter_funding_seller.first_funded_by = nftt.buyer
@@ -75,6 +77,14 @@ LEFT JOIN {{ ref('nft_trades') }} filter_bought_3x
     AND filter_bought_3x.token_standard IN ('erc721', 'erc20')
     {% if is_incremental() %}
     AND filter_bought_3x.block_time >= date_trunc("day", NOW() - interval '1 week')
+    {% endif %}
+LEFT JOIN {{ ref('nft_trades') }} filter_sold_3x
+    ON filter_sold_3x.nft_contract_address=nftt.nft_contract_address
+    AND filter_sold_3x.token_id=nftt.token_id
+    AND filter_sold_3x.seller=nftt.seller
+    AND filter_sold_3x.token_standard IN ('erc721', 'erc20')
+    {% if is_incremental() %}
+    AND filter_sold_3x.block_time >= date_trunc("day", NOW() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ ref('addresses_events_ethereum_first_funded_by') }} filter_funding_buyer
     ON filter_funding_buyer.address=nftt.buyer
