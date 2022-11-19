@@ -432,7 +432,7 @@ models:
     biswap:
       +schema: biswap
       +materialized: view
-      ethereum:
+      bnb:
         +schema: biswap_bnb
         +materialized: view
 
