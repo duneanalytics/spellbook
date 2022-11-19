@@ -13,7 +13,7 @@
 {% set project_start_date = '2021-08-16' %}
 
 
-SELECT 
+SELECT
 'polygon' as blockchain,
 evt_block_time,
 action,
@@ -80,7 +80,7 @@ SELECT
   redeemvalues:feeAmount as fee_amount,
   evt_tx_hash,
   evt_index
-FROM {{ source('jarvis_network_polygon','SynthereumMultiLpLiquidityPool_evt_Redeemed') }} 
+FROM {{ source('jarvis_network_polygon','SynthereumMultiLpLiquidityPool_evt_Redeemed') }}
 
 UNION ALL
 
@@ -96,7 +96,7 @@ SELECT
     feePaid as fee_amount,
     evt_tx_hash,
     evt_index
-FROM {{ source('jarvis_network_polygon','SynthereumPoolOnChainPriceFeed_evt_Mint') }} 
+FROM {{ source('jarvis_network_polygon','SynthereumPoolOnChainPriceFeed_evt_Mint') }}
 {% if is_incremental() %}
 WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% else %}
@@ -144,9 +144,9 @@ WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% else %}
 WHERE evt_block_time >= '{{ project_start_date }}'
 {% endif %}
-) x 
+) x
 INNER JOIN {{ ref('jarvis_network_polygon_jfiat_address_mapping') }} am ON (contract_address = jfiat_collateral_pool_address)
-LEFT JOIN  {{ ref('jarvis_network_polygon_jfiat_collateral_mapping') }} cm USING (jfiat_collateral_pool_address)
+LEFT JOIN  {{ ref('jarvis_network_polygon_jfiat_collateral_mapping') }} cm ON (am.jfiat_collateral_pool_address = cm.jfiat_collateral_pool_address)
 LEFT JOIN  {{ source('prices', 'usd') }} pu ON (am.blockchain = pu.blockchain AND cm.jfiat_collateral_symbol = pu.symbol AND date_trunc('minute',x.evt_block_time) = date_trunc('minute',pu.minute))
 ) p
 
