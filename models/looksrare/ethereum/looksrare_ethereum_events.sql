@@ -146,8 +146,11 @@ SELECT DISTINCT
             ), 0) END AS number_of_items,
     looks_rare.category as trade_category,
     CASE WHEN evt_type is NULL THEN 'Other' ELSE evt_type END as evt_type,
-    seller_fix.from AS seller,
-    buyer_fix.to AS buyer,
+    COALESCE(seller_fix.from, looks_rare.seller) AS seller,
+    COALESCE(buyer_fix.to, looks_rare.buyer) AS buyer,
+    --CASE WHEN looks_rare.buyer=agg.contract_address AND erct2.to IS NOT NULL THEN erct2.to
+    --    WHEN looks_rare.buyer=agg.contract_address AND erct3.to IS NOT NULL THEN erct3.to
+    --    ELSE looks_rare.buyer END AS buyer,
     looks_rare.price / power(10,erc20.decimals) AS amount_original,
     looks_rare.price AS amount_raw,
     CASE WHEN looks_rare.currency_contract_original = '0x0000000000000000000000000000000000000000' THEN 'ETH' ELSE erc20.symbol END AS currency_symbol,
@@ -191,22 +194,6 @@ LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', loo
     AND p.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20 ON erc20.contract_address = currency_contract AND erc20.blockchain = 'ethereum'
-LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct2 ON erct2.evt_block_time=looks_rare.block_time
-    AND looks_rare.nft_contract_address=erct2.contract_address
-    AND erct2.evt_tx_hash=looks_rare.tx_hash
-    AND erct2.tokenId=looks_rare.token_id
-    AND erct2.from=looks_rare.buyer
-    {% if is_incremental() %}
-    AND erct2.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-LEFT JOIN {{ source('erc1155_ethereum','evt_transfersingle') }} erct3 ON erct3.evt_block_time=looks_rare.block_time
-    AND looks_rare.nft_contract_address=erct3.contract_address
-    AND erct3.evt_tx_hash=looks_rare.tx_hash
-    AND erct3.id=looks_rare.token_id
-    AND erct3.from=looks_rare.buyer
-    {% if is_incremental() %}
-    AND erct3.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
 LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct4 ON erct4.evt_block_time=looks_rare.block_time
     AND looks_rare.nft_contract_address=erct4.contract_address
     AND erct4.evt_tx_hash=looks_rare.tx_hash
@@ -223,17 +210,17 @@ LEFT JOIN {{ source('ethereum','traces') }} ett
 LEFT JOIN {{ ref('nft_ethereum_transfers') }} buyer_fix ON looks_rare.tx_hash=buyer_fix.tx_hash
     AND looks_rare.nft_contract_address=buyer_fix.contract_address
     AND looks_rare.token_id=buyer_fix.token_id
-ANTI JOIN {{ ref('nft_ethereum_transfers') }} anti_buyer_fix ON anti_buyer_fix.tx_hash=buyer_fix.tx_hash
-    AND anti_buyer_fix.contract_address=buyer_fix.contract_address
-    AND anti_buyer_fix.token_id=buyer_fix.token_id
-    AND anti_buyer_fix.from=buyer_fix.to 
+    AND looks_rare.from=buyer_fix.buyer
+    {% if is_incremental() %}
+    AND buyer_fix.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 LEFT JOIN {{ ref('nft_ethereum_transfers') }} seller_fix ON looks_rare.tx_hash=seller_fix.tx_hash
     AND looks_rare.nft_contract_address=seller_fix.contract_address
     AND looks_rare.token_id=seller_fix.token_id
-ANTI JOIN {{ ref('nft_ethereum_transfers') }} anti_seller_fix ON anti_seller_fix.tx_hash=seller_fix.tx_hash
-    AND anti_seller_fix.contract_address=seller_fix.contract_address
-    AND anti_seller_fix.token_id=seller_fix.token_id
-    AND anti_seller_fix.to=seller_fix.from 
+    AND looks_rare.to=seller_fix.seller
+    {% if is_incremental() %}
+    AND seller_fix.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 WHERE number_of_items >= 1
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
