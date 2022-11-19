@@ -95,5 +95,6 @@ FROM (VALUES
         ('0x62812d4f2c7043b41b815c07c686e72dfe4bb632', 'wa-USDC-NYC', 6),
         ('0x0e15258734300290a651fdbae8deb039a8e7a2fa', 'ALCH', 18),
         ('0xd14c03a985a7b09af1a08640e5f6aff806dc8249', 'iBTCV', 18),
-        ('0xa0459edcad5aac14dc32775d22ff7bd33027cac7', 'WIS', 18)
+        ('0xa0459edcad5aac14dc32775d22ff7bd33027cac7', 'WIS', 18),
+        ('0x5979d7b546e38e414f7e9822514be443a4800529', 'wstETH', 18)
      ) AS temp_table (contract_address, symbol, decimals)
