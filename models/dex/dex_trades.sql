@@ -26,6 +26,7 @@
 ,'platypus_finance_avalanche_c_trades'
 ,'hashflow_trades'
 ,'mstable_ethereum_trades'
+,'mdex_bnb_trades'
 ,'zigzag_trades'
 ] %}
 
