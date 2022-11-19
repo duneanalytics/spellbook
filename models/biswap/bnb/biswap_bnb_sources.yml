@@ -4,9 +4,9 @@ sources:
   - name: biswap_bnb
     description: "Binance Smart Chain (bsc) decoded tables related to Biswap contract"
     tables:
-      - name: Pair_evt_Swap
+      - name: BiswapPair_evt_Swap
         loaded_at_field: evt_block_time
-        description: "Sushiswap swap events table on Bnb"
+        description: "Biswap swap events table on Bnb"
         columns:
           - &amount0In
             name: amount0In

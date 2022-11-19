@@ -27,7 +27,7 @@ WITH biswap_dex AS (
             t.evt_tx_hash                                                AS tx_hash,
             ''                                                           AS trace_address,
             t.evt_index
-    FROM {{ source('biswap_bnb', 'Pair_evt_Swap') }} t
+    FROM {{ source('biswap_bnb', 'BiswapPair_evt_Swap') }} t
     INNER JOIN {{ source('biswap_bnb', 'BiSwapFactory_evt_PairCreated') }} p
         ON t.contract_address = p.pair
     {% if is_incremental() %}
