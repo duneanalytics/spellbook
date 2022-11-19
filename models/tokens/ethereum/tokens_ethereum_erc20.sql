@@ -6747,4 +6747,5 @@ FROM (VALUES
           ('0xf8640b0b79c236b0c14f67344b4d203ffcedc712', 'MONK', 18),
           ('0xf98ab0874b13a7fdc39d7295dedd49850a5d426b', 'KIRA', 8),
           ('0xfc383f9c7b5c8c97f118d8c25c8f84e3c656b6da', 'FCNG', 18)
+          ('0x92DF60c51C710a1b1C20E42D85e221f3A1bFc7f2', 'BANANA', 18)
      ) AS temp_table (contract_address, symbol, decimals)
