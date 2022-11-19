@@ -210,14 +210,14 @@ LEFT JOIN {{ source('ethereum','traces') }} ett
 LEFT JOIN {{ ref('nft_ethereum_transfers') }} buyer_fix ON looks_rare.tx_hash=buyer_fix.tx_hash
     AND looks_rare.nft_contract_address=buyer_fix.contract_address
     AND looks_rare.token_id=buyer_fix.token_id
-    AND looks_rare.from=buyer_fix.buyer
+    AND looks_rare.buyer=buyer_fix.from
     {% if is_incremental() %}
     AND buyer_fix.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ ref('nft_ethereum_transfers') }} seller_fix ON looks_rare.tx_hash=seller_fix.tx_hash
     AND looks_rare.nft_contract_address=seller_fix.contract_address
     AND looks_rare.token_id=seller_fix.token_id
-    AND looks_rare.to=seller_fix.seller
+    AND looks_rare.seller=seller_fix.to
     {% if is_incremental() %}
     AND seller_fix.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
