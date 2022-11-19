@@ -27,7 +27,7 @@
 ,'woofi_avalanche_c_trades'
 ,'bancor_ethereum_trades'
 ,'platypus_finance_avalanche_c_trades'
-,'hashflow_ethereum_trades'
+,'hashflow_trades'
 ,'mstable_ethereum_trades'
 ,'zigzag_trades'
 ] %}
@@ -62,7 +62,7 @@ FROM (
         evt_index
     FROM {{ ref(dex_model) }}
     {% if not loop.last %}
-    UNION
+    UNION ALL
     {% endif %}
     {% endfor %}
 )
