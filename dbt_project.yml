@@ -429,6 +429,13 @@ models:
         +schema: reaper_optimism
         +materialized: view
     
+    biswap:
+      +schema: biswap
+      +materialized: view
+      ethereum:
+        +schema: biswap_bnb
+        +materialized: view
+
     defiswap:
       +schema: defiswap
       +materialized: view
