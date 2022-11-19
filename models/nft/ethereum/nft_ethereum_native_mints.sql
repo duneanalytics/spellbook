@@ -28,13 +28,6 @@ WITH namespaces AS (
     GROUP BY tx_hash
     )
 
-, nft_collections AS (
-    SELECT contract_address
-    , MAX(name) AS name
-    FROM {{ ref('tokens_ethereum_nft') }}
-    GROUP BY contract_address
-    )
-
 SELECT distinct 'ethereum' AS blockchain
 , COALESCE(ec.namespace, 'Unknown') AS project
 , NULL AS version
@@ -94,7 +87,7 @@ LEFT JOIN {{ source('prices','usd') }} pu_erc20s ON pu_erc20s.blockchain='ethere
 LEFT JOIN {{ source('ethereum','transactions') }} etxs ON etxs.block_time=nft_mints.block_time
     AND etxs.hash=nft_mints.tx_hash
 LEFT JOIN {{ ref('nft_ethereum_aggregators') }} agg ON etxs.to=agg.contract_address
-LEFT JOIN nft_collections tok ON tok.contract_address=nft_mints.contract_address
+LEFT JOIN {{ ref('tokens_ethereum_nft') }} tok ON tok.contract_address=nft_mints.contract_address
 LEFT JOIN namespaces ec ON etxs.to=ec.address
 WHERE nft_mints.from='0x0000000000000000000000000000000000000000'
 AND nft_mints.contract_address NOT IN (SELECT address FROM {{ ref('addresses_ethereum_defi') }})
