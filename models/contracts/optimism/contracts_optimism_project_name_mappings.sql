@@ -59,4 +59,5 @@ from (
     ,('quixotic', 'Quix')
     ,('project galaxy', 'Galxe')
     ,('project_galaxy', 'Galxe')
+    ,('Masoud_ecc', 'ECC Domains')
     ) as temp_table (dune_name, mapped_name)
