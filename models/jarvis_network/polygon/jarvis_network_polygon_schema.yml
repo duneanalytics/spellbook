@@ -21,7 +21,7 @@ models:
             - collateral_symbol
             - collateral_token_amount
             - net_collateral_amount
-            - net_amount_usd
+            - net_collateral_amount_usd
             - fee_amount_usd
             - evt_tx_hash
             - evt_index
