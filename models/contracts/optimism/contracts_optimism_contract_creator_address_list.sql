@@ -341,6 +341,8 @@ FROM (
       ,('0x2cc7A5c9D8AcA37395155cB200C98bA3b3516952', 'Atlantis World')
       ,('0x810973bdC95221817c4Ca7999A78aFD25F6d0F6d', 'KyberSwap')
       ,('0xC42e9476b0a458097087336e2395Dbf45B0BdC12', 'Pyth')
+      ,('0xdc7c7f0bea8444c12ec98ec626ff071c6fa27a19', 'Votium')
+      ,('0x11F11121DF7256C40339393b0FB045321022ce44', 'LiFi')
 
   ) as temp_table (creator_address, contract_project)
 
