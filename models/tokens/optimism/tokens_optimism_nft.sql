@@ -216,9 +216,5 @@ FROM
 ,('0xc7a144c247dd503acf87b2dc65aff3de3c10e3d1', 'Burnt Ape', 'erc721')
 ,('0xe4d6b73f6c45e759679852b80c4888a93727cc1d', 'Mangmoom', 'erc721')
 ,('0xdf711ae52f18f3b99ef544ee8e33c487ac68a88c', 'Torikos', 'erc721')
-,('','','')
-,('','','')
-,('','','')
-,('','','')
 
 ) as temp_table (contract_address, name, standard)
