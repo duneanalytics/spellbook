@@ -148,9 +148,6 @@ SELECT DISTINCT
     CASE WHEN evt_type is NULL THEN 'Other' ELSE evt_type END as evt_type,
     COALESCE(seller_fix.from, looks_rare.seller) AS seller,
     COALESCE(buyer_fix.to, looks_rare.buyer) AS buyer,
-    --CASE WHEN looks_rare.buyer=agg.contract_address AND erct2.to IS NOT NULL THEN erct2.to
-    --    WHEN looks_rare.buyer=agg.contract_address AND erct3.to IS NOT NULL THEN erct3.to
-    --    ELSE looks_rare.buyer END AS buyer,
     looks_rare.price / power(10,erc20.decimals) AS amount_original,
     looks_rare.price AS amount_raw,
     CASE WHEN looks_rare.currency_contract_original = '0x0000000000000000000000000000000000000000' THEN 'ETH' ELSE erc20.symbol END AS currency_symbol,
