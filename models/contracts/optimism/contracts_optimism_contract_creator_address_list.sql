@@ -359,7 +359,11 @@ FROM (
       ,('0x302d2451d9f47620374b54c521423bf0403916a2', 'Synthetix')
       ,('0xfda462548ce04282f4b6d6619823a7c64fdc0185', 'Angle')
       ,('0x9aa99c23f67c81701c772b106b4f83f6e858dd2e', 'Hop Protocol')
-      ,('0xbcb909975715dc8fde643ee44b89e3fd6a35a259', 'Furucombo') 
+      ,('0xbcb909975715dc8fde643ee44b89e3fd6a35a259', 'Furucombo')
+      ,('0x42405d66fda09dbdac90ff25fc5a4c2353f43e70', 'Beamer Bridge')
+      ,('0xe029c32d412972C5F3D107DA6d6eCF8F1C1E788C', 'Kwenta')
+      ,('0xcd526ee406bc8349ba8135758cee11fa3aaa59a0', 'OPX Finance')
+      ,('0x4023ef3aaa0669FaAf3A712626F4D8cCc3eAF2e5', 'Pickle Finance')
 
   ) as temp_table (creator_address, contract_project)
 
@@ -376,5 +380,6 @@ WHERE f.creator_address NOT IN (
   ,LOWER('0xcfA3A7637547094fF06246817a35B8333C315196') -- INEFFICIENT_IMMUTABLE_CREATE2_FACTORY_ADDRESS
   ,LOWER('0x0000000000ffe8b47b3e2130213b802212439497') -- IMMUTABLE_CREATE2_FACTORY_ADDRESS
   ,LOWER('0x4200000000000000000000000000000000000012') -- L2StandardTokenFactory
+  ,LOWER('0xeedA95f4513f950957Ae84E4da221ee260Fa2f40') -- Deterministic Factory
 )
 ;
