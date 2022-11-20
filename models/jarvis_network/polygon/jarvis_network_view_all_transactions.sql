@@ -149,8 +149,3 @@ INNER JOIN {{ ref('jarvis_network_polygon_jfiat_address_mapping') }} am ON (cont
 LEFT JOIN  {{ ref('jarvis_network_polygon_jfiat_collateral_mapping') }} cm ON (am.jfiat_collateral_pool_address = cm.jfiat_collateral_pool_address)
 LEFT JOIN  {{ source('prices', 'usd') }} pu ON (am.blockchain = pu.blockchain AND cm.jfiat_collateral_symbol = pu.symbol AND date_trunc('minute',x.evt_block_time) = date_trunc('minute',pu.minute))
 ) p
-
-
-
-
-
