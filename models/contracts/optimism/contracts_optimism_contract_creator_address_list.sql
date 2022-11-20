@@ -359,7 +359,7 @@ FROM (
       ,('0x302d2451d9f47620374b54c521423bf0403916a2', 'Synthetix')
       ,('0xfda462548ce04282f4b6d6619823a7c64fdc0185', 'Angle')
       ,('0x9aa99c23f67c81701c772b106b4f83f6e858dd2e', 'Hop Protocol')
-      ,('0xbcb909975715dc8fde643ee44b89e3fd6a35a259', 'Furucombo')
+      ,('0xbcb909975715dc8fde643ee44b89e3fd6a35a259', 'Furucombo') 
 
   ) as temp_table (creator_address, contract_project)
 
