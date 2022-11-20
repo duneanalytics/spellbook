@@ -3,10 +3,6 @@
         partition_by='block_date',
         materialized='incremental',
         file_format = 'delta',
-        post_hook='{{ expose_spells(\'["avalanche_c"]\',
-                                    "sector",
-                                    "nft",
-                                    \'["hildobby"]\') }}',
         unique_key = ['unique_transfer_id']
 )
 }}
