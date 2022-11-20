@@ -353,7 +353,7 @@ models:
       ethereum:
         +schema: archipelago_ethereum
         +materialized: view
-
+  
     integration_test:
       +schema: integration_test
       +materialized: view
@@ -607,6 +607,7 @@ seeds:
           token_bought_amount: float
           token_sold_address: string
           token_sold_amount: float
+
     sudoswap:
       +enabled: true
       +schema: test_data
