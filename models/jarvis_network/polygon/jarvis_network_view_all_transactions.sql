@@ -27,7 +27,7 @@ net_collateral_amount,
 fee_amount,
 collateral_token_amount_usd
 net_collateral_amount_usd,
-fee_amount_usd
+fee_amount_usd,
 evt_tx_hash,
 evt_index
 FROM (
