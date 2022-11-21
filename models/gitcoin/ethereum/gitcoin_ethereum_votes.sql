@@ -15,7 +15,6 @@
 
 {% set blockchain = 'ethereum' %}
 {% set project = 'gitcoin' %}
-{% set project_version = '' %}
 {% set dao_name = 'DAO: Gitcoin' %}
 {% set dao_address = '0xdbd27635a534a3d3169ef0498beb56fb9c937489' %}
 
@@ -28,7 +27,7 @@ GROUP BY proposalId)
 SELECT 
     '{{blockchain}}' as blockchain,
     '{{project}}' as project,
-    '{{project_version}}' as version,
+    cast(NULL as string) as version,
     vc.evt_block_time as block_time,
     date_trunc('DAY', vc.evt_block_time) AS block_date,
     vc.evt_tx_hash as tx_hash,
