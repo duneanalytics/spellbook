@@ -49,6 +49,7 @@ with events_raw as (
         ,er.project_contract_address
         ,lower('0x0000000000000000000000000000000000000000') -- v3 first few txs misconfigured to send fee to null address
         ,lower('0x942f9ce5d9a33a82f88d233aeb3292e680230348') -- v4 there are txs via Ambire Wallet Contract Deployer to be excluded 
+        ,lower('0xdf95dc47753c94771f52444a2517f4bae7c6046d') -- v5 another contract that creates mutiple internal transfers, e.g. https://optimistic.etherscan.io/tx/0x7c7daf30bf3fa829c22428fd275bbe7b30b62f7ccebd2a8e4aaa396904f01b78
       )
       {% if not is_incremental() %}
       -- smallest block number for source tables above
@@ -79,6 +80,7 @@ with events_raw as (
         ,er.project_contract_address
         ,lower('0x0000000000000000000000000000000000000000') -- v3 first few txs misconfigured to send fee to null address
         ,lower('0x942f9ce5d9a33a82f88d233aeb3292e680230348') -- v4 there are txs via Ambire Wallet Contract Deployer to be excluded 
+        ,lower('0xdf95dc47753c94771f52444a2517f4bae7c6046d') -- v5 another contract that creates mutiple internal transfers, e.g. https://optimistic.etherscan.io/tx/0x7c7daf30bf3fa829c22428fd275bbe7b30b62f7ccebd2a8e4aaa396904f01b78
       )
       {% if not is_incremental() %}
       -- smallest block number for source tables above
@@ -220,3 +222,4 @@ left join transfers as tr
     on tr.tx_hash = er.tx_hash 
     and tr.block_number = er.block_number
 {{ dbt_utils.group_by(n=37) }}
+;
