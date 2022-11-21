@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'gitcoin',
+    schema = 'gitcoin_ethereum',
     alias = 'votes',
     partition_by = ['block_date'],
     materialized = 'incremental',
