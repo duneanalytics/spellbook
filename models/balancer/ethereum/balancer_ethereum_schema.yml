@@ -32,7 +32,7 @@ models:
         name: cumulative_amount
         description: 'Balance of a token'
 
-  - name: balancer_ethereum_view_bpt_prices
+  - name: balancer_ethereum_bpt_prices
     meta:
       blockchain: ethereum
       project: balancer

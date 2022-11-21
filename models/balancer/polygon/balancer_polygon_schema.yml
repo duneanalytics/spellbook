@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: balancer_polygon_view_bpt_prices
+  - name: balancer_polygon_bpt_prices
     meta:
       blockchain: polygon
       project: balancer

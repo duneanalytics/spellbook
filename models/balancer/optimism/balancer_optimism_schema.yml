@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: balancer_optimism_view_bpt_prices
+  - name: balancer_optimism_bpt_prices
     meta:
       blockchain: optimism
       project: balancer

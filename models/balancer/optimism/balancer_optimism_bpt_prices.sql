@@ -1,7 +1,7 @@
 {{
     config(
-        alias='ethereum_view_bpt_prices',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
+        alias='bpt_prices',
+        post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "balancer",
                                     \'["victorstefenon"]\') }}'
@@ -36,16 +36,16 @@ WITH bpt_trades AS (
                 WHEN t.tokenIn = SUBSTRING(t.poolId, 0, 42) THEN t.amountOut
                 ELSE t.amountIn
             END AS token_amount_raw
-        FROM {{ source('balancer_v2_ethereum', 'Vault_evt_Swap') }} t
+        FROM {{ source('balancer_v2_optimism', 'Vault_evt_Swap') }} t
         WHERE t.tokenIn = SUBSTRING(t.poolId, 0, 42)
         OR t.tokenOut = SUBSTRING(t.poolId, 0, 42)
     ) dexs
     LEFT JOIN {{ ref('tokens_erc20') }} erc20a ON erc20a.contract_address = dexs.bpt_address
-    AND erc20a.blockchain = "ethereum"
+    AND erc20a.blockchain = "optimism"
     JOIN {{ ref('tokens_erc20') }}  erc20b ON erc20b.contract_address = dexs.token_address
-    AND erc20b.blockchain = "ethereum"
+    AND erc20b.blockchain = "optimism"
     LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', dexs.block_time)
-    AND p.contract_address = dexs.token_address AND p.blockchain = "ethereum"
+    AND p.contract_address = dexs.token_address AND p.blockchain = "optimism"
 ),
 
 bpt_estimated_prices AS (

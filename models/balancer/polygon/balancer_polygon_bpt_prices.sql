@@ -1,7 +1,7 @@
 {{
     config(
-        alias='arbitrum_view_bpt_prices',
-        post_hook='{{ expose_spells(\'["arbitrum"]\',
+        alias='bpt_prices',
+        post_hook='{{ expose_spells(\'["polygon"]\',
                                     "project",
                                     "balancer",
                                     \'["victorstefenon"]\') }}'
@@ -36,16 +36,16 @@ WITH bpt_trades AS (
                 WHEN t.tokenIn = SUBSTRING(t.poolId, 0, 42) THEN t.amountOut
                 ELSE t.amountIn
             END AS token_amount_raw
-        FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_Swap') }} t
+        FROM {{ source('balancer_v2_polygon', 'Vault_evt_Swap') }} t
         WHERE t.tokenIn = SUBSTRING(t.poolId, 0, 42)
         OR t.tokenOut = SUBSTRING(t.poolId, 0, 42)
     ) dexs
     LEFT JOIN {{ ref('tokens_erc20') }} erc20a ON erc20a.contract_address = dexs.bpt_address
-    AND erc20a.blockchain = "arbitrum"
+    AND erc20a.blockchain = "polygon"
     JOIN {{ ref('tokens_erc20') }}  erc20b ON erc20b.contract_address = dexs.token_address
-    AND erc20b.blockchain = "arbitrum"
+    AND erc20b.blockchain = "polygon"
     LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', dexs.block_time)
-    AND p.contract_address = dexs.token_address AND p.blockchain = "arbitrum"
+    AND p.contract_address = dexs.token_address AND p.blockchain = "polygon"
 ),
 
 bpt_estimated_prices AS (

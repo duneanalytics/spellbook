@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: balancer_arbitrum_view_bpt_prices
+  - name: balancer_arbitrum_bpt_prices
     meta:
       blockchain: arbitrum
       project: balancer
