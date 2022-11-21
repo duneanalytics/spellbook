@@ -125,6 +125,8 @@ models:
       - &unique_trade_id
         name: unique_trade_id
         description:  "Unique trade ID"
+        tests:
+          - unique
 
   - name: archipelago_ethereum_trades
     meta:
@@ -145,12 +147,14 @@ models:
       - *amount_usd
       - *token_standard
       - *trade_type
-      - *number_of_items
+      - name: number_of_items
+        description:  "Number of items traded"
       - *trade_category
       - *evt_type
       - *seller
       - *buyer
-      - *amount_original
+      - name: amount_original
+        description:  "Traded amount in original currency"
       - *amount_raw
       - *currency_symbol
       - *currency_contract
@@ -162,7 +166,7 @@ models:
       - *block_number
       - *tx_from
       - *tx_to
-      - *unique_trade_id
+      - name: unique_trade_id
 
   - name: archipelago_ethereum_fees
     meta:
@@ -192,7 +196,8 @@ models:
       - *royalty_fee_currency_symbol
       - *token_standard
       - *trade_type
-      - *number_of_items
+      - name: number_of_items
+        description:  "Number of items traded"
       - *trade_category
       - *evt_type
       - *seller
@@ -205,4 +210,4 @@ models:
       - *block_number
       - *tx_from
       - *tx_to
-      - *unique_trade_id
+      - name: unique_trade_id
