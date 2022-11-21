@@ -72,11 +72,7 @@ models:
         description: 'UTC event block time truncated to the hour mark'
         tests:
           - not_null
-      - &contract_address
-        name: contract_address
-        description: 'Balancer pool contract address'
-        tests:
-          - not_null
+      - *contract_address
       - &median_price
         name: median_price
         description: 'BPT median price'
