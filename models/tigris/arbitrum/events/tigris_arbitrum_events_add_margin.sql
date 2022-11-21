@@ -29,10 +29,10 @@ add_margin_v2 as (
             AND ap.evt_tx_hash = af.call_tx_hash 
             AND af.call_success = true 
         {% if is_incremental() %}
-        WHERE af.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE ap.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         {% if is_incremental() %}
-        AND ap.call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND af.call_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
@@ -55,10 +55,10 @@ add_margin_v3 as (
             AND ap.evt_tx_hash = af.call_tx_hash 
             AND af.call_success = true 
         {% if is_incremental() %}
-        WHERE af.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE ap.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         {% if is_incremental() %}
-        AND ap.call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND af.call_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
@@ -81,10 +81,10 @@ add_margin_v4 as (
             AND ap.evt_tx_hash = af.call_tx_hash 
             AND af.call_success = true 
         {% if is_incremental() %}
-        WHERE af.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE ap.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         {% if is_incremental() %}
-        AND ap.call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND af.call_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 )
 
