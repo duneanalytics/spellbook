@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: balancer_v2_ethereum
+  - name: balancer_v2_optimism
     description: >
       Decoded tables related to Balancer v2, an automated portfolio manager and trading platform.
     tables:
@@ -25,28 +25,8 @@ sources:
             name: evt_block_number
             description: 'Block number which processed the unique transaction hash'
           - name: poolAddress
-            description: 'Ethereum address for the liquidity pool used in transaction'
+            description: 'Optimism address for the liquidity pool used in transaction'
           - name: poolId
             description: 'Unique encoded identifier that refers to each pool'
           - name: specialization
             description: 'Pool specialization'
-
-  - name: balancer_v1_ethereum
-    description: >
-      Decoded tables related to Balancer v1, an automated portfolio manager and trading platform.
-    tables:
-      - name: BFactory_evt_LOG_NEW_POOL
-        description: >
-          Decoded table related to the Balancer BFactory contract.
-        loaded_at_field: evt_block_time
-        columns:
-          - name: contract_address
-            description: 'Balancer v1 BFactory contract address'
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
-          - name: caller
-            description: 'Caller address that created the Balancer pool'
-          - name: pool
-            description: 'Balancer pool contract address'
