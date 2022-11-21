@@ -25,10 +25,10 @@ with events_raw as (
         ,price as amount_raw
         ,evt_index
     from {{ source('quixotic_v5_optimism','ExchangeV5_evt_SellOrderFilled') }}
-    {% if is_incremental() %} 
-    where evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
     where contractAddress != lower('0xbe81eabdbd437cba43e4c1c330c63022772c2520') -- --exploit contract
+    {% if is_incremental() %} 
+    and evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 )
 ,transfers_raw as (
     -- eth royalities
