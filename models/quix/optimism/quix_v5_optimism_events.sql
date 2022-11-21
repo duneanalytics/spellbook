@@ -39,7 +39,7 @@ with events_raw as (
       ,tr.value
       ,tr.to
       ,er.evt_index
-      ,er.evt_index - coalesce(tr.trace[0], 0) as ranking
+      ,er.evt_index - coalesce(tr.trace_address[0], 0) as ranking
     from events_raw as er 
     join {{ ref('transfers_optimism_eth') }} as tr 
       on er.tx_hash = tr.tx_hash 
@@ -97,10 +97,19 @@ with events_raw as (
 )
 ,transfers as (
     select 
-      *
-      ,row_number() over (partition_by tx_hash, evt_index order by ranking) as rn 
-    from transfers_raw
-    having rn = 1 -- choose the closest 
+        block_number
+        ,block_time
+        ,tx_hash
+        ,value
+        ,to
+        ,evt_index
+    from (
+        select 
+            *
+            ,row_number() over (partition by tx_hash, evt_index order by abs(ranking)) as rn 
+        from transfers_raw
+    ) as x
+    where rn = 1 -- select closest by order
 )
 select
     'optimism' as blockchain
@@ -233,5 +242,6 @@ left join {{ ref('tokens_erc20') }} as t1
 left join transfers as tr 
     on tr.tx_hash = er.tx_hash 
     and tr.block_number = er.block_number
+    and tr.evt_index = er.evt_index
 {{ dbt_utils.group_by(n=37) }}
 ;
