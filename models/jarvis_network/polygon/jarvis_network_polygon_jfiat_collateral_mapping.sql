@@ -8,7 +8,7 @@
   )
 }}
 
-SELECT 'polygon'                             as blockchain,
+SELECT 'polygon'                             AS blockchain,
        LOWER(jfiat_collateral_pool_address)  AS jfiat_collateral_pool_address,
        jfiat_collateral_symbol,
        CAST(decimals AS numeric)             AS decimals,
