@@ -629,12 +629,12 @@ RETURN r;
 END
 $function$;
 
--- --delete prior to reload of history (commented out to be safe, uncomment as needed)
--- delete from
---   dex.trades
--- where
---   project in ('1inch', '1inch Limit Order Protocol')
--- ;
+--delete prior to reload of history (commented out to be safe, uncomment as needed)
+delete from
+  dex.trades
+where
+  project in ('1inch', '1inch Limit Order Protocol')
+;
 
 -- fill 2017
 SELECT dex.insert_1inch(
@@ -840,12 +840,12 @@ SELECT dex.insert_1inch(
 -- )
 ;
 
-INSERT INTO cron.job (schedule, command)
-VALUES ('*/10 * * * *', $$
-    SELECT dex.insert_1inch(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1inch'),
-        (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1inch')),
-        (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
-$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+-- INSERT INTO cron.job (schedule, command)
+-- VALUES ('*/10 * * * *', $$
+--     SELECT dex.insert_1inch(
+--         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1inch'),
+--         (SELECT now() - interval '20 minutes'),
+--         (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1inch')),
+--         (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
+-- $$)
+-- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
