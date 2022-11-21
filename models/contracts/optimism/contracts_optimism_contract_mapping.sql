@@ -247,7 +247,7 @@ select
           ,c.contract_project
           ,ovm1c.contract_project
         ),
-      '-',
+      '_',
       ' '
     )
    ) as contract_project

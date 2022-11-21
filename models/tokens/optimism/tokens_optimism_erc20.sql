@@ -231,6 +231,8 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0x50bce64397c75488465253c0a034b8097fea6578', 'HAN', 18)
 ,('0xe3ab61371ecc88534c522922a026f2296116c109', 'SPELL', 18)
 ,('0x29FAF5905bfF9Cfcc7CF56a5ed91E0f091F8664B', 'BANK', 18)
+,('0x920Cf626a271321C151D027030D5d08aF699456b', 'KWENTA', 18)
+,('0xcdb4bb51801a1f399d4402c61bc098a72c382e65', 'OPX', 18)
 ,('0x479a7d1fcdd71ce0c2ed3184bfbe9d23b92e8337', 'bb-rf-aUSD-asUSD', 18)
 ,('0x6222ae1d2a9f6894da50aa25cb7b303497f9bebd', 'bb-rf-aUSD', 18)
 ,('0xc0d7013a05860271a1edb52415cf74bc85b2ace7', 'bb-rf-asUSD', 18)
@@ -249,4 +251,5 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0x88d07558470484c03d3bb44c3ecc36cafcf43253', 'bb-USD+', 18)
 ,('0xf572649606db4743d217a2fa6e8b8eb79742c24a', 'test-bb-USD-MAI', 18)
 ,('0xdd89c7cd0613c1557b2daac6ae663282900204f1', 'bb-rf-aWETH', 18)
+
 ) AS temp_table (contract_address, symbol, decimals)
