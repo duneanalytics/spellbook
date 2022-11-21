@@ -109,7 +109,7 @@ WITH zora_trades AS (
     , z3_ape_af.evt_block_time AS block_time
     , z3_ape_af.evt_block_number AS block_number
     , z3_ape_af.tokenId AS token_id
-    , 'Private Buy' AS trade_category
+    , 'Private Sale' AS trade_category
     , get_json_object(z3_ape_af.ask, '$.seller') AS seller
     , get_json_object(z3_ape_af.ask, '$.buyer') AS buyer
     , get_json_object(z3_ape_af.ask, '$.price') AS amount_raw
@@ -353,7 +353,7 @@ SELECT distinct 'ethereum' AS blockchain
     , FIRST(zt.royalty_fee_receive_address) AS royalty_fee_receive_address
     , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN 'ETH'
         ELSE pu.symbol END AS royalty_fee_currency_symbol
-    , 'ethereumzora' || version || zt.tx_hash || zt.nft_contract_address || zt.token_id || zt.buyer || zt.seller AS unique_trade_id
+    , 'ethereumzora' || COALESCE(version, '-1') || COALESCE(zt.tx_hash, '-1') || COALESCE(zt.nft_contract_address, '-1') || COALESCE(zt.token_id, '-1') || COALESCE(zt.buyer, '-1') || COALESCE(zt.seller, '-1') AS unique_trade_id
 FROM zora_trades zt
 LEFT JOIN {{ source('ethereum','transactions') }} et ON et.block_time=zt.block_time
     AND et.hash=zt.tx_hash
