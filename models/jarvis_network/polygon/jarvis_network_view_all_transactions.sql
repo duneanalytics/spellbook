@@ -103,7 +103,8 @@ SELECT
 FROM {{ source('jarvis_network_polygon','SynthereumPoolOnChainPriceFeed_evt_Mint') }}
 {% if is_incremental() %}
 WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-{% else %}
+{% endif %}
+{% if not is_incremental() %}
 WHERE evt_block_time >= '{{ project_start_date }}'
 {% endif %}
 
