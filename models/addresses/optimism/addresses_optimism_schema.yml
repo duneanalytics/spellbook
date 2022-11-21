@@ -13,6 +13,8 @@ models:
     columns:
       - name: address
         description: "Address of known CEX/On-Ramp"
+        tests:
+          - unique
       - name: cex_name
         description: "Name of centralized exchange/ on-ramp"
       - name: distinct_name
