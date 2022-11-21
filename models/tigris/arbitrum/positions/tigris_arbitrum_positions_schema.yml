@@ -18,7 +18,7 @@ models:
             - leverage 
     columns:
       - &evt_block_time 
-        name: evt_block_tine 
+        name: evt_block_time 
         description: "blocktime of leverage transaction"
       - &position_id
         name: position_id 
@@ -45,7 +45,9 @@ models:
             - latest_leverage_time
             - payout 
     columns:
-      - *evt_tx_hash
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: "blockchain transaction hash"
       - *leverage 
       - *position_id
       - &latest_leverage_time
