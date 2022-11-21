@@ -109,6 +109,9 @@ models:
       - *evt_tx_hash
       - *position_id
       - *price
+      - &margin_change
+        name: margin_change
+        description: "margin change"
       - *margin
       - *trader
       - *version
@@ -141,6 +144,7 @@ models:
       - &modify_type
         name: modify_type
         description: "margin change type (add or remove magrin)"
+      - *margin_change
       - *margin
       - *trader
       - *version
