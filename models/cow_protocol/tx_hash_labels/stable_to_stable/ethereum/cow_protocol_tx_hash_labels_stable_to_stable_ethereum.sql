@@ -1,6 +1,6 @@
 {{
     config(
-        alias='stable_to_stable_ethereum',
+        alias='tx_hash_labels_stable_to_stable_ethereum',
     )
 }}
 
@@ -9,21 +9,8 @@ with
     select
         distinct tx_hash
     from {{ ref('cow_protocol_ethereum_trades') }}
-    where token_pair in (
-            'USDT-DAI',
-            'USDT-USDC',
-            'USDT-BUSD',
-            'DAI-USDT',
-            'DAI-USDC',
-            'DAI-BUSD',
-            'USDC-USDT',
-            'USDC-DAI',
-            'USDC-BUSD',
-            'BUSD-USDC',
-            'BUSD-USDT',
-            'BUSD-DAI'
-        )
-  )
+    where token_bought_address in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})
+    and token_sold_address in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})
 select
   array("ethereum") as blockchain,
   tx_hash,
