@@ -11,6 +11,7 @@ with
     from {{ ref('cow_protocol_ethereum_trades') }}
     where buy_token_address in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})
     and sell_token_address in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})
+ )
 select
   array("ethereum") as blockchain,
   tx_hash,
