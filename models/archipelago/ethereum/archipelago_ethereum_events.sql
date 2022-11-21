@@ -8,7 +8,7 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "archipelago",
-                                    \'["0xRob"]\') }}'
+                                    \'["0xRob", "hildobby"]\') }}'
         )
 }}
 
@@ -195,39 +195,57 @@ SELECT
     'ethereum' as blockchain
     , 'archipelago' as project
     , 'v1' as version
-    , TRY_CAST(date_trunc('DAY', block_time) AS date) AS block_date
-    , block_time
-    , block_number
-    , token_id
-    , token_standard
+    , TRY_CAST(date_trunc('DAY', te.block_time) AS date) AS block_date
+    , te.block_time
+    , te.block_number
+    , te.token_id
+    , te.token_standard
     , 1 as number_of_items
     , 'Single Item Trade' as trade_type
-    , case when tx_from = seller then 'Offer Accepted' else 'Buy' end as trade_category
+    , case when te.tx_from = COALESCE(seller_fix.from, te.seller) then 'Offer Accepted' else 'Buy' end as trade_category
     , 'Trade' as evt_type
-    , seller
-    , buyer
-    , amount_raw
-    , amount_original
-    , amount_usd
-    , currency_symbol
-    , currency_contract
-    , project_contract_address
-    , nft_contract_address
-    , collection
-    , tx_hash
-    , tx_from
-    , tx_to
-    , aggregator_address
-    , aggregator_name
-    , platform_fee_amount
-    , platform_fee_amount_raw
-    , platform_fee_amount_usd
-    , platform_fee_percentage
-    , royalty_fee_amount
-    , royalty_fee_amount_usd
-    , royalty_fee_amount_raw
-    , royalty_fee_currency_symbol
-    , royalty_fee_receive_address -- null here
-    , royalty_fee_percentage
-    , unique_trade_id
-from trades_enhanced
+    , COALESCE(seller_fix.from, te.seller) AS seller
+    , COALESCE(buyer_fix.to, te.buyer) AS buyer
+    , te.amount_raw
+    , te.amount_original
+    , te.amount_usd
+    , te.currency_symbol
+    , te.currency_contract
+    , te.project_contract_address
+    , te.nft_contract_address
+    , te.collection
+    , te.tx_hash
+    , te.tx_from
+    , te.tx_to
+    , te.aggregator_address
+    , te.aggregator_name
+    , te.platform_fee_amount
+    , te.platform_fee_amount_raw
+    , te.platform_fee_amount_usd
+    , te.platform_fee_percentage
+    , te.royalty_fee_amount
+    , te.royalty_fee_amount_usd
+    , te.royalty_fee_amount_raw
+    , te.royalty_fee_currency_symbol
+    , te.royalty_fee_receive_address -- null here
+    , te.royalty_fee_percentage
+    , te.unique_trade_id
+from trades_enhanced te
+left join {{ ref('nft_ethereum_transfers') }} buyer_fix on buyer_fix.block_time=te.block_time
+    and te.nft_contract_address=buyer_fix.contract_address
+    and buyer_fix.tx_hash=te.tx_hash
+    and te.token_id=buyer_fix.token_id
+    and te.buyer=te.aggregator_address
+    and buyer_fix.from=te.aggregator_address
+    {% if is_incremental() %}
+    and buyer_fix.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+left join {{ ref('nft_ethereum_transfers') }} seller_fix on seller_fix.block_time=te.block_time
+    and te.nft_contract_address=seller_fix.contract_address
+    and seller_fix.tx_hash=te.tx_hash
+    and te.token_id=seller_fix.token_id
+    and te.seller=te.aggregator_address
+    and seller_fix.to=te.aggregator_address
+    {% if is_incremental() %}
+    and seller_fix.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
