@@ -40,8 +40,8 @@ SELECT nftt.blockchain
         THEN true
         ELSE false 
         END AS filter2_back_and_forth_trade
-    , CASE WHEN COUNT(filter_bought_3x.block_number) >= 3
-        OR COUNT(filter_sold_3x.block_number) >= 3
+    , CASE WHEN COUNT(filter_bought_3x.block_number) > 2
+        OR COUNT(filter_sold_3x.block_number) > 2
         THEN true
         ELSE false
         END AS filter3_bought_or_sold_3x
@@ -54,7 +54,7 @@ SELECT nftt.blockchain
     , CASE WHEN nftt.buyer=nftt.seller
         OR COUNT(filter_baf.block_number) > 0
         OR COUNT(filter_bought_3x.block_number) > 2
-        OR COUNT(filter_sold_3x.block_number) >= 3
+        OR COUNT(filter_sold_3x.block_number) > 2
         OR filter_funding_buyer.first_funded_by = filter_funding_seller.first_funded_by
         OR filter_funding_buyer.first_funded_by = nftt.seller
         OR filter_funding_seller.first_funded_by = nftt.buyer
