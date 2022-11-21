@@ -67,3 +67,24 @@ models:
             If you are adding a token with a new standard, remember to add it the accepted valeus list.
       - name: category
         description: "NFT Collection Category"
+
+  - name: tokens_ethereum_erc20_stablecoins
+    meta:
+      blockchain: ethereum
+      sector: tokens
+      project: erc20
+      contributors: gentrexha
+    config:
+      tags: [ 'table', 'erc20', 'stablecoins' ]
+    description: "ERC20 Stablecoin Token Addresses, Symbols and Decimals"
+    columns:
+      - name: contract_address
+        description: "ERC20 stablecoin token contract address"
+        tests:
+          - unique
+      - name: symbol
+        description: "ERC20 stablecoin token symbol"
+      - name: decimals
+        description: "Number of decimals, refers to how divisible an ERC20 stablecoin token can be"
+      - name: name
+        description: "ERC20 stablecoin token name"
