@@ -23,7 +23,7 @@ models:
             - to_protocol
             - from_protocol
             - bridge_address
-            - trace_address 
+            - trace_address
     columns:
         - &tx_from
           name: tx_from
@@ -120,7 +120,7 @@ models:
   - name: aztec_v2_ethereum_daily_bridge_activity
     meta:
       blockchain: ethereum
-      project: aztec_v2 
+      project: aztec_v2
       contributors: jackie, henrystats
     config:
       tags: ['ethereum','aztec']
@@ -173,7 +173,7 @@ models:
   - name: aztec_v2_ethereum_daily_deposits
     meta:
       blockchain: ethereum
-      project: aztec_v2 
+      project: aztec_v2
       contributors: jackie, henrystats
     config:
       tags: ['ethereum','aztec']
@@ -208,7 +208,7 @@ models:
   - name: aztec_v2_ethereum_daily_estimated_rollup_tvl
     meta:
       blockchain: ethereum
-      project: aztec_v2 
+      project: aztec_v2
       contributors: jackie, henrystats
     config:
       tags: ['ethereum','aztec']
@@ -236,7 +236,7 @@ models:
   - name: aztec_v2_ethereum_bridges
     meta:
       blockchain: ethereum
-      project: aztec_v2 
+      project: aztec_v2
       contributors: jackie, henrystats
     config:
       tags: ['ethereum','aztec']

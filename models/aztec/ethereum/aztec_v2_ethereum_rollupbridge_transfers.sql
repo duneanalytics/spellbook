@@ -18,7 +18,7 @@
 
 WITH  
 
-bridges_label (protocol, version, description, contract_address) as (
+bridges_label (protocol, version, description, LOWER(contract_address) as contract_address) as (
         VALUES 
             ('Aztec RollupProcessor', '1.0', 'Prod Aztec Rollup', '0xff1f2b4adb9df6fc8eafecdcbf96a2b351680455'),
             ('Element', '1.0', 'Prod Element Bridge', '0xaed181779a8aabd8ce996949853fea442c2cdb47'),
@@ -198,4 +198,5 @@ tfers_categorized as (
         LEFT JOIN all_bridges from_contract on t.tx_from = from_contract.contract_address
 )
 SELECT * FROM tfers_categorized
-WHERE value_norm != 0 
+WHERE value_norm != 0
+;

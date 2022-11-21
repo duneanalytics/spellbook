@@ -1,8 +1,6 @@
 {{ config(
+    schema = 'aztec_v2_ethereum',
     alias = 'deposit_assets',
-    materialized = 'view',
-    file_format = 'delta',
-    unique_key = ['asset_id', 'asset_address', 'asset_gas_limit', 'date_added'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "aztec_v2",
@@ -39,3 +37,4 @@ LEFT JOIN
 {{ ref('tokens_erc20') }} t 
     ON a.asset_address = t.contract_address
     AND t.blockchain = 'ethereum'
+;

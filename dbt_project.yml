@@ -262,11 +262,11 @@ models:
         +schema: addresses_events_ethereum
         +materialized: table
 
-    aztec_v2:
-      +schema: aztec_v2
+    aztec:
+      +schema: aztec
       +materialized: view
       ethereum:
-        +schema: aztec_v2_ethereum
+        +schema: aztec_ethereum
         +materialized: view
 
     tokens:

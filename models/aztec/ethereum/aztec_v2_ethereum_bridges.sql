@@ -1,7 +1,6 @@
 {{ config(
+    schema = 'aztec_v2_ethereum',
     alias = 'bridges',
-    materialized = 'view',
-    file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "aztec_v2",
@@ -10,7 +9,7 @@
 
 WITH  
 
-bridges_label (protocol, version, description, contract_address) as (
+bridges_label (protocol, version, description, LOWER(contract_address) as contract_address) as (
         VALUES 
             ('Aztec RollupProcessor', '1.0', 'Prod Aztec Rollup', '0xff1f2b4adb9df6fc8eafecdcbf96a2b351680455'),
             ('Element', '1.0', 'Prod Element Bridge', '0xaed181779a8aabd8ce996949853fea442c2cdb47'),
@@ -51,3 +50,4 @@ bridges_creation bc
 LEFT JOIN 
 bridges_label bl 
     ON bl.contract_address = bc.bridgeAddress
+;

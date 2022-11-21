@@ -16,7 +16,7 @@
 with 
 
 rollup_balance_changes as (
-  select t.evt_block_time::date as date
+  select CAST(t.evt_block_time as date) as date
     , t.symbol
     , t.contract_address as token_address
     , sum(case when t.from_type = 'Rollup' then -1 * value_norm when t.to_type = 'Rollup' then value_norm else 0 end) as net_value_norm
@@ -35,7 +35,7 @@ rollup_balance_changes as (
 )
 
 , day_series as (
-  SELECT explode(sequence('2022-06-06'::DATE, NOW()::DATE, interval '1 Day')) as date 
+  SELECT explode(sequence(CAST('2022-06-06' as date), CAST(NOW() as date), interval '1 Day')) as date 
 )
 
 , token_balances_filled as (
@@ -46,7 +46,7 @@ rollup_balance_changes as (
   from day_series d
   inner join token_balances b
         on d.date >= b.date
-        and d.date < coalesce(b.next_date,now()::date + 1) -- if it's missing that means it's the last entry in the series
+        and d.date < coalesce(b.next_date,CAST(NOW() as date) + 1) -- if it's missing that means it's the last entry in the series
 )
 
 , token_addresses as (
@@ -120,3 +120,4 @@ rollup_balance_changes as (
   
 )
 select * from token_tvls
+;
