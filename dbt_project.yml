@@ -489,8 +489,23 @@ models:
     kyberswap:
       +schema: kyberswap
       +materialized: view
+      arbitrum:
+        +schema: kyberswap_arbitrum
+        +materialized: view
       avalanche_c:
         +schema: kyberswap_avalanche_c
+        +materialized: view
+      binance_smart_chain:
+        +schema: kyberswap_bsc
+        +materialized: view
+      ethereum:
+        +schema: kyberswap_ethereum
+        +materialized: view
+      optimism:
+        +schema: kyberswap_optimism
+        +materialized: view
+      polygon:
+        +schema: kyberswap_polygon
         +materialized: view
 
     fraxswap:

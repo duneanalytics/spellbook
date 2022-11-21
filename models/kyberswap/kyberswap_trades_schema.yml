@@ -3,6 +3,7 @@ version: 2
 models:
   - name: kyberswap_trades
     meta:
+      blockchain: arbitrum, avalanche_c, binance_smart_chain, ethereum, optimism, polygon
       sector: dex
       project: kyberswap
       contributors: zhongyiio
