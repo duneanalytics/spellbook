@@ -52,7 +52,7 @@ models:
         description: 'Swap fees for the pool, values are returned with 18 decimals (1e18 meaning 100%)'
         tests:
           - not_null
-  - name: balancer_polygon_view_bpt_prices
+  - name: balancer_v2_polygon_bpt_prices
     meta:
       blockchain: polygon
       project: balancer_v2

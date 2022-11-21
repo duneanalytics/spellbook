@@ -1,6 +1,7 @@
 {{
     config(
-        alias='optimism_view_bpt_prices',
+        schema = 'balancer_v2_optimism',
+        alias='bpt_prices',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "balancer",

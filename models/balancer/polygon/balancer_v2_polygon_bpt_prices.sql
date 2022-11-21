@@ -1,6 +1,7 @@
 {{
     config(
-        alias='polygon_view_bpt_prices',
+        schema = 'balancer_v2_polygon',
+        alias='bpt_prices',
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "project",
                                     "balancer",
