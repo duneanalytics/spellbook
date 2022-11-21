@@ -1,0 +1,62 @@
+version: 2
+
+models:
+  - name: tigris_arbitrum_positions_leverage
+    meta:
+      blockchain: arbitrum
+      project: tigris
+      contributors: Henrystats 
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      leverage data 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - position_id 
+            - leverage 
+    columns:
+      - &evt_tx_hash
+        name: evt_tx_hash 
+        description: "blockchain transaction id "
+      - &position_id
+        name: position_id 
+        description: "unique position id"
+      - &leverage
+        name: leverage
+        description: "positions's leverage"
+
+models:
+  - name: tigris_arbitrum_positions_close
+    meta:
+      blockchain: arbitrum
+      project: tigris
+      contributors: Henrystats 
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      positions close data 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - position_id 
+            - latest_leverage_time
+            - payout 
+    columns:
+      - *evt_tx_hash
+      - *leverage 
+      - *position_id
+      - &latest_leverage_time
+        name: latest_leverage_time
+        description: "last time leverage was updated"
+      - &payout
+        name: payout
+        description: "amount paid out"
+      - &previous_margin
+        name: previous_margin
+        description: "margin before payout"
+      - &new_margin
+        name: new_margin
+        description: "margin after payout"
