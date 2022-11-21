@@ -52,12 +52,12 @@ SELECT nftt.blockchain
         ELSE false
         END AS filter4_first_funded_by_same_wallet
     , CASE WHEN nftt.buyer=nftt.seller
-        OR COUNT(filter_baf.block_number) > 0
-        OR COUNT(filter_bought_3x.block_number) > 2
-        OR COUNT(filter_sold_3x.block_number) > 2
         OR filter_funding_buyer.first_funded_by = filter_funding_seller.first_funded_by
         OR filter_funding_buyer.first_funded_by = nftt.seller
         OR filter_funding_seller.first_funded_by = nftt.buyer
+        OR COUNT(filter_baf.block_number) > 0
+        OR COUNT(filter_bought_3x.block_number) > 2
+        OR COUNT(filter_sold_3x.block_number) > 2
         THEN true
         ELSE false
         END AS is_wash_trade
