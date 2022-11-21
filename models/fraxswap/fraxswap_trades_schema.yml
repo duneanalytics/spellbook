@@ -8,7 +8,7 @@ models:
       project: fraxswap
       contributors: zhongyiio, kndlexi
     config:
-      tags: ['avalanche_c', 'bnb', 'trades', 'dex', 'fraxswap', 'zhongyiio', 'kndlexi', 'hosuke']
+      tags: ['avalanche_c', 'bnb ', 'trades', 'dex', 'fraxswap', 'zhongyiio', 'kndlexi', 'hosuke']
     description: >
         Fraxswap trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
