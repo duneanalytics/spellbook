@@ -23,13 +23,14 @@ with events_raw as (
         ,seller
         ,contractAddress as nft_contract_address
         ,price as amount_raw
+        ,evt_index
     from {{ source('quixotic_v5_optimism','ExchangeV5_evt_SellOrderFilled') }}
     {% if is_incremental() %} 
     where evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     where contractAddress != lower('0xbe81eabdbd437cba43e4c1c330c63022772c2520') -- --exploit contract
 )
-,transfers as (
+,transfers_raw as (
     -- eth royalities
     select 
       tr.tx_block_number as block_number
@@ -37,6 +38,8 @@ with events_raw as (
       ,tr.tx_hash 
       ,tr.value
       ,tr.to
+      ,er.evt_index
+      ,er.evt_index - coalesce(tr.trace[0], 0) as ranking
     from events_raw as er 
     join {{ ref('transfers_optimism_eth') }} as tr 
       on er.tx_hash = tr.tx_hash 
@@ -68,6 +71,8 @@ with events_raw as (
       ,erc20.evt_tx_hash as tx_hash
       ,erc20.value
       ,erc20.to
+      ,er.evt_index
+      ,er.evt_index - erc20.evt_index as ranking
     from events_raw as er 
     join {{ source('erc20_optimism','evt_transfer') }} as erc20 
       on er.tx_hash = erc20.evt_tx_hash 
@@ -89,6 +94,13 @@ with events_raw as (
       {% if is_incremental() %}
       and erc20.evt_block_time >= date_trunc("day", now() - interval '1 week')
       {% endif %}
+)
+,transfers as (
+    select 
+      *
+      ,row_number() over (partition_by tx_hash, evt_index order by ranking) as rn 
+    from transfers_raw
+    having rn = 1 -- choose the closest 
 )
 select
     'optimism' as blockchain
