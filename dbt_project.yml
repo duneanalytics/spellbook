@@ -499,6 +499,9 @@ models:
       avalanche_c:
         +schema: fraxswap_avalanche_c
         +materialized: view
+      bnb:
+        +schema: fraxswap_bnb
+        +materialized: view
 
     mstable:
       +schema: mstable
