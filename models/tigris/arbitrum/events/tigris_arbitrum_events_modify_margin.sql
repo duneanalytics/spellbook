@@ -28,12 +28,12 @@ modify_margin_v2 as (
         {{ source('tigristrade_arbitrum', 'TradingV2_call_addMargin') }} am 
             ON mm._id = am._id 
             AND mm.evt_tx_hash = am.call_tx_hash
-            AND am.call_sucess = true 
+            AND am.call_success = true 
         LEFT JOIN 
         {{ source('tigristrade_arbitrum', 'TradingV2_call_removeMargin') }} rm 
             ON mm._id = rm._id 
             AND mm.evt_tx_hash = rm.call_tx_hash
-            AND rm.call_sucess = true 
+            AND rm.call_success = true 
         {% if is_incremental() %}
         WHERE mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
@@ -63,12 +63,12 @@ modify_margin_v3 as (
         {{ source('tigristrade_arbitrum', 'TradingV3_call_addMargin') }} am 
             ON mm._id = am._id 
             AND mm.evt_tx_hash = am.call_tx_hash
-            AND am.call_sucess = true 
+            AND am.call_success = true 
         LEFT JOIN 
         {{ source('tigristrade_arbitrum', 'TradingV3_call_removeMargin') }} rm 
             ON mm._id = rm._id 
             AND mm.evt_tx_hash = rm.call_tx_hash
-            AND rm.call_sucess = true 
+            AND rm.call_success = true 
         {% if is_incremental() %}
         WHERE mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
@@ -98,12 +98,12 @@ modify_margin_v4 as (
         {{ source('tigristrade_arbitrum', 'TradingV4_call_addMargin') }} am 
             ON mm._id = am._id 
             AND mm.evt_tx_hash = am.call_tx_hash
-            AND am.call_sucess = true 
+            AND am.call_success = true 
         LEFT JOIN 
         {{ source('tigristrade_arbitrum', 'TradingV4_call_removeMargin') }} rm 
             ON mm._id = rm._id 
             AND mm.evt_tx_hash = rm.call_tx_hash
-            AND rm.call_sucess = true 
+            AND rm.call_success = true 
         {% if is_incremental() %}
         WHERE mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}

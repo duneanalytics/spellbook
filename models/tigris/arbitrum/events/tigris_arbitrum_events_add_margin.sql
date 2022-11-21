@@ -27,7 +27,7 @@ add_margin_v2 as (
         {{ source('tigristrade_arbitrum', 'TradingV2_call_addToPosition') }} af 
             ON ap._id = af._id 
             AND ap.evt_tx_hash = af.call_tx_hash 
-            AND af.call_sucess = true 
+            AND af.call_success = true 
         {% if is_incremental() %}
         WHERE af.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
@@ -53,7 +53,7 @@ add_margin_v3 as (
         {{ source('tigristrade_arbitrum', 'TradingV3_call_addToPosition') }} af 
             ON ap._id = af._id 
             AND ap.evt_tx_hash = af.call_tx_hash 
-            AND af.call_sucess = true 
+            AND af.call_success = true 
         {% if is_incremental() %}
         WHERE af.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
@@ -79,7 +79,7 @@ add_margin_v4 as (
         {{ source('tigristrade_arbitrum', 'TradingV4_call_addToPosition') }} af 
             ON ap._id = af._id 
             AND ap.evt_tx_hash = af.call_tx_hash 
-            AND af.call_sucess = true 
+            AND af.call_success = true 
         {% if is_incremental() %}
         WHERE af.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
