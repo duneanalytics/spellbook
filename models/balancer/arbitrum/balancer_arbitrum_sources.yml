@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: balancer_v2_arbitrum
     description: >
-      Decoded tables related to Balancer v2, an automated portfolio manager and trading platform, on Arbitrum.
+      Decoded tables related to Balancer V2, an automated portfolio manager and trading platform, on Arbitrum.
     tables:
       - name: Vault_evt_PoolRegistered
         description: >

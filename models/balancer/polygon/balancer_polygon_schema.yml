@@ -55,7 +55,7 @@ models:
   - name: balancer_polygon_view_bpt_prices
     meta:
       blockchain: polygon
-      project: balancer
+      project: balancer_v2
       contributors: victorstefenon
     config:
       tags: ['polygon', 'bpt', 'prices']

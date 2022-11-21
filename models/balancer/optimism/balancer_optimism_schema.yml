@@ -55,7 +55,7 @@ models:
   - name: balancer_optimism_view_bpt_prices
     meta:
       blockchain: optimism
-      project: balancer
+      project: balancer_v2
       contributors: victorstefenon
     config:
       tags: ['optimism', 'bpt', 'prices']
