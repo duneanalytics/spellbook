@@ -44,8 +44,17 @@ models:
     balancer:
       +schema: balancer
       +materialized: view
+      arbitrum:
+        +schema: balancer_arbitrum
+        +materialized: view
       ethereum:
         +schema: balancer_ethereum
+        +materialized: view
+      polygon:
+        +schema: balancer_polygon
+        +materialized: view
+      optimism:
+        +schema: balancer_optimism
         +materialized: view
 
     ens:
@@ -362,7 +371,7 @@ models:
       ethereum:
         +schema: archipelago_ethereum
         +materialized: view
-
+  
     integration_test:
       +schema: integration_test
       +materialized: view
@@ -616,6 +625,7 @@ seeds:
           token_bought_amount: float
           token_sold_address: string
           token_sold_amount: float
+
     sudoswap:
       +enabled: true
       +schema: test_data

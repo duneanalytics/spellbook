@@ -39,6 +39,8 @@ CREATE MATERIALIZED VIEW tokemak.view_tokemak_lookup_reactors
     UNION
     SELECT '\x2Fc6e9c1b2C07E18632eFE51879415a580AD22E1'::bytea as reactor_address, '\x6BeA7CFEF803D1e3d5f7C0103f7ded065644e197'::bytea as underlyer_address, 'GAMMA Reactor', true
     UNION
+    SELECT '\x061aee9ab655e73719577EA1df116D7139b2A7E7'::bytea as reactor_address, '\x4b13006980aCB09645131b91D259eaA111eaF5Ba'::bytea as underlyer_address, 'MYC Reactor', true
+    UNION
     SELECT '\x41f6a95Bacf9bC43704c4A4902BA5473A8B00263'::bytea as reactor_address, '\x0ab87046fbb341d058f17cbc4c1133f25a20a52f'::bytea as underlyer_address, 'gOHM Reactor', true
     UNION
     SELECT '\x7A75ec20249570c935Ec93403A2B840fBdAC63fd'::bytea as reactor_address, '\xa47c8bf37f92aBed4A126BDA807A7b7498661acD'::bytea as underlyer_address, 'UST Reactor', true
