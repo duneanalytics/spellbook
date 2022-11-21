@@ -119,11 +119,13 @@ WITH rows AS (
         AND pa.contract_address = dexs.token_a_address
         AND pa.hour >= start_ts
         AND pa.hour < end_ts
+	AND pa.symbol NOT IN (SELECT symbol FROM prices.prices_exclude_tokens)
     LEFT JOIN prices.approx_prices_from_dex_data pb
       ON pb.hour = date_trunc('hour', dexs.block_time)
         AND pb.contract_address = dexs.token_b_address
         AND pb.hour >= start_ts
         AND pb.hour < end_ts
+	AND pb.symbol NOT IN (SELECT symbol FROM prices.prices_exclude_tokens)
 	
 	WHERE 1 = (
 		CASE WHEN dex_version = 0 THEN 1
