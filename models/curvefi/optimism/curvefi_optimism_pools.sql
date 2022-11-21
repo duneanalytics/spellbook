@@ -1,9 +1,8 @@
 {{ config(
     alias = 'pools',
     materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['tokenid', 'token', 'pool'],
+    incremental_strategy = 'insert_overwrite',
+    partition_by=['pool'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "curvefi",
