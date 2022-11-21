@@ -8,7 +8,7 @@
     unique_key = ['block_time', 'blockchain', 'project', 'version', 'tx_hash'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
-                                "gitcoin",
+                                "ens",
                                 \'["soispoke"]\') }}'
     )
 }}
@@ -16,10 +16,10 @@
 {% set blockchain = 'ethereum' %}
 {% set project = 'ens' %}
 {% set dao_name = 'DAO: ENS' %}
-{% set dao_address = '0xdbd27635a534a3d3169ef0498beb56fb9c937489' %}
+{% set dao_address = '0x323a76393544d5ecca80cd6ef2a560c6a395b7e3' %}
 
 WITH cte_sum_votes as 
-(SELECT sum(votes/1e18) as sum_votes, 
+(SELECT sum(weight/1e18) as sum_votes, 
         proposalId
 FROM {{ source('ethereumnameservice_ethereum', 'ENSGovernor_evt_VoteCast') }}
 GROUP BY proposalId)
@@ -34,17 +34,17 @@ SELECT
     '{{dao_name}}' as dao_name,
     '{{dao_address}}' as dao_address,
     vc.proposalId as proposal_id,
-    vc.votes/1e18 as votes,
-    (votes/1e18) * (100) / (csv.sum_votes) as votes_share,
+    vc.weight/1e18 as votes,
+    (weight/1e18) * (100) / (csv.sum_votes) as votes_share,
     p.symbol as token_symbol,
     p.contract_address as token_address, 
-    vc.votes/1e18 * p.price as votes_value_usd,
+    vc.weight/1e18 * p.price as votes_value_usd,
     vc.voter as voter_address,
     CASE WHEN vc.support = 0 THEN 'against'
          WHEN vc.support = 1 THEN 'for'
          WHEN vc.support = 2 THEN 'abstain'
          END AS support,
-    cast(NULL as string) as reason
+    reason
 FROM {{ source('ethereumnameservice_ethereum', 'ENSGovernor_evt_VoteCast') }} vc
 LEFT JOIN cte_sum_votes csv ON vc.proposalId = csv.proposalId
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', evt_block_time)
