@@ -3,10 +3,10 @@ with unit_test as (
         case when test.action = actual.action then true else false end as action_test,
         case when test.user = actual.user then true else false end as user_test,
         case when test.jfiat_token_symbol = actual.jfiat_token_symbol then true else false end as jfiat_token_test,
-        case when ROUND(test.jfiat_token_amount,2) = ROUND(actual.jfiat_token_amount,2) then true else false end as jfiat_token_amount_test,
+        case when ABS(test.jfiat_token_amount - actual.jfiat_token_amount) < 0.001 then true else false end as jfiat_token_amount_test,
         case when test.collateral_symbol = actual.collateral_symbol then true else false end as collateral_token_test,
-        case when ROUND(test.collateral_token_amount,2) = ROUND(actual.collateral_token_amount,2) then true else false end as collateral_token_amount_test,
-        case when ROUND(test.net_collateral_amount,2) = ROUND(actual.net_collateral_amount,2) then true else false end as net_collateral_amount_test
+        case when ABS(test.collateral_token_amount - actual.collateral_token_amount) < 0.001 then true else false end as collateral_token_amount_test,
+        case when ABS(test.net_collateral_amount - actual.net_collateral_amount) < 0.001 then true else false end as net_collateral_amount_test
     from {{ref ('jarvis_network_view_all_transactions')}} as actual
     INNER JOIN {{ref ('jarvis_network_polygon_view_transactions')}} as test
     on (actual.evt_tx_hash = test.evt_tx_hash AND actual.evt_index = test.evt_index)
