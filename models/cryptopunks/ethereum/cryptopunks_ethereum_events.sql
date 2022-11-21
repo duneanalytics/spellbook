@@ -86,11 +86,11 @@ SELECT
     "CryptoPunks" AS `collection`,
     buys.enhanced_buy_value / power(10,18) * p.price AS amount_usd,
     "erc20" AS token_standard,
-    NULL::string AS trade_type,
-    NULL::string AS number_of_items,
+    CAST(NULL AS VARCHAR(5)) AS trade_type,
+    CAST(NULL AS VARCHAR(5)) AS number_of_items,
     buys.trade_category,
     buys.from AS seller,
-    CASE WHEN buys.`enhanced_to`= agg.contract_address THEN NULL::string --erc.to
+    CASE WHEN buys.`enhanced_to`= agg.contract_address THEN CAST(NULL AS VARCHAR(5)) --erc.to
       ELSE buys.`enhanced_to` END AS buyer,
     "Trade" as evt_type,
     buys.enhanced_buy_value / power(10,18) AS amount_original,
@@ -113,8 +113,8 @@ SELECT
     0::double AS royalty_fee_amount,
     0::double AS royalty_fee_amount_usd,
     0::double  AS royalty_fee_percentage,
-    NULL::string as royalty_fee_receive_address,
-    NULL::string as royalty_fee_currency_symbol,
+    CAST(NULL AS VARCHAR(5)) as royalty_fee_receive_address,
+    CAST(NULL AS VARCHAR(5)) as royalty_fee_currency_symbol,
     "cryptopunks" || '-' || buys.evt_tx_hash || '-' || buys.punkIndex || '-' ||  buys.from || '-' || buys.evt_index || '-' || "" as unique_trade_id
 FROM buys
 INNER JOIN {{ source('ethereum','transactions') }} tx ON buys.evt_tx_hash = tx.hash

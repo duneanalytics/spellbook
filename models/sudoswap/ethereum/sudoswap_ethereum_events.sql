@@ -278,9 +278,9 @@ WITH
             , null::double as royalty_fee_amount_raw
             , null::double as royalty_fee_amount
             , null::double as royalty_fee_percentage
-            , null::string as royalty_fee_receive_address
+            , CAST(NULL AS VARCHAR(5)) as royalty_fee_receive_address
             , null::double as royalty_fee_amount_usd
-            , null::string as royalty_fee_currency_symbol
+            , CAST(NULL AS VARCHAR(5)) as royalty_fee_currency_symbol
             -- these 2 are used for matching the aggregator address, dropped later
             , router_caller
             , call_from

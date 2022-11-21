@@ -37,7 +37,7 @@ with base_level as (
   from (
     select 
       ct.`from` as creator_address
-      ,NULL::string as contract_factory
+      ,CAST(NULL AS VARCHAR(5)) as contract_factory
       ,ct.address as contract_address
       ,ct.block_time as created_time
       ,ct.tx_hash as creation_tx_hash
