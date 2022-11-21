@@ -349,7 +349,6 @@ FROM (
       ,('0x48cff7ff77b2bf83e4a6f843b5b1709601671e83', 'Clipper')
       ,('0x1a3daa6f487a480c1ad312b90fd0244871940b66', 'Quix')
       ,('0x8df57e3d9ddde355dce1adb19ebce93419ffa0fb', 'Revert Finance')
-      ,('0x59ca05674f5073f95f292aaca2d28a7dc80f12d6', 'Mirror')
       ,('0xccbdbd9b0309a77fc6a56e087ff2765ff394012e', '1Inch')
       ,('0x819addc3dd780704ae85ea12c18252f7020c24d0', 'Synthetix')
       ,('0xbf70200dd73d5f3aafa4f0d8adacdeaf3798b7f9', 'Cryptovania')
