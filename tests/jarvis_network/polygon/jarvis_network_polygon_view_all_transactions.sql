@@ -8,7 +8,7 @@ with unit_test as (
         case when test.collateral_token_amount = actual.collateral_token_amount then true else false end as collateral_token_amount_test,
         case when test.net_collateral_amount = actual.net_collateral_amount then true else false end as net_collateral_amount_test,
         case when test.net_collateral_amount_usd = actual.net_collateral_amount_usd then true else false end as net_collateral_amount_usd_test,
-        case when test.fee_amount_usd, = actual.fee_amount_usd then true else false end as fee_amount_usd_test
+        case when test.fee_amount_usd = actual.fee_amount_usd then true else false end as fee_amount_usd_test
     from {{ref ('jarvis_network_view_all_transactions')}} as actual
     INNER JOIN {{ref ('jarvis_network_polygon_view_transactions')}} as test
     on (actual.evt_tx_hash = test.evt_tx_hash AND actual.evt_index = test.evt_index)
