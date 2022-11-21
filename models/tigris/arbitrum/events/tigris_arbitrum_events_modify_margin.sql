@@ -18,7 +18,7 @@ modify_margin_v2 as (
             mm.evt_block_time,
             mm._id as position_id,
             mm._isMarginAdded as modify_type, 
-            COALESCE(am._addMargin/1e18, rm.removeMargin/1e18) as margin_change, 
+            COALESCE(am._addMargin/1e18, rm._removeMargin/1e18) as margin_change, 
             mm._newMargin/1e18 as margin, 
             mm._newLeverage/1e18 as leverage, 
             mm._trader as trader 
@@ -53,7 +53,7 @@ modify_margin_v3 as (
             mm.evt_block_time,
             mm._id as position_id,
             mm._isMarginAdded as modify_type, 
-            COALESCE(am._addMargin/1e18, rm.removeMargin/1e18) as margin_change, 
+            COALESCE(am._addMargin/1e18, rm._removeMargin/1e18) as margin_change, 
             mm._newMargin/1e18 as margin, 
             mm._newLeverage/1e18 as leverage, 
             mm._trader as trader 
@@ -88,7 +88,7 @@ modify_margin_v4 as (
             mm.evt_block_time,
             mm._id as position_id,
             mm._isMarginAdded as modify_type, 
-            COALESCE(am._addMargin/1e18, rm.removeMargin/1e18) as margin_change, 
+            COALESCE(am._addMargin/1e18, rm._removeMargin/1e18) as margin_change, 
             mm._newMargin/1e18 as margin, 
             mm._newLeverage/1e18 as leverage, 
             mm._trader as trader 
