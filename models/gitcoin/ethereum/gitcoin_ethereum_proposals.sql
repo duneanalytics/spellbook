@@ -25,7 +25,7 @@ with cte_support as (SELECT
         CASE WHEN support = 1 THEN sum(votes/1e18) ELSE 0 END AS votes_for,
         CASE WHEN support = 2 THEN sum(votes/1e18) ELSE 0 END AS votes_abstain,
         proposalId
-FROM {{ source('gitcoin', 'GovernorAlpha_evt_VoteCast') }}
+FROM {{ source('gitcoin_ethereum', 'GovernorAlpha_evt_VoteCast') }}
 GROUP BY support, proposalId, voter),
 
 cte_sum_votes as (
@@ -64,11 +64,11 @@ SELECT DISTINCT
          WHEN now() > pqu.evt_block_time AND startBlock > pcr.evt_block_number THEN 'Queued'
          ELSE 'Defeated' END AS status,
     description as description
-FROM  {{ source('gitcoin', 'GovernorAlpha_evt_ProposalCreated') }} pcr
+FROM  {{ source('gitcoin_ethereum', 'GovernorAlpha_evt_ProposalCreated') }} pcr
 LEFT JOIN cte_sum_votes csv ON csv.proposalId = pcr.id
-LEFT JOIN {{ source('gitcoin', 'GovernorAlpha_evt_ProposalCanceled') }} pca ON pca.id = pcr.id
-LEFT JOIN {{ source('gitcoin', 'GovernorAlpha_evt_ProposalExecuted') }} pex ON pex.id = pcr.id
-LEFT JOIN {{ source('gitcoin', 'GovernorAlpha_evt_ProposalQueued') }} pqu ON pex.id = pcr.id
+LEFT JOIN {{ source('gitcoin_ethereum', 'GovernorAlpha_evt_ProposalCanceled') }} pca ON pca.id = pcr.id
+LEFT JOIN {{ source('gitcoin_ethereum', 'GovernorAlpha_evt_ProposalExecuted') }} pex ON pex.id = pcr.id
+LEFT JOIN {{ source('gitcoin_ethereum', 'GovernorAlpha_evt_ProposalQueued') }} pqu ON pex.id = pcr.id
 {% if is_incremental() %}
 WHERE pcr.evt_block_time > (select max(created_at) from {{ this }})
 {% endif %}

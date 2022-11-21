@@ -45,7 +45,7 @@ SELECT
          WHEN vc.support = 1 THEN 'for'
          WHEN vc.support = 2 THEN 'abstain'
          END AS support,
-    vc.reason
+    cast(NULL as string) as reason
 FROM {{ source('gitcoin_ethereum', 'GovernorAlpha_evt_VoteCast') }} vc
 LEFT JOIN cte_sum_votes csv ON vc.proposalId = csv.proposalId
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', evt_block_time)
