@@ -48,7 +48,7 @@ SELECT
 FROM {{ source('gitcoin_ethereum', 'GovernorAlpha_evt_VoteCast') }} vc
 LEFT JOIN cte_sum_votes csv ON vc.proposalId = csv.proposalId
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', evt_block_time)
-    AND p.symbol = 'UNI'
+    AND p.symbol = 'GTC'
     AND p.blockchain ='ethereum'
     {% if is_incremental() %}
     AND p.minute >= date_trunc("day", now() - interval '1 week')
