@@ -9,7 +9,8 @@
 
 {% set dao_proposals_models = [
 'uniswap_v3_ethereum_proposals',
-'compound_v2_ethereum_proposals'
+'compound_v2_ethereum_proposals',
+'gitcoin_ethereum_proposals'
 ] %}
 
 SELECT *
