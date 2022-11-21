@@ -14,13 +14,7 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - action
-            - user
-            - jfiat_token_symbol
-            - jfiat_token_amount
-            - collateral_symbol
-            - collateral_token_amount
-            - net_collateral_amount
+            - block_date
             - evt_tx_hash
             - evt_index
 
@@ -30,7 +24,10 @@ models:
         description: "Blockchain which the contract is deployed" 
       - &evt_block_time
         name: evt_block_time
-        description: "UTC event block date of each transaction"
+        description: "UTC event block time of the transaction"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of the transaction"
       - &action
         name: action
         description:  "Transaction description (Mint,Redeem,Exchange)"
