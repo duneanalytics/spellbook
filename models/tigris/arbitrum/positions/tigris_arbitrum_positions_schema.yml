@@ -14,11 +14,11 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time
-            - position_id 
-            - leverage 
+            - position_id
+            - leverage
     columns:
-      - &evt_block_time 
-        name: evt_block_time 
+      - &evt_block_time
+        name: evt_block_time
         description: "blocktime of leverage transaction"
       - &position_id
         name: position_id 
@@ -41,9 +41,9 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_tx_hash
-            - position_id 
+            - position_id
             - latest_leverage_time
-            - payout 
+            - payout
     columns:
       - &evt_tx_hash
         name: evt_tx_hash
