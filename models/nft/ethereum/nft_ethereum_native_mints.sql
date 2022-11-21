@@ -10,7 +10,6 @@
                                     \'["umer_h_adil", "hildobby"]\') }}')
 }}
 
-
 WITH namespaces AS (
     SELECT address
     , FIRST(namespace) AS namespace
@@ -104,7 +103,7 @@ LEFT JOIN {{ source('ethereum','transactions') }} etxs ON etxs.block_time=nft_mi
 LEFT JOIN {{ ref('nft_ethereum_aggregators') }} agg ON etxs.to=agg.contract_address
 LEFT JOIN {{ ref('tokens_ethereum_nft') }} tok ON tok.contract_address=nft_mints.contract_address
 LEFT JOIN namespaces ec ON etxs.to=ec.address
-ANTI JOIN {{this}} anti_txs ON anti_txs.block_time=nft_mints.block_time
+LEFT ANTI JOIN {{this}} anti_txs ON anti_txs.block_time=nft_mints.block_time
     AND anti_txs.tx_hash=nft_mints.tx_hash
     {% if is_incremental() %}
     AND anti_txs.block_time >= date_trunc("day", now() - interval '1 week')
