@@ -22,7 +22,7 @@
 WITH cte_sum_votes as 
 (SELECT sum(votes/1e18) as sum_votes, 
         proposalId
-FROM {{ source('gitcoin', 'GovernorBravoDelegate_evt_VoteCast') }}
+FROM {{ source('gitcoin_ethereum', 'GovernorAlpha_evt_VoteCast') }}
 GROUP BY proposalId)
 
 SELECT 
