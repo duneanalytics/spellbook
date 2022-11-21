@@ -545,12 +545,21 @@ models:
         +schema: quix_optimism
         +materialized: view
 
+        
+    woofi:
+      +schema: woofi
+      +materialized: view
+      bnb:
+        +schema: woofi_bnb
+        +materialized: view
+
     zeroex:
       +schema: zeroex
       +materialized: view
       ethereum:
         +schema: zeroex_ethereum
         +materialized: view
+
 
 seeds:
   spellbook:
