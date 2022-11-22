@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: wash_trades_x2y2_filter
+  - name: inorganic_volume_filter_x2y2
     meta:
       blockchain: ethereum
-      sector: wash_trades
+      sector: inorganic_volume_filter
       contributors: henrystats 
     config:
-      tags: [ 'ethereum','wash_trades','opensea project', 'x2y2', 'Henrystats']
+      tags: [ 'ethereum','inorganic_volume_filter', 'x2y2', 'Henrystats']
     description: >
-      wash trades filter for x2y2 trades 
+      inorganic volume filter for z2y2 trades 
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -18,7 +18,7 @@ models:
             - nft_contract_address 
             - nft_token_id 
             - tx_hash 
-            - wash_filters
+            - inorganic_filters
             - unique_trade_id
     columns:
       - &day
@@ -78,8 +78,8 @@ models:
       - &cs_filter
         name: cs_filter
         description: "circular seller filter"
-      - &wash_filters
-        name: wash_filters
+      - &inorganic_filters
+        name: inorganic_filters
         description: "array with all filters"
       - &any_filter
         name: any_filter

@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'looksrare_filter',
+    alias = 'looksrare',
     partition_by = ['day'],
     materialized = 'incremental',
     file_format = 'delta',

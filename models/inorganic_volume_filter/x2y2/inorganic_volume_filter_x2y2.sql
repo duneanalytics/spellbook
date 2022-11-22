@@ -1,13 +1,13 @@
 {{ config(
-    alias = 'x2y2_filter',
+    alias = 'x2y2',
     partition_by = ['day'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['day', 'block_time', 'nft_contract_address', 'nft_token_id', 'tx_hash', 'wash_filters', 'unique_trade_id'],
+    unique_key = ['day', 'block_time', 'nft_contract_address', 'nft_token_id', 'tx_hash', 'inorganic_filters', 'unique_trade_id'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",
-                                "wash_trades",
+                                "inorganic_volume_filter",
                                 \'["henrystats"]\') }}')
 }}
 
@@ -183,10 +183,10 @@ wf_filter as (
         FROM 
         trades t 
         LEFT JOIN 
-        {{ ref('wash_trades_wallet_funders') }} f1 
+        {{ ref('inorganic_volume_filter_wallet_funders') }} f1 
             ON f1.wallet = t.buyer 
         LEFT JOIN 
-        {{ ref('wash_trades_wallet_funders') }} f2
+        {{ ref('inorganic_volume_filter_wallet_funders') }} f2
             ON f2.wallet = t.seller 
         WHERE t.project = 'x2y2'
         AND f1.funder = f2.funder 
@@ -279,7 +279,7 @@ filtered_trades as (
             CASE WHEN wf.filter IS NOT NULL THEN true ELSE FALSE END as wf_filter,
             CASE WHEN cb.filter IS NOT NULL THEN true ELSE FALSE END as cb_filter,
             CASE WHEN cs.filter IS NOT NULL THEN true ELSE FALSE END as cs_filter,
-            FILTER(array(mt.filter, sb.filter, lv.filter, hp.filter, wf.filter, cb.filter, cs.filter), x -> x IS NOT NULL) as wash_filters
+            FILTER(array(mt.filter, sb.filter, lv.filter, hp.filter, wf.filter, cb.filter, cs.filter), x -> x IS NOT NULL) as inorganic_filters
         FROM 
         trades_enrich t 
         LEFT JOIN 
@@ -319,6 +319,6 @@ filtered_trades as (
 
 SELECT 
 *, 
-CASE WHEN cardinality(wash_filters) > 0 AND wash_filters IS NOT NULL THEN true ELSE false END as any_filter 
+CASE WHEN cardinality(inorganic_filters) > 0 AND inorganic_filters IS NOT NULL THEN true ELSE false END as any_filter 
 FROM 
 filtered_trades
