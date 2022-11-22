@@ -1,18 +1,22 @@
 {{ config(
         alias = 'glp_components',
+        partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['minute'],
+        unique_key = ['block_date', 'minute'],
         post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                    "project",
-                                    "gmx",
-                                    \'["1chioku"]\') }}'
+                                        "project",
+                                        "gmx",
+                                        \'["1chioku"]\') }}'
         )
 }}
 
+{% set project_start_date = '2021-08-31 08:13' %}
+
 SELECT
     minute,
+    block_date,
     
     frax_available_assets, -- FRAX Pool Amounts - Decimal Places 18
     frax_current_price, -- Current Price as MAX(getMaxPrice,getMinPrice) - Decimal Places 12
@@ -52,4 +56,7 @@ SELECT
 FROM {{ref('gmx_arbitrum_glp_components_base')}}
 {% if is_incremental() %}
 WHERE minute >= date_trunc("day", now() - interval '1 day')
+{% endif %}
+{% if not is_incremental() %}
+WHERE minute >= '{{project_start_date}}'
 {% endif %}
