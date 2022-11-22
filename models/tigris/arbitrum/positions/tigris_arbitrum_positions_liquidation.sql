@@ -9,46 +9,42 @@ WITH
 
 last_margin as (
         SELECT 
-            *
+            xx.evt_block_time,
+            xx.position_id,
+            xy.margin 
         FROM 
         (
         SELECT 
-            ROW_NUMBER() OVER(PARTITION BY position_id ORDER BY evt_block_time DESC) as rank_, 
-            position_id,
-            margin 
-        FROM 
-        (
-        SELECT 
-            position_id,
-            margin, 
-            evt_block_time
+            MAX(evt_block_time) as evt_block_time,
+            position_id
         FROM 
         {{ ref('tigris_arbitrum_positions_margin') }}
+        GROUP BY 2 
         ) xx 
-        ) x 
-        WHERE x.rank_ = 1 
+        INNER JOIN 
+        {{ ref('tigris_arbitrum_positions_margin') }} xy 
+            ON xx.evt_block_time = xy.evt_block_time
+            AND xx.position_id = xy.position_id
 ),
 
 last_leverage as (
         SELECT 
-            *
+            xx.evt_block_time,
+            xx.position_id,
+            xy.leverage 
         FROM 
         (
         SELECT 
-            ROW_NUMBER() OVER(PARTITION BY position_id ORDER BY evt_block_time DESC) as rank_, 
-            position_id,
-            leverage 
-        FROM 
-        (
-        SELECT 
-            position_id,
-            leverage, 
-            evt_block_time
+            MAX(evt_block_time) as evt_block_time,
+            position_id
         FROM 
         {{ ref('tigris_arbitrum_positions_leverage') }}
+        GROUP BY 2 
         ) xx 
-        ) x 
-        WHERE x.rank_ = 1 
+        INNER JOIN 
+        {{ ref('tigris_arbitrum_positions_leverage') }} xy 
+            ON xx.evt_block_time = xy.evt_block_time
+            AND xx.position_id = xy.position_id
 )
 
 SELECT 
