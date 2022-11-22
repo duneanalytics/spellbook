@@ -4,7 +4,7 @@ sources:
   - name: nomiswap_bnb
     description: "Binance Smart Chain (bsc) decoded tables related to SushiSwap contract"
     tables:
-      - name: Pair_evt_Swap
+      - name: NomiswapPair_evt_Swap
         loaded_at_field: evt_block_time
         description: "NomiSwap swap events table on Binance Smart Chain (bsc)"
         columns:

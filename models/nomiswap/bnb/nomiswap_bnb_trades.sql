@@ -27,7 +27,7 @@ WITH nomiswap_dex AS (
             t.evt_tx_hash                                                AS tx_hash,
             ''                                                           AS trace_address,
             t.evt_index
-    FROM {{ source('nomiswap_bnb', 'Pair_evt_Swap') }} t
+    FROM {{ source('nomiswap_bnb', 'NomiswapPair_evt_Swap') }} t
     INNER JOIN {{ source('nomiswap_bnb', 'NomiswapFactory_evt_PairCreated') }} p
         ON t.contract_address = p.pair
     {% if is_incremental() %}
