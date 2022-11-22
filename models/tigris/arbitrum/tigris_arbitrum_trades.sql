@@ -174,7 +174,7 @@ modify_margin as (
     {{ ref('tigris_arbitrum_events_modify_margin') }} mm 
     INNER JOIN 
     open_position op 
-        ON lp.position_id = op.position_id 
+        ON mm.position_id = op.position_id 
     {% if is_incremental() %}
     WHERE mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
