@@ -118,6 +118,9 @@ models:
       optimism:
         +schema: uniswap_optimism
         +materialized: view
+      polygon:
+        +schema: uniswap_polygon
+        +materialized: view
 
     sushiswap:
       +schema: sushiswap

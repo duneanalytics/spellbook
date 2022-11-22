@@ -1,23 +1,16 @@
 {{ config(
-        alias ='trades',
-        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon"]\',
-                                "project",
-                                "uniswap",
-                                \'["jeff-dude","mtitus6", "henrystats]\') }}'
+        alias ='trades'
         )
 }}
 
-{% set uniswap_models = [
-'uniswap_ethereum_trades'
-,'uniswap_optimism_trades'
-,'uniswap_arbitrum_trades'
-,'uniswap_polygon_trades'
+{% set uniswap_polygon_models = [
+'uniswap_v3_polygon_trades'
 ] %}
 
 
 SELECT *
 FROM (
-    {% for dex_model in uniswap_models %}
+    {% for dex_model in uniswap_polygon_models %}
     SELECT
         blockchain,
         project,
