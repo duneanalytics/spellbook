@@ -275,12 +275,12 @@ WITH
             , (trade_price-protocol_fee_amount)/(1+pool_fee)*pool_fee/1e18 as pool_fee_amount
             , pool_fee as pool_fee_percentage
             -- royalties don't currently exist on the AMM,
-            , null::double as royalty_fee_amount_raw
-            , null::double as royalty_fee_amount
-            , null::double as royalty_fee_percentage
-            , null::string as royalty_fee_receive_address
-            , null::double as royalty_fee_amount_usd
-            , null::string as royalty_fee_currency_symbol
+            , CAST(NULL AS DOUBLE) as royalty_fee_amount_raw
+            , CAST(NULL AS DOUBLE) as royalty_fee_amount
+            , CAST(NULL AS DOUBLE) as royalty_fee_percentage
+            , CAST(NULL AS VARCHAR(5)) as royalty_fee_receive_address
+            , CAST(NULL AS DOUBLE) as royalty_fee_amount_usd
+            , CAST(NULL AS VARCHAR(5)) as royalty_fee_currency_symbol
             -- these 2 are used for matching the aggregator address, dropped later
             , router_caller
             , call_from
@@ -373,5 +373,5 @@ WITH
 --final SELECT CTE
 SELECT
     *
-    , 'sudoswap-' || tx_hash || '-' || nft_contract_address || token_id::string || '-' || seller || '-' || amount_original::string || 'Trade' AS unique_trade_id
+    , 'sudoswap-' || tx_hash || '-' || nft_contract_address || CAST(token_id AS VARCHAR(60)) || '-' || seller || '-' || CAST(amount_original AS VARCHAR(60)) || 'Trade' AS unique_trade_id
 FROM swaps_exploded
