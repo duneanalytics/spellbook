@@ -328,8 +328,14 @@ models:
       tags: ['arbitrum','gmx','glp']
     description: >
         View GLP mint and burns through the GLP Manager contract.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - minute
     columns:
       - *minute
+      - *block_date
       - &glp_mint_burn
         name: glp_mint_burn
         description: "GLP net mints and burns"
