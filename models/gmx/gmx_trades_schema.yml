@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: gmx_swaps
+  - name: gmx_trades
     meta:
       blockchain: arbitrum, avalanche_c
       sector: dex
