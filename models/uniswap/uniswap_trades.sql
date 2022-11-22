@@ -9,9 +9,9 @@
 
 {% set uniswap_models = [
 'uniswap_ethereum_trades'
-'uniswap_optimism_trades'
-'uniswap_arbitrum_trades'
-'uniswap_polygon_trades'
+,'uniswap_optimism_trades'
+,'uniswap_arbitrum_trades'
+,'uniswap_polygon_trades'
 ] %}
 
 
