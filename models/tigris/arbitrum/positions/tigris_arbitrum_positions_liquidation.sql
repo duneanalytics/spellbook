@@ -49,7 +49,7 @@ last_leverage as (
         ) xx 
         ) x 
         WHERE x.rank_ = 1 
-),
+)
 
 SELECT 
     lp.*, 
