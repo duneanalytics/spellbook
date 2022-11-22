@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'open_position',
+    alias = 'arbitrum_events_open_position',
     partition_by = ['day'],
     materialized = 'incremental',
     file_format = 'delta',

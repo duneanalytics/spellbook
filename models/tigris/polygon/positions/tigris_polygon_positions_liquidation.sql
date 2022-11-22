@@ -1,6 +1,6 @@
 {{ config(
     materialized = 'view',
-    alias = 'arbitrum_positions_liquidation',
+    alias = 'polygon_positions_liquidation',
     unique_key = ['evt_block_time', 'position_id']
     )
  }}
@@ -18,11 +18,11 @@ last_margin as (
             MAX(evt_block_time) as evt_block_time,
             position_id
         FROM 
-        {{ ref('tigris_arbitrum_positions_margin') }}
+        {{ ref('tigris_polygon_positions_margin') }}
         GROUP BY 2 
         ) xx 
         INNER JOIN 
-        {{ ref('tigris_arbitrum_positions_margin') }} xy 
+        {{ ref('tigris_polygon_positions_margin') }} xy 
             ON xx.evt_block_time = xy.evt_block_time
             AND xx.position_id = xy.position_id
 ),
@@ -38,11 +38,11 @@ last_leverage as (
             MAX(evt_block_time) as evt_block_time,
             position_id
         FROM 
-        {{ ref('tigris_arbitrum_positions_leverage') }}
+        {{ ref('tigris_polygon_positions_leverage') }}
         GROUP BY 2 
         ) xx 
         INNER JOIN 
-        {{ ref('tigris_arbitrum_positions_leverage') }} xy 
+        {{ ref('tigris_polygon_positions_leverage') }} xy 
             ON xx.evt_block_time = xy.evt_block_time
             AND xx.position_id = xy.position_id
 )
@@ -52,7 +52,7 @@ SELECT
     lm.margin, 
     ll.leverage 
 FROM 
-{{ ref('tigris_arbitrum_events_liquidate_position') }} lp 
+{{ ref('tigris_polygon_events_liquidate_position') }} lp 
 INNER JOIN 
 last_margin lm 
     ON lp.position_id = lm.position_id

@@ -1,6 +1,6 @@
 {{ config(
     materialized = 'view',
-    alias = 'arbitrum_positions_margin',
+    alias = 'polygon_positions_margin',
     unique_key = ['evt_block_time', 'position_id', 'margin']
     )
  }}
@@ -13,7 +13,7 @@ margin as (
         position_id,
         margin
     FROM 
-    {{ ref('tigris_arbitrum_events_add_margin') }}
+    {{ ref('tigris_polygon_events_add_margin') }}
 
     UNION 
 
@@ -22,7 +22,7 @@ margin as (
         position_id,
         margin
     FROM 
-    {{ ref('tigris_arbitrum_events_modify_margin') }}
+    {{ ref('tigris_polygon_events_modify_margin') }}
 
     UNION 
 
@@ -31,7 +31,7 @@ margin as (
         position_id,
         margin
     FROM 
-    {{ ref('tigris_arbitrum_events_open_position') }}
+    {{ ref('tigris_polygon_events_open_position') }}
 
     UNION 
 
@@ -40,7 +40,7 @@ margin as (
         position_id,
         new_margin as margin 
     FROM 
-    {{ ref('tigris_arbitrum_positions_close') }}
+    {{ ref('tigris_polygon_positions_close') }}
 
 )
 

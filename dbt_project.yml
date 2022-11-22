@@ -205,6 +205,9 @@ models:
       arbitrum:
         +schema: tigris_arbitrum
         +materialized: view
+      polygon:
+        +schema: tigris_polygon
+        +materialized: view
 
     x2y2:
       +schema: x2y2

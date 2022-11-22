@@ -1,6 +1,6 @@
 {{ config(
     materialized = 'view',
-    alias = 'arbitrum_positions_leverage',
+    alias = 'polygon_positions_leverage',
     unique_key = ['evt_block_time', 'position_id', 'leverage']
     )
  }}
@@ -13,7 +13,7 @@ leverage as (
         position_id,
         leverage 
     FROM 
-    {{ ref('tigris_arbitrum_events_open_position') }}
+    {{ ref('tigris_polygon_events_open_position') }}
 
     UNION 
 
@@ -22,7 +22,7 @@ leverage as (
         position_id,
         leverage 
     FROM 
-    {{ ref('tigris_arbitrum_events_modify_margin') }}
+    {{ ref('tigris_polygon_events_modify_margin') }}
 )
 
 SELECT * FROM leverage 

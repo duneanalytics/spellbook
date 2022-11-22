@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'arbitrum_trades',
+    alias = 'polygon_trades',
     partition_by = ['day'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -29,7 +29,7 @@ open_position as (
         margin as margin_change, 
         version, 
         'open_position' as trade_type 
-    FROM {{ ref('tigris_arbitrum_events_open_position') }}
+    FROM {{ ref('tigris_polygon_events_open_position') }}
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
@@ -55,7 +55,7 @@ close_position as (
         c.version, 
         'close_position' as trade_type 
     FROM 
-    {{ ref('tigris_arbitrum_positions_close') }} c 
+    {{ ref('tigris_polygon_positions_close') }} c 
     INNER JOIN 
     open_position op 
         ON c.position_id = op.position_id 
@@ -84,7 +84,7 @@ liquidate_position as (
         lp.version, 
         'liquidate_position' as trade_type
     FROM 
-    {{ ref('tigris_arbitrum_positions_liquidation') }} lp 
+    {{ ref('tigris_polygon_positions_liquidation') }} lp 
     INNER JOIN 
     open_position op 
         ON lp.position_id = op.position_id 
@@ -132,9 +132,9 @@ add_margin as (
         am.version,
         am.trader
     FROM 
-    {{ ref('tigris_arbitrum_events_add_margin') }} am 
+    {{ ref('tigris_polygon_events_add_margin') }} am 
     INNER JOIN 
-    {{ ref('tigris_arbitrum_positions_leverage') }} l 
+    {{ ref('tigris_polygon_positions_leverage') }} l 
         ON am.position_id = l.position_id 
         AND am.evt_block_time > l.evt_block_time
     {% if is_incremental() %}
@@ -146,7 +146,7 @@ add_margin as (
     GROUP BY 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
     ) tmp 
     INNER JOIN 
-    {{ ref('tigris_arbitrum_positions_leverage') }} l 
+    {{ ref('tigris_polygon_positions_leverage') }} l 
         ON tmp.position_id = l.position_id
         AND tmp.latest_leverage_time = l.evt_block_time
     {% if is_incremental() %}
@@ -178,7 +178,7 @@ modify_margin as (
         mm.version,
         CASE WHEN mm.modify_type = true THEN 'add_margin' ELSE 'remove_margin' END as trade_type
     FROM 
-    {{ ref('tigris_arbitrum_events_modify_margin') }} mm 
+    {{ ref('tigris_polygon_events_modify_margin') }} mm 
     INNER JOIN 
     open_position op 
         ON mm.position_id = op.position_id 
@@ -188,34 +188,34 @@ modify_margin as (
 )
 
 SELECT 
-    'arbitrum' as blockchain, 
+    'polygon' as blockchain, 
     * 
 FROM open_position
 
 UNION 
 
 SELECT 
-    'arbitrum' as blockchain,
+    'polygon' as blockchain,
     *
 FROM close_position
 
 UNION 
 
 SELECT 
-    'arbitrum' as blockchain, 
+    'polygon' as blockchain, 
     * 
 FROM liquidate_position
 
 UNION 
 
 SELECT 
-    'arbitrum' as blockchain,
+    'polygon' as blockchain,
     *
 FROM add_margin
 
 UNION 
 
 SELECT 
-    'arbitrum' as blockchain,
+    'polygon' as blockchain,
     *
 FROM modify_margin

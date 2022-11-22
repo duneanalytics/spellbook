@@ -1,6 +1,6 @@
 {{ config(
     materialized = 'view',
-    alias = 'arbitrum_events_asset_added',
+    alias = 'polygon_events_asset_added',
     unique_key = ['evt_tx_hash', 'asset_id', 'pair']
     )
  }}
@@ -10,4 +10,4 @@ SELECT
     _asset as asset_id, 
     _name as pair 
 FROM 
-{{ source('tigristrade_arbitrum', 'PairsContract_evt_AssetAdded') }}
+{{ source('tigristrade_polygon', 'PairsContract_evt_AssetAdded') }}

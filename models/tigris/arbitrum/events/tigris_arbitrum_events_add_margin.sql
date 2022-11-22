@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'add_margin',
+    alias = 'arbitrum_events_add_margin',
     partition_by = ['day'],
     materialized = 'incremental',
     file_format = 'delta',
