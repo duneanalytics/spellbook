@@ -204,6 +204,9 @@ models:
       arbitrum:
         +schema: gmx_arbitrum
         +materialized: view
+      avalanche_c:
+        +schema: gmx_avalanche_c
+        +materialized: view
 
     x2y2:
       +schema: x2y2
