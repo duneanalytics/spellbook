@@ -50,9 +50,9 @@ sources:
           - *evt_block_time 
           - *evt_index
           - *evt_tx_hash
-          - &pair
-            name: pair
           - &token0
             name: token0
           - &token1
             name: token1
+          - &pair
+            name: pair
