@@ -118,6 +118,9 @@ models:
       optimism:
         +schema: uniswap_optimism
         +materialized: view
+      polygon:
+        +schema: uniswap_polygon
+        +materialized: view
 
     sushiswap:
       +schema: sushiswap
@@ -191,12 +194,18 @@ models:
       optimism:
         +schema: gas_optimism
         +materialized: view
-
+      arbitrum:
+        +schema: gas_arbitrum
+        +materialized: view
+        
     gmx:
       +schema: gmx
       +materialized: view
       arbitrum:
         +schema: gmx_arbitrum
+        +materialized: view
+      avalanche_c:
+        +schema: gmx_avalanche_c
         +materialized: view
 
     x2y2:
