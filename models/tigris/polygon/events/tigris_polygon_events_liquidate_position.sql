@@ -12,61 +12,73 @@ WITH
 
 liquidate_position_v1 as (
         SELECT 
-            date_trunc('day', evt_block_time) as day, 
-            evt_tx_hash,
-            evt_index,
-            evt_block_time,
-            _id as position_id,
-            _trader as trader 
+            date_trunc('day', pl.evt_block_time) as day, 
+            pl.evt_tx_hash,
+            pl.evt_index,
+            pl.evt_block_time,
+            pl._id as position_id,
+            op._trader as trader 
         FROM 
-        {{ source('tigristrade_polygon', 'TradingV1_evt_PositionLiquidated') }}
+        {{ source('tigristrade_polygon', 'TradingV1_evt_PositionLiquidated') }} pl 
+        INNER JOIN 
+        {{ ref('tigris_polygon_events_open_position') }} op 
+            ON pl._id = op.position_id
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE pl.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
 liquidate_position_v2 as (
         SELECT 
-            date_trunc('day', evt_block_time) as day, 
-            evt_tx_hash,
-            evt_index,
-            evt_block_time,
-            _id as position_id,
-            _trader as trader 
+            date_trunc('day', pl.evt_block_time) as day, 
+            pl.evt_tx_hash,
+            pl.evt_index,
+            pl.evt_block_time,
+            pl._id as position_id,
+            op._trader as trader 
         FROM 
-        {{ source('tigristrade_polygon', 'TradingV2_evt_PositionLiquidated') }}
+        {{ source('tigristrade_polygon', 'TradingV2_evt_PositionLiquidated') }} pl 
+        INNER JOIN 
+        {{ ref('tigris_polygon_events_open_position') }} op 
+            ON pl._id = op.position_id
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE pl.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
 liquidate_position_v3 as (
         SELECT 
-            date_trunc('day', evt_block_time) as day, 
-            evt_tx_hash,
-            evt_index,
-            evt_block_time,
-            _id as position_id,
-            _trader as trader 
+            date_trunc('day', pl.evt_block_time) as day, 
+            pl.evt_tx_hash,
+            pl.evt_index,
+            pl.evt_block_time,
+            pl._id as position_id,
+            op._trader as trader 
         FROM 
-        {{ source('tigristrade_polygon', 'TradingV3_evt_PositionLiquidated') }}
+        {{ source('tigristrade_polygon', 'TradingV3_evt_PositionLiquidated') }} pl 
+        INNER JOIN 
+        {{ ref('tigris_polygon_events_open_position') }} op 
+            ON pl._id = op.position_id
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE pl.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
 liquidate_position_v4 as (
         SELECT 
-            date_trunc('day', evt_block_time) as day, 
-            evt_tx_hash,
-            evt_index,
-            evt_block_time,
-            _id as position_id,
-            _trader as trader 
+            date_trunc('day', pl.evt_block_time) as day, 
+            pl.evt_tx_hash,
+            pl.evt_index,
+            pl.evt_block_time,
+            pl._id as position_id,
+            op._trader as trader 
         FROM 
-        {{ source('tigristrade_polygon', 'TradingV4_evt_PositionLiquidated') }}
+        {{ source('tigristrade_polygon', 'TradingV4_evt_PositionLiquidated') }} pl 
+        INNER JOIN 
+        {{ ref('tigris_polygon_events_open_position') }} op 
+            ON pl._id = op.position_id
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE pl.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
