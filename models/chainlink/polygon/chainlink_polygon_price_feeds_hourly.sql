@@ -66,7 +66,7 @@ FROM (
                              aggregator_address,
                              underlying_token_address,
                              grp 
-                ORDER BY hr)                                AS oracle_price_avg
+                ORDER BY hr)                                AS oracle_price_avg,
         first_value(underlying_token_price_avg) 
             OVER (
                 PARTITION BY feed_name,
