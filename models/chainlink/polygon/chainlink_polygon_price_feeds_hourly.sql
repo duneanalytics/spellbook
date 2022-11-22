@@ -117,7 +117,7 @@ FROM (
                 gs.feed_name,
                 gs.proxy_address,
                 gs.aggregator_address,
-                gs.underlying_token_address,
+                gs.underlying_token_address
         ) a
     ) b
 ) c
