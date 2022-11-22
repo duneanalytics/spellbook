@@ -130,7 +130,8 @@ add_margin as (
         am.price, 
         am.margin, 
         am.margin_change,
-        am.version
+        am.version,
+        am.trader
     FROM 
     {{ ref('tigris_arbitrum_events_add_margin') }} am 
     INNER JOIN 
@@ -143,7 +144,7 @@ add_margin as (
     {% if is_incremental() %}
     AND l.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-    GROUP BY 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+    GROUP BY 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
     ) am 
     INNER JOIN 
     open_position op 
