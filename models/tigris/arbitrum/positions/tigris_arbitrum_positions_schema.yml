@@ -48,6 +48,7 @@ models:
       - &evt_tx_hash
         name: evt_tx_hash
         description: "blockchain transaction id"
+      - *evt_block_time
       - *leverage
       - *position_id
       - &latest_leverage_time
@@ -85,3 +86,34 @@ models:
       - &margin 
         name: margin
         description: "margin of trade"
+
+models:
+  - name: tigris_arbitrum_positions_liquidation
+    meta:
+      blockchain: arbitrum
+      project: tigris
+      contributors: Henrystats 
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      liquidation data 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - position_id
+    columns:
+      - *evt_block_time
+      - *position_id
+      - *margin 
+      - *evt_tx_hash
+      - *leverage
+      - &evt_index
+        name: evt_index
+        description: "blockchain transaction index"
+      - &trader
+        name: trader 
+        description: "trader liquidated"
+      - &day
+        name: day
+        description: "date of trade"
