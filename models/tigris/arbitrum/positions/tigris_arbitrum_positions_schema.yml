@@ -9,7 +9,7 @@ models:
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
-      leverage data 
+      leverage data
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -23,7 +23,7 @@ models:
       - &position_id
         name: position_id 
         description: "unqiue nft id "
-      - &leverage 
+      - &leverage
         name: leverage 
         description: "leverage of trade"
 
@@ -62,3 +62,26 @@ models:
       - &new_margin
         name: new_margin
         description: "margin after payout"
+
+models:
+  - name: tigris_arbitrum_positions_margin
+    meta:
+      blockchain: arbitrum
+      project: tigris
+      contributors: Henrystats 
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      leverage data 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - position_id
+            - margin
+    columns:
+      - *evt_block_time
+      - *position_id
+      - &margin 
+        name: margin
+        description: "margin of trade"
