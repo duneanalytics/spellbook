@@ -19,7 +19,7 @@ close_position_v2 as (
             _id as position_id,
             _closePrice/1e18 as price, 
             _payout/1e18 as payout, 
-            _percent/1e18 as perc_closed, 
+            _percent/1e8 as perc_closed, 
             _trader as trader 
         FROM 
         {{ source('tigristrade_arbitrum', 'TradingV2_evt_PositionClosed') }}
@@ -37,7 +37,7 @@ close_position_v3 as (
             _id as position_id,
             _closePrice/1e18 as price, 
             _payout/1e18 as payout, 
-            _percent/1e18 as perc_closed, 
+            _percent/1e8 as perc_closed, 
             _trader as trader 
         FROM 
         {{ source('tigristrade_arbitrum', 'TradingV3_evt_PositionClosed') }}
@@ -55,7 +55,7 @@ close_position_v4 as (
             _id as position_id,
             _closePrice/1e18 as price, 
             _payout/1e18 as payout, 
-            _percent/1e18 as perc_closed, 
+            _percent/1e8 as perc_closed, 
             _trader as trader 
         FROM 
         {{ source('tigristrade_arbitrum', 'TradingV4_evt_PositionClosed') }}
