@@ -27,8 +27,8 @@ WITH babyswap_dex AS (
             t.evt_tx_hash                                                AS tx_hash,
             ''                                                           AS trace_address,
             t.evt_index
-    FROM {{ source('babyswap_bnb', 'Pair_evt_Swap') }} t
-    INNER JOIN {{ source('babyswap_bnb', 'BabySwapFactory_evt_PairCreated') }} p
+    FROM {{ source('babyswap_bnb', 'BabyPair_evt_Swap') }} t
+    INNER JOIN {{ source('babyswap_bnb', 'BabyFactory_evt_PairCreated') }} p
         ON t.contract_address = p.pair
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')

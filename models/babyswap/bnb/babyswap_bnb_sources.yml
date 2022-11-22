@@ -4,7 +4,7 @@ sources:
   - name: babyswap_bnb
     description: "Binance Smart Chain (bnb) decoded tables related to BabySwap contract"
     tables:
-      - name: Pair_evt_Swap
+      - name: BabyPair_evt_Swap
         loaded_at_field: evt_block_time
         description: "babyswap swap events table on Avalanche C chain"
         columns:
@@ -37,7 +37,7 @@ sources:
             name: sender
           - &to
             name: to
-      - name:BabyFactory_evt_PairCreated
+      - name: BabyFactory_evt_PairCreated
         loaded_at_field: evt_block_time
         description: "BabySwap Pool created events table"
         columns:
