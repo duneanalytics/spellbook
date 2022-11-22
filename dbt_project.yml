@@ -46,16 +46,16 @@ models:
       +materialized: view
       arbitrum:
         +schema: balancer_arbitrum
-        +materialized: view
+        +materialized: table
       ethereum:
         +schema: balancer_ethereum
-        +materialized: view
+        +materialized: table
       polygon:
         +schema: balancer_polygon
-        +materialized: view
+        +materialized: table
       optimism:
         +schema: balancer_optimism
-        +materialized: view
+        +materialized: table
 
     ens:
       +schema: ens
@@ -156,7 +156,7 @@ models:
 
     superrare:
       +schema: superrare
-      +materialized: view
+      +materialized: table
     looksrare:
       +schema: looksrare
       +materialized: view
@@ -204,7 +204,7 @@ models:
       +materialized: view
       ethereum:
         +schema: x2y2_ethereum
-        +materialized: view
+        +materialized: table
     zora:
       +schema: zora
       +materialized: view
@@ -316,7 +316,7 @@ models:
       +materialized: view
       ethereum:
         +schema: sudoswap_ethereum
-        +materialized: view
+        +materialized: table
 
     safe:
       +schema: safe
