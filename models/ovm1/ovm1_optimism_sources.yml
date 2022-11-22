@@ -1,0 +1,90 @@
+version: 2
+
+sources:
+# Base Tables
+  - name: ovm1_optimism
+    description: "OVM1 Optimism Large tables"
+    tables:
+      - name: contracts
+        columns:
+        - name: contract_address
+        - name: contract_project
+        - name: contract_name
+        - name: erc20_address
+        - name: created_time
+        - name: creator_address
+
+      - name: erc20_balances
+        columns:
+        - name: user_address
+        - name: contract_address
+        - name: value
+
+      - name: q1_user_address_daily_transactions
+        columns:
+        - name: day
+        - name: from_address
+        - name: to_address
+        - name: method_id
+        - name: num_transactions
+
+      - name: q2_user_address_daily_transactions
+        columns:
+        - name: day
+        - name: from_address
+        - name: to_address
+        - name: method_id
+        - name: num_transactions
+
+      - name: q3_user_address_daily_transactions
+        columns:
+        - name: day
+        - name: from_address
+        - name: to_address
+        - name: method_id
+        - name: num_transactions
+
+      - name: q4_user_address_daily_transactions
+        columns:
+        - name: day
+        - name: from_address
+        - name: to_address
+        - name: method_id
+        - name: num_transactions
+
+      - name: user_address_daily_transactions
+        columns:
+        - name: day
+        - name: from_address
+        - name: to_address
+        - name: method_id
+        - name: num_transactions
+
+      - name: synthetix_genesis_contracts
+        columns:
+        - name: contract_address
+        - name: contract_name
+
+      - name: user_address_activity_last_30_days
+        columns:
+        - name: day
+        - name: tx_type
+        - name: user_address
+
+      - name: user_addresses_by_tx_type
+        columns:
+        - name: user_address
+        - name: tx_type
+        - name: first_transaction
+
+      - name: user_addresses_weekly_active_cohorts
+        columns:
+        - name: user_address
+        - name: week_active
+        - name: first_week_cohort
+        - name: num_transactions
+
+      - name: user_addresses
+        columns:
+        - name: user_address
+        - name: first_transaction

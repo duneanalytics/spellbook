@@ -1,0 +1,11 @@
+version: 2
+
+seeds:
+  - name: balances_ethereum_erc20_latest_entries
+    description: Legacy values from Postgres for hourly token balances. Sampled on May 5th, 2022.
+
+  - name: balances_ethereum_erc20_specific_wallet
+    description: Legacy values from Postgres for hourly token balances. Single wallet address.
+
+  - name: balances_ethereum_erc20_daily_entries
+    description: Legacy values from Postgres for daily token balances. Sampled on December 31st, 2021.

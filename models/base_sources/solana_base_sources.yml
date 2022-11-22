@@ -1,0 +1,82 @@
+version: 2
+
+sources:
+# Base Tables
+  - name: solana
+    description: "Solana raw tables including transactions, traces and logs."
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: transactions
+        loaded_at_field: block_time
+        description: "A Solana transaction contains a compact-array of signatures, followed by a message. Each item in the signatures array is a digital signature of the given message.."
+        columns:
+          - name: account_keys
+            description: "Array of addresses"
+          - &block_date
+            name: block_date
+            description: "Block event date in UTC"
+          - &block_hash
+            name: block_hash
+            description: "Block hash"
+          - &block_slot
+            name: block_slot
+            description: "Block slot"
+          - &block_time
+            name: block_time
+            description: "Timestamp for block event time in UTC" 
+          - name: error
+            description: "Error message" 
+          - name: fee
+            description: "Transaction fee" 
+          - name: id
+            description: "Transaction id" 
+          - name: index
+            description: "Transaction index"
+          - name: instructions
+            description: "Instructions" 
+          - name: log_messages
+            description: "Log messages" 
+          - name: post_balances
+            description: "Post balances" 
+          - name: post_token_balances
+            description: "Post token balances" 
+          - name: pre_balances
+            description: "Pre balances" 
+          - name: pre_token_balances
+            description: "Pre token balances" 
+          - name: readonly_signed_accounts
+            description: "Read only signed accounts" 
+          - name: readonly_unsigned_accounts
+            description: "Read only unsigned accounts" 
+          - name: recent_block_hash
+            description: "Recent block hash" 
+          - name: required_signatures
+            description: "Required signatures" 
+          - name: signatures
+            description: "Signatures" 
+          - name: signers
+            description: "Signers" 
+          - name: success
+            description: "Success" 
+
+      - name: rewards
+        loaded_at_field: block_time
+        description: "A Solana transaction contains a compact-array of signatures, followed by a message. Each item in the signatures array is a digital signature of the given message.."
+        columns:
+          - *block_date
+          - *block_hash
+          - *block_slot
+          - *block_time
+          - name: lamports
+            description: "Number of reward lamports credited or debited by the account" 
+          - name: post_balances
+            description: "Account balance in lamports after the reward was applied" 
+          - name: pre_balances
+            description: "Account balance in lamports before the reward was applied" 
+          - name: recipient
+            description: "The public key, as base-58 encoded string, of the account that received the reward" 
+          - name: reward_type
+            description: "Type of reward: 'Fee', 'Rent', 'Voting', 'Staking'"
+          - name: commission
+            description: "Vote account commission when the reward was credited, only present for voting and staking rewards"

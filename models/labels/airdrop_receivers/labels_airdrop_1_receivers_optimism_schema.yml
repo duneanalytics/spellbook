@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: labels_airdrop_1_receivers_optimism
+    meta:
+      blockchain: ethereum
+      sector: labels
+      category: airdrop
+      project: ['optimism']
+      contributors: soispoke
+    config:
+      tags: ['labels', 'airdrop', 'optimism']
+    description: "$OP Airdrop 1 receivers query labels"   
+    columns:
+      - name: blockchain
+        description: "Blockchain"   
+      - name: address
+        description: "Address of $OP receiver"
+        tests:
+          - unique
+      - name: name
+        description: "Label name: '$OP Airdrop 1 Receiver'"
+      - name: category
+        description: "Label category"
+      - name: contributor
+        description: "Wizard(s) contributing to labels"
+      - name: source
+        description: "How were labels generated (could be static or query)"
+      - name: created_at
+        description: "When were labels created"
+      - name: updated_at
+        description: "When were labels updated for the last time"

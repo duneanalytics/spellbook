@@ -1,0 +1,52 @@
+version: 2
+
+models:
+  - name: safe_ethereum_safes
+    meta:
+      blockchain: ethereum
+      project: safe
+      contributors: scherbovich, tschubotz
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'ethereum']
+    description: "Safe addresses"
+    columns:
+      - &address
+        name: address
+        description: "Safe contract address"
+      - &creation_version
+        name: creation_version
+        description: "Version of initially created safe"
+      - &block_date
+        name: block_date
+      - &creation_time
+        name: creation_time
+        description: "Date/time of safe creation"
+      - &tx_hash
+        name: tx_hash
+  
+  - name: safe_ethereum_eth_transfers
+    meta:
+      blockchain: ethereum
+      project: safe
+      contributors: scherbovich, tschubotz
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'transfers', 'ethereum']
+    description: "Eth transfers for safes"
+    columns:
+      - *address        
+      - *block_date
+      - &block_time
+        name: block_time
+        description: "Date of Eth transfer"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of transfered Eth"
+      - *tx_hash
+      - &trace_address
+        name: trace_address

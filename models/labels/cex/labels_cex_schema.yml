@@ -1,0 +1,75 @@
+version: 2
+
+models:
+  - name: labels_cex
+    meta:
+      blockchain: ethereum, bnb
+      sector: labels
+      project: cex
+      contributors: hildobby, soispoke
+    config:
+      tags: ['labels', 'ethereum', 'bnb', 'cex']
+    description: "Known centralised exchange addresses across chains"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"   
+      - &address
+        name: address
+        description: "Address of known CEX"
+      - &name
+        name: name
+        description: "Label name of centralised exchange"
+      - &category
+        name: category
+        description: "Label category"
+      - &contributor
+        name: contributor
+        description: "Wizard(s) contributing to labels"
+      - &source
+        name: source
+        description: "How were labels generated (could be static or query)"
+      - &created_at
+        name: created_at
+        description: "When were labels created"
+      - &updated_at
+        name: updated_at
+        description: "When were labels updated for the last time"
+
+  - name: labels_cex_ethereum
+    meta:
+      blockchain: ethereum
+      sector: labels
+      project: cex
+      contibutors: hildobby, soispoke, ilemi
+    config:
+      tags: ['labels', 'ethereum', 'cex']
+    description: "Known centralised exchange addresses on Ethereum"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+
+  - name: labels_cex_bnb
+    meta:
+      blockchain: bnb
+      sector: labels
+      project: cex
+      contributors: soispoke
+    config:
+      tags: ['labels', 'bnb', 'cex']
+    description: "Known centralised exchange addresses on BNB chain"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
