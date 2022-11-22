@@ -94,7 +94,7 @@ FROM
             glp_cum_balance
         FROM glp_balances
         {% if not is_incremental() %}
-        WHERE miute >= '{{project_start_date}}'
+        WHERE minute >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         WHERE minute >= date_trunc("day", now() - interval '1 week')
