@@ -194,7 +194,10 @@ models:
       optimism:
         +schema: gas_optimism
         +materialized: view
-
+      arbitrum:
+        +schema: gas_arbitrum
+        +materialized: view
+        
     gmx:
       +schema: gmx
       +materialized: view
