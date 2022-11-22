@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: wash_trades_wallet_funders
+  - name: inorganic_volume_filter_wallet_funders
     meta:
       blockchain: ethereum
-      project: waash_trades
+      project: inorganic_volume_filter
       contributors: henrystats
     config:
-      tags: ['table', 'funded by', 'wash traders', 'ethereum']
+      tags: ['table', 'funded by', 'inorganic_volume_filter', 'ethereum']
     description: "Table showing who first funded NFT wash traders"
     columns:
       - name: wallet
@@ -23,13 +23,13 @@ models:
       - name: tx_hash
         description: "The transaction hash on which the wallet address was first funded"
 
-  - name: wash_trades_wallet_funders_wallets
+  - name: inorganic_volume_filter_wallet_funders_wallets
     meta:
       blockchain: ethereum
-      project: wash_trades
+      project: inorganic_volume_filter
       contributors: henrystats
     config:
-      tags: ['table', 'wash traders', 'ethereum']
+      tags: ['table', 'inorganic_volume_filter', 'ethereum']
     description: "Wallet address of x2y2, blur & looksrare nft traders"
     columns:
       - name: wallet

@@ -5,7 +5,7 @@
     incremental_strategy = 'merge',
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
-                                    "wash_trades",
+                                    "inorganic_volume_filter",
                                     \'["henrystats"]\') }}',
     unique_key = ['wallet']
     )
