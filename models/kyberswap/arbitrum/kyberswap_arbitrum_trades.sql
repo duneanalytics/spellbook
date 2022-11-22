@@ -31,8 +31,8 @@ kyberswap_dex AS (
         ,t.evt_tx_hash                                                      AS tx_hash
         ,''                                                                 AS trace_address
         ,t.evt_index
-    FROM {{ source('kyber_arbitrum', 'DMMPool_evt_Swap') }} t
-    INNER JOIN {{ source('kyber_arbitrum', 'DMMFactory_evt_PoolCreated') }} p
+    FROM {{ source('kyber_arbitrum_trades', 'DMMPool_evt_Swap') }} t
+    INNER JOIN {{ source('kyber_arbitrum_trades', 'DMMFactory_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -58,8 +58,8 @@ kyberswap_dex AS (
         ,t.evt_tx_hash                                                                 AS tx_hash
         ,''                                                                            AS trace_address
         ,t.evt_index
-    FROM {{ source('kyber_arbitrum', 'Elastic_Pool_evt_swap') }} t
-    INNER JOIN {{ source('kyber_arbitrum', 'Elastic_Factory_evt_PoolCreated') }} p
+    FROM {{ source('kyber_arbitrum_trades', 'Elastic_Pool_evt_swap') }} t
+    INNER JOIN {{ source('kyber_arbitrum_trades', 'Elastic_Factory_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -83,7 +83,7 @@ kyberswap_dex AS (
         ,evt_tx_hash                                                       AS tx_hash
         ,''                                                                AS trace_address
         ,evt_index
-    FROM {{ source('kyber_arbitrum', 'AggregationRouter_evt_Swapped') }}
+    FROM {{ source('kyber_arbitrum_trades', 'AggregationRouter_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
         evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -107,7 +107,7 @@ kyberswap_dex AS (
         ,evt_tx_hash                                                       AS tx_hash
         ,''                                                                AS trace_address
         ,evt_index
-    FROM {{ source('kyber_arbitrum', 'AggregationRouterV2_evt_Swapped') }}
+    FROM {{ source('kyber_arbitrum_trades', 'AggregationRouterV2_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
         evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -131,7 +131,7 @@ kyberswap_dex AS (
         ,evt_tx_hash                                                       AS tx_hash
         ,''                                                                AS trace_address
         ,evt_index
-    FROM {{ source('kyber_arbitrum', 'AggregationRouterV3_evt_Swapped') }}
+    FROM {{ source('kyber_arbitrum_trades', 'AggregationRouterV3_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
         evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -155,7 +155,7 @@ kyberswap_dex AS (
         ,evt_tx_hash                                                       AS tx_hash
         ,''                                                                AS trace_address
         ,evt_index
-    FROM {{ source('kyber_arbitrum', 'MetaAggregationRouter_evt_Swapped') }}
+    FROM {{ source('kyber_arbitrum_trades', 'MetaAggregationRouter_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
         evt_block_time >= date_trunc("day", now() - interval '1 week')
