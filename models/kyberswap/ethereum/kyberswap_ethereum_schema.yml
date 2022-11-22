@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: kyberswap_avalanche_c_trades
+  - name: kyberswap_ethereum_trades
     meta:
-      blockchain: avalanche_c
+      blockchain: ethereum
       sector: dex
       project: kyberswap
-      contributors: zhongyiio
+      contributors: duc.le@kyber.network
     config:
-      tags: ['avalanche_c','dex','trades', 'kyberswap', 'zhongyiio', 'hosuke']
+      tags: ['ethereum', 'dex', 'trades', 'kyberswap']
     description: >
-        Kyberswap trades on Avalanche (C-Chain) across all contracts and versions. This table will load dex trades downstream.
+        Kyberswap trades on Ethereum across all contracts and versions. This table will load dex trades downstream.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -21,10 +21,6 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_seed:
-          blockchain: avalanche_c
-          project: kyberswap
-          version: dmm
     columns:
       - &blockchain
         name: blockchain
@@ -71,6 +67,9 @@ models:
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of the token bought"
+        tests:
+          - dex_trades_token_bought:
+              dex_trades_seed: ref('dex_trades_seed')
       - &token_sold_address
         name: token_sold_address
         description: "Contract address of the token sold"

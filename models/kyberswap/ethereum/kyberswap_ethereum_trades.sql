@@ -1,14 +1,14 @@
 {{ config(
-    alias = 'avalanche_c_trades',
+    alias = 'ethereum_trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
-    post_hook='{{ expose_spells(\'["avalanche_c"]\',
+    post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "kyberswap",
-                                \'["zhongyiio", "hosuke"]\') }}'
+                                \'["zhongyiio", "hosuke", "duc.le@kyber.network"]\') }}'
     )
 }}
 
@@ -31,8 +31,8 @@ kyberswap_dex AS (
         ,t.evt_tx_hash                                                      AS tx_hash
         ,''                                                                 AS trace_address
         ,t.evt_index
-    FROM {{ source('kyber_avalanche_c_trades', 'DMMPool_evt_Swap') }} t
-    INNER JOIN {{ source('kyber_avalanche_c_trades', 'DMMFactory_evt_PoolCreated') }} p
+    FROM {{ source('kyber_ethereum_trades', 'DMMPool_evt_Swap') }} t
+    INNER JOIN {{ source('kyber_ethereum_trades', 'DMMFactory_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -58,8 +58,8 @@ kyberswap_dex AS (
         ,t.evt_tx_hash                                                                 AS tx_hash
         ,''                                                                            AS trace_address
         ,t.evt_index
-    FROM {{ source('kyber_avalanche_c_trades', 'Elastic_Pool_evt_swap') }} t
-    INNER JOIN {{ source('kyber_avalanche_c_trades', 'Elastic_Factory_evt_PoolCreated') }} p
+    FROM {{ source('kyber_ethereum_trades', 'Elastic_Pool_evt_swap') }} t
+    INNER JOIN {{ source('kyber_ethereum_trades', 'Elastic_Factory_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -83,7 +83,7 @@ kyberswap_dex AS (
         ,evt_tx_hash                                                       AS tx_hash
         ,''                                                                AS trace_address
         ,evt_index
-    FROM {{ source('kyber_avalanche_c_trades', 'AggregationRouter_evt_Swapped') }}
+    FROM {{ source('kyber_ethereum_trades', 'AggregationRouter_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
         evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -107,7 +107,7 @@ kyberswap_dex AS (
         ,evt_tx_hash                                                       AS tx_hash
         ,''                                                                AS trace_address
         ,evt_index
-    FROM {{ source('kyber_avalanche_c_trades', 'AggregationRouterV2_evt_Swapped') }}
+    FROM {{ source('kyber_ethereum_trades', 'AggregationRouterV2_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
         evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -131,7 +131,7 @@ kyberswap_dex AS (
         ,evt_tx_hash                                                       AS tx_hash
         ,''                                                                AS trace_address
         ,evt_index
-    FROM {{ source('kyber_avalanche_c_trades', 'AggregationRouterV3_evt_Swapped') }}
+    FROM {{ source('kyber_ethereum_trades', 'AggregationRouterV3_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
         evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -155,7 +155,7 @@ kyberswap_dex AS (
         ,evt_tx_hash                                                       AS tx_hash
         ,''                                                                AS trace_address
         ,evt_index
-    FROM {{ source('kyber_avalanche_c_trades', 'MetaAggregationRouter_evt_Swapped') }}
+    FROM {{ source('kyber_ethereum_trades', 'MetaAggregationRouter_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
         evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -165,7 +165,7 @@ kyberswap_dex AS (
 )
 
 SELECT
-    'avalanche_c'                                                         AS blockchain
+    'ethereum'                                                            AS blockchain
     ,'kyberswap'                                                          AS project
     ,kyberswap_dex.version                                                AS version
     ,SELECT (CASE
@@ -181,8 +181,8 @@ SELECT
      END                                                                  AS token_pair
     ,kyberswap_dex.token_bought_amount_raw / power(10, erc20a.decimals)   AS token_bought_amount
     ,kyberswap_dex.token_sold_amount_raw / power(10, erc20b.decimals)     AS token_sold_amount
-    ,CAST(kyberswap_dex.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw
-    ,CAST(kyberswap_dex.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
+    ,kyberswap_dex.token_bought_amount_raw
+    ,kyberswap_dex.token_sold_amount_raw
     ,coalesce(kyberswap_dex.amount_usd
             ,(kyberswap_dex.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
             ,(kyberswap_dex.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
@@ -198,7 +198,7 @@ SELECT
     ,kyberswap_dex.trace_address
     ,kyberswap_dex.evt_index
 FROM kyberswap_dex
-INNER JOIN {{ source('avalanche_c', 'transactions') }} tx
+INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON kyberswap_dex.tx_hash = tx.hash
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc("day", now() - interval '1 week')
@@ -207,14 +207,14 @@ INNER JOIN {{ source('avalanche_c', 'transactions') }} tx
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = kyberswap_dex.token_bought_address
-    and erc20a.blockchain = 'avalanche_c'
+    and erc20a.blockchain = 'ethereum'
 LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     ON erc20b.contract_address = kyberswap_dex.token_sold_address
-    AND erc20b.blockchain = 'avalanche_c'
+    AND erc20b.blockchain = 'ethereum'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
     ON p_bought.minute = date_trunc('minute', kyberswap_dex.block_time)
     AND p_bought.contract_address = kyberswap_dex.token_bought_address
-    AND p_bought.blockchain = 'avalanche_c'
+    AND p_bought.blockchain = 'ethereum'
     {% if is_incremental() %}
     AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
     {% else %}
@@ -223,7 +223,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', kyberswap_dex.block_time)
     AND p_sold.contract_address = kyberswap_dex.token_sold_address
-    AND p_sold.blockchain = 'avalanche_c'
+    AND p_sold.blockchain = 'ethereum'
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
     {% else %}
