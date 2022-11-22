@@ -187,7 +187,8 @@ FROM open_position
 UNION 
 
 SELECT 
-    'arbitrum' as blockchain
+    'arbitrum' as blockchain,
+    *
 FROM close_position
 
 UNION 
@@ -200,11 +201,13 @@ FROM liquidate_position
 UNION 
 
 SELECT 
-    'arbitrum' as blockchain
+    'arbitrum' as blockchain,
+    *
 FROM add_margin
 
 UNION 
 
 SELECT 
-    'arbitrum' as blockchain
+    'arbitrum' as blockchain,
+    *
 FROM modify_margin
