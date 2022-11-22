@@ -28,7 +28,7 @@ WITH biswap_dex AS (
             ''                                                           AS trace_address,
             t.evt_index
     FROM {{ source('biswap_bnb', 'BiswapPair_evt_Swap') }} t
-    INNER JOIN {{ source('biswap_bnb', 'BiSwapFactory_evt_PairCreated') }} p
+    INNER JOIN {{ source('biswap_bnb', 'BiswapFactory_evt_PairCreated') }} p
         ON t.contract_address = p.pair
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')

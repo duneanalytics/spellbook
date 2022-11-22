@@ -37,7 +37,7 @@ sources:
             name: sender
           - &to
             name: to
-      - name: BiSwapFactory_evt_PairCreated
+      - name: BiswapFactory_evt_PairCreated
         loaded_at_field: evt_block_time
         description: "Biswap Pool created events table"
         columns:
