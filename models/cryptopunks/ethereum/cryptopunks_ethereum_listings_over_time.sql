@@ -1,8 +1,12 @@
-
-
-
-
-
+{{ config(
+        alias ='listings_over_time',
+        unique_key='punk_id',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "project",
+                                    "cryptopunks",
+                                    \'["cat"]\') }}'
+        )
+}}
 
 with all_listings as (
     select  `punkIndex` as punk_id

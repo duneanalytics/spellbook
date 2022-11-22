@@ -10025,9 +10025,9 @@ from
     (   
         select  NULL as `from`
                 , address as `to`
-                , to_timestamp('2017-06-23 19:37:59') as evt_block_time
-                , 3919418 as evt_block_number
-                , 1::int as evt_index
+                , cast('2017-06-23 19:37:59' as timestamp) as evt_block_time
+                , cast(3919418 as int) as evt_block_number
+                , cast(1 as int) as evt_index
                 , punk_id
         from original_holders
         
@@ -10038,10 +10038,10 @@ from
                 , a.evt_block_time
                 , a.evt_block_number
                 , a.evt_index
-                , case when topic1 = '0x05af636b70da6819000c49f85b21fa82081c632069bb626f30932034099107d8' then bytea2numeric_v2(substring(data from 3))::int 
-                    else bytea2numeric_v2(substring(topic2 from 3))::int end as punk_id
+                , case when topic1 = '0x05af636b70da6819000c49f85b21fa82081c632069bb626f30932034099107d8' then cast(bytea2numeric_v2(substring(data from 3)) as int)
+                    else cast(bytea2numeric_v2(substring(topic2 from 3)) as int) end as punk_id
         from {{ source('erc20_ethereum','evt_transfer') }} a 
-        inner join ethereum.logs b on a.evt_tx_hash = b.tx_hash -- and topic1 = '0x58e5d5a525e3b40bc15abaa38b5882678db1ee68befd2f60bafe3a7fd06db9e3'
+        inner join {{ source('ethereum','logs') }} b on a.evt_tx_hash = b.tx_hash -- and topic1 = '0x58e5d5a525e3b40bc15abaa38b5882678db1ee68befd2f60bafe3a7fd06db9e3'
         where a.contract_address = lower('0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB') -- cryptopunks contract 
             and topic1 in   (   '0xb0e0a660b4e50f26f0b7ce75c24655fc76cc66e3334a54ff410277229fa10bd4' -- PunkNoLongerForSale
                                 , '0x58e5d5a525e3b40bc15abaa38b5882678db1ee68befd2f60bafe3a7fd06db9e3' -- PunkBought
@@ -10051,4 +10051,4 @@ from
     ) a 
 ) b 
 where punk_id_tx_rank = 1 
-order by punk_id::int asc 
+order by cast(punk_id as int) asc 

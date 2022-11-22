@@ -112,7 +112,7 @@ select  "ethereum" as blockchain
         , "CryptoPunks" as `collection`
         , a.sale_price * p.price as amount_usd
         , "erc20" as token_standard
-        , NULL::string as trade_type 
+        , '' as trade_type 
         , 1 as number_of_items
         , a.event_type as trade_category
         , from_address as seller 
@@ -130,16 +130,16 @@ select  "ethereum" as blockchain
         , a.evt_tx_hash as tx_hash
         , tx.`from` as tx_from
         , tx.`to` as tx_to
-        , 0::double as platform_fee_amount_raw
-        , 0::double as platform_fee_amount
-        , 0::double as platform_fee_amount_usd
-        , 0::double as platform_fee_percentage
-        , 0::double as royalty_fee_amount_raw
-        , 0::double as royalty_fee_amount
-        , 0::double as royalty_fee_amount_usd
-        , 0::double as royalty_fee_percentage
-        , NULL::string as royalty_fee_receive_address
-        , NULL::string as royalty_fee_currency_symbol
+        , cast(0 as double) as platform_fee_amount_raw
+        , cast(0 as double) as platform_fee_amount
+        , cast(0 as double) as platform_fee_amount_usd
+        , cast(0 as double) as platform_fee_percentage
+        , cast(0 as double) as royalty_fee_amount_raw
+        , cast(0 as double) as royalty_fee_amount
+        , cast(0 as double) as royalty_fee_amount_usd
+        , cast(0 as double) as royalty_fee_percentage
+        , '' as royalty_fee_receive_address
+        , '' as royalty_fee_currency_symbol
         , "cryptopunks" || '-' || a.evt_tx_hash || '-' || a.punk_id || '-' ||  a.from_address || '-' || a.evt_index || '-' || "" as unique_trade_id
 from
 (   select * from bid_sales 
