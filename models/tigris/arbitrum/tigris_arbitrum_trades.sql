@@ -126,7 +126,6 @@ add_margin as (
     (
     SELECT 
         MIN(l.evt_block_time) as latest_leverage_time, 
-        l.leverage, 
         am.day, 
         am.evt_block_time,
         am.evt_tx_hash,
@@ -155,6 +154,9 @@ add_margin as (
     {{ ref('tigris_arbitrum_positions_leverage') }} l 
         ON tmp.position_id = l.position_id
         AND tmp.latest_leverage_time = l.evt_block_time
+    {% if is_incremental() %}
+    WHERE l.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     ) am  
     INNER JOIN 
     open_position op 
