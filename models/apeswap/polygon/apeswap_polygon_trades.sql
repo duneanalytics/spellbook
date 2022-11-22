@@ -28,7 +28,7 @@ WITH apeswap_dex AS (
             ''                                                           AS trace_address,
             t.evt_index
     FROM {{ source('apeswap_v2_polygon', 'Pair_evt_Swap') }} t
-    INNER JOIN {{ source('apeswap_v2_polygon', 'SushiV2Factory_evt_PairCreated') }} p
+    INNER JOIN {{ source('apeswap_v2_polygon', 'ApeFactory_evt_PairCreated') }} p
         ON t.contract_address = p.pair
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')

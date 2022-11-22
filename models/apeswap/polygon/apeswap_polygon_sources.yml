@@ -37,7 +37,7 @@ sources:
             name: sender
           - &to
             name: to
-      - name: SushiV2Factory_evt_PairCreated
+      - name: ApeFactory_evt_PairCreated
         loaded_at_field: evt_block_time
         description: "apeswap Pool created events table"
         columns:
