@@ -944,6 +944,7 @@ glp_weth_globalShortSizes AS -- This CTE returns average sum of all WETH shorts 
 
 SELECT  -- This subquery collates calculates the value of each components required to derrive AUM data
     y.minute,
+    TRY_CAST(date_trunc('DAY', y.minute) AS date) AS block_date,
     
     y.frax_poolAmounts/1e18 AS frax_available_assets, -- FRAX Pool Amounts - Decimal Places 18
     (0.5 * ((y.frax_getMaxPrice + y.frax_getMinPrice) + ABS(y.frax_getMaxPrice - y.frax_getMinPrice)))/1e12 AS frax_current_price, -- Current Price as MAX(getMaxPrice,getMinPrice) - Decimal Places 12
@@ -984,7 +985,6 @@ FROM
     (
     SELECT -- This subquery removes null values
         x.minute,
-        TRY_CAST(date_trunc('DAY', x.minute) AS date) AS block_date,
         
         COALESCE(x.frax_poolAmounts,0) AS frax_poolAmounts,
         COALESCE(x.frax_getMaxPrice,0) AS frax_getMaxPrice,

@@ -299,8 +299,14 @@ models:
       tags: ['arbitrum','gmx','glp']
     description: >
         View GLP fee accrued in the Fee GLP contract.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - minute
     columns:
       - *minute
+      - *block_date
       - &fees_weth_generated
         name: fees_weth_generated
         description: "Fees generated in WETH"
