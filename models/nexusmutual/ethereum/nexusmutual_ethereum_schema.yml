@@ -1,0 +1,88 @@
+version: 2
+
+models:
+  - name: nexusmutual_ethereum_quotation_trades
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: [zxf, jonah]
+    config:
+      tags: ['ethereum','nexusmutual','trades']
+    description: >
+        nexusmutual quotation trades on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - evt_tx_hash
+            - evt_index
+    columns:
+      - &cid
+        name: cid
+      - &contract_address
+        name: contract_address
+      - &symbol
+        name: symbol
+      - &evt_index
+        name: evt_index
+      - &evt_tx_hash
+        name: evt_tx_hash
+      - &curr
+        name: curr
+      - &premium
+        name: premium
+        tests:
+          - nexusmutual_trades_column_values:
+              nexusmutual_ethereum_trades_seed: ref('nexusmutual_ethereum_trades_seed')
+      - &pre_amount
+        name: pre_amount
+      - &premium_nxm
+        name: premium_nxm
+        tests:
+          - nexusmutual_trades_column_values:
+              nexusmutual_ethereum_trades_seed: ref('nexusmutual_ethereum_trades_seed')
+      - &pre_nxm_amount
+        name: pre_nxm_amount
+      - &sc_add
+        name: sc_add
+      - &sum_assured
+        name: sum_assured
+        tests:
+          - nexusmutual_trades_column_values:
+              nexusmutual_ethereum_trades_seed: ref('nexusmutual_ethereum_trades_seed')
+      - &block_hash
+        name: block_hash
+      - &nonce
+        name: nonce
+      - &gas_limit
+        name: gas_limit
+      - &gas_price
+        name: gas_price
+      - &gas_used
+        name: gas_used
+      - &max_fee_per_gas
+        name: max_fee_per_gas
+      - &max_priority_fee_per_gas
+        name: max_priority_fee_per_gas
+      - &priority_fee_per_gas
+        name: priority_fee_per_gas
+      - &success
+        name: success
+      - &tx_type
+        name: tx_type
+      - &tx_value
+        name: tx_value
+      - &evt_block_number
+        name: evt_block_number
+      - &evt_block_time
+        name: evt_block_time
+      - &evt_expiry
+        name: evt_expiry
+      - &evt_expiry_date
+        name: evt_expiry_date
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each DEX trade"
+      - &token_address
+        name: token_address
+        description: "Contract address for the token"
