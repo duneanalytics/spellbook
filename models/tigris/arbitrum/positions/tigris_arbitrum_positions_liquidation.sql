@@ -9,22 +9,34 @@ WITH
 
 last_margin as (
         SELECT 
-            MAX(evt_block_time) as latest_block_time, 
+            *
+        FROM 
+        (
+        SELECT 
+            ROW_NUMBER() OVER(PARTITION BY position_id ORDER BY evt_block_time DESC) as rank_, 
             position_id,
             margin 
         FROM 
         {{ ref('tigris_arbitrum_positions_margin') }}
         GROUP BY 2, 3
+        ) x 
+        WHERE x.rank_ = 1 
 ),
 
-last_leverage as (
+last_margin as (
         SELECT 
-            MAX(evt_block_time) as latest_block_time,
-            position_id, 
+            *
+        FROM 
+        (
+        SELECT 
+            ROW_NUMBER() OVER(PARTITION BY position_id ORDER BY evt_block_time DESC) as rank_, 
+            position_id,
             leverage
         FROM 
         {{ ref('tigris_arbitrum_positions_leverage') }}
-        GROUP BY 2, 3 
+        GROUP BY 2, 3
+        ) x 
+        WHERE x.rank_ = 1 
 )
 
 SELECT 
