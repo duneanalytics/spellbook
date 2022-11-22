@@ -10,7 +10,7 @@ models:
     config:
       tags: ['bnb','dex','trades', 'fraxswap', 'kndlexi']
     description: >
-        Fraxswap trades on BNB Chain across all contracts and versions. This table will load dex trades downstream.
+        Fraxswap trades on BNB Chain across all  contracts and versions. This table will load dex trades downstream.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
