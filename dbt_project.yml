@@ -44,8 +44,17 @@ models:
     balancer:
       +schema: balancer
       +materialized: view
+      arbitrum:
+        +schema: balancer_arbitrum
+        +materialized: view
       ethereum:
         +schema: balancer_ethereum
+        +materialized: view
+      polygon:
+        +schema: balancer_polygon
+        +materialized: view
+      optimism:
+        +schema: balancer_optimism
         +materialized: view
 
     ens:
@@ -242,7 +251,8 @@ models:
 
     labels:
       +schema: labels
-      +materialized: view
+      +materialized: table
+      +file_format: delta
 
     dao:
       +schema: dao
@@ -352,7 +362,7 @@ models:
       ethereum:
         +schema: archipelago_ethereum
         +materialized: view
-
+  
     integration_test:
       +schema: integration_test
       +materialized: view
@@ -517,6 +527,9 @@ models:
       ethereum:
         +schema: hashflow_ethereum
         +materialized: view
+      avalanche_c:
+        +schema: hashflow_avalanche_c
+        +materialized: view
 
     nexusmutual:
       +schema: nexusmutual
@@ -603,6 +616,7 @@ seeds:
           token_bought_amount: float
           token_sold_address: string
           token_sold_amount: float
+
     sudoswap:
       +enabled: true
       +schema: test_data

@@ -3,7 +3,7 @@ version: 2
 models:
   - name: dex_trades
     meta:
-      blockchain: ethereum
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism
       sector: dex
       contributors: jeff-dude
     config:
