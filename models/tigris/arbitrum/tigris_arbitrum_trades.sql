@@ -128,7 +128,6 @@ add_margin as (
         am.position_id,
         am.price, 
         am.margin, 
-        am.leverage,
         am.margin_change,
         am.version
     FROM 
@@ -143,7 +142,7 @@ add_margin as (
     {% if is_incremental() %}
     AND l.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-    GROUP BY 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+    GROUP BY 2, 3, 4, 5, 6, 7, 8, 9, 10
     ) am 
     INNER JOIN 
     open_position op 
