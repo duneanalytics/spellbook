@@ -9,7 +9,7 @@ models:
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
-      leverage data
+      combined leverage data to get up to get most recent  
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -19,13 +19,13 @@ models:
     columns:
       - &evt_block_time
         name: evt_block_time
-        description: "blockchain transaction block time"
+        description: "blockchain transaction event block time"
       - &position_id
-        name: position_id 
-        description: "unqiue nft id "
+        name: position_id
+        description: "unqiue id assigned to nft"
       - &leverage
-        name: leverage 
-        description: "leverage of trade"
+        name: leverage
+        description: "leverage of trade at evt block time"
 
 models:
   - name: tigris_arbitrum_positions_close
@@ -36,7 +36,7 @@ models:
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
     description:
-      "positions close data"
+      "data on close posititions that includes margin"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -47,22 +47,22 @@ models:
     columns:
       - &evt_tx_hash
         name: evt_tx_hash
-        description: "blockchain transaction id"
+        description: "blockchain transaction hash"
       - *evt_block_time
       - *leverage
       - *position_id
       - &latest_leverage_time
         name: latest_leverage_time
-        description: "last time leverage was updated"
+        description: "last block time leverage was updated"
       - &payout
         name: payout
-        description: "amount paid out"
+        description: "amount paid out to trader"
       - &previous_margin
         name: previous_margin
-        description: "margin before payout"
+        description: "margin before payout was processed"
       - &new_margin
         name: new_margin
-        description: "margin after payout"
+        description: "margin after payout was processed"
 
 models:
   - name: tigris_arbitrum_positions_margin
@@ -73,7 +73,7 @@ models:
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
-      leverage data 
+      margin change data 
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -83,9 +83,9 @@ models:
     columns:
       - *evt_block_time
       - *position_id
-      - &margin 
+      - &margin
         name: margin
-        description: "margin of trade"
+        description: "margin of trade at block time"
 
 models:
   - name: tigris_arbitrum_positions_liquidation
@@ -105,15 +105,15 @@ models:
     columns:
       - *evt_block_time
       - *position_id
-      - *margin 
+      - *margin
       - *evt_tx_hash
       - *leverage
       - &evt_index
         name: evt_index
-        description: "blockchain transaction index"
+        description: "blockchain transaction index "
       - &trader
-        name: trader 
-        description: "trader liquidated"
+        name: trader
+        description: "trader that was liquidated"
       - &day
         name: day
         description: "date of trade"

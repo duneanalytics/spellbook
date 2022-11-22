@@ -13,7 +13,7 @@ last_margin as (
         FROM 
         (
         SELECT 
-            ROW_NUMBER() OVER(PARTITION BY position_id ORDER BY evt_block_time DESC) as rank_, 
+            ROW_NUMBER() OVER(PARTITION BY position_id, margin ORDER BY evt_block_time DESC) as rank_, 
             position_id,
             margin 
         FROM 
@@ -28,7 +28,7 @@ last_leverage as (
         FROM 
         (
         SELECT 
-            ROW_NUMBER() OVER(PARTITION BY position_id ORDER BY evt_block_time DESC) as rank_, 
+            ROW_NUMBER() OVER(PARTITION BY position_id, leverage ORDER BY evt_block_time DESC) as rank_, 
             position_id,
             leverage
         FROM 
