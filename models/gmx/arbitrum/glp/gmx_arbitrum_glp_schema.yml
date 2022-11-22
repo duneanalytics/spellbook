@@ -221,8 +221,14 @@ models:
       tags: ['arbitrum','gmx','glp']
     description: >
         View GLP net AUM for stablecoins; and the AUM of long and neutral exposure for directional tokens.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - minute
     columns:
       - *minute
+      - *block_date
       - &frax_aum
         name: frax_aum
         description: "Net asset under management for the FRAX pool"

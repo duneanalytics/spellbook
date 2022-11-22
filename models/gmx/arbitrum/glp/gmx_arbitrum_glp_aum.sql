@@ -1,12 +1,18 @@
 {{ config(
         alias = 'glp_aum',
-        materialized = 'view',
+        partition_by = ['block_date'],
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['block_date', 'minute'],
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "project",
                                     "gmx",
                                     \'["1chioku"]\') }}'
         )
 }}
+
+{% set project_start_date = '2021-08-31 08:13' %}
 
 /*
 Stablecoin holings AUM = poolAmounts * current_price
@@ -16,6 +22,7 @@ Directional holdings Neutral Exposure = (longs) + ((current_price - shorts_entry
 
 SELECT -- This query calculates the AUM of each component of GLP
     minute,
+    block_date,
     
     frax_available_assets * frax_current_price AS frax_aum,
     
@@ -37,3 +44,9 @@ SELECT -- This query calculates the AUM of each component of GLP
     
     dai_available_assets * dai_current_price AS dai_aum
 FROM {{ref('gmx_arbitrum_glp_components')}}
+{% if is_incremental() %}
+WHERE minute >= date_trunc("day", now() - interval '1 day')
+{% endif %}
+{% if not is_incremental() %}
+WHERE minute >= '{{project_start_date}}'
+{% endif %}
