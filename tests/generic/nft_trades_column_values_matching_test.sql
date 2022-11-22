@@ -15,7 +15,7 @@
         model_sample.{{column_name}} as model_{{column_name}} {% if not loop.last %},{% endif %}
         {% endfor -%}
         from {{seed_file}} seed
-        left join (
+        inner join (
             select
             {%- for column_name in seed_matching_columns %}
             model.{{column_name}},
