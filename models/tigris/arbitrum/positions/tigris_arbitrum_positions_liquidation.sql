@@ -13,11 +13,18 @@ last_margin as (
         FROM 
         (
         SELECT 
-            ROW_NUMBER() OVER(PARTITION BY position_id, margin ORDER BY evt_block_time DESC) as rank_, 
+            ROW_NUMBER() OVER(PARTITION BY position_id ORDER BY evt_block_time DESC) as rank_, 
             position_id,
             margin 
         FROM 
+        (
+        SELECT 
+            position_id,
+            margin, 
+            evt_block_time
+        FROM 
         {{ ref('tigris_arbitrum_positions_margin') }}
+        ) xx 
         ) x 
         WHERE x.rank_ = 1 
 ),
@@ -28,14 +35,21 @@ last_leverage as (
         FROM 
         (
         SELECT 
-            ROW_NUMBER() OVER(PARTITION BY position_id, leverage ORDER BY evt_block_time DESC) as rank_, 
+            ROW_NUMBER() OVER(PARTITION BY position_id ORDER BY evt_block_time DESC) as rank_, 
             position_id,
-            leverage
+            leverage 
+        FROM 
+        (
+        SELECT 
+            position_id,
+            leverage, 
+            evt_block_time
         FROM 
         {{ ref('tigris_arbitrum_positions_leverage') }}
+        ) xx 
         ) x 
         WHERE x.rank_ = 1 
-)
+),
 
 SELECT 
     lp.*, 
