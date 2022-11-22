@@ -28,7 +28,7 @@ WITH nomiswap_dex AS (
             ''                                                           AS trace_address,
             t.evt_index
     FROM {{ source('nomiswap_bnb', 'Pair_evt_Swap') }} t
-    INNER JOIN {{ source('nomiswap_bnb', 'NomiSwapFactory_evt_PairCreated') }} p
+    INNER JOIN {{ source('nomiswap_bnb', 'NomiswapFactory_evt_PairCreated') }} p
         ON t.contract_address = p.pair
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')

@@ -10,7 +10,7 @@ models:
     config:
       tags: ['bnb','nomiswap','trades','dex']
     description: >
-        Nomiswap contract trades on Binance Smart Chain (bsc)
+         contract trades on Binance Smart Chain (bsc)
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

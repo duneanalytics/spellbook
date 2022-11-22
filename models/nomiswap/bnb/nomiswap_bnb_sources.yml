@@ -37,7 +37,7 @@ sources:
             name: sender
           - &to
             name: to
-      - name: NomiSwapFactory_evt_PairCreated
+      - name: NomiswapFactory_evt_PairCreated
         loaded_at_field: evt_block_time
         description: "NomiSwap Pool created events table"
         columns:
