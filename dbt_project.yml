@@ -502,6 +502,9 @@ models:
       bnb:
         +schema: fraxswap_bnb
         +materialized: view
+      ethereum:
+        +schema: fraxswap_ethereum
+        +materialized: view
 
     mstable:
       +schema: mstable
