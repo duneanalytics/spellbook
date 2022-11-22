@@ -23,7 +23,7 @@ last_margin as (
         WHERE x.rank_ = 1 
 ),
 
-last_margin as (
+last_leverage as (
         SELECT 
             *
         FROM 
