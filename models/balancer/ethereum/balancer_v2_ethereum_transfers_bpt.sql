@@ -1,3 +1,13 @@
+{{
+    config(
+        alias='transfers_bpt',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "project",
+                                    "balancer_v2",
+                                    \'["stefenon"]\') }}'
+    ) 
+}}
+
 {% set query %}
     SELECT DISTINCT CONCAT(namespace, '_ethereum', '.', name, '_evt_Transfer') AS event
     FROM {{ source('ethereum', 'contracts') }} c

@@ -1,3 +1,13 @@
+{{
+    config(
+        alias='transfers_bpt',
+        post_hook='{{ expose_spells(\'["polygon"]\',
+                                    "project",
+                                    "balancer_v2",
+                                    \'["stefenon"]\') }}'
+    ) 
+}}
+
 {% set query %}
     SELECT DISTINCT CONCAT(namespace, '_polygon', '.', name, '_evt_Transfer') AS event
     FROM {{ source('polygon', 'contracts') }} c
