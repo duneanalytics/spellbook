@@ -3,7 +3,7 @@ version: 2
 sources: 
   - name: foundation_ethereum
     freshness:
-      warn_after: { count: 12, period: hour }
+      warn_after: { count: 24, period: hour }
     tables:
       - name: market_evt_ReserveAuctionFinalized
         loaded_at_field: evt_block_time
@@ -14,6 +14,3 @@ sources:
       - name: market_evt_OfferAccepted
         loaded_at_field: evt_block_time
       - name: market_evt_PrivateSaleFinalized
-        loaded_at_field: evt_block_time
-      - name: foundationexchange_evt_royaltypayment
-        loaded_at_field: evt_block_time

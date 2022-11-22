@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: labels_flashbots_ethereum
+    meta:
+      blockchain: ethereum
+      sector: labels
+      project: flashbots
+      contributors: hildobby
+    config:
+      tags: ['labels', 'ethereum', 'MEV', 'Flashbots']
+    description: "Known Flashbots wallets on Ethereum"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"   
+      - &address
+        name: address
+        description: "Address of known Flashbots user wallet"
+      - &name
+        name: name
+        description: "Label name of Flashbots user address"
+      - &category
+        name: category
+        description: "Label category"
+      - &contributor
+        name: contributor
+        description: "Wizard(s) contributing to labels"
+      - &source
+        name: source
+        description: "How were labels generated (could be static or query)"
+      - &created_at
+        name: created_at
+        description: "When were labels created"
+      - &updated_at
+        name: updated_at
+        description: "When were labels updated for the last time"

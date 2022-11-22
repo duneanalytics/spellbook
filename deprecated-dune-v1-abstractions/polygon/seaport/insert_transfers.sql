@@ -315,11 +315,11 @@ with p1_call as (
           ,offer_item_type as offer_item_type
           ,offer_order_type as offer_order_type
           ,offer_identifier as nft_token_id_dcnt
-          ,price_token as price_token
-          ,price_item_type as price_item_type
-          ,price_amount as price_amount
-          ,fee_amount as fee_amount
-          ,royalty_amount as royalty_amount
+          ,evt_price_token as price_token
+          ,evt_price_item_type as price_item_type
+          ,evt_price_amount as price_amount
+          ,evt_fee_amount as fee_amount
+          ,evt_royalty_amount as royalty_amount
           ,evt_token_amount as evt_token_amount
           ,evt_price_amount as evt_price_amount
           ,evt_fee_amount as evt_fee_amount
@@ -328,9 +328,9 @@ with p1_call as (
           ,evt_royalty_token as evt_royalty_token
           ,evt_fee_recipient as evt_fee_recipient
           ,evt_royalty_recipient as evt_royalty_recipient
-          ,coalesce(price_amount,0) + coalesce(fee_amount,0) + coalesce(royalty_amount,0) as attempt_amount
-          ,case when evt_tx_hash is not null then coalesce(price_amount,0) + coalesce(fee_amount,0) + coalesce(royalty_amount,0) end as trade_amount
-          ,case when evt_tx_hash is null then coalesce(price_amount,0) + coalesce(fee_amount,0) + coalesce(royalty_amount,0) else 0 end as revert_amount
+          ,coalesce(evt_price_amount,0) + coalesce(evt_fee_amount,0) + coalesce(evt_royalty_amount,0) as attempt_amount
+          ,case when evt_tx_hash is not null then coalesce(evt_price_amount,0) + coalesce(evt_fee_amount,0) + coalesce(evt_royalty_amount,0) end as trade_amount
+          ,case when evt_tx_hash is null then coalesce(evt_price_amount,0) + coalesce(evt_fee_amount,0) + coalesce(evt_royalty_amount,0) else 0 end as revert_amount
           ,case when evt_tx_hash is null then true else false end as reverted
           ,'Bulk Purchase' as trade_type
           ,'Bulk Purchase' as order_type
@@ -822,13 +822,14 @@ $function$
 ;
 
 -- backfill
-SELECT seaport.insert_transfers('2022-07-01', (SELECT current_timestamp - interval '20 minutes'));
+delete from seaport.transfers where block_time >= '2022-10-01';
+SELECT seaport.insert_transfers('2022-10-01', (SELECT current_timestamp - interval '20 minutes'));
 
--- cronjob
-INSERT INTO cron.job (schedule, command)
-VALUES ('*/20 * * * *', 
-$$SELECT seaport.insert_transfers((SELECT date_trunc('day',MAX(block_time)) FROM seaport.transfers)
-                                            ,(SELECT current_timestamp - interval '20 minutes'));$$
-       )
-ON CONFLICT (command) 
-DO UPDATE SET schedule=EXCLUDED.schedule;
+-- -- cronjob
+-- INSERT INTO cron.job (schedule, command)
+-- VALUES ('*/20 * * * *', 
+-- $$SELECT seaport.insert_transfers((SELECT date_trunc('day',MAX(block_time)) FROM seaport.transfers)
+--                                             ,(SELECT current_timestamp - interval '20 minutes'));$$
+--        )
+-- ON CONFLICT (command) 
+-- DO UPDATE SET schedule=EXCLUDED.schedule;

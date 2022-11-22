@@ -253,9 +253,36 @@ models:
         View GLP fee accrued in the Fee GLP contract.
     columns:
       - *minute
-      - &fees_weth
-        name: fees_weth
+      - &fees_weth_generated
+        name: fees_weth_generated
+        description: "Fees generated in WETH"
+        tests: 
+          - not_null
+      - &fees_weth_cumulative
+        name: fees_weth_cumulative
         description: "Cumulative accrued fees in WETH"
         tests: 
           - not_null
       - *weth_current_price
+
+  - name: gmx_arbitrum_glp_float
+    meta:
+      blockchain: arbitrum
+      project: gmx
+      contributors: 1chioku
+    config:
+      tags: ['arbitrum','gmx','glp']
+    description: >
+        View GLP mint and burns through the GLP Manager contract.
+    columns:
+      - *minute
+      - &glp_mint_burn
+        name: glp_mint_burn
+        description: "GLP net mints and burns"
+        tests: 
+          - not_null
+      - &glp_float
+        name: glp_float
+        description: "Cumulative GLP float"
+        tests: 
+          - not_null
