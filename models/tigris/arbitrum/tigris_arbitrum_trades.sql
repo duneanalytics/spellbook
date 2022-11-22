@@ -125,6 +125,7 @@ add_margin as (
         am.day, 
         am.evt_block_time,
         am.evt_tx_hash,
+        am.evt_index,
         am.position_id,
         am.price, 
         am.margin, 
@@ -142,7 +143,7 @@ add_margin as (
     {% if is_incremental() %}
     AND l.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-    GROUP BY 2, 3, 4, 5, 6, 7, 8, 9, 10
+    GROUP BY 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
     ) am 
     INNER JOIN 
     open_position op 
