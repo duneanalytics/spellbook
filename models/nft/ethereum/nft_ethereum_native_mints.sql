@@ -29,7 +29,7 @@ WITH namespaces AS (
 
 SELECT distinct 'ethereum' AS blockchain
 , COALESCE(ec.namespace, 'Unknown') AS project
-, NULL AS version
+, '' AS version
 , nft_mints.block_time AS block_time
 , date_trunc('day', nft_mints.block_time) AS block_date
 , nft_mints.block_number AS block_number
@@ -60,7 +60,7 @@ SELECT distinct 'ethereum' AS blockchain
 , 0 AS platform_fee_amount
 , 0 AS platform_fee_amount_usd
 , 0 AS platform_fee_percentage
-, NULL AS royalty_fee_receive_address
+, '' AS royalty_fee_receive_address
 , 0 AS royalty_fee_currency_symbol
 , 0 AS royalty_fee_amount_raw
 , 0 AS royalty_fee_amount
@@ -84,7 +84,7 @@ LEFT JOIN {{ source('prices','usd') }} pu_eth ON pu_eth.blockchain='ethereum'
     {% if is_incremental() %}
     AND  pu_eth.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN erc20_ethereum.evt_Transfer erc20s ON erc20s.evt_block_time=nft_mints.block_time
+LEFT JOIN {{ source('erc20_ethereum','evt_transfer') }} erc20s ON erc20s.evt_block_time=nft_mints.block_time
     AND erc20s.from=nft_mints.to
     {% if is_incremental() %}
     AND  erc20s.evt_block_time >= date_trunc("day", now() - interval '1 week')
