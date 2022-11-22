@@ -76,19 +76,22 @@ close_position_v3 as (
 
 close_position_v4 as (
         SELECT 
-            date_trunc('day', evt_block_time) as day, 
-            evt_tx_hash,
-            evt_index,
-            evt_block_time,
-            _id as position_id,
-            _closePrice/1e18 as price, 
-            _payout/1e18 as payout, 
-            _percent/1e8 as perc_closed, 
-            _trader as trader 
+            date_trunc('day', tc.evt_block_time) as day, 
+            tc.evt_tx_hash,
+            tc.evt_index,
+            tc.evt_block_time,
+            tc._id as position_id,
+            tc._closePrice/1e18 as price, 
+            tc._payout/1e18 as payout, 
+            tc._percent/100 as perc_closed, 
+            op.trader
         FROM 
-        {{ source('tigristrade_polygon', 'TradingV4_evt_PositionClosed') }}
+        {{ source('tigristrade_polygon', 'TradingV4_evt_PositionClosed') }} tc 
+        INNER JOIN 
+        {{ ref('tigris_polygon_events_open_position') }} op 
+            ON tc._id = op.position_id
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 

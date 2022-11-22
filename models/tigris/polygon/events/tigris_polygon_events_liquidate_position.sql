@@ -17,7 +17,7 @@ liquidate_position_v1 as (
             pl.evt_index,
             pl.evt_block_time,
             pl._id as position_id,
-            op._trader as trader 
+            op.trader as trader 
         FROM 
         {{ source('tigristrade_polygon', 'TradingV1_evt_PositionLiquidated') }} pl 
         INNER JOIN 
@@ -35,7 +35,7 @@ liquidate_position_v2 as (
             pl.evt_index,
             pl.evt_block_time,
             pl._id as position_id,
-            op._trader as trader 
+            op.trader as trader 
         FROM 
         {{ source('tigristrade_polygon', 'TradingV2_evt_PositionLiquidated') }} pl 
         INNER JOIN 
@@ -53,7 +53,7 @@ liquidate_position_v3 as (
             pl.evt_index,
             pl.evt_block_time,
             pl._id as position_id,
-            op._trader as trader 
+            op.trader as trader 
         FROM 
         {{ source('tigristrade_polygon', 'TradingV3_evt_PositionLiquidated') }} pl 
         INNER JOIN 
@@ -71,7 +71,7 @@ liquidate_position_v4 as (
             pl.evt_index,
             pl.evt_block_time,
             pl._id as position_id,
-            op._trader as trader 
+            op.trader as trader 
         FROM 
         {{ source('tigristrade_polygon', 'TradingV4_evt_PositionLiquidated') }} pl 
         INNER JOIN 
