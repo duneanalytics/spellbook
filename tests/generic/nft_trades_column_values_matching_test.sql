@@ -74,11 +74,11 @@
     )
 
     select * from (
-        select *
-        from matching_count_test
---         union all
 --         select *
---         from equality_tests
+--         from matching_count_test
+--         union all
+        select *
+        from equality_tests
     ) all
     where `result (model)` != `expected (seed)`
 
