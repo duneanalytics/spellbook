@@ -59,4 +59,8 @@ from (
     ,('quixotic', 'Quix')
     ,('project galaxy', 'Galxe')
     ,('project_galaxy', 'Galxe')
+    ,('Masoud_ecc', 'ECC Domains')
+    ,('opx_finance', 'OPX Finance')
+    ,('pooltogether_v3', 'PoolTogether')
+    ,('beethovenx', 'Beethoven X')
     ) as temp_table (dune_name, mapped_name)
