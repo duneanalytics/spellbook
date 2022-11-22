@@ -7,36 +7,28 @@
         )
 }}
 
+{% set chainlink_models = [
+'chainlink_optimism_price_feeds_hourly'
+,'chainlink_polygon_price_feeds_hourly'
+] %}
+
 SELECT *
-FROM
-(
-        SELECT
-                blockchain,
-                hour,
-                block_date,
-                feed_name,
-                proxy_address,
-                aggregator_address,
-                underlying_token_address, 
-                oracle_price_avg,
-                underlying_token_price_avg
-        FROM {{ ref('chainlink_optimism_price_feeds_hourly') }}
-
-        UNION ALL
-
-                SELECT
-                blockchain,
-                hour,
-                block_date,
-                feed_name,
-                proxy_address,
-                aggregator_address,
-                underlying_token_address, 
-                oracle_price_avg,
-                underlying_token_price_avg
-        FROM {{ ref('chainlink_polygon_price_feeds_hourly') }}
-        /*
-        UNION ALL
-        <add future blockchains here>
-        */
+FROM (
+    {% for model in chainlink_models %}
+    SELECT
+        blockchain,
+        hour,
+        block_date,
+        feed_name,
+        proxy_address,
+        aggregator_address,
+        underlying_token_address, 
+        oracle_price_avg,
+        underlying_token_price_avg
+    FROM {{ ref(model) }}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
 )
+;

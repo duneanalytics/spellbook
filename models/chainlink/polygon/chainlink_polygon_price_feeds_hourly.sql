@@ -26,7 +26,7 @@ WITH gs AS (
                 sequence(
                         DATE_TRUNC('hour', 
                         {% if not is_incremental() %}
-                            '{{project_start_date}}'::date
+                            cast('{{project_start_date}}' as date)
                         {% endif %}
                         {% if is_incremental() %}
                             date_trunc('hour', now() - interval '1 week')
