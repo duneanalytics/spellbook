@@ -47,8 +47,8 @@ models:
     columns:
       - &evt_tx_hash
         name: evt_tx_hash
-        description: "blockchain transaction hash"
-      - *leverage 
+        description: "blockchain transaction id"
+      - *leverage
       - *position_id
       - &latest_leverage_time
         name: latest_leverage_time
