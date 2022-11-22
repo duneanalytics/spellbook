@@ -18,7 +18,6 @@ last_margin as (
             margin 
         FROM 
         {{ ref('tigris_arbitrum_positions_margin') }}
-        GROUP BY 2, 3
         ) x 
         WHERE x.rank_ = 1 
 ),
@@ -34,7 +33,6 @@ last_leverage as (
             leverage
         FROM 
         {{ ref('tigris_arbitrum_positions_leverage') }}
-        GROUP BY 2, 3
         ) x 
         WHERE x.rank_ = 1 
 )
