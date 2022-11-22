@@ -37,7 +37,7 @@ sources:
             name: sender
           - &to
             name: to
-      - name: BabySwapFactory_evt_PairCreated
+      - name:BabyFactory_evt_PairCreated
         loaded_at_field: evt_block_time
         description: "BabySwap Pool created events table"
         columns:
