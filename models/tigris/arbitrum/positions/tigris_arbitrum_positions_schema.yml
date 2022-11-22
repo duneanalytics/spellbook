@@ -19,13 +19,13 @@ models:
     columns:
       - &evt_block_time
         name: evt_block_time
-        description: "blocktime of leverage transaction"
+        description: "blockchain transaction block time"
       - &position_id
         name: position_id 
-        description: "unique position id"
-      - &leverage
-        name: leverage
-        description: "positions's leverage"
+        description: "unqiue nft id "
+      - &leverage 
+        name: leverage 
+        description: "leverage of trade"
 
 models:
   - name: tigris_arbitrum_positions_close
@@ -35,8 +35,8 @@ models:
       contributors: Henrystats 
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
-    description: >
-      positions close data 
+    description:
+      "positions close data"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
