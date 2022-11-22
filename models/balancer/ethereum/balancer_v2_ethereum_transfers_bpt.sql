@@ -1,6 +1,6 @@
 {% set query %}
     SELECT DISTINCT CONCAT(namespace, '_ethereum', '.', name, '_evt_Transfer') AS event
-    FROM {{ source('optimism', 'contracts') }} c
+    FROM {{ source('ethereum', 'contracts') }} c
     JOIN {{ source ('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} p
     ON p.poolAddress = c.address
 {% endset %}
