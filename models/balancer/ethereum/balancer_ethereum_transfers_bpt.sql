@@ -13,10 +13,10 @@
 {% set transfer_tables = [] %}
 {% endif %}
 
-{% for transfer_table in transfer_tables %}
-SELECT * FROM {{transfer_table}}
-{% if not loop.last %}
-UNION ALL
-{% endif %}
-{% endfor %}
-
+SELECT DISTINCT * FROM (
+    {% for transfer_table in transfer_tables %}
+    SELECT * FROM {{transfer_table}}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}) transfers
