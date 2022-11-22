@@ -48,7 +48,7 @@ funders as (
         FROM 
         {{ source('ethereum', 'transactions') }} et
         INNER JOIN 
-        {{ ref('wash_trades_wallet_funders_wallets') }} wl 
+        {{ ref('inorganic_volume_filter_wallet_funders_wallets') }} wl 
         ON et.to = wl.wallet 
         {% if is_incremental() %}
         AND et.block_time >= date_trunc('day', now() - interval '1 week')
