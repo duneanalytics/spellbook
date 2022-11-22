@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: wash_trades_wallet_funders
+    meta:
+      blockchain: ethereum
+      project: waash_trades
+      contributors: henrystats
+    config:
+      tags: ['table', 'funded by', 'wash traders', 'ethereum']
+    description: "Table showing who first funded NFT wash traders"
+    columns:
+      - name: wallet
+        description: "NFT Wash trader wallet address"
+        tests:
+          - unique
+      - name: funder
+        description: "Which Ethereum address first funded the address"
+      - name: block_time
+        description: "The block time on which the wallet address was first funded"
+      - name: block_number
+        description: "The block number on which the wallet address was first funded"
+      - name: tx_hash
+        description: "The transaction hash on which the wallet address was first funded"
+
+  - name: wash_trades_wallet_funders_wallets
+    meta:
+      blockchain: ethereum
+      project: wash_trades
+      contributors: henrystats
+    config:
+      tags: ['table', 'wash traders', 'ethereum']
+    description: "Wallet address of x2y2, blur & looksrare nft traders"
+    columns:
+      - name: wallet
+        description: "Wallet address of x2y2, blur & looksrare nft traders"
+        tests:
+          - unique
