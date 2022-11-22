@@ -73,8 +73,9 @@ SELECT 'bnb'                                 as blockchain
      , tfe.seller                            as seller
      , tfe.buyer                             as buyer
      , case
-           when tfe.kind = '3' then 'Offer Accepted'
-           else 'Buy'
+           when tfe.kind = '1' then 'Sell'
+           when tfe.kind = '2' then 'Buy'
+           else 'Acution'
     end                                      as trade_category
      , tfe.price                         as amount_raw
      , case
