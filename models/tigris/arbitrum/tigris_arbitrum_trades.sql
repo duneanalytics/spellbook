@@ -122,7 +122,15 @@ add_margin as (
     SELECT 
         MIN(l.evt_block_time) as latest_leverage_time, 
         l.leverage, 
-        am.* 
+        am.day, 
+        am.evt_block_time,
+        am.evt_tx_hash,
+        am.position_id,
+        am.price, 
+        am.margin, 
+        am.leverage,
+        am.margin_change,
+        am.version
     FROM 
     {{ ref('tigris_arbitrum_events_add_margin') }} am 
     INNER JOIN 
