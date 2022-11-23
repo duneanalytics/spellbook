@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       project: cryptopunks
-      contributors: [masquot, hidobby]
+      contributors: [masquot, hidobby, cat]
     config:
       tags: ['ethereum', 'cryptopunks', 'events']
     description: >
@@ -135,7 +135,7 @@ models:
     meta:
       blockchain: ethereum
       project: cryptopunks
-      contributors: [masquot, hildobby]
+      contributors: [masquot, hildobby, cat]
     config:
       tags: ['ethereum', 'cryptopunks', 'trades']
     description: >
@@ -168,3 +168,86 @@ models:
       - *tx_from
       - *tx_to
       - *unique_trade_id
+
+  - name: cryptopunks_ethereum_metadata
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [cat]
+    config:
+      tags: ['ethereum', 'cryptopunks', 'metadata']
+    description: > 
+        CryptoPunks metadata
+    columns:
+      - name: punk_id
+        description: "CryptoPunk ID #"
+      - name: punk_type
+        description: "CryptoPunk type"
+      - name: attribute_count
+        description: "Number of attributes"
+      - name: attribute_list 
+        description: "Attribute list"
+
+  - name: cryptopunks_ethereum_current_listings
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [cat]
+    config:
+      tags: ['ethereum', 'cryptopunks', 'listings']
+    description: > 
+        CryptoPunks currently open listings
+    columns:
+      - name: punk_id
+        description: "CryptoPunk ID #"
+      - name: listed_price
+        description: "Listed price (ETH)"
+      - name: listing_created_at
+        description: "Time listings was created"
+
+  - name: cryptopunks_ethereum_current_owners_per_token
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [cat]
+    config:
+      tags: ['ethereum', 'cryptopunks', 'owners']
+    description: > 
+        CryptoPunks current owners per token id 
+    columns:
+      - name: punk_id
+        description: "CryptoPunk ID #"
+      - name: current_owner
+        description: "Wallet that currently holds each CryptoPunk ID #"
+      - name: last_transfer_time
+        description: "Last recorded transfer"
+
+  - name: cryptopunks_ethereum_listings_over_time
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [cat]
+    config:
+      tags: ['ethereum', 'cryptopunks', 'listings']
+    description: > 
+        CryptoPunks listings count per day over time
+    columns:
+      - name: day
+        description: "Day"
+      - name: listed_count
+        description: "# Punks listed for sale that day"
+
+  - name: cryptopunks_ethereum_owners_over_time
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [cat]
+    config:
+      tags: ['ethereum', 'cryptopunks', 'owners']
+    description: > 
+        CryptoPunks unique owners per day over time
+    columns:
+      - name: day
+        description: "Day"
+      - name: unique_wallets
+        description: "# unique Punk wallets that day"
