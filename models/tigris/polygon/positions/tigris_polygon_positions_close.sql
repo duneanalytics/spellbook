@@ -38,6 +38,7 @@ latest_leverage as (
     {{ ref('tigris_polygon_positions_leverage') }} l 
         ON ab.position_id = l.position_id
         AND ab.latest_leverage_time = l.evt_block_time
+        AND cp.version = l.version 
 )
 
 SELECT * FROM latest_leverage
