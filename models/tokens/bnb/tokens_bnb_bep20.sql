@@ -5519,6 +5519,5 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0x79F3bb5534b8f060b37b3e5deA032a39412F6B10', 'USDEX-USDC', 18)
 ,('0x65D83463fC023bffbd8aC9a1a2E1037F4bbdB399', 'dexSHARE-BNB', 18)
 ,('0x01B279a06F5F26bD3F469A3E730097184973FC8a', 'dexIRA-BNB', 18)
-,('0xd32d01a43c869edcd1117c640fbdcfcfd97d9d65', 'NMX', 18)
   
 ) AS temp_table (contract_address, symbol, decimals)
