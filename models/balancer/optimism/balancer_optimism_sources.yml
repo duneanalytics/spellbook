@@ -31,6 +31,7 @@ sources:
             description: 'Unique encoded identifier that refers to each pool'
           - name: specialization
             description: 'Pool specialization'
+      
       - name: Vault_evt_Swap
         description: >
           Decoded table of swaps on the Balancer Vault contract.
