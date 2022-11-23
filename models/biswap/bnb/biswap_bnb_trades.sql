@@ -12,7 +12,7 @@
     )
 }}
 
-{% set project_start_date = '2021-03-15' %}
+{% set project_start_date = '2021-05-22' %}     -- select min(evt_block_time) from biswap_bnb.BiswapPair_evt_Swap
 
 WITH biswap_dex AS (
     SELECT  t.evt_block_time                                             AS block_time,
