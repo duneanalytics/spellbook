@@ -6,7 +6,7 @@ sources:
     tables:
       - name: PairsContract_evt_AssetAdded
         loaded_at_field: evt_block_time
-      - name: TradingV1_evt_PositionOpened
+      - name: Tradingv1_evt_PositionOpened
         loaded_at_field: evt_block_time
       - name: TradingV2_evt_PositionOpened
         loaded_at_field: evt_block_time
@@ -32,7 +32,7 @@ sources:
         loaded_at_field: evt_block_time
       - name: TradingV7_evt_MarginModified
         loaded_at_field: evt_block_time
-      - name: TradingV1_evt_PositionClosed
+      - name: Tradingv1_evt_PositionClosed
         loaded_at_field: evt_block_time
       - name: TradingV2_evt_PositionClosed
         loaded_at_field: evt_block_time
@@ -46,7 +46,7 @@ sources:
         loaded_at_field: evt_block_time
       - name: TradingV7_evt_PositionClosed
         loaded_at_field: evt_block_time
-      - name: TradingV1_evt_PositionLiquidated
+      - name: Tradingv1_evt_PositionLiquidated
         loaded_at_field: evt_block_time
       - name: TradingV2_evt_PositionLiquidated
         loaded_at_field: evt_block_time

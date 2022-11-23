@@ -19,10 +19,11 @@ liquidate_position_v1 as (
             pl._id as position_id,
             op.trader as trader 
         FROM 
-        {{ source('tigristrade_polygon', 'TradingV1_evt_PositionLiquidated') }} pl 
+        {{ source('tigristrade_polygon', 'Tradingv1_evt_PositionLiquidated') }} pl 
         INNER JOIN 
         {{ ref('tigris_polygon_events_open_position') }} op 
             ON pl._id = op.position_id
+            AND op.version = 'v1'
         {% if is_incremental() %}
         WHERE pl.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
@@ -41,6 +42,7 @@ liquidate_position_v2 as (
         INNER JOIN 
         {{ ref('tigris_polygon_events_open_position') }} op 
             ON pl._id = op.position_id
+            AND op.version = 'v2'
         {% if is_incremental() %}
         WHERE pl.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
@@ -59,6 +61,7 @@ liquidate_position_v3 as (
         INNER JOIN 
         {{ ref('tigris_polygon_events_open_position') }} op 
             ON pl._id = op.position_id
+            AND op.version = 'v3'
         {% if is_incremental() %}
         WHERE pl.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}

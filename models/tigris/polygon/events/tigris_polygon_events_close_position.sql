@@ -22,7 +22,7 @@ close_position_v1 as (
             tc._percent/100 as perc_closed, 
             op.trader
         FROM 
-        {{ source('tigristrade_polygon', 'TradingV1_evt_PositionClosed') }} tc 
+        {{ source('tigristrade_polygon', 'Tradingv1_evt_PositionClosed') }} tc 
         INNER JOIN 
         {{ ref('tigris_polygon_events_open_position') }} op 
             ON tc._id = op.position_id

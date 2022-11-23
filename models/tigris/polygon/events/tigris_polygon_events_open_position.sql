@@ -34,7 +34,7 @@ open_positions_v1 as (
             t._tradeInfo:referral as referral, 
             t._trader as trader 
         FROM 
-        {{ source('tigristrade_polygon', 'TradingV1_evt_PositionOpened') }} t 
+        {{ source('tigristrade_polygon', 'Tradingv1_evt_PositionOpened') }} t 
         INNER JOIN 
         pairs ta 
             ON t._tradeInfo:asset = ta.asset_id 
