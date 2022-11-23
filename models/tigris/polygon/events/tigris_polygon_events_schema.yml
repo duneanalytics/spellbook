@@ -191,7 +191,7 @@ models:
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
-      liquidate position events for tigris events 
+      liquidate position event for tigris events 
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
