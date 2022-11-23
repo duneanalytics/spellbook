@@ -29,6 +29,7 @@ FROM
                 ,taker
                 ,maker
                 ,project_contract_address
+                ,swap_fee
                 ,tx_hash
                 ,tx_from
                 ,tx_to
@@ -55,6 +56,7 @@ FROM
                 ,taker
                 ,maker
                 ,project_contract_address
+                ,swap_fee
                 ,tx_hash
                 ,tx_from
                 ,tx_to
@@ -81,6 +83,7 @@ FROM
                 ,taker
                 ,maker
                 ,project_contract_address
+                ,swap_fee
                 ,tx_hash
                 ,tx_from
                 ,tx_to
@@ -107,6 +110,7 @@ FROM
                 ,taker
                 ,maker
                 ,project_contract_address
+                ,swap_fee
                 ,tx_hash
                 ,tx_from
                 ,tx_to
