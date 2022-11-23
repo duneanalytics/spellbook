@@ -78,6 +78,7 @@ SELECT distinct 'ethereum' AS blockchain
 , 'looksrare' AS project
 , 'v1' AS version
 , lr.block_time
+, date_trunc('day', lr.block_time) AS block_date
 , lr.token_id
 , tok.name AS collection
 , pu.price*lr.amount_raw/POWER(10, pu.decimals) AS amount_usd
