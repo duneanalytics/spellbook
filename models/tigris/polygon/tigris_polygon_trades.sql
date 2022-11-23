@@ -59,6 +59,7 @@ close_position as (
     INNER JOIN 
     open_position op 
         ON c.position_id = op.position_id 
+        AND c.version = op.version 
     {% if is_incremental() %}
     WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
@@ -88,6 +89,7 @@ liquidate_position as (
     INNER JOIN 
     open_position op 
         ON lp.position_id = op.position_id 
+        AND lp.version = op.version 
     {% if is_incremental() %}
     WHERE lp.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
@@ -136,6 +138,7 @@ add_margin as (
     INNER JOIN 
     {{ ref('tigris_polygon_positions_leverage') }} l 
         ON am.position_id = l.position_id 
+        AND am.version = l.version
         AND am.evt_block_time > l.evt_block_time
     {% if is_incremental() %}
     WHERE am.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -148,6 +151,7 @@ add_margin as (
     INNER JOIN 
     {{ ref('tigris_polygon_positions_leverage') }} l 
         ON tmp.position_id = l.position_id
+        AND tmp.version = l.version
         AND tmp.latest_leverage_time = l.evt_block_time
     {% if is_incremental() %}
     WHERE l.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -156,6 +160,7 @@ add_margin as (
     INNER JOIN 
     open_position op 
         ON am.position_id = op.position_id 
+        AND am.version = op.version
 ),
 
 modify_margin as (
@@ -182,6 +187,7 @@ modify_margin as (
     INNER JOIN 
     open_position op 
         ON mm.position_id = op.position_id 
+        AND mm.version = op.version
     {% if is_incremental() %}
     WHERE mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
