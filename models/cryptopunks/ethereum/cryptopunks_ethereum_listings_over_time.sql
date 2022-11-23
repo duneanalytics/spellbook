@@ -1,6 +1,6 @@
 {{ config(
         alias ='listings_over_time',
-        unique_key='punk_id',
+        unique_key='day',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cryptopunks",
