@@ -127,7 +127,7 @@ LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain='ethereum'
     {% if is_incremental() %}
     AND pu.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ source('ethereum','transactions') }} et ON lr.block_time=et.block_time
+INNER JOIN {{ source('ethereum','transactions') }} et ON lr.block_time=et.block_time
     AND lr.tx_hash=et.hash
     {% if is_incremental() %}
     AND et.block_time >= date_trunc("day", now() - interval '1 week')
