@@ -251,3 +251,20 @@ models:
         description: "Day"
       - name: unique_wallets
         description: "# unique Punk wallets that day"
+
+  - name: cryptopunks_ethereum_floor_price_over_time
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [cat]
+    config:
+      tags: ['ethereum', 'cryptopunks', 'floor']
+    description: > 
+        CryptoPunks floor price per day over time
+    columns:
+      - name: day
+        description: "Day"
+      - name: floor_price_eth
+        description: "Floor price in ETH that day"
+      - name: floor_price_usd
+        description: "Floor price in $ that day"
