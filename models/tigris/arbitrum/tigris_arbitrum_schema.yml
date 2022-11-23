@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: arbitrum
       project: tigris
-      contributors: henrystats
+      contributors: Henrystats
     config:
       tags: ['arbitrum', 'tigris', 'trades', 'perps', 'dex']
     description: >

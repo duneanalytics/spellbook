@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: polygon
       project: tigris
-      contributors: Henrystats 
+      contributors: Henrystats
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
@@ -31,7 +31,7 @@ models:
     meta:
       blockchain: polygon
       project: tigris
-      contributors: Henrystats 
+      contributors: Henrystats
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
@@ -89,7 +89,7 @@ models:
     meta:
       blockchain: polygon
       project: tigris
-      contributors: Henrystats 
+      contributors: Henrystats
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
@@ -120,7 +120,7 @@ models:
     meta:
       blockchain: polygon
       project: tigris
-      contributors: Henrystats 
+      contributors: Henrystats
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
@@ -153,7 +153,7 @@ models:
     meta:
       blockchain: polygon
       project: tigris
-      contributors: Henrystats 
+      contributors: Henrystats
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
@@ -187,7 +187,7 @@ models:
     meta:
       blockchain: polygon
       project: tigris
-      contributors: Henrystats 
+      contributors: Henrystats
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
