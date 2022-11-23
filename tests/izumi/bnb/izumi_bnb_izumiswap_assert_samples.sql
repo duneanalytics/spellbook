@@ -15,7 +15,7 @@ with trades as (
 )
 , examples as (
     select * from {{ ref('dex_trades_seed') }}
-	where blockchain = 'bnb' and project='izumiswap' and version='1'
+	where blockchain = 'bnb' and project='iziswap' and version='1'
 )
 , matched as (
     select
