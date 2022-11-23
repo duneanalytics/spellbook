@@ -16,6 +16,7 @@ models:
             - evt_block_time
             - position_id
             - leverage
+            - version
     columns:
       - &evt_block_time
         name: evt_block_time
@@ -26,6 +27,9 @@ models:
       - &leverage
         name: leverage
         description: "leverage of trade at evt block time"
+      - &version
+        name: version
+        description: "contract version"
 
 models:
   - name: tigris_polygon_positions_close
@@ -80,12 +84,14 @@ models:
             - evt_block_time
             - position_id
             - margin
+            - version
     columns:
       - *evt_block_time
       - *position_id
       - &margin
         name: margin
         description: "margin of trade at block time"
+      - *version
 
 models:
   - name: tigris_polygon_positions_liquidation
@@ -102,12 +108,14 @@ models:
           combination_of_columns:
             - evt_block_time
             - position_id
+            - version
     columns:
       - *evt_block_time
       - *position_id
       - *margin
       - *evt_tx_hash
       - *leverage
+      - *version
       - &evt_index
         name: evt_index
         description: "blockchain transaction index "

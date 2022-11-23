@@ -1,7 +1,7 @@
 {{ config(
     materialized = 'view',
     alias = 'polygon_positions_leverage',
-    unique_key = ['evt_block_time', 'position_id', 'leverage']
+    unique_key = ['evt_block_time', 'position_id', 'leverage', 'version']
     )
  }}
 
@@ -11,7 +11,8 @@ leverage as (
     SELECT 
         evt_block_time,
         position_id,
-        leverage 
+        leverage, 
+        version
     FROM 
     {{ ref('tigris_polygon_events_open_position') }}
 
@@ -20,7 +21,8 @@ leverage as (
     SELECT 
         evt_block_time,
         position_id,
-        leverage 
+        leverage, 
+        version 
     FROM 
     {{ ref('tigris_polygon_events_modify_margin') }}
 )

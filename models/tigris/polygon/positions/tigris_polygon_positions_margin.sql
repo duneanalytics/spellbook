@@ -1,7 +1,7 @@
 {{ config(
     materialized = 'view',
     alias = 'polygon_positions_margin',
-    unique_key = ['evt_block_time', 'position_id', 'margin']
+    unique_key = ['evt_block_time', 'position_id', 'margin', 'version']
     )
  }}
 
@@ -11,7 +11,8 @@ margin as (
     SELECT 
         evt_block_time,
         position_id,
-        margin
+        margin,
+        version
     FROM 
     {{ ref('tigris_polygon_events_add_margin') }}
 
@@ -20,7 +21,8 @@ margin as (
     SELECT 
         evt_block_time,
         position_id,
-        margin
+        margin,
+        version
     FROM 
     {{ ref('tigris_polygon_events_modify_margin') }}
 
@@ -29,7 +31,8 @@ margin as (
     SELECT 
         evt_block_time,
         position_id,
-        margin
+        margin,
+        version
     FROM 
     {{ ref('tigris_polygon_events_open_position') }}
 
@@ -38,7 +41,8 @@ margin as (
     SELECT 
         evt_block_time,
         position_id,
-        new_margin as margin 
+        new_margin as margin,
+        version
     FROM 
     {{ ref('tigris_polygon_positions_close') }}
 
