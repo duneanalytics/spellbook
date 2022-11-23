@@ -26,6 +26,7 @@ close_position_v1 as (
         INNER JOIN 
         {{ ref('tigris_polygon_events_open_position') }} op 
             ON tc._id = op.position_id
+            AND op.version ='v1'
         {% if is_incremental() %}
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
@@ -47,6 +48,7 @@ close_position_v2 as (
         INNER JOIN 
         {{ ref('tigris_polygon_events_open_position') }} op 
             ON tc._id = op.position_id
+            AND op.version = 'v2'
         {% if is_incremental() %}
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
@@ -68,6 +70,7 @@ close_position_v3 as (
         INNER JOIN 
         {{ ref('tigris_polygon_events_open_position') }} op 
             ON tc._id = op.position_id
+            AND op.version = 'v3'
         {% if is_incremental() %}
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
@@ -90,6 +93,7 @@ close_position_v4 as (
         INNER JOIN 
         {{ ref('tigris_polygon_events_open_position') }} op 
             ON tc._id = op.position_id
+            AND op.version = 'v4'
         {% if is_incremental() %}
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
