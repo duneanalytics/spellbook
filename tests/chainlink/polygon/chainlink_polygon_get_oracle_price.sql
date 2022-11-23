@@ -7,12 +7,12 @@ with unit_test as (
     from       {{ref ('chainlink_polygon_price_feeds')}} actual
     INNER JOIN {{ref ('chainlink_polygon_get_price')}} test 
     ON (actual.blockchain = test.blockchain AND actual.block_time = test.block_time AND actual.feed_name = test.feed_name)
-
 )
 
 select * from unit_test
-where (oracle_price_test = false                OR 
-       proxy_address_test   = false             OR
-       aggregator_address_test = false          OR 
+where (
+        oracle_price_test = false                OR 
+       proxy_address_test   = false              OR
+       aggregator_address_test = false           OR 
        underlying_token_address_test = false
       )
