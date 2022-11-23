@@ -80,6 +80,7 @@ liquidate_position_v4 as (
         INNER JOIN 
         {{ ref('tigris_polygon_events_open_position') }} op 
             ON pl._id = op.position_id
+            AND op.version = 'v4'
         {% if is_incremental() %}
         WHERE pl.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
