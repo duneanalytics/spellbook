@@ -7,8 +7,8 @@ with unit_test as (
         case when test.collateral_symbol = actual.collateral_symbol then true else false end                                AS collateral_token_test,
         case when ABS(test.collateral_token_amount - actual.collateral_token_amount) < 0.001 then true else false end       AS collateral_token_amount_test,
         case when ABS(test.net_collateral_amount - actual.net_collateral_amount) < 0.001 then true else false end           AS net_collateral_amount_test
-    from       {{ref ('jarvis_network_view_all_transactions')}} actual
-    INNER JOIN {{ref ('jarvis_network_polygon_view_transactions')}} test 
+    from       {{ref ('jarvis_network_polygon_all_transactions')}} actual
+    INNER JOIN {{ref ('jarvis_network_polygon_view_transactions_seed')}} test 
     ON (actual.evt_tx_hash = test.evt_tx_hash AND actual.evt_index = test.evt_index)
 
 )
