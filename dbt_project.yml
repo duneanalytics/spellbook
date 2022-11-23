@@ -470,6 +470,13 @@ models:
       ethereum:
         +schema: defiswap_ethereum
         +materialized: view
+
+    knightswap:
+      +schema: knightswap
+      +materialized: view
+      bnb:
+        +schema: knightswap_bnb
+        +materialized: view
      
     swapr:
       +schema: swapr
