@@ -1,7 +1,8 @@
 -- Try it out here: https://dune.com/queries/1389623
 with batches_with_trades as (
     select
-        s.evt_tx_hash
+        s.evt_tx_hash,
+        s.evt_block_time
     from {{ source('gnosis_protocol_v2_ethereum','GPv2Settlement_evt_Trade') }} t
     inner join {{ source('gnosis_protocol_v2_ethereum','GPv2Settlement_evt_Settlement') }} s
         on s.evt_tx_hash = t.evt_tx_hash
