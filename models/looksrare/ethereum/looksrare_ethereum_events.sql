@@ -141,6 +141,15 @@ LEFT JOIN {{ source('looksrare_ethereum','looksrareexchange_evt_royaltypayment')
     {% if is_incremental() %}
     AND roy.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+LEFT ANTI JOIN {{ source('erc20_ethereum', 'evt_transfer') }} anti_roy ON anti_roy.evt_block_time=lr.block_time
+    AND anti_roy.evt_tx_hash=lr.tx_hash
+    AND anti_roy.contract_address=roy.currency
+    AND anti_roy.contract_address=roy.currency
+    AND anti_roy.to=roy.royaltyRecipient
+    AND anti_roy.from!=lr.buyer
+    {% if is_incremental() %}
+    AND anti_roy.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 LEFT JOIN {{ ref('nft_ethereum_transfers') }} buyer_fix ON lr.block_time=buyer_fix.block_time
     AND lr.tx_hash=buyer_fix.tx_hash
     AND lr.nft_contract_address=buyer_fix.contract_address
