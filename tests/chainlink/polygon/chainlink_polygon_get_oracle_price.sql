@@ -1,6 +1,6 @@
 with unit_test as (
     select
-        case when ABS(test.oracle_price - actual.oracle_price) < 0.00001 then true else false end                                          AS oracle_price_test,
+        case when ABS(test.oracle_price - actual.oracle_price) < 0.00001 then true else false end                           AS oracle_price_test,
         case when test.proxy_address = actual.proxy_address then true else false end                                        AS proxy_address_test,
         case when test.aggregator_address = actual.aggregator_address then true else false end                              AS aggregator_address_test,
         case when test.underlying_token_address = actual.underlying_token_address then true else false end                  AS underlying_token_address_test
