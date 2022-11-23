@@ -334,6 +334,13 @@ models:
         +schema: safe_ethereum
         +materialized: view
 
+    jarvis_network:
+      +schema: jarvis_network
+      +materialized: view
+      polygon:
+        +schema: jarvis_network_polygon
+        +materialized: view
+
     cryptopunks:
       +schema: cryptopunks
       +materialized: view
