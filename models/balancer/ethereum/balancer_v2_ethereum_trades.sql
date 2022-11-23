@@ -22,12 +22,12 @@ WITH swap_fees AS (
         swap.evt_index,
         SUBSTRING(swap.`poolId`, 0, 42) AS contract_address,
         swap.evt_block_time,
-        MAX(fees.evt_block_time) AS max_fee_evt_block_time
+        MAX(fees.block_time) AS max_fee_evt_block_time
     FROM
         {{ source ('balancer_v2_ethereum', 'Vault_evt_Swap') }} swap
         LEFT JOIN {{ ref('balancer_v2_ethereum_pools_fees') }} fees
             ON fees.contract_address = SUBSTRING(swap.`poolId`, 0, 42)
-            AND fees.evt_block_time <= swap.evt_block_time
+            AND fees.block_time <= swap.evt_block_time
     GROUP BY 1, 2, 3, 4, 5
 ),
 dexs AS (
@@ -53,7 +53,7 @@ dexs AS (
             AND swap.evt_index = swap_fees.evt_index
         LEFT JOIN {{ ref('balancer_v2_ethereum_pools_fees') }}
             ON pools_fees.contract_address = swap_fees.contract_address
-            AND pools_fees.evt_block_time = swap_fees.max_fee_evt_block_time
+            AND pools_fees.block_time = swap_fees.max_fee_evt_block_time
     WHERE
         swap.tokenIn != swap_fees.contract_address
         AND swap.tokenOut != swap_fees.contract_address
@@ -90,7 +90,7 @@ SELECT
     COALESCE(dexs.taker, tx.from) AS taker,
     dexs.maker,
     dexs.project_contract_address,
-    dexs.swap_fee_percentage,
+    dexs.swap_fee,
     dexs.tx_hash,
     tx.from AS tx_from,
     tx.to AS tx_to,
