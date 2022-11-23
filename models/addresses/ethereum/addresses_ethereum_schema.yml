@@ -13,6 +13,8 @@ models:
     columns:
       - name: address
         description: "Address of known CEX"
+        tests:
+          - unique
       - name: cex_name
         description: "Name of centralised exchange"
       - name: distinct_name
