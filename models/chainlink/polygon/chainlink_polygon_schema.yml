@@ -15,6 +15,7 @@ models:
           combination_of_columns:
               - blockchain
               - block_time
+              - block_number
               - proxy_address
               - aggregator_address
               - underlying_token_address
@@ -29,6 +30,9 @@ models:
       - &block_date
         name: block_date
         description: "Block time of the oracle update - truncated to date"
+      - &block_number
+        name: block_number
+        description: "Block number of the oracle update"
       - &feed_name
         name: feed_name
         description:  "Feed name from Chainlink docs"  

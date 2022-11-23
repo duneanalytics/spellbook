@@ -19,6 +19,7 @@
 SELECT 'polygon'                                        AS blockchain,
        c.block_time,
        c.block_date,
+       c.block_number,
        c.feed_name,
        c.oracle_price,
        c.proxy_address,
@@ -29,6 +30,7 @@ FROM
 (
     SELECT l.block_time,
            DATE_TRUNC('day', l.block_time)              AS block_date,
+           l.block_number,
 	       cfa.feed_name,
            AVG(
              conv( --handle for multiple updates in the same block
@@ -49,6 +51,7 @@ FROM
     GROUP BY
         l.block_time,
         block_date,
+        l.block_number,
         cfa.feed_name,
         cfa.proxy_address,
         cfa.aggregator_address
