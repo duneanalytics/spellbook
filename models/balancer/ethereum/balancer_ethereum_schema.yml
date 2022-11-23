@@ -176,6 +176,7 @@ models:
         description: 'Swap fees for the pool, values are returned with 18 decimals (1e18 meaning 100%)'
         tests:
           - not_null
+  
   - name: balancer_ethereum_balances
     meta:
       blockchain: ethereum
@@ -206,6 +207,7 @@ models:
       - &cumulative_amount
         name: cumulative_amount
         description: 'Balance of a token'
+  
   - name: balancer_v2_ethereum_bpt_prices
     meta:
       blockchain: ethereum
@@ -226,7 +228,10 @@ models:
         description: 'UTC event block time truncated to the hour mark'
         tests:
           - not_null
-      - *contract_address
+      - name: contract_address
+        description: 'Ethereum address for the liquidity pool used in transaction'
+        tests:
+          - not_null
       - &median_price
         name: median_price
         description: 'BPT median price'
