@@ -118,6 +118,9 @@ models:
       optimism:
         +schema: uniswap_optimism
         +materialized: view
+      polygon:
+        +schema: uniswap_polygon
+        +materialized: view
 
     sushiswap:
       +schema: sushiswap
@@ -200,12 +203,18 @@ models:
       optimism:
         +schema: gas_optimism
         +materialized: view
-
+      arbitrum:
+        +schema: gas_arbitrum
+        +materialized: view
+        
     gmx:
       +schema: gmx
       +materialized: view
       arbitrum:
         +schema: gmx_arbitrum
+        +materialized: view
+      avalanche_c:
+        +schema: gmx_avalanche_c
         +materialized: view
 
     x2y2:
@@ -334,6 +343,13 @@ models:
         +schema: safe_ethereum
         +materialized: view
 
+    jarvis_network:
+      +schema: jarvis_network
+      +materialized: view
+      polygon:
+        +schema: jarvis_network_polygon
+        +materialized: view
+
     cryptopunks:
       +schema: cryptopunks
       +materialized: view
@@ -425,6 +441,9 @@ models:
       optimism:
         +schema: chainlink_optimism
         +materialized: view
+      polygon:
+        +schema: chainlink_polygon
+        +materialized: view
 
     contracts:
       +schema: contracts
@@ -447,6 +466,13 @@ models:
         +schema: reaper_optimism
         +materialized: view
     
+    biswap:
+      +schema: biswap
+      +materialized: view
+      bnb:
+        +schema: biswap_bnb
+        +materialized: view
+
     defiswap:
       +schema: defiswap
       +materialized: view
