@@ -44,7 +44,7 @@ last_leverage as (
             version
         FROM 
         {{ ref('tigris_polygon_positions_leverage') }}
-        GROUP BY 1, 2
+        GROUP BY 2, 3
         ) xx 
         INNER JOIN 
         {{ ref('tigris_polygon_positions_leverage') }} xy 
