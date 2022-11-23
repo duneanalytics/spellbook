@@ -73,5 +73,5 @@ models:
         name: volume_usd
         description: "Trading volume measured in USD value"
         tests:
-          - zeroex_api_ethereum_fills_test:
+          - zeroex_ethereum_fills_test:
               seed_file: ref('zeroex_api_ethereum_fills_sample')
