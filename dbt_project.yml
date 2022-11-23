@@ -343,6 +343,13 @@ models:
         +schema: safe_ethereum
         +materialized: view
 
+    jarvis_network:
+      +schema: jarvis_network
+      +materialized: view
+      polygon:
+        +schema: jarvis_network_polygon
+        +materialized: view
+
     cryptopunks:
       +schema: cryptopunks
       +materialized: view
@@ -434,6 +441,9 @@ models:
       optimism:
         +schema: chainlink_optimism
         +materialized: view
+      polygon:
+        +schema: chainlink_polygon
+        +materialized: view
 
     contracts:
       +schema: contracts
@@ -456,6 +466,13 @@ models:
         +schema: reaper_optimism
         +materialized: view
     
+    biswap:
+      +schema: biswap
+      +materialized: view
+      bnb:
+        +schema: biswap_bnb
+        +materialized: view
+
     defiswap:
       +schema: defiswap
       +materialized: view
