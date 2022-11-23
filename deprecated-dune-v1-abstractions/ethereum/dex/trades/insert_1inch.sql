@@ -629,199 +629,199 @@ RETURN r;
 END
 $function$;
 
---delete prior to reload of history (commented out to be safe, uncomment as needed)
-delete from
-  dex.trades
-where
-  project in ('1inch', '1inch Limit Order Protocol')
-;
+-- --delete prior to reload of history (commented out to be safe, uncomment as needed)
+-- delete from
+--   dex.trades
+-- where
+--   project in ('1inch', '1inch Limit Order Protocol')
+-- ;
 
--- fill 2017
-SELECT dex.insert_1inch(
-    '2017-01-01',
-    '2017-07-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2017-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2017-07-01')
-)
--- not applicable as data is removed prior to reload
--- WHERE NOT EXISTS (
---     SELECT *
---     FROM dex.trades
---     WHERE block_time > '2017-01-01'
---     AND block_time <= '2018-01-01'
---     AND project = '1inch'
+-- -- fill 2017
+-- SELECT dex.insert_1inch(
+--     '2017-01-01',
+--     '2017-07-01',
+--     (SELECT max(number) FROM ethereum.blocks WHERE time < '2017-01-01'),
+--     (SELECT max(number) FROM ethereum.blocks WHERE time <= '2017-07-01')
 -- )
-;
+-- -- not applicable as data is removed prior to reload
+-- -- WHERE NOT EXISTS (
+-- --     SELECT *
+-- --     FROM dex.trades
+-- --     WHERE block_time > '2017-01-01'
+-- --     AND block_time <= '2018-01-01'
+-- --     AND project = '1inch'
+-- -- )
+-- ;
 
--- fill 2017
-SELECT dex.insert_1inch(
-    '2017-07-01',
-    '2018-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2017-07-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2018-01-01')
-)
--- not applicable as data is removed prior to reload
--- WHERE NOT EXISTS (
---     SELECT *
---     FROM dex.trades
---     WHERE block_time > '2017-01-01'
---     AND block_time <= '2018-01-01'
---     AND project = '1inch'
+-- -- fill 2017
+-- SELECT dex.insert_1inch(
+--     '2017-07-01',
+--     '2018-01-01',
+--     (SELECT max(number) FROM ethereum.blocks WHERE time < '2017-07-01'),
+--     (SELECT max(number) FROM ethereum.blocks WHERE time <= '2018-01-01')
 -- )
-;
+-- -- not applicable as data is removed prior to reload
+-- -- WHERE NOT EXISTS (
+-- --     SELECT *
+-- --     FROM dex.trades
+-- --     WHERE block_time > '2017-01-01'
+-- --     AND block_time <= '2018-01-01'
+-- --     AND project = '1inch'
+-- -- )
+-- ;
 
--- fill 2018
-SELECT dex.insert_1inch(
-    '2018-01-01',
-    '2018-07-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2018-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2018-07-01')
-)
--- not applicable as data is removed prior to reload
--- WHERE NOT EXISTS (
---     SELECT *
---     FROM dex.trades
---     WHERE block_time > '2018-01-01'
---     AND block_time <= '2019-01-01'
---     AND project = '1inch'
+-- -- fill 2018
+-- SELECT dex.insert_1inch(
+--     '2018-01-01',
+--     '2018-07-01',
+--     (SELECT max(number) FROM ethereum.blocks WHERE time < '2018-01-01'),
+--     (SELECT max(number) FROM ethereum.blocks WHERE time <= '2018-07-01')
 -- )
-;
+-- -- not applicable as data is removed prior to reload
+-- -- WHERE NOT EXISTS (
+-- --     SELECT *
+-- --     FROM dex.trades
+-- --     WHERE block_time > '2018-01-01'
+-- --     AND block_time <= '2019-01-01'
+-- --     AND project = '1inch'
+-- -- )
+-- ;
 
--- fill 2018
-SELECT dex.insert_1inch(
-    '2018-07-01',
-    '2019-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2018-07-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2019-01-01')
-)
--- not applicable as data is removed prior to reload
--- WHERE NOT EXISTS (
---     SELECT *
---     FROM dex.trades
---     WHERE block_time > '2018-01-01'
---     AND block_time <= '2019-01-01'
---     AND project = '1inch'
+-- -- fill 2018
+-- SELECT dex.insert_1inch(
+--     '2018-07-01',
+--     '2019-01-01',
+--     (SELECT max(number) FROM ethereum.blocks WHERE time < '2018-07-01'),
+--     (SELECT max(number) FROM ethereum.blocks WHERE time <= '2019-01-01')
 -- )
-;
+-- -- not applicable as data is removed prior to reload
+-- -- WHERE NOT EXISTS (
+-- --     SELECT *
+-- --     FROM dex.trades
+-- --     WHERE block_time > '2018-01-01'
+-- --     AND block_time <= '2019-01-01'
+-- --     AND project = '1inch'
+-- -- )
+-- ;
 
--- fill 2019
-SELECT dex.insert_1inch(
-    '2019-01-01',
-    '2019-07-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2019-07-01')
-)
--- not applicable as data is removed prior to reload
--- WHERE NOT EXISTS (
---     SELECT *
---     FROM dex.trades
---     WHERE block_time > '2019-01-01'
---     AND block_time <= '2020-01-01'
---     AND project = '1inch'
+-- -- fill 2019
+-- SELECT dex.insert_1inch(
+--     '2019-01-01',
+--     '2019-07-01',
+--     (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'),
+--     (SELECT max(number) FROM ethereum.blocks WHERE time <= '2019-07-01')
 -- )
-;
+-- -- not applicable as data is removed prior to reload
+-- -- WHERE NOT EXISTS (
+-- --     SELECT *
+-- --     FROM dex.trades
+-- --     WHERE block_time > '2019-01-01'
+-- --     AND block_time <= '2020-01-01'
+-- --     AND project = '1inch'
+-- -- )
+-- ;
 
--- fill 2019
-SELECT dex.insert_1inch(
-    '2019-07-01',
-    '2020-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-07-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-01-01')
-)
--- not applicable as data is removed prior to reload
--- WHERE NOT EXISTS (
---     SELECT *
---     FROM dex.trades
---     WHERE block_time > '2019-01-01'
---     AND block_time <= '2020-01-01'
---     AND project = '1inch'
+-- -- fill 2019
+-- SELECT dex.insert_1inch(
+--     '2019-07-01',
+--     '2020-01-01',
+--     (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-07-01'),
+--     (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-01-01')
 -- )
-;
+-- -- not applicable as data is removed prior to reload
+-- -- WHERE NOT EXISTS (
+-- --     SELECT *
+-- --     FROM dex.trades
+-- --     WHERE block_time > '2019-01-01'
+-- --     AND block_time <= '2020-01-01'
+-- --     AND project = '1inch'
+-- -- )
+-- ;
 
--- fill 2020
-SELECT dex.insert_1inch(
-    '2020-01-01',
-    '2020-07-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-07-01')
-)
--- not applicable as data is removed prior to reload
--- WHERE NOT EXISTS (
---     SELECT *
---     FROM dex.trades
---     WHERE block_time > '2020-01-01'
---     AND block_time <= '2021-01-01'
---     AND project = '1inch'
+-- -- fill 2020
+-- SELECT dex.insert_1inch(
+--     '2020-01-01',
+--     '2020-07-01',
+--     (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
+--     (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-07-01')
 -- )
-;
+-- -- not applicable as data is removed prior to reload
+-- -- WHERE NOT EXISTS (
+-- --     SELECT *
+-- --     FROM dex.trades
+-- --     WHERE block_time > '2020-01-01'
+-- --     AND block_time <= '2021-01-01'
+-- --     AND project = '1inch'
+-- -- )
+-- ;
 
--- fill 2020
-SELECT dex.insert_1inch(
-    '2020-07-01',
-    '2021-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-07-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2021-01-01')
-)
--- not applicable as data is removed prior to reload
--- WHERE NOT EXISTS (
---     SELECT *
---     FROM dex.trades
---     WHERE block_time > '2020-01-01'
---     AND block_time <= '2021-01-01'
---     AND project = '1inch'
+-- -- fill 2020
+-- SELECT dex.insert_1inch(
+--     '2020-07-01',
+--     '2021-01-01',
+--     (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-07-01'),
+--     (SELECT max(number) FROM ethereum.blocks WHERE time <= '2021-01-01')
 -- )
-;
+-- -- not applicable as data is removed prior to reload
+-- -- WHERE NOT EXISTS (
+-- --     SELECT *
+-- --     FROM dex.trades
+-- --     WHERE block_time > '2020-01-01'
+-- --     AND block_time <= '2021-01-01'
+-- --     AND project = '1inch'
+-- -- )
+-- ;
 
--- fill 2021
-SELECT dex.insert_1inch(
-    '2021-01-01',
-    '2021-07-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    (SELECT MAX(number) FROM ethereum.blocks where time <= '2021-07-01')
-)
--- not applicable as data is removed prior to reload
--- WHERE NOT EXISTS (
---     SELECT *
---     FROM dex.trades
---     WHERE block_time > '2021-01-01'
---     AND block_time <= now() - interval '20 minutes'
---     AND project = '1inch'
+-- -- fill 2021
+-- SELECT dex.insert_1inch(
+--     '2021-01-01',
+--     '2021-07-01',
+--     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
+--     (SELECT MAX(number) FROM ethereum.blocks where time <= '2021-07-01')
 -- )
-;
+-- -- not applicable as data is removed prior to reload
+-- -- WHERE NOT EXISTS (
+-- --     SELECT *
+-- --     FROM dex.trades
+-- --     WHERE block_time > '2021-01-01'
+-- --     AND block_time <= now() - interval '20 minutes'
+-- --     AND project = '1inch'
+-- -- )
+-- ;
 
--- fill 2021
-SELECT dex.insert_1inch(
-    '2021-07-01',
-    '2022-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-07-01'),
-    (SELECT MAX(number) FROM ethereum.blocks where time <= '2022-01-01')
-)
--- not applicable as data is removed prior to reload
--- WHERE NOT EXISTS (
---     SELECT *
---     FROM dex.trades
---     WHERE block_time > '2021-01-01'
---     AND block_time <= now() - interval '20 minutes'
---     AND project = '1inch'
+-- -- fill 2021
+-- SELECT dex.insert_1inch(
+--     '2021-07-01',
+--     '2022-01-01',
+--     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-07-01'),
+--     (SELECT MAX(number) FROM ethereum.blocks where time <= '2022-01-01')
 -- )
-;
+-- -- not applicable as data is removed prior to reload
+-- -- WHERE NOT EXISTS (
+-- --     SELECT *
+-- --     FROM dex.trades
+-- --     WHERE block_time > '2021-01-01'
+-- --     AND block_time <= now() - interval '20 minutes'
+-- --     AND project = '1inch'
+-- -- )
+-- ;
 
--- fill 2022
-SELECT dex.insert_1inch(
-    '2022-01-01',
-    '2022-07-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2022-01-01'),
-    (SELECT MAX(number) FROM ethereum.blocks where time <= '2022-07-01')
-)
--- not applicable as data is removed prior to reload
--- WHERE NOT EXISTS (
---     SELECT *
---     FROM dex.trades
---     WHERE block_time > '2021-01-01'
---     AND block_time <= now() - interval '20 minutes'
---     AND project = '1inch'
+-- -- fill 2022
+-- SELECT dex.insert_1inch(
+--     '2022-01-01',
+--     '2022-07-01',
+--     (SELECT max(number) FROM ethereum.blocks WHERE time < '2022-01-01'),
+--     (SELECT MAX(number) FROM ethereum.blocks where time <= '2022-07-01')
 -- )
-;
+-- -- not applicable as data is removed prior to reload
+-- -- WHERE NOT EXISTS (
+-- --     SELECT *
+-- --     FROM dex.trades
+-- --     WHERE block_time > '2021-01-01'
+-- --     AND block_time <= now() - interval '20 minutes'
+-- --     AND project = '1inch'
+-- -- )
+-- ;
 
 -- fill 2022
 SELECT dex.insert_1inch(
