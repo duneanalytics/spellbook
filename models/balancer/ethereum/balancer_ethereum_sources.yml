@@ -72,3 +72,11 @@ sources:
             description: 'Caller address that created the Balancer pool'
           - name: pool
             description: 'Balancer pool contract address'
+          - name: tokenIn
+            description: 'Contract address of the token provided to the pool'
+          - name: tokenOut
+            description: 'Contract address of the token bought from the pool'
+          - name: amountIn
+            description: 'Raw amount of the token provided to the pool'
+          - name: amountOut
+            description: 'Raw amount of the token bought from the pool'

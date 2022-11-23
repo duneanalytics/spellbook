@@ -38,4 +38,5 @@ FROM
     , ('0x2c45af926d5f62c5935278106800a03eb565778e', 'Rarible') -- Rarible
     , ('0x1ee3151cff01321059e3865214379b85c79ca984', 'Magic Eden') -- Magic Eden
     , ('0x141efc30c4093bc0f8204accb8afa6643fddecf2', 'Alpha Sharks') -- Alpha Sharks
+    , ('0x552b16d19dbad7af2786fe5a40d96d2a5c09428c', 'Alpha Sharks') -- Alpha Sharks 2.0
   ) AS temp_table (contract_address, name)

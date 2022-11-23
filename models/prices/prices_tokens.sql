@@ -936,7 +936,7 @@ VALUES
     ('revv-revv', 'ethereum', 'REVV', '0x557b933a7c2c45672b610f8954a3deb39a51a8ca', 18),
     ('rvp-revolution-populi', 'ethereum', 'RVP', '0x17ef75aa22dd5f6c2763b8304ab24f40ee54d48a', 18),
     ('synr-syndicate-token', 'ethereum', 'SYNR', '0xbc6e06778708177a18210181b073da747c88490a', 18),
-    ('tbtc-tbtc', 'ethereum', 'TBTC', '0x8daebade922df735c38c80c7ebd708af50815faa', 18),
+    -- ('tbtc-tbtc', 'ethereum', 'TBTC', '0x8daebade922df735c38c80c7ebd708af50815faa', 18), Remove feed with price anomaly
     ('unn-union-protocol-governance-token', 'ethereum', 'UNN', '0x226f7b842e0f0120b7e194d05432b3fd14773a9d', 18),
     ('wstr-wrappedstar', 'ethereum', 'WSTR', '0xf0dc76c22139ab22618ddfb498be1283254612b1', 18),
     ('xcn-chain', 'ethereum', 'XCN', '0xa2cd3d43c775978a96bdbf12d733d5a1ed94fb18', 18),
