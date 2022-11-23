@@ -27,6 +27,7 @@
 ,'hashflow_trades'
 ,'mstable_ethereum_trades'
 ,'zigzag_trades'
+,'gmx_trades'
 ,'wombat_bnb_trades'
 ,'izumi_bnb_iziswap_trades'
 ] %}
