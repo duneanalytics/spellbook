@@ -1,5 +1,5 @@
 {{ config(
-        alias ='listings_over_time',
+        alias ='floor_price_over_time',
         unique_key='day',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
@@ -84,7 +84,8 @@ with all_listings as (
 , aggregated_punk_on_off_data as (
     select date_trunc('day',a.evt_block_time) as day 
             , a.punk_id 
-            , case when event_type = 'Listing' then 'Active' else 'Not Listed' end as listed_bool
+            , listed_price
+            , case when event_sub_type = 'Public Listing' then 'Active' else 'Not Listed' end as listed_bool
     from all_punk_events a 
     inner join (    select date_trunc('day', evt_block_time) as day 
                             , punk_id
@@ -94,19 +95,32 @@ with all_listings as (
                 ) b -- max event per punk per day 
     on date_trunc('day',a.evt_block_time) = b.day and a.punk_id = b.punk_id and a.punk_event_index = b.max_event
 )
+
 select day 
-        , sum(case when bool_fill_in = 'Active' then 1 else 0 end) as listed_count
+        , floor_price_eth
+        , floor_price_eth*1.0*p.price as floor_price_usd
 from 
-(   select c.*
-            , last_value(listed_bool,true) over (partition by punk_id order by day asc ) as bool_fill_in
+(   select day 
+            , min(price_fill_in) filter (where bool_fill_in = 'Active' and price_fill_in > 0) as floor_price_eth
     from 
-    (   select a.day
-                , a.punk_id 
-                , listed_bool 
-        from base_data  a
-        left outer join aggregated_punk_on_off_data  b 
-        on a.day = b.day and a.punk_id = b.punk_id
-    ) c 
-) d 
-group by 1 
+    (   select c.*
+                , last_value(listed_price,true) over (partition by punk_id order by day asc ) as price_fill_in
+                , last_value(listed_bool,true) over (partition by punk_id order by day asc ) as bool_fill_in
+        from 
+        (   select a.day
+                    , a.punk_id 
+                    , listed_price
+                    , listed_bool 
+            from base_data  a
+            left outer join aggregated_punk_on_off_data  b 
+            on a.day = b.day and a.punk_id = b.punk_id
+        ) c 
+    ) d 
+    group by 1 
+) e 
+
+left join {{ source('prices', 'usd') }} p on p.minute = date_trunc('minute', e.day)
+    AND p.contract_address = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+    AND p.blockchain = "ethereum"
+
 order by day desc 
