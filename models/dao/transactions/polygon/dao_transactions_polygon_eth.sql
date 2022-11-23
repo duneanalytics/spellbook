@@ -27,7 +27,7 @@ transactions as (
         SELECT 
             block_time, 
             tx_hash, 
-            LOWER('0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270') as token, 
+            LOWER('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') as token, 
             value as value, 
             to as dao_wallet_address, 
             'tx_in' as tx_type, 
@@ -52,7 +52,7 @@ transactions as (
         SELECT 
             block_time, 
             tx_hash, 
-            LOWER('0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270') as token, 
+            LOWER('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') as token, 
             value as value, 
             from as dao_wallet_address, 
             'tx_out' as tx_type,
@@ -82,10 +82,10 @@ SELECT
     t.block_time, 
     t.tx_type,
     t.token as asset_contract_address,
-    COALESCE(er.symbol, t.token) as asset,
+    'MATIC' as asset,
     t.value as raw_value, 
-    t.value/POW(10, COALESCE(er.decimals, 18)) as value, 
-    t.value/POW(10, COALESCE(er.decimals, 18)) * p.price as usd_value, 
+    t.value/POW(10, 18) as value, 
+    t.value/POW(10, 18) * p.price as usd_value, 
     t.tx_hash, 
     t.tx_index,
     t.address_interacted_with,
@@ -96,13 +96,9 @@ INNER JOIN
 dao_tmp dt 
     ON t.dao_wallet_address = dt.dao_wallet_address
 LEFT JOIN 
-{{ ref('tokens_erc20') }} er 
-    ON t.token = er.contract_address
-    AND er.blockchain = 'polygon'
-LEFT JOIN 
 {{ source('prices', 'usd') }} p 
     ON p.minute = date_trunc('minute', t.block_time)
-    AND p.contract_address = t.token
+    AND p.symbol = 'MATIC'
     AND p.blockchain = 'polygon'
     {% if not is_incremental() %}
     AND p.minute >= '{{transactions_start_date}}'

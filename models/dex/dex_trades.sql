@@ -29,6 +29,7 @@
 ,'zigzag_trades'
 ,'nomiswap_bnb_trades'
 ,'gmx_trades'
+,'biswap_bnb_trades' 
 ] %}
 
 
