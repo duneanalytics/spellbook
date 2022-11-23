@@ -5,23 +5,24 @@
                                     "project",
                                     "balancer_v2",
                                     \'["stefenon"]\') }}'
-    ) 
+    )
 }}
 
-{% set query %}
-    SELECT DISTINCT CONCAT(namespace, '_ethereum', '.', name, '_evt_Transfer') AS event
-    FROM {{ source('ethereum', 'contracts') }} c
-    JOIN {{ source ('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} p
-    ON p.poolAddress = c.address
-{% endset %}
-
-{% set results = run_query(query) %}
-{% if execute %}
-{# Return the first column #}
-{% set transfer_tables = results.columns[0].values() %}
-{% else %}
-{% set transfer_tables = [] %}
-{% endif %}
+{% set transfer_tables = ['balancer_v2_ethereum.StablePhantomPool_evt_Transfer',
+                        'balancer_v2_ethereum.WeightedPoolV2_evt_Transfer',
+                        'element_finance_ethereum.ConvergentCurvePool_evt_Transfer',
+                        'balancer_v2_ethereum.ComposableStablePool_evt_Transfer',
+                        'balancer_v2_ethereum.LiquidityBootstrappingPool_evt_Transfer',
+                        'balancer_v2_ethereum.WeightedPool_evt_Transfer',
+                        'element_ethereum.ConvergentCurvePool_evt_Transfer',
+                        'balancer_v2_ethereum.NoProtocolFeeLiquidityBootstrappingPool_evt_Transfer',
+                        'balancer_v2_ethereum.InvestmentPool_evt_Transfer',
+                        'balancer_v2_ethereum.StablePool_evt_Transfer',
+                        'balancer_v2_ethereum.AaveLinearPool_evt_Transfer',
+                        'sensefinance_ethereum.Space_evt_Transfer',
+                        'balancer_v2_ethereum.MetaStablePool_evt_Transfer',
+                        'aura_finance_ethereum.StablePool_evt_Transfer',
+                        'balancer_v2_ethereum.ConvergentCurvePool_evt_Transfer'] %}
 
 SELECT DISTINCT * FROM (
     {% for transfer_table in transfer_tables %}

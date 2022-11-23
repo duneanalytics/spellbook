@@ -8,20 +8,13 @@
     ) 
 }}
 
-{% set query %}
-    SELECT DISTINCT CONCAT(namespace, '_optimism', '.', name, '_evt_Transfer') AS event
-    FROM {{ source('optimism', 'contracts') }} c
-    JOIN {{ source ('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} p
-    ON p.poolAddress = c.address
-{% endset %}
-
-{% set results = run_query(query) %}
-{% if execute %}
-{# Return the first column #}
-{% set transfer_tables = results.columns[0].values() %}
-{% else %}
-{% set transfer_tables = [] %}
-{% endif %}
+{% set transfer_tables = ['balancer_v2_optimism.ComposableStablePool_evt_Transfer',
+                        'balancer_v2_optimism.WeightedPool_evt_Transfer',
+                        'balancer_v2_optimism.WeightedPoolV2_evt_Transfer',
+                        'balancer_v2_optimism.MetaStablePool_evt_Transfer',
+                        'balancer_v2_optimism.WeightedPool2Tokens_evt_Transfer',
+                        'balancer_v2_optimism.ReaperLinearPool_evt_Transfer',
+                        'balancer_v2_optimism.AaveLinearPool_evt_Transfer'] %}
 
 SELECT DISTINCT * FROM (
     {% for transfer_table in transfer_tables %}

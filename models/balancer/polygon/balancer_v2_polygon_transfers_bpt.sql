@@ -5,23 +5,17 @@
                                     "project",
                                     "balancer_v2",
                                     \'["stefenon"]\') }}'
-    ) 
+    )
 }}
 
-{% set query %}
-    SELECT DISTINCT CONCAT(namespace, '_polygon', '.', name, '_evt_Transfer') AS event
-    FROM {{ source('polygon', 'contracts') }} c
-    JOIN {{ source ('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }} p
-    ON p.poolAddress = c.address
-{% endset %}
-
-{% set results = run_query(query) %}
-{% if execute %}
-{# Return the first column #}
-{% set transfer_tables = results.columns[0].values() %}
-{% else %}
-{% set transfer_tables = [] %}
-{% endif %}
+{% set transfer_tables = ['balancer_v2_polygon.WeightedPoolV2_evt_Transfer',
+                        'balancer_v2_polygon.NoProtocolFeeLiquidityBootstrappingPool_evt_Transfer',
+                        'balancer_v2_polygon.WeightedPool_evt_Transfer',
+                        'balancer_v2_polygon.LiquidityBootstrappingPool_evt_Transfer',
+                        'balancer_v2_polygon.StablePool_evt_Transfer',
+                        'balancer_v2_polygon.ComposableStablePool_evt_Transfer',
+                        'xavefinance_polygon.xsgd_usdc_v2_evt_Transfer',
+                        'balancer_v2_polygon.AaveLinearPool_evt_Transfer'] %}
 
 SELECT DISTINCT * FROM (
     {% for transfer_table in transfer_tables %}
