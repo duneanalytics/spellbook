@@ -7,6 +7,7 @@ name = "pypi"
 dbt-databricks = "1.2.1"
 numpy = "2.0.12"
 pre-commit = "2.20.0"
+dbt-spark = "*"
 
 [requires]
 python_version = "3.9"
