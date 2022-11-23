@@ -55,10 +55,7 @@ WITH aggregator_routed_x2y2_txs AS (
     , prof.contract_address AS project_contract_address
     , '0x' || substring(get_json_object(inv.item, '$.data'), 155, 40) AS nft_contract_address
     , tokens.name AS collection
-    , CASE WHEN right(ett.input, 8)='72db8c0b' THEN 'Gem'
-        WHEN right(ett.input, 8)='332d1229' THEN 'Blur'
-        ELSE NULL
-        END AS aggregator_name
+    , agg_m.aggregator_name AS aggregator_name
     , NULL AS aggregator_address
     , inv.evt_tx_hash AS tx_hash
     , prof.evt_index
@@ -71,11 +68,13 @@ WITH aggregator_routed_x2y2_txs AS (
     INNER JOIN {{ source('x2y2_ethereum','X2Y2_r1_evt_EvInventory') }} inv  ON inv.evt_block_time=prof.evt_block_time
         AND inv.itemHash=prof.itemHash
     LEFT JOIN {{ ref('tokens_nft') }} tokens ON ('0x' || substring(get_json_object(inv.item, '$.data'), 155, 40)) = tokens.contract_address AND tokens.blockchain = 'ethereum'
-    LEFT JOIN {{ source('ethereum','traces') }} ett
-        ON inv.evt_block_time = ett.block_time AND inv.evt_tx_hash = ett.tx_hash AND right(ett.input, 8)='72db8c0b'
+    LEFT JOIN {{ source('ethereum','transactions') }} et ON inv.evt_block_time = et.block_time
+        AND inv.evt_tx_hash = et.hash
         {% if is_incremental() %}
-        and ett.block_time >= date_trunc("day", now() - interval '1 week')
+        and et.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
+    LEFT JOIN {{ ref('nft_ethereum_aggregators_markers') }} agg_m
+        ON LEFT(et.data, CHARINDEX(agg_m.hash_marker, et.data) + LENGTH(agg_m.hash_marker)) LIKE '%' || agg_m.hash_marker
     WHERE taker NOT IN (SELECT contract_address FROM {{ ref('nft_ethereum_aggregators') }})
     {% if is_incremental() %}
     -- this filter will only be applied on an incremental run

@@ -44,8 +44,17 @@ models:
     balancer:
       +schema: balancer
       +materialized: view
+      arbitrum:
+        +schema: balancer_arbitrum
+        +materialized: view
       ethereum:
         +schema: balancer_ethereum
+        +materialized: view
+      polygon:
+        +schema: balancer_polygon
+        +materialized: view
+      optimism:
+        +schema: balancer_optimism
         +materialized: view
 
     ens:
@@ -108,6 +117,9 @@ models:
         +materialized: view
       optimism:
         +schema: uniswap_optimism
+        +materialized: view
+      polygon:
+        +schema: uniswap_polygon
         +materialized: view
 
     sushiswap:
@@ -182,12 +194,18 @@ models:
       optimism:
         +schema: gas_optimism
         +materialized: view
-
+      arbitrum:
+        +schema: gas_arbitrum
+        +materialized: view
+        
     gmx:
       +schema: gmx
       +materialized: view
       arbitrum:
         +schema: gmx_arbitrum
+        +materialized: view
+      avalanche_c:
+        +schema: gmx_avalanche_c
         +materialized: view
 
     x2y2:
@@ -248,7 +266,8 @@ models:
 
     labels:
       +schema: labels
-      +materialized: view
+      +materialized: table
+      +file_format: delta
 
     dao:
       +schema: dao
@@ -321,6 +340,13 @@ models:
         +schema: safe_ethereum
         +materialized: view
 
+    jarvis_network:
+      +schema: jarvis_network
+      +materialized: view
+      polygon:
+        +schema: jarvis_network_polygon
+        +materialized: view
+
     cryptopunks:
       +schema: cryptopunks
       +materialized: view
@@ -358,7 +384,7 @@ models:
       ethereum:
         +schema: archipelago_ethereum
         +materialized: view
-
+  
     integration_test:
       +schema: integration_test
       +materialized: view
@@ -523,6 +549,9 @@ models:
       ethereum:
         +schema: hashflow_ethereum
         +materialized: view
+      avalanche_c:
+        +schema: hashflow_avalanche_c
+        +materialized: view
 
     nexusmutual:
       +schema: nexusmutual
@@ -609,6 +638,7 @@ seeds:
           token_bought_amount: float
           token_sold_address: string
           token_sold_amount: float
+
     sudoswap:
       +enabled: true
       +schema: test_data
