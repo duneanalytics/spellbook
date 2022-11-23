@@ -32,48 +32,49 @@ WITH biswap_dex AS (
         ON t.contract_address = p.pair
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% else %}
+    {% endif %}
+    {% if not is_incremental() %}
     WHERE t.evt_block_time >= '{{ project_start_date }}'
     {% endif %}
 )
 
-SELECT
-    'bnb'                                                      AS blockchain,
-    'biswap'                                                        AS project,
-    '1'                                                                AS version,
-    try_cast(date_trunc('DAY', biswap_dex.block_time) AS date)      AS block_date,
-    biswap_dex.block_time,
-    erc20a.symbol                                                      AS token_bought_symbol,
-    erc20b.symbol                                                      AS token_sold_symbol,
-    CASE
-        WHEN lower(erc20a.symbol) > lower(erc20b.symbol) THEN concat(erc20b.symbol, '-', erc20a.symbol)
-        ELSE concat(erc20a.symbol, '-', erc20b.symbol)
-        END                                                            AS token_pair,
-    biswap_dex.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount,
-    biswap_dex.token_sold_amount_raw / power(10, erc20b.decimals)   AS token_sold_amount,
-    biswap_dex.token_bought_amount_raw,
-    biswap_dex.token_sold_amount_raw,
-    coalesce(
-            biswap_dex.amount_usd
-        , (biswap_dex.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
-        , (biswap_dex.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
-        )                                                              AS amount_usd,
-    biswap_dex.token_bought_address,
-    biswap_dex.token_sold_address,
-    coalesce(biswap_dex.taker, tx.from)                             AS taker,
-    biswap_dex.maker,
-    biswap_dex.project_contract_address,
-    biswap_dex.tx_hash,
-    tx.from                                                            AS tx_from,
-    tx.to                                                              AS tx_to,
-    biswap_dex.trace_address,
-    biswap_dex.evt_index
+SELECT 'bnb'                                                           AS blockchain,
+       'biswap'                                                        AS project,
+       '1'                                                             AS version,
+       try_cast(date_trunc('DAY', biswap_dex.block_time) AS date)      AS block_date,
+       biswap_dex.block_time,
+       erc20a.symbol                                                   AS token_bought_symbol,
+       erc20b.symbol                                                   AS token_sold_symbol,
+       CASE
+           WHEN lower(erc20a.symbol) > lower(erc20b.symbol) THEN concat(erc20b.symbol, '-', erc20a.symbol)
+           ELSE concat(erc20a.symbol, '-', erc20b.symbol)
+           END                                                         AS token_pair,
+       biswap_dex.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount,
+       biswap_dex.token_sold_amount_raw / power(10, erc20b.decimals)   AS token_sold_amount,
+       biswap_dex.token_bought_amount_raw,
+       biswap_dex.token_sold_amount_raw,
+       coalesce(
+               biswap_dex.amount_usd
+           , (biswap_dex.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
+           , (biswap_dex.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
+           )                                                           AS amount_usd,
+       biswap_dex.token_bought_address,
+       biswap_dex.token_sold_address,
+       coalesce(biswap_dex.taker, tx.from)                             AS taker,
+       biswap_dex.maker,
+       biswap_dex.project_contract_address,
+       biswap_dex.tx_hash,
+       tx.from                                                         AS tx_from,
+       tx.to                                                           AS tx_to,
+       biswap_dex.trace_address,
+       biswap_dex.evt_index
 FROM biswap_dex
 INNER JOIN {{ source('bnb', 'transactions') }} tx
     ON biswap_dex.tx_hash = tx.hash
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc("day", now() - interval '1 week')
-    {% else %}
+    {% endif %}
+    {% if not is_incremental() %}
     AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
@@ -88,7 +89,8 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.blockchain = 'bnb'
     {% if is_incremental() %}
     AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
-    {% else %}
+    {% endif %}
+    {% if not is_incremental() %}
     AND p_bought.minute >= '{{project_start_date}}'
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
@@ -97,7 +99,8 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.blockchain = 'bnb'
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
-    {% else %}
+    {% endif %}
+    {% if not is_incremental() %}
     AND p_sold.minute >= '{{project_start_date}}'
     {% endif %}
 ;
