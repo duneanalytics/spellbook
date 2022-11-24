@@ -31,7 +31,7 @@ FROM
                 ,trace_address
                 ,evt_index
         FROM {{ ref('uniswap_v1_ethereum_trades') }}
-        UNION
+        UNION ALL
         SELECT
                 blockchain
                 ,project
@@ -57,7 +57,7 @@ FROM
                 ,trace_address
                 ,evt_index
         FROM {{ ref('uniswap_v2_ethereum_trades') }}
-        UNION
+        UNION ALL
         SELECT
                 blockchain
                 ,project
