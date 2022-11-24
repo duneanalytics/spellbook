@@ -113,14 +113,6 @@ SELECT distinct 'ethereum' AS blockchain
 , COALESCE(ROUND(100*roy.amount/lr.amount_raw, 2), 0) AS royalty_fee_percentage
 , 'ethereum-looksrare-v1' || COALESCE(lr.tx_hash, '-1') || COALESCE(lr.nft_contract_address, '-1') || COALESCE(lr.token_id, '-1') || COALESCE(COALESCE(seller_fix.from, lr.seller), '-1') || COALESCE(COALESCE(buyer_fix.to, lr.buyer), '-1') || COALESCE(lr.evt_index, '-1') AS unique_trade_id
 FROM looksrare_trades lr
-LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} standard ON lr.block_time=standard.evt_block_time
-    AND lr.tx_hash=standard.evt_tx_hash
-    AND lr.nft_contract_address=standard.contract_address
-    AND lr.token_id=standard.tokenId
-    AND COALESCE(seller_fix.from, lr.seller)=standard.from
-    {% if is_incremental() %}
-    AND standard.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain='ethereum'
     AND pu.minute=date_trunc('minute', lr.block_time)
     AND (pu.contract_address=lr.currency_contract
@@ -168,6 +160,14 @@ LEFT JOIN {{ ref('nft_ethereum_transfers') }} seller_fix ON lr.block_time=seller
     AND lr.seller=seller_fix.to
     {% if is_incremental() %}
     AND seller_fix.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} standard ON lr.block_time=standard.evt_block_time
+    AND lr.tx_hash=standard.evt_tx_hash
+    AND lr.nft_contract_address=standard.contract_address
+    AND lr.token_id=standard.tokenId
+    AND COALESCE(seller_fix.from, lr.seller)=standard.from
+    {% if is_incremental() %}
+    AND standard.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN platform_fees pf ON pf.contract_address=lr.strategy
 LEFT JOIN {{ ref('nft_ethereum_aggregators_markers') }} agg_m
