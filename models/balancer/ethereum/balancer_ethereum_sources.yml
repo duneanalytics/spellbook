@@ -99,7 +99,7 @@ sources:
           - *denorm
           - *token
 
-      - name: BPool_call_rebind
+      - name: BPool_call_unbind
         description: >
           Decoded table related to the Balancer BPool contract.
         loaded_at_field: evt_block_time
