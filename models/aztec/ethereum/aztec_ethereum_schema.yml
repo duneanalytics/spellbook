@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       project: aztec_v2
-      contributors: jackie, henrystats
+      contributors: jackie, Henrystats
     config:
       tags: ['ethereum','aztec', 'bridge']
     description: "View aztec rollup bridge transactions on ethereum"
@@ -87,7 +87,7 @@ models:
           description: "bridge version"
         - &evt_block_date
           name: evt_block_date
-          description: "Blockchain Transaction Block Time date trunced"
+          description: "Blockchain transaction Block Time date trunced"
         - &trace_address
           name: trace_address
           description: "trace address from traces table, empty for erc20 txs"
@@ -96,7 +96,7 @@ models:
     meta:
       blockchain: ethereum
       project: aztec_v2
-      contributors: jackie, henrystats
+      contributors: jackie, Henrystats
     config:
       tags: ['ethereum','aztec']
     description: "List of assets added"
@@ -121,7 +121,7 @@ models:
     meta:
       blockchain: ethereum
       project: aztec_v2
-      contributors: jackie, henrystats
+      contributors: jackie, Henrystats
     config:
       tags: ['ethereum','aztec']
     description: "View aztec rollup bridge daily bridge activity summary"
@@ -174,7 +174,7 @@ models:
     meta:
       blockchain: ethereum
       project: aztec_v2
-      contributors: jackie, henrystats
+      contributors: jackie, Henrystats
     config:
       tags: ['ethereum','aztec']
     description: "View aztec daily deposits grouped by token"
@@ -209,7 +209,7 @@ models:
     meta:
       blockchain: ethereum
       project: aztec_v2
-      contributors: jackie, henrystats
+      contributors: jackie, Henrystats
     config:
       tags: ['ethereum','aztec']
     description: "View daily rollup tvl grouped by token"
@@ -237,7 +237,7 @@ models:
     meta:
       blockchain: ethereum
       project: aztec_v2
-      contributors: jackie, henrystats
+      contributors: jackie, Henrystats
     config:
       tags: ['ethereum','aztec']
     description: "Labels and addresses of bridges in the aztec ecosystem"
