@@ -36,7 +36,7 @@ tx_to,
 unique_trade_id
 FROM {{ ref('opensea_ethereum_trades') }}
 
-            UNION
+            UNION ALL
 
 SELECT blockchain,
 project,
