@@ -6767,4 +6767,5 @@ FROM (VALUES
           ('0xe9b076b476d8865cdf79d1cf7df420ee397a7f75', 'FUND', 9),
           ('0xf20393619c122f8b901b964264e614d2611ed9ba', 'SBFP', 18),
           ('0xfda4af798f2e30ecadc8878dda5b5fa3646b4216', 'Lord Elon', 9)
+          ('0x0B6F3c17e1626a7cBfA4302CE4E3c45522d23A83', 'WAD', 18)
      ) AS temp_table (contract_address, symbol, decimals)
