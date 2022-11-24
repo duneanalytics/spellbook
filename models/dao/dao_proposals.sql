@@ -11,6 +11,7 @@
 'uniswap_v3_ethereum_proposals',
 'compound_v2_ethereum_proposals',
 'gitcoin_ethereum_proposals',
+'ens_ethereum_proposals',
 'aave_ethereum_proposals'
 ] %}
 
