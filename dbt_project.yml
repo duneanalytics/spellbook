@@ -531,9 +531,9 @@ models:
       polygon:
         +schema: fraxswap_polygon
         +materialized: view
-      # ethereum:
-      #   +schema: fraxswap_ethereum
-      #   +materialized: view
+      ethereum:
+        +schema: fraxswap_ethereum
+        +materialized: view
 
     mstable:
       +schema: mstable
