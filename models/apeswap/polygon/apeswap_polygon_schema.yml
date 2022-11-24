@@ -3,14 +3,14 @@ version: 2
 models:
   - name: apeswap_polygon_trades
     meta:
-      blockchain: avalanche_c
+      blockchain: polygon
       sector: dex
       project: apeswap
       contributors: codingsh, zhongyiio
     config:
-      tags: ['avalanche_c','apeswap','trades','dex']
+      tags: ['polygon','apeswap','trades','dex']
     description: >
-        apeswap contract trades on Avalanche (C-Chain)
+        apeswap contract trades on Polygon
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
