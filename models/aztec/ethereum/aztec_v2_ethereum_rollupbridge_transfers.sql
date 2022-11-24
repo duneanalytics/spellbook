@@ -173,24 +173,24 @@ tfers_categorized as (
                 WHEN from_contract.contract_type = 'Bridge' AND to_contract.contract_type IS NULL THEN 'Bridge to Protocol'
                 WHEN to_contract.contract_type = 'Bridge' AND from_contract.contract_type IS NULL THEN 'Protocol to Bridge'
             END as spec_txn_type, 
-            to_contract.protocol as to_protocol,
-            to_contract.contract_type as to_type,
-            from_contract.protocol as from_protocol,
-            from_contract.contract_type as from_type,
+            COALESCE(to_contract.protocol, 'Blank') as to_protocol,
+            COALESCE(to_contract.contract_type, 'Blank') as to_type,
+            COALESCE(from_contract.protocol, 'Blank') as from_protocol,
+            COALESCE(from_contract.contract_type, 'Blank') as from_type,
             CASE 
                 WHEN to_contract.contract_type = 'Bridge' THEN to_contract.contract_address
                 WHEN from_contract.contract_type = 'Bridge' THEN from_contract.contract_address
-                ELSE NULL
+                ELSE 'Blank'
             END as bridge_address,
             CASE 
                 WHEN to_contract.contract_type = 'Bridge' THEN to_contract.protocol
                 WHEN from_contract.contract_type = 'Bridge' THEN from_contract.protocol
-                ELSE NULL 
+                ELSE 'Blank'
             END as bridge_protocol, 
             CASE 
                 WHEN to_contract.contract_type = 'Bridge' THEN to_contract.version
                 WHEN from_contract.contract_type = 'Bridge' THEN from_contract.version
-                ELSE NULL 
+                ELSE 'Blank'
             END as bridge_version
         FROM tfers_raw t
         LEFT JOIN {{ref('tokens_erc20')}}  tk on t.contract_address = tk.contract_address AND tk.blockchain = 'ethereum'
