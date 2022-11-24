@@ -101,36 +101,23 @@ UNION ALL
 
 SELECT
     c.`poolId` AS pool_id,
-    cc.tokens[0] AS token_address,
-    cc.weights[0] / POWER(1, 18) AS normalized_weight
+    tokens.token_address,
+    weights.normalized_weight / POWER(10, 18) AS normalized_weight
 FROM balancer_v2_ethereum.`Vault_evt_PoolRegistered` c
 INNER JOIN balancer_v2_ethereum.`WeightedPoolFactory_call_create` cc ON c.evt_tx_hash = cc.call_tx_hash
+    LATERAL VIEW posexplode(cc.tokens) tokens AS pos, token_address
+    LATERAL VIEW posexplode(cc.weights) weights AS pos, normalized_weight
+WHERE tokens.pos = weights.pos
 
 UNION ALL
 
 SELECT
     c.`poolId` AS pool_id,
-    cc.tokens[1] AS token_address,
-    cc.weights[1] / POWER(1, 18) AS normalized_weight
-FROM balancer_v2_ethereum.`Vault_evt_PoolRegistered` c
-INNER JOIN balancer_v2_ethereum.`WeightedPoolFactory_call_create` cc ON c.evt_tx_hash = cc.call_tx_hash
-
-UNION ALL
-
-SELECT
-    c.`poolId` AS pool_id,
-    cc.tokens[0] AS token_address,
-    cc.weights[0] / POWER(10, 18) AS normalized_weight
+    tokens.token_address,
+    weights.normalized_weight / POWER(10, 18) AS normalized_weight
 FROM balancer_v2_ethereum.`Vault_evt_PoolRegistered` c
 INNER JOIN balancer_v2_ethereum.`WeightedPool2TokensFactory_call_create` cc ON c.evt_tx_hash = cc.call_tx_hash
-
-UNION ALL
-
-SELECT
-    c.`poolId` AS pool_id,
-    cc.tokens[1] AS token_address,
-    cc.weights[1] / POWER(10, 18) AS normalized_weight
-FROM balancer_v2_ethereum.`Vault_evt_PoolRegistered` c
-INNER JOIN balancer_v2_ethereum.`WeightedPool2TokensFactory_call_create` cc ON c.evt_tx_hash = cc.call_tx_hash
-;
+    LATERAL VIEW posexplode(cc.tokens) tokens AS pos, token_address
+    LATERAL VIEW posexplode(cc.weights) weights AS pos, normalized_weight
+WHERE tokens.pos = weights.pos
 
