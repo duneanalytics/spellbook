@@ -24,7 +24,7 @@ models:
             - trace_address
             - address_interacted_with
             - value 
-            - asset 
+            - asset_contract_address
     columns:
       - &blockchain
         name: blockchain
@@ -101,7 +101,7 @@ models:
             - trace_address
             - address_interacted_with
             - value 
-            - asset 
+            - asset_contract_address
     columns:
       - *blockchain
       - *dao_creator_tool
