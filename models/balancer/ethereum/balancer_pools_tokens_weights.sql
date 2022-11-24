@@ -8,8 +8,6 @@
     ) 
 }}
 
-{% set project_start_date = '2021-04-20' %}
-
 WITH events AS (
     -- Binds
     SELECT
