@@ -11,43 +11,43 @@
 WITH events AS (
     -- Binds
     SELECT
-        call_block_number AS block_number,
-        index,
-        call_trace_address,
-        contract_address AS pool,
-        token,
-        denorm
-    FROM balancer_v1_ethereum.`BPool_call_bind`
-    INNER JOIN ethereum.transactions ON call_tx_hash = hash
-    WHERE call_success = TRUE
+        bind.call_block_number AS block_number,
+        tx.index,
+        bind.call_trace_address,
+        bind.contract_address AS pool,
+        bind.token,
+        bind.denorm
+    FROM {{ source('balancer_v1_ethereum', 'BPool_call_bind') }} bind
+    INNER JOIN {{ source('ethereum', 'transactions') }} tx ON tx.hash = bind.call_tx_hash 
+    WHERE bind.call_success = TRUE
 
     UNION ALL
 
     -- Rebinds
     SELECT
-        call_block_number AS block_number,
-        index,
-        call_trace_address,
-        contract_address AS pool,
-        token,
-        denorm
-    FROM balancer_v1_ethereum.`BPool_call_rebind`
-    INNER JOIN ethereum.transactions ON call_tx_hash = hash
-    WHERE call_success = TRUE
+        rebind.call_block_number AS block_number,
+        tx.index,
+        rebind.call_trace_address,
+        rebind.contract_address AS pool,
+        rebind.token,
+        rebind.denorm
+    FROM {{ source('balancer_v1_ethereum', 'BPool_call_rebind') }} rebind
+    INNER JOIN {{ source('ethereum', 'transactions') }} tx ON tx.hash = rebind.call_tx_hash 
+    WHERE rebind.call_success = TRUE
 
     UNION ALL
     
     -- Unbinds
     SELECT
-        call_block_number AS block_number, 
-        index,
-        call_trace_address,
-        contract_address AS pool,
-        token,
+        unbind.call_block_number AS block_number, 
+        tx.index,
+        unbind.call_trace_address,
+        unbind.contract_address AS pool,
+        unbind.token,
         '0' AS denorm
-    FROM balancer_v1_ethereum.`BPool_call_unbind`
-    INNER JOIN ethereum.transactions ON call_tx_hash = hash
-    WHERE call_success = TRUE
+    FROM {{ source('balancer_v1_ethereum', 'BPool_call_unbind') }} unbind
+    INNER JOIN {{ source('ethereum', 'transactions') }} tx ON tx.hash = unbind.call_tx_hash 
+    WHERE unbind.call_success = TRUE
 ),
 state_with_gaps AS (
     SELECT
@@ -66,7 +66,7 @@ settings AS (
         pool, 
         token, 
         denorm
-    FROM state_with_gaps s
+    FROM state_with_gaps
     WHERE
         next_block_number IS NULL
         AND denorm <> '0'
@@ -75,7 +75,7 @@ sum_denorm AS (
     SELECT
         pool,
         SUM(denorm) AS sum_denorm
-    FROM state_with_gaps s
+    FROM state_with_gaps
     WHERE
         next_block_number IS NULL
         AND denorm <> '0'
@@ -98,24 +98,26 @@ FROM norm_weights
 UNION ALL
 
 SELECT
-    c.`poolId` AS pool_id,
+    registered.`poolId` AS pool_id,
     tokens.token_address,
     weights.normalized_weight / POWER(10, 18) AS normalized_weight
-FROM balancer_v2_ethereum.`Vault_evt_PoolRegistered` c
-INNER JOIN balancer_v2_ethereum.`WeightedPoolFactory_call_create` cc ON c.evt_tx_hash = cc.call_tx_hash
-    LATERAL VIEW posexplode(cc.tokens) tokens AS pos, token_address
-    LATERAL VIEW posexplode(cc.weights) weights AS pos, normalized_weight
+FROM {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} registered
+INNER JOIN {{ source('balancer_v2_ethereum', 'WeightedPoolFactory_call_create') }} call_create
+    ON call_create.call_tx_hash = registered.evt_tx_hash
+    LATERAL VIEW posexplode(call_create.tokens) tokens AS pos, token_address
+    LATERAL VIEW posexplode(call_create.weights) weights AS pos, normalized_weight
 WHERE tokens.pos = weights.pos
 
 UNION ALL
 
 SELECT
-    c.`poolId` AS pool_id,
+    registered.`poolId` AS pool_id,
     tokens.token_address,
     weights.normalized_weight / POWER(10, 18) AS normalized_weight
-FROM balancer_v2_ethereum.`Vault_evt_PoolRegistered` c
-INNER JOIN balancer_v2_ethereum.`WeightedPool2TokensFactory_call_create` cc ON c.evt_tx_hash = cc.call_tx_hash
-    LATERAL VIEW posexplode(cc.tokens) tokens AS pos, token_address
-    LATERAL VIEW posexplode(cc.weights) weights AS pos, normalized_weight
+FROM {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} registered
+INNER JOIN {{ source('balancer_v2_ethereum', 'WeightedPool2TokensFactory_call_create') }} call_create
+    ON call_create.call_tx_hash = registered.evt_tx_hash
+    LATERAL VIEW posexplode(call_create.tokens) tokens AS pos, token_address
+    LATERAL VIEW posexplode(call_create.weights) weights AS pos, normalized_weight
 WHERE tokens.pos = weights.pos
 ;
