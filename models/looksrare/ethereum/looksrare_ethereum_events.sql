@@ -117,6 +117,7 @@ LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} standard ON lr.block_ti
     AND lr.tx_hash=standard.evt_tx_hash
     AND lr.nft_contract_address=standard.contract_address
     AND lr.token_id=standard.tokenId
+    AND COALESCE(seller_fix.from, lr.seller)=standard.from
     {% if is_incremental() %}
     AND standard.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
