@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: polygon
       sector: dao
-      contributors: henrystats 
+      contributors: Henrystats 
     config:
       tags: [ 'polygon','erc20','daos', 'dao creator tools', 'henrystats' ]
     description: >
@@ -24,7 +24,7 @@ models:
             - trace_address
             - address_interacted_with
             - value 
-            - asset 
+            - asset_contract_address
     columns:
       - &blockchain
         name: blockchain
@@ -82,7 +82,7 @@ models:
     meta:
       blockchain: ethereum
       sector: dao
-      contributors: henrystats 
+      contributors: Henrystats 
     config:
       tags: [ 'polygon','eth','daos', 'dao creator tools', 'henrystats' ]
     description: >
@@ -101,7 +101,7 @@ models:
             - trace_address
             - address_interacted_with
             - value 
-            - asset 
+            - asset_contract_address
     columns:
       - *blockchain
       - *dao_creator_tool
