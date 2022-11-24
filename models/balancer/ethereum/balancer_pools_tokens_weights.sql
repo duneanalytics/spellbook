@@ -110,8 +110,8 @@ UNION ALL
 
 SELECT
     c.`poolId` AS pool_id,
-    cc.tokens[0] AS token_address,
-    cc.weights[0] / POWER(1, 18) AS normalized_weight
+    cc.tokens[1] AS token_address,
+    cc.weights[1] / POWER(1, 18) AS normalized_weight
 FROM balancer_v2_ethereum.`Vault_evt_PoolRegistered` c
 INNER JOIN balancer_v2_ethereum.`WeightedPoolFactory_call_create` cc ON c.evt_tx_hash = cc.call_tx_hash
 
