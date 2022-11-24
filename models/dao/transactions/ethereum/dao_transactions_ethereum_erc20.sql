@@ -21,6 +21,7 @@ dao_tmp as (
         FROM 
         {{ ref('dao_addresses_ethereum') }}
         WHERE dao_wallet_address IS NOT NULL 
+        AND dao_wallet_address != '0x0000000000000000000000000000000000000001'
 ), 
 
 transactions as (
