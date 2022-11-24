@@ -190,7 +190,7 @@ models:
         tests:
           - not_null
       - &btc_b_aum
-        name: wbtc_aum
+        name: btc_b_aum
         description: "Net asset under management for the BTC.b pool"
         tests:
           - not_null
