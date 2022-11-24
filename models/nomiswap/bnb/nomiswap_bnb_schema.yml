@@ -8,9 +8,9 @@ models:
       project: nomiswap
       contributors: codingsh
     config:
-      tags: ['bnb','nomiswap','trades','dex']
+      tags: ["bnb", "nomiswap", "trades", "dex"]
     description: >
-         contract trades on Binance Smart Chain (bsc)
+      contract trades on BNB  Chain
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

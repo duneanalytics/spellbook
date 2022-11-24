@@ -2,11 +2,11 @@ version: 2
 
 sources:
   - name: nomiswap_bnb
-    description: "Binance Smart Chain (bsc) decoded tables related to SushiSwap contract"
+    description: "BNB  Chain decoded tables related to SushiSwap contract"
     tables:
       - name: NomiswapPair_evt_Swap
         loaded_at_field: evt_block_time
-        description: "NomiSwap swap events table on Binance Smart Chain (bsc)"
+        description: "NomiSwap swap events table on BNB  Chain"
         columns:
           - &amount0In
             name: amount0In
@@ -18,7 +18,7 @@ sources:
             name: amount1Out
           - &contract_address
             name: contract_address
-            description: "Binance Smart Chain (bsc) address for the liquidity pool used in transaction"
+            description: "BNB  Chain address for the liquidity pool used in transaction"
           - &evt_block_number
             name: evt_block_number
             description: "Block number which processed the unique transaction hash"
