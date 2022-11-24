@@ -122,7 +122,6 @@ models:
         +schema: uniswap_polygon
         +materialized: view
 
-
     nomiswap:
       +schema: nomiswap
       +materialized: view
