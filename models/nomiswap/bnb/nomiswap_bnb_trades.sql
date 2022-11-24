@@ -12,7 +12,7 @@
     )
 }}
 
-{% set project_start_date = '2022-09-09' %}
+{% set project_start_date = '2022-08-31' %}     -- select min(evt_block_time) from nomiswap_bnb.NomiswapPair_evt_Swap
 
 WITH nomiswap_dex AS (
     SELECT  t.evt_block_time                                             AS block_time,
@@ -39,34 +39,34 @@ WITH nomiswap_dex AS (
 )
 
 SELECT
-    'bnb'                                                      AS blockchain,
+    'bnb'                                                             AS blockchain,
     'nomiswap'                                                        AS project,
-    '1'                                                                AS version,
+    '1'                                                               AS version,
     try_cast(date_trunc('DAY', nomiswap_dex.block_time) AS date)      AS block_date,
     nomiswap_dex.block_time,
-    erc20a.symbol                                                      AS token_bought_symbol,
-    erc20b.symbol                                                      AS token_sold_symbol,
+    erc20a.symbol                                                     AS token_bought_symbol,
+    erc20b.symbol                                                     AS token_sold_symbol,
     CASE
         WHEN lower(erc20a.symbol) > lower(erc20b.symbol) THEN concat(erc20b.symbol, '-', erc20a.symbol)
         ELSE concat(erc20a.symbol, '-', erc20b.symbol)
-        END                                                            AS token_pair,
+        END                                                           AS token_pair,
     nomiswap_dex.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount,
     nomiswap_dex.token_sold_amount_raw / power(10, erc20b.decimals)   AS token_sold_amount,
     nomiswap_dex.token_bought_amount_raw,
     nomiswap_dex.token_sold_amount_raw,
     coalesce(
-            nomiswap_dex.amount_usd
+           nomiswap_dex.amount_usd
         , (nomiswap_dex.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
         , (nomiswap_dex.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
-        )                                                              AS amount_usd,
+        )                                                             AS amount_usd,
     nomiswap_dex.token_bought_address,
     nomiswap_dex.token_sold_address,
     coalesce(nomiswap_dex.taker, tx.from)                             AS taker,
     nomiswap_dex.maker,
     nomiswap_dex.project_contract_address,
     nomiswap_dex.tx_hash,
-    tx.from                                                            AS tx_from,
-    tx.to                                                              AS tx_to,
+    tx.from                                                           AS tx_from,
+    tx.to                                                             AS tx_to,
     nomiswap_dex.trace_address,
     nomiswap_dex.evt_index
 FROM nomiswap_dex
