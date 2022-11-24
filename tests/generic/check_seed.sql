@@ -1,7 +1,7 @@
 -- this tests checks a model for every row in a seed file.
 -- you need to specify the matching columns and the columns to check for equality.
 -- filter: dictionary filter of column:value that is applied to the seed file
-
+-- actual implementation in macros/test-helpers/check_seed.sql
 {% test check_seed(model, seed_file, match_columns=[], check_columns=[], filter=None) %}
     {#
         --jinja comment
@@ -14,8 +14,6 @@
     {{ config(severity = 'warn') }}
     {%- set seed_check_columns = check_columns -%}
     {%- set seed_matching_columns = match_columns -%}
-
-    -- actual implementation in macros/tests/check_seed.sql
     {{ check_seed(model,seed_file,seed_matching_columns,seed_check_columns,filter) }}
 
 {% endtest %}
