@@ -106,6 +106,20 @@ models:
         +schema: nft_optimism
         +materialized: view
 
+    compound:
+      +schema: compound
+      +materialized: view
+      ethereum:
+        +schema: compound_ethereum
+        +materialized: view
+
+    gitcoin:
+      +schema: gitcoin
+      +materialized: view
+      ethereum:
+        +schema: gitcoin_ethereum
+        +materialized: view
+
     uniswap:
       +schema: uniswap
       +materialized: view
