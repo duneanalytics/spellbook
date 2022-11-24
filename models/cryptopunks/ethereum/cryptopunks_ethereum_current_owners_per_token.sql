@@ -1,5 +1,7 @@
 {{ config(
         alias ='current_owners_per_token',
+        materialized = 'table',
+        file_format = 'delta',
         unique_key='punk_id',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
