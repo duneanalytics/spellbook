@@ -120,4 +120,4 @@ INNER JOIN balancer_v2_ethereum.`WeightedPool2TokensFactory_call_create` cc ON c
     LATERAL VIEW posexplode(cc.tokens) tokens AS pos, token_address
     LATERAL VIEW posexplode(cc.weights) weights AS pos, normalized_weight
 WHERE tokens.pos = weights.pos
-
+;
