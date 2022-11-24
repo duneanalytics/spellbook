@@ -8,7 +8,6 @@
     ) 
 }}
 
-{% set event_signature = '0xa9ba3ffe0b6c366b81232caab38605a0699ad5398d6cce76f91ee809e322dafc' %}
 {% set project_start_date = '2021-04-20' %}
 
 WITH events AS (
@@ -102,22 +101,36 @@ UNION ALL
 
 SELECT
     c.`poolId` AS pool_id,
-    tokens.token_address,
-    weights.normalized_weight / POWER(1, 18)
+    cc.tokens[0] AS token_address,
+    cc.weights[0] / POWER(1, 18) AS normalized_weight
 FROM balancer_v2_ethereum.`Vault_evt_PoolRegistered` c
 INNER JOIN balancer_v2_ethereum.`WeightedPoolFactory_call_create` cc ON c.evt_tx_hash = cc.call_tx_hash
-    LATERAL VIEW EXPLODE(cc.tokens) tokens AS token_address
-    LATERAL VIEW EXPLODE(cc.weights) weights AS normalized_weight
 
 UNION ALL
 
 SELECT
     c.`poolId` AS pool_id,
-    tokens.token_address,
-    weights.normalized_weight / POWER(1, 18)
+    cc.tokens[0] AS token_address,
+    cc.weights[0] / POWER(1, 18) AS normalized_weight
+FROM balancer_v2_ethereum.`Vault_evt_PoolRegistered` c
+INNER JOIN balancer_v2_ethereum.`WeightedPoolFactory_call_create` cc ON c.evt_tx_hash = cc.call_tx_hash
+
+UNION ALL
+
+SELECT
+    c.`poolId` AS pool_id,
+    cc.tokens[0] AS token_address,
+    cc.weights[0] / POWER(10, 18) AS normalized_weight
 FROM balancer_v2_ethereum.`Vault_evt_PoolRegistered` c
 INNER JOIN balancer_v2_ethereum.`WeightedPool2TokensFactory_call_create` cc ON c.evt_tx_hash = cc.call_tx_hash
-    LATERAL VIEW EXPLODE(cc.tokens) tokens AS token_address
-    LATERAL VIEW EXPLODE(cc.weights) weights AS normalized_weight
+
+UNION ALL
+
+SELECT
+    c.`poolId` AS pool_id,
+    cc.tokens[1] AS token_address,
+    cc.weights[1] / POWER(10, 18) AS normalized_weight
+FROM balancer_v2_ethereum.`Vault_evt_PoolRegistered` c
+INNER JOIN balancer_v2_ethereum.`WeightedPool2TokensFactory_call_create` cc ON c.evt_tx_hash = cc.call_tx_hash
 ;
 
