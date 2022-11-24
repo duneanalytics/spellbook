@@ -33,7 +33,7 @@ models:
         tests:
           - not_null
       - &usdc_e_current_price
-        name: usdt_current_price
+        name: usdc_e_current_price
         description: "Current price of USDC.e as calculated per the GMX smart contract"
         tests:
           - not_null
