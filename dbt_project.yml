@@ -141,8 +141,6 @@ models:
       bnb:
         +schema: babyswap_bnb
         +materialized: view
-    
-    
 
     opensea:
       +schema: opensea
