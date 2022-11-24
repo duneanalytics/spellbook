@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: polygon
       project: aragon
-      contributors: henrystats 
+      contributors: Henrystats 
     config:
       tags: [ 'polygon', 'daos', 'aragon', 'dao creator tools', 'henrystats' ]
     description: >
@@ -45,7 +45,7 @@ models:
     meta:
       blockchain: polygon
       project: syndicate
-      contributors: henrystats 
+      contributors: Henrystats 
     config:
       tags: [ 'polygon', 'daos', 'syndicate', 'dao creator tools', 'henrystats' ]
     description: >
@@ -70,7 +70,7 @@ models:
     meta:
       blockchain: polygon
       sector: dao
-      contributors: henrystats 
+      contributors: Henrystats 
     config:
       tags: [ 'polygon', 'daos', 'aragon', 'syndicate', 'dao creator tools', 'henrystats' ]
     description: >
