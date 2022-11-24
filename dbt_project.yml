@@ -592,7 +592,7 @@ models:
         +schema: zeroex_ethereum
         +materialized: view
 
-     wardenswap:
+    wardenswap:
       +schema: wardenswap
       +materialized: view
       arbitrum:
