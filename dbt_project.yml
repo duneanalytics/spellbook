@@ -578,6 +578,29 @@ models:
         +schema: zeroex_ethereum
         +materialized: view
 
+     wardenswap:
+      +schema: wardenswap
+      +materialized: view
+      arbitrum:
+        +schema: wardenswap_arbitrum
+        +materialized: view
+      ethereum:
+        +schema: wardenswap_ethereum
+        +materialized: view
+      bnb:
+        +schema: wardenswap_bnb
+        +materialized: view
+      avalanche_c:
+        +schema: wardenswap_avalanche_c
+        +materialized: view
+      polygon:
+        +schema: wardenswap_polygon
+        +materialized: view
+      optimism:
+        +schema: wardenswap_optimism
+        +materialized: view
+      
+
 seeds:
   spellbook:
     balances:
