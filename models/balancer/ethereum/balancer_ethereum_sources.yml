@@ -50,6 +50,68 @@ sources:
             description: 'Caller address that created the Balancer pool'
           - name: pool
             description: 'Balancer pool contract address'
+
+      - name: BPool_call_bind
+        description: >
+          Decoded table related to the Balancer BPool contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - &balance
+            name: balance
+            description: ''
+          - &call_block_number
+            name: call_block_number
+            description: ''
+          - &call_block_time
+            name: call_block_time
+            description: ''
+          - &call_success
+            name: call_success
+            description: ''
+          - &call_trace_address
+            name: call_trace_address
+            description: ''
+          - &call_tx_hash
+            name: call_tx_hash
+            description: ''
+          - &contract_address
+            name: contract_address
+            description: ''
+          - &denorm
+            name: denorm
+            description: ''
+          - &token
+            name: token
+            description: ''
+
+      - name: BPool_call_rebind
+        description: >
+          Decoded table related to the Balancer BPool contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - *balance
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - *contract_address
+          - *denorm
+          - *token
+
+      - name: BPool_call_rebind
+        description: >
+          Decoded table related to the Balancer BPool contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - *contract_address
+          - *token
+
   - name: balancer_v2_ethereum
     description: >
       Decoded tables related to Balancer V2, an automated portfolio manager and trading platform, on Ethereum.
