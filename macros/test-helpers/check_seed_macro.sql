@@ -2,7 +2,7 @@
 -- you need to specify the matching columns and the columns to check for equality.
 -- filter: dictionary filter of column:value that is applied to the seed file
 
-{% macro check_seed(model, seed_file, seed_matching_columns=[], seed_check_columns=[], filter=None) %}
+{% macro check_seed_macro(model, seed_file, seed_matching_columns=[], seed_check_columns=[], filter=None) %}
 
     with matched_records as (
         select

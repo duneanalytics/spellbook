@@ -14,6 +14,6 @@
     {{ config(severity = 'warn') }}
     {%- set seed_check_columns = check_columns -%}
     {%- set seed_matching_columns = match_columns -%}
-    {{ check_seed(model,seed_file,seed_matching_columns,seed_check_columns,filter) }}
+    {{ check_seed_macro(model,seed_file,seed_matching_columns,seed_check_columns,filter) }}
 
 {% endtest %}

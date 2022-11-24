@@ -8,6 +8,6 @@
     {%- set seed_matching_columns = ['block_date','blockchain','project','version','tx_hash','evt_index'] -%}
     {%- set filter = {'blockchain':blockchain, 'project':project, 'version':version} -%}
 
-    {{ check_seed(model,seed_file,seed_matching_columns,seed_check_columns,filter) }}
+    {{ check_seed_macro(model,seed_file,seed_matching_columns,seed_check_columns,filter) }}
 
 {% endtest %}
