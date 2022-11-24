@@ -384,6 +384,9 @@
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 388, 1000000, 'Your Story', 'encapsuled', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-388')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 389, 1000000, 'Miragem', 'Third Vision', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-389')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 390, 1000000, 'Imposter Syndrome', 'ippsketch', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-390')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 394, 1000000, 'Volute', 'RVig', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-394')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 395, 1000000, 'Implications', 'ixnayokay', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-395')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 396, 1000000, 'Good, Computer', 'Dean Blacc', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-396')
 
         -- explorations
         , ('0x942bc2d3e7a589fe5bd4a5c6ef9727dfd82f5c8a',0,1000000,'Friendship Bracelets','Alexis André','Explorations','N/A','0x942bc2d3e7a589fe5bd4a5c6ef9727dfd82f5c8a-0')
