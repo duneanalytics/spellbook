@@ -36,7 +36,7 @@ SELECT * FROM (
         tx_to,
         unique_trade_id
         FROM {{ ref('element_ethereum_trades') }}
-        UNION
+        UNION ALL
         SELECT blockchain,
         project,
         version,
@@ -65,7 +65,7 @@ SELECT * FROM (
         tx_to,
         unique_trade_id
         FROM {{ ref('element_avalanche_c_trades') }}
-        UNION
+        UNION ALL
         SELECT blockchain,
         project,
         version,
