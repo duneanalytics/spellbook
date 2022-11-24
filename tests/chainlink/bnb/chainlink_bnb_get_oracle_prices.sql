@@ -6,7 +6,7 @@ with unit_test as (
         case when test.underlying_token_address = actual.underlying_token_address then true else false end                  AS underlying_token_address_test
     from       {{ref ('chainlink_bnb_price_feeds')}} actual
     INNER JOIN {{ref ('chainlink_get_price_seed')}} test 
-    ON (actual.blockchain = test.blockchain AND 
+    ON (actual.blockchain = test.blockchain     AND 
         actual.block_number = test.block_number AND 
         actual.feed_name = test.feed_name
        )
