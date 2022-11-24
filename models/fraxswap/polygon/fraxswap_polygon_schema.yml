@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: fraxswap_bnb_trades
+  - name: fraxswap_polygon_trades
     meta:
       blockchain: polygon
       sector: dex
