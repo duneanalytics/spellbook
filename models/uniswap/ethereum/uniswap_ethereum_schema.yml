@@ -21,18 +21,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_seed:
-          seed_file: ref('dex_trades_seed')
-          match_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-          check_columns:
-            - token_bought_address
-            - token_sold_address
+      - check_dex_seed:
           blockchain: ethereum
           project: uniswap
           version: 1
@@ -127,18 +116,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_seed:
-          seed_file: ref('dex_trades_seed')
-          match_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-          check_columns:
-            - token_bought_address
-            - token_sold_address
+      - check_dex_seed:
           blockchain: ethereum
           project: uniswap
           version: 2
@@ -187,18 +165,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_seed:
-          seed_file: ref('dex_trades_seed')
-          match_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-          check_columns:
-            - token_bought_address
-            - token_sold_address
+      - check_dex_seed:
           blockchain: ethereum
           project: uniswap
           version: 3
