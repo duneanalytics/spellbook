@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'dao_creator_tool', 'dao', 'dao_wallet_address', 'tx_hash', 'tx_index', 'tx_type', 'trace_address', 'address_interacted_with']
+    unique_key = ['block_date', 'blockchain', 'dao_creator_tool', 'dao', 'dao_wallet_address', 'tx_hash', 'tx_index', 'tx_type', 'trace_address', 'address_interacted_with', 'value', 'asset_contract_address']
     )
 }}
 
@@ -21,13 +21,14 @@ dao_tmp as (
         FROM 
         {{ ref('dao_addresses_ethereum') }}
         WHERE dao_wallet_address IS NOT NULL
+        AND dao_wallet_address NOT IN ('0x0000000000000000000000000000000000000001', '0x000000000000000000000000000000000000dead')
 ), 
 
 transactions as (
         SELECT 
             block_time, 
             tx_hash, 
-            LOWER('0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2') as token, 
+            LOWER('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') as token, 
             value as value, 
             to as dao_wallet_address, 
             'tx_in' as tx_type, 
@@ -52,7 +53,7 @@ transactions as (
         SELECT 
             block_time, 
             tx_hash, 
-            LOWER('0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2') as token, 
+            LOWER('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') as token, 
             value as value, 
             from as dao_wallet_address, 
             'tx_out' as tx_type,
@@ -82,10 +83,10 @@ SELECT
     t.block_time, 
     t.tx_type,
     t.token as asset_contract_address,
-    COALESCE(er.symbol, t.token) as asset,
+    'ETH' asset,
     t.value as raw_value, 
-    t.value/POW(10, COALESCE(er.decimals, 18)) as value, 
-    t.value/POW(10, COALESCE(er.decimals, 18)) * p.price as usd_value, 
+    t.value/POW(10, 18) as value, 
+    t.value/POW(10, 18) * p.price as usd_value, 
     t.tx_hash, 
     t.tx_index,
     t.address_interacted_with,
@@ -96,13 +97,9 @@ INNER JOIN
 dao_tmp dt 
     ON t.dao_wallet_address = dt.dao_wallet_address
 LEFT JOIN 
-{{ ref('tokens_erc20') }} er 
-    ON t.token = er.contract_address
-    AND er.blockchain = 'ethereum'
-LEFT JOIN 
 {{ source('prices', 'usd') }} p 
     ON p.minute = date_trunc('minute', t.block_time)
-    AND p.contract_address = t.token
+    AND p.symbol = 'WETH'
     AND p.blockchain = 'ethereum'
     {% if not is_incremental() %}
     AND p.minute >= '{{transactions_start_date}}'
