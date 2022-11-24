@@ -86,7 +86,8 @@ sources:
           - *call_tx_hash
           - name: contract_address
             description: ''
-          - *name
+          - name: name
+            description: ''
           - *output_0
           - *owner
           - *swapFeePercentage
