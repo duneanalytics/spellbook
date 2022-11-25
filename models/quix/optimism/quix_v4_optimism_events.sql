@@ -143,12 +143,12 @@ with events_raw as (
             token_bought_amount as token_amount,
             token_bought_address as contract_address,
             token_bought_symbol as symbol 
-        from {{ source('uniswap_v3_optimism','trades') }}
+        from {{ ref('uniswap_v3_optimism_trades') }}
         where 
-        token_bought_address = '0x4200000000000000000000000000000000000042'
-        {% if is_incremental() %}
-        and block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
+            token_bought_address = '0x4200000000000000000000000000000000000042'
+            {% if is_incremental() %}
+            and block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
 
         union all 
 
@@ -158,12 +158,12 @@ with events_raw as (
             token_sold_amount as token_amount,
             token_sold_address as contract_address,
             token_sold_symbol as symbol 
-        from {{ source('uniswap_v3_optimism','trades') }}
+        from {{ ref('uniswap_v3_optimism_trades') }}
         where 
-        token_bought_address = '0x4200000000000000000000000000000000000042'
-        {% if is_incremental() %}
-        and block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
+            token_bought_address = '0x4200000000000000000000000000000000000042'
+            {% if is_incremental() %}
+            and block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
     ) as x
     group by 1, 2, 3
 )
