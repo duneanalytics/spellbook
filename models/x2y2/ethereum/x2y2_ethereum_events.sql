@@ -60,7 +60,7 @@ SELECT distinct 'ethereum' AS blockchain
 , SUM(COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[2]'), '$.percentage'), 0)
 +COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[3]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[4]'), '$.percentage'), 0))/1e6 AS royalty_fee_percentage
 , get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.to') AS royalty_fee_receive_address
-, 'ethereum-x2y2-v1' || COALESCE(prof.evt_tx_hash, '-1') || COALESCE(inv.taker, '-1') || COALESCE(inv.maker, '-1') || COALESCE('0x' || substring(get_json_object(inv.item, '$.data'), 155, 40), '-1') || COALESCE(bytea2numeric_v2(substring(get_json_object(inv.item, '$.data'), 195,64))::BIGINT, bytea2numeric_v2(substring(get_json_object(inv.item, '$.data'), 195,64))) || COALESCE(prof.evt_index, '-1') AS unique_trade_id
+, 'ethereum-x2y2-v1' || COALESCE(prof.evt_tx_hash, '-1') || '-' || COALESCE(inv.taker, '-1') || '-' || COALESCE(inv.maker, '-1') || '-' || COALESCE('0x' || substring(get_json_object(inv.item, '$.data'), 155, 40), '-1') || '-' || COALESCE(bytea2numeric_v2(substring(get_json_object(inv.item, '$.data'), 195,64))::BIGINT, bytea2numeric_v2(substring(get_json_object(inv.item, '$.data'), 195,64))) || '-' || COALESCE(prof.evt_index, '-1') AS unique_trade_id
 FROM {{ source('x2y2_ethereum','X2Y2_r1_evt_EvProfit') }} prof
 INNER JOIN {{ source('x2y2_ethereum','X2Y2_r1_evt_EvInventory') }} inv  ON inv.evt_block_time=prof.evt_block_time
     AND inv.itemHash = prof.itemHash
