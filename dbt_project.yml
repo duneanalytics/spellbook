@@ -300,27 +300,27 @@ models:
 
     tokens:
       +schema: tokens
-      +materialized: view
+      +materialized: table
       ethereum:
         +schema: tokens_ethereum
-        +materialized: view
+        +materialized: table
       optimism:
         +schema: tokens_optimism
-        +materialized: view
+        +materialized: table
       avalanche_c:
         +schema: tokens_avalanche_c
       bnb:
         +schema: tokens_bnb
-        +materialized: view
+        +materialized: table
       gnosis:
         +schema: tokens_gnosis
-        +materialized: view
+        +materialized: table
       arbitrum:
         +schema: tokens_arbitrum
-        +materialized: view
+        +materialized: table
       polygon:
         +schema: tokens_polygon
-        +materialized: view
+        +materialized: table
 
     transfers:
       +schema: transfers
