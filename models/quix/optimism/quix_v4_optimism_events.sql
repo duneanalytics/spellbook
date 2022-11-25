@@ -315,4 +315,4 @@ left join fill_missing_op_price as fop
 left join transfers as tr 
     on tr.tx_hash = er.tx_hash 
     and tr.block_number = er.block_number
--- {{ dbt_utils.group_by(n=37) }}
+
