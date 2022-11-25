@@ -20,9 +20,9 @@
 
 with cte_support as (SELECT 
         voter as voter,
-        CASE WHEN support = 0 THEN sum(votingPower/1e18) ELSE 0 END AS votes_against,
-        CASE WHEN support = 1 THEN sum(votingPower/1e18) ELSE 0 END AS votes_for,
-        CASE WHEN support = 2 THEN sum(votingPower/1e18) ELSE 0 END AS votes_abstain,
+        CASE WHEN support = 0 THEN sum(CAST(votingPower AS DOUBLE)/1e18) ELSE 0 END AS votes_against,
+        CASE WHEN support = 1 THEN sum(CAST(votingPower AS DOUBLE)/1e18) ELSE 0 END AS votes_for,
+        CASE WHEN support = 2 THEN sum(CAST(votingPower AS DOUBLE)/1e18) ELSE 0 END AS votes_abstain,
         id
 FROM {{ source('aave_ethereum', 'AaveGovernanceV2_evt_VoteEmitted') }}
 GROUP BY support, id, voter),

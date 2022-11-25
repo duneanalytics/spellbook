@@ -19,7 +19,7 @@
 {% set dao_address = '0xec568fffba86c094cf06b22134b23074dfe2252c' %}
 
 WITH cte_sum_votes as 
-(SELECT sum(votingPower/1e18) as sum_votes, 
+(SELECT sum(CAST(votingPower AS DOUBLE)/1e18) as sum_votes,
         id
 FROM {{ source('aave_ethereum', 'AaveGovernanceV2_evt_VoteEmitted') }}
 GROUP BY id)
@@ -34,11 +34,11 @@ SELECT
     '{{dao_name}}' as dao_name,
     '{{dao_address}}' as dao_address,
     vc.id as proposal_id,
-    vc.votingPower/1e18 as votes,
-    (votingPower/1e18) * (100) / (csv.sum_votes) as votes_share,
+    CAST(vc.votingPower AS DOUBLE)/1e18 as votes,
+    (CAST(votingPower AS DOUBLE)/1e18) * (100) / (csv.sum_votes) as votes_share,
     p.symbol as token_symbol,
     p.contract_address as token_address, 
-    vc.votingPower/1e18 * p.price as votes_value_usd,
+    CAST(vc.votingPower AS DOUBLE)/1e18 * p.price as votes_value_usd,
     vc.voter as voter_address,
     CASE WHEN vc.support = 0 THEN 'against'
          WHEN vc.support = 1 THEN 'for'
