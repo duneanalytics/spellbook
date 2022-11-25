@@ -93,6 +93,7 @@ models:
         metadata:
           +schema: nft_ethereum_metadata
           +materialized: table
+          +file_format: delta
       gnosis:
         +schema: nft_gnosis
         +materialized: view
