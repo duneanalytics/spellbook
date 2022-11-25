@@ -435,6 +435,9 @@ models:
       polygon:
         +schema: chainlink_polygon
         +materialized: view
+      bnb:
+        +schema: chainlink_bnb
+        +materialized: view
 
     contracts:
       +schema: contracts
