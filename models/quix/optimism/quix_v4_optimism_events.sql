@@ -1,11 +1,14 @@
 {{ config(
-    schema = 'quix_v4_optimism',
-    alias = 'events',
+    alias = 'v4_events',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'tx_hash', 'token_id', 'seller',  'evt_index']
+    unique_key = ['block_date', 'tx_hash', 'token_id', 'seller',  'evt_index'],
+    post_hook='{{ expose_spells(\'["optimism"]\',
+                        "project",
+                        "quix",
+                        \'["chuxinh"]\') }}'
     )
 }}
 {% set quix_fee_address_address = "0xec1557a67d4980c948cd473075293204f4d280fd" %}
@@ -257,4 +260,4 @@ left join {{ ref('tokens_erc20') }} as t1
 left join transfers as tr 
     on tr.tx_hash = er.tx_hash 
     and tr.block_number = er.block_number
-{{ dbt_utils.group_by(n=37) }}
+-- {{ dbt_utils.group_by(n=37) }}

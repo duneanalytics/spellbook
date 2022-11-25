@@ -1,11 +1,14 @@
 {{ config(
-    schema = 'quix_v3_optimism',
-    alias = 'events',
+    alias = 'v3_events',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'tx_hash', 'token_id', 'seller',  'evt_index']
+    unique_key = ['block_date', 'tx_hash', 'token_id', 'seller',  'evt_index'],
+    post_hook='{{ expose_spells(\'["optimism"]\',
+                        "project",
+                        "quix",
+                        \'["chuxinh"]\') }}'
     )
 }}
 {% set quix_fee_address_address = "0xec1557a67d4980c948cd473075293204f4d280fd" %}
