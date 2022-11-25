@@ -1,5 +1,6 @@
 {{ config(
         alias='erc1155_day',
+        materialize='table',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                             "sector",
                                             "balances",
