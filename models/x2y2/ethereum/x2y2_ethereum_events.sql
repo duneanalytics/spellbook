@@ -29,7 +29,7 @@ SELECT distinct 'ethereum' AS blockchain
 , 'Single Item Trade' AS trade_type
 , 1 AS number_of_items
 , CASE WHEN et.from=COALESCE(MAX(seller_fix.from), inv.maker) THEN 'Offer Accepted'
-    ELSE 'Buy' -- AND ADD PRIVATE ONES
+    ELSE 'Buy' -- I was not able to identify private sales (0 fees would work if not for their 0% fee period in April 2022). Asked in X2Y2's Discord, will do another PR when I have a reliable solution here
     END AS trade_category
 , 'Trade' AS evt_type
 , COALESCE(MAX(buyer_fix.to), inv.taker) AS buyer
