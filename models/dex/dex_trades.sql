@@ -28,6 +28,8 @@
 ,'mstable_ethereum_trades'
 ,'zigzag_trades'
 ,'woofi_bnb_trades'
+,'gmx_trades'
+,'biswap_bnb_trades' 
 ] %}
 
 

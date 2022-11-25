@@ -96,7 +96,7 @@ SELECT "date", asset_symbol, token_address, total_asset_qty, total_liability_qty
     , SUM(total_asset_qty-COALESCE(total_liability_qty,0)) as pca_qty
             FROM temp_combined tc
             INNER JOIN tokemak."view_tokemak_lookup_tokens" tl ON tl.address = tc.token_address 
-            AND is_dollar_stable = false AND tl.address <> '\xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2' AND tl.pricing_contract <> '\xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2' AND tl.address <>'\xae7ab96520DE3A18E5e111B5EaAb095312D7fE84'
+            AND is_dollar_stable = false AND tl.address <> '\xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2' AND tl.pricing_contract <> '\xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
             GROUP BY 1,2,3
     )as t 
     ORDER BY "date" desc, asset_symbol

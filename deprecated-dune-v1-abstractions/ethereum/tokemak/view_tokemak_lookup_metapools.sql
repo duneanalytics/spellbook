@@ -10,6 +10,10 @@ CREATE MATERIALIZED VIEW tokemak.view_tokemak_lookup_metapools
     SELECT 2 as tokemak_curve_metapool_id, 'Curve.fi ETH/stETH' as base_pool_symbol, '\xDC24316b9AE028F1497c275EB9192a3Ea0f67022'::bytea as base_pool_address, '\x06325440D014e39736583c165C2963BA99fAf14E'::bytea as pool_token_address, true
     UNION
     SELECT 3 as tokemak_curve_metapool_id, 'Curve.fi FRAX/USDC' as base_pool_symbol, '\xDcEF968d416a41Cdac0ED8702fAC8128A64241A2'::bytea as base_pool_address, '\x3175Df0976dFA876431C2E9eE6Bc45b65d3473CC'::bytea as pool_token_address, true
+    UNION
+    SELECT 4 as tokemak_curve_metapool_id, 'Convex FRAX/USDC' as base_pool_symbol, '\xDcEF968d416a41Cdac0ED8702fAC8128A64241A2'::bytea as base_pool_address, '\x8a53ee42FB458D4897e15cc7dEa3F75D0F1c3475'::bytea as pool_token_address, true
+    UNION
+    SELECT 5 as tokemak_curve_metapool_id, 'Curve.fi crvFXS/FXS' as base_pool_symbol, '\xd658A338613198204DCa1143Ac3F01A722b5d94A'::bytea as base_pool_address, '\xF3A43307DcAFa93275993862Aae628fCB50dC768'::bytea as pool_token_address, true
 );
 CREATE UNIQUE INDEX ON tokemak.view_tokemak_lookup_metapools (
    tokemak_curve_metapool_id, base_pool_address

@@ -3,10 +3,10 @@ version: 2
 models:
   - name: chainlink_price_feeds_hourly
     meta:
-      blockchain: optimism
+      blockchain: ["optimism","polygon"]
       sector: oracle
       project: chainlink
-      contributors: msilb7
+      contributors: ["msilb7","0xroll"]
     config:
       tags: ['optimism', 'chainlink','oracle']
     description: >
