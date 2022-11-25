@@ -129,6 +129,44 @@ with events_raw as (
       and erc20.evt_block_time >= date_trunc("day", now() - interval '1 week')
       {% endif %}
 )
+,fill_missing_op_price as (
+    -- op price missing from prices.usd 2022-06-06
+    select 
+      date_trunc('day', block_time) as block_date
+      ,symbol
+      ,contract_address
+      ,avg(amount_usd/token_amount) as price
+    from (
+        select 
+            block_time,
+            amount_usd,
+            token_bought_amount as token_amount,
+            token_bought_address as contract_address,
+            token_bought_symbol as symbol 
+        from {{ source('uniswap_v3_optimism','trades') }}
+        where 
+        token_bought_address = '0x4200000000000000000000000000000000000042'
+        {% if is_incremental() %}
+        and block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+
+        union all 
+
+        select 
+            block_time,
+            amount_usd,
+            token_sold_amount as token_amount,
+            token_sold_address as contract_address,
+            token_sold_symbol as symbol 
+        from {{ source('uniswap_v3_optimism','trades') }}
+        where 
+        token_bought_address = '0x4200000000000000000000000000000000000042'
+        {% if is_incremental() %}
+        and block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+    ) as x
+    group by 1, 2, 3
+)
 select
     'optimism' as blockchain
     ,'quix' as project
@@ -137,7 +175,7 @@ select
     ,er.block_time
     ,er.token_id 
     ,n.name as collection
-    ,er.amount_raw / power(10, t1.decimals) * p1.price as amount_usd
+    ,er.amount_raw / power(10, t1.decimals) * coalesce(p1.price, fop.price) as amount_usd
     ,case 
       when erct2.evt_tx_hash is not null then 'erc721'
       when erc1155.evt_tx_hash is not null then 'erc1155' 
@@ -174,11 +212,11 @@ select
     ,tx.to as tx_to
     ,ROUND((2.5*(er.amount_raw)/100),7) as platform_fee_amount_raw
     ,ROUND((2.5*((er.amount_raw / power(10,t1.decimals)))/100),7) AS platform_fee_amount
-    ,ROUND((2.5*((er.amount_raw / power(10,t1.decimals)* p1.price))/100),7) AS platform_fee_amount_usd
+    ,ROUND((2.5*((er.amount_raw / power(10,t1.decimals)* coalesce(p1.price, fop.price)))/100),7) AS platform_fee_amount_usd
     ,'2.5' as platform_fee_percentage
     ,tr.value as royalty_fee_amount_raw
     ,tr.value / power(10, t1.decimals) as royalty_fee_amount 
-    ,tr.value / power(10, t1.decimals) * p1.price as royalty_fee_amount_usd
+    ,tr.value / power(10, t1.decimals) * coalesce(p1.price, fop.price) as royalty_fee_amount_usd
     ,(tr.value / er.amount_raw * 100) as royalty_fee_percentage
     ,case when tr.value is not null then tr.to end as royalty_fee_receive_address
     ,case when tr.value is not null
@@ -246,17 +284,20 @@ left join {{ ref('tokens_erc20') }} as t1
         else erc20.contract_address
         end 
     and t1.blockchain = 'optimism'
-    left join {{ source('prices', 'usd') }} as p1
-    on p1.contract_address =
-        case when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
-        then '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
-        else erc20.contract_address
-        end
-    and p1.minute = date_trunc('minute', er.block_time)
-    and p1.blockchain = 'optimism'
-    {% if is_incremental() %}
-    and p1.minute >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+left join {{ source('prices', 'usd') }} as p1
+on p1.contract_address =
+    case when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
+    then '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
+    else erc20.contract_address
+    end
+and p1.minute = date_trunc('minute', er.block_time)
+and p1.blockchain = 'optimism'
+{% if is_incremental() %}
+and p1.minute >= date_trunc("day", now() - interval '1 week')
+{% endif %}
+left join fill_missing_op_price as fop 
+  on fop.contract_address = erc20.contract_address
+  and fop.block_date = date_trunc('day', er.block_time)
 left join transfers as tr 
     on tr.tx_hash = er.tx_hash 
     and tr.block_number = er.block_number
