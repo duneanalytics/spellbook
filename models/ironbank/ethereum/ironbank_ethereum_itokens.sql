@@ -1,5 +1,6 @@
 {{ config(
     alias = 'itokens',
+    materialized='table',
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "ironbank",
