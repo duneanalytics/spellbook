@@ -92,7 +92,7 @@ models:
         +materialized: view
         metadata:
           +schema: nft_ethereum_metadata
-          +materialized: view
+          +materialized: table
       gnosis:
         +schema: nft_gnosis
         +materialized: view

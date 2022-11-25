@@ -1,4 +1,4 @@
-{{config(alias='all_vaults')}}
+{{config(alias='all_vaults', materialized='table')}}
 SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 FROM
 (
