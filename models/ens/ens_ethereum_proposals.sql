@@ -26,7 +26,7 @@ with cte_support as (SELECT
         CASE WHEN support = 2 THEN sum(weight/1e18) ELSE 0 END AS votes_abstain,
         proposalId
 FROM {{ source('ethereumnameservice_ethereum', 'ENSGovernor_evt_VoteCast') }}
-GROUP BY support, proposalId, voter),
+GROUP BY evt_block_time, support, proposalId, voter),
 
 cte_sum_votes as (
 SELECT evt_block_time,
