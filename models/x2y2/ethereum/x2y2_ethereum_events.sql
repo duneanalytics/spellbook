@@ -47,9 +47,9 @@ SELECT distinct 'ethereum' AS blockchain
 , prof.evt_tx_hash AS tx_hash
 , et.from AS tx_from
 , et.to AS tx_to
-, COALESCE(get_json_object(inv.item, '$.price')*get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.percentage')/1e6, 0) AS platform_fee_amount_raw
-, COALESCE(get_json_object(inv.item, '$.price')*get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.percentage')/1e6, 0)/POWER(10, currency_token.decimals) AS platform_fee_amount
-, pu.price*COALESCE(get_json_object(inv.item, '$.price')*get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.percentage')/1e6, 0)/POWER(10, currency_token.decimals) AS platform_fee_amount_usd
+, ROUND(COALESCE(get_json_object(inv.item, '$.price')*get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.percentage')/1e6, 0), 0) AS platform_fee_amount_raw
+, ROUND(COALESCE(get_json_object(inv.item, '$.price')*get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.percentage')/1e6, 0), 0)/POWER(10, currency_token.decimals) AS platform_fee_amount
+, pu.price*ROUND(COALESCE(get_json_object(inv.item, '$.price')*get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.percentage')/1e6), 0)/POWER(10, currency_token.decimals) AS platform_fee_amount_usd
 , COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.percentage')/1e6, 0) AS platform_fee_percentage
 , COALESCE(get_json_object(inv.item, '$.price')*SUM(COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[2]'), '$.percentage'), 0)
 +COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[3]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[4]'), '$.percentage'), 0))/1e6, 0) AS royalty_fee_amount_raw
