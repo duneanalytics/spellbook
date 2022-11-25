@@ -167,6 +167,27 @@ with events_raw as (
     ) as x
     group by 1, 2, 3
 )
+,erc20_transfer as (
+    select 
+      erc20.evt_block_time
+      ,erc20.evt_block_number
+      ,erc20.evt_tx_hash
+      ,erc20.contract_address
+      ,erc20.to 
+    from events_raw as er
+    join {{ source('erc20_optimism','evt_transfer') }} as erc20
+        on erc20.evt_block_time=er.block_time
+            and erc20.evt_tx_hash=er.tx_hash
+            and erc20.to=er.seller
+            {% if not is_incremental() %}
+            -- smallest block number for source tables above
+            and erc20.evt_block_number >= '{{min_block_number}}'
+            {% endif %}
+            {% if is_incremental() %}
+            and erc20.evt_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
+    {{ dbt_utils.group_by(n=5) }}
+)
 select
     'optimism' as blockchain
     ,'quix' as project
@@ -266,17 +287,10 @@ left join {{ source('erc1155_optimism','evt_transfersingle') }} as erc1155
     {% if is_incremental() %}
     and erc1155.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-left join {{ source('erc20_optimism','evt_transfer') }} as erc20 
+left join erc20_transfer as erc20 
     on erc20.evt_block_time=er.block_time
     and erc20.evt_tx_hash=er.tx_hash
     and erc20.to=er.seller
-    {% if not is_incremental() %}
-    -- smallest block number for source tables above
-    and erc20.evt_block_number >= '{{min_block_number}}'
-    {% endif %}
-    {% if is_incremental() %}
-    and erc20.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
 left join {{ ref('tokens_erc20') }} as t1
     on t1.contract_address =
         case when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
