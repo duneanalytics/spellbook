@@ -312,6 +312,7 @@ models:
         +file_format: delta
       avalanche_c:
         +schema: tokens_avalanche_c
+        +materialized: table
         +file_format: delta
       bnb:
         +schema: tokens_bnb
@@ -324,6 +325,7 @@ models:
       arbitrum:
         +schema: tokens_arbitrum
         +materialized: table
+        +file_format: delta
       polygon:
         +schema: tokens_polygon
         +materialized: table
