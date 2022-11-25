@@ -1,4 +1,4 @@
- {{ config( alias='aggregators') }}
+ {{config(alias='aggregators', materialized='table')}}
 
 SELECT
   contract_address,
