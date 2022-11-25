@@ -10042,6 +10042,6 @@ from
                             , '0x58e5d5a525e3b40bc15abaa38b5882678db1ee68befd2f60bafe3a7fd06db9e3' -- PunkBought
                             , '0x05af636b70da6819000c49f85b21fa82081c632069bb626f30932034099107d8' -- PunkTransfer
                         )
-        and {% if is_incremental() %} where a.evt_block_time >= date_trunc("day", now() - interval '1 week') {% endif %}
+        {% if is_incremental() %} and a.evt_block_time >= date_trunc('day', now() - interval '1 week') {% endif %}    
     group by 1,2,3,4,5,6
 ) a 
