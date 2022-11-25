@@ -19,23 +19,25 @@
 {% set dao_address = '0xec568fffba86c094cf06b22134b23074dfe2252c' %}
 
 with cte_support as (SELECT 
+        evt_block_time,
         voter as voter,
         CASE WHEN support = 0 THEN sum(votingPower/1e18) ELSE 0 END AS votes_against,
         CASE WHEN support = 1 THEN sum(votingPower/1e18) ELSE 0 END AS votes_for,
         CASE WHEN support = 2 THEN sum(votingPower/1e18) ELSE 0 END AS votes_abstain,
         id
 FROM {{ source('aave_ethereum', 'AaveGovernanceV2_evt_VoteEmitted') }}
-GROUP BY support, id, voter),
+GROUP BY evt_block_time, support, id, voter),
 
 cte_sum_votes as (
-SELECT COUNT(DISTINCT voter) as number_of_voters,
+SELECT evt_block_time,
+       COUNT(DISTINCT voter) as number_of_voters,
        SUM(votes_for) as votes_for, 
        SUM(votes_against) as votes_against, 
        SUM(votes_abstain) as votes_abstain, 
        SUM(votes_for) + SUM(votes_against) + SUM(votes_abstain) as votes_total,
        id
 from cte_support
-GROUP BY id)
+GROUP BY evt_block_time, id)
 
 SELECT DISTINCT
     '{{blockchain}}' as blockchain,
@@ -69,5 +71,5 @@ LEFT JOIN {{ source('aave_ethereum', 'AaveGovernanceV2_evt_ProposalCanceled') }}
 LEFT JOIN {{ source('aave_ethereum', 'AaveGovernanceV2_evt_ProposalExecuted') }} pex ON pex.id = pcr.id
 LEFT JOIN {{ source('aave_ethereum', 'AaveGovernanceV2_evt_ProposalQueued') }} pqu ON pex.id = pcr.id
 {% if is_incremental() %}
-WHERE pcr.evt_block_time > (select max(created_at) from {{ this }})
+WHERE csv.evt_block_time > (select max(created_at) from {{ this }})
 {% endif %}
