@@ -2,6 +2,7 @@
         schema='prices',
         alias ='tokens',
         materialized='table',
+        file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon"]\',
                                     "sector",
                                     "prices",

@@ -92,7 +92,8 @@ models:
         +materialized: view
         metadata:
           +schema: nft_ethereum_metadata
-          +materialized: view
+          +materialized: table
+          +file_format: delta
       gnosis:
         +schema: nft_gnosis
         +materialized: view
@@ -301,26 +302,35 @@ models:
     tokens:
       +schema: tokens
       +materialized: table
+      +file_format: delta
       ethereum:
         +schema: tokens_ethereum
         +materialized: table
+        +file_format: delta
       optimism:
         +schema: tokens_optimism
         +materialized: table
+        +file_format: delta
       avalanche_c:
         +schema: tokens_avalanche_c
+        +materialized: table
+        +file_format: delta
       bnb:
         +schema: tokens_bnb
         +materialized: table
+        +file_format: delta
       gnosis:
         +schema: tokens_gnosis
         +materialized: table
+        +file_format: delta
       arbitrum:
         +schema: tokens_arbitrum
         +materialized: table
+        +file_format: delta
       polygon:
         +schema: tokens_polygon
         +materialized: table
+        +file_format: delta
 
     transfers:
       +schema: transfers
