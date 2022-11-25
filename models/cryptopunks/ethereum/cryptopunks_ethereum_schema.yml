@@ -237,6 +237,8 @@ models:
             - punk_id
             - evt_block_number
             - evt_index
+            - from
+            - to
     columns:
       - name: from
         description: "CryptoPunk transferred from"
