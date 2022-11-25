@@ -1,4 +1,4 @@
- {{config(alias='aggregators', materialized='table')}}
+ {{config(alias='aggregators', materialized='table', file_format = 'delta')}}
 
 SELECT
   contract_address,
