@@ -26,6 +26,9 @@ with iziswap_swaps as (
 		, case when sellXEarnY then amountX else amountY end as token_sold_amount_raw
 	from 
 		{{ source('izumi_bnb', 'iZiSwapPool_evt_Swap') }}
+	{% if is_incremental() %}
+    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 )
 select
 	'bnb' as blockchain
@@ -96,9 +99,5 @@ left join {{ source('prices', 'usd') }} prices_s
     {% endif %}
     {% if is_incremental() %}
     and prices_s.minute >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-where 1 = 1
-    {% if is_incremental() %}
-    and s.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 ;
