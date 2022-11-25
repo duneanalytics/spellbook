@@ -1,6 +1,7 @@
 {{ config(
         schema='prices',
         alias ='tokens',
+        materialized='table',
         post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon"]\',
                                     "sector",
                                     "prices",
