@@ -89,6 +89,9 @@ norm_weights AS (
     FROM settings
     INNER JOIN sum_denorm ON settings.pool = sum_denorm.pool
 )
+--
+-- Balancer v1 Pools Tokens Weights
+--
 SELECT
     pool_address AS pool_id,
     token_address,
@@ -97,6 +100,9 @@ FROM norm_weights
 
 UNION ALL
 
+--
+-- Balancer v2 Pools Tokens Weights
+--
 SELECT
     registered.`poolId` AS pool_id,
     tokens.token_address,
