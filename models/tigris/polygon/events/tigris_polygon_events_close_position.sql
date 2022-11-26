@@ -151,6 +151,24 @@ close_position_v7 as (
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
+),
+
+close_position_v8 as (
+        SELECT 
+            date_trunc('day', evt_block_time) as day, 
+            evt_tx_hash,
+            evt_index,
+            evt_block_time,
+            _id as position_id,
+            _closePrice/1e18 as price, 
+            _payout/1e18 as payout, 
+            _percent/1e8 as perc_closed, 
+            _trader as trader 
+        FROM 
+        {{ source('tigristrade_polygon', 'TradingV8_evt_PositionClosed') }}
+        {% if is_incremental() %}
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 )
 
 SELECT *, 'v1' as version FROM close_position_v1
@@ -178,3 +196,7 @@ SELECT *, 'v6' as version FROM close_position_v6
 UNION 
 
 SELECT *, 'v7' as version FROM close_position_v7
+
+UNION 
+
+SELECT *, 'v8' as version FROM close_position_v8

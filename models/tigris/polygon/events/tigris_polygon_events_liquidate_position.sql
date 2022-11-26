@@ -129,6 +129,21 @@ liquidate_position_v7 as (
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
+),
+
+liquidate_position_v8 as (
+        SELECT 
+            date_trunc('day', evt_block_time) as day, 
+            evt_tx_hash,
+            evt_index,
+            evt_block_time,
+            _id as position_id,
+            _trader as trader 
+        FROM 
+        {{ source('tigristrade_polygon', 'TradingV8_evt_PositionLiquidated') }}
+        {% if is_incremental() %}
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 )
 
 SELECT *, 'v1' as version FROM liquidate_position_v1
@@ -156,3 +171,7 @@ SELECT *, 'v6' as version FROM liquidate_position_v6
 UNION 
 
 SELECT *, 'v7' as version FROM liquidate_position_v7
+
+UNION 
+
+SELECT *, 'v8' as version FROM liquidate_position_v8

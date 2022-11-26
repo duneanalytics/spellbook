@@ -62,7 +62,26 @@ close_position_v4 as (
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
+),
+
+close_position_v5 as (
+        SELECT 
+            date_trunc('day', evt_block_time) as day, 
+            evt_tx_hash,
+            evt_index,
+            evt_block_time,
+            _id as position_id,
+            _closePrice/1e18 as price, 
+            _payout/1e18 as payout, 
+            _percent/1e8 as perc_closed, 
+            _trader as trader 
+        FROM 
+        {{ source('tigristrade_arbitrum', 'TradingV5_evt_PositionClosed') }}
+        {% if is_incremental() %}
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 )
+
 
 SELECT *, 'v2' as version FROM close_position_v2
 
@@ -73,3 +92,7 @@ SELECT *, 'v3' as version FROM close_position_v3
 UNION 
 
 SELECT *, 'v4' as version FROM close_position_v4
+
+UNION 
+
+SELECT *, 'v5' as version FROM close_position_v5

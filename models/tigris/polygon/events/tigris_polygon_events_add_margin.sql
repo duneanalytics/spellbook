@@ -86,6 +86,32 @@ add_margin_v7 as (
         {% if is_incremental() %}
         AND af.call_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
+),
+
+add_margin_v8 as (
+        SELECT 
+            date_trunc('day', ap.evt_block_time) as day, 
+            ap.evt_tx_hash,
+            ap.evt_index,
+            ap.evt_block_time,
+            ap._id as position_id,
+            af._addMargin/1e18 as margin_change, 
+            ap._newMargin/1e18 as margin, 
+            ap._newPrice/1e18 as price, 
+            ap._trader as trader 
+        FROM 
+        {{ source('tigristrade_polygon', 'TradingV8_evt_AddToPosition') }} ap 
+        INNER JOIN 
+        {{ source('tigristrade_polygon', 'TradingV8_call_addToPosition') }} af 
+            ON ap._id = af._id 
+            AND ap.evt_tx_hash = af.call_tx_hash 
+            AND af.call_success = true 
+        {% if is_incremental() %}
+        WHERE ap.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+        {% if is_incremental() %}
+        AND af.call_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 )
 
 SELECT *, 'v5' as version FROM add_margin_v5
@@ -97,3 +123,7 @@ SELECT *, 'v6' as version FROM add_margin_v6
 UNION 
 
 SELECT *, 'v7' as version FROM add_margin_v7
+
+UNION 
+
+SELECT *, 'v8' as version FROM add_margin_v8
