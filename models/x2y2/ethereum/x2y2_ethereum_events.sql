@@ -22,14 +22,15 @@ SELECT distinct 'ethereum' AS blockchain
 , nft_token.name AS collection
 , prof.amount AS amount_raw
 , prof.amount/POWER(10, currency_token.decimals) AS amount_original
-, pu.price*prof.amount/POWER(10, currency_token.decimals) AS amount_usd
+, pu.price*(prof.amount/POWER(10, currency_token.decimals)) AS amount_usd
 , CASE WHEN get_json_object(inv.detail, '$.executionDelegate')='0xf849de01b080adc3a814fabe1e2087475cf2e354' THEN 'erc721'
     WHEN get_json_object(inv.detail, '$.executionDelegate')='0x024ac22acdb367a3ae52a3d94ac6649fdc1f0779' THEN 'erc1155'
     END AS token_standard
 , 'Single Item Trade' AS trade_type
 , 1 AS number_of_items
-, CASE WHEN et.from=COALESCE(MAX(seller_fix.from), inv.maker) THEN 'Offer Accepted'
-    ELSE 'Buy' -- I was not able to identify private sales (0 fees would work if not for their 0% fee period in April 2022). Asked in X2Y2's Discord, will do another PR when I have a reliable solution here
+, CASE WHEN get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.to')!='0xd823c605807cc5e6bd6fc0d7e4eea50d3e2d66cd' AND (prof.evt_block_time < '2022-04-01' OR prof.evt_block_time >= '2022-05-01') THEN 'Private Sale'
+    WHEN et.from=COALESCE(MAX(seller_fix.from), inv.maker) THEN 'Offer Accepted'
+    ELSE 'Buy'
     END AS trade_category
 , 'Trade' AS evt_type
 , COALESCE(MAX(buyer_fix.to), inv.taker) AS buyer
@@ -47,19 +48,44 @@ SELECT distinct 'ethereum' AS blockchain
 , prof.evt_tx_hash AS tx_hash
 , et.from AS tx_from
 , et.to AS tx_to
-, ROUND(COALESCE(get_json_object(inv.item, '$.price')*get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.percentage')/1e6, 0), 0) AS platform_fee_amount_raw
-, ROUND(COALESCE(get_json_object(inv.item, '$.price')*get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.percentage')/1e6, 0), 0)/POWER(10, currency_token.decimals) AS platform_fee_amount
-, pu.price*ROUND(COALESCE(get_json_object(inv.item, '$.price')*get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.percentage')/1e6), 0)/POWER(10, currency_token.decimals) AS platform_fee_amount_usd
-, COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.percentage')/1e6, 0) AS platform_fee_percentage
-, COALESCE(get_json_object(inv.item, '$.price')*SUM(COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[2]'), '$.percentage'), 0)
-+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[3]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[4]'), '$.percentage'), 0))/1e6, 0) AS royalty_fee_amount_raw
-, COALESCE(get_json_object(inv.item, '$.price')*SUM(COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[2]'), '$.percentage'), 0)
-+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[3]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[4]'), '$.percentage'), 0))/1e6, 0)/POWER(10, currency_token.decimals) AS royalty_fee_amount
-, pu.price*COALESCE(get_json_object(inv.item, '$.price')*SUM(COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[2]'), '$.percentage'), 0)
-+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[3]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[4]'), '$.percentage'), 0))/1e6, 0)/POWER(10, currency_token.decimals) royalty_fee_amount_usd
-, SUM(COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[2]'), '$.percentage'), 0)
-+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[3]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[4]'), '$.percentage'), 0))/1e6 AS royalty_fee_percentage
-, get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.to') AS royalty_fee_receive_address
+, CASE WHEN get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.percentage')='0xd823c605807cc5e6bd6fc0d7e4eea50d3e2d66cd' THEN ROUND(COALESCE(get_json_object(inv.item, '$.price')*get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.percentage')/1e6, 0), 0)
+    ELSE 0
+    END AS platform_fee_amount_raw
+, CASE WHEN get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.to')='0xd823c605807cc5e6bd6fc0d7e4eea50d3e2d66cd' THEN ROUND(COALESCE(get_json_object(inv.item, '$.price')*get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.percentage')/1e6, 0), 0)/POWER(10, currency_token.decimals)
+    ELSE 0
+    END AS platform_fee_amount
+, CASE WHEN get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.to')='0xd823c605807cc5e6bd6fc0d7e4eea50d3e2d66cd' THEN pu.price*ROUND(COALESCE(get_json_object(inv.item, '$.price')*get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.percentage')/1e6), 0)/POWER(10, currency_token.decimals)
+    ELSE 0
+    END AS platform_fee_amount_usd
+, CASE WHEN get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.to')='0xd823c605807cc5e6bd6fc0d7e4eea50d3e2d66cd' THEN COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.percentage')/1e6, 0)
+    ELSE 0
+    END AS platform_fee_percentage
+, CASE WHEN get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.to')='0xd823c605807cc5e6bd6fc0d7e4eea50d3e2d66cd' THEN COALESCE(get_json_object(inv.item, '$.price')*SUM(COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[2]'), '$.percentage'), 0)
++COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[3]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[4]'), '$.percentage'), 0))/1e6, 0)
+    ELSE COALESCE(get_json_object(inv.item, '$.price')*SUM(COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.percentage'), 0)
++COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[2]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[3]'), '$.percentage'), 0))/1e6, 0)
+    END AS royalty_fee_amount_raw
+, CASE WHEN get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.to')='0xd823c605807cc5e6bd6fc0d7e4eea50d3e2d66cd' THEN COALESCE(get_json_object(inv.item, '$.price')*SUM(COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[2]'), '$.percentage'), 0)
++COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[3]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[4]'), '$.percentage'), 0))/1e6, 0)/POWER(10, currency_token.decimals)
+    ELSE COALESCE(get_json_object(inv.item, '$.price')*SUM(COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.percentage'), 0)
++COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[2]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[3]'), '$.percentage'), 0))/1e6, 0)/POWER(10, currency_token.decimals)
+    END AS royalty_fee_amount
+, CASE WHEN get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.to')='0xd823c605807cc5e6bd6fc0d7e4eea50d3e2d66cd' THEN pu.price*COALESCE(get_json_object(inv.item, '$.price')*SUM(COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[2]'), '$.percentage'), 0)
++COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[3]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[4]'), '$.percentage'), 0))/1e6, 0)/POWER(10, currency_token.decimals)
+    ELSE pu.price*COALESCE(get_json_object(inv.item, '$.price')*SUM(COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.percentage'), 0)
++COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[2]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[3]'), '$.percentage'), 0))/1e6, 0)/POWER(10, currency_token.decimals)
+    END AS royalty_fee_amount_usd
+, CASE WHEN get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.to')='0xd823c605807cc5e6bd6fc0d7e4eea50d3e2d66cd' THEN SUM(COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[2]'), '$.percentage'), 0)
++COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[3]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[4]'), '$.percentage'), 0))/1e6
+    ELSE SUM(COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.percentage'), 0)
++COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[2]'), '$.percentage'), 0)+COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[3]'), '$.percentage'), 0))/1e6
+    END AS royalty_fee_percentage
+, CASE WHEN prof.currency='0x0000000000000000000000000000000000000000' THEN 'ETH'
+    ELSE currency_token.symbol
+    END AS royalty_fee_currency_symbol
+, CASE WHEN get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.to')='0xd823c605807cc5e6bd6fc0d7e4eea50d3e2d66cd' THEN get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.to')
+    ELSE get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.to')
+    END AS royalty_fee_receive_address
 , 'ethereum-x2y2-v1' || COALESCE(prof.evt_tx_hash, '-1') || '-' || COALESCE(inv.taker, '-1') || '-' || COALESCE(inv.maker, '-1') || '-' || COALESCE('0x' || substring(get_json_object(inv.item, '$.data'), 155, 40), '-1') || '-' || COALESCE(bytea2numeric_v2(substring(get_json_object(inv.item, '$.data'), 195,64))::BIGINT, bytea2numeric_v2(substring(get_json_object(inv.item, '$.data'), 195,64))) || '-' || COALESCE(prof.evt_index, '-1') AS unique_trade_id
 FROM {{ source('x2y2_ethereum','X2Y2_r1_evt_EvProfit') }} prof
 INNER JOIN {{ source('x2y2_ethereum','X2Y2_r1_evt_EvInventory') }} inv  ON inv.evt_block_time=prof.evt_block_time
