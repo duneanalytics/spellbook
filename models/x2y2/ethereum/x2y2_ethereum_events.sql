@@ -28,7 +28,7 @@ SELECT distinct 'ethereum' AS blockchain
     END AS token_standard
 , 'Single Item Trade' AS trade_type
 , 1 AS number_of_items
-, CASE WHEN get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.to')!='0xd823c605807cc5e6bd6fc0d7e4eea50d3e2d66cd' AND (prof.evt_block_time < '2022-04-01' OR prof.evt_block_time >= '2022-05-01') THEN 'Private Sale'
+, CASE WHEN (get_json_object(inv.detail, '$.fees[0]') IS NULL OR get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.to')!='0xd823c605807cc5e6bd6fc0d7e4eea50d3e2d66cd') AND (prof.evt_block_time < '2022-04-01' OR prof.evt_block_time >= '2022-05-01') THEN 'Private Sale'
     WHEN et.from=COALESCE(MAX(seller_fix.from), inv.maker) THEN 'Offer Accepted'
     ELSE 'Buy'
     END AS trade_category
