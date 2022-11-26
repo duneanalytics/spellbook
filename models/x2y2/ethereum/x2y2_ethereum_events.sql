@@ -48,7 +48,7 @@ SELECT distinct 'ethereum' AS blockchain
 , prof.evt_tx_hash AS tx_hash
 , et.from AS tx_from
 , et.to AS tx_to
-, CASE WHEN get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.percentage')='0xd823c605807cc5e6bd6fc0d7e4eea50d3e2d66cd' THEN ROUND(COALESCE(get_json_object(inv.item, '$.price')*get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.percentage')/1e6, 0), 0)
+, CASE WHEN get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.to')='0xd823c605807cc5e6bd6fc0d7e4eea50d3e2d66cd' THEN ROUND(COALESCE(get_json_object(inv.item, '$.price')*get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.percentage')/1e6, 0), 0)
     ELSE 0
     END AS platform_fee_amount_raw
 , CASE WHEN get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.to')='0xd823c605807cc5e6bd6fc0d7e4eea50d3e2d66cd' THEN ROUND(COALESCE(get_json_object(inv.item, '$.price')*get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.percentage')/1e6, 0), 0)/POWER(10, currency_token.decimals)
