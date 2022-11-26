@@ -127,8 +127,9 @@ LEFT JOIN {{ ref('nft_ethereum_transfers') }} seller_fix ON prof.evt_block_time=
     {% endif %}
 LEFT JOIN {{ ref('nft_ethereum_aggregators_markers') }} agg_m
         ON LEFT(et.data, CHARINDEX(agg_m.hash_marker, et.data) + LENGTH(agg_m.hash_marker)) LIKE '%' || agg_m.hash_marker
+WHERE prof.evt_block_time >= '2022-02-04'
 {% if is_incremental() %}
-WHERE prof.evt_block_time >= date_trunc("day", now() - interval '1 week')
+AND prof.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
 GROUP BY prof.evt_block_time, prof.evt_block_number, inv.item, nft_token.name, prof.amount, currency_token.decimals
 , inv.maker, inv.taker, prof.currency, currency_token.symbol, prof.contract_address, prof.evt_index
