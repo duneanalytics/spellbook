@@ -44,8 +44,17 @@ models:
     balancer:
       +schema: balancer
       +materialized: view
+      arbitrum:
+        +schema: balancer_arbitrum
+        +materialized: view
       ethereum:
         +schema: balancer_ethereum
+        +materialized: view
+      polygon:
+        +schema: balancer_polygon
+        +materialized: view
+      optimism:
+        +schema: balancer_optimism
         +materialized: view
 
     ens:
@@ -83,7 +92,8 @@ models:
         +materialized: view
         metadata:
           +schema: nft_ethereum_metadata
-          +materialized: view
+          +materialized: table
+          +file_format: delta
       gnosis:
         +schema: nft_gnosis
         +materialized: view
@@ -97,6 +107,20 @@ models:
         +schema: nft_optimism
         +materialized: view
 
+    compound:
+      +schema: compound
+      +materialized: view
+      ethereum:
+        +schema: compound_ethereum
+        +materialized: view
+
+    gitcoin:
+      +schema: gitcoin
+      +materialized: view
+      ethereum:
+        +schema: gitcoin_ethereum
+        +materialized: view
+
     uniswap:
       +schema: uniswap
       +materialized: view
@@ -108,6 +132,9 @@ models:
         +materialized: view
       optimism:
         +schema: uniswap_optimism
+        +materialized: view
+      polygon:
+        +schema: uniswap_polygon
         +materialized: view
 
     sushiswap:
@@ -182,12 +209,18 @@ models:
       optimism:
         +schema: gas_optimism
         +materialized: view
-
+      arbitrum:
+        +schema: gas_arbitrum
+        +materialized: view
+        
     gmx:
       +schema: gmx
       +materialized: view
       arbitrum:
         +schema: gmx_arbitrum
+        +materialized: view
+      avalanche_c:
+        +schema: gmx_avalanche_c
         +materialized: view
 
     x2y2:
@@ -222,6 +255,9 @@ models:
       ethereum:
         +schema: seaport_ethereum
         +materialized: view
+      polygon:
+        +schema: seaport_polygon
+        +materialized: view
 
     balances:
       +schema: balances
@@ -239,7 +275,8 @@ models:
 
     labels:
       +schema: labels
-      +materialized: view
+      +materialized: table
+      +file_format: delta
 
     dao:
       +schema: dao
@@ -264,27 +301,36 @@ models:
 
     tokens:
       +schema: tokens
-      +materialized: view
+      +materialized: table
+      +file_format: delta
       ethereum:
         +schema: tokens_ethereum
-        +materialized: view
+        +materialized: table
+        +file_format: delta
       optimism:
         +schema: tokens_optimism
-        +materialized: view
+        +materialized: table
+        +file_format: delta
       avalanche_c:
         +schema: tokens_avalanche_c
+        +materialized: table
+        +file_format: delta
       bnb:
         +schema: tokens_bnb
-        +materialized: view
+        +materialized: table
+        +file_format: delta
       gnosis:
         +schema: tokens_gnosis
-        +materialized: view
+        +materialized: table
+        +file_format: delta
       arbitrum:
         +schema: tokens_arbitrum
-        +materialized: view
+        +materialized: table
+        +file_format: delta
       polygon:
         +schema: tokens_polygon
-        +materialized: view
+        +materialized: table
+        +file_format: delta
 
     transfers:
       +schema: transfers
@@ -312,9 +358,16 @@ models:
         +schema: safe_ethereum
         +materialized: view
 
+
     inorganic_volume_filter:
       +schema: inorganic_volume_filter
       +materialized: view
+    jarvis_network:
+      +schema: jarvis_network
+      +materialized: view
+      polygon:
+        +schema: jarvis_network_polygon
+        +materialized: view
 
     cryptopunks:
       +schema: cryptopunks
@@ -353,7 +406,7 @@ models:
       ethereum:
         +schema: archipelago_ethereum
         +materialized: view
-
+  
     integration_test:
       +schema: integration_test
       +materialized: view
@@ -407,6 +460,9 @@ models:
       optimism:
         +schema: chainlink_optimism
         +materialized: view
+      polygon:
+        +schema: chainlink_polygon
+        +materialized: view
 
     contracts:
       +schema: contracts
@@ -429,6 +485,13 @@ models:
         +schema: reaper_optimism
         +materialized: view
     
+    biswap:
+      +schema: biswap
+      +materialized: view
+      bnb:
+        +schema: biswap_bnb
+        +materialized: view
+
     defiswap:
       +schema: defiswap
       +materialized: view
@@ -457,11 +520,31 @@ models:
         +schema: shibaswap_ethereum
         +materialized: view
 
+    zigzag:
+      +schema: zigzag
+      +materialized: view
+      arbitrum:
+        +schema: zigzag_arbitrum
+        +materialized: view
+
     pancakeswap:
       +schema: pancakeswap
       +materialized: view
       bnb:
         +schema: pancakeswap_bnb
+        +materialized: view
+    bancor:
+      +schema: bancor
+      +materialized: view
+      ethereum:
+        +schema: bancor_ethereum
+        +materialized: view
+
+    kyberswap:
+      +schema: kyberswap
+      +materialized: view
+      avalanche_c:
+        +schema: kyberswap_avalanche_c
         +materialized: view
 
     fraxswap:
@@ -484,6 +567,13 @@ models:
       avalanche_c:
         +schema: platypus_finance_avalanche_c
         +materialized: view
+        
+    woofi:
+      +schema: woofi
+      +materialized: view
+      avalanche_c:
+        +schema: woofi_avalanche_c
+        +materialized: view
 
     hashflow:
       +schema: hashflow
@@ -491,18 +581,30 @@ models:
       ethereum:
         +schema: hashflow_ethereum
         +materialized: view
+      avalanche_c:
+        +schema: hashflow_avalanche_c
+        +materialized: view
+
+    nexusmutual:
+      +schema: nexusmutual
+      +materialized: view
+      ethereum:
+        +schema: nexusmutual_ethereum
+        +materialized: view
 
     quix:
       +schema: quix
       +materialized: view
       optimism:
         +schema: quix_optimism
+        +materialized: view
 
     zeroex:
       +schema: zeroex
       +materialized: view
       ethereum:
         +schema: zeroex_ethereum
+        +materialized: view
 
 seeds:
   spellbook:
@@ -568,6 +670,7 @@ seeds:
           token_bought_amount: float
           token_sold_address: string
           token_sold_amount: float
+
     sudoswap:
       +enabled: true
       +schema: test_data
@@ -629,6 +732,20 @@ seeds:
         +column_types:
           master_address: string
           alternative_address: string
+    nexusmutual:
+      ethereum:
+        +enabled: true
+        +schema: test_data
+        nexusmutual_ethereum_trades_seed:
+          +column_types:
+            evt_tx_hash: string
+            block_date: date
+            evt_block_number: string
+            nonce: string
+            curr: string
+            sum_assured: string
+            premium: string
+            premium_nxm: string
     perpetual:
       +enabled: true
       +schema: test_data
@@ -667,6 +784,42 @@ seeds:
             amount_raw: double
             amount: double
             tx_num: long
+
+    seaport:
+      +enabled: true
+      +schema: test_data
+      seaport_nft_trades_seed:
+        +column_types:
+          blockchain: string
+          project: string
+          version: string
+          block_date: date
+          block_time: timestamp
+          evt_index: int
+          sub_idx: int
+          sub_type: string
+          seller: string
+          buyer: string
+          trade_type: string
+          trade_category: string
+          evt_type: string
+          nft_contract_address: string
+          token_id: string
+          number_of_items: int
+          token_standard: string
+          amount_original: double
+          amount_raw: double
+          currency_contract: string
+          project_contract_address: string
+          platform_fee_receive_address: string
+          royalty_fee_receive_address: string
+          block_number: int
+          tx_hash: string
+          tx_from: string
+          tx_to: string
+          zone_address: string
+          estimated_price: string
+          is_private: string
 
     zeroex:
       ethereum:

@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: gnosis
       sector: dao
-      contributors: henrystats 
+      contributors: Henrystats 
     config:
       tags: [ 'gnosis','erc20','dao', 'dao creator tools', 'Henrystats' ]
     description: >
@@ -24,7 +24,7 @@ models:
             - trace_address
             - address_interacted_with
             - value 
-            - asset 
+            - asset_contract_address
     columns:
       - &blockchain
         name: blockchain
@@ -82,7 +82,7 @@ models:
     meta:
       blockchain: gnosis
       sector: dao
-      contributors: henrystats 
+      contributors: Henrystats 
     config:
       tags: [ 'gnosis','eth','dao', 'dao creator tools', 'Henrystats' ]
     description: >
@@ -101,7 +101,7 @@ models:
             - trace_address
             - address_interacted_with
             - value 
-            - asset 
+            - asset_contract_address
     columns:
       - *blockchain
       - *dao_creator_tool
