@@ -1,7 +1,8 @@
  {{
   config(
-        schema = 'uniswap_v3_optimism', 
+        schema='uniswap_v3_optimism',
         alias='pools',
+        materialized='table',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "uniswap_v3",

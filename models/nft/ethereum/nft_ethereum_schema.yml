@@ -20,7 +20,7 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: umer_h_adil
+      contributors: umer_h_adil, hildobby
     config:
       tags: ['nft','ethereum']
     description: >
@@ -74,7 +74,7 @@ models:
       - name: tx_hash
         description:  "Transaction hash"
       - name: block_number
-        description: "Block number in which the transaction was executed "
+        description: "Block number in which the transaction was executed"
       - name: tx_from
         description:  "Address that initiated the transaction"
       - name: tx_to
@@ -145,3 +145,22 @@ models:
         tests:
           - unique
         description: "Unique transfer ID"
+
+  - name: nft_ethereum_aggregators_markers
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: ['nft', 'ethereum', 'aggregators']
+    description: >
+        NFT aggregators markers
+    columns:
+      - name: hash_marker
+        description: "Hash used to identify an aggregator"
+      - name: aggregator_name
+        description: "Name of aggregator tied to the hash_marker"
+      - name: router_name
+        description: "Name of protocol that routed this trade using the aggregator, is NULL if it's the same as aggregator_name"
+      - name: hash_marker_size
+        description: "Number of characters the hash_marker is made of, can be useful on joins"

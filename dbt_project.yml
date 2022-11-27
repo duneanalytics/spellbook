@@ -44,8 +44,17 @@ models:
     balancer:
       +schema: balancer
       +materialized: view
+      arbitrum:
+        +schema: balancer_arbitrum
+        +materialized: view
       ethereum:
         +schema: balancer_ethereum
+        +materialized: view
+      polygon:
+        +schema: balancer_polygon
+        +materialized: view
+      optimism:
+        +schema: balancer_optimism
         +materialized: view
 
     ens:
@@ -83,7 +92,8 @@ models:
         +materialized: view
         metadata:
           +schema: nft_ethereum_metadata
-          +materialized: view
+          +materialized: table
+          +file_format: delta
       gnosis:
         +schema: nft_gnosis
         +materialized: view
@@ -97,6 +107,20 @@ models:
         +schema: nft_optimism
         +materialized: view
 
+    compound:
+      +schema: compound
+      +materialized: view
+      ethereum:
+        +schema: compound_ethereum
+        +materialized: view
+
+    gitcoin:
+      +schema: gitcoin
+      +materialized: view
+      ethereum:
+        +schema: gitcoin_ethereum
+        +materialized: view
+
     uniswap:
       +schema: uniswap
       +materialized: view
@@ -108,6 +132,9 @@ models:
         +materialized: view
       optimism:
         +schema: uniswap_optimism
+        +materialized: view
+      polygon:
+        +schema: uniswap_polygon
         +materialized: view
 
     sushiswap:
@@ -182,12 +209,18 @@ models:
       optimism:
         +schema: gas_optimism
         +materialized: view
-
+      arbitrum:
+        +schema: gas_arbitrum
+        +materialized: view
+        
     gmx:
       +schema: gmx
       +materialized: view
       arbitrum:
         +schema: gmx_arbitrum
+        +materialized: view
+      avalanche_c:
+        +schema: gmx_avalanche_c
         +materialized: view
 
     x2y2:
@@ -268,27 +301,36 @@ models:
 
     tokens:
       +schema: tokens
-      +materialized: view
+      +materialized: table
+      +file_format: delta
       ethereum:
         +schema: tokens_ethereum
-        +materialized: view
+        +materialized: table
+        +file_format: delta
       optimism:
         +schema: tokens_optimism
-        +materialized: view
+        +materialized: table
+        +file_format: delta
       avalanche_c:
         +schema: tokens_avalanche_c
+        +materialized: table
+        +file_format: delta
       bnb:
         +schema: tokens_bnb
-        +materialized: view
+        +materialized: table
+        +file_format: delta
       gnosis:
         +schema: tokens_gnosis
-        +materialized: view
+        +materialized: table
+        +file_format: delta
       arbitrum:
         +schema: tokens_arbitrum
-        +materialized: view
+        +materialized: table
+        +file_format: delta
       polygon:
         +schema: tokens_polygon
-        +materialized: view
+        +materialized: table
+        +file_format: delta
 
     transfers:
       +schema: transfers
@@ -314,6 +356,13 @@ models:
       +materialized: view
       ethereum:
         +schema: safe_ethereum
+        +materialized: view
+
+    jarvis_network:
+      +schema: jarvis_network
+      +materialized: view
+      polygon:
+        +schema: jarvis_network_polygon
         +materialized: view
 
     cryptopunks:
@@ -353,7 +402,7 @@ models:
       ethereum:
         +schema: archipelago_ethereum
         +materialized: view
-
+  
     integration_test:
       +schema: integration_test
       +materialized: view
@@ -407,6 +456,9 @@ models:
       optimism:
         +schema: chainlink_optimism
         +materialized: view
+      polygon:
+        +schema: chainlink_polygon
+        +materialized: view
 
     contracts:
       +schema: contracts
@@ -429,6 +481,13 @@ models:
         +schema: reaper_optimism
         +materialized: view
     
+    biswap:
+      +schema: biswap
+      +materialized: view
+      bnb:
+        +schema: biswap_bnb
+        +materialized: view
+
     defiswap:
       +schema: defiswap
       +materialized: view
@@ -607,6 +666,7 @@ seeds:
           token_bought_amount: float
           token_sold_address: string
           token_sold_amount: float
+
     sudoswap:
       +enabled: true
       +schema: test_data
