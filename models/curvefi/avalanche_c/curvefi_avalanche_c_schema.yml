@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: avalanche_c
       project: curvefi
-      contributors: [dsalv, yulesa]
+      contributors: [Henrystats]
     config:
       tags: ["avalanche_c", "curvefi", 'trades','dex']
     description: >
