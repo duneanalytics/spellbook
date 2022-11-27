@@ -64,4 +64,5 @@ from (
     ,('pooltogether_v3', 'PoolTogether')
     ,('beethovenx', 'Beethoven X')
     ,('openxswap', 'OpenXSwap')
+    ,('eccdomains', 'ECC Domains')
     ) as temp_table (dune_name, mapped_name)
