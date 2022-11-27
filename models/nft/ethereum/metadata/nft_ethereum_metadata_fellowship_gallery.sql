@@ -62,7 +62,7 @@ from (VALUES
         ('0x28398a2c1459119efa3e6699e928612ea4909a13','Our Life in The Shadows','Tania Franco Klein','SuperRare','https://superrare.com/taniafrancoklein'),
         ('0x23e3f2ea133f2c80558e181c4f78f4da3bc7c477','House Hunting','Todd Hido','Foundation','https://foundation.app/collection/thhh'),
         ('0xb8c55c77b3617ef22a4f552f9a47503e021c6623','Roaming','Todd Hido','Foundation','https://foundation.app/collection/thr-00f3')
-        , ('0x49e6b0cfb1880fd7afb69c062613238049a4b56b','By Accident - The Negatives',' Marcel De Baer','Foundation','https://foundation.app/collection/ngtvs')
+        , ('0x49e6b0cfb1880fd7afb69c062613238049a4b56b','By Accident - The Negatives','Marcel De Baer','Foundation','https://foundation.app/collection/ngtvs')
 
 ) as temp_table (contract_address, collection_name, artist_name, platform, website)
     
