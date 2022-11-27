@@ -6,7 +6,7 @@ sources:
     tables:
       - name: ApePair_evt_Swap
         loaded_at_field: evt_block_time
-        description: "apeswap swap events table on Avalanche C chain"
+        description: "apeswap swap events table on Polygon"
         columns:
           - &amount0In
             name: amount0In
@@ -18,7 +18,7 @@ sources:
             name: amount1Out
           - &contract_address
             name: contract_address
-            description: "Avalanche C-Chain address for the liquidity pool used in transaction"
+            description: "Polygon address for the liquidity pool used in transaction"
           - &evt_block_number
             name: evt_block_number
             description: "Block number which processed the unique transaction hash"

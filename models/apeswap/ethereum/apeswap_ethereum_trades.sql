@@ -31,8 +31,8 @@ with dexs as (
             '' as trace_address,
             t.evt_index
         from
-            {{ source('sushi_ethereum', 'Pair_evt_Swap') }} t
-            inner join {{ source('sushi_ethereum', 'Factory_evt_PairCreated') }} f 
+            {{ source('apeswap_ethereum', 'ApePair_evt_Swap') }} t
+            inner join {{ source('apeswap_ethereum', 'ApeFactory_evt_PairCreated') }} f 
                 on f.pair = t.contract_address
 )
 select
