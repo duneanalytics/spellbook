@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       project: inorganic_volume_filter
-      contributors: henrystats
+      contributors: Henrystats
     config:
       tags: ['table', 'funded by', 'inorganic_volume_filter', 'ethereum']
     description: "Table showing who first funded NFT wash traders"
@@ -27,7 +27,7 @@ models:
     meta:
       blockchain: ethereum
       project: inorganic_volume_filter
-      contributors: henrystats
+      contributors: Henrystats
     config:
       tags: ['table', 'inorganic_volume_filter', 'ethereum']
     description: "Wallet address of x2y2, blur & looksrare nft traders"

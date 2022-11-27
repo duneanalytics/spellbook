@@ -3,10 +3,6 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "inorganic_volume_filter",
-                                    \'["henrystats"]\') }}',
     unique_key = ['wallet']
     )
 }}

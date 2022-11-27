@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       sector: inorganic_volume_filter
-      contributors: henrystats 
+      contributors: Henrystats 
     config:
       tags: [ 'ethereum','inorganic_volume_filter', 'looksrare', 'Henrystats']
     description: >

@@ -4,11 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['day', 'block_time', 'nft_contract_address', 'nft_token_id', 'tx_hash', 'inorganic_filters', 'unique_trade_id'],
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "sector",
-                                "inorganic_volume_filter",
-                                \'["henrystats"]\') }}')
+    unique_key = ['day', 'block_time', 'nft_contract_address', 'nft_token_id', 'tx_hash', 'inorganic_filters', 'unique_trade_id']
 }}
 
 {% set project_start_date = '2022-10-19' %} -- blur start date 
@@ -272,13 +268,13 @@ trades_enrich as (
 filtered_trades as (
         SELECT 
             t.*, 
-            CASE WHEN mt.filter IS NOT NULL THEN true ELSE FALSE END as mt_filter,
-            CASE WHEN sb.filter IS NOT NULL THEN true ELSE FALSE END as sb_filter,
-            CASE WHEN lv.filter IS NOT NULL THEN true ELSE FALSE END as lv_filter,
-            CASE WHEN hp.filter IS NOT NULL THEN true ELSE FALSE END as hp_filter,
-            CASE WHEN wf.filter IS NOT NULL THEN true ELSE FALSE END as wf_filter,
-            CASE WHEN cb.filter IS NOT NULL THEN true ELSE FALSE END as cb_filter,
-            CASE WHEN cs.filter IS NOT NULL THEN true ELSE FALSE END as cs_filter,
+            CASE WHEN mt.filter IS NOT NULL THEN 'true' ELSE 'false' END as mt_filter,
+            CASE WHEN sb.filter IS NOT NULL THEN 'true' ELSE 'false' END as sb_filter,
+            CASE WHEN lv.filter IS NOT NULL THEN 'true' ELSE 'false' END as lv_filter,
+            CASE WHEN hp.filter IS NOT NULL THEN 'true' ELSE 'false' END as hp_filter,
+            CASE WHEN wf.filter IS NOT NULL THEN 'true' ELSE 'false' END as wf_filter,
+            CASE WHEN cb.filter IS NOT NULL THEN 'true' ELSE 'false' END as cb_filter,
+            CASE WHEN cs.filter IS NOT NULL THEN 'true' ELSE 'false' END as cs_filter,
             FILTER(array(mt.filter, sb.filter, lv.filter, hp.filter, wf.filter, cb.filter, cs.filter), x -> x IS NOT NULL) as inorganic_filters
         FROM 
         trades_enrich t 
@@ -319,6 +315,6 @@ filtered_trades as (
 
 SELECT 
 *, 
-CASE WHEN cardinality(inorganic_filters) > 0 AND inorganic_filters IS NOT NULL THEN true ELSE false END as any_filter 
+CASE WHEN cardinality(inorganic_filters) > 0 AND inorganic_filters IS NOT NULL THEN 'true' ELSE 'false' END as any_filter 
 FROM 
 filtered_trades
