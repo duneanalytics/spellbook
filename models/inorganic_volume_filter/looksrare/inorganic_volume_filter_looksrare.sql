@@ -5,6 +5,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['day', 'block_time', 'nft_contract_address', 'nft_token_id', 'tx_hash', 'inorganic_filters', 'unique_trade_id']
+)
 }}
 
 {% set project_start_date = '2022-01-02' %} -- looksrare start date 
