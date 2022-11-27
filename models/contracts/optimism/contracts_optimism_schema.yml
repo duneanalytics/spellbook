@@ -103,7 +103,7 @@ models:
       - name: trace_element
         description: "First item in the `trace_address` array"
     
-  - name: nondeterministic_contract_creators
+  - name: contracts_optimism_nondeterministic_contract_creators
     meta:
       blockchain: optimism
       sector: contracts
