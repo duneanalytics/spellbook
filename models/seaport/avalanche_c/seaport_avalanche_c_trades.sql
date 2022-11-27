@@ -8,7 +8,7 @@
     post_hook='{{ expose_spells(\'["avalanche_c"]\',
                             "project",
                             "seaport",
-                            \'["sohawk"]\') }}'
+                            \'["sohwak"]\') }}'
     )
 }}
 
@@ -17,7 +17,7 @@
 {% set c_native_symbol = "AVAX" %}
 {% set c_seaport_first_date = "2022-06-01" %}
 
-with source_ethereum_transactions as (
+with source_avalanche_c_transactions as (
     select *
     from {{ source('avalanche_c','transactions') }}
     {% if not is_incremental() %}
@@ -27,7 +27,7 @@ with source_ethereum_transactions as (
     where block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
-,ref_seaport_ethereum_base_pairs as (
+,ref_seaport_avalanche_c_base_pairs as (
       select *
       from {{ ref('seaport_avalanche_c_base_pairs') }}
       where 1=1
@@ -62,7 +62,8 @@ with source_ethereum_transactions as (
     {% endif %}
 )
 ,iv_base_pairs_priv as (
-  select a.block_time
+  select a.block_date
+        ,a.block_time
         ,a.block_number
         ,a.tx_hash
         ,a.evt_index
@@ -93,11 +94,12 @@ with source_ethereum_transactions as (
         ,a.creator_fee_idx
         ,a.is_traded_nft
         ,a.is_moved_nft
-  from ref_seaport_ethereum_base_pairs a
+  from ref_seaport_avalanche_c_base_pairs a
   where 1=1 
     and not a.is_private
   union all
-  select a.block_time
+  select a.block_date
+        ,a.block_time
         ,a.block_number
         ,a.tx_hash
         ,a.evt_index
@@ -130,10 +132,10 @@ with source_ethereum_transactions as (
         ,a.creator_fee_idx
         ,a.is_traded_nft
         ,a.is_moved_nft
-  from ref_seaport_ethereum_base_pairs a
-  left join ref_seaport_ethereum_base_pairs b on b.tx_hash = a.tx_hash
+  from ref_seaport_avalanche_c_base_pairs a
+  left join ref_seaport_avalanche_c_base_pairs b on b.tx_hash = a.tx_hash
     and b.evt_index = a.evt_index
-    and b.block_time = a.block_time -- for performance
+    and b.block_date = a.block_date -- for performance
     and b.token_contract_address = a.token_contract_address
     and b.token_id = a.token_id
     and b.original_amount = a.original_amount
@@ -144,7 +146,8 @@ with source_ethereum_transactions as (
     and a.consideration_cnt > 0
 ) 
 ,iv_volume as (
-  select block_time
+  select block_date
+        ,block_time
         ,tx_hash
         ,evt_index
         ,max(token_contract_address) as token_contract_address 
@@ -163,10 +166,11 @@ with source_ethereum_transactions as (
   from iv_base_pairs_priv a
   where 1=1
     and eth_erc_idx > 0
-  group by 1,2,3
+  group by 1,2,3,4
 )
 ,iv_nfts as (
-  select a.block_time
+  select a.block_date
+        ,a.block_time
         ,a.tx_hash
         ,a.evt_index
         ,a.block_number
@@ -199,9 +203,10 @@ with source_ethereum_transactions as (
               else false
           end as estimated_price
         ,is_private
+        ,sub_type
         ,sub_idx
   from iv_base_pairs_priv a
-  left join iv_volume b on b.block_time = a.block_time  -- tx_hash and evt_index is PK, but for performance, block_time is included
+  left join iv_volume b on b.block_date = a.block_date  -- tx_hash and evt_index is PK, but for performance, block_time is included
     and b.tx_hash = a.tx_hash
     and b.evt_index = a.evt_index
   where 1=1
@@ -209,7 +214,6 @@ with source_ethereum_transactions as (
 )
 ,iv_trades as (
   select a.*
-          ,try_cast(date_trunc('day', a.block_time) as date) as block_date
           ,n.name AS nft_token_name
           ,t.`from` as tx_from
           ,t.`to` as tx_to
@@ -229,9 +233,9 @@ with source_ethereum_transactions as (
           ,a.creator_fee_amount_raw / power(10, e.decimals) * p.price as creator_fee_amount_usd
           ,agg.name as aggregator_name
           ,agg.contract_address AS aggregator_address
-          ,'seaport-' || tx_hash || '-' || evt_index || '-' || nft_contract_address || '-' || nft_token_id || '-' || sub_idx as unique_trade_id
+          ,sub_idx
   from iv_nfts a
-  inner join source_ethereum_transactions t on t.hash = a.tx_hash
+  inner join source_avalanche_c_transactions t on t.hash = a.tx_hash
   left join ref_tokens_nft n on n.contract_address = nft_contract_address 
   left join ref_tokens_erc20 e on e.contract_address = case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_alternative_token_address}}'
                                                             else a.token_contract_address
@@ -314,9 +318,8 @@ with source_ethereum_transactions as (
     ,zone as zone_address
     ,estimated_price
     ,is_private
-
-    -- unique key    
-    ,unique_trade_id
+    ,sub_idx
+    ,sub_type
   from iv_trades
 )
 select *
