@@ -95,7 +95,7 @@ models:
     meta:
       blockchain: gnosis
       sector: dao
-      contributors: henrystats 
+      contributors: Henrystats 
     config:
       tags: [ 'gnosis', 'dao', 'aragon', 'colony', 'daohaus', 'dao creator tools', 'Henrystats' ]
     description: >
