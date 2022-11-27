@@ -52,5 +52,4 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0x221836a597948dce8f3568e044ff123108acc42a', 'amUSDC', 6)
 ,('0x19c60a251e525fa88cd6f3768416a8024e98fc19', 'amUSDT', 6)
 
->>>>>>> upstream/main
 ) AS temp_table (contract_address, symbol, decimals)
