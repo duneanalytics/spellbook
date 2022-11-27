@@ -54,8 +54,8 @@ SELECT
      END                                                                AS token_pair
     ,fraxswap_dex.token_bought_amount_raw / power(10, erc20a.decimals)  AS token_bought_amount
     ,fraxswap_dex.token_sold_amount_raw / power(10, erc20b.decimals)    AS token_sold_amount
-    ,fraxswap_dex.token_bought_amount_raw
-    ,fraxswap_dex.token_sold_amount_raw
+    ,CAST(fraxswap_dex.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw
+    ,CAST(fraxswap_dex.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
     ,coalesce(fraxswap_dex.amount_usd
             ,(fraxswap_dex.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
             ,(fraxswap_dex.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
