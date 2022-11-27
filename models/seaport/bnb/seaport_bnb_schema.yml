@@ -10,6 +10,14 @@ models:
       tags: ['bnb','seaport','base_pairs','sohwak']
     description: >
         Exploded table from Seaport trade events with `offer` and `consideration` array columns
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+            - sub_type
+            - sub_idx
     columns:
       - &block_time    
         name: block_time
@@ -114,6 +122,20 @@ models:
       tags: ['bnb','seaport','base_pairs','sohwak']
     description: >
         Seaport trades on BNB
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+            - nft_contract_address
+            - token_id
+            - sub_type
+            - sub_idx
+      - nft_trades_column_values_matching:
+          match_columns: ['block_date', 'tx_hash', 'evt_index', 'nft_contract_address', 'token_id', 'sub_type', 'sub_idx']
+          check_columns: ['buyer', 'seller']
+          seed_file: ref('seaport_nft_trades_seed_bnb')
     columns:
       - &blockchain
         name: blockchain
@@ -229,6 +251,7 @@ models:
       - *block_number
       - *tx_hash
       - *evt_index
+      - *sub_idx
       - &tx_from
         name: tx_from
         description:  "Address that initiated the transaction"
@@ -245,8 +268,3 @@ models:
         name: estimated_price
         description: "True if it is bundle trade and dividened price"
       - *is_private
-      - &unique_trade_id
-        name : unique_trade_id
-        description: "Unique trade ID"
-        tests:
-          - unique
