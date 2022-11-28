@@ -132,10 +132,10 @@ models:
             - token_id
             - sub_type
             - sub_idx
-      - nft_trades_column_values_matching:
-          match_columns: ['block_date', 'tx_hash', 'evt_index', 'nft_contract_address', 'token_id', 'sub_type', 'sub_idx']
-          check_columns: ['buyer', 'seller']
-          seed_file: ref('seaport_nft_trades_seed')
+      - check_nft_seed:
+          blockchain: polygon
+          project: seaport
+          version: v1
     columns:
       - &blockchain
         name: blockchain
