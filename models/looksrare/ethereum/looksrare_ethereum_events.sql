@@ -104,13 +104,13 @@ SELECT distinct 'ethereum' AS blockchain
 , COALESCE((pf.fee_percentage/100)*lr.amount_raw, 0) AS platform_fee_amount_raw
 , COALESCE((pf.fee_percentage/100)*lr.amount_raw/POWER(10, pu.decimals), 0) AS platform_fee_amount
 , COALESCE((pf.fee_percentage/100)*pu.price*lr.amount_raw/POWER(10, pu.decimals), 0) platform_fee_amount_usd
-, COALESCE(pf.fee_percentage, 0) AS platform_fee_percentage
+, CAST(COALESCE(pf.fee_percentage, 0) AS DOUBLE) AS platform_fee_percentage
 , roy.royaltyRecipient AS royalty_fee_receive_address
 , CASE WHEN lr.currency_contract='0x0000000000000000000000000000000000000000' THEN 'ETH' ELSE pu.symbol END AS royalty_fee_currency_symbol
 , COALESCE(roy.amount, 0) AS royalty_fee_amount_raw
 , COALESCE(roy.amount/POWER(10, pu.decimals), 0) AS royalty_fee_amount
 , COALESCE(pu.price*roy.amount/POWER(10, pu.decimals), 0) royalty_fee_amount_usd
-, COALESCE(ROUND(100*roy.amount/lr.amount_raw, 2), 0) AS royalty_fee_percentage
+, CAST(COALESCE(ROUND(100*roy.amount/lr.amount_raw, 2), 0) AS DOUBLE) AS royalty_fee_percentage
 , 'ethereum-looksrare-v1' || COALESCE(lr.tx_hash, '-1') || COALESCE(lr.nft_contract_address, '-1') || COALESCE(lr.token_id, '-1') || COALESCE(COALESCE(seller_fix.from, lr.seller), '-1') || COALESCE(COALESCE(buyer_fix.to, lr.buyer), '-1') || COALESCE(lr.evt_index, '-1') AS unique_trade_id
 FROM looksrare_trades lr
 LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain='ethereum'
