@@ -2,6 +2,7 @@
     alias = 'transactions',
     materialized = 'view',
     file_format = 'delta',
+    pre_hook='SET ansi_mode=true',
     post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon"]\',
                                 "sector",
                                 "dao",
