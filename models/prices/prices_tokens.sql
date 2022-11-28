@@ -231,7 +231,7 @@ VALUES
     ("sushi-sushi", "bnb", "SUSHI", "0x947950bcc74888a40ffa2593c5798f11fc9124c4", 18),
     ("swap-trustswap", "bnb", "SWAP", "0x82443a77684a7da92fdcb639c8d2bd068a596245", 18),
     ("sxp-swipe", "bnb", "SXP", "0x47bead2563dcbf3bf2c9407fea4dc236faba485a", 18),
-    ("titano-titano", "bnb", "TITANO", "0xba96731324de188ebc1ed87ca74544ddebc07d7f", 18),
+    ("titano-titano", "bnb", "TITANO", "0x4e3cabd3ad77420ff9031d19899594041c420aee", 18),
     ("tlm-alien-worlds", "bnb", "TLM", "0x2222227e22102fe3322098e4cbfe18cfebd57c95", 4),
     ("tpt-token-pocket", "bnb", "TPT", "0xeca41281c24451168a37211f0bc2b8645af45092", 4),
     ("tusd-trueusd", "bnb", "TUSD", "0x14016e85a25aeb13065688cafb43044c2ef86784", 18),
@@ -1655,6 +1655,7 @@ VALUES
     ("usdc-usd-coin", "polygon", "USDC", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", 6),
     ("usdt-tether", "polygon", "USDT", "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", 6),
     ("wbtc-wrapped-bitcoin", "polygon", "WBTC", "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6", 8),
+    ("bets-betswirl", "polygon", "BETS", "0x9246a5f10a79a5a939b0c2a75a3ad196aafdb43b", 18),
 
     ("aury-aurory", "solana", "AURY", "AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP", 9),
     ("btc-bitcoin", "solana", "BTC", "9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E", 6),
