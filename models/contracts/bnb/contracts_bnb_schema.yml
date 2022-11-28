@@ -16,4 +16,3 @@ models:
        description: "name of the dapp/project"
      - name: project_type
        description: "type of dapp/project (eg, DEX, Options, eg..)"
-
