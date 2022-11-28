@@ -21,8 +21,8 @@ FROM
                 ,token_pair
                 ,token_bought_amount
                 ,token_sold_amount
-                ,token_bought_amount_raw
-                ,token_sold_amount_raw
+                ,CAST(token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw
+                ,CAST(token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
                 ,amount_usd
                 ,token_bought_address
                 ,token_sold_address
@@ -36,7 +36,7 @@ FROM
                 ,evt_index
         FROM {{ ref('sushiswap_ethereum_trades') }}
 
-        UNION
+        UNION ALL
 
         SELECT
                 blockchain
@@ -49,8 +49,8 @@ FROM
                 ,token_pair
                 ,token_bought_amount
                 ,token_sold_amount
-                ,token_bought_amount_raw
-                ,token_sold_amount_raw
+                ,CAST(token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw
+                ,CAST(token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
                 ,amount_usd
                 ,token_bought_address
                 ,token_sold_address
@@ -64,7 +64,7 @@ FROM
                 ,evt_index
         FROM {{ ref('sushiswap_avalanche_c_trades') }}
 
-        UNION
+        UNION ALL
 
         SELECT
                 blockchain
@@ -77,8 +77,8 @@ FROM
                 ,token_pair
                 ,token_bought_amount
                 ,token_sold_amount
-                ,token_bought_amount_raw
-                ,token_sold_amount_raw
+                ,CAST(token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw
+                ,CAST(token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
                 ,amount_usd
                 ,token_bought_address
                 ,token_sold_address
@@ -92,7 +92,7 @@ FROM
                 ,evt_index
         FROM {{ ref('sushiswap_gnosis_trades') }}
         /*
-        UNION
+        UNION ALL
         <add future protocols versions here>
         */
 )
