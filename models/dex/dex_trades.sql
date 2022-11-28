@@ -12,20 +12,20 @@
 ,'sushiswap_trades'
 ,'kyberswap_trades'
 ,'fraxswap_trades'
-,'curvefi_trades'
-,'airswap_ethereum_trades'
+,'curvefi_trades' --uses old generic test, as multiple versions exist in one model
+,'airswap_ethereum_trades'  --uses old generic test, as multiple versions exist in one model
 ,'clipper_ethereum_trades'
 ,'shibaswap_ethereum_trades'
 ,'swapr_ethereum_trades'
 ,'defiswap_ethereum_trades'
 ,'dfx_ethereum_trades'
 ,'pancakeswap_trades'
-,'dodo_ethereum_trades'
+,'dodo_ethereum_trades'  --uses old generic test, as multiple versions exist in one model
 ,'woofi_avalanche_c_trades'
-,'bancor_ethereum_trades'
+,'bancor_ethereum_trades'  --uses old generic test, as multiple versions exist in one model
 ,'platypus_finance_avalanche_c_trades'
 ,'hashflow_trades'
-,'mstable_ethereum_trades'
+,'mstable_ethereum_trades'  --uses old generic test, as multiple versions exist in one model
 ,'zigzag_trades'
 ,'gmx_trades'
 ,'biswap_bnb_trades' 
