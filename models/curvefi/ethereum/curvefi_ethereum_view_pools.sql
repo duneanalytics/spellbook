@@ -110,16 +110,16 @@ plain_pools_deployed AS (
         _coins [3] AS coin2,
         _coins [4] AS coin3,
         CAST(
-            NULL AS STRING
+            NULL AS VARCHAR(5)
         ) AS undercoin0,
         CAST(
-            NULL AS STRING
+            NULL AS VARCHAR(5)
         ) AS undercoin1,
         CAST(
-            NULL AS STRING
+            NULL AS VARCHAR(5)
         ) AS undercoin2,
         CAST(
-            NULL AS STRING
+            NULL AS VARCHAR(5)
         ) AS undercoin3
     FROM
         plain_calls
@@ -160,10 +160,10 @@ meta_pools_deployed AS (
             WHEN _base_pool = '{{curvefi_ethereum_REN_swap_contract}}' THEN '{{renCRV_ethereum_token}}' --changing from swap to token contract
         END AS coin1,
         CAST(
-            NULL AS STRING
+            NULL AS VARCHAR(5)
         ) AS coin2,
         CAST(
-            NULL AS STRING
+            NULL AS VARCHAR(5)
         ) AS coin3,
         _coin AS undercoin0,
         --Listing underlying coins for the ExchangeUnderlying function
@@ -212,16 +212,16 @@ v2_pools_deployed AS (
         coins [3] AS coin2,
         coins [4] AS coin3,
         CAST(
-            NULL AS STRING
+            NULL AS VARCHAR(5)
         ) AS undercoin0,
         CAST(
-            NULL AS STRING
+            NULL AS VARCHAR(5)
         ) AS undercoin1,
         CAST(
-            NULL AS STRING
+            NULL AS VARCHAR(5)
         ) AS undercoin2,
         CAST(
-            NULL AS STRING
+            NULL AS VARCHAR(5)
         ) AS undercoin3
     FROM
         {{ source(

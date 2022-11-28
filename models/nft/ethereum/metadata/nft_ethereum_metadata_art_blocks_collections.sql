@@ -372,7 +372,8 @@
         -- switch to new contracts in October 2022
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 376, 1000000, 'Tide Predictor', 'LoVid', 'Curated', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-376')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 379, 1000000, 'ORI', 'James Merrill', 'Curated', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-379')
-        
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 383, 1000000, 'Pre-Process', 'Casey REAS', 'Curated', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-383')
+
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 375, 1000000, 'Wabi Sabi', 'Kazuhiro Tanimoto', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-375')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 377, 1000000, 'Ingress', 'Paweł Dudko', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-377')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 378, 1000000, 'Fleur', 'AnaPet', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-378')
@@ -387,6 +388,7 @@
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 394, 1000000, 'Volute', 'RVig', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-394')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 395, 1000000, 'Implications', 'ixnayokay', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-395')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 396, 1000000, 'Good, Computer', 'Dean Blacc', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-396')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 397, 1000000, 'Through Curved Air', 'Jacob Gold', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-397')
 
         -- explorations
         , ('0x942bc2d3e7a589fe5bd4a5c6ef9727dfd82f5c8a',0,1000000,'Friendship Bracelets','Alexis André','Explorations','N/A','0x942bc2d3e7a589fe5bd4a5c6ef9727dfd82f5c8a-0')
