@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: bnb
       sector: dex
-      project: sushiswap
+      project: mdex
       contributors: codingsh
     config:
       tags: ['bnb','mdex','trades','dex']
