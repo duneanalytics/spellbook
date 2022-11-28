@@ -6766,5 +6766,18 @@ FROM (VALUES
           ('0xe37009f6a756e8997fac8da44da7b5b87731fc22', 'MUNGER', 18),
           ('0xe9b076b476d8865cdf79d1cf7df420ee397a7f75', 'FUND', 9),
           ('0xf20393619c122f8b901b964264e614d2611ed9ba', 'SBFP', 18),
-          ('0xfda4af798f2e30ecadc8878dda5b5fa3646b4216', 'Lord Elon', 9)
+          ('0xfda4af798f2e30ecadc8878dda5b5fa3646b4216', 'Lord Elon', 9),
+          ('0x2275d4937b6bfd3c75823744d3efbf6c3a8de473', 'GBR', 18),
+          ('0x2b1d36f5b61addaf7da7ebbd11b35fd8cfb0de31', 'ITP', 18),
+          ('0x3b79a28264fc52c7b4cea90558aa0b162f7faf57', 'wMEMO', 18),
+          ('0x44108f0223a3c3028f5fe7aec7f9bb2e66bef82f', 'ACX', 18),
+          ('0x45ff085c34ab1d31ace16bfbf2ba7d3494182e18', 'LUCY', 18),
+          ('0x504624040e0642921c2c266a9ac37cafbd8cda4e', 'LOVE', 18),
+          ('0x56694577564fdd577a0abb20fe95c1e2756c2a11', 'ASW', 18),
+          ('0x6808dbc16e2bdcf40bf11a66a1701e7e65599891', 'Musket', 18),
+          ('0x9e0441e084f5db0606565737158aa6ab6b970fe0', 'bentCVX', 18),
+          ('0xb9d7dddca9a4ac480991865efef82e01273f79c3', 'bLUSD', 18),
+          ('0xda4dd9586d27202a338843dd6b9824d267006783', 'ECT', 9),
+          ('0xe1bda0c3bfa2be7f740f0119b6a34f057bd58eba', 'WNK', 18),
+          ('0xcfe4eb08e33272d98cb31e37a7be78d5c1b740c1', 'VB', 18)
      ) AS temp_table (contract_address, symbol, decimals)
