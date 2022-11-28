@@ -13,6 +13,7 @@
 }}
 {% set quix_fee_address_address = "0xec1557a67d4980c948cd473075293204f4d280fd" %}
 {% set min_block_number = 9162242 %}
+{% set project_start_date = '2022-05-27' %}     -- select time from optimism.blocks where `number` = 9162242
 
 
 with events_raw as (
@@ -299,16 +300,19 @@ left join {{ ref('tokens_erc20') }} as t1
         end 
     and t1.blockchain = 'optimism'
 left join {{ source('prices', 'usd') }} as p1
-on p1.contract_address =
-    case when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
-    then '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
-    else erc20.contract_address
-    end
-and p1.minute = date_trunc('minute', er.block_time)
-and p1.blockchain = 'optimism'
-{% if is_incremental() %}
-and p1.minute >= date_trunc("day", now() - interval '1 week')
-{% endif %}
+    on p1.contract_address =
+        case when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
+        then '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
+        else erc20.contract_address
+        end
+    and p1.minute = date_trunc('minute', er.block_time)
+    and p1.blockchain = 'optimism'
+    {% if is_incremental() %}
+    and p1.minute >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+    {% if not is_incremental() %}
+    and p1.minute >= '{{project_start_date}}'
+    {% endif %}
 left join fill_missing_op_price as fop 
   on fop.contract_address = erc20.contract_address
   and fop.block_date = date_trunc('day', er.block_time)

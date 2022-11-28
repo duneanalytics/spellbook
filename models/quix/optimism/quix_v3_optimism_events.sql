@@ -13,6 +13,7 @@
 }}
 {% set quix_fee_address_address = "0xec1557a67d4980c948cd473075293204f4d280fd" %}
 {% set min_block_number = 3387715 %}
+{% set project_start_date = '2022-02-10' %}     -- select time from optimism.blocks where `number` = 3387715
 
 
 with events_raw as (
@@ -252,6 +253,9 @@ left join {{ ref('tokens_erc20') }} as t1
     and p1.blockchain = 'optimism'
     {% if is_incremental() %}
     and p1.minute >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+    {% if not is_incremental() %}
+    and p1.minute >= '{{project_start_date}}'
     {% endif %}
 left join transfers as tr 
     on tr.tx_hash = er.tx_hash 
