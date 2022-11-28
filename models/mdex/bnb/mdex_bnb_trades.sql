@@ -32,23 +32,24 @@ WITH mdex_dex AS (
         ON f.pair = t.contract_address
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% else %}
+    {% endif %}
+    {% if not is_incremental() %}
     WHERE t.evt_block_time >= '{{ project_start_date }}'
     {% endif %}
 )
 
 SELECT
-    'bnb'                                                           AS blockchain,
-    'mdex'                                                       AS project,
-    '1'                                                                AS version,
+    'bnb'                                                         AS blockchain,
+    'mdex'                                                        AS project,
+    '1'                                                           AS version,
     try_cast(date_trunc('DAY', mdex_dex.block_time) AS date)      AS block_date,
     mdex_dex.block_time,
-    erc20a.symbol                                                      AS token_bought_symbol,
-    erc20b.symbol                                                      AS token_sold_symbol,
-     CASE
+    erc20a.symbol                                                 AS token_bought_symbol,
+    erc20b.symbol                                                 AS token_sold_symbol,
+    CASE
         WHEN lower(erc20a.symbol) > lower(erc20b.symbol) THEN concat(erc20b.symbol, '-', erc20a.symbol)
         ELSE concat(erc20a.symbol, '-', erc20b.symbol)
-        END                                                            AS token_pair,
+        END                                                       AS token_pair,
     mdex_dex.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount,
     mdex_dex.token_sold_amount_raw / power(10, erc20b.decimals)   AS token_sold_amount,
     mdex_dex.token_bought_amount_raw,
@@ -57,15 +58,15 @@ SELECT
             mdex_dex.amount_usd
         , (mdex_dex.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
         , (mdex_dex.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
-        )                                                              AS amount_usd,
+        )                                                         AS amount_usd,
     mdex_dex.token_bought_address,
     mdex_dex.token_sold_address,
     coalesce(mdex_dex.taker, tx.from)                             AS taker,
     mdex_dex.maker,
     mdex_dex.project_contract_address,
     mdex_dex.tx_hash,
-    tx.from                                                            AS tx_from,
-    tx.to                                                              AS tx_to,
+    tx.from                                                       AS tx_from,
+    tx.to                                                         AS tx_to,
     mdex_dex.trace_address,
     mdex_dex.evt_index
 FROM mdex_dex
@@ -73,7 +74,8 @@ INNER JOIN {{ source('bnb', 'transactions') }} tx
     ON mdex_dex.tx_hash = tx.hash
     {% if not is_incremental() %}
     AND tx.block_time >= '{{project_start_date}}'
-    {% else %}
+    {% endif %}
+    {% if is_incremental() %}
     AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
@@ -88,7 +90,8 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.blockchain = 'bnb'
     {% if not is_incremental() %}
     AND p_bought.minute >= '{{project_start_date}}'
-    {% else %}
+    {% endif %}
+    {% if is_incremental() %}
     AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
@@ -97,7 +100,8 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.blockchain = 'bnb'
     {% if not is_incremental() %}
     AND p_sold.minute >= '{{project_start_date}}'
-    {% else %}
+    {% endif %}
+    {% if is_incremental() %}
     AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 ;
