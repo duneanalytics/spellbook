@@ -18,10 +18,10 @@ models:
           - unique
       - &token0
         name: token0
-        description:  "Token0 contract address"  
+        description:  "Token0 contract address"
       - &token1
         name: token1
-        description:  "Token1 contract address" 
+        description:  "Token1 contract address"
       - &fee
         name: fee
         description:  "Swap fee of a Uniswap liquidity pool. Divide by 1e6 or power(10,6) to get the fee percentage"
@@ -45,13 +45,17 @@ models:
               - tx_hash
               - evt_index
               - trace_address
+      - check_dex_seed:
+          blockchain: optimism
+          project: uniswap
+          version: 3
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project 
+      - &project
         name: project
-        description: "Project name of the DEX"  
+        description: "Project name of the DEX"
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
@@ -88,9 +92,6 @@ models:
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of the token bought"
-        tests:
-          - dex_trades_token_bought:
-              dex_trades_seed: ref('dex_trades_seed')
       - &token_sold_address
         name: token_sold_address
         description: "Contract address of the token sold"
@@ -130,7 +131,7 @@ models:
     columns:
       - *blockchain
       - *project
-      - *version  
+      - *version
       - *block_date
       - *block_time
       - *token_bought_symbol
