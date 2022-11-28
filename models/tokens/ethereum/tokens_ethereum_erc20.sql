@@ -6778,5 +6778,6 @@ FROM (VALUES
           ('0xb9d7dddca9a4ac480991865efef82e01273f79c3', 'bLUSD', 18),
           ('0xda4dd9586d27202a338843dd6b9824d267006783', 'ECT', 9),
           ('0xe1bda0c3bfa2be7f740f0119b6a34f057bd58eba', 'WNK', 18),
-          ('0xfda4af798f2e30ecadc8878dda5b5fa3646b4216', 'Lord Elon', 9)
+          ('0xfda4af798f2e30ecadc8878dda5b5fa3646b4216', 'Lord Elon', 9),
+          ('0xcfe4eb08e33272d98cb31e37a7be78d5c1b740c1', 'VB', 18)
      ) AS temp_table (contract_address, symbol, decimals)
