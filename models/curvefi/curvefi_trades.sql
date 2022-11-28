@@ -42,7 +42,7 @@ FROM (
         evt_index
     FROM {{ ref(dex_model) }}
     {% if not loop.last %}
-    UNION
+    UNION ALL
     {% endif %}
     {% endfor %}
 )
