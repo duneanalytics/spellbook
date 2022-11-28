@@ -246,7 +246,7 @@ select
             then 'ETH' else t1.symbol end
         end as royalty_fee_currency_symbol
 from events_raw as er 
-join {{ source('optimism','transactions') }} as tx 
+inner join {{ source('optimism','transactions') }} as tx
     on er.tx_hash = tx.hash
     and er.block_number = tx.block_number
     {% if not is_incremental() %}
