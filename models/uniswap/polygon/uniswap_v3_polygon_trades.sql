@@ -9,7 +9,7 @@
     post_hook='{{ expose_spells(\'["polygon"]\',
                                 "project",
                                 "uniswap_v3",
-                                \'["henrystats"]\') }}'
+                                \'["Henrystats"]\') }}'
     )
 }}
 

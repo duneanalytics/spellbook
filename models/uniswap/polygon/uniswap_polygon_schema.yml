@@ -6,7 +6,7 @@ models:
       blockchain: polygon
       sector: dex
       project: uniswap_v3
-      contributors: henrystats
+      contributors: Henrystats
     config:
       tags: ['polygon','uniswap_v3','trades', 'uniswap','dex']
     description: >
