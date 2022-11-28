@@ -67,7 +67,7 @@ models:
         description: "USD value of the trade at time of execution"
       - &token_bought_address
         name: token_bought_address
-        description: "Contract address of the token bought"\
+        description: "Contract address of the token bought"
       - &token_sold_address
         name: token_sold_address
         description: "Contract address of the token sold"

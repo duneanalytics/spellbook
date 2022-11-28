@@ -7,25 +7,34 @@
         )
 }}
 
+/*
+list of models using old generic test, due to multiple versions in one model:
+    - curvefi_trades
+    - airswap_ethereum_trades
+    - dodo_ethereum_trades
+    - bancor_ethereum_trades
+    - mstable_ethereum_trades
+*/
+
 {% set dex_trade_models = [
 'uniswap_trades'
 ,'sushiswap_trades'
 ,'kyberswap_trades'
 ,'fraxswap_trades'
-,'curvefi_trades' --uses old generic test, as multiple versions exist in one model
-,'airswap_ethereum_trades'  --uses old generic test, as multiple versions exist in one model
+,'curvefi_trades'
+,'airswap_ethereum_trades'
 ,'clipper_ethereum_trades'
 ,'shibaswap_ethereum_trades'
 ,'swapr_ethereum_trades'
 ,'defiswap_ethereum_trades'
 ,'dfx_ethereum_trades'
 ,'pancakeswap_trades'
-,'dodo_ethereum_trades'  --uses old generic test, as multiple versions exist in one model
+,'dodo_ethereum_trades'
 ,'woofi_avalanche_c_trades'
-,'bancor_ethereum_trades'  --uses old generic test, as multiple versions exist in one model
+,'bancor_ethereum_trades'
 ,'platypus_finance_avalanche_c_trades'
 ,'hashflow_trades'
-,'mstable_ethereum_trades'  --uses old generic test, as multiple versions exist in one model
+,'mstable_ethereum_trades'
 ,'zigzag_trades'
 ,'gmx_trades'
 ,'biswap_bnb_trades' 
