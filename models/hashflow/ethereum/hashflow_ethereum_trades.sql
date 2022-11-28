@@ -42,7 +42,6 @@ select
     'ethereum' AS blockchain,
     'hashflow' as project,
     '1' as version,
-    'DEX' as category,
     block_date,
     hashflow_trades.block_time,
     hashflow_trades.maker_symbol as token_bought_symbol,
