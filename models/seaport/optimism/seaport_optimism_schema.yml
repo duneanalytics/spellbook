@@ -141,7 +141,7 @@ models:
             blockchain: optimism
             project: seaport
             version: v1
-          seed_matching_columns:
+          match_columns:
             - blockchain
             - block_date
             - tx_hash
