@@ -18,6 +18,24 @@ models:
             - evt_index
             - sub_type
             - sub_idx
+      - check_seed:
+          seed_file: ref('seaport_nft_trades_seed')
+          filter:
+            blockchain: polygon
+            project: seaport
+            version: v1
+          seed_matching_columns:
+            - blockchain
+            - block_date
+            - tx_hash
+            - evt_index
+            - nft_contract_address
+            - token_id
+            - sub_type
+            - sub_idx
+          check_columns:
+            - buyer
+            - seller
     columns:
       - &block_time
         name: block_time
