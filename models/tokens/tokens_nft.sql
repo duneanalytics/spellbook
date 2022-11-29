@@ -28,16 +28,16 @@ contract_address,
 name, 
 symbol,
 standard, 
-CAST(NULL as STRING) as category 
+CAST(NULL AS VARCHAR(5)) as category
 FROM  {{ ref('tokens_gnosis_nft') }}
             UNION
 SELECT
 'optimism' as blockchain, 
 contract_address, 
 name, 
-CAST(NULL as STRING) as symbol,
-CAST(NULL as STRING) as standard, 
-CAST(NULL as STRING) as category 
+CAST(NULL AS VARCHAR(5)) as symbol,
+CAST(NULL AS VARCHAR(5)) as standard,
+CAST(NULL AS VARCHAR(5)) as category
 FROM  {{ ref('tokens_optimism_nft') }}
             UNION
 SELECT
@@ -53,7 +53,7 @@ SELECT
 'bnb' as blockchain, 
 contract_address, 
 name, 
-CAST(NULL as STRING) as symbol,
+CAST(NULL AS VARCHAR(5)) as symbol,
 standard, 
-CAST(NULL as STRING) as category 
+CAST(NULL AS VARCHAR(5)) as category
 FROM  {{ ref('tokens_bnb_nft') }}

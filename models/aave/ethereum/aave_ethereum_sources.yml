@@ -236,3 +236,80 @@ sources:
         - *evt_block_time
         - *evt_index
         - *evt_tx_hash              
+
+      - name: AaveGovernanceV2_evt_VoteEmitted
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: "DAO governor contract address"
+          - name: evt_block_number
+          - name: evt_block_time
+            description: "UTC event block time of each DAO vote"
+          - name: evt_index
+          - name: evt_tx_hash
+            description: "Unique transaction hash value tied to each vote on the DAO"
+          - &proposalId
+            name: proposalId
+          - &reason
+            name: reason
+          - &voter
+            name: voter
+          - &votes
+            name: votes
+      - name: AaveGovernanceV2_evt_ProposalCreated
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: "DAO governor contract address"
+          - name: evt_block_number
+          - name: evt_block_time
+            description: "UTC event block time of each DAO vote"
+          - name: evt_index
+          - name: evt_tx_hash
+          - &calldatas
+            name: calldatas
+          - &description
+            name: description
+          - &endBlock
+            name: endBlock
+          - &id
+            name: id
+          - &proposer
+            name: proposer
+          - &signatures
+            name: signatures
+          - &startBlock
+            name: startBlock
+          - &targets
+            name: targets
+          - &values
+            name: values
+      - name: AaveGovernanceV2_evt_ProposalCanceled
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *id
+      - name: AaveGovernanceV2_evt_ProposalExecuted
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *id
+      - name: AaveGovernanceV2_evt_ProposalQueued
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - &eta
+            name: eta
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *id
