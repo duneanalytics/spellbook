@@ -135,7 +135,7 @@ WITH calendar AS
                     SELECT  date_trunc('day', t."evt_block_time") as "date",t."from" as wallet_address,contract_address,tl.symbol,tl.display_name, SUM(value/10^tl.decimals*-1) as qty 
                     FROM erc20."ERC20_evt_Transfer" t
                     INNER JOIN tokemak."view_tokemak_lookup_tokens" tl on tl.address = t.contract_address
-                    INNER JOIN tokemak."view_tokemak_addresses" a ON t."to" = a.address and t."from"='\x72a19342e8f1838460ebfccef09f6585e32db86e' --voting escrow withdrawal??  not sure about this as we have never withdrawn.  NEED TO VERIFY
+                    INNER JOIN tokemak."view_tokemak_addresses" a ON t."to" = a.address and t."from"='\x72a19342e8f1838460ebfccef09f6585e32db86e'
                     GROUP BY 1,2,3,4,5
                 )as t 
         UNION
