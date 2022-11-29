@@ -1,9 +1,52 @@
 version: 2
 
 sources:
+  - name: balancer_ethereum
+    description: >
+      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Ethereum.
+    tables:
+      - name: veBAL_call_create_lock
+        loaded_at_field: call_block_time
+        description: "Function to create a veBAL lock"
+        columns:
+          - name: _unlock_time
+            description: "Epoch time when tokens unlock; this is the user's request, but the actual unlock time will be rounded down to a Thursday"
+          - name: _value
+            description: "Amount to deposit"
+      - name: veBAL_evt_Deposit
+        loaded_at_field: evt_block_time
+        description: "Emitted when user deposits tokens in their lock or extends its unlock time"
+        columns:
+          - name: locktime
+            description: "Epoch time when tokens unlock"
+          - name: provider
+            description: "The wallet address of the lock's owner"
+          - name: ts
+            description: "Block timestamp"
+          - name: type
+            tests:
+              - accepted_values:
+                  values: [0, 1, 2, 3]
+            description: >
+              DEPOSIT_FOR_TYPE: 0
+              CREATE_LOCK_TYPE: 1
+              INCREASE_LOCK_AMOUNT: 2
+              INCREASE_UNLOCK_TIME: 3
+          - name: value
+            description: "Amount of base tokens added to the lock"
+      - name: veBAL_evt_Withdraw
+        loaded_at_field: evt_block_time
+        description: "Emitted when user withdraws tokens from their lock"
+        columns:
+          - name: provider
+            description: "The wallet address of the lock's owner"
+          - name: value
+            description: "Amount of base tokens withdrawn from the lock"
+          - name: ts
+            description: "Block timestamp"
   - name: balancer_v2_ethereum
     description: >
-      Decoded tables related to Balancer v2, an automated portfolio manager and trading platform.
+      Decoded tables related to Balancer v2, an automated portfolio manager and trading platform, on Ethereum.
     tables:
       - name: Vault_evt_PoolRegistered
         description: >
@@ -30,30 +73,6 @@ sources:
             description: 'Unique encoded identifier that refers to each pool'
           - name: specialization
             description: 'Pool specialization'
-
-  - name: balancer_v1_ethereum
-    description: >
-      Decoded tables related to Balancer V1, an automated portfolio manager and trading platform, on Ethereum.
-    tables:
-      - name: BFactory_evt_LOG_NEW_POOL
-        description: >
-          Decoded table related to the Balancer BFactory contract.
-        loaded_at_field: evt_block_time
-        columns:
-          - name: contract_address
-            description: 'Balancer v1 BFactory contract address'
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
-          - name: caller
-            description: 'Caller address that created the Balancer pool'
-          - name: pool
-            description: 'Balancer pool contract address'
-  - name: balancer_v2_ethereum
-    description: >
-      Decoded tables related to Balancer V2, an automated portfolio manager and trading platform, on Ethereum.
-    tables:
       - name: Vault_evt_Swap
         description: >
           Decoded table related to the the contracts emitted by swaps in Balancer V2 pools.
@@ -79,3 +98,22 @@ sources:
             description: 'Raw amount of the token provided to the pool'
           - name: amountOut
             description: 'Raw amount of the token bought from the pool'
+  - name: balancer_v1_ethereum
+    description: >
+      Decoded tables related to Balancer V1, an automated portfolio manager and trading platform, on Ethereum.
+    tables:
+      - name: BFactory_evt_LOG_NEW_POOL
+        description: >
+          Decoded table related to the Balancer BFactory contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'Balancer v1 BFactory contract address'
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: caller
+            description: 'Caller address that created the Balancer pool'
+          - name: pool
+            description: 'Balancer pool contract address'
