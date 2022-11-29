@@ -1,6 +1,6 @@
 {{ config(
         alias ='listings_over_time',
-        unique_key='punk_id',
+        unique_key='day',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cryptopunks",
@@ -25,7 +25,7 @@ with all_listings as (
 , all_no_longer_for_sale_events (
     select  `punkIndex` as punk_id
             , 'No Longer For Sale' as event_type
-            , case when evt_tx_hash in (select evt_tx_hash from cryptopunks_ethereum.CryptoPunksMarket_evt_PunkBought) then 'Punk Bought'
+            , case when evt_tx_hash in (select evt_tx_hash from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBought') }}) then 'Punk Bought'
                     else 'Other'
                 end as event_sub_type
             , null as listed_price

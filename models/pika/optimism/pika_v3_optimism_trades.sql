@@ -20,7 +20,7 @@ WITH positions AS (
 		positionId
 		,user AS user
 		,productId
-		,CAST(isLong AS STRING) AS isLong
+		,CAST(isLong AS VARCHAR(5)) AS isLong
 		,price
 		,oraclePrice
 		,margin
