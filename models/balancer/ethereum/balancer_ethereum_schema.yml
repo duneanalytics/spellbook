@@ -106,3 +106,23 @@ models:
       - &median_price
         name: median_price
         description: 'BPT median price'
+  - name: balancer_vebal_slopes
+    meta:
+      blockchain: ethereum
+      project: balancer
+      contibutors: markusbkoch, mendesfabio, stefenon
+    config:
+      tags: ['balancer', 'ethereum', 'vebal', 'slope', 'markusbkoch', 'mendesfabio', 'stefenon']
+    description: >
+        Slope and bias of veBAL per wallet after each balance update
+        Depends on veBAL_call_create_lock, veBAL_evt_Deposit and veBAL_evt_Withdraw
+    columns:
+      - *day
+      - name: wallet_address
+        description: "Address of the wallet holding the veBAL"
+      - name: bpt_balance
+        description: "Amount of BPT held in the veBAL lock"
+      - name: vebal_balance
+        description: "Amount of veBAL"
+      - name: lock_time
+        description: "Amount of time the BPT was locked for at the last time the lock was updated"
