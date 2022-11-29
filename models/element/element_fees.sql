@@ -17,11 +17,11 @@ SELECT * FROM (
         platform_fee_amount_raw,
         platform_fee_amount,
         platform_fee_amount_usd,
-        platform_fee_percentage,
+        CAST(platform_fee_percentage AS DOUBLE) AS platform_fee_percentage,
         royalty_fee_amount_raw,
         royalty_fee_amount,
         royalty_fee_amount_usd,
-        royalty_fee_percentage,
+        CAST(royalty_fee_percentage AS DOUBLE) AS royalty_fee_percentage,
         royalty_fee_receive_address,
         royalty_fee_currency_symbol,
         token_standard,
@@ -41,7 +41,7 @@ SELECT * FROM (
         tx_to,
         unique_trade_id
         FROM {{ ref('element_ethereum_fees') }}
-        UNION
+        UNION ALL
         SELECT blockchain,
         project,
         version,
@@ -51,11 +51,11 @@ SELECT * FROM (
         platform_fee_amount_raw,
         platform_fee_amount,
         platform_fee_amount_usd,
-        platform_fee_percentage,
+        CAST(platform_fee_percentage AS DOUBLE) AS platform_fee_percentage,
         royalty_fee_amount_raw,
         royalty_fee_amount,
         royalty_fee_amount_usd,
-        royalty_fee_percentage,
+        CAST(royalty_fee_percentage AS DOUBLE) AS royalty_fee_percentage,
         royalty_fee_receive_address,
         royalty_fee_currency_symbol,
         token_standard,
@@ -75,7 +75,7 @@ SELECT * FROM (
         tx_to,
         unique_trade_id
         FROM {{ ref('element_avalanche_c_fees') }}
-        UNION
+        UNION ALL
         SELECT blockchain,
         project,
         version,
@@ -85,11 +85,11 @@ SELECT * FROM (
         platform_fee_amount_raw,
         platform_fee_amount,
         platform_fee_amount_usd,
-        platform_fee_percentage,
+        CAST(platform_fee_percentage AS DOUBLE) AS platform_fee_percentage,
         royalty_fee_amount_raw,
         royalty_fee_amount,
         royalty_fee_amount_usd,
-        royalty_fee_percentage,
+        CAST(royalty_fee_percentage AS DOUBLE) AS royalty_fee_percentage,
         royalty_fee_receive_address,
         royalty_fee_currency_symbol,
         token_standard,
