@@ -32,7 +32,7 @@ models:
             - evt_index
           check_columns:
             - buyer
-            - seller
+            - nft_contract_address
     columns:
       - &blockchain
         name: blockchain
@@ -176,7 +176,7 @@ models:
             - evt_index
           check_columns:
             - buyer
-            - seller
+            - nft_contract_address
     columns:
        - *blockchain
        - *project
@@ -246,7 +246,7 @@ models:
             - evt_index
           check_columns:
             - buyer
-            - seller
+            - nft_contract_address
     columns:
        - *blockchain
        - *project
@@ -316,7 +316,7 @@ models:
             - evt_index
           check_columns:
             - buyer
-            - seller
+            - nft_contract_address
     columns:
        - *blockchain
        - *project
@@ -386,7 +386,7 @@ models:
             - evt_index
           check_columns:
             - buyer
-            - seller
+            - nft_contract_address
     columns:
        - *blockchain
        - *project
