@@ -69,5 +69,5 @@ models:
         name: project_name
         description: "name of the nft project"   
         tests:
-          - zeroex_ethereum_fills_test:
+          - zeroex_ethereum_nft_test:
               seed_file: ref('zeroex_nft_ethereum_fills_sample')        
