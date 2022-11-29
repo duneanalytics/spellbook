@@ -10,7 +10,7 @@
 
 -- how much time we look back, anything before is considered finalized, anything after is forward filled.
 -- we could decrease this to optimize query performance but it's a tradeoff with resiliency to lateness.
-{%- set lookback_interval = '24 hour' %}
+{%- set lookback_interval = '2 day' %}
 
 
 WITH
@@ -24,12 +24,12 @@ WITH
     select *,
         lead(minute) over (partition by blockchain,contract_address,decimals,symbol order by minute asc) as next_update_minute
     FROM {{ source('prices', 'usd') }}
-    where minute > now() - interval {{{lookback_interval}}
+    where minute > now() - interval {{lookback_interval}}
 )
 
 , timeseries as (
     select explode(sequence(
-        date_trunc('minute', now() - interval {{lookback_hours}} hour)
+        date_trunc('minute', now() - interval {{lookback_interval}})
         ,date_trunc('minute', now())
         ,interval 1 minute)) as minute
 )
