@@ -796,7 +796,6 @@ seeds:
           block_time: timestamp
           token_id: string
           collection: string
-          amount_usd: double
           token_standard: string
           trade_type: string
           number_of_items: int
@@ -804,29 +803,14 @@ seeds:
           evt_type: string
           seller: string
           buyer: string
-          amount_original: double
-          amount_raw: double
-          currency_symbol: string
-          currency_contract: string
           nft_contract_address: string
           project_contract_address: string
-          aggregator_name: string
-          aggregator_address: string
           tx_hash: string
           evt_index: int
           block_number: int
           tx_from: string
           tx_to: string
-          platform_fee_amount_raw: double
-          platform_fee_amount: double
-          platform_fee_amount_usd: double
-          platform_fee_percentage: double
-          royalty_fee_amount_raw: double
-          royalty_fee_amount: double
-          royalty_fee_amount_usd: double
-          royalty_fee_percentage: double
           royalty_fee_receive_address: string
-          royalty_fee_currency_symbol: string
 
     seaport:
       +enabled: true
