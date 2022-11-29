@@ -126,14 +126,14 @@ SELECT
      END                                                                  AS token_pair
     ,kyberswap_dex.token_bought_amount_raw / power(10, erc20a.decimals)   AS token_bought_amount
     ,kyberswap_dex.token_sold_amount_raw / power(10, erc20b.decimals)     AS token_sold_amount
-    ,kyberswap_dex.token_bought_amount_raw
-    ,kyberswap_dex.token_sold_amount_raw
+    ,CAST(kyberswap_dex.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw
+    ,CAST(kyberswap_dex.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
     ,coalesce(kyberswap_dex.amount_usd
             ,(kyberswap_dex.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
             ,(kyberswap_dex.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
      )                                                                   AS amount_usd
-    ,CAST(kyberswap_dex.token_bought_address AS DECIMAL(38,0)) AS token_bought_address
-    ,CAST(kyberswap_dex.token_sold_address AS DECIMAL(38,0)) AS token_sold_address
+    ,kyberswap_dex.token_bought_address
+    ,kyberswap_dex.token_sold_address
     ,coalesce(kyberswap_dex.taker, tx.from)                              AS taker
     ,kyberswap_dex.maker
     ,kyberswap_dex.project_contract_address
