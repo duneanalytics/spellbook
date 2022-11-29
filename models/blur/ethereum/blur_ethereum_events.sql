@@ -56,7 +56,7 @@ SELECT
     , 0 AS platform_fee_amount_raw
     , 0 AS platform_fee_amount
     , 0 AS platform_fee_amount_usd
-    , 0 AS platform_fee_percentage
+    , CAST(0 AS DOUBLE) AS platform_fee_percentage
     , COALESCE(get_json_object(bm.buy, '$.price')*get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/10000, 0) AS royalty_fee_amount_raw
     , CASE WHEN get_json_object(bm.buy, '$.paymentToken')='0x0000000000000000000000000000000000000000' THEN COALESCE(get_json_object(bm.buy, '$.price')/POWER(10, 18)*get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/10000, 0)
         ELSE COALESCE(get_json_object(bm.buy, '$.price')/POWER(10, pu.decimals)*get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/10000, 0)
@@ -64,7 +64,7 @@ SELECT
     , CASE WHEN get_json_object(bm.buy, '$.paymentToken')='0x0000000000000000000000000000000000000000' THEN COALESCE(pu.price*get_json_object(bm.buy, '$.price')/POWER(10, 18)*get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/10000, 0)
         ELSE COALESCE(pu.price*get_json_object(bm.buy, '$.price')/POWER(10, pu.decimals)*get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/10000, 0)
         END AS royalty_fee_amount_usd
-    , COALESCE(get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/100, 0) AS royalty_fee_percentage
+    , CAST(COALESCE(get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/100, 0) AS DOUBLE) AS royalty_fee_percentage
     , get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.recipient') AS royalty_fee_receive_address
     , CASE WHEN get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.recipient') IS NOT NULL AND get_json_object(bm.buy, '$.paymentToken')='0x0000000000000000000000000000000000000000' THEN 'ETH'
         WHEN get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.recipient') IS NOT NULL THEN pu.symbol
