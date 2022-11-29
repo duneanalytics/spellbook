@@ -28,5 +28,6 @@ FROM (values
         ("KRW / USD","0x24b820870f726da9b0d83b0b28a93885061dbf50","0xa22f6bc96f13bcc84df36109c973d3c0505a067e",0),
         ("MXN / USD","0x171b16562ea3476f5c61d1b8dad031dba0768545","0xbd1fe73e1f12bd2bc237de9b626f056f21f86427",0),
         ("NGN / USD","0x0df812c4d675d155815b1216ce1da9e68f1b7050","0x182c76e977161f703bb8f111047df6c43cfacc56",0),
-        ("NZD / USD","0xa302a0b8a499fd0f00449df0a490dede21105955","0x08e6d1f0c4877ef2993ad733fc6f1d022d0e9dbf",0)
+        ("NZD / USD","0xa302a0b8a499fd0f00449df0a490dede21105955","0x6b526daf03b4c47af2bcc5860b12151823ff70e0",0),
+        ("PLN / USD","0xb34bce11040702f71c11529d00179b2959bce6c0","0x08e6d1f0c4877ef2993ad733fc6f1d022d0e9dbf",0)
 ) a (feed_name, proxy_address, underlying_token_address, extra_decimals)

@@ -46,13 +46,16 @@ models:
       tags: ['tokens', 'optimism', 'nft', 'erc721']
     description: >
         Selection of NFT token addresses bridged from Ethereum to Optimism.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - contract_address
+            - contract_address_l1
     columns:
       - name: category
         description: "Category of the NFT Project"
       - name: contract_address
         description: "The contract address is the unique address of where the NFTs are stored on Optimism."
-        tests:
-          - unique
       - name: name
         description: "NFT Project name"
       - name: standard
