@@ -117,7 +117,7 @@ models:
     config:
       tags: ['ethereum', 'balancer', 'pools', 'tokens', 'weights']
     description: >
-      ERC20 token rolling sum balances on Balancer, an automated portfolio manager and trading platform.
+      Token weights in Balancer pools.
     columns:
       - &pool_id
         name: pool_id
@@ -127,5 +127,34 @@ models:
       - &token_address
         name: token_address
         description: 'Contract address for the token'
-      - name: normalized_weight
+      - &normalized_weight
+        name: normalized_weight
         description: 'Weight of the token in the pool.'
+
+  - name: balancer_v1_ethereum_pools_tokens_weights
+    meta:
+      blockchain: ethereum
+      project: balancer
+      contributors: jacektrocinski
+    config:
+      tags: ['ethereum', 'balancer', 'pools', 'tokens', 'weights']
+    description: >
+      Token weights in Balancer v1 pools.
+    columns:
+      - *pool_id
+      - *token_address
+      - *normalized_weight
+
+  - name: balancer_v2_ethereum_pools_tokens_weights
+    meta:
+      blockchain: ethereum
+      project: balancer
+      contributors: jacektrocinski
+    config:
+      tags: ['ethereum', 'balancer', 'pools', 'tokens', 'weights']
+    description: >
+      Token weights in Balancer v2 pools.
+    columns:
+      - *pool_id
+      - *token_address
+      - *normalized_weight
