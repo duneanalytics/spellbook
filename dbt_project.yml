@@ -255,6 +255,9 @@ models:
       ethereum:
         +schema: seaport_ethereum
         +materialized: view
+      avalanche_c:
+        +schema: seaport_avalanche_c
+        +materialized: view
       polygon:
         +schema: seaport_polygon
         +materialized: view
@@ -731,6 +734,7 @@ seeds:
       ethereum:
         +enabled: true
         +schema: test_data
+
     nft:
       +enabled: true
       +schema: test_data
@@ -738,6 +742,21 @@ seeds:
         +column_types:
           master_address: string
           alternative_address: string
+      nft_trades_seed:
+        +column_types:
+          blockchain: string
+          project: string
+          version: string
+          block_date: date
+          tx_hash: string
+          evt_index: int
+          nft_contract_address: string
+          token_id: string
+          sub_type: string
+          sub_idx: int
+          buyer: string
+          seller: string
+
     nexusmutual:
       ethereum:
         +enabled: true
@@ -790,42 +809,6 @@ seeds:
             amount_raw: double
             amount: double
             tx_num: long
-
-    seaport:
-      +enabled: true
-      +schema: test_data
-      seaport_nft_trades_seed:
-        +column_types:
-          blockchain: string
-          project: string
-          version: string
-          block_date: date
-          block_time: timestamp
-          evt_index: int
-          sub_idx: int
-          sub_type: string
-          seller: string
-          buyer: string
-          trade_type: string
-          trade_category: string
-          evt_type: string
-          nft_contract_address: string
-          token_id: string
-          number_of_items: int
-          token_standard: string
-          amount_original: double
-          amount_raw: double
-          currency_contract: string
-          project_contract_address: string
-          platform_fee_receive_address: string
-          royalty_fee_receive_address: string
-          block_number: int
-          tx_hash: string
-          tx_from: string
-          tx_to: string
-          zone_address: string
-          estimated_price: string
-          is_private: string
 
     zeroex:
       ethereum:

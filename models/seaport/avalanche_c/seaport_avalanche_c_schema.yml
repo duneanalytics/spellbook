@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: seaport_polygon_base_pairs
+  - name: seaport_avalanche_c_base_pairs
     meta:
-      blockchain: polygon
+      blockchain: avalanche_c
       project: seaport
       contributors: sohwak
     config:
-      tags: ['polygon','seaport','base_pairs','sohwak']
+      tags: ['avalanche_c','seaport','base_pairs','sohwak']
     description: >
         Exploded table from Seaport trade events with `offer` and `consideration` array columns
     tests:
@@ -113,15 +113,15 @@ models:
         name: is_moved_nft
         description: "Transferred NFT if `true`, because it is traded or just transferred."
 
-  - name: seaport_polygon_trades
+  - name: seaport_avalanche_c_trades
     meta:
-      blockchain: polygon
+      blockchain: avalanche_c
       project: seaport
       contributors: sohwak
     config:
-      tags: ['polygon','seaport','base_pairs','sohwak']
+      tags: ['avalanche_c','seaport','base_pairs','sohwak']
     description: >
-        Seaport trades on Polygon
+        Seaport trades on Avalanche_c
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -133,7 +133,7 @@ models:
             - sub_type
             - sub_idx
       - check_nft_seed:
-          blockchain: polygon
+          blockchain: avalanche_c
           project: seaport
           version: v1
     columns:
