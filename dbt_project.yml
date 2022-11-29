@@ -299,6 +299,13 @@ models:
         +schema: addresses_events_ethereum
         +materialized: table
 
+    aztec:
+      +schema: aztec
+      +materialized: view
+      ethereum:
+        +schema: aztec_ethereum
+        +materialized: view
+
     tokens:
       +schema: tokens
       +materialized: table
