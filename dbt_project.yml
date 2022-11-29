@@ -94,6 +94,7 @@ models:
           +schema: nft_ethereum_metadata
           +materialized: table
           +file_format: delta
+          +tags: "static"
       gnosis:
         +schema: nft_gnosis
         +materialized: view
