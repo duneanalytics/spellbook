@@ -31,7 +31,7 @@ WITH all_foundation_trades AS (
     , f.contract_address AS project_contract_address
     , c.nftContract AS nft_contract_address
     , f.evt_tx_hash AS tx_hash
-    , f.protocolFee AS platform_fee_amount_raw
+    , CAST(f.protocolFee AS DOUBLE) AS platform_fee_amount_raw
     , f.protocolFee/POWER(10, 18) AS platform_fee_amount
     , f.creatorFee AS royalty_fee_amount_raw
     , f.creatorFee/POWER(10, 18) royalty_fee_amount
@@ -158,8 +158,8 @@ SELECT DISTINCT t.blockchain
 , t.platform_fee_amount
 , t.platform_fee_amount*pu.price AS platform_fee_amount_usd
 , CAST(100.0*ROUND(t.platform_fee_amount/t.amount_original, 2) AS DOUBLE) AS platform_fee_percentage
-, CASE WHEN t.royalty_fee_amount/t.amount_original < 0.5 THEN t.royalty_fee_amount_raw
-    ELSE 0
+, CASE WHEN t.royalty_fee_amount/t.amount_original < 0.5 THEN CAST(t.royalty_fee_amount_raw AS DOUBLE)
+    ELSE CAST(0 AS DOUBLE)
     END AS royalty_fee_amount_raw
 , CASE WHEN t.royalty_fee_amount/t.amount_original < 0.5 THEN t.royalty_fee_amount
     ELSE 0
