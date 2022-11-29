@@ -62,13 +62,12 @@ models:
       - &price_usd
         name: price_usd
         description: "price of a transaction in USD"
-        tests:
-          - zeroex_ethereum_fills_test:
-              seed_file: ref('zeroex_nft_ethereum_fills_sample')
       - &token_amount
         name: token_amount
         description: "token amount, after dividing by the correct decimal"
       - &project_name
         name: project_name
         description: "name of the nft project"   
-        
+        tests:
+          - zeroex_ethereum_fills_test:
+              seed_file: ref('zeroex_nft_ethereum_fills_sample')        
