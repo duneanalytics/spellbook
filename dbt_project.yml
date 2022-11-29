@@ -466,6 +466,9 @@ models:
       optimism:
         +schema: contracts_optimism
         +materialized: view
+      bnb:
+        +schema: contracts_bnb
+        +materialized: view
 
     clipper:
       +schema: clipper
