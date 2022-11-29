@@ -120,3 +120,25 @@ sources:
           - *symbol
           - *tokens
           - *weights
+
+      - name: WeightedPoolV2Factory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer WeightedPool2TokensFactory contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: ''
+          - name: name
+            description: ''
+          - name: normalizedWeights
+            description: ''
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *symbol
+          - *tokens
