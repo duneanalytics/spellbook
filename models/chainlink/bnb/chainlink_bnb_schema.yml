@@ -74,7 +74,6 @@ models:
               - blockchain
               - hour
               - proxy_address
-              - aggregator_address
               - underlying_token_address
     columns:
       - *blockchain
