@@ -74,6 +74,9 @@ models:
       aggregator:
         +schema: dex_aggregator
         +materialized: view
+      prices:
+        +schema: dex_prices
+        +materialized: view
 
     nft:
       +schema: nft
