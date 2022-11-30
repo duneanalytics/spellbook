@@ -12,7 +12,7 @@ SELECT
       project,
       version,
       block_time,
-      token_id,
+      CAST(token_id AS VARCHAR(100)) AS token_id,
       collection,
       platform_fee_amount_raw,
       platform_fee_amount,
