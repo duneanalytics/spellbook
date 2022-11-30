@@ -340,11 +340,11 @@ SELECT distinct 'ethereum' AS blockchain
     , zt.tx_hash
     , et.from AS tx_from
     , et.to AS tx_to
-    , 0 AS platform_fee_amount_raw
+    , CAST(0 AS DOUBLE) AS platform_fee_amount_raw
     , 0 AS platform_fee_amount
     , 0 AS platform_fee_amount_usd
     , CAST(0 AS DOUBLE) AS platform_fee_percentage
-    , SUM(zt.royalty_fee_amount_raw) AS royalty_fee_amount_raw
+    , CAST(SUM(zt.royalty_fee_amount_raw) AS DOUBLE) AS royalty_fee_amount_raw
     , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN COALESCE(SUM(zt.royalty_fee_amount_raw)/POWER(10, 18), 0)
         ELSE COALESCE(SUM(zt.royalty_fee_amount_raw)/POWER(10, pu.decimals), 0) END AS royalty_fee_amount
     , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN COALESCE(SUM(zt.royalty_fee_amount_raw)/POWER(10, 18)*pu.price, 0)
