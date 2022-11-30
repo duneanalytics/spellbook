@@ -35,7 +35,7 @@ WITH element_txs AS (
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         
-        UNION
+        UNION ALL
         
         -- Ethereum ERC721 Buys
         SELECT 'ethereum' AS blockchain
@@ -62,7 +62,7 @@ WITH element_txs AS (
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         
-        UNION
+        UNION ALL
         
         -- Ethereum ERC1155 Sells
         SELECT 'ethereum' AS blockchain
@@ -89,7 +89,7 @@ WITH element_txs AS (
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         
-        UNION
+        UNION ALL
         
         -- Ethereum ERC1155 Buys
         SELECT 'ethereum' AS blockchain
@@ -147,11 +147,11 @@ SELECT alet.blockchain
 , 0 AS platform_fee_amount_raw
 , 0 AS platform_fee_amount
 , 0 AS platform_fee_amount_usd
-, 0 AS platform_fee_percentage
+, CAST(0 AS DOUBLE) AS platform_fee_percentage
 , 0 AS royalty_fee_amount_raw
 , 0 AS royalty_fee_amount
 , 0 AS royalty_fee_amount_usd
-, 0 AS royalty_fee_percentage
+, CAST(0 AS DOUBLE) AS royalty_fee_percentage
 , 0 AS royalty_fee_receive_address
 , 0 AS royalty_fee_currency_symbol
 , alet.blockchain || alet.project || alet.version || alet.tx_hash || alet.seller  || alet.buyer || alet.nft_contract_address || alet.token_id AS unique_trade_id
