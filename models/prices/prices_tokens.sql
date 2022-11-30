@@ -3,6 +3,7 @@
         alias ='tokens',
         materialized='table',
         file_format = 'delta',
+        tags=['static'],
         post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon"]\',
                                     "sector",
                                     "prices",
@@ -1126,7 +1127,7 @@ VALUES
     ('pussy-pussy-token', 'ethereum', 'PUSSY', '0x9196e18bc349b1f64bc08784eae259525329a1ad', 18),
     ('kuma-kuma-inu', 'ethereum', 'KUMA', '0x48c276e8d03813224bb1e55f953adb6d02fd3e02', 18),
     ('cor-coreto', 'ethereum', 'COR', '0x9c2dc0c3cc2badde84b0025cf4df1c5af288d835', 18),
-    ('shih-shih-tzu', 'ethereum', 'SHIH', '0x841fb148863454a3b3570f515414759be9091465', 18),
+    -- ('shih-shih-tzu', 'ethereum', 'SHIH', '0x841fb148863454a3b3570f515414759be9091465', 18), Broken price feed
     ('cqt-covalent', 'ethereum', 'CQT', '0xd417144312dbf50465b1c641d016962017ef6240', 18),
     ('glq-graphlinq', 'ethereum', 'GLQ', '0x9f9c8ec3534c3ce16f928381372bfbfbfb9f4d24', 18),
     ('dfyn-dfyn-network', 'ethereum', 'DFYN', '0x9695e0114e12c0d3a3636fab5a18e6b737529023', 18),
@@ -1680,4 +1681,3 @@ VALUES
     ("usdt-tether", "solana", "USDT", "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", 6)
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
-
