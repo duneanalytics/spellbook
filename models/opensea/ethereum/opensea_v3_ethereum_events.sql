@@ -19,10 +19,10 @@ select blockchain
       ,nft_contract_address
       ,collection
       ,token_id
-      ,number_of_items
+      ,CAST(number_of_items AS DECIMAL(38,0)) number_of_items
       ,token_standard
       ,amount_original
-      ,amount_raw
+      ,CAST(amount_raw AS DECIMAL(38,0)) amount_raw
       ,amount_usd
       ,currency_symbol
       ,currency_contract
@@ -47,7 +47,7 @@ select blockchain
       ,royalty_fee_amount_raw_4
       ,aggregator_name
       ,aggregator_address
-      ,block_number
+      ,CAST(block_number AS BIGINT) AS block_number
       ,tx_hash
       ,evt_index
       ,tx_from

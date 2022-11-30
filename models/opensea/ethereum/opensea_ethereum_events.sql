@@ -30,7 +30,7 @@ FROM
                 aggregator_name,
                 aggregator_address,
                 tx_hash,
-                block_number,
+                CAST(block_number AS BIGINT) AS block_number,
                 tx_from,
                 tx_to,
                 platform_fee_amount_raw,
@@ -71,7 +71,7 @@ FROM
                 ,aggregator_name
                 ,aggregator_address
                 ,tx_hash
-                ,block_number
+                ,CAST(block_number AS BIGINT) AS block_number
                 ,tx_from
                 ,tx_to
                 ,platform_fee_amount_raw

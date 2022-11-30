@@ -32,7 +32,7 @@ SELECT
         CAST(NULL AS VARCHAR(5)) as aggregator_name,
         CAST(NULL AS VARCHAR(5)) as aggregator_address,
         tx_hash,
-        block_number,
+        CAST(block_number AS BIGINT) AS block_number,
         CAST(NULL AS VARCHAR(5)) as tx_from,
         CAST(NULL AS VARCHAR(5)) as tx_to,
         platform_fee_amount_raw,
