@@ -81,7 +81,7 @@ LEFT JOIN {{ ref('tokens_erc20') }} t_bought
 LEFT JOIN {{ ref('tokens_erc20') }} t_sold
     ON t_sold.contract_address = e.token_sold_address
     AND t_sold.blockchain = 'ethereum'
-LEFT JOIN {{ source('prices', 'usd') }} p_bought
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} p_bought
     ON p_bought.minute = date_trunc('minute', e.block_time)
     AND p_bought.contract_address = e.token_bought_address
     AND p_bought.blockchain = 'ethereum'
@@ -91,7 +91,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     {% if is_incremental() %}
     AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ source('prices', 'usd') }} p_sold
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} p_sold
     ON p_sold.minute = date_trunc('minute', e.block_time)
     AND p_sold.contract_address = e.token_sold_address
     AND p_sold.blockchain = 'ethereum'

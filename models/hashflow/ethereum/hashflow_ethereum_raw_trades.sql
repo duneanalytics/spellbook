@@ -37,7 +37,7 @@ ethereum_transactions as (
 
 prices_usd as (
     select *
-    from {{ source('prices', 'usd') }}
+    from {{ ref('prices_usd_forward_fill') }}
     where `minute` >= '{{ project_start_date }}'
         and blockchain = 'ethereum'
     {% if is_incremental() %}

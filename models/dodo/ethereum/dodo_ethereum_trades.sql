@@ -12,12 +12,12 @@
                                     \'["scoffie"]\') }}'
 )
 }}
-    
+
 -- The first dodo contracted was deployed on '2020-08-10 13:19' from the query
 --select min(evt_block_time) from dodo_ethereum.DODO_evt_BuyBaseToken;
 {% set project_start_date = '2020-08-10' %}
 
-WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_symbol, base_token_address, quote_token_address) AS 
+WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_symbol, base_token_address, quote_token_address) AS
 (
     VALUES
     (lower('0x75c23271661d9d143dcb617222bc4bec783eff34'), 'WETH', 'USDC', lower('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'), lower('0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48')),
@@ -37,7 +37,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
     (lower('0x3058ef90929cb8180174d74c507176cca6835d73'), 'DAI', 'USDT',  lower('0x6b175474e89094c44da98b954eedeac495271d0f'), lower('0xdac17f958d2ee523a2206206994597c13d831ec7')),
     (lower('0xd84820f0e66187c4f3245e1fe5ccc40655dbacc9'), 'sUSD', 'USDT', lower('0x57ab1ec28d129707052df4df418d58a2d46d5f51'), lower('0xdac17f958d2ee523a2206206994597c13d831ec7'))
 )
-, dexs AS 
+, dexs AS
 (
     -- dodo v1 sell
         SELECT
@@ -63,7 +63,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         {% if is_incremental() %}
         AND s.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    
+
          UNION ALL
 
         -- dodo v1 buy
@@ -284,7 +284,7 @@ LEFT JOIN {{ ref('tokens_erc20') }} erc20a
 LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     ON erc20b.contract_address = dexs.token_sold_address
     AND erc20b.blockchain = 'ethereum'
-LEFT JOIN {{ source('prices', 'usd') }} p_bought
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} p_bought
     ON p_bought.minute = date_trunc('minute', dexs.block_time)
     AND p_bought.contract_address = dexs.token_bought_address
     AND p_bought.blockchain = 'ethereum'
@@ -294,7 +294,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     {% if is_incremental() %}
     AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ source('prices', 'usd') }} p_sold
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
     AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = 'ethereum'
@@ -304,7 +304,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ source('prices', 'usd') }} p_eth
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} p_eth
     ON p_eth.minute = date_trunc('minute', dexs.block_time)
     AND p_eth.blockchain is null
     AND p_eth.symbol = 'ETH'

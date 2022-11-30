@@ -40,7 +40,7 @@ select
     , coalesce(
         (s.toAmount / power(10, prices_b.decimals)) * prices_b.price
         ,(s.fromAmount / power(10, prices_s.decimals)) * prices_s.price
-    ) as amount_usd	
+    ) as amount_usd
 	, s.toToken as token_bought_address
 	, s.fromToken as token_sold_address
 	, erc20_b.symbol as token_bought_symbol
@@ -59,7 +59,7 @@ select
     , tx.to AS tx_to
 	, '' as trace_address
 	, s.evt_index as evt_index
-from 
+from
     {{ source('platypus_finance_avalanche_c', 'Pool_evt_Swap') }} s
 inner join {{ source('avalanche_c', 'transactions') }} tx
     ON tx.hash = s.evt_tx_hash
@@ -71,14 +71,14 @@ inner join {{ source('avalanche_c', 'transactions') }} tx
     {% endif %}
 -- bought tokens
 left join {{ ref('tokens_erc20') }} erc20_b
-    on erc20_b.contract_address = s.toToken 
+    on erc20_b.contract_address = s.toToken
     and erc20_b.blockchain = 'avalanche_c'
 -- sold tokens
 left join {{ ref('tokens_erc20') }} erc20_s
     on erc20_s.contract_address = s.fromToken
     and erc20_s.blockchain = 'avalanche_c'
 -- price of bought tokens
-left join {{ source('prices', 'usd') }} prices_b
+left join {{ ref('prices_usd_forward_fill') }} prices_b
     on prices_b.minute = date_trunc('minute', s.evt_block_time)
     and prices_b.contract_address = s.toToken
     and prices_b.blockchain = 'avalanche_c'
@@ -89,7 +89,7 @@ left join {{ source('prices', 'usd') }} prices_b
     and prices_b.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 -- price of sold tokens
-left join {{ source('prices', 'usd') }} prices_s
+left join {{ ref('prices_usd_forward_fill') }} prices_s
     on prices_s.minute = date_trunc('minute', s.evt_block_time)
     and prices_s.contract_address = s.fromToken
     and prices_s.blockchain = 'avalanche_c'
