@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: dodo_bnb_trades
+  - name: dodo_aggregator_bnb_trades
     meta:
       blockchain: bnb
       sector: dex
-      project: dodo
+      project: dodo_aggregator
       contributors: owen05
     config:
-      tags: ['bnb','dodo','trades', 'dex']
+      tags: ['bnb','dodo',"aggregator", 'trades', 'dex']
     description: >
-        Dodo trades on BNBChain.
+        DODO Aggregation on BNBChain.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -143,16 +143,16 @@ models:
       - *trace_address
       - *evt_index
 
-  - name: dodo_aggregator_bnb_trades
+  - name: dodo_bnb_trades
     meta:
       blockchain: bnb
       sector: dex
-      project: dodo_aggregator
+      project: dodo
       contributors: owen05
     config:
-      tags: ['bnb','dodo',"aggregator", 'trades', 'dex']
+      tags: ['bnb','dodo','trades', 'dex']
     description: >
-        DODO Aggregation on BNBChain.
+        Dodo trades on BNBChain.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

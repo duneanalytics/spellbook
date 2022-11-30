@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: dodo_ethereum_trades
+  - name: dodo_pools_ethereum_trades
     meta:
       blockchain: ethereum
       sector: dex
-      project: dodo
+      project: dodo_pools
       contributors: scoffie, owen05
     config:
-      tags: ['ethereum','dodo','trades', 'dex']
+      tags: ['ethereum','dodo',"pools", 'trades', 'dex']
     description: >
-        Dodo trades on Ethereum.
+        DodoV1 && DODOV2 pools' trades on Ethereum.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -98,16 +98,16 @@ models:
         name: evt_index
         description: "Index of the corresponding trade event"
 
-  - name: dodo_pools_ethereum_trades
+  - name: dodo_aggregator_ethereum_trades
     meta:
       blockchain: ethereum
       sector: dex
-      project: dodo_pools
+      project: dodo_aggregator
       contributors: scoffie, owen05
     config:
-      tags: ['ethereum','dodo',"pools", 'trades', 'dex']
+      tags: ['ethereum','dodo',"aggregator", 'trades', 'dex']
     description: >
-        DodoV1 && DODOV2 pools' trades on Ethereum.
+        DODO Aggregation on Ethereum.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -143,16 +143,16 @@ models:
       - *trace_address
       - *evt_index
 
-  - name: dodo_aggregator_ethereum_trades
+  - name: dodo_ethereum_trades
     meta:
       blockchain: ethereum
       sector: dex
-      project: dodo_aggregator
+      project: dodo
       contributors: scoffie, owen05
     config:
-      tags: ['ethereum','dodo',"aggregator", 'trades', 'dex']
+      tags: ['ethereum','dodo','trades', 'dex']
     description: >
-        DODO Aggregation on Ethereum.
+        Dodo trades on Ethereum.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
