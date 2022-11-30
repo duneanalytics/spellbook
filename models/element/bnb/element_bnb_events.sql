@@ -141,7 +141,7 @@ SELECT alet.blockchain
 , agg.name AS aggregator_name
 , CASE WHEN agg.name IS NOT NULL THEN agg.contract_address END AS aggregator_address
 , alet.tx_hash
-, alet.block_number
+, CAST(alet.block_number AS DECIMAL(38,0)) AS block_number
 , bt.from AS tx_from
 , bt.to AS tx_to
 , 0 AS platform_fee_amount_raw
