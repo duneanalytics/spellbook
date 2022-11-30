@@ -19,21 +19,21 @@ SELECT
     , 'v1' AS version
     , date_trunc('day', bm.evt_block_time) AS block_date
     , bm.evt_block_time AS block_time
-    , bm.evt_block_number AS block_number
+    , CAST(bm.evt_block_number AS BIGINT) AS block_number
     , get_json_object(bm.buy, '$.tokenId') AS token_id
     , erct.token_standard
     , nft.name AS collection
     , CASE WHEN get_json_object(bm.buy, '$.amount')=1 THEN 'Single Item Trade'
         ELSE 'Bundle Trade'
         END AS trade_type
-    , get_json_object(bm.buy, '$.amount') AS number_of_items
+    , CAST(get_json_object(bm.buy, '$.amount') AS DECIMAL(38,0)) AS number_of_items
     , 'Trade' AS evt_type
     , COALESCE(seller_fix.from, get_json_object(bm.sell, '$.trader')) AS seller
     , COALESCE(buyer_fix.to, get_json_object(bm.buy, '$.trader')) AS buyer
     , CASE WHEN et.from=buyer_fix.to OR et.from=COALESCE(buyer_fix.to, get_json_object(bm.buy, '$.trader')) THEN 'Buy'
         ELSE 'Offer Accepted'
         END AS trade_category
-    , get_json_object(bm.buy, '$.price') AS amount_raw
+    , CAST(get_json_object(bm.buy, '$.price') AS DECIMAL(38,0)) AS amount_raw
     , CASE WHEN get_json_object(bm.buy, '$.paymentToken')='0x0000000000000000000000000000000000000000' THEN get_json_object(bm.buy, '$.price')/POWER(10, 18)
         ELSE get_json_object(bm.buy, '$.price')/POWER(10, pu.decimals)
         END AS amount_original

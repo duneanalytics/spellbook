@@ -84,13 +84,13 @@ SELECT distinct 'ethereum' AS blockchain
 , pu.price*lr.amount_raw/POWER(10, pu.decimals) AS amount_usd
 , CASE WHEN standard.evt_index IS NULL THEN 'erc1155' ELSE 'erc721' END AS token_standard
 , CASE WHEN lr.number_of_items > 1 THEN 'Bundle Trade' ELSE 'Single Item Trade' END AS trade_type
-, lr.number_of_items
+, CAST(lr.number_of_items AS DECIMAL(38,0)) AS number_of_items
 , lr.trade_category
 , 'Trade' AS evt_type
 , COALESCE(seller_fix.from, lr.seller) AS seller
 , COALESCE(buyer_fix.to, lr.buyer) AS buyer
 , lr.amount_raw/POWER(10, pu.decimals) AS amount_original
-, lr.amount_raw
+, CAST(lr.amount_raw AS DECIMAL(38,0)) AS amount_raw
 , CASE WHEN lr.currency_contract='0x0000000000000000000000000000000000000000' THEN 'ETH' ELSE pu.symbol END AS currency_symbol
 , lr.currency_contract
 , lr.nft_contract_address
@@ -98,7 +98,7 @@ SELECT distinct 'ethereum' AS blockchain
 , COALESCE(agg_m.aggregator_name, agg.name) AS aggregator_name
 , agg.contract_address AS aggregator_address
 , lr.tx_hash
-, lr.block_number
+, CAST(lr.block_number AS BIGINT) AS block_number
 , et.from AS tx_from
 , et.to AS tx_to
 , COALESCE((pf.fee_percentage/100)*lr.amount_raw, 0) AS platform_fee_amount_raw

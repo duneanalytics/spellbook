@@ -32,19 +32,19 @@ SELECT distinct 'ethereum' AS blockchain
 , '' AS version
 , nft_mints.block_time AS block_time
 , date_trunc('day', nft_mints.block_time) AS block_date
-, nft_mints.block_number AS block_number
+, CAST(nft_mints.block_number AS BIGINT) AS block_number
 , nft_mints.token_id AS token_id
 , tok.name AS collection
 , nft_mints.token_standard
 , CASE WHEN nft_mints.amount=1 THEN 'Single Item Mint'
     ELSE 'Bundle Mint'
     END AS trade_type
-, nft_mints.amount AS number_of_items
+, CAST(nft_mints.amount AS DECIMAL(38,0)) AS number_of_items
 , 'Mint' AS trade_category
 , 'Mint' AS evt_type
 , nft_mints.from AS seller
 , nft_mints.to AS buyer
-, COALESCE(SUM(et.value), SUM(erc20s.value), 0)*(nft_mints.amount/nft_count.nfts_minted_in_tx) AS amount_raw
+, CAST(COALESCE(SUM(et.value), SUM(erc20s.value), 0)*(nft_mints.amount/nft_count.nfts_minted_in_tx) AS DECIMAL(38,0))AS amount_raw
 , COALESCE(SUM(et.value)/POWER(10, 18), SUM(erc20s.value)/POWER(10, pu_erc20s.decimals))*(nft_mints.amount/nft_count.nfts_minted_in_tx) AS amount_original
 , COALESCE(pu_eth.price*SUM(et.value)/POWER(10, 18), pu_erc20s.price*SUM(erc20s.value)/POWER(10, pu_erc20s.decimals))*(nft_mints.amount/nft_count.nfts_minted_in_tx) AS amount_usd
 , CASE WHEN et.success THEN 'ETH' ELSE pu_erc20s.symbol END AS currency_symbol
