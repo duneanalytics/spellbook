@@ -1,7 +1,5 @@
 {{ config(
-    materialized = 'view',
-    alias = 'arbitrum_events_asset_added',
-    unique_key = ['evt_tx_hash', 'asset_id', 'pair']
+    alias = 'events_asset_added'
     )
  }}
 
@@ -11,3 +9,4 @@ SELECT
     _name as pair 
 FROM 
 {{ source('tigristrade_arbitrum', 'PairsContract_evt_AssetAdded') }}
+;

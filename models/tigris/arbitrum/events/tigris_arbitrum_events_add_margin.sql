@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'arbitrum_events_add_margin',
+    alias = 'events_add_margin',
     partition_by = ['day'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -28,11 +28,11 @@ add_margin_v2 as (
             ON ap._id = af._id 
             AND ap.evt_tx_hash = af.call_tx_hash 
             AND af.call_success = true 
+            {% if is_incremental() %}
+            AND af.call_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
         {% if is_incremental() %}
         WHERE ap.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-        {% if is_incremental() %}
-        AND af.call_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
@@ -54,11 +54,11 @@ add_margin_v3 as (
             ON ap._id = af._id 
             AND ap.evt_tx_hash = af.call_tx_hash 
             AND af.call_success = true 
+            {% if is_incremental() %}
+            AND af.call_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
         {% if is_incremental() %}
         WHERE ap.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-        {% if is_incremental() %}
-        AND af.call_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
@@ -80,11 +80,11 @@ add_margin_v4 as (
             ON ap._id = af._id 
             AND ap.evt_tx_hash = af.call_tx_hash 
             AND af.call_success = true 
+            {% if is_incremental() %}
+            AND af.call_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
         {% if is_incremental() %}
         WHERE ap.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-        {% if is_incremental() %}
-        AND af.call_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
@@ -106,25 +106,26 @@ add_margin_v5 as (
             ON ap._id = af._id 
             AND ap.evt_tx_hash = af.call_tx_hash 
             AND af.call_success = true 
+            {% if is_incremental() %}
+            AND af.call_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
         {% if is_incremental() %}
         WHERE ap.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-        {% if is_incremental() %}
-        AND af.call_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 )
 
 
 SELECT *, 'v2' as version FROM add_margin_v2
 
-UNION 
+UNION ALL
 
 SELECT *, 'v3' as version FROM add_margin_v3
 
-UNION 
+UNION ALL
 
 SELECT *, 'v4' as version FROM add_margin_v4
 
-UNION 
+UNION ALL
 
 SELECT *, 'v5' as version FROM add_margin_v5
+;

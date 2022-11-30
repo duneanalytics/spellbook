@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'polygon_trades',
+    alias = 'trades',
     partition_by = ['day'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -140,11 +140,11 @@ add_margin as (
         ON am.position_id = l.position_id 
         AND am.version = l.version
         AND am.evt_block_time > l.evt_block_time
+        {% if is_incremental() %}
+        AND l.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     {% if is_incremental() %}
     WHERE am.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-    {% if is_incremental() %}
-    AND l.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     GROUP BY 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
     ) tmp 
@@ -153,9 +153,9 @@ add_margin as (
         ON tmp.position_id = l.position_id
         AND tmp.version = l.version
         AND tmp.latest_leverage_time = l.evt_block_time
-    {% if is_incremental() %}
-    WHERE l.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+        {% if is_incremental() %}
+        AND l.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     ) am  
     INNER JOIN 
     open_position op 
@@ -198,30 +198,31 @@ SELECT
     * 
 FROM open_position
 
-UNION 
+UNION ALL
 
 SELECT 
     'polygon' as blockchain,
     *
 FROM close_position
 
-UNION 
+UNION ALL
 
 SELECT 
     'polygon' as blockchain, 
     * 
 FROM liquidate_position
 
-UNION 
+UNION ALL
 
 SELECT 
     'polygon' as blockchain,
     *
 FROM add_margin
 
-UNION 
+UNION ALL
 
 SELECT 
     'polygon' as blockchain,
     *
 FROM modify_margin
+;

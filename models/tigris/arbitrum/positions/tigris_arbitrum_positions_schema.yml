@@ -26,8 +26,7 @@ models:
       - &leverage
         name: leverage
         description: "leverage of trade at evt block time"
-
-models:
+  
   - name: tigris_arbitrum_positions_close
     meta:
       blockchain: arbitrum
@@ -64,7 +63,6 @@ models:
         name: new_margin
         description: "margin after payout was processed"
 
-models:
   - name: tigris_arbitrum_positions_margin
     meta:
       blockchain: arbitrum
@@ -87,7 +85,6 @@ models:
         name: margin
         description: "margin of trade at block time"
 
-models:
   - name: tigris_arbitrum_positions_liquidation
     meta:
       blockchain: arbitrum

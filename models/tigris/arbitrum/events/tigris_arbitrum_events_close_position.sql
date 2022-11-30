@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'arbitrum_events_close_position',
+    alias = 'events_close_position',
     partition_by = ['day'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -85,14 +85,15 @@ close_position_v5 as (
 
 SELECT *, 'v2' as version FROM close_position_v2
 
-UNION 
+UNION ALL
 
 SELECT *, 'v3' as version FROM close_position_v3
 
-UNION 
+UNION ALL
 
 SELECT *, 'v4' as version FROM close_position_v4
 
-UNION 
+UNION ALL
 
 SELECT *, 'v5' as version FROM close_position_v5
+;

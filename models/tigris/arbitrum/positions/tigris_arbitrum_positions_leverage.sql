@@ -1,7 +1,5 @@
 {{ config(
-    materialized = 'view',
-    alias = 'arbitrum_positions_leverage',
-    unique_key = ['evt_block_time', 'position_id', 'leverage']
+    alias = 'positions_leverage'
     )
  }}
 
@@ -15,7 +13,7 @@ leverage as (
     FROM 
     {{ ref('tigris_arbitrum_events_open_position') }}
 
-    UNION 
+    UNION ALL
 
     SELECT 
         evt_block_time,
@@ -26,3 +24,4 @@ leverage as (
 )
 
 SELECT * FROM leverage 
+;

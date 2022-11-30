@@ -1,7 +1,5 @@
 {{ config(
-    materialized = 'view',
-    alias = 'polygon_positions_liquidation',
-    unique_key = ['evt_block_time', 'position_id', 'version']
+    alias = 'positions_liquidation'
     )
  }}
 
@@ -67,3 +65,4 @@ INNER JOIN
 last_leverage ll 
     ON lp.position_id = ll.position_id
     AND lp.version = ll.version
+;

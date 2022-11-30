@@ -1,7 +1,5 @@
 {{ config(
-    materialized = 'view',
-    alias = 'polygon_positions_leverage',
-    unique_key = ['evt_block_time', 'position_id', 'leverage', 'version']
+    alias = 'positions_leverage'
     )
  }}
 
@@ -27,4 +25,5 @@ leverage as (
     {{ ref('tigris_polygon_events_modify_margin') }}
 )
 
-SELECT * FROM leverage 
+SELECT * FROM leverage
+;

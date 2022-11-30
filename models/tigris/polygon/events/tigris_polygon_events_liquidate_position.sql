@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'polygon_events_liquidate_position',
+    alias = 'events_liquidate_position',
     partition_by = ['day'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -148,30 +148,31 @@ liquidate_position_v8 as (
 
 SELECT *, 'v1' as version FROM liquidate_position_v1
 
-UNION 
+UNION ALL
 
 SELECT *, 'v2' as version FROM liquidate_position_v2
 
-UNION 
+UNION ALL
 
 SELECT *, 'v3' as version FROM liquidate_position_v3
 
-UNION 
+UNION ALL
 
 SELECT *, 'v4' as version FROM liquidate_position_v4
 
-UNION 
+UNION ALL
 
 SELECT *, 'v5' as version FROM liquidate_position_v5
 
-UNION 
+UNION ALL
 
 SELECT *, 'v6' as version FROM liquidate_position_v6
 
-UNION 
+UNION ALL
 
 SELECT *, 'v7' as version FROM liquidate_position_v7
 
-UNION 
+UNION ALL
 
 SELECT *, 'v8' as version FROM liquidate_position_v8
+;

@@ -1,7 +1,5 @@
 {{ config(
-    materialized = 'view',
-    alias = 'arbitrum_positions_liquidation',
-    unique_key = ['evt_block_time', 'position_id']
+    alias = 'positions_liquidation'
     )
  }}
 
@@ -59,3 +57,4 @@ last_margin lm
 INNER JOIN 
 last_leverage ll 
     ON lp.position_id = ll.position_id
+;

@@ -1,7 +1,5 @@
 {{ config(
-    materialized = 'view',
-    alias = 'polygon_positions_close',
-    unique_key = ['latest_leverage_time', 'evt_tx_hash', 'position_id', 'payout']
+    alias = 'positions_close'
     )
  }}
 
@@ -42,3 +40,4 @@ latest_leverage as (
 )
 
 SELECT * FROM latest_leverage
+;

@@ -1,7 +1,5 @@
 {{ config(
-    materialized = 'view',
-    alias = 'arbitrum_positions_margin',
-    unique_key = ['evt_block_time', 'position_id', 'margin']
+    alias = 'positions_margin'
     )
  }}
 
@@ -15,7 +13,7 @@ margin as (
     FROM 
     {{ ref('tigris_arbitrum_events_add_margin') }}
 
-    UNION 
+    UNION ALL
 
     SELECT 
         evt_block_time,
@@ -24,7 +22,7 @@ margin as (
     FROM 
     {{ ref('tigris_arbitrum_events_modify_margin') }}
 
-    UNION 
+    UNION ALL
 
     SELECT 
         evt_block_time,
@@ -33,7 +31,7 @@ margin as (
     FROM 
     {{ ref('tigris_arbitrum_events_open_position') }}
 
-    UNION 
+    UNION ALL
 
     SELECT 
         evt_block_time,
@@ -45,3 +43,4 @@ margin as (
 )
 
 SELECT * FROM margin  
+;

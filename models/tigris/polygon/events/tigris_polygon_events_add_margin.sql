@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'polygon_events_add_margin',
+    alias = 'events_add_margin',
     partition_by = ['day'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -28,11 +28,11 @@ add_margin_v5 as (
             ON ap._id = af._id 
             AND ap.evt_tx_hash = af.call_tx_hash 
             AND af.call_success = true 
+            {% if is_incremental() %}
+            AND af.call_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
         {% if is_incremental() %}
         WHERE ap.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-        {% if is_incremental() %}
-        AND af.call_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
@@ -53,12 +53,12 @@ add_margin_v6 as (
         {{ source('tigristrade_polygon', 'TradingV6_call_addToPosition') }} af 
             ON ap._id = af._id 
             AND ap.evt_tx_hash = af.call_tx_hash 
-            AND af.call_success = true 
+            AND af.call_success = true
+            {% if is_incremental() %}
+            AND af.call_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %} 
         {% if is_incremental() %}
         WHERE ap.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-        {% if is_incremental() %}
-        AND af.call_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
@@ -80,11 +80,11 @@ add_margin_v7 as (
             ON ap._id = af._id 
             AND ap.evt_tx_hash = af.call_tx_hash 
             AND af.call_success = true 
+            {% if is_incremental() %}
+            AND af.call_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
         {% if is_incremental() %}
         WHERE ap.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-        {% if is_incremental() %}
-        AND af.call_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
@@ -106,24 +106,25 @@ add_margin_v8 as (
             ON ap._id = af._id 
             AND ap.evt_tx_hash = af.call_tx_hash 
             AND af.call_success = true 
+            {% if is_incremental() %}
+            AND af.call_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
         {% if is_incremental() %}
         WHERE ap.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-        {% if is_incremental() %}
-        AND af.call_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 )
 
 SELECT *, 'v5' as version FROM add_margin_v5
 
-UNION 
+UNION ALL
 
 SELECT *, 'v6' as version FROM add_margin_v6
 
-UNION 
+UNION ALL
 
 SELECT *, 'v7' as version FROM add_margin_v7
 
-UNION 
+UNION ALL
 
 SELECT *, 'v8' as version FROM add_margin_v8
+;
