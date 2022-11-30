@@ -12,7 +12,7 @@
     )
 }}
 
-WITH 
+WITH
 
 dex_trades as (
     SELECT 
