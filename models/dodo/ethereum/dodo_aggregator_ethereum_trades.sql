@@ -1,6 +1,6 @@
 {{ config
 (
-    schema = "dodo_aggregator_ethereum_trades",
+    schema = "dodo_aggregator_ethereum",
     alias ='trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -36,54 +36,6 @@ WITH dexs AS
             evt_index
         FROM
             {{ source('dodo_ethereum' ,'DODOV1Proxy01_evt_OrderHistory')}}
-        {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-
-        UNION ALL
-
-        -- dodo proxy02
-        SELECT
-            evt_block_time AS block_time,
-            'DODO' AS project,
-            '0' AS version,
-            sender AS taker,
-            '' AS maker,
-            fromAmount AS token_bought_amount_raw,
-            returnAmount AS token_sold_amount_raw,
-            cast(NULL as double) AS amount_usd,
-            fromToken AS token_bought_address,
-            toToken AS token_sold_address,
-            contract_address AS project_contract_address,
-            evt_tx_hash AS tx_hash,
-            '' AS trace_address,
-            evt_index
-        FROM
-            {{ source('dodo_ethereum' ,'DODOV1Proxy02_evt_OrderHistory')}}
-        {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-
-        UNION ALL
-
-        -- dodo proxy03
-        SELECT
-            evt_block_time AS block_time,
-            'DODO' AS project,
-            '0' AS version,
-            sender AS taker,
-            '' AS maker,
-            fromAmount AS token_bought_amount_raw,
-            returnAmount AS token_sold_amount_raw,
-            cast(NULL as double) AS amount_usd,
-            fromToken AS token_bought_address,
-            toToken AS token_sold_address,
-            contract_address AS project_contract_address,
-            evt_tx_hash AS tx_hash,
-            '' AS trace_address,
-            evt_index
-        FROM
-            {{ source('dodo_ethereum' ,'DODOV1Proxy03_evt_OrderHistory')}}
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
