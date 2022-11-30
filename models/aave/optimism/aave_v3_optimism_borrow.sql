@@ -35,7 +35,7 @@ SELECT
     user AS borrower, 
     CAST(NULL AS VARCHAR(5)) AS repayer,
     CAST(NULL AS VARCHAR(5)) AS liquidator,
-    CAST(amount AS DECIMAL(38,0)),
+    CAST(amount AS DECIMAL(38,0)) AS amount,
     evt_tx_hash,
     evt_index,
     evt_block_time,
