@@ -616,13 +616,6 @@ models:
         +schema: quix_optimism
         +materialized: view
 
-        
-    woofi:
-      +schema: woofi
-      +materialized: view
-      bnb:
-        +schema: woofi_bnb
-        +materialized: view
 
     dodo:
       +schema: dodo
