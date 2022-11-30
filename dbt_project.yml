@@ -94,6 +94,7 @@ models:
           +schema: nft_ethereum_metadata
           +materialized: table
           +file_format: delta
+          +tags: "static"
       gnosis:
         +schema: nft_gnosis
         +materialized: view
@@ -351,6 +352,13 @@ models:
         +materialized: table
         +file_format: delta
 
+    trader_joe:
+      +schema: trader_joe
+      +materialized: view
+      avalanche_c:
+        +schema: trader_joe_avalanche_c
+        +materialized: view
+    
     transfers:
       +schema: transfers
       +materialized: view

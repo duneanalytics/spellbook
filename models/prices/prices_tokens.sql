@@ -3,6 +3,7 @@
         alias ='tokens',
         materialized='table',
         file_format = 'delta',
+        tags=['static'],
         post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon"]\',
                                     "sector",
                                     "prices",
@@ -1680,4 +1681,3 @@ VALUES
     ("usdt-tether", "solana", "USDT", "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", 6)
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
-
