@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['evt_block_time', 'evt_tx_hash', 'position_id', 'trader', 'price', 'payout', 'perc_closed']
+    unique_key = ['evt_block_time', 'evt_tx_hash', 'evt_index', 'position_id', 'trader', 'price', 'payout', 'perc_closed']
     )
 }} 
 

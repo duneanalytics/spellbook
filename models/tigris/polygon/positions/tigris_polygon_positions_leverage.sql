@@ -10,7 +10,8 @@ leverage as (
         evt_block_time,
         position_id,
         leverage, 
-        version
+        version,
+        evt_index
     FROM 
     {{ ref('tigris_polygon_events_open_position') }}
 
@@ -20,7 +21,8 @@ leverage as (
         evt_block_time,
         position_id,
         leverage, 
-        version 
+        version,
+        evt_index
     FROM 
     {{ ref('tigris_polygon_events_modify_margin') }}
 )

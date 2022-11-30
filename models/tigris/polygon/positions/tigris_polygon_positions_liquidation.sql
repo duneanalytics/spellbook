@@ -7,10 +7,24 @@ WITH
 
 last_margin as (
         SELECT 
+            evt_block_time,
+            position_id,
+            version,
+            margin,
+            evt_index
+        FROM 
+        (
+        SELECT 
+            ROW_NUMBER() OVER (PARTITION BY position_id, version ORDER BY evt_index DESC) as rank_,
+            * 
+        FROM 
+        (
+        SELECT 
             xx.evt_block_time,
             xx.position_id,
             xx.version, 
-            xy.margin 
+            xy.margin,
+            xy.evt_index
         FROM 
         (
         SELECT 
@@ -26,29 +40,49 @@ last_margin as (
             ON xx.evt_block_time = xy.evt_block_time
             AND xx.position_id = xy.position_id
             AND xx.version = xy.version
+        ) tmp 
+        WHERE rank_ = 1 
+        ) tmp_2
 ),
 
 last_leverage as (
         SELECT 
+            evt_block_time,
+            position_id,
+            version,
+            leverage,
+            evt_index 
+        FROM 
+        (
+        SELECT 
+            ROW_NUMBER() OVER (PARTITION BY position_id, version ORDER BY evt_index DESC) as rank_,
+            * 
+        FROM 
+        (
+        SELECT 
             xx.evt_block_time,
             xx.position_id,
             xx.version, 
-            xy.leverage 
+            xy.leverage,
+            xy.evt_index
         FROM 
         (
         SELECT 
             MAX(evt_block_time) as evt_block_time,
             position_id,
-            version
+            version 
         FROM 
         {{ ref('tigris_polygon_positions_leverage') }}
-        GROUP BY 2, 3
+        GROUP BY 2, 3 
         ) xx 
         INNER JOIN 
         {{ ref('tigris_polygon_positions_leverage') }} xy 
             ON xx.evt_block_time = xy.evt_block_time
             AND xx.position_id = xy.position_id
             AND xx.version = xy.version
+        ) tmp 
+        WHERE rank_ = 1 
+        ) tmp_2
 )
 
 SELECT 

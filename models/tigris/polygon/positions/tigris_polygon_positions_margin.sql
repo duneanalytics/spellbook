@@ -10,7 +10,8 @@ margin as (
         evt_block_time,
         position_id,
         margin,
-        version
+        version,
+        evt_index
     FROM 
     {{ ref('tigris_polygon_events_add_margin') }}
 
@@ -20,7 +21,8 @@ margin as (
         evt_block_time,
         position_id,
         margin,
-        version
+        version,
+        evt_index
     FROM 
     {{ ref('tigris_polygon_events_modify_margin') }}
 
@@ -30,7 +32,8 @@ margin as (
         evt_block_time,
         position_id,
         margin,
-        version
+        version,
+        evt_index
     FROM 
     {{ ref('tigris_polygon_events_open_position') }}
 
@@ -40,7 +43,8 @@ margin as (
         evt_block_time,
         position_id,
         new_margin as margin,
-        version
+        version,
+        evt_index
     FROM 
     {{ ref('tigris_polygon_positions_close') }}
 

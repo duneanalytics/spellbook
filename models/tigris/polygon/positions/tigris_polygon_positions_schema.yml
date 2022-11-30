@@ -17,6 +17,7 @@ models:
             - position_id
             - leverage
             - version
+            - evt_index
     columns:
       - &evt_block_time
         name: evt_block_time
@@ -30,6 +31,9 @@ models:
       - &version
         name: version
         description: "contract version"
+      - &evt_index
+        name: evt_index
+        description: "blockchain transaction index "
 
   - name: tigris_polygon_positions_close
     meta:
@@ -47,6 +51,7 @@ models:
             - position_id
             - latest_leverage_time
             - payout
+            - evt_index
     columns:
       - &evt_tx_hash
         name: evt_tx_hash
@@ -66,6 +71,7 @@ models:
       - &new_margin
         name: new_margin
         description: "margin after payout was processed"
+      - *evt_index
 
   - name: tigris_polygon_positions_margin
     meta:
@@ -83,6 +89,7 @@ models:
             - position_id
             - margin
             - version
+            - evt_index
     columns:
       - *evt_block_time
       - *position_id
@@ -90,6 +97,7 @@ models:
         name: margin
         description: "margin of trade at block time"
       - *version
+      - *evt_index
 
   - name: tigris_polygon_positions_liquidation
     meta:
@@ -113,9 +121,7 @@ models:
       - *evt_tx_hash
       - *leverage
       - *version
-      - &evt_index
-        name: evt_index
-        description: "blockchain transaction index "
+      - *evt_index
       - &trader
         name: trader
         description: "trader that was liquidated"
