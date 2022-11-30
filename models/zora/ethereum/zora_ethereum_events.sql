@@ -321,14 +321,14 @@ SELECT distinct 'ethereum' AS blockchain
         ELSE zt.amount_raw/POWER(10, pu.decimals)*pu.price END AS amount_usd
     , CASE WHEN erc721.evt_index IS NOT NULL THEN 'erc721' ELSE 'erc1155' END AS token_standard
     , CASE WHEN agg.name IS NOT NULL THEN 'Bundle Trade' ELSE 'Single Item Trade' END AS trade_type
-    , CAST(1 AS DECIMAL(38,0)) AS number_of_items
+    , 1 AS number_of_items
     , zt.trade_category
     , 'Trade' AS evt_type
     , zt.seller
     , zt.buyer
     , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN zt.amount_raw/POWER(10, 18)
         ELSE zt.amount_raw/POWER(10, pu.decimals) END AS amount_original
-    , CAST(zt.amount_raw AS DECIMAL(38,0)) AS amount_raw
+    , zt.amount_raw
     , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN 'ETH'
         ELSE pu.symbol END AS currency_symbol
     , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
