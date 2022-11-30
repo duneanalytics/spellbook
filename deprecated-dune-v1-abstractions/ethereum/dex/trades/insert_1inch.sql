@@ -84,7 +84,9 @@ WITH rows AS (
                     SELECT "fromToken" as from_token, "toToken" as to_token, "tokensAmount" as from_amount, "minTokensAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."exchange_v6_call_aggregate" WHERE call_success and call_block_time >= start_ts AND call_block_time < end_ts UNION ALL
                     SELECT "fromToken" as from_token, "toToken" as to_token, "fromTokenAmount" as from_amount, "minReturnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."exchange_v7_call_swap" WHERE call_success and call_block_time >= start_ts AND call_block_time < end_ts UNION ALL
                     SELECT "fromToken" as from_token, "toToken" as to_token, "fromTokenAmount" as from_amount, "minReturnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."OneInchExchange_call_swap" WHERE call_success and call_block_time >= start_ts AND call_block_time < end_ts UNION ALL
-                    SELECT decode(substring("desc"->>'srcToken' FROM 3), 'hex') as from_token, decode(substring("desc"->>'dstToken' FROM 3), 'hex') as to_token, "output_spentAmount" as from_amount, "output_returnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address, NULL::integer as evt_index, contract_address, '4' as version FROM oneinch_v4."AggregationRouterV4_call_swap" where call_success and call_block_time >= start_ts AND call_block_time < end_ts
+                    SELECT decode(substring("desc"->>'srcToken' FROM 3), 'hex') as from_token, decode(substring("desc"->>'dstToken' FROM 3), 'hex') as to_token, "output_spentAmount" as from_amount, "output_returnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address, NULL::integer as evt_index, contract_address, '4' as version FROM oneinch_v4."AggregationRouterV4_call_swap" where call_success and call_block_time >= start_ts AND call_block_time < end_ts UNION ALL
+                    SELECT decode(substring("desc"->>'srcToken' FROM 3), 'hex') as from_token, decode(substring("desc"->>'dstToken' FROM 3), 'hex') as to_token, "output_spentAmount" as from_amount, "output_returnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address, NULL::integer as evt_index, contract_address, '5' as version FROM oneinch."AggregationRouterV5_call_swap" where call_success and call_block_time >= start_ts AND call_block_time < end_ts
+
                 ) calls
                 LEFT JOIN ethereum.traces t on calls.tx_hash = t.tx_hash and calls.trace_address = t.trace_address
                 and t.block_time >= start_ts
@@ -152,6 +154,8 @@ WITH rows AS (
                         and evt_block_time < end_ts
                 UNION ALL
                 SELECT decode(substring("desc"->>'srcToken' FROM 3), 'hex') as from_token, decode(substring("desc"->>'dstToken' FROM 3), 'hex') as to_token, "output_spentAmount" as from_amount, "output_returnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address, NULL::integer as evt_index, contract_address, '4' as version FROM oneinch_v4."AggregationRouterV4_call_swap" where call_success and call_block_time >= start_ts AND call_block_time < end_ts
+                UNION ALL
+                SELECT decode(substring("desc"->>'srcToken' FROM 3), 'hex') as from_token, decode(substring("desc"->>'dstToken' FROM 3), 'hex') as to_token, "output_spentAmount" as from_amount, "output_returnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address, NULL::integer as evt_index, contract_address, '5' as version FROM oneinch."AggregationRouterV5_call_swap" where call_success and call_block_time >= start_ts AND call_block_time < end_ts
             ) calls
         )
 
@@ -194,7 +198,9 @@ WITH rows AS (
                 SELECT "fromToken" as from_token, "toToken" as to_token, "fromTokenAmount" as from_amount, "minReturnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address as trace_address, NULL::integer as evt_index, contract_address, '1' as version FROM oneinch."OneInchExchange_call_swap" WHERE call_success and call_block_time >= start_ts AND call_block_time < end_ts UNION ALL
                 SELECT "srcToken" as from_token, "dstToken" as to_token, "spentAmount" as from_amount, "returnAmount" as to_amount, evt_tx_hash as tx_hash, evt_block_time as block_time, NULL::integer[] as call_trace_address, evt_index, contract_address, '2' as version FROM oneinch_v2."OneInchExchange_evt_Swapped" where evt_block_time >= start_ts AND evt_block_time < end_ts UNION ALL
                 SELECT "srcToken" as from_token, "dstToken" as to_token, "spentAmount" as from_amount, "returnAmount" as to_amount, evt_tx_hash as tx_hash, evt_block_time as block_time, NULL::integer[] as call_trace_address, evt_index, contract_address, '3' as version FROM oneinch_v3."AggregationRouterV3_evt_Swapped" where evt_block_time >= start_ts AND evt_block_time < end_ts UNION ALL
-                SELECT decode(substring("desc"->>'srcToken' FROM 3), 'hex') as from_token, decode(substring("desc"->>'dstToken' FROM 3), 'hex') as to_token, "output_spentAmount" as from_amount, "output_returnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address, NULL::integer as evt_index, contract_address, '4' as version FROM oneinch_v4."AggregationRouterV4_call_swap" where call_success and call_block_time >= start_ts AND call_block_time < end_ts
+                SELECT decode(substring("desc"->>'srcToken' FROM 3), 'hex') as from_token, decode(substring("desc"->>'dstToken' FROM 3), 'hex') as to_token, "output_spentAmount" as from_amount, "output_returnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address, NULL::integer as evt_index, contract_address, '4' as version FROM oneinch_v4."AggregationRouterV4_call_swap" where call_success and call_block_time >= start_ts AND call_block_time < end_ts UNION ALL
+                SELECT decode(substring("desc"->>'srcToken' FROM 3), 'hex') as from_token, decode(substring("desc"->>'dstToken' FROM 3), 'hex') as to_token, "output_spentAmount" as from_amount, "output_returnAmount" as to_amount, call_tx_hash as tx_hash, call_block_time as block_time, call_trace_address, NULL::integer as evt_index, contract_address, '5' as version FROM oneinch."AggregationRouterV5_call_swap" where call_success and call_block_time >= start_ts AND call_block_time < end_ts
+
             ) t
         )
         
@@ -283,6 +289,18 @@ WITH rows AS (
             where call_success
                 and call_block_time >= start_ts
                 and call_block_time < end_ts
+            -- union all
+            -- select "output_returnAmount", "amount", "srcToken", "pools", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address"
+            -- from oneinch."AggregationRouterV5_call_unoswapToWithPermit"
+            -- where call_success
+            --     and call_block_time >= start_ts
+            --     and call_block_time < end_ts
+            -- union all
+            -- select "output_returnAmount", "amount", "srcToken", "pools", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address"
+            -- from oneinch."AggregationRouterV5_call_unoswap"
+            -- where call_success
+            --     and call_block_time >= start_ts
+            --     and call_block_time < end_ts
         ) us
         left join ethereum.traces t on us.call_tx_hash = t.tx_hash and us.call_trace_address = t.trace_address
             and t.block_time >= start_ts
@@ -356,7 +374,10 @@ WITH rows AS (
             from (
                 select "output_returnAmount", "amount", "pools", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address" from oneinch_v4."AggregationRouterV4_call_uniswapV3Swap" where call_success and call_block_time >= start_ts and call_block_time < end_ts union all
                 select "output_returnAmount", "amount", "pools", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address" from oneinch_v4."AggregationRouterV4_call_uniswapV3SwapTo" where call_success and call_block_time >= start_ts and call_block_time < end_ts union all
-                select "output_returnAmount", "amount", "pools", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address" from oneinch_v4."AggregationRouterV4_call_uniswapV3SwapToWithPermit" where call_success and call_block_time >= start_ts and call_block_time < end_ts
+                select "output_returnAmount", "amount", "pools", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address" from oneinch_v4."AggregationRouterV4_call_uniswapV3SwapToWithPermit" where call_success and call_block_time >= start_ts and call_block_time < end_ts union all
+                select "output_returnAmount", "amount", "pools", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address" from oneinch."AggregationRouterV5_call_uniswapV3Swap" where call_success and call_block_time >= start_ts and call_block_time < end_ts union all
+                select "output_returnAmount", "amount", "pools", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address" from oneinch."AggregationRouterV5_call_uniswapV3SwapTo" where call_success and call_block_time >= start_ts and call_block_time < end_ts union all
+                select "output_returnAmount", "amount", "pools", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address" from oneinch."AggregationRouterV5_call_uniswapV3SwapToWithPermit" where call_success and call_block_time >= start_ts and call_block_time < end_ts
             ) sw
             left join ethereum.traces t 
             on t.tx_hash = sw.call_tx_hash 
@@ -387,7 +408,10 @@ WITH rows AS (
         FROM (
             select "output_returnAmount", "amount", "srcToken", "dstToken", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address" from oneinch_v4."AggregationRouterV4_call_clipperSwap" where call_success and call_block_time >= start_ts and call_block_time < end_ts union all
             select "output_returnAmount", "amount", "srcToken", "dstToken", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address" from oneinch_v4."AggregationRouterV4_call_clipperSwapTo" where call_success and call_block_time >= start_ts and call_block_time < end_ts union all
-            select "output_returnAmount", "amount", "srcToken", "dstToken", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address" from oneinch_v4."AggregationRouterV4_call_clipperSwapToWithPermit" where call_success and call_block_time >= start_ts and call_block_time < end_ts
+            select "output_returnAmount", "amount", "srcToken", "dstToken", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address" from oneinch_v4."AggregationRouterV4_call_clipperSwapToWithPermit" where call_success and call_block_time >= start_ts and call_block_time < end_ts union all
+            select "output_returnAmount", "inputAmount" as amount, "srcToken", "dstToken", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address" from oneinch."AggregationRouterV5_call_clipperSwap" where call_success and call_block_time >= start_ts and call_block_time < end_ts union all
+            select "output_returnAmount", "inputAmount" as amount, "srcToken", "dstToken", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address" from oneinch."AggregationRouterV5_call_clipperSwapTo" where call_success and call_block_time >= start_ts and call_block_time < end_ts union all
+            select "output_returnAmount", "inputAmount" as amount, "srcToken", "dstToken", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address" from oneinch."AggregationRouterV5_call_clipperSwapToWithPermit" where call_success and call_block_time >= start_ts and call_block_time < end_ts
         ) us
         LEFT JOIN ethereum.traces t on t.tx_hash = us.call_tx_hash and t.trace_address = us.call_trace_address
             and t.block_time >= start_ts
@@ -416,7 +440,10 @@ WITH rows AS (
             select '1' as version, decode(substring("order"::jsonb->>'makerAssetData' from 35 for 40), 'hex') as maker, contract_address, "order", output_0, output_1, call_block_time, call_tx_hash, call_trace_address from oneinch_lop."LimitOrderProtocol_call_fillOrder" where call_success and call_block_time >= start_ts and call_block_time < end_ts union all
             select '2' as version, decode(substring("order"::jsonb->>'maker' from 3 for 40), 'hex') as maker, contract_address, "order", output_0, output_1, call_block_time, call_tx_hash, call_trace_address from oneinch_lop_v2."LimitOrderProtocol_call_fillOrder" where call_success and call_block_time >= start_ts and call_block_time < end_ts union all
             select '2' as version, decode(substring("order"::jsonb->>'maker' from 3 for 40), 'hex') as maker, contract_address, "order", output_0, output_1, call_block_time, call_tx_hash, call_trace_address from oneinch_lop_v2."LimitOrderProtocol_call_fillOrderTo" where call_success and call_block_time >= start_ts and call_block_time < end_ts union all
-            select '2' as version, decode(substring("order"::jsonb->>'maker' from 3 for 40), 'hex') as maker, contract_address, "order", output_0, output_1, call_block_time, call_tx_hash, call_trace_address from oneinch_lop_v2."LimitOrderProtocol_call_fillOrderToWithPermit" where call_success and call_block_time >= start_ts and call_block_time < end_ts
+            select '2' as version, decode(substring("order"::jsonb->>'maker' from 3 for 40), 'hex') as maker, contract_address, "order", output_0, output_1, call_block_time, call_tx_hash, call_trace_address from oneinch_lop_v2."LimitOrderProtocol_call_fillOrderToWithPermit" where call_success and call_block_time >= start_ts and call_block_time < end_ts union all
+            select '3' as version, decode(substring("order_"::jsonb->>'maker' from 3 for 40), 'hex') as maker, contract_address, "order_" as order, "output_actualTakingAmount" as output_0, "output_actualMakingAmount" as output_1, call_block_time, call_tx_hash, call_trace_address from oneinch."AggregationRouterV5_call_fillOrderTo" where call_success and call_block_time >= start_ts and call_block_time < end_ts union all
+            select '3' as version, decode(substring("order"::jsonb->>'maker' from 3 for 40), 'hex') as maker, contract_address, "order", output_0, output_1, call_block_time, call_tx_hash, call_trace_address from oneinch."AggregationRouterV5_call_fillOrderToWithPermit" where call_success and call_block_time >= start_ts and call_block_time < end_ts union all
+            select '3' as version, decode(substring("order"::jsonb->>'maker' from 3 for 40), 'hex') as maker, contract_address, "order", output_0, output_1, call_block_time, call_tx_hash, call_trace_address from oneinch."AggregationRouterV5_call_fillOrder" where call_success and call_block_time >= start_ts and call_block_time < end_ts
         ) call
         LEFT JOIN ethereum.traces ts ON call_tx_hash = ts.tx_hash AND call_trace_address = ts.trace_address
             and ts.block_time >= start_ts
@@ -544,6 +571,34 @@ WITH rows AS (
         LEFT JOIN ethereum.traces ts ON call_tx_hash = ts.tx_hash AND call_trace_address = ts.trace_address
             and ts.block_time >= start_ts
             and ts.block_time < end_ts
+
+        UNION ALL
+
+        -- 1inch Limit Order Protocol RFQ v3
+        SELECT
+            call_block_time as block_time,
+            '1inch Limit Order Protocol' AS project,
+            'RFQ v3' as version,
+            'DEX' AS category,
+            ts."from" AS trader_a,
+            decode(substring("order"::jsonb->>'maker' from 3 for 40), 'hex') AS trader_b,
+            "output_1" AS token_a_amount_raw,
+            "output_0" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            decode(substring("order"::jsonb->>'takerAsset' from 3), 'hex') AS token_a_address,
+            decode(substring("order"::jsonb->>'makerAsset' from 3), 'hex') AS token_b_address,
+            contract_address AS exchange_contract_address,
+            call_tx_hash,
+            call_trace_address,
+            NULL AS evt_index
+        FROM (
+            select contract_address, "order", output_0, output_1, call_block_time, call_tx_hash, call_trace_address from oneinch."AggregationRouterV5_call_fillOrderRFQ" where call_success and call_block_time >= start_ts and call_block_time < end_ts union all
+            select contract_address, "order", "output_filledTakingAmount" as output_0, "output_filledMakingAmount" as output_1, call_block_time, call_tx_hash, call_trace_address from oneinch."AggregationRouterV5_call_fillOrderRFQTo" where call_success and call_block_time >= start_ts and call_block_time < end_ts union all
+            select contract_address, "order", output_0, output_1, call_block_time, call_tx_hash, call_trace_address from oneinch."AggregationRouterV5_call_fillOrderRFQToWithPermit" where call_success and call_block_time >= start_ts and call_block_time < end_ts
+        ) call
+        LEFT JOIN ethereum.traces ts ON call_tx_hash = ts.tx_hash AND call_trace_address = ts.trace_address
+            and ts.block_time >= start_ts
+            and ts.block_time < end_ts
     ) dexs
     INNER JOIN ethereum.transactions tx
         ON dexs.tx_hash = tx.hash
@@ -581,192 +636,192 @@ $function$;
 --   project in ('1inch', '1inch Limit Order Protocol')
 -- ;
 
--- fill 2017
-SELECT dex.insert_1inch(
-    '2017-01-01',
-    '2017-07-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2017-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2017-07-01')
-)
--- not applicable as data is removed prior to reload
--- WHERE NOT EXISTS (
---     SELECT *
---     FROM dex.trades
---     WHERE block_time > '2017-01-01'
---     AND block_time <= '2018-01-01'
---     AND project = '1inch'
+-- -- fill 2017
+-- SELECT dex.insert_1inch(
+--     '2017-01-01',
+--     '2017-07-01',
+--     (SELECT max(number) FROM ethereum.blocks WHERE time < '2017-01-01'),
+--     (SELECT max(number) FROM ethereum.blocks WHERE time <= '2017-07-01')
 -- )
-;
+-- -- not applicable as data is removed prior to reload
+-- -- WHERE NOT EXISTS (
+-- --     SELECT *
+-- --     FROM dex.trades
+-- --     WHERE block_time > '2017-01-01'
+-- --     AND block_time <= '2018-01-01'
+-- --     AND project = '1inch'
+-- -- )
+-- ;
 
--- fill 2017
-SELECT dex.insert_1inch(
-    '2017-07-01',
-    '2018-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2017-07-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2018-01-01')
-)
--- not applicable as data is removed prior to reload
--- WHERE NOT EXISTS (
---     SELECT *
---     FROM dex.trades
---     WHERE block_time > '2017-01-01'
---     AND block_time <= '2018-01-01'
---     AND project = '1inch'
+-- -- fill 2017
+-- SELECT dex.insert_1inch(
+--     '2017-07-01',
+--     '2018-01-01',
+--     (SELECT max(number) FROM ethereum.blocks WHERE time < '2017-07-01'),
+--     (SELECT max(number) FROM ethereum.blocks WHERE time <= '2018-01-01')
 -- )
-;
+-- -- not applicable as data is removed prior to reload
+-- -- WHERE NOT EXISTS (
+-- --     SELECT *
+-- --     FROM dex.trades
+-- --     WHERE block_time > '2017-01-01'
+-- --     AND block_time <= '2018-01-01'
+-- --     AND project = '1inch'
+-- -- )
+-- ;
 
--- fill 2018
-SELECT dex.insert_1inch(
-    '2018-01-01',
-    '2018-07-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2018-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2018-07-01')
-)
--- not applicable as data is removed prior to reload
--- WHERE NOT EXISTS (
---     SELECT *
---     FROM dex.trades
---     WHERE block_time > '2018-01-01'
---     AND block_time <= '2019-01-01'
---     AND project = '1inch'
+-- -- fill 2018
+-- SELECT dex.insert_1inch(
+--     '2018-01-01',
+--     '2018-07-01',
+--     (SELECT max(number) FROM ethereum.blocks WHERE time < '2018-01-01'),
+--     (SELECT max(number) FROM ethereum.blocks WHERE time <= '2018-07-01')
 -- )
-;
+-- -- not applicable as data is removed prior to reload
+-- -- WHERE NOT EXISTS (
+-- --     SELECT *
+-- --     FROM dex.trades
+-- --     WHERE block_time > '2018-01-01'
+-- --     AND block_time <= '2019-01-01'
+-- --     AND project = '1inch'
+-- -- )
+-- ;
 
--- fill 2018
-SELECT dex.insert_1inch(
-    '2018-07-01',
-    '2019-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2018-07-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2019-01-01')
-)
--- not applicable as data is removed prior to reload
--- WHERE NOT EXISTS (
---     SELECT *
---     FROM dex.trades
---     WHERE block_time > '2018-01-01'
---     AND block_time <= '2019-01-01'
---     AND project = '1inch'
+-- -- fill 2018
+-- SELECT dex.insert_1inch(
+--     '2018-07-01',
+--     '2019-01-01',
+--     (SELECT max(number) FROM ethereum.blocks WHERE time < '2018-07-01'),
+--     (SELECT max(number) FROM ethereum.blocks WHERE time <= '2019-01-01')
 -- )
-;
+-- -- not applicable as data is removed prior to reload
+-- -- WHERE NOT EXISTS (
+-- --     SELECT *
+-- --     FROM dex.trades
+-- --     WHERE block_time > '2018-01-01'
+-- --     AND block_time <= '2019-01-01'
+-- --     AND project = '1inch'
+-- -- )
+-- ;
 
--- fill 2019
-SELECT dex.insert_1inch(
-    '2019-01-01',
-    '2019-07-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2019-07-01')
-)
--- not applicable as data is removed prior to reload
--- WHERE NOT EXISTS (
---     SELECT *
---     FROM dex.trades
---     WHERE block_time > '2019-01-01'
---     AND block_time <= '2020-01-01'
---     AND project = '1inch'
+-- -- fill 2019
+-- SELECT dex.insert_1inch(
+--     '2019-01-01',
+--     '2019-07-01',
+--     (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-01-01'),
+--     (SELECT max(number) FROM ethereum.blocks WHERE time <= '2019-07-01')
 -- )
-;
+-- -- not applicable as data is removed prior to reload
+-- -- WHERE NOT EXISTS (
+-- --     SELECT *
+-- --     FROM dex.trades
+-- --     WHERE block_time > '2019-01-01'
+-- --     AND block_time <= '2020-01-01'
+-- --     AND project = '1inch'
+-- -- )
+-- ;
 
--- fill 2019
-SELECT dex.insert_1inch(
-    '2019-07-01',
-    '2020-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-07-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-01-01')
-)
--- not applicable as data is removed prior to reload
--- WHERE NOT EXISTS (
---     SELECT *
---     FROM dex.trades
---     WHERE block_time > '2019-01-01'
---     AND block_time <= '2020-01-01'
---     AND project = '1inch'
+-- -- fill 2019
+-- SELECT dex.insert_1inch(
+--     '2019-07-01',
+--     '2020-01-01',
+--     (SELECT max(number) FROM ethereum.blocks WHERE time < '2019-07-01'),
+--     (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-01-01')
 -- )
-;
+-- -- not applicable as data is removed prior to reload
+-- -- WHERE NOT EXISTS (
+-- --     SELECT *
+-- --     FROM dex.trades
+-- --     WHERE block_time > '2019-01-01'
+-- --     AND block_time <= '2020-01-01'
+-- --     AND project = '1inch'
+-- -- )
+-- ;
 
--- fill 2020
-SELECT dex.insert_1inch(
-    '2020-01-01',
-    '2020-07-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-07-01')
-)
--- not applicable as data is removed prior to reload
--- WHERE NOT EXISTS (
---     SELECT *
---     FROM dex.trades
---     WHERE block_time > '2020-01-01'
---     AND block_time <= '2021-01-01'
---     AND project = '1inch'
+-- -- fill 2020
+-- SELECT dex.insert_1inch(
+--     '2020-01-01',
+--     '2020-07-01',
+--     (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-01-01'),
+--     (SELECT max(number) FROM ethereum.blocks WHERE time <= '2020-07-01')
 -- )
-;
+-- -- not applicable as data is removed prior to reload
+-- -- WHERE NOT EXISTS (
+-- --     SELECT *
+-- --     FROM dex.trades
+-- --     WHERE block_time > '2020-01-01'
+-- --     AND block_time <= '2021-01-01'
+-- --     AND project = '1inch'
+-- -- )
+-- ;
 
--- fill 2020
-SELECT dex.insert_1inch(
-    '2020-07-01',
-    '2021-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-07-01'),
-    (SELECT max(number) FROM ethereum.blocks WHERE time <= '2021-01-01')
-)
--- not applicable as data is removed prior to reload
--- WHERE NOT EXISTS (
---     SELECT *
---     FROM dex.trades
---     WHERE block_time > '2020-01-01'
---     AND block_time <= '2021-01-01'
---     AND project = '1inch'
+-- -- fill 2020
+-- SELECT dex.insert_1inch(
+--     '2020-07-01',
+--     '2021-01-01',
+--     (SELECT max(number) FROM ethereum.blocks WHERE time < '2020-07-01'),
+--     (SELECT max(number) FROM ethereum.blocks WHERE time <= '2021-01-01')
 -- )
-;
+-- -- not applicable as data is removed prior to reload
+-- -- WHERE NOT EXISTS (
+-- --     SELECT *
+-- --     FROM dex.trades
+-- --     WHERE block_time > '2020-01-01'
+-- --     AND block_time <= '2021-01-01'
+-- --     AND project = '1inch'
+-- -- )
+-- ;
 
--- fill 2021
-SELECT dex.insert_1inch(
-    '2021-01-01',
-    '2021-07-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
-    (SELECT MAX(number) FROM ethereum.blocks where time <= '2021-07-01')
-)
--- not applicable as data is removed prior to reload
--- WHERE NOT EXISTS (
---     SELECT *
---     FROM dex.trades
---     WHERE block_time > '2021-01-01'
---     AND block_time <= now() - interval '20 minutes'
---     AND project = '1inch'
+-- -- fill 2021
+-- SELECT dex.insert_1inch(
+--     '2021-01-01',
+--     '2021-07-01',
+--     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-01-01'),
+--     (SELECT MAX(number) FROM ethereum.blocks where time <= '2021-07-01')
 -- )
-;
+-- -- not applicable as data is removed prior to reload
+-- -- WHERE NOT EXISTS (
+-- --     SELECT *
+-- --     FROM dex.trades
+-- --     WHERE block_time > '2021-01-01'
+-- --     AND block_time <= now() - interval '20 minutes'
+-- --     AND project = '1inch'
+-- -- )
+-- ;
 
--- fill 2021
-SELECT dex.insert_1inch(
-    '2021-07-01',
-    '2022-01-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-07-01'),
-    (SELECT MAX(number) FROM ethereum.blocks where time <= '2022-01-01')
-)
--- not applicable as data is removed prior to reload
--- WHERE NOT EXISTS (
---     SELECT *
---     FROM dex.trades
---     WHERE block_time > '2021-01-01'
---     AND block_time <= now() - interval '20 minutes'
---     AND project = '1inch'
+-- -- fill 2021
+-- SELECT dex.insert_1inch(
+--     '2021-07-01',
+--     '2022-01-01',
+--     (SELECT max(number) FROM ethereum.blocks WHERE time < '2021-07-01'),
+--     (SELECT MAX(number) FROM ethereum.blocks where time <= '2022-01-01')
 -- )
-;
+-- -- not applicable as data is removed prior to reload
+-- -- WHERE NOT EXISTS (
+-- --     SELECT *
+-- --     FROM dex.trades
+-- --     WHERE block_time > '2021-01-01'
+-- --     AND block_time <= now() - interval '20 minutes'
+-- --     AND project = '1inch'
+-- -- )
+-- ;
 
--- fill 2022
-SELECT dex.insert_1inch(
-    '2022-01-01',
-    '2022-07-01',
-    (SELECT max(number) FROM ethereum.blocks WHERE time < '2022-01-01'),
-    (SELECT MAX(number) FROM ethereum.blocks where time <= '2022-07-01')
-)
--- not applicable as data is removed prior to reload
--- WHERE NOT EXISTS (
---     SELECT *
---     FROM dex.trades
---     WHERE block_time > '2021-01-01'
---     AND block_time <= now() - interval '20 minutes'
---     AND project = '1inch'
+-- -- fill 2022
+-- SELECT dex.insert_1inch(
+--     '2022-01-01',
+--     '2022-07-01',
+--     (SELECT max(number) FROM ethereum.blocks WHERE time < '2022-01-01'),
+--     (SELECT MAX(number) FROM ethereum.blocks where time <= '2022-07-01')
 -- )
-;
+-- -- not applicable as data is removed prior to reload
+-- -- WHERE NOT EXISTS (
+-- --     SELECT *
+-- --     FROM dex.trades
+-- --     WHERE block_time > '2021-01-01'
+-- --     AND block_time <= now() - interval '20 minutes'
+-- --     AND project = '1inch'
+-- -- )
+-- ;
 
 -- fill 2022
 SELECT dex.insert_1inch(
@@ -785,12 +840,12 @@ SELECT dex.insert_1inch(
 -- )
 ;
 
-INSERT INTO cron.job (schedule, command)
-VALUES ('*/10 * * * *', $$
-    SELECT dex.insert_1inch(
-        (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1inch'),
-        (SELECT now() - interval '20 minutes'),
-        (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1inch')),
-        (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
-$$)
-ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
+-- INSERT INTO cron.job (schedule, command)
+-- VALUES ('*/10 * * * *', $$
+--     SELECT dex.insert_1inch(
+--         (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1inch'),
+--         (SELECT now() - interval '20 minutes'),
+--         (SELECT max(number) FROM ethereum.blocks WHERE time < (SELECT max(block_time) - interval '1 days' FROM dex.trades WHERE project='1inch')),
+--         (SELECT MAX(number) FROM ethereum.blocks where time < now() - interval '20 minutes'));
+-- $$)
+-- ON CONFLICT (command) DO UPDATE SET schedule=EXCLUDED.schedule;
