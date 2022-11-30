@@ -35,7 +35,7 @@ sources:
 
       - name: DODOV2Proxy02_evt_OrderHistory
         description: >
-          V2 of Decoded table  that shows Order History happening through a router contract number 2.
+          Decoded table  that shows Order History happening through a router contract number 1.
         loaded_at_field: evt_block_time
         columns:
           - name: contract_address
@@ -91,7 +91,7 @@ sources:
 
       - name: DODORouteProxy_evt_OrderHistory
         description: >
-          V2 of Decoded table  that shows Order History happening through a self_built_router contract.
+          Decoded table  that shows Order History happening through a self_built_router contract.
         loaded_at_field: evt_block_time
         columns:
           - name: contract_address
