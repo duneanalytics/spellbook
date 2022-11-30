@@ -278,6 +278,7 @@ models:
       contributors: soispoke
     config:
       tags: ['transfers', 'ethereum', 'erc1155', 'rolling_hour', 'soispoke']
+    description: "ERC1155 Token Transfers on Ethereum per hour."
     columns:
       - *blockchain
       - *hour
