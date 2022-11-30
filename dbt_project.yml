@@ -103,9 +103,6 @@ models:
       polygon:
         +schema: nft_polygon
         +materialized: view
-      optimism:
-        +schema: nft_optimism
-        +materialized: view
 
     compound:
       +schema: compound
