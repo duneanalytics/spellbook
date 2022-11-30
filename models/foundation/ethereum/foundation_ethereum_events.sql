@@ -31,7 +31,7 @@ WITH all_foundation_trades AS (
     , f.contract_address AS project_contract_address
     , c.nftContract AS nft_contract_address
     , f.evt_tx_hash AS tx_hash
-    , f.protocolFee AS platform_fee_amount_raw
+    , CAST(f.protocolFee AS DOUBLE) AS platform_fee_amount_raw
     , f.protocolFee/POWER(10, 18) AS platform_fee_amount
     , f.creatorFee AS royalty_fee_amount_raw
     , f.creatorFee/POWER(10, 18) royalty_fee_amount
@@ -40,7 +40,7 @@ WITH all_foundation_trades AS (
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
      WHERE f.evt_block_time >= (select max(block_time) from {{ this }})
      {% endif %}
-    UNION
+    UNION ALL
     SELECT 'ethereum' AS blockchain
     , 'foundation' AS project
     , 'v1' AS version
@@ -67,7 +67,7 @@ WITH all_foundation_trades AS (
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
      WHERE f.evt_block_time >= (select max(block_time) from {{ this }})
      {% endif %}
-    UNION
+    UNION ALL
     SELECT 'ethereum' AS blockchain
     , 'foundation' AS project
     , 'v1' AS version
@@ -94,7 +94,7 @@ WITH all_foundation_trades AS (
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
      WHERE f.evt_block_time >= (select max(block_time) from {{ this }})
      {% endif %}
-    UNION
+    UNION ALL
     SELECT 'ethereum' AS blockchain
     , 'foundation' AS project
     , 'v1' AS version
@@ -138,13 +138,13 @@ SELECT DISTINCT t.blockchain
 , CASE WHEN agg.contract_address IS NOT NULL THEN 'Bundle Trade'
     ELSE 'Single Item Purchase'
     END AS trade_type
-, t.number_of_items
+, CAST(t.number_of_items AS DECIMAL(38,0)) AS number_of_items
 , t.trade_category
 , t.evt_type
 , t.seller
 , t.buyer
 , t.amount_original
-, t.amount_raw
+, CAST(t.amount_raw AS DECIMAL(38,0)) AS amount_raw
 , t.currency_symbol
 , t.currency_contract
 , t.project_contract_address
@@ -157,9 +157,9 @@ SELECT DISTINCT t.blockchain
 , t.platform_fee_amount_raw
 , t.platform_fee_amount
 , t.platform_fee_amount*pu.price AS platform_fee_amount_usd
-, 100.0*ROUND(t.platform_fee_amount/t.amount_original, 2) AS platform_fee_percentage
-, CASE WHEN t.royalty_fee_amount/t.amount_original < 0.5 THEN t.royalty_fee_amount_raw
-    ELSE 0
+, CAST(100.0*ROUND(t.platform_fee_amount/t.amount_original, 2) AS DOUBLE) AS platform_fee_percentage
+, CASE WHEN t.royalty_fee_amount/t.amount_original < 0.5 THEN CAST(t.royalty_fee_amount_raw AS DOUBLE)
+    ELSE CAST(0 AS DOUBLE)
     END AS royalty_fee_amount_raw
 , CASE WHEN t.royalty_fee_amount/t.amount_original < 0.5 THEN t.royalty_fee_amount
     ELSE 0
@@ -167,8 +167,8 @@ SELECT DISTINCT t.blockchain
 , CASE WHEN t.royalty_fee_amount/t.amount_original < 0.5 THEN t.royalty_fee_amount*pu.price
     ELSE 0
     END AS royalty_fee_amount_usd
-, CASE WHEN t.royalty_fee_amount/t.amount_original < 0.5 THEN 100.0*ROUND(t.royalty_fee_amount/t.amount_original, 2)
-    ELSE 0
+, CASE WHEN t.royalty_fee_amount/t.amount_original < 0.5 THEN CAST(100.0*ROUND(t.royalty_fee_amount/t.amount_original, 2) AS DOUBLE)
+    ELSE CAST(0 AS DOUBLE)
     END AS royalty_fee_percentage
 , CASE WHEN t.royalty_fee_amount_raw = 0 THEN cast(NULL as string) ELSE ett.to END AS royalty_fee_receive_address
 , t.currency_symbol AS royalty_fee_currency_symbol
