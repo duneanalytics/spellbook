@@ -17,13 +17,13 @@ SELECT * FROM (
         amount_usd,
         token_standard,
         trade_type,
-        number_of_items,
+        CAST(number_of_items AS DECIMAL(38,0)) number_of_items,
         trade_category,
         evt_type,
         seller,
         buyer,
         amount_original,
-        amount_raw,
+        CAST(amount_raw AS DECIMAL(38,0)) amount_raw,
         currency_symbol,
         currency_contract,
         nft_contract_address,
@@ -36,7 +36,7 @@ SELECT * FROM (
         tx_to,
         unique_trade_id
         FROM {{ ref('element_ethereum_burns') }}
-        UNION
+        UNION ALL
         SELECT blockchain,
         project,
         version,
@@ -46,13 +46,13 @@ SELECT * FROM (
         amount_usd,
         token_standard,
         trade_type,
-        number_of_items,
+        CAST(number_of_items AS DECIMAL(38,0)) number_of_items,
         trade_category,
         evt_type,
         seller,
         buyer,
         amount_original,
-        amount_raw,
+        CAST(amount_raw AS DECIMAL(38,0)) amount_raw,
         currency_symbol,
         currency_contract,
         nft_contract_address,
@@ -65,7 +65,7 @@ SELECT * FROM (
         tx_to,
         unique_trade_id
         FROM {{ ref('element_avalanche_c_burns') }}
-        UNION
+        UNION ALL
         SELECT blockchain,
         project,
         version,
@@ -75,13 +75,13 @@ SELECT * FROM (
         amount_usd,
         token_standard,
         trade_type,
-        number_of_items,
+        CAST(number_of_items AS DECIMAL(38,0)) number_of_items,
         trade_category,
         evt_type,
         seller,
         buyer,
         amount_original,
-        amount_raw,
+        CAST(amount_raw AS DECIMAL(38,0)) amount_raw,
         currency_symbol,
         currency_contract,
         nft_contract_address,
