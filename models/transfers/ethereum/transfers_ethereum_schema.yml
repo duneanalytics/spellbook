@@ -217,6 +217,8 @@ models:
       contributors: soispoke, dot2dotseurat, hildobby, 0xRob
     config:
       tags: ['transfers', 'ethereum', 'erc721', 'rolling_day', 'soispoke', 'dot2dotseurat', 'hildobby']
+    description: >
+      "ERC721 Token Transfers on Ethereum per day."
     columns:
       - *blockchain
       - *day
