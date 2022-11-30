@@ -82,7 +82,7 @@ LEFT JOIN {{ ref('tokens_erc20') }} erc20a
 LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     ON erc20b.contract_address = sushiswap_dex.token_sold_address
     AND erc20b.blockchain = 'avalanche_c'
-LEFT JOIN {{ source('prices', 'usd') }} p_bought
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} p_bought
     ON p_bought.minute = date_trunc('minute', sushiswap_dex.block_time)
     AND p_bought.contract_address = sushiswap_dex.token_bought_address
     AND p_bought.blockchain = 'avalanche_c'
@@ -91,7 +91,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     {% else %}
     AND p_bought.minute >= '{{project_start_date}}'
     {% endif %}
-LEFT JOIN {{ source('prices', 'usd') }} p_sold
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} p_sold
     ON p_sold.minute = date_trunc('minute', sushiswap_dex.block_time)
     AND p_sold.contract_address = sushiswap_dex.token_sold_address
     AND p_sold.blockchain = 'avalanche_c'

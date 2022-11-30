@@ -32,7 +32,7 @@ with dexs as (
             t.evt_index
         from
             {{ source('sushi_ethereum', 'Pair_evt_Swap') }} t
-            inner join {{ source('sushi_ethereum', 'Factory_evt_PairCreated') }} f 
+            inner join {{ source('sushi_ethereum', 'Factory_evt_PairCreated') }} f
                 on f.pair = t.contract_address
 )
 select
@@ -75,13 +75,13 @@ inner join {{ source('ethereum', 'transactions') }} tx
     {% if is_incremental() %}
     and tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-left join {{ ref('tokens_erc20') }} erc20a 
-    on erc20a.contract_address = dexs.token_bought_address 
+left join {{ ref('tokens_erc20') }} erc20a
+    on erc20a.contract_address = dexs.token_bought_address
     and erc20a.blockchain = 'ethereum'
-left join {{ ref('tokens_erc20') }} erc20b 
-    on erc20b.contract_address = dexs.token_sold_address 
+left join {{ ref('tokens_erc20') }} erc20b
+    on erc20b.contract_address = dexs.token_sold_address
     and erc20b.blockchain = 'ethereum'
-left join {{ source('prices', 'usd') }} p_bought 
+left join {{ ref('prices_usd_forward_fill') }} p_bought
     on p_bought.minute = date_trunc('minute', dexs.block_time)
     and p_bought.contract_address = dexs.token_bought_address
     and p_bought.blockchain = 'ethereum'
@@ -91,7 +91,7 @@ left join {{ source('prices', 'usd') }} p_bought
     {% if is_incremental() %}
     and p_bought.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-left join {{ source('prices', 'usd') }} p_sold 
+left join {{ ref('prices_usd_forward_fill') }} p_sold
     on p_sold.minute = date_trunc('minute', dexs.block_time)
     and p_sold.contract_address = dexs.token_sold_address
     and p_sold.blockchain = 'ethereum'
@@ -101,4 +101,3 @@ left join {{ source('prices', 'usd') }} p_sold
     {% if is_incremental() %}
     and p_sold.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-    
