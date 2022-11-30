@@ -358,10 +358,6 @@ models:
         +schema: safe_ethereum
         +materialized: view
 
-
-    inorganic_volume_filter:
-      +schema: inorganic_volume_filter
-      +materialized: view
     jarvis_network:
       +schema: jarvis_network
       +materialized: view

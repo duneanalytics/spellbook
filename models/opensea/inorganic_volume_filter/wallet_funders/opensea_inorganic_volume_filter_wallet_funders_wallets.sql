@@ -1,9 +1,8 @@
-{{config(
-    alias='wallet_funders_wallets', 
-    unique_key = ['wallet']
-    )   
+{{ config(
+    alias = 'inorganic_volume_filter_wallet_funders_wallet',
+    materialized = 'view'
+)
 }}
-
 
 SELECT DISTINCT(buyer) as wallet FROM {{ ref('looksrare_ethereum_trades') }}
 

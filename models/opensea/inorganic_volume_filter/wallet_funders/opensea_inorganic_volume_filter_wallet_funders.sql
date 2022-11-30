@@ -1,10 +1,7 @@
 {{ config(
-    alias = 'wallet_funders',
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['wallet']
-    )
+    alias = 'inorganic_volume_filter_wallet_funders',
+    materialized = 'view'
+)
 }}
 
 WITH 
@@ -44,11 +41,8 @@ funders as (
         FROM 
         {{ source('ethereum', 'transactions') }} et
         INNER JOIN 
-        {{ ref('inorganic_volume_filter_wallet_funders_wallets') }} wl 
+        {{ ref('opensea_inorganic_volume_filter_wallet_funders_wallets') }} wl 
         ON et.to = wl.wallet 
-        {% if is_incremental() %}
-        AND et.block_time >= date_trunc('day', now() - interval '1 week')
-        {% endif %}
         LEFT JOIN aggregators agg ON et.from = agg.aggregator_address
         LEFT JOIN cex c ON et.from = c.cex_address
         LEFT JOIN disperse d ON et.from = d.disperse_address
@@ -61,9 +55,6 @@ funders as (
         ) as b 
         ON a.to = b.to 
         AND a.block_number = b.first_block
-        {% if is_incremental() %}
-        AND a.block_time >= date_trunc('day', now() - interval '1 week')
-        {% endif %}
         GROUP BY 1 
 )
 

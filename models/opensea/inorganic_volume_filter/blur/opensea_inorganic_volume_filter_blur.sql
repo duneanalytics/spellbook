@@ -1,14 +1,10 @@
 {{ config(
-    alias = 'looksrare',
-    partition_by = ['day'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['day', 'block_time', 'nft_contract_address', 'nft_token_id', 'tx_hash', 'inorganic_filters', 'unique_trade_id']
+    alias = 'inorganic_volume_filter_blur',
+    materialized = 'view'
 )
 }}
 
-{% set project_start_date = '2022-01-02' %} -- looksrare start date 
+{% set project_start_date = '2022-10-19' %} -- blur start date 
 
 WITH 
 
@@ -18,10 +14,7 @@ trades as (
         FROM 
         {{ ref('nft_trades') }} t 
         WHERE 1 = 1
-        {% if is_incremental() %}
-        AND t.block_time >= date_trunc('day', now() - interval '1 week')
-        {% endif %}
-        AND t.project IN ('opensea', 'looksrare')
+        AND t.project IN ('opensea', 'blur')
         AND t.blockchain = 'ethereum'
 ), 
 
@@ -40,9 +33,6 @@ royal_settings as (
             * 
         FROM 
         {{ source('looksrare_ethereum', 'RoyaltyFeeRegistry_evt_RoyaltyFeeUpdate') }}
-        {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
-        {% endif %}
         ) x1 
         ) x2 
         WHERE ordering = 1 
@@ -61,7 +51,7 @@ mt_filter as (
             COUNT(1) as num_sales 
         FROM 
         trades
-        WHERE project = 'looksrare'
+        WHERE project = 'blur'
         AND token_standard = 'erc721'
         GROUP BY 1, 2, 3
         ) trade_count 
@@ -85,7 +75,7 @@ sb_filter as (
         LEFT JOIN 
         {{ ref('nft_ethereum_aggregators') }} agg 
             ON agg.contract_address = t.buyer 
-        WHERE t.project = 'looksrare'
+        WHERE t.project = 'blur'
         AND agg.contract_address IS NULL 
         GROUP BY 1, 2, 3 
         ) foo 
@@ -114,7 +104,7 @@ lv_filter as (
             DISTINCT(nft_contract_address) as nft_address
         FROM 
         trades 
-        WHERE project = 'looksrare'
+        WHERE project = 'blur'
         ) x2 
         LEFT JOIN trades t 
             ON x2.nft_address = t.nft_contract_address
@@ -160,7 +150,7 @@ hp_filter as (
         royal_settings r 
             ON t.nft_contract_address = r.collection 
             AND r.fee = 0 
-        WHERE t.project = 'looksrare'
+        WHERE t.project = 'blur'
         ) x2 
         LEFT JOIN trades t 
             ON x2.nft_address = t.nft_contract_address
@@ -180,12 +170,12 @@ wf_filter as (
         FROM 
         trades t 
         LEFT JOIN 
-        {{ ref('inorganic_volume_filter_wallet_funders') }} f1 
+        {{ ref('opensea_inorganic_volume_filter_wallet_funders') }} f1 
             ON f1.wallet = t.buyer 
         LEFT JOIN 
-        {{ ref('inorganic_volume_filter_wallet_funders') }} f2
+        {{ ref('opensea_inorganic_volume_filter_wallet_funders') }} f2
             ON f2.wallet = t.seller 
-        WHERE t.project = 'looksrare'
+        WHERE t.project = 'blur'
         AND f1.funder = f2.funder 
         OR (f1.funder = t.seller OR f2.funder = t.buyer)
 ),
@@ -203,7 +193,7 @@ circular_buyer as (
             buyer 
         FROM 
         trades t 
-        WHERE t.project = 'looksrare'
+        WHERE t.project = 'blur'
         AND token_standard = 'erc721'
         AND buyer <> LOWER('0x39da41747a83aee658334415666f3ef92dd0d541')
         GROUP BY 2, 3, 4 
@@ -224,7 +214,7 @@ circular_seller as (
             seller 
         FROM 
         trades t 
-        WHERE t.project = 'looksrare'
+        WHERE t.project = 'blur'
         AND token_standard = 'erc721'
         AND buyer <> LOWER('0x39da41747a83aee658334415666f3ef92dd0d541')
         GROUP BY 2, 3, 4 
@@ -253,29 +243,24 @@ trades_enrich as (
             ON p.minute = date_trunc('minute', t.block_time)
             AND p.contract_address = t.currency_contract 
             AND p.blockchain = 'ethereum'
-            {% if not is_incremental() %}
             AND p.minute >= '{{project_start_date}}'
-            {% endif %}
-            {% if is_incremental() %}
-            AND p.minute >= date_trunc('day', now() - interval '1 week')
-            {% endif %}
         LEFT JOIN 
         {{ ref('tokens_erc20') }} erc20 
             ON t.currency_contract = erc20.contract_address
             AND erc20.blockchain = 'ethereum'
-        WHERE t.project = 'looksrare'
+        WHERE t.project = 'blur'
 ),
 
 filtered_trades as (
         SELECT 
             t.*, 
-            CASE WHEN mt.filter IS NOT NULL THEN 'true' ELSE 'false' END as mt_filter,
-            CASE WHEN sb.filter IS NOT NULL THEN 'true' ELSE 'false' END as sb_filter,
-            CASE WHEN lv.filter IS NOT NULL THEN 'true' ELSE 'false' END as lv_filter,
-            CASE WHEN hp.filter IS NOT NULL THEN 'true' ELSE 'false' END as hp_filter,
-            CASE WHEN wf.filter IS NOT NULL THEN 'true' ELSE 'false' END as wf_filter,
-            CASE WHEN cb.filter IS NOT NULL THEN 'true' ELSE 'false' END as cb_filter,
-            CASE WHEN cs.filter IS NOT NULL THEN 'true' ELSE 'false' END as cs_filter,
+            CASE WHEN mt.filter IS NOT NULL THEN true ELSE false END as mt_filter,
+            CASE WHEN sb.filter IS NOT NULL THEN true ELSE false END as sb_filter,
+            CASE WHEN lv.filter IS NOT NULL THEN true ELSE false END as lv_filter,
+            CASE WHEN hp.filter IS NOT NULL THEN true ELSE false END as hp_filter,
+            CASE WHEN wf.filter IS NOT NULL THEN true ELSE false END as wf_filter,
+            CASE WHEN cb.filter IS NOT NULL THEN true ELSE false END as cb_filter,
+            CASE WHEN cs.filter IS NOT NULL THEN true ELSE false END as cs_filter,
             FILTER(array(mt.filter, sb.filter, lv.filter, hp.filter, wf.filter, cb.filter, cs.filter), x -> x IS NOT NULL) as inorganic_filters
         FROM 
         trades_enrich t 

@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: inorganic_volume_filter_x2y2
+  - name: opensea_inorganic_volume_filter_blur
     meta:
       blockchain: ethereum
-      sector: inorganic_volume_filter
+      project: opensea
       contributors: Henrystats 
     config:
-      tags: [ 'ethereum','inorganic_volume_filter', 'x2y2', 'Henrystats']
+      tags: [ 'ethereum','inorganic-volume', 'blur', 'Henrystats']
     description: >
-      inorganic volume filter for z2y2 trades 
+      inorganice volume filter for blur trades 
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -29,7 +29,7 @@ models:
         description: "block time of transaction"
       - &project
         name: project 
-        description: "nft project where trade happned - x2y2 for this filter"
+        description: "nft project where trade happned - blur for this filter"
       - &nft_contract_address
         name: nft_contract_address
         desciption: "NFT contract address"

@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: inorganic_volume_filter_blur
+  - name: opensea_inorganic_volume_filter_looksrare
     meta:
       blockchain: ethereum
-      sector: inorganic_volume_filter
+      project: opensea
       contributors: Henrystats 
     config:
-      tags: [ 'ethereum','inorganic-volume', 'blur', 'Henrystats']
+      tags: [ 'ethereum','inorganic_volume_filter', 'looksrare', 'Henrystats']
     description: >
-      inorganice volume filter for blur trades 
+      inorganic volume filter for looksrare trades 
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -29,7 +29,7 @@ models:
         description: "block time of transaction"
       - &project
         name: project 
-        description: "nft project where trade happned - blur for this filter"
+        description: "nft project where trade happned - looksrare for this filter"
       - &nft_contract_address
         name: nft_contract_address
         desciption: "NFT contract address"

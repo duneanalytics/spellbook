@@ -1,10 +1,10 @@
 version: 2
 
 models:
-  - name: inorganic_volume_filter_wallet_funders
+  - name: opensea_inorganic_volume_filter_wallet_funders
     meta:
       blockchain: ethereum
-      project: inorganic_volume_filter
+      project: opensea
       contributors: Henrystats
     config:
       tags: ['table', 'funded by', 'inorganic_volume_filter', 'ethereum']
@@ -23,10 +23,10 @@ models:
       - name: tx_hash
         description: "The transaction hash on which the wallet address was first funded"
 
-  - name: inorganic_volume_filter_wallet_funders_wallets
+  - name: opensea_inorganic_volume_filter_wallet_funders_wallets
     meta:
       blockchain: ethereum
-      project: inorganic_volume_filter
+      project: opensea
       contributors: Henrystats
     config:
       tags: ['table', 'inorganic_volume_filter', 'ethereum']

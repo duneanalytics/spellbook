@@ -1,10 +1,6 @@
 {{ config(
-    alias = 'x2y2',
-    partition_by = ['day'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['day', 'block_time', 'nft_contract_address', 'nft_token_id', 'tx_hash', 'inorganic_filters', 'unique_trade_id']
+    alias = 'inorganic_volume_filter_xzy2',
+    materialized = 'view'
 )
 }}
 
@@ -18,9 +14,6 @@ trades as (
         FROM 
         {{ ref('nft_trades') }} t 
         WHERE 1 = 1
-        {% if is_incremental() %}
-        AND t.block_time >= date_trunc('day', now() - interval '1 week')
-        {% endif %}
         AND t.project IN ('opensea', 'x2y2')
         AND t.blockchain = 'ethereum'
 ), 
@@ -40,9 +33,6 @@ royal_settings as (
             * 
         FROM 
         {{ source('looksrare_ethereum', 'RoyaltyFeeRegistry_evt_RoyaltyFeeUpdate') }}
-        {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
-        {% endif %}
         ) x1 
         ) x2 
         WHERE ordering = 1 
@@ -180,10 +170,10 @@ wf_filter as (
         FROM 
         trades t 
         LEFT JOIN 
-        {{ ref('inorganic_volume_filter_wallet_funders') }} f1 
+        {{ ref('opensea_inorganic_volume_filter_wallet_funders') }} f1 
             ON f1.wallet = t.buyer 
         LEFT JOIN 
-        {{ ref('inorganic_volume_filter_wallet_funders') }} f2
+        {{ ref('opensea_inorganic_volume_filter_wallet_funders') }} f2
             ON f2.wallet = t.seller 
         WHERE t.project = 'x2y2'
         AND f1.funder = f2.funder 
@@ -253,12 +243,7 @@ trades_enrich as (
             ON p.minute = date_trunc('minute', t.block_time)
             AND p.contract_address = t.currency_contract 
             AND p.blockchain = 'ethereum'
-            {% if not is_incremental() %}
             AND p.minute >= '{{project_start_date}}'
-            {% endif %}
-            {% if is_incremental() %}
-            AND p.minute >= date_trunc('day', now() - interval '1 week')
-            {% endif %}
         LEFT JOIN 
         {{ ref('tokens_erc20') }} erc20 
             ON t.currency_contract = erc20.contract_address
@@ -269,13 +254,13 @@ trades_enrich as (
 filtered_trades as (
         SELECT 
             t.*, 
-            CASE WHEN mt.filter IS NOT NULL THEN 'true' ELSE 'false' END as mt_filter,
-            CASE WHEN sb.filter IS NOT NULL THEN 'true' ELSE 'false' END as sb_filter,
-            CASE WHEN lv.filter IS NOT NULL THEN 'true' ELSE 'false' END as lv_filter,
-            CASE WHEN hp.filter IS NOT NULL THEN 'true' ELSE 'false' END as hp_filter,
-            CASE WHEN wf.filter IS NOT NULL THEN 'true' ELSE 'false' END as wf_filter,
-            CASE WHEN cb.filter IS NOT NULL THEN 'true' ELSE 'false' END as cb_filter,
-            CASE WHEN cs.filter IS NOT NULL THEN 'true' ELSE 'false' END as cs_filter,
+            CASE WHEN mt.filter IS NOT NULL THEN true ELSE false END as mt_filter,
+            CASE WHEN sb.filter IS NOT NULL THEN true ELSE false END as sb_filter,
+            CASE WHEN lv.filter IS NOT NULL THEN true ELSE false END as lv_filter,
+            CASE WHEN hp.filter IS NOT NULL THEN true ELSE false END as hp_filter,
+            CASE WHEN wf.filter IS NOT NULL THEN true ELSE false END as wf_filter,
+            CASE WHEN cb.filter IS NOT NULL THEN true ELSE false END as cb_filter,
+            CASE WHEN cs.filter IS NOT NULL THEN true ELSE false END as cs_filter,
             FILTER(array(mt.filter, sb.filter, lv.filter, hp.filter, wf.filter, cb.filter, cs.filter), x -> x IS NOT NULL) as inorganic_filters
         FROM 
         trades_enrich t 
