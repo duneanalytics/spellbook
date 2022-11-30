@@ -3,7 +3,7 @@ version: 2
 models:
   - name: fraxswap_trades
     meta:
-      blockchain: avalanche_c, bnb, polygon, ethereum
+      blockchain: avalanche_c,  bnb, polygon, ethereum
       sector: dex
       project: fraxswap
       contributors: zhongyiio, kndlexi
