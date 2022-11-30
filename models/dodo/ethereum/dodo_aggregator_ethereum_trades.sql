@@ -1,6 +1,6 @@
 {{ config
 (
-    schema = "dodo_aggregator_ethereum_trades",
+    schema = "dodo_aggregator_ethereum",
     alias ='trades',
     partition_by = ['block_date'],
     materialized = 'incremental',

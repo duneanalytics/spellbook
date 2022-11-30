@@ -1,6 +1,6 @@
 {{ config
 (
-    schema = "dodo_aggregator_bnb_trades",
+    schema = "dodo_aggregator_bnb",
     alias ='trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
