@@ -117,7 +117,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         SELECT
             evt_block_time AS block_time,
             'DODO' AS project,
-            '2' AS version,
+            '2_dvm' AS version,
             trader AS taker,
             receiver AS maker,
             fromAmount AS token_bought_amount_raw,
@@ -147,7 +147,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         SELECT
             evt_block_time AS block_time,
             'DODO' AS project,
-            '2' AS version,
+            '2_dpp' AS version,
             trader AS taker,
             receiver AS maker,
             fromAmount AS token_bought_amount_raw,
@@ -177,7 +177,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         SELECT
             evt_block_time AS block_time,
             'DODO' AS project,
-            '2' AS version,
+            '2_dsp' AS version,
             trader AS taker,
             receiver AS maker,
             fromAmount AS token_bought_amount_raw,
