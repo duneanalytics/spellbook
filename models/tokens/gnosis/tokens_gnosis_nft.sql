@@ -1,5 +1,6 @@
 {{ config(schema = 'tokens_gnosis',
-        alias='nft'
+        alias='nft',
+        tags=['static']
         )
 }}
 
