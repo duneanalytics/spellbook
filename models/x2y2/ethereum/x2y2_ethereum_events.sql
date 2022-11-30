@@ -160,7 +160,7 @@ SELECT 'ethereum' AS blockchain
     ELSE 'erc1155'
     END AS token_standard
 , trade_type
-, 1 AS number_of_items
+, CAST(1 AS DECIMAL(38,0)) AS number_of_items
 , CASE WHEN et.`from`=seller THEN 'Offer Accepted'
     ELSE 'Buy'
     END AS trade_category
@@ -172,7 +172,7 @@ SELECT 'ethereum' AS blockchain
 , CASE WHEN currency_contract='0x0000000000000000000000000000000000000000' THEN txs.amount_raw/POWER(10, 18)
     ELSE txs.amount_raw/POWER(10, pu.decimals)
     END AS amount_original
-, txs.amount_raw
+, CAST(txs.amount_raw AS DECIMAL(38,0)) AS amount_raw
 , CASE WHEN currency_contract='0x0000000000000000000000000000000000000000' THEN 'ETH'
     ELSE pu.symbol
     END AS currency_symbol
