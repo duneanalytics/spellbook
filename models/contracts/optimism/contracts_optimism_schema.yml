@@ -115,4 +115,3 @@ models:
       - *creator_address
       - name: creator_name
         description: "Name of the creator, indicating why we shouldn't use it for mapping."
-

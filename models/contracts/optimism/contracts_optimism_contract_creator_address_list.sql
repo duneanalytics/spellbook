@@ -363,7 +363,6 @@ FROM (
       ,('0xe029c32d412972C5F3D107DA6d6eCF8F1C1E788C', 'Kwenta')
       ,('0xcd526ee406bc8349ba8135758cee11fa3aaa59a0', 'OPX Finance')
       ,('0x4023ef3aaa0669FaAf3A712626F4D8cCc3eAF2e5', 'Pickle Finance')
-      ,('0x83bc3055649F9a829BEbECCBc86E090D6A157161', 'Chainlink')
       ,('0x370880694995Aa8A53F71645F7Bec3b0e7bb25d9', 'OneRing')
       ,('0xfc8367ef6bcfc10746e5b9b034314812db8d7213', 'OpenXSwap')
       ,('0xafd91ef047189f7e894d0fac71dcce8687e9b893', 'ECC Domains')
