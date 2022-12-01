@@ -96,7 +96,7 @@ token_prices as (
         , dt.bridge_protocol
         , dt.bridge_address
         , dt.token_address
-        , er.symbol, 
+        , er.symbol 
         , dt.num_rollups
         , dt.num_tfers
         , dt.abs_value_norm
