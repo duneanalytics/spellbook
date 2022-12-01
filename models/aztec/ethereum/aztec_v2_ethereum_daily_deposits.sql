@@ -93,7 +93,10 @@ token_prices as (
 
  select dt.date
         , dt.token_address
-        , p.symbol
+        , CASE 
+            WHEN dt.token_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 'ETH' 
+            ELSE p.symbol
+          END as symbol
         , dt.num_rollups
         , dt.num_tfers
         , dt.abs_value_norm
