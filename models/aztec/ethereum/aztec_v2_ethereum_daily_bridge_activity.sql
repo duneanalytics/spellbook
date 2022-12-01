@@ -100,12 +100,12 @@ token_prices as (
         , dt.num_rollups
         , dt.num_tfers
         , dt.abs_value_norm
-        , dt.abs_value_norm * COALESCE(p.price_usd, b.eth_price) as abs_volume_usd
-        , dt.abs_value_norm * COALESCE(p.price_eth, 1) as abs_volume_eth
-        , dt.input_value_norm * COALESCE(p.price_usd, b.eth_price) as input_volume_usd
-        , dt.input_value_norm * COALESCE(p.price_eth, 1) as input_volume_eth
-        , dt.output_value_norm * COALESCE(p.price_usd, b.eth_price) as output_volume_usd
-        , dt.output_value_norm * COALESCE(p.price_eth, 1) as output_volume_eth
+        , dt.abs_value_norm * COALESCE(p.price_usd, b.eth_price, '') as abs_volume_usd
+        , dt.abs_value_norm * COALESCE(p.price_eth, 1, '') as abs_volume_eth
+        , dt.input_value_norm * COALESCE(p.price_usd, b.eth_price, '') as input_volume_usd
+        , dt.input_value_norm * COALESCE(p.price_eth, 1, '') as input_volume_eth
+        , dt.output_value_norm * COALESCE(p.price_usd, b.eth_price, '') as output_volume_usd
+        , dt.output_value_norm * COALESCE(p.price_eth, 1, '') as output_volume_eth
     from daily_transfers dt
     LEFT JOIN {{ref('tokens_erc20')}} er ON dt.token_address = er.contract_address AND er.blockchain = 'ethereum'
     LEFT join token_prices p on dt.date = p.day and dt.token_address = p.token_address
