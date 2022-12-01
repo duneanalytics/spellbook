@@ -301,47 +301,6 @@ direct_PLP AS (
     {% endif %}
 
 ),
-direct_uniswapv2 AS (
-    SELECT 
-            swap.evt_tx_hash AS tx_hash,
-            swap.evt_index,
-            swap.contract_address,
-            swap.evt_block_time AS block_time,
-            swap.contract_address AS maker,
-            LAST_VALUE(swap.to) OVER ( PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
-            CASE
-                WHEN swap.amount0In > swap.amount0Out THEN pair.token0
-                ELSE pair.token1
-            END AS taker_token,
-            CASE
-                WHEN swap.amount0In > swap.amount0Out THEN pair.token1
-                ELSE pair.token0
-            END AS maker_token,
-            CASE
-                WHEN swap.amount0In > swap.amount0Out THEN swap.amount0In - swap.amount0Out
-                ELSE swap.amount1In - swap.amount1Out
-            END AS taker_token_amount_raw,
-            CASE
-                WHEN swap.amount0In > swap.amount0Out THEN swap.amount1Out - swap.amount1In
-                ELSE swap.amount0Out - swap.amount0In
-            END AS maker_token_amount_raw,
-            'Uniswap V2 Direct' AS type,
-            zeroex_tx.affiliate_address AS affiliate_address,
-            TRUE AS swap_flag,
-            FALSE AS matcha_limit_order_flag
-    FROM {{ source('uniswap_v2_polygon', 'Pair_evt_Swap') }} swap
-    LEFT JOIN {{ source('uniswap_v2_polygon', 'Factory_evt_PairCreated') }} pair ON pair.pair = swap.contract_address
-    JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
-    WHERE sender = '0xdef1c0ded9bec7f1a1670819833240f027b25eff'
-
-        {% if is_incremental() %}
-        AND swap.evt_block_time >= date_trunc('day', now() - interval '1 week')
-        {% endif %}
-        {% if not is_incremental() %}
-        AND swap.evt_block_time >= '{{zeroex_v3_start_date}}'
-        {% endif %}
-
-),
 direct_sushiswap AS (
     SELECT 
             swap.evt_tx_hash AS tx_hash,
