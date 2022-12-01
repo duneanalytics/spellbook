@@ -8,7 +8,7 @@
     post_hook='{{ expose_spells(\'["optimism"]\',
                             "project",
                             "seaport",
-                            \'["sohawk"]\') }}'
+                            \'["sohwak"]\') }}'
     )
 }}
 
@@ -125,8 +125,6 @@ with iv_offer_consideration as (
             , evt_index
             , evt_tx_hash
             , offer
-            -- , offerer
-            -- , orderHash
             , recipient
             , zone
             ,posexplode(consideration) as (consideration_idx, consideration_item)
