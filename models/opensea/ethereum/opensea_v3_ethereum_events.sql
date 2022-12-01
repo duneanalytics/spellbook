@@ -19,10 +19,10 @@ select blockchain
       ,nft_contract_address
       ,collection
       ,token_id
-      ,number_of_items
+      ,CAST(number_of_items AS DECIMAL(38,0)) AS number_of_items
       ,token_standard
       ,amount_original
-      ,amount_raw
+      ,CAST(amount_raw AS DECIMAL(38,0)) AS amount_raw
       ,amount_usd
       ,currency_symbol
       ,currency_contract
