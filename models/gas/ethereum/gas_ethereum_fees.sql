@@ -14,33 +14,32 @@ SELECT
      block_number,
      block_time,
      txns.hash AS tx_hash,
-     txns.`from` AS tx_sender, 
+     txns.from AS tx_sender, 
      txns.to AS tx_receiver,
      'ETH' as native_token_symbol,
-     CAST(value AS DOUBLE)/1e18 AS tx_amount_native,
-     CAST(value AS DOUBLE)/1e18 * p.price AS tx_amount_usd,
-     CASE WHEN type = 'Legacy' THEN (CAST(gas_price AS DOUBLE) * CAST(txns.gas_used AS double))/1e18
-          WHEN type = 'DynamicFee' THEN ((CAST(base_fee_per_gas AS DOUBLE) + CAST(priority_fee_per_gas AS double)) * 
-                                         CAST(txns.gas_used AS DOUBLE))/1e18 END AS tx_fee_native, 
-     CASE WHEN type = 'Legacy' THEN (CAST(gas_price AS DOUBLE) * CAST(txns.gas_used AS double))/1e18 * p.price
-          WHEN type = 'DynamicFee' THEN  ((CAST(base_fee_per_gas AS DOUBLE) + CAST(priority_fee_per_gas AS double)) * 
-                                         CAST(txns.gas_used AS DOUBLE))/1e18  * p.price 
+     value/1e18 AS tx_amount_native,
+     value/1e18 * p.price AS tx_amount_usd,
+     CASE WHEN type = 'Legacy' THEN (gas_price * CAST(txns.gas_used AS DOUBLE))/1e18
+          WHEN type = 'DynamicFee' THEN ((base_fee_per_gas + priority_fee_per_gas) * CAST(txns.gas_used AS DOUBLE))/1e18 
+          END AS tx_fee_native, 
+     CASE WHEN type = 'Legacy' THEN (gas_price * CAST(txns.gas_used AS DOUBLE))/1e18 * p.price 
+          WHEN type = 'DynamicFee' THEN ((base_fee_per_gas + priority_fee_per_gas) * CAST(txns.gas_used AS DOUBLE))/1e18 * p.price 
           END AS tx_fee_usd,
-     ((CAST(base_fee_per_gas AS DOUBLE)) * CAST(txns.gas_used AS DOUBLE))/1e18 AS burned_native, 
-     ((CAST(base_fee_per_gas AS DOUBLE)) * CAST(txns.gas_used AS DOUBLE))/1e18 * p.price AS burned_usd,
-     ((CAST(max_fee_per_gas AS DOUBLE) -  CAST(priority_fee_per_gas AS DOUBLE) - CAST(base_fee_per_gas AS DOUBLE)) * CAST(txns.gas_used AS DOUBLE))/1e18 AS tx_savings_native,
-     (((CAST(max_fee_per_gas AS DOUBLE) -  CAST(priority_fee_per_gas AS DOUBLE) - CAST(base_fee_per_gas AS DOUBLE)) * CAST(txns.gas_used AS DOUBLE))/1e18) * p.price AS tx_savings_usd,
+     ((base_fee_per_gas) * CAST(txns.gas_used AS DOUBLE))/1e18 AS burned_native, 
+     (((base_fee_per_gas) * CAST(txns.gas_used AS DOUBLE))/1e18) * p.price AS burned_usd,
+     ((max_fee_per_gas - priority_fee_per_gas - base_fee_per_gas) * CAST(txns.gas_used AS DOUBLE))/1e18 AS tx_savings_native,
+     (((max_fee_per_gas - priority_fee_per_gas - base_fee_per_gas) * CAST(txns.gas_used AS DOUBLE))/1e18) * p.price AS tx_savings_usd,
      miner AS validator, -- or block_proposer since Proposer Builder Separation (PBS) happened ?
-     CAST(max_fee_per_gas AS DOUBLE) / 1e9 AS max_fee_gwei,
-     CAST(max_fee_per_gas AS DOUBLE) / 1e18 * p.price AS max_fee_usd,
-     CAST(base_fee_per_gas AS DOUBLE) / 1e9 AS base_fee_gwei,
-     CAST(base_fee_per_gas AS DOUBLE) / 1e18 * p.price AS base_fee_usd,
-     CAST(priority_fee_per_gas AS DOUBLE) / 1e9 AS priority_fee_gwei,
-     CAST(priority_fee_per_gas AS DOUBLE) / 1e18 * p.price AS priority_fee_usd,
-     CAST(gas_price AS DOUBLE) /1e9 AS gas_price_gwei,
-     CAST(gas_price AS DOUBLE) / 1e18 * p.price AS gas_price_usd,
-     CAST(txns.gas_used AS DOUBLE) AS gas_used,
-     CAST(txns.gas_limit AS DOUBLE) AS gas_limit,
+     max_fee_per_gas / 1e9 AS max_fee_gwei,
+     max_fee_per_gas / 1e18 * p.price AS max_fee_usd,
+     base_fee_per_gas / 1e9 AS base_fee_gwei,
+     base_fee_per_gas / 1e18 * p.price AS base_fee_usd,
+     priority_fee_per_gas / 1e9 AS priority_fee_gwei,
+     priority_fee_per_gas / 1e18 * p.price AS priority_fee_usd,
+     gas_price /1e9 AS gas_price_gwei,
+     gas_price / 1e18 * p.price AS gas_price_usd,
+     CAST(txns.gas_used AS DOUBLE),
+     CAST(txns.gas_limit AS DOUBLE),
      CAST(txns.gas_used AS DOUBLE) / CAST(txns.gas_limit AS DOUBLE) * 100 AS gas_usage_percent,
      difficulty,
      type AS transaction_type
