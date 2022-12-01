@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['symbol', 'token_address', 'date'],
+    unique_key = ['token_address', 'date'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "aztec_v2",
@@ -16,7 +16,7 @@
 with 
 
 rollup_balance_changes as (
-  select CAST(t.evt_block_time as date) as date
+  select CAST(date_trunc('day', t.evt_block_time) as date) as date
     , t.symbol
     , t.contract_address as token_address
     , sum(case when t.from_type = 'Rollup' then -1 * value_norm when t.to_type = 'Rollup' then value_norm else 0 end) as net_value_norm
