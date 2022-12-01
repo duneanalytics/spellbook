@@ -42,10 +42,12 @@ BEGIN;
                 SELECT evt_block_time                               as block_time,
                        num_trades,
                        CASE
-                           WHEN name = '1inch'
-                               OR name = 'ParaSwap'
-                               OR name = '0x'
-                               OR name = 'Legacy'
+                           WHEN (
+                            name ilike '%1inch'
+                             OR name ilike '%ParaSwap'
+                             OR name ilike '%0x'
+                             OR name = 'Legacy'
+                            )
                                THEN (select count(*) from dex.trades where tx_hash = evt_tx_hash and category = 'DEX')
                            ELSE dex_swaps END                       as dex_swaps,
                        batch_value,

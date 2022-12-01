@@ -24,14 +24,12 @@ WITH gs AS (
     FROM (
         SELECT explode(
                 sequence(
-                        DATE_TRUNC('hour', 
                         {% if not is_incremental() %}
-                            cast('{{project_start_date}}' as date)
+                            DATE_TRUNC('hour', cast('{{project_start_date}}' as date)),
                         {% endif %}
                         {% if is_incremental() %}
-                            date_trunc('hour', now() - interval '1 week')
+                            DATE_TRUNC('hour', now() - interval '1 week'),
                         {% endif %}
-                        ),
                         DATE_TRUNC('hour', NOW()),
                         interval '1 hour'
                         )
