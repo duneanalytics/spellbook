@@ -14,11 +14,7 @@
 ,ref('element_mints')
 ,ref('foundation_ethereum_mints')
 ,ref('blur_ethereum_mints')
-,ref('opensea_fees')
-,ref('sudoswap_ethereum_fees')
-,ref('superrare_ethereum_fees')
-,ref('x2y2_ethereum_fees')
-,ref('zora_ethereum_fees')
+,ref('zora_ethereum_mints')
 ] %}
 
 WITH project_mints as (
