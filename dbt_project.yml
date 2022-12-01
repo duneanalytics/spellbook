@@ -150,6 +150,13 @@ models:
       gnosis:
         +schema: sushiswap_gnosis
         +materialized: view
+    
+    babyswap:
+      +schema: babyswap
+      +materialized: view
+      bnb:
+        +schema: babyswap_bnb
+        +materialized: view
 
     opensea:
       +schema: opensea
