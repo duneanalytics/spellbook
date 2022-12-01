@@ -20,7 +20,7 @@ SELECT distinct 'ethereum' AS blockchain
 , prof.evt_block_number AS block_number
 , COALESCE(bytea2numeric_v2(substring(get_json_object(inv.item, '$.data'), 195,64))::BIGINT, bytea2numeric_v2(substring(get_json_object(inv.item, '$.data'), 195,64))) AS token_id
 , nft_token.name AS collection
-, CAST(number_oprof.amountf_items AS DECIMAL(38,0)) AS amount_raw
+, CAST(prof.amount AS DECIMAL(38,0)) AS amount_raw
 , prof.amount/POWER(10, currency_token.decimals) AS amount_original
 , pu.price*(prof.amount/POWER(10, currency_token.decimals)) AS amount_usd
 , CASE WHEN get_json_object(inv.detail, '$.executionDelegate')='0xf849de01b080adc3a814fabe1e2087475cf2e354' THEN 'erc721'
