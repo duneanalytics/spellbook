@@ -67,4 +67,4 @@ FROM
 dex_trades
 GROUP BY 1, 2, 3 
 HAVING COUNT(price) > 0 
-) tmp 
+) tmp  
