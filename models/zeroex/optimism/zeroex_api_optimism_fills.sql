@@ -57,7 +57,7 @@ WITH zeroex_tx AS (
                                         FROM (position('fbc019a7' IN INPUT) + 32)
                                         FOR 40)
                             END AS affiliate_address
-        FROM {{ source('polygon', 'traces') }} tr
+        FROM {{ source('optimism', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
                 '0x61935cbdd02287b511119ddb11aeb42f1593b7ef', 
@@ -83,36 +83,7 @@ WITH zeroex_tx AS (
     group by tx_hash
 
 ),
-v3_fills_no_bridge AS (
-    SELECT 
-            fills.evt_tx_hash                                                          AS tx_hash,
-            fills.evt_index,
-            fills.contract_address,
-            evt_block_time                                                             AS block_time,
-            fills.makerAddress                                                         AS maker,
-            fills.takerAddress                                                         AS taker,
-            SUBSTRING(fills.takerAssetData, 34, 40)                                    AS taker_token,
-            SUBSTRING(fills.makerAssetData, 34, 40)                                    AS maker_token,
-            fills.takerAssetFilledAmount                                               AS taker_token_amount_raw,
-            fills.makerAssetFilledAmount                                               AS maker_token_amount_raw,
-            'Fill'                                                                     AS type,
-            COALESCE(zeroex_tx.affiliate_address, fills.feeRecipientAddress)           AS affiliate_address,
-            (zeroex_tx.tx_hash IS NOT NULL)                                            AS swap_flag,
-            (fills.feeRecipientAddress = '0x86003b044f70dac0abc80ac8957305b6370893ed') AS matcha_limit_order_flag
-    FROM {{ source('zeroex_v3_polygon', 'Exchange_evt_Fill') }} fills
-    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
-    WHERE (SUBSTRING(makerAssetData, 1, 10) != '0xdc1600f3')
-        AND (zeroex_tx.tx_hash IS NOT NULL
-        OR fills.feeRecipientAddress = '0x86003b044f70dac0abc80ac8957305b6370893ed')
 
-        {% if is_incremental() %}
-         AND evt_block_time >= date_trunc('day', now() - interval '1 week')
-        {% endif %}
-        {% if not is_incremental() %}
-         AND evt_block_time >= '{{zeroex_v3_start_date}}'
-        {% endif %}
-
-),
 v4_rfq_fills_no_bridge AS (
     SELECT 
             fills.evt_tx_hash               AS tx_hash,
@@ -129,7 +100,7 @@ v4_rfq_fills_no_bridge AS (
             zeroex_tx.affiliate_address     AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
-    FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
+    FROM {{ source('zeroex_optimism', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
     LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
     {% if is_incremental() %}
@@ -155,7 +126,7 @@ v4_limit_fills_no_bridge AS (
             COALESCE(zeroex_tx.affiliate_address, fills.feeRecipient) AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             (fills.feeRecipient = '0x86003b044f70dac0abc80ac8957305b6370893ed') AS matcha_limit_order_flag
-    FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
+    FROM {{ source('zeroex_optimism', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
     LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
     {% if is_incremental() %}
@@ -181,7 +152,7 @@ otc_fills AS (
             zeroex_tx.affiliate_address     AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
-    FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
+    FROM {{ source('zeroex_optimism', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
     LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
     {% if is_incremental() %}
@@ -208,7 +179,7 @@ ERC20BridgeTransfer AS (
             zeroex_tx.affiliate_address             AS affiliate_address,
             TRUE                                    AS swap_flag,
             FALSE                                   AS matcha_limit_order_flag
-    FROM {{ source('polygon', 'logs') }} logs
+    FROM {{ source('optimism', 'logs') }} logs
     JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic1 = '0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9'
 
@@ -236,7 +207,7 @@ BridgeFill AS (
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
             FALSE                                           AS matcha_limit_order_flag
-    FROM {{ source('polygon', 'logs') }} logs
+    FROM {{ source('optimism', 'logs') }} logs
     JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic1 = '0xff3bc5e46464411f331d1b093e1587d2d1aa667f5618f98a95afc4132709d3a9'
         AND contract_address = '0x22f9dcf4647084d6c31b2765f6910cd85c178c18'
@@ -264,7 +235,7 @@ NewBridgeFill AS (
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
             FALSE                                           AS matcha_limit_order_flag
-    FROM {{ source('polygon' ,'logs') }} logs
+    FROM {{ source('optimism' ,'logs') }} logs
     JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic1 = '0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8'
         AND contract_address = '0x22f9dcf4647084d6c31b2765f6910cd85c178c18'
@@ -292,7 +263,7 @@ direct_PLP AS (
             zeroex_tx.affiliate_address AS affiliate_address,
             TRUE                        AS swap_flag,
             FALSE                       AS matcha_limit_order_flag
-    FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_LiquidityProviderSwap') }} plp
+    FROM {{ source('zeroex_optimism', 'ExchangeProxy_evt_LiquidityProviderSwap') }} plp
     JOIN zeroex_tx ON zeroex_tx.tx_hash = plp.evt_tx_hash
 
     {% if is_incremental() %}
@@ -301,49 +272,8 @@ direct_PLP AS (
     {% if not is_incremental() %}
     WHERE evt_block_time >= '{{zeroex_v3_start_date}}'
     {% endif %}
-
 ),
-direct_uniswapv2 AS (
-    SELECT 
-            swap.evt_tx_hash AS tx_hash,
-            swap.evt_index,
-            swap.contract_address,
-            swap.evt_block_time AS block_time,
-            swap.contract_address AS maker,
-            LAST_VALUE(swap.to) OVER ( PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
-            CASE
-                WHEN swap.amount0In > swap.amount0Out THEN pair.token0
-                ELSE pair.token1
-            END AS taker_token,
-            CASE
-                WHEN swap.amount0In > swap.amount0Out THEN pair.token1
-                ELSE pair.token0
-            END AS maker_token,
-            CASE
-                WHEN swap.amount0In > swap.amount0Out THEN swap.amount0In - swap.amount0Out
-                ELSE swap.amount1In - swap.amount1Out
-            END AS taker_token_amount_raw,
-            CASE
-                WHEN swap.amount0In > swap.amount0Out THEN swap.amount1Out - swap.amount1In
-                ELSE swap.amount0Out - swap.amount0In
-            END AS maker_token_amount_raw,
-            'Uniswap V2 Direct' AS type,
-            zeroex_tx.affiliate_address AS affiliate_address,
-            TRUE AS swap_flag,
-            FALSE AS matcha_limit_order_flag
-    FROM {{ source('uniswap_v2_polygon', 'Pair_evt_Swap') }} swap
-    LEFT JOIN {{ source('uniswap_v2_polygon', 'Factory_evt_PairCreated') }} pair ON pair.pair = swap.contract_address
-    JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
-    WHERE sender = '0xdef1c0ded9bec7f1a1670819833240f027b25eff'
-
-        {% if is_incremental() %}
-        AND swap.evt_block_time >= date_trunc('day', now() - interval '1 week')
-        {% endif %}
-        {% if not is_incremental() %}
-        AND swap.evt_block_time >= '{{zeroex_v3_start_date}}'
-        {% endif %}
-
-),
+/*
 direct_sushiswap AS (
     SELECT 
             swap.evt_tx_hash AS tx_hash,
@@ -372,8 +302,8 @@ direct_sushiswap AS (
             zeroex_tx.affiliate_address AS affiliate_address,
             TRUE AS swap_flag,
             FALSE AS matcha_limit_order_flag
-   FROM {{ source('sushi_polygon', 'UniswapV2Pair_evt_Swap') }} swap
-   LEFT JOIN {{ source('sushi_polygon', 'UniswapV2Factory_evt_PairCreated') }} pair ON pair.pair = swap.contract_address
+   FROM {{ source('sushi_optimism', 'ConstantProductPool_evt_Swap') }} swap
+   LEFT JOIN {{ source('sushi_optimism', 'UniswapV2Factory_evt_PairCreated') }} pair ON pair.pair = swap.contract_address
    JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
    WHERE sender = '0xdef1c0ded9bec7f1a1670819833240f027b25eff'
 
@@ -383,7 +313,7 @@ direct_sushiswap AS (
         {% if not is_incremental() %}
         AND swap.evt_block_time >= '{{zeroex_v3_start_date}}'
         {% endif %}
-),
+),*/
 direct_uniswapv3 AS (
     SELECT 
             swap.evt_tx_hash                                                                        AS tx_hash,
@@ -404,8 +334,8 @@ direct_uniswapv3 AS (
             zeroex_tx.affiliate_address                                                             AS affiliate_address,
             TRUE                                                                                    AS swap_flag,
             FALSE                                                                                   AS matcha_limit_order_flag
-    FROM {{ source('uniswap_v3_polygon', 'UniswapV3Pool_evt_Swap') }} swap
-   LEFT JOIN {{ source('uniswap_v3_polygon', 'factory_polygon_evt_PoolCreated') }} pair ON pair.pool = swap.contract_address
+    FROM {{ source('uniswap_v3_optimism', 'UniswapV3Pool_evt_Swap') }} swap
+   LEFT JOIN {{ source('uniswap_v3_optimism', 'factory_optimism_evt_PoolCreated') }} pair ON pair.pool = swap.contract_address
    JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
    WHERE sender = '0xdef1c0ded9bec7f1a1670819833240f027b25eff'
 
@@ -422,8 +352,10 @@ all_tx AS (
     FROM direct_uniswapv2
     UNION ALL SELECT *
     FROM direct_uniswapv3
+    /*
     UNION ALL SELECT *
     FROM direct_sushiswap
+    */
     UNION ALL SELECT *
     FROM direct_PLP
     UNION ALL SELECT *
@@ -465,7 +397,7 @@ SELECT
         matcha_limit_order_flag,
         COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price) AS volume_usd
 FROM all_tx
-INNER JOIN {{ source('polygon', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
+INNER JOIN {{ source('optimism', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
 
 {% if is_incremental() %}
 AND tx.block_time >= date_trunc('day', now() - interval '1 week')
@@ -479,7 +411,7 @@ AND CASE
         WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
         ELSE all_tx.taker_token
     END = tp.contract_address
-AND tp.blockchain = 'polygon'
+AND tp.blockchain = 'optimism'
 
 {% if is_incremental() %}
 AND tp.minute >= date_trunc('day', now() - interval '1 week')
@@ -493,7 +425,7 @@ AND CASE
         WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
         ELSE all_tx.maker_token
     END = mp.contract_address
-AND mp.blockchain = 'polygon'
+AND mp.blockchain = 'optimism'
 
 {% if is_incremental() %}
 AND mp.minute >= date_trunc('day', now() - interval '1 week')
