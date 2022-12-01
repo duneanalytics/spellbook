@@ -263,6 +263,9 @@ models:
       ethereum:
         +schema: seaport_ethereum
         +materialized: view
+      optimism:
+        +schema: seaport_optimism
+        +materialized: view
       avalanche_c:
         +schema: seaport_avalanche_c
         +materialized: view
