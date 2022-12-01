@@ -19,15 +19,15 @@ SELECT
     'BNB' as native_token_symbol,
     CAST(value AS DOUBLE)/1e18 AS tx_amount_native,
     CAST(value AS DOUBLE)/1e18 * p.price AS tx_amount_usd,
-    (CAST(CAST(gas_price AS DOUBLE) AS DOUBLE) * CAST(txns.gas_used AS DOUBLE))/1e18 AS tx_fee_native, 
-    (CAST(CAST(gas_price AS DOUBLE) AS DOUBLE) * CAST(txns.gas_used AS DOUBLE))/1e18 * p.price  AS tx_fee_usd,
+    (CAST(gas_price AS DOUBLE) * CAST(txns.gas_used AS DOUBLE))/1e18 AS tx_fee_native, 
+    (CAST(gas_price AS DOUBLE) * CAST(txns.gas_used AS DOUBLE))/1e18 * p.price  AS tx_fee_usd,
     CASE WHEN block_number >= 13082000 AND txns.to = '0x0000000000000000000000000000000000001000' THEN CAST(value AS DOUBLE)/1e18 * 10 / 100 
-        ELSE NULL::double END AS burned_native, -- change after BEP95
+        ELSE CAST(NULL AS DOUBLE) END AS burned_native, -- change after BEP95
     CASE WHEN block_number >= 13082000 AND txns.to = '0x0000000000000000000000000000000000001000' THEN CAST(value AS DOUBLE)/1e18 * 10 / 100 * p.price 
-        ELSE NULL::double END AS burned_usd, -- change after BEP95
+        ELSE CAST(NULL AS DOUBLE) END AS burned_usd, -- change after BEP95
     miner AS validator,
-    CAST(CAST(gas_price AS DOUBLE) AS DOUBLE) /1e9 AS CAST(CAST(gas_price AS DOUBLE) AS DOUBLE)_gwei,
-    CAST(CAST(gas_price AS DOUBLE) AS DOUBLE) / 1e18 * p.price AS CAST(CAST(gas_price AS DOUBLE) AS DOUBLE)_usd,
+    CAST(gas_price AS DOUBLE) /1e9 AS CAST(gas_price AS DOUBLE)_gwei,
+    CAST(gas_price AS DOUBLE) / 1e18 * p.price AS CAST(gas_price AS DOUBLE)_usd,
     CAST(txns.gas_used AS DOUBLE),
     CAST(txns.gas_used AS DOUBLE) / CAST(txns.gas_limit AS DOUBLE) * 100 AS gas_usage_percent,
     CAST(txns.gas_limit AS DOUBLE),
