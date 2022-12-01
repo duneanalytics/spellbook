@@ -509,6 +509,7 @@ VALUES
     ("ohmv2-olympus-v2", "ethereum", "OHM", "0x64aa3364f17a4d01c6f1751fd97c2bd3d7e7f1d5", 9),
     ("okb-okb", "ethereum", "OKB", "0x75231f58b43240c9718dd58b4967c5114342a86c", 18),
     ("ole-openleverage", "ethereum", "OLE", "0x92cfbec26c206c90aee3b7c66a9ae673754fab7e", 18),
+    ("ole-openleverage", "bnb", "OLE", "0xa865197a84e780957422237b5d152772654341f3", 18),
     ("omg-omisego", "ethereum", "OMG", "0xd26114cd6ee289accf82350c8d8487fedb8a0c07", 18),
     ("one-harmony", "ethereum", "ONE", "0x799a4202c12ca952cb311598a024c80ed371a41e", 18),
     ("orbs-orbs", "ethereum", "ORBS", "0xff56cc6b1e6ded347aa0b7676c85ab0b3d08b0fa", 18),
@@ -1554,6 +1555,7 @@ VALUES
     ('zxc-0xcert', 'ethereum', 'ZXC', '0x83e2be8d114f9661221384b3a50d24b96a5653f5', 18),
     ("gyen-gyen", "ethereum", "ibJPY", "0x5555f75e3d5278082200fb451d1b6ba946d8e13b", 18),
     ("chf-swiss-franc-token", "ethereum", "ibCHF", "0x1cc481ce2bd2ec7bf67d1be64d4878b16078f309", 18),
+    ("stmatic-lido-staked-matic", "ethereum", "STMATIC", "0x9ee91F9f426fA633d227f7a9b000E28b9dfd8599", 18),
 
     ("dai-dai", "gnosis", "WXDAI", "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18),
     ("usdc-usd-coin", "gnosis", "USDC", "0xddafbb505ad214d7b80b1f830fccc89b60fb7a83", 6),
@@ -1679,5 +1681,4 @@ VALUES
     ("ust-terrausd", "solana", "UST", "9vMJfxuKxXBoEa7rM12mYLMwTacLMLDJqHozw96WQL8i", 6),
     ("usdc-usd-coin", "solana", "USDC", "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", 6),
     ("usdt-tether", "solana", "USDT", "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", 6)
-
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

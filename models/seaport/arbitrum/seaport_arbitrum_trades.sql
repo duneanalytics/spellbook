@@ -5,21 +5,21 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'tx_hash', 'evt_index', 'nft_contract_address', 'token_id', 'sub_type', 'sub_idx'],
-    post_hook='{{ expose_spells(\'["polygon"]\',
+    post_hook='{{ expose_spells(\'["arbitrum"]\',
                             "project",
                             "seaport",
-                            \'["sohawk"]\') }}'
+                            \'["sohwak"]\') }}'
     )
 }}
 
 {% set c_native_token_address = "0x0000000000000000000000000000000000000000" %}
-{% set c_alternative_token_address = "0x0000000000000000000000000000000000001010" %}  -- MATIC
-{% set c_native_symbol = "MATIC" %}
+{% set c_alternative_token_address = "0x82af49447d8a07e3bd95bd0d56f35241523fbab1" %}  -- WETH
+{% set c_native_symbol = "ETH" %}
 {% set c_seaport_first_date = "2022-06-01" %}
 
-with source_polygon_transactions as (
+with source_arbitrum_transactions as (
     select *
-    from {{ source('polygon','transactions') }}
+    from {{ source('arbitrum','transactions') }}
     {% if not is_incremental() %}
     where block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
@@ -27,9 +27,9 @@ with source_polygon_transactions as (
     where block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
-,ref_seaport_polygon_base_pairs as (
+,ref_seaport_arbitrum_base_pairs as (
       select *
-      from {{ ref('seaport_polygon_base_pairs') }}
+      from {{ ref('seaport_arbitrum_base_pairs') }}
       where 1=1
       {% if is_incremental() %}
             and block_time >= date_trunc("day", now() - interval '1 week')
@@ -38,22 +38,22 @@ with source_polygon_transactions as (
 ,ref_tokens_nft as (
     select *
     from {{ ref('tokens_nft') }}
-    where blockchain = 'polygon'
+    where blockchain = 'arbitrum'
 )
 ,ref_tokens_erc20 as (
     select *
     from {{ ref('tokens_erc20') }}
-    where blockchain = 'polygon'
+    where blockchain = 'arbitrum'
 )
 ,ref_nft_aggregators as (
     select *
     from {{ ref('nft_aggregators') }}
-    where blockchain = 'polygon'
+    where blockchain = 'arbitrum'
 )
 ,source_prices_usd as (
     select *
     from {{ source('prices', 'usd') }}
-    where blockchain = 'polygon'
+    where blockchain = 'arbitrum'
     {% if not is_incremental() %}
       and minute >= date '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
@@ -94,7 +94,7 @@ with source_polygon_transactions as (
         ,a.creator_fee_idx
         ,a.is_traded_nft
         ,a.is_moved_nft
-  from ref_seaport_polygon_base_pairs a
+  from ref_seaport_arbitrum_base_pairs a
   where 1=1 
     and not a.is_private
   union all
@@ -132,8 +132,8 @@ with source_polygon_transactions as (
         ,a.creator_fee_idx
         ,a.is_traded_nft
         ,a.is_moved_nft
-  from ref_seaport_polygon_base_pairs a
-  left join ref_seaport_polygon_base_pairs b on b.tx_hash = a.tx_hash
+  from ref_seaport_arbitrum_base_pairs a
+  left join ref_seaport_arbitrum_base_pairs b on b.tx_hash = a.tx_hash
     and b.evt_index = a.evt_index
     and b.block_date = a.block_date -- for performance
     and b.token_contract_address = a.token_contract_address
@@ -206,7 +206,7 @@ with source_polygon_transactions as (
         ,sub_type
         ,sub_idx
   from iv_base_pairs_priv a
-  left join iv_volume b on b.block_date = a.block_date  -- tx_hash and evt_index is PK, but for performance, block_time is included
+  left join iv_volume b on b.block_time = a.block_time  -- tx_hash and evt_index is PK, but for performance, block_time is included
     and b.tx_hash = a.tx_hash
     and b.evt_index = a.evt_index
   where 1=1
@@ -235,7 +235,7 @@ with source_polygon_transactions as (
           ,agg.contract_address AS aggregator_address
           ,sub_idx
   from iv_nfts a
-  inner join source_polygon_transactions t on t.hash = a.tx_hash
+  inner join source_arbitrum_transactions t on t.hash = a.tx_hash
   left join ref_tokens_nft n on n.contract_address = nft_contract_address 
   left join ref_tokens_erc20 e on e.contract_address = case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_alternative_token_address}}'
                                                             else a.token_contract_address
@@ -252,7 +252,7 @@ with source_polygon_transactions as (
   -- initcap the code value if needed 
   select 
     -- basic info
-    'polygon' as blockchain
+    'arbitrum' as blockchain
     ,'seaport' as project
     ,'v1' as version
 
