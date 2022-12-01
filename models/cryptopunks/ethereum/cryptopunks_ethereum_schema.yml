@@ -246,6 +246,8 @@ models:
         description: "CryptoPunk transferred to"
       - name: evt_block_time
         description: "Time of transfer"
+      - name: evt_block_time_week
+        description: "Week of transfer"
       - name: evt_block_number
         description: "Block number of transfer"
       - name: evt_index
