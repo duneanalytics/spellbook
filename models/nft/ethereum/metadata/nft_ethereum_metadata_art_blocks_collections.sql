@@ -385,6 +385,7 @@
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 388, 1000000, 'Your Story', 'encapsuled', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-388')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 389, 1000000, 'Miragem', 'Third Vision', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-389')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 390, 1000000, 'Imposter Syndrome', 'ippsketch', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-390')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 393, 1000000, 'Race Condition', 'Jonas Lund', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-393')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 394, 1000000, 'Volute', 'RVig', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-394')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 395, 1000000, 'Implications', 'ixnayokay', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-395')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 396, 1000000, 'Good, Computer', 'Dean Blacc', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-396')
@@ -396,6 +397,7 @@
 
         -- collaborations
         , ('0x64780ce53f6e966e18a22af13a2f97369580ec11',0,1000000,'Petro National','John Gerrard','Art Blocks x Pace','N/A','0x64780ce53f6e966e18a22af13a2f97369580ec11-0')
+        , ('0x64780ce53f6e966e18a22af13a2f97369580ec11',1,1000000,'Floating World Genesis','A.A. Murakami','Art Blocks x Pace','N/A','0x64780ce53f6e966e18a22af13a2f97369580ec11-1')
         , ('0x64780ce53f6e966e18a22af13a2f97369580ec11',2,1000000,'QWERTY','Tara Donovan','Art Blocks x Pace','N/A','0x64780ce53f6e966e18a22af13a2f97369580ec11-2')
         , ('0x64780ce53f6e966e18a22af13a2f97369580ec11',3,1000000,'Contractions','Loie Hollowell','Art Blocks x Pace','N/A','0x64780ce53f6e966e18a22af13a2f97369580ec11-3')
 
