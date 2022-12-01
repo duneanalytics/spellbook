@@ -62,7 +62,8 @@ token_prices_token as (
 token_prices_eth as (
     SELECT 
         date_trunc('day', p.minute) as day, 
-        AVG(p.price) as price
+        AVG(p.price) as price,
+        1 as price_eth
 
     FROM 
     {{ source('prices', 'usd') }} p 
@@ -74,7 +75,7 @@ token_prices_eth as (
         {% if is_incremental() %}
         AND p.minute >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    GROUP BY 1
+    GROUP BY 1, 3 
 ),
 
 token_prices as (
@@ -100,14 +101,14 @@ token_prices as (
         , dt.num_rollups
         , dt.num_tfers
         , dt.abs_value_norm
-        , dt.abs_value_norm * COALESCE(p.price_usd, b.eth_price, '') as abs_volume_usd
-        , dt.abs_value_norm * COALESCE(p.price_eth, 1, '') as abs_volume_eth
-        , dt.input_value_norm * COALESCE(p.price_usd, b.eth_price, '') as input_volume_usd
-        , dt.input_value_norm * COALESCE(p.price_eth, 1, '') as input_volume_eth
-        , dt.output_value_norm * COALESCE(p.price_usd, b.eth_price, '') as output_volume_usd
-        , dt.output_value_norm * COALESCE(p.price_eth, 1, '') as output_volume_eth
+        , dt.abs_value_norm * COALESCE(p.price_usd, b.price) as abs_volume_usd
+        , dt.abs_value_norm * COALESCE(p.price_eth, b.price_eth) as abs_volume_eth
+        , dt.input_value_norm * COALESCE(p.price_usd, b.price) as input_volume_usd
+        , dt.input_value_norm * COALESCE(p.price_eth, b.price_eth) as input_volume_eth
+        , dt.output_value_norm * COALESCE(p.price_usd, b.price) as output_volume_usd
+        , dt.output_value_norm * COALESCE(p.price_eth, b.price_eth) as output_volume_eth
     from daily_transfers dt
     LEFT JOIN {{ref('tokens_erc20')}} er ON dt.token_address = er.contract_address AND er.blockchain = 'ethereum'
-    LEFT join token_prices p on dt.date = p.day and dt.token_address = p.token_address
-    LEFT JOIN token_prices b on dt.date = b.day AND dt.token_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -- using this to get price for missing ETH token 
+    LEFT join token_prices p on dt.date = p.day and dt.token_address = p.token_address AND dt.token_address != '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+    LEFT JOIN token_prices_eth b on dt.date = b.day AND dt.token_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -- using this to get price for missing ETH token 
 ;

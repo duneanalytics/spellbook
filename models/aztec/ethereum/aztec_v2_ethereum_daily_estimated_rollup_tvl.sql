@@ -78,7 +78,8 @@ rollup_balance_changes as (
 , token_prices_eth as (
     SELECT 
         date_trunc('day', p.minute) as day, 
-        AVG(p.price) as price
+        AVG(p.price) as price,
+        1 as price_eth
 
     FROM 
         {{ source('prices', 'usd') }} p 
@@ -90,7 +91,7 @@ rollup_balance_changes as (
         {% endif %}
         AND p.blockchain = 'ethereum'
         AND p.symbol = 'WETH'
-    GROUP BY 1
+    GROUP BY 1, 3
 )
 
 , token_prices as (
@@ -112,11 +113,11 @@ rollup_balance_changes as (
     , b.symbol
     , b.token_address
     , b.balance
-    , b.balance * COALESCE(p.price_usd, bb.eth_price) as tvl_usd
-    , b.balance * COALESCE(p.price_eth, 1) as tvl_eth
+    , b.balance * COALESCE(p.price_usd, bb.price) as tvl_usd
+    , b.balance * COALESCE(p.price_eth, bb.price_eth) as tvl_eth
   FROM token_balances_filled b
-  LEFT join token_prices p on b.date = p.day and b.token_address = p.token_address
-  LEFT JOIN token_prices bb on b.date = bb.day AND b.token_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -- using this to get price for missing ETH token 
+  LEFT join token_prices p on b.date = p.day and b.token_address = p.token_address AND b.token_address != '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' 
+  LEFT JOIN token_prices_eth bb on b.date = bb.day AND b.token_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -- using this to get price for missing ETH token 
   
 )
 select * from token_tvls
