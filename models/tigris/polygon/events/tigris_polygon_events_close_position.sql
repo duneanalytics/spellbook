@@ -155,6 +155,10 @@ close_position_v7 as (
 
 close_position_v8 as (
         SELECT 
+        * 
+        FROM 
+        (
+        SELECT 
             date_trunc('day', evt_block_time) as day, 
             evt_tx_hash,
             evt_index,
@@ -169,6 +173,8 @@ close_position_v8 as (
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
+        ) t 
+        WHERE t.evt_tx_hash NOT IN ('0x561cde89720f8af596bf8958dd96339d8b3923094d6d27dd8bf14f5326c9ae25', '0x17e49a19c4feaf014bf485ee2277bfa09375bde9931da9a95222de7a1e704d70', '0x146e22e33c8218ac8c70502b292bbc6d9334983135a1e70ffe0125784bfdcc91')
 )
 
 SELECT *, 'v1' as version FROM close_position_v1
