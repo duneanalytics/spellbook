@@ -66,7 +66,7 @@ token_prices_eth as (
 
     FROM 
     {{ source('prices', 'usd') }} p 
-        AND p.blockchain = 'ethereum'
+        WHERE p.blockchain = 'ethereum'
         AND p.symbol = 'WETH'
         {% if not is_incremental() %}
         AND p.minute >= '{{first_transfer_date}}'
