@@ -13,10 +13,12 @@
     )
 }}
 
-with 
+{% set first_transfer_date = '2022-06-06' %}
+
+WITH
 
 rollup_balance_changes as (
-  select CAST(date_trunc('day', t.evt_block_time) as date) as date
+  select date_trunc('day', t.evt_block_time) as date
     , t.symbol
     , t.contract_address as token_address
     , sum(case when t.from_type = 'Rollup' then -1 * value_norm when t.to_type = 'Rollup' then value_norm else 0 end) as net_value_norm
