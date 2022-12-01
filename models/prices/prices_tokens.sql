@@ -1554,6 +1554,7 @@ VALUES
     ('zxc-0xcert', 'ethereum', 'ZXC', '0x83e2be8d114f9661221384b3a50d24b96a5653f5', 18),
     ("gyen-gyen", "ethereum", "ibJPY", "0x5555f75e3d5278082200fb451d1b6ba946d8e13b", 18),
     ("chf-swiss-franc-token", "ethereum", "ibCHF", "0x1cc481ce2bd2ec7bf67d1be64d4878b16078f309", 18),
+    ("stmatic-lido-staked-matic", "ethereum", "STMATIC", "0x9ee91F9f426fA633d227f7a9b000E28b9dfd8599", 18),
 
     ("dai-dai", "gnosis", "WXDAI", "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18),
     ("usdc-usd-coin", "gnosis", "USDC", "0xddafbb505ad214d7b80b1f830fccc89b60fb7a83", 6),
@@ -1679,5 +1680,5 @@ VALUES
     ("ust-terrausd", "solana", "UST", "9vMJfxuKxXBoEa7rM12mYLMwTacLMLDJqHozw96WQL8i", 6),
     ("usdc-usd-coin", "solana", "USDC", "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", 6),
     ("usdt-tether", "solana", "USDT", "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", 6)
-
+    
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
