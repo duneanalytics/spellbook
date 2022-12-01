@@ -28,9 +28,9 @@ dex_trades as (
         AND d.blockchain = er.blockchain
         AND amount_usd > 0 
         AND token_bought_amount_raw > 0 
-    {% if is_incremental() %}
-    WHERE d.block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+        {% if is_incremental() %}
+        AND d.block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 
     UNION ALL
 
@@ -47,9 +47,9 @@ dex_trades as (
         AND d.blockchain = er.blockchain
         AND amount_usd > 0 
         AND token_bought_amount_raw > 0 
-    {% if is_incremental() %}
-    WHERE d.block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+        {% if is_incremental() %}
+        AND d.block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 )
 
 SELECT 
