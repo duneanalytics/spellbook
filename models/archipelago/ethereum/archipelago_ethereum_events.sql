@@ -129,7 +129,7 @@ WITH
             block_number
             ,sum(fee_amount_raw) as royalty_fee_amount_raw
             ,sum(fee_percentage) as royalty_fee_percentage
-            ,null::string as royalty_fee_receive_address -- we have multiple address so have to null this field
+            ,CAST(null AS VARCHAR(5)) as royalty_fee_receive_address -- we have multiple address so have to null this field
             ,unique_trade_id
         from fee_events
             where not is_protocol_fee
@@ -222,13 +222,13 @@ SELECT
     , te.platform_fee_amount
     , te.platform_fee_amount_raw
     , te.platform_fee_amount_usd
-    , te.platform_fee_percentage
+    , CAST(te.platform_fee_percentage AS DOUBLE) AS platform_fee_percentage
     , te.royalty_fee_amount
     , te.royalty_fee_amount_usd
     , te.royalty_fee_amount_raw
     , te.royalty_fee_currency_symbol
     , te.royalty_fee_receive_address -- null here
-    , te.royalty_fee_percentage
+    , CAST(te.royalty_fee_percentage AS DOUBLE) AS royalty_fee_percentage
     , te.unique_trade_id
 from trades_enhanced te
 left join {{ ref('nft_ethereum_transfers') }} buyer_fix on buyer_fix.block_time=te.block_time
