@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'avalanche_c_trades',
+    alias = 'trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -31,8 +31,8 @@ kyberswap_dex AS (
         ,t.evt_tx_hash                                                      AS tx_hash
         ,''                                                                 AS trace_address
         ,t.evt_index
-    FROM {{ source('kyber_avalanche_c_trades', 'DMMPool_evt_Swap') }} t
-    INNER JOIN {{ source('kyber_avalanche_c_trades', 'DMMFactory_evt_PoolCreated') }} p
+    FROM {{ source('kyber_avalanche_c', 'DMMPool_evt_Swap') }} t
+    INNER JOIN {{ source('kyber_avalanche_c', 'DMMFactory_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -58,8 +58,8 @@ kyberswap_dex AS (
         ,t.evt_tx_hash                                                                 AS tx_hash
         ,''                                                                            AS trace_address
         ,t.evt_index
-    FROM {{ source('kyber_avalanche_c_trades', 'Elastic_Pool_evt_swap') }} t
-    INNER JOIN {{ source('kyber_avalanche_c_trades', 'Elastic_Factory_evt_PoolCreated') }} p
+    FROM {{ source('kyber_avalanche_c', 'Elastic_Pool_evt_swap') }} t
+    INNER JOIN {{ source('kyber_avalanche_c', 'Elastic_Factory_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -83,7 +83,7 @@ kyberswap_dex AS (
         ,evt_tx_hash                                                       AS tx_hash
         ,''                                                                AS trace_address
         ,evt_index
-    FROM {{ source('kyber_avalanche_c_trades', 'AggregationRouter_evt_Swapped') }}
+    FROM {{ source('kyber_avalanche_c', 'AggregationRouter_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
         evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -91,53 +91,6 @@ kyberswap_dex AS (
         evt_block_time >= '{{ project_start_date }}'
         {% endif %}
 
-    UNION ALL
-
-    SELECT
-        'v2'                                                               AS version
-        ,evt_block_time                                                    AS block_time
-        ,sender                                                            AS taker
-        ,''                                                                AS maker
-        ,returnAmount                                                      AS token_bought_amount_raw
-        ,spentAmount                                                       AS token_sold_amount_raw
-        ,cast(NULL as double)                                              AS amount_usd
-        ,dstToken                                                          AS token_bought_address
-        ,srcToken                                                          AS token_sold_address
-        ,contract_address                                                  AS project_contract_address
-        ,evt_tx_hash                                                       AS tx_hash
-        ,''                                                                AS trace_address
-        ,evt_index
-    FROM {{ source('kyber_avalanche_c_trades', 'AggregationRouterV2_evt_Swapped') }}
-    WHERE
-        {% if is_incremental() %}
-        evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% else %}
-        evt_block_time >= '{{ project_start_date }}'
-        {% endif %}
-
-    UNION ALL
-
-    SELECT
-        'v3'                                                               AS version
-        ,evt_block_time                                                    AS block_time
-        ,sender                                                            AS taker
-        ,''                                                                AS maker
-        ,returnAmount                                                      AS token_bought_amount_raw
-        ,spentAmount                                                       AS token_sold_amount_raw
-        ,cast(NULL as double)                                              AS amount_usd
-        ,dstToken                                                          AS token_bought_address
-        ,srcToken                                                          AS token_sold_address
-        ,contract_address                                                  AS project_contract_address
-        ,evt_tx_hash                                                       AS tx_hash
-        ,''                                                                AS trace_address
-        ,evt_index
-    FROM {{ source('kyber_avalanche_c_trades', 'AggregationRouterV3_evt_Swapped') }}
-    WHERE
-        {% if is_incremental() %}
-        evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% else %}
-        evt_block_time >= '{{ project_start_date }}'
-        {% endif %}
 
     UNION ALL
 
@@ -155,7 +108,7 @@ kyberswap_dex AS (
         ,evt_tx_hash                                                       AS tx_hash
         ,''                                                                AS trace_address
         ,evt_index
-    FROM {{ source('kyber_avalanche_c_trades', 'MetaAggregationRouter_evt_Swapped') }}
+    FROM {{ source('kyber_avalanche_c', 'MetaAggregationRouter_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
         evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -168,9 +121,10 @@ SELECT
     'avalanche_c'                                                         AS blockchain
     ,'kyberswap'                                                          AS project
     ,kyberswap_dex.version                                                AS version
-    ,SELECT (CASE
-    WHEN (kyberswap_dev.version = 'dmm' or kyberswap_dev.version = 'elastic' ) then 'dex'
-    ELSE 'aggregator' END)                                                AS category
+    ,CASE
+        WHEN (kyberswap_dex.version = 'dmm' or kyberswap_dex.version = 'elastic' ) THEN 'dex'
+        ELSE 'aggregator'
+    END                                                                   AS category
     ,try_cast(date_trunc('DAY', kyberswap_dex.block_time) AS date)        AS block_date
     ,kyberswap_dex.block_time
     ,erc20a.symbol                                                        AS token_bought_symbol

@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: kyber_optimism_trades
+  - name: kyber_optimism
     description: "Optimism decoded tables related to Kyberswap contract"
     tables:
       - name: DMMPool_evt_Swap

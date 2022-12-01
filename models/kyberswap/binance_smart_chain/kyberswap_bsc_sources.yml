@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: kyber_bsc_trades
+  - name: kyber_bsc
     description: "Binance Smart Chain decoded tables related to Kyberswap contract"
     tables:
       - name: DMMPool_evt_Swap
