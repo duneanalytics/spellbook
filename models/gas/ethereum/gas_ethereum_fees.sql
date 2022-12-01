@@ -17,8 +17,8 @@ SELECT
      txns.from AS tx_sender, 
      txns.to AS tx_receiver,
      'ETH' as native_token_symbol,
-     value/1e18 AS tx_amount_native,
-     value/1e18 * p.price AS tx_amount_usd,
+     CAST(value AS DOUBLE)/1e18 AS tx_amount_native,
+     CAST(value AS DOUBLE)/1e18 * p.price AS tx_amount_usd,
      CASE WHEN type = 'Legacy' THEN (CAST(gas_price AS DOUBLE) * CAST(txns.gas_used AS double))/1e18
           WHEN type = 'DynamicFee' THEN ((CAST(base_fee_per_gas AS DOUBLE) + CAST(priority_fee_per_gas AS double)) * 
                                          CAST(txns.gas_used AS DOUBLE))/1e18 END AS tx_fee_native, 
