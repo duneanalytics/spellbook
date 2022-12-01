@@ -15,6 +15,5 @@ select * from unit_test
 where (
        oracle_price_test = false                 OR 
        proxy_address_test   = false              OR
-       aggregator_address_test = false           OR 
-       underlying_token_address_test = false
+       aggregator_address_test = false           
       )
