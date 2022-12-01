@@ -11,3 +11,13 @@ sources:
         loaded_at_field: evt_block_time
       - name: looksrareexchange_evt_royaltypayment
         loaded_at_field: evt_block_time
+      - name: StrategyStandardSaleForFixedPrice_call_viewProtocolFee
+        loaded_at_field: call_block_time
+      - name: StrategyAnyItemFromCollectionForFixedPrice_call_viewProtocolFee
+        loaded_at_field: call_block_time
+      - name: StrategyPrivateSale_call_viewProtocolFee
+        loaded_at_field: call_block_time
+      - name: StrategyStandardSaleForFixedPriceV1B_call_viewProtocolFee
+        loaded_at_field: call_block_time
+      - name: StrategyAnyItemFromCollectionForFixedPriceV1B_call_viewProtocolFee
+        loaded_at_field: call_block_time

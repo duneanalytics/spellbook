@@ -33,11 +33,13 @@ batch_counts as (
     from {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Settlement') }} s
         left outer join {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Interaction') }} i
             on i.evt_tx_hash = s.evt_tx_hash
+            {% if is_incremental() %}
+            AND i.evt_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
         join cow_protocol_ethereum.solvers
             on solver = address
     {% if is_incremental() %}
     WHERE s.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    AND i.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     group by s.evt_tx_hash, solver, s.evt_block_time, name
 ),
@@ -50,7 +52,7 @@ batch_values as (
         sum(fee_usd)    as fee_value,
         price           as eth_price
     from {{ ref('cow_protocol_ethereum_trades') }}
-        join {{ source('prices', 'usd') }} as p
+        left outer join {{ source('prices', 'usd') }} as p
             on p.contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
             and p.minute = date_trunc('minute', block_time)
             and blockchain = 'ethereum'
@@ -66,14 +68,18 @@ combined_batch_info as (
         evt_block_time                                 as block_time,
         num_trades,
         CASE
-            WHEN name ilike '%1inch'
-               OR name = '%ParaSwap'
-               OR name = '%0x'
+            WHEN (
+              name ilike '%1inch'
+               OR name ilike '%ParaSwap'
+               OR name ilike '%0x'
                OR name = 'Legacy'
-               THEN NULL
-            -- TODO: We can't rely on dex.trades table here yet,
-            -- thus we cannot know how many dex swaps are happening in settlements via aggregators
-            -- V1: (select count(*) from dex.trades where tx_hash = evt_tx_hash and category = 'DEX')
+              )
+               THEN (
+                select count(*)
+                from {{ ref('dex_trades') }}
+                where tx_hash = evt_tx_hash
+                and blockchain = 'ethereum'
+              )
             ELSE dex_swaps
         END                                              as dex_swaps,
         batch_value,

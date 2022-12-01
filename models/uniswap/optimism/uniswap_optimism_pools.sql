@@ -1,11 +1,13 @@
  {{
   config(
-        schema = 'uniswap_v3_optimism', 
+        schema='uniswap_v3_optimism',
         alias='pools',
+        materialized='table',
+        file_format = 'delta',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "uniswap_v3",
-                                    \'["msilb7", "chuxinh"]\') }}'
+                                    \'["msilb7", "chuxin"]\') }}'
   )
 }}
 with uniswap_v3_poolcreated as (

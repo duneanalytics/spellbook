@@ -4,7 +4,7 @@
     , post_hook='{{ expose_spells(\'["ethereum"]\',
                                   "project",
                                   "aave_v1",
-                                  \'["batwayne", "chuxinh"]\') }}'
+                                  \'["batwayne", "chuxin"]\') }}'
   )
 }}
 
@@ -20,8 +20,8 @@ SELECT
       borrower,
       repayer,
       liquidator,
-      amount / concat('1e',erc20.decimals) AS amount,
-      (amount/ concat('1e',p.decimals)) * price AS usd_amount,
+      amount / CAST(CONCAT('1e', CAST(erc20.decimals AS VARCHAR(100))) AS DOUBLE) AS amount,
+      (amount/ CAST(CONCAT('1e', CAST(p.decimals AS VARCHAR(1000))) AS DOUBLE)) * price AS usd_amount,
       evt_tx_hash,
       evt_index,
       evt_block_time,
@@ -39,9 +39,9 @@ SELECT
         ELSE _reserve
     END AS token,
     _user AS borrower,
-    NULL::string AS repayer,
-    NULL::string AS liquidator,
-    _amount AS amount, 
+    CAST(NULL AS VARCHAR(5)) AS repayer,
+    CAST(NULL AS VARCHAR(5)) AS liquidator,
+    CAST(_amount AS DECIMAL(38,0)) AS amount,
     evt_tx_hash,
     evt_index,
     evt_block_time,
@@ -58,8 +58,8 @@ SELECT
     END AS token,
     _user AS borrower,
     _repayer AS repayer,
-    NULL::string AS liquidator,
-    - _amountMinusFees AS amount,
+    CAST(NULL AS VARCHAR(5)) AS liquidator,
+    - CAST(_amountMinusFees AS DECIMAL(38,0)) AS amount,
     evt_tx_hash,
     evt_index,
     evt_block_time,
@@ -77,7 +77,7 @@ SELECT
     _user AS borrower,
     _liquidator AS repayer,
     _liquidator AS liquidator,
-    - _purchaseAmount AS amount,
+    - CAST(_purchaseAmount AS DECIMAL(38,0)) AS amount,
     evt_tx_hash,
     evt_index,
     evt_block_time,
