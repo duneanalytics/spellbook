@@ -144,11 +144,11 @@ SELECT alet.blockchain
 , alet.block_number
 , et.from AS tx_from
 , et.to AS tx_to
-, 0 AS platform_fee_amount_raw
+, CAST(0 AS DOUBLE) AS platform_fee_amount_raw
 , 0 AS platform_fee_amount
 , 0 AS platform_fee_amount_usd
 , CAST(0 AS DOUBLE) AS platform_fee_percentage
-, 0 AS royalty_fee_amount_raw
+, CAST(0 AS DOUBLE) AS royalty_fee_amount_raw
 , 0 AS royalty_fee_amount
 , 0 AS royalty_fee_amount_usd
 , CAST(0 AS DOUBLE) AS royalty_fee_percentage
