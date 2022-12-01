@@ -1,7 +1,7 @@
 {{ config(
     alias = 'pools',
     materialized = 'incremental',
-    incremental_strategy = 'insert_overwrite',
+    incremental_strategy = 'merge',
     partition_by=['pool'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
