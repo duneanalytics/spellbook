@@ -65,14 +65,14 @@ token_prices_eth as (
 
     FROM 
     {{ source('prices', 'usd') }} p 
+        WHERE p.blockchain = 'ethereum'
+        AND p.symbol = 'WETH'
         {% if not is_incremental() %}
-        WHERE p.minute >= '{{first_transfer_date}}'
+        AND p.minute >= '{{first_transfer_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE p.minute >= date_trunc("day", now() - interval '1 week')
+        AND p.minute >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-        AND p.blockchain = 'ethereum'
-        AND p.symbol = 'WETH'
     GROUP BY 1, 3
 ),
 
