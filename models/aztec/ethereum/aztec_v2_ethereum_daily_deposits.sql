@@ -93,10 +93,7 @@ token_prices as (
 
  select dt.date
         , dt.token_address
-        , CASE 
-            WHEN dt.token_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 'ETH' 
-            ELSE p.symbol
-          END as symbol
+        , er.symbol
         , dt.num_rollups
         , dt.num_tfers
         , dt.abs_value_norm
@@ -106,7 +103,8 @@ token_prices as (
         , dt.user_deposit_value_norm * COALESCE(p.price_eth, 1) as user_deposits_eth
         , dt.user_withdrawal_value_norm * COALESCE(p.price_usd, b.eth_price) as user_withdrawals_usd
         , dt.user_withdrawal_value_norm * COALESCE(p.price_eth, 1) as user_withdrawals_eth
-    from daily_transfers dt
+    FROM daily_transfers dt
+    LEFT JOIN {{ref('tokens_erc20')}} er ON dt.token_address = er.contract_address AND er.blockchain = 'ethereum'
     LEFT join token_prices p on dt.date = p.day and dt.token_address = p.token_address
     LEFT JOIN token_prices b on dt.date = b.day AND dt.token_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -- using this to get price for missing ETH token 
 ;

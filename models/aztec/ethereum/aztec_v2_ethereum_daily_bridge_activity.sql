@@ -96,10 +96,7 @@ token_prices as (
         , dt.bridge_protocol
         , dt.bridge_address
         , dt.token_address
-        , CASE 
-            WHEN dt.token_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 'ETH' 
-            ELSE p.symbol
-          END as symbol
+        , er.symbol, 
         , dt.num_rollups
         , dt.num_tfers
         , dt.abs_value_norm
@@ -110,6 +107,7 @@ token_prices as (
         , dt.output_value_norm * COALESCE(p.price_usd, b.eth_price) as output_volume_usd
         , dt.output_value_norm * COALESCE(p.price_eth, 1) as output_volume_eth
     from daily_transfers dt
+    LEFT JOIN {{ref('tokens_erc20')}} er ON dt.token_address = er.contract_address AND er.blockchain = 'ethereum'
     LEFT join token_prices p on dt.date = p.day and dt.token_address = p.token_address
     LEFT JOIN token_prices b on dt.date = b.day AND dt.token_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -- using this to get price for missing ETH token 
 ;
