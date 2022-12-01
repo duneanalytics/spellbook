@@ -273,6 +273,9 @@ models:
       ethereum:
         +schema: seaport_ethereum
         +materialized: view
+      bnb:
+        +schema: seaport_bnb
+        +materialized: view
       arbitrum:
         +schema: seaport_arbitrum
         +materialized: view
