@@ -17,6 +17,7 @@ with all_listings as (
             , `minValue`/1e18 as listed_price
             , `toAddress` as listing_offered_to 
             , evt_block_number
+            , evt_index
             , evt_block_time
             , evt_tx_hash
     from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkOffered') }}
@@ -30,6 +31,7 @@ with all_listings as (
             , null as listed_price
             , null as listing_offered_to
             , evt_block_number
+            , evt_index
             , evt_block_time
             , evt_tx_hash
     from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkNoLongerForSale') }}
@@ -41,6 +43,7 @@ with all_listings as (
             , null as listed_price
             , null as listing_offered_to
             , evt_block_number
+            , evt_index
             , evt_block_time
             , evt_tx_hash
     from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBought') }}
@@ -52,6 +55,7 @@ with all_listings as (
             , null as listed_price
             , null as listing_offered_to
             , evt_block_number
+            , evt_index
             , evt_block_time
             , evt_tx_hash
     from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkTransfer') }}
@@ -63,7 +67,7 @@ select b.punk_id
 from 
 (
     select *
-            , row_number() over (partition by punk_id order by evt_block_time desc) as punk_event_index
+            , row_number() over (partition by punk_id order by evt_block_number desc, evt_index desc ) as punk_event_index
     from 
     (
     select * from all_listings
