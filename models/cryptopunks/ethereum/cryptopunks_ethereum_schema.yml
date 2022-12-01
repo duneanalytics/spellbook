@@ -213,10 +213,12 @@ models:
     config:
       tags: ['ethereum', 'cryptopunks', 'owners']
     description: > 
-        CryptoPunks current owners per token id 
+        CryptoPunks current owners per token id    
     columns:
       - name: punk_id
         description: "CryptoPunk ID #"
+        tests:
+          - unique        
       - name: current_owner
         description: "Wallet that currently holds each CryptoPunk ID #"
       - name: last_transfer_time
@@ -231,14 +233,6 @@ models:
       tags: ['ethereum', 'cryptopunks', 'transfers']
     description: > 
         All CryptoPunks transfers
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - punk_id
-            - evt_block_number
-            - evt_index
-            - from
-            - to
     columns:
       - name: from
         description: "CryptoPunk transferred from"
