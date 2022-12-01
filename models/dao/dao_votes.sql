@@ -8,11 +8,7 @@
 }}
 
 {% set dao_votes_models = [
-'uniswap_v3_ethereum_votes',
-'compound_v2_ethereum_votes',
-'gitcoin_ethereum_votes',
-'ens_ethereum_votes',
-'aave_ethereum_votes'
+'uniswap_v3_ethereum_votes'
 ] %}
 
 

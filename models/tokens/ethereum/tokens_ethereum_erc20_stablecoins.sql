@@ -1,4 +1,4 @@
-{{ config( alias='stablecoins', tags=['static'])}}
+{{ config( alias='stablecoins')}}
 
 SELECT LOWER(contract_address) as contract_address, symbol, decimals, name
 FROM (VALUES

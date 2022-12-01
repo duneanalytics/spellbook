@@ -8,7 +8,7 @@
     post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                 "project",
                                 "curvefi",
-                                \'["Henrystats"]\') }}'
+                                \'["henrystats"]\') }}'
     )
 }}
 
@@ -91,7 +91,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- 3poolV2 tokenexchange 
         SELECT
@@ -121,7 +121,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- Aavepool tokenexchange 
         SELECT
@@ -151,7 +151,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- Aavepool tokenexchange underlying 
         SELECT
@@ -181,7 +181,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
     
         -- Aavev3 tokenexchange underlying 
         SELECT
@@ -211,7 +211,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- agEURjEUR tokenexchange
         SELECT
@@ -239,7 +239,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL  
+        UNION  
 
         -- arUSD tokenexchange
         SELECT
@@ -269,7 +269,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- ATricryptopool tokenexchange
         SELECT
@@ -299,7 +299,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- avax3pool tokenexchange 
         SELECT
@@ -329,7 +329,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- axlUSDCUSDC tokenexchange 
         SELECT
@@ -357,7 +357,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- axlUSDCUSDC_e tokenexchange 
         SELECT
@@ -385,7 +385,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- blizz tokenexchange 
         SELECT
@@ -415,7 +415,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- Curve_DD2_Pool tokenexchange 
         SELECT
@@ -443,7 +443,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- deBridge_USDC tokenexchange underlying 
         SELECT
@@ -475,7 +475,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- defrost h20 tokenexchange 
         SELECT
@@ -503,7 +503,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
     
         -- defrost h20 tokenexchange underlying
         SELECT
@@ -535,7 +535,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- eEURjEUR tokenexchange
         SELECT
@@ -563,7 +563,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- frax tokenexchange 
         SELECT
@@ -591,7 +591,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- frax tokenexchange  underlying
         SELECT
@@ -623,7 +623,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- FUSD_MIM_Factory_Pool tokenexchange 
         SELECT
@@ -651,7 +651,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- FUSDUSDC tokenexchange 
         SELECT
@@ -679,7 +679,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- l2stableswap tokenexchange 
         SELECT
@@ -707,7 +707,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- mai tokenexchange 
         SELECT
@@ -735,7 +735,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         
-        UNION ALL 
+        UNION 
 
         -- mai tokenexchange  underlying
         SELECT
@@ -767,7 +767,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- mim tokenexchange 
         SELECT
@@ -795,7 +795,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- mim tokenexchange  underlying
         SELECT
@@ -827,7 +827,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- MoreMoney_USD tokenexchange 
         SELECT
@@ -855,7 +855,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL  
+        UNION  
 
         -- MoreMoney_USD tokenexchange  underlying
         SELECT
@@ -887,7 +887,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL  
+        UNION  
 
         -- NXUSDaV3CRV tokenexchange  underlying
         SELECT
@@ -919,7 +919,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- ren tokenexchange 
         SELECT
@@ -947,7 +947,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- ren tokenexchange underlying 
         SELECT
@@ -975,7 +975,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- Topshelf_USDL tokenexchange  underlying
         SELECT
@@ -1007,7 +1007,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- USDCe_UST tokenexchange 
         SELECT
@@ -1035,7 +1035,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- USD coin tokenexchange 
         SELECT
@@ -1063,7 +1063,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- usds tokenexchange  underlying
         SELECT
@@ -1095,7 +1095,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION ALL 
+        UNION 
 
         -- yusdpool tokenexchange 
         SELECT
@@ -1140,8 +1140,8 @@ SELECT
     END as token_pair, 
     dexs.token_bought_amount_raw / power(10, erc20a.decimals) as token_bought_amount, 
     dexs.token_sold_amount_raw / power(10, erc20b.decimals) as token_sold_amount, 
-    CAST(dexs.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw, 
-    CAST(dexs.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw, 
+    dexs.token_bought_amount_raw, 
+    dexs.token_sold_amount_raw, 
     COALESCE(
         dexs.amount_usd, 
         (dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price, 

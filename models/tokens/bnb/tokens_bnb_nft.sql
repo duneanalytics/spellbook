@@ -1,6 +1,5 @@
 {{ config(
-        alias='nft',
-        tags=['static']
+        alias='nft'
         )
 }}
 

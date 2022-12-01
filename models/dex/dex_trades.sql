@@ -7,15 +7,6 @@
         )
 }}
 
-/*
-list of models using old generic test, due to multiple versions in one model:
-    - curvefi_trades
-    - airswap_ethereum_trades
-    - dodo_ethereum_trades
-    - bancor_ethereum_trades
-    - mstable_ethereum_trades
-*/
-
 {% set dex_trade_models = [
 'uniswap_trades'
 ,'sushiswap_trades'
@@ -33,13 +24,10 @@ list of models using old generic test, due to multiple versions in one model:
 ,'woofi_avalanche_c_trades'
 ,'bancor_ethereum_trades'
 ,'platypus_finance_avalanche_c_trades'
-,'trader_joe_trades'
 ,'hashflow_trades'
 ,'mstable_ethereum_trades'
 ,'zigzag_trades'
 ,'gmx_trades'
-,'biswap_bnb_trades' 
-,'babyswap_bnb_trades'
 ] %}
 
 
@@ -57,8 +45,8 @@ FROM (
         token_pair,
         token_bought_amount,
         token_sold_amount,
-        CAST(token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw,
-        CAST(token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw,
+        token_bought_amount_raw,
+        token_sold_amount_raw,
         amount_usd,
         token_bought_address,
         token_sold_address,

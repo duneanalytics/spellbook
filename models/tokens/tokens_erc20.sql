@@ -1,5 +1,4 @@
 {{ config( alias='erc20',
-        tags=['static'],
         post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis"]\',
                                     "sector",
                                     "tokens",

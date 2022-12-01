@@ -23,7 +23,7 @@ SELECT
       seller,
       buyer,
       amount_original,
-      CAST(amount_raw AS DECIMAL(38,0)) AS amount_raw,
+      amount_raw,
       currency_symbol,
       currency_contract,
       nft_contract_address,

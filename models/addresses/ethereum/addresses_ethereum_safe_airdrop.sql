@@ -1,5 +1,4 @@
 {{ config(alias='safe_airdrop', materialized = 'table', file_format = 'delta',
-        tags=['static'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "addresses",

@@ -21,10 +21,6 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_seed:
-          blockchain: ethereum
-          project: clipper
-          version: 1
     columns:
       - &blockchain
         name: blockchain
@@ -68,6 +64,9 @@ models:
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of the token bought"
+        tests:
+          - dex_trades_token_bought:
+              dex_trades_seed: ref('dex_trades_seed')
       - &token_sold_address
         name: token_sold_address
         description: "Contract address of the token sold"
@@ -116,10 +115,6 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_seed:
-          blockchain: ethereum
-          project: clipper
-          version: 2
     columns:
       - *blockchain
       - *project
@@ -166,10 +161,6 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_seed:
-          blockchain: ethereum
-          project: clipper
-          version: 3
     columns:
       - *blockchain
       - *project
@@ -220,7 +211,8 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount_raw
       - *amount_usd
-      - *token_bought_address
+      - name: token_bought_address  # avoid '*' usage to prevent running test on view
+        description: "Contract address of the token bought"
       - *token_sold_address
       - *taker
       - *maker
