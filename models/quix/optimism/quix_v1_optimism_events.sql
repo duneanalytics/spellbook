@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'v2_events',
+    alias = 'v1_events',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -12,64 +12,26 @@
     )
 }}
 {% set quix_fee_address_address = "0xec1557a67d4980c948cd473075293204f4d280fd" %}
-{% set min_block_number = 2753614 %}
-{% set project_start_date = '2022-01-24' %}     -- select time from optimism.blocks where `number` = 2753614
+{% set min_block_number = 1327197 %}
+{% set project_start_date = '2021-12-18' %}     -- select time from optimism.blocks where `number` = 1327197
 
 
 with events_raw as (
-    select 
-      *
-    from (
-        select
-            evt_block_number as block_number
-            ,tokenId as token_id
-            ,contract_address as project_contract_address
-            ,evt_tx_hash as tx_hash
-            ,evt_block_time as block_time
-            ,buyer
-            ,seller
-            ,erc721address as nft_contract_address
-            ,price as amount_raw
-        from {{ source('quixotic_v2_optimism','ExchangeV2_evt_BuyOrderFilled') }}
-        {% if is_incremental() %} -- this filter will only be applied on an incremental run
-        where evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-
-        union all 
-
-        select
-            evt_block_number as block_number
-            ,tokenId as token_id
-            ,contract_address as project_contract_address
-            ,evt_tx_hash as tx_hash
-            ,evt_block_time as block_time
-            ,buyer
-            ,seller
-            ,erc721address as nft_contract_address
-            ,price as amount_raw
-        from {{ source('quixotic_v2_optimism','ExchangeV2_evt_DutchAuctionFilled') }}
-        {% if is_incremental() %} -- this filter will only be applied on an incremental run
-        where evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-
-        union all 
-
-        select
-            evt_block_number as block_number
-            ,tokenId as token_id
-            ,contract_address as project_contract_address
-            ,evt_tx_hash as tx_hash
-            ,evt_block_time as block_time
-            ,buyer
-            ,seller
-            ,erc721address as nft_contract_address
-            ,price as amount_raw
-        from {{ source('quixotic_v2_optimism','ExchangeV2_evt_SellOrderFilled') }}
-        {% if is_incremental() %} -- this filter will only be applied on an incremental run
-        where evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-    ) as x 
-    where nft_contract_address != lower('0xbe81eabdbd437cba43e4c1c330c63022772c2520') -- --exploit contract
+    select
+        evt_block_number as block_number
+        ,tokenId as token_id
+        ,contract_address as project_contract_address
+        ,evt_tx_hash as tx_hash
+        ,evt_block_time as block_time
+        ,buyer
+        ,seller 
+        ,erc721address as nft_contract_address
+        ,price as amount_raw
+    from {{ source('quixotic_optimism','Exchange_evt_SellOrderFilled') }}
+    where erc721address != lower('0xbe81eabdbd437cba43e4c1c330c63022772c2520') -- --exploit contract
+    {% if is_incremental() %} -- this filter will only be applied on an incremental run
+    and evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 )
 ,transfers as (
     -- eth royalities
@@ -127,7 +89,7 @@ with events_raw as (
 select
     'optimism' as blockchain
     ,'quix' as project
-    ,'v2' as version
+    ,'v1' as version
     ,TRY_CAST(date_trunc('DAY', er.block_time) AS date) AS block_date
     ,er.block_time
     ,er.token_id 

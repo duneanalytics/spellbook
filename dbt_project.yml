@@ -914,6 +914,34 @@ seeds:
             amount: double
             tx_num: long
 
+    quix:
+      +enabled: true
+      +schema: test_data
+      quix_events_seed:
+        +column_types:
+          blockchain: string
+          project: string
+          version: string
+          block_date: date
+          block_time: timestamp
+          token_id: string
+          collection: string
+          token_standard: string
+          trade_type: string
+          number_of_items: int
+          trade_category: string
+          evt_type: string
+          seller: string
+          buyer: string
+          nft_contract_address: string
+          project_contract_address: string
+          tx_hash: string
+          evt_index: int
+          block_number: int
+          tx_from: string
+          tx_to: string
+          royalty_fee_receive_address: string
+
     zeroex:
       ethereum:
         +enabled: true
