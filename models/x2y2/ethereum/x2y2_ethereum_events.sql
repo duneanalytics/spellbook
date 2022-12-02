@@ -20,14 +20,14 @@ SELECT 'ethereum' AS blockchain
 , prof.evt_block_number AS block_number
 , COALESCE(bytea2numeric_v2(substring(get_json_object(inv.item, '$.data'), 195,64))::BIGINT, bytea2numeric_v2(substring(get_json_object(inv.item, '$.data'), 195,64))) AS token_id
 , nft_token.name AS collection
-, prof.amount AS amount_raw -- CAST(prof.amount AS DECIMAL(38,0))
+, CAST(prof.amount AS DECIMAL(38,0)) AS amount_raw
 , prof.amount/POWER(10, currency_token.decimals) AS amount_original
 , pu.price*(prof.amount/POWER(10, currency_token.decimals)) AS amount_usd
 , CASE WHEN get_json_object(inv.detail, '$.executionDelegate')='0xf849de01b080adc3a814fabe1e2087475cf2e354' THEN 'erc721'
     WHEN get_json_object(inv.detail, '$.executionDelegate')='0x024ac22acdb367a3ae52a3d94ac6649fdc1f0779' THEN 'erc1155'
     END AS token_standard
 , 'Single Item Trade' AS trade_type
-, 1 AS number_of_items -- CAST(1 AS DECIMAL(38,0)) 
+, CAST(1 AS DECIMAL(38,0)) AS number_of_items 
 , CASE WHEN (get_json_object(inv.detail, '$.fees[0]') IS NULL OR get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.to')!='0xd823c605807cc5e6bd6fc0d7e4eea50d3e2d66cd') AND (prof.evt_block_time < '2022-04-01' OR prof.evt_block_time >= '2022-05-01') THEN 'Private Sale'
     WHEN et.from=COALESCE(seller_fix.from, inv.maker) THEN 'Offer Accepted'
     ELSE 'Buy'
