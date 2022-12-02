@@ -125,6 +125,7 @@ VALUES
     ("frax-frax", "avalanche_c", "FRAX", "0xd24c2ad096400b6fbcd2ad8b24e7acbc21a1da64", 18),
     ("fxs-frax-share", "avalanche_c", "FXS", "0x214db107654ff987ad859f34125307783fc8e387", 18),
     ("avax-avalanche", "avalanche_c", "WAVAX", "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7", 18),
+    ("avax-avalanche", "avalanche_c", "AVAX", "0x0000000000000000000000000000000000000000", 18),
     ("dai-dai", "avalanche_c", "DAI", "0xd586e7f844cea2f87f50152665bcbc2c279d8d70", 18),
     ("usdc-usd-coin", "avalanche_c", "USDC", "0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e", 6),
     ("usdt-tether", "avalanche_c", "USDT", "0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7", 6),
@@ -159,6 +160,7 @@ VALUES
     ("bifi-beefyfinance", "bnb", "BIFI", "0xca3f508b8e4dd382ee878a314789373d80a5190a", 18),
     ("blz-bluzelle", "bnb", "BLZ", "0x935a544bf5816e3a7c13db2efe3009ffda0acda2", 18),
     ("bnb-binance-coin", "bnb", "WBNB", "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c", 18),
+    ("bnb-binance-coin", "bnb", "BNB", "0x0000000000000000000000000000000000000000", 18),
     ("bscpad-bscpad", "bnb", "BSCPAD", "0x5a3010d4d8d3b5fb49f8b6e57fb9e48063f16700", 18),
     ("btcb-binance-bitcoin", "bnb", "BTCB", "0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c", 18),
     ("bts-bitshares", "bnb", "BTS", "0xc2e1acef50ae55661855e8dcb72adb182a3cc259", 18),
@@ -261,6 +263,7 @@ VALUES
     ("sfm-safemoon", "bnb", "SFM", "0x42981d0bfbaf196529376ee702f2a9eb9092fcb5", 9),
     ("mnft-marvelous-nfts", "bnb", "MNFT", "0x33be7644c0e489b3a0c639d103392d4f3e338158", 18),
     ("bets-betswirl", "bnb", "BETS", "0x3e0a7c7db7bb21bda290a80c9811de6d47781671", 18),
+    ("floki-floki-inu", "bnb", "FLOKI", "0xfb5b838b6cfeedc2873ab27866079ac55363d37e", 18),
 
     ("0xbtc-0xbitcoin", "ethereum", "0xBTC", "0xb6ed7644c69416d67b522e20bc294a9a9b405b31", 8),
     ("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
@@ -1654,11 +1657,14 @@ VALUES
     ("bank-bankless-dao", "optimism", "BANK", "0x29FAF5905bfF9Cfcc7CF56a5ed91E0f091F8664B", 18),
 
     ("matic-polygon", "polygon", "MATIC", "0x0000000000000000000000000000000000001010", 18),
+    ("matic-polygon", "polygon", "MATIC", "0x0000000000000000000000000000000000000000", 18),
     ("dai-dai", "polygon", "DAI", "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063", 18),
     ("usdc-usd-coin", "polygon", "USDC", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", 6),
     ("usdt-tether", "polygon", "USDT", "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", 6),
     ("wbtc-wrapped-bitcoin", "polygon", "WBTC", "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6", 8),
     ("bets-betswirl", "polygon", "BETS", "0x9246a5f10a79a5a939b0c2a75a3ad196aafdb43b", 18),
+    ("eth-ethereum", "polygon", "WETH", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", 18),
+    ("mimatic-mimatic", "polygon", "MIMATIC", "0xa3fa99a148fa48d14ed51d610c367c61876997f1", 18),
 
     ("aury-aurory", "solana", "AURY", "AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP", 9),
     ("btc-bitcoin", "solana", "BTC", "9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E", 6),
