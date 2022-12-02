@@ -1,3 +1,12 @@
+{{ config(
+	alias ='genesis_balances',
+    post_hook='{{ expose_spells(\'["ethereum"]\',
+                                "sector",
+                                "ethereum",
+                                \'["bernat"]\') }}'
+	)
+}}
+
 SELECT address, balance FROM 
 (VALUES 
 	('0x3282791d6fd713f1e94f4bfd565eaa78b3a0599d', 1337000000000000000000), 
