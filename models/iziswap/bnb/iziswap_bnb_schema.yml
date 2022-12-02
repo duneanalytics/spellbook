@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: izumi_bnb_iziswap_trades
+  - name: iziswap_bnb_trades
     meta:
       blockchain: bnb
       sector: dex

@@ -6,7 +6,7 @@ with trades as (
 		token_sold_amount,
 		tx_hash,
 		evt_index
-    from {{ ref('izumi_bnb_iziswap_trades') }}
+    from {{ ref('iziswap_bnb_trades') }}
     where 1=0
 		-- 3 manually tested swaps
 		or (tx_hash='0x07e7b79ed2e7958c7744accc12ce8c732d82c6d62ce586365d276a72ecca8ba4' and evt_index='97')

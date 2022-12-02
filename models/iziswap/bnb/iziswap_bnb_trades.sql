@@ -7,7 +7,7 @@
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
     post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
-                                "iziswap_v1",
+                                "iziswap",
                                 \'["umer_h_adil"]\') }}'
     )
 }}
@@ -52,12 +52,12 @@ select
     end as token_pair
 	, s.token_bought_amount_raw / power(10, erc20_b.decimals) as token_bought_amount
 	, s.token_sold_amount_raw / power(10, erc20_s.decimals) as token_sold_amount
-    , tx.`from` as taker
+    , tx.from as taker
 	, '' as maker
 	, cast(s.contract_address as string) as project_contract_address
 	, s.evt_tx_hash as tx_hash
-    , tx.`from` as tx_from
-    , tx.`to` as tx_to
+    , tx.from as tx_from
+    , tx.to as tx_to
 	, '' as trace_address
 	, s.evt_index as evt_index
 from 

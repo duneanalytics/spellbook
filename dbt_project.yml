@@ -679,11 +679,11 @@ models:
         +schema: wombat_bnb
         +materialized: view
         
-    izumi:
-      +schema: izumi
+    iziswap:
+      +schema: iziswap
       +materialized: view
       bnb:
-        +schema: izumi_bnb
+        +schema: iziswap_bnb
         +materialized: view
 
 seeds:

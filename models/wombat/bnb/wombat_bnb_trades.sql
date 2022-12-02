@@ -36,16 +36,24 @@ select
     end as token_pair
 	, s.toAmount / power(10, erc20_b.decimals) as token_bought_amount
 	, s.fromAmount / power(10, erc20_s.decimals) as token_sold_amount
-    , s.`to` as taker
+    , coalesce(s.to, tx.from) AS taker
 	, '' as maker
 	, cast(s.contract_address as string) as project_contract_address
 	, s.evt_tx_hash as tx_hash
-    , `to` as tx_from
-    , `sender` as tx_to
+    , tx.from as tx_from
+    , tx.to as tx_to
 	, '' as trace_address
 	, s.evt_index as evt_index
 from 
     {{ source('wombat_bnb', 'Pool_evt_Swap') }} s
+inner join {{ source('bnb', 'transactions') }} tx
+    on tx.hash = s.evt_tx_hash
+    {% if not is_incremental() %}
+    and tx.block_time >= '{{project_start_date}}'
+    {% endif %}
+    {% if is_incremental() %}
+    and tx.block_time = date_trunc("day", now() - interval '1 week')
+    {% endif %}
 -- bought tokens
 left join {{ ref('tokens_erc20') }} erc20_b
     on erc20_b.contract_address = s.toToken 
