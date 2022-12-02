@@ -14,7 +14,7 @@ with unit_test as (
 
 select * from unit_test
 where (
-       oracle_price_test = false                 OR 
+       oracle_price_test = false                      OR 
        aggregator_address_test   = false              OR
        feed_name_test = false          
       )
