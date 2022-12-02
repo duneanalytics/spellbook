@@ -8,7 +8,7 @@ with unit_test as (
     ON (actual.blockchain = test.blockchain                     AND 
         actual.block_number = test.block_number                 AND 
         actual.proxy_address = test.proxy_address               AND
-        underlying_token_address = underlying_token_address
+        actual.underlying_token_address = test.underlying_token_address
        )
 )
 
