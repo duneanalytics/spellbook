@@ -39,12 +39,8 @@ list of models using old generic test, due to multiple versions in one model:
 ,'zigzag_trades'
 ,'gmx_trades'
 ,'biswap_bnb_trades' 
-,'wardenswap_bnb_trades'
-,'wardenswap_ethereum_trades'
-,'wardenswap_arbitrum_trades'
-,'wardenswap_avalanche_c_trades'
-,'wardenswap_optimism_trades'
-,'wardenswap_polygon_trades'
+,'wardenswap_trades'
+,'babyswap_bnb_trades'
 ] %}
 
 

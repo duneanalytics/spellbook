@@ -150,6 +150,13 @@ models:
       gnosis:
         +schema: sushiswap_gnosis
         +materialized: view
+    
+    babyswap:
+      +schema: babyswap
+      +materialized: view
+      bnb:
+        +schema: babyswap_bnb
+        +materialized: view
 
     opensea:
       +schema: opensea
@@ -224,6 +231,16 @@ models:
         +schema: gmx_avalanche_c
         +materialized: view
 
+    tigris:
+      +schema: tigris
+      +materialized: view
+      arbitrum:
+        +schema: tigris_arbitrum
+        +materialized: view
+      polygon:
+        +schema: tigris_polygon
+        +materialized: view
+
     x2y2:
       +schema: x2y2
       +materialized: view
@@ -255,6 +272,15 @@ models:
       +materialized: view
       ethereum:
         +schema: seaport_ethereum
+        +materialized: view
+      bnb:
+        +schema: seaport_bnb
+        +materialized: view
+      arbitrum:
+        +schema: seaport_arbitrum
+        +materialized: view
+      optimism:
+        +schema: seaport_optimism
         +materialized: view
       avalanche_c:
         +schema: seaport_avalanche_c
