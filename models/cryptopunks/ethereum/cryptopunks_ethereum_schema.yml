@@ -233,6 +233,14 @@ models:
       tags: ['ethereum', 'cryptopunks', 'transfers']
     description: > 
         All CryptoPunks transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - from
+            - to
+            - evt_block_number
+            - evt_index
+            - punk_id
     columns:
       - name: from
         description: "CryptoPunk transferred from"
