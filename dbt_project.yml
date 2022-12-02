@@ -31,6 +31,8 @@ models:
     +post-hook:
       sql: "{{ optimize_spell(this, model.config.materialized) }}"
       transaction: true
+    elementary:
+      +schema: "elementary"
     aave:
       +schema: aave
       +materialized: view
