@@ -138,6 +138,13 @@ models:
         +schema: uniswap_polygon
         +materialized: view
 
+    nomiswap:
+      +schema: nomiswap
+      +materialized: view
+      bnb:
+        +schema: nomiswap_bnb
+        +materialized: view
+
     sushiswap:
       +schema: sushiswap
       +materialized: view
