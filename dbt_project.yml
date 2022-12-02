@@ -150,7 +150,7 @@ models:
       gnosis:
         +schema: sushiswap_gnosis
         +materialized: view
-    
+
     babyswap:
       +schema: babyswap
       +materialized: view
@@ -220,7 +220,7 @@ models:
       arbitrum:
         +schema: gas_arbitrum
         +materialized: view
-        
+
     gmx:
       +schema: gmx
       +materialized: view
@@ -295,7 +295,7 @@ models:
       ethereum:
         +schema: balances_ethereum
         +materialized: view
-        
+
     dodo:
       +schema: dodo
       +materialized: view
@@ -321,11 +321,11 @@ models:
       optimism:
         +schema: addresses_optimism
         +materialized: view
-    
-    addresses_events: 
+
+    addresses_events:
       +schema: addresses_events
       +materialized: table
-      ethereum: 
+      ethereum:
         +schema: addresses_events_ethereum
         +materialized: table
 
@@ -375,7 +375,7 @@ models:
       avalanche_c:
         +schema: trader_joe_avalanche_c
         +materialized: view
-    
+
     transfers:
       +schema: transfers
       +materialized: view
@@ -446,7 +446,7 @@ models:
       ethereum:
         +schema: archipelago_ethereum
         +materialized: view
-  
+
     integration_test:
       +schema: integration_test
       +materialized: view
@@ -493,7 +493,7 @@ models:
       ethereum:
         +schema: airswap_ethereum
         +materialized: view
-        
+
     chainlink:
       +schema: chainlink
       +materialized: view
@@ -520,14 +520,14 @@ models:
       ethereum:
         +schema: clipper_ethereum
         +materialized: view
-        
+
     reaper:
       +schema: reaper
       +materialized: view
       optimism:
         +schema: reaper_optimism
         +materialized: view
-    
+
     biswap:
       +schema: biswap
       +materialized: view
@@ -541,7 +541,7 @@ models:
       ethereum:
         +schema: defiswap_ethereum
         +materialized: view
-     
+
     swapr:
       +schema: swapr
       +materialized: view
@@ -603,14 +603,14 @@ models:
       ethereum:
         +schema: mstable_ethereum
         +materialized: view
-        
+
     platypus_finance:
       +schema: platypus_finance
       +materialized: view
       avalanche_c:
         +schema: platypus_finance_avalanche_c
         +materialized: view
-        
+
     woofi:
       +schema: woofi
       +materialized: view
@@ -745,7 +745,7 @@ seeds:
           amount_raw: string
           currency_contract: string
     dao:
-      +enabled: true 
+      +enabled: true
       +schema: test_data
       dao_addresses_seed:
         +column_types:
@@ -753,7 +753,7 @@ seeds:
           dao_creator_tool: string
           dao: string
           dao_wallet_address: string
-          created_date: date 
+          created_date: date
       dao_transactions_seed:
         +column_types:
           blockchain: string
@@ -868,3 +868,14 @@ seeds:
             swap_flag: boolean
             matcha_limit_order_flag: boolean
             volume_usd: double
+
+    x2y2:
+      ethereum:
+        +enabled: true
+        +schema: test_data
+        x2y2_ethereum_trades_etherscan:
+          +column_types:
+            block_number: long
+            tx_hash: string
+            token_id: string
+            amount_original: double
