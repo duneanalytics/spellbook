@@ -114,7 +114,7 @@ LEFT JOIN {{ ref('nft_ethereum_transfers') }} buyer_fix ON prof.evt_block_time=b
     AND '0x' || substring(get_json_object(inv.item, '$.data'), 155, 40)=buyer_fix.contract_address
     AND inv.taker=agg.contract_address
     AND inv.taker=buyer_fix.from
-    AND CONV(buyer_fix.token_id, 10, 16)=substring(get_json_object(inv.item, '$.data'), 195,64)
+    AND buyer_fix.token_id=bytea2numeric_v2(substring(get_json_object(inv.item, '$.data'), 195,64))
     {% if is_incremental() %}
     AND buyer_fix.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
@@ -123,7 +123,7 @@ LEFT JOIN {{ ref('nft_ethereum_transfers') }} seller_fix ON prof.evt_block_time=
     AND '0x' || substring(get_json_object(inv.item, '$.data'), 155, 40)=seller_fix.contract_address
     AND inv.maker=agg.contract_address
     AND inv.maker=seller_fix.to
-    AND CONV(seller_fix.token_id, 10, 16)=substring(get_json_object(inv.item, '$.data'), 195,64)
+    AND seller_fix.token_id=bytea2numeric_v2(substring(get_json_object(inv.item, '$.data'), 195,64))
     {% if is_incremental() %}
     AND seller_fix.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
