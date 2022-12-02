@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  # Base Tables
+  - name: table_sample_nft
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: trades_2022_11_20
+        description: "Developer Sample: select * from nft.trades where date_trunc(block_time, 'day') = '2022-11-20'"
+
+      - name: addresses_events_ethereum_first_funded_by_GT_2022_11_10
+        description: "Developer Sample: select * from  addresses_events_ethereum.first_funded_by where date_trunc('day', block_time) > '2022-11-10'"
