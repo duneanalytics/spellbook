@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: genesis_balances
+    meta:
+      blockchain: ethereum
+      sector: balances
+      project: ethereum
+      contributors: bernat
+    config:
+      tags: ['balances', 'ethereum', 'genesis', 'bernat']
+    description: >
+        Hourly token balances of ERC20 Ethereum tokens per wallet and contract address pair.
+        Depends on erc20_ethereum_transfers
+    columns:
+      - &address
+        name: address
+        description: "Ethereum address"
+      - &balance
+        name: balance
+        description: "ETH balance, in wei"
