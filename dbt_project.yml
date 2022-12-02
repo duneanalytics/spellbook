@@ -138,6 +138,13 @@ models:
         +schema: uniswap_polygon
         +materialized: view
 
+    nomiswap:
+      +schema: nomiswap
+      +materialized: view
+      bnb:
+        +schema: nomiswap_bnb
+        +materialized: view
+
     sushiswap:
       +schema: sushiswap
       +materialized: view
@@ -541,6 +548,13 @@ models:
       ethereum:
         +schema: defiswap_ethereum
         +materialized: view
+
+    mdex:
+      +schema: mdex
+      +materialized: view
+      bnb:
+        +schema: mdex_bnb
+        +materialized: view
      
     swapr:
       +schema: swapr
@@ -595,6 +609,15 @@ models:
       +materialized: view
       avalanche_c:
         +schema: fraxswap_avalanche_c
+        +materialized: view
+      bnb:
+        +schema: fraxswap_bnb
+        +materialized: view
+      polygon:
+        +schema: fraxswap_polygon
+        +materialized: view
+      ethereum:
+        +schema: fraxswap_ethereum
         +materialized: view
 
     mstable:
@@ -700,6 +723,25 @@ seeds:
             block_time: timestamp
             tx_hash: string
             amount: string
+
+    seaport:
+      +enabled: true
+      +schema: test_data
+      seaport_trades_seed:
+        +column_types:
+          blockchain: string
+          project: string
+          version: string
+          block_date: date
+          tx_hash: string
+          evt_index: int
+          nft_contract_address: string
+          token_id: string
+          sub_type: string
+          sub_idx: int
+          buyer: string
+          seller: string
+
     magiceden:
       solana:
         +enabled: true
@@ -790,20 +832,6 @@ seeds:
         +column_types:
           master_address: string
           alternative_address: string
-      nft_trades_seed:
-        +column_types:
-          blockchain: string
-          project: string
-          version: string
-          block_date: date
-          tx_hash: string
-          evt_index: int
-          nft_contract_address: string
-          token_id: string
-          sub_type: string
-          sub_idx: int
-          buyer: string
-          seller: string
 
     nexusmutual:
       ethereum:
