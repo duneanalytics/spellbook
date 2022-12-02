@@ -671,6 +671,20 @@ models:
       ethereum:
         +schema: zeroex_ethereum
         +materialized: view
+        
+    wombat:
+      +schema: wombat
+      +materialized: view
+      bnb:
+        +schema: wombat_bnb
+        +materialized: view
+        
+    iziswap:
+      +schema: iziswap
+      +materialized: view
+      bnb:
+        +schema: iziswap_bnb
+        +materialized: view
 
 seeds:
   spellbook:
