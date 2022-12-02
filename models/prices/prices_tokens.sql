@@ -30,6 +30,7 @@ VALUES
     ("hbar-hedera-hashgraph", null, "HBAR", null, null),
     ("icx-icon", null, "ICX", null, null),
     ("ltc-litecoin", null, "LTC", null, null),
+    ("matic-polygon", null, "MATIC", null, null),
     ("miota-iota", null, "MIOTA", null, null),
     ("mona-monacoin", null, "MONA", null, null),
     ("neo-neo", null, "NEO", null, null),
@@ -261,6 +262,7 @@ VALUES
     ("sfm-safemoon", "bnb", "SFM", "0x42981d0bfbaf196529376ee702f2a9eb9092fcb5", 9),
     ("mnft-marvelous-nfts", "bnb", "MNFT", "0x33be7644c0e489b3a0c639d103392d4f3e338158", 18),
     ("bets-betswirl", "bnb", "BETS", "0x3e0a7c7db7bb21bda290a80c9811de6d47781671", 18),
+    ("floki-floki-inu", "bnb", "FLOKI", "0xfb5b838b6cfeedc2873ab27866079ac55363d37e", 18),
 
     ("0xbtc-0xbitcoin", "ethereum", "0xBTC", "0xb6ed7644c69416d67b522e20bc294a9a9b405b31", 8),
     ("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
@@ -1659,6 +1661,8 @@ VALUES
     ("usdt-tether", "polygon", "USDT", "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", 6),
     ("wbtc-wrapped-bitcoin", "polygon", "WBTC", "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6", 8),
     ("bets-betswirl", "polygon", "BETS", "0x9246a5f10a79a5a939b0c2a75a3ad196aafdb43b", 18),
+    ("eth-ethereum", "polygon", "WETH", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", 18),
+    ("mimatic-mimatic", "polygon", "MIMATIC", "0xa3fa99a148fa48d14ed51d610c367c61876997f1", 18),
 
     ("aury-aurory", "solana", "AURY", "AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP", 9),
     ("btc-bitcoin", "solana", "BTC", "9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E", 6),
