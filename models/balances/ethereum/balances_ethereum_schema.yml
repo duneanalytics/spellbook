@@ -246,11 +246,11 @@ models:
       - *collection
       - *category
 
-  - name: balances_ethereum_genesis
+  - name: genesis_balances
     meta:
       blockchain: ethereum
       sector: balances
-      project: ethereum
+      project: genesis
       contributors: bernat
     config:
       tags: ['balances', 'ethereum', 'genesis', 'bernat']
