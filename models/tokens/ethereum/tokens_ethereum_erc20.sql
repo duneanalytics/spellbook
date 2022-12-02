@@ -6779,5 +6779,19 @@ FROM (VALUES
           ('0xb9d7dddca9a4ac480991865efef82e01273f79c3', 'bLUSD', 18),
           ('0xda4dd9586d27202a338843dd6b9824d267006783', 'ECT', 9),
           ('0xe1bda0c3bfa2be7f740f0119b6a34f057bd58eba', 'WNK', 18),
-          ('0xcfe4eb08e33272d98cb31e37a7be78d5c1b740c1', 'VB', 18)
+          ('0xcfe4eb08e33272d98cb31e37a7be78d5c1b740c1', 'VB', 18),
+          ('0x03d1e72765545729a035e909edd9371a405f77fb', 'NABOX', 18),
+          ('0x259f515ae2ddca216dc4f92133a8bf1917e73b60', 'FAFO', 9),
+          ('0x54a7cee7b02976ace1bdd4afad87273251ed34cf', 'Rainbows', 18),
+          ('0x5cac718a3ae330d361e39244bf9e67ab17514ce8', 'COT', 18),
+          ('0x5f5c86a9f8aaf63ce27b82fab3b33df73cbc3d12', 'SPARK', 18),
+          ('0x6967299e9f3d5312740aa61dee6e9ea658958e31', 'T', 18),
+          ('0x69ef45cf64d8360279daa974aabadb42f0683a6c', 'LMAO', 18),
+          ('0x6a445e9f40e0b97c92d0b8a3366cef1d67f700bf', 'FIDU', 18),
+          ('0xa50c8eeeda775f048acb357d430020ae3a3c47d3', 'MOTO', 18),
+          ('0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b', 'BOB', 18),
+          ('0xd13cfd3133239a3c73a9e535a5c4dadee36b395c', 'VAI', 18),
+          ('0xd7c9f0e536dc865ae858b0c0453fe76d13c3beac', 'XAI', 18),
+          ('0xe22020f47b7378dfedcedd2c81d4137c22fe1152', 'MLP', 18),
+          ('0xeb813cccb65c338f6535d99146f280450e2a4d03', 'TSUBA', 9)
      ) AS temp_table (contract_address, symbol, decimals)
