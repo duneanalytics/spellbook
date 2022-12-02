@@ -18,7 +18,7 @@ models:
             - tx_hash
           check_columns:
             - token_id
-            - original_amount
+            - amount_original
     columns:
       - &blockchain
         name: blockchain
