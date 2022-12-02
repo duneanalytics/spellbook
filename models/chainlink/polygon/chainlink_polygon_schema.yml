@@ -14,12 +14,9 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - blockchain
-              - block_time
               - block_number
               - proxy_address
-              - aggregator_address
               - underlying_token_address
-              - oracle_price
     columns:
       - &blockchain
         name: blockchain
