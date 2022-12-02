@@ -4,7 +4,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['from', 'to', 'evt_block_number', 'evt_index', 'punk_id']
+        unique_key = ['from', 'to', 'evt_tx_hash, 'punk_id']
         )
 }}
 
@@ -10026,6 +10026,7 @@ from
             , cast(3919418 as int) as evt_block_number
             , cast(1 as int) as evt_index
             , punk_id
+            , cast(NULL as varchar(5)) as evt_tx_hash
     from original_holders
     
     union all 
@@ -10038,6 +10039,7 @@ from
             , a.evt_index
             , case when topic1 = '0x05af636b70da6819000c49f85b21fa82081c632069bb626f30932034099107d8' then cast(bytea2numeric_v2(substring(data from 3)) as int)
                 else cast(bytea2numeric_v2(substring(topic2 from 3)) as int) end as punk_id
+            , a.evt_tx_hash
     from {{ source('erc20_ethereum','evt_transfer') }} a 
     inner join {{ source('ethereum','logs') }} b on a.evt_tx_hash = b.tx_hash -- and topic1 = '0x58e5d5a525e3b40bc15abaa38b5882678db1ee68befd2f60bafe3a7fd06db9e3'
     where a.contract_address = lower('0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB') -- cryptopunks contract 
@@ -10046,5 +10048,5 @@ from
                             , '0x05af636b70da6819000c49f85b21fa82081c632069bb626f30932034099107d8' -- PunkTransfer
                         )
         {% if is_incremental() %} and a.evt_block_time >= date_trunc('day', now() - interval '1 week') {% endif %}    
-    group by 1,2,3,4,5,6,7
+    group by 1,2,3,4,5,6,7,8
 ) a 
