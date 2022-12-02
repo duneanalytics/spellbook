@@ -1,6 +1,9 @@
 {{ config(
         schema='prices',
         alias ='tokens',
+        materialized='table',
+        file_format = 'delta',
+        tags=['static'],
         post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon"]\',
                                     "sector",
                                     "prices",
@@ -229,7 +232,7 @@ VALUES
     ("sushi-sushi", "bnb", "SUSHI", "0x947950bcc74888a40ffa2593c5798f11fc9124c4", 18),
     ("swap-trustswap", "bnb", "SWAP", "0x82443a77684a7da92fdcb639c8d2bd068a596245", 18),
     ("sxp-swipe", "bnb", "SXP", "0x47bead2563dcbf3bf2c9407fea4dc236faba485a", 18),
-    ("titano-titano", "bnb", "TITANO", "0xba96731324de188ebc1ed87ca74544ddebc07d7f", 18),
+    ("titano-titano", "bnb", "TITANO", "0x4e3cabd3ad77420ff9031d19899594041c420aee", 18),
     ("tlm-alien-worlds", "bnb", "TLM", "0x2222227e22102fe3322098e4cbfe18cfebd57c95", 4),
     ("tpt-token-pocket", "bnb", "TPT", "0xeca41281c24451168a37211f0bc2b8645af45092", 4),
     ("tusd-trueusd", "bnb", "TUSD", "0x14016e85a25aeb13065688cafb43044c2ef86784", 18),
@@ -506,6 +509,7 @@ VALUES
     ("ohmv2-olympus-v2", "ethereum", "OHM", "0x64aa3364f17a4d01c6f1751fd97c2bd3d7e7f1d5", 9),
     ("okb-okb", "ethereum", "OKB", "0x75231f58b43240c9718dd58b4967c5114342a86c", 18),
     ("ole-openleverage", "ethereum", "OLE", "0x92cfbec26c206c90aee3b7c66a9ae673754fab7e", 18),
+    ("ole-openleverage", "bnb", "OLE", "0xa865197a84e780957422237b5d152772654341f3", 18),
     ("omg-omisego", "ethereum", "OMG", "0xd26114cd6ee289accf82350c8d8487fedb8a0c07", 18),
     ("one-harmony", "ethereum", "ONE", "0x799a4202c12ca952cb311598a024c80ed371a41e", 18),
     ("orbs-orbs", "ethereum", "ORBS", "0xff56cc6b1e6ded347aa0b7676c85ab0b3d08b0fa", 18),
@@ -1124,7 +1128,7 @@ VALUES
     ('pussy-pussy-token', 'ethereum', 'PUSSY', '0x9196e18bc349b1f64bc08784eae259525329a1ad', 18),
     ('kuma-kuma-inu', 'ethereum', 'KUMA', '0x48c276e8d03813224bb1e55f953adb6d02fd3e02', 18),
     ('cor-coreto', 'ethereum', 'COR', '0x9c2dc0c3cc2badde84b0025cf4df1c5af288d835', 18),
-    ('shih-shih-tzu', 'ethereum', 'SHIH', '0x841fb148863454a3b3570f515414759be9091465', 18),
+    -- ('shih-shih-tzu', 'ethereum', 'SHIH', '0x841fb148863454a3b3570f515414759be9091465', 18), Broken price feed
     ('cqt-covalent', 'ethereum', 'CQT', '0xd417144312dbf50465b1c641d016962017ef6240', 18),
     ('glq-graphlinq', 'ethereum', 'GLQ', '0x9f9c8ec3534c3ce16f928381372bfbfbfb9f4d24', 18),
     ('dfyn-dfyn-network', 'ethereum', 'DFYN', '0x9695e0114e12c0d3a3636fab5a18e6b737529023', 18),
@@ -1551,6 +1555,7 @@ VALUES
     ('zxc-0xcert', 'ethereum', 'ZXC', '0x83e2be8d114f9661221384b3a50d24b96a5653f5', 18),
     ("gyen-gyen", "ethereum", "ibJPY", "0x5555f75e3d5278082200fb451d1b6ba946d8e13b", 18),
     ("chf-swiss-franc-token", "ethereum", "ibCHF", "0x1cc481ce2bd2ec7bf67d1be64d4878b16078f309", 18),
+    ("stmatic-lido-staked-matic", "ethereum", "STMATIC", "0x9ee91F9f426fA633d227f7a9b000E28b9dfd8599", 18),
 
     ("dai-dai", "gnosis", "WXDAI", "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18),
     ("usdc-usd-coin", "gnosis", "USDC", "0xddafbb505ad214d7b80b1f830fccc89b60fb7a83", 6),
@@ -1653,6 +1658,7 @@ VALUES
     ("usdc-usd-coin", "polygon", "USDC", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", 6),
     ("usdt-tether", "polygon", "USDT", "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", 6),
     ("wbtc-wrapped-bitcoin", "polygon", "WBTC", "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6", 8),
+    ("bets-betswirl", "polygon", "BETS", "0x9246a5f10a79a5a939b0c2a75a3ad196aafdb43b", 18),
 
     ("aury-aurory", "solana", "AURY", "AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP", 9),
     ("btc-bitcoin", "solana", "BTC", "9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E", 6),
@@ -1675,6 +1681,4 @@ VALUES
     ("ust-terrausd", "solana", "UST", "9vMJfxuKxXBoEa7rM12mYLMwTacLMLDJqHozw96WQL8i", 6),
     ("usdc-usd-coin", "solana", "USDC", "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", 6),
     ("usdt-tether", "solana", "USDT", "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", 6)
-
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
-
