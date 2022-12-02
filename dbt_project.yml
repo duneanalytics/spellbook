@@ -548,6 +548,13 @@ models:
       ethereum:
         +schema: defiswap_ethereum
         +materialized: view
+
+    mdex:
+      +schema: mdex
+      +materialized: view
+      bnb:
+        +schema: mdex_bnb
+        +materialized: view
      
     swapr:
       +schema: swapr
