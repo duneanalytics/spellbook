@@ -114,7 +114,7 @@ LEFT JOIN {{ ref('nft_ethereum_transfers') }} buyer_fix ON prof.evt_block_time=b
     AND '0x' || substring(get_json_object(inv.item, '$.data'), 155, 40)=buyer_fix.contract_address
     AND inv.taker=agg.contract_address
     AND inv.taker=buyer_fix.from
-    AND SUBSTRING('0000000000000000000000000000000000000000000000000000000000000000', 1, 64-LEN(CONV(seller_fix.token_id, 10, 16))) || CONV(seller_fix.token_id, 10, 16)=substring(get_json_object(inv.item, '$.data'), 195,64)
+    AND SUBSTRING('0000000000000000000000000000000000000000000000000000000000000000', 1, 64-LEN(CONV(buyer_fix.token_id, 10, 16))) || CONV(buyer_fix.token_id, 10, 16)=substring(get_json_object(inv.item, '$.data'), 195,64)
     {% if is_incremental() %}
     AND buyer_fix.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
