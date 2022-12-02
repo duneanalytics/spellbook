@@ -832,6 +832,34 @@ seeds:
         +column_types:
           master_address: string
           alternative_address: string
+      nft_wash_trades_refactor_seed:
+        +column_types:
+          blockchain: string
+          project: string
+          version: string
+          nft_contract_address: string
+          token_id: bigint
+          token_standard: string
+          trade_category: string
+          buyer: string
+          seller: string
+          project_contract_address: string
+          aggregator_name: string
+          aggregator_address: string
+          tx_from: string
+          tx_to: string
+          block_time: string
+          block_date: string
+          block_number: bigint
+          tx_hash: string
+          unique_trade_id: string
+          buyer_first_funded_by: string
+          seller_first_funded_by: string
+          filter_1_same_buyer_seller: boolean
+          filter_2_back_and_forth_trade: boolean
+          filter_3_bought_or_sold_3x: boolean
+          filter_4_first_funded_by_same_wallet: boolean
+          is_wash_trade: boolean
 
     nexusmutual:
       ethereum:
