@@ -132,51 +132,51 @@ WITH filter_1 AS (
     )
 
 SELECT nftt.blockchain
-    , nftt.project
-    , nftt.version
-    , nftt.nft_contract_address
-    , nftt.token_id
-    , nftt.token_standard
-    , nftt.trade_category
-    , nftt.buyer
-    , nftt.seller
-    , nftt.project_contract_address
-    , nftt.aggregator_name
-    , nftt.aggregator_address
-    , nftt.tx_from
-    , nftt.tx_to
-    , nftt.block_time
-    , date_trunc('day', nftt.block_time) AS block_date
-    , nftt.block_number
-    , nftt.tx_hash
-    , nftt.unique_trade_id
-    , buyer_first_funded_by
-    , seller_first_funded_by
-    , CASE WHEN filter_1.same_buyer_seller
-        THEN true
-        ELSE false 
-        END AS filter_1_same_buyer_seller
-    , CASE WHEN filter_2.back_and_forth_trade
-        THEN true
-        ELSE false 
-        END AS filter_2_back_and_forth_trade
-    , CASE WHEN filter_3_bought.bought_3x
-        OR filter_3_sold.sold_3x
-        THEN true
-        ELSE false
-        END AS filter_3_bought_or_sold_3x
-    , CASE WHEN filter_4.first_funded_by_same_wallet
-        THEN true
-        ELSE false
-        END AS filter_4_first_funded_by_same_wallet
-    , CASE WHEN filter_1.same_buyer_seller
-        OR filter_2.back_and_forth_trade
-        OR filter_3_bought.bought_3x
-        OR filter_3_sold.sold_3x
-        OR filter_4.first_funded_by_same_wallet
-        THEN true
-        ELSE false
-        END AS is_wash_trade
+, nftt.project
+, nftt.version
+, nftt.nft_contract_address
+, nftt.token_id
+, nftt.token_standard
+, nftt.trade_category
+, nftt.buyer
+, nftt.seller
+, nftt.project_contract_address
+, nftt.aggregator_name
+, nftt.aggregator_address
+, nftt.tx_from
+, nftt.tx_to
+, nftt.block_time
+, date_trunc('day', nftt.block_time) AS block_date
+, nftt.block_number
+, nftt.tx_hash
+, nftt.unique_trade_id
+, buyer_first_funded_by
+, seller_first_funded_by
+, CASE WHEN filter_1.same_buyer_seller
+    THEN true
+    ELSE false 
+    END AS filter_1_same_buyer_seller
+, CASE WHEN filter_2.back_and_forth_trade
+    THEN true
+    ELSE false 
+    END AS filter_2_back_and_forth_trade
+, CASE WHEN filter_3_bought.bought_3x
+    OR filter_3_sold.sold_3x
+    THEN true
+    ELSE false
+    END AS filter_3_bought_or_sold_3x
+, CASE WHEN filter_4.first_funded_by_same_wallet
+    THEN true
+    ELSE false
+    END AS filter_4_first_funded_by_same_wallet
+, CASE WHEN filter_1.same_buyer_seller
+    OR filter_2.back_and_forth_trade
+    OR filter_3_bought.bought_3x
+    OR filter_3_sold.sold_3x
+    OR filter_4.first_funded_by_same_wallet
+    THEN true
+    ELSE false
+    END AS is_wash_trade
 FROM {{ ref('nft_trades') }} nftt
 LEFT JOIN filter_1 ON nftt.unique_trade_id=filter_1.unique_trade_id
 LEFT JOIN filter_2 ON nftt.unique_trade_id=filter_2.unique_trade_id
@@ -185,6 +185,6 @@ LEFT JOIN filter_3_sold ON nftt.unique_trade_id=filter_3_sold.unique_trade_id
 LEFT JOIN filter_4 ON nftt.unique_trade_id=filter_4.unique_trade_id
 WHERE nftt.blockchain='ethereum'
     AND nftt.unique_trade_id IS NOT NULL
-        {% if is_incremental() %}
-        AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
-        {% endif %}
+    {% if is_incremental() %}
+    AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
+    {% endif %}
