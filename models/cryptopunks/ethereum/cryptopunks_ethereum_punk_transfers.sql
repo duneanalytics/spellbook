@@ -10018,7 +10018,7 @@ select *
         , row_number() over (partition by punk_id order by evt_block_number desc, evt_index desc) as punk_id_tx_rank
 from
 (   
-    select  NULL as `from`
+    select  cast(NULL as varchar(5)) as `from`
             , address as `to`
             , cast('2017-06-23 19:37:59' as timestamp) as evt_block_time
             , date_trunc('week',cast('2017-06-23 19:37:59' as timestamp)) as evt_block_time_week
