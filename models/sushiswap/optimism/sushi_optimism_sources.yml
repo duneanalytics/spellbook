@@ -1,14 +1,14 @@
 version: 2
 
 sources:
-  - name: sushiswap_polygon
-    description: "Polygon decoded tables related to Sushiswap contract"
+  - name: sushi_optimism
+    description: "Optimistic decoded tables related to Sushiswap contract"
     freshness:
       warn_after: { count: 12, period: hour }
     tables:
-      - name: UniswapV2Pair_evt_Swap
+      - name: ConstantProductPool_evt_Swap
         loaded_at_field: evt_block_time
-        description: "Sushiswap swap events table on Gnosis chain"
+        description: "Sushiswap swap events table on Binance smart chain"
         columns:
           - &amount0In
             name: amount0In
@@ -20,7 +20,7 @@ sources:
             name: amount1Out
           - &contract_address
             name: contract_address
-            description: "Gnosis address for the liquidity pool used in transaction"
+            description: "optimism address for the liquidity pool used in transaction"
           - &evt_block_time
             name: evt_block_time
             description: "Timestamp for block event time in UTC"

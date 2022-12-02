@@ -1,8 +1,8 @@
 version: 2
 
 sources:
-  - name: sushiswap_optimism
-    description: "Optimistic decoded tables related to Sushiswap contract"
+  - name: sushi_bnb
+    description: "Bnb decoded tables related to Sushiswap contract"
     freshness:
       warn_after: { count: 12, period: hour }
     tables:
@@ -20,7 +20,7 @@ sources:
             name: amount1Out
           - &contract_address
             name: contract_address
-            description: "optimism address for the liquidity pool used in transaction"
+            description: "bnb address for the liquidity pool used in transaction"
           - &evt_block_time
             name: evt_block_time
             description: "Timestamp for block event time in UTC"

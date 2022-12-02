@@ -27,8 +27,8 @@ WITH sushiswap_dex AS (
             t.evt_tx_hash                                                AS tx_hash,
             ''                                                           AS trace_address,
             t.evt_index
-    FROM {{ source('sushiswap_bnb', 'UniswapV2Pair_evt_Swap') }} t
-    INNER JOIN {{ source('sushiswap_bnb', 'UniswapV2Factory_evt_PairCreated') }} f
+    FROM {{ source('sushi_bnb', 'UniswapV2Pair_evt_Swap') }} t
+    INNER JOIN {{ source('sushi_bnb', 'UniswapV2Factory_evt_PairCreated') }} f
         ON f.pair = t.contract_address
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')

@@ -19,9 +19,6 @@ list of models using old generic test, due to multiple versions in one model:
 {% set dex_trade_models = [
 'uniswap_trades'
 ,'sushiswap_trades'
-,'sushiswap_polygon_trades'
-,'sushiswap_bnb_trades'
-,'sushiswap_optimism_trades'
 ,'kyberswap_trades'
 ,'fraxswap_trades'
 ,'curvefi_trades'

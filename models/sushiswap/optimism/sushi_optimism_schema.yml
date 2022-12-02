@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: sushiswap_bnb_trades
+  - name: sushi_optimism_trades
     meta:
-      blockchain: bnb
+      blockchain: optimism
       sector: dex
       project: sushiswap
       contributors: hosuke, codingsh
     config:
-      tags: ['bnb','sushiswap','trades','dex']
+      tags: ['optimism','sushiswap','trades','dex']
     description: >
-        Sushiswap contract trades on Binance Smart Chain (bsc)
+        Sushiswap contract trades on Optimistic 
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -22,7 +22,7 @@ models:
             - evt_index
             - trace_address
       - check_dex_seed:
-          blockchain: bnb
+          blockchain: optimism
           project: sushiswap
           version: 1
     columns:

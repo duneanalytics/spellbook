@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: sushiswap_optimism_trades
+  - name: sushi_polygon_trades
     meta:
-      blockchain: optimism
+      blockchain: polygon
       sector: dex
       project: sushiswap
       contributors: hosuke, codingsh
     config:
-      tags: ['optimism','sushiswap','trades','dex']
+      tags: ['polygon','sushiswap','trades','dex']
     description: >
-        Sushiswap contract trades on Optimistic 
+        Sushiswap contract trades on Polygon
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -22,7 +22,7 @@ models:
             - evt_index
             - trace_address
       - check_dex_seed:
-          blockchain: optimism
+          blockchain: polygon
           project: sushiswap
           version: 1
     columns:

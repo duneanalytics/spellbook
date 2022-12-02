@@ -11,6 +11,9 @@
 'sushiswap_ethereum_trades'
 ,'sushiswap_avalanche_c_trades'
 ,'sushiswap_gnosis_trades'
+,'sushi_polygon_trades'
+,'sushi_bnb_trades'
+,'sushi_optimism_trades'
 ] %}
 
 

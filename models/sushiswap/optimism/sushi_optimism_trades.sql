@@ -5,10 +5,10 @@
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
     ,unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address']
-    ,post_hook='{{ expose_spells(\'["polygon"]\',
+    ,post_hook='{{ expose_spells(\'["optimism"]\',
                                       "project",
                                       "sushiswap",
-                                    \'["hosuke", "codingsh"]\') }}'
+                                    \'["hosuke","codingsh"]\') }}'
     )
 }}
 
@@ -27,8 +27,8 @@ WITH sushiswap_dex AS (
             t.evt_tx_hash                                                AS tx_hash,
             ''                                                           AS trace_address,
             t.evt_index
-    FROM {{ source('sushiswap_polygon', 'UniswapV2Pair_evt_Swap') }} t
-    INNER JOIN {{ source('sushiswap_polygon', 'UniswapV2Factory_evt_PairCreated') }} f
+    FROM {{ source('sushi_optimism', 'ConstantProductPool_evt_Swap') }} t
+    INNER JOIN {{ source('sushi_optimism', 'UniswapV2Factory_evt_PairCreated') }} f
         ON f.pair = t.contract_address
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -38,7 +38,7 @@ WITH sushiswap_dex AS (
 )
 
 SELECT
-    'polygon'                                                           AS blockchain,
+    'optimism'                                                           AS blockchain,
     'sushiswap'                                                        AS project,
     '1'                                                                AS version,
     try_cast(date_trunc('DAY', sushiswap_dex.block_time) AS date)      AS block_date,
@@ -69,7 +69,7 @@ SELECT
     sushiswap_dex.trace_address,
     sushiswap_dex.evt_index
 FROM sushiswap_dex
-INNER JOIN {{ source('polygon', 'transactions') }} tx
+INNER JOIN {{ source('optimism', 'transactions') }} tx
     ON sushiswap_dex.tx_hash = tx.hash
     {% if not is_incremental() %}
     AND tx.block_time >= '{{project_start_date}}'
@@ -78,14 +78,14 @@ INNER JOIN {{ source('polygon', 'transactions') }} tx
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = sushiswap_dex.token_bought_address
-    AND erc20a.blockchain = 'polygon'
+    AND erc20a.blockchain = 'optimism'
 LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     ON erc20b.contract_address = sushiswap_dex.token_sold_address
-    AND erc20b.blockchain = 'polygon'
+    AND erc20b.blockchain = 'optimism'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
     ON p_bought.minute = date_trunc('minute', sushiswap_dex.block_time)
     AND p_bought.contract_address = sushiswap_dex.token_bought_address
-    AND p_bought.blockchain = 'polygon'
+    AND p_bought.blockchain = 'optimism'
     {% if not is_incremental() %}
     AND p_bought.minute >= '{{project_start_date}}'
     {% else %}
@@ -94,7 +94,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', sushiswap_dex.block_time)
     AND p_sold.contract_address = sushiswap_dex.token_sold_address
-    AND p_sold.blockchain = 'polygon'
+    AND p_sold.blockchain = 'optimism'
     {% if not is_incremental() %}
     AND p_sold.minute >= '{{project_start_date}}'
     {% else %}
