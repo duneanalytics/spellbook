@@ -10,8 +10,7 @@ models:
     config:
       tags: ['balances', 'ethereum', 'genesis', 'bernat']
     description: >
-        Hourly token balances of ERC20 Ethereum tokens per wallet and contract address pair.
-        Depends on erc20_ethereum_transfers
+        Ethereum balances at genesis. Sourced from https://github.com/ethereum/ethereumj/blob/develop/ethereumj-core/src/main/resources/genesis/frontier.json
     columns:
       - &address
         name: address
