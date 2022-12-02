@@ -54,8 +54,8 @@ SELECT
        end                                                       AS token_pair
      , dexs.token_bought_amount_raw / power(10, bep20a.decimals) AS token_bought_amount
      , dexs.token_sold_amount_raw / power(10, bep20b.decimals)   AS token_sold_amount
-     , dexs.token_bought_amount_raw
-     , dexs.token_sold_amount_raw
+     , CAST(dexs.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw
+     , CAST(dexs.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
      , coalesce(
         dexs.amount_usd
         , (dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price

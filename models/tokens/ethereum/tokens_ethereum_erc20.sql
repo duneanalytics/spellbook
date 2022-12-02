@@ -1,4 +1,4 @@
-{{ config( alias='erc20')}}
+{{ config( alias='erc20', tags=['static'])}}
 
 SELECT LOWER(contract_address) as contract_address, symbol, decimals
 FROM (VALUES
@@ -6746,5 +6746,38 @@ FROM (VALUES
           ('0xeb3585922c9b1b27d288c4b606865642b17e2a73', 'FTTINU', 9),
           ('0xf8640b0b79c236b0c14f67344b4d203ffcedc712', 'MONK', 18),
           ('0xf98ab0874b13a7fdc39d7295dedd49850a5d426b', 'KIRA', 8),
-          ('0xfc383f9c7b5c8c97f118d8c25c8f84e3c656b6da', 'FCNG', 18)
+          ('0xfc383f9c7b5c8c97f118d8c25c8f84e3c656b6da', 'FCNG', 18),
+          ('0x0a5e677a6a24b2f1a2bf4f3bffc443231d2fdec8', 'USX', 18),
+          ('0x1c7ede23b1361acc098a1e357c9085d131b34a01', 'SHN', 18),
+          ('0x31d4eb09a216e181ec8a43ce79226a487d6f0ba9', 'USDM', 18),
+          ('0x3be7bf1a5f23bd8336787d0289b70602f1940875', 'VIDT', 18),
+          ('0x46d0dac0926fa16707042cadc23f1eb4141fe86b', 'SNM', 18),
+          ('0x49642110b712c1fd7261bc074105e9e44676c68f', 'DINO', 18),
+          ('0x554c7787475ee07af911107ecfa2f1e55b74f5f1', 'EMT', 18),
+          ('0x5657bbd276361448fe92f6e33f8623d64146e651', 'GRYPHON', 18),
+          ('0x5ade7ae8660293f2ebfcefaba91d141d72d221e8', 'EMN', 18),
+          ('0x5ee84583f67d5ecea5420dbb42b462896e7f8d06', 'PLSB', 12),
+          ('0x6a4c76874e686a7d080d173987a35a9c48905583', 'LPNT', 18),
+          ('0x7cd61e097f2a9582f4368c869356f1b84faa9068', 'X', 9),
+          ('0x852a4c5948524649d6f323d739b61ff6aa54f384', 'BINO', 18),
+          ('0x97e6e31afb2d93d437301e006d9da714616766a5', 'MIDAS', 18),
+          ('0x9b5c38cc2d1ba05ed87c8f8a2418475bacb20073', 'SBIO', 18),
+          ('0xac3e018457b222d93114458476f3e3416abbe38f', 'sfrxETH', 18),
+          ('0xe37009f6a756e8997fac8da44da7b5b87731fc22', 'MUNGER', 18),
+          ('0xe9b076b476d8865cdf79d1cf7df420ee397a7f75', 'FUND', 9),
+          ('0xf20393619c122f8b901b964264e614d2611ed9ba', 'SBFP', 18),
+          ('0xfda4af798f2e30ecadc8878dda5b5fa3646b4216', 'Lord Elon', 9),
+          ('0x2275d4937b6bfd3c75823744d3efbf6c3a8de473', 'GBR', 18),
+          ('0x2b1d36f5b61addaf7da7ebbd11b35fd8cfb0de31', 'ITP', 18),
+          ('0x3b79a28264fc52c7b4cea90558aa0b162f7faf57', 'wMEMO', 18),
+          ('0x44108f0223a3c3028f5fe7aec7f9bb2e66bef82f', 'ACX', 18),
+          ('0x45ff085c34ab1d31ace16bfbf2ba7d3494182e18', 'LUCY', 18),
+          ('0x504624040e0642921c2c266a9ac37cafbd8cda4e', 'LOVE', 18),
+          ('0x56694577564fdd577a0abb20fe95c1e2756c2a11', 'ASW', 18),
+          ('0x6808dbc16e2bdcf40bf11a66a1701e7e65599891', 'Musket', 18),
+          ('0x9e0441e084f5db0606565737158aa6ab6b970fe0', 'bentCVX', 18),
+          ('0xb9d7dddca9a4ac480991865efef82e01273f79c3', 'bLUSD', 18),
+          ('0xda4dd9586d27202a338843dd6b9824d267006783', 'ECT', 9),
+          ('0xe1bda0c3bfa2be7f740f0119b6a34f057bd58eba', 'WNK', 18),
+          ('0xcfe4eb08e33272d98cb31e37a7be78d5c1b740c1', 'VB', 18)
      ) AS temp_table (contract_address, symbol, decimals)

@@ -21,13 +21,17 @@ models:
             - tx_hash
             - evt_index
             - trace_address
+      - check_dex_seed:
+          blockchain: ethereum
+          project: uniswap
+          version: 1
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project 
+      - &project
         name: project
-        description: "Project name of the DEX"  
+        description: "Project name of the DEX"
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
@@ -64,9 +68,6 @@ models:
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of the token bought"
-        tests:
-          - dex_trades_token_bought:
-              dex_trades_seed: ref('dex_trades_seed')
       - &token_sold_address
         name: token_sold_address
         description: "Contract address of the token sold"
@@ -115,10 +116,14 @@ models:
             - tx_hash
             - evt_index
             - trace_address
+      - check_dex_seed:
+          blockchain: ethereum
+          project: uniswap
+          version: 2
     columns:
       - *blockchain
       - *project
-      - *version  
+      - *version
       - *block_date
       - *block_time
       - *token_bought_symbol
@@ -160,10 +165,14 @@ models:
             - tx_hash
             - evt_index
             - trace_address
+      - check_dex_seed:
+          blockchain: ethereum
+          project: uniswap
+          version: 3
     columns:
       - *blockchain
       - *project
-      - *version  
+      - *version
       - *block_date
       - *block_time
       - *token_bought_symbol
@@ -198,7 +207,7 @@ models:
     columns:
       - *blockchain
       - *project
-      - *version  
+      - *version
       - *block_date
       - *block_time
       - *token_bought_symbol
@@ -209,8 +218,7 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount_raw
       - *amount_usd
-      - name: token_bought_address # since object is a view, avoid test repeat with dbt '*' usage
-        description: "Contract address of the token bought"
+      - *token_bought_address
       - *token_sold_address
       - *taker
       - *maker
