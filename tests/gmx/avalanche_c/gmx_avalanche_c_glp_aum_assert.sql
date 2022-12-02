@@ -21,10 +21,10 @@ with aum as (
     select a.date,
            a.usdc_aum                                                               as a_usdc_aum,
            e.usdc_aum                                                               as e_usdc_aum,
-           if(abs(a.usdc_aum - e.usdc_aum) / e.usdc_aum < 0.001, true, false)       as usdc_aum_within_range,
+           if(abs(a.usdc_aum - e.usdc_aum) / e.usdc_aum < 0.03, true, false)       as usdc_aum_within_range,
            a.usdc_e_aum                                                             as a_usdc_e_aum,
            e.usdc_e_aum                                                             as e_usdc_e_aum,
-           if(abs(a.usdc_e_aum - e.usdc_e_aum) / e.usdc_e_aum < 0.001, true, false) as usdc_e_aum_within_range
+           if(abs(a.usdc_e_aum - e.usdc_e_aum) / e.usdc_e_aum < 0.03, true, false) as usdc_e_aum_within_range
     from aum as a
     full outer join examples as e
 on a.date=e.date
