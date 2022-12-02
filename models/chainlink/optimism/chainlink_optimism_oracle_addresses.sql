@@ -4,7 +4,7 @@
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "chainlink",
-                                    \'["msilb7"]\') }}'
+                                    \'["msilb7","0xroll"]\') }}'
   )
 }}
 
@@ -60,5 +60,6 @@ FROM (values
         ,("BAL / USD",8,"0x30D9d31C1ac29Bc2c2c312c1bCa9F8b3D60e2376","0x44f690526b76d91072fb0427b0a24b882e612455")
         ,("BOND / USD",8,"0x8fCfb87fc17CfD5775d234AcFd1753764899Bf20","0x3b06b9b3ead7ec34ae67e2d7f73b128da09c583a")
         ,("DOGE / USD",8,"0xC6066533917f034Cf610c08e1fe5e9c7eADe0f54","0x8afc1cc622be1cd1644579c9c7ec3fbba6bd02d2")
+        ,("EUR / USD",8,"0x3626369857A10CcC6cc3A6e4f5C2f5984a519F20","0xaa75ace4575abbe1d237d991a7461f497a56a8f0")
 ) a (feed_name, decimals, proxy_address, aggregator_address)
 
