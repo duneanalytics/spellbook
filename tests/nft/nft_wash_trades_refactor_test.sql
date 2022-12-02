@@ -1,12 +1,12 @@
 WITH unit_tests AS (
         SELECT
-        CASE WHEN test_data.back_and_forth_trade = wash_trades.filter_2_back_and_forth_trade THEN true
+        CASE WHEN test_data.filter_2_back_and_forth_trade = wash_trades.filter_2_back_and_forth_trade THEN true
                 ELSE false
                 END AS test_1
-        , CASE WHEN test_data.bought_it_three_times_within_a_week = wash_trades.filter_3_bought_or_sold_3x THEN true
+        , CASE WHEN test_data.filter_3_bought_or_sold_3x = wash_trades.filter_3_bought_or_sold_3x THEN true
                 ELSE false
                 END AS test_2
-        , CASE WHEN test_data.funded_by_same_wallet = wash_trades.filter_4_first_funded_by_same_wallet THEN true
+        , CASE WHEN test_data.filter_4_first_funded_by_same_wallet = wash_trades.filter_4_first_funded_by_same_wallet THEN true
                 ELSE false
                 END AS test_3
         , CASE WHEN test_data.is_wash_trade = wash_trades.is_wash_trade THEN true
