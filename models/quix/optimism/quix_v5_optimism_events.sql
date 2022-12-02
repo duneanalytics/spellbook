@@ -232,7 +232,7 @@ left join {{ ref('tokens_erc20') }} as t1
         else erc20.contract_address
         end 
     and t1.blockchain = 'optimism'
-    left join {{ source('prices', 'usd') }} as p1
+left join {{ source('prices', 'usd') }} as p1
     on p1.contract_address =
         case when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
         then '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
@@ -250,3 +250,4 @@ left join transfers as tr
     on tr.tx_hash = er.tx_hash 
     and tr.block_number = er.block_number
     and tr.evt_index = er.evt_index
+;
