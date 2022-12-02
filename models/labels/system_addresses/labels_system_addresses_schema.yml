@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: optimism, arbitrum, solana
       sector: labels
-      project: 'system_addresses'
+      project: system_addresses
       contributors: msilb7
     config:
       tags: ['labels', 'system', 'addresses', 'exclude','optimism','arbitrum','solana']
