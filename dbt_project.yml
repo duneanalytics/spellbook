@@ -868,3 +868,8 @@ seeds:
             swap_flag: boolean
             matcha_limit_order_flag: boolean
             volume_usd: double
+
+    ethereum:
+      ethereum:
+        +enabled: true
+        schema: test_data
