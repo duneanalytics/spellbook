@@ -1,4 +1,5 @@
 WITH unit_tests AS (
+
         SELECT
         CASE WHEN test_data.filter_2_back_and_forth_trade = wash_trades.filter_2_back_and_forth_trade THEN true
                 ELSE false
