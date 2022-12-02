@@ -1,6 +1,5 @@
 {{ config(
         alias ='current_owners_per_token',
-        unique_key = ['punk_id'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cryptopunks",
@@ -9,8 +8,9 @@
 }}
 
 select punk_id
-        , `to` as current_owner
+        , to as current_owner
         , evt_block_time as last_transfer_time
 from  {{ ref('cryptopunks_ethereum_punk_transfers') }}
 where punk_id_tx_rank = 1 
-order by cast(punk_id as int) asc 
+order by cast(punk_id as int) asc
+;

@@ -6,7 +6,7 @@ models:
       blockchain: arbitrum, avalanche_c
       sector: dex
       project: gmx
-      contributors: henrystats
+      contributors: Henrystats
     config:
       tags: ['arbitrum', 'avalanche_c', 'gmx','trades', 'swaps', 'dex', 'henrystats','cross-chain']
     description: >
