@@ -870,6 +870,5 @@ seeds:
             volume_usd: double
 
     ethereum:
-      ethereum:
-        +enabled: true
-        schema: test_data
+      +enabled: true
+      schema: ethereum
