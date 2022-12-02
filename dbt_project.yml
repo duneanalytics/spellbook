@@ -138,6 +138,13 @@ models:
         +schema: uniswap_polygon
         +materialized: view
 
+    nomiswap:
+      +schema: nomiswap
+      +materialized: view
+      bnb:
+        +schema: nomiswap_bnb
+        +materialized: view
+
     sushiswap:
       +schema: sushiswap
       +materialized: view
@@ -541,6 +548,13 @@ models:
       ethereum:
         +schema: defiswap_ethereum
         +materialized: view
+
+    mdex:
+      +schema: mdex
+      +materialized: view
+      bnb:
+        +schema: mdex_bnb
+        +materialized: view
      
     swapr:
       +schema: swapr
@@ -596,6 +610,15 @@ models:
       avalanche_c:
         +schema: fraxswap_avalanche_c
         +materialized: view
+      bnb:
+        +schema: fraxswap_bnb
+        +materialized: view
+      polygon:
+        +schema: fraxswap_polygon
+        +materialized: view
+      ethereum:
+        +schema: fraxswap_ethereum
+        +materialized: view
 
     mstable:
       +schema: mstable
@@ -647,6 +670,20 @@ models:
       +materialized: view
       ethereum:
         +schema: zeroex_ethereum
+        +materialized: view
+        
+    wombat:
+      +schema: wombat
+      +materialized: view
+      bnb:
+        +schema: wombat_bnb
+        +materialized: view
+        
+    iziswap:
+      +schema: iziswap
+      +materialized: view
+      bnb:
+        +schema: iziswap_bnb
         +materialized: view
 
 seeds:
