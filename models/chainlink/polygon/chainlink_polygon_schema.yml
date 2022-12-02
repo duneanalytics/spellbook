@@ -17,6 +17,19 @@ models:
               - block_number
               - proxy_address
               - underlying_token_address
+      - check_seed:
+          seed_file: ref('chainlink_get_price_seed')
+          filter:
+            blockchain: optimism
+          match_columns:
+            - blockchain
+            - block_number
+            - proxy_address
+            - underlying_token_address
+          check_columns:
+            - aggregator_address
+            - feed_name
+            - oracle_price
     columns:
       - &blockchain
         name: blockchain
