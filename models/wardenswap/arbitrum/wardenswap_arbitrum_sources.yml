@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: wardenswap_bnb
+  - name: wardenswap_arbitrum
     description: "ARB decoded tables related to Wardenswap contract"
     tables:
       - name: WardenPair_evt_Swap
