@@ -20,7 +20,7 @@ models:
       - check_seed:
           seed_file: ref('chainlink_get_price_seed')
           filter:
-            blockchain: optimism
+            blockchain: bnb
           match_columns:
             - blockchain
             - block_number
