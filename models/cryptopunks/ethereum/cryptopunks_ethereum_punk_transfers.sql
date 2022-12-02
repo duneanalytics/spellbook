@@ -4,7 +4,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['from', 'to', 'evt_tx_hash', 'punk_id']
+        unique_key = ['from', 'to', 'evt_block_number', 'evt_index', 'punk_id']
         )
 }}
 
@@ -10018,7 +10018,9 @@ with original_holders as (
 select *
         , row_number() over (partition by punk_id order by evt_block_number desc, evt_index desc) as punk_id_tx_rank
 from
-(   
+(   select *
+    from 
+    (
     select  cast(NULL as varchar(5)) as from
             , address as to
             , cast('2017-06-23 19:37:59' as timestamp) as evt_block_time
@@ -10048,5 +10050,6 @@ from
                             , '0x05af636b70da6819000c49f85b21fa82081c632069bb626f30932034099107d8' -- PunkTransfer
                         )
         {% if is_incremental() %} and a.evt_block_time >= date_trunc('day', now() - interval '1 week') {% endif %}    
+    ) a
     group by 1,2,3,4,5,6,7,8
-) a 
+) b

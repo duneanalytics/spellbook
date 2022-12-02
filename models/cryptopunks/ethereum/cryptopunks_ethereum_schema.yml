@@ -238,7 +238,8 @@ models:
           combination_of_columns:
             - from
             - to
-            - evt_tx_hash
+            - evt_block_number
+            - evt_index
             - punk_id
     columns:
       - name: from
