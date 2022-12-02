@@ -11,9 +11,6 @@
 )
 }}
 
---TESTING: {{ source('table_sample_nft', 'trades_2022_11_20') }}
---PRODUCTION: {{ ref('nft_trades') }}
-
 
 WITH filter_1 AS (
     SELECT unique_trade_id
@@ -21,7 +18,7 @@ WITH filter_1 AS (
         THEN true
         ELSE false 
         END AS same_buyer_seller
-    FROM {{ source('table_sample_nft', 'trades_2022_11_20') }} nftt
+    FROM {{ ref('nft_trades') }} nftt
     WHERE nftt.blockchain='ethereum'
         AND nftt.unique_trade_id IS NOT NULL
         {% if is_incremental() %}
@@ -35,8 +32,8 @@ WITH filter_1 AS (
         THEN true
         ELSE false 
         END AS back_and_forth_trade
-    FROM {{ source('table_sample_nft', 'trades_2022_11_20') }} nftt
-    INNER JOIN {{ source('table_sample_nft', 'trades_2022_11_20') }} filter_baf
+    FROM {{ ref('nft_trades') }} nftt
+    INNER JOIN {{ ref('nft_trades') }} filter_baf
         ON filter_baf.seller=nftt.buyer
         AND filter_baf.buyer=nftt.seller
         AND filter_baf.nft_contract_address=nftt.nft_contract_address
@@ -58,8 +55,8 @@ WITH filter_1 AS (
         THEN true
         ELSE false
         END AS bought_3x
-    FROM {{ source('table_sample_nft', 'trades_2022_11_20') }} nftt
-    INNER JOIN {{ source('table_sample_nft', 'trades_2022_11_20') }} filter_bought_3x
+    FROM {{ ref('nft_trades') }} nftt
+    INNER JOIN {{ ref('nft_trades') }} filter_bought_3x
         ON filter_bought_3x.nft_contract_address=nftt.nft_contract_address
         AND filter_bought_3x.token_id=nftt.token_id
         AND filter_bought_3x.buyer=nftt.buyer
@@ -81,8 +78,8 @@ WITH filter_1 AS (
         THEN true
         ELSE false
         END AS sold_3x
-    FROM {{ source('table_sample_nft', 'trades_2022_11_20') }} nftt
-    INNER JOIN {{ source('table_sample_nft', 'trades_2022_11_20') }} filter_sold_3x
+    FROM {{ ref('nft_trades') }} nftt
+    INNER JOIN {{ ref('nft_trades') }} filter_sold_3x
         ON filter_sold_3x.nft_contract_address=nftt.nft_contract_address
         AND filter_sold_3x.token_id=nftt.token_id
         AND filter_sold_3x.seller=nftt.seller
@@ -108,7 +105,7 @@ WITH filter_1 AS (
         END AS first_funded_by_same_wallet
     , filter_funding_buyer.first_funded_by AS buyer_first_funded_by
     , filter_funding_seller.first_funded_by AS seller_first_funded_by
-    FROM {{ source('table_sample_nft', 'trades_2022_11_20') }} nftt
+    FROM {{ ref('nft_trades') }} nftt
         INNER JOIN addresses_events_ethereum.first_funded_by filter_funding_buyer
         ON filter_funding_buyer.address=nftt.buyer
         AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM labels.bridges)
@@ -180,7 +177,7 @@ SELECT nftt.blockchain
         THEN true
         ELSE false
         END AS is_wash_trade
-FROM {{ source('table_sample_nft', 'trades_2022_11_20') }} nftt
+FROM {{ ref('nft_trades') }} nftt
 LEFT JOIN filter_1 ON nftt.unique_trade_id=filter_1.unique_trade_id
 LEFT JOIN filter_2 ON nftt.unique_trade_id=filter_2.unique_trade_id
 LEFT JOIN filter_3_bought ON nftt.unique_trade_id=filter_3_bought.unique_trade_id
