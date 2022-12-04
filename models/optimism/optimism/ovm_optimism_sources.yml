@@ -1,9 +1,8 @@
 version: 2
 
 sources:
-  - name: ovm_optimsim
+  - name: ovm_optimism
     description: "Decoded contracts for Optimism precompiles and system contracts"
-
     tables:
     - name: L2StandardTokenFactory_call_createStandardL2Token
       loaded_at_field: call_block_time
@@ -78,7 +77,7 @@ sources:
       - *_symbol
       - *_name
       
-    - name: L2StandardTokenFactory_evt_StandardL2TokenCreated
+    - name: OVM_L2StandardTokenFactory_evt_StandardL2TokenCreated
       loaded_at_field: evt_block_time
       description: "L2 Standard Token Factory - Creation Events."
       freshness:

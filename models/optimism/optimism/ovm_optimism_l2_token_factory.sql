@@ -9,6 +9,7 @@
                                   "project",
                                   "ovm_optimism",
                                   \'["msilb7"]\') }}'
+        ,depends_on=['tokens_erc20','tokens_optimism_erc20','tokens_ethereum_erc20']
   )
 }}
 
