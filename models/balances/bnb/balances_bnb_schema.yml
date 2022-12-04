@@ -1,0 +1,105 @@
+version: 2
+
+models:
+  - name: balances_bnb_bep20_hour
+    meta:
+      blockchain: bnb
+      sector: balances
+      project: bep20
+      contributors: crypto586
+    config:
+      tags: ['balances', 'bnb', 'bep20', 'hour', 'crypto586']
+    description: >
+        Hourly token balances of BEP20 BNB tokens per wallet and contract address pair.
+        Depends on transfers_bnb_bep20
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &hour
+        name: hour
+        description: "UTC event block time truncated to the hour mark"
+      - &wallet_address
+        name: wallet_address
+        description: "Address of the wallet holding this BEP20 token"
+      - &token_address
+        name: token_address
+        description: "Contract address for the BEP20 token"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of BEP20 token held *before* taking into account token decimals"
+      - &amount
+        name: amount
+        description: "Raw amount of BEP20 token held *after* taking into account token decimals"
+      - &amount_usd
+        name: amount_usd
+        description: "Amount of BEP20 token held in USD if we have it"
+      - &symbol
+        name: symbol
+        description: "Token symbol"
+
+  - name: balances_bnb_BEP20_day
+    meta:
+      blockchain: bnb
+      sector: balances
+      project: BEP20
+      contributors: crypto586
+    config:
+      tags: ['balances', 'bnb', 'BEP20', 'day', 'crypto586']
+    description: >
+        Daily token balances of BEP20 BNB tokens per wallet and contract address pair.
+        Depends on transfers_bnb_bep20.
+    columns:
+      - *blockchain
+      - &day
+        name: day
+        description: "UTC event block time truncated to the day mark"
+      - *wallet_address
+      - *token_address
+      - *amount_raw
+      - *amount
+      - *amount_usd
+      - *symbol
+
+
+  - name: balances_bnb_BEP20_latest
+    meta:
+      blockchain: bnb
+      sector: balances
+      project: BEP20
+      contributors: crypto586
+    config:
+      tags: ['balances', 'bnb', 'BEP20', 'latest', 'crypto586']
+    description: >
+        Latest token balances of BEP20 BNB tokens per wallet and contract address pair.
+        Depends on transfers_bnb_bep20.
+    columns:
+      - *blockchain
+      - &last_updated
+        name: last_updated
+        description: "UTC timestamp when data was last updated"
+      - *wallet_address
+      - *token_address
+      - *amount_raw
+      - *amount
+      - *amount_usd
+      - *symbol
+
+
+  - name: balances_bnb_BEP20_noncompliant
+    meta:
+      blockchain: bnb
+      sector: balances
+      project: BEP20
+      contributors: crypto586
+    config:
+      tags: ['view', 'BEP20', 'BEP20_latest', 'BEP20_hourly', 'BEP20_daily']
+    description: >
+        Helper model. This queries all of the token address with negative balances. 
+        Some wiggle room is allowed for tokens with very small negative balances which
+        could have been introduced by interger overflow due to very large ints. 
+        It's likely that the token contract is non-compliant if a negative balance occurs. 
+        Therefore, we use this table to remove those contracts from our token balances tables.
+    columns:
+      - name: token_address
+        description: "Token Address for possibly non-compliant BEP20 token"

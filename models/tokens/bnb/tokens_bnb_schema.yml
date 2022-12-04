@@ -43,3 +43,21 @@ models:
             The token standard. This is the set of rules that the contract must respect 
             to be compatible with the common standards. Accepted values are presently standards represented.
             If you are adding a token with a new standard, remember to add it the accepted valeus list.
+  - name: tokens_bnb_rebase
+    meta:
+      blockchain: bnb
+      sector: tokens
+      project: bep20
+      contributors: crypto586
+    config:
+      tags: ['table', 'bep20', 'rebase']
+    description: >
+      BNB Rebase Token Addresses and Symbols. 
+      A Rebase Token is a cryptocurrency with an algorithmically adjusted supply that controls its price.
+    columns:
+      - name: contract_address
+        description: "Token contract address"
+        tests:
+          - unique
+      - name: symbol
+        description: "Token symbol"
