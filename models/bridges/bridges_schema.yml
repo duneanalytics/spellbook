@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: bridge_transfers
+  - name: bridges_bridge_transfers
     meta:
       blockchain: ethereum, optimism
       sector: bridges

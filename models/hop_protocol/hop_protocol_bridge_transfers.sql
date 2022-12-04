@@ -1,5 +1,5 @@
 {{ config(
-        alias ='bridge_transfers',
+        alias ='hop_protocol_bridge_transfers',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "uniswap",

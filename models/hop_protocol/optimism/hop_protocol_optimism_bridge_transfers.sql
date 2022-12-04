@@ -137,7 +137,7 @@ FROM (
 LEFT JOIN {{ ref('hop_protocol_bridge_addresses') }} hba
             ON tf.project_contract_address = hba.`l2Bridge`
             AND tf.block_number >= hba.bridgeDeployedBlockNumber
-LEFT JOIN {{ ref('optimism', 'transactions') }} t
+LEFT JOIN {{ source('optimism', 'transactions') }} t
         ON t.block_number = tf.block_number
         AND t.hash = tf.tx_hash
         AND t.block_time >= (NOW() - interval '14 days')
@@ -145,7 +145,7 @@ LEFT JOIN {{ ref('tokens_erc20') }} erc
     ON erc.blockchain = hba.blockchain
     AND erc.contract_address = hba.`l2CanonicalToken`
     
-LEFT JOIN {{ ref('prices_usd') }} p
+LEFT JOIN {{ source('prices', 'usd') }} p
     ON p.minute = DATE_TRUNC('minute',tf.block_time)
     AND p.contract_address = hba.`l2CanonicalToken`
     AND p.blockchain = hba.blockchain

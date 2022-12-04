@@ -1,5 +1,5 @@
 {{ config(
-        alias ='bridge_transfers',
+        alias ='bridges_bridge_transfers',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                 "sector",
                                 "bridges",
