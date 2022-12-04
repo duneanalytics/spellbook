@@ -4,7 +4,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['from', 'to', 'evt_block_number', 'evt_index', 'punk_id']
+        unique_key = ['evt_block_time_week', 'punk_id', 'evt_tx_hash', 'evt_index']
         )
 }}
 

@@ -236,11 +236,10 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - from
-            - to
-            - evt_block_number
-            - evt_index
+            - evt_block_time_week
             - punk_id
+            - evt_tx_hash
+            - evt_index
     columns:
       - name: from
         description: "CryptoPunk transferred from"
