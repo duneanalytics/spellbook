@@ -30,10 +30,10 @@ models:
         description:  "ID of the chain per EIP155"  
       - &network_id
         name: network_id
-        description:  "ID of the network (usually the same as the Chain ID" 
+        description:  "ID of the network (usually the same as the Chain ID)" 
       - &info_url
         name: info_url
         description:  "URL with information about the blockchain" 
-      - &explorers
-        name: explorers
-        description:  "JSON with information about each chain's block explorers" 
+      - &explorer
+        name: explorer
+        description:  "URL for each chain's main block explorer (first from the chainlist array)" 
