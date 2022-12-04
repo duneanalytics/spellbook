@@ -19,6 +19,10 @@ models:
         description: "ERC20 token symbol"
       - name: decimals
         description: "Number of decimals, refers to how divisible an ERC20 token can be"
+      - name: token_type
+        description: "Is this token a receipt (vault, LP, etc) token, or a lowest-level underlying token (i.e. USDC, DAI, OP)?"
+      - name: token_mapping_source
+        description: "The source of ERC20 Token Information"
 
   - name: tokens_optimism_nft
     meta:

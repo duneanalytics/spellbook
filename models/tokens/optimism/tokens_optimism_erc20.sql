@@ -1,6 +1,6 @@
 {{ config( alias='erc20', tags=['static'])}}
 
--- token_type: What best desscribes this token? Is it a vault or LP token, or a lowest-level underlying token?
+-- token_type: What best describes this token? Is it a vault or LP token, or a lowest-level underlying token?
   -- underlying: This is the rawest form of the token (i.e. USDC, DAI, WETH, OP, UNI, GTC) - Counted in On-Chain Value
   -- receipt: This is a vault/LP receipt token (i.e. HOP-LP-USDC, aUSDC, LP Tokens) - NOT Counted in On-Chain Value (double count)
   -- na: This is a placeholder token that does not have a price
@@ -273,12 +273,12 @@ FROM (
 
     SELECT
     LOWER(l2_token) AS contract_address, symbol AS symbol, decimals as decimals
-    , 'dex' as token_type
+    , 'dex' as token_type, 'l2 token factory' AS token_mapping_source
     FROM {{ ref('ovm_optimism_l2_token_factory') }}
 
     SELECT
     LOWER(atoken_address) AS contract_address, atoken_symbol AS symbol, atoken_decimals as decimals
-    , 'receipt' as token_type
+    , 'receipt' as token_type, 'aave factory' AS token_mapping_source
     FROM {{ ref('aave_v3_tokens') }}
       WHERE blockchain = 'optimism'
     
@@ -286,7 +286,7 @@ FROM (
 
     SELECT
     LOWER(atoken_address) AS contract_address, atoken_symbol AS symbol, atoken_decimals as decimals
-    , 'receipt' as token_type
+    , 'receipt' as token_type, 'the granary factory' AS token_mapping_source
     FROM {{ ref('the_granary_optimism_tokens') }}
       WHERE blockchain = 'optimism'
   ) a
@@ -303,10 +303,10 @@ SELECT LOWER(contract_address) AS contract_address
       AS is_counted_in_tvl
 
     FROM (
-      SELECT contract_address, symbol, decimals, token_price_source
+      SELECT contract_address, symbol, decimals, token_price_source, 'anual' AS token_mapping_source
         FROM raw_token_list
       UNION ALL
-      SELECT contract_address, symbol, decimals, token_price_source
+      SELECT contract_address, symbol, decimals, token_price_source, token_mapping_source
         FROM generated_tokens_list  
         WHERE contract_address NOT IN (SELECT contract_address FROM raw_token_list) -- do not duplicate if manually mapped
     ) a
