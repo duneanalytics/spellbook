@@ -17,20 +17,36 @@
 WITH
     signatures as (
         {% for chain in chains %}
+
             SELECT
                 *
                 , concat(id, signature, type) as unique_signature_id
-            FROM {{chain}}.signatures --can't get source to work with {{chain}} variable
-
+            FROM {{ source(chain, 'signatures') }}
+            
             {% if is_incremental() %}
             WHERE created_at >= date_trunc("day", now() - interval '2 days')
             {% endif %}
 
             {% if not loop.last %}
-            union
+            union all
             {% endif %}
 
         {% endfor %}
     )
 
-   SELECT * FROM signatures
+    SELECT
+    *
+    FROM (
+        SELECT 
+            id
+            , signature
+            , abi
+            , type
+            , created_at
+            , unique_signature_id 
+            , row_number() over (partition by unique_signature_id order by created_at desc) recency
+        FROM signatures
+    ) a
+    WHERE recency = 1
+    AND a.unique_signature_id 
+        NOT EXISTS (SELECT 1 FROM {{ this }} WHERE unique_signature_id = a.unique_signature_id)
