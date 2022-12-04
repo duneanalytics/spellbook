@@ -139,6 +139,13 @@ VALUES
     ("usdce-usd-coine", "avalanche_c", "USDC.e", "0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664", 6),
     ("savax-benqi-liquid-staked-avax", "avalanche_c", "sAVAX", "0x2b2c81e08f1af8835a78bb2a90ae924ace0ea4be", 18),
     ("mimatic-mimatic", "avalanche_c", "MIMATIC", "0x3b55e45fd6bd7d4724f5c47e0d1bcaedd059263e", 18),
+    ("mim-magic-internet-money","avalanche_c","MIM","0x130966628846bfd36ff31a822705796e8cb8c18d",18),
+    ("joe-trader-joe","avalanche_c","JOE","0x6e84a6216ea6dacc71ee8e6b0a5b7322eebc0fdd",18),
+    ("time-wonderland","avalanche_c","TIME","0xb54f16fb19478766a268f172c9480f8da1a7c9c3",9),
+    ("pizza-pizza-game","avalanche_c","PIZZA","0x6121191018baf067c6dc6b18d42329447a164f05",18),
+    ("ptp-platypus-finance","avalanche_c","PTP","0x22d4002028f537599be9f666d1c4fa138522f9c8",18),
+    ("grape-grape-finance","avalanche_c","GRAPE","0x5541d83efad1f281571b343977648b75d95cdac2",18),
+    ("tusd-trueusd","avalanche_c","TUSD","0x1c20e891bab6b1727d14da358fae2984ed9b59eb",18),
 
     ("1inch-1inch", "bnb", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
     ("aave-aave-token", "bnb", "AAVE", "0xfb6115445bff7b52feb98650c87f44907e58f802", 18),
