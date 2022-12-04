@@ -10034,7 +10034,10 @@ from
             , date_trunc('week',a.evt_block_time) as evt_block_time_week
             , a.evt_block_number
             , a.evt_index
-            , case when topic1 = '0x05af636b70da6819000c49f85b21fa82081c632069bb626f30932034099107d8' then cast(bytea2numeric_v2(substring(data from 3)) as int)
+            , case when a.evt_tx_hash = lower('0x76d32b465ca332bbbe74f7a1834c6d354125f6950168c6123f8ab07440bc285e') and a.evt_index = 11 then 675
+                when a.evt_tx_hash = lower('0x76d32b465ca332bbbe74f7a1834c6d354125f6950168c6123f8ab07440bc285e') and a.evt_index = 27 then 675
+                when a.evt_tx_hash = lower('0x76d32b465ca332bbbe74f7a1834c6d354125f6950168c6123f8ab07440bc285e') and a.evt_index = 25 then 2138
+                when topic1 = '0x05af636b70da6819000c49f85b21fa82081c632069bb626f30932034099107d8' then cast(bytea2numeric_v2(substring(data from 3)) as int)
                 else cast(bytea2numeric_v2(substring(topic2 from 3)) as int) end as punk_id
             , a.evt_tx_hash
     from {{ source('erc20_ethereum','evt_transfer') }} a 
