@@ -1,5 +1,5 @@
 {{ config(
-        alias ='current_owners_per_token',
+        alias ='punk_transfers',
         partition_by = ['evt_block_time_week'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -10057,6 +10057,7 @@ from
             , punk_id
             , cast(NULL as varchar(5)) as evt_tx_hash
     from original_holders
+    where {% if is_incremental() %} cast('2017-06-23 19:37:59' as timestamp) >= date_trunc('day', now() - interval '1 week') {% endif %}    
     
     ) a
     group by 1,2,3,4,5,6,7,8
