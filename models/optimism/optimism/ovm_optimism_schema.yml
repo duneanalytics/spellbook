@@ -1,16 +1,16 @@
 version: 2
 
 models:
- - name: ovm_optimism_l2_token_factory
-   meta:
-     blockchain: optimism
-     project: ovm_optimism
-     contributors: msilb7
+  - name: ovm_optimism_l2_token_factory
+    meta:
+      blockchain: optimism
+      project: ovm_optimism
+      contributors: msilb7
 
-   config:
-     tags: ['cross-chain', 'optimism', 'tokens']
-   description: "Tokens created by Optimism's L2 Token Factory"
-   columns:
+  config:
+    tags: ['cross-chain', 'optimism', 'tokens']
+  description: "Tokens created by Optimism's L2 Token Factory"
+  columns:
     - &factory_address
       name: factory_address
       description: "Address of the factory contract creating the token"
