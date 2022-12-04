@@ -1,10 +1,10 @@
 {{ config(
         schema = 'aave_v3'
         , alias='tokens'
-        , materialized = 'incremental',
-        , file_format = 'delta',
-        , incremental_strategy = 'merge',
-        , unique_key = ['blockchain', 'atoken_address'],
+        , materialized = 'incremental'
+        , file_format = 'delta'
+        , incremental_strategy = 'merge'
+        , unique_key = ['blockchain', 'atoken_address']
         , post_hook='{{ expose_spells(\'["optimism","polygon","arbitrum","avalanche_c"]\',
                                   "project",
                                   "aave_v3",
