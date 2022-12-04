@@ -1,15 +1,19 @@
 {{ config(
-    schema = 'quix_v2_optimism',
-    alias = 'events',
+    alias = 'v2_events',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'tx_hash', 'token_id', 'seller',  'evt_index']
+    unique_key = ['block_date', 'tx_hash', 'token_id', 'seller',  'evt_index'],
+    post_hook='{{ expose_spells(\'["optimism"]\',
+                        "project",
+                        "quix",
+                        \'["chuxinh"]\') }}'
     )
 }}
 {% set quix_fee_address_address = "0xec1557a67d4980c948cd473075293204f4d280fd" %}
 {% set min_block_number = 2753614 %}
+{% set project_start_date = '2022-01-24' %}     -- select time from optimism.blocks where `number` = 2753614
 
 
 with events_raw as (
@@ -174,7 +178,7 @@ select
             then 'ETH' else t1.symbol end
         end as royalty_fee_currency_symbol
 from events_raw as er 
-join {{ source('optimism','transactions') }} as tx 
+inner join {{ source('optimism','transactions') }} as tx
     on er.tx_hash = tx.hash
     and er.block_number = tx.block_number
     {% if not is_incremental() %}
@@ -195,7 +199,7 @@ left join {{ source('erc721_optimism','evt_transfer') }} as erct2
     and er.nft_contract_address=erct2.contract_address
     and erct2.evt_tx_hash=er.tx_hash
     and erct2.tokenId=er.token_id
-    and erct2.from=er.buyer
+    and erct2.to=er.buyer
     {% if not is_incremental() %}
     -- smallest block number for source tables above
     and erct2.evt_block_number >= '{{min_block_number}}'
@@ -221,7 +225,7 @@ left join {{ ref('tokens_erc20') }} as t1
         else erc20.contract_address
         end 
     and t1.blockchain = 'optimism'
-    left join {{ source('prices', 'usd') }} as p1
+left join {{ source('prices', 'usd') }} as p1
     on p1.contract_address =
         case when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
         then '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
@@ -231,6 +235,9 @@ left join {{ ref('tokens_erc20') }} as t1
     and p1.blockchain = 'optimism'
     {% if is_incremental() %}
     and p1.minute >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+    {% if not is_incremental() %}
+    and p1.minute >= '{{project_start_date}}'
     {% endif %}
 left join transfers as tr 
     on tr.tx_hash = er.tx_hash 
