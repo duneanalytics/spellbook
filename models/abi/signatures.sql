@@ -48,5 +48,4 @@ WITH
         FROM signatures
     ) a
     WHERE recency = 1
-    AND a.unique_signature_id 
-        NOT EXISTS (SELECT 1 FROM {{ this }} WHERE unique_signature_id = a.unique_signature_id)
+    AND NOT EXISTS (SELECT 1 FROM {{ this }} WHERE unique_signature_id = a.unique_signature_id)

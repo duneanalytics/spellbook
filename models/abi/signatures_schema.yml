@@ -29,4 +29,5 @@ models:
         name: unique_signature_id
         description:  unique signature id
         tests:
+          - unique
           - not_null
