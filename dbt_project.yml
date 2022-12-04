@@ -302,6 +302,9 @@ models:
       ethereum:
         +schema: balances_ethereum
         +materialized: view
+      bnb:
+        +schema: balances_bnb
+        +materialized: view
         
     dodo:
       +schema: dodo
