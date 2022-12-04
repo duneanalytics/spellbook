@@ -216,5 +216,9 @@ FROM
 ,('0xc7a144c247dd503acf87b2dc65aff3de3c10e3d1', 'Burnt Ape', 'erc721')
 ,('0xe4d6b73f6c45e759679852b80c4888a93727cc1d', 'Mangmoom', 'erc721')
 ,('0xdf711ae52f18f3b99ef544ee8e33c487ac68a88c', 'Torikos', 'erc721')
+,('0x2408346BaB762718997F3F9746a5Cd5171F8404f', 'Opti Anime War', 'erc721')
+,('0xcfdff4e171133d55de2e45c66a0e144a135d93f2', 'Lyra sETH market Option Token', 'erc721')
+,('0x57fC581C33b32fcF85fB6618D07c1acDA3993149', 'ODOS.xyz NFT Campaign', 'erc721')
+,('0x03518ad0aaad97142262c57f0a07a1220e99805c', 'Quest3NFT', 'erc721')
 
 ) as temp_table (contract_address, name, standard)

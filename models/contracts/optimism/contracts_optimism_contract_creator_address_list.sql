@@ -365,6 +365,7 @@ FROM (
       ,('0x370880694995Aa8A53F71645F7Bec3b0e7bb25d9', 'OneRing')
       ,('0xfc8367ef6bcfc10746e5b9b034314812db8d7213', 'OpenXSwap')
       ,('0xafd91ef047189f7e894d0fac71dcce8687e9b893', 'ECC Domains')
+      ,('0x0E1B5AB67aF1c99F8c7Ebc71f41f75D4D6211e53', 'Rainbow')
 
   ) as temp_table (creator_address, contract_project)
 
