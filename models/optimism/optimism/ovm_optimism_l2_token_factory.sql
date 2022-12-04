@@ -1,11 +1,11 @@
 {{ config(
-    schema = 'ovm_optimism'
-    , alias='L2_Token_Factory'
-    , materialized = 'incremental',
-    , file_format = 'delta',
-    , incremental_strategy = 'merge',
-    , unique_key = ['l1_token', 'l2_token'],
-    , post_hook='{{ expose_spells(\'["optimism"]\',
+        schema = 'ovm_optimism'
+        , alias='l2_token_factory'
+        , materialized = 'incremental'
+        , file_format = 'delta'
+        , incremental_strategy = 'merge'
+        , unique_key = ['l1_token', 'l2_token']
+        , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
                                   "ovm_optimism",
                                   \'["msilb7"]\') }}'

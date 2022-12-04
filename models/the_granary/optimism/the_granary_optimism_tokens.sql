@@ -1,10 +1,10 @@
 {{ config(
     schema = 'the_granary'
     , alias='tokens'
-    , materialized = 'incremental',
-    , file_format = 'delta',
-    , incremental_strategy = 'merge',
-    , unique_key = ['blockchain', 'atoken_address'],
+    , materialized = 'incremental'
+    , file_format = 'delta'
+    , incremental_strategy = 'merge'
+    , unique_key = ['blockchain', 'atoken_address']
     , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
                                   "the_granary",
