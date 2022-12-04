@@ -16,7 +16,7 @@ models:
               - blockchain
               - tx_hash
               - evt_index
-              - transfer_id'
+              - transfer_id
     columns:
       - &chain_data_source
         name: chain_data_source

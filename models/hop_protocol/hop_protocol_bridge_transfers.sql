@@ -41,7 +41,7 @@ FROM
                 , evt_index
                 , trace_address
                 , tx_method_id
-        FROM {{ ref(dex_model) }}
+        FROM {{ ref(hop_tf_model) }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

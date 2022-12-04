@@ -22,7 +22,6 @@ SELECT
 , destination_chain_id
 , cid_source.chain_name AS source_chain_name
 , cid_dest.chain_name AS destination_chain_name
--- , cid_source.chain_name || ' -> ' || cid_dest.chain_name AS bridge_path_name --do at dbt-level
 , erc.symbol AS bridged_token_symbol
 , bridged_token_amount_raw / POWER(10,erc.decimals) AS bridged_token_amount
 , bridged_token_fee_amount_raw / POWER(10,erc.decimals) AS bridged_token_fee_amount
