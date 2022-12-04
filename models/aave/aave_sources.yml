@@ -70,21 +70,15 @@ sources:
         error_after: { count: 24, period: hour }
       loaded_at_field: evt_block_time
       columns:
-      - *contract_address  
-      - *evt_block_number
-      - *evt_block_time
-      - *evt_index
-      - *evt_tx_hash
-      - *underlyingAsset
-      - &debtTokenDecimals
-        name: debtTokenDecimals
-        description: "Decimals of the aToken"
-      - &debtTokenSymbol
-        name: debtTokenSymbol
-        description: "Symbol of the aToken"
-      - &debtTokenName
-        name: debtTokenName
-        description: "Name of the aToken" 
+        - *contract_address  
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *debtTokenDecimals
+        - *debtTokenSymbol
+        - *debtTokenName
 
   - name: aave_v3_arbitrum
     description: "Decoded contracts for Aave on Arbitrum"
@@ -97,33 +91,15 @@ sources:
         error_after: { count: 24, period: hour }
       loaded_at_field: evt_block_time
       columns:
-        - &contract_address
-          name: contract_address
-          description: "Aave token contract address"       
-        - &evt_block_number
-          name: evt_block_number
-          description: "Event block number"  
-        - &evt_block_time
-          name: evt_block_time
-          description: "Timestamp for block event time in UTC"
-        - &evt_index
-          name: evt_index
-          description: "Event index"  
-        - &evt_tx_hash
-          name: evt_tx_hash
-          description: "Transaction hash of the event" 
-        - &underlyingAsset
-          name: underlyingAsset
-          description: "Underlying ERC20 token that that the aToken represents"
-        - &aTokenDecimals
-          name: aTokenDecimals
-          description: "Decimals of the aToken"
-        - &aTokenSymbol
-          name: aTokenSymbol
-          description: "Symbol of the aToken"
-        - &aTokenName
-          name: aTokenName
-          description: "Name of the aToken"
+        - *contract_address      
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index 
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *aTokenDecimals
+        - *aTokenSymbol
+        - *aTokenName
 
     - name: StableDebtToken_evt_Initialized
         description: "aToken initialization events - stable debt tokens."
@@ -132,21 +108,15 @@ sources:
           error_after: { count: 24, period: hour }
         loaded_at_field: evt_block_time
         columns:
-        - *contract_address  
-        - *evt_block_number
-        - *evt_block_time
-        - *evt_index
-        - *evt_tx_hash
-        - *underlyingAsset
-        - &debtTokenDecimals
-          name: debtTokenDecimals
-          description: "Decimals of the aToken"
-        - &debtTokenSymbol
-          name: debtTokenSymbol
-          description: "Symbol of the aToken"
-        - &debtTokenName
-          name: debtTokenName
-          description: "Name of the aToken" 
+          - *contract_address  
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *underlyingAsset
+          - *debtTokenDecimals
+          - *debtTokenSymbol
+          - *debtTokenName
       
     - name: VariableDebtToken_evt_Initialized
       description: "aToken initialization events - variable debt tokens."
@@ -155,21 +125,15 @@ sources:
         error_after: { count: 24, period: hour }
       loaded_at_field: evt_block_time
       columns:
-      - *contract_address  
-      - *evt_block_number
-      - *evt_block_time
-      - *evt_index
-      - *evt_tx_hash
-      - *underlyingAsset
-      - &debtTokenDecimals
-        name: debtTokenDecimals
-        description: "Decimals of the aToken"
-      - &debtTokenSymbol
-        name: debtTokenSymbol
-        description: "Symbol of the aToken"
-      - &debtTokenName
-        name: debtTokenName
-        description: "Name of the aToken" 
+        - *contract_address  
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *debtTokenDecimals
+        - *debtTokenSymbol
+        - *debtTokenName
   
   - name: aave_v3_polygon
     description: "Decoded contracts for Aave on Polygon"
@@ -181,33 +145,15 @@ sources:
         error_after: { count: 24, period: hour }
       loaded_at_field: evt_block_time
       columns:
-      - &contract_address
-        name: contract_address
-        description: "Aave token contract address"       
-      - &evt_block_number
-        name: evt_block_number
-        description: "Event block number"  
-      - &evt_block_time
-        name: evt_block_time
-        description: "Timestamp for block event time in UTC"
-      - &evt_index
-        name: evt_index
-        description: "Event index"  
-      - &evt_tx_hash
-        name: evt_tx_hash
-        description: "Transaction hash of the event" 
-      - &underlyingAsset
-        name: underlyingAsset
-        description: "Underlying ERC20 token that that the aToken represents"
-      - &aTokenDecimals
-        name: aTokenDecimals
-        description: "Decimals of the aToken"
-      - &aTokenSymbol
-        name: aTokenSymbol
-        description: "Symbol of the aToken"
-      - &aTokenName
-        name: aTokenName
-        description: "Name of the aToken"
+        - *contract_address      
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index 
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *aTokenDecimals
+        - *aTokenSymbol
+        - *aTokenName
 
     - name: StableDebtToken_evt_Initialized
       description: "aToken initialization events - stable debt tokens."
@@ -216,21 +162,15 @@ sources:
         error_after: { count: 24, period: hour }
       loaded_at_field: evt_block_time
       columns:
-      - *contract_address  
-      - *evt_block_number
-      - *evt_block_time
-      - *evt_index
-      - *evt_tx_hash
-      - *underlyingAsset
-      - &debtTokenDecimals
-        name: debtTokenDecimals
-        description: "Decimals of the aToken"
-      - &debtTokenSymbol
-        name: debtTokenSymbol
-        description: "Symbol of the aToken"
-      - &debtTokenName
-        name: debtTokenName
-        description: "Name of the aToken" 
+        - *contract_address  
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *debtTokenDecimals
+        - *debtTokenSymbol
+        - *debtTokenName
       
     - name: VariableDebtToken_evt_Initialized
       description: "aToken initialization events - variable debt tokens."
@@ -239,21 +179,15 @@ sources:
         error_after: { count: 24, period: hour }
       loaded_at_field: evt_block_time
       columns:
-      - *contract_address  
-      - *evt_block_number
-      - *evt_block_time
-      - *evt_index
-      - *evt_tx_hash
-      - *underlyingAsset
-      - &debtTokenDecimals
-        name: debtTokenDecimals
-        description: "Decimals of the aToken"
-      - &debtTokenSymbol
-        name: debtTokenSymbol
-        description: "Symbol of the aToken"
-      - &debtTokenName
-        name: debtTokenName
-        description: "Name of the aToken" 
+        - *contract_address  
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *debtTokenDecimals
+        - *debtTokenSymbol
+        - *debtTokenName
   
   - name: aave_v3_avalanche_c
     description: "Decoded contracts for Aave on Avalanche"
@@ -265,33 +199,15 @@ sources:
         error_after: { count: 24, period: hour }
       loaded_at_field: evt_block_time
       columns:
-        - &contract_address
-          name: contract_address
-          description: "Aave token contract address"       
-        - &evt_block_number
-          name: evt_block_number
-          description: "Event block number"  
-        - &evt_block_time
-          name: evt_block_time
-          description: "Timestamp for block event time in UTC"
-        - &evt_index
-          name: evt_index
-          description: "Event index"  
-        - &evt_tx_hash
-          name: evt_tx_hash
-          description: "Transaction hash of the event" 
-        - &underlyingAsset
-          name: underlyingAsset
-          description: "Underlying ERC20 token that that the aToken represents"
-        - &aTokenDecimals
-          name: aTokenDecimals
-          description: "Decimals of the aToken"
-        - &aTokenSymbol
-          name: aTokenSymbol
-          description: "Symbol of the aToken"
-        - &aTokenName
-          name: aTokenName
-          description: "Name of the aToken"
+        - *contract_address      
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index 
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *aTokenDecimals
+        - *aTokenSymbol
+        - *aTokenName
 
     - name: StableDebtToken_evt_Initialized
       description: "aToken initialization events - stable debt tokens."
@@ -306,15 +222,9 @@ sources:
         - *evt_index
         - *evt_tx_hash
         - *underlyingAsset
-        - &debtTokenDecimals
-          name: debtTokenDecimals
-          description: "Decimals of the aToken"
-        - &debtTokenSymbol
-          name: debtTokenSymbol
-          description: "Symbol of the aToken"
-        - &debtTokenName
-          name: debtTokenName
-          description: "Name of the aToken" 
+        - *debtTokenDecimals
+        - *debtTokenSymbol
+        - *debtTokenName
       
     - name: VariableDebtToken_evt_Initialized
       description: "aToken initialization events - variable debt tokens."
@@ -329,12 +239,6 @@ sources:
         - *evt_index
         - *evt_tx_hash
         - *underlyingAsset
-        - &debtTokenDecimals
-          name: debtTokenDecimals
-          description: "Decimals of the aToken"
-        - &debtTokenSymbol
-          name: debtTokenSymbol
-          description: "Symbol of the aToken"
-        - &debtTokenName
-          name: debtTokenName
-          description: "Name of the aToken"
+        - *debtTokenDecimals
+        - *debtTokenSymbol
+        - *debtTokenName
