@@ -16,13 +16,13 @@ collection,
 amount_usd,
 token_standard,
 trade_type,
-number_of_items,
+CAST(number_of_items AS DECIMAL(38,0)) AS number_of_items,
 trade_category,
 evt_type,
 seller,
 buyer,
 amount_original,
-amount_raw,
+CAST(amount_raw AS DECIMAL(38,0)) AS amount_raw,
 currency_symbol,
 currency_contract,
 nft_contract_address,
@@ -34,5 +34,5 @@ tx_hash,
 tx_from,
 tx_to,
 unique_trade_id
-FROM ({{ ref('zora_ethereum_events') }})
+FROM {{ ref('zora_ethereum_events') }}
 WHERE evt_type = 'Trade'

@@ -1,4 +1,5 @@
 {{ config( alias='erc20',
+        tags=['static'],
         post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis"]\',
                                     "sector",
                                     "tokens",
@@ -15,3 +16,5 @@ UNION
 SELECT 'gnosis' as blockchain, * FROM  {{ ref('tokens_gnosis_erc20') }}
 UNION
 SELECT 'optimism' as blockchain, * FROM  {{ ref('tokens_optimism_erc20') }}
+UNION
+SELECT 'polygon' as blockchain, * FROM  {{ ref('tokens_polygon_erc20') }}

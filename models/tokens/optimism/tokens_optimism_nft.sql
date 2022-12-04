@@ -1,4 +1,4 @@
-{{ config(alias='nft') }}
+{{ config(alias='nft', tags=['static']) }}
 
 SELECT
   LOWER(contract_address) AS contract_address, name, standard
@@ -200,5 +200,21 @@ FROM
 ,('0xba4e052b56c2ca1ddc17ad615dafe02c9522852f', 'Optimism x Galxe Twitter Spaces NFTs', 'erc721')
 ,('0x0deaAc29d8A3d4EbBAAa3eCd3cC97C9deF00f720', 'OaycNFT', 'erc721')
 ,('0x56FE60179c13B6492c6501D36e77CCD9FB86d7c2', 'Tally Ho Optimissions', 'erc721')
+,('0x74a002d13f5f8af7f9a971f006b9a46c9b31dabd', 'RabbitHole L2 Explorer', 'erc721')
+,('0x94C1ff1951c38fC3DF189c8f4Edf01E3Bf4D1e5B', 'RabbitHole Credentials: L2', 'erc721')
+,('0xd3d390D48845C32acf39DA7bc527bF0CC97794a2', 'OP Horse Kingdom', 'erc721')
+,('0xefc0403c2d7ad01bc1595164be5cf595f2053419', 'BabyDinos', 'erc721')
+,('0x3e7e82fb003caa50930f288c165f8e895f02117b', 'Opti Azuki Club', 'erc721')
+,('0x7e6ae1bc06e329826e50aeebe1ff1b62bca412d4', 'Optigladiator', 'erc721')
+,('0xD6be31243599B2E5Bc650109cf8bB81EA8d6c150', 'Optimism City Pathfinder','erc721')
+,('0x5a72C065DFE67D1C4e2951Fff292b8714a98CF68', 'OP Bridgooor','erc721')
+,('0xc0FA2864749409e95bf76969Fbe7E3bD73c077Ca', 'Metaverse Cards','erc721')
+,('0x93646745ee291f1c32733f549091390c0ff83b1c', 'Panic Bunny','erc721')
+,('0x2831aa51de4e3bb318cf01eacd8a7fdbb440ac3a', 'MagicBaby', 'erc721')
+,('0xa0a2164522228846637586b7ed2f30161f237f5a', 'Orx Incentive Program', 'erc721')
+,('0xa7730c8ff9cae55274ad3c11f61b50486edf69c4', 'Panic Halloween Bucket', 'erc721')
+,('0xc7a144c247dd503acf87b2dc65aff3de3c10e3d1', 'Burnt Ape', 'erc721')
+,('0xe4d6b73f6c45e759679852b80c4888a93727cc1d', 'Mangmoom', 'erc721')
+,('0xdf711ae52f18f3b99ef544ee8e33c487ac68a88c', 'Torikos', 'erc721')
 
 ) as temp_table (contract_address, name, standard)

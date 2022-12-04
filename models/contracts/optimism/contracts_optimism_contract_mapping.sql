@@ -8,7 +8,7 @@
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "contracts",
-                                    \'["msilb7", "chuxinh"]\') }}'
+                                    \'["msilb7", "chuxin"]\') }}'
   )
 }}
 
@@ -247,7 +247,7 @@ select
           ,c.contract_project
           ,ovm1c.contract_project
         ),
-      '-',
+      '_',
       ' '
     )
    ) as contract_project
