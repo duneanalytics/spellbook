@@ -1,7 +1,7 @@
 {{ config( alias='rebase', tags=['static'])}}
 
 SELECT
-  LOWER(contract_address),
+  LOWER(contract_address) AS contract_address,
   symbol
 FROM (
   VALUES
