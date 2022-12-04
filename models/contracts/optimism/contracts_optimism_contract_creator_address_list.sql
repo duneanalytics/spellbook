@@ -172,7 +172,6 @@ FROM (
       ,('0x11978d32619cfefc2e7c75a70ef8beb077b503ca', 'Frax Finance')
       ,('0x68d03de837cc395ec34c61c078fa901468a3bb29', 'Frax Finance')
       ,('0x4707ddf20584a1df862403e7e0cc77c33330dca0', 'Bongswap')
-      ,('0x0aa8aa45b1eb8ccdd2c742e7db796b0a589b86b5', 'Perpetual Protocol')
       ,('0x97b62cd23a04be0e0dc4a5f03ddbd0addc8ba29a', 'Band Protocol')
       ,('0xf6839085f692bde6a8062573e3da35e7e947c21e', 'InstaDapp')
       ,('0x26ed8119c45e3871df446a13f7fdc9e2c527dacd', 'InstaDapp')
