@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'the_granary'
+    schema = 'the_granary_optimism'
     , alias='tokens'
     , materialized = 'incremental'
     , file_format = 'delta'

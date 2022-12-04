@@ -40,6 +40,9 @@ models:
       optimism:
         +schema: aave_optimism
         +materialized: view
+      aave_v3:
+        +schema: aave_v3
+        +materialized: view
 
     balancer:
       +schema: balancer
@@ -966,3 +969,8 @@ seeds:
             swap_flag: boolean
             matcha_limit_order_flag: boolean
             volume_usd: double
+    
+    the_granary:
+      optimism:
+        +schema: the_granary_optimism
+        +materialized: view
