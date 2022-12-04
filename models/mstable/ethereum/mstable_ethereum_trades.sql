@@ -8,18 +8,18 @@
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "mstable",
-                                    \'["ripple3"]\') }}'
+                                    \'["dbustos20"]\') }}'
     )
 }}
 
 {% set project_start_date = '2020-05-28' %}
 
 WITH dexs AS
-(
+(     
     SELECT
         evt_block_time AS block_time,
-        'mStable' AS project,
-        '1' AS version,
+        'mstable' AS project,
+        'masset' AS version,
         swapper AS taker,
         cast(NULL as string) AS maker,
         `outputAmount` AS token_bought_amount_raw,
@@ -44,8 +44,8 @@ WITH dexs AS
 
     SELECT
         evt_block_time AS block_time,
-        'mStable' AS project,
-        '1' AS version,
+        'mstable' AS project,
+        'feederpool' AS version,
         swapper AS taker,
         cast(NULL as string) AS maker,
         `outputAmount` AS token_bought_amount_raw,
@@ -80,8 +80,8 @@ SELECT
     end as token_pair,
     dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount,
     dexs.token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount,
-    dexs.token_bought_amount_raw,
-    dexs.token_sold_amount_raw,
+    CAST(dexs.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw,
+    CAST(dexs.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw,
     coalesce(
         dexs.amount_usd,
         dexs.token_bought_amount_raw / power(10, p_bought.decimals) * p_bought.price,

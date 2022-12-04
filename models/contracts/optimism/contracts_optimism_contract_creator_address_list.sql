@@ -337,12 +337,42 @@ FROM (
       ,('0xC6387E937Bcef8De3334f80EDC623275d42457ff', 'Yearn')
       ,('0x4B9f696c998f9549485a3a85DcA692Fd6CCE491F', 'Flashstake')
       ,('0x652c46a302060B324A02d2d3e4a56e3DA07FA91b', 'Kwenta')
+      ,('0x5E28ffE6700C6643747f51349d7246202F1a3F25', 'Odos')
+      ,('0x2cc7A5c9D8AcA37395155cB200C98bA3b3516952', 'Atlantis World')
+      ,('0x810973bdC95221817c4Ca7999A78aFD25F6d0F6d', 'KyberSwap')
+      ,('0xC42e9476b0a458097087336e2395Dbf45B0BdC12', 'Pyth')
+      ,('0xdc7c7f0bea8444c12ec98ec626ff071c6fa27a19', 'Votium')
+      ,('0x11F11121DF7256C40339393b0FB045321022ce44', 'LiFi')
+      ,('0xcde47c1a5e2d60b9ff262b0a3b6d486048575ad9', 'OP')
+      ,('0x59ca05674f5073f95f292aaca2d28a7dc80f12d6', 'Mirror')
+      ,('0xedcd79f34db8b78cd7a55e04dbf991ecd1a5c0f4', '0x')
+      ,('0x48cff7ff77b2bf83e4a6f843b5b1709601671e83', 'Clipper')
+      ,('0x1a3daa6f487a480c1ad312b90fd0244871940b66', 'Quix')
+      ,('0x8df57e3d9ddde355dce1adb19ebce93419ffa0fb', 'Revert Finance')
+      ,('0xccbdbd9b0309a77fc6a56e087ff2765ff394012e', '1Inch')
+      ,('0x819addc3dd780704ae85ea12c18252f7020c24d0', 'Synthetix')
+      ,('0xbf70200dd73d5f3aafa4f0d8adacdeaf3798b7f9', 'Cryptovania')
+      ,('0x719dafe0be7abf7d2b6c67eed4fa18d970d3abb6', 'Unidex')
+      ,('0x2c01f405e3c525c0cb867789aaf077f3553ccbb7', 'Lido')
+      ,('0x2e985acd6c8fa033a4c5209b0140940e24da7c5c', 'Kromatika')
+      ,('0x302d2451d9f47620374b54c521423bf0403916a2', 'Synthetix')
+      ,('0xfda462548ce04282f4b6d6619823a7c64fdc0185', 'Angle')
+      ,('0x9aa99c23f67c81701c772b106b4f83f6e858dd2e', 'Hop Protocol')
+      ,('0xbcb909975715dc8fde643ee44b89e3fd6a35a259', 'Furucombo')
+      ,('0x42405d66fda09dbdac90ff25fc5a4c2353f43e70', 'Beamer Bridge')
+      ,('0xe029c32d412972C5F3D107DA6d6eCF8F1C1E788C', 'Kwenta')
+      ,('0xcd526ee406bc8349ba8135758cee11fa3aaa59a0', 'OPX Finance')
+      ,('0x4023ef3aaa0669FaAf3A712626F4D8cCc3eAF2e5', 'Pickle Finance')
+      ,('0x370880694995Aa8A53F71645F7Bec3b0e7bb25d9', 'OneRing')
+      ,('0xfc8367ef6bcfc10746e5b9b034314812db8d7213', 'OpenXSwap')
+      ,('0xafd91ef047189f7e894d0fac71dcce8687e9b893', 'ECC Domains')
+
   ) as temp_table (creator_address, contract_project)
 
 ) f
 
 --filter out creators that we never want to map
 WHERE f.creator_address NOT IN (
-  LOWER('0xbb6e024b9cffacb947a71991e386681b1cd1477d')
+   SELECT creator_address FROM {{ ref('contracts_optimism_nondeterministic_contract_creators') }}
 )
 ;

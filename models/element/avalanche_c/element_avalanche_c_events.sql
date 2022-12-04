@@ -19,7 +19,7 @@ WITH element_txs AS (
         , 'erc721' AS token_standard
         , 'Single Item Trade' AS trade_type
         , 1 AS number_of_items
-        , 'Sell' AS trade_category
+        , 'Offer Accepted' AS trade_category
         , ee.maker AS seller
         , ee.taker AS buyer
         , ee.erc20TokenAmount AS amount_raw
@@ -35,7 +35,7 @@ WITH element_txs AS (
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         
-        UNION
+        UNION ALL
         
         -- Avalanche ERC721 Buys
         SELECT 'avalanche_c' AS blockchain
@@ -62,7 +62,7 @@ WITH element_txs AS (
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         
-        UNION
+        UNION ALL
         
         -- Avalanche ERC1155 Sells
         SELECT 'avalanche_c' AS blockchain
@@ -73,7 +73,7 @@ WITH element_txs AS (
         , 'erc1155' AS token_standard
         , 'Single Item Trade' AS trade_type
         , 1 AS number_of_items
-        , 'Sell' AS trade_category
+        , 'Offer Accepted' AS trade_category
         , ee.maker AS seller
         , ee.taker AS buyer
         , ee.erc20FillAmount AS amount_raw
@@ -89,7 +89,7 @@ WITH element_txs AS (
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         
-        UNION
+        UNION ALL
         
         -- Avalanche ERC1155 Buys
         SELECT 'avalanche_c' AS blockchain
@@ -127,7 +127,7 @@ SELECT alet.blockchain
 , alet.amount_raw/POWER(10, ava_erc20_tokens.decimals)*prices.price AS amount_usd
 , alet.token_standard
 , CASE WHEN agg.name IS NOT NULL THEN 'Bundle Trade' ELSE 'Single Item Trade' END AS trade_type
-, alet.number_of_items
+, CAST(alet.number_of_items AS DECIMAL(38,0)) AS number_of_items
 , alet.trade_category
 , 'Trade' AS evt_type
 , alet.seller
@@ -144,14 +144,14 @@ SELECT alet.blockchain
 , alet.block_number
 , at.from AS tx_from
 , at.to AS tx_to
-, 0 AS platform_fee_amount_raw
+, CAST(0 AS DOUBLE) AS platform_fee_amount_raw
 , 0 AS platform_fee_amount
 , 0 AS platform_fee_amount_usd
-, 0 AS platform_fee_percentage
-, 0 AS royalty_fee_amount_raw
+, CAST(0 AS DOUBLE) AS platform_fee_percentage
+, CAST(0 AS DOUBLE) AS royalty_fee_amount_raw
 , 0 AS royalty_fee_amount
 , 0 AS royalty_fee_amount_usd
-, 0 AS royalty_fee_percentage
+, CAST(0 AS DOUBLE) AS royalty_fee_percentage
 , 0 AS royalty_fee_receive_address
 , 0 AS royalty_fee_currency_symbol
 , alet.blockchain || alet.project || alet.version || alet.tx_hash || alet.seller  || alet.buyer || alet.nft_contract_address || alet.token_id AS unique_trade_id

@@ -1,6 +1,9 @@
 {{ config(
         schema='prices',
         alias ='tokens',
+        materialized='table',
+        file_format = 'delta',
+        tags=['static'],
         post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon"]\',
                                     "sector",
                                     "prices",
@@ -27,6 +30,7 @@ VALUES
     ("hbar-hedera-hashgraph", null, "HBAR", null, null),
     ("icx-icon", null, "ICX", null, null),
     ("ltc-litecoin", null, "LTC", null, null),
+    ("matic-polygon", null, "MATIC", null, null),
     ("miota-iota", null, "MIOTA", null, null),
     ("mona-monacoin", null, "MONA", null, null),
     ("neo-neo", null, "NEO", null, null),
@@ -117,6 +121,7 @@ VALUES
     ("weth-weth","arbitrum","WETH","0x82af49447d8a07e3bd95bd0d56f35241523fbab1",18),
     ("wis-experty-wisdom-token","arbitrum","WIS","0xa0459edcad5aac14dc32775d22ff7bd33027cac7",18),
     ("yfi-yearnfinance","arbitrum","YFI","0x82e3a8f066a6989666b031d916c43672085b1582",18),
+    ("zz-zigzag","arbitrum","ZZ","0xada42bb73b42e0472a994218fb3799dfcda21237",18),
 
     ("frax-frax", "avalanche_c", "FRAX", "0xd24c2ad096400b6fbcd2ad8b24e7acbc21a1da64", 18),
     ("fxs-frax-share", "avalanche_c", "FXS", "0x214db107654ff987ad859f34125307783fc8e387", 18),
@@ -125,8 +130,15 @@ VALUES
     ("usdc-usd-coin", "avalanche_c", "USDC", "0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e", 6),
     ("usdt-tether", "avalanche_c", "USDT", "0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7", 6),
     ("wbtc-wrapped-bitcoin", "avalanche_c", "WBTC", "0x50b7545627a5162f82a992c33b87adc75187b218", 8),
-    ("bets-betswirl", "avalanche_c", "BETS", "0xc763f8570A48c4c00C80B76107cbE744dDa67b79", 18),
+    ("bets-betswirl", "avalanche_c", "BETS", "0xc763f8570a48c4c00c80b76107cbe744dda67b79", 18),
     ("thor-thor", "avalanche_c", "THOR", "0x8f47416cae600bccf9530e9f3aeaa06bdd1caa79", 18),
+    ("weth-weth", "avalanche_c", "WETH.e", "0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab", 18),
+    ("btcb-bitcoin-avalanche-bridged-btcb", "avalanche_c", "BTC.b", "0x152b9d0fdc40c096757f570a51e494bd4b943e50",8),
+    ("woo-wootrade", "avalanche_c", "WOO.e", "0xabc9547b534519ff73921b1fba6e672b5f58d083", 18),
+    ("usdte-tether-usde", "avalanche_c", "USDT.e", "0xc7198437980c041c805a1edcba50c1ce5db95118", 6),
+    ("usdce-usd-coine", "avalanche_c", "USDC.e", "0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664", 6),
+    ("savax-benqi-liquid-staked-avax", "avalanche_c", "sAVAX", "0x2b2c81e08f1af8835a78bb2a90ae924ace0ea4be", 18),
+    ("mimatic-mimatic", "avalanche_c", "MIMATIC", "0x3b55e45fd6bd7d4724f5c47e0d1bcaedd059263e", 18),
 
     ("1inch-1inch", "bnb", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
     ("aave-aave-token", "bnb", "AAVE", "0xfb6115445bff7b52feb98650c87f44907e58f802", 18),
@@ -221,7 +233,7 @@ VALUES
     ("sushi-sushi", "bnb", "SUSHI", "0x947950bcc74888a40ffa2593c5798f11fc9124c4", 18),
     ("swap-trustswap", "bnb", "SWAP", "0x82443a77684a7da92fdcb639c8d2bd068a596245", 18),
     ("sxp-swipe", "bnb", "SXP", "0x47bead2563dcbf3bf2c9407fea4dc236faba485a", 18),
-    ("titano-titano", "bnb", "TITANO", "0xba96731324de188ebc1ed87ca74544ddebc07d7f", 18),
+    ("titano-titano", "bnb", "TITANO", "0x4e3cabd3ad77420ff9031d19899594041c420aee", 18),
     ("tlm-alien-worlds", "bnb", "TLM", "0x2222227e22102fe3322098e4cbfe18cfebd57c95", 4),
     ("tpt-token-pocket", "bnb", "TPT", "0xeca41281c24451168a37211f0bc2b8645af45092", 4),
     ("tusd-trueusd", "bnb", "TUSD", "0x14016e85a25aeb13065688cafb43044c2ef86784", 18),
@@ -250,6 +262,7 @@ VALUES
     ("sfm-safemoon", "bnb", "SFM", "0x42981d0bfbaf196529376ee702f2a9eb9092fcb5", 9),
     ("mnft-marvelous-nfts", "bnb", "MNFT", "0x33be7644c0e489b3a0c639d103392d4f3e338158", 18),
     ("bets-betswirl", "bnb", "BETS", "0x3e0a7c7db7bb21bda290a80c9811de6d47781671", 18),
+    ("floki-floki-inu", "bnb", "FLOKI", "0xfb5b838b6cfeedc2873ab27866079ac55363d37e", 18),
 
     ("0xbtc-0xbitcoin", "ethereum", "0xBTC", "0xb6ed7644c69416d67b522e20bc294a9a9b405b31", 8),
     ("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
@@ -498,6 +511,7 @@ VALUES
     ("ohmv2-olympus-v2", "ethereum", "OHM", "0x64aa3364f17a4d01c6f1751fd97c2bd3d7e7f1d5", 9),
     ("okb-okb", "ethereum", "OKB", "0x75231f58b43240c9718dd58b4967c5114342a86c", 18),
     ("ole-openleverage", "ethereum", "OLE", "0x92cfbec26c206c90aee3b7c66a9ae673754fab7e", 18),
+    ("ole-openleverage", "bnb", "OLE", "0xa865197a84e780957422237b5d152772654341f3", 18),
     ("omg-omisego", "ethereum", "OMG", "0xd26114cd6ee289accf82350c8d8487fedb8a0c07", 18),
     ("one-harmony", "ethereum", "ONE", "0x799a4202c12ca952cb311598a024c80ed371a41e", 18),
     ("orbs-orbs", "ethereum", "ORBS", "0xff56cc6b1e6ded347aa0b7676c85ab0b3d08b0fa", 18),
@@ -928,7 +942,7 @@ VALUES
     ('revv-revv', 'ethereum', 'REVV', '0x557b933a7c2c45672b610f8954a3deb39a51a8ca', 18),
     ('rvp-revolution-populi', 'ethereum', 'RVP', '0x17ef75aa22dd5f6c2763b8304ab24f40ee54d48a', 18),
     ('synr-syndicate-token', 'ethereum', 'SYNR', '0xbc6e06778708177a18210181b073da747c88490a', 18),
-    ('tbtc-tbtc', 'ethereum', 'TBTC', '0x8daebade922df735c38c80c7ebd708af50815faa', 18),
+    -- ('tbtc-tbtc', 'ethereum', 'TBTC', '0x8daebade922df735c38c80c7ebd708af50815faa', 18), Remove feed with price anomaly
     ('unn-union-protocol-governance-token', 'ethereum', 'UNN', '0x226f7b842e0f0120b7e194d05432b3fd14773a9d', 18),
     ('wstr-wrappedstar', 'ethereum', 'WSTR', '0xf0dc76c22139ab22618ddfb498be1283254612b1', 18),
     ('xcn-chain', 'ethereum', 'XCN', '0xa2cd3d43c775978a96bdbf12d733d5a1ed94fb18', 18),
@@ -1116,7 +1130,7 @@ VALUES
     ('pussy-pussy-token', 'ethereum', 'PUSSY', '0x9196e18bc349b1f64bc08784eae259525329a1ad', 18),
     ('kuma-kuma-inu', 'ethereum', 'KUMA', '0x48c276e8d03813224bb1e55f953adb6d02fd3e02', 18),
     ('cor-coreto', 'ethereum', 'COR', '0x9c2dc0c3cc2badde84b0025cf4df1c5af288d835', 18),
-    ('shih-shih-tzu', 'ethereum', 'SHIH', '0x841fb148863454a3b3570f515414759be9091465', 18),
+    -- ('shih-shih-tzu', 'ethereum', 'SHIH', '0x841fb148863454a3b3570f515414759be9091465', 18), Broken price feed
     ('cqt-covalent', 'ethereum', 'CQT', '0xd417144312dbf50465b1c641d016962017ef6240', 18),
     ('glq-graphlinq', 'ethereum', 'GLQ', '0x9f9c8ec3534c3ce16f928381372bfbfbfb9f4d24', 18),
     ('dfyn-dfyn-network', 'ethereum', 'DFYN', '0x9695e0114e12c0d3a3636fab5a18e6b737529023', 18),
@@ -1543,6 +1557,7 @@ VALUES
     ('zxc-0xcert', 'ethereum', 'ZXC', '0x83e2be8d114f9661221384b3a50d24b96a5653f5', 18),
     ("gyen-gyen", "ethereum", "ibJPY", "0x5555f75e3d5278082200fb451d1b6ba946d8e13b", 18),
     ("chf-swiss-franc-token", "ethereum", "ibCHF", "0x1cc481ce2bd2ec7bf67d1be64d4878b16078f309", 18),
+    ("stmatic-lido-staked-matic", "ethereum", "STMATIC", "0x9ee91F9f426fA633d227f7a9b000E28b9dfd8599", 18),
 
     ("dai-dai", "gnosis", "WXDAI", "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18),
     ("usdc-usd-coin", "gnosis", "USDC", "0xddafbb505ad214d7b80b1f830fccc89b60fb7a83", 6),
@@ -1645,6 +1660,9 @@ VALUES
     ("usdc-usd-coin", "polygon", "USDC", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", 6),
     ("usdt-tether", "polygon", "USDT", "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", 6),
     ("wbtc-wrapped-bitcoin", "polygon", "WBTC", "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6", 8),
+    ("bets-betswirl", "polygon", "BETS", "0x9246a5f10a79a5a939b0c2a75a3ad196aafdb43b", 18),
+    ("eth-ethereum", "polygon", "WETH", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", 18),
+    ("mimatic-mimatic", "polygon", "MIMATIC", "0xa3fa99a148fa48d14ed51d610c367c61876997f1", 18),
 
     ("aury-aurory", "solana", "AURY", "AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP", 9),
     ("btc-bitcoin", "solana", "BTC", "9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E", 6),
@@ -1667,6 +1685,4 @@ VALUES
     ("ust-terrausd", "solana", "UST", "9vMJfxuKxXBoEa7rM12mYLMwTacLMLDJqHozw96WQL8i", 6),
     ("usdc-usd-coin", "solana", "USDC", "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", 6),
     ("usdt-tether", "solana", "USDT", "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", 6)
-
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
-

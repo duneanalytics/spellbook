@@ -1,4 +1,4 @@
-{{ config( alias='nft') }}
+{{ config( alias='nft', tags=['static']) }}
 
 SELECT LOWER(contract_address) AS contract_address, name, symbol, standard, category
 FROM (VALUES

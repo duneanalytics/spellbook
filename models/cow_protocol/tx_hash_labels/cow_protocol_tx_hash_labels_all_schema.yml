@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: cow_protocol_tx_hash_labels_all
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - name
+            - category
+            - blockchain
+    meta:
+      blockchain: ethereum
+      sector: labels
+      category: dex
+      contributors: gentrexha
+    config:
+      tags: ['labels', 'ethereum', 'tx_hash']
+    description: "Labels across chains and categories for CoW Protocol trades"
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: tx_hash
+        description: "Label transaction hash"
+      - name: name
+        description: "Label name"
+      - name: category
+        description: "Label category"
+      - name: contributor
+        description: "Wizard(s) contributing to labels"
+      - name: source
+        description: "How were labels generated (could be static or query)"
+      - name: created_at
+        description: "When were labels created"
+      - name: updated_at
+        description: "When were labels updated for the last time"
