@@ -1,16 +1,30 @@
 version: 2
 
 models:
-  - name: fraxswap_trades
+  - name: wombat_bnb_trades
     meta:
-      blockchain: avalanche_c,  bnb, polygon, ethereum
+      blockchain: bnb
       sector: dex
-      project: fraxswap
-      contributors: zhongyiio, kndlexi
+      project: wombat
+      contributors: umer_h_adil
     config:
-      tags: ['avalanche_c', 'bnb', 'polygon', 'ethereum', 'trades', 'dex', 'fraxswap', 'zhongyiio', 'kndlexi', 'hosuke']
+      tags: ['bnb', 'trades', 'dex', 'umer_h_adil']
     description: >
-        Fraxswap trades on all chains across all contracts and versions. This table will load dex trades downstream.
+        Wombat trades (on BNB). This table loads into dex.trades downstream.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_seed:
+          blockchain: bnb
+          project: wombat
+          version: 1
     columns:
       - &blockchain
         name: blockchain
