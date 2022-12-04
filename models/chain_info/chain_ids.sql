@@ -32,7 +32,7 @@ raw:[0].explorers AS explorers
 
 FROM json_data
 
-{% for i in range( 1,(SELECT lenght_json FROM json_data) )) -%}
+{% for i in range( 1,(SELECT length_json FROM json_data) )) -%}
 UNION ALL
 SELECT
 raw:[i].name as chain_name,
