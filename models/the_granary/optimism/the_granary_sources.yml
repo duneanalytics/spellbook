@@ -7,7 +7,7 @@ sources:
     tables:
     - name: AToken_evt_Initialized
       loaded_at_field: evt_block_time
-      description: "aToken initialization events - supply tokens."
+      description: "aToken initialization events, supply tokens."
       freshness:
         warn_after: { count: 12, period: hour }
         error_after: { count: 24, period: hour }
@@ -42,7 +42,7 @@ sources:
 
     - name: StableDebtToken_evt_Initialized
       loaded_at_field: evt_block_time
-      description: "aToken initialization events - stable debt tokens."
+      description: "aToken initialization events, stable debt tokens."
       freshness:
         warn_after: { count: 12, period: hour }
         error_after: { count: 24, period: hour }
@@ -65,7 +65,7 @@ sources:
       
     - name: VariableDebtToken_evt_Initialized
       loaded_at_field: evt_block_time
-      description: "aToken initialization events - variable debt tokens."
+      description: "aToken initialization events, variable debt tokens."
       freshness:
         warn_after: { count: 12, period: hour }
         error_after: { count: 24, period: hour }

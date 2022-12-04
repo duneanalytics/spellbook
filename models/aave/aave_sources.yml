@@ -6,7 +6,7 @@ sources:
 
     tables:
     - name: AToken_evt_Initialized
-      description: "aToken initialization events - supply tokens."
+      description: "aToken initialization events, supply tokens."
       freshness:
         warn_after: { count: 12, period: hour }
         error_after: { count: 24, period: hour }
@@ -41,7 +41,7 @@ sources:
           description: "Name of the aToken"
 
     - name: StableDebtToken_evt_Initialized
-      description: "aToken initialization events - stable debt tokens."
+      description: "aToken initialization events, stable debt tokens."
       freshness:
         warn_after: { count: 12, period: hour }
         error_after: { count: 24, period: hour }
@@ -64,7 +64,7 @@ sources:
           description: "Name of the aToken" 
       
     - name: VariableDebtToken_evt_Initialized
-      description: "aToken initialization events - variable debt tokens."
+      description: "aToken initialization events, variable debt tokens."
       freshness:
         warn_after: { count: 12, period: hour }
         error_after: { count: 24, period: hour }
@@ -85,7 +85,7 @@ sources:
 
     tables:
     - name: AToken_evt_Initialized
-      description: "aToken initialization events - supply tokens."
+      description: "aToken initialization events, supply tokens."
       freshness:
         warn_after: { count: 12, period: hour }
         error_after: { count: 24, period: hour }
@@ -102,7 +102,7 @@ sources:
         - *aTokenName
 
     - name: StableDebtToken_evt_Initialized
-      description: "aToken initialization events - stable debt tokens."
+      description: "aToken initialization events, stable debt tokens."
       freshness:
         warn_after: { count: 12, period: hour }
         error_after: { count: 24, period: hour }
@@ -119,7 +119,7 @@ sources:
         - *debtTokenName
       
     - name: VariableDebtToken_evt_Initialized
-      description: "aToken initialization events - variable debt tokens."
+      description: "aToken initialization events, variable debt tokens."
       freshness:
         warn_after: { count: 12, period: hour }
         error_after: { count: 24, period: hour }
@@ -139,7 +139,7 @@ sources:
     description: "Decoded contracts for Aave on Polygon"
     tables:
     - name: AToken_evt_Initialized
-      description: "aToken initialization events - supply tokens."
+      description: "aToken initialization events, supply tokens."
       freshness:
         warn_after: { count: 12, period: hour }
         error_after: { count: 24, period: hour }
@@ -156,7 +156,7 @@ sources:
         - *aTokenName
 
     - name: StableDebtToken_evt_Initialized
-      description: "aToken initialization events - stable debt tokens."
+      description: "aToken initialization events, stable debt tokens."
       freshness:
         warn_after: { count: 12, period: hour }
         error_after: { count: 24, period: hour }
@@ -173,7 +173,7 @@ sources:
         - *debtTokenName
       
     - name: VariableDebtToken_evt_Initialized
-      description: "aToken initialization events - variable debt tokens."
+      description: "aToken initialization events, variable debt tokens."
       freshness:
         warn_after: { count: 12, period: hour }
         error_after: { count: 24, period: hour }
@@ -193,7 +193,7 @@ sources:
     description: "Decoded contracts for Aave on Avalanche"
     tables:
     - name: AToken_evt_Initialized
-      description: "aToken initialization events - supply tokens."
+      description: "aToken initialization events, supply tokens."
       freshness:
         warn_after: { count: 12, period: hour }
         error_after: { count: 24, period: hour }
@@ -210,7 +210,7 @@ sources:
         - *aTokenName
 
     - name: StableDebtToken_evt_Initialized
-      description: "aToken initialization events - stable debt tokens."
+      description: "aToken initialization events, stable debt tokens."
       freshness:
         warn_after: { count: 12, period: hour }
         error_after: { count: 24, period: hour }
@@ -227,7 +227,7 @@ sources:
         - *debtTokenName
       
     - name: VariableDebtToken_evt_Initialized
-      description: "aToken initialization events - variable debt tokens."
+      description: "aToken initialization events, variable debt tokens."
       freshness:
         warn_after: { count: 12, period: hour }
         error_after: { count: 24, period: hour }
