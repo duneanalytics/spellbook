@@ -3,13 +3,14 @@ version: 2
 sources:
   - name: aave_v3_optimism
     description: "Decoded contracts for Aave on Optimism"
-    freshness:
-          warn_after: { count: 12, period: hour }
-          error_after: { count: 24, period: hour }
+
     tables:
      - name: AToken_evt_Initialized
-        loaded_at_field: evt_block_time
         description: "aToken initialization events - supply tokens."
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        loaded_at_field: evt_block_time
         columns:
         - &contract_address
           name: contract_address
@@ -40,8 +41,11 @@ sources:
           description: "Name of the aToken"
 
       - name: StableDebtToken_evt_Initialized
-        loaded_at_field: evt_block_time
         description: "aToken initialization events - stable debt tokens."
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        loaded_at_field: evt_block_time
         columns:
         - *contract_address  
         - *evt_block_number
@@ -60,8 +64,11 @@ sources:
           description: "Name of the aToken" 
       
       - name: VariableDebtToken_evt_Initialized
-        loaded_at_field: evt_block_time
         description: "aToken initialization events - variable debt tokens."
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        loaded_at_field: evt_block_time
         columns:
         - *contract_address  
         - *evt_block_number
@@ -81,13 +88,14 @@ sources:
 
   - name: aave_v3_arbitrum
     description: "Decoded contracts for Aave on Arbitrum"
-    freshness:
-          warn_after: { count: 12, period: hour }
-          error_after: { count: 24, period: hour }
+
     tables:
      - name: AToken_evt_Initialized
-        loaded_at_field: evt_block_time
         description: "aToken initialization events - supply tokens."
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        loaded_at_field: evt_block_time
         columns:
         - &contract_address
           name: contract_address
@@ -118,8 +126,11 @@ sources:
           description: "Name of the aToken"
 
       - name: StableDebtToken_evt_Initialized
-        loaded_at_field: evt_block_time
         description: "aToken initialization events - stable debt tokens."
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        loaded_at_field: evt_block_time
         columns:
         - *contract_address  
         - *evt_block_number
@@ -138,8 +149,11 @@ sources:
           description: "Name of the aToken" 
       
       - name: VariableDebtToken_evt_Initialized
-        loaded_at_field: evt_block_time
         description: "aToken initialization events - variable debt tokens."
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        loaded_at_field: evt_block_time
         columns:
         - *contract_address  
         - *evt_block_number
@@ -160,13 +174,13 @@ sources:
   - name: aave_v3_polygon
     description: "Decoded contracts for Aave on Polygon"
 
-    freshness:
-          warn_after: { count: 12, period: hour }
-          error_after: { count: 24, period: hour }
     tables:
      - name: AToken_evt_Initialized
-        loaded_at_field: evt_block_time
         description: "aToken initialization events - supply tokens."
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        loaded_at_field: evt_block_time
         columns:
         - &contract_address
           name: contract_address
@@ -197,8 +211,11 @@ sources:
           description: "Name of the aToken"
 
       - name: StableDebtToken_evt_Initialized
-        loaded_at_field: evt_block_time
         description: "aToken initialization events - stable debt tokens."
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        loaded_at_field: evt_block_time
         columns:
         - *contract_address  
         - *evt_block_number
@@ -217,8 +234,11 @@ sources:
           description: "Name of the aToken" 
       
       - name: VariableDebtToken_evt_Initialized
-        loaded_at_field: evt_block_time
         description: "aToken initialization events - variable debt tokens."
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        loaded_at_field: evt_block_time
         columns:
         - *contract_address  
         - *evt_block_number
@@ -239,13 +259,13 @@ sources:
   - name: aave_v3_avalanche_c
     description: "Decoded contracts for Aave on Avalanche"
 
-    freshness:
-          warn_after: { count: 12, period: hour }
-          error_after: { count: 24, period: hour }
     tables:
      - name: AToken_evt_Initialized
-        loaded_at_field: evt_block_time
         description: "aToken initialization events - supply tokens."
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        loaded_at_field: evt_block_time
         columns:
         - &contract_address
           name: contract_address
@@ -276,8 +296,11 @@ sources:
           description: "Name of the aToken"
 
       - name: StableDebtToken_evt_Initialized
-        loaded_at_field: evt_block_time
         description: "aToken initialization events - stable debt tokens."
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        loaded_at_field: evt_block_time
         columns:
         - *contract_address  
         - *evt_block_number
@@ -296,8 +319,11 @@ sources:
           description: "Name of the aToken" 
       
       - name: VariableDebtToken_evt_Initialized
-        loaded_at_field: evt_block_time
         description: "aToken initialization events - variable debt tokens."
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        loaded_at_field: evt_block_time
         columns:
         - *contract_address  
         - *evt_block_number
@@ -313,5 +339,4 @@ sources:
           description: "Symbol of the aToken"
         - &debtTokenName
           name: debtTokenName
-          description: "Name of the aToken" 
-          
+          description: "Name of the aToken"
