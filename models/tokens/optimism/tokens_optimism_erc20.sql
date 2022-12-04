@@ -1,4 +1,9 @@
-{{ config( alias='erc20', tags=['static'])}}
+{{ config( alias='erc20_detailed', tags=['static'],
+    post_hook='{{ expose_spells(\'["optimism"]\',
+                                    "sector",
+                                    "tokens",
+                                    \'["msilb7"]\') }}')}}
+
 
 -- token_type: What best describes this token? Is it a vault or LP token, or a lowest-level underlying token?
   -- underlying: This is the rawest form of the token (i.e. USDC, DAI, WETH, OP, UNI, GTC) - Counted in On-Chain Value

@@ -23,6 +23,8 @@ models:
         description: "Is this token a receipt (vault, LP, etc) token, or a lowest-level underlying token (i.e. USDC, DAI, OP)?"
       - name: token_mapping_source
         description: "The source of ERC20 Token Information"
+      - name: is_counted_in_tvl
+        description: "Should we count this token in TVL or On-Chain Value calculations. 1 if yes, 0 if no."
 
   - name: tokens_optimism_nft
     meta:
