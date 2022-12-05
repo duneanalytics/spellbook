@@ -106,7 +106,7 @@ SELECT 'ethereum' AS blockchain
 , prof.evt_block_time AS block_time
 , date_trunc('day', prof.evt_block_time) AS block_date
 , prof.evt_block_number AS block_number
-, COALESCE(bytea2numeric_v2(token_id_bytes)::BIGINT, bytea2numeric_v2(token_id_bytes)) AS token_id
+, CAST(COALESCE(bytea2numeric_v2(token_id_bytes)::BIGINT, bytea2numeric_v2(token_id_bytes)) AS VARCHAR(100)) AS token_id
 , nft_token.name AS collection
 , CAST(inv.price AS DECIMAL(38,0)) AS amount_raw
 , inv.price/POWER(10, currency_token.decimals) AS amount_original
