@@ -61,7 +61,7 @@ WITH base_pools AS (
         {% if is_incremental() %}
         WHERE mp.evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
-        GROUP BY 1,2,3,4 --unique
+        GROUP BY 1 ,3,4 --unique (Will throw an error if we group by 2 - since it's = 0)
     ) mps
     -- the exchange address appears as an erc20 minted to itself (not in the deploymeny event)
     INNER JOIN {{ source('erc20_optimism','evt_transfer') }} et
