@@ -47,12 +47,7 @@ linked_address_sorted as (
     -- Normalize linked addresses to master address
     select blockchain,
         (case when address_a > address_b then address_b else address_a end) as master_address,
-        address_a as alternative_address
-    from linked_address_nft_trade
-    union
-    select blockchain,
-        (case when address_a > address_b then address_b else address_a end) as master_address,
-        address_b as alternative_address
+        (case when address_a > address_b then address_a else address_b end) as alternative_address
     from linked_address_nft_trade
 ),
 

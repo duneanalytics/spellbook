@@ -28,7 +28,7 @@ FROM {{ source('erc721_avalanche_c','evt_transfer') }} t
 {% if is_incremental() %}
 WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
-UNION
+UNION ALL
 SELECT 'avalanche_c' AS blockchain
 , t.evt_block_time AS block_time
 , date_trunc('day', t.evt_block_time) AS block_date
@@ -51,7 +51,7 @@ FROM {{ source('erc1155_avalanche_c','evt_transfersingle') }} t
 {% if is_incremental() %}
 WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
-UNION
+UNION ALL
 SELECT 'avalanche_c' AS blockchain
 , evt_block_time AS block_time
 , date_trunc('day', evt_block_time) AS block_date

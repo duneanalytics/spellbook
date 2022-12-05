@@ -29,7 +29,7 @@ FROM {{ source('erc721_ethereum','evt_transfer') }} t
 {% if is_incremental() %}
 WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
-UNION
+UNION ALL
 SELECT 'ethereum' as blockchain
 , t.evt_block_time AS block_time
 , date_trunc('day', t.evt_block_time) AS block_date
@@ -52,7 +52,7 @@ FROM {{ source('erc1155_ethereum','evt_transfersingle') }} t
 {% if is_incremental() %}
 WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
-UNION
+UNION ALL
 SELECT 'ethereum' as blockchain
 , evt_block_time AS block_time
 , date_trunc('day', evt_block_time) AS block_date

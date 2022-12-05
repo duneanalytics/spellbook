@@ -29,7 +29,7 @@ FROM {{ source('erc721_arbitrum','evt_transfer') }} t
 {% if is_incremental() %}
 WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
-UNION
+UNION ALL
 SELECT 'arbitrum' AS blockchain
 , t.evt_block_time AS block_time
 , date_trunc('day', t.evt_block_time) AS block_date
@@ -52,7 +52,7 @@ FROM {{ source('erc1155_arbitrum','evt_transfersingle') }} t
 {% if is_incremental() %}
 WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
-UNION
+UNION ALL
 SELECT 'arbitrum' AS blockchain
 , evt_block_time AS block_time
 , date_trunc('day', evt_block_time) AS block_date
