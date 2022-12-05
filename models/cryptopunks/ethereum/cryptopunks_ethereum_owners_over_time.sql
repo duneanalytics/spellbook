@@ -1,17 +1,12 @@
 {{ config(
         alias ='owners_over_time',
-        -- partition_by = ['day'],
-        -- materialized = 'incremental',
-        -- file_format = 'delta',
-        -- incremental_strategy = 'merge',
-        -- unique_key='day',
+        unique_key='day',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cryptopunks",
                                     \'["cat"]\') }}'
         )
 }}
-
 
 with transfers as (    
     select  date_trunc('day',evt_block_time) as day 
