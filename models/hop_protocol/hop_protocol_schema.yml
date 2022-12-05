@@ -69,6 +69,9 @@ models:
       - &bridged_token_fee_address
         name: bridged_token_fee_address
         description: Bridged Token Fee Address
+      - &is_native_bridge
+        name: is_native_bridge
+        description: Did this use the native token bridge? 1 if true, 0 if false
       - &block_number
         name: block_number
         description: Block number of the transaction

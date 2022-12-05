@@ -33,15 +33,27 @@ FROM
                 , bridged_token_fee_amount_raw
                 , bridged_token_address
                 , bridged_token_fee_address
-                , block_number
-                , tx_hash
+                , CASE WHEN sb.tx_hash IS NOT NULL
+                        THEN 1 ELSE 0
+                 END AS is_native_bridge
+                , h.block_number
+                , h.tx_hash
                 , tx_from
                 , tx_to
                 , transfer_id
                 , evt_index
                 , trace_address
                 , tx_method_id
-        FROM {{ ref(hop_tf_model) }}
+        FROM {{ ref(hop_tf_model) }} h
+        LEFT JOIN
+        {% if hop_tf_model == 'hop_protocol_optimism_bridge_transfers' %}
+                {{ref('ovm_optimism_standard_bridge_transfers')}} sb
+        {% endif %}
+        -- Add if statements for other chains here
+        ON sb.tx_hash = h.tx_hash
+        AND sb.block_number = h.block_number
+        AND sb.block_date = h.block_date
+
     {% if not loop.last %}
     UNION ALL
     {% endif %}

@@ -140,7 +140,9 @@ LEFT JOIN {{ ref('hop_protocol_bridge_addresses') }} hba
 LEFT JOIN {{ source('optimism', 'transactions') }} t
         ON t.block_number = tf.block_number
         AND t.hash = tf.tx_hash
+        {% if is_incremental() %}
         AND t.block_time >= (NOW() - interval '14 days')
+        {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc
     ON erc.blockchain = hba.blockchain
     AND erc.contract_address = hba.`l2CanonicalToken`
@@ -149,7 +151,9 @@ LEFT JOIN {{ source('prices', 'usd') }} p
     ON p.minute = DATE_TRUNC('minute',tf.block_time)
     AND p.contract_address = hba.`l2CanonicalToken`
     AND p.blockchain = hba.blockchain
+    {% if is_incremental() %}
     AND p.minute >= (NOW() - interval '14 days')
+    {% endif %}
     
 LEFT JOIN {{ ref('chain_ids') }} cid_source
     ON cid_source.chain_id = tf.source_chain_id
