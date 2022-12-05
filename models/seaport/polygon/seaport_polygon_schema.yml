@@ -19,15 +19,18 @@ models:
             - sub_type
             - sub_idx
     columns:
-      - &block_time    
+      - &block_time
         name: block_time
         description: "Block time in UTC"
+      - &block_date
+        name: block_date
+        description: "Block date in UTC"
       - &block_number
         name: block_number
         description: "Block number of transaction"
       - &tx_hash
         name: tx_hash
-        description: "Hash ID of transaction" 
+        description: "Hash ID of transaction"
       - &evt_index
         name: evt_index
         description: "Event log index"
@@ -36,7 +39,7 @@ models:
         description: "Exploded column : `offer`|`consideration`"
       - &sub_idx
         name: sub_idx
-        description: "Index number of `sub_type`" 
+        description: "Index number of `sub_type`"
       - &offer_first_item_type
         name: offer_first_item_type
         description: "First item_type of offer in this trade : `native`|`erc20`|`erc721`|`erc1155`"
@@ -132,10 +135,10 @@ models:
             - token_id
             - sub_type
             - sub_idx
-      - nft_trades_column_values_matching:
-          match_columns: ['block_date', 'tx_hash', 'evt_index', 'nft_contract_address', 'token_id', 'sub_type', 'sub_idx']
-          check_columns: ['buyer', 'seller']
-          seed_file: ref('seaport_nft_trades_seed')
+      - check_seaport_seed:
+          blockchain: polygon
+          project: seaport
+          version: v1
     columns:
       - &blockchain
         name: blockchain
@@ -146,9 +149,7 @@ models:
       - &version
         name: version
         description: "Project version"
-      - &block_date
-        name: block_date
-        description: "block date"
+      - *block_date
       - *block_time
       - &seller
         name: seller
@@ -252,6 +253,7 @@ models:
       - *tx_hash
       - *evt_index
       - *sub_idx
+      - *sub_type
       - &tx_from
         name: tx_from
         description:  "Address that initiated the transaction"
@@ -261,7 +263,7 @@ models:
       - &right_hash
         name: right_hash
         description: "right 8 character of data column on Transaction"
-      - &zone_address 
+      - &zone_address
         name: zone_address
         description: "zone address of Seaport transaction"
       - &estimated_price
