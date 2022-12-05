@@ -213,14 +213,52 @@ models:
     config:
       tags: ['ethereum', 'cryptopunks', 'owners']
     description: > 
-        CryptoPunks current owners per token id 
+        CryptoPunks current owners per token id    
     columns:
       - name: punk_id
         description: "CryptoPunk ID #"
+        tests:
+          - unique        
       - name: current_owner
         description: "Wallet that currently holds each CryptoPunk ID #"
       - name: last_transfer_time
         description: "Last recorded transfer"
+
+  - name: cryptopunks_ethereum_punk_transfers
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [cat]
+    config:
+      tags: ['ethereum', 'cryptopunks', 'transfers']
+    description: > 
+        All CryptoPunks transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time_week
+            - punk_id
+            - evt_tx_hash
+            - evt_index
+    columns:
+      - name: from
+        description: "CryptoPunk transferred from"
+      - name: to
+        description: "CryptoPunk transferred to"
+      - name: evt_block_time
+        description: "Time of transfer"
+      - name: evt_block_time_week
+        description: "Week of transfer"
+      - name: evt_block_number
+        description: "Block number of transfer"
+      - name: evt_index
+        description: "Index of transfer"   
+      - name: punk_id
+        description: "Punk ID #"   
+      - name: evt_tx_hash
+        description: "Transfer transaction hash"
+      - name: punk_id_tx_rank
+        description: "Transfer rank per Punk ID # (1 = most recent)"   
 
   - name: cryptopunks_ethereum_listings_over_time
     meta:
