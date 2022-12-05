@@ -1,5 +1,6 @@
 {{
   config(
+        schema = 'hop_protocol',
         alias='hop_bridge_addresses',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",

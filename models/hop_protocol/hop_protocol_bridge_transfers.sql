@@ -1,4 +1,5 @@
 {{ config(
+        schema = 'hop_protocol',
         alias ='hop_protocol_bridge_transfers',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
