@@ -22,112 +22,118 @@
 
 with dexs as
 (
-    -- Stableswap
-    SELECT
-        'stable' AS pool_type, -- has implications for decimals for curve
-        t.evt_block_time AS block_time,
-        t.evt_block_number,
-        t.buyer AS taker,
-        '' AS maker,
-        -- when amount0 is negative it means taker is buying token0 from the pool
-        `tokens_bought` AS token_bought_amount_raw,
-        `tokens_sold` AS token_sold_amount_raw,
-        NULL AS amount_usd,
-        ta.token AS token_bought_address,
-        tb.token AS token_sold_address,
-        t.contract_address as project_contract_address,
-        t.evt_tx_hash AS tx_hash,
-        '' AS trace_address,
-        t.evt_index, 
-        bought_id, 
-        sold_id,
-        NULL AS underlying_decimals --used for metaswaps
-    FROM {{ source('curvefi_optimism', 'StableSwap_evt_TokenExchange') }} t
-    INNER JOIN {{ ref('curvefi_optimism_pools') }} ta
-        ON t.contract_address = ta.pool
-        AND t.bought_id = ta.tokenid
-    INNER JOIN {{ ref('curvefi_optimism_pools') }} tb
-        ON t.contract_address = tb.pool
-        AND t.sold_id = tb.tokenid
-    {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc('day', now() - interval '1 week')
-    {% endif %}
+SELECT
+    pool_type,
+    block_time,
+    block_number,
+    taker,
+    maker,
+    token_bought_amount_raw,
+    token_sold_amount_raw,
+    ta.token AS token_bought_address,
+    tb.token AS token_sold_address,
+    project_contract_address,
+    tx_hash,
+    trace_address,
+    evt_index,
+    bought_id,
+    sold_id,
+    underlying_decimals
+    FROM (
+        -- Stableswap
+        SELECT
+            'stable' AS pool_type, -- has implications for decimals for curve
+            t.evt_block_time AS block_time,
+            t.evt_block_number AS block_number,
+            t.buyer AS taker,
+            '' AS maker,
+            -- when amount0 is negative it means taker is buying token0 from the pool
+            `tokens_bought` AS token_bought_amount_raw,
+            `tokens_sold` AS token_sold_amount_raw,
+            t.contract_address as project_contract_address,
+            t.evt_tx_hash AS tx_hash,
+            '' AS trace_address,
+            t.evt_index, 
+            bought_id, 
+            sold_id,
+            NULL AS underlying_decimals --used for metaswaps
+        FROM {{ source('curvefi_optimism', 'StableSwap_evt_TokenExchange') }} t
+        {% if is_incremental() %}
+        WHERE t.evt_block_time >= date_trunc('day', now() - interval '1 week')
+        {% endif %}
 
-    UNION ALL
+        UNION ALL
 
-    -- MetaPoolSwap
-    SELECT
-        'meta' AS pool_type, -- has implications for decimals for curve
-        t.evt_block_time AS block_time,
-        t.evt_block_number,
-        t.buyer AS taker,
-        '' AS maker,
-        -- when amount0 is negative it means taker is buying token0 from the pool
-        `tokens_bought` AS token_bought_amount_raw,
-        `tokens_sold` AS token_sold_amount_raw,
-        NULL AS amount_usd,
-        ta.token AS token_bought_address,
-        tb.token AS token_sold_address,
-        t.contract_address as project_contract_address,
-        t.evt_tx_hash AS tx_hash,
-        '' AS trace_address,
-        t.evt_index, 
-        bought_id, 
-        sold_id,
-        CASE WHEN bought_id = 0
-            THEN ea.decimals 
-            ELSE eb.decimals 
-            END AS underlying_decimals --used if meta
-    FROM {{ source('curvefi_optimism', 'MetaPoolSwap_evt_TokenExchangeUnderlying') }} t
+        -- MetaPoolSwap
+        SELECT
+            'meta' AS pool_type, -- has implications for decimals for curve
+            t.evt_block_time AS block_time,
+            t.evt_block_number,
+            t.buyer AS taker,
+            '' AS maker,
+            -- when amount0 is negative it means taker is buying token0 from the pool
+            `tokens_bought` AS token_bought_amount_raw,
+            `tokens_sold` AS token_sold_amount_raw,
+            t.contract_address as project_contract_address,
+            t.evt_tx_hash AS tx_hash,
+            '' AS trace_address,
+            t.evt_index, 
+            bought_id, 
+            sold_id,
+            CASE WHEN bought_id = 0
+                THEN ea.decimals 
+                ELSE eb.decimals 
+                END AS underlying_decimals --used if meta
+        FROM {{ source('curvefi_optimism', 'MetaPoolSwap_evt_TokenExchangeUnderlying') }} t
+        {% if is_incremental() %}
+        WHERE t.evt_block_time >= date_trunc('day', now() - interval '1 week')
+        {% endif %}
+    
+
+        UNION ALL
+
+        --BasicPoolSwap --to replace with decoded contract eventually
+        --example https://optimistic.etherscan.io/address/0x3da3153e26a230d918bb9f9428a8d60349b73379#events
+        SELECT
+            'basic' as pool_type,
+            block_time,
+            block_number,
+            substring(topic2,25,40) AS taker,
+            '' AS maker,
+            conv(substring(data,3+64*3,64),16,10) as token_bought_amount_raw, --2nd bought
+            conv(substring(data,3+64*1,64),16,10) as token_sold_amount_raw, --1st sold
+            contract_address AS project_contract_address,
+            l.tx_hash,
+            '' AS trace_address,
+            index AS evt_index,
+            conv(substring(data,3+64*2,64),16,10) AS bought_id,
+            conv(substring(data,3+64*0,64),16,10) AS sold_id,
+            NULL AS underlying_decimals
+        FROM {{ source('optimism', 'logs') }} l
+        INNER JOIN {{ ref('curvefi_optimism_pools') }} ta
+            ON l.contract_address = ta.pool
+            AND conv(substring(data,3+64*3,64),16,10) = ta.tokenid --t.bought_id = ta.tokenid
+            AND ta.version = 'Basic Pool'
+        INNER JOIN {{ ref('curvefi_optimism_pools') }} tb
+            ON l.contract_address = tb.pool
+            AND conv(substring(data,3+64*1,64),16,10) = tb.tokenid --t.sold_id = tb.tokenid
+            AND tb.version = 'Basic Pool'
+        WHERE l.topic1 = '0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140'
+        AND l.topic2 IS NOT NULL AND l.data IS NOT NULL
+        {% if is_incremental() %}
+        AND l.block_time >= date_trunc('day', now() - interval '1 week')
+        {% endif %}
+    ) cp
     INNER JOIN {{ ref('curvefi_optimism_pools') }} ta
-        ON t.contract_address = ta.pool
-        AND t.bought_id = ta.tokenid
+        ON cp.project_contract_address = ta.pool
+        AND cp.bought_id = ta.tokenid
     INNER JOIN {{ ref('curvefi_optimism_pools') }} tb
-        ON t.contract_address = tb.pool
-        AND t.sold_id = tb.tokenid
+        ON cp.project_contract_address = tb.pool
+        AND cp.sold_id = tb.tokenid
     LEFT JOIN {{ ref('tokens_optimism_erc20') }} ea
         ON ea.contract_address = ta.token
     LEFT JOIN {{ ref('tokens_optimism_erc20') }} eb
         ON eb.contract_address = tb.token
-    {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc('day', now() - interval '1 week')
-    {% endif %}
-
-    UNION ALL
-
-    --BasicPoolSwap --to replace with decoded contract eventually
-    --example https://optimistic.etherscan.io/address/0x3da3153e26a230d918bb9f9428a8d60349b73379#events
-    SELECT
-        'basic' as pool_type,
-        block_time,
-        block_number,
-        substring(topic2,25,40) AS taker,
-        '' AS maker,
-        ta.token as token_bought_amount_raw, --2nd bought
-        tb.token as token_sold_amount_raw, --1st sold
-        NULL AS amount_usd,
-        conv(substring(data,3+64*2,64),16,10) as token_bought_address, --2nd bought
-        conv(substring(data,3+64*2,64),16,10) as token_sold_address, --2nd bought
-        contract_address AS project_contract_address,
-        l.tx_hash,
-        '' AS trace_address,
-        index AS evt_index,
-        conv(substring(data,3+64*3,64),16,10) AS bought_id,
-        conv(substring(data,3+64*1,64),16,10) AS sold_id,
-        NULL AS underlying_decimals
-    FROM {{ source('optimism', 'logs') }} l
-    INNER JOIN {{ ref('curvefi_optimism_pools') }} ta
-        ON l.contract_address = ta.pool
-        AND conv(substring(data,3+64*3,64),16,10) = ta.tokenid --t.bought_id = ta.tokenid
-        AND ta.version = 'Basic Pool'
-    INNER JOIN {{ ref('curvefi_optimism_pools') }} tb
-        ON l.contract_address = tb.pool
-        AND conv(substring(data,3+64*1,64),16,10) = tb.tokenid --t.sold_id = tb.tokenid
-        AND tb.version = 'Basic Pool'
-    WHERE l.topic1 = '0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140'
-    {% if is_incremental() %}
-    AND l.block_time >= date_trunc('day', now() - interval '1 week')
-    {% endif %}
 )
 SELECT DISTINCT
     'optimism' AS blockchain,
@@ -147,7 +153,6 @@ SELECT DISTINCT
     dexs.token_bought_amount_raw,
     dexs.token_sold_amount_raw,
     coalesce(
-        dexs.amount_usd,
 	    --metapools seem to always use the added coin's decimals if it's the one that's bought - even if the other token has less decimals (i.e. USDC)
         dexs.token_bought_amount_raw / POWER(10 , CASE WHEN pool_type = 'meta' AND bought_id = 0 THEN underlying_decimals ELSE COALESCE(erc20a.decimals,p_bought.decimals) END) * p_bought.price,
         dexs.token_sold_amount_raw / POWER(10 , CASE WHEN pool_type = 'meta' AND bought_id = 0 THEN underlying_decimals ELSE COALESCE(erc20b.decimals,p_sold.decimals) END) * p_sold.price
@@ -165,7 +170,7 @@ SELECT DISTINCT
 FROM dexs
 INNER JOIN {{ source('optimism', 'transactions') }} tx
     ON dexs.tx_hash = tx.hash
-    AND dexs.evt_block_number = tx.block_number
+    AND dexs.block_number = tx.block_number
     {% if not is_incremental() %}
     AND tx.block_time >= '{{project_start_date}}'
     {% endif %}

@@ -101,34 +101,57 @@ WITH base_pools AS (
     GROUP BY --1,2,3
         pos, col, pool --unique
 )
-SELECT
-    version
-    , cast( int(tokenid) as string) AS tokenid
-    , token
-    , pool 
-FROM
-(
+    -- handle for wsteth & pools that we're not deployed via the factory.. weird
+    -- info from contract reads 'coins' https://optimistic.etherscan.io/address/0xb90b9b1f91a01ea22a182cd84c1e22222e39b415#readContract
+    -- TODO/TOLINK: Query to check for Curve Pools with swap events that aren't mapped here
+    , custom_pools AS (
+    SELECT version, tokenid, LOWER(token) AS token, lower(pool) AS pool
+    FROM (values
+            --wstETH/ETH
+             ('Basic Pool','0','0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE','0xb90b9b1f91a01ea22a182cd84c1e22222e39b415')
+            ,('Basic Pool','1','0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb','0xb90b9b1f91a01ea22a182cd84c1e22222e39b415')
+            --aPool
+            ,('Basic Pool','0','0x82E64f49Ed5EC1bC6e43DAD4FC8Af9bb3A2312EE','0x66b5792ed50a2a7405ea75c4b6b1913ef4e46661')
+            ,('Basic Pool','1','0x625E7708f30cA75bfd92586e17077590C60eb4cD','0x66b5792ed50a2a7405ea75c4b6b1913ef4e46661')
+            ,('Basic Pool','2','0x6ab707Aca953eDAeFBc4fD23bA73294241490620','0x66b5792ed50a2a7405ea75c4b6b1913ef4e46661')
+        ) a (version, tokenid, token, pool)
+    
+    )
+
+, agg_pools AS (
     SELECT
-        'Base Pool' AS version
-        , tokenid
+        version
+        , int(tokenid) AS tokenid
         , token
         , pool 
-    FROM base_pools
+    FROM
+    (
+        SELECT
+            'Base Pool' AS version
+            , tokenid
+            , token
+            , pool 
+        FROM base_pools
+        UNION ALL
+        SELECT
+            'Meta Pool' AS version
+            , tokenid
+            , token
+            , pool
+        FROM meta_pools
+        UNION ALL
+        SELECT
+            'Basic Pool' AS version
+            , tokenid
+            , token
+            , pool
+        FROM basic_pools
+    ) a
+    GROUP BY --1,2,3,4 --unique
+        version, int(tokenid), token, pool --unique
+)
+SELECT version, CAST(tokenid AS string) AS tokenid, token, pool FROM agg_pools
     UNION ALL
-    SELECT
-        'Meta Pool' AS version
-        , tokenid
-        , token
-        , pool
-    FROM meta_pools
-    UNION ALL
-    SELECT
-        'Basic Pool' AS version
-        , tokenid
-        , token
-        , pool
-    FROM basic_pools
-) a
-GROUP BY --1,2,3,4 --unique
-    version, cast( int(tokenid) as string), token, pool --unique
+SELECT version, CAST(tokenid AS string) AS tokenid, token, pool FROM custom_pools
+    WHERE pool NOT IN (SELECT pool FROM agg_pools) --avoid dupes that are caught by factories
 ;
