@@ -110,6 +110,35 @@ WITH calendar AS
         --GROUP BY source, contract_address,symbol,display_name
         --order by "date" desc, symbol
         UNION
+        --CONVEX FRAX
+        SELECT "date", source,wallet_address, token_address, symbol,display_name, sum(qty) OVER (PARTITION BY wallet_address,symbol ORDER BY "date")as balance 
+        FROM (
+                SELECT "date", 5 as source,wallet_address, contract_address as token_address, symbol,display_name, sum(qty) as qty FROM (
+                    SELECT date_trunc('day', t."evt_block_time") as "date",t."to" as wallet_address,contract_address,tl.symbol,tl.display_name, SUM((value/10^tl.decimals)*-1) as qty 
+                    FROM erc20."ERC20_evt_Transfer" t
+                    INNER JOIN tokemak."view_tokemak_lookup_tokens" tl on tl.address = t.contract_address
+                    INNER JOIN tokemak."view_tokemak_addresses" a ON t."to" = a.address and t."from"='\xF403C135812408BFbE8713b5A23a04b3D48AAE31'
+                    GROUP BY 1,2,3,4,5
+                    UNION 
+                    SELECT  date_trunc('day', t."evt_block_time") as "date",t."from" as wallet_address,contract_address,tl.symbol,tl.display_name, SUM(value/10^tl.decimals) as qty 
+                    FROM erc20."ERC20_evt_Transfer" t
+                    INNER JOIN tokemak."view_tokemak_lookup_tokens" tl on tl.address = t.contract_address
+                    INNER JOIN tokemak."view_tokemak_addresses" a ON t."from" = a.address and t."to"='\x989aeb4d175e16225e39e87d0d97a3360524ad80'
+                    GROUP BY 1,2,3,4,5
+                    UNION
+                    SELECT  date_trunc('day', t."evt_block_time") as "date",t."from" as wallet_address,contract_address,tl.symbol,tl.display_name, SUM(value/10^tl.decimals) as qty 
+                    FROM erc20."ERC20_evt_Transfer" t
+                    INNER JOIN tokemak."view_tokemak_lookup_tokens" tl on tl.address = t.contract_address
+                    INNER JOIN tokemak."view_tokemak_addresses" a ON t."from" = a.address and t."to"='\x72a19342e8f1838460ebfccef09f6585e32db86e' --voting escrow deposit
+                    GROUP BY 1,2,3,4,5
+                    UNION
+                    SELECT  date_trunc('day', t."evt_block_time") as "date",t."from" as wallet_address,contract_address,tl.symbol,tl.display_name, SUM(value/10^tl.decimals*-1) as qty 
+                    FROM erc20."ERC20_evt_Transfer" t
+                    INNER JOIN tokemak."view_tokemak_lookup_tokens" tl on tl.address = t.contract_address
+                    INNER JOIN tokemak."view_tokemak_addresses" a ON t."to" = a.address and t."from"='\x72a19342e8f1838460ebfccef09f6585e32db86e'
+                    GROUP BY 1,2,3,4,5
+                )as t 
+        UNION
         --CONVEX
         SELECT "date", source,wallet_address, token_address, symbol,display_name, sum(qty) OVER (PARTITION BY wallet_address,symbol ORDER BY "date")as balance 
         FROM (

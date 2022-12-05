@@ -163,7 +163,7 @@ CREATE MATERIALIZED VIEW tokemak.view_tokemak_lookup_tokens
     UNION
     SELECT 'fraxUSDC' as symbol, 'Curve.fi FRAX/USDC' as display_name,'\x3175Df0976dFA876431C2E9eE6Bc45b65d3473CC'::bytea as address,''::bytea as pricing_contract, 18::numeric as decimals, true, true, false, false
     UNION
-    SELECT 'CONVEX-fraxUSDC' as symbol, 'Convex FRAX/USDC' as display_name,'\x8a53ee42FB458D4897e15cc7dEa3F75D0F1c3475'::bytea as address,''::bytea as pricing_contract, 18::numeric as decimals, true, true, false, false
+    SELECT 'CONVEX-FRAX-fraxUSDC' as symbol, 'Convex Frax FRAX/USDC' as display_name,'\x8a53ee42FB458D4897e15cc7dEa3F75D0F1c3475'::bytea as address,''::bytea as pricing_contract, 18::numeric as decimals, true, true, false, false
     UNION
     SELECT 'crvFXS/FXS' as symbol, 'Curve.fi crvFXS/FXS' as display_name,'\xF3A43307DcAFa93275993862Aae628fCB50dC768'::bytea as address,''::bytea as pricing_contract, 18::numeric as decimals, true, true, false, false
     UNION
