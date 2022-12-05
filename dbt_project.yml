@@ -708,12 +708,10 @@ models:
       #   +schema: hop_gnosis
       #   +materialized: view
     
-    # ovm:
-    #   +schema: ovm
-    #   +materialized: view
-    ovm_optimism:
-      +schema: ovm_optimism
-      +materialized: view
+    # ovm_optimism:
+    #   optimism:
+    #     +schema: ovm_optimism
+    #     +materialized: view
 
 seeds:
   spellbook:
