@@ -12,7 +12,7 @@ models:
         X2Y2 v1 events on Ethereum
     tests:
       - check_seed:
-          seed_file: x2y2_ethereum_trades_etherscan
+          seed_file: ref('x2y2_ethereum_trades_etherscan')
           match_columns:
             - block_time
             - tx_hash
