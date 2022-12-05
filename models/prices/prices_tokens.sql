@@ -1691,5 +1691,8 @@ VALUES
     ("sol-solana", "solana", "SOL", "So11111111111111111111111111111111111111112", 9),
     ("ust-terrausd", "solana", "UST", "9vMJfxuKxXBoEa7rM12mYLMwTacLMLDJqHozw96WQL8i", 6),
     ("usdc-usd-coin", "solana", "USDC", "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", 6),
-    ("usdt-tether", "solana", "USDT", "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", 6)
+    ("usdt-tether", "solana", "USDT", "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", 6),
+    ("drip-drip-network", "bnb", "DRIP", "0x20f663CEa80FaCE82ACDFA3aAE6862d246cE0333", 18),
+    ("fur-furio", "bnb", "$FUR", "0x48378891d6E459ca9a56B88b406E8F4eAB2e39bF", 18),
+    ("pstn-piston", "bnb", "PSTN", "0xBfACD29427fF376FF3BC22dfFB29866277cA5Fb4", 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
