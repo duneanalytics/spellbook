@@ -56,6 +56,9 @@ with minute as -- This CTE generates a series of minute values
                  {% if is_incremental() %}
                  AND call_block_time >= date_trunc("day", now() - interval '1 week')
                  {% endif %}
+                 {% if not is_incremental() %}
+                 AND call_block_time >= '{{project_start_date}}'
+                 {% endif %}
              )
              select block_minute,
                     token,
@@ -73,6 +76,9 @@ with minute as -- This CTE generates a series of minute values
                  where call_success = true
                  {% if is_incremental() %}
                  AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                 {% endif %}
+                 {% if not is_incremental() %}
+                 AND call_block_time >= '{{project_start_date}}'
                  {% endif %}
              )
              select block_minute,
@@ -92,6 +98,9 @@ with minute as -- This CTE generates a series of minute values
                  {% if is_incremental() %}
                  AND call_block_time >= date_trunc("day", now() - interval '1 week')
                  {% endif %}
+                 {% if not is_incremental() %}
+                 AND call_block_time >= '{{project_start_date}}'
+                 {% endif %}
              )
              select block_minute,
                     token,
@@ -110,6 +119,9 @@ with minute as -- This CTE generates a series of minute values
                  {% if is_incremental() %}
                  AND call_block_time >= date_trunc("day", now() - interval '1 week')
                  {% endif %}
+                 {% if not is_incremental() %}
+                 AND call_block_time >= '{{project_start_date}}'
+                 {% endif %}
              )
              select block_minute,
                     token,
@@ -127,6 +139,9 @@ with minute as -- This CTE generates a series of minute values
                  where call_success = true
                  {% if is_incremental() %}
                  AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                 {% endif %}
+                 {% if not is_incremental() %}
+                 AND call_block_time >= '{{project_start_date}}'
                  {% endif %}
              )
              select block_minute,
@@ -147,6 +162,9 @@ with minute as -- This CTE generates a series of minute values
                  {% if is_incremental() %}
                  AND call_block_time >= date_trunc("day", now() - interval '1 week')
                  {% endif %}
+                 {% if not is_incremental() %}
+                 AND call_block_time >= '{{project_start_date}}'
+                 {% endif %}
              )
              select block_minute,
                     token,
@@ -164,6 +182,9 @@ with minute as -- This CTE generates a series of minute values
                  where call_success = true
                  {% if is_incremental() %}
                  AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                 {% endif %}
+                 {% if not is_incremental() %}
+                 AND call_block_time >= '{{project_start_date}}'
                  {% endif %}
              )
              select block_minute,
