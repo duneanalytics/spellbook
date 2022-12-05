@@ -272,6 +272,8 @@ models:
     columns:
       - name: day
         description: "Day"
+        tests:
+          - unique
       - name: listed_count
         description: "# Punks listed for sale that day"
 

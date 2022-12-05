@@ -1,5 +1,9 @@
 {{ config(
         alias ='owners_over_time',
+        partition_by = ['day'],
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
         unique_key='punk_id',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
@@ -7,6 +11,7 @@
                                     \'["cat"]\') }}'
         )
 }}
+
 
 with original_holders as (
     select address, original_count
@@ -300,20 +305,13 @@ with original_holders as (
         , ('0xffdd93414a062d534d9262def0461939c471d52e', 1)
      ) as temp_table (address, original_count)
 )
-, transfers as (
-    select  to_date('2017-06-22', 'yyyy-MM-dd') as day
-            , address as wallet 
-            , sum(original_count) as punk_balance 
-    from original_holders
-    group by 1,2
-    
-    union all 
-    
+, transfers as (    
     select  date_trunc('day',evt_block_time) as day 
             , `from` as wallet
             , count(*)*-1.0 as punk_balance
     from {{ source('erc20_ethereum','evt_transfer') }}
     where contract_address = lower('0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB') -- cryptopunks
+        {% if is_incremental() %} and evt_block_time >= date_trunc('day', now() - interval '1 week') {% endif %}    
     group by 1,2
     
     union all 
@@ -323,7 +321,18 @@ with original_holders as (
             , count(*) as punk_balance
     from {{ source('erc20_ethereum','evt_transfer') }}
     where contract_address = lower('0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB') -- cryptopunks
+        {% if is_incremental() %} and evt_block_time >= date_trunc('day', now() - interval '1 week') {% endif %}    
     group by 1,2
+    
+    union all 
+
+    select  to_date('2017-06-22', 'yyyy-MM-dd') as day
+            , address as wallet 
+            , sum(original_count) as punk_balance 
+    from original_holders
+    where {% if is_incremental() %} cast('2017-06-22 00:00:00' as timestamp) >= date_trunc('day', now() - interval '1 week') {% endif %}    
+
+    group by 1,2 
 )
 , punk_transfer_summary as (
     select  day
