@@ -29,7 +29,7 @@ daily_transfers as (
         , sum(case when spec_txn_type = 'Bridge to Protocol' then value_norm else 0 end ) as input_value_norm
         , sum(case when spec_txn_type = 'Protocol to Bridge' then value_norm else 0 end ) as output_value_norm
     FROM {{ref('aztec_v2_ethereum_rollupbridge_transfers')}}
-    where bridge_protocol is not null -- exclude all txns that don't interact with the bridges
+    where bridge_protocol != '' -- exclude all txns that don't interact with the bridges
     group by 1,2,3,4
 ),
 
@@ -62,19 +62,20 @@ token_prices_token as (
 token_prices_eth as (
     SELECT 
         date_trunc('day', p.minute) as day, 
-        AVG(p.price) as price
+        AVG(p.price) as price,
+        1 as price_eth
 
     FROM 
     {{ source('prices', 'usd') }} p 
+        WHERE p.blockchain = 'ethereum'
+        AND p.symbol = 'WETH'
         {% if not is_incremental() %}
-        WHERE p.minute >= '{{first_transfer_date}}'
+        AND p.minute >= '{{first_transfer_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE p.minute >= date_trunc("day", now() - interval '1 week')
+        AND p.minute >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-        AND p.blockchain = 'ethereum'
-        AND p.symbol = 'WETH'
-    GROUP BY 1
+    GROUP BY 1, 3 
 ),
 
 token_prices as (
@@ -96,17 +97,18 @@ token_prices as (
         , dt.bridge_protocol
         , dt.bridge_address
         , dt.token_address
-        , p.symbol
+        , er.symbol 
         , dt.num_rollups
         , dt.num_tfers
         , dt.abs_value_norm
-        , dt.abs_value_norm * COALESCE(p.price_usd, b.eth_price) as abs_volume_usd
-        , dt.abs_value_norm * COALESCE(p.price_eth, 1) as abs_volume_eth
-        , dt.input_value_norm * COALESCE(p.price_usd, b.eth_price) as input_volume_usd
-        , dt.input_value_norm * COALESCE(p.price_eth, 1) as input_volume_eth
-        , dt.output_value_norm * COALESCE(p.price_usd, b.eth_price) as output_volume_usd
-        , dt.output_value_norm * COALESCE(p.price_eth, 1) as output_volume_eth
+        , dt.abs_value_norm * COALESCE(p.price_usd, b.price) as abs_volume_usd
+        , dt.abs_value_norm * COALESCE(p.price_eth, b.price_eth) as abs_volume_eth
+        , dt.input_value_norm * COALESCE(p.price_usd, b.price) as input_volume_usd
+        , dt.input_value_norm * COALESCE(p.price_eth, b.price_eth) as input_volume_eth
+        , dt.output_value_norm * COALESCE(p.price_usd, b.price) as output_volume_usd
+        , dt.output_value_norm * COALESCE(p.price_eth, b.price_eth) as output_volume_eth
     from daily_transfers dt
-    inner join token_prices p on dt.date = p.day and dt.token_address = p.token_address
-    LEFT JOIN token_prices b on dt.date = b.day AND dt.token_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -- using this to get price for missing ETH token 
+    LEFT JOIN {{ref('tokens_erc20')}} er ON dt.token_address = er.contract_address AND er.blockchain = 'ethereum'
+    LEFT join token_prices p on dt.date = p.day and dt.token_address = p.token_address AND dt.token_address != '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+    LEFT JOIN token_prices_eth b on dt.date = b.day AND dt.token_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -- using this to get price for missing ETH token 
 ;

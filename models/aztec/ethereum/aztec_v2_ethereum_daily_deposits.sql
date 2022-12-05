@@ -60,19 +60,20 @@ token_prices_token as (
 token_prices_eth as (
     SELECT 
         date_trunc('day', p.minute) as day, 
-        AVG(p.price) as price
+        AVG(p.price) as price,
+        1 as price_eth
 
     FROM 
     {{ source('prices', 'usd') }} p 
+        WHERE p.blockchain = 'ethereum'
+        AND p.symbol = 'WETH'
         {% if not is_incremental() %}
-        WHERE p.minute >= '{{first_transfer_date}}'
+        AND p.minute >= '{{first_transfer_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE p.minute >= date_trunc("day", now() - interval '1 week')
+        AND p.minute >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-        AND p.blockchain = 'ethereum'
-        AND p.symbol = 'WETH'
-    GROUP BY 1
+    GROUP BY 1, 3
 ),
 
 token_prices as (
@@ -93,17 +94,18 @@ token_prices as (
 
  select dt.date
         , dt.token_address
-        , p.symbol
+        , er.symbol
         , dt.num_rollups
         , dt.num_tfers
         , dt.abs_value_norm
-        , dt.abs_value_norm * COALESCE(p.price_usd, b.eth_price) as abs_volume_usd
-        , dt.abs_value_norm * COALESCE(p.price_eth, 1) as abs_volume_eth
-        , dt.user_deposit_value_norm * COALESCE(p.price_usd, b.eth_price) as user_deposits_usd
-        , dt.user_deposit_value_norm * COALESCE(p.price_eth, 1) as user_deposits_eth
-        , dt.user_withdrawal_value_norm * COALESCE(p.price_usd, b.eth_price) as user_withdrawals_usd
-        , dt.user_withdrawal_value_norm * COALESCE(p.price_eth, 1) as user_withdrawals_eth
-    from daily_transfers dt
-    inner join token_prices p on dt.date = p.day and dt.token_address = p.token_address
-    LEFT JOIN token_prices b on dt.date = b.day AND dt.token_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -- using this to get price for missing ETH token 
+        , dt.abs_value_norm * COALESCE(p.price_usd, b.price) as abs_volume_usd
+        , dt.abs_value_norm * COALESCE(p.price_eth, b.price_eth) as abs_volume_eth
+        , dt.user_deposit_value_norm * COALESCE(p.price_usd, b.price) as user_deposits_usd
+        , dt.user_deposit_value_norm * COALESCE(p.price_eth, b.price_eth) as user_deposits_eth
+        , dt.user_withdrawal_value_norm * COALESCE(p.price_usd, b.price) as user_withdrawals_usd
+        , dt.user_withdrawal_value_norm * COALESCE(p.price_eth, b.price_eth) as user_withdrawals_eth
+    FROM daily_transfers dt
+    LEFT JOIN {{ref('tokens_erc20')}} er ON dt.token_address = er.contract_address AND er.blockchain = 'ethereum'
+    LEFT join token_prices p on dt.date = p.day and dt.token_address = p.token_address
+    LEFT JOIN token_prices_eth b on dt.date = b.day AND dt.token_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -- using this to get price for missing ETH token 
 ;

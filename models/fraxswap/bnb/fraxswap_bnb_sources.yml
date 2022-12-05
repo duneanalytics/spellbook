@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: fraxswap_bnb
+    description: "BNB  Chain decoded tables related to Fraxswap contract"
+    tables:
+      - name: FraxswapFactory_evt_PairCreated
+      - name: FraxswapPair_evt_Swap

@@ -97,7 +97,7 @@ WITH base_pools AS (
 )
 SELECT
     version
-    , tokenid
+    , cast( int(tokenid) as string) AS tokenid
     , token
     , pool 
 FROM

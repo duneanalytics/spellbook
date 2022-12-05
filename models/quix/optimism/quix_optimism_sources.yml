@@ -78,3 +78,142 @@ sources:
           - *price
           - *seller
           - *tokenId
+
+  - name: quixotic_v3_optimism
+    freshness:
+      warn_after: { count: 24, period: hour }
+    tables:
+      - name: ExchangeV3_evt_BuyOrderFilled
+        loaded_at_field: evt_block_time
+        description: "Events emitted from BuyOrderFilled."
+        columns:
+          - *contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *buyer
+          - &contractAddress
+            name: contractAddress
+            description: "Contract address of the NFT collection."
+          - *price
+          - *seller
+          - *tokenId
+
+      - name: ExchangeV3_evt_DutchAuctionFilled
+        loaded_at_field: evt_block_time
+        description: "Events emitted from DutchAuctionFilled."
+        columns:
+          - *buyer
+          - *contract_address
+          - *contractAddress
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *price
+          - *seller
+          - *tokenId
+
+      - name: ExchangeV3_evt_SellOrderFilled
+        loaded_at_field: evt_block_time
+        description: "Events emitted from SellOrderFilled."
+        columns:
+          - *buyer
+          - *contract_address
+          - *contractAddress
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *price
+          - *seller
+          - *tokenId
+
+
+  - name: quixotic_optimism
+    freshness:
+      warn_after: { count: 24, period: hour }
+    tables:
+      - name: Exchange_evt_SellOrderFilled
+        loaded_at_field: evt_block_time
+        description: "Events emitted from SellOrderFilled."
+        columns:
+          - *buyer
+          - *contract_address
+          - *erc721address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *price
+          - *seller
+          - *tokenId
+
+  - name: quixotic_v4_optimism
+    freshness:
+      warn_after: { count: 24, period: hour }
+    tables:
+      - name: ExchangeV4_evt_BuyOrderFilled
+        loaded_at_field: evt_block_time
+        description: "Events emitted from BuyOrderFilled."
+        columns:
+          - *contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *buyer
+          - *contractAddress
+          - *price
+          - *seller
+          - *tokenId
+
+      - name: ExchangeV4_evt_DutchAuctionFilled
+        loaded_at_field: evt_block_time
+        description: "Events emitted from DutchAuctionFilled."
+        columns:
+          - *buyer
+          - *contract_address
+          - *contractAddress
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *price
+          - *seller
+          - *tokenId
+
+      - name: ExchangeV4_evt_SellOrderFilled
+        loaded_at_field: evt_block_time
+        description: "Events emitted from SellOrderFilled."
+        columns:
+          - *buyer
+          - *contract_address
+          - *contractAddress
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *price
+          - *seller
+          - *tokenId
+
+  - name: quixotic_v5_optimism
+    freshness:
+      warn_after: { count: 24, period: hour }
+    tables:
+      - name: ExchangeV5_evt_SellOrderFilled
+        loaded_at_field: evt_block_time
+        description: "Events emitted from SellOrderFilled."
+        columns:
+          - *buyer
+          - *contract_address
+          - *contractAddress
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *price
+          - *seller
+          - *tokenId
