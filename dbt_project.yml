@@ -722,7 +722,7 @@ seeds:
             token_id: string
             amount_original: float
             buyer: string
-            price: string
+            seller: string
       solana:
         +enabled: true
         +schema: test_data
