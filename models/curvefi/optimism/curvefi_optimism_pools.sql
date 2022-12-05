@@ -3,6 +3,7 @@
     materialized = 'incremental',
     incremental_strategy = 'merge',
     partition_by=['pool'],
+    unique_key = ['version', 'tokenid', 'token', 'pool']
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "curvefi",
