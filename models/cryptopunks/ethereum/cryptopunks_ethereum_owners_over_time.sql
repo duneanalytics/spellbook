@@ -330,7 +330,6 @@ with original_holders as (
             , address as wallet 
             , sum(original_count) as punk_balance 
     from original_holders
-    where {% if is_incremental() %} cast('2017-06-22 00:00:00' as timestamp) >= date_trunc('day', now() - interval '1 week') {% endif %}    
 
     group by 1,2 
 )
