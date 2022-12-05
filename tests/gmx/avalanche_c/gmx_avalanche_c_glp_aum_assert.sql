@@ -9,7 +9,7 @@ with aum as (
                usdc_aum,
                usdc_e_aum
         from {{ ref('gmx_avalanche_c_glp_aum') }}
-        where date_trunc('day', minute) in (cast('2022-09-15' as date), cast('2022-10-02' as date),
+        where date_trunc('day', minute) in (cast('2022-09-15' as date), cast('2022-09-16' as date), cast('2022-10-02' as date),
                        cast('2022-11-23' as date), cast('2022-11-30' as date)))
   where rn = 1
 )
