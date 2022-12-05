@@ -10,9 +10,9 @@ models:
       tags: ['ethereum','opensea','v1','events']
     description: >
         OpenSea v1 trades on Ethereum
-    test:
+    tests:
       check_seed:
-        seed_file: opensea_wyvern_trades_samples
+        seed_file: ref('opensea_wyvern_trades_samples')
         match_columns:
           - block_time
           - tx_hash
