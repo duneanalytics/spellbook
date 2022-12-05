@@ -75,6 +75,10 @@ models:
         +schema: dex_aggregator
         +materialized: view
 
+    bridge:
+      +schema: bridge
+      +materialized: view
+
     nft:
       +schema: nft
       +materialized: view
@@ -120,6 +124,19 @@ models:
       +materialized: view
       ethereum:
         +schema: gitcoin_ethereum
+        +materialized: view
+
+    celer:
+      +schema: celer
+      +materialized: view
+      ethereum:
+        +schema: celer_ethereum
+        +materialized: view
+      optimism:
+        +schema: celer_optimism
+        +materialized: view
+      polygon:
+        +schema: celer_polygon
         +materialized: view
 
     uniswap:

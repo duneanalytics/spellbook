@@ -1,0 +1,77 @@
+version: 2
+
+models:
+  - name: bridge_flows
+    meta:
+      blockchain: ethereum, optimism
+      sector: bridge
+      contributors: soispoke
+    config:
+      tags: ['bridge', 'flows','ethereum','optimism']
+    description: >
+        Bridge flows (deposits and withdrawals) across chains
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - transfer_id
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the bridge is deployed"
+      - &project
+        name: project
+        description: "Project name of the bridge"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the bridge project"
+      - &contract_address
+        name: contract_address
+        description: "Address of the bridge contract on Ethereum"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each bridge transfer"
+      - &block_number
+        name: block_number
+        description: "Block number in which the bridge transfer was executed "
+      - &tx_hash
+        name: tx_hash
+        description:  "Transaction hash"
+      - &evt_index
+        name: evt_index
+        description: "Event Index"
+      - &tx_type
+        name: tx_type
+        description: "Type of bridge transfer (deposit of withdrawal)"
+      - &sender
+        name: sender
+        description: "Address of the wallet depositing the asset"
+      - &receiver
+        name: receiver
+        description: "Address of the wallet receiving the asset"
+      - &token_address
+        name: token_address
+        description: "Contract address for the ERC20 token"
+      - &token_symbol
+        name: token_symbol
+        description: "Token symbol"
+      - &token_amount_raw
+        name: token_amount_raw
+        description: "Raw amount of token held *before* taking into account token decimals"
+      - &token_amount
+        name: token_amount
+        description: "Raw amount of ERC20 token held *after* taking into account token decimals"
+      - &token_amount_usd
+        name: token_amount_usd
+        description: "Amount of ERC20 token held in USD"
+      - &token_amount_eth
+        name: token_amount_native
+        description: "Amount of ERC20 token held in ETH"
+      - &transfer_id
+        name: transfer_id
+        description: "Unique bridge transfer ID"

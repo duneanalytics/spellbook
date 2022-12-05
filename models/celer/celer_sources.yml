@@ -1,0 +1,20 @@
+version: 2
+
+sources: 
+  - name: celer_ethereum
+    description: "Ethereum Celer Bridges decoded tables"
+    tables:
+      - name: Bridge_evt_Send
+      - name: Bridge_evt_WithdrawDone
+
+  - name: celer_optimism
+    description: "Optimism Celer Bridges decoded tables"
+    tables:
+      - name: Bridge_evt_Send
+      - name: Bridge_evt_WithdrawDone
+  
+  - name: celer_polygon
+    description: "Polygon Celer Bridges decoded tables"
+    tables:
+      - name: Bridge_evt_Send
+      - name: Bridge_evt_WithdrawDone
