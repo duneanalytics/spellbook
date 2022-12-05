@@ -1,0 +1,5 @@
+version: 2
+
+models:
+  - name: elementary
+    description: Stand in. Elementary requires a schema in dbt_project but this causes an error because the path is unused.
