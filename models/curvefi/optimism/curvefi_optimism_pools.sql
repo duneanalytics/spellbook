@@ -25,7 +25,8 @@ WITH base_pools AS (
         , contract_address AS pool
     FROM {{ source('curvefi_optimism', 'StableSwap_call_coins') }}
     WHERE call_success
-    GROUP BY 1,2,3 --unique
+    GROUP BY --1,2,3 --unique
+        `arg0`, output_0, contract_address --unique
 )
 , meta_pools AS (
     -- Meta Pools are "Base Pools" + 1 extra token (i.e. sUSD + 3pool = sUSD Metapool)
@@ -46,7 +47,8 @@ WITH base_pools AS (
         {% if is_incremental() %}
         WHERE mp.evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
-        GROUP BY 1,2,3,4 --unique
+        GROUP BY --1,2,3,4 --unique
+            mp.evt_tx_hash, (bp.tokenid + 1), bp.token, mp.evt_block_number --unique
     
         UNION ALL
         
@@ -61,7 +63,8 @@ WITH base_pools AS (
         {% if is_incremental() %}
         WHERE mp.evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
-        GROUP BY 1 ,3,4 --unique (Will throw an error if we group by 2 - since it's = 0)
+        GROUP BY --1 ,3,4 --unique (Will throw an error if we group by 2 - since it's = 0)
+            mp.evt_tx_hash, mp.`coin`, mp.evt_block_number --unique
     ) mps
     -- the exchange address appears as an erc20 minted to itself (not in the deploymeny event)
     INNER JOIN {{ source('erc20_optimism','evt_transfer') }} et
@@ -75,7 +78,9 @@ WITH base_pools AS (
         {% if is_incremental() %}
         AND et.evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
-    GROUP BY 1,2,3
+    GROUP BY --1,2,3
+        tokenid, token, et.`contract_address` --unique
+
 )
 , basic_pools AS (
     SELECT
@@ -93,7 +98,8 @@ WITH base_pools AS (
         AND call_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
     ) a
-    GROUP BY 1,2,3
+    GROUP BY --1,2,3
+        pos, col, pool --unique
 )
 SELECT
     version
@@ -123,5 +129,6 @@ FROM
         , pool
     FROM basic_pools
 ) a
-GROUP BY 1,2,3,4 --unique
+GROUP BY --1,2,3,4 --unique
+    version, cast( int(tokenid) as string), token, pool --unique
 ;
