@@ -12,7 +12,7 @@
 ] %}
 
 {% set native_bridge_transfer_models = [
-'hop_protocol_bridge_transfers'
+'ovm_optimism_standard_bridge_transfers'
 ] %}
 
 WITH bridge_protocols AS (
@@ -62,7 +62,7 @@ WITH bridge_protocols AS (
 , native_bridges AS (
     SELECT nat.*
     FROM (
-        {% for bridge_protocol_model in bridge_protocol_transfer_models %}
+        {% for native_bridge_model in native_bridge_transfer_models %}
         SELECT
             chain_data_source
             , project
@@ -91,7 +91,7 @@ WITH bridge_protocols AS (
             , evt_index
             , trace_address
             , tx_method_id
-        FROM {{ ref(bridge_protocol_model) }} bmod
+        FROM {{ ref(native_bridge_model) }} bmod
             LEFT JOIN {{ ref('chain_ids') }} cid_source
                 ON cid_source.chain_id = bmod.source_chain_id
             LEFT JOIN {{ ref('chain_ids') }} cid_dest
@@ -104,6 +104,7 @@ WITH bridge_protocols AS (
     -- Exclude native bridges where a bridge protocol was used. Assign the bridge to the bridge protocol.
     LEFT ANTI JOIN  bridge_protocols prot
         ON prot.block_date = nat.block_date
+        AND prot.blockchain = nat.blockchain
         AND prot.block_number = nat.block_number
         AND prot.tx_hash = nat.tx_hash
         AND prot.bridged_token_address = nat.bridged_token_address
