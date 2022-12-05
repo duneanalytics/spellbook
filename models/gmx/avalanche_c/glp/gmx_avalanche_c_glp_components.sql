@@ -1,18 +1,27 @@
 {{ config(
         alias = 'glp_components',
         materialized = 'incremental',
+        partition_by = ['block_date'],
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['minute'],
+        unique_key = ['block_date', 'minute'],
         post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "project",
                                     "gmx",
                                     \'["theachenyj"]\') }}'
         )
 }}
+
+{% set project_start_date = '2021-12-22 06:07' %}
+
 with minute as -- This CTE generates a series of minute values
          (
-             SELECT explode(sequence(TIMESTAMP '2021-12-22 06:07', now(), INTERVAL 1 minute)) AS minute
+            {% if not is_incremental() %}
+            SELECT explode(sequence(TIMESTAMP '{{project_start_date}}', CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute
+            {% endif %}
+            {% if is_incremental() %}
+            SELECT explode(sequence(date_trunc("day", now() - interval '1 week'), CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute
+            {% endif %}
          ),
      token as -- This CTE create tokens which in GLP pool on Avalanche
          (
@@ -199,33 +208,34 @@ with minute as -- This CTE generates a series of minute values
               ) as tmp_win
      )
 -- povit and get final output
-select usdc.minute                        as minute,
-       usdc.available_assets              as usdc_available_assets,
-       usdc.current_price                 as usdc_current_price,
-       usdc_e.available_assets            as usdc_e_available_assets,
-       usdc_e.current_price               as usdc_e_current_price,
-       mim.available_assets               as mim_available_assets,
-       mim.current_price                  as mim_current_price,
-       wavax.available_assets             as wavax_available_assets,
-       wavax.current_price                as wavax_current_price,
-       wavax.longs                        as wavax_longs,
-       wavax.shorts_entry_price           as wavax_shorts_entry_price,
-       wavax.shorts_outstanding_notional  as wavax_shorts_outstanding_notional,
-       weth_e.available_assets            as weth_e_available_assets,
-       weth_e.current_price               as weth_e_current_price,
-       weth_e.longs                       as weth_e_longs,
-       weth_e.shorts_entry_price          as weth_e_shorts_entry_price,
-       weth_e.shorts_outstanding_notional as weth_e_shorts_outstanding_notional,
-       wbtc_e.available_assets            as wbtc_e_available_assets,
-       wbtc_e.current_price               as wbtc_e_current_price,
-       wbtc_e.longs                       as wbtc_e_longs,
-       wbtc_e.shorts_entry_price          as wbtc_e_shorts_entry_price,
-       wbtc_e.shorts_outstanding_notional as wbtc_e_shorts_outstanding_notional,
-       btc_b.available_assets              as btc_b_available_assets,
-       btc_b.current_price                 as btc_b_current_price,
-       btc_b.longs                         as btc_b_longs,
-       btc_b.shorts_entry_price            as btc_b_shorts_entry_price,
-       btc_b.shorts_outstanding_notional   as btc_b_shorts_outstanding_notional
+select usdc.minute                                      as minute,
+       TRY_CAST(date_trunc('DAY', usdc.minute) AS date) as block_date,
+       usdc.available_assets                            as usdc_available_assets,
+       usdc.current_price                               as usdc_current_price,
+       usdc_e.available_assets                          as usdc_e_available_assets,
+       usdc_e.current_price                             as usdc_e_current_price,
+       mim.available_assets                             as mim_available_assets,
+       mim.current_price                                as mim_current_price,
+       wavax.available_assets                           as wavax_available_assets,
+       wavax.current_price                              as wavax_current_price,
+       wavax.longs                                      as wavax_longs,
+       wavax.shorts_entry_price                         as wavax_shorts_entry_price,
+       wavax.shorts_outstanding_notional                as wavax_shorts_outstanding_notional,
+       weth_e.available_assets                          as weth_e_available_assets,
+       weth_e.current_price                             as weth_e_current_price,
+       weth_e.longs                                     as weth_e_longs,
+       weth_e.shorts_entry_price                        as weth_e_shorts_entry_price,
+       weth_e.shorts_outstanding_notional               as weth_e_shorts_outstanding_notional,
+       wbtc_e.available_assets                          as wbtc_e_available_assets,
+       wbtc_e.current_price                             as wbtc_e_current_price,
+       wbtc_e.longs                                     as wbtc_e_longs,
+       wbtc_e.shorts_entry_price                        as wbtc_e_shorts_entry_price,
+       wbtc_e.shorts_outstanding_notional               as wbtc_e_shorts_outstanding_notional,
+       btc_b.available_assets                           as btc_b_available_assets,
+       btc_b.current_price                              as btc_b_current_price,
+       btc_b.longs                                      as btc_b_longs,
+       btc_b.shorts_entry_price                         as btc_b_shorts_entry_price,
+       btc_b.shorts_outstanding_notional                as btc_b_shorts_outstanding_notional
 from (
          select minute,
                 pool_amount                                                as available_assets,
