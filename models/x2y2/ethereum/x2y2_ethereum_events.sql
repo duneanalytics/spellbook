@@ -109,7 +109,7 @@ SELECT 'ethereum' AS blockchain
 , COALESCE(bytea2numeric_v2(token_id_bytes)::BIGINT, bytea2numeric_v2(token_id_bytes)) AS token_id
 , nft_token.name AS collection
 , CAST(inv.price AS DECIMAL(38,0)) AS amount_raw
-, inv.price.amount/POWER(10, currency_token.decimals) AS amount_original
+, inv.price/POWER(10, currency_token.decimals) AS amount_original
 , pu.price*(inv.price/POWER(10, currency_token.decimals)) AS amount_usd
 , CASE WHEN inv.execution_delegate = '{{erc721_delegate}}' THEN 'erc721'
     WHEN inv.execution_delegate = '{{erc1155_delegate}}' THEN 'erc1155'
