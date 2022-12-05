@@ -141,7 +141,7 @@ WITH aggregator_routed_x2y2_txs AS (
 
 , all_x2y2_txs AS (
     SELECT * FROM aggregator_routed_x2y2_txs_formatted
-    UNION
+    UNION ALL
     SELECT * FROM direct_x2y2_txs_formated
     )
 
@@ -160,7 +160,7 @@ SELECT 'ethereum' AS blockchain
     ELSE 'erc1155'
     END AS token_standard
 , trade_type
-, 1 AS number_of_items
+, CAST(1 AS DECIMAL(38,0)) AS number_of_items
 , CASE WHEN et.`from`=seller THEN 'Offer Accepted'
     ELSE 'Buy'
     END AS trade_category
@@ -194,7 +194,7 @@ SELECT 'ethereum' AS blockchain
 , CASE WHEN currency_contract='0x0000000000000000000000000000000000000000' THEN pu.price*platform_fee_amount_raw/POWER(10, 18)
     ELSE pu.price*platform_fee_amount_raw/POWER(10, pu.decimals)
     END AS platform_fee_amount_usd
-, platform_fee_percentage*100 AS platform_fee_percentage
+, CAST(platform_fee_percentage*100 AS DOUBLE) AS platform_fee_percentage
 , royalty_fee_amount_raw
 , CASE WHEN currency_contract='0x0000000000000000000000000000000000000000' THEN royalty_fee_amount_raw/POWER(10, 18)
     ELSE royalty_fee_amount_raw/POWER(10, pu.decimals)
@@ -202,7 +202,7 @@ SELECT 'ethereum' AS blockchain
 , CASE WHEN currency_contract='0x0000000000000000000000000000000000000000' THEN pu.price*royalty_fee_amount_raw/POWER(10, 18)
     ELSE pu.price*royalty_fee_amount_raw/POWER(10, pu.decimals)
     END AS royalty_fee_amount_usd
-, royalty_fee_percentage*100 AS royalty_fee_percentage
+, CAST(royalty_fee_percentage*100 AS DOUBLE) AS royalty_fee_percentage
 , royalty_fee_receive_address
 , CASE WHEN currency_contract='0x0000000000000000000000000000000000000000' THEN 'ETH'
     ELSE pu.symbol
