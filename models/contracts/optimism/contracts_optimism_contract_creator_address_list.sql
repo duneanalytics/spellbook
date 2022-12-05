@@ -366,6 +366,7 @@ FROM (
       ,('0xfc8367ef6bcfc10746e5b9b034314812db8d7213', 'OpenXSwap')
       ,('0xafd91ef047189f7e894d0fac71dcce8687e9b893', 'ECC Domains')
       ,('0x0E1B5AB67aF1c99F8c7Ebc71f41f75D4D6211e53', 'Rainbow')
+      ,('0xd531795282a1d7857faf43416b4c135759db45c4', 'Sided Finance')
 
   ) as temp_table (creator_address, contract_project)
 
