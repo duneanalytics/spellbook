@@ -216,7 +216,8 @@ CREATE MATERIALIZED VIEW balancer_v2.view_liquidity AS (
             unnest(cc.weights) / 1e18 AS normalized_weight
         FROM
             balancer_v2."Vault_evt_PoolRegistered" c
-            INNER JOIN balancer_v2."WeightedPoolFactory_call_create" cc ON c.evt_tx_hash = cc.call_tx_hash
+            INNER JOIN balancer_v2."WeightedPoolFactory_call_create" cc
+            ON cc.output_0 = SUBSTRING(c."poolId", 0, 21)
         UNION
         ALL
         SELECT
@@ -225,7 +226,8 @@ CREATE MATERIALIZED VIEW balancer_v2.view_liquidity AS (
             unnest(cc.weights) / 1e18 AS normalized_weight
         FROM
             balancer_v2."Vault_evt_PoolRegistered" c
-            INNER JOIN balancer_v2."WeightedPool2TokensFactory_call_create" cc ON c.evt_tx_hash = cc.call_tx_hash
+            INNER JOIN balancer_v2."WeightedPool2TokensFactory_call_create" cc
+            ON cc.output_0 = SUBSTRING(c."poolId", 0, 21)
     ),
     pool_liquidity_estimates AS (
         SELECT

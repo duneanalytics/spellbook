@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: gmx_arbitrum_glp_components
+  - name: gmx_arbitrum_glp_components_base
     meta:
       blockchain: arbitrum
       project: gmx
@@ -9,7 +9,12 @@ models:
     config:
       tags: ['arbitrum','gmx','glp']
     description: >
-        View components used in deriving GLP AUM data.
+        Create a table of components used in deriving GLP AUM data.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - minute
     columns:
       - &minute
         name: minute
@@ -17,6 +22,9 @@ models:
         tests: 
           - unique
           - not_null
+      - &block_date
+        name: block_date
+        description: "UTC event block time truncated to the date"
       - &frax_available_assets
         name: frax_available_assets
         description: "FRAX tokens in poolAmounts"
@@ -158,6 +166,52 @@ models:
         tests: 
           - not_null
 
+  - name: gmx_arbitrum_glp_components
+    meta:
+      blockchain: arbitrum
+      project: gmx
+      contributors: 1chioku
+    config:
+      tags: ['arbitrum','gmx','glp']
+    description: >
+        View components used in deriving GLP AUM data.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - minute
+    columns:
+      - *minute
+      - *block_date
+      - *frax_available_assets
+      - *frax_current_price
+      - *usdt_available_assets
+      - *usdt_current_price
+      - *wbtc_available_assets
+      - *wbtc_longs
+      - *wbtc_current_price
+      - *wbtc_shorts_entry_price
+      - *wbtc_shorts_outstanding_notional
+      - *usdc_available_assets
+      - *usdc_current_price
+      - *uni_available_assets
+      - *uni_longs
+      - *uni_current_price
+      - *uni_shorts_entry_price
+      - *uni_shorts_outstanding_notional
+      - *link_available_assets
+      - *link_longs
+      - *link_current_price
+      - *link_shorts_entry_price
+      - *link_shorts_outstanding_notional
+      - *weth_available_assets
+      - *weth_longs
+      - *weth_current_price
+      - *weth_shorts_entry_price
+      - *weth_shorts_outstanding_notional
+      - *dai_available_assets
+      - *dai_current_price
+
   - name: gmx_arbitrum_glp_aum
     meta:
       blockchain: arbitrum
@@ -166,9 +220,15 @@ models:
     config:
       tags: ['arbitrum','gmx','glp']
     description: >
-        View GLP net AUM by pools.
+        View GLP net AUM for stablecoins; and the AUM of long and neutral exposure for directional tokens.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - minute
     columns:
       - *minute
+      - *block_date
       - &frax_aum
         name: frax_aum
         description: "Net asset under management for the FRAX pool"
@@ -179,9 +239,14 @@ models:
         description: "Net asset under management for the USDT pool"
         tests: 
           - not_null
-      - &wbtc_aum
-        name: wbtc_aum
-        description: "Net asset under management for the WETH pool"
+      - &wbtc_long_exposure_aum
+        name: wbtc_long_exposure_aum
+        description: "Net asset under management of long exposures for the WBTC pool"
+        tests: 
+          - not_null
+      - &wbtc_neutral_exposure_aum
+        name: wbtc_neutral_exposure_aum
+        description: "Net asset under management of neutral exposures for the WBTC pool"
         tests: 
           - not_null
       - &usdc_aum
@@ -189,56 +254,39 @@ models:
         description: "Net asset under management for the USDC pool"
         tests: 
           - not_null
-      - &uni_aum
-        name: uni_aum
-        description: "Net asset under management for the UNI pool"
+      - &uni_long_exposure_aum
+        name: uni_long_exposure_aum
+        description: "Net asset under management of long exposures for the UNI pool"
         tests: 
           - not_null
-      - &link_aum
-        name: link_aum
-        description: "Net asset under management for the LINK pool"
+      - &uni_neutral_exposure_aum
+        name: uni_neutral_exposure_aum
+        description: "Net asset under management of neutral exposures for the UNI pool"
         tests: 
           - not_null
-      - &weth_aum
-        name: weth_aum
-        description: "Net asset under management for the WETH pool"
+      - &link_long_exposure_aum
+        name: link_long_exposure_aum
+        description: "Net asset under management of long exposures for the LINK pool"
+        tests: 
+          - not_null
+      - &link_neutral_exposure_aum
+        name: link_neutral_exposure_aum
+        description: "Net asset under management of neutral exposures for the LINK pool"
+        tests: 
+          - not_null
+      - &weth_long_exposure_aum
+        name: weth_long_exposure_aum
+        description: "Net asset under management of long exposures for the WETH pool"
+        tests: 
+          - not_null
+      - &weth_neutral_exposure_aum
+        name: weth_neutral_exposure_aum
+        description: "Net asset under management of neutral exposures for the WETH pool"
         tests: 
           - not_null
       - &dai_aum
         name: dai_aum
         description: "Net asset under management for the DAI pool"
-        tests: 
-          - not_null
-
-  - name: gmx_arbitrum_glp_exposure
-    meta:
-      blockchain: arbitrum
-      project: gmx
-      contributors: 1chioku
-    config:
-      tags: ['arbitrum','gmx','glp']
-    description: >
-        View net GLP long exposure by directional token.
-    columns:
-      - *minute
-      - &wbtc_exposure
-        name: wbtc_exposure
-        description: "Net long exposure of the pool to WBTC"
-        tests: 
-          - not_null
-      - &uni_exposure
-        name: uni_exposure
-        description: "Net long exposure of the pool to UNI"
-        tests: 
-          - not_null
-      - &link_exposure
-        name: link_exposure
-        description: "Net long exposure of the pool to LINK"
-        tests: 
-          - not_null
-      - &weth_exposure
-        name: weth_exposure
-        description: "Net long exposure of the pool to WETH"
         tests: 
           - not_null
 
@@ -251,8 +299,14 @@ models:
       tags: ['arbitrum','gmx','glp']
     description: >
         View GLP fee accrued in the Fee GLP contract.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - minute
     columns:
       - *minute
+      - *block_date
       - &fees_weth_generated
         name: fees_weth_generated
         description: "Fees generated in WETH"
@@ -274,8 +328,14 @@ models:
       tags: ['arbitrum','gmx','glp']
     description: >
         View GLP mint and burns through the GLP Manager contract.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - minute
     columns:
       - *minute
+      - *block_date
       - &glp_mint_burn
         name: glp_mint_burn
         description: "GLP net mints and burns"

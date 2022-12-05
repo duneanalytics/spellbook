@@ -12,7 +12,7 @@ latest_leverage as (
     FROM 
     (
     SELECT 
-        MIN(l.evt_block_time) as latest_leverage_time, 
+        MAX(l.evt_block_time) as latest_leverage_time, 
         cp.evt_block_time, 
         cp.evt_tx_hash,
         cp.position_id,
