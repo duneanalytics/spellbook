@@ -48,4 +48,6 @@ WITH
         FROM signatures
     ) a
     WHERE recency = 1
+    {% if is_incremental() %}
     AND NOT EXISTS (SELECT 1 FROM {{ this }} WHERE unique_signature_id = a.unique_signature_id)
+    {% endif %}
