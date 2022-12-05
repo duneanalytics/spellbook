@@ -28,8 +28,8 @@ SELECT
     '3' AS version,
     'borrow' AS transaction_type,
     CASE 
-        WHEN interestRateMode = '1' THEN 'stable'
-        WHEN interestRateMode = '2' THEN 'variable'
+        WHEN interestRateMode = 1 THEN 'stable'
+        WHEN interestRateMode = 2 THEN 'variable'
     END AS loan_type,
     reserve AS token,
     user AS borrower, 

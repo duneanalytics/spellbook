@@ -133,7 +133,7 @@ SELECT alet.blockchain
 , alet.seller
 , alet.buyer
 , alet.amount_raw/POWER(10, ava_erc20_tokens.decimals) AS amount_original
-, CAST(alet.amount_raw AS DECIMAL(38,0)) AS amount_raw
+, alet.amount_raw
 , COALESCE(alet.currency_symbol, ava_erc20_tokens.symbol) AS currency_symbol
 , alet.currency_contract
 , alet.nft_contract_address
@@ -144,11 +144,11 @@ SELECT alet.blockchain
 , alet.block_number
 , at.from AS tx_from
 , at.to AS tx_to
-, 0 AS platform_fee_amount_raw
+, CAST(0 AS DOUBLE) AS platform_fee_amount_raw
 , 0 AS platform_fee_amount
 , 0 AS platform_fee_amount_usd
 , CAST(0 AS DOUBLE) AS platform_fee_percentage
-, 0 AS royalty_fee_amount_raw
+, CAST(0 AS DOUBLE) AS royalty_fee_amount_raw
 , 0 AS royalty_fee_amount
 , 0 AS royalty_fee_amount_usd
 , CAST(0 AS DOUBLE) AS royalty_fee_percentage
