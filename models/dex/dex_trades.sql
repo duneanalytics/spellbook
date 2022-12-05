@@ -41,6 +41,8 @@ list of models using old generic test, due to multiple versions in one model:
 ,'nomiswap_bnb_trades'
 ,'gmx_trades'
 ,'biswap_bnb_trades' 
+,'wombat_bnb_trades'
+,'iziswap_bnb_trades'
 ,'babyswap_bnb_trades'
 ] %}
 
