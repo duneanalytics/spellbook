@@ -19,7 +19,7 @@ WITH all_foundation_trades AS (
     , f.evt_block_time AS block_time
     , f.evt_block_number AS block_number
     , c.tokenId AS token_id
-    , 1 AS number_of_items
+    , CAST(1 AS DECIMAL(38,0)) AS number_of_items
     , 'Auction Settled' AS trade_category
     , 'Trade' AS evt_type
     , f.seller
@@ -144,7 +144,7 @@ SELECT DISTINCT t.blockchain
 , t.seller
 , t.buyer
 , t.amount_original
-, t.amount_raw
+, CAST(t.amount_raw AS DECIMAL(38,0)) AS amount_raw
 , t.currency_symbol
 , t.currency_contract
 , t.project_contract_address

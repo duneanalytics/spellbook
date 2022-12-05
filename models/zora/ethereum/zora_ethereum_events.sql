@@ -20,7 +20,7 @@ WITH zora_trades AS (
     , 'Offer Accepted' AS trade_category
     , z3_o1_ee.userA AS seller
     , z3_o1_ee.userB AS buyer
-    , get_json_object(z3_o1_ee.b, '$.amount') AS amount_raw
+    , CAST(get_json_object(z3_o1_ee.b, '$.amount') AS DECIMAL(38,0)) AS amount_raw
     , get_json_object(z3_o1_ee.b, '$.tokenContract') AS currency_contract
     , get_json_object(z3_o1_ee.a, '$.tokenContract') AS nft_contract_address
     , z3_o1_ee.contract_address AS project_contract_address
