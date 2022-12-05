@@ -19,8 +19,7 @@ SELECT
 ,`networkId` AS network_id
 ,`infoURL` AS info_url
 ,`explorer` AS explorer
-FROM (
-
+FROM ( values
  ('Ethereum Mainnet'	,'ETH'	,'ETH'	,'1'	,'1'	,'https://ethereum.org'	,'https://etherscan.io')
 ,('Expanse Network'	,'EXP'	,'EXP'	,'2'	,'1'	,'https://expanse.tech'	,'')
 ,('Ropsten'	,'ETH'	,'ETH'	,'3'	,'3'	,'https://github.com/ethereum/ropsten'	,'https://ropsten.etherscan.io')
