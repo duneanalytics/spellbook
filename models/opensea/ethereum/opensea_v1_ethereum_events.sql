@@ -144,7 +144,7 @@ SELECT DISTINCT
       WHEN agg.name is NULL AND erc_transfers.value_unique > 1 OR erc_transfers.count_erc > 1 THEN 'Bundle Trade'
   ELSE wa.trade_type END AS trade_type,
   -- Count number of items traded for different trade types and erc standards
-  CASE WHEN agg.name is NULL AND erc_transfers.value_unique > 1 THEN erc_transfers.value_unique
+  CAST(CASE WHEN agg.name is NULL AND erc_transfers.value_unique > 1 THEN erc_transfers.value_unique
       WHEN agg.name is NULL AND erc_transfers.value_unique is NULL AND erc_transfers.count_erc > 1 THEN erc_transfers.count_erc
       WHEN wa.trade_type = 'Single Item Trade' THEN cast(1 as bigint)
       WHEN wa.token_standard = 'erc1155' THEN erc_transfers.value_unique
@@ -158,7 +158,7 @@ SELECT DISTINCT
              count(1)::bigint cnt
           FROM {{ source('erc1155_ethereum','evt_transfersingle') }} erc1155
           WHERE erc1155.evt_tx_hash = wa.call_tx_hash
-        ) END AS number_of_items,
+        ) END AS DECIMAL(38,0)) AS number_of_items,
   'Buy' AS trade_category,
   wa.seller AS seller,
   CASE WHEN buyer=agg.contract_address AND erct2.to IS NOT NULL THEN erct2.to
@@ -167,7 +167,7 @@ SELECT DISTINCT
   CASE WHEN shared_storefront_address = '0x495f947276749ce646f68ac8c248420045cb7b5e' THEN 'Mint'
   WHEN evt_type is not NULL THEN evt_type ELSE 'Trade' END as evt_type,
   wa.amount_original / power(10,erc20.decimals) AS amount_original,
-  wa.amount_original AS amount_raw,
+  CAST(wa.amount_original AS DECIMAL(38,0)) AS amount_raw,
   CASE WHEN wa.currency_contract_original = '0x0000000000000000000000000000000000000000' THEN 'ETH' ELSE erc20.symbol END AS currency_symbol,
   wa.currency_contract,
   wa.nft_contract_address AS nft_contract_address,
@@ -181,11 +181,11 @@ SELECT DISTINCT
   ROUND((2.5*(wa.amount_original)/100),7) AS platform_fee_amount_raw,
   ROUND((2.5*(wa.amount_original / power(10,erc20.decimals))/100),7) AS platform_fee_amount,
   ROUND((2.5*(wa.amount_original / power(10,erc20.decimals) * p.price)/100),7) AS platform_fee_amount_usd,
-  '2.5' AS platform_fee_percentage,
+  CAST(2.5 AS DOUBLE) AS platform_fee_percentage,
   wa.fees AS royalty_fee_amount_raw,
   wa.fees / power(10,erc20.decimals) AS royalty_fee_amount,
   wa.fees / power(10,erc20.decimals) * p.price AS royalty_fee_amount_usd,
-  (wa.fees / wa.amount_original * 100)::string  AS royalty_fee_percentage,
+  CAST((wa.fees / wa.amount_original * 100) AS DOUBLE)  AS royalty_fee_percentage,
   wa.fee_receive_address as royalty_fee_receive_address,
   wa.fee_currency_symbol as royalty_fee_currency_symbol,
   'opensea' || '-' || wa.call_tx_hash || '-' || coalesce(token_id_erc_uncapped, wa.token_id, '') || '-' ||  wa.seller || '-' || coalesce(erc_transfers.evt_index::string, '') || '-' || coalesce(wa.call_trace_address::string,'') as unique_trade_id

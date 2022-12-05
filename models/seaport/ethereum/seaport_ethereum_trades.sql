@@ -268,12 +268,12 @@ with source_ethereum_transactions as (
     ,nft_contract_address
     ,nft_token_name as collection
     ,nft_token_id as token_id
-    ,nft_token_amount as number_of_items
+    ,CAST(nft_token_amount AS DECIMAL(38,0)) as number_of_items
     ,nft_token_standard as token_standard
 
     -- price info          
     ,price_amount as amount_original
-    ,price_amount_raw as amount_raw
+    ,CAST(price_amount_raw AS DECIMAL(38,0)) as amount_raw
     ,price_amount_usd as amount_usd
     ,token_symbol as currency_symbol
     ,token_alternative_symbol as currency_contract
