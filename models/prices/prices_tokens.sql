@@ -7,7 +7,7 @@
         post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon"]\',
                                     "sector",
                                     "prices",
-                                    \'["aalan3", "jeff-dude"]\') }}'
+                                    \'["aalan3", "jeff-dude", "umer_h_adil"]\') }}'
         )
 }}
 SELECT token_id, blockchain, symbol, LOWER(contract_address) as contract_address, decimals from (
@@ -270,6 +270,12 @@ VALUES
     ("mnft-marvelous-nfts", "bnb", "MNFT", "0x33be7644c0e489b3a0c639d103392d4f3e338158", 18),
     ("bets-betswirl", "bnb", "BETS", "0x3e0a7c7db7bb21bda290a80c9811de6d47781671", 18),
     ("floki-floki-inu", "bnb", "FLOKI", "0xfb5b838b6cfeedc2873ab27866079ac55363d37e", 18),
+	("wom-wombat", "bnb", "WOM", "0xad6742a35fb341a9cc6ad674738dd8da98b94fb1", 18),
+	("qwom-wombat", "bnb", "qWOM", "0x0fe34b8aaaf3f522a6088e278936d10f934c0b19", 18),
+	("wmxwom-wombat", "bnb", "wmxWom", "0x0415023846ff1c6016c4d9621de12b24b2402979", 18),
+	("mwom-wombat", "bnb", "mWOM", "0x027a9d301fb747cd972cfb29a63f3bda551dfc5c", 18),
+	("hay-destablecoin", "bnb", "HAY", "0x0782b6d8c4551b9760e74c0545a9bcd90bdc41e5", 18),
+	("stkbnb-pstake", "bnb", "stkBNB", "0xc2e9d07f66a89c44062459a47a0d2dc038e4fb16", 18),
 
     ("0xbtc-0xbitcoin", "ethereum", "0xBTC", "0xb6ed7644c69416d67b522e20bc294a9a9b405b31", 8),
     ("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
