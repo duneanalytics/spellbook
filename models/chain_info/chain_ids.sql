@@ -1,6 +1,6 @@
 {{
   config(
-        schema = 'chain_info'
+        schema = 'chain_info',
         alias='chain_ids',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
