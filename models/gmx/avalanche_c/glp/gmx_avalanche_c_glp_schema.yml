@@ -165,8 +165,14 @@ models:
       tags: ['avalanche_c','gmx','glp']
     description: >
         View GLP net AUM by pools.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - minute
     columns:
       - *minute
+      - *block_date
       - &usdc_aum
         name: usdc_aum
         description: "Net asset under management for the USDC pool"
