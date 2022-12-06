@@ -19,32 +19,32 @@ FROM
         SELECT
                 h.chain_data_source
                 , 'Hop Protocol' AS project
-                , block_date
-                , block_time
-                , source_chain_id
-                , destination_chain_id
-                , source_chain_name
-                , destination_chain_name
-                , bridged_token_symbol
-                , bridged_token_amount
-                , bridged_token_fee_amount
-                , bridged_amount_usd
-                , bridged_token_fee_amount_usd
-                , bridged_token_amount_raw
-                , bridged_token_fee_amount_raw
-                , bridged_token_address
-                , bridged_token_fee_address
+                , h.block_date
+                , h.block_time
+                , h.source_chain_id
+                , h.destination_chain_id
+                , h.source_chain_name
+                , h.destination_chain_name
+                , h.bridged_token_symbol
+                , h.bridged_token_amount
+                , h.bridged_token_fee_amount
+                , h.bridged_amount_usd
+                , h.bridged_token_fee_amount_usd
+                , h.bridged_token_amount_raw
+                , h.bridged_token_fee_amount_raw
+                , h.bridged_token_address
+                , h.bridged_token_fee_address
                 , CASE WHEN sb.tx_hash IS NOT NULL
                         THEN 1 ELSE 0
                  END AS is_native_bridge
                 , h.block_number
                 , h.tx_hash
-                , tx_from
-                , tx_to
-                , transfer_id
-                , evt_index
-                , trace_address
-                , tx_method_id
+                , h.tx_from
+                , h.tx_to
+                , h.transfer_id
+                , h.evt_index
+                , h.trace_address
+                , h.tx_method_id
         FROM {{ ref(hop_tf_model) }} h
         LEFT JOIN
         {% if hop_tf_model == 'hop_protocol_optimism_bridge_transfers' %}
