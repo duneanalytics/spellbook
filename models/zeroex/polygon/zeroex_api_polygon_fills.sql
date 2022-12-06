@@ -376,8 +376,6 @@ direct_uniswapv3 AS (
 ),
 all_tx AS (
     SELECT *
-    FROM direct_uniswapv2
-    UNION ALL SELECT *
     FROM direct_uniswapv3
     UNION ALL SELECT *
     FROM direct_sushiswap
