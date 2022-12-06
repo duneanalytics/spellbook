@@ -137,6 +137,7 @@ FROM (
 LEFT JOIN {{ ref('hop_protocol_bridge_addresses') }} hba
             ON tf.project_contract_address = hba.`l2Bridge`
             AND tf.block_number >= hba.bridgeDeployedBlockNumber
+            AND hba.blockchain = 'optimism'
 LEFT JOIN {{ source('optimism', 'transactions') }} t
         ON t.block_number = tf.block_number
         AND t.hash = tf.tx_hash
