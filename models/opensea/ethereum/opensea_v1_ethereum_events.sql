@@ -102,11 +102,11 @@ enhanced_orders as (
 enhanced_trades as (
     select
     o.*,
-    nft_contract_address,
-    token_standard,
-    token_id,
-    amount as number_of_items,
-    total_amount_raw/(sum(amount) over (partition by o.block_number, o.tx_hash, o.order_evt_index)) as amount_raw,
+    nft.nft_contract_address,
+    nft.token_standard,
+    nft.token_id,
+    nft.amount as number_of_items,
+    total_amount_raw*amount/(sum(nft.amount) over (partition by o.block_number, o.tx_hash, o.order_evt_index)) as amount_raw,
     case when count(nft.evt_index) over (partition by o.block_number, o.tx_hash, o.order_evt_index) > 1
         then concat('Bundle trade: ',sale_type)
         else concat('Single Item Trade: ',sale_type)
