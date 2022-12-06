@@ -34,7 +34,7 @@ FROM
             trace_address,
             evt_index,
             unique_trade_id
-        FROM {{ ref('cow_protocol_trades') }}
+        FROM {{ ref('cow_protocol_dex_trades') }}
         /*
         UNION
         <add future protocols here>
