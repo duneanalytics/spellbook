@@ -17,7 +17,7 @@ FROM
 (
         {% for hop_tf_model in hop_transfer_models %}
         SELECT
-                chain_data_source
+                h.chain_data_source
                 , 'Hop Protocol' AS project
                 , block_date
                 , block_time
