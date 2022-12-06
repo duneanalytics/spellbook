@@ -10,7 +10,7 @@
 
 with transfers as (    
     select  date_trunc('day',evt_block_time) as day 
-            , `from` as wallet
+            , from as wallet
             , count(*)*-1.0 as punk_balance
     from {{ref('cryptopunks_ethereum_punk_transfers')}} 
     group by 1,2
@@ -18,7 +18,7 @@ with transfers as (
     union all 
     
     select  date_trunc('day',evt_block_time) as day 
-            , `to` as wallet
+            , to as wallet
             , count(*) as punk_balance
     from {{ref('cryptopunks_ethereum_punk_transfers')}} 
     group by 1,2
@@ -50,3 +50,4 @@ select day
         , count(wallet) filter (where holding > 0) as unique_wallets
 from combined_table
 group by 1
+;
