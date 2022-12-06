@@ -30,7 +30,7 @@ limit_order_v2 as (
             t._margin/1e18 * t._lev/1e18 as volume_usd, 
             '' as margin_asset, 
             ta.pair, 
-            t._direction as direction, 
+            CASE WHEN t._direction = true THEN 'true' ELSE 'false' END as direction,
             '' as referral, 
             t._trader as trader 
         FROM 
@@ -56,7 +56,7 @@ limit_order_v3 as (
             t._margin/1e18 * t._lev/1e18 as volume_usd, 
             '' as margin_asset, 
             ta.pair, 
-            t._direction as direction, 
+            CASE WHEN t._direction = true THEN 'true' ELSE 'false' END as direction,
             '' as referral, 
             t._trader as trader 
         FROM 
@@ -82,7 +82,7 @@ limit_order_v4 as (
             t._margin/1e18 * t._lev/1e18 as volume_usd, 
             '' as margin_asset, 
             ta.pair, 
-            t._direction as direction, 
+            CASE WHEN t._direction = true THEN 'true' ELSE 'false' END as direction,
             '' as referral, 
             t._trader as trader 
         FROM 
@@ -108,7 +108,7 @@ limit_order_v5 as (
             t._margin/1e18 * t._lev/1e18 as volume_usd, 
             '' as margin_asset, 
             ta.pair, 
-            t._direction as direction, 
+            CASE WHEN t._direction = true THEN 'true' ELSE 'false' END as direction,
             '' as referral, 
             t._trader as trader 
         FROM 
