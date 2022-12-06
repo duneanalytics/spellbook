@@ -35,6 +35,31 @@ open_position as (
     {% endif %}
 ), 
 
+limit_order as (
+    SELECT 
+        day, 
+        evt_block_time, 
+        evt_index,
+        evt_tx_hash,
+        position_id,
+        price, 
+        margin as new_margin,
+        leverage,
+        volume_usd,
+        margin_asset,
+        pair, 
+        direction,
+        referral,
+        trader,
+        margin as margin_change, 
+        version, 
+        'limit_order' as trade_type 
+    FROM {{ ref('tigris_polygon_events_limit_order') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+), 
+
 close_position as (
     SELECT 
         date_trunc('day', c.evt_block_time) as day, 
@@ -46,23 +71,30 @@ close_position as (
         c.new_margin as new_margin, 
         c.leverage, 
         c.payout * c.leverage as volume_usd, 
-        op.margin_asset,
-        op.pair,
-        op.direction, 
-        op.referral, 
+        COALESCE(op.margin_asset, lo.margin_asset) as margin_asset, 
+        COALESCE(op.pair, lo.pair) as pair, 
+        COALESCE(op.direction, lo.direction) as direction, 
+        COALESCE(op.referral, lo.referral) as referral, 
         c.trader, 
         c.payout as margin_change, 
         c.version, 
         'close_position' as trade_type 
     FROM 
     {{ ref('tigris_polygon_positions_close') }} c 
-    INNER JOIN 
+    LEFT JOIN 
     open_position op 
         ON c.position_id = op.position_id 
-        AND c.version = op.version 
-    {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+        AND c.version = op.version
+        {% if is_incremental() %}
+        AND c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+    LEFT JOIN 
+    limit_order lo 
+        ON c.position_id = lo.position_id 
+        AND c.version = lo.version
+        {% if is_incremental() %}
+        AND c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 ), 
 
 liquidate_position as (
@@ -76,23 +108,30 @@ liquidate_position as (
         0 as new_margin, 
         lp.leverage, 
         lp.margin * lp.leverage as volume_usd, 
-        op.margin_asset,
-        op.pair, 
-        op.direction,
-        op.referral,
+        COALESCE(op.margin_asset, lo.margin_asset) as margin_asset, 
+        COALESCE(op.pair, lo.pair) as pair, 
+        COALESCE(op.direction, lo.direction) as direction, 
+        COALESCE(op.referral, lo.referral) as referral, 
         lp.trader, 
         lp.margin as margin_change,
         lp.version, 
         'liquidate_position' as trade_type
     FROM 
     {{ ref('tigris_polygon_positions_liquidation') }} lp 
-    INNER JOIN 
+    LEFT JOIN 
     open_position op 
         ON lp.position_id = op.position_id 
-        AND lp.version = op.version 
-    {% if is_incremental() %}
-    WHERE lp.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+        AND lp.version = op.version
+        {% if is_incremental() %}
+        AND lp.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+    LEFT JOIN 
+    limit_order lo 
+        ON lp.position_id = lo.position_id 
+        AND lp.version = lo.version
+        {% if is_incremental() %}
+        AND lp.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 ),
 
 add_margin as (
@@ -106,10 +145,10 @@ add_margin as (
         am.margin as new_margin,
         am.leverage, 
         am.margin_change * am.leverage as volume_usd,
-        op.margin_asset,
-        op.pair,
-        op.direction,
-        op.referral,
+        COALESCE(op.margin_asset, lo.margin_asset) as margin_asset, 
+        COALESCE(op.pair, lo.pair) as pair, 
+        COALESCE(op.direction, lo.direction) as direction, 
+        COALESCE(op.referral, lo.referral) as referral, 
         am.trader,
         am.margin_change,
         am.version, 
@@ -157,10 +196,14 @@ add_margin as (
         AND l.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     ) am  
-    INNER JOIN 
+    LEFT JOIN 
     open_position op 
         ON am.position_id = op.position_id 
-        AND am.version = op.version
+        AND am.version = op.version 
+    LEFT JOIN 
+    limit_order lo 
+        ON am.position_id = lo.position_id 
+        AND am.version = lo.version
 ),
 
 modify_margin as (
@@ -174,23 +217,30 @@ modify_margin as (
         mm.margin as new_margin, 
         mm.leverage,
         mm.margin_change * mm.leverage as volume_usd,
-        op.margin_asset,
-        op.pair,
-        op.direction,
-        op.referral,
+        COALESCE(op.margin_asset, lo.margin_asset) as margin_asset, 
+        COALESCE(op.pair, lo.pair) as pair, 
+        COALESCE(op.direction, lo.direction) as direction, 
+        COALESCE(op.referral, lo.referral) as referral, 
         mm.trader, 
         mm.margin_change,
         mm.version,
         CASE WHEN mm.modify_type = true THEN 'add_margin' ELSE 'remove_margin' END as trade_type
     FROM 
     {{ ref('tigris_polygon_events_modify_margin') }} mm 
-    INNER JOIN 
+    LEFT JOIN 
     open_position op 
         ON mm.position_id = op.position_id 
         AND mm.version = op.version
-    {% if is_incremental() %}
-    WHERE mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+        {% if is_incremental() %}
+        AND mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+    LEFT JOIN 
+    limit_order lo 
+        ON mm.position_id = lo.position_id 
+        AND mm.version = op.version 
+        {% if is_incremental() %}
+        AND mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 )
 
 SELECT 
@@ -225,4 +275,11 @@ SELECT
     'polygon' as blockchain,
     *
 FROM modify_margin
+
+UNION ALL
+
+SELECT 
+    'polygon' as blockchain,
+    *
+FROM limit_order
 ;
