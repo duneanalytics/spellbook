@@ -108,6 +108,12 @@ models:
       - &receiver
         name: receiver
         description: "Recipient of trades buyToken"
+      - &limit_sell_amount
+        name: limit_sell_amount
+        description: "Sell amount side of the limit price"
+      - &limit_buy_amount
+        name: limit_buy_amount
+        description: "Buy amount side of the limit price"
   - name: cow_protocol_ethereum_batches
     meta:
       blockchain: ethereum
