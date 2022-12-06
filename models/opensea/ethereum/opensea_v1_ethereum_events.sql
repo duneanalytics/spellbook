@@ -168,10 +168,10 @@ SELECT
   tx.from as tx_from,
   tx.to as tx_to,
   -- some complex price calculations
-  CAST(2.5/100 * (t.amount_raw/(1+buyer_fee_percentage)) AS DOUBLE) AS platform_fee_amount_raw,
+  2.5/100 * (t.amount_raw/(1+buyer_fee_percentage)) AS platform_fee_amount_raw,
   2.5/100 * (t.amount_raw/(1+buyer_fee_percentage)) / power(10,erc20.decimals) AS platform_fee_amount,
   2.5/100 * (t.amount_raw/(1+buyer_fee_percentage)) / power(10,erc20.decimals) * p.price AS platform_fee_amount_usd,
-  '2.5' AS platform_fee_percentage,
+  CAST(2.5 AS DOUBLE) AS platform_fee_percentage,
   CAST((100 * (seller_fee_percentage + buyer_fee_percentage - 2.5/100)) AS DOUBLE) as royalty_fee_percentage,
   ((seller_fee_percentage + buyer_fee_percentage - 2.5/100) / (1 + buyer_fee_percentage) * amount_raw) AS royalty_fee_amount_raw,
   ((seller_fee_percentage + buyer_fee_percentage - 2.5/100) / (1 + buyer_fee_percentage) * amount_raw) / power(10,erc20.decimals) AS royalty_fee_amount,
