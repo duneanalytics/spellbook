@@ -120,6 +120,8 @@ enhanced_trades as (
     nft.token_standard,
     nft.token_id,
     nft.amount as number_of_items,
+    nft.to as nft_to,
+    nft.from as nft_from,
     total_amount_raw*amount/(sum(nft.amount) over (partition by o.block_number, o.tx_hash, o.order_evt_index)) as amount_raw,
     case when count(nft.evt_index) over (partition by o.block_number, o.tx_hash, o.order_evt_index) > 1
         then concat('Bundle trade: ',sale_type)
@@ -130,8 +132,7 @@ enhanced_trades as (
     inner join nft_transfers nft
     ON o.block_number = nft.block_number
         AND o.tx_hash = nft.tx_hash
-        AND nft.from = o.seller
-        AND nft.to = o.buyer
+        AND (trade_category = 'Buy' AND nft.from = o.seller) OR (trade_category = 'Sell' AND nft.to = o.buyer)
         AND nft.evt_index <= o.order_evt_index and (prev_order_evt_index is null OR nft.evt_index > o.prev_order_evt_index )
 )
 
@@ -157,8 +158,8 @@ SELECT
   t.trade_category,
   t.trade_type,
   CAST(t.number_of_items AS DECIMAL(38,0)) as number_of_items,
-  t.seller AS seller,
-  coalesce(agg_tr.to, buyer) as buyer,
+  coalesce(t.nft_from, t.seller) AS seller,
+  coalesce(t.nft_to, t.buyer) as buyer,
   t.evt_type,
   CASE WHEN t.native_eth THEN 'ETH' ELSE erc20.symbol END AS currency_symbol,
   t.currency_contract,
@@ -186,13 +187,6 @@ INNER JOIN {{ source('ethereum','transactions') }} tx ON t.block_number = tx.blo
     {% endif %}
 LEFT JOIN {{ ref('tokens_nft') }} nft ON nft.contract_address = t.nft_contract_address and nft.blockchain = 'ethereum'
 LEFT JOIN {{ ref('nft_aggregators') }} agg ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
-LEFT JOIN {{ ref('nft_aggregators') }} agg_buyer ON agg_buyer.contract_address = buyer AND agg.blockchain = 'ethereum'
-LEFT JOIN nft_transfers agg_tr
-    ON agg_tr.block_number = t.block_number AND agg_tr.tx_hash = t.tx_hash
-        AND agg_tr.nft_contract_address = t.nft_contract_address
-        AND agg_tr.token_id = t.token_id
-        AND agg_tr.from = agg_buyer.contract_address -- only not null if this is the buyer
-        AND agg_tr.evt_index > t.order_evt_index --happens after the order
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', t.block_time)
     AND p.contract_address = t.currency_contract
     AND p.blockchain ='ethereum'
