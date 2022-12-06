@@ -287,6 +287,8 @@ models:
     columns:
       - name: day
         description: "Day"
+        tests:
+          - unique
       - name: unique_wallets
         description: "# unique Punk wallets that day"
 
