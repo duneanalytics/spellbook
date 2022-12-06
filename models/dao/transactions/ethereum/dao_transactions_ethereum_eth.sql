@@ -8,7 +8,7 @@
     )
 }}
 
-{% set transactions_start_date = '2018-10-27' %}  
+{% set transactions_start_date = '2018-10-27' %}
 
 WITH 
 
@@ -36,19 +36,17 @@ transactions as (
             from as address_interacted_with,
             trace_address
         FROM 
-        {{ source('ethereum', 'traces') }} et 
-        INNER JOIN 
-        dao_tmp dt 
-            ON et.to = dt.dao_wallet_address        
-            AND (LOWER(et.call_type) NOT IN ('delegatecall', 'callcode', 'staticcall') or call_type IS NULL)
-            AND et.success = true 
-            AND CAST(et.value as decimal(38,0)) != 0 
-            {% if not is_incremental() %}
-            AND et.block_time >= '{{transactions_start_date}}'
-            {% endif %}
-            {% if is_incremental() %}
-            AND et.block_time >= date_trunc("day", now() - interval '1 week')
-            {% endif %}
+        {{ source('ethereum', 'traces') }}
+        {% if not is_incremental() %}
+        WHERE block_time >= '{{transactions_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+        AND to IN (SELECT dao_wallet_address FROM dao_tmp)
+        AND (LOWER(call_type) NOT IN ('delegatecall', 'callcode', 'staticcall') or call_type IS NULL)
+        AND success = true 
+        AND CAST(value as decimal(38,0)) != 0 
 
         UNION ALL 
 
@@ -63,19 +61,17 @@ transactions as (
             to as address_interacted_with,
             trace_address
         FROM 
-        {{ source('ethereum', 'traces') }} et 
-        INNER JOIN 
-        dao_tmp dt 
-            ON et.from = dt.dao_wallet_address        
-            AND (LOWER(et.call_type) NOT IN ('delegatecall', 'callcode', 'staticcall') or call_type IS NULL)
-            AND et.success = true 
-            AND CAST(et.value as decimal(38,0)) != 0 
-            {% if not is_incremental() %}
-            AND et.block_time >= '{{transactions_start_date}}'
-            {% endif %}
-            {% if is_incremental() %}
-            AND et.block_time >= date_trunc("day", now() - interval '1 week')
-            {% endif %}
+        {{ source('ethereum', 'traces') }}
+        {% if not is_incremental() %}
+        WHERE block_time >= '{{transactions_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+        AND from IN (SELECT dao_wallet_address FROM dao_tmp)
+        AND (LOWER(call_type) NOT IN ('delegatecall', 'callcode', 'staticcall') or call_type IS NULL)
+        AND success = true 
+        AND CAST(value as decimal(38,0)) != 0 
 )
 
 SELECT 
