@@ -108,7 +108,7 @@ WITH base_pools AS (
     SELECT version, tokenid, LOWER(token) AS token, lower(pool) AS pool
     FROM (values
             --wstETH/ETH
-             ('Basic Pool','0','0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE','0xb90b9b1f91a01ea22a182cd84c1e22222e39b415')
+             ('Basic Pool','0','0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee','0xb90b9b1f91a01ea22a182cd84c1e22222e39b415')
             ,('Basic Pool','1','0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb','0xb90b9b1f91a01ea22a182cd84c1e22222e39b415')
             --aPool
             ,('Basic Pool','0','0x82E64f49Ed5EC1bC6e43DAD4FC8Af9bb3A2312EE','0x66b5792ed50a2a7405ea75c4b6b1913ef4e46661')
