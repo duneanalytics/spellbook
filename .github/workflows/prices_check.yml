@@ -1,0 +1,32 @@
+# .github/workflows/app.yaml
+name: dbt slim ci (in beta)
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'models/prices/prices_tokens.sql'
+  push:
+    branches:
+      - 'main'
+
+concurrency:
+  group:  ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dbt-test:
+    runs-on: [ self-hosted, linux, spellbook ]
+    timeout-minutes: 60
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: print-diff
+        shell: bash
+        run: |
+          git fetch origin main
+          git diff origin/main..HEAD > mydiff
+          echo "mydiff = "
+          cat mydiff
