@@ -105,8 +105,8 @@ WITH bridge_protocols AS (
     -- Exclude native bridges where a bridge protocol was used. Assign the bridge to the bridge protocol.
     LEFT ANTI JOIN  bridge_protocols prot
         ON prot.block_date = nat.block_date
-        AND prot.blockchain = nat.blockchain
         AND prot.chain_data_source = nat.chain_data_source
+        AND prot.block_number = nat.block_number
         AND prot.tx_hash = nat.tx_hash
         AND prot.bridged_token_address = nat.bridged_token_address
         -- Eventual improvement: See if we can join on event (i.e. tie a Hop event with a standard bridge event)
