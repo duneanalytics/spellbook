@@ -14,7 +14,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - block_date
-              - blockchain
+              - chain_data_source
               - tx_hash
               - evt_index
               - transfer_id
