@@ -12,6 +12,7 @@
 }}
 SELECT token_id, blockchain, symbol, LOWER(contract_address) as contract_address, decimals from (
 VALUES
+    ("test", null, "TEST", null, null),
     ("ada-cardano", null, "ADA", null, null),
     ("ae-aeternity", null, "AE", null, null),
     ("algo-algorand", null, "ALGO", null, null),
