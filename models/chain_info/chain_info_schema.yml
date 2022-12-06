@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: chain_ids
+  - name: chain_info
     meta:
       blockchain: ethereum
       project: chain_ids

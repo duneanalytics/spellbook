@@ -712,6 +712,9 @@ models:
     #   optimism:
     #     +schema: ovm_optimism
     #     +materialized: view
+    chain_info:
+      +schema: chain_info
+      +materialized: view
 
 seeds:
   spellbook:

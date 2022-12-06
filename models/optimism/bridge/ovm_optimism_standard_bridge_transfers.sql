@@ -18,7 +18,7 @@
 
 WITH bridge_events AS (
     SELECT
-        block_time, DATE_TRUNC('day',block_time) AS block_date block_number, tx_hash,
+        block_time, DATE_TRUNC('day',block_time) AS block_date, block_number, tx_hash,
         bridged_token_address, bridged_token_amount_raw, 
         recipient_address, trace_address, a.evt_index, project_contract_address,
         COALESCE(message_nonce_hash,'unknown') AS transfer_id, source_chain_id, destination_chain_id
@@ -53,7 +53,9 @@ WITH bridge_events AS (
         WHERE topic1 = '0xb0444523268717a02698be47d0803aa7468c00acbed2f8bd93a0459cde61dd89' --Deposit Finalized
         -- Other potentially helpful filters
         AND (topic2 IS NOT NULL) AND (topic3 IS NOT NULL) AND (topic4 IS NOT NULL) AND (data IS NOT NULL)
-        AND block_time > NOW() - interval '1 week'
+        {% if is_incremental() %}
+        AND block_time > NOW() - interval '14 days'
+        {% endif %}
         
         UNION ALL
         
@@ -86,20 +88,25 @@ WITH bridge_events AS (
         WHERE topic1 = '0x73d170910aba9e6d50b102db522b1dbcd796216f5128b445aa2135272886497e' --Withdrawal Initiated
         -- Other potentially helpful filters
         AND (topic2 IS NOT NULL) AND (topic3 IS NOT NULL) AND (topic4 IS NOT NULL) AND (data IS NOT NULL)
-        AND block_time > NOW() - interval '1 week'
+        {% if is_incremental() %}
+        AND block_time > NOW() - interval '14 days'
+        {% endif %}
         
         ) a
-    LEFT JOIN FROM {{ ref ('ovm_optimism_cross_domain_messenger_messages') }} l m
+    LEFT JOIN {{ ref ('ovm_optimism_cross_domain_messenger_messages') }} m
         ON a.tf_type = m.msg_type
         AND a.block_time = m.l2_block_time
         AND a.block_number = m.l2_block_number
         AND a.tx_hash = m.l2_tx_hash
         AND a.tf_index = m.msg_index
+        {% if is_incremental() %}
+        AND m.l2_block_time > NOW() - interval '14 days'
+        {% endif %}
 )
 
 SELECT
  'optimism' as chain_data_source
- 'Standard Bridge' AS project
+, 'Standard Bridge' AS project
 , tf.block_date
 , tf.block_time
 , source_chain_id
@@ -131,7 +138,7 @@ LEFT JOIN {{ source('optimism', 'transactions') }} t
         ON t.block_number = tf.block_number
         AND t.hash = tf.tx_hash
         {% if is_incremental() %}
-        AND t.block_time >= (NOW() - interval '14 days')
+        AND t.block_time >= (NOW() - interval '14' days)
         {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc
     ON erc.blockchain = 'optimism'
