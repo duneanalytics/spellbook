@@ -689,7 +689,6 @@ models:
         +schema: iziswap_bnb
         +materialized: view
 
-
 seeds:
   spellbook:
     balances:
