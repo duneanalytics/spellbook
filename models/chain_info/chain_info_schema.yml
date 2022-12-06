@@ -1,10 +1,10 @@
 version: 2
 
 models:
-  - name: chain_info
+  - name: chain_ids
     meta:
       blockchain: ethereum
-      project: chain_ids
+      project: chain_info
       contributors: msilb7
     config:
       tags: ['chains','cross-chain']
