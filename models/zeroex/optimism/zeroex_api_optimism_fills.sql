@@ -294,7 +294,7 @@ direct_uniswapv3 AS (
             TRUE                                                                                    AS swap_flag,
             FALSE                                                                                   AS matcha_limit_order_flag
     FROM {{ source('uniswap_v3_optimism', 'Pair_evt_Swap') }} swap
-   LEFT JOIN {{ source('uniswap_v3_optimism', 'Factory_evt_PoolCreated') }} pair ON pair.pool = swap.contract_address
+   LEFT JOIN {{ source('uniswap_v3_optimism', 'factory_evt_poolcreated') }} pair ON pair.pool = swap.contract_address
    JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
    WHERE sender = '0xdef1c0ded9bec7f1a1670819833240f027b25eff'
 
