@@ -10046,8 +10046,9 @@ from
                             , '0x58e5d5a525e3b40bc15abaa38b5882678db1ee68befd2f60bafe3a7fd06db9e3' -- PunkBought
                             , '0x05af636b70da6819000c49f85b21fa82081c632069bb626f30932034099107d8' -- PunkTransfer
                         )
+        {% if is_incremental() %} and a.evt_block_time >= date_trunc('day', now() - interval '1 week') {% endif %}    
+
 ) c 
-{% if is_incremental() %} where c.evt_block_time >= date_trunc('day', now() - interval '1 week') {% endif %}    
 group by 1,2,3,4,5,6,7,8
 
 union all 
@@ -10061,7 +10062,7 @@ select  cast(NULL as varchar(5)) as from
         , punk_id
         , cast(NULL as varchar(5)) as evt_tx_hash
 from original_holders
-where {% if is_incremental() %} cast('2017-06-23 19:37:59' as timestamp) >= date_trunc('day', now() - interval '1 week') {% endif %}
+{% if is_incremental() %} where cast('2017-06-23 19:37:59' as timestamp) >= date_trunc('day', now() - interval '1 week') {% endif %}
 
 ) d 
 order by evt_block_number desc, evt_index desc 
