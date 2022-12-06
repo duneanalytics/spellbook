@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'tx_hash', 'evt_index', 'transfer_id'],
+    unique_key = ['block_date', 'chain_data_source', 'tx_hash', 'evt_index', 'transfer_id'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "hop_protocol",
