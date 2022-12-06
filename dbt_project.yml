@@ -720,7 +720,7 @@ seeds:
             tx_hash: string
             block_time: timestamp
             token_id: string
-            amount_original: float
+            amount_original: double
             buyer: string
             seller: string
       solana:
