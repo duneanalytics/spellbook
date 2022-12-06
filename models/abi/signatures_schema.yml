@@ -25,6 +25,9 @@ models:
       - &created_at
         name: created_at
         description: UTC signature added time
+      - &created_at_month
+        name: created_at_month
+        description: UTC signature month partition
       - &unique_signature_id
         name: unique_signature_id
         description:  unique signature id

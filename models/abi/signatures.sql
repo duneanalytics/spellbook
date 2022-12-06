@@ -1,6 +1,6 @@
 {{ config(
         alias = 'signatures',
-        partition_by = ['created_at'],
+        partition_by = ['created_at_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -43,6 +43,7 @@ WITH
             , abi
             , type
             , created_at
+            , date_trunc('month',created_at) as created_at_month
             , unique_signature_id 
             , row_number() over (partition by unique_signature_id order by created_at desc) recency
         FROM signatures
