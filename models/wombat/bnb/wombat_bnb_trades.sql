@@ -16,22 +16,22 @@
 
 with wombat_swaps_all_pools as (
 	-- main pool
-	select * from {{ source('wombat_bnb', 'Pool_evt_Swap') }}
-	union
+	select toAmount, fromAmount, toToken, fromToken, evt_block_time, evt_tx_hash, evt_index, to, contract_address from {{ source('wombat_bnb', 'Pool_evt_Swap') }}
+	union all
 	-- side pool
-	select * from {{ source('wombat_bnb', 'HighCovRatioFeePool_evt_Swap') }}
-	union
+	select toAmount, fromAmount, toToken, fromToken, evt_block_time, evt_tx_hash, evt_index, to, contract_address from {{ source('wombat_bnb', 'HighCovRatioFeePool_evt_Swap') }}
+	union all
 	-- bnb pool
-	select * from {{ source('wombat_bnb', 'DynamicPool_evt_Swap') }}
-	union
+	select toAmount, fromAmount, toToken, fromToken, evt_block_time, evt_tx_hash, evt_index, to, contract_address from {{ source('wombat_bnb', 'DynamicPool_evt_Swap') }}
+	union all
 	-- mwom pool
-	select * from {{ source('wombat_bnb', 'mWOM_Pool_evt_Swap') }}
-	union
+	select toAmount, fromAmount, toToken, fromToken, evt_block_time, evt_tx_hash, evt_index, to, contract_address from {{ source('wombat_bnb', 'mWOM_Pool_evt_Swap') }}
+	union all
 	-- qwom pool
-	select * from {{ source('wombat_bnb', 'qWOM_WOMPool_evt_Swap') }}
-	union
+	select toAmount, fromAmount, toToken, fromToken, evt_block_time, evt_tx_hash, evt_index, to, contract_address from {{ source('wombat_bnb', 'qWOM_WOMPool_evt_Swap') }}
+	union all
 	-- wmx pool
-	select * from {{ source('wombat_bnb', 'WMX_WOM_Pool_evt_Swap') }}
+	select toAmount, fromAmount, toToken, fromToken, evt_block_time, evt_tx_hash, evt_index, to, contract_address from {{ source('wombat_bnb', 'WMX_WOM_Pool_evt_Swap') }}
 )
 select
 	'bnb' as blockchain
@@ -55,12 +55,12 @@ select
     end as token_pair
 	, s.toAmount / power(10, erc20_b.decimals) as token_bought_amount
 	, s.fromAmount / power(10, erc20_s.decimals) as token_sold_amount
-  , coalesce(s.to, tx.from) AS taker
+    , coalesce(s.to, tx.from) AS taker
 	, '' as maker
 	, cast(s.contract_address as string) as project_contract_address
 	, s.evt_tx_hash as tx_hash
-  , tx.from as tx_from
-  , tx.to as tx_to
+    , tx.from as tx_from
+    , tx.to as tx_to
 	, '' as trace_address
 	, s.evt_index as evt_index
 from 
