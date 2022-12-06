@@ -640,6 +640,9 @@ models:
       avalanche_c:
         +schema: woofi_avalanche_c
         +materialized: view
+      bnb:
+        +schema: woofi_bnb
+        +materialized: view
 
     hashflow:
       +schema: hashflow
@@ -663,14 +666,6 @@ models:
       +materialized: view
       optimism:
         +schema: quix_optimism
-        +materialized: view
-
-        
-    woofi:
-      +schema: woofi
-      +materialized: view
-      bnb:
-        +schema: woofi_bnb
         +materialized: view
 
     zeroex:
