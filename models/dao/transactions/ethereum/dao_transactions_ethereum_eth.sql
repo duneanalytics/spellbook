@@ -33,7 +33,7 @@ transactions as (
             to as dao_wallet_address, 
             'tx_in' as tx_type, 
             tx_index,
-            from as address_interacted_with,
+            COALESCE(from, '') as address_interacted_with,
             trace_address
         FROM 
         {{ source('ethereum', 'traces') }}
@@ -58,7 +58,7 @@ transactions as (
             from as dao_wallet_address, 
             'tx_out' as tx_type,
             tx_index,
-            to as address_interacted_with,
+            COALESCE(to, '') as address_interacted_with,
             trace_address
         FROM 
         {{ source('ethereum', 'traces') }}
