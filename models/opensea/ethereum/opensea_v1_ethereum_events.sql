@@ -132,7 +132,7 @@ enhanced_trades as (
     inner join nft_transfers nft
     ON o.block_number = nft.block_number
         AND o.tx_hash = nft.tx_hash
-        AND (trade_category = 'Buy' AND nft.from = o.seller) OR (trade_category = 'Sell' AND nft.to = o.buyer)
+        AND ((trade_category = 'Buy' AND nft.from = o.seller) OR (trade_category = 'Sell' AND nft.to = o.buyer))
         AND nft.evt_index <= o.order_evt_index and (prev_order_evt_index is null OR nft.evt_index > o.prev_order_evt_index )
 )
 
