@@ -111,7 +111,7 @@ with source_ethereum_transactions as (
           end as receiver
         ,a.zone
         ,a.token_contract_address
-        ,a.original_amount
+        ,CAST(a.original_amount AS DECIMAL(38,0)) AS original_amount
         ,a.item_type
         ,a.token_id
         ,a.platform_contract_address
