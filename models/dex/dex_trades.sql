@@ -33,11 +33,17 @@ list of models using old generic test, due to multiple versions in one model:
 ,'woofi_avalanche_c_trades'
 ,'bancor_ethereum_trades'
 ,'platypus_finance_avalanche_c_trades'
+,'trader_joe_trades'
 ,'hashflow_trades'
 ,'mstable_ethereum_trades'
+,'mdex_bnb_trades'
 ,'zigzag_trades'
+,'nomiswap_bnb_trades'
 ,'gmx_trades'
 ,'biswap_bnb_trades' 
+,'wombat_bnb_trades'
+,'iziswap_bnb_trades'
+,'babyswap_bnb_trades'
 ] %}
 
 

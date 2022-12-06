@@ -151,7 +151,7 @@ SELECT 'ethereum' AS blockchain
 , TRY_CAST(date_trunc('DAY', txs.block_time) AS date) AS block_date
 , txs.block_time
 , txs.block_number
-, txs.token_id
+, CAST(txs.token_id AS VARCHAR(100)) AS token_id
 , txs.collection
 , CASE WHEN currency_contract='0x0000000000000000000000000000000000000000' THEN pu.price*txs.amount_raw/POWER(10, 18)
     ELSE pu.price*txs.amount_raw/POWER(10, pu.decimals)
@@ -160,7 +160,7 @@ SELECT 'ethereum' AS blockchain
     ELSE 'erc1155'
     END AS token_standard
 , trade_type
-, 1 AS number_of_items
+, CAST(1 AS DECIMAL(38,0)) AS number_of_items
 , CASE WHEN et.`from`=seller THEN 'Offer Accepted'
     ELSE 'Buy'
     END AS trade_category
