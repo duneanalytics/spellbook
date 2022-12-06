@@ -8,10 +8,13 @@ with trades as (
 		evt_index
     from {{ ref('wombat_bnb_trades') }}
     where 1=0
-		-- 3 manually tested swaps
-		or (tx_hash='0x5c4e8696f5ae333d1c2ee215b9533edfefefe533b243f67a118d89074faf1f69' and evt_index='95')
-		or (tx_hash='0xa02ca83efdfc740d46788fda69aff0a44d809cf150834d1e03741d8a2f733d8a' and evt_index='121')
-		or (tx_hash='0x106a1a6c98c61488201007b99b692b5ba5e73be9aadff85e9449855cfe7a216c' and evt_index='683')
+		-- 6 manually tested swaps
+		or (tx_hash='0x9b6a9e1b626bc607d296537c3eee92a3e1f51229938253b6685a6b002d710786' and evt_index='991')
+		or (tx_hash='0x478de9749640e880e80485550c62a63072fa946c791f3cf00b60e417c34cb4dd' and evt_index='138')
+		or (tx_hash='0xc016cb50b1044f767a0097b24501fadc72ff30840efe057fd2e3ee7812a4ad88' and evt_index='411')
+		or (tx_hash='0xb228abac355fbc699ab0b134f48a495929069310aa32132ca5cdb679a81b6128' and evt_index='111')
+		or (tx_hash='0x068e19b399f5bb6e25b0784ddadc5b5bd87d36fe14958f91c3ffaa67ed47dce1' and evt_index='91')
+		or (tx_hash='0xc1cc6d3a674fd8472b1ce8f213e9d5b9e701e61eae14280a17bdab63a21b3fd9' and evt_index='358')
 )
 , examples as (
     select * from {{ ref('dex_trades_seed') }}
