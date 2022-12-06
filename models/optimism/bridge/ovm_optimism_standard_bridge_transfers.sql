@@ -121,7 +121,7 @@ SELECT
 , bridged_token_amount_raw
 , 0 AS bridged_token_fee_amount_raw
 , bridged_token_address
-, NULL AS bridged_token_fee_address
+, '' AS bridged_token_fee_address
 , 1 AS is_native_bridge
 , tf.block_number
 , tx_hash
