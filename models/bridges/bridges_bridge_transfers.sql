@@ -30,6 +30,11 @@ WITH bridge_protocols AS (
             , cid_source.chain_name AS source_chain_name
             , cid_dest.chain_name AS destination_chain_name
             , cid_source.chain_name || ' -> ' || cid_dest.chain_name AS bridge_path_name
+            , CASE
+                WHEN chain_data_source = cid_source.chain_name THEN 'Withdrawal'
+                WHEN chain_data_source = cid_dest.chain_name THEN 'Deposit'
+                ELSE 'na'
+            END AS transfer_type
             , bridged_token_symbol
             , bridged_token_amount
             , bridged_token_fee_amount
@@ -74,6 +79,11 @@ WITH bridge_protocols AS (
             , cid_source.chain_name AS source_chain_name
             , cid_dest.chain_name AS destination_chain_name
             , cid_source.chain_name || ' -> ' || cid_dest.chain_name AS bridge_path_name
+            , CASE
+                WHEN chain_data_source = cid_source.chain_name THEN 'Withdrawal'
+                WHEN chain_data_source = cid_dest.chain_name THEN 'Deposit'
+                ELSE 'na'
+            END AS transfer_type
             , bridged_token_symbol
             , bridged_token_amount
             , bridged_token_fee_amount

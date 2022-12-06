@@ -46,6 +46,9 @@ models:
       - &bridge_path_name
         name: bridge_path_name
         description: "Bridge Path: Source -> Destination by Chain name"
+      - &transfer_type
+        name: transfer_type
+        description: "Is the transfer a Deposit to the chain_data_source chain, or a Withdrawal away?"
       - &bridged_token_symbol
         name: bridged_token_symbol
         description: Bridged Token Symbol
