@@ -23,10 +23,14 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
 
-      - name: print-diff
+      # This step finds only new lines in prices_tokens.sql.
+      # New lines are expected to be added to the values list in the query
+      # Other edits to the prices query like changing the SELECT statement or config will cause
+      # this step to fail.
+      - name: Get prices diff
         shell: bash
         run: |
-          git fetch origin main
-          git diff origin/main..HEAD > mydiff
-          echo "mydiff = "
-          cat mydiff
+          echo "PRICES_DIFF=$(git diff origin/main..HEAD models/prices/prices_tokens.sql | grep '^\+ ')" >> $GITHUB_ENV
+
+      - name: Test Variable
+        run: echo "$PRICES_DIFF"
