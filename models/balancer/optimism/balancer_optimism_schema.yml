@@ -95,6 +95,7 @@ models:
             - evt_block_number
             - from
             - to
+            - value
     columns:
       - *contract_address
       - &evt_tx_hash
