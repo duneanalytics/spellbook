@@ -1,4 +1,5 @@
 {{ config(
+        schema = 'bridges'
         alias ='bridges_bridge_transfers',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                 "sector",

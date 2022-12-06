@@ -715,6 +715,9 @@ models:
     chain_info:
       +schema: chain_info
       +materialized: view
+    bridges:
+      +schema: bridges
+      +materialized: view
 
 seeds:
   spellbook:
