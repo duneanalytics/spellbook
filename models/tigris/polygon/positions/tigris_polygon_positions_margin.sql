@@ -53,7 +53,7 @@ margin as (
     SELECT 
         evt_block_time,
         position_id,
-        new_margin as margin,
+        margin,
         version,
         evt_index
     FROM 
