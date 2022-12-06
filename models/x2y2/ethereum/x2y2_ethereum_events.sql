@@ -18,7 +18,7 @@ WITH aggregator_routed_x2y2_txs AS (
     , inv.taker AS buyer
     , prof.to AS seller
     , ROUND(bytea2numeric_v2(substring(get_json_object(inv.item, '$.data'), 195,64)),0) AS token_id
-    , get_json_object(inv.item, '$.price') AS amount_raw
+    , CAST(get_json_object(inv.item, '$.price') AS DECIMAL(38,0)) AS amount_raw
     , prof.currency AS currency_contract
     , prof.contract_address AS project_contract_address
     , '0x' || substring(get_json_object(inv.item, '$.data'), 155, 40) AS nft_contract_address

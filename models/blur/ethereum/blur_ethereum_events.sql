@@ -33,7 +33,7 @@ SELECT
     , CASE WHEN et.from=buyer_fix.to OR et.from=COALESCE(buyer_fix.to, get_json_object(bm.buy, '$.trader')) THEN 'Buy'
         ELSE 'Offer Accepted'
         END AS trade_category
-    , get_json_object(bm.buy, '$.price') AS amount_raw
+    , CAST(get_json_object(bm.buy, '$.price') AS DECIMAL(38,0)) AS amount_raw
     , CASE WHEN get_json_object(bm.buy, '$.paymentToken')='0x0000000000000000000000000000000000000000' THEN get_json_object(bm.buy, '$.price')/POWER(10, 18)
         ELSE get_json_object(bm.buy, '$.price')/POWER(10, pu.decimals)
         END AS amount_original
