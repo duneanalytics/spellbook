@@ -74,7 +74,7 @@ with source_ethereum_transactions as (
         ,a.receiver
         ,a.zone
         ,a.token_contract_address
-        ,a.original_amount
+        ,CAST(a.original_amount AS DECIMAL(38,0)) AS original_amount
         ,a.item_type
         ,a.token_id
         ,a.platform_contract_address
@@ -148,7 +148,7 @@ with source_ethereum_transactions as (
         ,tx_hash
         ,evt_index
         ,max(token_contract_address) as token_contract_address 
-        ,sum(case when is_price then original_amount end) as price_amount_raw
+        ,CAST(sum(case when is_price then original_amount end) AS DECIMAL(38,0)) as price_amount_raw
         ,sum(case when is_platform_fee then original_amount end) as platform_fee_amount_raw
         ,max(case when is_platform_fee then receiver end) as platform_fee_receiver
         ,sum(case when is_creator_fee then original_amount end) as creator_fee_amount_raw
@@ -183,7 +183,7 @@ with source_ethereum_transactions as (
         ,a.zone
         ,a.platform_contract_address
         ,b.token_contract_address 
-        ,round(price_amount_raw / nft_cnt) as price_amount_raw  -- to truncate the odd number of decimal places 
+        ,CAST(round(price_amount_raw / nft_cnt) AS DECIMAL(38,0)) as price_amount_raw  -- to truncate the odd number of decimal places 
         ,round(platform_fee_amount_raw / nft_cnt) as platform_fee_amount_raw
         ,platform_fee_receiver
         ,round(creator_fee_amount_raw / nft_cnt) as creator_fee_amount_raw  
@@ -268,12 +268,12 @@ with source_ethereum_transactions as (
     ,nft_contract_address
     ,nft_token_name as collection
     ,nft_token_id as token_id
-    ,CAST(nft_token_amount AS DECIMAL(38,0)) as number_of_items
+    ,nft_token_amount as number_of_items
     ,nft_token_standard as token_standard
 
     -- price info          
     ,price_amount as amount_original
-    ,CAST(price_amount_raw AS DECIMAL(38,0)) as amount_raw
+    ,price_amount_raw as amount_raw
     ,price_amount_usd as amount_usd
     ,token_symbol as currency_symbol
     ,token_alternative_symbol as currency_contract
