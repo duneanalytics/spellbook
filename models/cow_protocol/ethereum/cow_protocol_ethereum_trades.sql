@@ -6,7 +6,10 @@
         on_schema_change='sync_all_columns',
         file_format ='delta',
         incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["ethereum"]\', "project", "cow_protocol", \'["bh2smith", "gentrexha"]\') }}'
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "project",
+                                    "cow_protocol",
+                                    \'["bh2smith", "gentrexha"]\') }}'
     )
 }}
 
