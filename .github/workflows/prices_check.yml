@@ -25,12 +25,12 @@ jobs:
 
 
       - name: echo
-        run: echo ${{ github.event.pull_request.base.sha }}
+        run: echo ${{ github.event.pull_request.head.sha }}
 
       - name: Get prices diff
         shell: bash
         run: |
-          git diff ${{ github.event.pull_request.base.sha}}..HEAD models/prices/prices_tokens.sql | grep '^\+ ' > other.txt
+          git diff ${{ github.event.pull_request.head.sha}}..HEAD models/prices/prices_tokens.sql | grep '^\+ ' > other.txt
 
       - name: Test Variable
         run: cat other.txt
