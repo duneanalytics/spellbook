@@ -6,14 +6,14 @@
         on_schema_change='sync_all_columns',
         file_format ='delta',
         incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
+        post_hook='{{ expose_spells(\'["gnosis"]\',
                                     "project",
                                     "cow_protocol",
                                     \'["bh2smith", "gentrexha"]\') }}'
     )
 }}
 
--- Find the PoC Query here: https://dune.com/queries/1283229
+-- Find the PoC Query here: https://dune.com/queries/1719733
 WITH
 -- First subquery joins buy and sell token prices from prices.usd
 -- Also deducts fee from sell amount
@@ -32,11 +32,11 @@ trades_with_prices AS (
            feeAmount                 as fee_amount,
            ps.price                  as sell_price,
            pb.price                  as buy_price
-    FROM {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }} settlement
+    FROM {{ source('gnosis_protocol_v2_gnosis', 'GPv2Settlement_evt_Trade') }} settlement
              LEFT OUTER JOIN {{ source('prices', 'usd') }} as ps
                              ON sellToken = ps.contract_address
                                  AND ps.minute = date_trunc('minute', evt_block_time)
-                                 AND ps.blockchain = 'ethereum'
+                                 AND ps.blockchain = 'gnosis'
                                  {% if is_incremental() %}
                                  AND ps.minute >= date_trunc("day", now() - interval '1 week')
                                  {% endif %}
@@ -44,11 +44,11 @@ trades_with_prices AS (
                              ON pb.contract_address = (
                                  CASE
                                      WHEN buyToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-                                         THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                                         THEN '0xe91d153e0b41518a2ce8dd3d7944fa863463a97d'
                                      ELSE buyToken
                                      END)
                                  AND pb.minute = date_trunc('minute', evt_block_time)
-                                 AND pb.blockchain = 'ethereum'
+                                 AND pb.blockchain = 'gnosis'
                                  {% if is_incremental() %}
                                  AND pb.minute >= date_trunc("day", now() - interval '1 week')
                                  {% endif %}
@@ -73,7 +73,7 @@ trades_with_token_units as (
            buy_token                         as buy_token_address,
            (CASE
                 WHEN tb.symbol IS NULL THEN buy_token
-                WHEN buy_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 'ETH'
+                WHEN buy_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 'xDAI'
                 ELSE tb.symbol
                END)                          as buy_token,
            sell_amount / pow(10, ts.decimals) as units_sold,
@@ -86,13 +86,13 @@ trades_with_token_units as (
            sell_price,
            buy_price
     FROM trades_with_prices
-             LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} ts
+             LEFT OUTER JOIN {{ ref('tokens_gnosis_erc20') }} ts
                              ON ts.contract_address = sell_token
-             LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} tb
+             LEFT OUTER JOIN {{ ref('tokens_gnosis_erc20') }} tb
                              ON tb.contract_address =
                                 (CASE
                                      WHEN buy_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-                                         THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                                         THEN '0xe91d153e0b41518a2ce8dd3d7944fa863463a97d'
                                      ELSE buy_token
                                     END)
 ),
@@ -101,7 +101,7 @@ trades_with_token_units as (
 order_ids as (
     select evt_tx_hash, collect_list(orderUid) as order_ids
     from (  select orderUid, evt_tx_hash, evt_index
-            from {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }}
+            from {{ source('gnosis_protocol_v2_gnosis', 'GPv2Settlement_evt_Trade') }}
              {% if is_incremental() %}
              where evt_block_time >= date_trunc("day", now() - interval '1 week')
              {% endif %}
@@ -128,7 +128,7 @@ reduced_order_ids as (
 trade_data as (
     select call_tx_hash,
            posexplode(trades)
-    from {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_call_settle') }}
+    from {{ source('gnosis_protocol_v2_gnosis', 'GPv2Settlement_call_settle') }}
     where call_success = true
     {% if is_incremental() %}
     AND call_block_time >= date_trunc("day", now() - interval '1 week')

@@ -187,6 +187,11 @@ models:
         +schema: element_avalanche_c
         +materialized: view
 
+
+    abi:
+      +schema: abi
+      +materialized: view
+      
     superrare:
       +schema: superrare
       +materialized: view
