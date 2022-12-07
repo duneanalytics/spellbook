@@ -120,11 +120,11 @@ models:
       - &flags
         name: flags
         description: "bitmap with additional trade information (cf. https://github.com/cowprotocol/contracts/blob/main/src/contracts/libraries/GPv2Trade.sol#L58-L94)"
-  - name: cow_protocol_ethereum_batches
+  - name: cow_protocol_gnosis_batches
     meta:
-      blockchain: ethereum
+      blockchain: gnosis
       project: cow_protocol
-      contributors: bh2smith, gentrexha
+      contributors: bh2smith
     config:
       tags: ['gnosis','cow_protocol','trades', 'dex', 'aggregator', 'auction']
     description: >
