@@ -331,9 +331,9 @@ WITH
             , block_date
             , block_time
             , block_number
-            , explode(token_id) as token_id --nft.trades prefers each token id be its own row
+            , explode(token_id) as raw_token_id --nft.trades prefers each token id be its own row
             , token_standard
-            , number_of_items/number_of_items as number_of_items
+            , CAST(number_of_items/number_of_items AS DECIMAL(38,0)) as number_of_items
             , trade_type
             , trade_category
             , evt_type
@@ -355,7 +355,7 @@ WITH
             , platform_fee_amount/number_of_items as platform_fee_amount
             , cast(platform_fee_amount_raw/number_of_items as double) as platform_fee_amount_raw
             , platform_fee_amount_usd/number_of_items as platform_fee_amount_usd
-            , platform_fee_percentage
+            , CAST(platform_fee_percentage AS DOUBLE) AS platform_fee_percentage
             , pool_fee_amount/number_of_items as pool_fee_amount
             , pool_fee_amount_raw/number_of_items as pool_fee_amount_raw
             , pool_fee_amount_usd/number_of_items as pool_fee_amount_usd
@@ -364,7 +364,7 @@ WITH
             , royalty_fee_amount/number_of_items as royalty_fee_amount
             , royalty_fee_amount_raw/number_of_items as royalty_fee_amount_raw
             , royalty_fee_amount_usd/number_of_items as royalty_fee_amount_usd
-            , royalty_fee_percentage
+            , CAST(royalty_fee_percentage AS DOUBLE) AS royalty_fee_percentage
             , royalty_fee_currency_symbol
             , royalty_fee_receive_address
         FROM swaps_cleaned_w_metadata
@@ -373,5 +373,6 @@ WITH
 --final SELECT CTE
 SELECT
     *
-    , 'sudoswap-' || tx_hash || '-' || nft_contract_address || token_id::string || '-' || seller || '-' || amount_original::string || 'Trade' AS unique_trade_id
+    , CAST(raw_token_id AS VARCHAR(100)) AS token_id
+    , 'sudoswap-' || tx_hash || '-' || nft_contract_address || raw_token_id::string || '-' || seller || '-' || amount_original::string || 'Trade' AS unique_trade_id
 FROM swaps_exploded
