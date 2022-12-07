@@ -39,7 +39,7 @@ SELECT distinct 'ethereum' AS blockchain
 , CASE WHEN nft_mints.amount=1 THEN 'Single Item Mint'
     ELSE 'Bundle Mint'
     END AS trade_type
-, nft_mints.amount AS number_of_items
+, CAST(nft_mints.amount AS DECIMAL(38,0)) AS number_of_items
 , 'Mint' AS trade_category
 , 'Mint' AS evt_type
 , nft_mints.from AS seller
@@ -56,7 +56,7 @@ SELECT distinct 'ethereum' AS blockchain
 , nft_mints.tx_hash AS tx_hash
 , etxs.from AS tx_from
 , etxs.to AS tx_to
-, 0 AS platform_fee_amount_raw
+, CAST(0 AS DECIMAL(38,0)) AS platform_fee_amount_raw
 , 0 AS platform_fee_amount
 , 0 AS platform_fee_amount_usd
 , 0 AS platform_fee_percentage

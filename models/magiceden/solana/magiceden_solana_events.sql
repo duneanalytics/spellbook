@@ -20,7 +20,7 @@ SELECT
   block_slot::string as block_number,
   abs(post_balances[0] / 1e9 - pre_balances[0] / 1e9) * p.price AS amount_usd,
   abs(post_balances[0] / 1e9 - pre_balances[0] / 1e9) AS amount_original,
-  abs(post_balances[0] - pre_balances[0])::string AS amount_raw,
+  CAST(abs(post_balances[0] - pre_balances[0]) AS DECIMAL(38,0)) AS amount_raw,
   p.symbol as currency_symbol,
   p.contract_address as currency_contract,
   'metaplex' as token_standard,
@@ -53,7 +53,7 @@ SELECT
          AND array_contains(log_messages, 'Program log: Instruction: ExecuteSale')
          AND array_contains(log_messages, 'Program log: Instruction: Buy') THEN 'Single Item Trade' ELSE NULL::string
          END as trade_type,
-  '1' as number_of_items,
+  CAST(1 AS DECIMAL(38,0)) as number_of_items,
   NULL::string as trade_category,
   signer as buyer,
   CASE WHEN (array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
