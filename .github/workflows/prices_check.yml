@@ -37,5 +37,4 @@ jobs:
 
       - name: Run validations
         id: validations
-        working-directory: scripts
-        run: python check_tokens.py
+        run: python scripts/check_tokens.py
