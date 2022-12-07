@@ -23,19 +23,14 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
 
-      - name: Fetch Main
-        run: git fetch origin main
-
-      - name: Set Merge Base
-        run: echo "MERGE_BASE=$(git merge-base --fork-point main)" >> $GITHUB_ENV
 
       - name: echo
-        run: echo $MERGE_BASE
+        run: echo $pull_request.base.sha
 
       - name: Get prices diff
         shell: bash
         run: |
-          git diff $MERGE_BASE..HEAD models/prices/prices_tokens.sql | grep '^\+ ' > other.txt
+          git diff $pull_request.base.sha..HEAD models/prices/prices_tokens.sql | grep '^\+ ' > other.txt
 
       - name: Test Variable
         run: cat other.txt
