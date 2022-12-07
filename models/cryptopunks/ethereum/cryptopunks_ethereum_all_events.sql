@@ -57,4 +57,4 @@ from
     from {{ ref('cryptopunks_ethereum_punk_transfers') }}
     where (evt_tx_hash is null or evt_tx_hash not in (select distinct tx_hash from {{ ref('cryptopunks_ethereum_trades') }} ))
 ) a 
-order by evt_block_time desc, evt_block_number desc, evt_index desc
+order by evt_block_number desc
