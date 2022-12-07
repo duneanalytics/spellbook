@@ -3,7 +3,8 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                             "sector",
                                             "balances",
-                                            \'["hildobby","soispoke","dot2dotseurat"]\') }}'
+                                            \'["hildobby","soispoke","dot2dotseurat"]\',
+                                            trino_enabled=False) }}'
         )
 }}
 

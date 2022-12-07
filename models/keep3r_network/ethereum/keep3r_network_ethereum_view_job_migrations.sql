@@ -1,6 +1,9 @@
 {{ config (
     alias = 'job_migrations',
-    post_hook = '{{ expose_spells(\'["ethereum"]\', "project", "keep3r", \'["wei3erHase", "agaperste"]\') }}'
+    post_hook = '{{ expose_spells(\'["ethereum"]\', 
+        "project", "keep3r", 
+        \'["wei3erHase", "agaperste"]\',
+        trino_enabled=False) }}'
 ) }}
 
 SELECT

@@ -5,7 +5,8 @@
          post_hook='{{ expose_spells(\'["ethereum"]\',
                                       "project",
                                       "nomad",
-                                    \'["springzh"]\') }}')
+                                    \'["springzh"]\',
+                                    trino_enabled=False) }}')
 }}
 
 with nomad_bridge_domains(domain_id, domain_name, domain_type) as (

@@ -1,8 +1,9 @@
-{% macro expose_spells(blockchains, spell_type, spell_name, contributors) %}
+{% macro expose_spells(blockchains, spell_type, spell_name, contributors, trino_enabled=True) %}
 {%- if target.name == 'prod'-%}
         ALTER {{"view" if model.config.materialized == "view" else "table"}} {{ this }}
         SET TBLPROPERTIES (
         'dune.public'='true',
+        {{ "'dune.disabled_datasets'='11'," if not trino_enabled else "" }}
         'dune.data_explorer.blockchains'= '{{ blockchains }}',     -- e.g., ["ethereum","solana"]
         'dune.data_explorer.category'='abstraction',
         'dune.data_explorer.abstraction.type'= '{{ spell_type }}', -- 'project' or 'sector'

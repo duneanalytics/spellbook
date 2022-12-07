@@ -2,7 +2,8 @@
     post_hook='{{ expose_spells(\'["ethereum"]\',
                             "project",
                             "ens",
-                            \'["antonio-mendes","mewwts"]\') }}')}}
+                            \'["antonio-mendes","mewwts"]\',
+                            trino_enabled=False) }}')}}
 SELECT
     label,
     TO_TIMESTAMP(min(expires)) AS min_expires,
