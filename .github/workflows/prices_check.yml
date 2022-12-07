@@ -1,5 +1,5 @@
 # .github/workflows/app.yaml
-name: dbt slim ci (in beta)
+name: Prices Check
 
 on:
   workflow_dispatch:
@@ -34,3 +34,5 @@ jobs:
 
       - name: Test Variable
         run: echo "$PRICES_DIFF"
+
+      -
