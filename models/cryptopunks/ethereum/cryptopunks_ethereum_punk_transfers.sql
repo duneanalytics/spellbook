@@ -10016,19 +10016,18 @@ with original_holders as (
 )
 
 select *
-        , row_number() over (partition by punk_id order by evt_block_number desc, evt_index desc) as punk_id_tx_rank
-from
-(   select  from
-            , to
-            , evt_block_time
-            , evt_block_time_week
-            , evt_block_number
-            , evt_index
-            , punk_id
-            , evt_tx_hash 
-    from 
-    (
-    select  a.from
+from 
+(
+select  from
+        , to
+        , evt_block_time
+        , evt_block_time_week
+        , evt_block_number
+        , evt_index
+        , punk_id
+        , evt_tx_hash 
+from 
+(   select  a.from
             , a.to
             , a.evt_block_time
             , date_trunc('week',a.evt_block_time) as evt_block_time_week
@@ -10048,20 +10047,22 @@ from
                             , '0x05af636b70da6819000c49f85b21fa82081c632069bb626f30932034099107d8' -- PunkTransfer
                         )
         {% if is_incremental() %} and a.evt_block_time >= date_trunc('day', now() - interval '1 week') {% endif %}    
-    
-    union all 
-    
-    select  cast(NULL as varchar(5)) as from
-            , address as to
-            , cast('2017-06-23 19:37:59' as timestamp) as evt_block_time
-            , date_trunc('week',cast('2017-06-23 19:37:59' as timestamp)) as evt_block_time_week
-            , cast(3919418 as int) as evt_block_number
-            , cast(1 as int) as evt_index
-            , punk_id
-            , cast(NULL as varchar(5)) as evt_tx_hash
-    from original_holders
-    where {% if is_incremental() %} cast('2017-06-23 19:37:59' as timestamp) >= date_trunc('day', now() - interval '1 week') {% endif %}    
-    
-    ) a
-    group by 1,2,3,4,5,6,7,8
-) b
+
+) c 
+group by 1,2,3,4,5,6,7,8
+
+union all 
+
+select  cast(NULL as varchar(5)) as from
+        , address as to
+        , cast('2017-06-23 19:37:59' as timestamp) as evt_block_time
+        , date_trunc('week',cast('2017-06-23 19:37:59' as timestamp)) as evt_block_time_week
+        , cast(3919418 as int) as evt_block_number
+        , cast(1 as int) as evt_index
+        , punk_id
+        , cast(NULL as varchar(5)) as evt_tx_hash
+from original_holders
+{% if is_incremental() %} where cast('2017-06-23 19:37:59' as timestamp) >= date_trunc('day', now() - interval '1 week') {% endif %}
+
+) d 
+order by evt_block_number desc, evt_index desc 
