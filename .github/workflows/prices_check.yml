@@ -36,5 +36,11 @@ jobs:
           git diff ${{ github.event.pull_request.base.sha}}..${{ github.event.pull_request.head.sha }} models/prices/prices_tokens.sql | grep '^\+ ' > scripts/new_lines.txt
 
       - name: Run validations
+        id: validations
         working-directory: scripts
-        run: python token_checker.py 2>&1
+        run: python token_checker.py
+
+    - name: use error detail on failure
+      if: ${{ failure() }}
+      run: |
+        echo ${{ steps.validations.outputs.errors }}
