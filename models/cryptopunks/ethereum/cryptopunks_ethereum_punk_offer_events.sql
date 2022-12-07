@@ -14,7 +14,7 @@ select punkIndex as punk_id
         , b.from 
         , case when toAddress = '0x0000000000000000000000000000000000000000' then cast(NULL as varchar(5))
             else toAddress end as to
-        , minValue/1e18 as eth_price
+        , minValue/1e18 as eth_value
         , a.evt_block_time 
         , date_trunc('week',a.evt_block_time) as evt_block_time_week
         , a.evt_block_number
@@ -32,7 +32,7 @@ select  a.punkIndex
         , 'Offer Withdrawn' as event_type
         , b.from  
         , cast(NULL as varchar(5)) as to 
-        , cast(NULL as double) as eth_price
+        , cast(NULL as double) as eth_value
         , a.evt_block_time
         , date_trunc('week',a.evt_block_time) as evt_block_time_week
         , a.evt_block_number
