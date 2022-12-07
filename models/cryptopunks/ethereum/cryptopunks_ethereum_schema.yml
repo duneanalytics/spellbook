@@ -405,3 +405,32 @@ models:
         description: "Index of transfer"   
       - name: evt_tx_hash
         description: "Transfer transaction hash"
+
+  - name: cryptopunks_ethereum_all_events
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [cat]
+    config:
+      tags: ['ethereum', 'cryptopunks']
+    description: > 
+        All CryptoPunks events
+    columns:
+      - name: punk_id
+        description: "Punk ID #"    
+      - name: event_type
+        description: "Type of event"
+      - name: from
+        description: "Wallet that initiated transaction"
+      - name: to
+        description: "If transaction to another address"
+      - name: eth_value
+        description: "ETH amount"       
+      - name: evt_block_time
+        description: "Time of transfer"
+      - name: evt_block_number
+        description: "Block number of transfer"
+      - name: evt_index
+        description: "Index of transfer"   
+      - name: evt_tx_hash
+        description: "Transfer transaction hash"
