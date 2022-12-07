@@ -35,4 +35,6 @@ jobs:
       - name: Test Variable
         run: echo "$PRICES_DIFF"
 
-      -
+      - name: Run validations
+        working-directory: scripts
+        run: python token_checker.py --new_lines $PRICES_DIFF 2>&1
