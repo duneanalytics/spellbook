@@ -1,5 +1,5 @@
 {{ config(
-        alias ='trades'
+        alias ='nft_trades'
 )
 }}
 
