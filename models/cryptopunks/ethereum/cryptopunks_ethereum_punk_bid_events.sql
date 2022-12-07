@@ -5,6 +5,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['evt_block_time_week', 'evt_tx_hash', 'evt_index']
+        
         )
 }}
 
