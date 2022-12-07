@@ -25,12 +25,12 @@ jobs:
 
 
       - name: Fetch base commit
-        run:  git fetch origin ${{ github.event.pull_request.base.base }}
+        run:  git fetch origin ${{ github.event.pull_request.base.sha }}
 
       - name: Get prices diff
         shell: bash
         run: |
-          git diff ${{ github.event.pull_request.base.sha}}..${{ github.sha }} models/prices/prices_tokens.sql | grep '^\+ ' > other.txt
+          git diff ${{ github.event.pull_request.base.sha}}..${{ github.event.pull_request.head.sha }} models/prices/prices_tokens.sql | grep '^\+ ' > other.txt
 
       - name: Test Variable
         run: cat other.txt
