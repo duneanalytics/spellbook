@@ -1,9 +1,9 @@
 WITH unit_tests as
-(SELECT case when test.maker_token_address = actual.maker_token_address 
+(SELECT case when test.maker_token_amount = actual.maker_token_amount 
                 and test.taker_token_amount = actual.taker_token_amount 
                 and test.taker_token_address = actual.taker_token_address 
 then True else False end as test
-FROM {{ ref('zeroex_api_polygon_fills_sample') }} actual
+FROM {{ ref('zeroex_api_polygon_fills') }} actual
 JOIN {{ ref('zeroex_api_polygon_fills_sample') }} test ON test.tx_hash = actual.tx_hash AND test.evt_index = actual.evt_index 
 )
 select count(case when test = false then 1 else null end)/count(*) as pct_mismatch, count(*) as count_rows

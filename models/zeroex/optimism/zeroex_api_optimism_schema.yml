@@ -71,5 +71,4 @@ models:
         description: "If the swap's order was initially created and submitted thru Matcha. This is for Matcha related query needs."
       - &volume_usd
         name: volume_usd
-        description: "Trading volume measured in USD value"
-              
+        description: "Trading volume measured in USD value"           
