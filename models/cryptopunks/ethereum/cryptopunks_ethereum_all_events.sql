@@ -35,7 +35,7 @@ from
     union all 
 
     select token_id 
-            , trade_category
+            , 'Sold' as event_type
             , seller
             , buyer
             , amount_original
