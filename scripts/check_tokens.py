@@ -1,6 +1,6 @@
 from scripts.token_checker import TokenChecker
 
-WWWwith open('tests/new_lines.txt') as f:
+with open('new_lines.txt') as f:
     new_lines = f.read().strip().split('\n')
 new_lines = [new_line.lstrip('+').strip() for new_line in new_lines]
 exceptions = 0
