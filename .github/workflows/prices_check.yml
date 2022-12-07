@@ -24,10 +24,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: echo
-        run: echo  $GITHUB_SHA
+        run: echo $GITHUB_REF
 
       - name: Set Merge Base
-        run: echo "MERGE_BASE=$(git merge-base --fork-point origin/main $GITHUB_SHA)" >> $GITHUB_ENV
+        run: echo "MERGE_BASE=$(git merge-base --fork-point origin/main $GITHUB_REF)" >> $GITHUB_ENV
 
       - name: echo
         run: echo $MERGE_BASE
