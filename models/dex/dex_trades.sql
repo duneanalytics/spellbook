@@ -30,7 +30,7 @@ list of models using old generic test, due to multiple versions in one model:
 ,'dfx_ethereum_trades'
 ,'pancakeswap_trades'
 ,'dodo_ethereum_trades'
-,'woofi_avalanche_c_trades'
+,'woofi_trades'
 ,'bancor_ethereum_trades'
 ,'platypus_finance_avalanche_c_trades'
 ,'trader_joe_trades'
