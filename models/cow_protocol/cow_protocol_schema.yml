@@ -85,3 +85,52 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the corresponding trade event"
+  - name: cow_protocol_batches
+    meta:
+      blockchain: gnosis
+      project: cow_protocol
+      contributors: bh2smith
+    config:
+      tags: ['gnosis','cow_protocol','batches', 'dex', 'aggregator', 'auction']
+    description: >
+      CoW Protocol enriched batches table cross-chain
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_date
+      - *block_time
+      - &num_trades
+        name: num_trades
+        description: Number of trades settled within the batch
+      - &dex_swaps
+        name: dex_swaps
+        description: Number of AMM interactions used to settle the batch (estimated)
+      - &batch_value
+        name: batch_value
+        description: Total USD value of trades settled within the batch
+      - &solver_address
+        name: solver_address
+        description: Ethereum address of solver settled batch (equivalent to tx.from)
+      - *tx_hash
+      - &gas_price
+        name: gas_price
+        description: Gas price (in WEI) of transaction
+      - &gas_used
+        name: gas_used
+        description: Total/cumulative gas consumed (in WEI) to settle the batch
+      - &tx_cost_usd
+        name: tx_cost_usd
+        description: USD cost of batch execution (gas_price * gas_used) / 1e18 * ETH price
+      - &fee_value
+        name: fee_value
+        description: Total USD valuation of fees collected from all trades within the batch
+      - &call_data_size
+        name: call_data_size
+        description: Size (in Kilobytes) of call data passed into the settle method.
+      - &unwraps
+        name: unwraps
+        description: Number of WETH unwraps performed within the settlement
+      - &token_approvals
+        name: token_approvals
+        description: Number of ERC20 token approvals made within the settlement
