@@ -150,7 +150,10 @@ models:
       - &solver_address
         name: solver_address
         description: Ethereum address of solver settled batch (equivalent to tx.from)
-      - *tx_hash
+      - name: tx_hash
+        description: "Transaction hash of trade"
+        tests:
+          - unique
       - &gas_price
         name: gas_price
         description: Gas price (in WEI) of transaction
@@ -161,7 +164,8 @@ models:
         name: tx_cost_usd
         description: USD cost of batch execution (gas_price * gas_used) / 1e18 * ETH price
       - &fee_value
-        name: Total USD valuation of fees collected from all trades within the batch
+        name: fee_value
+        description: Total USD valuation of fees collected from all trades within the batch
       - &call_data_size
         name: call_data_size
         description: Size (in Kilobytes) of call data passed into the settle method.

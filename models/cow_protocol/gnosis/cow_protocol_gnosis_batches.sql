@@ -94,7 +94,7 @@ combined_batch_info as (
         inner join {{ source('gnosis', 'transactions') }} tx
             on evt_tx_hash = hash
             {% if is_incremental() %}
-            AND block_time >= date_trunc("day", now() - interval '1 week')
+            AND tx.block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
     where num_trades > 0 --! Exclude Withdraw Batches
 )
