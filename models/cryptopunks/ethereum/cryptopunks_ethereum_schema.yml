@@ -368,3 +368,40 @@ models:
         description: "Event index"
       - name: evt_tx_hash
         description: "Event tx hash"
+
+  - name: cryptopunks_ethereum_punk_offer_events
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [cat]
+    config:
+      tags: ['ethereum', 'cryptopunks', 'offers']
+    description: > 
+        All CryptoPunks offer events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time_week
+            - evt_tx_hash
+            - evt_index
+    columns:
+      - name: punk_id
+        description: "Punk ID #"    
+      - name: event_type
+        description: "Bid entered or withdrawn"
+      - name: from
+        description: "Wallet that initiated transaction"
+      - name: to
+        description: "If offered to specific address, otherwise null"
+      - name: eth_value
+        description: "ETH amount of offer"       
+      - name: evt_block_time
+        description: "Time of transfer"
+      - name: evt_block_time_week
+        description: "Week of transfer"
+      - name: evt_block_number
+        description: "Block number of transfer"
+      - name: evt_index
+        description: "Index of transfer"   
+      - name: evt_tx_hash
+        description: "Transfer transaction hash"
