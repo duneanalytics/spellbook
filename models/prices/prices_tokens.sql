@@ -271,9 +271,6 @@ VALUES
     ("bets-betswirl", "bnb", "BETS", "0x3e0a7c7db7bb21bda290a80c9811de6d47781671", 18),
     ("floki-floki-inu", "bnb", "FLOKI", "0xfb5b838b6cfeedc2873ab27866079ac55363d37e", 18),
     ("wom-wombat", "bnb", "WOM", "0xad6742a35fb341a9cc6ad674738dd8da98b94fb1", 18),
-    ("qwom-wombat", "bnb", "qWOM", "0x0fe34b8aaaf3f522a6088e278936d10f934c0b19", 18),
-    ("wmxwom-wombat", "bnb", "wmxWom", "0x0415023846ff1c6016c4d9621de12b24b2402979", 18),
-    ("mwom-wombat", "bnb", "mWOM", "0x027a9d301fb747cd972cfb29a63f3bda551dfc5c", 18),
     ("hay-destablecoin", "bnb", "HAY", "0x0782b6d8c4551b9760e74c0545a9bcd90bdc41e5", 18),
     ("bnbx-staderlabs", "bnb", "BNBx", "0x1bdd3cf7f79cfb8edbb955f20ad99211551ba275", 18),
 
