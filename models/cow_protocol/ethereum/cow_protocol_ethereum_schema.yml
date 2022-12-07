@@ -108,6 +108,18 @@ models:
       - &receiver
         name: receiver
         description: "Recipient of trades buyToken"
+      - &limit_sell_amount
+        name: limit_sell_amount
+        description: "Sell amount side of the limit price"
+      - &limit_buy_amount
+        name: limit_buy_amount
+        description: "Buy amount side of the limit price"
+      - &valid_to
+        name: valid_to
+        description: "epoch timestamp (in seconds) until when the order was valid"
+      - &flags
+        name: flags
+        description: "bitmap with additional trade information (cf. https://github.com/cowprotocol/contracts/blob/main/src/contracts/libraries/GPv2Trade.sol#L58-L94)"
   - name: cow_protocol_ethereum_batches
     meta:
       blockchain: ethereum

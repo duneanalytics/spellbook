@@ -135,7 +135,11 @@ uid_to_app_id as (
     select
         order_id as uid,
         get_json_object(trades.col, '$.appData') as app_data,
-        get_json_object(trades.col, '$.receiver') as receiver
+        get_json_object(trades.col, '$.receiver') as receiver,
+        get_json_object(trades.col, '$.sellAmount') as limit_sell_amount,
+        get_json_object(trades.col, '$.buyAmount') as limit_buy_amount,
+        get_json_object(trades.col, '$.validTo') as valid_to,
+        get_json_object(trades.col, '$.flags') as flags
     from reduced_order_ids order_ids
              join trade_data trades
                   on evt_tx_hash = call_tx_hash
@@ -191,7 +195,11 @@ valued_trades as (
                 ELSE NULL::numeric
                END)                                        as fee_usd,
            app_data,
-           receiver
+           receiver,
+           limit_sell_amount,
+           limit_buy_amount,
+           valid_to,
+           flags
     FROM trades_with_token_units
              JOIN uid_to_app_id
                   ON uid = order_uid
