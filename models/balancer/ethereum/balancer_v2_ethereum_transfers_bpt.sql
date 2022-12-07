@@ -22,7 +22,7 @@ SELECT DISTINCT * FROM (
     SELECT
         logs.contract_address,
         logs.tx_hash AS evt_tx_hash,
-        logs.tx_index AS evt_index,
+        logs.index AS evt_index,
         logs.block_time AS evt_block_time,
         logs.block_number AS evt_block_number,
         CONCAT('0x', SUBSTRING(logs.topic2, 27, 40)) AS from,
