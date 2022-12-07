@@ -306,3 +306,37 @@ models:
         description: "Floor price in ETH that day"
       - name: floor_price_usd
         description: "Floor price in $ that day"
+
+  - name: cryptopunks_ethereum_punk_bids
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [cat]
+    config:
+      tags: ['ethereum', 'cryptopunks', 'bids']
+    description: > 
+        All CryptoPunks bid events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time_week
+            - evt_tx_hash
+    columns:
+      - name: event_type
+        description: "Bid entered or withdrawn"
+      - name: bidder
+        description: "Wallet that created bid"
+      - name: punk_id
+        description: "Punk ID #"
+      - name: eth_value
+        description: "ETH amount of bid"       
+      - name: evt_block_time
+        description: "Time of transfer"
+      - name: evt_block_time_week
+        description: "Week of transfer"
+      - name: evt_block_number
+        description: "Block number of transfer"
+      - name: evt_index
+        description: "Index of transfer"   
+      - name: evt_tx_hash
+        description: "Transfer transaction hash"
