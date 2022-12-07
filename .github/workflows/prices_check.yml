@@ -11,7 +11,7 @@ on:
       - 'main'
 
 concurrency:
-  group:  ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -25,19 +25,17 @@ jobs:
 
 
       - name: Fetch base commit
-        run:  git fetch origin ${{ github.event.pull_request.base.sha }}
+        run: git fetch origin ${{ github.event.pull_request.base.sha }}
 
       - name: Fetch head commit
         run: git fetch origin ${{ github.event.pull_request.head.sha }}
 
       - name: Get prices diff
         shell: bash
+        working-directory: scripts
         run: |
-          git diff ${{ github.event.pull_request.base.sha}}..${{ github.event.pull_request.head.sha }} models/prices/prices_tokens.sql | grep '^\+ ' > other.txt
-
-      - name: Test Variable
-        run: cat other.txt
+          git diff ${{ github.event.pull_request.base.sha}}..${{ github.event.pull_request.head.sha }} models/prices/prices_tokens.sql | grep '^\+ ' > new_lines.txt
 
       - name: Run validations
         working-directory: scripts
-        run: python token_checker.py --new_lines $PRICES_DIFF 2>&1
+        run: python token_checker.py 2>&1
