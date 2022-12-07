@@ -275,7 +275,7 @@ VALUES
     ("wmxwom-wombat", "bnb", "wmxWom", "0x0415023846ff1c6016c4d9621de12b24b2402979", 18),
     ("mwom-wombat", "bnb", "mWOM", "0x027a9d301fb747cd972cfb29a63f3bda551dfc5c", 18),
     ("hay-destablecoin", "bnb", "HAY", "0x0782b6d8c4551b9760e74c0545a9bcd90bdc41e5", 18),
-    ("stkbnb-pstake", "bnb", "stkBNB", "0xc2e9d07f66a89c44062459a47a0d2dc038e4fb16", 18),
+    ("bnbx-staderlabs", "bnb", "BNBx", "0x1bdd3cf7f79cfb8edbb955f20ad99211551ba275", 18),
 
     ("0xbtc-0xbitcoin", "ethereum", "0xBTC", "0xb6ed7644c69416d67b522e20bc294a9a9b405b31", 8),
     ("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
