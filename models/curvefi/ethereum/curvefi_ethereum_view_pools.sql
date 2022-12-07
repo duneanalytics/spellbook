@@ -55,13 +55,13 @@ regular_pools_deployed AS (
         symbol,
         pool_address,
         CAST(
-            NULL AS DECIMAL
+            NULL AS VARCHAR(5)
         ) AS A,
         CAST(
-            NULL AS DECIMAL
+            NULL AS VARCHAR(5)
         ) AS mid_fee,
         CAST(
-            NULL AS DECIMAL
+            NULL AS VARCHAR(5)
         ) AS out_fee,
         token_address,
         deposit_contract,

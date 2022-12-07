@@ -328,7 +328,7 @@ SELECT distinct 'ethereum' AS blockchain
     , zt.buyer
     , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN zt.amount_raw/POWER(10, 18)
         ELSE zt.amount_raw/POWER(10, pu.decimals) END AS amount_original
-    , zt.amount_raw
+    , CAST(zt.amount_raw AS DECIMAL(38,0)) AS amount_raw
     , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN 'ETH'
         ELSE pu.symbol END AS currency_symbol
     , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'

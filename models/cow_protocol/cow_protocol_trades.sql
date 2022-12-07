@@ -26,14 +26,14 @@ FROM
             buy_token_address AS token_bought_address,
             sell_token_address AS token_sold_address,
             trader AS taker,
-            NULL AS maker,
+            CAST(NULL AS VARCHAR(5)) AS maker,
             project_contract_address,
             tx_hash,
             trader AS tx_from,
             receiver AS tx_to,
             '' AS trace_address,
             evt_index,
-            'cow_protocol' ||'-'|| tx_hash ||'-'|| order_uid || evt_index AS unique_trade_id
+            'cow_protocol' ||'-'|| tx_hash ||'-'|| order_uid || CAST(evt_index AS VARCHAR(100)) AS unique_trade_id
         FROM {{ ref('cow_protocol_ethereum_trades') }}
         /*
         UNION
