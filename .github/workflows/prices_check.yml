@@ -30,7 +30,7 @@ jobs:
       - name: Get prices diff
         shell: bash
         run: |
-          echo git diff origin/main..HEAD models/prices/prices_tokens.sql | grep '^\+ ' > other.txt
+          git diff origin/main..HEAD models/prices/prices_tokens.sql | grep '^\+ ' > other.txt
 
       - name: Test Variable
         run: cat other.txt
