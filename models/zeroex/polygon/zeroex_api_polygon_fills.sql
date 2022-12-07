@@ -1,5 +1,5 @@
 {{  config(
-        alias='fills',
+        alias='polygon_fills',
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
@@ -237,7 +237,7 @@ BridgeFill AS (
     FROM {{ source('polygon', 'logs') }} logs
     JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic1 = '0xff3bc5e46464411f331d1b093e1587d2d1aa667f5618f98a95afc4132709d3a9'
-        AND contract_address = '0x22f9dcf4647084d6c31b2765f6910cd85c178c18'
+        AND contract_address = '0xdb6f1920a889355780af7570773609bd8cb1f498'
 
         {% if is_incremental() %}
         AND block_time >= date_trunc('day', now() - interval '1 week')
@@ -265,7 +265,7 @@ NewBridgeFill AS (
     FROM {{ source('polygon' ,'logs') }} logs
     JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic1 = '0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8'
-        AND contract_address = '0x22f9dcf4647084d6c31b2765f6910cd85c178c18'
+        AND contract_address = '0xdb6f1920a889355780af7570773609bd8cb1f498'
 
         {% if is_incremental() %}
         AND block_time >= date_trunc('day', now() - interval '1 week')

@@ -1,12 +1,12 @@
 {{  config(
-        alias='fills',
+        alias='optimism_fills',
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
         incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["polygon"]\',
+        post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "zeroex",
                                 \'["rantumBits", "sui414", "bakabhai993"]\') }}'
@@ -22,13 +22,13 @@ WITH zeroex_tx AS (
     SELECT tx_hash,
            max(affiliate_address) as affiliate_address
     FROM (
-
+        /*
         SELECT v3.evt_tx_hash AS tx_hash,
                     CASE
                         WHEN takerAddress = '0x63305728359c088a52b0b0eeec235db4d31a67fc' THEN takerAddress
                         ELSE NULL
                     END AS affiliate_address
-        FROM {{ source('zeroex_v3_polygon', 'Exchange_evt_Fill') }} v3
+        FROM {{ source('zeroex_v3_optimism', 'Exchange_evt_Fill') }} v3
         WHERE (  -- nuo
                 v3.takerAddress = '0x63305728359c088a52b0b0eeec235db4d31a67fc'
                 OR -- contains a bridge order
@@ -46,6 +46,7 @@ WITH zeroex_tx AS (
             {% endif %}
 
         UNION ALL
+        */
         SELECT tr.tx_hash,
                     '0x' || CASE
                                 WHEN POSITION('869584cd' IN INPUT) <> 0
@@ -66,7 +67,7 @@ WITH zeroex_tx AS (
                 '0x4aa817c6f383c8e8ae77301d18ce48efb16fd2be',
                 '0x4ef40d1bf0983899892946830abf99eca2dbc5ce', 
                 -- exchange proxy
-                '0xdef1c0ded9bec7f1a1670819833240f027b25eff'
+                '0xdef1abe32c034e558cdd535791643c58a13acc10'
                 )
                 AND (
                         POSITION('869584cd' IN INPUT) <> 0
@@ -198,7 +199,7 @@ BridgeFill AS (
             logs.contract_address,
             block_time                                      AS block_time,
             '0x' || substring(DATA, 27, 40)                 AS maker,
-            '0xdef1c0ded9bec7f1a1670819833240f027b25eff'    AS taker,
+            '0xdef1abe32c034e558cdd535791643c58a13acc10'    AS taker,
             '0x' || substring(DATA, 91, 40)                 AS taker_token,
             '0x' || substring(DATA, 155, 40)                AS maker_token,
             bytea2numeric('0x' || substring(DATA, 219, 40)) AS taker_token_amount_raw,
@@ -210,7 +211,7 @@ BridgeFill AS (
     FROM {{ source('optimism', 'logs') }} logs
     JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic1 = '0xff3bc5e46464411f331d1b093e1587d2d1aa667f5618f98a95afc4132709d3a9'
-        AND contract_address = '0x22f9dcf4647084d6c31b2765f6910cd85c178c18'
+        AND contract_address = '0xa3128d9b7cca7d5af29780a56abeec12b05a6740'
 
         {% if is_incremental() %}
         AND block_time >= date_trunc('day', now() - interval '1 week')
@@ -226,7 +227,7 @@ NewBridgeFill AS (
             logs.contract_address,
             block_time                                      AS block_time,
             '0x' || substring(DATA, 27, 40)                 AS maker,
-            '0xdef1c0ded9bec7f1a1670819833240f027b25eff'    AS taker,
+            '0xdef1abe32c034e558cdd535791643c58a13acc10'    AS taker,
             '0x' || substring(DATA, 91, 40)                 AS taker_token,
             '0x' || substring(DATA, 155, 40)                AS maker_token,
             bytea2numeric('0x' || substring(DATA, 219, 40)) AS taker_token_amount_raw,
@@ -238,7 +239,7 @@ NewBridgeFill AS (
     FROM {{ source('optimism' ,'logs') }} logs
     JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic1 = '0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8'
-        AND contract_address = '0x22f9dcf4647084d6c31b2765f6910cd85c178c18'
+        AND contract_address = '0xa3128d9b7cca7d5af29780a56abeec12b05a6740'
 
         {% if is_incremental() %}
         AND block_time >= date_trunc('day', now() - interval '1 week')
@@ -296,7 +297,7 @@ direct_uniswapv3 AS (
     FROM {{ source('uniswap_v3_optimism', 'Pair_evt_Swap') }} swap
    LEFT JOIN {{ source('uniswap_v3_optimism', 'factory_evt_poolcreated') }} pair ON pair.pool = swap.contract_address
    JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
-   WHERE sender = '0xdef1c0ded9bec7f1a1670819833240f027b25eff'
+   WHERE sender = '0xdef1abe32c034e558cdd535791643c58a13acc10'
 
         {% if is_incremental() %}
         AND swap.evt_block_time >= date_trunc('day', now() - interval '1 week')
@@ -337,7 +338,7 @@ SELECT
         try_cast(date_trunc('day', all_tx.block_time) AS date) AS block_date,
         maker,
         CASE
-            WHEN taker = '0xdef1c0ded9bec7f1a1670819833240f027b25eff' THEN tx.from
+            WHEN taker = '0xdef1abe32c034e558cdd535791643c58a13acc10' THEN tx.from
             ELSE taker
         END AS taker, -- fix the user masked by ProxyContract issue
         taker_token,
