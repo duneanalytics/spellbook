@@ -23,9 +23,6 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
 
-      - name: Setup Debug Session
-        uses: csexton/debugger-action@master
-
       - name: echo
         run: echo  $GITHUB_HEAD_REF
 
