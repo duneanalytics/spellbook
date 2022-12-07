@@ -2,10 +2,7 @@
     schema = 'opensea_v1_ethereum',
     alias = 'events',
     partition_by = ['block_date'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['block_date', 'unique_trade_id']
+    file_format = 'delta'
     )
 }}
 
@@ -16,10 +13,6 @@
 {% set START_DATE='2018-07-18' %}
 {% set END_DATE='2022-08-02' %}
 
--- no need to run on incremental
-{% if is_incremental() %}
-SELECT * from {{this}} WHERE false;
-{% else %}
 WITH wyvern_call_data as (
     SELECT
       call_tx_hash as tx_hash,
@@ -185,4 +178,3 @@ LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', t.b
     AND minute >= '{{START_DATE}}' AND minute <= '{{END_DATE}}'
 LEFT JOIN {{ ref('tokens_erc20') }} erc20 ON erc20.contract_address = t.currency_contract and erc20.blockchain = 'ethereum'
 ;
-{% endif %}

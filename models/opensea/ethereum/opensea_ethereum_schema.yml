@@ -7,10 +7,14 @@ models:
       project: opensea
       contributors: soispoke, umer_h_adil, hildobby
     config:
-      tags: ['ethereum','opensea','v1','events']
+      tags: ['ethereum','opensea','v1','events', 'static']
     description: >
         OpenSea v1 trades on Ethereum
     tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_trade_id
       - check_seed:
           seed_file: ref('opensea_wyvern_trades_samples')
           match_columns:
