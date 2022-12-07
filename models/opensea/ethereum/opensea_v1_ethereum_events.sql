@@ -16,6 +16,10 @@
 {% set START_DATE='2018-07-18' %}
 {% set END_DATE='2022-08-02' %}
 
+-- no need to run on incremental
+{% if is_incremental() %}
+SELECT null WHERE false;
+{% else %}
 WITH wyvern_call_data as (
     SELECT
       call_tx_hash as tx_hash,
@@ -55,9 +59,6 @@ WITH wyvern_call_data as (
     WHERE 1=1
         AND (addrs[3] = '{{OS_WALLET}}' OR addrs[10] = '{{OS_WALLET}}') -- limit to OpenSea
     AND call_success = true
-    {% if is_incremental() %}
-    AND call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
     AND call_block_time >= '{{START_DATE}}' AND call_block_time <= '{{END_DATE}}'
 ),
 
@@ -73,9 +74,6 @@ order_prices as (
         lag(evt_index) over (partition by evt_block_number, evt_tx_hash order by evt_index asc) as prev_order_evt_index
     from {{ source('opensea_ethereum','wyvernexchange_evt_ordersmatched') }}
     WHERE evt_block_time >= '{{START_DATE}}' AND evt_block_time <= '{{END_DATE}}'
-    {% if is_incremental() %}
-    AND evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
 
 ),
 -- needed to pull token_id, token_amounts, token_standard and nft_contract_address
@@ -93,9 +91,6 @@ nft_transfers as (
         tx_hash
     from {{ ref('nft_ethereum_transfers') }}
     WHERE block_time >= '{{START_DATE}}' AND block_time <= '{{END_DATE}}'
-    {% if is_incremental() %}
-    AND block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
 ),
 
 -- join call and order data
@@ -182,17 +177,12 @@ SELECT
 FROM enhanced_trades t
 INNER JOIN {{ source('ethereum','transactions') }} tx ON t.block_number = tx.block_number AND t.tx_hash = tx.hash
     AND tx.block_time >= '{{START_DATE}}' AND tx.block_time <= '{{END_DATE}}'
-    {% if is_incremental() %}
-    and tx.block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
 LEFT JOIN {{ ref('tokens_nft') }} nft ON nft.contract_address = t.nft_contract_address and nft.blockchain = 'ethereum'
 LEFT JOIN {{ ref('nft_aggregators') }} agg ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', t.block_time)
     AND p.contract_address = t.currency_contract
     AND p.blockchain ='ethereum'
     AND minute >= '{{START_DATE}}' AND minute <= '{{END_DATE}}'
-    {% if is_incremental() %}
-    AND p.minute >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20 ON erc20.contract_address = t.currency_contract and erc20.blockchain = 'ethereum'
 ;
+{% endif %}
