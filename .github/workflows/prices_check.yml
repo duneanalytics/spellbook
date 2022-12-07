@@ -30,10 +30,10 @@ jobs:
       - name: Get prices diff
         shell: bash
         run: |
-          echo "PRICES_DIFF=$(git diff origin/main..HEAD models/prices/prices_tokens.sql | grep '^\+ ')" >> $GITHUB_ENV
+          echo "git diff origin/main..HEAD models/prices/prices_tokens.sql | grep '^\+ ')" > other.txt
 
       - name: Test Variable
-        run: echo "$PRICES_DIFF"
+        run: cat other.txt
 
       - name: Run validations
         working-directory: scripts
