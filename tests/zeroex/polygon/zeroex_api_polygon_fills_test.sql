@@ -1,7 +1,7 @@
 WITH unit_tests as
 (SELECT case when test.maker_token_amount = actual.maker_token_amount 
                 and test.taker_token_amount = actual.taker_token_amount 
-                and test.taker_token_address = actual.taker_token_address 
+                and test.taker_token = actual.taker_token
 then True else False end as test
 FROM {{ ref('zeroex_api_polygon_fills') }} actual
 JOIN {{ ref('zeroex_api_polygon_fills_sample') }} test ON test.tx_hash = actual.tx_hash AND test.evt_index = actual.evt_index 
