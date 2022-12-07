@@ -27,7 +27,7 @@ jobs:
         run: echo  $GITHUB_HEAD_REF
 
       - name: Set Merge Base
-        run: echo "MERGE_BASE=$(git merge-base --fork-point origin/main 'T-22081-automatic-price-checks')" >> $GITHUB_ENV
+        run: echo "MERGE_BASE=$(git merge-base --fork-point origin/main T-22081-automatic-price-checks)" >> $GITHUB_ENV
 
       - name: echo
         run: echo $MERGE_BASE
