@@ -18,7 +18,7 @@
 
 -- no need to run on incremental
 {% if is_incremental() %}
-SELECT null WHERE false;
+SELECT null as block_date, null as unique_trade_id WHERE false;
 {% else %}
 WITH wyvern_call_data as (
     SELECT
