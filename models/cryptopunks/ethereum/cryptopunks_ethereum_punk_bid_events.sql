@@ -4,7 +4,11 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['evt_block_time_week', 'evt_tx_hash', 'evt_index']
+        unique_key = ['evt_block_time_week', 'evt_tx_hash', 'evt_index'],
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "project",
+                                    "cryptopunks",
+                                    \'["cat"]\') }}'
         )
 }}
 
@@ -19,7 +23,9 @@ select  'Bid Entered' as event_type
         , evt_index
         , evt_tx_hash 
 from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBidEntered') }}
-{% if is_incremental() %} where evt_block_time >= date_trunc('day', now() - interval '1 week') {% endif %}  
+{% if is_incremental() %}
+where evt_block_time >= date_trunc('day', now() - interval '1 week')
+{% endif %}
 
 union all 
 
@@ -33,4 +39,6 @@ select  'Bid Withdrawn' as event_type
         , evt_index
         , evt_tx_hash 
 from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBidWithdrawn') }}
-{% if is_incremental() %} where evt_block_time >= date_trunc('day', now() - interval '1 week') {% endif %}  
+{% if is_incremental() %}
+where evt_block_time >= date_trunc('day', now() - interval '1 week')
+{% endif %}
