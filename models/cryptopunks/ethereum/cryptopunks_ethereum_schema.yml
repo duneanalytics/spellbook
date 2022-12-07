@@ -320,9 +320,8 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time_week
-            - punk_id
-            - eth_value
             - evt_tx_hash
+            - evt_index
     columns:
       - name: event_type
         description: "Bid entered or withdrawn"
