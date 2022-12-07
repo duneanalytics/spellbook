@@ -23,14 +23,17 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
 
-      # This step finds only new lines in prices_tokens.sql.
-      # New lines are expected to be added to the values list in the query
-      # Other edits to the prices query like changing the SELECT statement or config will cause
-      # this step to fail.
+
+      - name: echo
+        run: echo  $GITHUB_HEAD_REF
+
+      - name: echo
+        run: echo  $GITHUB_BASE_REF
+
       - name: Get prices diff
         shell: bash
         run: |
-          git diff $(git merge-base --fork-point origin/main $GITHUB_REF_NAME)..HEAD models/prices/prices_tokens.sql | grep '^\+ ' > other.txt
+          git diff $(git merge-base --fork-point origin/main $GITHUB_HEAD_REF)..HEAD models/prices/prices_tokens.sql | grep '^\+ ' > other.txt
 
       - name: Test Variable
         run: cat other.txt
