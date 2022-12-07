@@ -3,7 +3,7 @@
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum"]\',
                                 "sector",
                                 "dex",
-                                \'["jeff-dude", "hosuke", "0xRob", "pandajackson42", "Henrystats", "scoffie", "zhongyiio", "justabi", "umer_h_adil", "mtitus6", "dbustos20", "tian7"]\') }}'
+                                \'["jeff-dude", "hosuke", "0xRob", "pandajackson42", "Henrystats", "scoffie", "zhongyiio", "justabi", "umer_h_adil", "mtitus6", "dbustos20", "tian7", "bh2smith"]\') }}'
         )
 }}
 
@@ -44,6 +44,7 @@ list of models using old generic test, due to multiple versions in one model:
 ,'wombat_bnb_trades'
 ,'iziswap_bnb_trades'
 ,'babyswap_bnb_trades'
+,'cow_protocol_trades'
 ] %}
 
 

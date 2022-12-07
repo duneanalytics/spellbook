@@ -10,7 +10,11 @@ models:
     config:
       tags: ['ethereum','cow_protocol','trades','dex','aggregator','cross-chain']
     description: >
-        CoW Protocol trades on all chains across all contracts and versions. This table will load dex trades downstream.
+        CoW Protocol trades on all chains across all contracts and versions. 
+        This table will load dex trades downstream.
+        This particular version of the protocol trades table is intended to conform 
+        with the columns as specified in dex.trades sector. 
+        A more detailed version of the protocol trades table can be found under `cow_protocol_ethereum.trades`
     columns:
       - &blockchain
         name: blockchain
@@ -81,6 +85,3 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the corresponding trade event"
-      - &unique_trade_id
-        name: unique_trade_id
-        description: "Unique trade ID built to track merge incremental strategy in the model"

@@ -32,6 +32,12 @@ models:
       tags: ['ethereum','cow_protocol','trades', 'dex', 'aggregator']
     description: >
       CoW Protocol enriched trades list on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - order_uid
+            - evt_index
     columns:
       - &block_date
         name: block_date
