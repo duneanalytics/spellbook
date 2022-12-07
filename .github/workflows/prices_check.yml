@@ -39,8 +39,3 @@ jobs:
         id: validations
         working-directory: scripts
         run: python token_checker.py
-
-    - name: use error detail on failure
-      if: ${{ failure() }}
-      run: |
-        echo ${{ steps.validations.outputs.errors }}
