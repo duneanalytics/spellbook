@@ -27,7 +27,7 @@ jobs:
         run: git fetch origin main
 
       - name: Set Merge Base
-        run: echo "MERGE_BASE=$(git merge-base --fork-point origin/main)" >> $GITHUB_ENV
+        run: echo "MERGE_BASE=$(echo git merge-base --fork-point origin/main)" >> $GITHUB_ENV
 
       - name: echo
         run: echo $MERGE_BASE
