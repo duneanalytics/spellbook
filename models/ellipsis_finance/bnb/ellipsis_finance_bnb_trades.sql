@@ -392,7 +392,7 @@ ausd_3eps_underlying as (
         evt_tx_hash AS tx_hash,
         '' AS trace_address,
         evt_index
-    FROM {{ source('ellipsis_finance_bnb', 'ARTH_usd_evt_TokenExchangeUnderlying') }} eb 
+    FROM {{ source('ellipsis_finance_bnb', 'AUSD_3EPS_evt_TokenExchangeUnderlying') }} eb 
     LEFT JOIN 
     {{ ref('ellipsis_finance_bnb_underlying_tokens') }} ut 
         ON eb.bought_id = ut.token_id
