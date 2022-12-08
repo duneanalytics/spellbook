@@ -72,6 +72,23 @@ from
 
     union all
 
+    -- temporary until rarible history is added to nft_trades - likely missing some other rarible contracts
+    select evt_block_time
+            , tokenId
+            , 'Sold' as event_type
+            , 'Wrapped Sale' as sale_type
+            , seller
+            , buyer
+            , price/1e18 as eth_amount
+            , cast(NULL as double) as usd_amount
+            , evt_block_number
+            , evt_index
+            , evt_tx_hash
+    from {{ source('rarible_v1_ethereum','ERC721Sale_v2_evt_Buy') }}
+    where token = lower('0xb7f7f6c52f2e2fdb1963eab30438024864c313f6')
+
+    union all 
+
     select  evt_block_time
             , punk_id 
             , case  when from = '0x0000000000000000000000000000000000000000' then 'Claimed' 
