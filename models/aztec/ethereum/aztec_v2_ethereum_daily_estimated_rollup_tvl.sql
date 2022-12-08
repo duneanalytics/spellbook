@@ -63,7 +63,7 @@ rollup_balance_changes as (
     AND p.contract_address IN (SELECT token_address FROM token_addresses)
     AND p.blockchain = 'ethereum'
     GROUP BY 1, 2, 3 
-),
+)
 
 , token_prices_eth as (
     SELECT 
