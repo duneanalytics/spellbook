@@ -363,6 +363,9 @@ FROM (
       ,('0xe029c32d412972C5F3D107DA6d6eCF8F1C1E788C', 'Kwenta')
       ,('0xcd526ee406bc8349ba8135758cee11fa3aaa59a0', 'OPX Finance')
       ,('0x4023ef3aaa0669FaAf3A712626F4D8cCc3eAF2e5', 'Pickle Finance')
+      ,('0x370880694995Aa8A53F71645F7Bec3b0e7bb25d9', 'OneRing')
+      ,('0xfc8367ef6bcfc10746e5b9b034314812db8d7213', 'OpenXSwap')
+      ,('0xafd91ef047189f7e894d0fac71dcce8687e9b893', 'ECC Domains')
 
   ) as temp_table (creator_address, contract_project)
 
@@ -370,15 +373,6 @@ FROM (
 
 --filter out creators that we never want to map
 WHERE f.creator_address NOT IN (
-   LOWER('0xbb6e024b9cffacb947a71991e386681b1cd1477d') -- singleton factory
-  ,LOWER('0xce0042B868300000d44A59004Da54A005ffdcf9f') -- singleton factory
-  ,LOWER('0x3fAB184622Dc19b6109349B94811493BF2a45362') -- Deterministic Deployment Factory
-  ,LOWER('0x11f11121df7256c40339393b0fb045321022ce44') -- create3 factory
-  ,LOWER('0x4c8D290a1B368ac4728d83a9e8321fC3af2b39b1') -- Opensea KEYLESS_CREATE2_DEPLOYER_ADDRESS
-  ,LOWER('0x7A0D94F55792C434d74a40883C6ed8545E406D12') -- Opensea KEYLESS_CREATE2_ADDRESS
-  ,LOWER('0xcfA3A7637547094fF06246817a35B8333C315196') -- INEFFICIENT_IMMUTABLE_CREATE2_FACTORY_ADDRESS
-  ,LOWER('0x0000000000ffe8b47b3e2130213b802212439497') -- IMMUTABLE_CREATE2_FACTORY_ADDRESS
-  ,LOWER('0x4200000000000000000000000000000000000012') -- L2StandardTokenFactory
-  ,LOWER('0xeedA95f4513f950957Ae84E4da221ee260Fa2f40') -- Deterministic Factory
+   SELECT creator_address FROM {{ ref('contracts_optimism_nondeterministic_contract_creators') }}
 )
 ;
