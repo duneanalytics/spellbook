@@ -31,12 +31,13 @@ with transfers as (
     group by day, wallet
 )
 , base_data as (
-    with all_days  as (select explode(sequence(to_date('2017-06-23'), to_date(now()), interval 1 day)) as day)
+    with all_days as (select explode(sequence(to_date('2017-06-23'), to_date(now()), interval 1 day)) as day)
     , all_wallets as (select distinct wallet from punk_transfer_summary)
     
     select  day
             , wallet
-    from all_days full outer join all_wallets on true
+    from all_days 
+    full outer join all_wallets on true
 )
 , combined_table as (
     select base_data.day

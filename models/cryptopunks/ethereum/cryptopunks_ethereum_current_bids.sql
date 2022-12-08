@@ -42,14 +42,14 @@ with combined_events_table as (
         union all 
 
         select  trade_category as event_type
-                , NULL as bidder
+                , cast(NULL as varchar(5)) as bidder
                 , seller as transfer_from
                 , buyer as transfer_to
                 , token_id as punk_id
                 , amount_original as eth_amount
                 , block_time
                 , block_number
-                , 1000 as evt_index
+                , evt_index
                 , tx_hash 
         from  {{ ref('cryptopunks_ethereum_trades') }}
     ) a
@@ -96,18 +96,16 @@ from
 
     group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14
 ) a 
-where a.punk_id_tx_rank = most_recent_bid -- pull the most recent bid 
+where a.punk_id_tx_rank = most_recent_bid -- pull the most recent bid for each punk
     and (   a.punk_id_tx_rank < most_recent_withdraw -- make sure it hasn't been withdrawn 
             or most_recent_withdraw is null 
         )
     and (   a.punk_id_tx_rank < most_recent_offer_accept -- bid accepted will reset bids 
             or most_recent_offer_accept is null 
         )
-    
     and (   buyers_post_bid not like concat('%', a.bidder, '%') -- if bidder buys punk, their open bid is cancelled
             or buyers_post_bid is null 
         )
-
     and (   transfers_post_bid not like concat('%', a.bidder, '%') -- if bidder transferred punk, their open bid is cancelled
             or transfers_post_bid is null 
         )
