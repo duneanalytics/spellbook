@@ -10,14 +10,14 @@
 select *
 from 
 (
-    select  punk_id
+    select  evt_block_time
+            , punk_id
             , event_type
             , cast(NULL as varchar(5)) as sale_type
             , bidder as from 
             , cast(NULL as varchar(5)) as to 
             , eth_amount
             , usd_amount
-            , evt_block_time
             , evt_block_number
             , evt_index
             , evt_tx_hash
@@ -25,14 +25,14 @@ from
 
     union all 
 
-    select  punk_id
+    select  evt_block_time
+            , punk_id
             , event_type
             , cast(NULL as varchar(5)) as sale_type
             , from 
             , to 
             , eth_amount
             , usd_amount
-            , evt_block_time
             , evt_block_number
             , evt_index
             , evt_tx_hash 
@@ -40,14 +40,14 @@ from
 
     union all 
 
-    select token_id 
+    select  block_time
+            , token_id 
             , 'Sold' as event_type
-            , trade_category as sale_type
+            , case when trade_category = 'Offer Accepted' then 'Bid Accept' else trade_category end as sale_type -- convert nft.trades wording to match cryptopunks.app
             , seller
             , buyer
             , amount_original
             , amount_usd
-            , block_time
             , block_number 
             , evt_index
             , tx_hash
@@ -55,14 +55,14 @@ from
 
     union all
 
-    select punk_id 
+    select  evt_block_time
+            , punk_id 
             , case when from = '0x0000000000000000000000000000000000000000' then 'Claimed' else 'Transfer' end as event_type
             , cast(NULL as varchar(5)) as sale_type
             , from
             , to
             , cast(NULL as double) as eth_amount
             , cast(NULL as double) as usd_amount
-            , evt_block_time
             , evt_block_number 
             , evt_index
             , evt_tx_hash

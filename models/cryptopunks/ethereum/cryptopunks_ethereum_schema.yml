@@ -424,6 +424,8 @@ models:
     description: > 
         All CryptoPunks events
     columns:
+      - name: evt_block_time
+        description: "Time of event"
       - name: punk_id
         description: "Punk ID #"    
       - name: event_type
@@ -438,8 +440,6 @@ models:
         description: "ETH amount"   
       - name: usd_amount
         description: "USD amount at time of event"    
-      - name: evt_block_time
-        description: "Time of event"
       - name: evt_block_number
         description: "Block number of event"
       - name: evt_index
