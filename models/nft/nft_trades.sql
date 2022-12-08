@@ -19,7 +19,6 @@
 ,'superrare_ethereum_trades'
 ,'zora_ethereum_trades'
 ,'blur_ethereum_trades'
-,'pancakeswap_nft_trades'
 ] %}
 
 

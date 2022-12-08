@@ -81,13 +81,3 @@ models:
       - &evt_index
         name: evt_index
         description: "the position of this event log within this transaction"
-  - name: pancakeswap_nft_trades
-    meta:
-      blockchain: bnb
-      project: pancakeswap
-      contributors: thb0301
-    config:
-      tags: ['bnb','element','trades']
-    description: >
-        Pancakswap NFT trades on BNB
-  
