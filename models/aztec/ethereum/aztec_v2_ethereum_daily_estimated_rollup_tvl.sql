@@ -122,5 +122,5 @@ rollup_balance_changes as (
   LEFT JOIN token_prices_eth bb on b.date = bb.day AND b.token_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -- using this to get price for missing ETH token 
   
 )
-select * from token_tvls
+select * from token_tvls 
 ;
