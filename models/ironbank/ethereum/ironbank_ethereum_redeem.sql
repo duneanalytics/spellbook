@@ -16,8 +16,8 @@ r.redeemer,
 i.symbol,
 i.underlying_symbol,
 i.underlying_token_address AS underlying_address,
-r.redeemAmount / power(10,i.underlying_decimals) AS redeem_amount,
-r.redeemAmount / power(10,i.underlying_decimals)*p.price AS redeem_usd
+CAST(r.redeemAmount AS DOUBLE) / power(10,i.underlying_decimals) AS redeem_amount,
+CAST(r.redeemAmount AS DOUBLE) / power(10,i.underlying_decimals)*p.price AS redeem_usd
 FROM {{ source('ironbank_ethereum', 'CErc20Delegator_evt_Redeem') }} r
 LEFT JOIN {{ ref('ironbank_ethereum_itokens') }} i ON r.contract_address = i.contract_address
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', r.evt_block_time) AND p.contract_address = i.underlying_token_address AND p.blockchain = 'ethereum'

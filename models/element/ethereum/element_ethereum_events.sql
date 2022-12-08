@@ -133,7 +133,7 @@ SELECT alet.blockchain
 , alet.seller
 , alet.buyer
 , alet.amount_raw/POWER(10, eth_erc20_tokens.decimals) AS amount_original
-, alet.amount_raw
+, CAST(alet.amount_raw AS DECIMAL(38,0)) AS amount_raw
 , COALESCE(alet.currency_symbol, eth_erc20_tokens.symbol) AS currency_symbol
 , alet.currency_contract
 , alet.nft_contract_address
