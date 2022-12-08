@@ -338,7 +338,7 @@ arth_usd_underlying as (
     LEFT JOIN 
     {{ ref('ellipsis_finance_bnb_pool_tokens') }} pb 
         ON pb.token_id = '1'
-        AND eb.token_id != '0'
+        AND eb.sold_id != '0'
         AND eb.contract_address = pb.pool 
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -411,7 +411,7 @@ ausd_3eps_underlying as (
     LEFT JOIN 
     {{ ref('ellipsis_finance_bnb_pool_tokens') }} pb 
         ON pb.token_id = '1'
-        AND eb.token_id != '0'
+        AND eb.sold_id  != '0'
         AND eb.contract_address = pb.pool 
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -932,7 +932,7 @@ czusd_val3eps_underlying as (
     LEFT JOIN 
     {{ ref('ellipsis_finance_bnb_pool_tokens') }} pb 
         ON pb.token_id = '1'
-        AND eb.token_id != '0'
+        AND eb.sold_id  != '0'
         AND eb.contract_address = pb.pool 
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -1005,7 +1005,7 @@ debridge_usd_underlying as (
     LEFT JOIN 
     {{ ref('ellipsis_finance_bnb_pool_tokens') }} pb 
         ON pb.token_id = '1'
-        AND eb.token_id != '0'
+        AND eb.sold_id  != '0'
         AND eb.contract_address = pb.pool 
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -1238,7 +1238,7 @@ mai_val3eps_underlying as (
     LEFT JOIN 
     {{ ref('ellipsis_finance_bnb_pool_tokens') }} pb 
         ON pb.token_id = '1'
-        AND eb.token_id != '0'
+        AND eb.sold_id != '0'
         AND eb.contract_address = pb.pool 
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -1311,7 +1311,7 @@ nbusd_val3eps_underlying as (
     LEFT JOIN 
     {{ ref('ellipsis_finance_bnb_pool_tokens') }} pb 
         ON pb.token_id = '1'
-        AND eb.token_id != '0'
+        AND eb.sold_id  != '0'
         AND eb.contract_address = pb.pool 
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -1416,7 +1416,7 @@ usdd_3eps_underlying as (
     LEFT JOIN 
     {{ ref('ellipsis_finance_bnb_pool_tokens') }} pb 
         ON pb.token_id = '1'
-        AND eb.token_id != '0'
+        AND eb.sold_id  != '0'
         AND eb.contract_address = pb.pool 
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -1489,7 +1489,7 @@ usdl_val3eps_underlying as (
     LEFT JOIN 
     {{ ref('ellipsis_finance_bnb_pool_tokens') }} pb 
         ON pb.token_id = '1'
-        AND eb.token_id != '0'
+        AND eb.sold_id  != '0'
         AND eb.contract_address = pb.pool 
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -1562,7 +1562,7 @@ usdn_val3eps_underlying as (
     LEFT JOIN 
     {{ ref('ellipsis_finance_bnb_pool_tokens') }} pb 
         ON pb.token_id = '1'
-        AND eb.token_id != '0'
+        AND eb.sold_id  != '0'
         AND eb.contract_address = pb.pool 
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -1635,7 +1635,7 @@ usds_val3eps_underlying as (
     LEFT JOIN 
     {{ ref('ellipsis_finance_bnb_pool_tokens') }} pb 
         ON pb.token_id = '1'
-        AND eb.token_id != '0'
+        AND eb.sold_id  != '0'
         AND eb.contract_address = pb.pool 
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -1836,7 +1836,7 @@ valdai_val3eps_underlying as (
     LEFT JOIN 
     {{ ref('ellipsis_finance_bnb_pool_tokens') }} pb 
         ON pb.token_id = '1'
-        AND eb.token_id != '0'
+        AND eb.sold_id  != '0'
         AND eb.contract_address = pb.pool 
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -1909,7 +1909,7 @@ valtusd_val3eps_underlying as (
     LEFT JOIN 
     {{ ref('ellipsis_finance_bnb_pool_tokens') }} pb 
         ON pb.token_id = '1'
-        AND eb.token_id != '0'
+        AND eb.sold_id  != '0'
         AND eb.contract_address = pb.pool 
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc("day", now() - interval '1 week')
