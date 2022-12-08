@@ -1,6 +1,6 @@
 {{ config(
         alias='erc1155_latest',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
+        post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                             "sector",
                                             "balances",
                                             \'["soispoke"]\') }}'
