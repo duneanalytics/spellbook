@@ -426,7 +426,7 @@ models:
         description: "Wallet that initiated transaction"
       - name: to
         description: "If transaction to another address"
-      - name: eth_value
+      - name: eth_amount
         description: "ETH amount"       
       - name: evt_block_time
         description: "Time of event"

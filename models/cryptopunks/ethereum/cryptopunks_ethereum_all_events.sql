@@ -57,7 +57,7 @@ from
             , cast(NULL as varchar(5)) as sale_type
             , from
             , to
-            , cast(NULL as double) as eth_value
+            , cast(NULL as double) as eth_amount
             , evt_block_time
             , evt_block_number 
             , evt_index
