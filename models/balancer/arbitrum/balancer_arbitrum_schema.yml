@@ -90,8 +90,12 @@ models:
           combination_of_columns:
             - evt_tx_hash
             - evt_index
+            - block_date
     columns:
       - *contract_address
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each DEX trade"
       - &evt_tx_hash
         name: evt_tx_hash
         description: 'Transaction hash of transfer event'
