@@ -1,6 +1,11 @@
 {{
     config(
         alias='transfers_bpt',
+        partition_by = ['block_date'],
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['block_time', 'evt_tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "project",
                                     "balancer_v2",
@@ -24,6 +29,7 @@ SELECT DISTINCT * FROM (
         logs.tx_hash AS evt_tx_hash,
         logs.index AS evt_index,
         logs.block_time AS evt_block_time,
+        TRY_CAST(date_trunc('DAY', logs.block_time) AS date) AS block_date,
         logs.block_number AS evt_block_number,
         CONCAT('0x', SUBSTRING(logs.topic2, 27, 40)) AS from,
         CONCAT('0x', SUBSTRING(logs.topic3, 27, 40)) AS to,
