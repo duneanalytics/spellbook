@@ -64,7 +64,7 @@ from
             , amount_original
             , amount_usd
             , block_number
-            , case(NULL as double) as evt_index
+            , cast(NULL as double) as evt_index
             , tx_hash
     from {{ ref('nft_trades') }}
     where nft_contract_address = lower('0xb7f7f6c52f2e2fdb1963eab30438024864c313f6') -- wrapped punk contract
