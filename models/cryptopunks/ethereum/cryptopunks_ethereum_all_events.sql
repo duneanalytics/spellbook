@@ -17,6 +17,7 @@ from
             , eth_amount
             , evt_block_time
             , evt_block_number
+            , evt_index
             , evt_tx_hash
     from {{ ref('cryptopunks_ethereum_punk_bid_events') }}
 
@@ -29,6 +30,7 @@ from
             , eth_amount
             , evt_block_time
             , evt_block_number
+            , evt_index
             , evt_tx_hash 
     from {{ ref('cryptopunks_ethereum_punk_offer_events') }}
 
@@ -41,6 +43,7 @@ from
             , amount_original
             , block_time
             , block_number 
+            , evt_index
             , tx_hash
     from {{ ref('cryptopunks_ethereum_trades') }}
 
@@ -53,6 +56,7 @@ from
             , cast(NULL as double) as eth_value
             , evt_block_time
             , evt_block_number 
+            , evt_index
             , evt_tx_hash
     from {{ ref('cryptopunks_ethereum_punk_transfers') }}
     where (evt_tx_hash is null or evt_tx_hash not in (select distinct tx_hash from {{ ref('cryptopunks_ethereum_trades') }} ))

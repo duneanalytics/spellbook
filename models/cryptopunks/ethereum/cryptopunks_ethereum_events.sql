@@ -123,6 +123,7 @@ select  "ethereum" as blockchain
         , agg.name as aggregator_name
         , agg.contract_address as aggregator_address
         , a.evt_block_number as block_number
+        , a.evt_index as evt_index
         , a.evt_tx_hash as tx_hash
         , tx.`from` as tx_from
         , tx.`to` as tx_to
