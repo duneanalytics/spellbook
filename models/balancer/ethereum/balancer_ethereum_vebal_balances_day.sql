@@ -17,7 +17,7 @@ WITH base_locks AS (
         
         UNION ALL
         
-        SELECT provider, null::numeric AS locked_at, locktime AS unlocked_at, ts AS updated_at
+        SELECT provider, cast(null as numeric(38)) AS locked_at, locktime AS unlocked_at, ts AS updated_at
         FROM {{ source('balancer_ethereum', 'veBAL_evt_Deposit') }}
         WHERE value = 0
     ),
