@@ -6,7 +6,7 @@
 
 {% set project_start_date = '2022-10-19' %} -- blur start date 
 
-WITH 
+WITH  
 
 trades as (
         SELECT 
