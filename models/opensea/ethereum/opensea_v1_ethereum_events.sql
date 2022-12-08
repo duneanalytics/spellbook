@@ -166,7 +166,7 @@ SELECT
   ((seller_fee_percentage + buyer_fee_percentage - 2.5/100) / (1 + buyer_fee_percentage) * amount_raw) / power(10,erc20.decimals) * p.price AS royalty_fee_amount_usd,
   t.fee_recipient as royalty_fee_receive_address,
   CASE WHEN t.native_eth THEN 'ETH' ELSE erc20.symbol END AS royalty_fee_currency_symbol,
-  'wyvern-opensea' || '-' || t.tx_hash || '-' || t.order_evt_index || '-' || t.nft_evt_index as unique_trade_id
+  'wyvern-opensea' || '-' || t.tx_hash || '-' || t.order_evt_index || '-' || t.nft_evt_index || '-' || token_id as unique_trade_id
 FROM enhanced_trades t
 INNER JOIN {{ source('ethereum','transactions') }} tx ON t.block_number = tx.block_number AND t.tx_hash = tx.hash
     AND tx.block_time >= '{{START_DATE}}' AND tx.block_time <= '{{END_DATE}}'
