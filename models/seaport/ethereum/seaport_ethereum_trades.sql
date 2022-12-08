@@ -74,7 +74,7 @@ with source_ethereum_transactions as (
         ,a.receiver
         ,a.zone
         ,a.token_contract_address
-        ,a.original_amount
+        ,CAST(a.original_amount AS DECIMAL(38,0)) AS original_amount
         ,a.item_type
         ,a.token_id
         ,a.platform_contract_address
@@ -148,7 +148,7 @@ with source_ethereum_transactions as (
         ,tx_hash
         ,evt_index
         ,max(token_contract_address) as token_contract_address 
-        ,sum(case when is_price then original_amount end) as price_amount_raw
+        ,CAST(sum(case when is_price then original_amount end) AS DECIMAL(38,0)) as price_amount_raw
         ,sum(case when is_platform_fee then original_amount end) as platform_fee_amount_raw
         ,max(case when is_platform_fee then receiver end) as platform_fee_receiver
         ,sum(case when is_creator_fee then original_amount end) as creator_fee_amount_raw
@@ -183,7 +183,7 @@ with source_ethereum_transactions as (
         ,a.zone
         ,a.platform_contract_address
         ,b.token_contract_address 
-        ,round(price_amount_raw / nft_cnt) as price_amount_raw  -- to truncate the odd number of decimal places 
+        ,CAST(round(price_amount_raw / nft_cnt) AS DECIMAL(38,0)) as price_amount_raw  -- to truncate the odd number of decimal places 
         ,round(platform_fee_amount_raw / nft_cnt) as platform_fee_amount_raw
         ,platform_fee_receiver
         ,round(creator_fee_amount_raw / nft_cnt) as creator_fee_amount_raw  
@@ -211,8 +211,8 @@ with source_ethereum_transactions as (
   select a.*
           ,try_cast(date_trunc('day', a.block_time) as date) as block_date
           ,n.name AS nft_token_name
-          ,t.`from` as tx_from
-          ,t.`to` as tx_to
+          ,t.from as tx_from
+          ,t.to as tx_to
           ,right(t.data,8) as right_hash
           ,case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_native_symbol}}'
                 else e.symbol

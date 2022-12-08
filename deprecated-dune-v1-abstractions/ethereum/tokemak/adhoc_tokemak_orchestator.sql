@@ -23,7 +23,6 @@ CREATE UNIQUE INDEX ON tokemak.view_tokemak_addresses (
 --step 2
 DROP MATERIALIZED VIEW IF EXISTS tokemak.view_tokemak_lookup_sources cascade
 ;
-
 CREATE MATERIALIZED VIEW tokemak.view_tokemak_lookup_sources
 (
 	id, source_name
@@ -37,6 +36,8 @@ CREATE MATERIALIZED VIEW tokemak.view_tokemak_lookup_sources
     SELECT 3 as id, 'Sushiswap' as source_name
     UNION
     SELECT 4 as id, 'UniswapV2' as source_name
+    UNION
+    SELECT 5 as id, 'Convex Frax' as source_name
 );
 CREATE UNIQUE INDEX ON tokemak.view_tokemak_lookup_sources (
    id
@@ -131,7 +132,7 @@ CREATE UNIQUE INDEX ON tokemak.view_tokemak_lookup_reactors (
 );
 
 --step 5
-DROP MATERIALIZED VIEW IF EXISTS tokemak.view_tokemak_lookup_tokens cascade
+DROP MATERIALIZED VIEW IF EXISTS tokemak.view_tokemak_lookup_tokens CASCADE
 ;
 
 CREATE MATERIALIZED VIEW tokemak.view_tokemak_lookup_tokens
@@ -296,7 +297,7 @@ CREATE MATERIALIZED VIEW tokemak.view_tokemak_lookup_tokens
     UNION
     SELECT 'fraxUSDC' as symbol, 'Curve.fi FRAX/USDC' as display_name,'\x3175Df0976dFA876431C2E9eE6Bc45b65d3473CC'::bytea as address,''::bytea as pricing_contract, 18::numeric as decimals, true, true, false, false
     UNION
-    SELECT 'CONVEX-fraxUSDC' as symbol, 'Convex FRAX/USDC' as display_name,'\x8a53ee42FB458D4897e15cc7dEa3F75D0F1c3475'::bytea as address,''::bytea as pricing_contract, 18::numeric as decimals, true, true, false, false
+    SELECT 'CONVEX-FRAX-fraxUSDC' as symbol, 'Convex Frax FRAX/USDC' as display_name,'\x8a53ee42FB458D4897e15cc7dEa3F75D0F1c3475'::bytea as address,''::bytea as pricing_contract, 18::numeric as decimals, true, true, false, false
     UNION
     SELECT 'crvFXS/FXS' as symbol, 'Curve.fi crvFXS/FXS' as display_name,'\xF3A43307DcAFa93275993862Aae628fCB50dC768'::bytea as address,''::bytea as pricing_contract, 18::numeric as decimals, true, true, false, false
     UNION
@@ -577,6 +578,33 @@ WITH calendar AS
                     , date_trunc('day', evt_block_time)::date as "date"
                     , MAX(ARRAY[evt_block_number, evt_index, token_supply/10^tl.decimals]) AS total_supply 
                     FROM curvefi."frax_evt_RemoveLiquidityOne" 
+                    INNER JOIN tokemak."view_tokemak_lookup_tokens" tl ON tl.address = contract_address
+                    GROUP BY symbol, contract_address,  "date"
+            ) as t GROUP BY  symbol, contract_address,  "date")
+            UNION
+            --crvFXS/FXS
+            (SELECT symbol, contract_address,  "date",MAX(total_supply) as total_supply FROM (
+                SELECT symbol
+                    , contract_address                    
+                    , date_trunc('day', evt_block_time)::date as "date"
+                    , MAX(ARRAY[evt_block_number, evt_index, token_supply/10^tl.decimals]) AS total_supply 
+                    FROM curvefi."cvxfxsfxs_swap_evt_AddLiquidity"
+                    INNER JOIN tokemak."view_tokemak_lookup_tokens" tl ON tl.address = contract_address
+                    GROUP BY symbol, contract_address,  "date"
+                UNION 
+                SELECT symbol
+                    , contract_address                   
+                    , date_trunc('day', evt_block_time)::date as "date"
+                    , MAX(ARRAY[evt_block_number, evt_index, token_supply/10^tl.decimals]) AS total_supply 
+                    FROM curvefi."cvxfxsfxs_swap_evt_RemoveLiquidity" 
+                    INNER JOIN tokemak."view_tokemak_lookup_tokens" tl ON tl.address = contract_address
+                    GROUP BY symbol, contract_address,  "date"
+                UNION
+                SELECT symbol
+                    , contract_address                  
+                    , date_trunc('day', evt_block_time)::date as "date"
+                    , ARRAY[0] AS total_supply 
+                    FROM curvefi."cvxfxsfxs_swap_evt_RemoveLiquidityOne" 
                     INNER JOIN tokemak."view_tokemak_lookup_tokens" tl ON tl.address = contract_address
                     GROUP BY symbol, contract_address,  "date"
             ) as t GROUP BY  symbol, contract_address,  "date")
@@ -966,6 +994,102 @@ CREATE UNIQUE INDEX ON tokemak.view_tokemak_curve_convex_pool_total_supply (
 
 
 
+--step x
+DROP MATERIALIZED VIEW IF EXISTS tokemak.view_tokemak_convex_frax_pool_stats_daily cascade
+;
+
+CREATE MATERIALIZED VIEW tokemak.view_tokemak_convex_frax_pool_stats_daily
+(   
+    source
+    ,"date"
+    ,pool_address
+    ,pool_symbol
+    ,token_address
+    ,token_symbol
+    ,total_lp_supply
+    ,reserve
+) AS (
+    
+WITH convex_frax_pools As 
+    (
+        SELECT contract_address as pool_address, symbol, sum(qty) as qty 
+            FROM (
+            SELECT contract_address,tl.symbol, (value/10^tl.decimals)*-1 as qty 
+            FROM erc20."ERC20_evt_Transfer" t
+            INNER JOIN tokemak.view_tokemak_lookup_tokens tl on tl.address = t.contract_address
+            WHERE t."to"='\xA86e412109f77c45a3BC1c5870b880492Fb86A14' and t."from"='\xF403C135812408BFbE8713b5A23a04b3D48AAE31'
+            AND NOT (t."to" = t."from")
+            UNION
+            SELECT contract_address,tl.symbol, value/10^tl.decimals as qty 
+            FROM erc20."ERC20_evt_Transfer" t
+            INNER JOIN tokemak.view_tokemak_lookup_tokens tl on tl.address = t.contract_address
+            WHERE t."from"='\xA86e412109f77c45a3BC1c5870b880492Fb86A14' and t."to"='\x989aeb4d175e16225e39e87d0d97a3360524ad80'
+            AND NOT (t."to" = t."from")
+        )as t GROUP BY contract_address, symbol 
+    ),
+    pools_and_constituents AS (
+        --fraxUSDC
+       SELECT "date", token_address,p.base_pool_symbol as pool_symbol,p.pool_token_address as pool_address, m.symbol as token_symbol, (qty/10^m.decimals) as qty  FROM (
+            SELECT "date",token_address,
+            SUM(qty) OVER (PARTITION BY token_address ORDER BY "date")as qty
+            FROM
+            (
+                SELECT
+                    DATE_TRUNC('day', evt_block_time) as "date",
+                    contract_address as token_address,
+                    SUM(CASE WHEN "to" = '\xDcEF968d416a41Cdac0ED8702fAC8128A64241A2' THEN value ELSE value *-1  END) as qty 
+                FROM erc20."ERC20_evt_Transfer" 
+                WHERE "to" = '\xDcEF968d416a41Cdac0ED8702fAC8128A64241A2' OR "from" = '\xDcEF968d416a41Cdac0ED8702fAC8128A64241A2'
+                AND NOT ("to" = "from")
+                GROUP BY 1,2 --ORDER BY "date" desc
+            ) as tt
+       )as t 
+       INNER JOIN tokemak."view_tokemak_lookup_tokens" m ON m.address = t.token_address
+       CROSS JOIN tokemak."view_tokemak_lookup_metapools" p WHERE p.base_pool_address = '\xDcEF968d416a41Cdac0ED8702fAC8128A64241A2'  
+ )
+ 
+,  calendar AS  
+    (SELECT DISTINCT  i::date as "date", pool_address,pool_symbol,token_address,token_symbol
+        FROM pools_and_constituents
+        CROSS JOIN generate_series('2021-08-01'::date, current_date, '1 day') t(i)
+        )
+
+  , temp AS
+  (
+  SELECT c."date"
+  ,c.pool_address
+  ,c.pool_symbol
+  ,c.token_address
+  ,c.token_symbol
+  ,pc.qty  
+  ,count(pc.qty) OVER (PARTITION BY c.pool_address,c.token_address ORDER BY c."date") AS grpQty
+  FROM calendar c 
+  LEFT JOIN pools_and_constituents pc on pc."date" = c."date" AND pc.pool_address = c.pool_address AND pc.token_address = c.token_address 
+  )
+
+    SELECT 
+        5 as source
+        ,t."date"
+        ,pool_address
+        ,pool_symbol
+        ,token_address
+        ,token_symbol
+        ,ts.total_supply as lp_total_supply
+        ,first_value(qty) OVER (PARTITION BY pool_address, token_address, grpQty ORDER BY t."date") AS qty
+        FROM  temp t 
+        INNER JOIN tokemak."view_tokemak_curve_convex_pool_total_supply" ts ON (t.pool_address = ts.address AND ts."date" = t."date")
+        ORDER BY "date" desc, pool_symbol asc
+
+        
+            
+);
+
+CREATE UNIQUE INDEX ON tokemak.view_tokemak_convex_frax_pool_stats_daily (
+   "date",
+   pool_address,
+   token_address
+);
+
 --step 7
 DROP MATERIALIZED VIEW IF EXISTS tokemak.view_tokemak_convex_pool_stats_daily cascade
 ;
@@ -1018,6 +1142,25 @@ WITH  convex_pools As
        )as t 
        INNER JOIN tokemak."view_tokemak_lookup_tokens" m ON m.address = t.token_address
        CROSS JOIN tokemak."view_tokemak_lookup_metapools" p WHERE p.base_pool_address = '\xDcEF968d416a41Cdac0ED8702fAC8128A64241A2'
+     UNION
+     -- crvFXS/FXS
+     SELECT "date", token_address,p.base_pool_symbol as pool_symbol,p.pool_token_address as pool_address, m.symbol as token_symbol, (qty/10^m.decimals) as qty  FROM (
+            SELECT "date",token_address,
+            SUM(qty) OVER (PARTITION BY token_address ORDER BY "date")as qty
+            FROM
+            (
+                SELECT
+                    DATE_TRUNC('day', evt_block_time) as "date",
+                    contract_address as token_address,
+                    SUM(CASE WHEN "to" = '\xd658A338613198204DCa1143Ac3F01A722b5d94A' THEN value ELSE value *-1  END) as qty 
+                FROM erc20."ERC20_evt_Transfer" 
+                WHERE "to" = '\xd658A338613198204DCa1143Ac3F01A722b5d94A' OR "from" = '\xd658A338613198204DCa1143Ac3F01A722b5d94A'
+                AND NOT ("to" = "from")
+                GROUP BY 1,2 --ORDER BY "date" desc
+            ) as tt
+       )as t 
+       INNER JOIN tokemak."view_tokemak_lookup_tokens" m ON m.address = t.token_address
+       CROSS JOIN tokemak."view_tokemak_lookup_metapools" p WHERE p.base_pool_address = '\xd658A338613198204DCa1143Ac3F01A722b5d94A'
      UNION
         --3crv
        SELECT "date", token_address,p.base_pool_symbol as pool_symbol,p.pool_token_address as pool_address, m.symbol as token_symbol, (qty/10^m.decimals) as qty  FROM (
@@ -1137,7 +1280,7 @@ CREATE UNIQUE INDEX ON tokemak.view_tokemak_convex_pool_stats_daily (
 DROP MATERIALIZED VIEW IF EXISTS tokemak.view_tokemak_curve_pool_stats_daily cascade
 ;
 
-CREATE MATERIALIZED VIEW tokemak.view_tokemak_curve_pool_stats_daily
+CREATE MATERIALIZED VIEW tokemak."view_tokemak_curve_pool_stats_daily"
 (
     source
     ,"date"
@@ -1192,6 +1335,26 @@ WITH   pools_and_constituents As
        )as t 
        INNER JOIN tokemak."view_tokemak_lookup_tokens" m ON m.address = t.token_address
        CROSS JOIN tokemak."view_tokemak_lookup_metapools" p WHERE p.base_pool_address = '\xDcEF968d416a41Cdac0ED8702fAC8128A64241A2' 
+    UNION    
+        --crvFXS/FXS
+       SELECT "date", token_address,p.base_pool_symbol as pool_symbol,p.pool_token_address as pool_address, m.symbol, 
+        (qty/10^m.decimals) as qty  FROM (
+            SELECT "date",token_address,
+            SUM(qty) OVER (PARTITION BY token_address ORDER BY "date")as qty
+            FROM
+            (
+                SELECT
+                    DATE_TRUNC('day', evt_block_time) as "date",
+                    contract_address as token_address,
+                    SUM(CASE WHEN "to" = '\xd658A338613198204DCa1143Ac3F01A722b5d94A' THEN value ELSE value *-1  END) as qty 
+                FROM erc20."ERC20_evt_Transfer" 
+                WHERE ("to" = '\xd658A338613198204DCa1143Ac3F01A722b5d94A' OR "from" = '\xd658A338613198204DCa1143Ac3F01A722b5d94A')
+                AND NOT ("to" = "from")
+                GROUP BY 1,2 --ORDER BY "date" desc
+            ) as tt
+       )as t 
+       INNER JOIN tokemak."view_tokemak_lookup_tokens" m ON m.address = t.token_address
+       CROSS JOIN tokemak."view_tokemak_lookup_metapools" p WHERE p.base_pool_address = '\xd658A338613198204DCa1143Ac3F01A722b5d94A' 
     UNION    
        --wormhole
         SELECT"date", token_address,p.symbol as pool_symbol,p.address as pool_address, m.symbol as token_symbol, (qty/10^m.decimals) as qty FROM (
@@ -1526,6 +1689,7 @@ CREATE UNIQUE INDEX ON tokemak.view_tokemak_curve_pool_stats_daily (
    token_address
 );
 
+
 --step 9
 drop MATERIALIZED VIEW tokemak.view_tokemak_sushiswap_pool_stats_daily cascade
 ;
@@ -1798,7 +1962,7 @@ CREATE UNIQUE INDEX ON tokemak.view_tokemak_uniswap_pool_stats_daily (
 );
 
 --step 11
-drop MATERIALIZED VIEW tokemak.view_tokemak_wallet_balances_daily cascade
+DROP MATERIALIZED VIEW IF EXISTS tokemak.view_tokemak_wallet_balances_daily cascade
 ;
 
 CREATE MATERIALIZED VIEW tokemak.view_tokemak_wallet_balances_daily
@@ -1942,6 +2106,24 @@ WITH calendar AS
                     GROUP BY 1,2,3,4,5
                 )as t GROUP BY 1,2,3,4,5,6
             )as t --GROUP BY source, contract_address, symbol, display_name 
+        UNION
+        --CONVEX FRAX
+        SELECT "date", source,wallet_address, token_address, symbol,display_name, sum(qty) OVER (PARTITION BY wallet_address,symbol ORDER BY "date")as balance 
+        FROM (
+                SELECT "date", 5 as source,wallet_address, contract_address as token_address, symbol,display_name, sum(qty) as qty FROM (
+                    SELECT date_trunc('day', t."evt_block_time") as "date",t."to" as wallet_address,contract_address,tl.symbol,tl.display_name, SUM((value/10^tl.decimals)*-1) as qty 
+                    FROM erc20."ERC20_evt_Transfer" t
+                    INNER JOIN tokemak."view_tokemak_lookup_tokens" tl on tl.address = t.contract_address
+                    INNER JOIN tokemak."view_tokemak_addresses" a ON t."to" = a.address and t."from"='\x5d9ef8f1cfa952a4a383e10a447dd23c5ea20eb8'
+                    GROUP BY 1,2,3,4,5
+                    UNION 
+                    SELECT  date_trunc('day', t."evt_block_time") as "date",t."from" as wallet_address,contract_address,tl.symbol,tl.display_name, SUM(value/10^tl.decimals) as qty 
+                    FROM erc20."ERC20_evt_Transfer" t
+                    INNER JOIN tokemak."view_tokemak_lookup_tokens" tl on tl.address = t.contract_address
+                    INNER JOIN tokemak."view_tokemak_addresses" a ON t."from" = a.address and t."to"='\x5d9ef8f1cfa952a4a383e10a447dd23c5ea20eb8'
+                    GROUP BY 1,2,3,4,5
+                )as t GROUP BY 1,2,3,4,5,6
+            )as t --GROUP BY source, contract_address, symbol, display_name     
             ORDER BY "date" desc, symbol
         ) as t
         GROUP BY 1,2,3,4,5,6 
@@ -1988,6 +2170,7 @@ CREATE UNIQUE INDEX ON tokemak.view_tokemak_wallet_balances_daily (
    wallet_address,
    token_address
 );
+
 
 --step 12
 drop MATERIALIZED VIEW tokemak.view_tokemak_prices_usd_eth_daily cascade
@@ -2171,7 +2354,16 @@ AS
             ,token_address
             ,token_symbol
             ,total_lp_supply
-            ,reserve FROM tokemak."view_tokemak_convex_pool_stats_daily" order by "date" desc, pool_symbol, token_symbol
+            ,reserve FROM tokemak."view_tokemak_convex_pool_stats_daily" 
+        UNION
+        SELECT source
+            ,"date"
+            ,pool_address
+            ,pool_symbol
+            ,token_address
+            ,token_symbol
+            ,total_lp_supply
+            ,reserve FROM tokemak."view_tokemak_convex_frax_pool_stats_daily" order by "date" desc, pool_symbol, token_symbol
         ),
 base as (        
     SELECT 
@@ -2256,6 +2448,7 @@ pool_balances as (
    pool_address,
    token_address
 );
+
 
 --step 14
 DROP MATERIALIZED VIEW IF EXISTS tokemak.view_tokemak_reactor_balances_daily CASCADE
