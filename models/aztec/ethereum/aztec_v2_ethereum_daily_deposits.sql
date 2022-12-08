@@ -43,17 +43,15 @@ token_prices_token as (
         p.symbol, 
         AVG(p.price) as price
     FROM 
-    token_addresses ta 
-    INNER JOIN 
     {{ source('prices', 'usd') }} p 
-        ON ta.token_address = p.contract_address
-        AND p.blockchain = 'ethereum'
-        {% if not is_incremental() %}
-        AND p.minute >= '{{first_transfer_date}}'
-        {% endif %}
-        {% if is_incremental() %}
-        AND p.minute >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
+    {% if not is_incremental() %}
+    WHERE p.minute >= '{{first_transfer_date}}'
+    {% endif %}
+    {% if is_incremental() %}
+    WHERE p.minute >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+    AND p.blockchain = 'ethereum'
+    AND p.contract_address IN (SELECT token_address FROM token_addresses)
     GROUP BY 1, 2, 3 
 ),
 
