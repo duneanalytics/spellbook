@@ -279,6 +279,12 @@ models:
         +schema: nomad_ethereum
         +materialized: view
 
+    ellipsis_finance:
+      +schema: ellipsis_finance
+      +materialized: view
+      bnb:
+        +schema: ellipsis_finance_bnb
+        +materialized: view
     seaport:
       +schema: seaport
       +materialized: view
@@ -774,6 +780,14 @@ seeds:
           token_bought_amount: float
           token_sold_address: string
           token_sold_amount: float
+      pools:
+        +column_types:
+          blockchain: string
+          project: string
+          version: string
+          pool: string
+          token_id: string
+          token_address: string
 
     sudoswap:
       +enabled: true
