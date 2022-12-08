@@ -390,7 +390,7 @@ SELECT * FROM valtusd_val3eps
 SELECT 
     'bnb' as blockchain, 
     '1' as version, 
-    'ellipsis_finance' as project
+    'ellipsis_finance' as project,
     * 
 FROM 
 all 
