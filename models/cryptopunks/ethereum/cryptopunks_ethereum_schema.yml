@@ -330,7 +330,9 @@ models:
       - name: bidder
         description: "Wallet that created bid"
       - name: eth_amount
-        description: "ETH amount of bid"       
+        description: "ETH amount of bid"  
+      - name: usd_amount
+        description: "USD amount at time of bid"     
       - name: evt_block_time
         description: "Time of transfer"
       - name: evt_block_time_week
