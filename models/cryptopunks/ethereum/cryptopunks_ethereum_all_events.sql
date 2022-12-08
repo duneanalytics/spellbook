@@ -53,11 +53,31 @@ from
             , tx_hash
     from {{ ref('cryptopunks_ethereum_trades') }}
 
+    union all 
+
+    select block_time
+            , token_id
+            , 'Sold' as event_type
+            , 'Wrapped Sale' as sale_type
+            , seller
+            , buyer
+            , amount_original
+            , amount_usd
+            , block_number
+            , case(NULL as double) as evt_index
+            , tx_hash
+    from {{ ref('nft_trades') }}
+    where nft_contract_address = lower('0xb7f7f6c52f2e2fdb1963eab30438024864c313f6') -- wrapped punk contract
+        and blockchain = 'ethereum'
+
     union all
 
     select  evt_block_time
             , punk_id 
-            , case when from = '0x0000000000000000000000000000000000000000' then 'Claimed' else 'Transfer' end as event_type
+            , case  when from = '0x0000000000000000000000000000000000000000' then 'Claimed' 
+                    when from = '0xb7f7f6c52f2e2fdb1963eab30438024864c313f6' then 'Unwrap'
+                    when to = '0xb7f7f6c52f2e2fdb1963eab30438024864c313f6' then 'Wrap'
+                else 'Transfer' end as event_type
             , cast(NULL as varchar(5)) as sale_type
             , from
             , to
