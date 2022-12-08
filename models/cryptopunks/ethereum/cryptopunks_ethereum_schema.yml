@@ -325,11 +325,11 @@ models:
     columns:
       - name: event_type
         description: "Bid entered or withdrawn"
-      - name: bidder
-        description: "Wallet that created bid"
       - name: punk_id
         description: "Punk ID #"
-      - name: eth_value
+      - name: bidder
+        description: "Wallet that created bid"
+      - name: eth_amount
         description: "ETH amount of bid"       
       - name: evt_block_time
         description: "Time of transfer"
@@ -385,15 +385,15 @@ models:
             - evt_tx_hash
             - evt_index
     columns:
+      - name: event_type
+        description: "Offer entered or withdrawn"
       - name: punk_id
         description: "Punk ID #"    
-      - name: event_type
-        description: "Bid entered or withdrawn"
       - name: from
         description: "Wallet that initiated transaction"
       - name: to
         description: "If offered to specific address, otherwise null"
-      - name: eth_value
+      - name: eth_amount
         description: "ETH amount of offer"       
       - name: evt_block_time
         description: "Time of transfer"

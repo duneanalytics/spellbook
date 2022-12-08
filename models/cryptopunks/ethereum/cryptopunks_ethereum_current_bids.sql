@@ -18,7 +18,7 @@ with combined_events_table as (
                 , cast(NULL as varchar(5)) as transfer_from
                 , cast(NULL as varchar(5)) as transfer_to
                 , punk_id
-                , eth_value
+                , eth_amount
                 , evt_block_time
                 , evt_block_number
                 , evt_index
@@ -28,11 +28,11 @@ with combined_events_table as (
         union all 
 
         select  'Transfer' as event_type
-                , NULL as bidder
+                , cast(NULL as varchar(5)) as bidder
                 , from as transfer_from
                 , to as transfer_to
                 , punk_id
-                , NULL as eth_value
+                , cast(NULL as double) as eth_amount
                 , evt_block_time
                 , evt_block_number
                 , evt_index
@@ -46,7 +46,7 @@ with combined_events_table as (
                 , seller as transfer_from
                 , buyer as transfer_to
                 , token_id as punk_id
-                , amount_original as eth_value
+                , amount_original as eth_amount
                 , block_time
                 , block_number
                 , 1000 as evt_index
@@ -64,7 +64,7 @@ with combined_events_table as (
 
 select  bidder
         , punk_id 
-        , eth_value as bid_amount
+        , eth_amount as bid_amount
         , evt_block_time 
         , evt_block_number
         , evt_index
@@ -75,7 +75,7 @@ from
             , a.transfer_from
             , a.transfer_to
             , a.punk_id
-            , a.eth_value
+            , a.eth_amount
             , a.evt_block_time
             , a.evt_block_number
             , a.evt_index

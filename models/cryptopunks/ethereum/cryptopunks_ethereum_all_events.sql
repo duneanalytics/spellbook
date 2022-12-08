@@ -14,7 +14,7 @@ from
             , event_type
             , bidder as from 
             , cast(NULL as varchar(5)) as to 
-            , eth_value
+            , eth_amount
             , evt_block_time
             , evt_block_number
             , evt_tx_hash
@@ -26,7 +26,7 @@ from
             , event_type
             , from 
             , to 
-            , eth_value
+            , eth_amount
             , evt_block_time
             , evt_block_number
             , evt_tx_hash 

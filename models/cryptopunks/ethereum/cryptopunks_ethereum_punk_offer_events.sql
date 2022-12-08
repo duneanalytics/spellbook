@@ -9,12 +9,12 @@
 }}
 
 
-select punkIndex as punk_id
-        , 'Offered' as event_type
+select  'Offered' as event_type
+        , punkIndex as punk_id
         , b.from 
         , case when toAddress = '0x0000000000000000000000000000000000000000' then cast(NULL as varchar(5))
             else toAddress end as to
-        , minValue/1e18 as eth_value
+        , minValue/1e18 as eth_amount
         , a.evt_block_time 
         , date_trunc('week',a.evt_block_time) as evt_block_time_week
         , a.evt_block_number
@@ -28,11 +28,11 @@ where a.evt_block_time >= date_trunc('day', now() - interval '1 week')
 
 union all 
 
-select  a.punkIndex
-        , 'Offer Withdrawn' as event_type
+select  'Offer Withdrawn' as event_type
+        , a.punkIndex
         , b.from  
         , cast(NULL as varchar(5)) as to 
-        , cast(NULL as double) as eth_value
+        , cast(NULL as double) as eth_amount
         , a.evt_block_time
         , date_trunc('week',a.evt_block_time) as evt_block_time_week
         , a.evt_block_number

@@ -10,9 +10,9 @@
 
 
 select  'Bid Entered' as event_type
-        , fromAddress as bidder
         , punkIndex as punk_id
-        , value/1e18 as eth_value
+        , fromAddress as bidder
+        , value/1e18 as eth_amount
         , evt_block_time
         , date_trunc('week',evt_block_time) as evt_block_time_week
         , evt_block_number
@@ -26,9 +26,9 @@ where evt_block_time >= date_trunc('day', now() - interval '1 week')
 union all 
 
 select  'Bid Withdrawn' as event_type
-        , fromAddress as bidder
         , punkIndex as punk_id
-        , value/1e18 as eth_value
+        , fromAddress as bidder
+        , value/1e18 as eth_amount
         , evt_block_time
         , date_trunc('week',evt_block_time) as evt_block_time_week
         , evt_block_number
