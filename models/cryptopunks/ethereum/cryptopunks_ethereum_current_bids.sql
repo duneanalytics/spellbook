@@ -8,7 +8,6 @@
         )
 }}
 
-
 with combined_events_table as (
     select *
             , row_number() over (partition by punk_id order by evt_block_number desc, evt_index desc ) as punk_id_tx_rank
