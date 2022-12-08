@@ -645,6 +645,9 @@ models:
       avalanche_c:
         +schema: woofi_avalanche_c
         +materialized: view
+      bnb:
+        +schema: woofi_bnb
+        +materialized: view
 
     hashflow:
       +schema: hashflow
