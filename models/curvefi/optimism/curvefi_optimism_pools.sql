@@ -114,6 +114,9 @@ WITH base_pools AS (
             ,('Basic Pool','0','0x82E64f49Ed5EC1bC6e43DAD4FC8Af9bb3A2312EE','0x66b5792ed50a2a7405ea75c4b6b1913ef4e46661')
             ,('Basic Pool','1','0x625E7708f30cA75bfd92586e17077590C60eb4cD','0x66b5792ed50a2a7405ea75c4b6b1913ef4e46661')
             ,('Basic Pool','2','0x6ab707Aca953eDAeFBc4fD23bA73294241490620','0x66b5792ed50a2a7405ea75c4b6b1913ef4e46661')
+            --sUSD/FRAX
+            ,('Basic Pool','0','0x8c6f28f2F1A3C87F0f938b96d27520d9751ec8d9','0x54dcfe120d608551f9010d3b66620d230fd5c11b')
+            ,('Basic Pool','1','0x29A3d66B30Bc4AD674A4FDAF27578B64f6afbFe7','0x54dcfe120d608551f9010d3b66620d230fd5c11b')
         ) a (version, tokenid, token, pool)
     
     )
