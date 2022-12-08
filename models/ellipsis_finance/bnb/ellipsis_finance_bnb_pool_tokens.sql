@@ -1,5 +1,7 @@
 {{config(alias='pool_tokens')}}
 
+WITH
+
 2brl as (
     SELECT 
         contract_address as pool, 

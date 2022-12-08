@@ -14,6 +14,8 @@
 
 {% set project_start_date = '2021-03-01 00:00:00' %} -- https://www.coinbase.com/price/ellipsis
 
+WITH 
+
 2brl as (
     SELECT 
         evt_block_time AS block_time,

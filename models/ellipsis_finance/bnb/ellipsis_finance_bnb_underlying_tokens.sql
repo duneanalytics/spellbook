@@ -1,5 +1,7 @@
 {{config(alias='underlying_tokens')}}
 
+WITH
+
 arth_usd as (
     SELECT 
         '0xaf6b98b5dc17f4a9a5199545a1c29ee427266da4' as pool, 
