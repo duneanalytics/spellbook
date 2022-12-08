@@ -3,7 +3,7 @@ with unit_test as (
         case when ABS(test.oracle_price - actual.oracle_price) < 0.00001 then true else false end                           AS oracle_price_test,
         case when test.aggregator_address = actual.aggregator_address then true else false end                              AS aggregator_address_test,
         case when test.feed_name = actual.feed_name then true else false end                                                AS feed_name_test
-    from       {{ref ('chainlink_polygon_price_feeds')}} actual
+    from       {{ref ('chainlink_bnb_price_feeds')}} actual
     INNER JOIN {{ref ('chainlink_get_price_seed')}} test 
     ON (actual.blockchain = test.blockchain                     AND 
         actual.block_number = test.block_number                 AND 

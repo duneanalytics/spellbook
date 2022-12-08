@@ -5,18 +5,18 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['blockchain', 'block_number', 'proxy_address','underlying_token_address'],
-    post_hook='{{ expose_spells(\'["polygon"]\',
+    post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
                                 "chainlink",
                                 \'["msilb7","0xroll"]\') }}'
     )
 }}
 
-{% set project_start_date = '2020-10-26' %}
+{% set project_start_date = '2020-08-29' %}
 {% set answer_updated = '0x0559884fd3a460db3073b7fc896cc77986f16e378210ded43186175bf646fc5f' %}
 
 
-SELECT 'polygon'                                        AS blockchain,
+SELECT 'bnb'                                        AS blockchain,
        c.block_time,
        c.block_date,
        c.block_number,
@@ -39,8 +39,8 @@ FROM
               )                                         AS oracle_price,
 	       cfa.proxy_address,
            cfa.aggregator_address
-	FROM {{ source('polygon', 'logs') }} l
-	INNER JOIN {{ ref('chainlink_polygon_oracle_addresses') }} cfa ON l.contract_address = cfa.aggregator_address
+	FROM {{ source('bnb', 'logs') }} l
+	INNER JOIN {{ ref('chainlink_bnb_oracle_addresses') }} cfa ON l.contract_address = cfa.aggregator_address
 	WHERE l.topic1 = '{{answer_updated}}'
         {% if not is_incremental() %}
         AND l.block_time >= '{{project_start_date}}'
@@ -56,4 +56,4 @@ FROM
         cfa.proxy_address,
         cfa.aggregator_address
 ) c
-LEFT JOIN {{ ref('chainlink_polygon_oracle_token_mapping') }} o ON c.proxy_address = o.proxy_address
+LEFT JOIN {{ ref('chainlink_bnb_oracle_token_mapping') }} o ON c.proxy_address = o.proxy_address

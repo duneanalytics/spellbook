@@ -5,14 +5,14 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['blockchain', 'hour', 'proxy_address', 'underlying_token_address'],
-    post_hook='{{ expose_spells(\'["polygon"]\',
+    post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
                                 "chainlink",
                                 \'["msilb7","0xroll"]\') }}'
     )
 }}
 
-{% set project_start_date = '2020-10-26' %}
+{% set project_start_date = '2020-08-29' %}
 
 WITH gs AS (
     SELECT
@@ -24,14 +24,12 @@ WITH gs AS (
     FROM (
         SELECT explode(
                 sequence(
-                        DATE_TRUNC('hour', 
                         {% if not is_incremental() %}
-                            cast('{{project_start_date}}' as date)
+                            DATE_TRUNC('hour', cast('{{project_start_date}}' as date)),
                         {% endif %}
                         {% if is_incremental() %}
-                            date_trunc('hour', now() - interval '1 week')
+                            DATE_TRUNC('hour', now() - interval '1 week'),
                         {% endif %}
-                        ),
                         DATE_TRUNC('hour', NOW()),
                         interval '1 hour'
                         )
@@ -39,11 +37,11 @@ WITH gs AS (
                 feed_name,
                 proxy_address,
                 aggregator_address
-        FROM {{ ref('chainlink_polygon_oracle_addresses') }}
-    ) oa LEFT JOIN {{ ref('chainlink_polygon_oracle_token_mapping') }} c ON c.proxy_address = oa.proxy_address
+        FROM {{ ref('chainlink_bnb_oracle_addresses') }}
+    ) oa LEFT JOIN {{ ref('chainlink_bnb_oracle_token_mapping') }} c ON c.proxy_address = oa.proxy_address
 )
 
-SELECT 'polygon'                                            AS blockchain,
+SELECT 'bnb'                                                AS blockchain,
         hour,
         DATE_TRUNC('day',hour)                              AS block_date,
         feed_name,
@@ -100,7 +98,7 @@ FROM (
                 AVG(oracle_price)                           AS oracle_price_avg,
                 gs.underlying_token_address,
                 AVG(underlying_token_price)                 AS underlying_token_price_avg
-            FROM gs LEFT JOIN {{ ref('chainlink_polygon_price_feeds') }} f
+            FROM gs LEFT JOIN {{ ref('chainlink_bnb_price_feeds') }} f
                  ON gs.hr = DATE_TRUNC('day',f.block_time)
                  AND gs.underlying_token_address = f.underlying_token_address
                  AND gs.proxy_address = f.proxy_address
