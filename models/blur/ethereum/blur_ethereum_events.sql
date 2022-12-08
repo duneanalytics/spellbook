@@ -26,14 +26,14 @@ SELECT
     , CASE WHEN get_json_object(bm.buy, '$.amount')=1 THEN 'Single Item Trade'
         ELSE 'Bundle Trade'
         END AS trade_type
-    , CAST(get_json_object(bm.buy, '$.amount') AS DECIMAL(38,0)) AS number_of_items
+    , get_json_object(bm.buy, '$.amount') AS number_of_items
     , 'Trade' AS evt_type
     , COALESCE(seller_fix.from, get_json_object(bm.sell, '$.trader')) AS seller
     , COALESCE(buyer_fix.to, get_json_object(bm.buy, '$.trader')) AS buyer
     , CASE WHEN et.from=buyer_fix.to OR et.from=COALESCE(buyer_fix.to, get_json_object(bm.buy, '$.trader')) THEN 'Buy'
         ELSE 'Offer Accepted'
         END AS trade_category
-    , CAST(get_json_object(bm.buy, '$.price') AS DECIMAL(38,0)) AS amount_raw
+    , get_json_object(bm.buy, '$.price') AS amount_raw
     , CASE WHEN get_json_object(bm.buy, '$.paymentToken')='0x0000000000000000000000000000000000000000' THEN get_json_object(bm.buy, '$.price')/POWER(10, 18)
         ELSE get_json_object(bm.buy, '$.price')/POWER(10, pu.decimals)
         END AS amount_original
