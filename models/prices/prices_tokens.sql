@@ -270,9 +270,9 @@ VALUES
     ("mnft-marvelous-nfts", "bnb", "MNFT", "0x33be7644c0e489b3a0c639d103392d4f3e338158", 18),
     ("bets-betswirl", "bnb", "BETS", "0x3e0a7c7db7bb21bda290a80c9811de6d47781671", 18),
     ("floki-floki-inu", "bnb", "FLOKI", "0xfb5b838b6cfeedc2873ab27866079ac55363d37e", 18),
-    ("wom-wombat", "bnb", "WOM", "0xad6742a35fb341a9cc6ad674738dd8da98b94fb1", 18),
-    ("hay-destablecoin", "bnb", "HAY", "0x0782b6d8c4551b9760e74c0545a9bcd90bdc41e5", 18),
-    ("bnbx-staderlabs", "bnb", "BNBx", "0x1bdd3cf7f79cfb8edbb955f20ad99211551ba275", 18),
+    ("wom-wombat-exchange", "bnb", "WOM", "0xad6742a35fb341a9cc6ad674738dd8da98b94fb1", 18),
+    ("hay-hay", "bnb", "HAY", "0x0782b6d8c4551b9760e74c0545a9bcd90bdc41e5", 18),
+    ("bnbx-stader-bnbx", "bnb", "BNBx", "0x1bdd3cf7f79cfb8edbb955f20ad99211551ba275", 18),
 
     ("0xbtc-0xbitcoin", "ethereum", "0xBTC", "0xb6ed7644c69416d67b522e20bc294a9a9b405b31", 8),
     ("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),

@@ -1,51 +1,30 @@
 version: 2
 
 models:
-  - name: opensea_v1_ethereum_excluded_txns
-    meta:
-      blockchain: ethereum
-      project: opensea
-      contributors: soispoke
-    config:
-      tags: ['ethereum','opensea','v1','view']
-    description: Excluded OpenSea transactions on Ethereum
-    columns:
-      - name: call_tx_hash
-        description: "Transactions hash of excluded OpenSea transactions"
-
-  - name: opensea_v1_ethereum_fees
-    meta:
-      blockchain: ethereum
-      project: opensea
-      contributors: soispoke
-    config:
-      tags: ['ethereum','opensea','v1','fees']
-    description: OpenSea v1 fees on Ethereum
-    columns:
-      - name: block_time
-        description: "Block time of transaction"
-      - name: trace_address
-        description: "Trace address for fees"
-      - name: tx_hash
-        description: "Transaction hash"
-      - name: fees
-        description: "Amount of fees in original currency"
-      - name: from
-        description: "Wallet address that sent fees"
-      - name: to
-        description: "Wallet address that received fees"
-      - name: fee_currency_symbol
-        description: "Currency symbol in which fees were paid"
-
   - name: opensea_v1_ethereum_events
     meta:
       blockchain: ethereum
       project: opensea
       contributors: soispoke, umer_h_adil, hildobby
     config:
-      tags: ['ethereum','opensea','v1','events']
+      tags: ['ethereum','opensea','v1','events', 'static']
     description: >
         OpenSea v1 trades on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_trade_id
+      - check_seed:
+          seed_file: ref('opensea_wyvern_trades_samples')
+          match_columns:
+            - block_time
+            - tx_hash
+            - token_id
+          check_columns:
+            - amount_original
+            - buyer
+            - seller
     columns:
       - &blockchain
         name: blockchain
