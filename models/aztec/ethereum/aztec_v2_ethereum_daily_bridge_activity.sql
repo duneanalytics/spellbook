@@ -1,11 +1,6 @@
 {{ config(
     schema = 'aztec_v2_ethereum',
     alias = 'daily_bridge_activity',
-    partition_by = ['date'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['bridge_protocol', 'date', 'bridge_address', 'token_address'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "aztec_v2",
@@ -46,14 +41,9 @@ token_prices_token as (
         AVG(p.price) as price
     FROM 
     {{ source('prices', 'usd') }} p 
-    {% if not is_incremental() %}
     WHERE p.minute >= '{{first_transfer_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    WHERE p.minute >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-    AND p.blockchain = 'ethereum'
     AND p.contract_address IN (SELECT token_address FROM token_addresses)
+    AND p.blockchain = 'ethereum'
     GROUP BY 1, 2, 3 
 ),
 
@@ -62,17 +52,11 @@ token_prices_eth as (
         date_trunc('day', p.minute) as day, 
         AVG(p.price) as price,
         1 as price_eth
-
     FROM 
     {{ source('prices', 'usd') }} p 
-        {% if not is_incremental() %}
-        WHERE p.minute >= '{{first_transfer_date}}'
-        {% endif %}
-        {% if is_incremental() %}
-        WHERE p.minute >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-        AND p.blockchain = 'ethereum'
-        AND p.symbol = 'WETH'
+    WHERE p.minute >= '{{first_transfer_date}}'
+    AND p.blockchain = 'ethereum'
+    AND p.symbol = 'WETH'
     GROUP BY 1, 3 
 ),
 
