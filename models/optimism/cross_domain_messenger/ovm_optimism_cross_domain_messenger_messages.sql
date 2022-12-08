@@ -13,7 +13,7 @@
     )
 }}
 
-SELECT 'Withdrawal' AS msg_type, 'SentMessage' AS event,
+SELECT 'withdraw' AS msg_type, 'SentMessage' AS event, sender,
     evt_tx_hash AS l2_tx_hash, evt_block_number AS l2_block_number, 
     evt_block_time AS l2_block_time, DATE_TRUNC('day',evt_block_time) AS l2_block_date,
     contract_address, target, messageNonce AS message_nonce_hash, evt_index, '2' AS version,
@@ -27,7 +27,7 @@ SELECT 'Withdrawal' AS msg_type, 'SentMessage' AS event,
     
 UNION ALL
 
-SELECT 'Deposit' AS m_type, 'RelayedMessage' AS event,
+SELECT 'deposit' AS m_type, 'RelayedMessage' AS event, '' as sender,
     evt_tx_hash AS l2_tx_hash, evt_block_number AS l2_block_number, 
     evt_block_time AS l2_block_time, DATE_TRUNC('day',evt_block_time) AS l2_block_date,
     contract_address, NULL AS target, msgHash AS message_nonce_hash, evt_index, '2' AS version,

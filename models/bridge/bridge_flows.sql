@@ -1,52 +1,55 @@
 {{ config(
-        schema = 'bridges',
-        alias ='bridges_bridge_transfers',
+        schema = 'bridge',
+        alias ='flows',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                 "sector",
-                                "bridges",
-                                \'["msilb7"]\') }}'
+                                "bridge",
+                                \'["msilb7","soispoke]\') }}'
         )
 }}
 
-{% set bridge_protocol_transfer_models = [
-'hop_protocol_bridge_transfers'
+{% set bridge_protocol_flows_models = [
+'hop_protocol_flows'
 ] %}
 
-{% set native_bridge_transfer_models = [
-'ovm_optimism_standard_bridge_transfers'
+{% set native_bridge_flows_models = [
+'optimism_standard_bridge_flows'
 ] %}
 
 WITH bridge_protocols AS (
     SELECT *
     FROM (
-        {% for bridge_protocol_model in bridge_protocol_transfer_models %}
+        {% for bridge_protocol_model in bridge_protocol_flows_models %}
         SELECT
-            chain_data_source
+            blockchain
             , project
-            , block_date
+            , version
             , block_time
+            , block_date
+            , block_number
+            , tx_hash
+            , cid_source.chain_name || ' -> ' || cid_dest.chain_name AS bridge_path_name
+            , sender
+            , receiver
+            , CASE
+                WHEN lower(blockchain) = lower(cid_source.chain_name) THEN 'withdrawal'
+                WHEN lower(blockchain) = lower(cid_dest.chain_name) THEN 'deposit'
+                ELSE 'na'
+            END AS transfer_type
+            , token_symbol
+            , token_amount
+            , token_amount_usd
+            , token_amount_raw
+            , token_fee_amount
+            , token_fee_amount_usd
+            , token_fee_amount_raw
+            , token_address
+            , token_fee_address
             , source_chain_id
             , destination_chain_id
             , cid_source.chain_name AS source_chain_name
             , cid_dest.chain_name AS destination_chain_name
-            , cid_source.chain_name || ' -> ' || cid_dest.chain_name AS bridge_path_name
-            , CASE
-                WHEN lower(chain_data_source) = lower(cid_source.chain_name) THEN 'Withdrawal'
-                WHEN lower(chain_data_source) = lower(cid_dest.chain_name) THEN 'Deposit'
-                ELSE 'na'
-            END AS transfer_type
-            , bridged_token_symbol
-            , bridged_token_amount
-            , bridged_token_fee_amount
-            , bridged_amount_usd
-            , bridged_token_fee_amount_usd
-            , bridged_token_amount_raw
-            , bridged_token_fee_amount_raw
-            , bridged_token_address
-            , bridged_token_fee_address
             , is_native_bridge
-            , block_number
-            , tx_hash
             , tx_from
             , tx_to
             , transfer_id
@@ -68,34 +71,37 @@ WITH bridge_protocols AS (
 , native_bridges AS (
     SELECT nat.*
     FROM (
-        {% for native_bridge_model in native_bridge_transfer_models %}
+        {% for native_bridge_model in native_bridge_flows_models %}
         SELECT
-            chain_data_source
+            blockchain -- changed
             , project
-            , block_date
+            , version
             , block_time
+            , block_date
+            , block_number
+            , tx_hash
+            , cid_source.chain_name || ' -> ' || cid_dest.chain_name AS bridge_path_name
+            , sender -- TO DO
+            , receiver -- TO DO
+            , CASE
+                WHEN lower(blockchain) = lower(cid_source.chain_name) THEN 'withdrawal'
+                WHEN lower(blockchain) = lower(cid_dest.chain_name) THEN 'deposit'
+                ELSE 'na'
+            END AS transfer_type
+            , token_symbol
+            , token_amount
+            , token_amount_usd -- changed
+            , token_amount_raw
+            , token_fee_amount
+            , token_fee_amount_usd
+            , token_fee_amount_raw
+            , token_address
+            , token_fee_address
             , source_chain_id
             , destination_chain_id
             , cid_source.chain_name AS source_chain_name
             , cid_dest.chain_name AS destination_chain_name
-            , cid_source.chain_name || ' -> ' || cid_dest.chain_name AS bridge_path_name
-            , CASE
-                WHEN lower(chain_data_source) = lower(cid_source.chain_name) THEN 'Withdrawal'
-                WHEN lower(chain_data_source) = lower(cid_dest.chain_name) THEN 'Deposit'
-                ELSE 'na'
-            END AS transfer_type
-            , bridged_token_symbol
-            , bridged_token_amount
-            , bridged_token_fee_amount
-            , bridged_amount_usd
-            , bridged_token_fee_amount_usd
-            , bridged_token_amount_raw
-            , bridged_token_fee_amount_raw
-            , bridged_token_address
-            , bridged_token_fee_address
             , is_native_bridge
-            , block_number
-            , tx_hash
             , tx_from
             , tx_to
             , transfer_id
@@ -115,10 +121,10 @@ WITH bridge_protocols AS (
     -- Exclude native bridges where a bridge protocol was used. Assign the bridge to the bridge protocol.
     LEFT ANTI JOIN  bridge_protocols prot
         ON prot.block_date = nat.block_date
-        AND prot.chain_data_source = nat.chain_data_source
+        AND prot.blockchain = nat.blockchain
         AND prot.block_number = nat.block_number
         AND prot.tx_hash = nat.tx_hash
-        AND prot.bridged_token_address = nat.bridged_token_address
+        AND prot.token_address = nat.token_address
         -- Eventual improvement: See if we can join on event (i.e. tie a Hop event with a standard bridge event)
 )
 

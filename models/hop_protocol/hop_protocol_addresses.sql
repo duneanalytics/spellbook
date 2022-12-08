@@ -1,10 +1,10 @@
 {{
   config(
         schema = 'hop_protocol',
-        alias='hop_bridge_addresses',
+        alias='addresses',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
-                                    "bridges",
+                                    "bridge",
                                     \'["msilb7"]\') }}'
   )
 }}

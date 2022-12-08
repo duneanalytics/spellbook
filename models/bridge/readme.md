@@ -11,7 +11,7 @@ Bridges are used by users who want to send information (often transferring asset
 - **CEX / Fiat On/Off-Ramps:** Centralized entities that hold funds on either end of a bridge and facilitate user's directly depositing and withdrawing. ex: Coinbase, Binance, Ramp. (Debatable if we should include these as bridges, so for now we'll plan to do a separate On-Ramp transfers table).
 
 ### Tables:
-- **bridges.bridge_transfers:** Transfer events for any native bridges and cross-chain bridges. This table ~tries to avoid double counting bridge events by excluding native bridge transfers if they're also found in a bridge protocol or bridge aggregator (i.e. User deposits to Optimism from Ethereum using Hop, and Hop uses the Optimism standard bridge)
+- **bridge.flows:** Transfer events for any native bridges and cross-chain bridges. This table ~tries to avoid double counting bridge events by excluding native bridge transfers if they're also found in a bridge protocol or bridge aggregator (i.e. User deposits to Optimism from Ethereum using Hop, and Hop uses the Optimism standard bridge)
 
 ### Protocols:
 - **Optimism:** Bolded if Done or In-Progress

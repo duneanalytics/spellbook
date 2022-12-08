@@ -1,15 +1,15 @@
 {{ config(
-    schema = 'ovm_optimism',
-    alias = 'standard_bridge_transfers',
+    schema = 'optimism',
+    alias = 'standard_bridge_flows',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'chain_data_source', 'tx_hash', 'evt_index'],
+    unique_key = ['block_date', 'blockchain', 'tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "ovm_optimism",
-                                \'["msilb7"]\') }}'
+                                "sector",
+                                "bridge",
+                                \'["msilb7","soispoke"]\') }}'
     )
 }}
 
@@ -18,14 +18,23 @@
 
 WITH bridge_events AS (
     SELECT
-        block_time, DATE_TRUNC('day',block_time) AS block_date, block_number, tx_hash,
-        bridged_token_address, bridged_token_amount_raw, 
-        recipient_address, trace_address, a.evt_index, project_contract_address,
-        COALESCE(message_nonce_hash,'unknown') AS transfer_id, source_chain_id, destination_chain_id
+        block_time, 
+        DATE_TRUNC('day',block_time) AS block_date, 
+        sender,
+        block_number, 
+        tx_hash,
+        bridged_token_address, 
+        bridged_token_amount_raw, 
+        recipient_address, 
+        trace_address, a.evt_index, 
+        project_contract_address,
+        COALESCE(message_nonce_hash,'unknown') AS transfer_id, 
+        source_chain_id, 
+        destination_chain_id
     FROM (
         
         SELECT 
-        'Deposit' AS tf_type
+        'deposit' AS tf_type
         , l.block_time
         ,l.block_number
         ,l.tx_hash
@@ -60,7 +69,7 @@ WITH bridge_events AS (
         UNION ALL
         
         SELECT 
-        'Withdrawal' AS tf_type
+        'withdraw' AS tf_type
         , l.block_time
         , l.block_number
         , l.tx_hash
@@ -105,26 +114,29 @@ WITH bridge_events AS (
 )
 
 SELECT
- 'optimism' as chain_data_source
-, 'Standard Bridge' AS project
-, tf.block_date
+ 'optimism' as blockchain
+, 'standard_bridge' AS project
+, '' as version
 , tf.block_time
+, tf.block_date
+, tf.block_number
+, tx_hash
+, COALESCE(sender,'') as sender
+, COALESCE(tf.recipient_address,'') as receiver
+, erc.symbol AS token_symbol
+, bridged_token_amount_raw / POWER(10,erc.decimals) AS token_amount
+, p.price*( bridged_token_amount_raw / POWER(10,erc.decimals) ) AS token_amount_usd
+, bridged_token_amount_raw as token_amount_raw
+, 0 AS token_fee_amount
+, 0 AS token_fee_amount_usd
+, 0 AS token_fee_amount_raw
+, bridged_token_address as token_address
+, '' AS token_fee_address
 , source_chain_id
 , destination_chain_id
 , cid_source.chain_name AS source_chain_name
 , cid_dest.chain_name AS destination_chain_name
-, erc.symbol AS bridged_token_symbol
-, bridged_token_amount_raw / POWER(10,erc.decimals) AS bridged_token_amount
-, 0 AS bridged_token_fee_amount
-, p.price*( bridged_token_amount_raw / POWER(10,erc.decimals) ) AS bridged_amount_usd
-, 0 AS bridged_token_fee_amount_usd
-, bridged_token_amount_raw
-, 0 AS bridged_token_fee_amount_raw
-, bridged_token_address
-, '' AS bridged_token_fee_address
 , 1 AS is_native_bridge
-, tf.block_number
-, tx_hash
 , t.`from` AS tx_from
 , t.`to` AS tx_to
 , tf.transfer_id
@@ -135,7 +147,7 @@ SELECT
 FROM bridge_events tf
 
 LEFT JOIN {{ source('optimism', 'transactions') }} t
-        ON t.block_number = tf.block_number
+        ON t.block_time = tf.block_time
         AND t.hash = tf.tx_hash
         {% if is_incremental() %}
         AND t.block_time >= (NOW() - interval '14' days)

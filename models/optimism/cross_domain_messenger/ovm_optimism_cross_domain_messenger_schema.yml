@@ -24,6 +24,9 @@ models:
       - &event
         name: event
         description: Event type
+      - &sender
+        name: sender
+        description: Address sending the message
       - &l2_block_date
         name: l2_block_date
         description: Date of the block time

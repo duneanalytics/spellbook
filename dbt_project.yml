@@ -715,8 +715,8 @@ models:
     chain_info:
       +schema: chain_info
       +materialized: view
-    bridges:
-      +schema: bridges
+    bridge:
+      +schema: bridge
       +materialized: view
 
 seeds:
