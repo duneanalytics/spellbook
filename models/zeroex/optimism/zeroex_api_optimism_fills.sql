@@ -17,36 +17,10 @@
 
 -- Test Query here: https://dune.com/queries/1685501
 
--- rantum: need to fix dune query, then fix query below
 WITH zeroex_tx AS (
     SELECT tx_hash,
            max(affiliate_address) as affiliate_address
     FROM (
-        /*
-        SELECT v3.evt_tx_hash AS tx_hash,
-                    CASE
-                        WHEN takerAddress = '0x63305728359c088a52b0b0eeec235db4d31a67fc' THEN takerAddress
-                        ELSE NULL
-                    END AS affiliate_address
-        FROM {{ source('zeroex_v3_optimism', 'Exchange_evt_Fill') }} v3
-        WHERE (  -- nuo
-                v3.takerAddress = '0x63305728359c088a52b0b0eeec235db4d31a67fc'
-                OR -- contains a bridge order
-                (
-                    v3.feeRecipientAddress = '0x1000000000000000000000000000000000000011'
-                    AND SUBSTRING(v3.makerAssetData, 1, 10) = '0xdc1600f3'
-                )
-            )
-
-            {% if is_incremental() %}
-            AND evt_block_time >= date_trunc('day', now() - interval '1 week')
-            {% endif %}
-            {% if not is_incremental() %}
-            AND evt_block_time >= '{{zeroex_v3_start_date}}'
-            {% endif %}
-
-        UNION ALL
-        */
         SELECT tr.tx_hash,
                     '0x' || CASE
                                 WHEN POSITION('869584cd' IN INPUT) <> 0
@@ -164,6 +138,7 @@ otc_fills AS (
     {% endif %}
 
 ),
+
 ERC20BridgeTransfer AS (
     SELECT 
             logs.tx_hash,
@@ -310,10 +285,6 @@ direct_uniswapv3 AS (
 all_tx AS (
     SELECT *
     FROM direct_uniswapv3
-    /*
-    UNION ALL SELECT *
-    FROM direct_sushiswap
-    */
     UNION ALL SELECT *
     FROM direct_PLP
     UNION ALL SELECT *
