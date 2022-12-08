@@ -78,7 +78,7 @@ SELECT
     t.tx_type,
     t.token as asset_contract_address,
     COALESCE(er.symbol, t.token) as asset,
-    t.value as raw_value, 
+    CAST(t.value AS DECIMAL(38,0)) as raw_value, 
     t.value/POW(10, COALESCE(er.decimals, 18)) as value, 
     t.value/POW(10, COALESCE(er.decimals, 18)) * p.price as usd_value, 
     t.tx_hash, 
