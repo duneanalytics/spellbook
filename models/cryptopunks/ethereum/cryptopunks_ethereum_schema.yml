@@ -200,8 +200,10 @@ models:
     columns:
       - name: punk_id
         description: "CryptoPunk ID #"
-      - name: listed_price
+      - name: listed_price_eth
         description: "Listed price (ETH)"
+      - name: listed_price_current_usd
+        description: "Listed price at current USD value"
       - name: listing_created_at
         description: "Time listings was created"
 
@@ -360,8 +362,10 @@ models:
         description: "CryptoPunk ID #"
         tests:
           - unique
-      - name: bid_amount
+      - name: bid_amount_eth
         description: "Bid amount (ETH)"
+      - name: bid_amount_current_usd
+        description: "Bid amount converted to USD at current price"
       - name: evt_block_time
         description: "Time bid was placed"
       - name: evt_block_number
@@ -396,7 +400,9 @@ models:
       - name: to
         description: "If offered to specific address, otherwise null"
       - name: eth_amount
-        description: "ETH amount of offer"       
+        description: "ETH amount of offer"  
+      - name: usd_amount
+        description: "USD amount at time of listing"     
       - name: evt_block_time
         description: "Time of transfer"
       - name: evt_block_time_week
@@ -429,7 +435,9 @@ models:
       - name: to
         description: "If transaction to another address"
       - name: eth_amount
-        description: "ETH amount"       
+        description: "ETH amount"   
+      - name: usd_amount
+        description: "USD amount at time of event"    
       - name: evt_block_time
         description: "Time of event"
       - name: evt_block_number

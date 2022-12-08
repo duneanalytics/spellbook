@@ -46,9 +46,17 @@ with all_listing_events as (
             , evt_tx_hash
     from {{ ref('cryptopunks_ethereum_punk_transfers') }}
 )
+, latest_eth_price as (
+    select price
+    from prices.usd 
+    where blockchain = 'ethereum' 
+        and contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+    order by minute desc limit 1
+)
 
 select  punk_id
-        , listed_price
+        , listed_price as listed_price_eth
+        , listed_price * (select price from latest_eth_price) as listed_price_current_usd
         , evt_block_time as listing_created_at
 from 
 (

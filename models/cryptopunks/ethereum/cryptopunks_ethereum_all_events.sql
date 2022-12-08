@@ -16,6 +16,7 @@ from
             , bidder as from 
             , cast(NULL as varchar(5)) as to 
             , eth_amount
+            , usd_amount
             , evt_block_time
             , evt_block_number
             , evt_index
@@ -30,6 +31,7 @@ from
             , from 
             , to 
             , eth_amount
+            , usd_amount
             , evt_block_time
             , evt_block_number
             , evt_index
@@ -44,6 +46,7 @@ from
             , seller
             , buyer
             , amount_original
+            , amount_usd
             , block_time
             , block_number 
             , evt_index
@@ -58,6 +61,7 @@ from
             , from
             , to
             , cast(NULL as double) as eth_amount
+            , cast(NULL as double) as usd_amount
             , evt_block_time
             , evt_block_number 
             , evt_index

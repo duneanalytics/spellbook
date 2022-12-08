@@ -61,10 +61,18 @@ with combined_events_table as (
     from combined_events_table
     group by 1,2
 )
+, latest_eth_price as (
+    select price
+    from prices.usd 
+    where blockchain = 'ethereum' 
+        and contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+    order by minute desc limit 1
+)
 
 select  bidder
         , punk_id 
-        , eth_amount as bid_amount
+        , eth_amount as bid_amount_eth
+        , eth_amount * (select price from latest_eth_price) as bid_amount_current_usd
         , evt_block_time 
         , evt_block_number
         , evt_index
