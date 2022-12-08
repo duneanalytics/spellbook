@@ -420,6 +420,8 @@ models:
         description: "Punk ID #"    
       - name: event_type
         description: "Type of event"
+      - name: sale_type
+        description: "For sale events - bid accepted or regular sale"
       - name: from
         description: "Wallet that initiated transaction"
       - name: to

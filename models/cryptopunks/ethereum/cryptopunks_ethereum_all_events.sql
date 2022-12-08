@@ -12,6 +12,7 @@ from
 (
     select  punk_id
             , event_type
+            , cast(NULL as varchar(5)) as sale_type
             , bidder as from 
             , cast(NULL as varchar(5)) as to 
             , eth_amount
@@ -25,6 +26,7 @@ from
 
     select  punk_id
             , event_type
+            , cast(NULL as varchar(5)) as sale_type
             , from 
             , to 
             , eth_amount
@@ -38,6 +40,7 @@ from
 
     select token_id 
             , 'Sold' as event_type
+            , trade_category as sale_type
             , seller
             , buyer
             , amount_original
@@ -50,7 +53,8 @@ from
     union all
 
     select punk_id 
-            , case when evt_tx_hash is null then 'Claimed' else 'Transfer' end as trade_category
+            , case when from = '0x0000000000000000000000000000000000000000' then 'Claimed' else 'Transfer' end as event_type
+            , cast(NULL as varchar(5)) as sale_type
             , from
             , to
             , cast(NULL as double) as eth_value
