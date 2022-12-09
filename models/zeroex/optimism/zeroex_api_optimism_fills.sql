@@ -58,7 +58,7 @@ WITH zeroex_tx AS (
     group by tx_hash
 
 ),
-
+/*
 v4_rfq_fills_no_bridge AS (
     SELECT 
             fills.evt_tx_hash               AS tx_hash,
@@ -158,7 +158,7 @@ ERC20BridgeTransfer AS (
     FROM {{ source('optimism', 'logs') }} logs
     JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic1 = '0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9'
-
+    
     {% if is_incremental() %}
     AND block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
@@ -166,7 +166,7 @@ ERC20BridgeTransfer AS (
     AND block_time >= '{{zeroex_v3_start_date}}'
     {% endif %}
 
-),
+), 
 BridgeFill AS (
     SELECT 
             logs.tx_hash,
@@ -194,7 +194,7 @@ BridgeFill AS (
         {% if not is_incremental() %}
         AND block_time >= '{{zeroex_v4_start_date}}'
         {% endif %}
-),
+),*/
 NewBridgeFill AS (
     SELECT 
             logs.tx_hash,
@@ -207,7 +207,7 @@ NewBridgeFill AS (
             '0x' || substring(DATA, 155, 40)                AS maker_token,
             bytea2numeric('0x' || substring(DATA, 219, 40)) AS taker_token_amount_raw,
             bytea2numeric('0x' || substring(DATA, 283, 40)) AS maker_token_amount_raw,
-            'NewBridgeFill'                                 AS type,
+            'BridgeFill'                                 AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
             FALSE                                           AS matcha_limit_order_flag
@@ -223,12 +223,13 @@ NewBridgeFill AS (
         AND block_time >= '{{zeroex_v4_start_date}}'
         {% endif %}
 ),
+/*
 direct_PLP AS (
     SELECT 
             plp.evt_tx_hash,
             plp.evt_index               AS evt_index,
             plp.contract_address,
-            plp.evt_block_time          AS block_time,
+            plp.evt_block_time          AS block_time,f
             provider                    AS maker,
             recipient                   AS taker,
             inputToken                  AS taker_token,
@@ -281,8 +282,9 @@ direct_uniswapv3 AS (
         AND swap.evt_block_time >= '{{zeroex_v4_start_date}}'
         {% endif %}
 
-),
+), */
 all_tx AS (
+    /*
     SELECT *
     FROM direct_uniswapv3
     UNION ALL SELECT *
@@ -291,14 +293,14 @@ all_tx AS (
     FROM ERC20BridgeTransfer
     UNION ALL SELECT *
     FROM BridgeFill
-    UNION ALL SELECT *
-    FROM NewBridgeFill
+    UNION ALL */ SELECT *
+    FROM NewBridgeFill /*
     UNION ALL SELECT *
     FROM v4_rfq_fills_no_bridge
     UNION ALL SELECT *
     FROM v4_limit_fills_no_bridge
     UNION ALL SELECT *
-    FROM otc_fills
+    FROM otc_fills */
 )
 
 SELECT 
