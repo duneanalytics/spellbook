@@ -123,7 +123,7 @@ FROM (
             {% if is_incremental() %}
             AND poly.evt_block_time >= (NOW() - interval '45 days')
               {% endif %}
-        LEFT JOIN {{ source ('hop_gnosis', 'L2_xDaiBridge_evt_TransferSent') }} gno
+        LEFT JOIN {{ source ('hop_protocol_gnosis', 'L2_xDaiBridge_evt_TransferSent') }} gno
             ON gno.evt_block_time BETWEEN (wb.evt_block_time - interval '30 days') AND (wb.evt_block_time + interval '1 day') --usually < ~20 mins, but extending longer for safety & OP blocktimestamp fix (used to have ~15 min delay)
             AND gno.transferId = wb.transferId
             {% if is_incremental() %}
