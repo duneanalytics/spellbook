@@ -116,6 +116,9 @@ SELECT
         {% if is_incremental() %}
         AND l.block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
+        {% if not is_incremental() %}
+        AND l.block_time >= '{{project_start_date}}'
+        {% endif %}
     ) cp
     INNER JOIN {{ ref('curvefi_optimism_pools') }} ta
         ON cp.project_contract_address = ta.pool
