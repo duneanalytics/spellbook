@@ -12,7 +12,7 @@ SELECT "bnb"                                 AS blockchain,
        feed_name,
        LOWER(proxy_address)                  AS proxy_address,
        LOWER(underlying_token_address)       AS underlying_token_address,
-       CAST( extra_decimals AS NUMERIC)      AS extra_decimals
+       CAST( extra_decimals AS BIGINT)      AS extra_decimals
 FROM (values
         ("EUR / USD","0x0bf79f617988c472dca68ff41efe1338955b9a80","0x23b8683ff98f9e4781552dfe6f12aa32814924e8",0),
         ("GBP / USD","0x8faf16f710003e538189334541f5d4a391da46a0","0x048e9b1ddf9ebbb224812372280e94ccac443f9e",0),
