@@ -8,8 +8,8 @@
     , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
                                   "the_granary",
-                                  \'["msilb7"]\') }}'
-    ,depends_on=['tokens_erc20','tokens_optimism_erc20']
+                                  \'["msilb7"]\') 
+    }}'
   )
 }}
 
@@ -44,7 +44,7 @@ WITH atokens AS (
             AND evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         ) a
-    LEFT JOIN {{ ref('tokens_erc20') }} et
+    LEFT JOIN {{ ref('tokens_erc20_snapshot') }} et
         ON a.underlying_address = et.contract_address
         AND et.blockchain = 'optimism'
 

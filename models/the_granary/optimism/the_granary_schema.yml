@@ -1,17 +1,17 @@
 version: 2
 
 models:
-  - name: aave_v3_tokens
+  - name: the_granary_optimism_tokens
 
     meta:
-      blockchain: optimism, ethereum, polygon, avalanche_c, arbitrum
+      blockchain: optimism
       sector: lending
-      project: aave
+      project: the_granary
       contributors: msilb7
 
     config:
-      tags: ['cross-chain', 'aave', 'aave_v3','tokens','lending', 'borrowing']
-    description: "Aave aToken list and mappings to underlying tokens"
+      tags: ['the_granary', 'optimism', 'tokens', 'lending']
+    description: "Granary aToken list and mappings to underlying tokens"
     columns:
     - &blockchain
       name: blockchain

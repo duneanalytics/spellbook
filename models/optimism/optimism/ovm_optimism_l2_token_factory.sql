@@ -9,7 +9,7 @@
                                   "project",
                                   "ovm_optimism",
                                   \'["msilb7"]\') }}'
-        ,depends_on=['tokens_erc20','tokens_optimism_erc20','tokens_ethereum_erc20']
+        ,depends_on=['tokens_optimism_erc20','tokens_erc20']
   )
 }}
 
@@ -38,7 +38,7 @@ FROM (
             AND tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        LEFT JOIN {{ref('tokens_erc20')}} t
+        LEFT JOIN {{ref('tokens_erc20_snapshot')}} t
             ON t.contract_address = c1._l1Token
             AND t.blockchain = 'ethereum'
 
@@ -61,7 +61,7 @@ FROM (
             AND tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        LEFT JOIN {{ref('tokens_erc20')}} t
+        LEFT JOIN {{ref('tokens_erc20_snapshot')}} t
             ON t.contract_address = c2._l1Token
             AND t.blockchain = 'ethereum'
 

@@ -9,7 +9,6 @@
                                   "project",
                                   "aave_v3",
                                   \'["msilb7"]\') }}'
-        ,depends_on=['tokens_erc20','tokens_optimism_erc20']
   )
 }}
 
@@ -58,7 +57,7 @@ WITH atokens AS (
         {% endfor %}
 
         ) a
-    LEFT JOIN {{ ref('tokens_erc20') }} et
+    LEFT JOIN {{ ref('tokens_erc20_snapshot') }} et
         ON a.underlying_address = et.contract_address
         AND a.blockchain = et.blockchain
 

@@ -368,6 +368,7 @@ FROM (
       ,('0x0E1B5AB67aF1c99F8c7Ebc71f41f75D4D6211e53', 'Rainbow')
       ,('0xd531795282a1d7857faf43416b4c135759db45c4', 'Sided Finance')
       ,('0x2dA7e3a7F21cCE79efeb66f3b082196EA0A8B9af', 'OmniSwap')
+      ,('0x0c6c8f014d1B3E37F470d39356379E220e4Beb67', 'Resonate')
 
   ) as temp_table (creator_address, contract_project)
 

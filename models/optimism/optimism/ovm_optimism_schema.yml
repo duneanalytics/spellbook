@@ -2,6 +2,7 @@ version: 2
 
 models:
   - name: ovm_optimism_l2_token_factory
+
     meta:
       blockchain: optimism
       project: ovm_optimism
