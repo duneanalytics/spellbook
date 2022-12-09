@@ -259,7 +259,10 @@ models:
     columns:
       - &address
         name: address
-        description: "Ethereum address"
+        description: "Ethereum wallet address"
+      - &balance_raw
+        name: balance_raw
+        description: "ETH balance of this address at genesis, in wei"
       - &balance
         name: balance
-        description: "ETH balance, in wei"
+        description: "ETH balance of this address at genesis, in ETH"

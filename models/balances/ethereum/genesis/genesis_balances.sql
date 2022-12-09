@@ -2,12 +2,16 @@
 	alias ='genesis_balances',
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",
-                                "ethereum",
+                                "balances",
                                 \'["bernat"]\') }}'
 	)
 }}
 
-SELECT address, balance FROM 
+SELECT 
+	address
+	,balance_raw
+	,balance_raw / power(10,18) as balance 
+FROM 
 (VALUES 
 	('0x3282791d6fd713f1e94f4bfd565eaa78b3a0599d', 1337000000000000000000), 
 	('0x17961d633bcf20a7b029a7d94b7df4da2ec5427f', 229427000000000000000), 
@@ -8902,4 +8906,4 @@ SELECT address, balance FROM
 	('0x2489ac126934d4d6a94df08743da7b7691e9798e', 1000000000000000000000), 
 	('0xf42f905231c770f0a406f2b768877fb49eee0f21', 197000000000000000000), 
 	('0x756f45e3fa69347a9a973a725e3c98bc4db0b5a0', 200000000000000000000)
-) AS accounts(address, balance);
+) AS accounts(address, balance_raw);
