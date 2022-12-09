@@ -1,5 +1,5 @@
 {{config(alias='view_expirations',
-    post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
+    post_hook='{{ expose_spells(\'["ethereum"]\',
                             "project",
                             "ens",
                             \'["antonio-mendes","mewwts"]\') }}')}}

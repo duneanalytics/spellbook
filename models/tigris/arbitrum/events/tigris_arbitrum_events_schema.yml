@@ -178,7 +178,7 @@ models:
         name: payout
         description: "amount received after closing trade"
       - &perc_closed
-        name: perc_closed
+        name: payout
         description: "% of trade closed"
       - *trader
       - *version

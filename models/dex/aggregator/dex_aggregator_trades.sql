@@ -1,6 +1,6 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["ethereum", "gnosis"]\',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",
                                 "dex_aggregator",
                                 \'["bh2smith"]\') }}'
@@ -32,10 +32,11 @@ FROM
             tx_from,
             tx_to,
             trace_address,
-            evt_index
+            evt_index,
+            unique_trade_id
         FROM {{ ref('cow_protocol_trades') }}
         /*
-        UNION ALL
+        UNION
         <add future protocols here>
         */
     )

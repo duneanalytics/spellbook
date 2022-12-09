@@ -11,10 +11,9 @@
         --    {%- set seed_matching_columns = dbt_utils.get_filtered_columns_in_relation(from=seed_file, except=seed_check_columns) -%}
         --jinja comment
     #}
-    {{ config(severity = 'error') }}
+    {{ config(severity = 'warn') }}
     {%- set seed_check_columns = check_columns -%}
     {%- set seed_matching_columns = match_columns -%}
-    {%- set seed = seed_file -%}
-    {{ check_seed_macro(model,seed,seed_matching_columns,seed_check_columns,filter) }}
+    {{ check_seed_macro(model,seed_file,seed_matching_columns,seed_check_columns,filter) }}
 
 {% endtest %}

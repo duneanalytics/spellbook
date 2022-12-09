@@ -1,7 +1,7 @@
 {{
     config(
         alias='balances',
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "balancer",
                                     \'["metacrypto", "jacektrocinski"]\') }}'

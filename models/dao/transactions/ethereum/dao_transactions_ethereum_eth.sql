@@ -33,7 +33,7 @@ transactions as (
             to as dao_wallet_address, 
             'tx_in' as tx_type, 
             tx_index,
-            COALESCE(from, '') as address_interacted_with,
+            from as address_interacted_with,
             trace_address
         FROM 
         {{ source('ethereum', 'traces') }}
@@ -58,7 +58,7 @@ transactions as (
             from as dao_wallet_address, 
             'tx_out' as tx_type,
             tx_index,
-            COALESCE(to, '') as address_interacted_with,
+            to as address_interacted_with,
             trace_address
         FROM 
         {{ source('ethereum', 'traces') }}
@@ -84,7 +84,7 @@ SELECT
     t.tx_type,
     t.token as asset_contract_address,
     'ETH' asset,
-    CAST(t.value AS DECIMAL(38,0)) as raw_value, 
+    t.value as raw_value, 
     t.value/POW(10, 18) as value, 
     t.value/POW(10, 18) * p.price as usd_value, 
     t.tx_hash, 
