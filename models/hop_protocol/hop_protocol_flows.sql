@@ -30,11 +30,11 @@ FROM
                 , h.token_amount
                 , h.token_amount_usd
                 , h.token_amount_raw
-                , h.token_fee_amount
-                , h.token_fee_amount_usd
-                , h.token_fee_amount_raw
+                , h.fee_amount
+                , h.fee_amount_usd
+                , h.fee_amount_raw
                 , h.token_address
-                , h.token_fee_address
+                , h.fee_address
                 , h.source_chain_id
                 , h.destination_chain_id
                 , h.source_chain_name

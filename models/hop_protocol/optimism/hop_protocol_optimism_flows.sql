@@ -28,11 +28,11 @@ SELECT
 , bridged_token_amount_raw / POWER(10,erc.decimals) AS token_amount
 , p.price*( bridged_token_amount_raw / POWER(10,erc.decimals) ) AS token_amount_usd
 , bridged_token_amount_raw as token_amount_raw
-, bridged_token_fee_amount_raw / POWER(10,erc.decimals) AS token_fee_amount
-, p.price*( bridged_token_fee_amount_raw / POWER(10,erc.decimals) ) AS token_fee_amount_usd
-, bridged_token_fee_amount_raw as token_fee_amount_raw
+, bridged_fee_amount_raw / POWER(10,erc.decimals) AS fee_amount
+, p.price*( bridged_fee_amount_raw / POWER(10,erc.decimals) ) AS fee_amount_usd
+, bridged_fee_amount_raw as fee_amount_raw
 , hba.`l2CanonicalToken` AS token_address
-, hba.`l2CanonicalToken` AS token_fee_address
+, hba.`l2CanonicalToken` AS fee_address
 , source_chain_id
 , destination_chain_id
 , cid_source.chain_name AS source_chain_name
@@ -51,7 +51,7 @@ FROM (
     ,ts.evt_block_number AS block_number
     ,ts.evt_tx_hash AS tx_hash
     , ts.`amount` AS bridged_token_amount_raw
-    , ts.`bonderFee` AS bridged_token_fee_amount_raw
+    , ts.`bonderFee` AS bridged_fee_amount_raw
     , '' as sender_address
     , ts.recipient AS recipient_address
     ,'' AS trace_address
@@ -72,7 +72,7 @@ FROM (
     ,tl.evt_block_number AS block_number
     ,tl.evt_tx_hash AS tx_hash
     , tl.`amount` AS bridged_token_amount_raw
-    , tl.`relayerFee` AS bridged_token_fee_amount_raw
+    , tl.`relayerFee` AS bridged_fee_amount_raw
     , '' as sender_address
     , tl.recipient AS recipient_address
     ,'' AS trace_address
@@ -94,7 +94,7 @@ FROM (
     ,wb.evt_block_number AS block_number
     ,wb.evt_tx_hash AS tx_hash
     , wb.`amount` AS bridged_token_amount_raw
-    , 0 AS bridged_token_fee_amount_raw
+    , 0 AS bridged_fee_amount_raw
     , '' as sender_address
     , COALESCE(arb.recipient,poly.recipient,poly2.recipient,gno.recipient) AS recipient_address
     ,'' AS trace_address

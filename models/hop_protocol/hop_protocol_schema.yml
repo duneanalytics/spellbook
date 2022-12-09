@@ -60,20 +60,20 @@ models:
       - &token_amount_raw
         name: token_amount_raw
         description: Bridged Token Amount (Not Decimal adjusted)
-      - &token_fee_amount
-        name: token_fee_amount
+      - &fee_amount
+        name: fee_amount
         description: Bridged Token Fee Amount (Decimal adjusted)
-      - &token_fee_amount_usd
-        name: token_fee_amount_usd
+      - &fee_amount_usd
+        name: fee_amount_usd
         description: Bridged Token Fee Amount USD
-      - &token_fee_amount_raw
-        name: token_fee_amount_raw
+      - &fee_amount_raw
+        name: fee_amount_raw
         description: Bridged Token Fee Amount (Not Decimal adjusted)
       - &token_address
         name: token_address
         description: Bridged Token Address
-      - &token_fee_address
-        name: bridged_token_fee_address
+      - &fee_address
+        name: bridged_fee_address
         description: Bridged Token Fee Address
       - &source_chain_id
         name: source_chain_id

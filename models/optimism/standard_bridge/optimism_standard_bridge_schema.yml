@@ -48,26 +48,26 @@ models:
       - &bridged_token_amount
         name: bridged_token_amount
         description: Bridged Token Amount (Decimal adjusted)
-      - &bridged_token_fee_amount
-        name: bridged_token_fee_amount
+      - &bridged_fee_amount
+        name: bridged_fee_amount
         description: Bridged Token Fee Amount (Decimal adjusted)
       - &bridged_amount_usd
         name: bridged_amount_usd
         description: Bridged Token Amount USD
-      - &bridged_token_fee_amount_usd
-        name: bridged_token_fee_amount_usd
+      - &bridged_fee_amount_usd
+        name: bridged_fee_amount_usd
         description: Bridged Token Fee Amount USD
       - &bridged_token_amount_raw
         name: bridged_token_amount_raw
         description: Bridged Token Amount (Not Decimal adjusted)
-      - &bridged_token_fee_amount_raw
-        name: bridged_token_fee_amount_raw
+      - &bridged_fee_amount_raw
+        name: bridged_fee_amount_raw
         description: Bridged Token Fee Amount (Not Decimal adjusted)
       - &bridged_token_address
         name: bridged_token_address
         description: Bridged Token Address
-      - &bridged_token_fee_address
-        name: bridged_token_fee_address
+      - &bridged_fee_address
+        name: bridged_fee_address
         description: Bridged Token Fee Address
       - &block_number
         name: block_number

@@ -9,7 +9,7 @@ models:
     config:
       tags: ['chains','cross-chain']
     description: >
-        Tbale mapping chain IDs to names
+        Table mapping chain IDs to names
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
