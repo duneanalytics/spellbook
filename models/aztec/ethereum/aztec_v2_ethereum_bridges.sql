@@ -26,7 +26,7 @@ bridges_creation as (
         SELECT 
             bridgeAddress, 
             'Bridge' as contract_type, 
-            AVG(bridgeGasLimit) as blank -- to get unique bridges 
+            AVG(CAST(bridgeGasLimit AS BIGINT)) as blank -- to get unique bridges 
         FROM 
         {{source('aztec_v2_ethereum', 'RollupProcessor_evt_BridgeAdded')}}
         GROUP BY 1, 2 
