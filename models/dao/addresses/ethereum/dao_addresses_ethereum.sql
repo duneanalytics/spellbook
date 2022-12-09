@@ -23,6 +23,6 @@ mapping as (
 
 
 )
-
+ 
 SELECT * FROM mapping
 
