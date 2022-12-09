@@ -82,7 +82,7 @@ WITH events AS (
         {% if is_incremental() %}
         AND prices.minute >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    LEFT JOIN {{ source('bnb','transactions') }} bt ON bt.hash=events.tx_hash
+    INNER JOIN {{ source('bnb','transactions') }} bt ON bt.hash=events.tx_hash
     AND bt.block_time=events.block_time
         {% if is_incremental() %}
         AND bt.block_time >= date_trunc("day", now() - interval '1 week')
