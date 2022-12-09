@@ -30,4 +30,6 @@ FROM (VALUES
     ,("0x1bf7f994cf93c4eaab5f785d712668e2d6fff9d6", "Binance", "Binance 13")
     ,("0xb22ffd456ab4efc3863be8299f4a404d813b92be", "Binance", "Binance 14")
     ,("0xef7fb88f709ac6148c07d070bc71d252e8e13b92", "Binance", "Binance 15")
+    ,("0x98DB3a41bF8bF4DeD2C92A84ec0705689DdEEF8B", "Ramp", "Ramp UK")
+    ,("0x8a37F0290AE85D08522d2A605617e76128Fd0712", "Ramp", "Ramp US")
     ) AS x (address, cex_name, distinct_name)

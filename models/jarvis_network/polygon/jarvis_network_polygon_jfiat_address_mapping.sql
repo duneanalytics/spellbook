@@ -10,12 +10,12 @@
 
 SELECT 'polygon'                             AS blockchain,
         jfiat_symbol,
-        CAST(decimals AS numeric)            AS decimals,
+        CAST(decimals AS BIGINT)            AS decimals,
         LOWER(jfiat_token_address)           AS jfiat_token_address,
         LOWER(jfiat_liquidity_address)       AS jfiat_liquidity_address,
         LOWER(jfiat_collateral_pool_address) AS jfiat_collateral_pool_address,
         LOWER(jfiat_chainlink_address)       AS jfiat_chainlink_address,
-        CAST(contract_version AS numeric)    AS contract_version
+        CAST(contract_version AS BIGINT)    AS contract_version
 FROM (values
 ('jEUR',18,'0x4e3decbb3645551b8a19f0ea1678079fcb33fb4c','0x65a7b4ff684c2d08c115d55a4b089bf4e92f5003','0x65a7b4ff684c2d08c115d55a4b089bf4e92f5003','0x73366fe0aa0ded304479862808e02506fe556a98',2), 
 ('jGBP',18,'0x767058f11800fba6a682e73a6e79ec5eb74fac8c','0x36d6d1d6249fbc6ebd0fc28fd46c846fb69b9074','0x36d6d1d6249fbc6ebd0fc28fd46c846fb69b9074','0x099a2540848573e94fb1ca0fa420b00acbbc845a',2), 
