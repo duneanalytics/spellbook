@@ -331,7 +331,7 @@ WITH
             , block_date
             , block_time
             , block_number
-            , explode(token_id) as token_id --nft.trades prefers each token id be its own row
+            , explode(token_id) as raw_token_id --nft.trades prefers each token id be its own row
             , token_standard
             , number_of_items/number_of_items as number_of_items
             , trade_type
@@ -373,5 +373,6 @@ WITH
 --final SELECT CTE
 SELECT
     *
-    , 'sudoswap-' || tx_hash || '-' || nft_contract_address || token_id::string || '-' || seller || '-' || amount_original::string || 'Trade' AS unique_trade_id
+    , CAST(raw_token_id AS VARCHAR(100)) AS token_id
+    , 'sudoswap-' || tx_hash || '-' || nft_contract_address || raw_token_id::string || '-' || seller || '-' || amount_original::string || 'Trade' AS unique_trade_id
 FROM swaps_exploded
