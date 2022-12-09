@@ -27,7 +27,8 @@ WITH events AS (
         collection AS nft_contract_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
-        evt_block_number AS block_number
+        evt_block_number AS block_number,
+        evt_index
     FROM {{source('pancakeswap_v2_bnb','ERC721NFTMarketV1_evt_Trade')}}
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
