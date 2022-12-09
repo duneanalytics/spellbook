@@ -40,12 +40,6 @@ models:
       optimism:
         +schema: aave_optimism
         +materialized: view
-    liquidifty:
-      +schema: liquidifty
-      +materialized: view
-      liquidifty_bnb_events:
-        +schema: liquidifty_bnb_events
-        +materialized: view
     balancer:
       +schema: balancer
       +materialized: view
@@ -1004,12 +998,6 @@ seeds:
             swap_flag: boolean
             matcha_limit_order_flag: boolean
             volume_usd: double
-    
-
-  
-
-
-
     x2y2:
       ethereum:
         +enabled: true
