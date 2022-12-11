@@ -174,11 +174,11 @@ SELECT
   tx.from as tx_from,
   tx.to as tx_to,
   -- some complex price calculations, (t.amount_raw/t.price_correction) is the original base price for fees.
-  CAST((100 * platform_fee) AS DOUBLE) AS platform_fee_percentage,
+  CAST(round((100 * platform_fee),4) AS DOUBLE) AS platform_fee_percentage,
   platform_fee * (t.amount_raw/t.price_correction) AS platform_fee_amount_raw,
   platform_fee * (t.amount_raw/t.price_correction) / power(10,erc20.decimals) AS platform_fee_amount,
   platform_fee * (t.amount_raw/t.price_correction) / power(10,erc20.decimals) * p.price AS platform_fee_amount_usd,
-  CAST((100 * royalty_fee) AS DOUBLE) as royalty_fee_percentage,
+  CAST(round((100 * royalty_fee),4) AS DOUBLE) as royalty_fee_percentage,
   royalty_fee * (t.amount_raw/t.price_correction) AS royalty_fee_amount_raw,
   royalty_fee * (t.amount_raw/t.price_correction) / power(10,erc20.decimals) AS royalty_fee_amount,
   royalty_fee * (t.amount_raw/t.price_correction) / power(10,erc20.decimals) * p.price AS royalty_fee_amount_usd,
