@@ -8,9 +8,9 @@
 }}
 
 {% set curvefi_trade_models = [
-'curvefi_ethereum_trades'
-,'curvefi_optimism_trades'
-,'curvefi_avalanche_c_trades'
+ ref('curvefi_ethereum_trades')
+,ref('curvefi_optimism_trades')
+,ref('curvefi_avalanche_c_trades')
 ] %}
 
 
@@ -41,7 +41,7 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ ref(curvefi_model) }}
+    FROM {{ curvefi_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
