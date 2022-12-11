@@ -39,12 +39,12 @@ SELECT distinct 'ethereum' AS blockchain
 , CASE WHEN nft_mints.amount=1 THEN 'Single Item Mint'
     ELSE 'Bundle Mint'
     END AS trade_type
-, nft_mints.amount AS number_of_items
+, CAST(nft_mints.amount AS DECIMAL(38,0)) AS number_of_items
 , 'Mint' AS trade_category
 , 'Mint' AS evt_type
 , nft_mints.from AS seller
 , nft_mints.to AS buyer
-, COALESCE(SUM(et.value), SUM(erc20s.value), 0)*(nft_mints.amount/nft_count.nfts_minted_in_tx) AS amount_raw
+, CAST(COALESCE(SUM(et.value), SUM(erc20s.value), 0)*(nft_mints.amount/nft_count.nfts_minted_in_tx) AS DECIMAL(38,0)) AS amount_raw
 , COALESCE(SUM(et.value)/POWER(10, 18), SUM(erc20s.value)/POWER(10, pu_erc20s.decimals))*(nft_mints.amount/nft_count.nfts_minted_in_tx) AS amount_original
 , COALESCE(pu_eth.price*SUM(et.value)/POWER(10, 18), pu_erc20s.price*SUM(erc20s.value)/POWER(10, pu_erc20s.decimals))*(nft_mints.amount/nft_count.nfts_minted_in_tx) AS amount_usd
 , CASE WHEN et.success THEN 'ETH' ELSE pu_erc20s.symbol END AS currency_symbol
@@ -59,13 +59,13 @@ SELECT distinct 'ethereum' AS blockchain
 , 0 AS platform_fee_amount_raw
 , 0 AS platform_fee_amount
 , 0 AS platform_fee_amount_usd
-, 0 AS platform_fee_percentage
+, CAST(0 AS DOUBLE) AS platform_fee_percentage
 , '' AS royalty_fee_receive_address
 , 0 AS royalty_fee_currency_symbol
 , 0 AS royalty_fee_amount_raw
 , 0 AS royalty_fee_amount
 , 0 AS royalty_fee_amount_usd
-, 0 AS royalty_fee_percentage
+, CAST(0 AS DOUBLE) AS royalty_fee_percentage
 , 'ethereum' || '-' || COALESCE(ec.namespace, 'Unknown') || '-Mint-' || COALESCE(nft_mints.tx_hash, '-1') || '-' || COALESCE(nft_mints.to, '-1') || '-' ||  COALESCE(nft_mints.contract_address, '-1') || '-' || COALESCE(nft_mints.token_id, '-1') || '-' || COALESCE(erc20s.contract_address, '0x0000000000000000000000000000000000000000') || '-' || COALESCE(nft_mints.evt_index, '-1') AS unique_trade_id
 FROM {{ ref('nft_ethereum_transfers') }} nft_mints
 LEFT JOIN nfts_per_tx nft_count ON nft_count.tx_hash=nft_mints.tx_hash
