@@ -9,7 +9,7 @@
 }}
 
 {% set hop_flows_models = [
-        'hop_protocol_optimism_flows'
+        ref( 'hop_protocol_optimism_flows' )
 ] %}
 
 SELECT *
@@ -48,7 +48,7 @@ FROM
                 , h.evt_index
                 , h.trace_address
                 , h.tx_method_id
-        FROM {{ ref(hop_tf_model) }} h
+        FROM {{ hop_tf_model }} h
         LEFT JOIN
         {% if hop_tf_model == 'hop_protocol_optimism_flows' %}
                 {{ref('optimism_standard_bridge_flows')}} sb
