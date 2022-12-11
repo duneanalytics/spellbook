@@ -191,7 +191,7 @@ models:
     abi:
       +schema: abi
       +materialized: view
-      
+
     superrare:
       +schema: superrare
       +materialized: view
@@ -734,6 +734,8 @@ seeds:
             amount_original: double
             buyer: string
             seller: string
+            platform_fee_amount: double
+            royalty_fee_amount: double
       solana:
         +enabled: true
         +schema: test_data
