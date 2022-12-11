@@ -373,6 +373,7 @@
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 376, 1000000, 'Tide Predictor', 'LoVid', 'Curated', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-376')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 379, 1000000, 'ORI', 'James Merrill', 'Curated', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-379')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 383, 1000000, 'Pre-Process', 'Casey REAS', 'Curated', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-383')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 385, 1000000, 'Dipolar', 'Junia Farquhar', 'Curated', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-385')
 
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 375, 1000000, 'Wabi Sabi', 'Kazuhiro Tanimoto', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-375')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 377, 1000000, 'Ingress', 'Paweł Dudko', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-377')
@@ -382,9 +383,11 @@
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 382, 1000000, 'Metaphysics', 'Jinyao Lin', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-382')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 384, 1000000, 'VOXΞL', 'JEANVASCRIPT', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-384')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 386, 1000000, 'Ego Death', 'electralina', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-386')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 387, 1000000, 'Pointers', 'Steve Pikelny', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-387')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 388, 1000000, 'Your Story', 'encapsuled', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-388')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 389, 1000000, 'Miragem', 'Third Vision', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-389')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 390, 1000000, 'Imposter Syndrome', 'ippsketch', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-390')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 392, 1000000, 'Drive: A-Side', 'Ryan Bell', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-392')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 393, 1000000, 'Race Condition', 'Jonas Lund', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-393')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 394, 1000000, 'Volute', 'RVig', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-394')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 395, 1000000, 'Implications', 'ixnayokay', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-395')
@@ -392,7 +395,7 @@
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 397, 1000000, 'Through Curved Air', 'Jacob Gold', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-397')
 
         -- explorations
-        , ('0x942bc2d3e7a589fe5bd4a5c6ef9727dfd82f5c8a',0,1000000,'Friendship Bracelets','Alexis André','Explorations','N/A','0x942bc2d3e7a589fe5bd4a5c6ef9727dfd82f5c8a-0')
+        , ('0x942bc2d3e7a589fe5bd4a5c6ef9727dfd82f5c8a',0,1000000,'Friendship Bracelets','Alexis Andre','Explorations','N/A','0x942bc2d3e7a589fe5bd4a5c6ef9727dfd82f5c8a-0')
         , ('0x942bc2d3e7a589fe5bd4a5c6ef9727dfd82f5c8a',1,1000000,'Marfa Yucca','Daniel Calderon Arenas','Explorations','N/A','0x942bc2d3e7a589fe5bd4a5c6ef9727dfd82f5c8a-1')
 
         -- collaborations
