@@ -50,7 +50,7 @@ FROM
                 , h.tx_method_id
         FROM {{ hop_tf_model }} h
         LEFT JOIN
-        {% if hop_tf_model == 'hop_protocol_optimism_flows' %}
+        {% if hop_tf_model == ref('hop_protocol_optimism_flows') %}
                 {{ref('optimism_standard_bridge_flows')}} sb
         {% endif %}
         -- Add if statements for other chains here
