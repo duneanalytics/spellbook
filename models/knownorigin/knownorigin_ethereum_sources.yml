@@ -1,0 +1,13 @@
+version: 2
+
+sources: 
+  - name: knownorigin_ethereum
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: TokenMarketplaceV2_evt_TokenPurchased
+        loaded_at_field: evt_block_time
+      - name: TokenMarketplace_evt_BidAccepted
+        loaded_at_field: evt_block_time
+      - name: KnownOriginDigitalAssetV2_evt_Purchase
+        loaded_at_field: evt_block_time
