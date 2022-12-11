@@ -40,28 +40,28 @@ WITH wyvern_call_data as (
         ELSE 'Trade' END as evt_type,
       CASE
         when addrs[3] != '{{ZERO_ADDR}}'  -- SELL
-            then (case when (uints[0]+uints[1])/10000 < 0.025 -- we assume no marketplace fees then..
+            then (case when (uints[0]+uints[1])/1e6 < 0.025 -- we assume no marketplace fees then..
                 then 0.0
-                else 2.5 end)
+                else 0.025 end)
         when addrs[10] != '{{ZERO_ADDR}}'  -- BUY
             then (case when (addrs[9] != '{{ZERO_ADDR}}' --private listing
-                    OR (uints[9]+uints[10])/10000 < 0.025) -- we assume no marketplace fees then..
+                    OR (uints[9]+uints[10])/1e6 < 0.025) -- we assume no marketplace fees then..
                 then 0.0
-                else 2.5 end)
+                else 0.025 end)
       END as platform_fee,
       CASE
         when addrs[3] != '{{ZERO_ADDR}}'  -- SELL
-            then case when (uints[0]+uints[1])/10000 < 0.025 -- we assume no marketplace fees then..
-                then (uints[0]+uints[1])/10000
-                else (2.5-(uints[0]+uints[1])/10000) end
+            then case when (uints[0]+uints[1])/1e6 < 0.025 -- we assume no marketplace fees then..
+                then (uints[0]+uints[1])/1e6
+                else (0.025-(uints[0]+uints[1])/1e6) end
         when addrs[10] != '{{ZERO_ADDR}}'  -- BUY
             then case when (addrs[9] != '{{ZERO_ADDR}}' --private listing
-                    OR (uints[9]+uints[10])/10000 < 0.025) -- we assume no marketplace fees then..
-                then (uints[9]+uints[10])/10000
-                else (2.5-(uints[9]+uints[10])/10000) end
+                    OR (uints[9]+uints[10])/1e6 < 0.025) -- we assume no marketplace fees then..
+                then (uints[9]+uints[10])/1e6
+                else (0.025-(uints[9]+uints[10])/1e6) end
       END as royalty_fee,
       case when addrs[10] != '{{ZERO_ADDR}}' and addrs [6] = '{{ZERO_ADDR}}'
-        then 1 + uints[10]/10000       -- on ERC20 BUY: add sell side taker fee (this is not included in the price from the evt) https://etherscan.io/address/0x7be8076f4ea4a4ad08075c2508e481d6c946d12b#code#L838
+        then 1 + uints[10]/1e6      -- on ERC20 BUY: add sell side taker fee (this is not included in the price from the evt) https://etherscan.io/address/0x7be8076f4ea4a4ad08075c2508e481d6c946d12b#code#L838
         else 1 end as price_correction,
       call_trace_address,
       row_number() over (partition by call_block_number, call_tx_hash order by call_trace_address asc) as tx_call_order
