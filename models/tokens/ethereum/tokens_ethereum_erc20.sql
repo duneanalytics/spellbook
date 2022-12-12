@@ -6793,5 +6793,16 @@ FROM (VALUES
           ('0xd13cfd3133239a3c73a9e535a5c4dadee36b395c', 'VAI', 18),
           ('0xd7c9f0e536dc865ae858b0c0453fe76d13c3beac', 'XAI', 18),
           ('0xe22020f47b7378dfedcedd2c81d4137c22fe1152', 'MLP', 18),
-          ('0xeb813cccb65c338f6535d99146f280450e2a4d03', 'TSUBA', 9)
+          ('0xeb813cccb65c338f6535d99146f280450e2a4d03', 'TSUBA', 9),
+          ('0x2c69095d81305f1e3c6ed372336d407231624cea', 'WEMIX', 18),
+          ('0x3802c218221390025bceabbad5d8c59f40eb74b8', 'GETH', 18),
+          ('0x5e5a6618fd4bcf74a665aca1bda3ae76e0961244', 'TWTC', 9),
+          ('0x6d1fea476f177500d1972f08cf41fba6f0f2d547', 'EARTH', 18),
+          ('0x7476d8b314607990957dda4479acf44ffa552034', 'HEART', 18),
+          ('0x783c68814126b66b9242c4c6538ae47db5e33169', 'RODO', 2),
+          ('0x7c72f41342d485d59a890528880a210ee7bfbb73', 'JCOIN', 6),
+          ('0x8dcc22dcc33fa7fab495596f3310dc1b0fc78583', 'TFX', 6),
+          ('0x9310bbb650e1555605b671873a8688eb6cde44d3', 'BVB', 9),
+          ('0xa95c5ebb86e0de73b4fb8c47a45b792cfea28c23', 'SDL', 18),
+          ('0xbbe2f3bbb57851d230bb35d609b44a18a16b63e0', '$OBI', 18)
      ) AS temp_table (contract_address, symbol, decimals)
