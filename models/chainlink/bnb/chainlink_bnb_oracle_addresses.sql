@@ -10,7 +10,7 @@
 
 SELECT "bnb"                    AS blockchain,
        feed_name,
-       CAST(decimals AS numeric)    AS decimals,
+       CAST(decimals AS BIGINT)    AS decimals,
        LOWER(proxy_address)         AS proxy_address,
        LOWER(aggregator_address)    AS aggregator_address
 FROM (values

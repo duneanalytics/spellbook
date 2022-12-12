@@ -2,7 +2,7 @@
         alias ='aggregators_markers',
 		materialized = 'view',
         unique_key='hash_marker',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
+        post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                     "sector",
                                     "nft",
                                     \'["hildobby"]\') }}')
