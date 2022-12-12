@@ -11,7 +11,9 @@
                                     \'["metacrypto", "jacektrocinski"]\') }}'
     ) 
 }}
-
+{% set bind_start_date = '2020-02-28' %}
+{% set rebind_start_date = '2020-04-01' %}
+{% set unbind_start_date = '2020-04-05' %}
 WITH events AS (
     -- Binds
     SELECT
