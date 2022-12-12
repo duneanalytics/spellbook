@@ -289,18 +289,6 @@ WITH rows AS (
             where call_success
                 and call_block_time >= start_ts
                 and call_block_time < end_ts
-            union all
-            select "output_returnAmount", "amount", "srcToken", numeric2bytea(pools) as pools, "call_tx_hash", "call_trace_address", "call_block_time", "contract_address"
-            from oneinch."AggregationRouterV5_call_unoswapToWithPermit"
-            where call_success
-                and call_block_time >= start_ts
-                and call_block_time < end_ts
-            union all
-            select "output_returnAmount", "amount", "srcToken", numeric2bytea(pools) as pools, "call_tx_hash", "call_trace_address", "call_block_time", "contract_address"
-            from oneinch."AggregationRouterV5_call_unoswap"
-            where call_success
-                and call_block_time >= start_ts
-                and call_block_time < end_ts
         ) us
         left join ethereum.traces t on us.call_tx_hash = t.tx_hash and us.call_trace_address = t.trace_address
             and t.block_time >= start_ts
@@ -315,6 +303,70 @@ WITH rows AS (
                 )
             and ll.block_time >= start_ts
             and ll.block_time < end_ts
+
+        UNION ALL
+
+        -- 1inch Unoswap for V5 Router
+        SELECT
+            call_block_time as block_time,
+            '1inch' AS project,
+            'UNI v2' AS version,
+            'Aggregator' AS category,
+            t."from" AS trader_a,
+            NULL::bytea AS trader_b,
+            "output_returnAmount" AS token_a_amount_raw,
+            "amount" AS token_b_amount_raw,
+            NULL::numeric AS usd_amount,
+            (CASE WHEN ll.to = '\xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AND substring("pools"[ARRAY_LENGTH("pools", 1)] from 1 for 1) IN ('\xc0', '\x40') THEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' ELSE ll.to END) AS token_a_address,
+            (CASE WHEN "srcToken" = '\x0000000000000000000000000000000000000000' THEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' ELSE "srcToken" END) AS token_b_address,
+            us.contract_address AS exchange_contract_address,
+            call_tx_hash,
+            call_trace_address AS trace_address,
+            NULL::integer AS evt_index
+        FROM (
+            select
+                "output_returnAmount"
+                , "amount"
+                , "srcToken",
+                CASE WHEN ((pools[array_length(pools, 1)] / 2^252)::int & 2 <> 0) THEN '\xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+                ELSE
+                    (
+                        select tr2.to
+                        from ethereum.traces tr2
+                        where call_type = 'call'
+                        and tr2.block_time >= start_ts
+                        and tr2.block_time < end_ts
+                        and tr2.tx_hash = call_tx_hash
+                        and substring(tr2.input from 1 for 4) = '\xa9059cbb'
+                        and COALESCE(call_trace_address, array[]::int[]) = tr2.trace_address[:COALESCE(ARRAY_LENGTH(call_trace_address, 1), 0)]
+                        and COALESCE(ARRAY_LENGTH(call_trace_address, 1), 0) + 2 = COALESCE(ARRAY_LENGTH(tr2.trace_address, 1), 0)
+                        and tr2.from <> contract_address
+                        order by COALESCE(trace_address, array[]::int[]) desc
+                        LIMIT 1
+                    )
+                END as "dstToken"
+                ,"pools", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address", t."from" as trader_a
+            from (
+                select "output_returnAmount", "amount", "srcToken", "pools", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address"
+                from oneinch."AggregationRouterV5_call_unoswap"
+                where call_success
+                    and call_block_time >= start_ts
+                    and call_block_time < end_ts
+
+                UNION ALL
+
+                select "output_returnAmount", "amount", "srcToken", "pools", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address"
+                from oneinch."AggregationRouterV5_call_unoswap_withPermit"
+                where call_success
+                    and call_block_time >= start_ts
+                    and call_block_time < end_ts
+            ) sw
+            left join ethereum.traces t
+            on t.tx_hash = sw.call_tx_hash
+            and t.trace_address = sw.call_trace_address
+            and t.block_time >= start_ts
+            and t.block_time < end_ts
+        ) us
 
         UNION ALL
 
@@ -379,9 +431,9 @@ WITH rows AS (
                 select "output_returnAmount", "amount", "pools", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address" from oneinch."AggregationRouterV5_call_uniswapV3SwapTo" where call_success and call_block_time >= start_ts and call_block_time < end_ts union all
                 select "output_returnAmount", "amount", "pools", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address" from oneinch."AggregationRouterV5_call_uniswapV3SwapToWithPermit" where call_success and call_block_time >= start_ts and call_block_time < end_ts
             ) sw
-            left join ethereum.traces t
-            on t.tx_hash = sw.call_tx_hash
-            and t.trace_address = sw.call_trace_address
+                left join ethereum.traces t
+                on t.tx_hash = sw.call_tx_hash
+                and t.trace_address = sw.call_trace_address
             and t.block_time >= start_ts
             and t.block_time < end_ts
         ) us
