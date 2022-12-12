@@ -47,8 +47,8 @@ SELECT
             t.buyer AS taker,
             '' AS maker,
             -- when amount0 is negative it means taker is buying token0 from the pool
-            `tokens_bought` AS token_bought_amount_raw,
-            `tokens_sold` AS token_sold_amount_raw,
+            tokens_bought AS token_bought_amount_raw,
+            tokens_sold AS token_sold_amount_raw,
             t.contract_address as project_contract_address,
             t.evt_tx_hash AS tx_hash,
             '' AS trace_address,
@@ -70,8 +70,8 @@ SELECT
             t.buyer AS taker,
             '' AS maker,
             -- when amount0 is negative it means taker is buying token0 from the pool
-            `tokens_bought` AS token_bought_amount_raw,
-            `tokens_sold` AS token_sold_amount_raw,
+            tokens_bought AS token_bought_amount_raw,
+            tokens_sold AS token_sold_amount_raw,
             t.contract_address as project_contract_address,
             t.evt_tx_hash AS tx_hash,
             '' AS trace_address,
@@ -155,12 +155,12 @@ SELECT DISTINCT
     ) as amount_usd,
     dexs.token_bought_address,
     dexs.token_sold_address,
-    coalesce(dexs.taker, tx.`from`) as taker, -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
+    coalesce(dexs.taker, tx.from) as taker, -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
     dexs.maker,
     dexs.project_contract_address,
     dexs.tx_hash,
-    tx.`from` as tx_from,
-    tx.`to` as tx_to,
+    tx.from as tx_from,
+    tx.to as tx_to,
     dexs.trace_address,
     dexs.evt_index
 FROM dexs

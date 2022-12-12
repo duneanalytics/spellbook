@@ -1,6 +1,7 @@
 {{ config(
     alias = 'pools',
     materialized = 'incremental',
+    file_format = 'delta',
     incremental_strategy = 'merge',
     partition_by=['pool'],
     unique_key = ['version', 'tokenid', 'token', 'pool'],
@@ -20,20 +21,20 @@
 WITH base_pools AS (
     --Need all base pools because the meta pools reference them
     SELECT
-        `arg0` AS tokenid
+        arg0 AS tokenid
         , output_0 AS token
         , contract_address AS pool
     FROM {{ source('curvefi_optimism', 'StableSwap_call_coins') }}
     WHERE call_success
-    GROUP BY --1,2,3 --unique
-        `arg0`, output_0, contract_address --unique
+    GROUP BY
+        arg0, output_0, contract_address --unique
 )
 , meta_pools AS (
     -- Meta Pools are "Base Pools" + 1 extra token (i.e. sUSD + 3pool = sUSD Metapool)
     SELECT
         tokenid
         , token
-        , et.`contract_address` AS pool
+        , et.contract_address AS pool
     FROM
     (
         SELECT
@@ -47,7 +48,7 @@ WITH base_pools AS (
         {% if is_incremental() %}
         WHERE mp.evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
-        GROUP BY --1,2,3,4 --unique
+        GROUP BY
             mp.evt_tx_hash, (bp.tokenid + 1), bp.token, mp.evt_block_number --unique
     
         UNION ALL
@@ -55,7 +56,7 @@ WITH base_pools AS (
         SELECT
             mp.evt_tx_hash
             , 0 AS tokenid
-            , mp.`coin` AS token
+            , mp.coin AS token
             , mp.evt_block_number
         FROM {{ source('curvefi_optimism', 'PoolFactory_evt_MetaPoolDeployed') }} mp
         INNER JOIN base_pools bp
@@ -63,14 +64,14 @@ WITH base_pools AS (
         {% if is_incremental() %}
         WHERE mp.evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
-        GROUP BY --1 ,3,4 --unique (Will throw an error if we group by 2 - since it's = 0)
-            mp.evt_tx_hash, mp.`coin`, mp.evt_block_number --unique
+        GROUP BY
+            mp.evt_tx_hash, mp.coin, mp.evt_block_number --unique
     ) mps
     -- the exchange address appears as an erc20 minted to itself (not in the deploymeny event)
     INNER JOIN {{ source('erc20_optimism','evt_transfer') }} et
         ON et.evt_tx_hash = mps.evt_tx_hash
-        AND et.`from` = '0x0000000000000000000000000000000000000000'
-        AND et.`to` = et.`contract_address`
+        AND et.from = '0x0000000000000000000000000000000000000000'
+        AND et.to = et.contract_address
         AND et.evt_block_number = mps.evt_block_number
         {% if not is_incremental() %}
         AND et.evt_block_time >= '{{project_start_date}}'
@@ -78,8 +79,8 @@ WITH base_pools AS (
         {% if is_incremental() %}
         AND et.evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
-    GROUP BY --1,2,3
-        tokenid, token, et.`contract_address` --unique
+    GROUP BY
+        tokenid, token, et.contract_address --unique
 
 )
 , basic_pools AS (
@@ -98,7 +99,7 @@ WITH base_pools AS (
         AND call_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
     ) a
-    GROUP BY --1,2,3
+    GROUP BY
         pos, col, pool --unique
 )
     -- handle for wsteth & pools that we're not deployed via the factory.. weird
@@ -124,7 +125,7 @@ WITH base_pools AS (
 , agg_pools AS (
     SELECT
         version
-        , int(tokenid) AS tokenid
+        , cast(tokenid as int) AS tokenid
         , token
         , pool 
     FROM
@@ -150,8 +151,8 @@ WITH base_pools AS (
             , pool
         FROM basic_pools
     ) a
-    GROUP BY --1,2,3,4 --unique
-        version, int(tokenid), token, pool --unique
+    GROUP BY
+        version, cast(tokenid as int), token, pool --unique
 )
 SELECT version, CAST(tokenid AS string) AS tokenid, token, pool FROM agg_pools
     UNION ALL
