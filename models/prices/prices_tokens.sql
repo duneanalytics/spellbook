@@ -7,7 +7,7 @@
         post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon"]\',
                                     "sector",
                                     "prices",
-                                    \'["aalan3", "jeff-dude"]\') }}'
+                                    \'["aalan3", "jeff-dude", "umer_h_adil"]\') }}'
         )
 }}
 SELECT token_id, blockchain, symbol, LOWER(contract_address) as contract_address, decimals from (
@@ -270,6 +270,9 @@ VALUES
     ("mnft-marvelous-nfts", "bnb", "MNFT", "0x33be7644c0e489b3a0c639d103392d4f3e338158", 18),
     ("bets-betswirl", "bnb", "BETS", "0x3e0a7c7db7bb21bda290a80c9811de6d47781671", 18),
     ("floki-floki-inu", "bnb", "FLOKI", "0xfb5b838b6cfeedc2873ab27866079ac55363d37e", 18),
+    ("wom-wombat-exchange", "bnb", "WOM", "0xad6742a35fb341a9cc6ad674738dd8da98b94fb1", 18),
+    ("hay-hay", "bnb", "HAY", "0x0782b6d8c4551b9760e74c0545a9bcd90bdc41e5", 18),
+    ("bnbx-stader-bnbx", "bnb", "BNBx", "0x1bdd3cf7f79cfb8edbb955f20ad99211551ba275", 18),
 
     ("0xbtc-0xbitcoin", "ethereum", "0xBTC", "0xb6ed7644c69416d67b522e20bc294a9a9b405b31", 8),
     ("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
@@ -1566,10 +1569,22 @@ VALUES
     ("chf-swiss-franc-token", "ethereum", "ibCHF", "0x1cc481ce2bd2ec7bf67d1be64d4878b16078f309", 18),
     ("stmatic-lido-staked-matic", "ethereum", "STMATIC", "0x9ee91F9f426fA633d227f7a9b000E28b9dfd8599", 18),
 
+    -- Query for Popular Traded Tokens on Gnosis Chain without prices: https://dune.com/queries/1719783
     ("dai-dai", "gnosis", "WXDAI", "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18),
     ("usdc-usd-coin", "gnosis", "USDC", "0xddafbb505ad214d7b80b1f830fccc89b60fb7a83", 6),
     ("usdt-tether", "gnosis", "USDT", "0x4ecaba5870353805a9f068101a40e0f32ed605c6", 6),
     ("wbtc-wrapped-bitcoin", "gnosis", "WBTC", "0x8e5bbbb09ed1ebde8674cda39a0c169401db4252", 8),
+    ("weth-weth", "gnosis", "WETH", "0x6a023ccd1ff6f2045c3309768ead9e68f978f6e1", 18),
+    ("gno-gnosis", "gnosis", "GNO", "0x9c58bacc331c9aa871afd802db6379a98e80cedb", 18),
+    ("cow-cow-protocol-token", "gnosis", "COW", "0x177127622c4a00f3d409b75571e12cb3c8973d3c", 18),
+    ("matic-polygon", "gnosis", "MATIC", "0x7122d7661c4564b7c6cd4878b06766489a6028a2", 18),
+    ("1inch-1inch", "gnosis", "1INCH", "0x7f7440c5098462f833e123b44b8a03e1d9785bab", 18),
+    ("dai-dai", "gnosis", "DAI", "0x44fa8e6f47987339850636f88629646662444217", 18),
+    ("busd-binance-usd", "gnosis", "BUSD", "0xdd96b45877d0e8361a4ddb732da741e97f3191ff", 18),
+    ("crv-curve-dao-token", "gnosis", "CRV", "0x712b3d230f3c1c19db860d80619288b1f0bdd0bd", 18),
+    ("link-chainlink", "gnosis", "LINK", "0xe2e73a1c69ecf83f464efce6a5be353a37ca09b2", 18),
+    ("sushi-sushi", "gnosis", "SUSHI", "0x2995d1317dcd4f0ab89f4ae60f3f020a4f17c7ce", 18),
+
     --tokens not yet supported or are not active on coinpaprika are commented out
     ("eth-ethereum", "optimism", "ETH", "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", 18),
     ("eth-ethereum", "optimism","ETH", "0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000",18),
@@ -1691,5 +1706,8 @@ VALUES
     ("sol-solana", "solana", "SOL", "So11111111111111111111111111111111111111112", 9),
     ("ust-terrausd", "solana", "UST", "9vMJfxuKxXBoEa7rM12mYLMwTacLMLDJqHozw96WQL8i", 6),
     ("usdc-usd-coin", "solana", "USDC", "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", 6),
-    ("usdt-tether", "solana", "USDT", "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", 6)
+    ("usdt-tether", "solana", "USDT", "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", 6),
+    ("drip-drip-network", "bnb", "DRIP", "0x20f663CEa80FaCE82ACDFA3aAE6862d246cE0333", 18),
+    ("fur-furio", "bnb", "$FUR", "0x48378891d6E459ca9a56B88b406E8F4eAB2e39bF", 18),
+    ("pstn-piston", "bnb", "PSTN", "0xBfACD29427fF376FF3BC22dfFB29866277cA5Fb4", 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

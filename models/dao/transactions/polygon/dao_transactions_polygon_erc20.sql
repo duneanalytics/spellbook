@@ -33,7 +33,7 @@ transactions as (
             'tx_in' as tx_type,
             evt_index as tx_index,
             from as address_interacted_with,
-            array('') as trace_address
+            array(CAST(NULL AS BIGINT)) as trace_address
         FROM 
         {{ source('erc20_polygon', 'evt_transfer') }}
         {% if not is_incremental() %}
@@ -55,7 +55,7 @@ transactions as (
             'tx_out' as tx_type, 
             evt_index as tx_index, 
             to as address_interacted_with,
-            array('') as trace_address
+            array(CAST(NULL AS BIGINT)) as trace_address
         FROM 
         {{ source('erc20_polygon', 'evt_transfer') }}
         {% if not is_incremental() %}
@@ -77,7 +77,7 @@ SELECT
     t.tx_type,
     t.token as asset_contract_address, 
     COALESCE(er.symbol, t.token) as asset,
-    t.value as raw_value, 
+    CAST(t.value AS DECIMAL(38,0)) as raw_value, 
     t.value/POW(10, COALESCE(er.decimals, 18)) as value, 
     t.value/POW(10, COALESCE(er.decimals, 18)) * p.price as usd_value, 
     t.tx_hash, 

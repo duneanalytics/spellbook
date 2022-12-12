@@ -2,7 +2,7 @@
     config(
         schema = 'balancer_v2_ethereum',
         alias='bpt_prices',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
+        post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                     "project",
                                     "balancer",
                                     \'["victorstefenon"]\') }}'

@@ -113,13 +113,13 @@ select  "ethereum" as blockchain
         , a.sale_price * p.price as amount_usd
         , "erc20" as token_standard
         , '' as trade_type 
-        , 1 as number_of_items
+        , CAST(1 AS DECIMAL(38,0)) as number_of_items
         , a.event_type as trade_category
         , from_address as seller 
         , to_address as buyer 
         , "Trade" as evt_type
         , sale_price as amount_original
-        , sale_price * 1e18 as amount_raw
+        , CAST((sale_price * 1e18) AS DECIMAL(38,0)) as amount_raw
         , "ETH" as currency_symbol
         , "0x0000000000000000000000000000000000000000" as currency_contract
         , "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb" as nft_contract_address
