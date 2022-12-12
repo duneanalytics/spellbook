@@ -680,8 +680,12 @@ models:
       +schema: zeroex
       +materialized: view
       ethereum:
-        +schema: zeroex_ethereum
-        +materialized: view
+        erc20:
+          +schema: zeroex_ethereum_erc20
+          +materialized: view
+        nft:
+          +schema: zeroex_ethereum_nft
+          +materialized: view
 
     wombat:
       +schema: wombat
