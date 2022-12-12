@@ -5520,4 +5520,7 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0x65d83463fc023bffbd8ac9a1a2e1037f4bbdb399', 'dexSHARE-BNB', 18)
 ,('0x01b279a06f5f26bd3f469a3e730097184973fc8a', 'dexIRA-BNB', 18)
 ,('0x05134427ca04fe0712b29fb50c4d573f63e5cb22', 'vBABY', 18)
+,('0xad6742a35fb341a9cc6ad674738dd8da98b94fb1', 'WOM', 18)
+,('0x0782b6d8c4551b9760e74c0545a9bcd90bdc41e5', 'HAY', 18)
+,('0x1bdd3cf7f79cfb8edbb955f20ad99211551ba275', 'BNBx', 18)
 ) AS temp_table (contract_address, symbol, decimals)
