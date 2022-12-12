@@ -1,7 +1,7 @@
 {{ config(
         schema='prices',
         alias ='usd_forward_fill',
-        post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon"]\',
+        post_hook='{{ expose_spells_hide_trino(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon"]\',
                                     "sector",
                                     "prices",
                                     \'["0xRob"]\') }}'
