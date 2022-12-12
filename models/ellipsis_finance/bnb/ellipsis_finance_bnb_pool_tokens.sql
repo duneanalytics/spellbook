@@ -1,4 +1,12 @@
-{{config(alias='pool_tokens')}}
+{{ config(
+    alias = 'pool_tokens',
+    partition_by = ['pool'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['pool', 'token_id']
+    )
+}}
 
 WITH 
 
