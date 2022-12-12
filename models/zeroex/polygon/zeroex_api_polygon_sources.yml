@@ -33,4 +33,3 @@ sources:
 
     tables:
       - name: factory_polygon_call_createPool
-      - name: UniswapV3Pool_evt_Swap
