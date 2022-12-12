@@ -194,7 +194,7 @@ BridgeFill AS (
         {% if not is_incremental() %}
         AND block_time >= '{{zeroex_v4_start_date}}'
         {% endif %}
-),*/
+),
 NewBridgeFill AS (
     SELECT 
             logs.tx_hash,
@@ -282,7 +282,7 @@ direct_uniswapv3 AS (
         AND swap.evt_block_time >= '{{zeroex_v4_start_date}}'
         {% endif %}
 
-), */
+), 
 all_tx AS (
     
     SELECT *
