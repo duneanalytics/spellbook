@@ -44,7 +44,7 @@ WITH bridge_protocols AS (
             , fee_amount_usd
             , fee_amount_raw
             , token_address
-            , token_fee_address
+            , fee_address
             , source_chain_id
             , destination_chain_id
             , cid_source.chain_name AS source_chain_name
