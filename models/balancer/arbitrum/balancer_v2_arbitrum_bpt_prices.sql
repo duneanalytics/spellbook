@@ -2,7 +2,7 @@
     config(
         schema = 'balancer_v2_arbitrum',
         alias='bpt_prices',
-        post_hook='{{ expose_spells(\'["arbitrum"]\',
+        post_hook='{{ expose_spells_hide_trino(\'["arbitrum"]\',
                                     "project",
                                     "balancer",
                                     \'["victorstefenon"]\') }}'
