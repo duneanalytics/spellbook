@@ -14,7 +14,7 @@ with
         where blockchain = 'ethereum'
         and token_bought_address in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})
         and token_sold_address in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})
-        UNION
+        UNION ALL
         select distinct tx_hash
         from {{ ref('dex_trades') }}
         where blockchain = 'ethereum'
