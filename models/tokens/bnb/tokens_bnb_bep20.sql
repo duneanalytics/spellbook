@@ -270,7 +270,7 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0xb6c53431608e626ac81a9776ac3e999c5556717c', 'TLOS', 18)
 ,('0xeca41281c24451168a37211f0bc2b8645af45092', 'TPT', 4)
 ,('0x7af173f350d916358af3e218bdf2178494beb748', 'TRADE', 18)
-,('0x85eac5ac2f758618dfa09bdbe0cf174e7d574d5b', 'TRX', 18)
+,('0xce7de646e7208a4ef112cb6ed5038fa6cc6b12e3', 'TRX', 18)
 ,('0x14016e85a25aeb13065688cafb43044c2ef86784', 'TUSD', 18)
 ,('0x4b0f1812e5df2a09796481ff14017e6005508003', 'TWT', 18)
 ,('0x1ffd0b47127fdd4097e54521c9e2c7f0d66aafc5', 'TXL', 18)
