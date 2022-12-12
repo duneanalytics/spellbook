@@ -104,7 +104,6 @@ FROM (
     , CASE
             WHEN arb.transferId IS NOT NULL THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'arbitrum')
             WHEN poly.transferId IS NOT NULL THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'polygon')
-            WHEN poly2.transferId IS NOT NULL THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'polygon')
             WHEN gno.transferId IS NOT NULL THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'gnosis')
         ELSE NULL
         END
