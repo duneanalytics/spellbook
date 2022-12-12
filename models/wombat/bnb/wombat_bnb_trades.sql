@@ -14,6 +14,30 @@
 
 {% set project_start_date = '2022-04-18' %}
 
+with wombat_swaps_all_pools as (
+    -- main pool
+    select toAmount, fromAmount, toToken, fromToken, evt_block_time, evt_tx_hash, evt_index, to, contract_address
+    from {{ source('wombat_bnb', 'Pool_evt_Swap') }}
+    union all
+    -- side pool
+    select toAmount, fromAmount, toToken, fromToken, evt_block_time, evt_tx_hash, evt_index, to, contract_address
+    from {{ source('wombat_bnb', 'HighCovRatioFeePool_evt_Swap') }}
+    union all
+    -- bnb pool
+    select toAmount, fromAmount, toToken, fromToken, evt_block_time, evt_tx_hash, evt_index, to, contract_address
+    from {{ source('wombat_bnb', 'DynamicPool_evt_Swap') }}
+    union all
+    -- mwom pool
+    select toAmount, fromAmount, toToken, fromToken, evt_block_time, evt_tx_hash, evt_index, to, contract_address
+    from {{ source('wombat_bnb', 'mWOM_Pool_evt_Swap') }}
+    union all
+    -- qwom pool
+    select toAmount, fromAmount, toToken, fromToken, evt_block_time, evt_tx_hash, evt_index, to, contract_address
+    from {{ source('wombat_bnb', 'qWOM_WOMPool_evt_Swap') }}
+    union all
+    -- wmx pool
+    select toAmount, fromAmount, toToken, fromToken, evt_block_time, evt_tx_hash, evt_index, to, contract_address
+    from {{ source('wombat_bnb', 'WMX_WOM_Pool_evt_Swap') }})
 select
 	'bnb' as blockchain
 	, 'wombat' as project
@@ -45,7 +69,7 @@ select
 	, '' as trace_address
 	, s.evt_index as evt_index
 from 
-    {{ source('wombat_bnb', 'Pool_evt_Swap') }} s
+    wombat_swaps_all_pools s
 inner join {{ source('bnb', 'transactions') }} tx
     on tx.hash = s.evt_tx_hash
     {% if not is_incremental() %}
