@@ -20,7 +20,6 @@ models:
         name: minute
         description: "UTC event block time truncated to the minute"
         tests:
-          - unique
           - not_null
       - &block_date
         name: block_date
