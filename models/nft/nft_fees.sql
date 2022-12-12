@@ -1,6 +1,6 @@
 {{ config(
         alias ='fees',
-        post_hook='{{ expose_spells(\'["ethereum","solana"]\',
+        post_hook='{{ expose_spells_hide_trino(\'["ethereum","solana"]\',
                                     "sector",
                                     "nft",
                                     \'["soispoke"]\') }}')
