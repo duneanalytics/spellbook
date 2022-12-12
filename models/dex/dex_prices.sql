@@ -16,9 +16,9 @@ WITH
 
 dex_trades as (
     SELECT 
-        token_bought_address as contract_address, 
-        COALESCE(amount_usd/token_bought_amount, amount_usd/(token_bought_amount_raw/POW(10, er.decimals))) as price, 
-        block_time, 
+        d.token_bought_address as contract_address, 
+        COALESCE(d.amount_usd/d.token_bought_amount, d.amount_usd/(d.token_bought_amount_raw/POW(10, er.decimals))) as price, 
+        d.block_time, 
         d.blockchain
     FROM 
     {{ ref('dex_trades') }} d 
@@ -26,8 +26,8 @@ dex_trades as (
     {{ ref('tokens_erc20') }} er 
         ON d.token_bought_address = er.contract_address
         AND d.blockchain = er.blockchain
-        AND amount_usd > 0 
-        AND token_bought_amount_raw > 0 
+        AND d.amount_usd > 0 
+        AND d.token_bought_amount_raw > 0 
         {% if is_incremental() %}
         AND d.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
@@ -35,9 +35,9 @@ dex_trades as (
     UNION ALL
 
     SELECT 
-        token_sold_address as contract_address, 
-        COALESCE(amount_usd/token_sold_amount, amount_usd/(token_sold_amount_raw/POW(10, er.decimals))) as price, 
-        block_time, 
+        d.token_sold_address as contract_address, 
+        COALESCE(d.amount_usd/d.token_sold_amount, d.amount_usd/(d.token_sold_amount_raw/POW(10, er.decimals))) as price, 
+        d.block_time, 
         d.blockchain
     FROM 
     {{ ref('dex_trades') }} d 
@@ -45,8 +45,8 @@ dex_trades as (
     {{ ref('tokens_erc20') }} er 
         ON d.token_sold_address = er.contract_address
         AND d.blockchain = er.blockchain
-        AND amount_usd > 0 
-        AND token_bought_amount_raw > 0 
+        AND d.amount_usd > 0 
+        AND d.token_bought_amount_raw > 0 
         {% if is_incremental() %}
         AND d.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
