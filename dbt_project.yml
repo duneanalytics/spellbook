@@ -75,10 +75,6 @@ models:
         +schema: dex_aggregator
         +materialized: view
 
-    bridge:
-      +schema: bridge
-      +materialized: view
-
     nft:
       +schema: nft
       +materialized: view
