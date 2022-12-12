@@ -1,11 +1,7 @@
 {{
   config(
         schema = 'chain_info',
-        alias='chain_ids',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "chain_ids",
-                                    \'["msilb7"]\') }}'
+        alias='chain_ids'
   )
 }}
 

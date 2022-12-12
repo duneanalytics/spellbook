@@ -105,27 +105,7 @@ sources:
           - *chainId_dest
           - *recipient
   
-  - name: hop_polygon
-    description: "Polygon decoded tables related to Hop Protocol contracts"
-    freshness:
-      warn_after: { count: 12, period: hour }
-    tables:
-      - name: L2_PolygonBridge_evt_TransferSent
-        loaded_at_field: evt_block_time
-        description: "Event logs for bridge transfers away from Polygon"
-        columns:
-          - *contract_address
-          - *evt_block_number
-          - *evt_block_time
-          - *evt_index
-          - *evt_tx_hash
-          - *amount
-          - *bonderFee
-          - *transferId
-          - *chainId_dest
-          - *recipient
-  
-  - name: hop_gnosis
+  - name: hop_protocol_gnosis
     description: "Gnosis decoded tables related to Hop Protocol contracts"
     freshness:
       warn_after: { count: 12, period: hour }

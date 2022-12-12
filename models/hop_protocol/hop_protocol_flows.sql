@@ -9,7 +9,7 @@
 }}
 
 {% set hop_flows_models = [
-        'hop_protocol_optimism_flows'
+        ref( 'hop_protocol_optimism_flows' )
 ] %}
 
 SELECT *
@@ -30,11 +30,11 @@ FROM
                 , h.token_amount
                 , h.token_amount_usd
                 , h.token_amount_raw
-                , h.token_fee_amount
-                , h.token_fee_amount_usd
-                , h.token_fee_amount_raw
+                , h.fee_amount
+                , h.fee_amount_usd
+                , h.fee_amount_raw
                 , h.token_address
-                , h.token_fee_address
+                , h.fee_address
                 , h.source_chain_id
                 , h.destination_chain_id
                 , h.source_chain_name
@@ -48,9 +48,9 @@ FROM
                 , h.evt_index
                 , h.trace_address
                 , h.tx_method_id
-        FROM {{ ref(hop_tf_model) }} h
+        FROM {{ hop_tf_model }} h
         LEFT JOIN
-        {% if hop_tf_model == 'hop_protocol_optimism_flows' %}
+        {% if hop_tf_model == ref('hop_protocol_optimism_flows') %}
                 {{ref('optimism_standard_bridge_flows')}} sb
         {% endif %}
         -- Add if statements for other chains here

@@ -127,11 +127,11 @@ SELECT
 , bridged_token_amount_raw / POWER(10,erc.decimals) AS token_amount
 , p.price*( bridged_token_amount_raw / POWER(10,erc.decimals) ) AS token_amount_usd
 , bridged_token_amount_raw as token_amount_raw
-, 0 AS token_fee_amount
-, 0 AS token_fee_amount_usd
-, 0 AS token_fee_amount_raw
+, 0 AS fee_amount
+, 0 AS fee_amount_usd
+, 0 AS fee_amount_raw
 , bridged_token_address as token_address
-, '' AS token_fee_address
+, '' AS fee_address
 , source_chain_id
 , destination_chain_id
 , cid_source.chain_name AS source_chain_name

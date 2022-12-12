@@ -128,8 +128,8 @@ models:
         name: platform_fee_amount_usd
         description:  "Platform fee amount in USD"
       - &pool_fee_amount_usd
-          name: pool_fee_amount_usd
-          description: "pool owner fee amount in USD"
+        name: pool_fee_amount_usd
+        description: "pool owner fee amount in USD"
       - &tx_from
         name: tx_from
         description:  "Address that initiated the transaction"
@@ -139,6 +139,8 @@ models:
       - &unique_trade_id
         name: unique_trade_id
         description:  "Unique trade ID"
+        tests:
+          - unique
 
   - name: sudoswap_ethereum_trades
     meta:

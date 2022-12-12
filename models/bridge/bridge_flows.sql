@@ -9,11 +9,11 @@
 }}
 
 {% set bridge_protocol_flows_models = [
-'hop_protocol_flows'
+    ref( 'hop_protocol_flows' )
 ] %}
 
 {% set native_bridge_flows_models = [
-'optimism_standard_bridge_flows'
+    ref( 'optimism_standard_bridge_flows' )
 ] %}
 
 WITH bridge_protocols AS (
@@ -40,11 +40,11 @@ WITH bridge_protocols AS (
             , token_amount
             , token_amount_usd
             , token_amount_raw
-            , token_fee_amount
-            , token_fee_amount_usd
-            , token_fee_amount_raw
+            , fee_amount
+            , fee_amount_usd
+            , fee_amount_raw
             , token_address
-            , token_fee_address
+            , fee_address
             , source_chain_id
             , destination_chain_id
             , cid_source.chain_name AS source_chain_name
@@ -56,7 +56,7 @@ WITH bridge_protocols AS (
             , evt_index
             , trace_address
             , tx_method_id
-        FROM {{ ref(bridge_protocol_model) }} bmod
+        FROM {{ bridge_protocol_model }} bmod
             LEFT JOIN {{ ref('chain_ids') }} cid_source
                 ON cid_source.chain_id = bmod.source_chain_id
             LEFT JOIN {{ ref('chain_ids') }} cid_dest
@@ -92,11 +92,11 @@ WITH bridge_protocols AS (
             , token_amount
             , token_amount_usd -- changed
             , token_amount_raw
-            , token_fee_amount
-            , token_fee_amount_usd
-            , token_fee_amount_raw
+            , fee_amount
+            , fee_amount_usd
+            , fee_amount_raw
             , token_address
-            , token_fee_address
+            , fee_address
             , source_chain_id
             , destination_chain_id
             , cid_source.chain_name AS source_chain_name
@@ -108,7 +108,7 @@ WITH bridge_protocols AS (
             , evt_index
             , trace_address
             , tx_method_id
-        FROM {{ ref(native_bridge_model) }} bmod
+        FROM {{ native_bridge_model }} bmod
             LEFT JOIN {{ ref('chain_ids') }} cid_source
                 ON cid_source.chain_id = bmod.source_chain_id
             LEFT JOIN {{ ref('chain_ids') }} cid_dest
