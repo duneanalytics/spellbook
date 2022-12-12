@@ -1,16 +1,12 @@
 import pytest
-import os
-import sys
+from requests import HTTPError
 
 from token_checker import TokenChecker
 
 
 def test_test_token_checker_attrs1():
-    test_token_checker = TokenChecker(new_line='("test", null, "TEST", null, null),')
-    assert "test" == test_token_checker.token_id
-    assert None == test_token_checker.blockchain
-    assert "TEST" == test_token_checker.symbol
-    assert None == test_token_checker.contract_address
+    with pytest.raises(HTTPError):
+        test_token_checker = TokenChecker(new_line='("test", null, "TEST", null, null),')
 
 def test_test_token_checker_attrs2():
     test_token_checker = TokenChecker(new_line='("0xbtc-0xbitcoin","arbitrum","0xBTC","0x7cb16cb78ea464ad35c8a50abf95dff3c9e09d5d",8),')
