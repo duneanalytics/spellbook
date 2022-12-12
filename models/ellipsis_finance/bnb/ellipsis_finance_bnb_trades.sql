@@ -2050,7 +2050,7 @@ dexs as (
     UNION 
 
     SELECT * FROM jbrl_busd
-
+ 
     UNION 
 
     SELECT * FROM jngn_ngnt
