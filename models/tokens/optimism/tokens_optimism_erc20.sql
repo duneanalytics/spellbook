@@ -47,6 +47,7 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0xe3c332a5dce0e1d9bc2cc72a68437790570c28a4', 'VEE', 18)
 ,('0xb27e3eab7526bf721ea8029bfcd3fdc94c4f8b5b', 'ODOGE', 18)
 ,('0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000', 'ETH', 18)
+,('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', 'ETH', 18)
 ,('0x9bcef72be871e61ed4fbbc7630889bee758eb81d', 'rETH', 18)
 ,('0xc40f949f8a4e094d1b49a23ea9241d289b7b2819', 'LUSD', 18)
 ,('0xe88d846b69020680b2deeea58511636250c42707', 'OVM-TEST', 18)

@@ -1,5 +1,4 @@
 {{ config(
-    schema = 'uniswap_v3_optimism',
     alias = 'trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -8,42 +7,43 @@
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
-                                "uniswap_v3",
-                                \'["jeff-dude", "markusbkoch", "masquot", "milkyklim", "0xBoxer", "mewwts", "hagaetc"]\') }}'
+                                "velodrome",
+                                \'["msilb7"]\') }}'
     )
 }}
--- OVM 1 Launch 06-23-21
-{% set project_start_date = '2021-06-23' %}
+-- derived from
+-- SELECT MIN(evt_block_time) FROM velodrome_optimism.Pair_evt_Swap
+{% set project_start_date = '2022-06-01' %}
 
 WITH dexs AS
 (
-    --Uniswap v3
     SELECT
         t.evt_block_time AS block_time
-        , t.evt_block_number
-        , t.recipient AS taker
+        ,t.evt_block_number
+        ,t.to AS taker
         ,'' AS maker
-        ,CASE WHEN amount0 < '0' THEN abs(amount0) ELSE abs(amount1) END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
-        ,CASE WHEN amount0 < '0' THEN abs(amount1) ELSE abs(amount0) END AS token_sold_amount_raw
+        -- logic from ethereum/dex/trades/insert_uniswap_v2
+	    ,CASE WHEN amount0Out = '0' THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
+	    ,CASE WHEN amount0In = '0' OR amount1Out = '0' THEN amount1In ELSE amount0In END AS token_sold_amount_raw
         ,NULL AS amount_usd
-        ,CASE WHEN amount0 < '0' THEN f.token0 ELSE f.token1 END AS token_bought_address
-        ,CASE WHEN amount0 < '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
+        ,CASE WHEN amount0Out = '0' THEN token1 ELSE token0 END AS token_bought_address
+	    ,CASE WHEN amount0In = '0' OR amount1Out = '0' THEN token1 ELSE token0 END AS token_sold_address
         ,CAST(t.contract_address as string) as project_contract_address
         ,t.evt_tx_hash AS tx_hash
         ,'' AS trace_address
         ,t.evt_index
     FROM
-        {{ source('uniswap_v3_optimism', 'Pair_evt_Swap') }} t
-    INNER JOIN {{ ref('uniswap_optimism_pools') }} f
-        ON f.pool = t.contract_address
+        {{ source('velodrome_optimism', 'Pair_evt_Swap') }} t
+    INNER JOIN {{ source('velodrome_optimism', 'PairFactory_evt_PairCreated') }} f
+        ON f.pair = t.contract_address
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
 )
 SELECT
     'optimism' AS blockchain
-    ,'uniswap' AS project
-    ,'3' AS version
+    ,'velodrome' AS project
+    ,'1' AS version
     ,TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
     ,dexs.block_time
     ,erc20a.symbol AS token_bought_symbol
@@ -54,8 +54,8 @@ SELECT
     end as token_pair
     ,dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount
     ,dexs.token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount
-    ,CAST(dexs.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw
-    ,CAST(dexs.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
+    ,dexs.token_bought_amount_raw
+    ,dexs.token_sold_amount_raw
     ,coalesce(
         dexs.amount_usd
         ,(dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
