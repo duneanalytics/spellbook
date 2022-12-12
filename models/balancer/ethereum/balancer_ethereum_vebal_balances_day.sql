@@ -2,6 +2,10 @@
     config(
         schema = 'balancer_ethereum',
         alias='vebal_balances_day',
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['day', 'wallet_address'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "balancer",
@@ -142,3 +146,9 @@ INNER JOIN max_updated_at b
 ON a.day = b.day
 AND a.wallet_address = b.wallet_address
 AND a.updated_at = b.updated_at
+{% if not is_incremental() %}
+AND a.day >= '{{ project_start_date }}'
+{% endif %}
+{% if is_incremental() %}
+AND a.day >= DATE_TRUNC('day', NOW() - interval '1 week')
+{% endif %}
