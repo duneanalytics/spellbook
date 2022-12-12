@@ -271,8 +271,8 @@ direct_uniswapv3 AS (
             zeroex_tx.affiliate_address                                                             AS affiliate_address,
             TRUE                                                                                    AS swap_flag,
             FALSE                                                                                   AS matcha_limit_order_flag
-    FROM {{ source('uniswap_v3_polygon', 'Pair_evt_Swap') }} swap
-   LEFT JOIN {{ source('uniswap_v3_polygon', 'factory_evt_poolcreated') }} pair ON pair.pool = swap.contract_address
+    FROM {{ source('uniswap_v3_polygon', 'UniswapV3Pool_evt_Swap') }} swap
+   LEFT JOIN {{ source('uniswap_v3_polygon', 'factory_polygon_call_createPool') }} pair ON pair.pool = swap.contract_address
    JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
    WHERE sender = '0xdef1c0ded9bec7f1a1670819833240f027b25eff'
 

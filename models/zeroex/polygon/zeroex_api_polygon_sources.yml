@@ -23,3 +23,14 @@ sources:
 
     tables:
       - name: Exchange_evt_Fill
+
+      # for native orders on v3
+  - name: uniswap_v3_polygon
+    description: "Polygon decoded tables related to Uniswap v3  Contract"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    loaded_at_field: evt_block_time
+
+    tables:
+      - name: factory_polygon_call_createPool
+      - name: UniswapV3Pool_evt_Swap
