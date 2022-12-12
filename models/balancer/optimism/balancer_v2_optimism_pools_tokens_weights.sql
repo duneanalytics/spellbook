@@ -29,7 +29,7 @@ WHERE tokens.pos = weights.pos
     {% if is_incremental() %}
     AND registered.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-UNION ALL
+UNION
 
 SELECT
     registered.`poolId` AS pool_id,
@@ -44,7 +44,7 @@ WHERE tokens.pos = weights.pos
     {% if is_incremental() %}
     AND registered.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-UNION ALL
+UNION
 
 SELECT
     registered.`poolId` AS pool_id,
