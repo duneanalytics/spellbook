@@ -37,4 +37,4 @@ jobs:
 
       - name: Run validations
         id: validations
-        run: python scripts/check_tokens.py
+        run: python scripts/check_tokens.py --file_name scripts/new_lines.txt
