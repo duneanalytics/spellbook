@@ -46,7 +46,15 @@ WITH events AS (
     FROM {{ source('balancer_v1_ethereum', 'BPool_call_rebind') }} rebind
     INNER JOIN {{ source('ethereum', 'transactions') }} tx ON tx.hash = rebind.call_tx_hash 
     WHERE rebind.call_success = TRUE
-
+        {% if not is_incremental() %}
+        AND rebind.call_block_time >= '{{bind_start_date}}'
+        AND tx.block_time >= '{{bind_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+        AND rebind.call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+    
     UNION ALL
     
     -- Unbinds
@@ -60,6 +68,14 @@ WITH events AS (
     FROM {{ source('balancer_v1_ethereum', 'BPool_call_unbind') }} unbind
     INNER JOIN {{ source('ethereum', 'transactions') }} tx ON tx.hash = unbind.call_tx_hash 
     WHERE unbind.call_success = TRUE
+        {% if not is_incremental() %}
+        AND unbind.call_block_time >= '{{bind_start_date}}'
+        AND tx.block_time >= '{{bind_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+        AND unbind.call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 ),
 state_with_gaps AS (
     SELECT
