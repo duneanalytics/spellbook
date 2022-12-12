@@ -56,15 +56,15 @@ SELECT distinct 'ethereum' AS blockchain
 , nft_mints.tx_hash AS tx_hash
 , etxs.from AS tx_from
 , etxs.to AS tx_to
-, 0 AS platform_fee_amount_raw
-, 0 AS platform_fee_amount
-, 0 AS platform_fee_amount_usd
+, CAST(0 AS DOUBLE) AS platform_fee_amount_raw
+, CAST(0 AS DOUBLE) AS platform_fee_amount
+, CAST(0 AS DOUBLE) AS platform_fee_amount_usd
 , CAST(0 AS DOUBLE) AS platform_fee_percentage
 , '' AS royalty_fee_receive_address
-, 0 AS royalty_fee_currency_symbol
-, 0 AS royalty_fee_amount_raw
-, 0 AS royalty_fee_amount
-, 0 AS royalty_fee_amount_usd
+, CAST('0' AS VARCHAR(5)) AS royalty_fee_currency_symbol
+, CAST(0 AS DOUBLE) AS royalty_fee_amount_raw
+, CAST(0 AS DOUBLE) AS royalty_fee_amount
+, CAST(0 AS DOUBLE) AS royalty_fee_amount_usd
 , CAST(0 AS DOUBLE) AS royalty_fee_percentage
 , 'ethereum' || '-' || COALESCE(ec.namespace, 'Unknown') || '-Mint-' || COALESCE(nft_mints.tx_hash, '-1') || '-' || COALESCE(nft_mints.to, '-1') || '-' ||  COALESCE(nft_mints.contract_address, '-1') || '-' || COALESCE(nft_mints.token_id, '-1') || '-' || COALESCE(erc20s.contract_address, '0x0000000000000000000000000000000000000000') || '-' || COALESCE(nft_mints.evt_index, '-1') AS unique_trade_id
 FROM {{ ref('nft_ethereum_transfers') }} nft_mints
