@@ -106,9 +106,7 @@ models:
       - &contract_address
         name: contract_address
         description: "token's contract address"
-      - &blockchain
-        name: blockchain
-        description: "Blockchain of the token"
+      - *blockchain
       - &median_price
         name: median_price
         description: "Median price of the token in USD within the corresponding hour"
