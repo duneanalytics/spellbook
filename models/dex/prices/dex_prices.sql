@@ -66,5 +66,5 @@ SELECT
 FROM 
 dex_trades
 GROUP BY 1, 2, 3 
-HAVING COUNT(price) > 0 
+HAVING COUNT(price) >= 5 
 ) tmp  
