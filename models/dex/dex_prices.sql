@@ -20,13 +20,11 @@ dex_trades as (
         COALESCE(d.amount_usd/d.token_bought_amount, d.amount_usd/(d.token_bought_amount_raw/POW(10, er.decimals))) as price, 
         d.block_time, 
         d.blockchain
-    FROM 
-    {{ ref('dex_trades') }} d 
-    LEFT JOIN 
-    {{ ref('tokens_erc20') }} er 
+    FROM {{ ref('dex_trades') }} d 
+    LEFT JOIN {{ ref('tokens_erc20') }} er 
         ON d.token_bought_address = er.contract_address
         AND d.blockchain = er.blockchain
-        AND d.amount_usd > 0 
+    WHERE d.amount_usd > 0 
         AND d.token_bought_amount_raw > 0 
         {% if is_incremental() %}
         AND d.block_time >= date_trunc("day", now() - interval '1 week')
@@ -39,13 +37,11 @@ dex_trades as (
         COALESCE(d.amount_usd/d.token_sold_amount, d.amount_usd/(d.token_sold_amount_raw/POW(10, er.decimals))) as price, 
         d.block_time, 
         d.blockchain
-    FROM 
-    {{ ref('dex_trades') }} d 
-    LEFT JOIN 
-    {{ ref('tokens_erc20') }} er 
+    FROM {{ ref('dex_trades') }} d 
+    LEFT JOIN {{ ref('tokens_erc20') }} er 
         ON d.token_sold_address = er.contract_address
         AND d.blockchain = er.blockchain
-        AND d.amount_usd > 0 
+    WHERE d.amount_usd > 0 
         AND d.token_bought_amount_raw > 0 
         {% if is_incremental() %}
         AND d.block_time >= date_trunc("day", now() - interval '1 week')
@@ -57,14 +53,14 @@ SELECT
     * 
 FROM 
 (
-SELECT 
-    date_trunc('hour', block_time) as hour, 
-    contract_address,
-    blockchain,
-    (PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY price)) AS median_price,
-    COUNT(price) as sample_size 
-FROM 
-dex_trades
-GROUP BY 1, 2, 3 
-HAVING COUNT(price) >= 5 
-) tmp  
+    SELECT 
+        date_trunc('hour', block_time) as hour, 
+        contract_address,
+        blockchain,
+        (PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY price)) AS median_price,
+        COUNT(price) as sample_size 
+    FROM dex_trades
+    GROUP BY 1, 2, 3
+    HAVING COUNT(price) >= 5 
+) tmp
+;
