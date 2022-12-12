@@ -40,9 +40,9 @@ WITH bridge_protocols AS (
             , token_amount
             , token_amount_usd
             , token_amount_raw
-            , token_fee_amount
-            , token_fee_amount_usd
-            , token_fee_amount_raw
+            , fee_amount
+            , fee_amount_usd
+            , fee_amount_raw
             , token_address
             , token_fee_address
             , source_chain_id
@@ -92,9 +92,9 @@ WITH bridge_protocols AS (
             , token_amount
             , token_amount_usd -- changed
             , token_amount_raw
-            , token_fee_amount
-            , token_fee_amount_usd
-            , token_fee_amount_raw
+            , fee_amount
+            , fee_amount_usd
+            , fee_amount_raw
             , token_address
             , token_fee_address
             , source_chain_id
