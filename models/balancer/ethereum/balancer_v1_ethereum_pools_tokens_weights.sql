@@ -24,6 +24,14 @@ WITH events AS (
     FROM {{ source('balancer_v1_ethereum', 'BPool_call_bind') }} bind
     INNER JOIN {{ source('ethereum', 'transactions') }} tx ON tx.hash = bind.call_tx_hash 
     WHERE bind.call_success = TRUE
+        {% if not is_incremental() %}
+        AND bind.call_block_time >= '{{bind_start_date}}'
+        AND tx.block_time >= '{{bind_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+        AND bind.call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 
     UNION ALL
 
