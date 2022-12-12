@@ -1919,223 +1919,223 @@ valtusd_val3eps_underlying as (
 dexs as (
     SELECT * FROM 2brl 
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM 2pool 
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM 3brl 
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM 3eps 
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM ankr_bnb
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM ankr_eth
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM ankr_matic
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM apl_busd
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM arth_usd
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM arth_usd_underlying
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM ausd_3eps
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM ausd_3eps_underlying
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM axelar_usd
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM bnb_bnbl
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM bnbx_bnb
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM cryptopool_bnbx_bnb
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM cryptopool_busd_arth
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM cryptopool_busd_btcb
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM cryptopool_busd_ddd
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM cryptopool_busd_jchf
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM cryptopool_depx_busd
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM cryptopool_epx_bnb
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM cryptopool_eth_bnb
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM cryptopool_jrt_bnb
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM cryptopool_valas_bnb
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM czusd_busd
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM czusd_val3eps
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM czusd_val3eps_underlying
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM debridge_usd
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM debridge_usd_underlying
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM dotdot_depx_epx
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM hay_busd
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM horizon_zbnb_bnb
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM jbrl_busd
  
-    UNION 
+    UNION ALL  
 
     SELECT * FROM jngn_ngnt
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM mai_val3eps
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM mai_val3eps_underlying
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM nbusd_val3eps
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM nbusd_val3eps_underlying
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM hay_stableswap
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM usdd_3eps
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM usdd_3eps_underlying
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM usdl_val3eps
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM usdl_val3eps_underlying
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM usdn_val3eps
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM usdn_val3eps_underlying
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM usds_val3eps
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM usds_val3eps_underlying
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM val3eps
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM val3eps_underlying
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM valbtc_renbtc
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM valbtc_renbtc_underlying
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM valdai_val3eps
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM valdai_val3eps_underlying
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM valtusd_val3eps
 
-    UNION 
+    UNION ALL  
 
     SELECT * FROM valtusd_val3eps_underlying
 )
