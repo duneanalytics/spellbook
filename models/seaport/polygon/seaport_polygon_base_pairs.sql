@@ -39,7 +39,7 @@ with iv_offer_consideration as (
             ,recipient as receiver
             ,zone
             ,offer_item:token as token_contract_address 
-            ,offer_item:amount::numeric(38) as original_amount
+            ,cast(offer_item:amount as numeric(38)) as original_amount
             ,case offer_item:itemType
                 when '0' then 'native'
                 when '1' then 'erc20'
@@ -101,7 +101,7 @@ with iv_offer_consideration as (
             ,consideration_item:recipient as receiver
             ,zone
             ,consideration_item:token as token_contract_address
-            ,consideration_item:amount::numeric(38) as original_amount
+            ,cast(consideration_item:amount as numeric(38)) as original_amount
             ,case consideration_item:itemType
                 when '0' then 'native'
                 when '1' then 'erc20'

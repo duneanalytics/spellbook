@@ -249,6 +249,33 @@ WITH calendar AS
                     GROUP BY symbol, contract_address,  "date"
             ) as t GROUP BY  symbol, contract_address,  "date")
             UNION
+            --crvFXS/FXS
+            (SELECT symbol, contract_address,  "date",MAX(total_supply) as total_supply FROM (
+                SELECT symbol
+                    , contract_address                    
+                    , date_trunc('day', evt_block_time)::date as "date"
+                    , MAX(ARRAY[evt_block_number, evt_index, token_supply/10^tl.decimals]) AS total_supply 
+                    FROM curvefi."cvxfxsfxs_swap_evt_AddLiquidity"
+                    INNER JOIN tokemak."view_tokemak_lookup_tokens" tl ON tl.address = contract_address
+                    GROUP BY symbol, contract_address,  "date"
+                UNION 
+                SELECT symbol
+                    , contract_address                   
+                    , date_trunc('day', evt_block_time)::date as "date"
+                    , MAX(ARRAY[evt_block_number, evt_index, token_supply/10^tl.decimals]) AS total_supply 
+                    FROM curvefi."cvxfxsfxs_swap_evt_RemoveLiquidity" 
+                    INNER JOIN tokemak."view_tokemak_lookup_tokens" tl ON tl.address = contract_address
+                    GROUP BY symbol, contract_address,  "date"
+                UNION
+                SELECT symbol
+                    , contract_address                  
+                    , date_trunc('day', evt_block_time)::date as "date"
+                    , ARRAY[0] AS total_supply 
+                    FROM curvefi."cvxfxsfxs_swap_evt_RemoveLiquidityOne" 
+                    INNER JOIN tokemak."view_tokemak_lookup_tokens" tl ON tl.address = contract_address
+                    GROUP BY symbol, contract_address,  "date"
+            ) as t GROUP BY  symbol, contract_address,  "date")
+            UNION
             --WETH
             (SELECT symbol, contract_address,  "date",MAX(total_supply) as total_supply FROM (
                 SELECT symbol

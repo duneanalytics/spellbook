@@ -331,18 +331,21 @@ models:
       - &seller_first_funded_by
         name: seller_first_funded_by
         description: "Which wallet first funded the seller's wallet in ETH"
-      - &back_and_forth_trade
-        name: back_and_forth_trade
-        description: "Was the NFT traded the other way around at some point (buyer<>seller)"
-      - &bought_it_three_times_within_a_week
-        name: bought_it_three_times_within_a_week
-        description: ""
-      - &funded_by_same_wallet
-        name: funded_by_same_wallet
-        description: ""
+      - &filter_1_same_buyer_seller
+        name: filter_1_same_buyer_seller
+        description: "Were the seller and buyer the same address in the trade?"
+      - &filter_2_back_and_forth_trade
+        name: filter_2_back_and_forth_trade
+        description: "Was the NFT ever traded the other way around (buyer<>seller)"
+      - &filter_3_bought_or_sold_3x
+        name: filter_3_bought_or_sold_3x
+        description: "Was the same NFT bought 3+ times (Excluding ERC1155s)"
+      - &filter_4_first_funded_by_same_wallet
+        name: filter_4_first_funded_by_same_wallet
+        description: "Did the same wallet first fund the seller and buyer's wallets in ETH?"
       - &is_wash_trade
         name: is_wash_trade
-        description: ""
+        description: "Have any of the filters flag as true? Then it is labelled as a wash trade"
 
   - name: nft_linked_addresses
     meta:
