@@ -34,7 +34,11 @@ jobs:
     - name: Install dependencies
       run: |
         pipenv install
+
+    - name: Setup Debug Session
+      uses: csexton/debugger-action@master
+
     - name: Run pytest
-      working-directory: scripts/tests
+      working-directory: scripts
       run: | 
-        pipenv run pytest
+        pipenv run pytest test_token_checker.py

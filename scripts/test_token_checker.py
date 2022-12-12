@@ -1,6 +1,8 @@
 import pytest
+import os
+import sys
 
-from scripts.token_checker import TokenChecker
+from token_checker import TokenChecker
 
 
 def test_test_token_checker_attrs1():
@@ -32,7 +34,7 @@ def test_valid_token1():
     test_token_checker.validate_token()
 
 def test_valid_token2():
-    test_token_checker = TokenChecker(new_line='("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),',)
+    test_token_checker = TokenChecker(new_line='("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),', )
     test_token_checker.validate_token()
 
 def test_valid_token3():
