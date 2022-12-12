@@ -1,5 +1,5 @@
 # .github/workflows/app.yaml
-name: Prices Check
+name: Token Prices Automation
 
 on:
   workflow_dispatch:
@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  prices-test:
+  token-prices-test:
     runs-on: ubuntu-latest
     timeout-minutes: 60
 

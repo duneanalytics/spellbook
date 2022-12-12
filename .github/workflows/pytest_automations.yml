@@ -1,4 +1,4 @@
-name: pytest
+name: Pytest Prices Automation
 
 on:
   push:
@@ -12,7 +12,7 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  pytest-automation:
     runs-on: ubuntu-latest
 
     steps:
