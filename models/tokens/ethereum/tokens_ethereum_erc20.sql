@@ -1,4 +1,4 @@
-{{ config( alias='erc20')}}
+{{ config( alias='erc20', tags=['static'])}}
 
 SELECT LOWER(contract_address) as contract_address, symbol, decimals
 FROM (VALUES
@@ -6766,5 +6766,43 @@ FROM (VALUES
           ('0xe37009f6a756e8997fac8da44da7b5b87731fc22', 'MUNGER', 18),
           ('0xe9b076b476d8865cdf79d1cf7df420ee397a7f75', 'FUND', 9),
           ('0xf20393619c122f8b901b964264e614d2611ed9ba', 'SBFP', 18),
-          ('0xfda4af798f2e30ecadc8878dda5b5fa3646b4216', 'Lord Elon', 9)
+          ('0xfda4af798f2e30ecadc8878dda5b5fa3646b4216', 'Lord Elon', 9),
+          ('0x2275d4937b6bfd3c75823744d3efbf6c3a8de473', 'GBR', 18),
+          ('0x2b1d36f5b61addaf7da7ebbd11b35fd8cfb0de31', 'ITP', 18),
+          ('0x3b79a28264fc52c7b4cea90558aa0b162f7faf57', 'wMEMO', 18),
+          ('0x44108f0223a3c3028f5fe7aec7f9bb2e66bef82f', 'ACX', 18),
+          ('0x45ff085c34ab1d31ace16bfbf2ba7d3494182e18', 'LUCY', 18),
+          ('0x504624040e0642921c2c266a9ac37cafbd8cda4e', 'LOVE', 18),
+          ('0x56694577564fdd577a0abb20fe95c1e2756c2a11', 'ASW', 18),
+          ('0x6808dbc16e2bdcf40bf11a66a1701e7e65599891', 'Musket', 18),
+          ('0x9e0441e084f5db0606565737158aa6ab6b970fe0', 'bentCVX', 18),
+          ('0xb9d7dddca9a4ac480991865efef82e01273f79c3', 'bLUSD', 18),
+          ('0xda4dd9586d27202a338843dd6b9824d267006783', 'ECT', 9),
+          ('0xe1bda0c3bfa2be7f740f0119b6a34f057bd58eba', 'WNK', 18),
+          ('0xcfe4eb08e33272d98cb31e37a7be78d5c1b740c1', 'VB', 18),
+          ('0x03d1e72765545729a035e909edd9371a405f77fb', 'NABOX', 18),
+          ('0x259f515ae2ddca216dc4f92133a8bf1917e73b60', 'FAFO', 9),
+          ('0x54a7cee7b02976ace1bdd4afad87273251ed34cf', 'Rainbows', 18),
+          ('0x5cac718a3ae330d361e39244bf9e67ab17514ce8', 'COT', 18),
+          ('0x5f5c86a9f8aaf63ce27b82fab3b33df73cbc3d12', 'SPARK', 18),
+          ('0x6967299e9f3d5312740aa61dee6e9ea658958e31', 'T', 18),
+          ('0x69ef45cf64d8360279daa974aabadb42f0683a6c', 'LMAO', 18),
+          ('0x6a445e9f40e0b97c92d0b8a3366cef1d67f700bf', 'FIDU', 18),
+          ('0xa50c8eeeda775f048acb357d430020ae3a3c47d3', 'MOTO', 18),
+          ('0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b', 'BOB', 18),
+          ('0xd13cfd3133239a3c73a9e535a5c4dadee36b395c', 'VAI', 18),
+          ('0xd7c9f0e536dc865ae858b0c0453fe76d13c3beac', 'XAI', 18),
+          ('0xe22020f47b7378dfedcedd2c81d4137c22fe1152', 'MLP', 18),
+          ('0xeb813cccb65c338f6535d99146f280450e2a4d03', 'TSUBA', 9),
+          ('0x2c69095d81305f1e3c6ed372336d407231624cea', 'WEMIX', 18),
+          ('0x3802c218221390025bceabbad5d8c59f40eb74b8', 'GETH', 18),
+          ('0x5e5a6618fd4bcf74a665aca1bda3ae76e0961244', 'TWTC', 9),
+          ('0x6d1fea476f177500d1972f08cf41fba6f0f2d547', 'EARTH', 18),
+          ('0x7476d8b314607990957dda4479acf44ffa552034', 'HEART', 18),
+          ('0x783c68814126b66b9242c4c6538ae47db5e33169', 'RODO', 2),
+          ('0x7c72f41342d485d59a890528880a210ee7bfbb73', 'JCOIN', 6),
+          ('0x8dcc22dcc33fa7fab495596f3310dc1b0fc78583', 'TFX', 6),
+          ('0x9310bbb650e1555605b671873a8688eb6cde44d3', 'BVB', 9),
+          ('0xa95c5ebb86e0de73b4fb8c47a45b792cfea28c23', 'SDL', 18),
+          ('0xbbe2f3bbb57851d230bb35d609b44a18a16b63e0', '$OBI', 18)
      ) AS temp_table (contract_address, symbol, decimals)

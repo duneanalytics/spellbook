@@ -289,6 +289,18 @@ WITH rows AS (
             where call_success
                 and call_block_time >= start_ts
                 and call_block_time < end_ts
+            -- union all
+            -- select "output_returnAmount", "amount", "srcToken", "pools", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address"
+            -- from oneinch."AggregationRouterV5_call_unoswapToWithPermit"
+            -- where call_success
+            --     and call_block_time >= start_ts
+            --     and call_block_time < end_ts
+            -- union all
+            -- select "output_returnAmount", "amount", "srcToken", "pools", "call_tx_hash", "call_trace_address", "call_block_time", "contract_address"
+            -- from oneinch."AggregationRouterV5_call_unoswap"
+            -- where call_success
+            --     and call_block_time >= start_ts
+            --     and call_block_time < end_ts
         ) us
         left join ethereum.traces t on us.call_tx_hash = t.tx_hash and us.call_trace_address = t.trace_address
             and t.block_time >= start_ts

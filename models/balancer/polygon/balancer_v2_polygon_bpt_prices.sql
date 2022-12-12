@@ -2,7 +2,7 @@
     config(
         schema = 'balancer_v2_polygon',
         alias='bpt_prices',
-        post_hook='{{ expose_spells(\'["polygon"]\',
+        post_hook='{{ expose_spells_hide_trino(\'["polygon"]\',
                                     "project",
                                     "balancer",
                                     \'["victorstefenon"]\') }}'
