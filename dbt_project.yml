@@ -696,6 +696,42 @@ models:
       bnb:
         +schema: iziswap_bnb
         +materialized: view
+        
+    hop_protocol:
+      +schema: hop_protocol
+      +materialized: view
+      optimism:
+        +schema: hop_protocol_optimism
+        +materialized: view
+      # ethereum:
+      #   +schema: hop_protocol_ethereum
+      #   +materialized: view
+      # polygon:
+      #   +schema: hop_protocol_polygon
+      #   +materialized: view
+      # polygon2:
+      #   +schema: hop_polygon
+      #   +materialized: view
+      # arbitrum:
+      #   +schema: hop_protocol_arbitrum
+      #   +materialized: view
+      # gnosis:
+      #   +schema: hop_protocol_gnosis
+      #   +materialized: view
+      # gnosis2:
+      #   +schema: hop_gnosis
+      #   +materialized: view
+    
+    # ovm_optimism:
+    #   optimism:
+    #     +schema: ovm_optimism
+    #     +materialized: view
+    chain_info:
+      +schema: chain_info
+      +materialized: view
+    bridge:
+      +schema: bridge
+      +materialized: view
 
 seeds:
   spellbook:
