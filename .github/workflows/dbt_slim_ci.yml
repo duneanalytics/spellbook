@@ -7,6 +7,8 @@ on:
     paths-ignore:
       - 'deprecated-dune-v1-abstractions/**'
       - 'scripts/**'
+      - 'Pipfile'
+      - '.gitignore'
   push:
     branches:
       - 'main'
