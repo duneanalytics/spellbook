@@ -11,6 +11,8 @@ CREATE MATERIALIZED VIEW tokemak.view_tokemak_lookup_sources
     SELECT 3 as id, 'Sushiswap' as source_name
     UNION
     SELECT 4 as id, 'UniswapV2' as source_name
+    UNION
+    SELECT 5 as id, 'Convex Frax' as source_name
 );
 CREATE UNIQUE INDEX ON tokemak.view_tokemak_lookup_sources (
    id
