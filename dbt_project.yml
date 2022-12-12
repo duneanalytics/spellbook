@@ -984,8 +984,8 @@ seeds:
     zeroex:
       ethereum:
         fills:
-        +enabled: true
-        +schema: test_data
+          +enabled: true
+          +schema: test_data
           zeroex_api_ethereum_fills_sample:
             +column_types:
               tx_hash: string
@@ -1012,8 +1012,8 @@ seeds:
               tx_from: string
               tx_to: string
         nfts:
-        +enabled: true
-        +schema: test_data
+          +enabled: true
+          +schema: test_data
           zeroex_nft_ethereum_fills_sample:
             +column_types:
               block_time: timestamp
