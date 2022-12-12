@@ -5512,7 +5512,7 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0x8db1d28ee0d822367af8d220c0dc7cb6fe9dc442', 'ETHPAD', 18)
 ,('0x6598463d6cbe4b51e9977437bf1200df4c45286c', 'SOCA', 9)
 ,('0x829c09fcc46d9fd31967272aba245bef9f727f93', 'USDEX', 18)
-,('0x147e07976e1ae78287c33aafaab87760d32e50a5', 'dexIRA', 18)
+,('0x147e07976e1ae78287c33aafaab87760d32e50a5', 'dexIRA', 9)
 ,('0xf4914e6d97a75f014acfcf4072f11be5cffc4ca6', 'dexSHARE', 18)
 ,('0x60ebfd605cb25c7796f729c78a4453acecb1ce03', 'dexMMETF', 18)
 ,('0x05220a11566a954d449dcb72d241277668b8cf9e', 'wDEX-SHARE', 18)
