@@ -983,6 +983,8 @@ seeds:
 
     zeroex:
       ethereum:
+      +enabled: true
+      +schema: test_data
         fills:
         +enabled: true
         +schema: test_data
