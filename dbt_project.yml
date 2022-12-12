@@ -1038,6 +1038,16 @@ seeds:
             matcha_limit_order_flag: boolean
             volume_usd: double
 
+    gmx:
+      avalanche_c:
+        +enabled: true
+        +schema: test_data
+        gmx_glp_aum_seed:
+          +column_types:
+            date: date
+            usdc_aum: double
+            usdc_e_aum: double
+
     x2y2:
       ethereum:
         +enabled: true
