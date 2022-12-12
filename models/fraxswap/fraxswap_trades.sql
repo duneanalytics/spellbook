@@ -1,18 +1,23 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["avalanche_c"]\',
+        post_hook='{{ expose_spells(\'["avalanche_c", "bnb", "polygon", "ethereum"]\',
                                 "project",
                                 "fraxswap",
-                                \'["zhongyiio", "hosuke"]\') }}'
+                                \'["zhongyiio", "kndlexi", "hosuke"]\') }}'
         )
 }}
 
 {% set frax_models = [
-'fraxswap_avalanche_c_trades'
+'fraxswap_avalanche_c_trades',
+'fraxswap_ethereum_trades',
+'fraxswap_polygon_trades',
+'fraxswap_bnb_trades'
+
 ] %}
 
 
 SELECT *
+
 FROM (
     {% for dex_model in frax_models %}
     SELECT
@@ -46,3 +51,4 @@ FROM (
     {% endfor %}
 )
 ;
+
