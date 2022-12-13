@@ -5,6 +5,7 @@
                                     \'["bh2smith"]\') }}'
 )}}
 
+-- PoC Query here - https://dune.com/queries/1752782
 select
     tx_hash,
     data.amount as cow_reward,
