@@ -19,7 +19,7 @@ SELECT
      txns.to AS tx_receiver,
      'AVAX' as native_token_symbol,
      value/1e18 AS tx_amount_native,
-     value/1e18 * p.price AStx_amount_usd ,
+     value/1e18 * p.price AS tx_amount_usd,
      CASE WHEN type = 'Legacy' THEN (gas_price * txns.gas_used)/1e18
           WHEN type = 'DynamicFee' THEN ((base_fee_per_gas + priority_fee_per_gas) * txns.gas_used)/1e18 
           END AS tx_fee_native, 
