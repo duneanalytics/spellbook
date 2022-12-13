@@ -32,9 +32,14 @@ from
             , a.evt_index
             , a.evt_tx_hash
     from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkOffered') }} a
-    inner join {{ source('ethereum','transactions') }} b on a.evt_tx_hash = b.hash 
+    inner join ( select * 
+                from {{ source('ethereum','transactions') }} 
+                {% if is_incremental() %}
+                where block_time >= date_trunc('day', now() - interval '1 week')
+                {% endif %}
+                ) b on a.evt_tx_hash = b.hash 
     {% if is_incremental() %}
-    and a.evt_block_time >= date_trunc('day', now() - interval '1 week')
+    where a.evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
 
     union all 
@@ -50,12 +55,17 @@ from
             , a.evt_index
             , a.evt_tx_hash
     from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkNoLongerForSale') }} a
-    inner join {{ source('ethereum','transactions') }} b on a.evt_tx_hash = b.hash 
-    {% if is_incremental() %}
-    and a.evt_block_time >= date_trunc('day', now() - interval '1 week')
-    {% endif %}
+    inner join ( select * 
+                from {{ source('ethereum','transactions') }} 
+                {% if is_incremental() %}
+                where block_time >= date_trunc('day', now() - interval '1 week')
+                {% endif %}
+                ) b on a.evt_tx_hash = b.hash 
     where evt_tx_hash not in (select distinct tx_hash from {{ ref('cryptopunks_ethereum_trades') }} )
         and evt_tx_hash not in (select distinct evt_tx_hash from {{ ref('cryptopunks_ethereum_punk_transfers') }} )
+        {% if is_incremental() %}
+        and a.evt_block_time >= date_trunc('day', now() - interval '1 week')
+        {% endif %}
 
 ) a 
 left join {{ source('prices', 'usd') }} p on p.minute = date_trunc('minute', a.evt_block_time)
