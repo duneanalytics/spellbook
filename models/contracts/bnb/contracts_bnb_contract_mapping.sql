@@ -10146,6 +10146,5 @@ from
 ('0x7874caff04afb8b6f5cbbe3ebec3f83fcd882272', 'JDBot', 'Others'),
 ('0x8e311db45b55df68b7c1c8d01888a4c43986c60f', 'Degen Ape Club', 'NFT'),
 ('0xa50a7a99c6937ab77e075199d23450086b2db7bc', 'Degen Ape Club', 'NFT')
-
 ) as temp_table (contract_address,project_name,project_type)
 ;
