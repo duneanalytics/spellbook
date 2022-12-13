@@ -148,10 +148,6 @@ sources:
         loaded_at_field: evt_block_time
       - name: nBUSD_val3EPS_evt_TokenExchangeUnderlying
         loaded_at_field: evt_block_time
-      - name: StableSwap_call_coins
-        loaded_at_field: call_block_time
-      - name: StableSwap_evt_TokenExchange
-        loaded_at_field: evt_block_time
       - name: USDD_3EPS_call_coins
         loaded_at_field: call_block_time
       - name: USDD_3EPS_evt_TokenExchange

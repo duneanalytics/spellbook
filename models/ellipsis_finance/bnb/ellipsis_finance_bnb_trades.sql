@@ -48,7 +48,6 @@
     ,source('ellipsis_finance_bnb', 'MAI_val3EPS_evt_TokenExchange')
     ,source('ellipsis_finance_bnb', 'Horizon_protocol_zBNB_BNB_evt_TokenExchange')
     ,source('ellipsis_finance_bnb', 'nBUSD_val3EPS_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'StableSwap_evt_TokenExchange')
     ,source('ellipsis_finance_bnb', 'USDD_3EPS_evt_TokenExchange')
     ,source('ellipsis_finance_bnb', 'USDL_val3EPS_evt_TokenExchange')
     ,source('ellipsis_finance_bnb', 'USDN_val3EPS_evt_TokenExchange')
