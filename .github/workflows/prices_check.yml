@@ -7,6 +7,8 @@ on:
     paths:
       - 'models/prices/prices_tokens.sql'
   push:
+    paths:
+      - 'models/prices/prices_tokens.sql'
     branches:
       - 'main'
 
