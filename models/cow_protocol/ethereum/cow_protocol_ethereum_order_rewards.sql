@@ -11,4 +11,4 @@ select
     data.amount as cow_reward,
     cast(data.surplus_fee as double) as surplus_fee,
     order_uid
-from cowswap.raw_order_rewards
+from {{ source('cowswap', 'raw_order_rewards') }}
