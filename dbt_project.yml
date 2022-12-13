@@ -981,6 +981,7 @@ seeds:
           tx_to: string
           royalty_fee_receive_address: string
 
+
     zeroex:
       ethereum:
         fills:
