@@ -92,7 +92,9 @@ models:
         +materialized: view
         metadata:
           +schema: nft_ethereum_metadata
-          +materialized: view
+          +materialized: table
+          +file_format: delta
+          +tags: "static"
       gnosis:
         +schema: nft_gnosis
         +materialized: view
@@ -106,6 +108,20 @@ models:
         +schema: nft_optimism
         +materialized: view
 
+    compound:
+      +schema: compound
+      +materialized: view
+      ethereum:
+        +schema: compound_ethereum
+        +materialized: view
+
+    gitcoin:
+      +schema: gitcoin
+      +materialized: view
+      ethereum:
+        +schema: gitcoin_ethereum
+        +materialized: view
+
     uniswap:
       +schema: uniswap
       +materialized: view
@@ -117,6 +133,16 @@ models:
         +materialized: view
       optimism:
         +schema: uniswap_optimism
+        +materialized: view
+      polygon:
+        +schema: uniswap_polygon
+        +materialized: view
+
+    nomiswap:
+      +schema: nomiswap
+      +materialized: view
+      bnb:
+        +schema: nomiswap_bnb
         +materialized: view
 
     sushiswap:
@@ -132,6 +158,13 @@ models:
         +schema: sushiswap_gnosis
         +materialized: view
 
+    babyswap:
+      +schema: babyswap
+      +materialized: view
+      bnb:
+        +schema: babyswap_bnb
+        +materialized: view
+
     opensea:
       +schema: opensea
       +materialized: view
@@ -141,6 +174,7 @@ models:
       solana:
         +schema: opensea_solana
         +materialized: view
+
     element:
       +schema: element
       +materialized: view
@@ -153,6 +187,11 @@ models:
       avalanche_c:
         +schema: element_avalanche_c
         +materialized: view
+
+
+    abi:
+      +schema: abi
+      +materialized: view
 
     superrare:
       +schema: superrare
@@ -191,12 +230,28 @@ models:
       optimism:
         +schema: gas_optimism
         +materialized: view
+      arbitrum:
+        +schema: gas_arbitrum
+        +materialized: view
 
     gmx:
       +schema: gmx
       +materialized: view
       arbitrum:
         +schema: gmx_arbitrum
+        +materialized: view
+      avalanche_c:
+        +schema: gmx_avalanche_c
+        +materialized: view
+
+    tigris:
+      +schema: tigris
+      +materialized: view
+      arbitrum:
+        +schema: tigris_arbitrum
+        +materialized: view
+      polygon:
+        +schema: tigris_polygon
         +materialized: view
 
     x2y2:
@@ -231,6 +286,18 @@ models:
       ethereum:
         +schema: seaport_ethereum
         +materialized: view
+      bnb:
+        +schema: seaport_bnb
+        +materialized: view
+      arbitrum:
+        +schema: seaport_arbitrum
+        +materialized: view
+      optimism:
+        +schema: seaport_optimism
+        +materialized: view
+      avalanche_c:
+        +schema: seaport_avalanche_c
+        +materialized: view
       polygon:
         +schema: seaport_polygon
         +materialized: view
@@ -241,7 +308,7 @@ models:
       ethereum:
         +schema: balances_ethereum
         +materialized: view
-        
+
     dodo:
       +schema: dodo
       +materialized: view
@@ -267,36 +334,59 @@ models:
       optimism:
         +schema: addresses_optimism
         +materialized: view
-    
-    addresses_events: 
+
+    addresses_events:
       +schema: addresses_events
       +materialized: table
-      ethereum: 
+      ethereum:
         +schema: addresses_events_ethereum
         +materialized: table
 
-    tokens:
-      +schema: tokens
+    aztec:
+      +schema: aztec
       +materialized: view
       ethereum:
-        +schema: tokens_ethereum
+        +schema: aztec_ethereum
         +materialized: view
+
+    tokens:
+      +schema: tokens
+      +materialized: table
+      +file_format: delta
+      ethereum:
+        +schema: tokens_ethereum
+        +materialized: table
+        +file_format: delta
       optimism:
         +schema: tokens_optimism
-        +materialized: view
+        +materialized: table
+        +file_format: delta
       avalanche_c:
         +schema: tokens_avalanche_c
+        +materialized: table
+        +file_format: delta
       bnb:
         +schema: tokens_bnb
-        +materialized: view
+        +materialized: table
+        +file_format: delta
       gnosis:
         +schema: tokens_gnosis
-        +materialized: view
+        +materialized: table
+        +file_format: delta
       arbitrum:
         +schema: tokens_arbitrum
-        +materialized: view
+        +materialized: table
+        +file_format: delta
       polygon:
         +schema: tokens_polygon
+        +materialized: table
+        +file_format: delta
+
+    trader_joe:
+      +schema: trader_joe
+      +materialized: view
+      avalanche_c:
+        +schema: trader_joe_avalanche_c
         +materialized: view
 
     transfers:
@@ -325,6 +415,13 @@ models:
         +schema: safe_ethereum
         +materialized: view
 
+    jarvis_network:
+      +schema: jarvis_network
+      +materialized: view
+      polygon:
+        +schema: jarvis_network_polygon
+        +materialized: view
+
     cryptopunks:
       +schema: cryptopunks
       +materialized: view
@@ -350,6 +447,7 @@ models:
       optimism:
         +schema: pika_optimism
         +materialized: view
+
     synthetix:
       +schema: synthetix
       +materialized: view
@@ -362,7 +460,7 @@ models:
       ethereum:
         +schema: archipelago_ethereum
         +materialized: view
-  
+
     integration_test:
       +schema: integration_test
       +materialized: view
@@ -373,9 +471,13 @@ models:
       ethereum:
         +schema: curvefi_ethereum
         +materialized: view
+      optimism:
+        +schema: curvefi_optimism
+        +materialized: view
       avalanche_c:
         +schema: curvefi_avalanche_c
         +materialized: view
+
     cow_protocol:
       +schema: cow_protocol
       +materialized: view
@@ -409,12 +511,18 @@ models:
       ethereum:
         +schema: airswap_ethereum
         +materialized: view
-        
+
     chainlink:
       +schema: chainlink
       +materialized: view
       optimism:
         +schema: chainlink_optimism
+        +materialized: view
+      polygon:
+        +schema: chainlink_polygon
+        +materialized: view
+      bnb:
+        +schema: chainlink_bnb
         +materialized: view
 
     contracts:
@@ -423,6 +531,9 @@ models:
       optimism:
         +schema: contracts_optimism
         +materialized: view
+      bnb:
+        +schema: contracts_bnb
+        +materialized: view
 
     clipper:
       +schema: clipper
@@ -430,21 +541,35 @@ models:
       ethereum:
         +schema: clipper_ethereum
         +materialized: view
-        
+
     reaper:
       +schema: reaper
       +materialized: view
       optimism:
         +schema: reaper_optimism
         +materialized: view
-    
+
+    biswap:
+      +schema: biswap
+      +materialized: view
+      bnb:
+        +schema: biswap_bnb
+        +materialized: view
+
     defiswap:
       +schema: defiswap
       +materialized: view
       ethereum:
         +schema: defiswap_ethereum
         +materialized: view
-     
+
+    mdex:
+      +schema: mdex
+      +materialized: view
+      bnb:
+        +schema: mdex_bnb
+        +materialized: view
+
     swapr:
       +schema: swapr
       +materialized: view
@@ -465,6 +590,12 @@ models:
       ethereum:
         +schema: shibaswap_ethereum
         +materialized: view
+
+    velodrome:
+      +schema: velodrome
+      +materialized: view
+      optimism:
+        +schema: velodrome_optimism
 
     zigzag:
       +schema: zigzag
@@ -499,6 +630,15 @@ models:
       avalanche_c:
         +schema: fraxswap_avalanche_c
         +materialized: view
+      bnb:
+        +schema: fraxswap_bnb
+        +materialized: view
+      polygon:
+        +schema: fraxswap_polygon
+        +materialized: view
+      ethereum:
+        +schema: fraxswap_ethereum
+        +materialized: view
 
     mstable:
       +schema: mstable
@@ -506,19 +646,22 @@ models:
       ethereum:
         +schema: mstable_ethereum
         +materialized: view
-        
+
     platypus_finance:
       +schema: platypus_finance
       +materialized: view
       avalanche_c:
         +schema: platypus_finance_avalanche_c
         +materialized: view
-        
+
     woofi:
       +schema: woofi
       +materialized: view
       avalanche_c:
         +schema: woofi_avalanche_c
+        +materialized: view
+      bnb:
+        +schema: woofi_bnb
         +materialized: view
 
     hashflow:
@@ -552,6 +695,56 @@ models:
         +schema: zeroex_ethereum
         +materialized: view
 
+    wombat:
+      +schema: wombat
+      +materialized: view
+      bnb:
+        +schema: wombat_bnb
+        +materialized: view
+
+    iziswap:
+      +schema: iziswap
+      +materialized: view
+      bnb:
+        +schema: iziswap_bnb
+        +materialized: view
+        
+    hop_protocol:
+      +schema: hop_protocol
+      +materialized: view
+      optimism:
+        +schema: hop_protocol_optimism
+        +materialized: view
+      # ethereum:
+      #   +schema: hop_protocol_ethereum
+      #   +materialized: view
+      # polygon:
+      #   +schema: hop_protocol_polygon
+      #   +materialized: view
+      # polygon2:
+      #   +schema: hop_polygon
+      #   +materialized: view
+      # arbitrum:
+      #   +schema: hop_protocol_arbitrum
+      #   +materialized: view
+      # gnosis:
+      #   +schema: hop_protocol_gnosis
+      #   +materialized: view
+      # gnosis2:
+      #   +schema: hop_gnosis
+      #   +materialized: view
+    
+    # ovm_optimism:
+    #   optimism:
+    #     +schema: ovm_optimism
+    #     +materialized: view
+    chain_info:
+      +schema: chain_info
+      +materialized: view
+    bridge:
+      +schema: bridge
+      +materialized: view
+
 seeds:
   spellbook:
     balances:
@@ -581,6 +774,16 @@ seeds:
             evt_block_time: timestamp
             evt_tx_hash: string
             price: string
+        opensea_wyvern_trades_samples:
+          +column_types:
+            tx_hash: string
+            block_time: timestamp
+            token_id: string
+            amount_original: double
+            buyer: string
+            seller: string
+            platform_fee_amount: double
+            royalty_fee_amount: double
       solana:
         +enabled: true
         +schema: test_data
@@ -589,6 +792,25 @@ seeds:
             block_time: timestamp
             tx_hash: string
             amount: string
+
+    seaport:
+      +enabled: true
+      +schema: test_data
+      seaport_trades_seed:
+        +column_types:
+          blockchain: string
+          project: string
+          version: string
+          block_date: date
+          tx_hash: string
+          evt_index: int
+          nft_contract_address: string
+          token_id: string
+          sub_type: string
+          sub_idx: int
+          buyer: string
+          seller: string
+
     magiceden:
       solana:
         +enabled: true
@@ -648,7 +870,7 @@ seeds:
           amount_raw: string
           currency_contract: string
     dao:
-      +enabled: true 
+      +enabled: true
       +schema: test_data
       dao_addresses_seed:
         +column_types:
@@ -656,7 +878,7 @@ seeds:
           dao_creator_tool: string
           dao: string
           dao_wallet_address: string
-          created_date: date 
+          created_date: date
       dao_transactions_seed:
         +column_types:
           blockchain: string
@@ -671,6 +893,21 @@ seeds:
       ethereum:
         +enabled: true
         +schema: test_data
+
+    chainlink:
+      +enabled: true
+      +schema: test_data
+      chainlink_get_price_seed:
+        +column_types:
+          blockchain: string
+          block_time: timestamp
+          block_number: int
+          feed_name: string
+          oracle_price: double
+          proxy_address: string
+          aggregator_address: string
+          underlying_token_address: string
+
     nft:
       +enabled: true
       +schema: test_data
@@ -678,6 +915,35 @@ seeds:
         +column_types:
           master_address: string
           alternative_address: string
+      nft_wash_trades_refactor_seed:
+        +column_types:
+          blockchain: string
+          project: string
+          version: string
+          nft_contract_address: string
+          token_id: bigint
+          token_standard: string
+          trade_category: string
+          buyer: string
+          seller: string
+          project_contract_address: string
+          aggregator_name: string
+          aggregator_address: string
+          tx_from: string
+          tx_to: string
+          block_time: string
+          block_date: string
+          block_number: bigint
+          tx_hash: string
+          unique_trade_id: string
+          buyer_first_funded_by: string
+          seller_first_funded_by: string
+          filter_1_same_buyer_seller: boolean
+          filter_2_back_and_forth_trade: boolean
+          filter_3_bought_or_sold_3x: boolean
+          filter_4_first_funded_by_same_wallet: boolean
+          is_wash_trade: boolean
+
     nexusmutual:
       ethereum:
         +enabled: true
@@ -692,6 +958,7 @@ seeds:
             sum_assured: string
             premium: string
             premium_nxm: string
+
     perpetual:
       +enabled: true
       +schema: test_data
@@ -731,41 +998,33 @@ seeds:
             amount: double
             tx_num: long
 
-    seaport:
+    quix:
       +enabled: true
       +schema: test_data
-      seaport_nft_trades_seed:
+      quix_events_seed:
         +column_types:
           blockchain: string
           project: string
           version: string
           block_date: date
           block_time: timestamp
-          evt_index: int
-          sub_idx: int
-          sub_type: string
-          seller: string
-          buyer: string
+          token_id: string
+          collection: string
+          token_standard: string
           trade_type: string
+          number_of_items: int
           trade_category: string
           evt_type: string
+          seller: string
+          buyer: string
           nft_contract_address: string
-          token_id: string
-          number_of_items: int
-          token_standard: string
-          amount_original: double
-          amount_raw: double
-          currency_contract: string
           project_contract_address: string
-          platform_fee_receive_address: string
-          royalty_fee_receive_address: string
-          block_number: int
           tx_hash: string
+          evt_index: int
+          block_number: int
           tx_from: string
           tx_to: string
-          zone_address: string
-          estimated_price: string
-          is_private: string
+          royalty_fee_receive_address: string
 
     zeroex:
       ethereum:
@@ -791,3 +1050,24 @@ seeds:
             swap_flag: boolean
             matcha_limit_order_flag: boolean
             volume_usd: double
+
+    gmx:
+      avalanche_c:
+        +enabled: true
+        +schema: test_data
+        gmx_glp_aum_seed:
+          +column_types:
+            date: date
+            usdc_aum: double
+            usdc_e_aum: double
+
+    x2y2:
+      ethereum:
+        +enabled: true
+        +schema: test_data
+        x2y2_ethereum_trades_etherscan:
+          +column_types:
+            block_number: long
+            tx_hash: string
+            token_id: string
+            amount_original: double

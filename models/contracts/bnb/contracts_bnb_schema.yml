@@ -1,0 +1,18 @@
+version: 2
+
+models:
+ - name: contracts_bnb_contract_mapping
+   meta:
+     blockchain: bnb
+     sector: contracts
+     contributors: davidcheongyl
+   config:
+     tags: ['bnb', 'contracts', 'addresses']
+   description: "A list of contract addresses and their corresponding project names/creator."
+   columns:
+     - name: contract_address
+       description: "contract address of the dapp/project"
+     - name: project_name
+       description: "name of the dapp/project"
+     - name: project_type
+       description: "type of dapp/project (eg, DEX, Options, eg..)"

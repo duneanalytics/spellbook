@@ -7,11 +7,22 @@
 with
  stable_to_stable_trades as (
     select
-        distinct tx_hash
-    from {{ ref('cow_protocol_ethereum_trades') }}
-    where buy_token_address in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})
-    and sell_token_address in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})
+        tx_hash
+    from (
+        select distinct tx_hash
+        from {{ ref('dex_aggregator_trades') }}
+        where blockchain = 'ethereum'
+        and token_bought_address in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})
+        and token_sold_address in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})
+        UNION ALL
+        select distinct tx_hash
+        from {{ ref('dex_trades') }}
+        where blockchain = 'ethereum'
+        and token_bought_address in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})
+        and token_sold_address in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})
+    )
  )
+
 select
   array("ethereum") as blockchain,
   tx_hash,
