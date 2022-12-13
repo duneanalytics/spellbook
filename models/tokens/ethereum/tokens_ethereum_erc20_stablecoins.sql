@@ -1,4 +1,12 @@
-{{ config( alias='stablecoins', tags=['static'])}}
+{{ config(
+      alias='stablecoins'
+      , tags=['static']
+      , post_hook='{{ expose_spells(\'["ethereum"]\',
+                                  "sector",
+                                  "tokens_ethereum",
+                                  \'["gentrexha", "dot2dotseurat"]\') }}'
+  )
+}}
 
 SELECT LOWER(contract_address) as contract_address, symbol, decimals, name
 FROM (VALUES

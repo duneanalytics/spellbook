@@ -257,8 +257,6 @@ models:
         description: "Punk ID #"   
       - name: evt_tx_hash
         description: "Transfer transaction hash"
-      - name: punk_id_tx_rank
-        description: "Transfer rank per Punk ID # (1 = most recent)"   
 
   - name: cryptopunks_ethereum_listings_over_time
     meta:

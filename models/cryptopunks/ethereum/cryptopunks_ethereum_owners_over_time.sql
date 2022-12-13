@@ -1,7 +1,7 @@
 {{ config(
         alias ='owners_over_time',
         unique_key='day',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
+        post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                     "project",
                                     "cryptopunks",
                                     \'["cat"]\') }}'
@@ -50,4 +50,5 @@ select day
         , count(wallet) filter (where holding > 0) as unique_wallets
 from combined_table
 group by 1
+order by day desc
 ;

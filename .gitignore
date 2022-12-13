@@ -3,6 +3,7 @@
 manifest.json
 macros/dune/create_views_of_dependencies.sql
 macros/dune/alter_table_locations.sql
+scripts/integration_test/test_diffs_tokens/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
