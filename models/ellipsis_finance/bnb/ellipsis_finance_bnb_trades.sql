@@ -96,7 +96,7 @@ WITH exchange_evt_all as (
     {%- endif %}
     {%- endfor %}
 ),
-
+ 
 exchange_und_evt_all as (
     {%- for src in evt_TokenExchangeUnderlying_sources %}
     SELECT
