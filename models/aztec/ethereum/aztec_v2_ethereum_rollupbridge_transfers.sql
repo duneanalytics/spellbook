@@ -196,7 +196,7 @@ tfers_categorized as (
         LEFT JOIN {{ref('tokens_erc20')}}  tk on t.contract_address = tk.contract_address AND tk.blockchain = 'ethereum'
         LEFT JOIN all_bridges to_contract on t.tx_to = to_contract.contract_address
         LEFT JOIN all_bridges from_contract on t.tx_from = from_contract.contract_address
-)
+) 
 SELECT * FROM tfers_categorized
 WHERE value_norm != 0
 ;
