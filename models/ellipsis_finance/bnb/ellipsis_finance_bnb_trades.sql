@@ -8,7 +8,7 @@
     post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
                                 "ellipsis_finance",
-                                \'["Henrystats"]\') }}'
+                                \'["Henrystats", "0xRob"]\') }}'
     )
 }}
 -- https://www.coinbase.com/price/ellipsis
