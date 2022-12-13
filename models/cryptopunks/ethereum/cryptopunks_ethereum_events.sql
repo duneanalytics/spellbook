@@ -14,11 +14,11 @@ with cryptopunks_bids_and_sales as (
     (
     select  "PunkBought" as event_type
             , punkIndex as punk_id 
-            , value/1e18 as sale_price   
-            , NULL as bid_amount 
+            , cast(value/1e18 as double) as sale_price   
+            , cast(NULL as double) as bid_amount 
             , toAddress as to_address
             , fromAddress as from_address 
-            , NULL as bid_from_address 
+            , cast(NULL as varchar(5)) as bid_from_address 
             , evt_block_number 
             , evt_index
             , evt_block_time
@@ -29,10 +29,10 @@ with cryptopunks_bids_and_sales as (
     
     select  "PunkBidEntered" as event_type
             , punkIndex as punk_id 
-            , NULL as sale_price
+            , cast(NULL as double) as sale_price
             , value/1e18 as bid_amount 
-            , NULL as to_address
-            , NULL as from_address
+            , cast(NULL as varchar(5)) as to_address
+            , cast(NULL as varchar(5)) as from_address
             , fromAddress as bid_from_address 
             , evt_block_number 
             , evt_index
@@ -44,10 +44,10 @@ with cryptopunks_bids_and_sales as (
     
     select  "PunkBidWithdrawn" as event_type
             , punkIndex as punk_id 
-            , NULL as sale_price
+            , cast(NULL as double) as sale_price
             , value/1e18 as bid_amount 
-            , NULL as to_address
-            , NULL as from_address
+            , cast(NULL as varchar(5)) as to_address
+            , cast(NULL as varchar(5)) as from_address
             , fromAddress as bid_from_address 
             , evt_block_number 
             , evt_index
