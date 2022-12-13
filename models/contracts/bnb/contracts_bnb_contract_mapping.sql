@@ -9902,7 +9902,6 @@ from
   ('0xcef9b240c13f269354e5ae3d6808fecf9834bf10', 'SaTT', 'Social'),
   ('0xffa1d46642ad43a701aaa1484826834986eb53fc', 'SaTT', 'Social'),
   ('0x3b95d0df0e02cdec2c1369f37d0e66795469693a', 'BitSport', 'Gaming'),
-  ('0x3b95d0df0e02cdec2c1369f37d0e66795469693a', 'BitSport', 'Gaming'),
 ('0x814dc4a7cdd45e685771b06741f426ec9380267f', 'TopGoal', 'Gaming'),
 ('0x4803ac6b79f9582f69c4fa23c72cb76dd1e46d8d', 'TopGoal', 'Gaming'),
 ('0x7e20fec0e64e81e4b9812bd4886cd1fd3ad4df45', 'BTC-POR', 'Red Alarm'),
