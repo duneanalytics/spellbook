@@ -7,7 +7,6 @@
     unique_key = ['block_date', 'tx_hash', 'evt_index', 'sub_type', 'sub_idx'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                             "project",
-                            "seaport",
                             "quix",
                             \'["chuxin"]\') }}'
     )

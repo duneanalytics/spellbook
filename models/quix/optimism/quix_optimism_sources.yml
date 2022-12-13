@@ -150,7 +150,7 @@ sources:
           - &offer
             name: offer
             description: "The offer contains an array of items that may be transferred from the offerer's account."
-          - &offer
+          - &offerer
             name: offerer
             description: "The address making the offer."
           - &orderHash
