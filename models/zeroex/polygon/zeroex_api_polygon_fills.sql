@@ -288,20 +288,20 @@ all_tx AS (
     
     SELECT *
     FROM direct_uniswapv3
-    /* UNION ALL SELECT *
-    FROM direct_PLP */
+    UNION ALL SELECT *
+    FROM direct_PLP 
     UNION ALL SELECT *
     FROM ERC20BridgeTransfer
     UNION ALL SELECT *
     FROM BridgeFill
-    UNION ALL */ SELECT *
+    UNION ALL  SELECT *
     FROM NewBridgeFill 
     UNION ALL SELECT *
     FROM v4_rfq_fills_no_bridge
     UNION ALL SELECT *
     FROM v4_limit_fills_no_bridge
     UNION ALL SELECT *
-    FROM otc_fills */
+    FROM otc_fills 
 )
 
 SELECT 
