@@ -7,7 +7,7 @@
     unique_key = ['pool', 'token_id']
     )
 }}
-
+ 
 {%- set call_coin_sources = [
  source('ellipsis_finance_bnb', '2brl_call_coins')
  ,source('ellipsis_finance_bnb', '2pool_call_coins')
