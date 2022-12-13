@@ -65,7 +65,7 @@ FROM (
     SELECT DISTINCT
         contract_address as pool,
         arg0 as token_id,
-        output_0 as token_address,
+        output_0 as token_address
     FROM {{ src }}
     WHERE call_success = true
         {%- if is_incremental() %}
