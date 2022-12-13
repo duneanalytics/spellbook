@@ -1,7 +1,7 @@
 {{ config(
         alias ='current_listings',
         unique_key='punk_id',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
+        post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                     "project",
                                     "cryptopunks",
                                     \'["cat"]\') }}'

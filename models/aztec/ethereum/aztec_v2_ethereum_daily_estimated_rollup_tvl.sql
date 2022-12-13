@@ -1,11 +1,6 @@
 {{ config(
     schema = 'aztec_v2_ethereum',
     alias = 'daily_estimated_rollup_tvl',
-    partition_by = ['date'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['token_address', 'date'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "aztec_v2",
@@ -63,17 +58,10 @@ rollup_balance_changes as (
         p.symbol, 
         AVG(p.price) as price
     FROM 
-    token_addresses ta 
-    INNER JOIN 
-        {{ source('prices', 'usd') }} p 
-        ON ta.token_address = p.contract_address
-        AND p.blockchain = 'ethereum'
-        {% if not is_incremental() %}
-        AND p.minute >= '{{first_transfer_date}}'
-        {% endif %}
-        {% if is_incremental() %}
-        AND p.minute >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
+    {{ source('prices', 'usd') }} p 
+    WHERE p.minute >= '{{first_transfer_date}}'
+    AND p.contract_address IN (SELECT token_address FROM token_addresses)
+    AND p.blockchain = 'ethereum'
     GROUP BY 1, 2, 3 
 )
 
@@ -82,18 +70,12 @@ rollup_balance_changes as (
         date_trunc('day', p.minute) as day, 
         AVG(p.price) as price,
         1 as price_eth
-
     FROM 
-        {{ source('prices', 'usd') }} p 
-        WHERE p.blockchain = 'ethereum'
-        AND p.symbol = 'WETH'
-        {% if not is_incremental() %}
-        AND p.minute >= '{{first_transfer_date}}'
-        {% endif %}
-        {% if is_incremental() %}
-        AND p.minute >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-    GROUP BY 1, 3
+    {{ source('prices', 'usd') }} p 
+    WHERE p.minute >= '{{first_transfer_date}}'
+    AND p.blockchain = 'ethereum'
+    AND p.symbol = 'WETH'
+    GROUP BY 1, 3 
 )
 
 , token_prices as (
@@ -122,5 +104,5 @@ rollup_balance_changes as (
   LEFT JOIN token_prices_eth bb on b.date = bb.day AND b.token_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -- using this to get price for missing ETH token 
   
 )
-select * from token_tvls
+select * from token_tvls 
 ;
