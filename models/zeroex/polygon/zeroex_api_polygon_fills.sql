@@ -229,7 +229,7 @@ direct_PLP AS (
             plp.evt_tx_hash,
             plp.evt_index               AS evt_index,
             plp.contract_address,
-            plp.evt_block_time          AS block_time,f
+            plp.evt_block_time          AS block_time,
             provider                    AS maker,
             recipient                   AS taker,
             inputToken                  AS taker_token,
