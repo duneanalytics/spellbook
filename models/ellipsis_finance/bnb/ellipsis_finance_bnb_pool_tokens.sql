@@ -11,7 +11,7 @@
 {%- set call_coin_sources = [
  source('ellipsis_finance_bnb', '2brl_call_coins')
  ,source('ellipsis_finance_bnb', '2pool_call_coins')
- ,source('ellipsis_finance_bnb', '2pool_call_coins')    -- todo: this should be 3brl?
+ ,source('ellipsis_finance_bnb', '3brl_call_coins')
  ,source('ellipsis_finance_bnb', '3EPS_call_coins')
  ,source('ellipsis_finance_bnb', 'Ankr_BNB_call_coins')
  ,source('ellipsis_finance_bnb', 'ankr_eth_call_coins')
