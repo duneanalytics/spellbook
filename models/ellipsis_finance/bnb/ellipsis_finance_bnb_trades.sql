@@ -54,7 +54,9 @@
     ,source('ellipsis_finance_bnb', 'USDN_val3EPS_evt_TokenExchange')
     ,source('ellipsis_finance_bnb', 'USDS_val3EPS_evt_TokenExchange')
     ,source('ellipsis_finance_bnb', 'val3EPS_evt_TokenExchange')
+    ,source('ellipsis_finance_bnb', 'val3EPS_evt_TokenExchangeUnderlying')
     ,source('ellipsis_finance_bnb', 'valBTC_renBTC_evt_TokenExchange')
+    ,source('ellipsis_finance_bnb', 'valBTC_renBTC_evt_TokenExchangeUnderlying')
     ,source('ellipsis_finance_bnb', 'valDAI_val3EPS_evt_TokenExchange')
     ,source('ellipsis_finance_bnb', 'valTUSD_val3EPS_evt_TokenExchange')
 ] -%}
@@ -70,8 +72,6 @@
     ,source('ellipsis_finance_bnb', 'USDL_val3EPS_evt_TokenExchangeUnderlying')
     ,source('ellipsis_finance_bnb', 'USDN_val3EPS_evt_TokenExchangeUnderlying')
     ,source('ellipsis_finance_bnb', 'USDS_val3EPS_evt_TokenExchangeUnderlying')
-    ,source('ellipsis_finance_bnb', 'val3EPS_evt_TokenExchangeUnderlying')
-    ,source('ellipsis_finance_bnb', 'valBTC_renBTC_evt_TokenExchangeUnderlying')
     ,source('ellipsis_finance_bnb', 'valDAI_val3EPS_evt_TokenExchangeUnderlying')
     ,source('ellipsis_finance_bnb', 'valTUSD_val3EPS_evt_TokenExchangeUnderlying')
 ] -%}
