@@ -9690,6 +9690,21 @@ FROM (VALUES
     (9682,'Reverse',8,144,3,18,'Normal',204,200,'Ribbed','',''),
     (9683,'Reverse',26,116,3,15,'Normal',1,200,'Normal','',''),
     (9684,'Forward',21,34,3,12,'Normal',228,1000,'Fuzzy','','')
+    , (9685,'Forward',32,168,3,18,'Normal',116,1000,'Fuzzy','','')
+    , (9686,'Reverse',28,127,3,19,'Normal',247,200,'Normal','','')
+    , (9687,'Forward',21,178,3,15,'Normal',36,200,'Ribbed','','')
+    , (9688,'Forward',24,97,3,15,'Normal',227,200,'Normal','','')
+    , (9689,'Forward',35,94,3,12,'Normal',26,200,'Normal','','')
+    , (9690,'Forward',27,186,3,16,'Normal',68,200,'Normal','','')
+    , (9691,'Reverse',14,31,3,13,'Normal',101,200,'Normal','','')
+    , (9692,'Forward',21,146,3,15,'Normal',4,200,'Normal','','')
+    , (9693,'Forward',35,218,3,15,'Normal',133,200,'Normal','','')
+    , (9694,'Forward',7,14,3,14,'Normal',124,200,'Normal','','')
+    , (9695,'Forward',11,173,3,16,'Normal',138,200,'Ribbed','','')
+    , (9696,'Forward',16,252,3,19,'Normal',85,1000,'Fuzzy','','')
+    , (9697,'Reverse',29,224,3,15,'Normal',217,1000,'Fuzzy','','')
+    , (9698,'Forward',10,194,3,17,'Normal',109,200,'Normal','','')
+    , (9699,'Reverse',9,57,3,14,'Normal',1,200,'Normal','','')
 
 
  ) AS temp_table (token_id, color_direction, color_spread, end_color, height, segments, spectrum, start_color, steps_between, squiggle_type, day_zero, harmonic)
