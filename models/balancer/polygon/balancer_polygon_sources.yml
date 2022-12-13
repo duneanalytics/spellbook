@@ -142,3 +142,43 @@ sources:
           - *swapFeePercentage
           - *symbol
           - *tokens
+
+      - name: LiquidityBootstrappingPool_evt_GradualWeightUpdateScheduled
+        description: >
+          Decoded table related to scheduled gradual weight updates on the Balancer LiquidityBootstrappingPool contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'LBP contract address'
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: endTime
+            description: 'Unix timestamp of the LBP end time'
+          - name: endWeights
+            description: 'Array with the weights of the LBP tokens at the end of the LBP'
+          - name: startTime
+            description: 'Unix timestamp of the LBP start time'
+          - name: startWeights
+            description: 'Array with the weights of the LBP tokens at the start of the LBP'
+
+      - name: NoProtocolFeeLiquidityBootstrappingPool_evt_GradualWeightUpdateScheduled
+        description: >
+          Decoded table related to scheduled gradual weight updates on the Balancer NoProtocolFeeLiquidityBootstrappingPool contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'LBP contract address'
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: endTime
+            description: 'Unix timestamp of the LBP end time'
+          - name: endWeights
+            description: 'Array with the weights of the LBP tokens at the end of the LBP'
+          - name: startTime
+            description: 'Unix timestamp of the LBP start time'
+          - name: startWeights
+            description: 'Array with the weights of the LBP tokens at the start of the LBP'
