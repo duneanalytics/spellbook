@@ -150,10 +150,10 @@ inner join {{ source('ethereum','transactions') }} tx on a.evt_tx_hash = tx.hash
 {% endif %}
 
 left join {{ source('prices', 'usd') }} p on p.minute = date_trunc('minute', a.evt_block_time)
-    and p.contract_address = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
-    and p.blockchain = "ethereum"
+    and p.contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+    and p.blockchain = 'ethereum'
 {% if is_incremental() %}
-    and p.minute >= date_trunc("day", now() - interval '1 week')
+    and p.minute >= date_trunc('day', now() - interval '1 week')
 {% endif %}
 
 left join {{ ref('nft_ethereum_aggregators') }} agg on agg.contract_address = tx.to
