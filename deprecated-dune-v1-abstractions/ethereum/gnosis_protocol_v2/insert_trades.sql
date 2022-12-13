@@ -151,7 +151,11 @@ BEGIN
                        fee_atoms,
                        fee_usd,
                        order_uid,
-                       receiver,
+                       case
+                          when receiver = '\x0000000000000000000000000000000000000000'
+                            then trader
+                          else receiver
+                       end                                    as receiver,
                        sell_price,
                        sell_token_address,
                        sell_token,
