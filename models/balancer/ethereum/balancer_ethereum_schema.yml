@@ -298,7 +298,7 @@ models:
   - name: balancer_v2_ethereum_lbps
     meta:
       blockchain: ethereum
-      project: balancer
+      project: balancer_v2
       contributors: stefenon
     config:
       tags: ['ethereum', 'balancer', 'lbp']
