@@ -197,3 +197,24 @@ models:
       - &slippage_bips
         name: slippage_bips
         description: User's slippage tolerance configured through the interface. Used to compute trade execution price improvement (can be Null)
+  - name: cow_protocol_ethereum_order_rewards
+    meta:
+      blockchain: ethereum
+      project: cow_protocol
+      contributors: bh2smith
+    config:
+      tags: ['ethereum','cow_protocol','app_data', "metadata"]
+    description: >
+        Order Rewards contains the data necessary to compute Weekly Solver Payouts.
+        In particular, how much COW token solvers are entitled for each settled order.
+        Furthermore, since the introduction of limit orders into the the protocol, 
+        this table also contains the surplus fee.
+    columns:
+      - *tx_hash
+      - &cow_reward
+        name: cow_reward
+        description: ""
+      - &surplus_fee
+        name: surplus_fee
+        description: ""
+      - *order_uid
