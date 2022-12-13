@@ -1,0 +1,13 @@
+{{ config(alias='order_rewards',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "project",
+                                    "cow_protocol",
+                                    \'["bh2smith"]\') }}'
+)}}
+
+select
+    tx_hash,
+    data.amount as cow_reward,
+    cast(data.surplus_fee as double) as surplus_fee,
+    order_uid
+from cowswap.raw_order_rewards
