@@ -9,7 +9,7 @@
 }}
 
 WITH events AS (
-    SELECT 
+    SELECT
         'bnb' AS blockchain,
         'pancakeswap' AS project,
         'v1' AS version,
@@ -34,7 +34,7 @@ WITH events AS (
     WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
-    SELECT 
+    SELECT
         events.blockchain,
         events.project,
         events.version,
@@ -72,7 +72,7 @@ WITH events AS (
         CAST(0 AS DOUBLE) AS royalty_fee_percentage,
         0 AS royalty_fee_receive_address,
         0 AS royalty_fee_currency_symbol,
-        events.block_number || events.tx_hash || events.evt_index AS unique_trade_id
+        events.block_number || '-' || events.tx_hash || '-' || events.evt_index AS unique_trade_id
 
     FROM events
     LEFT JOIN {{ ref('nft_aggregators') }} agg ON events.buyer=agg.contract_address AND agg.blockchain='bnb'
