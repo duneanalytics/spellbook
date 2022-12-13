@@ -61,12 +61,12 @@ SELECT
     token_id,
     token_address
 FROM (
-    {%- for call source in call_coin_sources %}
+    {%- for src in call_coin_sources %}
     SELECT DISTINCT
         contract_address as pool,
         arg0 as token_id,
         output_0 as token_address,
-    FROM {{ source }}
+    FROM {{ src }}
     WHERE call_success = true
         {%- if is_incremental() %}
         AND call_block_time >= date_trunc("day", now() - interval '1 week')
