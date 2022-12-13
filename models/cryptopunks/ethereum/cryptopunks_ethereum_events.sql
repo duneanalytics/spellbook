@@ -13,11 +13,11 @@ with cryptopunks_bids_and_sales as (
     from 
     (
     select  "PunkBought" as event_type
-            , `punkIndex` as punk_id 
-            , `value`/1e18 as sale_price   
+            , punkIndex as punk_id 
+            , value/1e18 as sale_price   
             , NULL as bid_amount 
-            , `toAddress` as to_address
-            , `fromAddress` as from_address 
+            , toAddress as to_address
+            , fromAddress as from_address 
             , NULL as bid_from_address 
             , evt_block_number 
             , evt_index
@@ -28,12 +28,12 @@ with cryptopunks_bids_and_sales as (
     union all 
     
     select  "PunkBidEntered" as event_type
-            , `punkIndex` as punk_id 
+            , punkIndex as punk_id 
             , NULL as sale_price
-            , `value`/1e18 as bid_amount 
+            , value/1e18 as bid_amount 
             , NULL as to_address
             , NULL as from_address
-            , `fromAddress` as bid_from_address 
+            , fromAddress as bid_from_address 
             , evt_block_number 
             , evt_index
             , evt_block_time
@@ -43,12 +43,12 @@ with cryptopunks_bids_and_sales as (
     union all 
     
     select  "PunkBidWithdrawn" as event_type
-            , `punkIndex` as punk_id 
+            , punkIndex as punk_id 
             , NULL as sale_price
-            , `value`/1e18 as bid_amount 
+            , value/1e18 as bid_amount 
             , NULL as to_address
             , NULL as from_address
-            , `fromAddress` as bid_from_address 
+            , fromAddress as bid_from_address 
             , evt_block_number 
             , evt_index
             , evt_block_time
@@ -60,7 +60,7 @@ with cryptopunks_bids_and_sales as (
     select  "Offer Accepted" as event_type
             , a.punk_id 
             , max(c.bid_amount) as sale_price -- max bid from buyer pre-sale 
-            , b.`to` as to_address -- for bids accepted, look up who the seller transferred to in the same block with 1 offset index 
+            , b.to as to_address -- for bids accepted, look up who the seller transferred to in the same block with 1 offset index 
             , a.from_address 
             , a.evt_block_number 
             , a.evt_index
@@ -69,43 +69,43 @@ with cryptopunks_bids_and_sales as (
     from cryptopunks_bids_and_sales a 
     
     join {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_Transfer') }} b
-    on a.from_address = b.`from` and a.evt_block_number = b.evt_block_number and a.evt_index = (b.evt_index+1)
+    on a.from_address = b.from and a.evt_block_number = b.evt_block_number and a.evt_index = (b.evt_index+1)
     
     left outer join cryptopunks_bids_and_sales c
-    on a.punk_id = c.punk_id and c.event_type = "PunkBidEntered" and c.punk_id_event_number < a.punk_id_event_number and c.bid_from_address = b.`to`
+    on a.punk_id = c.punk_id and c.event_type = "PunkBidEntered" and c.punk_id_event_number < a.punk_id_event_number and c.bid_from_address = b.to
     
     where a.sale_price = 0 and a.to_address = '0x0000000000000000000000000000000000000000'
     group by 1,2,4,5,6,7,8,9
 )
 , regular_sales as (
     select  "Buy" as event_type
-            , a.`punkIndex` as punk_id 
-            , a.`value`/1e18 as sale_price
-            , case when a.`toAddress` = '0x83c8f28c26bf6aaca652df1dbbe0e1b56f8baba2' -- gem 
-                then b.`to`
-                else a.`toAddress` end as to_address
-            , a.`fromAddress` as from_address 
+            , a.punkIndex as punk_id 
+            , a.value/1e18 as sale_price
+            , case when a.toAddress = '0x83c8f28c26bf6aaca652df1dbbe0e1b56f8baba2' -- gem 
+                then b.to
+                else a.toAddress end as to_address
+            , a.fromAddress as from_address 
             , a.evt_block_number 
             , a.evt_index
             , a.evt_block_time
             , a.evt_tx_hash
     from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBought') }} a
     left outer join {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkTransfer') }} b
-    on a.`punkIndex` = b.`punkIndex`
-        and a.`toAddress` = b.`from` 
-        and b.`from` = '0x83c8f28c26bf6aaca652df1dbbe0e1b56f8baba2'
+    on a.punkIndex = b.punkIndex
+        and a.toAddress = b.from 
+        and b.from = '0x83c8f28c26bf6aaca652df1dbbe0e1b56f8baba2'
         and a.evt_tx_hash = b.evt_tx_hash
 
-    where a.`value` != 0 or a.`toAddress` != '0x0000000000000000000000000000000000000000' -- only include sales here 
+    where a.value != 0 or a.toAddress != '0x0000000000000000000000000000000000000000' -- only include sales here 
 )
 
 
 select  "ethereum" as blockchain
         , "cryptopunks" as project
-        , "v1" as `version`
+        , "v1" as version
         , a.evt_block_time as block_time
         , a.punk_id as token_id
-        , "CryptoPunks" as `collection`
+        , "CryptoPunks" as collection
         , a.sale_price * p.price as amount_usd
         , "erc20" as token_standard
         , '' as trade_type 
@@ -125,8 +125,8 @@ select  "ethereum" as blockchain
         , a.evt_block_number as block_number
         , a.evt_index as evt_index
         , a.evt_tx_hash as tx_hash
-        , tx.`from` as tx_from
-        , tx.`to` as tx_to
+        , tx.from as tx_from
+        , tx.to as tx_to
         , cast(0 as double) as platform_fee_amount_raw
         , cast(0 as double) as platform_fee_amount
         , cast(0 as double) as platform_fee_amount_usd
