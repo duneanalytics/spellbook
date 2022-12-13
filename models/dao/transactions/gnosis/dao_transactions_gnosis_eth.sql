@@ -32,7 +32,7 @@ transactions as (
             to as dao_wallet_address, 
             'tx-in' as tx_type, 
             tx_index, 
-            COALESCE(from '') as address_interacted_with,
+            COALESCE(from, '') as address_interacted_with,
             trace_address
         FROM 
         {{ source('gnosis', 'traces') }}
