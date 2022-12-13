@@ -15,7 +15,7 @@ with cryptopunks_bids_and_sales as (
     select  "PunkBought" as event_type
             , `punkIndex` as punk_id 
             , `value`/1e18 as sale_price   
-            , NULL as bid_amount 
+            , cast(NULL as double) as bid_amount 
             , `toAddress` as to_address
             , `fromAddress` as from_address 
             , NULL as bid_from_address 
