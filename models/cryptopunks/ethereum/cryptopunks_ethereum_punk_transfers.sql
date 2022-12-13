@@ -33,7 +33,11 @@ from
                         else cast(bytea2numeric_v2(substring(topic2 from 3)) as int) end as punk_id
                 , a.evt_tx_hash
         from {{ source('erc20_ethereum','evt_transfer') }} a 
-        inner join {{ source('ethereum','logs') }} b on a.evt_tx_hash = b.tx_hash 
+        inner join {{ source('ethereum','logs') }} b 
+                        on a.evt_tx_hash = b.tx_hash 
+                        {% if is_incremental() %}
+                        and b.block_time >= date_trunc('day', now() - interval '1 week')
+                        {% endif %}
         where a.contract_address = lower('0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB') -- cryptopunks contract 
                 and topic1 in   ( '0x58e5d5a525e3b40bc15abaa38b5882678db1ee68befd2f60bafe3a7fd06db9e3' -- PunkBought
                                 , '0x05af636b70da6819000c49f85b21fa82081c632069bb626f30932034099107d8' -- PunkTransfer
