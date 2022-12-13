@@ -11,8 +11,8 @@
                                 \'["Henrystats"]\') }}'
     )
 }}
-
-{% set project_start_date = '2021-03-01 00:00:00' %} -- https://www.coinbase.com/price/ellipsis
+-- https://www.coinbase.com/price/ellipsis
+{% set project_start_date = '2021-03-01 00:00:00' %}
 
 {%- set evt_TokenExchange_sources = [
      source('ellipsis_finance_bnb', '2brl_evt_TokenExchange')
@@ -75,7 +75,6 @@
     ,source('ellipsis_finance_bnb', 'valDAI_val3EPS_evt_TokenExchangeUnderlying')
     ,source('ellipsis_finance_bnb', 'valTUSD_val3EPS_evt_TokenExchangeUnderlying')
 ] -%}
-
 
 WITH exchange_evt_all as (
     {%- for src in evt_TokenExchange_sources %}
