@@ -525,7 +525,7 @@ WITH project_events AS (
         royalty_fee_amount_usd,
         royalty_fee_percentage,
         unique_trade_id
-    FROM {{ ref('knownorigin_ethereum_events') }}
+    FROM {{ ref('knownorigin_ethereum_events') }} 
 ),
 native_mints AS (
     SELECT
