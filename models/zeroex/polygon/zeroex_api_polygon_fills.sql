@@ -291,9 +291,10 @@ all_tx AS (
     UNION ALL */
     SELECT *
     FROM direct_PLP 
+    /*
     UNION ALL SELECT *
     FROM ERC20BridgeTransfer
-    /* UNION ALL SELECT *
+    UNION ALL SELECT *
     FROM BridgeFill */
     UNION ALL  SELECT *
     FROM NewBridgeFill 
