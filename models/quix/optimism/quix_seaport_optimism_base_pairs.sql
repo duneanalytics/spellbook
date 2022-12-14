@@ -70,7 +70,7 @@ with iv_offer_consideration as (
             , posexplode(offer) as (offer_idx, offer_item)
         from {{ source('quixotic_optimism', 'Seaport_evt_OrderFulfilled') }}
         {% if not is_incremental() %}
-        where evt_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
+        where evt_block_time >= '{{c_seaport_first_date}}'  -- seaport first txn
         {% endif %}
         {% if is_incremental() %}
         where evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -130,7 +130,7 @@ with iv_offer_consideration as (
             ,posexplode(consideration) as (consideration_idx, consideration_item)
         from {{ source('quixotic_optimism', 'Seaport_evt_OrderFulfilled') }}
         {% if not is_incremental() %}
-        where evt_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
+        where evt_block_time >= '{{c_seaport_first_date}}'  -- seaport first txn
         {% endif %}
         {% if is_incremental() %}
         where evt_block_time >= date_trunc("day", now() - interval '1 week')
