@@ -65,4 +65,7 @@ from (
     ,('beethovenx', 'Beethoven X')
     ,('openxswap', 'OpenXSwap')
     ,('eccdomains', 'ECC Domains')
+    ,('2pi_network','2Pi Network')
+    ,('twopi_network','2Pi Network')
+    ,('acryptos', 'AcryptoS')
     ) as temp_table (dune_name, mapped_name)

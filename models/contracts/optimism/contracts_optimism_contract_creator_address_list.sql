@@ -369,6 +369,8 @@ FROM (
       ,('0xd531795282a1d7857faf43416b4c135759db45c4', 'Sided Finance')
       ,('0x2dA7e3a7F21cCE79efeb66f3b082196EA0A8B9af', 'OmniSwap')
       ,('0x0c6c8f014d1B3E37F470d39356379E220e4Beb67', 'Resonate')
+      ,('0xe25831C97aC161AD58aEf70B6ceE507B0E49688C', '2Pi Network')
+      ,('0x8888888841B669313CdC735910214313d7420E25', 'AcryptoS')
 
   ) as temp_table (creator_address, contract_project)
 
