@@ -7,7 +7,7 @@
       strategy='check',
       check_cols= 'all',
       invalidate_hard_deletes=True,
-      depends_on = []
+      depends_on = [ref('tokens_erc20')]
     )
 }}
 
