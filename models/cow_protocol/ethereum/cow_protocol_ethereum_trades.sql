@@ -131,7 +131,7 @@ orders_and_trades as (
 -- this is implied by the inner join
 --      and call_success = true
 ),
-
+-- Validate Uid <--> app_data mapping here: https://dune.com/queries/1759039?d=1
 uid_to_app_id as (
     select
         uid,
