@@ -131,4 +131,3 @@ sources:
             description: 'Event index'
           - name: evt_block_time
             description: 'Timestamp for block event time in UTC'
-
