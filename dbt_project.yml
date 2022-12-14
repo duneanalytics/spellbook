@@ -766,11 +766,6 @@ seeds:
       ethereum:
         +enabled: true
         +schema: test_data
-        opensea_ethereum_trades_postgres:
-          +column_types:
-            block_time: timestamp
-            tx_hash: string
-            amount_original: string
         opensea_wyvern_trades_samples:
           +column_types:
             tx_hash: string
