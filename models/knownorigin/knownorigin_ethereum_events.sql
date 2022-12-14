@@ -76,6 +76,7 @@ with raw_ko_transactions as (
 select  'ethereum' as blockchain
         , 'known origin' as project
         , 'v1' as `version`
+        , cast(date_trunc('day', a.evt_block_time) AS date) as block_date
         , a.evt_block_time as block_time
         , a.token_id
         , 'Known Origin' as collection
