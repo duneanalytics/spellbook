@@ -36,16 +36,33 @@ WITH wyvern_call_data as (
         when addrs[3] != '{{ZERO_ADDR}}' then addrs[3]
         when addrs[10] != '{{ZERO_ADDR}}' then addrs[10]
       END as fee_recipient,
-      CASE WHEN addrs[4] = '{{SHARED_STOREFRONT}}' THEN 'Mint'
+      CASE WHEN addrs[4] = '{{SHARED_STOREFRONT}}' THEN 'Mint'  -- todo: this needs to be verified if correct
         ELSE 'Trade' END as evt_type,
-      CASE -- Relayer fee contains both royalty, marketplace and protocol fees, There were never any 'Wyvern' protocol fees so we can ignore them
-        when addrs[3] != '{{ZERO_ADDR}}' then uints[1]/10000
-        when addrs[10] != '{{ZERO_ADDR}}' then uints[0]/10000
-      END as seller_fee_percentage,    -- incl in price.
       CASE
-        when addrs[3] != '{{ZERO_ADDR}}' then uints[0]/10000
-        when addrs[10] != '{{ZERO_ADDR}}' then uints[1]/10000
-      END as buyer_fee_percentage,    -- excl in price.
+        when addrs[3] != '{{ZERO_ADDR}}'  -- SELL
+            then (case when (uints[0]+uints[1])/1e4 < 0.025 -- we assume no marketplace fees then..
+                then 0.0
+                else 0.025 end)
+        when addrs[10] != '{{ZERO_ADDR}}'  -- BUY
+            then (case when (addrs[9] != '{{ZERO_ADDR}}' --private listing
+                    OR (uints[9]+uints[10])/1e4 < 0.025) -- we assume no marketplace fees then..
+                then 0.0
+                else 0.025 end)
+      END as platform_fee,
+      CASE
+        when addrs[3] != '{{ZERO_ADDR}}'  -- SELL
+            then case when (uints[0]+uints[1])/1e4 < 0.025 -- we assume no marketplace fees then..
+                then (uints[0]+uints[1])/1e4
+                else (uints[0]+uints[1]-250)/1e4 end
+        when addrs[10] != '{{ZERO_ADDR}}'  -- BUY
+            then case when (addrs[9] != '{{ZERO_ADDR}}' --private listing
+                    OR (uints[9]+uints[10])/1e4 < 0.025) -- we assume no marketplace fees then..
+                then (uints[9]+uints[10])/1e4
+                else (uints[9]+uints[10]-250)/1e4 end
+      END as royalty_fee,
+      case when addrs[10] != '{{ZERO_ADDR}}' and addrs [6] = '{{ZERO_ADDR}}'
+        then 1.0 + uints[10]/1e4      -- on ERC20 BUY: add sell side taker fee (this is not included in the price from the evt) https://etherscan.io/address/0x7be8076f4ea4a4ad08075c2508e481d6c946d12b#code#L838
+        else 1.0 end as price_correction,
       call_trace_address,
       row_number() over (partition by call_block_number, call_tx_hash order by call_trace_address asc) as tx_call_order
     FROM
@@ -91,7 +108,7 @@ nft_transfers as (
 enhanced_orders as (
     select
         c.*,
-        o.price * (1+c.buyer_fee_percentage) as total_amount_raw,
+        o.price * c.price_correction as total_amount_raw,
         o.order_evt_index,
         o.prev_order_evt_index
     from wyvern_call_data c
@@ -135,8 +152,6 @@ SELECT
   t.block_time,
   t.block_number,
   t.tx_hash,
-  tx.from,
-  tx.to,
   t.nft_contract_address,
   t.token_standard,
   nft.name AS collection,
@@ -156,15 +171,15 @@ SELECT
   agg.contract_address as aggregator_address,
   tx.from as tx_from,
   tx.to as tx_to,
-  -- some complex price calculations
-  2.5/100 * (t.amount_raw/(1+buyer_fee_percentage)) AS platform_fee_amount_raw,
-  2.5/100 * (t.amount_raw/(1+buyer_fee_percentage)) / power(10,erc20.decimals) AS platform_fee_amount,
-  2.5/100 * (t.amount_raw/(1+buyer_fee_percentage)) / power(10,erc20.decimals) * p.price AS platform_fee_amount_usd,
-  CAST(2.5 AS DOUBLE) AS platform_fee_percentage,
-  CAST((100 * (seller_fee_percentage + buyer_fee_percentage - 2.5/100)) AS DOUBLE) as royalty_fee_percentage,
-  ((seller_fee_percentage + buyer_fee_percentage - 2.5/100) / (1 + buyer_fee_percentage) * amount_raw) AS royalty_fee_amount_raw,
-  ((seller_fee_percentage + buyer_fee_percentage - 2.5/100) / (1 + buyer_fee_percentage) * amount_raw) / power(10,erc20.decimals) AS royalty_fee_amount,
-  ((seller_fee_percentage + buyer_fee_percentage - 2.5/100) / (1 + buyer_fee_percentage) * amount_raw) / power(10,erc20.decimals) * p.price AS royalty_fee_amount_usd,
+  -- some complex price calculations, (t.amount_raw/t.price_correction) is the original base price for fees.
+  CAST(round((100 * platform_fee),4) AS DOUBLE) AS platform_fee_percentage,
+  platform_fee * (t.amount_raw/t.price_correction) AS platform_fee_amount_raw,
+  platform_fee * (t.amount_raw/t.price_correction) / power(10,erc20.decimals) AS platform_fee_amount,
+  platform_fee * (t.amount_raw/t.price_correction) / power(10,erc20.decimals) * p.price AS platform_fee_amount_usd,
+  CAST(round((100 * royalty_fee),4) AS DOUBLE) as royalty_fee_percentage,
+  royalty_fee * (t.amount_raw/t.price_correction) AS royalty_fee_amount_raw,
+  royalty_fee * (t.amount_raw/t.price_correction) / power(10,erc20.decimals) AS royalty_fee_amount,
+  royalty_fee * (t.amount_raw/t.price_correction) / power(10,erc20.decimals) * p.price AS royalty_fee_amount_usd,
   t.fee_recipient as royalty_fee_receive_address,
   CASE WHEN t.native_eth THEN 'ETH' ELSE erc20.symbol END AS royalty_fee_currency_symbol,
   'wyvern-opensea' || '-' || t.tx_hash || '-' || t.order_evt_index || '-' || t.nft_evt_index || '-' || token_id as unique_trade_id

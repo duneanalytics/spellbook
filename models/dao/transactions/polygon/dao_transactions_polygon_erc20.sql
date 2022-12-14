@@ -79,7 +79,7 @@ SELECT
     COALESCE(er.symbol, t.token) as asset,
     CAST(t.value AS DECIMAL(38,0)) as raw_value, 
     t.value/POW(10, COALESCE(er.decimals, 18)) as value, 
-    t.value/POW(10, COALESCE(er.decimals, 18)) * p.price as usd_value, 
+    t.value/POW(10, COALESCE(er.decimals, 18)) * COALESCE(p.price, dp.median_price) as usd_value, 
     t.tx_hash, 
     t.tx_index,
     t.address_interacted_with,
@@ -103,4 +103,13 @@ LEFT JOIN
     {% endif %}
     {% if is_incremental() %}
     AND p.minute >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+LEFT JOIN 
+{{ ref('dex_prices') }} dp 
+    ON dp.hour = date_trunc('hour', t.block_time)
+    AND dp.contract_address = t.token
+    AND dp.blockchain = 'polygon'
+    AND dp.hour >= '{{transactions_start_date}}'
+    {% if is_incremental() %}
+    AND dp.hour >= date_trunc("day", now() - interval '1 week')
     {% endif %}

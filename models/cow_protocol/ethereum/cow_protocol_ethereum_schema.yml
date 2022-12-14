@@ -171,3 +171,50 @@ models:
       - &token_approvals
         name: token_approvals
         description: Number of ERC20 token approvals made within the settlement
+  - name: cow_protocol_ethereum_app_data
+    meta:
+      blockchain: ethereum
+      project: cow_protocol
+      contributors: bh2smith
+    config:
+      tags: ['ethereum','cow_protocol','app_data', "metadata"]
+    description: >
+      CoW Protocol App Data is JSON content stored on IPFS corresponding to order AppHash (cf. CoW Documentation https://docs.cow.fi/front-end/creating-app-ids).
+    columns:
+      - &app_hash
+        name: app_hash
+        description: Unique identifier of AppData published on-chain, used to fetch remaining content from IPFS. This can be recovered from call data provided to the Settlement Contracts `settle` method
+      - &app_code
+        name: app_code
+        description: App Code is an indicator of where the order came from - primarily intended to be used for integration partners
+      - *environment
+      - &order_class
+        name: order_class
+        description: Enum flag indicating if an order was a market or limit order (can be Null)
+      - &referrer
+        name: referrer
+        description: Ethereum address of referrer - used for tracking affiliate data (can be Null)
+      - &slippage_bips
+        name: slippage_bips
+        description: User's slippage tolerance configured through the interface. Used to compute trade execution price improvement (can be Null)
+  - name: cow_protocol_ethereum_order_rewards
+    meta:
+      blockchain: ethereum
+      project: cow_protocol
+      contributors: bh2smith
+    config:
+      tags: ['ethereum','cow_protocol','app_data', "metadata"]
+    description: >
+        Order Rewards contains the data necessary to compute Weekly Solver Payouts.
+        In particular, how much COW token solvers are entitled for each settled order.
+        Furthermore, since the introduction of limit orders into the the protocol, 
+        this table also contains the surplus fee.
+    columns:
+      - *tx_hash
+      - &cow_reward
+        name: cow_reward
+        description: ""
+      - &surplus_fee
+        name: surplus_fee
+        description: ""
+      - *order_uid

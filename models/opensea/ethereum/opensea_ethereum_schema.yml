@@ -25,6 +25,8 @@ models:
             - amount_original
             - buyer
             - seller
+            - platform_fee_amount
+            - royalty_fee_amount
     columns:
       - &blockchain
         name: blockchain
