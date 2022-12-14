@@ -9,14 +9,14 @@ models:
       contributors: gentrexha
     config:
       tags: ['labels', 'ethereum', 'trader_frequencies', 'dex', 'dex_aggregator']
-    description: "Trades that traded from one stable coin to another"
+    description: "Trader frequencies (daily, weekly, monthly) for traders who use dex and dex aggregators"
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain"   
       - &address
         name: address
-        description: "Address hash of stable to stable trade"
+        description: "Address of trader"
       - &name
         name: name
         description: "Label name"
@@ -44,7 +44,7 @@ models:
       contributors: gentrexha
     config:
       tags: ['labels', 'ethereum', 'trader_frequencies', 'dex', 'dex_aggregator']
-    description:  "Trades that traded from one stable coin to another"
+    description:  "Trader frequencies (daily, weekly, monthly) for traders who use dex and dex aggregators"
     columns:
       - *blockchain
       - *address
