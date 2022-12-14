@@ -30,7 +30,7 @@ select
     when trades_per_day >= 1 then 'Daily Trader'
     when trades_per_day >= 0.142857142857 then 'Weekly Trader'
     else 'Monthly Trader'
-  end name
+  end as name,
   "trader_frequencies" AS category,
   "gentrexha" AS contributor,
   "query" AS source,
