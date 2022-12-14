@@ -90,6 +90,7 @@ models:
           combination_of_columns:
             - evt_tx_hash
             - evt_index
+            - block_date
     columns:
       - *contract_address
       - &block_date
