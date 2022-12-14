@@ -356,14 +356,18 @@ models:
       tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'ethereum', 'solana', 'address']
     description: >
         NFT linked addresses. Addresses that buy and sell NFTs from each other.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - master_address
+            - alternative_address
     columns:
       - *blockchain
       - name: master_address
         description: "Master address"
       - name: alternative_address
         description: "Alternative address"
-      - name: linked_address_id
-        description: "Unique linked address id"
 
 
   - name: nft_transfers
