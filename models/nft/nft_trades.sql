@@ -19,6 +19,7 @@
 ,'superrare_ethereum_trades'
 ,'zora_ethereum_trades'
 ,'blur_ethereum_trades'
+,'knownorigin_ethereum_trades'
 ] %}
 
 
