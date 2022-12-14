@@ -14,12 +14,22 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - blockchain
-              - block_time
               - block_number
               - proxy_address
-              - aggregator_address
               - underlying_token_address
-              - oracle_price
+      - check_seed:
+          seed_file: ref('chainlink_get_price_seed')
+          filter:
+            blockchain: polygon
+          match_columns:
+            - blockchain
+            - block_number
+            - proxy_address
+            - underlying_token_address
+          check_columns:
+            - aggregator_address
+            - feed_name
+            - oracle_price
     columns:
       - &blockchain
         name: blockchain

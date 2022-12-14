@@ -5,7 +5,11 @@
         unique_key = ['tx_hash', 'order_uid', 'evt_index'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
-        incremental_strategy='merge'
+        incremental_strategy='merge',
+        post_hook='{{ expose_spells(\'["gnosis"]\',
+                                    "project",
+                                    "cow_protocol",
+                                    \'["bh2smith", "gentrexha"]\') }}'
     )
 }}
 
@@ -195,7 +199,11 @@ valued_trades as (
                 ELSE NULL::numeric
                END)                                        as fee_usd,
            app_data,
-           receiver,
+           case
+              when receiver = '0x0000000000000000000000000000000000000000'
+              then trader
+              else receiver
+           end                                    as receiver,
            limit_sell_amount,
            limit_buy_amount,
            valid_to,
