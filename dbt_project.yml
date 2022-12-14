@@ -104,9 +104,6 @@ models:
       polygon:
         +schema: nft_polygon
         +materialized: view
-      optimism:
-        +schema: nft_optimism
-        +materialized: view
 
     compound:
       +schema: compound
@@ -708,7 +705,7 @@ models:
       bnb:
         +schema: iziswap_bnb
         +materialized: view
-        
+
     hop_protocol:
       +schema: hop_protocol
       +materialized: view
@@ -733,7 +730,7 @@ models:
       # gnosis2:
       #   +schema: hop_gnosis
       #   +materialized: view
-    
+
     # ovm_optimism:
     #   optimism:
     #     +schema: ovm_optimism
@@ -769,11 +766,6 @@ seeds:
       ethereum:
         +enabled: true
         +schema: test_data
-        opensea_ethereum_trades_postgres:
-          +column_types:
-            evt_block_time: timestamp
-            evt_tx_hash: string
-            price: string
         opensea_wyvern_trades_samples:
           +column_types:
             tx_hash: string
