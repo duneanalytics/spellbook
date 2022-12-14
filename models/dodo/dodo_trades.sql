@@ -8,8 +8,8 @@
 }}
 
 {% set dodo_models = [
-'dodo_ethereum_trades'
-,'dodo_bnb_trades'
+ref('dodo_ethereum_trades')
+, ref('dodo_bnb_trades')
 ] %}
 
 
@@ -27,8 +27,8 @@ FROM (
         token_pair,
         token_bought_amount,
         token_sold_amount,
-        CAST(token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw,
-        CAST(token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw,
+        token_bought_amount_raw,
+        token_sold_amount_raw,
         amount_usd,
         token_bought_address,
         token_sold_address,
@@ -40,7 +40,7 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ ref(dex_model) }}
+    FROM {{ dex_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
