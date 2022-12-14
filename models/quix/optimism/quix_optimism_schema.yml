@@ -570,7 +570,9 @@ models:
       - *amount_usd
       - *currency_symbol
       - *currency_contract
-      - *original_currency_contract
+      - &original_currency_contract
+        name: original_currency_contract
+        description: "Original currency contract"
       - *currency_decimal
       - *project_contract_address
       - *platform_fee_receive_address
