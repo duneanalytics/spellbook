@@ -186,7 +186,7 @@ models:
       - *token_address
       - *normalized_weight
 
-  - name: balancer_v2_ethereum_lbps
+  - name: balancer_v2_polygon_lbps
     meta:
       blockchain: polygon
       project: balancer_v2
