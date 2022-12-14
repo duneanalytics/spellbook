@@ -138,7 +138,7 @@ otc_fills AS (
     {% endif %}
 
 ),
-
+/*
 ERC20BridgeTransfer AS (
     SELECT 
             logs.tx_hash,
@@ -194,7 +194,7 @@ BridgeFill AS (
         {% if not is_incremental() %}
   --      AND block_time >= '{{zeroex_v4_start_date}}'
         {% endif %}
-),
+), */
 NewBridgeFill AS (
     SELECT 
             logs.tx_hash,
@@ -249,7 +249,7 @@ direct_PLP AS (
     {% if not is_incremental() %}
     WHERE evt_block_time >= '{{zeroex_v3_start_date}}'
     {% endif %}
-), */
+), 
 direct_uniswapv3 AS (
     SELECT 
             swap.evt_tx_hash                                                                        AS tx_hash,
@@ -282,18 +282,19 @@ direct_uniswapv3 AS (
       --  AND swap.evt_block_time >= '{{zeroex_v4_start_date}}'
         {% endif %}
 
-), 
+), */
 all_tx AS (
-    
+    /*
     SELECT *
     FROM direct_uniswapv3
-    /* UNION ALL SELECT *
-    FROM direct_PLP */
+     UNION ALL SELECT *
+    FROM direct_PLP 
     UNION ALL SELECT *
     FROM ERC20BridgeTransfer
     UNION ALL SELECT *
     FROM BridgeFill
-    UNION ALL SELECT *
+    UNION ALL */
+    SELECT *
     FROM NewBridgeFill 
     UNION ALL SELECT *
     FROM v4_rfq_fills_no_bridge
