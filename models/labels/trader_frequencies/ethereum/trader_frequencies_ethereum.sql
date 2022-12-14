@@ -8,19 +8,19 @@ with
  trader_frequencies as (
     select
         taker as address,
-        count(tx_hash) / datediff(max(block_time), min(block_time)) as trades_per_day
+        count(tx_hash) / datediff(max(block_date), min(block_date)) as trades_per_day
     from (
-        select taker, block_time, tx_hash
+        select taker, block_date, tx_hash
         from {{ ref('dex_aggregator_trades') }}
         where blockchain = 'ethereum'
         UNION ALL
-        select taker, block_time, tx_hash
+        select taker, block_date, tx_hash
         from {{ ref('dex_trades') }}
         where blockchain = 'ethereum'
     )
     group by taker
     -- That have at least more than 1 trade
-    having datediff(max(block_time), min(block_time)) > 0
+    having datediff(max(block_date), min(block_date)) > 0
  )
 
 select
@@ -29,7 +29,9 @@ select
   case
     when trades_per_day >= 1 then 'Daily Trader'
     when trades_per_day >= 0.142857142857 then 'Weekly Trader'
-    else 'Monthly Trader'
+    when trades_per_day >= 0.0333333333333 then 'Monthly Trader'
+    when trades_per_day >= 0.0027397260274 then 'Yearly Trader'
+    else 'Sparse Trader'
   end as name,
   "trader_frequencies" AS category,
   "gentrexha" AS contributor,
