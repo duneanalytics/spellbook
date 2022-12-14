@@ -19,7 +19,7 @@
                         '0x6b175474e89094c44da98b954eedeac495271d0f',
                         '0x88acdd2a6425c3faae4bc9650fd7e27e0bebb7ab',
                         '0x64aa3364f17a4d01c6f1751fd97c2bd3d7e7f1d5'
-                        ) %}
+                        ) %} -- WETH, USDC, DAI, MIST & OHM
 
 WITH lbps_call_create AS (
         {% for create_lbp_contract in create_lbp_contracts %}
@@ -113,5 +113,6 @@ WITH lbps_call_create AS (
     FROM lbps_info l
     LEFT JOIN {{ ref('tokens_erc20') }} t
     ON l.token = t.contract_address
+    AND t.blockchain = 'polygon'
     ORDER BY pool_id
     
