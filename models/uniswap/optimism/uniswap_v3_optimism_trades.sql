@@ -12,16 +12,16 @@
                                 \'["jeff-dude", "markusbkoch", "masquot", "milkyklim", "0xBoxer", "mewwts", "hagaetc"]\') }}'
     )
 }}
--- derived from
--- Select min(evt_block_time) from uniswap_v3_optimism.pair_evt_swap
-{% set project_start_date = '2021-12-14' %}
+-- OVM 1 Launch 06-23-21
+{% set project_start_date = '2021-06-23' %}
 
 WITH dexs AS
 (
     --Uniswap v3
     SELECT
         t.evt_block_time AS block_time
-        ,t.recipient AS taker
+        , t.evt_block_number
+        , t.recipient AS taker
         ,'' AS maker
         ,CASE WHEN amount0 < '0' THEN abs(amount0) ELSE abs(amount1) END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
         ,CASE WHEN amount0 < '0' THEN abs(amount1) ELSE abs(amount0) END AS token_sold_amount_raw
@@ -34,10 +34,10 @@ WITH dexs AS
         ,t.evt_index
     FROM
         {{ source('uniswap_v3_optimism', 'Pair_evt_Swap') }} t
-    INNER JOIN {{ source('uniswap_v3_optimism', 'factory_evt_poolcreated') }} f
+    INNER JOIN {{ ref('uniswap_optimism_pools') }} f
         ON f.pool = t.contract_address
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE t.evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
 )
 SELECT
@@ -74,11 +74,12 @@ SELECT
 FROM dexs
 INNER JOIN {{ source('optimism', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
+    AND tx.block_number = dexs.evt_block_number
     {% if not is_incremental() %}
     AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+    AND tx.block_time >= date_trunc('day', now() - interval '1' week)
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address 
@@ -94,7 +95,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
+    AND p_bought.minute >= date_trunc('day', now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
@@ -104,6 +105,6 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
+    AND p_sold.minute >= date_trunc('day', now() - interval '1 week')
     {% endif %}
 ;
