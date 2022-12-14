@@ -197,7 +197,7 @@ BridgeFill AS (
 ), */
 NewBridgeFill AS (
     SELECT 
-            logs.tx_hash,
+            logs.tx_hash as tx_hash,
             INDEX                                           AS evt_index,
             logs.contract_address,
             block_time                                      AS block_time,
