@@ -36,15 +36,15 @@ WITH tbl_cte_transaction AS
          , erc20TokenAmount AS token_amount_raw
     FROM {{ source ('zeroex_ethereum', 'ExchangeProxy_evt_ERC721OrderFilled') }}
     WHERE 1 = 1 
-    {% if is_incremental() %}
+        {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '1 week')
-    {% endif %} 
-    
-    {% if not is_incremental() %}
-    AND     evt_block_time >= '{{zeroex_v4_nft_start_date}}' 
-    {% endif %} 
+        {% endif %}
+        {% if not is_incremental() %}
+        AND evt_block_time >= '{{zeroex_v4_nft_start_date}}'
+        {% endif %}
 
     UNION ALL
+
     SELECT  evt_block_time
             , evt_tx_hash
             , evt_index
@@ -63,13 +63,12 @@ WITH tbl_cte_transaction AS
             , erc20FillAmount   AS token_amount_raw
     FROM {{ source ('zeroex_ethereum', 'ExchangeProxy_evt_ERC1155OrderFilled') }}
     WHERE 1 = 1 
-    {% if is_incremental() %}
+        {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '1 week')
-    {% endif %}
-
-    {% if not is_incremental() %}
-    AND     evt_block_time >= '{{zeroex_v4_nft_start_date}}' 
-    {% endif %}     
+        {% endif %}
+        {% if not is_incremental() %}
+        AND evt_block_time >= '{{zeroex_v4_nft_start_date}}'
+        {% endif %}
 )
 , tbl_usd AS
 (
@@ -86,39 +85,45 @@ WITH tbl_cte_transaction AS
         WHERE 1=1
             AND blockchain = 'ethereum'
             AND p.contract_address IN ( SELECT DISTINCT price_label FROM tbl_cte_transaction) 
-        {% if is_incremental() %}
+            {% if is_incremental() %}
             AND minute > now() - interval '100 days'
-        {% endif %}        
-
-        {% if not is_incremental() %}
+            {% endif %}
+            {% if not is_incremental() %}
             AND minute >= '{{zeroex_v4_nft_start_date}}' 
-        {% endif %}            
+            {% endif %}
     ) a
     WHERE ranker = 1 
 ) 
 , tbl_master AS
 (
-SELECT  a.evt_block_time                                                                             AS block_time
-       ,try_cast(date_trunc('day',a.evt_block_time) AS date)                                         AS block_date
-       ,a.evt_index
-       ,a.evt_tx_hash                                                                                AS tx_hash
-       ,a.maker
-       ,a.taker
-       ,a.matcher
-       ,a.nft_address
-       ,a.nft_id
-       ,a.label
-       ,a.price_label
-       ,a.token
-       ,a.token_amount_raw
-       ,CASE WHEN token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 'ETH'  ELSE b.symbol END AS symbol
-       ,b.price*(a.token_amount_raw/pow(10,b.decimals))                                              AS price_usd
-       ,(a.token_amount_raw/pow(10,b.decimals))                                                      AS token_amount
-       ,c.name                                                                                       AS project_name
+SELECT a.evt_block_time                                      AS block_time
+     , try_cast(date_trunc('day', a.evt_block_time) AS date) AS block_date
+     , a.evt_index
+     , a.evt_tx_hash                                         AS tx_hash
+     , a.maker
+     , a.taker
+     , a.matcher
+     , a.nft_address
+     , a.nft_id
+     , a.label
+     , a.price_label
+     , a.token
+     , a.token_amount_raw
+     , CASE
+            WHEN token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+            THEN 'ETH'
+            ELSE b.symbol
+      END                                                    AS symbol
+     , b.price * (a.token_amount_raw / pow(10, b.decimals))  AS price_usd
+     , (a.token_amount_raw / pow(10, b.decimals))            AS token_amount
+     , c.name                                                AS project_name
 FROM tbl_cte_transaction AS a
 LEFT JOIN tbl_usd AS b
-ON date_trunc('minute', a.evt_block_time) = b.minute AND a.price_label = b.contract_address
-    LEFT JOIN {{ ref('tokens_nft') }} AS c ON nft_address = c.contract_address AND c.blockchain = 'ethereum'
+    ON date_trunc('minute', a.evt_block_time) = b.minute
+    AND a.price_label = b.contract_address
+LEFT JOIN {{ ref('tokens_nft') }} AS c
+    ON nft_address = c.contract_address
+    AND c.blockchain = 'ethereum'
 )
 SELECT  *
 FROM tbl_master
