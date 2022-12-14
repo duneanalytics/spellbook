@@ -1050,7 +1050,6 @@ seeds:
             swap_flag: boolean
             matcha_limit_order_flag: boolean
             volume_usd: double
-<<<<<<< HEAD
       optimism:
         +enabled: true
         +schema: test_data
@@ -1097,26 +1096,3 @@ seeds:
             swap_flag: boolean
             matcha_limit_order_flag: boolean
             volume_usd: double
-=======
-
-    gmx:
-      avalanche_c:
-        +enabled: true
-        +schema: test_data
-        gmx_glp_aum_seed:
-          +column_types:
-            date: date
-            usdc_aum: double
-            usdc_e_aum: double
-
-    x2y2:
-      ethereum:
-        +enabled: true
-        +schema: test_data
-        x2y2_ethereum_trades_etherscan:
-          +column_types:
-            block_number: long
-            tx_hash: string
-            token_id: string
-            amount_original: double
->>>>>>> 0c99882a1e7bd8e570c64722b444fb242f88e758
