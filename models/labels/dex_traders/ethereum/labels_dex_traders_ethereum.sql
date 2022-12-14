@@ -3,7 +3,7 @@
 with 
  dex_traders as (
     select distinct taker
-    from dex.trades
+    from {{ref('dex_trades')}}
     where blockchain = 'ethereum'
   )
 select
