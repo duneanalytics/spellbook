@@ -447,9 +447,9 @@ models:
       - &block_date
         name: block_date
         description: "Block date in UTC"
-       - *block_number
-       - *tx_hash
-       - *evt_index
+      - *block_number
+      - *tx_hash
+      - *evt_index
       - &sub_type
         name: sub_type
         description: "Exploded column : `offer`|`consideration`"
