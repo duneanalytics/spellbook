@@ -1,6 +1,6 @@
 {{
     config(
-        schema="balancer_v2_optimism",
+        schema='balancer_v2_optimism',
         alias='pools_tokens_weights',
         materialized = 'incremental',
         file_format = 'delta',
