@@ -19,7 +19,6 @@ models:
       - check_seed:
           seed_file: ref('zeroex_api_ethereum_fills_sample')
           match_columns:
-            - block_date
             - tx_hash
             - evt_index
           check_columns:
