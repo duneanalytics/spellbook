@@ -3,12 +3,12 @@ version: 2
 models:
   - name: curvefi_trades
     meta:
-      blockchain: ethereum, avalanche_c
+      blockchain: ethereum, avalanche_c, optimism
       sector: dex
       project: curvefi
-      contributors: [jeff-dude, dsalv, yulesa, Henrystats]
+      contributors: [jeff-dude, dsalv, yulesa, Henrystats, msilb7]
     config:
-      tags: ['ethereum', 'avalanche_c', 'curvefi','trades', 'dex', 'cross-chain']
+      tags: ['ethereum', 'avalanche_c', 'optimism', 'curvefi','trades', 'dex', 'cross-chain']
     description: >
         curve trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:

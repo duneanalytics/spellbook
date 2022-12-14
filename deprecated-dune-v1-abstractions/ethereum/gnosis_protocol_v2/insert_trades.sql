@@ -151,7 +151,11 @@ BEGIN
                        fee_atoms,
                        fee_usd,
                        order_uid,
-                       receiver,
+                       case
+                          when receiver = '\x0000000000000000000000000000000000000000'
+                            then trader
+                          else receiver
+                       end                                    as receiver,
                        sell_price,
                        sell_token_address,
                        sell_token,
@@ -187,17 +191,22 @@ END
 $function$;
 
 
--- fill 2021: This is only ever relevant 1 time.
+-- fill 2021: This is only ever relevant for rebuilds
+DELETE FROM gnosis_protocol_v2.trades
+;
+
 SELECT gnosis_protocol_v2.insert_trades(
                '2021-03-03', --! Deployment date
                '2022-01-01'
            )
-WHERE NOT EXISTS(
-        SELECT *
-        FROM gnosis_protocol_v2.trades
-        WHERE block_time >= '2021-03-03'
-          AND block_time < '2022-01-01'
-    );
+           ;
+
+
+-- fill 2022: This is only ever relevant for rebuilds
+SELECT gnosis_protocol_v2.insert_trades(
+               '2022-01-01'
+           )
+           ;
 
 -- For the two cron jobs defined below,
 -- one is intended to back fill lagging price feed (while also including most recent trades).

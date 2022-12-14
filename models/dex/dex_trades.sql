@@ -17,33 +17,34 @@ list of models using old generic test, due to multiple versions in one model:
 */
 
 {% set dex_trade_models = [
-'uniswap_trades'
-,'sushiswap_trades'
-,'kyberswap_trades'
-,'fraxswap_trades'
-,'curvefi_trades'
-,'airswap_ethereum_trades'
-,'clipper_ethereum_trades'
-,'shibaswap_ethereum_trades'
-,'swapr_ethereum_trades'
-,'defiswap_ethereum_trades'
-,'dfx_ethereum_trades'
-,'pancakeswap_trades'
-,'dodo_ethereum_trades'
-,'woofi_trades'
-,'bancor_ethereum_trades'
-,'platypus_finance_avalanche_c_trades'
-,'trader_joe_trades'
-,'hashflow_trades'
-,'mstable_ethereum_trades'
-,'mdex_bnb_trades'
-,'zigzag_trades'
-,'nomiswap_bnb_trades'
-,'gmx_trades'
-,'biswap_bnb_trades' 
-,'wombat_bnb_trades'
-,'iziswap_bnb_trades'
-,'babyswap_bnb_trades'
+ ref('uniswap_trades')
+,ref('sushiswap_trades')
+,ref('kyberswap_trades')
+,ref('fraxswap_trades')
+,ref('curvefi_trades')
+,ref('airswap_ethereum_trades')
+,ref('clipper_ethereum_trades')
+,ref('shibaswap_ethereum_trades')
+,ref('swapr_ethereum_trades')
+,ref('defiswap_ethereum_trades')
+,ref('dfx_ethereum_trades')
+,ref('pancakeswap_trades')
+,ref('dodo_ethereum_trades')
+,ref('velodrome_optimism_trades')
+,ref('woofi_trades')
+,ref('bancor_ethereum_trades')
+,ref('platypus_finance_avalanche_c_trades')
+,ref('trader_joe_trades')
+,ref('hashflow_trades')
+,ref('mstable_ethereum_trades')
+,ref('mdex_bnb_trades')
+,ref('zigzag_trades')
+,ref('nomiswap_bnb_trades')
+,ref('gmx_trades')
+,ref('biswap_bnb_trades') 
+,ref('wombat_bnb_trades')
+,ref('iziswap_bnb_trades')
+,ref('babyswap_bnb_trades')
 ] %}
 
 
@@ -74,7 +75,7 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ ref(dex_model) }}
+    FROM {{ dex_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
