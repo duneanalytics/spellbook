@@ -137,3 +137,56 @@ with iv_offer_consideration as (
         {% endif %}
     )
 )
+
+,iv_base_pairs as (
+    select a.*
+            ,try_cast(date_trunc('day', a.block_time) as date) as block_date
+            ,case when offer_first_item_type = 'erc20' then 'offer accepted'
+                when offer_first_item_type in ('erc721','erc1155') then 'buy'
+                else 'etc' -- some txns has no nfts
+            end as order_type
+            ,case when offer_first_item_type = 'erc20' and sub_type = 'offer' and item_type = 'erc20' then true
+                when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and item_type in ('native','erc20') then true
+                else false
+            end is_price
+            ,case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and eth_erc_idx = 0 then true  -- offer accepted has no price at all. it has to be calculated.
+                when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and eth_erc_idx = 1 then true
+                else false
+            end is_netprice
+            ,case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and eth_erc_idx = 1 then true
+                when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and eth_erc_idx = 2 then true
+                else false
+            end is_platform_fee
+            ,case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and eth_erc_idx > 1 then true
+                when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and eth_erc_idx > 2 then true
+                else false
+            end is_creator_fee
+            ,case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and eth_erc_idx > 1 then eth_erc_idx - 1
+                when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and eth_erc_idx > 2 then eth_erc_idx - 2
+            end creator_fee_idx
+            ,case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and item_type in ('erc721','erc1155') then true
+                when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc721','erc1155') then true
+                else false
+            end is_traded_nft
+            ,case when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and item_type in ('erc721','erc1155') then true
+                else false
+            end is_moved_nft
+    from
+    (
+        select a.*
+            ,case when item_type in ('native','erc20') then sum(case when item_type in ('native','erc20') then 1 end) over (partition by tx_hash, evt_index, sub_type order by sub_idx) end as eth_erc_idx
+            ,sum(case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and item_type in ('erc721','erc1155') then 1
+                        when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc721','erc1155') then 1
+                end) over (partition by tx_hash, evt_index) as nft_cnt
+            ,sum(case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and item_type in ('erc721') then 1
+                        when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc721') then 1
+                end) over (partition by tx_hash, evt_index) as erc721_cnt
+            ,sum(case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and item_type in ('erc1155') then 1
+                        when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc1155') then 1
+                end) over (partition by tx_hash, evt_index) as erc1155_cnt
+        from iv_offer_consideration a
+    ) a
+)
+select *
+from iv_base_pairs
+;
