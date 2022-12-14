@@ -903,10 +903,6 @@ seeds:
     nft:
       +enabled: true
       +schema: test_data
-      nft_linked_addresses_postgres:
-        +column_types:
-          master_address: string
-          alternative_address: string
       nft_wash_trades_refactor_seed:
         +column_types:
           blockchain: string
