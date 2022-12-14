@@ -58,5 +58,5 @@ select day
         , count(wallet) filter (where holding > 0) as unique_wallets
 from cumulative_data
 group by 1
-order by day desc
+order by day desc 
 ;
