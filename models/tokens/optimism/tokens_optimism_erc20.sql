@@ -308,7 +308,7 @@ SELECT LOWER(contract_address) AS contract_address
       AS is_counted_in_tvl
 
     FROM (
-      SELECT contract_address, symbol, decimals, token_price_source, 'anual' AS token_mapping_source
+      SELECT contract_address, symbol, decimals, token_price_source, 'manual' AS token_mapping_source
         FROM raw_token_list
       UNION ALL
       SELECT contract_address, symbol, decimals, token_price_source, token_mapping_source
