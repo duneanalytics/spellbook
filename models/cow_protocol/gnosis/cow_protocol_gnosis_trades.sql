@@ -199,7 +199,11 @@ valued_trades as (
                 ELSE NULL::numeric
                END)                                        as fee_usd,
            app_data,
-           receiver,
+           case
+              when receiver = '0x0000000000000000000000000000000000000000'
+              then trader
+              else receiver
+           end                                    as receiver,
            limit_sell_amount,
            limit_buy_amount,
            valid_to,

@@ -8,57 +8,43 @@
         )
 }}
 
-with all_listings as (
-    select  `punkIndex` as punk_id
-            , 'Listing' as event_type
-            , case when `toAddress` = '0x0000000000000000000000000000000000000000' then 'Public Listing'
-                    else 'Private Listing'
-                end as event_sub_type
-            , `minValue`/1e18 as listed_price
-            , `toAddress` as listing_offered_to 
+with all_listing_events as (
+    select  punk_id
+            , event_type
+            , case  when event_type = 'Offered' and to is null then 'Public Listing'
+                    when event_type = 'Offered' and to is not null then 'Private Listing'
+                else 'Listing Withdrawn' end as event_sub_type
+            , eth_amount as listed_price
+            , to as listing_offered_to
             , evt_block_number
             , evt_index
             , evt_block_time
             , evt_tx_hash
-    from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkOffered') }}
-)
-, all_no_longer_for_sale_events (
-    select  `punkIndex` as punk_id
-            , 'No Longer For Sale' as event_type
-            , case when evt_tx_hash in (select evt_tx_hash from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBought') }}) then 'Punk Bought'
-                    else 'Other'
-                end as event_sub_type
-            , null as listed_price
-            , null as listing_offered_to
-            , evt_block_number
-            , evt_index
-            , evt_block_time
-            , evt_tx_hash
-    from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkNoLongerForSale') }}
+    from {{ ref('cryptopunks_ethereum_punk_offer_events') }}
 )
 , all_buys as (
-    select  `punkIndex` as punk_id
+    select  token_id as punk_id
             , 'Punk Bought' as event_type
             , 'Punk Bought' as event_sub_type
-            , null as listed_price
-            , null as listing_offered_to
-            , evt_block_number
+            , cast(NULL as double) as listed_price
+            , cast(NULL as varchar(5)) as listing_offered_to
+            , block_number as evt_block_number
             , evt_index
-            , evt_block_time
-            , evt_tx_hash
-    from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBought') }}
+            , block_time as evt_block_time
+            , tx_hash as evt_tx_hash
+    from {{ ref('cryptopunks_ethereum_trades') }}
 )
 , all_transfers as (
-    select  `punkIndex` as punk_id
+    select  punk_id
             , 'Punk Transfer' as event_type
             , 'Punk Transfer' as event_sub_type
-            , null as listed_price
-            , null as listing_offered_to
+            , cast(NULL as double) as listed_price
+            , cast(NULL as varchar(5)) as listing_offered_to
             , evt_block_number
             , evt_index
             , evt_block_time
             , evt_tx_hash
-    from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkTransfer') }}
+    from {{ ref('cryptopunks_ethereum_punk_transfers') }}
 )
 , base_data as (
     with all_days  as (select explode(sequence(to_date('2017-06-23'), to_date(now()), interval 1 day)) as day)
@@ -74,12 +60,10 @@ with all_listings as (
           , row_number() over (partition by punk_id order by evt_block_number asc, evt_index asc ) as punk_event_index
     from 
     (
-    select * from all_listings
-    union all select * from all_no_longer_for_sale_events
+    select * from all_listing_events
     union all select * from all_buys
     union all select * from all_transfers
     ) a 
-    order by evt_block_number desc, evt_index desc 
 )
 , aggregated_punk_on_off_data as (
     select date_trunc('day',a.evt_block_time) as day 
@@ -120,7 +104,7 @@ from
 ) e 
 
 left join {{ source('prices', 'usd') }} p on p.minute = date_trunc('minute', e.day)
-    AND p.contract_address = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
-    AND p.blockchain = "ethereum"
+    and p.contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+    and p.blockchain = 'ethereum'
 
 order by day desc 
