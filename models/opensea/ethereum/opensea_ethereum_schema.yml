@@ -27,6 +27,12 @@ models:
             - seller
             - platform_fee_amount
             - royalty_fee_amount
+      - check_seed:
+          seed_file: ref('opensea_wyvern_trades_samples')
+          match_columns:
+            - block_time
+            - tx_hash
+            - amount_original
     columns:
       - &blockchain
         name: blockchain
