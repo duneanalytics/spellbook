@@ -573,9 +573,13 @@ models:
       - &original_currency_contract
         name: original_currency_contract
         description: "Original currency contract"
-      - *currency_decimal
+      - &currency_decimal
+        name: currency_decimal
+        description: "Token Decimal"
       - *project_contract_address
-      - *platform_fee_receive_address
+      - &platform_fee_receive_address
+        name: platform_fee_receive_address
+        description: "Platform fee receive address"
       - *platform_fee_amount_raw
       - *platform_fee_amount
       - *platform_fee_amount_usd
