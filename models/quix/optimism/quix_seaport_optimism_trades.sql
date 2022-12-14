@@ -13,7 +13,7 @@
 }}
 
 {% set c_native_token_address = "0x0000000000000000000000000000000000000000" %}
-{% set c_alternative_token_address = "0x4200000000000000000000000000000000000006" %}  -- WETH
+{% set c_alternative_token_address = "0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000" %}  -- ETH
 {% set c_native_symbol = "ETH" %}
 {% set c_seaport_first_date = "2022-07-29" %}
 
