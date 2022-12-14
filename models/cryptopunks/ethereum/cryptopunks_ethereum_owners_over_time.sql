@@ -42,14 +42,21 @@ with transfers as (
 , combined_table as (
     select base_data.day
             , base_data.wallet
-            , sum(coalesce(daily_transfer_sum,0)) over (partition by base_data.wallet order by base_data.day) as holding
+            , coalesce(daily_transfer_sum,0) as daily_transfer_sum
+        --     , sum(coalesce(daily_transfer_sum,0)) over (partition by base_data.wallet order by base_data.day) as holding
     from base_data
     left join punk_transfer_summary on base_data.day = punk_transfer_summary.day and base_data.wallet = punk_transfer_summary.wallet 
+)
+, cumulative_data as (
+    select t1.day, t1.wallet, t1.daily_transfer_sum, sum(t2.daily_transfer_sum) as holding
+    from combined_table t1
+    inner join combined_table t2 on t1.day >= t2.day and t1.wallet = t2.wallet
+    group by t1.day, t1.wallet, t1.daily_transfer_sum
 )
     
 select day
         , count(wallet) filter (where holding > 0) as unique_wallets
-from combined_table
+from cumulative_data
 group by 1
 order by day desc
 ;
