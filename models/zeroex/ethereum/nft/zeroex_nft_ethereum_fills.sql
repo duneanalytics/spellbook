@@ -19,17 +19,21 @@
 WITH tbl_cte_transaction AS
 (
     SELECT  evt_block_time
-           ,evt_tx_hash
-           ,evt_index
-           ,maker
-           ,taker
-           ,matcher
-           ,erc721Token                                                                                                                                AS nft_address
-           ,erc721TokenId                                                                                                                              AS nft_id
-           ,'erc721'                                                                                                                                   AS label
-           ,CASE WHEN erc20Token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'  ELSE erc20Token END AS price_label
-           ,erc20Token                                                                                                                                 AS token
-           ,erc20TokenAmount                                                                                                                           AS token_amount_raw
+         , evt_tx_hash
+         , evt_index
+         , maker
+         , taker
+         , matcher
+         , erc721Token      AS nft_address
+         , erc721TokenId    AS nft_id
+         , 'erc721'         AS label
+         , CASE
+                WHEN erc20Token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+                THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                ELSE erc20Token
+            END             AS price_label
+         , erc20Token       AS token
+         , erc20TokenAmount AS token_amount_raw
     FROM {{ source ('zeroex_ethereum', 'ExchangeProxy_evt_ERC721OrderFilled') }}
     WHERE 1 = 1 
     {% if is_incremental() %}
@@ -42,23 +46,27 @@ WITH tbl_cte_transaction AS
 
     UNION ALL
     SELECT  evt_block_time
-           ,evt_tx_hash
-           ,evt_index
-           ,maker
-           ,taker
-           ,matcher
-           ,erc1155Token                                                                                                                               AS nft_address
-           ,erc1155TokenId                                                                                                                             AS nft_id
-           ,'erc1155'                                                                                                                                  AS label
-           ,CASE WHEN erc20Token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'  ELSE erc20Token END AS price_label
-           ,erc20Token                                                                                                                                 AS token
-           ,erc20FillAmount                                                                                                                            AS token_amount_raw
+            , evt_tx_hash
+            , evt_index
+            , maker
+            , taker
+            , matcher
+            , erc1155Token      AS nft_address
+            , erc1155TokenId    AS nft_id
+            , 'erc1155'         AS label
+            , CASE
+                WHEN erc20Token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+                THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                ELSE erc20Token
+                END             AS price_label
+            , erc20Token        AS token
+            , erc20FillAmount   AS token_amount_raw
     FROM {{ source ('zeroex_ethereum', 'ExchangeProxy_evt_ERC1155OrderFilled') }}
     WHERE 1 = 1 
     {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '1 week')
-    {% endif %} 
-    
+    {% endif %}
+
     {% if not is_incremental() %}
     AND     evt_block_time >= '{{zeroex_v4_nft_start_date}}' 
     {% endif %}     

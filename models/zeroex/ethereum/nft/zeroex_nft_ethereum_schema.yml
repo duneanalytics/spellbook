@@ -16,6 +16,17 @@ models:
             - block_date
             - tx_hash
             - evt_index
+      - check_seed:
+          seed_file: ref('zeroex_nft_ethereum_fills_sample')
+          match_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+          check_columns:
+            - maker
+            - taker
+            - nft_id
+            - nft_address
     columns:
       - &block_time
         name: block_time
@@ -70,4 +81,4 @@ models:
         description: "name of the nft project"   
         tests:
           - zeroex_ethereum_nft_test:
-              seed_file: ref('zeroex_nft_ethereum_fills_sample')        
+              seed_file: ref('zeroex_nft_ethereum_fills_sample')
