@@ -2,7 +2,7 @@
 
 with 
  dex_traders as (
-    select distinct taker
+    select distinct taker as address
     from {{ref('dex_trades')}}
     where blockchain = 'ethereum'
   )
