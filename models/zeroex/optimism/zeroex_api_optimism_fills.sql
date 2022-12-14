@@ -58,7 +58,7 @@ WITH zeroex_tx AS (
     group by tx_hash
 
 ),
-/*
+
 v4_rfq_fills_no_bridge AS (
     SELECT 
             fills.evt_tx_hash               AS tx_hash,
@@ -82,7 +82,7 @@ v4_rfq_fills_no_bridge AS (
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
+  --  WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
     {% endif %}
 ),
 v4_limit_fills_no_bridge AS (
@@ -108,7 +108,7 @@ v4_limit_fills_no_bridge AS (
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
+  --  WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
     {% endif %}
 ),
 otc_fills AS (
@@ -138,7 +138,7 @@ otc_fills AS (
     {% endif %}
 
 ),
-
+/*
 ERC20BridgeTransfer AS (
     SELECT 
             logs.tx_hash,
@@ -294,13 +294,13 @@ all_tx AS (
     UNION ALL SELECT *
     FROM BridgeFill
     UNION ALL */ SELECT *
-    FROM NewBridgeFill /*
+    FROM NewBridgeFill 
     UNION ALL SELECT *
     FROM v4_rfq_fills_no_bridge
     UNION ALL SELECT *
     FROM v4_limit_fills_no_bridge
     UNION ALL SELECT *
-    FROM otc_fills */
+    FROM otc_fills 
 )
 
 SELECT 
@@ -332,7 +332,7 @@ INNER JOIN {{ source('optimism', 'transactions')}} tx ON all_tx.tx_hash = tx.has
 AND tx.block_time >= date_trunc('day', now() - interval '1 week')
 {% endif %}
 {% if not is_incremental() %}
-AND tx.block_time >= '{{zeroex_v3_start_date}}'
+-- AND tx.block_time >= '{{zeroex_v3_start_date}}'
 {% endif %}
 
 LEFT JOIN {{ source('prices', 'usd') }} tp ON date_trunc('minute', all_tx.block_time) = tp.minute
@@ -346,7 +346,7 @@ AND tp.blockchain = 'optimism'
 AND tp.minute >= date_trunc('day', now() - interval '1 week')
 {% endif %}
 {% if not is_incremental() %}
-AND tp.minute >= '{{zeroex_v3_start_date}}'
+-- AND tp.minute >= '{{zeroex_v3_start_date}}'
 {% endif %}
 
 LEFT JOIN {{ source('prices', 'usd') }} mp ON DATE_TRUNC('minute', all_tx.block_time) = mp.minute
@@ -360,5 +360,5 @@ AND mp.blockchain = 'optimism'
 AND mp.minute >= date_trunc('day', now() - interval '1 week')
 {% endif %}
 {% if not is_incremental() %}
-AND mp.minute >= '{{zeroex_v3_start_date}}'
+-- AND mp.minute >= '{{zeroex_v3_start_date}}'
 {% endif %}
