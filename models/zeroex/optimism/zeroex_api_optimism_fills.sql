@@ -52,7 +52,7 @@ WITH zeroex_tx AS (
                 AND block_time >= date_trunc('day', now() - interval '1 week') 
                 {% endif %}
                 {% if not is_incremental() %}
-                AND block_time >= '{{zeroex_v3_start_date}}'
+             --   AND block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
     ) temp
     group by tx_hash
@@ -82,7 +82,7 @@ v4_rfq_fills_no_bridge AS (
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
+   -- WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
     {% endif %}
 ),
 v4_limit_fills_no_bridge AS (
@@ -108,7 +108,7 @@ v4_limit_fills_no_bridge AS (
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
+  --  WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
     {% endif %}
 ),
 otc_fills AS (
@@ -134,7 +134,7 @@ otc_fills AS (
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
+  --  WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
     {% endif %}
 
 ),
@@ -163,7 +163,7 @@ ERC20BridgeTransfer AS (
     AND block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
     {% if not is_incremental() %}
-    AND block_time >= '{{zeroex_v3_start_date}}'
+  --  AND block_time >= '{{zeroex_v3_start_date}}'
     {% endif %}
 
 ), 
@@ -192,7 +192,7 @@ BridgeFill AS (
         AND block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
         {% if not is_incremental() %}
-        AND block_time >= '{{zeroex_v4_start_date}}'
+  --      AND block_time >= '{{zeroex_v4_start_date}}'
         {% endif %}
 ),
 NewBridgeFill AS (
@@ -279,7 +279,7 @@ direct_uniswapv3 AS (
         AND swap.evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
         {% if not is_incremental() %}
-        AND swap.evt_block_time >= '{{zeroex_v4_start_date}}'
+      --  AND swap.evt_block_time >= '{{zeroex_v4_start_date}}'
         {% endif %}
 
 ), 
@@ -332,7 +332,7 @@ INNER JOIN {{ source('optimism', 'transactions')}} tx ON all_tx.tx_hash = tx.has
 AND tx.block_time >= date_trunc('day', now() - interval '1 week')
 {% endif %}
 {% if not is_incremental() %}
-AND tx.block_time >= '{{zeroex_v3_start_date}}'
+--AND tx.block_time >= '{{zeroex_v3_start_date}}'
 {% endif %}
 
 LEFT JOIN {{ source('prices', 'usd') }} tp ON date_trunc('minute', all_tx.block_time) = tp.minute
@@ -346,7 +346,7 @@ AND tp.blockchain = 'optimism'
 AND tp.minute >= date_trunc('day', now() - interval '1 week')
 {% endif %}
 {% if not is_incremental() %}
-AND tp.minute >= '{{zeroex_v3_start_date}}'
+--AND tp.minute >= '{{zeroex_v3_start_date}}'
 {% endif %}
 
 LEFT JOIN {{ source('prices', 'usd') }} mp ON DATE_TRUNC('minute', all_tx.block_time) = mp.minute
@@ -360,5 +360,5 @@ AND mp.blockchain = 'optimism'
 AND mp.minute >= date_trunc('day', now() - interval '1 week')
 {% endif %}
 {% if not is_incremental() %}
-AND mp.minute >= '{{zeroex_v3_start_date}}'
+--AND mp.minute >= '{{zeroex_v3_start_date}}'
 {% endif %}
