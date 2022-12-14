@@ -9,6 +9,7 @@ models:
       contributors: gentrexha
     config:
       tags: ['labels', 'dex']
+    description: "DEX traders query labels across chains"
     columns:
       - &blockchain
         name: blockchain
@@ -43,6 +44,7 @@ models:
       contributors: gentrexha
     config:
       tags: ['labels', 'ethereum', 'dex']
+    description: "DEX traders query labels on ethereum"
     columns:
       - *blockchain
       - *address
