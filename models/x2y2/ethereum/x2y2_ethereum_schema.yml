@@ -10,6 +10,15 @@ models:
       tags: ['ethereum','x2y2','v1','events']
     description: >
         X2Y2 v1 events on Ethereum
+    tests:
+      - check_seed:
+          seed_file: ref('x2y2_ethereum_trades_etherscan')
+          match_columns:
+            - block_time
+            - tx_hash
+          check_columns:
+            - token_id
+            - amount_original
     columns:
       - &blockchain
         name: blockchain

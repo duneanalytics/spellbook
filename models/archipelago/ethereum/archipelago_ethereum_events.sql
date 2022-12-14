@@ -200,13 +200,13 @@ SELECT
     , te.block_number
     , te.token_id
     , te.token_standard
-    , 1 as number_of_items
+    , CAST(1 AS DECIMAL(38,0)) as number_of_items
     , 'Single Item Trade' as trade_type
     , case when te.tx_from = COALESCE(seller_fix.from, te.seller) then 'Offer Accepted' else 'Buy' end as trade_category
     , 'Trade' as evt_type
     , COALESCE(seller_fix.from, te.seller) AS seller
     , COALESCE(buyer_fix.to, te.buyer) AS buyer
-    , te.amount_raw
+    , CAST(te.amount_raw AS DECIMAL(38,0)) AS amount_raw
     , te.amount_original
     , te.amount_usd
     , te.currency_symbol

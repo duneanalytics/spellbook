@@ -8,7 +8,7 @@ models:
       project: addresses
       contributors: Msilb7
     config:
-      tags: ['table', 'airdrop', 'addresses', 'optimism']
+      tags: ['table', 'airdrop', 'addresses', 'optimism', 'static']
     description: "List of addresses eligible for $OP airdrop and amount they received based on their activity"
     columns:
       - name: address

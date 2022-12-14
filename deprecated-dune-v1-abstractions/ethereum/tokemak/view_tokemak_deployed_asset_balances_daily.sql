@@ -55,7 +55,16 @@ AS
             ,token_address
             ,token_symbol
             ,total_lp_supply
-            ,reserve FROM tokemak."view_tokemak_convex_pool_stats_daily" order by "date" desc, pool_symbol, token_symbol
+            ,reserve FROM tokemak."view_tokemak_convex_pool_stats_daily" 
+        UNION
+        SELECT source
+            ,"date"
+            ,pool_address
+            ,pool_symbol
+            ,token_address
+            ,token_symbol
+            ,total_lp_supply
+            ,reserve FROM tokemak."view_tokemak_convex_frax_pool_stats_daily" order by "date" desc, pool_symbol, token_symbol
         ),
 base as (        
     SELECT 
