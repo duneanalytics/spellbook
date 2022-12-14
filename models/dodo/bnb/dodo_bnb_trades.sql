@@ -13,7 +13,7 @@
 )
 }}
     
--- The first dodo contract on bsc was deployed on '2021-02-22 07:47' from the query
+-- The first dodo contract on bsc was deployed on '2021-01-23 07:47' from the query
 --select min(evt_block_time) from dodoex_bnb.DODO_evt_BuyBaseToken;
 {% set project_start_date = '2021-01-23' %}
 
