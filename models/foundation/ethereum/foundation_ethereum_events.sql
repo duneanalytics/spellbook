@@ -138,13 +138,13 @@ SELECT DISTINCT t.blockchain
 , CASE WHEN agg.contract_address IS NOT NULL THEN 'Bundle Trade'
     ELSE 'Single Item Purchase'
     END AS trade_type
-, t.number_of_items
+, CAST(t.number_of_items AS DECIMAL(38,0)) AS number_of_items
 , t.trade_category
 , t.evt_type
 , t.seller
 , t.buyer
 , t.amount_original
-, t.amount_raw
+, CAST(t.amount_raw AS DECIMAL(38,0)) AS amount_raw
 , t.currency_symbol
 , t.currency_contract
 , t.project_contract_address
@@ -154,7 +154,7 @@ SELECT DISTINCT t.blockchain
 , t.tx_hash
 , et.from AS tx_from
 , et.to AS tx_to
-, t.platform_fee_amount_raw
+, CAST(t.platform_fee_amount_raw AS DOUBLE) AS platform_fee_amount_raw
 , t.platform_fee_amount
 , t.platform_fee_amount*pu.price AS platform_fee_amount_usd
 , CAST(100.0*ROUND(t.platform_fee_amount/t.amount_original, 2) AS DOUBLE) AS platform_fee_percentage
