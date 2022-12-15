@@ -1,7 +1,7 @@
 {{ config(
         schema = 'bridge',
         alias ='flows',
-        post_hook='{{ expose_spells(\'["optimism"]\',
+        post_hook='{{ expose_spells_hide_trino(\'["optimism"]\',
                                 "sector",
                                 "bridge",
                                 \'["msilb7","soispoke]\') }}'

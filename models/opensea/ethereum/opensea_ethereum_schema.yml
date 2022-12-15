@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       project: opensea
-      contributors: soispoke, umer_h_adil, hildobby
+      contributors: soispoke, umer_h_adil, hildobby, 0xRob
     config:
       tags: ['ethereum','opensea','v1','events', 'static']
     description: >

@@ -3,28 +3,28 @@
         post_hook='{{ expose_spells(\'["ethereum","solana"]\',
                                     "sector",
                                     "nft",
-                                    \'["soispoke"]\') }}')
+                                    \'["soispoke", "0xRob"]\') }}')
 }}
 
-{% set nft_models = [
-'opensea_trades'
-,'magiceden_trades'
-,'looksrare_ethereum_trades'
-,'x2y2_ethereum_trades'
-,'sudoswap_ethereum_trades'
-,'foundation_ethereum_trades'
-,'archipelago_ethereum_trades'
-,'cryptopunks_ethereum_trades'
-,'element_trades'
-,'superrare_ethereum_trades'
-,'zora_ethereum_trades'
-,'blur_ethereum_trades'
-] %}
 
+{% set nft_models = [
+ ref('archipelago_ethereum_trades')
+,ref('blur_ethereum_trades')
+,ref('cryptopunks_ethereum_trades')
+,ref('element_trades')
+,ref('foundation_ethereum_trades')
+,ref('looksrare_ethereum_trades')
+,ref('magiceden_trades')
+,ref('opensea_trades')
+,ref('sudoswap_ethereum_trades')
+,ref('superrare_ethereum_trades')
+,ref('x2y2_ethereum_trades')
+,ref('zora_ethereum_trades')
+] %}
 
 SELECT *
 FROM (
-    {% for model in nft_models %}
+    {% for nft_model in nft_models %}
     SELECT
         blockchain,
         project,
@@ -53,10 +53,10 @@ FROM (
         tx_from,
         tx_to,
         unique_trade_id
-    FROM {{ ref(model) }}
+    FROM {{ nft_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
+
 )
-;
