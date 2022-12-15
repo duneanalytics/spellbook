@@ -1,5 +1,3 @@
-models/nft/nft_burns.sql
-
 {{ config(
         alias ='burns',
         post_hook='{{ expose_spells_hide_trino(\'["ethereum","solana","bnb"]\',
