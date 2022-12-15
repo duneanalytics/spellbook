@@ -33,7 +33,7 @@ select
     when trader_age > 91 then '3 months'
     when trader_age > 30 then '1 month'
     when trader_age > 7 then '1 week'
-    else '<=$100'
+    else 'less than 1 week'
   end as name,
   "trader_age" AS category,
   "gentrexha" AS contributor,
