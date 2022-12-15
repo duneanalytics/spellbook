@@ -1,5 +1,10 @@
 {{ config(
         alias ='trades',
+        partition_by = ['block_date'],
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
         post_hook='{{ expose_spells(\'["bnb"]\',
                                     "project",
                                     "dodo",
@@ -34,6 +39,9 @@ FROM (
         trace_address,
         evt_index
     FROM {{ ref("dodo_aggregator_bnb_trades") }}
+    {% if is_incremental() %}
+    WHERE block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION ALL
 
@@ -62,5 +70,8 @@ FROM (
         trace_address,
         evt_index
     FROM {{ ref("dodo_pools_bnb_trades") }}
+    {% if is_incremental() %}
+    WHERE block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 )
 ;
