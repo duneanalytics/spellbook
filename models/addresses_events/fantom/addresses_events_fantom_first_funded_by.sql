@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'addresses_events_ethereum'
+    schema = 'addresses_events_fantom'
     , alias = 'first_funded_by'
     , materialized = 'incremental'
     , file_format = 'delta'
@@ -8,18 +8,18 @@
     )
 }}
 
-SELECT 'ethereum' AS blokchain
+SELECT 'fantom' AS blokchain
     , b.to AS address
     , MIN(a.from) AS first_funded_by
     , MIN(a.block_time) AS block_time
     , MIN(a.block_number) AS block_number
     , MIN(a.tx_hash) AS tx_hash
-FROM {{ source('arbitrum', 'traces') }} a
+FROM {{ source('fantom', 'traces') }} a
 JOIN
 (
     SELECT et.to
         , MIN(et.block_number) AS first_block
-    FROM {{ source('arbitrum', 'traces') }} et
+    FROM {{ source('fantom', 'traces') }} et
     {% if is_incremental() %}
     LEFT ANTI JOIN {{this}} ffb
         ON et.to = ffb.address
