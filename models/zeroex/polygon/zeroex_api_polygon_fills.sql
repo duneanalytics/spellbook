@@ -32,7 +32,7 @@ WITH zeroex_tx AS (
                                 THEN SUBSTRING(INPUT
                                         FROM (position('fbc019a7' IN INPUT) + 32)
                                         FOR 40)
-                            END AS affiliate_address
+                            END AS affiliate_address, tr.to, tr.from
         FROM {{ source('polygon', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
@@ -74,6 +74,7 @@ v4_rfq_fills_no_bridge AS (
             fills.makerTokenFilledAmount    AS maker_token_amount_raw,
             'RfqOrderFilled'                AS type,
             zeroex_tx.affiliate_address     AS affiliate_address,
+            zeroex_tx.to, zeroex_tx.from,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
     FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
@@ -100,6 +101,7 @@ v4_limit_fills_no_bridge AS (
             fills.makerTokenFilledAmount AS maker_token_amount_raw,
             'LimitOrderFilled' AS type,
             COALESCE(zeroex_tx.affiliate_address, fills.feeRecipient) AS affiliate_address,
+            zeroex_tx.to, zeroex_tx.from,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             (fills.feeRecipient = '0x86003b044f70dac0abc80ac8957305b6370893ed') AS matcha_limit_order_flag
     FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
@@ -126,6 +128,7 @@ otc_fills AS (
             fills.makerTokenFilledAmount    AS maker_token_amount_raw,
             'OtcOrderFilled'                AS type,
             zeroex_tx.affiliate_address     AS affiliate_address,
+            zeroex_tx.to, zeroex_tx.from,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
     FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
@@ -210,6 +213,7 @@ NewBridgeFill AS (
             bytea2numeric('0x' || substring(DATA, 283, 40)) AS maker_token_amount_raw,
             'BridgeFill'                                 AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
+            zeroex_tx.to, zeroex_tx.from,
             TRUE                                            AS swap_flag,
             FALSE                                           AS matcha_limit_order_flag
     FROM {{ source('polygon' ,'logs') }} logs
@@ -239,6 +243,7 @@ direct_PLP AS (
             outputTokenAmount           AS maker_token_amount_raw,
             'LiquidityProviderSwap'     AS type,
             zeroex_tx.affiliate_address AS affiliate_address,
+            zeroex_tx.to, zeroex_tx.from,
             TRUE                        AS swap_flag,
             FALSE                       AS matcha_limit_order_flag
     FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_LiquidityProviderSwap') }} plp
@@ -325,11 +330,13 @@ SELECT
         maker_token_amount_raw / pow(10, mp.decimals) AS maker_token_amount,
         maker_token_amount_raw,
         all_tx.type,
-        affiliate_address,
+        affiliate_address,to, from, 
         swap_flag,
         matcha_limit_order_flag,
         COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price) AS volume_usd
 FROM all_tx
+
+/*
 INNER JOIN {{ source('polygon', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
 
 {% if is_incremental() %}
@@ -338,6 +345,7 @@ AND tx.block_time >= date_trunc('day', now() - interval '1 week')
 {% if not is_incremental() %}
 AND tx.block_time >= '{{zeroex_v3_start_date}}'
 {% endif %}
+*/
 
 LEFT JOIN {{ source('prices', 'usd') }} tp ON date_trunc('minute', all_tx.block_time) = tp.minute
 AND CASE
