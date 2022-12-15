@@ -1,6 +1,6 @@
 version: 2
 
-sources: 
+sources:
   - name: wombat_bnb
     description: "BNB decoded tables related to Wombat"
     tables:
@@ -8,17 +8,24 @@ sources:
         freshness:
           warn_after: { count: 12, period: hour }
         loaded_at_field: evt_block_time
-        description: "Swaps done with Wombat pools"
+        description: "Swaps done with Wombat main pool"
         columns:
-          - &buyer
-            name: buyer
-            description: "Buyer Ethereum wallet address"
+        columns:
+          - &fromAmount
+            name: fromAmount
+            description: "Raw amount of tokens sold during transaction with the contract"
+          - &fromToken
+            name: fromToken
+            description: "BNB address of tokens sold during transaction with the contract"
+          - &toAmount
+            name: toAmount
+            description: "Raw amount of tokens bought during transaction with the contract"
+          - &toToken
+            name: toToken
+            description: "BNB address of tokens bought during transaction with the contract"
           - &contract_address
             name: contract_address
             description: "Ethereum address for the liquidity pool used in transaction"
-          - &eth_sold
-            name: eth_sold
-            description: "Raw amount of ETH sold during transaction with the contract"
           - &evt_block_number
             name: evt_block_number
             description: "Block number which processed the unique transaction hash"
@@ -33,6 +40,99 @@ sources:
             description: "Primary key of the transaction"
             tests:
               - not_null
-          - &tokens_bought
-            name: tokens_bought
-            description: "Raw amount of tokens bought during transaction with the contract"
+          - &sender
+            name: sender
+            description: "Initiated the transaction"
+          - &to
+            name: to
+            description: "Received the transaction"
+
+      - name: HighCovRatioFeePool_evt_Swap
+        freshness:
+          warn_after: { count: 12, period: hour }
+        loaded_at_field: evt_block_time
+        description: "Swaps done with Wombat side pool"
+        columns:
+          - *fromAmount
+          - *fromToken
+          - *toAmount
+          - *toToken
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *sender
+          - *to
+
+      - name: DynamicPool_evt_Swap
+        freshness:
+          warn_after: { count: 12, period: hour }
+        loaded_at_field: evt_block_time
+        description: "Swaps done with Wombat BNB pool"
+        columns:
+          - *fromAmount
+          - *fromToken
+          - *toAmount
+          - *toToken
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *sender
+          - *to
+
+      - name: mWOM_Pool_evt_Swap
+        freshness:
+          warn_after: { count: 12, period: hour }
+        loaded_at_field: evt_block_time
+        description: "Swaps done with Wombat mWOM pool"
+        columns:
+          - *fromAmount
+          - *fromToken
+          - *toAmount
+          - *toToken
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *sender
+          - *to
+
+      - name: qWOM_WOMPool_evt_Swap
+        freshness:
+          warn_after: { count: 12, period: hour }
+        loaded_at_field: evt_block_time
+        description: "Swaps done with Wombat qWOM pool"
+        columns:
+          - *fromAmount
+          - *fromToken
+          - *toAmount
+          - *toToken
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *sender
+          - *to
+
+      - name: WMX_WOM_Pool_evt_Swap
+        freshness:
+          warn_after: { count: 12, period: hour }
+        loaded_at_field: evt_block_time
+        description: "Swaps done with Wombat wmxWOM pool"
+        columns:
+          - *fromAmount
+          - *fromToken
+          - *toAmount
+          - *toToken
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *sender
+          - *to
