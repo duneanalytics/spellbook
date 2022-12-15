@@ -1012,7 +1012,6 @@ seeds:
               volume_usd: double
               tx_from: string
               tx_to: string
-              
         nfts:
           +enabled: true
           +schema: test_data
