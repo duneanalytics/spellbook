@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       project: cryptopunks
-      contributors: [masquot, hidobby, cat]
+      contributors: [masquot, hildobby, cat]
     config:
       tags: ['ethereum', 'cryptopunks', 'events']
     description: >
