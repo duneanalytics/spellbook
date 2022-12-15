@@ -40,9 +40,6 @@ models:
       optimism:
         +schema: aave_optimism
         +materialized: view
-      aave_v3:
-        +schema: aave_v3
-        +materialized: view
 
     balancer:
       +schema: balancer
@@ -748,6 +745,11 @@ models:
       +schema: bridge
       +materialized: view
 
+    the_granary:
+      optimism:
+        +schema: the_granary_optimism
+        +materialized: view
+
 seeds:
   spellbook:
     balances:
@@ -1073,9 +1075,3 @@ seeds:
             tx_hash: string
             token_id: string
             amount_original: double
-
-    
-    the_granary:
-      optimism:
-        +schema: the_granary_optimism
-        +materialized: view
