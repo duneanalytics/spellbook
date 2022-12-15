@@ -28,7 +28,7 @@ eth_flow_orders as (
         conv(substring(data, 3, 16), 16, 10) as quote_id,
         -- These are unpacked so to hopefully make the join on trade events more efficient.
         get_json_object(event.order, '$.sellAmount') as sell_amount,
-        get_json_object(event.order, '$.feeAmount') as fee_amount,
+        get_json_object(event.order, '$.feeAmount') as fee,
         -- Additional potentially relevant fields (for unfilled orders)
         get_json_object(event.order, '$.buyAmount') as buy_amount,
         get_json_object(event.order, '$.buyToken') as buy_token,
@@ -47,4 +47,18 @@ eth_flow_orders as (
     {% endif %}
 )
 
-select * from eth_flow_orders
+select
+  block_date,
+  block_time,
+  block_number,
+  tx_hash,
+  valid_to,
+  quote_id,
+  sell_amount,
+  fee,
+  buy_amount,
+  buy_token,
+  receiver,
+  app_hash,
+  order_uid
+from eth_flow_orders
