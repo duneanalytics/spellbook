@@ -1,6 +1,6 @@
 {{ config(
         alias='bep20_latest',
-        post_hook='{{ expose_spells(\'["bnb"]\',
+        post_hook='{{ expose_spells_hide_trino(\'["bnb"]\',
                                             "sector",
                                             "balances",
                                             \'["crypto586"]\') }}'

@@ -5,7 +5,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['hour', 'wallet_address', 'token_address'],
-        post_hook='{{ expose_spells(\'["bnb"]\',
+        post_hook='{{ expose_spells_hide_trino(\'["bnb"]\',
                                             "sector",
                                             "balances",
                                             \'["crypto586"]\') }}'
