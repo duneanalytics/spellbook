@@ -1608,7 +1608,6 @@ VALUES
     ("gyen-gyen", "ethereum", "ibJPY", "0x5555f75e3d5278082200fb451d1b6ba946d8e13b", 18),
     ("chf-swiss-franc-token", "ethereum", "ibCHF", "0x1cc481ce2bd2ec7bf67d1be64d4878b16078f309", 18),
     ("stmatic-lido-staked-matic", "ethereum", "STMATIC", "0x9ee91F9f426fA633d227f7a9b000E28b9dfd8599", 18),
-    ("xsushi-xsushi", "ethereum", "XSUSHI", "0x8798249c2e607446efb7ad49ec89dd1865ff4272", 18),
 
     -- Query for Popular Traded Tokens on Gnosis Chain without prices: https://dune.com/queries/1719783
     ("dai-dai", "gnosis", "WXDAI", "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18),
