@@ -6,6 +6,8 @@ Welcome to your [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incant
 #### Heads up
 Working on something new? Open a draft PR to let other wizards know you're working on it to help minimize duplicated work. 
 
+Looking for abstractions from the V1 engine? We moved them to [dune-v1-abstractions](https://github.com/duneanalytics/dune-v1-abstractions).
+
 ## Intro
 
 Write SQL to transform blockchain data into curated datasets on [dune.com](https://dune.com/home).
