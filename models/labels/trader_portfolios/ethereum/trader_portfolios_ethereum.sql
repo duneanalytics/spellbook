@@ -1,0 +1,45 @@
+{{
+    config(
+        alias='trader_portfolios_ethereum',
+    )
+}}
+
+with
+ trader_portfolios as (
+    select
+        sum(amount_usd) as portfolio_value_usd,
+        wallet_address as address
+    from {{ ref('balances_ethereum_erc20_day') }}
+    where blockchain = 'ethereum' and day = CURRENT_DATE
+    and wallet_address in (
+        select taker, block_date, tx_hash
+        from {{ ref('dex_aggregator_trades') }}
+        where blockchain = 'ethereum'
+        UNION ALL
+        select taker, block_date, tx_hash
+        from {{ ref('dex_trades') }}
+        where blockchain = 'ethereum'
+    )
+    group by wallet_address
+    -- For some reason there's negative portfolio values in here
+    having portfolio_value_usd > 0
+ )
+
+select
+  array("ethereum") as blockchain,
+  address,
+  case
+    when portfolio_value_usd > 90000 then '>$90k'
+    when portfolio_value_usd > 7000 then '$7k-$90k'
+    when portfolio_value_usd > 2000 then '$2k-$7k'
+    when portfolio_value_usd > 400 then '$400-$2k'
+    when portfolio_value_usd > 100 then '$100-$400'
+    else '<=$100'
+  end as name,
+  "trader_portfolios" AS category,
+  "gentrexha" AS contributor,
+  "query" AS source,
+  timestamp('2022-12-15') as created_at,
+  now() as updated_at
+from
+  trader_portfolios
