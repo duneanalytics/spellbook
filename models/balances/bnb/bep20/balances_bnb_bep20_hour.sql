@@ -1,5 +1,10 @@
 {{ config(
         alias='bep20_hour',
+        partition_by = ['hour'],
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['hour', 'wallet_address', 'token_address'],
         post_hook='{{ expose_spells(\'["bnb"]\',
                                             "sector",
                                             "balances",
@@ -24,6 +29,9 @@ hourly_balances AS (
         lead(hour, 1, now()) OVER (PARTITION BY token_address, wallet_address ORDER BY hour) AS next_hour
     FROM
         {{ ref('transfers_bnb_bep20_rolling_hour') }}
+    {% if is_incremental() %}
+    WHERE hour >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 )
 
 SELECT

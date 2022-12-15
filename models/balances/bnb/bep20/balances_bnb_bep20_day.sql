@@ -1,5 +1,10 @@
 {{ config(
         alias='bep20_day',
+        partition_by = ['day'],
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['day', 'wallet_address', 'token_address'],
         post_hook='{{ expose_spells(\'["bnb"]\',
                                             "sector",
                                             "balances",
@@ -25,6 +30,9 @@ daily_balances AS (
         lead(day, 1, now()) OVER (PARTITION BY token_address, wallet_address ORDER BY day) AS next_day
     FROM
         {{ ref('transfers_bnb_bep20_rolling_day') }}
+    {% if is_incremental() %}
+    WHERE day >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 )
 
 SELECT
