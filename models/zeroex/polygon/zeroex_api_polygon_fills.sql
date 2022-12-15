@@ -32,7 +32,7 @@ WITH zeroex_tx AS (
                                 THEN SUBSTRING(INPUT
                                         FROM (position('fbc019a7' IN INPUT) + 32)
                                         FOR 40)
-                            END AS affiliate_address, 
+                            END AS affiliate_address
         FROM {{ source('polygon', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
