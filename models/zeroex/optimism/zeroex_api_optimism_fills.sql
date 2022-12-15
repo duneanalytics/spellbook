@@ -220,7 +220,7 @@ NewBridgeFill AS (
         AND block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
         {% if not is_incremental() %}
-        AND block_time >= '{{zeroex_v4_start_date}}'
+        --AND block_time >= '{{zeroex_v4_start_date}}'
         {% endif %}
 ),
 /*
