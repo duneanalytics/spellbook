@@ -56,7 +56,7 @@ jobs:
         run: "dbt seed --select state:modified --state ."
 
       - name: dbt run initial model(s)
-        run: "dbt -x run --select state:modified --state ."
+        run: "dbt -x run --select state:modified --state . --full-refresh"
 
       - name: dbt test initial model(s)
         run: "dbt test --select state:new state:modified --state ."
