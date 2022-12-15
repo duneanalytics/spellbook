@@ -27,9 +27,9 @@ with source_optimism_transactions as (
     where block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
-,ref_seaport_optimism_base_pairs as (
+,ref_quix_seaport_optimism_base_pairs as (
       select *
-      from {{ ref('seaport_optimism_base_pairs') }}
+      from {{ ref('quix_seaport_optimism_base_pairs') }}
       where 1=1
       {% if is_incremental() %}
             and block_time >= date_trunc("day", now() - interval '1 week')
@@ -94,7 +94,7 @@ with source_optimism_transactions as (
         ,a.creator_fee_idx
         ,a.is_traded_nft
         ,a.is_moved_nft
-  from ref_seaport_optimism_base_pairs a
+  from ref_quix_seaport_optimism_base_pairs a
   where 1=1
     and not a.is_private
   union all
@@ -132,8 +132,8 @@ with source_optimism_transactions as (
         ,a.creator_fee_idx
         ,a.is_traded_nft
         ,a.is_moved_nft
-  from ref_seaport_optimism_base_pairs a
-  left join ref_seaport_optimism_base_pairs b on b.tx_hash = a.tx_hash
+  from ref_quix_seaport_optimism_base_pairs a
+  left join ref_quix_seaport_optimism_base_pairs b on b.tx_hash = a.tx_hash
     and b.evt_index = a.evt_index
     and b.block_date = a.block_date -- for performance
     and b.token_contract_address = a.token_contract_address
