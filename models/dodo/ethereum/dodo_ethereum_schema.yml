@@ -11,6 +11,24 @@ models:
       tags: ['ethereum','dodo','trades', 'dex']
     description: >
         Dodo trades on Ethereum.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_seed:
+          blockchain: ethereum
+          project: DODO
+          version: 1
+      - check_dex_seed:
+          blockchain: ethereum
+          project: DODO
+          version: 2
     columns:
       - &blockchain
         name: blockchain
