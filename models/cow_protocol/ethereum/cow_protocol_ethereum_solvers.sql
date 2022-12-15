@@ -62,6 +62,8 @@ known_solver_metadata (address, environment, name) as (
                  ('0xA21740833858985e4D801533a808786d3647Fb83', 'prod', 'Laertes'),
                  ('0x398890BE7c4FAC5d766E1AEFFde44B2EE99F38EF', 'prod', 'Seasolver'),
                  ('0x97Ec0a17432D71a3234EF7173C6B48a2C0940896', 'prod', 'Quasilabs'),
+                 ('0xF5181183D43796120a004130d0CaeE5B2DF2D441', 'prod', 'DMA'),
+                 ('0x5B2F5e5C94a5De698e2DeC7f30E90069eb3b12bb', 'barn', 'DMA'),                    
                  ('0x872A1B63A739190D0780721d57D8d92ef766Db35', 'barn', 'Quasilabs'),
                  ('0x8a4e90e9AFC809a69D2a3BDBE5fff17A12979609', 'barn', 'Seasolver'),
                  ('0x0a308697e1d3a91dcB1e915C51F8944AaEc9015F', 'barn', 'Laertes'),

@@ -17,8 +17,8 @@ SELECT
       borrower,
       repayer,
       liquidator,
-      amount / concat('1e',erc20.decimals) AS amount,
-      (amount/ concat('1e',p.decimals)) * price AS usd_amount,
+      amount / CAST(CONCAT('1e',CAST(erc20.decimals AS VARCHAR(100))) AS DOUBLE) AS amount,
+      (amount/ CAST(CONCAT('1e',CAST(p.decimals AS VARCHAR(100))) AS DOUBLE)) * price AS usd_amount,
       evt_tx_hash,
       evt_index,
       evt_block_time,
@@ -28,14 +28,14 @@ SELECT
     '3' AS version,
     'borrow' AS transaction_type,
     CASE 
-        WHEN interestRateMode = '1' THEN 'stable'
-        WHEN interestRateMode = '2' THEN 'variable'
+        WHEN interestRateMode = 1 THEN 'stable'
+        WHEN interestRateMode = 2 THEN 'variable'
     END AS loan_type,
     reserve AS token,
     user AS borrower, 
     CAST(NULL AS VARCHAR(5)) AS repayer,
     CAST(NULL AS VARCHAR(5)) AS liquidator,
-    CAST(amount AS DECIMAL(38,0)),
+    CAST(amount AS DECIMAL(38,0)) AS amount,
     evt_tx_hash,
     evt_index,
     evt_block_time,

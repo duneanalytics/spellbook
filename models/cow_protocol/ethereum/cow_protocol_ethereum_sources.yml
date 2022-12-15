@@ -122,3 +122,14 @@ sources:
           - &value
             name: value
             description: ETH amount (in WEI) being passed into contract interaction
+  - name: cowswap
+    tables:
+      - name: raw_app_data
+        columns:
+          - name: app_hash
+          - name: data
+      - name: raw_order_rewards
+        columns:
+          - name: tx_hash
+          - name: data
+          - name: order_uid

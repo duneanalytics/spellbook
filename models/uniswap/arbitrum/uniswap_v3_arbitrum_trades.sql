@@ -40,7 +40,7 @@ WITH dexs AS
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
-SELECT
+SELECT DISTINCT
     'arbitrum' AS blockchain
     ,'uniswap' AS project
     ,'3' AS version
@@ -54,8 +54,8 @@ SELECT
     end as token_pair
     ,dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount
     ,dexs.token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount
-    ,dexs.token_bought_amount_raw
-    ,dexs.token_sold_amount_raw
+    ,CAST(dexs.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw
+    ,CAST(dexs.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
     ,coalesce(
         dexs.amount_usd
         ,(dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price

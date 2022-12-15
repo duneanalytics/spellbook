@@ -129,7 +129,7 @@ WITH
             block_number
             ,sum(fee_amount_raw) as royalty_fee_amount_raw
             ,sum(fee_percentage) as royalty_fee_percentage
-            ,null::string as royalty_fee_receive_address -- we have multiple address so have to null this field
+            ,CAST(null AS VARCHAR(5)) as royalty_fee_receive_address -- we have multiple address so have to null this field
             ,unique_trade_id
         from fee_events
             where not is_protocol_fee
@@ -200,13 +200,13 @@ SELECT
     , te.block_number
     , te.token_id
     , te.token_standard
-    , 1 as number_of_items
+    , CAST(1 AS DECIMAL(38,0)) as number_of_items
     , 'Single Item Trade' as trade_type
     , case when te.tx_from = COALESCE(seller_fix.from, te.seller) then 'Offer Accepted' else 'Buy' end as trade_category
     , 'Trade' as evt_type
     , COALESCE(seller_fix.from, te.seller) AS seller
     , COALESCE(buyer_fix.to, te.buyer) AS buyer
-    , te.amount_raw
+    , CAST(te.amount_raw AS DECIMAL(38,0)) AS amount_raw
     , te.amount_original
     , te.amount_usd
     , te.currency_symbol
@@ -222,13 +222,13 @@ SELECT
     , te.platform_fee_amount
     , te.platform_fee_amount_raw
     , te.platform_fee_amount_usd
-    , te.platform_fee_percentage
+    , CAST(te.platform_fee_percentage AS DOUBLE) AS platform_fee_percentage
     , te.royalty_fee_amount
     , te.royalty_fee_amount_usd
     , te.royalty_fee_amount_raw
     , te.royalty_fee_currency_symbol
     , te.royalty_fee_receive_address -- null here
-    , te.royalty_fee_percentage
+    , CAST(te.royalty_fee_percentage AS DOUBLE) AS royalty_fee_percentage
     , te.unique_trade_id
 from trades_enhanced te
 left join {{ ref('nft_ethereum_transfers') }} buyer_fix on buyer_fix.block_time=te.block_time
