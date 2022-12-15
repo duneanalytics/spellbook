@@ -20,7 +20,7 @@
 
 WITH zeroex_tx AS (
     SELECT tx_hash,
-           max(affiliate_address) as affiliate_address, tr.to, tr.from
+           max(affiliate_address) as affiliate_address, temp.to, temp.from
     FROM (
         SELECT tr.tx_hash,
                     '0x' || CASE
@@ -32,7 +32,7 @@ WITH zeroex_tx AS (
                                 THEN SUBSTRING(INPUT
                                         FROM (position('fbc019a7' IN INPUT) + 32)
                                         FOR 40)
-                            END AS affiliate_address
+                            END AS affiliate_address, tr.to as to, tr.from as from 
         FROM {{ source('polygon', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
