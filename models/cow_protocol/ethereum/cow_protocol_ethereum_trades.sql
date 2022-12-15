@@ -134,7 +134,7 @@ orders_and_trades as (
 -- Validate Uid <--> app_data mapping here: https://dune.com/queries/1759039?d=1
 uid_to_app_id as (
     select
-        uid,
+        distinct uid,
         get_json_object(trade, '$.appData') as app_data,
         get_json_object(trade, '$.receiver') as receiver,
         get_json_object(trade, '$.sellAmount') as limit_sell_amount,
