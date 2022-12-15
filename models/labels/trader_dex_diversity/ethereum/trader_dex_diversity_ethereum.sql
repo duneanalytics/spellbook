@@ -12,11 +12,11 @@ with
     from (
         select taker, project
         from {{ ref('dex_aggregator_trades') }}
-        where blockchain = 'ethereum'
+        where blockchain = 'ethereum' and block_time > (current_date - interval '30 days')
         UNION ALL
         select taker, project
         from {{ ref('dex_trades') }}
-        where blockchain = 'ethereum'
+        where blockchain = 'ethereum' and block_time > (current_date - interval '30 days')
     )
     group by taker
  )
