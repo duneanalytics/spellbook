@@ -442,7 +442,5 @@ models:
         description: "USD amount at time of event"    
       - name: evt_block_number
         description: "Block number of event"
-      - name: evt_index
-        description: "Event index"
       - name: evt_tx_hash
         description: "Event transaction hash"
