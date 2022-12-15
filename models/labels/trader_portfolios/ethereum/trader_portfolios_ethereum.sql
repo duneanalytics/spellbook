@@ -12,11 +12,11 @@ with
     from {{ ref('balances_ethereum_erc20_day') }}
     where blockchain = 'ethereum' and day = CURRENT_DATE
     and wallet_address in (
-        select taker, block_date, tx_hash
+        select distinct taker
         from {{ ref('dex_aggregator_trades') }}
         where blockchain = 'ethereum'
         UNION ALL
-        select taker, block_date, tx_hash
+        select distinct taker
         from {{ ref('dex_trades') }}
         where blockchain = 'ethereum'
     )
