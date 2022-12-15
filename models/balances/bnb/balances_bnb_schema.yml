@@ -12,6 +12,12 @@ models:
     description: >
         Hourly token balances of BEP20 BNB tokens per wallet and contract address pair.
         Depends on transfers_bnb_bep20
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - hour
+            - wallet_address
+            - token_address
     columns:
       - &blockchain
         name: blockchain
@@ -49,6 +55,12 @@ models:
     description: >
         Daily token balances of BEP20 BNB tokens per wallet and contract address pair.
         Depends on transfers_bnb_bep20.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - wallet_address
+            - token_address
     columns:
       - *blockchain
       - &day
