@@ -110,4 +110,4 @@ from
     where evt_tx_hash not in (select distinct tx_hash from {{ ref('cryptopunks_ethereum_trades') }} )
 ) a 
 group by 1,2,3,4,5,6,7,8,9,10
-order by evt_block_number desc, evt_index desc
+order by evt_block_number desc
