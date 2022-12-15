@@ -46,7 +46,7 @@ from (
         block_number,
         tx_from,
         tx_to
-    from {{ ref('{{model}}') }}
+    from {{ ref({{model}}) }}
     where evt_type = 'Trade'
     {% if not loop.last %}
     union all
