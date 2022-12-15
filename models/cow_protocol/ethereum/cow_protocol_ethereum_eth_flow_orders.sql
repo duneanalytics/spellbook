@@ -1,7 +1,7 @@
 {{  config(
         alias='eth_flow_orders',
         materialized='incremental',
-        partition_by = ['placement_date'],
+        partition_by = ['block_date'],
         unique_key = ['tx_hash'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
