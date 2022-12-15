@@ -249,7 +249,7 @@ with source_optimism_transactions as (
 )
 ,erc721_transfer as (
   select *
-  from {{ source('erc721_optimism','evt_Transfer') }}
+  from {{ source('erc721_optimism','evt_transfer') }}
   where 
     from = '{{non_buyer_address}}'
     {% if not is_incremental() %}
