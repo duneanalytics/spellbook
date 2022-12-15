@@ -220,5 +220,11 @@ FROM
 ,('0xcfdff4e171133d55de2e45c66a0e144a135d93f2', 'Lyra sETH market Option Token', 'erc721')
 ,('0x57fC581C33b32fcF85fB6618D07c1acDA3993149', 'ODOS.xyz NFT Campaign', 'erc721')
 ,('0x03518ad0aaad97142262c57f0a07a1220e99805c', 'Quest3NFT', 'erc721')
+,('0xf68f8d089f2a1efe2395aca82288753dc2cea8a4', 'OAYC Mutagen III', 'erc721')
+,('0x2f05e799c61b600c65238a9df060caba63db8e78', 'Generic ERC1155', 'erc1155')
+,('0xd348e05195a4695b5647b7e71cde96cc4932cb08', 'Xmas ABC', 'erc721')
+,('0xe12103a2f6a41a812c1f58bd02afac93f3e43e6c', 'Galxe Stargator Warrior NFTs', 'erc721')
+,('0x19287b85b215c043974860361f8559a3ce1c3543', 'OAYC Mutagen II', 'erc721')
+,('0x882d70db198d2207404b977be3fdb1f3893d5de2', 'Galxe OpenOcean World Cup NFT', 'other')
 
 ) as temp_table (contract_address, name, standard)
