@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: bend_ethereum
+    description: "bend ethereum decoded events"
+    tables:
+      - name: LendingPool_evt_Borrow
+        loaded_at_field: evt_block_time
+      - name: LendingPool_evt_Repay
+        loaded_at_field: evt_block_time
