@@ -52,6 +52,7 @@ models:
         description: 'Swap fees for the pool, values are returned with 18 decimals (1e18 meaning 100%)'
         tests:
           - not_null
+
   - name: balancer_v2_optimism_bpt_prices
     meta:
       blockchain: optimism
@@ -76,3 +77,44 @@ models:
       - &median_price
         name: median_price
         description: 'BPT median price'
+
+  - name: balancer_optimism_pools_tokens_weights
+    meta:
+      blockchain: optimism
+      project: balancer
+      contributors: jacektrocinski
+    config:
+      tags: ['optimism', 'balancer', 'pools', 'tokens', 'weights']
+    description: >
+      Token weights in Balancer pools.
+    columns:
+      - &pool_id
+        name: pool_id
+        description: 'Unique encoded identifier that refers to each pool'
+        tests:
+          - not_null
+      - &token_address
+        name: token_address
+        description: 'Contract address for the token'
+      - &normalized_weight
+        name: normalized_weight
+        description: 'Weight of the token in the pool.'
+
+  - name: balancer_v2_optimism_pools_tokens_weights
+    meta:
+      blockchain: optimism
+      project: balancer
+      contributors: jacektrocinski
+    config:
+      tags: ['optimism', 'balancer', 'pools', 'tokens', 'weights']
+    description: >
+      Token weights in Balancer v2 pools.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_id
+            - token_address
+    columns:
+      - *pool_id
+      - *token_address
+      - *normalized_weight
