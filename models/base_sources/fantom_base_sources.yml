@@ -56,7 +56,6 @@ sources:
           - name: hash
             description: "Primary key of the transaction"
             tests:
-              - unique
               - not_null
           - name: type
             description: "Transaction type"
