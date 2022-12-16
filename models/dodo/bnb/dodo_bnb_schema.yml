@@ -108,6 +108,18 @@ models:
             - tx_hash
             - evt_index
             - trace_address
+      - check_dex_seed:
+          blockchain: bnb
+          project: DODO
+          version: 0
+      - check_dex_seed:
+          blockchain: bnb
+          project: DODO
+          version: 1
+      - check_dex_seed:
+          blockchain: bnb
+          project: DODO
+          version: 2_dvm
     columns:
       - *blockchain
       - *project
