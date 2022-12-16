@@ -8,12 +8,12 @@
 }}
 
 {% set quix_events = [
-'quix_v1_optimism_events'
-,'quix_v2_optimism_events'
-,'quix_v3_optimism_events'
-,'quix_v4_optimism_events'
-,'quix_v5_optimism_events'
-,'quix_seaport_optimism_trades'
+ref( 'quix_v1_optimism_events' )
+,ref( 'quix_v2_optimism_events' )
+,ref( 'quix_v3_optimism_events' )
+,ref( 'quix_v4_optimism_events' )
+,ref( 'quix_v5_optimism_events' )
+,ref( 'quix_seaport_optimism_trades' )
 ] %}
 
 select *
@@ -46,7 +46,7 @@ from (
         block_number,
         tx_from,
         tx_to
-    from {{ ref(model) }}
+    from {{ model }}
     where evt_type = 'Trade'
     {% if not loop.last %}
     union all
