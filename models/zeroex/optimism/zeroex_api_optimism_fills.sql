@@ -13,7 +13,8 @@
     )
 }}
 
-
+{% set zeroex_v3_start_date = '2019-12-01' %}
+{% set zeroex_v4_start_date = '2021-01-06' %}
 
 -- Test Query here: https://dune.com/queries/1685501
 
@@ -82,7 +83,7 @@ v4_rfq_fills_no_bridge AS (
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
     {% if not is_incremental() %}
-  --  WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
+    WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
     {% endif %}
 ),
 v4_limit_fills_no_bridge AS (
@@ -108,7 +109,7 @@ v4_limit_fills_no_bridge AS (
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
     {% if not is_incremental() %}
-  --  WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
+    WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
     {% endif %}
 ),
 otc_fills AS (
@@ -163,7 +164,7 @@ ERC20BridgeTransfer AS (
     AND block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
     {% if not is_incremental() %}
-    AND block_time >= '{{zeroex_v3_start_date}}'
+  --  AND block_time >= '{{zeroex_v3_start_date}}'
     {% endif %}
 
 ), 
@@ -192,12 +193,12 @@ BridgeFill AS (
         AND block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
         {% if not is_incremental() %}
-        AND block_time >= '{{zeroex_v4_start_date}}'
+  --      AND block_time >= '{{zeroex_v4_start_date}}'
         {% endif %}
-),*/
+), */
 NewBridgeFill AS (
     SELECT 
-            logs.tx_hash,
+            logs.tx_hash as tx_hash,
             INDEX                                           AS evt_index,
             logs.contract_address,
             block_time                                      AS block_time,
@@ -249,7 +250,7 @@ direct_PLP AS (
     {% if not is_incremental() %}
     WHERE evt_block_time >= '{{zeroex_v3_start_date}}'
     {% endif %}
-),
+), 
 direct_uniswapv3 AS (
     SELECT 
             swap.evt_tx_hash                                                                        AS tx_hash,
@@ -279,7 +280,7 @@ direct_uniswapv3 AS (
         AND swap.evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
         {% if not is_incremental() %}
-        AND swap.evt_block_time >= '{{zeroex_v4_start_date}}'
+      --  AND swap.evt_block_time >= '{{zeroex_v4_start_date}}'
         {% endif %}
 
 ), */
@@ -287,13 +288,14 @@ all_tx AS (
     /*
     SELECT *
     FROM direct_uniswapv3
-    UNION ALL SELECT *
-    FROM direct_PLP
+     UNION ALL SELECT *
+    FROM direct_PLP 
     UNION ALL SELECT *
     FROM ERC20BridgeTransfer
     UNION ALL SELECT *
     FROM BridgeFill
-    UNION ALL */ SELECT *
+    UNION ALL */
+    SELECT *
     FROM NewBridgeFill 
     UNION ALL SELECT *
     FROM v4_rfq_fills_no_bridge
@@ -332,7 +334,7 @@ INNER JOIN {{ source('optimism', 'transactions')}} tx ON all_tx.tx_hash = tx.has
 AND tx.block_time >= date_trunc('day', now() - interval '1 week')
 {% endif %}
 {% if not is_incremental() %}
--- AND tx.block_time >= '{{zeroex_v3_start_date}}'
+AND tx.block_time >= '{{zeroex_v3_start_date}}'
 {% endif %}
 
 LEFT JOIN {{ source('prices', 'usd') }} tp ON date_trunc('minute', all_tx.block_time) = tp.minute
@@ -346,7 +348,7 @@ AND tp.blockchain = 'optimism'
 AND tp.minute >= date_trunc('day', now() - interval '1 week')
 {% endif %}
 {% if not is_incremental() %}
--- AND tp.minute >= '{{zeroex_v3_start_date}}'
+AND tp.minute >= '{{zeroex_v3_start_date}}'
 {% endif %}
 
 LEFT JOIN {{ source('prices', 'usd') }} mp ON DATE_TRUNC('minute', all_tx.block_time) = mp.minute
@@ -360,5 +362,5 @@ AND mp.blockchain = 'optimism'
 AND mp.minute >= date_trunc('day', now() - interval '1 week')
 {% endif %}
 {% if not is_incremental() %}
--- AND mp.minute >= '{{zeroex_v3_start_date}}'
+AND mp.minute >= '{{zeroex_v3_start_date}}'
 {% endif %}
