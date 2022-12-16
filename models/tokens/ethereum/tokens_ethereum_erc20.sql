@@ -6824,5 +6824,18 @@ FROM (VALUES
           ('0xbd0d47d7ecf0978f13878615635f3d3dc5fecde1', 'KEK', 18),
           ('0xa92c49c403386111c1629aee00936eed2a9e74a6', 'KLTR', 18),
           ('0xe85d69d5e7b91b1a0d2e93a3678315e6915197b2', 'JBG', 4),
-          ('0xdc97fdaadcbc1c77525b8a1c981865bd2e0425aa', 'SMTS', 18)
+          ('0xdc97fdaadcbc1c77525b8a1c981865bd2e0425aa', 'SMTS', 18),
+          ('0x04c17b9d3b29a78f7bd062a57cf44fc633e71f85', 'IMPT', 18),
+          ('0x250855469b1eafadc4ecac66c8f390554ec4e104', 'SENSHI', 18),
+          ('0x351caa9045d65107b9d311d922d15887cfd634e4', 'ARW', 18),
+          ('0x402f878bdd1f5c66fdaf0fababcf74741b68ac36', 'sdFXS', 18),
+          ('0x444444444444c1a66f394025ac839a535246fcc8', 'GENI', 9),
+          ('0x4edcb2b46377530bc18bb4d2c7fe46a992c73e10', 'cbETH-wstETH-BPT', 18),
+          ('0x836a808d4828586a69364065a1e064609f5078c7', 'pETH', 18),
+          ('0x8bb08042c06fa0fc26cd2474c5f0c03a1056ad2f', 'CPI', 18),
+          ('0x8e0e57dcb1ce8d9091df38ec1bfc3b224529754a', 'CAH', 18),
+          ('0xbb24c7a8e89eda9f22842644df8d0524871257e5', 'LL', 18),
+          ('0xc1f33e0cf7e40a67375007104b929e49a581bafe', 'SPOT', 9),
+          ('0xc5f3d11580c41cd07104e9af154fc6428bb93c73', 'yvBalancer-BoostedAaveUSD', 18),
+          ('0xf33683d0d690ccdbbf63a54b8d6709ff7e6cf987', 'TFI', 18)
      ) AS temp_table (contract_address, symbol, decimals)
