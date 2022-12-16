@@ -32,7 +32,7 @@ select tfe.evt_block_time as raw_block_time
         , tfe.evt_tx_hash as raw_tx_hash
         , tff.token as raw_nft_contract_address
         , tff.token_id as raw_token_id
-        , tfe.evt_tx_hash || tff.token || '-' || tff.token_id AS raw_unique_trade_id
+        , tfe.evt_tx_hash || '-' || tff.token || '-' || tff.token_id AS raw_unique_trade_id
 from tfe
     join tff
 on tfe.evt_tx_hash = tff.call_tx_hash
@@ -56,7 +56,7 @@ WHERE blockchain = 'bnb'
 
 select *
 from raw_events as r
-outer join processed_events as p
+full join processed_events as p
 on r.raw_block_time = p.processed_block_time
     and r.raw_unique_trade_id = p.processed_trade_id
 where not r.raw_unique_trade_id = p.processed_trade_id

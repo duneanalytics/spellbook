@@ -147,6 +147,7 @@ FROM tfe
                        AND erct.evt_tx_hash = tfe.evt_tx_hash
                        AND tff.token_id = erct.tokenId
                        AND erct.from = tfe.seller
+                       AND erct.to = tfe.buyer
                        {% if is_incremental() %}
                        and erct.evt_block_time >= date_trunc("day", now() - interval '1 week')
                        {% endif %}
