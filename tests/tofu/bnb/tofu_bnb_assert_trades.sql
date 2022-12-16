@@ -9,7 +9,7 @@ WITH tff AS (
                  explode(from_json(get_json_object(detail, '$.bundle'), 'array<string>')) as t
           FROM {{ source('tofu_nft_bnb', 'MarketNG_call_run') }}
           WHERE call_success = true
-            and call_block_time >= '2022-11-15'
+            and call_block_time >= '2022-12-01' -- Check from Dec 1 2022
             and call_block_time
               < NOW() - interval '1 day'
          ) as tmp
@@ -24,7 +24,7 @@ WITH tff AS (
                 get_json_object(inventory, '$.currency') as currency
          from {{ source('tofu_nft_bnb', 'MarketNG_evt_EvInventoryUpdate') }}
 where get_json_object(inventory, '$.status') = '1'
-  and evt_block_time >= '2022-11-15'
+  and evt_block_time >= '2022-12-01'
   and evt_block_time < NOW() - interval '1 day'
     )
     , raw_events as (
@@ -49,13 +49,13 @@ FROM {{ ref('tofu_bnb_events') }}
 WHERE blockchain = 'bnb'
   AND project = 'tofu'
   AND version = 'v1'
-  AND block_time >= '2022-11-15'
+  AND block_time >= '2022-12-01'
   AND block_time
     < NOW() - interval '1 day'
     )
 
 select *
-from raw_events as r 
+from raw_events as r
 outer join processed_events as p
 on r.raw_block_time = p.processed_block_time
     and r.raw_unique_trade_id = p.processed_trade_id
