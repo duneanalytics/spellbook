@@ -145,7 +145,7 @@ SELECT 'ethereum' AS blockchain
 , CASE WHEN inv.fees_0_to='{{fee_management_addr}}' THEN pu.price*ROUND(COALESCE(inv.price*inv.platform_fee_percentage/1e6), 0)/POWER(10, currency_token.decimals)
     ELSE 0
     END AS platform_fee_amount_usd
-, CASE WHEN inv.fees_0_to='{{fee_management_addr}}' THEN COALESCE(inv.platform_fee_percentage/1e6, 0)
+, CASE WHEN inv.fees_0_to='{{fee_management_addr}}' THEN COALESCE(inv.platform_fee_percentage/1e4, 0)
     ELSE 0
     END AS platform_fee_percentage
 , CASE WHEN inv.fees_0_to='{{fee_management_addr}}' THEN COALESCE(inv.price*inv.royalty_fee_percentage/1e6, 0)
@@ -157,8 +157,8 @@ SELECT 'ethereum' AS blockchain
 , CASE WHEN inv.fees_0_to='{{fee_management_addr}}' THEN pu.price*COALESCE(inv.price*inv.royalty_fee_percentage/1e6, 0)/POWER(10, currency_token.decimals)
     ELSE pu.price*COALESCE(inv.price*inv.all_fee_percentage/1e6, 0)/POWER(10, currency_token.decimals)
     END AS royalty_fee_amount_usd
-, CASE WHEN inv.fees_0_to='{{fee_management_addr}}' THEN inv.royalty_fee_percentage/1e6
-    ELSE inv.all_fee_percentage/1e6
+, CASE WHEN inv.fees_0_to='{{fee_management_addr}}' THEN inv.royalty_fee_percentage/1e4
+    ELSE inv.all_fee_percentage/1e4
     END AS royalty_fee_percentage
 , CASE WHEN prof.is_native_eth THEN 'ETH'
     ELSE currency_token.symbol

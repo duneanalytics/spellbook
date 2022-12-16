@@ -7,7 +7,16 @@
         )
 }}
 
-select *
+select  evt_block_time
+        , punk_id
+        , event_type
+        , sale_type
+        , from 
+        , to 
+        , eth_amount
+        , usd_amount
+        , evt_block_number
+        , evt_tx_hash
 from 
 (
     select  evt_block_time
@@ -19,7 +28,6 @@ from
             , eth_amount
             , usd_amount
             , evt_block_number
-            , evt_index
             , evt_tx_hash
     from {{ ref('cryptopunks_ethereum_punk_bid_events') }}
 
@@ -34,7 +42,6 @@ from
             , eth_amount
             , usd_amount
             , evt_block_number
-            , evt_index
             , evt_tx_hash 
     from {{ ref('cryptopunks_ethereum_punk_offer_events') }}
 
@@ -49,7 +56,6 @@ from
             , amount_original
             , amount_usd
             , block_number 
-            , evt_index
             , tx_hash
     from {{ ref('cryptopunks_ethereum_trades') }}
 
@@ -64,7 +70,6 @@ from
             , amount_original
             , amount_usd
             , block_number
-            , cast(NULL as double) as evt_index
             , tx_hash
     from {{ ref('nft_trades') }}
     where nft_contract_address = lower('0xb7f7f6c52f2e2fdb1963eab30438024864c313f6') -- wrapped punk contract
@@ -82,7 +87,6 @@ from
             , price/1e18 as eth_amount
             , cast(NULL as double) as usd_amount
             , evt_block_number
-            , evt_index
             , evt_tx_hash
     from {{ source('rarible_v1_ethereum','ERC721Sale_v2_evt_Buy') }}
     where token = lower('0xb7f7f6c52f2e2fdb1963eab30438024864c313f6')
@@ -101,9 +105,9 @@ from
             , cast(NULL as double) as eth_amount
             , cast(NULL as double) as usd_amount
             , evt_block_number 
-            , evt_index
             , evt_tx_hash
     from {{ ref('cryptopunks_ethereum_punk_transfers') }}
     where evt_tx_hash not in (select distinct tx_hash from {{ ref('cryptopunks_ethereum_trades') }} )
 ) a 
-order by evt_block_number desc, evt_index desc
+group by 1,2,3,4,5,6,7,8,9,10
+order by evt_block_number desc
