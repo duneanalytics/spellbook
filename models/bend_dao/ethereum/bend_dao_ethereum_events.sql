@@ -107,7 +107,7 @@ LEFT JOIN
     ON collateral_currency.contract_address = ae.collateral_currency_contract
 LEFT JOIN 
 {{ source('prices', 'usd') }} p 
-    ON p.minute = date_trunc('minute', ae.block_time)
+    ON p.minute = date_trunc('minute', ae.evt_block_time)
     AND p.contract_address = ae.collateral_currency_contract
     AND p.blockchain = 'ethereum'
     {% if not is_incremental() %}
