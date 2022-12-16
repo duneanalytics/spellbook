@@ -31,29 +31,6 @@ sources:
           - name: specialization
             description: 'Pool specialization'
 
-  - name: balancer_v1_ethereum
-    description: >
-      Decoded tables related to Balancer V1, an automated portfolio manager and trading platform, on Ethereum.
-    tables:
-      - name: BFactory_evt_LOG_NEW_POOL
-        description: >
-          Decoded table related to the Balancer BFactory contract.
-        loaded_at_field: evt_block_time
-        columns:
-          - name: contract_address
-            description: 'Balancer v1 BFactory contract address'
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
-          - name: caller
-            description: 'Caller address that created the Balancer pool'
-          - name: pool
-            description: 'Balancer pool contract address'
-  - name: balancer_v2_ethereum
-    description: >
-      Decoded tables related to Balancer V2, an automated portfolio manager and trading platform, on Ethereum.
-    tables:
       - name: Vault_evt_Swap
         description: >
           Decoded table related to the the contracts emitted by swaps in Balancer V2 pools.
@@ -79,3 +56,161 @@ sources:
             description: 'Raw amount of the token provided to the pool'
           - name: amountOut
             description: 'Raw amount of the token bought from the pool'
+
+      - name: WeightedPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer WeightedPoolFactory contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - &call_block_number
+            name: call_block_number
+            description: ''
+          - &call_block_time
+            name: call_block_time
+            description: ''
+          - &call_success
+            name: call_success
+            description: ''
+          - &call_trace_address
+            name: call_trace_address
+            description: ''
+          - &call_tx_hash
+            name: call_tx_hash
+            description: ''
+          - name: contract_address
+            description: ''
+          - name: name
+            description: ''
+          - &output_0
+            name: output_0
+            description: ''
+          - &owner
+            name: owner
+            description: ''
+          - &swapFeePercentage
+            name: swapFeePercentage
+            description: ''
+          - &symbol
+            name: symbol
+            description: ''
+          - &tokens
+            name: tokens
+            description: ''
+          - &weights
+            name: weights
+            description: ''
+
+      - name: WeightedPool2TokensFactory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer WeightedPool2TokensFactory contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: ''
+          - name: name
+            description: ''
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *symbol
+          - *tokens
+          - *weights
+
+      - name: WeightedPoolV2Factory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer WeightedPool2TokensFactory contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: ''
+          - name: name
+            description: ''
+          - name: normalizedWeights
+            description: ''
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *symbol
+          - *tokens
+
+  - name: balancer_v1_ethereum
+    description: >
+      Decoded tables related to Balancer V1, an automated portfolio manager and trading platform, on Ethereum.
+    tables:
+      - name: BFactory_evt_LOG_NEW_POOL
+        description: >
+          Decoded table related to the Balancer BFactory contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'Balancer v1 BFactory contract address'
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: caller
+            description: 'Caller address that created the Balancer pool'
+          - name: pool
+            description: 'Balancer pool contract address'
+
+      - name: BPool_call_bind
+        description: >
+          Decoded table related to the Balancer BPool contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - &balance
+            name: balance
+            description: ''
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: ''
+          - &denorm
+            name: denorm
+            description: ''
+          - &token
+            name: token
+            description: ''
+
+      - name: BPool_call_rebind
+        description: >
+          Decoded table related to the Balancer BPool contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - *balance
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: ''
+          - *denorm
+          - *token
+
+      - name: BPool_call_unbind
+        description: >
+          Decoded table related to the Balancer BPool contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: ''
+          - *token
