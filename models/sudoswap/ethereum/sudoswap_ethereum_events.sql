@@ -386,7 +386,7 @@ SELECT
     , evt_type
     , seller
     , buyer
-    , amount_raw
+    , CAST(amount_raw AS DECIMAL(38,0)) AS amount_raw
     , amount_original
     , amount_usd
     , currency_symbol
