@@ -19,7 +19,7 @@ models:
     meta:
       blockchain: avalanche_c
       sector: nft
-      contributors: hildobby
+      contributors: hildobby, 0xRob
     config:
       tags: ['nft', 'avalanche_c', 'transfers']
     description: >
@@ -29,6 +29,8 @@ models:
           combination_of_columns:
             - unique_transfer_id
     columns:
+      - name: blockchain
+        description: "Blockchain"
       - name: block_time
         description: "UTC event block time"
       - name: block_number
