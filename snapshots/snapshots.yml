@@ -1,6 +1,0 @@
-version: 2
-
-snapshots:
-  - name: tokens_erc20_snapshot
-    description: 'Historical Snapshot of ERC20 Tokens - so we can dynamically build these tables'
-    depends_on: []
