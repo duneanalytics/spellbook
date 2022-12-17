@@ -352,7 +352,7 @@ models:
         +materialized: table
       gnosis:
         +schema: addresses_events_gnosis
-        +materialized: 
+        +materialized: table
       optimism:
         +schema: addresses_events_optimism
         +materialized: table
