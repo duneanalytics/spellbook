@@ -23,7 +23,7 @@
 
 
 SELECT distinct 
-    blockchain
+    a.blockchain
         , a.atoken_address, a.underlying_address, a.atoken_decimals, a.side, a.arate_type, a.atoken_symbol, a.atoken_name
         , et.decimals AS underlying_decimals, et.symbol AS underlying_symbol
     
