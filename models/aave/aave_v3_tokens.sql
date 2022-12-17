@@ -31,14 +31,14 @@ WITH atokens AS (
         {% for aave_v3_chain in aave_v3_decoded_chains %}
         SELECT
         '{{aave_v3_chain}}' AS blockchain, contract_address as atoken_address, `underlyingAsset` as underlying_address, `aTokenDecimals` as atoken_decimals, 'Supply' as side, 'Variable' as arate_type, aTokenSymbol as atoken_symbol, aTokenName as atoken_name
-            FROM {{source( 'aave_v3_' + aave_v3_chain, 'AToken_evt_Initialized' ) }}
+            FROM {{source( 'aave_v3_' + '{{aave_v3_chain}}', 'AToken_evt_Initialized' ) }}
             {% if is_incremental() %}
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         UNION ALL
         SELECT
         '{{aave_v3_chain}}' AS blockchain, contract_address as atoken_address, `underlyingAsset` as underlying_address, `debtTokenDecimals` as atoken_decimals, 'Borrow' as side, 'Stable' as arate_type, debtTokenSymbol as atoken_symbol, debtTokenName as atoken_name
-            FROM {{source( 'aave_v3_' + aave_v3_chain, 'StableDebtToken_evt_Initialized' ) }}
+            FROM {{source( 'aave_v3_' + '{{aave_v3_chain}}', 'StableDebtToken_evt_Initialized' ) }}
             WHERE debtTokenName LIKE '%Stable%'
             {% if is_incremental() %}
             AND evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -46,7 +46,7 @@ WITH atokens AS (
         UNION ALL
         SELECT
         '{{aave_v3_chain}}' AS blockchain, contract_address as atoken_address, `underlyingAsset` as underlying_address, `debtTokenDecimals` as atoken_decimals, 'Borrow' as side, 'Variable' as arate_type, debtTokenSymbol as atoken_symbol, debtTokenName as atoken_name
-            FROM {{source( 'aave_v3_' + aave_v3_chain, 'VariableDebtToken_evt_Initialized' ) }}
+            FROM {{source( 'aave_v3_' + '{{aave_v3_chain}}', 'VariableDebtToken_evt_Initialized' ) }}
             WHERE debtTokenName LIKE '%Variable%'
             {% if is_incremental() %}
             AND evt_block_time >= date_trunc("day", now() - interval '1 week')
