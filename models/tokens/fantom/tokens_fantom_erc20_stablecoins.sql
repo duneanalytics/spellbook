@@ -19,6 +19,7 @@ FROM (VALUES
           ('0x7a6e4E3CC2ac9924605DCa4bA31d1831c84b44aE', '2OMB', 18, '2omb Finance Algorithmic Stablecoin'), 
           ('0x846e4D51d7E2043C1a87E0Ab7490B93FB940357b', 'UST',	6,	'UST (Wormhole)'), 
           ('0x87a5C9B60A3aaf1064006FE64285018e50e0d020', 'MAGIK', 18, 'Magik Finance Algorithm Stablecoin'),
+          ('0x9879aBDea01a879644185341F7aF7d8343556B7a', 'TUSD', 18, 'TrueUSD'),
 
 
 
