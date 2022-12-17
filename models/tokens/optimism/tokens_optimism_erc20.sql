@@ -306,7 +306,7 @@ FROM (
     --   WHERE blockchain = 'optimism'
     */
   ) a
-  GROUP BY contract_address, symbol, token_type --get uniques & handle if L2 token factory gets decimals wrong
+  GROUP BY contract_address, symbol, token_type, token_mapping_source --get uniques & handle if L2 token factory gets decimals wrong
 )
 
 SELECT LOWER(contract_address) AS contract_address
