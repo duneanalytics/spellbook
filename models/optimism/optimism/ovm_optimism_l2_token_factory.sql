@@ -38,9 +38,8 @@ FROM (
             AND tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        LEFT JOIN {{ref('tokens_erc20_snapshot')}} t
+        LEFT JOIN {{ref('tokens_ethereum_erc20')}} t
             ON t.contract_address = c1._l1Token
-            AND t.blockchain = 'ethereum'
 
         WHERE call_success = true
         {% if is_incremental() %}
@@ -61,9 +60,8 @@ FROM (
             AND tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        LEFT JOIN {{ref('tokens_erc20_snapshot')}} t
+        LEFT JOIN {{ref('tokens_ethereum_erc20')}} t
             ON t.contract_address = c2._l1Token
-            AND t.blockchain = 'ethereum'
 
         WHERE call_success = true
         {% if is_incremental() %}

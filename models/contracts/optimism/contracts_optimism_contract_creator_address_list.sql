@@ -371,6 +371,8 @@ FROM (
       ,('0x0c6c8f014d1B3E37F470d39356379E220e4Beb67', 'Resonate')
       ,('0xe25831C97aC161AD58aEf70B6ceE507B0E49688C', '2Pi Network')
       ,('0x8888888841B669313CdC735910214313d7420E25', 'AcryptoS')
+      ,('0x72c1a1c24917eef19e7f5dea146d950841f37662', 'O3 Swap')
+      ,('0xfb41cbf2ce16e8f626013a2f465521d27ba9a610', 'Beefy Finance')
 
   ) as temp_table (creator_address, contract_project)
 
