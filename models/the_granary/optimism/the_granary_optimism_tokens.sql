@@ -28,20 +28,13 @@
             {% endif %}
         UNION ALL
         SELECT
-        'optimism' AS blockchain, contract_address as atoken_address, `underlyingAsset` as underlying_address, `debtTokenDecimals` as atoken_decimals, 'Borrow' as side, 'Stable' as arate_type, debtTokenSymbol as atoken_symbol, debtTokenName as atoken_name
-            FROM {{source( 'the_granary_optimism', 'StableDebtToken_evt_Initialized' ) }}
-            WHERE debtTokenName LIKE '%Stable%'
+        'optimism' AS blockchain, contract_address as atoken_address, `underlyingAsset` as underlying_address, `debtTokenDecimals` as atoken_decimals, 'Borrow' as side, 
+        CASE WHEN debtTokenName LIKE '%Stable%' THEN 'Stable' ELSE 'Variable' END as arate_type, debtTokenSymbol as atoken_symbol, debtTokenName as atoken_name
+            FROM {{source( 'the_granary_optimism', 'DebtToken_evt_Initialized' ) }}
             {% if is_incremental() %}
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
-        UNION ALL
-        SELECT
-        'optimism' AS blockchain, contract_address as atoken_address, `underlyingAsset` as underlying_address, `debtTokenDecimals` as atoken_decimals, 'Borrow' as side, 'Variable' as arate_type, debtTokenSymbol as atoken_symbol, debtTokenName as atoken_name
-            FROM {{source( 'the_granary_optimism', 'VariableDebtToken_evt_Initialized' ) }}
-            WHERE debtTokenName LIKE '%Variable%'
-            {% if is_incremental() %}
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
-            {% endif %}
+  
         ) a
     LEFT JOIN {{ ref('tokens_erc20') }} et
         ON a.underlying_address = et.contract_address
