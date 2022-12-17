@@ -62,3 +62,5 @@ WITH atokens AS (
         AND a.blockchain = et.blockchain
 
     )
+
+    SELECT * FROM atokens
