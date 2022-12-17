@@ -44,7 +44,7 @@ WITH atokens AS (
             AND evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         ) a
-    LEFT JOIN {{ ref('tokens_erc20_snapshot') }} et
+    LEFT JOIN {{ ref('tokens_erc20') }} et
         ON a.underlying_address = et.contract_address
         AND et.blockchain = 'optimism'
 

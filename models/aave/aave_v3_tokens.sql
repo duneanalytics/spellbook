@@ -57,7 +57,7 @@ WITH atokens AS (
         {% endfor %}
 
         ) a
-    LEFT JOIN {{ ref('tokens_erc20_snapshot') }} et
+    LEFT JOIN {{ ref('tokens_erc20') }} et
         ON a.underlying_address = et.contract_address
         AND a.blockchain = et.blockchain
 
