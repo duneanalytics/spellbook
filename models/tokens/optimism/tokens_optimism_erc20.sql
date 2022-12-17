@@ -274,7 +274,7 @@ WITH raw_token_list AS (
     ,('0x1a9c8b7f8695abd9a930ea49a498ce1b7a590d25', 'ABT', 18, 'underlying')
     ,('0x0c5b4c92c948691EEBf185C17eeB9c230DC019E9', 'PICKLE', 18, 'underlying')
 
-    ) AS temp_table (contract_address, symbol, decimals, token_price_source)
+    ) AS temp_table (contract_address, symbol, decimals, token_type)
 
 )
 
@@ -312,17 +312,18 @@ FROM (
 SELECT LOWER(contract_address) AS contract_address
       , symbol
       , decimals
-      , token_price_source
-      , CASE WHEN token_price_source IN ('underlying') THEN 1
+      , token_type
+      , token_mapping_source
+      , CASE WHEN token_type IN ('underlying') THEN 1
         ELSE 0 --double counted (breakdown, receipt) or no price
       END
       AS is_counted_in_tvl
 
     FROM (
-      SELECT contract_address, symbol, decimals, token_price_source, 'manual' AS token_mapping_source
+      SELECT contract_address, symbol, decimals, token_type, 'manual' AS token_mapping_source
         FROM raw_token_list
       UNION ALL
-      SELECT contract_address, symbol, decimals, token_price_source, token_mapping_source
+      SELECT contract_address, symbol, decimals, token_type, token_mapping_source
         FROM generated_tokens_list  
         WHERE contract_address NOT IN (SELECT contract_address FROM raw_token_list) -- do not duplicate if manually mapped
     ) a
