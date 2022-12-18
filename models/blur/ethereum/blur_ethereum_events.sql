@@ -53,9 +53,9 @@ SELECT
     , bm.evt_tx_hash AS tx_hash
     , et.from AS tx_from
     , et.to AS tx_to
-    , 0 AS platform_fee_amount_raw
-    , 0 AS platform_fee_amount
-    , 0 AS platform_fee_amount_usd
+    , CAST(0 AS DOUBLE) AS platform_fee_amount_raw
+    , CAST(0 AS DOUBLE) AS platform_fee_amount
+    , CAST(0 AS DOUBLE) AS platform_fee_amount_usd
     , CAST(0 AS DOUBLE) AS platform_fee_percentage
     , COALESCE(get_json_object(bm.buy, '$.price')*get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/10000, 0) AS royalty_fee_amount_raw
     , CASE WHEN get_json_object(bm.buy, '$.paymentToken') IN ('0x0000000000000000000000000000000000000000', '0x0000000000a39bb272e79075ade125fd351887ac') THEN COALESCE(get_json_object(bm.buy, '$.price')/POWER(10, 18)*get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/10000, 0)
