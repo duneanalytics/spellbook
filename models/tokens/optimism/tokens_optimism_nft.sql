@@ -238,6 +238,5 @@ FROM
 ,('0x671CFd5882b5F48654EC99ec8F997Ed6C6031DF9', 'Tally Ho Community Call Optimism', 'erc721')
 ,('0x49Bb981c8b721B9873093f519337329f794E8577', 'Jigsaw Pass', 'erc721')
 ,('0xE70ab5DBe405723A31C7Aed81d93Ff0b14230913', 'Hook Explorer Badge', 'erc721')
-,('0x2408346BaB762718997F3F9746a5Cd5171F8404f', 'Anime War NFT', 'erc721')
 
 ) as temp_table (contract_address, name, standard)
