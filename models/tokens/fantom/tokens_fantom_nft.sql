@@ -45,7 +45,7 @@ FROM (VALUES
         ('0xb54FF1EBc9950fce19Ee9E055A382B1219f862f0', 'Portalheads', 'PH', 'erc721', ''), 
         ('0x8313f3551C4D3984FfbaDFb42f780D0c8763Ce94', 'veEQUAL', 'veEQUAL', 'erc721', ''), 
         ('0x6393C82a8CDB073C97E496e44849f584539DC21d', 'Fantom Name Service', 'FNS', 'erc721', ''), 
-        ('0x2B1c7b41f6A8F2b2bc45C3233a5d5FB3cD6dC9A8', 'KyberSwap v2 NFT Positions Manager', 'KS2-NPM', 'erc71', ''), 
+        ('0x2B1c7b41f6A8F2b2bc45C3233a5d5FB3cD6dC9A8', 'KyberSwap v2 NFT Positions Manager', 'KS2-NPM', 'erc721', ''), 
         ('0x74D3736377fd0251c19b2b77288Cea6D3Ad87578', 'CryptoWormzNFT', 'CW', 'erc721', ''), 
         ('0x68B714Ac6913B9497817c03ac14cf99BbfB9d737', 'Fantom Fox Boy', 'FTMFOXBOY', 'erc721', ''),
         ('0x6Fc9D59108D54e874b82e29833227f5fB3c57020', 'MagikWorldSPR', 'MWSPR', 'erc721', ''), 
