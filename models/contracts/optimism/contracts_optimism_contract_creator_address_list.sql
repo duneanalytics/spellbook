@@ -373,6 +373,7 @@ FROM (
       ,('0x8888888841B669313CdC735910214313d7420E25', 'AcryptoS')
       ,('0x72c1a1c24917eef19e7f5dea146d950841f37662', 'O3 Swap')
       ,('0xfb41cbf2ce16e8f626013a2f465521d27ba9a610', 'Beefy Finance')
+      ,('0xbA22746D79E75931DD8C0336760332E5D4a372a5', 'Curve')
 
   ) as temp_table (creator_address, contract_project)
 
