@@ -154,7 +154,7 @@ SELECT DISTINCT t.blockchain
 , t.tx_hash
 , et.from AS tx_from
 , et.to AS tx_to
-, t.platform_fee_amount_raw
+, CAST(t.platform_fee_amount_raw AS DOUBLE) AS platform_fee_amount_raw
 , t.platform_fee_amount
 , t.platform_fee_amount*pu.price AS platform_fee_amount_usd
 , CAST(100.0*ROUND(t.platform_fee_amount/t.amount_original, 2) AS DOUBLE) AS platform_fee_percentage
