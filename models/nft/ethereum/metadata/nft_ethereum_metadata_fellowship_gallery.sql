@@ -63,6 +63,8 @@ from (VALUES
         ('0x23e3f2ea133f2c80558e181c4f78f4da3bc7c477','House Hunting','Todd Hido','Foundation','https://foundation.app/collection/thhh'),
         ('0xb8c55c77b3617ef22a4f552f9a47503e021c6623','Roaming','Todd Hido','Foundation','https://foundation.app/collection/thr-00f3')
         , ('0x49e6b0cfb1880fd7afb69c062613238049a4b56b','By Accident - The Negatives','Marcel De Baer','Foundation','https://foundation.app/collection/ngtvs')
+        , ('0xe31cc44e305955fa5965addb42641832e9a5502f', 'Light Years - Selection Pass', 'Dmitri Cherniak', 'N/A', 'https://lightyears.fellowship.xyz/')
+        , ('0x082dcab372505ae56eafde58204ba5b12ff3f3f5', 'Light Years', 'Dmitri Cherniak', 'N/A', 'https://lightyears.fellowship.xyz/')
 
 ) as temp_table (contract_address, collection_name, artist_name, platform, website)
     

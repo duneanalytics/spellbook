@@ -1,22 +1,19 @@
 {{ config(
     schema = 'aztec_v2_ethereum',
     alias = 'daily_estimated_rollup_tvl',
-    partition_by = ['date'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['symbol', 'token_address', 'date'],
-    post_hook='{{ expose_spells(\'["ethereum"]\',
+    post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                 "project",
                                 "aztec_v2",
                                 \'["Henrystats"]\') }}'
     )
 }}
 
-with 
+{% set first_transfer_date = '2022-06-06' %}
+
+WITH
 
 rollup_balance_changes as (
-  select CAST(t.evt_block_time as date) as date
+  select date_trunc('day', t.evt_block_time) as date
     , t.symbol
     , t.contract_address as token_address
     , sum(case when t.from_type = 'Rollup' then -1 * value_norm when t.to_type = 'Rollup' then value_norm else 0 end) as net_value_norm
@@ -61,36 +58,24 @@ rollup_balance_changes as (
         p.symbol, 
         AVG(p.price) as price
     FROM 
-    token_addresses ta 
-    INNER JOIN 
-        {{ source('prices', 'usd') }} p 
-        ON ta.token_address = p.contract_address
-        AND p.blockchain = 'ethereum'
-        {% if not is_incremental() %}
-        AND p.minute >= '{{first_transfer_date}}'
-        {% endif %}
-        {% if is_incremental() %}
-        AND p.minute >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
+    {{ source('prices', 'usd') }} p 
+    WHERE p.minute >= '{{first_transfer_date}}'
+    AND p.contract_address IN (SELECT token_address FROM token_addresses)
+    AND p.blockchain = 'ethereum'
     GROUP BY 1, 2, 3 
 )
 
 , token_prices_eth as (
     SELECT 
         date_trunc('day', p.minute) as day, 
-        AVG(p.price) as price
-
+        AVG(p.price) as price,
+        1 as price_eth
     FROM 
-        {{ source('prices', 'usd') }} p 
-        {% if not is_incremental() %}
-        WHERE p.minute >= '{{first_transfer_date}}'
-        {% endif %}
-        {% if is_incremental() %}
-        WHERE p.minute >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-        AND p.blockchain = 'ethereum'
-        AND p.symbol = 'WETH'
-    GROUP BY 1
+    {{ source('prices', 'usd') }} p 
+    WHERE p.minute >= '{{first_transfer_date}}'
+    AND p.blockchain = 'ethereum'
+    AND p.symbol = 'WETH'
+    GROUP BY 1, 3 
 )
 
 , token_prices as (
@@ -112,12 +97,12 @@ rollup_balance_changes as (
     , b.symbol
     , b.token_address
     , b.balance
-    , b.balance * COALESCE(p.price_usd, bb.eth_price) as tvl_usd
-    , b.balance * COALESCE(p.price_eth, 1) as tvl_eth
-  from token_balances_filled b
-  inner join token_prices p on b.date = p.day and b.token_address = p.token_address
-  LEFT JOIN token_prices bb on b.date = bb.day AND b.token_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -- using this to get price for missing ETH token 
+    , b.balance * COALESCE(p.price_usd, bb.price) as tvl_usd
+    , b.balance * COALESCE(p.price_eth, bb.price_eth) as tvl_eth
+  FROM token_balances_filled b
+  LEFT join token_prices p on b.date = p.day and b.token_address = p.token_address AND b.token_address != '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' 
+  LEFT JOIN token_prices_eth bb on b.date = bb.day AND b.token_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -- using this to get price for missing ETH token 
   
 )
-select * from token_tvls
+select * from token_tvls 
 ;

@@ -5,11 +5,15 @@
         unique_key = ['tx_hash', 'order_uid', 'evt_index'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
-        incremental_strategy='merge'
+        incremental_strategy='merge',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "project",
+                                    "cow_protocol",
+                                    \'["bh2smith", "gentrexha"]\') }}'
     )
 }}
 
--- Find the PoC Query here: https://dune.com/queries/1283229
+-- Find the PoC Query here: https://dune.com/queries/1759305
 WITH
 -- First subquery joins buy and sell token prices from prices.usd
 -- Also deducts fee from sell amount
@@ -18,7 +22,7 @@ trades_with_prices AS (
            evt_block_time            as block_time,
            evt_tx_hash               as tx_hash,
            evt_index,
-           settlement.contract_address          as project_contract_address,
+           trade.contract_address          as project_contract_address,
            owner                     as trader,
            orderUid                  as order_uid,
            sellToken                 as sell_token,
@@ -28,7 +32,7 @@ trades_with_prices AS (
            feeAmount                 as fee_amount,
            ps.price                  as sell_price,
            pb.price                  as buy_price
-    FROM {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }} settlement
+    FROM {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }} trade
              LEFT OUTER JOIN {{ source('prices', 'usd') }} as ps
                              ON sellToken = ps.contract_address
                                  AND ps.minute = date_trunc('minute', evt_block_time)
@@ -93,53 +97,54 @@ trades_with_token_units as (
                                     END)
 ),
 -- This, independent, aggregation defines a mapping of order_uid and trade
--- TODO - create a view for the following block mapping uid to app_data
-order_ids as (
-    select evt_tx_hash, collect_list(orderUid) as order_ids
-    from (  select orderUid, evt_tx_hash, evt_index
-            from {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }}
-             {% if is_incremental() %}
-             where evt_block_time >= date_trunc("day", now() - interval '1 week')
-             {% endif %}
-                     sort by evt_index
-         ) as _
-    group by evt_tx_hash
-),
-
-exploded_order_ids as (
-    select evt_tx_hash, posexplode(order_ids)
-    from order_ids
-),
-
-reduced_order_ids as (
+sorted_orders as (
     select
-        col as order_id,
-        -- This is a dirty hack!
-        collect_list(evt_tx_hash)[0] as evt_tx_hash,
-        collect_list(pos)[0] as pos
-    from exploded_order_ids
-    group by order_id
+        evt_tx_hash,
+        evt_block_number,
+        collect_list(orderUid) as order_ids
+    from (
+        select
+            evt_tx_hash,
+            evt_block_number,
+            orderUid
+        from gnosis_protocol_v2_ethereum.GPv2Settlement_evt_Trade
+        {% if is_incremental() %}
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+        distribute by
+            evt_tx_hash, evt_block_number
+        sort by
+            evt_index
+    )
+    group by evt_tx_hash, evt_block_number
 ),
 
-trade_data as (
-    select call_tx_hash,
-           posexplode(trades)
-    from {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_call_settle') }}
-    where call_success = true
-    {% if is_incremental() %}
-    AND call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+orders_and_trades as (
+    select
+        evt_tx_hash,
+        trades,
+        order_ids
+    from sorted_orders
+    inner join {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_call_settle') }}
+        on evt_block_number = call_block_number
+        and evt_tx_hash = call_tx_hash
+-- this is implied by the inner join
+--      and call_success = true
 ),
-
+-- Validate Uid <--> app_data mapping here: https://dune.com/queries/1759039?d=1
 uid_to_app_id as (
     select
-        order_id as uid,
-        get_json_object(trades.col, '$.appData') as app_data,
-        get_json_object(trades.col, '$.receiver') as receiver
-    from reduced_order_ids order_ids
-             join trade_data trades
-                  on evt_tx_hash = call_tx_hash
-                      and order_ids.pos = trades.pos
+        distinct uid,
+        get_json_object(trade, '$.appData') as app_data,
+        get_json_object(trade, '$.receiver') as receiver,
+        get_json_object(trade, '$.sellAmount') as limit_sell_amount,
+        get_json_object(trade, '$.buyAmount') as limit_buy_amount,
+        get_json_object(trade, '$.validTo') as valid_to,
+        get_json_object(trade, '$.flags') as flags
+    from orders_and_trades
+        lateral view posexplode(order_ids) o as i, uid
+        lateral view posexplode(trades) t as j, trade
+    where i = j
 ),
 
 valued_trades as (
@@ -191,7 +196,15 @@ valued_trades as (
                 ELSE NULL::numeric
                END)                                        as fee_usd,
            app_data,
-           receiver
+           case
+              when receiver = '0x0000000000000000000000000000000000000000'
+              then trader
+              else receiver
+           end                                    as receiver,
+           limit_sell_amount,
+           limit_buy_amount,
+           valid_to,
+           flags
     FROM trades_with_token_units
              JOIN uid_to_app_id
                   ON uid = order_uid

@@ -6,7 +6,8 @@
         unique_key = ['unique_transfer_id']
 )
 }}
- SELECT t.evt_block_time AS block_time
+ SELECT 'avalanche_c' AS blockchain
+, t.evt_block_time AS block_time
 , date_trunc('day', t.evt_block_time) AS block_date
 , t.evt_block_number AS block_number
 , 'erc721' AS token_standard
@@ -27,8 +28,9 @@ FROM {{ source('erc721_avalanche_c','evt_transfer') }} t
 {% if is_incremental() %}
 WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
-UNION
-SELECT t.evt_block_time AS block_time
+UNION ALL
+SELECT 'avalanche_c' AS blockchain
+, t.evt_block_time AS block_time
 , date_trunc('day', t.evt_block_time) AS block_date
 , t.evt_block_number AS block_number
 , 'erc1155' AS token_standard
@@ -49,8 +51,9 @@ FROM {{ source('erc1155_avalanche_c','evt_transfersingle') }} t
 {% if is_incremental() %}
 WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
-UNION
-SELECT evt_block_time AS block_time
+UNION ALL
+SELECT 'avalanche_c' AS blockchain
+, evt_block_time AS block_time
 , date_trunc('day', evt_block_time) AS block_date
 , evt_block_number AS block_number
 , 'erc1155' AS token_standard
@@ -77,4 +80,4 @@ FROM (
     GROUP BY t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t.from, t.to, t.evt_index, t.values, t.ids
     )
 WHERE ids_and_count.values > 0
-GROUP BY evt_block_time, evt_block_number, evt_tx_hash, contract_address, from, to, evt_index, token_id, amount
+GROUP BY blockchain, evt_block_time, evt_block_number, evt_tx_hash, contract_address, from, to, evt_index, token_id, amount
