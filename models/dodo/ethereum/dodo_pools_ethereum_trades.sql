@@ -19,12 +19,10 @@
 {% set project_start_date = '2020-08-10' %}
 
 {% set dodo_proxies = [
-"0xd0678ec59d1337e29d1e1b1b6338f3e85d311f5e", 
-"0x6ed3fd491f5b10384787b3fb162a72227fafbf63",
-"0x9a9942458754bdf65dcbcd0b6b4b842a7d4031ab",
-"0xa2cb66ebb947d217f61510882096f6e95c1de97d",
-"0xa356867fdcea8e71aeaf87805808803806231fdc", 
-"0xa2398842f37465f89540430bdc00219fa9e4d28a"
+"0x91E1c84BA8786B1FaE2570202F0126C0b88F6Ec7",
+"0x9B64c81ba54eA51e1f6B7fefb3cfF8AA6F1e2A09",
+"0xe6AafA1c45D9d0C64686c1f1D17B9fe9c7DAB05b",
+"0xE55154D09265b18aC7CDAC6E646672A5460389a1"
 ] %}
 
 WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_symbol, base_token_address, quote_token_address) AS 
