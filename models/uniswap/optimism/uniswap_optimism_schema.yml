@@ -48,14 +48,8 @@ models:
         name: newAddress
         description: "Uniswap liquidity pool contract address in the EVM Equivalence regenesis release."
       - *token0
-        name: token0
-        description:  "Token0 contract address"
       - *token1
-        name: token1
-        description:  "Token1 contract address"
       - *fee
-        name: fee
-        description:  "Swap fee of a Uniswap liquidity pool. Divide by 1e6 or power(10,6) to get the fee percentage"
 
   - name: uniswap_v3_optimism_trades
     meta:
