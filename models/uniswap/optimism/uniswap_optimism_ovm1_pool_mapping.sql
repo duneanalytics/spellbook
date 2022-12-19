@@ -750,7 +750,7 @@ with ovm1_legacy_pools_raw as (
 )
 select 
    col.oldAddress
-  ,col.`newAddress`
+  ,col.newAddress
   ,col.token0
   ,col.token1
   ,col.fee
