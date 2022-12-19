@@ -13,7 +13,7 @@
     )
 }}
 
--- Find the PoC Query here: https://dune.com/queries/1759305
+-- Find the PoC Query here: https://dune.com/queries/1779431
 WITH
 -- First subquery joins buy and sell token prices from prices.usd
 -- Also deducts fee from sell amount
@@ -147,16 +147,33 @@ uid_to_app_id as (
     where i = j
 ),
 
+eth_flow_senders as (
+    select
+        sender,
+        concat(output_orderHash, substring(event.contract_address, 3, 40), 'ffffffff') as order_uid
+    from {{ source('cow_protocol_ethereum', 'CoWSwapEthFlow_evt_OrderPlacement') }} event
+    inner join {{ source('cow_protocol_ethereum', 'CoWSwapEthFlow_call_createOrder') }} call
+        on call_block_number = evt_block_number
+        and call_tx_hash = evt_tx_hash
+        and call_success = true
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    AND call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+),
+
+
 valued_trades as (
     SELECT block_date,
            block_time,
            tx_hash,
            evt_index,
            project_contract_address,
-           order_uid,
-           trader,
+           trades.order_uid,
+           -- ETH Flow orders have trader = sender of orderCreation.
+           case when sender is not null then sender else trader end as trader,
            sell_token_address,
-           sell_token,
+           case when sender is not null then 'ETH' else sell_token end as sell_token,
            buy_token_address,
            buy_token,
            case
@@ -205,9 +222,11 @@ valued_trades as (
            limit_buy_amount,
            valid_to,
            flags
-    FROM trades_with_token_units
-             JOIN uid_to_app_id
-                  ON uid = order_uid
+    FROM trades_with_token_units trades
+    JOIN uid_to_app_id
+        ON uid = order_uid
+    LEFT OUTER JOIN eth_flow_senders efs
+        ON trades.order_uid = efs.order_uid
 )
 
 select * from valued_trades

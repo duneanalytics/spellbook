@@ -251,5 +251,8 @@ models:
         description: buy amount as part of the signed user order
       - *buy_token
       - *receiver
+      - &sender
+        name: sender
+        description: sender of order placement transaction. Equivalent to "trader"
       - *app_hash
       - *order_uid

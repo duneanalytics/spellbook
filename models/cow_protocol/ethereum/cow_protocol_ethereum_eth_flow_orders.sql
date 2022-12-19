@@ -48,18 +48,4 @@ eth_flow_orders as (
     {% endif %}
 )
 
-select
-  block_date,
-  block_time,
-  block_number,
-  tx_hash,
-  valid_to,
-  quote_id,
-  sell_amount,
-  fee,
-  buy_amount,
-  buy_token,
-  receiver,
-  app_hash,
-  order_uid
-from eth_flow_orders
+select * from eth_flow_orders
