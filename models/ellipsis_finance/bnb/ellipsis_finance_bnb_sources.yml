@@ -4,195 +4,23 @@ sources:
   - name: ellipsis_finance_bnb
     description: "decoded events for ellipsis finance on bnb"
     tables:
-      - name: 2brl_call_coins
+      - name: FactoryPool_call_add_base_pool
         loaded_at_field: call_block_time
-      - name: 2brl_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: 2pool_call_coins
+      - name: FactoryPool_v2_call_add_base_pool
         loaded_at_field: call_block_time
-      - name: 2pool_evt_TokenExchange
+      - name: FactoryPool_evt_PlainPoolDeployed
         loaded_at_field: evt_block_time
-      - name: 3brl_call_coins
-        loaded_at_field: call_block_time
-      - name: 3brl_evt_TokenExchange
+      - name: FactoryPool_v2_evt_PlainPoolDeployed
         loaded_at_field: evt_block_time
-      - name: 3EPS_call_coins
-        loaded_at_field: call_block_time
-      - name: 3EPS_evt_TokenExchange
+      - name: FactoryPool_evt_MetaPoolDeployed
         loaded_at_field: evt_block_time
-      - name: Ankr_BNB_call_coins
-        loaded_at_field: call_block_time
-      - name: Ankr_BNB_evt_TokenExchange
+      - name: FactoryPool_v2_evt_MetaPoolDeployed
         loaded_at_field: evt_block_time
-      - name: ankr_eth_call_coins
-        loaded_at_field: call_block_time
-      - name: ankr_eth_evt_TokenExchange
+      - name: FactoryPool_v3_evt_CryptoPoolDeployed
         loaded_at_field: evt_block_time
-      - name: ankr_matic_call_coins
-        loaded_at_field: call_block_time
-      - name: ankr_matic_evt_TokenExchange
+      - name: FactoryPool_v4_evt_CryptoPoolDeployed
         loaded_at_field: evt_block_time
-      - name: apl_BUSD_call_coins
-        loaded_at_field: call_block_time
-      - name: apl_BUSD_evt_TokenExchange
+      - name: StableSwap_evt_TokenExchange
         loaded_at_field: evt_block_time
-      - name: ARTH_usd_call_coins
-        loaded_at_field: call_block_time
-      - name: ARTH_usd_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: ARTH_usd_evt_TokenExchangeUnderlying
-        loaded_at_field: evt_block_time
-      - name: AUSD_3EPS_call_coins
-        loaded_at_field: call_block_time
-      - name: AUSD_3EPS_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: AUSD_3EPS_evt_TokenExchangeUnderlying
-        loaded_at_field: evt_block_time
-      - name: axelarUSD_call_coins
-        loaded_at_field: call_block_time
-      - name: axelarUSD_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: bnb_bnbl_call_coins
-        loaded_at_field: call_block_time
-      - name: bnb_bnbl_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: BNBx_BNB_call_coins
-        loaded_at_field: call_block_time
-      - name: BNBx_BNB_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: cryptopool_BNBx_BNB_call_coins
-        loaded_at_field: call_block_time
-      - name: cryptopool_BNBx_BNB_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: cryptopool_BUSD_ARTH_bsc_call_coins
-        loaded_at_field: call_block_time
-      - name: cryptopool_BUSD_ARTH_bsc_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: crypto_pool_BUSD_BTCB_call_coins
-        loaded_at_field: call_block_time
-      - name: crypto_pool_BUSD_BTCB_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: crypto_pool_BUSD_DDD_call_coins
-        loaded_at_field: call_block_time
-      - name: crypto_pool_BUSD_DDD_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: crypto_pool_BUSD_jCHF_call_coins
-        loaded_at_field: call_block_time
-      - name: crypto_pool_BUSD_jCHF_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: cryptopool_dEPX_BUSD_call_coins
-        loaded_at_field: call_block_time
-      - name: cryptopool_dEPX_BUSD_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: crypto_pool_EPX_BNB_call_coins
-        loaded_at_field: call_block_time
-      - name: crypto_pool_EPX_BNB_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: crypto_pool_ETH_BNB_call_coins
-        loaded_at_field: call_block_time
-      - name: crypto_pool_ETH_BNB_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: crypto_pool_JRT_BNB_call_coins
-        loaded_at_field: call_block_time
-      - name: crypto_pool_JRT_BNB_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: crypto_pool_VALAS_BNB_call_coins
-        loaded_at_field: call_block_time
-      - name: crypto_pool_VALAS_BNB_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: CZUSD_BUSD_call_coins
-        loaded_at_field: call_block_time
-      - name: CZUSD_BUSD_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: CZUSD_val3EPS_call_coins
-        loaded_at_field: call_block_time
-      - name: CZUSD_val3EPS_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: CZUSD_val3EPS_evt_TokenExchangeUnderlying
-        loaded_at_field: evt_block_time
-      - name: deBridge_USD_call_coins
-        loaded_at_field: call_block_time
-      - name: deBridge_USD_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: deBridge_USD_evt_TokenExchangeUnderlying
-        loaded_at_field: evt_block_time
-      - name: DotDot_dEPX_EPX_call_coins
-        loaded_at_field: call_block_time
-      - name: DotDot_dEPX_EPX_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: HAY_BUSD_call_coins
-        loaded_at_field: call_block_time
-      - name: HAY_BUSD_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: Horizon_protocol_zBNB_BNB_call_coins
-        loaded_at_field: call_block_time
-      - name: Horizon_protocol_zBNB_BNB_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: jBRL_BUSD_call_coins
-        loaded_at_field: call_block_time
-      - name: jBRL_BUSD_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: jNGN_NGNT_call_coins
-        loaded_at_field: call_block_time
-      - name: jNGN_NGNT_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: MAI_val3EPS_call_coins
-        loaded_at_field: call_block_time
-      - name: MAI_val3EPS_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: MAI_val3EPS_evt_TokenExchangeUnderlying
-        loaded_at_field: evt_block_time
-      - name: nBUSD_val3EPS_call_coins
-        loaded_at_field: call_block_time
-      - name: nBUSD_val3EPS_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: nBUSD_val3EPS_evt_TokenExchangeUnderlying
-        loaded_at_field: evt_block_time
-      - name: USDD_3EPS_call_coins
-        loaded_at_field: call_block_time
-      - name: USDD_3EPS_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: USDD_3EPS_evt_TokenExchangeUnderlying
-        loaded_at_field: evt_block_time
-      - name: USDL_val3EPS_call_coins
-        loaded_at_field: call_block_time
-      - name: USDL_val3EPS_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: USDL_val3EPS_evt_TokenExchangeUnderlying
-        loaded_at_field: evt_block_time
-      - name: USDN_val3EPS_call_coins
-        loaded_at_field: call_block_time
-      - name: USDN_val3EPS_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: USDN_val3EPS_evt_TokenExchangeUnderlying
-        loaded_at_field: evt_block_time
-      - name: USDS_val3EPS_call_coins
-        loaded_at_field: call_block_time
-      - name: USDS_val3EPS_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: USDS_val3EPS_evt_TokenExchangeUnderlying
-        loaded_at_field: evt_block_time
-      - name: val3EPS_call_coins
-        loaded_at_field: call_block_time
-      - name: val3EPS_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: val3EPS_evt_TokenExchangeUnderlying
-        loaded_at_field: evt_block_time
-      - name: valBTC_renBTC_call_coins
-        loaded_at_field: call_block_time
-      - name: valBTC_renBTC_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: valBTC_renBTC_evt_TokenExchangeUnderlying
-        loaded_at_field: evt_block_time
-      - name: valDAI_val3EPS_call_coins
-        loaded_at_field: call_block_time
-      - name: valDAI_val3EPS_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: valDAI_val3EPS_evt_TokenExchangeUnderlying
-        loaded_at_field: evt_block_time
-      - name: valTUSD_val3EPS_call_coins
-        loaded_at_field: call_block_time
-      - name: valTUSD_val3EPS_evt_TokenExchange
-        loaded_at_field: evt_block_time
-      - name: valTUSD_val3EPS_evt_TokenExchangeUnderlying
+      - name: StableSwap_evt_TokenExchangeUnderlying
         loaded_at_field: evt_block_time

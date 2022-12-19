@@ -852,6 +852,7 @@ seeds:
           pool: string
           token_id: string
           token_address: string
+          token_type: string
 
     sudoswap:
       +enabled: true

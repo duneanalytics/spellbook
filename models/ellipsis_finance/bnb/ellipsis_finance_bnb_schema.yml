@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: ellipsis_finance_bnb_underlying_tokens
+  - name: ellipsis_finance_bnb_pool_tokens
     meta:
       blockchain: bnb
       sector: dex
@@ -16,6 +16,7 @@ models:
           combination_of_columns:
             - pool
             - token_id
+            - token_type
       - check_dex_pools_seed:
           blockchain: bnb
           project: ellipsis_finance
@@ -39,29 +40,12 @@ models:
       - &token_address
         name: token_address
         description: "underlying token address"
-
-  - name: ellipsis_finance_bnb_pool_tokens
-    meta:
-      blockchain: bnb
-      sector: dex
-      project: ellipsis_finance
-      contributors: Henrystats, 0xRob
-    config:
-      tags: ['bnb','pool_tokens', 'ellipsis','dex']
-    description: >
-        Ellipsis pooltokens for token_exchange event
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool
-            - token_id
-    columns:
-      - *blockchain
-      - *project 
-      - *version
-      - *pool
-      - *token_id
-      - *token_address
+      - &token_type
+        name: token_type
+        description: "token data (Underlying token, pool token.......)"
+      - &pool_type
+        name: pool_type
+        description: "pool type (Meta Pool, Base Pool....)"
 
   - name: ellipsis_finance_bnb_trades
     meta:

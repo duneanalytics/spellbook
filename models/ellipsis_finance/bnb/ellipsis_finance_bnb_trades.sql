@@ -15,64 +15,11 @@
 {% set project_start_date = '2021-03-01 00:00:00' %}
 
 {%- set evt_TokenExchange_sources = [
-     source('ellipsis_finance_bnb', '2brl_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', '2pool_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', '3brl_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', '3EPS_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'Ankr_BNB_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'ankr_eth_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'ankr_matic_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'apl_BUSD_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'ARTH_usd_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'AUSD_3EPS_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'axelarUSD_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'bnb_bnbl_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'BNBx_BNB_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'cryptopool_BNBx_BNB_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'cryptopool_BUSD_ARTH_bsc_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'crypto_pool_BUSD_BTCB_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'crypto_pool_BUSD_DDD_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'crypto_pool_BUSD_jCHF_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'cryptopool_dEPX_BUSD_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'crypto_pool_EPX_BNB_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'crypto_pool_ETH_BNB_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'crypto_pool_JRT_BNB_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'crypto_pool_VALAS_BNB_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'CZUSD_BUSD_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'CZUSD_val3EPS_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'deBridge_USD_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'DotDot_dEPX_EPX_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'HAY_BUSD_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'jBRL_BUSD_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'jNGN_NGNT_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'MAI_val3EPS_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'Horizon_protocol_zBNB_BNB_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'nBUSD_val3EPS_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'USDD_3EPS_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'USDL_val3EPS_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'USDN_val3EPS_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'USDS_val3EPS_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'val3EPS_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'val3EPS_evt_TokenExchangeUnderlying')
-    ,source('ellipsis_finance_bnb', 'valBTC_renBTC_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'valBTC_renBTC_evt_TokenExchangeUnderlying')
-    ,source('ellipsis_finance_bnb', 'valDAI_val3EPS_evt_TokenExchange')
-    ,source('ellipsis_finance_bnb', 'valTUSD_val3EPS_evt_TokenExchange')
+     source('ellipsis_finance_bnb', 'StableSwap_evt_TokenExchange')
 ] -%}
 
 {%- set evt_TokenExchangeUnderlying_sources = [
-     source('ellipsis_finance_bnb', 'ARTH_usd_evt_TokenExchangeUnderlying')
-    ,source('ellipsis_finance_bnb', 'AUSD_3EPS_evt_TokenExchangeUnderlying')
-    ,source('ellipsis_finance_bnb', 'CZUSD_val3EPS_evt_TokenExchangeUnderlying')
-    ,source('ellipsis_finance_bnb', 'deBridge_USD_evt_TokenExchangeUnderlying')
-    ,source('ellipsis_finance_bnb', 'MAI_val3EPS_evt_TokenExchangeUnderlying')
-    ,source('ellipsis_finance_bnb', 'nBUSD_val3EPS_evt_TokenExchangeUnderlying')
-    ,source('ellipsis_finance_bnb', 'USDD_3EPS_evt_TokenExchangeUnderlying')
-    ,source('ellipsis_finance_bnb', 'USDL_val3EPS_evt_TokenExchangeUnderlying')
-    ,source('ellipsis_finance_bnb', 'USDN_val3EPS_evt_TokenExchangeUnderlying')
-    ,source('ellipsis_finance_bnb', 'USDS_val3EPS_evt_TokenExchangeUnderlying')
-    ,source('ellipsis_finance_bnb', 'valDAI_val3EPS_evt_TokenExchangeUnderlying')
-    ,source('ellipsis_finance_bnb', 'valTUSD_val3EPS_evt_TokenExchangeUnderlying')
+     source('ellipsis_finance_bnb', 'StableSwap_evt_TokenExchangeUnderlying')
 ] -%}
 
 WITH exchange_evt_all as (
@@ -129,6 +76,7 @@ enriched_evt_all as(
     INNER JOIN {{ ref('ellipsis_finance_bnb_pool_tokens') }} pa
         ON eb.bought_id = pa.token_id
         AND eb.project_contract_address = pa.pool
+        AND pa.token_type = 'pool_token'
         {% if is_incremental() %}
         AND eb.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
@@ -136,32 +84,28 @@ enriched_evt_all as(
     {{ ref('ellipsis_finance_bnb_pool_tokens') }} pb
         ON eb.sold_id = pb.token_id
         AND eb.project_contract_address = pb.pool
+        AND pb.token_type = 'pool_token'
         {% if is_incremental() %}
         AND eb.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     UNION ALL
     SELECT
         eb.*
-        ,ut.token_address as token_bought_address
-        ,COALESCE(pa.token_address, pb.token_address) as token_sold_address
+        ,pa.token_address as token_bought_address
+        ,pb.token_address as token_sold_address
     FROM exchange_und_evt_all eb
-    INNER JOIN {{ ref('ellipsis_finance_bnb_underlying_tokens') }} ut
-        ON eb.bought_id = ut.token_id
-        AND eb.project_contract_address = ut.pool
-        {% if is_incremental() %}
-        AND eb.block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-    LEFT JOIN {{ ref('ellipsis_finance_bnb_pool_tokens') }} pa
-        ON eb.sold_id = pa.token_id
-        AND eb.sold_id = '0'
+    INNER JOIN {{ ref('ellipsis_finance_bnb_pool_tokens') }} pa
+        ON eb.bought_id = pa.token_id
         AND eb.project_contract_address = pa.pool
+        AND pa.token_type = 'underlying_token_bought'
         {% if is_incremental() %}
         AND eb.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    LEFT JOIN {{ ref('ellipsis_finance_bnb_pool_tokens') }} pb
-        ON pb.token_id = '1'
-        AND eb.sold_id  != '0'
+    INNER JOIN
+    {{ ref('ellipsis_finance_bnb_pool_tokens') }} pb
+        ON eb.sold_id = pb.token_id
         AND eb.project_contract_address = pb.pool
+        AND pb.token_type = 'underlying_token_sold'
         {% if is_incremental() %}
         AND eb.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
