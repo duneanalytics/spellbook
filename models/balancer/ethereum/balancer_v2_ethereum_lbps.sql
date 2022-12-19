@@ -32,7 +32,7 @@ WITH lbps_call_create AS (
     
     lbps_list AS (
         SELECT 
-            posexplode(tokens) AS (token_index, token),
+            tokens,
             lower(symbol) AS name,
             poolId AS pool_id,
             SUBSTRING(poolId, 0, 42) AS pool_address
@@ -64,30 +64,30 @@ WITH lbps_call_create AS (
         ) w
         WHERE ranking = 1
     ),
-    
-    last_weight_update_unnested AS (
-        SELECT 
-            pool_address,
-            start_time,
-            end_time,
-            posexplode(start_weights) AS (start_weight_index, start_weight)
-        FROM last_weight_update
-    ),
-    
-    lbps_tokens_weights AS (
+
+    zipped_lbps_tokens_weights AS (
         SELECT 
             name,
             pool_id,
             l.pool_address,
             start_time,
             end_time,
-            token,
-            start_weight
+            explode(arrays_zip(tokens, start_weights)) AS zipped
         FROM lbps_list l
-        LEFT JOIN last_weight_update_unnested w
+        LEFT JOIN last_weight_update w
         ON w.pool_address = l.pool_address
-        AND w.start_weight_index = l.token_index
-        ORDER BY w.pool_address
+    ),
+    
+    lbps_tokens_weights AS (
+        SELECT 
+            name,
+            pool_id,
+            pool_address,
+            start_time,
+            end_time,
+            zipped.tokens AS token,
+            zipped.start_weights AS start_weight
+        FROM zipped_lbps_tokens_weights
     ),
     
     lbps_info AS (
