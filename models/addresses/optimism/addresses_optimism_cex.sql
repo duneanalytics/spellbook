@@ -33,4 +33,5 @@ FROM (VALUES
     ,("0x98DB3a41bF8bF4DeD2C92A84ec0705689DdEEF8B", "Ramp", "Ramp UK")
     ,("0x8a37F0290AE85D08522d2A605617e76128Fd0712", "Ramp", "Ramp US")
     ,("0x0d0707963952f2fba59dd06f2b425ace40b492fe", "Gate.io", "Gate.io 1")
+    ,("0xebe80f029b1c02862b9e8a70a7e5317c06f62cae", "OKX", "OKX 1")
     ) AS x (address, cex_name, distinct_name)
