@@ -81,7 +81,7 @@ models:
         name: platform_fee_amount
         description:  "Platform fee amount in original token currency (properly formatted in decimals)"
       - &platform_fee_percentage
-        name: platform_fee_percentage
+        name: platform_fee_amount_usd
         description:  "Platform fee in % of the amount paid for a given trade"
       - &royalty_fee_amount_raw
         name: royalty_fee_amount_raw
