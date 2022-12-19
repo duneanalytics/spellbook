@@ -8,11 +8,22 @@
         )
 }}
 
-with transfers as (    
+with transfers_sub_table as (
+    select  from
+            , to
+            , evt_block_time
+            , evt_block_time_week
+            , evt_block_number
+            , punk_id
+            , evt_tx_hash 
+    from {{ref('cryptopunks_ethereum_punk_transfers')}} 
+    group by 1,2,3,4,5,6,7
+)
+, transfers as (    
     select  date_trunc('day',evt_block_time) as day 
             , from as wallet
             , count(*)*-1.0 as punk_balance
-    from {{ref('cryptopunks_ethereum_punk_transfers')}} 
+    from transfers_sub_table
     group by 1,2
     
     union all 
@@ -20,7 +31,7 @@ with transfers as (
     select  date_trunc('day',evt_block_time) as day 
             , to as wallet
             , count(*) as punk_balance
-    from {{ref('cryptopunks_ethereum_punk_transfers')}} 
+    from transfers_sub_table
     group by 1,2
 )
 , punk_transfer_summary as (

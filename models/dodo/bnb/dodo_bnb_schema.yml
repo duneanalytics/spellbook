@@ -111,15 +111,15 @@ models:
       - check_dex_seed:
           blockchain: bnb
           project: DODO
-          version: 0
-      - check_dex_seed:
-          blockchain: bnb
-          project: DODO
           version: 1
       - check_dex_seed:
           blockchain: bnb
           project: DODO
           version: 2_dvm
+      - check_dex_seed:
+          blockchain: bnb
+          project: DODO
+          version: 2_dsp
     columns:
       - *blockchain
       - *project
@@ -165,6 +165,10 @@ models:
             - tx_hash
             - evt_index
             - trace_address
+      - check_dex_seed:
+          blockchain: bnb
+          project: DODO
+          version: 0
     columns:
       - *blockchain
       - *project
