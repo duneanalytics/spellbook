@@ -33,6 +33,19 @@ base_pools as ( -- this gets the base pools deployed on ellipsis
         {% if is_incremental() %}
         AND call_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
+
+        UNION  -- manually importanting base pools that weren't created by the factory (no events emitted for them)
+
+        SELECT 
+            LOWER(pool) as pool, 
+            LOWER(lp_token) as lp_token 
+        FROM (
+        VALUES 
+        -- valtusd_val3eps
+            ('0xAB499095961516f058245C1395f9c0410764b6Cd', '0xF6be0F52Be5e68DF4Ed3ea7cCD569C16024C250D'),
+        -- valdai_val3eps
+            ('0x245e8bb5427822FB8fd6cE062d8dd853FbcfABF5', '0x8087a94FFE6bcF08DC4b4EBB3d28B4Ed75a792aC')
+        ) as temp_table (pool, lp_token)
 ), 
 
 hardcoded_underlying as ( -- harcoding the underlying tokens here as there's no event emitted that gives a list of the tokens 
@@ -52,7 +65,17 @@ hardcoded_underlying as ( -- harcoding the underlying tokens here as there's no 
             ('0xaF4dE8E872131AE328Ce21D909C74705d3Aaf452', '2', '0x55d398326f99059fF775485246999027B3197955'), 
         -- valbtc_renbtc
             ('0xdc7f3e34c43f8700b0eb58890add03aa84f7b0e1', '0', '0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c' ), 
-            ('0xdc7f3e34c43f8700b0eb58890add03aa84f7b0e1', '1', '0xfCe146bF3146100cfe5dB4129cf6C82b0eF4Ad8c' )
+            ('0xdc7f3e34c43f8700b0eb58890add03aa84f7b0e1', '1', '0xfCe146bF3146100cfe5dB4129cf6C82b0eF4Ad8c' ),
+        -- valtusd_val3eps
+            ('0xF6be0F52Be5e68DF4Ed3ea7cCD569C16024C250D', '0', '0x14016E85a25aeb13065688cAFB43044C2ef86784'), 
+            ('0xF6be0F52Be5e68DF4Ed3ea7cCD569C16024C250D', '1', '0xaeD19DAB3cd68E4267aec7B2479b1eD2144Ad77f'),
+            ('0xF6be0F52Be5e68DF4Ed3ea7cCD569C16024C250D', '2', '0xA6fDEa1655910C504E974f7F1B520B74be21857B'), 
+            ('0xF6be0F52Be5e68DF4Ed3ea7cCD569C16024C250D', '3', '0x5f7f6cB266737B89f7aF86b30F03Ae94334b83e9'), 
+        -- valdai_val3eps
+            ('0x8087a94FFE6bcF08DC4b4EBB3d28B4Ed75a792aC', '0', '0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3'), 
+            ('0x8087a94FFE6bcF08DC4b4EBB3d28B4Ed75a792aC', '1', '0xaeD19DAB3cd68E4267aec7B2479b1eD2144Ad77f'),
+            ('0x8087a94FFE6bcF08DC4b4EBB3d28B4Ed75a792aC', '2', '0xA6fDEa1655910C504E974f7F1B520B74be21857B'), 
+            ('0x8087a94FFE6bcF08DC4b4EBB3d28B4Ed75a792aC', '3', '0x5f7f6cB266737B89f7aF86b30F03Ae94334b83e9')
         ) as temp_table (pool, token_id, token_address)
 ), 
 
@@ -90,7 +113,13 @@ base_pools_pool_tokens as ( -- these are the pool coins (different from underlyi
             ('0x19ec9e3f7b21dd27598e7ad5aae7dc0db00a806d', '2', '0x5f7f6cB266737B89f7aF86b30F03Ae94334b83e9'), 
         -- valbtc_renbtc 
             ('0xfa715e7c8fa704cf425dd7769f4a77b81420fbf2', '0', '0x204992f7fCBC4c0455d7Fec5f712BeDd98E7d6d6'), 
-            ('0xfa715e7c8fa704cf425dd7769f4a77b81420fbf2', '1', '0xfCe146bF3146100cfe5dB4129cf6C82b0eF4Ad8c')
+            ('0xfa715e7c8fa704cf425dd7769f4a77b81420fbf2', '1', '0xfCe146bF3146100cfe5dB4129cf6C82b0eF4Ad8c'),
+        -- valtusd_val3ps
+            ('0xAB499095961516f058245C1395f9c0410764b6Cd', '0', '0xBB5DDE96BAD874e4FFe000B41Fa5E98F0665a4BC'),
+            ('0xAB499095961516f058245C1395f9c0410764b6Cd', '1', '0x5b5bD8913D766D005859CE002533D4838B0Ebbb5'), 
+        -- valdai_val3ps
+            ('0x245e8bb5427822FB8fd6cE062d8dd853FbcfABF5', '0', '0x2c85EBAE81b7078Cd656b2C6e2d58411cB41D91A'),
+            ('0x245e8bb5427822FB8fd6cE062d8dd853FbcfABF5', '1', '0x5b5bD8913D766D005859CE002533D4838B0Ebbb5')
         ) as temp_table (pool, token_id, token_address)
 ), 
 
