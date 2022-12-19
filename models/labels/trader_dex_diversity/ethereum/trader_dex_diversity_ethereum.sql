@@ -24,7 +24,7 @@ with
 select
   array("ethereum") as blockchain,
   address,
-  dex_diversity as name,
+  concat('Number of DEXs traded on: ', dex_diversity) as name,
   "trader_dex_diversity" AS category,
   "gentrexha" AS contributor,
   "query" AS source,
