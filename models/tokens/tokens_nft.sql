@@ -57,3 +57,12 @@ CAST(NULL AS VARCHAR(5)) as symbol,
 standard, 
 CAST(NULL AS VARCHAR(5)) as category
 FROM  {{ ref('tokens_bnb_nft') }}
+            UNION
+SELECT
+'fantom' as blockchain, 
+contract_address, 
+name, 
+symbol,
+standard, 
+category 
+FROM  {{ ref('tokens_fantom_nft') }}
