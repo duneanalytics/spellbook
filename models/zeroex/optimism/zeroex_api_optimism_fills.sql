@@ -78,7 +78,6 @@ v4_rfq_fills_no_bridge AS (
             FALSE                           AS matcha_limit_order_flag
     FROM {{ source('zeroex_optimism', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
     LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
-
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
