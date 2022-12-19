@@ -5,8 +5,8 @@
 
     {{ config(severity = 'warn') }}
     {%- set seed_file = ref('dex_pools_seed') -%}
-    {%- set seed_check_columns = ['token_address', 'token_id'] -%}
-    {%- set seed_matching_columns = ['pool','blockchain','project','version','token_type','token_address'] -%}
+    {%- set seed_check_columns = ['token_address'] -%}
+    {%- set seed_matching_columns = ['pool','blockchain','project','version','token_type','token_id'] -%}
     {%- set filter = {'blockchain':blockchain, 'project':project, 'version':version} -%}
 
     {{ check_seed_macro(model,seed_file,seed_matching_columns,seed_check_columns,filter) }}
