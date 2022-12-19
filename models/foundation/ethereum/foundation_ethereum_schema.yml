@@ -102,7 +102,7 @@ models:
         name: platform_fee_amount_usd
         description:  "Platform fee amount in USD"
       - &platform_fee_percentage
-        name: platform_fee_percentage
+        name: platform_fee_amount_usd
         description:  "Platform fee in % of the amount paid for a given trade"
       - &royalty_fee_amount_raw
         name: royalty_fee_amount_raw
