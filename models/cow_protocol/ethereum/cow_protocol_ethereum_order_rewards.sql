@@ -8,6 +8,7 @@
 -- PoC Query here - https://dune.com/queries/1752782
 select
     tx_hash,
+    solver as solver_address,
     data.amount as cow_reward,
     cast(data.surplus_fee as double) as surplus_fee,
     order_uid
