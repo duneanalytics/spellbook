@@ -211,6 +211,7 @@ models:
         this table also contains the surplus fee.
     columns:
       - *tx_hash
+      - *solver_address
       - &cow_reward
         name: cow_reward
         description: ""
