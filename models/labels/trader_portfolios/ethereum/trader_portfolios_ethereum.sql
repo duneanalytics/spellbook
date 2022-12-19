@@ -29,12 +29,12 @@ select
   array("ethereum") as blockchain,
   address,
   case
-    when portfolio_value_usd > 90000 then '>$90k'
-    when portfolio_value_usd > 7000 then '$7k-$90k'
-    when portfolio_value_usd > 2000 then '$2k-$7k'
-    when portfolio_value_usd > 400 then '$400-$2k'
-    when portfolio_value_usd > 100 then '$100-$400'
-    else '<=$100'
+    when portfolio_value_usd > 90000 then '>$90k portfolio value'
+    when portfolio_value_usd > 7000 then '$7k-$90k portfolio value'
+    when portfolio_value_usd > 2000 then '$2k-$7k portfolio value'
+    when portfolio_value_usd > 400 then '$400-$2k portfolio value'
+    when portfolio_value_usd > 100 then '$100-$400 portfolio value'
+    else '<=$100 portfolio value'
   end as name,
   "trader_portfolios" AS category,
   "gentrexha" AS contributor,
