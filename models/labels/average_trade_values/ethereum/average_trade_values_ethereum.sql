@@ -31,7 +31,7 @@ select
     when average_trade_value > 2000 then '$2k-$5k avg. DEX trade value'
     when average_trade_value > 1000 then '$1k-$2k avg. DEX trade value'
     when average_trade_value > 400 then '$400-$1k avg. DEX trade value'
-    else '<=$400'
+    else '<=$400 avg. DEX trade value'
   end as name,
   "average_trade_values" AS category,
   "gentrexha" AS contributor,
