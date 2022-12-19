@@ -25,7 +25,7 @@ select
   ,col.token0
   ,col.token1
   ,col.fee
-from ref{{ ('uniswap_optimism_ovm1_pool_mapping') }}
+from {{ ref('uniswap_optimism_ovm1_pool_mapping') }}
 
 union
 
