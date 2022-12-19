@@ -25,12 +25,12 @@ select
   array("ethereum") as blockchain,
   address,
   case
-    when average_trade_value > 50000 then '>$50k'
-    when average_trade_value > 10000 then '$10k-$50k'
-    when average_trade_value > 5000 then '$5k-$10k'
-    when average_trade_value > 2000 then '$2k-$5k'
-    when average_trade_value > 1000 then '$1k-$2k'
-    when average_trade_value > 400 then '$400-$1k'
+    when average_trade_value > 50000 then '>$50k avg. DEX trade value'
+    when average_trade_value > 10000 then '$10k-$50k avg. DEX trade value'
+    when average_trade_value > 5000 then '$5k-$10k avg. DEX trade value'
+    when average_trade_value > 2000 then '$2k-$5k avg. DEX trade value'
+    when average_trade_value > 1000 then '$1k-$2k avg. DEX trade value'
+    when average_trade_value > 400 then '$400-$1k avg. DEX trade value'
     else '<=$400'
   end as name,
   "average_trade_values" AS category,
