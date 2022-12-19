@@ -64,8 +64,8 @@ hardcoded_underlying as ( -- harcoding the underlying tokens here as there's no 
             ('0xaF4dE8E872131AE328Ce21D909C74705d3Aaf452', '1', '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d'),
             ('0xaF4dE8E872131AE328Ce21D909C74705d3Aaf452', '2', '0x55d398326f99059fF775485246999027B3197955'), 
         -- valbtc_renbtc
-            ('0xdc7f3e34c43f8700b0eb58890add03aa84f7b0e1', '0', '0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c' ), 
-            ('0xdc7f3e34c43f8700b0eb58890add03aa84f7b0e1', '1', '0xfCe146bF3146100cfe5dB4129cf6C82b0eF4Ad8c' ),
+            ('0xdc7f3e34c43f8700b0eb58890add03aa84f7b0e1', '0', '0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c'), 
+            ('0xdc7f3e34c43f8700b0eb58890add03aa84f7b0e1', '1', '0xfCe146bF3146100cfe5dB4129cf6C82b0eF4Ad8c'),
         -- valtusd_val3eps
             ('0xF6be0F52Be5e68DF4Ed3ea7cCD569C16024C250D', '0', '0x14016E85a25aeb13065688cAFB43044C2ef86784'), 
             ('0xF6be0F52Be5e68DF4Ed3ea7cCD569C16024C250D', '1', '0xaeD19DAB3cd68E4267aec7B2479b1eD2144Ad77f'),
