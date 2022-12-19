@@ -15,6 +15,7 @@ with ovm1_legacy_pools_raw as (
     explode(
       from_json(
         '[
+          
           {
             "oldAddress": "0x2e9c575206288f2219409289035facac0b670c2f",
             "newAddress": "0x03af20bdaaffb4cc0a521796a223f7d85e2aac31",
@@ -749,7 +750,7 @@ with ovm1_legacy_pools_raw as (
 )
 select 
   col.oldAddress
-  col.newAddress
+  ,col.newAddress
   ,col.token0
   ,col.token1
   ,col.fee
