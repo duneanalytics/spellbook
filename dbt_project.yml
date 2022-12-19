@@ -1075,42 +1075,10 @@ seeds:
         +enabled: true
         +schema: test_data
         pancakeswap_nft_trades_samples:
-          +column_types:
-            blockchain: string
-            project: string
-            version: string
             block_time: timestamp
-            block_date: timestamp
             token_id: int
-            collection: string
-            amount_usd: int
-            token_standard: string
-            trade_type: string
-            number_of_items: int
-            trade_category: string
-            evt_type: string
             seller: string
             buyer: string
             amount_original: int
-            amount_raw: int
-            currency_symbol: string
-            currency_contract: string
-            nft_contract_address: string
-            project_contract_address: string
-            aggregator_name: string
-            aggregator_address: string
             tx_hash: string
             block_number: int
-            tx_from: string
-            tx_to: string
-            platform_fee_amount_raw: int
-            platform_fee_amount: int
-            platform_fee_amount_usd: int
-            platform_fee_percentage: int
-            royalty_fee_amount_raw: int
-            royalty_fee_amount: int
-            royalty_fee_amount_usd: int
-            royalty_fee_percentage: int
-            royalty_fee_receive_address: string
-            royalty_fee_currency_symbol: string
-            unique_trade_id: string
