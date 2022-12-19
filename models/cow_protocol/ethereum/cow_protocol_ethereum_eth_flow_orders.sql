@@ -2,7 +2,7 @@
         alias='eth_flow_orders',
         materialized='incremental',
         partition_by = ['block_date'],
-        unique_key = ['tx_hash'],
+        unique_key = ['tx_hash', 'order_uid'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
         incremental_strategy='merge',
@@ -44,6 +44,7 @@ eth_flow_orders as (
         and call_success = true
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    AND call_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
 
