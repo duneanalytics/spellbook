@@ -208,7 +208,7 @@ LEFT JOIN {{ source('ethereum','traces') }} ett ON ett.block_time=t.block_time
     AND ett.tx_hash=t.tx_hash
     AND ett.from = t.project_contract_address
     AND cast(ett.value as string) = cast(t.royalty_fee_amount_raw as string)
---    AND call_type = 'call' -- the fix
+    AND call_type = 'call'
     AND ett.to!=t.project_contract_address
     AND t.royalty_fee_amount/t.amount_original < 0.5
     and ett.success = true
