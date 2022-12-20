@@ -3,12 +3,26 @@ version: 2
 models:
   - name: foundation_ethereum_events
     tests:
-      - unique:
-          column_name: "(block_time || '-' || unique_trade_id)"
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_trade_id
+      - check_seed:
+          seed_file: ref('foundation_trades_samples')
+          match_columns:
+            - block_time
+            - tx_hash
+            - token_id
+          check_columns:
+            - amount_original
+            - buyer
+            - seller
+            - platform_fee_amount
+            - royalty_fee_amount
     meta:
       blockchain: ethereum
       project: foundation
-      contributors: hildobby, soispoke
+      contributors: hildobby, soispoke, 0xRob
     config:
       tags: ['ethereum','foundation','v1','events']
     description: >

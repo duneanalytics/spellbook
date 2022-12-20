@@ -1086,3 +1086,18 @@ seeds:
             tx_hash: string
             token_id: string
             amount_original: double
+
+    foundation:
+      ethereum:
+        +enabled: true
+        +schema: test_data
+        foundation_trades_samples:
+          +column_types:
+            tx_hash: string
+            block_time: timestamp
+            token_id: string
+            amount_original: double
+            buyer: string
+            seller: string
+            platform_fee_amount: double
+            royalty_fee_amount: double
