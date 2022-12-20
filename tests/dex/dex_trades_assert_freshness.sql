@@ -1,3 +1,45 @@
+-- Add sources for decoded projects where trades may not happen daily
+-- Project, Blockchain, Table Schema, Table Name, Time Column
+{% set trade_sources = [
+    {'project': 'fraxswap',
+     'blockchain': 'avalanche_c',
+     'schema': 'fraxswap_avalanche_c',
+     'table_name': 'FraxswapPair_evt_Swap',
+     'time_column': 'evt_block_time'},
+
+    {'project': 'fraxswap',
+     'blockchain': 'bnb',
+     'schema': 'fraxswap_bnb',
+     'table_name': 'FraxswapPair_evt_Swap',
+     'time_column': 'evt_block_time'},
+
+    {'project': 'dfx',
+     'blockchain': 'ethereum',
+     'schema': 'dfx_finance_ethereum',
+     'table_name': 'Curve_evt_Trade',
+     'time_column': 'evt_block_time'},
+
+    {'project': 'hashflow',
+     'blockchain': 'avalanche_c',
+     'schema': 'hashflow_avalanche_c',
+     'table_name': 'Pool_evt_Trade',
+     'time_column': 'evt_block_time'},
+
+    {'project': 'hashflow',
+     'blockchain': 'ethereum',
+     'schema': 'hashflow_ethereum',
+     'table_name': 'pool_evt_trade',
+     'time_column': 'evt_block_time'},
+
+    {'project': 'zigzag',
+     'blockchain': 'arbitrum',
+     'schema': 'zigzag_test_v6_arbitrum',
+     'table_name': 'zigzag_settelment_call_matchOrders',
+     'time_column': 'call_block_time'}
+] %}
+
+
+
 with delays as (
     SELECT
         project
@@ -8,49 +50,18 @@ with delays as (
 )
 
 , sources as
--- Add sources for decoded projects where trades may not happen daily
 (
-select
-        'fraxswap' as project
-        , 'avalanche_c' as blockchain
-        , datediff(now(), max(evt_block_time)) age_of_last_record_days
- from {{ source('fraxswap_avalanche_c', 'FraxswapPair_evt_Swap') }}
- group by 1,2
- union
+{%  for trade_source in trade_sources %}
  select
-        'fraxswap' as project
-        , 'bnb' as blockchain
-        , datediff(now(), max(evt_block_time)) age_of_last_record_days
- from {{ source('fraxswap_bnb','FraxswapPair_evt_Swap') }}
+        '{{ trade_source['project'] }}' as project
+        , '{{ trade_source['blockchain'] }}' as blockchain
+        , datediff(now(), max({{ trade_source['time_column'] }})) age_of_last_record_days
+ from {{ source(trade_source['schema'],trade_source['table_name']) }}
  group by 1,2
-  union
- select
-        'dfx' as project
-        , 'ethereum' as blockchain
-        , datediff(now(), max(evt_block_time)) age_of_last_record_days
- from {{ source('dfx_finance_ethereum','Curve_evt_Trade') }}
- group by 1,2
-   union
- select
-        'hashflow' as project
-        , 'ethereum' as blockchain
-        , datediff(now(), max(evt_block_time)) age_of_last_record_days
- from {{ source('hashflow_ethereum','pool_evt_trade') }}
- group by 1,2
-    union
- select
-        'hashflow' as project
-        , 'avalanche_c' as blockchain
-        , datediff(now(), max(evt_block_time)) age_of_last_record_days
- from {{ source('hashflow_avalanche_c','Pool_evt_Trade') }}
- group by 1,2
-      union
- select
-        'zigzag' as project
-        , 'arbitrum' as blockchain
-        , datediff(now(), max(call_block_time)) age_of_last_record_days
- from {{ source('zigzag_test_v6_arbitrum','zigzag_settelment_call_matchOrders') }}
- group by 1,2
+{% if not loop.last %}
+    UNION ALL
+{% endif %}
+{% endfor %}
 )
 
 select
