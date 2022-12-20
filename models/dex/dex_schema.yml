@@ -50,6 +50,9 @@ models:
       - &amount_usd
         name: amount_usd
         description: "USD value of the trade at time of execution"
+        tests:
+          - dbt_utils.accepted_range:
+              max_value: 1000000
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of the token bought"
