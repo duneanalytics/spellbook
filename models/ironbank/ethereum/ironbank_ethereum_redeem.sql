@@ -1,6 +1,6 @@
 {{ config(
     alias = 'redeem',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
+    post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                 "project",
                                 "ironbank",
                                 \'["michael-ironbank"]\') }}'

@@ -1,7 +1,7 @@
 {{ config(
         schema='prices',
         alias ='usd_latest',
-        post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c"]\',
+        post_hook='{{ expose_spells_hide_trino(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c"]\',
                                     "sector",
                                     "prices",
                                     \'["hildobby"]\') }}'

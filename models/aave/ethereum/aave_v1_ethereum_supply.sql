@@ -1,7 +1,7 @@
 {{ config(
     schema = 'aave_v1_ethereum'
     , alias='supply'
-    , post_hook='{{ expose_spells(\'["ethereum"]\',
+    , post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                   "project",
                                   "aave_v1",
                                   \'["batwayne", "chuxin"]\') }}'
