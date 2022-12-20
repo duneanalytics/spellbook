@@ -19,4 +19,5 @@ from
     ,('0x81b30ff521D1fEB67EDE32db726D95714eb00637', 'Optimistic Explorer', 'OptimisticExplorerNFT')
     ,('0x998EF16Ea4111094EB5eE72fC2c6f4e6E8647666', 'Quix', 'Seaport')
     ,('0xEE36eaaD94d1Cc1d0eccaDb55C38bFfB6Be06C77', 'AttestationStation','AttestationStation')
+    ,('0x9dDA6Ef3D919c9bC8885D5560999A3640431e8e6', 'Metamask Swaps', 'MetamaskSwaps')
     ) as temp_table(contract_address, contract_project, contract_name)
