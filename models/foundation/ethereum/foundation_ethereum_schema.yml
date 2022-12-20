@@ -3,12 +3,14 @@ version: 2
 models:
   - name: foundation_ethereum_events
     tests:
-      - unique:
-          column_name: "(block_time || '-' || unique_trade_id)"
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_trade_id
     meta:
       blockchain: ethereum
       project: foundation
-      contributors: hildobby, soispoke
+      contributors: hildobby, soispoke, 0xRob
     config:
       tags: ['ethereum','foundation','v1','events']
     description: >
