@@ -179,6 +179,11 @@ models:
     description: >
         Daily balances of veBAL per wallet
         Depends on veBAL_call_create_lock, veBAL_evt_Deposit and veBAL_evt_Withdraw
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - wallet_address
     columns:
       - *day
       - name: wallet_address
