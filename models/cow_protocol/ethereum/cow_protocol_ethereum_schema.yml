@@ -42,6 +42,9 @@ models:
       - &block_date
         name: block_date
         description: "UTC event block date of each trade"
+      - &block_number
+        name: block_number
+        description: "Block number that the transaction was included"
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"
@@ -137,6 +140,7 @@ models:
       CoW Protocol enriched batches table on Ethereum
     columns:
       - *block_date
+      - *block_number
       - *block_time
       - &num_trades
         name: num_trades
@@ -234,9 +238,7 @@ models:
     columns:
       - *block_date
       - *block_time
-      - &block_number
-        name: block_number
-        description: Block number when transaction was included.
+      - *block_number
       - *tx_hash
       - *valid_to
       - &quote_id
