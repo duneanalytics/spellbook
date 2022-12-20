@@ -378,6 +378,10 @@ models:
         +schema: tokens_polygon
         +materialized: table
         +file_format: delta
+      fantom:
+        +schema: tokens_fantom
+        +materialized: table
+        +file_format: delta
 
     trader_joe:
       +schema: trader_joe
@@ -1019,6 +1023,29 @@ seeds:
         +enabled: true
         +schema: test_data
         zeroex_api_ethereum_fills_sample:
+          +column_types:
+            tx_hash: string
+            evt_index: int
+            contract_address: string
+            block_time: timestamp
+            block_date: date
+            maker: string
+            taker: string
+            taker_token: string
+            maker_token: string
+            taker_token_amount: double
+            taker_token_amount_raw: double
+            maker_token_amount: double
+            maker_token_amount_raw: double
+            type: string
+            affiliate_address: string
+            swap_flag: boolean
+            matcha_limit_order_flag: boolean
+            volume_usd: double
+      optimism:
+        +enabled: true
+        +schema: test_data
+        zeroex_api_optimism_fills_sample:
           +column_types:
             tx_hash: string
             evt_index: int
