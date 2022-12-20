@@ -331,10 +331,9 @@ SELECT
              WHEN taker_token IN ('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2','0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48','0xdac17f958d2ee523a2206206994597c13d831ec7','0x4fabb145d64652a948d72533023f6e7a623c7c53','0x6b175474e89094c44da98b954eedeac495271d0f')     
              THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
-             END AS volume_usd, tx.to, tx.from
+             END AS volume_usd, tx.to, tx.from 
 FROM all_tx
 INNER JOIN {{ source('optimism', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
-
 {% if is_incremental() %}
 AND tx.block_time >= date_trunc('day', now() - interval '1 week')
 {% endif %}
