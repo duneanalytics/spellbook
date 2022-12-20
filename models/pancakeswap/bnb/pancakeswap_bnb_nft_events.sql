@@ -76,7 +76,7 @@ WITH events AS (
         (amount_raw * royalty_fee_percentage)/POWER(10, bnb_bep20_tokens.decimals) AS royalty_fee_amount,
         (amount_raw * royalty_fee_percentage)/POWER(10, bnb_bep20_tokens.decimals)*prices.price AS royalty_fee_amount_usd,
         CAST(100*royalty_fee_percentage AS DOUBLE) AS royalty_fee_percentage,
-        null AS royalty_fee_receive_address,
+        CAST(null AS STRING) AS royalty_fee_receive_address,
         COALESCE(events.currency_symbol, bnb_bep20_tokens.symbol) AS royalty_fee_currency_symbol,
         events.block_number || '-' || events.tx_hash || '-' || events.evt_index AS unique_trade_id
 
