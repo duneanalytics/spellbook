@@ -2,14 +2,14 @@ version: 2
 
 sources:
   # Base Tables
-  - name: bnb
-    description: "BNB raw tables including transactions, traces and logs."
+  - name: fantom
+    description: "Fantom raw tables including transactions, traces and logs."
     freshness:
       warn_after: { count: 12, period: hour }
     tables:
       - name: transactions
         loaded_at_field: block_time
-        description: "A BNB transaction refers to an action initiated by an externally-owned account (i.e., an account managed by a human, not a contract)."
+        description: "A Fantom transaction refers to an action initiated by an externally-owned account (i.e., an account managed by a human, not a contract)."
         columns:
           - &block_date
             name: block_date
@@ -19,14 +19,14 @@ sources:
             description: "Timestamp for block event time in UTC"
           - &value
             name: value
-            description: "Amount of BNB transferred from sender to recipient"
+            description: "Amount of Fantom transferred from sender to recipient"
           - &block_number
             name: block_number
             description: "Block number"
           - name: gas_limit
             description: "Maximum amount of gas units that can be consumed by the transaction"
           - name: gas_price
-            description: "Gas price denoted in gwei, which itself is a denomination of BNB - each gwei is equal to 10-9 BNB"
+            description: "Gas price denoted in gwei, which itself is a denomination of Fantom - each gwei is equal to 10-9 Fantom"
           - name: gas_used
             description: "Number of gas units consumed by the transaction"
           - name: max_fee_per_gas
@@ -65,7 +65,7 @@ sources:
 
       - name: traces
         loaded_at_field: block_time
-        description: "A BNB trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide."
+        description: "A Fantom trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide."
         columns:
           - *block_date
           - *block_time
@@ -113,14 +113,14 @@ sources:
 
       - name: logs
         loaded_at_field: block_time
-        description: "A BNB log can be used to describe an event within a smart contract, like a token transfer or a change of ownership."
+        description: "A Fantom log can be used to describe an event within a smart contract, like a token transfer or a change of ownership."
         columns:
           - *block_date
           - *block_time
           - *block_number
           - *block_hash
           - name: contract_address
-            description: "Address of the BNB smart contract generating the log"
+            description: "Address of the Fantom smart contract generating the log"
           - name: topic1
             description: "Topics are 32-byte (256 bit) “words” that are used to describe what’s going on in an event. The first topic usually consists of the signature of the name of the event that occurred, including the types (uint256, string, etc.) of its parameters."
           - name: topic2
@@ -160,7 +160,7 @@ sources:
           warn_after: { count: 1, period: day }
           error_after: { count: 3, period: day }
         loaded_at_field: created_at
-        description: "A view keeping track of what contracts are decoded on Dune on BNB; contains information associated with the decoded contract such as namespace, name, address, ABI."
+        description: "A view keeping track of what contracts are decoded on Dune on Fantom; contains information associated with the decoded contract such as namespace, name, address, ABI."
         columns:
           - name: abi
             description: "ABI of the decoded contract"
@@ -188,19 +188,19 @@ sources:
           - name: created_at
             description: "Timestamp for contract creation"
 
-  # BEP Transfer Tables
-  - name: erc20_bnb
-    description: "Transfers events for BEP20 tokens on BNB."
+  # ERC Transfer Tables
+  - name: erc20_fantom
+    description: "Transfers events for ERC20 tokens on Fantom."
     tables:
       - name: evt_transfer
         loaded_at_field: evt_block_time
-        description: "Transfers events for BEP20 tokens on BNB."
+        description: "Transfers events for ERC20 tokens on Fantom."
         freshness:
           warn_after: { count: 12, period: hour }
           error_after: { count: 24, period: hour }
         columns:
           - name: contract_address
-            description: "BEP20 token contract address"
+            description: "ERC20 token contract address"
           - &evt_tx_hash
             name: evt_tx_hash
             description: "Transaction hash of the event"
@@ -216,17 +216,17 @@ sources:
           - *from
           - *to
           - name: value
-            description: "Amount of BEP20 token transferred"
+            description: "Amount of ERC20 token transferred"
 
-  - name: erc1155_bnb
-    description: "Transfers events for BEP1155 tokens on BNB."
+  - name: erc1155_fantom
+    description: "Transfers events for ERC1155 tokens on Fantom."
     tables:
       - name: evt_transfersingle
         loaded_at_field: evt_block_time
-        description: "Single transfers events for BEP1155 tokens on BNB."
+        description: "Single transfers events for ERC1155 tokens on Fantom."
         columns:
           - name: contract_address
-            description: "BEP1155 token contract address"
+            description: "ERC1155 token contract address"
           - *evt_tx_hash
           - *evt_index
           - *evt_block_time
@@ -236,16 +236,16 @@ sources:
           - *from
           - *to
           - name: id
-            description: "BEP1155 token ID"
+            description: "ERC1155 token ID"
           - name: value
-            description: "Amount of BEP1155 token transferred"
+            description: "Amount of ERC1155 token transferred"
 
       - name: evt_transferbatch
         loaded_at_field: evt_block_time
-        description: "Batch transfers events for BEP1155 tokens on BNB."
+        description: "Batch transfers events for ERC1155 tokens on Fantom."
         columns:
           - name: contract_address
-            description: "BEP1155 token contract address"
+            description: "ERC1155 token contract address"
           - *evt_tx_hash
           - *evt_index
           - *evt_block_time
@@ -255,20 +255,20 @@ sources:
           - *from
           - *to
           - name: ids
-            description: "BEP1155 token IDs"
+            description: "ERC1155 token IDs"
           - name: values
-            description: "Amounts of BEP1155 token transferred"
+            description: "Amounts of ERC1155 token transferred"
 
-  - name: erc721_bnb
-    description: "Transfers events for BEP721 tokens on BNB."
+  - name: erc721_fantom
+    description: "Transfers events for ERC721 tokens on Fantom."
     tables:
       - name: evt_transfer
         loaded_at_field: evt_block_time
-        description: "Transfers events for BEP721 tokens on BNB."
+        description: "Transfers events for ERC721 tokens on Fantom."
         columns:
           - &contract_address
             name: contract_address
-            description: "BEP721 token contract address"
+            description: "ERC721 token contract address"
           - *evt_tx_hash
           - *evt_index
           - *evt_block_time
@@ -276,4 +276,4 @@ sources:
           - *from
           - *to
           - name: tokenId
-            description: "BEP721 token ID."
+            description: "ERC721 token ID."

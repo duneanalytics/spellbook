@@ -8,7 +8,7 @@
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "blur",
-                                \'["hildobby"]\') }}')
+                                \'["hildobby","pandajackson42"]\') }}')
 }}
 
 {% set project_start_date = '2022-10-18' %}
@@ -30,7 +30,9 @@ SELECT
     , 'Trade' AS evt_type
     , COALESCE(seller_fix.from, get_json_object(bm.sell, '$.trader')) AS seller
     , COALESCE(buyer_fix.to, get_json_object(bm.buy, '$.trader')) AS buyer
-    , CASE WHEN et.from=buyer_fix.to OR et.from=COALESCE(buyer_fix.to, get_json_object(bm.buy, '$.trader')) THEN 'Buy'
+    , CASE WHEN get_json_object(bm.buy, '$.matchingPolicy') IN ('0x00000000006411739da1c40b106f8511de5d1fac', '0x0000000000dab4a563819e8fd93dba3b25bc3495') THEN 'Buy'
+        WHEN get_json_object(bm.buy, '$.matchingPolicy') IN ('0x0000000000b92d5d043faf7cecf7e2ee6aaed232') THEN 'Offer Accepted'
+        WHEN et.from=buyer_fix.to OR et.from=COALESCE(buyer_fix.to, get_json_object(bm.buy, '$.trader')) THEN 'Buy'
         ELSE 'Offer Accepted'
         END AS trade_category
     , CAST(get_json_object(bm.buy, '$.price') AS DECIMAL(38,0)) AS amount_raw
