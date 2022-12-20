@@ -378,6 +378,10 @@ models:
         +schema: tokens_polygon
         +materialized: table
         +file_format: delta
+      fantom:
+        +schema: tokens_fantom
+        +materialized: table
+        +file_format: delta
 
     trader_joe:
       +schema: trader_joe

@@ -156,7 +156,7 @@ ERC20BridgeTransfer AS (
             TRUE                                    AS swap_flag,
             FALSE                                   AS matcha_limit_order_flag
     FROM {{ source('optimism', 'logs') }} logs
-    JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
+    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic1 = '0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9'
     
     {% if is_incremental() %}
@@ -184,7 +184,7 @@ BridgeFill AS (
             TRUE                                            AS swap_flag,
             FALSE                                           AS matcha_limit_order_flag
     FROM {{ source('optimism', 'logs') }} logs
-    JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
+    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic1 = '0xff3bc5e46464411f331d1b093e1587d2d1aa667f5618f98a95afc4132709d3a9'
         AND contract_address = '0xa3128d9b7cca7d5af29780a56abeec12b05a6740'
 
@@ -212,7 +212,7 @@ NewBridgeFill AS (
             TRUE                                            AS swap_flag,
             FALSE                                           AS matcha_limit_order_flag
     FROM {{ source('optimism' ,'logs') }} logs
-    JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
+    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic1 = '0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8'
         AND contract_address = '0xa3128d9b7cca7d5af29780a56abeec12b05a6740'
 
@@ -241,7 +241,7 @@ direct_PLP AS (
             TRUE                        AS swap_flag,
             FALSE                       AS matcha_limit_order_flag
     FROM {{ source('zeroex_optimism', 'ExchangeProxy_evt_LiquidityProviderSwap') }} plp
-    JOIN zeroex_tx ON zeroex_tx.tx_hash = plp.evt_tx_hash
+    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = plp.evt_tx_hash
 
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
@@ -272,7 +272,7 @@ direct_uniswapv3 AS (
             FALSE                                                                                   AS matcha_limit_order_flag
     FROM {{ source('uniswap_v3_optimism', 'Pair_evt_Swap') }} swap
    LEFT JOIN {{ source('uniswap_v3_optimism', 'factory_evt_poolcreated') }} pair ON pair.pool = swap.contract_address
-   JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
+   INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
    WHERE sender = '0xdef1abe32c034e558cdd535791643c58a13acc10'
 
         {% if is_incremental() %}
