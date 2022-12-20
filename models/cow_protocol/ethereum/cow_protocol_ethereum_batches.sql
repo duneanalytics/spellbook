@@ -42,7 +42,7 @@ batch_counts as (
     {% if is_incremental() %}
     WHERE s.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-    group by s.evt_tx_hash, solver, s.evt_block_time, name
+    group by s.evt_block_number, s.evt_block_time, s.evt_tx_hash, solver, name
 ),
 
 batch_values as (
