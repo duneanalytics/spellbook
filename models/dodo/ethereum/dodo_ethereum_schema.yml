@@ -21,18 +21,6 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_seed:
-          blockchain: ethereum
-          project: DODO
-          version: 1
-      - check_dex_seed:
-          blockchain: ethereum
-          project: DODO
-          version: 2_dvm
-      - check_dex_seed:
-          blockchain: ethereum
-          project: DODO
-          version: 2_dsp
     columns:
       - &blockchain
         name: blockchain
@@ -130,6 +118,18 @@ models:
             - tx_hash
             - evt_index
             - trace_address
+      - check_dex_seed:
+          blockchain: ethereum
+          project: DODO
+          version: 1
+      - check_dex_seed:
+          blockchain: ethereum
+          project: DODO
+          version: 2_dvm
+      - check_dex_seed:
+          blockchain: ethereum
+          project: DODO
+          version: 2_dsp
     columns:
       - *blockchain
       - *project
