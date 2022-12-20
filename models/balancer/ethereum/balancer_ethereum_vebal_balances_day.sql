@@ -18,12 +18,18 @@ WITH base_locks AS (
         FROM {{ source('balancer_ethereum', 'veBAL_call_create_lock') }} l  
         JOIN {{ source('balancer_ethereum', 'veBAL_evt_Deposit') }} d
         ON d.evt_tx_hash = l.call_tx_hash
+        {% if is_incremental() %}
+        WHERE evt_block_time >= DATE_TRUNC('day', NOW() - interval '1 week')
+        {% endif %}
         
         UNION ALL
         
         SELECT provider, cast(null as numeric(38)) AS locked_at, locktime AS unlocked_at, ts AS updated_at
         FROM {{ source('balancer_ethereum', 'veBAL_evt_Deposit') }}
         WHERE value = 0
+        {% if is_incremental() %}
+        AND evt_block_time >= DATE_TRUNC('day', NOW() - interval '1 week')
+        {% endif %}
     ),
     
     decorated_locks AS (
