@@ -7,7 +7,7 @@ WITH raw_events AS (
   , f.evt_tx_hash || '-' || c.nftContract || '-' || c.tokenId AS raw_unique_trade_id
   FROM {{ source('foundation_ethereum','market_evt_ReserveAuctionFinalized') }} f
   LEFT JOIN {{ source('foundation_ethereum','market_evt_ReserveAuctionCreated') }} c ON c.auctionId=f.auctionId AND c.evt_block_time<=f.evt_block_time
-  WHERE f.evt_block_time >= '2022-04-15'
+  WHERE f.evt_block_time >= now() - interval 7 day
   AND f.evt_block_time < NOW() - interval '1 day' -- allow some head desync
   UNION
   SELECT f.evt_block_time AS raw_block_time
@@ -16,7 +16,7 @@ WITH raw_events AS (
   , f.tokenId AS raw_token_id
   , f.evt_tx_hash || '-' || f.nftContract || '-' || f.tokenId AS raw_unique_trade_id
     FROM {{ source('foundation_ethereum','market_evt_BuyPriceAccepted') }} f
-  WHERE f.evt_block_time >= '2022-04-15'
+  WHERE f.evt_block_time >= now() - interval 7 day
   AND f.evt_block_time < NOW() - interval '1 day' -- allow some head desync
   UNION
   SELECT f.evt_block_time AS raw_block_time
@@ -34,7 +34,7 @@ WITH raw_events AS (
   , f.tokenId AS raw_token_id
   , f.evt_tx_hash || '-' || f.nftContract || '-' || f.tokenId AS raw_unique_trade_id
     FROM {{ source('foundation_ethereum','market_evt_PrivateSaleFinalized') }} f
-  WHERE f.evt_block_time >= '2022-04-15'
+  WHERE f.evt_block_time >= now() - interval 7 day
   AND f.evt_block_time < NOW() - interval '1 day' -- allow some head desync
   )
 
@@ -48,7 +48,7 @@ WITH raw_events AS (
   WHERE blockchain = 'ethereum'
     AND project = 'foundation'
     AND version = 'v1'
-    AND block_time >= '2022-04-15'
+    AND block_time >= now() - interval 7 day
     AND block_time < NOW() - interval '1 day' -- allow some head desync
   )
 
