@@ -16,11 +16,24 @@ models:
             - block_date
             - tx_hash
             - evt_index
+      - check_seed:
+          seed_file: ref('zeroex_api_ethereum_fills_sample')
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - maker
+            - taker
+            - maker_token
+            - taker_token
     
     columns:
       - &tx_hash
         name: tx_hash
         description: "Transaction hash of the fill"
+      - &block_number
+        name: block_number
+        description: "Block Number of the fill"        
       - &evt_index
         name: evt_index
         description: "Index of the corresponding fill/swap event"
@@ -42,9 +55,18 @@ models:
       - &taker_token
         name: taker_token
         description: "Contract address of the token taker sells"
+      - &taker_symbol
+        name: taker_symbol
+        description: "Symbol of the token taker sells"
       - &maker_token
         name: maker_token
         description: "Contract address of the token taker buys"
+      - &maker_symbol
+        name: maker_symbol
+        description: "Symbol of the token taker buys"        
+      - &token_pair
+        name: token_pair
+        description: "Token pair traded"        
       - &taker_token_amount
         name: taker_token_amount
         description: "The after-decimal amount of the token taker sells"
@@ -73,5 +95,5 @@ models:
         name: volume_usd
         description: "Trading volume measured in USD value"
         tests:
-          - zeroex_api_ethereum_fills_test:
+          - zeroex_ethereum_fills_test:
               seed_file: ref('zeroex_api_ethereum_fills_sample')

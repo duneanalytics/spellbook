@@ -693,8 +693,12 @@ models:
       +schema: zeroex
       +materialized: view
       ethereum:
-        +schema: zeroex_ethereum
-        +materialized: view
+        erc20:
+          +schema: zeroex_ethereum_erc20
+          +materialized: view
+        nft:
+          +schema: zeroex_ethereum_nft
+          +materialized: view
 
     wombat:
       +schema: wombat
@@ -1020,28 +1024,56 @@ seeds:
 
     zeroex:
       ethereum:
-        +enabled: true
-        +schema: test_data
-        zeroex_api_ethereum_fills_sample:
-          +column_types:
-            tx_hash: string
-            evt_index: int
-            contract_address: string
-            block_time: timestamp
-            block_date: date
-            maker: string
-            taker: string
-            taker_token: string
-            maker_token: string
-            taker_token_amount: double
-            taker_token_amount_raw: double
-            maker_token_amount: double
-            maker_token_amount_raw: double
-            type: string
-            affiliate_address: string
-            swap_flag: boolean
-            matcha_limit_order_flag: boolean
-            volume_usd: double
+        fills:
+          +enabled: true
+          +schema: test_data
+          zeroex_api_ethereum_fills_sample:
+            +column_types:
+              tx_hash: string
+              block_number: int
+              evt_index: int
+              contract_address: string
+              block_time: timestamp
+              maker: string
+              taker: string
+              taker_token: string
+              taker_symbol: string
+              maker_token: string
+              maker_symbol: string
+              token_pair: string
+              taker_token_amount: double 
+              taker_token_amount_raw: string
+              maker_token_amount: double
+              maker_token_amount_raw: string
+              type: string
+              affiliate_address: string
+              swap_flag: boolean
+              matcha_limit_order_flag: boolean
+              volume_usd: double
+              tx_from: string
+              tx_to: string
+        nfts:
+          +enabled: true
+          +schema: test_data
+          zeroex_nft_ethereum_fills_sample:
+            +column_types:
+              block_time: timestamp
+              block_date: timestamp
+              evt_index: int
+              tx_hash: string
+              maker: string
+              taker: string
+              matcher: string
+              nft_address: string
+              nft_id: string
+              label: string
+              price_label: string
+              token: string
+              token_amount_raw: string
+              symbol: string
+              price_usd: double
+              token_amount: double
+              project_name: string
       optimism:
         +enabled: true
         +schema: test_data
