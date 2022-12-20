@@ -35,7 +35,7 @@ WITH all_foundation_trades AS (
     , f.protocolFee/POWER(10, 18) AS platform_fee_amount
     , f.creatorFee AS royalty_fee_amount_raw
     , f.creatorFee/POWER(10, 18) royalty_fee_amount
-    , evt_index
+    , f.evt_index
     FROM {{ source('foundation_ethereum','market_evt_ReserveAuctionFinalized') }} f
     LEFT JOIN {{ source('foundation_ethereum','market_evt_ReserveAuctionCreated') }} c ON c.auctionId=f.auctionId AND c.evt_block_time<=f.evt_block_time
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
