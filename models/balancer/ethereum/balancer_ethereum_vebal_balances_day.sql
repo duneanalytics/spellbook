@@ -54,6 +54,9 @@ WITH base_locks AS (
             date_trunc('day', evt_block_time) AS day,
             SUM(value/1e18) AS delta_bpt
         FROM {{ source('balancer_ethereum', 'veBAL_evt_Deposit') }}
+        {% if is_incremental() %}
+        WHERE evt_block_time >= DATE_TRUNC('day', NOW() - interval '1 week')
+        {% endif %}
         GROUP BY 1, 2
     ),
     
@@ -63,6 +66,9 @@ WITH base_locks AS (
             date_trunc('day', evt_block_time) AS day,
             -SUM(value/1e18) AS delta_bpt
         FROM {{ source('balancer_ethereum', 'veBAL_evt_Withdraw') }}
+        {% if is_incremental() %}
+        WHERE evt_block_time >= DATE_TRUNC('day', NOW() - interval '1 week')
+        {% endif %}
         GROUP BY 1, 2
     ),
     
