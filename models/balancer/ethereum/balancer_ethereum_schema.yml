@@ -179,8 +179,15 @@ models:
     description: >
         Slope and bias of veBAL per wallet after each balance update
         Depends on veBAL_call_create_lock, veBAL_evt_Deposit and veBAL_evt_Withdraw
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - wallet_address
     columns:
       - *block_number
+      - name: block_date
+        description: "Block time trunc to date"
       - name: wallet_address
         description: "Address of the wallet holding the veBAL"
       - name: bpt_balance
