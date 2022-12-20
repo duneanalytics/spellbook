@@ -13,8 +13,8 @@ SELECT
 , pu.contract_address
 , pu.decimals
 , pu.symbol
-, max(pu.minute)
-, max_by(pu.price, pu.minute)
+, max(pu.minute) as minute
+, max_by(pu.price, pu.minute) as price
 FROM {{ source('prices', 'usd') }} pu
 WHERE minute > now() - interval 7 day
 GROUP BY 1,2,3,4
