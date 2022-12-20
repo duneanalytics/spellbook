@@ -20,7 +20,7 @@ SELECT
     , date_trunc('day', bm.evt_block_time) AS block_date
     , bm.evt_block_time AS block_time
     , bm.evt_block_number AS block_number
-    , get_json_object(bm.buy, '$.tokenId') AS token_id
+    , get_json_object(bm.sell, '$.tokenId') AS token_id
     , erct.token_standard
     , nft.name AS collection
     , CASE WHEN get_json_object(bm.buy, '$.amount')=1 THEN 'Single Item Trade'
@@ -95,7 +95,7 @@ LEFT JOIN {{ ref('tokens_ethereum_nft') }} nft ON get_json_object(bm.buy, '$.col
 LEFT JOIN {{ ref('nft_ethereum_transfers') }} erct ON erct.block_time=bm.evt_block_time
     AND get_json_object(bm.buy, '$.collection')=erct.contract_address
     AND erct.tx_hash=bm.evt_tx_hash
-    AND get_json_object(bm.buy, '$.tokenId')=erct.token_id
+    AND get_json_object(bm.sell, '$.tokenId')=erct.token_id
     AND erct.from=get_json_object(bm.sell, '$.trader')
     {% if not is_incremental() %}
     AND erct.block_time >= '{{project_start_date}}'
@@ -106,7 +106,7 @@ LEFT JOIN {{ ref('nft_ethereum_transfers') }} erct ON erct.block_time=bm.evt_blo
 LEFT JOIN {{ ref('nft_ethereum_transfers') }} buyer_fix ON buyer_fix.block_time=bm.evt_block_time
     AND get_json_object(bm.buy, '$.collection')=buyer_fix.contract_address
     AND buyer_fix.tx_hash=bm.evt_tx_hash
-    AND get_json_object(bm.buy, '$.tokenId')=buyer_fix.token_id
+    AND get_json_object(bm.sell, '$.tokenId')=buyer_fix.token_id
     AND get_json_object(bm.buy, '$.trader')=agg.contract_address
     AND buyer_fix.from=agg.contract_address
     {% if not is_incremental() %}
@@ -118,7 +118,7 @@ LEFT JOIN {{ ref('nft_ethereum_transfers') }} buyer_fix ON buyer_fix.block_time=
 LEFT JOIN {{ ref('nft_ethereum_transfers') }} seller_fix ON seller_fix.block_time=bm.evt_block_time
     AND get_json_object(bm.buy, '$.collection')=seller_fix.contract_address
     AND seller_fix.tx_hash=bm.evt_tx_hash
-    AND get_json_object(bm.buy, '$.tokenId')=seller_fix.token_id
+    AND get_json_object(bm.sell, '$.tokenId')=seller_fix.token_id
     AND get_json_object(bm.sell, '$.trader')=agg.contract_address
     AND seller_fix.to=agg.contract_address
     {% if not is_incremental() %}
