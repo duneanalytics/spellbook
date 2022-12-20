@@ -58,6 +58,9 @@ jobs:
       - name: dbt run initial model(s)
         run: "dbt -x run --select state:modified --defer --state ."
 
+      - name: dbt run initial model(s) (should fail)
+        run: "dbt -x run --select state:modified --state ."
+
       - name: dbt test initial model(s)
         run: "dbt test --select state:new state:modified --defer --state ."
 
