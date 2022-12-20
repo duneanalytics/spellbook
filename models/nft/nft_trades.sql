@@ -20,6 +20,7 @@
 ,ref('superrare_ethereum_trades')
 ,ref('x2y2_ethereum_trades')
 ,ref('zora_ethereum_trades')
+,ref('pancakeswap_bnb_nft_trades')
 ] %}
 
 SELECT *
