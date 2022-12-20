@@ -211,10 +211,48 @@ models:
         this table also contains the surplus fee.
     columns:
       - *tx_hash
+      - *solver_address
       - &cow_reward
         name: cow_reward
         description: ""
       - &surplus_fee
         name: surplus_fee
         description: ""
+      - *order_uid
+  - name: cow_protocol_ethereum_eth_flow_orders
+    meta:
+      blockchain: ethereum
+      project: cow_protocol
+      contributors: bh2smith
+    config:
+      tags: ['ethereum','cow_protocol','eth-flow', "orders"]
+    description: >
+      ETHFlow enables the sale of Native ETH via CoW Protocol. This works essentially by placing an (onchain) order, 
+      through the ETHFlow contract (https://github.com/cowprotocol/ethflowcontract) sending native which then wraps 
+      the asset as an ERC20. The order is filled through this intermediary contract that uses ERC1271 signature 
+      verification to place the order on the user's behalf.
+    columns:
+      - *block_date
+      - *block_time
+      - &block_number
+        name: block_number
+        description: Block number when transaction was included.
+      - *tx_hash
+      - *valid_to
+      - &quote_id
+        name: quote_id
+        description: Integer corresponding to the quote user was given in the interface.
+      - &sell_amount
+        name: sell_amount
+        description: sell amount as part of the signed user order
+      - *fee
+      - &buy_amount
+        name: buy_amount
+        description: buy amount as part of the signed user order
+      - *buy_token
+      - *receiver
+      - &sender
+        name: sender
+        description: sender of order placement transaction. Equivalent to "trader"
+      - *app_hash
       - *order_uid

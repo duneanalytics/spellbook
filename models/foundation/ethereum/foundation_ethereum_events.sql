@@ -35,10 +35,11 @@ WITH all_foundation_trades AS (
     , f.protocolFee/POWER(10, 18) AS platform_fee_amount
     , f.creatorFee AS royalty_fee_amount_raw
     , f.creatorFee/POWER(10, 18) royalty_fee_amount
+    , f.evt_index
     FROM {{ source('foundation_ethereum','market_evt_ReserveAuctionFinalized') }} f
     LEFT JOIN {{ source('foundation_ethereum','market_evt_ReserveAuctionCreated') }} c ON c.auctionId=f.auctionId AND c.evt_block_time<=f.evt_block_time
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
-     WHERE f.evt_block_time >= (select max(block_time) from {{ this }})
+     WHERE f.evt_block_time >= date_trunc("day", now() - interval '1 week')
      {% endif %}
     UNION ALL
     SELECT 'ethereum' AS blockchain
@@ -63,9 +64,10 @@ WITH all_foundation_trades AS (
     , protocolFee/POWER(10, 18) AS platform_fee_amount
     , creatorFee AS royalty_fee_amount_raw
     , creatorFee/POWER(10, 18) AS royalty_fee_amount
+    , evt_index
     FROM {{ source('foundation_ethereum','market_evt_BuyPriceAccepted') }} f
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
-     WHERE f.evt_block_time >= (select max(block_time) from {{ this }})
+     WHERE f.evt_block_time >= date_trunc("day", now() - interval '1 week')
      {% endif %}
     UNION ALL
     SELECT 'ethereum' AS blockchain
@@ -90,9 +92,10 @@ WITH all_foundation_trades AS (
     , protocolFee/POWER(10, 18) AS platform_fee_amount
     , creatorFee AS royalty_fee_amount_raw
     , creatorFee/POWER(10, 18) AS royalty_fee_amount
+    , evt_index
     FROM {{ source('foundation_ethereum','market_evt_OfferAccepted') }} f
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
-     WHERE f.evt_block_time >= (select max(block_time) from {{ this }})
+     WHERE f.evt_block_time >= date_trunc("day", now() - interval '1 week')
      {% endif %}
     UNION ALL
     SELECT 'ethereum' AS blockchain
@@ -117,9 +120,10 @@ WITH all_foundation_trades AS (
     , protocolFee/POWER(10, 18) AS platform_fee_amount
     , creatorFee AS royalty_fee_amount_raw
     , creatorFee/POWER(10, 18) AS royalty_fee_amount
+    , evt_index
     FROM {{ source('foundation_ethereum','market_evt_PrivateSaleFinalized') }} f
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
-     WHERE f.evt_block_time >= (select max(block_time) from {{ this }})
+     WHERE f.evt_block_time >= date_trunc("day", now() - interval '1 week')
      {% endif %}
     )
 
@@ -172,7 +176,7 @@ SELECT DISTINCT t.blockchain
     END AS royalty_fee_percentage
 , CASE WHEN t.royalty_fee_amount_raw = 0 THEN cast(NULL as string) ELSE ett.to END AS royalty_fee_receive_address
 , t.currency_symbol AS royalty_fee_currency_symbol
-, t.blockchain || t.project || t.version || t.tx_hash || t.project_contract_address || t.token_id || t.buyer || t.seller AS unique_trade_id
+, t.block_number || t.tx_hash || t.evt_index  AS unique_trade_id
 FROM all_foundation_trades t
 LEFT JOIN {{ ref('tokens_ethereum_nft') }} nft ON t.nft_contract_address=nft.contract_address
 LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} nft_t ON nft_t.evt_block_time=t.block_time
@@ -204,6 +208,7 @@ LEFT JOIN {{ source('ethereum','traces') }} ett ON ett.block_time=t.block_time
     AND ett.tx_hash=t.tx_hash
     AND ett.from = t.project_contract_address
     AND cast(ett.value as string) = cast(t.royalty_fee_amount_raw as string)
+    AND call_type = 'call'
     AND ett.to!=t.project_contract_address
     AND t.royalty_fee_amount/t.amount_original < 0.5
     and ett.success = true

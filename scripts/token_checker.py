@@ -21,6 +21,10 @@ class TokenChecker:
                              "bnb": "bnb-binance-coin",
                              "polygon": "matic-polygon",
                              "solana": "sol-solana",
+                             "avalanche_c": "avax-avalanche",
+                             # "arbitrum": "",
+                             "gnosis": "gno-gnosis",
+                             "optimism": "op-optimism",
                              "ADD MISSING": "CHAINS MAPPINGS HERE"}
 
     def get_token(self):
