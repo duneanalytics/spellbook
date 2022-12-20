@@ -1,6 +1,5 @@
 {{ config
 (
-    schema = "dodo_pools_bnb",
     alias ='trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
