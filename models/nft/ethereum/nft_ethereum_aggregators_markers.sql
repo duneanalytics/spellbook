@@ -94,3 +94,8 @@ SELECT '9616c6c64617461' AS hash_marker
 , 'Rarible' AS aggregator_name
 , NULL AS router_name
 , LENGTH('9616c6c64617461') AS hash_marker_size
+UNION ALL
+SELECT '61598d6d' AS hash_marker
+, 'Flip' AS aggregator_name
+, NULL AS router_name
+, LENGTH('61598d6d') AS hash_marker_size

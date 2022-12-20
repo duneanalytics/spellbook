@@ -104,9 +104,6 @@ models:
       polygon:
         +schema: nft_polygon
         +materialized: view
-      optimism:
-        +schema: nft_optimism
-        +materialized: view
 
     compound:
       +schema: compound
@@ -379,6 +376,10 @@ models:
         +file_format: delta
       polygon:
         +schema: tokens_polygon
+        +materialized: table
+        +file_format: delta
+      fantom:
+        +schema: tokens_fantom
         +materialized: table
         +file_format: delta
 
@@ -692,8 +693,12 @@ models:
       +schema: zeroex
       +materialized: view
       ethereum:
-        +schema: zeroex_ethereum
-        +materialized: view
+        erc20:
+          +schema: zeroex_ethereum_erc20
+          +materialized: view
+        nft:
+          +schema: zeroex_ethereum_nft
+          +materialized: view
 
     wombat:
       +schema: wombat
@@ -708,7 +713,7 @@ models:
       bnb:
         +schema: iziswap_bnb
         +materialized: view
-        
+
     hop_protocol:
       +schema: hop_protocol
       +materialized: view
@@ -733,7 +738,7 @@ models:
       # gnosis2:
       #   +schema: hop_gnosis
       #   +materialized: view
-    
+
     # ovm_optimism:
     #   optimism:
     #     +schema: ovm_optimism
@@ -769,11 +774,6 @@ seeds:
       ethereum:
         +enabled: true
         +schema: test_data
-        opensea_ethereum_trades_postgres:
-          +column_types:
-            evt_block_time: timestamp
-            evt_tx_hash: string
-            price: string
         opensea_wyvern_trades_samples:
           +column_types:
             tx_hash: string
@@ -911,10 +911,6 @@ seeds:
     nft:
       +enabled: true
       +schema: test_data
-      nft_linked_addresses_postgres:
-        +column_types:
-          master_address: string
-          alternative_address: string
       nft_wash_trades_refactor_seed:
         +column_types:
           blockchain: string
@@ -1028,9 +1024,60 @@ seeds:
 
     zeroex:
       ethereum:
+        fills:
+          +enabled: true
+          +schema: test_data
+          zeroex_api_ethereum_fills_sample:
+            +column_types:
+              tx_hash: string
+              block_number: int
+              evt_index: int
+              contract_address: string
+              block_time: timestamp
+              maker: string
+              taker: string
+              taker_token: string
+              taker_symbol: string
+              maker_token: string
+              maker_symbol: string
+              token_pair: string
+              taker_token_amount: double 
+              taker_token_amount_raw: string
+              maker_token_amount: double
+              maker_token_amount_raw: string
+              type: string
+              affiliate_address: string
+              swap_flag: boolean
+              matcha_limit_order_flag: boolean
+              volume_usd: double
+              tx_from: string
+              tx_to: string
+        nfts:
+          +enabled: true
+          +schema: test_data
+          zeroex_nft_ethereum_fills_sample:
+            +column_types:
+              block_time: timestamp
+              block_date: timestamp
+              evt_index: int
+              tx_hash: string
+              maker: string
+              taker: string
+              matcher: string
+              nft_address: string
+              nft_id: string
+              label: string
+              price_label: string
+              token: string
+              token_amount_raw: string
+              symbol: string
+              price_usd: double
+              token_amount: double
+              project_name: string
+      optimism:
         +enabled: true
         +schema: test_data
-        zeroex_api_ethereum_fills_sample:
+        zeroex_api_optimism_fills_sample:
           +column_types:
             tx_hash: string
             evt_index: int
@@ -1071,3 +1118,18 @@ seeds:
             tx_hash: string
             token_id: string
             amount_original: double
+
+    foundation:
+      ethereum:
+        +enabled: true
+        +schema: test_data
+        foundation_trades_samples:
+          +column_types:
+            tx_hash: string
+            block_time: timestamp
+            token_id: string
+            amount_original: double
+            buyer: string
+            seller: string
+            platform_fee_amount: double
+            royalty_fee_amount: double
