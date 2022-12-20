@@ -1,7 +1,7 @@
 {{
     config(
-        schema = 'balancer_ethereum',
         alias='vebal_slopes',
+        partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
