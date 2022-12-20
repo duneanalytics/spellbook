@@ -238,9 +238,7 @@ models:
     columns:
       - *block_date
       - *block_time
-      - &block_number
-        name: block_number
-        description: Block number when transaction was included.
+      - *block_number
       - *tx_hash
       - *valid_to
       - &quote_id
