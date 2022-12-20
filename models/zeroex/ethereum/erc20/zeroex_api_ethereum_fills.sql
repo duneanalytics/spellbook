@@ -201,8 +201,8 @@ ERC20BridgeTransfer AS (
             '0x' || substring(DATA, 347, 40)        AS taker,
             '0x' || substring(DATA, 27, 40)         AS taker_token,
             '0x' || substring(DATA, 91, 40)         AS maker_token,
-            bytea2numeric(substring(DATA, 155, 40)) AS taker_token_amount_raw,
-            bytea2numeric(substring(DATA, 219, 40)) AS maker_token_amount_raw,
+            bytea2numeric_v2(substring(DATA, 155, 40)) AS taker_token_amount_raw,
+            bytea2numeric_v2(substring(DATA, 219, 40)) AS maker_token_amount_raw,
             'ERC20BridgeTransfer'                   AS type,
             zeroex_tx.affiliate_address             AS affiliate_address,
             TRUE                                    AS swap_flag,
@@ -229,8 +229,8 @@ BridgeFill AS (
             '0xdef1c0ded9bec7f1a1670819833240f027b25eff'    AS taker,
             '0x' || substring(DATA, 91, 40)                 AS taker_token,
             '0x' || substring(DATA, 155, 40)                AS maker_token,
-            bytea2numeric('0x' || substring(DATA, 219, 40)) AS taker_token_amount_raw,
-            bytea2numeric('0x' || substring(DATA, 283, 40)) AS maker_token_amount_raw,
+            bytea2numeric_v2('0x' || substring(DATA, 219, 40)) AS taker_token_amount_raw,
+            bytea2numeric_v2('0x' || substring(DATA, 283, 40)) AS maker_token_amount_raw,
             'BridgeFill'                                    AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
@@ -257,8 +257,8 @@ NewBridgeFill AS (
             '0xdef1c0ded9bec7f1a1670819833240f027b25eff'    AS taker,
             '0x' || substring(DATA, 91, 40)                 AS taker_token,
             '0x' || substring(DATA, 155, 40)                AS maker_token,
-            bytea2numeric('0x' || substring(DATA, 219, 40)) AS taker_token_amount_raw,
-            bytea2numeric('0x' || substring(DATA, 283, 40)) AS maker_token_amount_raw,
+            bytea2numeric_v2('0x' || substring(DATA, 219, 40)) AS taker_token_amount_raw,
+            bytea2numeric_v2('0x' || substring(DATA, 283, 40)) AS maker_token_amount_raw,
             'NewBridgeFill'                                 AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
@@ -443,6 +443,7 @@ all_tx AS (
 
 SELECT 
         all_tx.tx_hash,
+        tx.block_number,
         all_tx.evt_index,
         all_tx.contract_address,
         all_tx.block_time,
@@ -453,7 +454,10 @@ SELECT
             ELSE taker
         END AS taker, -- fix the user masked by ProxyContract issue
         taker_token,
+        ts.symbol AS taker_symbol,
         maker_token,
+        ms.symbol AS maker_symbol,
+        CASE WHEN lower(ts.symbol) > lower(ms.symbol) THEN concat(ms.symbol, '-', ts.symbol) ELSE concat(ts.symbol, '-', ms.symbol) END AS token_pair,
         taker_token_amount_raw / pow(10, tp.decimals) AS taker_token_amount,
         taker_token_amount_raw,
         maker_token_amount_raw / pow(10, mp.decimals) AS maker_token_amount,
@@ -462,7 +466,14 @@ SELECT
         affiliate_address,
         swap_flag,
         matcha_limit_order_flag,
-        COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price) AS volume_usd
+        CASE WHEN maker_token IN ('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2','0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48','0xdac17f958d2ee523a2206206994597c13d831ec7','0x4fabb145d64652a948d72533023f6e7a623c7c53','0x6b175474e89094c44da98b954eedeac495271d0f')
+             THEN (all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price
+             WHEN taker_token IN ('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2','0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48','0xdac17f958d2ee523a2206206994597c13d831ec7','0x4fabb145d64652a948d72533023f6e7a623c7c53','0x6b175474e89094c44da98b954eedeac495271d0f')     
+             THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
+             ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
+             END AS volume_usd,
+        tx.from AS tx_from,
+        tx.to AS tx_to
 FROM all_tx
 INNER JOIN {{ source('ethereum', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
 
@@ -500,3 +511,6 @@ AND mp.minute >= date_trunc('day', now() - interval '1 week')
 {% if not is_incremental() %}
 AND mp.minute >= '{{zeroex_v3_start_date}}'
 {% endif %}
+
+LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} ts ON ts.contract_address = taker_token
+LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} ms ON ms.contract_address = maker_token

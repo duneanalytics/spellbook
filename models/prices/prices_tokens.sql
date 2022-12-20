@@ -146,6 +146,7 @@ VALUES
     ("ptp-platypus-finance","avalanche_c","PTP","0x22d4002028f537599be9f666d1c4fa138522f9c8",18),
     ("grape-grape-finance","avalanche_c","GRAPE","0x5541d83efad1f281571b343977648b75d95cdac2",18),
     ("tusd-trueusd","avalanche_c","TUSD","0x1c20e891bab6b1727d14da358fae2984ed9b59eb",18),
+    ("xen-xen-crypto", "avalanche_c", "XEN", "0xC0C5AA69Dbe4d6DDdfBc89c0957686ec60F24389", 18),
 
     ("1inch-1inch", "bnb", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
     ("aave-aave-token", "bnb", "AAVE", "0xfb6115445bff7b52feb98650c87f44907e58f802", 18),
@@ -314,6 +315,7 @@ VALUES
     ("wirtual-wirtual","bnb" ,"WIRTUAL" ,"0xa19d3f4219e2ed6dc1cb595db20f70b8b6866734" ,18),
     ("ape-apecoin", "bnb" ,"APE" ,"0x0b079b33b6e72311c6be245f9f660cc385029fc3",18),
     ("metis-metis-token","bnb" ,"Metis" ,"0xe552fb52a4f19e44ef5a967632dbc320b0820639" ,18),
+    ("xen-xen-crypto", "bnb", "XEN", "0x2AB0e9e4eE70FFf1fB9D67031E44F6410170d00e", 18),
     ("0xbtc-0xbitcoin", "ethereum", "0xBTC", "0xb6ed7644c69416d67b522e20bc294a9a9b405b31", 8),
     ("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
     ("aave-new", "ethereum", "AAVE", "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9", 18),
@@ -1608,6 +1610,7 @@ VALUES
     ("gyen-gyen", "ethereum", "ibJPY", "0x5555f75e3d5278082200fb451d1b6ba946d8e13b", 18),
     ("chf-swiss-franc-token", "ethereum", "ibCHF", "0x1cc481ce2bd2ec7bf67d1be64d4878b16078f309", 18),
     ("stmatic-lido-staked-matic", "ethereum", "STMATIC", "0x9ee91F9f426fA633d227f7a9b000E28b9dfd8599", 18),
+    ("xen-xen-crypto", "ethereum", "XEN", "0x06450dEe7FD2Fb8E39061434BAbCFC05599a6Fb8", 18),
 
     -- Query for Popular Traded Tokens on Gnosis Chain without prices: https://dune.com/queries/1719783
     ("dai-dai", "gnosis", "WXDAI", "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18),
@@ -1724,6 +1727,10 @@ VALUES
     ("wbtc-wrapped-bitcoin", "polygon", "WBTC", "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6", 8),
     ("bets-betswirl", "polygon", "BETS", "0x9246a5f10a79a5a939b0c2a75a3ad196aafdb43b", 18),
     ("eth-ethereum", "polygon", "WETH", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", 18),
+    ("wmatic-wrapped-matic-wormhole", "polygon", "WMATIC", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", 18),
+    ("link-chainlink", "polygon", "LINK", "0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39", 18),
+    ("ghst-aavegotchi", "polygon", "GHST", "0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7", 18),
+    ("crv-curve-dao-token", "polygon", "CRV", "0x172370d5cd63279efa6d502dab29171933a610af", 18),
     ("mimatic-mimatic", "polygon", "MIMATIC", "0xa3fa99a148fa48d14ed51d610c367c61876997f1", 18),
 
     ("aury-aurory", "solana", "AURY", "AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP", 9),
