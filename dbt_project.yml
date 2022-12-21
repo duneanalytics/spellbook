@@ -40,6 +40,12 @@ models:
       optimism:
         +schema: aave_optimism
         +materialized: view
+    liquidifty:
+      +schema: liquidifty
+      +materialized: view
+      bnb:
+        +schema: liquidifty_bnb
+        +materialized: view
     balancer:
       +schema: balancer
       +materialized: view
@@ -1116,11 +1122,13 @@ seeds:
             block_number: long
             tx_hash: string
             token_id: string
+            amount_original: double
+    liquidifty:
     pancakeswap:
       bnb:
         +enabled: true
         +schema: test_data
-        pancakeswap_nft_trades_samples:
+        liquidifty_trades_samples:
             block_time: timestamp
             token_id: int
             seller: string
@@ -1143,3 +1151,5 @@ seeds:
             seller: string
             platform_fee_amount: double
             royalty_fee_amount: double
+
+            amount_original: double
