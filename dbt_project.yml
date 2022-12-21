@@ -46,7 +46,7 @@ models:
       ethereum:
         +schema: balancer_ethereum
       polygon:
-        +schema: balancer_polygo
+        +schema: balancer_polygonn
       optimism:
         +schema: balancer_optimism
 
@@ -85,7 +85,7 @@ models:
       optimism:
         +schema: nft_optimism
       polygon:
-        +schema: nft_polygo
+        +schema: nft_polygon
 
     compound:
       +schema: compound
@@ -106,7 +106,7 @@ models:
       optimism:
         +schema: uniswap_optimism
       polygon:
-        +schema: uniswap_polygo
+        +schema: uniswap_polygon
 
     nomiswap:
       +schema: nomiswap
@@ -187,7 +187,7 @@ models:
       arbitrum:
         +schema: tigris_arbitrum
       polygon:
-        +schema: tigris_polygo
+        +schema: tigris_polygon
 
     x2y2:
       +schema: x2y2
@@ -220,7 +220,7 @@ models:
       avalanche_c:
         +schema: seaport_avalanche_c
       polygon:
-        +schema: seaport_polygo
+        +schema: seaport_polygon
 
     balances:
       +schema: balances
@@ -288,7 +288,7 @@ models:
         +materialized: table
         +file_format: delta
       polygon:
-        +schema: tokens_polygon
+        +schema: tokens_polygonn
         +materialized: table
         +file_format: delta
       fantom:
@@ -323,7 +323,7 @@ models:
     jarvis_network:
       +schema: jarvis_network
       polygon:
-        +schema: jarvis_network_polygo
+        +schema: jarvis_network_polygon
 
     cryptopunks:
       +schema: cryptopunks
@@ -394,7 +394,7 @@ models:
       optimism:
         +schema: chainlink_optimism
       polygon:
-        +schema: chainlink_polygo
+        +schema: chainlink_polygon
       bnb:
         +schema: chainlink_bnb
 
@@ -476,7 +476,7 @@ models:
       bnb:
         +schema: fraxswap_bnb
       polygon:
-        +schema: fraxswap_polygo
+        +schema: fraxswap_polygon
       ethereum:
         +schema: fraxswap_ethereum
 
@@ -540,10 +540,10 @@ models:
       #   +schema: hop_protocol_ethereum
       #
       # polygon:
-      #   +schema: hop_protocol_polygon
+      #   +schema: hop_protocol_polygonn
       #
       # polygon2:
-      #   +schema: hop_polygon
+      #   +schema: hop_polygonn
       #
       # arbitrum:
       #   +schema: hop_protocol_arbitrum
