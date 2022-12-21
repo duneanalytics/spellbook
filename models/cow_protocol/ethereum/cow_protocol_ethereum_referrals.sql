@@ -8,15 +8,6 @@ referral_map as (
     where referrer is not null
 )
 
-,trader_data as (
-    select
-        trader,
-        count(*) as num_trades,
-        sum(usd_value) as trader_volume
-    FROM {{ ref('cow_protocol_ethereum_trades') }}
-    group by trader
-)
-
 -- Table with first trade per user. Used to determine their referral
 ,ordered_user_trades AS (
     SELECT
