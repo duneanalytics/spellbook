@@ -21,6 +21,7 @@
 WITH zeroex_tx AS (
     SELECT tx_hash,
            max(affiliate_address) as affiliate_address, temp.to, temp.from, temp.block_number
+           max(affiliate_address) as affiliate_address, temp.to, temp.from, temp.block_number
     FROM (
         SELECT tr.tx_hash,
                     '0x' || CASE
