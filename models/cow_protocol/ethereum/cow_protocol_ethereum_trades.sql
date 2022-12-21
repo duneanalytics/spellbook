@@ -19,10 +19,11 @@ WITH
 -- Also deducts fee from sell amount
 trades_with_prices AS (
     SELECT try_cast(date_trunc('day', evt_block_time) as date) as block_date,
+           evt_block_number          as block_number,
            evt_block_time            as block_time,
            evt_tx_hash               as tx_hash,
            evt_index,
-           trade.contract_address          as project_contract_address,
+           trade.contract_address    as project_contract_address,
            owner                     as trader,
            orderUid                  as order_uid,
            sellToken                 as sell_token,
@@ -59,6 +60,7 @@ trades_with_prices AS (
 -- Second subquery gets token symbol and decimals from tokens.erc20 (to display units bought and sold)
 trades_with_token_units as (
     SELECT block_date,
+           block_number,
            block_time,
            tx_hash,
            evt_index,
@@ -165,6 +167,7 @@ eth_flow_senders as (
 
 valued_trades as (
     SELECT block_date,
+           block_number,
            block_time,
            tx_hash,
            evt_index,
