@@ -1727,6 +1727,10 @@ VALUES
     ("wbtc-wrapped-bitcoin", "polygon", "WBTC", "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6", 8),
     ("bets-betswirl", "polygon", "BETS", "0x9246a5f10a79a5a939b0c2a75a3ad196aafdb43b", 18),
     ("eth-ethereum", "polygon", "WETH", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", 18),
+    ("wmatic-wrapped-matic-wormhole", "polygon", "WMATIC", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", 18),
+    ("link-chainlink", "polygon", "LINK", "0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39", 18),
+    ("ghst-aavegotchi", "polygon", "GHST", "0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7", 18),
+    ("crv-curve-dao-token", "polygon", "CRV", "0x172370d5cd63279efa6d502dab29171933a610af", 18),
     ("mimatic-mimatic", "polygon", "MIMATIC", "0xa3fa99a148fa48d14ed51d610c367c61876997f1", 18),
 
     ("aury-aurory", "solana", "AURY", "AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP", 9),
