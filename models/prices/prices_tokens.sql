@@ -316,6 +316,8 @@ VALUES
     ("ape-apecoin", "bnb" ,"APE" ,"0x0b079b33b6e72311c6be245f9f660cc385029fc3",18),
     ("metis-metis-token","bnb" ,"Metis" ,"0xe552fb52a4f19e44ef5a967632dbc320b0820639" ,18),
     ("xen-xen-crypto", "bnb", "XEN", "0x2AB0e9e4eE70FFf1fB9D67031E44F6410170d00e", 18),
+    ("bob-bob", "bnb", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
+
     ("0xbtc-0xbitcoin", "ethereum", "0xBTC", "0xb6ed7644c69416d67b522e20bc294a9a9b405b31", 8),
     ("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
     ("aave-new", "ethereum", "AAVE", "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9", 18),
@@ -1611,6 +1613,7 @@ VALUES
     ("chf-swiss-franc-token", "ethereum", "ibCHF", "0x1cc481ce2bd2ec7bf67d1be64d4878b16078f309", 18),
     ("stmatic-lido-staked-matic", "ethereum", "STMATIC", "0x9ee91F9f426fA633d227f7a9b000E28b9dfd8599", 18),
     ("xen-xen-crypto", "ethereum", "XEN", "0x06450dEe7FD2Fb8E39061434BAbCFC05599a6Fb8", 18),
+    ("bob-bob", "ethereum", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
 
     -- Query for Popular Traded Tokens on Gnosis Chain without prices: https://dune.com/queries/1719783
     ("dai-dai", "gnosis", "WXDAI", "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18),
@@ -1719,6 +1722,7 @@ VALUES
     ("snx-synthetix-network-token", "optimism", "SNX", "0x8700daec35af8ff88c16bdf0418774cb3d7599b4", 18),
     ("unlock-unlock", "optimism", "UNLOCK", "0x7ae97042a4a0eb4d1eb370c34bfec71042a056b7", 18),
     ("bank-bankless-dao", "optimism", "BANK", "0x29FAF5905bfF9Cfcc7CF56a5ed91E0f091F8664B", 18),
+    ("bob-bob", "optimism", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
 
     ("matic-polygon", "polygon", "MATIC", "0x0000000000000000000000000000000000001010", 18),
     ("dai-dai", "polygon", "DAI", "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063", 18),
@@ -1732,6 +1736,7 @@ VALUES
     ("ghst-aavegotchi", "polygon", "GHST", "0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7", 18),
     ("crv-curve-dao-token", "polygon", "CRV", "0x172370d5cd63279efa6d502dab29171933a610af", 18),
     ("mimatic-mimatic", "polygon", "MIMATIC", "0xa3fa99a148fa48d14ed51d610c367c61876997f1", 18),
+    ("bob-bob", "polygon", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
 
     ("aury-aurory", "solana", "AURY", "AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP", 9),
     ("btc-bitcoin", "solana", "BTC", "9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E", 6),
