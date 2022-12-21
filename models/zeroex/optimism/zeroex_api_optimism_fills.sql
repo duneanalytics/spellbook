@@ -306,6 +306,7 @@ all_tx AS (
 
 SELECT 
         all_tx.tx_hash,
+        tx.block_number,
         all_tx.evt_index,
         all_tx.contract_address,
         all_tx.block_time,
