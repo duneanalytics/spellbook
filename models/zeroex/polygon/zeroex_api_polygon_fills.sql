@@ -57,7 +57,7 @@ WITH zeroex_tx AS (
                 AND block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
     ) temp
-    group by tx_hash, to, from
+    group by tx_hash, to, from, block_number
 
 ),
 
