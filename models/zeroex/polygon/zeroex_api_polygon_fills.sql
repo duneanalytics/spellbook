@@ -20,7 +20,7 @@
 
 WITH zeroex_tx AS (
     SELECT tx_hash,
-           max(affiliate_address) as affiliate_address, temp.to, temp.from
+           max(affiliate_address) as affiliate_address, temp.to, temp.from, temp.block_number
     FROM (
         SELECT tr.tx_hash,
                     '0x' || CASE
@@ -32,7 +32,8 @@ WITH zeroex_tx AS (
                                 THEN SUBSTRING(INPUT
                                         FROM (position('fbc019a7' IN INPUT) + 32)
                                         FOR 40)
-                            END AS affiliate_address, tr.to as to, tr.from as from 
+                            END AS affiliate_address, tr.to as to, 
+                            tr.from as from, tr.block_number as block_number
         FROM {{ source('polygon', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
@@ -74,7 +75,7 @@ v4_rfq_fills_no_bridge AS (
             fills.makerTokenFilledAmount    AS maker_token_amount_raw,
             'RfqOrderFilled'                AS type,
             zeroex_tx.affiliate_address     AS affiliate_address,
-            zeroex_tx.to, zeroex_tx.from,
+            zeroex_tx.to, zeroex_tx.from, zeroex_tx.block_number,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
     FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
@@ -101,7 +102,7 @@ v4_limit_fills_no_bridge AS (
             fills.makerTokenFilledAmount AS maker_token_amount_raw,
             'LimitOrderFilled' AS type,
             COALESCE(zeroex_tx.affiliate_address, fills.feeRecipient) AS affiliate_address,
-            zeroex_tx.to, zeroex_tx.from,
+            zeroex_tx.to, zeroex_tx.from,zeroex_tx.block_number,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             (fills.feeRecipient = '0x86003b044f70dac0abc80ac8957305b6370893ed') AS matcha_limit_order_flag
     FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
@@ -128,7 +129,7 @@ otc_fills AS (
             fills.makerTokenFilledAmount    AS maker_token_amount_raw,
             'OtcOrderFilled'                AS type,
             zeroex_tx.affiliate_address     AS affiliate_address,
-            zeroex_tx.to, zeroex_tx.from,
+            zeroex_tx.to, zeroex_tx.from,zeroex_tx.block_number,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
     FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
@@ -213,7 +214,7 @@ NewBridgeFill AS (
             bytea2numeric('0x' || substring(DATA, 283, 40)) AS maker_token_amount_raw,
             'BridgeFill'                                 AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
-            zeroex_tx.to, zeroex_tx.from,
+            zeroex_tx.to, zeroex_tx.from,zeroex_tx.block_number,
             TRUE                                            AS swap_flag,
             FALSE                                           AS matcha_limit_order_flag
     FROM {{ source('polygon' ,'logs') }} logs
@@ -243,7 +244,7 @@ direct_PLP AS (
             outputTokenAmount           AS maker_token_amount_raw,
             'LiquidityProviderSwap'     AS type,
             zeroex_tx.affiliate_address AS affiliate_address,
-            zeroex_tx.to, zeroex_tx.from,
+            zeroex_tx.to, zeroex_tx.from,zeroex_tx.block_number,
             TRUE                        AS swap_flag,
             FALSE                       AS matcha_limit_order_flag
     FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_LiquidityProviderSwap') }} plp
@@ -314,6 +315,7 @@ all_tx AS (
 
 SELECT 
         all_tx.tx_hash,
+        all_tx.block_number, 
         all_tx.evt_index,
         all_tx.contract_address,
         all_tx.block_time,
@@ -324,22 +326,29 @@ SELECT
             ELSE taker
         END AS taker, -- fix the user masked by ProxyContract issue
         taker_token,
+        ts.symbol AS taker_symbol,
         maker_token,
+        ms.symbol AS maker_symbol,
+        CASE WHEN lower(ts.symbol) > lower(ms.symbol) THEN concat(ms.symbol, '-', ts.symbol) ELSE concat(ts.symbol, '-', ms.symbol) END AS token_pair,
         taker_token_amount_raw / pow(10, tp.decimals) AS taker_token_amount,
         taker_token_amount_raw,
         maker_token_amount_raw / pow(10, mp.decimals) AS maker_token_amount,
         maker_token_amount_raw,
         all_tx.type,
-        affiliate_address,to, from, 
+        affiliate_address,
         swap_flag,
         matcha_limit_order_flag,
-        CASE WHEN maker_token IN ('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2','0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48','0xdac17f958d2ee523a2206206994597c13d831ec7','0x4fabb145d64652a948d72533023f6e7a623c7c53','0x6b175474e89094c44da98b954eedeac495271d0f')
-             -- WETH, USDC, USDT, BUSD, DAI
+        CASE WHEN maker_token IN ('0x2791bca1f2de4661ed88a30c99a7a9449aa84174','0x7ceb23fd6bc0add59e62ac25578270cff1b9f619','0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270','0xc2132d05d31c914a87c6611c10748aeb04b58e8f','0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6','0x8f3cf7ad23cd3cadbd9735aff958023239c6a063','0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4')
              THEN (all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price
-             WHEN taker_token IN ('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2','0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48','0xdac17f958d2ee523a2206206994597c13d831ec7','0x4fabb145d64652a948d72533023f6e7a623c7c53','0x6b175474e89094c44da98b954eedeac495271d0f')     
+             WHEN taker_token IN ('0x2791bca1f2de4661ed88a30c99a7a9449aa84174','0x7ceb23fd6bc0add59e62ac25578270cff1b9f619','0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270','0xc2132d05d31c914a87c6611c10748aeb04b58e8f','0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6','0x8f3cf7ad23cd3cadbd9735aff958023239c6a063','0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4')   
              THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
+<<<<<<< HEAD
              END AS volume_usd
+        all_tx.to as to, all_tx.from as from 
+=======
+             END AS volume_usd, all_tx.to, all_tx.from 
+>>>>>>> parent of 79bf84e (revise poly volume logic)
 FROM all_tx
 
 /*
@@ -380,3 +389,6 @@ AND mp.minute >= date_trunc('day', now() - interval '1 week')
 {% if not is_incremental() %}
 AND mp.minute >= '{{zeroex_v3_start_date}}'
 {% endif %}
+
+LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} ts ON ts.contract_address = taker_token
+LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} ms ON ms.contract_address = maker_token
