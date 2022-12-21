@@ -44,22 +44,11 @@ jobs:
       - name: dbt compile to create manifest to compare to
         run: "dbt compile"
 
-      - name: create macro to define dependencies
-        working-directory: scripts
-        run: |
-           python3 pr_job_utils.py --pr_schema git_$GIT_SHA
-
-      - name: dbt create views of dependencies
-        run: "dbt run-operation create_views_of_dependencies"
-
       - name: dbt seed
         run: "dbt seed --select state:modified --state ."
 
       - name: dbt run initial model(s)
-        run: "dbt -x run --select state:modified --state ."
-
-      - name: dbt test initial model(s)
-        run: "dbt test --select state:new state:modified --state ."
+        run: "dbt -x run --select state:modified --defer --state ."
 
       - name: Set environment variable for incremental model count
         run: |
@@ -67,8 +56,8 @@ jobs:
 
       - name: dbt run incremental model(s) if applicable
         if: env.INC_MODEL_COUNT > 0
-        run: "dbt run --select state:modified,config.materialized:incremental --state ."
+        run: "dbt run --select state:modified,config.materialized:incremental --defer --state ."
 
       - name: dbt test incremental model(s) if applicable
         if: env.INC_MODEL_COUNT > 0
-        run: "dbt test --select state:modified,config.materialized:incremental --state ."
+        run: "dbt test --select state:modified,config.materialized:incremental --defer --state ."
