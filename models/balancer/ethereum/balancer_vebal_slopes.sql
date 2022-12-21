@@ -144,7 +144,4 @@ ON a.block_number = b.block_number
 AND a.block_time = b.block_time
 AND a.wallet_address = b.wallet_address
 AND a.updated_at = b.updated_at
-{% if is_incremental() %}
-WHERE a.block_time >= DATE_TRUNC('day', NOW() - interval '1 week')
-{% endif %}
 ORDER BY a.wallet_address, a.block_number
