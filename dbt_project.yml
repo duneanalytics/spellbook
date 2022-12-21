@@ -31,6 +31,7 @@ models:
     +post-hook:
       sql: "{{ optimize_spell(this, model.config.materialized) }}"
       transaction: true
+    +materialized: view
     aave:
       +schema: aave
       +materialized: view
@@ -308,7 +309,6 @@ models:
 
     dodo:
       +schema: dodo
-      +materialized: view
       ethereum:
         +schema: dodo_ethereum
         +materialized: view
@@ -754,7 +754,6 @@ seeds:
   spellbook:
     balances:
       ethereum:
-        +enabled: true
         +schema: test_data
         balances_ethereum_erc20_latest_entries:
           +column_types:
@@ -772,7 +771,6 @@ seeds:
             amount: string
     opensea:
       ethereum:
-        +enabled: true
         +schema: test_data
         opensea_wyvern_trades_samples:
           +column_types:
@@ -785,7 +783,6 @@ seeds:
             platform_fee_amount: double
             royalty_fee_amount: double
       solana:
-        +enabled: true
         +schema: test_data
         opensea_solana_trades_solscan:
           +column_types:
@@ -794,7 +791,6 @@ seeds:
             amount: string
 
     seaport:
-      +enabled: true
       +schema: test_data
       seaport_trades_seed:
         +column_types:
@@ -813,7 +809,6 @@ seeds:
 
     magiceden:
       solana:
-        +enabled: true
         +schema: test_data
         magiceden_solana_trades_solscan:
           +column_types:
@@ -821,10 +816,8 @@ seeds:
             tx_hash: string
             amount: string
     ens:
-      +enabled: true
       +schema: test_data
     dex:
-      +enabled: true
       +schema: test_data
       trades:
         +column_types:
@@ -840,7 +833,6 @@ seeds:
           token_sold_amount: float
 
     sudoswap:
-      +enabled: true
       +schema: test_data
       sudoswap_ethereum_example_trades:
         +column_types:
@@ -853,7 +845,6 @@ seeds:
           platform_fee_amount: double
           pool_fee_amount: double
     cryptopunks:
-      +enabled: true
       +schema: test_data
       cryptopunks_trades_buys_bids_seed:
         +column_types:
@@ -870,7 +861,6 @@ seeds:
           amount_raw: string
           currency_contract: string
     dao:
-      +enabled: true
       +schema: test_data
       dao_addresses_seed:
         +column_types:
@@ -891,11 +881,9 @@ seeds:
           tx_hash: string
     curvefi:
       ethereum:
-        +enabled: true
         +schema: test_data
 
     chainlink:
-      +enabled: true
       +schema: test_data
       chainlink_get_price_seed:
         +column_types:
@@ -909,7 +897,6 @@ seeds:
           underlying_token_address: string
 
     nft:
-      +enabled: true
       +schema: test_data
       nft_wash_trades_refactor_seed:
         +column_types:
@@ -942,7 +929,6 @@ seeds:
 
     nexusmutual:
       ethereum:
-        +enabled: true
         +schema: test_data
         nexusmutual_ethereum_trades_seed:
           +column_types:
@@ -956,7 +942,6 @@ seeds:
             premium_nxm: string
 
     perpetual:
-      +enabled: true
       +schema: test_data
       trades:
         +column_types:
@@ -971,7 +956,6 @@ seeds:
           tx_hash: string
     transfers:
       bnb:
-        +enabled: true
         +schema: test_data
         transfers_bnb_bep20_agg_day_v2:
           +column_types:
@@ -995,7 +979,6 @@ seeds:
             tx_num: long
 
     quix:
-      +enabled: true
       +schema: test_data
       quix_events_seed:
         +column_types:
@@ -1025,7 +1008,6 @@ seeds:
     zeroex:
       ethereum:
         fills:
-          +enabled: true
           +schema: test_data
           zeroex_api_ethereum_fills_sample:
             +column_types:
@@ -1041,7 +1023,7 @@ seeds:
               maker_token: string
               maker_symbol: string
               token_pair: string
-              taker_token_amount: double 
+              taker_token_amount: double
               taker_token_amount_raw: string
               maker_token_amount: double
               maker_token_amount_raw: string
@@ -1053,7 +1035,6 @@ seeds:
               tx_from: string
               tx_to: string
         nfts:
-          +enabled: true
           +schema: test_data
           zeroex_nft_ethereum_fills_sample:
             +column_types:
@@ -1075,7 +1056,6 @@ seeds:
               token_amount: double
               project_name: string
       optimism:
-        +enabled: true
         +schema: test_data
         zeroex_api_optimism_fills_sample:
           +column_types:
@@ -1100,7 +1080,6 @@ seeds:
 
     gmx:
       avalanche_c:
-        +enabled: true
         +schema: test_data
         gmx_glp_aum_seed:
           +column_types:
@@ -1110,7 +1089,6 @@ seeds:
 
     x2y2:
       ethereum:
-        +enabled: true
         +schema: test_data
         x2y2_ethereum_trades_etherscan:
           +column_types:
@@ -1121,7 +1099,6 @@ seeds:
 
     foundation:
       ethereum:
-        +enabled: true
         +schema: test_data
         foundation_trades_samples:
           +column_types:
