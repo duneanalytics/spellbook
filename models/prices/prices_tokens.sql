@@ -1774,9 +1774,9 @@ VALUES
     ("mcrt-magiccraft", "fantom", "MCRT", "0xE705aF5f63fcaBDCDF5016aA838EAaac35D12890", 9), 
     ("tarot-tarot", "fantom", "TAROT", "0xC5e2B037D30a390e62180970B3aa4E91868764cD", 18),
     ("brush-brush", "fantom", "BRUSH", "0x85dec8c4B2680793661bCA91a8F129607571863d", 18), 
-    ("tcs-timechain-swap-token", "fantom", "TCS", "0xFbfAE0DD49882e503982f8eb4b8B1e464ecA0b91", 18),
+    -- ("tcs-timechain-swap-token", "fantom", "TCS", "0xFbfAE0DD49882e503982f8eb4b8B1e464ecA0b91", 18), -- inactive so commented out
     ("wbond-war-bond", "fantom", "WBOND", "0x59c6606ED2AF925F270733e378D6aF7829B5b3cf", 18), 
-    ("mimatic-mimatic", "fantom", "miMATC", "0xfB98B335551a418cD0737375a2ea0ded62Ea213b", 18),
+    ("mimatic-mimatic", "fantom", "miMATIC", "0xfB98B335551a418cD0737375a2ea0ded62Ea213b", 18),
     ("fame-fantom-maker", "fantom", "FAME", "0x904f51a2E7eEaf76aaF0418cbAF0B71149686f4A", 18), 
     ("boo-spookyswap", "fantom", "BOO", "0x841FAD6EAe12c286d1Fd18d1d525DFfA75C7EFFE", 18), 
     ("hec-hector-dao", "fantom", "HEC", "0x5C4FDfc5233f935f20D2aDbA572F770c2E377Ab0", 9),
