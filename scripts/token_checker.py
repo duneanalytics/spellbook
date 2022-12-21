@@ -25,6 +25,7 @@ class TokenChecker:
                              # "arbitrum": "",
                              "gnosis": "gno-gnosis",
                              "optimism": "op-optimism",
+                             "fantom": "ftm-fantom"
                              "ADD MISSING": "CHAINS MAPPINGS HERE"}
 
     def get_token(self):
