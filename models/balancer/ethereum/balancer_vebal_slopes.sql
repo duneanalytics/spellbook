@@ -5,7 +5,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['block_time', 'wallet_address'],
+        unique_key = ['block_number', 'wallet_address'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "balancer",
