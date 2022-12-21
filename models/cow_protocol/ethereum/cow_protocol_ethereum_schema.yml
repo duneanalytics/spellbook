@@ -272,7 +272,5 @@ models:
       query to build a the affiliate mapping.
     columns:
       - *trader
-      - &referrer
-        name: referrer
-        description: A table showing affiliate (referral) mapping of trader <-> referrer
+      - *referrer
 
