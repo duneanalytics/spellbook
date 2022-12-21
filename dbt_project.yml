@@ -1097,7 +1097,6 @@ seeds:
             swap_flag: boolean
             matcha_limit_order_flag: boolean
             volume_usd: double
-      
 
     gmx:
       avalanche_c:
