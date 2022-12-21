@@ -46,7 +46,7 @@ models:
       ethereum:
         +schema: balancer_ethereum
       polygon:
-        +schema: balancer_polygonn
+        +schema: balancer_polygon
       optimism:
         +schema: balancer_optimism
 
@@ -93,7 +93,7 @@ models:
         +schema: compound_ethereum
 
     gitcoin:
-      +schema: gitcoi
+      +schema: gitcoin
       ethereum:
         +schema: gitcoin_ethereum
 
@@ -154,7 +154,7 @@ models:
       ethereum:
         +schema: looksrare_ethereum
     foundation:
-      +schema: foundatio
+      +schema: foundation
       ethereum:
         +schema: foundation_ethereum
     blur:
@@ -198,7 +198,7 @@ models:
       ethereum:
         +schema: zora_ethereum
     magiceden:
-      +schema: magicede
+      +schema: magiceden
       solana:
         +schema: magiceden_solana
 
@@ -288,7 +288,7 @@ models:
         +materialized: table
         +file_format: delta
       polygon:
-        +schema: tokens_polygonn
+        +schema: tokens_polygon
         +materialized: table
         +file_format: delta
       fantom:
@@ -540,10 +540,10 @@ models:
       #   +schema: hop_protocol_ethereum
       #
       # polygon:
-      #   +schema: hop_protocol_polygonn
+      #   +schema: hop_protocol_polygon
       #
       # polygon2:
-      #   +schema: hop_polygonn
+      #   +schema: hop_polygon
       #
       # arbitrum:
       #   +schema: hop_protocol_arbitrum
@@ -566,9 +566,9 @@ models:
 
 seeds:
   spellbook:
+    +schema: test_data
     balances:
       ethereum:
-        +schema: test_data
         balances_ethereum_erc20_latest_entries:
           +column_types:
             timestamp: timestamp
@@ -585,7 +585,6 @@ seeds:
             amount: string
     opensea:
       ethereum:
-        +schema: test_data
         opensea_wyvern_trades_samples:
           +column_types:
             tx_hash: string
@@ -597,7 +596,6 @@ seeds:
             platform_fee_amount: double
             royalty_fee_amount: double
       solana:
-        +schema: test_data
         opensea_solana_trades_solscan:
           +column_types:
             block_time: timestamp
@@ -605,7 +603,6 @@ seeds:
             amount: string
 
     seaport:
-      +schema: test_data
       seaport_trades_seed:
         +column_types:
           blockchain: string
@@ -623,16 +620,13 @@ seeds:
 
     magiceden:
       solana:
-        +schema: test_data
         magiceden_solana_trades_solscan:
           +column_types:
             block_time: timestamp
             tx_hash: string
             amount: string
     ens:
-      +schema: test_data
     dex:
-      +schema: test_data
       trades:
         +column_types:
           blockchain: string
@@ -647,7 +641,6 @@ seeds:
           token_sold_amount: float
 
     sudoswap:
-      +schema: test_data
       sudoswap_ethereum_example_trades:
         +column_types:
           block_number: long
@@ -659,7 +652,6 @@ seeds:
           platform_fee_amount: double
           pool_fee_amount: double
     cryptopunks:
-      +schema: test_data
       cryptopunks_trades_buys_bids_seed:
         +column_types:
           test_description: string
@@ -675,7 +667,6 @@ seeds:
           amount_raw: string
           currency_contract: string
     dao:
-      +schema: test_data
       dao_addresses_seed:
         +column_types:
           blockchain: string
@@ -695,10 +686,8 @@ seeds:
           tx_hash: string
     curvefi:
       ethereum:
-        +schema: test_data
 
     chainlink:
-      +schema: test_data
       chainlink_get_price_seed:
         +column_types:
           blockchain: string
@@ -711,7 +700,6 @@ seeds:
           underlying_token_address: string
 
     nft:
-      +schema: test_data
       nft_wash_trades_refactor_seed:
         +column_types:
           blockchain: string
@@ -743,7 +731,6 @@ seeds:
 
     nexusmutual:
       ethereum:
-        +schema: test_data
         nexusmutual_ethereum_trades_seed:
           +column_types:
             evt_tx_hash: string
@@ -756,7 +743,6 @@ seeds:
             premium_nxm: string
 
     perpetual:
-      +schema: test_data
       trades:
         +column_types:
           blockchain: string
@@ -770,7 +756,6 @@ seeds:
           tx_hash: string
     transfers:
       bnb:
-        +schema: test_data
         transfers_bnb_bep20_agg_day_v2:
           +column_types:
             blockchain: string
@@ -793,7 +778,6 @@ seeds:
             tx_num: long
 
     quix:
-      +schema: test_data
       quix_events_seed:
         +column_types:
           blockchain: string
@@ -822,7 +806,6 @@ seeds:
     zeroex:
       ethereum:
         fills:
-          +schema: test_data
           zeroex_api_ethereum_fills_sample:
             +column_types:
               tx_hash: string
@@ -849,7 +832,6 @@ seeds:
               tx_from: string
               tx_to: string
         nfts:
-          +schema: test_data
           zeroex_nft_ethereum_fills_sample:
             +column_types:
               block_time: timestamp
@@ -870,7 +852,6 @@ seeds:
               token_amount: double
               project_name: string
       optimism:
-        +schema: test_data
         zeroex_api_optimism_fills_sample:
           +column_types:
             tx_hash: string
@@ -894,7 +875,6 @@ seeds:
 
     gmx:
       avalanche_c:
-        +schema: test_data
         gmx_glp_aum_seed:
           +column_types:
             date: date
@@ -903,7 +883,6 @@ seeds:
 
     x2y2:
       ethereum:
-        +schema: test_data
         x2y2_ethereum_trades_etherscan:
           +column_types:
             block_number: long
@@ -913,7 +892,6 @@ seeds:
 
     foundation:
       ethereum:
-        +schema: test_data
         foundation_trades_samples:
           +column_types:
             tx_hash: string
