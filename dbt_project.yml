@@ -1093,10 +1093,9 @@ seeds:
             token_id: int
             seller: string
             buyer: string
-            amount_original: int
             tx_hash: string
             block_number: int
-            amount_original: double            
+            amount_original: double
 
     foundation:
       ethereum:
@@ -1111,4 +1110,4 @@ seeds:
             buyer: string
             seller: string
             platform_fee_amount: double
-            royalty_fee_amount: double            
+            royalty_fee_amount: double
