@@ -316,7 +316,10 @@ SELECT
             ELSE taker
         END AS taker, -- fix the user masked by ProxyContract issue
         taker_token,
+        ts.symbol AS taker_symbol,
         maker_token,
+        ms.symbol AS maker_symbol,
+        CASE WHEN lower(ts.symbol) > lower(ms.symbol) THEN concat(ms.symbol, '-', ts.symbol) ELSE concat(ts.symbol, '-', ms.symbol) END AS token_pair,
         taker_token_amount_raw / pow(10, tp.decimals) AS taker_token_amount,
         taker_token_amount_raw,
         maker_token_amount_raw / pow(10, mp.decimals) AS maker_token_amount,
@@ -326,9 +329,9 @@ SELECT
         swap_flag,
         matcha_limit_order_flag,
         --COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price) AS volume_usd
-        CASE WHEN maker_token IN ('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2','0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48','0xdac17f958d2ee523a2206206994597c13d831ec7','0x4fabb145d64652a948d72533023f6e7a623c7c53','0x6b175474e89094c44da98b954eedeac495271d0f')
+        CASE WHEN maker_token IN ('0x7f5c764cbc14f9669b88837ca1490cca17c31607','0x4200000000000000000000000000000000000006','0xda10009cbd5d07dd0cecc66161fc93d7c9000da1','0x4200000000000000000000000000000000000042','0x94b008aa00579c1307b0ef2c499ad98a8ce58e58', '0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9')
              THEN (all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price
-             WHEN taker_token IN ('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2','0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48','0xdac17f958d2ee523a2206206994597c13d831ec7','0x4fabb145d64652a948d72533023f6e7a623c7c53','0x6b175474e89094c44da98b954eedeac495271d0f')     
+             WHEN taker_token IN ('0x7f5c764cbc14f9669b88837ca1490cca17c31607','0x4200000000000000000000000000000000000006','0xda10009cbd5d07dd0cecc66161fc93d7c9000da1','0x4200000000000000000000000000000000000042','0x94b008aa00579c1307b0ef2c499ad98a8ce58e58', '0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9')     
              THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
              END AS volume_usd, tx.to, tx.from 
@@ -368,3 +371,6 @@ AND mp.minute >= date_trunc('day', now() - interval '1 week')
 {% if not is_incremental() %}
 AND mp.minute >= '{{zeroex_v3_start_date}}'
 {% endif %}
+
+LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} ts ON ts.contract_address = taker_token
+LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} ms ON ms.contract_address = maker_token
