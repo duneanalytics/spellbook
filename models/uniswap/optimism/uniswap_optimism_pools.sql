@@ -21,10 +21,10 @@ with uniswap_v3_poolcreated as (
 )
 
 select 
-  col.newAddress as pool
-  ,col.token0
-  ,col.token1
-  ,col.fee
+   newAddress as pool
+  ,token0
+  ,token1
+  ,fee
 from {{ ref('uniswap_optimism_ovm1_pool_mapping') }}
 
 union
