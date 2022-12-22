@@ -8,8 +8,8 @@ config-version: 2
 profile: "spellbook"
 
 vars:
-  DBT_ENV_CUSTOM_ENV_S3_BUCKET: "{{ env_var('DBT_ENV_CUSTOM_ENV_S3_BUCKET', 'local') }}"
-
+  DBT_ENV_CUSTOM_ENV_S3_BUCKET: "{{ 'local' if env_var('DBT_ENV_CUSTOM_ENV_S3_BUCKET', 'local') == '' else  env_var('DBT_ENV_CUSTOM_ENV_S3_BUCKET', 'local')}}"
+  
 # These configurations specify where dbt should look for different types of files.
 # You don't need to change these!
 model-paths: ["models"]
