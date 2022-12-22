@@ -104,6 +104,70 @@ models:
       - name: token_address
         description: "Token Address for possibly non-compliant erc20 token"
 
+  - name: balances_fantom_ftm_hour
+    meta:
+      blockchain: fantom
+      sector: balances
+      project: ftm
+      contributors: Henrystats
+    config:
+      tags: ['balances', 'fantom', 'ftm', 'hour', 'Henrystats']
+    description: >
+        Hourly token balances of ftm fantom tokens per wallet and contract address pair.
+        Depends on ftm_fantom_transfers
+    columns:
+      - *blockchain
+      - *hour
+      - *wallet_address
+      - *token_address
+      - *amount_raw
+      - *amount
+      - *amount_usd
+      - *symbol
+
+  - name: balances_fantom_ftm_day
+    meta:
+      blockchain: fantom
+      sector: balances
+      project: ftm
+      contributors: Henrystats
+    config:
+      tags: ['balances', 'fantom', 'ftm', 'day', 'Henrystats']
+    description: >
+        Daily token balances of ftm fantom tokens per wallet and contract address pair.
+        Depends on ftm_fantom_transfers.
+    columns:
+      - *blockchain
+      - *day
+      - *wallet_address
+      - *token_address
+      - *amount_raw
+      - *amount
+      - *amount_usd
+      - *symbol
+
+
+  - name: balances_fantom_ftm_latest
+    meta:
+      blockchain: fantom
+      sector: balances
+      project: ftm
+      contributors: Henrystats
+    config:
+      tags: ['balances', 'fantom', 'ftm', 'latest', 'Henrystats']
+    description: >
+        Latest token balances of ftm fantom tokens per wallet and contract address pair.
+        Depends on ftm_fantom_transfers.
+    columns:
+      - *blockchain
+      - *last_updated
+      - *wallet_address
+      - *token_address
+      - *amount_raw
+      - *amount
+      - *amount_usd
+      - *symbol
+
 
   - name: balances_fantom_erc721_day
     meta:
