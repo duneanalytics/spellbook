@@ -1,6 +1,13 @@
 {{ config(
-     alias = 'base_pairs'
-     )
+    alias = 'base_pairs',
+    partition_by = ['block_time'],
+    materialized = 'table',
+    file_format = 'delta',
+    post_hook='{{ expose_spells(\'["ethereum"]\',
+                            "project",
+                            "seaport",
+                            \'["sohwak"]\') }}'
+    )
 }}
 
 with iv_offer_consideration as (
