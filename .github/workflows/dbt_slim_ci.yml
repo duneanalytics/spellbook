@@ -23,41 +23,43 @@ jobs:
     timeout-minutes: 60
 
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-
-      - name: Set environment variables
-        run: |
-          echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-8)" >> $GITHUB_ENV
-
-      - name: Add git_sha to schema
-        run: "/runner/change_schema.sh git_$GIT_SHA"
-
-      - name: Get latest manifest
-        env:
-          JOB_ID: "123193"
-        run: "/runner/fetch_latest_manifest.py --dbt_job_id $JOB_ID"
-
-      - name: dbt dependencies
-        run: "dbt deps"
-
-      - name: dbt compile to create manifest to compare to
-        run: "dbt compile"
-
+      - name: echo
+        run: echo "$DBT_ENV_CUSTOM_ENV_S3_BUCKET"
+#      - name: Check out repository code
+#        uses: actions/checkout@v2
+#
+#      - name: Set environment variables
+#        run: |
+#          echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-8)" >> $GITHUB_ENV
+#
+#      - name: Add git_sha to schema
+#        run: "/runner/change_schema.sh git_$GIT_SHA"
+#
+#      - name: Get latest manifest
+#        env:
+#          JOB_ID: "123193"
+#        run: "/runner/fetch_latest_manifest.py --dbt_job_id $JOB_ID"
+#
+#      - name: dbt dependencies
+#        run: "dbt deps"
+#
+#      - name: dbt compile to create manifest to compare to
+#        run: "dbt compile"
+#
 #      - name: dbt seed
 #        run: "dbt seed --select state:modified --state ."
-
-      - name: dbt run initial model(s)
-        run: "dbt -x run --select state:modified --defer --state ."
-
-      - name: Set environment variable for incremental model count
-        run: |
-          echo "INC_MODEL_COUNT=$(echo dbt ls --select state:modified,config.materialized:incremental --state . --resource-type model  | wc -l)" >> $GITHUB_ENV
-
-      - name: dbt run incremental model(s) if applicable
-        if: env.INC_MODEL_COUNT > 0
-        run: "dbt run --select state:modified,config.materialized:incremental --defer --state ."
-
-      - name: dbt test incremental model(s) if applicable
-        if: env.INC_MODEL_COUNT > 0
-        run: "dbt test --select state:modified,config.materialized:incremental --defer --state ."
+#
+#      - name: dbt run initial model(s)
+#        run: "dbt -x run --select state:modified --defer --state ."
+#
+#      - name: Set environment variable for incremental model count
+#        run: |
+#          echo "INC_MODEL_COUNT=$(echo dbt ls --select state:modified,config.materialized:incremental --state . --resource-type model  | wc -l)" >> $GITHUB_ENV
+#
+#      - name: dbt run incremental model(s) if applicable
+#        if: env.INC_MODEL_COUNT > 0
+#        run: "dbt run --select state:modified,config.materialized:incremental --defer --state ."
+#
+#      - name: dbt test incremental model(s) if applicable
+#        if: env.INC_MODEL_COUNT > 0
+#        run: "dbt test --select state:modified,config.materialized:incremental --defer --state ."
