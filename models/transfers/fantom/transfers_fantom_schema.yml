@@ -254,7 +254,8 @@ models:
         name: wallet_address
         description: "Wallet address of sender or receiver."
       - &token_address_erc1155
-        name: token_address_erc1155
+        name: token_address
+        description: "contract Address of erc1155 token."
       - *evt_block_time
       - &tokenId_erc1155
         name: tokenId
