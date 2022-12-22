@@ -273,7 +273,7 @@ WITH raw_token_list AS (
     ,('0x6f0fecbc276de8fc69257065fe47c5a03d986394', 'POP', 18, 'underlying')
     ,('0x1a9c8b7f8695abd9a930ea49a498ce1b7a590d25', 'ABT', 18, 'underlying')
     ,('0x0c5b4c92c948691EEBf185C17eeB9c230DC019E9', 'PICKLE', 18, 'underlying')
-
+    ,('0xB0ae108669CEB86E9E98e8fE9e40d98b867855fD', 'RING', 18, 'underlying')
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 
 )
