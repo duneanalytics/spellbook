@@ -307,7 +307,6 @@ models:
         +materialized: view
       fantom:
         +schema: balances_fantom
-        +materialized: view
 
     dodo:
       +schema: dodo

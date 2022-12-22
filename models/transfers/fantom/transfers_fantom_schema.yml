@@ -37,7 +37,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['transfers', 'fantom', 'erc20', 'agg_hour', 'Henrystats']
-    description: ""
+    description: "aggregated fantom erc20 transactions per hour"
     columns:
       - *blockchain
       - &hour
@@ -63,7 +63,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['transfers', 'fantom', 'erc20', 'rolling_hour', 'Henrystats']
-    description: ""
+    description: "rolling fantom transactions per hour"
     columns:
       - *blockchain
       - *hour
@@ -87,7 +87,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['transfers', 'fantom', 'erc20', 'agg_day', 'Henrystats']
-    description: ""
+    description: "aggregated fantom transactions per day"
     columns:
       - *blockchain
       - &day
@@ -113,7 +113,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['transfers', 'fantom', 'erc20', 'rolling_day', 'Henrystats']
-    description: ""
+    description: "rolling fantom erc20 transactions per day"
     columns:
       - *blockchain
       - *day
@@ -164,7 +164,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['transfers', 'fantom', 'erc721', 'agg_hour', 'Henrystats']
-    description: ""
+    description: "erc72 transactions aggregated per hour"
     columns:
       - *blockchain
       - *hour
@@ -204,7 +204,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['transfers', 'fantom', 'erc721', 'agg_hour', 'Henrystats']
-    description: ""
+    description: "erc721 transactions aggregated per day"
     columns:
       - *blockchain
       - *day
@@ -271,7 +271,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['transfers', 'fantom', 'erc1155', 'agg_hour', 'Henrystats']
-    description: ""
+    description: "erc1155 transactions aggregated per hour"
     columns:
       - *blockchain
       - *hour
@@ -327,7 +327,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['transfers', 'fantom', 'erc1155', 'rolling_day', 'Henrystats']
-    description: ""
+    description: "erc1155 transactions per day"
     columns:
       - *blockchain
       - *day
