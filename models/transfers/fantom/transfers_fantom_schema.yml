@@ -288,7 +288,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['transfers', 'fantom', 'erc1155', 'rolling_hour', 'Henrystats']
-    description: "ERC1155 Token Transfers on fantom per hour."
+    description: "ERC1155 Token Transfers  on fantom per hour."
     columns:
       - *blockchain
       - *hour
@@ -309,7 +309,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['transfers', 'fantom', 'erc1155', 'agg_hour', 'Henrystats']
-    description: ""
+    description: "erc155 transactions aggregated by day"
     columns:
       - *blockchain
       - *day
