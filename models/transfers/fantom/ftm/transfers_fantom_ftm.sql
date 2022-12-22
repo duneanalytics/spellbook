@@ -20,7 +20,7 @@ with
     )
 
     ,
-    sent_transfers as (
+    received_transfers as (
         select
             'receive' || '-' || tx_hash || '-' || CAST(tx_index AS VARCHAR(100)) || '-' || CAST(trace_address AS VARCHAR(100)) || '-' ||  `from` as unique_transfer_id,
             `to` as wallet_address,
