@@ -185,7 +185,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['transfers', 'fantom', 'erc721', 'rolling_hour', 'Henrystats']
-    description: ""
+    description: "erc721 rolling hour transactions"
     columns:
       - *blockchain
       - *hour
