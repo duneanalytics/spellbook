@@ -8,7 +8,7 @@ with
  trader_platforms as (
     select
         taker as address,
-        count(tx_hash) / datediff(max(block_date), min(block_date)) as trades_per_day
+        project
     from (
         select taker, block_date, tx_hash
         from {{ ref('dex_aggregator_trades') }}
@@ -18,9 +18,6 @@ with
         from {{ ref('dex_trades') }}
         where blockchain = 'ethereum'
     )
-    group by taker
-    -- That have at least more than 1 trade
-    having datediff(max(block_date), min(block_date)) > 0
  )
 
 select
