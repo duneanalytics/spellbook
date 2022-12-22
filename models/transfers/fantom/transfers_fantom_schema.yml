@@ -37,6 +37,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['transfers', 'fantom', 'erc20', 'agg_hour', 'Henrystats']
+    description: ""
     columns:
       - *blockchain
       - &hour
@@ -62,6 +63,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['transfers', 'fantom', 'erc20', 'rolling_hour', 'Henrystats']
+    description: ""
     columns:
       - *blockchain
       - *hour
@@ -85,6 +87,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['transfers', 'fantom', 'erc20', 'agg_day', 'Henrystats']
+    description: ""
     columns:
       - *blockchain
       - &day
@@ -110,6 +113,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['transfers', 'fantom', 'erc20', 'rolling_day', 'Henrystats']
+    description: ""
     columns:
       - *blockchain
       - *day
@@ -160,6 +164,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['transfers', 'fantom', 'erc721', 'agg_hour', 'Henrystats']
+    description: ""
     columns:
       - *blockchain
       - *hour
@@ -179,6 +184,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['transfers', 'fantom', 'erc721', 'rolling_hour', 'Henrystats']
+    description: ""
     columns:
       - *blockchain
       - *hour
@@ -198,6 +204,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['transfers', 'fantom', 'erc721', 'agg_hour', 'Henrystats']
+    description: ""
     columns:
       - *blockchain
       - *day
@@ -264,6 +271,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['transfers', 'fantom', 'erc1155', 'agg_hour', 'Henrystats']
+    description: ""
     columns:
       - *blockchain
       - *hour
@@ -301,6 +309,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['transfers', 'fantom', 'erc1155', 'agg_hour', 'Henrystats']
+    description: ""
     columns:
       - *blockchain
       - *day
@@ -318,6 +327,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['transfers', 'fantom', 'erc1155', 'rolling_day', 'Henrystats']
+    description: ""
     columns:
       - *blockchain
       - *day
