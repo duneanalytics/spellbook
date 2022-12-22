@@ -23,6 +23,9 @@ jobs:
     timeout-minutes: 60
 
     steps:
+      - name: echo env var
+        run: echo "${{ DBT_ENV_CUSTOM_ENV_S3_BUCKET }}"
+
       - name: Check out repository code
         uses: actions/checkout@v2
 
@@ -72,3 +75,8 @@ jobs:
       - name: dbt test incremental model(s) if applicable
         if: env.INC_MODEL_COUNT > 0
         run: "dbt test --select state:modified,config.materialized:incremental --state ."
+
+      - name: check dunesql compatibility
+        working-directory: scripts
+        run: |
+          python3 pr_job_utils.py --pr_schema git_$GIT_SHA
