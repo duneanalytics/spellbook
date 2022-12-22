@@ -12,7 +12,7 @@ SELECT
     rh.amount_raw,
     rh.amount,
     rh.amount*p.price as amount_usd,
-    'FTM' as symbol 
+    'FTM' as symbol, 
     rh.last_updated
 FROM {{ ref('transfers_fantom_ftm_rolling_hour') }} rh
 LEFT JOIN {{ source('prices', 'usd') }} p
