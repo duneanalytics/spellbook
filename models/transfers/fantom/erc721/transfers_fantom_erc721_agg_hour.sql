@@ -5,7 +5,7 @@
         incremental_strategy='merge',
         unique_key='unique_transfer_id'
         )
-}}
+}} 
 
 select
     'fantom' as blockchain,
