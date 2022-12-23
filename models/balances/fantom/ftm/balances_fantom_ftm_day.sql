@@ -25,7 +25,7 @@ with
     amount,
     day,
     symbol,
-    lead(day, 1, now()) OVER (PARTITION BY token_address, wallet_address ORDER BY day) AS next_day
+    lead(day, 1, now()) OVER (PARTITION BY wallet_address ORDER BY day) AS next_day
     FROM {{ ref('transfers_fantom_ftm_rolling_day') }})
 
 SELECT

@@ -25,7 +25,7 @@ with
     amount,
     hour,
     symbol,
-    lead(hour, 1, now()) OVER (PARTITION BY token_address, wallet_address ORDER BY hour) AS next_hour
+    lead(hour, 1, now()) OVER (PARTITION BY wallet_address ORDER BY hour) AS next_hour
     FROM {{ ref('transfers_fantom_ftm_rolling_hour') }})
 
 SELECT
