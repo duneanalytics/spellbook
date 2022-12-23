@@ -143,7 +143,6 @@ models:
         description: "Unique transfer ID (used for testing for duplicates)"
       - *blockchain
       - *wallet_address
-      - *token_address
       - *evt_block_time
       - *amount_raw
 
@@ -160,9 +159,6 @@ models:
       - *blockchain
       - *hour
       - *wallet_address
-      - *token_address
-      - name: symbol
-        description: "WFTM Symbol that will be changed in balances spell"
       - *amount_raw
       - name: amount
         description: "Raw amount of FTM token held *after* taking into account token decimals"
@@ -184,9 +180,6 @@ models:
       - *blockchain
       - *hour
       - *wallet_address
-      - *token_address
-      - name: symbol
-        description: "wFTM token symbol will be changed in balances model"
       - *amount_raw
       - name: amount
         description: "Rolling sum of raw amount of FTM token held *after* taking into account token decimals"
@@ -208,9 +201,6 @@ models:
       - *blockchain
       - *day
       - *wallet_address
-      - *token_address
-      - name: symbol
-        description: "wFTM token symbol will be changed in balances model"
       - *amount_raw
       - name: amount
         description: "Raw amount of FTM token held *after* taking into account token decimals"
@@ -232,9 +222,6 @@ models:
       - *blockchain
       - *day
       - *wallet_address
-      - *token_address
-      - name: symbol
-        description: "wFTM token symbol will be changed in balances model"
       - *amount_raw
       - name: amount
         description: "Rolling sum of raw amount of FTM token held *after* taking into account token decimals"

@@ -20,11 +20,9 @@ with
 , hourly_balances as
  (SELECT
     wallet_address,
-    token_address,
     amount_raw,
     amount,
     hour,
-    symbol,
     lead(hour, 1, now()) OVER (PARTITION BY wallet_address ORDER BY hour) AS next_hour
     FROM {{ ref('transfers_fantom_ftm_rolling_hour') }})
 
@@ -32,7 +30,6 @@ SELECT
     'fantom' as blockchain,
     h.hour,
     b.wallet_address,
-    b.token_address,
     b.amount_raw,
     b.amount,
     b.amount * p.price as amount_usd,
@@ -40,6 +37,6 @@ SELECT
 FROM hourly_balances b
 INNER JOIN hours h ON b.hour <= h.hour AND h.hour < b.next_hour
 LEFT JOIN {{ source('prices', 'usd') }} p
-    ON p.contract_address = b.token_address
+    ON p.symbol = 'WFTM'
     AND h.hour = p.minute
     AND p.blockchain = 'fantom'

@@ -119,7 +119,6 @@ models:
       - *blockchain
       - *hour
       - *wallet_address
-      - *token_address
       - *amount_raw
       - *amount
       - *amount_usd
@@ -140,7 +139,6 @@ models:
       - *blockchain
       - *day
       - *wallet_address
-      - *token_address
       - *amount_raw
       - *amount
       - *amount_usd
@@ -162,7 +160,6 @@ models:
       - *blockchain
       - *last_updated
       - *wallet_address
-      - *token_address
       - *amount_raw
       - *amount
       - *amount_usd
