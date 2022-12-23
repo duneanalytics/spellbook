@@ -21,16 +21,17 @@ WITH tff AS (
            fee_address,
            royalty_address,
            bundle_size,
-           get_json_object(t, '$.token')   as token,
-           get_json_object(t, '$.tokenId') as token_id,
-           get_json_object(t, '$.amount')  as amount
+           get_json_object(t.col, '$.token')   as token,
+           get_json_object(t.col, '$.tokenId') as token_id,
+           get_json_object(t.col, '$.amount')  as amount,
+           t.pos as bundle_index
     FROM (SELECT call_block_time,
                  call_tx_hash,
                  get_json_object(get_json_object(detail, '$.settlement'), '$.feeRate') / 1000000     as fee_rate,
                  get_json_object(get_json_object(detail, '$.settlement'), '$.royaltyRate') / 1000000 as royalty_rate,
                  get_json_object(get_json_object(detail, '$.settlement'), '$.feeAddress')            as fee_address,
                  get_json_object(get_json_object(detail, '$.settlement'), '$.royaltyAddress')        as royalty_address,
-                 explode(from_json(get_json_object(detail, '$.bundle'), 'array<string>'))            as t,
+                 posexplode(from_json(get_json_object(detail, '$.bundle'), 'array<string>'))            as t,
                  json_array_length(get_json_object(detail, '$.bundle'))                              as bundle_size
           FROM {{ source('tofu_nft_bnb', 'MarketNG_call_run') }}
           WHERE call_success = true
@@ -110,7 +111,7 @@ SELECT 'bnb'                                 as blockchain
            when tfe.native_bnb THEN 'BNB'
            else pu.symbol
       end                                    as royalty_fee_currency_symbol
-     , ('bnb-tofu-v1-' || tfe.evt_block_number ||'-'||tfe.evt_tx_hash || '-' || tfe.evt_index) as unique_trade_id
+     , ('bnb-tofu-v1-' || tfe.evt_block_number ||'-'||tfe.evt_tx_hash || '-' || tfe.evt_index || '-' || tff.bundle_index) as unique_trade_id
 FROM tfe
          INNER JOIN tff
               ON tfe.evt_tx_hash = tff.call_tx_hash
