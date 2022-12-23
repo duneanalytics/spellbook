@@ -10,11 +10,11 @@ with
         taker as address,
         project
     from (
-        select taker, project
+        select taker, project, block_time
         from {{ ref('dex_aggregator_trades') }}
         where blockchain = 'ethereum'
         UNION ALL
-        select taker, project
+        select taker, project, block_time
         from {{ ref('dex_trades') }}
         where blockchain = 'ethereum'
     )
