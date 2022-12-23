@@ -31,7 +31,7 @@ WITH tff AS (
                  get_json_object(get_json_object(detail, '$.settlement'), '$.royaltyRate') / 1000000 as royalty_rate,
                  get_json_object(get_json_object(detail, '$.settlement'), '$.feeAddress')            as fee_address,
                  get_json_object(get_json_object(detail, '$.settlement'), '$.royaltyAddress')        as royalty_address,
-                 posexplode(from_json(get_json_object(detail, '$.bundle'), 'array<string>'))            as (t,i),
+                 posexplode(from_json(get_json_object(detail, '$.bundle'), 'array<string>'))            as (i,t),
                  json_array_length(get_json_object(detail, '$.bundle'))                              as bundle_size
           FROM {{ source('tofu_nft_bnb', 'MarketNG_call_run') }}
           WHERE call_success = true
