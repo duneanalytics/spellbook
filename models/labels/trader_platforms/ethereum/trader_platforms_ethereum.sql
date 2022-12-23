@@ -8,6 +8,7 @@ with
  trader_platforms as (
     select
         taker as address,
+        block_time,
         project
     from (
         select taker, project, block_time
@@ -18,7 +19,7 @@ with
         from {{ ref('dex_trades') }}
         where blockchain = 'ethereum'
     )
-    order by block_time asc
+    order by block_time
  )
 
 select
