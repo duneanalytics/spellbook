@@ -49,3 +49,5 @@ UNION
 SELECT * FROM {{ ref('labels_sandwich_attackers') }}
 UNION 
 SELECT * FROM {{ ref('labels_dao') }}
+UNION 
+SELECT * FROM {{ ref('labels_balancer_v2_pools') }}
