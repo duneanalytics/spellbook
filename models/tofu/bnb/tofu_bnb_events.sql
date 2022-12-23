@@ -110,7 +110,7 @@ SELECT 'bnb'                                 as blockchain
            when tfe.native_bnb THEN 'BNB'
            else pu.symbol
       end                                    as royalty_fee_currency_symbol
-     , 'bnb-tofu-v1-' || tfe.evt_block_number ||'-'||tfe.evt_tx_hash || '-' || tfe.evt_index || AS unique_trade_id
+     , 'bnb-tofu-v1-' || tfe.evt_block_number ||'-'||tfe.evt_tx_hash || '-' || tfe.evt_index AS unique_trade_id
 FROM tfe
          INNER JOIN tff
               ON tfe.evt_tx_hash = tff.call_tx_hash
