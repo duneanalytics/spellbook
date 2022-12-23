@@ -38,7 +38,7 @@ with
             'gas' || '-' || hash || '-' || CAST(index AS VARCHAR(100)) || '-' || `from` as unique_transfer_id, 
             `from` as wallet_address, 
             block_time as evt_block_time,
-            -1 * ((gas_price * gas_used)/1e18) as amount_raw
+            -1 * ((gas_price * gas_used)) as amount_raw
         from 
             {{ source('fantom', 'transactions') }}
 
