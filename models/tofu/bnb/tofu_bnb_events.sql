@@ -110,25 +110,25 @@ SELECT 'bnb'                                 as blockchain
            when tfe.native_bnb THEN 'BNB'
            else pu.symbol
       end                                    as royalty_fee_currency_symbol
-     , 'bnb-tofu-v1-' || tfe.evt_block_number ||'-'||tfe.evt_tx_hash || '-' || tfe.evt_index AS unique_trade_id
+     , ('bnb-tofu-v1-' || tfe.evt_block_number ||'-'||tfe.evt_tx_hash || '-' || tfe.evt_index) as unique_trade_id
 FROM tfe
          INNER JOIN tff
               ON tfe.evt_tx_hash = tff.call_tx_hash
                   AND tfe.evt_block_time = tff.call_block_time
-         LEFT JOIN {{ source('bnb', 'transactions') }} as tx
+         LEFT JOIN {{ source('bnb', 'transactions') }} tx
                    ON tx.block_time = tfe.evt_block_time
                        AND tx.hash = tfe.evt_tx_hash
                        {% if is_incremental() %}
                        and tx.block_time >= date_trunc("day", now() - interval '1 week')
                        {% endif %}
-         LEFT JOIN {{ ref('tokens_bnb_nft') }} AS nft
+         LEFT JOIN {{ ref('tokens_bnb_nft') }} nft
                    ON tff.token = nft.contract_address
-         LEFT JOIN {{ source('prices', 'usd') }} as pu
+         LEFT JOIN {{ source('prices', 'usd') }} pu
                    ON pu.blockchain = 'bnb'
                        AND pu.minute = date_trunc('minute', tfe.evt_block_time)
                        AND pu.contract_address = tfe.currency
                        {% if is_incremental() %}
                        AND pu.minute >= date_trunc("day", now() - interval '1 week')
                        {% endif %}
-         LEFT JOIN {{ ref('nft_bnb_aggregators')}} as agg
+         LEFT JOIN {{ ref('nft_bnb_aggregators')}} agg
                    ON agg.contract_address = tx.`to`
