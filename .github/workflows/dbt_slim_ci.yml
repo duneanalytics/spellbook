@@ -51,7 +51,7 @@ jobs:
         run: "dbt -x run --select state:modified --defer --state ."
 
       - name: dbt test initial model(s)
-        run: "dbt test --select state:new state:modified --state ."
+        run: "dbt test --select state:new state:modified --defer --state ."
 
       - name: Set environment variable for incremental model count
         run: |
