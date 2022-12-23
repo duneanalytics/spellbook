@@ -61,7 +61,7 @@ SELECT
     'gnosis' as blockchain, 
     'aragon' as dao_creator_tool, 
     ad.dao, 
-    gw.dao_wallet_address, 
+    COALESCE(gw.dao_wallet_address, '') as dao_wallet_address,
     ad.created_block_time,
     TRY_CAST(ad.created_date as DATE) as created_date
 FROM 
