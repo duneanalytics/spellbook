@@ -5,11 +5,9 @@ import sys
 
 logging.basicConfig(stream=sys.stdout, level=logging.WARN)
 
-
 parser = argparse.ArgumentParser()
 parser.add_argument('--model')
 args = parser.parse_args()
-
 
 
 class Sources:
@@ -27,10 +25,12 @@ class Sources:
         else:
             return
 
+
 def missing_freshness_checks(sources, manifest, check_type='warn'):
     sources = list(set(sources))
-    source_defintions = { source: manifest['sources'][source] for source in sources}
-    empty_checks = [key for key, value in source_defintions.items() if value['freshness'][f'{check_type}_after']['count'] is None]
+    source_defintions = {source: manifest['sources'][source] for source in sources}
+    empty_checks = [key for key, value in source_defintions.items() if
+                    value['freshness'][f'{check_type}_after']['count'] is None]
     return empty_checks
 
 
@@ -39,6 +39,7 @@ class MissingSourceFreshnessChecks(Exception):
         self.sources_missing_checks = sources_missing_checks
         self.message = "Sources Missing Freshness Checks: \n" + "\n".join(sources_missing_checks)
         super().__init__(self.message)
+
 
 with open('../target/manifest.json') as json_file:
     manifest = json.load(json_file)
