@@ -24,7 +24,7 @@ with
 select
   array("ethereum") as blockchain,
   address,
-  array_join(array_distinct(collect_list(concat(upper(substring(project,1,1)),substring(project,2)))(), ', ') ||' User' as name,
+  array_join(array_distinct(collect_list(concat(upper(substring(project,1,1)),substring(project,2)))), ', ') ||' User' as name,
   "trader_platforms" AS category,
   "gentrexha" AS contributor,
   "query" AS source,
