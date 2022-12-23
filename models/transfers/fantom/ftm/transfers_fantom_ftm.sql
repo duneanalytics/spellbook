@@ -33,7 +33,7 @@ with
         AND success = true 
         AND CAST(value as decimal(38,0)) > 0 
     )
-
+ 
     ,
     gas_fees as (
         select 
