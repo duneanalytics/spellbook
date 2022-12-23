@@ -31,7 +31,7 @@ WITH tff AS (
                  get_json_object(get_json_object(detail, '$.settlement'), '$.feeAddress')            as fee_address,
                  get_json_object(get_json_object(detail, '$.settlement'), '$.royaltyAddress')        as royalty_address,
                  explode(from_json(get_json_object(detail, '$.bundle'), 'array<string>'))            as t,
-                 json_array_length(get_json_object(detail, '$.bundle'))                              as bundle_size,
+                 json_array_length(get_json_object(detail, '$.bundle'))                              as bundle_size
           FROM {{ source('tofu_nft_bnb', 'MarketNG_call_run') }}
           WHERE call_success = true
               {% if is_incremental() %}
