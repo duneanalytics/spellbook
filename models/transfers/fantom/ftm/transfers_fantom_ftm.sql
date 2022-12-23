@@ -23,7 +23,7 @@ with
     received_transfers as (
         select
             'receive' || '-' || tx_hash || '-' || CAST(tx_index AS VARCHAR(100)) || '-' || CAST(trace_address AS VARCHAR(100)) || '-' ||  `from` as unique_transfer_id,
-            `to` as wallet_address,
+            `from` as wallet_address,
             LOWER('0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83') as token_address,
             block_time as evt_block_time,
             -1 * CAST(value as decimal(38,0)) as amount_raw 
@@ -34,8 +34,24 @@ with
         AND CAST(value as decimal(38,0)) > 0 
     )
 
+    ,
+    gas_fees as (
+        select 
+            'gas' || '-' || hash || '-' || CAST(index AS VARCHAR(100)) || '-' || `from` as unique_transfer_id, 
+            `from` as wallet_address, 
+            LOWER('0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83') as token_address,
+            block_time as evt_block_time,
+            -1 * ((gas_price * gas_used)/1e18) as amount_raw
+        from 
+            {{ source('fantom', 'transactions') }}
+
+    )
+
 select unique_transfer_id, 'fantom' as blockchain, wallet_address, token_address, evt_block_time, amount_raw
 from sent_transfers
 union
 select unique_transfer_id, 'fantom' as blockchain, wallet_address, token_address, evt_block_time, amount_raw
 from received_transfers
+union
+select unique_transfer_id, 'fantom' as blockchain, wallet_address, token_address, evt_block_time, amount_raw
+from gas_fees
