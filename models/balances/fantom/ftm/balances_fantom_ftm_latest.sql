@@ -19,3 +19,4 @@ LEFT JOIN {{ source('prices', 'usd') }} p
     ON p.contract_address = rh.token_address
     AND p.minute = date_trunc('minute', rh.last_updated) - INTERVAL 10 minutes
     AND p.blockchain = 'fantom'
+where rh.recency_index = 1
