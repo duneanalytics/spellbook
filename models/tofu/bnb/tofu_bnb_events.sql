@@ -11,6 +11,8 @@
                                 \'["theachenyj"]\') }}')
 }}
 
+{%- set BNB_ERC20_ADDRESS = ''}
+
 WITH tff AS (
     SELECT call_block_time,
            call_tx_hash,
@@ -29,7 +31,7 @@ WITH tff AS (
                  get_json_object(get_json_object(detail, '$.settlement'), '$.feeAddress')            as fee_address,
                  get_json_object(get_json_object(detail, '$.settlement'), '$.royaltyAddress')        as royalty_address,
                  explode(from_json(get_json_object(detail, '$.bundle'), 'array<string>'))            as t,
-                 json_array_length(get_json_object(detail, '$.bundle'))                              as bundle_size
+                 json_array_length(get_json_object(detail, '$.bundle'))                              as bundle_size,
           FROM {{ source('tofu_nft_bnb', 'MarketNG_call_run') }}
           WHERE call_success = true
               {% if is_incremental() %}
@@ -41,6 +43,7 @@ WITH tff AS (
          select evt_tx_hash,
                 evt_block_time,
                 evt_block_number,
+                evt_index,
                 get_json_object(inventory, '$.seller')   as seller,
                 get_json_object(inventory, '$.buyer')    as buyer,
                 get_json_object(inventory, '$.kind')     as kind,
@@ -60,9 +63,7 @@ SELECT 'bnb'                                 as blockchain
      , tfe.evt_block_time                    as block_time
      , tfe.evt_block_number                  as block_number
      , tff.token_id                          as token_id
-     , case
-           when erct.evt_block_time is not null then 'bep721'
-           else 'bep1155' end                as token_standard
+     , nft.standard                          as token_standard
      , nft.name                              as collection
      , case
            when tff.bundle_size = 1 then 'Single Item Trade'
@@ -73,8 +74,8 @@ SELECT 'bnb'                                 as blockchain
      , tfe.seller                            as seller
      , tfe.buyer                             as buyer
      , case
-           when tfe.kind = '1' then 'Sell'
-           when tfe.kind = '2' then 'Buy'
+           when tfe.kind = '1' then 'Buy'
+           when tfe.kind = '2' then 'Sell'
            else 'Acution'
     end                                      as trade_category
      , tfe.price                         as amount_raw
@@ -124,32 +125,21 @@ SELECT 'bnb'                                 as blockchain
            else pu.price * tfe.price * tff.royalty_rate / power(10, pu.decimals)
     end                                      as royalty_fee_amount_usd
      , tff.royalty_rate                      as royalty_fee_percentage
-     , tff.fee_address                       as royalty_fee_receive_address
+     , tff.royalty_address                   as royalty_fee_receive_address
      , case
            when tfe.currency = '0x0000000000000000000000000000000000000000' THEN 'BNB'
            else pu.symbol
     end                                      as royalty_fee_currency_symbol
-     , 'bnb-tofu-v1' || tfe.evt_tx_hash || '-' || tfe.seller || '-' || tfe.buyer || '-' || tff.token || '-' ||
-       tff.token_id                          AS unique_trade_id
+     , 'bnb-tofu-v1-' || tfe.evt_block_number ||'-'||tfe.evt_tx_hash || '-' || tfe.evt_index || AS unique_trade_id
 FROM tfe
-         JOIN tff
+         INNER JOIN tff
               ON tfe.evt_tx_hash = tff.call_tx_hash
-                  AND tff.call_block_time = tfe.evt_block_time
+                  AND tfe.evt_block_time = tff.call_block_time
          LEFT JOIN {{ source('bnb', 'transactions') }} as tx
                    ON tx.block_time = tfe.evt_block_time
                        AND tx.hash = tfe.evt_tx_hash
                        {% if is_incremental() %}
                        and tx.block_time >= date_trunc("day", now() - interval '1 week')
-                       {% endif %}
-         LEFT JOIN {{ source('erc721_bnb', 'evt_Transfer') }} as erct
-                   ON erct.evt_block_time = tfe.evt_block_time
-                       AND tff.token = erct.contract_address
-                       AND erct.evt_tx_hash = tfe.evt_tx_hash
-                       AND tff.token_id = erct.tokenId
-                       AND erct.from = tfe.seller
-                       AND erct.to = tfe.buyer
-                       {% if is_incremental() %}
-                       and erct.evt_block_time >= date_trunc("day", now() - interval '1 week')
                        {% endif %}
          LEFT JOIN {{ ref('tokens_bnb_nft') }} AS nft
                    ON tff.token = nft.contract_address
