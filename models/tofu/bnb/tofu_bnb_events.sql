@@ -11,7 +11,7 @@
                                 \'["theachenyj"]\') }}')
 }}
 
-{%- set BNB_ERC20_ADDRESS = ''}
+{%- set BNB_ERC20_ADDRESS = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c' %}
 
 WITH tff AS (
     SELECT call_block_time,
@@ -48,7 +48,11 @@ WITH tff AS (
                 get_json_object(inventory, '$.buyer')    as buyer,
                 get_json_object(inventory, '$.kind')     as kind,
                 get_json_object(inventory, '$.price')    as price,
-                get_json_object(inventory, '$.currency') as currency,
+                CASE WHEN get_json_object(inventory, '$.currency') = '0x0000000000000000000000000000000000000000'
+                  THEN '{{BNB_ERC20_ADDRESS}}'
+                  ELSE get_json_object(inventory, '$.currency')
+                END as currency,
+                (get_json_object(inventory, '$.currency') = '0x0000000000000000000000000000000000000000') as native_bnb,
                 contract_address
          from {{ source('tofu_nft_bnb', 'MarketNG_evt_EvInventoryUpdate') }}
          where get_json_object(inventory, '$.status') = '1'
@@ -79,20 +83,12 @@ SELECT 'bnb'                                 as blockchain
            else 'Acution'
     end                                      as trade_category
      , tfe.price                         as amount_raw
+     , tfe.price / power(10, pu.decimals) as amount_original
+     , pu.price * tfe.price / power(10, pu.decimals) as amount_usd
      , case
-           when tfe.currency = '0x0000000000000000000000000000000000000000'
-               Then tfe.price / power(10, 18)
-           else tfe.price / power(10, pu.decimals)
-    end                                      as amount_original
-     , case
-           when tfe.currency = '0x0000000000000000000000000000000000000000'
-               Then pu.price * tfe.price / power(10, 18)
-           else pu.price * tfe.price / power(10, pu.decimals)
-    end                                      as amount_usd
-     , case
-           when tfe.currency = '0x0000000000000000000000000000000000000000' THEN 'BNB'
+           when tfe.native_bnb THEN 'BNB'
            else pu.symbol
-    end                                      as currency_symbol
+       end                                   as currency_symbol
      , tfe.currency                          as currency_contract
      , tfe.contract_address                  as project_contract_address
      , tff.token                             as nft_contract_address
@@ -102,34 +98,18 @@ SELECT 'bnb'                                 as blockchain
      , tx.from                               as tx_from
      , tx.to                                 as tx_to
      , tfe.price * tff.fee_rate              as platform_fee_amount_raw
-     , case
-           when tfe.currency = '0x0000000000000000000000000000000000000000'
-               Then tfe.price * tff.fee_rate / power(10, 18)
-           else tfe.price * tff.fee_rate / power(10, pu.decimals)
-    end                                      as platform_fee_amount
-     , case
-           when tfe.currency = '0x0000000000000000000000000000000000000000'
-               Then pu.price * tfe.price * tff.fee_rate / power(10, 18)
-           else pu.price * tfe.price * tff.fee_rate / power(10, pu.decimals)
-    end                                      as platform_fee_amount_usd
+     , tfe.price * tff.fee_rate / power(10, pu.decimals) as platform_fee_amount
+     , pu.price * tfe.price * tff.fee_rate / power(10, pu.decimals) as platform_fee_amount_usd
      , tff.fee_rate                          as platform_fee_percentage
      , tfe.price * tff.royalty_rate          as royalty_fee_amount_raw
-     , case
-           when tfe.currency = '0x0000000000000000000000000000000000000000'
-               Then tfe.price * tff.royalty_rate / power(10, 18)
-           else tfe.price * tff.royalty_rate / power(10, pu.decimals)
-    end                                      as royalty_fee_amount
-     , case
-           when tfe.currency = '0x0000000000000000000000000000000000000000'
-               Then pu.price * tfe.price * tff.royalty_rate / power(10, 18)
-           else pu.price * tfe.price * tff.royalty_rate / power(10, pu.decimals)
-    end                                      as royalty_fee_amount_usd
+     , tfe.price * tff.royalty_rate / power(10, pu.decimals) as royalty_fee_amount
+     , pu.price * tfe.price * tff.royalty_rate / power(10, pu.decimals) as royalty_fee_amount_usd
      , tff.royalty_rate                      as royalty_fee_percentage
      , tff.royalty_address                   as royalty_fee_receive_address
      , case
-           when tfe.currency = '0x0000000000000000000000000000000000000000' THEN 'BNB'
+           when tfe.native_bnb THEN 'BNB'
            else pu.symbol
-    end                                      as royalty_fee_currency_symbol
+      end                                    as royalty_fee_currency_symbol
      , 'bnb-tofu-v1-' || tfe.evt_block_number ||'-'||tfe.evt_tx_hash || '-' || tfe.evt_index || AS unique_trade_id
 FROM tfe
          INNER JOIN tff
@@ -146,9 +126,7 @@ FROM tfe
          LEFT JOIN {{ source('prices', 'usd') }} as pu
                    ON pu.blockchain = 'bnb'
                        AND pu.minute = date_trunc('minute', tfe.evt_block_time)
-                       AND (pu.contract_address = tfe.currency
-                           OR (pu.contract_address = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
-                               AND tfe.currency = '0x0000000000000000000000000000000000000000'))
+                       AND pu.contract_address = tfe.currency
                        {% if is_incremental() %}
                        AND pu.minute >= date_trunc("day", now() - interval '1 week')
                        {% endif %}
