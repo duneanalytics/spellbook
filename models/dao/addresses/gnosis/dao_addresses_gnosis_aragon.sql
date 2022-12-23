@@ -66,6 +66,6 @@ SELECT
     TRY_CAST(ad.created_date as DATE) as created_date
 FROM
 aragon_daos ad
-LEFT JOIN --trigger test
+INNER JOIN
 get_aragon_wallets gw
     ON ad.dao = gw.dao
