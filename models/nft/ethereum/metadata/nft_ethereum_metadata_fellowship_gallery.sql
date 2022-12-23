@@ -65,6 +65,8 @@ from (VALUES
         , ('0x49e6b0cfb1880fd7afb69c062613238049a4b56b','By Accident - The Negatives','Marcel De Baer','Foundation','https://foundation.app/collection/ngtvs')
         , ('0xe31cc44e305955fa5965addb42641832e9a5502f', 'Light Years - Selection Pass', 'Dmitri Cherniak', 'N/A', 'https://lightyears.fellowship.xyz/')
         , ('0x082dcab372505ae56eafde58204ba5b12ff3f3f5', 'Light Years', 'Dmitri Cherniak', 'N/A', 'https://lightyears.fellowship.xyz/')
+        , ('0xd07f39b232e935154748bab2aa3b6c18c926957e', 'La Vie est Belle', 'Prisca Munkeni Monnier', 'Foundation', 'https://foundation.app/collection/pmmvb')
+        , ('0x4f248709cfee7f6eb125482509de5bebd40466d3', 'Rescued: Shelter Dog Charity Collection', 'Fellowship Studio Three', 'Foundation', 'https://foundation.app/collection/rsdcc')
 
 ) as temp_table (contract_address, collection_name, artist_name, platform, website)
     
