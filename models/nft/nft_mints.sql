@@ -15,7 +15,6 @@
 ,ref('foundation_ethereum_mints')
 ,ref('blur_ethereum_mints')
 ,ref('zora_ethereum_mints')
-,ref('tofu_bnb_mints')
 ] %}
 
 WITH project_mints as (

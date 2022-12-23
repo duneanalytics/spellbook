@@ -3,7 +3,7 @@
         post_hook='{{ expose_spells(\'["ethereum","solana","bnb"]\',
                                     "sector",
                                     "nft",
-                                    \'["soispoke", "0xRob", "theachenyj"]\') }}')
+                                    \'["soispoke", "0xRob"]\') }}')
 }}
 
 
