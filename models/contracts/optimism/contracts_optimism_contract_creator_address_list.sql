@@ -375,6 +375,7 @@ FROM (
       ,('0xfb41cbf2ce16e8f626013a2f465521d27ba9a610', 'Beefy Finance')
       ,('0xbA22746D79E75931DD8C0336760332E5D4a372a5', 'Curve')
       ,('0xA80481E3f9098602954B2E5cf306e6dEE053EF3E', 'Gysr')
+      ,('0x3cD76a3E1Ae288c11459b986362ff2f63Ba0A379', 'Opti Stickman Club')
 
   ) as temp_table (creator_address, contract_project)
 
