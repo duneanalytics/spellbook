@@ -68,4 +68,5 @@ from (
     ,('2pi_network','2Pi Network')
     ,('twopi_network','2Pi Network')
     ,('acryptos', 'AcryptoS')
+    ,('woofi', 'WooFi')
     ) as temp_table (dune_name, mapped_name)
