@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: tessera_ethereum
+    description: >
+      Decoded events for [tessera](https://tessera.co/), the easiest way to collectively buy, own, and govern the NFTs you already know and love.
+    tables:
+      - name: tessera_ethereum_LPDA_evt_BidEntered
+      - name: tessera_ethereum_LPDA_evt_CreatedLPDA
+      - name: tessera_ethereum_LPDA_evt_FeeDispersed
+      - name: tessera_ethereum_OptimisticBid_evt_BuyRaes
+      - name: tessera_ethereum_VaultFactory_evt_DeployVault
