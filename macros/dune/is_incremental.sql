@@ -1,4 +1,10 @@
 {% macro is_incremental() %}
+    {#-- allow for command line compile of incremental models  #}
+    {#-- Usage: dbt compile --vars '{force-incremental: True}'  #}
+    {% if var('force-incremental', False) %}
+        {{ return(True) }}
+    {% endif %}
+
     {#-- do not run introspective queries in parsing #}
     {% if not execute %}
         {{ return(False) }}
