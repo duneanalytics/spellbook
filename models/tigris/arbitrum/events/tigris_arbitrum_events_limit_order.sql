@@ -15,122 +15,45 @@ pairs as (
             * 
         FROM 
         {{ ref('tigris_arbitrum_events_asset_added') }}
-), 
-
-limit_order_v2 as (
-        SELECT 
-            date_trunc('day', t.evt_block_time) as day, 
-            t.evt_block_time, 
-            t.evt_index, 
-            t.evt_tx_hash, 
-            t._id as position_id, 
-            t._openPrice/1e18 as price, 
-            t._margin/1e18 as margin, 
-            t._lev/1e18 as leverage,
-            t._margin/1e18 * t._lev/1e18 as volume_usd, 
-            '' as margin_asset, 
-            ta.pair, 
-            CASE WHEN t._direction = true THEN 'true' ELSE 'false' END as direction,
-            '' as referral, 
-            t._trader as trader 
-        FROM 
-        {{ source('tigristrade_arbitrum', 'TradingV2_evt_LimitOrderExecuted') }} t 
-        INNER JOIN 
-        pairs ta 
-            ON t._asset = ta.asset_id 
-        {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-), 
-
-limit_order_v3 as (
-        SELECT 
-            date_trunc('day', t.evt_block_time) as day, 
-            t.evt_block_time, 
-            t.evt_index, 
-            t.evt_tx_hash, 
-            t._id as position_id, 
-            t._openPrice/1e18 as price, 
-            t._margin/1e18 as margin, 
-            t._lev/1e18 as leverage,
-            t._margin/1e18 * t._lev/1e18 as volume_usd, 
-            '' as margin_asset, 
-            ta.pair, 
-            CASE WHEN t._direction = true THEN 'true' ELSE 'false' END as direction,
-            '' as referral, 
-            t._trader as trader 
-        FROM 
-        {{ source('tigristrade_arbitrum', 'TradingV3_evt_LimitOrderExecuted') }} t 
-        INNER JOIN 
-        pairs ta 
-            ON t._asset = ta.asset_id 
-        {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-), 
-
-limit_order_v4 as (
-        SELECT 
-            date_trunc('day', t.evt_block_time) as day, 
-            t.evt_block_time, 
-            t.evt_index, 
-            t.evt_tx_hash, 
-            t._id as position_id, 
-            t._openPrice/1e18 as price, 
-            t._margin/1e18 as margin, 
-            t._lev/1e18 as leverage,
-            t._margin/1e18 * t._lev/1e18 as volume_usd, 
-            '' as margin_asset, 
-            ta.pair, 
-            CASE WHEN t._direction = true THEN 'true' ELSE 'false' END as direction,
-            '' as referral, 
-            t._trader as trader 
-        FROM 
-        {{ source('tigristrade_arbitrum', 'TradingV4_evt_LimitOrderExecuted') }} t 
-        INNER JOIN 
-        pairs ta 
-            ON t._asset = ta.asset_id 
-        {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
 ),
 
-limit_order_v5 as (
-        SELECT 
-            date_trunc('day', t.evt_block_time) as day, 
-            t.evt_block_time, 
-            t.evt_index, 
-            t.evt_tx_hash, 
-            t._id as position_id, 
-            t._openPrice/1e18 as price, 
-            t._margin/1e18 as margin, 
+{% set limit_order_trading_evt_tables = [
+    'TradingV2_evt_LimitOrderExecuted'
+    ,'TradingV3_evt_LimitOrderExecuted'
+    ,'TradingV4_evt_LimitOrderExecuted'
+    ,'TradingV5_evt_LimitOrderExecuted'
+] %}
+
+limit_orders AS (
+    {% for limit_order_trading_evt in limit_order_trading_evt_tables %}
+        SELECT
+            '{{ 'v' + (loop.index + 1) | string }}' as version,
+            date_trunc('day', t.evt_block_time) as day,
+            t.evt_block_time,
+            t.evt_index,
+            t.evt_tx_hash,
+            t._id as position_id,
+            t._openPrice/1e18 as price,
+            t._margin/1e18 as margin,
             t._lev/1e18 as leverage,
-            t._margin/1e18 * t._lev/1e18 as volume_usd, 
-            '' as margin_asset, 
-            ta.pair, 
+            t._margin/1e18 * t._lev/1e18 as volume_usd,
+            '' as margin_asset,
+            ta.pair,
             CASE WHEN t._direction = true THEN 'true' ELSE 'false' END as direction,
-            '' as referral, 
-            t._trader as trader 
-        FROM 
-        {{ source('tigristrade_arbitrum', 'TradingV5_evt_LimitOrderExecuted') }} t 
-        INNER JOIN 
-        pairs ta 
-            ON t._asset = ta.asset_id 
+            '' as referral,
+            t._trader as trader
+        FROM {{ source('tigristrade_arbitrum', limit_order_trading_evt) }} t
+        INNER JOIN pairs ta
+            ON t._asset = ta.asset_id
         {% if is_incremental() %}
         WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
+        {% if not loop.last %}
+        UNION ALL
+        {% endif %}
+    {% endfor %}
 )
 
-SELECT *, 'v2' as version FROM limit_order_v2
-
-UNION ALL
-
-SELECT *, 'v3' as version FROM limit_order_v3
-
-UNION ALL
-
-SELECT *, 'v4' as version FROM limit_order_v4
-
-UNION ALL
-
-SELECT *, 'v5' as version FROM limit_order_v5
+SELECT *
+FROM limit_orders
+;
