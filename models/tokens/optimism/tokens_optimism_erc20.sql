@@ -252,5 +252,13 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0x88d07558470484c03d3bb44c3ecc36cafcf43253', 'bb-USD+', 18)
 ,('0xf572649606db4743d217a2fa6e8b8eb79742c24a', 'test-bb-USD-MAI', 18)
 ,('0xdd89c7cd0613c1557b2daac6ae663282900204f1', 'bb-rf-aWETH', 18)
-
+,('0xe50fa9b3c56ffb159cb0fca61f5c9d750e8128c8', 'aOptWETH', 18)
+,('0x625e7708f30ca75bfd92586e17077590c60eb4cd', 'aOptUSDC', 6)
+,('0x6ab707aca953edaefbc4fd23ba73294241490620', 'aOptUSDT', 6)
+,('0xf329e36c7bf6e5e86ce2150875a84ce77f477375', 'aOptAAVE', 18)
+,('0x82e64f49ed5ec1bc6e43dad4fc8af9bb3a2312ee', 'aOptDAI', 18)
+,('0x191c10aa4af7c30e871e70c95db0e4eb77237530', 'aOptLINK', 18)
+,('0x6d80113e533a2c0fe82eabd35f1875dcea89ea97', 'aOptSUSD', 18)
+,('0x078f358208685046a11c85e8ad32895ded33a249', 'aOptWBTC', 8)
+        
 ) AS temp_table (contract_address, symbol, decimals)
