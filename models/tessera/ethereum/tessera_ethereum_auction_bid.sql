@@ -8,6 +8,7 @@ WITH lpda_bid AS (
     SELECT 
         _user AS user,
         _vault AS vault_address,
+        'LPDA' AS type,
         _price/POWER(10,18) AS price,
         _quantity AS amount,
         _price/POWER(10,18)*_quantity AS volume,
