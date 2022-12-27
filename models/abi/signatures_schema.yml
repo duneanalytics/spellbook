@@ -3,7 +3,7 @@ version: 2
 models:
   - name: signatures
     meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb']
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom']
       sector: abi
       contributors: [ilemi]
     config:

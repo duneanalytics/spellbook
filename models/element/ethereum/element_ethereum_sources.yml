@@ -3,11 +3,11 @@ version: 2
 sources:
   - name: element_ex_ethereum
     tables:
-      - name: ERC721OrdersFeature_evt_ERC721SellOrderFilled
+      - name: OrdersFeature_evt_ERC721SellOrderFilled
         loaded_at_field: evt_block_time
-      - name: ERC721OrdersFeature_evt_ERC721BuyOrderFilled
+      - name: OrdersFeature_evt_ERC721BuyOrderFilled
         loaded_at_field: evt_block_time
-      - name: ERC1155OrdersFeature_evt_ERC1155SellOrderFilled
+      - name: OrdersFeature_evt_ERC1155SellOrderFilled
         loaded_at_field: evt_block_time
-      - name: ERC1155OrdersFeature_evt_ERC1155BuyOrderFilled
+      - name: OrdersFeature_evt_ERC1155BuyOrderFilled
         loaded_at_field: evt_block_time
