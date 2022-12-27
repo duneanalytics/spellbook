@@ -564,6 +564,11 @@ models:
     bridge:
       +schema: bridge
 
+    tessera:
+      +schema: tessera
+      ethereum:
+        +schema: tessera_ethereum
+
 seeds:
   spellbook:
     +schema: test_data
