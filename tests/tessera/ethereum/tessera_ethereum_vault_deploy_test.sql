@@ -1,5 +1,4 @@
 WITH unit_test AS (
-    -- Here we compare test data to actual data, returning TRUE if it matches and FALSE if not; ROUND and LOWER ensure we don’t get false errors due to formatting differences.
     SELECT
         CASE
             WHEN LOWER(test.owner) = LOWER(actual.owner) THEN TRUE
@@ -12,7 +11,7 @@ WITH unit_test AS (
         CASE
             WHEN LOWER(test.vault) = LOWER(actual.vault) THEN TRUE
             ELSE FALSE
-        END AS vault_test,
+        END AS vault_test
     FROM
         {{ ref('tessera_ethereum_vault_deploy') }} AS actual
         INNER JOIN {{ ref('tessera_ethereum_vault_deploy_test_data') }} AS test
