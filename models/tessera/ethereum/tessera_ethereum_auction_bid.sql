@@ -14,7 +14,7 @@ WITH lpda_bid AS (
         evt_block_time AS timestamp,
         evt_tx_hash AS tx_hash
     FROM 
-        {{ source('tessera_ethereum','tessera_ethereum_LPDA_evt_BidEntered') }}
+        {{ source('tessera_ethereum','LPDA_evt_BidEntered') }}
 )
 
 SELECT *
