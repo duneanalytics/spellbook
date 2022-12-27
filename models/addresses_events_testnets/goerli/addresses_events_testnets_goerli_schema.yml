@@ -4,7 +4,7 @@ models:
   - name: addresses_events_testnets_goerli_first_funded_by
     meta:
       blockchain: goerli
-      sector: addresses_events
+      sector: addresses_events_testnets
       project: addresses
       contributors: hildobby
     config:

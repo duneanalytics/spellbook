@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: addresses_events_first_funded_by
+  - name: addresses_events_testnets_first_funded_by
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon
-      sector: addresses_events
+      blockchain: goerli
+      sector: addresses_events_testnets
       project: addresses
       contributors: hildobby
     config:
-      tags: ['table', 'funded', 'addresses_events', 'mainnets']
-    description: "Table showing who first funded each address in its native asset on every chain"
+      tags: ['table', 'funded', 'addresses_events', 'testnets']
+    description: "Table showing who first funded each address in its native asset on every testnet chain"
     columns:
       - &blockchain
         name: blockchain
