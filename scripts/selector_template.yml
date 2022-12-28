@@ -1,6 +1,0 @@
-selectors: # These selectors are generated programmatically (validate_source_freshness_checks.py) and pasted in manually
-- name: test
-  definition:
-    union:
-    - method: source
-      value: delete_me
