@@ -16,10 +16,10 @@ WITH
 
 days AS (
      -- BSC mainnet launch date
-    {% if is_incremental() %}
+    {% if not is_incremental() %}
     SELECT explode(sequence(to_date('2020-08-31'), date_trunc('day', now()), interval 1 day)) AS day
     {% endif %}
-    {% if not is_incremental() %}
+    {% if is_incremental() %}
     SELECT explode(sequence(date_trunc("day", now() - interval '1 week'), date_trunc('day', now()), interval 1 day)) AS day
     {% endif %}
 ),
