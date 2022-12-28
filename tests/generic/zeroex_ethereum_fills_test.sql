@@ -1,4 +1,4 @@
-{% test zeroex_api_ethereum_fills_test(model, column_name, seed_file) %}
+{% test zeroex_ethereum_fills_test(model, column_name, seed_file) %}
 
 
 WITH unit_tests AS
