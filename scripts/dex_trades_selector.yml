@@ -1,0 +1,350 @@
+selectors: # These selectors are generated programmatically (validate_source_freshness_checks.py) and pasted in manually
+  - name: dex_trades_sources
+    definition:
+      union:
+        - method: source
+          value: curvefi_avalanche_c.frax_evt_TokenExchange
+        - method: source
+          value: woofi_bnb.WooPP_evt_WooSwap
+        - method: source
+          value: curvefi_ethereum.compound_v2_evt_TokenExchangeUnderlying
+        - method: source
+          value: curvefi_avalanche_c.NXUSDaV3CRV_evt_TokenExchangeUnderlying
+        - method: source
+          value: curvefi_avalanche_c.AavePool_evt_TokenExchangeUnderlying
+        - method: source
+          value: curvefi_avalanche_c.eEURjEUR_evt_TokenExchange
+        - method: source
+          value: fraxswap_bnb.FraxswapPair_evt_Swap
+        - method: source
+          value: wombat_bnb.DynamicPool_evt_Swap
+        - method: source
+          value: curvefi_avalanche_c.ATriCryptoPool_evt_TokenExchange
+        - method: source
+          value: curvefi_avalanche_c.arUSD_evt_TokenExchange
+        - method: source
+          value: curvefi_avalanche_c.DefrostH2O_evt_TokenExchangeUnderlying
+        - method: source
+          value: trader_joe_avalanche_c.JoeFactory_evt_PairCreated
+        - method: source
+          value: bancornetwork_ethereum.BancorNetwork_v9_evt_Conversion
+        - method: source
+          value: curvefi_ethereum.usdt_swap_evt_TokenExchangeUnderlying
+        - method: source
+          value: bancor3_ethereum.BancorNetwork_evt_TokensTraded
+        - method: source
+          value: kyber_avalanche_c.MetaAggregationRouter_evt_Swapped
+        - method: source
+          value: bancornetwork_ethereum.BancorNetwork_v7_evt_Conversion
+        - method: source
+          value: uniswap_v3_polygon.factory_polygon_evt_PoolCreated
+        - method: source
+          value: bnb.transactions
+        - method: source
+          value: uniswap_v3_arbitrum.Pair_evt_Swap
+        - method: source
+          value: sushiswap_gnosis.UniswapV2Pair_evt_Swap
+        - method: source
+          value: gmx_avalanche_c.Router_evt_Swap
+        - method: source
+          value: kyber_avalanche_c.DMMPool_evt_Swap
+        - method: source
+          value: crodefi_ethereum.CroDefiSwapFactory_evt_PairCreated
+        - method: source
+          value: curvefi_avalanche_c.USDCe_UST_evt_TokenExchange
+        - method: source
+          value: fraxswap_avalanche_c.FraxswapPair_evt_Swap
+        - method: source
+          value: curvefi_avalanche_c.Topshelf_USDL_evt_TokenExchangeUnderlying
+        - method: source
+          value: fraxswap_ethereum.FraxswapFactory_evt_PairCreated
+        - method: source
+          value: curvefi_ethereum.ren_swap_evt_TokenExchange
+        - method: source
+          value: fraxswap_polygon.FraxswapPair_evt_Swap
+        - method: source
+          value: bancornetwork_ethereum.BancorNetwork_v8_evt_Conversion
+        - method: source
+          value: curvefi_avalanche_c.deBridge_USDC_evt_TokenExchangeUnderlying
+        - method: source
+          value: dodo_ethereum.DODO_evt_BuyBaseToken
+        - method: source
+          value: woofi_bnb.WooRouter_evt_WooRouterSwap
+        - method: source
+          value: defiswap_ethereum.CroDefiSwapPair_evt_Swap
+        - method: source
+          value: babyswap_bnb.BabyFactory_evt_PairCreated
+        - method: source
+          value: uniswap_v3_optimism.factory_evt_poolcreated
+        - method: source
+          value: clipper_ethereum.ClipperVerifiedCaravelExchange_evt_Swapped
+        - method: source
+          value: wombat_bnb.WMX_WOM_Pool_evt_Swap
+        - method: source
+          value: biswap_bnb.BiswapPair_evt_Swap
+        - method: source
+          value: curvefi_optimism.StableSwap_call_coins
+        - method: source
+          value: curvefi_ethereum.compound_v2_evt_TokenExchange
+        - method: source
+          value: curvefi_ethereum.busd_swap_evt_TokenExchangeUnderlying
+        - method: source
+          value: wombat_bnb.qWOM_WOMPool_evt_Swap
+        - method: source
+          value: sushiswap_v2_avalanche_c.SushiV2Factory_evt_PairCreated
+        - method: source
+          value: clipper_ethereum.ClipperExchangeInterface_evt_Swapped
+        - method: source
+          value: nomiswap_bnb.NomiswapPair_evt_Swap
+        - method: source
+          value: curvefi_ethereum.tricrypto2_swap_evt_TokenExchange
+        - method: source
+          value: mdex_bnb.MdexFactory_evt_PairCreated
+        - method: source
+          value: curvefi_ethereum.tricrypto_swap_evt_TokenExchange
+        - method: source
+          value: curvefi_ethereum.steth_swap_evt_TokenExchange
+        - method: source
+          value: curvefi_ethereum.y_swap_evt_TokenExchangeUnderlying
+        - method: source
+          value: curvefi_avalanche_c.agEURjEUR_evt_TokenExchange
+        - method: source
+          value: curvefi_avalanche_c.MoreMoney_USD_evt_TokenExchangeUnderlying
+        - method: source
+          value: curvefi_avalanche_c.FUSDUSDC_evt_TokenExchange
+        - method: source
+          value: uniswap_v3_ethereum.Factory_evt_PoolCreated
+        - method: source
+          value: izumi_bnb.iZiSwapPool_evt_Swap
+        - method: source
+          value: curvefi_ethereum.susd_evt_TokenExchangeUnderlying
+        - method: source
+          value: dfx_finance_ethereum.Curve_evt_Trade
+        - method: source
+          value: mstable_ethereum.FeederPool_evt_Swapped
+        - method: source
+          value: curvefi_ethereum.compound_swap_evt_TokenExchangeUnderlying
+        - method: source
+          value: dodo_ethereum.DVM_evt_DODOSwap
+        - method: source
+          value: swapr_ethereum.DXswapFactory_evt_PairCreated
+        - method: source
+          value: curvefi_avalanche_c.3pool_evt_TokenExchange
+        - method: source
+          value: wombat_bnb.Pool_evt_Swap
+        - method: source
+          value: biswap_bnb.BiswapFactory_evt_PairCreated
+        - method: source
+          value: ethereum.traces
+        - method: source
+          value: curvefi_ethereum.susd_swap_evt_TokenExchange
+        - method: source
+          value: hashflow_ethereum.pool_evt_trade
+        - method: source
+          value: uniswap_ethereum.Exchange_evt_TokenPurchase
+        - method: source
+          value: curvefi_ethereum.pax_swap_evt_TokenExchange
+        - method: source
+          value: nomiswap_bnb.NomiswapFactory_evt_PairCreated
+        - method: source
+          value: curvefi_avalanche_c.MAI_evt_TokenExchangeUnderlying
+        - method: source
+          value: curvefi_ethereum.susd_swap_evt_TokenExchangeUnderlying
+        - method: source
+          value: hashflow_avalanche_c.Pool_evt_Trade
+        - method: source
+          value: hashflow_ethereum.router_call_tradesinglehop
+        - method: source
+          value: sushiswap_v2_avalanche_c.Pair_evt_Swap
+        - method: source
+          value: curvefi_avalanche_c.L2StableSwap_evt_TokenExchange
+        - method: source
+          value: sushiswap_gnosis.UniswapV2Factory_evt_PairCreated
+        - method: source
+          value: dodo_ethereum.DODOV1Proxy04_evt_OrderHistory
+        - method: source
+          value: fraxswap_bnb.FraxswapFactory_evt_PairCreated
+        - method: source
+          value: dodo_ethereum.DODOV2Proxy02_evt_OrderHistory
+        - method: source
+          value: curvefi_avalanche_c.YUSDPOOL_evt_TokenExchange
+        - method: source
+          value: uniswap_v3_polygon.UniswapV3Pool_evt_Swap
+        - method: source
+          value: curvefi_optimism.MetaPoolSwap_evt_TokenExchangeUnderlying
+        - method: source
+          value: kyber_avalanche_c.Elastic_Pool_evt_swap
+        - method: source
+          value: wombat_bnb.HighCovRatioFeePool_evt_Swap
+        - method: source
+          value: sushi_ethereum.Factory_evt_PairCreated
+        - method: source
+          value: dodo_ethereum.DPP_evt_DODOSwap
+        - method: source
+          value: bancornetwork_ethereum.BancorNetwork_v6_evt_Conversion
+        - method: source
+          value: curvefi_avalanche_c.DefrostH2O_evt_TokenExchange
+        - method: source
+          value: hashflow_avalanche_c.Pool_evt_LzTrade
+        - method: source
+          value: dodo_ethereum.DODOV1Proxy01_evt_OrderHistory
+        - method: source
+          value: curvefi_ethereum.compound_evt_TokenExchange
+        - method: source
+          value: trader_joe_avalanche_c.JoePair_evt_Swap
+        - method: source
+          value: curvefi_avalanche_c.3poolV2_evt_TokenExchange
+        - method: source
+          value: curvefi_avalanche_c.MoreMoney_USD_evt_TokenExchange
+        - method: source
+          value: dodo_ethereum.DSP_evt_DODOSwap
+        - method: source
+          value: curvefi_ethereum.pax_swap_evt_TokenExchangeUnderlying
+        - method: source
+          value: uniswap_ethereum.Exchange_evt_EthPurchase
+        - method: source
+          value: sushi_ethereum.Pair_evt_Swap
+        - method: source
+          value: velodrome_optimism.Pair_evt_Swap
+        - method: source
+          value: woofi_avalanche_c.WooPP_evt_WooSwap
+        - method: source
+          value: airswap_ethereum.Swap_v3_evt_Swap
+        - method: source
+          value: curvefi_ethereum.busd_swap_evt_TokenExchange
+        - method: source
+          value: mstable_ethereum.Masset_evt_Swapped
+        - method: source
+          value: woofi_avalanche_c.WooRouterV2_evt_WooRouterSwap
+        - method: source
+          value: woofi_bnb.WooRouterV2_evt_WooRouterSwap
+        - method: source
+          value: gmx_arbitrum.Router_evt_Swap
+        - method: source
+          value: curvefi_avalanche_c.ren_evt_TokenExchange
+        - method: source
+          value: pancakeswap_v2_bnb.PancakePair_evt_Swap
+        - method: source
+          value: gnosis.transactions
+        - method: source
+          value: optimism.logs
+        - method: source
+          value: curvefi_avalanche_c.MIM_evt_TokenExchange
+        - method: source
+          value: curvefi_ethereum.compound_swap_evt_TokenExchange
+        - method: source
+          value: fraxswap_avalanche_c.FraxswapFactory_evt_PairCreated
+        - method: source
+          value: curvefi_optimism.PoolFactory_call_deploy_plain_pool
+        - method: source
+          value: babyswap_bnb.BabyPair_evt_Swap
+        - method: source
+          value: curvefi_ethereum.usdt_swap_evt_TokenExchange
+        - method: source
+          value: polygon.transactions
+        - method: source
+          value: zigzag_test_v6_arbitrum.zigzag_settelment_call_matchOrders
+        - method: source
+          value: uniswap_v3_arbitrum.UniswapV3Factory_evt_PoolCreated
+        - method: source
+          value: velodrome_optimism.PairFactory_evt_PairCreated
+        - method: source
+          value: curvefi_avalanche_c.Curve_DD2_Pool_evt_TokenExchange
+        - method: source
+          value: wombat_bnb.mWOM_Pool_evt_Swap
+        - method: source
+          value: fraxswap_polygon.FraxswapFactory_evt_PairCreated
+        - method: source
+          value: curvefi_ethereum.sbtc_swap_evt_TokenExchange
+        - method: source
+          value: curvefi_avalanche_c.MAI_evt_TokenExchange
+        - method: source
+          value: uniswap_ethereum.Factory_evt_NewExchange
+        - method: source
+          value: curvefi_optimism.StableSwap_evt_TokenExchange
+        - method: source
+          value: curvefi_ethereum.susd_evt_TokenExchange
+        - method: source
+          value: shibaswap_ethereum.UniswapV2Pair_evt_Swap
+        - method: source
+          value: erc20_optimism.evt_transfer
+        - method: source
+          value: kyber_avalanche_c.Elastic_Factory_evt_PoolCreated
+        - method: source
+          value: optimism.transactions
+        - method: source
+          value: airswap_ethereum.Light_evt_Swap
+        - method: source
+          value: fraxswap_ethereum.FraxswapPair_evt_Swap
+        - method: source
+          value: mdex_bnb.MdexPair_evt_Swap
+        - method: source
+          value: platypus_finance_avalanche_c.Pool_evt_Swap
+        - method: source
+          value: uniswap_v2_ethereum.Pair_evt_Swap
+        - method: source
+          value: uniswap_v3_ethereum.Pair_evt_Swap
+        - method: source
+          value: uniswap_v3_optimism.Pair_evt_Swap
+        - method: source
+          value: prices.usd
+        - method: source
+          value: curvefi_avalanche_c.ren_evt_TokenExchangeUnderlying
+        - method: source
+          value: avalanche_c.transactions
+        - method: source
+          value: curvefi_avalanche_c.axlUSDCUSDC_evt_TokenExchange
+        - method: source
+          value: pancakeswap_v2_bnb.PancakeFactory_evt_PairCreated
+        - method: source
+          value: airswap_ethereum.swap_evt_Swap
+        - method: source
+          value: curvefi_avalanche_c.aave_v3_evt_TokenExchangeUnderlying
+        - method: source
+          value: swapr_ethereum.DXswapPair_evt_Swap
+        - method: source
+          value: curvefi_avalanche_c.AavePool_evt_TokenExchange
+        - method: source
+          value: shibaswap_ethereum.UniswapV2Factory_evt_PairCreated
+        - method: source
+          value: curvefi_avalanche_c.FUSD_MIM_Factory_Pool_evt_TokenExchange
+        - method: source
+          value: kyber_avalanche_c.AggregationRouter_evt_Swapped
+        - method: source
+          value: ethereum.transactions
+        - method: source
+          value: curvefi_optimism.PoolFactory_evt_MetaPoolDeployed
+        - method: source
+          value: uniswap_v2_ethereum.Factory_evt_PairCreated
+        - method: source
+          value: curvefi_avalanche_c.axlUSDC_USDC_e_evt_TokenExchange
+        - method: source
+          value: ethereum.logs
+        - method: source
+          value: bancornetwork_ethereum.BancorNetwork_v10_evt_Conversion
+        - method: source
+          value: curvefi_ethereum.y_swap_evt_TokenExchange
+        - method: source
+          value: curvefi_ethereum.hbtc_swap_evt_TokenExchange
+        - method: source
+          value: dodo_ethereum.DODO_evt_SellBaseToken
+        - method: source
+          value: kyber_avalanche_c.DMMFactory_evt_PoolCreated
+        - method: source
+          value: curvefi_avalanche_c.USDS_evt_TokenExchangeUnderlying
+        - method: source
+          value: arbitrum.transactions
+        - method: source
+          value: curvefi_ethereum.threepool_swap_evt_TokenExchange
+        - method: source
+          value: curvefi_avalanche_c.avax3pool_evt_TokenExchange
+        - method: source
+          value: curvefi_avalanche_c.frax_evt_TokenExchangeUnderlying
+        - method: source
+          value: clipper_ethereum.ClipperCaravelExchange_evt_Swapped
+        - method: source
+          value: curvefi_avalanche_c.Blizz_evt_TokenExchange
+        - method: source
+          value: curvefi_avalanche_c.MIM_evt_TokenExchangeUnderlying
+        - method: source
+          value: curvefi_avalanche_c.USD_coin_evt_TokenExchange
