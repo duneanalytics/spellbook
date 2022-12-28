@@ -351,11 +351,11 @@ models:
     meta:
       blockchain: ethereum, solana
       sector: nft
-      contributors: springzh
+      contributors: springzh, 0xRob
     config:
       tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'ethereum', 'solana', 'address']
     description: >
-        NFT linked addresses. Addresses that buy and sell NFTs from each other.
+        NFT linked addresses. Addresses that buy and sell NFTs from each other. By definition (master address < alt address) alphabetically.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -368,6 +368,8 @@ models:
         description: "Master address"
       - name: alternative_address
         description: "Alternative address"
+      - name: last_interaction
+        description: "block_time of the last trade between the pair"
 
 
   - name: nft_transfers

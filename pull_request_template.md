@@ -1,3 +1,7 @@
+HOLIDAY CODE FREEZE 
+merge freeze starting on the 22nd until the 27th included and starting on the 30th until the 2nd of Jan included
+
+
 Brief comments on the purpose of your changes:
 
 **For Dune Engine V2**
