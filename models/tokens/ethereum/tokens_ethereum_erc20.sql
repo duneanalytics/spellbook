@@ -6824,5 +6824,6 @@ FROM (VALUES
           ('0xbd0d47d7ecf0978f13878615635f3d3dc5fecde1', 'KEK', 18),
           ('0xa92c49c403386111c1629aee00936eed2a9e74a6', 'KLTR', 18),
           ('0xe85d69d5e7b91b1a0d2e93a3678315e6915197b2', 'JBG', 4),
-          ('0xdc97fdaadcbc1c77525b8a1c981865bd2e0425aa', 'SMTS', 18)
+          ('0xdc97fdaadcbc1c77525b8a1c981865bd2e0425aa', 'SMTS', 18),
+          ('0x3175df0976dfa876431c2e9ee6bc45b65d3473cc', 'crvFRAX', 18)
      ) AS temp_table (contract_address, symbol, decimals)
