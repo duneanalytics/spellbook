@@ -6828,6 +6828,7 @@ FROM (VALUES
           ('0xa92c49c403386111c1629aee00936eed2a9e74a6', 'KLTR', 18),
           ('0xe85d69d5e7b91b1a0d2e93a3678315e6915197b2', 'JBG', 4),
           ('0xdc97fdaadcbc1c77525b8a1c981865bd2e0425aa', 'SMTS', 18),
+          ('0x3175df0976dfa876431c2e9ee6bc45b65d3473cc', 'crvFRAX', 18),
           ('0x04c17b9d3b29a78f7bd062a57cf44fc633e71f85', 'IMPT', 18),
           ('0x250855469b1eafadc4ecac66c8f390554ec4e104', 'SENSHI', 18),
           ('0x351caa9045d65107b9d311d922d15887cfd634e4', 'ARW', 18),
