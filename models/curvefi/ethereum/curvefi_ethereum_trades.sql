@@ -52,7 +52,7 @@
 {% set steth_contract = "0xae7ab96520de3a18e5e111b5eaab095312d7fe84" %}
 
 {% set rsr_token = "0x320623b8e4ff03373931769a31fc52a4e78b5d70" %}
-{% set fraxbp_token = "0x3175Df0976dFA876431C2E9eE6Bc45b65d3473CC" %}
+{% set fraxbp_token = "0x3175df0976dfa876431c2e9ee6bc45b65d3473cc" %}
 
 WITH dexs AS
 (
@@ -745,7 +745,7 @@ WITH dexs AS
         evt_tx_hash AS tx_hash,
         '' AS trace_address,
         evt_index
-    FROM {{ source('curvefi_ethereum', 'tricrypto2_swap_evt_TokenExchange') }}   
+    FROM {{ source('curvefi_ethereum', 'tricrypto2_swap_evt_TokenExchange') }}
         {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
@@ -772,7 +772,7 @@ WITH dexs AS
         evt_tx_hash AS tx_hash,
         '' AS trace_address,
         evt_index
-    FROM {{ source('curvefi_ethereum', 'rsr_frax_usdc_pool_evt_TokenExchange') }}   
+    FROM {{ source('curvefi_ethereum', 'rsr_frax_usdc_pool_evt_TokenExchange') }}
         {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
