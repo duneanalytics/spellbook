@@ -1,6 +1,6 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["ethereum","solana"]\',
+        post_hook='{{ expose_spells(\'["ethereum","solana","bnb"]\',
                                     "sector",
                                     "nft",
                                     \'["soispoke", "0xRob"]\') }}')
@@ -20,6 +20,7 @@
 ,ref('superrare_ethereum_trades')
 ,ref('x2y2_ethereum_trades')
 ,ref('zora_ethereum_trades')
+,ref('tofu_bnb_trades')
 ] %}
 
 SELECT *
