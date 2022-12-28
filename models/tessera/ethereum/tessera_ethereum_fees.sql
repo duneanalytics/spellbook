@@ -1,17 +1,17 @@
 {{ config (
-    alias = 'fee',
+    alias = 'fees',
     post_hook = '{{ expose_spells(\'["ethereum"]\', "project", "tessera",\'["amadarrrr"]\') }}'
 ) }}
 -- FEES GENERATED
 WITH lpda_fees AS (
-    SELECT 
+    SELECT
         _vault AS vault,
         _receiver AS receiver,
         'LPDA' AS source,
         _amount/POWER(10, 18) AS amount,
         evt_block_time AS timestamp,
         evt_tx_hash AS tx_hash
-    FROM 
+    FROM
         {{ source('tessera_ethereum','LPDA_evt_FeeDispersed') }}
 )
 

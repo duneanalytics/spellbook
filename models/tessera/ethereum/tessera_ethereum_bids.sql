@@ -1,11 +1,11 @@
 -- PROTOFORM DISTRIBUTION BID. for example LPDA
 {{ config (
-    alias = 'auction_bid',
+    alias = 'bids',
     post_hook = '{{ expose_spells(\'["ethereum"]\', "project", "tessera",\'["amadarrrr"]\') }}'
 ) }}
 
 WITH lpda_bid AS (
-    SELECT 
+    SELECT
         _user AS user,
         _vault AS vault,
         'LPDA' AS type,
@@ -14,7 +14,7 @@ WITH lpda_bid AS (
         _price/POWER(10,18)*_quantity AS volume,
         evt_block_time AS timestamp,
         evt_tx_hash AS tx_hash
-    FROM 
+    FROM
         {{ source('tessera_ethereum','LPDA_evt_BidEntered') }}
 )
 

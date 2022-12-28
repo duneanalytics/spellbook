@@ -1,10 +1,10 @@
 {{ config (
-    alias = 'distribution_start',
+    alias = 'distributions',
     post_hook = '{{ expose_spells(\'["ethereum"]\', "project", "tessera",\'["amadarrrr"]\') }}'
 ) }}
 -- PROTOFORM DISTRIBUTION. for example LPDA
 WITH lpda_creations AS (
-    SELECT 
+    SELECT
         _id AS id,
         _token AS token,
         _vault AS vault,
@@ -12,7 +12,7 @@ WITH lpda_creations AS (
         _lpdaInfo AS info,
         evt_block_time AS timestamp,
         evt_tx_hash AS tx_hash
-    FROM 
+    FROM
         {{ source('tessera_ethereum','LPDA_evt_CreatedLPDA') }}
 )
 
