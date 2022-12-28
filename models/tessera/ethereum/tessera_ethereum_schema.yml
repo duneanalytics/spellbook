@@ -23,8 +23,8 @@ models:
       - &vault
         name: vault
         description: "Address of the Vault"
-      - &timestamp
-        name: timestamp
+      - &block_time
+        name: block_time
         description: "Timestamp when the action took place"
       - &tx_hash
         name: tx_hash
@@ -52,7 +52,7 @@ models:
         name: info
         description: "Further information about the distribution"
       - *vault
-      - *timestamp
+      - *block_time
       - *tx_hash
   - name: tessera_ethereum_bids
     meta:
@@ -78,7 +78,7 @@ models:
       - &bid_volume
         name: volume
         description: "Value of the bid (ETH)"
-      - *timestamp
+      - *block_time
       - *tx_hash
   - name: tessera_ethereum_fees
     meta:
@@ -100,6 +100,6 @@ models:
       - &fee_receiver
         name: receiver
         description: "Address of the receiver of the fee"
-      - *timestamp
+      - *block_time
       - *tx_hash
 
