@@ -8,6 +8,15 @@ models:
       contributors: [amadarrrr]
     config:
       tags: ["ethereum", "tessera", "vault"]
+    test:
+      - check_seed:
+          seed_file: ref('tessera_ethereum_vault_deploy_test_data')
+          match_columns:
+            - tx_hash
+          check_columns:
+            - owner
+            - origin
+            - vault
     description: >
       Tessera Vault created. A Vault can contain multiple NFTs.
     columns:
