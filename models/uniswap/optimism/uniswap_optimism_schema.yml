@@ -26,6 +26,31 @@ models:
         name: fee
         description:  "Swap fee of a Uniswap liquidity pool. Divide by 1e6 or power(10,6) to get the fee percentage"
 
+  - name: uniswap_optimism_ovm1_pool_mapping
+    meta:
+      blockchain: optimism
+      project: uniswap
+      contributors: msilb7, chuxin
+    config:
+      tags: ['optimism','uniswap','pools']
+    description: >
+        A canonical table containing all Uniswap pool address changes between OVM1 and the EVM Equivalence regenesis release.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - oldAddress
+              - newAddress
+    columns:
+      - &oldAddress
+        name: oldAddress
+        description: "Uniswap liquidity pool contract address in OVM1"
+      - &newAddress
+        name: newAddress
+        description: "Uniswap liquidity pool contract address in the EVM Equivalence regenesis release."
+      - *token0
+      - *token1
+      - *fee
+
   - name: uniswap_v3_optimism_trades
     meta:
       blockchain: optimism
