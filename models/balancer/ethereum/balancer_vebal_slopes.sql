@@ -10,7 +10,7 @@
                                     "project",
                                     "balancer",
                                     \'["markusbkoch", "mendesfabio", "stefenon"]\') }}'
-    ) 
+    )
 }}
 
 
@@ -35,14 +35,14 @@ WITH base_locks AS (
     ),
     
     decorated_locks AS (
-        SELECT
-          provider, unlocked_at, updated_at, FIRST_VALUE(locked_at) OVER (PARTITION BY provider, locked_partition ORDER BY updated_at) AS locked_at
-        FROM (
-          SELECT
-            *,
-            SUM(CASE WHEN locked_at IS NULL THEN 0 ELSE 1 END) OVER (PARTITION BY provider ORDER BY updated_at) AS locked_partition
-          FROM base_locks
-        ) AS foo
+        SELECT provider,
+               unlocked_at,
+               updated_at,
+               FIRST_VALUE(locked_at) OVER (PARTITION BY provider, locked_partition ORDER BY updated_at) AS locked_at
+        FROM (SELECT *,
+                     SUM(CASE WHEN locked_at IS NULL THEN 0 ELSE 1 END)
+                         OVER (PARTITION BY provider ORDER BY updated_at) AS locked_partition
+              FROM base_locks) AS foo
     ),
     
     locks_info AS (
@@ -60,7 +60,7 @@ WITH base_locks AS (
         {% if is_incremental() %}
         WHERE evt_block_time >= DATE_TRUNC('day', NOW() - interval '1 week')
         {% endif %}
-        GROUP BY 1, 2, 3
+        GROUP BY provider, block_number, block_time
     ),
     
     withdrawals AS (
@@ -73,7 +73,7 @@ WITH base_locks AS (
         {% if is_incremental() %}
         WHERE evt_block_time >= DATE_TRUNC('day', NOW() - interval '1 week')
         {% endif %}
-        GROUP BY 1, 2, 3
+        GROUP BY provider, block_number, block_time
     ),
     
     bpt_locked_balance AS (
@@ -83,7 +83,7 @@ WITH base_locks AS (
             UNION ALL
             SELECT * FROM withdrawals
         ) union_all
-        GROUP BY 1, 2, 3
+        GROUP BY provider, block_number, block_time
     ),
     
     cumulative_balances AS (
@@ -125,7 +125,7 @@ WITH base_locks AS (
             wallet_address,
             max(updated_at) AS updated_at
         FROM double_counting
-        GROUP BY 1, 2, 3
+        GROUP BY block_number, block_time, wallet_address
     )
 
 SELECT 
