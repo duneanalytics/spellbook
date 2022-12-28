@@ -69,4 +69,8 @@ from (
     ,('twopi_network','2Pi Network')
     ,('acryptos', 'AcryptoS')
     ,('woofi', 'WooFi')
+    ,('powerbomb_finance','Powerbomb Finance')
+    ,('powerbomb','Powerbomb Finance')
+    ,('lemma_finance','Lemma Finance')
+    ,('lemma','Lemma Finance')
     ) as temp_table (dune_name, mapped_name)

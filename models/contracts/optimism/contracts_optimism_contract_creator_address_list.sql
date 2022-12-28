@@ -377,6 +377,9 @@ FROM (
       ,('0xA80481E3f9098602954B2E5cf306e6dEE053EF3E', 'Gysr')
       ,('0x3cD76a3E1Ae288c11459b986362ff2f63Ba0A379', 'Opti Stickman Club')
       ,('0x97471c0fdddb5e5cc34cb08cb17961bd3a53f38f', 'WooFi')
+      ,('0x2C10aC0E6B6c1619F4976b2ba559135BFeF53c5E', 'Powerbomb Finance')
+      ,('0x0f3BF5c241B6625C0fA781ED137fDe6786b2e66f', 'Lemma Finance')
+      ,('0x43834c6A65C64a4529E048Ba55a685fF5Aa43cB4', 'fBOMB Finance')
 
   ) as temp_table (creator_address, contract_project)
 
