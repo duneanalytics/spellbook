@@ -146,27 +146,27 @@ plain_pools as ( -- getting plain pools data
             token_type
         FROM 
         (
-        SELECT 
-            pool, 
-            POSEXPLODE(coins) as (token_id, token_address), 
-            'pool_token' as token_type
-        FROM 
-        {{ source('ellipsis_finance_bnb', 'FactoryPool_evt_PlainPoolDeployed') }}
-        {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-        
-        UNION 
-        
-        SELECT 
-            pool, 
-            POSEXPLODE(coins) as (token_id, token_address), 
-            'pool_token' as token_type
-        FROM 
-        {{ source('ellipsis_finance_bnb', 'FactoryPool_v2_evt_PlainPoolDeployed') }}
-        {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
+            SELECT
+                pool,
+                POSEXPLODE(coins) as (token_id, token_address),
+                'pool_token' as token_type
+            FROM
+            {{ source('ellipsis_finance_bnb', 'FactoryPool_evt_PlainPoolDeployed') }}
+            {% if is_incremental() %}
+            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
+
+            UNION
+
+            SELECT
+                pool,
+                POSEXPLODE(coins) as (token_id, token_address),
+                'pool_token' as token_type
+            FROM
+            {{ source('ellipsis_finance_bnb', 'FactoryPool_v2_evt_PlainPoolDeployed') }}
+            {% if is_incremental() %}
+            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
         ) x 
 ), 
 
@@ -187,27 +187,27 @@ meta_pools as ( -- getting meta pools and their base pools
             base_pool
         FROM 
         (
-        SELECT 
-            pool, 
-            POSEXPLODE(coins) as (token_id, token_address), 
-            base_pool
-        FROM 
-        {{ source('ellipsis_finance_bnb', 'FactoryPool_evt_MetaPoolDeployed') }}
-        {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-        
-        UNION 
-        
-        SELECT 
-            pool, 
-            POSEXPLODE(coins) as (token_id, token_address), 
-            base_pool
-        FROM 
-        {{ source('ellipsis_finance_bnb', 'FactoryPool_v2_evt_MetaPoolDeployed') }}
-        {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
+            SELECT
+                pool,
+                POSEXPLODE(coins) as (token_id, token_address),
+                base_pool
+            FROM
+            {{ source('ellipsis_finance_bnb', 'FactoryPool_evt_MetaPoolDeployed') }}
+            {% if is_incremental() %}
+            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
+
+            UNION
+
+            SELECT
+                pool,
+                POSEXPLODE(coins) as (token_id, token_address),
+                base_pool
+            FROM
+            {{ source('ellipsis_finance_bnb', 'FactoryPool_v2_evt_MetaPoolDeployed') }}
+            {% if is_incremental() %}
+            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
         ) x 
 ), 
 
@@ -316,27 +316,27 @@ crypto_pools as ( -- getting crypto pools
             token_type
         FROM 
         (
-        SELECT 
-            pool, 
-            POSEXPLODE(coins) as (token_id, token_address), 
-            'pool_token' as token_type
-        FROM 
-        {{ source('ellipsis_finance_bnb', 'FactoryPool_v3_evt_CryptoPoolDeployed') }}
-        {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-        
-        UNION 
-        
-        SELECT 
-            pool, 
-            POSEXPLODE(coins) as (token_id, token_address), 
-            'pool_token' as token_type
-        FROM 
-        {{ source('ellipsis_finance_bnb', 'FactoryPool_v4_evt_CryptoPoolDeployed') }}
-        {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
+            SELECT
+                pool,
+                POSEXPLODE(coins) as (token_id, token_address),
+                'pool_token' as token_type
+            FROM
+            {{ source('ellipsis_finance_bnb', 'FactoryPool_v3_evt_CryptoPoolDeployed') }}
+            {% if is_incremental() %}
+            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
+
+            UNION
+
+            SELECT
+                pool,
+                POSEXPLODE(coins) as (token_id, token_address),
+                'pool_token' as token_type
+            FROM
+            {{ source('ellipsis_finance_bnb', 'FactoryPool_v4_evt_CryptoPoolDeployed') }}
+            {% if is_incremental() %}
+            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
         ) x 
 ), 
 
