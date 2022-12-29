@@ -212,13 +212,18 @@ models:
             - wallet_address
     columns:
       - *block_number
-      - name: block_date
-        description: "Block time trunc to date"
+      - *block_time
+      - name: block_timestamp
+        description: "Block timestamp"
       - name: wallet_address
         description: "Address of the wallet holding the veBAL"
       - name: bpt_balance
         description: "Amount of BPT held in the veBAL lock"
-      - name: vebal_balance
-        description: "Amount of veBAL"
-      - name: lock_time
-        description: "Amount of time the BPT was locked for at the last time the lock was updated"
+      - name: unlocked_at
+        description: ""
+      - name: slope
+        description: ""
+      - name: bias
+        description: ""
+      - name: block_date
+        description: "Block time trunc to date"
