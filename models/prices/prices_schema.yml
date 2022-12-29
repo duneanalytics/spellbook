@@ -30,10 +30,17 @@ models:
   - name: prices_usd_latest
     meta:
       sector: prices
-      contributors: hildobby
+      contributors: hildobby, 0xRob
     config:
       tags: ['prices', 'usd', 'latest']
     description: "Latest prices table across blockchains"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - symbol
+            - decimals
     columns:
       - name: minute
         description: "UTC event block time truncated to the minute mark"
