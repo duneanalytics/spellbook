@@ -45,6 +45,7 @@ def test_valid_token5():
     test_token_checker = TokenChecker(new_line='("dfl-defi-land", "solana", "DFL", "DFL1zNkaGPWm1BqAVqRjCZvHmwTFrEaJtbzJWgseoNJh", 9),')
     test_token_checker.validate_token()
 
-def test_valid_token6():
+def test_deactivated_token():
     test_token_checker = TokenChecker(new_line='("bets-betswirl", "polygon", "BETS", "0x9246a5f10a79a5a939b0c2a75a3ad196aafdb43b", 18),')
-    test_token_checker.validate_token()
+    with pytest.raises(AssertionError):
+        test_token_checker.validate_token()
