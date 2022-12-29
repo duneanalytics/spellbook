@@ -57,7 +57,7 @@ with source_polygon_transactions as (
     {% if not is_incremental() %}
       and minute >= date '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
-    {% if is_incremental() %} 
+    {% if is_incremental() %}
       and minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
@@ -95,16 +95,17 @@ with source_polygon_transactions as (
         ,a.is_traded_nft
         ,a.is_moved_nft
   from ref_seaport_polygon_base_pairs a
-  where 1=1 
+  where 1=1
     and not a.is_private
   union all
-  select a.block_date
+  select distinct -- temporary solution to https://github.com/duneanalytics/spellbook/issues/2404
+         a.block_date
         ,a.block_time
         ,a.block_number
         ,a.tx_hash
         ,a.evt_index
         ,a.sub_type
-        ,a.sub_idx
+        ,coalesce(b.sub_idx, a.sub_idx) as sub_idx -- temporary solution to #2404
         ,a.offer_first_item_type
         ,a.consideration_first_item_type
         ,a.sender
@@ -144,13 +145,13 @@ with source_polygon_transactions as (
     and a.is_private
     and not a.is_moved_nft
     and a.consideration_cnt > 0
-) 
+)
 ,iv_volume as (
   select block_date
         ,block_time
         ,tx_hash
         ,evt_index
-        ,max(token_contract_address) as token_contract_address 
+        ,max(token_contract_address) as token_contract_address
         ,sum(case when is_price then original_amount end) as price_amount_raw
         ,sum(case when is_platform_fee then original_amount end) as platform_fee_amount_raw
         ,max(case when is_platform_fee then receiver end) as platform_fee_receiver
@@ -176,7 +177,7 @@ with source_polygon_transactions as (
         ,a.block_number
         ,a.sender as seller
         ,a.receiver as buyer
-        ,case when nft_cnt > 1 then 'bundle trade' 
+        ,case when nft_cnt > 1 then 'bundle trade'
               else 'single item trade'
           end as trade_type
         ,a.order_type
@@ -186,11 +187,11 @@ with source_polygon_transactions as (
         ,a.item_type as nft_token_standard
         ,a.zone
         ,a.platform_contract_address
-        ,b.token_contract_address 
-        ,round(price_amount_raw / nft_cnt) as price_amount_raw  -- to truncate the odd number of decimal places 
+        ,b.token_contract_address
+        ,round(price_amount_raw / nft_cnt) as price_amount_raw  -- to truncate the odd number of decimal places
         ,round(platform_fee_amount_raw / nft_cnt) as platform_fee_amount_raw
         ,platform_fee_receiver
-        ,round(creator_fee_amount_raw / nft_cnt) as creator_fee_amount_raw  
+        ,round(creator_fee_amount_raw / nft_cnt) as creator_fee_amount_raw
         ,creator_fee_amount_raw_1 / nft_cnt as creator_fee_amount_raw_1
         ,creator_fee_amount_raw_2 / nft_cnt as creator_fee_amount_raw_2
         ,creator_fee_amount_raw_3 / nft_cnt as creator_fee_amount_raw_3
@@ -236,7 +237,7 @@ with source_polygon_transactions as (
           ,sub_idx
   from iv_nfts a
   inner join source_polygon_transactions t on t.hash = a.tx_hash
-  left join ref_tokens_nft n on n.contract_address = nft_contract_address 
+  left join ref_tokens_nft n on n.contract_address = nft_contract_address
   left join ref_tokens_erc20 e on e.contract_address = case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_alternative_token_address}}'
                                                             else a.token_contract_address
                                                       end
@@ -244,13 +245,13 @@ with source_polygon_transactions as (
                                                             else a.token_contract_address
                                                         end
     and p.minute = date_trunc('minute', a.block_time)
-  left join ref_nft_aggregators agg on agg.contract_address = t.to                                     
+  left join ref_nft_aggregators agg on agg.contract_address = t.to
 )
 ,iv_columns as (
   -- Rename column to align other *.trades tables
   -- But the columns ordering is according to convenience.
-  -- initcap the code value if needed 
-  select 
+  -- initcap the code value if needed
+  select
     -- basic info
     'polygon' as blockchain
     ,'seaport' as project
@@ -272,7 +273,7 @@ with source_polygon_transactions as (
     ,nft_token_amount as number_of_items
     ,nft_token_standard as token_standard
 
-    -- price info          
+    -- price info
     ,price_amount as amount_original
     ,price_amount_raw as amount_raw
     ,price_amount_usd as amount_usd
