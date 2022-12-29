@@ -141,8 +141,8 @@ base_pools_underlying_tokens_sold as ( -- the underlying tokens sold works diffe
 plain_pools as ( -- getting plain pools data 
         SELECT 
             pool, 
-            token_id::STRING as token_id, 
-            token_address::STRING as token_address, 
+            CAST(token_id AS STRING) as token_id,
+            CAST(token_address AS STRING) as token_address,
             token_type
         FROM 
         (
@@ -182,8 +182,8 @@ plain_pools_pool_tokens as (
 meta_pools as ( -- getting meta pools and their base pools 
         SELECT 
             pool, 
-            token_id::STRING as token_id, 
-            token_address::STRING as token_address, 
+            CAST(token_id AS STRING) as token_id,
+            CAST(token_address AS STRING) as token_address,
             base_pool
         FROM 
         (
@@ -311,8 +311,8 @@ meta_pools_underlying_tokens_sold as ( -- getting the underlying tokens sold for
 crypto_pools as ( -- getting crypto pools 
         SELECT 
             pool, 
-            token_id::STRING as token_id, 
-            token_address::STRING as token_address, 
+            CAST(token_id AS STRING) as token_id,
+            CAST(token_address AS STRING) as token_address,
             token_type
         FROM 
         (
