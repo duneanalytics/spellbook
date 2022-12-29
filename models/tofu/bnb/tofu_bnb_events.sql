@@ -101,11 +101,11 @@ SELECT 'bnb'                                 as blockchain
      , CAST(tfe.price * tff.fee_rate AS DOUBLE)                                     as platform_fee_amount_raw
      , CAST(tfe.price * tff.fee_rate / power(10, pu.decimals) AS DOUBLE)            as platform_fee_amount
      , CAST(pu.price * tfe.price * tff.fee_rate / power(10, pu.decimals) AS DOUBLE) as platform_fee_amount_usd
-     , CAST(tff.fee_rate AS DOUBLE)                                                 as platform_fee_percentage
+     , CAST(100 * tff.fee_rate AS DOUBLE)                                           as platform_fee_percentage
      , tfe.price * tff.royalty_rate                                                 as royalty_fee_amount_raw
      , tfe.price * tff.royalty_rate / power(10, pu.decimals)                        as royalty_fee_amount
      , pu.price * tfe.price * tff.royalty_rate / power(10, pu.decimals)             as royalty_fee_amount_usd
-     , CAST(tff.royalty_rate AS DOUBLE)                                             as royalty_fee_percentage
+     , CAST(100 * tff.royalty_rate AS DOUBLE)                                       as royalty_fee_percentage
      , tff.royalty_address                                                          as royalty_fee_receive_address
      , case
            when tfe.native_bnb THEN 'BNB'
