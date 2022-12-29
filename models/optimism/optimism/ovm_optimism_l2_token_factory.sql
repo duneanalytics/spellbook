@@ -42,10 +42,10 @@ FROM (
             ON t.contract_address = c1._l1Token
 
         WHERE call_success = true
-        {% if is_incremental() %}
-        AND c1.call_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-    
+            {% if is_incremental() %}
+            AND c1.call_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
+
     UNION ALL
     
     SELECT c2.contract_address, c2._l1Token, _l2Token, _symbol, _name, 
@@ -64,7 +64,7 @@ FROM (
             ON t.contract_address = c2._l1Token
 
         WHERE call_success = true
-        {% if is_incremental() %}
-        AND c2.call_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
+            {% if is_incremental() %}
+            AND c2.call_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
     ) a
