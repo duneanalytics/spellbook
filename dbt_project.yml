@@ -564,6 +564,16 @@ models:
     bridge:
       +schema: bridge
 
+    tessera:
+      +schema: tessera
+      ethereum:
+        +schema: tessera_ethereum
+
+    tofu:
+      +schema: tofu
+      bnb:
+        +schema: tofu_bnb
+
 seeds:
   spellbook:
     +schema: test_data

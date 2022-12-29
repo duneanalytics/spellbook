@@ -51,6 +51,9 @@
 {% set weth_contract = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" %}
 {% set steth_contract = "0xae7ab96520de3a18e5e111b5eaab095312d7fe84" %}
 
+{% set rsr_token = "0x320623b8e4ff03373931769a31fc52a4e78b5d70" %}
+{% set fraxbp_token = "0x3175df0976dfa876431c2e9ee6bc45b65d3473cc" %}
+
 WITH dexs AS
 (
     -- Curvefi TokenExchange
@@ -742,7 +745,34 @@ WITH dexs AS
         evt_tx_hash AS tx_hash,
         '' AS trace_address,
         evt_index
-    FROM {{ source('curvefi_ethereum', 'tricrypto2_swap_evt_TokenExchange') }}   
+    FROM {{ source('curvefi_ethereum', 'tricrypto2_swap_evt_TokenExchange') }}
+        {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+
+    UNION ALL
+
+    SELECT
+        evt_block_time AS block_time,
+        '2' AS version,
+        buyer AS taker,
+        '' AS maker,
+        tokens_bought AS token_bought_amount_raw,
+        tokens_sold AS token_sold_amount_raw,
+        NULL AS amount_usd,
+        CASE
+            WHEN bought_id = 0 THEN '{{rsr_token}}'
+            WHEN bought_id = 1 THEN '{{fraxbp_token}}'
+        END as token_bought_address,
+        CASE
+            WHEN sold_id = 0 THEN '{{rsr_token}}'
+            WHEN sold_id = 1 THEN '{{fraxbp_token}}'
+        END as token_sold_address,
+        contract_address AS project_contract_address,
+        evt_tx_hash AS tx_hash,
+        '' AS trace_address,
+        evt_index
+    FROM {{ source('curvefi_ethereum', 'rsr_frax_usdc_pool_evt_TokenExchange') }}
         {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}

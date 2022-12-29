@@ -1,35 +1,36 @@
 {{ config(
-    alias = 'trades',
+    alias = 'seaport_trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'tx_hash', 'evt_index', 'nft_contract_address', 'token_id', 'sub_type', 'sub_idx'],
-    post_hook='{{ expose_spells(\'["polygon"]\',
+    post_hook='{{ expose_spells(\'["optimism"]\',
                             "project",
-                            "seaport",
-                            \'["sohawk"]\') }}'
+                            "quix",
+                            \'["chuxin"]\') }}'
     )
 }}
 
 {% set c_native_token_address = "0x0000000000000000000000000000000000000000" %}
-{% set c_alternative_token_address = "0x0000000000000000000000000000000000001010" %}  -- MATIC
-{% set c_native_symbol = "MATIC" %}
-{% set c_seaport_first_date = "2022-06-01" %}
+{% set c_alternative_token_address = "0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000" %}  -- ETH
+{% set c_native_symbol = "ETH" %}
+{% set c_seaport_first_date = "2022-07-29" %}
+{% set non_buyer_address = "0xc78a09d6a4badecc7614a339fd264b7290361ef1" %} -- quix contract address
 
-with source_polygon_transactions as (
+with source_optimism_transactions as (
     select *
-    from {{ source('polygon','transactions') }}
+    from {{ source('optimism','transactions') }}
     {% if not is_incremental() %}
-    where block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
+    where block_time >= '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
     where block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
-,ref_seaport_polygon_base_pairs as (
+,ref_quix_seaport_optimism_base_pairs as (
       select *
-      from {{ ref('seaport_polygon_base_pairs') }}
+      from {{ ref('quix_seaport_optimism_base_pairs') }}
       where 1=1
       {% if is_incremental() %}
             and block_time >= date_trunc("day", now() - interval '1 week')
@@ -38,24 +39,24 @@ with source_polygon_transactions as (
 ,ref_tokens_nft as (
     select *
     from {{ ref('tokens_nft') }}
-    where blockchain = 'polygon'
+    where blockchain = 'optimism'
 )
 ,ref_tokens_erc20 as (
     select *
     from {{ ref('tokens_erc20') }}
-    where blockchain = 'polygon'
+    where blockchain = 'optimism'
 )
 ,ref_nft_aggregators as (
     select *
     from {{ ref('nft_aggregators') }}
-    where blockchain = 'polygon'
+    where blockchain = 'optimism'
 )
 ,source_prices_usd as (
     select *
     from {{ source('prices', 'usd') }}
-    where blockchain = 'polygon'
+    where blockchain = 'optimism'
     {% if not is_incremental() %}
-      and minute >= date '{{c_seaport_first_date}}'  -- seaport first txn
+      and minute >= '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
       and minute >= date_trunc("day", now() - interval '1 week')
@@ -94,18 +95,17 @@ with source_polygon_transactions as (
         ,a.creator_fee_idx
         ,a.is_traded_nft
         ,a.is_moved_nft
-  from ref_seaport_polygon_base_pairs a
+  from ref_quix_seaport_optimism_base_pairs a
   where 1=1
     and not a.is_private
   union all
-  select distinct -- temporary solution to https://github.com/duneanalytics/spellbook/issues/2404
-         a.block_date
+  select a.block_date
         ,a.block_time
         ,a.block_number
         ,a.tx_hash
         ,a.evt_index
         ,a.sub_type
-        ,coalesce(b.sub_idx, a.sub_idx) as sub_idx -- temporary solution to #2404
+        ,a.sub_idx
         ,a.offer_first_item_type
         ,a.consideration_first_item_type
         ,a.sender
@@ -133,8 +133,8 @@ with source_polygon_transactions as (
         ,a.creator_fee_idx
         ,a.is_traded_nft
         ,a.is_moved_nft
-  from ref_seaport_polygon_base_pairs a
-  left join ref_seaport_polygon_base_pairs b on b.tx_hash = a.tx_hash
+  from ref_quix_seaport_optimism_base_pairs a
+  left join ref_quix_seaport_optimism_base_pairs b on b.tx_hash = a.tx_hash
     and b.evt_index = a.evt_index
     and b.block_date = a.block_date -- for performance
     and b.token_contract_address = a.token_contract_address
@@ -236,7 +236,7 @@ with source_polygon_transactions as (
           ,agg.contract_address AS aggregator_address
           ,sub_idx
   from iv_nfts a
-  inner join source_polygon_transactions t on t.hash = a.tx_hash
+  inner join source_optimism_transactions t on t.hash = a.tx_hash
   left join ref_tokens_nft n on n.contract_address = nft_contract_address
   left join ref_tokens_erc20 e on e.contract_address = case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_alternative_token_address}}'
                                                             else a.token_contract_address
@@ -247,82 +247,99 @@ with source_polygon_transactions as (
     and p.minute = date_trunc('minute', a.block_time)
   left join ref_nft_aggregators agg on agg.contract_address = t.to
 )
+,erc721_transfer as (
+  select *
+  from {{ source('erc721_optimism','evt_transfer') }}
+  where 
+    from = '{{non_buyer_address}}'
+    {% if not is_incremental() %}
+    and evt_block_time >= '{{c_seaport_first_date}}'  -- seaport first txn
+    {% endif %}
+    {% if is_incremental() %}
+    and evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+)
 ,iv_columns as (
   -- Rename column to align other *.trades tables
   -- But the columns ordering is according to convenience.
   -- initcap the code value if needed
   select
     -- basic info
-    'polygon' as blockchain
-    ,'seaport' as project
-    ,'v1' as version
+    'optimism' as blockchain
+    ,'quix' as project
+    ,'seaport' as version
 
     -- order info
-    ,block_date
-    ,block_time
-    ,seller
-    ,buyer
-    ,initcap(trade_type) as trade_type
-    ,initcap(order_type) as trade_category -- Buy / Offer Accepted
+    ,t.block_date
+    ,t.block_time
+    ,t.seller
+    ,case when t.buyer = '{{non_buyer_address}}' then erc.to else t.buyer end as buyer
+    ,initcap(t.trade_type) as trade_type
+    ,initcap(t.order_type) as trade_category -- Buy / Offer Accepted
     ,'Trade' as evt_type
 
     -- nft token info
-    ,nft_contract_address
-    ,nft_token_name as collection
-    ,nft_token_id as token_id
-    ,nft_token_amount as number_of_items
-    ,nft_token_standard as token_standard
+    ,t.nft_contract_address
+    ,t.nft_token_name as collection
+    ,t.nft_token_id as token_id
+    ,t.nft_token_amount as number_of_items
+    ,t.nft_token_standard as token_standard
 
     -- price info
-    ,price_amount as amount_original
-    ,price_amount_raw as amount_raw
-    ,price_amount_usd as amount_usd
-    ,token_symbol as currency_symbol
-    ,token_alternative_symbol as currency_contract
-    ,token_contract_address as original_currency_contract
-    ,price_token_decimals as currency_decimals   -- in case calculating royalty1~4
+    ,t.price_amount as amount_original
+    ,t.price_amount_raw as amount_raw
+    ,t.price_amount_usd as amount_usd
+    ,t.token_symbol as currency_symbol
+    ,t.token_alternative_symbol as currency_contract
+    ,t.token_contract_address as original_currency_contract
+    ,t.price_token_decimals as currency_decimals   -- in case calculating royalty1~4
 
     -- project info (platform or exchange)
-    ,platform_contract_address as project_contract_address
-    ,platform_fee_receiver as platform_fee_receive_address
-    ,platform_fee_amount_raw
-    ,platform_fee_amount
-    ,platform_fee_amount_usd
+    ,t.platform_contract_address as project_contract_address
+    ,t.platform_fee_receiver as platform_fee_receive_address
+    ,t.platform_fee_amount_raw
+    ,t.platform_fee_amount
+    ,t.platform_fee_amount_usd
 
     -- royalty info
-    ,creator_fee_receiver_1 as royalty_fee_receive_address
-    ,creator_fee_amount_raw as royalty_fee_amount_raw
-    ,creator_fee_amount as royalty_fee_amount
-    ,creator_fee_amount_usd as royalty_fee_amount_usd
-    ,creator_fee_receiver_1 as royalty_fee_receive_address_1
-    ,creator_fee_receiver_2 as royalty_fee_receive_address_2
-    ,creator_fee_receiver_3 as royalty_fee_receive_address_3
-    ,creator_fee_receiver_4 as royalty_fee_receive_address_4
-    ,creator_fee_amount_raw_1 as royalty_fee_amount_raw_1
-    ,creator_fee_amount_raw_2 as royalty_fee_amount_raw_2
-    ,creator_fee_amount_raw_3 as royalty_fee_amount_raw_3
-    ,creator_fee_amount_raw_4 as royalty_fee_amount_raw_4
+    ,t.creator_fee_receiver_1 as royalty_fee_receive_address
+    ,t.creator_fee_amount_raw as royalty_fee_amount_raw
+    ,t.creator_fee_amount as royalty_fee_amount
+    ,t.creator_fee_amount_usd as royalty_fee_amount_usd
+    ,t.creator_fee_receiver_1 as royalty_fee_receive_address_1
+    ,t.creator_fee_receiver_2 as royalty_fee_receive_address_2
+    ,t.creator_fee_receiver_3 as royalty_fee_receive_address_3
+    ,t.creator_fee_receiver_4 as royalty_fee_receive_address_4
+    ,t.creator_fee_amount_raw_1 as royalty_fee_amount_raw_1
+    ,t.creator_fee_amount_raw_2 as royalty_fee_amount_raw_2
+    ,t.creator_fee_amount_raw_3 as royalty_fee_amount_raw_3
+    ,t.creator_fee_amount_raw_4 as royalty_fee_amount_raw_4
 
     -- aggregator
-    ,aggregator_name
-    ,aggregator_address
+    ,t.aggregator_name
+    ,t.aggregator_address
 
     -- tx
-    ,block_number
-    ,tx_hash
-    ,evt_index
-    ,tx_from
-    ,tx_to
-    ,right_hash
+    ,t.block_number
+    ,t.tx_hash
+    ,t.evt_index
+    ,t.tx_from
+    ,t.tx_to
+    ,t.right_hash
 
     -- seaport etc
-    ,zone as zone_address
-    ,estimated_price
-    ,is_private
-    ,sub_idx
-    ,sub_type
-  from iv_trades
+    ,t.zone as zone_address
+    ,t.estimated_price
+    ,t.is_private
+    ,t.sub_idx
+    ,t.sub_type
+  from iv_trades as t 
+  left join erc721_transfer as erc
+    on t.tx_hash = erc.evt_tx_hash
+    and t.block_number = erc.evt_block_number
+    and t.nft_token_id = erc.tokenId
+    and t.nft_contract_address = erc.contract_address
+    and t.buyer = erc.from
 )
 select *
 from iv_columns
-;
