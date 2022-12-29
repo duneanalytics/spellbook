@@ -89,24 +89,24 @@ SELECT 'bnb'                                 as blockchain
      , case
            when tfe.native_bnb THEN 'BNB'
            else pu.symbol
-       end                                   as currency_symbol
-     , tfe.currency                          as currency_contract
-     , tfe.contract_address                  as project_contract_address
-     , tff.token                             as nft_contract_address
-     , agg.name                              as aggregator_name
-     , agg.contract_address                  as aggregator_address
-     , tfe.evt_tx_hash                       as tx_hash
-     , tx.from                               as tx_from
-     , tx.to                                 as tx_to
-     , tfe.price * tff.fee_rate              as platform_fee_amount_raw
-     , tfe.price * tff.fee_rate / power(10, pu.decimals) as platform_fee_amount
-     , pu.price * tfe.price * tff.fee_rate / power(10, pu.decimals) as platform_fee_amount_usd
-     , tff.fee_rate                          as platform_fee_percentage
-     , tfe.price * tff.royalty_rate          as royalty_fee_amount_raw
-     , tfe.price * tff.royalty_rate / power(10, pu.decimals) as royalty_fee_amount
-     , pu.price * tfe.price * tff.royalty_rate / power(10, pu.decimals) as royalty_fee_amount_usd
-     , tff.royalty_rate                      as royalty_fee_percentage
-     , tff.royalty_address                   as royalty_fee_receive_address
+       end                                                                          as currency_symbol
+     , tfe.currency                                                                 as currency_contract
+     , tfe.contract_address                                                         as project_contract_address
+     , tff.token                                                                    as nft_contract_address
+     , agg.name                                                                     as aggregator_name
+     , agg.contract_address                                                         as aggregator_address
+     , tfe.evt_tx_hash                                                              as tx_hash
+     , tx.from                                                                      as tx_from
+     , tx.to                                                                        as tx_to
+     , CAST(tfe.price * tff.fee_rate AS DOUBLE)                                     as platform_fee_amount_raw
+     , CAST(tfe.price * tff.fee_rate / power(10, pu.decimals) AS DOUBLE)            as platform_fee_amount
+     , CAST(pu.price * tfe.price * tff.fee_rate / power(10, pu.decimals) AS DOUBLE) as platform_fee_amount_usd
+     , CAST(tff.fee_rate AS DOUBLE)                                                 as platform_fee_percentage
+     , tfe.price * tff.royalty_rate                                                 as royalty_fee_amount_raw
+     , tfe.price * tff.royalty_rate / power(10, pu.decimals)                        as royalty_fee_amount
+     , pu.price * tfe.price * tff.royalty_rate / power(10, pu.decimals)             as royalty_fee_amount_usd
+     , CAST(tff.royalty_rate AS DOUBLE)                                             as royalty_fee_percentage
+     , tff.royalty_address                                                          as royalty_fee_receive_address
      , case
            when tfe.native_bnb THEN 'BNB'
            else pu.symbol
