@@ -6828,6 +6828,7 @@ FROM (VALUES
           ('0xa92c49c403386111c1629aee00936eed2a9e74a6', 'KLTR', 18),
           ('0xe85d69d5e7b91b1a0d2e93a3678315e6915197b2', 'JBG', 4),
           ('0xdc97fdaadcbc1c77525b8a1c981865bd2e0425aa', 'SMTS', 18),
+          ('0x3175df0976dfa876431c2e9ee6bc45b65d3473cc', 'crvFRAX', 18),
           ('0x04c17b9d3b29a78f7bd062a57cf44fc633e71f85', 'IMPT', 18),
           ('0x250855469b1eafadc4ecac66c8f390554ec4e104', 'SENSHI', 18),
           ('0x351caa9045d65107b9d311d922d15887cfd634e4', 'ARW', 18),
@@ -6840,5 +6841,16 @@ FROM (VALUES
           ('0xbb24c7a8e89eda9f22842644df8d0524871257e5', 'LL', 18),
           ('0xc1f33e0cf7e40a67375007104b929e49a581bafe', 'SPOT', 9),
           ('0xc5f3d11580c41cd07104e9af154fc6428bb93c73', 'yvBalancer-BoostedAaveUSD', 18),
-          ('0xf33683d0d690ccdbbf63a54b8d6709ff7e6cf987', 'TFI', 18)
+          ('0xf33683d0d690ccdbbf63a54b8d6709ff7e6cf987', 'TFI', 18),
+          ('0x2bb9867e3061353611e00f9af7197672aab48a11', 'ANTIMA', 9),
+          ('0x45d74446748fb432f05e7a85bd974abb7af5c285', 'WRAB', 18),
+          ('0x5b3240b6be3e7487d61cd1afdfc7fe4fa1d81e64', 'DOLA BSP', 18),
+          ('0x8ee325ae3e54e83956ef2d5952d3c8bc1fa6ec27', 'TYRANT', 9),
+          ('0x9ee91f9f426fa633d227f7a9b000e28b9dfd8599', 'stMATIC', 18),
+          ('0xb208b1a5664574f72d22e9e9981837310cacfed6', 'SAKURA', 9),
+          ('0xb399511642fe1666c6a07f83483e6e4feaed9a00', 'SEURO', 18),
+          ('0xbe1767bbe37fd77a4b1b8d2da86de39ea60f46cb', 'FOA', 18),
+          ('0xd101dcc414f310268c37eeb4cd376ccfa507f571', 'RSC', 18),
+          ('0xd4df22556e07148e591b4c7b4f555a17188cf5cf', 'TWT', 9),
+          ('0xe57180685e3348589e9521aa53af0bcd497e884d', 'DOLAFRAXBP3CRV-f', 18)
      ) AS temp_table (contract_address, symbol, decimals)
