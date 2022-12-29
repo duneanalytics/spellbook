@@ -53,8 +53,7 @@ FROM (
         block_number,
         tx_from,
         tx_to,
-        unique_trade_id,
-        'testchange' as test
+        unique_trade_id
     FROM {{ nft_model }}
     {% if not loop.last %}
     UNION ALL
