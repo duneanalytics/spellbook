@@ -9,7 +9,7 @@
 with
 partially_unpacked_app_content as (
     select
-        app_hash,
+        distinct app_hash,
         content.appCode as app_code,
         content.environment,
         content.metadata.orderClass.orderClass as order_class,

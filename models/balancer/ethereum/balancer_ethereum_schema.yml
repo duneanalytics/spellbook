@@ -88,7 +88,7 @@ models:
     meta:
       blockchain: ethereum
       project: balancer_v2
-      contributors: victorstefenon
+      contributors: stefenon
     config:
       tags: ['ethereum', 'bpt', 'prices']
     description: >
@@ -168,3 +168,29 @@ models:
       - *pool_id
       - *token_address
       - *normalized_weight
+
+  - name: balancer_ethereum_vebal_balances_day
+    meta:
+      blockchain: ethereum
+      project: balancer
+      contibutors: markusbkoch, mendesfabio, stefenon
+    config:
+      tags: ['balancer', 'ethereum', 'vebal', 'day', 'markusbkoch', 'mendesfabio']
+    description: >
+        Daily balances of veBAL per wallet
+        Depends on veBAL_call_create_lock, veBAL_evt_Deposit and veBAL_evt_Withdraw
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - wallet_address
+    columns:
+      - *day
+      - name: wallet_address
+        description: "Address of the wallet holding the veBAL"
+      - name: bpt_balance
+        description: "Amount of BPT held in the veBAL lock"
+      - name: vebal_balance
+        description: "Amount of veBAL"
+      - name: lock_time
+        description: "Amount of time the BPT was locked for at the last time the lock was updated"

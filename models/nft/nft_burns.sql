@@ -1,6 +1,6 @@
 {{ config(
         alias ='burns',
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum","solana"]\',
+        post_hook='{{ expose_spells_hide_trino(\'["ethereum","solana","bnb"]\',
                                     "sector",
                                     "nft",
                                     \'["soispoke","0xRob"]\') }}')
