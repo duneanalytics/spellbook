@@ -66,3 +66,5 @@ sources:
         loaded_at_field: evt_block_time
       - name: tricrypto2_swap_evt_TokenExchange
         loaded_at_field: evt_block_time
+      - name: rsr_frax_usdc_pool_evt_TokenExchange
+        loaded_at_field: evt_block_time
