@@ -569,6 +569,11 @@ models:
       ethereum:
         +schema: tessera_ethereum
 
+    tofu:
+      +schema: tofu
+      bnb:
+        +schema: tofu_bnb
+
 seeds:
   spellbook:
     +schema: test_data
