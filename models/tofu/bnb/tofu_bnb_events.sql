@@ -31,7 +31,7 @@ WITH tff AS (
                  get_json_object(get_json_object(detail, '$.settlement'), '$.royaltyRate') / 1000000 as royalty_rate,
                  get_json_object(get_json_object(detail, '$.settlement'), '$.feeAddress')            as fee_address,
                  get_json_object(get_json_object(detail, '$.settlement'), '$.royaltyAddress')        as royalty_address,
-                 posexplode(from_json(get_json_object(detail, '$.bundle'), 'array<string>'))            as (i,t),
+                 posexplode(from_json(get_json_object(detail, '$.bundle'), 'array<string>'))         as (i,t),
                  json_array_length(get_json_object(detail, '$.bundle'))                              as bundle_size
           FROM {{ source('tofu_nft_bnb', 'MarketNG_call_run') }}
           WHERE call_success = true
@@ -74,7 +74,7 @@ SELECT 'bnb'                                 as blockchain
            when tff.bundle_size = 1 then 'Single Item Trade'
            else 'Bundle Trade'
     end                                      as trade_type
-     , tff.amount                            as number_of_items
+     , CAST(tff.amount AS DECIMAL(38,0))     as number_of_items
      , 'Trade'                               as evt_type
      , tfe.seller                            as seller
      , tfe.buyer                             as buyer
@@ -83,8 +83,8 @@ SELECT 'bnb'                                 as blockchain
            when tfe.kind = '2' then 'Sell'
            else 'Acution'
     end                                      as trade_category
-     , tfe.price                         as amount_raw
-     , tfe.price / power(10, pu.decimals) as amount_original
+     , CAST(tfe.price AS DECIMAL(38,0))      as amount_raw
+     , tfe.price / power(10, pu.decimals)    as amount_original
      , pu.price * tfe.price / power(10, pu.decimals) as amount_usd
      , case
            when tfe.native_bnb THEN 'BNB'
