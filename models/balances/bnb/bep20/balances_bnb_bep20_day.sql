@@ -54,19 +54,10 @@ FROM
 INNER JOIN
     days d ON b.day <= d.day
         AND d.day < b.next_day
-
 INNER JOIN
-    {{ source('prices', 'usd') }} p ON p.contract_address = b.token_address
+    {{ ref('prices_tokens') }} AS t ON b.token_address = t.contract_address
+        AND t.blockchain = 'bnb'
+LEFT JOIN
+    {{ source('prices', 'usd') }} AS p ON p.contract_address = b.token_address
         AND d.day = p.minute
         AND p.blockchain = 'bnb'
-
--- Removes rebase tokens from balances (I don't know why actually. I kept the logic from balances_ethereum_erc20_day).
-LEFT JOIN
-    {{ ref('tokens_bnb_rebase') }} AS r ON b.token_address = r.contract_address
-
--- Removes likely non-compliant tokens due to negative balances
-LEFT JOIN
-    {{ ref('balances_bnb_bep20_noncompliant') }} AS nc ON b.token_address = nc.token_address
-
-WHERE
-    r.contract_address IS NULL AND nc.token_address IS NULL
