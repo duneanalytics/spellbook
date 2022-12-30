@@ -1,6 +1,5 @@
 {{ config(
-        schema = 'ovm_optimism'
-        , alias='l2_token_factory'
+        alias='l2_token_factory'
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'
