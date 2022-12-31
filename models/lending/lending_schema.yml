@@ -1,0 +1,177 @@
+version: 2
+
+models:
+  - name: deposits
+    meta:
+      blockchain: ethereum, optimism
+      sector: lending
+      contributors: augustog, henrystats, msilb7
+    config:
+      tags: ['ethereum', 'lending', 'cross-chain','optimism']
+    description: >
+      Deposits and Withdrawals on lending protocols on all chains across all contracts and versions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - transaction_type
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the transaction happened"
+      - &project
+        name: project
+        description: "Name of the lending protocol"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the lending project"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each transaction"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each transaction"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction on the DEX"
+      - &evt_index
+        name: evt_index
+        description: "Index of the corresponding trade event"
+      - &transaction_type
+        name: trsansaction_type
+        description: "Type of movement (supply, borrow, liquidation)"
+        tests:
+          - not_null
+      - &vault_address
+        name: vault_address
+        description: "Address of the vault / reserve involved in the transaction"
+        tests:
+          - not_null
+      - &depositor
+        name: depositor
+        description: "Address that performed the deposit"
+        tests:
+          - not_null
+      - &withdrawn_to
+        name: withdrawn_to
+        description: "Address that received the funds after a withdrawal"
+      - &liquidator
+        name: liquidator
+        description: "Address that triggered the liquidation"
+      - &token_address
+        name: token_address
+        description: "Contract address of the token borrowed / withdrawn"
+        tests:
+          - not_null
+      - &token_symbol
+        name: token_symbol
+        description: "Symbol of the token borrowed / withdrawn"
+        tests:
+          - not_null
+      - &token_amount
+        name: token_amount
+        description: "Amount borrowed / withdrawn denominated in the Token's native unit"
+        tests:
+          - not_null
+      - &amount_usd
+        name: amount_usd
+        description: "USD equivalent borrowed / withdrawn"
+      - &deposit_token_address
+        name: deposit_token_address
+        description: "Contract address of the deposit token representing the share of the vault (e.g. aToken for AAVE)"
+      - &deposit_token_amount
+        name: deposit_token_amount
+        description: "Amount of the deposit token (e.g. aToken for AAVE) transacted"
+      - &deposit_token_symbol
+        name: deposit_token_symbol
+        description: "Symbol of the deposit token representing the share of the vault (e.g. aToken for AAVE)"
+  - name: borrows
+    meta:
+      blockchain: ethereum, optimism
+      sector: lending
+      contributors: augustog, henrystats, msilb7
+    config:
+      tags: ['ethereum', 'lending', 'cross-chain','optimism']
+    description: >
+      Borrows and Repayments on lending protocols on all chains across all contracts and versions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - transaction_type
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_date
+      - *block_time
+      - *tx_hash
+      - *evt_index
+      - *transaction_type
+      - *vault_address
+      - &loan_type
+        name: loan_type
+        description: "Type of interest (fixed, variable)"
+        tests:
+          - accepted_values:
+              values: [fixed, variable]
+          - not_null
+      - &borrower
+        name: borrower
+        description: "Address that generated the loan"
+      - &repaid_by
+        name: repaid_by
+        description: "Address that repaid the loan"
+      - *liquidator
+      - *token_address
+      - *token_amount
+      - *token_symbol
+      - *amount_usd
+  - name: interest_rates
+    meta:
+      blockchain: ethereum, optimism
+      sector: lending
+      contributors: augustog, henrystats, msilb7
+    config:
+      tags: ['ethereum', 'lending', 'cross-chain','optimism']
+    description: >
+      Block-by-block values of interest rates on lending protocols on all chains across all contracts and versions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_date
+      - *block_time
+      - *tx_hash
+      - *evt_index
+      - *vault_address
+      - *token_address
+      - *token_symbol
+      - &deposit_apy
+        name: deposit_apy
+        description: "Value of deposit APY on project & blockchain for this token at block time"
+      - &stable_borrow_apy
+        name: stable_borrow_apy
+        description: "Value of stable borrow APY on project & blockchain for this token at block time"
+      - &variable_borrow_apy
+        name: varibale_borrow_apy
+        description: "Value of variable borrow APY on project & blockchain for this token at block time"
