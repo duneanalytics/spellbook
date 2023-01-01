@@ -38,11 +38,25 @@ daily_balances AS (
     {% if is_incremental() %}
     WHERE day >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+),
+
+full_calenddr_daily_balances as (
+    select
+        date_format(date_add(b.`day`, i), 'yyyy-MM-dd') as `day`,
+        wallet_address,
+        token_address,
+        amount_raw,
+        amount,
+        symbol
+    from daily_balances b
+        lateral view outer
+        posexplode(split(space(datediff(next_day, b.`day`)), ' ')) temp as i,x
+    where to_date('2020-08-31') <= b.day and b.day <= current_date
 )
 
 SELECT
     'bnb' AS blockchain,
-    d.day,
+    b.day,
     b.wallet_address,
     b.token_address,
     b.amount_raw,
@@ -50,10 +64,7 @@ SELECT
     b.amount * p.price AS amount_usd,
     b.symbol
 FROM
-    daily_balances b
-INNER JOIN
-    days d ON b.day <= d.day
-        AND d.day < b.next_day
+    full_calenddr_daily_balances b
 INNER JOIN
     {{ ref('prices_tokens') }} AS t ON b.token_address = t.contract_address
         AND t.blockchain = 'bnb'
