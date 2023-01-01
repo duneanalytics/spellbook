@@ -34,7 +34,7 @@ daily_balances AS (
         tr.symbol,
         lead(day, 1, now()) OVER (PARTITION BY tr.token_address, tr.wallet_address ORDER BY day) AS next_day
     FROM
-        {{ ref('transfers_bnb_bep20_rolling_day') }} AS tr
+        {{ ref('transfers_bnb_bep20_rolling_day_limited') }} AS tr
     INNER JOIN
         {{ ref('prices_tokens') }} AS t
         ON tr.token_address = t.contract_address

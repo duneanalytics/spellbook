@@ -74,6 +74,32 @@ models:
       - *amount_raw
       - *amount
 
+  - name: transfers_bnb_bep20_agg_day_limited
+    meta:
+      blockchain: bnb
+      sector: transfers
+      project: bep20
+      contributors: hosuke
+    config:
+      tags: ['transfers', 'bnb', 'bep20', 'agg_day', 'hosuke']
+    description: >
+      BEP20 tokens' transfers on bnb smart chain aggregated by day.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet_address
+            - token_address
+            - day
+    columns:
+      - *blockchain
+      - *day
+      - *wallet_address
+      - *token_address
+      - name: symbol
+        description: "BEP20 token symbol"
+      - *amount_raw
+      - *amount
+
   - name: transfers_bnb_bep20_rolling_hour
     meta:
       blockchain: bnb
@@ -118,18 +144,17 @@ models:
       - *last_updated
       - *recency_index
 
-  - name: transfers_bnb_bep20_rolling_month
+  - name: transfers_bnb_bep20_rolling_day_limited
     meta:
       blockchain: bnb
       sector: transfers
       project: bep20
       contributors: hosuke
     config:
-      tags: [ 'transfers', 'bnb', 'bep20', 'rolling_month', 'hosuke' ]
+      tags: [ 'transfers', 'bnb', 'bep20', 'rolling_day', 'hosuke' ]
     columns:
       - *blockchain
-      - name: month
-        description: "UTC event block time truncated to the month mark."
+      - *day
       - *wallet_address
       - *token_address
       - *symbol
