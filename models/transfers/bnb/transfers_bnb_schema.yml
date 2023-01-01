@@ -117,3 +117,23 @@ models:
       - *amount
       - *last_updated
       - *recency_index
+
+  - name: transfers_bnb_bep20_rolling_month
+    meta:
+      blockchain: bnb
+      sector: transfers
+      project: bep20
+      contributors: hosuke
+    config:
+      tags: [ 'transfers', 'bnb', 'bep20', 'rolling_month', 'hosuke' ]
+    columns:
+      - *blockchain
+      - name: month
+        description: "UTC event block time truncated to the month mark."
+      - *wallet_address
+      - *token_address
+      - *symbol
+      - *amount_raw
+      - *amount
+      - *last_updated
+      - *recency_index
