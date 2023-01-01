@@ -26,17 +26,21 @@ days AS (
 
 daily_balances AS (
     SELECT
-        wallet_address,
-        token_address,
-        amount_raw,
-        amount,
-        day,
-        symbol,
-        lead(day, 1, now()) OVER (PARTITION BY token_address, wallet_address ORDER BY day) AS next_day
+        tr.wallet_address,
+        tr.token_address,
+        tr.amount_raw,
+        tr.amount,
+        tr.day,
+        tr.symbol,
+        lead(day, 1, now()) OVER (PARTITION BY tr.token_address, tr.wallet_address ORDER BY day) AS next_day
     FROM
-        {{ ref('transfers_bnb_bep20_rolling_day') }}
+        {{ ref('transfers_bnb_bep20_rolling_day') }} AS tr
+    INNER JOIN
+        {{ ref('prices_tokens') }} AS t
+        ON tr.token_address = t.contract_address
+        AND t.blockchain = 'bnb'
     {% if is_incremental() %}
-    WHERE day >= date_trunc("day", now() - interval '1 week')
+    WHERE tr.day >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 ),
 
@@ -65,9 +69,6 @@ SELECT
     b.symbol
 FROM
     full_calenddr_daily_balances b
-INNER JOIN
-    {{ ref('prices_tokens') }} AS t ON b.token_address = t.contract_address
-        AND t.blockchain = 'bnb'
 LEFT JOIN
     {{ source('prices', 'usd') }} AS p ON p.contract_address = b.token_address
         AND b.day = p.minute
