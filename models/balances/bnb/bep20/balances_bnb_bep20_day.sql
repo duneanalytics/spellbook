@@ -70,5 +70,5 @@ INNER JOIN
         AND t.blockchain = 'bnb'
 LEFT JOIN
     {{ source('prices', 'usd') }} AS p ON p.contract_address = b.token_address
-        AND d.day = p.minute
+        AND b.day = p.minute
         AND p.blockchain = 'bnb'
