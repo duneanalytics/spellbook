@@ -519,6 +519,8 @@ models:
       ethereum:
         erc20:
           +schema: zeroex_ethereum_erc20
+        erc20_dedup:
+          +schema: zeroex_ethereum_erc20_deduped          
         nft:
           +schema: zeroex_ethereum_nft
 
@@ -841,6 +843,32 @@ seeds:
               volume_usd: double
               tx_from: string
               tx_to: string
+          zeroex_api_ethereum_deduped_fills_sample:
+            +column_types:
+              blockchain: string
+              project: string
+              version: string
+              block_date: timestamp
+              block_time: timestamp
+              taker_symbol: string
+              maker_symbol: string
+              token_pair: string
+              taker_token_amount: double
+              maker_token_amount: double
+              taker_token_amount_raw: string
+              maker_token_amount_raw: string
+              amount_usd: double
+              taker_token: string
+              maker_token: string
+              taker: string
+              maker: string
+              project_contract_address: string
+              tx_hash: string
+              tx_from: string
+              tx_to: string
+              trace_address: string 
+              evt_index: int
+              unique_trade_id: string              
         nfts:
           zeroex_nft_ethereum_fills_sample:
             +column_types:
