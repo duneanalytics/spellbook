@@ -574,6 +574,10 @@ models:
       bnb:
         +schema: tofu_bnb
 
+    maker:
+      +schema: maker
+      +materialized: table
+
 seeds:
   spellbook:
     +schema: test_data

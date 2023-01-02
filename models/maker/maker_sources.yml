@@ -1,0 +1,16 @@
+version: 2 # Spells all have “version: 2” as that’s the version of our engine they use.
+
+sources:
+  - name: maker_ethereum
+    description: Decoded events for [MakerDAO](https://makerdao.com/en/).
+    tables:
+      - name: dai_call_mint
+      - name: JUG_call_file
+      - name: SPOT_call_file
+      - name: VAT_call_fold
+      - name: VAT_call_frob
+      - name: VAT_call_grab
+      - name: VAT_call_move
+      - name: VAT_call_suck
+      - name: VOW_call_fess
+      - name: VOW_call_file
