@@ -16,6 +16,6 @@ tests as (
     case when abs(abs_balance - 137785982132.94) < 1 then true else false end as success
   from balance_2022
 )
-select 
-from ref('maker_accounting')
-where
+select *
+from tests
+where success is false
