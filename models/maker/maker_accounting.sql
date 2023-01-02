@@ -1,3 +1,17 @@
+{{ config(
+        alias ='accounting',
+        materialized = 'table',
+        partition_by = ['code'],
+        file_format = 'delta',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                "project",
+                                "maker",
+                                \'["lyt", "adcv", "SebVentures", "steakhouse"]\') }}'
+        )
+}}
+
+{% set start_dt = "'2019-11-01'" %}
+{% set end_dt = 'current_date' %}
 
 WITH dao_wallet AS (
     SELECT * FROM (VALUES
@@ -64,11 +78,11 @@ WITH dao_wallet AS (
     SELECT STRING(UNHEX(TRIM('0', RIGHT(ilk, LENGTH(ilk)-2)))) AS ilk
     FROM 
         (   
-            SELECT i AS ilk FROM {{ source('maker_ethereum','VAT_call_frob') }} GROUP BY 1
+            SELECT i AS ilk FROM {{ source('maker_ethereum','vat_call_frob') }} GROUP BY 1
             UNION ALL
-            SELECT ilk FROM {{ source('maker_ethereum','SPOT_call_file') }} GROUP BY 1
+            SELECT ilk FROM {{ source('maker_ethereum','spot_call_file') }} GROUP BY 1
             UNION ALL
-            SELECT ilk FROM {{ source('maker_ethereum','JUG_call_file') }} GROUP BY 1
+            SELECT ilk FROM {{ source('maker_ethereum','jug_call_file') }} GROUP BY 1
         )
     GROUP BY 1
 ), hashless_trxns AS
@@ -188,13 +202,13 @@ WITH dao_wallet AS (
 
 , contracts AS ( 
     SELECT 'FlapFlop' AS contract_type, data AS contract_address
-    FROM {{ source('maker_ethereum','VOW_call_file') }}
+    FROM {{ source('maker_ethereum','vow_call_file') }}
     WHERE LEFT(data,2) = '0x'
     AND call_success
     GROUP BY 2
     UNION ALL
     SELECT 'PSM' AS contract_type, u AS contract_address
-    FROM {{ source('maker_ethereum','VAT_call_frob') }}
+    FROM {{ source('maker_ethereum','vat_call_frob') }}
     WHERE STRING(UNHEX(TRIM('0', RIGHT(i, LENGTH(i)-2)))) LIKE 'PSM%'
     AND call_success
     GROUP BY 2
@@ -218,7 +232,7 @@ WITH dao_wallet AS (
     SELECT call_block_time ts
     , call_tx_hash hash
     , SUM(rad/POW(10,45)) AS value
-    FROM {{ source('maker_ethereum','VAT_call_move') }}
+    FROM {{ source('maker_ethereum','vat_call_move') }}
     JOIN team_dai_burns_tx -- Flop income (coming directly from users wallets)
     USING (call_tx_hash)
     WHERE dst = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- vow
@@ -253,7 +267,7 @@ WITH dao_wallet AS (
     , call_tx_hash hash
     , ilk
     , SUM(rad/POW(10,45)) AS value
-    FROM {{ source('maker_ethereum','dai_call_burn') }}
+    FROM {{ source('maker_ethereum','vat_call_move') }}
     JOIN psm_yield_trxns
     USING (call_tx_hash)
     WHERE dst = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- vow
@@ -281,7 +295,7 @@ WITH dao_wallet AS (
     SELECT call_block_time ts
     , call_tx_hash hash
     , SUM(rad/POW(10,45)) AS value
-    FROM {{ source('maker_ethereum','VAT_call_move') }}
+    FROM {{ source('maker_ethereum','vat_call_move') }}
     WHERE dst = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- vow
     AND call_success
     AND src NOT IN (SELECT contract_address FROM contracts) -- contract_type = 'PSM' should be enough but letting it wider
@@ -295,7 +309,7 @@ WITH dao_wallet AS (
     SELECT call_block_time ts
     , call_tx_hash hash
     , SUM(tab/POW(10,45)) AS value
-    FROM {{ source('maker_ethereum','VOW_call_fess') }}
+    FROM {{ source('maker_ethereum','vow_call_fess') }}
     WHERE call_success
     GROUP BY 1,2
 ), liquidation AS 
@@ -327,7 +341,7 @@ WITH dao_wallet AS (
 (
     SELECT u AS psm_address
     , STRING(UNHEX(TRIM('0', RIGHT(i, LENGTH(i)-2)))) AS ilk
-    FROM {{ source('maker_ethereum','VAT_call_frob') }}
+    FROM {{ source('maker_ethereum','vat_call_frob') }}
     WHERE STRING(UNHEX(TRIM('0', RIGHT(i, LENGTH(i)-2)))) LIKE 'PSM-%'
     AND call_success
     GROUP BY 1,2
@@ -337,7 +351,7 @@ WITH dao_wallet AS (
     , call_tx_hash hash
     , ilk
     , SUM(rad)/POW(10,45) AS value
-    FROM {{ source('maker_ethereum','VAT_call_move') }}
+    FROM {{ source('maker_ethereum','vat_call_move') }}
     INNER JOIN psms
     ON src = psm_address
     WHERE call_success
@@ -353,7 +367,7 @@ WITH dao_wallet AS (
     SELECT call_block_time ts
     , call_tx_hash hash
     , SUM(rad/POW(10,45)) AS value
-    FROM {{ source('maker_ethereum','VAT_call_move') }}
+    FROM {{ source('maker_ethereum','vat_call_move') }}
     JOIN (SELECT tx_hash FROM liquidation_excluded_tx) -- Flop income (coming directly from users wallets)
     ON call_tx_hash = tx_hash
     WHERE dst = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- vow
@@ -380,7 +394,7 @@ WITH dao_wallet AS (
     SELECT call_block_time ts
     , call_tx_hash hash
     , SUM(rad/POW(10,45)) AS value
-    FROM {{ source('maker_ethereum','VAT_call_move') }}
+    FROM {{ source('maker_ethereum','vat_call_move') }}
     WHERE src = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- vow
     AND call_success
     GROUP BY 1,2
@@ -406,7 +420,7 @@ WITH dao_wallet AS (
     , call_tx_hash hash
     , dart
     , NULL AS rate
-    FROM {{ source('maker_ethereum','VAT_call_frob') }}
+    FROM {{ source('maker_ethereum','vat_call_frob') }}
     WHERE call_success
     AND dart <> 0.0
     
@@ -417,7 +431,7 @@ WITH dao_wallet AS (
     , call_tx_hash hash
     , dart
     , 0.0 AS rate
-    FROM {{ source('maker_ethereum','VAT_call_grab') }}
+    FROM {{ source('maker_ethereum','vat_call_grab') }}
     WHERE call_success
     AND dart <> 0.0
     
@@ -428,7 +442,7 @@ WITH dao_wallet AS (
     , call_tx_hash hash
     , NULL AS dart
     , rate 
-    FROM {{ source('maker_ethereum','VAT_call_fold') }}
+    FROM {{ source('maker_ethereum','vat_call_fold') }}
     WHERE call_success
     AND rate <> 0.0
 ), interest_accruals_2 AS 
@@ -473,7 +487,7 @@ WITH dao_wallet AS (
 ), opex_suck_hashes AS 
 (
     SELECT suck.call_tx_hash
-    FROM {{ source('maker_ethereum','VAT_call_suck') }} suck
+    FROM {{ source('maker_ethereum','vat_call_suck') }} suck
     WHERE suck.call_success
     AND suck.u = '0xa950524441892a31ebddf91d3ceefa04bf454466'
     AND v IN ('0xbe8e3e3618f7474f8cb1d074a26affef007e98fb', '0x2cc583c0aacdac9e23cb601fda8f1a0c56cdcb71', '0xa4c22f0e25c6630b2017979acf1f865e94695c4b')
@@ -513,7 +527,7 @@ WITH dao_wallet AS (
     , call_tx_hash hash
     , 31610 AS code
     , -SUM(rad)/POW(10,45) AS value --reduced equity
-    FROM {{ source('maker_ethereum','VAT_call_suck') }}
+    FROM {{ source('maker_ethereum','vat_call_suck') }}
     WHERE u = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- Vow
     AND v = '0x197e90f9fad81970ba7976f33cbd77088e5d7cf7' -- Pot
     AND call_success
@@ -525,7 +539,7 @@ WITH dao_wallet AS (
     , call_tx_hash hash
     , 21110 AS code
     , SUM(rad)/POW(10,45) AS value --increased liability
-    FROM {{ source('maker_ethereum','VAT_call_suck') }}
+    FROM {{ source('maker_ethereum','vat_call_suck') }}
     WHERE u = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- Vow
     AND v = '0x197e90f9fad81970ba7976f33cbd77088e5d7cf7' -- Pot
     AND call_success
@@ -536,7 +550,7 @@ WITH dao_wallet AS (
     , call_tx_hash hash
     , 31520 AS code
     , -SUM(rad)/POW(10,45) AS value --reduced equity
-    FROM {{ source('maker_ethereum','VAT_call_suck') }}
+    FROM {{ source('maker_ethereum','vat_call_suck') }}
     WHERE u = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- Vow
     AND v NOT IN ('0x197e90f9fad81970ba7976f33cbd77088e5d7cf7', '0xbe8e3e3618f7474f8cb1d074a26affef007e98fb', '0x2cc583c0aacdac9e23cb601fda8f1a0c56cdcb71', '0xa4c22f0e25c6630b2017979acf1f865e94695c4b') -- dsr, opex
     AND call_success
@@ -548,7 +562,7 @@ WITH dao_wallet AS (
     , call_tx_hash hash
     , 21120 AS code
     , SUM(rad)/POW(10,45) AS value --increased liability
-    FROM {{ source('maker_ethereum','VAT_call_suck') }}
+    FROM {{ source('maker_ethereum','vat_call_suck') }}
     WHERE u = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- Vow
     AND v NOT IN ('0x197e90f9fad81970ba7976f33cbd77088e5d7cf7', '0xbe8e3e3618f7474f8cb1d074a26affef007e98fb', '0x2cc583c0aacdac9e23cb601fda8f1a0c56cdcb71', '0xa4c22f0e25c6630b2017979acf1f865e94695c4b') -- dsr, opex
     AND call_success
@@ -559,7 +573,7 @@ WITH dao_wallet AS (
     , call_tx_hash hash
     , 31510 AS code
     , SUM(rad)/POW(10,45) AS value --increased equity
-    FROM {{ source('maker_ethereum','VAT_call_suck') }}
+    FROM {{ source('maker_ethereum','vat_call_suck') }}
     WHERE v = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- Vow
     AND call_success
     GROUP BY 1,2
@@ -570,7 +584,7 @@ WITH dao_wallet AS (
     , call_tx_hash hash
     , 21120 AS code
     , -SUM(rad)/POW(10,45) AS value --decreased liability
-    FROM {{ source('maker_ethereum','VAT_call_suck') }}
+    FROM {{ source('maker_ethereum','vat_call_suck') }}
     WHERE v = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- Vow
     AND call_success
     GROUP BY 1,2
@@ -579,7 +593,7 @@ WITH dao_wallet AS (
     SELECT call_block_time ts
     , call_tx_hash hash
     , -rad/POW(10,45) AS dsr_flow
-    FROM {{ source('maker_ethereum','VAT_call_move') }} m
+    FROM {{ source('maker_ethereum','vat_call_move') }} m
     WHERE call_success
     AND src = '0x197e90f9fad81970ba7976f33cbd77088e5d7cf7'
     
@@ -588,7 +602,7 @@ WITH dao_wallet AS (
     SELECT call_block_time ts
     , call_tx_hash hash
     , rad/POW(10,45) AS dsr_flow
-    FROM {{ source('maker_ethereum','VAT_call_move') }}  m
+    FROM {{ source('maker_ethereum','vat_call_move') }}  m
     WHERE call_success
     AND dst = '0x197e90f9fad81970ba7976f33cbd77088e5d7cf7'
 ), dsr_flows AS
@@ -612,7 +626,7 @@ WITH dao_wallet AS (
     , evt_tx_hash hash
     , token
     , SUM(value/pow(10,decimals)) AS value
-    FROM {{ source('erc20_ethereum','evt_Transfer') }}
+    FROM {{ source('erc20_ethereum','evt_transfer') }}
     JOIN treasury_erc20s
     USING (contract_address)
     WHERE `to` = '0xbe8e3e3618f7474f8cb1d074a26affef007e98fb'
@@ -624,7 +638,7 @@ WITH dao_wallet AS (
     , evt_tx_hash hash
     , token
     , -SUM(value/pow(10,decimals)) AS value
-    FROM {{ source('erc20_ethereum','evt_Transfer') }}
+    FROM {{ source('erc20_ethereum','evt_transfer') }}
     JOIN treasury_erc20s
     USING (contract_address)
     WHERE `from` = '0xbe8e3e3618f7474f8cb1d074a26affef007e98fb'
@@ -653,7 +667,7 @@ WITH dao_wallet AS (
     , call_tx_hash hash
     , dart AS dart
     , NULL AS rate
-    FROM maker_ethereum.VAT_call_frob
+    FROM maker_ethereum.vat_call_frob
     WHERE call_success
     AND dart <> 0.0
     
@@ -664,7 +678,7 @@ WITH dao_wallet AS (
     , call_tx_hash hash
     , dart AS dart
     , 0.0 AS rate
-    FROM maker_ethereum.VAT_call_grab
+    FROM maker_ethereum.vat_call_grab
     WHERE call_success
     AND dart <> 0.0
     UNION ALL
@@ -674,7 +688,7 @@ WITH dao_wallet AS (
     , call_tx_hash hash
     , NULL AS dart
     , rate AS rate
-    FROM maker_ethereum.VAT_call_fold
+    FROM maker_ethereum.vat_call_fold
     WHERE call_success
     AND rate <> 0.0
 )*/
@@ -788,37 +802,37 @@ FROM chart_of_accounts coa
 
 LEFT JOIN 
 (
-    SELECT ts, hash, code, value, 'DAI' AS token, 'Returned Workforce Expenses' AS descriptor, NULL AS ilk FROM team_dai_burns WHERE ts BETWEEN '{{start_dt}}' AND DATEADD('{{end_dt}}',1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'Returned Workforce Expenses' AS descriptor, NULL AS ilk FROM team_dai_burns WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'Liquidation Revenues/Expenses' AS descriptor, NULL AS ilk FROM liquidation WHERE ts BETWEEN '{{start_dt}}' AND DATEADD('{{end_dt}}',1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'Liquidation Revenues/Expenses' AS descriptor, NULL AS ilk FROM liquidation WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'Trading Revenues' AS descriptor, ilk FROM trading_revenues WHERE ts BETWEEN '{{start_dt}}' AND DATEADD('{{end_dt}}',1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'Trading Revenues' AS descriptor, ilk FROM trading_revenues WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'MKR Mints' AS descriptor, NULL AS ilk FROM mkr_mints WHERE ts BETWEEN '{{start_dt}}' AND DATEADD('{{end_dt}}',1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'MKR Mints' AS descriptor, NULL AS ilk FROM mkr_mints WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'MKR Burns' AS descriptor, NULL AS ilk FROM mkr_burns WHERE ts BETWEEN '{{start_dt}}' AND DATEADD('{{end_dt}}',1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'MKR Burns' AS descriptor, NULL AS ilk FROM mkr_burns WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'Interest Accruals' AS descriptor, ilk FROM interest_accruals WHERE ts BETWEEN '{{start_dt}}' AND DATEADD('{{end_dt}}',1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'Interest Accruals' AS descriptor, ilk FROM interest_accruals WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'OpEx' AS descriptor, NULL AS ilk FROM opex WHERE ts BETWEEN '{{start_dt}}' AND DATEADD('{{end_dt}}',1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'OpEx' AS descriptor, NULL AS ilk FROM opex WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'DSR Expenses' AS descriptor, NULL AS ilk FROM dsr_expenses WHERE ts BETWEEN '{{start_dt}}' AND DATEADD('{{end_dt}}',1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'DSR Expenses' AS descriptor, NULL AS ilk FROM dsr_expenses WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'Other Sin Outflows'AS descriptor, NULL AS ilk  FROM other_sin_outflows WHERE ts BETWEEN '{{start_dt}}' AND DATEADD('{{end_dt}}',1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'Other Sin Outflows'AS descriptor, NULL AS ilk  FROM other_sin_outflows WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'Sin Inflows' AS descriptor, NULL AS ilk FROM sin_inflows WHERE ts BETWEEN '{{start_dt}}' AND DATEADD('{{end_dt}}',1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'Sin Inflows' AS descriptor, NULL AS ilk FROM sin_inflows WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'DSR Flows' AS descriptor, NULL AS ilk FROM dsr_flows WHERE ts BETWEEN '{{start_dt}}' AND DATEADD('{{end_dt}}',1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'DSR Flows' AS descriptor, NULL AS ilk FROM dsr_flows WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
     UNION ALL
-    SELECT ts, hash, code, value, token, 'Treasury Flows' AS descriptor, NULL AS ilk FROM treasury_flows WHERE ts BETWEEN '{{start_dt}}' AND DATEADD('{{end_dt}}',1)
+    SELECT ts, hash, code, value, token, 'Treasury Flows' AS descriptor, NULL AS ilk FROM treasury_flows WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'Loan Draws/Repays' AS descriptor, ilk FROM loan_actions WHERE ts BETWEEN '{{start_dt}}' AND DATEADD('{{end_dt}}',1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'Loan Draws/Repays' AS descriptor, ilk FROM loan_actions WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'D3M Revenues' AS descriptor, ilk FROM d3m_revenues WHERE ts BETWEEN '{{start_dt}}' AND DATEADD('{{end_dt}}',1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'D3M Revenues' AS descriptor, ilk FROM d3m_revenues WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'PSM Yield' AS descriptor, ilk FROM psm_yield WHERE ts BETWEEN '{{start_dt}}' AND DATEADD('{{end_dt}}',1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'PSM Yield' AS descriptor, ilk FROM psm_yield WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
     UNION ALL
-    SELECT ts, hash, code, value, token, 'Accounting Plugs' AS descriptor, ilk FROM hashless_trxns WHERE ts BETWEEN '{{start_dt}}' AND DATEADD('{{end_dt}}',1)
+    SELECT ts, hash, code, value, token, 'Accounting Plugs' AS descriptor, ilk FROM hashless_trxns WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
 ) unioned
 USING (code)
 WHERE value IS NOT NULL
