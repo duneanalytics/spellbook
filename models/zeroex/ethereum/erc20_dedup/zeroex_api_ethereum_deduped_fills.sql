@@ -89,7 +89,6 @@ SELECT  'ethereum' AS blockchain
       , a.tx_to
       , '' AS trace_address
       , b.evt_index
-      , '' AS unique_trade_id
   FROM fills_with_tx_fill_number a 
     JOIN deduped_bridge_fills b ON (a.tx_hash = b.tx_hash AND a.evt_index = b.evt_index)
 ;
