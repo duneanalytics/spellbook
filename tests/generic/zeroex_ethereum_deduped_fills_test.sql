@@ -15,6 +15,6 @@ WITH unit_tests AS
 )
 select *
     from unit_tests
-    where amount_test = True
+    where amount_test = False
 
 {% endtest %}
