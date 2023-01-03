@@ -22,7 +22,7 @@ base_pools as ( -- this gets the base pools deployed on ellipsis
         {% endif %}
 
         
-        UNION 
+        UNION ALL
         
         SELECT 
             _base_pool as pool, 
@@ -34,7 +34,7 @@ base_pools as ( -- this gets the base pools deployed on ellipsis
         AND call_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
-        UNION  -- manually importanting base pools that weren't created by the factory (no events emitted for them)
+        UNION ALL -- manually importanting base pools that weren't created by the factory (no events emitted for them)
 
         SELECT 
             LOWER(pool) as pool, 
@@ -156,7 +156,7 @@ plain_pools as ( -- getting plain pools data
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-            UNION
+            UNION ALL
 
             SELECT
                 pool,
@@ -197,7 +197,7 @@ meta_pools as ( -- getting meta pools and their base pools
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-            UNION
+            UNION ALL
 
             SELECT
                 pool,
@@ -241,7 +241,7 @@ meta_pools_underlying_tokens_bought as ( -- getting the underlying token bought,
         meta_pools_pool_tokens
         WHERE token_id = '0'
         
-        UNION 
+        UNION ALL
         
         SELECT 
             mt.pool, 
@@ -271,7 +271,7 @@ meta_pools_underlying_tokens_sold as ( -- getting the underlying tokens sold for
         meta_pools_pool_tokens
         WHERE token_id = '0'
         
-        UNION  -- duplicate here because the pool token (1) is also token 2 & 3 
+        UNION ALL  -- duplicate here because the pool token (1) is also token 2 & 3
 
         SELECT 
             pool, 
@@ -283,7 +283,7 @@ meta_pools_underlying_tokens_sold as ( -- getting the underlying tokens sold for
         meta_pools_pool_tokens
         WHERE token_id = '1'
         
-        UNION 
+        UNION ALL
 
         SELECT 
             pool, 
@@ -295,7 +295,7 @@ meta_pools_underlying_tokens_sold as ( -- getting the underlying tokens sold for
         meta_pools_pool_tokens
         WHERE token_id = '1'
         
-        UNION 
+        UNION ALL
         
         SELECT 
             pool, 
@@ -326,7 +326,7 @@ crypto_pools as ( -- getting crypto pools
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-            UNION
+            UNION ALL
 
             SELECT
                 pool,
