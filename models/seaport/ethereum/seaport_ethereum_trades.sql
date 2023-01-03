@@ -167,6 +167,7 @@ with source_ethereum_transactions as (
   where 1=1
     and eth_erc_idx > 0
   group by 1,2,3,4
+  having count(distinct token_contract_address) = 1  -- some private sale trade has more that one currencies
 )
 ,iv_nfts as (
   select a.block_date
@@ -206,7 +207,7 @@ with source_ethereum_transactions as (
         ,sub_type
         ,sub_idx
   from iv_base_pairs_priv a
-  left join iv_volume b on b.block_time = a.block_time  -- tx_hash and evt_index is PK, but for performance, block_time is included
+  left join iv_volume b on b.block_date = a.block_date  -- tx_hash and evt_index is PK, but for performance, block_time is included
     and b.tx_hash = a.tx_hash
     and b.evt_index = a.evt_index
   where 1=1

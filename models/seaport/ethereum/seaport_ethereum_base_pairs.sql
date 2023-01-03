@@ -12,6 +12,8 @@
      )
 }}
 
+{% set c_seaport_first_date = "2022-06-01" %}
+
 with iv_offer_consideration as (
     select evt_block_time as block_time
             ,evt_block_number as block_number
