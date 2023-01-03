@@ -374,7 +374,3 @@ models:
         description: "True if it is bundle trade and dividened price"
       - name: is_private
         description: "True if it is private sale"
-      - name : unique_trade_id
-        description:  "Unique trade ID"
-        tests:
-          - unique
