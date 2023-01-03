@@ -868,7 +868,6 @@ seeds:
               tx_to: string
               trace_address: string 
               evt_index: int
-              unique_trade_id: string              
         nfts:
           zeroex_nft_ethereum_fills_sample:
             +column_types:
