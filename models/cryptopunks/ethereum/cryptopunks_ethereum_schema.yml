@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       project: cryptopunks
-      contributors: [masquot, hidobby, cat]
+      contributors: [masquot, hildobby, cat]
     config:
       tags: ['ethereum', 'cryptopunks', 'events']
     description: >
@@ -108,7 +108,7 @@ models:
         name: platform_fee_amount_usd
         description: "Platform fee amount in USD"
       - &platform_fee_percentage
-        name: platform_fee_amount_usd
+        name: platform_fee_percentage
         description: "Platform fee in % of the amount paid for a given trade"
       - &royalty_fee_amount_raw
         name: royalty_fee_amount_raw
@@ -442,7 +442,5 @@ models:
         description: "USD amount at time of event"    
       - name: evt_block_number
         description: "Block number of event"
-      - name: evt_index
-        description: "Event index"
       - name: evt_tx_hash
         description: "Event transaction hash"
