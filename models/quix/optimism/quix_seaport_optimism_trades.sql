@@ -341,5 +341,7 @@ with source_optimism_transactions as (
     and t.nft_contract_address = erc.contract_address
     and t.buyer = erc.from
 )
-select *
+select 
+  *
+  ,concat(block_date, tx_hash, evt_index, nft_contract_address, token_id, sub_type, sub_idx) as unique_trade_id
 from iv_columns

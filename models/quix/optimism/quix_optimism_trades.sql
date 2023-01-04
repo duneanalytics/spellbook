@@ -45,7 +45,8 @@ from (
         tx_hash,
         block_number,
         tx_from,
-        tx_to
+        tx_to,
+        unique_trade_id
     from {{ model }}
     where evt_type = 'Trade'
     {% if not loop.last %}
