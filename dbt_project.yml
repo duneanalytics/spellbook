@@ -38,7 +38,7 @@ models:
         +schema: aave_ethereum
       optimism:
         +schema: aave_optimism
-
+    
     balancer:
       +schema: balancer
       arbitrum:
@@ -898,6 +898,17 @@ seeds:
             block_number: long
             tx_hash: string
             token_id: string
+    pancakeswap:
+      bnb:
+        +enabled: true
+        +schema: test_data
+        pancakeswap_nft_trades_samples:
+            block_time: timestamp
+            token_id: int
+            seller: string
+            buyer: string
+            tx_hash: string
+            block_number: int
             amount_original: double
 
     foundation:
