@@ -258,3 +258,19 @@ models:
         description: sender of order placement transaction. Equivalent to "trader"
       - *app_hash
       - *order_uid
+  - name: cow_protocol_ethereum_referrals
+    meta:
+      blockchain: ethereum
+      project: cow_protocol
+      contributors: bh2smith
+    config:
+      tags: ['ethereum','cow_protocol','affiliate', 'referrals']
+    description: >
+      The CoW Protocol Affiliate Program works based on referrals contained in AppData.
+      A referral is considered valid whenever a new trader comes and places their first 
+      order with referral address in the meta content. This table contains the relevant 
+      query to build a the affiliate mapping.
+    columns:
+      - *trader
+      - *referrer
+

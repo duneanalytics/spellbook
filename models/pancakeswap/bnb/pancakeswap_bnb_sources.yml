@@ -65,3 +65,4 @@ sources:
           - &token1
             name: token1
             description: "Token1 contract address"
+      - name: ERC721NFTMarketV1_evt_Trade

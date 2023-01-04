@@ -393,6 +393,10 @@
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 395, 1000000, 'Implications', 'ixnayokay', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-395')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 396, 1000000, 'Good, Computer', 'Dean Blacc', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-396')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 397, 1000000, 'Through Curved Air', 'Jacob Gold', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-397')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 398, 1000000, 'Libra', 'Cooper Jamieson', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-398')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 399, 1000000, 'The Field', 'Beervangeer', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-399')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 400, 1000000, 'Such A Lovely Time', 'petitsapin', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-400')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 401, 1000000, 'Aragnation', 'Devi Parikh and Abhishek Das', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-401')
 
         -- explorations
         , ('0x942bc2d3e7a589fe5bd4a5c6ef9727dfd82f5c8a',0,1000000,'Friendship Bracelets','Alexis Andre','Explorations','N/A','0x942bc2d3e7a589fe5bd4a5c6ef9727dfd82f5c8a-0')
