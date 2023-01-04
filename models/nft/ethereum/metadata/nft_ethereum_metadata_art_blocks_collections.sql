@@ -374,6 +374,7 @@
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 379, 1000000, 'ORI', 'James Merrill', 'Curated', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-379')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 383, 1000000, 'Pre-Process', 'Casey REAS', 'Curated', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-383')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 385, 1000000, 'Dipolar', 'Junia Farquhar', 'Curated', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-385')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 399, 1000000, 'The Field', 'Beervangeer', 'Curated', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-399')
 
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 375, 1000000, 'Wabi Sabi', 'Kazuhiro Tanimoto', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-375')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 377, 1000000, 'Ingress', 'Paweł Dudko', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-377')
