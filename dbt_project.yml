@@ -231,6 +231,11 @@ models:
       +schema: dodo
       ethereum:
         +schema: dodo_ethereum
+        +materialized: view
+      bnb:
+        +schema: dodo_bnb
+        +materialized: view
+    
 
     labels:
       +schema: labels
