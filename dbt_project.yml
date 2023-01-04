@@ -232,6 +232,8 @@ models:
       +schema: dodo
       ethereum:
         +schema: dodo_ethereum
+      bnb:
+        +schema: dodo_bnb
 
     labels:
       +schema: labels
