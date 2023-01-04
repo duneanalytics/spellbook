@@ -20668,7 +20668,7 @@ FROM (VALUES
         ('0xffc16ab7d366273466c705f03cfeaca8dd964f89', 'CHIEFS', 15),
         ('0xffc63b9146967a1ba33066fb057ee3722221acf0', 'A', 18),
         ('0xffc8ca4e83416b7e0443ff430cc245646434b647', '📘', 18),
-        ('0xffc97d72e13e01096502cb8eb52dee56f74dad7b', 'aAAVE', 18)
+        ('0xffc97d72e13e01096502cb8eb52dee56f74dad7b', 'aAAVE', 18),
         ('0xffcaf8d48c77fc73b9627c41cc6b4b89c31138cd', 'TWAPE', 8),
         ('0xffcf5f9feb7e14833331b6687755d1622399316c', 'ICICB', 0),
         ('0xffd0b32bb593927dd55358ec79050ad81ccefa12', 'BFT', 9),
