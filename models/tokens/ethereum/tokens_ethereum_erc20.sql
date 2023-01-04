@@ -20692,5 +20692,5 @@ FROM (VALUES
         ('0xfffb03083625d86ce1c2a7d6d3467b487385e8e6', 'CBAI', 9),
         ('0xffff981b7f8730faabd44906aa02fac15c22f2ce', 'NF', 9),
         ('0xffffffff2ba8f66d4e51811c5190992176930278', 'COMBO', 18),
-        ('0xfffffffff15abf397da76f1dcc1a1604f45126db', 'FSW', 18),
+        ('0xfffffffff15abf397da76f1dcc1a1604f45126db', 'FSW', 18)
      ) AS temp_table (contract_address, symbol, decimals)
