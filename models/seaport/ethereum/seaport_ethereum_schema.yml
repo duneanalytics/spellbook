@@ -208,19 +208,27 @@ models:
       tags: ['ethereum','seaport','base_pairs','sohwak']
     description: >
         Exploded table from Seaport trade events with `offer` and `consideration` array columns
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - tx_hash
+            - evt_index
+            - sub_type
+            - sub_idx
     columns:
       - name: block_time
         description: "Block time in UTC"
       - name: block_number
         description: "Block number of transaction"
       - name: tx_hash
-        description: "Hash ID of transaction" 
+        description: "Hash ID of transaction"
       - name: evt_index
         description: "Event log index"
       - name: sub_type
         description: "Exploded column : `offer`|`consideration`"
       - name: sub_idx
-        description: "Index number of `sub_type`" 
+        description: "Index number of `sub_type`"
       - name: offer_first_item_type
         description: "First item_type of offer in this trade : `native`|`erc20`|`erc721`|`erc1155`"
       - name: consideration_first_item_type
@@ -281,6 +289,14 @@ models:
       tags: ['ethereum','seaport','base_pairs','sohwak']
     description: >
         Seaport trades on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+            - nft_contract_address
+            - token_id
     columns:
       - *blockchain
       - *project
