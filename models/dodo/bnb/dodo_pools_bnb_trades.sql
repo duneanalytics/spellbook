@@ -161,6 +161,67 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
 
         UNION ALL
 
+        -- dodov2 dppAdvanced
+        SELECT
+            evt_block_time AS block_time,
+            'DODO' AS project,
+            '2_dpp' AS version,
+            trader AS taker,
+            receiver AS maker,
+            fromAmount AS token_bought_amount_raw,
+            toAmount AS token_sold_amount_raw,
+            cast(NULL as double)  AS amount_usd,
+            fromToken AS token_bought_address,
+            toToken AS token_sold_address,
+            contract_address AS project_contract_address,
+            evt_tx_hash AS tx_hash,
+            '' AS trace_address,
+            evt_index
+        FROM
+            {{ source('dodoex_bnb', 'DPPAdvanced_evt_DODOSwap')}}
+        WHERE {% for dodo_proxy in dodo_proxies %}
+        trader <> '{{dodo_proxy}}'
+        {% if not loop.last %}
+        and
+        {% endif %}
+        {% endfor %}
+        {% if is_incremental() %}
+        AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+
+        UNION ALL
+
+        -- dodov2 dppOracle
+        SELECT
+            evt_block_time AS block_time,
+            'DODO' AS project,
+            '2_dpp' AS version,
+            trader AS taker,
+            receiver AS maker,
+            fromAmount AS token_bought_amount_raw,
+            toAmount AS token_sold_amount_raw,
+            cast(NULL as double)  AS amount_usd,
+            fromToken AS token_bought_address,
+            toToken AS token_sold_address,
+            contract_address AS project_contract_address,
+            evt_tx_hash AS tx_hash,
+            '' AS trace_address,
+            evt_index
+        FROM
+            {{ source('dodoex_bnb', 'DPPOracle_evt_DODOSwap')}}
+        WHERE {% for dodo_proxy in dodo_proxies %}
+        trader <> '{{dodo_proxy}}'
+        {% if not loop.last %}
+        and
+        {% endif %}
+        {% endfor %}
+        {% if is_incremental() %}
+        AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+
+        UNION ALL
+
+
         -- dodov2 dsp
         SELECT
             evt_block_time AS block_time,
