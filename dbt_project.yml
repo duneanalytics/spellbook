@@ -308,13 +308,8 @@ models:
 
     dodo:
       +schema: dodo
-      +materialized: view
       ethereum:
         +schema: dodo_ethereum
-        +materialized: view
-      bnb:
-        +schema: dodo_bnb
-        +materialized: view
 
     labels:
       +schema: labels
