@@ -8,7 +8,7 @@
     post_hook='{{ expose_spells(\'["optimism"]\',
                         "project",
                         "quix",
-                        \'["chuxinh"]\') }}'
+                        \'["chuxin"]\') }}'
     )
 }}
 {% set quix_fee_address_address = "0xec1557a67d4980c948cd473075293204f4d280fd" %}
