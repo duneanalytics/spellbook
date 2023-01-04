@@ -35,11 +35,9 @@ FROM
                 , h.fee_amount_raw
                 , h.token_address
                 , h.fee_address
-                , CASE WHEN h.tx_method_id = '0x3d12a85a' THEN 1
-                       ELSE h.source_chain_id END AS source_chain_id
+                , h.source_chain_id
                 , h.destination_chain_id
-                , CASE WHEN h.tx_method_id = '0x3d12a85a' THEN 'Ethereum Mainnet'
-                       ELSE h.source_chain_name END AS source_chain_name
+                , h.source_chain_name
                 , h.destination_chain_name
                 , CASE WHEN sb.tx_hash IS NOT NULL
                         THEN 1 ELSE 0
