@@ -282,7 +282,7 @@ with source_optimism_transactions as (
     ,t.nft_contract_address
     ,t.nft_token_name as collection
     ,t.nft_token_id as token_id
-    ,t.nft_token_amount as number_of_items
+    ,cast(t.nft_token_amount as decimal(38, 0)) as number_of_items
     ,t.nft_token_standard as token_standard
 
     -- price info
