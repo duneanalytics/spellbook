@@ -17,7 +17,7 @@ SELECT
   signatures[0] as tx_hash,
   block_date,
   block_time,
-  block_slot::string as block_number,
+  CAST(block_slot AS BIGINT) as block_number,
   abs(post_balances[0] / 1e9 - pre_balances[0] / 1e9) * p.price AS amount_usd,
   abs(post_balances[0] / 1e9 - pre_balances[0] / 1e9) AS amount_original,
   CAST(abs(post_balances[0] - pre_balances[0]) AS DECIMAL(38,0)) AS amount_raw,
@@ -69,8 +69,8 @@ SELECT
   2*(abs(post_balances[0] / 1e9 - pre_balances[0] / 1e9))/100 as platform_fee_amount,
   2*(abs(post_balances[0] / 1e9 - pre_balances[0] / 1e9) * p.price)/100 as platform_fee_amount_usd,
   CAST(2 AS DOUBLE) as platform_fee_percentage,
-  abs(post_balances[11] - pre_balances[11]) + abs(post_balances[12] - pre_balances[12])
-    + abs(post_balances[13] - pre_balances[13]) + abs(post_balances[14] - pre_balances[14])  + abs(post_balances[15] - pre_balances[15]) as royalty_fee_amount_raw,
+  CAST (abs(post_balances[11] - pre_balances[11]) + abs(post_balances[12] - pre_balances[12])
+    + abs(post_balances[13] - pre_balances[13]) + abs(post_balances[14] - pre_balances[14])  + abs(post_balances[15] - pre_balances[15]) AS DOUBLE) as royalty_fee_amount_raw,
   abs(post_balances[11] / 1e9 - pre_balances[11] / 1e9) + abs(post_balances[12] / 1e9 - pre_balances[12] / 1e9)
     + abs(post_balances[13] / 1e9 - pre_balances[13] / 1e9) + abs(post_balances[14] / 1e9 - pre_balances[14] / 1e9) + abs(post_balances[15] / 1e9 - pre_balances[15] / 1e9)
     as royalty_fee_amount,
