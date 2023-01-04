@@ -7665,7 +7665,6 @@ FROM (VALUES
         ('0x5d30ad9c6374bf925d0a75454fa327aacf778492', 'PERI', 18),
         ('0x5d3a4f62124498092ce665f865e0b38ff6f5fbea', 'IDEA', 18),
         ('0x5d3a536e4d6dbd6114cc1ead35777bab948e3643', 'cDAI', 8),
-        ('0x5d3a536e4d6dbd6114cc1ead35777bab948e3643', 'cDAI', 8),
         ('0x5d3b916636f21790f15603aef08542bfb80228f9', '$VHX', 18),
         ('0x5d3c0985d46cf35699604cceb68ce7ea62bca475', 'L', 9),
         ('0x5d45aa01b73c971c65f3df409c9b3627b8fe2726', 'TMCN', 18),
