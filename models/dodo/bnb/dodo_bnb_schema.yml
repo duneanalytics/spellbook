@@ -6,11 +6,33 @@ models:
       blockchain: bnb
       sector: dex
       project: dodo
-      contributors: owen05
+      contributors: owen05, scoffie
     config:
       tags: ['bnb','dodo','trades', 'dex']
     description: >
         Dodo trades on BNBChain.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_seed:
+          blockchain: bnb
+          project: DODO
+          version: 1
+      - check_dex_seed:
+          blockchain: bnb
+          project: DODO
+          version: 2_dvm
+      - check_dex_seed:
+          blockchain: bnb
+          project: DODO
+          version: 2_dsp
     columns:
       - &blockchain
         name: blockchain
@@ -57,9 +79,6 @@ models:
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of the token bought"
-        tests:
-          - dex_trades_token_bought:
-              dex_trades_seed: ref('dex_trades_seed')
       - &token_sold_address
         name: token_sold_address
         description: "Contract address of the token sold"
@@ -95,7 +114,7 @@ models:
       project: dodo_pools
       contributors: owen05
     config:
-      tags: ['bnb','dodo',"pools", 'trades', 'dex']
+      tags: ['bnb', 'dodo', 'pools', 'trades', 'dex']
     description: >
         DodoV1 && DODOV2 pools' trades on BNBChain.
     tests:
@@ -152,7 +171,7 @@ models:
       project: dodo_aggregator
       contributors: owen05
     config:
-      tags: ['bnb','dodo',"aggregator", 'trades', 'dex']
+      tags: ['bnb', 'dodo', 'aggregator', 'trades', 'dex']
     description: >
         DODO Aggregation on BNBChain.
     tests:
