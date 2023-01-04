@@ -287,7 +287,7 @@ with source_optimism_transactions as (
 
     -- price info
     ,t.price_amount as amount_original
-    ,t.price_amount_raw as amount_raw
+    ,cast(t.price_amount_raw as as decimal(38, 0)) as amount_raw
     ,t.price_amount_usd as amount_usd
     ,t.token_symbol as currency_symbol
     ,t.token_alternative_symbol as currency_contract

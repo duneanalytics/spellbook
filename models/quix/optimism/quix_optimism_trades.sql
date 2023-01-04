@@ -35,7 +35,7 @@ from (
         seller,
         buyer,
         amount_original,
-        cast(amount_raw as decimal(38, 0)) as amount_raw,
+        amount_raw,
         currency_symbol,
         currency_contract,
         nft_contract_address,

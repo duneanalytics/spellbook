@@ -138,7 +138,7 @@ select
     else er.buyer 
     end as buyer
     ,er.amount_raw / power(10, t1.decimals) as amount_original
-    ,er.amount_raw
+    ,cast(er.amount_raw as decimal(38, 0)) as amount_raw
     ,case 
         when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
             then 'ETH'
