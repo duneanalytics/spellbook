@@ -25,15 +25,15 @@ select
   array("ethereum") as blockchain,
   address,
   case
-    when trader_age > 1825 then '5 years old trader'
-    when trader_age > 1460 then '4 years old trader'
-    when trader_age > 1095 then '3 years old trader'
-    when trader_age > 730 then '2 years old trader'
-    when trader_age > 365 then '1 year old trader'
-    when trader_age > 91 then '3 months old trader'
-    when trader_age > 30 then '1 month old trader'
-    when trader_age > 7 then '1 week old trader'
-    else 'less than 1 week old trader'
+    when trader_age > 1825 then '5 years old DEX trader'
+    when trader_age > 1460 then '4 years old DEX trader'
+    when trader_age > 1095 then '3 years old DEX trader'
+    when trader_age > 730 then '2 years old DEX trader'
+    when trader_age > 365 then '1 year old DEX trader'
+    when trader_age > 91 then '3 months old DEX trader'
+    when trader_age > 30 then '1 month old DEX trader'
+    when trader_age > 7 then '1 week old DEX trader'
+    else 'less than 1 week old DEX trader'
   end as name,
   "trader_age" AS category,
   "gentrexha" AS contributor,
