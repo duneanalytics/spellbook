@@ -30,7 +30,7 @@ sources:
             description: 'Unique encoded identifier that refers to each pool'
           - name: specialization
             description: 'Pool specialization'
-
+      
       - name: Vault_evt_Swap
         description: >
           Decoded table related to the the contracts emitted by swaps in Balancer V2 pools.
@@ -227,7 +227,7 @@ sources:
             description: "Epoch time when tokens unlock; this is the user's request, but the actual unlock time will be rounded down to a Thursday"
           - name: _value
             description: "Amount to deposit"
-     
+
       - name: veBAL_evt_Deposit
         loaded_at_field: evt_block_time
         description: "Emitted when user deposits tokens in their lock or extends its unlock time"
@@ -249,7 +249,7 @@ sources:
               INCREASE_UNLOCK_TIME: 3
           - name: value
             description: "Amount of base tokens added to the lock"
-      
+
       - name: veBAL_evt_Withdraw
         loaded_at_field: evt_block_time
         description: "Emitted when user withdraws tokens from their lock"
