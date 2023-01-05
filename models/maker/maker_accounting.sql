@@ -87,27 +87,27 @@ WITH dao_wallet AS (
     GROUP BY 1
 ), hashless_trxns AS
 (
-    SELECT '2022-11-01 00:00'::TIMESTAMP AS ts, 'noHash:movingGusdPSMBalanceFromNonYieldingToYielding' AS hash, 13410 AS code, -222632234.27 AS value, 'DAI' AS token, 'PSM-GUSD-A' AS ilk
+    SELECT CAST('2022-11-01 00:00' AS TIMESTAMP) AS ts, 'noHash:movingGusdPSMBalanceFromNonYieldingToYielding' AS hash, 13410 AS code, -222632234.27 AS value, 'DAI' AS token, 'PSM-GUSD-A' AS ilk
     UNION ALL
-    SELECT '2022-11-01 00:00'::TIMESTAMP AS ts, 'noHash:movingGusdPSMBalanceFromNonYieldingToYielding' AS hash, 13411 AS code, 222632234.27 AS value, 'DAI' AS token, 'PSM-GUSD-A' AS ilk
+    SELECT CAST('2022-11-01 00:00' AS TIMESTAMP) AS ts, 'noHash:movingGusdPSMBalanceFromNonYieldingToYielding' AS hash, 13411 AS code, 222632234.27 AS value, 'DAI' AS token, 'PSM-GUSD-A' AS ilk
 ), ilk_list_manual_input --every RWA needs to be listed here to be counted.
     --PSMs not listed will be assumed non-yield-bearing
     --Any ilk listed in here must have complete history (a row with null as the begin month/yr and a row with null as the end month/year, can be same row)
     (ilk, begin_dt, end_dt, asset_code, equity_code, apr)
     AS (values
-    ('PSM-GUSD-A',NULL,'2022-10-31',13410,NULL::NUMERIC,NULL::NUMERIC), --could make rate 0 as well.
+    ('PSM-GUSD-A',NULL,'2022-10-31',13410,CAST(NULL AS NUMERIC(38)),CAST(NULL AS NUMERIC(38))), --could make rate 0 as well.
     ('PSM-GUSD-A','2022-11-01',NULL,13411,31180,0.0125),
-    ('RWA001-A',NULL,NULL,12310,31170,NULL::NUMERIC),
-    ('RWA002-A',NULL,NULL,12310,31170,NULL::NUMERIC),
-    ('RWA003-A',NULL,NULL,12310,31170,NULL::NUMERIC),
-    ('RWA004-A',NULL,NULL,12310,31170,NULL::NUMERIC),
-    ('RWA005-A',NULL,NULL,12310,31170,NULL::NUMERIC),
-    ('RWA006-A',NULL,NULL,12310,31170,NULL::NUMERIC),
-    ('RWA007-A',NULL,NULL,12320,31172,NULL::NUMERIC),
-    ('RWA008-A',NULL,NULL,12310,31170,NULL::NUMERIC),
-    ('RWA009-A',NULL,NULL,12310,31170,NULL::NUMERIC),
-    ('UNIV2DAIUSDC-A',NULL,NULL,11140,31140,NULL::NUMERIC), --need to list all UNIV2% LP that are stable LPs, all else assumed volatile
-    ('UNIV2DAIUSDT-A',NULL,NULL,11140,31140,NULL::NUMERIC)
+    ('RWA001-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
+    ('RWA002-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
+    ('RWA003-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
+    ('RWA004-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
+    ('RWA005-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
+    ('RWA006-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
+    ('RWA007-A',NULL,NULL,12320,31172,CAST(NULL AS NUMERIC(38))),
+    ('RWA008-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
+    ('RWA009-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
+    ('UNIV2DAIUSDC-A',NULL,NULL,11140,31140,CAST(NULL AS NUMERIC(38))), --need to list all UNIV2% LP that are stable LPs, all else assumed volatile
+    ('UNIV2DAIUSDT-A',NULL,NULL,11140,31140,CAST(NULL AS NUMERIC(38)))
 ), ilk_list_labeled AS
 (
     SELECT * FROM ilk_list_manual_input
@@ -136,12 +136,12 @@ WITH dao_wallet AS (
         WHEN ilk LIKE 'UNIV2%' THEN 31141
         WHEN ilk LIKE 'DIRECT%' THEN 31160
         WHEN ilk LIKE 'RWA%' THEN 31170 --default rwa into off-chain private credit in case an RWA is not manually listed
-        WHEN ilk LIKE 'PSM%' THEN NULL::NUMERIC --defaulting PSMS to non-yielding; exceptions should be listed in manual entry table
+        WHEN ilk LIKE 'PSM%' THEN CAST(NULL AS NUMERIC(38)) --defaulting PSMS to non-yielding; exceptions should be listed in manual entry table
         WHEN ilk IN ('USDC-A','USDC-B', 'USDT-A', 'TUSD-A','GUSD-A','PAXUSD-A') THEN 31190
         ELSE 31150 --other crypto loans category. all other categories are accounted for in the above logic. SAI included here
 
         END AS equity_code
-    , NULL::NUMERIC AS apr
+    , CAST(NULL AS NUMERIC(38)) AS apr
     FROM ilk_list
     WHERE ilk NOT IN (SELECT ilk FROM ilk_list_manual_input)
     AND ilk <> 'TELEPORT-FW-A' --Need to look into how to handle teleport and potentially update. Ignoring for now.
@@ -482,7 +482,7 @@ WITH dao_wallet AS (
     FROM interest_accruals_3
     LEFT JOIN ilk_list_labeled
     ON interest_accruals_3.ilk = ilk_list_labeled.ilk
-    AND interest_accruals_3.ts::DATE BETWEEN COALESCE(ilk_list_labeled.begin_dt, '2000-01-01') AND COALESCE(ilk_list_labeled.end_dt, '2222-12-31') --if null, ensure its not restrictive
+    AND CAST(interest_accruals_3.ts AS DATE) BETWEEN COALESCE(ilk_list_labeled.begin_dt, '2000-01-01') AND COALESCE(ilk_list_labeled.end_dt, '2222-12-31') --if null, ensure its not restrictive
     GROUP BY 1,2,3,5
 ), opex_suck_hashes AS 
 (
@@ -711,7 +711,7 @@ WITH dao_wallet AS (
     FROM loan_actions_2
     LEFT JOIN ilk_list_labeled
     ON loan_actions_2.ilk = ilk_list_labeled.ilk
-    AND loan_actions_2.ts::DATE BETWEEN COALESCE(ilk_list_labeled.begin_dt, '2000-01-01') AND COALESCE(ilk_list_labeled.end_dt, '2222-12-31') --if null, ensure its not restrictive
+    AND CAST(loan_actions_2.ts AS DATE) BETWEEN COALESCE(ilk_list_labeled.begin_dt, '2000-01-01') AND COALESCE(ilk_list_labeled.end_dt, '2222-12-31') --if null, ensure its not restrictive
     --WHERE COALESCE(dart,0) <> 0  --this illogically breaks the query....
     GROUP BY 1,2,3,5
     HAVING SUM(dart*rate)/POW(10,45) <> 0
