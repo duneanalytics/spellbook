@@ -229,9 +229,9 @@ values
 , contracts AS ( 
     SELECT 'FlapFlop' AS contract_type, data AS contract_address
     FROM {{ source('maker_ethereum','vow_call_file') }}
-    WHERE LEFT(contract_address, 2) = '0x'
+    WHERE LEFT(data, 2) = '0x'
     AND call_success
-    GROUP BY contract_address
+    GROUP BY data
     UNION ALL
     SELECT 'PSM' AS contract_type, u AS contract_address
     FROM {{ source('maker_ethereum','vat_call_frob') }}
