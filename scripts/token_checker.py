@@ -85,8 +85,8 @@ class TokenChecker:
             # Confirm Contract Listed
             api_contract = self.contracts_by_chain[token['blockchain']][token['id']]
             if token['contract_address']:
-                assert token['contract_address'].lower() == api_contract['contract_address'].lower() \
-                    , f"WARN: {token['id']} Provided contract address: {token['contract_address']} for chain {token['blockchain']} does not match CoinPaprika {api_contract['contract_address']}." \
+                assert token['contract_address'].lower() == api_contract['address'].lower() \
+                    , f"WARN: {token['id']} Provided contract address: {token['contract_address']} for chain {token['blockchain']} does not match CoinPaprika {api_contract['address']}." \
                       f" (Not uncommon! share block explorer link to confirm contract)"
             else:
                 logging.warning(f"WARN: Line: {new_line} contract_address is None")
