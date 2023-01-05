@@ -1,9 +1,9 @@
 version: 2
 
 sources:
-  - name: dodo_ethereum
+  - name: dodoex_bnb
     description: >
-      Decoded tables related to Dodo dex trades.
+      Decoded tables related to Dodo dex trades for Binance Smart Chain
     freshness: # default freshness
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
@@ -14,7 +14,7 @@ sources:
         loaded_at_field: evt_block_time
         columns:
           - name: contract_address
-            description: 'Ethereum address for the liquidity pool used in transaction'
+            description: 'Binance Smart Chain address for the liquidity pool used in transaction'
           - name: evt_tx_hash
             description: 'Transaction hash of the event'
           - name: evt_index
@@ -28,7 +28,7 @@ sources:
         loaded_at_field: evt_block_time
         columns:
           - name: contract_address
-            description: 'Ethereum address for the liquidity pool used in transaction'
+            description: 'Binance Smart Chain address for the liquidity pool used in transaction'
           - name: evt_tx_hash
             description: 'Transaction hash of the event'
           - name: evt_index
@@ -36,13 +36,13 @@ sources:
           - name: evt_block_time
             description: 'Timestamp for Buy event time in UTC'
 
-      - name: DODOV1Proxy01_evt_OrderHistory
+      - name: DODORouteProxy_evt_OrderHistory
         description: >
           V1 of Decoded table  that shows Order History happening through a router contract number 1.
         loaded_at_field: evt_block_time
         columns:
           - name: contract_address
-            description: 'Ethereum address for the proxy contract used in transaction'
+            description: 'Binance Smart Chain address for the proxy contract used in transaction'
           - name: evt_tx_hash
             description: 'Transaction hash of the event'
           - name: evt_index
@@ -50,13 +50,13 @@ sources:
           - name: evt_block_time
             description: 'Timestamp for block event time in UTC'
 
-      - name: DODOV1Proxy04_evt_OrderHistory
+      - name: DODOV2Proxy01_evt_OrderHistory
         description: >
-          V1 of Decoded table  that shows Order History happening through a router contract number 4.
+          V2 of Decoded table  that shows Order History happening through a router contract number 01.
         loaded_at_field: evt_block_time
         columns:
           - name: contract_address
-            description: 'Ethereum address for the proxy contract used in transaction'
+            description: 'Binance Smart Chain address for the proxy contract used in transaction'
           - name: evt_tx_hash
             description: 'Transaction hash of the event'
           - name: evt_index
@@ -70,7 +70,7 @@ sources:
         loaded_at_field: evt_block_time
         columns:
           - name: contract_address
-            description: 'Ethereum address for the proxy contract used in transaction'
+            description: 'Binance Smart Chain address for the proxy contract used in transaction'
           - name: evt_tx_hash
             description: 'Transaction hash of the event'
           - name: evt_index
@@ -84,7 +84,7 @@ sources:
         loaded_at_field: evt_block_time
         columns:
           - name: contract_address
-            description: 'Ethereum address for the liquidity pool used in transaction'
+            description: 'Binance Smart Chain address for the liquidity pool used in transaction'
           - name: evt_tx_hash
             description: 'Transaction hash of the event'
           - name: evt_index
@@ -98,13 +98,28 @@ sources:
         loaded_at_field: evt_block_time
         columns:
           - name: contract_address
-            description: 'Ethereum address for the liquidity pool used in transaction'
+            description: 'Binance Smart Chain address for the liquidity pool used in transaction'
           - name: evt_tx_hash
             description: 'Transaction hash of the event'
           - name: evt_index
             description: 'Event index'
           - name: evt_block_time
             description: 'Timestamp for block event time in UTC'
+
+      - name: DPPOracle_evt_DODOSwap
+        description: >
+          Decoded table related to DPPOracle DODOSwap contract events.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'Binance Smart Chain address for the liquidity pool used in transaction'
+          - name: evt_tx_hash
+            description: 'Transaction hash of the event'
+          - name: evt_index
+            description: 'Event index'
+          - name: evt_block_time
+            description: 'Timestamp for block event time in UTC'
+
 
       - name: DSP_evt_DODOSwap
         description: >
@@ -112,11 +127,10 @@ sources:
         loaded_at_field: evt_block_time
         columns:
           - name: contract_address
-            description: 'Ethereum address for the liquidity pool used in transaction'
+            description: 'Binance Smart Chain address for the liquidity pool used in transaction'
           - name: evt_tx_hash
             description: 'Transaction hash of the event'
           - name: evt_index
             description: 'Event index'
           - name: evt_block_time
             description: 'Timestamp for block event time in UTC'
-
