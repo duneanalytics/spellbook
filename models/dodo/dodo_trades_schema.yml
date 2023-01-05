@@ -5,7 +5,7 @@ models:
       blockchain: ethereum, bnb
       sector: dex
       project: dodo
-      contributors: scoffie
+      contributors: scoffie, owen05
     config:
       tags: ['ethereum','bnb', 'dex','trades', 'dodo',]
     description: >
