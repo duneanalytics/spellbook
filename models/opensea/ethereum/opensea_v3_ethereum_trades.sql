@@ -1,5 +1,5 @@
 {{ config(schema='opensea_v3_ethereum'
-         ,alias='trades') 
+         ,alias='trades')
 }}
 
 -- opensea.trades has the same columns as seaport.trades
@@ -7,7 +7,7 @@
 -- project/version : opensea/v3
 -- materialize : view
 
-select blockchain    
+select blockchain
       ,'opensea' as project
       ,'v3' as version
       ,block_date
@@ -28,7 +28,7 @@ select blockchain
       ,currency_symbol
       ,currency_contract
       ,original_currency_contract
-      ,currency_decimals   
+      ,currency_decimals
       ,project_contract_address
       ,platform_fee_receive_address
       ,platform_fee_amount_raw
@@ -57,7 +57,7 @@ select blockchain
       ,zone_address
       ,estimated_price
       ,is_private
-      ,'seaport-' || tx_hash || '-' || evt_index || '-' || nft_contract_address || '-' || token_id || '-' || sub_idx as unique_trade_id
+      ,'seaport-' || tx_hash || '-' || cast(evt_index as VARCHAR(10)) || '-' || nft_contract_address || '-' || cast(token_id as VARCHAR(10)) || '-' || cast(sub_idx as VARCHAR(10)) as unique_trade_id
   from {{ ref('seaport_ethereum_trades') }}
  where zone_address in ('0xf397619df7bfd4d1657ea9bdd9df7ff888731a11'
                        ,'0x9b814233894cd227f561b78cc65891aa55c62ad2'
