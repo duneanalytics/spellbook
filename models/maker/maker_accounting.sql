@@ -229,7 +229,7 @@ values
 , contracts AS ( 
     SELECT 'FlapFlop' AS contract_type, data AS contract_address
     FROM {{ source('maker_ethereum','vow_call_file') }}
-    WHERE LEFT(data,2) = '0x'
+    WHERE LEFT(contract_address, 2) = '0x'
     AND call_success
     GROUP BY contract_address
     UNION ALL
