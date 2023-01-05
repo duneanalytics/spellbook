@@ -57,7 +57,7 @@ select blockchain
       ,zone_address
       ,estimated_price
       ,is_private
-      ,'seaport-' || tx_hash || '-' || cast(evt_index as VARCHAR) || '-' || nft_contract_address || '-' || cast(token_id as VARCHAR) || '-' || cast(sub_idx as VARCHAR) as unique_trade_id
+      ,'seaport-' || tx_hash || '-' || cast(evt_index as VARCHAR(10)) || '-' || nft_contract_address || '-' || cast(token_id as VARCHAR(10)) || '-' || cast(sub_idx as VARCHAR(10)) as unique_trade_id
   from {{ ref('seaport_ethereum_trades') }}
  where zone_address in ('0xf397619df7bfd4d1657ea9bdd9df7ff888731a11'
                        ,'0x9b814233894cd227f561b78cc65891aa55c62ad2'
