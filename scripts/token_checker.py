@@ -30,7 +30,7 @@ class TokenChecker:
             "id": values[0],
             "blockchain": values[1],
             "symbol": values[2],
-            "contract_address": values[3]
+            "contract_address": values[3].lower()
         }
 
     @staticmethod
