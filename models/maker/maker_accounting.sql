@@ -64,37 +64,63 @@ WITH dao_wallet AS (
 )
 
 -- ********** Helper Tables *********** 
-, treasury_erc20s AS
-(
-    SELECT '0xc18360217d8f7ab5e7c516566761ea12ce7f9d72' AS contract_address, '0xc18360217d8f7ab5e7c516566761ea12ce7f9d72' AS price_address, 18 AS decimals, 'ENS' AS token
+, treasury_erc20s AS( -- unused CTE #Hosuke commented
+    SELECT '0xc18360217d8f7ab5e7c516566761ea12ce7f9d72' AS contract_address,
+           '0xc18360217d8f7ab5e7c516566761ea12ce7f9d72' AS price_address,
+           18                                           AS decimals,
+           'ENS'                                        AS token
     UNION ALL
-    SELECT '0x4da27a545c0c5b758a6ba100e3a049001de870f5' AS contract_address, '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9' AS price_address, 18 AS decimals, 'stkAAVE' AS token
+    SELECT '0x4da27a545c0c5b758a6ba100e3a049001de870f5' AS contract_address,
+           '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9' AS price_address,
+           18                                           AS decimals,
+           'stkAAVE'                                    AS token
     UNION ALL
-    SELECT '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9' AS contract_address, '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9' AS price_address, 18 AS decimals, 'AAVE' AS token
+    SELECT '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9' AS contract_address,
+           '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9' AS price_address,
+           18                                           AS decimals,
+           'AAVE'                                       AS token
     UNION ALL
-    SELECT '0xc00e94cb662c3520282e6f5717214004a7f26888' AS contract_address, '0xc00e94cb662c3520282e6f5717214004a7f26888' AS price_address, 18 AS decimals, 'COMP' AS token
-), ilk_list AS 
-(
-    SELECT STRING(UNHEX(TRIM('0', RIGHT(ilk, LENGTH(ilk)-2)))) AS ilk
-    FROM 
-        (   
-            SELECT i AS ilk FROM {{ source('maker_ethereum','vat_call_frob') }} GROUP BY 1
-            UNION ALL
-            SELECT ilk FROM {{ source('maker_ethereum','spot_call_file') }} GROUP BY 1
-            UNION ALL
-            SELECT ilk FROM {{ source('maker_ethereum','jug_call_file') }} GROUP BY 1
-        )
-    GROUP BY 1
-), hashless_trxns AS
-(
-    SELECT CAST('2022-11-01 00:00' AS TIMESTAMP) AS ts, 'noHash:movingGusdPSMBalanceFromNonYieldingToYielding' AS hash, 13410 AS code, -222632234.27 AS value, 'DAI' AS token, 'PSM-GUSD-A' AS ilk
+    SELECT '0xc00e94cb662c3520282e6f5717214004a7f26888' AS contract_address,
+           '0xc00e94cb662c3520282e6f5717214004a7f26888' AS price_address,
+           18                                           AS decimals,
+           'COMP'                                       AS token
+)
+, ilk_list AS (
+    SELECT STRING(UNHEX(TRIM('0', RIGHT(ilk, LENGTH(ilk) - 2)))) AS ilk
+    FROM (SELECT i AS ilk
+          FROM {{ source('maker_ethereum', 'vat_call_frob') }}
+          GROUP BY ilk
+          UNION ALL
+          SELECT ilk
+          FROM {{ source('maker_ethereum', 'spot_call_file') }}
+          GROUP BY ilk
+          UNION ALL
+          SELECT ilk
+          FROM {{ source('maker_ethereum', 'jug_call_file') }}
+          GROUP BY ilk)
+    GROUP BY ilk
+)
+, hashless_trxns AS(  -- unused CTE #Hosuke commented
+    SELECT CAST('2022-11-01 00:00' AS TIMESTAMP)                  AS ts,
+           'noHash:movingGusdPSMBalanceFromNonYieldingToYielding' AS hash,
+           13410                                                  AS code,
+           -222632234.27                                          AS value,
+           'DAI'                                                  AS token,
+           'PSM-GUSD-A'                                           AS ilk
     UNION ALL
-    SELECT CAST('2022-11-01 00:00' AS TIMESTAMP) AS ts, 'noHash:movingGusdPSMBalanceFromNonYieldingToYielding' AS hash, 13411 AS code, 222632234.27 AS value, 'DAI' AS token, 'PSM-GUSD-A' AS ilk
-), ilk_list_manual_input --every RWA needs to be listed here to be counted.
+    SELECT CAST('2022-11-01 00:00' AS TIMESTAMP)                  AS ts,
+           'noHash:movingGusdPSMBalanceFromNonYieldingToYielding' AS hash,
+           13411                                                  AS code,
+           222632234.27                                           AS value,
+           'DAI'                                                  AS token,
+           'PSM-GUSD-A'                                           AS ilk
+)
+, ilk_list_manual_input
+    --every RWA needs to be listed here to be counted.
     --PSMs not listed will be assumed non-yield-bearing
     --Any ilk listed in here must have complete history (a row with null as the begin month/yr and a row with null as the end month/year, can be same row)
-    (ilk, begin_dt, end_dt, asset_code, equity_code, apr)
-    AS (values
+(ilk, begin_dt, end_dt, asset_code, equity_code, apr) AS (
+values
     ('PSM-GUSD-A',NULL,'2022-10-31',13410,CAST(NULL AS NUMERIC(38)),CAST(NULL AS NUMERIC(38))), --could make rate 0 as well.
     ('PSM-GUSD-A','2022-11-01',NULL,13411,31180,0.0125),
     ('RWA001-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
@@ -108,8 +134,8 @@ WITH dao_wallet AS (
     ('RWA009-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
     ('UNIV2DAIUSDC-A',NULL,NULL,11140,31140,CAST(NULL AS NUMERIC(38))), --need to list all UNIV2% LP that are stable LPs, all else assumed volatile
     ('UNIV2DAIUSDT-A',NULL,NULL,11140,31140,CAST(NULL AS NUMERIC(38)))
-), ilk_list_labeled AS
-(
+)
+, ilk_list_labeled AS (
     SELECT * FROM ilk_list_manual_input
     
     UNION ALL
@@ -145,9 +171,10 @@ WITH dao_wallet AS (
     FROM ilk_list
     WHERE ilk NOT IN (SELECT ilk FROM ilk_list_manual_input)
     AND ilk <> 'TELEPORT-FW-A' --Need to look into how to handle teleport and potentially update. Ignoring for now.
-), chart_of_accounts
-    (code, primary_label, secondary_label, account_label, category_label, subcategory_label)
-    AS (values
+)
+, chart_of_accounts
+(code, primary_label, secondary_label, account_label, category_label, subcategory_label) AS (
+    values
     (11110, 'Assets', 'Collateralized Lending', 'Crypto-Loans', 'ETH', 'ETH'),
     (11120, 'Assets', 'Collateralized Lending', 'Crypto-Loans', 'BTC', 'BTC'),
     (11130, 'Assets', 'Collateralized Lending', 'Crypto-Loans', 'WSTETH', 'WSTETH'),
@@ -158,12 +185,12 @@ WITH dao_wallet AS (
     (11510, 'Assets', 'Collateralized Lending', 'Legacy', 'Stablecoins', 'Stablecoins'),
     (12310, 'Assets', 'Real-World Lending', 'RWA', 'Private Credit RWA', 'Off-Chain Private Credit'),
     (12311, 'Assets', 'Real-World Lending', 'RWA', 'Private Credit RWA', 'Tokenized Private Credit'),
-    (12320, 'Assets', 'Real-World Lending', 'RWA', 'Public Credit RWA', 'Off-Chain Public Credit'), 
+    (12320, 'Assets', 'Real-World Lending', 'RWA', 'Public Credit RWA', 'Off-Chain Public Credit'),
     (12321, 'Assets', 'Real-World Lending', 'RWA', 'Public Credit RWA', 'Tokenized Public Credit'),
     (13410, 'Assets', 'Liquidity Pool', 'PSM', 'PSM', 'Non-Yielding Stablecoin'),
     (13411, 'Assets', 'Liquidity Pool', 'PSM', 'PSM', 'Yielding Stablecoin'),
     (14620, 'Assets', 'Proprietary Treasury', 'Holdings', 'Treasury Assets', 'DS Pause Proxy'),
-    
+
     (21110, 'Liabilities', 'Stablecoin', 'Circulating', 'Interest-bearing', 'Dai'),
     (21120, 'Liabilities', 'Stablecoin', 'Circulating', 'Non-interest bearing', 'Dai'),
 
@@ -195,7 +222,6 @@ WITH dao_wallet AS (
     (31730, 'Equity', 'Protocol Surplus', 'Indirect Expenses', 'Workforce Expenses', 'Returned Workforce Expenses'),
     (31740, 'Equity', 'Protocol Surplus', 'Indirect Expenses', 'Direct to Third Party Expenses', 'Direct to Third Party Expenses'),
     (32810, 'Equity', 'Proprietary Treasury', 'Holdings', 'Treasury Assets', 'DS Pause Proxy')
-
 )
 
 -- ********** Calculation Tables *********** 
@@ -205,213 +231,226 @@ WITH dao_wallet AS (
     FROM {{ source('maker_ethereum','vow_call_file') }}
     WHERE LEFT(data,2) = '0x'
     AND call_success
-    GROUP BY 2
+    GROUP BY contract_address
     UNION ALL
     SELECT 'PSM' AS contract_type, u AS contract_address
     FROM {{ source('maker_ethereum','vat_call_frob') }}
     WHERE STRING(UNHEX(TRIM('0', RIGHT(i, LENGTH(i)-2)))) LIKE 'PSM%'
     AND call_success
-    GROUP BY 2
-), liquidation_excluded_tx AS 
-(
+    GROUP BY contract_address
+)
+, liquidation_excluded_tx AS (  -- unused CTE #Hosuke commented
     SELECT tx_hash
-    FROM ethereum.traces
+    FROM {{ source('ethereum', 'traces') }}
     JOIN contracts ON `from` = contract_address
     WHERE contract_type IN('FlapFlop') 
-    GROUP BY 1
-), team_dai_burns_tx AS
-(
+    GROUP BY tx_hash
+)
+, team_dai_burns_tx AS (    -- unused CTE #Hosuke commented
     SELECT call_tx_hash
-    , usr
-    FROM maker_ethereum.dai_call_burn
+         , usr
+    FROM {{ source('maker_ethereum', 'dai_call_burn') }}
     WHERE call_success
-    AND (usr = '0x0048fc4357db3c0f45adea433a07a20769ddb0cf' OR usr IN (SELECT wallet_address FROM dao_wallet))
-    GROUP BY 1,2
-), team_dai_burns_preunioned AS 
-(
-    SELECT call_block_time ts
-    , call_tx_hash hash
-    , SUM(rad/POW(10,45)) AS value
-    FROM {{ source('maker_ethereum','vat_call_move') }}
-    JOIN team_dai_burns_tx -- Flop income (coming directly from users wallets)
-    USING (call_tx_hash)
+      AND (usr = '0x0048fc4357db3c0f45adea433a07a20769ddb0cf' OR usr IN (SELECT wallet_address FROM dao_wallet))
+    GROUP BY call_tx_hash, usr
+)
+, team_dai_burns_preunioned AS (
+    SELECT call_block_time        AS ts
+         , call_tx_hash           AS hash
+         , SUM(rad / POW(10, 45)) AS value
+    FROM {{ source('maker_ethereum', 'vat_call_move') }}
+        JOIN team_dai_burns_tx -- Flop income (coming directly from users wallets)
+        USING (call_tx_hash)
     WHERE dst = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- vow
-    AND call_success
-    GROUP BY 1,2
-), team_dai_burns AS
-(
+      AND call_success
+    GROUP BY ts, hash
+)
+, team_dai_burns AS (
     SELECT ts
-    , hash
-    , 31730 AS code 
-    , value --increased equity
+         , hash
+         , 31730 AS code
+         , value --increased equity
     FROM team_dai_burns_preunioned
-    
+
     UNION ALL
-    
+
     SELECT ts
-    , hash
-    , 21120 AS code
-    , -value AS value--decreased liability
+         , hash
+         , 21120  AS code
+         , -value AS value--decreased liability
     FROM team_dai_burns_preunioned
-), psm_yield_trxns AS
-(
+)
+, psm_yield_trxns AS (  -- unused CTE #Hosuke commented
     SELECT call_tx_hash
-    , CASE WHEN usr = '0xf2e7a5b83525c3017383deed19bb05fe34a62c27' THEN 'PSM-GUSD-A' END AS ilk
-    FROM {{ source('maker_ethereum','dai_call_burn') }}
+         , CASE WHEN usr = '0xf2e7a5b83525c3017383deed19bb05fe34a62c27' THEN 'PSM-GUSD-A' END AS ilk
+    FROM {{ source('maker_ethereum', 'dai_call_burn') }}
     WHERE call_success
-    AND usr IN ('0xf2e7a5b83525c3017383deed19bb05fe34a62c27') --GUSD interest payment contract
-    GROUP BY 1,2
-), psm_yield_preunioned AS 
-(
-    SELECT call_block_time ts
-    , call_tx_hash hash
-    , ilk
-    , SUM(rad/POW(10,45)) AS value
-    FROM {{ source('maker_ethereum','vat_call_move') }}
-    JOIN psm_yield_trxns
-    USING (call_tx_hash)
+      AND usr IN ('0xf2e7a5b83525c3017383deed19bb05fe34a62c27') --GUSD interest payment contract
+    GROUP BY call_tx_hash, ilk
+)
+, psm_yield_preunioned AS (
+    SELECT call_block_time           ts
+         , call_tx_hash              hash
+         , ilk
+         , SUM(rad / POW(10, 45)) AS value
+    FROM {{ source('maker_ethereum', 'vat_call_move') }}
+        JOIN psm_yield_trxns
+        USING (call_tx_hash)
     WHERE dst = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- vow
-    AND call_success
-    GROUP BY 1,2,3
-), psm_yield AS
-(
+      AND call_success
+    GROUP BY ts, hash, ilk
+)
+, psm_yield AS (
     SELECT ts
-    , hash
-    , 31180 AS code 
-    , value --increased equity
-    , ilk
+         , hash
+         , 31180 AS code
+         , value --increased equity
+         , ilk
     FROM psm_yield_preunioned
-    
+
     UNION ALL
-    
+
     SELECT ts
-    , hash
-    , 21120 AS code
-    , -value AS value--decreased liability
-    , ilk
+         , hash
+         , 21120  AS code
+         , -value AS value--decreased liability
+         , ilk
     FROM psm_yield_preunioned
-), liquidation_revenues AS 
-(
-    SELECT call_block_time ts
-    , call_tx_hash hash
-    , SUM(rad/POW(10,45)) AS value
-    FROM {{ source('maker_ethereum','vat_call_move') }}
-    WHERE dst = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- vow
-    AND call_success
-    AND src NOT IN (SELECT contract_address FROM contracts) -- contract_type = 'PSM' should be enough but letting it wider
-    AND src NOT IN ('0xa13c0c8eb109f5a13c6c90fc26afb23beb3fb04a', '0x621fe4fde2617ea8ffade08d0ff5a862ad287ec2') --aave v2 d3m, compuond v2 d3m
-    AND call_tx_hash NOT IN (SELECT tx_hash FROM liquidation_excluded_tx) -- Exclude Flop income (coming directly from users wallets)
-    AND call_tx_hash NOT IN (SELECT call_tx_hash FROM team_dai_burns_tx)
-    AND call_tx_hash NOT IN (SELECT call_tx_hash FROM psm_yield_trxns)
-    GROUP BY 1,2
-), liquidation_expenses AS 
-(
-    SELECT call_block_time ts
-    , call_tx_hash hash
-    , SUM(tab/POW(10,45)) AS value
-    FROM {{ source('maker_ethereum','vow_call_fess') }}
+)
+, liquidation_revenues AS (
+    SELECT call_block_time           ts
+         , call_tx_hash              hash
+         , SUM(rad / POW(10, 45)) AS value
+    FROM {{ source('maker_ethereum', 'vat_call_move') }}
+    WHERE dst = '0xa950524441892a31ebddf91d3ceefa04bf454466'                -- vow
+      AND call_success
+      AND src NOT IN (SELECT contract_address FROM contracts)               -- contract_type = 'PSM' should be enough but letting it wider
+      AND src NOT IN ('0xa13c0c8eb109f5a13c6c90fc26afb23beb3fb04a'
+        , '0x621fe4fde2617ea8ffade08d0ff5a862ad287ec2')                     --aave v2 d3m, compuond v2 d3m
+      AND call_tx_hash NOT IN (SELECT tx_hash FROM liquidation_excluded_tx) -- Exclude Flop income (coming directly from users wallets)
+      AND call_tx_hash NOT IN (SELECT call_tx_hash FROM team_dai_burns_tx)
+      AND call_tx_hash NOT IN (SELECT call_tx_hash FROM psm_yield_trxns)
+    GROUP BY 1, 2
+)
+, liquidation_expenses AS (
+    SELECT call_block_time           ts
+         , call_tx_hash              hash
+         , SUM(tab / POW(10, 45)) AS value
+    FROM {{ source('maker_ethereum', 'vow_call_fess') }}
     WHERE call_success
-    GROUP BY 1,2
-), liquidation AS 
-(
-    SELECT ts, hash, 31210 AS code, value AS value FROM liquidation_revenues --increased equity
+    GROUP BY 1, 2
+)
+, liquidation AS (
+    SELECT ts, hash, 31210 AS code, value AS value
+    FROM liquidation_revenues --increased equity
     UNION ALL
-    SELECT ts, hash, 21120 AS code, -value AS value FROM liquidation_revenues --reduced liability
+    SELECT ts, hash, 21120 AS code, -value AS value
+    FROM liquidation_revenues --reduced liability
     UNION ALL
-    SELECT ts, hash, 31620 AS code, -value AS value FROM liquidation_expenses --decreased equity
+    SELECT ts, hash, 31620 AS code, -value AS value
+    FROM liquidation_expenses --decreased equity
     UNION ALL
-    SELECT ts, hash, 21120 AS code, value AS value FROM liquidation_expenses --increased liability
-), d3m_revenues_preunion AS
-(
-    SELECT call_block_time ts
-    , call_tx_hash hash
-    , CASE WHEN src = '0xa13c0c8eb109f5a13c6c90fc26afb23beb3fb04a' THEN 'DIRECT-AAVEV2-DAI' WHEN src = '0x621fe4fde2617ea8ffade08d0ff5a862ad287ec2' THEN 'DIRECT-COMPV2-DAI' END AS ilk
-    , SUM(rad)/POW(10,45) AS value
-    FROM {{ source('maker_ethereum','vat_call_move') }}
+    SELECT ts, hash, 21120 AS code, value AS value
+    FROM liquidation_expenses --increased liability
+)
+, d3m_revenues_preunion AS (
+    SELECT call_block_time                                                                             ts
+         , call_tx_hash                                                                                hash
+         , CASE
+               WHEN src = '0xa13c0c8eb109f5a13c6c90fc26afb23beb3fb04a' THEN 'DIRECT-AAVEV2-DAI'
+               WHEN src = '0x621fe4fde2617ea8ffade08d0ff5a862ad287ec2' THEN 'DIRECT-COMPV2-DAI' END AS ilk
+         , SUM(rad) / POW(10, 45)                                                                   AS value
+    FROM {{ source('maker_ethereum', 'vat_call_move') }}
     WHERE call_success
-    AND src IN ('0xa13c0c8eb109f5a13c6c90fc26afb23beb3fb04a') --aave d3m
-    AND dst = '0xa950524441892a31ebddf91d3ceefa04bf454466' --vow
-    GROUP BY 1,2,3
-), d3m_revenues AS
-(
-    SELECT ts, hash, 31160 AS code, value AS value, ilk FROM d3m_revenues_preunion --increased equity
+      AND src IN ('0xa13c0c8eb109f5a13c6c90fc26afb23beb3fb04a') --aave d3m
+      AND dst = '0xa950524441892a31ebddf91d3ceefa04bf454466'    --vow
+    GROUP BY 1, 2, 3
+)
+, d3m_revenues AS (
+    SELECT ts, hash, 31160 AS code, value AS value, ilk
+    FROM d3m_revenues_preunion --increased equity
     UNION ALL
-    SELECT ts, hash, 21120 AS code, -value AS value, ilk FROM d3m_revenues_preunion --reduced liability
-), psms AS 
-(
-    SELECT u AS psm_address
-    , STRING(UNHEX(TRIM('0', RIGHT(i, LENGTH(i)-2)))) AS ilk
-    FROM {{ source('maker_ethereum','vat_call_frob') }}
-    WHERE STRING(UNHEX(TRIM('0', RIGHT(i, LENGTH(i)-2)))) LIKE 'PSM-%'
-    AND call_success
-    GROUP BY 1,2
-), trading_revenues_preunion AS 
-(
-    SELECT call_block_time ts
-    , call_tx_hash hash
-    , ilk
-    , SUM(rad)/POW(10,45) AS value
-    FROM {{ source('maker_ethereum','vat_call_move') }}
-    INNER JOIN psms
+    SELECT ts, hash, 21120 AS code, -value AS value, ilk
+    FROM d3m_revenues_preunion --reduced liability
+)
+, psms AS (
+    SELECT u                                                 AS psm_address
+         , STRING(UNHEX(TRIM('0', RIGHT(i, LENGTH(i) - 2)))) AS ilk
+    FROM {{ source('maker_ethereum', 'vat_call_frob') }}
+    WHERE STRING (UNHEX(TRIM('0'
+        , RIGHT (i
+        , LENGTH(i)-2)))) LIKE 'PSM-%'
+      AND call_success
+    GROUP BY 1, 2
+)
+, trading_revenues_preunion AS (
+    SELECT call_block_time           ts
+         , call_tx_hash              hash
+         , ilk
+         , SUM(rad) / POW(10, 45) AS value
+    FROM {{ source('maker_ethereum', 'vat_call_move') }}
+        INNER JOIN psms
     ON src = psm_address
     WHERE call_success
-    AND dst = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- Vow
-    GROUP BY 1,2,3
-), trading_revenues AS
-(
-    SELECT ts, hash, 31310 AS code, value AS value, ilk FROM trading_revenues_preunion --increased equity
+      AND dst = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- Vow
+    GROUP BY 1, 2, 3
+)
+, trading_revenues AS (
+    SELECT ts, hash, 31310 AS code, value AS value, ilk
+    FROM trading_revenues_preunion --increased equity
     UNION ALL
-    SELECT ts, hash, 21120 AS code, -value AS value, ilk FROM trading_revenues_preunion --reduced liability
-), mkr_mints_preunioned AS 
-(
-    SELECT call_block_time ts
-    , call_tx_hash hash
-    , SUM(rad/POW(10,45)) AS value
-    FROM {{ source('maker_ethereum','vat_call_move') }}
-    JOIN (SELECT tx_hash FROM liquidation_excluded_tx) -- Flop income (coming directly from users wallets)
+    SELECT ts, hash, 21120 AS code, -value AS value, ilk
+    FROM trading_revenues_preunion --reduced liability
+)
+, mkr_mints_preunioned AS (
+    SELECT call_block_time           ts
+         , call_tx_hash              hash
+         , SUM(rad / POW(10, 45)) AS value
+    FROM {{ source('maker_ethereum', 'vat_call_move') }}
+        JOIN (SELECT tx_hash FROM liquidation_excluded_tx) -- Flop income (coming directly from users wallets)
     ON call_tx_hash = tx_hash
     WHERE dst = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- vow
-    AND call_success
-    AND src NOT IN (SELECT contract_address FROM contracts WHERE contract_type = 'PSM')
-    GROUP BY 1,2
-), mkr_mints AS
-(
+      AND call_success
+      AND src NOT IN (SELECT contract_address FROM contracts WHERE contract_type = 'PSM')
+    GROUP BY 1, 2
+)
+, mkr_mints AS (
     SELECT ts
-    , hash
-    , 31410 AS code 
-    , value --increased equity
+         , hash
+         , 31410 AS code
+         , value --increased equity
     FROM mkr_mints_preunioned
-    
+
     UNION ALL
-    
+
     SELECT ts
-    , hash
-    , 21120 AS code
-    , -value AS value--decreased liability
+         , hash
+         , 21120  AS code
+         , -value AS value--decreased liability
     FROM mkr_mints_preunioned
-), mkr_burns_preunioned AS
-(
-    SELECT call_block_time ts
-    , call_tx_hash hash
-    , SUM(rad/POW(10,45)) AS value
-    FROM {{ source('maker_ethereum','vat_call_move') }}
+)
+, mkr_burns_preunioned AS (
+    SELECT call_block_time           ts
+         , call_tx_hash              hash
+         , SUM(rad / POW(10, 45)) AS value
+    FROM {{ source('maker_ethereum', 'vat_call_move') }}
     WHERE src = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- vow
-    AND call_success
-    GROUP BY 1,2
-), mkr_burns AS
-(
+      AND call_success
+    GROUP BY 1, 2
+)
+, mkr_burns AS (
     SELECT ts
-    , hash
-    , 31420 AS code 
-    , -value AS value --decreased equity
+         , hash
+         , 31420  AS code
+         , -value AS value --decreased equity
     FROM mkr_burns_preunioned
-    
+
     UNION ALL
-    
+
     SELECT ts
-    , hash
-    , 21120 AS code
-    , value --increased liability
+         , hash
+         , 21120 AS code
+         , value --increased liability
     FROM mkr_burns_preunioned
 ), interest_accruals_1 AS 
 (
