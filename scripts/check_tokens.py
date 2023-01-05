@@ -30,7 +30,7 @@ for new_line in filtered_lines:
     try:
         checker.validate_token(new_line)
         # Sleep to (hopefully) avoid limits
-        time.sleep(2)
+        # time.sleep(2) (not needed anymore since we fetch everything in batch at the beginning)
     except Exception as err:
         if type(err) != AssertionError:
             if hasattr(err, 'response'):
