@@ -38,7 +38,7 @@ sources:
 
       - name: DODORouteProxy_evt_OrderHistory
         description: >
-          V1 of Decoded table  that shows Order History happening through a router contract number 1.
+          V1 of Decoded table  that shows Order History happening through a self_built_router contract.
         loaded_at_field: evt_block_time
         columns:
           - name: contract_address
@@ -105,7 +105,21 @@ sources:
             description: 'Event index'
           - name: evt_block_time
             description: 'Timestamp for block event time in UTC'
-
+            
+      - name: DPPAdvanced_evt_DODOSwap
+        description: >
+          Decoded table related to DPPAdvanced DODOSwap contract events.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'Ethereum address for the liquidity pool used in transaction'
+          - name: evt_tx_hash
+            description: 'Transaction hash of the event'
+          - name: evt_index
+            description: 'Event index'
+          - name: evt_block_time
+            description: 'Timestamp for block event time in UTC'
+      
       - name: DPPOracle_evt_DODOSwap
         description: >
           Decoded table related to DPPOracle DODOSwap contract events.
@@ -119,7 +133,6 @@ sources:
             description: 'Event index'
           - name: evt_block_time
             description: 'Timestamp for block event time in UTC'
-
 
       - name: DSP_evt_DODOSwap
         description: >
