@@ -57,7 +57,7 @@ select blockchain
       ,zone_address
       ,estimated_price
       ,is_private
-      ,unique_trade_id
+      ,'seaport-' || tx_hash || '-' || evt_index || '-' || nft_contract_address || '-' || token_id || '-' || sub_idx as unique_trade_id
   from {{ ref('seaport_ethereum_trades') }}
  where zone_address in ('0xf397619df7bfd4d1657ea9bdd9df7ff888731a11'
                        ,'0x9b814233894cd227f561b78cc65891aa55c62ad2'
