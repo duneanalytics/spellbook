@@ -15,7 +15,7 @@ args = parser.parse_args()
 
 
 def filter_non_row_lines(new_lines):
-    filtered_lines = [line for line in new_lines if bool(re.search(r'\((.*?,.*?)\)', line))]
+    filtered_lines = [line for line in new_lines if bool(re.search(r'\((.*?,.*?)\)', line)) and not line.startswith('--')]
     return filtered_lines
 
 
