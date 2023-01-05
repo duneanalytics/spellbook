@@ -521,6 +521,11 @@ models:
           +schema: zeroex_ethereum_erc20
         nft:
           +schema: zeroex_ethereum_nft
+      optimism:
+        +schema: zeroex_optimism
+      polygon:
+        erc20:
+          +schema: zeroex_polygon_erc20
 
     wombat:
       +schema: wombat
