@@ -31,20 +31,14 @@ for new_line in filtered_lines:
         checker.validate_token(new_line)
         # Sleep to (hopefully) avoid limits
         # time.sleep(2) (not needed anymore since we fetch everything in batch at the beginning)
-    except Exception as err:
-        if type(err) != AssertionError:
-            if hasattr(err, 'response'):
-                if err.response.status_code == 402:
-                    logging.warning('Rate limited, sleep for one hour before continue')
-                    time.sleep(3600)
-            else:
-                raise err
-        else:
-            exceptions += 1
-            logging.error(err)
+    except AssertionError as err:
+        exceptions += 1
+        logging.error(err)
     except JSONDecodeError as err:
         exceptions += 1
         logging.warning(f'Failed to decode line: {new_line}')
+    except Exception as err:
+        raise err
 if exceptions > 0:
     raise Exception(
         f"{exceptions} exception/s. Review logs for details. Some could be due simply to missing data from API.")
