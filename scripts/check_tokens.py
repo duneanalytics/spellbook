@@ -3,10 +3,11 @@ import logging
 import re
 import sys
 import time
+from json import JSONDecodeError
 
 from token_checker import TokenChecker
 
-logging.basicConfig(stream=sys.stdout, level=logging.WARN)
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--file_name')
@@ -41,6 +42,9 @@ for new_line in filtered_lines:
         else:
             exceptions += 1
             logging.error(err)
+    except JSONDecodeError as err:
+        exceptions += 1
+        logging.warning(f'Failed to decode line: {new_line}')
 if exceptions > 0:
     raise Exception(
         f"{exceptions} exception/s. Review logs for details. Some could be due simply to missing data from API.")
