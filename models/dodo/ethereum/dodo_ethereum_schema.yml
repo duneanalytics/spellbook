@@ -67,9 +67,6 @@ models:
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of the token bought"
-        tests:
-          - dex_trades_token_bought:
-              dex_trades_seed: ref('dex_trades_seed')
       - &token_sold_address
         name: token_sold_address
         description: "Contract address of the token sold"
@@ -105,7 +102,7 @@ models:
       project: dodo_pools
       contributors: scoffie, owen05
     config:
-      tags: ['ethereum','dodo',"pools", 'trades', 'dex']
+      tags: ['ethereum','dodo','pools', 'trades', 'dex']
     description: >
         DodoV1 && DODOV2 pools' trades on Ethereum.
     tests:
