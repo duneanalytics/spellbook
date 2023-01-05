@@ -33,7 +33,7 @@ sources:
       
       - name: Vault_evt_Swap
         description: >
-          Decoded table related to the the contracts emitted by swaps in Balancer V2 pools.
+          Decoded table related to the contracts emitted by swaps in Balancer V2 pools.
         loaded_at_field: evt_block_time
         columns:
           - name: contract_address
