@@ -51,7 +51,7 @@ class TokenChecker:
         try:
             resp = requests.get(f"https://api.coinpaprika.com/v1/contracts/{chain_slug}")
             resp.raise_for_status()
-            result = {e["id"]: e for e in resp.json()}
+            result = {e["address"].lower(): e for e in resp.json()}
             logging.info(f"INFO: retrieved {len(result)} contracts")
             return result
         except requests.HTTPError:
@@ -80,13 +80,14 @@ class TokenChecker:
             assert token['blockchain'] in self.chain_slugs \
                 , f"WARN: chain: {token['blockchain']} not supported in the price checker, could not check contract or chain"
 
-            assert token['id'] in self.contracts_by_chain[token['blockchain']] \
-                , f"WARN: {token['id']} not found in the contracts for chain: {token['blockchain']}"
-            # Confirm Contract Listed
-            api_contract = self.contracts_by_chain[token['blockchain']][token['id']]
             if token['contract_address']:
-                assert token['contract_address'].lower() == api_contract['address'].lower() \
-                    , f"WARN: {token['id']} Provided contract address: {token['contract_address']} for chain {token['blockchain']} does not match CoinPaprika {api_contract['address']}." \
+                assert token['contract_address'] in self.contracts_by_chain[token['blockchain']] \
+                    , f"WARN: contract {token['contract_address']} for token {token['id']} not found in the contracts for chain: {token['blockchain']}" \
+                      f" (Not uncommon! share block explorer link to confirm contract)"
+                # Confirm Contract Listed
+                api_contract_id = self.contracts_by_chain[token['blockchain']][token['contract_address']]
+                assert token['id'] == api_contract_id['id'] \
+                    , f"WARN: {token['id']} for provided contract address: {token['contract_address']} for chain {token['blockchain']} does not match CoinPaprika id :{api_contract_id['id']}" \
                       f" (Not uncommon! share block explorer link to confirm contract)"
             else:
                 logging.warning(f"WARN: Line: {new_line} contract_address is None")
