@@ -237,7 +237,7 @@ values
     FROM {{ source('maker_ethereum','vat_call_frob') }}
     WHERE STRING(UNHEX(TRIM('0', RIGHT(i, LENGTH(i)-2)))) LIKE 'PSM%'
     AND call_success
-    GROUP BY contract_address
+    GROUP BY u
 )
 , liquidation_excluded_tx AS (  -- unused CTE #Hosuke commented
     SELECT tx_hash
