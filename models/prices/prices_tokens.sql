@@ -978,7 +978,7 @@ VALUES
     ("bolt-bolt", "ethereum", "BOLT", "0xd5930c307d7395ff807f2921f12c5eb82131a789", 18),
     ("cntr-centaur", "ethereum", "CNTR", "0x03042482d64577a7bdb282260e2ea4c8a89c064b", 18),
     -- ("corn-cornichon", "ethereum", "CORN", "0xa456b515303b2ce344e9d2601f91270f8c2fea5e", 18),
-    ("dusd-defidollar", "ethereum", "DUSD", "0x5bc25f649fc4e26069ddf4cf4010f9f706c23831", 18),
+    -- ("dusd-defidollar", "ethereum", "DUSD", "0x5bc25f649fc4e26069ddf4cf4010f9f706c23831", 18),
     ("edda-eddaswap", "ethereum", "EDDA", "0xfbbe9b1142c699512545f47937ee6fae0e4b0aa9", 18),
     ("entr-enterdao", "ethereum", "ENTR", "0xd779eea9936b4e323cddff2529eb6f13d0a4d66e", 18),
     ("game-gamestarter", "ethereum", "GAME", "0xd567b5f02b9073ad3a982a099a23bf019ff11d1c", 5),
