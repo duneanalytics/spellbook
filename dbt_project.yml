@@ -925,3 +925,17 @@ seeds:
             seller: string
             platform_fee_amount: double
             royalty_fee_amount: double
+
+    balancer:
+      balancer_transfers_bpt_seed:
+        +column_types:
+          blockchain: string
+          contract_address: string
+          evt_tx_hash: string
+          evt_index: int
+          evt_block_time: timestamp
+          block_date: timestamp
+          evt_block_number: int
+          from: string
+          to: string
+          value: double
