@@ -132,7 +132,7 @@ models:
             - token_id
             - sub_type
             - sub_idx
-      - check_nft_seed:
+      - check_seaport_seed:
           blockchain: arbitrum
           project: seaport
           version: v1

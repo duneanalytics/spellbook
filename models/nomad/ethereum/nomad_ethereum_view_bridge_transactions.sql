@@ -2,7 +2,7 @@
 -- => expose_spells(["blockchains"], 'project'/'sector','name', ["contributors"])
 {{
   config(alias='view_bridge_transactions',
-         post_hook='{{ expose_spells(\'["ethereum"]\',
+         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                       "project",
                                       "nomad",
                                     \'["springzh"]\') }}')
