@@ -20,6 +20,7 @@
 ,ref('superrare_ethereum_trades')
 ,ref('x2y2_ethereum_trades')
 ,ref('zora_ethereum_trades')
+,ref('pancakeswap_bnb_nft_trades')
 ,ref('tofu_bnb_trades')
 ] %}
 
@@ -53,8 +54,7 @@ FROM (
         block_number,
         tx_from,
         tx_to,
-        unique_trade_id,
-        'testchange' as test
+        unique_trade_id
     FROM {{ nft_model }}
     {% if not loop.last %}
     UNION ALL

@@ -19,6 +19,7 @@
 ,ref('superrare_ethereum_fees')
 ,ref('x2y2_ethereum_fees')
 ,ref('zora_ethereum_fees')
+,ref('pancakeswap_bnb_nft_fees')
 ] %}
 
 

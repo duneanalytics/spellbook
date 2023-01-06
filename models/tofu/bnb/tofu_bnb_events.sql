@@ -31,7 +31,7 @@ WITH tff AS (
                  get_json_object(get_json_object(detail, '$.settlement'), '$.royaltyRate') / 1000000 as royalty_rate,
                  get_json_object(get_json_object(detail, '$.settlement'), '$.feeAddress')            as fee_address,
                  get_json_object(get_json_object(detail, '$.settlement'), '$.royaltyAddress')        as royalty_address,
-                 posexplode(from_json(get_json_object(detail, '$.bundle'), 'array<string>'))            as (i,t),
+                 posexplode(from_json(get_json_object(detail, '$.bundle'), 'array<string>'))         as (i,t),
                  json_array_length(get_json_object(detail, '$.bundle'))                              as bundle_size
           FROM {{ source('tofu_nft_bnb', 'MarketNG_call_run') }}
           WHERE call_success = true
@@ -74,7 +74,7 @@ SELECT 'bnb'                                 as blockchain
            when tff.bundle_size = 1 then 'Single Item Trade'
            else 'Bundle Trade'
     end                                      as trade_type
-     , tff.amount                            as number_of_items
+     , CAST(tff.amount AS DECIMAL(38,0))     as number_of_items
      , 'Trade'                               as evt_type
      , tfe.seller                            as seller
      , tfe.buyer                             as buyer
@@ -83,30 +83,30 @@ SELECT 'bnb'                                 as blockchain
            when tfe.kind = '2' then 'Sell'
            else 'Acution'
     end                                      as trade_category
-     , tfe.price                         as amount_raw
-     , tfe.price / power(10, pu.decimals) as amount_original
+     , CAST(tfe.price AS DECIMAL(38,0))      as amount_raw
+     , tfe.price / power(10, pu.decimals)    as amount_original
      , pu.price * tfe.price / power(10, pu.decimals) as amount_usd
      , case
            when tfe.native_bnb THEN 'BNB'
            else pu.symbol
-       end                                   as currency_symbol
-     , tfe.currency                          as currency_contract
-     , tfe.contract_address                  as project_contract_address
-     , tff.token                             as nft_contract_address
-     , agg.name                              as aggregator_name
-     , agg.contract_address                  as aggregator_address
-     , tfe.evt_tx_hash                       as tx_hash
-     , tx.from                               as tx_from
-     , tx.to                                 as tx_to
-     , tfe.price * tff.fee_rate              as platform_fee_amount_raw
-     , tfe.price * tff.fee_rate / power(10, pu.decimals) as platform_fee_amount
-     , pu.price * tfe.price * tff.fee_rate / power(10, pu.decimals) as platform_fee_amount_usd
-     , tff.fee_rate                          as platform_fee_percentage
-     , tfe.price * tff.royalty_rate          as royalty_fee_amount_raw
-     , tfe.price * tff.royalty_rate / power(10, pu.decimals) as royalty_fee_amount
-     , pu.price * tfe.price * tff.royalty_rate / power(10, pu.decimals) as royalty_fee_amount_usd
-     , tff.royalty_rate                      as royalty_fee_percentage
-     , tff.royalty_address                   as royalty_fee_receive_address
+       end                                                                          as currency_symbol
+     , tfe.currency                                                                 as currency_contract
+     , tfe.contract_address                                                         as project_contract_address
+     , tff.token                                                                    as nft_contract_address
+     , agg.name                                                                     as aggregator_name
+     , agg.contract_address                                                         as aggregator_address
+     , tfe.evt_tx_hash                                                              as tx_hash
+     , tx.from                                                                      as tx_from
+     , tx.to                                                                        as tx_to
+     , CAST(tfe.price * tff.fee_rate AS DOUBLE)                                     as platform_fee_amount_raw
+     , CAST(tfe.price * tff.fee_rate / power(10, pu.decimals) AS DOUBLE)            as platform_fee_amount
+     , CAST(pu.price * tfe.price * tff.fee_rate / power(10, pu.decimals) AS DOUBLE) as platform_fee_amount_usd
+     , CAST(100 * tff.fee_rate AS DOUBLE)                                           as platform_fee_percentage
+     , tfe.price * tff.royalty_rate                                                 as royalty_fee_amount_raw
+     , tfe.price * tff.royalty_rate / power(10, pu.decimals)                        as royalty_fee_amount
+     , pu.price * tfe.price * tff.royalty_rate / power(10, pu.decimals)             as royalty_fee_amount_usd
+     , CAST(100 * tff.royalty_rate AS DOUBLE)                                       as royalty_fee_percentage
+     , tff.royalty_address                                                          as royalty_fee_receive_address
      , case
            when tfe.native_bnb THEN 'BNB'
            else pu.symbol

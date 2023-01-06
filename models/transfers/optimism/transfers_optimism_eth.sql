@@ -24,7 +24,7 @@ with eth_transfers as (
         ,r.block_time as tx_block_time 
         ,r.block_number as tx_block_number 
         ,substring(t.data, 1, 10) as tx_method_id
-        ,r.tx_hash || '-' || r.trace_address::string as unique_transfer_id
+        ,r.tx_hash || '-' || cast(r.trace_address as string) as unique_transfer_id
     from {{ source('optimism', 'traces') }} as r 
     join {{ source('optimism', 'transactions') }} as t 
         on r.tx_hash = t.hash
@@ -32,7 +32,7 @@ with eth_transfers as (
         (r.call_type not in ('delegatecall', 'callcode', 'staticcall') or r.call_type is null)
         and r.tx_success
         and r.success
-        and r.value > 0 
+        and r.value > '0'
         {% if is_incremental() %} -- this filter will only be applied on an incremental run 
         and r.block_time >= date_trunc('day', now() - interval '1 week')
         and t.block_time >= date_trunc('day', now() - interval '1 week')
@@ -53,17 +53,19 @@ with eth_transfers as (
         ,r.evt_block_time as tx_block_time
         ,r.evt_block_number as tx_block_number
         ,substring(t.data, 1, 10) as tx_method_id
-        ,r.evt_tx_hash || '-' || array(r.evt_index)::string as unique_transfer_id
+        ,r.evt_tx_hash || '-' || cast(array(r.evt_index) as string) as unique_transfer_id
     from {{ source('erc20_optimism', 'evt_transfer') }} as r
     join {{ source('optimism', 'transactions') }} as t 
         on r.evt_tx_hash = t.hash
     where 
         r.contract_address = lower('0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000')
         and t.success
-        and r.value > 0 
+        and r.value > '0'
         {% if is_incremental() %} -- this filter will only be applied on an incremental run 
         and r.evt_block_time >= date_trunc('day', now() - interval '1 week')
         and t.block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
 )
-select * from eth_transfers order by tx_block_time
+select *
+from eth_transfers
+;
