@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'seaport_trades',
+    alias = 'seaport_events',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
