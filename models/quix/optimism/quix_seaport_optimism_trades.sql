@@ -250,7 +250,7 @@ with source_optimism_transactions as (
 ,erc721_transfer as (
   select *
   from {{ source('erc721_optimism','evt_transfer') }}
-  where 
+  where
     from = '{{non_buyer_address}}'
     {% if not is_incremental() %}
     and evt_block_time >= '{{c_seaport_first_date}}'  -- seaport first txn
@@ -287,7 +287,7 @@ with source_optimism_transactions as (
 
     -- price info
     ,t.price_amount as amount_original
-    ,cast(t.price_amount_raw as as decimal(38, 0)) as amount_raw
+    ,cast(t.price_amount_raw as decimal(38, 0)) as amount_raw
     ,t.price_amount_usd as amount_usd
     ,t.token_symbol as currency_symbol
     ,t.token_alternative_symbol as currency_contract
@@ -333,7 +333,7 @@ with source_optimism_transactions as (
     ,t.is_private
     ,t.sub_idx
     ,t.sub_type
-  from iv_trades as t 
+  from iv_trades as t
   left join erc721_transfer as erc
     on t.tx_hash = erc.evt_tx_hash
     and t.block_number = erc.evt_block_number
@@ -341,7 +341,7 @@ with source_optimism_transactions as (
     and t.nft_contract_address = erc.contract_address
     and t.buyer = erc.from
 )
-select 
+select
   *
   ,concat(block_date, tx_hash, evt_index, nft_contract_address, token_id, sub_type, sub_idx) as unique_trade_id
 from iv_columns
