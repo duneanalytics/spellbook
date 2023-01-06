@@ -1,6 +1,6 @@
 {{ config(
         alias ='accounting',
-        materialized = 'table',
+        materialized = 'incremental',
         partition_by = ['code'],
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -12,6 +12,7 @@
 
 {% set start_dt = "'2019-11-01'" %}
 {% set end_dt = 'current_date' %}
+{% set project_start_date = "'2019-11-01'" %}
 
 WITH dao_wallet AS (
     SELECT * FROM (VALUES
@@ -452,254 +453,312 @@ values
          , 21120 AS code
          , value --increased liability
     FROM mkr_burns_preunioned
-), interest_accruals_1 AS 
-(
-    SELECT i AS ilk
-    , call_block_time ts
-    , call_tx_hash hash
-    , dart
-    , NULL AS rate
-    FROM {{ source('maker_ethereum','vat_call_frob') }}
+)
+, interest_accruals_1 AS (
+    SELECT i    AS         ilk
+         , call_block_time ts
+         , call_tx_hash    hash
+         , dart
+         , NULL AS         rate
+    FROM {{ source('maker_ethereum', 'vat_call_frob') }}
     WHERE call_success
-    AND dart <> 0.0
-    
+      AND dart <> 0.0
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
+
     UNION ALL
-    
+
     SELECT i AS ilk
-    , call_block_time ts
-    , call_tx_hash hash
-    , dart
-    , 0.0 AS rate
-    FROM {{ source('maker_ethereum','vat_call_grab') }}
+            , call_block_time ts
+            , call_tx_hash hash
+            , dart
+            , 0.0 AS rate
+    FROM {{ source('maker_ethereum', 'vat_call_grab') }}
     WHERE call_success
-    AND dart <> 0.0
-    
+      AND dart <> 0.0
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
+
     UNION ALL
-    
+
     SELECT i AS ilk
-    , call_block_time ts
-    , call_tx_hash hash
-    , NULL AS dart
-    , rate 
-    FROM {{ source('maker_ethereum','vat_call_fold') }}
+            , call_block_time ts
+            , call_tx_hash hash
+            , NULL AS dart
+            , rate
+    FROM {{ source('maker_ethereum', 'vat_call_fold') }}
     WHERE call_success
-    AND rate <> 0.0
-), interest_accruals_2 AS 
-(
+      AND rate <> 0.0
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
+)
+, interest_accruals_2 AS (
     SELECT *
-    , SUM(dart) OVER(PARTITION BY ilk ORDER BY ts ASC) AS cumulative_dart
+         , SUM(dart) OVER (PARTITION BY ilk ORDER BY ts ASC) AS cumulative_dart
     FROM interest_accruals_1
-), interest_accruals_3 AS 
-(
-    SELECT STRING(UNHEX(TRIM('0', RIGHT(ilk, LENGTH(ilk)-2)))) AS ilk
-    , ts
-    , hash
-    , SUM(cumulative_dart * rate)/POW(10,45) AS interest_accruals
+)
+, interest_accruals_3 AS (
+    SELECT STRING(UNHEX(TRIM('0', RIGHT(ilk, LENGTH(ilk) - 2)))) AS ilk
+         , ts
+         , hash
+         , SUM(cumulative_dart * rate) / POW(10, 45)             AS interest_accruals
     FROM interest_accruals_2
     WHERE rate IS NOT NULL
     GROUP BY 1,2,3
-), interest_accruals AS 
-(
+)
+, interest_accruals AS (
     SELECT ts
-    , hash
-    , equity_code AS code
-    , SUM(interest_accruals) AS value --increased equity
-    , interest_accruals_3.ilk
+         , hash
+         , equity_code            AS code
+         , SUM(interest_accruals) AS value --increased equity
+         , interest_accruals_3.ilk
     FROM interest_accruals_3
     LEFT JOIN ilk_list_labeled
-    ON interest_accruals_3.ilk = ilk_list_labeled.ilk
-    AND interest_accruals_3.ts BETWEEN COALESCE(ilk_list_labeled.begin_dt, '2000-01-01') AND COALESCE(ilk_list_labeled.end_dt, '2222-12-31') --if null, ensure its not restrictive
+        ON interest_accruals_3.ilk = ilk_list_labeled.ilk
+        AND interest_accruals_3.ts BETWEEN COALESCE(ilk_list_labeled.begin_dt, '2000-01-01')
+        AND COALESCE(ilk_list_labeled.end_dt, '2222-12-31') --if null, ensure its not restrictive
     GROUP BY 1,2,3,5
     
     UNION ALL
     
     SELECT ts
-    , hash
-    , asset_code AS code
-    , SUM(interest_accruals) AS value --increased assets
-    , interest_accruals_3.ilk
+         , hash
+         , asset_code             AS code
+         , SUM(interest_accruals) AS value --increased assets
+         , interest_accruals_3.ilk
     FROM interest_accruals_3
     LEFT JOIN ilk_list_labeled
-    ON interest_accruals_3.ilk = ilk_list_labeled.ilk
-    AND CAST(interest_accruals_3.ts AS DATE) BETWEEN COALESCE(ilk_list_labeled.begin_dt, '2000-01-01') AND COALESCE(ilk_list_labeled.end_dt, '2222-12-31') --if null, ensure its not restrictive
+        ON interest_accruals_3.ilk = ilk_list_labeled.ilk
+        AND CAST(interest_accruals_3.ts AS DATE) BETWEEN COALESCE(ilk_list_labeled.begin_dt, '2000-01-01')
+        AND COALESCE(ilk_list_labeled.end_dt, '2222-12-31') --if null, ensure its not restrictive
     GROUP BY 1,2,3,5
-), opex_suck_hashes AS 
-(
+)
+, opex_suck_hashes AS (
     SELECT suck.call_tx_hash
-    FROM {{ source('maker_ethereum','vat_call_suck') }} suck
+    FROM {{ source('maker_ethereum', 'vat_call_suck') }} suck
     WHERE suck.call_success
-    AND suck.u = '0xa950524441892a31ebddf91d3ceefa04bf454466'
-    AND v IN ('0xbe8e3e3618f7474f8cb1d074a26affef007e98fb', '0x2cc583c0aacdac9e23cb601fda8f1a0c56cdcb71', '0xa4c22f0e25c6630b2017979acf1f865e94695c4b')
+      AND suck.u = '0xa950524441892a31ebddf91d3ceefa04bf454466'
+      AND v IN ('0xbe8e3e3618f7474f8cb1d074a26affef007e98fb'
+        , '0x2cc583c0aacdac9e23cb601fda8f1a0c56cdcb71'
+        , '0xa4c22f0e25c6630b2017979acf1f865e94695c4b')
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
     GROUP BY 1
-), opex_preunion AS
-(
-    SELECT call_block_time AS ts
-    , call_tx_hash AS hash
-    , CASE WHEN dao_wallet.code = 'GELATO' THEN 31710 --keeper maintenance expenses
-        WHEN dao_wallet.code = 'GAS' THEN 31630 -- oracle gas expenses
-        WHEN dao_wallet.code IS NOT NULL THEN 31720 --workforce expenses
-        ELSE 31740 --direct opex - when a suck operation is used to directly transfer DAI to a third party
-        END AS equity_code
-    , wad/POW(10,18) AS expense
-    FROM {{ source('maker_ethereum','dai_call_mint') }}
-    JOIN opex_suck_hashes USING (call_tx_hash)
-    LEFT JOIN dao_wallet ON usr = wallet_address
+)
+, opex_preunion AS (
+    SELECT call_block_time   AS ts
+         , call_tx_hash      AS hash
+         , CASE
+               WHEN dao_wallet.code = 'GELATO' THEN 31710 --keeper maintenance expenses
+               WHEN dao_wallet.code = 'GAS' THEN 31630 -- oracle gas expenses
+               WHEN dao_wallet.code IS NOT NULL THEN 31720 --workforce expenses
+               ELSE 31740 --direct opex - when a suck operation is used to directly transfer DAI to a third party
+        END                  AS equity_code
+         , wad / POW(10, 18) AS expense
+    FROM {{ source('maker_ethereum', 'dai_call_mint') }}
+        JOIN opex_suck_hashes USING (call_tx_hash)
+        LEFT JOIN dao_wallet
+    ON usr = wallet_address
     WHERE call_success
-), opex AS
-(
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
+)
+, opex AS (
     SELECT ts
-    , hash
-    , equity_code AS code
-    , -expense AS value --reduced equity
+         , hash
+         , equity_code AS code
+         , -expense    AS value --reduced equity
     FROM opex_preunion
-    
+
     UNION ALL
-    
+
     SELECT ts
-    , hash
-    , 21120 AS code
-    , expense AS value --increased liability
+         , hash
+         , 21120   AS code
+         , expense AS value --increased liability
     FROM opex_preunion
-), dsr_expenses AS
-(
-    SELECT call_block_time ts
-    , call_tx_hash hash
-    , 31610 AS code
-    , -SUM(rad)/POW(10,45) AS value --reduced equity
-    FROM {{ source('maker_ethereum','vat_call_suck') }}
+)
+, dsr_expenses AS (
+    SELECT call_block_time            ts
+         , call_tx_hash               hash
+         , 31610                   AS code
+         , -SUM(rad) / POW(10, 45) AS value --reduced equity
+    FROM {{ source('maker_ethereum', 'vat_call_suck') }}
     WHERE u = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- Vow
-    AND v = '0x197e90f9fad81970ba7976f33cbd77088e5d7cf7' -- Pot
-    AND call_success
+      AND v = '0x197e90f9fad81970ba7976f33cbd77088e5d7cf7' -- Pot
+      AND call_success
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
     GROUP BY 1,2
     
     UNION ALL
     
     SELECT call_block_time ts
-    , call_tx_hash hash
-    , 21110 AS code
-    , SUM(rad)/POW(10,45) AS value --increased liability
-    FROM {{ source('maker_ethereum','vat_call_suck') }}
+            , call_tx_hash hash
+            , 21110 AS code
+            , SUM(rad)/POW(10, 45) AS value --increased liability
+    FROM {{ source('maker_ethereum', 'vat_call_suck') }}
     WHERE u = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- Vow
-    AND v = '0x197e90f9fad81970ba7976f33cbd77088e5d7cf7' -- Pot
-    AND call_success
+      AND v = '0x197e90f9fad81970ba7976f33cbd77088e5d7cf7' -- Pot
+      AND call_success
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
     GROUP BY 1,2
-), other_sin_outflows AS 
-(
-    SELECT call_block_time ts
-    , call_tx_hash hash
-    , 31520 AS code
-    , -SUM(rad)/POW(10,45) AS value --reduced equity
-    FROM {{ source('maker_ethereum','vat_call_suck') }}
+)
+, other_sin_outflows AS (
+    SELECT call_block_time            ts
+         , call_tx_hash               hash
+         , 31520                   AS code
+         , -SUM(rad) / POW(10, 45) AS value --reduced equity
+    FROM {{ source('maker_ethereum', 'vat_call_suck') }}
     WHERE u = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- Vow
-    AND v NOT IN ('0x197e90f9fad81970ba7976f33cbd77088e5d7cf7', '0xbe8e3e3618f7474f8cb1d074a26affef007e98fb', '0x2cc583c0aacdac9e23cb601fda8f1a0c56cdcb71', '0xa4c22f0e25c6630b2017979acf1f865e94695c4b') -- dsr, opex
-    AND call_success
+      AND v NOT IN ('0x197e90f9fad81970ba7976f33cbd77088e5d7cf7'
+        , '0xbe8e3e3618f7474f8cb1d074a26affef007e98fb'
+        , '0x2cc583c0aacdac9e23cb601fda8f1a0c56cdcb71'
+        , '0xa4c22f0e25c6630b2017979acf1f865e94695c4b')    -- dsr, opex
+      AND call_success
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
     GROUP BY 1,2
     
     UNION ALL
     
     SELECT call_block_time ts
-    , call_tx_hash hash
-    , 21120 AS code
-    , SUM(rad)/POW(10,45) AS value --increased liability
-    FROM {{ source('maker_ethereum','vat_call_suck') }}
+            , call_tx_hash hash
+            , 21120 AS code
+            , SUM(rad)/POW(10, 45) AS value --increased liability
+    FROM {{ source('maker_ethereum', 'vat_call_suck') }}
     WHERE u = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- Vow
-    AND v NOT IN ('0x197e90f9fad81970ba7976f33cbd77088e5d7cf7', '0xbe8e3e3618f7474f8cb1d074a26affef007e98fb', '0x2cc583c0aacdac9e23cb601fda8f1a0c56cdcb71', '0xa4c22f0e25c6630b2017979acf1f865e94695c4b') -- dsr, opex
-    AND call_success
+      AND v NOT IN ('0x197e90f9fad81970ba7976f33cbd77088e5d7cf7'
+        , '0xbe8e3e3618f7474f8cb1d074a26affef007e98fb'
+        , '0x2cc583c0aacdac9e23cb601fda8f1a0c56cdcb71'
+        , '0xa4c22f0e25c6630b2017979acf1f865e94695c4b')    -- dsr, opex
+      AND call_success
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
     GROUP BY 1,2
-), sin_inflows AS 
-(
-    SELECT call_block_time ts
-    , call_tx_hash hash
-    , 31510 AS code
-    , SUM(rad)/POW(10,45) AS value --increased equity
-    FROM {{ source('maker_ethereum','vat_call_suck') }}
+)
+, sin_inflows AS (
+    SELECT call_block_time           ts
+         , call_tx_hash              hash
+         , 31510                  AS code
+         , SUM(rad) / POW(10, 45) AS value --increased equity
+    FROM {{ source('maker_ethereum', 'vat_call_suck') }}
     WHERE v = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- Vow
-    AND call_success
+      AND call_success
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
     GROUP BY 1,2
     
     UNION ALL
     
     SELECT call_block_time ts
-    , call_tx_hash hash
-    , 21120 AS code
-    , -SUM(rad)/POW(10,45) AS value --decreased liability
-    FROM {{ source('maker_ethereum','vat_call_suck') }}
+            , call_tx_hash hash
+            , 21120 AS code
+            , -SUM(rad)/POW(10, 45) AS value --decreased liability
+    FROM {{ source('maker_ethereum', 'vat_call_suck') }}
     WHERE v = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- Vow
-    AND call_success
+      AND call_success
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
     GROUP BY 1,2
-), dsr_flows_preunioned AS
-(
-    SELECT call_block_time ts
-    , call_tx_hash hash
-    , -rad/POW(10,45) AS dsr_flow
-    FROM {{ source('maker_ethereum','vat_call_move') }} m
+)
+, dsr_flows_preunioned AS (
+    SELECT call_block_time       ts
+         , call_tx_hash          hash
+         , -rad / POW(10, 45) AS dsr_flow
+    FROM {{ source('maker_ethereum', 'vat_call_move') }} m
     WHERE call_success
-    AND src = '0x197e90f9fad81970ba7976f33cbd77088e5d7cf7'
-    
+      AND src = '0x197e90f9fad81970ba7976f33cbd77088e5d7cf7'
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
+
     UNION ALL
-    
+
     SELECT call_block_time ts
-    , call_tx_hash hash
-    , rad/POW(10,45) AS dsr_flow
-    FROM {{ source('maker_ethereum','vat_call_move') }}  m
+            , call_tx_hash hash
+            , rad/POW(10, 45) AS dsr_flow
+    FROM {{ source('maker_ethereum', 'vat_call_move') }} m
     WHERE call_success
-    AND dst = '0x197e90f9fad81970ba7976f33cbd77088e5d7cf7'
-), dsr_flows AS
-(
+      AND dst = '0x197e90f9fad81970ba7976f33cbd77088e5d7cf7'
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
+)
+, dsr_flows AS (
     SELECT ts
-    , hash
-    , 21110 AS code
-    , dsr_flow AS value -- positive dsr flow increases interest-bearing dai liability
+         , hash
+         , 21110    AS code
+         , dsr_flow AS value -- positive dsr flow increases interest-bearing dai liability
     FROM dsr_flows_preunioned
-    
+
     UNION ALL
-    
+
     SELECT ts
-    , hash
-    , 21120 AS code
-    , -dsr_flow AS value -- positive dsr flow decreases non-interest-bearing dai liability
+         , hash
+         , 21120     AS code
+         , -dsr_flow AS value -- positive dsr flow decreases non-interest-bearing dai liability
     FROM dsr_flows_preunioned
-), treasury_flows_preunioned AS
-(
-    SELECT evt_block_time ts
-    , evt_tx_hash hash
-    , token
-    , SUM(value/pow(10,decimals)) AS value
-    FROM {{ source('erc20_ethereum','evt_transfer') }}
-    JOIN treasury_erc20s
-    USING (contract_address)
+)
+, treasury_flows_preunioned AS (
+    SELECT evt_block_time                    ts
+         , evt_tx_hash                       hash
+         , token
+         , SUM(value / pow(10, decimals)) AS value
+    FROM {{ source('erc20_ethereum', 'evt_transfer') }}
+        JOIN treasury_erc20s
+        USING (contract_address)
     WHERE `to` = '0xbe8e3e3618f7474f8cb1d074a26affef007e98fb'
-    GROUP BY 1,2,3
+      {% if is_incremental() %}
+      AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
+    GROUP BY 1, 2, 3
     
     UNION ALL
     
     SELECT evt_block_time ts
-    , evt_tx_hash hash
-    , token
-    , -SUM(value/pow(10,decimals)) AS value
-    FROM {{ source('erc20_ethereum','evt_transfer') }}
-    JOIN treasury_erc20s
-    USING (contract_address)
+            , evt_tx_hash hash
+            , token
+            , -SUM(value/pow(10, decimals)) AS value
+    FROM {{ source('erc20_ethereum', 'evt_transfer') }}
+        JOIN treasury_erc20s
+        USING (contract_address)
     WHERE `from` = '0xbe8e3e3618f7474f8cb1d074a26affef007e98fb'
-    GROUP BY 1,2,3
-), treasury_flows AS 
-(
+      {% if is_incremental() %}
+      AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
+    GROUP BY 1, 2, 3
+)
+, treasury_flows AS (
     SELECT ts
-    , hash
-    , 32810 AS code
-    , value --increased equity
-    , token
+         , hash
+         , 32810 AS code
+         , value --increased equity
+         , token
     FROM treasury_flows_preunioned
-    
+
     UNION ALL
-    
+
     SELECT ts
-    , hash
-    , 14620 AS code
-    , value --increased assets
-    , token
+         , hash
+         , 14620 AS code
+         , value --increased assets
+         , token
     FROM treasury_flows_preunioned
-)/*, loan_actions_1 AS 
+)
+/*, loan_actions_1 AS
 (
     SELECT i AS ilk
     , call_block_time ts
@@ -731,26 +790,26 @@ values
     WHERE call_success
     AND rate <> 0.0
 )*/
-, loan_actions_2 AS 
-(
-    SELECT STRING(UNHEX(TRIM('0', RIGHT(ilk, LENGTH(ilk)-2)))) AS ilk
-    , ts
-    , hash
-    , dart
-    , COALESCE(POW(10,27) + SUM(rate) OVER(PARTITION BY ilk ORDER BY ts ASC), POW(10,27)) AS rate
+, loan_actions_2 AS (
+    SELECT STRING(UNHEX(TRIM('0', RIGHT(ilk, LENGTH(ilk) - 2))))                                  AS ilk
+         , ts
+         , hash
+         , dart
+         , COALESCE(POW(10, 27) + SUM(rate) OVER (PARTITION BY ilk ORDER BY ts ASC), POW(10, 27)) AS rate
     FROM interest_accruals_1 -- loan_actions_1 was previously exactly the same as interest_accruals_1, so instead of being redundant, I am just going from interest_accruals_1 and continuing the naming convention (treating as if it was called loan_actions_1)
     WHERE STRING(UNHEX(TRIM('0', RIGHT(ilk, LENGTH(ilk)-2)))) <> 'TELEPORT-FW-A'
-), loan_actions AS
-(
+)
+, loan_actions AS (
     SELECT ts
-    , hash
-    , asset_code AS code
-    , SUM(dart*rate)/POW(10,45) AS value --increase in assets
-    , loan_actions_2.ilk
+         , hash
+         , asset_code                     AS code
+         , SUM(dart * rate) / POW(10, 45) AS value --increase in assets
+         , loan_actions_2.ilk
     FROM loan_actions_2
     LEFT JOIN ilk_list_labeled
-    ON loan_actions_2.ilk = ilk_list_labeled.ilk
-    AND CAST(loan_actions_2.ts AS DATE) BETWEEN COALESCE(ilk_list_labeled.begin_dt, '2000-01-01') AND COALESCE(ilk_list_labeled.end_dt, '2222-12-31') --if null, ensure its not restrictive
+        ON loan_actions_2.ilk = ilk_list_labeled.ilk
+        AND CAST(loan_actions_2.ts AS DATE) BETWEEN COALESCE(ilk_list_labeled.begin_dt, '2000-01-01')
+        AND COALESCE(ilk_list_labeled.end_dt, '2222-12-31') --if null, ensure its not restrictive
     --WHERE COALESCE(dart,0) <> 0  --this illogically breaks the query....
     GROUP BY 1,2,3,5
     HAVING SUM(dart*rate)/POW(10,45) <> 0
@@ -758,10 +817,10 @@ values
     UNION ALL
     
     SELECT ts
-    , hash
-    , 21120 AS code --increase in liabilities
-    , SUM(dart*rate)/POW(10,45) AS value
-    , loan_actions_2.ilk
+         , hash
+         , 21120                          AS code --increase in liabilities
+         , SUM(dart * rate) / POW(10, 45) AS value
+         , loan_actions_2.ilk
     FROM loan_actions_2
     --WHERE COALESCE(dart,0) <> 0 --this illogically breaks the query....
     GROUP BY 1,2,5
@@ -831,47 +890,79 @@ values
 )
 */
 SELECT coa.code
-, unioned.ts
-, unioned.hash
-, unioned.value
-, unioned.token
-, unioned.descriptor
-, unioned.ilk
+     , unioned.ts
+     , unioned.hash
+     , unioned.value
+     , unioned.token
+     , unioned.descriptor
+     , unioned.ilk
 FROM chart_of_accounts coa
 
 LEFT JOIN 
 (
-    SELECT ts, hash, code, value, 'DAI' AS token, 'Returned Workforce Expenses' AS descriptor, NULL AS ilk FROM team_dai_burns WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'Returned Workforce Expenses' AS descriptor, NULL AS ilk
+    FROM team_dai_burns
+    WHERE ts BETWEEN {{start_dt}} AND DATEADD({{end_dt}}, 1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'Liquidation Revenues/Expenses' AS descriptor, NULL AS ilk FROM liquidation WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'Liquidation Revenues/Expenses' AS descriptor, NULL AS ilk
+    FROM liquidation
+    WHERE ts BETWEEN {{start_dt}} AND DATEADD({{end_dt}}, 1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'Trading Revenues' AS descriptor, ilk FROM trading_revenues WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'Trading Revenues' AS descriptor, ilk
+    FROM trading_revenues
+    WHERE ts BETWEEN {{start_dt}} AND DATEADD({{end_dt}}, 1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'MKR Mints' AS descriptor, NULL AS ilk FROM mkr_mints WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'MKR Mints' AS descriptor, NULL AS ilk
+    FROM mkr_mints
+    WHERE ts BETWEEN {{start_dt}} AND DATEADD({{end_dt}}, 1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'MKR Burns' AS descriptor, NULL AS ilk FROM mkr_burns WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'MKR Burns' AS descriptor, NULL AS ilk
+    FROM mkr_burns
+    WHERE ts BETWEEN {{start_dt}} AND DATEADD({{end_dt}}, 1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'Interest Accruals' AS descriptor, ilk FROM interest_accruals WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'Interest Accruals' AS descriptor, ilk
+    FROM interest_accruals
+    WHERE ts BETWEEN {{start_dt}} AND DATEADD({{end_dt}}, 1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'OpEx' AS descriptor, NULL AS ilk FROM opex WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'OpEx' AS descriptor, NULL AS ilk
+    FROM opex
+    WHERE ts BETWEEN {{start_dt}} AND DATEADD({{end_dt}}, 1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'DSR Expenses' AS descriptor, NULL AS ilk FROM dsr_expenses WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'DSR Expenses' AS descriptor, NULL AS ilk
+    FROM dsr_expenses
+    WHERE ts BETWEEN {{start_dt}} AND DATEADD({{end_dt}}, 1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'Other Sin Outflows'AS descriptor, NULL AS ilk  FROM other_sin_outflows WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'Other Sin Outflows' AS descriptor, NULL AS ilk
+    FROM other_sin_outflows
+    WHERE ts BETWEEN {{start_dt}} AND DATEADD({{end_dt}}, 1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'Sin Inflows' AS descriptor, NULL AS ilk FROM sin_inflows WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'Sin Inflows' AS descriptor, NULL AS ilk
+    FROM sin_inflows
+    WHERE ts BETWEEN {{start_dt}} AND DATEADD({{end_dt}}, 1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'DSR Flows' AS descriptor, NULL AS ilk FROM dsr_flows WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'DSR Flows' AS descriptor, NULL AS ilk
+    FROM dsr_flows
+    WHERE ts BETWEEN {{start_dt}} AND DATEADD({{end_dt}}, 1)
     UNION ALL
-    SELECT ts, hash, code, value, token, 'Treasury Flows' AS descriptor, NULL AS ilk FROM treasury_flows WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
+    SELECT ts, hash, code, value, token, 'Treasury Flows' AS descriptor, NULL AS ilk
+    FROM treasury_flows
+    WHERE ts BETWEEN {{start_dt}} AND DATEADD({{end_dt}}, 1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'Loan Draws/Repays' AS descriptor, ilk FROM loan_actions WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'Loan Draws/Repays' AS descriptor, ilk
+    FROM loan_actions
+    WHERE ts BETWEEN {{start_dt}} AND DATEADD({{end_dt}}, 1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'D3M Revenues' AS descriptor, ilk FROM d3m_revenues WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'D3M Revenues' AS descriptor, ilk
+    FROM d3m_revenues
+    WHERE ts BETWEEN {{start_dt}} AND DATEADD({{end_dt}}, 1)
     UNION ALL
-    SELECT ts, hash, code, value, 'DAI' AS token, 'PSM Yield' AS descriptor, ilk FROM psm_yield WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
+    SELECT ts, hash, code, value, 'DAI' AS token, 'PSM Yield' AS descriptor, ilk
+    FROM psm_yield
+    WHERE ts BETWEEN {{start_dt}} AND DATEADD({{end_dt}}, 1)
     UNION ALL
-    SELECT ts, hash, code, value, token, 'Accounting Plugs' AS descriptor, ilk FROM hashless_trxns WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
+    SELECT ts, hash, code, value, token, 'Accounting Plugs' AS descriptor, ilk
+    FROM hashless_trxns
+    WHERE ts BETWEEN {{start_dt}}  AND DATEADD({{end_dt}},1)
 ) unioned
 USING (code)
 WHERE value IS NOT NULL
