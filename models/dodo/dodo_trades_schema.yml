@@ -2,14 +2,14 @@ version: 2
 models:
   - name: dodo_trades
     meta:
-      blockchain: ethereum, bnb
+      blockchain: ethereum, bnb, polygon
       sector: dex
       project: dodo
       contributors: scoffie, owen05
     config:
-      tags: ['ethereum','bnb', 'dex','trades', 'dodo',]
+      tags: ['ethereum','bnb', 'polygon', 'dex','trades', 'dodo',]
     description: >
-        dodo trades across two contracts. This table will load dex trades downstream.
+        dodo trades across three networks. This table will load dex trades downstream.
     columns:
       - &blockchain
         name: blockchain
@@ -19,7 +19,7 @@ models:
         description: "Project name of the DEX"
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project"
+        description: "Version of the contract built and deployed by the DEX project, 0 presents dodo_aggregator, 1 presents DODOV1, 2_dvm presents DODOV2 public pool, 2_dsp presents DODOV2 stable pool, 2_dpp presents DODOV2 private pool"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
