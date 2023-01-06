@@ -1826,7 +1826,7 @@ VALUES
     ("mpl-maple-finance", "ethereum", "MPL", "0x33349B282065b0284d756F0577FB39c158F935e6", 18),
     -- ("bankai-bankai", "ethereum", "BANKAI", "0x5a6D9dE34Fa1f09AAff941eC635e3F1C7689Cf74", 9),
     ("koyo-yofune-nushi", "ethereum", "KOYO", "0x9dAeF41E08Bc88183572b03796C96a7ace1Ec9d4", 18),
-    ("safemoon-safemoon", "ethereum", "SAFEMOON", "0x16631e53C20Fd2670027C6D53EfE2642929b285C", 18),
+    -- ("safemoon-safemoon", "ethereum", "SAFEMOON", "0x16631e53C20Fd2670027C6D53EfE2642929b285C", 18),
     ("shaman-shaman-king-inu", "ethereum", "SHAMAN", "0xF98E38C3F287304a1F2d4879E741d2BF55474e84", 9),
     ("dbi-don39t-buy-inu", "ethereum", "DBI", "0x2dE509bf0014ddF697b220bE628213034d320EcE", 18),
     ("tbtc-tbtc", "ethereum", "TBTC", "0x8dAEBADE922dF735c38C80C7eBD708Af50815fAa", 18),
