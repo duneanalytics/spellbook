@@ -5535,3 +5535,4 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0x1bdd3cf7f79cfb8edbb955f20ad99211551ba275', 'BNBx', 18)
 ,('0x48378891d6e459ca9a56b88b406e8f4eab2e39bf', '$FUR', 18)
 ) AS temp_table (contract_address, symbol, decimals)
+;
