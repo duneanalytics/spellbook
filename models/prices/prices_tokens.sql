@@ -1613,6 +1613,13 @@ VALUES
     ("stmatic-lido-staked-matic", "ethereum", "STMATIC", "0x9ee91F9f426fA633d227f7a9b000E28b9dfd8599", 18),
     ("xen-xen-crypto", "ethereum", "XEN", "0x06450dEe7FD2Fb8E39061434BAbCFC05599a6Fb8", 18),
     ("bob-bob", "ethereum", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
+    ("kltr-kollector", "ethereum", "KLTR", "0xa92c49C403386111C1629AEe00936eED2A9E74a6", 18),
+    ("lmt-lympo-market-token", "ethereum", "LMT", "0x327673aE6B33Bd3d90f0096870059994f30Dc8AF", 18),
+    ("ndr-node-runners", "ethereum", "NDR", "0x739763a258640919981F9bA610AE65492455bE53", 18),
+    ("surf-surffinance", "ethereum", "SURF", "0xEa319e87Cf06203DAe107Dd8E5672175e3Ee976c", 18),
+    ("ern-ethernity-chain", "ethereum", "ERN", "0xBBc2AE13b23d715c30720F079fcd9B4a74093505", 18),
+    ("artem-artem-coin", "ethereum", "ARTEM", "0x9B83f827928aBdf18cF1F7e67053572b9bceff3a", 18),
+    ("aqt-alpha-quark-token", "ethereum", "AQT", "0x2a9bDCFF37aB68B95A53435ADFd8892e86084F93", 18),
 
     -- Query for Popular Traded Tokens on Gnosis Chain without prices: https://dune.com/queries/1719783
     ("dai-dai", "gnosis", "WXDAI", "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18),
