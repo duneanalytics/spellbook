@@ -306,6 +306,7 @@ with source_optimism_transactions as (
     ,t.creator_fee_receiver_1 as royalty_fee_receive_address
     ,t.creator_fee_amount_raw as royalty_fee_amount_raw
     ,case when t.price_amount_raw > 0 then CAST ((creator_fee_amount_raw / t.price_amount_raw * 100) AS DOUBLE) end royalty_fee_percentage
+    ,t.token_symbol as royalty_fee_currency_symbol
     ,t.creator_fee_amount as royalty_fee_amount
     ,t.creator_fee_amount_usd as royalty_fee_amount_usd
     ,t.creator_fee_receiver_1 as royalty_fee_receive_address_1
