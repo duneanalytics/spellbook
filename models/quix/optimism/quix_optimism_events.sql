@@ -29,7 +29,7 @@ from (
         amount_usd,
         token_standard,
         trade_type,
-       number_of_items,
+        number_of_items,
         trade_category,
         evt_type,
         seller,
