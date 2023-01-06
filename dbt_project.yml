@@ -432,10 +432,12 @@ models:
       bnb:
         +schema: mdex_bnb
 
+
     knightswap:
       +schema: knightswap
       bnb:
         +schema: knightswap_bnb
+
 
     swapr:
       +schema: swapr
