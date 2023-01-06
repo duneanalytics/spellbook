@@ -1,6 +1,6 @@
 {{ config(
         alias='trades',
-        post_hook='{{ expose_spells(\'["ethereum", "avalanche_c"]\',
+        post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "optimism", "polygon"]\',
                         "project",
                         "wardenswap",
                         \'["codingsh", "jeff-dude", "hosuke"]\') }}'
@@ -8,12 +8,12 @@
 }}
 
 {% set wardenswap_models = [
-'wardenswap_bnb_trades'
-,'wardenswap_ethereum_trades'
-,'wardenswap_arbitrum_trades'
-,'wardenswap_avalanche_c_trades'
-,'wardenswap_optimism_trades'
-,'wardenswap_polygon_trades'
+ref('wardenswap_bnb_trades')
+,ref('wardenswap_ethereum_trades')
+,ref('wardenswap_arbitrum_trades')
+,ref('wardenswap_avalanche_c_trades')
+,ref('wardenswap_optimism_trades')
+,ref('wardenswap_polygon_trades')
 ] %}
 
 SELECT *
@@ -30,8 +30,8 @@ FROM (
         token_pair,
         token_bought_amount,
         token_sold_amount,
-        CAST(token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw,
-        CAST(token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw,
+        token_bought_amount_raw,
+        token_sold_amount_raw,
         amount_usd,
         token_bought_address,
         token_sold_address,
@@ -43,7 +43,7 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ ref(dex_model) }}
+    FROM {{ dex_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
