@@ -30,13 +30,13 @@ WITH element_txs AS (
         , ee.contract_address AS project_contract_address
         , ee.evt_tx_hash AS tx_hash
         , ee.evt_block_number AS block_number
-        FROM {{ source('element_ex_avalanche_c','ERC721OrdersFeature_evt_ERC721SellOrderFilled') }} ee
+        FROM {{ source('element_ex_avalanche_c','OrdersFeature_evt_ERC721SellOrderFilled') }} ee
         {% if is_incremental() %}
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-        
+
         UNION ALL
-        
+
         -- Avalanche ERC721 Buys
         SELECT 'avalanche_c' AS blockchain
         , 'element' AS project
@@ -57,13 +57,13 @@ WITH element_txs AS (
         , ee.contract_address AS project_contract_address
         , ee.evt_tx_hash AS tx_hash
         , ee.evt_block_number AS block_number
-        FROM {{ source('element_ex_avalanche_c','ERC721OrdersFeature_evt_ERC721BuyOrderFilled') }} ee
+        FROM {{ source('element_ex_avalanche_c','OrdersFeature_evt_ERC721BuyOrderFilled') }} ee
         {% if is_incremental() %}
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-        
+
         UNION ALL
-        
+
         -- Avalanche ERC1155 Sells
         SELECT 'avalanche_c' AS blockchain
         , 'element' AS project
@@ -84,13 +84,13 @@ WITH element_txs AS (
         , ee.contract_address AS project_contract_address
         , ee.evt_tx_hash AS tx_hash
         , ee.evt_block_number AS block_number
-        FROM {{ source('element_ex_avalanche_c','ERC1155OrdersFeature_evt_ERC1155SellOrderFilled') }} ee
+        FROM {{ source('element_ex_avalanche_c','OrdersFeature_evt_ERC1155SellOrderFilled') }} ee
         {% if is_incremental() %}
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-        
+
         UNION ALL
-        
+
         -- Avalanche ERC1155 Buys
         SELECT 'avalanche_c' AS blockchain
         , 'element' AS project
@@ -111,12 +111,12 @@ WITH element_txs AS (
         , ee.contract_address AS project_contract_address
         , ee.evt_tx_hash AS tx_hash
         , ee.evt_block_number AS block_number
-        FROM {{ source('element_ex_avalanche_c','ERC1155OrdersFeature_evt_ERC1155BuyOrderFilled') }} ee
+        FROM {{ source('element_ex_avalanche_c','OrdersFeature_evt_ERC1155BuyOrderFilled') }} ee
         {% if is_incremental() %}
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         )
-    
+
 SELECT alet.blockchain
 , alet.project
 , alet.version
@@ -127,13 +127,13 @@ SELECT alet.blockchain
 , alet.amount_raw/POWER(10, ava_erc20_tokens.decimals)*prices.price AS amount_usd
 , alet.token_standard
 , CASE WHEN agg.name IS NOT NULL THEN 'Bundle Trade' ELSE 'Single Item Trade' END AS trade_type
-, alet.number_of_items
+, CAST(alet.number_of_items AS DECIMAL(38,0)) AS number_of_items
 , alet.trade_category
 , 'Trade' AS evt_type
 , alet.seller
 , alet.buyer
 , alet.amount_raw/POWER(10, ava_erc20_tokens.decimals) AS amount_original
-, alet.amount_raw
+, CAST(alet.amount_raw AS DECIMAL(38,0)) AS amount_raw
 , COALESCE(alet.currency_symbol, ava_erc20_tokens.symbol) AS currency_symbol
 , alet.currency_contract
 , alet.nft_contract_address
@@ -144,16 +144,16 @@ SELECT alet.blockchain
 , alet.block_number
 , at.from AS tx_from
 , at.to AS tx_to
-, 0 AS platform_fee_amount_raw
-, 0 AS platform_fee_amount
-, 0 AS platform_fee_amount_usd
+, CAST(0 AS DOUBLE) AS platform_fee_amount_raw
+, CAST(0 AS DOUBLE) AS platform_fee_amount
+, CAST(0 AS DOUBLE) AS platform_fee_amount_usd
 , CAST(0 AS DOUBLE) AS platform_fee_percentage
-, 0 AS royalty_fee_amount_raw
-, 0 AS royalty_fee_amount
-, 0 AS royalty_fee_amount_usd
+, CAST(0 AS DOUBLE) AS royalty_fee_amount_raw
+, CAST(0 AS DOUBLE) AS royalty_fee_amount
+, CAST(0 AS DOUBLE) AS royalty_fee_amount_usd
 , CAST(0 AS DOUBLE) AS royalty_fee_percentage
-, 0 AS royalty_fee_receive_address
-, 0 AS royalty_fee_currency_symbol
+, CAST('0' AS VARCHAR(5)) AS royalty_fee_receive_address
+, CAST('0' AS VARCHAR(5)) AS royalty_fee_currency_symbol
 , alet.blockchain || alet.project || alet.version || alet.tx_hash || alet.seller  || alet.buyer || alet.nft_contract_address || alet.token_id AS unique_trade_id
 FROM element_txs alet
 LEFT JOIN {{ ref('nft_aggregators') }} agg ON alet.buyer=agg.contract_address AND agg.blockchain='avalanche_c'
