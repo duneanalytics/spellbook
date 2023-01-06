@@ -9,61 +9,87 @@ class TokenChecker:
     TokenChecker uses the coinpaprika API, an assertion error does not mean the input data is incorrect, just that
     it is not represented in the coinpaprika API response.
     """
-    def __init__(self, new_line):
-        self.new_line = new_line
-        self.values = json.loads(self.new_line.rstrip(',').replace('(', '[').replace(')', ']'))
-        self.token_id = self.values[0]
-        self.blockchain = self.values[1]
-        self.symbol = self.values[2]
-        self.contract_address = self.values[3]
-        self.token_api_resp = self.get_token()
-        self.chain_mapper = {"ethereum": "eth-ethereum",
-                             "bnb": "bnb-binance-coin",
-                             "polygon": "matic-polygon",
-                             "solana": "sol-solana",
-                             "avalanche_c": "avax-avalanche",
-                             # "arbitrum": "",
-                             "gnosis": "gno-gnosis",
-                             "optimism": "op-optimism",
-                             "ADD MISSING": "CHAINS MAPPINGS HERE"}
 
-    def get_token(self):
+    def __init__(self):
+        self.chain_slugs = {"ethereum": "eth-ethereum",
+                            "bnb": "bnb-binance-coin",
+                            "polygon": "matic-polygon",
+                            "solana": "sol-solana",
+                            "avalanche_c": "avax-avalanche",
+                            # "arbitrum": "",
+                            "gnosis": "gno-gnosis",
+                            "optimism": "op-optimism"
+                            }
+        self.tokens_by_id = self.get_tokens()
+        self.contracts_by_chain = self.get_contracts()
+
+    @staticmethod
+    def parse_token(line):
+        values = json.loads(line.rstrip(',').replace('(', '[').replace(')', ']'))
+        return {
+            "id": values[0],
+            "blockchain": values[1],
+            "symbol": values[2],
+            "contract_address": values[3].lower()
+        }
+
+    @staticmethod
+    def get_tokens():
+        logging.info(f"INFO: getting all the coins from coinpaprika...")
         try:
-            resp = requests.get("https://api.coinpaprika.com/v1/coins/{}".format(self.token_id))
+            resp = requests.get("https://api.coinpaprika.com/v1/coins")
             resp.raise_for_status()
-            return resp.json()
+            result = {e["id"]: e for e in resp.json()}
+            logging.info(f"INFO: retrieved {len(result)} coins")
+            return result
         except requests.HTTPError:
             raise
 
+    @staticmethod
+    def get_contracts_for_chain(chain_slug):
+        logging.info(f"INFO: getting all the contracts from coinpaprika for chain: {chain_slug}...")
+        try:
+            resp = requests.get(f"https://api.coinpaprika.com/v1/contracts/{chain_slug}")
+            resp.raise_for_status()
+            result = {e["address"].lower(): e for e in resp.json()}
+            logging.info(f"INFO: retrieved {len(result)} contracts")
+            return result
+        except requests.HTTPError:
+            raise
 
-    def validate_token(self):
-        #Confirm Symbol
-        if self.symbol:
-            assert self.token_api_resp[
-                       'symbol'] == self.symbol, f"ERROR: {self.token_id} Provided symbol: {self.symbol} does not match CoinPaprika source: {self.token_api_resp['symbol']}"
+    def get_contracts(self):
+        return {chain: self.get_contracts_for_chain(slug) for chain, slug in self.chain_slugs.items()}
+
+    def validate_token(self, new_line):
+        token = self.parse_token(new_line)
+        api_token = self.tokens_by_id[token['id']]
+        # Confirm Symbol
+        if token['symbol']:
+            assert api_token['symbol'] == token['symbol'] \
+                , f"ERROR: {token['id']} Provided symbol: {token['symbol']} does not match CoinPaprika source: {api_token['symbol']}"
         else:
-            logging.warning(f"WARN: Line: {self.new_line} Symbol is None")
+            logging.warning(f"WARN: Line: {new_line} Symbol is None")
 
-        #Confirm Active
-        if self.token_id:
-            assert self.token_api_resp['is_active'] == True, f"ERROR: Token: {self.token_id} is not active"
+        # Confirm Active
+        if token["id"]:
+            assert api_token['is_active'] is True, f"ERROR: Token: {token['id']} is not active"
         else:
-            logging.warning(f"WARN: Line: {self.new_line} token_id is None")
+            logging.warning(f"WARN: Line: {new_line} token_id is None")
 
-        #Confirm Contract Listed
-        if self.contract_address:
-            contracts = [contract['contract'].lower() for contract in self.token_api_resp.get('contracts', [{"contract": "API response missing contracts field"}])]
-            assert self.contract_address.lower() in contracts, f"WARN: {self.token_id} Provided contract address: {self.contract_address} not in CoinPaprika contracts list {contracts}. (Not uncommon! share block explorer link to confirm contract)"
+        if token['blockchain']:
+            assert token['blockchain'] in self.chain_slugs \
+                , f"WARN: chain: {token['blockchain']} not supported in the price checker, could not check contract or chain"
+
+            if token['contract_address']:
+                assert token['contract_address'] in self.contracts_by_chain[token['blockchain']] \
+                    , f"WARN: contract {token['contract_address']} for token {token['id']} not found in the contracts for chain: {token['blockchain']}" \
+                      f" (Not uncommon! share block explorer link to confirm contract)"
+                # Confirm Contract Listed
+                api_contract_id = self.contracts_by_chain[token['blockchain']][token['contract_address']]
+                assert token['id'] == api_contract_id['id'] \
+                    , f"WARN: {token['id']} for provided contract address: {token['contract_address']} for chain {token['blockchain']} does not match CoinPaprika id :{api_contract_id['id']}" \
+                      f" (Not uncommon! share block explorer link to confirm contract)"
+            else:
+                logging.warning(f"WARN: Line: {new_line} contract_address is None")
         else:
-            logging.warning(f"WARN: Line: {self.new_line} contract_address is None")
-
-        #Confirm Platform Matches
-        if self.blockchain:
-            index_contract = contracts.index(self.contract_address.lower())
-            platforms = [contract['platform'] for contract in self.token_api_resp['contracts']]
-            platform = platforms[index_contract]
-            assert platform == self.chain_mapper.get(self.blockchain,
-                                                     self.blockchain), f"ERROR: {self.token_id} Provided blockchain {self.blockchain} does not match expected platform {platform}"
-        else:
-            logging.warning(f"WARN: Line: {self.new_line} blockchain is None")
-
+            logging.warning(f"WARN: Line: {new_line} chain is None")

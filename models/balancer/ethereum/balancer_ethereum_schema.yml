@@ -194,3 +194,36 @@ models:
         description: "Amount of veBAL"
       - name: lock_time
         description: "Amount of time the BPT was locked for at the last time the lock was updated"
+
+  - name: balancer_vebal_slopes
+    meta:
+      blockchain: ethereum
+      project: balancer
+      contibutors: markusbkoch, mendesfabio, stefenon
+    config:
+      tags: ['balancer', 'ethereum', 'vebal', 'slope', 'markusbkoch', 'mendesfabio', 'stefenon']
+    description: >
+        Slope and bias of veBAL per wallet after each balance update
+        Depends on veBAL_call_create_lock, veBAL_evt_Deposit and veBAL_evt_Withdraw
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - wallet_address
+    columns:
+      - *block_number
+      - *block_time
+      - name: block_timestamp
+        description: "Block timestamp"
+      - name: wallet_address
+        description: "Address of the wallet holding the veBAL"
+      - name: bpt_balance
+        description: "Amount of BPT held in the veBAL lock"
+      - name: unlocked_at
+        description: "Timestamp at which B-80BAL-20WETH BPT can be unlocked"
+      - name: slope
+        description: "veBAL decay rate (per second)"
+      - name: bias
+        description: "veBAL balance at the moment user locks or re-locks"
+      - name: block_date
+        description: "Block time trunc to date"
