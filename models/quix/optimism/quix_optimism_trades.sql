@@ -36,5 +36,5 @@ select
     tx_from,
     tx_to,
     unique_trade_id
-from ref('quix_optimism_events')
+from {{ ref('quix_optimism_events') }}
 where evt_type = 'Trade'
