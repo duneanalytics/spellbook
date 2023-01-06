@@ -223,6 +223,9 @@ sources:
 
   - name: erc1155_ethereum
     description: "Transfers events for ERC1155 tokens on Ethereum."
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
     tables:
       - name: evt_transfersingle
         loaded_at_field: evt_block_time
@@ -264,6 +267,9 @@ sources:
 
   - name: erc721_ethereum
     description: "Transfers events for ERC721 tokens on Ethereum."
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
     tables:
       - name: evt_transfer
         loaded_at_field: evt_block_time

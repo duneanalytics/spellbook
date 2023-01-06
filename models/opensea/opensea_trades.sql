@@ -36,7 +36,7 @@ tx_to,
 unique_trade_id
 FROM {{ ref('opensea_ethereum_trades') }}
 
-            UNION
+            UNION ALL
 
 SELECT blockchain,
 project,
@@ -47,7 +47,7 @@ CAST(NULL AS VARCHAR(5)) as collection,
 amount_usd,
 token_standard,
 CAST(NULL AS VARCHAR(5)) as trade_type,
-CAST(NULL AS DECIMAL(38,10)) as number_of_items,
+CAST(NULL AS DECIMAL(38,0)) as number_of_items,
 CAST(NULL AS VARCHAR(5)) as trade_category,
 evt_type,
 CAST(NULL AS VARCHAR(5)) as seller,

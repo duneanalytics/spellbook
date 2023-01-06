@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'dao_creator_tool', 'dao', 'dao_wallet_address', 'tx_hash', 'tx_index', 'tx_type', 'trace_address', 'address_interacted_with']
+    unique_key = ['block_date', 'blockchain', 'dao_creator_tool', 'dao', 'dao_wallet_address', 'tx_hash', 'tx_index', 'tx_type', 'trace_address', 'address_interacted_with', 'value', 'asset_contract_address']
     )
 }}
 
@@ -21,6 +21,7 @@ dao_tmp as (
         FROM 
         {{ ref('dao_addresses_ethereum') }}
         WHERE dao_wallet_address IS NOT NULL
+        AND dao_wallet_address NOT IN ('0x0000000000000000000000000000000000000001', '0x000000000000000000000000000000000000dead')
 ), 
 
 transactions as (
@@ -32,7 +33,7 @@ transactions as (
             to as dao_wallet_address, 
             'tx_in' as tx_type, 
             tx_index,
-            from as address_interacted_with,
+            COALESCE(from, '') as address_interacted_with,
             trace_address
         FROM 
         {{ source('ethereum', 'traces') }}
@@ -57,7 +58,7 @@ transactions as (
             from as dao_wallet_address, 
             'tx_out' as tx_type,
             tx_index,
-            to as address_interacted_with,
+            COALESCE(to, '') as address_interacted_with,
             trace_address
         FROM 
         {{ source('ethereum', 'traces') }}
@@ -83,9 +84,9 @@ SELECT
     t.tx_type,
     t.token as asset_contract_address,
     'ETH' asset,
-    t.value as raw_value, 
+    CAST(t.value AS DECIMAL(38,0)) as raw_value, 
     t.value/POW(10, 18) as value, 
-    t.value/POW(10, 18) * p.price as usd_value, 
+    t.value/POW(10, 18) * COALESCE(p.price, dp.median_price) as usd_value, 
     t.tx_hash, 
     t.tx_index,
     t.address_interacted_with,
@@ -105,6 +106,15 @@ LEFT JOIN
     {% endif %}
     {% if is_incremental() %}
     AND p.minute >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+LEFT JOIN 
+{{ ref('dex_prices') }} dp 
+    ON dp.hour = date_trunc('hour', t.block_time)
+    AND dp.contract_address = LOWER('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2')
+    AND dp.blockchain = 'ethereum'
+    AND dp.hour >= '{{transactions_start_date}}'
+    {% if is_incremental() %}
+    AND dp.hour >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 
 
