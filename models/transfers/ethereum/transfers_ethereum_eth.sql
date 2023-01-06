@@ -15,7 +15,7 @@ with eth_transfers as (
     select 
         r.from
         ,r.to
-        --Using the ETH deposit placeholder address to match with prices tables
+        --Using the ETH placeholder address to match with prices tables
         ,lower('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') as contract_address
         ,cast(r.value as double) AS value
         ,cast(r.value as double)/1e18 as value_decimal
