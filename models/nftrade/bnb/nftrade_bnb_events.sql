@@ -14,6 +14,8 @@
 
 {%- set project_start_date = '2022-09-17' %}
 
+WITH
+
 -- fill events 
 source_inventory as (
     SELECT 
