@@ -385,3 +385,11 @@ models:
         tests:
           - not_null
           - unique
+          
+      - &tx_to
+        name: tx_to
+        description: "To Address for the Transaction"
+
+      - &tx_from
+          name: tx_from
+          description: "From Address for the Transaction"
