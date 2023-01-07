@@ -19,7 +19,7 @@ models:
         description: "Project name of the DEX"
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project, 0 presents dodo_aggregator, 1 presents DODOV1, 2_dvm presents DODOV2 public pool, 2_dsp presents DODOV2 stable pool, 2_dpp presents DODOV2 private pool"
+        description: "Version of the contract(0 - dodo_aggregator, 1 - DODOV1, 2_dvm - DODOV2 public pool, 2_dsp - DODOV2 stable pool, 2_dpp - DODOV2 private pool)"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"

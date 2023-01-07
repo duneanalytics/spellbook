@@ -30,7 +30,7 @@ models:
         description: "Project name of the DEX"
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project(0:DODO Aggregation,1:DODOV1,2:DODOV2)"
+        description: "Version of the contract(0 - dodo_aggregator, 1 - DODOV1, 2_dvm - DODOV2 public pool, 2_dsp - DODOV2 stable pool, 2_dpp - DODOV2 private pool)"
       - &category
         name: category
         description: "Type of route through which a trade happened. Through DEX contract or and Aggregator contract"
