@@ -65,7 +65,7 @@ WITH dao_wallet AS (
 )
 
 -- ********** Helper Tables *********** 
-, treasury_erc20s AS( -- unused CTE #Hosuke commented
+, treasury_erc20s AS(
     SELECT '0xc18360217d8f7ab5e7c516566761ea12ce7f9d72' AS contract_address,
            '0xc18360217d8f7ab5e7c516566761ea12ce7f9d72' AS price_address,
            18                                           AS decimals,
@@ -90,18 +90,27 @@ WITH dao_wallet AS (
     SELECT STRING(UNHEX(TRIM('0', RIGHT(ilk, LENGTH(ilk) - 2)))) AS ilk
     FROM (SELECT i AS ilk
           FROM {{ source('maker_ethereum', 'vat_call_frob') }}
+          {% if is_incremental() %}
+          AND call_block_time >= date_trunc("day", now() - interval '1 week')
+          {% endif %}
           GROUP BY ilk
           UNION ALL
           SELECT ilk
           FROM {{ source('maker_ethereum', 'spot_call_file') }}
+          {% if is_incremental() %}
+          AND call_block_time >= date_trunc("day", now() - interval '1 week')
+          {% endif %}
           GROUP BY ilk
           UNION ALL
           SELECT ilk
           FROM {{ source('maker_ethereum', 'jug_call_file') }}
+          {% if is_incremental() %}
+          AND call_block_time >= date_trunc("day", now() - interval '1 week')
+          {% endif %}
           GROUP BY ilk)
     GROUP BY ilk
 )
-, hashless_trxns AS(  -- unused CTE #Hosuke commented
+, hashless_trxns AS(
     SELECT CAST('2022-11-01 00:00' AS TIMESTAMP)                  AS ts,
            'noHash:movingGusdPSMBalanceFromNonYieldingToYielding' AS hash,
            13410                                                  AS code,
@@ -232,27 +241,39 @@ values
     FROM {{ source('maker_ethereum','vow_call_file') }}
     WHERE LEFT(data, 2) = '0x'
     AND call_success
+    {% if is_incremental() %}
+    AND call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     GROUP BY data
     UNION ALL
     SELECT 'PSM' AS contract_type, u AS contract_address
     FROM {{ source('maker_ethereum','vat_call_frob') }}
     WHERE STRING(UNHEX(TRIM('0', RIGHT(i, LENGTH(i)-2)))) LIKE 'PSM%'
     AND call_success
+    {% if is_incremental() %}
+    AND call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     GROUP BY u
 )
-, liquidation_excluded_tx AS (  -- unused CTE #Hosuke commented
+, liquidation_excluded_tx AS (
     SELECT tx_hash
     FROM {{ source('ethereum', 'traces') }}
     JOIN contracts ON `from` = contract_address
-    WHERE contract_type IN('FlapFlop') 
+    WHERE contract_type IN('FlapFlop')
+    {% if is_incremental() %}
+    AND block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     GROUP BY tx_hash
 )
-, team_dai_burns_tx AS (    -- unused CTE #Hosuke commented
+, team_dai_burns_tx AS (
     SELECT call_tx_hash
          , usr
     FROM {{ source('maker_ethereum', 'dai_call_burn') }}
     WHERE call_success
       AND (usr = '0x0048fc4357db3c0f45adea433a07a20769ddb0cf' OR usr IN (SELECT wallet_address FROM dao_wallet))
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
     GROUP BY call_tx_hash, usr
 )
 , team_dai_burns_preunioned AS (
@@ -264,6 +285,9 @@ values
         USING (call_tx_hash)
     WHERE dst = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- vow
       AND call_success
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
     GROUP BY ts, hash
 )
 , team_dai_burns AS (
@@ -281,12 +305,15 @@ values
          , -value AS value--decreased liability
     FROM team_dai_burns_preunioned
 )
-, psm_yield_trxns AS (  -- unused CTE #Hosuke commented
+, psm_yield_trxns AS (
     SELECT call_tx_hash
          , CASE WHEN usr = '0xf2e7a5b83525c3017383deed19bb05fe34a62c27' THEN 'PSM-GUSD-A' END AS ilk
     FROM {{ source('maker_ethereum', 'dai_call_burn') }}
     WHERE call_success
       AND usr IN ('0xf2e7a5b83525c3017383deed19bb05fe34a62c27') --GUSD interest payment contract
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
     GROUP BY call_tx_hash, ilk
 )
 , psm_yield_preunioned AS (
@@ -299,6 +326,9 @@ values
         USING (call_tx_hash)
     WHERE dst = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- vow
       AND call_success
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
     GROUP BY ts, hash, ilk
 )
 , psm_yield AS (
@@ -331,6 +361,9 @@ values
       AND call_tx_hash NOT IN (SELECT tx_hash FROM liquidation_excluded_tx) -- Exclude Flop income (coming directly from users wallets)
       AND call_tx_hash NOT IN (SELECT call_tx_hash FROM team_dai_burns_tx)
       AND call_tx_hash NOT IN (SELECT call_tx_hash FROM psm_yield_trxns)
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
     GROUP BY 1, 2
 )
 , liquidation_expenses AS (
@@ -339,6 +372,9 @@ values
          , SUM(tab / POW(10, 45)) AS value
     FROM {{ source('maker_ethereum', 'vow_call_fess') }}
     WHERE call_success
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
     GROUP BY 1, 2
 )
 , liquidation AS (
@@ -365,6 +401,9 @@ values
     WHERE call_success
       AND src IN ('0xa13c0c8eb109f5a13c6c90fc26afb23beb3fb04a') --aave d3m
       AND dst = '0xa950524441892a31ebddf91d3ceefa04bf454466'    --vow
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
     GROUP BY 1, 2, 3
 )
 , d3m_revenues AS (
@@ -382,6 +421,9 @@ values
         , RIGHT (i
         , LENGTH(i)-2)))) LIKE 'PSM-%'
       AND call_success
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
     GROUP BY 1, 2
 )
 , trading_revenues_preunion AS (
@@ -394,6 +436,9 @@ values
     ON src = psm_address
     WHERE call_success
       AND dst = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- Vow
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
     GROUP BY 1, 2, 3
 )
 , trading_revenues AS (
@@ -413,6 +458,9 @@ values
     WHERE dst = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- vow
       AND call_success
       AND src NOT IN (SELECT contract_address FROM contracts WHERE contract_type = 'PSM')
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
     GROUP BY 1, 2
 )
 , mkr_mints AS (
@@ -437,6 +485,9 @@ values
     FROM {{ source('maker_ethereum', 'vat_call_move') }}
     WHERE src = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- vow
       AND call_success
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
     GROUP BY 1, 2
 )
 , mkr_burns AS (
