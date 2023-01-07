@@ -380,6 +380,7 @@ FROM (
       ,('0x2C10aC0E6B6c1619F4976b2ba559135BFeF53c5E', 'Powerbomb Finance')
       ,('0x0f3BF5c241B6625C0fA781ED137fDe6786b2e66f', 'Lemma Finance')
       ,('0x43834c6A65C64a4529E048Ba55a685fF5Aa43cB4', 'fBOMB Finance')
+      ,('0xc82c018dB54B894853cACb878D0F3e481E8C6b96', 'Via Protocol')
 
   ) as temp_table (creator_address, contract_project)
 
