@@ -24,12 +24,6 @@ source_inventory as (
         evt_block_time, 
         evt_index, 
         evt_tx_hash, 
-        CASE 
-            WHEN bytea2numeric_v2(SUBSTRING(makerAssetData, 77, 64)) = 0 
-            OR bytea2numeric_v2(SUBSTRING(makerAssetData, 77, 64)) IS NULL 
-            THEN CONCAT('0x', SUBSTRING(takerAssetData, 35, 40))
-        ELSE CONCAT('0x', SUBSTRING(makerAssetData, 35, 40))
-        END as nft_contract_address, 
         makerAddress, 
         makerAssetAmount as makerAssetAmountRaw,
         makerAssetAmount/POW(10, 18) as makerAssetAmount, 
