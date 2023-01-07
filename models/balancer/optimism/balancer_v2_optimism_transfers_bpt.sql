@@ -1,5 +1,6 @@
 {{
     config(
+        schema = 'balancer_v2_optimism',
         alias='transfers_bpt',
         partition_by = ['block_date'],
         materialized = 'incremental',
