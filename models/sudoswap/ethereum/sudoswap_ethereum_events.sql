@@ -291,7 +291,11 @@ WITH
         SELECT
             sc.*
             , tokens.name AS collection
-            , case when lower(right(tx.data, 8)) = '72db8c0b' then 'Gem' else agg.name end as aggregator_name
+            , case when lower(right(tx.data, 8)) = '72db8c0b' then 'Gem' 
+                    when lower(right(tx.data, 32)) = '1f616c706861736861726b732e696f1f' then 'Alpha Sharks'
+                    when lower(right(tx.data, 8)) = 'a8a9c101' then 'Alpha Sharks'
+                    else agg.name 
+            end as aggregator_name
             , agg.contract_address as aggregator_address
             , sc.amount_original*pu.price as amount_usd
             , sc.pool_fee_amount*pu.price as pool_fee_amount_usd

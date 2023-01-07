@@ -234,6 +234,8 @@ with source_ethereum_transactions as (
           ,a.creator_fee_amount_raw / power(10, e.decimals) * p.price as creator_fee_amount_usd
           ,case when right(t.data,8) = '72db8c0b' then 'Gem'
                 when right(t.data,8) = '332d1229' THEN 'Blur'
+                when right(t.data,32) = '1f616c706861736861726b732e696f1f' then 'Alpha Sharks'
+                when right(t.data,8) = 'a8a9c101' then 'Alpha Sharks'
                 else agg.name
            end as aggregator_name
           ,agg.contract_address AS aggregator_address

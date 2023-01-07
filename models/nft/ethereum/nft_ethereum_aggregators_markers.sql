@@ -86,6 +86,16 @@ SELECT '72db8c0b' AS hash_marker
 , NULL AS router_name
 , LENGTH('72db8c0b') AS hash_marker_size
 UNION ALL
+SELECT 'a8a9c101' AS hash_marker
+, 'Alpha Sharks' AS aggregator_name
+, NULL AS router_name
+, LENGTH('a8a9c101') AS hash_marker_size
+UNION ALL
+SELECT '1f616c706861736861726b732e696f1f' AS hash_marker
+, 'Alpha Sharks' AS aggregator_name
+, NULL AS router_name
+, LENGTH('1f616c706861736861726b732e696f1f') AS hash_marker_size
+UNION ALL
 SELECT '332d1229' AS hash_marker
 , 'Blur' AS aggregator_name
 , NULL AS router_name
