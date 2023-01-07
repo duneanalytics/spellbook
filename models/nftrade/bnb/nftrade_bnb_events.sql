@@ -148,7 +148,7 @@ source_inventory_enriched as (
         {% endif %}
     LEFT JOIN 
     {{ ref('tokens_bnb_nft') }} nft_token 
-        ON nft_token.nft_contract_address = src.nft_contract_address
+        ON nft_token.contract_address = src.nft_contract_address
     LEFT JOIN 
     {{ source('prices','usd') }} p 
         ON p.blockchain = 'bnb'
