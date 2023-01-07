@@ -322,6 +322,11 @@ models:
       ethereum:
         +schema: safe_ethereum
 
+    nftrade:
+      +schema: nftrade
+      bnb:
+        +schema: nftrade_bnb
+
     jarvis_network:
       +schema: jarvis_network
       polygon:
@@ -905,6 +910,18 @@ seeds:
         +enabled: true
         +schema: test_data
         pancakeswap_nft_trades_samples:
+            block_time: timestamp
+            token_id: int
+            seller: string
+            buyer: string
+            tx_hash: string
+            block_number: int
+            amount_original: double
+    nftrade:
+      bnb:
+        +enabled: true
+        +schema: test_data
+        nftrade_nft_trades_samples:
             block_time: timestamp
             token_id: int
             seller: string
