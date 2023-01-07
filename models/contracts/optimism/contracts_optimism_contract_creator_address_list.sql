@@ -381,6 +381,7 @@ FROM (
       ,('0x0f3BF5c241B6625C0fA781ED137fDe6786b2e66f', 'Lemma Finance')
       ,('0x43834c6A65C64a4529E048Ba55a685fF5Aa43cB4', 'fBOMB Finance')
       ,('0xc82c018dB54B894853cACb878D0F3e481E8C6b96', 'Via Protocol')
+      ,('0x4401A1667dAFb63Cff06218A69cE11537de9A101', 'Clique')
 
   ) as temp_table (creator_address, contract_project)
 
