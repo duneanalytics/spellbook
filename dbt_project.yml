@@ -927,7 +927,6 @@ seeds:
             seller: string
             buyer: string
             tx_hash: string
-            block_number: int
             amount_original: double
 
     foundation:
