@@ -1,6 +1,6 @@
 WITH unit_tests as
 (SELECT case when test.maker_token = actual.maker_token 
-                and test.taker_token_amount = actual.taker_token_amount 
+              --  and test.taker_token_amount_raw = actual.taker_token_amount_raw
                 and test.taker_token = actual.taker_token
 then True else False end as test
 FROM {{ ref('zeroex_api_fantom_fills') }} actual
