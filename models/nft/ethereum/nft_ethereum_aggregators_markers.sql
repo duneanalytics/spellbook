@@ -28,6 +28,7 @@
 SELECT hash_marker
 , 'Reservoir' AS aggregator_name
 , CASE WHEN router_website='ens.vision' THEN 'ENS.Vision'
+    WHEN router_website='alphasharks.io' THEN 'Alpha Sharks'
     WHEN router_website='nftnerds.ai' THEN 'NFTNerds'
     WHEN router_website='0xba5ed0773240626366a7eb3a4bea22f0dd46b1b5' THEN 'Unknown'
     WHEN router_website='rare.id' THEN 'Rare.ID'

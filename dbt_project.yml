@@ -38,7 +38,7 @@ models:
         +schema: aave_ethereum
       optimism:
         +schema: aave_optimism
-
+    
     balancer:
       +schema: balancer
       arbitrum:
@@ -231,6 +231,8 @@ models:
       +schema: dodo
       ethereum:
         +schema: dodo_ethereum
+      bnb:
+        +schema: dodo_bnb
 
     labels:
       +schema: labels
@@ -591,6 +593,16 @@ models:
     bridge:
       +schema: bridge
 
+    tessera:
+      +schema: tessera
+      ethereum:
+        +schema: tessera_ethereum
+
+    tofu:
+      +schema: tofu
+      bnb:
+        +schema: tofu_bnb
+
 seeds:
   spellbook:
     +schema: test_data
@@ -915,6 +927,17 @@ seeds:
             block_number: long
             tx_hash: string
             token_id: string
+    pancakeswap:
+      bnb:
+        +enabled: true
+        +schema: test_data
+        pancakeswap_nft_trades_samples:
+            block_time: timestamp
+            token_id: int
+            seller: string
+            buyer: string
+            tx_hash: string
+            block_number: int
             amount_original: double
 
     foundation:
@@ -929,3 +952,17 @@ seeds:
             seller: string
             platform_fee_amount: double
             royalty_fee_amount: double
+
+    balancer:
+      balancer_transfers_bpt_seed:
+        +column_types:
+          blockchain: string
+          contract_address: string
+          evt_tx_hash: string
+          evt_index: int
+          evt_block_time: timestamp
+          block_date: timestamp
+          evt_block_number: int
+          from: string
+          to: string
+          value: double
