@@ -34,7 +34,6 @@ models:
     +materialized: view
     aave:
       +schema: aave
-      +materialized: view
       ethereum:
         +schema: aave_ethereum
       optimism:
@@ -568,9 +567,9 @@ models:
       +schema: bridge
 
     the_granary:
+      +schema: the_granary
       optimism:
         +schema: the_granary_optimism
-        +materialized: view
 
     tessera:
       +schema: tessera
