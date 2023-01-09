@@ -922,7 +922,7 @@ seeds:
         +enabled: true
         +schema: test_data
         nftrade_nft_trades_samples:
-            block_time: timestamp
+            block_number: int
             token_id: int
             seller: string
             buyer: string
