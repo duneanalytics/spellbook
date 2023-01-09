@@ -209,10 +209,9 @@ models:
 
     ellipsis_finance:
       +schema: ellipsis_finance
-      +materialized: view
       bnb:
         +schema: ellipsis_finance_bnb
-        +materialized: view
+
     seaport:
       +schema: seaport
       ethereum:
