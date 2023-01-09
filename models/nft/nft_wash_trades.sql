@@ -11,12 +11,11 @@
 )
 }}
 
-
 WITH filter_1 AS (
     SELECT unique_trade_id
     , CASE WHEN nftt.buyer=nftt.seller
         THEN true
-        ELSE false 
+        ELSE false
         END AS same_buyer_seller
     FROM {{ ref('nft_trades') }} nftt
     WHERE nftt.blockchain='ethereum'
@@ -30,7 +29,7 @@ WITH filter_1 AS (
     SELECT nftt.unique_trade_id
     , CASE WHEN COUNT(filter_baf.block_number) > 0
         THEN true
-        ELSE false 
+        ELSE false
         END AS back_and_forth_trade
     FROM {{ ref('nft_trades') }} nftt
     INNER JOIN {{ ref('nft_trades') }} filter_baf
@@ -154,11 +153,11 @@ SELECT nftt.blockchain
 , seller_first_funded_by
 , CASE WHEN filter_1.same_buyer_seller
     THEN true
-    ELSE false 
+    ELSE false
     END AS filter_1_same_buyer_seller
 , CASE WHEN filter_2.back_and_forth_trade
     THEN true
-    ELSE false 
+    ELSE false
     END AS filter_2_back_and_forth_trade
 , CASE WHEN filter_3_bought.bought_3x
     OR filter_3_sold.sold_3x
