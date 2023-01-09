@@ -258,7 +258,7 @@ all_tx AS (
     FROM ERC20BridgeTransfer
     UNION ALL SELECT *
     FROM BridgeFill
-    UNION ALL */
+    UNION ALL 
     SELECT *
     FROM NewBridgeFill 
     
