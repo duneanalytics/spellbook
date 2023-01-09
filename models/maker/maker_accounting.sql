@@ -91,21 +91,21 @@ WITH dao_wallet AS (
     FROM (SELECT i AS ilk
           FROM {{ source('maker_ethereum', 'vat_call_frob') }}
           {% if is_incremental() %}
-          AND call_block_time >= date_trunc("day", now() - interval '1 week')
+          WHERE call_block_time >= date_trunc("day", now() - interval '1 week')
           {% endif %}
           GROUP BY ilk
           UNION ALL
           SELECT ilk
           FROM {{ source('maker_ethereum', 'spot_call_file') }}
           {% if is_incremental() %}
-          AND call_block_time >= date_trunc("day", now() - interval '1 week')
+          WHERE call_block_time >= date_trunc("day", now() - interval '1 week')
           {% endif %}
           GROUP BY ilk
           UNION ALL
           SELECT ilk
           FROM {{ source('maker_ethereum', 'jug_call_file') }}
           {% if is_incremental() %}
-          AND call_block_time >= date_trunc("day", now() - interval '1 week')
+          WHERE call_block_time >= date_trunc("day", now() - interval '1 week')
           {% endif %}
           GROUP BY ilk)
     GROUP BY ilk
