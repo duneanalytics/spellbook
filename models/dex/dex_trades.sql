@@ -29,7 +29,7 @@ list of models using old generic test, due to multiple versions in one model:
 ,ref('defiswap_ethereum_trades')
 ,ref('dfx_ethereum_trades')
 ,ref('pancakeswap_trades')
-,ref('dodo_ethereum_trades')
+,ref('dodo_trades')
 ,ref('velodrome_optimism_trades')
 ,ref('woofi_trades')
 ,ref('bancor_ethereum_trades')

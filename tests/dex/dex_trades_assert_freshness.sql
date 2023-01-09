@@ -35,7 +35,25 @@
      'blockchain': 'arbitrum',
      'schema': 'zigzag_test_v6_arbitrum',
      'table_name': 'zigzag_settelment_call_matchOrders',
-     'time_column': 'call_block_time'}
+     'time_column': 'call_block_time'},
+
+    {'project': 'mstable',
+     'blockchain': 'ethereum',
+     'schema': 'mstable_ethereum',
+     'table_name': 'Masset_evt_Swapped',
+     'time_column': 'evt_block_time'},
+
+    {'project': 'Bancor Network',
+     'blockchain': 'ethereum',
+     'schema': 'bancornetwork_ethereum',
+     'table_name': 'BancorNetwork_v10_evt_Conversion',
+     'time_column': 'evt_block_time'},
+
+    {'project': 'airswap',
+     'blockchain': 'ethereum',
+     'schema': 'airswap_ethereum',
+     'table_name': 'swap_evt_Swap',
+     'time_column': 'evt_block_time'}
 ] %}
 
 
@@ -44,7 +62,7 @@ with delays as (
     SELECT
         project
         , blockchain
-        , datediff(now(), max(block_time)) age_of_last_record_days
+        , int(now() - max(block_time))/3600 as age_of_last_record_hours
     from {{ ref('dex_trades') }}
     group by 1,2
 )
@@ -55,7 +73,7 @@ with delays as (
  select
         '{{ trade_source['project'] }}' as project
         , '{{ trade_source['blockchain'] }}' as blockchain
-        , datediff(now(), max({{ trade_source['time_column'] }})) age_of_last_record_days
+        , int(now() - max({{ trade_source['time_column'] }}))/3600 as age_of_last_record_hours
  from {{ source(trade_source['schema'],trade_source['table_name']) }}
  group by 1,2
 {% if not loop.last %}
@@ -67,8 +85,8 @@ with delays as (
 select
     d.project,
     d.blockchain,
-    coalesce(s.age_of_last_record_days, 0) - d.age_of_last_record_days as age_of_last_record_days_source_minus_table
+    coalesce(s.age_of_last_record_hours, 0) - d.age_of_last_record_hours as age_of_last_record_hours_source_minus_table
 from delays d
 left join sources s
 on d.project = s.project and d.blockchain = s.blockchain
-where coalesce(s.age_of_last_record_days, 0) - d.age_of_last_record_days != 0
+where coalesce(s.age_of_last_record_hours, 0) - d.age_of_last_record_hours > 24
