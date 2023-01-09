@@ -1,8 +1,8 @@
 -- Check that the accounting table provided a 0 net balance for 2022 and the correct amount
 with balance_2022 as (
-  select sum(case when left(code, 1) = '1' then value else -value end) as balance, 
-    sum(abs(value)) as abs_balance, 
-  from ref('maker_accounting')
+  select sum(case when left(code, 1) = '1' then value else -value end) as balance,
+         sum(abs(value))                                               as abs_balance
+  from {{ ref('maker_accounting') }}
   where extract(year from ts) = 2022
 ),
 tests as (
