@@ -1,4 +1,4 @@
-{{ config( alias='erc20_detailed', tags=['static'],
+{{ config( alias='erc20', tags=['static'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "tokens",
