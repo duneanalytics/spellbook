@@ -20,10 +20,10 @@ def test_test_token_checker_attrs2():
     assert "0x7cb16cb78ea464ad35c8a50abf95dff3c9e09d5d" == token['contract_address']
 
 
-def test_token_missing_contract1():
+def test_token_missing_contract1(caplog):
     test_line = '("dai-dai", "avalanche_c", "DAI", "0xd586e7f844cea2f87f50152665bcbc2c279d8d70", 18),'
-    with pytest.raises(AssertionError):
-        checker.validate_token(test_line)
+    checker.validate_token(test_line)
+    assert [log for log in caplog.records if log.levelname == "WARNING"]
 
 
 def test_token_missing_contract2():
