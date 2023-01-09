@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: optimism
       project: quix
-      contributors: chuxinh
+      contributors: chuxin
     config:
       tags: ['optimism','quix', 'v2', 'events']
     description: >
@@ -149,7 +149,7 @@ models:
     meta:
       blockchain: optimism
       project: quix
-      contributors: chuxinh
+      contributors: chuxin
     config:
       tags: ['optimism','quix', 'v3', 'events']
     description: >
@@ -219,7 +219,7 @@ models:
     meta:
       blockchain: optimism
       project: quix
-      contributors: chuxinh
+      contributors: chuxin
     config:
       tags: ['optimism','quix', 'v1', 'events']
     description: >
@@ -289,7 +289,7 @@ models:
     meta:
       blockchain: optimism
       project: quix
-      contributors: chuxinh
+      contributors: chuxin
     config:
       tags: ['optimism','quix', 'v4', 'events']
     description: >
@@ -359,7 +359,7 @@ models:
     meta:
       blockchain: optimism
       project: quix
-      contributors: chuxinh
+      contributors: chuxin
     config:
       tags: ['optimism','quix', 'v5', 'events']
     description: >
@@ -424,3 +424,253 @@ models:
        - *royalty_fee_percentage
        - *royalty_fee_receive_address
        - *royalty_fee_currency_symbol
+
+  - name: quix_seaport_optimism_base_pairs
+    meta:
+      blockchain: optimism
+      project: quix
+      contributors: chuxin
+    config:
+      tags: ['optimism','quix','base_pairs','chuxin']
+    description: >
+        Exploded table from Seaport trade events with `offer` and `consideration` array columns
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+            - sub_type
+            - sub_idx
+    columns:
+      - *block_time
+      - &block_date
+        name: block_date
+        description: "Block date in UTC"
+      - *block_number
+      - *tx_hash
+      - *evt_index
+      - &sub_type
+        name: sub_type
+        description: "Exploded column : `offer`|`consideration`"
+      - &sub_idx
+        name: sub_idx
+        description: "Index number of `sub_type`"
+      - &offer_first_item_type
+        name: offer_first_item_type
+        description: "First item_type of offer in this trade : `native`|`erc20`|`erc721`|`erc1155`"
+      - &consideration_first_item_type
+        name: consideration_first_item_type
+        description: "First item_type of consideration in this trade : `native`|`erc20`|`erc721`|`erc1155`"
+      - &sender
+        name: sender
+        description: "Item sender"
+      - &receiver
+        name: receiver
+        description: "Item receiver"
+      - &zone
+        name: zone
+        description: "Zone address"
+      - &token_contract_address
+        name: token_contract_address
+        description: "Item contract address"
+      - &original_amount
+        name: original_amount
+        description: "Original amount in a offer/consideration"
+      - &item_type
+        name: item_type
+        description: "`native`|`erc20`|`erc721`|`erc1155`"
+      - *token_id
+      - &platform_contract_address
+        name: platform_contract_address
+        description: "Platform's contract_address"
+      - &offer_cnt
+        name: offer_cnt
+        description: "Total number of offer items"
+      - &consideration_cnt
+        name: consideration_cnt
+        description: "Total number of consideration items"
+      - &is_private
+        name: is_private
+        description: "If trade is private sale then `true` else `false` (boolean)"
+      - &eth_erc_idx
+        name: eth_erc_idx
+        description: "Sequencial number of native or erc20 tokens only"
+      - &nft_cnt
+        name: nft_cnt
+        description: "Total number of traded NFT in this trade"
+      - &erc721_cnt
+        name: erc721_cnt
+        description: "Total number of traded erc721 in this trade"
+      - &erc1155_cnt
+        name: erc1155_cnt
+        description: "Total number of traded erc1155 in this trade"
+      - &order_type
+        name: order_type
+        description: "Direction of trade. `buy` or `offer accepted` only (lowercase)"
+      - &is_price
+        name: is_price
+        description: "Part of volume or not. `true` makes volume of this trade"
+      - &is_netprice
+        name: is_netprice
+        description: "Change of `price - platform_fee - creator_fee`, (but might not be used)"
+      - &is_platform_fee
+        name: is_platform_fee
+        description: "Platform fee if `true`"
+      - &is_creator_fee
+        name: is_creator_fee
+        description: "Creator fee if `true`"
+      - &creator_fee_idx
+        name: creator_fee_idx
+        description: "Sequencial number only for creator fee"
+      - &is_traded_nft
+        name: is_traded_nft
+        description: "Traded NFT if `true`, because it is traded or just transferred."
+      - &is_moved_nft
+        name: is_moved_nft
+        description: "Transferred NFT if `true`, because it is traded or just transferred."
+
+  - name: quix_seaport_optimism_trades
+    meta:
+      blockchain: optimism
+      project: quix
+      contributors: chuxin
+    config:
+      tags: ['optimism','seaport','trades','chuxin']
+    description: >
+        Quix Seaport trades on Optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+            - nft_contract_address
+            - token_id
+            - sub_type
+            - sub_idx
+      - check_seed:
+          seed_file: ref('quix_events_seed')
+          filter:
+            blockchain: optimism
+            project: quix
+            version: seaport
+          match_columns:
+            - block_date
+            - tx_hash
+            - token_id
+            - seller
+            - evt_index
+          check_columns:
+            - buyer
+            - nft_contract_address
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_date
+      - *block_time
+      - *seller
+      - *buyer
+      - *trade_type
+      - *trade_category
+      - *evt_type
+      - *nft_contract_address
+      - *collection
+      - *token_id
+      - *number_of_items
+      - *token_standard
+      - *amount_raw
+      - *amount_original
+      - *amount_usd
+      - *currency_symbol
+      - *currency_contract
+      - &original_currency_contract
+        name: original_currency_contract
+        description: "Original currency contract"
+      - &currency_decimal
+        name: currency_decimal
+        description: "Token Decimal"
+      - *project_contract_address
+      - &platform_fee_receive_address
+        name: platform_fee_receive_address
+        description: "Platform fee receive address"
+      - *platform_fee_amount_raw
+      - *platform_fee_amount
+      - *platform_fee_amount_usd
+      - *royalty_fee_receive_address
+      - *royalty_fee_amount_raw
+      - *royalty_fee_amount
+      - *royalty_fee_amount_usd
+      - name: royalty_fee_receive_address_1
+        description: "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_receive_address_2
+        description: "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_receive_address_3
+        description: "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_receive_address_4
+        description: "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_amount_raw_1
+        description: "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_amount_raw_2
+        description: "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_amount_raw_3
+        description: "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_amount_raw_4
+        description: "Wallet addresses receiving fees from the transaction"
+      - *aggregator_name
+      - *aggregator_address
+      - *block_number
+      - *tx_hash
+      - *evt_index
+      - *sub_idx
+      - *sub_type
+      - *tx_from
+      - *tx_to
+      - &right_hash
+        name: right_hash
+        description: "right 8 character of data column on Transaction"
+      - &zone_address
+        name: zone_address
+        description: "zone address of Seaport transaction"
+      - &estimated_price
+        name: estimated_price
+        description: "True if it is bundle trade and dividened price"
+      - *is_private
+
+  - name: quix_optimism_trades
+    meta:
+      blockchain: optimism
+      project: quix
+      contributors: [chuxin]
+    config:
+      tags: ['optimism','nft','trades','chuxin']
+    description: >
+        Quix v1, v2, v3, v4, v5 and Seaport trades on Optimism.
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *token_id
+      - *collection
+      - *amount_usd
+      - *token_standard
+      - *trade_type
+      - *number_of_items
+      - *trade_category
+      - *evt_type
+      - *seller
+      - *buyer
+      - *amount_original
+      - *amount_raw
+      - *currency_symbol
+      - *currency_contract
+      - *nft_contract_address
+      - *project_contract_address
+      - *aggregator_name
+      - *aggregator_address
+      - *tx_hash
+      - *block_number
+      - *tx_from
+      - *tx_to
