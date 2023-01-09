@@ -77,18 +77,14 @@ enriched_evt_all as(
         ON eb.bought_id = pa.token_id
         AND eb.project_contract_address = pa.pool
         AND pa.token_type = 'pool_token'
-        {% if is_incremental() %}
-        AND eb.block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
     INNER JOIN
     {{ ref('ellipsis_finance_bnb_pool_tokens') }} pb
         ON eb.sold_id = pb.token_id
         AND eb.project_contract_address = pb.pool
         AND pb.token_type = 'pool_token'
-        {% if is_incremental() %}
-        AND eb.block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
+
     UNION ALL
+
     SELECT
         eb.*
         ,pa.token_address as token_bought_address
@@ -98,17 +94,11 @@ enriched_evt_all as(
         ON eb.bought_id = pa.token_id
         AND eb.project_contract_address = pa.pool
         AND pa.token_type = 'underlying_token_bought'
-        {% if is_incremental() %}
-        AND eb.block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
     INNER JOIN
     {{ ref('ellipsis_finance_bnb_pool_tokens') }} pb
         ON eb.sold_id = pb.token_id
         AND eb.project_contract_address = pb.pool
         AND pb.token_type = 'underlying_token_sold'
-        {% if is_incremental() %}
-        AND eb.block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
 )
 
 SELECT
