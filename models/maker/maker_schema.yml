@@ -6,7 +6,7 @@ models:
      blockchain: ethereum
      sector: lending
      project: maker
-     contributors: [lyt, adcv, "SebVentures", steakhouse]
+     contributors: [lyt, adcv, SebVentures, steakhouse]
    config:
      tags: ['ethereum', 'maker', 'interest', 'stablecoin', 'lending']
    description: "Granular-level general ledger of MakerDAO with all accounting entries. Currently Work In Progress"
@@ -33,3 +33,20 @@ models:
        name: ilk
        description: "Ilk that related to the accountring entry, if any"
 
+ - name: maker_accounting_interest
+   meta:
+     blockchain: ethereum
+     sector: lending
+     project: maker
+     contributors: [ lyt, adcv, SebVentures, steakhouse ]
+   config:
+     tags: [ 'ethereum', 'maker', 'interest', 'stablecoin', 'lending' ]
+   description: "Granular-level general ledger of MakerDAO with all accounting entries. Currently Work In Progress"
+   columns:
+     - *code
+     - *ts
+     - *hash
+     - *value
+     - *token
+     - *descriptor
+     - *ilk

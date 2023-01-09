@@ -576,7 +576,6 @@ models:
 
     maker:
       +schema: maker
-      +materialized: table
 
 seeds:
   spellbook:

@@ -1,0 +1,161 @@
+{{ config(
+        alias ='interest',
+        materialized = 'incremental',
+        partition_by = ['code'],
+        file_format = 'delta',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                "project",
+                                "maker",
+                                \'["lyt", "adcv", "SebVentures", "steakhouse"]\') }}'
+        )
+}}
+
+WITH ilk_list_manual_input
+    --every RWA needs to be listed here to be counted.
+    --PSMs not listed will be assumed non-yield-bearing
+    --Any ilk listed in here must have complete history (a row with null as the begin month/yr and a row with null as the end month/year, can be same row)
+(ilk, begin_dt, end_dt, asset_code, equity_code, apr) AS (
+values
+    ('PSM-GUSD-A',NULL,'2022-10-31',13410,CAST(NULL AS NUMERIC(38)),CAST(NULL AS NUMERIC(38))), --could make rate 0 as well.
+    ('PSM-GUSD-A','2022-11-01',NULL,13411,31180,0.0125),
+    ('RWA001-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
+    ('RWA002-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
+    ('RWA003-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
+    ('RWA004-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
+    ('RWA005-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
+    ('RWA006-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
+    ('RWA007-A',NULL,NULL,12320,31172,CAST(NULL AS NUMERIC(38))),
+    ('RWA008-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
+    ('RWA009-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
+    ('UNIV2DAIUSDC-A',NULL,NULL,11140,31140,CAST(NULL AS NUMERIC(38))), --need to list all UNIV2% LP that are stable LPs, all else assumed volatile
+    ('UNIV2DAIUSDT-A',NULL,NULL,11140,31140,CAST(NULL AS NUMERIC(38)))
+)
+, ilk_list_labeled AS (
+    SELECT * FROM ilk_list_manual_input
+
+    UNION ALL
+
+    SELECT ilk_list.ilk
+    , NULL AS begin_dt
+    , NULL AS end_dt
+    , CASE WHEN ilk LIKE 'ETH-%' THEN 11110
+        WHEN ilk LIKE 'WBTC-%' OR ilk = 'RENBTC-A' THEN 11120
+        WHEN ilk LIKE 'WSTETH-%' OR ilk LIKE 'RETH-%' OR ilk = 'CRVV1ETHSTETH-A' THEN 11130
+        WHEN ilk LIKE 'GUNI%' THEN 11140
+        WHEN ilk LIKE 'UNIV2%' THEN 11141
+        WHEN ilk LIKE 'DIRECT%' THEN 11210
+        WHEN ilk LIKE 'RWA%' THEN 12310 --default rwa into off-chain private credit in case an RWA is not manually listed
+        WHEN ilk LIKE 'PSM%' THEN 13410 --defaulting PSMS to non-yielding; exceptions should be listed in manual entry table
+        WHEN ilk IN ('USDC-A','USDC-B', 'USDT-A', 'TUSD-A','GUSD-A','PAXUSD-A') THEN 11510
+        ELSE 11199 --other crypto loans category. all other categories are accounted for in the above logic. SAI included here
+        END AS asset_code
+
+    , CASE WHEN ilk LIKE 'ETH-%' THEN 31110
+        WHEN ilk LIKE 'WBTC-%' OR ilk = 'RENBTC-A'  THEN 31120
+        WHEN ilk LIKE 'WSTETH-%' OR ilk LIKE 'RETH-%' OR ilk = 'CRVV1ETHSTETH-A' THEN 31130
+        WHEN ilk LIKE 'GUNI%' THEN 31140
+        WHEN ilk LIKE 'UNIV2%' THEN 31141
+        WHEN ilk LIKE 'DIRECT%' THEN 31160
+        WHEN ilk LIKE 'RWA%' THEN 31170 --default rwa into off-chain private credit in case an RWA is not manually listed
+        WHEN ilk LIKE 'PSM%' THEN CAST(NULL AS NUMERIC(38)) --defaulting PSMS to non-yielding; exceptions should be listed in manual entry table
+        WHEN ilk IN ('USDC-A','USDC-B', 'USDT-A', 'TUSD-A','GUSD-A','PAXUSD-A') THEN 31190
+        ELSE 31150 --other crypto loans category. all other categories are accounted for in the above logic. SAI included here
+
+        END AS equity_code
+    , CAST(NULL AS NUMERIC(38)) AS apr
+    FROM ilk_list
+    WHERE ilk NOT IN (SELECT ilk FROM ilk_list_manual_input)
+    AND ilk <> 'TELEPORT-FW-A' --Need to look into how to handle teleport and potentially update. Ignoring for now.
+)
+, interest_accruals_1 AS (
+    SELECT i    AS         ilk
+         , call_block_time ts
+         , call_tx_hash    hash
+         , dart
+         , NULL AS         rate
+    FROM {{ source('maker_ethereum', 'vat_call_frob') }}
+    WHERE call_success
+      AND dart <> 0.0
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
+
+    UNION ALL
+
+    SELECT i AS ilk
+            , call_block_time ts
+            , call_tx_hash hash
+            , dart
+            , 0.0 AS rate
+    FROM {{ source('maker_ethereum', 'vat_call_grab') }}
+    WHERE call_success
+      AND dart <> 0.0
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
+
+    UNION ALL
+
+    SELECT i AS ilk
+            , call_block_time ts
+            , call_tx_hash hash
+            , NULL AS dart
+            , rate
+    FROM {{ source('maker_ethereum', 'vat_call_fold') }}
+    WHERE call_success
+      AND rate <> 0.0
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
+)
+, interest_accruals_2 AS (
+    SELECT *
+         , SUM(dart) OVER (PARTITION BY ilk ORDER BY ts ASC) AS cumulative_dart
+    FROM interest_accruals_1
+)
+, interest_accruals_3 AS (
+    SELECT STRING(UNHEX(TRIM('0', RIGHT(ilk, LENGTH(ilk) - 2)))) AS ilk
+         , ts
+         , hash
+         , SUM(cumulative_dart * rate) / POW(10, 45)             AS interest_accruals
+    FROM interest_accruals_2
+    WHERE rate IS NOT NULL
+    GROUP BY 1,2,3
+)
+, interest_accruals AS (
+    SELECT ts
+         , hash
+         , equity_code            AS code
+         , SUM(interest_accruals) AS value --increased equity
+         , interest_accruals_3.ilk
+    FROM interest_accruals_3
+    LEFT JOIN ilk_list_labeled
+        ON interest_accruals_3.ilk = ilk_list_labeled.ilk
+        AND interest_accruals_3.ts BETWEEN COALESCE(ilk_list_labeled.begin_dt, '2000-01-01')
+        AND COALESCE(ilk_list_labeled.end_dt, '2222-12-31') --if null, ensure its not restrictive
+    GROUP BY 1,2,3,5
+
+    UNION ALL
+
+    SELECT ts
+         , hash
+         , asset_code             AS code
+         , SUM(interest_accruals) AS value --increased assets
+         , interest_accruals_3.ilk
+    FROM interest_accruals_3
+    LEFT JOIN ilk_list_labeled
+        ON interest_accruals_3.ilk = ilk_list_labeled.ilk
+        AND CAST(interest_accruals_3.ts AS DATE) BETWEEN COALESCE(ilk_list_labeled.begin_dt, '2000-01-01')
+        AND COALESCE(ilk_list_labeled.end_dt, '2222-12-31') --if null, ensure its not restrictive
+    GROUP BY 1,2,3,5
+)
+
+SELECT ts,
+       hash,
+       code,
+       value,
+       'DAI'               AS token,
+       'Interest Accruals' AS descriptor,
+       ilk
+FROM interest_accruals
+;
