@@ -1,0 +1,47 @@
+version: 2
+
+sources:
+  - name: ovm_optimism
+    description: "Optimism Cross-Domain Messenger Tables"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: L2CrossDomainMessenger_evt_SentMessage
+        loaded_at_field: evt_block_time
+        description: "Event logs for messages sent from Optimism to L1"
+        columns:
+        - &evt_block_time
+          name: evt_block_time
+          description: block time of the transaction
+        - &evt_block_number
+          name: block_number
+          description: Block number of the transaction
+        - &evt_tx_hash
+          name: evt_tx_hash
+          description: Transaction hash
+        - &contract_address
+          name: contract_address
+          description: Address of the contract
+        - &target
+          name: target
+          description: Target address of the message
+        - &messageNonce
+          name: messageNonce
+          description: Nonce of the message
+        - &evt_index
+          name: evt_index
+          description: "Index value of the event"
+
+      - name: L2CrossDomainMessenger_evt_RelayedMessage
+        loaded_at_field: evt_block_time
+        description: "Event logs for messages relayed to Optimism from L1"
+        columns:
+        - *evt_block_time
+        - *evt_block_number
+        - *evt_tx_hash
+        - *contract_address
+        - *target
+        - *evt_index
+        - &msgHash
+          name: msgHash
+          description: Hash of the message

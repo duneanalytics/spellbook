@@ -2,7 +2,7 @@
         alias ='aggregators_markers',
 		materialized = 'view',
         unique_key='hash_marker',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
+        post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                     "sector",
                                     "nft",
                                     \'["hildobby"]\') }}')
@@ -28,6 +28,7 @@
 SELECT hash_marker
 , 'Reservoir' AS aggregator_name
 , CASE WHEN router_website='ens.vision' THEN 'ENS.Vision'
+    WHEN router_website='alphasharks.io' THEN 'Alpha Sharks'
     WHEN router_website='nftnerds.ai' THEN 'NFTNerds'
     WHEN router_website='0xba5ed0773240626366a7eb3a4bea22f0dd46b1b5' THEN 'Unknown'
     WHEN router_website='rare.id' THEN 'Rare.ID'
@@ -94,3 +95,8 @@ SELECT '9616c6c64617461' AS hash_marker
 , 'Rarible' AS aggregator_name
 , NULL AS router_name
 , LENGTH('9616c6c64617461') AS hash_marker_size
+UNION ALL
+SELECT '61598d6d' AS hash_marker
+, 'Flip' AS aggregator_name
+, NULL AS router_name
+, LENGTH('61598d6d') AS hash_marker_size

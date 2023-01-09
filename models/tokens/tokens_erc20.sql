@@ -1,5 +1,6 @@
 {{ config( alias='erc20',
-        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis"]\',
+        tags=['static'],
+        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom"]\',
                                     "sector",
                                     "tokens",
                                     \'["0xManny","hildobby","soispoke","dot2dotseurat","mtitus6"]\') }}')}}
@@ -17,3 +18,5 @@ UNION
 SELECT 'optimism' as blockchain, * FROM  {{ ref('tokens_optimism_erc20') }}
 UNION
 SELECT 'polygon' as blockchain, * FROM  {{ ref('tokens_polygon_erc20') }}
+UNION 
+SELECT 'fantom' as blockchain, * FROM {{ ref('tokens_fantom_erc20') }}
