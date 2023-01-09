@@ -195,7 +195,7 @@ BridgeFill AS (
         {% if not is_incremental() %}
         AND block_time >= '{{zeroex_v4_start_date}}'
         {% endif %}
-), */
+), 
 NewBridgeFill AS (
     SELECT 
             logs.tx_hash as tx_hash,
