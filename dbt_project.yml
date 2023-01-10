@@ -524,13 +524,17 @@ models:
     zeroex:
       +schema: zeroex
       ethereum:
+        +schema: zeroex_ethereum
         erc20:
           +schema: zeroex_ethereum_erc20
         nft:
           +schema: zeroex_ethereum_nft
       optimism:
         +schema: zeroex_optimism
+        erc20:
+          +schema: zeroex_optimism_erc20
       polygon:
+        +schema: zeroex_polygon
         erc20:
           +schema: zeroex_polygon_erc20
 
