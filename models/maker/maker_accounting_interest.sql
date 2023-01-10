@@ -1,4 +1,5 @@
 {{ config(
+        schema = 'maker_accounting',
         alias ='interest',
         materialized = 'incremental',
         partition_by = ['code'],
