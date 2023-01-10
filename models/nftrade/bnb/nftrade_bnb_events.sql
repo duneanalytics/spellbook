@@ -163,7 +163,7 @@ source_inventory_enriched as (
         {% endif %}
     LEFT JOIN
     {{ ref('nft_bnb_aggregators') }} agg
-        ON agg.contract_address = src.senderAddress
+        ON agg.contract_address = src.sender_address
     LEFT JOIN
     {{ source('erc721_ethereum','evt_transfer') }} erc721
         ON erc721.evt_block_time = src.evt_block_time
