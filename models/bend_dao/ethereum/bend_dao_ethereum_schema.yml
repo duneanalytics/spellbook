@@ -9,7 +9,22 @@ models:
     config:
       tags: ['ethereum','bend_dao','v1','events']
     description: >
-        bend_dao events on ethereum 
+        bend_dao events on ethereum
+    tests:
+        - dbt_utils.unique_combination_of_columns:
+            combination_of_columns:
+              - block_date
+              - unique_evt_id
+        - check_seed:
+            seed_file: ref('bend_dao_nft_lending')
+            match_columns:
+              - block_number
+              - tx_hash
+              - token_id
+            check_columns:
+              - amount_original
+              - evt_type
+              - address
     columns:
       - &blockchain
         name: blockchain
@@ -75,10 +90,6 @@ models:
         name: tx_to
         description:  "Address that received the transaction"
       - &unique_evt_id
-        name: unique_evt_id
-        description:  "Unique event ID"
-        tests:
-          - unique
 
   - name: bend_dao_ethereum_borrow
     meta:
