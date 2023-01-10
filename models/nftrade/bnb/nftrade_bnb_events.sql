@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'unique_trade_id'],
+    unique_key = ['block_date', 'tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
                                 "nftrade",
@@ -24,23 +24,23 @@ source_inventory as (
         evt_block_time,
         evt_index,
         evt_tx_hash,
-        makerAddress,
-        makerAssetAmount as makerAssetAmountRaw,
-        makerAssetAmount/POW(10, 18) as makerAssetAmount,
-        CONCAT('0x', SUBSTRING(makerAssetData, 35, 40)) as makerAssetAddress,
-        CAST(bytea2numeric_v2(SUBSTRING(makerAssetData, 77, 64)) as decimal(38)) as makerId,
-        marketplaceIdentifier,
+        makerAddress as maker_address,
+        makerAssetAmount as maker_asset_amount_raw,
+        makerAssetAmount/POW(10, 18) as maker_asset_amount,
+        CONCAT('0x', SUBSTRING(makerAssetData, 35, 40)) as maker_asset_address,
+        CAST(bytea2numeric_v2(SUBSTRING(makerAssetData, 77, 64)) as decimal(38)) as maker_id,
+        marketplaceIdentifier as marketplace_identifier,
         protocolFeePaid * 1 as protocol_fees_raw,
         protocolFeePaid/POW(10, 18) as protocol_fees,
-        royaltiesAddress,
+        royaltiesAddress as royalties_address,
         royaltiesAmount as royalty_fees_raw,
         royaltiesAmount/POW(10, 18) as royalty_fees,
         senderAddress,
         takerAddress,
-        takerAssetAmount as takerAssetAmountRaw,
-        takerAssetAmount/POW(10, 18) as takerAssetAmount,
-        CONCAT('0x', SUBSTRING(takerAssetData, 35, 40)) as takerAssetAddress,
-        CAST(bytea2numeric_v2(SUBSTRING(takerAssetData, 77, 64)) as decimal(38)) as takerId
+        takerAssetAmount as taker_asset_amount_raw,
+        takerAssetAmount/POW(10, 18) as taker_asset_amount,
+        CONCAT('0x', SUBSTRING(takerAssetData, 35, 40)) as taker_asset_address,
+        CAST(bytea2numeric_v2(SUBSTRING(takerAssetData, 77, 64)) as decimal(38)) as taker_id
     FROM
     {{ source('nftrade_bnb', 'NiftyProtocol_evt_Fill') }}
     WHERE evt_block_time >= '{{project_start_date}}'
@@ -53,40 +53,40 @@ source_inventory_enriched as (
     SELECT
         src.*,
         CASE
-            WHEN src.makerId = 0 OR src.makerId IS NULL THEN takerAssetAddress
-            ELSE makerAssetAddress
+            WHEN src.maker_id = 0 OR src.maker_id IS NULL THEN taker_asset_address
+            ELSE maker_asset_address
         END as nft_contract_address,
         CAST((CASE
-            WHEN src.makerId = 0 OR src.makerId IS NULL THEN src.takerId
-            ELSE src.makerId
+            WHEN src.maker_id = 0 OR src.maker_id IS NULL THEN src.taker_id
+            ELSE src.maker_id
         END) AS VARCHAR(100)) as token_id,
         CAST((CASE
-            WHEN src.makerId = 0 OR src.makerId IS NULL THEN src.makerAssetAmountRaw
-            ELSE src.takerAssetAmountRaw
+            WHEN src.maker_id = 0 OR src.maker_id IS NULL THEN src.maker_asset_amount_raw
+            ELSE src.maker_asset_amount
         END) AS DECIMAL(38, 0)) as amount_raw,
         CASE
-            WHEN src.makerId = 0 OR src.makerId IS NULL THEN src.makerAssetAmount
-            ELSE src.takerAssetAmount
+            WHEN src.maker_id = 0 OR src.maker_id IS NULL THEN src.maker_asset_amount
+            ELSE src.maker_asset_amount
         END as amount_original,
         CASE
-            WHEN src.makerId = 0 or src.makerId IS NULL THEN 'Sell'
+            WHEN src.maker_id = 0 or src.maker_id IS NULL THEN 'Sell'
             ELSE 'buy'
         END as trade_category,
         CASE
-            WHEN src.makerId = 0 or src.makerId IS NULL THEN src.makerAddress
-            ELSE src.takerAddress
+            WHEN src.maker_id = 0 or src.maker_id IS NULL THEN src.maker_address
+            ELSE src.taker_asset_address
         END as buyer,
         CASE
-            WHEN src.makerId = 0 or src.makerId IS NULL THEN src.takerAddress
-            ELSE src.makerAddress
+            WHEN src.maker_id = 0 or src.maker_id IS NULL THEN src.takerAddress
+            ELSE src.maker_address
         END as seller,
         CASE
-            WHEN src.makerId = 0 OR src.makerId IS NULL THEN (src.protocol_fees/src.makerAssetAmount) * 100
-            ELSE (src.protocol_fees/src.takerAssetAmount) * 100
+            WHEN src.maker_id = 0 OR src.maker_id IS NULL THEN (src.protocol_fees/src.maker_asset_amount) * 100
+            ELSE (src.protocol_fees/src.maker_asset_amount) * 100
         END as platform_fee_percentage,
         CASE
-            WHEN src.makerId = 0 OR src.makerId IS NULL THEN (src.royalty_fees/src.makerAssetAmount) * 100
-            ELSE (src.royalty_fees/src.takerAssetAmount) * 100
+            WHEN src.maker_id = 0 OR src.maker_id IS NULL THEN (src.royalty_fees/src.maker_asset_amount) * 100
+            ELSE (src.royalty_fees/src.maker_asset_amount) * 100
         END as royalty_fee_percentage
     FROM
     source_inventory src
@@ -132,7 +132,7 @@ source_inventory_enriched as (
         src.royalty_fees * p.price as royalty_fee_amount_usd,
         src.royalty_fee_percentage,
         'BNB' as royalty_fee_currency_symbol,
-        royaltiesAddress as royalty_fee_receive_address,
+        royalties_address as royalty_fee_receive_address,
         'bnb-nftrade-v1' || '-' || src.evt_block_number || '-' || src.evt_tx_hash || '-' ||  src.evt_index AS unique_trade_id
     FROM
     source_inventory_enriched src
