@@ -566,6 +566,11 @@ models:
     bridge:
       +schema: bridge
 
+    the_granary:
+      +schema: the_granary
+      optimism:
+        +schema: the_granary_optimism
+
     tessera:
       +schema: tessera
       ethereum:
@@ -884,7 +889,6 @@ seeds:
             swap_flag: boolean
             matcha_limit_order_flag: boolean
             volume_usd: double
-
     gmx:
       avalanche_c:
         gmx_glp_aum_seed:
