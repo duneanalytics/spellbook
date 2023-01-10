@@ -1751,6 +1751,7 @@ VALUES
     ("ghst-aavegotchi", "polygon", "GHST", "0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7", 18),
     ("crv-curve-dao-token", "polygon", "CRV", "0x172370d5cd63279efa6d502dab29171933a610af", 18),
     ("mimatic-mimatic", "polygon", "MIMATIC", "0xa3fa99a148fa48d14ed51d610c367c61876997f1", 18),
+    ("kom-kommunitas", "polygon", "KOM", "0xc004e2318722ea2b15499d6375905d75ee5390b8", 8),
     ("bob-bob", "polygon", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
     ("stmatic-lido-staked-matic","polygon","STMATIC","0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4",18),
 
