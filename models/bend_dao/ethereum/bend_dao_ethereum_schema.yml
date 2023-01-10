@@ -90,6 +90,8 @@ models:
         name: tx_to
         description:  "Address that received the transaction"
       - &unique_evt_id
+        name: unique_evt_id
+        description: "unique event id"
 
   - name: bend_dao_ethereum_borrow
     meta:
