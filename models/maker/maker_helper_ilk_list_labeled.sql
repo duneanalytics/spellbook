@@ -83,13 +83,17 @@ values
         WHEN ilk LIKE 'PSM%' THEN CAST(NULL AS NUMERIC(38)) --defaulting PSMS to non-yielding; exceptions should be listed in manual entry table
         WHEN ilk IN ('USDC-A','USDC-B', 'USDT-A', 'TUSD-A','GUSD-A','PAXUSD-A') THEN 31190
         ELSE 31150 --other crypto loans category. all other categories are accounted for in the above logic. SAI included here
-
         END AS equity_code
     , CAST(NULL AS NUMERIC(38)) AS apr
     FROM ilk_list
     WHERE ilk NOT IN (SELECT ilk FROM ilk_list_manual_input)
     AND ilk <> 'TELEPORT-FW-A' --Need to look into how to handle teleport and potentially update. Ignoring for now.
 )
-SELECT *
+SELECT ilk,
+       begin_dt,
+       end_dt,
+       asset_code,
+       equity_code,
+       apr
 FROM ilk_list_labeled
 ;
