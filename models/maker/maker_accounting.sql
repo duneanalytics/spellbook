@@ -727,45 +727,54 @@ values
          , token
     FROM treasury_flows_preunioned
 )
-/*, loan_actions_1 AS
-(
-    SELECT i AS ilk
-    , call_block_time ts
-    , call_tx_hash hash
-    , dart AS dart
-    , NULL AS rate
-    FROM maker_ethereum.vat_call_frob
+, loan_actions_1 AS (
+    SELECT i    AS         ilk
+         , call_block_time ts
+         , call_tx_hash    hash
+         , dart
+         , NULL AS         rate
+    FROM {{ source('maker_ethereum', 'vat_call_frob') }}
     WHERE call_success
-    AND dart <> 0.0
-    
+      AND dart <> 0.0
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
+
     UNION ALL
-    
+
     SELECT i AS ilk
-    , call_block_time ts
-    , call_tx_hash hash
-    , dart AS dart
-    , 0.0 AS rate
-    FROM maker_ethereum.vat_call_grab
+            , call_block_time ts
+            , call_tx_hash hash
+            , dart
+            , 0.0 AS rate
+    FROM {{ source('maker_ethereum', 'vat_call_grab') }}
     WHERE call_success
-    AND dart <> 0.0
+      AND dart <> 0.0
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
+
     UNION ALL
-    
+
     SELECT i AS ilk
-    , call_block_time ts
-    , call_tx_hash hash
-    , NULL AS dart
-    , rate AS rate
-    FROM maker_ethereum.vat_call_fold
+            , call_block_time ts
+            , call_tx_hash hash
+            , NULL AS dart
+            , rate
+    FROM {{ source('maker_ethereum', 'vat_call_fold') }}
     WHERE call_success
-    AND rate <> 0.0
-)*/
+      AND rate <> 0.0
+      {% if is_incremental() %}
+      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
+)
 , loan_actions_2 AS (
     SELECT STRING(UNHEX(TRIM('0', RIGHT(ilk, LENGTH(ilk) - 2))))                                  AS ilk
          , ts
          , hash
          , dart
          , COALESCE(POW(10, 27) + SUM(rate) OVER (PARTITION BY ilk ORDER BY ts ASC), POW(10, 27)) AS rate
-    FROM interest_accruals_1 -- loan_actions_1 was previously exactly the same as interest_accruals_1, so instead of being redundant, I am just going from interest_accruals_1 and continuing the naming convention (treating as if it was called loan_actions_1)
+    FROM loan_actions_1 -- loan_actions_1 was previously exactly the same as interest_accruals_1
     WHERE STRING(UNHEX(TRIM('0', RIGHT(ilk, LENGTH(ilk)-2)))) <> 'TELEPORT-FW-A'
 )
 , loan_actions AS (
