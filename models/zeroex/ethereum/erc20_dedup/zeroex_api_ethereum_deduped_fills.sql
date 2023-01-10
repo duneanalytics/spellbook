@@ -24,7 +24,7 @@ AS
 (
     SELECT   row_number() OVER ( partition BY tx_hash ORDER BY evt_index ASC ) AS tx_fill_number
            , *
-      FROM {{ ref('zeroex_api_ethereum_fills') }} 
+    FROM {{ ref('zeroex_api_ethereum_fills') }}
     WHERE 1=1
     AND swap_flag = 1
     {% if is_incremental() %}
@@ -37,14 +37,19 @@ AS
 , fills_first_last
 AS
 (
-    SELECT  CASE WHEN a.taker_token = c.maker_token   AND a.taker_token_amount_raw = c.maker_token_amount_raw   THEN 0 ELSE 1 END AS taker_consider_flag--from
-          , CASE WHEN a.maker_token   = b.taker_token AND a.maker_token_amount_raw   = b.taker_token_amount_raw THEN 0 ELSE 1 END AS maker_consider_flag
-          , SUM(CASE WHEN a.maker_token   = b.taker_token AND a.maker_token_amount_raw  = b.taker_token_amount_raw THEN 0 ELSE 1 END) OVER(PARTITION BY a.tx_hash ORDER BY a.evt_index DESC) hop_count
-          , a.*
-
-      FROM  fills_with_tx_fill_number a 
-            LEFT JOIN fills_with_tx_fill_number b ON (a.tx_hash = b.tx_hash AND a.tx_fill_number = b.tx_fill_number - 1)
-            LEFT JOIN fills_with_tx_fill_number c ON (a.tx_hash = c.tx_hash AND a.tx_fill_number = c.tx_fill_number + 1)    
+    SELECT CASE
+               WHEN a.taker_token = c.maker_token AND a.taker_token_amount_raw = c.maker_token_amount_raw THEN 0
+               ELSE 1 END AS                                                           taker_consider_flag--from
+         , CASE
+               WHEN a.maker_token = b.taker_token AND a.maker_token_amount_raw = b.taker_token_amount_raw THEN 0
+               ELSE 1 END AS                                                           maker_consider_flag
+         , SUM(CASE
+                   WHEN a.maker_token = b.taker_token AND a.maker_token_amount_raw = b.taker_token_amount_raw THEN 0
+                   ELSE 1 END) OVER (PARTITION BY a.tx_hash ORDER BY a.evt_index DESC) hop_count
+         , a.*
+    FROM  fills_with_tx_fill_number a
+        LEFT JOIN fills_with_tx_fill_number b ON (a.tx_hash = b.tx_hash AND a.tx_fill_number = b.tx_fill_number - 1)
+        LEFT JOIN fills_with_tx_fill_number c ON (a.tx_hash = c.tx_hash AND a.tx_fill_number = c.tx_fill_number + 1)
 )
 , deduped_bridge_fills
 AS
@@ -76,8 +81,8 @@ SELECT  'ethereum' AS blockchain
       , CASE WHEN lower(b.taker_symbol) > lower(b.maker_symbol) THEN concat(b.maker_symbol, '-', b.taker_symbol) ELSE concat(b.taker_symbol, '-', b.maker_symbol) END AS token_pair
       , b.taker_token_amount
       , b.maker_token_amount
-      , b.taker_token_amount_raw
-      , b.maker_token_amount_raw
+      , CAST(b.taker_token_amount_raw AS DECIMAL(38,0))
+      , CAST(b.maker_token_amount_raw AS DECIMAL(38,0))
       , a.volume_usd AS amount_usd
       , b.taker_token
       , b.maker_token
@@ -89,6 +94,7 @@ SELECT  'ethereum' AS blockchain
       , a.tx_to
       , '' AS trace_address
       , b.evt_index
-  FROM fills_with_tx_fill_number a 
-    JOIN deduped_bridge_fills b ON (a.tx_hash = b.tx_hash AND a.evt_index = b.evt_index)
+FROM fills_with_tx_fill_number a
+INNER JOIN deduped_bridge_fills b
+    ON (a.tx_hash = b.tx_hash AND a.evt_index = b.evt_index)
 ;
