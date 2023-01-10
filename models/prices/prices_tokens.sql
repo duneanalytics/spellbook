@@ -49,6 +49,7 @@ VALUES
     ("zec-zcash", null, "ZEC", null, null),
 
     ("0xbtc-0xbitcoin","arbitrum","0xBTC","0x7cb16cb78ea464ad35c8a50abf95dff3c9e09d5d",8),
+    ("aave-new","arbitrum","AAVE","0xba5ddd1f9d7f570dc94a51479a000e3bce967196",18),
     ("ageur-ageur","arbitrum","agEUR","0xfa5ed56a203466cbbc2430a43c66b9d8723528e7",18),
     ("ach-alchemy","arbitrum","ALCH","0x0e15258734300290a651fdbae8deb039a8e7a2fa",18),
     ("apex-apexit-finance","arbitrum","APEX","0x61a1ff55c5216b636a294a07d77c6f4df10d3b56",18),
@@ -68,6 +69,7 @@ VALUES
     ("dodo-dodo","arbitrum","DODO","0x69eb4fa4a2fbd498c257c57ea8b7655a2559a581",18),
     ("dpx-dopex","arbitrum","DPX","0x6c2c06790b3e3e3c38e12ee22f8183b37a13ee55",18),
     ("dvf-rhinofi","arbitrum","DVF","0xa7aa2921618e3d63da433829d448b58c9445a4c3",18),
+    ("eurs-stasis-eurs","arbitrum","EURS","0xd22a58f79e9481d1a88e00c343885a588b34b68b",2),
     ("frax-frax","arbitrum","FRAX","0x17fc002b466eec40dae837fc4be5c67993ddbd6f",18),
     ("fuse-fuse-network","arbitrum","FUSE","0xbdef0e9ef12e689f366fe494a7a7d0dad25d9286",18),
     ("fxs-frax-share","arbitrum","FXS","0x9d2f299715d94d8a7e6f5eaa8e654e8c74a988a7",18),
@@ -123,6 +125,7 @@ VALUES
     ("yfi-yearnfinance","arbitrum","YFI","0x82e3a8f066a6989666b031d916c43672085b1582",18),
     ("zz-zigzag","arbitrum","ZZ","0xada42bb73b42e0472a994218fb3799dfcda21237",18),
 
+    ("aave-new","avalanche_c","AAVE.e","0x63a72806098bd3d9520cc43356dd78afe5d386d9",18),
     ("frax-frax", "avalanche_c", "FRAX", "0xd24c2ad096400b6fbcd2ad8b24e7acbc21a1da64", 18),
     ("fxs-frax-share", "avalanche_c", "FXS", "0x214db107654ff987ad859f34125307783fc8e387", 18),
     ("avax-avalanche", "avalanche_c", "WAVAX", "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7", 18),
@@ -147,6 +150,9 @@ VALUES
     ("grape-grape-finance","avalanche_c","GRAPE","0x5541d83efad1f281571b343977648b75d95cdac2",18),
     ("tusd-trueusd","avalanche_c","TUSD","0x1c20e891bab6b1727d14da358fae2984ed9b59eb",18),
     ("xen-xen-crypto", "avalanche_c", "XEN", "0xC0C5AA69Dbe4d6DDdfBc89c0957686ec60F24389", 18),
+    ("link-chainlink", "avalanche_c", "LINK.e", "0x5947bb275c521040051d82396192181b413227a3", 18),
+    ("mimatic-mimatic", "avalanche_c", "MAI", "0x5c49b268c9841aff1cc3b0a418ff5c3442ee3f3b", 18),
+
 
     ("1inch-1inch", "bnb", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
     ("aave-aave-token", "bnb", "AAVE", "0xfb6115445bff7b52feb98650c87f44907e58f802", 18),
@@ -1726,10 +1732,17 @@ VALUES
     ("bob-bob", "optimism", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
     ("bomb-fbomb","optimism","fBOMB","0x74ccbe53F77b08632ce0CB91D3A545bF6B8E0979",18),
 
+    ("aave-new","polygon","AAVE","0xd6df932a45c0f255f85145f286ea0b292b21c90b",18),
+    ("ageur-ageur","polygon",'agEUR',"0xe0b52e49357fd4daf2c15e02058dce6bc0057db4",18),
+    ("bal-balancer","polygon","BAL","0x9a71012b13ca4d3d0cdc72a177df3ef03b0e76a3",18),
+    ("dpi-defi-pulse-index", "polygon", "DPI", "0x85955046df4668e1dd369d2de9f3aeb98dd2a369", 18),
+    ("eurs-stasis-eurs","polygon","EURS","0xe111178a87a3bff0c8d18decba5798827539ae99",2),
     ("matic-polygon", "polygon", "MATIC", "0x0000000000000000000000000000000000001010", 18),
     ("dai-dai", "polygon", "DAI", "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063", 18),
     ("usdc-usd-coin", "polygon", "USDC", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", 6),
     ("usdt-tether", "polygon", "USDT", "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", 6),
+    ("stmatic-lido-staked-matic","polygon","stMATIC","0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4",18),
+    ("sushi-sushi","polygon","SUSHI","0x0b3f868e0be5597d5db7feb59e1cadbb0fdda50a",18),
     ("wbtc-wrapped-bitcoin", "polygon", "WBTC", "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6", 8),
     ("bets-betswirl", "polygon", "BETS", "0x9246a5f10a79a5a939b0c2a75a3ad196aafdb43b", 18),
     ("eth-ethereum", "polygon", "WETH", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", 18),
