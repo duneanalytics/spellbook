@@ -1,9 +1,9 @@
 {{ config(
         alias='trades',
-        post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "arbitrum"]\',
                         "project",
                         "sushiswap",
-                        \'["augustog", "hosuke"]\') }}'
+                        \'["augustog", "hosuke", "Henrystats]\') }}'
         )
 }}
 
@@ -11,6 +11,7 @@
 'sushiswap_ethereum_trades'
 ,'sushiswap_avalanche_c_trades'
 ,'sushiswap_gnosis_trades'
+,'sushiswap_arbitrum_trades'
 ] %}
 
 

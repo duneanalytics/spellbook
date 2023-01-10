@@ -121,6 +121,8 @@ models:
         +schema: sushiswap_avalanche_c
       gnosis:
         +schema: sushiswap_gnosis
+      arbitrum:
+        +schema: sushiswap_arbitrum
 
     babyswap:
       +schema: babyswap
