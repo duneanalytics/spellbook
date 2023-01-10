@@ -133,6 +133,7 @@ source_inventory_enriched as (
         src.royalty_fee_percentage,
         'BNB' as royalty_fee_currency_symbol,
         royalties_address as royalty_fee_receive_address,
+        src.evt_index,
         'bnb-nftrade-v1' || '-' || src.evt_block_number || '-' || src.evt_tx_hash || '-' ||  src.evt_index AS unique_trade_id
     FROM
     source_inventory_enriched src
