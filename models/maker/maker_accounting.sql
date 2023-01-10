@@ -890,7 +890,7 @@ LEFT JOIN
     WHERE ts BETWEEN {{start_dt}} AND DATEADD({{end_dt}}, 1)
     UNION ALL
     SELECT ts, hash, code, value, token, descriptor, ilk
-    FROM ref('maker_accounting_interest')
+    FROM {{ ref('maker_accounting_interest') }}
     WHERE ts BETWEEN {{start_dt}} AND DATEADD({{end_dt}}, 1)
     UNION ALL
     SELECT ts, hash, code, value, 'DAI' AS token, 'OpEx' AS descriptor, NULL AS ilk
