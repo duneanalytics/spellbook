@@ -201,7 +201,7 @@ VALUES
     ("fil-filecoin", "bnb", "FIL", "0x0d8ce2a99bb6e3b7db580ed848240e4a0f9ae153", 18),
     ("for-fortube", "bnb", "FOR", "0x658a109c5900bc6d2357c87549b651670e5b0539", 18),
     ("frax-frax", "bnb", "FRAX", "0x29ced01c447166958605519f10dcf8b0255fb379", 18),
-    ("ftm-fantom", "bnb", "FTM", "0xa4b6e76bba7413b9b4bd83f4e3aa63cc181d869f", 9),
+    ("ftm-fantom", "bnb", "FTM", "0xAD29AbB318791D579433D831ed122aFeAf29dcfe", 18),
     ("fxs-frax-share", "bnb", "FXS", "0xde2f075f6f14eb9d96755b24e416a53e736ca363", 18),
     ("gala-gala", "bnb", "GALA", "0x7ddee176f665cd201f93eede625770e2fd911990", 18),
     ("gny-gny", "bnb", "GNY", "0xe4a4ad6e0b773f47d28f548742a23efd73798332", 18),
