@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: signatures
+    meta:
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom']
+      sector: abi
+      contributors: [ilemi]
+    config:
+      tags: ['contracts','abi','signatures','funcsig','topics']
+    description: >
+        all signatures for functions and events from ABIs decoded in dune
+    columns:
+      - &id
+        name: id
+        description: the 4 byte funcsig or 32 byte topic signature
+      - &signature
+        name: signature
+      - &abi
+        name: abi
+        description: signature abi json
+      - &type
+        name: type
+        description: either function_call or event
+      - &created_at
+        name: created_at
+        description: UTC signature added time
+      - &created_at_month
+        name: created_at_month
+        description: UTC signature month partition
+      - &unique_signature_id
+        name: unique_signature_id
+        description:  unique signature id
+        tests:
+          - unique
+          - not_null

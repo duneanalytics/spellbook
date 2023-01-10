@@ -1,0 +1,84 @@
+version: 2
+
+models:
+  - name: zeroex_nft_ethereum_fills
+    meta:
+      blockchain: ethereum
+      project: zeroex
+      contributors: bakabhai993, sui414
+    config:
+      tags: ['ethereum','0x','nft']
+    description: >
+        NFT Swaps enabled by 0x exchange contracts
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('zeroex_nft_ethereum_fills_sample')
+          match_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+          check_columns:
+            - maker
+            - taker
+            - nft_id
+            - nft_address
+    columns:
+      - &block_time
+        name: block_time
+        description: "Timestamp for block event time in UTC"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each trade"
+      - &evt_index
+        name: evt_index
+        description: "Index of the corresponding order filled event"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash of the fill"
+      - &maker
+        name: maker
+        description: "seller of the nft"
+      - &taker
+        name: taker
+        description: "buyer of the nft"
+      - &matcher
+        name: matcher
+        description: "address/bot that brings two public quotes (from buy as well as from the sell side) together"
+      - &nft_address
+        name: nft_address
+        description: "NFT project address"
+      - &nft_id
+        name: nft_id
+        description: "Token ID of the NFT project address"
+      - &label
+        name: label
+        description: "type of nft - ERC 721 OR ERC 1155"
+      - &price_label
+        name: price_label
+        description: "token address used to genearate the amount in usd - for eth, we take the price of weth"
+      - &token
+        name: token
+        description: "token used to pay for the transaction"
+      - &token_amount_raw
+        name: token_amount_raw
+        description: "raw token amount used to pay for the transaction"
+      - &symbol
+        name: symbol
+        description: "symbol of the token used to pay for the transaction - use this column for all your descriptive needs + aggregations"
+      - &price_usd
+        name: price_usd
+        description: "price of a transaction in USD"
+      - &token_amount
+        name: token_amount
+        description: "token amount, after dividing by the correct decimal"
+      - &project_name
+        name: project_name
+        description: "name of the nft project"   
+        tests:
+          - zeroex_ethereum_nft_test:
+              seed_file: ref('zeroex_nft_ethereum_fills_sample')

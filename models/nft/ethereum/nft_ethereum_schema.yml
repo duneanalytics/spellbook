@@ -25,7 +25,7 @@ models:
       tags: ['nft','ethereum']
     description: >
         NFT native (i.e., non-platform) mints
-        
+
     columns:
       - name: blockchain
         description: "Blockchain"
@@ -107,12 +107,14 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: hildobby
+      contributors: hildobby, 0xRob
     config:
       tags: ['nft', 'ethereum', 'transfers']
     description: >
         NFT transfers
     columns:
+      - name: blockchain
+        description: "Blockchain"
       - name: block_time
         description: "UTC event block time"
       - name: block_number
