@@ -1,6 +1,5 @@
 {{ config(
-        schema = 'maker_accounting',
-        alias ='interest',
+        alias ='accounting_interest',
         materialized = 'incremental',
         partition_by = ['code'],
         file_format = 'delta',

@@ -1,6 +1,5 @@
 {{ config(
-        schema = 'maker_accounting',
-        alias ='liquidation',
+        alias ='accounting_liquidation',
         materialized = 'incremental',
         partition_by = ['code'],
         file_format = 'delta',
