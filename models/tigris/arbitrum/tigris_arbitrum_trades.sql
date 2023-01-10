@@ -80,19 +80,17 @@ close_position as (
         c.version, 
         'close_position' as trade_type 
     FROM 
-    {{ ref('tigris_arbitrum_positions_close') }} c 
-    LEFT JOIN 
-    open_position op 
-        ON c.position_id = op.position_id 
-        {% if is_incremental() %}
-        AND c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-    LEFT JOIN 
-    limit_order lo 
-        ON c.position_id = lo.position_id 
-        {% if is_incremental() %}
-        AND c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
+        {{ ref('tigris_arbitrum_positions_close') }} c
+    LEFT JOIN
+        open_position op 
+        ON c.position_id = op.position_id
+    LEFT JOIN
+        limit_order lo
+        ON c.position_id = lo.position_id
+    {% if is_incremental() %}
+    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+
 ), 
 
 liquidate_position as (
@@ -115,19 +113,16 @@ liquidate_position as (
         lp.version, 
         'liquidate_position' as trade_type
     FROM 
-    {{ ref('tigris_arbitrum_positions_liquidation') }} lp 
-    LEFT JOIN 
-    open_position op 
+        {{ ref('tigris_arbitrum_positions_liquidation') }} lp 
+    LEFT JOIN
+        open_position op 
         ON lp.position_id = op.position_id 
-        {% if is_incremental() %}
-        AND lp.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-    LEFT JOIN 
-    limit_order lo 
+    LEFT JOIN
+        limit_order lo 
         ON lp.position_id = lo.position_id 
-        {% if is_incremental() %}
-        AND lp.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
+    {% if is_incremental() %}
+    WHERE lp.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 ),
 
 add_margin as (
@@ -151,50 +146,50 @@ add_margin as (
         'add_to_position' as trade_type 
     FROM 
     (
-    SELECT 
-        tmp.*, 
-        l.leverage 
-    FROM 
-    (
-    SELECT 
-        MIN(l.evt_block_time) as latest_leverage_time, 
-        am.day, 
-        am.evt_block_time,
-        am.evt_tx_hash,
-        am.evt_index,
-        am.position_id,
-        am.price, 
-        am.margin, 
-        am.margin_change,
-        am.version,
-        am.trader
-    FROM 
-    {{ ref('tigris_arbitrum_events_add_margin') }} am 
-    INNER JOIN 
-    {{ ref('tigris_arbitrum_positions_leverage') }} l 
-        ON am.position_id = l.position_id 
-        AND am.evt_block_time > l.evt_block_time
-        {% if is_incremental() %}
-        AND l.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-    {% if is_incremental() %}
-    WHERE am.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-    GROUP BY 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
-    ) tmp 
-    INNER JOIN 
-    {{ ref('tigris_arbitrum_positions_leverage') }} l 
-        ON tmp.position_id = l.position_id
-        AND tmp.latest_leverage_time = l.evt_block_time
-        {% if is_incremental() %}
-        AND l.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
+        SELECT 
+            tmp.*, 
+            l.leverage 
+        FROM 
+        (
+            SELECT 
+                MIN(l.evt_block_time) as latest_leverage_time, 
+                am.day, 
+                am.evt_block_time,
+                am.evt_tx_hash,
+                am.evt_index,
+                am.position_id,
+                am.price, 
+                am.margin, 
+                am.margin_change,
+                am.version,
+                am.trader
+            FROM 
+                {{ ref('tigris_arbitrum_events_add_margin') }} am 
+            INNER JOIN 
+                {{ ref('tigris_arbitrum_positions_leverage') }} l 
+                ON am.position_id = l.position_id 
+                AND am.evt_block_time > l.evt_block_time
+                {% if is_incremental() %}
+                AND l.evt_block_time >= date_trunc("day", now() - interval '1 week')
+                {% endif %}
+            {% if is_incremental() %}
+            WHERE am.evt_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
+            GROUP BY 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+        ) tmp 
+        INNER JOIN 
+            {{ ref('tigris_arbitrum_positions_leverage') }} l 
+            ON tmp.position_id = l.position_id
+            AND tmp.latest_leverage_time = l.evt_block_time
+            {% if is_incremental() %}
+            AND l.evt_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
     ) am  
     LEFT JOIN 
-    open_position op 
+        open_position op 
         ON am.position_id = op.position_id 
     LEFT JOIN 
-    limit_order lo 
+        limit_order lo 
         ON am.position_id = lo.position_id 
 ),
 
@@ -218,19 +213,16 @@ modify_margin as (
         mm.version,
         CASE WHEN mm.modify_type = true THEN 'add_margin' ELSE 'remove_margin' END as trade_type
     FROM 
-    {{ ref('tigris_arbitrum_events_modify_margin') }} mm 
+        {{ ref('tigris_arbitrum_events_modify_margin') }} mm 
     LEFT JOIN 
-    open_position op 
+        open_position op 
         ON mm.position_id = op.position_id 
-        {% if is_incremental() %}
-        AND mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
     LEFT JOIN 
-    limit_order lo 
+        limit_order lo 
         ON mm.position_id = lo.position_id 
-        {% if is_incremental() %}
-        AND mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
+    {% if is_incremental() %}
+    WHERE mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 )
 
 SELECT 
