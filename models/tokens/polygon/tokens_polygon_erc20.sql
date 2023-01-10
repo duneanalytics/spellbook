@@ -50,5 +50,11 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0x1aafc31091d93c3ff003cff5d2d8f7ba2e728425', 'LP-USDC-USD+', 18)
 ,('0x221836a597948dce8f3568e044ff123108acc42a', 'amUSDC', 6)
 ,('0x19c60a251e525fa88cd6f3768416a8024e98fc19', 'amUSDT', 6)
-
+,('0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7', 'GHST', 18)
+,('0xe0b52e49357fd4daf2c15e02058dce6bc0057db4', 'agEUR', 18)
+,('0x0b3f868e0be5597d5db7feb59e1cadbb0fdda50a', 'SUSHI', 18)
+,('0x9a71012b13ca4d3d0cdc72a177df3ef03b0e76a3', 'BAL', 18)
+,('0xe111178a87a3bff0c8d18decba5798827539ae99', 'EURS', 2)
+,('0x4e3decbb3645551b8a19f0ea1678079fcb33fb4c', 'jEUR', 18)
+,('0x85955046df4668e1dd369d2de9f3aeb98dd2a369', 'DPI', 18)
 ) AS temp_table (contract_address, symbol, decimals)

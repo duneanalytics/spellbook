@@ -19,6 +19,7 @@
 ,ref('superrare_ethereum_events')
 ,ref('x2y2_ethereum_events')
 ,ref('zora_ethereum_events')
+,ref('pancakeswap_bnb_nft_events')
 ,ref('tofu_bnb_events')
 ] %}
 
