@@ -33,6 +33,23 @@ models:
         name: ilk
         description: "Ilk that related to the accountring entry, if any"
 
+  - name: maker_helper_ilk_list_labeled
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: maker
+      contributors: [ lyt, adcv, SebVentures, steakhouse ]
+    config:
+      tags: [ 'ethereum', 'maker', 'helper' ]
+    description: "TODO"
+    columns:
+      - *ilk
+      - name: begin_dt
+      - name: end_dt
+      - name: asset_code
+      - name: equity_code
+      - name: apr
+
   - name: maker_accounting_interest
     meta:
       blockchain: ethereum
@@ -58,7 +75,7 @@ models:
       project: maker
       contributors: [ lyt, adcv, SebVentures, steakhouse ]
     config:
-      tags: [ 'ethereum', 'maker', 'interest', 'stablecoin', 'lending' ]
+      tags: [ 'ethereum', 'maker', 'liquidation', 'stablecoin', 'lending' ]
     description: "Granular-level general ledger of MakerDAO with all accounting entries. Currently Work In Progress"
     columns:
       - *code

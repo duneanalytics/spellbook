@@ -86,30 +86,6 @@ WITH dao_wallet AS (
            18                                           AS decimals,
            'COMP'                                       AS token
 )
-, ilk_list AS (
-    SELECT STRING(UNHEX(TRIM('0', RIGHT(ilk, LENGTH(ilk) - 2)))) AS ilk
-    FROM (SELECT i AS ilk
-          FROM {{ source('maker_ethereum', 'vat_call_frob') }}
-          {% if is_incremental() %}
-          WHERE call_block_time >= date_trunc("day", now() - interval '1 week')
-          {% endif %}
-          GROUP BY ilk
-          UNION ALL
-          SELECT ilk
-          FROM {{ source('maker_ethereum', 'spot_call_file') }}
-          {% if is_incremental() %}
-          WHERE call_block_time >= date_trunc("day", now() - interval '1 week')
-          {% endif %}
-          GROUP BY ilk
-          UNION ALL
-          SELECT ilk
-          FROM {{ source('maker_ethereum', 'jug_call_file') }}
-          {% if is_incremental() %}
-          WHERE call_block_time >= date_trunc("day", now() - interval '1 week')
-          {% endif %}
-          GROUP BY ilk)
-    GROUP BY ilk
-)
 , hashless_trxns AS(
     SELECT CAST('2022-11-01 00:00' AS TIMESTAMP)                  AS ts,
            'noHash:movingGusdPSMBalanceFromNonYieldingToYielding' AS hash,
@@ -124,26 +100,6 @@ WITH dao_wallet AS (
            222632234.27                                           AS value,
            'DAI'                                                  AS token,
            'PSM-GUSD-A'                                           AS ilk
-)
-, ilk_list_manual_input
-    --every RWA needs to be listed here to be counted.
-    --PSMs not listed will be assumed non-yield-bearing
-    --Any ilk listed in here must have complete history (a row with null as the begin month/yr and a row with null as the end month/year, can be same row)
-(ilk, begin_dt, end_dt, asset_code, equity_code, apr) AS (
-values
-    ('PSM-GUSD-A',NULL,'2022-10-31',13410,CAST(NULL AS NUMERIC(38)),CAST(NULL AS NUMERIC(38))), --could make rate 0 as well.
-    ('PSM-GUSD-A','2022-11-01',NULL,13411,31180,0.0125),
-    ('RWA001-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
-    ('RWA002-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
-    ('RWA003-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
-    ('RWA004-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
-    ('RWA005-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
-    ('RWA006-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
-    ('RWA007-A',NULL,NULL,12320,31172,CAST(NULL AS NUMERIC(38))),
-    ('RWA008-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
-    ('RWA009-A',NULL,NULL,12310,31170,CAST(NULL AS NUMERIC(38))),
-    ('UNIV2DAIUSDC-A',NULL,NULL,11140,31140,CAST(NULL AS NUMERIC(38))), --need to list all UNIV2% LP that are stable LPs, all else assumed volatile
-    ('UNIV2DAIUSDT-A',NULL,NULL,11140,31140,CAST(NULL AS NUMERIC(38)))
 )
 , ilk_list_labeled AS (
     SELECT * FROM ilk_list_manual_input
