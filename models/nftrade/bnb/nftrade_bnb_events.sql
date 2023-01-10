@@ -35,8 +35,8 @@ source_inventory as (
         royaltiesAddress as royalties_address,
         royaltiesAmount as royalty_fees_raw,
         royaltiesAmount/POW(10, 18) as royalty_fees,
-        senderAddress,
-        takerAddress,
+        senderAddress as sender_address,
+        takerAddress as taker_address,
         takerAssetAmount as taker_asset_amount_raw,
         takerAssetAmount/POW(10, 18) as taker_asset_amount,
         CONCAT('0x', SUBSTRING(takerAssetData, 35, 40)) as taker_asset_address,
@@ -62,31 +62,31 @@ source_inventory_enriched as (
         END) AS VARCHAR(100)) as token_id,
         CAST((CASE
             WHEN src.maker_id = 0 OR src.maker_id IS NULL THEN src.maker_asset_amount_raw
-            ELSE src.maker_asset_amount
+            ELSE src.taker_asset_amount_raw
         END) AS DECIMAL(38, 0)) as amount_raw,
         CASE
             WHEN src.maker_id = 0 OR src.maker_id IS NULL THEN src.maker_asset_amount
-            ELSE src.maker_asset_amount
+            ELSE src.taker_asset_amount
         END as amount_original,
         CASE
             WHEN src.maker_id = 0 or src.maker_id IS NULL THEN 'Sell'
-            ELSE 'buy'
+            ELSE 'Buy'
         END as trade_category,
         CASE
             WHEN src.maker_id = 0 or src.maker_id IS NULL THEN src.maker_address
-            ELSE src.taker_asset_address
+            ELSE src.taker_address
         END as buyer,
         CASE
-            WHEN src.maker_id = 0 or src.maker_id IS NULL THEN src.takerAddress
+            WHEN src.maker_id = 0 or src.maker_id IS NULL THEN src.taker_address
             ELSE src.maker_address
         END as seller,
         CASE
             WHEN src.maker_id = 0 OR src.maker_id IS NULL THEN (src.protocol_fees/src.maker_asset_amount) * 100
-            ELSE (src.protocol_fees/src.maker_asset_amount) * 100
+            ELSE (src.protocol_fees/src.taker_asset_amount) * 100
         END as platform_fee_percentage,
         CASE
             WHEN src.maker_id = 0 OR src.maker_id IS NULL THEN (src.royalty_fees/src.maker_asset_amount) * 100
-            ELSE (src.royalty_fees/src.maker_asset_amount) * 100
+            ELSE (src.royalty_fees/src.taker_asset_amount) * 100
         END as royalty_fee_percentage
     FROM
     source_inventory src
