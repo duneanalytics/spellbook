@@ -30,6 +30,30 @@ values
     ('UNIV2DAIUSDC-A',NULL,NULL,11140,31140,CAST(NULL AS NUMERIC(38))), --need to list all UNIV2% LP that are stable LPs, all else assumed volatile
     ('UNIV2DAIUSDT-A',NULL,NULL,11140,31140,CAST(NULL AS NUMERIC(38)))
 )
+, ilk_list AS (
+    SELECT STRING(UNHEX(TRIM('0', RIGHT(ilk, LENGTH(ilk) - 2)))) AS ilk
+    FROM (SELECT i AS ilk
+          FROM {{ source('maker_ethereum', 'vat_call_frob') }}
+          {% if is_incremental() %}
+          WHERE call_block_time >= date_trunc("day", now() - interval '1 week')
+          {% endif %}
+          GROUP BY ilk
+          UNION ALL
+          SELECT ilk
+          FROM {{ source('maker_ethereum', 'spot_call_file') }}
+          {% if is_incremental() %}
+          WHERE call_block_time >= date_trunc("day", now() - interval '1 week')
+          {% endif %}
+          GROUP BY ilk
+          UNION ALL
+          SELECT ilk
+          FROM {{ source('maker_ethereum', 'jug_call_file') }}
+          {% if is_incremental() %}
+          WHERE call_block_time >= date_trunc("day", now() - interval '1 week')
+          {% endif %}
+          GROUP BY ilk)
+    GROUP BY ilk
+)
 , ilk_list_labeled AS (
     SELECT * FROM ilk_list_manual_input
 
