@@ -12,7 +12,7 @@
 ,'hashflow_ethereum_trades'
 ,'hashflow_bnb_trades'
 ] %}
-
+ 
 SELECT *
 FROM (
     {% for dex_model in hashflow_models %}
