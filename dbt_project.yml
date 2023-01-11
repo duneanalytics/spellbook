@@ -401,7 +401,6 @@ models:
       ethereum:
         +schema: airswap_ethereum
 
-
     apeswap:
       +schema: apeswapclear 
       ethereum:
