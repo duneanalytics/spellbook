@@ -534,8 +534,6 @@ models:
       ethereum:
         erc20:
           +schema: zeroex_ethereum_erc20
-        erc20_dedup:
-          +schema: zeroex_ethereum_erc20_deduped          
         nft:
           +schema: zeroex_ethereum_nft
 
