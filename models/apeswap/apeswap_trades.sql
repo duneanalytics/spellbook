@@ -8,7 +8,11 @@
 }}
 
 
-{% set apeswap_models = ['apeswap_ethereum_trades','apeswap_bnb_trades','apeswap_polygon_trades' ] %}
+{% set apeswap_models = [
+    'apeswap_ethereum_trades'
+    , 'apeswap_bnb_trades'
+    , 'apeswap_polygon_trades'
+] %}
 
 SELECT *
 FROM (
