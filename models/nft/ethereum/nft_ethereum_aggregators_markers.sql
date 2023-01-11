@@ -102,5 +102,5 @@
 
   SELECT *
     ,length(hash_marker) as hash_marker_size
-  FROM markers
+  FROM all_markers
 
