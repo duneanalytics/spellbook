@@ -31,7 +31,7 @@ class TokenChecker:
             "id": values[0],
             "blockchain": values[1],
             "symbol": values[2],
-            "contract_address": values[3].lower()
+            "contract_address": values[3].lower() if values[3] is not None else values[3]
         }
 
     @staticmethod
