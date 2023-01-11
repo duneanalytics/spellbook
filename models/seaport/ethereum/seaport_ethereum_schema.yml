@@ -219,6 +219,8 @@ models:
     columns:
       - name: block_time
         description: "Block time in UTC"
+      - name: block_date
+        description: "Block date in UTC"
       - name: block_number
         description: "Block number of transaction"
       - name: tx_hash
@@ -297,6 +299,12 @@ models:
             - evt_index
             - nft_contract_address
             - token_id
+            - sub_type
+            - sub_idx
+      - check_seaport_seed:
+          blockchain: ethereum
+          project: seaport
+          version: v1        
     columns:
       - *blockchain
       - *project
@@ -366,7 +374,3 @@ models:
         description: "True if it is bundle trade and dividened price"
       - name: is_private
         description: "True if it is private sale"
-      - name : unique_trade_id
-        description:  "Unique trade ID"
-        tests:
-          - unique
