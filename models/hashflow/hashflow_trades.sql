@@ -1,15 +1,16 @@
 {{ config(
         alias='trades',
-        post_hook='{{ expose_spells(\'["ethereum", "avalanche_c"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "avalanche_c", "bnb"]\',
                         "project",
                         "hashflow",
-                        \'["justabi", "jeff-dude", "hosuke"]\') }}'
+                        \'["justabi", "jeff-dude", "hosuke", "Henrystats"]\') }}'
         )
 }}
 
 {% set hashflow_models = [
 'hashflow_avalanche_c_trades'
 ,'hashflow_ethereum_trades'
+,'hashflow_bnb_trades'
 ] %}
 
 SELECT *
