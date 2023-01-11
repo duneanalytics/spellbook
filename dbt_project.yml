@@ -344,12 +344,15 @@ models:
 
     tornado_cash:
       +schema: tornado_cash
+
     perpetual:
       +schema: perpetual
+
     perpetual_protocol:
       +schema: perpetual_protocol
       optimism:
         +schema: perpetual_protocol_optimism
+
     pika:
       +schema: pika
       optimism:
@@ -550,31 +553,24 @@ models:
         +schema: hop_protocol_optimism
       # ethereum:
       #   +schema: hop_protocol_ethereum
-      #
       # polygon:
       #   +schema: hop_protocol_polygon
-      #
       # polygon2:
       #   +schema: hop_polygon
-      #
       # arbitrum:
       #   +schema: hop_protocol_arbitrum
-      #
       # gnosis:
       #   +schema: hop_protocol_gnosis
-      #
       # gnosis2:
       #   +schema: hop_gnosis
-      #
-
-    # ovm_optimism:
-    #   optimism:
-    #     +schema: ovm_optimism
-    #
+    
     chain_info:
       +schema: chain_info
+    
     bridge:
       +schema: bridge
+      optimism:
+        +schema: bridge_optimism
 
     the_granary:
       +schema: the_granary
@@ -590,6 +586,11 @@ models:
       +schema: tofu
       bnb:
         +schema: tofu_bnb
+
+    ovm:
+      +schema: ovm
+      optimism:
+        +schema: ovm_optimism
 
 seeds:
   spellbook:
