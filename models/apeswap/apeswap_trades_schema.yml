@@ -9,7 +9,7 @@ models:
     config:
       tags: ['ethereum','bnb', 'polygon', 'dex', 'trades', 'apeswap']
     description: >
-        apeswap tradeson all chains across all contracts and versions. This table will load dex trades downstream.
+        apeswap trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
       - &blockchain
         name: blockchain
