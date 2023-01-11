@@ -94,6 +94,15 @@ SELECT  'ethereum' AS blockchain
       , a.tx_to
       , '' AS trace_address
       , b.evt_index
+      -- for meta table
+      , COALESCE(b.taker_symbol,b.taker_token) AS token_sold_symbol
+      , COALESCE(b.maker_symbol,b.maker_token) AS token_bought_symbol
+      , b.taker_token_amount                   AS token_sold_amount
+      , b.maker_token_amount                   AS token_bought_amount
+      , CAST(b.taker_token_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
+      , CAST(b.maker_token_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw
+      , b.taker_token                          AS token_sold_address
+      , b.maker_token                          AS token_bought_address
 FROM fills_with_tx_fill_number a
 INNER JOIN deduped_bridge_fills b
     ON (a.tx_hash = b.tx_hash AND a.evt_index = b.evt_index)
