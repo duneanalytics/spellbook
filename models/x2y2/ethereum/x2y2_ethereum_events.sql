@@ -100,7 +100,7 @@ src_prices_usd as (
 
 
 -- results
-SELECT 'ethereum' AS blockchain
+SELECT DISTINCT 'ethereum' AS blockchain
 , 'x2y2' AS project
 , 'v1' AS version
 , prof.evt_block_time AS block_time
