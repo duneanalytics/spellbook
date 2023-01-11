@@ -404,6 +404,15 @@ models:
       ethereum:
         +schema: airswap_ethereum
 
+    apeswap:
+      +schema: apeswap
+      ethereum:
+        +schema: apeswap_ethereum
+      bnb:
+        +schema: apeswap_bnb
+      polygon:
+        +schema: apeswap_polygon
+
     chainlink:
       +schema: chainlink
       optimism:
