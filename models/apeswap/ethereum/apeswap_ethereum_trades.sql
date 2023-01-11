@@ -35,37 +35,36 @@ with dexs as (
             inner join {{ source('apeswap_ethereum', 'ApeFactory_evt_PairCreated') }} f 
                 on f.pair = t.contract_address
 )
-select
-    'ethereum' as blockchain,
-    'apeswap' as project,
-    '1' as version,
-    try_cast(date_trunc('DAY', dexs.block_time) as date) as block_date,
-    dexs.block_time,
-    erc20a.symbol as token_bought_symbol,
-    erc20b.symbol as token_sold_symbol,
-    case
-        when lower(erc20a.symbol) > lower(erc20b.symbol) then concat(erc20b.symbol, '-', erc20a.symbol)
-        else concat(erc20a.symbol, '-', erc20b.symbol)
-    end as token_pair,
-    dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount,
-    dexs.token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount,
-    dexs.token_bought_amount_raw,
-    dexs.token_sold_amount_raw,
-    coalesce(
-        dexs.amount_usd
-        ,(dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
-        ,(dexs.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
-    ) AS amount_usd,
-    dexs.token_bought_address,
-    dexs.token_sold_address,
-    coalesce(dexs.taker, tx.from) AS taker,
-    dexs.maker,
-    dexs.project_contract_address,
-    dexs.tx_hash,
-    tx.from AS tx_from,
-    tx.to AS tx_to,
-    dexs.trace_address,
-    dexs.evt_index
+select 'ethereum'                                                as blockchain,
+       'apeswap'                                                 as project,
+       '1'                                                       as version,
+       try_cast(date_trunc('DAY', dexs.block_time) as date)      as block_date,
+       dexs.block_time,
+       erc20a.symbol                                             as token_bought_symbol,
+       erc20b.symbol                                             as token_sold_symbol,
+       case
+           when lower(erc20a.symbol) > lower(erc20b.symbol) then concat(erc20b.symbol, '-', erc20a.symbol)
+           else concat(erc20a.symbol, '-', erc20b.symbol)
+           end                                                   as token_pair,
+       dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount,
+       dexs.token_sold_amount_raw / power(10, erc20b.decimals)   AS token_sold_amount,
+       CAST(dexs.token_bought_amount_raw AS DECIMAL(38, 0))      AS token_bought_amount_raw,
+       CAST(dexs.token_sold_amount_raw AS DECIMAL(38, 0))        AS token_sold_amount_raw,
+       coalesce(
+               dexs.amount_usd
+           , (dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
+           , (dexs.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
+           )                                                     AS amount_usd,
+       dexs.token_bought_address,
+       dexs.token_sold_address,
+       coalesce(dexs.taker, tx.from)                             AS taker,
+       dexs.maker,
+       dexs.project_contract_address,
+       dexs.tx_hash,
+       tx.from                                                   AS tx_from,
+       tx.to                                                     AS tx_to,
+       dexs.trace_address,
+       dexs.evt_index
 from dexs
 inner join {{ source('ethereum', 'transactions') }} tx
     on dexs.tx_hash = tx.hash

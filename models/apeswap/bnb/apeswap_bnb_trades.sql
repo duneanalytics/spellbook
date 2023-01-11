@@ -51,8 +51,8 @@ SELECT 'bnb'                                                            AS block
            END                                                          AS token_pair,
        apeswap_dex.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount,
        apeswap_dex.token_sold_amount_raw / power(10, erc20b.decimals)   AS token_sold_amount,
-       apeswap_dex.token_bought_amount_raw,
-       apeswap_dex.token_sold_amount_raw,
+       CAST(apeswap_dex.token_bought_amount_raw AS DECIMAL(38,0))       AS token_bought_amount_raw,
+       CAST(apeswap_dex.token_sold_amount_raw AS DECIMAL(38,0))         AS token_sold_amount_raw,
        coalesce(
                apeswap_dex.amount_usd
            , (apeswap_dex.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
