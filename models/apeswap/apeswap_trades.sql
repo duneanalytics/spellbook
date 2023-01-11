@@ -9,9 +9,9 @@
 
 
 {% set apeswap_models = [
-    'apeswap_ethereum_trades'
-    , 'apeswap_bnb_trades'
-    , 'apeswap_polygon_trades'
+    ref('apeswap_ethereum_trades')
+    , ref('apeswap_bnb_trades')
+    , ref('apeswap_polygon_trades')
 ] %}
 
 SELECT *
@@ -41,8 +41,9 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ ref(dex_model) }}
+    FROM {{ dex_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
+)
