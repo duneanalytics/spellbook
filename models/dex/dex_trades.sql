@@ -48,7 +48,7 @@ list of models using old generic test, due to multiple versions in one model:
 ,ref('apeswap_ethereum_trades')
 ,ref('apeswap_bnb_trades')
 ,ref('apeswap_polygon_trades')
-
+,ref('ellipsis_finance_trades')
 ] %}
 
 

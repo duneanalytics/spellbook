@@ -38,7 +38,7 @@ models:
         +schema: aave_ethereum
       optimism:
         +schema: aave_optimism
-    
+
     balancer:
       +schema: balancer
       arbitrum:
@@ -207,6 +207,11 @@ models:
       ethereum:
         +schema: nomad_ethereum
 
+    ellipsis_finance:
+      +schema: ellipsis_finance
+      bnb:
+        +schema: ellipsis_finance_bnb
+
     seaport:
       +schema: seaport
       ethereum:
@@ -321,6 +326,11 @@ models:
       +schema: safe
       ethereum:
         +schema: safe_ethereum
+
+    nftrade:
+      +schema: nftrade
+      bnb:
+        +schema: nftrade_bnb
 
     jarvis_network:
       +schema: jarvis_network
@@ -576,6 +586,11 @@ models:
     bridge:
       +schema: bridge
 
+    the_granary:
+      +schema: the_granary
+      optimism:
+        +schema: the_granary_optimism
+
     tessera:
       +schema: tessera
       ethereum:
@@ -661,6 +676,15 @@ seeds:
           token_bought_amount: float
           token_sold_address: string
           token_sold_amount: float
+      pools:
+        +column_types:
+          blockchain: string
+          project: string
+          version: string
+          pool: string
+          token_id: string
+          token_address: string
+          token_type: string
 
     sudoswap:
       sudoswap_ethereum_example_trades:
@@ -894,7 +918,6 @@ seeds:
             swap_flag: boolean
             matcha_limit_order_flag: boolean
             volume_usd: double
-
     gmx:
       avalanche_c:
         gmx_glp_aum_seed:
@@ -922,6 +945,17 @@ seeds:
             tx_hash: string
             block_number: int
             amount_original: double
+    nftrade:
+      bnb:
+        +enabled: true
+        +schema: test_data
+        nftrade_nft_trades_samples:
+            block_number: int
+            token_id: string
+            seller: string
+            buyer: string
+            tx_hash: string
+            amount_original: double
 
     foundation:
       ethereum:
@@ -935,3 +969,17 @@ seeds:
             seller: string
             platform_fee_amount: double
             royalty_fee_amount: double
+
+    balancer:
+      balancer_transfers_bpt_seed:
+        +column_types:
+          blockchain: string
+          contract_address: string
+          evt_tx_hash: string
+          evt_index: int
+          evt_block_time: timestamp
+          block_date: timestamp
+          evt_block_number: int
+          from: string
+          to: string
+          value: double
