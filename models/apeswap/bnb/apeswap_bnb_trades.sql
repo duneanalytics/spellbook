@@ -32,48 +32,49 @@ WITH apeswap_dex AS (
         ON f.pair = t.contract_address
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% else %}
+    {% endif %}
+    {% if is_incremental() %}
     WHERE t.evt_block_time >= '{{ project_start_date }}'
     {% endif %}
 )
 
-SELECT
-    'bnb'                                                           AS blockchain,
-    'apeswap'                                                        AS project,
-    '1'                                                                AS version,
-    try_cast(date_trunc('DAY', apeswap_dex.block_time) AS date)      AS block_date,
-    apeswap_dex.block_time,
-    erc20a.symbol                                                      AS token_bought_symbol,
-    erc20b.symbol                                                      AS token_sold_symbol,
-     CASE
-        WHEN lower(erc20a.symbol) > lower(erc20b.symbol) THEN concat(erc20b.symbol, '-', erc20a.symbol)
-        ELSE concat(erc20a.symbol, '-', erc20b.symbol)
-        END                                                            AS token_pair,
-    apeswap_dex.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount,
-    apeswap_dex.token_sold_amount_raw / power(10, erc20b.decimals)   AS token_sold_amount,
-    apeswap_dex.token_bought_amount_raw,
-    apeswap_dex.token_sold_amount_raw,
-    coalesce(
-            apeswap_dex.amount_usd
-        , (apeswap_dex.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
-        , (apeswap_dex.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
-        )                                                              AS amount_usd,
-    apeswap_dex.token_bought_address,
-    apeswap_dex.token_sold_address,
-    coalesce(apeswap_dex.taker, tx.from)                             AS taker,
-    apeswap_dex.maker,
-    apeswap_dex.project_contract_address,
-    apeswap_dex.tx_hash,
-    tx.from                                                            AS tx_from,
-    tx.to                                                              AS tx_to,
-    apeswap_dex.trace_address,
-    apeswap_dex.evt_index
+SELECT 'bnb'                                                            AS blockchain,
+       'apeswap'                                                        AS project,
+       '1'                                                              AS version,
+       try_cast(date_trunc('DAY', apeswap_dex.block_time) AS date)      AS block_date,
+       apeswap_dex.block_time,
+       erc20a.symbol                                                    AS token_bought_symbol,
+       erc20b.symbol                                                    AS token_sold_symbol,
+       CASE
+           WHEN lower(erc20a.symbol) > lower(erc20b.symbol) THEN concat(erc20b.symbol, '-', erc20a.symbol)
+           ELSE concat(erc20a.symbol, '-', erc20b.symbol)
+           END                                                          AS token_pair,
+       apeswap_dex.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount,
+       apeswap_dex.token_sold_amount_raw / power(10, erc20b.decimals)   AS token_sold_amount,
+       apeswap_dex.token_bought_amount_raw,
+       apeswap_dex.token_sold_amount_raw,
+       coalesce(
+               apeswap_dex.amount_usd
+           , (apeswap_dex.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
+           , (apeswap_dex.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
+           )                                                            AS amount_usd,
+       apeswap_dex.token_bought_address,
+       apeswap_dex.token_sold_address,
+       coalesce(apeswap_dex.taker, tx.from)                             AS taker,
+       apeswap_dex.maker,
+       apeswap_dex.project_contract_address,
+       apeswap_dex.tx_hash,
+       tx.from                                                          AS tx_from,
+       tx.to                                                            AS tx_to,
+       apeswap_dex.trace_address,
+       apeswap_dex.evt_index
 FROM apeswap_dex
 INNER JOIN {{ source('bnb', 'transactions') }} tx
     ON apeswap_dex.tx_hash = tx.hash
     {% if not is_incremental() %}
     AND tx.block_time >= '{{project_start_date}}'
-    {% else %}
+    {% endif %}
+    {% if is_incremental() %}
     AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
@@ -88,7 +89,8 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.blockchain = 'bnb'
     {% if not is_incremental() %}
     AND p_bought.minute >= '{{project_start_date}}'
-    {% else %}
+    {% endif %}
+    {% if is_incremental() %}
     AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
@@ -97,7 +99,8 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.blockchain = 'bnb'
     {% if not is_incremental() %}
     AND p_sold.minute >= '{{project_start_date}}'
-    {% else %}
+    {% endif %}
+    {% if is_incremental() %}
     AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 ;
