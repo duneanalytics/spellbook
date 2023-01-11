@@ -402,7 +402,7 @@ models:
         +schema: airswap_ethereum
 
     apeswap:
-      +schema: apeswapclear 
+      +schema: apeswap
       ethereum:
         +schema: apeswap_ethereum
       bnb:
