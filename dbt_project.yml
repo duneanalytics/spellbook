@@ -38,7 +38,7 @@ models:
         +schema: aave_ethereum
       optimism:
         +schema: aave_optimism
-    
+
     balancer:
       +schema: balancer
       arbitrum:
@@ -326,6 +326,11 @@ models:
       +schema: safe
       ethereum:
         +schema: safe_ethereum
+
+    nftrade:
+      +schema: nftrade
+      bnb:
+        +schema: nftrade_bnb
 
     jarvis_network:
       +schema: jarvis_network
@@ -929,6 +934,17 @@ seeds:
             buyer: string
             tx_hash: string
             block_number: int
+            amount_original: double
+    nftrade:
+      bnb:
+        +enabled: true
+        +schema: test_data
+        nftrade_nft_trades_samples:
+            block_number: int
+            token_id: string
+            seller: string
+            buyer: string
+            tx_hash: string
             amount_original: double
 
     foundation:
