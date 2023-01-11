@@ -45,6 +45,7 @@ list of models using old generic test, due to multiple versions in one model:
 ,ref('wombat_bnb_trades')
 ,ref('iziswap_bnb_trades')
 ,ref('babyswap_bnb_trades')
+,ref('apeswap_trades')
 ,ref('ellipsis_finance_trades')
 ] %}
 
