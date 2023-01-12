@@ -15,7 +15,7 @@
 
 SELECT
     'ethereum' AS blockchain
-    , 'blur' AS project
+    , 'blur-TEST' AS project
     , 'v1' AS version
     , date_trunc('day', bm.evt_block_time) AS block_date
     , bm.evt_block_time AS block_time
