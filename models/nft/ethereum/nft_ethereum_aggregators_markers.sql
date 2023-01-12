@@ -27,11 +27,11 @@
 
   -- needed to eliminate duplicates
   , reservoir_fixed as (
-    select *
+    select r_a.*
     from reservoir r_a
     anti join reservoir r_b
-        ON r_a.hash != r_b.hash
-        and right(r_a.hash, length(r_b.hash)) = r_b.hash
+        ON r_a.hash_marker != r_b.hash_marker
+        and right(r_a.hash_marker, length(r_b.hash_marker)) = r_b.hash_marker
   )
 
   , all_markers as (
@@ -88,7 +88,7 @@
             WHEN router_website='market.cosmoskidznft.com' THEN 'Cosmos Kidz'
             ELSE router_website::string
             END AS router_name
-    FROM reservoir
+    FROM reservoir_fixed
     UNION ALL
     SELECT
         hash_marker ,aggregator_name, router_name
