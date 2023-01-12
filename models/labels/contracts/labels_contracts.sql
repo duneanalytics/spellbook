@@ -1,5 +1,5 @@
 {{config(alias='contracts',
-        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "fantom"]\',
                                     "sector",
                                     "labels",
                                     \'["soispoke"]\') }}')
@@ -64,3 +64,13 @@ SELECT array('optimism') as blockchain,
        date('2022-09-26') as created_at,
        now() as modified_at
 FROM {{ source('optimism','contracts') }} 
+UNION 
+SELECT array('fantom') as blockchain,
+       address, 
+       concat(upper(substring(namespace,1,1)),substring(namespace,2)) || ': ' || name as name,
+       'contracts' as category,
+       'Henrystats' as contributor,
+       'query' AS source,
+       date('2022-12-18') as created_at,
+       now() as modified_at
+FROM {{ source('fantom','contracts') }} 
