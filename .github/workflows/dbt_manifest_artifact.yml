@@ -29,5 +29,5 @@ jobs:
         id: main_manifest
         uses: actions/cache/save@v3
         with:
-          path: manifest.json
+          path: ~/.cache/manifest.json
           key: main_manifest
