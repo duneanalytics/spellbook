@@ -142,3 +142,47 @@ sources:
           - *swapFeePercentage
           - *symbol
           - *tokens
+
+      - name: Vault_evt_PoolBalanceChanged
+        description: >
+          Decoded table of pool balances changes record on the Balancer Vault contract on Arbitrum.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'Balancer v2 Vault contract address'
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: poolId
+            description: 'Balancer pool contract address'
+          - name: tokens
+            description: 'Contract address of each token of the pool'
+          - name: deltas
+            description: 'Balance changes of each token of the pool'
+          - name: liquidityProvider
+            description: 'Address of the wallet which provided or removed liquidity from the pool'
+          - name: protocolFeeAmounts
+            description: 'Amount of fee paid of each token of the pool during the transaction'
+
+      - name: Vault_evt_PoolBalanceManaged
+        description: >
+          Decoded table of transactions performed by asset managers on the Balancer Vault contract on Arbitrum.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'Balancer v2 Vault contract address'
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: poolId
+            description: 'Balancer pool contract address'
+          - name: token
+            description: 'Contract address of token managed'
+          - name: assetManager
+            description: 'Address of the contract which managed the asset from the vault'
+          - name: managedDelta
+            description: 'Change in the amount of token managed by the asset manager'
+          - name: cashDelta
+            description: 'Change in the amount of token cashed the vault'
