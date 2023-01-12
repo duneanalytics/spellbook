@@ -19,6 +19,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: dbt setup
+        run: dbt deps
+
       - name: dbt compile to create manifest from main for slim ci to compare to
         run: "dbt compile"
 
