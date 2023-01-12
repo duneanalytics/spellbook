@@ -88,7 +88,7 @@
             WHEN router_website='market.cosmoskidznft.com' THEN 'Cosmos Kidz'
             ELSE router_website::string
             END AS router_name
-    FROM reservoir
+    FROM reservoir_fixed
     UNION ALL
     SELECT
         hash_marker ,aggregator_name, router_name
