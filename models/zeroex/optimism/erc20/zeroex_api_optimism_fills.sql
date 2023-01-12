@@ -111,7 +111,7 @@ v4_limit_fills_no_bridge AS (
     {% if not is_incremental() %}
     WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
     {% endif %}
-),
+),/*
 otc_fills AS (
     SELECT 
             fills.evt_tx_hash               AS tx_hash,
@@ -139,7 +139,7 @@ otc_fills AS (
     {% endif %}
 
 ),
-/*
+
 ERC20BridgeTransfer AS (
     SELECT 
             logs.tx_hash,
@@ -301,8 +301,7 @@ all_tx AS (
     FROM v4_rfq_fills_no_bridge
     UNION ALL SELECT *
     FROM v4_limit_fills_no_bridge
-    UNION ALL SELECT *
-    FROM otc_fills 
+   
 )
 
 SELECT 
