@@ -41,7 +41,6 @@ with
             -1 * ((gas_price * gas_used)) as amount_raw
         from 
             {{ source('fantom', 'transactions') }}
-
     )
 
 select unique_transfer_id, 'fantom' as blockchain, wallet_address, evt_block_time, amount_raw
