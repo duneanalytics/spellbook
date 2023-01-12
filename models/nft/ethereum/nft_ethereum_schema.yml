@@ -160,6 +160,8 @@ models:
     columns:
       - name: hash_marker
         description: "Hash used to identify an aggregator"
+        tests:
+          - unique
       - name: aggregator_name
         description: "Name of aggregator tied to the hash_marker"
       - name: router_name
