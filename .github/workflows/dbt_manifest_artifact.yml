@@ -1,0 +1,24 @@
+name: Main Manifest
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  compile_on_merge:
+    runs-on: [ self-hosted, linux, spellbook ]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: dbt compile to create manifest from main for slim ci to compare to
+        run: "dbt compile"
+
+      - name: Cache manifest.json
+        id: main_manifest
+        uses: actions/cache@v3
+        with:
+          path: manifest.json
+          key: main_manifest
