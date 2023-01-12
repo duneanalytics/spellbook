@@ -20,20 +20,26 @@
 
 WITH zeroex_tx AS (
     SELECT tx_hash,
-           max(affiliate_address) as affiliate_address, temp.to, temp.from, temp.block_number
+           max(affiliate_address) as affiliate_address, 
+           temp.to, 
+           temp.from, 
+           temp.block_number
     FROM (
-        SELECT tr.tx_hash,
-                    '0x' || CASE
-                                WHEN POSITION('869584cd' IN INPUT) <> 0
-                                THEN SUBSTRING(INPUT
-                                        FROM (position('869584cd' IN INPUT) + 32)
-                                        FOR 40)
-                                WHEN POSITION('fbc019a7' IN INPUT) <> 0
-                                THEN SUBSTRING(INPUT
-                                        FROM (position('fbc019a7' IN INPUT) + 32)
-                                        FOR 40)
-                            END AS affiliate_address, tr.to as to, 
-                            tr.from as from, tr.block_number as block_number
+        SELECT
+            tr.tx_hash,
+            '0x' || CASE
+                        WHEN POSITION('869584cd' IN INPUT) <> 0
+                        THEN SUBSTRING(INPUT
+                                FROM (position('869584cd' IN INPUT) + 32)
+                                FOR 40)
+                        WHEN POSITION('fbc019a7' IN INPUT) <> 0
+                        THEN SUBSTRING(INPUT
+                                FROM (position('fbc019a7' IN INPUT) + 32)
+                                FOR 40)
+            END AS affiliate_address,
+            tr.to as to,
+            tr.from as from,
+            tr.block_number as block_number
         FROM {{ source('polygon', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
@@ -79,7 +85,7 @@ v4_rfq_fills_no_bridge AS (
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
     FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
-    inner JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
@@ -106,7 +112,7 @@ v4_limit_fills_no_bridge AS (
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             (fills.feeRecipient = '0x86003b044f70dac0abc80ac8957305b6370893ed') AS matcha_limit_order_flag
     FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
-    inner JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
@@ -133,7 +139,7 @@ otc_fills AS (
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
     FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
-    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
@@ -303,13 +309,17 @@ all_tx AS (
     FROM ERC20BridgeTransfer
     UNION ALL SELECT *
     FROM BridgeFill */
-    UNION ALL  SELECT *
+    UNION ALL
+    SELECT *
     FROM NewBridgeFill 
-    UNION ALL SELECT *
+    UNION ALL
+    SELECT *
     FROM v4_rfq_fills_no_bridge
-    UNION ALL SELECT *
+    UNION ALL
+    SELECT *
     FROM v4_limit_fills_no_bridge
-    UNION ALL SELECT *
+    UNION ALL
+    SELECT *
     FROM otc_fills 
 )
 

@@ -77,7 +77,7 @@ v4_rfq_fills_no_bridge AS (
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
     FROM {{ source('zeroex_optimism', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
-    inner JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
@@ -103,7 +103,7 @@ v4_limit_fills_no_bridge AS (
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             (fills.feeRecipient = '0x86003b044f70dac0abc80ac8957305b6370893ed') AS matcha_limit_order_flag
     FROM {{ source('zeroex_optimism', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
-    inner JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
@@ -111,7 +111,8 @@ v4_limit_fills_no_bridge AS (
     {% if not is_incremental() %}
     WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
     {% endif %}
-),/*
+),
+/*
 otc_fills AS (
     SELECT 
             fills.evt_tx_hash               AS tx_hash,
@@ -129,7 +130,7 @@ otc_fills AS (
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
     FROM {{ source('zeroex_optimism', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
-    inner JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
@@ -195,7 +196,8 @@ BridgeFill AS (
         {% if not is_incremental() %}
   --      AND block_time >= '{{zeroex_v4_start_date}}'
         {% endif %}
-), */
+), 
+*/
 NewBridgeFill AS (
     SELECT
             logs.tx_hash as tx_hash,
@@ -288,20 +290,29 @@ all_tx AS (
     /*
     SELECT *
     FROM direct_uniswapv3
-     UNION ALL SELECT *
+    UNION ALL
+    SELECT *
     FROM direct_PLP 
-    UNION ALL SELECT *
+    UNION ALL
+    SELECT *
     FROM ERC20BridgeTransfer
-    UNION ALL SELECT *
+    UNION ALL
+    SELECT *
     FROM BridgeFill
     UNION ALL */
     SELECT *
     FROM NewBridgeFill 
-    UNION ALL SELECT *
+    UNION ALL 
+    SELECT *
     FROM v4_rfq_fills_no_bridge
-    UNION ALL SELECT *
+    UNION ALL 
+    SELECT *
     FROM v4_limit_fills_no_bridge
-   
+    UNION ALL 
+    /*
+    SELECT *
+    FROM otc_fills 
+    */
 )
 
 SELECT 
