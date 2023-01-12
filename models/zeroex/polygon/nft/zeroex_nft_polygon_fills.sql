@@ -110,8 +110,8 @@ SELECT a.evt_block_time                                      AS block_time
      , a.token
      , a.token_amount_raw
      , CASE
-            WHEN token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-            THEN 'ETH'
+            WHEN token = '0x0000000000000000000000000000000000001010'
+            THEN 'MATIC'
             ELSE b.symbol
       END                                                    AS symbol
      , b.price * (a.token_amount_raw / pow(10, b.decimals))  AS price_usd
