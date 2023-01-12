@@ -50,7 +50,7 @@ SELECT
         END AS currency_contract
     , bm.contract_address AS project_contract_address
     , get_json_object(bm.buy, '$.collection') AS nft_contract_address
-    , agg.name AS aggregator_name
+    , coalesce(agg.name,agg_m.aggregator_name) AS aggregator_name
     , agg.contract_address AS aggregator_address
     , bm.evt_tx_hash AS tx_hash
     , et.from AS tx_from
@@ -82,6 +82,8 @@ JOIN {{ source('ethereum','transactions') }} et ON et.block_time=bm.evt_block_ti
     AND et.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ ref('nft_ethereum_aggregators') }} agg ON agg.contract_address=et.to
+LEFT JOIN {{ ref('nft_ethereum_aggregators_markers') }} agg_m
+    ON RIGHT(et.data, agg_m.hash_marker_size) = agg_m.hash_marker
 LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain='ethereum'
     AND pu.minute=date_trunc('minute', bm.evt_block_time)
     AND (pu.contract_address=get_json_object(bm.buy, '$.paymentToken')
