@@ -27,7 +27,7 @@ jobs:
 
       - name: Cache manifest.json
         id: main_manifest
-        uses: actions/cache@v3
+        uses: actions/cache/save@v3
         with:
           path: manifest.json
           key: main_manifest
