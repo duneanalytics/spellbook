@@ -3,7 +3,7 @@ version: 2
 models:
   - name: sushiswap_trades
     meta:
-      blockchain: ethereum, polygon, avalanche_c, gnosis, optimism, bnb
+      blockchain: ethereum, polygon, avalanche_c, gnosis, bnb
       sector: dex
       project: sushiswap
       contributors: jeff-dude, masquot, soispoke, augustog, hosuke, codingsh
