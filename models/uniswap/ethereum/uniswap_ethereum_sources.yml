@@ -3,6 +3,9 @@ version: 2
 sources: 
   - name: uniswap_ethereum
     description: "Ethereum decoded tables related to Uniswap v1 contract"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
     tables:
       - name: Exchange_evt_TokenPurchase
         freshness:
@@ -38,6 +41,8 @@ sources:
             description: "Raw amount of tokens bought during transaction with the contract"
       - name: Factory_evt_NewExchange
         loaded_at_field: evt_block_time
+        freshness: # default freshness
+          warn_after: { count: 84, period: hour }
         description: "" # to-do
         columns:
           - name: contract_address # appears to be used differently here than the exchange event tables in uniswap v1

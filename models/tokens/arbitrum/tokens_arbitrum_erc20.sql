@@ -1,11 +1,11 @@
-{{ config( alias='erc20')}}
+{{ config( alias='erc20', tags=['static'])}}
 
 SELECT LOWER(contract_address) as contract_address, symbol, decimals
 FROM (VALUES
         ('0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9', 'USDT', 6)
         ,('0xff970a61a04b1ca14834a43f5de4533ebddb5cc8', 'USDC', 6)
         ,('0xda10009cbd5d07dd0cecc66161fc93d7c9000da1', 'DAI', 18)
-        ,('0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f', 'WBTC', 18)
+        ,('0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f', 'WBTC', 8)
         ,('0xfa7f8980b0f1e64a2062791cc3b0871572f1f7f0', 'UNI', 18)
         ,('0xf97f4df75117a78c1a5a0dbb814af92458539fb4', 'LINK', 18)
         ,('0x1a4da80967373fd929961e976b4b53ceec063a15', 'LUNC', 6)
@@ -98,4 +98,9 @@ FROM (VALUES
         ,('0xa0459edcad5aac14dc32775d22ff7bd33027cac7', 'WIS', 18)
         ,('0xada42bb73b42e0472a994218fb3799dfcda21237', 'ZZ', 18)
         ,('0x5979d7b546e38e414f7e9822514be443a4800529', 'wstETH', 18)
+        ,('0x0c4681e6c0235179ec3d4f4fc4df3d14fdd96017', 'RDNT', 18)
+        ,('0x1a5b0aaf478bf1fda7b934c76e7692d722982a6d', 'BFR', 18)
+        ,('0x4945970efeec98d393b4b979b9be265a3ae28a8b', 'GMD', 18)
+        ,('0xba5ddd1f9d7f570dc94a51479a000e3bce967196', 'AAVE', 18) 
+        ,('0xd22a58f79e9481d1a88e00c343885a588b34b68b', 'EURS', 2)
      ) AS temp_table (contract_address, symbol, decimals)

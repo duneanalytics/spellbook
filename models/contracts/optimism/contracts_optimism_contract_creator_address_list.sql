@@ -172,7 +172,6 @@ FROM (
       ,('0x11978d32619cfefc2e7c75a70ef8beb077b503ca', 'Frax Finance')
       ,('0x68d03de837cc395ec34c61c078fa901468a3bb29', 'Frax Finance')
       ,('0x4707ddf20584a1df862403e7e0cc77c33330dca0', 'Bongswap')
-      ,('0x0aa8aa45b1eb8ccdd2c742e7db796b0a589b86b5', 'Perpetual Protocol')
       ,('0x97b62cd23a04be0e0dc4a5f03ddbd0addc8ba29a', 'Band Protocol')
       ,('0xf6839085f692bde6a8062573e3da35e7e947c21e', 'InstaDapp')
       ,('0x26ed8119c45e3871df446a13f7fdc9e2c527dacd', 'InstaDapp')
@@ -363,6 +362,26 @@ FROM (
       ,('0xe029c32d412972C5F3D107DA6d6eCF8F1C1E788C', 'Kwenta')
       ,('0xcd526ee406bc8349ba8135758cee11fa3aaa59a0', 'OPX Finance')
       ,('0x4023ef3aaa0669FaAf3A712626F4D8cCc3eAF2e5', 'Pickle Finance')
+      ,('0x370880694995Aa8A53F71645F7Bec3b0e7bb25d9', 'OneRing')
+      ,('0xfc8367ef6bcfc10746e5b9b034314812db8d7213', 'OpenXSwap')
+      ,('0xafd91ef047189f7e894d0fac71dcce8687e9b893', 'ECC Domains')
+      ,('0x0E1B5AB67aF1c99F8c7Ebc71f41f75D4D6211e53', 'Rainbow')
+      ,('0xd531795282a1d7857faf43416b4c135759db45c4', 'Sided Finance')
+      ,('0x2dA7e3a7F21cCE79efeb66f3b082196EA0A8B9af', 'OmniSwap')
+      ,('0x0c6c8f014d1B3E37F470d39356379E220e4Beb67', 'Resonate')
+      ,('0xe25831C97aC161AD58aEf70B6ceE507B0E49688C', '2Pi Network')
+      ,('0x8888888841B669313CdC735910214313d7420E25', 'AcryptoS')
+      ,('0x72c1a1c24917eef19e7f5dea146d950841f37662', 'O3 Swap')
+      ,('0xfb41cbf2ce16e8f626013a2f465521d27ba9a610', 'Beefy Finance')
+      ,('0xbA22746D79E75931DD8C0336760332E5D4a372a5', 'Curve')
+      ,('0xA80481E3f9098602954B2E5cf306e6dEE053EF3E', 'Gysr')
+      ,('0x3cD76a3E1Ae288c11459b986362ff2f63Ba0A379', 'Opti Stickman Club')
+      ,('0x97471c0fdddb5e5cc34cb08cb17961bd3a53f38f', 'WooFi')
+      ,('0x2C10aC0E6B6c1619F4976b2ba559135BFeF53c5E', 'Powerbomb Finance')
+      ,('0x0f3BF5c241B6625C0fA781ED137fDe6786b2e66f', 'Lemma Finance')
+      ,('0x43834c6A65C64a4529E048Ba55a685fF5Aa43cB4', 'fBOMB Finance')
+      ,('0xc82c018dB54B894853cACb878D0F3e481E8C6b96', 'Via Protocol')
+      ,('0x4401A1667dAFb63Cff06218A69cE11537de9A101', 'Clique')
 
   ) as temp_table (creator_address, contract_project)
 
@@ -370,15 +389,6 @@ FROM (
 
 --filter out creators that we never want to map
 WHERE f.creator_address NOT IN (
-   LOWER('0xbb6e024b9cffacb947a71991e386681b1cd1477d') -- singleton factory
-  ,LOWER('0xce0042B868300000d44A59004Da54A005ffdcf9f') -- singleton factory
-  ,LOWER('0x3fAB184622Dc19b6109349B94811493BF2a45362') -- Deterministic Deployment Factory
-  ,LOWER('0x11f11121df7256c40339393b0fb045321022ce44') -- create3 factory
-  ,LOWER('0x4c8D290a1B368ac4728d83a9e8321fC3af2b39b1') -- Opensea KEYLESS_CREATE2_DEPLOYER_ADDRESS
-  ,LOWER('0x7A0D94F55792C434d74a40883C6ed8545E406D12') -- Opensea KEYLESS_CREATE2_ADDRESS
-  ,LOWER('0xcfA3A7637547094fF06246817a35B8333C315196') -- INEFFICIENT_IMMUTABLE_CREATE2_FACTORY_ADDRESS
-  ,LOWER('0x0000000000ffe8b47b3e2130213b802212439497') -- IMMUTABLE_CREATE2_FACTORY_ADDRESS
-  ,LOWER('0x4200000000000000000000000000000000000012') -- L2StandardTokenFactory
-  ,LOWER('0xeedA95f4513f950957Ae84E4da221ee260Fa2f40') -- Deterministic Factory
+   SELECT creator_address FROM {{ ref('contracts_optimism_nondeterministic_contract_creators') }}
 )
 ;
