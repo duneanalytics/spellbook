@@ -21,6 +21,16 @@ leverage as (
         leverage 
     FROM 
     {{ ref('tigris_arbitrum_events_modify_margin') }}
+
+    UNION ALL 
+
+    SELECT 
+        evt_block_time,
+        position_id,
+        leverage 
+    FROM 
+    {{ ref('tigris_arbitrum_events_limit_order') }}
+
 )
 
 SELECT * FROM leverage 

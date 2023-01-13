@@ -22,6 +22,7 @@
 ,ref('pancakeswap_bnb_nft_events')
 ,ref('tofu_bnb_events')
 ,ref('quix_optimism_events')
+,ref('nftrade_bnb_events')
 ] %}
 
 SELECT *
