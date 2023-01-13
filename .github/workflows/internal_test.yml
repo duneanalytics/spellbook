@@ -1,5 +1,5 @@
 # .github/workflows/app.yaml
-name: dbt slim ci (in beta)
+name: internal test (disregard)
 
 on:
   workflow_dispatch:
@@ -33,25 +33,34 @@ jobs:
       - name: Add git_sha to schema
         run: "/runner/change_schema.sh git_$GIT_SHA"
 
-      - name: Get latest manifest
-        env:
-          JOB_ID: "123193"
-        run: "/runner/fetch_latest_manifest.py --dbt_job_id $JOB_ID"
-
       - name: dbt dependencies
         run: "dbt deps"
 
       - name: dbt compile to create manifest to compare to
         run: "dbt compile"
 
+      - name: Upload new manifest.json if merging to main
+        if: github.event.pull_request.merged == true
+        uses: actions/upload-artifact@v3
+        with:
+          path: target/manifest.json
+          name: main_manifest
+
+      - name: Download manifest.json artifact from main merge event
+        if: github.event.pull_request.merged == false
+        uses: actions/download-artifact@v3
+        with:
+          path: manifest.json
+          name: main_manifest
+
       - name: dbt seed
-        run: "dbt seed --select state:modified --state ."
+        run: "dbt seed --select state:modified --state /work/spellbook/spellbook/manifest.json"
 
       - name: dbt run initial model(s)
-        run: "dbt -x run --select state:modified --defer --state ."
+        run: "dbt -x run --select state:modified --defer --state /work/spellbook/spellbook/manifest.json"
 
       - name: dbt test initial model(s)
-        run: "dbt test --select state:new state:modified --defer --state ."
+        run: "dbt test --select state:new state:modified --defer --state /work/spellbook/spellbook/manifest.json"
 
       - name: Set environment variable for incremental model count
         run: |
@@ -59,8 +68,8 @@ jobs:
 
       - name: dbt run incremental model(s) if applicable
         if: env.INC_MODEL_COUNT > 0
-        run: "dbt run --select state:modified,config.materialized:incremental --defer --state ."
+        run: "dbt run --select state:modified,config.materialized:incremental --defer --state /work/spellbook/spellbook/manifest.json"
 
       - name: dbt test incremental model(s) if applicable
         if: env.INC_MODEL_COUNT > 0
-        run: "dbt test --select state:modified,config.materialized:incremental --defer --state ."
+        run: "dbt test --select state:modified,config.materialized:incremental --defer --state /work/spellbook/spellbook/manifest.json"
