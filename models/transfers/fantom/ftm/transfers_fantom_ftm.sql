@@ -45,9 +45,11 @@ with
 
 select unique_transfer_id, 'fantom' as blockchain, wallet_address, evt_block_time, amount_raw
 from sent_transfers
+
 union
 select unique_transfer_id, 'fantom' as blockchain, wallet_address, evt_block_time, amount_raw
 from received_transfers
+
 union
 select unique_transfer_id, 'fantom' as blockchain, wallet_address, evt_block_time, amount_raw
 from gas_fees
