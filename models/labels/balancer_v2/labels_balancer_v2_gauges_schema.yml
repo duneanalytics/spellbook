@@ -54,3 +54,22 @@ models:
       - *source
       - *created_at
       - *updated_at
+
+  - name: labels_balancer_v2_gauges_polygon
+    meta:
+      blockchain: polygon
+      sector: labels
+      project: balancer_v2
+      contributors: jacektrocinski
+    config:
+      tags: ['labels', 'polygon', 'gauges']
+    description: 'Balancer v2 gauge labels.'
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at

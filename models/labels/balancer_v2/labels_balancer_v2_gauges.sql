@@ -5,7 +5,8 @@
                                     \'["jacektrocinski"]\') }}')}}
 
 {% set gauge_models = [
-'labels_balancer_v2_gauges_ethereum'
+'labels_balancer_v2_gauges_ethereum',
+'labels_balancer_v2_gauges_polygon'
 ] %}
 
 SELECT *

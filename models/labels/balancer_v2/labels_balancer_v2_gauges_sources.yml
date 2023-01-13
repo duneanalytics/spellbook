@@ -31,11 +31,63 @@ sources:
       - name: CappedLiquidityGaugeFactory_call_create
         columns:
           - name: contract_address
-          - name: call_success
-          - name: call_tx_hash
-          - name: call_trace_address
-          - name: call_block_time
-          - name: call_block_number
-          - name: output_0
+          - &call_success
+            name: call_success
+          - &call_tx_hash
+            name: call_tx_hash
+          - &call_trace_address
+            name: call_trace_address
+          - &call_block_time
+            name: call_block_time
+          - &call_block_number
+            name: call_block_number
+          - &output_0
+            name: output_0
           - name: pool
           - name: relativeWeightCap
+
+      - name: PolygonRootGaugeFactory_evt_PolygonRootGaugeCreated
+        columns:
+          - name: contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: gauge
+          - name: recipient
+
+      - name: CappedPolygonRootGaugeFactory_evt_GaugeCreated
+        columns:
+          - name: contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: gauge
+
+      - name: CappedPolygonRootGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - *call_success
+          - *call_tx_hash
+          - *call_trace_address
+          - *call_block_time
+          - *call_block_number
+          - *output_0
+          - name: recipient
+          - name: relativeWeightCap
+
+  - name: balancer_polygon
+    description: >
+      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Polygon.
+    tables:
+      - name: ChildChainLiquidityGaugeFactory_evt_RewardsOnlyGaugeCreated
+        columns:
+          - name: contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: gauge
+          - name: pool
+          - name: streamer
