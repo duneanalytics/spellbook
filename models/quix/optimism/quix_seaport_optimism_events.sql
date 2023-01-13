@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'seaport_trades',
+    alias = 'seaport_events',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -250,7 +250,7 @@ with source_optimism_transactions as (
 ,erc721_transfer as (
   select *
   from {{ source('erc721_optimism','evt_transfer') }}
-  where 
+  where
     from = '{{non_buyer_address}}'
     {% if not is_incremental() %}
     and evt_block_time >= '{{c_seaport_first_date}}'  -- seaport first txn
@@ -282,12 +282,12 @@ with source_optimism_transactions as (
     ,t.nft_contract_address
     ,t.nft_token_name as collection
     ,t.nft_token_id as token_id
-    ,t.nft_token_amount as number_of_items
+    ,cast(t.nft_token_amount as decimal(38, 0)) as number_of_items
     ,t.nft_token_standard as token_standard
 
     -- price info
     ,t.price_amount as amount_original
-    ,t.price_amount_raw as amount_raw
+    ,cast(t.price_amount_raw as decimal(38, 0)) as amount_raw
     ,t.price_amount_usd as amount_usd
     ,t.token_symbol as currency_symbol
     ,t.token_alternative_symbol as currency_contract
@@ -300,10 +300,13 @@ with source_optimism_transactions as (
     ,t.platform_fee_amount_raw
     ,t.platform_fee_amount
     ,t.platform_fee_amount_usd
+    ,case when t.price_amount_raw > 0 then CAST ((t.platform_fee_amount_raw / t.price_amount_raw * 100) AS DOUBLE) end platform_fee_percentage
 
     -- royalty info
     ,t.creator_fee_receiver_1 as royalty_fee_receive_address
     ,t.creator_fee_amount_raw as royalty_fee_amount_raw
+    ,case when t.price_amount_raw > 0 then CAST ((creator_fee_amount_raw / t.price_amount_raw * 100) AS DOUBLE) end royalty_fee_percentage
+    ,t.token_symbol as royalty_fee_currency_symbol
     ,t.creator_fee_amount as royalty_fee_amount
     ,t.creator_fee_amount_usd as royalty_fee_amount_usd
     ,t.creator_fee_receiver_1 as royalty_fee_receive_address_1
@@ -333,7 +336,7 @@ with source_optimism_transactions as (
     ,t.is_private
     ,t.sub_idx
     ,t.sub_type
-  from iv_trades as t 
+  from iv_trades as t
   left join erc721_transfer as erc
     on t.tx_hash = erc.evt_tx_hash
     and t.block_number = erc.evt_block_number
@@ -341,5 +344,7 @@ with source_optimism_transactions as (
     and t.nft_contract_address = erc.contract_address
     and t.buyer = erc.from
 )
-select *
+select
+  *
+  ,concat(block_date, tx_hash, evt_index, nft_contract_address, token_id, sub_type, sub_idx) as unique_trade_id
 from iv_columns

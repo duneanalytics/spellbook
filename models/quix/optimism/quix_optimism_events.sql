@@ -1,34 +1,25 @@
-{{ config(
-    alias ='events',
-    post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism"]\',
-                    "sector",
-                    "nft",
-                    \'["soispoke","0xRob"]\') }}')
+ {{
+  config(
+        alias='events',
+        post_hook='{{ expose_spells(\'["optimism"]\',
+                                    "project",
+                                    "quix",
+                                    \'["chuxin"]\') }}')
 }}
 
-{% set nft_models = [
- ref('archipelago_ethereum_events')
-,ref('blur_ethereum_events')
-,ref('cryptopunks_ethereum_events')
-,ref('element_events')
-,ref('foundation_ethereum_events')
-,ref('looksrare_ethereum_events')
-,ref('magiceden_events')
-,ref('opensea_events')
-,ref('sudoswap_ethereum_events')
-,ref('superrare_ethereum_events')
-,ref('x2y2_ethereum_events')
-,ref('zora_ethereum_events')
-,ref('pancakeswap_bnb_nft_events')
-,ref('tofu_bnb_events')
-,ref('quix_optimism_events')
-,ref('nftrade_bnb_events')
+{% set quix_events = [
+ref( 'quix_v1_optimism_events' )
+,ref( 'quix_v2_optimism_events' )
+,ref( 'quix_v3_optimism_events' )
+,ref( 'quix_v4_optimism_events' )
+,ref( 'quix_v5_optimism_events' )
+,ref( 'quix_seaport_optimism_events' )
 ] %}
 
-SELECT *
-FROM (
-    {% for nft_model in nft_models %}
-    SELECT
+select *
+from (
+    {% for model in quix_events %}
+    select
         blockchain,
         project,
         version,
@@ -59,16 +50,16 @@ FROM (
         platform_fee_amount,
         platform_fee_amount_usd,
         platform_fee_percentage,
-        royalty_fee_receive_address,
-        royalty_fee_currency_symbol,
         royalty_fee_amount_raw,
         royalty_fee_amount,
         royalty_fee_amount_usd,
         royalty_fee_percentage,
+        royalty_fee_receive_address,
+        royalty_fee_currency_symbol,
         unique_trade_id
-    FROM {{ nft_model }}
+    from {{ model }}
     {% if not loop.last %}
-    UNION ALL
+    union all
     {% endif %}
     {% endfor %}
 )
