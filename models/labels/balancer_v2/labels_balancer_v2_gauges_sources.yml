@@ -1,0 +1,41 @@
+version: 2
+
+sources:
+  - name: balancer_ethereum
+    description: >
+      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Ethereum.
+    tables:
+      - name: LiquidityGaugeFactory_evt_GaugeCreated
+        columns:
+          - name: contract_address
+          - &evt_tx_hash
+            name: evt_tx_hash
+          - &evt_index
+            name: evt_index
+          - &evt_block_time
+            name: evt_block_time
+          - &evt_block_number
+            name: evt_block_number
+          - name: gauge
+          - name: pool
+
+      - name: CappedLiquidityGaugeFactory_evt_GaugeCreated
+        columns:
+          - name: contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: gauge
+
+      - name: CappedLiquidityGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - name: call_success
+          - name: call_tx_hash
+          - name: call_trace_address
+          - name: call_block_time
+          - name: call_block_number
+          - name: output_0
+          - name: pool
+          - name: relativeWeightCap
