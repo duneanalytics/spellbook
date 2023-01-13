@@ -26,7 +26,7 @@ jobs:
         run: dbt compile
 
       - name: Cache manifest.json
-        if: github.event.pull_request.merged == true
+#        if: github.event.pull_request.merged == true
         uses: actions/upload-artifact@v3
         with:
           path: target/manifest.json
