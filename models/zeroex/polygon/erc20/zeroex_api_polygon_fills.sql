@@ -19,16 +19,9 @@
 -- Test Query here: https://dune.com/queries/1684477
 
 WITH zeroex_tx AS (
-    SELECT tx_hash,
-           max(affiliate_address) as affiliate_address, 
-           temp.to, 
-           temp.from, 
-           temp.block_number,
-           temp.block_time
-    FROM (
-        SELECT
+    SELECT
             tr.tx_hash,
-            '0x' || CASE
+            max('0x' || CASE
                         WHEN POSITION('869584cd' IN INPUT) <> 0
                         THEN SUBSTRING(INPUT
                                 FROM (position('869584cd' IN INPUT) + 32)
@@ -37,7 +30,7 @@ WITH zeroex_tx AS (
                         THEN SUBSTRING(INPUT
                                 FROM (position('fbc019a7' IN INPUT) + 32)
                                 FOR 40)
-            END AS affiliate_address,
+            END) AS affiliate_address,
             tr.to as to,
             tr.from as from,
             tr.block_number as block_number,
@@ -64,9 +57,7 @@ WITH zeroex_tx AS (
                 {% if not is_incremental() %}
                 AND block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
-    ) temp
-    group by tx_hash, to, from, block_number, block_time
-
+            group by tr.tx_hash, tr.to, tr.from, tr.block_number, tr.block_time
 ),
 
 v4_rfq_fills_no_bridge AS (
@@ -101,6 +92,7 @@ v4_rfq_fills_no_bridge AS (
     WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
     {% endif %}
 ),
+/*
 v4_limit_fills_no_bridge AS (
     SELECT 
             fills.evt_tx_hash AS tx_hash,
@@ -133,6 +125,7 @@ v4_limit_fills_no_bridge AS (
     WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
     {% endif %}
 ),
+*/
 otc_fills AS (
     SELECT 
             fills.evt_tx_hash               AS tx_hash,
@@ -225,40 +218,40 @@ BridgeFill AS (
 ),*/
 NewBridgeFill AS (
     SELECT 
-            logs.tx_hash,
-            INDEX                                           AS evt_index,
-            logs.contract_address,
-            block_time                                      AS block_time,
-            '0x' || substring(DATA, 27, 40)                 AS maker,
-            '0xdef1c0ded9bec7f1a1670819833240f027b25eff'    AS taker,
-            '0x' || substring(DATA, 91, 40)                 AS taker_token,
-            '0x' || substring(DATA, 155, 40)                AS maker_token,
-            bytea2numeric('0x' || substring(DATA, 219, 40)) AS taker_token_amount_raw,
-            bytea2numeric('0x' || substring(DATA, 283, 40)) AS maker_token_amount_raw,
-            'BridgeFill'                                 AS type,
-            zeroex_tx.affiliate_address                     AS affiliate_address,
-            zeroex_tx.to, 
-            zeroex_tx.from,
-            zeroex_tx.block_number,
-            TRUE                                            AS swap_flag,
-            FALSE                                           AS matcha_limit_order_flag
+        logs.tx_hash,
+        logs.INDEX                                           AS evt_index,
+        logs.contract_address,
+        logs.block_time                                      AS block_time,
+        '0x' || substring(logs.DATA, 27, 40)                 AS maker,
+        '0xdef1c0ded9bec7f1a1670819833240f027b25eff'         AS taker,
+        '0x' || substring(logs.DATA, 91, 40)                 AS taker_token,
+        '0x' || substring(logs.DATA, 155, 40)                AS maker_token,
+        bytea2numeric('0x' || substring(logs.DATA, 219, 40)) AS taker_token_amount_raw,
+        bytea2numeric('0x' || substring(logs.DATA, 283, 40)) AS maker_token_amount_raw,
+        'BridgeFill'                                         AS type,
+        zeroex_tx.affiliate_address                          AS affiliate_address,
+        zeroex_tx.to, 
+        zeroex_tx.from,
+        zeroex_tx.block_number,
+        TRUE                                                 AS swap_flag,
+        FALSE                                                AS matcha_limit_order_flag
     FROM {{ source('polygon' ,'logs') }} logs
     INNER JOIN zeroex_tx
         ON zeroex_tx.tx_hash = logs.tx_hash
         AND zeroex_tx.block_number = logs.block_number
         AND zeroex_tx.block_time = logs.block_time
 
-    WHERE topic1 = '0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8'
-        AND contract_address = '0xdb6f1920a889355780af7570773609bd8cb1f498'
+    WHERE logs.topic1 = '0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8'
+        AND logs.contract_address = '0xdb6f1920a889355780af7570773609bd8cb1f498'
 
         {% if is_incremental() %}
-        AND block_time >= date_trunc('day', now() - interval '1 week')
+        AND logs.block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
         {% if not is_incremental() %}
-        AND block_time >= '{{zeroex_v4_start_date}}'
+        AND logs.block_time >= '{{zeroex_v4_start_date}}'
         {% endif %}
 ),
-
+/*
 direct_PLP AS (
     SELECT 
             plp.evt_tx_hash             AS tx_hash,
@@ -291,7 +284,7 @@ direct_PLP AS (
     WHERE evt_block_time >= '{{zeroex_v3_start_date}}'
     {% endif %}
 ), 
-/*
+
 direct_uniswapv3 AS (
     SELECT 
             swap.evt_tx_hash                                                                        AS tx_hash,
@@ -329,23 +322,24 @@ all_tx AS (
     /*
     SELECT *
     FROM direct_uniswapv3
-    UNION ALL */
-    SELECT *
-    FROM direct_PLP 
-    /*
-    UNION ALL SELECT *
-    FROM ERC20BridgeTransfer
-    UNION ALL SELECT *
-    FROM BridgeFill */
     UNION ALL
+    SELECT *
+    FROM direct_PLP
+    UNION ALL
+    SELECT *
+    FROM ERC20BridgeTransfer
+    UNION ALL
+    SELECT *
+    FROM BridgeFill
+    UNION ALL
+    SELECT *
+    FROM v4_limit_fills_no_bridge
+    */
     SELECT *
     FROM NewBridgeFill 
     UNION ALL
     SELECT *
     FROM v4_rfq_fills_no_bridge
-    UNION ALL
-    SELECT *
-    FROM v4_limit_fills_no_bridge
     UNION ALL
     SELECT *
     FROM otc_fills 
