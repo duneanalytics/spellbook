@@ -10,7 +10,7 @@ models:
     config:
       tags: ['bnb','hashflow','trades','dex','Henrystats']
     description: >
-        Hashflow contract trades on Avalanche C-Chain
+        Hashflow contract trades on Binance Smart Chain
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
