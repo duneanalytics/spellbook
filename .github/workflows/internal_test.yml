@@ -25,6 +25,9 @@ jobs:
       - name: dbt compile to create manifest from main for slim ci to compare to
         run: dbt compile
 
+      - name: install zip
+        run: sudo apt install zip
+
       - name: Zip manifest file
         run: zip manifest.zip manifest.json
 
