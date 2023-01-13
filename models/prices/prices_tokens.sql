@@ -156,7 +156,7 @@ VALUES
 
 
     ("1inch-1inch", "bnb", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
-    ("aave-aave-token", "bnb", "AAVE", "0xfb6115445bff7b52feb98650c87f44907e58f802", 18),
+    ("aave-new", "bnb", "AAVE", "0xfb6115445bff7b52feb98650c87f44907e58f802", 18),
     ("abnbc-abnbc", "bnb", "ABNBC", "0xe85afccdafbe7f2b096f268e31cce3da8da2990a", 18),
     ("ada-cardano", "bnb", "ADA", "0x3ee2200efb3400fabb9aacf31297cbdd1d435d47", 18),
     ("adx-adex", "bnb", "ADX", "0x6bff4fb161347ad7de4a625ae5aa3a1ca7077819", 18),
@@ -1670,7 +1670,7 @@ VALUES
     ("thales-thales","optimism","THALES","0x217d47011b23bb961eb6d93ca9945b7501a5bb11",18),
     -- ("NULL","optimism","sSOL","0x8b2f7ae8ca8ee8428b6d76de88326bb413db2766",18),
     ("fxs-frax-share","optimism","FXS","0x67ccea5bb16181e7b4109c9c2143c24a1c2205be",18),
-    ("aave-aave-token","optimism","AAVE","0x76fb31fb4af56892a25e32cfc43de717950c9278",18),
+    ("aave-new","optimism","AAVE","0x76fb31fb4af56892a25e32cfc43de717950c9278",18),
     -- ("NULL","optimism","sAVAX","0xb2b42b231c68cbb0b4bf2ffebf57782fd97d3da4",18),
     -- ("NULL","optimism","sMATIC","0x81ddfac111913d3d5218dea999216323b7cd6356",18),
     -- ("NULL","optimism","sAAVE","0x00b8d5a5e1ac97cb4341c4bc4367443c8776e8d9",18),
