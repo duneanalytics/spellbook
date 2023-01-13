@@ -8,9 +8,9 @@
 }}
 
 {% set hashflow_models = [
-'hashflow_avalanche_c_trades'
-,'hashflow_ethereum_trades'
-,'hashflow_bnb_trades'
+ref('hashflow_avalanche_c_trades')
+, ref('hashflow_ethereum_trades')
+, ref('hashflow_bnb_trades')
 ] %}
  
 SELECT *
@@ -40,7 +40,7 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ ref(dex_model) }}
+    FROM {{ dex_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
