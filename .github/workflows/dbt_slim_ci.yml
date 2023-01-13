@@ -33,12 +33,6 @@ jobs:
       - name: Add git_sha to schema
         run: "/runner/change_schema.sh git_$GIT_SHA"
 
-      - name: Download manifest.json artifact from main merge event
-        uses: actions/download-artifact@v3
-        with:
-          path: manifest.json
-          name: main_manifest
-
       - name: dbt dependencies
         run: "dbt deps"
 
@@ -50,6 +44,12 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           path: target/manifest.json
+          name: main_manifest
+
+      - name: Download manifest.json artifact from main merge event
+        uses: actions/download-artifact@v3
+        with:
+          path: manifest.json
           name: main_manifest
 
       - name: dbt seed
