@@ -23,12 +23,17 @@ jobs:
         run: dbt deps
 
       - name: dbt compile to create manifest from main for slim ci to compare to
-        run: "dbt compile"
+        run: dbt compile
 
       - name: Cache manifest.json
-        id: main_manifest
-        uses: actions/cache/save@v3
-        if: always()
+        if: github.event.pull_request.merged == true
+        uses: actions/upload-artifact@v3
         with:
           path: target/manifest.json
-          key: main_manifest
+          name: main_manifest
+
+      - name: Download manifest.json
+        uses: actions/download-artifact@v3
+        with:
+          path: manifest.json
+          name: main_manifest

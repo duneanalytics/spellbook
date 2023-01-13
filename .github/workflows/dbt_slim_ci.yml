@@ -33,16 +33,24 @@ jobs:
       - name: Add git_sha to schema
         run: "/runner/change_schema.sh git_$GIT_SHA"
 
-      - uses: actions/cache@v3
+      - name: Download manifest.json artifact from main merge event
+        uses: actions/download-artifact@v3
         with:
           path: manifest.json
-          key: main_manifest
+          name: main_manifest
 
       - name: dbt dependencies
         run: "dbt deps"
 
       - name: dbt compile to create manifest to compare to
         run: "dbt compile"
+
+      - name: Upload new manifest.json if merging to main
+        if: github.event.pull_request.merged == true
+        uses: actions/upload-artifact@v3
+        with:
+          path: target/manifest.json
+          name: main_manifest
 
       - name: dbt seed
         run: "dbt seed --select state:modified --state ~/.cache/manifest.json"
@@ -64,3 +72,4 @@ jobs:
       - name: dbt test incremental model(s) if applicable
         if: env.INC_MODEL_COUNT > 0
         run: "dbt test --select state:modified,config.materialized:incremental --defer --state ."
+
