@@ -23,7 +23,8 @@ WITH zeroex_tx AS (
            max(affiliate_address) as affiliate_address, 
            temp.to, 
            temp.from, 
-           temp.block_number
+           temp.block_number,
+           temp.block_time
     FROM (
         SELECT
             tr.tx_hash,
@@ -39,7 +40,8 @@ WITH zeroex_tx AS (
             END AS affiliate_address,
             tr.to as to,
             tr.from as from,
-            tr.block_number as block_number
+            tr.block_number as block_number,
+            tr.block_time as block_time
         FROM {{ source('polygon', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
@@ -63,7 +65,7 @@ WITH zeroex_tx AS (
                 AND block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
     ) temp
-    group by tx_hash, to, from, block_number
+    group by tx_hash, to, from, block_number, block_time
 
 ),
 
@@ -81,11 +83,16 @@ v4_rfq_fills_no_bridge AS (
             fills.makerTokenFilledAmount    AS maker_token_amount_raw,
             'RfqOrderFilled'                AS type,
             zeroex_tx.affiliate_address     AS affiliate_address,
-            zeroex_tx.to, zeroex_tx.from, zeroex_tx.block_number,
+            zeroex_tx.to, 
+            zeroex_tx.from, 
+            zeroex_tx.block_number,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
     FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
-    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+    INNER JOIN zeroex_tx
+        ON zeroex_tx.tx_hash = fills.evt_tx_hash
+        AND zeroex_tx.block_number = fills.evt_block_number
+        AND zeroex_tx.block_time = fills.evt_block_time
 
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
@@ -108,11 +115,16 @@ v4_limit_fills_no_bridge AS (
             fills.makerTokenFilledAmount AS maker_token_amount_raw,
             'LimitOrderFilled' AS type,
             COALESCE(zeroex_tx.affiliate_address, fills.feeRecipient) AS affiliate_address,
-            zeroex_tx.to, zeroex_tx.from,zeroex_tx.block_number,
+            zeroex_tx.to, 
+            zeroex_tx.from,
+            zeroex_tx.block_number,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             (fills.feeRecipient = '0x86003b044f70dac0abc80ac8957305b6370893ed') AS matcha_limit_order_flag
     FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
-    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+    INNER JOIN zeroex_tx
+        ON zeroex_tx.tx_hash = fills.evt_tx_hash
+        AND zeroex_tx.block_number = fills.evt_block_number
+        AND zeroex_tx.block_time = fills.evt_block_time
 
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
@@ -135,11 +147,16 @@ otc_fills AS (
             fills.makerTokenFilledAmount    AS maker_token_amount_raw,
             'OtcOrderFilled'                AS type,
             zeroex_tx.affiliate_address     AS affiliate_address,
-            zeroex_tx.to, zeroex_tx.from,zeroex_tx.block_number,
+            zeroex_tx.to, 
+            zeroex_tx.from,
+            zeroex_tx.block_number,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
     FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
-    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+    INNER JOIN zeroex_tx
+        ON zeroex_tx.tx_hash = fills.evt_tx_hash
+        AND zeroex_tx.block_number = fills.evt_block_number
+        AND zeroex_tx.block_time = fills.evt_block_time
 
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
@@ -220,11 +237,17 @@ NewBridgeFill AS (
             bytea2numeric('0x' || substring(DATA, 283, 40)) AS maker_token_amount_raw,
             'BridgeFill'                                 AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
-            zeroex_tx.to, zeroex_tx.from,zeroex_tx.block_number,
+            zeroex_tx.to, 
+            zeroex_tx.from,
+            zeroex_tx.block_number,
             TRUE                                            AS swap_flag,
             FALSE                                           AS matcha_limit_order_flag
     FROM {{ source('polygon' ,'logs') }} logs
-    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
+    INNER JOIN zeroex_tx
+        ON zeroex_tx.tx_hash = logs.tx_hash
+        AND zeroex_tx.block_number = logs.block_number
+        AND zeroex_tx.block_time = logs.block_time
+
     WHERE topic1 = '0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8'
         AND contract_address = '0xdb6f1920a889355780af7570773609bd8cb1f498'
 
@@ -250,11 +273,16 @@ direct_PLP AS (
             outputTokenAmount           AS maker_token_amount_raw,
             'LiquidityProviderSwap'     AS type,
             zeroex_tx.affiliate_address AS affiliate_address,
-            zeroex_tx.to, zeroex_tx.from,zeroex_tx.block_number,
+            zeroex_tx.to, 
+            zeroex_tx.from,
+            zeroex_tx.block_number,
             TRUE                        AS swap_flag,
             FALSE                       AS matcha_limit_order_flag
     FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_LiquidityProviderSwap') }} plp
-    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = plp.evt_tx_hash
+    INNER JOIN zeroex_tx
+        ON zeroex_tx.tx_hash = plp.evt_tx_hash
+        AND zeroex_tx.block_number = plp.evt_block_number
+        AND zeroex_tx.block_time = plp.evt_block_time
 
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
