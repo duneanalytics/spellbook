@@ -179,7 +179,7 @@ SELECT DISTINCT t.blockchain
 , t.block_number || t.tx_hash || t.evt_index  AS unique_trade_id
 FROM all_foundation_trades t
 LEFT JOIN {{ ref('tokens_ethereum_nft') }} nft ON t.nft_contract_address=nft.contract_address
-LEFT JOIN {{ source('foundation_ethereum','market_evt_SellerReferralPaid') }} sellref ON sellref.evt_tx_hash = t.tx_hash
+LEFT JOIN {{ source('foundation_ethereum','market_evt_SellerReferralPaid') }} sellref ON sellref.evt_block_time = t.block_time AND sellref.evt_tx_hash = t.tx_hash
 LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} nft_t ON nft_t.evt_block_time=t.block_time
     AND nft_t.evt_tx_hash=t.tx_hash
     AND nft_t.tokenId=t.token_id
