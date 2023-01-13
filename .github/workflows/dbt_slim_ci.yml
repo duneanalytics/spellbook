@@ -53,7 +53,7 @@ jobs:
           name: main_manifest
 
       - name: dbt seed
-        run: "dbt seed --select state:modified --state ~/.cache/manifest.json"
+        run: "dbt seed --select state:modified --state ."
 
       - name: dbt run initial model(s)
         run: "dbt -x run --select state:modified --defer --state ."
