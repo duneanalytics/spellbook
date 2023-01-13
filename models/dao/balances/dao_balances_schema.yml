@@ -35,3 +35,6 @@ models:
       - &balance
         name: balance
         description: "asset balance"
+      - &usd_value
+        name: usd_value
+        description: "asset value in USD"

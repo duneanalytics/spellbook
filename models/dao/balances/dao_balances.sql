@@ -82,6 +82,7 @@ SELECT
     db.dao,
     db.dao_wallet_address,
     db.balance,
+    db.balance * p.price as usd_value, 
     db.asset, 
     db.asset_contract_address
 FROM 
@@ -90,4 +91,9 @@ INNER JOIN
 days d 
    ON db.day <= d.day 
    AND d.day < db.next_day
+LEFT JOIN 
+{{ source('prices', 'usd') }} p
+    ON p.contract_address = db.asset_contract_address
+    AND d.day = p.minute
+    AND p.blockchain = db.blockchain
     
