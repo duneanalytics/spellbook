@@ -273,4 +273,15 @@ models:
     columns:
       - *trader
       - *referrer
+  - name: cow_protocol_ethereum_price_improvement_data
+    meta:
+      blockchain: ethereum
+      project: cow_protocol
+      contributors: bh2smith, gentrexha, yosojo
+    config:
+      tags: [ 'ethereum','cow_protocol','price improvement' ]
+    description: >
+      TODO
+    columns:
+      - TODO
 
