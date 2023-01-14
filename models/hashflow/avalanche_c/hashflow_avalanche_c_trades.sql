@@ -60,6 +60,30 @@ with dexs AS (
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
+
+        UNION ALL
+
+        SELECT
+            evt_block_time          AS block_time,
+            trader                  AS taker,
+            ''                      AS maker,
+            quoteTokenAmount        AS token_bought_amount_raw,
+            baseTokenAmount         AS token_sold_amount_raw,
+            cast (NULL AS double)   AS amount_usd,
+            quoteToken              AS token_bought_address,
+            baseToken               AS token_sold_address,
+            contract_address        AS project_contract_address,
+            evt_tx_hash             AS tx_hash,
+            ''                      AS trace_address,
+            evt_index
+        FROM
+            {{ source('hashflow_avalanche_c', 'Pool_evt_XChainTrade') }}
+        {% if not is_incremental() %}
+        WHERE evt_block_time >= '{{project_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %} 
 )
 
 SELECT
