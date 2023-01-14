@@ -1619,6 +1619,7 @@ VALUES
     ("stmatic-lido-staked-matic", "ethereum", "STMATIC", "0x9ee91F9f426fA633d227f7a9b000E28b9dfd8599", 18),
     ("xen-xen-crypto", "ethereum", "XEN", "0x06450dEe7FD2Fb8E39061434BAbCFC05599a6Fb8", 18),
     ("bob-bob", "ethereum", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
+    ("unbnk-unbanked", "ethereum", "UNBNK", "0x06B884e60794Ce02AafAb13791B59A2e6A07442f", 18),
 
     -- Query for Popular Traded Tokens on Gnosis Chain without prices: https://dune.com/queries/1719783
     ("dai-dai", "gnosis", "WXDAI", "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18),
