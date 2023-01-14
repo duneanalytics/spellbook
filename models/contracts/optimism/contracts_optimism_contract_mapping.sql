@@ -255,7 +255,7 @@ select
   ,coalesce(co.contract_name, c.contract_name) as contract_name
   ,coalesce(c.creator_address, ovm1c.creator_address) as creator_address
   ,coalesce(c.created_time, to_timestamp(ovm1c.created_time)) as created_time
-  ,coalesce(c.contract_factory, th.contract_factory) as contract_creator_if_factory
+  ,coalesce(c.contract_factory, th.contract_creator_if_factory) as contract_creator_if_factory
   ,coalesce(c.is_self_destruct, false) as is_self_destruct
   ,c.creation_tx_hash
 from cleanup as c 
@@ -267,5 +267,5 @@ left join {{ ref('contracts_optimism_contract_overrides') }} as co --override co
   on lower(c.contract_address) = lower(co.contract_address)
 {% if is_incremental() %} -- this filter will only be applied on an incremental run 
 left join {{ this }} th -- grab if the contract was previously picked up as factory created
-  ON th.contract_address = c.contract_address
+  ON lower(th.contract_address) = lower(c.contract_address)
 {% endif %}
