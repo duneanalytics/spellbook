@@ -102,7 +102,6 @@ FROM (
     ,wb.contract_address AS project_contract_address
     , wb.transferId AS transfer_id
     , CASE
-            WHEN hpa.l2Bridge IS NOT NULL THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'ethereum mainnet') --ETH 
             WHEN arb.transferId IS NOT NULL THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'arbitrum one')
             WHEN poly.transferId IS NOT NULL THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'polygon mainnet')
             WHEN gno.transferId IS NOT NULL THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'gnosis')
@@ -129,9 +128,6 @@ FROM (
             {% if is_incremental() %}
             AND gno.evt_block_time >= (NOW() - interval '45 days')
               {% endif %}
-        LEFT JOIN {{ ref('hop_protocol_addresses') }} hpa
-            ON hpa.l2Bridge = wb.contract_address
-            AND hpa.l1CanonicalBridge = '0x0000000000000000000000000000000000000000'
     {% if is_incremental() %}
     WHERE wb.evt_block_time >= (NOW() - interval '14 days')
     {% endif %}
