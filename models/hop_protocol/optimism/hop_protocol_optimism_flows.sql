@@ -46,6 +46,8 @@ SELECT
 
 FROM (
 
+    -- Withdrawals away from Optimism
+    
     select 
      ts.evt_block_time AS block_time
     ,ts.evt_block_number AS block_number
@@ -65,7 +67,8 @@ FROM (
     {% if is_incremental() %}
     WHERE evt_block_time >= (NOW() - interval '14 days')
     {% endif %}
-    UNION ALL
+
+    UNION ALL -- Deposits to Optimism from L1
     
     select 
      tl.evt_block_time AS block_time
@@ -87,7 +90,7 @@ FROM (
     WHERE evt_block_time >= (NOW() - interval '14 days')
     {% endif %}
     
-    UNION ALL
+    UNION ALL -- Deposits to Optimism from Non-L1 Chains
     
     select 
      wb.evt_block_time AS block_time
