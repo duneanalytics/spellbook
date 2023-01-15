@@ -102,13 +102,9 @@ FROM (
     ,wb.contract_address AS project_contract_address
     , wb.transferId AS transfer_id
     , CASE
-            WHEN wb.contract_address = '0x83f6244bd87662118d96d9a6d44f09dfff14b30e' THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'ethereum mainnet') --ETH 
-            WHEN wb.contract_address = '0x7191061d5d4c60f598214cc6913502184baddf18' THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'ethereum mainnet') --DAI 
-            WHEN wb.contract_address = '0xa81d244a1814468c734e5b4101f7b9c0c577a8fc' THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'ethereum mainnet') --USDC
-            WHEN wb.contract_address = '0x03d7f750777ec48d39d080b020d83eb2cb4e3547' THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'ethereum mainnet') --HOP
-            WHEN wb.contract_address = '0x46ae9bab8cea96610807a275ebd36f8e916b5c61' THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'ethereum mainnet') --USDT
-            WHEN arb.transferId IS NOT NULL THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'arbitrum')
-            WHEN poly.transferId IS NOT NULL THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'polygon')
+            WHEN hpa.l2Bridge IS NOT NULL THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'ethereum mainnet') --ETH 
+            WHEN arb.transferId IS NOT NULL THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'arbitrum one')
+            WHEN poly.transferId IS NOT NULL THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'polygon mainnet')
             WHEN gno.transferId IS NOT NULL THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'gnosis')
         ELSE NULL
         END
@@ -133,6 +129,9 @@ FROM (
             {% if is_incremental() %}
             AND gno.evt_block_time >= (NOW() - interval '45 days')
               {% endif %}
+        LEFT JOIN {{ ref('hop_protocol_addresses') }} hpa
+            ON hpa.l2Bridge = wb.contract_address
+            AND hpa.l1CanonicalBridge = '0x0000000000000000000000000000000000000000'
     {% if is_incremental() %}
     WHERE wb.evt_block_time >= (NOW() - interval '14 days')
     {% endif %}
