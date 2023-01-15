@@ -12,7 +12,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - date_added
-            - contract_address
+            - product_contract_address
             - product_name
             - product_type
             - syndicate
