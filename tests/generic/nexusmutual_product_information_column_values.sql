@@ -10,7 +10,7 @@
             end as generic_column_test
         from {{ model }} m
         join {{ nexusmutual_ethereum_product_information_seed }} seed
-            on m.contract_address = seed.contract_address
+            on  m.product_contract_address = seed.product_contract_address
             and m.product_name = seed.product_name
             and m.product_type = seed.product_type
             and m.date_added = seed.date_added
