@@ -385,6 +385,11 @@ FROM (
       ,('0xF3808680917524CD1346b12e4845830076eB7001', 'Teahouse')
       ,('0x4dc45eAc9eE25Af88958c94461fd46175C47744a', 'Geoweb')
       ,('0xade09131C6f43fe22C2CbABb759636C43cFc181e', 'Connext')
+      ,('0x4b327372A347aD97e45881428af26a4C28840C66', 'Metamask')
+      ,('0x75ee82787c548daeac58af6cba5bd2a9ff863d28', 'Flipside Crypto')
+      ,('0x745748bcfd8f9c2de519a71d789be8a63dd7d66c', 'Curve')
+      ,('0xe0774a09b55febaf93049af328901f7a5b09827b', 'WooFi')
+      ,('0x413a8ba5175efd5f770e372d0ae91cf04a9473e3', 'WooFi')
 
   ) as temp_table (creator_address, contract_project)
 
