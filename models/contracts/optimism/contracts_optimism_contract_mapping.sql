@@ -255,7 +255,13 @@ select
   ,coalesce(co.contract_name, c.contract_name) as contract_name
   ,coalesce(c.creator_address, ovm1c.creator_address) as creator_address
   ,coalesce(c.created_time, to_timestamp(ovm1c.created_time)) as created_time
-  ,coalesce(c.contract_factory, th.contract_creator_if_factory) as contract_creator_if_factory
+  ,coalesce(c.contract_factory, 
+  {% if is_incremental() %}
+    th.contract_creator_if_factory
+    {% else -%}
+    NULL
+  {% endif %}
+  ) as contract_creator_if_factory
   ,coalesce(c.is_self_destruct, false) as is_self_destruct
   ,c.creation_tx_hash
 from cleanup as c 
