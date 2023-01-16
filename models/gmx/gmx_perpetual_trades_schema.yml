@@ -1,24 +1,16 @@
 version: 2
 
 models:
-  - name: gmx_arbitrum_perpetual_trades
+  - name: gmx_perpetual_trades
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c, arbitrum
       sector: perpetual
       project: gmx
       contributors: Henrystats
     config:
-      tags: ['arbitrum', 'gmx', 'perpetuals', 'perps']
+      tags: ['avalanche_c', 'arbitrum', 'gmx', 'perpetuals', 'perps']
     description: >
-      gmx perpetuals trades/swaps on arbitrum
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_time
-            - project
-            - version
-            - tx_hash
-            - evt_index
+      gmx perpetuals trades/swaps on avalanche_c & arbitrum
     columns:
       - &blockchain
         name: blockchain
