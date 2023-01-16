@@ -2,7 +2,7 @@
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                     "project",
                                     "cow_protocol",
-                                    \'["bh2smith", "gentrexha", "yosojo"]\') }}'
+                                    \'["bh2smith", "gentrexha", "josojo"]\') }}'
 )}}
 
 with batches_with_nested_uids_and_trades as (
