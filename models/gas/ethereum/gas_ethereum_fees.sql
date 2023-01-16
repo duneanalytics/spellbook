@@ -20,10 +20,10 @@ SELECT
      value/1e18 AS tx_amount_native,
      value/1e18 * p.price AS tx_amount_usd,
      CASE WHEN type = 'Legacy' THEN (gas_price * txns.gas_used)/1e18
-          WHEN type = 'DynamicFee' THEN ((base_fee_per_gas + priority_fee_per_gas) * txns.gas_used)/1e18 
+          ELSE ((base_fee_per_gas + priority_fee_per_gas) * txns.gas_used)/1e18 
           END AS tx_fee_native, 
      CASE WHEN type = 'Legacy' THEN (gas_price * txns.gas_used)/1e18 * p.price 
-          WHEN type = 'DynamicFee' THEN ((base_fee_per_gas + priority_fee_per_gas) * txns.gas_used)/1e18 * p.price 
+          ELSE ((base_fee_per_gas + priority_fee_per_gas) * txns.gas_used)/1e18 * p.price 
           END AS tx_fee_usd,
      ((base_fee_per_gas) * txns.gas_used)/1e18 AS burned_native, 
      (((base_fee_per_gas) * txns.gas_used)/1e18) * p.price AS burned_usd,
