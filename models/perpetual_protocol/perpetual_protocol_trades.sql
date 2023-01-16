@@ -2,7 +2,7 @@
 	alias = 'trades',
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
-                                "perpetual",
+                                "perpetual_protocol",
                                 \'["msilb7", "drethereum", "rplust"]\') }}'
 	)
 }}
