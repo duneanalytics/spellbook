@@ -297,14 +297,14 @@ with source_optimism_transactions as (
     -- project info (platform or exchange)
     ,t.platform_contract_address as project_contract_address
     ,t.platform_fee_receiver as platform_fee_receive_address
-    ,t.platform_fee_amount_raw
+    ,CAST(t.platform_fee_amount_raw as double) as platform_fee_amount_raw
     ,t.platform_fee_amount
     ,t.platform_fee_amount_usd
     ,case when t.price_amount_raw > 0 then CAST ((t.platform_fee_amount_raw / t.price_amount_raw * 100) AS DOUBLE) end platform_fee_percentage
 
     -- royalty info
     ,t.creator_fee_receiver_1 as royalty_fee_receive_address
-    ,t.creator_fee_amount_raw as royalty_fee_amount_raw
+    ,CAST(t.creator_fee_amount_raw as double) as royalty_fee_amount_raw
     ,case when t.price_amount_raw > 0 then CAST ((creator_fee_amount_raw / t.price_amount_raw * 100) AS DOUBLE) end royalty_fee_percentage
     ,t.token_symbol as royalty_fee_currency_symbol
     ,t.creator_fee_amount as royalty_fee_amount
