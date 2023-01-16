@@ -27,7 +27,7 @@ perp_events as (
         fee/1E30 as fee_usd, 
         collateralDelta/1E30 as margin_usd,
         sizeDelta as volume_raw, 
-        CASE WHEN isLong = false THEN short ELSE long END as trade_type, 
+        CASE WHEN isLong = false THEN 'short' ELSE 'long' END as trade_type, 
         account as trader, 
         contract_address as market_address, 
         evt_index,
@@ -53,7 +53,7 @@ perp_events as (
         fee/1E30 as fee_usd, 
         collateralDelta/1E30 as margin_usd,
         sizeDelta as volume_raw, 
-        CASE WHEN isLong = false THEN short ELSE long END as trade_type, 
+        CASE WHEN isLong = false THEN 'short' ELSE 'long' END as trade_type, 
         account as trader, 
         contract_address as market_address, 
         evt_index,
@@ -79,7 +79,7 @@ perp_events as (
         0 as fee_usd, 
         collateral/1E30 as margin_usd,
         size as volume_raw, 
-        CASE WHEN isLong = false THEN short ELSE long END as trade_type, 
+        CASE WHEN isLong = false THEN 'short' ELSE 'long' END as trade_type, 
         account as trader, 
         contract_address as market_address, 
         evt_index,
@@ -103,8 +103,8 @@ SELECT
     COALESCE(erc20a.symbol, pe.virtual_asset) as virtual_asset, 
     COALESCE(erc20b.symbol, pe.underlying_asset) as underlying_asset, 
     CASE 
-        WHEN pe.virtual_asset = pe.underlying_asset THEN COALESCE(ea.symbol, pe.virtual_asset)
-        ELSE COALESCE(ea.symbol, pe.virtual_asset) || '-' || COALESCE(eb.symbol, pe.underlying_asset)
+        WHEN pe.virtual_asset = pe.underlying_asset THEN COALESCE(erc20a.symbol, pe.virtual_asset)
+        ELSE COALESCE(erc20a.symbol, pe.virtual_asset) || '-' || COALESCE(erc20b.symbol, pe.underlying_asset)
     END as market, 
     pe.market_address,
     pe.volume_usd,
