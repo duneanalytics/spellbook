@@ -130,7 +130,7 @@ with events_raw as (
         ,ROUND((2.5*(er.amount_raw)/100),7) as platform_fee_amount_raw
         ,ROUND((2.5*((er.amount_raw / power(10,t1.decimals)))/100),7) AS platform_fee_amount
         ,ROUND((2.5*((er.amount_raw / power(10,t1.decimals)* p1.price))/100),7) AS platform_fee_amount_usd
-        ,'2.5' as platform_fee_percentage
+        ,CAST(2.5 AS DOUBLE) AS platform_fee_percentage
         ,tr.value as royalty_fee_amount_raw
         ,tr.value / power(10, t1.decimals) as royalty_fee_amount 
         ,tr.value / power(10, t1.decimals) * p1.price as royalty_fee_amount_usd
