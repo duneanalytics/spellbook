@@ -326,6 +326,8 @@ models:
       +schema: safe
       ethereum:
         +schema: safe_ethereum
+      optimimsm: 
+        +schema: safe_optimism
 
     nftrade:
       +schema: nftrade
