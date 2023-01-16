@@ -12,7 +12,6 @@
 ,'gmx_arbitrum_perpetual_trades'
 ] %}
 
-
 SELECT *
 FROM (
     {% for perpetual_model in gmx_models %}
