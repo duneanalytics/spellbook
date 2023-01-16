@@ -43,7 +43,7 @@ perp_events as (
 
     UNION ALL 
 
-    -- increase position 
+    -- increase position  
     SELECT
         evt_block_time as block_time, 
         'increase_position' as trade_data, 
