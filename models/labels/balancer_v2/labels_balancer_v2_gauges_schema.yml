@@ -73,3 +73,41 @@ models:
       - *source
       - *created_at
       - *updated_at
+
+  - name: labels_balancer_v2_gauges_arbitrum
+    meta:
+      blockchain: arbitrum
+      sector: labels
+      project: balancer_v2
+      contributors: jacektrocinski
+    config:
+      tags: ['labels', 'arbitrum', 'gauges']
+    description: 'Balancer v2 gauge labels.'
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+
+  - name: labels_balancer_v2_gauges_optimism
+    meta:
+      blockchain: optimism
+      sector: labels
+      project: balancer_v2
+      contributors: jacektrocinski
+    config:
+      tags: ['labels', 'optimism', 'gauges']
+    description: 'Balancer v2 gauge labels.'
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
