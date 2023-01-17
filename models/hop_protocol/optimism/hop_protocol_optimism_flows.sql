@@ -46,6 +46,8 @@ SELECT
 
 FROM (
 
+    -- Withdrawals away from Optimism
+    
     select 
      ts.evt_block_time AS block_time
     ,ts.evt_block_number AS block_number
@@ -65,7 +67,8 @@ FROM (
     {% if is_incremental() %}
     WHERE evt_block_time >= (NOW() - interval '14 days')
     {% endif %}
-    UNION ALL
+
+    UNION ALL -- Deposits to Optimism from L1
     
     select 
      tl.evt_block_time AS block_time
@@ -87,7 +90,7 @@ FROM (
     WHERE evt_block_time >= (NOW() - interval '14 days')
     {% endif %}
     
-    UNION ALL
+    UNION ALL -- Deposits to Optimism from Non-L1 Chains
     
     select 
      wb.evt_block_time AS block_time
@@ -102,8 +105,8 @@ FROM (
     ,wb.contract_address AS project_contract_address
     , wb.transferId AS transfer_id
     , CASE
-            WHEN arb.transferId IS NOT NULL THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'arbitrum')
-            WHEN poly.transferId IS NOT NULL THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'polygon')
+            WHEN arb.transferId IS NOT NULL THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'arbitrum one')
+            WHEN poly.transferId IS NOT NULL THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'polygon mainnet')
             WHEN gno.transferId IS NOT NULL THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'gnosis')
         ELSE NULL
         END

@@ -48,6 +48,17 @@ margin as (
     FROM 
     {{ ref('tigris_polygon_positions_close') }}
 
+    UNION ALL
+
+    SELECT 
+        evt_block_time,
+        position_id,
+        margin,
+        version,
+        evt_index
+    FROM 
+    {{ ref('tigris_polygon_events_limit_order') }}
+
 )
 
 SELECT * FROM margin  

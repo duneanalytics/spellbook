@@ -40,7 +40,7 @@ WITH dexs AS
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
-SELECT
+SELECT DISTINCT
     'arbitrum' AS blockchain
     ,'uniswap' AS project
     ,'3' AS version
