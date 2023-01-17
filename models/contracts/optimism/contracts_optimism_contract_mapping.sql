@@ -204,7 +204,34 @@ with base_level as (
       from {{ this }} as gc
       where 
         gc.contract_address = snx.contract_address
-        and gc.contract_project = 'Synthetix'
+        and gc.contract_project LIKE 'Synthetix%' --future proof in case this name changes
+    )
+    {% endif %}
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9
+
+    union all 
+  --uniswap pools from ovm1
+
+  select 
+    NULL as creator_address
+    ,NULL as contract_factory
+    ,lower(newaddress) as contract_address
+    ,'Uniswap V3' as contract_project
+    ,'Pair' as contract_name
+    ,to_timestamp('2021-11-11 00:00:00') as created_time
+    ,false as is_self_destruct
+    ,'ovm1 uniswap pools' as source
+    ,NULL as creation_tx_hash
+  from {{ ref('uniswap_v3_optimism', 'ovm1_pool_mapping') }} as uni
+  where 
+    true
+    {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+    and not exists (
+      select 1 
+      from {{ this }} as gc
+      where 
+        gc.contract_address = lower(newaddress)
+        and gc.contract_project LIKE 'Uniswap%' --future proof in case this name changes
     )
     {% endif %}
     group by 1, 2, 3, 4, 5, 6, 7, 8, 9
