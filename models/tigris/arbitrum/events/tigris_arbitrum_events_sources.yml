@@ -70,3 +70,11 @@ sources:
         loaded_at_field: call_block_time
       - name: TradingV5_call_removeMargin
         loaded_at_field: call_block_time
+      - name: TradingV2_evt_LimitOrderExecuted
+        loaded_at_field: evt_block_time
+      - name: TradingV3_evt_LimitOrderExecuted
+        loaded_at_field: evt_block_time
+      - name: TradingV4_evt_LimitOrderExecuted
+        loaded_at_field: evt_block_time
+      - name: TradingV5_evt_LimitOrderExecuted
+        loaded_at_field: evt_block_time

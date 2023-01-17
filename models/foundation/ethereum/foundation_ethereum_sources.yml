@@ -14,3 +14,6 @@ sources:
       - name: market_evt_OfferAccepted
         loaded_at_field: evt_block_time
       - name: market_evt_PrivateSaleFinalized
+        loaded_at_field: evt_block_time
+      - name: market_evt_SellerReferralPaid
+        loaded_at_field: evt_block_time
