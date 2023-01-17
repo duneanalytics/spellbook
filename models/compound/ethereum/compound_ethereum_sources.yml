@@ -14,14 +14,16 @@ sources:
             description: "DAO governor contract address"
           - &evt_block_number
             name: evt_block_number
+            description: "Event block number"
           - &evt_block_time
             name: evt_block_time
-            description: "UTC event block time of each DAO vote"
+            description: "UTC event block time"
           - &evt_index
             name: evt_index
+            description: "Event index"
           - &evt_tx_hash
             name: evt_tx_hash
-            description: "Unique transaction hash value tied to each vote on the DAO"
+            description: "Event transaction hash"
           - &proposalId
             name: proposalId
           - &reason
@@ -85,3 +87,37 @@ sources:
           - *evt_index
           - *evt_tx_hash
           - *id
+
+      - name: cErc20_evt_Mint
+        loaded_at_field: evt_block_time
+        description: "cErc20 mint events"
+        columns:
+          - *evt_block_time
+          - *evt_block_number
+          - *evt_tx_hash
+          - *evt_index
+          - &ctoken_address
+            name: contract_address
+            description: "cToken contract address"
+          - &minter
+            name: minter
+            description: "Minter of cToken"
+          - &mintTokens
+            name: mintTokens
+            description: "Amount of cTokens minted (including decimal mantissa)"
+          - &mintAmount
+            name: mintAmount
+            description: "Amount of underlying asset (including decimal mantissa)"
+
+      - name: cEther_evt_Mint
+        loaded_at_field: evt_block_time
+        description: "cEther mint events"
+        columns:
+          - *evt_block_time
+          - *evt_block_number
+          - *ctoken_address
+          - *evt_tx_hash
+          - *evt_index
+          - *minter
+          - *mintTokens
+          - *mintAmount
