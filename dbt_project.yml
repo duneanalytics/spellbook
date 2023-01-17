@@ -527,6 +527,8 @@ models:
         +schema: hashflow_ethereum
       avalanche_c:
         +schema: hashflow_avalanche_c
+      bnb:
+        +schema: hashflow_bnb
 
     nexusmutual:
       +schema: nexusmutual

@@ -1,8 +1,8 @@
 version: 2
 
 sources:
-  - name: hashflow_avalanche_c
-    description: "Avalanche (C-Chain) decoded tables related to Hashflow contract"
+  - name: hashflow_bnb
+    description: "BNB decoded tables related to Hashflow contract"
     freshness:
       warn_after: { count: 12, period: hour }
     tables:
