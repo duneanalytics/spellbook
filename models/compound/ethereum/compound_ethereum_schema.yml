@@ -99,6 +99,25 @@ models:
         name: description
         description: "Description of the proposal"
 
+  - name: compound_v2_ethereum_ctokens
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: compound_v2
+      contributors: bizzyvinci
+    config:
+      tags: ['ethereum', 'compound', 'compound_v2', 'cToken', 'cEther', 'cErc20']
+    description: "All compound v2 cTokens"
+    columns:
+      - name: asset_symbol
+        description: "Underlying asset symbol"
+      - name: ctoken_address
+        description: "cToken address"
+      - name: asset_address
+        description: "Underlying asset address"
+      - name: decimals_mantissa
+        description: "10 raise to power decimals of underlying asset"
+
   - name: compound_v2_ethereum_supply
     meta:
       blockchain: ethereum
@@ -136,6 +155,9 @@ models:
       - &evt_tx_hash
         name: evt_tx_hash
         description: "Transaction hash of the event"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
       - &evt_block_time
         name: evt_block_time
         description: "Timestamp for block event time in UTC"
