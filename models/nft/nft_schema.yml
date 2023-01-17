@@ -301,7 +301,7 @@ models:
       sector: nft
       contributors: hildobby
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'sudoswap', 'ethereum', 'wash_trades']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'sudoswap', 'blur', 'ethereum', 'wash_trades']
     description: >
         NFT wash trades labelling
     columns:
