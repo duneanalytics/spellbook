@@ -38,7 +38,7 @@ models:
         +schema: aave_ethereum
       optimism:
         +schema: aave_optimism
-    
+
     balancer:
       +schema: balancer
       arbitrum:
@@ -209,6 +209,11 @@ models:
       ethereum:
         +schema: nomad_ethereum
 
+    ellipsis_finance:
+      +schema: ellipsis_finance
+      bnb:
+        +schema: ellipsis_finance_bnb
+
     seaport:
       +schema: seaport
       ethereum:
@@ -324,6 +329,11 @@ models:
       ethereum:
         +schema: safe_ethereum
 
+    nftrade:
+      +schema: nftrade
+      bnb:
+        +schema: nftrade_bnb
+
     jarvis_network:
       +schema: jarvis_network
       polygon:
@@ -336,12 +346,15 @@ models:
 
     tornado_cash:
       +schema: tornado_cash
+
     perpetual:
       +schema: perpetual
+
     perpetual_protocol:
       +schema: perpetual_protocol
       optimism:
         +schema: perpetual_protocol_optimism
+
     pika:
       +schema: pika
       optimism:
@@ -392,6 +405,15 @@ models:
       +schema: airswap
       ethereum:
         +schema: airswap_ethereum
+
+    apeswap:
+      +schema: apeswap
+      ethereum:
+        +schema: apeswap_ethereum
+      bnb:
+        +schema: apeswap_bnb
+      polygon:
+        +schema: apeswap_polygon
 
     chainlink:
       +schema: chainlink
@@ -542,31 +564,29 @@ models:
         +schema: hop_protocol_optimism
       # ethereum:
       #   +schema: hop_protocol_ethereum
-      #
       # polygon:
       #   +schema: hop_protocol_polygon
-      #
       # polygon2:
       #   +schema: hop_polygon
-      #
       # arbitrum:
       #   +schema: hop_protocol_arbitrum
-      #
       # gnosis:
       #   +schema: hop_protocol_gnosis
-      #
       # gnosis2:
       #   +schema: hop_gnosis
-      #
-
-    # ovm_optimism:
-    #   optimism:
-    #     +schema: ovm_optimism
-    #
+    
     chain_info:
       +schema: chain_info
+    
     bridge:
       +schema: bridge
+      optimism:
+        +schema: bridge_optimism
+
+    the_granary:
+      +schema: the_granary
+      optimism:
+        +schema: the_granary_optimism
 
     tessera:
       +schema: tessera
@@ -577,6 +597,11 @@ models:
       +schema: tofu
       bnb:
         +schema: tofu_bnb
+
+    ovm:
+      +schema: ovm
+      optimism:
+        +schema: ovm_optimism
 
 seeds:
   spellbook:
@@ -653,6 +678,15 @@ seeds:
           token_bought_amount: float
           token_sold_address: string
           token_sold_amount: float
+      pools:
+        +column_types:
+          blockchain: string
+          project: string
+          version: string
+          pool: string
+          token_id: string
+          token_address: string
+          token_type: string
 
     sudoswap:
       sudoswap_ethereum_example_trades:
@@ -886,7 +920,6 @@ seeds:
             swap_flag: boolean
             matcha_limit_order_flag: boolean
             volume_usd: double
-
     gmx:
       avalanche_c:
         gmx_glp_aum_seed:
@@ -913,6 +946,17 @@ seeds:
             buyer: string
             tx_hash: string
             block_number: int
+            amount_original: double
+    nftrade:
+      bnb:
+        +enabled: true
+        +schema: test_data
+        nftrade_nft_trades_samples:
+            block_number: int
+            token_id: string
+            seller: string
+            buyer: string
+            tx_hash: string
             amount_original: double
 
     foundation:
