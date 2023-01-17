@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: balancer_v2_arbitrum
+    tables:
+      - name: InvestmentPoolFactory_call_create
+      # TODO Add and define source tables here
+      #  columns:
