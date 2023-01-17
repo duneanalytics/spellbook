@@ -1,5 +1,4 @@
 {{ config(
-    schema = 'arbswap_arbitrum',
     alias = 'trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -71,7 +70,7 @@ SELECT
     ,dexs.trace_address
     ,dexs.evt_index
 FROM dexs
-INNER JOIN {{ source('ethereum', 'transactions') }} tx
+INNER JOIN {{ source('arbitrum', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
     {% if not is_incremental() %}
     AND tx.block_time >= '{{project_start_date}}'
@@ -98,7 +97,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
     AND p_sold.contract_address = dexs.token_sold_address
-    AND p_sold.blockchain = 'ethereum'
+    AND p_sold.blockchain = 'arbitrum'
     {% if not is_incremental() %}
     AND p_sold.minute >= '{{project_start_date}}'
     {% endif %}
