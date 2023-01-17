@@ -619,6 +619,7 @@ VALUES
     ("rgt-rari-governance-token", "ethereum", "RGT", "0xd291e7a03283640fdc51b121ac401383a46cc623", 18),
     ("rlc-iexec-rlc", "ethereum", "RLC", "0x607f4c5bb672230e8672085532f7e901544a7375", 9),
     ("rndr-render-token", "ethereum", "RNDR", "0x6de037ef9ad2725eb40118bb1702ebb27e4aeb24", 18),
+    ("reth-rocket-pool-eth","ethereum","rETH", "0xae78736cd615f374d3085123a210448e74fc6393",18),
     ("rook-keeperdao", "ethereum", "ROOK", "0xfa5047c9c78b8877af97bdcb85db743fd7313d4a", 18),
     ("rpl-rocket-pool", "ethereum", "RPL", "0xb4efd85c19999d84251304bda99e90b92300bd93", 18),
     ("sai-single-collateral-dai", "ethereum", "SAI", "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359", 18),
