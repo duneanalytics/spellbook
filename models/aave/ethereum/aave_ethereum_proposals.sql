@@ -19,8 +19,8 @@
 {% set dao_address = '0xec568fffba86c094cf06b22134b23074dfe2252c' %}
 
 with cte_latest_block as (
-SELECT MAX(`number`) AS latest_block
-FROM {{ source('ethereum','blocks') }}
+SELECT MAX(b.number) AS latest_block
+FROM {{ source('ethereum','blocks') }} b
 ),
 
 cte_support as (SELECT 
