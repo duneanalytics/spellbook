@@ -8,7 +8,7 @@
         unique_key = ['pool_id', 'token_address'],
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "project",
-                                    "balancer",
+                                    "balancer_v2",
                                     \'["metacrypto", "jacektrocinski"]\') }}'
     )
 }}
