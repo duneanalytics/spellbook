@@ -26,7 +26,7 @@ dexs as (
             _amountOut as token_bought_amount_raw, 
             CAST(NULL as double) as amount_usd, 
             _tokenIn as token_sold_address, 
-            -tokenOut as token_bought_address, 
+            _tokenOut as token_bought_address, 
             contract_address as project_contract_address, 
             evt_tx_hash as tx_hash, 
             '' as trace_address, 
