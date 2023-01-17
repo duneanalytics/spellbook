@@ -1753,6 +1753,7 @@ VALUES
     ("mimatic-mimatic", "polygon", "MIMATIC", "0xa3fa99a148fa48d14ed51d610c367c61876997f1", 18),
     ("kom-kommunitas", "polygon", "KOM", "0xc004e2318722ea2b15499d6375905d75ee5390b8", 8),
     ("bob-bob", "polygon", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
+    ("ric-ricochet","polygon","RIC","0x263026e7e53dbfdce5ae55ade22493f828922965",18),
 
     ("aury-aurory", "solana", "AURY", "AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP", 9),
     ("btc-bitcoin", "solana", "BTC", "9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E", 6),
