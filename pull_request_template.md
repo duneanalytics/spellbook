@@ -5,14 +5,14 @@ Brief comments on the purpose of your changes:
 I've checked that:
 
 ### General checks:
-* [x] I tested the query on dune.com after compiling the model with dbt compile (compiled queries are written to the target directory)
-* [x] I used "refs" to reference other models in this repo and "sources" to reference raw or decoded tables 
-* [x] if adding a new model, I added a test
-* [x] the filename is unique and ends with .sql
-* [x] each sql file is a select statement and has only one view, table or function defined  
-* [x] column names are `lowercase_snake_cased`
-* [x] if adding a new model, I edited the dbt project YAML file with new directory path for both models and seeds (if applicable)
-* [x] if wanting to expose a model in the UI (Dune data explorer), I added a post-hook in the JINJA config to add metadata (blockchains, sector/project, name and contributor Dune usernames)
+* [ ] I tested the query on dune.com after compiling the model with dbt compile (compiled queries are written to the target directory)
+* [ ] I used "refs" to reference other models in this repo and "sources" to reference raw or decoded tables 
+* [ ] if adding a new model, I added a test
+* [ ] the filename is unique and ends with .sql
+* [ ] each sql file is a select statement and has only one view, table or function defined  
+* [ ] column names are `lowercase_snake_cased`
+* [ ] if adding a new model, I edited the dbt project YAML file with new directory path for both models and seeds (if applicable)
+* [ ] if wanting to expose a model in the UI (Dune data explorer), I added a post-hook in the JINJA config to add metadata (blockchains, sector/project, name and contributor Dune usernames)
 
 ### Pricing checks:
 * [ ] `coin_id` represents the ID of the coin on coinpaprika.com
