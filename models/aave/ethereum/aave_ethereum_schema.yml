@@ -308,7 +308,7 @@ models:
         description: "Participation in percent: Number of governance tokens used to vote / Total token supply"
       - &status
         name: status
-        description: "Proposal status: Queued, Active, Executed, Canceled or Defeated"
+        description: "Proposal status: Pending, Queued, Active, Executed, Canceled or Defeated"
         tests:
           - accepted_values:
               values: ['Pending', 'Queued', 'Active', 'Executed', 'Canceled','Defeated']
