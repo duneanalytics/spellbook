@@ -9,9 +9,9 @@
 }}
 
 select
-  lower(contract_address) as contract_address
-  ,project_name
-  ,project_type
+  trim(lower(contract_address)) as contract_address
+  ,trim(project_name) as project_name
+  ,trim(project_type) as project_type
 from
 (
   values
@@ -10306,7 +10306,7 @@ from
   ('0xb9cf74a418936c1ca80db21fa6f7beddeed148f4', 'ATTA Movie', 'NFT'),
   ('0xa5286319abbc22ceb755afbd81df55c1328dadd1', 'Num Finance', 'Defi'),
   ('0x8d38b81078ec36a200788f209c83bad5cd7e3d9a', 'Knata nft sport club', 'NFT'),
-  ('0xa12f829a5fefcba0390dc71c28c6824401680aa0', 'Feng Timo's dog (HANHAN)', 'NFT'),
+  ('0xa12f829a5fefcba0390dc71c28c6824401680aa0', 'Feng Timo''s dog (HANHAN)', 'NFT'),
   ('0x23b8683ff98f9e4781552dfe6f12aa32814924e8', 'Jarvis Network', 'INFRA'),
   ('0x7c869b5a294b1314e985283d01c702b62224a05f ', 'Jarvis Network', 'INFRA'),
   ('0x316622977073bbc3df32e7d2a9b3c77596a0a603 ', 'Jarvis Network', 'INFRA'),
