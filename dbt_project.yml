@@ -910,10 +910,8 @@ seeds:
               project_name: string
       optimism:
         fills:
-          +enabled: true
-          +schema: test_data
           zeroex_api_optimism_fills_sample:
-						+column_types:
+            +column_types:
 							tx_hash: string
 							evt_index: int
 							contract_address: string
