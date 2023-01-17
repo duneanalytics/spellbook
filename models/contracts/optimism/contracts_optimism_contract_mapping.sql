@@ -222,7 +222,7 @@ with base_level as (
     ,false as is_self_destruct
     ,'ovm1 uniswap pools' as source
     ,NULL as creation_tx_hash
-  from {{ ref('uniswap_v3_optimism', 'ovm1_pool_mapping') }} as uni
+  from {{ ref('uniswap_optimism_ovm1_pool_mapping') }} as uni
   where 
     true
     {% if is_incremental() %} -- this filter will only be applied on an incremental run 
