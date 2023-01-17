@@ -7,10 +7,14 @@
 	)
 }}
 
+{% set perpetual_trade_models = [
+ ref('perpetual_protocol_v2_optimism_trades')
+] %}
+
 SELECT *
-FROM
-(
-	SELECT
+FROM (
+    {% for perpetual_model in perpetual_trade_models %}
+    SELECT
 		blockchain
 		,block_date
 		,block_time
@@ -30,5 +34,9 @@ FROM
 		,tx_from
 		,tx_to
 		,evt_index
-	FROM {{ ref('perpetual_protocol_v2_optimism_trades') }}
+    FROM {{ perpetual_model }}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
 )
