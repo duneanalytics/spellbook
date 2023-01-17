@@ -1,0 +1,11 @@
+version: 2
+
+sources: 
+  - name: yield_yak_avalanche_c
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for swaps on yield yak
+    tables:
+      - name: YakRouter_evt_YakSwap
+        loaded_at_field: evt_block_time

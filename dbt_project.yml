@@ -464,6 +464,11 @@ models:
       ethereum:
         +schema: dfx_ethereum
 
+    yield_yak:
+      +schema: yield_yak
+      avalanche_c:
+        +schema: yield_yak_avalanche_c
+
     shibaswap:
       +schema: shibaswap
       ethereum:
