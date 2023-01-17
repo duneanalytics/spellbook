@@ -8,8 +8,8 @@ WITH pools AS (
     SELECT pool_id, zip.tokens AS token_address,  zip.weights/pow(10, 18) AS normalized_weight, symbol, pool_type
     FROM (
         SELECT c.poolId AS pool_id, explode(arrays_zip(cc.tokens, cc.weights)) AS zip, cc.symbol, 'WP' AS pool_type
-        FROM balancer_v2_polygon.Vault_evt_PoolRegistered c
-        INNER JOIN balancer_v2_polygon.WeightedPoolFactory_call_create cc
+        FROM {{ source('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }} c
+        INNER JOIN {{ source('balancer_v2_polygon', 'WeightedPoolFactory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
     )
 
@@ -18,18 +18,18 @@ WITH pools AS (
     SELECT pool_id, zip.tokens AS token_address,  zip.normalizedWeights/pow(10, 18) AS normalized_weight, symbol, pool_type
     FROM (
         SELECT c.poolId AS pool_id, explode(arrays_zip(cc.tokens, cc.normalizedWeights)) AS zip, cc.symbol, 'WP' AS pool_type
-        FROM balancer_v2_polygon.Vault_evt_PoolRegistered c
-        INNER JOIN balancer_v2_polygon.WeightedPoolV2Factory_call_create cc
+        FROM {{ source('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }} c
+        INNER JOIN {{ source('balancer_v2_polygon', 'WeightedPoolV2Factory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
     )
 
     UNION ALL
-    
+
     SELECT pool_id, zip.tokens AS token_address,  zip.weights/pow(10, 18) AS normalized_weight, symbol, pool_type
     FROM (
         SELECT c.poolId AS pool_id, explode(arrays_zip(cc.tokens, cc.weights)) AS zip, cc.symbol, 'WP2T' AS pool_type
-        FROM balancer_v2_polygon.Vault_evt_PoolRegistered c
-        INNER JOIN balancer_v2_polygon.WeightedPool2TokensFactory_call_create cc
+        FROM {{ source('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }} c
+        INNER JOIN {{ source('balancer_v2_polygon', 'WeightedPool2TokensFactory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
     )
 
@@ -38,59 +38,59 @@ WITH pools AS (
     SELECT pool_id, zip.tokens AS token_address,  zip.weights/pow(10, 18) AS normalized_weight, symbol, pool_type
     FROM (
         SELECT c.poolId AS pool_id, explode(arrays_zip(cc.tokens, cc.weights)) AS zip, cc.symbol, 'IP' AS pool_type
-        FROM balancer_v2_polygon.Vault_evt_PoolRegistered c
-        INNER JOIN balancer_v2_polygon.InvestmentPoolFactory_call_create cc
+        FROM {{ source('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }} c
+        INNER JOIN {{ source('balancer_v2_polygon', 'InvestmentPoolFactory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
     )
 
     UNION ALL
-    
+
     SELECT c.poolId AS pool_id, explode(cc.tokens) AS token_address, NULL AS normalized_weight, cc.symbol, 'SP' AS pool_type
-    FROM balancer_v2_polygon.Vault_evt_PoolRegistered c
-    INNER JOIN balancer_v2_polygon.StablePoolFactory_call_create cc
+    FROM {{ source('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }} c
+    INNER JOIN {{ source('balancer_v2_polygon', 'StablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
 
     UNION ALL
 
     SELECT c.poolId AS pool_id, explode(cc.tokens) AS token_address, NULL AS normalized_weight, cc.symbol, 'SP' AS pool_type
-    FROM balancer_v2_polygon.Vault_evt_PoolRegistered c
-    INNER JOIN balancer_v2_polygon.MetaStablePoolFactory_call_create cc
+    FROM {{ source('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }} c
+    INNER JOIN {{ source('balancer_v2_polygon', 'MetaStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
 
-    
-    UNION ALL
-
-    SELECT c.poolId AS pool_id, explode(cc.tokens) AS token_address, 0 AS normalized_weight, cc.symbol, 'LBP' AS pool_type
-    FROM balancer_v2_polygon.Vault_evt_PoolRegistered c
-    INNER JOIN balancer_v2_polygon.LiquidityBootstrappingPoolFactory_call_create cc
-    ON c.evt_tx_hash = cc.call_tx_hash
 
     UNION ALL
 
     SELECT c.poolId AS pool_id, explode(cc.tokens) AS token_address, 0 AS normalized_weight, cc.symbol, 'LBP' AS pool_type
-    FROM balancer_v2_polygon.Vault_evt_PoolRegistered c
-    INNER JOIN balancer_v2_polygon.NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create cc
-    ON c.evt_tx_hash = cc.call_tx_hash
-    
-    UNION ALL
-
-    SELECT c.poolId AS pool_id, explode(cc.tokens) AS token_address, NULL AS normalized_weight, cc.symbol, 'SP' AS pool_type
-    FROM balancer_v2_polygon.Vault_evt_PoolRegistered c
-    INNER JOIN balancer_v2_polygon.StablePhantomPoolFactory_call_create cc
+    FROM {{ source('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }} c
+    INNER JOIN {{ source('balancer_v2_polygon', 'LiquidityBootstrappingPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
 
     UNION ALL
 
+    SELECT c.poolId AS pool_id, explode(cc.tokens) AS token_address, 0 AS normalized_weight, cc.symbol, 'LBP' AS pool_type
+    FROM {{ source('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }} c
+    INNER JOIN {{ source('balancer_v2_polygon', 'NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create') }} cc
+    ON c.evt_tx_hash = cc.call_tx_hash
+
+    UNION ALL
+
     SELECT c.poolId AS pool_id, explode(cc.tokens) AS token_address, NULL AS normalized_weight, cc.symbol, 'SP' AS pool_type
-    FROM balancer_v2_polygon.Vault_evt_PoolRegistered c
-    INNER JOIN balancer_v2_polygon.ComposableStablePoolFactory_call_create cc
+    FROM {{ source('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }} c
+    INNER JOIN {{ source('balancer_v2_polygon', 'StablePhantomPoolFactory_call_create') }} cc
+    ON c.evt_tx_hash = cc.call_tx_hash
+
+    UNION ALL
+
+    SELECT c.poolId AS pool_id, explode(cc.tokens) AS token_address, NULL AS normalized_weight, cc.symbol, 'SP' AS pool_type
+    FROM {{ source('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }} c
+    INNER JOIN {{ source('balancer_v2_polygon', 'ComposableStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
 
     UNION ALL
 
     SELECT c.poolId AS pool_id, explode(array(cc.mainToken, cc.wrappedToken)) AS zip, NULL AS normalized_weight, cc.symbol, 'LP' AS pool_type
-    FROM balancer_v2_polygon.Vault_evt_PoolRegistered c
-    INNER JOIN balancer_v2_polygon.AaveLinearPoolFactory_call_create cc
+    FROM {{ source('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }} c
+    INNER JOIN {{ source('balancer_v2_polygon', 'AaveLinearPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
 ),
 
