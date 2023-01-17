@@ -1,6 +1,5 @@
 {{ config(
-    schema = 'sushiswap_arbitrum'
-    ,alias = 'trades'
+    alias = 'trades'
     ,partition_by = ['block_date']
     ,materialized = 'incremental'
     ,file_format = 'delta'
@@ -75,13 +74,13 @@ inner join {{ source('arbitrum', 'transactions') }} tx
     {% if is_incremental() %}
     and tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-left join {{ ref('tokens_erc20') }} erc20a 
-    on erc20a.contract_address = dexs.token_bought_address 
+left join {{ ref('tokens_erc20') }} erc20a
+    on erc20a.contract_address = dexs.token_bought_address
     and erc20a.blockchain = 'arbitrum'
-left join {{ ref('tokens_erc20') }} erc20b 
-    on erc20b.contract_address = dexs.token_sold_address 
+left join {{ ref('tokens_erc20') }} erc20b
+    on erc20b.contract_address = dexs.token_sold_address
     and erc20b.blockchain = 'arbitrum'
-left join {{ source('prices', 'usd') }} p_bought 
+left join {{ source('prices', 'usd') }} p_bought
     on p_bought.minute = date_trunc('minute', dexs.block_time)
     and p_bought.contract_address = dexs.token_bought_address
     and p_bought.blockchain = 'arbitrum'
@@ -91,7 +90,7 @@ left join {{ source('prices', 'usd') }} p_bought
     {% if is_incremental() %}
     and p_bought.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-left join {{ source('prices', 'usd') }} p_sold 
+left join {{ source('prices', 'usd') }} p_sold
     on p_sold.minute = date_trunc('minute', dexs.block_time)
     and p_sold.contract_address = dexs.token_sold_address
     and p_sold.blockchain = 'arbitrum'
