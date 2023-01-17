@@ -19,7 +19,7 @@ unit_test2 as (
     from {{ ref('compound_v2_ethereum_supply') }}
     where evt_tx_hash = '0x10f0743281e65468fb219df648ad333903e98067d53a695d7884deaddb5a01a2'
         and depositor = '0x56178a0d5f301baf6cf3e1cd53d9863437345bf9'
-        and token_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+        and token_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
 )
 
 select * from (

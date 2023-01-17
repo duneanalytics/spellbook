@@ -14,7 +14,7 @@ from (values
   	('COMP', '0x70e36f6bf80a52b3b46b3af8e106cc0ed743e8e4', '0xc00e94cb662c3520282e6f5717214004a7f26888', 1e18),
   	('DAI', '0x5d3a536e4d6dbd6114cc1ead35777bab948e3643', '0x6b175474e89094c44da98b954eedeac495271d0f', 1e18),
     -- cETH doesn't have underlying asset, but WETH is chosen because of prices.usd
-  	('ETH', '0x4ddc2d193948926d02f9b1fe9e1daa0718270ed5', '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', 1e18),
+  	('WETH', '0x4ddc2d193948926d02f9b1fe9e1daa0718270ed5', '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', 1e18),
   	('FEI', '0x7713dd9ca933848f6819f38b8352d9a15ea73f67', '0x956f47f50a910163d8bf957cf5846d573e7f87ca', 1e18),
   	('LINK', '0xface851a4921ce59e912d19329929ce6da6eb0c7', '0x514910771af9ca656af840dff83e8264ecf986ca', 1e18),
   	('MKR', '0x95b4ef2869ebd94beb4eee400a99824bf5dc325b', '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2', 1e18),
