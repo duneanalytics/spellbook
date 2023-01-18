@@ -47,5 +47,9 @@ models:
         description: "Category of depositor if identified"
       - name: tx_hash
         description: "Transaction hash of deposit"
-        tests:
-          - unique
+      - name: pubkey
+        description: "Public key"
+      - name: signature
+        description: "Signature"
+      - name: withdrawal_credentials
+        description: "Withdrawal credentials"

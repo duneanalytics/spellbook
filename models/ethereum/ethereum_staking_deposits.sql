@@ -3,7 +3,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['tx_hash'],
+    unique_key = ['tx_hash', 'from', 'pubkey'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "ethereum",
@@ -16,9 +16,15 @@ SELECT et.block_time
 , et.from AS depositor_address
 , ete.entity AS depositor_entity
 , ete.category AS depositor_entity_category
+, eth2.pubkey
+, eth2.signature
+, eth2.withdrawal_credentials
 , et.tx_hash
 FROM ethereum.traces et
 LEFT JOIN {{ ref('ethereum_staking_entities')}} ete ON et.from=ete.address
+LEFT JOIN {{ source ('eth2_ethereum', 'DepositContract_evt_DepositEvent')}} eth2 ON et.block_time=eth2.evt_block_time
+    AND et.tx_hash=eth2.evt_tx_hash
+    AND et.evt_index=eth2.evt_index
 WHERE et.to='0x00000000219ab540356cbb839cbe05303d7705fa'
 AND et.block_time >= '2020-10-14'
 AND et.value/POWER(10, 18) > 0
