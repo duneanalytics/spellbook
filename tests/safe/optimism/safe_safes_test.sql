@@ -1,7 +1,7 @@
 -- Check that safes count on a specific date is correct
 
 with test_data as (
-    select count(distinct contract_address) as total
+    select count(distinct address) as total
     from {{ ref('safe_optimism_safes') }}
     where creation_time < '2022-01-01'
 ),
