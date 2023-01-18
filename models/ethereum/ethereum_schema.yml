@@ -6,7 +6,7 @@ models:
       blockchain: ethereum
       sector: staking
       project: ethereum
-      contributors: [hildobby]
+      contributors: hildobby
     config:
       tags: ['ethereum', 'staking', 'deposits', 'entities']
     description: Ethereum staking identified depositor entities
@@ -28,7 +28,7 @@ models:
       blockchain: ethereum
       sector: staking
       project: ethereum
-      contributors: [hildobby]
+      contributors: hildobby
     config:
       tags: ['ethereum', 'staking', 'deposits']
     description: Ethereum staking deposits
