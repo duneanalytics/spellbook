@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: hashflow_bnb_trades
+  - name: gmx_arbitrum_trades
     meta:
-      blockchain: bnb
+      blockchain: arbitrum
       sector: dex
-      project: hashflow
+      project: gmx
       contributors: Henrystats
     config:
-      tags: ['bnb','hashflow','trades','dex','Henrystats']
+      tags: ['arbitrum','trades', 'gmx','dex']
     description: >
-        Hashflow contract trades on Binance Smart Chain
+        GMX trades on arbitrum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -22,16 +22,16 @@ models:
             - evt_index
             - trace_address
       - check_dex_seed:
-          blockchain: bnb
-          project: hashflow
+          blockchain: arbitrum
+          project: gmx
           version: 1
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project 
+      - &project
         name: project
-        description: "Project name of the DEX"  
+        description: "Project name of the DEX"
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
