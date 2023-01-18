@@ -50,6 +50,12 @@ with source_ethereum_transactions as (
     from {{ ref('nft_aggregators') }}
     where blockchain = 'ethereum'
 )
+
+,ref_nft_aggregators_marks as (
+    select *
+    from {{ ref('nft_ethereum_aggregators_markers') }}
+)
+
 ,source_prices_usd as (
     select *
     from {{ source('prices', 'usd') }}
@@ -57,7 +63,7 @@ with source_ethereum_transactions as (
     {% if not is_incremental() %}
       and minute >= date '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
-    {% if is_incremental() %} 
+    {% if is_incremental() %}
       and minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
@@ -95,7 +101,7 @@ with source_ethereum_transactions as (
         ,a.is_traded_nft
         ,a.is_moved_nft
   from ref_seaport_ethereum_base_pairs a
-  where 1=1 
+  where 1=1
     and not a.is_private
   union all
   select a.block_date
@@ -144,13 +150,13 @@ with source_ethereum_transactions as (
     and a.is_private
     and not a.is_moved_nft
     and a.consideration_cnt > 0
-) 
+)
 ,iv_volume as (
   select block_date
         ,block_time
         ,tx_hash
         ,evt_index
-        ,max(token_contract_address) as token_contract_address 
+        ,max(token_contract_address) as token_contract_address
         ,CAST(sum(case when is_price then original_amount end) AS DECIMAL(38,0)) as price_amount_raw
         ,sum(case when is_platform_fee then original_amount end) as platform_fee_amount_raw
         ,max(case when is_platform_fee then receiver end) as platform_fee_receiver
@@ -177,7 +183,7 @@ with source_ethereum_transactions as (
         ,a.block_number
         ,a.sender as seller
         ,a.receiver as buyer
-        ,case when nft_cnt > 1 then 'bundle trade' 
+        ,case when nft_cnt > 1 then 'bundle trade'
               else 'single item trade'
           end as trade_type
         ,a.order_type
@@ -187,11 +193,11 @@ with source_ethereum_transactions as (
         ,a.item_type as nft_token_standard
         ,a.zone
         ,a.platform_contract_address
-        ,b.token_contract_address 
-        ,CAST(round(price_amount_raw / nft_cnt) AS DECIMAL(38,0)) as price_amount_raw  -- to truncate the odd number of decimal places 
+        ,b.token_contract_address
+        ,CAST(round(price_amount_raw / nft_cnt) AS DECIMAL(38,0)) as price_amount_raw  -- to truncate the odd number of decimal places
         ,round(platform_fee_amount_raw / nft_cnt) as platform_fee_amount_raw
         ,platform_fee_receiver
-        ,round(creator_fee_amount_raw / nft_cnt) as creator_fee_amount_raw  
+        ,round(creator_fee_amount_raw / nft_cnt) as creator_fee_amount_raw
         ,creator_fee_amount_raw_1 / nft_cnt as creator_fee_amount_raw_1
         ,creator_fee_amount_raw_2 / nft_cnt as creator_fee_amount_raw_2
         ,creator_fee_amount_raw_3 / nft_cnt as creator_fee_amount_raw_3
@@ -232,15 +238,12 @@ with source_ethereum_transactions as (
           ,a.platform_fee_amount_raw / power(10, e.decimals) * p.price as platform_fee_amount_usd
           ,a.creator_fee_amount_raw / power(10, e.decimals) as creator_fee_amount
           ,a.creator_fee_amount_raw / power(10, e.decimals) * p.price as creator_fee_amount_usd
-          ,case when right(t.data,8) = '72db8c0b' then 'Gem'
-                when right(t.data,8) = '332d1229' THEN 'Blur'
-                else agg.name
-           end as aggregator_name
+          ,coalesce(agg.name,agg_m.aggregator_name) as aggregator_name
           ,agg.contract_address AS aggregator_address
           ,sub_idx
   from iv_nfts a
   inner join source_ethereum_transactions t on t.hash = a.tx_hash
-  left join ref_tokens_nft n on n.contract_address = nft_contract_address 
+  left join ref_tokens_nft n on n.contract_address = nft_contract_address
   left join ref_tokens_erc20 e on e.contract_address = case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_alternative_token_address}}'
                                                             else a.token_contract_address
                                                       end
@@ -248,13 +251,14 @@ with source_ethereum_transactions as (
                                                             else a.token_contract_address
                                                         end
     and p.minute = date_trunc('minute', a.block_time)
-  left join ref_nft_aggregators agg on agg.contract_address = t.to                                     
+  left join ref_nft_aggregators agg on agg.contract_address = t.to
+  left join ref_nft_aggregators_marks agg_m on right(t.data, agg_m.hash_marker_size) = agg_m.hash_marker
 )
 ,iv_columns as (
   -- Rename column to align other *.trades tables
   -- But the columns ordering is according to convenience.
-  -- initcap the code value if needed 
-  select 
+  -- initcap the code value if needed
+  select
     -- basic info
     'ethereum' as blockchain
     ,'seaport' as project
@@ -276,7 +280,7 @@ with source_ethereum_transactions as (
     ,nft_token_amount as number_of_items
     ,nft_token_standard as token_standard
 
-    -- price info          
+    -- price info
     ,price_amount as amount_original
     ,price_amount_raw as amount_raw
     ,price_amount_usd as amount_usd

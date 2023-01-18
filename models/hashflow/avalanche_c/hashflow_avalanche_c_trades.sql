@@ -13,8 +13,14 @@
 }}
 
 {% set project_start_date = '2022-04-11' %}
+{% set hashflow_avalanche_c_evt_trade_tables = [
+    source('hashflow_avalanche_c', 'Pool_evt_Trade')
+    , source('hashflow_avalanche_c', 'Pool_evt_LzTrade')
+    , source('hashflow_avalanche_c', 'Pool_evt_XChainTrade')
+] %}
 
 with dexs AS (
+    {% for evt_trade_table in hashflow_avalanche_c_evt_trade_tables %}
         SELECT
             evt_block_time          AS block_time,
             trader                  AS taker,
@@ -29,7 +35,7 @@ with dexs AS (
             ''                      AS trace_address,
             evt_index
         FROM
-            {{ source('hashflow_avalanche_c', 'Pool_evt_Trade') }}
+            {{ evt_trade_table }}
         {% if not is_incremental() %}
         WHERE evt_block_time >= '{{project_start_date}}'
         {% endif %}
@@ -37,29 +43,11 @@ with dexs AS (
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
+        {% if not loop.last %}
         UNION ALL
+        {% endif %}
 
-        SELECT
-            evt_block_time          AS block_time,
-            trader                  AS taker,
-            ''                      AS maker,
-            quoteTokenAmount        AS token_bought_amount_raw,
-            baseTokenAmount         AS token_sold_amount_raw,
-            cast (NULL AS double)   AS amount_usd,
-            quoteToken              AS token_bought_address,
-            baseToken               AS token_sold_address,
-            contract_address        AS project_contract_address,
-            evt_tx_hash             AS tx_hash,
-            ''                      AS trace_address,
-            evt_index
-        FROM
-            {{ source('hashflow_avalanche_c', 'Pool_evt_LzTrade') }}
-        {% if not is_incremental() %}
-        WHERE evt_block_time >= '{{project_start_date}}'
-        {% endif %}
-        {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
+    {% endfor %}
 )
 
 SELECT

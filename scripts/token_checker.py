@@ -18,7 +18,8 @@ class TokenChecker:
                             "avalanche_c": "avax-avalanche",
                             # "arbitrum": "",
                             "gnosis": "gno-gnosis",
-                            "optimism": "op-optimism"
+                            "optimism": "op-optimism",
+                            "fantom": "ftm-fantom"
                             }
         self.tokens_by_id = self.get_tokens()
         self.contracts_by_chain = self.get_contracts()
@@ -30,7 +31,7 @@ class TokenChecker:
             "id": values[0],
             "blockchain": values[1],
             "symbol": values[2],
-            "contract_address": values[3].lower()
+            "contract_address": values[3].lower() if values[3] is not None else values[3]
         }
 
     @staticmethod
@@ -65,7 +66,7 @@ class TokenChecker:
         api_token = self.tokens_by_id[token['id']]
         # Confirm Symbol
         if token['symbol']:
-            assert api_token['symbol'] == token['symbol'] \
+            assert api_token['symbol'].lower() == token['symbol'].lower() \
                 , f"ERROR: {token['id']} Provided symbol: {token['symbol']} does not match CoinPaprika source: {api_token['symbol']}"
         else:
             logging.warning(f"WARN: Line: {new_line} Symbol is None")
@@ -78,17 +79,20 @@ class TokenChecker:
 
         if token['blockchain']:
             assert token['blockchain'] in self.chain_slugs \
-                , f"WARN: chain: {token['blockchain']} not supported in the price checker, could not check contract or chain"
+                , f"ERROR: chain: {token['blockchain']} not supported in the price checker, could not check contract or chain"
 
             if token['contract_address']:
-                assert token['contract_address'] in self.contracts_by_chain[token['blockchain']] \
-                    , f"WARN: contract {token['contract_address']} for token {token['id']} not found in the contracts for chain: {token['blockchain']}" \
-                      f" (Not uncommon! share block explorer link to confirm contract)"
-                # Confirm Contract Listed
-                api_contract_id = self.contracts_by_chain[token['blockchain']][token['contract_address']]
-                assert token['id'] == api_contract_id['id'] \
-                    , f"WARN: {token['id']} for provided contract address: {token['contract_address']} for chain {token['blockchain']} does not match CoinPaprika id :{api_contract_id['id']}" \
-                      f" (Not uncommon! share block explorer link to confirm contract)"
+                if token['contract_address'] in self.contracts_by_chain[token['blockchain']]:
+                    # Confirm Contract Listed
+                    api_contract_id = self.contracts_by_chain[token['blockchain']][token['contract_address']]
+                    assert token['id'] == api_contract_id['id'] \
+                        , f"ERROR: ID: {token['id']} (contract address: {token['contract_address']},chain {token['blockchain']}) does not match CoinPaprika id :{api_contract_id['id']}" \
+                          f" (Not uncommon! share block explorer link to confirm contract)"
+                else:
+                    logging.warning(
+                        f"WARN: contract {token['contract_address']} for token {token['id']} not found in the "
+                        f"contracts for chain: {token['blockchain']}"
+                        f"(Not uncommon! share block explorer link to confirm contract)")
             else:
                 logging.warning(f"WARN: Line: {new_line} contract_address is None")
         else:
