@@ -67,6 +67,17 @@ FROM
     , ('0xefe9a82d56cd965d7b332c7ac1feb15c53cd4340', 'stakefish', 'stakefish 2', 'Staking Pools')
     , ('0xeee27662c2b8eba3cd936a23f039f3189633e4c8', 'Celsius', 'Celsius', 'Staking Pools')
     , ('0xe0c8df4270f4342132ec333f6048cb703e7a9c77', 'Swell', 'Swell', 'Liquid Staking')
+    , ('0x5180db0237291a6449dda9ed33ad90a38787621c', 'Frax Finance', 'Frax Finance Investor Custodian', 'Liquid Staking')
+    , ('0xaab27b150451726ec7738aa1d0a94505c8729bd1', 'Eden Network', 'Eden Network', 'Others')
+    , ('0x234ee9e35f8e9749a002fc42970d570db716453b', 'Gate.io', 'Gate.io', 'CEX')
+    , ('0x6c7c332a090c8d2085857cf3220ea01c6d45a723', 'Unagii', 'Unagii', 'Staking Pools')
+    , ('0x663d3947f03ef5b387992b880ac85940057c13e3', 'WeekInEth', 'WeekInEth', 'Others')
+    , ('0x3ccc0b321ec18997490c8bfc2c882ef83d546ddd', 'Cake DeFi', 'Cake DeFi', 'Staking Pools')
+    , ('0x31e180e06d771dbafa3d6eea452195ad1020fbdb', 'Ethereum Hive', 'Ethereum Hive', 'Staking Pools')
+    , ('0x6b523cd4fcdf3332bcb3177050e22cf7272b4c3a', 'Consensus Cell Network', 'Consensus Cell Network', 'Others')
+    , ('0xd3b16f647ad234f8b5bb2bdbe8e919daa5268681', 'FOAM Signal', 'FOAM Signal', 'Others')
+    , ('0x3187a42658417a4d60866163a4534ce00d40c0c8', 'ssv.network', 'ssv.network', 'Liquid Staking')
+    , ('0xea6b7151b138c274ed8d4d61328352545ef2d4b7', 'Harbour', 'Harbour', 'Liquid Staking')
     ) 
     x (address, entity, entity_unique_name, category)
 
@@ -89,9 +100,9 @@ FROM
         {% if is_incremental() %}
         AND et.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-        GROUP BY et.from
+        GROUP BY et.from, et.block_time
         ) coinbase
-    GROUP BY coinbase.address, coinbase.block_time
+    GROUP BY coinbase.address
 
     UNION ALL
 
@@ -127,15 +138,4 @@ FROM
     RIGHT JOIN ethereum.traces traces ON txs.hash=traces.tx_hash AND traces.to='0x00000000219ab540356cbb839cbe05303d7705fa'
     WHERE txs.to IN ('0xdcd51fc5cd918e0461b9b7fb75967fdfd10dae2f', '0x1cc9cf5586522c6f483e84a19c3c2b0b6d027bf0')
     GROUP BY traces.from, txs.block_time
-
-    UNION ALL
-
-    SELECT txs.from AS address
-    , 'Swell' AS name
-    , 'Swell ' || ROW_NUMBER() OVER (ORDER BY MAX(txs.block_time)) AS entity_unique_name
-    , 'Liquid Staking' AS category
-    FROM ethereum.transactions txs
-    RIGHT JOIN ethereum.traces traces ON txs.hash=traces.tx_hash AND traces.to='0x00000000219ab540356cbb839cbe05303d7705fa'
-    WHERE txs.to='0xe0c8df4270f4342132ec333f6048cb703e7a9c77'
-    GROUP BY txs.from, txs.block_time
     ;
