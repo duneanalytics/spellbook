@@ -560,6 +560,10 @@ models:
         +schema: zeroex_polygon
         erc20:
           +schema: zeroex_polygon_erc20
+      avalanche_c:
+        +schema: zeroex_avalanche_c
+        erc20:
+          +schema: zeroex_avalanche_c_erc20
 
     wombat:
       +schema: wombat
