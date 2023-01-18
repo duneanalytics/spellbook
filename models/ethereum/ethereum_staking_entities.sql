@@ -63,13 +63,15 @@ FROM
     , ('0xe733455faddf4999176e99a0ec084e978f5552ed', 'Bitfinex', 'Bitfinex 2', 'CEX')
     , ('0x4c2f150fc90fed3d8281114c2349f1906cde5346', 'Gemini', 'Gemini', 'CEX')
     , ('0xbb84d966c09264ce9a2104a4a20bb378369986db', 'WEX Exchange', 'WEX Exchange', 'CEX')
-    , ('0xe0c8df4270f4342132ec333f6048cb703e7a9c77', 'Swell', 'Swell', 'Liquid Staking')
     , ('0xbafa44efe7901e04e39dad13167d089c559c1138', 'Frax Finance', 'Frax Finance', 'Liquid Staking')
     , ('0xefe9a82d56cd965d7b332c7ac1feb15c53cd4340', 'stakefish', 'stakefish 2', 'Staking Pools')
     , ('0xeee27662c2b8eba3cd936a23f039f3189633e4c8', 'Celsius', 'Celsius', 'Staking Pools')
+    , ('0xe0c8df4270f4342132ec333f6048cb703e7a9c77', 'Swell', 'Swell', 'Liquid Staking')
     ) 
     x (address, entity, entity_unique_name, category)
+
     UNION ALL
+
     SELECT coinbase.address
     , 'Coinbase' AS name
     , 'Coinbase ' || ROW_NUMBER() OVER (ORDER BY MAX(coinbase.block_time)) AS entity_unique_name
@@ -90,7 +92,9 @@ FROM
         GROUP BY et.from
         ) coinbase
     GROUP BY coinbase.address, coinbase.block_time
+
     UNION ALL
+
     SELECT binance.address
     , 'Binance' AS name
     , 'Binance ' || ROW_NUMBER() OVER (ORDER BY MAX(t.block_time)) AS entity_unique_name
@@ -112,7 +116,9 @@ FROM
     ) binance
     LEFT JOIN {{ source('ethereum', 'traces') }} t ON binance.address=t.from AND t.to='0x00000000219ab540356cbb839cbe05303d7705fa'
     GROUP BY binance.address, t.block_time
+
     UNION ALL
+
     SELECT traces.from AS address
     , 'RocketPool (Minipool)' AS name
     , 'RocketPool (Minipool) ' || ROW_NUMBER() OVER (ORDER BY MAX(txs.block_time)) AS entity_unique_name
@@ -120,4 +126,16 @@ FROM
     FROM ethereum.transactions txs
     RIGHT JOIN ethereum.traces traces ON txs.hash=traces.tx_hash AND traces.to='0x00000000219ab540356cbb839cbe05303d7705fa'
     WHERE txs.to IN ('0xdcd51fc5cd918e0461b9b7fb75967fdfd10dae2f', '0x1cc9cf5586522c6f483e84a19c3c2b0b6d027bf0')
+    GROUP BY traces.from, txs.block_time
+
+    UNION ALL
+
+    SELECT txs.from AS address
+    , 'Swell' AS name
+    , 'Swell ' || ROW_NUMBER() OVER (ORDER BY MAX(txs.block_time)) AS entity_unique_name
+    , 'Liquid Staking' AS category
+    FROM ethereum.transactions txs
+    RIGHT JOIN ethereum.traces traces ON txs.hash=traces.tx_hash AND traces.to='0x00000000219ab540356cbb839cbe05303d7705fa'
+    WHERE txs.to='0xe0c8df4270f4342132ec333f6048cb703e7a9c77'
+    GROUP BY txs.from, txs.block_time
     ;
