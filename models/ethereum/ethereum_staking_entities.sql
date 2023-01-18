@@ -89,7 +89,7 @@ FROM
         {% endif %}
         GROUP BY et.from
         ) coinbase
-    GROUP BY coinbase.address
+    GROUP BY coinbase.address, coinbase.block_time
     UNION ALL
     SELECT binance.address
     , 'Binance' AS name
@@ -111,7 +111,7 @@ FROM
         GROUP BY to
     ) binance
     LEFT JOIN {{ source('ethereum', 'traces') }} t ON binance.address=t.from AND t.to='0x00000000219ab540356cbb839cbe05303d7705fa'
-    GROUP BY binance.address
+    GROUP BY binance.address, t.block_time
     UNION ALL
     SELECT traces.from AS address
     , 'RocketPool (Minipool)' AS name
