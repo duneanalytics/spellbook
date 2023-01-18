@@ -5,7 +5,7 @@
                                     \'["hildobby"]\') }}')}}
 
 WITH identified_stakers AS (
-    SELECT 'ethereum' AS blockchain
+    SELECT array('ethereum') AS blockchain
     , address
     , entity AS name
     , 'eth_staker' AS category
@@ -17,7 +17,7 @@ WITH identified_stakers AS (
     )
 
 , unidentified_stakers AS (
-    SELECT 'ethereum' AS blockchain
+    SELECT array('ethereum') AS blockchain
     , from AS address
     , 'Unidentified ETH staker' AS name
     , 'eth_staker' AS category
