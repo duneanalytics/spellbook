@@ -1,17 +1,18 @@
 {{ config(
         alias='trades',
-        post_hook='{{ expose_spells(\'["ethereum", "avalanche_c"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "avalanche_c", "bnb"]\',
                         "project",
                         "hashflow",
-                        \'["justabi", "jeff-dude", "hosuke"]\') }}'
+                        \'["justabi", "jeff-dude", "hosuke", "Henrystats"]\') }}'
         )
 }}
 
 {% set hashflow_models = [
-'hashflow_avalanche_c_trades'
-,'hashflow_ethereum_trades'
+ref('hashflow_avalanche_c_trades')
+, ref('hashflow_ethereum_trades')
+, ref('hashflow_bnb_trades')
 ] %}
-
+ 
 SELECT *
 FROM (
     {% for dex_model in hashflow_models %}
@@ -39,7 +40,7 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ ref(dex_model) }}
+    FROM {{ dex_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
