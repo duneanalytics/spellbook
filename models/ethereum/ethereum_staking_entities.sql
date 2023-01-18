@@ -85,7 +85,7 @@ FROM
 
     SELECT coinbase.address
     , 'Coinbase' AS name
-    , 'Coinbase ' || ROW_NUMBER() OVER (ORDER BY MAX(coinbase.block_time)) AS entity_unique_name
+    , 'Coinbase ' || ROW_NUMBER() OVER (ORDER BY MIN(coinbase.block_time)) AS entity_unique_name
     , 'CEX' AS category
     FROM (
         SELECT et.from AS address
@@ -108,7 +108,7 @@ FROM
 
     SELECT binance.address
     , 'Binance' AS name
-    , 'Binance ' || ROW_NUMBER() OVER (ORDER BY MAX(t.block_time)) AS entity_unique_name
+    , 'Binance ' || ROW_NUMBER() OVER (ORDER BY MIN(t.block_time)) AS entity_unique_name
     , 'CEX' AS category
     FROM (
         SELECT '0xf17aced3c7a8daa29ebb90db8d1b6efd8c364a18' AS address
@@ -126,16 +126,19 @@ FROM
         GROUP BY to
     ) binance
     LEFT JOIN {{ source('ethereum', 'traces') }} t ON binance.address=t.from AND t.to='0x00000000219ab540356cbb839cbe05303d7705fa'
-    GROUP BY binance.address, t.block_time
+    GROUP BY binance.address
 
     UNION ALL
 
     SELECT traces.from AS address
     , 'RocketPool (Minipool)' AS name
-    , 'RocketPool (Minipool) ' || ROW_NUMBER() OVER (ORDER BY MAX(txs.block_time)) AS entity_unique_name
+    , 'RocketPool (Minipool) ' || ROW_NUMBER() OVER (ORDER BY MIN(txs.block_time)) AS entity_unique_name
     , 'Liquid Staking' AS category
-    FROM ethereum.transactions txs
-    RIGHT JOIN ethereum.traces traces ON txs.hash=traces.tx_hash AND traces.to='0x00000000219ab540356cbb839cbe05303d7705fa'
+    FROM {{ source('ethereum', 'transactions') }} txs
+    RIGHT JOIN {{ source('ethereum', 'traces') }} traces ON txs.hash=traces.tx_hash AND traces.to='0x00000000219ab540356cbb839cbe05303d7705fa'
     WHERE txs.to IN ('0xdcd51fc5cd918e0461b9b7fb75967fdfd10dae2f', '0x1cc9cf5586522c6f483e84a19c3c2b0b6d027bf0')
-    GROUP BY traces.from, txs.block_time
+    {% if is_incremental() %}
+    AND txs.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+    GROUP BY traces.from
     ;
