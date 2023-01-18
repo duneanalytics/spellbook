@@ -1,5 +1,5 @@
 {{  config(
-        alias='avalanche_fills',
+        alias='fills',
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
@@ -9,7 +9,7 @@
         post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                 "project",
                                 "zeroex",
-                                \'["rantumBits", "sui414", "bakabhai993"]\') }}'
+                                \'["rantumBits",  "bakabhai993", "sui414"]\') }}'
     )
 }}
 
