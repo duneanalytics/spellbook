@@ -68,7 +68,6 @@ FROM
     , ('0xbafa44efe7901e04e39dad13167d089c559c1138', 'Frax Finance', 'Liquid Staking')
     , ('0xefe9a82d56cd965d7b332c7ac1feb15c53cd4340', 'stakefish', 'Staking Pools')
     , ('0xeee27662c2b8eba3cd936a23f039f3189633e4c8', 'Celsius', 'Staking Pools')
-    , ('0xfa5f9eaa65ffb2a75de092eb7f3fc84fc86b5b18', 'Abyss Finance', 'Staking Pools')
     ) 
     x (address, entity, category)
     UNION ALL
