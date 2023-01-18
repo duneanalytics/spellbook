@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'events',
+    alias = 'staking_deposits',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
