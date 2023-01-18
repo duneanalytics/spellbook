@@ -17,7 +17,11 @@ models:
           - unique
       - name: entity
         description: "Identified entity name"
+      - name: entity_unique_name
+        description: "Unique name of identified entity"
       - name: category
+        tests:
+          - unique
         description: "Category of entity"
         tests:
           - accepted_values:
@@ -43,6 +47,8 @@ models:
         description: "Address of depositor"
       - name: depositor_entity
         description: "Name of depositor if identified"
+      - name: depositor_entity_unique_name
+        description: "Unique name of depositor if identified"
       - name: depositor_entity_category
         description: "Category of depositor if identified"
       - name: tx_hash

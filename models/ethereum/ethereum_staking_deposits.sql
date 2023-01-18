@@ -14,6 +14,7 @@ SELECT et.block_time
 , et.value/POWER(10, 18) AS amount_staked
 , et.from AS depositor_address
 , ete.entity AS depositor_entity
+, ete.entity_unique_name AS depositor_entity_unique_name
 , ete.category AS depositor_entity_category
 --, eth2.pubkey
 --, eth2.signature
