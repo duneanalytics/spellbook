@@ -1779,7 +1779,7 @@ VALUES
     ("drip-drip-network", "bnb", "DRIP", "0x20f663CEa80FaCE82ACDFA3aAE6862d246cE0333", 18),
     ("fur-furio", "bnb", "$FUR", "0x48378891d6E459ca9a56B88b406E8F4eAB2e39bF", 18),
     ("pstn-piston", "bnb", "PSTN", "0xBfACD29427fF376FF3BC22dfFB29866277cA5Fb4", 18),
-
+    ("ocean-ocean-protocol", "bnb", "OCEAN", "0x3516141b1ac8751c2042a8a1bc411ab8655464ac", 18),
     ("weth-weth", "fantom", "WETH", "0x74b23882a30290451A17c44f4F05243b6b58C76d", 18), 
     ("wbtc-wrapped-bitcoin", "fantom", "WBTC", "0x321162Cd933E2Be498Cd2267a90534A804051b11", 8),
     ("ftm-fantom", "fantom", "WFTM", "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83", 18),
@@ -1829,5 +1829,4 @@ VALUES
     ("oxd-0xdao", "fantom", "OXD", "0xc165d941481e68696f43EE6E99BFB2B23E0E3114", 18), 
     ("2shares-2share", "fantom", "2SHARES", "0xc54A1684fD1bef1f077a336E6be4Bd9a3096a6Ca", 18), 
     ("3share-3share", "fantom", "3SHARES", "0x6437ADAC543583C4b31Bf0323A0870430F5CC2e7", 18)
-    
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
