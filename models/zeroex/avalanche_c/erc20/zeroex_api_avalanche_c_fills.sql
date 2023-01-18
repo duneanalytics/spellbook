@@ -54,12 +54,13 @@ WITH zeroex_tx AS (
                 {% if not is_incremental() %}
                 AND tr.block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
-       -- GROUP BY tr.tx_hash, tr.block_number, tr.affiliate_address
+        GROUP BY tr.tx_hash, tr.block_number
 ),
 
 v4_rfq_fills_no_bridge AS (
     SELECT 
             fills.evt_tx_hash               AS tx_hash,
+            fills.block_number               AS block_number,
             fills.evt_index,
             fills.contract_address,
             fills.evt_block_time            AS block_time,
@@ -87,6 +88,7 @@ v4_rfq_fills_no_bridge AS (
 v4_limit_fills_no_bridge AS (
     SELECT 
             fills.evt_tx_hash AS tx_hash,
+            fills.block_number               AS block_number,
             fills.evt_index,
             fills.contract_address,
             fills.evt_block_time AS block_time,
@@ -114,6 +116,7 @@ v4_limit_fills_no_bridge AS (
 otc_fills AS (
     SELECT 
             fills.evt_tx_hash               AS tx_hash,
+            fills.block_number               AS block_number,
             fills.evt_index,
             fills.contract_address,
             fills.evt_block_time            AS block_time,
@@ -199,6 +202,7 @@ BridgeFill AS (
 NewBridgeFill AS (
     SELECT 
             logs.tx_hash as tx_hash,
+            fills.block_number               AS block_number,
             INDEX                                           AS evt_index,
             logs.contract_address,
             block_time                                      AS block_time,
@@ -230,6 +234,7 @@ NewBridgeFill AS (
 direct_PLP AS (
     SELECT 
             plp.evt_tx_hash as tx_hash,
+            fills.block_number               AS block_number,
             plp.evt_index               AS evt_index,
             plp.contract_address,
             plp.evt_block_time          AS block_time,
@@ -274,6 +279,7 @@ all_tx AS (
 
 SELECT 
         all_tx.tx_hash,
+        all_tx.block_number,
         all_tx.evt_index,
         all_tx.contract_address,
         all_tx.block_time,
