@@ -10,16 +10,13 @@ models:
       tags: ['ethereum', 'staking', 'deposits', 'entities']
     description: Ethereum staking identified depositor entities
     columns:
-      - address
-        name: address
+      - name: address
         description: "Address of indentified depositor entity"
         tests:
           - unique
-      - entity
-        name: entity
+      - name: entity
         description: "Identified entity name"
-      - category
-        name: category
+      - name: category
         description: "Category of entity"
           - accepted_values:
               values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Whales', 'Others']
@@ -33,26 +30,19 @@ models:
       tags: ['ethereum', 'staking', 'deposits']
     description: Ethereum staking deposits
     columns:
-      - block_time
-        name: block_time
+      - name: block_time
         description: "Block time of deposit transaction"
-      - block_number
-        name: block_number
+      - name: block_number
         description: "Block number of deposit transaction"
-      - amount_staked
-        name: amount_staked
+      - name: amount_staked
         description: "Amount of ETH staked in trasaction"
-      - depositor_address
-        name: depositor_address
+      - name: depositor_address
         description: "Address of depositor"
-      - depositor_entity
-        name: depositor_entity
+      - name: depositor_entity
         description: "Name of depositor if identified"
-      - depositor_entity_category
-        name: depositor_entity_category
+      - name: depositor_entity_category
         description: "Category of depositor if identified"
-      - tx_hash
-        name: tx_hash
+      - name: tx_hash
         description: "Transaction hash of deposit"
         tests:
           - unique
