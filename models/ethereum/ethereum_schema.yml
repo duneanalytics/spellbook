@@ -18,6 +18,7 @@ models:
         description: "Identified entity name"
       - name: category
         description: "Category of entity"
+        tests:
           - accepted_values:
               values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Whales', 'Others']
 
