@@ -133,7 +133,7 @@ source_inventory_enriched as (
         CAST(src.protocol_fees AS DOUBLE) as platform_fee_amount,
         CAST(src.protocol_fees * p.price AS DOUBLE) as platform_fee_amount_usd,
         CAST(src.platform_fee_percentage AS DOUBLE) as platform_fee_percentage,
-        src.royalty_fees_raw as royalty_fee_amount_raw,
+        CAST(src.royalty_fees_raw  AS DOUBLE) as royalty_fee_amount_raw,
         src.royalty_fees as royalty_fee_amount,
         src.royalty_fees * p.price as royalty_fee_amount_usd,
         CAST(src.royalty_fee_percentage AS DOUBLE) as royalty_fee_percentage,

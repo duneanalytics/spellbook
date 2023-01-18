@@ -14,7 +14,7 @@ ref('gmx_avalanche_c_perpetual_trades')
 
 SELECT *
 FROM (
-    {% for perpetual_model in gmx_models %}
+    {% for perpetual_model in gmx_perp_models %}
     SELECT
 		blockchain
 		,block_date

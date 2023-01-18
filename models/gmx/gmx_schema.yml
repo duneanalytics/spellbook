@@ -1,30 +1,16 @@
 version: 2
 
 models:
-  - name: hashflow_bnb_trades
+  - name: gmx_trades
     meta:
-      blockchain: bnb
+      blockchain: arbitrum, avalanche_c
       sector: dex
-      project: hashflow
+      project: gmx
       contributors: Henrystats
     config:
-      tags: ['bnb','hashflow','trades','dex','Henrystats']
+      tags: ['arbitrum', 'avalanche_c', 'gmx','trades', 'swaps', 'dex', 'henrystats','cross-chain']
     description: >
-        Hashflow contract trades on Binance Smart Chain
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
-      - check_dex_seed:
-          blockchain: bnb
-          project: hashflow
-          version: 1
+        GMX trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
       - &blockchain
         name: blockchain
@@ -34,7 +20,7 @@ models:
         description: "Project name of the DEX"  
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project"
+        description: "Version of the contract built and deployed by the DEX project"  
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
@@ -91,29 +77,21 @@ models:
         description: "Address which received the transaction"
       - &trace_address
         name: trace_address
-        description: ""
+        description: "address of the trace within the call graph forest"
       - &evt_index
         name: evt_index
-        description: ""
+        description: "the position of this event log within this transaction"
 
-  - name: gmx_arbitrum_perpetual_trades
+  - name: gmx_perpetual_trades
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c, arbitrum
       sector: perpetual
       project: gmx
       contributors: Henrystats
     config:
-      tags: ['arbitrum', 'gmx', 'perpetuals', 'perps']
+      tags: ['avalanche_c', 'arbitrum', 'gmx', 'perpetuals', 'perps']
     description: >
-      gmx perpetuals trades/swaps on arbitrum
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_time
-            - project
-            - version
-            - tx_hash
-            - evt_index
+      gmx perpetuals trades/swaps on avalanche_c & arbitrum
     columns:
       - *blockchain
       - *block_date
