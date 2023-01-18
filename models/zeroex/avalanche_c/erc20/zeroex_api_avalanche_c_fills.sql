@@ -19,10 +19,10 @@
 -- Test Query here: https://dune.com/queries/1855493
 
 WITH zeroex_tx AS (
-        SELECT distinct 
+        SELECT 
             tr.tx_hash,
             tr.block_number,
-            '0x' || CASE
+            MAX('0x' || CASE
                                 WHEN POSITION('869584cd' IN INPUT) <> 0
                                 THEN SUBSTRING(INPUT
                                         FROM (position('869584cd' IN INPUT) + 32)
@@ -31,7 +31,7 @@ WITH zeroex_tx AS (
                                 THEN SUBSTRING(INPUT
                                         FROM (position('fbc019a7' IN INPUT) + 32)
                                         FOR 40)
-                            END AS affiliate_address
+                            END) AS affiliate_address
         FROM {{ source('avalanche_c', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
@@ -54,7 +54,7 @@ WITH zeroex_tx AS (
                 {% if not is_incremental() %}
                 AND tr.block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
-        GROUP BY tr.tx_hash, tr.block_number, tr.input
+        GROUP BY tr.tx_hash, tr.block_number
 ),
 
 v4_rfq_fills_no_bridge AS (
