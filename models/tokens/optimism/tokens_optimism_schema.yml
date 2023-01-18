@@ -19,6 +19,12 @@ models:
         description: "ERC20 token symbol"
       - name: decimals
         description: "Number of decimals, refers to how divisible an ERC20 token can be"
+      - name: token_type
+        description: "Is this token a receipt (vault, LP, etc) token, or a lowest-level underlying token (i.e. USDC, DAI, OP)?"
+      - name: token_mapping_source
+        description: "The source of ERC20 Token Information (i.e. manual, contract factory)"
+      - name: is_counted_in_tvl
+        description: "Is this a token whose value we should count in total value calculations? (i.e. we don't want to double count value)"
 
   - name: tokens_optimism_nft
     meta:

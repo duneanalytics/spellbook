@@ -1,5 +1,4 @@
 {{ config(
-    schema = 'optimism',
     alias = 'standard_bridge_flows',
     partition_by = ['block_date'],
     materialized = 'incremental',
