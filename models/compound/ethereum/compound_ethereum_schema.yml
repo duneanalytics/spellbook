@@ -137,7 +137,7 @@ models:
       - &symbol
         name: symbol
         description: "Symbol of the underlying asset"
-      - &token_address
+      - &token_address_lending
         name: token_address
         description: "Contract address of underlying asset"
       - &depositor
