@@ -67,3 +67,21 @@ sources:
             name: srcPool
           - *trader
           - *txid
+
+      - name: Pool_evt_XChainTrade
+        loaded_at_field: evt_block_time
+        description: "Pool XChain events table"
+        columns:
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *quoteToken
+          - *baseToken
+          - *baseTokenAmount
+          - *contract_address
+          - *dstChainId
+          - *dstPool
+          - *evt_block_number
+          - *quoteTokenAmount
+          - *trader
+          - *txid
