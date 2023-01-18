@@ -1,8 +1,15 @@
-{{config(alias='balancer_v2_pools_arbitrum',
-        post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                    "sector",
+{{config(
+    alias='balancer_v2_pools_arbitrum',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['pool_id', 'pool_symbol', 'pool_type'],
+    post_hook='{{ expose_spells(\'["arbitrum"]\',
+                                     "sector",
                                     "labels",
-                                    \'["balancerlabs"]\') }}')}}
+                                    \'["balancerlabs"]\') }}'
+    )
+}}
 
 WITH pools AS (
     SELECT pool_id,
@@ -18,6 +25,10 @@ WITH pools AS (
         FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
         INNER JOIN {{ source('balancer_v2_arbitrum', 'WeightedPoolFactory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
+        {% if is_incremental() %}
+        WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+          AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     )
 
     UNION ALL
@@ -28,6 +39,10 @@ WITH pools AS (
         FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
         INNER JOIN {{ source('balancer_v2_arbitrum', 'WeightedPoolV2Factory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
+        {% if is_incremental() %}
+        WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+          AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     )
 
     UNION ALL
@@ -38,6 +53,10 @@ WITH pools AS (
         FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
         INNER JOIN {{ source('balancer_v2_arbitrum', 'InvestmentPoolFactory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
+        {% if is_incremental() %}
+        WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+          AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     )
 
     UNION ALL
@@ -48,6 +67,10 @@ WITH pools AS (
         FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
         INNER JOIN {{ source('balancer_v2_arbitrum', 'WeightedPool2TokensFactory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
+        {% if is_incremental() %}
+        WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+          AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     )
 
     UNION ALL
@@ -55,6 +78,10 @@ WITH pools AS (
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'StablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    {% if is_incremental() %}
+    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+      AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION ALL
 
@@ -62,6 +89,10 @@ WITH pools AS (
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'MetaStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    {% if is_incremental() %}
+    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+      AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION ALL
 
@@ -69,6 +100,10 @@ WITH pools AS (
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'LiquidityBootstrappingPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    {% if is_incremental() %}
+    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+      AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION ALL
 
@@ -76,6 +111,10 @@ WITH pools AS (
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    {% if is_incremental() %}
+    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+      AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION ALL
 
@@ -83,6 +122,10 @@ WITH pools AS (
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'ComposableStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    {% if is_incremental() %}
+    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+      AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION ALL
 
@@ -90,6 +133,10 @@ WITH pools AS (
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'AaveLinearPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    {% if is_incremental() %}
+    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+      AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION ALL
 
@@ -97,6 +144,10 @@ WITH pools AS (
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'ERC4626LinearPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    {% if is_incremental() %}
+    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 ),
 
 settings AS (
@@ -121,8 +172,13 @@ SELECT
   timestamp('2022-12-23') AS created_at,
   now() AS updated_at
 FROM   (
-    SELECT s1.pool_id, token_symbol, pool_symbol, cast(100*normalized_weight AS integer) AS norm_weight, pool_type FROM settings s1
-    ORDER BY 1 ASC , 3 DESC, 2 ASC
+    SELECT s1.pool_id,
+           token_symbol,
+           pool_symbol,
+           cast(100 * normalized_weight AS integer) AS norm_weight,
+           pool_type
+    FROM settings s1
+    ORDER BY pool_id ASC , pool_symbol DESC, token_symbol ASC
 ) s
 GROUP BY pool_id, pool_symbol, pool_type
 ORDER BY 1
