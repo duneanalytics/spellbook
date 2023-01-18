@@ -77,6 +77,73 @@ models:
       - &median_price
         name: median_price
         description: 'BPT median price'
+  
+  - name: balancer_v2_arbitrum_transfers_bpt
+    meta:
+      blockchain: arbitrum
+      project: balancer_v2
+      contributors: victorstefenon
+    config:
+      tags: ['arbitrum', 'bpt', 'prices']
+    description: >
+      Balancer Pool Token (BPT) transfer logs on Balancer, an automated portfolio manager and trading platform, on Arbitrum.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_tx_hash
+            - evt_index
+            - block_date
+      - check_seed:
+          seed_file: ref('balancer_transfers_bpt_seed')
+          filter:
+            blockchain: arbitrum
+          match_columns:
+            - evt_tx_hash
+            - evt_index
+            - block_date
+          check_columns:
+            - contract_address
+            - evt_block_number
+            - from
+            - to
+    columns:
+      - *contract_address
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each DEX trade"
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: 'Transaction hash of transfer event'
+        tests:
+          - not_null
+      - &evt_index
+        name: evt_index
+        description: 'Transaction index of transfer event'
+        tests:
+          - not_null
+      - &evt_block_time
+        name: evt_block_time
+        description: 'Block time of transfer event'
+        tests:
+          - not_null
+      - &evt_block_number
+        name: evt_block_number
+        description: 'Block number of transfer event'
+        tests:
+          - not_null
+      - &from
+        name: from
+        description: 'Address of BPT provider of transfer event'
+        tests:
+          - not_null
+      - &to
+        name: to
+        description: 'Address of BPT receiver of transfer event'
+        tests:
+          - not_null
+      - &value
+        name: value
+        description: 'Amount of BPT transferred in transfer event'
 
   - name: balancer_arbitrum_pools_tokens_weights
     meta:
