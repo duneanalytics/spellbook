@@ -20,8 +20,8 @@
 
 WITH zeroex_tx AS (
         SELECT
-            tr.tx_hash,
-            tr.block_number,
+            tr.tx_hash as tx_hash,
+            tr.block_number as block_number,
             '0x' || CASE
                         WHEN POSITION('869584cd' IN INPUT) <> 0
                         THEN SUBSTRING(INPUT
@@ -54,7 +54,7 @@ WITH zeroex_tx AS (
                 {% if not is_incremental() %}
                 AND tr.block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
-        --GROUP BY tr.tx_hash, tr.block_number, tr.affiliate_address
+        GROUP BY tr.tx_hash, tr.block_number, tr.affiliate_address
 ),
 
 v4_rfq_fills_no_bridge AS (
