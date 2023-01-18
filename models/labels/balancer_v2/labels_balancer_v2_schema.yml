@@ -64,6 +64,10 @@ models:
     config:
       tags: ['labels', 'arbitrum', 'balancer', 'pools']
     description: "Balancer V2 liquidity pools created on Arbitrum."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
     columns:
       - *blockchain 
       - *address

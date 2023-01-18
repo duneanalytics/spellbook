@@ -3,7 +3,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['pool_id', 'pool_symbol', 'pool_type'],
+    unique_key = ['address'],
     post_hook='{{ expose_spells(\'["arbitrum"]\',
                                      "sector",
                                     "labels",
@@ -163,8 +163,9 @@ settings AS (
 SELECT
   array('arbitrum') AS blockchain,
   SUBSTRING(pool_id, 0, 42) AS address,
-  CASE WHEN array_contains(array('SP', 'LP', 'LBP'), pool_type) THEN lower(pool_symbol)
-  ELSE lower(concat(array_join(array_sort(collect_list(token_symbol)), '/'), ' ', array_join(collect_list(cast(norm_weight AS string)), '/')))
+  CASE WHEN array_contains(array('SP', 'LP', 'LBP'), pool_type)
+      THEN lower(pool_symbol)
+    ELSE lower(concat(array_join(array_sort(collect_list(token_symbol)), '/'), ' ', array_join(collect_list(cast(norm_weight AS string)), '/')))
   END AS name,
   'balancer_v2_pool' AS category,
   'balancerlabs' AS contributor,
