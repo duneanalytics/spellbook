@@ -19,19 +19,19 @@
 -- Test Query here: https://dune.com/queries/1855493
 
 WITH zeroex_tx AS (
-        SELECT
+        SELECT distinct 
             tr.tx_hash,
             tr.block_number,
-            MAX('0x' || CASE
-                        WHEN POSITION('869584cd' IN INPUT) <> 0
-                        THEN SUBSTRING(INPUT
-                                FROM (position('869584cd' IN INPUT) + 32)
-                                FOR 40)
-                        WHEN POSITION('fbc019a7' IN INPUT) <> 0
-                        THEN SUBSTRING(INPUT
-                                FROM (position('fbc019a7' IN INPUT) + 32)
-                                FOR 40)
-            ) END AS affiliate_address
+            '0x' || CASE
+                                WHEN POSITION('869584cd' IN INPUT) <> 0
+                                THEN SUBSTRING(INPUT
+                                        FROM (position('869584cd' IN INPUT) + 32)
+                                        FOR 40)
+                                WHEN POSITION('fbc019a7' IN INPUT) <> 0
+                                THEN SUBSTRING(INPUT
+                                        FROM (position('fbc019a7' IN INPUT) + 32)
+                                        FOR 40)
+                            END AS affiliate_address
         FROM {{ source('avalanche_c', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
