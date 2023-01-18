@@ -60,7 +60,7 @@ WITH zeroex_tx AS (
 v4_rfq_fills_no_bridge AS (
     SELECT 
             fills.evt_tx_hash               AS tx_hash,
-            fills.block_number               AS block_number,
+            fills.evt_block_number               AS block_number,
             fills.evt_index,
             fills.contract_address,
             fills.evt_block_time            AS block_time,
@@ -88,7 +88,7 @@ v4_rfq_fills_no_bridge AS (
 v4_limit_fills_no_bridge AS (
     SELECT 
             fills.evt_tx_hash AS tx_hash,
-            fills.block_number               AS block_number,
+            fills.evt_block_number               AS block_number,
             fills.evt_index,
             fills.contract_address,
             fills.evt_block_time AS block_time,
@@ -116,7 +116,7 @@ v4_limit_fills_no_bridge AS (
 otc_fills AS (
     SELECT 
             fills.evt_tx_hash               AS tx_hash,
-            fills.block_number               AS block_number,
+            fills.evt_block_number               AS block_number,
             fills.evt_index,
             fills.contract_address,
             fills.evt_block_time            AS block_time,
