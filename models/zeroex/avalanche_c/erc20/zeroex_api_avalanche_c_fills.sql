@@ -234,7 +234,7 @@ NewBridgeFill AS (
 direct_PLP AS (
     SELECT 
             plp.evt_tx_hash as tx_hash,
-            plp.block_number               AS block_number,
+            plp.evt_block_number               AS block_number,
             plp.evt_index               AS evt_index,
             plp.contract_address,
             plp.evt_block_time          AS block_time,
