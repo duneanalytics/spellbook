@@ -19,20 +19,19 @@
 -- Test Query here: https://dune.com/queries/1855493
 
 WITH zeroex_tx AS (
-    SELECT tx_hash,
-           max(affiliate_address) as affiliate_address
-    FROM (
-        SELECT tr.tx_hash,
-                    '0x' || CASE
-                                WHEN POSITION('869584cd' IN INPUT) <> 0
-                                THEN SUBSTRING(INPUT
-                                        FROM (position('869584cd' IN INPUT) + 32)
-                                        FOR 40)
-                                WHEN POSITION('fbc019a7' IN INPUT) <> 0
-                                THEN SUBSTRING(INPUT
-                                        FROM (position('fbc019a7' IN INPUT) + 32)
-                                        FOR 40)
-                            END AS affiliate_address
+        SELECT
+            tr.tx_hash,
+            tr.block_number,
+            MAX('0x' || CASE
+                        WHEN POSITION('869584cd' IN INPUT) <> 0
+                        THEN SUBSTRING(INPUT
+                                FROM (position('869584cd' IN INPUT) + 32)
+                                FOR 40)
+                        WHEN POSITION('fbc019a7' IN INPUT) <> 0
+                        THEN SUBSTRING(INPUT
+                                FROM (position('fbc019a7' IN INPUT) + 32)
+                                FOR 40)
+            ) END AS affiliate_address
         FROM {{ source('avalanche_c', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
@@ -50,14 +49,12 @@ WITH zeroex_tx AS (
                     )
                 
                 {% if is_incremental() %}
-                AND block_time >= date_trunc('day', now() - interval '1 week') 
+                AND tr.block_time >= date_trunc('day', now() - interval '1 week') 
                 {% endif %}
                 {% if not is_incremental() %}
-                AND block_time >= '{{zeroex_v3_start_date}}'
+                AND tr.block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
-    ) temp
-    group by tx_hash
-
+        GROUP BY tr.tx_hash, tr.block_number
 ),
 
 v4_rfq_fills_no_bridge AS (
@@ -77,13 +74,14 @@ v4_rfq_fills_no_bridge AS (
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
     FROM {{ source('zeroex_avalanche_c', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
-    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
-
+    INNER JOIN zeroex_tx 
+        ON zeroex_tx.tx_hash = fills.evt_tx_hash
+        AND zeroex_tx.block_number = fills.evt_block_number
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
+    WHERE fills.evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
+    WHERE fills.evt_block_time >= '{{zeroex_v4_start_date}}'
     {% endif %}
 ),
 v4_limit_fills_no_bridge AS (
@@ -103,13 +101,14 @@ v4_limit_fills_no_bridge AS (
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             (fills.feeRecipient = '0x86003b044f70dac0abc80ac8957305b6370893ed') AS matcha_limit_order_flag
     FROM {{ source('zeroex_avalanche_c', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
-    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
-
+    INNER JOIN zeroex_tx 
+        ON zeroex_tx.tx_hash = fills.evt_tx_hash
+        AND zeroex_tx.block_number = fills.evt_block_number
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
+    WHERE fills.evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
+    WHERE fills.evt_block_time >= '{{zeroex_v4_start_date}}'
     {% endif %}
 ),
 otc_fills AS (
@@ -129,13 +128,14 @@ otc_fills AS (
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
     FROM {{ source('zeroex_avalanche_c', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
-    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
-
+    INNER JOIN zeroex_tx
+        ON zeroex_tx.tx_hash = fills.evt_tx_hash
+        AND zeroex_tx.block_number = fills.evt_block_number
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
+    WHERE fills.evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
+    WHERE fills.evt_block_time >= '{{zeroex_v4_start_date}}'
     {% endif %}
 
 ),
@@ -213,15 +213,17 @@ NewBridgeFill AS (
             TRUE                                            AS swap_flag,
             FALSE                                           AS matcha_limit_order_flag
     FROM {{ source('avalanche_c' ,'logs') }} logs
-    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
+    INNER JOIN zeroex_tx
+        ON zeroex_tx.tx_hash = logs.tx_hash
+        AND zeroex_tx.block_number = logs.block_number
     WHERE topic1 = '0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8'
         AND contract_address = '0xdb6f1920a889355780af7570773609bd8cb1f498'
 
         {% if is_incremental() %}
-        AND block_time >= date_trunc('day', now() - interval '1 week')
+        AND logs.block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
         {% if not is_incremental() %}
-        AND block_time >= '{{zeroex_v4_start_date}}'
+        AND logs.block_time >= '{{zeroex_v4_start_date}}'
         {% endif %}
 ),
 
@@ -242,13 +244,14 @@ direct_PLP AS (
             TRUE                        AS swap_flag,
             FALSE                       AS matcha_limit_order_flag
     FROM {{ source('zeroex_avalanche_c', 'ExchangeProxy_evt_LiquidityProviderSwap') }} plp
-    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = plp.evt_tx_hash
-
+    INNER JOIN zeroex_tx
+        ON zeroex_tx.tx_hash = plp.evt_tx_hash
+        AND zeroex_tx.block_number = plp.evt_block_number
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
+    WHERE plp.evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{zeroex_v3_start_date}}'
+    WHERE plp.evt_block_time >= '{{zeroex_v3_start_date}}'
     {% endif %}
 ),
 
@@ -258,11 +261,14 @@ all_tx AS (
     UNION ALL 
     SELECT *
     FROM NewBridgeFill 
-    UNION ALL SELECT *
+    UNION ALL
+    SELECT *
     FROM v4_rfq_fills_no_bridge
-    UNION ALL SELECT *
+    UNION ALL
+    SELECT *
     FROM v4_limit_fills_no_bridge
-    UNION ALL SELECT *
+    UNION ALL
+    SELECT *
     FROM otc_fills 
 )
 
@@ -294,39 +300,40 @@ SELECT
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
              END AS volume_usd, tx.to, tx.from
 FROM all_tx
-INNER JOIN {{ source('avalanche_c', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
+INNER JOIN {{ source('avalanche_c', 'transactions')}} tx
+    ON all_tx.tx_hash = tx.hash
+    AND all_tx.block_number = tx.block_number
+    {% if is_incremental() %}
+    AND tx.block_time >= date_trunc('day', now() - interval '1 week')
+    {% endif %}
+    {% if not is_incremental() %}
+    AND tx.block_time >= '{{zeroex_v3_start_date}}'
+    {% endif %}
 
-{% if is_incremental() %}
-AND tx.block_time >= date_trunc('day', now() - interval '1 week')
-{% endif %}
-{% if not is_incremental() %}
-AND tx.block_time >= '{{zeroex_v3_start_date}}'
-{% endif %}
+LEFT JOIN {{ source('prices', 'usd') }} tp 
+    ON date_trunc('minute', all_tx.block_time) = tp.minute
+    AND CASE
+            WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            ELSE all_tx.taker_token
+        END = tp.contract_address
+    AND tp.blockchain = 'avalanche_c'
+    {% if is_incremental() %}
+    AND tp.minute >= date_trunc('day', now() - interval '1 week')
+    {% endif %}
+    {% if not is_incremental() %}
+    AND tp.minute >= '{{zeroex_v3_start_date}}'
+    {% endif %}
 
-LEFT JOIN {{ source('prices', 'usd') }} tp ON date_trunc('minute', all_tx.block_time) = tp.minute
-AND CASE
-        WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-        ELSE all_tx.taker_token
-    END = tp.contract_address
-AND tp.blockchain = 'avalanche_c'
-
-{% if is_incremental() %}
-AND tp.minute >= date_trunc('day', now() - interval '1 week')
-{% endif %}
-{% if not is_incremental() %}
-AND tp.minute >= '{{zeroex_v3_start_date}}'
-{% endif %}
-
-LEFT JOIN {{ source('prices', 'usd') }} mp ON DATE_TRUNC('minute', all_tx.block_time) = mp.minute
-AND CASE
-        WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-        ELSE all_tx.maker_token
-    END = mp.contract_address
-AND mp.blockchain = 'avalanche_c'
-
-{% if is_incremental() %}
-AND mp.minute >= date_trunc('day', now() - interval '1 week')
-{% endif %}
-{% if not is_incremental() %}
-AND mp.minute >= '{{zeroex_v3_start_date}}'
-{% endif %}
+LEFT JOIN {{ source('prices', 'usd') }} mp 
+    ON DATE_TRUNC('minute', all_tx.block_time) = mp.minute
+    AND CASE
+            WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            ELSE all_tx.maker_token
+        END = mp.contract_address
+    AND mp.blockchain = 'avalanche_c'
+    {% if is_incremental() %}
+    AND mp.minute >= date_trunc('day', now() - interval '1 week')
+    {% endif %}
+    {% if not is_incremental() %}
+    AND mp.minute >= '{{zeroex_v3_start_date}}'
+    {% endif %}
