@@ -20702,5 +20702,15 @@ FROM (VALUES
         ('0x93eeb426782bd88fcd4b48d7b0368cf061044928', 'TRG', 18),
         ('0xc97511a1ddb162c8742d39ff320cfdcd13fbcf7e', 'yvCurve-USDP', 18),
         ('0xcfcffe432a48db53f59c301422d2edd77b2a88d7', 'TEXAN', 18),
-        ('0xe27efbe0fbd6afe1a41aa8f5ef68cb8c75514fd2', 'SUPI', 9)
+        ('0xe27efbe0fbd6afe1a41aa8f5ef68cb8c75514fd2', 'SUPI', 9),
+        ('0x02814f435dd04e254be7ae69f61fca19881a780d', 'PINA', 18),
+        ('0x1635b506a88fbf428465ad65d00e8d6b6e5846c3', 'yvCurve-CVXETH', 18),
+        ('0x4560b99c904aad03027b5178cca81584744ac01f', 'yvCurve-cvxCRV', 18),
+        ('0x55b1e2d8b13e7acad03353fad58fc3fa065c5822', 'FRZ', 18),
+        ('0x6279b27e081dcc987a6a4eba5c18aec5a1b2b0c9', 'BONES', 18),
+        ('0x83ea98e238993ab966d7a687a0a850ddc853a8c2', 'TRY', 18),
+        ('0xd88dbba3f9c4391ee46f5ff548f289054db6e51c', 'yvCurve-DOLA', 18),
+        ('0xed7b82ff6161f703821eb4e210b13d3e54e93e3d', 'FAi', 18),
+        ('0xf32a10286cff395a6cbfa8cd7189c8b17663ae3c', 'POGE', 18),
+        ('0xfd0205066521550d7d7ab19da8f72bb004b4c341', 'LIT', 18)
      ) AS temp_table (contract_address, symbol, decimals)
