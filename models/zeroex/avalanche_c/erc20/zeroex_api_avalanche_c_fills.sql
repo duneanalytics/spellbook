@@ -20,9 +20,9 @@
 
 WITH zeroex_tx AS (
         SELECT
-            tr.tx_hash as tx_hash,
-            tr.block_number as block_number,
-            '0x' || CASE
+            tr.tx_hash,
+            tr.block_number,
+            MAX('0x' || CASE
                         WHEN POSITION('869584cd' IN INPUT) <> 0
                         THEN SUBSTRING(INPUT
                                 FROM (position('869584cd' IN INPUT) + 32)
@@ -31,7 +31,7 @@ WITH zeroex_tx AS (
                         THEN SUBSTRING(INPUT
                                 FROM (position('fbc019a7' IN INPUT) + 32)
                                 FOR 40)
-            END AS affiliate_address
+            ) END AS affiliate_address
         FROM {{ source('avalanche_c', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
@@ -54,13 +54,13 @@ WITH zeroex_tx AS (
                 {% if not is_incremental() %}
                 AND tr.block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
-      --  GROUP BY tr.tx_hash, tr.block_number
+        GROUP BY tr.tx_hash, tr.block_number, tr.input
 ),
 
 v4_rfq_fills_no_bridge AS (
     SELECT 
             fills.evt_tx_hash               AS tx_hash,
-            fills.evt_block_number               AS block_number,
+            fills.evt_block_number         AS block_number,
             fills.evt_index,
             fills.contract_address,
             fills.evt_block_time            AS block_time,
@@ -88,7 +88,7 @@ v4_rfq_fills_no_bridge AS (
 v4_limit_fills_no_bridge AS (
     SELECT 
             fills.evt_tx_hash AS tx_hash,
-            fills.evt_block_number               AS block_number,
+            fills.evt_block_number as block_number,
             fills.evt_index,
             fills.contract_address,
             fills.evt_block_time AS block_time,
@@ -116,7 +116,7 @@ v4_limit_fills_no_bridge AS (
 otc_fills AS (
     SELECT 
             fills.evt_tx_hash               AS tx_hash,
-            fills.evt_block_number               AS block_number,
+            fills.evt_block_number          AS block_number,
             fills.evt_index,
             fills.contract_address,
             fills.evt_block_time            AS block_time,
@@ -202,7 +202,7 @@ BridgeFill AS (
 NewBridgeFill AS (
     SELECT 
             logs.tx_hash as tx_hash,
-            logs.block_number               AS block_number,
+            logs.block_number as    block_number,
             INDEX                                           AS evt_index,
             logs.contract_address,
             block_time                                      AS block_time,
@@ -234,7 +234,7 @@ NewBridgeFill AS (
 direct_PLP AS (
     SELECT 
             plp.evt_tx_hash as tx_hash,
-            plp.evt_block_number               AS block_number,
+            plp.evt_block_number as block_number,
             plp.evt_index               AS evt_index,
             plp.contract_address,
             plp.evt_block_time          AS block_time,
