@@ -4,6 +4,7 @@ models:
   - name: ethereum_staking_entities
     meta:
       blockchain: ethereum
+      sector: staking
       project: ethereum
       contributors: [hildobby]
     config:
@@ -25,7 +26,8 @@ models:
   - name: ethereum_staking_deposits
     meta:
       blockchain: ethereum
-      project: blur
+      sector: staking
+      project: ethereum
       contributors: [hildobby]
     config:
       tags: ['ethereum', 'staking', 'deposits']
