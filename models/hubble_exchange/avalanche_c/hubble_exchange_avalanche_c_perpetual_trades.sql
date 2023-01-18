@@ -118,7 +118,7 @@ SELECT
 FROM 
 perp_events pe 
 INNER JOIN 
-{{ source('arbitrum', 'transactions') }} txns 
+{{ source('avalanche_c', 'transactions') }} txns 
     ON pe.tx_hash = txns.hash
     {% if not is_incremental() %}
     AND txns.block_time >= '{{project_start_date}}'
