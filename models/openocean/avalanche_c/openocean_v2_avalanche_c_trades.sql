@@ -26,14 +26,14 @@ dexs as (
         spentAmount as token_sold_amount_raw, 
         CAST(NULL as double) as amount_usd, 
         CASE 
-            WHEN dstToken = '0' 
+            WHEN CAST(dstToken as string) IN ('0', 'O', '0x0000000000000000000000000000000000000000')
             THEN '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7' -- wavax 
-            ELSE dstToken
+            ELSE CAST(dstToken as string)
         END as token_bought_address,  
         CASE 
-            WHEN srcToken = '0'
+            WHEN CAST(srcToken as string) IN ('0', 'O', '0x0000000000000000000000000000000000000000')
             THEN '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7' -- wavax 
-            ELSE srcToken 
+            ELSE CAST(srcToken as string)
         END as token_sold_address,
         contract_address as project_contract_address,
         evt_tx_hash as tx_hash, 
