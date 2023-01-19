@@ -1,7 +1,7 @@
 {{ config(
     alias ='product_information',
     materialized='view',
-    unique_key = ['product_contract_address', 'product_name', 'product_type', 'syndicate', 'date_added'],
+    unique_key = ['product_contract_address'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "nexusmutual",
@@ -9,7 +9,12 @@
     )
 }}
 
-SELECT lower(product_contract_address) as product_contract_address, product_name,  product_type, date_added, syndicate FROM (
+SELECT lower(product_contract_address) as product_contract_address,
+       product_name,
+       product_type,
+       date_added,
+       syndicate
+FROM (
 VALUES
     ('0xF5DCe57282A584D2746FaF1593d3121Fcac444dC', 'Compound Sai', 'protocol', '2020-01-01', 'v1'),
     ('0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633', 'bZx v1', 'protocol', '2020-01-01', 'v1'),
@@ -178,4 +183,4 @@ VALUES
     ('0x0000000000000000000000000000000000000030', 'Gearbox V2', 'protocol', '2022-10-31', 'v1'),
     ('0x0000000000000000000000000000000000000031', 'Aura', 'protocol', '2022-11-16', 'v1'),
     ('0x0000000000000000000000000000000000000032', 'Enzyme v4', 'protocol', '2022-11-16', 'v1')
-) temp (product_contract_address, product_name,  product_type, date_added, syndicate)
+) temp (product_contract_address, product_name, product_type, date_added, syndicate)

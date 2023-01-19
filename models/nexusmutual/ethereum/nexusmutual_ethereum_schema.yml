@@ -11,17 +11,14 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - date_added
             - product_contract_address
-            - product_name
-            - product_type
-            - syndicate
     columns:
       - &date_added
         name: date_added
       - &product_contract_address
         name: product_contract_address
         tests:
+          - unique
           - nexusmutual_product_information_column_values:
               nexusmutual_ethereum_product_information_seed: ref('nexusmutual_ethereum_product_information_seed')
       - &product_name
