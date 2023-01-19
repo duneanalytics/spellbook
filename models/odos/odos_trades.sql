@@ -8,7 +8,7 @@
 }}
 
 {% set odos_models = [
-'odos_avalanche_c_trades'
+ref('odos_avalanche_c_trades')
 ] %}
 
 
