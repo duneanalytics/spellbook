@@ -1,20 +1,20 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c"]\',
-                                "sector",
-                                "dex_aggregator",
-                                \'["bh2smith", "Henrystats"]\') }}'
+        post_hook='{{ expose_spells(\'["avalanche_c"]\',
+                                "project",
+                                "odos",
+                                \'["Henrystats]\') }}'
         )
 }}
 
-{% set dex_aggregators_models = [
- ref('cow_protocol_trades')
-,ref('odos_trades')
+{% set odos_models = [
+'odos_avalanche_c_trades'
 ] %}
+
 
 SELECT *
 FROM (
-    {% for aggregator_model in dex_aggregators_models %}
+    {% for dex_model in odos_models %}
     SELECT
         blockchain,
         project,
@@ -39,9 +39,10 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ aggregator_model }}
+    FROM {{ ref(dex_model) }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
 )
+;
