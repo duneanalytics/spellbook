@@ -391,6 +391,7 @@ FROM (
       ,('0xe0774a09b55febaf93049af328901f7a5b09827b', 'WooFi')
       ,('0x413a8ba5175efd5f770e372d0ae91cf04a9473e3', 'WooFi')
       ,('0xCb77b30841e1dEafFd88bA08B9654C667F80b80A', 'Quadrat')
+      ,('0x001530e763FE9De4DCfe31BBd8548BCb579Ebf3A', 'Defiedge')
 
   ) as temp_table (creator_address, contract_project)
 
