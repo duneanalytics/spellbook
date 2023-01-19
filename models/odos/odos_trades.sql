@@ -14,7 +14,7 @@
 
 SELECT *
 FROM (
-    {% for dex_model in odos_models %}
+    {% for aggregator_model in odos_models %}
     SELECT
         blockchain,
         project,
@@ -39,7 +39,7 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ ref(dex_model) }}
+    FROM {{ ref(aggregator_model) }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
