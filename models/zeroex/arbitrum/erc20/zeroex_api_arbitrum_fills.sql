@@ -19,11 +19,10 @@
 -- Test Query here: https://dune.com/queries/1855986
 
 WITH zeroex_tx AS (
-    SELECT tx_hash,
-           max(affiliate_address) as affiliate_address
-    FROM (
-        SELECT tr.tx_hash,
-                    '0x' || CASE
+     SELECT 
+            tr.tx_hash,
+            tr.block_number,
+            MAX('0x' || CASE
                                 WHEN POSITION('869584cd' IN INPUT) <> 0
                                 THEN SUBSTRING(INPUT
                                         FROM (position('869584cd' IN INPUT) + 32)
@@ -32,8 +31,8 @@ WITH zeroex_tx AS (
                                 THEN SUBSTRING(INPUT
                                         FROM (position('fbc019a7' IN INPUT) + 32)
                                         FOR 40)
-                            END AS affiliate_address
-        FROM {{ source('arbitrum', 'traces') }} tr
+                            END) AS affiliate_address
+        FROM {{ source('avalanche_c', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
                 '0x61935cbdd02287b511119ddb11aeb42f1593b7ef', 
@@ -55,14 +54,15 @@ WITH zeroex_tx AS (
                 {% if not is_incremental() %}
                 AND block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
-    ) temp
-    group by tx_hash
+    
+    group by tx_hash, tr.block_number
 
 ),
 
 v4_rfq_fills_no_bridge AS (
     SELECT 
             fills.evt_tx_hash               AS tx_hash,
+            fills.evt_block_number         AS block_number,
             fills.evt_index,
             fills.contract_address,
             fills.evt_block_time            AS block_time,
@@ -77,7 +77,9 @@ v4_rfq_fills_no_bridge AS (
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
     FROM {{ source('zeroex_arbitrum', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
-    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+        INNER JOIN zeroex_tx 
+        ON zeroex_tx.tx_hash = fills.evt_tx_hash
+        AND zeroex_tx.block_number = fills.evt_block_number
 
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
@@ -89,6 +91,7 @@ v4_rfq_fills_no_bridge AS (
 v4_limit_fills_no_bridge AS (
     SELECT 
             fills.evt_tx_hash AS tx_hash,
+            fills.evt_block_number as block_number,
             fills.evt_index,
             fills.contract_address,
             fills.evt_block_time AS block_time,
@@ -103,8 +106,9 @@ v4_limit_fills_no_bridge AS (
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             (fills.feeRecipient = '0x86003b044f70dac0abc80ac8957305b6370893ed') AS matcha_limit_order_flag
     FROM {{ source('zeroex_arbitrum', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
-    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
-
+    INNER JOIN zeroex_tx 
+        ON zeroex_tx.tx_hash = fills.evt_tx_hash
+        AND zeroex_tx.block_number = fills.evt_block_number
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
@@ -115,6 +119,7 @@ v4_limit_fills_no_bridge AS (
 otc_fills AS (
     SELECT 
             fills.evt_tx_hash               AS tx_hash,
+            fills.evt_block_number          AS block_number,
             fills.evt_index,
             fills.contract_address,
             fills.evt_block_time            AS block_time,
@@ -129,7 +134,9 @@ otc_fills AS (
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
     FROM {{ source('zeroex_arbitrum', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
-    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+    INNER JOIN zeroex_tx
+        ON zeroex_tx.tx_hash = fills.evt_tx_hash
+        AND zeroex_tx.block_number = fills.evt_block_number
 
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
@@ -200,6 +207,7 @@ NewBridgeFill AS (
     SELECT 
             logs.tx_hash as tx_hash,
             INDEX                                           AS evt_index,
+            logs.block_number as    block_number,
             logs.contract_address,
             block_time                                      AS block_time,
             '0x' || substring(DATA, 27, 40)                 AS maker,
@@ -213,7 +221,9 @@ NewBridgeFill AS (
             TRUE                                            AS swap_flag,
             FALSE                                           AS matcha_limit_order_flag
     FROM {{ source('arbitrum' ,'logs') }} logs
-    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
+    INNER JOIN zeroex_tx
+        ON zeroex_tx.tx_hash = logs.tx_hash
+        AND zeroex_tx.block_number = logs.block_number
     WHERE topic1 = '0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8'
         AND contract_address = '0xdb6f1920a889355780af7570773609bd8cb1f498'
 
@@ -228,6 +238,7 @@ NewBridgeFill AS (
 direct_PLP AS (
     SELECT 
             plp.evt_tx_hash as tx_hash,
+             plp.evt_block_number as block_number,
             plp.evt_index               AS evt_index,
             plp.contract_address,
             plp.evt_block_time          AS block_time,
@@ -242,7 +253,9 @@ direct_PLP AS (
             TRUE                        AS swap_flag,
             FALSE                       AS matcha_limit_order_flag
     FROM {{ source('zeroex_arbitrum', 'ExchangeProxy_evt_LiquidityProviderSwap') }} plp
-    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = plp.evt_tx_hash
+   INNER JOIN zeroex_tx
+        ON zeroex_tx.tx_hash = plp.evt_tx_hash
+        AND zeroex_tx.block_number = plp.evt_block_number
 
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
@@ -268,6 +281,7 @@ all_tx AS (
 
 SELECT 
         all_tx.tx_hash,
+        all_tx.block_number,
         all_tx.evt_index,
         all_tx.contract_address,
         all_tx.block_time,
@@ -294,14 +308,15 @@ SELECT
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
              END AS volume_usd, tx.to, tx.from 
 FROM all_tx
-INNER JOIN {{ source('arbitrum', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
-
-{% if is_incremental() %}
-AND tx.block_time >= date_trunc('day', now() - interval '1 week')
-{% endif %}
-{% if not is_incremental() %}
-AND tx.block_time >= '{{zeroex_v3_start_date}}'
-{% endif %}
+INNER JOIN {{ source('avalanche_c', 'transactions')}} tx
+    ON all_tx.tx_hash = tx.hash
+    AND all_tx.block_number = tx.block_number
+    {% if is_incremental() %}
+    AND tx.block_time >= date_trunc('day', now() - interval '1 week')
+    {% endif %}
+    {% if not is_incremental() %}
+    AND tx.block_time >= '{{zeroex_v3_start_date}}'
+    {% endif %}
 
 LEFT JOIN {{ source('prices', 'usd') }} tp ON date_trunc('minute', all_tx.block_time) = tp.minute
 AND CASE
