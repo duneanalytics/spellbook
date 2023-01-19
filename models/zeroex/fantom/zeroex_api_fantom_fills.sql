@@ -19,11 +19,10 @@
 -- Test Query here: https://dune.com/queries/1864334
 
 WITH zeroex_tx AS (
-    SELECT tx_hash,
-           max(affiliate_address) as affiliate_address
-    FROM (
-        SELECT tr.tx_hash,
-                    '0x' || CASE
+        SELECT 
+            tr.tx_hash,
+            tr.block_number,
+            MAX('0x' || CASE
                                 WHEN POSITION('869584cd' IN INPUT) <> 0
                                 THEN SUBSTRING(INPUT
                                         FROM (position('869584cd' IN INPUT) + 32)
@@ -32,7 +31,7 @@ WITH zeroex_tx AS (
                                 THEN SUBSTRING(INPUT
                                         FROM (position('fbc019a7' IN INPUT) + 32)
                                         FOR 40)
-                            END AS affiliate_address
+                            END) AS affiliate_address
         FROM {{ source('fantom', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
@@ -144,6 +143,7 @@ ERC20BridgeTransfer AS (
     SELECT 
             logs.tx_hash,
             INDEX                                   AS evt_index,
+            logs.block_number as    block_number,
             logs.contract_address,
             block_time                              AS block_time,
             '0x' || substring(DATA, 283, 40)        AS maker,
@@ -157,7 +157,9 @@ ERC20BridgeTransfer AS (
             TRUE                                    AS swap_flag,
             FALSE                                   AS matcha_limit_order_flag
     FROM {{ source('fantom', 'logs') }} logs
-    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
+    INNER JOIN zeroex_tx
+        ON zeroex_tx.tx_hash = logs.tx_hash
+        AND zeroex_tx.block_number = logs.block_number
     WHERE topic1 = '0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9'
     
     {% if is_incremental() %}
@@ -171,6 +173,7 @@ ERC20BridgeTransfer AS (
 BridgeFill AS (
     SELECT 
             logs.tx_hash,
+            logs.block_number as    block_number,
             INDEX                                           AS evt_index,
             logs.contract_address,
             block_time                                      AS block_time,
@@ -185,7 +188,9 @@ BridgeFill AS (
             TRUE                                            AS swap_flag,
             FALSE                                           AS matcha_limit_order_flag
     FROM {{ source('fantom', 'logs') }} logs
-    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
+    INNER JOIN zeroex_tx
+        ON zeroex_tx.tx_hash = logs.tx_hash
+        AND zeroex_tx.block_number = logs.block_number
     WHERE topic1 = '0xff3bc5e46464411f331d1b093e1587d2d1aa667f5618f98a95afc4132709d3a9'
         AND contract_address = '0xb4d961671cadfed687e040b076eee29840c142e5'
 
@@ -199,6 +204,7 @@ BridgeFill AS (
 NewBridgeFill AS (
     SELECT 
             logs.tx_hash as tx_hash,
+            logs.block_number as    block_number,
             INDEX                                           AS evt_index,
             logs.contract_address,
             block_time                                      AS block_time,
@@ -213,7 +219,9 @@ NewBridgeFill AS (
             TRUE                                            AS swap_flag,
             FALSE                                           AS matcha_limit_order_flag
     FROM {{ source('fantom' ,'logs') }} logs
-    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
+    INNER JOIN zeroex_tx
+        ON zeroex_tx.tx_hash = logs.tx_hash
+        AND zeroex_tx.block_number = logs.block_number
     WHERE topic1 = '0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8'
         AND contract_address = '0xb4d961671cadfed687e040b076eee29840c142e5'
 
@@ -267,6 +275,7 @@ all_tx AS (
 
 SELECT 
         all_tx.tx_hash,
+         all_tx.block_number,
         all_tx.evt_index,
         all_tx.contract_address,
         all_tx.block_time,
@@ -295,12 +304,14 @@ SELECT
 FROM all_tx
 INNER JOIN {{ source('fantom', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
 
-{% if is_incremental() %}
-AND tx.block_time >= date_trunc('day', now() - interval '1 week')
-{% endif %}
-{% if not is_incremental() %}
-AND tx.block_time >= '{{zeroex_v3_start_date}}'
-{% endif %}
+ON all_tx.tx_hash = tx.hash
+    AND all_tx.block_number = tx.block_number
+    {% if is_incremental() %}
+    AND tx.block_time >= date_trunc('day', now() - interval '1 week')
+    {% endif %}
+    {% if not is_incremental() %}
+    AND tx.block_time >= '{{zeroex_v3_start_date}}'
+    {% endif %}
 
 LEFT JOIN {{ source('prices', 'usd') }} tp ON date_trunc('minute', all_tx.block_time) = tp.minute
 AND CASE
