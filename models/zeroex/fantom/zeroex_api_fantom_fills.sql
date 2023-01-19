@@ -54,8 +54,8 @@ WITH zeroex_tx AS (
                 {% if not is_incremental() %}
                 AND block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
-    ) temp
-    group by tx_hash
+    
+    group by 1, 2
 
 ),
 /*
