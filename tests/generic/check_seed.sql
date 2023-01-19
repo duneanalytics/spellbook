@@ -12,6 +12,8 @@
         --jinja comment
     #}
     {{ config(severity = 'error') }}
+    {{ config(store_failures = true) }}
+    {{ config(alias = 'check_seed')}}
     {%- set seed_check_columns = check_columns -%}
     {%- set seed_matching_columns = match_columns -%}
     {%- set seed = seed_file -%}

@@ -46,8 +46,8 @@
     matching_count_test as (
         select
             'matched records count' as test_description,
-            count(model_{{seed_matching_columns[0]}}) as `result (model)`,
-            1 as `expected (seed)`,
+            count(model_{{seed_matching_columns[0]}}) as `result_model`,
+            1 as `expected_seed`,
             {%- for column_name in seed_matching_columns %}
             seed_{{column_name}} as {{column_name}}{% if not loop.last %},{% endif %}
             {% endfor -%}
@@ -66,8 +66,8 @@
             ,test.*
         from (
             select
-                model_{{checked_column}} as `result (model)`,
-                seed_{{checked_column}} as `expected (seed)`,
+                model_{{checked_column}} as `result_model`,
+                seed_{{checked_column}} as `expected_seed`,
                 {%- for column_name in seed_matching_columns %}
                 seed_{{column_name}} {% if not loop.last %},{% endif %}
                 {% endfor -%}
@@ -87,5 +87,5 @@
         select *
         from equality_tests
     ) all
-    where `result (model)` != `expected (seed)`
+    where `result_model` != `expected_seed`
 {% endmacro %}
