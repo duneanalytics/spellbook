@@ -19,6 +19,8 @@ models:
           check_columns:
             - token_id
             - amount_original
+      - dbt_utils.expression_is_true:
+          expression: "token_id not LIKE '%E%'" #fails whenever a scientific notation makes it into the table
     columns:
       - &blockchain
         name: blockchain
