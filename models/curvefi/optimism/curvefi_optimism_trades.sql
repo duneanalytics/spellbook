@@ -143,14 +143,16 @@ SELECT DISTINCT
         when lower(COALESCE(erc20a.symbol,p_bought.symbol)) > lower(COALESCE(erc20b.symbol,p_sold.symbol)) then concat(COALESCE(erc20b.symbol,p_sold.symbol), '-', COALESCE(erc20a.symbol,p_bought.symbol))
         else concat(COALESCE(erc20a.symbol,p_bought.symbol), '-', COALESCE(erc20b.symbol,p_sold.symbol))
     end as token_pair,
-    --metapools seem to always use the added coin's decimals if it's the one that's bought - even if the other token has less decimals (i.e. USDC)
-    dexs.token_bought_amount_raw / POWER(10 , (CASE WHEN pool_type = 'meta' AND bought_id = 0 THEN COALESCE(erc20b.decimals,p_sold.decimals) ELSE COALESCE(erc20a.decimals,p_bought.decimals) END) ) AS token_bought_amount,
+    --On Sell: Metapools seem to always use the added coin's decimals if it's the one that's bought - even if the other token has less decimals (i.e. USDC)
+    --On Buy: Metapools seem to always use the curve pool token's decimals (18) if bought_id = 0
+    dexs.token_bought_amount_raw / POWER(10 , (CASE WHEN pool_type = 'meta' AND bought_id = 0 THEN 18 ELSE COALESCE(erc20a.decimals,p_bought.decimals) END) ) AS token_bought_amount,
     dexs.token_sold_amount_raw / POWER(10 , (CASE WHEN pool_type = 'meta' AND bought_id = 0 THEN COALESCE(erc20a.decimals,p_bought.decimals) ELSE COALESCE(erc20b.decimals,p_sold.decimals) END) )  AS token_sold_amount,
     dexs.token_bought_amount_raw,
     dexs.token_sold_amount_raw,
     coalesce(
-	    --metapools seem to always use the added coin's decimals if it's the one that's bought - even if the other token has less decimals (i.e. USDC)
-        dexs.token_bought_amount_raw / POWER(10 , CASE WHEN pool_type = 'meta' AND bought_id = 0 THEN COALESCE(erc20b.decimals,p_sold.decimals) ELSE COALESCE(erc20a.decimals,p_bought.decimals) END) * p_bought.price,
+	    --On Sell: Metapools seem to always use the added coin's decimals if it's the one that's bought - even if the other token has less decimals (i.e. USDC)
+	    --On Buy: Metapools seem to always use the curve pool token's decimals (18) if bought_id = 0
+        dexs.token_bought_amount_raw / POWER(10 , CASE WHEN pool_type = 'meta' AND bought_id = 0 THEN 18 ELSE COALESCE(erc20a.decimals,p_bought.decimals) END) * p_bought.price,
         dexs.token_sold_amount_raw / POWER(10 , CASE WHEN pool_type = 'meta' AND bought_id = 0 THEN COALESCE(erc20a.decimals,p_bought.decimals) ELSE COALESCE(erc20b.decimals,p_sold.decimals) END) * p_sold.price
     ) as amount_usd,
     dexs.token_bought_address,

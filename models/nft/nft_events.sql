@@ -1,9 +1,9 @@
 {{ config(
     alias ='events',
-    post_hook='{{ expose_spells(\'["ethereum","solana"]\',
+    post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism"]\',
                     "sector",
                     "nft",
-                    \'["soispoke","umer_h_adil","0xRob"]\') }}')
+                    \'["soispoke","0xRob"]\') }}')
 }}
 
 {% set nft_models = [
@@ -19,6 +19,10 @@
 ,ref('superrare_ethereum_events')
 ,ref('x2y2_ethereum_events')
 ,ref('zora_ethereum_events')
+,ref('pancakeswap_bnb_nft_events')
+,ref('tofu_bnb_events')
+,ref('quix_optimism_events')
+,ref('nftrade_bnb_events')
 ] %}
 
 SELECT *

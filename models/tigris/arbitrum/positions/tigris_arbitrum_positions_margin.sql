@@ -40,6 +40,15 @@ margin as (
     FROM 
     {{ ref('tigris_arbitrum_positions_close') }}
 
+    UNION ALL 
+
+    SELECT 
+        evt_block_time,
+        position_id,
+        margin
+    FROM 
+    {{ ref('tigris_arbitrum_events_limit_order') }}
+
 )
 
 SELECT * FROM margin  
