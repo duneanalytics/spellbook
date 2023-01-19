@@ -61,8 +61,37 @@ repays as (
         on p.minute = date_trunc('minute', evt_repay.evt_block_time)
         and p.contract_address = ctokens.asset_address
         and p.blockchain = 'ethereum'
+),
+liquidations as (
+    select
+        '2' as version,
+        'borrow_liquidation' as transaction_type,
+        asset_symbol as symbol,
+        asset_address as token_address,
+        borrower,
+        liquidator as repayer,
+        liquidator,
+        -cast(repayAmount as decimal(38, 0)) / decimals_mantissa as amount,
+        -cast(repayAmount as decimal(38, 0)) / decimals_mantissa * price as usd_amount,
+        evt_tx_hash,
+        evt_index,
+        evt_block_time,
+        evt_block_number
+    from (
+        select * from {{ source('compound_v2_ethereum', 'cErc20_evt_LiquidateBorrow') }}
+        union all
+        select * from {{ source('compound_v2_ethereum', 'cEther_evt_LiquidateBorrow') }}
+    ) evt_liquidate
+    left join {{ ref('compound_v2_ethereum_ctokens') }} ctokens
+        on evt_liquidate.contract_address = ctokens.ctoken_address
+    left join {{ source('prices', 'usd') }} p
+        on p.minute = date_trunc('minute', evt_liquidate.evt_block_time)
+        and p.contract_address = ctokens.asset_address
+        and p.blockchain = 'ethereum'
 )
 
 select * from borrows
 union all
 select * from repays
+union all
+select * from liquidations

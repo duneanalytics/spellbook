@@ -211,3 +211,39 @@ sources:
           - *borrower
           - *repayAmount
           - *payer
+
+      - name: cErc20_evt_LiquidateBorrow
+        loaded_at_field: evt_block_time
+        description: "cErc20 liquidate borrow events"
+        columns:
+          - *evt_block_time
+          - *evt_block_number
+          - *evt_tx_hash
+          - *evt_index
+          - *ctoken_address
+          - *borrower
+          - *repayAmount
+          - &liquidator
+            name: liquidator
+            description: "Liquidator wallet address"
+          - &cTokenCollateral
+            name: cTokenCollateral
+            description: "cToken contract address of collateral"
+          - &seizeTokens
+            name: seizeTokens
+            description: "Amount of collateral ctoken to liquidate"
+
+      - name: cEther_evt_LiquidateBorrow
+        loaded_at_field: evt_block_time
+        description: "cEther liquidate borrow events"
+        columns:
+          - *evt_block_time
+          - *evt_block_number
+          - *evt_tx_hash
+          - *evt_index
+          - *ctoken_address
+          - *borrower
+          - *repayAmount
+          - *liquidator
+          - *cTokenCollateral
+          - *seizeTokens
