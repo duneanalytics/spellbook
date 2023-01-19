@@ -1,6 +1,8 @@
 {{ config(
     alias ='product_information',
-    materialized='view',
+    materialized='table',
+    file_format = 'delta',
+    tags=['static'],
     unique_key = ['product_contract_address'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
