@@ -145,7 +145,7 @@ models:
         description: "Depositor wallet address"
       - &withdrawn_to
         name: withdrawn_to
-        description: "The wallet address where the tokens are withdrawn"
+        description: "The wallet address where the tokens are withdrawn to"
       - &liquidator
         name: liquidator
         description: "Liquidator wallet address"
@@ -167,3 +167,31 @@ models:
       - &evt_block_number
         name: evt_block_number
         description: "Event block number"
+
+  - name: compound_v2_ethereum_borrow
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: compound_v2
+      contributors: bizzyvinci
+    config:
+      tags: ['ethereum', 'compound', 'compound_v2', 'borrow', 'lending']
+    description: "All compound v2 transactions involving borrow transactions on ethereum"
+    columns:
+      - *version
+      - *transaction_type
+      - *symbol
+      - *token_address_lending
+      - &borrower
+        name: borrower
+        description: "Borrower wallet address"
+      - &repayer
+        name: repayer
+        description: "Repayer wallet address"
+      - *liquidator
+      - *amount
+      - *usd_amount
+      - *evt_tx_hash
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
