@@ -41,6 +41,7 @@ src_evt_inventory as (
     ,maker
     ,get_json_object(inv.item, '$.data') as data
     ,substring(get_json_object(inv.item, '$.data'), 195,64) as token_id_bytes
+    ,bytea2numeric_v2(substring(get_json_object(inv.item, '$.data'), 195,64)) as token_id_try
     ,'0x' || substring(get_json_object(inv.item, '$.data'), 155, 40) as nft_contract_address
     ,get_json_object(inv.detail, '$.executionDelegate') as execution_delegate
     ,get_json_object(inv.item, '$.price') as price
@@ -106,7 +107,7 @@ SELECT 'ethereum' AS blockchain
 , prof.evt_block_time AS block_time
 , date_trunc('day', prof.evt_block_time) AS block_date
 , prof.evt_block_number AS block_number
-, CAST(COALESCE(bytea2numeric_v2(token_id_bytes)::BIGINT, bytea2numeric_v2(token_id_bytes)) AS VARCHAR(100)) AS token_id
+, CAST(COALESCE(bytea2numeric_v2(token_id_bytes)::DECIMAL(38), id_fix.token_id) AS VARCHAR(100)) AS token_id
 , nft_token.name AS collection
 , CAST(inv.price AS DECIMAL(38,0)) AS amount_raw
 , inv.price/POWER(10, currency_token.decimals) AS amount_original
@@ -117,12 +118,12 @@ SELECT 'ethereum' AS blockchain
 , 'Single Item Trade' AS trade_type
 , CAST(1 AS DECIMAL(38,0)) AS number_of_items
 , CASE WHEN (inv.fees_0 IS NULL OR inv.fees_0_to != '{{fee_management_addr}}') AND (prof.evt_block_time < '2022-04-01' OR prof.evt_block_time >= '2022-05-01') THEN 'Private Sale'
-    WHEN et.from=COALESCE(seller_fix.from, inv.maker) THEN 'Offer Accepted'
+    WHEN (et.from=inv.maker or et.from=id_fix.from)  THEN 'Offer Accepted'
     ELSE 'Buy'
     END AS trade_category
 , 'Trade' AS evt_type
-, COALESCE(buyer_fix.to, inv.taker) AS buyer
-, COALESCE(seller_fix.from, inv.maker) AS seller
+, case when inv.taker = agg.contract_address then coalesce(et.from, inv.taker) else inv.taker end AS buyer
+, case when inv.maker = agg.contract_address then coalesce(et.from, inv.maker) else inv.maker end as seller
 , CASE WHEN prof.is_native_eth THEN 'ETH'
     ELSE currency_token.symbol
     END AS currency_symbol
@@ -182,18 +183,11 @@ LEFT JOIN src_prices_usd pu
     ON pu.minute=date_trunc('minute', prof.evt_block_time)
     AND (pu.contract_address=prof.currency
         OR (prof.is_native_eth AND pu.contract_address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'))
-LEFT JOIN src_nft_transfers buyer_fix ON prof.evt_block_time=buyer_fix.block_time
-    AND prof.evt_tx_hash=buyer_fix.tx_hash
-    AND inv.nft_contract_address=buyer_fix.contract_address
-    AND buyer_fix.from=agg.contract_address
-    AND buyer_fix.from=inv.taker
-    AND SUBSTRING('0000000000000000000000000000000000000000000000000000000000000000', 1, 64-LEN(CONV(buyer_fix.token_id, 10, 16))) || CONV(buyer_fix.token_id, 10, 16)=inv.token_id_bytes
-LEFT JOIN src_nft_transfers seller_fix ON prof.evt_block_time=seller_fix.block_time
-    AND prof.evt_tx_hash=seller_fix.tx_hash
-    AND inv.nft_contract_address=seller_fix.contract_address
-    AND seller_fix.to=agg.contract_address
-    AND seller_fix.to=inv.maker
-    AND SUBSTRING('0000000000000000000000000000000000000000000000000000000000000000', 1, 64-LEN(CONV(seller_fix.token_id, 10, 16))) || CONV(seller_fix.token_id, 10, 16)=inv.token_id_bytes
+LEFT JOIN src_nft_transfers id_fix ON prof.evt_block_time=id_fix.block_time
+    AND prof.evt_tx_hash=id_fix.tx_hash
+    AND inv.nft_contract_address=id_fix.contract_address
+    AND ((id_fix.from=inv.maker AND id_fix.to=inv.taker) OR (id_fix.from=inv.taker AND id_fix.to=inv.maker))
+    AND (inv.token_id_try LIKE '%E%' AND id_fix.token_id LIKE replace(substring(inv.token_id_try,1,instr(inv.token_id_try,'E')-3),'.','') || '%')
 LEFT JOIN {{ ref('nft_ethereum_aggregators_markers') }} agg_m
         ON RIGHT(et.data, agg_m.hash_marker_size) = agg_m.hash_marker
 
