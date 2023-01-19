@@ -308,7 +308,7 @@ SELECT
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
              END AS volume_usd, tx.to, tx.from 
 FROM all_tx
-INNER JOIN {{ source('avalanche_c', 'transactions')}} tx
+INNER JOIN {{ source('arbitrum', 'transactions')}} tx
     ON all_tx.tx_hash = tx.hash
     AND all_tx.block_number = tx.block_number
     {% if is_incremental() %}
