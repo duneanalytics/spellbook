@@ -123,8 +123,6 @@ models:
         +schema: sushiswap_polygon
       bnb:
         +schema: sushiswap_bnb
-      optimism:
-        +schema: sushiswap_optimism
       gnosis:
         +schema: sushiswap_gnosis
       arbitrum:
