@@ -39,7 +39,7 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ ref(aggregator_model) }}
+    FROM {{ aggregator_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
