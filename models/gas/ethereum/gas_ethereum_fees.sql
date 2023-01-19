@@ -19,13 +19,13 @@ SELECT
      'ETH' as native_token_symbol,
      value/1e18 AS tx_amount_native,
      value/1e18 * p.price AS tx_amount_usd,
-     CASE WHEN type = 'Legacy' THEN (gas_price * txns.gas_used)/1e18
-          WHEN type = 'AccessList' THEN (gas_price * txns.gas_used)/1e18
-          WHEN type = 'DynamicFee' THEN ((base_fee_per_gas + priority_fee_per_gas) * txns.gas_used)/1e18 
+     CASE WHEN type = 'Legacy' THEN (cast(gas_price as double) * cast(txns.gas_used as double))/1e18
+          WHEN type = 'AccessList' THEN (cast(gas_price as double) * cast(txns.gas_used as double))/1e18
+          WHEN type = 'DynamicFee' THEN (cast(base_fee_per_gas as double) + cast(priority_fee_per_gas as double) * cast(txns.gas_used as double))/1e18 
           END AS tx_fee_native, 
-     CASE WHEN type = 'Legacy' THEN (gas_price * txns.gas_used)/1e18 * p.price 
-          WHEN type = 'AccessList' THEN (gas_price * txns.gas_used)/1e18 * p.price 
-          WHEN type = 'DynamicFee' THEN ((base_fee_per_gas + priority_fee_per_gas) * txns.gas_used)/1e18 * p.price 
+     CASE WHEN type = 'Legacy' THEN (cast(gas_price as double) * cast(txns.gas_used as double))/1e18 * p.price 
+          WHEN type = 'AccessList' THEN (cast(gas_price as double) * cast(txns.gas_used as double))/1e18 * p.price 
+          WHEN type = 'DynamicFee' THEN (cast(base_fee_per_gas as double) + cast(priority_fee_per_gas as double) * cast(txns.gas_used as double))/1e18 * p.price 
           END AS tx_fee_usd,
      ((base_fee_per_gas) * txns.gas_used)/1e18 AS burned_native, 
      (((base_fee_per_gas) * txns.gas_used)/1e18) * p.price AS burned_usd,
