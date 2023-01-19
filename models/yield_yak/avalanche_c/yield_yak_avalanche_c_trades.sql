@@ -20,7 +20,7 @@ WITH
 dexs as (
         SELECT 
             evt_block_time as block_time, 
-            '' as taker, 
+            -- '' as taker, commenting this as there's no trader in the event 
             '' as maker, 
             _amountIn as token_sold_amount_raw, 
             _amountOut as token_bought_amount_raw, 
@@ -64,7 +64,7 @@ SELECT
     ) as amount_usd, 
     dexs.token_bought_address, 
     dexs.token_sold_address, 
-    COALESCE(dexs.taker, tx.from) as taker,  -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
+    tx.from as taker,
     dexs.maker, 
     dexs.project_contract_address, 
     dexs.tx_hash, 
