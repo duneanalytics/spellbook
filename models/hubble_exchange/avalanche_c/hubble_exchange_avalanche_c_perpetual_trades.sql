@@ -107,7 +107,7 @@ SELECT
     pe.margin_usd,
     COALESCE(
         td.trade_data || '-' || pe.trade_type, -- using the call/open functions to classify trades 
-        '' -- to avoid breaking the incremental run 
+        'adjust' || '-' || pe.trade_type 
     ) as trade, 
     pe.trader,
     pe.volume_raw,
