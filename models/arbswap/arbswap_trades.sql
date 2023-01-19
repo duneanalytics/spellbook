@@ -12,7 +12,7 @@
     )
 }}
 
-{% set project_start_date = '2022-05-29 10:36' %}
+{% set project_start_date = '2022-05-29' %}
 
 WITH dexs AS
 (
@@ -36,6 +36,9 @@ WITH dexs AS
         ON f.pair = t.contract_address
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+    {% if not is_incremental() %}
+    WHERE t.evt_block_time >= '{{ project_start_date }}'
     {% endif %}
 )
 SELECT
