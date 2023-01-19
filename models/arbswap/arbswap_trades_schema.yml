@@ -11,6 +11,20 @@ models:
       tags: ['arbitrum', 'arbswap','trades', 'dex', 'chrispearcx']
     description: >
         Arbswap is a Arbitrum native DEX. This table will load dex trades downstream.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_seed:
+          blockchain: arbitrum
+          project: arbswap
+          version: 1
     columns:
       - &blockchain
         name: blockchain
