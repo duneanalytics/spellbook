@@ -121,6 +121,8 @@ models:
         +schema: sushiswap_avalanche_c
       gnosis:
         +schema: sushiswap_gnosis
+      arbitrum:
+        +schema: sushiswap_arbitrum
 
     babyswap:
       +schema: babyswap
@@ -326,6 +328,8 @@ models:
       +schema: safe
       ethereum:
         +schema: safe_ethereum
+      optimism: 
+        +schema: safe_optimism
 
     nftrade:
       +schema: nftrade
@@ -527,6 +531,8 @@ models:
         +schema: hashflow_ethereum
       avalanche_c:
         +schema: hashflow_avalanche_c
+      bnb:
+        +schema: hashflow_bnb
 
     nexusmutual:
       +schema: nexusmutual
@@ -541,10 +547,23 @@ models:
     zeroex:
       +schema: zeroex
       ethereum:
+        +schema: zeroex_ethereum
         erc20:
           +schema: zeroex_ethereum_erc20
         nft:
           +schema: zeroex_ethereum_nft
+      optimism:
+        +schema: zeroex_optimism
+        erc20:
+          +schema: zeroex_optimism_erc20
+      polygon:
+        +schema: zeroex_polygon
+        erc20:
+          +schema: zeroex_polygon_erc20
+      avalanche_c:
+        +schema: zeroex_avalanche_c
+        erc20:
+          +schema: zeroex_avalanche_c_erc20
 
     wombat:
       +schema: wombat
@@ -901,26 +920,51 @@ seeds:
               token_amount: double
               project_name: string
       optimism:
-        zeroex_api_optimism_fills_sample:
-          +column_types:
-            tx_hash: string
-            evt_index: int
-            contract_address: string
-            block_time: timestamp
-            block_date: date
-            maker: string
-            taker: string
-            taker_token: string
-            maker_token: string
-            taker_token_amount: double
-            taker_token_amount_raw: double
-            maker_token_amount: double
-            maker_token_amount_raw: double
-            type: string
-            affiliate_address: string
-            swap_flag: boolean
-            matcha_limit_order_flag: boolean
-            volume_usd: double
+        fills:
+          zeroex_api_optimism_fills_sample:
+            +column_types:
+              tx_hash: string
+              evt_index: int
+              contract_address: string
+              block_time: timestamp
+              block_date: date
+              maker: string
+              taker: string
+              taker_token: string
+              maker_token: string
+              taker_token_amount: double
+              taker_token_amount_raw: double
+              maker_token_amount: double
+              maker_token_amount_raw: double
+              type: string
+              affiliate_address: string
+              swap_flag: boolean
+              matcha_limit_order_flag: boolean
+              volume_usd: double
+      polygon:
+        fills:
+          +enabled: true
+          +schema: test_data
+          zeroex_api_polygon_fills_sample:
+            +column_types:
+              tx_hash: string
+              evt_index: int
+              contract_address: string
+              block_time: timestamp
+              block_date: date
+              maker: string
+              taker: string
+              taker_token: string
+              maker_token: string
+              taker_token_amount: double
+              taker_token_amount_raw: double
+              maker_token_amount: double
+              maker_token_amount_raw: double
+              type: string
+              affiliate_address: string
+              swap_flag: boolean
+              matcha_limit_order_flag: boolean
+              volume_usd: double
     gmx:
       avalanche_c:
         gmx_glp_aum_seed:
