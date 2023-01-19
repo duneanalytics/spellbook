@@ -15,6 +15,8 @@
 
 {% set project_start_date = '2022-11-29' %}
 
+WITH 
+
 dexs_raw as (
         SELECT 
             evt_block_time as block_time, 
