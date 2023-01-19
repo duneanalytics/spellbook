@@ -93,48 +93,15 @@ models:
         name: unique_evt_id
         description: "unique event id"
 
-  - name: bend_dao_ethereum_borrow
+  - name: bend_dao_ethereum_lending
     meta:
       blockchain: ethereum
       project: bend_dao
       contributors: [Henrystats]
     config:
-      tags: ['ethereum','bend_dao','v1','borrow']
+      tags: ['ethereum','bend_dao','v1','lending']
     description: >
-        bend_dao borrow on ethereum 
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_time
-      - *block_date
-      - *token_id
-      - *collection
-      - *amount_usd
-      - *token_standard
-      - *evt_type
-      - *address
-      - *amount_original
-      - *amount_raw
-      - *collateral_currency_symbol
-      - *collateral_currency_contract
-      - *nft_contract_address
-      - *project_contract_address
-      - *tx_hash
-      - *block_number
-      - *tx_from
-      - *tx_to
-      - *unique_evt_id
-
-  - name: bend_dao_ethereum_repay
-    meta:
-      blockchain: ethereum
-      project: bend_dao
-      contributors: [Henrystats]
-    config:
-      tags: ['ethereum','bend_dao','v1','repay']
-    description: >
-        bend_dao repay on ethereum 
+        bend_dao lending events (repay & borrow) on ethereum 
     columns:
       - *blockchain
       - *project

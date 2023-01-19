@@ -724,16 +724,15 @@ seeds:
           platform_fee_amount: double
           pool_fee_amount: double
     bend_dao:
-      +enabled: true
-      +schema: test_data
-      bend_dao_nft_lending:
-        +column_types:
-          block_number: long
-          tx_hash: string
-          evt_type: string
-          token_id: string
-          amount_original: double
-          address: string
+      ethereum:
+        bend_dao_nft_lending:
+          +column_types:
+            block_number: long
+            tx_hash: string
+            evt_type: string
+            token_id: string
+            amount_original: double
+            address: string
     cryptopunks:
       cryptopunks_trades_buys_bids_seed:
         +column_types:
