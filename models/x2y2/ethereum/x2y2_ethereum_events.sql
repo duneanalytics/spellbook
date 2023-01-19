@@ -195,5 +195,5 @@ LEFT JOIN src_nft_transfers seller_fix ON prof.evt_block_time=seller_fix.block_t
     AND seller_fix.to=inv.maker
     AND SUBSTRING('0000000000000000000000000000000000000000000000000000000000000000', 1, 64-LEN(CONV(seller_fix.token_id, 10, 16))) || CONV(seller_fix.token_id, 10, 16)=inv.token_id_bytes
 LEFT JOIN {{ ref('nft_ethereum_aggregators_markers') }} agg_m
-        ON LEFT(et.data, CHARINDEX(agg_m.hash_marker, et.data) + LENGTH(agg_m.hash_marker)) LIKE '%' || agg_m.hash_marker
+        ON RIGHT(et.data, agg_m.hash_marker_size) = agg_m.hash_marker
 

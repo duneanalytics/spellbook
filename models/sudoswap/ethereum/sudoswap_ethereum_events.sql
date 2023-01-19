@@ -291,7 +291,7 @@ WITH
         SELECT
             sc.*
             , tokens.name AS collection
-            , case when lower(right(tx.data, 8)) = '72db8c0b' then 'Gem' else agg.name end as aggregator_name
+            , coalesce(agg.name,agg_m.aggregator_name) as aggregator_name
             , agg.contract_address as aggregator_address
             , sc.amount_original*pu.price as amount_usd
             , sc.pool_fee_amount*pu.price as pool_fee_amount_usd
@@ -320,6 +320,8 @@ WITH
         LEFT JOIN {{ ref('nft_aggregators') }} agg
             ON (agg.contract_address = sc.call_from OR agg.contract_address = sc.router_caller) -- aggregator will either call pool directly or call the router
             AND agg.blockchain = 'ethereum'
+        LEFT JOIN {{ ref('nft_ethereum_aggregators_markers') }} agg_m
+            ON RIGHT(tx.data, agg_m.hash_marker_size) = agg_m.hash_marker
         LEFT JOIN tokens_ethereum_nft tokens ON nft_contract_address = tokens.contract_address
     )
 
