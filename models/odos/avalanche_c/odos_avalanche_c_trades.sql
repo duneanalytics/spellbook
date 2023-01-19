@@ -25,7 +25,11 @@ dexs_raw as (
             CAST(CONCAT_WS(", ", amountsIn) as double) as token_sold_amount_raw, 
             CAST(CONCAT_WS(", ", amountsOut) as double) as token_bought_amount_raw, 
             CAST(NULL as double) as amount_usd, 
-            CAST(CONCAT_WS(", ", tokensIn) as string) as token_sold_address, 
+            CASE 
+                WHEN CAST(CONCAT_WS(", ", tokensIn) as string) = '0' 
+                THEN '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7' -- WAVAX 
+                ELSE CAST(CONCAT_WS(", ", tokensIn) as string) 
+            END as token_sold_address, 
             contract_address as project_contract_address, 
             evt_tx_hash as tx_hash, 
             '' as trace_address, 
