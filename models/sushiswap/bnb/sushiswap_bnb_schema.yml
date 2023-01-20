@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: sushi_polygon_trades
+  - name: sushiswap_bnb_trades
     meta:
-      blockchain: polygon
+      blockchain: bnb
       sector: dex
       project: sushiswap
       contributors: hosuke, codingsh
     config:
-      tags: ['polygon','sushiswap','trades','dex']
+      tags: ['bnb','sushiswap','trades','dex']
     description: >
-        Sushiswap contract trades on Polygon
+        Sushiswap contract trades on Binance Smart Chain (bsc)
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -22,7 +22,7 @@ models:
             - evt_index
             - trace_address
       - check_dex_seed:
-          blockchain: polygon
+          blockchain: bnb
           project: sushiswap
           version: 1
     columns:
