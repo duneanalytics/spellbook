@@ -6,7 +6,7 @@ sources:
     freshness:
       warn_after: { count: 12, period: hour }
     tables:
-      - namme: swapETHForExactTokens
+      - name: swapETHForExactTokens
         loaded_at_field: evt_block_time
         description: "Sushiswap swap events table on Binance smart chain"
         columns:
@@ -46,7 +46,7 @@ sources:
             name: path
           - &to
             name: to
-      - namme: swapExactETHForTokens
+      - name: swapExactETHForTokens
         loaded_at_field: evt_block_time
         description: "Sushiswap swap events table on Binance smart chain"
         columns:
@@ -86,7 +86,7 @@ sources:
             name: path
           - &to
             name: to
-      - namme: swapExactETHForTokensSupportingFeeOnTransferTokens
+      - name: swapExactETHForTokensSupportingFeeOnTransferTokens
         loaded_at_field: evt_block_time
         description: "Sushiswap swap events table on Binance smart chain"
         columns:
