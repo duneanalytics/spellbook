@@ -186,8 +186,9 @@ LEFT JOIN src_prices_usd pu
 LEFT JOIN src_nft_transfers id_fix ON prof.evt_block_time=id_fix.block_time
     AND prof.evt_tx_hash=id_fix.tx_hash
     AND inv.nft_contract_address=id_fix.contract_address
-    AND ((id_fix.from=inv.maker AND id_fix.to=inv.taker) OR (id_fix.from=inv.taker AND id_fix.to=inv.maker))
-    AND (inv.token_id_try LIKE '%E%' AND id_fix.token_id LIKE replace(substring(inv.token_id_try,1,instr(inv.token_id_try,'E')-3),'.','') || '%')
+    AND (id_fix.from=inv.maker AND id_fix.to=inv.taker)
+    AND ((inv.token_id_try::decimal(38) is null AND id_fix.token_id LIKE replace(substring(inv.token_id_try,1,instr(inv.token_id_try,'E')-3),'.','') || '%')
+        OR inv.token_id_try::decimal(38) = id_fix.token_id)
 LEFT JOIN {{ ref('nft_ethereum_aggregators_markers') }} agg_m
         ON RIGHT(et.data, agg_m.hash_marker_size) = agg_m.hash_marker
 
