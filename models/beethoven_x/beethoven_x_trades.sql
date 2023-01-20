@@ -1,21 +1,20 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["avalanche_c","optimism"]\',
+        post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
-                                "kyberswap",
-                                \'["zhongyiio", "hosuke"]\') }}'
+                                "beethoven_x",
+                                \'["msilb7"]\') }}'
         )
 }}
 
-{% set kyber_models = [
-'kyberswap_avalanche_c_trades',
-'kyberswap_optimism_trades'
+{% set uniswap_models = [
+'beethoven_x_optimism_trades'
 ] %}
 
 
 SELECT *
 FROM (
-    {% for dex_model in kyber_models %}
+    {% for dex_model in uniswap_models %}
     SELECT
         blockchain,
         project,
