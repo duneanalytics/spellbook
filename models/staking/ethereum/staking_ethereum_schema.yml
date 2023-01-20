@@ -19,8 +19,6 @@ models:
       - name: entity_unique_name
         description: "Unique name of identified entity"
       - name: category
-        tests:
-          - unique
         description: "Category of entity"
         tests:
           - accepted_values:
@@ -34,6 +32,12 @@ models:
     config:
       tags: ['ethereum', 'staking', 'deposits']
     description: Ethereum staking deposits
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - tx_hash
+            - depositor_address
     columns:
       - name: block_time
         description: "Block time of deposit transaction"

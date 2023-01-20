@@ -10,7 +10,7 @@
                                 \'["hildobby"]\') }}')
 }}
 
-SELECT address, entity, entity_unique_name, category
+SELECT lower(trim(address)) as address, trim(entity) as entity, trim(entity_unique_name) as entity_unique_name, trim(category) as category
 FROM
   (VALUES
   ('0xae7ab96520de3a18e5e111b5eaab095312d7fe84', 'Lido', 'Lido', 'Liquid Staking')
@@ -88,19 +88,27 @@ FROM
     , 'Coinbase ' || ROW_NUMBER() OVER (ORDER BY MIN(coinbase.block_time)) AS entity_unique_name
     , 'CEX' AS category
     FROM (
-        SELECT et.from AS address
-        , et.block_time
-        FROM {{ source('ethereum', 'traces') }} et
-        INNER JOIN {{ source('ethereum', 'traces') }} et2 ON et2.from=et.from
-            AND et2.to='0xa090e606e30bd747d4e6245a1517ebe430f0057e'
-            AND et2.block_time >= '2020-10-14'
-        WHERE et.to='0x00000000219ab540356cbb839cbe05303d7705fa'
-        AND et.success
-        AND et.block_time >= '2020-10-14'
-        {% if is_incremental() %}
-        AND et.block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-        GROUP BY et.from, et.block_time
+            SELECT
+                et.from AS address
+                , et.block_time
+            FROM {{ source('ethereum', 'traces') }} et
+            INNER JOIN {{ source('ethereum', 'traces') }} et2 ON et2.from=et.from
+                AND et2.to='0xa090e606e30bd747d4e6245a1517ebe430f0057e'
+                {% if not is_incremental() %}
+                AND et2.block_time >= '2020-10-14'
+                {% endif %}
+                {% if is_incremental() %}
+                AND et2.block_time >= date_trunc("day", now() - interval '1 week')
+                {% endif %}
+            WHERE et.to='0x00000000219ab540356cbb839cbe05303d7705fa'
+                AND et.success
+                {% if not is_incremental() %}
+                AND et.block_time >= '2020-10-14'
+                {% endif %}
+                {% if is_incremental() %}
+                AND et.block_time >= date_trunc("day", now() - interval '1 week')
+                {% endif %}
+            GROUP BY et.from, et.block_time
         ) coinbase
     GROUP BY coinbase.address
 
@@ -118,14 +126,24 @@ FROM
         SELECT distinct to AS address
         FROM {{ source('ethereum', 'transactions') }}
         WHERE from='0xf17aced3c7a8daa29ebb90db8d1b6efd8c364a18'
-        AND to !='0x00000000219ab540356cbb839cbe05303d7705fa'
-        AND block_time >= '2020-10-14'
-        {% if is_incremental() %}
-        AND block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
+            AND to !='0x00000000219ab540356cbb839cbe05303d7705fa'
+            {% if not is_incremental() %}
+            AND block_time >= '2020-10-14'
+            {% endif %}
+            {% if is_incremental() %}
+            AND block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
         GROUP BY to
     ) binance
-    LEFT JOIN {{ source('ethereum', 'traces') }} t ON binance.address=t.from AND t.to='0x00000000219ab540356cbb839cbe05303d7705fa'
+    INNER JOIN {{ source('ethereum', 'traces') }} t
+        ON binance.address=t.from
+        AND t.to='0x00000000219ab540356cbb839cbe05303d7705fa'
+        {% if not is_incremental() %}
+        AND t.block_time >= '2020-10-14'
+        {% endif %}
+        {% if is_incremental() %}
+        AND t.block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     GROUP BY binance.address
 
     UNION ALL
@@ -135,10 +153,21 @@ FROM
     , 'RocketPool (Minipool) ' || ROW_NUMBER() OVER (ORDER BY MIN(txs.block_time)) AS entity_unique_name
     , 'Liquid Staking' AS category
     FROM {{ source('ethereum', 'transactions') }} txs
-    RIGHT JOIN {{ source('ethereum', 'traces') }} traces ON txs.hash=traces.tx_hash AND traces.to='0x00000000219ab540356cbb839cbe05303d7705fa'
+    INNER JOIN {{ source('ethereum', 'traces') }} traces
+        ON txs.hash=traces.tx_hash 
+        AND traces.to='0x00000000219ab540356cbb839cbe05303d7705fa'
+        {% if not is_incremental() %}
+        AND traces.block_time >= '2020-10-14'
+        {% endif %}
+        {% if is_incremental() %}
+        AND traces.block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     WHERE txs.to IN ('0xdcd51fc5cd918e0461b9b7fb75967fdfd10dae2f', '0x1cc9cf5586522c6f483e84a19c3c2b0b6d027bf0')
-    {% if is_incremental() %}
-    AND txs.block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+        {% if not is_incremental() %}
+        AND txs.block_time >= '2020-10-14'
+        {% endif %}
+        {% if is_incremental() %}
+        AND txs.block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     GROUP BY traces.from
     ;
