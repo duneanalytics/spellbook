@@ -13,3 +13,6 @@ sources:
       - name: FuturesMarketManager_evt_MarketAdded
         loaded_at_field: evt_block_time
         description: "Details the asset markets"
+      - name: SNX_evt_SynthExchange
+        loaded_at_field: evt_block_time
+        description: "Details the synth exchange"
