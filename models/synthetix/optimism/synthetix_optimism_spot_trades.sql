@@ -29,14 +29,8 @@ WITH dexs AS
         ,NULL AS token_bought_address
         ,NULL AS token_sold_address
         -- we need to map token symbols. This is not ideal.
-        CASE
-			WHEN MOD(POSITION('00' IN SUBSTRING(fromCurrencyKey, 3)), 2) = 0 THEN UNHEX(SUBSTRING(fromCurrencyKey, 3, POSITION('00' IN SUBSTRING(fromCurrencyKey, 3))))
-			ELSE UNHEX(SUBSTRING(fromCurrencyKey, 3, POSITION('00' IN SUBSTRING(fromCurrencyKey, 3))-1))
-		END AS token_bought_symbol,
-        CASE
-			WHEN MOD(POSITION('00' IN SUBSTRING(fromCurrencyKey, 3)), 2) = 0 THEN UNHEX(SUBSTRING(fromCurrencyKey, 3, POSITION('00' IN SUBSTRING(fromCurrencyKey, 3))))
-			ELSE UNHEX(SUBSTRING(fromCurrencyKey, 3, POSITION('00' IN SUBSTRING(fromCurrencyKey, 3))-1))
-		END AS token_sold_symbol
+        trim('\u0000' from unhex(substring(toCurrencyKey, 3))) AS token_bought_symbol,
+        trim('\u0000' from unhex(substring(fromCurrencyKey, 3))) AS token_sold_symbol
 
         ,t.contract_address as project_contract_address
         ,t.evt_tx_hash AS tx_hash
@@ -45,7 +39,8 @@ WITH dexs AS
     FROM
         {{ source('synthetix_optimism', 'SNX_evt_SynthExchange') }} t
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc('day', now() - interval '1 week')
+    -- making this incremental length longer sicne there's manual token list updates needed
+    WHERE t.evt_block_time >= date_trunc('day', now() - interval '1 month')
     {% endif %}
 )
 SELECT
@@ -87,7 +82,7 @@ INNER JOIN {{ source('optimism', 'transactions') }} tx
     AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '1' week)
+    AND tx.block_time >= date_trunc('day', now() - interval '1' month)
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.symbol = dexs.token_bought_symbol 
@@ -103,7 +98,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc('day', now() - interval '1 week')
+    AND p_bought.minute >= date_trunc('day', now() - interval '1 month')
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
@@ -113,6 +108,6 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc('day', now() - interval '1 week')
+    AND p_sold.minute >= date_trunc('day', now() - interval '1 month')
     {% endif %}
 ;
