@@ -564,6 +564,10 @@ models:
         +schema: zeroex_avalanche_c
         erc20:
           +schema: zeroex_avalanche_c_erc20
+      arbitrum:
+        +schema: zeroex_arbitrum
+        erc20:
+          +schema: zeroex_arbitrum_erc20
 
     wombat:
       +schema: wombat
