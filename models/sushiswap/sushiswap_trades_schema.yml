@@ -6,7 +6,7 @@ models:
       blockchain: ethereum, polygon, avalanche_c, gnosis, bnb
       sector: dex
       project: sushiswap
-      contributors: jeff-dude, masquot, soispoke, augustog, hosuke, codingsh
+      contributors: jeff-dude, masquot, soispoke, augustog, hosuke, Henrystats, codingsh
     config:
       tags: ['ethereum','sushiswap','trades', 'dex', 'jeff-dude','cross-chain']
     description: >
