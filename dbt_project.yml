@@ -568,6 +568,10 @@ models:
         +schema: zeroex_fantom
         erc20:
           +schema: zeroex_fantom_erc20
+      arbitrum:
+        +schema: zeroex_arbitrum
+        erc20:
+          +schema: zeroex_arbitrum_erc20
 
     wombat:
       +schema: wombat
