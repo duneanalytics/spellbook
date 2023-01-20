@@ -21,7 +21,7 @@ dexs as (
     SELECT 
         evt_block_time as block_time, 
         dstReceiver as taker, 
-        sender as maker, 
+        '' as maker, 
         returnAmount as token_bought_amount_raw, 
         spentAmount as token_sold_amount_raw, 
         CAST(NULL as double) as amount_usd, 
