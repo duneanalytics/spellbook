@@ -32,7 +32,7 @@ WITH zeroex_tx AS (
                                         FROM (position('fbc019a7' IN INPUT) + 32)
                                         FOR 40)
                             END) AS affiliate_address
-        FROM {{ source('avalanche_c', 'traces') }} tr
+        FROM {{ source('arbitrum', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
                 '0x61935cbdd02287b511119ddb11aeb42f1593b7ef', 
