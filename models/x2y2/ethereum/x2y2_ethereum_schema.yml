@@ -37,6 +37,8 @@ models:
       - &token_id
         name: token_id
         description: "NFT Token ID"
+        tests:
+          - not_null
       - &collection
         name: collection
         description: "NFT collection name"
