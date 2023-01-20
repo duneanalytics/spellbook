@@ -112,8 +112,8 @@ SELECT
     pe.trader,
     pe.volume_raw,
     pe.tx_hash,
-    txns.`to` as tx_to, 
-    txns.`from` as tx_from, 
+    txns.to as tx_to, 
+    txns.from as tx_from, 
     pe.evt_index
 FROM 
 perp_events pe 
