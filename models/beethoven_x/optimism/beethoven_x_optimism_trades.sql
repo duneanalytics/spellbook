@@ -24,7 +24,7 @@ WITH dexs AS
         ,'' AS taker --not in the event table, so we rely on the transaction "from"
         ,'' AS maker
         --tokenIn: what the user receives. So we map this to token bought
-        ,t.amountIn AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
+        ,t.amountIn AS token_bought_amount_raw
         ,t.amountOut AS token_sold_amount_raw
         ,NULL AS amount_usd
         ,t.tokenIn AS token_bought_address

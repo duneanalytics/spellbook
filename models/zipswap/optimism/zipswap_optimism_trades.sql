@@ -24,7 +24,7 @@ WITH dexs AS
         , t.evt_block_number
         , t.recipient AS taker
         ,'' AS maker
-        ,CASE WHEN amount0Out = 0 THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
+        ,CASE WHEN amount0Out = 0 THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw
         ,CASE WHEN amount0In = 0 OR amount1Out = 0 THEN amount1In ELSE amount0In END AS token_sold_amount_raw
         ,NULL AS amount_usd
         ,LOWER(CASE WHEN amount0Out = 0 THEN token1 ELSE token0 END) AS token_bought_address
