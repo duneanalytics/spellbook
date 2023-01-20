@@ -1,4 +1,4 @@
-{{config(alias='cex_ethereum',
+{{config(alias='eth_stakers',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",
@@ -13,24 +13,25 @@ WITH identified_stakers AS (
     , 'query' AS source
     , timestamp('2023-01-18') AS created_at
     , NOW() AS updated_at
-    FROM {{ ref('ethereum_staking_entities')}}
+    FROM {{ ref('staking_ethereum_entities')}}
     )
 
 , unidentified_stakers AS (
     SELECT array('ethereum') AS blockchain
-    , from AS address
+    , et.from AS address
     , 'Unidentified ETH staker' AS name
     , 'eth_staker' AS category
     , 'hildobby' AS contributor
     , 'query' AS source
     , timestamp('2023-01-18') AS created_at
     , NOW() AS updated_at
-    FROM ethereum.traces
-    WHERE to = '0x00000000219ab540356cbb839cbe05303d7705fa'
-    AND success
-    AND CAST(value AS double) > 0
-    AND from NOT IN (SELECT address FROM identified_stakers)
-    GROUP BY from
+    FROM {{ source('ethereum', 'traces') }} et
+    LEFT ANTI JOIN identified_stakers is
+        ON et.from = is.address
+    WHERE et.to = '0x00000000219ab540356cbb839cbe05303d7705fa'
+    AND et.success
+    AND CAST(et.value AS double) > 0
+    GROUP BY et.from
     )
 
 SELECT * FROM identified_stakers
