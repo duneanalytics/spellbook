@@ -252,8 +252,8 @@ direct_PLP AS (
             FALSE                       AS matcha_limit_order_flag
     FROM {{ source('zeroex_arbitrum', 'ExchangeProxy_evt_LiquidityProviderSwap') }} plp
     INNER JOIN zeroex_tx
-        ON zeroex_tx.tx_hash = logs.tx_hash
-        AND zeroex_tx.block_number = logs.block_number
+        ON zeroex_tx.tx_hash = plp.evt_tx_hash
+        AND zeroex_tx.block_number = plp.evt_block_number
 
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
