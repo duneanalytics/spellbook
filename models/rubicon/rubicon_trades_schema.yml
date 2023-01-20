@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: beethoven_x_trades
+  - name: rubicon_trades
     meta:
       blockchain: optimism,
       sector: dex
-      project: beethoven_x
+      project: rubicon
       contributors: msilb7
     config:
-      tags: ['optimism', 'beethoven_x','trades', 'dex']
+      tags: ['optimism', 'rubicon','trades', 'dex']
     description: >
-        beethoven_x trades on all chains across all contracts and versions. This table will load dex trades downstream.
+        rubicon trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
       - &blockchain
         name: blockchain
