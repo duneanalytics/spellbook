@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: safe_optimism_safes
+    meta:
+      blockchain: optimism
+      project: safe
+      contributors: frankmaseo
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'optimism']
+    description: "Safe addresses on Optimism"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "The blockchain on which the Safe is deployed"
+      - &address
+        name: address
+        description: "Safe contract address"
+      - &creation_version
+        name: creation_version
+        description: "Version of initially created safe"
+      - &block_date
+        name: block_date
+      - &creation_time
+        name: creation_time
+        description: "Date/time of safe creation"
+      - &tx_hash
+        name: tx_hash
