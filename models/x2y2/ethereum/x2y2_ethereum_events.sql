@@ -118,7 +118,7 @@ SELECT 'ethereum' AS blockchain
 , 'Single Item Trade' AS trade_type
 , CAST(1 AS DECIMAL(38,0)) AS number_of_items
 , CASE WHEN (inv.fees_0 IS NULL OR inv.fees_0_to != '{{fee_management_addr}}') AND (prof.evt_block_time < '2022-04-01' OR prof.evt_block_time >= '2022-05-01') THEN 'Private Sale'
-    WHEN (et.from=inv.maker or et.from=id_fix.from)  THEN 'Offer Accepted'
+    WHEN (et.from=inv.maker or inv.maker = agg.contract_address)  THEN 'Offer Accepted'
     ELSE 'Buy'
     END AS trade_category
 , 'Trade' AS evt_type
