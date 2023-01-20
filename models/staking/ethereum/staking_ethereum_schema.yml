@@ -1,14 +1,13 @@
 version: 2
 
 models:
-  - name: ethereum_staking_entities
+  - name: staking_ethereum_entities
     meta:
       blockchain: ethereum
       sector: staking
-      project: ethereum
       contributors: hildobby
     config:
-      tags: ['ethereum', 'staking', 'deposits', 'entities']
+      tags: ['ethereum', 'staking', 'entities']
     description: Ethereum staking identified depositor entities
     columns:
       - name: address
@@ -27,11 +26,10 @@ models:
           - accepted_values:
               values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Whales', 'Others']
 
-  - name: ethereum_staking_deposits
+  - name: staking_ethereum_deposits
     meta:
       blockchain: ethereum
       sector: staking
-      project: ethereum
       contributors: hildobby
     config:
       tags: ['ethereum', 'staking', 'deposits']

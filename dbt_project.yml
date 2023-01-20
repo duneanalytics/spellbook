@@ -60,12 +60,10 @@ models:
         +schema: airdrop_optimism
         +materialized: table
 
-    ethereum:
-      +schema: ethereum
-      staking_entities:
-        +schema: ethereum_staking_entities
-      staking_deposits:
-        +schema: ethereum_staking_deposits
+    staking:
+      +schema: staking
+      ethereum:
+        +schema: staking_ethereum
 
     dex:
       +schema: dex

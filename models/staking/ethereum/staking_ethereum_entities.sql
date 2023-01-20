@@ -1,12 +1,12 @@
 {{ config(
-    alias = 'staking_entities',
+    alias = 'entities',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['address'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "ethereum",
+                                "sector",
+                                "staking",
                                 \'["hildobby"]\') }}')
 }}
 
