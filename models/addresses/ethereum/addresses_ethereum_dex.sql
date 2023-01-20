@@ -39,7 +39,6 @@ FROM (VALUES
       ('0xf90e98f3d8dce44632e5020abf2e122e0f99dfab', 'Paraswap', 'V3'),
       ('0xdef171fe48cf0115b1d80b88dc8eab59176fee57', 'Paraswap', 'V5: Augustus Swapper Mainnet'),
       ('0x7a250d5630b4cf539739df2c5dacb4c659f2488d', 'Uniswap', 'Router02'),
-      ('0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45', 'Uniswap', 'SwapRouter02'),
       ('0xe592427a0aece92de3edee1f18e0157c05861564', 'Uniswap', 'V3 Router'),
       ('0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45', 'Uniswap', 'V3 Router 2'),
       ('0x619b188b3f02605e289771e0001f9c313b8436a0', 'Uniswap', 'V2 Aggregator'),
