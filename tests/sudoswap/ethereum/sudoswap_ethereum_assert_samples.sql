@@ -10,10 +10,10 @@ WITH trades as (
 
 , matched as (
     select
-    coalesce(t.block_number, ex.block_number)
-    , coalesce(t.tx_hash, ex.tx_hash)
-    , coalesce(t.nft_contract_address, ex.nft_contract_address)
-    , coalesce(t.token_id, ex.token_id)
+    coalesce(t.block_number, ex.block_number) as block_number
+    , coalesce(t.tx_hash, ex.tx_hash) as tx_hash
+    , coalesce(t.nft_contract_address, ex.nft_contract_address) as nft_contract_Address
+    , coalesce(t.token_id, ex.token_id) as token_id
     , case when (t.amount_original = ex.amount_original) then true else false end as correct_amt_orig
     , case when (t.platform_fee_amount = ex.platform_fee_amount) then true else false end as correct_platform_fee
     , case when (t.pool_fee_amount = ex.pool_fee_amount) then true else false end as correct_pool_fee

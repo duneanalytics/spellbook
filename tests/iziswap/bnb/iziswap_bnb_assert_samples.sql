@@ -27,14 +27,14 @@ with trades as (
 		, ex.evt_index as ex_evt_index
 		, '|' as `|2|`
 		, case when (tr.token_bought_amount - ex.token_bought_amount) < 0.01 then true else false end as correct_bought_amount
-		, tr.token_bought_amount as tr_token_bought_amount 
+		, tr.token_bought_amount as tr_token_bought_amount
 		, ex.token_bought_amount as ex_token_bought_amount
-		, tr.token_bought_amount - ex.token_bought_amount as `Δ token_bought_amount`
+		, tr.token_bought_amount - ex.token_bought_amount as `Δ_token_bought_amount`
 		, '|' as `|3|`
 		, case when (tr.token_sold_amount - ex.token_sold_amount) < 0.01 then true else false end as correct_sold_amount
 		, tr.token_sold_amount as tr_token_sold_amount
 		, ex.token_sold_amount as ex_token_sold_amount
-		, tr.token_sold_amount - ex.token_sold_amount as `Δ token_sold_amount`
+		, tr.token_sold_amount - ex.token_sold_amount as `Δ_token_sold_amount`
     from trades tr
     full outer join examples ex
 		on tr.tx_hash=ex.tx_hash and tr.evt_index=ex.evt_index

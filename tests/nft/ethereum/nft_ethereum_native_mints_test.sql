@@ -16,7 +16,7 @@ with
 	  -- seller = null address
       and topic2 = '0x0000000000000000000000000000000000000000000000000000000000000000'
       and block_time < now() - interval '1 day' -- allow some head desync
-	  
+
 	  {% if is_incremental() %}
 	  and block_time >= date_trunc("day", now() - interval '1 week')
 	  {% endif %}
@@ -35,7 +35,7 @@ with
       and block_time < now() - interval '1 day'
   )
 select
-  *
+  c1.*
 from
   ens_mints_ctn c1
   inner join eth_native_mints_ctn c2 on c1.dummy = c2.dummy
