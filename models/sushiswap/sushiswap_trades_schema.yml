@@ -3,12 +3,12 @@ version: 2
 models:
   - name: sushiswap_trades
     meta:
-      blockchain: ethereum, polygon, avalanche_c, gnosis, bnb
+      blockchain: ethereum, polygon, avalanche_c, arbitrum, gnosis, bnb
       sector: dex
       project: sushiswap
       contributors: jeff-dude, masquot, soispoke, augustog, hosuke, Henrystats, codingsh
     config:
-      tags: ['ethereum','sushiswap','trades', 'dex', 'jeff-dude','cross-chain']
+      tags: ['ethereum', 'polygon', 'avalanche_c', 'arbitrum', 'gnosis', 'bnb', 'sushiswap', 'trades', 'dex', 'jeff-dude','cross-chain']
     description: >
         Sushiswap trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
