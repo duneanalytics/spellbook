@@ -118,12 +118,12 @@ SELECT 'ethereum' AS blockchain
 , 'Single Item Trade' AS trade_type
 , CAST(1 AS DECIMAL(38,0)) AS number_of_items
 , CASE WHEN (inv.fees_0 IS NULL OR inv.fees_0_to != '{{fee_management_addr}}') AND (prof.evt_block_time < '2022-04-01' OR prof.evt_block_time >= '2022-05-01') THEN 'Private Sale'
-    WHEN (et.from=inv.maker or inv.maker = agg.contract_address)  THEN 'Offer Accepted'
+    WHEN (id_fix.from=inv.taker)  THEN 'Offer Accepted'
     ELSE 'Buy'
     END AS trade_category
 , 'Trade' AS evt_type
-, case when inv.taker = agg.contract_address then coalesce(et.from, inv.taker) else inv.taker end AS buyer
-, case when inv.maker = agg.contract_address then coalesce(et.from, inv.maker) else inv.maker end as seller
+, case when id_fix.to = agg.contract_address then coalesce(et.from, id_fix.to) else id_fix.to end AS buyer
+, case when id_fix.from = agg.contract_address then coalesce(et.from, id_fix.from) else id_fix.from end as seller
 , CASE WHEN prof.is_native_eth THEN 'ETH'
     ELSE currency_token.symbol
     END AS currency_symbol
@@ -186,7 +186,7 @@ LEFT JOIN src_prices_usd pu
 LEFT JOIN src_nft_transfers id_fix ON prof.evt_block_time=id_fix.block_time
     AND prof.evt_tx_hash=id_fix.tx_hash
     AND inv.nft_contract_address=id_fix.contract_address
-    AND (id_fix.from=inv.maker AND id_fix.to=inv.taker)
+    AND ((id_fix.from=inv.maker AND id_fix.to=inv.taker) OR (id_fix.from=inv.taker AND id_fix.to=inv.maker))
     AND ((inv.token_id_try::decimal(38) is null AND id_fix.token_id LIKE replace(substring(inv.token_id_try,1,instr(inv.token_id_try,'E')-3),'.','') || '%')
         OR inv.token_id_try::decimal(38) = id_fix.token_id)
 LEFT JOIN {{ ref('nft_ethereum_aggregators_markers') }} agg_m
