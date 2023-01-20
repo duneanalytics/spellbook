@@ -620,6 +620,12 @@ models:
       optimism:
         +schema: ovm_optimism
 
+    oneinch:
+      +schema: oneinch
+      ethereum:
+        +schema: oneinch_ethereum
+      
+
 seeds:
   spellbook:
     +schema: test_data
