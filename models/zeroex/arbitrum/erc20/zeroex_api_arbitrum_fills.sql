@@ -1,5 +1,5 @@
 {{  config(
-        alias='arbitrum_fills',
+        alias='fills',
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
@@ -78,7 +78,6 @@ v4_rfq_fills_no_bridge AS (
     INNER JOIN zeroex_tx 
         ON zeroex_tx.tx_hash = fills.evt_tx_hash
         AND zeroex_tx.block_number = fills.evt_block_number
-
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
@@ -220,7 +219,9 @@ NewBridgeFill AS (
             TRUE                                            AS swap_flag,
             FALSE                                           AS matcha_limit_order_flag
     FROM {{ source('arbitrum' ,'logs') }} logs
-    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
+    INNER JOIN zeroex_tx
+        ON zeroex_tx.tx_hash = logs.tx_hash
+        AND zeroex_tx.block_number = logs.block_number
     WHERE topic1 = '0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8'
         AND contract_address = '0xdb6f1920a889355780af7570773609bd8cb1f498'
 
@@ -250,7 +251,9 @@ direct_PLP AS (
             TRUE                        AS swap_flag,
             FALSE                       AS matcha_limit_order_flag
     FROM {{ source('zeroex_arbitrum', 'ExchangeProxy_evt_LiquidityProviderSwap') }} plp
-    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = plp.evt_tx_hash
+    INNER JOIN zeroex_tx
+        ON zeroex_tx.tx_hash = logs.tx_hash
+        AND zeroex_tx.block_number = logs.block_number
 
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
