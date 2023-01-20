@@ -21,10 +21,9 @@ WITH dexs AS
     SELECT
          t.evt_block_time AS block_time
         , t.evt_block_number
-        ,'toAddress' AS taker --not in the event table, so we rely on the transaction "from"
+        ,'toAddress' AS taker
         ,'' AS maker
-        --tokenIn: what the user receives. So we map this to token bought
-        ,t.toAmount AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
+        ,t.toAmount AS token_bought_amount_raw 
         ,t.fromAmount AS token_sold_amount_raw
         ,NULL AS amount_usd
         ,NULL AS token_bought_address

@@ -23,8 +23,7 @@ WITH dexs AS
         , t.evt_block_number
         ,'' AS taker --not in the event table, so we rely on the transaction "from"
         ,'' AS maker
-        --tokenIn: what the user receives. So we map this to token bought
-        ,t.buy_amt AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
+        ,t.buy_amt AS token_bought_amount_raw
         ,t.pay_amt AS token_sold_amount_raw
         ,NULL AS amount_usd
         ,t.buy_gem AS token_bought_address
@@ -34,7 +33,7 @@ WITH dexs AS
         ,'' AS trace_address
         ,t.evt_index
     FROM
-        {{ source('balancer_v2', 'Vault_evt_Swap') }} t
+        {{ source('rubicon_optimism', 'RubiconMarket_evt_LogTrade') }} t
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
