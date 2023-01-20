@@ -1,5 +1,5 @@
 {{  config(
-        schema='zeroex_ethereum_erc20_deduped',
+        schema='zeroex_ethereum_api_fills_deduped',
         alias='fills',
         materialized='incremental',
         partition_by = ['block_date'],

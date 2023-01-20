@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: zeroex_nft_ethereum_fills
+  - name: zeroex_ethereum_nft_fills
     meta:
       blockchain: ethereum
       project: zeroex
