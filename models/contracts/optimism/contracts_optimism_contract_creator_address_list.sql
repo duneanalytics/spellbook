@@ -393,6 +393,7 @@ FROM (
       ,('0x7D0831e0469e8b48e0F280459bC2CC44f23Ca7E4', 'WooFi')
       ,('0xCb77b30841e1dEafFd88bA08B9654C667F80b80A', 'Quadrat')
       ,('0x001530e763FE9De4DCfe31BBd8548BCb579Ebf3A', 'Defiedge')
+      ,('0xD8fA8F87129c654a6Dd7F34EEDAf58379E176eb1', 'Uniswap V3')
 
   ) as temp_table (creator_address, contract_project)
 
