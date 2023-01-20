@@ -34,8 +34,7 @@ models:
       - &block_time
         name: block_time
         description: "UTC event block time"
-      - &token_id
-        name: token_id
+      - name: token_id
         description: "NFT Token ID"
         tests:
           - not_null
@@ -152,7 +151,9 @@ models:
       - *project
       - *version
       - *block_time
-      - *token_id
+      - &token_id
+        name: token_id
+        description: "NFT Token ID"
       - *collection
       - *amount_usd
       - *token_standard
