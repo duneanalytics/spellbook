@@ -30,6 +30,7 @@ models:
         description: "Primary key of the transaction"
         tests:
           - not_null
+      - &trace_address
       - name: trace_address
         description: "All returned traces, gives the exact location in the call trace"
       - &tx_block_time
