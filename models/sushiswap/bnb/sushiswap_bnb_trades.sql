@@ -27,7 +27,7 @@ WITH sushiswap_dex AS (
            t.evt_tx_hash                                                      AS tx_hash,
            ''                                                                 AS trace_address,
            t.evt_index
-    FROM {{ source('sushi_bnb', 'UniswapV2Router02_evt_Swap') }} t
+    FROM {{ source('sushi_bnb', 'UniswapV2Router02_evt_swapTokensForExactTokens') }} t
     INNER JOIN {{ source('sushi_bnb', 'UniswapV2Factory_evt_PairCreated') }} f
         ON f.pair = t.contract_address
     {% if is_incremental() %}
