@@ -95,3 +95,11 @@ models:
       - &evt_index
         name: evt_index
         description: ""
+      - &amount0In
+        name: amount0In
+      - &amount0Out
+        name: amount0Out
+      - &amount1In
+        name: amount1In
+      - &amount1Out
+        name: amount1Out
