@@ -9,14 +9,14 @@ models:
       contributors: msilb7, chuxin
     config:
       tags: ["transfers", "optimism", "eth"]
-    description: "Events of native ETH transfers on Ethereum."
+    description: "Events of native ETH transfers on Optimism."
     columns:
       - &from
         name: from
-        description: "Wallet address that initiated the transaction"
+        description: "Wallet address that the ETH is transferred from"
       - &to
         name: to
-        description: "Wallet address that received the transaction"
+        description: "Wallet address that the ETH is transferred to"
       - name: contract_address
         description: "Using the ETH deposit placeholder address to match with prices tables"
       - &value
@@ -24,7 +24,7 @@ models:
         description: "Amount of ETH transferred from sender to recipient"
       - &value_decimal
         name: value_decimal
-        description: "Amount of ETH transferred in decimals from sender to recipient"
+        description: "Amount of ETH transferred, decimal adjusted, from sender to recipient"
       - &tx_hash
         name: tx_hash
         description: "Primary key of the transaction"
@@ -52,3 +52,74 @@ models:
       - &tx_from
           name: tx_from
           description: "From Address for the Transaction"
+
+  - name: transfers_optimism_tokens
+    meta:
+      blockchain: optimism
+      sector: transfers
+      project: tokens
+      contributors: msilb7, chuxin
+    config:
+      tags: ["transfers", "optimism", "eth","erc20","erc721","erc1155","nft"]
+    description: "Events of all token transfers on Optimism."
+    columns:
+      - &from_address
+        name: from_address
+        description: "Wallet address that the token is transferred from"
+      - &to_address
+        name: to_address
+        description: "Wallet address that token is transferred to"
+      - &contract_address_tokens
+        name: contract_address
+        description: "Address of the Token contract. ETH uses the deposit placeholder address to match with prices tables"
+      - &token_standard
+        name: token_standard
+        tests:
+          - accepted_values:
+              values: ['erc721', 'erc1155', 'eth', 'erc20']
+        description: "Token standard"
+      - &token_type
+        name: token_type
+        tests:
+          - accepted_values:
+              values: ['fungible','nft']
+        description: "What token type is this (i.e. fungible,  nft)"
+      - &token_id
+        name: token_id
+        description: "ID of transfered token(s)"
+      - &transfer_type
+        name: transfer_type
+        tests:
+          - accepted_values:
+              values: ['single', 'batch']
+        description: "single or batch transfer of tokens"
+      - &transfer_style
+        name: transfer_style
+        tests:
+          - accepted_values:
+              values: ['mint', 'burn','transfer']
+        description: "What high-level type of transaction is this (mint, burn, transfer)"
+      - &transfer_tx_type
+        name: transfer_tx_type
+        description: "What describes the tranfers' place in the transaction (i.e. internal, top-level, wrap)"
+      - &value_tokens
+        name: value
+        description: "Amount of each token transferred from from_address to to_address"
+      - *tx_block_time
+      - &tx_block_date
+        name: tx_block_date
+        description: "Date for block event time in UTC"
+      - *tx_block_number
+      - *tx_hash
+      - *tx_method_id
+      - &tx_from_address
+        name: tx_from_address
+        description: "From Address for the Transaction"
+      - &tx_to_address
+        name: tx_to_address
+        description: "To Address for the Transaction"
+      - &evt_index
+        name: evt_index
+      - *trace_address
+      - *unique_transfer_id
+      
