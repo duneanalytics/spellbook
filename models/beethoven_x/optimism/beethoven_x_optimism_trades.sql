@@ -34,7 +34,7 @@ WITH dexs AS
         ,'' AS trace_address
         ,t.evt_index
     FROM
-        {{ source('balancer_v2', 'Vault_evt_Swap') }} t
+        {{ source('balancer_v2_optimism', 'Vault_evt_Swap') }} t
     WHERE t.tokenIn != substring(t.poolId, 1, 20)
         AND t.tokenOut != substring(t.poolId, 1, 20)
     {% if is_incremental() %}
