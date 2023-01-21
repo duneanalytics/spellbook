@@ -1,5 +1,6 @@
 {{ config(alias='nft', tags=['static']) }}
 
+WITH manually_mapped_tokens AS (
 SELECT
   LOWER(contract_address) AS contract_address, name, standard
 FROM
@@ -247,5 +248,13 @@ FROM
 ,('0x19Cf19bf250BbA55583713085850C4FcF94f3EA8', 'Blockchain NFT V3', 'erc721')
 ,('0x194f10d4976F033F0e8802383c9a2997B92A1354', 'Optimistic Cat', 'erc721')
 ,('0x67709f880F66E15f6aE93b1D737f8d8D9FB9827f', 'Santa Oppa Bear', 'erc721')
+,('0x00e3aa03e47c32397a94509e50b0558988c0d04e', 'L2NFTOG', 'erc721')
 
 ) as temp_table (contract_address, name, standard)
+
+)
+
+SELECT contract_address, name, standard FROM manually_mapped_tokens
+UNION ALL
+SELECT contract_address, name, standard FROM {{ref('tokens_optimism_nft_bridged_mapping')}}
+  WHERE contract_address NOT IN (SELECT contract_address FROM manually_mapped_tokens)
