@@ -130,3 +130,33 @@ sources:
           - *evt_index
           - *evt_tx_hash
           - *to
+      - name: swapTokensForExactETH
+            loaded_at_field: evt_block_time
+            description: "Sushiswap swap events table on Binance smart chain"
+            columns:
+              - &amountInMax
+                name: amountInMax
+              - &amountOut
+                name: amountOut
+              - &call_block_number
+                name: call_block_number
+              - &call_block_time
+                name: call_block_time
+              - &call_success
+                name: call_success
+              - &call_trace_address
+                name: call_trace_address
+              - &call_tx_hash
+                name: call_tx_hash
+              - &deadline
+                name: deadline
+              - &output_amounts
+                name: output_amounts
+              - &path
+                name: path
+              - *contract_address
+              - *evt_block_number
+              - *evt_block_time 
+              - *evt_index
+              - *evt_tx_hash
+              - *to
