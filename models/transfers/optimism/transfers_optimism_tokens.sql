@@ -129,6 +129,8 @@ FROM (
         ----------
         -- NFT --
         ----------
+        UNION ALL
+        
         SELECT
 
         r."from" AS transfer_from_address,
