@@ -28,9 +28,9 @@ WITH sushiswap_dex AS (
            ''                                                                 AS trace_address,
            t.evt_index
     FROM {{ source('sushi_bnb', 'UniswapV2Pair_evt_Swap') }} t
-    FROM {{ source('sushi_bnb', 'swapETHForExactTokens') }} t
-    FROM {{ source('sushi_bnb', 'swapExactETHForTokens') }} t
-    FROM {{ source('sushi_bnb', 'swapExactETHForTokensSupportingFeeOnTransferTokens') }} t
+    INNER JOIN {{ source('sushi_bnb', 'swapETHForExactTokens') }} t
+    INNER JOIN {{ source('sushi_bnb', 'swapExactETHForTokens') }} t
+    INNER JOIN {{ source('sushi_bnb', 'swapExactETHForTokensSupportingFeeOnTransferTokens') }} t
     INNER JOIN {{ source('sushi_bnb', 'UniswapV2Factory_evt_PairCreated') }} f
         ON f.pair = t.contract_address
     {% if is_incremental() %}
