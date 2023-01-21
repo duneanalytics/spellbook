@@ -53,10 +53,20 @@ WITH sushiswap_dex AS (
            s2.output_amounts                                                  AS output_amounts,
            s2.path                                                            AS path,
            s2.to                                                              AS to,
+           --quote
+            q.amountA AS amountA,
+            q.call_block_number AS call_block_number,
+            q.call_block_time AS call_block_time,
+            q.call_success AS call_success,
+            q.call_trace_address AS call_trace_address,
+            q.call_tx_hash AS call_tx_hash,
+            q.contract_address AS contract_address,
+            q.output_amountB AS output_amountB,
+            q.reserveA AS reserveA,
+            q.reserveB AS reserveB,
 
 
     FROM {{ source('sushi_polygon', 'UniswapV2Pair_evt_Swap') }} t
-    
     INNER JOIN {{ source('sushi_polygon', 'swapExactETHForTokens') }} s1
         ON s1.contract_address = t.contract_address 
     INNER JOIN {{ source('sushi_polygon', 'swapTokensForExactETH') }} s2
@@ -67,8 +77,9 @@ WITH sushiswap_dex AS (
         AND s3.call_tx_hash = s1.call_tx_hash
         AND s3.amountETHMin = s1.amountOut
     INNER JOIN {{ source('sushi_polygon', 'swapETHForExactTokens') }} s4
-        ON s4.contract_address = t.contract_address 
-   
+        ON s4.contract_address = t.contract_address
+    INNER JOIN {{ source('sushi_polygon', 'quote') }} q
+        ON q.contract_address = t.contract_address 
     INNER JOIN {{ source('sushi_polygon', 'UniswapV2Factory_evt_PairCreated') }} f
         ON f.pair = t.contract_address
     {% if is_incremental() %}
