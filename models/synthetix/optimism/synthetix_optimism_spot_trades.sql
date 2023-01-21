@@ -29,8 +29,8 @@ WITH dexs AS
         ,NULL AS token_bought_address
         ,NULL AS token_sold_address
         -- we need to map token symbols. This is not ideal.
-        trim('\u0000' from unhex(substring(toCurrencyKey, 3))) AS token_bought_symbol,
-        trim('\u0000' from unhex(substring(fromCurrencyKey, 3))) AS token_sold_symbol
+        ,trim('\u0000' from unhex(substring(toCurrencyKey, 3))) AS token_bought_symbol
+        ,trim('\u0000' from unhex(substring(fromCurrencyKey, 3))) AS token_sold_symbol
 
         ,t.contract_address as project_contract_address
         ,t.evt_tx_hash AS tx_hash
