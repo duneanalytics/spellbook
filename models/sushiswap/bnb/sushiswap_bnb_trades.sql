@@ -28,9 +28,45 @@ WITH sushiswap_dex AS (
            t.evt_tx_hash                                                      AS tx_hash,
            ''                                                                 AS trace_address,
            t.evt_index
-    FROM {{ source('sushi_bnb', 'UniswapV2Router02_evt_swapTokensForExactTokens') }} t
+           --swapTokensForExactTokens
+           case when s1.amountOut = 0 then s1.amountOut else s1.amountOut end AS token_bought_amount_raw,
+           s1.amountInMax                                                     AS token_bought_amount_max,
+           s1.call_block_number                                               AS call_block_number,
+           s1.call_block_time                                                 AS call_block_time,
+           s1.call_success                                                    AS call_success,
+           s1.call_trace_address                                              AS call_trace_address,
+           s1.call_tx_hash                                                    AS call_tx_hash,
+           s1.contract_address                                                AS contract_address,
+           s1.deadline                                                        AS deadline,
+           s1.output_amounts                                                  AS output_amounts,
+           s1.path                                                            AS path,
+           s1.to                                                              AS to,
+           --swapTokensForExactETH
+           case when s2.amountOut = 0 then s2.amountOut else s2.amountOut end AS token_sold_amount_raw,
+           s2.amountInMax                                                     AS token_sold_amount_max,
+           s2.call_block_number                                               AS call_block_number,
+           s2.call_block_time                                                 AS call_block_time,
+           s2.call_success                                                    AS call_success,
+           s2.call_trace_address                                              AS call_trace_address,
+           s2.call_tx_hash                                                    AS call_tx_hash,
+           s2.contract_address                                                AS contract_address,
+           s2.deadline                                                        AS deadline,
+           s2.output_amounts                                                  AS output_amounts,
+           s2.path                                                            AS path,
+           s2.to                                                              AS to,
+    FROM {{ source('sushi_bnb', 'UniswapV2Pair_evt_Swap') }} t
     INNER JOIN {{ source('sushi_bnb', 'swapExactETHForTokens') }} s1
         ON s1.contract_address = t.contract_address 
+    INNER JOIN {{ source('sushi_bnb', 'swapTokensForExactETH') }} s2
+        ON s2.contract_address = t.contract_address 
+    INNER JOIN {{ source('sushi_bnb', 'swapExactETHForTokensSupportingFeeOnTransferTokens') }} s3
+        ON s3.contract_address = t.contract_address
+        AND s3.call_block_number = s1.call_block_number
+        AND s3.call_tx_hash = s1.call_tx_hash
+        AND s3.amountETHMin = s1.amountOut
+    INNER JOIN {{ source('sushi_bnb', 'swapETHForExactTokens') }} s4
+        ON s4.contract_address = t.contract_address 
+   
     INNER JOIN {{ source('sushi_bnb', 'UniswapV2Factory_evt_PairCreated') }} f
         ON f.pair = t.contract_address
     {% if is_incremental() %}

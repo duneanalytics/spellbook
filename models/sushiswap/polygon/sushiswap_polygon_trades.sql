@@ -19,18 +19,56 @@ WITH sushiswap_dex AS (
            t.to                                                               AS taker,
            ''                                                                 AS maker,
            case when t.amount0Out = 0 then t.amount1Out else t.amount0Out  end AS token_bought_amount_raw,
-           case when s1.amountOut = 0 then s1.amountOut else s1.amountOut end AS token_bought_amount_raw,
            case when t.amount0In = 0 then t.amount1In else t.amount0In end    AS token_sold_amount_raw,
            cast(NULL AS double)                                               AS amount_usd,
            case when t.amount0Out = 0 then f.token1 else f.token0 end         AS token_bought_address,
            case when t.amount0In = 0 then f.token1 else f.token0 end          AS token_sold_address,
            t.contract_address                                                 AS project_contract_address,
            t.evt_tx_hash                                                      AS tx_hash,
-           s1.call_trace_address                                                                 AS trace_address,
+           ''                                                                 AS trace_address,
            t.evt_index
+           --swapTokensForExactTokens
+           case when s1.amountOut = 0 then s1.amountOut else s1.amountOut end AS token_bought_amount_raw,
+           s1.amountInMax                                                     AS token_bought_amount_max,
+           s1.call_block_number                                               AS call_block_number,
+           s1.call_block_time                                                 AS call_block_time,
+           s1.call_success                                                    AS call_success,
+           s1.call_trace_address                                              AS call_trace_address,
+           s1.call_tx_hash                                                    AS call_tx_hash,
+           s1.contract_address                                                AS contract_address,
+           s1.deadline                                                        AS deadline,
+           s1.output_amounts                                                  AS output_amounts,
+           s1.path                                                            AS path,
+           s1.to                                                              AS to,
+           --swapTokensForExactETH
+           case when s2.amountOut = 0 then s2.amountOut else s2.amountOut end AS token_sold_amount_raw,
+           s2.amountInMax                                                     AS token_sold_amount_max,
+           s2.call_block_number                                               AS call_block_number,
+           s2.call_block_time                                                 AS call_block_time,
+           s2.call_success                                                    AS call_success,
+           s2.call_trace_address                                              AS call_trace_address,
+           s2.call_tx_hash                                                    AS call_tx_hash,
+           s2.contract_address                                                AS contract_address,
+           s2.deadline                                                        AS deadline,
+           s2.output_amounts                                                  AS output_amounts,
+           s2.path                                                            AS path,
+           s2.to                                                              AS to,
+
+
     FROM {{ source('sushi_polygon', 'UniswapV2Pair_evt_Swap') }} t
+    
     INNER JOIN {{ source('sushi_polygon', 'swapExactETHForTokens') }} s1
         ON s1.contract_address = t.contract_address 
+    INNER JOIN {{ source('sushi_polygon', 'swapTokensForExactETH') }} s2
+        ON s2.contract_address = t.contract_address 
+    INNER JOIN {{ source('sushi_polygon', 'swapExactETHForTokensSupportingFeeOnTransferTokens') }} s3
+        ON s3.contract_address = t.contract_address
+        AND s3.call_block_number = s1.call_block_number
+        AND s3.call_tx_hash = s1.call_tx_hash
+        AND s3.amountETHMin = s1.amountOut
+    INNER JOIN {{ source('sushi_polygon', 'swapETHForExactTokens') }} s4
+        ON s4.contract_address = t.contract_address 
+   
     INNER JOIN {{ source('sushi_polygon', 'UniswapV2Factory_evt_PairCreated') }} f
         ON f.pair = t.contract_address
     {% if is_incremental() %}
