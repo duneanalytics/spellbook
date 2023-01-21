@@ -53,6 +53,12 @@
      'blockchain': 'ethereum',
      'schema': 'airswap_ethereum',
      'table_name': 'swap_evt_Swap',
+     'time_column': 'evt_block_time'},
+
+    {'project': 'tetuswap',
+     'blockchain': 'fantom',
+     'schema': 'tetu_io_fantom',
+     'table_name': 'Pair_evt_Swap',
      'time_column': 'evt_block_time'}
 ] %}
 
