@@ -42,7 +42,8 @@ models:
       - &tx_method_id
         name: tx_method_id
         description: "Function calls specified by the first four bytes of data sent with a transaction"
-      - name: unique_transfer_id
+      - &unique_transfer_id
+        name: unique_transfer_id
         description: "Unique transfer ID (used for testing for duplicates), made up with tx_hash and trace_address"
         tests:
           - not_null
