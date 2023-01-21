@@ -1,6 +1,5 @@
 {{ config(alias='nft', tags=['static']) }}
 
-WITH manually_mapped_tokens AS (
 SELECT
   LOWER(contract_address) AS contract_address, name, standard
 FROM
@@ -251,11 +250,3 @@ FROM
 ,('0x00e3aa03e47c32397a94509e50b0558988c0d04e', 'L2NFTOG', 'erc721')
 
 ) as temp_table (contract_address, name, standard)
-
-)
-
-SELECT contract_address, name, standard FROM manually_mapped_tokens
-UNION ALL
-SELECT contract_address, name, standard FROM {{ref('tokens_optimism_nft_bridged_mapping')}}
-  WHERE contract_address NOT IN (SELECT contract_address FROM manually_mapped_tokens)
-  GROUP BY 1,2,3
