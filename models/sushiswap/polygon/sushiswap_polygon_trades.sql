@@ -18,16 +18,19 @@ WITH sushiswap_dex AS (
     SELECT t.evt_block_time                                                   AS block_time,
            t.to                                                               AS taker,
            ''                                                                 AS maker,
-           case when t.amount0Out = 0 then t.amount1Out else t.amount0Out end AS token_bought_amount_raw,
+           case when t.amount0Out = 0 then t.amount1Out else t.amount0Out  end AS token_bought_amount_raw,
+           case when s1.amountOut = 0 then s1.amountOut else s1.amountOut end AS token_bought_amount_raw,
            case when t.amount0In = 0 then t.amount1In else t.amount0In end    AS token_sold_amount_raw,
            cast(NULL AS double)                                               AS amount_usd,
            case when t.amount0Out = 0 then f.token1 else f.token0 end         AS token_bought_address,
            case when t.amount0In = 0 then f.token1 else f.token0 end          AS token_sold_address,
            t.contract_address                                                 AS project_contract_address,
            t.evt_tx_hash                                                      AS tx_hash,
-           ''                                                                 AS trace_address,
+           s1.call_trace_address                                                                 AS trace_address,
            t.evt_index
-    FROM {{ source('sushi_polygon', 'UniswapV2Router02_evt_swapTokensForExactTokens') }} t
+    FROM {{ source('sushi_polygon', 'UniswapV2Pair_evt_Swap') }} t
+    INNER JOIN {{ source('sushi_polygon', 'swapExactETHForTokens') }} s1
+        ON s1.contract_address = t.contract_address 
     INNER JOIN {{ source('sushi_polygon', 'UniswapV2Factory_evt_PairCreated') }} f
         ON f.pair = t.contract_address
     {% if is_incremental() %}
