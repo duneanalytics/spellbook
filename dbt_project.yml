@@ -123,6 +123,8 @@ models:
         +schema: sushiswap_gnosis
       arbitrum:
         +schema: sushiswap_arbitrum
+      fantom:
+        +schema: sushiswap_fantom
 
     babyswap:
       +schema: babyswap
