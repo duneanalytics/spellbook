@@ -58,7 +58,7 @@ models:
       blockchain: optimism
       sector: transfers
       project: tokens
-      contributors: msilb7, chuxin
+      contributors: msilb7, chuxin, hildobby, 0xRob
     config:
       tags: ["transfers", "optimism", "eth","erc20","erc721","erc1155","nft"]
     description: "Events of all token transfers on Optimism."
