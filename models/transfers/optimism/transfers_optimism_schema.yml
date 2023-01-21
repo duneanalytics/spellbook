@@ -120,6 +120,7 @@ models:
         description: "To Address for the Transaction"
       - &evt_index
         name: evt_index
+        description: "Event Index"
       - *trace_address
       - *unique_transfer_id
       
