@@ -129,6 +129,11 @@ models:
       bnb:
         +schema: babyswap_bnb
 
+    tetuswap:
+      +schema: tetuswap
+      fantom:
+        +schema: tetuswap_fantom
+
     opensea:
       +schema: opensea
       ethereum:
