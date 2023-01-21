@@ -63,6 +63,12 @@ models:
       tags: ["transfers", "optimism", "eth","erc20","erc721","erc1155","nft"]
     description: "Events of all token transfers on Optimism."
     columns:
+      - *tx_block_time
+      - *tx_block_number
+      - *tx_hash
+      - *tx_method_id
+      - *trace_address
+      - *unique_transfer_id
       - &from_address
         name: from_address
         description: "Wallet address that the token is transferred from"
@@ -105,13 +111,9 @@ models:
       - &value_tokens
         name: value
         description: "Amount of each token transferred from from_address to to_address"
-      - *tx_block_time
       - &tx_block_date
         name: tx_block_date
         description: "Date for block event time in UTC"
-      - *tx_block_number
-      - *tx_hash
-      - *tx_method_id
       - &tx_from_address
         name: tx_from_address
         description: "From Address for the Transaction"
@@ -121,6 +123,4 @@ models:
       - &evt_index
         name: evt_index
         description: "Event Index"
-      - *trace_address
-      - *unique_transfer_id
       
