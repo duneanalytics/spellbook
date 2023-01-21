@@ -258,3 +258,4 @@ SELECT contract_address, name, standard FROM manually_mapped_tokens
 UNION ALL
 SELECT contract_address, name, standard FROM {{ref('tokens_optimism_nft_bridged_mapping')}}
   WHERE contract_address NOT IN (SELECT contract_address FROM manually_mapped_tokens)
+  GROUP BY 1,2,3
