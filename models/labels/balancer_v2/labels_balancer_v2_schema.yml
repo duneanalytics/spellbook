@@ -10,10 +10,14 @@ models:
     config:
       tags: ['labels', 'ethereum', 'balancer', 'pools']
     description: "Balancer V2 liquidity pools created on Ethereum. "
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain"   
+        description: "Blockchain"
       - &address
         name: address
         description: "Address of liquidity pool"
@@ -35,7 +39,7 @@ models:
       - &updated_at
         name: updated_at
         description: "When were labels updated for the last time"
-  
+
   - name: labels_balancer_v2_pools_polygon
     meta:
       blockchain: polygon
@@ -45,8 +49,12 @@ models:
     config:
       tags: ['labels', 'polygon', 'balancer', 'pools']
     description: "Balancer V2 liquidity pools created on Polygon."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
     columns:
-      - *blockchain 
+      - *blockchain
       - *address
       - *name
       - *category
@@ -69,7 +77,7 @@ models:
           combination_of_columns:
             - address
     columns:
-      - *blockchain 
+      - *blockchain
       - *address
       - *name
       - *category
@@ -87,8 +95,12 @@ models:
     config:
       tags: ['labels', 'optimism', 'balancer', 'pools']
     description: "Balancer V2 liquidity pools created on Optimism."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
     columns:
-      - *blockchain 
+      - *blockchain
       - *address
       - *name
       - *category
@@ -104,10 +116,10 @@ models:
       project: balancer_v2
       contributors: balancerlabs
     config:
-      tags: ['labels', 'ethereum', 'polygon', 'arbitrum', 'optimism', 'balancer', 'pools']  
+      tags: ['labels', 'ethereum', 'polygon', 'arbitrum', 'optimism', 'balancer', 'pools']
     description: "Balancer V2 liquidity pools created across blockchains."
     columns:
-      - *blockchain 
+      - *blockchain
       - *address
       - *name
       - *category
