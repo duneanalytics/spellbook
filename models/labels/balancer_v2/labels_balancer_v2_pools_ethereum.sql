@@ -1,8 +1,15 @@
-{{config(alias='balancer_v2_pools_ethereum',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
+{{config(
+    alias='balancer_v2_pools_ethereum',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['address'],
+    post_hook='{{ expose_spells(\'["ethereum"]\',
+                                     "sector",
                                     "labels",
-                                    \'["balancerlabs"]\') }}')}}
+                                    \'["balancerlabs"]\') }}'
+    )
+}}
 
 WITH pools AS (
     SELECT pool_id, zip.tokens AS token_address,  zip.weights/pow(10, 18) AS normalized_weight, symbol, pool_type
@@ -11,6 +18,10 @@ WITH pools AS (
         FROM {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} c
         INNER JOIN {{ source('balancer_v2_ethereum', 'WeightedPoolFactory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
+        {% if is_incremental() %}
+        WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+            AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     )
 
     UNION ALL
@@ -21,6 +32,10 @@ WITH pools AS (
         FROM {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} c
         INNER JOIN {{ source('balancer_v2_ethereum', 'WeightedPoolV2Factory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
+        {% if is_incremental() %}
+        WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+            AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     )
 
     UNION ALL
@@ -31,6 +46,10 @@ WITH pools AS (
         FROM {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} c
         INNER JOIN {{ source('balancer_v2_ethereum', 'WeightedPool2TokensFactory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
+        {% if is_incremental() %}
+        WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+            AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     )
 
     UNION ALL
@@ -41,6 +60,10 @@ WITH pools AS (
         FROM {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} c
         INNER JOIN {{ source('balancer_v2_ethereum', 'InvestmentPoolFactory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
+        {% if is_incremental() %}
+        WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+            AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     )
 
     UNION ALL
@@ -49,6 +72,10 @@ WITH pools AS (
     FROM {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_ethereum', 'StablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    {% if is_incremental() %}
+    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION ALL
 
@@ -56,6 +83,10 @@ WITH pools AS (
     FROM {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_ethereum', 'MetaStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    {% if is_incremental() %}
+    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION ALL
 
@@ -63,6 +94,10 @@ WITH pools AS (
     FROM {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_ethereum', 'LiquidityBootstrappingPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    {% if is_incremental() %}
+    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION ALL
 
@@ -70,6 +105,10 @@ WITH pools AS (
     FROM {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_ethereum', 'NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    {% if is_incremental() %}
+    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION ALL
 
@@ -77,6 +116,10 @@ WITH pools AS (
     FROM {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_ethereum', 'StablePhantomPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    {% if is_incremental() %}
+    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION ALL
 
@@ -84,6 +127,10 @@ WITH pools AS (
     FROM {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_ethereum', 'ComposableStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    {% if is_incremental() %}
+    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
     UNION ALL
 
@@ -91,6 +138,10 @@ WITH pools AS (
     FROM {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_ethereum', 'AaveLinearPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    {% if is_incremental() %}
+    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 ),
 
 settings AS (
