@@ -25,6 +25,7 @@ WITH pools AS (
         FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
         INNER JOIN {{ source('balancer_v2_arbitrum', 'WeightedPoolFactory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
+        AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
         {% if is_incremental() %}
         WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
           AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -39,6 +40,7 @@ WITH pools AS (
         FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
         INNER JOIN {{ source('balancer_v2_arbitrum', 'WeightedPoolV2Factory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
+        AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
         {% if is_incremental() %}
         WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
           AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -53,6 +55,7 @@ WITH pools AS (
         FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
         INNER JOIN {{ source('balancer_v2_arbitrum', 'InvestmentPoolFactory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
+        AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
         {% if is_incremental() %}
         WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
           AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -67,6 +70,7 @@ WITH pools AS (
         FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
         INNER JOIN {{ source('balancer_v2_arbitrum', 'WeightedPool2TokensFactory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
+        AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
         {% if is_incremental() %}
         WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
           AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -78,6 +82,7 @@ WITH pools AS (
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'StablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
     WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
       AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -89,6 +94,7 @@ WITH pools AS (
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'MetaStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
     WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
       AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -100,6 +106,7 @@ WITH pools AS (
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'LiquidityBootstrappingPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
     WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
       AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -111,6 +118,7 @@ WITH pools AS (
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
     WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
       AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -122,6 +130,7 @@ WITH pools AS (
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'ComposableStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
     WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
       AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -133,6 +142,7 @@ WITH pools AS (
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'AaveLinearPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
     WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
       AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -144,6 +154,7 @@ WITH pools AS (
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'ERC4626LinearPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
     WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
     AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')

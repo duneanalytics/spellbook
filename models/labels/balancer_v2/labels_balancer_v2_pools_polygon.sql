@@ -18,6 +18,7 @@ WITH pools AS (
         FROM {{ source('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }} c
         INNER JOIN {{ source('balancer_v2_polygon', 'WeightedPoolFactory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
+        AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
         {% if is_incremental() %}
         WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
             AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -32,6 +33,7 @@ WITH pools AS (
         FROM {{ source('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }} c
         INNER JOIN {{ source('balancer_v2_polygon', 'WeightedPoolV2Factory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
+        AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
         {% if is_incremental() %}
         WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
             AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -46,6 +48,7 @@ WITH pools AS (
         FROM {{ source('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }} c
         INNER JOIN {{ source('balancer_v2_polygon', 'WeightedPool2TokensFactory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
+        AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
         {% if is_incremental() %}
         WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
             AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -60,6 +63,7 @@ WITH pools AS (
         FROM {{ source('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }} c
         INNER JOIN {{ source('balancer_v2_polygon', 'InvestmentPoolFactory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
+        AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
         {% if is_incremental() %}
         WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
             AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -72,6 +76,7 @@ WITH pools AS (
     FROM {{ source('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_polygon', 'StablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
     WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
         AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -83,6 +88,7 @@ WITH pools AS (
     FROM {{ source('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_polygon', 'MetaStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
     WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
         AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -95,6 +101,7 @@ WITH pools AS (
     FROM {{ source('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_polygon', 'LiquidityBootstrappingPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
     WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
         AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -106,6 +113,7 @@ WITH pools AS (
     FROM {{ source('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_polygon', 'NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
     WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
         AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -117,6 +125,7 @@ WITH pools AS (
     FROM {{ source('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_polygon', 'StablePhantomPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
     WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
         AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -128,6 +137,7 @@ WITH pools AS (
     FROM {{ source('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_polygon', 'ComposableStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
     WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
         AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -139,6 +149,7 @@ WITH pools AS (
     FROM {{ source('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_polygon', 'AaveLinearPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
+    AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
     WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
         AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
