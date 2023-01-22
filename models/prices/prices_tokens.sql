@@ -427,7 +427,6 @@ VALUES
     ("eng-enigma", "ethereum", "ENG", "0xf0ee6b27b759c9893ce4f094b49ad28fd15a23e4", 8),
     ("enj-enjin-coin", "ethereum", "ENJ", "0xf629cbd94d3791c9250152bd8dfbdf380e2a3b9c", 18),
     ("ens-ethereum-name-service", "ethereum", "ENS", "0xc18360217d8f7ab5e7c516566761ea12ce7f9d72", 18),
-    ("erc20-erc20", "ethereum", "ERC20", "0xc3761eb917cd790b30dad99f6cc5b4ff93c4f9ea", 18),
     ("erowan-sifchain", "ethereum", "EROWAN", "0x07bac35846e5ed502aa91adf6a9e7aa210f2dcbe", 18),
     ("ersdl-unfederalreserve", "ethereum", "ERSDL", "0x5218e472cfcfe0b64a064f055b43b4cdc9efd3a6", 18),
     ("ethplo-ethplode", "ethereum", "ETHPLO", "0xe0c6ce3e73029f201e5c0bedb97f67572a93711c", 6),
@@ -1617,8 +1616,9 @@ VALUES
     ("gyen-gyen", "ethereum", "ibJPY", "0x5555f75e3d5278082200fb451d1b6ba946d8e13b", 18),
     ("chf-swiss-franc-token", "ethereum", "ibCHF", "0x1cc481ce2bd2ec7bf67d1be64d4878b16078f309", 18),
     ("stmatic-lido-staked-matic", "ethereum", "STMATIC", "0x9ee91F9f426fA633d227f7a9b000E28b9dfd8599", 18),
-    ("xen-xen-crypto", "ethereum", "XEN", "0x06450dEe7FD2Fb8E39061434BAbCFC05599a6Fb8", 18),
+    ("xen-xen-crypto", "ethereum", "XEN", "0x06450dee7fd2fb8e39061434babcfc05599a6fb8", 18),
     ("bob-bob", "ethereum", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
+    ("unbnk-unbanked", "ethereum", "UNBNK", "0x06b884e60794ce02aafab13791b59a2e6a07442f", 18),
 
     -- Query for Popular Traded Tokens on Gnosis Chain without prices: https://dune.com/queries/1719783
     ("dai-dai", "gnosis", "WXDAI", "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18),
@@ -1753,6 +1753,7 @@ VALUES
     ("mimatic-mimatic", "polygon", "MIMATIC", "0xa3fa99a148fa48d14ed51d610c367c61876997f1", 18),
     ("kom-kommunitas", "polygon", "KOM", "0xc004e2318722ea2b15499d6375905d75ee5390b8", 8),
     ("bob-bob", "polygon", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
+    ("ric-ricochet","polygon","RIC","0x263026e7e53dbfdce5ae55ade22493f828922965",18),
 
     ("aury-aurory", "solana", "AURY", "AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP", 9),
     ("btc-bitcoin", "solana", "BTC", "9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E", 6),
@@ -1778,7 +1779,7 @@ VALUES
     ("drip-drip-network", "bnb", "DRIP", "0x20f663CEa80FaCE82ACDFA3aAE6862d246cE0333", 18),
     ("fur-furio", "bnb", "$FUR", "0x48378891d6E459ca9a56B88b406E8F4eAB2e39bF", 18),
     ("pstn-piston", "bnb", "PSTN", "0xBfACD29427fF376FF3BC22dfFB29866277cA5Fb4", 18),
-
+    ("ocean-ocean-protocol", "bnb", "OCEAN", "0x3516141b1ac8751c2042a8a1bc411ab8655464ac", 18),
     ("weth-weth", "fantom", "WETH", "0x74b23882a30290451A17c44f4F05243b6b58C76d", 18), 
     ("wbtc-wrapped-bitcoin", "fantom", "WBTC", "0x321162Cd933E2Be498Cd2267a90534A804051b11", 8),
     ("ftm-fantom", "fantom", "WFTM", "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83", 18),
@@ -1828,5 +1829,4 @@ VALUES
     ("oxd-0xdao", "fantom", "OXD", "0xc165d941481e68696f43EE6E99BFB2B23E0E3114", 18), 
     ("2shares-2share", "fantom", "2SHARES", "0xc54A1684fD1bef1f077a336E6be4Bd9a3096a6Ca", 18), 
     ("3share-3share", "fantom", "3SHARES", "0x6437ADAC543583C4b31Bf0323A0870430F5CC2e7", 18)
-    
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
