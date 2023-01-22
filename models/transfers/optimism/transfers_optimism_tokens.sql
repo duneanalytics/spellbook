@@ -44,7 +44,7 @@ FROM (
         -----------
         SELECT
 
-        r."from" AS transfer_from_address,
+        r.`from` AS transfer_from_address,
         r.to AS transfer_to_address,
         r.contract_address AS contract_address,
         'erc20' AS token_standard,
@@ -60,10 +60,10 @@ FROM (
         r.value,
         r.evt_block_time AS tx_block_time,
         r.evt_block_number AS tx_block_number,
-        r.evt_tx_hash AS tx_hash
+        r.evt_tx_hash AS tx_hash,
 
         substring(t.data, 1, 10) AS tx_method_id,
-        t."from" AS tx_from_address,
+        t.`from` AS tx_from_address,
         t.to AS tx_to_address,
 
         r.evt_index,
@@ -91,7 +91,7 @@ FROM (
 
         SELECT
 
-        r."from" AS transfer_from_address,
+        r.`from` AS transfer_from_address,
         r.to AS transfer_to_address,
         r.contract_address AS contract_address,
         'eth' AS token_standard,
@@ -110,7 +110,7 @@ FROM (
         tx_block_number,
 
         tx_method_id,
-        t."from" AS tx_from_address,
+        t.`from` AS tx_from_address,
         t.to AS tx_to_address,
 
         NULL AS evt_index,
@@ -133,7 +133,7 @@ FROM (
         
         SELECT
 
-        r."from" AS transfer_from_address,
+        r.`from` AS transfer_from_address,
         r.to AS transfer_to_address,
         r.contract_address AS contract_address,
         token_standard,
@@ -152,10 +152,10 @@ FROM (
         amount as value,
         r.evt_block_time AS tx_block_time,
         r.evt_block_number AS tx_block_number,
-        r.evt_tx_hash AS tx_hash
+        r.evt_tx_hash AS tx_hash,
 
         substring(t.data, 1, 10) AS tx_method_id,
-        t."from" AS tx_from_address,
+        t.`from` AS tx_from_address,
         t.to AS tx_to_address,
 
         r.evt_index,
