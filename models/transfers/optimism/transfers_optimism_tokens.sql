@@ -79,14 +79,14 @@ FROM (
         r.evt_index,
         NULL AS trace_address,
 
-        evt_tx_hash || '-' || CAST(evt_index AS VARCHAR(100))  as unique_transfer_id
+        r.evt_tx_hash || '-' || CAST(evt_index AS VARCHAR(100))  as unique_transfer_id
 
         FROM {{ source('erc20_ethereum', 'evt_transfer') }} r
 
         -- exclude ETH placeholder token transfer since this is handled in ETH transfers
         where r.contract_address != lower('0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000')
         {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-        and r.block_time >= date_trunc('day', now() - interval '1 week')
+        and r.evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
 
         ----------
@@ -117,7 +117,7 @@ FROM (
         FROM {{ ref('transfers_optimism_eth') }} r
 
         {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-        where t.block_time >= date_trunc('day', now() - interval '1 week')
+        where t.tx_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
 
         ----------
