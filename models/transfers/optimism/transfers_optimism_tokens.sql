@@ -71,6 +71,7 @@ FROM (
         r.evt_block_time AS tx_block_time,
         r.evt_block_number AS tx_block_number,
         r.evt_tx_hash AS tx_hash,
+        
         r.evt_index,
         NULL AS trace_address,
 
@@ -102,6 +103,7 @@ FROM (
         r.value,
         tx_block_time,
         tx_block_number,
+        tx_hash,
 
         NULL AS evt_index,
         r.trace_address,
@@ -132,6 +134,7 @@ FROM (
         r.evt_block_time AS tx_block_time,
         r.evt_block_number AS tx_block_number,
         r.evt_tx_hash AS tx_hash,
+
         r.evt_index,
         NULL AS trace_address,
 
