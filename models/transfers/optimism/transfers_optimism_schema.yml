@@ -13,10 +13,10 @@ models:
     columns:
       - &from
         name: from
-        description: "Wallet address that initiated the transaction"
+        description: "Wallet address that sent the ETH"
       - &to
         name: to
-        description: "Wallet address that received the transaction"
+        description: "Wallet address that received the ETH"
       - &contract_address
         name: contract_address
         description: "Using the ETH deposit placeholder address to match with prices tables"
@@ -25,7 +25,7 @@ models:
         description: "Amount of ETH transferred from sender to recipient"
       - &value_decimal
         name: value_decimal
-        description: "Amount of ETH transferred in decimals from sender to recipient"
+        description: "Amount of ETH transferred, decimal adjusted, from sender to recipient"
       - &tx_hash
         name: tx_hash
         description: "Primary key of the transaction"
