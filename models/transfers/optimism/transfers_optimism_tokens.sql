@@ -112,7 +112,7 @@ FROM (
         NULL AS evt_index,
         r.trace_address,
 
-        r.tx_hash || '-' || cast(r.trace_address as string) as unique_transfer_id
+        r.unique_transfer_id
 
         FROM {{ ref('transfers_optimism_eth') }} r
 
