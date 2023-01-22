@@ -99,7 +99,7 @@ FROM (
         NULL AS token_id, -- used by NFTs
         NULL AS transfer_type, -- used by NFTs
         -- is the transaction an eth transfer, or did this happen in an internal transaction?
-        t.value,
+        r.value,
         tx_block_time,
         tx_block_number,
 
