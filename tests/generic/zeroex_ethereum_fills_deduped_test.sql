@@ -1,6 +1,5 @@
 {% test zeroex_ethereum_fills_deduped_test(model, column_name, seed_file) %}
 
-
 WITH unit_tests AS
 (
     SELECT 
@@ -16,5 +15,4 @@ WITH unit_tests AS
 select *
     from unit_tests
     where amount_test = False
-
 {% endtest %}
