@@ -138,7 +138,7 @@ FROM (
         r.evt_index,
         NULL AS trace_address,
 
-        evt_tx_hash || '-' || CAST(evt_index AS VARCHAR(100))  as unique_transfer_id
+        tx_hash || '-' || CAST(evt_index AS VARCHAR(100))  as unique_transfer_id
 
         FROM {{ ref('nft_optimism_transfers') }} r
 
