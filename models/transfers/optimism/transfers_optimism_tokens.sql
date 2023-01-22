@@ -91,16 +91,16 @@ FROM (
 
         SELECT
 
-        t.`from` AS transfer_from_address,
-        t.to AS transfer_to_address,
-        t.contract_address AS contract_address,
+        r.`from` AS transfer_from_address,
+        r.to AS transfer_to_address,
+        r.contract_address AS contract_address,
         'eth' AS token_standard,
         'fungible' AS token_type,
         NULL AS token_id, -- used by NFTs
         NULL AS transfer_type, -- used by NFTs
         -- is the transaction an eth transfer, or did this happen in an internal transaction?
         CASE
-                WHEN gas_used = 21000 AND tx_method_id = '0x' THEN 'transfer transaction'
+                WHEN t.gas_used = 21000 AND tx_method_id = '0x' THEN 'transfer transaction' -- we specify gas_used because some arb bots will send null data as well.
                 WHEN tx_method_id = '0xd0e30db0' THEN 'eth wrap'
                 WHEN tx_method_id = '0x2e1a7d4d' THEN 'eth unwrap'
                 ELSE 'internal transaction' END
@@ -110,15 +110,18 @@ FROM (
         tx_block_number,
 
         tx_method_id,
-        t.`from` AS tx_from_address,
-        t.to AS tx_to_address,
+        r.`from` AS tx_from_address,
+        r.to AS tx_to_address,
 
         NULL AS evt_index,
-        t.trace_address,
+        r.trace_address,
 
-        t.tx_hash || '-' || cast(t.trace_address as string) as unique_transfer_id
+        r.tx_hash || '-' || cast(r.trace_address as string) as unique_transfer_id
 
-        FROM {{ ref('transfers_optimism_eth') }} t
+        FROM {{ ref('transfers_optimism_eth') }} r
+        inner join {{ source('optimism', 'transactions') }} as t 
+                on r.evt_tx_hash = t.hash
+                and r.evt_block_number = t.block_number
 
         {% if is_incremental() %} -- this filter will only be applied on an incremental run 
         where 
