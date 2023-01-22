@@ -240,6 +240,11 @@ models:
         +schema: dodo_ethereum
       bnb:
         +schema: dodo_bnb
+        
+    spookyswap:
+      +schema: spookyswap
+      fantom:
+        +schema: spookyswap_fantom
 
     labels:
       +schema: labels
