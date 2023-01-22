@@ -19,12 +19,15 @@ SELECT transfer_from_address,
         token_type,
         token_id,
         transfer_type,
+        -- mint, burn, or transfer
         CASE
                 WHEN transfer_from_address = '0x0000000000000000000000000000000000000000' THEN 'mint'
                 WHEN transfer_to_address = '0x0000000000000000000000000000000000000000' THEN 'burn'
                 ELSE 'transfer'
                 END 
         AS transfer_style,
+
+        -- is the transfer part of the top-level transaction, or is it internal?
         CASE WHEN substring(t.data, 1, 10)
                         IN (    '0x42842e0e','0x23b872dd','0xb88d4fde','0xf3993d11' --erc721
                                 ,'0xf242432a','0x2eb2c2d6' --erc1155
@@ -40,7 +43,8 @@ SELECT transfer_from_address,
                 ELSE 'internal transaction'
                 END
         AS transfer_tx_type,
-        cast(value as double) AS value,
+
+        cast(tfs.value as double) AS value,
         tx_block_time,
         DATE_TRUNC('day',tx_block_time) AS tx_block_date,
         tx_block_number,
