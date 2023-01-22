@@ -67,7 +67,7 @@ FROM (
         t.to AS tx_to_address,
 
         r.evt_index,
-        r.trace_address,
+        NULL AS trace_address,
 
         evt_tx_hash || '-' || CAST(evt_index AS VARCHAR(100))  as unique_transfer_id
 
@@ -159,7 +159,7 @@ FROM (
         t.to AS tx_to_address,
 
         r.evt_index,
-        r.trace_address,
+        NULL AS trace_address,
 
         evt_tx_hash || '-' || CAST(evt_index AS VARCHAR(100))  as unique_transfer_id
 
