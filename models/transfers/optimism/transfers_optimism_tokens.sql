@@ -111,8 +111,7 @@ FROM (
         FROM {{ ref('transfers_optimism_eth') }} r
 
         {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-        where 
-                t.block_time >= date_trunc('day', now() - interval '1 week')
+        where t.block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
 
         ----------
@@ -139,10 +138,6 @@ FROM (
         evt_tx_hash || '-' || CAST(evt_index AS VARCHAR(100))  as unique_transfer_id
 
         FROM {{ ref('nft_optimism_transfers') }} r
-
-        inner join {{ source('optimism', 'transactions') }} as t 
-                on r.evt_tx_hash = t.hash
-                and r.evt_block_number = t.block_number
 
         {% if is_incremental() %} -- this filter will only be applied on an incremental run 
         where r.block_time >= date_trunc('day', now() - interval '1 week')
