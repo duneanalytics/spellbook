@@ -26,7 +26,7 @@ SELECT transfer_from_address,
                 END 
         AS transfer_style,
         transfer_tx_type,
-        value,
+        cast(value as double) AS value,
         tx_block_time,
         DATE_TRUNC('day',tx_block_time) AS tx_block_date,
         tx_block_number,
