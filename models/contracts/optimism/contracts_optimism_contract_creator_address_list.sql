@@ -394,6 +394,9 @@ FROM (
       ,('0xCb77b30841e1dEafFd88bA08B9654C667F80b80A', 'Quadrat')
       ,('0x001530e763FE9De4DCfe31BBd8548BCb579Ebf3A', 'Defiedge')
       ,('0xD8fA8F87129c654a6Dd7F34EEDAf58379E176eb1', 'Uniswap V3')
+      ,('0xf09c27934A92c56c7C0dD6cBAc858C35fBd5170f', 'Scion Finance')
+      ,('0x41BA3387E1a5a592E27B9EE33935957CE5F872C1', 'Avault')
+      ,('0x86b86c24c7b1f404ada8b4000acbe04158e096bd', 'Defiedge')
 
   ) as temp_table (creator_address, contract_project)
 
