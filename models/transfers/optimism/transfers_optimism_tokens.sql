@@ -163,7 +163,7 @@ FROM (
 
         evt_tx_hash || '-' || CAST(evt_index AS VARCHAR(100))  as unique_transfer_id
 
-        FROM {{ ref('nft_optimism_transfers') }} t
+        FROM {{ ref('nft_optimism_transfers') }} r
 
         inner join {{ source('optimism', 'transactions') }} as t 
                 on r.evt_tx_hash = t.hash
