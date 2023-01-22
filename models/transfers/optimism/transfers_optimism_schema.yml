@@ -17,7 +17,8 @@ models:
       - &to
         name: to
         description: "Wallet address that the ETH is transferred to"
-      - name: contract_address
+      - &contract_address
+        name: contract_address
         description: "Using the ETH deposit placeholder address to match with prices tables"
       - &value
         name: value
@@ -71,11 +72,11 @@ models:
       - *tx_method_id
       - *trace_address
       - *unique_transfer_id
-      - &from_address
-        name: from_address
+      - &transfer_from_address
+        name: transfer_from_address
         description: "Wallet address that the token is transferred from"
-      - &to_address
-        name: to_address
+      - &transfer_to_address
+        name: transfer_to_address
         description: "Wallet address that token is transferred to"
       - &contract_address_tokens
         name: contract_address
@@ -125,4 +126,3 @@ models:
       - &evt_index
         name: evt_index
         description: "Event Index"
-      
