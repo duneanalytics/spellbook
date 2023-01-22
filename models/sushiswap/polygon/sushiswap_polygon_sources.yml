@@ -131,9 +131,9 @@ sources:
           - *evt_tx_hash
           - *to
       - name: swapTokensForExactETH
-          loaded_at_field: evt_block_time
-          description: "Sushiswap swap events table on Binance smart chain"
-          columns:
+        loaded_at_field: evt_block_time
+        description: "Sushiswap swap events table on Binance smart chain"
+        columns:
             - &amountInMax
               name: amountInMax
             - *amountOut              
