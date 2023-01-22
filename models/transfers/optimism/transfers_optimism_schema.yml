@@ -9,14 +9,14 @@ models:
       contributors: msilb7, chuxin
     config:
       tags: ["transfers", "optimism", "eth"]
-    description: "Events of native ETH transfers on Optimism."
+    description: "Events of native ETH transfers on Ethereum."
     columns:
       - &from
         name: from
-        description: "Wallet address that the ETH is transferred from"
+        description: "Wallet address that initiated the transaction"
       - &to
         name: to
-        description: "Wallet address that the ETH is transferred to"
+        description: "Wallet address that received the transaction"
       - &contract_address
         name: contract_address
         description: "Using the ETH deposit placeholder address to match with prices tables"
@@ -25,14 +25,14 @@ models:
         description: "Amount of ETH transferred from sender to recipient"
       - &value_decimal
         name: value_decimal
-        description: "Amount of ETH transferred, decimal adjusted, from sender to recipient"
+        description: "Amount of ETH transferred in decimals from sender to recipient"
       - &tx_hash
         name: tx_hash
         description: "Primary key of the transaction"
         tests:
           - not_null
       - &trace_address
-      - name: trace_address
+        name: trace_address
         description: "All returned traces, gives the exact location in the call trace"
       - &tx_block_time
         name: tx_block_time
