@@ -27,34 +27,36 @@ with transfers_list as (SELECT el.block_time,
        tx.from as tx_from,
        tx.to as tx_to,
        tx.index as tx_index
-FROM {{ source('ethereum','logs') }} el
-LEFT JOIN {{ source('ethereum','transactions') }} tx ON tx.hash = el.tx_hash AND tx.block_time = el.block_time
-LEFT JOIN {{ source('ethereum','traces') }} tr ON tr.tx_hash = el.tx_hash AND tr.block_time = el.block_time
+FROM ethereum.logs el
+LEFT JOIN ethereum.transactions tx ON tx.hash = el.tx_hash AND tx.block_time = el.block_time
+LEFT JOIN ethereum.traces tr ON tr.tx_hash = el.tx_hash AND tr.block_time = el.block_time
 WHERE 1=1
     AND array_contains(array(
                 '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'),
                 topic1)
-    AND rpad('0x',42,ltrim('0x000000000000000000000000',el.topic2)) not in (
-        select address from {{ ref('addresses_ethereum_bridges') }}
-      )
+    AND el.block_time > '2022-10-11' AND el.block_time < '2022-10-13'
+    AND tx.block_time > '2022-10-11' AND tx.block_time < '2022-10-13'
+    AND tr.block_time > '2022-10-11' AND tr.block_time < '2022-10-13'
 GROUP BY 1,2,3,4,5,6,7,8,tx.from,tx.to,tx.index
             UNION ALL
-SELECT block_time,
-       block_number,
-       hash as tx_hash,
+SELECT tx.block_time,
+       tx.block_number,
+       tx.hash as tx_hash,
        '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' as token_address,
-       value,
-       from as transfer_from,
-       to as transfer_to,
+       tx.value,
+       tx.from as transfer_from,
+       tx.to as transfer_to,
        0 as index,
-       cast(success as string) as success,
-       CASE WHEN SUM(value) > 0 THEN from
-            ELSE to END AS contract_address,
-       from as tx_from,
-       to as tx_to,
-       index as tx_index
-FROM {{ source('ethereum','transactions') }}
-GROUP BY 1,2,3,4,5,6,7,8,from,to,index,success
+       cast(tx.success as string) as success,
+       CASE WHEN SUM(tr.value) > 0 THEN tx.from
+            ELSE tx.to END AS contract_address,
+       tx.from as tx_from,
+       tx.to as tx_to,
+       tx.index as tx_index
+FROM ethereum.transactions tx
+LEFT JOIN ethereum.traces tr ON tr.tx_hash = tx.hash AND tr.block_time = tx.block_time
+where tx.block_time > '2022-10-11' AND tx.block_time < '2022-10-13'
+GROUP BY 1,2,3,4,5,6,7,8,tx.from,tx.to,index,tx.success
 ORDER BY index ASC),
 
 label_sandwich as (
