@@ -6,6 +6,15 @@ sources:
     freshness:
       warn_after: { count: 12, period: hour }
     tables:
+      - name: UniswapV2Router02_call_swapETHForExactTokens
+      - name: UniswapV2Router02_call_swapExactETHForTokens
+      - name: UniswapV2Router02_call_swapExactETHForTokensSupportingFeeOnTransferTokens
+      - name: UniswapV2Router02_call_swapExactTokensForETH
+      - name: UniswapV2Router02_call_swapExactTokensForETHSupportingFeeOnTransferTokens
+      - name: UniswapV2Router02_call_swapExactTokensForTokens
+      - name: UniswapV2Router02_call_swapExactTokensForTokensSupportingFeeOnTransferTokens
+      - name: UniswapV2Router02_call_swapTokensForExactETH
+      - name: UniswapV2Router02_call_swapTokensForExactTokens
       - name: UniswapV2Pair_evt_Swap
         loaded_at_field: evt_block_time
         description: "Sushiswap swap events table on Binance smart chain"
@@ -131,9 +140,9 @@ sources:
           - *evt_tx_hash
           - *to
       - name: swapTokensForExactETH
-          loaded_at_field: evt_block_time
-          description: "Sushiswap swap events table on Binance smart chain"
-          columns:
+        loaded_at_field: evt_block_time
+        description: "Sushiswap swap events table on Binance smart chain"
+        columns:
             - &amountInMax
               name: amountInMax
             - *amountOut              
