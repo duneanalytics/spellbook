@@ -397,6 +397,7 @@ FROM (
       ,('0xf09c27934A92c56c7C0dD6cBAc858C35fBd5170f', 'Scion Finance')
       ,('0x41BA3387E1a5a592E27B9EE33935957CE5F872C1', 'Avault')
       ,('0x86b86c24c7b1f404ada8b4000acbe04158e096bd', 'Defiedge')
+      ,('0xf708929CCfDed4142420592caAef42bD41C8a367', 'Champion Finance')
 
   ) as temp_table (creator_address, contract_project)
 
