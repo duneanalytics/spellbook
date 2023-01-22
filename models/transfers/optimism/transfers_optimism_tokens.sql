@@ -91,9 +91,9 @@ FROM (
 
         SELECT
 
-        r.`from` AS transfer_from_address,
-        r.to AS transfer_to_address,
-        r.contract_address AS contract_address,
+        t.`from` AS transfer_from_address,
+        t.to AS transfer_to_address,
+        t.contract_address AS contract_address,
         'eth' AS token_standard,
         'fungible' AS token_type,
         NULL AS token_id, -- used by NFTs
@@ -105,7 +105,7 @@ FROM (
                 WHEN tx_method_id = '0x2e1a7d4d' THEN 'eth unwrap'
                 ELSE 'internal transaction' END
         AS transfer_tx_type,
-        r.value,
+        t.value,
         tx_block_time,
         tx_block_number,
 
@@ -114,15 +114,15 @@ FROM (
         t.to AS tx_to_address,
 
         NULL AS evt_index,
-        r.trace_address,
+        t.trace_address,
 
-        r.tx_hash || '-' || cast(r.trace_address as string) as unique_transfer_id
+        t.tx_hash || '-' || cast(t.trace_address as string) as unique_transfer_id
 
         FROM {{ ref('transfers_optimism_eth') }} t
 
         {% if is_incremental() %} -- this filter will only be applied on an incremental run 
         where 
-                r.block_time >= date_trunc('day', now() - interval '1 week')
+                t.block_time >= date_trunc('day', now() - interval '1 week')
                 and t.block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
 
