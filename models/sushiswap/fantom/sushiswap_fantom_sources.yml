@@ -8,7 +8,7 @@ sources:
     tables:
       - name: Pair_evt_Swap
         loaded_at_field: evt_block_time
-        description: "" # to-do
+        description: "Sushiswap swap events table on fantom chain"
         columns:
           - &amount0In
             name: amount0In
@@ -41,7 +41,7 @@ sources:
             name: to
       - name: SushiV2Factory_evt_PairCreated
         loaded_at_field: evt_block_time
-        description: "" # to-do
+        description: "SushiSwap Pool created events table"
         columns:
           - &_0
             name: _0
