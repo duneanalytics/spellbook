@@ -27,7 +27,7 @@ WITH prices AS (
         GROUP BY
             1, 2
     ),
-    
+
  dex_prices_1 AS (
         SELECT
             date_trunc('day', HOUR) AS DAY,
@@ -38,7 +38,7 @@ WITH prices AS (
         GROUP BY 1, 2
         HAVING sum(sample_size) > 3
     ),
-    
+
     dex_prices AS (
         SELECT
             *,
@@ -78,7 +78,7 @@ WITH prices AS (
             ) swaps
         GROUP BY 1, 2, 3
     ),
-    
+
 zipped_balance_changes AS (
         SELECT
             date_trunc('day', evt_block_time) AS day,
@@ -86,7 +86,7 @@ zipped_balance_changes AS (
             explode(arrays_zip(tokens, deltas, protocolFeeAmounts)) AS zipped
         FROM {{ source('balancer_v2_optimism', 'Vault_evt_PoolBalanceChanged') }}
     ),
-    
+
     balances_changes AS (
         SELECT
             day,
@@ -96,7 +96,7 @@ zipped_balance_changes AS (
         FROM zipped_balance_changes
         ORDER BY 1, 2, 3
     ),
-    
+
     managed_changes AS (
         SELECT
             date_trunc('day', evt_block_time) AS day,
@@ -105,7 +105,7 @@ zipped_balance_changes AS (
             cashDelta + managedDelta AS delta
         FROM {{ source('balancer_v2_optimism', 'Vault_evt_PoolBalanceManaged') }}
     ),
-    
+
     daily_delta_balance AS (
         SELECT
             day,
@@ -141,7 +141,7 @@ zipped_balance_changes AS (
             ) balance
         GROUP BY 1, 2, 3
     ),
-    
+
     cumulative_balance AS (
         SELECT
             DAY,
@@ -151,11 +151,11 @@ zipped_balance_changes AS (
             SUM(amount) OVER (PARTITION BY pool_id, token ORDER BY DAY ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS cumulative_amount
         FROM daily_delta_balance
     ),
-    
+
     calendar AS (
         SELECT explode(sequence(to_date('2021-04-21'), CURRENT_DATE, interval 1 day)) AS day
     ),
-    
+
    cumulative_usd_balance AS (
         SELECT
             c.day,
@@ -173,42 +173,7 @@ zipped_balance_changes AS (
         AND p2.token = b.token
         WHERE b.token != SUBSTRING(b.pool_id, 0, 42)
     ),
-    
-zipped_pools_tokens_weights AS (
-        SELECT
-            c.poolId AS pool_id,
-            explode(arrays_zip(cc.tokens, cc.weights)) AS zipped
-        FROM {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} c
-        INNER JOIN {{ source('balancer_v2_optimism', 'WeightedPoolFactory_call_create') }}  cc
-        ON cc.output_0 = SUBSTRING(c.poolId, 0, 42)
-        
-        UNION ALL
-        
-        SELECT
-            c.poolId AS pool_id,
-            explode(arrays_zip(cc.tokens, cc.weights)) AS zipped
-        FROM {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} c
-        INNER JOIN {{ source('balancer_v2_optimism', 'WeightedPool2TokensFactory_call_create') }}  cc
-        ON cc.output_0 = SUBSTRING(c.poolId, 0, 42)
 
-        UNION ALL
-        
-        SELECT
-            c.poolId AS pool_id,
-            explode(arrays_zip(cc.tokens, cc.weights)) AS zipped
-        FROM {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} c
-        INNER JOIN {{ source('balancer_v2_optimism', 'WeightedPoolV2Factory_call_create') }}  cc
-        ON cc.output_0 = SUBSTRING(c.poolId, 0, 42)
-    ),
-    
-    pools_tokens_weights AS (
-        SELECT
-            pool_id,
-            zipped.tokens AS token_address,
-            zipped.weights / 1e18 AS normalized_weight
-        FROM zipped_pools_tokens_weights
-    ),
-    
     pool_liquidity_estimates AS (
         SELECT
             b.day,
@@ -219,7 +184,7 @@ zipped_pools_tokens_weights AS (
         AND b.token = w.token_address
         GROUP BY 1, 2
     )
-    
+
 SELECT
     b.day,
     b.pool_id,
@@ -235,4 +200,3 @@ AND w.token_address = c.token
 LEFT JOIN tokens.erc20 t ON t.contract_address = c.token
 ORDER BY 1, 2, 3
 --LEFT JOIN pool_labels p ON p.pool_id = SUBSTRING(b.pool_id, 0, 42) :: bytea
-    
