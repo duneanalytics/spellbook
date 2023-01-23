@@ -62,9 +62,11 @@ ORDER BY index ASC),
 label_sandwich as (
 SELECT DISTINCT 
 tl0.tx_hash,
-CASE WHEN array_contains(array(txm3.to,txm2.to,txm1.to,tx1.to,tx2.to,tx3.to),tl0.tx_to) THEN 'sandwich'
-	   WHEN array_contains(array(txm3.from,txm2.from,txm1.from,tx1.from,tx2.from,tx3.from),tl0.tx_from) THEN 'sandwich'
-     ELSE 'not_sandwich' END AS label
+CASE WHEN array_contains(array(txm3.from,txm2.from,txm1.from,tx1.from,tx2.from,tx3.from,
+														   txm3.to,txm2.to,txm1.to,tx1.to,tx2.to,tx3.to),tl0.tx_to) THEN 'sandwich'
+	   WHEN array_contains(array(txm3.from,txm2.from,txm1.from,tx1.from,tx2.from,tx3.from,
+														   txm3.to,txm2.to,txm1.to,tx1.to,tx2.to,tx3.to),tl0.tx_from) THEN 'sandwich'
+     ELSE 'not_sandwich' END AS label_sandwiches
 FROM transfers_list tl0
 LEFT JOIN {{ source('ethereum','transactions') }} tx1
     ON tl0.block_time = tx1.block_time AND tl0.block_number = tx1.block_number AND tx1.index = tl0.tx_index + 1
@@ -115,10 +117,12 @@ check_surplus AS (
 SELECT tx_hash, 
        block_time, 
        SUM(sum_value_usd) AS revenue_amount_usd,
+       SUM(sum_value_eth) AS revenue_amount_eth,
        collect_set(token_address) AS revenue_token_addresses,
        collect_set(symbol) AS revenue_token_symbols
 FROM (
 SELECT SUM(value/power(10,p.decimals)*p.price) AS sum_value_usd,
+	   SUM(value/power(10,p.decimals)*p.price/peth.price) AS sum_value_eth,
        tx_hash,
        block_time,
        address,
@@ -128,8 +132,11 @@ FROM transfers_table tt
 JOIN {{ source('prices','usd') }} p ON p.minute = date_trunc('minute', tt.block_time) 
     AND p.contract_address = token_address
     AND p.blockchain = 'ethereum'
+JOIN {{ source('prices','usd') }} peth ON peth.minute = date_trunc('minute', tt.block_time) 
+    AND peth.symbol = 'WETH'
+    AND peth.blockchain = 'ethereum'
 WHERE address = tt.contract_address
-GROUP BY 2,3,4,5,6)
+GROUP BY 3,4,5,6,7)
 GROUP BY 1,2),
 
 count_trades AS (
@@ -149,8 +156,9 @@ SELECT
        tx_hash,
        contract_address,
        profit_amount_usd,
-			 projects,
+	   projects,
        tokens,
+       revenue_amount_eth,
        revenue_amount_usd,
        revenue_token_symbols,
        cost_amount,
@@ -164,11 +172,13 @@ FROM
        'ethereum' as blockchain,
        tl.block_time,
        tl.tx_hash,
+       revenue_amount_eth,
        revenue_amount_usd,
        revenue_token_symbols,
        tl.contract_address as contract_address,
        tx_fee_native as cost_amount,
        tx_fee_usd as cost_amount_usd,
+       revenue_amount_eth - tx_fee_native as profit_amount_eth,
        revenue_amount_usd - tx_fee_usd as profit_amount_usd
 FROM transfers_list tl
 LEFT JOIN check_surplus cs ON tl.tx_hash = cs.tx_hash AND tl.block_time = cs.block_time
@@ -183,16 +193,12 @@ WHERE 1=1
       AND label_bridges = 'not_bridge'
       AND cs.revenue_amount_usd > 0
       AND ct.nb_of_trades > 0
-      AND tl.tx_to not in (
-        select address from {{ ref('addresses_ethereum_dex') }}
-      )
-      AND tl.tx_from not in (
-        select address from {{ ref('addresses_ethereum_dex') }}
-      )
-      AND tl.tx_to NOT IN (SELECT address FROM {{ ref('addresses_ethereum_dex') }})
-      AND tl.tx_from NOT IN (SELECT address FROM {{ ref('addresses_ethereum_dex') }})
-      AND tl.tx_to IN (SELECT address FROM {{ ref('labels_mev_ethereum') }})
-      AND tl.tx_from IN (SELECT address FROM {{ ref('labels_mev_ethereum') }})
-GROUP BY 3,4,5,6,7,8,9,10,11)
+      AND tl.tx_to NOT IN (SELECT address FROM {{ ref('labels_contracts') }})
+      AND tl.tx_from NOT IN (SELECT address FROM {{ ref('labels_contracts') }})
+      AND tl.tx_to NOT IN (SELECT address FROM {{ ref('addresses_ethereum_swap_routing_contracts') }}) 
+      AND tl.tx_from NOT IN (SELECT address FROM {{ ref('addresses_ethereum_swap_routing_contracts') }}) 
+      AND tl.contract_address IN (SELECT address FROM {{ ref('labels_arbitrage_traders_ethereum') }}) 
+      OR tl.contract_address IN (SELECT address FROM {{ ref('labels_mev_ethereum') }}) 
+GROUP BY 3,4,5,6,7,8,9,10,11,12,13)
 WHERE size(projects) > 1 AND size(tokens) > 1
 ORDER BY revenue_amount_usd DESC

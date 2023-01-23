@@ -20,18 +20,18 @@ models:
       - name: distinct_name
         description: "Distinct name of centralised exchange address"
 
-  - name: addresses_ethereum_dex
+  - name: addresses_ethereum_swap_routing_contracts
     meta:
       blockchain: ethereum
       sector: dex
       project: addresses
       contributors: soispoke
     config:
-      tags: ['table', 'dex', 'addresses', 'ethereum']
-    description: "Known decentralised exchange addresses"
+      tags: ['table', 'swap', 'routing', 'addresses', 'ethereum']
+    description: "Known decentralised exchange addresses for swap and routing contracts. This table is used so swaps and routers can be differenciated from arbitrages (see the mev_ethereum_arbitrages table)"
     columns:
       - name: address
-        description: "Address of known DEX"
+        description: "Address of known DEX swap and routers"
         tests:
           - unique
       - name: dex_name
