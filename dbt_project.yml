@@ -214,6 +214,11 @@ models:
       bnb:
         +schema: ellipsis_finance_bnb
 
+    bend_dao:
+      +schema: bend_dao
+      ethereum:
+        +schema: bend_dao_ethereum
+
     seaport:
       +schema: seaport
       ethereum:
@@ -724,6 +729,16 @@ seeds:
           amount_original: double
           platform_fee_amount: double
           pool_fee_amount: double
+    bend_dao:
+      ethereum:
+        bend_dao_nft_lending:
+          +column_types:
+            block_number: long
+            tx_hash: string
+            evt_type: string
+            token_id: string
+            amount_original: double
+            address: string
     cryptopunks:
       cryptopunks_trades_buys_bids_seed:
         +column_types:
