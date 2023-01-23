@@ -1619,6 +1619,7 @@ VALUES
     ("xen-xen-crypto", "ethereum", "XEN", "0x06450dee7fd2fb8e39061434babcfc05599a6fb8", 18),
     ("bob-bob", "ethereum", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
     ("unbnk-unbanked", "ethereum", "UNBNK", "0x06b884e60794ce02aafab13791b59a2e6a07442f", 18),
+    ("fin-fin", "ethereum", "FIN", "0x054f76beed60ab6dbeb23502178c52d6c5debe40", 18),
 
     -- Query for Popular Traded Tokens on Gnosis Chain without prices: https://dune.com/queries/1719783
     ("dai-dai", "gnosis", "WXDAI", "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18),
