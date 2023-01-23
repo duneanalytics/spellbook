@@ -106,6 +106,7 @@ VALUES
     ("rgt-rari-governance-token","arbitrum","RGT","0xef888bca6ab6b1d26dbec977c455388ecd794794",18),
     ("route-router-protocol","arbitrum","ROUTE","0x5298060a95205be6dd4abc21910a4bb23d6dcd8b",18),
     ("rpl-rocket-pool","arbitrum","RPL","0xb766039cc6db368759c1e56b79affe831d0cc507",18),
+    ("reth-rocket-pool-eth","arbitrum","rETH","0xec70dcb4a1efa46b8f2d97c310c9c4790ba5ffa8",18),
     ("sdt-stake-dao","arbitrum","SDT","0x7ba4a00d54a07461d9db2aef539e91409943adc9",18),
     ("spa-sperax","arbitrum","SPA","0x5575552988a3a80504bbaeb1311674fcfd40ad4b",18),
     ("spell-spell-token","arbitrum","SPELL","0x3e6648c5a70a150a88bce65f4ad4d506fe15d2af",18),
@@ -339,6 +340,7 @@ VALUES
     ("metis-metis-token","bnb" ,"Metis" ,"0xe552fb52a4f19e44ef5a967632dbc320b0820639" ,18),
     ("xen-xen-crypto", "bnb", "XEN", "0x2AB0e9e4eE70FFf1fB9D67031E44F6410170d00e", 18),
     ("bob-bob", "bnb", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
+    ("fb-fbbank", "bnb", "FB", "0x770F030FDBf63EBF1C939De8BCFf8943C2C2d454", 2),
 
     ("0xbtc-0xbitcoin", "ethereum", "0xBTC", "0xb6ed7644c69416d67b522e20bc294a9a9b405b31", 8),
     ("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
@@ -635,6 +637,7 @@ VALUES
     ("rep-augur", "ethereum", "REPv2", "0x221657776846890989a759ba2973e427dff5c9bb", 18),
     ("rep-augur", "ethereum", "REP", "0x1985365e9f78359a9b6ad760e32412f4a445e862", 18),
     ("req-request-network", "ethereum", "REQ", "0x8f8221afbb33998d8584a2b05749ba73c37a938a", 18),
+    ("reth-rocket-pool-eth", "ethereum", "rETH", "0xae78736cd615f374d3085123a210448e74fc6393", 18),
     ("rgt-rari-governance-token", "ethereum", "RGT", "0xd291e7a03283640fdc51b121ac401383a46cc623", 18),
     ("rlc-iexec-rlc", "ethereum", "RLC", "0x607f4c5bb672230e8672085532f7e901544a7375", 9),
     ("rndr-render-token", "ethereum", "RNDR", "0x6de037ef9ad2725eb40118bb1702ebb27e4aeb24", 18),
@@ -1639,6 +1642,7 @@ VALUES
     ("xen-xen-crypto", "ethereum", "XEN", "0x06450dee7fd2fb8e39061434babcfc05599a6fb8", 18),
     ("bob-bob", "ethereum", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
     ("unbnk-unbanked", "ethereum", "UNBNK", "0x06b884e60794ce02aafab13791b59a2e6a07442f", 18),
+    ("fin-fin", "ethereum", "FIN", "0x054f76beed60ab6dbeb23502178c52d6c5debe40", 18),
 
     -- Query for Popular Traded Tokens on Gnosis Chain without prices: https://dune.com/queries/1719783
     ("dai-dai", "gnosis", "WXDAI", "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18),
@@ -1782,6 +1786,7 @@ VALUES
     ("kom-kommunitas", "polygon", "KOM", "0xc004e2318722ea2b15499d6375905d75ee5390b8", 8),
     ("bob-bob", "polygon", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
     ("ric-ricochet","polygon","RIC","0x263026e7e53dbfdce5ae55ade22493f828922965",18),
+    ("nuls-nuls", "polygon", "NULS", "0x8b8e48a8cc52389cd16a162e5d8bd514fabf4ba0", 8),
 
     ("aury-aurory", "solana", "AURY", "AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP", 9),
     ("btc-bitcoin", "solana", "BTC", "9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E", 6),
