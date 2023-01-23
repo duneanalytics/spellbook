@@ -12,7 +12,7 @@
     )
 }}
 
-{% set project_start_date = '2021-08-31' %} -- min(evt_block_time) from wigo_fantom.Pair_evt_Swap
+{% set project_start_date = '2022-01-24' %} -- min(evt_block_time) from wigo_fantom.Pair_evt_Swap
 
 with dexs as (
     -- wigoswap
