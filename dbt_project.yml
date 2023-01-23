@@ -216,10 +216,8 @@ models:
 
     bend_dao:
       +schema: bend_dao
-      +materialized: view
       ethereum:
         +schema: bend_dao_ethereum
-        +materialized: view
 
     seaport:
       +schema: seaport
