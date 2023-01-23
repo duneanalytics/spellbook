@@ -27,7 +27,7 @@ WITH sushiswap_dex AS (
            t.contract_address                                                 AS project_contract_address,
            t.evt_tx_hash                                                      AS tx_hash,
            ''                                                                 AS trace_address,
-           t.evt_index
+           t.evt_index,
            --swapTokensForExactTokens
            case when s1.amountOut = 0 then s1.amountOut else s1.amountOut end AS token_bought_amount_raw,
            s1.amountInMax                                                     AS token_bought_amount_max,
