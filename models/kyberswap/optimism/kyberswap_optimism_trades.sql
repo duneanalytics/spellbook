@@ -30,6 +30,7 @@ kyberswap_dex AS (
         ,t.evt_tx_hash                                                      AS tx_hash
         ,''                                                                 AS trace_address
         ,t.evt_index
+
     FROM {{ source('kyber_optimism', 'DMM_Pool_evt_Swap') }} t
     INNER JOIN {{ source('kyber_optimism', 'DMM_Factory_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
@@ -56,6 +57,7 @@ kyberswap_dex AS (
         ,t.evt_tx_hash                                                                 AS tx_hash
         ,''                                                                            AS trace_address
         ,t.evt_index
+
     FROM {{ source('kyber_optimism', 'Elastic_Pool_evt_swap') }} t
     INNER JOIN {{ source('kyber_optimism', 'Elastic_Factory_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
@@ -80,6 +82,7 @@ kyberswap_dex AS (
         ,evt_tx_hash                                                       AS tx_hash
         ,''                                                                AS trace_address
         ,evt_index
+
     FROM {{ source('kyber_optimism', 'AggregationRouter_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
@@ -103,6 +106,7 @@ kyberswap_dex AS (
         ,evt_tx_hash                                                       AS tx_hash
         ,''                                                                AS trace_address
         ,evt_index
+
     FROM {{ source('kyber_optimism', 'AggregationRouterV3_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
@@ -126,6 +130,7 @@ kyberswap_dex AS (
         ,evt_tx_hash                                                       AS tx_hash
         ,''                                                                AS trace_address
         ,evt_index
+
     FROM {{ source('kyber_optimism', 'MetaAggregationRouter_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
@@ -149,6 +154,7 @@ kyberswap_dex AS (
         ,evt_tx_hash                                                       AS tx_hash
         ,''                                                                AS trace_address
         ,evt_index
+        
     FROM {{ source('kyberswap_optimism', 'MetaAggregationRouter_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
