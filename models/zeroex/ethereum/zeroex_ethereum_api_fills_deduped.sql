@@ -1,6 +1,5 @@
 {{  config(
-        schema='zeroex_ethereum_api_fills_deduped',
-        alias='fills',
+        alias='api_fills_deduped',
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
@@ -18,7 +17,7 @@
 --the code used to create the data for the insertion into the dex.trades table
 --this code is also the deduped version for the fills tables.
 --only the data for 0x API fills.
---dependent on:zeroex_ethereum_erc20.fills.
+--dependent on:zeroex_ethereum.api_fills.
 
 WITH fills_with_tx_fill_number
 AS
