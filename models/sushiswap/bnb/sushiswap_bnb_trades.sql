@@ -67,15 +67,17 @@ WITH sushiswap_dex AS (
             q.reserveB AS reserveB,
 
     FROM {{ source('sushi_bnb', 'UniswapV2Pair_evt_Swap') }} t
-    SELECT * FROM {{ source('sushi_bnb', 'swapExactETHForTokens') }} s1
+      SELECT * FROM {{ source('sushi_bnb', 'UniswapV2Router02_call_swapETHForExactTokens') }} s1
     UNION ALL
-    SELECT * FROM {{ source('sushi_bnb', 'swapTokensForExactETH') }} s2
+    SELECT * FROM {{ source('sushi_bnb', 'UniswapV2Router02_call_swapExactETHForTokens') }} s2
     UNION ALL
-    SELECT * FROM {{ source('sushi_bnb', 'swapExactETHForTokensSupportingFeeOnTransferTokens') }} s3
+    SELECT * FROM {{ source('sushi_bnb', 'UniswapV2Router02_call_swapExactETHForTokensSupportingFeeOnTransferTokens') }} s3
     UNION ALL
-    SELECT * FROM {{ source('sushi_bnb', 'swapETHForExactTokens') }} s4
-
-   
+    SELECT * FROM {{ source('sushi_bnb', 'UniswapV2Router02_call_swapExactTokensForETH') }} s4
+    SELECT * FROM {{ source('sushi_bnb', 'UniswapV2Router02_call_swapExactTokensForETHSupportingFeeOnTransferTokens') }} s5
+    SELECT * FROM {{ source('sushi_bnb', 'UniswapV2Router02_call_swapExactTokensForTokens') }} s6
+    SELECT * FROM {{ source('sushi_bnb', 'UniswapV2Router02_call_swapTokensForExactETH') }} s8
+    SELECT * FROM {{ source('sushi_bnb', 'UniswapV2Router02_call_swapTokensForExactTokens') }} s8
     INNER JOIN {{ source('sushi_bnb', 'UniswapV2Factory_evt_PairCreated') }} f
         ON f.pair = t.contract_address
     {% if is_incremental() %}
