@@ -26,7 +26,7 @@ WITH sushiswap_dex AS (
            t.contract_address                                                 AS project_contract_address,
            t.evt_tx_hash                                                      AS tx_hash,
            ''                                                                 AS trace_address,
-           t.evt_index
+           t.evt_index,
            --swapTokensForExactTokens
            case when s1.amountOut = 0 then s1.amountOut else s1.amountOut end AS token_bought_amount_raw,
            s1.amountInMax                                                     AS token_bought_amount_max,
@@ -67,19 +67,14 @@ WITH sushiswap_dex AS (
 
 
     FROM {{ source('sushi_polygon', 'UniswapV2Pair_evt_Swap') }} t
-    INNER JOIN {{ source('sushi_polygon', 'swapExactETHForTokens') }} s1
-        ON s1.contract_address = t.contract_address 
-    INNER JOIN {{ source('sushi_polygon', 'swapTokensForExactETH') }} s2
-        ON s2.contract_address = t.contract_address 
-    INNER JOIN {{ source('sushi_polygon', 'swapExactETHForTokensSupportingFeeOnTransferTokens') }} s3
-        ON s3.contract_address = t.contract_address
-        AND s3.call_block_number = s1.call_block_number
-        AND s3.call_tx_hash = s1.call_tx_hash
-        AND s3.amountETHMin = s1.amountOut
-    INNER JOIN {{ source('sushi_polygon', 'swapETHForExactTokens') }} s4
-        ON s4.contract_address = t.contract_address
-    INNER JOIN {{ source('sushi_polygon', 'quote') }} q
-        ON q.contract_address = t.contract_address 
+    SELECT * FROM {{ source('sushi_polygon', 'swapExactETHForTokens') }} s1
+    UNION ALL
+    SELECT * FROM {{ source('sushi_polygon', 'swapTokensForExactETH') }} s2
+    UNION ALL
+    SELECT * FROM {{ source('sushi_polygon', 'swapExactETHForTokensSupportingFeeOnTransferTokens') }} s3
+    UNION ALL
+    SELECT * FROM {{ source('sushi_polygon', 'swapETHForExactTokens') }} s4
+    SELECT * FROM {{ source('sushi_polygon', 'quote') }} q
     INNER JOIN {{ source('sushi_polygon', 'UniswapV2Factory_evt_PairCreated') }} f
         ON f.pair = t.contract_address
     {% if is_incremental() %}

@@ -67,17 +67,14 @@ WITH sushiswap_dex AS (
             q.reserveB AS reserveB,
 
     FROM {{ source('sushi_bnb', 'UniswapV2Pair_evt_Swap') }} t
-    INNER JOIN {{ source('sushi_bnb', 'swapExactETHForTokens') }} s1
-        ON s1.contract_address = t.contract_address 
-    INNER JOIN {{ source('sushi_bnb', 'swapTokensForExactETH') }} s2
-        ON s2.contract_address = t.contract_address 
-    INNER JOIN {{ source('sushi_bnb', 'swapExactETHForTokensSupportingFeeOnTransferTokens') }} s3
-        ON s3.contract_address = t.contract_address
-        AND s3.call_block_number = s1.call_block_number
-        AND s3.call_tx_hash = s1.call_tx_hash
-        AND s3.amountETHMin = s1.amountOut
-    INNER JOIN {{ source('sushi_bnb', 'swapETHForExactTokens') }} s4
-        ON s4.contract_address = t.contract_address 
+    SELECT * FROM {{ source('sushi_bnb', 'swapExactETHForTokens') }} s1
+    UNION ALL
+    SELECT * FROM {{ source('sushi_bnb', 'swapTokensForExactETH') }} s2
+    UNION ALL
+    SELECT * FROM {{ source('sushi_bnb', 'swapExactETHForTokensSupportingFeeOnTransferTokens') }} s3
+    UNION ALL
+    SELECT * FROM {{ source('sushi_bnb', 'swapETHForExactTokens') }} s4
+
    
     INNER JOIN {{ source('sushi_bnb', 'UniswapV2Factory_evt_PairCreated') }} f
         ON f.pair = t.contract_address
