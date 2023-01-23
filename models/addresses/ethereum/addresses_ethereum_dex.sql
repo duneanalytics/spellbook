@@ -27,6 +27,7 @@ FROM (VALUES
       ('0x52ea46506b9cc5ef470c5bf89f17dc28bb35d85c', 'Curve', 'USDT Swap'),
       ('0x45f783cce6b7ff23b2ab2d70e416cdb7d6055f51', 'Curve', 'y Swap'),
       ('0xf7ca8f55c54cbb6d0965bc6d65c43adc500bc591', 'cVault Finance', 'Deployer'),
+      ('0xa2398842f37465f89540430bdc00219fa9e4d28a', 'DODO', 'RouteProxy'),
       ('0xa356867fdcea8e71aeaf87805808803806231fdc', 'DODO', 'V2 Proxy'),
       ('0x31e085afd48a1d6e51cc193153d625e8f0514c7f', 'KyberSwap', 'Reserve Uniswap'),
       ('0xdf1a1b60f2d438842916c0adc43748768353ec25', 'KyberSwap', 'Aggregation Router 2'),
