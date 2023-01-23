@@ -1757,6 +1757,7 @@ VALUES
     ("kom-kommunitas", "polygon", "KOM", "0xc004e2318722ea2b15499d6375905d75ee5390b8", 8),
     ("bob-bob", "polygon", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
     ("ric-ricochet","polygon","RIC","0x263026e7e53dbfdce5ae55ade22493f828922965",18),
+    ("nuls-nuls", "polygon", "NULS", "0x8b8e48a8cc52389cd16a162e5d8bd514fabf4ba0", 8),
 
     ("aury-aurory", "solana", "AURY", "AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP", 9),
     ("btc-bitcoin", "solana", "BTC", "9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E", 6),
