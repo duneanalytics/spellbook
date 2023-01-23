@@ -59,7 +59,7 @@ repay_events as (
 all_events as (
         SELECT * FROM borrow_events
 
-        UNION 
+        UNION ALL
 
         SELECT * FROM repay_events
 )
@@ -67,7 +67,7 @@ all_events as (
 SELECT 
     'ethereum' as blockchain, 
     'bend_dao' as project, 
-    'v1' as version, 
+    '1' as version, 
     ae.evt_block_time as block_time, 
     date_trunc('day', ae.evt_block_time) as block_date, 
     ae.evt_block_number as block_number, 
