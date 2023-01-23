@@ -56,7 +56,7 @@ VALUES
     ("apex-apexit-finance","arbitrum","APEX","0x61a1ff55c5216b636a294a07d77c6f4df10d3b56",18),
     ("ata-automata","arbitrum","ATA","0xac9ac2c17cdfed4abc80a53c5553388575714d03",18),
     ("axl-axelar","arbitrum","AXL","0x23ee2343b892b1bb63503a4fabc840e0e2c6810f",6),
-    ("axlusdc-axelar-wrapped-usdc","arbitrum","axlUSDC","0x23ee2343b892b1bb63503a4fabc840e0e2c6810f",6),
+    ("axlusdc-axelar-wrapped-usdc","arbitrum","axlUSDC","0xeb466342c4d449bc9f53a865d5cb90586f405215",6),
     ("badger-badger","arbitrum","BADGER","0xbfa641051ba0a0ad1b0acf549a89536a0d76472e",18),
     ("bal-balancer","arbitrum","BAL","0x040d1edc9569d4bab2d15287dc5a4f10f56a56b8",18),
     ("bond-barnbridge","arbitrum","BOND","0x0d81e50bc677fa67341c44d7eaa9228dee64a4e1",18),
