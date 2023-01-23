@@ -33,10 +33,11 @@ with dexs as (
         {{ source('tetu_io_fantom', 'Pair_evt_Swap') }} t
         inner join {{ source('tetu_io_fantom', 'TetuSwapFactory_evt_PairCreated') }} f 
             on f.pair = t.contract_address
+    {% if not is_incremental() %}
+    WHERE t.evt_block_time >= '{{project_start_date}}'
+    {% endif %}
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% else %}
-    WHERE t.evt_block_time >= '{{ project_start_date }}'
     {% endif %}
 )
 select
