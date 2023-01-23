@@ -375,7 +375,9 @@
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 383, 1000000, 'Pre-Process', 'Casey REAS', 'Curated', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-383')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 385, 1000000, 'Dipolar', 'Junia Farquhar', 'Curated', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-385')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 399, 1000000, 'The Field', 'Beervangeer', 'Curated', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-399')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 407, 1000000, 'The Harvest', 'Per Kristian Stoveland', 'Curated', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-407')
 
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 374, 1000000, 'Ottocento', 'Berubara', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-374')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 375, 1000000, 'Wabi Sabi', 'Kazuhiro Tanimoto', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-375')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 377, 1000000, 'Ingress', 'Paweł Dudko', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-377')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 378, 1000000, 'Fleur', 'AnaPet', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-378')
@@ -397,6 +399,9 @@
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 398, 1000000, 'Libra', 'Cooper Jamieson', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-398')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 400, 1000000, 'Such A Lovely Time', 'petitsapin', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-400')
         , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 401, 1000000, 'Aragnation', 'Devi Parikh and Abhishek Das', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-401')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 404, 1000000, 'Ad Extremum Terrae', 'uMathA', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-404')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 408, 1000000, 'NimTeens', 'Bryan Brinkman', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-408')
+        , ('0x99a9b7c1116f9ceeb1652de04d5969cce509b069', 409, 1000000, 'Tout tracé', 'Florian Zumbrunn', 'Presents', 'N/A', '0x99a9b7c1116f9ceeb1652de04d5969cce509b069-409')
 
         -- explorations
         , ('0x942bc2d3e7a589fe5bd4a5c6ef9727dfd82f5c8a',0,1000000,'Friendship Bracelets','Alexis Andre','Explorations','N/A','0x942bc2d3e7a589fe5bd4a5c6ef9727dfd82f5c8a-0')
@@ -407,6 +412,7 @@
         , ('0x64780ce53f6e966e18a22af13a2f97369580ec11',1,1000000,'Floating World Genesis','A.A. Murakami','Art Blocks x Pace','N/A','0x64780ce53f6e966e18a22af13a2f97369580ec11-1')
         , ('0x64780ce53f6e966e18a22af13a2f97369580ec11',2,1000000,'QWERTY','Tara Donovan','Art Blocks x Pace','N/A','0x64780ce53f6e966e18a22af13a2f97369580ec11-2')
         , ('0x64780ce53f6e966e18a22af13a2f97369580ec11',3,1000000,'Contractions','Loie Hollowell','Art Blocks x Pace','N/A','0x64780ce53f6e966e18a22af13a2f97369580ec11-3')
+        , ('0x64780ce53f6e966e18a22af13a2f97369580ec11',4,1000000,'New Worlds','Robert Whitman','Art Blocks x Pace','N/A','0x64780ce53f6e966e18a22af13a2f97369580ec11-4')
 
     ) as temp_table (contract_address, project_id, project_id_base_value, collection_name, artist_name, art_blocks_project_type, art_blocks_curated_season, art_collection_unique_id)
     
