@@ -189,6 +189,10 @@ WHERE 1=1
       AND tl.tx_from not in (
         select address from {{ ref('addresses_ethereum_dex') }}
       )
+      AND tl.tx_to NOT IN (SELECT address FROM {{ ref('addresses_ethereum_dex') }})
+      AND tl.tx_from NOT IN (SELECT address FROM {{ ref('addresses_ethereum_dex') }})
+      AND tl.tx_to IN (SELECT address FROM {{ ref('labels_mev_ethereum') }})
+      AND tl.tx_from IN (SELECT address FROM {{ ref('labels_mev_ethereum') }})
 GROUP BY 3,4,5,6,7,8,9,10,11)
 WHERE size(projects) > 1 AND size(tokens) > 1
 ORDER BY revenue_amount_usd DESC
