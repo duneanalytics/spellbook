@@ -35,8 +35,7 @@ FROM (
         tx_hash,
         block_number,
         tx_from,
-        tx_to,
-        unique_evt_id
+        tx_to
     FROM {{ nft_model }}
     {% if not loop.last %}
     UNION ALL

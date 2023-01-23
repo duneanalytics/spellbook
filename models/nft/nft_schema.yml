@@ -455,6 +455,3 @@ models:
       - *block_number
       - *tx_from
       - *tx_to
-      - &unique_evt_id
-        name: unique_evt_id
-        description: "unique event id"

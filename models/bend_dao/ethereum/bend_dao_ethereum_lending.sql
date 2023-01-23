@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'unique_evt_id'],
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'evt_type', 'tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "bend_dao",
@@ -85,8 +85,7 @@ SELECT
     ae.contract_address as project_contract_address, 
     ae.evt_tx_hash as tx_hash, 
     et.from as tx_from, 
-    et.to as tx_to, 
-    'ethereum-bend_dao-v1' || '-' || ae.evt_type || '-' || ae.evt_block_number || '-' || ae.evt_tx_hash || '-' || ae.evt_index as unique_evt_id 
+    et.to as tx_to
 FROM 
 all_events ae 
 INNER JOIN 

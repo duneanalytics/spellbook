@@ -14,7 +14,12 @@ models:
         - dbt_utils.unique_combination_of_columns:
             combination_of_columns:
               - block_date
-              - unique_evt_id
+              - blockchain
+              - project
+              - version
+              - evt_type
+              - tx_hash
+              - evt_index
         - check_seed:
             seed_file: ref('bend_dao_nft_lending')
             match_columns:
@@ -89,6 +94,3 @@ models:
       - &tx_to
         name: tx_to
         description:  "Address that received the transaction"
-      - &unique_evt_id
-        name: unique_evt_id
-        description: "unique event id"
