@@ -117,7 +117,7 @@ FROM (
         FROM {{ ref('transfers_optimism_eth') }} r
 
         {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-        where t.tx_block_time >= date_trunc('day', now() - interval '1 week')
+        where r.tx_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
 
         ----------
