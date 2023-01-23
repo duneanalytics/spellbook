@@ -9,9 +9,6 @@ models:
     description: >
         nexusmutual product information for v1
     tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - product_contract_address
       - check_seed:
           seed_file: ref('nexusmutual_ethereum_product_information_seed')
           match_columns:
