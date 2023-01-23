@@ -6,7 +6,7 @@ models:
       blockchain: bnb
       sector: dex
       project: wombat
-      contributors: umer_h_adil
+      contributors: [umer_h_adil, hosuke]
     config:
       tags: ['bnb', 'trades', 'dex', 'umer_h_adil']
     description: >
