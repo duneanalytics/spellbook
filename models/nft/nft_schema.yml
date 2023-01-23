@@ -455,3 +455,6 @@ models:
       - *block_number
       - *tx_from
       - *tx_to
+      - &evt_index
+        name: evt_index
+        description: "Index of the corresponding lending event"

@@ -18,8 +18,9 @@ FROM (
         blockchain,
         project,
         version,
-        block_time,
         block_date,
+        block_time,
+        block_number,
         token_id,
         collection,
         amount_usd,
@@ -33,9 +34,9 @@ FROM (
         nft_contract_address,
         project_contract_address,
         tx_hash,
-        block_number,
         tx_from,
-        tx_to
+        tx_to,
+        evt_index
     FROM {{ nft_model }}
     {% if not loop.last %}
     UNION ALL

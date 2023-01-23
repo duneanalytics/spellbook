@@ -94,3 +94,6 @@ models:
       - &tx_to
         name: tx_to
         description:  "Address that received the transaction"
+      - &evt_index
+        name: evt_index
+        description: "Index of the corresponding lending event"

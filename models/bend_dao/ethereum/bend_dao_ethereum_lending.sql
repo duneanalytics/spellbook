@@ -68,24 +68,25 @@ SELECT
     'ethereum' as blockchain, 
     'bend_dao' as project, 
     '1' as version, 
-    ae.evt_block_time as block_time, 
     date_trunc('day', ae.evt_block_time) as block_date, 
+    ae.evt_block_time as block_time, 
     ae.evt_block_number as block_number, 
     ae.token_id, 
     nft_token.name as collection, 
-    CAST(ae.amount_raw as DECIMAL(38,0)) as amount_raw, 
-    ae.amount_raw/POWER(10, collateral_currency.decimals) as amount_original, 
     p.price * (ae.amount_raw/POWER(10, collateral_currency.decimals)) as amount_usd, 
     nft_token.standard as token_standard, 
     ae.evt_type, 
     ae.address, 
+    ae.amount_raw/POWER(10, collateral_currency.decimals) as amount_original, 
+    CAST(ae.amount_raw as DECIMAL(38,0)) as amount_raw, 
     collateral_currency.symbol as collateral_currency_symbol, 
     ae.collateral_currency_contract, 
     ae.nft_contract_address, 
     ae.contract_address as project_contract_address, 
     ae.evt_tx_hash as tx_hash, 
     et.from as tx_from, 
-    et.to as tx_to
+    et.to as tx_to,
+    ae.evt_index
 FROM 
 all_events ae 
 INNER JOIN 
