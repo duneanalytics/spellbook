@@ -121,6 +121,8 @@ models:
         +schema: sushiswap_avalanche_c
       gnosis:
         +schema: sushiswap_gnosis
+      arbitrum:
+        +schema: sushiswap_arbitrum
 
     babyswap:
       +schema: babyswap
@@ -326,6 +328,8 @@ models:
       +schema: safe
       ethereum:
         +schema: safe_ethereum
+      optimism: 
+        +schema: safe_optimism
 
     nftrade:
       +schema: nftrade
@@ -556,6 +560,18 @@ models:
         +schema: zeroex_polygon
         erc20:
           +schema: zeroex_polygon_erc20
+      avalanche_c:
+        +schema: zeroex_avalanche_c
+        erc20:
+          +schema: zeroex_avalanche_c_erc20
+      fantom:
+        +schema: zeroex_fantom
+        erc20:
+          +schema: zeroex_fantom_erc20
+      arbitrum:
+        +schema: zeroex_arbitrum
+        erc20:
+          +schema: zeroex_arbitrum_erc20
 
     wombat:
       +schema: wombat
