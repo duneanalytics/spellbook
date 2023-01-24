@@ -34,9 +34,16 @@ WITH pools AS (
 
     UNION ALL
 
-    SELECT pool_id, zip.tokens AS token_address,  zip.normalizedWeights/pow(10, 18) AS normalized_weight, symbol, pool_type
+    SELECT pool_id,
+           zip.tokens AS token_address,
+           zip.normalizedWeights/pow(10, 18) AS normalized_weight,
+           symbol,
+           pool_type
     FROM (
-        SELECT c.poolId AS pool_id, explode(arrays_zip(cc.tokens, cc.normalizedWeights)) AS zip, cc.symbol, 'WP' AS pool_type
+        SELECT c.poolId AS pool_id,
+               explode(arrays_zip(cc.tokens, cc.normalizedWeights)) AS zip,
+               cc.symbol,
+               'WP' AS pool_type
         FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
         INNER JOIN {{ source('balancer_v2_arbitrum', 'WeightedPoolV2Factory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
@@ -49,9 +56,16 @@ WITH pools AS (
 
     UNION ALL
 
-    SELECT pool_id, zip.tokens AS token_address,  zip.weights/pow(10, 18) AS normalized_weight, symbol, pool_type
+    SELECT pool_id,
+           zip.tokens AS token_address,
+           zip.weights / pow(10, 18) AS normalized_weight,
+           symbol,
+           pool_type
     FROM (
-        SELECT c.poolId AS pool_id, explode(arrays_zip(cc.tokens, cc.weights)) AS zip, cc.symbol, 'IP' AS pool_type
+        SELECT c.poolId AS pool_id,
+               explode(arrays_zip(cc.tokens, cc.weights)) AS zip,
+               cc.symbol,
+               'IP' AS pool_type
         FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
         INNER JOIN {{ source('balancer_v2_arbitrum', 'InvestmentPoolFactory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
@@ -64,9 +78,16 @@ WITH pools AS (
 
     UNION ALL
 
-    SELECT pool_id, zip.tokens AS token_address,  zip.weights/pow(10, 18) AS normalized_weight, symbol, pool_type
+    SELECT pool_id,
+           zip.tokens AS token_address,
+           zip.weights / pow(10, 18) AS normalized_weight,
+           symbol,
+           pool_type
     FROM (
-        SELECT c.poolId AS pool_id, explode(arrays_zip(cc.tokens, cc.weights)) AS zip, cc.symbol, 'WP2T' AS pool_type
+        SELECT c.poolId AS pool_id,
+               explode(arrays_zip(cc.tokens, cc.weights)) AS zip,
+               cc.symbol,
+               'WP2T' AS pool_type
         FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
         INNER JOIN {{ source('balancer_v2_arbitrum', 'WeightedPool2TokensFactory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
@@ -78,7 +99,12 @@ WITH pools AS (
     )
 
     UNION ALL
-    SELECT c.poolId AS pool_id, explode(cc.tokens) AS token_address, NULL AS normalized_weight, cc.symbol, 'SP' AS pool_type
+
+    SELECT c.poolId AS pool_id,
+           explode(cc.tokens) AS token_address,
+           CAST(NULL AS DOUBLE) AS normalized_weight,
+           cc.symbol,
+           'SP' AS pool_type
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'StablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
@@ -90,7 +116,11 @@ WITH pools AS (
 
     UNION ALL
 
-    SELECT c.poolId AS pool_id, explode(cc.tokens) AS token_address, NULL AS normalized_weight, cc.symbol, 'SP' AS pool_type
+    SELECT c.poolId AS pool_id,
+        explode(cc.tokens) AS token_address,
+        CAST(NULL AS DOUBLE) AS normalized_weight,
+        cc.symbol,
+        'SP' AS pool_type
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'MetaStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
@@ -102,7 +132,9 @@ WITH pools AS (
 
     UNION ALL
 
-    SELECT c.poolId AS pool_id, explode(cc.tokens) AS token_address, 0 AS normalized_weight, cc.symbol, 'LBP' AS pool_type
+    SELECT c.poolId AS pool_id,
+        explode(cc.tokens) AS token_address,
+        0 AS normalized_weight, cc.symbol, 'LBP' AS pool_type
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'LiquidityBootstrappingPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
@@ -114,7 +146,10 @@ WITH pools AS (
 
     UNION ALL
 
-    SELECT c.poolId AS pool_id, explode(cc.tokens) AS token_address, 0 AS normalized_weight, cc.symbol, 'LBP' AS pool_type
+    SELECT c.poolId AS pool_id,
+        explode(cc.tokens) AS token_address,
+        0 AS normalized_weight, cc.symbol,
+        'LBP' AS pool_type
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
@@ -126,7 +161,10 @@ WITH pools AS (
 
     UNION ALL
 
-    SELECT c.poolId AS pool_id, explode(cc.tokens) AS token_address, NULL AS normalized_weight, cc.symbol, 'SP' AS pool_type
+    SELECT c.poolId AS pool_id,
+        explode(cc.tokens) AS token_address,
+        CAST(NULL AS DOUBLE) AS normalized_weight,
+        cc.symbol, 'SP' AS pool_type
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'ComposableStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
@@ -138,7 +176,11 @@ WITH pools AS (
 
     UNION ALL
 
-    SELECT c.poolId AS pool_id, explode(array(cc.mainToken, cc.wrappedToken)) AS zip, NULL AS normalized_weight, cc.symbol, 'LP' AS pool_type
+    SELECT c.poolId AS pool_id,
+        explode(array(cc.mainToken, cc.wrappedToken)) AS zip,
+        CAST(NULL AS DOUBLE) AS normalized_weight,
+        cc.symbol,
+        'LP' AS pool_type
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'AaveLinearPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
@@ -150,14 +192,17 @@ WITH pools AS (
 
     UNION ALL
 
-    SELECT c.poolId AS pool_id, explode(array(cc.mainToken, cc.wrappedToken)) AS zip, NULL AS normalized_weight, cc.symbol, 'LP' AS pool_type
+    SELECT c.poolId AS pool_id,
+        explode(array (cc.mainToken, cc.wrappedToken)) AS zip,
+        CAST(NULL AS DOUBLE) AS normalized_weight, cc.symbol,
+        'LP' AS pool_type
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'ERC4626LinearPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
     AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
     WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+      AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 ),
 
