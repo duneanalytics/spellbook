@@ -84,7 +84,7 @@ WITH pools AS (
 
     UNION ALL
 
-    SELECT c.poolId AS pool_id, explode(cc.tokens) AS token_address, NULL AS normalized_weight, cc.symbol, 'SP' AS pool_type
+    SELECT c.poolId AS pool_id, explode(cc.tokens) AS token_address, CAST(NULL AS DOUBLE) AS normalized_weight, cc.symbol, 'SP' AS pool_type
     FROM {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_ethereum', 'MetaStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
@@ -120,7 +120,7 @@ WITH pools AS (
 
     UNION ALL
 
-    SELECT c.poolId AS pool_id, explode(cc.tokens) AS token_address, NULL AS normalized_weight, cc.symbol, 'SP' AS pool_type
+    SELECT c.poolId AS pool_id, explode(cc.tokens) AS token_address, CAST(NULL AS DOUBLE) AS normalized_weight, cc.symbol, 'SP' AS pool_type
     FROM {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_ethereum', 'StablePhantomPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
@@ -132,7 +132,7 @@ WITH pools AS (
 
     UNION ALL
 
-    SELECT c.poolId AS pool_id, explode(cc.tokens) AS token_address, NULL AS normalized_weight, cc.symbol, 'SP' AS pool_type
+    SELECT c.poolId AS pool_id, explode(cc.tokens) AS token_address, CAST(NULL AS DOUBLE) AS normalized_weight, cc.symbol, 'SP' AS pool_type
     FROM {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_ethereum', 'ComposableStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
@@ -144,7 +144,7 @@ WITH pools AS (
 
     UNION ALL
 
-    SELECT c.poolId AS pool_id, explode(array(cc.mainToken, cc.wrappedToken)) AS zip, NULL AS normalized_weight, cc.symbol, 'LP' AS pool_type
+    SELECT c.poolId AS pool_id, explode(array(cc.mainToken, cc.wrappedToken)) AS zip, CAST(NULL AS DOUBLE) AS normalized_weight, cc.symbol, 'LP' AS pool_type
     FROM {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_ethereum', 'AaveLinearPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
