@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: maker_accounting
+  - name: maker_ethereum_accounting
     meta:
       blockchain: ethereum
       sector: lending
@@ -33,7 +33,7 @@ models:
         name: ilk
         description: "Ilk that related to the accountring entry, if any"
 
-  - name: maker_helper_ilk_list_labeled
+  - name: maker_ethereum_helper_ilk_list_labeled
     meta:
       blockchain: ethereum
       sector: lending
@@ -50,7 +50,7 @@ models:
       - name: equity_code
       - name: apr
 
-  - name: maker_accounting_interest
+  - name: maker_ethereum_accounting_interest
     meta:
       blockchain: ethereum
       sector: lending
@@ -68,7 +68,7 @@ models:
       - *descriptor
       - *ilk
 
-  - name: maker_accounting_liquidation
+  - name: maker_ethereum_accounting_liquidation
     meta:
       blockchain: ethereum
       sector: lending
