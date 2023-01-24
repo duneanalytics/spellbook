@@ -72,7 +72,7 @@ WITH interest_accruals_1 AS (
          , SUM(interest_accruals) AS value --increased equity
          , interest_accruals_3.ilk
     FROM interest_accruals_3
-    LEFT JOIN {{ ref('maker_helper_ilk_list_labeled') }} ilk_list_labeled
+    LEFT JOIN {{ ref('maker_ethereum_helper_ilk_list_labeled') }} ilk_list_labeled
         ON interest_accruals_3.ilk = ilk_list_labeled.ilk
         AND interest_accruals_3.ts BETWEEN COALESCE(ilk_list_labeled.begin_dt, '2000-01-01')
         AND COALESCE(ilk_list_labeled.end_dt, '2222-12-31') --if null, ensure its not restrictive
@@ -86,7 +86,7 @@ WITH interest_accruals_1 AS (
          , SUM(interest_accruals) AS value --increased assets
          , interest_accruals_3.ilk
     FROM interest_accruals_3
-    LEFT JOIN {{ ref('maker_helper_ilk_list_labeled') }} ilk_list_labeled
+    LEFT JOIN {{ ref('maker_ethereum_helper_ilk_list_labeled') }} ilk_list_labeled
         ON interest_accruals_3.ilk = ilk_list_labeled.ilk
         AND CAST(interest_accruals_3.ts AS DATE) BETWEEN COALESCE(ilk_list_labeled.begin_dt, '2000-01-01')
         AND COALESCE(ilk_list_labeled.end_dt, '2222-12-31') --if null, ensure its not restrictive

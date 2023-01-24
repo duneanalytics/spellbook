@@ -2,7 +2,7 @@
 with balance_2022 as (
   select sum(case when left(code, 1) = '1' then value else -value end) as balance,
          sum(abs(value))                                               as abs_balance
-  from {{ ref('maker_accounting') }}
+  from {{ ref('maker_ethereum_accounting') }}
   where extract(year from ts) = 2022
 ),
 tests as (
