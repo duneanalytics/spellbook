@@ -630,6 +630,8 @@ models:
 
     maker:
       +schema: maker
+      ethereum:
+        +schema: maker_ethereum
 
     ovm:
       +schema: ovm
