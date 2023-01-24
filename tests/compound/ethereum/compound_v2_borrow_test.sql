@@ -28,7 +28,7 @@ unit_test3 as (
     end as test
     from {{ ref('compound_v2_ethereum_borrow') }}
     where evt_tx_hash = '0x30cf18690db1e78604a53f7b66ef255747af2b0f40ea1a92c44de849372be0d9'
-        and payer = '0x67bbbccddd394c2cfa15d3958904858b21040cc6'
+        and repayer = '0x67bbbccddd394c2cfa15d3958904858b21040cc6'
         and token_address = '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'
 ),
 unit_test4 as (
@@ -39,7 +39,7 @@ unit_test4 as (
     end as test
     from {{ ref('compound_v2_ethereum_borrow') }}
     where evt_tx_hash = '0x7bf84079666cd48a06d0cbf93b28d0adb20dde5a4b6135689fa5746449136e53'
-        and payer = '0xf859a1ad94bcf445a406b892ef0d3082f4174088'
+        and repayer = '0xf859a1ad94bcf445a406b892ef0d3082f4174088'
         and token_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
 )
 
