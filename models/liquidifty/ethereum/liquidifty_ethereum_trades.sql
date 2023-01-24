@@ -162,7 +162,7 @@ select
     transactions.to as tx_to,
     buys.unique_trade_id,
     buys.currency_token_standard,
-    buys.orderType
+    buys.orderType as order_type
 from (
     select * from v2
     union all

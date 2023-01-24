@@ -76,5 +76,5 @@ models:
         name: unique_trade_id
       - &currency_token_standard
         name: currency_token_standard
-      - &orderType
-        name: orderType
+      - &order_type
+        name: order_type
