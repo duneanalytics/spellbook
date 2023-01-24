@@ -20,9 +20,9 @@ models:
       - &block_time
         name: block_time
         description: "UTC event block time"
-      - &escrow_id
-        name: escrow_id
-        description: "The ID of the escrow account associated with the loan"
+      - &loan_id
+        name: loan_id
+        description: "The ID associated with the loan"
       - &sharkyfi_instructions
         name: sharkyfi_instructions
         description: "The set of instructions executed by the SharkyFi smart contract"

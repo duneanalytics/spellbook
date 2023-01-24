@@ -61,10 +61,19 @@ WITH events AS (
     SELECT
     *,
     CASE
-        WHEN evt_type = 'Offer' THEN sharkyfi_instructions[0].account_arguments[3]
-        WHEN evt_type = 'Take' THEN sharkyfi_instructions[0].account_arguments[6]
+        -- The smart contract was update around the 2022-12-01 and a new account was added before the loan id
+        WHEN evt_type = 'Offer' THEN IF(
+                sharkyfi_instructions[0].account_arguments[2] = 'So11111111111111111111111111111111111111112',
+                sharkyfi_instructions[0].account_arguments[3],
+                sharkyfi_instructions[0].account_arguments[2]
+            )
+        WHEN evt_type = 'Take' THEN IF(
+                sharkyfi_instructions[0].account_arguments[4] = 'So11111111111111111111111111111111111111112',
+                sharkyfi_instructions[0].account_arguments[6],
+                sharkyfi_instructions[0].account_arguments[5]
+            )
         WHEN (evt_type = 'Rescind' OR evt_type = 'Repay' OR evt_type = 'Foreclose') THEN sharkyfi_instructions[0].account_arguments[0]
-    ELSE NULL END as escrow_id
+    ELSE NULL END as loan_id
     FROM events
 
 
