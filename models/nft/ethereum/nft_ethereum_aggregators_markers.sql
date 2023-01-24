@@ -95,6 +95,7 @@
     FROM ( VALUES
       ('72db8c0b', 'Gem', null)
     , ('332d1229', 'Blur', null)
+    , ('a8a9c101', 'Alpha Sharks', null)
     , ('9616c6c64617461', 'Rarible', null)
     , ('61598d6d', 'Flip', null)
     ) AS temp_table (hash_marker ,aggregator_name, router_name)
