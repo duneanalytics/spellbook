@@ -1,3 +1,5 @@
+{% do run_query(bytea2numeric_v3()) %};
+
 WITH unit_tests as
 (
     SELECT
