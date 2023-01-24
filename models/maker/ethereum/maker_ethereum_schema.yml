@@ -42,6 +42,11 @@ models:
     config:
       tags: [ 'ethereum', 'maker', 'helper' ]
     description: "TODO"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - ilk
+            - end_dt
     columns:
       - *ilk
       - name: begin_dt
