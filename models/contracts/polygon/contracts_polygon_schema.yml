@@ -12,6 +12,8 @@ models:
    columns:
      - name: contract_address
        description: "contract address of the dapp/project"
+       tests:
+         - unique
      - name: project_name
        description: "name of the dapp/project"
      - name: project_type

@@ -5611,12 +5611,7 @@ from
 ('0x27b37e4befacc50b02102d1e2117c4ea8a54beff','Reddit Collectibles'),
 ('0x71dc46607f31f30510f0ccc670b0963f431b212a','Reddit Collectibles'),
 ('0x622d8fea4603ba9edaf1084b407052d8b0a9bed7','Reddit Collectibles'),
-('0xDb46d1Dc155634FbC732f92E853b10B288AD5a1d','Lens Protocol')select
-  trim(lower(contract_address)) as contract_address
-  ,trim(project_name) as project_name
-from
-(
-  values
+('0xDb46d1Dc155634FbC732f92E853b10B288AD5a1d','Lens Protocol'),
 ('0xffb9f1907f827709b0ed09b37956cd3c7462abdb', 'Yellow Duckies'),
 ('0x2d973169a34a2185a4baf5de2bad89afea881464','Planet Ix'),
 ('0x7754357c9aafea07ae20cac805a210f518b3d8e6','Planet Ix'),
