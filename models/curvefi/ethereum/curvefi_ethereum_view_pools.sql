@@ -4,7 +4,7 @@
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "curvefi",
-                                \'["yulesa", "agaperste"]\') }}'
+                                \'["yulesa", "agaperste", "ilemi"]\') }}'
     )
  }}
 
@@ -105,10 +105,10 @@ plain_pools_deployed AS (
         _fee AS out_fee,
         output_0 AS token_address,
         output_0 AS deposit_contract,
-        _coins [1] AS coin0,
-        _coins [2] AS coin1,
-        _coins [3] AS coin2,
-        _coins [4] AS coin3,
+        _coins [0] AS coin0,
+        _coins [1] AS coin1,
+        _coins [2] AS coin2,
+        _coins [3] AS coin3,
         CAST(
             NULL AS VARCHAR(5)
         ) AS undercoin0,
@@ -207,10 +207,10 @@ v2_pools_deployed AS (
         p.out_fee AS out_fee,
         p.token AS token_address,
         output_0 AS deposit_contract,
-        coins [1] AS coin0,
-        coins [2] AS coin1,
-        coins [3] AS coin2,
-        coins [4] AS coin3,
+        coins [0] AS coin0,
+        coins [1] AS coin1,
+        coins [2] AS coin2,
+        coins [3] AS coin3,
         CAST(
             NULL AS VARCHAR(5)
         ) AS undercoin0,
