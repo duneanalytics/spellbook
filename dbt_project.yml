@@ -553,10 +553,6 @@ models:
       +schema: zeroex
       ethereum:
         +schema: zeroex_ethereum
-        erc20:
-          +schema: zeroex_ethereum_erc20
-        nft:
-          +schema: zeroex_ethereum_nft
       optimism:
         +schema: zeroex_optimism
         erc20:
@@ -893,52 +889,75 @@ seeds:
 
     zeroex:
       ethereum:
-        fills:
-          zeroex_api_ethereum_fills_sample:
-            +column_types:
-              tx_hash: string
-              block_number: int
-              evt_index: int
-              contract_address: string
-              block_time: timestamp
-              maker: string
-              taker: string
-              taker_token: string
-              taker_symbol: string
-              maker_token: string
-              maker_symbol: string
-              token_pair: string
-              taker_token_amount: double
-              taker_token_amount_raw: string
-              maker_token_amount: double
-              maker_token_amount_raw: string
-              type: string
-              affiliate_address: string
-              swap_flag: boolean
-              matcha_limit_order_flag: boolean
-              volume_usd: double
-              tx_from: string
-              tx_to: string
-        nfts:
-          zeroex_nft_ethereum_fills_sample:
-            +column_types:
-              block_time: timestamp
-              block_date: timestamp
-              evt_index: int
-              tx_hash: string
-              maker: string
-              taker: string
-              matcher: string
-              nft_address: string
-              nft_id: string
-              label: string
-              price_label: string
-              token: string
-              token_amount_raw: string
-              symbol: string
-              price_usd: double
-              token_amount: double
-              project_name: string
+        zeroex_ethereum_api_fills_deduped_sample:
+          +column_types:
+            blockchain: string
+            project: string
+            version: string
+            block_date: date
+            block_time: timestamp
+            taker_symbol: string
+            maker_symbol: string
+            token_pair: string
+            taker_token_amount: double
+            maker_token_amount: double
+            taker_token_amount_raw: string
+            maker_token_amount_raw: string
+            amount_usd: double
+            taker_token: string
+            maker_token: string
+            taker: string
+            maker: string
+            project_contract_address: string
+            tx_hash: string
+            tx_from: string
+            tx_to: string
+            trace_address: string
+            evt_index: int
+        zeroex_ethereum_api_fills_sample:
+          +column_types:
+            tx_hash: string
+            block_number: int
+            evt_index: int
+            contract_address: string
+            block_time: timestamp
+            maker: string
+            taker: string
+            taker_token: string
+            taker_symbol: string
+            maker_token: string
+            maker_symbol: string
+            token_pair: string
+            taker_token_amount: double
+            taker_token_amount_raw: string
+            maker_token_amount: double
+            maker_token_amount_raw: string
+            type: string
+            affiliate_address: string
+            swap_flag: boolean
+            matcha_limit_order_flag: boolean
+            volume_usd: double
+            tx_from: string
+            tx_to: string
+        zeroex_ethereum_nft_fills_sample:
+          +column_types:
+            block_time: timestamp
+            block_date: timestamp
+            evt_index: int
+            tx_hash: string
+            maker: string
+            taker: string
+            matcher: string
+            nft_address: string
+            nft_id: string
+            label: string
+            price_label: string
+            token: string
+            token_amount_raw: string
+            symbol: string
+            price_usd: double
+            token_amount: double
+            project_name: string
       optimism:
         fills:
           zeroex_api_optimism_fills_sample:
