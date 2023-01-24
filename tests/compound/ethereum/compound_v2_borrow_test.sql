@@ -1,7 +1,7 @@
 with unit_test1 as (
     -- cErc20 borrow
     select case
-        when amount = 44.5596938306667 then true
+        when abs(amount - 44.5596938306667) < 1e-9 then true
         else false
     end as test
     from {{ ref('compound_v2_ethereum_borrow') }}
