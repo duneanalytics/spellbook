@@ -94,7 +94,7 @@ trade_data as (
 
 SELECT 
     'avalanche_c' as blockchain, 
-    'hubble_exchange' as project, 
+    'emdx' as project,
     '1' as version,
     date_trunc('day', pe.block_time) as block_date,
     pe.block_time, 
