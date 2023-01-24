@@ -30,7 +30,7 @@ dexs as (
             initiator as maker, 
             receivedAmount as token_bought_amount_raw,
             srcAmount as token_sold_amount_raw,
-            CAST(NULL as double),
+            CAST(NULL as double) as amount_usd,
             CASE 
                 WHEN destToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
                 THEN '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83' -- wftm 

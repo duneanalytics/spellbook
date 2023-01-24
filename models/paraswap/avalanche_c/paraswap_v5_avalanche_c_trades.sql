@@ -30,7 +30,7 @@ dexs as (
             initiator as maker, 
             receivedAmount as token_bought_amount_raw,
             srcAmount as token_sold_amount_raw,
-            CAST(NULL as double),
+            CAST(NULL as double) as amount_usd,
             CASE 
                 WHEN destToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
                 THEN '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7' -- wavax
