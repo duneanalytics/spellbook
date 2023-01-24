@@ -13,12 +13,7 @@
 }}
 
 WITH calendar AS (
-        {% if not is_incremental() %}
         SELECT explode(sequence(to_date('2022-04-07'), CURRENT_DATE, interval 1 week)) AS start_date
-        {% endif %}
-        {% if is_incremental() %}
-        SELECT explode(sequence(date_trunc("day", now() - interval '1 week'), CURRENT_TIMESTAMP, interval 1 week)) AS start_date
-        {% endif %}
     ),
     
     rounds_info AS (
@@ -43,13 +38,10 @@ WITH calendar AS (
             slope,
             bias
         FROM {{ source('balancer_ethereum', 'GaugeController_evt_VoteForGauge') }} v
-        INNER JOIN {{ ref('balancer_vebal_slopes') }} d
-            ON d.wallet_address = v.user
-            AND d.block_number <= v.evt_block_number
-        {% if is_incremental() %}
-        WHERE v.evt_block_time >= DATE_TRUNC('day', NOW() - interval '1 week')
-        {% endif %}
-        ORDER BY provider, evt_block_time
+        JOIN {{ ref('balancer_vebal_slopes') }} d
+        ON d.wallet_address = v.user
+        AND d.block_number <= v.evt_block_number
+        ORDER BY 4, 1
     ),
     
     max_block_number AS (
