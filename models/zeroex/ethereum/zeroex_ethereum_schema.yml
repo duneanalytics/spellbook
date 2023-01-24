@@ -131,7 +131,8 @@ models:
       - *maker_token_amount
       - *taker_token_amount_raw
       - *maker_token_amount_raw
-      - *volume_usd
+      - name: volume_usd
+        description: "Trading volume measured in USD value" # since volume_usd applies a test previously in this schema file, don't reuse, or it'll attempt to test here too
       - *taker_token
       - *maker_token
       - *taker
