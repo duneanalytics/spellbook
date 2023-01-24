@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: sharky_solana
+    freshness:
+      warn_after: { count: 1, period: day }
+    tables:
+      - name: sharky_solana_events
+        loaded_at_field: block_time
