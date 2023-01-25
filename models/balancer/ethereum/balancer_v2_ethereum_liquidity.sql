@@ -21,9 +21,10 @@ WITH prices AS (
             AVG(price) AS price
         FROM
             {{ sources('prices', 'usd') }}
-        WHERE
-            minute >= DATE_TRUNC('day', NOW() - interval '1 week')
-            AND blockchain = "ethereum"
+        WHERE blockchain = "ethereum"
+        {% if is_incremental() %}
+        AND minute >= DATE_TRUNC('day', NOW() - interval '1 week')
+        {% endif %}
         GROUP BY
             1, 2
     ),
