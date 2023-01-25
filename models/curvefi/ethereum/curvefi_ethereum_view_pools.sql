@@ -11,7 +11,6 @@
 
 ---------------------------------------------------------------- Regular Pools ----------------------------------------------------------------
 WITH records AS (
-
     SELECT
         *
     FROM
@@ -22,18 +21,18 @@ regular_pools AS (
         version,
         `name`,
         symbol,
-        pool_address AS pool_address,
-        token_address AS token_address,
-        deposit_contract AS deposit_contract,
-        gauge_contract AS gauge_contract,
-        coin0 AS coin0,
-        coin1 AS coin1,
-        coin2 AS coin2,
-        coin3 AS coin3,
-        undercoin0 AS undercoin0,
-        undercoin1 AS undercoin1,
-        undercoin2 AS undercoin2,
-        undercoin3 AS undercoin3
+        lower(pool_address) AS pool_address,
+        lower(token_address) AS token_address,
+        lower(deposit_contract) AS deposit_contract,
+        lower(gauge_contract) AS gauge_contract,
+        lower(coin0) AS coin0,
+        lower(coin1) AS coin1,
+        lower(coin2) AS coin2,
+        lower(coin3) AS coin3,
+        lower(undercoin0) AS undercoin0,
+        lower(undercoin1) AS undercoin1,
+        lower(undercoin2) AS undercoin2,
+        lower(undercoin3) AS undercoin3
     FROM
         records
 ),
