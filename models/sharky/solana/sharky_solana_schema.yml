@@ -23,8 +23,8 @@ models:
       - &loan_id
         name: loan_id
         description: "The ID associated with the loan"
-      - &sharkyfi_instructions
-        name: sharkyfi_instructions
+      - &sharky_instructions
+        name: sharky_instructions
         description: "The set of instructions executed by the SharkyFi smart contract"
       - &amount_original
         name: amount_original

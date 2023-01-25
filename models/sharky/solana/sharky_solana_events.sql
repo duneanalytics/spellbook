@@ -29,7 +29,7 @@ WITH events AS (
       filter(
             instructions,
             x -> x.executing_account = '{{sharky_smart_contract}}'
-          ) AS sharkyfi_instructions,
+          ) AS sharky_instructions,
       CASE
           WHEN array_contains( log_messages, 'Program log: Instruction: OfferLoan') THEN 'Offer'
           WHEN array_contains( log_messages, 'Program log: Instruction: TakeLoan') THEN 'Take'
@@ -63,15 +63,15 @@ WITH events AS (
     CASE
         -- The smart contract was update around the 2022-12-01 and a new account was added before the loan id
         WHEN evt_type = 'Offer' THEN IF(
-                sharkyfi_instructions[0].account_arguments[2] = 'So11111111111111111111111111111111111111112',
-                sharkyfi_instructions[0].account_arguments[3],
-                sharkyfi_instructions[0].account_arguments[2]
+                sharky_instructions[0].account_arguments[2] = 'So11111111111111111111111111111111111111112',
+                sharky_instructions[0].account_arguments[3],
+                sharky_instructions[0].account_arguments[2]
             )
         WHEN evt_type = 'Take' THEN IF(
-                sharkyfi_instructions[0].account_arguments[4] = 'So11111111111111111111111111111111111111112',
-                sharkyfi_instructions[0].account_arguments[6],
-                sharkyfi_instructions[0].account_arguments[5]
+                sharky_instructions[0].account_arguments[4] = 'So11111111111111111111111111111111111111112',
+                sharky_instructions[0].account_arguments[6],
+                sharky_instructions[0].account_arguments[5]
             )
-        WHEN (evt_type = 'Rescind' OR evt_type = 'Repay' OR evt_type = 'Foreclose') THEN sharkyfi_instructions[0].account_arguments[0]
+        WHEN (evt_type = 'Rescind' OR evt_type = 'Repay' OR evt_type = 'Foreclose') THEN sharky_instructions[0].account_arguments[0]
     END as loan_id
     FROM events
