@@ -131,12 +131,8 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
-            - version
-            - transaction_type
-            - token_address
-            - evt_tx_hash
-            - depositor
-            - withdrawn_to
+            - evt_block_number
+            - evt_index
     columns:
       - &version
         name: version
@@ -194,12 +190,8 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
-            - version
-            - transaction_type
-            - token_address
-            - evt_tx_hash
-            - borrower
-            - repayer
+            - evt_block_number
+            - evt_index
     columns:
       - *version
       - *transaction_type
