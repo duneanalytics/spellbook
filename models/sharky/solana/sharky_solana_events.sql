@@ -48,15 +48,15 @@ WITH events AS (
       AND p.minute >= date_trunc("day", now() - interval '1 week')
       {% endif %}
     WHERE
-         array_contains(account_keys, '{{sharky_smart_contract}}')
-         AND success = 'True'
+         success = 'True'
          {% if not is_incremental() %}
-         AND block_date > '{{ project_start_date }}'
+         AND block_date >= '{{ project_start_date }}'
          {% endif %}
          {% if is_incremental() %}
          -- this filter will only be applied on an incremental run
          AND block_date >= date_trunc("day", now() - interval '1 week')
          {% endif %}
+         AND array_contains(account_keys, '{{sharky_smart_contract}}')
 )
     SELECT
     *,
