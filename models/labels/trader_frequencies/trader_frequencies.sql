@@ -44,3 +44,4 @@ select
   now() as updated_at
 from
   trader_frequencies
+  ;
