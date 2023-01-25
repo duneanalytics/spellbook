@@ -73,9 +73,5 @@ WITH events AS (
                 sharkyfi_instructions[0].account_arguments[5]
             )
         WHEN (evt_type = 'Rescind' OR evt_type = 'Repay' OR evt_type = 'Foreclose') THEN sharkyfi_instructions[0].account_arguments[0]
-    ELSE NULL END as loan_id
+    END as loan_id
     FROM events
-
-
-
-
