@@ -9,7 +9,7 @@
     post_hook = '{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "compound_v2",
-                                    \'["bizzyvinci"]\') }}'
+                                    \'["bizzyvinci", "hosuke"]\') }}'
     )
 }}
 

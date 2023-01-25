@@ -123,10 +123,20 @@ models:
       blockchain: ethereum
       sector: lending
       project: compound_v2
-      contributors: bizzyvinci
+      contributors: [bizzyvinci, hosuke]
     config:
       tags: ['ethereum', 'compound', 'compound_v2', 'supply', 'lending']
     description: "All compound v2 transactions involving supply transactions on ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - version
+            - transaction_type
+            - token_address
+            - evt_tx_hash
+            - depositor
+            - withdrawn_to
     columns:
       - &version
         name: version
@@ -167,16 +177,29 @@ models:
       - &evt_block_number
         name: evt_block_number
         description: "Event block number"
+      - &block_date
+        name: block_date
+        description: "UTC event block date"
 
   - name: compound_v2_ethereum_borrow
     meta:
       blockchain: ethereum
       sector: lending
       project: compound_v2
-      contributors: bizzyvinci
+      contributors: [bizzyvinci, hosuke]
     config:
       tags: ['ethereum', 'compound', 'compound_v2', 'borrow', 'lending']
     description: "All compound v2 transactions involving borrow transactions on ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - version
+            - transaction_type
+            - token_address
+            - evt_tx_hash
+            - borrower
+            - repayer
     columns:
       - *version
       - *transaction_type
@@ -195,3 +218,4 @@ models:
       - *evt_index
       - *evt_block_time
       - *evt_block_number
+      - *block_date
