@@ -17,23 +17,27 @@
 
 WITH dexs AS
 (
-    -- Migrated from: https://github.com/duneanalytics/dune-v1-abstractions/blob/main/deprecated-dune-v1-abstractions/optimism2/dex/insert_rubicon.sql
+    -- -- useful syntax when dealing with the event LogTake
+    -- -- pay_gem corresponds with take_amt - this is what the taker is taking and what the maker is selling
+    -- -- buy_gem corresponds with give_amt - this is what the taker is giving and what the maker is buying
+
+    --From the prespective of the taker
     SELECT
          t.evt_block_time AS block_time
         , t.evt_block_number
-        ,'' AS taker --not in the event table, so we rely on the transaction "from"
-        ,'' AS maker
-        ,t.buy_amt AS token_bought_amount_raw
-        ,t.pay_amt AS token_sold_amount_raw
+        ,t.taker AS taker
+        ,t.maker AS maker
+        ,t.take_amt AS token_bought_amount_raw
+        ,t.give_amt AS token_sold_amount_raw
         ,NULL AS amount_usd
-        ,t.buy_gem AS token_bought_address
-        ,t.pay_gem AS token_sold_address
+        ,t.pay_gem AS token_bought_address
+        ,t.buy_gem AS token_sold_address
         ,t.contract_address as project_contract_address
         ,t.evt_tx_hash AS tx_hash
         ,'' AS trace_address
         ,t.evt_index
     FROM
-        {{ source('rubicon_optimism', 'RubiconMarket_evt_LogTrade') }} t
+        {{ source('rubicon_optimism', 'RubiconMarket_evt_LogTake') }} t
         
     WHERE t.evt_block_time >= '{{project_start_date}}'
     {% endif %}
@@ -64,7 +68,7 @@ SELECT
     ) AS amount_usd
     ,dexs.token_bought_address
     ,dexs.token_sold_address
-    ,tx.from AS taker -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
+    ,dexs.taker
     ,dexs.maker
     ,dexs.project_contract_address
     ,dexs.tx_hash
