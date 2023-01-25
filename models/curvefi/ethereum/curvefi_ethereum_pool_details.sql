@@ -850,6 +850,7 @@ FROM
                 , NULL --coin2
                 , null --undercoin0
                 , null --undercoin1
+                , null --undercoin2
                 , null --undercoin3
                 , null --deposit_contract
                 , null --coin3
@@ -867,6 +868,7 @@ FROM
                 , NULL --coin2
                 , null --undercoin0
                 , null --undercoin1
+                , null --undercoin2
                 , null --undercoin3
                 , null --deposit_contract
                 , null --coin3
