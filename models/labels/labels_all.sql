@@ -2,7 +2,7 @@
     alias = 'all',
     materialized = 'table',
     file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "fantom"]\',
                                 "sector",
                                 "labels",
                                 \'["soispoke","hildobby"]\') }}')
