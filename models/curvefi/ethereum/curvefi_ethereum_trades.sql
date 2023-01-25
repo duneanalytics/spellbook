@@ -12,12 +12,15 @@
     )
 }}
 
+{% set project_start_date = '2017-09-27 00:00:00' %}
+
+--see curvefi readme for more info on the logic below.
 WITH dexs AS
 (
-    --meta pools v1 and regular pools (has two event types for exchanges, and has underlying concept)
+    --factory v1 and regular pools
     SELECT
         l.block_time
-        , 'Factory V1 Meta' as version
+        , p.version as version
         , '0x' || substring(l.topic2, 27,40) as taker
         , '' as maker
         , bytea2numeric(substring(l.data, 195, 64)) as token_bought_amount_raw
@@ -32,7 +35,7 @@ WITH dexs AS
         , '' as trace_address
         , l.index as evt_index
     FROM ethereum.logs l 
-    JOIN  {{ ref('curvefi_ethereum_view_pools') }} p ON l.contract_address = p.pool_address AND version IN ('Factory V1 Meta', 'Regular')
+    JOIN  {{ ref('curvefi_ethereum_view_pools') }} p ON l.contract_address = p.pool_address AND version IN ('Factory V1 Meta', 'Factory V1 Plain', 'Regular') --note Plain only has TokenExchange.
     WHERE l.topic1 IN ("0xd013ca23e77a65003c2c659c5442c00c805371b7fc1ebd4c206c41d1536bd90b" -- TokenExchangeUnderlying 
                         , "0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140") -- TokenExchange
     {% if is_incremental() %}
@@ -44,7 +47,7 @@ WITH dexs AS
     --factory v2 pools and v1 plain pools have same logic
     SELECT
         l.block_time
-        , 'Factory V2' as version
+        , p.version as version
         , '0x' || substring(l.topic2, 27,40) as taker
         , '' as maker
         , bytea2numeric(substring(l.data, 195, 64)) as token_bought_amount_raw
@@ -57,7 +60,7 @@ WITH dexs AS
         , '' as trace_address
         , l.index as evt_index
     FROM ethereum.logs l 
-    JOIN  {{ ref('curvefi_ethereum_view_pools') }} p ON l.contract_address = p.pool_address AND version IN ('Factory V1 Plain', 'Factory V2')
+    JOIN  {{ ref('curvefi_ethereum_view_pools') }} p ON l.contract_address = p.pool_address AND version = 'Factory V2'
     WHERE l.topic1 = "0xb2e76ae99761dc136e598d4a629bb347eccb9532a5f8bbd72e18467c3c34cc98" --TokenExchange
     {% if is_incremental() %}
     and l.block_time >= date_trunc("day", now() - interval '1 week')
