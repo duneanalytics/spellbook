@@ -837,7 +837,7 @@ SELECT
     end as token_pair
     ,dexs.token_bought_amount_raw / power(10, coalesce(erc20a.decimals,18)) AS token_bought_amount
     ,dexs.token_sold_amount_raw / power(10, coalesce(erc20b.decimals,18)) AS token_sold_amount
-    ,coalesce(try(CAST(dexs.token_bought_amount_raw AS DECIMAL(38,0))),dexs.token_bought_amount_raw) AS token_bought_amount_raw
+    ,CAST(dexs.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw
     ,CAST(dexs.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
     ,coalesce(
         dexs.amount_usd
