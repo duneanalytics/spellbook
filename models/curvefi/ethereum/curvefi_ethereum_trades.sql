@@ -835,14 +835,14 @@ SELECT
         when lower(erc20a.symbol) > lower(erc20b.symbol) then concat(erc20b.symbol, '-', erc20a.symbol)
         else concat(erc20a.symbol, '-', erc20b.symbol)
     end as token_pair
-    ,dexs.token_bought_amount_raw / power(10, erc20a.decimals,18) AS token_bought_amount
-    ,dexs.token_sold_amount_raw / power(10, erc20b.decimals,18) AS token_sold_amount
+    ,dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount
+    ,dexs.token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount
     ,CAST(dexs.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw
     ,CAST(dexs.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
     ,coalesce(
         dexs.amount_usd
-        ,(dexs.token_bought_amount_raw / power(10, p_bought.decimals,18)) * p_bought.price
-        ,(dexs.token_sold_amount_raw / power(10, p_sold.decimals,18)) * p_sold.price
+        ,(dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
+        ,(dexs.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
     ) AS amount_usd
     ,dexs.token_bought_address
     ,dexs.token_sold_address
