@@ -1,0 +1,11 @@
+version: 2
+
+sources: 
+  - name: beethoven_x_fantom
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for swaps on beethoven_x
+    tables:
+      - name: Vault_evt_Swap
+        loaded_at_field: evt_block_time

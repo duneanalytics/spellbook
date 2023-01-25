@@ -184,6 +184,11 @@ models:
       avalanche_c:
         +schema: gmx_avalanche_c
 
+    beethoven_x:
+      +schema: beethoven_x
+      fantom:
+        +schema: beethoven_x_fantom
+
     tigris:
       +schema: tigris
       arbitrum:
