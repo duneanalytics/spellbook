@@ -624,6 +624,11 @@ models:
       bnb:
         +schema: tofu_bnb
 
+    maker:
+      +schema: maker
+      ethereum:
+        +schema: maker_ethereum
+
     ovm:
       +schema: ovm
       optimism:
