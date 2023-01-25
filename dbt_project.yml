@@ -699,6 +699,15 @@ seeds:
             block_time: timestamp
             tx_hash: string
             amount: string
+
+    sharky:
+      solana:
+        sharky_solana_loans_solscan:
+          +column_types:
+            block_time: timestamp
+            tx_hash: string
+            amount: string
+
     ens:
     dex:
       trades:
