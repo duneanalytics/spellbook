@@ -156,7 +156,7 @@ meta_pools_deployed AS (
         r.coin2 as undercoin3
     FROM
         meta_calls mc 
-    LEFT JOIN records r ON mc.pool_address = r._base_pool
+    LEFT JOIN records r ON mc.output_0 = r._base_pool
 ),
 v1_pools_deployed AS(
     SELECT
