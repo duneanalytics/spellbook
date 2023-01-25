@@ -44,12 +44,12 @@ unit_test4 as (
 )
 
 select * from (
-    select * from unit_test1
-    union
-    select * from unit_test2
-    union
-    select * from unit_test3
-    union
-    select * from unit_test4
+    select 'test1' as test_no, * from unit_test1
+    union all
+    select 'test2' as test_no, * from unit_test2
+    union all
+    select 'test3' as test_no, * from unit_test3
+    union all
+    select 'test4' as test_no, * from unit_test4
 )
 where test = false
