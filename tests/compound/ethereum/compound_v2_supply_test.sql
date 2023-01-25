@@ -12,8 +12,7 @@ with unit_test1 as (
 unit_test2 as (
     -- cEther mint
     select case
-        -- actually 25.190814828273316528
-        when amount = 25.190814828273316000 then true
+        when abs(amount - 25.190814828273316) < 1e-12 then true
         else false
     end as test
     from {{ ref('compound_v2_ethereum_supply') }}
