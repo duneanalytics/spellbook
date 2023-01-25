@@ -29,7 +29,7 @@ with
 select
   collect_list(blockchain) as blockchain,
   address,
-  array_join(array_distinct(initcap(project)), ', ') ||' User' as name,
+  collect_list(initcap(project)) ||' User' as name,
   "trader_platforms" AS category,
   "gentrexha" AS contributor,
   "query" AS source,
