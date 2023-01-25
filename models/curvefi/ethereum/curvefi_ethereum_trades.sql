@@ -8,7 +8,7 @@
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "curvefi",
-                                \'["jeff-dude", "yulesa", "dsalv"]\') }}'
+                                \'["jeff-dude", "yulesa", "dsalv", "ilemi"]\') }}'
     )
 }}
 
@@ -745,6 +745,78 @@ WITH dexs AS
     FROM {{ source('curvefi_ethereum', 'tricrypto2_swap_evt_TokenExchange') }}   
         {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+
+    UNION ALL 
+
+    --plain pools v1
+    SELECT
+        l.block_time
+        , 'Factory V1 Plain' as version
+        , '' as maker
+        , '0x' || substring(l.topic2, 27,40) as taker
+        , l.contract_address as project_contract_address --pool address
+        , l.tx_hash 
+        , null as trace_address
+        , l.index as evt_index
+        , p.coins[cast(substring(l.data, 3, 64) as int)] as token_sold_address
+        , bytea2numeric(substring(l.data, 67, 64)) as token_sold_amount_raw
+        , p.coins[cast(substring(l.data, 131, 64) as int)] as token_bought_address
+        , bytea2numeric(substring(l.data, 195, 64)) as token_bought_amount_raw
+    FROM ethereum.logs l 
+    JOIN  {{ ref('curvefi_ethereum_view_pools') }} p ON l.contract_address = p.pool_address AND version = 'Factory V1 Plain'
+    WHERE l.topic1 = "0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140" --TokenExchange
+    {% if is_incremental() %}
+    AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+
+    UNION ALL 
+
+    --meta pools v1 (has two event types for exchanges)
+    SELECT
+        l.block_time
+        , 'Factory V1 Meta' as version
+        , '' as maker
+        , '0x' || substring(l.topic2, 27,40) as taker
+        , l.contract_address as project_contract_address --pool address
+        , l.tx_hash 
+        , null as trace_address
+        , l.index as evt_index
+        , case when l.topic1 = "0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140" then p.coins[cast(substring(l.data, 3, 64) as int)] 
+            else p.undercoins[cast(substring(l.data, 3, 64) as int)] end as token_sold_address
+        , bytea2numeric(substring(l.data, 67, 64)) as token_sold_amount_raw
+        , case when l.topic1 = "0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140" then p.coins[cast(substring(l.data, 131, 64) as int)] 
+            else p.undercoins[cast(substring(l.data, 3, 64) as int)] end as token_bought_address
+        , bytea2numeric(substring(l.data, 195, 64)) as token_bought_amount_raw
+    FROM ethereum.logs l 
+    JOIN  {{ ref('curvefi_ethereum_view_pools') }} p ON l.contract_address = p.pool_address AND version = 'Factory V1 Meta'
+    WHERE l.topic1 IN ("0xd013ca23e77a65003c2c659c5442c00c805371b7fc1ebd4c206c41d1536bd90b" -- TokenExchangeUnderlying 
+                        , "0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140") -- TokenExchange
+    {% if is_incremental() %}
+    AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+
+    UNION ALL
+
+    --factory v2 pools
+    SELECT
+        l.block_time
+        , 'Factory V2' as version
+        , '' as maker
+        , '0x' || substring(l.topic2, 27,40) as taker
+        , l.contract_address as project_contract_address --pool address
+        , l.tx_hash 
+        , null as trace_address
+        , l.index as evt_index
+        , p.coins[cast(substring(l.data, 3, 64) as int)] as token_sold_address
+        , bytea2numeric(substring(l.data, 67, 64)) as token_sold_amount_raw
+        , p.coins[cast(substring(l.data, 131, 64) as int)] as token_bought_address
+        , bytea2numeric(substring(l.data, 195, 64)) as token_bought_amount_raw
+    FROM ethereum.logs l 
+    JOIN  {{ ref('curvefi_ethereum_view_pools') }} p ON l.contract_address = p.pool_address AND version = 'Factory V2'
+    WHERE l.topic1 = "0xb2e76ae99761dc136e598d4a629bb347eccb9532a5f8bbd72e18467c3c34cc98" --TokenExchange
+    {% if is_incremental() %}
+    and evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
 

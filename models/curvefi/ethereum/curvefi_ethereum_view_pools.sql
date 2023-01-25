@@ -8,18 +8,6 @@
     )
  }}
 
-{% set curvefi_ethereum_DAI_USDC_USDT_pool_contract = "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7" %}
-{% set curvefi_ethereum_sBTC_swap_contract = "0x7fc77b5c7614e1533320ea6ddc2eb61fa00a9714" %}
-{% set curvefi_ethereum_REN_swap_contract = "0x93054188d876f558f4a66b2ef1d97d16edf0895b" %}
-{% set threeCRV_ethereum_token = "0x6c3f90f043a72fa612cbac8115ee7e52bde6e490" %}
-{% set sbtcCRV_ethereum_token = "0x075b1bb99792c9e1041ba13afef80c91a1e70fb3" %}
-{% set renCRV_ethereum_token = "0x49849c98ae39fff122806c06791fa73784fb3675" %}
-{% set dai_ethereum_token = "0x6b175474e89094c44da98b954eedeac495271d0f" %}
-{% set renBTC_ethereum_token = "0xeb4c2781e4eba804ce9a9803c67d0893436bb27d" %}
-{% set usdc_ethereum_token = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48" %}
-{% set wbtc_ethereum_token = "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599" %}
-{% set usdt_ethereum_token = "0xdac17f958d2ee523a2206206994597c13d831ec7" %}
-{% set sBTC_ethereum_token = "0xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6" %}
 ---------------------------------------------------------------- Regular Pools ----------------------------------------------------------------
 WITH records AS (
 
@@ -154,11 +142,7 @@ meta_pools_deployed AS (
         output_0 AS token_address,
         output_0 AS deposit_contract,
         _coin AS coin0,
-        CASE
-            WHEN _base_pool = '{{curvefi_ethereum_DAI_USDC_USDT_pool_contract}}' THEN '{{threeCRV_ethereum_token}}' --changing from swap to token contract
-            WHEN _base_pool = '{{curvefi_ethereum_sBTC_swap_contract}}' THEN '{{sbtcCRV_ethereum_token}}' --changing from swap to token contract
-            WHEN _base_pool = '{{curvefi_ethereum_REN_swap_contract}}' THEN '{{renCRV_ethereum_token}}' --changing from swap to token contract
-        END AS coin1,
+        r.token_address as coin1, --reference the token address of the base pool as coin1. meta pools swap into the base pool token, and then another swap is conducted.
         CAST(
             NULL AS VARCHAR(5)
         ) AS coin2,
@@ -167,22 +151,12 @@ meta_pools_deployed AS (
         ) AS coin3,
         _coin AS undercoin0,
         --Listing underlying coins for the ExchangeUnderlying function
-        CASE
-            WHEN _base_pool = '{{curvefi_ethereum_DAI_USDC_USDT_pool_contract}}' THEN '{{DAI_ethereum_token}}'
-            WHEN _base_pool = '{{curvefi_ethereum_sBTC_swap_contract}}' THEN '{{renBTC_ethereum_token}}'
-            WHEN _base_pool = '{{curvefi_ethereum_REN_swap_contract}}' THEN '{{renBTC_ethereum_token}}'
-        END AS undercoin1,
-        CASE
-            WHEN _base_pool = '{{curvefi_ethereum_DAI_USDC_USDT_pool_contract}}' THEN '{{USDC_ethereum_token}}'
-            WHEN _base_pool = '{{curvefi_ethereum_sBTC_swap_contract}}' THEN '{{WBTC_ethereum_token}}'
-            WHEN _base_pool = '{{curvefi_ethereum_REN_swap_contract}}' THEN '{{WBTC_ethereum_token}}'
-        END AS undercoin2,
-        CASE
-            WHEN _base_pool = '{{curvefi_ethereum_DAI_USDC_USDT_pool_contract}}' THEN '{{USDT_ethereum_token}}'
-            WHEN _base_pool = '{{curvefi_ethereum_sBTC_swap_contract}}' THEN '{{sBTC_ethereum_token}}'
-        END AS undercoin3
+        r.coin0 as undercoin1,
+        r.coin1 as undercoin2,
+        r.coin2 as undercoin3
     FROM
-        meta_calls
+        meta_calls mc 
+    LEFT JOIN records r ON mc.pool_address = r._base_pool
 ),
 v1_pools_deployed AS(
     SELECT
@@ -267,6 +241,7 @@ pools AS (
         g2
         ON pd2.pool_address = g2.token
 )
+
 SELECT
     version,
     p.`name`,
@@ -291,6 +266,8 @@ SELECT
     undercoin1,
     undercoin2,
     undercoin3,
+    array(coin0, coin1, coin2, coin3) as coins,
+    array(undercoin0, undercoin1, undercoin2, undercoin3) as undercoins,
     gauge_contract
 FROM
     pools p
