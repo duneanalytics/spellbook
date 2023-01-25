@@ -15,6 +15,6 @@ jobs:
           await github.rest.actions.createWorkflowDispatch({
             owner: 'duneanalytics',
             repo: 'spellbook-dagster',
-            workflow_id: 'deploy.yml',
+            workflow_id: '38005040',
             ref: 'main'
           })
