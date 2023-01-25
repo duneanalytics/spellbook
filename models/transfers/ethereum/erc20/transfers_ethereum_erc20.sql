@@ -7,7 +7,7 @@
 with
     sent_transfers as (
         select
-            'send' || '-' || evt_tx_hash || '-' || evt_index || '-' || `to` as unique_transfer_id,
+            'send' || '-' || evt_tx_hash || '-' || CAST(evt_index AS VARCHAR(100)) || '-' || `to` as unique_transfer_id,
             `to` as wallet_address,
             contract_address as token_address,
             evt_block_time,
@@ -19,11 +19,11 @@ with
     ,
     received_transfers as (
         select
-        'receive' || '-' || evt_tx_hash || '-' || evt_index || '-' || `from` as unique_transfer_id,
+        'receive' || '-' || evt_tx_hash || '-' || CAST(evt_index AS VARCHAR(100)) || '-' || `from` as unique_transfer_id,
         `from` as wallet_address,
         contract_address as token_address,
         evt_block_time,
-        - value as amount_raw
+        '-' || value as amount_raw
         from
             {{ source('erc20_ethereum', 'evt_transfer') }}
     )
@@ -31,7 +31,7 @@ with
     ,
     deposited_weth as (
         select
-            'deposit' || '-' || evt_tx_hash || '-' || evt_index || '-' || dst as unique_transfer_id,
+            'deposit' || '-' || evt_tx_hash || '-' || CAST(evt_index AS VARCHAR(100)) || '-' || dst as unique_transfer_id,
             dst as wallet_address,
             contract_address as token_address,
             evt_block_time,
@@ -43,11 +43,11 @@ with
     ,
     withdrawn_weth as (
         select
-            'withdrawn' || '-' || evt_tx_hash || '-' || evt_index || '-' || src as unique_transfer_id,
+            'withdrawn' || '-' || evt_tx_hash || '-' || CAST(evt_index AS VARCHAR(100)) || '-' || src as unique_transfer_id,
             src as wallet_address,
             contract_address as token_address,
             evt_block_time,
-            - wad as amount_raw
+            '-' || wad as amount_raw
         from
             {{ source('zeroex_ethereum', 'weth9_evt_withdrawal') }}
     )

@@ -17,6 +17,7 @@ WITH
 -- Find the PoC Query here: https://dune.com/queries/1290518
 batch_counts as (
     select try_cast(date_trunc('day', s.evt_block_time) as date) as block_date,
+           s.evt_block_number,
            s.evt_block_time,
            s.evt_tx_hash,
            solver,
@@ -41,7 +42,7 @@ batch_counts as (
     {% if is_incremental() %}
     WHERE s.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-    group by s.evt_tx_hash, solver, s.evt_block_time, name
+    group by s.evt_block_number, s.evt_block_time, s.evt_tx_hash, solver, name
 ),
 
 batch_values as (
@@ -65,6 +66,7 @@ batch_values as (
 combined_batch_info as (
     select
         block_date,
+        evt_block_number                               as block_number,
         evt_block_time                                 as block_time,
         num_trades,
         CASE

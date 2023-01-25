@@ -79,7 +79,22 @@ with
                 '1.0',
                 'ERC4626 Tokenized Vault',
                 '0x3578D6D5e1B4F07A48bb1c958CBfEc135bef7d98'
+              ),
+              (
+                'Curve',
+                'Bridge',
+                '1.0',
+                'CurveStEth Bridge V2',
+                '0xe09801da4c74e62fb42dfc8303a1c1bd68073d1a'
+              ),
+              (
+                'Uniswap',
+                'Bridge',
+                '1.0',
+                'UniswapDCABridge',
+                '0x94679a39679ffe53b53b6a1187aa1c649a101321'
               )
+              
           ) AS x (
             protocol,
             contract_type,

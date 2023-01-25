@@ -125,13 +125,6 @@ models:
     config:
       tags: ['ethereum','aztec']
     description: "View aztec rollup bridge daily bridge activity summary"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - bridge_protocol
-            - date
-            - bridge_address
-            - token_address 
     columns:
         - &date 
           name: date
@@ -178,11 +171,6 @@ models:
     config:
       tags: ['ethereum','aztec']
     description: "View aztec daily deposits grouped by token"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - date
-            - token_address 
     columns:
         - *date 
         - *token_address
@@ -213,11 +201,6 @@ models:
     config:
       tags: ['ethereum','aztec']
     description: "View daily rollup tvl grouped by token"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - token_address
-            - date
     columns:
         - *date 
         - *symbol

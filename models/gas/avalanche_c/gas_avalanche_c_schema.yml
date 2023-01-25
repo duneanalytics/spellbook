@@ -49,7 +49,7 @@ models:
         description: "Total amount of $USD paid in gas fees"
       - &burned_native
         name: burned_native
-        description: "Total amount of native tokens (AVAX) burned for this transaction, is equal to the the total transaction fee for the Avalanche blockchain"
+        description: "Total amount of native tokens (AVAX) burned for this transaction, is equal to the total transaction fee for the Avalanche blockchain"
       - &burned_usd
         name: burned_usd
         description: "Total amount of $USD burned for this transaction"   

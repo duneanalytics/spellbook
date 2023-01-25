@@ -1,7 +1,7 @@
 {{
   config(
         alias='view_transactions',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
+        post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                 "project",
                                 "seaport",
                                 \'["sohawk","soispoke"]\') }}'

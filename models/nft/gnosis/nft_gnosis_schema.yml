@@ -11,6 +11,8 @@ models:
     description: >
         NFT transfers
     columns:
+      - name: blockchain
+        description: "Blockchain"
       - name: block_time
         description: "UTC event block time"
       - name: block_number

@@ -7,7 +7,7 @@ models:
       sector: dex
       contributors: jeff-dude
     config:
-      tags: ['ethereum', 'amm', 'trades', 'dex', 'cross-chain']
+      tags: ['ethereum', 'amm', 'trades', 'dex', 'cross-chain','optimism']
     description: >
       DEX trades on all chains across all contracts and versions
     columns:
@@ -80,3 +80,36 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the corresponding trade event"
+
+  - name: dex_prices
+    meta:
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: ['ethereum', 'polygon', 'arbitrum', 'optimism', 'gnosis', 'avalanche_c', 'trades', 'dex', 'cross-chain', 'prices']
+    description: >
+      This table loads the prices of tokens from the dex.trades table. This helps for missing tokens from the prices.usd table
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - hour
+            - blockchain
+            - contract_address
+    columns:
+      - &day
+        name: day
+        description: "Used for Partitioning"
+      - &hour
+        name: hour
+        description: "hour corresponding to the prices data"
+      - &contract_address
+        name: contract_address
+        description: "token's contract address"
+      - *blockchain
+      - &median_price
+        name: median_price
+        description: "Median price of the token in USD within the corresponding hour"
+      - &sample_size
+        name: sample_size
+        description: "Number of times the token was traded within the coressponding hour"

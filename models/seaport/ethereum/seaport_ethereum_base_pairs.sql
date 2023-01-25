@@ -1,7 +1,18 @@
 {{ config(
-     alias = 'base_pairs'
+    alias = 'base_pairs',
+    partition_by = ['block_date'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'tx_hash', 'evt_index', 'sub_type', 'sub_idx'],
+    post_hook='{{ expose_spells(\'["ethereum"]\',
+                            "project",
+                            "seaport",
+                            \'["sohwak"]\') }}'
      )
 }}
+
+{% set c_seaport_first_date = "2022-06-01" %}
 
 with iv_offer_consideration as (
     select evt_block_time as block_time
@@ -45,9 +56,24 @@ with iv_offer_consideration as (
             end as is_private
     from
     (
-        select *
-            ,posexplode(offer) as (offer_idx, offer_item)
-        from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }}
+        select consideration
+            , contract_address
+            , evt_block_number
+            , evt_block_time
+            , evt_index
+            , evt_tx_hash
+            , offer
+            , offerer
+            , recipient
+            , zone
+            , posexplode(offer) as (offer_idx, offer_item)
+        from {{ source('seaport_ethereum', 'Seaport_evt_OrderFulfilled') }}
+        {% if not is_incremental() %}
+        where evt_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
+        {% endif %}
+        {% if is_incremental() %}
+        where evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     )
     union all
     select evt_block_time as block_time
@@ -91,13 +117,28 @@ with iv_offer_consideration as (
             end as is_private
     from
     (
-        select *
+        select consideration
+            , contract_address
+            , evt_block_number
+            , evt_block_time
+            , evt_index
+            , evt_tx_hash
+            , offer
+            , recipient
+            , zone
             ,posexplode(consideration) as (consideration_idx, consideration_item)
         from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }}
+        {% if not is_incremental() %}
+        where evt_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
+        {% endif %}
+        {% if is_incremental() %}
+        where evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}        
     )
 )
 ,iv_base_pairs as (
     select a.*
+            ,try_cast(date_trunc('day', a.block_time) as date) as block_date
             ,case when offer_first_item_type = 'erc20' then 'offer accepted'
                 when offer_first_item_type in ('erc721','erc1155') then 'buy'
                 else 'etc' -- some txns has no nfts

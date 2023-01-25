@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['blockchain', 'block_time', 'proxy_address', 'oracle_price', 'aggregator_address', 'underlying_token_address'],
+    unique_key = ['blockchain', 'block_number', 'proxy_address','underlying_token_address'],
     post_hook='{{ expose_spells(\'["polygon"]\',
                                 "project",
                                 "chainlink",

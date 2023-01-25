@@ -4,7 +4,7 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cryptopunks",
-                                    \'["masquot"]\') }}')
+                                    \'["masquot", "cat"]\') }}')
 }}
 
 SELECT blockchain,
@@ -30,6 +30,7 @@ project_contract_address,
 aggregator_name,
 aggregator_address,
 block_number,
+evt_index,
 tx_hash,
 tx_from,
 tx_to,

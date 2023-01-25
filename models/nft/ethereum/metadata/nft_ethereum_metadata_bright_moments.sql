@@ -35,6 +35,9 @@ from (VALUES
         , ('0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676', 27, 1000000, 'lo que no esta', 'Marcelo Soria-Rodriguez', 'Mexico City','0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676-27')
         , ('0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676', 28, 1000000, '100 Untitled Spaces', 'Snowfro', 'Mexico City','0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676-28')
         , ('0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676', 29, 1000000, '100 Sunsets', 'Zach Lieberman', 'Mexico City','0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676-29')
+        , ('0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676', 30, 1000000, 'Transcendence', 'Jeff Davis', 'Mexico City','0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676-30')
+        , ('0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676', 31, 1000000, 'Caminos', 'Juan Rodriguez Garcia', 'Mexico City','0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676-31')
+        , ('0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676', 32, 1000000, 'Color Streams', 'r4v3n', 'All','0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676-32')
 
 
 ) as temp_table (contract_address, project_id, project_id_base_value, collection_name, artist_name, bright_moments_city, art_collection_unique_id)

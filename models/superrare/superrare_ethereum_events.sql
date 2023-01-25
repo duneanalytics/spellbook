@@ -225,13 +225,13 @@ SELECT
     else 'erc721'
     end as token_standard,
     'Single Item Trade' as trade_type,
-    1 as number_of_items,
+    CAST(1 AS DECIMAL(38,0)) as number_of_items,
     'Buy' as trade_category,
     'Trade' as evt_type,
     a.seller as seller,
     a.buyer as buyer,
     (a.amount / 1e18) as amount_original,
-    a.amount as amount_raw,
+    CAST(a.amount AS DECIMAL(38,0)) as amount_raw,
     case
     when a.currencyAddress = '0xba5bde662c17e2adff1075610382b9b691296350' then 'RARE'
     else 'ETH' -- only RARE and ETH possible

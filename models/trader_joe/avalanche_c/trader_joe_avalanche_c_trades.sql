@@ -33,7 +33,7 @@ WITH dexs AS
         {{ source('trader_joe_avalanche_c', 'JoePair_evt_Swap') }} t
     INNER JOIN {{ source('trader_joe_avalanche_c', 'JoeFactory_evt_PairCreated') }} f
         ON f.pair = t.contract_address 
-    {% if is_incremental() %}
+    {% if is_incremental() %}  -- comment to accomodate additions to prices.usd and force full reload
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )

@@ -462,9 +462,9 @@ WITH dexs AS (
             END as token_bought_address,
             CASE
                 WHEN sold_id = 0 THEN '{{debridge_usdc_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -522,9 +522,9 @@ WITH dexs AS (
             END as token_bought_address,
             CASE
                 WHEN sold_id = 0 THEN '{{defrost_h20_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -610,9 +610,9 @@ WITH dexs AS (
             END as token_bought_address,
             CASE
                 WHEN sold_id = 0 THEN '{{frax_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -754,9 +754,9 @@ WITH dexs AS (
             END as token_bought_address,
             CASE
                 WHEN sold_id = 0 THEN '{{mai_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -814,9 +814,9 @@ WITH dexs AS (
             END as token_bought_address,
             CASE
                 WHEN sold_id = 0 THEN '{{mim_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -874,9 +874,9 @@ WITH dexs AS (
             END as token_bought_address,
             CASE
                 WHEN sold_id = 0 THEN '{{moremoney_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -906,9 +906,9 @@ WITH dexs AS (
             END as token_bought_address,
             CASE
                 WHEN sold_id = 0 THEN '{{nxusd_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -994,9 +994,9 @@ WITH dexs AS (
             END as token_bought_address,
             CASE
                 WHEN sold_id = 0 THEN '{{usdl_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -1082,9 +1082,9 @@ WITH dexs AS (
             END as token_bought_address,
             CASE
                 WHEN sold_id = 0 THEN '{{usds_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,

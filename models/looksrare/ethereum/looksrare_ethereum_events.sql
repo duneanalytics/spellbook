@@ -67,11 +67,11 @@ WITH looksrare_trades AS (
     UNION ALL
     SELECT distinct contract_address
     , output_0/100 AS fee_percentage
-    FROM {{ source('looksrare_ethereum','StrategyStandardSaleForFixedPriceV1B_call_viewProtocolFee') }} 
+    FROM {{ source('looksrare_ethereum','StrategyStandardSaleForFixedPriceV1B_call_viewProtocolFee') }}
     UNION ALL
     SELECT distinct contract_address
     , output_0/100 AS fee_percentage
-    FROM {{ source('looksrare_ethereum','StrategyAnyItemFromCollectionForFixedPriceV1B_call_viewProtocolFee') }} 
+    FROM {{ source('looksrare_ethereum','StrategyAnyItemFromCollectionForFixedPriceV1B_call_viewProtocolFee') }}
     )
 
 SELECT distinct 'ethereum' AS blockchain
@@ -84,13 +84,13 @@ SELECT distinct 'ethereum' AS blockchain
 , pu.price*lr.amount_raw/POWER(10, pu.decimals) AS amount_usd
 , CASE WHEN standard.evt_index IS NULL THEN 'erc1155' ELSE 'erc721' END AS token_standard
 , CASE WHEN lr.number_of_items > 1 THEN 'Bundle Trade' ELSE 'Single Item Trade' END AS trade_type
-, lr.number_of_items
+, CAST(lr.number_of_items AS DECIMAL(38,0)) AS number_of_items
 , lr.trade_category
 , 'Trade' AS evt_type
 , COALESCE(seller_fix.from, lr.seller) AS seller
 , COALESCE(buyer_fix.to, lr.buyer) AS buyer
 , lr.amount_raw/POWER(10, pu.decimals) AS amount_original
-, lr.amount_raw
+, CAST(lr.amount_raw AS DECIMAL(38,0)) AS amount_raw
 , CASE WHEN lr.currency_contract='0x0000000000000000000000000000000000000000' THEN 'ETH' ELSE pu.symbol END AS currency_symbol
 , lr.currency_contract
 , lr.nft_contract_address
@@ -171,4 +171,4 @@ LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} standard ON lr.block_ti
     {% endif %}
 LEFT JOIN platform_fees pf ON pf.contract_address=lr.strategy
 LEFT JOIN {{ ref('nft_ethereum_aggregators_markers') }} agg_m
-    ON LEFT(et.data, CHARINDEX(agg_m.hash_marker, et.data) + LENGTH(agg_m.hash_marker)) LIKE '%' || agg_m.hash_marker
+    ON RIGHT(et.data, agg_m.hash_marker_size) = agg_m.hash_marker

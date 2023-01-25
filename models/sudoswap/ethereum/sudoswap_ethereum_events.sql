@@ -291,7 +291,7 @@ WITH
         SELECT
             sc.*
             , tokens.name AS collection
-            , case when lower(right(tx.data, 8)) = '72db8c0b' then 'Gem' else agg.name end as aggregator_name
+            , coalesce(agg.name,agg_m.aggregator_name) as aggregator_name
             , agg.contract_address as aggregator_address
             , sc.amount_original*pu.price as amount_usd
             , sc.pool_fee_amount*pu.price as pool_fee_amount_usd
@@ -320,6 +320,8 @@ WITH
         LEFT JOIN {{ ref('nft_aggregators') }} agg
             ON (agg.contract_address = sc.call_from OR agg.contract_address = sc.router_caller) -- aggregator will either call pool directly or call the router
             AND agg.blockchain = 'ethereum'
+        LEFT JOIN {{ ref('nft_ethereum_aggregators_markers') }} agg_m
+            ON RIGHT(tx.data, agg_m.hash_marker_size) = agg_m.hash_marker
         LEFT JOIN tokens_ethereum_nft tokens ON nft_contract_address = tokens.contract_address
     )
 
@@ -331,15 +333,15 @@ WITH
             , block_date
             , block_time
             , block_number
-            , explode(token_id) as token_id --nft.trades prefers each token id be its own row
+            , explode(token_id) as raw_token_id --nft.trades prefers each token id be its own row
             , token_standard
-            , number_of_items/number_of_items as number_of_items
+            , CAST(number_of_items/number_of_items AS DECIMAL(38,0)) as number_of_items
             , trade_type
             , trade_category
             , evt_type
             , seller
             , buyer
-            , cast(amount_raw/number_of_items as double) as amount_raw
+            , cast(amount_raw/number_of_items as DECIMAL(38,0)) as amount_raw
             , amount_original/number_of_items as amount_original
             , amount_usd/number_of_items as amount_usd
             , currency_symbol
@@ -372,6 +374,47 @@ WITH
 
 --final SELECT CTE
 SELECT
-    *
-    , 'sudoswap-' || tx_hash || '-' || nft_contract_address || token_id::string || '-' || seller || '-' || amount_original::string || 'Trade' AS unique_trade_id
+    blockchain
+    , project
+    , version
+    , block_date
+    , block_time
+    , block_number
+    , CAST(raw_token_id AS VARCHAR(100)) AS token_id
+    , token_standard
+    , number_of_items
+    , trade_type
+    , trade_category
+    , evt_type
+    , seller
+    , buyer
+    , CAST(amount_raw AS DECIMAL(38,0)) AS amount_raw
+    , amount_original
+    , amount_usd
+    , currency_symbol
+    , currency_contract
+    , project_contract_address
+    , nft_contract_address
+    , collection
+    , tx_hash
+    , tx_from
+    , tx_to
+    , aggregator_address
+    , aggregator_name
+    , platform_fee_amount
+    , platform_fee_amount_raw
+    , platform_fee_amount_usd
+    , platform_fee_percentage
+    , pool_fee_amount
+    , pool_fee_amount_raw
+    , pool_fee_amount_usd
+    , pool_fee_percentage
+    , royalty_fee_amount
+    , royalty_fee_amount_raw
+    , royalty_fee_amount_usd
+    , royalty_fee_percentage
+    , royalty_fee_currency_symbol
+    , royalty_fee_receive_address
+    , 'sudoswap-' || tx_hash || '-' || nft_contract_address || raw_token_id::string || '-' || seller || '-' || amount_original::string || 'Trade' AS unique_trade_id
 FROM swaps_exploded
+;

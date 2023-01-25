@@ -1,21 +1,22 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["ethereum","avalanche_c"]\',
+        post_hook='{{ expose_spells(\'["ethereum","avalanche_c","optimism"]\',
                                 "project",
                                 "curvefi",
-                                \'["jeff-dude","yulesa","dsalv","Henrystats"]\') }}'
+                                \'["jeff-dude","yulesa","dsalv","Henrystats","msilb7"]\') }}'
         )
 }}
 
 {% set curvefi_trade_models = [
-'curvefi_ethereum_trades'
-,'curvefi_avalanche_c_trades'
+ ref('curvefi_ethereum_trades')
+,ref('curvefi_optimism_trades')
+,ref('curvefi_avalanche_c_trades')
 ] %}
 
 
 SELECT *
 FROM (
-    {% for dex_model in curvefi_trade_models %}
+    {% for curvefi_model in curvefi_trade_models %}
     SELECT
         blockchain,
         project,
@@ -40,9 +41,10 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ ref(dex_model) }}
+    FROM {{ curvefi_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
 )
+;

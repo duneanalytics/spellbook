@@ -39,7 +39,7 @@ known_solver_metadata (address, environment, name) as (
                  ('0x79f175703ECE2AbC7BE2e2a603eBBa319FB84Acc', 'barn', 'Baseline'),
                  ('0x508bCC23C1a808A9c41D10E2FCB544Ffb76ae3E5', 'barn', 'MIP'),
                  ('0x7942a2b3540d1eC40B2740896f87aEcB2a588731', 'barn', 'Quasimodo'),
-                 ('0x26029B63C7DBD0C4C04D7226C3e7de5EAb3DB3D8', 'barn', 'Gnosis_1Inch'),
+                 ('0x26029B63C7DBD0C4C04D7226C3e7de5EAb3DB3D8', 'barn', 'Gnosis_1inch'),
                  ('0x52ac5B5e85De9aa72ef5925989Fc419AA04EB15b', 'barn', 'SeaSolver'),
                  ('0xf794f31976a9a1d866cadfecde8984e656395a70', 'barn', 'Quasilabs'),
                  ('0x449944c987d622cd8db9c150fd4ecdfe4435b836', 'barn', 'Naive'),
@@ -51,7 +51,7 @@ known_solver_metadata (address, environment, name) as (
                  ('0xB4783aBc7B1e5FdAEb36F78eE585e03Ee6eBB718', 'prod', 'Baseline'),
                  ('0x920c9D5ec65dAC83435e9aF378C0f6fac69b8B66', 'prod', 'MIP'),
                  ('0x7938A4770953Ab0003bF1e1fC5fC7F769B57d525', 'prod', 'Quasilabs'),
-                 ('0xd2F50B092ec32623c4955cEF4AE30C4699353735', 'prod', 'Gnosis_1Inch'),
+                 ('0xd2F50B092ec32623c4955cEF4AE30C4699353735', 'prod', 'Gnosis_1inch'),
                  ('0x68dEE65bB88d919463495E5CeA9870a81f1e9413', 'service', 'Withdraw'),
                  ('0xa03be496e67ec29bc62f01a428683d7f9c204930', 'service', 'Withdraw'),
                  ('0x7524942F9283FBFa8F17b05CC0a9cBde397d25b3', 'test', 'Test 1')

@@ -301,7 +301,7 @@ models:
       sector: nft
       contributors: hildobby
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'sudoswap', 'ethereum', 'wash_trades']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'sudoswap', 'blur', 'ethereum', 'wash_trades']
     description: >
         NFT wash trades labelling
     columns:
@@ -351,19 +351,25 @@ models:
     meta:
       blockchain: ethereum, solana
       sector: nft
-      contributors: springzh
+      contributors: springzh, 0xRob
     config:
       tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'ethereum', 'solana', 'address']
     description: >
-        NFT linked addresses. Addresses that buy and sell NFTs from each other.
+        NFT linked addresses. Addresses that buy and sell NFTs from each other. By definition (master address < alt address) alphabetically.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - master_address
+            - alternative_address
     columns:
       - *blockchain
       - name: master_address
         description: "Master address"
       - name: alternative_address
         description: "Alternative address"
-      - name: linked_address_id
-        description: "Unique linked address id"
+      - name: last_interaction
+        description: "block_time of the last trade between the pair"
 
 
   - name: nft_transfers
@@ -409,3 +415,46 @@ models:
         tests:
           - unique
         description: "Unique transfer ID"
+
+  - name: nft_lending
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: Henrystats
+    config:
+      tags: ['ethereum','nft', 'lending']
+    description: >
+        nft lending events (repay & borrow)
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - &block_date
+        name: block_date
+        description: "UTC event block date"
+      - *token_id
+      - *collection
+      - *amount_usd
+      - *token_standard
+      - *evt_type
+      - &address
+        name: address
+        description:  "Address repaying or borrowing"
+      - *amount_original
+      - *amount_raw
+      - &collateral_currency_symbol
+        name: collateral_currency_symbol
+        description:  "Symbol of collateral currency used for loan"
+      - &collateral_currency_contract
+        name: collateral_currency_contract
+        description:  "Contract address of collateral currency used for loan"
+      - *nft_contract_address
+      - *project_contract_address
+      - *tx_hash
+      - *block_number
+      - *tx_from
+      - *tx_to
+      - &evt_index
+        name: evt_index
+        description: "Index of the corresponding lending event"

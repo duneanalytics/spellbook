@@ -17,8 +17,8 @@ i.symbol,
 i.underlying_symbol,
 i_asset.underlying_token_address AS underlying_address,
 i_collateral.underlying_token_address AS collateral_address,
-l.repayAmount / power(10,i.underlying_decimals) AS repay_amount,
-l.repayAmount / power(10,i.underlying_decimals)*p.price AS repay_usd
+CAST(l.repayAmount AS DOUBLE) / power(10,i.underlying_decimals) AS repay_amount,
+CAST(l.repayAmount AS DOUBLE) / power(10,i.underlying_decimals)*p.price AS repay_usd
 FROM {{ source('ironbank_ethereum', 'CErc20Delegator_evt_LiquidateBorrow') }} l
 LEFT JOIN (SELECT contract_address,underlying_token_address
             FROM {{ ref('ironbank_ethereum_itokens') }} ) i_collateral ON l.cTokenCollateral = i_collateral.contract_address
