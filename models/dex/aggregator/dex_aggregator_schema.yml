@@ -80,6 +80,3 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the corresponding trade event"
-      - &unique_trade_id
-        name: unique_trade_id
-        description: "Unique trade ID built to track merge incremental strategy in the model"
