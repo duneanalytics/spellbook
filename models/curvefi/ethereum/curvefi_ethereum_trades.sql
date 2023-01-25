@@ -841,7 +841,7 @@ SELECT
     ,CAST(dexs.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
     ,coalesce(
         dexs.amount_usd
-        ,(dexs.token_bought_amount_raw / power(10, coalesce(p_bought.decimals),18)) * p_bought.price
+        ,(dexs.token_bought_amount_raw / power(10, coalesce(p_bought.decimals,18))) * p_bought.price
         ,(dexs.token_sold_amount_raw / power(10, coalesce(p_sold.decimals,18))) * p_sold.price
     ) AS amount_usd
     ,dexs.token_bought_address
