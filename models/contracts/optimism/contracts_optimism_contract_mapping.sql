@@ -37,7 +37,7 @@ with base_level as (
   from (
     select 
       ct.`from` as creator_address
-      ,NULL::string as contract_factory
+      ,CAST(NULL AS string) as contract_factory
       ,ct.address as contract_address
       ,ct.block_time as created_time
       ,ct.tx_hash as creation_tx_hash
@@ -52,7 +52,7 @@ with base_level as (
       {% endif %}
     where 
       true
-    {% if is_incremental() %}
+      {% if is_incremental() %}
       and ct.block_time >= date_trunc('day', now() - interval '1 week')
 
     -- to get existing history of contract mapping
@@ -66,7 +66,7 @@ with base_level as (
       ,creation_tx_hash
       ,is_self_destruct
     from {{ this }}
-    {% endif %}
+      {% endif %} -- line 55 incremental filter
   ) as x
   group by 1, 2, 3, 4, 5, 6
 )
@@ -194,7 +194,7 @@ with base_level as (
     ,to_timestamp('2021-07-06 00:00:00') as created_time
     ,false as is_self_destruct
     ,'synthetix contracts' as source
-    ,NULL as creation_tx_hash
+    ,cast(NULL as string) as creation_tx_hash
   from {{ source('ovm1_optimism', 'synthetix_genesis_contracts') }} as snx
   where 
     true
@@ -286,7 +286,7 @@ select
   {% if is_incremental() %}
     th.contract_creator_if_factory
     {% else -%}
-    NULL
+    cast(NULL as string)
   {% endif %}
   ) as contract_creator_if_factory
   ,coalesce(c.is_self_destruct, false) as is_self_destruct
