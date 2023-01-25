@@ -29,7 +29,7 @@ with v2 as (
         contract_address  as project_contract_address,
         evt_tx_hash as tx_hash,
         evt_block_number as block_number,
-        concat(cast(evt_block_number as varchar), '-', cast(evt_index as varchar)) as unique_trade_id,
+        concat(cast(evt_block_number as varchar(5)), '-', cast(evt_index as varchar(5))) as unique_trade_id,
         case
             when currency = '0x0000000000000000000000000000000000000000' then 'native'
             else 'erc20'
@@ -39,9 +39,9 @@ with v2 as (
 ),
 stack as (
     select
-        cast(null as varchar) as version,
+        cast(null as varchar(5)) as version,
         evt_block_time as block_time,
-        cast(null as varchar) as token_id,
+        cast(null as varchar(5)) as token_id,
         'erc721' as token_standard,
         'Bundle Item Trade' as trade_type,
         amount as number_of_items,
@@ -57,7 +57,7 @@ stack as (
         contract_address  as project_contract_address,
         evt_tx_hash as tx_hash,
         evt_block_number as block_number,
-        concat(cast(evt_block_number as varchar), '-', cast(evt_index as varchar)) as unique_trade_id,
+        concat(cast(evt_block_number as varchar(5)), '-', cast(evt_index as varchar(5))) as unique_trade_id,
         case
             when currency = '0x0000000000000000000000000000000000000000' then 'native'
             else 'erc20'
@@ -69,61 +69,61 @@ v3 as (
     select
         'v3' as version,
         call_block_time as block_time,
-        json_extract_scalar(nft, '$.id') as token_id,
+        get_json_object(nft, '$.id') as token_id,
         case
-            when json_extract_scalar(nft, '$.assetType') = '0' then 'native'
-            when json_extract_scalar(nft, '$.assetType') = '1' then 'erc20'
-            when json_extract_scalar(nft, '$.assetType') = '2' then 'erc721'
-            when json_extract_scalar(nft, '$.assetType') = '3' then 'erc1155'
+            when get_json_object(nft, '$.assetType') = '0' then 'native'
+            when get_json_object(nft, '$.assetType') = '1' then 'erc20'
+            when get_json_object(nft, '$.assetType') = '2' then 'erc721'
+            when get_json_object(nft, '$.assetType') = '3' then 'erc1155'
         end as token_standard,
         case
             when cardinality(orders) > 1 then 'Bundle Trade'
             else 'Single Item Trade'
         end as trade_type,
-        json_extract_scalar(nft, '$.amount') as number_of_items,
+        get_json_object(nft, '$.amount') as number_of_items,
         case
             when orderType = '0' then 'Swap'
             when orderType = '1' then 'Buy'
             when orderType = '2' then 'Sell'
         end as trade_category,
-        json_extract_scalar("order", '$.signer') as seller,
-        cast(null as varchar) as buyer,
-        json_extract_scalar(currency, '$.amount') as amount_raw,
+        get_json_object(order, '$.signer') as seller,
+        cast(null as varchar(5)) as buyer,
+        get_json_object(currency, '$.amount') as amount_raw,
         case
-            when json_extract_scalar(currency, '$.assetType') = '0' then '{{ weth_address }}'
-            else json_extract_scalar(currency, '$.collection')
+            when get_json_object(currency, '$.assetType') = '0' then '{{ weth_address }}'
+            else get_json_object(currency, '$.collection')
         end as currency_contract,
-        json_extract_scalar(nft, '$.collection') as nft_contract_address,
+        get_json_object(nft, '$.collection') as nft_contract_address,
         contract_address  as project_contract_address,
         call_tx_hash as tx_hash,
         call_block_number as block_number,
-        concat(cast(call_block_number as varchar), '-', call_tx_hash, cast(array_join(call_trace_address, ',') as varchar)) as unique_trade_id,
+        concat(cast(call_block_number as varchar(5)), '-', call_tx_hash, cast(array_join(call_trace_address, ',') as varchar(5))) as unique_trade_id,
         case
-            when json_extract_scalar(currency, '$.assetType') = '0' then 'native'
-            when json_extract_scalar(currency, '$.assetType') = '1' then 'erc20'
-            when json_extract_scalar(currency, '$.assetType') = '2' then 'erc721'
-            when json_extract_scalar(currency, '$.assetType') = '3' then 'erc1155'
+            when get_json_object(currency, '$.assetType') = '0' then 'native'
+            when get_json_object(currency, '$.assetType') = '1' then 'erc20'
+            when get_json_object(currency, '$.assetType') = '2' then 'erc721'
+            when get_json_object(currency, '$.assetType') = '3' then 'erc1155'
         end as currency_token_standard,
         orderType
     from (
         select *,
             case
-                when orderType = '1' then json_parse(json_extract_scalar("order", '$.bid[0]'))
-                else json_parse(json_extract_scalar("order", '$.ask[0]'))
+                when orderType = '1' then get_json_object(order, '$.bid[0]')
+                else get_json_object(order, '$.ask[0]')
             end as nft,
             case
-                when orderType = '1' then json_parse(json_extract_scalar("order", '$.ask[0]'))
-                else json_parse(json_extract_scalar("order", '$.bid[0]'))
+                when orderType = '1' then get_json_object(order, '$.ask[0]')
+                else get_json_object(order, '$.bid[0]')
             end as currency
         from (
             select *,
-                json_extract_scalar("order", '$.orderType') as orderType,
-                json_extract_scalar("order", '$.amount') as amount
+                get_json_object(order, '$.orderType') as orderType,
+                get_json_object(order, '$.amount') as amount
             from (
-                select * from {{ source('liquidifty_ethereum', 'MarketplaceV3_call_buy') }}
+                select *, explode(orders) as order from {{ source('liquidifty_ethereum', 'MarketplaceV3_call_buy') }}
                 union all
-                select * from {{ source('liquidifty_ethereum', 'MarketplaceV3_deprecated_call_buy') }}
-            ), unnest(orders) as orders("order")
+                select *, explode(orders) as order from {{ source('liquidifty_ethereum', 'MarketplaceV3_deprecated_call_buy') }}
+            )
             where call_success
         )
     )
@@ -145,7 +145,7 @@ select
     'Trade' as evt_type,
     buys.seller,
     case
-        when buys.version = 'v3' then transactions."from"
+        when buys.version = 'v3' then transactions.from
         else buys.buyer
     end as buyer,
     cast(buys.amount_raw as decimal(38, 0)) / power(10, erc20.decimals) as amount_original,
@@ -154,11 +154,11 @@ select
     buys.currency_contract,
     buys.nft_contract_address,
     buys.project_contract_address,
-    cast(null as varchar) as aggregator_name,
-    cast(null as varchar) as aggregator_address,
+    cast(null as varchar(5)) as aggregator_name,
+    cast(null as varchar(5)) as aggregator_address,
     buys.tx_hash,
     buys.block_number,
-    transactions."from" as tx_from,
+    transactions.from as tx_from,
     transactions.to as tx_to,
     buys.unique_trade_id,
     buys.currency_token_standard,
