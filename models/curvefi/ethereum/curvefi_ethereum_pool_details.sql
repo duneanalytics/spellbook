@@ -836,7 +836,7 @@ FROM
                 '0xdac17f958d2ee523a2206206994597c13d831ec7', --undercoin3
                 '0xc5FA220347375ac4f91f9E4A4AAb362F22801504', --deposit_contract
                 NULL --coin3
-            ),
+            )
 
             , (
                 'Regular' --version
@@ -871,7 +871,7 @@ FROM
                 , null --deposit_contract
                 , null --coin3
             )
-            
+
     ) AS temp_table (
         version,
         `name`,
