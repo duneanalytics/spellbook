@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: maker_ethereum_accounting
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: maker
+      contributors: [ lyt, adcv, SebVentures, steakhouse ]
+    config:
+      tags: [ 'ethereum', 'maker', 'interest', 'stablecoin', 'lending' ]
+    description: "Granular-level general ledger of MakerDAO with all accounting entries. Currently Work In Progress"
+    columns:
+      - &code
+        name: code
+        description: "Account of the accounting entry"
+      - &ts
+        name: ts
+        description: "Timestamp of the accounting entry"
+      - &hash
+        name: hash
+        description: "Transaction hash of the accounting entry, if any"
+      - &value
+        name: value
+        description: "Value of the accounting entry, positive (credit) or negative (debit)"
+      - &token
+        name: token
+        description: "Token unit for the value"
+      - &descriptor
+        name: descriptor
+        description: "Label of the accounting entry"
+      - &ilk
+        name: ilk
+        description: "Ilk that related to the accountring entry, if any"
