@@ -415,3 +415,46 @@ models:
         tests:
           - unique
         description: "Unique transfer ID"
+
+  - name: nft_lending
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: Henrystats
+    config:
+      tags: ['ethereum','nft', 'lending']
+    description: >
+        nft lending events (repay & borrow)
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - &block_date
+        name: block_date
+        description: "UTC event block date"
+      - *token_id
+      - *collection
+      - *amount_usd
+      - *token_standard
+      - *evt_type
+      - &address
+        name: address
+        description:  "Address repaying or borrowing"
+      - *amount_original
+      - *amount_raw
+      - &collateral_currency_symbol
+        name: collateral_currency_symbol
+        description:  "Symbol of collateral currency used for loan"
+      - &collateral_currency_contract
+        name: collateral_currency_contract
+        description:  "Contract address of collateral currency used for loan"
+      - *nft_contract_address
+      - *project_contract_address
+      - *tx_hash
+      - *block_number
+      - *tx_from
+      - *tx_to
+      - &evt_index
+        name: evt_index
+        description: "Index of the corresponding lending event"
