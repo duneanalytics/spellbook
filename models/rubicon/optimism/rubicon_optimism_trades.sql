@@ -40,7 +40,6 @@ WITH dexs AS
         {{ source('rubicon_optimism', 'RubiconMarket_evt_LogTake') }} t
         
     WHERE t.evt_block_time >= '{{project_start_date}}'
-    {% endif %}
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
