@@ -767,7 +767,7 @@ WITH dexs AS
     JOIN  {{ ref('curvefi_ethereum_view_pools') }} p ON l.contract_address = p.pool_address AND version = 'Factory V1 Plain'
     WHERE l.topic1 = "0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140" --TokenExchange
     {% if is_incremental() %}
-    AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+    AND l.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 
     UNION ALL 
@@ -793,7 +793,7 @@ WITH dexs AS
     WHERE l.topic1 IN ("0xd013ca23e77a65003c2c659c5442c00c805371b7fc1ebd4c206c41d1536bd90b" -- TokenExchangeUnderlying 
                         , "0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140") -- TokenExchange
     {% if is_incremental() %}
-    AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+    AND l.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 
     UNION ALL
@@ -816,7 +816,7 @@ WITH dexs AS
     JOIN  {{ ref('curvefi_ethereum_view_pools') }} p ON l.contract_address = p.pool_address AND version = 'Factory V2'
     WHERE l.topic1 = "0xb2e76ae99761dc136e598d4a629bb347eccb9532a5f8bbd72e18467c3c34cc98" --TokenExchange
     {% if is_incremental() %}
-    and evt_block_time >= date_trunc("day", now() - interval '1 week')
+    and l.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
 
