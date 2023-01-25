@@ -1,6 +1,11 @@
 {{ config(
     schema = 'compound_v2_ethereum',
     alias = 'borrow',
+    partition_by = ['block_date'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'version', 'transaction_type', 'token_address', 'evt_tx_hash', 'borrower', 'repayer'],
     post_hook = '{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "compound_v2",
@@ -22,11 +27,18 @@ with borrows as (
         evt_tx_hash,
         evt_index,
         evt_block_time,
-        evt_block_number
+        evt_block_number,
+        date_trunc('DAY', evt_block_time) as block_date
     from (
         select * from {{ source('compound_v2_ethereum', 'cErc20_evt_Borrow') }}
+        {% if is_incremental() %}
+		where evt_block_time >= date_trunc("day", now() - interval '1 week')
+		{% endif %}
         union all
         select * from {{ source('compound_v2_ethereum', 'cEther_evt_Borrow') }}
+        {% if is_incremental() %}
+		where evt_block_time >= date_trunc("day", now() - interval '1 week')
+		{% endif %}
     ) evt_borrow
     left join {{ ref('compound_v2_ethereum_ctokens') }} ctokens
         on evt_borrow.contract_address = ctokens.ctoken_address
@@ -34,6 +46,9 @@ with borrows as (
         on p.minute = date_trunc('minute', evt_borrow.evt_block_time)
         and p.contract_address = ctokens.asset_address
         and p.blockchain = 'ethereum'
+        {% if is_incremental() %}
+        and p.minute >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 ),
 repays as (
     select
@@ -49,11 +64,18 @@ repays as (
         evt_tx_hash,
         evt_index,
         evt_block_time,
-        evt_block_number
+        evt_block_number,
+        date_trunc('DAY', evt_block_time) as block_date
     from (
         select * from {{ source('compound_v2_ethereum', 'cErc20_evt_RepayBorrow') }}
+        {% if is_incremental() %}
+		where evt_block_time >= date_trunc("day", now() - interval '1 week')
+		{% endif %}
         union all
         select * from {{ source('compound_v2_ethereum', 'cEther_evt_RepayBorrow') }}
+        {% if is_incremental() %}
+		where evt_block_time >= date_trunc("day", now() - interval '1 week')
+		{% endif %}
     ) evt_repay
     left join {{ ref('compound_v2_ethereum_ctokens') }} ctokens
         on evt_repay.contract_address = ctokens.ctoken_address
@@ -61,6 +83,9 @@ repays as (
         on p.minute = date_trunc('minute', evt_repay.evt_block_time)
         and p.contract_address = ctokens.asset_address
         and p.blockchain = 'ethereum'
+        {% if is_incremental() %}
+        and p.minute >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 ),
 liquidations as (
     select
@@ -76,11 +101,18 @@ liquidations as (
         evt_tx_hash,
         evt_index,
         evt_block_time,
-        evt_block_number
+        evt_block_number,
+        date_trunc('DAY', evt_block_time) as block_date
     from (
         select * from {{ source('compound_v2_ethereum', 'cErc20_evt_LiquidateBorrow') }}
+        {% if is_incremental() %}
+		where evt_block_time >= date_trunc("day", now() - interval '1 week')
+		{% endif %}
         union all
         select * from {{ source('compound_v2_ethereum', 'cEther_evt_LiquidateBorrow') }}
+        {% if is_incremental() %}
+		where evt_block_time >= date_trunc("day", now() - interval '1 week')
+		{% endif %}
     ) evt_liquidate
     left join {{ ref('compound_v2_ethereum_ctokens') }} ctokens
         on evt_liquidate.contract_address = ctokens.ctoken_address
@@ -88,6 +120,9 @@ liquidations as (
         on p.minute = date_trunc('minute', evt_liquidate.evt_block_time)
         and p.contract_address = ctokens.asset_address
         and p.blockchain = 'ethereum'
+        {% if is_incremental() %}
+        and p.minute >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 )
 
 select * from borrows

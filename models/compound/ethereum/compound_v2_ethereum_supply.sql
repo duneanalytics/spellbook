@@ -1,6 +1,11 @@
 {{ config(
     schema = 'compound_v2_ethereum',
     alias = 'supply',
+    partition_by = ['block_date'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'version', 'transaction_type', 'token_address', 'evt_tx_hash', 'depositor', 'withdrawn_to'],
     post_hook = '{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "compound_v2",
@@ -22,11 +27,18 @@ with mints as (
         evt_tx_hash,
         evt_index,
         evt_block_time,
-        evt_block_number
+        evt_block_number,
+        date_trunc('DAY', evt_block_time) as block_date
     from (
         select * from {{ source('compound_v2_ethereum', 'cErc20_evt_Mint') }}
+        {% if is_incremental() %}
+		where evt_block_time >= date_trunc("day", now() - interval '1 week')
+		{% endif %}
         union all
         select * from {{ source('compound_v2_ethereum', 'cEther_evt_Mint') }}
+        {% if is_incremental() %}
+		where evt_block_time >= date_trunc("day", now() - interval '1 week')
+		{% endif %}
     ) evt_mint
     left join {{ ref('compound_v2_ethereum_ctokens') }} ctokens
         on evt_mint.contract_address = ctokens.ctoken_address
@@ -34,6 +46,9 @@ with mints as (
         on p.minute = date_trunc('minute', evt_mint.evt_block_time)
         and p.contract_address = ctokens.asset_address
         and p.blockchain = 'ethereum'
+        {% if is_incremental() %}
+        and p.minute >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 ),
 redeems as (
     select
@@ -49,11 +64,18 @@ redeems as (
         evt_tx_hash,
         evt_index,
         evt_block_time,
-        evt_block_number
+        evt_block_number,
+        date_trunc('DAY', evt_block_time) as block_date
     from (
         select * from {{ source('compound_v2_ethereum', 'cErc20_evt_Redeem') }}
+        {% if is_incremental() %}
+		where evt_block_time >= date_trunc("day", now() - interval '1 week')
+		{% endif %}
         union all
         select * from {{ source('compound_v2_ethereum', 'cEther_evt_Redeem') }}
+        {% if is_incremental() %}
+		where evt_block_time >= date_trunc("day", now() - interval '1 week')
+		{% endif %}
     ) evt_mint
     left join {{ ref('compound_v2_ethereum_ctokens') }} ctokens
         on evt_mint.contract_address = ctokens.ctoken_address
@@ -61,6 +83,9 @@ redeems as (
         on p.minute = date_trunc('minute', evt_mint.evt_block_time)
         and p.contract_address = ctokens.asset_address
         and p.blockchain = 'ethereum'
+        {% if is_incremental() %}
+        and p.minute >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 )
 
 
