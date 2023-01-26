@@ -163,7 +163,7 @@ meta_pools as ( -- getting meta pools and their base pools
             {{ source('curvefi_fantom', 'StableSwap_Factory_call_deploy_metapool') }} a 
             INNER JOIN 
             base_pools_lp_tokens b 
-                ON a.base_pool = b.pool
+                ON a._base_pool = b.pool
                 AND a.call_success = true 
                 {% if is_incremental() %}
                 AND a.call_block_time >= date_trunc("day", now() - interval '1 week')
