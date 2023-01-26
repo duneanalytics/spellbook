@@ -20,7 +20,7 @@ WITH prices AS (
             contract_address AS token,
             AVG(price) AS price
         FROM
-            {{ sources('prices', 'usd') }}
+            {{ source('prices', 'usd') }}
         WHERE
             minute >= DATE_TRUNC('day', NOW() - interval '1 week')
             AND blockchain = "polygon"
@@ -180,7 +180,7 @@ zipped_balance_changes AS (
             b.pool_id,
             SUM(b.amount_usd) / COALESCE(SUM(w.normalized_weight), 1) AS liquidity
         FROM cumulative_usd_balance b
-        LEFT JOIN {{ ref('balancer_v2_polygon', 'pools_tokens_weights') }} w ON b.pool_id = w.pool_id
+        LEFT JOIN {{ ref('balancer_v2_polygon_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
         AND b.token = w.token_address
         GROUP BY 1, 2
     )
@@ -188,15 +188,14 @@ zipped_balance_changes AS (
 SELECT
     b.day,
     b.pool_id,
-    --pool_symbol,
+    cast(null AS string) AS pool_symbol,
     token AS token_address,
     symbol AS token_symbol,
     coalesce(amount_usd, liquidity * normalized_weight) AS usd_amount
 FROM pool_liquidity_estimates b
 LEFT JOIN cumulative_usd_balance c ON c.day = b.day
 AND c.pool_id = b.pool_id
-LEFT JOIN {{ ref('balancer_v2_polygon', 'pools_tokens_weights') }} w ON b.pool_id = w.pool_id
+LEFT JOIN {{ ref('balancer_v2_polygon_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
 AND w.token_address = c.token
 LEFT JOIN tokens.erc20 t ON t.contract_address = c.token
 ORDER BY 1, 2, 3
---LEFT JOIN pool_labels p ON p.pool_id = SUBSTRING(b.pool_id, 0, 42) :: bytea
