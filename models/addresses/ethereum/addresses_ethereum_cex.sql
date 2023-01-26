@@ -55,7 +55,7 @@ FROM (VALUES
     -- FTX, Source: https://etherscan.io/accounts/label/ftx
     , ('0x2faf487a4414fe77e2327f0bf4ae2a264a776ad2', 'FTX', 'FTX 1')
     , ('0xc098b2a3aa256d2140208c3de6543aaef5cd3a94', 'FTX', 'FTX 2')
-    , ('0x25eaff5b179f209cf186b1cdcbfa463a69df4c45', 'FTX', 'Blockfolio')
+    , ('0x25eaff5b179f209cf186b1cdcbfa463a69df4c45', 'FTX', 'FTX (formerly Blockfolio)')
     -- FTX US, Source: https://etherscan.io/accounts/label/ftx
     , ('0x7abe0ce388281d2acf297cb089caef3819b13448', 'FTX US', 'FTX US')
     -- Coinbase, Source: https://etherscan.io/accounts/label/coinbase
