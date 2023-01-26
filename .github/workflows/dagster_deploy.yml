@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/github-script@v6
       with:
-        github-token: ${{ secrets.PAT }}
+        github-token: 'test'
         script: |
           await github.rest.actions.createWorkflowDispatch({
             owner: 'duneanalytics',
