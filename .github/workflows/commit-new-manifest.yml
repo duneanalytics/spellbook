@@ -16,13 +16,8 @@ jobs:
     - uses: actions/setup-python@v3
     - name: Checkout main branch
       uses: actions/checkout@v2
-      with:
-        ref: main
-
-    - name: check
-      working-directory: scripts
-      run: ls
-
+#      with:
+#        ref: main
 
     - name: dbt dependencies
       run: "dbt deps"
