@@ -20,10 +20,10 @@ jobs:
     - name: dbt compile to create prod manifest from main
       run: "dbt compile --target-path ."
 
-    - name: install zip
-      run: |
-        apt-get update
-        apt-get install -y zip
+#    - name: install zip
+#      run: |
+#        apt-get update
+#        apt-get install -y zip
 
     - name: zip manifest to save some space
       run: |
