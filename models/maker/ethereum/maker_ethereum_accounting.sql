@@ -196,14 +196,16 @@ WITH dao_wallet AS (
     (11510, 'Assets', 'Collateralized Lending', 'Legacy', 'Stablecoins', 'Stablecoins'),
     (12310, 'Assets', 'Real-World Lending', 'RWA', 'Private Credit RWA', 'Off-Chain Private Credit'),
     (12311, 'Assets', 'Real-World Lending', 'RWA', 'Private Credit RWA', 'Tokenized Private Credit'),
-    (12320, 'Assets', 'Real-World Lending', 'RWA', 'Public Credit RWA', 'Off-Chain Public Credit'),
+    (12320, 'Assets', 'Real-World Lending', 'RWA', 'Public Credit RWA', 'Off-Chain Public Credit'), 
     (12321, 'Assets', 'Real-World Lending', 'RWA', 'Public Credit RWA', 'Tokenized Public Credit'),
     (13410, 'Assets', 'Liquidity Pool', 'PSM', 'PSM', 'Non-Yielding Stablecoin'),
     (13411, 'Assets', 'Liquidity Pool', 'PSM', 'PSM', 'Yielding Stablecoin'),
     (14620, 'Assets', 'Proprietary Treasury', 'Holdings', 'Treasury Assets', 'DS Pause Proxy'),
+    (19999, 'Assets', 'Mark to Market Plugs', 'Mark to Market Plugs', 'Mark to Market Plugs', 'Mark to Market Plugs'),
 
     (21110, 'Liabilities', 'Stablecoin', 'Circulating', 'Interest-bearing', 'Dai'),
     (21120, 'Liabilities', 'Stablecoin', 'Circulating', 'Non-interest bearing', 'Dai'),
+    (29999, 'Liabilities', 'Mark to Market Plugs', 'Mark to Market Plugs', 'Mark to Market Plugs', 'Mark to Market Plugs'),
 
     (31110, 'Equity', 'Protocol Surplus', 'Gross Interest Revenues', 'ETH', 'ETH SF'),
     (31120, 'Equity', 'Protocol Surplus', 'Gross Interest Revenues', 'BTC', 'BTC SF'),
@@ -232,7 +234,11 @@ WITH dao_wallet AS (
     (31720, 'Equity', 'Protocol Surplus', 'Indirect Expenses', 'Workforce Expenses', 'Workforce Expenses'),
     (31730, 'Equity', 'Protocol Surplus', 'Indirect Expenses', 'Workforce Expenses', 'Returned Workforce Expenses'),
     (31740, 'Equity', 'Protocol Surplus', 'Indirect Expenses', 'Direct to Third Party Expenses', 'Direct to Third Party Expenses'),
-    (32810, 'Equity', 'Proprietary Treasury', 'Holdings', 'Treasury Assets', 'DS Pause Proxy')
+    (31810, 'Equity', 'Protocol Surplus', 'MKR Token Expenses', 'MKR Token Expenses', 'MKR Token Expenses'),
+    (32810, 'Equity', 'Proprietary Treasury', 'Holdings', 'Treasury Assets', 'DS Pause Proxy'),
+    (33110, 'Equity', 'Reserved MKR Surplus', 'MKR Vests Created or Yanked', 'MKR Vests Created or Yanked', 'MKR Vests Created or Yanked'),
+    (34110, 'Equity', 'MKR Contra Equity', 'MKR Contra Equity', 'MKR Contra Equity', 'MKR Contra Equity'), 
+    (39999, 'Equity', 'Mark to Market Plugs', 'Mark to Market Plugs', 'Mark to Market Plugs', 'Mark to Market Plugs')
 )
 
 -- ********** Calculation Tables *********** 
@@ -370,7 +376,7 @@ WITH dao_wallet AS (
       AND call_success
       AND src NOT IN (SELECT contract_address FROM contracts)               -- contract_type = 'PSM' should be enough but letting it wider
       AND src NOT IN ('0xa13c0c8eb109f5a13c6c90fc26afb23beb3fb04a'
-        , '0x621fe4fde2617ea8ffade08d0ff5a862ad287ec2')                     --aave v2 d3m, compuond v2 d3m
+        , '0x621fe4fde2617ea8ffade08d0ff5a862ad287ec2')                     --aave v2 d3m, compound v2 d3m
       AND call_tx_hash NOT IN (SELECT tx_hash FROM liquidation_excluded_tx) -- Exclude Flop income (coming directly from users wallets)
       AND call_tx_hash NOT IN (SELECT call_tx_hash FROM team_dai_burns_tx)
       AND call_tx_hash NOT IN (SELECT call_tx_hash FROM psm_yield_trxns)
@@ -426,7 +432,8 @@ WITH dao_wallet AS (
          , SUM(rad) / POW(10, 45)                                                                   AS value
     FROM {{ source('maker_ethereum', 'vat_call_move') }}
     WHERE call_success
-      AND src IN ('0xa13c0c8eb109f5a13c6c90fc26afb23beb3fb04a') --aave d3m
+      AND src IN ('0xa13c0c8eb109f5a13c6c90fc26afb23beb3fb04a'
+                  , '0x621fe4fde2617ea8ffade08d0ff5a862ad287ec2') --aave d3m, compound v2 d3m
       AND dst = '0xa950524441892a31ebddf91d3ceefa04bf454466'    --vow
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -550,6 +557,7 @@ WITH dao_wallet AS (
          , call_tx_hash    hash
          , dart
          , NULL AS         rate
+         , call_trace_address
     FROM {{ source('maker_ethereum', 'vat_call_frob') }}
     WHERE call_success
       AND dart <> 0.0
@@ -564,6 +572,7 @@ WITH dao_wallet AS (
             , call_tx_hash hash
             , dart
             , 0.0 AS rate
+            , call_trace_address
     FROM {{ source('maker_ethereum', 'vat_call_grab') }}
     WHERE call_success
       AND dart <> 0.0
@@ -578,6 +587,7 @@ WITH dao_wallet AS (
             , call_tx_hash hash
             , NULL AS dart
             , rate
+            , call_trace_address
     FROM {{ source('maker_ethereum', 'vat_call_fold') }}
     WHERE call_success
       AND rate <> 0.0
@@ -587,7 +597,7 @@ WITH dao_wallet AS (
 )
 , interest_accruals_2 AS (
     SELECT *
-         , SUM(dart) OVER (PARTITION BY ilk ORDER BY ts ASC) AS cumulative_dart
+         , SUM(dart) OVER (PARTITION BY ilk ORDER BY ts ASC, call_trace_address ASC) AS cumulative_dart
     FROM interest_accruals_1
 )
 , interest_accruals_3 AS (
@@ -925,70 +935,6 @@ WITH dao_wallet AS (
     GROUP BY 1,2,5
     HAVING SUM(dart*rate)/POW(10,45) <> 0
 )
-/*
-, yielding_psms_ilks AS 
-(
-    SELECT ilk FROM ilk_list_manual_input WHERE ilk LIKE 'PSM%' --only grabbing the ones that were put into the manual entry table as all others are assumed to be non yielding
-    GROUP BY 1
-), yielding_psms_trxns AS 
-(
-    SELECT STRING(UNHEX(TRIM('0', RIGHT(i, LENGTH(i)-2)))) AS ilk
-    , call_block_time
-    , dink
-    FROM maker_ethereum.vat_call_frob
-    JOIN yielding_psms_ilks ON STRING(UNHEX(TRIM('0', RIGHT(i, LENGTH(i)-2)))) = ilk
-    WHERE call_success
-), yielding_psms_cart_ilk AS 
-(
-    SELECT ilk
-    , period
-    , NULL AS amt
-    FROM (SELECT ilk, EXPLODE(SEQUENCE(MIN(call_block_time), CURRENT_DATE(), INTERVAL 1 DAY)) AS period FROM yielding_psms_trxns GROUP BY 1) AS period
-), yielding_psms_unioned AS 
-(
-    SELECT ilk, call_block_time, dink
-    FROM yielding_psms_trxns
-    
-    UNION ALL
-    
-    SELECT ilk, period, amt
-    FROM yielding_psms_cart_ilk
-), yielding_psms_daily_agg AS
-(
-    SELECT DATE_TRUNC('day',call_block_time) AS period
-    , ilk
-    , SUM(dink)/POW(10,18) AS amt
-    FROM yielding_psms_unioned
-    GROUP BY 1,2
-), yielding_psms_balance AS 
-(
-    SELECT period
-    , ilk
-    , SUM(amt) OVER (PARTITION BY ilk ORDER BY period ASC) AS balance
-    FROM yielding_psms_daily_agg
-), yielding_psms_monthly_avg AS 
-(
-    SELECT LEFT(CAST(period AS STRING),7) AS period
-    , YEAR(period) AS year
-    , MONTH(period) AS month
-    , ilk
-    , AVG(balance) OVER (PARTITION BY ilk, LEFT(CAST(period AS STRING),7)) AS avg_balance
-    , COUNT(balance) OVER (PARTITION BY ilk, LEFT(CAST(period AS STRING),7)) AS num_days
-    FROM yielding_psms_balance
-    QUALIFY ROW_NUMBER() OVER (PARTITION BY ilk, LEFT(CAST(period AS STRING),7) ORDER BY period, ilk) = 1 --1 row per month taken post averaging
-), yielding_psms AS
-(
-    SELECT year
-    , month
-    , revenue_code AS code
-    , avg_balance * apr * num_days/365 AS value
-    FROM yielding_psms_monthly_avg
-    JOIN ilk_list_labeled
-    ON yielding_psms_monthly_avg.ilk = ilk_list_labeled.ilk
-    AND yielding_psms_monthly_avg.period BETWEEN COALESCE(ilk_list_labeled.begin_period, '2000-01') AND COALESCE(ilk_list_labeled.end_period, '2222-12') --if null, ensure its not restrictive
-    AND ilk_list_labeled.revenue_code = 4411
-)
-*/
 SELECT coa.code
      , unioned.ts
      , unioned.hash
