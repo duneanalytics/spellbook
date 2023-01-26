@@ -13,6 +13,7 @@ jobs:
     runs-on: [ self-hosted, linux, spellbook ]
 
     steps:
+    - uses: actions/setup-python@v3
     - name: Checkout main branch
       uses: actions/checkout@v2
       with:
