@@ -12,7 +12,7 @@
     )
 }}
 
-{%- set project_start_date = '2022-12-26' %} -- TODO change back to '2022-04-01'
+{%- set project_start_date = '2022-10-26' %} -- TODO change back to '2022-04-01'
 {%- set sharky_smart_contract = 'SHARKobtfF1bHhxD2eqftjHBdVSCbKo9JtgK71FhELP' %}
 
 WITH sharky_txs AS (
