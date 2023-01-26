@@ -12,7 +12,7 @@
     )
 }}
 
-{%- set project_start_date = '2022-10-26' %} -- TODO change back to '2022-04-01'
+{%- set project_start_date = '2022-10-26' %} -- TODO change back to '2022-04-14'
 {%- set sharky_smart_contract = 'SHARKobtfF1bHhxD2eqftjHBdVSCbKo9JtgK71FhELP' %}
 
 WITH sharky_txs AS (
@@ -48,9 +48,17 @@ WITH sharky_txs AS (
             CASE
               WHEN array_contains( log_messages, 'Program log: Instruction: OfferLoan') THEN 'Offer'
               WHEN array_contains( log_messages, 'Program log: Instruction: TakeLoan') THEN 'Take'
-              WHEN array_contains( log_messages, 'Program log: Instruction: RescindLoan') THEN 'Rescind'
               WHEN array_contains( log_messages, 'Program log: Instruction: RepayLoan') THEN 'Repay'
-              WHEN array_contains( log_messages, 'Program log: Instruction: ForecloseLoan') THEN 'Foreclose'
+              WHEN
+                  (
+                      array_contains(log_messages, 'Program log: Instruction: RescindLoan')
+                      OR array_contains(log_messages, 'Program log: Instruction: RescindLoanEscrow')
+                  ) THEN 'Rescind'
+              WHEN
+                  (
+                    array_contains(log_messages, 'Program log: Instruction: ForecloseLoan')
+                    OR array_contains(log_messages, 'Program log: Instruction: ForecloseLoanEscrow')
+                  ) THEN 'Foreclose'
             ELSE 'Other' END as evt_type,
             signer as user,
             signatures[0] || '-' || id as unique_trade_id
