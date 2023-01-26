@@ -13,8 +13,8 @@
 SELECT 
     et.block_time
     , et.block_number
-    , et.value/POWER(10, 18) AS amount_staked
     , et.from AS depositor_address
+    , SUM(et.value/POWER(10, 18)) AS amount_staked
     , ete.entity AS depositor_entity
     , ete.entity_unique_name AS depositor_entity_unique_name
     , ete.category AS depositor_entity_category
@@ -37,3 +37,4 @@ WHERE et.to='0x00000000219ab540356cbb839cbe05303d7705fa'
     AND et.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     AND et.value/POWER(10, 18) > 0
+GROUP BY block_time, et.block_number, et.from, ete.entity, ete.entity_unique_name, ete.category, et.tx_hash
