@@ -934,192 +934,477 @@ WITH dao_wallet AS (
     --WHERE COALESCE(dart,0) <> 0 --this illogically breaks the query....
     GROUP BY 1,2,5
     HAVING SUM(dart*rate)/POW(10,45) <> 0
-)
-SELECT coa.code
-     , unioned.ts
-     , unioned.hash
-     , unioned.value
-     , unioned.token
-     , unioned.descriptor
-     , unioned.ilk
-FROM chart_of_accounts coa
-
-LEFT JOIN 
+), create_mkr_vests_raw AS
+(
+    SELECT call_block_time      ts
+        , call_tx_hash          hash
+        , output_id
+        , _bgn
+        , _tau
+        , _tot/1e18     AS      total_mkr
+    FROM {{ source('maker_ethereum', 'dssvesttransferrable_call_create') }}
+    WHERE call_success
+), yanks_raw AS 
+(
+    SELECT call_block_time      ts
+        , call_tx_hash          hash
+        , _end
+        , _id
+    FROM {{ source('maker_ethereum', 'dssvesttransferrable_call_yank') }}
+    WHERE call_success
+), yanks_with_context AS
+(
+    SELECT yanks_raw.*
+        , create_mkr_vests_raw._bgn
+        , create_mkr_vests_raw._tau
+        , create_mkr_vests_raw.total_mkr
+        , CASE WHEN from_unixtime(yanks_raw._end) > yanks_raw.ts THEN from_unixtime(yanks_raw._end) ELSE yanks_raw.ts END AS end_time
+    FROM yanks_raw
+    LEFT JOIN create_mkr_vests_raw
+    ON yanks_raw._id = create_mkr_vests_raw.output_id
+), yanks AS
+(
+    SELECT ts
+        , hash
+        , _id
+        , from_unixtime(_bgn)   AS begin_time
+        , end_time
+        , _tau
+        , total_mkr             AS original_total_mkr
+        , (1 - (unix_timestamp(end_time)-_bgn)/ _tau) * total_mkr AS yanked_mkr
+    FROM yanks_with_context
+), mkr_vest_creates_yanks AS
+(
+    SELECT ts
+        , hash
+        , 31810         AS code --MKR expense realized
+        , -total_mkr    AS value
+    FROM create_mkr_vests_raw
+    
+    UNION ALL
+    
+    SELECT ts
+        , hash
+        , 33110         AS code --MKR in vest contracts increases
+        , total_mkr     AS value
+    FROM create_mkr_vests_raw
+    
+    UNION ALL
+    
+    SELECT ts
+        , hash
+        , 31810         AS code --MKR expense reversed (yanked)
+        , yanked_mkr    AS value
+    FROM yanks
+    
+    UNION ALL
+    
+    SELECT ts
+        , hash
+        , 33110         AS code --MKR in vest contracts yanked (decreases)
+        , -yanked_mkr   AS value
+    FROM yanks
+), mkr_vest_trxns AS 
+(   
+    SELECT evt_tx_hash AS hash
+        , 1 AS vested
+    FROM {{ source('maker_ethereum', 'dssvesttransferrable_evt_vest') }}
+), pause_proxy_mkr_trxns_raw AS
+(
+    SELECT evt_block_time       ts
+        , evt_tx_hash hash
+        , value         AS      expense --positive expense which is a reduction in equity
+        , `to`          AS      address
+    FROM {{ source('maker_ethereum', 'mkr_evt_transfer') }}
+    WHERE `from` = '0xbe8e3e3618f7474f8cb1d074a26affef007e98fb'
+    AND `to` <> '0xbe8e3e3618f7474f8cb1d074a26affef007e98fb' --one transaction both to and from pause proxy, ignoring this one
+    
+    UNION ALL
+    
+    SELECT evt_block_time       ts
+        , evt_tx_hash hash
+        , -value        AS      expense --negative expense, increase in equity
+        , `from`        AS      address
+    FROM {{ source('maker_ethereum', 'mkr_evt_transfer') }}
+    WHERE `to` = '0xbe8e3e3618f7474f8cb1d074a26affef007e98fb'
+    AND `from` NOT IN ('0x8ee7d9235e01e6b42345120b5d270bdb763624c7'
+                       , '0xbe8e3e3618f7474f8cb1d074a26affef007e98fb') --filtering out initial transfers in; also one transaction both to and from pause proxy, ignoring this one
+), pause_proxy_mkr_trxns_preunion AS
+(
+    SELECT ts
+        , hash
+        , CASE WHEN vested IS NOT NULL THEN 33110 --negative number will go into reserved surplus (aka reserved surplus will be depleted when the transaction originates from a vest contract)
+            ELSE 31810 --negative number will go into protocol surplus directly when a vest contract wasn't involved
+            --positive side (as in, when an expense is made, this number will go up) goes to contra code in either case
+            END AS code
+        , -expense/1e18 AS value
+    FROM pause_proxy_mkr_trxns_raw
+    LEFT JOIN mkr_vest_trxns
+    USING (hash)
+), pause_proxy_mkr_trxns AS
 (
     SELECT ts
         , hash
         , code
-        , value
-        , 'DAI' AS token
-        , 'Returned Workforce Expenses' AS descriptor
-        , CAST(NULL as string) AS ilk
-    FROM team_dai_burns
+        , value 
+    FROM pause_proxy_mkr_trxns_preunion
 
     UNION ALL
 
     SELECT ts
         , hash
-        , code
-        , value
-        , 'DAI' AS token
-        , 'Liquidation Revenues/Expenses' AS descriptor
-        , CAST(NULL as string) AS ilk
-    FROM liquidation
-
+        , 34110 AS code
+        , -value
+    FROM pause_proxy_mkr_trxns_preunion
+), m2m_levels AS 
+(
+    SELECT minute AS ts
+        , tokens.token
+        , CASE WHEN tokens.token = 'DAI' THEN 1 ELSE price END AS price
+    FROM {{ source('prices', 'usd') }} p
+    INNER JOIN
+    (
+        SELECT token, price_address FROM treasury_erc20s
+        UNION ALL
+        SELECT 'DAI' AS token, '0x6b175474e89094c44da98b954eedeac495271d0f' AS price_address
+    ) tokens
+    ON p.contract_address = tokens.price_address
+    WHERE blockchain = 'ethereum'
+    AND EXTRACT(HOUR FROM minute) = 23
+    AND EXTRACT(MINUTE from minute) = 59
+    AND minute >= '2019-11-01'
+), token_prices AS
+(
+    SELECT minute AS ts
+        , tokens.token
+        , price
+    FROM {{ source('prices', 'usd') }} p
+    INNER JOIN
+    (
+        SELECT token, price_address FROM treasury_erc20s
+        UNION ALL
+        SELECT 'MKR' AS token, '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2' AS price_address
+        UNION ALL
+        SELECT 'ETH' AS token, '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS price_address
+    ) tokens 
+    ON p.contract_address = tokens.price_address
+    WHERE blockchain = 'ethereum'
+    AND minute >= '2019-11-01'
+    
     UNION ALL
-
+    
+    SELECT '2021-11-09 00:02' AS ts, 'ENS' AS token, 44.3 AS price --ENS price history doesn't go back far enough, so manually inputting the first value from 2021-12-17 00:00
+), eth_prices AS
+(
+    SELECT * FROM token_prices WHERE token = 'ETH'
+), with_prices AS
+(
+    SELECT coa.code
+    , unioned.ts
+    , unioned.hash
+    , unioned.value
+    , unioned.token
+    , unioned.descriptor
+    , unioned.ilk
+    , unioned.value * CASE WHEN unioned.token = 'DAI' THEN 1 ELSE token_prices.price END AS dai_value
+    , unioned.value * CASE WHEN unioned.token = 'DAI' THEN 1 ELSE token_prices.price END / eth_prices.price AS eth_value
+    , eth_prices.price AS eth_price
+    FROM chart_of_accounts coa
+    
+    LEFT JOIN 
+    (
     SELECT ts
+            , hash
+            , code
+            , value
+            , 'DAI' AS token
+            , 'Returned Workforce Expenses' AS descriptor
+            , CAST(NULL as string) AS ilk
+        FROM team_dai_burns
+
+        UNION ALL
+
+        SELECT ts
+            , hash
+            , code
+            , value
+            , 'DAI' AS token
+            , 'Liquidation Revenues/Expenses' AS descriptor
+            , CAST(NULL as string) AS ilk
+        FROM liquidation
+
+        UNION ALL
+
+        SELECT ts
+            , hash
+            , code
+            , value
+            , 'DAI' AS token
+            , 'Trading Revenues' AS descriptor
+            , ilk
+        FROM trading_revenues
+
+        UNION ALL
+
+        SELECT ts
+            , hash
+            , code
+            , value
+            , 'DAI' AS token
+            , 'MKR Mints' AS descriptor
+            , CAST(NULL as string) AS ilk
+        FROM mkr_mints
+
+        UNION ALL
+
+        SELECT ts
+            , hash
+            , code
+            , value
+            , 'DAI' AS token
+            , 'MKR Burns' AS descriptor
+            , CAST(NULL as string) AS ilk
+        FROM mkr_burns
+
+        UNION ALL
+
+        SELECT ts
+            , hash
+            , code
+            , value
+            , 'DAI' AS token
+            , 'Interest Accruals' AS descriptor
+            , ilk
+        FROM interest_accruals
+
+        UNION ALL
+
+        SELECT ts
+            , hash
+            , code
+            , value
+            , 'DAI' AS token
+            , 'OpEx' AS descriptor
+            , CAST(NULL as string) AS ilk
+        FROM opex
+
+        UNION ALL
+
+        SELECT ts
+            , hash
+            , code
+            , value
+            , 'DAI' AS token
+            , 'DSR Expenses' AS descriptor
+            , CAST(NULL as string) AS ilk
+        FROM dsr_expenses
+
+        UNION ALL
+
+        SELECT ts
+            , hash
+            , code
+            , value
+            , 'DAI' AS token
+            , 'Other Sin Outflows' AS descriptor
+            , CAST(NULL as string) AS ilk
+        FROM other_sin_outflows
+
+        UNION ALL
+
+        SELECT ts
+            , hash
+            , code
+            , value
+            , 'DAI' AS token
+            , 'Sin Inflows' AS descriptor
+            , CAST(NULL as string) AS ilk
+        FROM sin_inflows
+
+        UNION ALL
+
+        SELECT ts
+            , hash
+            , code
+            , value
+            , 'DAI' AS token
+            , 'DSR Flows' AS descriptor
+            , CAST(NULL as string) AS ilk
+        FROM dsr_flows
+
+        UNION ALL
+
+        SELECT ts
+            , hash
+            , code
+            , value
+            , token
+            , 'Treasury Flows' AS descriptor
+            , CAST(NULL as string) AS ilk
+        FROM treasury_flows
+
+        UNION ALL
+
+        SELECT ts
+            , hash
+            , code
+            , value
+            , 'DAI' AS token
+            , 'Loan Draws/Repays' AS descriptor
+            , ilk
+        FROM loan_actions
+
+        UNION ALL
+
+        SELECT ts
+            , hash
+            , code
+            , value
+            , 'DAI' AS token
+            , 'D3M Revenues' AS descriptor
+            , ilk
+        FROM d3m_revenues
+
+        UNION ALL
+
+        SELECT ts
+            , hash
+            , code
+            , value
+            , 'DAI' AS token
+            , 'PSM Yield' AS descriptor
+            , ilk
+        FROM psm_yield
+
+        UNION ALL
+
+        SELECT ts
+            , hash
+            , code
+            , value
+            , 'MKR' AS token
+            , 'MKR Vest Creates/Yanks' AS descriptor
+            , NULL AS ilk
+        FROM mkr_vest_creates_yanks
+
+        UNION ALL
+
+        SELECT ts
+            , hash
+            , code
+            , value
+            , 'MKR' AS token
+            , 'MKR Pause Proxy Trxns' AS descriptor
+            , NULL AS ilk
+        FROM pause_proxy_mkr_trxns
+
+        UNION ALL
+
+        SELECT ts
+            , hash
+            , code
+            , value
+            , token
+            , 'Accounting Plugs' AS descriptor
+            , ilk
+        FROM hashless_trxns
+
+
+        UNION ALL
+
+        SELECT ts
+            , 'noHash:dailyMarkToMarket' AS hash
+            , 19999 AS code
+            , 0 AS value
+            , token
+            , 'Currency Translation to Presentation Token' AS descriptor
+            , NULL AS ilk
+        FROM m2m_levels
+
+        UNION ALL
+
+        SELECT ts
+            , 'noHash:dailyMarkToMarket' AS hash
+            , 29999 AS code
+            , 0 AS value
+            , token
+            , 'Currency Translation to Presentation Token' AS descriptor
+            , NULL AS ilk
+        FROM m2m_levels
+
+        UNION ALL
+
+        SELECT ts
+            , 'noHash:dailyMarkToMarket' AS hash
+            , 39999 AS code
+            , 0 AS value
+            , token
+            , 'Currency Translation to Presentation Token' AS descriptor
+            , NULL AS ilk
+        FROM m2m_levels
+    ) unioned
+    USING (code)
+    LEFT JOIN token_prices
+    ON unioned.ts::DATE = token_prices.ts::DATE
+    AND EXTRACT(HOUR FROM unioned.ts) = EXTRACT(HOUR FROM token_prices.ts)
+    AND EXTRACT(MINUTE FROM unioned.ts) = EXTRACT(MINUTE FROM token_prices.ts)
+    AND unioned.token = token_prices.token
+    LEFT JOIN eth_prices
+    ON unioned.ts::DATE = eth_prices.ts::DATE
+    AND EXTRACT(HOUR FROM unioned.ts) = EXTRACT(HOUR FROM eth_prices.ts)
+    AND EXTRACT(MINUTE FROM unioned.ts) = EXTRACT(MINUTE FROM eth_prices.ts)
+    WHERE value IS NOT NULL
+), cumulative_sums AS
+(
+    SELECT with_prices.*
+        , SUM(value) OVER (PARTITION BY LEFT(code,1), with_prices.token ORDER BY with_prices.ts) AS cumulative_ale_token_value
+        , SUM(dai_value) OVER (PARTITION BY LEFT(code,1), with_prices.token ORDER BY with_prices.ts) AS cumulative_ale_dai_value
+        , SUM(eth_value) OVER (PARTITION BY LEFT(code,1), with_prices.token ORDER BY with_prices.ts) AS cumulative_ale_eth_value
+        , m2m_levels.price * SUM(value) OVER (PARTITION BY LEFT(code,1), with_prices.token ORDER BY with_prices.ts) AS dai_value_if_converted_all_once
+        , m2m_levels.price/with_prices.eth_price * SUM(value) OVER (PARTITION BY LEFT(code,1), with_prices.token ORDER BY with_prices.ts) AS eth_value_if_converted_all_once
+        , m2m_levels.price * SUM(value) OVER (PARTITION BY LEFT(code,1), with_prices.token ORDER BY with_prices.ts) - SUM(dai_value) OVER (PARTITION BY LEFT(code,1), with_prices.token ORDER BY with_prices.ts) AS dai_m2m
+        , m2m_levels.price/with_prices.eth_price * SUM(value) OVER (PARTITION BY LEFT(code,1), with_prices.token ORDER BY with_prices.ts) - SUM(eth_value) OVER (PARTITION BY LEFT(code,1), with_prices.token ORDER BY with_prices.ts) eth_m2m
+    FROM with_prices
+    LEFT JOIN m2m_levels
+    ON with_prices.token = m2m_levels.token
+    AND with_prices.ts = m2m_levels.ts
+), incremental_m2m AS
+(
+    SELECT *
+        , dai_m2m - COALESCE(LAG(dai_m2m) OVER (PARTITION BY LEFT(code,1), token ORDER BY ts), 0) AS incremental_dai_m2m
+        , eth_m2m - COALESCE(LAG(eth_m2m) OVER (PARTITION BY LEFT(code,1), token ORDER BY ts), 0) AS incremental_eth_m2m
+    FROM cumulative_sums
+    WHERE cumulative_ale_token_value > 0
+    AND RIGHT(code,4) = 9999
+), final AS
+(
+    SELECT code
+        , ts
         , hash
-        , code
-        , value
-        , 'DAI' AS token
-        , 'Trading Revenues' AS descriptor
-        , ilk
-    FROM trading_revenues
-
-    UNION ALL
-
-    SELECT ts
-        , hash
-        , code
-        , value
-        , 'DAI' AS token
-        , 'MKR Mints' AS descriptor
-        , CAST(NULL as string) AS ilk
-    FROM mkr_mints
-
-    UNION ALL
-
-    SELECT ts
-        , hash
-        , code
-        , value
-        , 'DAI' AS token
-        , 'MKR Burns' AS descriptor
-        , CAST(NULL as string) AS ilk
-    FROM mkr_burns
-
-    UNION ALL
-
-    SELECT ts
-        , hash
-        , code
-        , value
-        , 'DAI' AS token
-        , 'Interest Accruals' AS descriptor
-        , ilk
-    FROM interest_accruals
-
-    UNION ALL
-
-    SELECT ts
-        , hash
-        , code
-        , value
-        , 'DAI' AS token
-        , 'OpEx' AS descriptor
-        , CAST(NULL as string) AS ilk
-    FROM opex
-
-    UNION ALL
-
-    SELECT ts
-        , hash
-        , code
-        , value
-        , 'DAI' AS token
-        , 'DSR Expenses' AS descriptor
-        , CAST(NULL as string) AS ilk
-    FROM dsr_expenses
-
-    UNION ALL
-
-    SELECT ts
-        , hash
-        , code
-        , value
-        , 'DAI' AS token
-        , 'Other Sin Outflows' AS descriptor
-        , CAST(NULL as string) AS ilk
-    FROM other_sin_outflows
-
-    UNION ALL
-
-    SELECT ts
-        , hash
-        , code
-        , value
-        , 'DAI' AS token
-        , 'Sin Inflows' AS descriptor
-        , CAST(NULL as string) AS ilk
-    FROM sin_inflows
-
-    UNION ALL
-
-    SELECT ts
-        , hash
-        , code
-        , value
-        , 'DAI' AS token
-        , 'DSR Flows' AS descriptor
-        , CAST(NULL as string) AS ilk
-    FROM dsr_flows
-
-    UNION ALL
-
-    SELECT ts
-        , hash
-        , code
         , value
         , token
-        , 'Treasury Flows' AS descriptor
-        , CAST(NULL as string) AS ilk
-    FROM treasury_flows
-
-    UNION ALL
-
-    SELECT ts
-        , hash
-        , code
-        , value
-        , 'DAI' AS token
-        , 'Loan Draws/Repays' AS descriptor
+        , descriptor
         , ilk
-    FROM loan_actions
-
+        , dai_value
+        , eth_value
+    FROM with_prices
+    WHERE RIGHT(code,4) <> 9999
+    
     UNION ALL
-
-    SELECT ts
+    
+    SELECT code
+        , ts
         , hash
-        , code
-        , value
-        , 'DAI' AS token
-        , 'D3M Revenues' AS descriptor
-        , ilk
-    FROM d3m_revenues
-
-    UNION ALL
-
-    SELECT ts
-        , hash
-        , code
-        , value
-        , 'DAI' AS token
-        , 'PSM Yield' AS descriptor
-        , ilk
-    FROM psm_yield
-
-    UNION ALL
-
-    SELECT ts
-        , hash
-        , code
-        , value
+        , NULL AS value
         , token
-        , 'Accounting Plugs' AS descriptor
+        , descriptor
         , ilk
-    FROM hashless_trxns
-) unioned
-ON coa.code = unioned.code
-WHERE unioned.value IS NOT NULL
+        , incremental_dai_m2m AS dai_value
+        , incremental_eth_m2m AS eth_value
+    FROM incremental_m2m
+)
+SELECT *
+FROM final
+WHERE ( COALESCE(value, 0) <> 0 OR dai_value <> 0 OR eth_value <> 0 )
+AND ts <= (SELECT MAX(ts) + INTERVAL 59 SECONDS FROM eth_prices) --excludes blocks for which we can't price in eth yet (last 30 min or so). 59 second interval is to accomodate the entire minute. Might have to be more restrictive even in the spell depending on how execution works
 ;
