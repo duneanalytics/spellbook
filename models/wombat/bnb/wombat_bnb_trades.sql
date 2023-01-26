@@ -8,36 +8,43 @@
     post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
                                 "wombat_v1",
-                                \'["umer_h_adil"]\') }}'
+                                \'["umer_h_adil", "hosuke"]\') }}'
     )
 }}
 
 {% set project_start_date = '2022-04-18' %}
+{% set wombat_bnb_swap_evt_tables = [
+    source('wombat_bnb', 'Pool_evt_Swap')
+    , source('wombat_bnb', 'HighCovRatioFeePool_evt_Swap')
+    , source('wombat_bnb', 'DynamicPool_evt_Swap')
+    , source('wombat_bnb', 'mWOM_Pool_evt_Swap')
+    , source('wombat_bnb', 'qWOM_WOMPool_evt_Swap')
+    , source('wombat_bnb', 'WMX_WOM_Pool_evt_Swap')
+] %}
 
 with wombat_swaps_all_pools as (
-    -- main pool
-    select toAmount, fromAmount, toToken, fromToken, evt_block_time, evt_tx_hash, evt_index, to, contract_address
-    from {{ source('wombat_bnb', 'Pool_evt_Swap') }}
-    union all
-    -- side pool
-    select toAmount, fromAmount, toToken, fromToken, evt_block_time, evt_tx_hash, evt_index, to, contract_address
-    from {{ source('wombat_bnb', 'HighCovRatioFeePool_evt_Swap') }}
-    union all
-    -- bnb pool
-    select toAmount, fromAmount, toToken, fromToken, evt_block_time, evt_tx_hash, evt_index, to, contract_address
-    from {{ source('wombat_bnb', 'DynamicPool_evt_Swap') }}
-    union all
-    -- mwom pool
-    select toAmount, fromAmount, toToken, fromToken, evt_block_time, evt_tx_hash, evt_index, to, contract_address
-    from {{ source('wombat_bnb', 'mWOM_Pool_evt_Swap') }}
-    union all
-    -- qwom pool
-    select toAmount, fromAmount, toToken, fromToken, evt_block_time, evt_tx_hash, evt_index, to, contract_address
-    from {{ source('wombat_bnb', 'qWOM_WOMPool_evt_Swap') }}
-    union all
-    -- wmx pool
-    select toAmount, fromAmount, toToken, fromToken, evt_block_time, evt_tx_hash, evt_index, to, contract_address
-    from {{ source('wombat_bnb', 'WMX_WOM_Pool_evt_Swap') }})
+    {% for swap_evt_table in wombat_bnb_swap_evt_tables %}
+        select  toAmount
+                , fromAmount
+                , toToken
+                , fromToken
+                , evt_block_time
+                , evt_tx_hash
+                , evt_index
+                , t.to
+                , contract_address
+        from {{ swap_evt_table }} t
+        {% if is_incremental() %}
+        where evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+
+        {% if not loop.last %}
+        union all
+        {% endif %}
+
+    {% endfor%}
+)
+
 select
 	'bnb' as blockchain
 	, 'wombat' as project
@@ -76,7 +83,7 @@ inner join {{ source('bnb', 'transactions') }} tx
     and tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and tx.block_time = date_trunc("day", now() - interval '1 week')
+    and tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 -- bought tokens
 left join {{ ref('tokens_erc20') }} erc20_b
