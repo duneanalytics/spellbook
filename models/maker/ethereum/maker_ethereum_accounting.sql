@@ -1,6 +1,6 @@
 {{ config(
         alias ='accounting',
-        partition_by = ['code'],
+        partition_by = ['ts'],
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',
