@@ -10,31 +10,25 @@
  }}
 
 ---------------------------------------------------------------- Regular Pools ----------------------------------------------------------------
-WITH records AS (
-    SELECT
-        *
-    FROM
-        {{ ref('curvefi_ethereum_pool_details') }}
-),
-regular_pools AS (
+WITH regular_pools AS (
     SELECT
         version,
         `name`,
         symbol,
-        lower(pool_address) AS pool_address,
-        lower(token_address) AS token_address,
-        lower(deposit_contract) AS deposit_contract,
-        lower(gauge_contract) AS gauge_contract,
-        lower(coin0) AS coin0,
-        lower(coin1) AS coin1,
-        lower(coin2) AS coin2,
-        lower(coin3) AS coin3,
-        lower(undercoin0) AS undercoin0,
-        lower(undercoin1) AS undercoin1,
-        lower(undercoin2) AS undercoin2,
-        lower(undercoin3) AS undercoin3
+        pool_address,
+        token_address,
+        gauge_contract,
+        coin0,
+        coin1,
+        coin2,
+        undercoin0,
+        undercoin1,
+        undercoin2,
+        undercoin3,
+        deposit_contract,
+        coin3
     FROM
-        records
+        {{ ref('curvefi_ethereum_pool_details') }}
 ),
 regular_pools_deployed AS (
     SELECT
@@ -156,7 +150,7 @@ meta_pools_deployed AS (
         r.coin2 as undercoin3
     FROM
         meta_calls mc 
-    LEFT JOIN records r ON r.pool_address = mc._base_pool
+    LEFT JOIN regular_pools r ON r.pool_address = mc._base_pool
 ),
 v1_pools_deployed AS(
     SELECT
