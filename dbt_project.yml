@@ -341,6 +341,11 @@ models:
       bnb:
         +schema: nftrade_bnb
 
+    lifi:
+      +schema: lifi
+      fantom:
+        +schema: lifi_fantom
+
     jarvis_network:
       +schema: jarvis_network
       polygon:
