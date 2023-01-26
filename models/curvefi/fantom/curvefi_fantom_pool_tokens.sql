@@ -144,7 +144,7 @@ meta_pools as ( -- getting meta pools and their base pools
                 output_0 as pool,
                 '0' as token_id, 
                 _coin as token_address,
-                base_pool
+                _base_pool as base_pool
             FROM
             {{ source('curvefi_fantom', 'StableSwap_Factory_call_deploy_metapool') }}
             WHERE call_success = true 
@@ -158,7 +158,7 @@ meta_pools as ( -- getting meta pools and their base pools
                 a.output_0 as pool,
                 '1' as token_id,
                 b.lp_token as token_address, -- token id (1) is the lp token of the base pool
-                a.base_pool
+                a._base_pool as base_pool
             FROM
             {{ source('curvefi_fantom', 'StableSwap_Factory_call_deploy_metapool') }} a 
             INNER JOIN 
