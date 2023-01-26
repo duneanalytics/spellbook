@@ -25,4 +25,4 @@ jobs:
       run: "dbt compile --target-path ."
 
     - name: upload manifest
-      run: scripts/write_manifest_to_s3.py
+      run: python scripts/write_manifest_to_s3.py
