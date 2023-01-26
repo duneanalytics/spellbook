@@ -443,8 +443,6 @@ FROM (VALUES
     -- BW 
     , ('0xbcdfc35b86bedf72f0cda046a3c16829a2ef41d1', 'BW', 'BW Old Address') -- https://etherscan.io/address/0xbcdfc35b86bedf72f0cda046a3c16829a2ef41d1
     , ('0x73957709695e73fd175582105c44743cf0fb6f2f', 'BW', 'BW 1') -- https://etherscan.io/address/0x73957709695e73fd175582105c44743cf0fb6f2f
-    -- Blockfolio 
-    , ('0x25eaff5b179f209cf186b1cdcbfa463a69df4c45', 'Blockfolio', 'Blockfolio') -- https://etherscan.io/address/0x25eaff5b179f209cf186b1cdcbfa463a69df4c45
     -- bitFlyer
     , ('0x111cff45948819988857bbf1966a0399e0d1141e', 'bitFlyer', 'bitFlyer 1') -- https://etherscan.io/address/0x111cff45948819988857bbf1966a0399e0d1141e
     -- Coinone

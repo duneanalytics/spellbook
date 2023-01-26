@@ -445,8 +445,6 @@ FROM (VALUES
     -- BW 
     , (array('ethereum'), '0xbcdfc35b86bedf72f0cda046a3c16829a2ef41d1', 'BW Old Address', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now()) -- https://etherscan.io/address/0xbcdfc35b86bedf72f0cda046a3c16829a2ef41d1
     , (array('ethereum'), '0x73957709695e73fd175582105c44743cf0fb6f2f', 'BW 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now()) -- https://etherscan.io/address/0x73957709695e73fd175582105c44743cf0fb6f2f
-    -- Blockfolio 
-    , (array('ethereum'), '0x25eaff5b179f209cf186b1cdcbfa463a69df4c45', 'Blockfolio', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now()) -- https://etherscan.io/address/0x25eaff5b179f209cf186b1cdcbfa463a69df4c45
     -- bitFlyer
     , (array('ethereum'), '0x111cff45948819988857bbf1966a0399e0d1141e', 'bitFlyer 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now()) -- https://etherscan.io/address/0x111cff45948819988857bbf1966a0399e0d1141e
     -- Coinone
