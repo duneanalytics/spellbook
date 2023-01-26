@@ -22,21 +22,35 @@ WITH dexs AS
         , bytea2numeric(substring(l.data, 195, 64)) as token_bought_amount_raw
         , bytea2numeric(substring(l.data, 67, 64)) as token_sold_amount_raw
         , NULL AS amount_usd
-        , case when l.topic1 = "0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140" then p.coins[cast(substring(l.data, 131, 64) as int)] 
-            else p.undercoins[cast(substring(l.data, 131, 64) as int)] end as token_bought_address
-        , case when l.topic1 = "0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140" then p.coins[cast(substring(l.data, 3, 64) as int)] 
-            else p.undercoins[cast(substring(l.data, 3, 64) as int)] end as token_sold_address
+        , case
+            when l.topic1 = "0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140"
+                then p.coins[cast(substring(l.data, 131, 64) as int)] 
+                else p.undercoins[cast(substring(l.data, 131, 64) as int)]
+            end as token_bought_address
+        , case
+            when l.topic1 = "0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140"
+                then p.coins[cast(substring(l.data, 3, 64) as int)] 
+                else p.undercoins[cast(substring(l.data, 3, 64) as int)]
+            end as token_sold_address
         , l.contract_address as project_contract_address --pool address
         , l.tx_hash 
         , '' as trace_address
         , l.index as evt_index
-    FROM ethereum.logs l 
-    JOIN  {{ ref('curvefi_ethereum_view_pools') }} p ON l.contract_address = p.pool_address AND version IN ('Factory V1 Meta', 'Factory V1 Plain', 'Regular') --note Plain only has TokenExchange.
-    WHERE l.topic1 IN ("0xd013ca23e77a65003c2c659c5442c00c805371b7fc1ebd4c206c41d1536bd90b" -- TokenExchangeUnderlying 
-                        , "0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140") -- TokenExchange
-    {% if is_incremental() %}
-    AND l.block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+    FROM {{ source('ethereum', 'logs') }} l
+    JOIN  {{ ref('curvefi_ethereum_view_pools') }} p
+        ON l.contract_address = p.pool_address
+        AND p.version IN ('Factory V1 Meta', 'Factory V1 Plain', 'Regular') --note Plain only has TokenExchange.
+    WHERE l.topic1 IN
+        (
+            "0xd013ca23e77a65003c2c659c5442c00c805371b7fc1ebd4c206c41d1536bd90b" -- TokenExchangeUnderlying 
+            , "0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140" -- TokenExchange
+        )
+        {% if not is_incremental() %}
+        AND l.block_time >= '{{project_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+        AND l.block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 
     UNION ALL
 
@@ -55,12 +69,17 @@ WITH dexs AS
         , l.tx_hash 
         , '' as trace_address
         , l.index as evt_index
-    FROM ethereum.logs l 
-    JOIN  {{ ref('curvefi_ethereum_view_pools') }} p ON l.contract_address = p.pool_address AND version = 'Factory V2'
+    FROM {{ source('ethereum', 'logs') }} l
+    JOIN  {{ ref('curvefi_ethereum_view_pools') }} p
+        ON l.contract_address = p.pool_address
+        AND p.version = 'Factory V2'
     WHERE l.topic1 = "0xb2e76ae99761dc136e598d4a629bb347eccb9532a5f8bbd72e18467c3c34cc98" --TokenExchange
-    {% if is_incremental() %}
-    and l.block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+        {% if not is_incremental() %}
+        AND l.block_time >= '{{project_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+        and l.block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 )
 
 SELECT
