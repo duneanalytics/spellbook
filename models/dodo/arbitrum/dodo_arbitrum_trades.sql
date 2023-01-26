@@ -1,17 +1,20 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["ethereum","bnb","polygon","arbitrum"]\',
-                                "project",
-                                "dodo",
-                                \'["scoffie", "owen05"]\') }}'
+        partition_by = ['block_date'],
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
+        post_hook='{{ expose_spells(\'["arbitrum"]\',
+                                    "project",
+                                    "dodo",
+                                    \'["owen05"]\') }}'
         )
 }}
 
 {% set dodo_models = [
-ref('dodo_ethereum_trades')
-, ref('dodo_bnb_trades')
-, ref('dodo_polygon_trades')
-, ref('dodo_arbitrum_trades')
+ref("dodo_aggregator_arbitrum_trades")
+, ref("dodo_pools_arbitrum_trades")
 ] %}
 
 
@@ -43,6 +46,9 @@ FROM (
         trace_address,
         evt_index
     FROM {{ dex_model }}
+    {% if is_incremental() %}
+    WHERE block_date >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

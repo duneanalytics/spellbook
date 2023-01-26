@@ -245,6 +245,10 @@ models:
         +schema: dodo_ethereum
       bnb:
         +schema: dodo_bnb
+      polygon:
+        +schema: dodo_polygon
+      arbitrum:
+        +schema: dodo_arbitrum
 
     labels:
       +schema: labels
