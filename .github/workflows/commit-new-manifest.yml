@@ -19,11 +19,10 @@ jobs:
       with:
         ref: main
 
-    - name: check path
-      run: pwd
-
-    - name: check contents
+    - name: check
+      working-directory: scripts
       run: ls
+
 
     - name: dbt dependencies
       run: "dbt deps"
