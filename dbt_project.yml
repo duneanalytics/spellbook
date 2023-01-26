@@ -185,7 +185,6 @@ models:
         +schema: element_avalanche_c
         +materialized: view
 
-
     abi:
       +schema: abi
       +materialized: view
@@ -1041,7 +1040,7 @@ seeds:
               maker_token: string
               maker_symbol: string
               token_pair: string
-              taker_token_amount: double 
+              taker_token_amount: double
               taker_token_amount_raw: string
               maker_token_amount: double
               maker_token_amount_raw: string
@@ -1133,3 +1132,10 @@ seeds:
             seller: string
             platform_fee_amount: double
             royalty_fee_amount: double
+
+    rocifi:
+      +schema: rocifi
+      +materialized: view
+      polygon:
+        +schema: rocifi_polygon
+        +materialized: view
