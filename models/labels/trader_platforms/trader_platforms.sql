@@ -39,3 +39,4 @@ from
   trader_platforms
 where address is not null
 group by address
+;
