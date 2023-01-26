@@ -1,6 +1,6 @@
 {{config(
     alias='system_addresses',
-    post_hook='{{ expose_spells(\'["ethereum", "arbitrum","bnb","avalanche_c","optimism","gnosis"]\',
+    post_hook='{{ expose_spells(\'["arbitrum","optimism","solana"]\',
                                 "sector",
                                 "labels",
                                 \'["msilb7"]\') }}'
