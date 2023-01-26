@@ -147,7 +147,7 @@ meta_pools as ( -- getting meta pools and their base pools
                 base_pool
             FROM
             {{ source('curvefi_fantom', 'StableSwap_Factory_call_deploy_metapool') }}
-            WHERE call_sucess = true 
+            WHERE call_success = true 
             {% if is_incremental() %}
             AND call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
