@@ -4,8 +4,9 @@ on:
   pull_request:
 #    types: [closed]
 
-env:
-  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+concurrency:
+  group:  ${{ github.workflow }}
+  cancel-in-progress: true
 
 jobs:
   commit_manifest:
@@ -23,22 +24,5 @@ jobs:
     - name: dbt compile to create prod manifest from main
       run: "dbt compile --target-path ."
 
-    - name: install zip
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y zip
-
-    - name: zip manifest to save some space
-      run: |
-        zip -r manifest.json.zip manifest.json
-
-    - name: commit manifest
-      env:
-        CI_COMMIT_MESSAGE: Continuous Integration Build Artifacts after ${{ env.GITHUB_SHA }}
-        CI_COMMIT_AUTHOR: Continuous Integration
-      run: |
-        git config --local user.name github-actions
-        git config --local user.email github-actions@github.com
-        git add manifest.json.zip
-        git commit -m "${{ env.CI_COMMIT_MESSAGE }}"
-        git push
+    - name: upload manifest
+      run: scripts/write_manifest_to_s3.py
