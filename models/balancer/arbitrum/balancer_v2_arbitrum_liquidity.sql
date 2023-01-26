@@ -198,4 +198,3 @@ AND c.pool_id = b.pool_id
 LEFT JOIN {{ ref('balancer_v2_arbitrum_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
 AND w.token_address = c.token
 LEFT JOIN tokens.erc20 t ON t.contract_address = c.token
-ORDER BY 1, 2, 3
