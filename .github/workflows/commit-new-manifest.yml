@@ -1,0 +1,41 @@
+name: Update Manifest
+
+on:
+  pull_request:
+#    types: [closed]
+
+jobs:
+  commit_manifest:
+    runs-on: [ self-hosted, linux, spellbook ]
+
+    steps:
+    - name: Checkout main branch
+      uses: actions/checkout@v2
+      with:
+        ref: main
+
+    - name: dbt dependencies
+      run: "dbt deps"
+
+    - name: dbt compile to create prod manifest from main
+      run: "dbt compile --target-path ."
+
+    - name: install zip
+      run: |
+        apt-get update
+        apt-get install -y zip
+
+    - name: zip manifest to save some space
+      run: |
+        zip -r manifest.json.zip manifest.json
+
+    - name: commit manifest
+      env:
+        CI_COMMIT_MESSAGE: Continuous Integration Build Artifacts after ${{ env.GITHUB_SHA }}
+        CI_COMMIT_AUTHOR: Continuous Integration
+      run: |
+        git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
+        git config --global user.email "username@users.noreply.github.com"
+        git add manifest.json.zip
+        git commit -m "${{ env.CI_COMMIT_MESSAGE }}"
+        git push
