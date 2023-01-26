@@ -2,10 +2,6 @@
     config(
         schema='balancer_v2_ethereum',
         alias='liquidity',
-        partition_by = ['block_date'],
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
         unique_key = ['day', 'pool_id', 'token_address'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
