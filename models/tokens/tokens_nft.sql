@@ -36,7 +36,7 @@ SELECT
 contract_address, 
 name, 
 CAST(NULL AS VARCHAR(5)) as symbol,
-CAST(NULL AS VARCHAR(5)) as standard,
+standard,
 CAST(NULL AS VARCHAR(5)) as category
 FROM  {{ ref('tokens_optimism_nft') }}
             UNION

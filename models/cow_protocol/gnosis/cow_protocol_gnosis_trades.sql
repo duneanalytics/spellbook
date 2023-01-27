@@ -188,16 +188,15 @@ valued_trades as (
            fee,
            fee_atoms,
            (CASE
-                WHEN sell_price IS NOT NULL THEN
-                    CASE
-                        WHEN buy_price IS NOT NULL and buy_price * units_bought > sell_price * units_sold
-                            then buy_price * units_bought * fee / units_sold
-                        ELSE sell_price * fee
-                        END
-                WHEN sell_price IS NULL AND buy_price IS NOT NULL
-                    THEN buy_price * units_bought * fee / units_sold
+                WHEN sell_price IS NOT NULL THEN sell_price * fee
+             -- Note that this formulation is subject to some precision error in a few irregular cases:
+             -- E.g. In this transaction 0x84d57d1d57e01dd34091c763765ddda6ff713ad67840f39735f0bf0cced11f02
+             -- buy_price * units_bought * fee / units_sold
+             -- 1.001076 * 0.005 * 0.0010148996324193 / 3e-18 = 1693319440706.3
+             -- So, if sell_price had been null here (thankfully it is not), we would have a vastly inaccurate fee valuation
+                WHEN buy_price IS NOT NULL THEN buy_price * units_bought * fee / units_sold
                 ELSE NULL::numeric
-               END)                                        as fee_usd,
+           END)                                            as fee_usd,
            app_data,
            case
               when receiver = '0x0000000000000000000000000000000000000000'

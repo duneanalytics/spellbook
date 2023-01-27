@@ -30,13 +30,13 @@ WITH element_txs AS (
         , ee.contract_address AS project_contract_address
         , ee.evt_tx_hash AS tx_hash
         , ee.evt_block_number AS block_number
-        FROM {{ source('element_ex_avalanche_c','ERC721OrdersFeature_evt_ERC721SellOrderFilled') }} ee
+        FROM {{ source('element_ex_avalanche_c','OrdersFeature_evt_ERC721SellOrderFilled') }} ee
         {% if is_incremental() %}
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-        
+
         UNION ALL
-        
+
         -- Avalanche ERC721 Buys
         SELECT 'avalanche_c' AS blockchain
         , 'element' AS project
@@ -57,13 +57,13 @@ WITH element_txs AS (
         , ee.contract_address AS project_contract_address
         , ee.evt_tx_hash AS tx_hash
         , ee.evt_block_number AS block_number
-        FROM {{ source('element_ex_avalanche_c','ERC721OrdersFeature_evt_ERC721BuyOrderFilled') }} ee
+        FROM {{ source('element_ex_avalanche_c','OrdersFeature_evt_ERC721BuyOrderFilled') }} ee
         {% if is_incremental() %}
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-        
+
         UNION ALL
-        
+
         -- Avalanche ERC1155 Sells
         SELECT 'avalanche_c' AS blockchain
         , 'element' AS project
@@ -84,13 +84,13 @@ WITH element_txs AS (
         , ee.contract_address AS project_contract_address
         , ee.evt_tx_hash AS tx_hash
         , ee.evt_block_number AS block_number
-        FROM {{ source('element_ex_avalanche_c','ERC1155OrdersFeature_evt_ERC1155SellOrderFilled') }} ee
+        FROM {{ source('element_ex_avalanche_c','OrdersFeature_evt_ERC1155SellOrderFilled') }} ee
         {% if is_incremental() %}
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-        
+
         UNION ALL
-        
+
         -- Avalanche ERC1155 Buys
         SELECT 'avalanche_c' AS blockchain
         , 'element' AS project
@@ -111,12 +111,12 @@ WITH element_txs AS (
         , ee.contract_address AS project_contract_address
         , ee.evt_tx_hash AS tx_hash
         , ee.evt_block_number AS block_number
-        FROM {{ source('element_ex_avalanche_c','ERC1155OrdersFeature_evt_ERC1155BuyOrderFilled') }} ee
+        FROM {{ source('element_ex_avalanche_c','OrdersFeature_evt_ERC1155BuyOrderFilled') }} ee
         {% if is_incremental() %}
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         )
-    
+
 SELECT alet.blockchain
 , alet.project
 , alet.version

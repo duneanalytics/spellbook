@@ -1,6 +1,6 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["ethereum","solana"]\',
+        post_hook='{{ expose_spells(\'["ethereum","solana","bnb", "optimism"]\',
                                     "sector",
                                     "nft",
                                     \'["soispoke", "0xRob"]\') }}')
@@ -20,6 +20,10 @@
 ,ref('superrare_ethereum_trades')
 ,ref('x2y2_ethereum_trades')
 ,ref('zora_ethereum_trades')
+,ref('pancakeswap_bnb_nft_trades')
+,ref('tofu_bnb_trades')
+,ref('quix_optimism_trades')
+,ref('nftrade_bnb_trades')
 ] %}
 
 SELECT *
@@ -52,8 +56,7 @@ FROM (
         block_number,
         tx_from,
         tx_to,
-        unique_trade_id,
-        'testchange' as test
+        unique_trade_id
     FROM {{ nft_model }}
     {% if not loop.last %}
     UNION ALL

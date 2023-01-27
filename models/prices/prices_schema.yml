@@ -3,7 +3,7 @@ version: 2
 models:
   - name: prices_tokens
     meta:
-      blockchain: ethereum, bnb, solana
+      blockchain: ethereum, bnb, solana, fantom
       sector: prices
       contributors: aalan3
     config:

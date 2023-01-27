@@ -14,7 +14,7 @@ Write SQL to transform blockchain data into curated datasets on [dune.com](https
 
 First-time visitor? Check out how to [get started](#getting-started) below and visit the [Spellbook Getting Started Guide](https://dune.com/docs/spellbook/getting-started/). More tk.
 
-Been here before? An archive of intermediate datasets that were contributed to Dune v1 can be consulted [here](deprecated-dune-v1-abstractions).
+Been here before? An archive of intermediate datasets that were contributed to Dune v1 can be consulted [here](https://github.com/duneanalytics/dune-v1-abstractions).
 
 ## Getting Started
 

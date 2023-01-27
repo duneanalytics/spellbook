@@ -4,7 +4,7 @@
         alias='bpt_prices',
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                     "project",
-                                    "balancer",
+                                    "balancer_v2",
                                     \'["victorstefenon"]\') }}'
     )
 }}
