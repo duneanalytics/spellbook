@@ -1,6 +1,6 @@
 {{ config(
         alias ='accounting',
-        partition_by = ['ts'],
+        partition_by = ['dt'],
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -1387,6 +1387,7 @@ WITH dao_wallet AS (
         , ilk
         , dai_value
         , eth_value
+        , DATE(ts) AS dt
     FROM with_prices
     WHERE RIGHT(code,4) <> 9999
     
@@ -1401,6 +1402,7 @@ WITH dao_wallet AS (
         , ilk
         , incremental_dai_m2m AS dai_value
         , incremental_eth_m2m AS eth_value
+        , DATE(ts) AS dt
     FROM incremental_m2m
 )
 SELECT *
