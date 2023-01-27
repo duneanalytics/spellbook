@@ -6,7 +6,7 @@ models:
       blockchain: ethereum, fantom, bnb, avalanche_c, arbitrum, polygon, gnosis, optimism
       sector: labels
       category: trader_dex_diversity
-      contributors: gentrexha
+      contributors: gentrexha, Henrystats
     config:
       tags: ['labels', 'ethereum', 'fantom', 'bnb', 'avalanche_c', 'arbitrum', 'polygon', 'gnosis', 'optimism', 'trader_dex_diversity', 'dex', 'dex_aggregator']
     description: "Number of different dex-es used by addresses who use dex and dex aggregators"
