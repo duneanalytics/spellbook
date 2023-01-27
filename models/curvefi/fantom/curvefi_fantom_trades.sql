@@ -103,7 +103,7 @@ enriched_evt_all as(
 
 SELECT
     'fantom' as blockchain,
-    'curvefi' as project,
+    'curve' as project,
     '2' as version,
     TRY_CAST(date_trunc('DAY', dexs.block_time) as date) as block_date,
     dexs.block_time,

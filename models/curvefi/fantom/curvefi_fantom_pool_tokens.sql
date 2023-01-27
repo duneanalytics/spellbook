@@ -121,7 +121,24 @@ plain_pools as ( -- getting plain pools data
             AND call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         ) x 
-), 
+        WHERE x.pool IS NOT NULL -- some pools are weirdly having a null output_0 so will enter them manually
+),
+
+harcoded_plainpools as ( -- these pools have a null output_o in the deploy plain pool function and they actually have a few trades so manaully importing them (only one has multiple transactions rest are 0 transactions and pools have zero liquidity)
+        SELECT 
+            LOWER(pool) as pool, 
+            token_id, 
+            LOWER(token_address) as token_address,
+            'pool_token' as token_type 
+        FROM (
+        VALUES 
+        -- FraxTUSD 4Pool pool
+            ('0x872686B519E06B216EEf150dC4914f35672b0954', '0', '0x04068da6c83afcfa0e13ba15a6696662335d5b75'), -- usdc 
+            ('0x872686B519E06B216EEf150dC4914f35672b0954', '1', '0x8D11eC38a3EB5E956B052f67Da8Bdc9bef8Abf3E'), -- dai
+            ('0x872686B519E06B216EEf150dC4914f35672b0954', '2', '0x9879abdea01a879644185341f7af7d8343556b7a'), -- tusd
+            ('0x872686B519E06B216EEf150dC4914f35672b0954', '3', '0xdc301622e621166bd8e82f2ca0a26c13ad0be355') -- frax
+        ) as temp_table (pool, token_id, token_address)
+),
 
 plain_pools_pool_tokens as (
         SELECT 
@@ -130,6 +147,14 @@ plain_pools_pool_tokens as (
         FROM 
         plain_pools
         WHERE token_address != '0x0000000000000000000000000000000000000000' -- the 3rd & 4th coins are usually 0x000 so filtering here
+
+        UNION ALL 
+
+        SELECT 
+            *,
+            'Plain Pool' as pool_type
+        FROM 
+        harcoded_plainpools
 ), 
 
 meta_pools as ( -- getting meta pools and their base pools 
