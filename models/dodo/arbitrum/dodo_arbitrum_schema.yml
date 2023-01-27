@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: dodo_ethereum_trades
+  - name: dodo_arbitrum_trades
     meta:
-      blockchain: ethereum
+      blockchain: arbitrum
       sector: dex
       project: dodo
-      contributors: scoffie, owen05
+      contributors: owen05, scoffie
     config:
-      tags: ['ethereum','dodo','trades', 'dex']
+      tags: ['arbitrum','dodo','trades', 'dex']
     description: >
-        Dodo trades on Ethereum.
+        Dodo trades on Arbitrum.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -24,7 +24,7 @@ models:
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain which the DEX is deployed (specify: ethereum)"
+        description: "Blockchain which the DEX is deployed (specify: arbitrum)"
       - &project
         name: project
         description: "Project name of the DEX (specify: DODO)"
@@ -92,16 +92,16 @@ models:
         name: evt_index
         description: "Index of the corresponding trade event"
 
-  - name: dodo_pools_ethereum_trades
+  - name: dodo_pools_arbitrum_trades
     meta:
-      blockchain: ethereum
+      blockchain: arbitrum
       sector: dex
       project: dodo_pools
-      contributors: scoffie, owen05
+      contributors: owen05
     config:
-      tags: ['ethereum','dodo','pools', 'trades', 'dex']
+      tags: ['arbiturm', 'dodo', 'pools', 'trades', 'dex']
     description: >
-        DodoV1 && DODOV2 pools' trades on Ethereum.
+        DodoV1 && DODOV2 pools' trades on Arbitrum.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -113,15 +113,15 @@ models:
             - evt_index
             - trace_address
       - check_dex_seed:
-          blockchain: ethereum
+          blockchain: arbitrum
           project: DODO
           version: 1
       - check_dex_seed:
-          blockchain: ethereum
+          blockchain: arbitrum
           project: DODO
           version: 2_dvm
       - check_dex_seed:
-          blockchain: ethereum
+          blockchain: arbitrum
           project: DODO
           version: 2_dsp
     columns:
@@ -149,16 +149,16 @@ models:
       - *trace_address
       - *evt_index
 
-  - name: dodo_aggregator_ethereum_trades
+  - name: dodo_aggregator_arbitrum_trades
     meta:
-      blockchain: ethereum
+      blockchain: arbitrum
       sector: dex
       project: dodo_aggregator
-      contributors: scoffie, owen05
+      contributors: owen05
     config:
-      tags: ['ethereum','dodo',"aggregator", 'trades', 'dex']
+      tags: ['arbitrum', 'dodo', 'aggregator', 'trades', 'dex']
     description: >
-        DODO Aggregation on Ethereum.
+        DODO Aggregation on Arbitrum.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -170,7 +170,7 @@ models:
             - evt_index
             - trace_address
       - check_dex_seed:
-          blockchain: ethereum
+          blockchain: arbitrum
           project: DODO
           version: 0
     columns:
