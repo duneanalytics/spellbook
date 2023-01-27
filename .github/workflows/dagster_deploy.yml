@@ -4,6 +4,11 @@ on:
     branches:
       - "main"
 
+concurrency:
+  group:  ${{ github.workflow }}
+  cancel-in-progress: true
+
+
 jobs:
   dispatch:
     runs-on: [ self-hosted, linux, spellbook ]
@@ -11,7 +16,7 @@ jobs:
     - uses: actions/github-script@v6
       with:
 #        github-token: ${{ secrets.PAT_TOKEN }}
-        github-token: "$spellbook_pat_token"
+        github-token: ${{ secrets.SPELLBOOK_PAT_TOKEN }}
         script: |
           await github.rest.actions.createWorkflowDispatch({
             owner: 'duneanalytics',
