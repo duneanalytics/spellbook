@@ -23,9 +23,9 @@ WITH base_locks AS (
         WHERE d.evt_block_time >= DATE_TRUNC('day', NOW() - interval '1 week')
         AND l.call_block_time >= DATE_TRUNC('day', NOW() - interval '1 week')
         {% endif %}
-        
+
         UNION ALL
-        
+
         SELECT provider, cast(null as numeric(38)) AS locked_at, locktime AS unlocked_at, ts AS updated_at
         FROM {{ source('balancer_ethereum', 'veBAL_evt_Deposit') }}
         WHERE value = 0
@@ -33,7 +33,7 @@ WITH base_locks AS (
         AND evt_block_time >= DATE_TRUNC('day', NOW() - interval '1 week')
         {% endif %}
     ),
-    
+
     decorated_locks AS (
         SELECT provider,
                unlocked_at,
@@ -44,7 +44,7 @@ WITH base_locks AS (
                          OVER (PARTITION BY provider ORDER BY updated_at) AS locked_partition
               FROM base_locks) AS foo
     ),
-    
+
     locks_info AS (
         SELECT *, unlocked_at - locked_at AS lock_period
         FROM decorated_locks
@@ -62,9 +62,9 @@ WITH base_locks AS (
         {% endif %}
         GROUP BY provider, block_number, block_time
     ),
-    
+
     withdrawals AS (
-        SELECT 
+        SELECT
             provider,
             evt_block_number AS block_number,
             evt_block_time AS block_time,
@@ -75,7 +75,7 @@ WITH base_locks AS (
         {% endif %}
         GROUP BY provider, block_number, block_time
     ),
-    
+
     bpt_locked_balance AS (
         SELECT block_number, block_time, provider, SUM(delta_bpt) AS bpt_balance
         FROM (
@@ -85,7 +85,7 @@ WITH base_locks AS (
         ) union_all
         GROUP BY provider, block_number, block_time
     ),
-    
+
     cumulative_balances AS (
         SELECT
             block_number,
@@ -117,9 +117,9 @@ WITH base_locks AS (
         ON l.provider = b.provider
         AND l.updated_at <= unix_timestamp(block_time)
     ),
-    
+
     max_updated_at AS (
-        SELECT 
+        SELECT
             block_number,
             block_time,
             wallet_address,
@@ -128,7 +128,7 @@ WITH base_locks AS (
         GROUP BY block_number, block_time, wallet_address
     )
 
-SELECT 
+SELECT
     a.block_number,
     a.block_time,
     a.block_timestamp,
