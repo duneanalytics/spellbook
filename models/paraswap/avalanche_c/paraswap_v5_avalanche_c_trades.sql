@@ -18,8 +18,8 @@
 WITH 
 
 {% set trade_event_tables = [
-    'AugustusSwapperV5_evt_BoughtV3'
-    ,'AugustusSwapperV5_evt_SwappedV3'
+    source('paraswap_avalanche_c', 'AugustusSwapperV5_evt_BoughtV3')
+    ,source('paraswap_avalanche_c', 'AugustusSwapperV5_evt_SwappedV3')
 ] %}
 
 dexs as (
@@ -45,7 +45,7 @@ dexs as (
             evt_tx_hash as tx_hash, 
             '' as trace_address,
             evt_index
-        FROM {{ source('paraswap_avalanche_c', trade_tables) }} p 
+        FROM {{ trade_tables }} p 
         {% if is_incremental() %}
         WHERE p.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
