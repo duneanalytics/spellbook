@@ -6,7 +6,7 @@ on:
 
 jobs:
   dispatch:
-     runs-on: [ self-hosted, linux, spellbook ]
+    runs-on: [ self-hosted, linux, spellbook ]
     steps:
     - uses: actions/github-script@v6
       with:
