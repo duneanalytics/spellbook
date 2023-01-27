@@ -150,7 +150,6 @@ models:
       avalanche_c:
         +schema: element_avalanche_c
 
-
     abi:
       +schema: abi
 
@@ -645,6 +644,11 @@ models:
 
     arbswap:
       +schema: arbswap
+    
+    rocifi:
+      +schema: rocifi
+      polygon:
+        +schema: rocifi_polygon
 
 seeds:
   spellbook:
