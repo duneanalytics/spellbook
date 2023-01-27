@@ -70,7 +70,7 @@ models:
     meta:
       blockchain: ethereum
       project: curvefi
-      contributors: [agaperste, yulesa, ilemi]
+      contributors: [agaperste, yulesa]
     config:
       tags: ["ethereum", "curvefi", "view_pools", "view"]
     description: >
@@ -102,17 +102,13 @@ models:
       - *undercoin1
       - *undercoin2
       - *undercoin3
-      - name: coins 
-        description: "All of the coins aggregated into an array, useful for exchange trades"
-      - name: undercoins 
-        description: "All of the undercoins aggregated into an array, useful for exchange_underlying trades"
       - *gauge_contract
 
   - name: curvefi_ethereum_trades
     meta:
       blockchain: ethereum
       project: curvefi
-      contributors: [dsalv, yulesa, ilemi, jeff-dude]
+      contributors: [dsalv, yulesa]
     config:
       tags: ["ethereum", "curvefi", 'trades','dex']
     description: >
