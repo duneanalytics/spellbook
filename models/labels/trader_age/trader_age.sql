@@ -5,7 +5,7 @@
         ["ethereum", "fantom", "arbitrum", "avalanche_c", "gnosis", "bnb", "optimism", "polygon"]\', 
         "sector", 
         "labels", \'
-        ["gentrexha"]\') }}'
+        ["gentrexha", "Henrystats"]\') }}'
     )
 }}
 
