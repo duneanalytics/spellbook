@@ -13,7 +13,8 @@ with
  trader_platforms as (
     select
         taker as address,
-        block_time,
+        MIN(block_time) as first_trade,
+        COUNT(*) as num_txs, -- to optimize query 
         project,
         blockchain
     from (
@@ -23,6 +24,7 @@ with
         select blockchain, taker, project, block_time
         from {{ ref('dex_trades') }}
     )
+    group by taker, project, blockchain 
     order by block_time
  )
 
