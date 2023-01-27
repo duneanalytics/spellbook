@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: trader_age
+  - name: labels_trader_age
     meta:
       blockchain: ethereum, fantom, bnb, avalanche_c, arbitrum, polygon, gnosis, optimism
       sector: labels
