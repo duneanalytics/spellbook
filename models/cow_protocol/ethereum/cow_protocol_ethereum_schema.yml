@@ -211,17 +211,18 @@ models:
     description: >
         Order Rewards contains the data necessary to compute Weekly Solver Payouts.
         In particular, how much COW token solvers are entitled for each settled order.
-        Furthermore, since the introduction of limit orders into the the protocol, 
+        Furthermore, since the introduction of limit orders into the protocol, 
         this table also contains the surplus fee.
     columns:
       - *tx_hash
       - *solver_address
+      - *block_number
       - &cow_reward
         name: cow_reward
-        description: ""
+        description: "COW token reward distributed to solver for settling order"
       - &surplus_fee
         name: surplus_fee
-        description: ""
+        description: "Fee taken from limit orders"
       - *order_uid
   - name: cow_protocol_ethereum_eth_flow_orders
     meta:
@@ -269,7 +270,7 @@ models:
       The CoW Protocol Affiliate Program works based on referrals contained in AppData.
       A referral is considered valid whenever a new trader comes and places their first 
       order with referral address in the meta content. This table contains the relevant 
-      query to build a the affiliate mapping.
+      query to build the affiliate mapping.
     columns:
       - *trader
       - *referrer

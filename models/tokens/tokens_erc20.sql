@@ -15,7 +15,7 @@ SELECT 'ethereum' as blockchain, * FROM  {{ ref('tokens_ethereum_erc20') }}
 UNION
 SELECT 'gnosis' as blockchain, * FROM  {{ ref('tokens_gnosis_erc20') }}
 UNION
-SELECT 'optimism' as blockchain, * FROM  {{ ref('tokens_optimism_erc20') }}
+SELECT 'optimism' as blockchain, contract_address, symbol, decimals FROM  {{ ref('tokens_optimism_erc20') }}
 UNION
 SELECT 'polygon' as blockchain, * FROM  {{ ref('tokens_polygon_erc20') }}
 UNION 

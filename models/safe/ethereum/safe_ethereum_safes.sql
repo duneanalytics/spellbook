@@ -15,6 +15,7 @@
 }}
 
 select
+    'ethereum' as blockchain,
     et.from as address,
     case 
         when et.to = '0x8942595a2dc5181df0465af0d7be08c8f23c93af' then '0.1.0'
@@ -53,7 +54,9 @@ where et.success = true
         
 union all
     
-select contract_address as address, 
+select 
+    'ethereum' as blockchain,
+    contract_address as address, 
     '1.3.0' as creation_version, 
     try_cast(date_trunc('day', evt_block_time) as date) as block_date,
     evt_block_time as creation_time, 
