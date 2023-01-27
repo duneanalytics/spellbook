@@ -1,5 +1,5 @@
 {{config(alias='miners',
-        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c","fantom","polygon"]\',
                                     "sector",
                                     "labels",
                                     \'["soispoke"]\') }}')
@@ -64,3 +64,23 @@ SELECT DISTINCT array('optimism') as blockchain,
        date('2022-09-28') as created_at,
        now() as modified_at
 FROM {{ source('optimism','blocks') }} 
+UNION 
+SELECT DISTINCT array('fantom') as blockchain,
+       miner, 
+       'Fantom Miner' as name,
+       'contracts' as category,
+       'soispoke' as contributor,
+       'query' AS source,
+       date('2023-01-25') as created_at,
+       now() as modified_at
+FROM {{ source('fantom','blocks') }} 
+UNION 
+SELECT DISTINCT array('polygon') as blockchain,
+       miner, 
+       'Polygon Miner' as name,
+       'contracts' as category,
+       'soispoke' as contributor,
+       'query' AS source,
+       date('2023-01-25') as created_at,
+       now() as modified_at
+FROM {{ source('polygon','blocks') }} 
