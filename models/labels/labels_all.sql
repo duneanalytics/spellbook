@@ -50,4 +50,6 @@ SELECT * FROM {{ ref('labels_sandwich_attackers') }}
 UNION ALL
 SELECT * FROM {{ ref('labels_dao') }}
 UNION ALL
+SELECT * FROM {{ ref('labels_balancer_v2_pools') }}
+UNION ALL
 SELECT * FROM {{ ref('labels_eth_stakers') }}
