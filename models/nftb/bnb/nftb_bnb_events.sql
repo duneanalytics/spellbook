@@ -125,7 +125,7 @@ AND evt_block_time >= date_trunc("day", now() - interval '1 week')
 FROM {{ source('nftb_bnb', 'NFT_evt_Transfer')}} tr
 INNER JOIN {{ source('nftb_bnb', 'NFT_call_royaltyInfo')}} r
 ON r.call_tx_hash=tr.evt_tx_hash
-INNER JOIN {{source('bnb','transactions')}}tr1
+INNER JOIN {{ source('bnb','transactions')}} as tr1
 ON tr1.hash=tr.evt_tx_hash
 {% if not is_incremental() %}
 AND tr1.block_time >= '{{project_start_date}}'

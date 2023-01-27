@@ -345,6 +345,10 @@ models:
       optimism: 
         +schema: safe_optimism
 
+    nftb:
+      +schema: nftb
+      bnb:
+        +schema: nftb_bnb
     nftrade:
       +schema: nftrade
       bnb:
