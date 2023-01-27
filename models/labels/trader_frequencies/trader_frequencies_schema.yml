@@ -6,7 +6,7 @@ models:
       blockchain: ethereum, fantom, bnb, avalanche_c, arbitrum, polygon, gnosis, optimism
       sector: labels
       category: trader_frequencies
-      contributors: gentrexha
+      contributors: gentrexha, Henrystats
     config:
       tags: ['labels', 'ethereum', 'fantom', 'bnb', 'avalanche_c', 'arbitrum', 'polygon', 'gnosis', 'optimism', 'trader_frequencies', 'dex', 'dex_aggregator']
     description: "Trader frequencies (daily, weekly, monthly) for traders who use dex and dex aggregators"
