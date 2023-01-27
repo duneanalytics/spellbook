@@ -269,9 +269,6 @@ FROM (VALUES
     , (array('ethereum'), '0x66f820a414680b5bcda5eeca5dea238543f42054', 'Bittrex 3', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     -- Bithumb, Source: https://etherscan.io/accounts/label/bithumb
     , (array('ethereum'), '0x88d34944cf554e9cccf4a24292d891f620e9c94f', 'Bithumb 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
-    , (array('ethereum'), '0x186549a4ae594fc1f70ba4cffdac714b405be3f9', 'Bithumb 10', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
-    , (array('ethereum'), '0xd273bd546b11bd60214a2f9d71f22a088aafe31b', 'Bithumb 11', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
-    , (array('ethereum'), '0x558553d54183a8542f7832742e7b4ba9c33aa1e6', 'Bithumb 12', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x3052cd6bf951449a984fe4b5a38b46aef9455c8e', 'Bithumb 2', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x2140efd7ba31169c69dfff6cdc66c542f0211825', 'Bithumb 3', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0xa0ff1e0f30b5dda2dc01e7e828290bc72b71e57d', 'Bithumb 4', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
