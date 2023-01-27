@@ -8,7 +8,6 @@ concurrency:
   group:  ${{ github.workflow }}
   cancel-in-progress: true
 
-
 jobs:
   dispatch:
     runs-on: [ self-hosted, linux, spellbook ]
