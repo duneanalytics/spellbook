@@ -12,7 +12,7 @@
 with
  trader_frequencies as (
     select
-        collect_list(blockchain) as blockchain, 
+        blockchain, 
         taker as address,
         count(tx_hash) / datediff(max(block_date), min(block_date)) as trades_per_day
     from (
@@ -22,13 +22,13 @@ with
         select blockchain, taker, block_date, tx_hash
         from {{ ref('dex_trades') }}
     )
-    group by taker
+    group by taker, blockchain
     -- That have at least more than 1 trade
     having datediff(max(block_date), min(block_date)) > 0
  )
 
 select
-  blockchain,
+  array(blockchain) as blockchain,
   address,
   case
     when trades_per_day >= 1 then 'Daily Trader'
