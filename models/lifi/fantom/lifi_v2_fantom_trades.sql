@@ -18,8 +18,8 @@
 WITH 
 
 {% set trade_event_tables = [
-    'LiFiDiamond_v2_evt_AssetSwapped'
-    ,'LiFiDiamond_v2_evt_LiFiSwappedGeneric'
+    source('lifi_fantom', 'LiFiDiamond_v2_evt_AssetSwapped')
+    ,source('lifi_fantom', 'LiFiDiamond_v2_evt_LiFiSwappedGeneric')
 ] %}
 
 dexs as (
@@ -44,7 +44,7 @@ dexs as (
             evt_tx_hash as tx_hash, 
             '' as trace_address,
             evt_index
-        FROM {{ source('lifi_fantom', trade_tables) }} p 
+        FROM {{ trade_tables }} p 
         {% if is_incremental() %}
         WHERE p.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
