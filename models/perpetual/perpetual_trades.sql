@@ -1,9 +1,9 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["optimism"]\',
+        post_hook='{{ expose_spells(\'["optimism","avalanche_c","arbitrum"]\',
                                 "sector",
                                 "perpetual",
-                                \'["msilb7", "drethereum", "rplust"]\') }}'
+                                \'["msilb7", "drethereum", "rplust","Henrystats"]\') }}'
         )
 }}
 
