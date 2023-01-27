@@ -125,6 +125,7 @@ plain_pools as ( -- getting plain pools data
 ),
 
 harcoded_plainpools as ( -- these pools have a null output_o in the deploy plain pool function and they actually have a few trades so manaully importing them (only one has multiple transactions rest are 0 transactions and pools have zero liquidity)
+                        -- there are also some plain pools like tricrypto that aren't deployed by factory and don't show up here https://dune.com/queries/1933132 used this query to get the most active ones 
         SELECT 
             LOWER(pool) as pool, 
             token_id, 
@@ -293,6 +294,33 @@ meta_pools_underlying_tokens_sold as ( -- getting the underlying tokens sold for
         WHERE token_id = '1'
 ), 
 
+hardcoded_pools as ( -- some pools are not decoded via factory and don't show in the plain pool or meta pool event so their details have to be entered manually https://dune.com/queries/1933132 used this query to get the most active ones, had to manually submit them for decoding to as they're not picked up by the factory
+    SELECT 
+        LOWER(pool) as pool, 
+        token_id, 
+        LOWER(token_address) as token_address,
+        token_type, 
+        pool_type 
+    FROM (
+    VALUES 
+    -- tricrypto pool
+        ('0x3a1659Ddcf2339Be3aeA159cA010979FB49155FF', '0', '0x049d68029688eAbF473097a2fC38ef61633A3C7A', 'pool_token', 'Plain Pool'), -- fusdt 
+        ('0x3a1659Ddcf2339Be3aeA159cA010979FB49155FF', '1', '0x321162Cd933E2Be498Cd2267a90534A804051b11', 'pool_token', 'Plain Pool'), -- wbtc
+        ('0x3a1659Ddcf2339Be3aeA159cA010979FB49155FF', '2', '0x74b23882a30290451A17c44f4F05243b6b58C76d', 'pool_token', 'Plain Pool'), -- weth
+    -- fusdt pool tokens 
+        ('0x92D5ebF3593a92888C25C0AbEF126583d4b5312E', '0', '0x049d68029688eAbF473097a2fC38ef61633A3C7A', 'pool_token', 'Meta Pool'), -- fusdt 
+        ('0x92D5ebF3593a92888C25C0AbEF126583d4b5312E', '1', '0x27E611FD27b276ACbd5Ffd632E5eAEBEC9761E40', 'pool_token', 'Meta Pool'), -- 2pool pool 
+    -- fusdt underlying sold 
+        ('0x92D5ebF3593a92888C25C0AbEF126583d4b5312E', '0', '0x049d68029688eAbF473097a2fC38ef61633A3C7A', 'underlying_token_sold', 'Meta Pool'), -- fusdt 
+        ('0x92D5ebF3593a92888C25C0AbEF126583d4b5312E', '1', '0x27E611FD27b276ACbd5Ffd632E5eAEBEC9761E40', 'underlying_token_sold', 'Plain Pool'), -- 2pool pool 
+        ('0x92D5ebF3593a92888C25C0AbEF126583d4b5312E', '2', '0x27E611FD27b276ACbd5Ffd632E5eAEBEC9761E40', 'underlying_token_sold', 'Plain Pool'), -- 2pool pool 
+    -- fusdt underlying bought
+        ('0x92D5ebF3593a92888C25C0AbEF126583d4b5312E', '0', '0x049d68029688eAbF473097a2fC38ef61633A3C7A', 'underlying_token_bought', 'Meta Pool'), -- fusdt 
+        ('0x92D5ebF3593a92888C25C0AbEF126583d4b5312E', '1', '0x8D11eC38a3EB5E956B052f67Da8Bdc9bef8Abf3E', 'underlying_token_bought', 'Meta Pool'), -- dai
+        ('0x92D5ebF3593a92888C25C0AbEF126583d4b5312E', '2', '0x04068DA6C83AFCFA0e13ba15A6696662335D5B75', 'underlying_token_bought', 'Meta Pool') -- usdc
+    ) as temp_table (pool, token_id, token_address, token_type, pool_type)
+),
+
 all_pool_tokens as (
         SELECT pool, token_id, token_address, token_type, pool_type FROM base_pools_pool_tokens
         UNION 
@@ -307,6 +335,8 @@ all_pool_tokens as (
         SELECT pool, token_id, token_address, token_type, pool_type FROM meta_pools_underlying_tokens_bought
         UNION 
         SELECT pool, token_id, token_address, token_type, pool_type FROM meta_pools_underlying_tokens_sold
+        UNION 
+        SELECT pool, token_id, token_address, token_type, pool_type FROM hardcoded_pools
 )
 
 SELECT 

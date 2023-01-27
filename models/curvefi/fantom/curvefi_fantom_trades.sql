@@ -5,10 +5,6 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
-    post_hook='{{ expose_spells(\'["fantom"]\',
-                                "project",
-                                "curvefi",
-                                \'["Henrystats"]\') }}'
     )
 }}
 -- SELECT MIN(evt_block_time) FROM curvefi_fantom.StableSwap_evt_TokenExchange
