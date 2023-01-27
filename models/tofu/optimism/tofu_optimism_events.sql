@@ -92,7 +92,7 @@ select
     ,cast(tfe.price as decimal(38,0)) as amount_raw 
     ,tfe.price / power(10, pu.decimals) as amount_original
     ,pu.price * tfe.price / power(10, pu.decimals) as amount_usd
-    ,case when tfe.native_bnb then 'ETH' else pu.symbol end as currency_symbol
+    ,case when tfe.native_eth then 'ETH' else pu.symbol end as currency_symbol
     ,tfe.currency as currency_contract
     ,tff.token as nft_contract_address
     ,agg.name as aggregator_name
@@ -109,7 +109,7 @@ select
     ,pu.price * tfe.price * tff.royalty_rate / power(10, pu.decimals) as royalty_fee_amount_usd
     ,cast(100 * tff.royalty_rate as double) as royalty_fee_percentage
     ,tff.royalty_address as royalty_fee_receive_address
-    ,case when tfe.native_bnb then 'ETH' else pu.symbol end as royalty_fee_currency_symbol
+    ,case when tfe.native_eth then 'ETH' else pu.symbol end as royalty_fee_currency_symbol
     ,concat(tfe.evt_block_number, tfe.evt_tx_hash, tfe.evt_index, tff.bundle_index) as unique_trade_id
 from tfe 
 join tff 
@@ -120,7 +120,7 @@ inner join {{ source('optimism', 'transactions') }} as tx
     and tx.hash = tfe.evt_tx_hash
 left join {{ ref('tokens_nft') }} as nft 
     on nft.contract_address = tff.token
-    and n.blockchain = 'optimism'
+    and nft.blockchain = 'optimism'
 left join {{ source('prices', 'usd') }} as pu 
   on pu.blockchain = 'optimism'
   and pu.minute = date_trunc('minute', tfe.evt_block_time)
