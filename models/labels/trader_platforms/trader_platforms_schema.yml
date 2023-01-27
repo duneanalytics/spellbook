@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: trader_platforms
+  - name: labels_trader_platforms
     meta:
       blockchain: ethereum, fantom, bnb, avalanche_c, arbitrum, polygon, gnosis, optimism
       sector: labels
