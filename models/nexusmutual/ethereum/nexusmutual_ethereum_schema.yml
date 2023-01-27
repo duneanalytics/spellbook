@@ -1,6 +1,36 @@
 version: 2
 
 models:
+  - name: nexusmutual_ethereum_product_information
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: [guyhow]
+    description: >
+        nexusmutual product information for v1
+    tests:
+      - check_seed:
+          seed_file: ref('nexusmutual_ethereum_product_information_seed')
+          match_columns:
+            - product_contract_address
+          check_columns:
+            - product_name
+            - product_type
+            - syndicate
+    columns:
+      - &date_added
+        name: date_added
+      - &product_contract_address
+        name: product_contract_address
+        tests:
+          - unique
+      - &product_name
+        name: product_name
+      - &product_type
+        name: product_type
+      - &syndicate
+        name: syndicate
+
   - name: nexusmutual_ethereum_quotation_trades
     meta:
       blockchain: ethereum

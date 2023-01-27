@@ -12,6 +12,7 @@
 ,ref('pika_trades')
 ,ref('synthetix_trades')
 ,ref('hubble_exchange_avalanche_c_perpetual_trades')
+,ref('gmx_perpetual_trades')
 ] %}
 
 SELECT *

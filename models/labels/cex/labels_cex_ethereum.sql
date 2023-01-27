@@ -55,6 +55,8 @@ FROM (VALUES
     -- FTX, Source: https://etherscan.io/accounts/label/ftx
     , (array('ethereum'), '0x2faf487a4414fe77e2327f0bf4ae2a264a776ad2', 'FTX 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0xc098b2a3aa256d2140208c3de6543aaef5cd3a94', 'FTX 2', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
+    , (array('ethereum'), '0x25eaff5b179f209cf186b1cdcbfa463a69df4c45', 'FTX (formerly Blockfolio)', 'cex', 'hildobby', 'static', timestamp('20233-01-26'), now())
+    -- FTX US, Source: https://etherscan.io/accounts/label/ftx
     , (array('ethereum'), '0x7abe0ce388281d2acf297cb089caef3819b13448', 'FTX US', 'cex', 'agaperste', 'static', timestamp('2022-11-15'), now())
     -- Coinbase, Source: https://etherscan.io/accounts/label/coinbase
     , (array('ethereum'), '0x71660c4005ba85c37ccec55d0c4493e66fe775d3', 'Coinbase 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
@@ -63,6 +65,14 @@ FROM (VALUES
     , (array('ethereum'), '0x3cd751e6b0078be393132286c442345e5dc49699', 'Coinbase 4', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0xb5d85cbf7cb3ee0d56b3bb207d5fc4b82f43f511', 'Coinbase 5', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0xeb2629a2734e272bcc07bda959863f316f4bd4cf', 'Coinbase 6', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
+    , (array('ethereum'), '0xd688aea8f7d450909ade10c47faa95707b0682d9', 'Coinbase 7', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0x02466e547bfdab679fc49e96bbfc62b9747d997c', 'Coinbase 8', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0x6b76f8b1e9e59913bfe758821887311ba1805cab', 'Coinbase 9', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43', 'Coinbase 10', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0x77696bb39917c91a0c3908d577d5e322095425ca', 'Coinbase 11', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0x7c195d981abfdc3ddecd2ca0fed0958430488e34', 'Coinbase 12', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0x95a9bd206ae52c4ba8eecfc93d18eacdd41c88cc', 'Coinbase 13', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0xb739d0895772dbb71a89a3754a160269068f0d45', 'Coinbase 14', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
     , (array('ethereum'), '0xa090e606e30bd747d4e6245a1517ebe430f0057e', 'Coinbase Miscellaneous', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0xf6874c88757721a02f47592140905c4336dfbc61', 'Coinbase Commerce', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x881d4032abe4188e2237efcd27ab435e81fc6bb1', 'Coinbase Commerce 2', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
@@ -74,6 +84,19 @@ FROM (VALUES
     , (array('ethereum'), '0x59fae149a8f8ec74d5bc038f8b76d25b136b9573', 'OKX 5', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x98ec059dc3adfbdd63429454aeb0c990fba4a128', 'OKX 6', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x5041ed759dd4afc3a72b8192c143f72f4724081a', 'OKX 7', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
+    , (array('ethereum'), '0xcba38020cd7b6f51df6afaf507685add148f6ab6', 'OKX 8', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0x461249076b88189f8ac9418de28b365859e46bfd', 'OKX 9', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0xc5451b523d5fffe1351337a221688a62806ad91a', 'OKX 10', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0x42436286a9c8d63aafc2eebbca193064d68068f2', 'OKX 11', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0x69a722f0b5da3af02b4a205d6f0c285f4ed8f396', 'OKX 12', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0xc708a1c712ba26dc618f972ad7a187f76c8596fd', 'OKX 13', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0x6fb624b48d9299674022a23d92515e76ba880113', 'OKX 14', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0xf59869753f41db720127ceb8dbb8afaf89030de4', 'OKX 15', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0x65a0947ba5175359bb457d3b34491edf4cbf7997', 'OKX 16', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0x4d19c0a5357bc48be0017095d3c871d9afc3f21d', 'OKX 17', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0x5c52cc7c96bde8594e5b77d5b76d042cb5fae5f2', 'OKX 18', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0xe9172daf64b05b26eb18f07ac8d6d723acb48f99', 'OKX 19', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0x7eb6c83ab7d8d9b8618c0ed973cbef71d1921ef2', 'OKX 20', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
     -- Huobi, Source: https://etherscan.io/accounts/label/huobi
     , (array('ethereum'), '0xab5c66752a9e8167967685f1450532fb96d5d24f', 'Huobi 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x6748f50f686bfbca6fe8ad62b22228b87f31ff2b', 'Huobi 2', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
@@ -114,6 +137,7 @@ FROM (VALUES
     , (array('ethereum'), '0xf66852bc122fd40bfecc63cd48217e88bda12109', 'Huobi 37', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x49517ca7b7a50f592886d4c74175f4c07d460a70', 'Huobi 38', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x58c2cb4a6bee98c309215d0d2a38d7f8aa71211c', 'Huobi 39', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
+    , (array('ethereum'), '0x39d9f4640b98189540a9c0edcfa95c5e657706aa', 'Huobi 40', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
     , (array('ethereum'), '0x1d1e10e8c66b67692f4c002c0cb334de5d485e41', 'Huobi Old Address 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x1b93129f05cc2e840135aab154223c75097b69bf', 'Huobi Old Address 2', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0xeb6d43fe241fb2320b5a3c9be9cdfd4dd8226451', 'Huobi Old Address 3', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
@@ -166,7 +190,8 @@ FROM (VALUES
     , (array('ethereum'), '0xae2d4617c862309a3d75a0ffb358c7a5009c673f', 'Kraken 10', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x43984d578803891dfa9706bdeee6078d80cfc79e', 'Kraken 11', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x66c57bf505a85a74609d2c83e94aabb26d691e1f', 'Kraken 12', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
-    , (array('ethereum'), '0xda9dfa130df4de4673b89022ee50ff26f6ea73cf', 'Kraken 13', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
+    , (array('ethereum'), '0xda9dfa130df4de4673b89022ee50ff26f6ea73cf', 'Kraken 14', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
+    , (array('ethereum'), '0xa83b11093c858c86321fbc4c20fe82cdbd58e09e', 'Kraken 13', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
     , (array('ethereum'), '0xe9f7ecae3a53d2a67105292894676b00d1fab785', 'Kraken Hot Wallet', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     -- Bitfinex, Source: https://etherscan.io/accounts/label/bitfinex
     , (array('ethereum'), '0x77134cbc06cb00b66f4c7e623d5fdbf6777635ec', 'Bitfinex: Hot Wallet', 'cex', 'soispoke', 'static', timestamp('2022-10-19'), now())
@@ -183,6 +208,13 @@ FROM (VALUES
     , (array('ethereum'), '0xc56fefd1028b0534bfadcdb580d3519b5586246e', 'Bitfinex 11', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x0b73f67a49273fc4b9a65dbd25d7d0918e734e63', 'Bitfinex 12', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x482f02e8bc15b5eabc52c6497b425b3ca3c821e8', 'Bitfinex 13', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
+    , (array('ethereum'), '0x1b8766d041567eed306940c587e21c06ab968663', 'Bitfinex 14', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0x5a710a3cdf2af218740384c52a10852d8870626a', 'Bitfinex 15', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0x28140cb1ac771d4add91ee23788e50249c10263d', 'Bitfinex 16', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0x53b36141490c419fa27ecabfeb8be1ecadc82431', 'Bitfinex 17', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0x0cd76cd43992c665fdc2d8ac91b935ca3165e782', 'Bitfinex 18', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0xe92d1a43df510f82c66382592a047d288f85226f', 'Bitfinex 19', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0x8103683202aa8da10536036edef04cdd865c225e', 'Bitfinex 20', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
     , (array('ethereum'), '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e', 'Bitfinex MultiSig 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0xc6cde7c39eb2f0f0095f41570af89efc2c1ea828', 'Bitfinex MultiSig 2', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0xc61b9bb3a7a0767e3179713f3a5c7a9aedce193c', 'Bitfinex MultiSig 3', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
@@ -200,6 +232,11 @@ FROM (VALUES
     , (array('ethereum'), '0x899b5d52671830f567bf43a14684eb14e1f945fe', 'KuCoin 8', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0xf16e9b0d03470827a95cdfd0cb8a8a3b46969b91', 'KuCoin 9', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0xcad621da75a66c7a8f4ff86d30a2bf981bfc8fdd', 'KuCoin 10', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
+    , (array('ethereum'), '0xec30d02f10353f8efc9601371f56e808751f396f', 'KuCoin 11', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0x738cf6903e6c4e699d1c2dd9ab8b67fcdb3121ea', 'KuCoin 12', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0xd89350284c7732163765b23338f2ff27449e0bf5', 'KuCoin 13', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0x88bd4d3e2997371bceefe8d9386c6b5b4de60346', 'KuCoin 14', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0xb8e6d31e7b212b2b7250ee9c26c56cebbfbe6b23', 'KuCoin 15', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
     -- Crypto.com, Source: https://etherscan.io/accounts/label/crypto-com
     , (array('ethereum'), '0x6262998ced04146fa42253a5c0af90ca02dfd2a3', 'Crypto.com 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x46340b20830761efd32832a74d7169b29feb9758', 'Crypto.com 2', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
@@ -232,9 +269,6 @@ FROM (VALUES
     , (array('ethereum'), '0x66f820a414680b5bcda5eeca5dea238543f42054', 'Bittrex 3', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     -- Bithumb, Source: https://etherscan.io/accounts/label/bithumb
     , (array('ethereum'), '0x88d34944cf554e9cccf4a24292d891f620e9c94f', 'Bithumb 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
-    , (array('ethereum'), '0x186549a4ae594fc1f70ba4cffdac714b405be3f9', 'Bithumb 10', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
-    , (array('ethereum'), '0xd273bd546b11bd60214a2f9d71f22a088aafe31b', 'Bithumb 11', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
-    , (array('ethereum'), '0x558553d54183a8542f7832742e7b4ba9c33aa1e6', 'Bithumb 12', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x3052cd6bf951449a984fe4b5a38b46aef9455c8e', 'Bithumb 2', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x2140efd7ba31169c69dfff6cdc66c542f0211825', 'Bithumb 3', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0xa0ff1e0f30b5dda2dc01e7e828290bc72b71e57d', 'Bithumb 4', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
@@ -243,6 +277,9 @@ FROM (VALUES
     , (array('ethereum'), '0x15878e87c685f866edfaf454be6dc06fa517b35b', 'Bithumb 7', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x31d03f07178bcd74f9099afebd23b0ae30184ab5', 'Bithumb 8', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0xed48dc0628789c2956b1e41726d062a86ec45bff', 'Bithumb 9', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
+    , (array('ethereum'), '0x186549a4ae594fc1f70ba4cffdac714b405be3f9', 'Bithumb 10', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0xd273bd546b11bd60214a2f9d71f22a088aafe31b', 'Bithumb 11', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
+    , (array('ethereum'), '0x558553d54183a8542f7832742e7b4ba9c33aa1e6', 'Bithumb 12', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
     , (array('ethereum'), '0xbb5a0408fa54287b9074a2f47ab54c855e95ef82', 'Bithumb Old Address 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x5521a68d4f8253fc44bfb1490249369b3e299a4a', 'Bithumb Old Address 2', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x8fa8af91c675452200e49b4683a33ca2e1a34e42', 'Bithumb Old Address 3', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
@@ -405,8 +442,6 @@ FROM (VALUES
     -- BW 
     , (array('ethereum'), '0xbcdfc35b86bedf72f0cda046a3c16829a2ef41d1', 'BW Old Address', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now()) -- https://etherscan.io/address/0xbcdfc35b86bedf72f0cda046a3c16829a2ef41d1
     , (array('ethereum'), '0x73957709695e73fd175582105c44743cf0fb6f2f', 'BW 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now()) -- https://etherscan.io/address/0x73957709695e73fd175582105c44743cf0fb6f2f
-    -- Blockfolio 
-    , (array('ethereum'), '0x25eaff5b179f209cf186b1cdcbfa463a69df4c45', 'Blockfolio', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now()) -- https://etherscan.io/address/0x25eaff5b179f209cf186b1cdcbfa463a69df4c45
     -- bitFlyer
     , (array('ethereum'), '0x111cff45948819988857bbf1966a0399e0d1141e', 'bitFlyer 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now()) -- https://etherscan.io/address/0x111cff45948819988857bbf1966a0399e0d1141e
     -- Coinone
