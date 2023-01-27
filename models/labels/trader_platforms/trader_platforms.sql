@@ -25,7 +25,7 @@ with
         from {{ ref('dex_trades') }}
     )
     group by taker, project, blockchain 
-    order by block_time
+    order by first_trade
  )
 
 select
