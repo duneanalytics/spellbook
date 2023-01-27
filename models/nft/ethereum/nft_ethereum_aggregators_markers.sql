@@ -2,7 +2,7 @@
         alias ='aggregators_markers',
 		materialized = 'table',
         unique_key='hash_marker',
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "nft",
                                     \'["hildobby", "0xRob"]\') }}')
@@ -18,8 +18,8 @@
         '0x59728544b08ab483533076417fbbb2fd0b17ce3a', --looksrare
         '0x9ebfb53fa8526906738856848a27cb11b0285c3f'  --reservoir
     )
-    AND RIGHT(data, 2) = '1f'
-    AND LEFT(regexp_replace(data, '^.*00', ''), 2)='1f'
+    AND `RIGHT`(data, 2) = '1f'
+    AND `LEFT`(regexp_replace(data, '^.*00', ''), 2)='1f'
     AND regexp_replace(data, '^.*00', '') != '1f'
     AND length(regexp_replace(data, '^.*00', ''))%2 = 0
     AND block_time > '2022-10-15'
@@ -31,7 +31,7 @@
     from reservoir r_a
     anti join reservoir r_b
         ON r_a.hash_marker != r_b.hash_marker
-        and right(r_a.hash_marker, length(r_b.hash_marker)) = r_b.hash_marker
+        and `right`(r_a.hash_marker, length(r_b.hash_marker)) = r_b.hash_marker
   )
 
   , all_markers as (
