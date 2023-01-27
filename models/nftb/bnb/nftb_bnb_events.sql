@@ -252,7 +252,7 @@ SELECT 'bnb' as blockchain
 FROM all_events ae
 
 INNER JOIN {{ source('bnb','transactions') }} btx
-ON btx.block_time = ae.evt_block_time
+ON btx.block_time = ae.block_time
 AND btx.hash = ae.tx_hash
 {% if not is_incremental() %}
 AND btx.block_time >= '{{project_start_date}}'
