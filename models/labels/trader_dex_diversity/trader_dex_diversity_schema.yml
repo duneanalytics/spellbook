@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: trader_dex_diversity
+  - name: labels_trader_dex_diversity
     meta:
       blockchain: ethereum, fantom, bnb, avalanche_c, arbitrum, polygon, gnosis, optimism
       sector: labels
