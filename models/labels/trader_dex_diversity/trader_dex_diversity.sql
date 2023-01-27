@@ -12,7 +12,7 @@
 with
  trader_dex_diversity as (
     select
-        collect_set(blockchain) as blockchain,
+        blockchain,
         count(distinct project) as dex_diversity,
         taker as address
     from (
@@ -22,11 +22,11 @@ with
         select blockchain, taker, project
         from {{ ref('dex_trades') }}
     )
-    group by taker
+    group by taker, blockchain 
  )
 
 select
-  blockchain,
+  array(blockchain) as blockchain,
   address,
   concat('Number of DEXs traded on: ', dex_diversity) as name,
   "trader_dex_diversity" AS category,
