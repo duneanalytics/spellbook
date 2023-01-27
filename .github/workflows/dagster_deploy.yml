@@ -15,8 +15,7 @@ jobs:
     steps:
     - uses: actions/github-script@v6
       with:
-#        github-token: ${{ secrets.PAT_TOKEN }}
-        github-token: $SPELLBOOK_PAT_TOKEN[spellbook_pat_token]
+        github-token: $SPELLBOOK_PAT_TOKEN
         script: |
           await github.rest.actions.createWorkflowDispatch({
             owner: 'duneanalytics',
