@@ -1,10 +1,10 @@
 {{
   config(
         alias='contract_mapping',
-        post_hook='{{ expose_spells(\'["bnb"]\',
+        post_hook='{{ expose_spells(\'["fantom"]\',
                                     "sector",
                                     "contracts",
-                                    \'["davidcheongyl"]\') }}'
+                                    \'["Henrystats"]\') }}'
         )
 }}
 
@@ -48,10 +48,26 @@ from
   ('0xfd000ddcea75a2e23059881c3589f6425bff1abb', 'Paintswap', 'Dex'),
   ('0x16327e3fbdaca3bcf7e38f5af2599d2ddc33ae52', 'Spritswap', 'Dex'),
   ('0x31efc4aeaa7c39e54a33fdc3c46ee2bd70ae0a09', 'xPollinate', 'Dex'),
-  ('0x71c7656ec7ab88b098defb751b7401b5f6d8976f', 'FTMscan', 'Donations'),
-  ('0xccdb6c5818116a2a93ee6ec28cf92445d56c623e', 'Nova', 'Donations'),
-  ('0x5ec86d4d826bf3e12ee2486b9df01d7cfa99b6ca', 'Rarity Game', 'Donations'),
+  ('0x71c7656ec7ab88b098defb751b7401b5f6d8976f', 'FTMscan', 'Tooling'),
+  ('0xccdb6c5818116a2a93ee6ec28cf92445d56c623e', 'Nova', 'DeFi'),
+  ('0x5ec86d4d826bf3e12ee2486b9df01d7cfa99b6ca', 'Rarity Game', 'Gaming'),
   ('0x8E1701CFd85258DDb8DFE89Bc4c7350822B9601D', 'MEXC', 'Cex'),
-
+  ('0xce761d788df608bd21bdd59d6f4b54b2e27f25bb', 'Rarity', 'Gaming'),
+  ('0xf347b0e405249c78d8b261b7c493449b9275b946', 'Hundred Finance', 'DeFi'),
+  ('0x0f390559f258eb8591c8e31cf0905e97cf36ace2', 'Hundred Finance', 'DeFi'),
+  ('0xd0bb8e4e4dd5fdcd5d54f78263f5ec8f33da4c95', 'Hundred Finance', 'DeFi'),
+  ('0x42b458056f887fd665ed6f160a59afe932e1f559', 'Hundred Finance', 'DeFi'),
+  ('0xfc2d09642a3ef8b9bef2264138e23e6dceac20db', 'Hundred Finance', 'DeFi'),
+  ('0xf640259e4032ef4f7e0a1b7a14b2473373c0245c', 'Hyperswap', 'Dex'),
+  ('0x85c85647e1a79c2b8bc3ed2b6a1dde326eec66c5', 'Hyperswap', 'Dex'),
+  ('0x90df158ff7c31ad1d81dddb1d8ab9d0ecbceda20', 'Hyperswap', 'Dex'),
+  ('0x53c153a0df7e050bbefbb70ee9632061f12795fb', 'Hyperswap', 'Dex'),
+  ('0x9c454510848906fddc846607e4baa27ca999fbb6', 'Morpheus Swap', 'Dex'),
+  ('0xc7dad2e953dc7b11474151134737a007049f576e', 'Morpheus Swap', 'Dex'),
+  ('0x0c35b3b57cde4a3007398045b274548a6592e9d0', 'Morpheus Swap', 'Dex'),
+  ('0x92fcfc79187bc2db094c784d2a1b09e427ede24f', 'Morpheus Swap', 'Dex'),
+  ('0x415742c217ea4941b706ff358bf6178985590cfa', 'Morpheus Swap', 'Dex'),
+  ('0x8ac868293d97761a1fed6d4a01e9ff17c5594aa3', 'Morpheus Swap', 'Dex'),
+  ('0x77e4b42c3d788735bc27ad7f494362b07ccd9f04', 'Morpheus Swap', 'Dex')
 ) as temp_table (contract_address,project_name,project_type)
 ;
