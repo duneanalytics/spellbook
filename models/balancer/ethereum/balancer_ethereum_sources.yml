@@ -30,7 +30,7 @@ sources:
             description: 'Unique encoded identifier that refers to each pool'
           - name: specialization
             description: 'Pool specialization'
-      
+
       - name: Vault_evt_Swap
         description: >
           Decoded table related to the contracts emitted by swaps in Balancer V2 pools.
@@ -60,50 +60,50 @@ sources:
       - name: WeightedPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer WeightedPoolFactory contract.
-        loaded_at_field: evt_block_time
+        loaded_at_field: call_block_time
         columns:
           - &call_block_number
             name: call_block_number
-            description: ''
+            description: 'Block number which processed the unique transaction hash'
           - &call_block_time
             name: call_block_time
-            description: ''
+            description: 'Timestamp for block time in which the call occurred in UTC'
           - &call_success
             name: call_success
-            description: ''
+            description: 'Boolean indicating if call was successfully processed'
           - &call_trace_address
             name: call_trace_address
             description: ''
           - &call_tx_hash
             name: call_tx_hash
-            description: ''
+            description: 'Primary key of the transaction'
           - name: contract_address
-            description: ''
+            description: 'Address of the WeightedPoolFactory contract'
           - name: name
-            description: ''
+            description: 'Name of the created pool'
           - &output_0
             name: output_0
-            description: ''
+            description: 'Contract address of the created pool'
           - &owner
             name: owner
-            description: ''
+            description: 'Contract of the pool owner'
           - &swapFeePercentage
             name: swapFeePercentage
-            description: ''
+            description: 'Pool swap fee in percentage'
           - &symbol
             name: symbol
-            description: ''
+            description: 'Symbol of the created pool'
           - &tokens
             name: tokens
-            description: ''
+            description: 'Array with the address of the created pool tokens'
           - &weights
             name: weights
-            description: ''
+            description: 'Array with the weight of each token in the created pool'
 
       - name: WeightedPool2TokensFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer WeightedPool2TokensFactory contract.
-        loaded_at_field: evt_block_time
+        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -111,9 +111,9 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: ''
+            description: 'Address of the WeightedPool2TokensFactory contract'
           - name: name
-            description: ''
+            description: 'Name of the created pool'
           - *output_0
           - *owner
           - *swapFeePercentage
@@ -124,7 +124,7 @@ sources:
       - name: WeightedPoolV2Factory_call_create
         description: >
           Decoded table of registered pools on the Balancer WeightedPool2TokensFactory contract.
-        loaded_at_field: evt_block_time
+        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -132,11 +132,11 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: ''
+            description: 'Address of the WeightedPoolV2Factory contract'
           - name: name
-            description: ''
+            description: 'Name of the created pool'
           - name: normalizedWeights
-            description: ''
+            description: 'Array with the normalized weight of each token in the created pool'
           - *output_0
           - *owner
           - *swapFeePercentage
@@ -162,7 +162,7 @@ sources:
             description: 'Caller address that created the Balancer pool'
           - name: pool
             description: 'Balancer pool contract address'
-  
+
       - name: BPool_call_bind
         description: >
           Decoded table related to the Balancer BPool contract.
@@ -227,7 +227,6 @@ sources:
             description: "Epoch time when tokens unlock; this is the user's request, but the actual unlock time will be rounded down to a Thursday"
           - name: _value
             description: "Amount to deposit"
-
       - name: veBAL_evt_Deposit
         loaded_at_field: evt_block_time
         description: "Emitted when user deposits tokens in their lock or extends its unlock time"
@@ -249,7 +248,6 @@ sources:
               INCREASE_UNLOCK_TIME: 3
           - name: value
             description: "Amount of base tokens added to the lock"
-
       - name: veBAL_evt_Withdraw
         loaded_at_field: evt_block_time
         description: "Emitted when user withdraws tokens from their lock"
