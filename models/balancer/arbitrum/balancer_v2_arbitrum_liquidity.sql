@@ -157,11 +157,13 @@ zipped_balance_changes AS (
             c.day,
             b.pool_id,
             b.token,
+            symbol AS token_symbol,
             cumulative_amount / POWER(10, t.decimals) * COALESCE(p1.price, p2.price, 0) AS amount_usd
         FROM calendar c
         LEFT JOIN cumulative_balance b ON b.day <= c.day
         AND c.day < b.day_of_next_change
         LEFT JOIN tokens.erc20 t ON t.contract_address = b.token
+        AND blockchain = "arbitrum"
         LEFT JOIN prices p1 ON p1.day = b.day
         AND p1.token = b.token
         LEFT JOIN dex_prices p2 ON p2.day <= c.day
@@ -186,11 +188,10 @@ SELECT
     b.pool_id,
     cast(null AS string) AS pool_symbol,
     token AS token_address,
-    symbol AS token_symbol,
+    token_symbol,
     coalesce(amount_usd, liquidity * normalized_weight) AS usd_amount
 FROM pool_liquidity_estimates b
 LEFT JOIN cumulative_usd_balance c ON c.day = b.day
 AND c.pool_id = b.pool_id
 LEFT JOIN {{ ref('balancer_v2_arbitrum_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
 AND w.token_address = c.token
-LEFT JOIN tokens.erc20 t ON t.contract_address = c.token
