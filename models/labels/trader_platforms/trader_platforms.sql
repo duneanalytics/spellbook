@@ -27,7 +27,7 @@ with
  )
 
 select
-  collect_list(blockchain) as blockchain,
+  array(blockchain) as blockchain,
   address,
   array_join(array_distinct(collect_list(concat(upper(substring(project,1,1)),substring(project,2)))), ', ') ||' User' as name,
   "trader_platforms" AS category,
