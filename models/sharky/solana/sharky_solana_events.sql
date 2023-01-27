@@ -48,12 +48,12 @@ WITH sharky_txs AS (
             CASE
               WHEN array_contains( log_messages, 'Program log: Instruction: OfferLoan') THEN 'Offer'
               WHEN array_contains( log_messages, 'Program log: Instruction: TakeLoan') THEN 'Take'
-              WHEN array_contains( log_messages, 'Program log: Instruction: RepayLoan') THEN 'Repay'
+              WHEN array_contains( log_messages, 'Program log: Instruction: RescindLoan') THEN 'Rescind'
               WHEN
                   (
-                      array_contains(log_messages, 'Program log: Instruction: RescindLoan')
-                      OR array_contains(log_messages, 'Program log: Instruction: RescindLoanEscrow')
-                  ) THEN 'Rescind'
+                      array_contains(log_messages, 'Program log: Instruction: RepayLoan')
+                      OR array_contains(log_messages, 'Program log: Instruction: RepayLoanEscrow')
+                  ) THEN 'Repay'
               WHEN
                   (
                     array_contains(log_messages, 'Program log: Instruction: ForecloseLoan')
