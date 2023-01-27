@@ -3,7 +3,7 @@ version: 2
 models:
   - name: labels_contracts
     meta:
-      blockchain: ethereum, arbitrum, gnosis, optimism, bnb, avalanche_c, fantom
+      blockchain: ethereum, arbitrum, gnosis, optimism, bnb, avalanche_c, fantom, polygon
       sector: labels
       category: contracts
       contributors:  soispoke
