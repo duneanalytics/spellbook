@@ -23,7 +23,7 @@ WITH mints as
        ,tr.evt_block_number as block_number
     --   ,"from"
     --   ,to 
-       ,tokenId as token_id
+       ,tr.tokenId as token_id
        ,NULL as buyer
        ,NULL as seller
        ,'Mint' as evt_type
@@ -89,7 +89,7 @@ AND evt_block_time >= date_trunc("day", now() - interval '1 week')
        ,tr.evt_block_number as block_number
      -- ,tr."from"
       --,tr.to 
-       ,tokenId as token_id
+       ,tr.tokenId as token_id
        ,tr.to as buyer
        ,CASE WHEN tr.from= '0xdc2f08364ebc6cebe0b487fc47823b1e83ce8550' --- claim contract address
              THEN CONCAT('0x',substr(l1.topic3, 27, 40))
