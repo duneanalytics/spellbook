@@ -94,7 +94,6 @@ VALUES
     ("multi-multichain","arbitrum","MULTI","0x9fb9a33956351cf4fa040f65a13b835a3c8764e3",18),
     ("myc-mycelium","arbitrum","MYC","0xc74fe4c715510ec2f8c61d70d397b32043f55abe",18),
     ("perp-perpetual-protocol","arbitrum","PERP","0x753d224bcf9aafacd81558c32341416df61d3dac",18),
-    ("plt-plutus-defi","arbitrum","PLS","0x51318b7d00db7acc4026c88c3952b66278b6a67f",18),
     ("rai-rai-reflex-index","arbitrum","RAI","0xaef5bbcbfa438519a5ea80b4c7181b4e78d419f2",18),
     ("rdpx-dopex-rebate-token","arbitrum","RDPX","0x32eb7902d4134bf98a28b963d26de779af92a212",18),
     ("rgt-rari-governance-token","arbitrum","RGT","0xef888bca6ab6b1d26dbec977c455388ecd794794",18),
