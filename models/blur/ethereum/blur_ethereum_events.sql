@@ -134,4 +134,74 @@ LEFT JOIN {{ ref('nft_ethereum_transfers') }} seller_fix ON seller_fix.block_tim
 {% if is_incremental() %}
 WHERE bm.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
+
+UNION ALL
+
+SELECT 'ethereum' AS blockchain
+, 'blur' AS project
+, 'v1' AS version
+, date_trunc('day', s.evt_block_time) AS block_date
+, s.evt_block_time AS block_time
+, s.evt_block_number AS block_number
+, get_json_object(s.offer[0], '$.identifier') AS token_id
+, tr.token_standard AS token_standard
+, nft_tok.name AS collection
+, CASE WHEN get_json_object(s.offer[0], '$.amount')=1 THEN 'Single Item Trade' ELSE 'Bundle Trade' END AS trade_type
+, get_json_object(s.offer[0], '$.amount') AS number_of_items
+, 'Trade' AS evt_type
+, s.offerer AS seller
+, s.recipient AS buyer
+, 'Buy' AS trade_category
+, get_json_object(s.consideration[0], '$.amount')+get_json_object(s.consideration[1], '$.amount') AS amount_raw
+, (get_json_object(s.consideration[0], '$.amount')+get_json_object(s.consideration[1], '$.amount'))/POWER(10, 18) AS amount_original
+, pu.price*(get_json_object(s.consideration[0], '$.amount')+get_json_object(s.consideration[1], '$.amount'))/POWER(10, 18) AS amount_usd
+, CASE WHEN get_json_object(s.consideration[0], '$.token')='0x0000000000000000000000000000000000000000' THEN 'ETH' ELSE currency_tok.symbol END AS currency_symbol
+, get_json_object(s.consideration[0], '$.token') AS currency_contract
+, s.contract_address AS project_contract_address
+, get_json_object(s.offer[0], '$.token') AS nft_contract_address
+, NULL AS aggregator_name
+, NULL AS aggregator_address
+, s.evt_tx_hash AS tx_hash
+, tx.from AS tx_from
+, tx.to AS tx_to
+, CAST(0 AS DOUBLE) AS platform_fee_amount_raw
+, CAST(0 AS DOUBLE) AS platform_fee_amount
+, CAST(0 AS DOUBLE) AS platform_fee_amount_usd
+, CAST(0 AS DOUBLE) AS platform_fee_percentage
+, LEAST(get_json_object(s.consideration[0], '$.amount'), get_json_object(s.consideration[1], '$.amount')) AS royalty_fee_amount_raw
+, LEAST(get_json_object(s.consideration[0], '$.amount'), get_json_object(s.consideration[1], '$.amount'))/POWER(10, 18) AS royalty_fee_amount
+, pu.price*LEAST(get_json_object(s.consideration[0], '$.amount'), get_json_object(s.consideration[1], '$.amount'))/POWER(10, 18) AS royalty_fee_amount_usd
+, LEAST(get_json_object(s.consideration[0], '$.amount'), get_json_object(s.consideration[1], '$.amount'))
+    /(get_json_object(s.consideration[0], '$.amount')+get_json_object(s.consideration[1], '$.amount')) AS royalty_fee_percentage
+, currency_tok.symbol AS royalty_fee_currency_symbol
+, CASE WHEN get_json_object(s.consideration[0], '$.recipient')!=s.recipient THEN get_json_object(s.consideration[0], '$.recipient')
+    ELSE get_json_object(s.consideration[1], '$.recipient')
+    END AS royalty_fee_receive_address
+, 'ethereum-blur-v1-' || s.evt_block_number || '-' || s.evt_tx_hash || '-' || s.evt_index AS unique_trade_id
+FROM {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }} s
+INNER JOIN {{ source('ethereum', 'transactions') }} tx ON tx.block_number=s.evt_block_number
+    AND tx.hash=s.evt_tx_hash
+    {% if is_incremental() %}
+    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+LEFT JOIN tokens_ethereum.nft nft_tok ON nft_tok.contract_address=get_json_object(s.offer[0], '$.token')
+LEFT JOIN tokens_ethereum.erc20 currency_tok ON currency_tok.contract_address=get_json_object(s.consideration[0], '$.token')
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON ((pu.contract_address=get_json_object(s.consideration[0], '$.token') AND pu.blockchain='ethereum')
+        OR (get_json_object(s.consideration[0], '$.token')='0x0000000000000000000000000000000000000000'  AND pu.blockchain IS NULL AND pu.contract_address IS NULL AND pu.symbol='ETH'))
+    AND pu.minute=date_trunc('minute', s.evt_block_time)
+    {% if is_incremental() %}
+    AND pu.minute >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+LEFT JOIN {{ ref('nft_ethereum_transfers') }} tr ON tr.block_time=s.evt_block_time
+    AND tr.contract_address=get_json_object(s.offer[0], '$.token')
+    AND tr.token_id=get_json_object(s.offer[0], '$.identifier')
+    AND tr.from=s.offerer
+    {% if is_incremental() %}
+    AND tr.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+WHERE s.evt_block_time >= '2023-01-25'
+AND s.zone='0x0000000000d80cfcb8dfcd8b2c4fd9c813482938'
+{% if is_incremental() %}
+AND s.evt_block_time >= date_trunc("day", now() - interval '1 week')
+{% endif %}
 ;
