@@ -12,7 +12,7 @@
 with
  trader_age as (
     select
-        collect_set(blockchain) as blockchain,
+        blockchain,
         datediff(max(block_date), min(block_date)) as trader_age,
         taker as address
     from (
@@ -22,11 +22,11 @@ with
         select blockchain, taker, block_date
         from {{ ref('dex_trades') }}
     )
-    group by taker
+    group by taker, blockchain
  )
 
 select
-  blockchain,
+  array(blockchain) as blockchain,
   address,
   case
     when trader_age > 1825 then '5 years old DEX trader'
