@@ -24,16 +24,13 @@ models:
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain which the DEX is deployed"
+        description: "Blockchain which the DEX is deployed (specify: ethereum)"
       - &project
         name: project
-        description: "Project name of the DEX"
+        description: "Project name of the DEX (specify: DODO)"
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project(0:DODO Aggregation,1:DODOV1,2:DODOV2)"
-      - &category
-        name: category
-        description: "Type of route through which a trade happened. Through DEX contract or and Aggregator contract"
+        description: "Version of dodo contracts (0 - dodo_aggregator, 1 - DODOV1, 2_dvm - DODOV2 public pool, 2_dsp - DODOV2 stable pool, 2_dpp - DODOV2 private pool)"
       - &block_date
         name: block_date
         description: "Truncated to day UTC event block date of each DEX trade"
@@ -75,7 +72,7 @@ models:
         description: "Address of trader who purchased a token"
       - &maker
         name: maker
-        description: "Address of trader who sold a token. DEX contract always the maker"
+        description: "Address of trader who sold a token."
       - &project_contract_address
         name: project_contract_address
         description: "Project contract address which executed the trade on the blockchain"

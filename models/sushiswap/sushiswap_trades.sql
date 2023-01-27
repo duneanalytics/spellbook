@@ -1,16 +1,17 @@
 {{ config(
         alias='trades',
-        post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "arbitrum"]\',
                         "project",
                         "sushiswap",
-                        \'["augustog", "hosuke"]\') }}'
+                        \'["augustog", "hosuke", "Henrystats]\') }}'
         )
 }}
 
 {% set sushi_models = [
-'sushiswap_ethereum_trades'
-,'sushiswap_avalanche_c_trades'
-,'sushiswap_gnosis_trades'
+ref('sushiswap_ethereum_trades')
+, ref('sushiswap_avalanche_c_trades')
+, ref('sushiswap_gnosis_trades')
+, ref('sushiswap_arbitrum_trades')
 ] %}
 
 
@@ -41,7 +42,7 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ ref(dex_model) }}
+    FROM {{ dex_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
