@@ -139,9 +139,9 @@ LEFT JOIN (SELECT
                   ,SUM(CAST (value AS DECIMAL(38,0))) AS value
             FROM {{ source ('bnb','traces')}} bt
             WHERE 1=1
-            AND (bt.from=0xebd4232e4c1999bc9562802eae01b431d5053e65 --seller contract address when withdraw function is called
+            AND (bt.from='0xebd4232e4c1999bc9562802eae01b431d5053e65' --seller contract address when withdraw function is called
             OR
-            bt.from=0xdc2f08364ebc6cebe0b487fc47823b1e83ce8550-- seller contract address when claim function is called
+            bt.from='0xdc2f08364ebc6cebe0b487fc47823b1e83ce8550'-- seller contract address when claim function is called
             )
             AND bt.input='0x'
             AND bt.call_type='call'
