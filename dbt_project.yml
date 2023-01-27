@@ -643,6 +643,9 @@ models:
       optimism:
         +schema: ovm_optimism
 
+    arbswap:
+      +schema: arbswap
+
 seeds:
   spellbook:
     +schema: test_data
