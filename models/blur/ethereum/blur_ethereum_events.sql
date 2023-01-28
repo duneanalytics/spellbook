@@ -171,7 +171,7 @@ SELECT 'ethereum' AS blockchain
 , LEAST(get_json_object(s.consideration[0], '$.amount'), get_json_object(s.consideration[1], '$.amount')) AS royalty_fee_amount_raw
 , LEAST(get_json_object(s.consideration[0], '$.amount'), get_json_object(s.consideration[1], '$.amount'))/POWER(10, 18) AS royalty_fee_amount
 , pu.price*LEAST(get_json_object(s.consideration[0], '$.amount'), get_json_object(s.consideration[1], '$.amount'))/POWER(10, 18) AS royalty_fee_amount_usd
-, LEAST(get_json_object(s.consideration[0], '$.amount'), get_json_object(s.consideration[1], '$.amount'))
+, 100.0*LEAST(get_json_object(s.consideration[0], '$.amount'), get_json_object(s.consideration[1], '$.amount'))
     /(get_json_object(s.consideration[0], '$.amount')+get_json_object(s.consideration[1], '$.amount')) AS royalty_fee_percentage
 , currency_tok.symbol AS royalty_fee_currency_symbol
 , CASE WHEN get_json_object(s.consideration[0], '$.recipient')!=s.recipient THEN get_json_object(s.consideration[0], '$.recipient')
