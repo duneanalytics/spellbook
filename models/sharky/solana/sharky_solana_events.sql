@@ -64,12 +64,6 @@ WITH sharky_txs AS (
         FROM sharky_txs stx
         INNER JOIN {{ source('solana','transactions') }} tx
             ON stx.id = tx.id
-            {% if not is_incremental() %}
-            AND tx.block_time >= '{{project_start_date}}'
-            {% endif %}
-            {% if is_incremental() %}
-            AND tx.block_time >= date_trunc("day", now() - interval '1 week')
-            {% endif %}
         LEFT JOIN {{ source('prices', 'usd') }} p
             ON p.minute = date_trunc('minute', stx.block_time)
             AND p.blockchain is NULL
