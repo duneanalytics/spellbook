@@ -60,7 +60,7 @@ WITH sharky_txs AS (
                            ) THEN 'Foreclose'
                    ELSE 'Other' END                                            AS evt_type,
                signer                                                          AS user,
-               stx.id
+               stx.id                                                          AS id
         FROM sharky_txs stx
         INNER JOIN {{ source('solana','transactions') }} tx
             ON stx.id = tx.id
