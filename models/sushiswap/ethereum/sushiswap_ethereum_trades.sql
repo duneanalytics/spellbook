@@ -6,34 +6,35 @@
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
     ,unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address']
-    ,post_hook='{{ expose_spells(\'["ethereum"]\',
-                                      "project",
-                                      "sushiswap",
-                                    \'["augustog", "jeff-dude"]\') }}'
     )
 }}
 
 {% set project_start_date = '2020-09-04' %}
 
 with dexs as (
-        -- Sushiswap
-        select
-            t.evt_block_time as block_time,
-            t.to as taker,
-            '' as maker,
-            case when amount0Out  = 0 then amount1Out else amount0Out end as token_bought_amount_raw,
-            case when amount0In = 0 then amount1In else amount0In end as token_sold_amount_raw,
-            null as amount_usd,
-            case when amount0Out  = 0 then f.token1 else f.token0 end as token_bought_address,
-            case when amount0In = 0 then f.token1 else f.token0 end as token_sold_address,
-            t.contract_address as project_contract_address,
-            t.evt_tx_hash as tx_hash,
-            '' as trace_address,
-            t.evt_index
-        from
-            {{ source('sushi_ethereum', 'Pair_evt_Swap') }} t
-            inner join {{ source('sushi_ethereum', 'Factory_evt_PairCreated') }} f 
-                on f.pair = t.contract_address
+    -- Sushiswap
+    SELECT
+        t.evt_block_time as block_time,
+        t.to as taker,
+        '' as maker,
+        case when amount0Out  = 0 then amount1Out else amount0Out end as token_bought_amount_raw,
+        case when amount0In = 0 then amount1In else amount0In end as token_sold_amount_raw,
+        null as amount_usd,
+        case when amount0Out  = 0 then f.token1 else f.token0 end as token_bought_address,
+        case when amount0In = 0 then f.token1 else f.token0 end as token_sold_address,
+        t.contract_address as project_contract_address,
+        t.evt_tx_hash as tx_hash,
+        '' as trace_address,
+        t.evt_index
+    FROM
+        {{ source('sushi_ethereum', 'Pair_evt_Swap') }} t
+        inner join {{ source('sushi_ethereum', 'Factory_evt_PairCreated') }} f 
+            on f.pair = t.contract_address
+    {% if is_incremental() %}
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% else %}
+    WHERE t.evt_block_time >= '{{ project_start_date }}'
+    {% endif %}
 )
 select
     'ethereum' as blockchain,

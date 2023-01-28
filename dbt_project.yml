@@ -38,7 +38,7 @@ models:
         +schema: aave_ethereum
       optimism:
         +schema: aave_optimism
-    
+
     balancer:
       +schema: balancer
       arbitrum:
@@ -59,6 +59,11 @@ models:
       optimism:
         +schema: airdrop_optimism
         +materialized: table
+
+    staking:
+      +schema: staking
+      ethereum:
+        +schema: staking_ethereum
 
     dex:
       +schema: dex
@@ -121,6 +126,10 @@ models:
         +schema: sushiswap_avalanche_c
       gnosis:
         +schema: sushiswap_gnosis
+      arbitrum:
+        +schema: sushiswap_arbitrum
+      fantom:
+        +schema: sushiswap_fantom
 
     babyswap:
       +schema: babyswap
@@ -142,7 +151,6 @@ models:
         +schema: element_bnb
       avalanche_c:
         +schema: element_avalanche_c
-
 
     abi:
       +schema: abi
@@ -207,6 +215,16 @@ models:
       ethereum:
         +schema: nomad_ethereum
 
+    ellipsis_finance:
+      +schema: ellipsis_finance
+      bnb:
+        +schema: ellipsis_finance_bnb
+
+    bend_dao:
+      +schema: bend_dao
+      ethereum:
+        +schema: bend_dao_ethereum
+
     seaport:
       +schema: seaport
       ethereum:
@@ -233,6 +251,10 @@ models:
         +schema: dodo_ethereum
       bnb:
         +schema: dodo_bnb
+      polygon:
+        +schema: dodo_polygon
+      arbitrum:
+        +schema: dodo_arbitrum
 
     labels:
       +schema: labels
@@ -321,6 +343,13 @@ models:
       +schema: safe
       ethereum:
         +schema: safe_ethereum
+      optimism: 
+        +schema: safe_optimism
+
+    nftrade:
+      +schema: nftrade
+      bnb:
+        +schema: nftrade_bnb
 
     jarvis_network:
       +schema: jarvis_network
@@ -334,12 +363,15 @@ models:
 
     tornado_cash:
       +schema: tornado_cash
+
     perpetual:
       +schema: perpetual
+
     perpetual_protocol:
       +schema: perpetual_protocol
       optimism:
         +schema: perpetual_protocol_optimism
+
     pika:
       +schema: pika
       optimism:
@@ -390,6 +422,15 @@ models:
       +schema: airswap
       ethereum:
         +schema: airswap_ethereum
+
+    apeswap:
+      +schema: apeswap
+      ethereum:
+        +schema: apeswap_ethereum
+      bnb:
+        +schema: apeswap_bnb
+      polygon:
+        +schema: apeswap_polygon
 
     chainlink:
       +schema: chainlink
@@ -505,6 +546,8 @@ models:
         +schema: hashflow_ethereum
       avalanche_c:
         +schema: hashflow_avalanche_c
+      bnb:
+        +schema: hashflow_bnb
 
     nexusmutual:
       +schema: nexusmutual
@@ -519,10 +562,27 @@ models:
     zeroex:
       +schema: zeroex
       ethereum:
+        +schema: zeroex_ethereum
+      optimism:
+        +schema: zeroex_optimism
         erc20:
-          +schema: zeroex_ethereum_erc20
-        nft:
-          +schema: zeroex_ethereum_nft
+          +schema: zeroex_optimism_erc20
+      polygon:
+        +schema: zeroex_polygon
+        erc20:
+          +schema: zeroex_polygon_erc20
+      avalanche_c:
+        +schema: zeroex_avalanche_c
+        erc20:
+          +schema: zeroex_avalanche_c_erc20
+      fantom:
+        +schema: zeroex_fantom
+        erc20:
+          +schema: zeroex_fantom_erc20
+      arbitrum:
+        +schema: zeroex_arbitrum
+        erc20:
+          +schema: zeroex_arbitrum_erc20
 
     wombat:
       +schema: wombat
@@ -540,31 +600,29 @@ models:
         +schema: hop_protocol_optimism
       # ethereum:
       #   +schema: hop_protocol_ethereum
-      #
       # polygon:
       #   +schema: hop_protocol_polygon
-      #
       # polygon2:
       #   +schema: hop_polygon
-      #
       # arbitrum:
       #   +schema: hop_protocol_arbitrum
-      #
       # gnosis:
       #   +schema: hop_protocol_gnosis
-      #
       # gnosis2:
       #   +schema: hop_gnosis
-      #
-
-    # ovm_optimism:
-    #   optimism:
-    #     +schema: ovm_optimism
-    #
+    
     chain_info:
       +schema: chain_info
+    
     bridge:
       +schema: bridge
+      optimism:
+        +schema: bridge_optimism
+
+    the_granary:
+      +schema: the_granary
+      optimism:
+        +schema: the_granary_optimism
 
     tessera:
       +schema: tessera
@@ -575,6 +633,24 @@ models:
       +schema: tofu
       bnb:
         +schema: tofu_bnb
+
+    maker:
+      +schema: maker
+      ethereum:
+        +schema: maker_ethereum
+
+    ovm:
+      +schema: ovm
+      optimism:
+        +schema: ovm_optimism
+
+    arbswap:
+      +schema: arbswap
+    
+    rocifi:
+      +schema: rocifi
+      polygon:
+        +schema: rocifi_polygon
 
 seeds:
   spellbook:
@@ -651,6 +727,15 @@ seeds:
           token_bought_amount: float
           token_sold_address: string
           token_sold_amount: float
+      pools:
+        +column_types:
+          blockchain: string
+          project: string
+          version: string
+          pool: string
+          token_id: string
+          token_address: string
+          token_type: string
 
     sudoswap:
       sudoswap_ethereum_example_trades:
@@ -663,6 +748,16 @@ seeds:
           amount_original: double
           platform_fee_amount: double
           pool_fee_amount: double
+    bend_dao:
+      ethereum:
+        bend_dao_nft_lending:
+          +column_types:
+            block_number: long
+            tx_hash: string
+            evt_type: string
+            token_id: string
+            amount_original: double
+            address: string
     cryptopunks:
       cryptopunks_trades_buys_bids_seed:
         +column_types:
@@ -817,74 +912,121 @@ seeds:
 
     zeroex:
       ethereum:
-        fills:
-          zeroex_api_ethereum_fills_sample:
-            +column_types:
-              tx_hash: string
-              block_number: int
-              evt_index: int
-              contract_address: string
-              block_time: timestamp
-              maker: string
-              taker: string
-              taker_token: string
-              taker_symbol: string
-              maker_token: string
-              maker_symbol: string
-              token_pair: string
-              taker_token_amount: double
-              taker_token_amount_raw: string
-              maker_token_amount: double
-              maker_token_amount_raw: string
-              type: string
-              affiliate_address: string
-              swap_flag: boolean
-              matcha_limit_order_flag: boolean
-              volume_usd: double
-              tx_from: string
-              tx_to: string
-        nfts:
-          zeroex_nft_ethereum_fills_sample:
-            +column_types:
-              block_time: timestamp
-              block_date: timestamp
-              evt_index: int
-              tx_hash: string
-              maker: string
-              taker: string
-              matcher: string
-              nft_address: string
-              nft_id: string
-              label: string
-              price_label: string
-              token: string
-              token_amount_raw: string
-              symbol: string
-              price_usd: double
-              token_amount: double
-              project_name: string
-      optimism:
-        zeroex_api_optimism_fills_sample:
+        zeroex_ethereum_api_fills_deduped_sample:
+          +column_types:
+            blockchain: string
+            project: string
+            version: string
+            block_date: date
+            block_time: timestamp
+            taker_symbol: string
+            maker_symbol: string
+            token_pair: string
+            taker_token_amount: double
+            maker_token_amount: double
+            taker_token_amount_raw: string
+            maker_token_amount_raw: string
+            amount_usd: double
+            taker_token: string
+            maker_token: string
+            taker: string
+            maker: string
+            project_contract_address: string
+            tx_hash: string
+            tx_from: string
+            tx_to: string
+            trace_address: string
+            evt_index: int
+        zeroex_ethereum_api_fills_sample:
           +column_types:
             tx_hash: string
+            block_number: int
             evt_index: int
             contract_address: string
             block_time: timestamp
-            block_date: date
             maker: string
             taker: string
             taker_token: string
+            taker_symbol: string
             maker_token: string
+            maker_symbol: string
+            token_pair: string
             taker_token_amount: double
-            taker_token_amount_raw: double
+            taker_token_amount_raw: string
             maker_token_amount: double
-            maker_token_amount_raw: double
+            maker_token_amount_raw: string
             type: string
             affiliate_address: string
             swap_flag: boolean
             matcha_limit_order_flag: boolean
             volume_usd: double
-
+            tx_from: string
+            tx_to: string
+        zeroex_ethereum_nft_fills_sample:
+          +column_types:
+            block_time: timestamp
+            block_date: timestamp
+            evt_index: int
+            tx_hash: string
+            maker: string
+            taker: string
+            matcher: string
+            nft_address: string
+            nft_id: string
+            label: string
+            price_label: string
+            token: string
+            token_amount_raw: string
+            symbol: string
+            price_usd: double
+            token_amount: double
+            project_name: string
+      optimism:
+        fills:
+          zeroex_api_optimism_fills_sample:
+            +column_types:
+              tx_hash: string
+              evt_index: int
+              contract_address: string
+              block_time: timestamp
+              block_date: date
+              maker: string
+              taker: string
+              taker_token: string
+              maker_token: string
+              taker_token_amount: double
+              taker_token_amount_raw: double
+              maker_token_amount: double
+              maker_token_amount_raw: double
+              type: string
+              affiliate_address: string
+              swap_flag: boolean
+              matcha_limit_order_flag: boolean
+              volume_usd: double
+      polygon:
+        fills:
+          +enabled: true
+          +schema: test_data
+          zeroex_api_polygon_fills_sample:
+            +column_types:
+              tx_hash: string
+              evt_index: int
+              contract_address: string
+              block_time: timestamp
+              block_date: date
+              maker: string
+              taker: string
+              taker_token: string
+              maker_token: string
+              taker_token_amount: double
+              taker_token_amount_raw: double
+              maker_token_amount: double
+              maker_token_amount_raw: double
+              type: string
+              affiliate_address: string
+              swap_flag: boolean
+              matcha_limit_order_flag: boolean
+              volume_usd: double
     gmx:
       avalanche_c:
         gmx_glp_aum_seed:
@@ -912,6 +1054,17 @@ seeds:
             tx_hash: string
             block_number: int
             amount_original: double
+    nftrade:
+      bnb:
+        +enabled: true
+        +schema: test_data
+        nftrade_nft_trades_samples:
+            block_number: int
+            token_id: string
+            seller: string
+            buyer: string
+            tx_hash: string
+            amount_original: double
 
     foundation:
       ethereum:
@@ -925,3 +1078,17 @@ seeds:
             seller: string
             platform_fee_amount: double
             royalty_fee_amount: double
+
+    balancer:
+      balancer_transfers_bpt_seed:
+        +column_types:
+          blockchain: string
+          contract_address: string
+          evt_tx_hash: string
+          evt_index: int
+          evt_block_time: timestamp
+          block_date: timestamp
+          evt_block_number: int
+          from: string
+          to: string
+          value: double

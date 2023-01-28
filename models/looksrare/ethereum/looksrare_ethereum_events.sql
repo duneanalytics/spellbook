@@ -67,11 +67,11 @@ WITH looksrare_trades AS (
     UNION ALL
     SELECT distinct contract_address
     , output_0/100 AS fee_percentage
-    FROM {{ source('looksrare_ethereum','StrategyStandardSaleForFixedPriceV1B_call_viewProtocolFee') }} 
+    FROM {{ source('looksrare_ethereum','StrategyStandardSaleForFixedPriceV1B_call_viewProtocolFee') }}
     UNION ALL
     SELECT distinct contract_address
     , output_0/100 AS fee_percentage
-    FROM {{ source('looksrare_ethereum','StrategyAnyItemFromCollectionForFixedPriceV1B_call_viewProtocolFee') }} 
+    FROM {{ source('looksrare_ethereum','StrategyAnyItemFromCollectionForFixedPriceV1B_call_viewProtocolFee') }}
     )
 
 SELECT distinct 'ethereum' AS blockchain
@@ -171,4 +171,4 @@ LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} standard ON lr.block_ti
     {% endif %}
 LEFT JOIN platform_fees pf ON pf.contract_address=lr.strategy
 LEFT JOIN {{ ref('nft_ethereum_aggregators_markers') }} agg_m
-    ON LEFT(et.data, CHARINDEX(agg_m.hash_marker, et.data) + LENGTH(agg_m.hash_marker)) LIKE '%' || agg_m.hash_marker
+    ON RIGHT(et.data, agg_m.hash_marker_size) = agg_m.hash_marker
