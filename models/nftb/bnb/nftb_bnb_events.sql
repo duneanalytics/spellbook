@@ -46,7 +46,7 @@ INNER JOIN {{source('nftb_bnb', 'NFT_evt_Mint')}} m
 ON tr.evt_tx_hash=m.evt_tx_hash
 WHERE tr.evt_block_time >= '{{project_start_date}}'
 {% if is_incremental() %}
-AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+AND tr.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
 )
 
@@ -76,7 +76,7 @@ WHERE 1=1
 AND to='0x0000000000000000000000000000000000000000'
 AND  tr.evt_block_time >= '{{project_start_date}}'
 {% if is_incremental() %}
-AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+AND tr.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
 
 )
