@@ -289,7 +289,7 @@ LEFT JOIN {{ ref('tokens_bnb_nft') }} nft_token
 ON nft_token.contract_address = ae.nft_contract_address
 
 LEFT JOIN {{ ref('nft_bnb_aggregators')}} agg
-ON agg.contract_address = tx.`to`
+ON agg.contract_address = btx.`to`
 
 
 
