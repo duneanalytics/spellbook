@@ -2,7 +2,7 @@
 -- => expose_spells(["blockchains"], 'project'/'sector','name', ["contributors"])
 {{
   config(alias='view_bridge_transactions',
-         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
+         post_hook='{{ expose_spells(\'["ethereum"]\',
                                       "project",
                                       "nomad",
                                     \'["springzh"]\') }}')
@@ -31,11 +31,11 @@ with nomad_bridge_domains(domain_id, domain_name, domain_type) as (
           ,s.contract_address as contract_address
           ,token as token_address
           ,amount as original_amount_raw
-          ,amount / pow(10, e1.decimals) as original_amount
+          ,CAST(amount AS DOUBLE) / pow(10, e1.decimals) as original_amount
           ,e1.symbol as original_currency
-          ,amount / pow(10, e1.decimals) * coalesce(p1.price, 0) as usd_amount
+          ,CAST(amount AS DOUBLE) / pow(10, e1.decimals) * coalesce(p1.price, 0) as usd_amount
           ,`from` as sender
-          ,concat('0x', right(toId, 40)) as recipient
+          ,concat('0x', `right`(toId, 40)) as recipient
           ,toDomain as domain_id
           ,d.domain_name as domain_name
           ,fastLiquidityEnabled as fast_liquidity_enabled
@@ -45,7 +45,7 @@ with nomad_bridge_domains(domain_id, domain_name, domain_type) as (
       left join {{ ref('tokens_erc20') }} e1 on e1.contract_address = s.token and e1.blockchain = 'ethereum'
       left join {{ source('prices', 'usd') }} p1 on p1.contract_address = s.token
             and p1.minute = date_trunc('minute', s.evt_block_time)
-            and p1.minute >= '2022-01-01'
+            and p1.minute >= CAST('2022-01-01' AS TIMESTAMP)
             and p1.blockchain = 'ethereum'
 
       union all
@@ -58,24 +58,24 @@ with nomad_bridge_domains(domain_id, domain_name, domain_type) as (
           ,r.contract_address as contract_address
           ,token as token_address
           ,amount as original_amount_raw
-          ,amount / pow(10, e1.decimals) as original_amount
+          ,CAST(amount AS DOUBLE) / pow(10, e1.decimals) as original_amount
           ,e1.symbol as original_currency
-          ,amount / pow(10, e1.decimals) * coalesce(p1.price, 0) as usd_amount
+          ,CAST(amount AS DOUBLE) / pow(10, e1.decimals) * coalesce(p1.price, 0) as usd_amount
           ,t.`from` as sender
           ,r.recipient
-          ,left(originAndNonce, 8) as domain_id
+          ,CAST(`left`(originAndNonce, 8) AS BIGINT) as domain_id
           ,d.domain_name as domain_name
           ,false as fast_liquidity_enabled
           ,liquidityProvider as liquidity_provider
       from {{ source('nomad_ethereum', 'BridgeRouter_evt_Receive') }} r
       inner join {{ source('ethereum','transactions') }} t on r.evt_block_number = t.block_number
             and r.evt_tx_hash = t.hash
-            and t.block_time >= '2022-01-01'
-      inner join nomad_bridge_domains d on d.domain_id = left(originAndNonce, 8)
+            and t.block_time >= CAST('2022-01-01' AS TIMESTAMP)
+      inner join nomad_bridge_domains d on d.domain_id = CAST(`left`(originAndNonce, 8) AS BIGINT)
       left join {{ ref('tokens_erc20') }} e1 on e1.contract_address = r.token and e1.blockchain = 'ethereum'
       left join {{ source('prices', 'usd') }} p1 on p1.contract_address = r.token
             and p1.minute = date_trunc('minute', r.evt_block_time)
-            and p1.minute >= '2022-01-01'
+            and p1.minute >= CAST('2022-01-01' AS TIMESTAMP)
             and p1.blockchain = 'ethereum'
 )
 

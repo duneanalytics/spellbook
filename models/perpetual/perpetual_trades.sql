@@ -12,6 +12,7 @@
 ,ref('pika_trades')
 ,ref('synthetix_trades')
 ,ref('emdx_avalanche_c_perpetual_trades')
+,ref('gmx_perpetual_trades')
 ] %}
 
 SELECT *
