@@ -60,6 +60,11 @@ models:
         +schema: airdrop_optimism
         +materialized: table
 
+    staking:
+      +schema: staking
+      ethereum:
+        +schema: staking_ethereum
+
     dex:
       +schema: dex
       aggregator:
@@ -123,6 +128,8 @@ models:
         +schema: sushiswap_gnosis
       arbitrum:
         +schema: sushiswap_arbitrum
+      fantom:
+        +schema: sushiswap_fantom
 
     babyswap:
       +schema: babyswap
@@ -144,7 +151,6 @@ models:
         +schema: element_bnb
       avalanche_c:
         +schema: element_avalanche_c
-
 
     abi:
       +schema: abi
@@ -245,6 +251,10 @@ models:
         +schema: dodo_ethereum
       bnb:
         +schema: dodo_bnb
+      polygon:
+        +schema: dodo_polygon
+      arbitrum:
+        +schema: dodo_arbitrum
 
     labels:
       +schema: labels
@@ -629,10 +639,23 @@ models:
       bnb:
         +schema: tofu_bnb
 
+    maker:
+      +schema: maker
+      ethereum:
+        +schema: maker_ethereum
+
     ovm:
       +schema: ovm
       optimism:
         +schema: ovm_optimism
+
+    arbswap:
+      +schema: arbswap
+    
+    rocifi:
+      +schema: rocifi
+      polygon:
+        +schema: rocifi_polygon
 
 seeds:
   spellbook:
