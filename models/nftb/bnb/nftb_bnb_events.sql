@@ -228,8 +228,8 @@ SELECT 'bnb' as blockchain
         ,ae.nft_contract_address
         ,ae.project_contract_address
         
-        ,NULL as aggregator_name
-        ,NULL  as aggregator_address
+       , agg.name as aggregator_name
+       , agg.contract_address as aggregator_address
         ,ae.tx_hash 
         ,btx.from as tx_from 
         ,btx.to as tx_to
@@ -287,6 +287,9 @@ AND erc721.evt_block_time >= date_trunc("day", now() - interval '1 week')
 
 LEFT JOIN {{ ref('tokens_bnb_nft') }} nft_token
 ON nft_token.contract_address = ae.nft_contract_address
+
+LEFT JOIN {{ ref('nft_bnb_aggregators')}} agg
+ON agg.contract_address = tx.`to`
 
 
 
