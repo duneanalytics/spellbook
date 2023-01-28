@@ -1,9 +1,8 @@
 {{
     config(
         alias='vebal_votes',
-        materialized = 'incremental',
+        materialized = 'view',
         file_format = 'delta',
-        incremental_strategy = 'merge',
         unique_key = ['round_id', 'gauge', 'provider'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
