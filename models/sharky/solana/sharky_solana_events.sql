@@ -71,7 +71,7 @@ WITH sharky_txs AS (
             AND tx.block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         LEFT JOIN {{ source('prices', 'usd') }} p
-            ON p.minute = date_trunc('minute', block_time)
+            ON p.minute = date_trunc('minute', stx.block_time)
             AND p.blockchain is NULL
             AND p.symbol = 'SOL'
             {% if not is_incremental() %}
