@@ -1,6 +1,6 @@
 {{ config(
         alias='trades',
-        post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "arbitrum", "polygon", "bnb"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "arbitrum", "fantom", "polygon", "bnb"]\',
                         "project",
                         "sushiswap",
                         \'["augustog", "hosuke", "Henrystats", "codingsh"]\') }}'
@@ -14,6 +14,7 @@ ref('sushiswap_ethereum_trades')
 , ref('sushiswap_arbitrum_trades')
 , ref('sushiswap_bnb_trades')
 , ref('sushiswap_polygon_trades')
+, ref('sushiswap_fantom_trades')
 ] %}
 
 
@@ -50,4 +51,4 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;
+; 
