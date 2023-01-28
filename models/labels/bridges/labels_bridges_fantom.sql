@@ -15,6 +15,6 @@ FROM (VALUES
     , (array('fantom'), '0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7', 'LayerZero: Fantom Endpoint', 'bridge', 'Henrystats', 'static', timestamp('2023-01-27'), now())
     , (array('fantom'), '0xc10ef9f491c9b59f936957026020c321651ac078', 'Multichain: anyCall V6', 'bridge', 'Henrystats', 'static', timestamp('2023-01-27'), now())
     , (array('fantom'), '0xaf41a65f786339e7911f4acdad6bd49426f2dc6b', 'Synapse: Bridge', 'bridge', 'Henrystats', 'static', timestamp('2023-01-27'), now())
-    , (array('fantom'), '0x7bc05ff03397950e8dee098b354c37f449907c20', 'Synapse: Bridge Zap', 'Henrystats', 'static', timestamp('2023-01-27'), now())
+    , (array('fantom'), '0x7bc05ff03397950e8dee098b354c37f449907c20', 'Synapse: Bridge Zap', 'bridge', 'Henrystats', 'static', timestamp('2023-01-27'), now())
     , (array('fantom'), '0x31efc4aeaa7c39e54a33fdc3c46ee2bd70ae0a09', 'xPollinate: Transaction Manager', 'bridge', 'Henrystats', 'static', timestamp('2023-01-27'), now())
     ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at);
