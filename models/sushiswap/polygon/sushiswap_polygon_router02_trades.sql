@@ -5,29 +5,29 @@
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
     ,unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address']
-    ,post_hook='{{ expose_spells(\'["bnb"]\',
+    ,post_hook='{{ expose_spells(\'["polygon"]\',
                                       "project",
                                       "sushiswap",
                                     \'["hosuke"]\') }}'
     )
 }}
 
-{% set project_start_date = '2021-03-03' %} -- fork from sushiswap_bnb_trades
+{% set project_start_date = '2021-03-03' %} -- fork from sushiswap_polygon_trades
 
-{% set sushi_bnb_router02_swaps = [
-    source('sushi_bnb', 'UniswapV2Router02_call_swapETHForExactTokens')
-    , source('sushi_bnb', 'UniswapV2Router02_call_swapExactETHForTokens')
-    , source('sushi_bnb', 'UniswapV2Router02_call_swapExactETHForTokensSupportingFeeOnTransferTokens')
-    , source('sushi_bnb', 'UniswapV2Router02_call_swapExactTokensForETH')
-    , source('sushi_bnb', 'UniswapV2Router02_call_swapExactTokensForETHSupportingFeeOnTransferTokens')
-    , source('sushi_bnb', 'UniswapV2Router02_call_swapExactTokensForTokens')
-    , source('sushi_bnb', 'UniswapV2Router02_call_swapExactTokensForTokensSupportingFeeOnTransferTokens')
-    , source('sushi_bnb', 'UniswapV2Router02_call_swapTokensForExactETH')
-    , source('sushi_bnb', 'UniswapV2Router02_call_swapTokensForExactTokens')
+{% set sushi_polygon_router02_swaps = [
+    source('sushiswap_polygon', 'UniswapV2Router02_call_swapETHForExactTokens')
+    , source('sushiswap_polygon', 'UniswapV2Router02_call_swapExactETHForTokens')
+    , source('sushiswap_polygon', 'UniswapV2Router02_call_swapExactETHForTokensSupportingFeeOnTransferTokens')
+    , source('sushiswap_polygon', 'UniswapV2Router02_call_swapExactTokensForETH')
+    , source('sushiswap_polygon', 'UniswapV2Router02_call_swapExactTokensForETHSupportingFeeOnTransferTokens')
+    , source('sushiswap_polygon', 'UniswapV2Router02_call_swapExactTokensForTokens')
+    , source('sushiswap_polygon', 'UniswapV2Router02_call_swapExactTokensForTokensSupportingFeeOnTransferTokens')
+    , source('sushiswap_polygon', 'UniswapV2Router02_call_swapTokensForExactETH')
+    , source('sushiswap_polygon', 'UniswapV2Router02_call_swapTokensForExactTokens')
 ] %}
 
 WITH sushiswap_decodes AS (
-    {% for swaps_evt in sushi_bnb_router02_swaps %}
+    {% for swaps_evt in sushi_polygon_router02_swaps %}
         SELECT
             call_block_time,
             call_trace_address,
@@ -63,15 +63,16 @@ sushiswap_decodes_with_log AS (
         call_trace_address,
         t.to
     FROM sushiswap_decodes t
-    INNER JOIN {{ source('bnb', 'logs') }} l
+    INNER JOIN {{ source('polygon', 'logs') }} l
         ON t.call_tx_hash = l.tx_hash
         AND l.topic1 = "0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822"
         {% if is_incremental() %}
         AND l.block_time >= date_trunc("day", now() - interval '1 week')
-        {% else %}
+        {% endif %}
+        {% if not is_incremental() %}
         AND l.block_time >= '{{ project_start_date }}'
         {% endif %}
-    INNER JOIN {{ source('sushi_bnb', 'UniswapV2Factory_evt_PairCreated') }} p
+    INNER JOIN {{ source('sushi_polygon', 'UniswapV2Factory_evt_PairCreated') }} p
         ON l.contract_address = p.pair
 ),
 
@@ -92,7 +93,7 @@ sushiswap_dex AS (
 )
 
 SELECT
-    'bnb'                                                              AS blockchain,
+    'polygon'                                                          AS blockchain,
     'sushiswap'                                                        AS project,
     '1'                                                                AS version,
     try_cast(date_trunc('DAY', sushiswap_dex.block_time) AS date)      AS block_date,
@@ -123,7 +124,7 @@ SELECT
     sushiswap_dex.trace_address,
     sushiswap_dex.evt_index
 from sushiswap_dex
-inner join {{ source('bnb', 'transactions') }} tx
+inner join {{ source('polygon', 'transactions') }} tx
     on sushiswap_dex.tx_hash = tx.hash
     {% if is_incremental() %}
     and tx.block_time >= date_trunc("day", now() - interval '1 week')
@@ -132,14 +133,14 @@ inner join {{ source('bnb', 'transactions') }} tx
     {% endif %}
 left join {{ ref('tokens_erc20') }} erc20a
     on erc20a.contract_address = sushiswap_dex.token_bought_address
-    and erc20a.blockchain = 'bnb'
+    and erc20a.blockchain = 'polygon'
 left join {{ ref('tokens_erc20') }} erc20b
     on erc20b.contract_address = sushiswap_dex.token_sold_address
-    and erc20b.blockchain = 'bnb'
+    and erc20b.blockchain = 'polygon'
 left join {{ source('prices', 'usd') }} p_bought
     on p_bought.minute = date_trunc('minute', sushiswap_dex.block_time)
     and p_bought.contract_address = sushiswap_dex.token_bought_address
-    and p_bought.blockchain = 'bnb'
+    and p_bought.blockchain = 'polygon'
     {% if is_incremental() %}
     and p_bought.minute >= date_trunc("day", now() - interval '1 week')
     {% else %}
@@ -148,7 +149,7 @@ left join {{ source('prices', 'usd') }} p_bought
 left join {{ source('prices', 'usd') }} p_sold
     on p_sold.minute = date_trunc('minute', sushiswap_dex.block_time)
     and p_sold.contract_address = sushiswap_dex.token_sold_address
-    and p_sold.blockchain = 'bnb'
+    and p_sold.blockchain = 'polygon'
     {% if is_incremental() %}
     and p_sold.minute >= date_trunc("day", now() - interval '1 week')
     {% else %}
