@@ -1833,7 +1833,7 @@ VALUES
     ("lif3-lif3", "fantom", "LIF3", "0xbf60e7414EF09026733c1E7de72E7393888C64DA", 18),
     ("oxd-0xdao", "fantom", "OXD", "0xc165d941481e68696f43EE6E99BFB2B23E0E3114", 18), 
     ("2shares-2share", "fantom", "2SHARES", "0xc54A1684fD1bef1f077a336E6be4Bd9a3096a6Ca", 18), 
-    ("3share-3share", "fantom", "3SHARES", "0x6437ADAC543583C4b31Bf0323A0870430F5CC2e7", 18)
+    ("3share-3share", "fantom", "3SHARES", "0x6437ADAC543583C4b31Bf0323A0870430F5CC2e7", 18),
     ("blank-blockwallet","ethereum", "BLANK", "0x41A3Dba3D677E573636BA691a70ff2D606c29666", 18),
     ("blank-blockwallet","polygon", "BLANK", "0xc49079e96cEaf20C9900f1B77aA09d2D5A011341", 18),
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
