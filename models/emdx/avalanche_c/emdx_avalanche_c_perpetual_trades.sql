@@ -20,7 +20,7 @@ perp_events as (
     SELECT 
         evt_block_time as block_time, 
         evt_block_number as block_number, 
-        CASE WHEN (exchangedPositionSize * 1) > 0 THEN 'long' ELSE 'short' END as trade_type, 
+        CASE WHEN (exchangedPositionSize * 1) >= 0 THEN 'long' ELSE 'short' END as trade_type, 
         '' as virtual_asset, -- cant find in events
         '' as underlying_asset, -- cant find in events 
         positionNotional/1E18 as volume_usd, 
