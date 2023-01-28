@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: sushi_polygon
+  - name: sushiswap_polygon
     description: "Polygon decoded tables related to Sushiswap contract"
     freshness:
       warn_after: { count: 12, period: hour }
@@ -15,9 +15,15 @@ sources:
       - name: UniswapV2Router02_call_swapExactTokensForTokensSupportingFeeOnTransferTokens
       - name: UniswapV2Router02_call_swapTokensForExactETH
       - name: UniswapV2Router02_call_swapTokensForExactTokens
-      - name: UniswapV2Router02_evt_Swap
+
+  - name: sushi_polygon
+    description: "Polygon decoded tables related to Sushiswap contract"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: UniswapV2Pair_evt_Swap
         loaded_at_field: evt_block_time
-        description: "Sushiswap swap events table on Binance smart chain"
+        description: "Sushiswap swap events table on polygon chain"
         columns:
           - &amount0In
             name: amount0In
@@ -30,6 +36,9 @@ sources:
           - &contract_address
             name: contract_address
             description: "bnb address for the liquidity pool used in transaction"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block number which processed the unique transaction hash"
           - &evt_block_time
             name: evt_block_time
             description: "Timestamp for block event time in UTC"
@@ -39,11 +48,6 @@ sources:
           - &evt_tx_hash
             name: evt_tx_hash
             description: "Primary key of the transaction"
-            tests:
-              - not_null
-          - &evt_block_number
-            name: evt_block_number
-            description: "Block number which processed the unique transaction hash"
           - &sender
             name: sender
           - &to
@@ -65,132 +69,3 @@ sources:
             name: token0
           - &token1
             name: token1
-      - name: swapETHForExactTokens
-        loaded_at_field: evt_block_time
-        description: "Sushiswap swap events table on Binance smart chain"
-        columns:
-          - &amountOut
-            name: amountOut
-          - &call_block_number
-            name: call_block_number
-          - &call_block_time
-            name: call_block_time
-          - &call_success
-            name: call_success
-          - &call_trace_address
-            name: call_trace_address
-          - &call_tx_hash
-            name: call_tx_hash
-          - &deadline
-            name: deadline
-          - &output_amounts
-            name: output_amounts
-          - *contract_address
-          - *evt_block_number
-          - *evt_block_time 
-          - *evt_index
-          - *evt_tx_hash
-          - &path
-            name: path
-          - *to
-      - name: swapExactETHForTokens
-        loaded_at_field: evt_block_time
-        description: "Sushiswap swap events table on Binance smart chain"
-        columns:
-          - &amountOutMin
-            name: amountOutMin
-          - *call_block_number
-          - *call_block_time
-          - *call_success
-          - *call_trace_address
-          - *call_tx_hash
-          - *deadline
-          - *output_amounts
-          - *contract_address
-          - *evt_block_number
-          - *evt_block_time 
-          - *evt_index
-          - *evt_tx_hash
-          - *to
-          - *path          
-      - name: swapExactETHForTokensSupportingFeeOnTransferTokens
-        loaded_at_field: evt_block_time
-        description: "Sushiswap swap events table on Binance smart chain"
-        columns:
-          - &amountETHMin
-            name: amountETHMin
-          - &amountTokenMin
-            name: amountTokenMin
-          - *call_block_number
-          - *call_block_time
-          - *call_success
-          - *call_trace_address
-          - *call_tx_hash
-          - *deadline
-          - &liquidity
-            name: liquidity
-          - &output_amountETH
-            name: output_amountETH
-          - &token
-            name: token
-          - *contract_address
-          - *evt_block_number
-          - *evt_block_time 
-          - *evt_index
-          - *evt_tx_hash
-          - *to
-      - name: swapTokensForExactETH
-        loaded_at_field: evt_block_time
-        description: "Sushiswap swap events table on Binance smart chain"
-        columns:
-            - &amountInMax
-              name: amountInMax
-            - *amountOut              
-            - *call_block_number                
-            - *call_block_time                
-            - *call_success                
-            - *call_trace_address                
-            - *call_tx_hash                
-            - *deadline                
-            - *output_amounts                
-            - *path                
-            - *contract_address
-            - *evt_block_number
-            - *evt_block_time 
-            - *evt_index
-            - *evt_tx_hash
-            - *to
-      - name: quote
-        loaded_at_field: call_block_time
-        description: "Sushiswap quote events table"
-        columns:
-          - &amountA
-            name: amountA
-          - *call_block_number            
-          - *call_block_time            
-          - *call_success            
-          - *call_trace_address            
-          - *call_tx_hash            
-          - *contract_address
-          - &output_amountB
-            name: output_amountB
-          - &reserveA
-            name: reserveA
-          - &reserveB
-            name: reserveB
-      - name: UniswapV2Pair_evt_Swap
-        loaded_at_field: evt_block_time
-        description: "Sushiswap swap events table on Polygon chain"
-        columns:
-          - *amount0In
-          - *amount0Out
-          - *amount1In
-          - *amount1Out
-          - *contract_address
-          - *evt_block_time
-          - *evt_index
-          - *evt_tx_hash
-          - *evt_block_number
-          - *sender
-          - *to
-
