@@ -140,7 +140,3 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
-      - *amount0In
-      - *amount0Out
-      - *amount1In
-      - *amount1Out
