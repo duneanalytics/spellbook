@@ -5,11 +5,21 @@ models:
     meta:
       blockchain: solana
       project: sharky
-      contributors: ennnas
+      contributors: [ennnas, hosuke]
     config:
       tags: ['sharky','solana','events']
     description: >
         SharkyFi events on Solana
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - id
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
     columns:
       - &blockchain
         name: blockchain
@@ -38,8 +48,6 @@ models:
       - &user
         name: user
         description:  "The wallet address of the user who initiated the event"
-      - &unique_trade_id
-        name: unique_trade_id
-        description:  "Unique event id, combination of signatures[0] and id"
-        tests:
-          - unique
+      - &id
+        name: id
+        description:  "tx_id of solana.account_activity"
