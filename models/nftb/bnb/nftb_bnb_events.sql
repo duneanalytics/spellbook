@@ -219,7 +219,6 @@ SELECT 'bnb' as blockchain
         END as token_standard
         ,ae.trade_type
         ,ae.number_of_items
-        ,ae.trade_type
         ,ae.trade_category
         ,ae.evt_type
         ,ae.buyer
