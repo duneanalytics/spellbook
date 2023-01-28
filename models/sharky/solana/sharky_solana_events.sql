@@ -19,14 +19,14 @@ WITH sharky_txs AS (
         SELECT tx_id AS id,
                block_time
         FROM {{ source('solana', 'account_activity') }}
+        WHERE tx_success
         {% if not is_incremental() %}
-        WHERE block_time >= '{{ project_start_date }}'
+          AND block_time >= '{{ project_start_date }}'
         {% endif %}
         {% if is_incremental() %}
         -- this filter will only be applied on an incremental run
-        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+          AND block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-          AND tx_success
           AND address = '{{sharky_smart_contract}}'
     ),
 
@@ -62,8 +62,7 @@ WITH sharky_txs AS (
                signer                                                          AS user,
                stx.id                                                          AS id
         FROM sharky_txs stx
-        INNER JOIN {{ source('solana','transactions') }} tx
-            ON stx.id = tx.id
+        INNER JOIN {{ source('solana','transactions') }} tx USING (id)
         LEFT JOIN {{ source('prices', 'usd') }} p
             ON p.minute = date_trunc('minute', stx.block_time)
             AND p.blockchain is NULL
