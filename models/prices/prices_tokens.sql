@@ -1623,7 +1623,7 @@ VALUES
     ("bob-bob", "ethereum", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
     ("unbnk-unbanked", "ethereum", "UNBNK", "0x06b884e60794ce02aafab13791b59a2e6a07442f", 18),
     ("fin-fin", "ethereum", "FIN", "0x054f76beed60ab6dbeb23502178c52d6c5debe40", 18),
-    ("blank-blockwallet","ethereum", "BLANK", "0x41A3Dba3D677E573636BA691a70ff2D606c29666", 18),
+    ("blank-blockwallet","ethereum", "BLANK", "0x41a3dba3d677e573636ba691a70ff2d606c29666", 18),
 
     -- Query for Popular Traded Tokens on Gnosis Chain without prices: https://dune.com/queries/1719783
     ("dai-dai", "gnosis", "WXDAI", "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18),
@@ -1760,7 +1760,7 @@ VALUES
     ("bob-bob", "polygon", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
     ("ric-ricochet","polygon","RIC","0x263026e7e53dbfdce5ae55ade22493f828922965",18),
     ("nuls-nuls", "polygon", "NULS", "0x8b8e48a8cc52389cd16a162e5d8bd514fabf4ba0", 8),
-    ("blank-blockwallet","polygon", "BLANK", "0xc49079e96cEaf20C9900f1B77aA09d2D5A011341", 18),
+    ("blank-blockwallet","polygon", "BLANK", "0xc49079e96ceaf20c9900f1b77aa09d2d5a011341", 18),
 
     ("aury-aurory", "solana", "AURY", "AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP", 9),
     ("btc-bitcoin", "solana", "BTC", "9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E", 6),
