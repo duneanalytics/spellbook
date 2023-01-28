@@ -31,17 +31,17 @@ WITH calendar AS (
             evt_block_time,
             block_timestamp,
             d.block_number,
-            user AS provider,
+            v.user AS provider,
             gauge_addr AS gauge,
             weight / 1e4 AS weight,
             unlocked_at,
             slope,
             bias
         FROM {{ source('balancer_ethereum', 'GaugeController_evt_VoteForGauge') }} v
-        JOIN {{ ref('balancer_vebal_slopes') }} d
+        INNER JOIN {{ ref('balancer_vebal_slopes') }} d
         ON d.wallet_address = v.user
         AND d.block_number <= v.evt_block_number
-        ORDER BY 4, 1
+        ORDER BY v.user, evt_block_time
     ),
     
     max_block_number AS (
@@ -78,7 +78,7 @@ WITH calendar AS (
     votes_with_gaps AS (
         SELECT 
             *,
-            LEAD(round_id::int, 1, 9999) OVER (PARTITION BY provider, gauge ORDER BY round_id) AS next_round
+            LEAD(CAST(round_id AS INT), 1, 9999) OVER (PARTITION BY provider, gauge ORDER BY round_id) AS next_round
         FROM (
             SELECT
                 COALESCE(round_id, 1) AS round_id,
@@ -124,4 +124,5 @@ SELECT
     gauge,
     provider,
     ((bias - slope * (end_timestamp - block_timestamp)) * weight) AS vote 
-FROM running_votes;
+FROM running_votes
+;
