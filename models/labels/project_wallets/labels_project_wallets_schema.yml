@@ -15,9 +15,11 @@ models:
       - name: blockchain
         description: "Blockchain"   
       - name: address
-        description: "wallet ddress"
-      - name: project_name
+        description: "wallet address"
+      - name: name
         description: "name of project"
+      - name: contributor
+        description: "contributor"
       - name: source
         description: "How were labels generated (could be static or query)"
       - name: created_at
