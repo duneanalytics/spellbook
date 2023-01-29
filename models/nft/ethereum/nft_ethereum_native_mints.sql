@@ -74,7 +74,7 @@ LEFT JOIN {{ source('ethereum','traces') }} et ON et.block_time=nft_mints.block_
     AND et.from=nft_mints.to
     AND (et.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR et.call_type IS NULL)
     AND et.success
-    AND SUM(CAST(et.value as DOUBLE)) > 0
+    AND CAST(et.value as DOUBLE) > 0
     {% if is_incremental() %}
     AND  et.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
