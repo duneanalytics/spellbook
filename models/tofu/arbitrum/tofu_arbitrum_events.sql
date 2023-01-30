@@ -12,6 +12,7 @@
 }}
 
 {%- set ARETH_ERC20_ADDRESS = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1' %}
+{% set project_start_date = '2021-12-09' %}
 
 WITH tff AS (
     SELECT call_block_time,
@@ -81,7 +82,7 @@ SELECT 'arbitrum'                                 as blockchain
      , case
            when tfe.kind = '1' then 'Buy'
            when tfe.kind = '2' then 'Sell'
-           else 'Acution'
+           else 'Auction'
     end                                      as trade_category
      , CAST(tfe.price AS DECIMAL(38,0))      as amount_raw
      , tfe.price / power(10, pu.decimals)    as amount_original
@@ -120,6 +121,9 @@ FROM tfe
          LEFT JOIN {{ source('arbitrum', 'transactions') }} tx
                    ON tx.block_time = tfe.evt_block_time
                        AND tx.hash = tfe.evt_tx_hash
+                       {% if not is_incremental() %}
+                       AND tx.block_time >= '{{project_start_date}}'
+                       {% endif %}
                        {% if is_incremental() %}
                        and tx.block_time >= date_trunc("day", now() - interval '1 week')
                        {% endif %}
@@ -130,6 +134,9 @@ FROM tfe
                    ON pu.blockchain = 'arbitrum'
                        AND pu.minute = date_trunc('minute', tfe.evt_block_time)
                        AND pu.contract_address = tfe.currency
+                       {% if not is_incremental() %}
+                       AND pu.minute >= '{{project_start_date}}'
+                       {% endif %}
                        {% if is_incremental() %}
                        AND pu.minute >= date_trunc("day", now() - interval '1 week')
                        {% endif %}
