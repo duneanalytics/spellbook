@@ -195,6 +195,11 @@ models:
       tags: ['balancer', 'optimism', 'amm', 'trades', 'dex']
     description: >
       DEX trades on balancer on optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - evt_index
     columns:
       - &blockchain
         name: blockchain
