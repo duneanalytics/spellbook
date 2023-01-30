@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_number', 'evt_index'],
+    unique_key = ['block_time', 'evt_index'],
     post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
                                 "balancer",

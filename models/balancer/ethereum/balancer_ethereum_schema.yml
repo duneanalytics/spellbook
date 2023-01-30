@@ -307,7 +307,7 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_number
+            - block_time
             - evt_index
     columns:
       - &blockchain
