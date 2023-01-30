@@ -6,7 +6,7 @@ models:
       blockchain: ethereum, avalanche_c, optimism
       sector: dex
       project: curvefi
-      contributors: [jeff-dude, dsalv, yulesa, Henrystats, msilb7,ilemi,agaperste]
+      contributors: [jeff-dude, dsalv, yulesa, Henrystats, msilb7]
     config:
       tags: ['ethereum', 'avalanche_c', 'optimism', 'curvefi','trades', 'dex', 'cross-chain']
     description: >
