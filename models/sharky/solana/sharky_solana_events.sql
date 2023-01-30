@@ -12,7 +12,7 @@
     )
 }}
 
-{%- set project_start_date = '2022-11-26' %} -- TODO change back to '2022-04-14'
+{%- set project_start_date = '2022-11-30' %} -- TODO change back to '2022-04-14'
 {%- set sharky_smart_contract = 'SHARKobtfF1bHhxD2eqftjHBdVSCbKo9JtgK71FhELP' %}
 
 WITH sharky_txs AS (
@@ -34,8 +34,8 @@ WITH sharky_txs AS (
         SELECT 'solana'                                                        AS blockchain,
                'sharky'                                                        AS project,
                signatures[0]                                                   AS tx_hash,
-               tx.block_date,
-               stx.block_time,
+               block_date,
+               block_time,
                CAST(block_slot AS BIGINT)                                      AS block_number,
                (abs(post_balances[0] - pre_balances[0]) / 1e9) * p.price       AS amount_usd,
                (abs(post_balances[0] - pre_balances[0]) / 1e9)                 AS amount_original,
@@ -60,9 +60,9 @@ WITH sharky_txs AS (
                            ) THEN 'Foreclose'
                    ELSE 'Other' END                                            AS evt_type,
                signer                                                          AS user,
-               stx.id                                                          AS id
+               id
         FROM sharky_txs stx
-        INNER JOIN {{ source('solana','transactions') }} tx USING (id)
+        INNER JOIN {{ source('solana','transactions') }} tx USING (block_time, id)
         LEFT JOIN {{ source('prices', 'usd') }} p
             ON p.minute = date_trunc('minute', stx.block_time)
             AND p.blockchain is NULL
