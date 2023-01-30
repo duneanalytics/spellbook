@@ -12,9 +12,12 @@ jobs:
   dispatch:
     runs-on: [ self-hosted, linux, spellbook ]
     steps:
+    - name: Set environment variables
+      run: |
+        echo "PAT_TOKEN=$(echo echo $SPELLBOOK_PAT_TOKEN)" >> $GITHUB_ENV
     - uses: actions/github-script@v6
       with:
-        github-token: $SPELLBOOK_PAT_TOKEN
+        github-token: $PAT_TOKEN
         script: |
           await github.rest.actions.createWorkflowDispatch({
             owner: 'duneanalytics',
