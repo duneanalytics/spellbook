@@ -12,7 +12,7 @@
 }}
 
 {% set project_start_date = '2022-10-18' %}
-{% set seaport_usage_start_date = '2023-01-27' %}
+{% set seaport_usage_start_date = '2023-01-25' %}
 
 SELECT
     CAST('ethereum' AS string) AS blockchain
@@ -38,7 +38,7 @@ SELECT
         END AS trade_category
     , CAST(get_json_object(bm.buy, '$.price') AS DECIMAL(38,0)) AS amount_raw
     , CASE WHEN get_json_object(bm.buy, '$.paymentToken') IN ('0x0000000000000000000000000000000000000000', '0x0000000000a39bb272e79075ade125fd351887ac') THEN CAST(get_json_object(bm.buy, '$.price')/POWER(10, 18) AS double)
-        ELSE CAST(get_json_object(bm.buy, '$.price')/POWER(10, pu.decimals) AS double) AS
+        ELSE CAST(get_json_object(bm.buy, '$.price')/POWER(10, pu.decimals) AS double)
         END AS amount_original
     , CASE WHEN get_json_object(bm.buy, '$.paymentToken') IN ('0x0000000000000000000000000000000000000000', '0x0000000000a39bb272e79075ade125fd351887ac') THEN CAST(pu.price*get_json_object(bm.buy, '$.price')/POWER(10, 18) AS double)
         ELSE CAST(pu.price*get_json_object(bm.buy, '$.price')/POWER(10, pu.decimals) AS double)
@@ -49,7 +49,7 @@ SELECT
     , CASE WHEN get_json_object(bm.buy, '$.paymentToken') IN ('0x0000000000000000000000000000000000000000', '0x0000000000a39bb272e79075ade125fd351887ac') THEN CAST('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS string)
         ELSE CAST(get_json_object(bm.buy, '$.paymentToken') AS string)
         END AS currency_contract
-    , CAST(bm.contract_address AS project_contract_address
+    , CAST(bm.contract_address AS string) AS project_contract_address
     , CAST(get_json_object(bm.buy, '$.collection') AS string) AS nft_contract_address
     , CAST(coalesce(agg.name,agg_m.aggregator_name) AS string) AS aggregator_name
     , CAST(agg.contract_address AS string) AS aggregator_address
@@ -145,12 +145,12 @@ SELECT CAST('ethereum' AS string) AS blockchain
 , CAST(s.evt_block_time AS timestamp) AS block_time
 , CAST(s.evt_block_number AS double) AS block_number
 , CAST(get_json_object(s.offer[0], '$.identifier') AS string) AS token_id
-, CAST(tr.token_standard) AS string) AS token_standard
+, CAST(tr.token_standard AS string) AS token_standard
 , CAST(nft_tok.name AS string) AS collection
 , CASE WHEN get_json_object(s.offer[0], '$.amount')=1 THEN CAST('Single Item Trade' AS string) ELSE CAST('Bundle Trade' AS string) END AS trade_type
 , CAST(get_json_object(s.offer[0], '$.amount') AS DECIMAL(38,0)) AS number_of_items
 , CAST('Trade' AS string) AS evt_type
-, CAST(s.offererAS string) AS seller
+, CAST(s.offerer AS string) AS seller
 , CAST(s.recipient AS string) AS buyer
 , CAST('Buy' AS string) AS trade_category
 , CAST(get_json_object(s.consideration[0], '$.amount')+get_json_object(s.consideration[1], '$.amount') AS DECIMAL(38,0)) AS amount_raw
