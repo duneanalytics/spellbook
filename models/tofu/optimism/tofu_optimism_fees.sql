@@ -40,4 +40,4 @@ tx_hash,
 tx_from,
 tx_to,
 unique_trade_id
-from{{ ref('tofu_optimism_events') }}
+from {{ ref('tofu_optimism_events') }}
