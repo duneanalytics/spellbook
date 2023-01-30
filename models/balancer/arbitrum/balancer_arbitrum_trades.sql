@@ -1,12 +1,12 @@
 {{ config(
-    schema = 'balancer_ethereum',
+    schema = 'balancer_arbitrum',
     alias = 'trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_number', 'evt_index'],
-    post_hook='{{ expose_spells(\'["ethereum"]\',
+    post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
                                 "balancer",
                                 \'["bizzyvinci"]\') }}'
@@ -14,23 +14,7 @@
 }}
 
 
-with v1 as (
-    select
-        'v1' as version,
-        tokenOut as token_bought_address,
-        tokenAmountOut as token_bought_amount_raw,
-        tokenIn as token_sold_address,
-        tokenAmountOut as token_sold_amount_raw,
-        contract_address as project_contract_address,
-        evt_block_time,
-        evt_tx_hash,
-        evt_index
-    from {{ source('balancer_v1_ethereum', 'BPool_evt_LOG_SWAP') }}
-    {% if is_incremental() %}
-        where evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-),
-v2 as (
+with v2 as (
     select
         'v2' as version,
         tokenOut as token_bought_address,
@@ -41,16 +25,16 @@ v2 as (
         s.evt_block_time,
         s.evt_tx_hash,
         s.evt_index
-    from {{ source('balancer_v2_ethereum', 'Vault_evt_Swap') }} s
+    from {{ source('balancer_v2_arbitrum', 'Vault_evt_Swap') }} s
     {% if is_incremental() %}
         where evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-    inner join {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} p
+    inner join {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} p
     on s.poolId = p.poolId
 ),
 prices as (
     select * from {{ source('prices', 'usd') }}
-    where blockchain = 'ethereum'
+    where blockchain = 'arbitrum'
     {% if is_incremental() %}
         and minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
@@ -58,7 +42,7 @@ prices as (
 
 
 select
-    'ethereum' as blockchain,
+    'arbitrum' as blockchain,
     'balancer' as project,
     version,
     evt_block_time as block_time,
@@ -86,16 +70,12 @@ select
     tx.from as tx_from,
     tx.to as tx_to,
     evt_index
-from (
-    select * from v1
-    union all
-    select * from v2
-) trades
-inner join {{ source('ethereum', 'transactions') }} tx
+from v2 trades
+inner join {{ source('arbitrum', 'transactions') }} tx
     on trades.evt_tx_hash = tx.hash
-left join {{ ref('tokens_ethereum_erc20') }} erc20a
+left join {{ ref('tokens_arbitrum_erc20') }} erc20a
     on trades.token_bought_address = erc20a.contract_address
-left join {{ ref('tokens_ethereum_erc20') }} erc20b
+left join {{ ref('tokens_arbitrum_erc20') }} erc20b
     on trades.token_sold_address = erc20b.contract_address
 left join prices p_bought
     ON p_bought.minute = date_trunc('minute', trades.evt_block_time)
