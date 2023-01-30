@@ -227,6 +227,7 @@ sources:
             description: "Epoch time when tokens unlock; this is the user's request, but the actual unlock time will be rounded down to a Thursday"
           - name: _value
             description: "Amount to deposit"
+
       - name: veBAL_evt_Deposit
         loaded_at_field: evt_block_time
         description: "Emitted when user deposits tokens in their lock or extends its unlock time"
@@ -248,6 +249,7 @@ sources:
               INCREASE_UNLOCK_TIME: 3
           - name: value
             description: "Amount of base tokens added to the lock"
+
       - name: veBAL_evt_Withdraw
         loaded_at_field: evt_block_time
         description: "Emitted when user withdraws tokens from their lock"
@@ -258,3 +260,22 @@ sources:
             description: "Amount of base tokens withdrawn from the lock"
           - name: ts
             description: "Block timestamp"
+
+      - name: GaugeController_evt_VoteForGauge
+        loaded_at_field: evt_block_time
+        description: "Emitted when veBAL holder votes for a gauge"
+        columns:
+          - name: contract_address
+            description: "Gauge controller address"
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - name: gauge_addr
+            description: "Address of the gauge which user votes for"
+          - name: time
+            description: "Epoch timestamp at which the event occurred"
+          - name: user
+            description: "veBAL holder that voted for the gauge"
+          - name: weight
+            description: "Weight of the user for the gauge"
