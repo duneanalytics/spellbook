@@ -16,11 +16,11 @@
 
 with v1 as (
     select
-        'v1' as version,
+        '1' as version,
         tokenOut as token_bought_address,
         tokenAmountOut as token_bought_amount_raw,
         tokenIn as token_sold_address,
-        tokenAmountOut as token_sold_amount_raw,
+        tokenAmountIn as token_sold_amount_raw,
         contract_address as project_contract_address,
         evt_block_time,
         evt_tx_hash,
@@ -32,7 +32,7 @@ with v1 as (
 ),
 v2 as (
     select
-        'v2' as version,
+        '2' as version,
         tokenOut as token_bought_address,
         amountOut as token_bought_amount_raw,
         tokenIn as token_sold_address,

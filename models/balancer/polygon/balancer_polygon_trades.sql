@@ -16,7 +16,7 @@
 
 with v2 as (
     select
-        'v2' as version,
+        '2' as version,
         tokenOut as token_bought_address,
         amountOut as token_bought_amount_raw,
         tokenIn as token_sold_address,
