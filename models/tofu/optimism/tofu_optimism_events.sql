@@ -100,6 +100,7 @@ select
     ,pu.price * tfe.price / power(10, pu.decimals) as amount_usd
     ,case when tfe.native_eth then 'ETH' else pu.symbol end as currency_symbol
     ,tfe.currency as currency_contract
+    ,tfe.contract_address as project_contract_address
     ,tff.token as nft_contract_address
     ,agg.name as aggregator_name
     ,agg.contract_address as aggregator_address
