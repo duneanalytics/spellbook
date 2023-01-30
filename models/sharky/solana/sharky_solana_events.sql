@@ -12,7 +12,7 @@
     )
 }}
 
-{%- set project_start_date = '2022-11-30' %} -- TODO change back to '2022-04-14'
+{%- set project_start_date = '2022-12-30' %} -- TODO change back to '2022-04-14'
 {%- set sharky_smart_contract = 'SHARKobtfF1bHhxD2eqftjHBdVSCbKo9JtgK71FhELP' %}
 
 WITH sharky_txs AS (
@@ -29,7 +29,20 @@ WITH sharky_txs AS (
         {% endif %}
           AND address = '{{sharky_smart_contract}}'
     ),
-
+    sol_price AS (
+        SELECT minute,
+              price
+        FROM {{ source('prices', 'usd') }}
+        WHERE
+        blockchain IS NULL
+        AND symbol = 'SOL'
+        {% if not is_incremental() %}
+        AND minute >= '{{ project_start_date }}'
+        {% endif %}
+        {% if is_incremental() %}
+        AND minute >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+    ),
     events AS (
         SELECT 'solana'                                                        AS blockchain,
                'sharky'                                                        AS project,
@@ -61,16 +74,10 @@ WITH sharky_txs AS (
                    ELSE 'Other' END                                            AS evt_type,
                signer                                                          AS user,
                id
-        FROM sharky_txs stx
-        INNER JOIN {{ source('solana','transactions') }} tx USING (block_time, id)
-        LEFT JOIN {{ source('prices', 'usd') }} p
-            ON p.minute = date_trunc('minute', stx.block_time)
-            {% if is_incremental() %}
-            AND p.minute >= date_trunc("day", now() - interval '1 week')
-            {% endif %}
-        WHERE
-            p.blockchain is NULL
-            AND p.symbol = 'SOL'
+        FROM sharky_txs
+        INNER JOIN {{ source('solana','transactions') }} USING (block_time, id)
+        LEFT JOIN sol_price p
+            ON p.minute = date_trunc('minute', block_time)
 )
 SELECT *,
        CASE
