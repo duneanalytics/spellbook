@@ -1,32 +1,26 @@
 version: 2
 
 models:
-  - name: oneinch_ethereum_trades
+  - name: oneinch_ethereum_internal_swaps_trades
     meta:
       blockchain: ethereum
       project: oneinch
       contributors: [jeff-dude, dsalv, k06a]
     config:
       tags: ['ethereum','oneinch', 'trades', 'dex', 'aggregator']
-    description: >
+    description: > #todo: find a viable description to put here
         1inch aggregator trades on the Ethereum mainnet
-    # tests:
-    #   - dbt_utils.unique_combination_of_columns:
-    #       combination_of_columns:
-    #         - block_date
-    #         - unique_trade_id
-    #   - check_seed:
-    #       seed_file: ref('opensea_wyvern_trades_samples')
-    #       match_columns:
-    #         - block_time
-    #         - tx_hash
-    #         - token_id
-    #       check_columns:
-    #         - amount_original
-    #         - buyer
-    #         - seller
-    #         - platform_fee_amount
-    #         - royalty_fee_amount
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      # todo: add seed test here
     columns:
       - &blockchain
         name: blockchain
@@ -93,6 +87,7 @@ models:
         description: "Address which received the trade"
       - &trace_address
         name: trace_address
+        #description: "" todo: what to use here?
       - &evt_index
         name: evt_index
         description: "Index of the corresponding trade event"
