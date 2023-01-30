@@ -1673,7 +1673,7 @@ VALUES
     ("thales-thales","optimism","THALES","0x217d47011b23bb961eb6d93ca9945b7501a5bb11",18),
     -- ("NULL","optimism","sSOL","0x8b2f7ae8ca8ee8428b6d76de88326bb413db2766",18),
     ("fxs-frax-share","optimism","FXS","0x67ccea5bb16181e7b4109c9c2143c24a1c2205be",18),
-    ("aave-aave-token","optimism","AAVE","0x76fb31fb4af56892a25e32cfc43de717950c9278",18),
+    ("aave-new","optimism","AAVE","0x76fb31fb4af56892a25e32cfc43de717950c9278",18),
     -- ("NULL","optimism","sAVAX","0xb2b42b231c68cbb0b4bf2ffebf57782fd97d3da4",18),
     -- ("NULL","optimism","sMATIC","0x81ddfac111913d3d5218dea999216323b7cd6356",18),
     -- ("NULL","optimism","sAAVE","0x00b8d5a5e1ac97cb4341c4bc4367443c8776e8d9",18),
