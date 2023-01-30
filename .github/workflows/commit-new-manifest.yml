@@ -26,5 +26,4 @@ jobs:
       run: "dbt compile --target-path ."
 
     - name: upload manifest
-      working-directory: scripts
-      run: python write_manifest_to_s3.py
+      run: "aws s3 cp manifest.json s3://manifest-spellbook/manifest.json upload: ./manifest.json to s3://manifest-spellbook/manifest.json"
