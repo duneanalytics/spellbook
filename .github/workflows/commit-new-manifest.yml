@@ -11,6 +11,9 @@ concurrency:
 jobs:
   commit_manifest:
     runs-on: [ self-hosted, linux, spellbook ]
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
     - uses: actions/setup-python@v3
