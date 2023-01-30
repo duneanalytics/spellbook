@@ -20743,5 +20743,7 @@ FROM (VALUES
         ('0xdc63269ea166b70d4780b3a11f5c825c2b761b01', 'PAW', 18),
         ('0xdd0ef0b2de3efec847a79b4ce4de52c4bb98f488', 'DAO9', 18),
         ('0xe1747f4d30479d7a2dcfea5af69fb86b8f71ccec', 'yvCurve-TRYB3POOL-f-f', 18),
-        ('0xef27252b567f6b3fe35b34a85be322917abe524a', 'FLONA', 18)
+        ('0xef27252b567f6b3fe35b34a85be322917abe524a', 'FLONA', 18),
+        -- Using the "commonly accepted symbol and decimals for this OG token
+        ('0xbb9bc244d798123fde783fcc1c72d3bb8c189413', 'TheDAO', 16)
      ) AS temp_table (contract_address, symbol, decimals)
