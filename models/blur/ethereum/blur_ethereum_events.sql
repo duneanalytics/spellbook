@@ -209,7 +209,7 @@ LEFT JOIN {{ ref('nft_ethereum_transfers') }} tr ON tr.block_time=s.evt_block_ti
     {% if not is_incremental() %}
     AND tr.block_time >= '{{seaport_usage_start_date}}'
     {% endif %}
-WHERE s.evt_block_time >= '2023-01-25'
+WHERE s.evt_block_time >= '{{seaport_usage_start_date}}'
 AND s.zone='0x0000000000d80cfcb8dfcd8b2c4fd9c813482938'
 {% if is_incremental() %}
 AND s.evt_block_time >= date_trunc("day", now() - interval '1 week')
