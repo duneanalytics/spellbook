@@ -21,7 +21,7 @@ concurrency:
 jobs:
   dbt-precommit-hooks:
     runs-on: [ self-hosted, linux, spellbook ]
-    timeout-minutes: 120
+    timeout-minutes: 60
 
     steps:
       - uses: actions/checkout@v3
