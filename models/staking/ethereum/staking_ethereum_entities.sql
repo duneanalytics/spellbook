@@ -10,23 +10,6 @@
                                 \'["hildobby"]\') }}')
 }}
 
-WITH contracts AS (
-    SELECT lower(trim(address)) as address, trim(entity) as entity, trim(category) as category
-FROM
-  (VALUES
-  ('0xdcd51fc5cd918e0461b9b7fb75967fdfd10dae2f', 'RocketPool (Minipool)', 'Staking Pools')
-  , ('0x1cc9cf5586522c6f483e84a19c3c2b0b6d027bf0', 'RocketPool (Minipool)', 'Staking Pools')
-  , ('0x1e68238ce926dec62b3fbc99ab06eb1d85ce0270', 'Kiln', 'Staking Pools')
-  , ('0x9b8c989ff27e948f55b53bb19b3cc1947852e394', 'Kiln', 'Staking Pools')
-  , ('0x301407427168fb51bcc927b9fb76dcd88fe45681', 'Ether Capital', 'Staking Pools')
-  , ('0x2421a0af8badfae12e1c1700e369747d3db47b09', 'SenseiNode', 'Staking Pools')
-  , ('0x10e02a656b5f9de2c44c687787c36a2c4801cc40', 'Tranchess', 'Liquid Staking')
-  , ('0x447c3ee829a3B506ad0a66Ff1089F30181c42637', 'KingHash', 'Liquid Staking')
-  , ('0xa8f50a6c41d67685b820b4fe6bed7e549e54a949', 'Eth2Stake', 'Eth2Stake', 'Staking Pools')
-    ) 
-    x (address, entity, category)
-    )
-
 SELECT lower(trim(address)) as address, trim(entity) as entity, trim(entity_unique_name) as entity_unique_name, trim(category) as category
 FROM
   (VALUES
@@ -95,10 +78,6 @@ FROM
     , ('0xd3b16f647ad234f8b5bb2bdbe8e919daa5268681', 'FOAM Signal', 'FOAM Signal', 'Others')
     , ('0x3187a42658417a4d60866163a4534ce00d40c0c8', 'ssv.network', 'ssv.network', 'Liquid Staking')
     , ('0xea6b7151b138c274ed8d4d61328352545ef2d4b7', 'Harbour', 'Harbour', 'Liquid Staking')
-    , ('0x1e68238ce926dec62b3fbc99ab06eb1d85ce0270', 'Kiln', 'Kiln', 'Staking Pools')
-    , ('0x588e859cb38fecf2d56925c0512471ab47aa9ff1', 'StaFi', 'StaFi SuperNode', 'Liquid Staking')
-    , ('0x1c906685384df71e3fafa6f3b21bd884e9d44f4b', 'StaFi', 'StaFi LightNode', '')
-    --, ('', '', '', '')
     ) 
     x (address, entity, entity_unique_name, category)
 
@@ -170,10 +149,9 @@ FROM
     UNION ALL
 
     SELECT traces.from AS address
-    , c.entity AS name
-    , c.entity || ROW_NUMBER() OVER (PARTITION BY c.entity ORDER BY MIN(txs.block_time)) AS entity_unique_name
-        END AS entity_unique_name
-    , c.category AS category
+    , 'RocketPool (Minipool)' AS name
+    , 'RocketPool (Minipool) ' || ROW_NUMBER() OVER (ORDER BY MIN(txs.block_time)) AS entity_unique_name
+    , 'Liquid Staking' AS category
     FROM {{ source('ethereum', 'transactions') }} txs
     INNER JOIN {{ source('ethereum', 'traces') }} traces
         ON txs.hash=traces.tx_hash 
@@ -184,8 +162,7 @@ FROM
         {% if is_incremental() %}
         AND traces.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    INNER JOIN contracts c ON c.address=txs.to
-    WHERE txs.to IN (SELECT address FROM contracts)
+    WHERE txs.to IN ('0xdcd51fc5cd918e0461b9b7fb75967fdfd10dae2f', '0x1cc9cf5586522c6f483e84a19c3c2b0b6d027bf0')
         {% if not is_incremental() %}
         AND txs.block_time >= '2020-10-14'
         {% endif %}
