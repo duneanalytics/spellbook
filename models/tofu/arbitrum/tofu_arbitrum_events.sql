@@ -114,6 +114,7 @@ SELECT 'arbitrum'                                 as blockchain
       end                                    as royalty_fee_currency_symbol
     , tff.bundle_index
     , '' as unique_trade_id -- leaving this here as blank until the column isn't needed in nft.trades downstream
+    , tfe.evt_index
 FROM tfe
          INNER JOIN tff
               ON tfe.evt_tx_hash = tff.call_tx_hash

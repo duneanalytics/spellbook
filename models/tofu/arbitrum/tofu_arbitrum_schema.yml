@@ -145,6 +145,9 @@ models:
       - &unique_trade_id
         name: unique_trade_id
         description:  "Unique trade ID"
+      - &evt_index
+        name: evt_index
+        description:  "Unique trade index"
 
   - name: tofu_arbitrum_trades
     meta:
