@@ -262,7 +262,7 @@ models:
       - name: lock_time
         description: "Amount of time the BPT was locked for at the last time the lock was updated"
 
-  - name: balancer_vebal_slopes
+  - name: balancer_ethereum_vebal_slopes
     meta:
       blockchain: ethereum
       project: balancer
@@ -295,7 +295,7 @@ models:
       - name: block_date
         description: "Block time trunc to date"
 
-  - name: balancer_vebal_votes
+  - name: balancer_ethereum_vebal_votes
     meta:
       blockchain: ethereum
       project: balancer

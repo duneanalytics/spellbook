@@ -1,9 +1,8 @@
 {{
     config(
         alias='vebal_votes',
-        materialized = 'view',
+        materialized = 'table',
         file_format = 'delta',
-        unique_key = ['round_id', 'gauge', 'provider'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "balancer",
@@ -37,7 +36,7 @@ WITH calendar AS (
             slope,
             bias
         FROM {{ source('balancer_ethereum', 'GaugeController_evt_VoteForGauge') }} v
-        INNER JOIN {{ ref('balancer_vebal_slopes') }} d
+        INNER JOIN {{ ref('balancer_ethereum_vebal_slopes') }} d
         ON d.wallet_address = v.user
         AND d.block_number <= v.evt_block_number
         ORDER BY v.user, evt_block_time
