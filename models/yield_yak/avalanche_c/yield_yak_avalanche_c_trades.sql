@@ -54,7 +54,7 @@ calls as ( -- to get trace address
             call_tx_hash as tx_hash, 
             _trade:amountIn as amount_in, 
             _trade:amountOut as amount_out, 
-            call_trace_addres as trace_address
+            call_trace_address as trace_address
         FROM {{ calls }} c
         WHERE c.call_success = true 
         {% if is_incremental() %}
