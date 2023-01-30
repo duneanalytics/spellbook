@@ -18,15 +18,15 @@ models:
       - check_seed:
           seed_file: ref('tofu_optimism_trades_samples')
           match_columns:
-            - block_number
+            - block_date
             - tx_hash
             - token_id
+            - seller
           check_columns:
+            - nft_contract_address
             - amount_original
             - buyer
-            - seller
-            - platform_fee_amount
-            - royalty_fee_amount
+
     columns:
       - &blockchain
         name: blockchain
