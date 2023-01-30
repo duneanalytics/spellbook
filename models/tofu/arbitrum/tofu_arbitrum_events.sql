@@ -123,8 +123,9 @@ FROM tfe
                        {% if is_incremental() %}
                        and tx.block_time >= date_trunc("day", now() - interval '1 week')
                        {% endif %}
-         LEFT JOIN {{ ref('tokens_arbitrum_nft') }} nft
+         LEFT JOIN {{ ref('tokens_nft') }} nft
                    ON tff.token = nft.contract_address
+                   AND nft.blockchain = 'arbitrum'
          LEFT JOIN {{ source('prices', 'usd') }} pu
                    ON pu.blockchain = 'arbitrum'
                        AND pu.minute = date_trunc('minute', tfe.evt_block_time)
@@ -132,5 +133,6 @@ FROM tfe
                        {% if is_incremental() %}
                        AND pu.minute >= date_trunc("day", now() - interval '1 week')
                        {% endif %}
-         LEFT JOIN {{ ref('nft_arbitrum_aggregators')}} agg
+         LEFT JOIN {{ ref('nft_aggregators')}} agg
                    ON agg.contract_address = tx.`to`
+                   AND agg.blockchain = 'arbitrum'

@@ -1,5 +1,5 @@
 {{ config(
-        alias ='fees',
+        alias ='events',
         post_hook='{{ expose_spells(\'["arbitrum","bnb"]\',
                                     "project",
                                     "tofu",
