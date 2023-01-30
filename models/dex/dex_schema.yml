@@ -3,7 +3,7 @@ version: 2
 models:
   - name: dex_trades
     meta:
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum
       sector: dex
       contributors: jeff-dude
     config:
@@ -83,11 +83,11 @@ models:
 
   - name: dex_prices
     meta:
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom
       sector: dex
       contributors: Henrystats
     config:
-      tags: ['ethereum', 'polygon', 'arbitrum', 'optimism', 'gnosis', 'avalanche_c', 'trades', 'dex', 'cross-chain', 'prices']
+      tags: ['ethereum', 'polygon', 'arbitrum', 'optimism', 'gnosis', 'fantom', 'avalanche_c', 'trades', 'dex', 'cross-chain', 'prices']
     description: >
       This table loads the prices of tokens from the dex.trades table. This helps for missing tokens from the prices.usd table
     tests:

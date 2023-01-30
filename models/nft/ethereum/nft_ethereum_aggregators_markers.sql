@@ -2,7 +2,7 @@
         alias ='aggregators_markers',
 		materialized = 'table',
         unique_key='hash_marker',
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "nft",
                                     \'["hildobby", "0xRob"]\') }}')
@@ -18,8 +18,8 @@
         '0x59728544b08ab483533076417fbbb2fd0b17ce3a', --looksrare
         '0x9ebfb53fa8526906738856848a27cb11b0285c3f'  --reservoir
     )
-    AND RIGHT(data, 2) = '1f'
-    AND LEFT(regexp_replace(data, '^.*00', ''), 2)='1f'
+    AND `RIGHT`(data, 2) = '1f'
+    AND `LEFT`(regexp_replace(data, '^.*00', ''), 2)='1f'
     AND regexp_replace(data, '^.*00', '') != '1f'
     AND length(regexp_replace(data, '^.*00', ''))%2 = 0
     AND block_time > '2022-10-15'
@@ -27,11 +27,11 @@
 
   -- needed to eliminate duplicates
   , reservoir_fixed as (
-    select *
+    select r_a.*
     from reservoir r_a
     anti join reservoir r_b
-        ON r_a.hash != r_b.hash
-        and right(r_a.hash, length(r_b.hash)) = r_b.hash
+        ON r_a.hash_marker != r_b.hash_marker
+        and `right`(r_a.hash_marker, length(r_b.hash_marker)) = r_b.hash_marker
   )
 
   , all_markers as (
@@ -88,13 +88,14 @@
             WHEN router_website='market.cosmoskidznft.com' THEN 'Cosmos Kidz'
             ELSE router_website::string
             END AS router_name
-    FROM reservoir
+    FROM reservoir_fixed
     UNION ALL
     SELECT
         hash_marker ,aggregator_name, router_name
     FROM ( VALUES
       ('72db8c0b', 'Gem', null)
     , ('332d1229', 'Blur', null)
+    , ('a8a9c101', 'Alpha Sharks', null)
     , ('9616c6c64617461', 'Rarible', null)
     , ('61598d6d', 'Flip', null)
     ) AS temp_table (hash_marker ,aggregator_name, router_name)
