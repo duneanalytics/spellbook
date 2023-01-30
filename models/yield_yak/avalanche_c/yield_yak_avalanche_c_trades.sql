@@ -95,7 +95,7 @@ SELECT
     dexs.tx_hash, 
     tx.from as tx_from, 
     tx.to AS tx_to, 
-    COALESCE(c.trace_address, '') as trace_address, 
+    COALESCE(c.trace_address, array('')) as trace_address, 
     dexs.evt_index
 FROM dexs
 INNER JOIN {{ source('avalanche_c', 'transactions') }} tx
