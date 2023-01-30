@@ -17,7 +17,7 @@ jobs:
         echo "PAT_TOKEN=$(echo $SPELLBOOK_PAT_TOKEN)" >> $GITHUB_ENV
     - uses: actions/github-script@v6
       with:
-        github-token: ${{ github.PAT_TOKEN }}
+        github-token: ${{ secrets.TEST_TOKEN }}
         script: |
           await github.rest.actions.createWorkflowDispatch({
             owner: 'duneanalytics',
