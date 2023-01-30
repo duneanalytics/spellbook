@@ -22,7 +22,7 @@ FROM
   , ('0x2421a0af8badfae12e1c1700e369747d3db47b09', 'SenseiNode', 'Staking Pools')
   , ('0x10e02a656b5f9de2c44c687787c36a2c4801cc40', 'Tranchess', 'Liquid Staking')
   , ('0x447c3ee829a3B506ad0a66Ff1089F30181c42637', 'KingHash', 'Liquid Staking')
-  , ('0xa8f50a6c41d67685b820b4fe6bed7e549e54a949', 'Eth2Stake', 'Eth2Stake', 'Staking Pools')
+  , ('0xa8f50a6c41d67685b820b4fe6bed7e549e54a949', 'Eth2Stake', 'Staking Pools')
     ) 
     x (address, entity, category)
     )
@@ -169,28 +169,33 @@ FROM
 
     UNION ALL
 
-    SELECT traces.from AS address
-    , c.entity AS name
-    , c.entity || ROW_NUMBER() OVER (PARTITION BY c.entity ORDER BY MIN(txs.block_time)) AS entity_unique_name
-        END AS entity_unique_name
-    , c.category AS category
-    FROM {{ source('ethereum', 'transactions') }} txs
-    INNER JOIN {{ source('ethereum', 'traces') }} traces
-        ON txs.hash=traces.tx_hash 
-        AND traces.to='0x00000000219ab540356cbb839cbe05303d7705fa'
-        {% if not is_incremental() %}
-        AND traces.block_time >= '2020-10-14'
-        {% endif %}
-        {% if is_incremental() %}
-        AND traces.block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-    INNER JOIN contracts c ON c.address=txs.to
-    WHERE txs.to IN (SELECT address FROM contracts)
-        {% if not is_incremental() %}
-        AND txs.block_time >= '2020-10-14'
-        {% endif %}
-        {% if is_incremental() %}
-        AND txs.block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-    GROUP BY traces.from
+    SELECT address
+    , entity AS name
+    , entity || ROW_NUMBER() OVER (PARTITION BY c.entity ORDER BY first_used) AS entity_unique_name
+    , category AS category
+    FROM (
+        SELECT traces.from AS address
+        , c.entity
+        , c.category
+        , MIN(txs.block_time) AS first_used
+        FROM {{ source('ethereum', 'transactions') }} txs
+        INNER JOIN {{ source('ethereum', 'traces') }} traces
+            ON txs.hash=traces.tx_hash 
+            AND traces.to='0x00000000219ab540356cbb839cbe05303d7705fa'
+            {% if not is_incremental() %}
+            AND traces.block_time >= '2020-10-14'
+            {% endif %}
+            {% if is_incremental() %}
+            AND traces.block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
+        INNER JOIN contracts c ON c.address=txs.to
+        WHERE txs.to IN (SELECT address FROM contracts)
+            {% if not is_incremental() %}
+            AND txs.block_time >= '2020-10-14'
+            {% endif %}
+            {% if is_incremental() %}
+            AND txs.block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
+        GROUP BY 1, 2, 3
+        )
     ;
