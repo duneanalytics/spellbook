@@ -171,7 +171,7 @@ FROM
 
     SELECT address
     , entity AS name
-    , entity || ROW_NUMBER() OVER (PARTITION BY c.entity ORDER BY first_used) AS entity_unique_name
+    , entity || ROW_NUMBER() OVER (PARTITION BY entity ORDER BY first_used) AS entity_unique_name
     , category AS category
     FROM (
         SELECT traces.from AS address
