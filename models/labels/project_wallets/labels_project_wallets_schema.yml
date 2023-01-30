@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: labels_project_wallets
+    meta:
+      blockchain: optimism
+      sector: labels
+      category: project_wallets
+      project: ['project_wallets']
+      contributors: soispoke
+    config:
+      tags: ['labels', 'optimism','projects']
+    description: "Known wallets belong to projects and apps"   
+    columns:
+      - name: blockchain
+        description: "Blockchain"   
+      - name: address
+        description: "wallet address"
+      - name: name
+        description: "name of project"
+      - name: contributor
+        description: "contributor"
+      - name: source
+        description: "How were labels generated (could be static or query)"
+      - name: created_at
+        description: "When were labels created"
+      - name: updated_at
+        description: "When were labels updated for the last time"
