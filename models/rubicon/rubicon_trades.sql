@@ -7,14 +7,14 @@
         )
 }}
 
-{% set uniswap_models = [
+{% set rubi_models = [
 'rubicon_optimism_trades'
 ] %}
 
 
 SELECT *
 FROM (
-    {% for dex_model in uniswap_models %}
+    {% for dex_model in rubi_models %}
     SELECT
         blockchain,
         project,

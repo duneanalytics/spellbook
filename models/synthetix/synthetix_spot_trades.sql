@@ -7,14 +7,14 @@
         )
 }}
 
-{% set uniswap_models = [
+{% set snx_models = [
 'synthetix_optimism_spot_trades'
 ] %}
 
 
 SELECT *
 FROM (
-    {% for dex_model in uniswap_models %}
+    {% for dex_model in snx_models %}
     SELECT
         blockchain,
         project,
