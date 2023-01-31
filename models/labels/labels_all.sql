@@ -53,3 +53,5 @@ UNION ALL
 SELECT * FROM {{ ref('labels_balancer_v2_pools') }}
 UNION ALL
 SELECT * FROM {{ ref('labels_eth_stakers') }}
+UNION ALL
+SELECT * FROM {{ ref('labels_project_wallets') }}
