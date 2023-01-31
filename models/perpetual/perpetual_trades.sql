@@ -1,9 +1,9 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["optimism"]\',
+        post_hook='{{ expose_spells(\'["optimism","avalanche_c","arbitrum"]\',
                                 "sector",
                                 "perpetual",
-                                \'["msilb7", "drethereum", "rplust"]\') }}'
+                                \'["msilb7", "drethereum", "rplust","Henrystats"]\') }}'
         )
 }}
 
@@ -11,6 +11,7 @@
  ref('perpetual_protocol_trades')
 ,ref('pika_trades')
 ,ref('synthetix_trades')
+,ref('hubble_exchange_avalanche_c_perpetual_trades')
 ,ref('gmx_perpetual_trades')
 ] %}
 
