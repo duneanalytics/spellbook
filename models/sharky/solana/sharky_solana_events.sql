@@ -43,6 +43,16 @@ WITH sharky_txs AS (
         AND minute >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     ),
+    filtered_txs AS (
+        SELECT *
+        FROM {{ source('solana','transactions') }}
+        {% if not is_incremental() %}
+        WHERE tx.block_time >= '{{ project_start_date }}'
+        {% endif %}
+        {% if is_incremental() %}
+        WHERE tx.block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+    ),
     events AS (
         SELECT 'solana'                                                        AS blockchain,
                'sharky'                                                        AS project,
@@ -75,7 +85,7 @@ WITH sharky_txs AS (
                signer                                                          AS user,
                id
         FROM sharky_txs
-        INNER JOIN {{ source('solana','transactions') }} USING (block_time, id)
+        INNER JOIN filtered_txs USING (block_time, id)
 --         LEFT JOIN sol_price p
 --             ON p.minute = date_trunc('minute', block_time)
 )
