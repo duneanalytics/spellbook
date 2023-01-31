@@ -1,15 +1,29 @@
 version: 2
 
 models:
-  - name: perpetual_trades
+  - name: hubble_exchange_avalanche_c_perpetual_trades
     meta:
-      blockchain: optimism, avalanche_c, arbitrum
+      blockchain: avalanche_c
       sector: perpetual
-      contributors: msilb7, drethereum, rplust, Henrystats
+      project: hubble_exchange
+      contributors: Henrystats
     config:
-      tags: ['optimism', 'avalanche_c', 'arbitrum', 'perpetuals', 'perps', 'cross-chain', 'pika', 'perpetual-protocol', 'synthetix']
+      tags: ['avalanche_c', 'hubble_exchange', 'perpetuals', 'perps']
     description: >
-      Perpetual swaps/trades table
+      Hubble exchange perpetuals trades/swaps on avalanche_c
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - check_perpetuals_seed:
+          blockchain: avalanche_c
+          project: hubble_exchange
+          version: 1
     columns:
       - &blockchain
         name: blockchain
@@ -61,10 +75,10 @@ models:
         description: "The hash of the transaction"
       - &tx_from
         name: tx_from
-        description: "The address that originated the transaction; based on the optimism.transactions table"
+        description: "The address that originated the transaction; based on the avalanche_c.transactions table"
       - &tx_to
         name: tx_to
-        description: "The address receiving the transaction; based on the optimism.transactions table"
+        description: "The address receiving the transaction; based on the avalanche_c.transactions table"
       - &evt_index
         name: evt_index
         description: "Event index number"
