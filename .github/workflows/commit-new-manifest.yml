@@ -2,7 +2,7 @@ name: Update Manifest
 
 on:
   pull_request:
-#    types: [closed]
+    types: [closed]
 
 concurrency:
   group:  ${{ github.workflow }}
