@@ -220,6 +220,11 @@ models:
       bnb:
         +schema: ellipsis_finance_bnb
 
+    wigoswap:
+      +schema: wigoswap
+      fantom:
+        +schema: wigoswap_fantom
+
     bend_dao:
       +schema: bend_dao
       ethereum:
@@ -517,6 +522,11 @@ models:
       avalanche_c:
         +schema: kyberswap_avalanche_c
 
+    hubble_exchange:
+      +schema: hubble_exchange
+      avalanche_c:
+        +schema: hubble_exchange_avalanche_c
+
     fraxswap:
       +schema: fraxswap
       avalanche_c:
@@ -537,6 +547,11 @@ models:
       +schema: platypus_finance
       avalanche_c:
         +schema: platypus_finance_avalanche_c
+
+    emdx:
+      +schema: emdx
+      avalanche_c:
+        +schema: emdx_avalanche_c
 
     woofi:
       +schema: woofi
