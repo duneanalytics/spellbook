@@ -26,8 +26,8 @@ WITH dexs AS
         ,CASE WHEN amount0 < '0' THEN abs(amount0) ELSE abs(amount1) END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
         ,CASE WHEN amount0 < '0' THEN abs(amount1) ELSE abs(amount0) END AS token_sold_amount_raw
         ,NULL AS amount_usd
-        ,CASE WHEN amount0 < '0' THEN f.token0 ELSE f.token1 END AS token_bought_address
-        ,CASE WHEN amount0 < '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
+        ,LOWER(CASE WHEN amount0 < '0' THEN f.token0 ELSE f.token1 END) AS token_bought_address
+        ,LOWER(CASE WHEN amount0 < '0' THEN f.token1 ELSE f.token0 END) AS token_sold_address
         ,CAST(t.contract_address as string) as project_contract_address
         ,t.evt_tx_hash AS tx_hash
         ,'' AS trace_address

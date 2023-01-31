@@ -2,7 +2,7 @@
     alias = 'all',
     materialized = 'table',
     file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "fantom"]\',
                                 "sector",
                                 "labels",
                                 \'["soispoke","hildobby"]\') }}')
@@ -51,3 +51,9 @@ UNION ALL
 SELECT * FROM {{ ref('labels_dao') }}
 UNION ALL
 SELECT * FROM {{ ref('labels_balancer_v2_gauges') }}
+UNION ALL
+SELECT * FROM {{ ref('labels_balancer_v2_pools') }}
+UNION ALL
+SELECT * FROM {{ ref('labels_eth_stakers') }}
+UNION ALL
+SELECT * FROM {{ ref('labels_project_wallets') }}
