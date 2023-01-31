@@ -17,16 +17,6 @@
 
 WITH 
 
--- to get trace address 
-
-{% set call_tables = [ 
-    source('yield_yak_avalanche_c', 'YakRouter_call_swapNoSplitFromAVAX')
-    ,source('yield_yak_avalanche_c', 'YakRouter_call_swapNoSplit')
-    ,source('yield_yak_avalanche_c', 'YakRouter_call_swapNoSplitToAVAXWithPermit')
-    ,source('yield_yak_avalanche_c', 'YakRouter_call_swapNoSplitWithPermit')
-    ,source('yield_yak_avalanche_c', 'YakRouter_call_swapNoSplitToAVAX')
-] %}
-
 dexs as (
         SELECT 
             evt_block_time as block_time, 
@@ -39,31 +29,13 @@ dexs as (
             _tokenOut as token_bought_address, 
             contract_address as project_contract_address, 
             evt_tx_hash as tx_hash,
+            '' as trace_address,
             evt_index
         FROM 
         {{ source('yield_yak_avalanche_c', 'YakRouter_evt_YakSwap') }}
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-), 
-
-calls as ( -- to get trace address
-    {% for calls in call_tables %}
-        SELECT 
-            call_block_time as block_time,
-            call_tx_hash as tx_hash, 
-            _trade:amountIn as amount_in, 
-            _trade:amountOut as amount_out, 
-            call_trace_address as trace_address
-        FROM {{ calls }} c
-        WHERE c.call_success = true 
-        {% if is_incremental() %}
-        AND c.call_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-        {% if not loop.last %}
-        UNION ALL
-        {% endif %}
-    {% endfor %}
 )
 
 SELECT
@@ -95,7 +67,7 @@ SELECT
     dexs.tx_hash, 
     tx.from as tx_from, 
     tx.to AS tx_to, 
-    COALESCE(CAST(c.trace_address AS STRING), '') as trace_address,
+    dexs.trace_address,
     dexs.evt_index
 FROM dexs
 INNER JOIN {{ source('avalanche_c', 'transactions') }} tx
@@ -106,11 +78,6 @@ INNER JOIN {{ source('avalanche_c', 'transactions') }} tx
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN calls c 
-    ON dexs.block_time = c.block_time
-    AND dexs.tx_hash = c.tx_hash
-    AND dexs.token_sold_amount_raw = c.amount_in
-    AND dexs.token_bought_amount_raw = c.amount_out
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address
     AND erc20a.blockchain = 'avalanche_c'
