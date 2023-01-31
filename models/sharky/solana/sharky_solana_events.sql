@@ -31,7 +31,7 @@ WITH sharky_txs AS (
     ),
     sol_price AS (
         SELECT minute,
-              price
+               price
         FROM {{ source('prices', 'usd') }}
         WHERE
         blockchain IS NULL
@@ -76,8 +76,8 @@ WITH sharky_txs AS (
                id
         FROM sharky_txs
         INNER JOIN {{ source('solana','transactions') }} USING (block_time, id)
-        LEFT JOIN sol_price p
-            ON p.minute = date_trunc('minute', block_time)
+--         LEFT JOIN sol_price p
+--             ON p.minute = date_trunc('minute', block_time)
 )
 SELECT *,
        CASE
