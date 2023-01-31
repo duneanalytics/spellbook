@@ -8,8 +8,8 @@
 }}
 
 {% set kyber_models = [
-'kyberswap_avalanche_c_trades',
-'kyberswap_optimism_trades'
+ 'kyberswap_avalanche_c_trades'
+,'kyberswap_optimism_trades'
 ] %}
 
 
