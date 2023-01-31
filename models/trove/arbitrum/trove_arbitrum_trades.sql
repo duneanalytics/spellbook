@@ -23,17 +23,18 @@ with marketplace as (
         cast(pricePerItem as decimal(38, 0)) * cast(quantity as decimal(38, 0)) as amount_raw,
         paymentToken as currency_contract,
         nftAddress as nft_contract_address,
+        contract_address as project_contract_address,
         evt_tx_hash as tx_hash,
         evt_block_number as block_number
     from (
         select evt_block_time, tokenId, quantity, seller, pricePerItem,
             paymentToken, nftAddress, evt_tx_hash, evt_block_number,
-            bidder as buyer
+            contract_address, bidder as buyer
         from {{ source('treasure_trove_arbitrum', 'TreasureMarketplace_evt_BidAccepted') }}
         union all
         select evt_block_time, tokenId, quantity, seller, pricePerItem,
             paymentToken, nftAddress, evt_tx_hash, evt_block_number,
-            buyer
+            contract_address, buyer
         from {{ source('treasure_trove_arbitrum', 'TreasureMarketplace_evt_ItemSold') }}
     )
 )
@@ -59,6 +60,7 @@ select
     erc20.symbol as currency_symbol,
     currency_contract,
     nft_contract_address,
+    project_contract_address,
     cast(null as varchar(5)) as aggregator_name,
     cast(null as varchar(5)) as aggregator_address,
     tx_hash,
