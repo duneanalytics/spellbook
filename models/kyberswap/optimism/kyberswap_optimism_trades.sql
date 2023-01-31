@@ -66,31 +66,6 @@ kyberswap_dex AS (
     {% else %}
     WHERE t.evt_block_time >= '{{ project_start_date }}'
     {% endif %}
-
-    -- Avax's AggregationRouter is AggregationRouterV3 on Optimism
-    -- UNION ALL
-
-    -- SELECT
-    --     evt_block_time                                                     AS block_time
-    --     ,sender                                                            AS taker
-    --     ,''                                                                AS maker
-    --     ,returnAmount                                                      AS token_bought_amount_raw
-    --     ,spentAmount                                                       AS token_sold_amount_raw
-    --     ,cast(NULL as double)                                              AS amount_usd
-    --     ,dstToken                                                          AS token_bought_address
-    --     ,srcToken                                                          AS token_sold_address
-    --     ,contract_address                                                  AS project_contract_address
-    --     ,evt_tx_hash                                                       AS tx_hash
-    --     ,''                                                                AS trace_address
-    --     ,evt_index
-
-    -- FROM {{ source('kyber_optimism', 'AggregationRouter_evt_Swapped') }}
-    -- WHERE
-    --     {% if is_incremental() %}
-    --     evt_block_time >= date_trunc("day", now() - interval '1 week')
-    --     {% else %}
-    --     evt_block_time >= '{{ project_start_date }}'
-    --     {% endif %}
     
     UNION ALL
 
