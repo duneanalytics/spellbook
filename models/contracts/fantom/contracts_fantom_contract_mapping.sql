@@ -15,7 +15,7 @@ select
 from
 (
   values
-  ('0xDEF189DeAEF76E379df891899eb5A00a94cBC250', '0x Exchange', 'Aggregator'),
+  ('0xdef189deaef76e379df891899eb5a00a94cbc250', '0x Exchange', 'Aggregator'),
   ('0xf760c5b88d970d6f97e64e264dac5a3767dafd74', '0x Exchange', 'Aggregator'),
   ('0xb4d961671cadfed687e040b076eee29840c142e5', '0x Exchange', 'Aggregator'),
   ('0xca64d4225804f2ae069760cb5ff2f1d8bac1c2f9', '0x Exchange', 'Aggregator'),
