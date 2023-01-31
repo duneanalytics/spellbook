@@ -22,13 +22,9 @@ WITH pool_labels AS (
             date_trunc('day', minute) AS day,
             contract_address AS token,
             AVG(price) AS price
-        FROM
-            {{ source('prices', 'usd') }}
-        WHERE
-            minute >= DATE_TRUNC('day', NOW() - interval '1 week')
-            AND blockchain = "optimism"
-        GROUP BY
-            1, 2
+        FROM {{ source('prices', 'usd') }}
+        WHERE blockchain = "optimism"
+        GROUP BY 1, 2
     ),
 
     dex_prices_1 AS (

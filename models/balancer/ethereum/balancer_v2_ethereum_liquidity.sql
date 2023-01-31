@@ -22,14 +22,9 @@ WITH pool_labels AS (
             date_trunc('day', minute) AS day,
             contract_address AS token,
             AVG(price) AS price
-        FROM
-            {{ source('prices', 'usd') }}
+        FROM {{ source('prices', 'usd') }}
         WHERE blockchain = "ethereum"
-        {% if is_incremental() %}
-        AND minute >= DATE_TRUNC('day', NOW() - interval '1 week')
-        {% endif %}
-        GROUP BY
-            1, 2
+        GROUP BY 1, 2
     ),
 
     dex_prices_1 AS (
