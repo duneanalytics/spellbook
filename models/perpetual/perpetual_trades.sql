@@ -11,6 +11,7 @@
  ref('perpetual_protocol_trades')
 ,ref('pika_trades')
 ,ref('synthetix_trades')
+,ref('gmx_perpetual_trades')
 ] %}
 
 SELECT *
