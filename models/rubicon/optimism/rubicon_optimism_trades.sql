@@ -41,7 +41,7 @@ WITH dexs AS
         
     WHERE t.evt_block_time >= '{{project_start_date}}'
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc('day', now() - interval '1 week')
+    AND t.evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
 )
 SELECT
