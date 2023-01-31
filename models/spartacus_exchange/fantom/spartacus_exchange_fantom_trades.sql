@@ -22,7 +22,7 @@ with dexs as (
         '' as maker,
         case when amount0Out  = 0 then amount1Out else amount0Out end as token_bought_amount_raw,
         case when amount0In = 0 then amount1In else amount0In end as token_sold_amount_raw,
-        null as amount_usd,
+        cast(null as double) as amount_usd,
         case when amount0Out  = 0 then f.token1 else f.token0 end as token_bought_address,
         case when amount0In = 0 then f.token1 else f.token0 end as token_sold_address,
         t.contract_address as project_contract_address,
@@ -33,9 +33,6 @@ with dexs as (
         {{ source('spartacus_exchange_fantom', 'Pair_evt_Swap') }} t
         inner join {{ source('spartacus_exchange_fantom', 'BaseV1Factory_evt_PairCreated') }} f 
             on f.pair = t.contract_address
-    {% if not is_incremental() %}
-    WHERE t.evt_block_time >= '{{project_start_date}}'
-    {% endif %}
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
