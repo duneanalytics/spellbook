@@ -538,6 +538,11 @@ models:
       avalanche_c:
         +schema: platypus_finance_avalanche_c
 
+    emdx:
+      +schema: emdx
+      avalanche_c:
+        +schema: emdx_avalanche_c
+
     woofi:
       +schema: woofi
       avalanche_c:
