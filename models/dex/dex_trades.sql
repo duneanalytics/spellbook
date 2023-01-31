@@ -47,6 +47,7 @@ list of models using old generic test, due to multiple versions in one model:
 ,ref('babyswap_bnb_trades')
 ,ref('apeswap_trades')
 ,ref('ellipsis_finance_trades')
+,ref('equalizer_exchange_fantom_trades')
 ,ref('wigoswap_fantom_trades')
 ,ref('arbswap_trades')
 ] %}
