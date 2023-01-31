@@ -220,6 +220,11 @@ models:
       bnb:
         +schema: ellipsis_finance_bnb
 
+    wigoswap:
+      +schema: wigoswap
+      fantom:
+        +schema: wigoswap_fantom
+
     bend_dao:
       +schema: bend_dao
       ethereum:
