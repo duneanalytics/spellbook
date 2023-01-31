@@ -12,7 +12,7 @@ with unit_test1 as (
 unit_test2 as (
     -- ethereum
     select case
-        when amount = 70.9535 then true
+        when amount_usd = 70.9535 then true
         else false
     end as test
     from {{ ref('trove_trades') }}
