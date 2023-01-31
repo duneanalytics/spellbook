@@ -42,11 +42,11 @@ v2 as (
         s.evt_tx_hash,
         s.evt_index
     from {{ source('balancer_v2_ethereum', 'Vault_evt_Swap') }} s
-    {% if is_incremental() %}
-        where evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
     inner join {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} p
     on s.poolId = p.poolId
+    {% if is_incremental() %}
+        where s.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 ),
 prices as (
     select * from {{ source('prices', 'usd') }}
