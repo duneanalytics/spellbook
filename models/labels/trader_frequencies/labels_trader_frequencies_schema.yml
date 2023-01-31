@@ -17,6 +17,8 @@ models:
       - &address
         name: address
         description: "Address of trader"
+        test:
+          - unique
       - &name
         name: name
         description: "Label name"

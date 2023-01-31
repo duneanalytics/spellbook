@@ -12,7 +12,7 @@
 with
  trader_frequencies as (
     select
-        blockchain, 
+        blockchain,
         taker as address,
         count(tx_hash) / datediff(max(block_date), min(block_date)) as trades_per_day
     from (
@@ -27,21 +27,19 @@ with
     having datediff(max(block_date), min(block_date)) > 0
  )
 
-select
-  array(blockchain) as blockchain,
-  address,
-  case
-    when trades_per_day >= 1 then 'Daily Trader'
-    when trades_per_day >= 0.142857142857 then 'Weekly Trader'
-    when trades_per_day >= 0.0333333333333 then 'Monthly Trader'
-    when trades_per_day >= 0.0027397260274 then 'Yearly Trader'
-    else 'Sparse Trader'
-  end as name,
-  "trader_frequencies" AS category,
-  "gentrexha" AS contributor,
-  "query" AS source,
-  timestamp('2022-12-14') as created_at,
-  now() as updated_at
-from
-  trader_frequencies
-  ;
+select array(blockchain)       AS blockchain,
+       address,
+       case
+           when trades_per_day >= 1 then 'Daily Trader'
+           when trades_per_day >= 0.142857142857 then 'Weekly Trader'
+           when trades_per_day >= 0.0333333333333 then 'Monthly Trader'
+           when trades_per_day >= 0.0027397260274 then 'Yearly Trader'
+           else 'Sparse Trader'
+           end                 AS name,
+       "trader_frequencies"    AS category,
+       "gentrexha"             AS contributor,
+       "query"                 AS source,
+       timestamp('2022-12-14') AS created_at,
+       now()                   AS updated_at
+from trader_frequencies
+;
