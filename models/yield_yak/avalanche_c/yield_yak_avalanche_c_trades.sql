@@ -95,7 +95,7 @@ SELECT
     dexs.tx_hash, 
     tx.from as tx_from, 
     tx.to AS tx_to, 
-    COALESCE(c.trace_address, array('')) as trace_address, 
+    COALESCE(CAST(c.trace_address AS STRING), '') as trace_address,
     dexs.evt_index
 FROM dexs
 INNER JOIN {{ source('avalanche_c', 'transactions') }} tx
@@ -137,4 +137,4 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-; 
+;
