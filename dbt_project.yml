@@ -512,6 +512,11 @@ models:
       avalanche_c:
         +schema: kyberswap_avalanche_c
 
+    hubble_exchange:
+      +schema: hubble_exchange
+      avalanche_c:
+        +schema: hubble_exchange_avalanche_c
+
     fraxswap:
       +schema: fraxswap
       avalanche_c:
