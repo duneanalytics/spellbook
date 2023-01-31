@@ -64,7 +64,7 @@ select
     cast(null as varchar(5)) as aggregator_name,
     cast(null as varchar(5)) as aggregator_address,
     tx_hash,
-    block_number,
+    mp.block_number,
     tx.from as tx_from,
     tx.to as tx_to,
     cast(null as varchar(5)) as unique_trade_id
