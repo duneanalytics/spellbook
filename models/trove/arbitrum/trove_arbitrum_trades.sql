@@ -63,7 +63,8 @@ select
     cast(null as varchar(5)) as aggregator_address,
     tx_hash,
     tx.from as tx_from,
-    tx.to as tx_to
+    tx.to as tx_to,
+    cast(null as varchar(5)) as unique_trade_id
 from marketplace mp
 left join {{ ref('tokens_arbitrum_erc20') }} erc20
     on erc20.contract_address = mp.currency_contract
