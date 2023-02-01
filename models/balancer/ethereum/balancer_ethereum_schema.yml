@@ -108,7 +108,7 @@ models:
       - &median_price
         name: median_price
         description: 'BPT median price'
-  
+
   - name: balancer_v2_ethereum_transfers_bpt
     meta:
       blockchain: ethereum

@@ -10,6 +10,7 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6', 'WBTC', 8)
 ,('0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', 'WETH', 18)
 ,('0x2c89bbc92bd86f8075d1decc58c7f4e0107f286b', 'WAVAX', 18)
+,('0x5d47baba0d66083c52009271faf3f50dcc01023c', 'BANANA', 18)
 ,('0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270', 'WMATIC', 18)
 ,('0xd6df932a45c0f255f85145f286ea0b292b21c90b', 'AAVE', 18)
 ,('0xa3fa99a148fa48d14ed51d610c367c61876997f1', 'miMATIC', 18)
