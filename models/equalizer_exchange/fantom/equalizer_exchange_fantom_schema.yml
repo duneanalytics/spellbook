@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: gmx_arbitrum_trades
+  - name: equalizer_exchange_fantom_trades
     meta:
-      blockchain: arbitrum
+      blockchain: fantom
       sector: dex
-      project: gmx 
+      project: equalizer_exchange
       contributors: Henrystats
     config:
-      tags: ['arbitrum','trades', 'gmx','dex']
+      tags: ['fantom','equalizer_exchange','trades','dex']
     description: >
-        GMX trades on arbitrum 
+        equalizer_exchange contract trades on fantom
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -22,8 +22,8 @@ models:
             - evt_index
             - trace_address
       - check_dex_seed:
-          blockchain: arbitrum
-          project: gmx
+          blockchain: fantom
+          project: equalizer_exchange
           version: 1
     columns:
       - &blockchain
