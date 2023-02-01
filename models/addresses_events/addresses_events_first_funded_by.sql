@@ -21,7 +21,7 @@ ref('addresses_events_arbitrum_first_funded_by')
 
 SELECT *
 FROM (
-    {% for addresses_events_model in addresses_events_model %}
+    {% for addresses_events_model in addresses_events_models %}
     SELECT blokchain
     , address
     , first_funded_by
