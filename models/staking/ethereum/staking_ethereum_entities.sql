@@ -208,17 +208,16 @@ WITH contracts AS (
     , 'Individuals' AS category
     FROM {{ source('ethereum', 'traces') }} et
     INNER JOIN {{ ref('labels_ens') }} ens ON ens.address=et.from
-    LEFT JOIN non_individual_addresses remove
+    LEFT ANTI JOIN non_individual_addresses remove
         ON et.from=remove.address
     WHERE et.to='0x00000000219ab540356cbb839cbe05303d7705fa'
-    AND remove.entity IS NULL
     {% if not is_incremental() %}
     AND et.block_time >= '2020-10-14'
     {% endif %}
     {% if is_incremental() %}
     AND et.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-    AND et.value > 0
+    AND et.value/POWER(10, 18) > 0
     GROUP BY 1
     )
 
