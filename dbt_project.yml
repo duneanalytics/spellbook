@@ -725,7 +725,7 @@ seeds:
           +column_types:
             block_time: timestamp
             tx_hash: string
-            amount: string
+            amount: double
 
     ens:
     dex:
