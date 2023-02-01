@@ -9,7 +9,7 @@
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "aave",
-                                \'["soispoke"]\') }}'
+                                \'["soispoke","pandajackson42"]\') }}'
     )
 }}
 
@@ -18,7 +18,12 @@
 {% set dao_name = 'DAO: AAVE' %}
 {% set dao_address = '0xec568fffba86c094cf06b22134b23074dfe2252c' %}
 
-with cte_support as (SELECT 
+with cte_latest_block as (
+SELECT MAX(b.number) AS latest_block
+FROM {{ source('ethereum','blocks') }} b
+),
+
+cte_support as (SELECT 
         voter as voter,
         CASE WHEN support = 0 THEN sum(votingPower/1e18) ELSE 0 END AS votes_against,
         CASE WHEN support = 1 THEN sum(votingPower/1e18) ELSE 0 END AS votes_for,
@@ -59,15 +64,16 @@ SELECT DISTINCT
     CASE 
          WHEN pex.id is not null and now() > pex.evt_block_time THEN 'Executed' 
          WHEN pca.id is not null and now() > pca.evt_block_time THEN 'Canceled'
-         WHEN pcr.startBlock < pcr.evt_block_number < pcr.endBlock THEN 'Active'
-         WHEN now() > pqu.evt_block_time AND startBlock > pcr.evt_block_number THEN 'Queued'
+         WHEN (SELECT latest_block FROM cte_latest_block) <= pcr.startBlock THEN 'Pending'
+         WHEN (SELECT latest_block FROM cte_latest_block) <= pcr.endBlock THEN 'Active'
+         WHEN pqu.id is not null and now() > pqu.evt_block_time and now() < CAST(CAST(pqu.executionTime AS numeric) AS TIMESTAMP) THEN 'Queued'
          ELSE 'Defeated' END AS status,
     cast(NULL as string) as description
 FROM  {{ source('aave_ethereum', 'AaveGovernanceV2_evt_ProposalCreated') }} pcr
 LEFT JOIN cte_sum_votes csv ON csv.id = pcr.id
 LEFT JOIN {{ source('aave_ethereum', 'AaveGovernanceV2_evt_ProposalCanceled') }} pca ON pca.id = pcr.id
 LEFT JOIN {{ source('aave_ethereum', 'AaveGovernanceV2_evt_ProposalExecuted') }} pex ON pex.id = pcr.id
-LEFT JOIN {{ source('aave_ethereum', 'AaveGovernanceV2_evt_ProposalQueued') }} pqu ON pex.id = pcr.id
+LEFT JOIN {{ source('aave_ethereum', 'AaveGovernanceV2_evt_ProposalQueued') }} pqu ON pqu.id = pcr.id
 {% if is_incremental() %}
 WHERE pcr.evt_block_time > (select max(created_at) from {{ this }})
 {% endif %}

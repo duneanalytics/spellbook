@@ -1,6 +1,6 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom"]\',
                                 "sector",
                                 "dex",
                                 \'["jeff-dude", "hosuke", "0xRob", "pandajackson42", "Henrystats", "scoffie", "zhongyiio", "justabi", "umer_h_adil", "mtitus6", "dbustos20", "tian7", "bh2smith"]\') }}'
@@ -45,6 +45,11 @@ list of models using old generic test, due to multiple versions in one model:
 ,ref('wombat_bnb_trades')
 ,ref('iziswap_bnb_trades')
 ,ref('babyswap_bnb_trades')
+,ref('apeswap_trades')
+,ref('ellipsis_finance_trades')
+,ref('equalizer_exchange_fantom_trades')
+,ref('wigoswap_fantom_trades')
+,ref('arbswap_trades')
 ] %}
 
 
