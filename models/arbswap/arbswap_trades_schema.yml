@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: gmx_avalanche_c_trades
+  - name: arbswap_trades
     meta:
-      blockchain: avalanche_c
+      blockchain: arbitrum
       sector: dex
-      project: gmx 
-      contributors: Henrystats
+      project: arbswap
+      contributors: chrispearcx, hosuke
     config:
-      tags: ['avalanche_c','trades', 'gmx','dex']
+      tags: ['arbitrum', 'arbswap','trades', 'dex', 'chrispearcx']
     description: >
-        GMX trades on avalanche_c
+        Arbswap is a Arbitrum native DEX. This table will load dex trades downstream.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -22,16 +22,16 @@ models:
             - evt_index
             - trace_address
       - check_dex_seed:
-          blockchain: avalanche_c
-          project: gmx
+          blockchain: arbitrum
+          project: arbswap
           version: 1
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project 
+      - &project
         name: project
-        description: "Project name of the DEX"  
+        description: "Project name of the DEX"
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
@@ -91,7 +91,7 @@ models:
         description: "Address which received the transaction"
       - &trace_address
         name: trace_address
-        description: ""
+        description: "address of the trace within the call graph forest"
       - &evt_index
         name: evt_index
-        description: ""
+        description: "the position of this event log within this transaction"

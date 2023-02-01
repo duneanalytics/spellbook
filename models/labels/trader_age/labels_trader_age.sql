@@ -1,28 +1,32 @@
 {{
     config(
-        alias='trader_age_ethereum',
+        alias='trader_age',
+        post_hook='{{ expose_spells(\'
+        ["ethereum", "fantom", "arbitrum", "avalanche_c", "gnosis", "bnb", "optimism", "polygon"]\', 
+        "sector", 
+        "labels", \'
+        ["gentrexha", "Henrystats"]\') }}'
     )
 }}
 
 with
  trader_age as (
     select
+        blockchain,
         datediff(max(block_date), min(block_date)) as trader_age,
         taker as address
     from (
-        select taker, block_date
+        select blockchain, taker, block_date
         from {{ ref('dex_aggregator_trades') }}
-        where blockchain = 'ethereum'
         UNION ALL
-        select taker, block_date
+        select blockchain, taker, block_date
         from {{ ref('dex_trades') }}
-        where blockchain = 'ethereum'
     )
-    group by taker
+    group by taker, blockchain
  )
 
 select
-  array("ethereum") as blockchain,
+  array(blockchain) as blockchain,
   address,
   case
     when trader_age > 1825 then '5 years old DEX trader'
@@ -42,3 +46,4 @@ select
   now() as updated_at
 from
   trader_age
+; 

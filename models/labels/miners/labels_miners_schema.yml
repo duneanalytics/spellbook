@@ -3,7 +3,7 @@ version: 2
 models:
   - name: labels_miners
     meta:
-      blockchain: ethereum, arbitrum, gnosis, optimism, bnb, avalanche_c
+      blockchain: ethereum, arbitrum, gnosis, optimism, bnb, avalanche_c, fantom, polygon
       sector: labels
       category: miners
       contributors:  soispoke
