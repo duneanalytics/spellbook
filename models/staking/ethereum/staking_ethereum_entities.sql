@@ -78,6 +78,7 @@ FROM
     , ('0xd3b16f647ad234f8b5bb2bdbe8e919daa5268681', 'FOAM Signal', 'FOAM Signal', 'Others')
     , ('0x3187a42658417a4d60866163a4534ce00d40c0c8', 'ssv.network', 'ssv.network', 'Liquid Staking')
     , ('0xea6b7151b138c274ed8d4d61328352545ef2d4b7', 'Harbour', 'Harbour', 'Liquid Staking')
+    , ('0x751683968FD078341C48B90bC657d6bAbc2339F7', 'EthStaker', 'EthStaker', 'Others')
     ) 
     x (address, entity, entity_unique_name, category)
 
