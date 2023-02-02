@@ -13,7 +13,7 @@
     )
 }}
 
-{% set project_start_date = '2021-06-01' %}
+{% set project_start_date = '2021-06-01' %}  -- Uniswap v3 was deployed on Arbitrum on 2021-06-01
 
 -- Uniswap v3 trades are derived from the Swap event emitted by the pool contract
 -- The Swap event contains the amount of token0 and token1 that were bought and sold
