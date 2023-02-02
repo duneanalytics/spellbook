@@ -16,9 +16,7 @@ WITH contracts AS (
     (VALUES
     ('0xdcd51fc5cd918e0461b9b7fb75967fdfd10dae2f', 'RocketPool (Minipool)', 'Staking Pools')
     , ('0x1cc9cf5586522c6f483e84a19c3c2b0b6d027bf0', 'RocketPool (Minipool)', 'Staking Pools')
-    , ('0x1e68238ce926dec62b3fbc99ab06eb1d85ce0270', 'Kiln', 'Staking Pools')
     , ('0x9b8c989ff27e948f55b53bb19b3cc1947852e394', 'Kiln', 'Staking Pools')
-    , ('0x301407427168fb51bcc927b9fb76dcd88fe45681', 'Ether Capital', 'Staking Pools')
     , ('0x2421a0af8badfae12e1c1700e369747d3db47b09', 'SenseiNode', 'Staking Pools')
     , ('0x10e02a656b5f9de2c44c687787c36a2c4801cc40', 'Tranchess', 'Liquid Staking')
     , ('0x447c3ee829a3B506ad0a66Ff1089F30181c42637', 'KingHash', 'Liquid Staking')
@@ -95,7 +93,6 @@ FROM
     , ('0xd3b16f647ad234f8b5bb2bdbe8e919daa5268681', 'FOAM Signal', 'FOAM Signal', 'Others')
     , ('0x3187a42658417a4d60866163a4534ce00d40c0c8', 'ssv.network', 'ssv.network', 'Liquid Staking')
     , ('0xea6b7151b138c274ed8d4d61328352545ef2d4b7', 'Harbour', 'Harbour', 'Liquid Staking')
-    , ('0x1e68238ce926dec62b3fbc99ab06eb1d85ce0270', 'Kiln', 'Kiln', 'Staking Pools')
     , ('0x588e859cb38fecf2d56925c0512471ab47aa9ff1', 'StaFi', 'StaFi SuperNode', 'Liquid Staking')
     , ('0x1c906685384df71e3fafa6f3b21bd884e9d44f4b', 'StaFi', 'StaFi LightNode', 'Liquid Staking')
     --, ('', '', '', '')
