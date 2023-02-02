@@ -191,7 +191,7 @@ models:
        - *trade_category
        - *evt_type
        - *seller
-       - *buyer 
+       - *buyer
        - *amount_original
        - *amount_raw
        - *currency_symbol
@@ -207,9 +207,9 @@ models:
        - *tx_to
        - *platform_fee_amount_raw
        - *platform_fee_amount
-       - *platform_fee_amount_usd 
+       - *platform_fee_amount_usd
        - *royalty_fee_amount_raw
-       - *royalty_fee_amount 
+       - *royalty_fee_amount
        - *royalty_fee_amount_usd
        - *royalty_fee_percentage
        - *royalty_fee_receive_address
@@ -261,7 +261,7 @@ models:
        - *trade_category
        - *evt_type
        - *seller
-       - *buyer 
+       - *buyer
        - *amount_original
        - *amount_raw
        - *currency_symbol
@@ -277,9 +277,9 @@ models:
        - *tx_to
        - *platform_fee_amount_raw
        - *platform_fee_amount
-       - *platform_fee_amount_usd 
+       - *platform_fee_amount_usd
        - *royalty_fee_amount_raw
-       - *royalty_fee_amount 
+       - *royalty_fee_amount
        - *royalty_fee_amount_usd
        - *royalty_fee_percentage
        - *royalty_fee_receive_address
@@ -331,7 +331,7 @@ models:
        - *trade_category
        - *evt_type
        - *seller
-       - *buyer 
+       - *buyer
        - *amount_original
        - *amount_raw
        - *currency_symbol
@@ -347,9 +347,9 @@ models:
        - *tx_to
        - *platform_fee_amount_raw
        - *platform_fee_amount
-       - *platform_fee_amount_usd 
+       - *platform_fee_amount_usd
        - *royalty_fee_amount_raw
-       - *royalty_fee_amount 
+       - *royalty_fee_amount
        - *royalty_fee_amount_usd
        - *royalty_fee_percentage
        - *royalty_fee_receive_address
@@ -401,7 +401,7 @@ models:
        - *trade_category
        - *evt_type
        - *seller
-       - *buyer 
+       - *buyer
        - *amount_original
        - *amount_raw
        - *currency_symbol
@@ -417,9 +417,9 @@ models:
        - *tx_to
        - *platform_fee_amount_raw
        - *platform_fee_amount
-       - *platform_fee_amount_usd 
+       - *platform_fee_amount_usd
        - *royalty_fee_amount_raw
-       - *royalty_fee_amount 
+       - *royalty_fee_amount
        - *royalty_fee_amount_usd
        - *royalty_fee_percentage
        - *royalty_fee_receive_address
@@ -530,15 +530,15 @@ models:
         name: is_moved_nft
         description: "Transferred NFT if `true`, because it is traded or just transferred."
 
-  - name: quix_seaport_optimism_trades
+  - name: quix_seaport_optimism_events
     meta:
       blockchain: optimism
       project: quix
       contributors: chuxin
     config:
-      tags: ['optimism','seaport','trades','chuxin']
+      tags: ['optimism','seaport','events','chuxin']
     description: >
-        Quix Seaport trades on Optimism
+        Quix Seaport events on Optimism
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -638,11 +638,61 @@ models:
         description: "True if it is bundle trade and dividened price"
       - *is_private
 
+  - name: quix_optimism_events
+    meta:
+      blockchain: optimism
+      project: quix
+      contributors: chuxin
+    config:
+      tags: [ 'optimism','nft','events','chuxin' ]
+    description: >
+      Quix v1, v2, v3, v4, v5 and Seaport events on Optimism.
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *token_id
+      - *collection
+      - *amount_usd
+      - *token_standard
+      - *trade_type
+      - *number_of_items
+      - *trade_category
+      - *evt_type
+      - *seller
+      - *buyer
+      - *amount_original
+      - *amount_raw
+      - *currency_symbol
+      - *currency_contract
+      - *nft_contract_address
+      - *project_contract_address
+      - *aggregator_name
+      - *aggregator_address
+      - *platform_fee_amount_raw
+      - *platform_fee_amount
+      - *platform_fee_amount_usd
+      - *platform_fee_percentage
+      - *royalty_fee_amount_raw
+      - *royalty_fee_amount
+      - *royalty_fee_amount_usd
+      - *royalty_fee_percentage
+      - *royalty_fee_receive_address
+      - *royalty_fee_currency_symbol
+      - *tx_hash
+      - *block_number
+      - *tx_from
+      - *tx_to
+      - &unique_trade_id
+        name: unique_trade_id
+        description: "unique trade id"
+
   - name: quix_optimism_trades
     meta:
       blockchain: optimism
       project: quix
-      contributors: [chuxin]
+      contributors: chuxin
     config:
       tags: ['optimism','nft','trades','chuxin']
     description: >
@@ -674,3 +724,49 @@ models:
       - *block_number
       - *tx_from
       - *tx_to
+      - *unique_trade_id
+
+  - name: quix_optimism_fees
+    meta:
+      blockchain: optimism
+      project: opensea
+      contributors: chuxin
+    config:
+      tags: ['optimism','nft','fees','quix','chuxin']
+    description: >
+      Quix v1, v2, v3, v4, v5 and Seaport fees on Optimism.
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *token_id
+      - *collection
+      - *platform_fee_amount_raw
+      - *platform_fee_amount
+      - *platform_fee_amount_usd
+      - *platform_fee_percentage
+      - *royalty_fee_amount_raw
+      - *royalty_fee_amount
+      - *royalty_fee_amount_usd
+      - *royalty_fee_percentage
+      - *royalty_fee_receive_address
+      - *royalty_fee_currency_symbol
+      - *token_standard
+      - *trade_type
+      - *number_of_items
+      - *trade_category
+      - *evt_type
+      - *seller
+      - *buyer
+      - *currency_symbol
+      - *currency_contract
+      - *nft_contract_address
+      - *project_contract_address
+      - *aggregator_name
+      - *aggregator_address
+      - *tx_hash
+      - *block_number
+      - *tx_from
+      - *tx_to
+      - *unique_trade_id
