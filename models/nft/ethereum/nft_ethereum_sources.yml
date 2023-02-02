@@ -1,0 +1,106 @@
+version: 2
+
+sources:
+  - name: erc721_ethereum
+    description: "erc721 ethereum decoded events"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: evt_Transfer
+        loaded_at_field: evt_block_time
+
+  - name: nftfi_ethereum
+    description: "nftfi ethereum decoded events"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: NFTfi_evt_LoanStarted
+        loaded_at_field: evt_block_time
+      - name: DirectLoanFixedOffer_evt_LoanStarted
+        loaded_at_field: evt_block_time
+      - name: DirectLoanFixedOfferRedeploy_evt_LoanStarted
+        loaded_at_field: evt_block_time
+      - name: DirectLoanFixedCollectionOffer_evt_LoanStarted
+        loaded_at_field: evt_block_time
+      - name: NFTfi_evt_LoanRepaid
+        loaded_at_field: evt_block_time
+      - name: DirectLoanFixedOffer_evt_LoanRepaid
+        loaded_at_field: evt_block_time
+      - name: DirectLoanFixedOfferRedeploy_evt_LoanRepaid
+        loaded_at_field: evt_block_time
+      - name: DirectLoanFixedCollectionOffer_evt_LoanRepaid
+        loaded_at_field: evt_block_time
+  
+  - name: xy3_ethereum
+    description: "x2y2 ethereum decoded events"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: XY3_evt_LoanStarted
+        loaded_at_field: evt_block_time
+      - name: XY3_evt_LoanRepaid
+        loaded_at_field: evt_block_time
+
+  - name: pawnfi_ethereum
+    description: "arcade v1 ethereum decoded events"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: LoanCore_call_startLoan
+        loaded_at_field: call_block_time
+      - name: LoanCore_evt_LoanCreated
+        loaded_at_field: evt_block_time
+      - name: LoanCore_evt_LoanRepaid
+        loaded_at_field: evt_block_time 
+      - name: AssetWrapper_evt_DepositERC721
+        loaded_at_field: evt_block_time 
+      - name: AssetWrapperv102_evt_DepositERC721
+        loaded_at_field: evt_block_time
+  
+  - name: pawnfi_v2_ethereum
+    description: "arcade v1.2 ethereum decoded events"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: LoanCore_call_startLoan
+        loaded_at_field: call_block_time
+      - name: LoanCore_evt_LoanCreated
+        loaded_at_field: evt_block_time
+      - name: LoanCore_evt_LoanRepaid
+        loaded_at_field: evt_block_time
+
+  - name: pawnfi_v201_ethereum
+    description: "arcade v3 ethereum decoded events"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: VaultFactory_evt_VaultCreated
+        loaded_at_field: evt_block_time
+      - name: AssetVault_call_onERC721Received
+        loaded_at_field: evt_block_time      
+      - name: AssetVault_call_withdrawERC721
+        loaded_at_field: evt_block_time  
+      - name: LoanCore_call_startLoan
+        loaded_at_field: call_block_time  
+      - name: LoanCore_call_rollover
+        loaded_at_field: call_block_time  
+
+  - name: bend_ethereum
+    description: "bend ethereum decoded events"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: LendingPoolLoan_evt_LoanCreated
+        loaded_at_field: evt_block_time
+      - name: LendingPoolLoan_evt_LoanRepaid
+        loaded_at_field: evt_block_time
+      - name: LendingPoolLoan_evt_LoanLiquidated
+        loaded_at_field: evt_block_time
+      
