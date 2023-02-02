@@ -3,7 +3,7 @@
     , alias = 'first_funded_by'
     , materialized = 'incremental'
     , file_format = 'delta'
-    , incremental_strategy = 'merge'
+    , incremental_strategy = 'append'
     , unique_key = ['address']
     )
 }}
@@ -14,12 +14,12 @@ SELECT 'arbitrum' AS blokchain
     , MIN(a.block_time) AS block_time
     , MIN(a.block_number) AS block_number
     , MIN(a.tx_hash) AS tx_hash
-FROM {{ source('ethereum', 'traces') }} a
+FROM {{ source('arbitrum', 'traces') }} a
 JOIN
 (
     SELECT et.to
         , MIN(et.block_number) AS first_block
-    FROM {{ source('ethereum', 'traces') }} et
+    FROM {{ source('arbitrum', 'traces') }} et
     {% if is_incremental() %}
     LEFT ANTI JOIN {{this}} ffb
         ON et.to = ffb.address

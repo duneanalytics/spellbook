@@ -3,7 +3,7 @@
     , alias = 'first_funded_by'
     , materialized = 'incremental'
     , file_format = 'delta'
-    , incremental_strategy = 'merge'
+    , incremental_strategy = 'append'
     , unique_key = ['address']
     )
 }}

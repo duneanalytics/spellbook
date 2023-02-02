@@ -278,37 +278,26 @@ models:
 
     addresses_events:
       +schema: addresses_events
-      +materialized: table
       arbitrum:
         +schema: addresses_events_arbitrum
-        +materialized: table
       avalanche_c:
         +schema: addresses_events_avalanche_c
-        +materialized: table
       bnb:
         +schema: addresses_events_bnb
-        +materialized: table
       ethereum:
         +schema: addresses_events_ethereum
-        +materialized: table
       fantom:
         +schema: addresses_events_fantom
-        +materialized: table
       gnosis:
         +schema: addresses_events_gnosis
-        +materialized: table
       optimism:
         +schema: addresses_events_optimism
-        +materialized: table
       polygon:
         +schema: addresses_events_polygon
-        +materialized: table
     addresses_events_testnets:
       +schema: addresses_events_testnets
-      +materialized: table
       goerli:
         +schema: addresses_events_testnets_goerli
-        +materialized: table
 
     aztec:
       +schema: aztec
