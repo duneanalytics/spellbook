@@ -112,7 +112,7 @@ prof_data as (
 
 SELECT 
     d.day as block_date, 
-    prof.nft_contract_address, 
+    d.nft_contract_address, 
     COALESCE(prof.currency_volume, 0) as currency_volume,
     COALESCE(prof.trades, 0) as trades, 
     COALESCE(prof.fifth_percentile, 0) as fifth_percentile,
