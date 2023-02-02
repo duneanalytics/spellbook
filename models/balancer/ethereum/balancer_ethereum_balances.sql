@@ -1,12 +1,18 @@
 {{
     config(
         alias='balances',
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['day', 'pool', 'token'],
+        post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "balancer",
                                     \'["metacrypto", "jacektrocinski"]\') }}'
     ) 
 }}
+
+{% set project_start_date = '2020-01-01' %}
 
 {% set balancer_contract = "0xba12222222228d8ba445958a75a0704d566bf2c8" %}
 
@@ -19,23 +25,49 @@ joins AS (
     SELECT p.pools as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, SUM(value) AS amount
     FROM {{ source('erc20_ethereum', 'evt_transfer') }} e
     INNER JOIN pools p ON e.`to` = p.pools
+    WHERE
+        {% if not is_incremental() %}
+        e.evt_block_time >= '{{ project_start_date }}'
+        {% endif %}
+        {% if is_incremental() %}
+        AND e.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     GROUP BY 1, 2, 3
     UNION ALL
     SELECT e.`to` as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, SUM(value) AS amount
     FROM {{ source('erc20_ethereum', 'evt_transfer') }} e
     WHERE e.`to` = '{{balancer_contract}}'
+        {% if not is_incremental() %}
+        AND e.evt_block_time >= '{{ project_start_date }}'
+        {% endif %}
+        {% if is_incremental() %}
+        AND e.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     GROUP BY 1, 2, 3
 ),
 
 exits AS (
     SELECT p.pools as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, -SUM(value) AS amount
     FROM {{ source('erc20_ethereum', 'evt_transfer') }} e
-    INNER JOIN pools p ON e.`from` = p.pools   
+    INNER JOIN pools p ON e.`from` = p.pools
+    WHERE
+        {% if not is_incremental() %}
+        e.evt_block_time >= '{{ project_start_date }}'
+        {% endif %}
+        {% if is_incremental() %}
+        AND e.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     GROUP BY 1, 2, 3
     UNION ALL
     SELECT e.`from` as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, -SUM(value) AS amount
     FROM {{ source('erc20_ethereum', 'evt_transfer') }} e
     WHERE e.`from` = '{{balancer_contract}}'
+        {% if not is_incremental() %}
+        AND e.evt_block_time >= '{{ project_start_date }}'
+        {% endif %}
+        {% if is_incremental() %}
+        AND e.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     GROUP BY 1, 2, 3
 ),
 
@@ -60,7 +92,7 @@ cumulative_balance_by_token AS (
 ),
 
 calendar AS (
-    SELECT explode(sequence(to_date('2020-01-01'), current_date, interval 1 day)) AS day
+    SELECT explode(sequence(to_date('{{ project_start_date }}'), current_date, interval 1 day)) AS day
 ),
 
 running_cumulative_balance_by_token AS (
