@@ -687,7 +687,7 @@ VALUES
     ("unfi-unifi-protocol", "ethereum", "UNFI", "0x441761326490cacf7af299725b6292597ee822c2", 18),
     ("uni-uniswap", "ethereum", "UNI", "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984", 18),
     ("uniq-uniqly", "ethereum", "UNIQ", "0x3758e00b100876c854636ef8db61988931bb8025", 18),
-    ("up-unifi-protocol", "ethereum", "UP", "0xb6c5c839cef46082a2b51164e8db649c121f147e", 18),
+    --("up-unifi-protocol", "ethereum", "UP", "0xb6c5c839cef46082a2b51164e8db649c121f147e", 18), broken price feed
     ("usdc-usd-coin", "ethereum", "USDC", "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48", 6),
     ("usdn-neutrino-usd", "ethereum", "USDN", "0x674c6ad92fd080e4004b2312b45f796a192d27a0", 18),
     ("usdt-tether", "ethereum", "USDT", "0xdac17f958d2ee523a2206206994597c13d831ec7", 6),
