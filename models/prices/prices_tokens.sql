@@ -644,7 +644,7 @@ VALUES
     ("snt-status", "ethereum", "SNT", "0x744d70fdbe2ba4cf95131626614a1763df805b9e", 18),
     ("sos-opendao", "ethereum", "SOS", "0x3b484b82567a09e2588a13d54d032153f0c0aee0", 18),
     ("spank-spankchain", "ethereum", "SPANK", "0x42d6622dece394b54999fbd73d108123806f6a18", 18),
-    ("spell-spell-token", "ethereum", "SPELL", "0x090185f2135308bad17527004364ebcc2d37e5f6", 18),
+    --("spell-spell-token", "ethereum", "SPELL", "0x090185f2135308bad17527004364ebcc2d37e5f6", 18),
     ("srm-serum", "ethereum", "SRM", "0x476c5e26a75bd202a9683ffd34359c0cc15be0ff", 6),
     ("srn-sirin-labs-token", "ethereum", "SRN", "0x68d57c9a1c35f63e2c83ee8e49a64e9d70528d25", 18),
     ("stake-xdai-stake", "ethereum", "STAKE", "0x0ae055097c6d159879521c384f1d2123d1f195e6", 18),
