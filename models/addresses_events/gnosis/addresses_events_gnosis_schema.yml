@@ -9,7 +9,7 @@ models:
       contributors: hildobby
     config:
       tags: ['table', 'funded', 'addresses_events', 'gnosis']
-    description: "Table showing who first funded each ArbiGnosistrum address in xDAI"
+    description: "Table showing who first funded each Gnosis address in xDAI"
     columns:
       - name: address
         description: "Concerned Gnosis address"
