@@ -12,7 +12,7 @@ WITH
 sales as (
     SELECT 
         nft_contract_address, 
-        nft_token_id, 
+        token_id as nft_token_id, 
         seller, 
         amount_original as price, 
         tx_hash, 
