@@ -13,6 +13,7 @@
     )
 }}
 
+{% set project_start_date = '2022-05-23' %}
 
 with v2 as (
     select
@@ -28,6 +29,9 @@ with v2 as (
     from {{ source('balancer_v2_optimism', 'Vault_evt_Swap') }} s
     inner join {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} p
     on s.poolId = p.poolId
+    {% if not is_incremental() %}
+        where s.evt_block_time >= '{{project_start_date}}'
+    {% endif %}
     {% if is_incremental() %}
         where s.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
@@ -35,6 +39,9 @@ with v2 as (
 prices as (
     select * from {{ source('prices', 'usd') }}
     where blockchain = 'optimism'
+    {% if not is_incremental() %}
+        and minute >= '{{project_start_date}}'
+    {% endif %}
     {% if is_incremental() %}
         and minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}

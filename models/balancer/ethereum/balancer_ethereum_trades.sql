@@ -13,6 +13,7 @@
     )
 }}
 
+{% set project_start_date = '2020-03-13' %}
 
 with v1 as (
     select
@@ -26,6 +27,9 @@ with v1 as (
         evt_tx_hash,
         evt_index
     from {{ source('balancer_v1_ethereum', 'BPool_evt_LOG_SWAP') }}
+    {% if not is_incremental() %}
+        where s.evt_block_time >= '{{project_start_date}}'
+    {% endif %}
     {% if is_incremental() %}
         where evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
@@ -44,6 +48,9 @@ v2 as (
     from {{ source('balancer_v2_ethereum', 'Vault_evt_Swap') }} s
     inner join {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} p
     on s.poolId = p.poolId
+    {% if not is_incremental() %}
+        where s.evt_block_time >= '{{project_start_date}}'
+    {% endif %}
     {% if is_incremental() %}
         where s.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
@@ -51,6 +58,9 @@ v2 as (
 prices as (
     select * from {{ source('prices', 'usd') }}
     where blockchain = 'ethereum'
+    {% if not is_incremental() %}
+        and minute >= '{{project_start_date}}'
+    {% endif %}
     {% if is_incremental() %}
         and minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
