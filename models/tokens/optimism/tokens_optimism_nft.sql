@@ -241,5 +241,12 @@ FROM
 ,('0x1e04c33cd5a015e1ced0e3ecd8bdc42902512124', 'Optimism Subscriber NFTs', 'erc1155')
 ,('0xe73b33d6A88A703065E0c22E042b18fd3c4EEDC5', 'Save Pakistan', 'erc1155')
 ,('0x1ff8382e43f5cb5064044c2833ca4f1070da5d51', 'Mutant Optimistic Ape Yacht Club', 'erc721')
+,('0x54b743d6055e3bbbf13eb2c748a3783516156e5b', 'InfinityKeysAchievement', 'erc1155')
+,('0x384dADB90a195e52ceD97328cf08DD5666Ab1474', 'Catens', 'erc721')
+,('0x6bA97CF6023cc1cC56cCc9CB871612b3D7CD09CA', 'Optimism Furry', 'erc721')
+,('0x19Cf19bf250BbA55583713085850C4FcF94f3EA8', 'Blockchain NFT V3', 'erc721')
+,('0x194f10d4976F033F0e8802383c9a2997B92A1354', 'Optimistic Cat', 'erc721')
+,('0x67709f880F66E15f6aE93b1D737f8d8D9FB9827f', 'Santa Oppa Bear', 'erc721')
+,('0x00e3aa03e47c32397a94509e50b0558988c0d04e', 'L2NFTOG', 'erc721')
 
 ) as temp_table (contract_address, name, standard)
