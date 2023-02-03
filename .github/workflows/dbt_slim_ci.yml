@@ -34,7 +34,7 @@ jobs:
         run: "/runner/change_schema.sh git_$GIT_SHA"
 
       - name: Get latest manifest
-        run: "aws s3 s3://manifest-spellbook/manifest.json cp manifest.json"
+        run: "aws s3 cp s3://manifest-spellbook/manifest.json cp manifest.json"
 
       - name: dbt dependencies
         run: "dbt deps"
