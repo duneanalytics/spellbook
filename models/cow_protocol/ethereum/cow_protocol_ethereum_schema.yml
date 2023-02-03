@@ -283,7 +283,7 @@ models:
     description: >
       The query contains several measurments between the quoted price on cowswap and 
       the executed price. The price difference between the quote and the actual price 
-      is called price improvement and is measured as percentage or in absolte dollars.
+      is called price improvement and is measured as percentage or in absolute dollars.
     columns:
       - *order_uid
       - *block_time
