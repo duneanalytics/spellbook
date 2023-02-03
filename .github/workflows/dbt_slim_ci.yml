@@ -46,7 +46,7 @@ jobs:
           aws-region: eu-west-1
 
       - name: Get latest manifest
-        run: "aws s3 cp s3://manifest-spellbook/manifest.json cp manifest.json"
+        run: "aws s3 cp s3://manifest-spellbook/manifest.json manifest.json"
 
       - name: dbt dependencies
         run: "dbt deps"
