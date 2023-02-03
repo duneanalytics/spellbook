@@ -182,8 +182,9 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
-            - seller
+            - price
             - nft_token_id
+            - nft_contract_address
     columns:
       - name: nft_contract_address
         description: "nft contract address"
