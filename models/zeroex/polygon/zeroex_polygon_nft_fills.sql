@@ -102,23 +102,23 @@ SELECT a.evt_block_time                                      AS block_time
      , try_cast(date_trunc('day', a.evt_block_time) AS date) AS block_date
      , a.evt_index
      , a.evt_tx_hash                                         AS tx_hash
-     , a.maker                                              as buyer
-    , a.taker                                                AS seller
+     , a.maker                                              
+     , a.taker
      , a.matcher
-     , a.nft_address as nft_contract_address
-     , a.nft_id as token_id 
+     , a.nft_address
+     , a.nft_id
      , a.nft_cnt as number_of_items
-     , a.label as token_standard
+     , a.label
      , a.price_label
      , a.token
-     , a.token_amount_raw as amount_raw
+     , a.token_amount_raw
      , CASE
             WHEN token = '0x0000000000000000000000000000000000001010'
             THEN 'MATIC'
             ELSE b.symbol
-      END                                                    AS currency_symbol
-     , b.price * (a.token_amount_raw / pow(10, b.decimals))  AS amount_usd
-     , (a.token_amount_raw / pow(10, b.decimals))            AS amount_original
+      END                                                    AS symbol
+     , b.price * (a.token_amount_raw / pow(10, b.decimals))  AS price_usd
+     , (a.token_amount_raw / pow(10, b.decimals))            AS token_amount
      , c.name                                                AS project_name
 FROM tbl_cte_transaction AS a
 LEFT JOIN tbl_usd AS b
