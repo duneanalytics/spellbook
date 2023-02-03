@@ -10,6 +10,16 @@ models:
     config:
       tags: ['table', 'funded', 'addresses_events', 'bnb']
     description: "Table showing who first funded each BNB address in BNB"
+    tests:
+      seed_file: ref('first_funded_by_seed')
+      filter:
+        blockchain: bnb
+      match_columns:
+        - address
+      check_columns:
+        - first_funded_by
+        - block_number
+        - tx_hash
     columns:
       - name: address
         description: "Concerned BNB address"

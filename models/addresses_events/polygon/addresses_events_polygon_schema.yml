@@ -10,6 +10,16 @@ models:
     config:
       tags: ['table', 'funded', 'addresses_events', 'polygon']
     description: "Table showing who first funded each Polygon address in MATIC"
+    tests:
+      seed_file: ref('first_funded_by_seed')
+      filter:
+        blockchain: polygon
+      match_columns:
+        - address
+      check_columns:
+        - first_funded_by
+        - block_number
+        - tx_hash
     columns:
       - name: address
         description: "Concerned Polygon address"
