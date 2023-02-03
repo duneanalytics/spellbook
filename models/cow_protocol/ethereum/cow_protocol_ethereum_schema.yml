@@ -216,12 +216,13 @@ models:
     columns:
       - *tx_hash
       - *solver_address
+      - *block_number
       - &cow_reward
         name: cow_reward
-        description: ""
+        description: "COW token reward distributed to solver for settling order"
       - &surplus_fee
         name: surplus_fee
-        description: ""
+        description: "Fee taken from limit orders"
       - *order_uid
   - name: cow_protocol_ethereum_eth_flow_orders
     meta:
