@@ -1,5 +1,5 @@
 {{ config(alias='price_improvement',
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cow_protocol",
                                     \'["bh2smith", "gentrexha", "josojo"]\') }}'
@@ -8,6 +8,7 @@
 with 
 raw_data as (
     select
+    block_number,
     block_time,
     case when (flags % 2) = 0 then 'SELL' else 'BUY' end  as order_type,
     limit_buy_amount,
@@ -35,7 +36,7 @@ where slippage_bips is not null
 ),
 
 results as (
-    select *,
+    select order_uid, block_number, block_time, buy_quote, sell_quote, slippage_bips, usd_value,
         CASE
             WHEN order_type = 'SELL' THEN (atoms_bought - (limit_buy_amount / buy_tolerance))
             ELSE ((limit_sell_amount / sell_tolerance) - atoms_sold)

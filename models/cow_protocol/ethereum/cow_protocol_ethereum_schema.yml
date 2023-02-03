@@ -285,31 +285,15 @@ models:
       the executed price. The price difference between the quote and the actual price 
       is called price improvement and is measured as percentage or in absolte dollars.
     columns:
+      - *order_uid
       - *block_time
-      - &order_type
-        name: order_type
-      - *limit_buy_amount
+      - *block_number
       - &buy_quote
         name: buy_quote
-      - *atoms_bought
-      - *units_bought
-      - &buy_decimals
-        name: buy_decimals
-      - *limit_sell_amount
       - &sell_quote
         name: sell_quote
-      - *atoms_sold
-      - *units_sold
-      - *sell_price
-      - &sell_decimals
-        name: sell_decimals
-      - *usd_value
       - *slippage_bips
-      - &buy_tolerance
-        name: buy_tolerance
-      - &sell_tolerance
-        name: sell_tolerance
-      - *order_uid
+      - *usd_value
       - &surplus_atoms
         name: surplus_atoms
       - &surplus_percentage
