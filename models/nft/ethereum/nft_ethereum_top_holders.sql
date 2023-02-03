@@ -7,7 +7,7 @@
       )
   }}
 
-WTIH 
+WITH 
 
 erc1155_balances as (
     SELECT 
