@@ -35,7 +35,7 @@ erc721_balances as (
     SELECT 
         wallet_address,
         token_address as nft_contract_address,
-        COUNT(*) as balance 
+        SUM(1) as balance 
     FROM 
     {{ ref('balances_ethereum_erc721_latest') }}
     GROUP BY 1, 2
