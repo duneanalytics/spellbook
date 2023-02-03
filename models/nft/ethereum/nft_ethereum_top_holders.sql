@@ -25,7 +25,7 @@ erc1155_ranked as (
         nft_contract_address, 
         balance, 
         SUM(balance) OVER (PARTITION BY nft_contract_address) as total_supply, 
-        ROW_NUMBER() OVER (PARTITION BY nft_contract_address ORDER BY balance) as rn 
+        ROW_NUMBER() OVER (PARTITION BY nft_contract_address ORDER BY balance DESC) as rn 
     FROM 
     erc1155_balances
     QUALIFY rn <= 50 
@@ -47,7 +47,7 @@ erc721_ranked as (
         nft_contract_address, 
         balance, 
         SUM(balance) OVER (PARTITION BY nft_contract_address) as total_supply, 
-        ROW_NUMBER() OVER (PARTITION BY nft_contract_address ORDER BY balance) as rn 
+        ROW_NUMBER() OVER (PARTITION BY nft_contract_address ORDER BY balance DESC) as rn 
     FROM 
     erc721_balances
     QUALIFY rn <= 50 
