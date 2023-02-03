@@ -631,7 +631,7 @@ WITH dao_wallet AS (
     FROM interest_accruals_3
     LEFT JOIN ilk_list_labeled
         ON interest_accruals_3.ilk = ilk_list_labeled.ilk
-        AND interest_accruals_3.ts::DATE BETWEEN COALESCE(ilk_list_labeled.begin_dt, '2000-01-01') AND COALESCE(ilk_list_labeled.end_dt, '2222-12-31') --if null, ensure its not restrictive
+        AND CAST(interest_accruals_3.ts AS DATE) BETWEEN COALESCE(ilk_list_labeled.begin_dt, '2000-01-01') AND COALESCE(ilk_list_labeled.end_dt, '2222-12-31') --if null, ensure its not restrictive
     GROUP BY 1,2,3,5
 )
 , opex_suck_hashes AS (
@@ -1345,12 +1345,12 @@ WITH dao_wallet AS (
     ) unioned
     USING (code)
     LEFT JOIN token_prices
-    ON unioned.ts::DATE = token_prices.ts::DATE
+    ON CAST(unioned.ts AS DATE) = CAST(token_prices.ts AS DATE)
     AND EXTRACT(HOUR FROM unioned.ts) = EXTRACT(HOUR FROM token_prices.ts)
     AND EXTRACT(MINUTE FROM unioned.ts) = EXTRACT(MINUTE FROM token_prices.ts)
     AND unioned.token = token_prices.token
     LEFT JOIN eth_prices
-    ON unioned.ts::DATE = eth_prices.ts::DATE
+    ON CAST(unioned.ts AS DATE) = CAST(eth_prices.ts AS DATE)
     AND EXTRACT(HOUR FROM unioned.ts) = EXTRACT(HOUR FROM eth_prices.ts)
     AND EXTRACT(MINUTE FROM unioned.ts) = EXTRACT(MINUTE FROM eth_prices.ts)
     WHERE value IS NOT NULL
