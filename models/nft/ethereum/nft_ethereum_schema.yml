@@ -168,3 +168,32 @@ models:
         description: "Name of protocol that routed this trade using the aggregator, is NULL if it's the same as aggregator_name"
       - name: hash_marker_size
         description: "Number of characters the hash_marker is made of, can be useful on joins"
+
+  - name: nft_ethereum_top_sales
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: Henrystats
+    config:
+      tags: ['nft', 'ethereum', 'top sales']
+    description: >
+        Top 50 NFT sales
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - seller
+            - nft_token_id
+    columns:
+      - name: nft_contract_address
+        description: "nft contract address"
+      - name: nft_token_id
+        description: "nft token id"
+      - name: seller
+        description: "seller address"
+      - name: price
+        description: "value of trade in eth"
+      - name: tx_hash
+        description: "Unique trade blockchain tx_hash"
+      - name: rn
+        description: "row number"
