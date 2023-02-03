@@ -306,5 +306,5 @@ loans_with_prices as (
     where not price is null
 )
 
-select *
-from loans_with_prices
+select l.*, coalesce(t.name, 'Awesome NFT') as collectionName 
+from loans_with_prices l left join {{ source('tokens','nft') }} t on l.collectionContract=t.contract_address

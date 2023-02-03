@@ -21,6 +21,8 @@ models:
         description: "Lender's address"
       - name: collectionContract
         description: "Contract address of the NFT collection used for collateral."
+      - name: collectionName
+        description: "Name of the NFT collection used for collateral."
       - name: tokenId
         description: "Token ID from the NFT collection used for collateral."
       - name: apr
