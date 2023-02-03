@@ -24,6 +24,12 @@ clean-targets: # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
 
+# Configuring tests
+# Full documentation: https://docs.getdbt.com/reference/test-configs
+tests:
+  spellbook:
+    +store_failures: true  # store failures for all tests
+
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
@@ -353,7 +359,7 @@ models:
       +schema: safe
       ethereum:
         +schema: safe_ethereum
-      optimism: 
+      optimism:
         +schema: safe_optimism
 
     nftrade:
@@ -630,10 +636,10 @@ models:
       #   +schema: hop_protocol_gnosis
       # gnosis2:
       #   +schema: hop_gnosis
-    
+
     chain_info:
       +schema: chain_info
-    
+
     bridge:
       +schema: bridge
       optimism:
