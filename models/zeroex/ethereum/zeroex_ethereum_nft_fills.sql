@@ -107,7 +107,7 @@ SELECT a.evt_block_time                                      AS block_time
      , a.matcher
      , a.nft_address
      , a.nft_id
-     , a.nft_cnt
+     , a.nft_cnt as number_of_items
      , a.label
      , a.price_label
      , a.token
