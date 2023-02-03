@@ -17,7 +17,7 @@ sources:
       error_after: { count: 24, period: hour }
     tables:
       - name: nft
-        loaded_at_field: blockhchain
+        loaded_at_field: blockchain
 
   - name: nftfi_ethereum
     description: "nftfi ethereum decoded events"
