@@ -168,3 +168,31 @@ models:
         description: "Name of protocol that routed this trade using the aggregator, is NULL if it's the same as aggregator_name"
       - name: hash_marker_size
         description: "Number of characters the hash_marker is made of, can be useful on joins"
+  
+  - name: nft_ethereum_top_holders
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: Henrystats
+    config:
+      tags: ['nft', 'ethereum', 'top Holder']
+    description: >
+        Top 50 NFT Holders
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - nft_contract_address
+            - wallet_address
+    columns:
+      - name: nft_contract_address
+        description: "nft contract address"
+      - name: wallet_address
+        description: "Wallet Address that Holds the nft"
+      - name: balance
+        description: "Number of NFTs held"
+      - name: supply_share
+        description: "Share of NFT Total Supply"
+      - name: supply
+        description: "NFT Total Supply"
+      - name: rn
+        description: "row number"

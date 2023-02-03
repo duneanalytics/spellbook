@@ -17,3 +17,4 @@ SELECT
 FROM {{ ref('transfers_ethereum_erc1155_rolling_hour') }}
 LEFT JOIN {{ ref('tokens_nft') }} nft_tokens ON nft_tokens.contract_address = token_address
 AND nft_tokens.blockchain = 'ethereum'
+WHERE recency_index = 1
