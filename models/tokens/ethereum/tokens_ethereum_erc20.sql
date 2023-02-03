@@ -20745,7 +20745,7 @@ FROM (VALUES
         ('0xe1747f4d30479d7a2dcfea5af69fb86b8f71ccec', 'yvCurve-TRYB3POOL-f-f', 18),
         ('0xef27252b567f6b3fe35b34a85be322917abe524a', 'FLONA', 18),
         -- Using the "commonly accepted symbol and decimals for this OG token
-        ('0xbb9bc244d798123fde783fcc1c72d3bb8c189413', 'TheDAO', 16)
+        ('0xbb9bc244d798123fde783fcc1c72d3bb8c189413', 'TheDAO', 16),
         ('0x04b727c7e246ca70d496ecf52e6b6280f3c8077d', 'APEUSDBP3CRV-f', 18),
         ('0x0a58153a0cd1cfaea94ce1f7fdc5d7e679eca936', 'IM', 18),
         ('0x119d5f9771809ae6b1fac2c282dbd30760a93f70', 'WOOD', 18),
