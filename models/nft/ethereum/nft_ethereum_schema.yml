@@ -185,6 +185,7 @@ models:
             - price
             - nft_token_id
             - nft_contract_address
+            - rn
     columns:
       - name: nft_contract_address
         description: "nft contract address"
