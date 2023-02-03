@@ -28,7 +28,7 @@ with v1 as (
         evt_index
     from {{ source('balancer_v1_ethereum', 'BPool_evt_LOG_SWAP') }}
     {% if not is_incremental() %}
-        where s.evt_block_time >= '{{project_start_date}}'
+        where evt_block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
         where evt_block_time >= date_trunc("day", now() - interval '1 week')
