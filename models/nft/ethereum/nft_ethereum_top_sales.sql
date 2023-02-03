@@ -34,4 +34,3 @@ SELECT
 FROM 
 sales 
 ORDER BY rn DESC 
-;
