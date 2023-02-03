@@ -20743,5 +20743,32 @@ FROM (VALUES
         ('0xdc63269ea166b70d4780b3a11f5c825c2b761b01', 'PAW', 18),
         ('0xdd0ef0b2de3efec847a79b4ce4de52c4bb98f488', 'DAO9', 18),
         ('0xe1747f4d30479d7a2dcfea5af69fb86b8f71ccec', 'yvCurve-TRYB3POOL-f-f', 18),
-        ('0xef27252b567f6b3fe35b34a85be322917abe524a', 'FLONA', 18)
+        ('0xef27252b567f6b3fe35b34a85be322917abe524a', 'FLONA', 18),
+        -- Using the "commonly accepted symbol and decimals for this OG token
+        ('0xbb9bc244d798123fde783fcc1c72d3bb8c189413', 'TheDAO', 16)
+        ('0x04b727c7e246ca70d496ecf52e6b6280f3c8077d', 'APEUSDBP3CRV-f', 18),
+        ('0x0a58153a0cd1cfaea94ce1f7fdc5d7e679eca936', 'IM', 18),
+        ('0x119d5f9771809ae6b1fac2c282dbd30760a93f70', 'WOOD', 18),
+        ('0x131bf51e864024df1982f2cd7b1c786e1a005152', 'uP', 18),
+        ('0x1e2c4fb7ede391d116e6b41cd0608260e8801d59', 'bCSPX', 18),
+        ('0x1e8e29ca51363d923725ab9dac73bd7e9c440f71', 'MTAO', 9),
+        ('0x269895a3df4d73b077fc823dd6da1b95f72aaf9b', 'sKRW', 18),
+        ('0x2863a328a0b7fc6040f11614fa0728587db8e353', 'multibtc3CRV-f', 18),
+        ('0x2d011adf89f0576c9b722c28269fcb5d50c2d179', 'B-sdBAL-STABLE', 18),
+        ('0x2e516ba5bf3b7ee47fb99b09eadb60bde80a82e0', 'EGGS', 18),
+        ('0x5331009b82853e9fb711bc0b300e1b374724adac', 'yvCurve-sdYFI-YFI-f', 18),
+        ('0x62b2ca80fed2ad97920dd07cbd2772e87ecc0adb', 'FAI', 9),
+        ('0x685fb6960ea7f7b24f02e17c8d893b8c33239d48', 'SAIKO', 9),
+        ('0x6bc08509b36a98e829dffad49fde5e412645d0a3', 'WOOF', 18),
+        ('0x6fc73113fc1afab4c28d3dd4c537a1da6045d47d', 'TRENDAI', 18),
+        ('0x77e06c9eccf2e797fd462a92b6d7642ef85b0a44', 'wTAO', 9),
+        ('0x93ef1ea305d11a9b2a3ebb9bb4fcc34695292e7d', 'qETH', 18),
+        ('0x967b0c95295ead8faef70d26a7846aecd349aaff', '$HACHI', 18),
+        ('0xa1f65a27591b8419cb58ec32fae02d79283fd3fc', '$SHIPAD', 18),
+        ('0xa89060952228c8d2a0019a0b949e90e2fe0a70ef', 'WOOF', 9),
+        ('0xc8b66130c6827380cd853853926fa3238c7f606a', 'BOBA', 18),
+        ('0xc9393609a47f5744ce98369208b9dc66224e6b5d', 'GOS', 6),
+        ('0xd347e7a3ddf5ce4c42e19a4f30eeaa761795c72b', 'yvCurve-ibEUR-f', 18),
+        ('0xf05050032db6b1aabf71fa94ffb658325c33f4b3', '$PONZI', 18),
+        ('0xfa99e1c98868f392704b7395ece5d66cb9041bc8', 'Shy', 18)
      ) AS temp_table (contract_address, symbol, decimals)
