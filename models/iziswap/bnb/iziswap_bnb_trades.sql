@@ -68,7 +68,7 @@ inner join {{ source('bnb', 'transactions') }} tx
     and tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and tx.block_time = date_trunc("day", now() - interval '1 week')
+    and tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 -- bought tokens
 left join {{ ref('tokens_erc20') }} erc20_b

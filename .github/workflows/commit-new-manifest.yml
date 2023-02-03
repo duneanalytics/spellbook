@@ -1,0 +1,41 @@
+name: Update Manifest
+
+on:
+  pull_request:
+    types: [closed]
+
+concurrency:
+  group:  ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  commit_manifest:
+    runs-on: [ self-hosted, linux, spellbook ]
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+    - uses: actions/setup-python@v3
+    - name: Checkout main branch
+      uses: actions/checkout@v2
+      with:
+        ref: main
+
+    - id: install-aws-cli
+      uses: unfor19/install-aws-cli-action@v1
+
+    - name: AWS Credentials
+      uses: aws-actions/configure-aws-credentials@master
+      with:
+        role-to-assume: arn:aws:iam::118330671040:role/spellbook-ci
+        aws-region: eu-west-1
+
+    - name: dbt dependencies
+      run: "dbt deps"
+
+    - name: dbt compile to create prod manifest from main
+      run: "dbt compile --target-path ."
+
+    - name: upload manifest
+      run: "aws s3 cp manifest.json s3://manifest-spellbook/manifest.json"
