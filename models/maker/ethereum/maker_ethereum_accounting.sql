@@ -201,11 +201,11 @@ WITH dao_wallet AS (
     (13410, 'Assets', 'Liquidity Pool', 'PSM', 'PSM', 'Non-Yielding Stablecoin'),
     (13411, 'Assets', 'Liquidity Pool', 'PSM', 'PSM', 'Yielding Stablecoin'),
     (14620, 'Assets', 'Proprietary Treasury', 'Holdings', 'Treasury Assets', 'DS Pause Proxy'),
-    (19999, 'Assets', 'Mark to Market Plugs', 'Mark to Market Plugs', 'Mark to Market Plugs', 'Mark to Market Plugs'),
+    (19999, 'Assets', 'Currency Translation to Presentation Token', 'Currency Translation to Presentation Token', 'Currency Translation to Presentation Token', 'Currency Translation to Presentation Token'),
 
     (21110, 'Liabilities', 'Stablecoin', 'Circulating', 'Interest-bearing', 'Dai'),
     (21120, 'Liabilities', 'Stablecoin', 'Circulating', 'Non-interest bearing', 'Dai'),
-    (29999, 'Liabilities', 'Mark to Market Plugs', 'Mark to Market Plugs', 'Mark to Market Plugs', 'Mark to Market Plugs'),
+    (29999, 'Liabilities', 'Currency Translation to Presentation Token', 'Currency Translation to Presentation Token', 'Currency Translation to Presentation Token', 'Currency Translation to Presentation Token'),
 
     (31110, 'Equity', 'Protocol Surplus', 'Gross Interest Revenues', 'ETH', 'ETH SF'),
     (31120, 'Equity', 'Protocol Surplus', 'Gross Interest Revenues', 'BTC', 'BTC SF'),
@@ -234,11 +234,11 @@ WITH dao_wallet AS (
     (31720, 'Equity', 'Protocol Surplus', 'Indirect Expenses', 'Workforce Expenses', 'Workforce Expenses'),
     (31730, 'Equity', 'Protocol Surplus', 'Indirect Expenses', 'Workforce Expenses', 'Returned Workforce Expenses'),
     (31740, 'Equity', 'Protocol Surplus', 'Indirect Expenses', 'Direct to Third Party Expenses', 'Direct to Third Party Expenses'),
-    (31810, 'Equity', 'Protocol Surplus', 'MKR Token Expenses', 'MKR Token Expenses', 'MKR Token Expenses'),
+    (31810, 'Equity', 'Reserved MKR Surplus', 'MKR Token Expenses', 'Direct MKR Token Expenses', 'Direct MKR Token Expenses'),
     (32810, 'Equity', 'Proprietary Treasury', 'Holdings', 'Treasury Assets', 'DS Pause Proxy'),
-    (33110, 'Equity', 'Reserved MKR Surplus', 'MKR Vests Created or Yanked', 'MKR Vests Created or Yanked', 'MKR Vests Created or Yanked'),
+    (33110, 'Equity', 'Reserved MKR Surplus', 'MKR Token Expenses', 'Vested MKR Token Expenses', 'Vested MKR Token Expenses'),
     (34110, 'Equity', 'MKR Contra Equity', 'MKR Contra Equity', 'MKR Contra Equity', 'MKR Contra Equity'), 
-    (39999, 'Equity', 'Mark to Market Plugs', 'Mark to Market Plugs', 'Mark to Market Plugs', 'Mark to Market Plugs')
+    (39999, 'Equity', 'Currency Translation to Presentation Token', 'Currency Translation to Presentation Token', 'Currency Translation to Presentation Token', 'Currency Translation to Presentation Token')
 )
 
 -- ********** Calculation Tables *********** 
@@ -1385,8 +1385,8 @@ WITH dao_wallet AS (
         , token
         , descriptor
         , ilk
-        , dai_value
-        , eth_value
+        , CASE WHEN descriptor = 'MKR Vest Creates/Yanks' THEN 0 ELSE dai_value END AS dai_value
+        , CASE WHEN descriptor = 'MKR Vest Creates/Yanks' THEN 0 ELSE eth_value END AS eth_value
         , DATE(ts) AS dt
     FROM with_prices
     WHERE RIGHT(code,4) <> 9999
