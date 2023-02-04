@@ -7,14 +7,14 @@
         )
 }}
 
-{% set uniswap_models = [
+{% set beets_models = [
 'beethoven_x_optimism_trades'
 ] %}
 
 
 SELECT *
 FROM (
-    {% for dex_model in uniswap_models %}
+    {% for beet_model in beets_models %}
     SELECT
         blockchain,
         project,
@@ -39,7 +39,7 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ ref(dex_model) }}
+    FROM {{ ref(beet_model) }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
