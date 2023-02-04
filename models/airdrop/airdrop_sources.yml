@@ -1,0 +1,79 @@
+version: 2
+
+sources:
+  - name: op_optimism
+    description: "Decoded tables related to Optimism airdrop"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: MerkleDistributor_evt_Claimed
+        loaded_at_field: evt_block_time
+  
+  - name: apecoin_ethereum
+    description: "Decoded tables related to Apecoin airdrop"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: AirdropGrapesToken_evt_AlphaClaimed
+        loaded_at_field: evt_block_time  
+      - name: AirdropGrapesToken_evt_BetaClaimed
+        loaded_at_field: evt_block_time 
+      - name: AirdropGrapesToken_evt_GammaClaimed
+        loaded_at_field: evt_block_time 
+  
+  - name: uniswap_ethereum
+    description: "Decoded tables related to Uniswap airdrop"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: MerkleDistributor_evt_Claimed
+        loaded_at_field: evt_block_time  
+  
+  - name: ethereumnameservice_ethereum
+    description: "Decoded tables related to ENS airdrop"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: ENSToken_evt_Claim
+        loaded_at_field: evt_block_time  
+  
+  - name: hop_protocol_ethereum
+    description: "Decoded tables related to Hop airdrop"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: HOPToken_evt_Claim
+        loaded_at_field: evt_block_time  
+  
+  - name: looksrare_ethereum
+    description: "Decoded tables related to Looksrare airdrop"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: LooksRareAirdrop_evt_AirdropRewardsClaim
+        loaded_at_field: evt_block_time  
+  
+  - name: velodrome_optimism
+    description: "Decoded tables related to Velodrome airdrop"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: MerkleClaim_evt_Claim
+        loaded_at_field: evt_block_time  
+
+
+  - name: gitcoin_ethereum
+    description: "Decoded tables related to Gitcoin airdrop"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: TokenDistributor_evt_Claimed
+        loaded_at_field: evt_block_time
