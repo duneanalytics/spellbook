@@ -74,7 +74,7 @@ models:
     meta:
       blockchain: optimism
       sector: dex
-      project: ynthetix
+      project: synthetix
       contributors: msilb7
     config:
       tags: ['optimism', 'synthetix','trades', 'dex']

@@ -8,7 +8,7 @@ models:
       project: zipswap
       contributors: msilb7
     config:
-      tags: ['zipswap','trades', 'dex', 'jeff-dude','cross-chain']
+      tags: ['zipswap','trades', 'dex', 'cross-chain']
     description: >
         zipswap trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
