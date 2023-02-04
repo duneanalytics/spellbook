@@ -9,7 +9,7 @@
 
 
 {% set drop_models = [
- ref('airdrop_optimism_op_airdrop1_transfers')
+ ref('op_airdrop1_transfers')
 ] %}
 
 
