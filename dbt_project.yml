@@ -65,6 +65,9 @@ models:
       optimism:
         +schema: airdrop_optimism
         +materialized: table
+      ethereum:
+        +schema: airdrop_ethereum
+        +materialized: table
 
     staking:
       +schema: staking
@@ -677,6 +680,10 @@ models:
       +schema: rocifi
       polygon:
         +schema: rocifi_polygon
+    
+    op_token:
+      optimism:
+        +schema: op_token_optimism
 
 seeds:
   spellbook:
