@@ -12,16 +12,16 @@ models:
     description: "Table showing who first funded each Goerli address in ETH"
     tests:
       - check_seed:
-        seed_file: ref('first_funded_by_seed')
-        filter:
-          blockchain: goerli
-        match_columns:
-          - blockchain
-          - address
-        check_columns:
-          - first_funded_by
-          - block_number
-          - tx_hash
+          seed_file: ref('first_funded_by_seed')
+          filter:
+            blockchain: goerli
+          match_columns:
+            - blockchain
+            - address
+          check_columns:
+            - first_funded_by
+            - block_number
+            - tx_hash
     columns:
       - name: address
         description: "Concerned Goerli address"
