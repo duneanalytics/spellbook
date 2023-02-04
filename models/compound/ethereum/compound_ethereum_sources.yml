@@ -14,14 +14,16 @@ sources:
             description: "DAO governor contract address"
           - &evt_block_number
             name: evt_block_number
+            description: "Event block number"
           - &evt_block_time
             name: evt_block_time
-            description: "UTC event block time of each DAO vote"
+            description: "UTC event block time"
           - &evt_index
             name: evt_index
+            description: "Event index"
           - &evt_tx_hash
             name: evt_tx_hash
-            description: "Unique transaction hash value tied to each vote on the DAO"
+            description: "Event transaction hash"
           - &proposalId
             name: proposalId
           - &reason
@@ -85,3 +87,163 @@ sources:
           - *evt_index
           - *evt_tx_hash
           - *id
+
+      - name: cErc20_evt_Mint
+        loaded_at_field: evt_block_time
+        description: "cErc20 mint events"
+        columns:
+          - *evt_block_time
+          - *evt_block_number
+          - *evt_tx_hash
+          - *evt_index
+          - &ctoken_address
+            name: contract_address
+            description: "cToken contract address"
+          - &minter
+            name: minter
+            description: "Minter of cToken"
+          - &mintTokens
+            name: mintTokens
+            description: "Amount of cTokens minted (including decimal mantissa)"
+          - &mintAmount
+            name: mintAmount
+            description: "Amount of underlying asset (including decimal mantissa)"
+
+      - name: cEther_evt_Mint
+        loaded_at_field: evt_block_time
+        description: "cEther mint events"
+        columns:
+          - *evt_block_time
+          - *evt_block_number
+          - *ctoken_address
+          - *evt_tx_hash
+          - *evt_index
+          - *minter
+          - *mintTokens
+          - *mintAmount
+
+      - name: cErc20_evt_Redeem
+        loaded_at_field: evt_block_time
+        description: "cErc20 redeem events"
+        columns:
+          - *evt_block_time
+          - *evt_block_number
+          - *evt_tx_hash
+          - *evt_index
+          - *ctoken_address
+          - &redeemer
+            name: redeemer
+            description: "Redeemer of cToken"
+          - &redeemTokens
+            name: redeemTokens
+            description: "Amount of cTokens redeemed (including decimal mantissa)"
+          - &redeemAmount
+            name: redeemAmount
+            description: "Amount of underlying asset (including decimal mantissa)"
+
+      - name: cEther_evt_Redeem
+        loaded_at_field: evt_block_time
+        description: "cEther redeem events"
+        columns:
+          - *evt_block_time
+          - *evt_block_number
+          - *ctoken_address
+          - *evt_tx_hash
+          - *evt_index
+          - *redeemer
+          - *redeemTokens
+          - *redeemAmount
+
+      - name: cErc20_evt_Borrow
+        loaded_at_field: evt_block_time
+        description: "cErc20 borrow events"
+        columns:
+          - *evt_block_time
+          - *evt_block_number
+          - *evt_tx_hash
+          - *evt_index
+          - *ctoken_address
+          - &borrower
+            name: borrower
+            description: "Borrower wallet address"
+          - &borrowAmount
+            name: borrowAmount
+            description: "Amount of underlying asset borrowed"
+
+      - name: cEther_evt_Borrow
+        loaded_at_field: evt_block_time
+        description: "cEther borrow events"
+        columns:
+          - *evt_block_time
+          - *evt_block_number
+          - *evt_tx_hash
+          - *evt_index
+          - *ctoken_address
+          - *borrower
+          - *borrowAmount
+
+      - name: cErc20_evt_RepayBorrow
+        loaded_at_field: evt_block_time
+        description: "cErc20 repay borrow events"
+        columns:
+          - *evt_block_time
+          - *evt_block_number
+          - *evt_tx_hash
+          - *evt_index
+          - *ctoken_address
+          - *borrower
+          - &repayAmount
+            name: repayAmount
+            description: "Amount of underlying asset repaid"
+          - &payer
+            name: payer
+            description: "Payer wallet address"
+
+      - name: cEther_evt_RepayBorrow
+        loaded_at_field: evt_block_time
+        description: "cEther repay borrow events"
+        columns:
+          - *evt_block_time
+          - *evt_block_number
+          - *evt_tx_hash
+          - *evt_index
+          - *ctoken_address
+          - *borrower
+          - *repayAmount
+          - *payer
+
+      - name: cErc20_evt_LiquidateBorrow
+        loaded_at_field: evt_block_time
+        description: "cErc20 liquidate borrow events"
+        columns:
+          - *evt_block_time
+          - *evt_block_number
+          - *evt_tx_hash
+          - *evt_index
+          - *ctoken_address
+          - *borrower
+          - *repayAmount
+          - &liquidator
+            name: liquidator
+            description: "Liquidator wallet address"
+          - &cTokenCollateral
+            name: cTokenCollateral
+            description: "cToken contract address of collateral"
+          - &seizeTokens
+            name: seizeTokens
+            description: "Amount of collateral ctoken to liquidate"
+
+      - name: cEther_evt_LiquidateBorrow
+        loaded_at_field: evt_block_time
+        description: "cEther liquidate borrow events"
+        columns:
+          - *evt_block_time
+          - *evt_block_number
+          - *evt_tx_hash
+          - *evt_index
+          - *ctoken_address
+          - *borrower
+          - *repayAmount
+          - *liquidator
+          - *cTokenCollateral
+          - *seizeTokens
