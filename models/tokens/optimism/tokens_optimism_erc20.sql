@@ -283,6 +283,8 @@ WITH raw_token_list AS (
     ,('0x6d80113e533a2c0fe82eabd35f1875dcea89ea97', 'aOptSUSD', 18, 'receipt')
     ,('0x078f358208685046a11c85e8ad32895ded33a249', 'aOptWBTC', 8, 'receipt')
     ,('0x74ccbe53F77b08632ce0CB91D3A545bF6B8E0979', 'fBOMB', 18, 'underlying')
+    ,('0xb12a1be740b99d845af98098965af761be6bd7fe', 'CUSDCLP', 18)
+    ,('0x3c12765d3cfac132de161bc6083c886b2cd94934', 'CWETHLP', 18)            
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 
 )
