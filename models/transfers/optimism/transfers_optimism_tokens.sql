@@ -81,7 +81,7 @@ FROM (
 
         r.evt_tx_hash || '-' || CAST(evt_index AS VARCHAR(100))  as unique_transfer_id
 
-        FROM {{ source('erc20_ethereum', 'evt_transfer') }} r
+        FROM {{ source('erc20_optimism', 'evt_transfer') }} r
 
         -- exclude ETH placeholder token transfer since this is handled in ETH transfers
         where r.contract_address != lower('0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000')
