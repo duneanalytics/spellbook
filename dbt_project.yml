@@ -1051,3 +1051,9 @@ seeds:
           from: string
           to: string
           value: double
+
+    udf:
+      bytea2numeric_samples:
+        +column_types:
+          hex: string
+          dec: string
