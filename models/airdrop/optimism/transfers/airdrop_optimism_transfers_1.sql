@@ -34,7 +34,7 @@ tx."from" AS tx_from_address,
 tx.to AS tx_to_address,
 substring(tx.data,1,10) AS tx_method_id
 
-FROM {{ source('erc20_optimism', 'evt_transfer') } tfer
+FROM {{ source('erc20_optimism', 'evt_transfer') }} tfer
 INNER JOIN {{ ref('tokens_optimism_erc20') }} r
         ON r.contract_address = tfer.contract_address
 INNER JOIN {{ source('optimism','transactions') }} tx

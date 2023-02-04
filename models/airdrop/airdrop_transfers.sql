@@ -1,5 +1,5 @@
 {{ config(
-        schema = 'airdrop_optimism',
+        schema = 'airdrop',
         alias ='transfers',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                 "sector",

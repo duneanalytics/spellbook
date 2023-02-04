@@ -1,7 +1,8 @@
 
 
 {{ config(
-        alias='op_token_initial_allocations'
+        schema = 'op_token_optimism',
+        alias='initial_allocations'
         , unique_key = ['allocation_category','allocation_subcategory']
         , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
@@ -36,4 +37,4 @@ SELECT
 , allocation_subcategory
 , pct_supply_allocation*total_initial_supply AS initial_allocated_supply
 
-FROM {{ ref('ovm_optimism_op_token_metadata')}} md , initial_allocation_percentages allo
+FROM {{ ref('op_token_optimism_metadata')}} md , initial_allocation_percentages allo
