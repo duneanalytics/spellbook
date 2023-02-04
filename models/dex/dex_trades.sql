@@ -51,6 +51,8 @@ list of models using old generic test, due to multiple versions in one model:
 ,ref('rubicon_trades')
 ,ref('synthetix_spot_trades')
 ,ref('zipswap_trades')
+,ref('equalizer_exchange_fantom_trades')
+,ref('wigoswap_fantom_trades')
 ,ref('arbswap_trades')
 ] %}
 

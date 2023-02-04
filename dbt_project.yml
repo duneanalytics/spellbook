@@ -24,6 +24,12 @@ clean-targets: # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
 
+# Configuring tests
+# Full documentation: https://docs.getdbt.com/reference/test-configs
+tests:
+  spellbook:
+    +store_failures: true  # store failures for all tests
+
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
@@ -220,6 +226,11 @@ models:
       bnb:
         +schema: ellipsis_finance_bnb
 
+    wigoswap:
+      +schema: wigoswap
+      fantom:
+        +schema: wigoswap_fantom
+
     bend_dao:
       +schema: bend_dao
       ethereum:
@@ -339,11 +350,16 @@ models:
       ethereum:
         +schema: sudoswap_ethereum
 
+    equalizer_exchange:
+      +schema: equalizer_exchange
+      fantom:
+        +schema: equalizer_exchange_fantom
+
     safe:
       +schema: safe
       ethereum:
         +schema: safe_ethereum
-      optimism: 
+      optimism:
         +schema: safe_optimism
 
     nftrade:
@@ -514,6 +530,11 @@ models:
       optimism:
         +schema: kyberswap_optimism
 
+    hubble_exchange:
+      +schema: hubble_exchange
+      avalanche_c:
+        +schema: hubble_exchange_avalanche_c
+
     fraxswap:
       +schema: fraxswap
       avalanche_c:
@@ -534,6 +555,11 @@ models:
       +schema: platypus_finance
       avalanche_c:
         +schema: platypus_finance_avalanche_c
+
+    emdx:
+      +schema: emdx
+      avalanche_c:
+        +schema: emdx_avalanche_c
 
     woofi:
       +schema: woofi
@@ -612,10 +638,10 @@ models:
       #   +schema: hop_protocol_gnosis
       # gnosis2:
       #   +schema: hop_gnosis
-    
+
     chain_info:
       +schema: chain_info
-    
+
     bridge:
       +schema: bridge
       optimism:
