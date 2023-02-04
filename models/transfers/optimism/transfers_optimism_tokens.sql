@@ -25,7 +25,7 @@ SELECT transfer_from_address,
                 WHEN transfer_to_address = '0x0000000000000000000000000000000000000000' THEN 'burn'
                 ELSE 'transfer'
                 END 
-        AS transfer_style,
+        AS transfer_action,
 
         -- is the transfer part of the top-level transaction, or is it internal?
         CASE WHEN substring(t.data, 1, 10)
@@ -40,9 +40,9 @@ SELECT transfer_from_address,
                         THEN 'eth wrap'
                 WHEN substring(t.data, 1, 10) = '0x2e1a7d4d'
                         THEN 'eth unwrap'
-                ELSE 'internal transaction'
+                ELSE 'internal transfer'
                 END
-        AS transfer_tx_type,
+        AS transfer_location,
 
         cast(tfs.value as double) AS value,
         tx_block_time,
