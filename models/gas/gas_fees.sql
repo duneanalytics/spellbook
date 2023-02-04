@@ -1,10 +1,5 @@
 {{ config(
         alias ='fees',
-        partition_by = ['block_date'],
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['blockchain','tx_hash','block_number'],
         post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c","optimism","arbitrum"]\',
                                 "sector",
                                 "gas",
@@ -47,7 +42,7 @@ FROM (
         transaction_type
     FROM {{ ref(gas_model) }}
     {% if not loop.last %}
-    UNION
+    UNION ALL
     {% endif %}
     {% endfor %}
 )
