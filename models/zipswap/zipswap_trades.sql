@@ -7,14 +7,14 @@
         )
 }}
 
-{% set uniswap_models = [
+{% set zip_models = [
  'zipswap_optimism_trades'
 ] %}
 
 
 SELECT *
 FROM (
-    {% for z_model in uniswap_models %}
+    {% for z_model in zip_models %}
     SELECT
         blockchain,
         project,
