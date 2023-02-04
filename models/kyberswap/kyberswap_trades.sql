@@ -15,7 +15,7 @@
 
 SELECT *
 FROM (
-    {% for dex_model in kyber_models %}
+    {% for k_model in kyber_models %}
     SELECT
         blockchain,
         project,
@@ -40,7 +40,7 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ ref(dex_model) }}
+    FROM {{ ref(k_model) }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
