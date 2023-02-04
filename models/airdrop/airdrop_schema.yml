@@ -1,0 +1,61 @@
+version: 2
+
+models:
+  - name: airdrop_transfers
+    meta:
+      blockchain: optimism
+      sector: airdrop
+      project: transfers
+      contributors: msilb7
+    config:
+      tags: ['airdrop', 'transfers']
+    description: "All Airdrops transfers"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain where the airdrop took place"
+      - &airdrop_name
+        name: airdrop_name
+        description: "Name of the specific airdrop"
+      - &distributor_address
+        name: distributor_address
+        description: "Address of the airdrop distributor"
+      - &recipient_address
+        name: recipient_address
+        description: "Address receiving the airdrop"
+      - &airdrop_token_address
+        name: airdrop_token_address
+        description: "Address of the token airdropped"
+      - &airdrop_token_symbol
+        name: airdrop_token_symbol
+        description: "Symbol of the token airdropped"
+      - &transfer_block_date
+        name: transfer_block_date
+        description: "Date of the airdrop transfer"
+      - &transfer_block_time
+        name: transfer_block_time
+        description: "Block time of the airdrop transfer"
+      - &transfer_block_number
+        name: transfer_block_number
+        description: "Block Number of the airdrop transfer"
+      - &transfer_tx_hash
+        name: transfer_tx_hash
+        description: "Tx Hash of the airdrop transfer"
+      - &transfer_evt_index
+        name: transfer_evt_index
+        description: "Event Index of the airdrop transfer"
+      - &airdrop_token_amount
+        name: airdrop_token_amount
+        description: "Amount of the token airdropped, adjusted for decimals"
+      - &airdrop_token_amount_raw
+        name: airdrop_token_amount_raw
+        description: "Amount of the token airdropped, in raw form (not adjusted for decimals)"
+      - &tx_from_address
+        name: tx_from_address
+        description: "Transaction From Address"
+      - &tx_to_address
+        name: tx_to_address
+        description: "Transaction To Address"
+      - &tx_method_id
+        name: tx_method_id
+        description: "Method of the Transaction (first 4 bytes)"

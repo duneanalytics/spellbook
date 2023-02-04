@@ -1,0 +1,115 @@
+version: 2
+
+models:
+  - name: airdrop_optimism_addresses_1
+    meta:
+      blockchain: optimism
+      sector: airdrop
+      project: addresses
+      contributors: msilb7
+    config:
+      tags: ['OP', 'airdrop', 'addresses', 'optimism', 'static']
+    description: "List of addresses eligible for OP airdrop and amount they received based on their activity"
+    columns:
+      - name: address
+        description: "Eligible address for OP airdrop"
+      - name: a_is_voter
+        description: "Voted for/against a DAO governance proposal"
+      - name: b_is_multisig_signer
+        description: "Multisig Signer"
+      - name: c_is_gitcoin
+        description: "Gitcoin Donor (on L1)"
+      - name: d_is_price_out
+        description: "User Priced Out of Ethereum"
+      - name: e_op_user
+        description: "Optimism User"
+      - name: f_op_repeat
+        description: "Repeat Optimism User"
+      - name: num_categories_if_op_user
+        description: "Number of Categories & OP User"
+      - name: g_overlap_bonus
+        description: "Overlap Bonus"
+      - name: total_op_eligible_to_claim
+        description: "Total OP tokens eligible to claim"
+
+  - name: airdrop_optimism_transfers
+    meta:
+      blockchain: optimism
+      sector: airdrop
+      project: transfers
+      contributors: msilb7
+    config:
+      tags: ['OP', 'airdrop', 'transfers', 'optimism']
+    description: "Optimism Airdrops transfers"
+    columns:
+      - &airdrop_name
+        name: airdrop_name
+        description: "Name of the specific airdrop"
+      - &distributor_address
+        name: distributor_address
+        description: "Address of the airdrop distributor"
+      - &recipient_address
+        name: recipient_address
+        description: "Address receiving the airdrop"
+      - &airdrop_token_address
+        name: airdrop_token_address
+        description: "Address of the token airdropped"
+      - &airdrop_token_symbol
+        name: airdrop_token_symbol
+        description: "Symbol of the token airdropped"
+      - &transfer_block_date
+        name: transfer_block_date
+        description: "Date of the airdrop transfer"
+      - &transfer_block_time
+        name: transfer_block_time
+        description: "Block time of the airdrop transfer"
+      - &transfer_block_number
+        name: transfer_block_number
+        description: "Block Number of the airdrop transfer"
+      - &transfer_tx_hash
+        name: transfer_tx_hash
+        description: "Tx Hash of the airdrop transfer"
+      - &transfer_evt_index
+        name: transfer_evt_index
+        description: "Event Index of the airdrop transfer"
+      - &airdrop_token_amount
+        name: airdrop_token_amount
+        description: "Amount of the token airdropped, adjusted for decimals"
+      - &airdrop_token_amount_raw
+        name: airdrop_token_amount_raw
+        description: "Amount of the token airdropped, in raw form (not adjusted for decimals)"
+      - &tx_from_address
+        name: tx_from_address
+        description: "Transaction From Address"
+      - &tx_to_address
+        name: tx_to_address
+        description: "Transaction To Address"
+      - &tx_method_id
+        name: tx_method_id
+        description: "Method of the Transaction (first 4 bytes)"
+  
+  - name: airdrop_optimism_transfers_1
+    meta:
+      blockchain: optimism
+      sector: airdrop
+      project: transfers
+      contributors: msilb7
+    config:
+      tags: ['OP', 'airdrop', 'transfers', 'optimism']
+    description: "Optimism Airdrops transfers"
+    columns:
+      - *airdrop_name
+      - *distributor_address
+      - *recipient_address
+      - *airdrop_token_address
+      - *airdrop_token_symbol
+      - *transfer_block_date
+      - *transfer_block_time
+      - *transfer_block_number
+      - *transfer_tx_hash
+      - *transfer_evt_index
+      - *airdrop_token_amount
+      - *airdrop_token_amount_raw
+      - *tx_from_address
+      - *tx_to_address
+      - *tx_method_id
