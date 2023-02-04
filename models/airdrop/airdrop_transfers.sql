@@ -1,7 +1,7 @@
 {{ config(
         schema = 'airdrop',
         alias ='transfers',
-        post_hook='{{ expose_spells(\'["optimism"]\',
+        post_hook='{{ expose_spells(\'["optimism","ethereum"]\',
                                 "sector",
                                 "airdrop",
                                 \'["msilb7"]\') }}'
@@ -10,7 +10,14 @@
 
 
 {% set drop_models = [
- ref('airdrop_optimism_transfers')
+  ref('optimism_op_airdrop_transfers')
+ ,ref('velodrome_airdrop_transfers')
+ ,ref('ens_airdrop_transfers')
+ ,ref('looksrare_airdrop_transfers')
+ ,ref('hop_protocol_airdrop_transfers')
+ ,ref('uniswap_airdrop_transfers')
+ ,ref('gitcoin_airdrop_transfers')
+ ,ref('apecoin_airdrop_transfers')
 ] %}
 
 
@@ -18,8 +25,9 @@ SELECT *
 FROM (
     {% for drop_mod in drop_models %}
     SELECT
-          blockchain
+          lower(blockchain) AS blockchain
         , airdrop_name
+        , airdrop_project
         , distributor_address
         , recipient_address
         , airdrop_token_address
