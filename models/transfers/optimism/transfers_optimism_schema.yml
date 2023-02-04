@@ -102,14 +102,14 @@ models:
           - accepted_values:
               values: ['single', 'batch']
         description: "single or batch transfer of tokens"
-      - &transfer_style
-        name: transfer_style
+      - &transfer_action
+        name: transfer_action
         tests:
           - accepted_values:
               values: ['mint', 'burn','transfer']
         description: "What high-level type of transaction is this (mint, burn, transfer)"
-      - &transfer_tx_type
-        name: transfer_tx_type
+      - &transfer_location
+        name: transfer_location
         description: "What describes the tranfers' place in the transaction (i.e. internal, top-level, wrap)"
       - &value_tokens
         name: value
