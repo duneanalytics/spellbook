@@ -2,7 +2,7 @@
     alias = 'wallet_pnl',
     partition_by='last_updated',
     materialized='incremental',
-    file_format = 'delta',
+    file_format = 'parquet',
     incremental_strategy = 'insert_overwrite',
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",
