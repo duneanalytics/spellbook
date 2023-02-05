@@ -29,7 +29,7 @@ WITH dexs AS
         ,t.maker AS maker
         ,t.take_amt AS token_bought_amount_raw
         ,t.give_amt AS token_sold_amount_raw
-        ,NULL AS amount_usd
+        ,cast(NULL as double) AS amount_usd
         ,t.pay_gem AS token_bought_address
         ,t.buy_gem AS token_sold_address
         ,t.contract_address as project_contract_address

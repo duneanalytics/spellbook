@@ -25,9 +25,9 @@ WITH dexs AS
         ,'' AS maker
         ,t.toAmount AS token_bought_amount_raw 
         ,t.fromAmount AS token_sold_amount_raw
-        ,NULL AS amount_usd
-        ,NULL AS token_bought_address
-        ,NULL AS token_sold_address
+        ,cast(NULL as double) AS amount_usd
+        ,'' AS token_bought_address
+        ,'' AS token_sold_address
         -- we need to map token symbols. This is not ideal.
         ,trim('\u0000' from unhex(substring(toCurrencyKey, 3))) AS token_bought_symbol
         ,trim('\u0000' from unhex(substring(fromCurrencyKey, 3))) AS token_sold_symbol

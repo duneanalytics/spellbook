@@ -26,7 +26,7 @@ WITH dexs AS
         --tokenIn: what the user receives. So we map this to token bought
         ,t.amountIn AS token_bought_amount_raw
         ,t.amountOut AS token_sold_amount_raw
-        ,NULL AS amount_usd
+        ,cast(NULL as double) AS amount_usd
         ,t.tokenIn AS token_bought_address
         ,t.tokenOut AS token_sold_address
         ,t.poolId as project_contract_address
