@@ -17,7 +17,7 @@ SELECT
 'APE Airdrop' AS airdrop_name,
 'Apecoin' AS airdrop_project,
 
-tfer.user AS recipient_address,
+tfer. account AS recipient_address,
 
 r.contract_address AS airdrop_token_address,
 r.symbol AS airdrop_token_symbol,
@@ -57,7 +57,7 @@ SELECT
 'APE Airdrop' AS airdrop_name,
 'Apecoin' AS airdrop_project,
 
-tfer.user AS recipient_address,
+tfer. account AS recipient_address,
 
 r.contract_address AS airdrop_token_address,
 r.symbol AS airdrop_token_symbol,
@@ -97,7 +97,7 @@ SELECT
 'APE Airdrop' AS airdrop_name,
 'Apecoin' AS airdrop_project,
 
-tfer.user AS recipient_address,
+tfer. account AS recipient_address,
 
 r.contract_address AS airdrop_token_address,
 r.symbol AS airdrop_token_symbol,
