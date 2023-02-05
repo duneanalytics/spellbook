@@ -14,6 +14,7 @@
 WITH global_values AS (
 
   SELECT
+    'optimism' AS native_blockchain,
     contract_address,
     symbol,
     decimals,

@@ -12,6 +12,9 @@ models:
     description: "Metadata about the OP token"
 
     columns:
+      - &native_blockchain
+        name: native_blockchain
+        description: "What chain the token is native to"
       - &contract_address
         name: contract_address
         description: "Contract Address of the token"
