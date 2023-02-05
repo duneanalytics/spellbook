@@ -12,7 +12,7 @@
     )
 }}
 
-{%- set project_start_date = '2022-10-31' %} -- TODO change back to '2022-04-14'
+{%- set project_start_date = '2022-11-05' %} -- TODO change back to '2022-04-14'
 {%- set sharky_smart_contract = 'SHARKobtfF1bHhxD2eqftjHBdVSCbKo9JtgK71FhELP' %}
 
 WITH sharky_txs AS (
@@ -53,7 +53,7 @@ WITH sharky_txs AS (
         WHERE tx.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     ),
-    events AS (
+    raw_events AS (
         SELECT 'solana'                                                        AS blockchain,
                'sharky'                                                        AS project,
                signatures[0]                                                   AS tx_hash,
@@ -67,27 +67,30 @@ WITH sharky_txs AS (
                            instructions,
                            x -> x.executing_account = '{{sharky_smart_contract}}'
                    )                                                           AS sharky_instructions,
-               CASE
-                   WHEN array_contains(log_messages, 'Program log: Instruction: OfferLoan') THEN 'Offer'
-                   WHEN array_contains(log_messages, 'Program log: Instruction: TakeLoan') THEN 'Take'
-                   WHEN array_contains(log_messages, 'Program log: Instruction: RescindLoan') THEN 'Rescind'
-                   WHEN
-                       (
-                               array_contains(log_messages, 'Program log: Instruction: RepayLoan')
-                               OR array_contains(log_messages, 'Program log: Instruction: RepayLoanEscrow')
-                           ) THEN 'Repay'
-                   WHEN
-                       (
-                               array_contains(log_messages, 'Program log: Instruction: ForecloseLoan')
-                               OR array_contains(log_messages, 'Program log: Instruction: ForecloseLoanEscrow')
-                           ) THEN 'Foreclose'
-                   ELSE 'Other' END                                            AS evt_type,
                signer                                                          AS user,
                id
         FROM sharky_txs
         INNER JOIN filtered_txs USING (block_time, id)
         LEFT JOIN sol_price p
             ON p.minute = date_trunc('minute', block_time)
+    ),
+    events AS (
+        SELECT *,
+            CASE
+                -- We are using the first 8 bytes of the instruction data to identify the instruction
+               WHEN startswith(sharky_instructions[0].data, '2pxy3Z56gzj') THEN 'Offer'
+               WHEN startswith(sharky_instructions[0].data, '6mJ5qjvtoWx') THEN 'Take'
+               WHEN startswith(sharky_instructions[0].data, 'BkL6jMvp6k5') THEN 'Rescind'
+               WHEN (
+                            startswith(sharky_instructions[0].data, 'eXdKfXUwK2M') -- RepayLoan
+                            OR startswith(sharky_instructions[0].data, 'YLEyC8YnDio') -- RepayLoanEscrow
+                        ) THEN 'Repay'
+               WHEN (
+                            startswith(sharky_instructions[0].data, 'b1ZCtXZzR4a') -- ForecloseLoan
+                            OR startswith(sharky_instructions[0].data, 'ddCAzdgcmjs') -- ForecloseLoanEscrow
+                        ) THEN 'Foreclose'
+            END AS evt_type
+    FROM raw_events
 )
 SELECT *,
        CASE
