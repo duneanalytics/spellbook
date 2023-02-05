@@ -28,7 +28,7 @@ models:
         name: token_launch_date
         description: "Launch Date of the token"
   
-  - name: initial_allocations
+  - name: op_token_optimism_initial_allocations
     meta:
       blockchain: optimism
       project: op_token
@@ -52,7 +52,7 @@ models:
         name: initial_allocated_supply
         description: "Inital supply for each allocation"
   
-  - name: inflation_schedule
+  - name: op_token_optimism_inflation_schedule
     meta:
       blockchain: optimism
       project: op_token

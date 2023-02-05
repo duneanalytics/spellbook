@@ -163,7 +163,7 @@ models:
       - *tx_to_address
       - *tx_method_id
   
-  - name: hop_airdrop_transfers
+  - name: hop_protocol_airdrop_transfers
     meta:
       blockchain: ethereum
       sector: airdrop
