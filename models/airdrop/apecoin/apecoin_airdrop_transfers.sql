@@ -30,7 +30,7 @@ tfer.evt_index AS transfer_evt_index,
 cast(10094 as double) AS airdrop_token_amount,
 cast(10094*POWER(10,decimals) as double) AS airdrop_token_amount_raw,
 
-tx."from" AS tx_from_address,
+tx.`from` AS tx_from_address,
 tx.to AS tx_to_address,
 substring(tx.data,1,10) AS tx_method_id
 
@@ -70,7 +70,7 @@ tfer.evt_index AS transfer_evt_index,
 cast(2042 as double) AS airdrop_token_amount,
 cast(2042*POWER(10,decimals) as double) AS airdrop_token_amount_raw,
 
-tx."from" AS tx_from_address,
+tx.`from` AS tx_from_address,
 tx.to AS tx_to_address,
 substring(tx.data,1,10) AS tx_method_id
 
@@ -110,7 +110,7 @@ tfer.evt_index AS transfer_evt_index,
 cast(856 as double) AS airdrop_token_amount,
 cast(856*POWER(10,decimals) as double) AS airdrop_token_amount_raw,
 
-tx."from" AS tx_from_address,
+tx.`from` AS tx_from_address,
 tx.to AS tx_to_address,
 substring(tx.data,1,10) AS tx_method_id
 

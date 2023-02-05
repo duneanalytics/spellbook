@@ -29,7 +29,7 @@ tfer.evt_index AS transfer_evt_index,
 cast(tfer.amount as double) / cast(POWER(10,r.decimals) as double) AS airdrop_token_amount,
 cast(tfer.amount as double) AS airdrop_token_amount_raw,
 
-tx."from" AS tx_from_address,
+tx.`from` AS tx_from_address,
 tx.to AS tx_to_address,
 substring(tx.data,1,10) AS tx_method_id
 
