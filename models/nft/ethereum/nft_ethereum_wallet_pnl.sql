@@ -1,6 +1,5 @@
 {{ config(
     alias = 'wallet_pnl',
-    partition_by='last_updated',
     materialized='incremental',
     file_format = 'parquet',
     incremental_strategy = 'insert_overwrite',
