@@ -8,7 +8,7 @@
 }}
 
 {% set zip_models = [
- 'zipswap_optimism_trades'
+ ref('zipswap_optimism_trades')
 ] %}
 
 
@@ -39,7 +39,7 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ ref(z_model) }}
+    FROM {{ z_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

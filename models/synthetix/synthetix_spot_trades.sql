@@ -8,7 +8,7 @@
 }}
 
 {% set snx_models = [
-'synthetix_optimism_spot_trades'
+ref('synthetix_optimism_spot_trades')
 ] %}
 
 
@@ -39,7 +39,7 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ ref(snx_model) }}
+    FROM {{ snx_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

@@ -8,8 +8,8 @@
 }}
 
 {% set kyber_models = [
- 'kyberswap_avalanche_c_trades'
-,'kyberswap_optimism_trades'
+ ref('kyberswap_avalanche_c_trades')
+,ref('kyberswap_optimism_trades')
 ] %}
 
 
@@ -40,7 +40,7 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ ref(k_model) }}
+    FROM {{ k_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

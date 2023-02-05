@@ -8,7 +8,7 @@
 }}
 
 {% set rubi_models = [
-'rubicon_optimism_trades'
+ref('rubicon_optimism_trades')
 ] %}
 
 
@@ -39,7 +39,7 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ ref(r_model) }}
+    FROM {{ r_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

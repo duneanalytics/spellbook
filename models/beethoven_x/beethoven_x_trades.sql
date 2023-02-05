@@ -8,7 +8,7 @@
 }}
 
 {% set beets_models = [
-'beethoven_x_optimism_trades'
+ref('beethoven_x_optimism_trades')
 ] %}
 
 
@@ -39,7 +39,7 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ ref(beet_model) }}
+    FROM {{ beet_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
