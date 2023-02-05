@@ -199,3 +199,5 @@ models:
         description: "pnl from selling/buying nfts, measured in eth"
       - name: trades
         description: "number of trades"
+      - name: last_updated
+        description: "Last time spell was updated"
