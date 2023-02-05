@@ -112,7 +112,7 @@ combined as (
         SUM(trades) as trades 
     FROM 
     trades 
-    GROUP BY 1, 2
+    GROUP BY 1, 2, 3
     {% endif %}
     {% if is_incremental() %}
     SELECT 
@@ -137,7 +137,7 @@ combined as (
     trades t 
         ON prev.wallet = t.wallet 
         AND prev.nft_contract_address = t.nft_contract_address
-    GROUP BY 1, 2
+    GROUP BY 1, 2, 3
     {% endif %}
 )
 
