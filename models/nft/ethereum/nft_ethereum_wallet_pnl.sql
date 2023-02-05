@@ -70,3 +70,4 @@ SELECT
 FROM 
 combined
 QUALIFY index <= 50
+;
