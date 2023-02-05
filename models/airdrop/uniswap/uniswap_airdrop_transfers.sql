@@ -16,7 +16,7 @@ SELECT
 'Uniswap Airdrop' AS airdrop_name,
 'Uniswap' AS airdrop_project,
 
-tfer.claimant AS recipient_address,
+tfer.account AS recipient_address,
 
 r.contract_address AS airdrop_token_address,
 r.symbol AS airdrop_token_symbol,
