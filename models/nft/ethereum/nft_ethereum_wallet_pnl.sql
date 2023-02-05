@@ -29,7 +29,7 @@ trades as (
     AND buyer != seller 
     AND trade_type = 'Single Item Trade'
     AND amount_original IS NOT NULL 
-    AND block_time < NOW() - Inteval '5 Minutes'
+    AND block_time < NOW() - Interval '5 Minutes'
     GROUP BY 1, 2, 3, 6
 
     UNION ALL 
@@ -48,7 +48,7 @@ trades as (
     AND buyer != seller 
     AND trade_type = 'Single Item Trade'
     AND amount_original IS NOT NULL 
-    AND block_time < NOW() - Inteval '5 Minutes'
+    AND block_time < NOW() - Interval '5 Minutes'
     GROUP BY 1, 2, 3, 6
     {% endif %}
     -- incremental run 
@@ -67,7 +67,7 @@ trades as (
     AND buyer != seller 
     AND trade_type = 'Single Item Trade'
     AND amount_original IS NOT NULL 
-    AND block_time < NOW() - Inteval '5 Minutes'
+    AND block_time < NOW() - Interval '5 Minutes'
     GROUP BY 1, 2, 3, 6
 
     UNION ALL 
@@ -87,7 +87,7 @@ trades as (
     AND buyer != seller 
     AND trade_type = 'Single Item Trade'
     AND amount_original IS NOT NULL 
-    AND block_time < NOW() - Inteval '5 Minutes'
+    AND block_time < NOW() - Interval '5 Minutes'
     GROUP BY 1, 2, 3, 6
     {% endif %}
 ), 
