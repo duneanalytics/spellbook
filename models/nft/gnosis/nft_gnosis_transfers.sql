@@ -19,6 +19,7 @@
 , 1 AS amount
 , t.from
 , t.to
+, gt.from AS executed_by
 , t.evt_tx_hash AS tx_hash
 , 'gnosis' || t.evt_tx_hash || '-erc721-' || t.contract_address || '-' || t.tokenId || '-' || t.from || '-' || t.to || '-' || '1' || '-' || t.evt_index AS unique_transfer_id
 FROM {{ source('erc721_gnosis','evt_transfer') }} t
@@ -26,10 +27,17 @@ FROM {{ source('erc721_gnosis','evt_transfer') }} t
     ANTI JOIN {{this}} anti_table
         ON t.evt_tx_hash = anti_table.tx_hash
 {% endif %}
+INNER JOIN gnosis.transactions gt ON gt.block_number = t.evt_block_number
+    AND gt.hash = t.evt_tx_hash
+    {% if is_incremental() %}
+    AND gt.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 {% if is_incremental() %}
 WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
+
 UNION ALL
+
 SELECT 'gnosis' as blockchain
 , t.evt_block_time AS block_time
 , date_trunc('day', t.evt_block_time) AS block_date
@@ -42,6 +50,7 @@ SELECT 'gnosis' as blockchain
 , t.value AS amount
 , t.from
 , t.to
+, gt.from AS executed_by
 , t.evt_tx_hash AS tx_hash
 , 'gnosis' || t.evt_tx_hash || '-erc721-' || t.contract_address || '-' || t.id || '-' || t.from || '-' || t.to || '-' || t.value || '-' || t.evt_index AS unique_transfer_id
 FROM {{ source('erc1155_gnosis','evt_transfersingle') }} t
@@ -49,10 +58,17 @@ FROM {{ source('erc1155_gnosis','evt_transfersingle') }} t
     ANTI JOIN {{this}} anti_table
         ON t.evt_tx_hash = anti_table.tx_hash
 {% endif %}
+INNER JOIN gnosis.transactions gt ON gt.block_number = t.evt_block_number
+    AND gt.hash = t.evt_tx_hash
+    {% if is_incremental() %}
+    AND gt.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 {% if is_incremental() %}
 WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
+
 UNION ALL
+
 SELECT 'gnosis' as blockchain
 , evt_block_time AS block_time
 , date_trunc('day', evt_block_time) AS block_date
@@ -65,6 +81,7 @@ SELECT 'gnosis' as blockchain
 , ids_and_count.values AS amount
 , from
 , to
+, gt.from AS executed_by
 , evt_tx_hash AS tx_hash
 , 'gnosis' || evt_tx_hash || '-erc1155-' || contract_address || '-' || ids_and_count.ids || '-' || from || '-' || to || '-' || ids_and_count.values || '-' || evt_index AS unique_transfer_id
 FROM (
@@ -79,6 +96,11 @@ FROM (
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     GROUP BY t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t.from, t.to, t.evt_index, t.values, t.ids
-    )
+    ) t
+INNER JOIN gnosis.transactions gt ON gt.block_number = t.evt_block_number
+    AND gt.hash = t.evt_tx_hash
+    {% if is_incremental() %}
+    AND gt.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 WHERE ids_and_count.values > 0
-GROUP BY blockchain, evt_block_time, evt_block_number, evt_tx_hash, contract_address, from, to, evt_index, token_id, amount
+GROUP BY blockchain, t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t.from, t.to, t.evt_index, token_id, amount
