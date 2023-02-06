@@ -95,6 +95,7 @@ FROM
     , ('0xea6b7151b138c274ed8d4d61328352545ef2d4b7', 'Harbour', 'Harbour', 'Liquid Staking')
     , ('0x588e859cb38fecf2d56925c0512471ab47aa9ff1', 'StaFi', 'StaFi SuperNode', 'Liquid Staking')
     , ('0x1c906685384df71e3fafa6f3b21bd884e9d44f4b', 'StaFi', 'StaFi LightNode', 'Liquid Staking')
+    , ('0xa8582b5a0f615bc21d7780618557042be60b32ed', 'Bitpie', 'Bitpie', 'Staking Pools')
     --, ('', '', '', '')
     ) 
     x (address, entity, entity_unique_name, category)
