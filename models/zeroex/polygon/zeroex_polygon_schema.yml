@@ -98,12 +98,6 @@ models:
             - nft_id
             - nft_address
     columns:
-      - &tx_hash
-        name: tx_hash
-        description: "Transaction hash of the fill"
-      - &evt_index
-        name: evt_index
-        description: "Index of the corresponding fill/swap event"
       - &contract_address
         name: contract_address
         desctiption: "The address of the contract which fired the fill/swap event"
@@ -113,12 +107,6 @@ models:
       - &block_date
         name: block_date
         description: "UTC event block date of each trade"
-      - &maker
-        name: maker
-        description: "For limit order, the wallet who posted order first; for AMM orders, the liquidity pools; for RFQ orders, the professional market makers."
-      - &taker
-        name: taker
-        description: "User who is taking the order"
       - &taker_token
         name: taker_token
         description: "Contract address of the token taker sells"
