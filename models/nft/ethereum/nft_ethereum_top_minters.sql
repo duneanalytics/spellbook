@@ -49,7 +49,11 @@ src_data as (
     UNION ALL 
 
     SELECT 
-        * 
+        nft_contract_address,
+        minter,
+        eth_spent,
+        no_minted,
+        last_updated
     FROM 
     {{this}}
     {% endif %}
