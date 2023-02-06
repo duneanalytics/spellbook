@@ -331,6 +331,8 @@ VALUES
     ("xen-xen-crypto", "bnb", "XEN", "0x2AB0e9e4eE70FFf1fB9D67031E44F6410170d00e", 18),
     ("bob-bob", "bnb", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
     ("fb-fbbank", "bnb", "FB", "0x770F030FDBf63EBF1C939De8BCFf8943C2C2d454", 2),
+    ("mdb-mdb", "bnb", "MDB+", "0x9f8bb16f49393eea4331a39b69071759e54e16ea", 18),
+    ("mdb-milliondollarbaby", "bnb", "MDB", "0x0557a288a93ed0df218785f2787dac1cd077f8f3", 18),
 
     ("0xbtc-0xbitcoin", "ethereum", "0xBTC", "0xb6ed7644c69416d67b522e20bc294a9a9b405b31", 8),
     ("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
@@ -1774,6 +1776,7 @@ VALUES
     ("nuls-nuls", "polygon", "NULS", "0x8b8e48a8cc52389cd16a162e5d8bd514fabf4ba0", 8),
     ("blank-blockwallet","polygon", "BLANK", "0xf4C83080E80AE530d6f8180572cBbf1Ac9D5d435", 18),
     ("fin-fin", "polygon", "FIN", "0x576c990a8a3e7217122e9973b2230a3be9678e94", 18),
+    ("sphere-sphere-finance", "polygon", "SPHERE", "0x62f594339830b90ae4c084ae7d223ffafd9658a7", 18),
 
     ("aury-aurory", "solana", "AURY", "AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP", 9),
     ("btc-bitcoin", "solana", "BTC", "9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E", 6),
