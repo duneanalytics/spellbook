@@ -29,6 +29,7 @@ FROM
     , ('0x2c8e928504b47c2c76aa09a0f0eb6ccde73e3cca', 'Gem') -- Gem v2 NFT20
     , ('0x2b2e8cda09bba9660dca5cb6233787738ad68329', 'Gem') -- Gem v2 SudoSwap
     , ('0x29ab6d8f7e3d815168d6b40ebb12625b4fe13998', 'Gem') -- Gem
+    , ('0x9c049c5a973e9637cdf5f7c31b93ec074161d2fe', 'Gem') -- Gem
     , ('0x56dd5bbede9bfdb10a2845c4d70d4a2950163044', 'X2Y2') -- X2Y2's OpenSea Sniper
     , ('0x69cf8871f61fb03f540bc519dd1f1d4682ea0bf6', 'Element') -- Element NFT Marketplace Aggregator
     , ('0xb4e7b8946fa2b35912cc0581772cccd69a33000c', 'Element') -- Element NFT Marketplace Aggregator 2
