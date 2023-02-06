@@ -1849,7 +1849,9 @@ VALUES
     ("3omb-3omb-token", "fantom", "3OMB", "0x14DEf7584A6c52f470Ca4F4b9671056b22f4FfDE", 18), 
     ("gscarab-gscarab", "fantom", "GSCARAB", "0x6ab5660f0B1f174CFA84e9977c15645e4848F5D6", 18), 
     ("lif3-lif3", "fantom", "LIF3", "0xbf60e7414EF09026733c1E7de72E7393888C64DA", 18),
-    ("oxd-0xdao", "fantom", "OXD", "0xc165d941481e68696f43EE6E99BFB2B23E0E3114", 18), 
+    ("oxd-0xdao", "fantom", "OXD", "0xc165d941481e68696f43EE6E99BFB2B23E0E3114", 18),
+    ("ust-terrausd", "fantom", "UST", "0xe2d27f06f63d98b8e11b38b5b08a75d0c8dd62b9", 6),
+    ("luna-terra", "fantom", "LUNC", "0x95dd59343a893637be1c3228060ee6afbf6f0730", 6),
     ("2shares-2share", "fantom", "2SHARES", "0xc54A1684fD1bef1f077a336E6be4Bd9a3096a6Ca", 18), 
     ("3share-3share", "fantom", "3SHARES", "0x6437ADAC543583C4b31Bf0323A0870430F5CC2e7", 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
