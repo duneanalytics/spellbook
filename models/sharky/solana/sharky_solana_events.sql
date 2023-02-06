@@ -44,7 +44,15 @@ WITH sharky_txs AS (
         {% endif %}
     ),
     filtered_txs AS (
-        SELECT *
+        SELECT signatures,
+               block_date,
+               block_time,
+               block_slot,
+               post_balances,
+               pre_balances,
+               instructions,
+               signer,
+               id
         FROM {{ source('solana','transactions') }} tx
         {% if not is_incremental() %}
         WHERE tx.block_time >= '{{ project_start_date }}'
