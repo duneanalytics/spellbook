@@ -2,26 +2,23 @@
 
 ## Uniswap V3 trades on Arbitrum
 
-## Introduction
-This is a model that standardizes the data for Uniswap v3 data on the Arbitrum blockchain. 
-It is written in SparkSQL and used to standardize the data to make it easier for analysts to run queries.
+### Conceptual Summary
+This model transforms the trade events from Uniswap v3 pool contracts on the Arbitrum network into a table that is easier to work with. The transformed data includes information about the tokens traded, the amounts of tokens bought and sold, and the USD value of the trade. The model also adds metadata about the tokens, such as their symbol and decimals.
+  
+### Data Sources
+The following data sources are used in this model:
 
-On a high level, the model joins prices, token information and pool information to all trades and standardizes the data so it can be inserted in dex.trades upstream.
-
-## Data Standardization Pipeline
-The data standardization pipeline performs the following operations:
-
-Queries all Uniswap V3 Pools on Arbitrum using the Pair_evt_Swap table
-Joins the UniswapV3Factory_evt_PoolCreated table to get token0 and token1 addresses which are needed for further joins
-Adds the blockchain name (Arbitrum), project name (Uniswap), and version (3) to the results
-Adds the block date to partition the data
-Adds the symbol of token0 and token1 to the results
-Orders the symbols of token0 and token1 alphabetically and concatenates them with a dash to create a consistent token_pair
-Calculates the display amount of token0 and token1 that was bought/sold
-Calculates the amount in USD by either using the value of amount_usd (if available), or by multiplying the raw amount with the token's price.
-Table Description
-The following table lists the columns and their descriptions in the resulting standardized data table:
-
-
+1. ``uniswap_v3_arbitrum.Pair_evt_Swap``: contains the Swap events emitted when a trade occurs on a Uniswap v3 pool
+2. ``uniswap_v3_arbitrum.UniswapV3Factory_evt_PoolCreated``: contains information about the pool contract
+3. ``tokens.erc20``: contains the symbol and decimals of token0 and token1
+4. ``prices.usd``: contains the price of token0 and token1 in USD
+  
+### Data Transformations
+The contract_address of the pool contract in the Swap event is used to join with the ``uniswap_v3_arbitrum.UniswapV3Factory_evt_PoolCreated`` event to obtain the contract addresses of token0 and token1.  
+The contract addresses of token0 and token1 are used to join with the ``tokens.erc20`` table to obtain the symbol and decimals of the tokens.  
+The decimals of token0 and token1 are used to calculate the display amount of tokens bought and sold.  
+The contract_address of token0 and token1 are used to join with the ``prices.usd`` table to obtain the price of the tokens in USD.  
+The amounts of token0 and token1 that were bought and sold are used to calculate the USD value of the trade.  
+The taker in the Swap event is not necessarily the trader that bought and sold token0 and token1. The trader can potentially be derived from the EOA (Externally Owned Account) that signed the transaction.  
 
 {% enddocs %}

@@ -10,7 +10,7 @@ models:
     config:
       tags: ['arbitrum','uniswap_v3','trades', 'uniswap','dex']
     description: >
-        Uniswap V3 contract trades on Arbitrum
+            {{doc("uniswap_v3_arbitrum_trades")}}
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

@@ -44,7 +44,8 @@ models:
       contributors: alexth
     config:
       tags: ['labels', 'ethereum', 'sandwich', 'bot','sandwich_attackers', 'dex']
-    description:  "{{ doc('sandwich_attackers') }}"
+    description:  >
+            {{doc("sandwich_attackers")}}
     columns:
       - *blockchain
       - *address
