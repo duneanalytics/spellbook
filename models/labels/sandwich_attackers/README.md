@@ -13,8 +13,8 @@ The logic to identify a sandwich attacker is as follows:
 7. (index of t1 >= index of t2 + 2) or (index of t2 >= index of t1 + 2)
 8. Exclude uniswap v2 router address since this gets included as a false positive for some reason
 
-This logic should work to include both buy-first and less common sell-first sandwiches
-By excluding point 6, we also include sandwich attacks that made a loss
-By using '>=' instead of just '=' in point 7, we can also include sandwich attackers that are perhaps not using flashbots and not tightly bundling their transactions
+This logic should work to include both buy-first and less common sell-first sandwiches.  
+By excluding point 6, we also include sandwich attacks that made a loss.  
+By using '>=' instead of just '=' in point 7, we can also include sandwich attackers that are perhaps not using flashbots and not tightly bundling their transactions.
 
 {% enddocs %}
