@@ -1744,6 +1744,7 @@ VALUES
     ("pickle-pickle-finance", "optimism", "PICKLE", "0x0c5b4c92c948691EEBf185C17eeB9c230DC019E9", 18),
     ("bob-bob", "optimism", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
     ("bomb-fbomb","optimism","fBOMB","0x74ccbe53F77b08632ce0CB91D3A545bF6B8E0979",18),
+    ("busd-binance-usd","optimism","BUSD","0x9c9e5fd8bbc25984b178fdce6117defa39d2db39",18),
 
     ("aave-new","polygon","AAVE","0xd6df932a45c0f255f85145f286ea0b292b21c90b",18),
     ("ageur-ageur","polygon",'agEUR',"0xe0b52e49357fd4daf2c15e02058dce6bc0057db4",18),
