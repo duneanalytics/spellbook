@@ -1,5 +1,4 @@
 {{ config(
-    schema = 'balancer_optimism',
     alias = 'trades',
     partition_by = ['block_date'],
     materialized = 'incremental',

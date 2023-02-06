@@ -1,5 +1,4 @@
 {{ config(
-    schema = 'balancer_arbitrum',
     alias = 'trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
