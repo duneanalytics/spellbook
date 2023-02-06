@@ -58,8 +58,12 @@
             from decimals
         )
     )
-
+    , result as (
+        select
+            ltrim('0',lpad(dec_3,10,'0') || lpad(dec_2,34,'0') || lpad(dec_1,34,'0')) as dec_string
+        from carries;
+    )
     select
-        ltrim('0',lpad(dec_3,10,'0') || lpad(dec_2,34,'0') || lpad(dec_1,34,'0'))
-    from carries;
+        case when dec_string = '' then '0' else dec_string end as out
+    from result;
 {% endmacro %}
