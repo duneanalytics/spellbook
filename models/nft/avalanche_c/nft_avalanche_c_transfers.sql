@@ -57,7 +57,7 @@ FROM {{ source('erc1155_avalanche_c','evt_transfersingle') }} t
     ANTI JOIN {{this}} anti_table
         ON t.evt_tx_hash = anti_table.tx_hash
     {% endif %}
-INNER JOIN avalanche_c.transactions et ON at.block_number = t.evt_block_number
+INNER JOIN avalanche_c.transactions at ON at.block_number = t.evt_block_number
     AND at.hash = t.evt_tx_hash
     {% if is_incremental() %}
     AND at.block_time >= date_trunc("day", now() - interval '1 week')
@@ -102,4 +102,4 @@ INNER JOIN avalanche_c.transactions at ON at.block_number = t.evt_block_number
     AND at.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 WHERE ids_and_count.values > 0
-GROUP BY blockchain, t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t.from, t.to, t.evt_index, token_id, amount
+GROUP BY blockchain, t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t.from, t.to, at.from, t.evt_index, token_id, amount

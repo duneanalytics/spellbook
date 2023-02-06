@@ -103,4 +103,4 @@ INNER JOIN polygon.transactions pt ON pt.block_number = t.evt_block_number
     AND pt.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 WHERE ids_and_count.values > 0
-GROUP BY blockchain, t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t.from, t.to, t.evt_index, token_id, amount
+GROUP BY blockchain, t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t.from, t.to, pt.from, t.evt_index, token_id, amount
