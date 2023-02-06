@@ -3,8 +3,8 @@ WITH unit_tests as
                
                 and test.taker_token = actual.taker_token
 then True else False end as test
-FROM {{ ref('zeroex_api_arbitrum_fills') }} actual
-JOIN {{ ref('zeroex_api_arbitrum_fills_sample') }} test 
+FROM {{ ref('zeroex_arbitrum_api_fills') }} actual
+JOIN {{ ref('zeroex_arbitrum_api_fills_sample') }} test 
     ON test.tx_hash = actual.tx_hash AND test.evt_index = actual.evt_index
 )
 select count(case when test = false then 1 else null end)/count(*) as pct_mismatch, count(*) as count_rows
