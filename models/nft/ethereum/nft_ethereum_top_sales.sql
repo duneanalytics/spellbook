@@ -54,6 +54,7 @@ sales as (
         AND currency_symbol IN ('ETH', 'WETH')
         AND amount_original >= (SELECT MIN(price) FROM {{this}}) -- optimize query
     ) x 
+    QUALIFY rn <= 50
 {% endif %}
 )
 
