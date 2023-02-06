@@ -103,7 +103,7 @@ models:
       - check_dex_seed:
           blockchain: optimism
           project: synthetix
-          version: 2
+          version: 1
     columns:
       - *blockchain
       - *project

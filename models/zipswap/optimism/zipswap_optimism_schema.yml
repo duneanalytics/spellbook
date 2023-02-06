@@ -24,7 +24,7 @@ models:
       - check_dex_seed:
           blockchain: optimism
           project: zipswap
-          version: 3
+          version: 1
     columns:
       - &blockchain
         name: blockchain
