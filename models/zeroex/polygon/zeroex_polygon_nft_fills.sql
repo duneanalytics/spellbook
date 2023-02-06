@@ -6,16 +6,16 @@
         on_schema_change='sync_all_columns',     
         file_format ='delta',
         incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
+        post_hook='{{ expose_spells(\'["polygon"]\',
                                 "project",
                                 "zeroex",
-                                \'["bakabhai993", "sui414"]\') }}'
+                                \'["rantum","bakabhai993", "sui414"]\') }}'
     )
 }}
 
 {% set zeroex_v4_nft_start_date = '2022-03-01' %}
 
---sample query on dune v2: https://dune.com/queries/1607746 
+--sample query on dune v2: https://dune.com/queries/1844568 
 WITH tbl_cte_transaction AS
 (
     SELECT  evt_block_time
@@ -27,15 +27,15 @@ WITH tbl_cte_transaction AS
          , erc721Token      AS nft_address
          , erc721TokenId    AS nft_id
          , 'erc721'         AS label
-         , '1'  as nft_cnt
+         , '1'             AS nft_cnt   
          , CASE
                 WHEN erc20Token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-                THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                THEN '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619'
                 ELSE erc20Token
             END             AS price_label
          , erc20Token       AS token
          , erc20TokenAmount AS token_amount_raw
-    FROM {{ source ('zeroex_ethereum', 'ExchangeProxy_evt_ERC721OrderFilled') }}
+    FROM {{ source ('zeroex_polygon', 'ExchangeProxy_evt_ERC721OrderFilled') }}
     WHERE 1 = 1 
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '1 week')
@@ -55,15 +55,15 @@ WITH tbl_cte_transaction AS
             , erc1155Token      AS nft_address
             , erc1155TokenId    AS nft_id
             , 'erc1155'         AS label
-            , erc1155FillAmount AS nft_cnt
+            , erc1155FillAmount  as nft_cnt
             , CASE
                 WHEN erc20Token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-                THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                THEN '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619'
                 ELSE erc20Token
                 END             AS price_label
             , erc20Token        AS token
             , erc20FillAmount   AS token_amount_raw
-    FROM {{ source ('zeroex_ethereum', 'ExchangeProxy_evt_ERC1155OrderFilled') }}
+    FROM {{ source ('zeroex_polygon', 'ExchangeProxy_evt_ERC1155OrderFilled') }}
     WHERE 1 = 1 
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '1 week')
@@ -85,7 +85,7 @@ WITH tbl_cte_transaction AS
                ,row_number() OVER(PARTITION BY contract_address,minute ORDER BY minute DESC) AS ranker
         FROM {{ source('prices', 'usd') }} p
         WHERE 1=1
-            AND blockchain = 'ethereum'
+            AND blockchain = 'polygon'
             AND p.contract_address IN ( SELECT DISTINCT price_label FROM tbl_cte_transaction) 
             {% if is_incremental() %}
             AND minute > now() - interval '100 days'
@@ -102,7 +102,7 @@ SELECT a.evt_block_time                                      AS block_time
      , try_cast(date_trunc('day', a.evt_block_time) AS date) AS block_date
      , a.evt_index
      , a.evt_tx_hash                                         AS tx_hash
-     , a.maker
+     , a.maker                                              
      , a.taker
      , a.matcher
      , a.nft_address
@@ -113,8 +113,8 @@ SELECT a.evt_block_time                                      AS block_time
      , a.token
      , a.token_amount_raw
      , CASE
-            WHEN token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-            THEN 'ETH'
+            WHEN token = '0x0000000000000000000000000000000000001010'
+            THEN 'MATIC'
             ELSE b.symbol
       END                                                    AS symbol
      , b.price * (a.token_amount_raw / pow(10, b.decimals))  AS price_usd
@@ -126,7 +126,7 @@ LEFT JOIN tbl_usd AS b
     AND a.price_label = b.contract_address
 LEFT JOIN {{ ref('tokens_nft') }} AS c
     ON nft_address = c.contract_address
-    AND c.blockchain = 'ethereum'
+    AND c.blockchain = 'polygon'
 )
 SELECT  *
 FROM tbl_master
