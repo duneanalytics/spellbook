@@ -13,7 +13,7 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - block_date
             - tx_hash
             - evt_index
       - check_seed:
@@ -22,6 +22,9 @@ models:
             - block_time
             - tx_hash
             - evt_index
+          check_columns:
+            - maker
+            - taker
     columns:
       - &evt_index
         name: evt_index
