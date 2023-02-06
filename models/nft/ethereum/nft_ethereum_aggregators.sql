@@ -20,6 +20,16 @@ FROM
     , ('0x9e97195f937c9372fe5fda5e3b86e9b88cbefed7', 'Gem') -- Gem's X2Y2 Batch Buys (Old)
     , ('0x539ea5d6ec0093ff6401dbcd14d049c37a77151b', 'Gem') -- Gem's X2Y2 Batch Buys
     , ('0xf22007700b8c443bcb36a39580f7804bffdb1169', 'Gem') -- Gem's Blur Batch Buys
+    , ('0x00000000006c3852cbef3e08e8df289169ede581', 'Gem') -- Gem v2 Seaport
+    , ('0x094e654351cf152112e136923ad21508401d64d3', 'Gem') -- Gem v2 LooksRare
+    , ('0x4326275317acc0fae4aa5c68fce4c54c74dc08d3', 'Gem') -- Gem v2 X2Y2
+    , ('0x8ef012434311a3165bea2842fb4425085cac4ae2', 'Gem') -- Gem v2 Larvalabs
+    , ('0xfcc3a7bf1a7f1cc3e3721323289ac59981821701', 'Gem') -- Gem v2 Not Larvalabs
+    , ('0x79bff2e1f673e2262349d1cfe7245ca7f4e45ce2', 'Gem') -- Gem v2 NFTX
+    , ('0x2c8e928504b47c2c76aa09a0f0eb6ccde73e3cca', 'Gem') -- Gem v2 NFT20
+    , ('0x2b2e8cda09bba9660dca5cb6233787738ad68329', 'Gem') -- Gem v2 SudoSwap
+    , ('0x29ab6d8f7e3d815168d6b40ebb12625b4fe13998', 'Gem') -- Gem
+    , ('0x9c049c5a973e9637cdf5f7c31b93ec074161d2fe', 'Gem') -- Gem
     , ('0x56dd5bbede9bfdb10a2845c4d70d4a2950163044', 'X2Y2') -- X2Y2's OpenSea Sniper
     , ('0x69cf8871f61fb03f540bc519dd1f1d4682ea0bf6', 'Element') -- Element NFT Marketplace Aggregator
     , ('0xb4e7b8946fa2b35912cc0581772cccd69a33000c', 'Element') -- Element NFT Marketplace Aggregator 2
@@ -45,4 +55,5 @@ FROM
     , ('0x36ab1c395b3711d3d5ed2af8ac8371cc991aa06c', 'Flip') -- Flip
     , ('0x7db11e30ae8ad7495668701c3f2c1b6d60587eda', 'Flip') -- Flip's LooksRare Checkout
     , ('0xb123504fa220ba482768dd1e798594c1af88d7dc', 'Tiny Astro') -- Tiny Astro
+    , ('0x4c9712cd94376c537464caa4d87bce198d59936c', 'GigaMart') -- GigaMart's GigaAggregator
   ) AS temp_table (contract_address, name)
