@@ -28,7 +28,6 @@ FROM (
           lower(blockchain) AS blockchain
         , airdrop_name
         , airdrop_project
-        , distributor_address
         , recipient_address
         , airdrop_token_address
         , airdrop_token_symbol
