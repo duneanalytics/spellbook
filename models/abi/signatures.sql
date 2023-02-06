@@ -21,9 +21,7 @@ WITH
             SELECT
                 abi,
                 created_at,
-                created_at_month,
                 id,
-                recency,
                 signature,
                 type,
                 concat(id, signature, type) as unique_signature_id
