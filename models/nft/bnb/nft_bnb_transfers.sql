@@ -96,7 +96,7 @@ FROM (
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     GROUP BY t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t.from, t.to, t.evt_index, t.values, t.ids
-    )
+    ) t
 INNER JOIN bnb.transactions bt ON bt.block_number = t.evt_block_number
     AND bt.hash = t.evt_tx_hash
     {% if is_incremental() %}
