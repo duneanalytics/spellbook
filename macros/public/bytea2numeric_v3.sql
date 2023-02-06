@@ -30,8 +30,7 @@
     --compose all factors together in the correct decimal(38)s
     , decimals as (
     select
-         hex_input_64
-        ,left(lpad(hex_5 * base_56_4,34,'0'),17)::decimal(38) as dec_3
+        left(lpad(hex_5 * base_56_4,34,'0'),17)::decimal(38) as dec_3
         ,(  left(lpad(hex_3 * base_28_2,34,'0'),17)::decimal(38)
             + left(lpad(hex_4 * base_42_2,34,'0'),17)::decimal(38) + (hex_4 * base_42_3)
             + left(lpad(hex_5 * base_56_2,34,'0'),17)::decimal(38) + (hex_5 * base_56_3) + right(hex_5 * base_56_4,17)::decimal(38)*pow_10_17
@@ -48,12 +47,12 @@
     --handle carry overs from dec1 -> dec2 and dec2 -> dec3
     , carries as (
         select
-        ,dec_3 + left(lpad(dec_2,35,'0'),1)::decimal(38) as dec_3
+        dec_3 + left(lpad(dec_2,35,'0'),1)::decimal(38) as dec_3
         ,right(dec_2,34) as dec_2
         ,dec_1
         from (
             select
-                ,dec_3
+                dec_3
                 ,dec_2 + left(lpad(dec_1,35,'0'),1)::decimal(38) as dec_2
                 ,right(dec_1,34) as dec_1
             from decimals
