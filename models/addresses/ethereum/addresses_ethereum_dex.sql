@@ -41,7 +41,6 @@ FROM (VALUES
       ('0x7a250d5630b4cf539739df2c5dacb4c659f2488d', 'Uniswap', 'Router02'),
       ('0xe592427a0aece92de3edee1f18e0157c05861564', 'Uniswap', 'V3 Router'),
       ('0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45', 'Uniswap', 'V3 Router 2'),
-      ('0xb45a2dda996c32e93b8c47098e90ed0e7ab18e39', 'Uniswap', 'TransitSwapRouterV4'),
       ('0x619b188b3f02605e289771e0001f9c313b8436a0', 'Uniswap', 'V2 Aggregator'),
       ('0x81c46feca27b31f3adc2b91ee4be9717d1cd3dd7', 'Vyper', 'Vyper contract'),
       ('0x31efc4aeaa7c39e54a33fdc3c46ee2bd70ae0a09', 'xPollinate', 'Transaction Manager'),
