@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: zeroex_api_arbitrum_fills
+  - name: zeroex_arbitrum_api_fills
     meta:
       blockchain: arbitrum
       project: zeroex
@@ -17,7 +17,7 @@ models:
             - tx_hash
             - evt_index
       - check_seed:
-          seed_file: ref('zeroex_api_arbitrum_fills_sample')
+          seed_file: ref('zeroex_arbitrum_api_fills_sample')
           match_columns:
             - tx_hash
             - evt_index
