@@ -159,7 +159,7 @@ VALUES
     ("xen-xen-crypto", "avalanche_c", "XEN", "0xC0C5AA69Dbe4d6DDdfBc89c0957686ec60F24389", 18),
     ("link-chainlink", "avalanche_c", "LINK.e", "0x5947bb275c521040051d82396192181b413227a3", 18),
     ("mimatic-mimatic", "avalanche_c", "MAI", "0x5c49b268c9841aff1cc3b0a418ff5c3442ee3f3b", 18),
-    ("luna-terra", "avalanche_c", "LUNC", "0x798e4fc9113b86b24c66d8912ce5524dcc08e294", 18),
+    ("luna-luna-wormhole", "avalanche_c", "LUNA", "0x70928e5b188def72817b7775f0bf6325968e563b", 6),
     ("ust-terrausd-wormhole", "avalanche_c", "UST", "0xb599c3590f42f8f995ecfa0f85d2980b76862fc1", 6),
 
 
