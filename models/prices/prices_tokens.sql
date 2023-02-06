@@ -644,7 +644,7 @@ VALUES
     ("snt-status", "ethereum", "SNT", "0x744d70fdbe2ba4cf95131626614a1763df805b9e", 18),
     ("sos-opendao", "ethereum", "SOS", "0x3b484b82567a09e2588a13d54d032153f0c0aee0", 18),
     ("spank-spankchain", "ethereum", "SPANK", "0x42d6622dece394b54999fbd73d108123806f6a18", 18),
-    ("spell-spell-token", "ethereum", "SPELL", "0x090185f2135308bad17527004364ebcc2d37e5f6", 18),
+    --("spell-spell-token", "ethereum", "SPELL", "0x090185f2135308bad17527004364ebcc2d37e5f6", 18),
     ("srm-serum", "ethereum", "SRM", "0x476c5e26a75bd202a9683ffd34359c0cc15be0ff", 6),
     ("srn-sirin-labs-token", "ethereum", "SRN", "0x68d57c9a1c35f63e2c83ee8e49a64e9d70528d25", 18),
     ("stake-xdai-stake", "ethereum", "STAKE", "0x0ae055097c6d159879521c384f1d2123d1f195e6", 18),
@@ -1738,12 +1738,13 @@ VALUES
     ("spell-spell-token", "optimism", "SPELL", "0xe3ab61371ecc88534c522922a026f2296116c109", 18),
     ("suku-suku", "optimism", "SUKU", "0xef6301da234fc7b0545c6e877d3359fe0b9e50a4", 18),
     ("snx-synthetix-network-token", "optimism", "SNX", "0x8700daec35af8ff88c16bdf0418774cb3d7599b4", 18),
-    ("unlock-unlock", "optimism", "UNLOCK", "0x7ae97042a4a0eb4d1eb370c34bfec71042a056b7", 18),
+    -- ("unlock-unlock", "optimism", "UNLOCK", "0x7ae97042a4a0eb4d1eb370c34bfec71042a056b7", 18), --removed for low quality feed
     ("bank-bankless-dao", "optimism", "BANK", "0x29FAF5905bfF9Cfcc7CF56a5ed91E0f091F8664B", 18),
     ("btcb-bitcoin-avalanche-bridged-btcb","optimism","BTC.b","0x2297aebd383787a160dd0d9f71508148769342e3",18),
     ("pickle-pickle-finance", "optimism", "PICKLE", "0x0c5b4c92c948691EEBf185C17eeB9c230DC019E9", 18),
     ("bob-bob", "optimism", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
     ("bomb-fbomb","optimism","fBOMB","0x74ccbe53F77b08632ce0CB91D3A545bF6B8E0979",18),
+    ("busd-binance-usd","optimism","BUSD","0x9c9e5fd8bbc25984b178fdce6117defa39d2db39",18),
 
     ("aave-new","polygon","AAVE","0xd6df932a45c0f255f85145f286ea0b292b21c90b",18),
     ("ageur-ageur","polygon",'agEUR',"0xe0b52e49357fd4daf2c15e02058dce6bc0057db4",18),
