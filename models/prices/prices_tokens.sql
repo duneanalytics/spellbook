@@ -1738,7 +1738,7 @@ VALUES
     ("spell-spell-token", "optimism", "SPELL", "0xe3ab61371ecc88534c522922a026f2296116c109", 18),
     ("suku-suku", "optimism", "SUKU", "0xef6301da234fc7b0545c6e877d3359fe0b9e50a4", 18),
     ("snx-synthetix-network-token", "optimism", "SNX", "0x8700daec35af8ff88c16bdf0418774cb3d7599b4", 18),
-    ("unlock-unlock", "optimism", "UNLOCK", "0x7ae97042a4a0eb4d1eb370c34bfec71042a056b7", 18),
+    -- ("unlock-unlock", "optimism", "UNLOCK", "0x7ae97042a4a0eb4d1eb370c34bfec71042a056b7", 18), --removed for low quality feed
     ("bank-bankless-dao", "optimism", "BANK", "0x29FAF5905bfF9Cfcc7CF56a5ed91E0f091F8664B", 18),
     ("btcb-bitcoin-avalanche-bridged-btcb","optimism","BTC.b","0x2297aebd383787a160dd0d9f71508148769342e3",18),
     ("pickle-pickle-finance", "optimism", "PICKLE", "0x0c5b4c92c948691EEBf185C17eeB9c230DC019E9", 18),
