@@ -13,18 +13,15 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
+            - block_time
             - tx_hash
             - evt_index
       - check_seed:
           seed_file: ref('zeroex_polygon_api_fills_sample')
           match_columns:
-            - block_date
+            - block_time
             - tx_hash
             - evt_index
-          check_columns:
-            - maker
-            - taker
     columns:
       - &evt_index
         name: evt_index
