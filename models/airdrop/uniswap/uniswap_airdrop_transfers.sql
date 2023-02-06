@@ -35,7 +35,7 @@ substring(tx.data,1,10) AS tx_method_id
 
 FROM {{ source('uniswap_ethereum', 'MerkleDistributor_evt_Claimed') }} tfer
 INNER JOIN {{ ref('tokens_ethereum_erc20') }} r
-        ON r.contract_address = '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984' --UNI Token
+        ON r.contract_address = lower('0x1f9840a85d5af5bf1d1762f925bdaddc4201f984') --UNI Token
 INNER JOIN {{ source('ethereum','transactions') }} tx
         ON tx.block_number = tfer.evt_block_number
         AND tx.block_time = tfer.evt_block_time
