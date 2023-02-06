@@ -53,7 +53,7 @@ src_data as (
         minter,
         eth_spent,
         no_minted,
-        last_updated
+        NOW() - Interval '5 Minutes' as last_updated
     FROM 
     {{this}}
     {% endif %}
