@@ -591,8 +591,7 @@ models:
         +schema: zeroex_ethereum
       optimism:
         +schema: zeroex_optimism
-        erc20:
-          +schema: zeroex_optimism_erc20
+        
       polygon:
         +schema: zeroex_polygon
         erc20:
@@ -1007,27 +1006,26 @@ seeds:
             token_amount: double
             project_name: string
       optimism:
-        fills:
-          zeroex_api_optimism_fills_sample:
-            +column_types:
-              tx_hash: string
-              evt_index: int
-              contract_address: string
-              block_time: timestamp
-              block_date: date
-              maker: string
-              taker: string
-              taker_token: string
-              maker_token: string
-              taker_token_amount: double
-              taker_token_amount_raw: double
-              maker_token_amount: double
-              maker_token_amount_raw: double
-              type: string
-              affiliate_address: string
-              swap_flag: boolean
-              matcha_limit_order_flag: boolean
-              volume_usd: double
+        zeroex_optimism_api_fills_sample:
+          +column_types:
+            tx_hash: string
+            evt_index: int
+            contract_address: string
+            block_time: timestamp
+            block_date: date
+            maker: string
+            taker: string
+            taker_token: string
+            maker_token: string
+            taker_token_amount: double
+            taker_token_amount_raw: double
+            maker_token_amount: double
+            maker_token_amount_raw: double
+            type: string
+            affiliate_address: string
+            swap_flag: boolean
+            matcha_limit_order_flag: boolean
+            volume_usd: double
       polygon:
         fills:
           +enabled: true
