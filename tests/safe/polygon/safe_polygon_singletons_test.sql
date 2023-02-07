@@ -1,7 +1,7 @@
 -- Check that at least the official singletons are part of the return set.
 
 with test_data as (
-    select count(*)
+    select count(*) as num_official
     from {{ ref('safe_polygon_singletons') }}
     where address in (
         '0x34cfac646f301356faa8b21e94227e3583fe3f5f',
@@ -11,7 +11,7 @@ with test_data as (
 ),
 
 test_result as (
-    select case when total = 4 then true else false end as success
+    select case when num_official = 4 then true else false end as success
     from test_data
 )
 

@@ -1,8 +1,8 @@
 -- Check that at least the official singletons are part of the return set.
 
 with test_data as (
-    select count(*)
-    from safe_ethereum.singletons
+    select count(*) as num_official
+    from {{ ref('safe_ethereum_singletons') }}
     where address in (
         '0x8942595a2dc5181df0465af0d7be08c8f23c93af',
         '0xb6029ea3b2c51d09a50b53ca8012feeb05bda35a',
@@ -14,7 +14,7 @@ with test_data as (
 ),
 
 test_result as (
-    select case when total = 7 then true else false end as success
+    select case when num_official = 7 then true else false end as success
     from test_data
 )
 

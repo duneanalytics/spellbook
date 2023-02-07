@@ -1,7 +1,7 @@
 -- Check that at least the official singletons are part of the return set.
 
 with test_data as (
-    select count(*)
+    select count(*) as num_official
     from {{ ref('safe_avalanche_c_singletons') }}
     where address in (
         '0xfb1bffc9d739b8d520daf37df666da4c687191ea',
@@ -9,7 +9,7 @@ with test_data as (
 ),
 
 test_result as (
-    select case when total = 2 then true else false end as success
+    select case when num_official = 2 then true else false end as success
     from test_data
 )
 

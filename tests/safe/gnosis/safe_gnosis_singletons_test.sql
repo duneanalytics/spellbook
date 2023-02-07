@@ -1,7 +1,7 @@
 -- Check that at least the official singletons are part of the return set.
 
 with test_data as (
-    select count(*)
+    select count(*) as num_official
     from {{ ref('safe_gnosis_singletons') }}
     where address in (
         '0xb6029ea3b2c51d09a50b53ca8012feeb05bda35a',
@@ -12,7 +12,7 @@ with test_data as (
 ),
 
 test_result as (
-    select case when total = 5 then true else false end as success
+    select case when num_official = 5 then true else false end as success
     from test_data
 )
 
