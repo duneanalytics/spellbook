@@ -1,49 +1,70 @@
-with events as (
-    -- binds
-    select call_block_number as block_number, 
-    contract_address as pool, token, denorm
-    from balancer_v1_ethereum.BPool_call_bind
-    where call_success
+{{config(
+    alias='balancer_v1_pools_ethereum',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['address'],
+    post_hook='{{ expose_spells(\'["ethereum"]\',
+                                     "sector",
+                                    "labels",
+                                    \'["balancerlabs"]\') }}'
+    )
+}}
 
-    union all
+WITH events AS (
+    -- binds
+    SELECT call_block_number AS block_number, 
+    contract_address AS pool, token, denorm
+    FROM {{ source('balancer_v1_ethereum', 'BPool_call_bind') }}
+    WHERE call_success
+    {% if is_incremental() %}
+        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+
+    UNION all
 
     -- rebinds
-    select call_block_number as block_number, 
-    contract_address as pool, token, denorm
-    from balancer_v1_ethereum.BPool_call_rebind
-    where call_success
+    SELECT call_block_number AS block_number, 
+    contract_address AS pool, token, denorm
+    FROM {{ source('balancer_v1_ethereum', 'BPool_call_rebind') }}
+    WHERE call_success
+    {% if is_incremental() %}
+        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
-    union all
+    UNION all
     
     -- unbinds
-    select call_block_number as block_number, 
-    contract_address as pool, token, 0 as denorm
-    from balancer_v1_ethereum.BPool_call_unbind
-    where call_success
+    SELECT call_block_number AS block_number, 
+    contract_address AS pool, token, 0 AS denorm
+    FROM {{ source('balancer_v1_ethereum', 'BPool_call_unbind') }}
+    WHERE call_success
+    {% if is_incremental() %}
+        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 ),
 
-state_with_gaps as (
-    select events.block_number, events.pool, events.token, CAST(events.denorm AS double),
-    LEAD(events.block_number, 1, 99999999) over (partition by events.pool, events.token order by events.block_number) as next_block_number
-    from events
+state_with_gaps AS (
+    SELECT events.block_number, events.pool, events.token, CAST(events.denorm AS double),
+    LEAD(events.block_number, 1, 99999999) OVER (PARTITION BY events.pool, events.token ORDER BY events.block_number) AS next_block_number
+    FROM events
 ),
 
-settings as (
-    select pool, 
-    coalesce(t.symbol,'?') as symbol, 
+settings AS (
+    SELECT pool, 
+    coalesce(t.symbol,'?') AS symbol, 
     denorm,
     next_block_number
-    from state_with_gaps s
-    left join tokens.erc20 t on s.token = t.contract_address
-    AND blockchain = "ethereum"
-    where next_block_number = 99999999
-    and denorm > 0
+    FROM state_with_gaps s
+    LEFT JOIN {{ ref('tokens_ethereum_erc20') }} t ON s.token = t.contract_address
+    WHERE next_block_number = 99999999
+    AND denorm > 0
 ),
 
-final as (
+final AS (
     SELECT 
       array('ethereum') AS blockchain,
-      pool as address,
+      pool AS address,
       lower(concat(array_join(collect_list(symbol), '/'), ' ', array_join(collect_list(cast(norm_weight AS string)), '/'))) AS name,
       'balancer_v1_pool' AS category,
       'balancerlabs' AS contributor,
@@ -52,14 +73,14 @@ final as (
       now() AS updated_at
 
     FROM   (
-        select s1.pool, symbol, cast(100*denorm/total_denorm as integer) as norm_weight from settings s1
-        inner join (select pool, sum(denorm) as total_denorm from settings group by pool) s2
-        on s1.pool = s2.pool
-        order by 1 asc , 3 desc, 2 asc
+        SELECT s1.pool, symbol, cast(100*denorm/total_denorm AS integer) AS norm_weight FROM settings s1
+        INNER JOIN (SELECT pool, sum(denorm) AS total_denorm FROM settings GROUP BY pool) s2
+        ON s1.pool = s2.pool
+        ORDER BY 1 ASC , 3 DESC, 2 ASC
     ) s
 
     GROUP BY 1, 2
 )
 SELECT *
 FROM final
-WHERE LENGTH(name) < 35
+WHERE length(name) < 35
