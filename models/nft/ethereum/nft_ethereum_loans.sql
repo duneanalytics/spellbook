@@ -30,12 +30,12 @@ with nftfi_base as (
             evt_block_time,
             borrower,
             lender,
-            json_value(loanTerms, 'lax $.nftCollateralContract') as collectionContract,
-            json_value(loanTerms, 'lax $.nftCollateralId') as tokenId,
-            json_value(loanTerms, 'lax $.loanERC20Denomination') as loanERC20Denomination, 
-            cast(json_query(loanTerms, 'lax $.loanPrincipalAmount') as decimal) as loanPrincipalAmount,
-            cast(json_query(loanTerms, 'lax $.loanDuration') as decimal) as loanDuration,
-            cast(json_query(loanTerms, 'lax $.maximumRepaymentAmount') as decimal) as maximumRepaymentAmount,
+            get_json_object(loanTerms, '$.nftCollateralContract') as collectionContract,
+            get_json_object(loanTerms, '$.nftCollateralId') as tokenId,
+            get_json_object(loanTerms, '$.loanERC20Denomination') as loanERC20Denomination, 
+            get_json_object(loanTerms, '$.loanPrincipalAmount') as loanPrincipalAmount,
+            get_json_object(loanTerms, '$.loanDuration') as loanDuration,
+            get_json_object(loanTerms, '$.maximumRepaymentAmount') as maximumRepaymentAmount,
             loanId,
             contract_address
         from {{ source('nftfi_ethereum','DirectLoanFixedOffer_evt_LoanStarted') }}
@@ -45,12 +45,12 @@ with nftfi_base as (
             evt_block_time,
             borrower,
             lender,
-            json_value(loanTerms, 'lax $.nftCollateralContract') as collectionContract,
-            json_value(loanTerms, 'lax $.nftCollateralId') as tokenId,
-            json_value(loanTerms, 'lax $.loanERC20Denomination') as loanERC20Denomination, 
-            cast(json_query(loanTerms, 'lax $.loanPrincipalAmount') as decimal) as loanPrincipalAmount,
-            cast(json_query(loanTerms, 'lax $.loanDuration') as decimal) as loanDuration,
-            cast(json_query(loanTerms, 'lax $.maximumRepaymentAmount') as decimal) as maximumRepaymentAmount,
+            get_json_object(loanTerms, '$.nftCollateralContract') as collectionContract,
+            get_json_object(loanTerms, '$.nftCollateralId') as tokenId,
+            get_json_object(loanTerms, '$.loanERC20Denomination') as loanERC20Denomination, 
+            get_json_object(loanTerms, '$.loanPrincipalAmount') as loanPrincipalAmount,
+            get_json_object(loanTerms, '$.loanDuration') as loanDuration,
+            get_json_object(loanTerms, '$.maximumRepaymentAmount') as maximumRepaymentAmount,
             loanId,
             contract_address
         from {{ source('nftfi_ethereum','DirectLoanFixedOfferRedeploy_evt_LoanStarted') }}
@@ -60,12 +60,12 @@ with nftfi_base as (
             evt_block_time,
             borrower,
             lender,
-            json_value(loanTerms, 'lax $.nftCollateralContract') as collectionContract,
-            json_value(loanTerms, 'lax $.nftCollateralId') as tokenId,
-            json_value(loanTerms, 'lax $.loanERC20Denomination') as loanERC20Denomination, 
-            cast(json_query(loanTerms, 'lax $.loanPrincipalAmount') as decimal) as loanPrincipalAmount,
-            cast(json_query(loanTerms, 'lax $.loanDuration') as decimal) as loanDuration,
-            cast(json_query(loanTerms, 'lax $.maximumRepaymentAmount') as decimal) as maximumRepaymentAmount,
+            get_json_object(loanTerms, '$.nftCollateralContract') as collectionContract,
+            get_json_object(loanTerms, '$.nftCollateralId') as tokenId,
+            get_json_object(loanTerms, '$.loanERC20Denomination') as loanERC20Denomination, 
+            get_json_object(loanTerms, '$.loanPrincipalAmount') as loanPrincipalAmount,
+            get_json_object(loanTerms, '$.loanDuration') as loanDuration,
+            get_json_object(loanTerms, '$.maximumRepaymentAmount') as maximumRepaymentAmount,
             loanId,
             contract_address
         from {{ source('nftfi_ethereum','DirectLoanFixedCollectionOffer_evt_LoanStarted') }}
@@ -94,12 +94,12 @@ x2y2_base as (
     from (
         select 
             evt_tx_hash, evt_block_time, borrower, lender,
-            json_query(loanDetail, 'lax $.nftAsset' omit quotes) as collectionContract,
-            json_query(loanDetail, 'lax $.nftTokenId' omit quotes) as tokenId,
-            cast(json_query(loanDetail, 'lax $.borrowAmount') as decimal) as principal_raw,
-            json_query(loanDetail, 'lax $.borrowAsset' omit quotes) as currency,
-            cast(json_query(loanDetail, 'lax $.repayAmount') as decimal) as repayment_raw,
-            cast(json_query(loanDetail, 'lax $.loanDuration') as decimal) / 86400 as duration,
+            get_json_object(loanDetail, '$.nftAsset') as collectionContract,
+            get_json_object(loanDetail, '$.nftTokenId') as tokenId,
+            get_json_object(loanDetail, '$.borrowAmount') as principal_raw,
+            get_json_object(loanDetail, '$.borrowAsset') as currency,
+            get_json_object(loanDetail, '$.repayAmount')  as repayment_raw,
+            get_json_object(loanDetail, '$.loanDuration') / 86400 as duration,
             contract_address, loanId
         from {{ source('xy3_ethereum','XY3_evt_LoanStarted') }}
     ) t
@@ -123,20 +123,20 @@ arcade_v1_base as (
     select *, 365 * 1.0 / duration * (interest_raw * 1.0 / principal_raw) * 100 as apr
     from (
         select c.evt_tx_hash, evt_block_time, borrower, lender, c.contract_address, p.loanId, 'v1' as version,
-            cast(json_query(terms, 'lax $.collateralTokenId') as decimal) as bundleId,
-            json_query(terms, 'lax $.payableCurrency' omit quotes) as currency,
-            cast(json_query(terms, 'lax $.principal') as decimal) as principal_raw,
-            cast(json_query(terms, 'lax $.interest') as decimal) as interest_raw,
-            cast(json_query(terms, 'lax $.durationSecs') as decimal) / 86400 as duration
+            get_json_object(terms, '$.collateralTokenId') as bundleId,
+            get_json_object(terms, '$.payableCurrency') as currency,
+            get_json_object(terms, '$.principal') as principal_raw,
+            get_json_object(terms, '$.interest') as interest_raw,
+            get_json_object(terms, '$.durationSecs') / 86400 as duration
         from {{ source('pawnfi_ethereum','LoanCore_call_startLoan') }} p left join {{ source('pawnfi_ethereum','LoanCore_evt_LoanCreated') }} c on p.call_block_time=c.evt_block_time and p.call_tx_hash = c.evt_tx_hash
         where call_success=true
         union all
         select c.evt_tx_hash, evt_block_time, borrower, lender, c.contract_address, p.loanId, 'v1.2' as version,
-            cast(json_query(terms, 'lax $.collateralTokenId') as decimal) as bundleId,
-            json_query(terms, 'lax $.payableCurrency' omit quotes) as currency,
-            cast(json_query(terms, 'lax $.principal') as decimal) as principal_raw,
-            cast(json_query(terms, 'lax $.interest') as decimal) as interest_raw,
-            cast(json_query(terms, 'lax $.durationSecs') as decimal) / 86400 as duration
+            get_json_object(terms, '$.collateralTokenId') as bundleId,
+            get_json_object(terms, '$.payableCurrency') as currency,
+            get_json_object(terms, '$.principal')  as principal_raw,
+            get_json_object(terms, '$.interest') as interest_raw,
+            get_json_object(terms, '$.durationSecs') / 86400 as duration
         from {{ source('pawnfi_v2_ethereum','LoanCore_call_startLoan') }} p left join {{ source('pawnfi_v2_ethereum','LoanCore_evt_LoanCreated') }} c on p.call_block_time=c.evt_block_time and p.call_tx_hash = c.evt_tx_hash
         where call_success=true
     ) t
@@ -160,7 +160,7 @@ arcade_v1_with_tokens as (
 
 -- arcade v2 loans
 arcade_v2_wrappers as ( -- arcade asset wrappers
-    select * from (values (0x6e9b4c2f6bd57b7b924d29b5dcfca1273ecc94a2), (0x666faa632e5f7ba20a7fce36596a6736f87133be)) t(id)
+    select * from (values ('0x6e9b4c2f6bd57b7b924d29b5dcfca1273ecc94a2'), ('0x666faa632e5f7ba20a7fce36596a6736f87133be')) t(id)
 ),
 
 arcade_v2_vault_created as (
@@ -169,12 +169,12 @@ arcade_v2_vault_created as (
 ),
 
 arcade_v2_vault_deposited_nfts as (
-    select e.to as vault, "_1" as borrower, e.tokenId, e.contract_address, call_block_time, e.evt_tx_hash
+    select e.to as vault, `_1` as borrower, e.tokenId, e.contract_address, call_block_time, e.evt_tx_hash
     from {{ source('pawnfi_v201_ethereum','AssetVault_call_onERC721Received') }} p inner join {{ source('erc721_ethereum','evt_Transfer') }}  e on p.call_block_time=e.evt_block_time and p.call_tx_hash=e.evt_tx_hash
 ),
 
 arcade_v2_vault_withdrawn_nfts as (
-    select e."from" as vault, p.to as borrower, p.tokenId, p.token as contract_address, p.call_block_time, e.evt_tx_hash
+    select e.`from` as vault, p.to as borrower, p.tokenId, p.token as contract_address, p.call_block_time, e.evt_tx_hash
     from {{ source('pawnfi_v201_ethereum','AssetVault_call_withdrawERC721') }} p inner join {{ source('erc721_ethereum','evt_Transfer') }}  e on p.call_block_time=e.evt_block_time and p.call_tx_hash=e.evt_tx_hash
 ),
 
@@ -192,29 +192,29 @@ arcade_v2_base as (
     select *, 365 * 1.0 / duration * (interest_rate_raw / 1e18 / 100) as apr
     from (
         select call_tx_hash as evt_tx_hash, call_block_time as evt_block_time, borrower, lender, contract_address, output_loanId as loanId, 'v2' as version,
-            json_query(terms, 'lax $.collateralId' omit quotes) as collateralId,
-            json_query(terms, 'lax $.collateralAddress' omit quotes) as collateralAddress,
-            json_query(terms, 'lax $.payableCurrency' omit quotes) as currency,
-            cast(json_query(terms, 'lax $.principal') as decimal) as principal_raw,
-            cast(json_query(terms, 'lax $.interestRate') as decimal) as interest_rate_raw,
-            cast(json_query(terms, 'lax $.durationSecs') as decimal) / 86400 as duration
+            get_json_object(terms, '$.collateralId') as collateralId,
+            get_json_object(terms, '$.collateralAddress') as collateralAddress,
+            get_json_object(terms, '$.payableCurrency') as currency,
+            get_json_object(terms, '$.principal') as principal_raw,
+            get_json_object(terms, '$.interestRate') as interest_rate_raw,
+            get_json_object(terms, '$.durationSecs') / 86400 as duration
         from {{ source('pawnfi_v201_ethereum','LoanCore_call_startLoan') }}
         where call_success=true
         union all
         select call_tx_hash as evt_tx_hash, call_block_time as evt_block_time, borrower, lender, contract_address, output_newLoanId as loanId, 'v2-r' as version,
-            json_query(terms, 'lax $.collateralId' omit quotes) as collateralId,
-            json_query(terms, 'lax $.collateralAddress' omit quotes) as collateralAddress,
-            json_query(terms, 'lax $.payableCurrency' omit quotes) as currency,
-            cast(json_query(terms, 'lax $.principal') as decimal) as principal_raw,
-            cast(json_query(terms, 'lax $.interestRate') as decimal) as interest_rate_raw,
-            cast(json_query(terms, 'lax $.durationSecs') as decimal) / 86400 as duration
+            get_json_object(terms, '$.collateralId') as collateralId,
+            get_json_object(terms, '$.collateralAddress') as collateralAddress,
+            get_json_object(terms, '$.payableCurrency') as currency,
+            get_json_object(terms, '$.principal') as principal_raw,
+            get_json_object(terms, '$.interestRate') as interest_rate_raw,
+            get_json_object(terms, '$.durationSecs') / 86400 as duration
         from {{ source('pawnfi_v201_ethereum','LoanCore_call_rollover') }}
         where call_success=true
     ) t
 ),
 
 arcade_v2 as (
-    select l.*, case when (r.evt_block_time is null and l.evt_block_time + interval '1' day * duration < current_date) then l.evt_block_time else null end as repay_time
+    select l.*, case when (r.evt_block_time is null and l.evt_block_time + interval '1 day' * duration < current_date) then l.evt_block_time else null end as repay_time
     from arcade_v2_base l left join pawnfi_v201_ethereum.LoanCore_evt_LoanClaimed r on l.loanId=r.loanId and l.contract_address=r.contract_address
 ),
 
@@ -307,4 +307,4 @@ loans_with_prices as (
 )
 
 select l.*, coalesce(t.name, 'Awesome NFT') as collectionName 
-from loans_with_prices l left join {{ source('tokens','nft') }} t on l.collectionContract=t.contract_address
+from loans_with_prices l left join tokens.nft t on l.collectionContract=t.contract_address
