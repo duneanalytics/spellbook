@@ -1,5 +1,5 @@
 {{ config( alias='nft',
-        post_hook='{{ expose_spells(\'["avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom"]\',
+        post_hook='{{ expose_spells(\'["avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom","arbitrum"]\',
                                     "sector",
                                     "tokens",
                                     \'["0xManny","hildobby","soispoke","dot2dotseurat"]\') }}')}}
@@ -66,3 +66,12 @@ symbol,
 standard, 
 category 
 FROM  {{ ref('tokens_fantom_nft') }}
+            UNION
+SELECT
+'arbitrum' as blockchain, 
+contract_address, 
+name, 
+symbol,
+standard, 
+category 
+FROM  {{ ref('tokens_arbitrum_nft') }}
