@@ -271,7 +271,7 @@ benddao as (
     from (
         select l.*, 
             case when status='repaid' then r.evt_block_time else null end as repay_time, 
-            case when status is not null then date_diff('day', l.evt_block_time, r.evt_block_time) else null end as duration,
+            case when status is not null then datediff(r.evt_block_time, l.evt_block_time)  else null end as duration,
             null as apr
         from benddao_base l left join benddao_ended r on l.loanId=r.loanId --and l.user=r.user
     ) t 
