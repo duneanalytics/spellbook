@@ -4,7 +4,7 @@
 }}
 
         select
-            'test' as blockchain,
+            'ethereum' as blockchain,
             day,
             wallet_address,
             token_address,
