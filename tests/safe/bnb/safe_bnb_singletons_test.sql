@@ -2,7 +2,7 @@
 
 with test_data as (
     select count(*)
-    from safe_bnb.singletons
+    from {{ ref('safe_bnb_singletons') }}
     where address in (
         '0x34cfac646f301356faa8b21e94227e3583fe3f5f',
         '0x6851d6fdfafd08c0295c392436245e5bc78b0185',

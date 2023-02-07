@@ -2,7 +2,7 @@
 
 with test_data as (
     select count(*)
-    from safe_gnosis.singletons
+    from {{ ref('safe_gnosis_singletons') }}
     where address in (
         '0xb6029ea3b2c51d09a50b53ca8012feeb05bda35a',
         '0x34cfac646f301356faa8b21e94227e3583fe3f5f',
