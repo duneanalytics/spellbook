@@ -61,7 +61,7 @@
     , result as (
         select
             ltrim('0',lpad(dec_3,10,'0') || lpad(dec_2,34,'0') || lpad(dec_1,34,'0')) as dec_string
-        from carries;
+        from carries
     )
     select
         case when dec_string = '' then '0' else dec_string end as out
