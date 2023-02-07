@@ -464,6 +464,8 @@ models:
         +schema: contracts_optimism
       bnb:
         +schema: contracts_bnb
+      fantom:
+        +schema: contracts_fantom
 
     clipper:
       +schema: clipper
