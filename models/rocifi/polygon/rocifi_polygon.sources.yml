@@ -1,0 +1,32 @@
+version: 2
+
+sources:
+  - name: polygon
+    description: > 
+      Raw Data of Polygon Blockchain
+    tables: 
+      - name: logs
+
+  - name: rocifi_v2_polygon
+    description: >
+      Decoded events for version 2 of [Roci.fi](https://roci.fi/), UNDER-COLLATERALIZED LENDING PROTOCOL ON POLYGON
+    tables:
+      - name: ScoreDB_evt_ScoreUpdated
+        description: "Event Log of NFCS Credit Score updated onchain"
+      - name: LoanManager_evt_LoanCreated
+        description: "Event Log of Loan Initiated"
+      - name: LoanManager_call_borrow
+        description: "Function call of Loan Initiated"
+      - name: CollateralManager_evt_CollateralFrozen
+        description: "Event Log of Collateral Frozen, against which borrow is made"
+      - name: LoanManager_evt_LoanPayed
+        description: "Event Log of Loan Repayment"
+      - name: LoanManager_evt_LoanLiquidated
+        description: "Event Log of Loan Liquidated upon maturity"
+  
+  - name: rocifi_polygon
+    description: >
+      Decoded events for version 1 of [Roci.fi](https://roci.fi/), UNDER-COLLATERALIZED LENDING PROTOCOL ON POLYGON
+    tables:
+      - name: NFCS_evt_TokenMinted
+        description: "Event Log of NFCS Token minted"

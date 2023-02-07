@@ -14,3 +14,87 @@ models:
         description: "Test addresses used to test in Production"
         tests:
           - unique
+
+  - name: rocifi_polygon_v2_loan_master
+    meta:
+      blockchain: polygon
+      project: rocifi
+      contributors: maybeyonas
+    config:
+      tags: ['table', 'loan', 'polygon', 'rocifi']
+    description: "Master Table tracking all Loans initiated on v2 and their latest status"
+    tests:
+      - unique
+    columns:
+      - name: loan_id
+        description: "Unique ID for each Loan initiated"
+      - name: loan_issue_time
+        description: "Timestamp when Loan was issued"
+      - name: loan_issue_tx
+        description: "Transaction hash of Loan issued"
+      - name: borrower
+        description: "User issuing Loan"
+      - name: pool_address
+        description: "Address of Lending Pool from which Loan is issued"
+      - name: pool
+        description: "Name of Lending Pool from which Loan is issued"
+      - name: underlying_token
+        description: "Address of underlying token of Lending Pool from which Loan is issued"
+      - name: loan_symbol
+        description: "Symbol of underlying token of Lending Pool from which Loan is issued"
+      - name: loan_amount
+        description: "Decimal adjusted Amount of underlying token taken out as Loan"
+      - name: loan_usd_then
+        description: "USD value of amount of underlying token taken out as Loan, at the time of Loan issuance"
+      - name: loan_usd_now
+        description: "USD value of amount of underlying token taken out as Loan, at current Date"
+      - name: collateral_token
+        description: "Address of collateral token against which Loan is issued"
+      - name: collateral_symbol
+        description: "Symbol of collateral token against which Loan is issued"
+      - name: collateral_amount
+        description: "Decimal adjusted Amount of collateral token Frozen to borrow against"
+      - name: collateral_usd_then
+        description: "USD value of amount of collateral token Frozen to borrow against"
+      - name: collateral_usd_now
+        description: "USD value of amount of collateral Frozen to borrow against"
+      - name: apr
+        description: "Interest APR at which Loan is issued"
+      - name: ltv
+        description: "Unique ID for each Loan initiated"
+      - name: duration
+        description: "Duration in seconds, for which the Loan is taken"
+      - name: due_time
+        description: "Timestamp before which Loan is expected to be paid. Past this, Interest APR increases"
+      - name: liquidation_time
+        description: "Timestamp before which Loan must be paid to recover collateral.Past this, Frozen collateral is liquidated"
+      - name: position_status
+        description: "Status of Loan Position, can be [NEW,PAID_EARLY_PART,PAID_EARLY_FULL,PAID_LATE_PART,PAID_LATE_FULL,DEFAULT_PART,DEFAULT_FULL_LIQUIDATED,DEFAULT_FULL_PAID]"
+      - name: nfcs_score
+        description: "Credit Score of the borrower at the time of Loan initiation"
+      - name: nfcs_id
+        description: "NFCS token ID of borrower"
+      - name: repayments
+        description: "Number of Repayments made on the Loan"
+      - name: total_repaid
+        description: "Decimal adjusted Amount of underlying token repaid till current Date"
+      - name: last_repay_time
+        description: "Timestamp of last Repayment transaction"
+      - name: last_repay_tx
+        description: "Transaction Hash of last Repayment transaction"
+      - name: outstanding_since_last_repay
+        description: "Decimal adjusted Amount of underlying token Outstanding at the end of last Repayment transaction"
+      - name: is_liquidated
+        description: "Is the Loan liquidated or not"
+      - name: liq_time
+        description: "Onchain timestamp of actual Liquidation"
+      - name: liq_tx_hash
+        description: "Transaction Hash of actual Liquidation"
+      - name: collateral_liquidated
+        description: "Decimal adjusted Amount of collateral token Liquidated"
+      - name: liquidation_repaid
+        description: "Decimal adjusted Amount of underlying token repaid via Frozen Collateral liquidation"
+      - name: liquidation_unpaid
+        description: "Decimal adjusted Amount of underlying token left unpaid after liquidation of Frozen Collateral"
+      - name: repaid_and_liquidation
+        description: "Decimal adjusted Amount of underlying token repaid via Frozen Collateral liquidation and Pre-liquidation Repayments"
