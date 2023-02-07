@@ -1,0 +1,63 @@
+version: 2
+
+models:
+  - name: staking_ethereum_entities
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby
+    config:
+      tags: ['ethereum', 'staking', 'entities']
+    description: Ethereum staking identified depositor entities
+    columns:
+      - name: address
+        description: "Address of indentified depositor entity"
+        tests:
+          - unique
+      - name: entity
+        description: "Identified entity name"
+      - name: entity_unique_name
+        description: "Unique name of identified entity"
+      - name: category
+        description: "Category of entity"
+        tests:
+          - accepted_values:
+              values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Whales', 'Others']
+
+  - name: staking_ethereum_deposits
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby
+    config:
+      tags: ['ethereum', 'staking', 'deposits']
+    description: Ethereum staking deposits
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - tx_hash
+            - depositor_address
+    columns:
+      - name: block_time
+        description: "Block time of deposit transaction"
+      - name: block_number
+        description: "Block number of deposit transaction"
+      - name: amount_staked
+        description: "Amount of ETH staked in trasaction"
+      - name: depositor_address
+        description: "Address of depositor"
+      - name: depositor_entity
+        description: "Name of depositor if identified"
+      - name: depositor_entity_unique_name
+        description: "Unique name of depositor if identified"
+      - name: depositor_entity_category
+        description: "Category of depositor if identified"
+      - name: tx_hash
+        description: "Transaction hash of deposit"
+      #- name: pubkey
+      #  description: "Public key"
+      #- name: signature
+      #  description: "Signature"
+      #- name: withdrawal_credentials
+      #  description: "Withdrawal credentials"
