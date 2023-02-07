@@ -105,7 +105,7 @@ models:
     config:
       tags: ['arbitrum','dex','trades', 'uniswap']
     description: >
-        Uniswap trades on Arbitrum across all contracts and versions. This table will load dex trades downstream.
+            {{doc("uniswap_arbitrum_trades")}}
     columns:
       - *blockchain
       - *project

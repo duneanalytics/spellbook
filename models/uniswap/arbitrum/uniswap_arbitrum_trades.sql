@@ -7,6 +7,8 @@
 'uniswap_v3_arbitrum_trades'
 ] %}
 
+--this model pulls data from all the trade models that are deployed on arbitrum at the moment.
+-- at the moment this is only uniswap v3  
 
 SELECT *
 FROM (
