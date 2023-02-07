@@ -602,8 +602,7 @@ models:
           +schema: zeroex_avalanche_c_erc20
       fantom:
         +schema: zeroex_fantom
-        erc20:
-          +schema: zeroex_fantom_erc20
+        
       arbitrum:
         +schema: zeroex_arbitrum
       
