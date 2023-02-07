@@ -20,9 +20,6 @@ concurrency:
 jobs:
   dbt-test:
     runs-on: [ self-hosted, linux, spellbook ]
-    permissions:
-      id-token: write
-      contents: read
     timeout-minutes: 60
 
     steps:
@@ -36,17 +33,10 @@ jobs:
       - name: Add git_sha to schema
         run: "/runner/change_schema.sh git_$GIT_SHA"
 
-      - id: install-aws-cli
-        uses: unfor19/install-aws-cli-action@v1
-
-      - name: AWS Credentials
-        uses: aws-actions/configure-aws-credentials@master
-        with:
-          role-to-assume: arn:aws:iam::118330671040:role/spellbook-ci
-          aws-region: eu-west-1
-
       - name: Get latest manifest
-        run: "aws s3 cp s3://manifest-spellbook/manifest.json manifest.json"
+        env:
+          JOB_ID: "123193"
+        run: "/runner/fetch_latest_manifest.py --dbt_job_id $JOB_ID"
 
       - name: dbt dependencies
         run: "dbt deps"
