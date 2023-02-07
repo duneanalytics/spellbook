@@ -601,8 +601,6 @@ models:
           +schema: zeroex_polygon_erc20
       avalanche_c:
         +schema: zeroex_avalanche_c
-        erc20:
-          +schema: zeroex_avalanche_c_erc20
       fantom:
         +schema: zeroex_fantom
         
@@ -1075,6 +1073,30 @@ seeds:
             swap_flag: boolean
             matcha_limit_order_flag: boolean
             volume_usd: double
+      avalanche_c:
+        +enabled: true
+        +schema: test_data
+        zeroex_avalanche_c_api_fills_sample:
+          +column_types:
+            tx_hash: string
+            evt_index: int
+            contract_address: string
+            block_time: timestamp
+            block_date: date
+            maker: string
+            taker: string
+            taker_token: string
+            maker_token: string
+            taker_token_amount: double
+            taker_token_amount_raw: double
+            maker_token_amount: double
+            maker_token_amount_raw: double
+            type: string
+            affiliate_address: string
+            swap_flag: boolean
+            matcha_limit_order_flag: boolean
+            volume_usd: double
+
     gmx:
       avalanche_c:
         gmx_glp_aum_seed:

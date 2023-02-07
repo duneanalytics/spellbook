@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: zeroex_api_avalanche_c_fills
+  - name: zeroex_avalanche_c_api_fills
     meta:
       blockchain: avalanche_c
       project: zeroex
@@ -17,7 +17,7 @@ models:
             - tx_hash
             - evt_index
       - check_seed:
-          seed_file: ref('zeroex_api_avalanche_c_fills_sample')
+          seed_file: ref('zeroex_avalanche_c_api_fills_sample')
           match_columns:
             - tx_hash
             - evt_index
