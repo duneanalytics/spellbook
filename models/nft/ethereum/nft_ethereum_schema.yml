@@ -190,7 +190,7 @@ models:
             - nft_contract_address
           check_columns:
             - currency_volume_eth
-            - fifth_perecentile_eth
+            - fifth_percentile_eth
             - currency_max_eth
             - currency_min_eth
     columns:
@@ -202,7 +202,7 @@ models:
         description: "daily nft collection volume in ETH"
       - name: trades
         description: "daily nft collection number of trades"
-      - name: fifth_perecentile_eth
+      - name: fifth_percentile_eth
         description: "5th percentile nft trade price in ETH"
       - name: currency_min_eth
         description: "Min NFT trade price in ETH"
