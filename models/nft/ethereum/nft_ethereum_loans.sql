@@ -279,13 +279,61 @@ benddao as (
 
 -- -- aggregated loans
 loans as (
-    select evt_tx_hash, evt_block_time, repay_time, borrower, lender, collectionContract, tokenId, principal_raw, currency, apr, duration, 'NFTFi' as source from nftfi
+    select evt_tx_hash,
+           evt_block_time,
+           repay_time,
+           borrower,
+           lender,
+           collectionContract,
+           tokenId,
+           principal_raw,
+           currency,
+           apr,
+           duration,
+           'NFTFi' as source
+    from nftfi
     union all
-    select evt_tx_hash, evt_block_time, repay_time, borrower, lender, collectionContract, tokenId, principal_raw, currency, apr, duration, 'X2Y2' as source from x2y2
+    select evt_tx_hash,
+           evt_block_time,
+           repay_time,
+           borrower,
+           lender,
+           collectionContract,
+           tokenId,
+           principal_raw,
+           currency,
+           apr,
+           duration,
+           'X2Y2' as source
+    from x2y2
     union all
-    select evt_tx_hash, evt_block_time, repay_time, borrower, lender, collectionContract, tokenId, principal_raw, currency, apr, duration, 'Arcade' as source from arcade
+    select evt_tx_hash,
+           evt_block_time,
+           repay_time,
+           borrower,
+           lender,
+           collectionContract,
+           tokenId,
+           principal_raw,
+           currency,
+           apr,
+           duration,
+           'Arcade' as source
+    from arcade
     union all
-    select evt_tx_hash, evt_block_time, repay_time, borrower, lender, collectionContract, tokenId, principal_raw, currency, apr, duration, 'BendDAO' as source from benddao
+    select evt_tx_hash,
+           evt_block_time,
+           repay_time,
+           borrower,
+           lender,
+           collectionContract,
+           tokenId,
+           principal_raw,
+           currency,
+           apr,
+           duration,
+           'BendDAO' as source
+    from benddao
 ),
 
 loans_with_prices as (
@@ -307,4 +355,6 @@ loans_with_prices as (
 )
 
 select l.*, coalesce(t.name, 'Awesome NFT') as collectionName 
-from loans_with_prices l left join {{ source('tokens','nft') }} t on l.collectionContract=t.contract_address
+from loans_with_prices l
+left join {{ ref('tokens_nft') }} t
+    on l.collectionContract=t.contract_address
