@@ -10,22 +10,24 @@
     )
 }}
 
-WITH prices AS (
+WITH pool_labels AS (
+    SELECT
+        address AS pool_id,
+        name AS pool_symbol
+    FROM {{ ref('labels_balancer_v2_pools_ethereum') }}
+    ),
+
+    prices AS (
         SELECT
             date_trunc('day', minute) AS day,
             contract_address AS token,
             AVG(price) AS price
-        FROM
-            {{ source('prices', 'usd') }}
+        FROM {{ source('prices', 'usd') }}
         WHERE blockchain = "ethereum"
-        {% if is_incremental() %}
-        AND minute >= DATE_TRUNC('day', NOW() - interval '1 week')
-        {% endif %}
-        GROUP BY
-            1, 2
+        GROUP BY 1, 2
     ),
 
- dex_prices_1 AS (
+    dex_prices_1 AS (
         SELECT
             date_trunc('day', HOUR) AS DAY,
             contract_address AS token,
@@ -187,7 +189,7 @@ zipped_balance_changes AS (
 SELECT
     b.day,
     b.pool_id,
-    cast(null AS string) AS pool_symbol,
+    p.pool_symbol,
     token AS token_address,
     token_symbol,
     coalesce(amount_usd, liquidity * normalized_weight) AS usd_amount
@@ -196,3 +198,4 @@ LEFT JOIN cumulative_usd_balance c ON c.day = b.day
 AND c.pool_id = b.pool_id
 LEFT JOIN {{ ref('balancer_v2_ethereum_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
 AND w.token_address = c.token
+LEFT JOIN pool_labels p ON p.pool_id = SUBSTRING(b.pool_id, 0, 42)
