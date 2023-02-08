@@ -36,15 +36,6 @@ jobs:
       - name: Add git_sha to schema
         run: "/runner/change_schema.sh git_$GIT_SHA"
 
-      - id: install-aws-cli
-        uses: unfor19/install-aws-cli-action@v1
-
-      - name: AWS Credentials
-        uses: aws-actions/configure-aws-credentials@master
-        with:
-          role-to-assume: arn:aws:iam::118330671040:role/spellbook-ci
-          aws-region: eu-west-1
-
       - name: Get latest manifest
         run: "aws s3 cp s3://manifest-spellbook/manifest.json manifest.json"
 
