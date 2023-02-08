@@ -15,7 +15,7 @@ SELECT
 'Velodrome Launch Airdrop' AS airdrop_name,
 'Velodrome' AS airdrop_project,
 
-tfer.account AS recipient_address,
+tfer.to AS recipient_address,
 
 r.contract_address AS airdrop_token_address,
 r.symbol AS airdrop_token_symbol,
