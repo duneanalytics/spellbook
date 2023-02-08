@@ -26,7 +26,7 @@ with
  )
 
 select
-  array("ethereum") as blockchain,
+  "ethereum" as blockchain,
   address,
   case
     when portfolio_value_usd > 90000 then '>$90k portfolio value'
@@ -36,10 +36,12 @@ select
     when portfolio_value_usd > 100 then '$100-$400 portfolio value'
     else '<=$100 portfolio value'
   end as name,
-  "trader_portfolios" AS category,
+  "dex" AS category,
   "gentrexha" AS contributor,
   "query" AS source,
   timestamp('2022-12-15') as created_at,
-  now() as updated_at
+  now() as updated_at,
+  "trader_portfolios" as model_name,
+  "usage" as label_type
 from
   trader_portfolios

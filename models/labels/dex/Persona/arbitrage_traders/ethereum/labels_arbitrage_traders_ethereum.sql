@@ -65,13 +65,15 @@ with
       )
   )
 select
-  array("ethereum") as blockchain,
+  "ethereum" as blockchain,
   address,
   "Arbitrage Trader" AS name,
-  "arbitrage_traders" AS category,
+  "dex" AS category,
   "alexth" AS contributor,
   "query" AS source,
   timestamp('2022-10-05') as created_at,
-  now() as updated_at
+  now() as updated_at,
+  "arbitrage_traders" as model_name,
+  "persona" as label_type
 from
   eth_arb_traders

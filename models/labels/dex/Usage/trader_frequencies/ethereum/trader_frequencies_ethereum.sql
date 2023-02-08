@@ -24,7 +24,7 @@ with
  )
 
 select
-  array("ethereum") as blockchain,
+  "ethereum" as blockchain,
   address,
   case
     when trades_per_day >= 1 then 'Daily Trader'
@@ -33,10 +33,12 @@ select
     when trades_per_day >= 0.0027397260274 then 'Yearly Trader'
     else 'Sparse Trader'
   end as name,
-  "trader_frequencies" AS category,
+  "dex" AS category,
   "gentrexha" AS contributor,
   "query" AS source,
   timestamp('2022-12-14') as created_at,
-  now() as updated_at
+  now() as updated_at,
+  "trader_frequencies" as model_name,
+  "usage" as label_type
 from
   trader_frequencies

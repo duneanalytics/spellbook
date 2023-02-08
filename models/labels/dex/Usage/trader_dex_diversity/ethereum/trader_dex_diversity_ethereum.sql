@@ -22,13 +22,15 @@ with
  )
 
 select
-  array("ethereum") as blockchain,
+  "ethereum" as blockchain,
   address,
   concat('Number of DEXs traded on: ', dex_diversity) as name,
-  "trader_dex_diversity" AS category,
+  "dex" AS category,
   "gentrexha" AS contributor,
   "query" AS source,
   timestamp('2022-12-15') as created_at,
-  now() as updated_at
+  now() as updated_at,
+  "trader_dex_diversity" as model_name,
+  "usage" as label_type
 from
   trader_dex_diversity

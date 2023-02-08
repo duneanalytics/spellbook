@@ -22,7 +22,7 @@ with
  )
 
 select
-  array("ethereum") as blockchain,
+  "ethereum" as blockchain,
   address,
   case
     when average_trade_value > 50000 then '>$50k avg. DEX trade value'
@@ -33,10 +33,12 @@ select
     when average_trade_value > 400 then '$400-$1k avg. DEX trade value'
     else '<=$400 avg. DEX trade value'
   end as name,
-  "average_trade_values" AS category,
+  "dex" AS category,
   "gentrexha" AS contributor,
   "query" AS source,
   timestamp('2022-12-15') as created_at,
-  now() as updated_at
+  now() as updated_at,
+  "average_trade_values" as model_name,
+  "usage" as label_type
 from
   average_trade_values

@@ -35,10 +35,12 @@ select
     when trader_age > 7 then '1 week old DEX trader'
     else 'less than 1 week old DEX trader'
   end as name,
-  "trader_age" AS category,
+  "dex" AS category,
   "gentrexha" AS contributor,
   "query" AS source,
   timestamp('2022-12-15') as created_at,
-  now() as updated_at
+  now() as updated_at,
+  "trader_age" as model_name,
+  "usage" as label_type
 from
   trader_age
