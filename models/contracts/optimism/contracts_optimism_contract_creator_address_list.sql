@@ -401,6 +401,7 @@ FROM (
       ,('0x221a8Da83f675f1Fd97105a5B2B3bb65916a5101', 'Rabbithole')
       ,('0x35a8e8ed19122f6707984e7c135c0d8943d4d750', 'OKX')
       ,('0xe2e2d9e31d7e1cc1178fe0d1c5950f6c809816a3', 'Wormhole')
+      ,('0x44cBfc3Ce762fC0Fee9Ddd6372804b7B660176bC', 'MUX')
   ) as temp_table (creator_address, contract_project)
 
 ) f

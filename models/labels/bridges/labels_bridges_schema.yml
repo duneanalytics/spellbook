@@ -3,12 +3,12 @@ version: 2
 models:
   - name: labels_bridges
     meta:
-      blockchain: ethereum
+      blockchain: ethereum, fantom
       sector: labels
       project: bridges
-      contributors: hildobby
+      contributors: hildobby, Henrystats
     config:
-      tags: ['labels', 'ethereum', 'bridges']
+      tags: ['labels', 'ethereum', 'fantom', 'bridges']
     description: "Known bridges addresses across chains"
     columns:
       - &blockchain
@@ -45,6 +45,25 @@ models:
     config:
       tags: ['labels', 'ethereum', 'bridges']
     description: "Known bridges addresses on Ethereum"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+
+  - name: labels_bridges_fantom
+    meta:
+      blockchain: fantom
+      sector: labels
+      project: bridges
+      contributors: Henrystats
+    config:
+      tags: ['labels', 'fantom', 'bridges']
+    description: "Known bridges addresses on Fantom"
     columns:
       - *blockchain
       - *address
