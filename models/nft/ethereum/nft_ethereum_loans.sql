@@ -216,7 +216,7 @@ arcade_v2_base as (
 arcade_v2 as (
     select l.*, case when (r.evt_block_time is null and l.evt_block_time + interval '1 day' * duration < current_date) then l.evt_block_time else null end as repay_time
     from arcade_v2_base l
-    left join {{ source('pawnfi_v201_ethereum',' LoanCore_evt_LoanClaimed') }} r
+    left join {{ source('pawnfi_v201_ethereum', 'LoanCore_evt_LoanClaimed') }} r
         on l.loanId=r.loanId
         and l.contract_address=r.contract_address
 ),
