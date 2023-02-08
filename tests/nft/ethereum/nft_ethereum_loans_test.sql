@@ -1,7 +1,7 @@
 WITH unit_tests AS (
 
         SELECT
-        CASE WHEN loans.principal_raw = test_data.principal_raw THEN true
+        CASE WHEN loans.eth = test_data.eth  THEN true
                 ELSE false
                 END AS test_1
         ,CASE WHEN loans.evt_block_time = test_data.evt_block_time THEN true
