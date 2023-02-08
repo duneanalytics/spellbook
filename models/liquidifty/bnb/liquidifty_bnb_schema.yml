@@ -10,6 +10,18 @@ models:
     config:
       tags: ['liquidifty', 'nft', 'trades']
     description: "NFT trades on liquidifty on BNB blockchain"
+    tests:
+      - check_seed:
+          seed_file: ref('liquidifty_bnb_nft_trades_samples')
+          match_columns:
+            - block_number
+            - version
+            - tx_hash
+            - token_id
+          check_columns:
+            - amount_original
+            - buyer
+            - seller
     columns:
       - &blockchain
         name: blockchain
