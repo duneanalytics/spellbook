@@ -66,4 +66,8 @@ models:
       tags: ['safe', 'singletons', 'ethereum']
     description: "Singletons addresses used with Safes"
     columns:
-      - *address    
+      - name: address
+        description: "Safe contract address"
+        tests:
+          - unique
+          - not_null

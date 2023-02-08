@@ -48,4 +48,4 @@ where evt_block_time >= date_trunc('day', now() - interval '1 week')
 union
 
 -- The Circles project used a custom Safe master copy, not via the official factories though, adding that manually.
-select '0x2CB0ebc503dE87CFD8f0eCEED8197bF7850184ae' as address
+select '0x2cb0ebc503de87cfd8f0eceed8197bf7850184ae' as address
