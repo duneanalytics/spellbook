@@ -98,7 +98,9 @@ sources:
       - name: LoanCore_call_startLoan
         loaded_at_field: call_block_time  
       - name: LoanCore_call_rollover
-        loaded_at_field: call_block_time  
+        loaded_at_field: call_block_time
+      - name: LoanCore_evt_LoanClaimed
+        loaded_at_field: call_block_time
 
   - name: bend_ethereum
     description: "bend ethereum decoded events"
