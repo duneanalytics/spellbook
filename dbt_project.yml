@@ -530,6 +530,8 @@ models:
       +schema: kyberswap
       avalanche_c:
         +schema: kyberswap_avalanche_c
+      optimism:
+        +schema: kyberswap_optimism
 
     hubble_exchange:
       +schema: hubble_exchange
@@ -667,6 +669,23 @@ models:
       +schema: ovm
       optimism:
         +schema: ovm_optimism
+    
+    rubicon:
+      +schema: rubicon
+      optimism:
+        +schema: rubicon_optimism
+    
+    beethoven_x:
+      +schema: beethoven_x
+      optimism:
+        +schema: beethoven_x_optimism
+    
+    zipswap:
+      +schema: zipswap
+      optimism:
+        +schema: zipswap_optimism
+    
+    
 
     arbswap:
       +schema: arbswap

@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: kyberswap_trades
+  - name: beethoven_x_trades
     meta:
-      blockchain: avalanche_c, optimism
+      blockchain: optimism,
       sector: dex
-      project: kyberswap
-      contributors: zhongyiio
+      project: beethoven_x
+      contributors: msilb7
     config:
-      tags: ['avalanche_c', 'optimism','trades', 'dex', 'kyberswap', 'zhongyiio', 'hosuke']
+      tags: ['optimism', 'beethoven_x','trades', 'dex']
     description: >
-        Kyberswap trades on all chains across all contracts and versions. This table will load dex trades downstream.
+        beethoven_x trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
       - &blockchain
         name: blockchain

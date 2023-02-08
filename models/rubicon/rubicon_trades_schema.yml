@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: kyberswap_trades
+  - name: rubicon_trades
     meta:
-      blockchain: avalanche_c, optimism
+      blockchain: optimism,
       sector: dex
-      project: kyberswap
-      contributors: zhongyiio
+      project: rubicon
+      contributors: msilb7
     config:
-      tags: ['avalanche_c', 'optimism','trades', 'dex', 'kyberswap', 'zhongyiio', 'hosuke']
+      tags: ['optimism', 'rubicon','trades', 'dex']
     description: >
-        Kyberswap trades on all chains across all contracts and versions. This table will load dex trades downstream.
+        rubicon trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
       - &blockchain
         name: blockchain
