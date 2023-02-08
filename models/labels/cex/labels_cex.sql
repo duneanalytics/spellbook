@@ -12,3 +12,7 @@ UNION All
 SELECT 
 array("optimism"), address, distinct_name, 'cex', 'msilb7','static','2022-10-10'::timestamp,now()
 FROM {{ ref('addresses_optimism_cex') }}
+
+UNION All
+
+SELECT * FROM {{ ref('labels_cex_fantom') }}
