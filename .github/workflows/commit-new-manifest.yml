@@ -19,6 +19,9 @@ jobs:
       uses: actions/checkout@v2
       with:
         ref: main
+        
+    - name: Add git_sha to schema
+      run: "/runner/change_schema.sh wizard"
 
     - name: dbt dependencies
       run: "dbt deps"
