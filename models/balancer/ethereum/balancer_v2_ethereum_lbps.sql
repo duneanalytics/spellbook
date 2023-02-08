@@ -113,6 +113,6 @@ WITH lbps_call_create AS (
     FROM lbps_info l
     LEFT JOIN {{ ref('tokens_erc20') }} t
     ON l.token = t.contract_address
-    AND t.blockchain = 'polygon'
+    AND t.blockchain = 'ethereum'
     ORDER BY pool_id
     
