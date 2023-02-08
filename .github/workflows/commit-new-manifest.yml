@@ -1,8 +1,9 @@
 name: Update Manifest
 
 on:
-  pull_request:
-    types: [closed]
+  push:
+    branches:
+      - main
 
 concurrency:
   group:  ${{ github.workflow }}
