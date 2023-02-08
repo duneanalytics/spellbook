@@ -20,7 +20,6 @@ FROM (
           'optimism' AS blockchain
         , airdrop_name
         , 'optimism' AS airdrop_project
-        , distributor_address
         , recipient_address
         , airdrop_token_address
         , airdrop_token_symbol
