@@ -859,10 +859,10 @@ seeds:
         +column_types:
           block_date: date
           nft_contract_address: string
-          currency_volume_eth: float
-          fifth_percentile_eth: float
-          currency_max_eth: float
-          currency_min_eth: float
+          currency_volume_eth: double
+          fifth_percentile_eth: double
+          currency_max_eth: double
+          currency_min_eth: double
 
     nexusmutual:
       ethereum:
