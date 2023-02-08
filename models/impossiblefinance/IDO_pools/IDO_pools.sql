@@ -90,10 +90,10 @@ FROM (VALUES
     (array('bnb'),'0x3Fd53a1B0D1eef5aC963aFB979b47E9e4b13B24e', 'Pine', 'Pine Protocol', 'vIDIA Standard Sale', 16, timestamp('2023-02-06'), timestamp('2022-11-17'), timestamp('2023-02-06')),
     (array('bnb'),'0xa800614528FE1360c0AC1Ff2268d1687A8CF97d3', 'Pine', 'Pine Protocol', 'vIDIA Unlimited Sale', 16, timestamp('2023-02-06'), timestamp('2022-11-17'), timestamp('2023-02-06')),
     (array('bnb'),'0x80050189e95fb2A27Fc90b1d931F2415Edca3247', 'Pine', 'Pine Protocol', 'Whitelist $50', 16, timestamp('2023-02-06'), timestamp('2022-11-17'), timestamp('2023-02-06')),
-    (array('bnb'),'0x4f2F9CD3049882e0dbC9e1c5A1910A4dd65d9CB33', 'Pine', 'Pine Protocol', 'Whitelist $100', 16, timestamp('2023-02-06'), timestamp('2022-11-17'), timestamp('2023-02-06')),
+    (array('bnb'),'0x4f2F9CD3049882e0dbC9e1c5A1910A4dd65d9CB3', 'Pine', 'Pine Protocol', 'Whitelist $100', 16, timestamp('2023-02-06'), timestamp('2022-11-17'), timestamp('2023-02-06')),
     (array('bnb'),'0xd978A18f30E08b049b3406A1cA71234176418a2e', 'Pine', 'Pine Protocol', 'Whitelist $200', 16, timestamp('2023-02-06'), timestamp('2022-11-17'), timestamp('2023-02-06')),
     (array('bnb'),'0xCD675Ec17Ab0E935C4A70557d47C6Bd785e2aA38', 'Pine', 'Pine Protocol', 'Whitelist $250', 16, timestamp('2023-02-06'), timestamp('2022-11-17'), timestamp('2023-02-06')),
     (array('bnb'),'0x388AF868359e2Ec7d19184705621B285e5C83a9D', 'Pine', 'Pine Protocol', 'Whitelist $500', 16, timestamp('2023-02-06'), timestamp('2022-11-17'), timestamp('2023-02-06')),
-    (array('bnb'),'0x27ce3CD4264bfAcd86CcB7c2Ad5748387Faa0746', 'Pine', 'Pine Protocol', 'Whitelist $2000', 16, timestamp('2023-02-06'), timestamp('2022-11-17'), timestamp('2023-02-06')),
+    (array('bnb'),'0x27ce3CD4264bfAcd86CcB7c2Ad5748387Faa0746', 'Pine', 'Pine Protocol', 'Whitelist $2000', 16, timestamp('2023-02-06'), timestamp('2022-11-17'), timestamp('2023-02-06'))
     
 )AS x (blockchain, address, launchpad, project_name, sale_type, launch_order, purchase_date, start_staking_period, end_staking_period)
