@@ -1,3 +1,13 @@
+{{ config (
+    alias = 'v2_loan_master',
+    post_hook = '{{ 
+        expose_spells(\'["polygon"]\',
+        "project", 
+        "rocifi",
+        \'["maybeyonas"]\') }}'
+) }}
+
+
 with score as (
     select evt_block_time,
         score,
