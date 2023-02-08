@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: kyberswap_trades
+  - name: zipswap_trades
     meta:
-      blockchain: avalanche_c, optimism
+      blockchain: optimism
       sector: dex
-      project: kyberswap
-      contributors: zhongyiio
+      project: zipswap
+      contributors: msilb7
     config:
-      tags: ['avalanche_c', 'optimism','trades', 'dex', 'kyberswap', 'zhongyiio', 'hosuke']
+      tags: ['zipswap','trades', 'dex', 'cross-chain']
     description: >
-        Kyberswap trades on all chains across all contracts and versions. This table will load dex trades downstream.
+        zipswap trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
       - &blockchain
         name: blockchain
