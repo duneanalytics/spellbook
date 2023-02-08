@@ -1,0 +1,51 @@
+version: 2
+
+models:
+  - name: impossible_finance_IDO_pools
+    meta:
+      blockchain: bnb
+      project: impossible_finance
+      contibutors: kartod
+    config:
+      tags: ['impossible', 'bnb']
+    description: "Impossible finance pools where users send BUSD to buy available allocation"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+
+      - &pool_address
+        name: pool_address
+        description: "Address of IDO pool"
+
+      - &launchpad
+        name: launchpad
+        description: "Short launchpad name"
+
+      - &project_name
+        name: project_name
+        description: "Full launchpad name"
+
+      - &sale_type
+        name: sale_type
+        description: "Sale type"
+
+      - &launch_order
+        name: launch_order
+        description: "IDO Number"
+
+      - &purchase_date
+        name: purchase_date
+        description: "Purchase date"
+
+      - &start_staking_period
+        name: start_staking_period
+        description: "Start staking period"
+
+      - &end_staking_period
+        name: end_staking_period
+        description: "End staking period"
+
+      - &accepted_currency
+        name: accepted_currency
+        description: "Accepted currency for this pool"
