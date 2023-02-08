@@ -1,14 +1,14 @@
 version: 2
 
 models:
-  - name: trader_frequencies
+  - name: labels_trader_frequencies
     meta:
-      blockchain: ethereum
+      blockchain: ethereum, fantom, bnb, avalanche_c, arbitrum, polygon, gnosis, optimism
       sector: labels
       category: trader_frequencies
-      contributors: gentrexha
+      contributors: gentrexha, Henrystats
     config:
-      tags: ['labels', 'ethereum', 'trader_frequencies', 'dex', 'dex_aggregator']
+      tags: ['labels', 'ethereum', 'fantom', 'bnb', 'avalanche_c', 'arbitrum', 'polygon', 'gnosis', 'optimism', 'trader_frequencies', 'dex', 'dex_aggregator']
     description: "Trader frequencies (daily, weekly, monthly) for traders who use dex and dex aggregators"
     columns:
       - &blockchain
@@ -17,6 +17,8 @@ models:
       - &address
         name: address
         description: "Address of trader"
+        test:
+          - unique
       - &name
         name: name
         description: "Label name"
@@ -35,22 +37,3 @@ models:
       - &updated_at
         name: updated_at
         description: "When were labels updated for the last time"
-
-  - name: trader_frequencies_ethereum
-    meta:
-      blockchain: ethereum
-      sector: labels
-      category: trader_frequencies
-      contributors: gentrexha
-    config:
-      tags: ['labels', 'ethereum', 'trader_frequencies', 'dex', 'dex_aggregator']
-    description:  "Trader frequencies (daily, weekly, monthly) for traders who use dex and dex aggregators"
-    columns:
-      - *blockchain
-      - *address
-      - *name
-      - *category
-      - *contributor
-      - *source
-      - *created_at
-      - *updated_at
