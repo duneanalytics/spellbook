@@ -3,12 +3,12 @@ version: 2
 models:
   - name: labels_cex
     meta:
-      blockchain: ethereum, bnb
+      blockchain: ethereum, bnb, fantom, optimism
       sector: labels
       project: cex
-      contributors: hildobby, soispoke
+      contributors: hildobby, soispoke, Henrystats, msilb7
     config:
-      tags: ['labels', 'ethereum', 'bnb', 'cex']
+      tags: ['labels', 'ethereum', 'fantom', 'bnb', 'optimism', 'cex']
     description: "Known centralised exchange addresses across chains"
     columns:
       - &blockchain
@@ -64,6 +64,25 @@ models:
     config:
       tags: ['labels', 'bnb', 'cex']
     description: "Known centralised exchange addresses on BNB chain"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+
+  - name: labels_cex_fantom
+    meta:
+      blockchain: fantom
+      sector: labels
+      project: cex
+      contributors: Henrystats
+    config:
+      tags: ['labels', 'fantom', 'cex']
+    description: "Known centralised exchange addresses on Fantom chain"
     columns:
       - *blockchain
       - *address
