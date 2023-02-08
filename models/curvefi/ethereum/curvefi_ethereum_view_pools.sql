@@ -260,8 +260,8 @@ SELECT
     undercoin1,
     undercoin2,
     undercoin3,
-    array(coin0, coin1, coin2, coin3) as coins,
     array(undercoin0, undercoin1, undercoin2, undercoin3) as undercoins,
+    array(coin0, coin1, coin2, coin3) as coins, --changing order to hopefully reset the CI
     gauge_contract
 FROM
     pools p
