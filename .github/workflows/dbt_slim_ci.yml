@@ -20,9 +20,6 @@ concurrency:
 jobs:
   dbt-test:
     runs-on: [ self-hosted, linux, spellbook ]
-    permissions:
-      id-token: write
-      contents: read
     timeout-minutes: 60
 
     steps:
