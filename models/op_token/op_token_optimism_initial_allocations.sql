@@ -13,7 +13,7 @@
 
 WITH initial_allocation_percentages AS (
   SELECT pct_supply_allocation, allocation_category, allocation_subcategory
-  FROM (
+  FROM (values
     --25% Ecosystem Fund
        (0.054,'Ecosystem Fund','Governance Fund')
       ,(0.054,'Ecosystem Fund','Partner Fund')
