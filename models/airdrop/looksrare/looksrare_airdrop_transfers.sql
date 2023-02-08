@@ -15,7 +15,7 @@
 SELECT
 'ethereum' AS blockchain,
 'LOOKS Airdrop' AS airdrop_name,
-'Looksrare' AS airdrop_project,
+'looksrare' AS airdrop_project,
 
 tfer.user AS recipient_address,
 

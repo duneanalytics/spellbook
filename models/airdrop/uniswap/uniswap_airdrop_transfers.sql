@@ -14,7 +14,7 @@
 SELECT
 'ethereum' AS blockchain,
 'Uniswap Airdrop' AS airdrop_name,
-'Uniswap' AS airdrop_project,
+'uniswap' AS airdrop_project,
 
 tfer.account AS recipient_address,
 

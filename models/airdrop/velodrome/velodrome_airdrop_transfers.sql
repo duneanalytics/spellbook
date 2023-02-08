@@ -13,7 +13,7 @@
 SELECT
 'optimism' AS blockchain,
 'Velodrome Launch Airdrop' AS airdrop_name,
-'Velodrome' AS airdrop_project,
+'velodrome' AS airdrop_project,
 
 tfer.to AS recipient_address,
 

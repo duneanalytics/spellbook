@@ -14,7 +14,7 @@
 SELECT
 'ethereum' AS blockchain,
 'HOP Airdrop' AS airdrop_name,
-'Hop Protocol' AS airdrop_project,
+'hop_protocol' AS airdrop_project,
 
 tfer.claimant AS recipient_address,
 

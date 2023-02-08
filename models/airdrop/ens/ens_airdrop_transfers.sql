@@ -15,7 +15,7 @@
 SELECT
 'ethereum' AS blockchain,
 'ENS Airdrop' AS airdrop_name,
-'Ethereum Name Service' AS airdrop_project,
+'ethereumnameservice' AS airdrop_project,
 
 tfer.claimant AS recipient_address,
 

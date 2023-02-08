@@ -19,7 +19,7 @@ FROM (
     SELECT
           'optimism' AS blockchain
         , airdrop_name
-        , 'Optimism' AS airdrop_project
+        , 'optimism' AS airdrop_project
         , distributor_address
         , recipient_address
         , airdrop_token_address

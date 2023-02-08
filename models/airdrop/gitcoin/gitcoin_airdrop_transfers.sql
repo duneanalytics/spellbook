@@ -14,7 +14,7 @@
 SELECT
 'ethereum' AS blockchain,
 'Gitcoin Airdrop' AS airdrop_name,
-'Gticoin' AS airdrop_project,
+'gticoin' AS airdrop_project,
 
 tfer.account AS recipient_address,
 
