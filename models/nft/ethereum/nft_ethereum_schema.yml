@@ -189,22 +189,22 @@ models:
             - block_date
             - nft_contract_address
           check_columns:
-            - currency_volume_eth
-            - fifth_percentile_eth
-            - currency_max_eth
-            - currency_min_eth
+            - volume_eth
+            - price_p5_eth
+            - price_max_eth
+            - price_min_eth
     columns:
       - name: block_date
         description: "Block date"
       - name: nft_contract_address
         description: "NFT contract address"
-      - name: currency_volume_eth
-        description: "daily nft collection volume in ETH"
+      - name: volume_eth
+        description: "daily nft collection volume Measured in ETH"
       - name: trades
         description: "daily nft collection number of trades"
-      - name: fifth_percentile_eth
-        description: "5th percentile nft trade price in ETH"
-      - name: currency_min_eth
-        description: "Min NFT trade price in ETH"
-      - name: currency_max_eth
-        description: "Max NFT trade price in ETH"
+      - name: price_p5_eth
+        description: "5th percentile nft trade price Measured in ETH"
+      - name: price_min_eth
+        description: "Min NFT trade price Measured in ETH"
+      - name: price_max_eth
+        description: "Max NFT trade price Measured in ETH"

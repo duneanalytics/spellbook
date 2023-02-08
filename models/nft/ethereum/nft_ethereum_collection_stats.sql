@@ -106,11 +106,11 @@ prof_data as (
 SELECT 
     d.day as block_date, 
     d.nft_contract_address, 
-    COALESCE(prof.currency_volume, 0) as currency_volume_eth,
+    COALESCE(prof.currency_volume, 0) as volume_eth,
     COALESCE(prof.trades, 0) as trades, 
-    COALESCE(prof.fifth_percentile, 0) as fifth_percentile_eth,
-    COALESCE(prof.currency_min, 0) as currency_min_eth, 
-    COALESCE(prof.currency_max, 0) as currency_max_eth
+    COALESCE(prof.fifth_percentile, 0) as price_p5_eth,
+    COALESCE(prof.currency_min, 0) as price_min_eth, 
+    COALESCE(prof.currency_max, 0) as price_max_eth
 FROM 
 days d 
 LEFT JOIN 
