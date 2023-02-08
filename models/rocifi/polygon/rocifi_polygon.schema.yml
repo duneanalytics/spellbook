@@ -21,7 +21,7 @@ models:
       project: rocifi
       contributors: maybeyonas
     config:
-      tags: ['table', 'loan', 'polygon', 'rocifi']
+      tags: ['loan', 'polygon', 'rocifi', 'rocifi_v2']
     description: "Master Table tracking all Loans initiated on v2 and their latest status"
     tests:
       - unique
