@@ -1,11 +1,6 @@
 version: 2
 
 sources:
-  - name: polygon
-    description: > 
-      Raw Data of Polygon Blockchain
-    tables: 
-      - name: logs
 
   - name: rocifi_v2_polygon
     description: >
