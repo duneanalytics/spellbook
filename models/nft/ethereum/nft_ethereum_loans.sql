@@ -18,9 +18,9 @@ with nftfi_base as (
             nftCollateralContract as collectionContract,
             nftCollateralId as tokenId,
             loanERC20Denomination, 
-            cast(loanPrincipalAmount as decimal) as loanPrincipalAmount,
-            cast(loanDuration as decimal) as loanDuration,
-            cast(maximumRepaymentAmount as decimal) as maximumRepaymentAmount,
+            loanPrincipalAmount as loanPrincipalAmount,
+            loanDuration as loanDuration,
+            maximumRepaymentAmount as maximumRepaymentAmount,
             cast(loanId as bigint) as loanId,
             contract_address
         from {{ source('nftfi_ethereum','NFTfi_evt_LoanStarted') }}
@@ -142,7 +142,11 @@ arcade_v1_base as (
             get_json_object(terms, '$.principal') as principal_raw,
             get_json_object(terms, '$.interest') as interest_raw,
             get_json_object(terms, '$.durationSecs') / 86400 as duration
-        from {{ source('pawnfi_ethereum','LoanCore_call_startLoan') }} p left join {{ source('pawnfi_ethereum','LoanCore_evt_LoanCreated') }} c on p.call_block_time=c.evt_block_time and p.call_tx_hash = c.evt_tx_hash
+        from {{ source('pawnfi_ethereum','LoanCore_call_startLoan') }} p 
+        left join 
+        {{ source('pawnfi_ethereum','LoanCore_evt_LoanCreated') }} c 
+        on p.call_block_time=c.evt_block_time 
+        and p.call_tx_hash = c.evt_tx_hash
         where call_success=true
         union all
         select c.evt_tx_hash, evt_block_time, borrower, lender, c.contract_address, p.loanId, 'v1.2' as version,
@@ -151,7 +155,11 @@ arcade_v1_base as (
             get_json_object(terms, '$.principal')  as principal_raw,
             get_json_object(terms, '$.interest') as interest_raw,
             get_json_object(terms, '$.durationSecs') / 86400 as duration
-        from {{ source('pawnfi_v2_ethereum','LoanCore_call_startLoan') }} p left join {{ source('pawnfi_v2_ethereum','LoanCore_evt_LoanCreated') }} c on p.call_block_time=c.evt_block_time and p.call_tx_hash = c.evt_tx_hash
+        from {{ source('pawnfi_v2_ethereum','LoanCore_call_startLoan') }} p 
+        left join 
+        {{ source('pawnfi_v2_ethereum','LoanCore_evt_LoanCreated') }} c 
+        on p.call_block_time=c.evt_block_time 
+        and p.call_tx_hash = c.evt_tx_hash
         where call_success=true
     ) t
 ),
@@ -168,7 +176,11 @@ arcade_v1 as (
 
 arcade_v1_with_tokens as (
     select a.*, d.tokenId, d.collectionContract, d.evt_block_time as d_block_time
-    from arcade_v1 a left join arcade_v1_deposits d on a.evt_block_time>d.evt_block_time and a.bundleId=d.bundleId and a.version=d.version
+    from arcade_v1 a
+    left join 
+    arcade_v1_deposits d 
+        on a.evt_block_time>d.evt_block_time 
+        and a.bundleId=d.bundleId and a.version=d.version
     where a.evt_block_time is not null and d.evt_block_time is not null
 ) ,
 
@@ -180,7 +192,8 @@ arcade_v2_wrappers as ( -- arcade asset wrappers
 arcade_v2_vault_created as (
     select vault, e.tokenId as vaultId, p.to as borrower, e.evt_tx_hash
     from {{ source('pawnfi_v201_ethereum', 'VaultFactory_evt_VaultCreated') }} p
-    inner join {{ source('erc721_ethereum', 'evt_Transfer') }} e
+    inner join 
+    {{ source('erc721_ethereum', 'evt_Transfer') }} e
         on p.evt_tx_hash=e.evt_tx_hash
         and p.evt_block_time=e.evt_block_time
 ),
@@ -188,7 +201,8 @@ arcade_v2_vault_created as (
 arcade_v2_vault_deposited_nfts as (
     select e.to as vault, `_1` as borrower, e.tokenId, e.contract_address, call_block_time, e.evt_tx_hash
     from {{ source('pawnfi_v201_ethereum','AssetVault_call_onERC721Received') }} p
-    inner join {{ source('erc721_ethereum','evt_Transfer') }} e
+    inner join 
+    {{ source('erc721_ethereum','evt_Transfer') }} e
         on p.call_block_time=e.evt_block_time
         and p.call_tx_hash=e.evt_tx_hash
 ),
@@ -196,7 +210,8 @@ arcade_v2_vault_deposited_nfts as (
 arcade_v2_vault_withdrawn_nfts as (
     select e.`from` as vault, p.to as borrower, p.tokenId, p.token as contract_address, p.call_block_time, e.evt_tx_hash
     from {{ source('pawnfi_v201_ethereum','AssetVault_call_withdrawERC721') }} p
-    inner join {{ source('erc721_ethereum','evt_Transfer') }}  e
+    inner join 
+    {{ source('erc721_ethereum','evt_Transfer') }}  e
         on p.call_block_time=e.evt_block_time
         and p.call_tx_hash=e.evt_tx_hash
 ),
@@ -265,7 +280,12 @@ arcade_loans_with_tokens as (
     select l.evt_tx_hash, l.evt_block_time, l.borrower, l.lender, t.collectionContract, t.tokenId, 
         l.principal_raw as p, l.currency, l.apr, l.duration, loanId, 'v2' as version, repay_time,
         count(tokenId) over (partition by l.evt_tx_hash) as num_items
-    from arcade_v2_loans_with_vaults l inner join arcade_v2_vault_total_nfts t on l.vault=t.vault and l.evt_block_time>t.d_block_time and (t.w_block_time is null or l.evt_block_time<t.w_block_time)
+    from arcade_v2_loans_with_vaults l 
+    inner join 
+    arcade_v2_vault_total_nfts t 
+        on l.vault=t.vault 
+        and l.evt_block_time>t.d_block_time 
+        and (t.w_block_time is null or l.evt_block_time<t.w_block_time)
     union all
     select evt_tx_hash, evt_block_time, borrower, lender, collateralAddress as collectionContract, collateralId as tokenId, 
         principal_raw as p, currency, apr, duration, loanId, 'v2' as version, repay_time,
@@ -284,7 +304,7 @@ benddao_base as (
     select evt_tx_hash, evt_block_time, 
         onBehalfOf as borrower, '0xdafce4acc2703a24f29d1321adaadf5768f54642' as lender,
         nftAsset as collectionContract, nftTokenId as tokenId,
-        cast(amount as decimal) as principal_raw, reserveAsset as currency,
+        amount as principal_raw, reserveAsset as currency,
         user, loanId
     from {{ source('bend_ethereum','LendingPoolLoan_evt_LoanCreated') }}
 ),
@@ -304,7 +324,10 @@ benddao as (
             case when status='repaid' then r.evt_block_time else null end as repay_time, 
             case when status is not null then datediff(r.evt_block_time, l.evt_block_time)  else null end as duration,
             null as apr
-        from benddao_base l left join benddao_ended r on l.loanId=r.loanId --and l.user=r.user
+        from benddao_base l 
+        left join 
+        benddao_ended r 
+            on l.loanId=r.loanId --and l.user=r.user
     ) t 
 ),
 
