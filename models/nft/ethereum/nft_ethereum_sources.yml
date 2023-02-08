@@ -52,6 +52,10 @@ sources:
         loaded_at_field: evt_block_time
       - name: XY3_evt_LoanRepaid
         loaded_at_field: evt_block_time
+      - name: XY3_V2_evt_LoanStarted
+        loaded_at_field: evt_block_time
+      - name: XY3_V2_evt_LoanRepaid
+        loaded_at_field: evt_block_time
 
   - name: pawnfi_ethereum
     description: "arcade v1 ethereum decoded events"
