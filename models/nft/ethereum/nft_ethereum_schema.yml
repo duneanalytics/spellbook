@@ -169,7 +169,7 @@ models:
       - name: hash_marker_size
         description: "Number of characters the hash_marker is made of, can be useful on joins"
 
-  - name: nft_ethereum_floor_price
+  - name: nft_ethereum_collection_stats
     meta:
       blockchain: ethereum
       sector: nft
@@ -183,18 +183,28 @@ models:
           combination_of_columns:
             - block_date
             - nft_contract_address
+      - check_seed:
+          seed_file: ref('nft_collection_stats_seed')
+          match_columns:
+            - block_date
+            - nft_contract_address
+          check_columns:
+            - currency_volume_eth
+            - fifth_perecentile_eth
+            - currency_max_eth
+            - currency_min_eth
     columns:
       - name: block_date
         description: "Block date"
       - name: nft_contract_address
         description: "NFT contract address"
-      - name: currency_volume
+      - name: currency_volume_eth
         description: "daily nft collection volume in ETH"
       - name: trades
         description: "daily nft collection number of trades"
-      - name: fifth_perecentile
+      - name: fifth_perecentile_eth
         description: "5th percentile nft trade price in ETH"
-      - name: currency_min
+      - name: currency_min_eth
         description: "Min NFT trade price in ETH"
-      - name: currency_max
+      - name: currency_max_eth
         description: "Max NFT trade price in ETH"

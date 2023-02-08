@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'floor_price',
+    alias = 'collection_stats',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -21,7 +21,7 @@ src_data as (
     FROM 
     {{ ref('nft_trades') }} 
     WHERE blockchain = 'ethereum'
-    AND trade_type = 'Single Item Trade'
+    AND number_of_items = 1
     AND tx_from != LOWER('0x0000000000000000000000000000000000000000')
     AND amount_raw > 0 
     {% if is_incremental() %}
@@ -70,36 +70,29 @@ prof_data as (
         src.block_date, 
         src.nft_contract_address,
         percentile_cont(.05) WITHIN GROUP 
-            (ORDER BY src.amount_original/(
+            (ORDER BY 
                 CASE 
-                    WHEN src.currency_symbol IN ('ETH', 'WETH') THEN 1 
-                    ELSE prices.price
-                END
-            )         
+                    WHEN src.currency_symbol IN ('ETH', 'WETH') THEN src.amount_original 
+                    ELSE src.amount_usd /prices.price
+                END       
         ) as fifth_percentile, 
         MIN(
-            src.amount_original/(
                 CASE 
-                    WHEN src.currency_symbol IN ('ETH', 'WETH') THEN 1 
-                    ELSE prices.price
-                END 
-            )
+                    WHEN src.currency_symbol IN ('ETH', 'WETH') THEN src.amount_original 
+                    ELSE src.amount_usd /prices.price
+                END  
         ) as currency_min, 
         MAX(
-            src.amount_original/(
                 CASE 
-                    WHEN src.currency_symbol IN ('ETH', 'WETH') THEN 1 
-                    ELSE prices.price
-                END 
-            )
+                    WHEN src.currency_symbol IN ('ETH', 'WETH') THEN src.amount_original 
+                    ELSE src.amount_usd /prices.price
+                END  
         ) as currency_max, 
         SUM(
-            src.amount_original/(
                 CASE 
-                    WHEN src.currency_symbol IN ('ETH', 'WETH') THEN 1 
-                    ELSE prices.price
-                END 
-            )
+                    WHEN src.currency_symbol IN ('ETH', 'WETH') THEN src.amount_original 
+                    ELSE src.amount_usd /prices.price
+                END  
         ) as currency_volume, 
         COUNT(*) as trades 
     FROM 
@@ -113,11 +106,11 @@ prof_data as (
 SELECT 
     d.day as block_date, 
     d.nft_contract_address, 
-    COALESCE(prof.currency_volume, 0) as currency_volume,
+    COALESCE(prof.currency_volume, 0) as currency_volume_eth,
     COALESCE(prof.trades, 0) as trades, 
-    COALESCE(prof.fifth_percentile, 0) as fifth_percentile,
-    COALESCE(prof.currency_min, 0) as currency_min, 
-    COALESCE(prof.currency_max, 0) as currency_max 
+    COALESCE(prof.fifth_percentile, 0) as fifth_percentile_eth,
+    COALESCE(prof.currency_min, 0) as currency_min_eth, 
+    COALESCE(prof.currency_max, 0) as currency_max_eth
 FROM 
 days d 
 LEFT JOIN 
