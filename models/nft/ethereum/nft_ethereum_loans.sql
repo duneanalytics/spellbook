@@ -179,17 +179,26 @@ arcade_v2_wrappers as ( -- arcade asset wrappers
 
 arcade_v2_vault_created as (
     select vault, e.tokenId as vaultId, p.to as borrower, e.evt_tx_hash
-    from {{ source('pawnfi_v201_ethereum','VaultFactory_evt_VaultCreated') }} p inner join {{ source('erc721_ethereum','evt_Transfer') }} e on p.evt_tx_hash=e.evt_tx_hash and p.evt_block_time=e.evt_block_time 
+    from {{ source('pawnfi_v201_ethereum', 'VaultFactory_evt_VaultCreated') }} p
+    inner join {{ source('erc721_ethereum', 'evt_Transfer') }} e
+        on p.evt_tx_hash=e.evt_tx_hash
+        and p.evt_block_time=e.evt_block_time
 ),
 
 arcade_v2_vault_deposited_nfts as (
     select e.to as vault, `_1` as borrower, e.tokenId, e.contract_address, call_block_time, e.evt_tx_hash
-    from {{ source('pawnfi_v201_ethereum','AssetVault_call_onERC721Received') }} p inner join {{ source('erc721_ethereum','evt_Transfer') }}  e on p.call_block_time=e.evt_block_time and p.call_tx_hash=e.evt_tx_hash
+    from {{ source('pawnfi_v201_ethereum','AssetVault_call_onERC721Received') }} p
+    inner join {{ source('erc721_ethereum','evt_Transfer') }} e
+        on p.call_block_time=e.evt_block_time
+        and p.call_tx_hash=e.evt_tx_hash
 ),
 
 arcade_v2_vault_withdrawn_nfts as (
     select e.`from` as vault, p.to as borrower, p.tokenId, p.token as contract_address, p.call_block_time, e.evt_tx_hash
-    from {{ source('pawnfi_v201_ethereum','AssetVault_call_withdrawERC721') }} p inner join {{ source('erc721_ethereum','evt_Transfer') }}  e on p.call_block_time=e.evt_block_time and p.call_tx_hash=e.evt_tx_hash
+    from {{ source('pawnfi_v201_ethereum','AssetVault_call_withdrawERC721') }} p
+    inner join {{ source('erc721_ethereum','evt_Transfer') }}  e
+        on p.call_block_time=e.evt_block_time
+        and p.call_tx_hash=e.evt_tx_hash
 ),
 
 arcade_v2_vault_total_nfts as (
@@ -197,7 +206,12 @@ arcade_v2_vault_total_nfts as (
     from (
         select d.vault, d.tokenId, d.contract_address as collectionContract, d.call_block_time as d_block_time, w.call_block_time as w_block_time, 
         row_number() over (partition by d.vault, d.tokenId, d.contract_address order by w.call_block_time) as r
-        from arcade_v2_vault_deposited_nfts d left join arcade_v2_vault_withdrawn_nfts w on d.call_block_time<w.call_block_time and d.vault=w.vault and d.tokenId=w.tokenId and d.contract_address=w.contract_address
+        from arcade_v2_vault_deposited_nfts d
+        left join arcade_v2_vault_withdrawn_nfts w
+            on d.call_block_time<w.call_block_time
+            and d.vault=w.vault
+            and d.tokenId=w.tokenId
+            and d.contract_address=w.contract_address
     ) t
     where r is null or r = 1
 ),
@@ -229,7 +243,10 @@ arcade_v2_base as (
 
 arcade_v2 as (
     select l.*, case when (r.evt_block_time is null and l.evt_block_time + interval '1 day' * duration < current_date) then l.evt_block_time else null end as repay_time
-    from arcade_v2_base l left join {{ source('pawnfi_v201_ethereum','LoanCore_evt_LoanClaimed') }} r on l.loanId=r.loanId and l.contract_address=r.contract_address
+    from arcade_v2_base l
+    left join {{ source('pawnfi_v201_ethereum','LoanCore_evt_LoanClaimed') }} r
+        on l.loanId=r.loanId
+        and l.contract_address=r.contract_address
 ),
 
 arcade_v2_loans_with_vaults as (

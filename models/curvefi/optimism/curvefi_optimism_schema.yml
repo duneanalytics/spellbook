@@ -132,3 +132,6 @@ models:
       - &evt_index
         name: evt_index
         description: ""
+      - &pool_type
+        name: pool_type
+        description: "What model the pool follows (i.e. meta pool, stable pool)"
