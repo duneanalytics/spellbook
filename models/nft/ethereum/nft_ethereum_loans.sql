@@ -215,7 +215,7 @@ arcade_v2_base as (
 
 arcade_v2 as (
     select l.*, case when (r.evt_block_time is null and l.evt_block_time + interval '1 day' * duration < current_date) then l.evt_block_time else null end as repay_time
-    from arcade_v2_base l left join pawnfi_v201_ethereum.LoanCore_evt_LoanClaimed r on l.loanId=r.loanId and l.contract_address=r.contract_address
+    from arcade_v2_base l left join {{ source('pawnfi_v201_ethereum','LoanCore_evt_LoanClaimed') }} r on l.loanId=r.loanId and l.contract_address=r.contract_address
 ),
 
 arcade_v2_loans_with_vaults as (
@@ -291,14 +291,14 @@ loans as (
 loans_with_prices as (
     select evt_tx_hash, evt_block_time, borrower, lender, collectionContract, tokenId, apr, duration, source,
             principal_raw / case 
-                                    when currency = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 THEN 1e18
-                                    when currency = 0x6b175474e89094c44da98b954eedeac495271d0f THEN 1e18 * price
-                                    when currency = 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48 THEN 1e6 * price
+                                    when currency = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' THEN 1e18
+                                    when currency = '0x6b175474e89094c44da98b954eedeac495271d0f' THEN 1e18 * price
+                                    when currency = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48' THEN 1e6 * price
             end as eth,
             principal_raw * case 
-                                    when currency = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 THEN price / 1e18
-                                    when currency = 0x6b175474e89094c44da98b954eedeac495271d0f THEN 1.0 / 1e18
-                                    when currency = 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48 THEN 1.0 / 1e6
+                                    when currency = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' THEN price / 1e18
+                                    when currency = '0x6b175474e89094c44da98b954eedeac495271d0f' THEN 1.0 / 1e18
+                                    when currency = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48' THEN 1.0 / 1e6
             end as usd, 
             case when not repay_time is null then 'REPAID' when (repay_time is null and evt_block_time + interval '1' day * duration < current_date) then 'DEFAULTED' else 'ACTIVE' end as status
             ,currency, principal_raw
@@ -307,4 +307,4 @@ loans_with_prices as (
 )
 
 select l.*, coalesce(t.name, 'Awesome NFT') as collectionName 
-from loans_with_prices l left join tokens.nft t on l.collectionContract=t.contract_address
+from loans_with_prices l left join {{ source('tokens','nft') }} t on l.collectionContract=t.contract_address
