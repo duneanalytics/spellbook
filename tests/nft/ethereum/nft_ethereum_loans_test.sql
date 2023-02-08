@@ -6,10 +6,10 @@ WITH unit_tests AS (
                 END AS test_1
         ,CASE WHEN loans.evt_block_time = test_data.evt_block_time THEN true
                 ELSE false
-                END AS test_3
+                END AS test_2
         ,CASE WHEN loans.borrower = test_data.borrower THEN true
                 ELSE false
-                END AS test_4
+                END AS test_3
         ,CASE WHEN loans.lender = test_data.lender THEN true
                 ELSE false
                 END AS test_4
