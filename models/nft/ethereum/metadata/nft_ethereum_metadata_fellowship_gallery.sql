@@ -71,6 +71,12 @@ from (VALUES
         , ('0x4f248709cfee7f6eb125482509de5bebd40466d3', 'Rescued: Shelter Dog Charity Collection', 'Carlo Van de Roer', 'Foundation', 'https://foundation.app/collection/rsdcc')
         , ('0x0835412b2ac0c74644ee6467f43aca5a848e0bfc', 'End of an Age', 'Paul Graham', 'Foundation', 'https://foundation.app/collection/pgea')
         , ('0x69f55fd1425b8dc3362aed8804a74f64c95c99ad', 'Television Portraits', 'Paul Graham', 'Foundation', 'https://foundation.app/collection/pgtp')
+        , ('0x47fa0f531b3cda5d092ca4f90b20d56eaa3f1744', 'Maurizio Anzeri', 'Maurizio Anzeri', 'Foundation', 'https://foundation.app/collection/maurizioanzeri')
+        , ('0x17a4425708ae3fd28b595f09da7ae384a02adb4a', 'In and Around the House II', 'Laurie Simmons', 'Foundation', 'https://foundation.app/collection/lsiah')
+        , ('0xa4448819cf690cb311239e4002ec60175838ac69', 'Gentlemen''s Club', 'Cristina De Middel', 'Foundation', 'https://foundation.app/collection/cmgc')
+        , ('0xc44bb15b8b0839beb322ae24283f57f3421d120a', 'Midnight at the Crossroads', 'Cristina De Middel', 'Foundation', 'https://foundation.app/collection/cmmc')
+        , ('0x9fea390481b6be2339fe143b0202a5457e0605fa', 'Polyspam', 'Cristina De Middel', 'Foundation', 'https://foundation.app/collection/cm-p')
+        , ('0x65cb92b2a4bf5f7827df387b65962154f4666dbb', 'Sharkification', 'Cristina De Middel', 'Foundation', 'https://foundation.app/collection/cm-s')
 
 ) as temp_table (contract_address, collection_name, artist_name, platform, website)
     
