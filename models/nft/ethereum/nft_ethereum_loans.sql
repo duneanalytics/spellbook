@@ -70,7 +70,6 @@ with nftfi_base as (
             contract_address
         from {{ source('nftfi_ethereum','DirectLoanFixedCollectionOffer_evt_LoanStarted') }}
     ) n 
-    where loanPrincipalAmount> 0
 ), 
 
 nftfi as (
