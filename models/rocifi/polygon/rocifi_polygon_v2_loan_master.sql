@@ -1,25 +1,22 @@
-{{ config (
+{{config (
     alias = 'v2_loan_master',
     post_hook = '{{ 
         expose_spells(\'["polygon"]\',
         "project", 
         "rocifi",
         \'["maybeyonas"]\') }}'
-) }}
-
-
-with score as (
+)}} with score as (
     select evt_block_time,
         score,
         tokenId as token_id
-    from { { source('rocifi_v2_polygon', 'ScoreDB_evt_ScoreUpdated') } }
+    from {{source('rocifi_v2_polygon', 'ScoreDB_evt_ScoreUpdated')}}
 ),
 NFCS as (
     select m.evt_block_time as mint_time,
         _recipient as minter,
         _tokenId::int as token_id,
         explode(_addressBundle) as addr
-    from { { source('rocifi_polygon', 'NFCS_evt_TokenMinted') } } m
+    from {{source('rocifi_polygon', 'NFCS_evt_TokenMinted')}} m
 ),
 loan_id_score as (
     -- finding the credit score during the loanCreation, by finding the last 'scoreUpdate' before the Loan is created
@@ -51,10 +48,10 @@ loan_id_score as (
                         null as score,
                         token_id,
                         loanId as loan_id
-                    from { { source(
+                    from {{source(
                             'rocifi_v2_polygon',
                             'LoanManager_evt_LoanCreated'
-                        ) } } b
+                        )}} b
                         join NFCS n on b.borrower = n.addr
                 )
             order by evt_block_time desc
@@ -87,15 +84,15 @@ borrow_raw_info as (
         cb.duration,
         nfcs_score,
         nfcs_id
-    from { { source(
+    from {{source(
             'rocifi_v2_polygon',
             'LoanManager_evt_LoanCreated'
-        ) } } elc
-        join { { source('rocifi_v2_polygon', 'LoanManager_call_borrow') } } cb on call_tx_hash = evt_tx_hash
-        join { { source(
+        )}} elc
+        join {{source('rocifi_v2_polygon', 'LoanManager_call_borrow')}} cb on call_tx_hash = evt_tx_hash
+        join {{source(
             'rocifi_v2_polygon',
             'CollateralManager_evt_CollateralFrozen'
-        ) } } ecf on elc.evt_tx_hash = ecf.evt_tx_hash
+        )}} ecf on elc.evt_tx_hash = ecf.evt_tx_hash
         join loan_id_score l on elc.loanId = l.loan_id
 ),
 loan_update_events as (
@@ -117,7 +114,7 @@ loan_update_events as (
             when 8.0 then ' DEFAULT_FULL_PAID '
             else ' sus '
         end as position_status
-    from { { source('polygon', 'logs') } }
+    from {{source('polygon', 'logs')}}
     where block_number >= 36623032
         and topic1 = '0x392df00c89a09571865cf4a708cee83527a8eba918e951b455a33269913486c3' -- loanStatusChanged
         and contract_address = '0x60ade7ec42f3907474d5d6008eb36aeb2627bd41' -- loanManager
@@ -130,10 +127,10 @@ events as (
         0.0 as from_status,
         1.0 as to_status,
         'NEW' as position_status
-    from { { source(
+    from {{source(
             'rocifi_v2_polygon',
             'LoanManager_evt_LoanCreated'
-        ) } }
+        )}}
     union all
     select *
     from loan_update_events
@@ -157,7 +154,7 @@ prices_then as (
         contract_address,
         price,
         decimals
-    from { { source('prices', 'usd ') } }
+    from {{source('prices', 'usd ')}}
     where blockchain = ' polygon '
         and contract_address in (
             select distinct collateral_token
@@ -173,7 +170,7 @@ prices_now as (
         -- symbol,
         contract_address,
         price
-    from { { source('prices', 'usd') } }
+    from {{source('prices', 'usd')}}
     where blockchain = 'polygon'
         and contract_address in (
             select distinct collateral_token
@@ -195,7 +192,7 @@ repay_info as (
         interestAccrued,
         outstanding,
         repayAmount
-    from { { source('rocifi_v2_polygon', 'LoanManager_evt_LoanPayed') } }
+    from {{source('rocifi_v2_polygon', 'LoanManager_evt_LoanPayed')}}
 ),
 repay_aggregate as (
     select loan_id,
@@ -220,10 +217,10 @@ liq_event as (
         rank() over(
             order by evt_block_time
         ) as liq_rank
-    from { { source(
+    from {{source(
             'rocifi_v2_polygon',
             'LoanManager_evt_LoanLiquidated'
-        ) } }
+        )}}
 ),
 liq_swap_evt as (
     select *,
@@ -235,7 +232,7 @@ liq_swap_evt as (
                 -- bytea2numeric_v2(substring(data,3,64)) as liquidityRecordIndex,
                 bytea2numeric_v2(substring(data, 67, 64)) as amountIn,
                 bytea2numeric_v2(substring(data, 131, 64)) as amountOut
-            from { { source('polygon', 'logs') } }
+            from {{source('polygon', 'logs')}}
             where block_number >= 36623029
                 and contract_address = lower('0x130035b6289de638c58b2ff865e69923545321b9')
                 and topic1 = '0xba9fccb0b9c11f982c4ca6eef78f938cae053a5636eae1ae78503bafcf563413'
