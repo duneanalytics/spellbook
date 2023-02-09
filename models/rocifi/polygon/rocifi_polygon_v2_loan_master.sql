@@ -104,15 +104,15 @@ loan_update_events as (
         bytea2numeric_v2(substring(data, 67, 64)) as to_status,
         case
             bytea2numeric_v2(substring(data, 67, 64))
-            when 1.0 then ' NEW '
-            when 2.0 then ' PAID_EARLY_PART '
-            when 3.0 then ' PAID_EARLY_FULL '
-            when 4.0 then ' PAID_LATE_PART '
-            when 5.0 then ' PAID_LATE_FULL '
-            when 6.0 then ' DEFAULT_PART '
-            when 7.0 then ' DEFAULT_FULL_LIQUIDATED '
-            when 8.0 then ' DEFAULT_FULL_PAID '
-            else ' sus '
+            when 1.0 then 'NEW'
+            when 2.0 then 'PAID_EARLY_PART'
+            when 3.0 then 'PAID_EARLY_FULL'
+            when 4.0 then 'PAID_LATE_PART'
+            when 5.0 then 'PAID_LATE_FULL'
+            when 6.0 then 'DEFAULT_PART'
+            when 7.0 then 'DEFAULT_FULL_LIQUIDATED'
+            when 8.0 then 'DEFAULT_FULL_PAID'
+            else 'sus'
         end as position_status
     from {{source('polygon', 'logs')}}
     where block_number >= 36623032
@@ -155,7 +155,7 @@ prices_then as (
         price,
         decimals
     from {{source('prices', 'usd')}}
-    where blockchain = ' polygon '
+    where blockchain = 'polygon'
         and contract_address in (
             select distinct collateral_token
             from borrow_raw_info
@@ -163,7 +163,7 @@ prices_then as (
             select distinct underlying_token
             from borrow_raw_info
         )
-        and minute >= ' 2022 -11 -12 '
+        and minute >= '2022-11-12'
 ),
 prices_now as (
     select minute,
