@@ -159,6 +159,8 @@ VALUES
     ("xen-xen-crypto", "avalanche_c", "XEN", "0xC0C5AA69Dbe4d6DDdfBc89c0957686ec60F24389", 18),
     ("link-chainlink", "avalanche_c", "LINK.e", "0x5947bb275c521040051d82396192181b413227a3", 18),
     ("mimatic-mimatic", "avalanche_c", "MAI", "0x5c49b268c9841aff1cc3b0a418ff5c3442ee3f3b", 18),
+    ("luna-luna-wormhole", "avalanche_c", "LUNA", "0x70928e5b188def72817b7775f0bf6325968e563b", 6),
+    ("ust-terrausd-wormhole", "avalanche_c", "UST", "0xb599c3590f42f8f995ecfa0f85d2980b76862fc1", 6),
 
 
     ("1inch-1inch", "bnb", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
@@ -644,7 +646,7 @@ VALUES
     ("snt-status", "ethereum", "SNT", "0x744d70fdbe2ba4cf95131626614a1763df805b9e", 18),
     ("sos-opendao", "ethereum", "SOS", "0x3b484b82567a09e2588a13d54d032153f0c0aee0", 18),
     ("spank-spankchain", "ethereum", "SPANK", "0x42d6622dece394b54999fbd73d108123806f6a18", 18),
-    ("spell-spell-token", "ethereum", "SPELL", "0x090185f2135308bad17527004364ebcc2d37e5f6", 18),
+    --("spell-spell-token", "ethereum", "SPELL", "0x090185f2135308bad17527004364ebcc2d37e5f6", 18),
     ("srm-serum", "ethereum", "SRM", "0x476c5e26a75bd202a9683ffd34359c0cc15be0ff", 6),
     ("srn-sirin-labs-token", "ethereum", "SRN", "0x68d57c9a1c35f63e2c83ee8e49a64e9d70528d25", 18),
     ("stake-xdai-stake", "ethereum", "STAKE", "0x0ae055097c6d159879521c384f1d2123d1f195e6", 18),
@@ -1738,12 +1740,13 @@ VALUES
     ("spell-spell-token", "optimism", "SPELL", "0xe3ab61371ecc88534c522922a026f2296116c109", 18),
     ("suku-suku", "optimism", "SUKU", "0xef6301da234fc7b0545c6e877d3359fe0b9e50a4", 18),
     ("snx-synthetix-network-token", "optimism", "SNX", "0x8700daec35af8ff88c16bdf0418774cb3d7599b4", 18),
-    ("unlock-unlock", "optimism", "UNLOCK", "0x7ae97042a4a0eb4d1eb370c34bfec71042a056b7", 18),
+    -- ("unlock-unlock", "optimism", "UNLOCK", "0x7ae97042a4a0eb4d1eb370c34bfec71042a056b7", 18), --removed for low quality feed
     ("bank-bankless-dao", "optimism", "BANK", "0x29FAF5905bfF9Cfcc7CF56a5ed91E0f091F8664B", 18),
     ("btcb-bitcoin-avalanche-bridged-btcb","optimism","BTC.b","0x2297aebd383787a160dd0d9f71508148769342e3",18),
     ("pickle-pickle-finance", "optimism", "PICKLE", "0x0c5b4c92c948691EEBf185C17eeB9c230DC019E9", 18),
     ("bob-bob", "optimism", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
     ("bomb-fbomb","optimism","fBOMB","0x74ccbe53F77b08632ce0CB91D3A545bF6B8E0979",18),
+    ("busd-binance-usd","optimism","BUSD","0x9c9e5fd8bbc25984b178fdce6117defa39d2db39",18),
 
     ("aave-new","polygon","AAVE","0xd6df932a45c0f255f85145f286ea0b292b21c90b",18),
     ("ageur-ageur","polygon",'agEUR',"0xe0b52e49357fd4daf2c15e02058dce6bc0057db4",18),
@@ -1773,6 +1776,8 @@ VALUES
     ("nuls-nuls", "polygon", "NULS", "0x8b8e48a8cc52389cd16a162e5d8bd514fabf4ba0", 8),
     ("blank-blockwallet","polygon", "BLANK", "0xf4C83080E80AE530d6f8180572cBbf1Ac9D5d435", 18),
     ("fin-fin", "polygon", "FIN", "0x576c990a8a3e7217122e9973b2230a3be9678e94", 18),
+    ("luna-luna-wormhole", "polygon", "LUNA", "0x9cd6746665d9557e1b9a775819625711d0693439", 6),
+    ("ust-terrausd", "polygon", "USTC", "0x692597b009d13c4049a947cab2239b7d6517875f", 18),
 
     ("aury-aurory", "solana", "AURY", "AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP", 9),
     ("btc-bitcoin", "solana", "BTC", "9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E", 6),
@@ -1792,7 +1797,7 @@ VALUES
     ("steth-lido-staked-ether", "solana", "wstETH", "ZScHuTtqZukUrtZS43teTKGs2VqkKL8k4QCouR2n6Uo", 8),
     ("stsol-lido-staked-sol", "solana", "stSOL", "7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj", 9),
     ("sol-solana", "solana", "SOL", "So11111111111111111111111111111111111111112", 9),
-    ("ust-terrausd", "solana", "UST", "9vMJfxuKxXBoEa7rM12mYLMwTacLMLDJqHozw96WQL8i", 6),
+    ("ust-terrausd", "solana", "USTC", "9vMJfxuKxXBoEa7rM12mYLMwTacLMLDJqHozw96WQL8i", 6),
     ("usdc-usd-coin", "solana", "USDC", "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", 6),
     ("usdt-tether", "solana", "USDT", "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", 6),
     ("drip-drip-network", "bnb", "DRIP", "0x20f663CEa80FaCE82ACDFA3aAE6862d246cE0333", 18),
@@ -1848,7 +1853,9 @@ VALUES
     ("3omb-3omb-token", "fantom", "3OMB", "0x14DEf7584A6c52f470Ca4F4b9671056b22f4FfDE", 18), 
     ("gscarab-gscarab", "fantom", "GSCARAB", "0x6ab5660f0B1f174CFA84e9977c15645e4848F5D6", 18), 
     ("lif3-lif3", "fantom", "LIF3", "0xbf60e7414EF09026733c1E7de72E7393888C64DA", 18),
-    ("oxd-0xdao", "fantom", "OXD", "0xc165d941481e68696f43EE6E99BFB2B23E0E3114", 18), 
+    ("oxd-0xdao", "fantom", "OXD", "0xc165d941481e68696f43EE6E99BFB2B23E0E3114", 18),
+    ("ust-terrausd", "fantom", "USTC", "0xe2d27f06f63d98b8e11b38b5b08a75d0c8dd62b9", 6),
+    ("luna-terra", "fantom", "LUNC", "0x95dd59343a893637be1c3228060ee6afbf6f0730", 6),
     ("2shares-2share", "fantom", "2SHARES", "0xc54A1684fD1bef1f077a336E6be4Bd9a3096a6Ca", 18), 
     ("3share-3share", "fantom", "3SHARES", "0x6437ADAC543583C4b31Bf0323A0870430F5CC2e7", 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
