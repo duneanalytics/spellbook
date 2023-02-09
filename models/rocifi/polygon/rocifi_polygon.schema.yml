@@ -23,11 +23,11 @@ models:
     config:
       tags: ['loan', 'polygon', 'rocifi', 'rocifi_v2']
     description: "Master Table tracking all Loans initiated on v2 and their latest status"
-    tests:
-      - unique
     columns:
       - name: loan_id
         description: "Unique ID for each Loan initiated"
+        tests:
+          - unique
       - name: loan_issue_time
         description: "Timestamp when Loan was issued"
       - name: loan_issue_tx
