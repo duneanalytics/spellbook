@@ -5,10 +5,6 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "curvefi",
-                                \'["msilb7"]\') }}'
     )
 }}
 
@@ -164,7 +160,8 @@ SELECT DISTINCT
     tx.from as tx_from,
     tx.to as tx_to,
     dexs.trace_address,
-    dexs.evt_index
+    dexs.evt_index,
+    dexs.pool_type
 FROM dexs
 INNER JOIN {{ source('optimism', 'transactions') }} tx
     ON dexs.tx_hash = tx.hash

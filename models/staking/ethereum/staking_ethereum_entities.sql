@@ -41,6 +41,7 @@ FROM
     , ('0xc2288b408dc872a1546f13e6ebfa9c94998316a2', 'Bitcoin Suisse', 'Bitcoin Suisse 6', 'Staking Pools')
     , ('0xf2be95116845252a28bd43661651917dc183dab1', 'Figment', 'Figment 1', 'Staking Pools')
     , ('0x37ab162ab59e106d6072eb7a7bd4c4c2973455a7', 'Figment', 'Figment 2', 'Staking Pools')
+    , ('0xb4e2e925d75793c33f5f94cd652f6c464665c76b', 'Figment', 'Figment 3', 'Staking Pools')
     , ('0xc874b064f465bdd6411d45734b56fac750cda29a', 'Stakewise', 'Stakewise', 'Liquid Staking')
     , ('0x84db6ee82b7cf3b47e8f19270abde5718b936670', 'Stkr (Ankr)', 'Stkr (Ankr)', 'Liquid Staking')
     , ('0x194bd70b59491ce1310ea0bceabdb6c23ac9d5b2', 'Huobi', 'Huobi 1', 'CEX')
@@ -96,6 +97,9 @@ FROM
     , ('0x588e859cb38fecf2d56925c0512471ab47aa9ff1', 'StaFi', 'StaFi SuperNode', 'Liquid Staking')
     , ('0x1c906685384df71e3fafa6f3b21bd884e9d44f4b', 'StaFi', 'StaFi LightNode', 'Liquid Staking')
     --, ('', '', '', '')
+    , ('0xf79caa45612fb183c4e258ed449bfa632d7400b9', 'Everstake Pool', 'Everstake', 'Staking Pools')
+    , ('0xcf07df57a6b338a20d50114a79fee09d28b13d72', 'cryptostake.com', 'cryptostake.com', 'Staking Pools')
+    , ('0x2915f91dcff0be7b60df411f164827d517caca67', 'TokenPocket', 'TokenPocket', 'Others')   
     ) 
     x (address, entity, entity_unique_name, category)
 
@@ -165,7 +169,7 @@ FROM
     GROUP BY binance.address
 
     UNION ALL
-
+    
     SELECT address
     , entity AS name
     , entity || ' ' || ROW_NUMBER() OVER (PARTITION BY entity ORDER BY first_used) AS entity_unique_name
