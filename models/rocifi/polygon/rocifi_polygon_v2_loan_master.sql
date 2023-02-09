@@ -154,7 +154,7 @@ prices_then as (
         contract_address,
         price,
         decimals
-    from {{source('prices', 'usd ')}}
+    from {{source('prices', 'usd')}}
     where blockchain = ' polygon '
         and contract_address in (
             select distinct collateral_token
