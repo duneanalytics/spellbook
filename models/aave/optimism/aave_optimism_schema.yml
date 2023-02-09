@@ -40,6 +40,12 @@ models:
    config:
      tags: ['optimism', 'aave_v3', 'interest', 'aave', 'lending']
    description: "Hourly aave interest rates on optimism"
+   tests:
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - reserve
+           - symbol
+           - hour
    columns:
      - *reserve
      - *symbol
@@ -57,6 +63,14 @@ models:
    config:
      tags: ['ethereum', 'aave_v3', 'supply', 'aave', 'lending']
    description: "All aave v3 transactions involving supply transactions on optimism"
+   tests:
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - version
+           - token_address
+           - evt_tx_hash
+           - evt_block_number
+           - evt_index
    columns:
      - &version
        name: version
@@ -112,7 +126,7 @@ models:
            - token_address
            - evt_tx_hash
            - evt_block_number
-           - evt_index'
+           - evt_index
    columns:
      - *version
      - *transaction_type
