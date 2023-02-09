@@ -192,7 +192,5 @@ models:
         description: "Total eth spent by minter"
       - name: no_minted
         description: "Number of nft's minted"
-      - name: rn
-        description: "row number"
       - name: last_updated
         description: "Last time spell was updated"

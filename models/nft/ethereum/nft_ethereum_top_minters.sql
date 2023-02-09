@@ -20,13 +20,12 @@ src_data as (
         buyer as minter, 
         SUM(amount_original) as eth_spent, 
         COUNT(*) as no_minted,
-        NOW() - Interval '5 Minutes' as last_updated
+        (SELECT MAX(block_time) FROM {{ ref('nft_mints') }}) as last_updated
     FROM 
     {{ ref('nft_mints') }}
     WHERE blockchain = 'ethereum'
     AND currency_symbol IN ('WETH', 'ETH')
     AND amount_original IS NOT NULL
-    AND block_time < NOW() - Interval '5 Minutes'
     GROUP BY 1, 2, 5
     {% endif %}
     -- incremental run
@@ -36,14 +35,13 @@ src_data as (
         buyer as minter, 
         SUM(amount_original) as eth_spent, 
         COUNT(*) as no_minted,
-        NOW() - Interval '5 Minutes' as last_updated
+        (SELECT MAX(block_time) FROM {{ ref('nft_mints') }} WHERE block_time > (SELECT MAX(last_updated) FROM {{this}})) as last_updated -- speedup
     FROM 
     {{ ref('nft_mints') }}
-    WHERE block_time >= (SELECT MAX(last_updated) FROM {{this}})
+    WHERE block_time > (SELECT MAX(last_updated) FROM {{this}})
     AND blockchain = 'ethereum'
     AND currency_symbol IN ('WETH', 'ETH')
     AND amount_original IS NOT NULL
-    AND block_time < NOW() - Interval '5 Minutes'
     GROUP BY 1, 2, 5 
 
     UNION ALL 
@@ -53,7 +51,7 @@ src_data as (
         minter,
         eth_spent,
         no_minted,
-        NOW() - Interval '5 Minutes' as last_updated
+        (SELECT MAX(block_time) FROM {{ ref('nft_mints') }} WHERE block_time > (SELECT MAX(last_updated) FROM {{this}})) as last_updated -- speedup
     FROM 
     {{this}}
     {% endif %}
@@ -72,7 +70,6 @@ combined as (
 )
 
 SELECT 
-    ROW_NUMBER() OVER (PARTITION BY nft_contract_address ORDER BY no_minted DESC) as rank_,
     * 
 FROM 
 combined
