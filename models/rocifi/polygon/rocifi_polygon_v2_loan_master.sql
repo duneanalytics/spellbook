@@ -5,7 +5,10 @@
         "project", 
         "rocifi",
         \'["maybeyonas"]\') }}'
-)}} with score as (
+)}} 
+
+with 
+score as (
     select evt_block_time,
         score,
         tokenId as token_id
@@ -31,10 +34,7 @@ loan_and_nfcs_events as (
         null as score,
         token_id,
         loanId as loan_id
-    from {{source(
-            'rocifi_v2_polygon',
-            'LoanManager_evt_LoanCreated'
-        )}} b
+    from {{source('rocifi_v2_polygon', 'LoanManager_evt_LoanCreated')}} b
         join NFCS n on b.borrower = n.addr
 ),
 ranked_loan_and_nfcs_events as (
@@ -45,7 +45,8 @@ ranked_loan_and_nfcs_events as (
             score,
             last(score, true) over(
                 partition by token_id
-                order by evt_block_time range unbounded preceding
+                order by evt_block_time 
+                range unbounded preceding
             )
         ) as score,
         token_id
@@ -86,15 +87,9 @@ borrow_raw_info as (
         cb.duration,
         nfcs_score,
         nfcs_id
-    from {{source(
-            'rocifi_v2_polygon',
-            'LoanManager_evt_LoanCreated'
-        )}} elc
+    from {{source('rocifi_v2_polygon', 'LoanManager_evt_LoanCreated')}} elc
         join {{source('rocifi_v2_polygon', 'LoanManager_call_borrow')}} cb on call_tx_hash = evt_tx_hash
-        join {{source(
-            'rocifi_v2_polygon',
-            'CollateralManager_evt_CollateralFrozen'
-        )}} ecf on elc.evt_tx_hash = ecf.evt_tx_hash
+        join {{source('rocifi_v2_polygon', 'CollateralManager_evt_CollateralFrozen')}} ecf on elc.evt_tx_hash = ecf.evt_tx_hash
         join loan_id_score l on elc.loanId = l.loan_id
 ),
 loan_update_events as (
@@ -129,10 +124,7 @@ events as (
         0.0 as from_status,
         1.0 as to_status,
         'NEW' as position_status
-    from {{source(
-            'rocifi_v2_polygon',
-            'LoanManager_evt_LoanCreated'
-        )}}
+    from {{source('rocifi_v2_polygon', 'LoanManager_evt_LoanCreated')}}
     union all
     select *
     from loan_update_events
@@ -145,7 +137,7 @@ latest_status as (
                     partition by loan_id
                     order by evt_block_time desc,
                         evt_index desc
-                ) as latest_rank -- 0x1cc4c1d0398778ca38d8a5e21ae2911d29fceac9d465336cbe3f77f9f540a6db must have status 5
+                ) as latest_rank
             from events
         )
     where latest_rank = 1
@@ -219,10 +211,7 @@ liq_event as (
         rank() over(
             order by evt_block_time
         ) as liq_rank
-    from {{source(
-            'rocifi_v2_polygon',
-            'LoanManager_evt_LoanLiquidated'
-        )}}
+    from {{source('rocifi_v2_polygon', 'LoanManager_evt_LoanLiquidated')}}
 ),
 liq_swap_evt as (
     select *,
@@ -273,22 +262,24 @@ select block_time as loan_issue_time,
     from_unixtime(unix_timestamp(block_time) + duration) as due_time,
     from_unixtime(unix_timestamp(block_time) + duration + 432000) as liquidation_time,
     ls.position_status,
+
     nfcs_score,
     nfcs_id,
+
     coalesce(repayments, 0) as repayments,
     coalesce(total_repaid, 0) / pow(10, pb.decimals) as total_repaid,
     last_repay_time,
     repay_tx as last_repay_tx,
     coalesce(outstanding, loan_amount) / pow(10, pb.decimals) as outstanding_since_last_repay,
+
     coalesce(is_liquidated, 'no') as is_liquidated,
     liq_time,
     liq_tx_hash,
     coalesce(collateral_liquidated, 0) / pow(10, pc.decimals) as collateral_liquidated,
     coalesce(liquidation_repaid, 0) / pow(10, pb.decimals) as liquidation_repaid,
     coalesce(liquidation_unpaid, 0) / pow(10, pb.decimals) as liquidation_unpaid,
-    (
-        coalesce(total_repaid, 0) + coalesce(liquidation_repaid, 0)
-    ) / pow(10, pb.decimals) as repaid_and_liquidation
+
+    (coalesce(total_repaid, 0) + coalesce(liquidation_repaid, 0)) / pow(10, pb.decimals) as repaid_and_liquidation
 from borrow_raw_info b
     join prices_then pb on b.underlying_token = pb.contract_address
     and pb.minute = date_trunc('minute', b.block_time)
