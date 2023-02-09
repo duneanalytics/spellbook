@@ -18,44 +18,46 @@ NFCS as (
         explode(_addressBundle) as addr
     from {{source('rocifi_polygon', 'NFCS_evt_TokenMinted')}} m
 ),
+loan_and_nfcs_events as (
+    select evt_block_time,
+        'updateScore' as event,
+        score,
+        token_id,
+        null as loan_id
+    from score
+    union all
+    select evt_block_time,
+        'loanCreated' as event,
+        null as score,
+        token_id,
+        loanId as loan_id
+    from {{source(
+            'rocifi_v2_polygon',
+            'LoanManager_evt_LoanCreated'
+        )}} b
+        join NFCS n on b.borrower = n.addr
+),
+ranked_loan_and_nfcs_events as (
+    select evt_block_time,
+        event,
+        loan_id,
+        coalesce(
+            score,
+            last(score, true) over(
+                partition by token_id
+                order by evt_block_time range unbounded preceding
+            )
+        ) as score,
+        token_id
+    from loan_and_nfcs_events
+    order by evt_block_time desc
+),
 loan_id_score as (
     -- finding the credit score during the loanCreation, by finding the last 'scoreUpdate' before the Loan is created
     select loan_id,
         coalesce(score, 404) as nfcs_score,
         token_id as nfcs_id
-    from (
-            select evt_block_time,
-                event,
-                loan_id,
-                coalesce(
-                    score,
-                    last(score, true) over(
-                        partition by token_id
-                        order by evt_block_time range unbounded preceding
-                    )
-                ) as score,
-                token_id
-            from (
-                    select evt_block_time,
-                        'updateScore' as event,
-                        score,
-                        token_id,
-                        null as loan_id
-                    from score
-                    union all
-                    select evt_block_time,
-                        'loanCreated' as event,
-                        null as score,
-                        token_id,
-                        loanId as loan_id
-                    from {{source(
-                            'rocifi_v2_polygon',
-                            'LoanManager_evt_LoanCreated'
-                        )}} b
-                        join NFCS n on b.borrower = n.addr
-                )
-            order by evt_block_time desc
-        )
+    from ranked_loan_and_nfcs_events
     where event = 'loanCreated'
 ),
 borrow_raw_info as (
