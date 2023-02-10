@@ -27,6 +27,7 @@ WITH tbl_cte_transaction AS
          , erc721Token      AS nft_address
          , erc721TokenId    AS nft_id
          , 'erc721'         AS label
+         , '1'  as nft_cnt
          , CASE
                 WHEN erc20Token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
                 THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
@@ -54,6 +55,7 @@ WITH tbl_cte_transaction AS
             , erc1155Token      AS nft_address
             , erc1155TokenId    AS nft_id
             , 'erc1155'         AS label
+            , erc1155FillAmount AS nft_cnt
             , CASE
                 WHEN erc20Token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
                 THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
@@ -105,6 +107,7 @@ SELECT a.evt_block_time                                      AS block_time
      , a.matcher
      , a.nft_address
      , a.nft_id
+     , a.nft_cnt as number_of_items
      , a.label
      , a.price_label
      , a.token
