@@ -81,7 +81,7 @@ SELECT 'bnb'                                 as blockchain
      , case
            when tfe.kind = '1' then 'Buy'
            when tfe.kind = '2' then 'Sell'
-           else 'Acution'
+           else 'Auction'
     end                                      as trade_category
      , CAST(tfe.price AS DECIMAL(38,0))      as amount_raw
      , tfe.price / power(10, pu.decimals)    as amount_original

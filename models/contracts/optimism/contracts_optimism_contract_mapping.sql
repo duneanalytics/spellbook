@@ -37,7 +37,7 @@ with base_level as (
   from (
     select 
       ct.`from` as creator_address
-      ,NULL::string as contract_factory
+      ,CAST(NULL AS string) as contract_factory
       ,ct.address as contract_address
       ,ct.block_time as created_time
       ,ct.tx_hash as creation_tx_hash
@@ -52,7 +52,7 @@ with base_level as (
       {% endif %}
     where 
       true
-    {% if is_incremental() %}
+      {% if is_incremental() %}
       and ct.block_time >= date_trunc('day', now() - interval '1 week')
 
     -- to get existing history of contract mapping
@@ -66,7 +66,7 @@ with base_level as (
       ,creation_tx_hash
       ,is_self_destruct
     from {{ this }}
-    {% endif %}
+      {% endif %} -- line 55 incremental filter
   ) as x
   group by 1, 2, 3, 4, 5, 6
 )
@@ -194,7 +194,7 @@ with base_level as (
     ,to_timestamp('2021-07-06 00:00:00') as created_time
     ,false as is_self_destruct
     ,'synthetix contracts' as source
-    ,NULL as creation_tx_hash
+    ,cast(NULL as string) as creation_tx_hash
   from {{ source('ovm1_optimism', 'synthetix_genesis_contracts') }} as snx
   where 
     true
@@ -204,7 +204,34 @@ with base_level as (
       from {{ this }} as gc
       where 
         gc.contract_address = snx.contract_address
-        and gc.contract_project = 'Synthetix'
+        and gc.contract_project LIKE 'Synthetix%' --future proof in case this name changes
+    )
+    {% endif %}
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9
+
+    union all 
+  --uniswap pools from ovm1
+
+  select 
+    NULL as creator_address
+    ,NULL as contract_factory
+    ,lower(newaddress) as contract_address
+    ,'Uniswap V3' as contract_project
+    ,'Pair' as contract_name
+    ,to_timestamp('2021-11-11 00:00:00') as created_time
+    ,false as is_self_destruct
+    ,'ovm1 uniswap pools' as source
+    ,NULL as creation_tx_hash
+  from {{ ref('uniswap_optimism_ovm1_pool_mapping') }} as uni
+  where 
+    true
+    {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+    and not exists (
+      select 1 
+      from {{ this }} as gc
+      where 
+        gc.contract_address = lower(newaddress)
+        and gc.contract_project LIKE 'Uniswap%' --future proof in case this name changes
     )
     {% endif %}
     group by 1, 2, 3, 4, 5, 6, 7, 8, 9
@@ -255,7 +282,13 @@ select
   ,coalesce(co.contract_name, c.contract_name) as contract_name
   ,coalesce(c.creator_address, ovm1c.creator_address) as creator_address
   ,coalesce(c.created_time, to_timestamp(ovm1c.created_time)) as created_time
-  ,c.contract_factory as contract_creator_if_factory
+  ,coalesce(c.contract_factory, 
+  {% if is_incremental() %}
+    th.contract_creator_if_factory
+    {% else -%}
+    cast(NULL as string)
+  {% endif %}
+  ) as contract_creator_if_factory
   ,coalesce(c.is_self_destruct, false) as is_self_destruct
   ,c.creation_tx_hash
 from cleanup as c 
@@ -265,3 +298,7 @@ left join {{ ref('contracts_optimism_project_name_mappings') }} as dnm -- fix na
   on lower(c.contract_project) = lower(dnm.dune_name)
 left join {{ ref('contracts_optimism_contract_overrides') }} as co --override contract maps
   on lower(c.contract_address) = lower(co.contract_address)
+{% if is_incremental() %} -- this filter will only be applied on an incremental run 
+left join {{ this }} th -- grab if the contract was previously picked up as factory created
+  ON lower(th.contract_address) = lower(c.contract_address)
+{% endif %}
