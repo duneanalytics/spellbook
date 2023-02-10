@@ -351,6 +351,13 @@ models:
       bnb:
         +schema: nftrade_bnb
 
+    trove:
+      +schema: trove
+      arbitrum:
+        +schema: trove_arbitrum
+      ethereum:
+        +schema: trove_ethereum
+
     jarvis_network:
       +schema: jarvis_network
       polygon:
@@ -1059,6 +1066,28 @@ seeds:
         +enabled: true
         +schema: test_data
         nftrade_nft_trades_samples:
+            block_number: int
+            token_id: string
+            seller: string
+            buyer: string
+            tx_hash: string
+            amount_original: double
+
+    trove:
+      arbitrum:
+        +enabled: true
+        +schema: test_data
+        trove_arbitrum_nft_trades_samples:
+            block_number: int
+            token_id: string
+            seller: string
+            buyer: string
+            tx_hash: string
+            amount_original: double
+      ethereum:
+        +enabled: true
+        +schema: test_data
+        trove_ethereum_nft_trades_samples:
             block_number: int
             token_id: string
             seller: string

@@ -83,6 +83,17 @@ models:
     config:
       tags: ['trove', 'treasure', 'nft', 'trades']
     description: "NFT trades on trove on arbitrum blockchain"
+    tests:
+      - check_seed:
+          seed_file: ref('trove_arbitrum_nft_trades_samples')
+          match_columns:
+            - block_number
+            - tx_hash
+            - token_id
+          check_columns:
+            - amount_original
+            - buyer
+            - seller
     columns:
       - *blockchain
       - *project
@@ -121,6 +132,17 @@ models:
     config:
       tags: ['trove', 'treasure', 'nft', 'trades']
     description: "NFT trades on trove on ethereum blockchain"
+    tests:
+      - check_seed:
+          seed_file: ref('trove_ethereum_nft_trades_samples')
+          match_columns:
+            - block_number
+            - tx_hash
+            - token_id
+          check_columns:
+            - amount_original
+            - buyer
+            - seller
     columns:
       - *blockchain
       - *project
