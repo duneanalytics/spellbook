@@ -33,8 +33,8 @@ with dexs as (
         {{ source('spookyswap_fantom', 'Pair_evt_Swap') }} t
         inner join {{ source('spookyswap_fantom', 'UniswapV2Factory_evt_PairCreated') }} f 
             on f.pair = t.contract_address
-    {% if not is_incremental() %}
-    WHERE t.evt_block_time >= '{{ project_start_date }}'
+    {% if is_incremental() %}
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
 select
