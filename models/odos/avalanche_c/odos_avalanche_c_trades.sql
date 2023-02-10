@@ -36,9 +36,6 @@ dexs_raw as (
             evt_index
         FROM 
         {{ source('odos_avalanche_c', 'OdosRouter_evt_Swapped') }}
-        {% if not is_incremental() %}
-        WHERE evt_block_time >= '{{project_start_date}}'
-        {% endif %}
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
