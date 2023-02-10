@@ -1,14 +1,15 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["ethereum", "gnosis"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "fantom"]\',
                                 "sector",
                                 "dex_aggregator",
-                                \'["bh2smith"]\') }}'
+                                \'["bh2smith", "Henrystats"]\') }}'
         )
 }}
 
 {% set dex_aggregator_models = [
  ref('cow_protocol_trades')
+ ,ref('yield_yak_avalanche_c_trades')
 ] %}
 
 
