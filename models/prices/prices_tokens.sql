@@ -7,7 +7,7 @@
         post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon", "fantom"]\',
                                     "sector",
                                     "prices",
-                                    \'["aalan3", "jeff-dude", "umer_h_adil"]\') }}'
+                                    \'["aalan3", "jeff-dude", "umer_h_adil", "0xBoxer"]\') }}'
         )
 }}
 SELECT token_id, blockchain, symbol, LOWER(contract_address) as contract_address, decimals from (
