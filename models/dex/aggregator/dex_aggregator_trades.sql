@@ -10,6 +10,7 @@
 {% set dex_aggregator_models = [
  ref('cow_protocol_trades')
  ,ref('openocean_trades')
+ ,ref('yield_yak_avalanche_c_trades')
 ] %}
 
 
