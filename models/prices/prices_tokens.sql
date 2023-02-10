@@ -1636,6 +1636,7 @@ VALUES
     ("fin-fin", "ethereum", "FIN", "0x054f76beed60ab6dbeb23502178c52d6c5debe40", 18),
     ("blank-blockwallet","ethereum", "BLANK", "0x41a3dba3d677e573636ba691a70ff2d606c29666", 18),
     ("vra-verasity", "ethereum", "VRA", "0xf411903cbc70a74d22900a5de66a2dda66507255", 18),
+    ("gt-gatechain-token","ethereum", "GT", "0xe66747a101bff2dba3697199dcce5b743b454759",18),
 
     -- Query for Popular Traded Tokens on Gnosis Chain without prices: https://dune.com/queries/1719783
     ("dai-dai", "gnosis", "WXDAI", "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18),
