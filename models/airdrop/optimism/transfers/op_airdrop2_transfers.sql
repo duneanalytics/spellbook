@@ -14,17 +14,17 @@
 SELECT
 'Optimism Airdrop #2' AS airdrop_name,
 
-tfer.account AS recipient_address,
+tfer.to AS recipient_address,
 
-r.contract_address AS airdrop_token_address,
-r.symbol AS airdrop_token_symbol,
+tfer.contract_address AS airdrop_token_address,
+tk.symbol AS airdrop_token_symbol,
 DATE_TRUNC('day',tfer.evt_block_time) AS transfer_block_date,
 tfer.evt_block_time AS transfer_block_time,
 tfer.evt_block_number AS transfer_block_number,
 tfer.evt_tx_hash AS transfer_tx_hash,
 tfer.evt_index AS transfer_evt_index,
 
-cast(tfer.amount as double) / cast(POWER(10,r.decimals) as double) AS airdrop_token_amount,
+cast(tfer.amount as double) / cast(POWER(10,tk.decimals) as double) AS airdrop_token_amount,
 cast(tfer.amount as double) AS airdrop_token_amount_raw,
 
 tx.`from` AS tx_from_address,
@@ -33,7 +33,7 @@ substring(tx.data,1,10) AS tx_method_id
 
 FROM {{ source('erc20_optimism', 'evt_transfer') }} tfer
 INNER JOIN {{ ref('tokens_optimism_erc20') }} tk
-        ON r.contract_address = '0x4200000000000000000000000000000000000042' --OP Token
+        ON tfer.contract_address = '0x4200000000000000000000000000000000000042' --OP Token
 INNER JOIN {{ source('optimism','transactions') }} tx
         ON tx.block_number = tfer.evt_block_number
         AND tx.block_time = tfer.evt_block_time
