@@ -10,107 +10,113 @@
 with
 score as (
     select evt_block_time,
-        score,
-        tokenId as token_id
+           score,
+           tokenId as token_id
     from {{source('rocifi_v2_polygon', 'ScoreDB_evt_ScoreUpdated')}}
 ),
 NFCS as (
-    select m.evt_block_time as mint_time,
-        _recipient as minter,
-        cast(_tokenId as int) as token_id,
-        explode(_addressBundle) as addr
+    select m.evt_block_time        as mint_time,
+           _recipient              as minter,
+           cast(_tokenId as int)   as token_id,
+           explode(_addressBundle) as addr
     from {{source('rocifi_polygon', 'NFCS_evt_TokenMinted')}} m
 ),
 loan_and_nfcs_events as (
     select evt_block_time,
-        'updateScore' as event,
-        score,
-        token_id,
-        cast(null as int) as loan_id
+           'updateScore'     as event,
+           score,
+           token_id,
+           cast(null as int) as loan_id
     from score
     union all
     select evt_block_time,
-        'loanCreated' as event,
-        cast(null as int) as score,
-        token_id,
-        loanId as loan_id
+           'loanCreated'     as event,
+           cast(null as int) as score,
+           token_id,
+           loanId            as loan_id
     from {{source('rocifi_v2_polygon', 'LoanManager_evt_LoanCreated')}} b
-        join NFCS n on b.borrower = n.addr
+    inner join NFCS n
+        on b.borrower = n.addr
 ),
 ranked_loan_and_nfcs_events as (
     select evt_block_time,
-        event,
-        loan_id,
-        coalesce(
-            score,
-            last(score, true) over(
-                partition by token_id
-                order by evt_block_time
-                range unbounded preceding
-            )
-        ) as score,
-        token_id
+           event,
+           loan_id,
+           coalesce(
+                   score,
+                   last(score, true) over (
+                       partition by token_id
+                       order by evt_block_time
+                       range unbounded preceding
+                       )
+               ) as score,
+           token_id
     from loan_and_nfcs_events
     order by evt_block_time desc
 ),
 loan_id_score as (
     -- finding the credit score during the loanCreation, by finding the last 'scoreUpdate' before the Loan is created
     select loan_id,
-        coalesce(score, 404) as nfcs_score,
-        token_id as nfcs_id
+           coalesce(score, 404) as nfcs_score,
+           token_id             as nfcs_id
     from ranked_loan_and_nfcs_events
     where event = 'loanCreated'
 ),
 borrow_raw_info as (
-    select elc.evt_block_time as block_time,
-        elc.evt_tx_hash as tx_hash,
-        elc.borrower,
-        elc.pool as pool_address,
-        case
-            elc.pool
-            when lower('0x4eBB81605f91C02827426E37001d402bF46a170d') then 'rUSDC1' -- usdc1
-            when lower('0x94C29F381A65344d65baB80f321660A75C237815') then 'rUSDT1' -- usdt1
-            else 'sus'
-        end as pool,
-        case
-            elc.pool
-            when lower('0x4eBB81605f91C02827426E37001d402bF46a170d') then '0x2791bca1f2de4661ed88a30c99a7a9449aa84174' -- usdc1
-            when lower('0x94C29F381A65344d65baB80f321660A75C237815') then '0xc2132d05d31c914a87c6611c10748aeb04b58e8f' -- usdt1
-            else 'sus'
-        end as underlying_token,
-        elc.amount as loan_amount,
-        cb.collateral as collateral_token,
-        ecf.amount as collateral_amount,
-        elc.apr / pow(10, 18) as apr,
-        elc.loanId as loan_id,
-        cb.ltv / pow(10, 18) as ltv,
-        cb.duration,
-        nfcs_score,
-        nfcs_id
+    select elc.evt_block_time    as block_time,
+           elc.evt_tx_hash       as tx_hash,
+           elc.borrower,
+           elc.pool              as pool_address,
+           case
+               elc.pool
+               when lower('0x4eBB81605f91C02827426E37001d402bF46a170d') then 'rUSDC1' -- usdc1
+               when lower('0x94C29F381A65344d65baB80f321660A75C237815') then 'rUSDT1' -- usdt1
+               else 'sus'
+               end               as pool,
+           case
+               elc.pool
+               when lower('0x4eBB81605f91C02827426E37001d402bF46a170d')
+                   then '0x2791bca1f2de4661ed88a30c99a7a9449aa84174' -- usdc1
+               when lower('0x94C29F381A65344d65baB80f321660A75C237815')
+                   then '0xc2132d05d31c914a87c6611c10748aeb04b58e8f' -- usdt1
+               else 'sus'
+               end               as underlying_token,
+           elc.amount            as loan_amount,
+           cb.collateral         as collateral_token,
+           ecf.amount            as collateral_amount,
+           elc.apr / pow(10, 18) as apr,
+           elc.loanId            as loan_id,
+           cb.ltv / pow(10, 18)  as ltv,
+           cb.duration,
+           nfcs_score,
+           nfcs_id
     from {{source('rocifi_v2_polygon', 'LoanManager_evt_LoanCreated')}} elc
-        join {{source('rocifi_v2_polygon', 'LoanManager_call_borrow')}} cb on call_tx_hash = evt_tx_hash
-        join {{source('rocifi_v2_polygon', 'CollateralManager_evt_CollateralFrozen')}} ecf on elc.evt_tx_hash = ecf.evt_tx_hash
-        join loan_id_score l on elc.loanId = l.loan_id
+    inner join {{source('rocifi_v2_polygon', 'LoanManager_call_borrow')}} cb
+        on call_tx_hash = evt_tx_hash
+    inner join {{source('rocifi_v2_polygon', 'CollateralManager_evt_CollateralFrozen')}} ecf
+        on elc.evt_tx_hash = ecf.evt_tx_hash
+    inner join loan_id_score l
+        on elc.loanId = l.loan_id
 ),
 loan_update_events as (
     select block_time,
-        tx_hash,
-        index,
-        cast(bytea2numeric_v2(substring(topic2, 3)) as int) as loan_id,
-        bytea2numeric_v2(substring(data, 3, 64)) as from_status,
-        bytea2numeric_v2(substring(data, 67, 64)) as to_status,
-        case
-            bytea2numeric_v2(substring(data, 67, 64))
-            when 1.0 then 'NEW'
-            when 2.0 then 'PAID_EARLY_PART'
-            when 3.0 then 'PAID_EARLY_FULL'
-            when 4.0 then 'PAID_LATE_PART'
-            when 5.0 then 'PAID_LATE_FULL'
-            when 6.0 then 'DEFAULT_PART'
-            when 7.0 then 'DEFAULT_FULL_LIQUIDATED'
-            when 8.0 then 'DEFAULT_FULL_PAID'
-            else 'sus'
-        end as position_status
+           tx_hash,
+           index,
+           cast(bytea2numeric_v2(substring(topic2, 3)) as int) as loan_id,
+           bytea2numeric_v2(substring(data, 3, 64))            as from_status,
+           bytea2numeric_v2(substring(data, 67, 64))           as to_status,
+           case
+               bytea2numeric_v2(substring(data, 67, 64))
+               when 1.0 then 'NEW'
+               when 2.0 then 'PAID_EARLY_PART'
+               when 3.0 then 'PAID_EARLY_FULL'
+               when 4.0 then 'PAID_LATE_PART'
+               when 5.0 then 'PAID_LATE_FULL'
+               when 6.0 then 'DEFAULT_PART'
+               when 7.0 then 'DEFAULT_FULL_LIQUIDATED'
+               when 8.0 then 'DEFAULT_FULL_PAID'
+               else 'sus'
+               end                                             as position_status
     from {{source('polygon', 'logs')}}
     where block_number >= 36623032
         and topic1 = '0x392df00c89a09571865cf4a708cee83527a8eba918e951b455a33269913486c3' -- loanStatusChanged
@@ -118,12 +124,12 @@ loan_update_events as (
 ),
 events as (
     select evt_block_time,
-        evt_tx_hash,
-        evt_index,
-        loanId as loan_id,
-        0.0 as from_status,
-        1.0 as to_status,
-        'NEW' as position_status
+           evt_tx_hash,
+           evt_index,
+           loanId as loan_id,
+           0.0    as from_status,
+           1.0    as to_status,
+           'NEW'  as position_status
     from {{source('rocifi_v2_polygon', 'LoanManager_evt_LoanCreated')}}
     union all
     select *
@@ -144,20 +150,20 @@ latest_status as (
 ),
 prices_then as (
     select minute,
-        symbol,
-        contract_address,
-        price,
-        decimals
+           symbol,
+           contract_address,
+           price,
+           decimals
     from {{source('prices', 'usd')}}
     where blockchain = 'polygon'
-        and contract_address in (
-            select distinct collateral_token
-            from borrow_raw_info
-            union all
-            select distinct underlying_token
-            from borrow_raw_info
+      and contract_address in (
+        select distinct collateral_token
+        from borrow_raw_info
+        union all
+        select distinct underlying_token
+        from borrow_raw_info
         )
-        and minute >= '2022-11-12'
+      and minute >= '2022-11-12'
 ),
 prices_now as (
     select minute,
@@ -238,58 +244,66 @@ liq_info as (
         amountOut as liquidation_repaid,
         remainingLoanAmount as liquidation_unpaid
     from liq_event
-        join liq_swap_evt on liq_rank = swap_rank
+        inner join liq_swap_evt on liq_rank = swap_rank
 )
-select block_time as loan_issue_time,
-    tx_hash as loan_issue_tx,
-    borrower,
-    pool_address,
-    pool,
-    underlying_token,
-    pb.symbol as loan_symbol,
-    loan_amount / pow(10, pb.decimals) as loan_amount,
-    loan_amount * pb.price / pow(10, pb.decimals) as loan_usd_then,
-    loan_amount * pbn.price / pow(10, pb.decimals) as loan_usd_now,
-    collateral_token,
-    pc.symbol as collateral_symbol,
-    collateral_amount / pow(10, pc.decimals) as collateral_amount,
-    collateral_amount * pc.price / pow(10, pc.decimals) as collateral_usd_then,
-    collateral_amount * pcn.price / pow(10, pc.decimals) as collateral_usd_now,
-    apr,
-    cast(b.loan_id as int) as loan_id,
-    ltv,
-    duration,
-    from_unixtime(unix_timestamp(block_time) + duration) as due_time,
-    from_unixtime(unix_timestamp(block_time) + duration + 432000) as liquidation_time,
-    ls.position_status,
+select block_time                                                                           as loan_issue_time,
+       tx_hash                                                                              as loan_issue_tx,
+       borrower,
+       pool_address,
+       pool,
+       underlying_token,
+       pb.symbol                                                                            as loan_symbol,
+       loan_amount / pow(10, pb.decimals)                                                   as loan_amount,
+       loan_amount * pb.price / pow(10, pb.decimals)                                        as loan_usd_then,
+       loan_amount * pbn.price / pow(10, pb.decimals)                                       as loan_usd_now,
+       collateral_token,
+       pc.symbol                                                                            as collateral_symbol,
+       collateral_amount / pow(10, pc.decimals)                                             as collateral_amount,
+       collateral_amount * pc.price / pow(10, pc.decimals)                                  as collateral_usd_then,
+       collateral_amount * pcn.price / pow(10, pc.decimals)                                 as collateral_usd_now,
+       apr,
+       cast(b.loan_id as int)                                                               as loan_id,
+       ltv,
+       duration,
+       from_unixtime(unix_timestamp(block_time) + duration)                                 as due_time,
+       from_unixtime(unix_timestamp(block_time) + duration + 432000)                        as liquidation_time,
+       ls.position_status,
 
-    nfcs_score,
-    nfcs_id,
+       nfcs_score,
+       nfcs_id,
 
-    coalesce(repayments, 0) as repayments,
-    coalesce(total_repaid, 0) / pow(10, pb.decimals) as total_repaid,
-    last_repay_time,
-    repay_tx as last_repay_tx,
-    coalesce(outstanding, loan_amount) / pow(10, pb.decimals) as outstanding_since_last_repay,
+       coalesce(repayments, 0)                                                              as repayments,
+       coalesce(total_repaid, 0) / pow(10, pb.decimals)                                     as total_repaid,
+       last_repay_time,
+       repay_tx                                                                             as last_repay_tx,
+       coalesce(outstanding, loan_amount) / pow(10, pb.decimals)                            as outstanding_since_last_repay,
 
-    coalesce(is_liquidated, 'no') as is_liquidated,
-    liq_time,
-    liq_tx_hash,
-    coalesce(collateral_liquidated, 0) / pow(10, pc.decimals) as collateral_liquidated,
-    coalesce(liquidation_repaid, 0) / pow(10, pb.decimals) as liquidation_repaid,
-    coalesce(liquidation_unpaid, 0) / pow(10, pb.decimals) as liquidation_unpaid,
+       coalesce(is_liquidated, 'no')                                                        as is_liquidated,
+       liq_time,
+       liq_tx_hash,
+       coalesce(collateral_liquidated, 0) / pow(10, pc.decimals)                            as collateral_liquidated,
+       coalesce(liquidation_repaid, 0) / pow(10, pb.decimals)                               as liquidation_repaid,
+       coalesce(liquidation_unpaid, 0) / pow(10, pb.decimals)                               as liquidation_unpaid,
 
-    (coalesce(total_repaid, 0) + coalesce(liquidation_repaid, 0)) / pow(10, pb.decimals) as repaid_and_liquidation
+       (coalesce(total_repaid, 0) + coalesce(liquidation_repaid, 0)) / pow(10, pb.decimals) as repaid_and_liquidation
 from borrow_raw_info b
-    join prices_then pb on b.underlying_token = pb.contract_address
+inner join prices_then pb
+    on b.underlying_token = pb.contract_address
     and pb.minute = date_trunc('minute', b.block_time)
-    join prices_then pc on b.collateral_token = pc.contract_address
+inner join prices_then pc
+    on b.collateral_token = pc.contract_address
     and pc.minute = date_trunc('minute', b.block_time)
-    join prices_now pbn on b.underlying_token = pbn.contract_address
-    join prices_now pcn on b.collateral_token = pcn.contract_address
-    join latest_status ls on b.loan_id = ls.loan_id
-    left join repay_aggregate ra on b.loan_id = ra.loan_id
-    left join repay_info ri on ra.loan_id = ri.loan_id
+inner join prices_now pbn
+    on b.underlying_token = pbn.contract_address
+inner join prices_now pcn
+    on b.collateral_token = pcn.contract_address
+inner join latest_status ls
+    on b.loan_id = ls.loan_id
+left join repay_aggregate ra
+    on b.loan_id = ra.loan_id
+left join repay_info ri
+    on ra.loan_id = ri.loan_id
     and ra.last_repay_time = ri.repay_time
-    left join liq_info li on b.loan_id = li.loan_id
+left join liq_info li
+    on b.loan_id = li.loan_id
 order by cast(loan_id as integer) desc
