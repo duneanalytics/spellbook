@@ -1,20 +1,21 @@
 {{ config(
         alias='trades',
-        post_hook='{{ expose_spells(\'["fantom"]\',
+        post_hook='{{ expose_spells(\'["fantom", "optimism"]\',
                         "project",
                         "beethoven_x",
-                        \'["Henrystats"]\') }}'
+                        \'["Henrystats", "msilb7"]\') }}'
         )
 }}
 
-{% set beethoven_models = [
-ref('beethoven_x_fantom_trades')
+{% set beets_models = [
+ref('beethoven_x_optimism_trades')
+,ref('beethoven_x_fantom_trades')
 ] %}
 
 
 SELECT *
 FROM (
-    {% for dex_model in beethoven_models %}
+    {% for beet_model in beets_models %}
     SELECT
         blockchain,
         project,
@@ -39,7 +40,7 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ dex_model }}
+    FROM {{ beet_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
