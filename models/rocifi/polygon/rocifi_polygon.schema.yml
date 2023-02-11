@@ -28,6 +28,7 @@ models:
         description: "Unique ID for each Loan initiated"
         tests:
           - unique
+          - not_null
       - name: loan_issue_time
         description: "Timestamp when Loan was issued"
       - name: loan_issue_tx

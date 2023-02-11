@@ -17,7 +17,7 @@ score as (
 NFCS as (
     select m.evt_block_time as mint_time,
         _recipient as minter,
-        _tokenId::int as token_id,
+        cast(_tokenId as int) as token_id,
         explode(_addressBundle) as addr
     from {{source('rocifi_polygon', 'NFCS_evt_TokenMinted')}} m
 ),
@@ -96,7 +96,7 @@ loan_update_events as (
     select block_time,
         tx_hash,
         index,
-        bytea2numeric_v2(substring(topic2, 3))::int as loan_id,
+        cast(bytea2numeric_v2(substring(topic2, 3)) as int) as loan_id,
         bytea2numeric_v2(substring(data, 3, 64)) as from_status,
         bytea2numeric_v2(substring(data, 67, 64)) as to_status,
         case
@@ -256,7 +256,7 @@ select block_time as loan_issue_time,
     collateral_amount * pc.price / pow(10, pc.decimals) as collateral_usd_then,
     collateral_amount * pcn.price / pow(10, pc.decimals) as collateral_usd_now,
     apr,
-    b.loan_id,
+    cast(b.loan_id as int) as loan_id,
     ltv,
     duration,
     from_unixtime(unix_timestamp(block_time) + duration) as due_time,
@@ -292,4 +292,4 @@ from borrow_raw_info b
     left join repay_info ri on ra.loan_id = ri.loan_id
     and ra.last_repay_time = ri.repay_time
     left join liq_info li on b.loan_id = li.loan_id
-order by loan_id::integer desc
+order by cast(loan_id as integer) desc
