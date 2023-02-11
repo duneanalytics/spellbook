@@ -1,5 +1,6 @@
 {{config (
     alias = 'v2_loan_master',
+    unique_key = ['loan_id'],
     post_hook = '{{ 
         expose_spells(\'["polygon"]\',
         "project", 
