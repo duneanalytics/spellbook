@@ -28,7 +28,7 @@ trades_with_prices AS (
            orderUid                  as order_uid,
            sellToken                 as sell_token,
            buyToken                  as buy_token,
-           (sellAmount - feeAmount)  as sell_amount,
+           cast(sellAmount - feeAmount as string)  as sell_amount,
            buyAmount                 as buy_amount,
            feeAmount                 as fee_amount,
            ps.price                  as sell_price,
