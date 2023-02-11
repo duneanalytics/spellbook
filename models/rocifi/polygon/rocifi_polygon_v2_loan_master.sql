@@ -204,19 +204,19 @@ repay_aggregate as (
 ),
 liq_event as (
     select evt_block_time as liq_time,
-        evt_tx_hash as liq_tx_hash,
-        loanId as loan_id,
-        'yes' as is_liquidated,
-        -- borrower,
-        liquidatedCollateral,
-        -- pool,
-        interestAccrued,
-        -- poolValueAdjustment,
-        remainingLoanAmount,
-        -- unfrozenCollateral,
-        rank() over(
-            order by evt_block_time
-        ) as liq_rank
+           evt_tx_hash    as liq_tx_hash,
+           loanId         as loan_id,
+           'yes'          as is_liquidated,
+           -- borrower,
+           liquidatedCollateral,
+           -- pool,
+           interestAccrued,
+           -- poolValueAdjustment,
+           remainingLoanAmount,
+           -- unfrozenCollateral,
+           rank() over (
+               order by evt_block_time
+               )          as liq_rank
     from {{source('rocifi_v2_polygon', 'LoanManager_evt_LoanLiquidated')}}
 ),
 liq_swap_evt as (
@@ -237,14 +237,15 @@ liq_swap_evt as (
 ),
 liq_info as (
     select liq_time,
-        liq_tx_hash,
-        loan_id,
-        is_liquidated,
-        liquidatedCollateral as collateral_liquidated,
-        amountOut as liquidation_repaid,
-        remainingLoanAmount as liquidation_unpaid
+           liq_tx_hash,
+           loan_id,
+           is_liquidated,
+           liquidatedCollateral as collateral_liquidated,
+           amountOut            as liquidation_repaid,
+           remainingLoanAmount  as liquidation_unpaid
     from liq_event
-        inner join liq_swap_evt on liq_rank = swap_rank
+    inner join liq_swap_evt
+        on liq_rank = swap_rank
 )
 select block_time                                                                           as loan_issue_time,
        tx_hash                                                                              as loan_issue_tx,
