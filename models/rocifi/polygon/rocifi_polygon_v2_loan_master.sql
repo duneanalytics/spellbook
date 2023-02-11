@@ -5,9 +5,9 @@
         "project", 
         "rocifi",
         \'["maybeyonas"]\') }}'
-)}} 
+)}}
 
-with 
+with
 score as (
     select evt_block_time,
         score,
@@ -26,12 +26,12 @@ loan_and_nfcs_events as (
         'updateScore' as event,
         score,
         token_id,
-        null as loan_id
+        cast(null as int) as loan_id
     from score
     union all
     select evt_block_time,
         'loanCreated' as event,
-        null as score,
+        cast(null as int) as score,
         token_id,
         loanId as loan_id
     from {{source('rocifi_v2_polygon', 'LoanManager_evt_LoanCreated')}} b
@@ -45,7 +45,7 @@ ranked_loan_and_nfcs_events as (
             score,
             last(score, true) over(
                 partition by token_id
-                order by evt_block_time 
+                order by evt_block_time
                 range unbounded preceding
             )
         ) as score,
