@@ -94,7 +94,7 @@ models:
       contributors: msilb7
     config:
       tags: ['OP', 'airdrop', 'transfers', 'optimism']
-    description: "Optimism Airdrops transfers"
+    description: "Optimism Airdrop #1 transfers"
     columns:
       - *airdrop_name
       - *recipient_address
@@ -279,6 +279,31 @@ models:
     columns:
       - *airdrop_name
       - *airdrop_project
+      - *recipient_address
+      - *airdrop_token_address
+      - *airdrop_token_symbol
+      - *transfer_block_date
+      - *transfer_block_time
+      - *transfer_block_number
+      - *transfer_tx_hash
+      - *transfer_evt_index
+      - *airdrop_token_amount
+      - *airdrop_token_amount_raw
+      - *tx_from_address
+      - *tx_to_address
+      - *tx_method_id
+  
+  - name: op_airdrop2_transfers
+    meta:
+      blockchain: optimism
+      sector: airdrop
+      project: transfers
+      contributors: msilb7
+    config:
+      tags: ['OP', 'airdrop', 'transfers', 'optimism']
+    description: "Optimism Airdrop #2 transfers"
+    columns:
+      - *airdrop_name
       - *recipient_address
       - *airdrop_token_address
       - *airdrop_token_symbol

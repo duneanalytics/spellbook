@@ -5,4 +5,4 @@
 - **ovm:** Tables relating to Optimism protocol operations (i.e. cross-domain messaging, bridge token factories). 'OVM' is now an outdated term, but it's what was used in the initial version of these tables. To avoid downstream queries breaking, we'll keep the name here.
 
 *To be Created*
-- **op_chains:** Tables relating to *op-chains*, a subset of chains building on the [OP Stack](https://optimism.mirror.xyz/fLk5UGjZDiXFuvQh6R_HscMQuuY9ABYNF7PI76-qJYs) which contirbute back to Optimism; including metadata, unified on-chain activity, etc (TBD).
+- **op_chains:** Tables relating to *op-chains*, a subset of chains building on the [OP Stack](https://optimism.mirror.xyz/fLk5UGjZDiXFuvQh6R_HscMQuuY9ABYNF7PI76-qJYs) which contirbute back to Optimism; including metadata, unified on-chain activity, etc (i.e. OPCraft).
