@@ -2,7 +2,6 @@
     config(
         schema='balancer_v2_polygon',
         alias='liquidity',
-        unique_key = ['day', 'pool_id', 'token_address'],
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "project",
                                     "balancer_v2",
