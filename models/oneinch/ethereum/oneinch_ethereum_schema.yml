@@ -20,7 +20,10 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      # todo: add seed test here
+      - check_dex_aggregator_seed:
+          blockchain: ethereum
+          project: 1inch
+          version: 1
     columns:
       - &blockchain
         name: blockchain
@@ -111,7 +114,10 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      # todo: add seed test here
+      - check_dex_aggregator_seed:
+          blockchain: ethereum
+          project: 1inch
+          version: 2
     columns:
       - *blockchain
       - *project
@@ -156,7 +162,10 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      # todo: add seed test here
+      - check_dex_aggregator_seed:
+          blockchain: ethereum
+          project: 1inch
+          version: 3
     columns:
       - *blockchain
       - *project
@@ -201,7 +210,10 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      # todo: add seed test here
+      - check_dex_aggregator_seed:
+          blockchain: ethereum
+          project: 1inch
+          version: 4
     columns:
       - *blockchain
       - *project
@@ -246,7 +258,10 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      # todo: add seed test here
+      - check_dex_aggregator_seed:
+          blockchain: ethereum
+          project: 1inch
+          version: 5
     columns:
       - *blockchain
       - *project
