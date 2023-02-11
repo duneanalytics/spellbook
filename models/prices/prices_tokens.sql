@@ -1779,7 +1779,7 @@ VALUES
     ("nuls-nuls", "polygon", "NULS", "0x8b8e48a8cc52389cd16a162e5d8bd514fabf4ba0", 8),
     ("blank-blockwallet","polygon", "BLANK", "0xf4C83080E80AE530d6f8180572cBbf1Ac9D5d435", 18),
     ("fin-fin", "polygon", "FIN", "0x576c990a8a3e7217122e9973b2230a3be9678e94", 18),
-    -- ("sphere-sphere-finance", "polygon", "SPHERE", "0x62f594339830b90ae4c084ae7d223ffafd9658a7", 18),
+    ("sphere-sphere-finance", "polygon", "SPHERE", "0x62f594339830b90ae4c084ae7d223ffafd9658a7", 18),
     ("luna-luna-wormhole", "polygon", "LUNA", "0x9cd6746665d9557e1b9a775819625711d0693439", 6),
     ("ust-terrausd", "polygon", "USTC", "0x692597b009d13c4049a947cab2239b7d6517875f", 18),
 
