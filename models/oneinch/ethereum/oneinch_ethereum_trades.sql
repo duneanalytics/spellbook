@@ -1,18 +1,48 @@
-{{  config(
-        alias='trades',
-        partition_by = ['block_date'],
-        unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
-        on_schema_change='sync_all_columns',
-        file_format ='delta',
-        materialized='incremental',
-        incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "oneinch",
-                                    \'["jeff-dude", "dsalv", "k06a"]\') }}'
-    )
+{{ config(
+        alias ='trades'
+        )
 }}
 
--- {% set project_start_date = '2019-06-03' %}
-{% set project_start_date = '2023-01-01' %} --for dev, keep data to recent timeframe
+{% set oneinch_models = [
+ref('oneinch_v1_ethereum_trades')
+,ref('oneinch_v2_ethereum_trades')
+,ref('oneinch_v3_ethereum_trades')
+,ref('oneinch_v4_ethereum_trades')
+,ref('oneinch_v5_ethereum_trades')
+] %}
 
+
+SELECT *
+FROM (
+    {% for dex_model in oneinch_models %}
+    SELECT
+        blockchain
+        ,project
+        ,version
+        ,block_date
+        ,block_time
+        ,token_bought_symbol
+        ,token_sold_symbol
+        ,token_pair
+        ,token_bought_amount
+        ,token_sold_amount
+        ,token_bought_amount_raw
+        ,token_sold_amount_raw
+        ,amount_usd
+        ,token_bought_address
+        ,token_sold_address
+        ,taker
+        ,maker
+        ,project_contract_address
+        ,tx_hash
+        ,tx_from
+        ,tx_to
+        ,trace_address
+        ,evt_index
+    FROM {{ dex_model }}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
+)
+;

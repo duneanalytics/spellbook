@@ -1,5 +1,5 @@
 {{  config(
-        schema='oneinch_ethereum_internal_swaps',
+        schema='oneinch_v1_ethereum',
         alias='trades',
         partition_by = ['block_date'],
         on_schema_change='sync_all_columns',
@@ -10,7 +10,7 @@
     )
 }}
 
-{% set project_start_date = '2023-01-01' %} --for testing, use small subset of data
+{% set project_start_date = '2023-02-01' %} --for testing, use small subset of data
 
 {% set final_columns = [
     'block_number'
@@ -226,106 +226,6 @@ WITH oneinch_calls AS
         {% else %}
         AND call_block_time >= '{{project_start_date}}'
         {% endif %}
-        
-    UNION ALL
-    
-    SELECT
-        call_block_number as block_number,
-        CAST(NULL as string) as taker,
-        get_json_object(desc,'$.srcToken') as from_token,
-        get_json_object(desc,'$.dstToken') as to_token,
-        output_spentAmount as from_amount,
-        output_returnAmount as to_amount,
-        call_tx_hash as tx_hash,
-        call_block_time as block_time,
-        call_trace_address as trace_address,
-        CAST(NULL as integer) as evt_index,
-        contract_address,
-        '4' as version
-    FROM
-        {{ source('oneinch_v4_ethereum', 'AggregationRouterV4_call_swap') }}
-    WHERE
-        call_success
-        {% if is_incremental() %}
-        AND call_block_time >= date_trunc("day", now() - interval '1 week')
-        {% else %}
-        AND call_block_time >= '{{project_start_date}}'
-        {% endif %}
-        
-    UNION ALL
-    
-    SELECT
-        call_block_number as block_number,
-        CAST(NULL as string) as taker,
-        get_json_object(desc,'$.srcToken') as from_token,
-        get_json_object(desc,'$.dstToken') as to_token,
-        output_spentAmount as from_amount,
-        output_returnAmount as to_amount,
-        call_tx_hash as tx_hash,
-        call_block_time as block_time,
-        call_trace_address as trace_address,
-        CAST(NULL as integer) as evt_index,
-        contract_address,
-        '5' as version
-    FROM
-        {{ source('oneinch_ethereum', 'AggregationRouterV5_call_swap') }}
-    WHERE
-        call_success
-        {% if is_incremental() %}
-        AND call_block_time >= date_trunc("day", now() - interval '1 week')
-        {% else %}
-        AND call_block_time >= '{{project_start_date}}'
-        {% endif %}
-)
-, oneinch_events AS
-(
-    SELECT
-        evt_block_number as block_number,
-        sender as taker,
-        srcToken as from_token,
-        dstToken as to_token,
-        spentAmount as from_amount,
-        returnAmount as to_amount,
-        evt_tx_hash as tx_hash,
-        evt_block_time as block_time,
-        CAST(NULL as array<int>) as trace_address,
-        evt_index,
-        contract_address,
-        '2' as version
-    FROM
-        {{ source('oneinch_v2_ethereum', 'OneInchExchange_evt_Swapped') }}
-    {% if is_incremental() %}
-    WHERE
-        evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% else %}
-    WHERE
-        evt_block_time >= '{{project_start_date}}'
-    {% endif %}
-    
-    UNION ALL
-    
-    SELECT
-        evt_block_number as block_number,
-        sender as taker,
-        srcToken as from_token,
-        dstToken as to_token,
-        spentAmount as from_amount,
-        returnAmount as to_amount,
-        evt_tx_hash as tx_hash,
-        evt_block_time as block_time,
-        CAST(NULL as array<int>) as trace_address,
-        evt_index,
-        contract_address,
-        '3' as version
-    FROM
-        {{ source('oneinch_v3_ethereum', 'AggregationRouterV3_evt_Swapped') }}
-    {% if is_incremental() %}
-    WHERE
-        evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% else %}
-    WHERE
-        evt_block_time >= '{{project_start_date}}'
-    {% endif %}
 )
 , oneinch AS
 (
@@ -361,17 +261,9 @@ WITH oneinch_calls AS
             {% endfor %}
         FROM
             oneinch_calls
-            
-        UNION ALL
-        
-        SELECT
-            {% for column in final_columns %}
-            {% if not loop.first %},{% endif %} {{column}}
-            {% endfor %}
-        FROM
-            oneinch_events
     )
 )
+
 SELECT
     'ethereum' AS blockchain
     ,src.project
