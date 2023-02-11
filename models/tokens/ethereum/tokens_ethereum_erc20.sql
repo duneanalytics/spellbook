@@ -20783,5 +20783,22 @@ FROM (VALUES
         ('0xe68a2c0eef74b5d8d2975bbf7a681226e4d7473c', 'SHIBDAO', 9),
         ('0xf05050032db6b1aabf71fa94ffb658325c33f4b3', '$PONZI', 18),
         ('0xf7ae8897ff00e5be7fba85f5c064b6399abb0ea8', 'CREAM', 9),
-        ('0xfa99e1c98868f392704b7395ece5d66cb9041bc8', 'Shy', 18)
+        ('0xfa99e1c98868f392704b7395ece5d66cb9041bc8', 'Shy', 18),
+        ('0x0a9b93d67240959eef35b62c63fee4ff30c06627', 'TT', 18),
+        ('0x27afd4ec290d4a00db44453cc6902e5d8f7f54fc', 'MDOGE', 18),
+        ('0x28d2dea856a8fa7160ff17d577c0fd61326a3c0c', 'AGI', 9),
+        ('0x2f5efe5a13d7ee8b982d1426bbb3e945c4d8387d', 'HEDGY', 18),
+        ('0x428dca9537116148616a5a3e44035af17238fe9d', 'OXAI', 18),
+        ('0x48607651416a943bf5ac71c41be1420538e78f87', '50Silo-50WETH', 18),
+        ('0x5a9ea46cc7fbc8b85c96a6188beb45aa59598f04', 'SHISWAP', 18),
+        ('0x5c0a86a32c129538d62c106eb8115a8b02358d57', 'yvCurve-rETHwstETH', 18),
+        ('0x7788a5492bc948e1d8c2caa53b2e0a60ed5403b0', 'yvCurve-OHMFRAXBP-f-f', 18),
+        ('0x7a8476d428ef3d98189ba393e4020779b8fd9097', 'SHILOCK', 9),
+        ('0xa4eb9c64ec359d093eac7b65f51ef933d6e5f7cd', 'STABLZ', 18),
+        ('0xb5de7250128775a317b3f775a7afcec73571b732', 'yvCurve-sETH-f', 18),
+        ('0xc29d7945c617ee9f99d9eaf81d2a5f840e7e7110', 'STABLZ', 9),
+        ('0xc5a051b4e77f2d6cfa049fe27ed986f4a5c66ee2', 'DeusEX', 9),
+        ('0xce37d83424a6545103e24fe027f8559d0e6d0f45', 'WBTC0.5', 18),
+        ('0xce5771ccc0066682eecec1a8ed7d21ad53a363f3', 'BOTTO', 9),
+        ('0xff770e4c68e35db85c6e0e89a43750ec02bdb2ac', 'oBTC', 18)
      ) AS temp_table (contract_address, symbol, decimals)
