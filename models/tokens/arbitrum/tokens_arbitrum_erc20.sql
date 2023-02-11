@@ -103,4 +103,6 @@ FROM (VALUES
         ,('0x4945970efeec98d393b4b979b9be265a3ae28a8b', 'GMD', 18)
         ,('0xba5ddd1f9d7f570dc94a51479a000e3bce967196', 'AAVE', 18) 
         ,('0xd22a58f79e9481d1a88e00c343885a588b34b68b', 'EURS', 2)
+        ,('0xda492c29d88ffe9b7cbfa6dc068c2f9befae851b', 'CUSDCLP', 18)
+        ,('0xb86af5eb59a8e871bfa573fa656123ea86f47c3a', 'CWETHLP', 18)
      ) AS temp_table (contract_address, symbol, decimals)
