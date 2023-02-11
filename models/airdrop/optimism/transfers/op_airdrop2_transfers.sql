@@ -24,8 +24,8 @@ tfer.evt_block_number AS transfer_block_number,
 tfer.evt_tx_hash AS transfer_tx_hash,
 tfer.evt_index AS transfer_evt_index,
 
-cast(tfer.amount as double) / cast(POWER(10,tk.decimals) as double) AS airdrop_token_amount,
-cast(tfer.amount as double) AS airdrop_token_amount_raw,
+cast(tfer.value as double) / cast(POWER(10,tk.decimals) as double) AS airdrop_token_amount,
+cast(tfer.value as double) AS airdrop_token_amount_raw,
 
 tx.`from` AS tx_from_address,
 tx.to AS tx_to_address,
