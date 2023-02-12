@@ -18,26 +18,3 @@ sources:
     tables:
       - name: nft
         loaded_at_field: blockchain
-
-  - name: nftfi_ethereum
-    description: "nftfi ethereum decoded events"
-    freshness: # default freshness
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
-    tables:
-      - name: NFTfi_evt_LoanStarted
-        loaded_at_field: evt_block_time
-      - name: DirectLoanFixedOffer_evt_LoanStarted
-        loaded_at_field: evt_block_time
-      - name: DirectLoanFixedOfferRedeploy_evt_LoanStarted
-        loaded_at_field: evt_block_time
-      - name: DirectLoanFixedCollectionOffer_evt_LoanStarted
-        loaded_at_field: evt_block_time
-      - name: NFTfi_evt_LoanRepaid
-        loaded_at_field: evt_block_time
-      - name: DirectLoanFixedOffer_evt_LoanRepaid
-        loaded_at_field: evt_block_time
-      - name: DirectLoanFixedOfferRedeploy_evt_LoanRepaid
-        loaded_at_field: evt_block_time
-      - name: DirectLoanFixedCollectionOffer_evt_LoanRepaid
-        loaded_at_field: evt_block_time
