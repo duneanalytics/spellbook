@@ -373,6 +373,11 @@ models:
       bnb:
         +schema: nftrade_bnb
 
+    spiritswap:
+      +schema: spiritswap
+      fantom:
+        +schema: spiritswap_fantom
+
     jarvis_network:
       +schema: jarvis_network
       polygon:
