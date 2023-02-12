@@ -27,7 +27,7 @@ FROM {{ source('erc721_polygon','evt_transfer') }} t
     ANTI JOIN {{this}} anti_table
         ON t.evt_tx_hash = anti_table.tx_hash
     {% endif %}
-INNER JOIN polygon.transactions pt ON pt.block_number = t.evt_block_number
+INNER JOIN {{ source('polygon', 'transactions') }} pt ON pt.block_number = t.evt_block_number
     AND pt.hash = t.evt_tx_hash
     {% if is_incremental() %}
     AND pt.block_time >= date_trunc("day", now() - interval '1 week')
@@ -58,7 +58,7 @@ FROM {{ source('erc1155_polygon','evt_transfersingle') }} t
     ANTI JOIN {{this}} anti_table
         ON t.evt_tx_hash = anti_table.tx_hash
     {% endif %}
-INNER JOIN polygon.transactions pt ON pt.block_number = t.evt_block_number
+INNER JOIN {{ source('polygon', 'transactions') }} pt ON pt.block_number = t.evt_block_number
     AND pt.hash = t.evt_tx_hash
     {% if is_incremental() %}
     AND pt.block_time >= date_trunc("day", now() - interval '1 week')

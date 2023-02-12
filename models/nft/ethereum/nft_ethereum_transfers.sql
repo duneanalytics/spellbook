@@ -27,7 +27,7 @@ FROM {{ source('erc721_ethereum','evt_transfer') }} t
         ANTI JOIN {{this}} anti_table
             ON t.evt_tx_hash = anti_table.tx_hash
     {% endif %}
-INNER JOIN ethereum.transactions et ON et.block_number = t.evt_block_number
+INNER JOIN {{ source('ethereum', 'transactions') }} et ON et.block_number = t.evt_block_number
     AND et.hash = t.evt_tx_hash
     {% if is_incremental() %}
     AND et.block_time >= date_trunc("day", now() - interval '1 week')
@@ -58,7 +58,7 @@ FROM {{ source('erc1155_ethereum','evt_transfersingle') }} t
         ANTI JOIN {{this}} anti_table
             ON t.evt_tx_hash = anti_table.tx_hash
     {% endif %}
-INNER JOIN ethereum.transactions et ON et.block_number = t.evt_block_number
+INNER JOIN {{ source('ethereum', 'transactions') }} et ON et.block_number = t.evt_block_number
     AND et.hash = t.evt_tx_hash
     {% if is_incremental() %}
     AND et.block_time >= date_trunc("day", now() - interval '1 week')

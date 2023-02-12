@@ -27,7 +27,7 @@ FROM {{ source('erc721_optimism','evt_transfer') }} t
     ANTI JOIN {{this}} anti_table
         ON t.evt_tx_hash = anti_table.tx_hash
 {% endif %}
-INNER JOIN optimism.transactions ot ON ot.block_number = t.evt_block_number
+INNER JOIN {{ source('optimism', 'transactions') }} ot ON ot.block_number = t.evt_block_number
     AND ot.hash = t.evt_tx_hash
     {% if is_incremental() %}
     AND ot.block_time >= date_trunc("day", now() - interval '1 week')
@@ -58,7 +58,7 @@ FROM {{ source('erc1155_optimism','evt_transfersingle') }} t
     ANTI JOIN {{this}} anti_table
         ON t.evt_tx_hash = anti_table.tx_hash
 {% endif %}
-INNER JOIN optimism.transactions ot ON ot.block_number = t.evt_block_number
+INNER JOIN {{ source('optimism', 'transactions') }} ot ON ot.block_number = t.evt_block_number
     AND ot.hash = t.evt_tx_hash
     {% if is_incremental() %}
     AND ot.block_time >= date_trunc("day", now() - interval '1 week')

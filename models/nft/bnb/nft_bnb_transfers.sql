@@ -27,7 +27,7 @@ FROM {{ source('erc721_bnb','evt_transfer') }} t
     ANTI JOIN {{this}} anti_table
         ON t.evt_tx_hash = anti_table.tx_hash
     {% endif %}
-INNER JOIN bnb.transactions bt ON bt.block_number = t.evt_block_number
+INNER JOIN {{ source('bnb', 'transactions') }} bt ON bt.block_number = t.evt_block_number
     AND bt.hash = t.evt_tx_hash
     {% if is_incremental() %}
     AND bt.block_time >= date_trunc("day", now() - interval '1 week')
@@ -58,7 +58,7 @@ FROM {{ source('erc1155_bnb','evt_transfersingle') }} t
     ANTI JOIN {{this}} anti_table
         ON t.evt_tx_hash = anti_table.tx_hash
     {% endif %}
-INNER JOIN bnb.transactions bt ON bt.block_number = t.evt_block_number
+INNER JOIN {{ source('bnb', 'transactions') }} bt ON bt.block_number = t.evt_block_number
     AND bt.hash = t.evt_tx_hash
     {% if is_incremental() %}
     AND bt.block_time >= date_trunc("day", now() - interval '1 week')
