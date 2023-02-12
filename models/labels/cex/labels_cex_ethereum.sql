@@ -177,6 +177,10 @@ FROM (VALUES
     , (array('ethereum'), '0x0d0707963952f2fba59dd06f2b425ace40b492fe', 'Gate.io 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x7793cd85c11a924478d358d49b05b37e91b5810f', 'Gate.io 2', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x1c4b70a3968436b9a0a9cf5205c787eb81bb558c', 'Gate.io 3', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
+	, (array('ethereum'), '0xD793281182A0e3E023116004778F45c29fc14F19', 'Gate.io: Contract', 'cex', 'web3_data', 'static', timestamp('2023-02-07'), now())
+	, (array('ethereum'), '0x234ee9e35f8e9749a002fc42970d570db716453b', 'Gate.io 4', 'cex', 'web3_data', 'static', timestamp('2023-02-07'), now())
+	, (array('ethereum'), '0xc882b111a75c0c657fc507c04fbfcd2cc984f071', 'Gate.io 5', 'cex', 'web3_data', 'static', timestamp('2023-02-07'), now())
+	, (array('ethereum'), '0x6596da8b65995d5feacff8c2936f0b7a2051b0d0', 'Gate.io: Deposit Funde', 'cex', 'web3_data', 'static', timestamp('2023-02-07'), now())
     -- Kraken, Source: https://etherscan.io/accounts/label/kraken
     , (array('ethereum'), '0x2910543af39aba0cd09dbb2d50200b3e800a63d2', 'Kraken 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0x0a869d79a7052c7f1b55a8ebabbea3420f0d1e13', 'Kraken 2', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
@@ -542,5 +546,6 @@ FROM (VALUES
     -- Beldex
     , (array('ethereum'), '0x258b7b9a1ba92f47f5f4f5e733293477620a82cb', 'Beldex 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now()) -- https://etherscan.io/address/0x258b7b9a1ba92f47f5f4f5e733293477620a82cb
     -- SouthXchange
-    , (array('ethereum'), '0x324cc2c9fb379ea7a0d1c0862c3b48ca28d174a4', 'SouthXchange 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now()) -- https://etherscan.io/address/0x324cc2c9fb379ea7a0d1c0862c3b48ca28d174a4
-    ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at)
+    , (array('ethereum'), '0x324cc2c9fb379ea7a0d1c0862c3b48ca28d174a4', 'SouthXchange 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now()) -- https://etherscan.io/address/0x324cc2c9fb379ea7a0d1c0862c3b48ca28d174a4     
+     
+     ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at)
