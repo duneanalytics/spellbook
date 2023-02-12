@@ -1,10 +1,24 @@
 {{ config(
-        alias ='nft_loans'
+    alias ='loans',
+    post_hook='{{ expose_spells(\'["ethereum"]\',
+                                "project",
+                                "nft",
+                                \'["ivankitanovski", "hosuke"]\') }}'
 )}}
 
+{% set loans_models = [
+ref('nftfi_ethereum_loans')
+, ref('x2y2_ethereum_loans')
+, ref('arcade_v1_ethereum_loans')
+, ref('arcade_v2_ethereum_loans')
+, ref('bend_dao_ethereum_loans')
+] %}
+
 -- -- aggregated loans
-loans as (
-    select evt_tx_hash,
+with loans as (
+    {% for loans_model in loans_models %}
+    SELECT blockchain,
+           evt_tx_hash,
            evt_block_time,
            repay_time,
            borrower,
@@ -16,63 +30,11 @@ loans as (
            apr,
            duration,
            source
-    from {{ ref('nftfi_ethereum_loans') }}
-    union all
-    select evt_tx_hash,
-           evt_block_time,
-           repay_time,
-           borrower,
-           lender,
-           collectionContract,
-           tokenId,
-           principal_raw,
-           currency,
-           apr,
-           duration,
-           source
-    from {{ ref('x2y2_ethereum_loans') }}
-    union all
-    select evt_tx_hash,
-           evt_block_time,
-           repay_time,
-           borrower,
-           lender,
-           collectionContract,
-           tokenId,
-           principal_raw,
-           currency,
-           apr,
-           duration,
-           source
-    from {{ ref('arcade_v1_ethereum_loans') }}
-    union all
-    select evt_tx_hash,
-           evt_block_time,
-           repay_time,
-           borrower,
-           lender,
-           collectionContract,
-           tokenId,
-           principal_raw,
-           currency,
-           apr,
-           duration,
-           source
-    from {{ ref('arcade_v2_ethereum_loans') }}
-    union all
-    select evt_tx_hash,
-           evt_block_time,
-           repay_time,
-           borrower,
-           lender,
-           collectionContract,
-           tokenId,
-           principal_raw,
-           currency,
-           apr,
-           duration,
-           'BendDAO' as source
-    from {{ ref('bend_dao_ethereum_loans') }}
+    FROM {{ loans_model }}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
 ),
 
 loans_with_prices as (
