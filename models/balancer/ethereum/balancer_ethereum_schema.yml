@@ -304,24 +304,6 @@ models:
       tags: ['balancer', 'ethereum', 'amm', 'trades', 'dex']
     description: >
       DEX trades on balancer on ethereum
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
-      - check_dex_seed:
-          blockchain: ethereum
-          project: balancer
-          version: 1
-      - check_dex_seed:
-          blockchain: ethereum
-          project: balancer
-          version: 2
     columns:
       - &blockchain
         name: blockchain
@@ -384,6 +366,103 @@ models:
         name: trace_address
         description: ""
       - *evt_index
+
+  - name: balancer_v1_ethereum_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      contributors: bizzyvinci
+    config:
+      tags: [ 'balancer', 'ethereum', 'amm', 'trades', 'dex' ]
+    description: >
+      DEX trades on balancer v1 on ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_seed:
+          blockchain: ethereum
+          project: balancer
+          version: 1
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *trace_address
+      - *evt_index
+
+  - name: balancer_v2_ethereum_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      contributors: bizzyvinci
+    config:
+      tags: [ 'balancer', 'ethereum', 'amm', 'trades', 'dex' ]
+    description: >
+      DEX trades on balancer v2 on ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_seed:
+          blockchain: ethereum
+          project: balancer
+          version: 2
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *trace_address
+      - *evt_index
+
 
   - name: balancer_ethereum_vebal_votes
     meta:
