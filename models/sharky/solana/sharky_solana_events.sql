@@ -87,15 +87,16 @@ WITH sharky_txs AS (
             CASE
                 -- We are using the first 8 bytes of the instruction data to identify the instruction
                WHEN startswith(sharky_instructions[0].data, '2pxy3Z56gzj') THEN 'Offer'
-               WHEN startswith(sharky_instructions[0].data, '6mJ5qjvtoWx') THEN 'Take'
                WHEN startswith(sharky_instructions[0].data, 'BkL6jMvp6k5') THEN 'Rescind'
+               -- We need to decode the instruction data to identify the instruction since the payload changes the base58 encoded string
+               WHEN startswith(base58_decode(sharky_instructions[0].data), '9935333bde663483') THEN 'Take'
                WHEN (
-                            startswith(sharky_instructions[0].data, 'eXdKfXUwK2M') -- RepayLoan
-                            OR startswith(sharky_instructions[0].data, 'YLEyC8YnDio') -- RepayLoanEscrow
+                            startswith(base58_decode(sharky_instructions[0].data), 'e05d904d3d118936') -- RepayLoan
+                            OR startswith(base58_decode(sharky_instructions[0].data), 'bb51fa5992571440') -- RepayLoanEscrow
                         ) THEN 'Repay'
                WHEN (
-                            startswith(sharky_instructions[0].data, 'b1ZCtXZzR4a') -- ForecloseLoan
-                            OR startswith(sharky_instructions[0].data, 'ddCAzdgcmjs') -- ForecloseLoanEscrow
+                            startswith(base58_decode(sharky_instructions[0].data), 'cb5477e28901b417') -- ForecloseLoan
+                            OR startswith(base58_decode(sharky_instructions[0].data), 'daf5ed6d2ece0d0e') -- ForecloseLoanEscrow
                         ) THEN 'Foreclose'
             END AS evt_type
     FROM raw_events
