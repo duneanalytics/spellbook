@@ -1,5 +1,5 @@
 {{  config(
-        schema='oneinch_v3_ethereum',
+        schema='onesplit_ethereum',
         alias='trades',
         partition_by = ['block_date'],
         on_schema_change='sync_all_columns',
@@ -12,45 +12,49 @@
 
 {% set project_start_date = '2017-01-01' %} --for testing, use small subset of data
 
-{% set final_columns = [
-    'block_number'
-    ,'taker'
-    ,'from_token'
-    ,'to_token'
-    ,'from_amount'
-    ,'to_amount'
-    ,'tx_hash'
-    ,'block_time'
-    ,'trace_address'
-    ,'evt_index'
-    ,'contract_address'
-    ,'version'
-] %}
-
-WITH oneinch_events AS
+WITH onesplit AS
 (
     SELECT
-        evt_block_number as block_number,
-        sender as taker,
-        srcToken as from_token,
-        dstToken as to_token,
-        spentAmount as from_amount,
-        returnAmount as to_amount,
-        evt_tx_hash as tx_hash,
-        evt_block_time as block_time,
-        CAST(NULL as array<int>) as trace_address,
-        evt_index,
-        contract_address,
-        '3' as version
+        call_block_number as block_number,
+        CAST(NULL as string) as taker,
+        fromToken AS from_token,
+        toToken AS to_token,
+        amount AS from_amount,
+        minReturn AS to_amount,
+        call_tx_hash AS tx_hash,
+        call_trace_address AS trace_address,
+        call_block_time AS block_time,
+        contract_address
     FROM
-        {{ source('oneinch_v3_ethereum', 'AggregationRouterV3_evt_Swapped') }}
-    {% if is_incremental() %}
+        {{ source('onesplit_ethereum', 'OneSplit_call_swap') }}
     WHERE
-        evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% else %}
+        call_success
+        {% if is_incremental() %}
+        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+        {% else %}
+        AND call_block_time >= '{{project_start_date}}'
+        {% endif %}
+    UNION ALL
+    SELECT
+        call_block_number as block_number,
+        CAST(NULL as string) as taker,
+        fromToken AS from_token,
+        toToken AS to_token,
+        amount AS from_amount,
+        minReturn AS to_amount,
+        call_tx_hash AS tx_hash,
+        call_trace_address AS trace_address,
+        call_block_time AS block_time,
+        contract_address
+    FROM
+        {{ source('onesplit_ethereum', 'OneSplit_call_goodSwap') }}
     WHERE
-        evt_block_time >= '{{project_start_date}}'
-    {% endif %}
+        call_success
+        {% if is_incremental() %}
+        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+        {% else %}
+        AND call_block_time >= '{{project_start_date}}'
+        {% endif %}
 )
 , oneinch AS
 (
@@ -58,37 +62,26 @@ WITH oneinch_events AS
         block_number,
         block_time,
         '1inch' AS project,
-        version,
+        '1split' as version,
         taker,
         CAST(NULL as string) AS maker,
         to_amount AS token_bought_amount_raw,
         from_amount AS token_sold_amount_raw,
         CAST(NULL as double) AS amount_usd,
         CASE
-          WHEN to_token = '0x0000000000000000000000000000000000000000'
-            THEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+            WHEN to_token = '0x0000000000000000000000000000000000000000' THEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
             ELSE to_token
         END AS token_bought_address,
         CASE
-          WHEN from_token = '0x0000000000000000000000000000000000000000'
-              THEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-              ELSE from_token
+            WHEN from_token = '0x0000000000000000000000000000000000000000' THEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+            ELSE from_token
         END AS token_sold_address,
         contract_address AS project_contract_address,
         tx_hash,
         trace_address,
-        evt_index
-    FROM
-    (
-        SELECT
-            {% for column in final_columns %}
-            {% if not loop.first %},{% endif %} {{column}}
-            {% endfor %}
-        FROM
-            oneinch_events
-    )
+        CAST(NULL as integer) as evt_index
+    FROM onesplit
 )
-
 SELECT
     'ethereum' AS blockchain
     ,src.project
@@ -151,7 +144,42 @@ SELECT
     ,tx.to AS tx_to
     ,src.trace_address
     ,src.evt_index
-FROM oneinch as src
+FROM
+    oneinch as src
+LEFT ANTI JOIN --where tx_hash isn't already pulled from oneinch version spells
+    (
+        SELECT DISTINCT
+            tx_hash
+            , block_number
+        FROM
+            {{ ref('oneinch_v1_ethereum_trades') }}
+        UNION ALL
+        SELECT DISTINCT
+            tx_hash
+            , block_number
+        FROM
+            {{ ref('oneinch_v2_ethereum_trades') }}
+        UNION ALL
+        SELECT DISTINCT
+            tx_hash
+            , block_number
+        FROM
+            {{ ref('oneinch_v3_ethereum_trades') }}
+        UNION ALL
+        SELECT DISTINCT
+            tx_hash
+            , block_number
+        FROM
+            {{ ref('oneinch_v4_ethereum_trades') }}
+        UNION ALL
+        SELECT DISTINCT
+            tx_hash
+            , block_number
+        FROM
+            {{ ref('oneinch_v5_ethereum_trades') }}
+    ) oneinch
+    ON src.tx_hash = oneinch.tx_hash
+    AND src.block_number = oneinch.block_number
 INNER JOIN {{ source('ethereum', 'transactions') }} as tx
     ON src.tx_hash = tx.hash
     AND src.block_number = tx.block_number

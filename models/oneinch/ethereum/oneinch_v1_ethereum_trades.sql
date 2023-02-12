@@ -270,6 +270,7 @@ SELECT
     ,src.version
     ,date_trunc('day', src.block_time) AS block_date
     ,src.block_time
+    ,src.block_number
     ,token_bought.symbol AS token_bought_symbol
     ,token_sold.symbol AS token_sold_symbol
     ,case

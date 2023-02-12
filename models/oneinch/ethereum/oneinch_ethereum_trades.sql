@@ -9,6 +9,7 @@ ref('oneinch_v1_ethereum_trades')
 ,ref('oneinch_v3_ethereum_trades')
 ,ref('oneinch_v4_ethereum_trades')
 ,ref('oneinch_v5_ethereum_trades')
+,ref('onesplit_ethereum_trades')
 ] %}
 
 
