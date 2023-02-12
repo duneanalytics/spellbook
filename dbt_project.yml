@@ -267,6 +267,11 @@ models:
         +schema: dodo_polygon
       arbitrum:
         +schema: dodo_arbitrum
+        
+    spookyswap:
+      +schema: spookyswap
+      fantom:
+        +schema: spookyswap_fantom
 
     labels:
       +schema: labels
@@ -367,6 +372,11 @@ models:
       +schema: nftrade
       bnb:
         +schema: nftrade_bnb
+
+    spiritswap:
+      +schema: spiritswap
+      fantom:
+        +schema: spiritswap_fantom
 
     jarvis_network:
       +schema: jarvis_network
