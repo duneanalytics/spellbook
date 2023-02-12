@@ -1,0 +1,76 @@
+version: 2
+
+models:
+  - name: arcade_v1_ethereum_loans
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: ivankitanovski, hosuke
+    config:
+      tags: [ 'nft', 'ethereum', 'loans', 'lending' ]
+    description: >
+      NFT-backed loans with statuses accross platforms Arcade
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - name: evt_tx_hash
+        description: "Event hash"
+      - name: evt_block_time
+        description: "Event time timestamp. The time is the point of loan origination."
+      - name: repay_time
+        desciption: "Time of repayment, null if unpaid"
+      - name: borrower
+        description: "Borrower's address"
+      - name: lender
+        description: "Lender's address"
+      - name: collectionContract
+        description: "Contract address of the NFT collection used for collateral."
+      - name: tokenId
+        description: "Token ID from the NFT collection used for collateral."
+      - name: apr
+        escription: "Calculated APR."
+      - name: duration
+        description: "Duration of loan. Calculated in days."
+      - name: source
+        description: "Platform where the loan was originated."
+      - name: currency
+        description: "Contract address of the original currency in which the loan was originated."
+      - name: principal_raw
+        description: "Raw principal in original currency."
+
+  - name: arcade_v2_ethereum_loans
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: ivankitanovski, hosuke
+    config:
+      tags: [ 'nft', 'ethereum', 'loans', 'lending' ]
+    description: >
+      NFT-backed loans with statuses accross platforms Arcade
+    columns:
+      - *blockchain
+      - name: evt_tx_hash
+        description: "Event hash"
+      - name: evt_block_time
+        description: "Event time timestamp. The time is the point of loan origination."
+      - name: repay_time
+        desciption: "Time of repayment, null if unpaid"
+      - name: borrower
+        description: "Borrower's address"
+      - name: lender
+        description: "Lender's address"
+      - name: collectionContract
+        description: "Contract address of the NFT collection used for collateral."
+      - name: tokenId
+        description: "Token ID from the NFT collection used for collateral."
+      - name: apr
+        escription: "Calculated APR."
+      - name: duration
+        description: "Duration of loan. Calculated in days."
+      - name: source
+        description: "Platform where the loan was originated."
+      - name: currency
+        description: "Contract address of the original currency in which the loan was originated."
+      - name: principal_raw
+        description: "Raw principal in original currency."
