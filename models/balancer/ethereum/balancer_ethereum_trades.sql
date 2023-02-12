@@ -103,10 +103,12 @@ from (
 ) trades
 inner join {{ source('ethereum', 'transactions') }} tx
     on trades.evt_tx_hash = tx.hash
-left join {{ ref('tokens_ethereum_erc20') }} erc20a
+left join {{ ref('tokens_erc20') }} erc20a
     on trades.token_bought_address = erc20a.contract_address
-left join {{ ref('tokens_ethereum_erc20') }} erc20b
+    and erc20a.blockchain = 'ethereum'
+left join {{ ref('tokens_erc20') }} erc20b
     on trades.token_sold_address = erc20b.contract_address
+    and erc20b.blockchain = 'ethereum'
 left join prices p_bought
     ON p_bought.minute = date_trunc('minute', trades.evt_block_time)
     and p_bought.contract_address = trades.token_bought_address
