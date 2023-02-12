@@ -16,7 +16,6 @@ models:
           filter:
             blockchain: gnosis
           match_columns:
-            - blockchain
             - address
           check_columns:
             - first_funded_by
