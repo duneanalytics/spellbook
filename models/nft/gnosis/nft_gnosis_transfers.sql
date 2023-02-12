@@ -97,7 +97,7 @@ FROM (
     {% endif %}
     GROUP BY t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t.from, t.to, t.evt_index, t.values, t.ids
     ) t
-INNER JOIN gnosis.transactions gt ON gt.block_number = t.evt_block_number
+INNER JOIN {{ source('gnosis', 'transactions') }} gt ON gt.block_number = t.evt_block_number
     AND gt.hash = t.evt_tx_hash
     {% if is_incremental() %}
     AND gt.block_time >= date_trunc("day", now() - interval '1 week')

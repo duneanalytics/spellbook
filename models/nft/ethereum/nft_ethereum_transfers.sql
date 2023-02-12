@@ -97,7 +97,7 @@ FROM (
     {% endif %}
     GROUP BY t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t.from, t.to, t.evt_index, t.values, t.ids
     ) t
-INNER JOIN ethereum.transactions et ON et.block_number = t.evt_block_number
+INNER JOIN {{ source('ethereum', 'transactions') }} et ON et.block_number = t.evt_block_number
     AND et.hash = t.evt_tx_hash
     {% if is_incremental() %}
     AND et.block_time >= date_trunc("day", now() - interval '1 week')
