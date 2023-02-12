@@ -292,3 +292,49 @@ models:
       - *tx_from
       - *tx_to
       - *unique_trade_id
+
+  - name: x2y2_ethereum_loans
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: ivankitanovski, hosuke
+    config:
+      tags: [ 'nft', 'ethereum', 'loans', 'lending' ]
+    description: >
+      NFT-backed loans with statuses accross platforms BendDAO, NFTFi, Arcade and X2Y2
+    columns:
+      - name: evt_tx_hash
+        description: "Event hash"
+      - name: evt_block_time
+        description: "Event time timestamp. The time is the point of loan origination."
+      - name: borrower
+        description: "Borrower's address"
+      - name: lender
+        description: "Lender's address"
+      - name: collectionContract
+        description: "Contract address of the NFT collection used for collateral."
+      - name: collectionName
+        description: "Name of the NFT collection used for collateral."
+      - name: tokenId
+        description: "Token ID from the NFT collection used for collateral."
+      - name: apr
+        escription: "Calculated APR."
+      - name: duration
+        description: "Duration of loan. Calculated in days."
+      - name: source
+        description: "Platform where the loan was originated."
+      - name: eth
+        description: "Principal in ETH."
+      - name: usd
+        description: "Principal in USD."
+      - name: status
+        description: "Final loan status"
+        tests:
+          - accepted_values:
+              values: [ 'ACTIVE', 'REPAID', 'DEFAULTED' ]
+      - name: final_time
+        description: "Timestamp of the loan repayment or default. Default timestamp is calculated as start + duration, if it wasn't repaid. "
+      - name: currency
+        description: "Contract address of the original currency in which the loan was originated."
+      - name: principal_raw
+        description: "Raw principal in original currency."

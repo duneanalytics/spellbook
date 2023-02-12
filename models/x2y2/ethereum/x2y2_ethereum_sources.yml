@@ -9,3 +9,18 @@ sources:
         loaded_at_field: evt_block_time
       - name: X2Y2_r1_evt_EvInventory
         loaded_at_field: evt_block_time
+
+  - name: xy3_ethereum
+    description: "x2y2 ethereum decoded events"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: XY3_evt_LoanStarted
+        loaded_at_field: evt_block_time
+      - name: XY3_evt_LoanRepaid
+        loaded_at_field: evt_block_time
+      - name: XY3_V2_evt_LoanStarted
+        loaded_at_field: evt_block_time
+      - name: XY3_V2_evt_LoanRepaid
+        loaded_at_field: evt_block_time
