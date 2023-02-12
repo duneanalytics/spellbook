@@ -81,6 +81,12 @@ select
 from v2 trades
 inner join {{ source('ethereum', 'transactions') }} tx
     on trades.evt_tx_hash = tx.hash
+    {% if not is_incremental() %}
+    and tx.block_time >= '{{project_start_date}}'
+    {% endif %}
+    {% if is_incremental() %}
+    and tx.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 left join {{ ref('tokens_erc20') }} erc20a
     on trades.token_bought_address = erc20a.contract_address
     and erc20a.blockchain = 'ethereum'
