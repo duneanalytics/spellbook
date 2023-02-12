@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: odos_avalanche_c_trades
+  - name: yield_yak_avalanche_c_trades
     meta:
       blockchain: avalanche_c
       sector: dex
-      project: odos
+      project: yield_yak
       contributors: Henrystats
     config:
-      tags: ['avalanche_c','trades', 'dfx','dex']
+      tags: ['avalanche_c','trades', 'aggregator', 'yield_yak','dex']
     description: >
-        odos aggregator trades on avalanche_c
+        yield yak aggregator trades on avalanche_c
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -23,7 +23,7 @@ models:
             - trace_address
       - check_dex_aggregator_seed:
           blockchain: avalanche_c
-          project: odos
+          project: yield_yak
           version: 1
     columns:
       - &blockchain

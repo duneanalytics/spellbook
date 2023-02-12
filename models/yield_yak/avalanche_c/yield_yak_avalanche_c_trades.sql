@@ -7,56 +7,40 @@
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
     post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                 "project",
-                                "odos",
+                                "yield_yak",
                                 \'["Henrystats"]\') }}'
     )
 }}
 
 
-{% set project_start_date = '2022-11-29' %}
+{% set project_start_date = '2021-09-15' %}
 
 WITH 
 
-dexs_raw as (
+dexs as (
         SELECT 
             evt_block_time as block_time, 
-            explode(outputs) as data_value, 
+            -- '' as taker, commenting this as there's no trader in the event 
             '' as maker, 
-            CAST(CONCAT_WS(", ", amountsIn) as double) as token_sold_amount_raw, 
-            CAST(CONCAT_WS(", ", amountsOut) as double) as token_bought_amount_raw, 
+            _amountIn as token_sold_amount_raw, 
+            _amountOut as token_bought_amount_raw, 
             CAST(NULL as double) as amount_usd, 
-            CASE 
-                WHEN CAST(CONCAT_WS(", ", tokensIn) as string) IN ('0', 'O', '0x0000000000000000000000000000000000000000')
-                THEN '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7' -- WAVAX 
-                ELSE CAST(CONCAT_WS(", ", tokensIn) as string) 
-            END as token_sold_address, 
+            _tokenIn as token_sold_address, 
+            _tokenOut as token_bought_address, 
             contract_address as project_contract_address, 
-            evt_tx_hash as tx_hash, 
-            '' as trace_address, 
+            evt_tx_hash as tx_hash,
+            '' as trace_address,
             evt_index
         FROM 
-        {{ source('odos_avalanche_c', 'OdosRouter_evt_Swapped') }}
+        {{ source('yield_yak_avalanche_c', 'YakRouter_evt_YakSwap') }}
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-), 
-
-dexs as (
-        SELECT 
-            *, 
-            CAST(data_value:receiver as string) as taker, 
-            CASE 
-                WHEN CAST(data_value:tokenAddress as string) IN ('0', 'O', '0x0000000000000000000000000000000000000000')
-                THEN '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7' -- WAVAX 
-                ELSE CAST(data_value:tokenAddress as string)
-            END as token_bought_address
-        FROM 
-        dexs_raw
 )
 
 SELECT
     'avalanche_c' as blockchain, 
-    'odos' as project, 
+    'yield_yak' as project, 
     '1' as version, 
     TRY_CAST(date_trunc('DAY', dexs.block_time) as date) as block_date, 
     dexs.block_time, 
@@ -77,13 +61,13 @@ SELECT
     ) as amount_usd, 
     dexs.token_bought_address, 
     dexs.token_sold_address, 
-    COALESCE(dexs.taker, tx.from) as taker,  -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
+    tx.from as taker,
     dexs.maker, 
     dexs.project_contract_address, 
     dexs.tx_hash, 
     tx.from as tx_from, 
     tx.to AS tx_to, 
-    dexs.trace_address, 
+    dexs.trace_address,
     dexs.evt_index
 FROM dexs
 INNER JOIN {{ source('avalanche_c', 'transactions') }} tx
@@ -120,3 +104,4 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+;
