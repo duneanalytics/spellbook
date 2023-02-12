@@ -267,6 +267,11 @@ models:
         +schema: dodo_polygon
       arbitrum:
         +schema: dodo_arbitrum
+        
+    spookyswap:
+      +schema: spookyswap
+      fantom:
+        +schema: spookyswap_fantom
 
     labels:
       +schema: labels
