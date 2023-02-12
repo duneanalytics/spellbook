@@ -47,6 +47,7 @@ list of models using old generic test, due to multiple versions in one model:
 ,ref('babyswap_bnb_trades')
 ,ref('apeswap_trades')
 ,ref('ellipsis_finance_trades')
+,ref('spartacus_exchange_fantom_trades')
 ,ref('spookyswap_fantom_trades')
 ,ref('beethoven_x_trades')
 ,ref('rubicon_trades')
@@ -73,8 +74,8 @@ FROM (
         token_pair,
         token_bought_amount,
         token_sold_amount,
-        CAST(token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw,
-        CAST(token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw,
+        token_bought_amount_raw,
+        token_sold_amount_raw,
         amount_usd,
         token_bought_address,
         token_sold_address,

@@ -388,6 +388,11 @@ models:
       ethereum:
         +schema: cryptopunks_ethereum
 
+    spartacus_exchange:
+      +schema: spartacus_exchange
+      fantom:
+        +schema: spartacus_exchange_fantom
+
     tornado_cash:
       +schema: tornado_cash
 
