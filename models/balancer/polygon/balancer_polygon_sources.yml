@@ -182,9 +182,3 @@ sources:
             description: 'Unix timestamp of the LBP start time'
           - name: startWeights
             description: 'Array with the weights of the LBP tokens at the start of the LBP'
-
-      - name: create_lbp_contract
-        loaded_at_field: call_block_time
-
-      - name: lbp_weight_upgrade_contract
-        loaded_at_field: call_block_time
