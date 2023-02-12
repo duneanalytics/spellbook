@@ -319,3 +319,9 @@ sources:
             description: "veBAL holder that voted for the gauge"
           - name: weight
             description: "Weight of the user for the gauge"
+
+      - name: create_lbp_contract
+        loaded_at_field: call_block_time
+
+      - name: lbp_weight_upgrade_contract
+        loaded_at_field: call_block_time
