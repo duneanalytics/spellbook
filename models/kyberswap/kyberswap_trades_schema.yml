@@ -3,12 +3,12 @@ version: 2
 models:
   - name: kyberswap_trades
     meta:
-      blockchain: avalanche_c
+      blockchain: avalanche_c, optimism
       sector: dex
       project: kyberswap
       contributors: zhongyiio
     config:
-      tags: ['avalanche_c', 'trades', 'dex', 'kyberswap', 'zhongyiio', 'hosuke']
+      tags: ['avalanche_c', 'optimism','trades', 'dex', 'kyberswap', 'zhongyiio', 'hosuke']
     description: >
         Kyberswap trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
