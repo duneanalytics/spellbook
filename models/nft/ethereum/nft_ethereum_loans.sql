@@ -259,39 +259,6 @@ arcade as (
     select *, p / num_items as principal_raw
     from arcade_loans_with_tokens
 ),
-
---benddao
-benddao_base as (
-    select evt_tx_hash, evt_block_time, 
-        onBehalfOf as borrower, '0xdafce4acc2703a24f29d1321adaadf5768f54642' as lender,
-        nftAsset as collectionContract, nftTokenId as tokenId,
-        amount as principal_raw, reserveAsset as currency,
-        user, loanId
-    from {{ source('bend_ethereum','LendingPoolLoan_evt_LoanCreated') }}
-),
-
-benddao_ended as (
-    select loanId, user, evt_block_time, 'repaid' as status
-    from {{ source('bend_ethereum','LendingPoolLoan_evt_LoanRepaid') }}
-    union all
-    select loanId, user, evt_block_time, 'defaulted' as status
-    from {{ source('bend_ethereum','LendingPoolLoan_evt_LoanLiquidated') }}
-),
-
-benddao as (
-    select *
-    from (
-        select l.*, 
-            case when status='repaid' then r.evt_block_time else null end as repay_time, 
-            case when status is not null then datediff(r.evt_block_time, l.evt_block_time)  else null end as duration,
-            null as apr
-        from benddao_base l 
-        left join 
-        benddao_ended r 
-            on l.loanId=r.loanId --and l.user=r.user
-    ) t 
-),
-
 -- -- aggregated loans
 loans as (
     select evt_tx_hash,
@@ -348,28 +315,47 @@ loans as (
            apr,
            duration,
            'BendDAO' as source
-    from benddao
+    from {{ ref('bend_dao_ethereum_loans') }}
 ),
 
 loans_with_prices as (
-    select evt_tx_hash, evt_block_time, borrower, lender, collectionContract, tokenId, apr, duration, source,
-            principal_raw / case 
-                                    when currency = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' THEN 1e18
-                                    when currency = '0x6b175474e89094c44da98b954eedeac495271d0f' THEN 1e18 * price
-                                    when currency = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48' THEN 1e6 * price
-            end as eth,
-            principal_raw * case 
-                                    when currency = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' THEN price / 1e18
-                                    when currency = '0x6b175474e89094c44da98b954eedeac495271d0f' THEN 1.0 / 1e18
-                                    when currency = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48' THEN 1.0 / 1e6
-            end as usd, 
-            case when not repay_time is null then 'REPAID' when (repay_time is null and evt_block_time + interval '1' day * duration < current_date) then 'DEFAULTED' else 'ACTIVE' end as status
-            ,currency, principal_raw
-    from loans l left join {{ source('prices','usd') }} p on date_trunc('minute', evt_block_time) = MINUTE and MINUTE > cast('2020-05-15' as timestamp) and p.contract_address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+    select evt_tx_hash,
+           evt_block_time,
+           borrower,
+           lender,
+           collectionContract,
+           tokenId,
+           apr,
+           duration,
+           source,
+           principal_raw / case
+                               when currency = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' THEN 1e18
+                               when currency = '0x6b175474e89094c44da98b954eedeac495271d0f' THEN 1e18 * price
+                               when currency = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48' THEN 1e6 * price
+               end               as eth,
+           principal_raw * case
+                               when currency = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' THEN price / 1e18
+                               when currency = '0x6b175474e89094c44da98b954eedeac495271d0f' THEN 1.0 / 1e18
+                               when currency = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48' THEN 1.0 / 1e6
+               end               as usd,
+           case
+               when not repay_time is null then 'REPAID'
+               when (repay_time is null and evt_block_time + interval '1' day * duration < current_date)
+                   then 'DEFAULTED'
+               else 'ACTIVE' end as status
+            ,
+           currency,
+           principal_raw
+    from loans l
+    left join {{ source('prices', 'usd') }} p
+        on date_trunc('minute', evt_block_time) = p.minute
+        and p.minute  > cast ('2020-05-15' as timestamp)
+        and p.contract_address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
     where not price is null
 )
 
-select l.*, coalesce(t.name, 'Awesome NFT') as collectionName 
+select l.*,
+       coalesce(t.name, 'Awesome NFT') as collectionName
 from loans_with_prices l
 left join {{ ref('tokens_nft') }} t
     on l.collectionContract=t.contract_address

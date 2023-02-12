@@ -7,7 +7,15 @@ sources:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
     tables:
+      # lending
       - name: LendingPool_evt_Borrow
         loaded_at_field: evt_block_time
       - name: LendingPool_evt_Repay
+        loaded_at_field: evt_block_time
+      # loans
+      - name: LendingPoolLoan_evt_LoanCreated
+        loaded_at_field: evt_block_time
+      - name: LendingPoolLoan_evt_LoanRepaid
+        loaded_at_field: evt_block_time
+      - name: LendingPoolLoan_evt_LoanLiquidated
         loaded_at_field: evt_block_time

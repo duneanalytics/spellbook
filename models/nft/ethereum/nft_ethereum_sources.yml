@@ -91,16 +91,3 @@ sources:
       - name: LoanCore_evt_LoanClaimed
         loaded_at_field: evt_block_time
 
-  - name: bend_ethereum
-    description: "bend ethereum decoded events"
-    freshness: # default freshness
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
-    tables:
-      - name: LendingPoolLoan_evt_LoanCreated
-        loaded_at_field: evt_block_time
-      - name: LendingPoolLoan_evt_LoanRepaid
-        loaded_at_field: evt_block_time
-      - name: LendingPoolLoan_evt_LoanLiquidated
-        loaded_at_field: evt_block_time
-      
