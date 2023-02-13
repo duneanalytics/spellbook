@@ -9,6 +9,7 @@ on:
       - 'scripts/**'
       - 'Pipfile'
       - '.gitignore'
+      - '.github/**'
   push:
     branches:
       - 'main'
