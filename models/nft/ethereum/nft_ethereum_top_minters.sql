@@ -24,7 +24,7 @@ WITH src_data as
     {% if is_incremental() %}
     LEFT JOIN
         {{this}} prev
-        ON prev.minter = src.minter 
+        ON prev.minter = src.buyer 
         AND prev.nft_contract_address = src.nft_contract_address
     {% endif %}
     WHERE
