@@ -47,7 +47,6 @@ list of models using old generic test, due to multiple versions in one model:
 ,ref('babyswap_bnb_trades')
 ,ref('apeswap_trades')
 ,ref('ellipsis_finance_trades')
--- ,ref('spartacus_exchange_fantom_trades')
 ,ref('spookyswap_fantom_trades')
 ,ref('beethoven_x_trades')
 ,ref('rubicon_trades')
@@ -59,6 +58,7 @@ list of models using old generic test, due to multiple versions in one model:
 ,ref('spiritswap_fantom_trades')
 ] %}
 
+--,ref('spartacus_exchange_fantom_trades')
 
 SELECT *
 FROM (
