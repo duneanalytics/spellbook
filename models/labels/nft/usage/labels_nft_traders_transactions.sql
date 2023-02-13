@@ -38,6 +38,8 @@ SELECT * FROM (
     'nft' AS category,
     'soispoke' AS contributor,
     'query' AS source,
+    'nft_traders_transactions' as model_name,
+    'usage' as label_type,
     timestamp('2022-08-24') as created_at,
     now() as updated_at
     FROM nft_trades

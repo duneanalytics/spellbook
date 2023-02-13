@@ -22,7 +22,9 @@ SELECT
     'soispoke' AS contributor,
     'query' AS source,
     timestamp('2022-09-03') as created_at,
-    now() as updated_at
+    now() as updated_at,
+    'nft_users_platforms' as model_name,
+    'persona' as label_type
 FROM nft_trades
 WHERE address is not null
 GROUP BY address
