@@ -22,8 +22,7 @@ WITH trades as
         COUNT(*) as trades, 
         NOW() - Interval '5 Minutes' as last_updated
     FROM 
-        -- {{ ref('nft_trades') }}
-        nft.trades
+        {{ ref('nft_trades') }}
     WHERE
         currency_symbol IN ('ETH', 'WETH')
         AND blockchain = 'ethereum'
@@ -49,8 +48,7 @@ WITH trades as
         COUNT(*) as trades, 
         NOW() - Interval '5 Minutes' as last_updated
     FROM 
-        -- {{ ref('nft_trades') }}
-        nft.trades
+        {{ ref('nft_trades') }}
     WHERE
         currency_symbol IN ('ETH', 'WETH')
         AND blockchain = 'ethereum'
