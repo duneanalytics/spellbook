@@ -170,6 +170,8 @@ models:
         description: "Unique ID, used in order to apply the merge into incremental strategy"
         tests:
           - unique
+      - name: amount
+        description: "Amount of ERC721 transferred within the hour i.e a count of deposits - count of withdrawals as it's grouped by tokenid"
 
   - name: transfers_ethereum_erc721_rolling_hour
     meta:
@@ -187,6 +189,8 @@ models:
       - *tokenId
       - name: updated_at
         description: "UTC timestamp when table was last updated"
+      - name: amount
+        description: "ERC721 balance for wallet_address date trunced by hour"
       - name: recency_index
         description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
 
@@ -208,6 +212,8 @@ models:
         description: "Unique ID, used in order to apply the merge into incremental strategy"
         tests:
           - unique
+      - name: amount
+        description: "Amount of ERC721 transferred within the day i.e a count of deposits - count of withdrawals as it's grouped by tokenid"
 
   - name: transfers_ethereum_erc721_rolling_day
     meta:
@@ -227,6 +233,8 @@ models:
       - *tokenId
       - name: updated_at
         description: "UTC timestamp when table was last updated"
+      - name: amount
+        description: "ERC721 balance for wallet_address date trunced by day"
       - name: recency_index
         description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
 
