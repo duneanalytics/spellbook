@@ -22,7 +22,7 @@ models:
         description: "Category of entity"
         tests:
           - accepted_values:
-              values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Whales', 'Others']
+              values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Individuals', 'Others']
 
   - name: staking_ethereum_deposits
     meta:
