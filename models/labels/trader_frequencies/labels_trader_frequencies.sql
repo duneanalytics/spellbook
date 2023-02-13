@@ -14,7 +14,7 @@ with
     select
         blockchain,
         taker as address,
-        count(tx_hash) / datediff(max(block_date), min(block_date)) as trades_per_day
+        count(distinct tx_hash) / datediff(max(block_date), min(block_date)) as trades_per_day
     from (
         select blockchain, taker, block_date, tx_hash
         from {{ ref('dex_aggregator_trades') }}
