@@ -10,10 +10,14 @@
     )
 }}
 
-{% set create_lbp_contracts = ['LiquidityBootstrappingPoolFactory_call_create',
-                                'NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create'] %}
-{% set lbp_weight_upgrade_contracts = ['LiquidityBootstrappingPool_evt_GradualWeightUpdateScheduled',
-                                        'NoProtocolFeeLiquidityBootstrappingPool_evt_GradualWeightUpdateScheduled'] %}
+{% set create_lbp_contracts = [
+                                source('balancer_v2_ethereum', 'LiquidityBootstrappingPoolFactory_call_create'),
+                                source('balancer_v2_ethereum', 'NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create')
+                                ] %}
+{% set lbp_weight_upgrade_contracts = [
+                                source('balancer_v2_ethereum', 'LiquidityBootstrappingPool_evt_GradualWeightUpdateScheduled'),
+                                source('balancer_v2_ethereum', 'NoProtocolFeeLiquidityBootstrappingPool_evt_GradualWeightUpdateScheduled')
+                                ] %}
 {% set non_lbp_tokens = ('0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
                         '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
                         '0x8f3cf7ad23cd3cadbd9735aff958023239c6a063',
@@ -21,7 +25,7 @@
 
 WITH lbps_call_create AS (
         {% for create_lbp_contract in create_lbp_contracts %}
-        SELECT * FROM {{ source('balancer_v2_polygon', create_lbp_contract) }}
+        SELECT * FROM {{ create_lbp_contract }}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
@@ -42,7 +46,7 @@ WITH lbps_call_create AS (
     
     lbps_weight_update AS (
         {% for lbp_weight_upgrade_contract in lbp_weight_upgrade_contracts %}
-        SELECT * FROM {{ source('balancer_v2_polygon', lbp_weight_upgrade_contract) }}
+        SELECT * FROM {{ lbp_weight_upgrade_contract }}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
