@@ -1861,5 +1861,7 @@ VALUES
     ("ust-terrausd", "fantom", "USTC", "0xe2d27f06f63d98b8e11b38b5b08a75d0c8dd62b9", 6),
     ("luna-terra", "fantom", "LUNC", "0x95dd59343a893637be1c3228060ee6afbf6f0730", 6),
     ("2shares-2share", "fantom", "2SHARES", "0xc54A1684fD1bef1f077a336E6be4Bd9a3096a6Ca", 18), 
-    ("3share-3share", "fantom", "3SHARES", "0x6437ADAC543583C4b31Bf0323A0870430F5CC2e7", 18)
+    ("3share-3share", "fantom", "3SHARES", "0x6437ADAC543583C4b31Bf0323A0870430F5CC2e7", 18),
+    ("alvey-chain", "bnb", "wALV", "0x256D1fCE1b1221e8398f65F9B36033CE50B2D497", 18),
+    ("loop-network", "bnb", "LOOP", "0xcE186ad6430E2Fe494a22C9eDbD4c68794a28B35", 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
