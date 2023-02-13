@@ -1,6 +1,5 @@
 {{ config(
     alias = 'trades',
-    partition_by = ['block_date'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "balancer",
