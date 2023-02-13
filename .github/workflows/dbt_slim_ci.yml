@@ -9,7 +9,7 @@ on:
       - 'scripts/**'
       - 'Pipfile'
       - '.gitignore'
-      - '.github/**'
+      - '.github/workflows/dbt_slim_ci.yml'
   push:
     branches:
       - 'main'
