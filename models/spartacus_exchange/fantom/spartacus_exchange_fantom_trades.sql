@@ -103,4 +103,3 @@ left join {{ source('prices', 'usd') }} p_sold
     {% if is_incremental() %}
     and p_sold.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-;
