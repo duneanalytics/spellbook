@@ -24,6 +24,12 @@ clean-targets: # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
 
+# Configuring tests
+# Full documentation: https://docs.getdbt.com/reference/test-configs
+tests:
+  spellbook:
+    +store_failures: true  # store failures for all tests
+
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
@@ -152,6 +158,7 @@ models:
       avalanche_c:
         +schema: element_avalanche_c
 
+
     abi:
       +schema: abi
 
@@ -220,6 +227,11 @@ models:
       bnb:
         +schema: ellipsis_finance_bnb
 
+    wigoswap:
+      +schema: wigoswap
+      fantom:
+        +schema: wigoswap_fantom
+
     bend_dao:
       +schema: bend_dao
       ethereum:
@@ -255,6 +267,11 @@ models:
         +schema: dodo_polygon
       arbitrum:
         +schema: dodo_arbitrum
+        
+    spookyswap:
+      +schema: spookyswap
+      fantom:
+        +schema: spookyswap_fantom
 
     labels:
       +schema: labels
@@ -339,11 +356,16 @@ models:
       ethereum:
         +schema: sudoswap_ethereum
 
+    equalizer_exchange:
+      +schema: equalizer_exchange
+      fantom:
+        +schema: equalizer_exchange_fantom
+
     safe:
       +schema: safe
       ethereum:
         +schema: safe_ethereum
-      optimism: 
+      optimism:
         +schema: safe_optimism
 
     nftrade:
@@ -351,12 +373,18 @@ models:
       bnb:
         +schema: nftrade_bnb
 
+
     trove:
       +schema: trove
       arbitrum:
         +schema: trove_arbitrum
       ethereum:
         +schema: trove_ethereum
+
+    spiritswap:
+      +schema: spiritswap
+      fantom:
+        +schema: spiritswap_fantom
 
     jarvis_network:
       +schema: jarvis_network
@@ -367,6 +395,11 @@ models:
       +schema: cryptopunks
       ethereum:
         +schema: cryptopunks_ethereum
+
+    spartacus_exchange:
+      +schema: spartacus_exchange
+      fantom:
+        +schema: spartacus_exchange_fantom
 
     tornado_cash:
       +schema: tornado_cash
@@ -454,6 +487,8 @@ models:
         +schema: contracts_optimism
       bnb:
         +schema: contracts_bnb
+      fantom:
+        +schema: contracts_fantom
 
     clipper:
       +schema: clipper
@@ -490,6 +525,11 @@ models:
       ethereum:
         +schema: dfx_ethereum
 
+    yield_yak:
+      +schema: yield_yak
+      avalanche_c:
+        +schema: yield_yak_avalanche_c
+
     shibaswap:
       +schema: shibaswap
       ethereum:
@@ -518,6 +558,13 @@ models:
       +schema: kyberswap
       avalanche_c:
         +schema: kyberswap_avalanche_c
+      optimism:
+        +schema: kyberswap_optimism
+
+    hubble_exchange:
+      +schema: hubble_exchange
+      avalanche_c:
+        +schema: hubble_exchange_avalanche_c
 
     fraxswap:
       +schema: fraxswap
@@ -539,6 +586,11 @@ models:
       +schema: platypus_finance
       avalanche_c:
         +schema: platypus_finance_avalanche_c
+
+    emdx:
+      +schema: emdx
+      avalanche_c:
+        +schema: emdx_avalanche_c
 
     woofi:
       +schema: woofi
@@ -572,24 +624,18 @@ models:
         +schema: zeroex_ethereum
       optimism:
         +schema: zeroex_optimism
-        erc20:
-          +schema: zeroex_optimism_erc20
+        
       polygon:
         +schema: zeroex_polygon
-        erc20:
-          +schema: zeroex_polygon_erc20
+        
       avalanche_c:
         +schema: zeroex_avalanche_c
-        erc20:
-          +schema: zeroex_avalanche_c_erc20
       fantom:
         +schema: zeroex_fantom
-        erc20:
-          +schema: zeroex_fantom_erc20
+        
       arbitrum:
         +schema: zeroex_arbitrum
-        erc20:
-          +schema: zeroex_arbitrum_erc20
+      
 
     wombat:
       +schema: wombat
@@ -617,10 +663,10 @@ models:
       #   +schema: hop_protocol_gnosis
       # gnosis2:
       #   +schema: hop_gnosis
-    
+
     chain_info:
       +schema: chain_info
-    
+
     bridge:
       +schema: bridge
       optimism:
@@ -650,10 +696,27 @@ models:
       +schema: ovm
       optimism:
         +schema: ovm_optimism
+    
+    rubicon:
+      +schema: rubicon
+      optimism:
+        +schema: rubicon_optimism
+    
+    beethoven_x:
+      +schema: beethoven_x
+      optimism:
+        +schema: beethoven_x_optimism
+    
+    zipswap:
+      +schema: zipswap
+      optimism:
+        +schema: zipswap_optimism
+    
+    
 
     arbswap:
       +schema: arbswap
-    
+
     rocifi:
       +schema: rocifi
       polygon:
@@ -734,6 +797,18 @@ seeds:
           token_bought_amount: float
           token_sold_address: string
           token_sold_amount: float
+      aggregator:
+        +column_types:
+          blockchain: string
+          project: string
+          version: string
+          block_date: date
+          tx_hash: string
+          evt_index: int
+          token_bought_address: string
+          token_bought_amount: float
+          token_sold_address: string
+          token_sold_amount: float  
       pools:
         +column_types:
           blockchain: string
@@ -989,51 +1064,73 @@ seeds:
             token_amount: double
             project_name: string
       optimism:
-        fills:
-          zeroex_api_optimism_fills_sample:
-            +column_types:
-              tx_hash: string
-              evt_index: int
-              contract_address: string
-              block_time: timestamp
-              block_date: date
-              maker: string
-              taker: string
-              taker_token: string
-              maker_token: string
-              taker_token_amount: double
-              taker_token_amount_raw: double
-              maker_token_amount: double
-              maker_token_amount_raw: double
-              type: string
-              affiliate_address: string
-              swap_flag: boolean
-              matcha_limit_order_flag: boolean
-              volume_usd: double
+        zeroex_optimism_api_fills_sample:
+          +column_types:
+            tx_hash: string
+            evt_index: int
+            contract_address: string
+            block_time: timestamp
+            block_date: date
+            maker: string
+            taker: string
+            taker_token: string
+            maker_token: string
+            taker_token_amount: double
+            taker_token_amount_raw: double
+            maker_token_amount: double
+            maker_token_amount_raw: double
+            type: string
+            affiliate_address: string
+            swap_flag: boolean
+            matcha_limit_order_flag: boolean
+            volume_usd: double
       polygon:
-        fills:
-          +enabled: true
-          +schema: test_data
-          zeroex_api_polygon_fills_sample:
-            +column_types:
-              tx_hash: string
-              evt_index: int
-              contract_address: string
-              block_time: timestamp
-              block_date: date
-              maker: string
-              taker: string
-              taker_token: string
-              maker_token: string
-              taker_token_amount: double
-              taker_token_amount_raw: double
-              maker_token_amount: double
-              maker_token_amount_raw: double
-              type: string
-              affiliate_address: string
-              swap_flag: boolean
-              matcha_limit_order_flag: boolean
-              volume_usd: double
+        +enabled: true
+        +schema: test_data
+        zeroex_polygon_api_fills_sample:
+          +column_types:
+            tx_hash: string
+            evt_index: int
+            contract_address: string
+            block_time: timestamp
+            block_date: date
+            maker: string
+            taker: string
+            taker_token: string
+            maker_token: string
+            taker_token_amount: double
+            taker_token_amount_raw: double
+            maker_token_amount: double
+            maker_token_amount_raw: double
+            type: string
+            affiliate_address: string
+            swap_flag: boolean
+            matcha_limit_order_flag: boolean
+            volume_usd: double
+      avalanche_c:
+        +enabled: true
+        +schema: test_data
+        zeroex_avalanche_c_api_fills_sample:
+          +column_types:
+            tx_hash: string
+            evt_index: int
+            contract_address: string
+            block_time: timestamp
+            block_date: date
+            maker: string
+            taker: string
+            taker_token: string
+            maker_token: string
+            taker_token_amount: double
+            taker_token_amount_raw: double
+            maker_token_amount: double
+            maker_token_amount_raw: double
+            type: string
+            affiliate_address: string
+            swap_flag: boolean
+            matcha_limit_order_flag: boolean
+            volume_usd: double
+
     gmx:
       avalanche_c:
         gmx_glp_aum_seed:
@@ -1121,3 +1218,9 @@ seeds:
           from: string
           to: string
           value: double
+
+    udf:
+      bytea2numeric_samples:
+        +column_types:
+          hex: string
+          dec: string

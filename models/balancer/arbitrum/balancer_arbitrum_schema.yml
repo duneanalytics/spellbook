@@ -77,7 +77,7 @@ models:
       - &median_price
         name: median_price
         description: 'BPT median price'
-  
+
   - name: balancer_v2_arbitrum_transfers_bpt
     meta:
       blockchain: arbitrum
@@ -185,3 +185,30 @@ models:
       - *pool_id
       - *token_address
       - *normalized_weight
+
+  - name: balancer_v2_arbitrum_liquidity
+    meta:
+      blockchain: arbitrum
+      project: balancer_v2
+      contributors: victorstefenon
+    config:
+      tags: ['arbitrum', 'balancer', 'pools', 'liquidity']
+    description: >
+      Balancer v2 pools liquidity by token in Arbitrum.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_id
+            - token_address
+    columns:
+      - name: day
+        description: 'UTC event block time truncated to the day mark'
+      - *pool_id
+      - name: pool_symbol
+        description: 'Symbol of the pool, consisting of the symbol of its tokens and their respective weights'
+      - *token_address
+      - name: token_symbol
+        description: 'Symbol of the token'
+      - name: usd_amount
+        description: 'Liquidity of the token in the pool in USD'

@@ -52,8 +52,8 @@ SELECT
         END                                                       AS token_pair,
     mdex_dex.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount,
     mdex_dex.token_sold_amount_raw / power(10, erc20b.decimals)   AS token_sold_amount,
-    mdex_dex.token_bought_amount_raw,
-    mdex_dex.token_sold_amount_raw,
+    CAST(mdex_dex.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw,
+    CAST(mdex_dex.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw,
     coalesce(
             mdex_dex.amount_usd
         , (mdex_dex.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
