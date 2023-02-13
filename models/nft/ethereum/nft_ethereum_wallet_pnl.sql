@@ -111,26 +111,26 @@ combined as
             (
                 CASE 
                     WHEN t.trade_type = 'Buys'
-                    THEN ABS(t.eth_amount) 
+                    THEN ABS(t.eth_amount) + COALESCE(prev.eth_spent, 0)
                     ELSE 0 
                 END
             )
         , 0
-        ) + COALESCE(prev.eth_spent, 0) as eth_spent,
+        ) as eth_spent,
         COALESCE
         (
             SUM
             (
                 CASE 
                     WHEN t.trade_type = 'Sells'
-                    THEN t.eth_amount
-                    ELSE 0 
+                    THEN t.eth_amount + COALESCE(prev.eth_received, 0)
+                    ELSE 0
                 END
             )
         , 0
-        ) + COALESCE(prev.eth_received, 0) as eth_received,
-        SUM(t.eth_amount) + COALESCE(prev.pnl, 0) as pnl, 
-        SUM(t.trades) + COALESCE(prev.trades, 0) as trades
+        ) as eth_received,
+        SUM(t.eth_amount + COALESCE(prev.pnl, 0)) as pnl,
+        SUM(t.trades + COALESCE(prev.trades, 0)) as trades
     FROM 
         trades t
     LEFT JOIN
