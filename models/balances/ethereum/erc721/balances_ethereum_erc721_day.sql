@@ -24,8 +24,8 @@ with
     tokenId,
     day,
     lead(day, 1, now()) OVER (PARTITION BY token_address, tokenId ORDER BY day) AS next_day
-    FROM {{ ref('transfers_ethereum_erc721_rolling_day') }})
-    WHERE amount = 1
+    FROM {{ ref('transfers_ethereum_erc721_rolling_day') }}
+    WHERE amount = 1)
 
 SELECT 
     'ethereum' as blockchain,
