@@ -3,11 +3,11 @@ version: 2
 models:
   - name: dex_aggregator_trades
     meta:
-      blockchain: ethereum
+      blockchain: ethereum, gnosis, avalanche_c
       sector: dex_aggregator
-      contributors: bh2smith
+      contributors: bh2smith, Henrystats
     config:
-      tags: ['ethereum', 'aggregator', 'dex', 'trades', 'cross-chain']
+      tags: ['ethereum', 'gnosis', 'avalanche_c', 'aggregator', 'dex', 'trades', 'cross-chain']
     description: >
       Aggregator trades on all chains across all contracts and versions
     columns:
@@ -80,6 +80,3 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the corresponding trade event"
-      - &unique_trade_id
-        name: unique_trade_id
-        description: "Unique trade ID built to track merge incremental strategy in the model"
