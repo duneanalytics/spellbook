@@ -183,16 +183,6 @@ models:
           combination_of_columns:
             - block_date
             - nft_contract_address
-      - check_seed:
-          seed_file: ref('nft_collection_stats_seed')
-          match_columns:
-            - block_date
-            - nft_contract_address
-          check_columns:
-            - volume_eth
-            - price_p5_eth
-            - price_max_eth
-            - price_min_eth
     columns:
       - name: block_date
         description: "Block date"

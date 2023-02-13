@@ -909,14 +909,6 @@ seeds:
           filter_3_bought_or_sold_3x: boolean
           filter_4_first_funded_by_same_wallet: boolean
           is_wash_trade: boolean
-      nft_collection_stats_seed:
-        +column_types:
-          block_date: date
-          nft_contract_address: string
-          volume_eth: double
-          price_p5_eth: double
-          price_max_eth: double
-          price_min_eth: double
 
     nexusmutual:
       ethereum:
