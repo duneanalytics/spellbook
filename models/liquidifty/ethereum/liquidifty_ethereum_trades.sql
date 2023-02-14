@@ -1,5 +1,9 @@
 {{ config(
     schema = 'liquidifty_ethereum',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'unique_trade_id'],
     alias = 'trades',
     post_hook = '{{ expose_spells(\'["ethereum"]\',
                                     "project",
@@ -36,6 +40,9 @@ with v2 as (
         end as currency_token_standard,
         '1' as orderType
     from {{ source('liquidifty_ethereum', 'MarketplaceV2_5_evt_Buy') }}
+    {% if is_incremental() %}
+    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 ),
 stack as (
     select
@@ -64,6 +71,9 @@ stack as (
         end as currency_token_standard,
         '1' as orderType
     from {{ source('liquidifty_ethereum', 'PoolSell_evt_Buy') }}
+    {% if is_incremental() %}
+    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 ),
 v3 as (
     select
@@ -120,9 +130,17 @@ v3 as (
                 get_json_object(order, '$.orderType') as orderType,
                 get_json_object(order, '$.amount') as amount
             from (
-                select *, explode(orders) as order from {{ source('liquidifty_ethereum', 'MarketplaceV3_call_buy') }}
+                select *, explode(orders) as order
+                from {{ source('liquidifty_ethereum', 'MarketplaceV3_call_buy') }}
+                {% if is_incremental() %}
+                where call_block_time >= date_trunc("day", now() - interval '1 week')
+                {% endif %}
                 union all
-                select *, explode(orders) as order from {{ source('liquidifty_ethereum', 'MarketplaceV3_deprecated_call_buy') }}
+                select *, explode(orders) as order
+                from {{ source('liquidifty_ethereum', 'MarketplaceV3_deprecated_call_buy') }}
+                {% if is_incremental() %}
+                where call_block_time >= date_trunc("day", now() - interval '1 week')
+                {% endif %}
             )
             where call_success
         )
@@ -178,5 +196,12 @@ left join {{ source('prices', 'usd') }} as prices
     on prices.minute = date_trunc('minute', buys.block_time)
     and prices.contract_address = buys.currency_contract
     and prices.blockchain = 'ethereum'
+    {% if is_incremental() %}
+    and prices.minute >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 inner join {{ source('ethereum', 'transactions') }} transactions
-    on transactions.hash = buys.tx_hash
+    on transactions.block_number = buys.block_number
+    and transactions.hash = buys.tx_hash
+    {% if is_incremental() %}
+    and transactions.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
