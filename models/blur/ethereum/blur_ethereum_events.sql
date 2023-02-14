@@ -72,7 +72,7 @@ SELECT
     , CASE WHEN get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.recipient') IS NOT NULL AND get_json_object(bm.buy, '$.paymentToken') IN ('0x0000000000000000000000000000000000000000', '0x0000000000a39bb272e79075ade125fd351887ac') THEN CAST('ETH' AS string)
         WHEN get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.recipient') IS NOT NULL THEN CAST(pu.symbol AS string)
         END AS royalty_fee_currency_symbol
-    ,  CAST('ethereum-blur-v1-' || bm.evt_block_number || '-' || bm.evt_tx_hash || '-' || bm.evt_index AS string) AS unique_trade_id
+    ,  CAST('ethereum-blur-v1-' || bm.evt_block_number || '-' || bm.evt_tx_hash || '-' || COALESCE(seller_fix.from, get_json_object(bm.sell, '$.trader')) || '-' || COALESCE(buyer_fix.to, get_json_object(bm.buy, '$.trader')) || '-' || get_json_object(bm.buy, '$.collection') || '-' || get_json_object(bm.sell, '$.tokenId') || '-' || bm.evt_index AS string) AS unique_trade_id
 FROM {{ source('blur_ethereum','BlurExchange_evt_OrdersMatched') }} bm
 JOIN {{ source('ethereum','transactions') }} et ON et.block_number=bm.evt_block_number
     AND et.hash=bm.evt_tx_hash
@@ -179,7 +179,7 @@ SELECT
     , CASE WHEN get_json_object(s.consideration[0], '$.recipient')!=s.recipient THEN CAST(get_json_object(s.consideration[0], '$.recipient') AS string)
         ELSE CAST(get_json_object(s.consideration[1], '$.recipient') AS string)
         END AS royalty_fee_receive_address
-    , CAST('ethereum-blur-v1-' || s.evt_block_number || '-' || s.evt_tx_hash || '-' || s.evt_index AS string) AS unique_trade_id
+    , CAST('ethereum-blur-v1-' || s.evt_block_number || '-' || CAST(s.evt_tx_hash || '-' || s.offerer || '-' || s.recipient || '-' || get_json_object(s.offer[0], '$.token') || '-' || get_json_object(s.offer[0], '$.identifier') || '-' || s.evt_index AS string) AS unique_trade_id
 FROM {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }} s
 INNER JOIN {{ source('ethereum', 'transactions') }} tx ON tx.block_number=s.evt_block_number
     AND tx.hash=s.evt_tx_hash
