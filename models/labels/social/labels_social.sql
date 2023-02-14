@@ -8,27 +8,26 @@
                                 \'["ilemi"]\') }}')
 }}
 
-{% set dex_models = [
---Persona
- ref('labels_sandwich_attackers')
-,ref('labels_dex_aggregator_traders')
-,ref('labels_arbitrage_traders')
-,ref('labels_dex_traders')
-,ref('labels_trader_platforms')
---Usage
-,ref('labels_average_trade_values')
-,ref('labels_trader_age')
-,ref('labels_trader_dex_diversity')
-,ref('labels_trader_frequencies')
-,ref('labels_trader_portfolios')
+{% set social_models = [
+--Identifier
+ ref('labels_ens')
 ] %}
 
 SELECT *
 FROM (
-    {% for dex_model in dex_models %}
+    {% for social_model in social_models %}
     SELECT
-        *
-    FROM {{ dex_model }}
+        blockchain,
+        address,
+        name,
+        case when category = 'ENS' then 'social' else category end as category,
+        contributor,
+        source,
+        created_at,
+        updated_at,
+        model_name,
+        label_type
+    FROM {{ social_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
