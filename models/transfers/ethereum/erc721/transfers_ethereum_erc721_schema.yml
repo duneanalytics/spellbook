@@ -21,6 +21,7 @@ models:
         description: "Wallet address of sender or receiver."
       - &token_address_erc721
         name: token_address
+        description: "erc721 contract address"
       - name: symbol
         description: "ERC721 token symbol"
       - &evt_block_time
