@@ -30,7 +30,7 @@ with v1 as (
         contract_address  as project_contract_address,
         evt_tx_hash as tx_hash,
         evt_block_number as block_number,
-
+        evt_index as in_tx_id,
         'native' as currency_token_standard,
         '1' as orderType
     from {{ source('liquidifty_bnb', 'MarketplaceV1_evt_Buy') }}
