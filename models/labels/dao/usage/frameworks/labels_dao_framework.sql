@@ -1,7 +1,7 @@
 {{config(alias='dao_framework')}}
 
 SELECT 
-    array(blockchain) as blockchain,
+    blockchain,
     dao as address, 
     CASE 
         WHEN dao_creator_tool = 'aragon' THEN 'DAO: Aragon'
@@ -23,7 +23,7 @@ WHERE dao_creator_tool != 'zodiac' -- excluding zodiac since they're gnosis safe
 UNION  -- using a union because there are daos whose contract address also receives and send funds
 
 SELECT 
-    array(blockchain) as blockchain,
+    blockchain,
     dao_wallet_address as address, 
     CASE 
         WHEN dao_creator_tool = 'aragon' THEN 'DAO: Aragon'
