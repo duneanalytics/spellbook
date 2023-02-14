@@ -8,7 +8,7 @@
     )
 }}
 
-SELECT 'ethereum' AS blokchain
+SELECT 'ethereum' AS blockchain
 , et.to AS address
 , MIN_BY(et.from, et.block_number) AS first_funded_by
 , MIN(et.block_time) AS block_time

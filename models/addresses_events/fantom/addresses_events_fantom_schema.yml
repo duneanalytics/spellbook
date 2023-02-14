@@ -16,12 +16,15 @@ models:
           filter:
             blockchain: fantom
           match_columns:
+            - blockchain
             - address
           check_columns:
             - first_funded_by
             - block_number
             - tx_hash
     columns:
+      - name: blockchain
+        description: "Blockchain"
       - name: address
         description: "Concerned Fantom address"
         tests:

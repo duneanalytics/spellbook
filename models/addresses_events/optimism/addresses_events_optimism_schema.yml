@@ -22,6 +22,8 @@ models:
             - block_number
             - tx_hash
     columns:
+      - name: blockchain
+        description: "Blockchain"
       - name: address
         description: "Concerned Optimism address"
         tests:
