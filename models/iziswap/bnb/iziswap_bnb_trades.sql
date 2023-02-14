@@ -36,8 +36,8 @@ select
 	, '1' as version
 	, date_trunc('DAY', s.evt_block_time) as block_date
 	, s.evt_block_time as block_time
-	, s.token_bought_amount_raw as token_bought_amount_raw
-	, s.token_sold_amount_raw as token_sold_amount_raw
+    , CAST(s.token_bought_amount_raw  AS DECIMAL(38,0)) AS token_bought_amount_raw
+    , CAST(s.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
     , coalesce(
         (s.token_bought_amount_raw / power(10, prices_b.decimals)) * prices_b.price
         ,(s.token_sold_amount_raw / power(10, prices_s.decimals)) * prices_s.price
