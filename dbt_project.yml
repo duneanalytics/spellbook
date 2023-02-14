@@ -267,6 +267,11 @@ models:
         +schema: dodo_polygon
       arbitrum:
         +schema: dodo_arbitrum
+        
+    spookyswap:
+      +schema: spookyswap
+      fantom:
+        +schema: spookyswap_fantom
 
     labels:
       +schema: labels
@@ -368,6 +373,11 @@ models:
       bnb:
         +schema: nftrade_bnb
 
+    spiritswap:
+      +schema: spiritswap
+      fantom:
+        +schema: spiritswap_fantom
+
     jarvis_network:
       +schema: jarvis_network
       polygon:
@@ -377,6 +387,11 @@ models:
       +schema: cryptopunks
       ethereum:
         +schema: cryptopunks_ethereum
+
+    spartacus_exchange:
+      +schema: spartacus_exchange
+      fantom:
+        +schema: spartacus_exchange_fantom
 
     tornado_cash:
       +schema: tornado_cash
@@ -502,6 +517,11 @@ models:
       ethereum:
         +schema: dfx_ethereum
 
+    yield_yak:
+      +schema: yield_yak
+      avalanche_c:
+        +schema: yield_yak_avalanche_c
+
     shibaswap:
       +schema: shibaswap
       ethereum:
@@ -599,8 +619,7 @@ models:
         
       polygon:
         +schema: zeroex_polygon
-        erc20:
-          +schema: zeroex_polygon_erc20
+        
       avalanche_c:
         +schema: zeroex_avalanche_c
       fantom:
@@ -770,6 +789,18 @@ seeds:
           token_bought_amount: float
           token_sold_address: string
           token_sold_amount: float
+      aggregator:
+        +column_types:
+          blockchain: string
+          project: string
+          version: string
+          block_date: date
+          tx_hash: string
+          evt_index: int
+          token_bought_address: string
+          token_bought_amount: float
+          token_sold_address: string
+          token_sold_amount: float  
       pools:
         +column_types:
           blockchain: string
@@ -1046,33 +1077,9 @@ seeds:
             matcha_limit_order_flag: boolean
             volume_usd: double
       polygon:
-        fills:
-          +enabled: true
-          +schema: test_data
-          zeroex_api_polygon_fills_sample:
-            +column_types:
-              tx_hash: string
-              evt_index: int
-              contract_address: string
-              block_time: timestamp
-              block_date: date
-              maker: string
-              taker: string
-              taker_token: string
-              maker_token: string
-              taker_token_amount: double
-              taker_token_amount_raw: double
-              maker_token_amount: double
-              maker_token_amount_raw: double
-              type: string
-              affiliate_address: string
-              swap_flag: boolean
-              matcha_limit_order_flag: boolean
-              volume_usd: double
-      arbitrum:
         +enabled: true
         +schema: test_data
-        zeroex_arbitrum_api_fills_sample:
+        zeroex_polygon_api_fills_sample:
           +column_types:
             tx_hash: string
             evt_index: int
