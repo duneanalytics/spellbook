@@ -19,31 +19,40 @@ models:
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain"
+      - &project
+        name: project
       - &tx_hash
         name: tx_hash
         description: "Transaction hash"
+      - &block_date
+        name: block_date
+        description: "UTC event block date"
       - &block_time
         name: block_time
         description: "UTC event block time"
-      - &loan_id
-        name: loan_id
-        description: "The ID associated with the loan"
-      - &sharky_instructions
-        name: sharky_instructions
-        description: "The set of instructions executed by the SharkyFi smart contract"
-      - &amount_original
-        name: amount_original
-        description: "Value of the loan at time of execution in the original currency"
+      - &block_number
+        name: block_number
       - &amount_usd
         name: amount_usd
         description:  "USD value of the loan at time of execution"
-      - &evt_type
-        name: evt_type
-        description:  "Event type (Offer, Rescind, Take, Repay, Foreclose)"
+      - &amount_original
+        name: amount_original
+        description: "Value of the loan at time of execution in the original currency"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw value of the loan at time of execution in the original currency"
+      - &sharky_instructions
+        name: sharky_instructions
+        description: "The set of instructions executed by the SharkyFi smart contract"
       - &user
         name: user
         description:  "The wallet address of the user who initiated the event"
       - &id
         name: id
         description:  "tx_id of solana.account_activity"
+      - &evt_type
+        name: evt_type
+        description:  "Event type (Offer, Rescind, Take, Repay, Foreclose)"
+      - &loan_id
+        name: loan_id
+        description: "The ID associated with the loan"

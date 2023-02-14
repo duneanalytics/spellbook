@@ -703,9 +703,7 @@ models:
       +schema: zipswap
       optimism:
         +schema: zipswap_optimism
-    
-    
-
+        
     sharky:
       +schema: sharky
       solana:

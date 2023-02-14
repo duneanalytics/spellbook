@@ -12,7 +12,7 @@
     )
 }}
 
-{%- set project_start_date = '2022-11-14' %} -- TODO change back to '2022-04-14'
+{%- set project_start_date = '2023-01-14' %} -- TODO change back to '2022-04-14'
 {%- set sharky_smart_contract = 'SHARKobtfF1bHhxD2eqftjHBdVSCbKo9JtgK71FhELP' %}
 
 WITH sharky_txs AS (
@@ -20,28 +20,25 @@ WITH sharky_txs AS (
                block_time
         FROM {{ source('solana', 'account_activity') }}
         WHERE tx_success
-        {% if not is_incremental() %}
-          AND block_time >= '{{ project_start_date }}'
-        {% endif %}
-        {% if is_incremental() %}
-        -- this filter will only be applied on an incremental run
-          AND block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-          AND address = '{{sharky_smart_contract}}'
+            {% if not is_incremental() %}
+            AND block_time >= '{{ project_start_date }}'
+            {% else %}
+            AND block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
+            AND address = '{{sharky_smart_contract}}'
     ),
     sol_price AS (
         SELECT minute,
                price
         FROM {{ source('prices', 'usd') }}
         WHERE
-        blockchain IS NULL
-        AND symbol = 'SOL'
-        {% if not is_incremental() %}
-        AND minute >= '{{ project_start_date }}'
-        {% endif %}
-        {% if is_incremental() %}
-        AND minute >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
+            blockchain IS NULL
+            AND symbol = 'SOL'
+            {% if not is_incremental() %}
+            AND minute >= '{{ project_start_date }}'
+            {% else %}
+            AND minute >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
     ),
     filtered_txs AS (
         SELECT signatures,
@@ -56,29 +53,30 @@ WITH sharky_txs AS (
         FROM {{ source('solana','transactions') }} tx
         {% if not is_incremental() %}
         WHERE tx.block_time >= '{{ project_start_date }}'
-        {% endif %}
-        {% if is_incremental() %}
+        {% else %}
         WHERE tx.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     ),
     raw_events AS (
-        SELECT 'solana'                                                        AS blockchain,
-               'sharky'                                                        AS project,
-               signatures[0]                                                   AS tx_hash,
-               block_date,
-               block_time,
-               CAST(block_slot AS BIGINT)                                      AS block_number,
-               (abs(post_balances[0] - pre_balances[0]) / 1e9) * p.price       AS amount_usd,
-               (abs(post_balances[0] - pre_balances[0]) / 1e9)                 AS amount_original,
-               CAST(abs(post_balances[0] - pre_balances[0]) AS DECIMAL(38, 0)) AS amount_raw,
+        SELECT 'solana'                                                                                     AS blockchain,
+               'sharky'                                                                                     AS project,
+               filtered_txs.signatures[0]                                                                   AS tx_hash,
+               filtered_txs.block_date,
+               filtered_txs.block_time,
+               CAST(filtered_txs.block_slot AS BIGINT)                                                      AS block_number,
+               (abs(filtered_txs.post_balances[0] - filtered_txs.pre_balances[0]) / 1e9) * p.price          AS amount_usd,
+               (abs(filtered_txs.post_balances[0] - filtered_txs.pre_balances[0]) / 1e9)                    AS amount_original,
+               CAST(abs(filtered_txs.post_balances[0] - filtered_txs.pre_balances[0]) AS DECIMAL(38, 0))    AS amount_raw,
                filter(
-                           instructions,
+                           filtered_txs.instructions,
                            x -> x.executing_account = '{{sharky_smart_contract}}'
-                   )                                                           AS sharky_instructions,
-               signer                                                          AS user,
-               id
+                   )                                                                                        AS sharky_instructions,
+               filtered_txs.signer                                                                          AS user,
+               filtered_txs.id
         FROM sharky_txs
-        INNER JOIN filtered_txs USING (block_time, id)
+        INNER JOIN filtered_txs
+            ON sharky_txs.block_time = filtered_txs.block_time
+            AND sharky_txs.id = filtered_txs.id
         LEFT JOIN sol_price p
             ON p.minute = date_trunc('minute', block_time)
     ),
