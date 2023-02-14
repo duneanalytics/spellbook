@@ -3,6 +3,8 @@
 ) 
 }}
 
+WITH 
+
 multiple_owners as (
     select 
         blockchain,
