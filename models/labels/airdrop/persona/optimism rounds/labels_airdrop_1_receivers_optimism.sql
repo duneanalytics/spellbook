@@ -1,7 +1,7 @@
 {{config(alias='airdrop_1_receivers_optimism')}}
 
 SELECT
-    array('optimism') as blockchain,
+    'optimism' as blockchain,
     address,
     '$OP Airdrop 1 Receiver' AS name,
     'airdrop' AS category,
