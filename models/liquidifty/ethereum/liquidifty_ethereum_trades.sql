@@ -33,7 +33,7 @@ with v2 as (
         contract_address  as project_contract_address,
         evt_tx_hash as tx_hash,
         evt_block_number as block_number,
-        concat(cast(evt_block_number as varchar(5)), '-', cast(evt_index as varchar(5))) as unique_trade_id,
+        concat(cast(evt_block_number as varchar(5)), '-',evt_tx_hash,'-', cast(evt_index as varchar(5))) as unique_trade_id,
         case
             when currency = '0x0000000000000000000000000000000000000000' then 'native'
             else 'erc20'
@@ -64,7 +64,7 @@ stack as (
         contract_address  as project_contract_address,
         evt_tx_hash as tx_hash,
         evt_block_number as block_number,
-        concat(cast(evt_block_number as varchar(5)), '-', cast(evt_index as varchar(5))) as unique_trade_id,
+        concat(cast(evt_block_number as varchar(5)), '-',evt_tx_hash,'-', cast(evt_index as varchar(5))) as unique_trade_id,
         case
             when currency = '0x0000000000000000000000000000000000000000' then 'native'
             else 'erc20'
