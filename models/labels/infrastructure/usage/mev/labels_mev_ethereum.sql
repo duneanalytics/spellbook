@@ -267,4 +267,4 @@ FROM (VALUES
 , ('ethereum','0xff2fbc735d33ae830f056107f1b551783ec4ed5b','MEV','infrastructure','hildobby','static', TIMESTAMP('2022-10-08'), now(), 'mev', 'usage')
 , ('ethereum','0xff62dfadca3b5643d0b283571fe154d886580c0c','MEV','infrastructure','hildobby','static', TIMESTAMP('2022-10-08'), now(), 'mev', 'usage')
 , ('ethereum','0x93f9a668dccc090f63b0ec27d809527dc2f0ebba','MEV','infrastructure','hildobby','static', TIMESTAMP('2022-10-08'), now(), 'mev', 'usage')
-    ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at)
+    ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type)
