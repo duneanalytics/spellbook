@@ -8,7 +8,7 @@
 }}
 
 select
-    'test' as blockchain,
+    'ethereum' as blockchain,
     date_trunc('day', evt_block_time) as day,
     wallet_address,
     token_address,
