@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'all',
+    alias = 'dex',
     materialized = 'table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c"]\',
@@ -9,13 +9,12 @@
 }}
 
 {% set dex_models = [
---Persona
  ref('labels_sandwich_attackers')
 ,ref('labels_dex_aggregator_traders')
 ,ref('labels_arbitrage_traders')
 ,ref('labels_dex_traders')
 ,ref('labels_trader_platforms')
---Usage
+
 ,ref('labels_average_trade_values')
 ,ref('labels_trader_age')
 ,ref('labels_trader_dex_diversity')

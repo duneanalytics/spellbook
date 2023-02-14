@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: trader_dex_diversity
+  - name: labels_trader_age
     meta:
       blockchain: ethereum
       sector: labels
       category: dex
       contributors: gentrexha
     config:
-      tags: ['labels', 'ethereum', 'trader_dex_diversity', 'dex', 'dex_aggregator']
-    description: "Number of different dex-es used by addresses who use dex and dex aggregators"
+      tags: ['labels', 'ethereum', 'trader_age', 'dex', 'dex_aggregator']
+    description: "Trader age (days between first and last trade) for addresses who use dex and dex aggregators"
     columns:
       - &blockchain
         name: blockchain
@@ -42,15 +42,15 @@ models:
         name: label_type
         description: "Type of label (see labels overall readme)"
 
-  - name: trader_dex_diversity_ethereum
+  - name: labels_trader_age_ethereum
     meta:
       blockchain: ethereum
       sector: labels
-      category: trader_dex_diversity
+      category: trader_age
       contributors: gentrexha
     config:
-      tags: ['labels', 'ethereum', 'trader_dex_diversity', 'dex', 'dex_aggregator']
-    description:  "Number of different dex-es used by addresses who use dex and dex aggregators"
+      tags: ['labels', 'ethereum', 'trader_age', 'dex', 'dex_aggregator']
+    description:  "Trader age (days between first and last trade) for addresses who use dex and dex aggregators"
     columns:
       - *blockchain
       - *address

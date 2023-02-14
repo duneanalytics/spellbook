@@ -1,4 +1,4 @@
-{{config(alias='dao')}}
+{{config(alias='dao_framework')}}
 
 SELECT 
     array(blockchain) as blockchain,

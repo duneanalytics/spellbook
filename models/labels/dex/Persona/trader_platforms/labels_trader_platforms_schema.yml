@@ -1,19 +1,19 @@
 version: 2
 
 models:
-  - name: average_trade_values
+  - name: labels_trader_platforms
     meta:
       blockchain: ethereum
       sector: labels
       category: dex
       contributors: gentrexha
     config:
-      tags: ['labels', 'ethereum', 'average_trade_values', 'dex', 'dex_aggregator']
-    description: "Trader average trade values for addresses who use dex and dex aggregators"
+      tags: ['labels', 'ethereum', 'trader_platforms', 'dex', 'dex_aggregator']
+    description: "Trader platforms for traders who use dex and dex aggregators"
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain"
+        description: "Blockchain"   
       - &address
         name: address
         description: "Address of trader"
@@ -42,15 +42,15 @@ models:
         name: label_type
         description: "Type of label (see labels overall readme)"
 
-  - name: average_trade_values_ethereum
+  - name: labels_trader_platforms_ethereum
     meta:
       blockchain: ethereum
       sector: labels
-      category: average_trade_values
+      category: trader_platforms
       contributors: gentrexha
     config:
-      tags: ['labels', 'ethereum', 'average_trade_values', 'dex', 'dex_aggregator']
-    description:  "Trader average trade values for addresses who use dex and dex aggregators"
+      tags: ['labels', 'ethereum', 'trader_platforms', 'dex', 'dex_aggregator']
+    description:  "Trader platforms for traders who use dex and dex aggregators"
     columns:
       - *blockchain
       - *address

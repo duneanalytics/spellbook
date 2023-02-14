@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'all',
+    alias = 'dao',
     materialized = 'table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -9,10 +9,8 @@
 }}
 
 {% set dao_models = [
---identifier
  ref('labels_dao_multisig_ethereum')
---Usage
-,ref('labels_dao_framework')
+ ,ref('labels_dao_framework')
 ] %}
 
 SELECT *

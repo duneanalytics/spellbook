@@ -1,8 +1,8 @@
 {{
     config(
-        alias='trader_platforms',
+        alias='trader_dex_diversity',
         post_hook='{{ expose_spells(\'["ethereum"]\', "sector", "labels", \'["gentrexha"]\') }}'
     )
 }}
 
-SELECT * FROM {{ ref('trader_platforms_ethereum') }}
+SELECT * FROM {{ ref('labels_trader_dex_diversity_ethereum') }}

@@ -6,7 +6,7 @@ The most important thing to learn are the label types below. If you have a label
 
 **There are currently 7 high-level categories of labels**, and we are always open to adding more. If the model is likely to be the only model of it's category, it will go in the `__single category labels__` folder until we find something to expand on or attach it to. Those models have the exact same schemas as others, but are put into their own folder so that high-level categories are easily found and navigated.
 
-### Contributing
+## Contributing
 
 Anyone can contribute, if you have an idea you would just like to discuss first then go ahead and start a [new discussion](https://github.com/duneanalytics/spellbook/discussions/categories/labels-discussion) in the labels section.
 
@@ -16,7 +16,7 @@ Anyone can contribute, if you have an idea you would just like to discuss first 
 
 If you want to update/improve upon an existing label, start a discussion as well and tag the contributors (their names can be found in the schema file, which usually map closely to their github names). `ilemi` is `andrewhong5297`, I should be your default tag for questions.
 
-### Label Types:
+## Label Types:
 
 Here’s a list of label types:
 
@@ -26,9 +26,9 @@ Here’s a list of label types:
 
 This is just the starting list. If a label is created that clearly fits inside a new type, we will create a type for it. The idea is to try and keep types smaller in number and very clear so that it's easier for analysts to navigate, use, and contribute to.
 
-## Example Hierarchies:
+### Example Hierarchies:
 
-To make this clear, let’s do some examples.
+To make this clear, let’s do some examples (some of these don't exist yet in the repo).
 
 **Category: NFT**
 

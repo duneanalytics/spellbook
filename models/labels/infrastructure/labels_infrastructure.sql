@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'all',
+    alias = 'infrastructure',
     materialized = 'table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -9,13 +9,12 @@
 }}
 
 {% set infrastructure_models = [
---identifier
  ref('labels_eth_stakers')
  , ref('labels_miners')
  , ref('labels_system_addresses')
  , ref('labels_validators')
---usage
- ,ref('labels_flashbots')
+
+ , ref('labels_flashbots_ethereum')
  , ref('labels_mev_ethereum')
 ] %}
 

@@ -1,8 +1,8 @@
 {{
     config(
-        alias='trader_age',
+        alias='average_trade_values',
         post_hook='{{ expose_spells(\'["ethereum"]\', "sector", "labels", \'["gentrexha"]\') }}'
     )
 }}
 
-SELECT * FROM {{ ref('trader_age_ethereum') }}
+SELECT * FROM {{ ref('labels_average_trade_values_ethereum') }}

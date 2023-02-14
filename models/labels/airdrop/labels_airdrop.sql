@@ -1,8 +1,8 @@
-{{config(alias='nft',
+{{config(alias='airdrop',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "labels",
                                     \'["ilemi"]\') }}'
 )}}
 
-SELECT * FROM {{ ref('airdrop_1_receivers_optimism') }}
+SELECT * FROM {{ ref('labels_airdrop_1_receivers_optimism') }}
