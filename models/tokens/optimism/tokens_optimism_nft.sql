@@ -248,5 +248,6 @@ FROM
 ,('0x194f10d4976F033F0e8802383c9a2997B92A1354', 'Optimistic Cat', 'erc721')
 ,('0x67709f880F66E15f6aE93b1D737f8d8D9FB9827f', 'Santa Oppa Bear', 'erc721')
 ,('0x00e3aa03e47c32397a94509e50b0558988c0d04e', 'L2NFTOG', 'erc721')
+,('0x0baf753c3c7fae9121d1c731fd3c59d98a0397b9', 'Optimism Checks', 'erc721')
 
 ) as temp_table (contract_address, name, standard)
