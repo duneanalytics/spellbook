@@ -21,7 +21,7 @@
 -- base sources
 WITH
 src_evt_profit as (
-    SELECT
+    SELECT distinct
      *
      , CASE WHEN currency='0x0000000000000000000000000000000000000000'
         THEN true ELSE false END as is_native_eth
@@ -33,7 +33,7 @@ src_evt_profit as (
 ),
 
 src_evt_inventory as (
-    SELECT
+    SELECT distinct
      evt_tx_hash
     ,evt_block_time
     ,itemHash
