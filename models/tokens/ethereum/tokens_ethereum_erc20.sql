@@ -20800,5 +20800,19 @@ FROM (VALUES
         ('0xc5a051b4e77f2d6cfa049fe27ed986f4a5c66ee2', 'DeusEX', 9),
         ('0xce37d83424a6545103e24fe027f8559d0e6d0f45', 'WBTC0.5', 18),
         ('0xce5771ccc0066682eecec1a8ed7d21ad53a363f3', 'BOTTO', 9),
-        ('0xff770e4c68e35db85c6e0e89a43750ec02bdb2ac', 'oBTC', 18)
+        ('0xff770e4c68e35db85c6e0e89a43750ec02bdb2ac', 'oBTC', 18),
+        ('0x1c44203525c11099873e72561f337b29e425860f', '⅒', 18),
+        ('0x341bb10d8f5947f3066502dc8125d9b8949fd3d6', 'yvCurve-STG-USDC', 18),
+        ('0x3c20ac688410be8f391be1fb00afc5c212972f86', 'clevUSD', 18),
+        ('0x4f08705fb8f33affc231ed66e626b40e84a71870', 'FLUT', 11),
+        ('0x569424c5ee13884a193773fdc5d1c5f79c443a51', 'PINE', 18),
+        ('0x643b17e11fa8a01e1f01f3e7ebd6a28d6b9bcc5d', 'EIGEN', 18),
+        ('0x80941467df667bfdad333d4dc3527713a620df3c', 'ChatGPT', 18),
+        ('0x97983236be88107cc8998733ef73d8d969c52e37', 'sdYFI', 18),
+        ('0xb2d948be3a74ecce80378d4093e6cd7f4dc1cf9c', 'AMX', 6),
+        ('0xc8d9871a79551ab4439c9e08f12962e3785f0437', 'COC', 18),
+        ('0xd0b9ed2c21849e830d6f6a9a7ba6c1e952847569', 'NEOAI', 18),
+        ('0xdadb4ae5b5d3099dd1f586f990b845f2404a1c4c', '( ͡° ͜ʖ ͡°)', 18),
+        ('0xddc6625feca10438857dd8660c021cd1088806fb', 'RAD', 18),
+        ('0xe2db97b7dd3d3d6d669043af80ed06e1f9a83286', 'MNPLY', 18)
      ) AS temp_table (contract_address, symbol, decimals)
