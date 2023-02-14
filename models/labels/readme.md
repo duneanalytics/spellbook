@@ -16,6 +16,8 @@ Anyone can contribute, if you have an idea you would just like to discuss first 
 
 If you want to update/improve upon an existing label, start a discussion as well and tag the contributors (their names can be found in the schema file, which usually map closely to their github names). `ilemi` is `andrewhong5297`, I should be your default tag for questions.
 
+
+
 ## Label Types:
 
 Here’s a list of label types:
