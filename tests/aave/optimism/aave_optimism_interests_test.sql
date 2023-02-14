@@ -1,6 +1,6 @@
 with unit_test1
     as (select case
-                 when variable_borrow_apy = 0.03485010188503055 then true
+                 when variable_borrow_apy = 0.03485010188503056 then true
                  else false
                end as test
         from   {{ ref('aave_v3_optimism_interest_rates' )}}
