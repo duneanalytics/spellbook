@@ -33,7 +33,7 @@ with v2 as (
         contract_address  as project_contract_address,
         evt_tx_hash as tx_hash,
         evt_block_number as block_number,
-        concat(cast(evt_block_number as varchar(5)), '-',evt_tx_hash,'-', cast(evt_index as varchar(5))) as unique_trade_id,
+        evt_index as in_tx_id,
         case
             when currency = '0x0000000000000000000000000000000000000000' then 'native'
             else 'erc20'
@@ -64,7 +64,7 @@ stack as (
         contract_address  as project_contract_address,
         evt_tx_hash as tx_hash,
         evt_block_number as block_number,
-        concat(cast(evt_block_number as varchar(5)), '-',evt_tx_hash,'-', cast(evt_index as varchar(5))) as unique_trade_id,
+        evt_index as in_tx_id,
         case
             when currency = '0x0000000000000000000000000000000000000000' then 'native'
             else 'erc20'
@@ -107,7 +107,7 @@ v3 as (
         contract_address  as project_contract_address,
         call_tx_hash as tx_hash,
         call_block_number as block_number,
-        concat(cast(call_block_number as varchar(5)), '-', call_tx_hash,'-', call_trace_address::string) as unique_trade_id,
+        row_number() over (partition by call_tx_hash, order by call_trace_address) as in_tx_id,
         case
             when get_json_object(currency, '$.assetType') = '0' then 'native'
             when get_json_object(currency, '$.assetType') = '1' then 'erc20'
@@ -178,7 +178,7 @@ select
     buys.block_number,
     transactions.from as tx_from,
     transactions.to as tx_to,
-    buys.unique_trade_id,
+    concat(cast(buys.block_number as varchar(5)), '-',buys.tx_hash,'-', cast(in_tx_id as varchar(5))) as unique_trade_id,
     buys.currency_token_standard,
     buys.orderType as order_type
 from (
