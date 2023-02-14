@@ -34,31 +34,31 @@ models:
         name: total_op_eligible_to_claim
         description: "Total OP tokens eligible to claim"
   
-  - name: airdrop_optimism_op_airdrop2_addresses
-    meta:
-      blockchain: optimism
-      sector: airdrop
-      project: addresses
-      contributors: msilb7
-    config:
-      tags: ['OP', 'airdrop', 'addresses', 'optimism', 'static']
-    description: "List of addresses eligible for OP airdrop #2 and amount they received based on their activity"
-    columns:
-      - *address
-      - name: a_op_delelgated_airdrop
-        description: "OP earned from governance delegation rewards"
-      - name: b_gas_rebate_airdrop
-        description: "OP earned from gas rebate rewards"
-      - name: attr1_currently_delegating_points
-        description: "Did the address have the 'currently delegating' attribute"
-      - name: attr2_op_delelgated_points
-        description: "Did the address have the 'higher op delegation' attribute"
-      - name: attr3_mo_active_points
-        description: "Did the address have the '6 months of app actions' attribute"
-      - name: attr4_gas_rebate_points
-        description: "Did the address have the 'higher gas rebate' attribute"
-      - name: num_bonus_categories
-        description: "How many bonus attribute categories did the address have"
-      - name: op_multiplier_bonus
-        description: "OP earned from multiplier bonuses"
-      - *total_op_eligible_to_claim
+  # - name: airdrop_optimism_op_airdrop2_addresses
+  #   meta:
+  #     blockchain: optimism
+  #     sector: airdrop
+  #     project: addresses
+  #     contributors: msilb7
+  #   config:
+  #     tags: ['OP', 'airdrop', 'addresses', 'optimism', 'static']
+  #   description: "List of addresses eligible for OP airdrop #2 and amount they received based on their activity"
+  #   columns:
+  #     - *address
+  #     - name: a_op_delelgated_airdrop
+  #       description: "OP earned from governance delegation rewards"
+  #     - name: b_gas_rebate_airdrop
+  #       description: "OP earned from gas rebate rewards"
+  #     - name: attr1_currently_delegating_points
+  #       description: "Did the address have the 'currently delegating' attribute"
+  #     - name: attr2_op_delelgated_points
+  #       description: "Did the address have the 'higher op delegation' attribute"
+  #     - name: attr3_mo_active_points
+  #       description: "Did the address have the '6 months of app actions' attribute"
+  #     - name: attr4_gas_rebate_points
+  #       description: "Did the address have the 'higher gas rebate' attribute"
+  #     - name: num_bonus_categories
+  #       description: "How many bonus attribute categories did the address have"
+  #     - name: op_multiplier_bonus
+  #       description: "OP earned from multiplier bonuses"
+  #     - *total_op_eligible_to_claim
