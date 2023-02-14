@@ -168,3 +168,33 @@ models:
         description: "Name of protocol that routed this trade using the aggregator, is NULL if it's the same as aggregator_name"
       - name: hash_marker_size
         description: "Number of characters the hash_marker is made of, can be useful on joins"
+
+  - name: nft_ethereum_collection_stats
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: Henrystats
+    config:
+      tags: ['nft','ethereum', 'sales stats','volume']
+    description: >
+        This spell aggregates nft collections trading stats (volume, floor price) and pulls the data from nft.trades
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - nft_contract_address
+    columns:
+      - name: block_date
+        description: "Block date"
+      - name: nft_contract_address
+        description: "NFT contract address"
+      - name: volume_eth
+        description: "daily nft collection volume Measured in ETH"
+      - name: trades
+        description: "daily nft collection number of trades"
+      - name: price_p5_eth
+        description: "5th percentile nft trade price Measured in ETH"
+      - name: price_min_eth
+        description: "Min NFT trade price Measured in ETH"
+      - name: price_max_eth
+        description: "Max NFT trade price Measured in ETH"
