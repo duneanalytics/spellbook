@@ -5,82 +5,98 @@
                                     \'["soispoke"]\') }}')
 }}
 
-SELECT DISTINCT array('ethereum') as blockchain,
+SELECT DISTINCT 'ethereum' as blockchain,
        miner, 
        'Ethereum Miner' as name,
-       'contracts' as category,
+       'infrastructure' as category,
        'soispoke' as contributor,
        'query' AS source,
        date('2022-09-28') as created_at,
-       now() as modified_at
+       now() as modified_at,
+       'miners' AS model_name,
+       'identifier' as label_type
 FROM {{ source('ethereum','blocks') }} 
 UNION 
-SELECT DISTINCT array('gnosis') as blockchain,
+SELECT DISTINCT 'gnosis' as blockchain,
        miner, 
        'Gnosis Miner' as name,
-       'contracts' as category,
+       'infrastructure' as category,
        'soispoke' as contributor,
        'query' AS source,
        date('2022-09-28') as created_at,
-       now() as modified_at
+       now() as modified_at,
+       'miners' AS model_name,
+       'identifier' as label_type
 FROM {{ source('gnosis','blocks') }} 
 UNION 
-SELECT DISTINCT array('avalanche_c') as blockchain,
+SELECT DISTINCT 'avalanche_c' as blockchain,
        miner, 
        'Avalanche Miner' as name,
-       'contracts' as category,
+       'infrastructure' as category,
        'soispoke' as contributor,
        'query' AS source,
        date('2022-09-28') as created_at,
-       now() as modified_at
+       now() as modified_at,
+       'miners' AS model_name,
+       'identifier' as label_type
 FROM {{ source('avalanche_c','blocks') }} 
 UNION 
-SELECT DISTINCT array('arbitrum') as blockchain,
+SELECT DISTINCT 'arbitrum' as blockchain,
        miner, 
        'Arbitrum Miner' as name,
-       'contracts' as category,
+       'infrastructure' as category,
        'soispoke' as contributor,
        'query' AS source,
        date('2022-09-28') as created_at,
-       now() as modified_at
+       now() as modified_at,
+       'miners' AS model_name,
+       'identifier' as label_type
 FROM {{ source('arbitrum','blocks') }} 
 UNION 
-SELECT DISTINCT array('bnb') as blockchain,
+SELECT DISTINCT 'bnb' as blockchain,
        miner, 
        'BNB Chain Miner' as name,
-       'contracts' as category,
+       'infrastructure' as category,
        'soispoke' as contributor,
        'query' AS source,
        date('2022-09-28') as created_at,
-       now() as modified_at
+       now() as modified_at,
+        'miners' AS model_name,
+       'identifier' as label_type
 FROM {{ source('bnb','blocks') }} 
 UNION 
-SELECT DISTINCT array('optimism') as blockchain,
+SELECT DISTINCT 'optimism' as blockchain,
        miner, 
        'Optimism Miner' as name,
-       'contracts' as category,
+       'infrastructure' as category,
        'soispoke' as contributor,
        'query' AS source,
        date('2022-09-28') as created_at,
-       now() as modified_at
+       now() as modified_at,
+        'miners' AS model_name,
+       'identifier' as label_type
 FROM {{ source('optimism','blocks') }} 
 UNION 
-SELECT DISTINCT array('fantom') as blockchain,
+SELECT DISTINCT 'fantom' as blockchain,
        miner, 
        'Fantom Miner' as name,
-       'contracts' as category,
+       'infrastructure' as category,
        'soispoke' as contributor,
        'query' AS source,
        date('2023-01-25') as created_at,
-       now() as modified_at
+       now() as modified_at,
+        'miners' AS model_name,
+       'identifier' as label_type
 FROM {{ source('fantom','blocks') }} 
 UNION 
-SELECT DISTINCT array('polygon') as blockchain,
+SELECT DISTINCT 'polygon' as blockchain,
        miner, 
        'Polygon Miner' as name,
-       'contracts' as category,
+       'infrastructure' as category,
        'soispoke' as contributor,
        'query' AS source,
        date('2023-01-25') as created_at,
-       now() as modified_at
+       now() as modified_at,
+        'miners' AS model_name,
+       'identifier' as label_type
 FROM {{ source('polygon','blocks') }} 

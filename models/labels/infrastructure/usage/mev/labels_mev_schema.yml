@@ -1,25 +1,25 @@
 version: 2
 
 models:
-  - name: labels_eth_stakers
+  - name: labels_mev_ethereum
     meta:
       blockchain: ethereum
       sector: labels
-      project: eth_stakers
+      project: mev
       contributors: hildobby
     config:
-      tags: ['labels', 'ethereum', 'staker', 'staking', 'eth']
-    description: "Addresses that have staked ETH"
+      tags: ['labels', 'ethereum', 'MEV']
+    description: "Known MEV wallets on Ethereum"
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain"   
       - &address
         name: address
-        description: "Address of staker"
+        description: "Address of known MEV wallet"
       - &name
         name: name
-        description: "Label name of staker"
+        description: "Label name of MEV address"
       - &category
         name: category
         description: "Label category"
@@ -35,3 +35,9 @@ models:
       - &updated_at
         name: updated_at
         description: "When were labels updated for the last time"
+      - &model_name
+        name: model_name
+        description: "Name of the label model sourced from"
+      - &label_type
+        name: label_type
+        description: "Type of label (see labels overall readme)"

@@ -5,26 +5,30 @@
                                     \'["hildobby"]\') }}')}}
 
 WITH identified_stakers AS (
-    SELECT array('ethereum') AS blockchain
+    SELECT 'ethereum' AS blockchain
     , address
     , entity AS name
-    , 'eth_staker' AS category
+    , 'infrastructure' AS category
     , 'hildobby' AS contributor
     , 'query' AS source
     , timestamp('2023-01-18') AS created_at
     , NOW() AS updated_at
+    , 'eth_stakers' AS model_name
+    , 'identifier' as label_type
     FROM {{ ref('staking_ethereum_entities')}}
     )
 
 , unidentified_stakers AS (
-    SELECT array('ethereum') AS blockchain
+    SELECT 'ethereum' AS blockchain
     , et.from AS address
     , 'Unidentified ETH staker' AS name
-    , 'eth_staker' AS category
+    , 'infrastructure' AS category
     , 'hildobby' AS contributor
     , 'query' AS source
     , timestamp('2023-01-18') AS created_at
     , NOW() AS updated_at
+    , 'eth_stakers' AS model_name
+    , 'identifier' as label_type
     FROM {{ source('ethereum', 'traces') }} et
     LEFT ANTI JOIN identified_stakers is
         ON et.from = is.address
