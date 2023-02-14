@@ -40,6 +40,7 @@ models:
       contributors: soispoke, dot2dotseurat, hildobby, 0xRob
     config:
       tags: ['transfers', 'ethereum', 'erc721', 'agg_hour', 'soispoke', 'dot2dotseurat', 'hildobby']
+      description: "A helper table to construct erc721 balances"
     columns:
       - *blockchain
       - &hour
@@ -63,6 +64,7 @@ models:
       contributors: soispoke, dot2dotseurat, hildobby, 0xRob
     config:
       tags: ['transfers', 'ethereum', 'erc721', 'rolling_hour', 'soispoke', 'dot2dotseurat', 'hildobby']
+      description: "A helper table to construct erc721 balances"
     columns:
       - *blockchain
       - *hour
@@ -84,6 +86,7 @@ models:
       contributors: soispoke, dot2dotseurat, hildobby, 0xRob
     config:
       tags: ['transfers', 'ethereum', 'erc721', 'agg_day', 'soispoke', 'dot2dotseurat', 'hildobby']
+      description: "A helper table to construct erc721 balances"
     columns:
       - *blockchain
       - &day
