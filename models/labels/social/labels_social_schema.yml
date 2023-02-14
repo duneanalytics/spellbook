@@ -21,6 +21,9 @@ models:
       - &category
         name: category
         description: "Label category"
+        tests:
+          - accepted_values:
+              values: ['dex']
       - &contributor
         name: contributor
         description: "Wizard(s) contributing to labels"

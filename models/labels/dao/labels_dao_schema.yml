@@ -18,6 +18,9 @@ models:
       - &name
         name: name
         description: "Label name"
+        tests:
+          - accepted_values:
+              values: ['dao']
       - &category
         name: category
         description: "Label category"

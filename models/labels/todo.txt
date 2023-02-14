@@ -1,5 +1,3 @@
-need to add label_type and model_name to all single category labels
-
 need to add required in checks for all high level categories where only category name is accepted
 
 need to go through PR ci/cd and see if everything is okay

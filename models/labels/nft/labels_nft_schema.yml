@@ -24,6 +24,9 @@ models:
       - &category
         name: category
         description: "Label category (NFT here)"
+        tests:
+          - accepted_values:
+              values: ['nft']
       - &contributor
         name: contributor
         description: "Wizard(s) contributing to labels"

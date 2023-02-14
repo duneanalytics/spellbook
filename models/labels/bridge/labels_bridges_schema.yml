@@ -23,6 +23,9 @@ models:
       - &category
         name: category
         description: "Label category"
+        tests:
+          - accepted_values:
+              values: ['bridge']
       - &contributor
         name: contributor
         description: "Wizard(s) contributing to labels"
