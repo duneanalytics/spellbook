@@ -1,0 +1,5 @@
+add ens?
+for lens, phi, etc.
+
+need to come back to labels_all and add an arbitrary label type for all single category labels
+need to define the readme better.
