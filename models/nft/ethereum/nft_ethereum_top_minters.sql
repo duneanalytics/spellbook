@@ -11,47 +11,37 @@
     )
 }}
 
+{% if is_incremental() %}
+{%- call statement('get_last_update_date', fetch_result=True) -%}
+    SELECT MAX(last_updated) FROM {{this}}
+{%- endcall -%}
+
+{%- set last_update_date = load_result('get_last_update_date')['data'][0][0] -%}
+{% endif %}
+
 WITH src_data as
 (
     SELECT 
         src.nft_contract_address,
         src.buyer as minter,
-        {% if is_incremental() %} SUM(src.amount_original + prev.eth_spent) as eth_spent, {% else %} SUM(src.amount_original) as eth_spent, {% endif %}
-        {% if is_incremental() %} COUNT(src.nft_contract_address + prev.no_minted) as no_minted, {% else %} COUNT(src.nft_contract_address) as no_minted, {% endif %}
+        SUM(src.amount_original) as eth_spent,
+        COUNT(1) as no_minted,
         MAX(src.block_time) as last_updated
     FROM
         {{ ref('nft_mints') }} src
-    {% if is_incremental() %}
-    LEFT JOIN
-        {{this}} prev
-        ON prev.minter = src.buyer 
-        AND prev.nft_contract_address = src.nft_contract_address
-    {% endif %}
     WHERE
         1 = 1
         {% if is_incremental() %}
-        AND block_time >= date_trunc("day", now() - interval '1 week')
+        AND block_time >= '{{last_update_date}}'
         {% endif %}
         AND blockchain = 'ethereum'
         AND currency_symbol IN ('WETH', 'ETH')
         AND amount_original IS NOT NULL
     GROUP BY 1, 2
-), 
-combined as
-(
-    SELECT 
-        nft_contract_address, 
-        minter, 
-        SUM(eth_spent) as eth_spent, 
-        SUM(no_minted) as no_minted, 
-        last_updated
-    FROM 
-        src_data
-    GROUP BY 1, 2, 5
 )
 
 SELECT 
     * 
 FROM 
-    combined
+    src_data
 ;
