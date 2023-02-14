@@ -7,7 +7,7 @@ with
     where blockchain = 'ethereum'
   )
 select
-  array("ethereum") as blockchain,
+  "ethereum" as blockchain,
   address,
   "DEX Trader" AS name,
   "dex" AS category,

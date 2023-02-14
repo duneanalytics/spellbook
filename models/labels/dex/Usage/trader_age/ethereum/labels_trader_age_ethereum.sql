@@ -22,7 +22,7 @@ with
  )
 
 select
-  array("ethereum") as blockchain,
+  "ethereum" as blockchain,
   address,
   case
     when trader_age > 1825 then '5 years old DEX trader'

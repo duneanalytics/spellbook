@@ -27,7 +27,7 @@ with
     having datediff(max(block_date), min(block_date)) > 0
  )
 
-select array(blockchain)       AS blockchain,
+select blockchain       AS blockchain,
        address,
        case
            when trades_per_day >= 1 then 'Daily Trader'
