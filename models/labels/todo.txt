@@ -1,4 +1,0 @@
-need to add required in checks for all high level categories where only category name is accepted
-
-need to go through PR ci/cd and see if everything is okay
-need to get final approval from discussion again (3 day waiting period).

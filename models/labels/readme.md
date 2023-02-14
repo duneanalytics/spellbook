@@ -6,7 +6,15 @@ The most important thing to learn are the label types below. If you have a label
 
 **There are currently 7 high-level categories of labels**, and we are always open to adding more. If the model is likely to be the only model of it's category, it will go in the `__single category labels__` folder until we find something to expand on or attach it to. Those models have the exact same schemas as others, but are put into their own folder so that high-level categories are easily found and navigated.
 
+### Contributing
+
 Anyone can contribute, if you have an idea you would just like to discuss first then go ahead and start a [new discussion](https://github.com/duneanalytics/spellbook/discussions/categories/labels-discussion) in the labels section.
+
+1. Add a label sql and schema file under the intended category/label type folder
+2. Add the new label model to the top-level model in the category folder (i.e. `labels_dex.sql`)
+3. Create a new PR with your changed/added models.
+
+If you want to update/improve upon an existing label, start a discussion as well and tag the contributors (their names can be found in the schema file, which usually map closely to their github names). `ilemi` is `andrewhong5297`, I should be your default tag for questions.
 
 ### Label Types:
 
