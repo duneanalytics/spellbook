@@ -274,4 +274,31 @@ models:
     columns:
       - *trader
       - *referrer
+  - name: cow_protocol_ethereum_price_improvement
+    meta:
+      blockchain: ethereum
+      project: cow_protocol
+      contributors: bh2smith, gentrexha, josojo
+    config:
+      tags: [ 'ethereum','cow_protocol','price improvement' ]
+    description: >
+      The query contains several measurments between the quoted price on cowswap and 
+      the executed price. The price difference between the quote and the actual price 
+      is called price improvement and is measured as percentage or in absolute dollars.
+    columns:
+      - *order_uid
+      - *block_time
+      - *block_number
+      - &buy_quote
+        name: buy_quote
+      - &sell_quote
+        name: sell_quote
+      - *slippage_bips
+      - *usd_value
+      - &surplus_atoms
+        name: surplus_atoms
+      - &surplus_percentage
+        name: surplus_percentage
+      - &surplus_usd
+        name: surplus_usd
 
