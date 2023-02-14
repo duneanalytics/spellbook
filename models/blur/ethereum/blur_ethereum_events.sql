@@ -179,7 +179,7 @@ SELECT
     , CASE WHEN get_json_object(s.consideration[0], '$.recipient')!=s.recipient THEN CAST(get_json_object(s.consideration[0], '$.recipient') AS string)
         ELSE CAST(get_json_object(s.consideration[1], '$.recipient') AS string)
         END AS royalty_fee_receive_address
-    , CAST('ethereum-blur-v1-' || s.evt_block_number || '-' || CAST(s.evt_tx_hash || '-' || s.offerer || '-' || s.recipient || '-' || get_json_object(s.offer[0], '$.token') || '-' || get_json_object(s.offer[0], '$.identifier') || '-' || s.evt_index AS string) AS unique_trade_id
+    , CAST('ethereum-blur-v1-' || s.evt_block_number || '-' || s.evt_tx_hash || '-' || s.offerer || '-' || s.recipient || '-' || get_json_object(s.offer[0], '$.token') || '-' || get_json_object(s.offer[0], '$.identifier') || '-' || s.evt_index AS string) AS unique_trade_id
 FROM {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }} s
 INNER JOIN {{ source('ethereum', 'transactions') }} tx ON tx.block_number=s.evt_block_number
     AND tx.hash=s.evt_tx_hash
