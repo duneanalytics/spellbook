@@ -40,4 +40,4 @@ LEFT JOIN {{ ref('tokens_nft') }} nft_tokens ON nft_tokens.contract_address = b.
 AND nft_tokens.blockchain = 'ethereum'
 LEFT JOIN {{ ref('balances_ethereum_erc721_noncompliant') }}  as nc
     ON b.token_address = nc.token_address
-WHERE nc.contract_address IS NULL 
+WHERE nc.token_address IS NULL 
