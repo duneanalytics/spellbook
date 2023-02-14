@@ -22,7 +22,7 @@ FROM {{ ref('tornado_cash_withdrawals') }}
 )
 
 SELECT
-    collect_set(blockchain) as blockchain,
+    blockchain,
     address,
     'Tornado Cash ' || array_join(collect_set(name),' and ') AS name,
     'tornado_cash' AS category,
@@ -33,4 +33,4 @@ SELECT
     'tornado_cash' AS model_name,
     'usage' AS label_type
 FROM tornado_addresses
-GROUP BY address
+GROUP BY address, blockchain

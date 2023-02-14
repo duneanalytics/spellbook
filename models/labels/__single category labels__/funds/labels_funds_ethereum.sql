@@ -1,6 +1,6 @@
 {{config(alias='funds_ethereum')}}
 
-SELECT blockchain, address, name, category, contributor, source, created_at, updated_at
+SELECT blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type
 FROM (VALUES
      ('ethereum','0x2B1Ad6184a6B0fac06bD225ed37C2AbC04415fF4', 'a16z', 'funds', 'soispoke', 'static', timestamp('2022-09-03'), now(), 'funds_ethereum', 'identifier')
     , ('ethereum', '0x05e793ce0c6027323ac150f6d45c2344d28b6019', 'a16z', 'funds', 'soispoke', 'static', timestamp('2022-09-03'), now(), 'funds_ethereum', 'identifier')

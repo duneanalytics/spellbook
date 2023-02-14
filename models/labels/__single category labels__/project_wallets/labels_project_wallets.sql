@@ -7,7 +7,7 @@
 
 SELECT
 
-    array('optimism') as blockchain,
+    'optimism' as blockchain,
     address,
     project_name AS name,
     'project wallet' AS category,

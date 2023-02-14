@@ -4,7 +4,7 @@
                                     "labels",
                                     \'["hildobby"]\') }}')}}
 
-SELECT blockchain, address, name, category, contributor, source, created_at, updated_at
+SELECT blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type
 FROM (VALUES
     -- Source: https://home.treasury.gov/policy-issues/financial-sanctions/recent-actions/20220808
     ('ethereum', '0x8589427373d6d84e98730d7795d8f6f8731fda16', 'Tornado Cash: Donate', 'ofac_sanction', 'hildobby', 'static', TIMESTAMP('2022-09-20'), now(), 'ofac_sanctionned', 'identifier')

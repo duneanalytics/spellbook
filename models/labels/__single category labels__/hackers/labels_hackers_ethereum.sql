@@ -4,7 +4,7 @@
                                     "labels",
                                     \'["ilemi","soispoke"]\') }}')}}
 
-SELECT blockchain, address, name, category, contributor, source, created_at, updated_at
+SELECT blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type
 FROM (VALUES
 ('ethereum','0xb3764761e297d6f121e79c32a65829cd1ddb4d32','Multisig Exploit Hacker','hackers','ilemi','static', timestamp('2022-08-28'), now(), 'hackers_ethereum', 'identifier'),
 ('ethereum','0x1342a001544b8b7ae4a5d374e33114c66d78bd5f','Gatecoin Hacker 2','hackers','ilemi','static', timestamp('2022-08-28'), now(), 'hackers_ethereum', 'identifier'),
