@@ -358,6 +358,11 @@ models:
       avalanche_c:
         +schema: trader_joe_avalanche_c
 
+    odos:
+      +schema: odos
+      avalanche_c:
+        +schema: odos_avalanche_c
+
     transfers:
       +schema: transfers
       ethereum:
@@ -383,6 +388,18 @@ models:
         +schema: safe_ethereum
       optimism:
         +schema: safe_optimism
+      gnosis: 
+        +schema: safe_gnosis
+      polygon: 
+        +schema: safe_polygon
+      bnb: 
+        +schema: safe_bnb
+      avalanche_c: 
+        +schema: safe_avalanche_c
+      fantom: 
+        +schema: safe_fantom
+      arbitrum: 
+        +schema: safe_arbitrum
 
     nftrade:
       +schema: nftrade
