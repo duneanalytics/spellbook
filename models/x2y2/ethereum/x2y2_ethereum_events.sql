@@ -75,7 +75,7 @@ src_eth_transactions as  (
 ),
 
 src_nft_transfers as (
-    SELECT *
+    SELECT distinct *
     FROM {{ ref('nft_ethereum_transfers') }}
     WHERE block_time > '{{project_start_date}}'
         {% if is_incremental() %}
