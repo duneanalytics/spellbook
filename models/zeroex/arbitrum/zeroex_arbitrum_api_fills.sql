@@ -1,5 +1,5 @@
 {{  config(
-        alias='fills',
+        alias='api_fills',
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
