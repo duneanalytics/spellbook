@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: labels_multisig_ethereum
+  - name: labels_dao_multisig_ethereum
     meta:
       blockchain: ethereum
       sector: labels
@@ -9,7 +9,7 @@ models:
       contributors: ilemi, soispoke
     config:
       tags: ['labels', 'ethereum', 'multisig']
-    description: "Known multisig wallets on Ethereum"
+    description: "Known multisig DAO wallets on Ethereum"
     columns:
       - &blockchain
         name: blockchain

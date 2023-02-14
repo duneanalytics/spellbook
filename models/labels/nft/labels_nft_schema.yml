@@ -64,7 +64,9 @@ models:
       - *source
       - *created_at
       - *updated_at
-        
+      - *model_name
+      - *label_type
+
   - name: labels_nft_traders_transactions
     meta:
       blockchain: ethereum, solana

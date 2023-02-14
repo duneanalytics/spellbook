@@ -1,5 +1,6 @@
 add ens?
 for lens, phi, etc.
 
-need to come back to labels_all and add an arbitrary label type for all single category labels
+need to refactor infrastructure category
+need to add label_type and model_name to all single category labels
 need to define the readme better.
