@@ -15,7 +15,7 @@ FROM {{ ref('nft_trades') }}
 )
 
 SELECT
-    collect_set(blockchain) as blockchain,
+    blockchain as blockchain,
     address,
     array_join(collect_set(concat(upper(substring(project,1,1)),substring(project,2))), ', ') ||' User' as name,
     'nft' AS category,
@@ -27,4 +27,4 @@ SELECT
     'persona' as label_type
 FROM nft_trades
 WHERE address is not null
-GROUP BY address
+GROUP BY address, blockchain

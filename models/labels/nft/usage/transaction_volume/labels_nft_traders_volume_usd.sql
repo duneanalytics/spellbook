@@ -24,7 +24,7 @@ GROUP BY 1
 
 SELECT * FROM (
     SELECT
-    collect_set(nft_trades.blockchain) as blockchain,
+    nft_trades.blockchain as blockchain,
     nft_trades.address,
     CASE WHEN ((ROW_NUMBER() OVER(ORDER BY SUM(amount_usd) DESC)) / total_count * 100) <= 10
               AND ((ROW_NUMBER() OVER(ORDER BY SUM(amount_usd) DESC)) / total_count * 100) > 5
@@ -44,7 +44,7 @@ SELECT * FROM (
     FROM nft_trades
       JOIN total on total.address = nft_trades.address
     WHERE nft_trades.address is not null and amount_usd is not null
-    GROUP BY nft_trades.address, total_count
+    GROUP BY nft_trades.address, total_count, nft_trades.blockchain
 )
 WHERE name is not null
 
