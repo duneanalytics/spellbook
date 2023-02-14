@@ -24,7 +24,7 @@ WITH src_data as
     WHERE
         1 = 1
         {% if is_incremental() %}
-        AND block_time >= >= date_trunc("day", now() - interval '1 week')
+        AND block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         AND blockchain = 'ethereum'
         AND currency_symbol IN ('WETH', 'ETH')
