@@ -147,7 +147,7 @@ v3 as (
         contract_address  as project_contract_address,
         call_tx_hash as tx_hash,
         call_block_number as block_number,
-        row_number() over (partition by call_tx_hash, order by call_trace_address) as in_tx_id,
+        row_number() over (partition by call_tx_hash order by call_trace_address asc) as in_tx_id,
         case
             when get_json_object(currency, '$.assetType') = '0' then 'native'
             when get_json_object(currency, '$.assetType') = '1' then 'erc20'
