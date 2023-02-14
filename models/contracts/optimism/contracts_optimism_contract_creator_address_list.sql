@@ -390,7 +390,7 @@ FROM (
       ,('0x745748bcfd8f9c2de519a71d789be8a63dd7d66c', 'Curve')
       ,('0xe0774a09b55febaf93049af328901f7a5b09827b', 'WooFi')
       ,('0x413a8ba5175efd5f770e372d0ae91cf04a9473e3', 'WooFi')
-      ,('0x7D0831e0469e8b48e0F280459bC2CC44f23Ca7E4', 'WooFi')
+      ,('0x7D0831e0469e8b48e0F280459bC2CC44f23Ca7E4', '1Inch')
       ,('0xCb77b30841e1dEafFd88bA08B9654C667F80b80A', 'Quadrat')
       ,('0x001530e763FE9De4DCfe31BBd8548BCb579Ebf3A', 'Defiedge')
       ,('0xD8fA8F87129c654a6Dd7F34EEDAf58379E176eb1', 'Uniswap V3')
