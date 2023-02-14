@@ -169,6 +169,38 @@ models:
       - name: hash_marker_size
         description: "Number of characters the hash_marker is made of, can be useful on joins"
 
+  - name: nft_ethereum_wallet_pnl
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: Henrystats
+    config:
+      tags: ['nft', 'ethereum', 'wallet pnl']
+    description: >
+        Top 50 nft traders based on profit from nft.trades
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet
+            - nft_contract_address
+    columns:
+      - name: index
+        description: "Rank"
+      - name: wallet
+        description: "Trader wallet address"
+      - name: nft_contract_address
+        description: "nft contract address"
+      - name: eth_spent
+        description: "eth spent to buy nfts"
+      - name: eth_received
+        description: "eth received from selling nfts"
+      - name: pnl
+        description: "pnl from selling/buying nfts, measured in eth"
+      - name: trades
+        description: "number of trades"
+      - name: last_updated
+        description: "Last time spell was updated"
+        
   - name: nft_ethereum_collection_stats
     meta:
       blockchain: ethereum
