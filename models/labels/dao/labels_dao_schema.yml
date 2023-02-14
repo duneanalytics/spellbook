@@ -1,3 +1,5 @@
+version: 2
+
 models:
   - name: labels_dao
     meta:

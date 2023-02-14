@@ -1,13 +1,15 @@
+version: 2
+
 models:
-  - name: labels_dex
+  - name: labels_social
     meta:
       blockchain: ethereum
       sector: labels
-      category: dex
+      category: social
       contributors: ilemi
     config:
-      tags: ['labels', 'dex']
-    description: "all dex labels"
+      tags: ['labels', 'social','ens']
+    description: "all social labels"
     columns:
       - &blockchain
         name: blockchain
@@ -23,7 +25,7 @@ models:
         description: "Label category"
         tests:
           - accepted_values:
-              values: ['dex']
+              values: ['social']
       - &contributor
         name: contributor
         description: "Wizard(s) contributing to labels"
