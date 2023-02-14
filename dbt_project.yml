@@ -267,6 +267,11 @@ models:
         +schema: dodo_polygon
       arbitrum:
         +schema: dodo_arbitrum
+        
+    spookyswap:
+      +schema: spookyswap
+      fantom:
+        +schema: spookyswap_fantom
 
     labels:
       +schema: labels
@@ -373,6 +378,11 @@ models:
       bnb:
         +schema: nftrade_bnb
 
+    spiritswap:
+      +schema: spiritswap
+      fantom:
+        +schema: spiritswap_fantom
+
     jarvis_network:
       +schema: jarvis_network
       polygon:
@@ -382,6 +392,11 @@ models:
       +schema: cryptopunks
       ethereum:
         +schema: cryptopunks_ethereum
+
+    spartacus_exchange:
+      +schema: spartacus_exchange
+      fantom:
+        +schema: spartacus_exchange_fantom
 
     tornado_cash:
       +schema: tornado_cash
