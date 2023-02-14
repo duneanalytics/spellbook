@@ -7,6 +7,7 @@
         )
 }}
 SELECT
+    'ethereum' as blockchain,
     wallet_address,
     token_address,
     tokenId,
