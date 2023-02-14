@@ -36,4 +36,4 @@ FROM (VALUES
     ('bnb', '0x72A53cDBBcc1b9efa39c834A540550e23463AAcB', 'Crypto.com 3', 'cex', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier'),
     ('bnb', '0x7758e507850da48cd47df1fb5f875c23e3340c50', 'Crypto.com 4', 'cex', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier'),
     ('bnb', '0xcffad3200574698b78f32232aa9d63eabd290703', 'Crypto.com 5', 'cex', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier')
-    ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at)
+    ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type)

@@ -32,4 +32,4 @@ FROM (VALUES
     ('bnb','0xB8f7166496996A7da21cF1f1b04d9B3E26a3d077', 'BNB Validator: Coinlix', 'infrastructure', 'soispoke', 'static', timestamp('2022-10-07'), now(), 'validators_bnb', 'identifier'),
     ('bnb','0x2a7cdd959bFe8D9487B2a43B33565295a698F7e2', 'BNB Validator: Sigm8', 'infrastructure', 'soispoke', 'static', timestamp('2022-10-07'), now(), 'validators_bnb', 'identifier'),
     ('bnb','0x6488Aa4D1955Ee33403f8ccB1d4dE5Fb97C7ade2', 'BNB Validator: Seoraksan', 'infrastructure', 'soispoke', 'static', timestamp('2022-10-07'), now(), 'validators_bnb', 'identifier'))
-    AS x (blockchain, address, name, category, contributor, source, created_at, updated_at)
+    AS x (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type)

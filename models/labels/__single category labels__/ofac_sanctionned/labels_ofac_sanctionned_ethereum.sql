@@ -45,4 +45,4 @@ FROM (VALUES
     , ('ethereum', '0x03893a7c7463ae47d46bc7f091665f1893656003', 'Tornado Cash: 50000 cDAI Pool', 'ofac_sanction', 'hildobby', 'static', TIMESTAMP('2022-09-20'), now(), 'ofac_sanctionned', 'identifier')
     , ('ethereum', '0xca0840578f57fe71599d29375e16783424023357', 'Tornado Cash: L1 Helper', 'ofac_sanction', 'hildobby', 'static', TIMESTAMP('2022-09-20'), now(), 'ofac_sanctionned', 'identifier')
     , ('ethereum', '0x58e8dcc13be9780fc42e8723d8ead4cf46943df2', 'Tornado Cash: Relayer Registry', 'ofac_sanction', 'hildobby', 'static', TIMESTAMP('2022-09-20'), now(), 'ofac_sanctionned', 'identifier')
-    ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at)
+    ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type)

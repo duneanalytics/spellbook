@@ -106,4 +106,4 @@ FROM (VALUES
 ('ethereum','0x844f03375f7da2292da550aebfd52dff2cc6ad75','RUNE Token Exploiter','hackers','ilemi','static', timestamp('2022-08-28'), now(), 'hackers_ethereum', 'identifier'),
 ('ethereum','0x09923e35f19687a524bbca7d42b92b6748534f25','Nexus Mutual Hacker 1','hackers','ilemi','static', timestamp('2022-08-28'), now(), 'hackers_ethereum', 'identifier'),
 ('ethereum','0x59ABf3837Fa962d6853b4Cc0a19513AA031fd32b','FTX Funds Drainer','hackers','augustog','static', timestamp('2022-11-15'), now(), 'hackers_ethereum', 'identifier')      
-    ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at)
+    ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type)

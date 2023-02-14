@@ -53,4 +53,4 @@ FROM (VALUES
     , ('ethereum', '0xAF0B0000f0210D0f421F0009C72406703B50506B', 'Wintermute Trading', 'funds', 'msilb7', 'static',  timestamp('2023-01-22'), now(), 'funds_ethereum', 'identifier')
     , ('ethereum', '0x9507c04b10486547584c37bcbd931b2a4fee9a41', 'Jump Trading', 'funds', 'msilb7', 'static',  timestamp('2023-01-22'), now(), 'funds_ethereum', 'identifier')
     , ('ethereum', '0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43', 'Coinbase: Market Maker', 'funds', 'msilb7', 'static',  timestamp('2023-01-22'), now(), 'funds_ethereum', 'identifier')
-     ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at)
+     ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type)

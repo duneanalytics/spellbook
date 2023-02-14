@@ -548,4 +548,4 @@ FROM (VALUES
     -- SouthXchange
     , ('ethereum', '0x324cc2c9fb379ea7a0d1c0862c3b48ca28d174a4', 'SouthXchange 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier') -- https://etherscan.io/address/0x324cc2c9fb379ea7a0d1c0862c3b48ca28d174a4     
      
-     ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at)
+     ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type)

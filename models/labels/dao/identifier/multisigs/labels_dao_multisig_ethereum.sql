@@ -489,4 +489,4 @@ FROM (VALUES
 (array('ethereum'),'0x54a1d79e997b485ef9f17592d72383178f7bf350','PP: MULTISIG','dao','ilemi','static',timestamp('2022-09-28'), now(), 'dao_multisig', 'identifier'),    
 (array('ethereum'),'0xccf04146399214eb7813ab45b50d004c5b254784','OctoFi: Multisig','dao','ilemi','static',timestamp('2022-09-28'), now(), 'dao_multisig', 'identifier'),    
 (array('ethereum'),'0xc4bd0ec59bc090417b7829a25f99c3559f997b22','DAOmasters: Treasury 2','dao','ilemi','static',timestamp('2022-09-28'), now(), 'dao_multisig', 'identifier')
-    ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at)
+    ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type)
