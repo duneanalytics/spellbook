@@ -3,7 +3,7 @@
 with
   contract_labels as (
     SELECT
-      array('ethereum') as blockchain,
+      'ethereum' as blockchain,
       contract_address as address,
       description as name,
       contract_type as category,
@@ -12,7 +12,9 @@ with
       date('2022-09-19') as created_at,
       now() as updated_at,
       version,
-      protocol
+      protocol,
+      'aztec_v2_contracts_ethereum' as model_name,
+      'identifier' as label_type
     from
       (
         SELECT

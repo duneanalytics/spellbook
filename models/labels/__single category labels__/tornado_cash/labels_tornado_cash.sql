@@ -29,6 +29,8 @@ SELECT
     'soispoke' AS contributor,
     'query' AS source,
     timestamp('2022-10-01') as created_at,
-    now() as updated_at
+    now() as updated_atm
+    'tornado_cash' AS model_name,
+    'usage' AS label_type
 FROM tornado_addresses
 GROUP BY address

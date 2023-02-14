@@ -43,3 +43,9 @@ models:
         description: "Name of the protocol that's associated with the contract"
       - &contract_creator
         name: contract_creator
+      - &model_name
+        name: model_name
+        description: "Name of the label model sourced from"
+      - &label_type
+        name: label_type
+        description: "Type of label (see labels overall readme)"

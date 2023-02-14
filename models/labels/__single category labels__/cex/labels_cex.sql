@@ -10,7 +10,7 @@ UNION All
 
 -- add address list from CEXs
 SELECT 
-array("optimism"), address, distinct_name, 'cex', 'msilb7','static','2022-10-10'::timestamp,now()
+"optimism", address, distinct_name, 'cex', 'msilb7','static','2022-10-10'::timestamp,now(),'cex_optimism','identifier'
 FROM {{ ref('addresses_optimism_cex') }}
 
 UNION All

@@ -217,7 +217,7 @@ settings AS (
 )
 
 SELECT
-  array('arbitrum') AS blockchain,
+  'arbitrum' AS blockchain,
   SUBSTRING(pool_id, 0, 42) AS address,
   CASE WHEN array_contains(array('SP', 'LP', 'LBP'), pool_type)
       THEN lower(pool_symbol)
@@ -227,7 +227,9 @@ SELECT
   'balancerlabs' AS contributor,
   'query' AS source,
   timestamp('2022-12-23') AS created_at,
-  now() AS updated_at
+  now() AS updated_at,
+  'balancer_v2_pools_arbitrum' AS model_name,
+  'identifier' as label_type
 FROM   (
     SELECT s1.pool_id,
            token_symbol,

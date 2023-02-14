@@ -126,7 +126,7 @@ settings AS (
 )
 
 SELECT
-  array('optimism') AS blockchain,
+  'optimism' AS blockchain,
   SUBSTRING(pool_id, 0, 42) AS address,
   CASE WHEN array_contains(array('SP', 'LP', 'LBP'), pool_type) THEN lower(pool_symbol)
   ELSE lower(concat(array_join(array_sort(collect_list(token_symbol)), '/'), ' ', array_join(collect_list(cast(norm_weight AS string)), '/')))
@@ -135,7 +135,9 @@ SELECT
   'balancerlabs' AS contributor,
   'query' AS source,
   timestamp('2022-12-23') AS created_at,
-  now() AS updated_at
+  now() AS updated_at,
+  'balancer_v2_pools_optimism' AS model_name,
+  'identifier' as label_type
 FROM   (
     SELECT s1.pool_id, token_symbol, pool_symbol, cast(100*normalized_weight AS integer) AS norm_weight, pool_type FROM settings s1
     ORDER BY 1 ASC , 3 DESC, 2 ASC

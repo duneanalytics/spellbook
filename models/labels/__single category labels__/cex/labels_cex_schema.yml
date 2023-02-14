@@ -35,6 +35,12 @@ models:
       - &updated_at
         name: updated_at
         description: "When were labels updated for the last time"
+      - &model_name
+        name: model_name
+        description: "Name of the label model sourced from"
+      - &label_type
+        name: label_type
+        description: "Type of label (see labels overall readme)"
 
   - name: labels_cex_ethereum
     meta:
@@ -54,6 +60,8 @@ models:
       - *source
       - *created_at
       - *updated_at
+      - *model_name
+      - *label_type
 
   - name: labels_cex_bnb
     meta:
@@ -73,6 +81,8 @@ models:
       - *source
       - *created_at
       - *updated_at
+      - *model_name
+      - *label_type
 
   - name: labels_cex_fantom
     meta:
@@ -92,3 +102,5 @@ models:
       - *source
       - *created_at
       - *updated_at
+      - *model_name
+      - *label_type

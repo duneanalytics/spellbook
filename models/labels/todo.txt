@@ -1,4 +1,6 @@
-need to refactor infrastructure category
 need to add label_type and model_name to all single category labels
+
 need to add required in checks for all high level categories where only category name is accepted
-need to define the readme better.
+
+need to go through PR ci/cd and see if everything is okay
+need to get final approval from discussion again (3 day waiting period).

@@ -14,7 +14,9 @@ SELECT
     'msilb7' AS contributor,
     'static' AS source,
     timestamp('2023-01-28') as created_at,
-    NOW() AS updated_at
+    NOW() AS updated_at,
+    'project_wallets' AS model_name,
+    'identifier' AS label_type
 
 FROM {{ ref('addresses_optimism_grants_funding') }}
 GROUP BY 1,2,3
