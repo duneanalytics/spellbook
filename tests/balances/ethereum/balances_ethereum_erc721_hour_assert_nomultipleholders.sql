@@ -5,7 +5,7 @@ select
     hour,
     token_address,
     tokenId,
-    count(wallet_address)
+    count(wallet_address) as holder_count --should always be 1
 from {{ ref('balances_ethereum_erc721_hour') }}
 where hour >= now() - interval '12 hours'
 group by blockchain, hour, token_address, tokenId

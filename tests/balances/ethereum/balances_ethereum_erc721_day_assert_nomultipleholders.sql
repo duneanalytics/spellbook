@@ -5,7 +5,7 @@ select
     day,
     token_address,
     tokenId,
-    count(wallet_address)
+    count(wallet_address) as holder_count --should always be 1
 from {{ ref('balances_ethereum_erc721_day') }}
 where day >= now() - interval '2 days'
 group by blockchain, day, token_address, tokenId
