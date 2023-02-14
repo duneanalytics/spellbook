@@ -336,7 +336,7 @@ VALUES
     ("mdb-mdb", "bnb", "MDB+", "0x9f8bb16f49393eea4331a39b69071759e54e16ea", 18),
     ("mdb-milliondollarbaby", "bnb", "MDB", "0x0557a288a93ed0df218785f2787dac1cd077f8f3", 18),
     ("walv-alvey-chain", "bnb", "wALV", "0x256d1fce1b1221e8398f65f9b36033ce50b2d497", 18),
-    ("loop-network", "bnb", "LOOP", "0xce186ad6430e2fe494a22c9edbd4c68794a28b35", 18),
+    ("loop-loopnetwork", "bnb", "LOOP", "0xce186ad6430e2fe494a22c9edbd4c68794a28b35", 18),
 
     ("0xbtc-0xbitcoin", "ethereum", "0xBTC", "0xb6ed7644c69416d67b522e20bc294a9a9b405b31", 8),
     ("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
