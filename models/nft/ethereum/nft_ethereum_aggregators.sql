@@ -1,7 +1,6 @@
  {{config(alias='aggregators', tags=['static'], materialized='table', file_format = 'delta')}}
 
-SELECT
-  contract_address,
+SELECT LOWER(contract_address) AS contract_address,
   name
 FROM
   (
