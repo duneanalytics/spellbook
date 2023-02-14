@@ -16,7 +16,11 @@ Anyone can contribute, if you have an idea you would just like to discuss first 
 
 If you want to update/improve upon an existing label, start a discussion as well and tag the contributors (their names can be found in the schema file, which usually map closely to their github names). `ilemi` is `andrewhong5297`, I should be your default tag for questions.
 
+The schema of all models should follow this format: 
 
+![alt text](https://github.com/duneanalytics/spellbook/blob/labels-relaunch-2023-final/models/labels/labels_schema.PNG)
+
+You can add extra columns to the base label if it is helpful, but then make sure you select only the columns from the schema above when adding it to the top-level model of the category.
 
 ## Label Types:
 
