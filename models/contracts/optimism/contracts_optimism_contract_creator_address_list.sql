@@ -402,6 +402,7 @@ FROM (
       ,('0x35a8e8ed19122f6707984e7c135c0d8943d4d750', 'OKX')
       ,('0xe2e2d9e31d7e1cc1178fe0d1c5950f6c809816a3', 'Wormhole')
       ,('0x44cBfc3Ce762fC0Fee9Ddd6372804b7B660176bC', 'MUX')
+      ,('0x7f4537349A0a40cd20ba5Af0D11fdC46dCFCBB3f', 'Zonic')
   ) as temp_table (creator_address, contract_project)
 
 ) f
