@@ -56,6 +56,7 @@ list of models using old generic test, due to multiple versions in one model:
 ,ref('equalizer_exchange_fantom_trades')
 ,ref('wigoswap_fantom_trades')
 ,ref('arbswap_trades')
+,ref('balancer_trades')
 ,ref('spiritswap_fantom_trades')
 ] %}
 
