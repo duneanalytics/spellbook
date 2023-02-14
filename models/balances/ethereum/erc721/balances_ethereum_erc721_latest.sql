@@ -17,3 +17,4 @@ LEFT JOIN {{ ref('tokens_nft') }} nft_tokens ON nft_tokens.contract_address = to
 AND nft_tokens.blockchain = 'ethereum'
 WHERE recency_index = 1
 AND amount = 1
+;
