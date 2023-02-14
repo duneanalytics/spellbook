@@ -342,6 +342,11 @@ models:
       avalanche_c:
         +schema: trader_joe_avalanche_c
 
+    odos:
+      +schema: odos
+      avalanche_c:
+        +schema: odos_avalanche_c
+
     transfers:
       +schema: transfers
       ethereum:
