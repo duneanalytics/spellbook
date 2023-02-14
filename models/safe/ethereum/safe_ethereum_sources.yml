@@ -39,3 +39,133 @@ sources:
           - &threshold
             name: threshold
             description: "Number of required confirmations for a Safe transaction"
+      - name: ProxyFactoryv1_0_0_call_createProxy
+        loaded_at_field: call_block_time
+        description: "Safe v1.0.0 factory createProxy calls"
+        columns:
+          - &call_block_number
+            name: call_block_number
+            description: "Call block number"
+          - &call_block_time
+            name: call_block_time
+            description: "Call block time (UTC)"
+          - &call_success
+            name: call_success
+            description: "Call success"
+          - &call_trace_address
+            name: call_trace_address
+            description: "Call trace address"
+          - &call_tx_hash
+            name: call_tx_hash
+            description: "Call tx hash"
+          - *contract_address
+          - &data
+            name: data
+            description: "Initializer data"
+          - &masterCopy
+            name: masterCopy
+            description: "Singleton"
+          - &output_proxy
+            name: output_proxy
+            description: "Address of created Safe proxy"
+      - name: ProxyFactoryv1_0_0_call_createProxyWithNonce
+        loaded_at_field: call_block_time
+        description: "Safe v1.0.0 factory createProxyWithNonce calls"
+        columns:
+          - &_mastercopy
+            name: _mastercopy
+            description: "Singleton"
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - *contract_address
+          - *initializer
+          - *output_proxy
+          - &saltNonce
+            name: saltNonce
+            description: "Salt nonce"
+      - name: ProxyFactoryv1_1_0_call_createProxy
+        loaded_at_field: call_block_time
+        description: "Safe v1.1.0 factory createProxy calls"
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - *contract_address
+          - *data
+          - *masterCopy
+          - *output_proxy
+      - name: ProxyFactoryv1_1_0_call_createProxyWithNonce
+        loaded_at_field: call_block_time
+        description: "Safe v1.1.0 factory createProxyWithNonce calls"
+        columns:
+          - *_mastercopy
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - *contract_address
+          - *initializer
+          - *output_proxy
+          - *saltNonce
+      - name: ProxyFactoryv1_1_1_call_createProxy
+        loaded_at_field: call_block_time
+        description: "Safe v1.1.1 factory createProxy calls"
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - *contract_address
+          - *data
+          - *masterCopy
+          - *output_proxy
+      - name: ProxyFactoryv1_1_1_call_createProxyWithNonce
+        loaded_at_field: call_block_time
+        description: "Safe v1.1.1 factory createProxyWithNonce calls"
+        columns:
+          - *_mastercopy
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - *contract_address
+          - *initializer
+          - *output_proxy
+          - *saltNonce
+      - name: ProxyFactoryv1_1_1_call_createProxyWithCallback
+        loaded_at_field: call_block_time
+        description: "Safe v1.1.1 factory createProxyWithCallback calls"
+        columns:
+          - *_mastercopy
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - *contract_address
+          - *initializer
+          - *output_proxy
+          - *saltNonce
+      - name: GnosisSafeProxyFactory_v1_3_0_evt_ProxyCreation
+        loaded_at_field: evt_block_time
+        description: "Safe v1.3.0 factory ProxyCreation events"
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &proxy
+            name: proxy
+            description: "Address of created Safe proxy"
+          - &singleton
+            name: singleton
+            description: "Singleton"
