@@ -25,6 +25,7 @@ sales as (
     {{ ref('nft_trades') }}
     WHERE blockchain = 'ethereum'
     AND currency_symbol IN ('ETH', 'WETH')
+    AND amount_original IS NOT NULL 
 {% endif %}
 {% if is_incremental() %}
     SELECT 
@@ -45,6 +46,7 @@ sales as (
     WHERE block_time >= date_trunc("day", now() - interval '1 week')
     AND blockchain = 'ethereum'
     AND currency_symbol IN ('ETH', 'WETH')
+    AND amount_original IS NOT NULL 
     AND amount_original >= (SELECT MIN(price) FROM {{this}}) -- optimize query
 {% endif %}
 )
