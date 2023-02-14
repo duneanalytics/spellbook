@@ -5,7 +5,7 @@
     post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "fantom"]\',
                                 "sector",
                                 "labels",
-                                \'["soispoke","hildobby"]\') }}')
+                                \'["soispoke","hildobby","ilemi"]\') }}')
 }}
 
 -- single category labels (no subsets), needs label_type and model_name added still.
@@ -45,4 +45,4 @@ SELECT * FROM {{ ref('labels_airdrop') }}
 UNION ALL
 SELECT * FROM {{ ref('labels_dao') }}
 UNION ALL
-SELECT * FROM {{ ref('labels_block_building') }}
+SELECT * FROM {{ ref('labels_infrastructure') }}
