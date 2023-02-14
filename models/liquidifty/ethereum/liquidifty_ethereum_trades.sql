@@ -107,7 +107,7 @@ v3 as (
         contract_address  as project_contract_address,
         call_tx_hash as tx_hash,
         call_block_number as block_number,
-        concat(cast(call_block_number as varchar(5)), '-', call_tx_hash, cast(array_join(call_trace_address, ',') as varchar(5))) as unique_trade_id,
+        concat(cast(call_block_number as varchar(5)), '-', call_tx_hash,'-',call_trace_address) as unique_trade_id, as unique_trade_id,
         case
             when get_json_object(currency, '$.assetType') = '0' then 'native'
             when get_json_object(currency, '$.assetType') = '1' then 'erc20'
