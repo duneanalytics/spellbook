@@ -10,7 +10,7 @@
 
 SELECT *
 FROM (
-    SELECT blokchain
+    SELECT blockchain
     , address
     , first_funded_by
     , block_time
