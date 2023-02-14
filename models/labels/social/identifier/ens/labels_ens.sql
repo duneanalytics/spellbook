@@ -20,7 +20,7 @@ FROM (
        '0xRob' as contributor,
        'query' AS source,
        date('2022-10-06') as created_at,
-       now() as modified_at,
+       now() as updated_at,
        "ens" as model_name,
        "identifier" as label_type
     FROM (
