@@ -13,7 +13,7 @@
 SELECT *
 FROM (
        SELECT
-       array('ethereum') as blockchain,
+       'ethereum' as blockchain,
        coalesce(rev.address, res.address) as address,
        coalesce(rev.name, res.name) as name,
        'ENS' as category, --should be social but we can't change this due to how many queries it probably breaks.
@@ -39,7 +39,7 @@ FROM (
 
 -- For now, we want to limit the amount of ENS labels to 1
 --UNION
---SELECT array('ethereum') as blockchain,
+--SELECT 'ethereum' as blockchain,
 --       address,
 --       name,
 --       'ENS resolver' as category,
@@ -49,7 +49,7 @@ FROM (
 --       now() as modified_at
 --FROM {{ ref('ens_resolver_latest') }}
 --UNION
---SELECT array('ethereum') as blockchain,
+--SELECT 'ethereum' as blockchain,
 --       address,
 --       name,
 --       'ENS reverse' as category,
