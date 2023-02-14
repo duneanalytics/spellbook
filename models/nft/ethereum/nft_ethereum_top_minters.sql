@@ -11,29 +11,65 @@
     )
 }}
 
-WITH src_data as
-(
+WITH 
+
+src_data as (
+    {% if not is_incremental() %}
     SELECT 
-        src.nft_contract_address,
-        src.buyer as minter,
-        SUM(src.amount_original) as eth_spent,
-        COUNT(1) as no_minted,
-        MAX(src.block_time) as last_updated
-    FROM
-        {{ ref('nft_mints') }} src
-    WHERE
-        1 = 1
-        {% if is_incremental() %}
-        AND block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-        AND blockchain = 'ethereum'
-        AND currency_symbol IN ('WETH', 'ETH')
-        AND amount_original IS NOT NULL
-    GROUP BY 1, 2
+        nft_contract_address,
+        buyer as minter, 
+        SUM(amount_original) as eth_spent, 
+        COUNT(*) as no_minted,
+        (SELECT MAX(block_time) FROM {{ ref('nft_mints') }}) as last_updated
+    FROM 
+    {{ ref('nft_mints') }}
+    WHERE blockchain = 'ethereum'
+    AND currency_symbol IN ('WETH', 'ETH')
+    AND amount_original IS NOT NULL
+    GROUP BY 1, 2, 5
+    {% endif %}
+    -- incremental run
+    {% if is_incremental() %}
+    SELECT 
+        nft_contract_address,
+        buyer as minter, 
+        SUM(amount_original) as eth_spent, 
+        COUNT(*) as no_minted,
+        (SELECT MAX(block_time) FROM {{ ref('nft_mints') }} WHERE block_time > (SELECT MAX(last_updated) FROM {{this}})) as last_updated -- speedup
+    FROM 
+    {{ ref('nft_mints') }}
+    WHERE block_time > (SELECT MAX(last_updated) FROM {{this}})
+    AND blockchain = 'ethereum'
+    AND currency_symbol IN ('WETH', 'ETH')
+    AND amount_original IS NOT NULL
+    GROUP BY 1, 2, 5 
+
+    UNION ALL 
+
+    SELECT 
+        nft_contract_address,
+        minter,
+        eth_spent,
+        no_minted,
+        (SELECT MAX(block_time) FROM {{ ref('nft_mints') }} WHERE block_time > (SELECT MAX(last_updated) FROM {{this}})) as last_updated -- speedup
+    FROM 
+    {{this}}
+    {% endif %}
+), 
+
+combined as (
+    SELECT 
+        nft_contract_address, 
+        minter, 
+        SUM(eth_spent) as eth_spent, 
+        SUM(no_minted) as no_minted, 
+        last_updated
+    FROM 
+    src_data
+    GROUP BY 1, 2, 5
 )
 
 SELECT 
     * 
 FROM 
-    src_data
-;
+combined
