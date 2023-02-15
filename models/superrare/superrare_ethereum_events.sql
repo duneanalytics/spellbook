@@ -208,7 +208,7 @@ with all_superrare_sales as (
     where evt.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
-SELECT
+SELECT distinct
     'ethereum' as blockchain,
     'superrare' as project,
     'v1' as version,
