@@ -31,6 +31,6 @@ SELECT
     timestamp('2022-10-01') as created_at,
     now() as updated_at,
     'tornado_cash' AS model_name,
-    'usage' AS label_type
+    'persona' AS label_type
 FROM tornado_addresses
 GROUP BY address, blockchain

@@ -13,5 +13,5 @@ SELECT DISTINCT 'ethereum' AS blockchain
 , date('2022-10-08') AS created_at
 , NOW() AS modified_at
 , 'flashbots' AS model_name
-, 'usage' as label_type
+, 'persona' as label_type
 FROM {{ source('flashbots','arbitrages') }}

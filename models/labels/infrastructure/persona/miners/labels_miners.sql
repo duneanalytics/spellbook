@@ -14,7 +14,7 @@ SELECT DISTINCT 'ethereum' as blockchain,
        date('2022-09-28') as created_at,
        now() as modified_at,
        'miners' AS model_name,
-       'identifier' as label_type
+       'persona' as label_type
 FROM {{ source('ethereum','blocks') }} 
 UNION 
 SELECT DISTINCT 'gnosis' as blockchain,
@@ -26,7 +26,7 @@ SELECT DISTINCT 'gnosis' as blockchain,
        date('2022-09-28') as created_at,
        now() as modified_at,
        'miners' AS model_name,
-       'identifier' as label_type
+       'persona' as label_type
 FROM {{ source('gnosis','blocks') }} 
 UNION 
 SELECT DISTINCT 'avalanche_c' as blockchain,
@@ -38,7 +38,7 @@ SELECT DISTINCT 'avalanche_c' as blockchain,
        date('2022-09-28') as created_at,
        now() as modified_at,
        'miners' AS model_name,
-       'identifier' as label_type
+       'persona' as label_type
 FROM {{ source('avalanche_c','blocks') }} 
 UNION 
 SELECT DISTINCT 'arbitrum' as blockchain,
@@ -50,7 +50,7 @@ SELECT DISTINCT 'arbitrum' as blockchain,
        date('2022-09-28') as created_at,
        now() as modified_at,
        'miners' AS model_name,
-       'identifier' as label_type
+       'persona' as label_type
 FROM {{ source('arbitrum','blocks') }} 
 UNION 
 SELECT DISTINCT 'bnb' as blockchain,
@@ -62,7 +62,7 @@ SELECT DISTINCT 'bnb' as blockchain,
        date('2022-09-28') as created_at,
        now() as modified_at,
         'miners' AS model_name,
-       'identifier' as label_type
+       'persona' as label_type
 FROM {{ source('bnb','blocks') }} 
 UNION 
 SELECT DISTINCT 'optimism' as blockchain,
@@ -74,7 +74,7 @@ SELECT DISTINCT 'optimism' as blockchain,
        date('2022-09-28') as created_at,
        now() as modified_at,
         'miners' AS model_name,
-       'identifier' as label_type
+       'persona' as label_type
 FROM {{ source('optimism','blocks') }} 
 UNION 
 SELECT DISTINCT 'fantom' as blockchain,
@@ -86,7 +86,7 @@ SELECT DISTINCT 'fantom' as blockchain,
        date('2023-01-25') as created_at,
        now() as modified_at,
         'miners' AS model_name,
-       'identifier' as label_type
+       'persona' as label_type
 FROM {{ source('fantom','blocks') }} 
 UNION 
 SELECT DISTINCT 'polygon' as blockchain,
@@ -98,5 +98,5 @@ SELECT DISTINCT 'polygon' as blockchain,
        date('2023-01-25') as created_at,
        now() as modified_at,
         'miners' AS model_name,
-       'identifier' as label_type
+       'persona' as label_type
 FROM {{ source('polygon','blocks') }} 

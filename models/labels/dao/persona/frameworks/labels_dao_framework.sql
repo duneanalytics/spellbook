@@ -15,7 +15,7 @@ SELECT
     timestamp('2022-11-05') as created_at,
     now() as updated_at,
     'dao_framework' as model_name,
-    'usage' as label_type
+    'persona' as label_type
 FROM 
 {{ ref('dao_addresses') }}
 WHERE dao_creator_tool != 'zodiac' -- excluding zodiac since they're gnosis safes
