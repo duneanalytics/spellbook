@@ -36,6 +36,7 @@ substring(tx.data,1,10) AS tx_method_id
 FROM {{ source('hop_protocol_ethereum', 'HOPToken_evt_Claim') }} tfer
 INNER JOIN {{ ref('tokens_ethereum_erc20') }} r
         ON r.contract_address = lower('0xc5102fe9359fd9a28f877a67e36b0f050d81a3cc') --HOP Token
+        AND r.contract_address = tfer.contract_address
 INNER JOIN {{ source('ethereum','transactions') }} tx
         ON tx.block_number = tfer.evt_block_number
         AND tx.block_time = tfer.evt_block_time

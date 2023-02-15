@@ -34,6 +34,7 @@ substring(tx.data,1,10) AS tx_method_id
 FROM {{ source('op_optimism', 'MerkleDistributor_evt_Claimed') }} tfer
 INNER JOIN {{ ref('tokens_optimism_erc20') }} r
         ON r.contract_address = '0x4200000000000000000000000000000000000042' --OP Token
+        AND r.contract_address = tfer.contract_address
 INNER JOIN {{ source('optimism','transactions') }} tx
         ON tx.block_number = tfer.evt_block_number
         AND tx.block_time = tfer.evt_block_time

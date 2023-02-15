@@ -35,6 +35,7 @@ substring(tx.data,1,10) AS tx_method_id
 FROM {{ source('velodrome_optimism', 'MerkleClaim_evt_Claim') }} tfer
 INNER JOIN {{ ref('tokens_optimism_erc20') }} r
         ON r.contract_address = lower('0x3c8b650257cfb5f272f799f5e2b4e65093a11a05')
+        AND r.contract_address = tfer.contract_address
 INNER JOIN {{ source('optimism','transactions') }} tx
         ON tx.block_number = tfer.evt_block_number
         AND tx.block_time = tfer.evt_block_time

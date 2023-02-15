@@ -37,6 +37,7 @@ substring(tx.data,1,10) AS tx_method_id
 FROM {{ source('ethereumnameservice_ethereum', 'ENSToken_evt_Claim') }} tfer
 INNER JOIN {{ ref('tokens_ethereum_erc20') }} r
         ON r.contract_address = lower('0xc18360217d8f7ab5e7c516566761ea12ce7f9d72') --ENS Token
+        AND r.contract_address = tfer.contract_address
 INNER JOIN {{ source('ethereum','transactions') }} tx
         ON tx.block_number = tfer.evt_block_number
         AND tx.block_time = tfer.evt_block_time

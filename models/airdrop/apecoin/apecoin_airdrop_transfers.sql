@@ -39,6 +39,7 @@ FROM (
         FROM {{ source('apecoin_ethereum', 'AirdropGrapesToken_evt_AlphaClaimed') }} tfer
         INNER JOIN {{ ref('tokens_ethereum_erc20') }} r
                 ON r.contract_address = lower('0xba30e5f9bb24caa003e9f2f0497ad287fdf95623') --APE Token
+                AND r.contract_address = tfer.contract_address
         INNER JOIN {{ source('ethereum','transactions') }} tx
                 ON tx.block_number = tfer.evt_block_number
                 AND tx.block_time = tfer.evt_block_time
@@ -76,6 +77,7 @@ FROM (
         FROM {{ source('apecoin_ethereum', 'AirdropGrapesToken_evt_BetaClaimed') }} tfer
         INNER JOIN {{ ref('tokens_ethereum_erc20') }} r
                 ON r.contract_address = lower('0xba30e5f9bb24caa003e9f2f0497ad287fdf95623') --APE Token
+                AND r.contract_address = tfer.contract_address
         INNER JOIN {{ source('ethereum','transactions') }} tx
                 ON tx.block_number = tfer.evt_block_number
                 AND tx.block_time = tfer.evt_block_time
@@ -113,6 +115,7 @@ FROM (
         FROM {{ source('apecoin_ethereum', 'AirdropGrapesToken_evt_GammaClaimed') }} tfer
         INNER JOIN {{ ref('tokens_ethereum_erc20') }} r
                 ON r.contract_address = lower('0xba30e5f9bb24caa003e9f2f0497ad287fdf95623') --APE Token
+                AND r.contract_address = tfer.contract_address
         INNER JOIN {{ source('ethereum','transactions') }} tx
                 ON tx.block_number = tfer.evt_block_number
                 AND tx.block_time = tfer.evt_block_time

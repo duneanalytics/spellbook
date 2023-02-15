@@ -33,7 +33,7 @@ substring(tx.data,1,10) AS tx_method_id
 
 FROM {{ source('erc20_optimism', 'evt_transfer') }} tfer
 INNER JOIN {{ ref('tokens_optimism_erc20') }} tk
-        ON tfer.contract_address = '0x4200000000000000000000000000000000000042' --OP Token
+        ON tfer.contract_address = tk.contract_address
 INNER JOIN {{ source('optimism','transactions') }} tx
         ON tx.block_number = tfer.evt_block_number
         AND tx.block_time = tfer.evt_block_time
@@ -46,6 +46,8 @@ INNER JOIN {{ source('optimism','transactions') }} tx
                 cast('{{airdrop_start_date}}' as date)
                 AND cast('{{airdrop_end_date}}' as date)
          AND tx.to = '0xbe9a9b1b07f027130e56d8569d1aea5dd5a86013'
+         AND tfer.contract_address = '0x4200000000000000000000000000000000000042' --OP Token
+         AND tfer.`from` = '0x2501c477d0a35545a387aa4a3eee4292a9a8b3f0' -- OP FND Address
 
         {% if is_incremental() %}
         AND tfer.evt_block_time >= date_trunc('day', now() - interval '1' week)

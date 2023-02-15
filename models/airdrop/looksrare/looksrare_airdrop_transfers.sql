@@ -37,6 +37,7 @@ substring(tx.data,1,10) AS tx_method_id
 FROM {{ source('looksrare_ethereum', 'LooksRareAirdrop_evt_AirdropRewardsClaim') }} tfer
 INNER JOIN {{ ref('tokens_ethereum_erc20') }} r
         ON r.contract_address = lower('0xa35dce3e0e6ceb67a30b8d7f4aee721c949b5970') --LOOKS Token
+        AND r.contract_address = tfer.contract_address
 INNER JOIN {{ source('ethereum','transactions') }} tx
         ON tx.block_number = tfer.evt_block_number
         AND tx.block_time = tfer.evt_block_time

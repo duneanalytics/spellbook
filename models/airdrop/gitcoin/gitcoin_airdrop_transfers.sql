@@ -36,6 +36,7 @@ substring(tx.data,1,10) AS tx_method_id
 FROM {{ source('gitcoin_ethereum', 'TokenDistributor_evt_Claimed') }} tfer
 INNER JOIN {{ ref('tokens_ethereum_erc20') }} r
         ON r.contract_address = lower('0xde30da39c46104798bb5aa3fe8b9e0e1f348163f') --GTC Token
+        AND r.contract_address = tfer.contract_address
 INNER JOIN {{ source('ethereum','transactions') }} tx
         ON tx.block_number = tfer.evt_block_number
         AND tx.block_time = tfer.evt_block_time
