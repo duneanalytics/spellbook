@@ -1196,3 +1196,27 @@ seeds:
         +column_types:
           hex: string
           dec: string
+    clipper:
+      arbitrum:
+        clipper_arbitrum_trades_test_data:
+            blockchain: string
+            project: string
+            version: int
+            block_date: timestamp
+            block_time: timestamp
+            token_bought_symbol: string
+            token_sold_symbol: string
+            token_pair: string
+            token_bought_amount: double
+            token_sold_amount: double
+            token_bought_amount_raw: int
+            token_sold_amount_raw: int
+            amount_usd: double
+            token_bought_address: string
+            token_sold_address: string
+            taker: string
+            maker: string
+            project_contract_address: string
+            tx_hash: string
+            tx_from: string
+            tx_to: string
