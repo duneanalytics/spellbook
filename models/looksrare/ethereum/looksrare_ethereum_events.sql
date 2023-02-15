@@ -13,43 +13,55 @@
 }}
 
 WITH looksrare_trades AS (
-    SELECT ta.evt_block_time AS block_time
-    , ta.tokenId AS token_id
-    , ta.amount AS number_of_items
-    , CASE WHEN ta.strategy='0x58d83536d3efedb9f7f2a1ec3bdaad2b1a4dd98c' THEN 'Private Sale' ELSE 'Buy' END AS trade_category
-    , ta.maker AS seller
-    , ta.taker AS buyer
-    , ta.price AS amount_raw
-    , ta.currency AS currency_contract
-    , ta.collection AS nft_contract_address
-    , ta.contract_address AS project_contract_address
-    , ta.evt_tx_hash AS tx_hash
-    , ta.evt_block_number AS block_number
-    , ta.evt_index
-    , ta.strategy
-    FROM {{ source('looksrare_ethereum','looksrareexchange_evt_takerask') }} ta
-    {% if is_incremental() %}
-    WHERE ta.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-    UNION ALL
-    SELECT tb.evt_block_time AS block_time
-    , tb.tokenId AS token_id
-    , tb.amount AS number_of_items
-    , CASE WHEN tb.strategy='0x58d83536d3efedb9f7f2a1ec3bdaad2b1a4dd98c' THEN 'Private Sale' ELSE 'Offer Accepted' END AS trade_category
-    , tb.maker AS seller
-    , tb.taker AS buyer
-    , tb.price AS amount_raw
-    , tb.currency AS currency_contract
-    , tb.collection AS nft_contract_address
-    , tb.contract_address AS project_contract_address
-    , tb.evt_tx_hash AS tx_hash
-    , tb.evt_block_number AS block_number
-    , tb.evt_index
-    , tb.strategy
-    FROM {{ source('looksrare_ethereum','looksrareexchange_evt_takerbid') }} tb
-    {% if is_incremental() %}
-    WHERE tb.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+    SELECT *
+    , ROW_NUMBER() OVER (PARTITION BY tx_hash, nft_contract_address, token_id ORDER BY evt_index ASC) AS id
+    FROM (
+        SELECT ta.evt_block_time AS block_time
+        , ta.tokenId AS token_id
+        , ta.amount AS number_of_items
+        , CASE WHEN ta.strategy='0x58d83536d3efedb9f7f2a1ec3bdaad2b1a4dd98c' THEN 'Private Sale' ELSE 'Buy' END AS trade_category
+        , ta.maker AS seller
+        , ta.taker AS buyer
+        , ta.price AS amount_raw
+        , ta.currency AS currency_contract
+        , ta.collection AS nft_contract_address
+        , ta.contract_address AS project_contract_address
+        , ta.evt_tx_hash AS tx_hash
+        , ta.evt_block_number AS block_number
+        , ta.evt_index
+        , ta.strategy
+        FROM {{ source('looksrare_ethereum','LooksRareExchange_evt_TakerAsk') }} ta
+    
+        UNION ALL
+        
+        SELECT tb.evt_block_time AS block_time
+        , tb.tokenId AS token_id
+        , tb.amount AS number_of_items
+        , CASE WHEN tb.strategy='0x58d83536d3efedb9f7f2a1ec3bdaad2b1a4dd98c' THEN 'Private Sale' ELSE 'Offer Accepted' END AS trade_category
+        , tb.maker AS seller
+        , tb.taker AS buyer
+        , tb.price AS amount_raw
+        , tb.currency AS currency_contract
+        , tb.collection AS nft_contract_address
+        , tb.contract_address AS project_contract_address
+        , tb.evt_tx_hash AS tx_hash
+        , tb.evt_block_number AS block_number
+        , tb.evt_index
+        , tb.strategy
+        FROM {{ source('looksrare_ethereum','LooksRareExchange_evt_TakerBid') }} tb
+        )
+    )
+
+, royalties AS (
+    SELECT evt_block_time AS block_time
+    , evt_tx_hash AS tx_hash
+    , evt_index
+    , collection AS nft_contract_address
+    , tokenId AS token_id
+    , amount
+    , royaltyRecipient
+    , ROW_NUMBER() OVER (PARTITION BY evt_tx_hash, collection, tokenId ORDER BY evt_index ASC) AS id
+    FROM {{ source('looksrare_ethereum','LooksRareExchange_evt_RoyaltyPayment') }}
     )
 
 , platform_fees AS (
@@ -73,6 +85,7 @@ WITH looksrare_trades AS (
     , output_0/100 AS fee_percentage
     FROM {{ source('looksrare_ethereum','StrategyAnyItemFromCollectionForFixedPriceV1B_call_viewProtocolFee') }}
     )
+
 
 SELECT distinct 'ethereum' AS blockchain
 , 'looksrare' AS project
@@ -113,7 +126,7 @@ SELECT distinct 'ethereum' AS blockchain
 , CAST(COALESCE(ROUND(100*roy.amount/lr.amount_raw, 2), 0) AS DOUBLE) AS royalty_fee_percentage
 , 'ethereum-looksrare-v1' || COALESCE(lr.tx_hash, '-1') || COALESCE(lr.nft_contract_address, '-1') || COALESCE(lr.token_id, '-1') || COALESCE(COALESCE(seller_fix.from, lr.seller), '-1') || COALESCE(COALESCE(buyer_fix.to, lr.buyer), '-1') || COALESCE(lr.evt_index, '-1') AS unique_trade_id
 FROM looksrare_trades lr
-LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain='ethereum'
+LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain='ethereum'
     AND pu.minute=date_trunc('minute', lr.block_time)
     AND (pu.contract_address=lr.currency_contract
         OR (pu.contract_address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AND lr.currency_contract='0x0000000000000000000000000000000000000000'))
@@ -127,22 +140,11 @@ INNER JOIN {{ source('ethereum','transactions') }} et ON lr.block_time=et.block_
     {% endif %}
 LEFT JOIN {{ ref('nft_ethereum_aggregators') }} agg ON et.to=agg.contract_address
 LEFT JOIN {{ ref('tokens_ethereum_nft') }} tok ON lr.nft_contract_address=tok.contract_address
-LEFT JOIN {{ source('looksrare_ethereum','looksrareexchange_evt_royaltypayment') }} roy ON roy.evt_block_time=lr.block_time
-    AND roy.evt_tx_hash=lr.tx_hash
-    AND roy.collection=lr.nft_contract_address
-    AND roy.tokenId=lr.token_id
-    {% if is_incremental() %}
-    AND roy.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-LEFT ANTI JOIN {{ source('erc20_ethereum', 'evt_transfer') }} anti_roy ON anti_roy.evt_block_time=lr.block_time
-    AND anti_roy.evt_tx_hash=lr.tx_hash
-    AND anti_roy.contract_address=roy.currency
-    AND anti_roy.contract_address=roy.currency
-    AND anti_roy.to=roy.royaltyRecipient
-    AND anti_roy.from!=lr.buyer
-    {% if is_incremental() %}
-    AND anti_roy.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+LEFT JOIN royalties roy ON roy.block_time=lr.block_time
+    AND roy.tx_hash=lr.tx_hash
+    AND roy.nft_contract_address=lr.nft_contract_address
+    AND roy.token_id=lr.token_id
+    AND roy.id = lr.id
 LEFT JOIN {{ ref('nft_ethereum_transfers') }} buyer_fix ON lr.block_time=buyer_fix.block_time
     AND lr.tx_hash=buyer_fix.tx_hash
     AND lr.nft_contract_address=buyer_fix.contract_address
