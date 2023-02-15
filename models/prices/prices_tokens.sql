@@ -380,6 +380,7 @@ VALUES
     ("bit-bitdao", "ethereum", "BIT", "0x1a4b46696b2bb4794eb3d4c26f1c55f9170fa4c5", 18),
     ("bix-bibox-token", "ethereum", "BIX", "0xb3104b4b9da82025e8b9f8fb28b3553ce2f67069", 18),
     ("blt-bloom", "ethereum", "BLT", "0x107c4504cd79c5d2696ea0030a8dd4e92601b82e", 18),
+    ("blur-blur", "ethereum", "BLUR", "0x5283d291dbcf85356a21ba090e6db59121208b44", 18),
     ("blz-bluzelle", "ethereum", "BLZ", "0x5732046a883704404f284ce41ffadd5b007fd668", 18),
     ("bnb-binance-coin", "ethereum", "BNB", "0xb8c77482e45f1f44de1745f52c74426c631bdd52", 18),
     ("bnk-bankera", "ethereum", "BNK", "0xc80c5e40220172b36adee2c951f26f2a577810c5", 8),
