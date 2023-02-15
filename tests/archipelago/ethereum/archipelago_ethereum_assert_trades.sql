@@ -14,7 +14,7 @@ WITH raw_events AS (
       block_time as processed_block_time
       , tx_hash as processed_tx_hash
       , unique_trade_id as processed_trade_id
-    FROM {{ ref('nft_trades') }}
+    FROM {{ ref('archipelago_ethereum_events') }}
     WHERE
       blockchain = 'ethereum'
       AND project = 'archipelago'
