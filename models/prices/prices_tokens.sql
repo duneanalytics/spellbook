@@ -335,6 +335,8 @@ VALUES
     ("fb-fbbank", "bnb", "FB", "0x770F030FDBf63EBF1C939De8BCFf8943C2C2d454", 2),
     ("mdb-mdb", "bnb", "MDB+", "0x9f8bb16f49393eea4331a39b69071759e54e16ea", 18),
     ("mdb-milliondollarbaby", "bnb", "MDB", "0x0557a288a93ed0df218785f2787dac1cd077f8f3", 18),
+    ("walv-alvey-chain", "bnb", "wALV", "0x256d1fce1b1221e8398f65f9b36033ce50b2d497", 18),
+    ("loop-loopnetwork", "bnb", "LOOP", "0xce186ad6430e2fe494a22c9edbd4c68794a28b35", 18),
 
     ("0xbtc-0xbitcoin", "ethereum", "0xBTC", "0xb6ed7644c69416d67b522e20bc294a9a9b405b31", 8),
     ("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
@@ -1250,7 +1252,7 @@ VALUES
     ('hati-hati', 'ethereum', 'HATI', '0x251457b7c5d85251ca1ab384361c821330be2520', 18),
     ('rss3-rss3', 'ethereum', 'RSS3', '0xc98d64da73a6616c42117b582e832812e7b8d57f', 18),
     ('leag-leaguedao-governance-token', 'ethereum', 'LEAG', '0x7b39917f9562c8bc83c7a6c2950ff571375d505d', 18),
-    ('pop-pop-chest-token', 'ethereum', 'POP', '0x5d858bcd53e085920620549214a8b27ce2f04670', 18),
+    --('pop-pop-chest-token', 'ethereum', 'POP', '0x5d858bcd53e085920620549214a8b27ce2f04670', 18),
     ('revo-revomon', 'ethereum', 'REVO', '0x155040625d7ae3e9cada9a73e3e44f76d3ed1409', 18),
     ('xp-polkafantasy', 'ethereum', 'XP', '0x948c70dc6169bfb10028fdbe96cbc72e9562b2ac', 18),
     ('cdai-compound-dai', 'ethereum', 'CDAI', '0x5d3a536e4d6dbd6114cc1ead35777bab948e3643', 8),
@@ -1351,7 +1353,7 @@ VALUES
     ('wxeq-wrapped-equilibria-v2', 'ethereum', 'WXEQ', '0x4a5b3d0004454988c50e8de1bcfc921ee995ade3', 18),
     ('cvr-cvr', 'ethereum', 'CVR', '0x3c03b4ec9477809072ff9cc9292c9b25d4a8e6c6', 18),
     ('dows-shadows', 'ethereum', 'DOWS', '0x661ab0ed68000491d98c796146bcf28c20d7c559', 18),
-    ('lit-lit', 'ethereum', 'LIT', '0xc5b3d3231001a776123194cf1290068e8b0c783b', 18),
+    --('lit-lit', 'ethereum', 'LIT', '0xc5b3d3231001a776123194cf1290068e8b0c783b', 18),
     ('og-oogear', 'ethereum', 'OG', '0xe89c20096b636ffec9fd26d1a623f42a33ead309', 18),
     ('riot-riot-racers', 'ethereum', 'RIOT', '0xf56408077487cb879c992909c5b5c66d68c02eb4', 18),
     ('time-chronotech', 'ethereum', 'TIME', '0x485d17a6f1b8780392d53d64751824253011a260', 8),
@@ -1861,5 +1863,5 @@ VALUES
     ("ust-terrausd", "fantom", "USTC", "0xe2d27f06f63d98b8e11b38b5b08a75d0c8dd62b9", 6),
     ("luna-terra", "fantom", "LUNC", "0x95dd59343a893637be1c3228060ee6afbf6f0730", 6),
     ("2shares-2share", "fantom", "2SHARES", "0xc54A1684fD1bef1f077a336E6be4Bd9a3096a6Ca", 18), 
-    ("3share-3share", "fantom", "3SHARES", "0x6437ADAC543583C4b31Bf0323A0870430F5CC2e7", 18)
+    ("3share-3share", "fantom", "3SHARE", "0x6437adac543583c4b31bf0323a0870430f5cc2e7", 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
