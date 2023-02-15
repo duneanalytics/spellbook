@@ -3,7 +3,7 @@
      materialized='incremental',
      file_format = 'delta',
      incremental_strategy = 'merge',
-     unique_key = ['tx_hash', 'nft_contract_address', 'nft_token_id', 'price', 'rn'],
+     unique_key = ['rn'],
      post_hook='{{ expose_spells(\'["ethereum"]\',
                                  "sector",
                                  "nft",
