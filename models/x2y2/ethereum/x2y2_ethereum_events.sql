@@ -21,7 +21,7 @@
 -- base sources
 WITH
 src_evt_profit as (
-    SELECT distinct
+    SELECT
      *
      , CASE WHEN currency='0x0000000000000000000000000000000000000000'
         THEN true ELSE false END as is_native_eth
@@ -33,7 +33,7 @@ src_evt_profit as (
 ),
 
 src_evt_inventory as (
-    SELECT distinct
+    SELECT
      evt_tx_hash
     ,evt_block_time
     ,itemHash
@@ -75,7 +75,7 @@ src_eth_transactions as  (
 ),
 
 src_nft_transfers as (
-    SELECT distinct *
+    SELECT *
     FROM {{ ref('nft_ethereum_transfers') }}
     WHERE block_time > '{{project_start_date}}'
         {% if is_incremental() %}
@@ -100,7 +100,7 @@ src_prices_usd as (
 
 
 -- results
-SELECT 'ethereum' AS blockchain
+SELECT distinct 'ethereum' AS blockchain
 , 'x2y2' AS project
 , 'v1' AS version
 , prof.evt_block_time AS block_time
