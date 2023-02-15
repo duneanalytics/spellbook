@@ -1,20 +1,20 @@
 {{ config(
-    schema = 'addresses_events_ethereum'
+    schema = 'addresses_events_testnets_goerli'
     , alias = 'first_funded_by'
     , materialized = 'incremental'
     , file_format = 'delta'
-    , incremental_strategy = 'append'
+    , incremental_strategy = 'merge'
     , unique_key = ['address']
     )
 }}
 
-SELECT 'ethereum' AS blockchain
+SELECT 'goerli' AS blockchain
 , et.to AS address
 , MIN_BY(et.from, et.block_number) AS first_funded_by
 , MIN(et.block_time) AS block_time
 , MIN(et.block_number) AS block_number
 , MIN_BY(et.tx_hash, et.block_number) AS tx_hash
-FROM {{ source('ethereum', 'traces') }} et
+FROM {{ source('goerli', 'traces') }} et
 {% if is_incremental() %}
 LEFT ANTI JOIN {{this}} ffb ON et.to = ffb.address
 {% endif %}

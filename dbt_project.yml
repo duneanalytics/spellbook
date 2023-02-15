@@ -290,10 +290,26 @@ models:
 
     addresses_events:
       +schema: addresses_events
-      +materialized: table
+      arbitrum:
+        +schema: addresses_events_arbitrum
+      avalanche_c:
+        +schema: addresses_events_avalanche_c
+      bnb:
+        +schema: addresses_events_bnb
       ethereum:
         +schema: addresses_events_ethereum
-        +materialized: table
+      fantom:
+        +schema: addresses_events_fantom
+      gnosis:
+        +schema: addresses_events_gnosis
+      optimism:
+        +schema: addresses_events_optimism
+      polygon:
+        +schema: addresses_events_polygon
+    addresses_events_testnets:
+      +schema: addresses_events_testnets
+      goerli:
+        +schema: addresses_events_testnets_goerli
 
     aztec:
       +schema: aztec
@@ -341,6 +357,11 @@ models:
       +schema: trader_joe
       avalanche_c:
         +schema: trader_joe_avalanche_c
+
+    odos:
+      +schema: odos
+      avalanche_c:
+        +schema: odos_avalanche_c
 
     transfers:
       +schema: transfers
@@ -715,8 +736,11 @@ models:
       +schema: zipswap
       optimism:
         +schema: zipswap_optimism
-    
-    
+        
+    sharky:
+      +schema: sharky
+      solana:
+        +schema: sharky_solana
 
     arbswap:
       +schema: arbswap
@@ -787,6 +811,15 @@ seeds:
             block_time: timestamp
             tx_hash: string
             amount: string
+
+    sharky:
+      solana:
+        sharky_solana_loans_solscan:
+          +column_types:
+            block_time: timestamp
+            tx_hash: string
+            amount: double
+
     ens:
     dex:
       trades:
