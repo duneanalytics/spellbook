@@ -5,7 +5,7 @@
                                     \'["jacektrocinski"]\') }}')}}
 
 SELECT
-    'ethereum' AS blockchain,
+    array('ethereum') AS blockchain,
     gauge AS address,
     'eth:' || pools.name AS name,
     'balancer_v2_gauges' AS category,
@@ -18,7 +18,7 @@ FROM
     LEFT JOIN {{ ref('labels_balancer_v2_pools_ethereum') }} pools ON pools.address = gauge.pool
 UNION ALL
 SELECT
-    'ethereum' AS blockchain,
+    array('ethereum') AS blockchain,
     gauge AS address,
     'eth:' || pools.name AS name,
     'balancer_v2_gauges' AS category,

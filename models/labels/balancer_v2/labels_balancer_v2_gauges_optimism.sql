@@ -5,7 +5,7 @@
                                     \'["jacektrocinski"]\') }}')}}
 
 SELECT
-    'optimism' AS blockchain,
+    array('optimism') AS blockchain,
     gauge.gauge AS address,
     'op:' || pools.name AS name,
     'balancer_v2_gauges' AS category,
@@ -19,7 +19,7 @@ FROM
     LEFT JOIN {{ ref('labels_balancer_v2_pools_optimism') }} pools ON pools.address = streamer.pool
 UNION ALL
 SELECT
-    'optimism' AS blockchain,
+    array('optimism') AS blockchain,
     gauge.gauge AS address,
     'op:' || pools.name AS name,
     'balancer_v2_gauges' AS category,
