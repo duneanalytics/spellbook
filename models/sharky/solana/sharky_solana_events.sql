@@ -78,7 +78,7 @@ WITH sharky_txs AS (
             ON sharky_txs.block_time = filtered_txs.block_time
             AND sharky_txs.id = filtered_txs.id
         LEFT JOIN sol_price p
-            ON p.minute = date_trunc('minute', block_time)
+            ON p.minute = date_trunc('minute', filtered_txs.block_time)
     ),
     events AS (
         SELECT *,
