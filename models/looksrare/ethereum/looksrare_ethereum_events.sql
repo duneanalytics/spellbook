@@ -31,6 +31,9 @@ WITH looksrare_trades AS (
         , ta.evt_index
         , ta.strategy
         FROM {{ source('looksrare_ethereum','LooksRareExchange_evt_TakerAsk') }} ta
+        {% if is_incremental() %}
+        AND ta.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     
         UNION ALL
         
@@ -49,6 +52,9 @@ WITH looksrare_trades AS (
         , tb.evt_index
         , tb.strategy
         FROM {{ source('looksrare_ethereum','LooksRareExchange_evt_TakerBid') }} tb
+        {% if is_incremental() %}
+        AND tb.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
         )
     )
 
@@ -62,6 +68,9 @@ WITH looksrare_trades AS (
     , royaltyRecipient
     , ROW_NUMBER() OVER (PARTITION BY evt_tx_hash, collection, tokenId ORDER BY evt_index ASC) AS id
     FROM {{ source('looksrare_ethereum','LooksRareExchange_evt_RoyaltyPayment') }}
+    {% if is_incremental() %}
+    AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     )
 
 , platform_fees AS (
