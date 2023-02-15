@@ -160,7 +160,8 @@ SELECT DISTINCT
     tx.from as tx_from,
     tx.to as tx_to,
     dexs.trace_address,
-    dexs.evt_index
+    dexs.evt_index,
+    dexs.pool_type
 FROM dexs
 INNER JOIN {{ source('optimism', 'transactions') }} tx
     ON dexs.tx_hash = tx.hash

@@ -24,5 +24,5 @@ from
     ,('0xcD487Bbd5F6f9AFD3CEa637A1803b6E8d71C958A', 'BitKeep Swaps', 'SwapRouter')
     ,('0x15DdA60616Ffca20371ED1659dBB78E888f65556', 'RetroPGF Receiver', 'AssetReceiver')
     ,('0x92D932aBBC7885999c4347880Eb069F854982eDD', 'OKX NFT', NULL)
-    ,('0x86Bb63148d17d445Ed5398ef26Aa05Bf76dD5b59', 'LayerZero', 'TheAptosBridge')
+    ,('0x86Bb63148d17d445Ed5398ef26Aa05Bf76dD5b59', 'Layer Zero', 'TheAptosBridge')
     ) as temp_table(contract_address, contract_project, contract_name)
