@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: safe_arbitrum_singletons
+    meta:
+      blockchain: arbitrum
+      project: safe
+      contributors: tschubotz
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'singletons', 'arbitrum']
+    description: "Singletons addresses used with Safes"
+    columns:
+      - &address
+        name: address
+        description: "Safe contract address"
+        tests:
+          - unique
+          - not_null
