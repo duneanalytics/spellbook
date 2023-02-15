@@ -55,7 +55,7 @@ FROM (VALUES
     -- FTX, Source: https://etherscan.io/accounts/label/ftx
     , (array('ethereum'), '0x2faf487a4414fe77e2327f0bf4ae2a264a776ad2', 'FTX 1', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
     , (array('ethereum'), '0xc098b2a3aa256d2140208c3de6543aaef5cd3a94', 'FTX 2', 'cex', 'hildobby', 'static', timestamp('2022-08-28'), now())
-    , (array('ethereum'), '0x25eaff5b179f209cf186b1cdcbfa463a69df4c45', 'FTX (formerly Blockfolio)', 'cex', 'hildobby', 'static', timestamp('20233-01-26'), now())
+    , (array('ethereum'), '0x25eaff5b179f209cf186b1cdcbfa463a69df4c45', 'FTX (formerly Blockfolio)', 'cex', 'hildobby', 'static', timestamp('2023-01-26'), now())
     -- FTX US, Source: https://etherscan.io/accounts/label/ftx
     , (array('ethereum'), '0x7abe0ce388281d2acf297cb089caef3819b13448', 'FTX US', 'cex', 'agaperste', 'static', timestamp('2022-11-15'), now())
     -- Coinbase, Source: https://etherscan.io/accounts/label/coinbase
