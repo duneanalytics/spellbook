@@ -45,7 +45,7 @@ where et.success = true
     )
     and et.gas_used > 0  -- to ensure the setup call was successful
     {% if not is_incremental() %}
-    and et.block_time > '2018-11-24' -- for initial query optimisation    
+    and et.block_time > '2021-01-26' -- for initial query optimisation    
     {% endif %}
     {% if is_incremental() %}
     and et.block_time > date_trunc("day", now() - interval '1 week')
