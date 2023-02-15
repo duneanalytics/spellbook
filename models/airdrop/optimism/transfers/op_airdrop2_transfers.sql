@@ -38,14 +38,14 @@ INNER JOIN {{ source('optimism','transactions') }} tx
         ON tx.block_number = tfer.evt_block_number
         AND tx.block_time = tfer.evt_block_time
         AND tx.hash = tfer.evt_tx_hash
-        AND tx.to = '0xbe9a9b1b07f027130e56d8569d1aea5dd5a86013'
         AND tx.block_time BETWEEN
             cast('{{airdrop_start_date}}' as date)
             AND cast('{{airdrop_end_date}}' as date)
 
     WHERE tfer.evt_block_time BETWEEN
-         cast('{{airdrop_start_date}}' as date)
-         AND cast('{{airdrop_end_date}}' as date)
+                cast('{{airdrop_start_date}}' as date)
+                AND cast('{{airdrop_end_date}}' as date)
+         AND tx.to = '0xbe9a9b1b07f027130e56d8569d1aea5dd5a86013'
 
         {% if is_incremental() %}
         AND tfer.evt_block_time >= date_trunc('day', now() - interval '1' week)
