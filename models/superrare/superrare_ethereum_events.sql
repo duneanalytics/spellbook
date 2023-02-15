@@ -335,12 +335,14 @@ inner join {{ source('ethereum','transactions') }} t
 left outer join {{ source('erc721_ethereum','evt_transfer') }} evt on evt.contract_address = a.contract_address
     and evt.tokenId = a.tokenId
     and evt.from = '0x0000000000000000000000000000000000000000'
+    and evt.evt_tx_hash = a.evt_tx_hash
     {% if is_incremental() %}
     and evt.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 left outer join {{ source('erc20_ethereum','evt_transfer') }} erc20 on erc20.contract_address = a.contract_address
     and erc20.value = a.tokenId
     and erc20.from = '0x0000000000000000000000000000000000000000'
+    and erc20.evt_tx_hash = a.evt_tx_hash
     {% if is_incremental() %}
     and erc20.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
