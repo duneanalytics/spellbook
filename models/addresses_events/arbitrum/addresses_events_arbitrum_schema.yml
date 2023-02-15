@@ -1,20 +1,20 @@
 version: 2
 
 models:
-  - name: addresses_events_ethereum_first_funded_by
+  - name: addresses_events_arbitrum_first_funded_by
     meta:
-      blockchain: ethereum
+      blockchain: arbitrum
       sector: addresses_events
       project: addresses
       contributors: hildobby
     config:
-      tags: ['table', 'funded', 'addresses_events', 'ethereum']
-    description: "Table showing who first funded each Ethereum address in ETH"
+      tags: ['table', 'funded', 'addresses_events', 'arbitrum']
+    description: "Table showing who first funded each Arbitrum address in ETH"
     tests:
       - check_seed:
           seed_file: ref('first_funded_by_seed')
           filter:
-            blockchain: ethereum
+            blockchain: arbitrum
           match_columns:
             - blockchain
             - address
@@ -26,11 +26,11 @@ models:
       - name: blockchain
         description: "Blockchain"
       - name: address
-        description: "Concerned Ethereum address"
+        description: "Concerned Arbitrum address"
         tests:
           - unique
       - name: first_funded_by
-        description: "Which Ethereum address first funded the address with ETH"
+        description: "Which Arbitrum address first funded the address with ETH"
       - name: block_time
         description: "The block time on which the address was first funded with ETH"
       - name: block_number
