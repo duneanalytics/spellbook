@@ -8966,5 +8966,10 @@ FROM (VALUES ('0x3f9463bdb502ec2079bf39da6c924d4022ff9f4c', 'biubiu.tools', 18),
              ('0xc5102fe9359fd9a28f877a67e36b0f050d81a3cc', 'HOP', 18),
              ('0xf9a797b40dbc6c92aaa69aba169b1e68a5722037', 'WagTest9WXDAI', 18),
              ('0x05698e7346ea67cfb088f64ad8962b18137d17c0', 'BER', 18),
-             ('0xe68856eb29b2fb39699286cca7f10f90ce8ae9de', 'FCL', 18)
+             ('0xcb444e90d8198415266c6a2724b7900fb12fc56e', 'EURe', 18),
+             ('0xe68856eb29b2fb39699286cca7f10f90ce8ae9de', 'FCL', 18),
+--           -- Using the "commonly accepted symbol and decimals for this OG token
+             ('0xbb9bc244d798123fde783fcc1c72d3bb8c189413', 'TheDAO', 16),
+             ('0x7ac5bbefae0459f007891f9bd245f6beaa91076c', 'CWETHLP', 18),
+             ('0xa639fb3f8c52e10e10a8623616484d41765d5f82', 'CUSDCLP', 18)
      ) AS temp_table (contract_address, symbol, decimals)

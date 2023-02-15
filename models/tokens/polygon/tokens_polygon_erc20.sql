@@ -58,4 +58,6 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0xe111178a87a3bff0c8d18decba5798827539ae99', 'EURS', 2)
 ,('0x4e3decbb3645551b8a19f0ea1678079fcb33fb4c', 'jEUR', 18)
 ,('0x85955046df4668e1dd369d2de9f3aeb98dd2a369', 'DPI', 18)
+,('0xef1348dac70e8349513e4ae7498f302e27102101', 'CWETHLP', 18)
+,('0xa03258b76ef13af716370529358f6a79eb03ec12', 'CUSDCLP', 18)
 ) AS temp_table (contract_address, symbol, decimals)
