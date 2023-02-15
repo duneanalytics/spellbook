@@ -26,6 +26,7 @@ sales as (
     WHERE blockchain = 'ethereum'
     AND currency_symbol IN ('ETH', 'WETH')
     AND amount_original IS NOT NULL 
+    AND number_of_items = 1
 {% endif %}
 {% if is_incremental() %}
     SELECT 
@@ -48,6 +49,7 @@ sales as (
     AND currency_symbol IN ('ETH', 'WETH')
     AND amount_original IS NOT NULL 
     AND amount_original >= (SELECT MIN(price) FROM {{this}}) -- optimize query
+    AND number_of_items = 1
 {% endif %}
 )
 SELECT 
