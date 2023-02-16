@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: manifold_ethereum
+    freshness:
+      warn_after: { count: 72, period: hour }
+      error_after: { count: 120, period: hour }
+    tables:
+      - name: ERC1155BurnRedeem_evt_BurnRedeemInitialized
+        loaded_at_field: evt_block_time
+      - name: ERC1155LazyPayableClaim_evt_ClaimInitialized
+        loaded_at_field: evt_block_time
+      - name: ERC1155LazyPayableClaimV2_evt_ClaimInitialized
+        loaded_at_field: evt_block_time
+      - name: ERC721LazyPayableClaim_evt_ClaimInitialized
+        loaded_at_field: evt_block_time
+      - name: ERC721LazyPayableClaimV2_evt_ClaimInitialized
+        loaded_at_field: evt_block_time
+      - name: ManifoldERC721Edition_evt_SeriesCreated
+        loaded_at_field: evt_block_time
