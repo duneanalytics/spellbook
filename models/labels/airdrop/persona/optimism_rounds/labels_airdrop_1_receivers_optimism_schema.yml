@@ -1,29 +1,25 @@
 version: 2
 
 models:
-  - name: labels_all
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
-            - name
-            - category
-            - blockchain
+  - name: labels_airdrop_1_receivers_optimism
     meta:
-      blockchain: ethereum, solana
+      blockchain: ethereum
       sector: labels
-      category: cex, nft
-      contributors: hildobby, soispoke
+      category: airdrop
+      project: ['optimism']
+      contributors: soispoke
     config:
-      tags: ['labels', 'ethereum', 'solana', 'cex', 'nft']
-    description: "All labels across chains and categories"
+      tags: ['labels', 'airdrop', 'optimism']
+    description: "$OP Airdrop 1 receivers query labels"   
     columns:
       - name: blockchain
-        description: "Blockchain"
+        description: "Blockchain"   
       - name: address
-        description: "Label address"
+        description: "Address of $OP receiver"
+        tests:
+          - unique
       - name: name
-        description: "Label name"
+        description: "Label name: '$OP Airdrop 1 Receiver'"
       - name: category
         description: "Label category"
       - name: contributor

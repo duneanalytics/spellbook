@@ -1,27 +1,21 @@
 version: 2
 
 models:
-  - name: labels_all
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
-            - name
-            - category
-            - blockchain
+  - name: labels_tornado_cash
     meta:
-      blockchain: ethereum, solana
+      blockchain: ethereum
       sector: labels
-      category: cex, nft
-      contributors: hildobby, soispoke
+      category: tornado_cash
+      project: ['tornado_cash']
+      contributors: soispoke
     config:
-      tags: ['labels', 'ethereum', 'solana', 'cex', 'nft']
-    description: "All labels across chains and categories"
+      tags: ['labels', 'tornado_cash', 'ethereum', 'arbitrum','bnb','avalanche_c','optimism','gnosis']
+    description: "Tornado Cash depositors and recipients query labels across chains"   
     columns:
       - name: blockchain
-        description: "Blockchain"
+        description: "Blockchain"   
       - name: address
-        description: "Label address"
+        description: "Tornado cash depositor/recipient address"
       - name: name
         description: "Label name"
       - name: category

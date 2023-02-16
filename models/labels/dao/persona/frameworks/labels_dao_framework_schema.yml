@@ -1,37 +1,36 @@
 version: 2
 
 models:
-  - name: labels_dao
+  - name: labels_dao_framework
     meta:
       blockchain: ethereum, polygon, gnosis
       sector: labels
-      category: dao
-      contributors: ilemi
+      project: dao
+      contibutors: henrystats 
     config:
-      tags: ['labels', 'dao']
-    description: "all dao labels"
+      tags: ['labels', 'ethereum', 'gnosis', 'polygon', 'dao']
+    description: "dao addresses and wallet addresses from dao addresses spell"
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain"   
       - &address
         name: address
-        description: "Label address"
+        description: "DAO Address"
+        tests:
+          - unique
       - &name
         name: name
-        description: "Label name"
+        description: "custom name determined by tool used to create dao"
       - &category
         name: category
         description: "Label category"
-        tests:
-          - accepted_values:
-              values: ['dao']
       - &contributor
         name: contributor
         description: "Wizard(s) contributing to labels"
       - &source
         name: source
-        description: "How were labels generated (query)"
+        description: "How were labels generated (could be static or query)"
       - &created_at
         name: created_at
         description: "When were labels created"

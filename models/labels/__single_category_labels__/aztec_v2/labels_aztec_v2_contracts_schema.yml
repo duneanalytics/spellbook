@@ -1,43 +1,48 @@
 version: 2
 
 models:
-  - name: labels_dao
+  - name: labels_aztec_v2_contracts_ethereum
     meta:
-      blockchain: ethereum, polygon, gnosis
+      blockchain: ethereum
       sector: labels
-      category: dao
-      contributors: ilemi
+      project: aztec
+      contributors: jackiep00, Henrystats
     config:
-      tags: ['labels', 'dao']
-    description: "all dao labels"
+      tags: ["labels", "ethereum", "aztec"]
+    description: "Contracts that are in the Aztec Connect ecosystem"
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain"   
+        description: "Blockchain"
       - &address
         name: address
-        description: "Label address"
+        description: "Address of bridge contract or rollup"
       - &name
         name: name
-        description: "Label name"
+        description: "Description of the contract"
       - &category
         name: category
-        description: "Label category"
-        tests:
-          - accepted_values:
-              values: ['dao']
+        description: "Contract type"
       - &contributor
         name: contributor
         description: "Wizard(s) contributing to labels"
       - &source
         name: source
-        description: "How were labels generated (query)"
+        description: "How were labels generated"
       - &created_at
         name: created_at
         description: "When were labels created"
       - &updated_at
         name: updated_at
         description: "When were labels updated for the last time"
+      - &version
+        name: version
+        description: "Version of the contract"
+      - &protocol
+        name: protocol
+        description: "Name of the protocol that's associated with the contract"
+      - &contract_creator
+        name: contract_creator
       - &model_name
         name: model_name
         description: "Name of the label model sourced from"
