@@ -11,59 +11,58 @@
      )
  }}
 
-WITH sales as 
+{% if not is_incremental() %}
+SELECT 
+    nft_contract_address, 
+    token_id as nft_token_id, 
+    seller, 
+    amount_original as price, 
+    tx_hash,
+    ROW_NUMBER() OVER (PARTITION BY nft_contract_address ORDER BY amount_original DESC) as rn 
+FROM 
+    {{ ref('nft_trades') }}
+WHERE 
+    blockchain = 'ethereum'
+    AND currency_symbol IN ('ETH', 'WETH')
+    AND amount_original IS NOT NULL 
+    AND number_of_items = 1
+QUALIFY 
+    rn <= 50
+{% else %}
+with incremental_subset as
 (
-    {% if not is_incremental() %}
-    SELECT 
+    SELECT
         nft_contract_address, 
-        token_id as nft_token_id, 
-        seller, 
-        amount_original as price, 
+        token_id as nft_token_id,
         tx_hash
     FROM 
         {{ ref('nft_trades') }}
-    WHERE 
-        blockchain = 'ethereum'
-        AND currency_symbol IN ('ETH', 'WETH')
-        AND amount_original IS NOT NULL 
-        AND number_of_items = 1
-    {% else %}
-    SELECT 
-        nft_contract_address, 
-        nft_token_id, 
-        seller, 
-        price, 
-        tx_hash
-    FROM 
-        {{this}}
-
-    UNION 
-
-    SELECT 
-        nft_contract_address,
-        token_id as nft_token_id, 
-        seller, 
-        amount_original as price, 
-        tx_hash
-    FROM 
-        {{ ref('nft_trades') }}
-    WHERE 
+    WHERE
         block_time >= date_trunc("day", now() - interval '1 week')
         AND blockchain = 'ethereum'
         AND currency_symbol IN ('ETH', 'WETH')
         AND amount_original IS NOT NULL 
-        -- AND amount_original >= (SELECT MIN(price) FROM {{this}})
         AND number_of_items = 1
-    {% endif %}
 )
 SELECT 
-    nft_contract_address, 
-    nft_token_id,
-    seller, 
-    price, 
-    tx_hash, 
-    ROW_NUMBER() OVER (PARTITION BY nft_contract_address ORDER BY price DESC) as rn 
+    src.nft_contract_address, 
+    src.token_id as nft_token_id, 
+    src.seller, 
+    src.amount_original as price, 
+    src.tx_hash,
+    ROW_NUMBER() OVER (PARTITION BY src.nft_contract_address ORDER BY src.amount_original DESC) as rn
 FROM 
-    sales 
+    {{ ref('nft_trades') }} src
+INNER JOIN
+    incremental_subset --reduce number of rows to process on incremental run(s)
+    ON src.nft_contract_address = incremental_subset.nft_contract_address
+    AND src.nft_token_id = incremental_subset.nft_token_id
+    AND src.tx_hash = incremental_subset.tx_hash
+WHERE 
+    blockchain = 'ethereum'
+    AND currency_symbol IN ('ETH', 'WETH')
+    AND amount_original IS NOT NULL 
+    AND number_of_items = 1
 QUALIFY 
     rn <= 50
+{% endif %}
