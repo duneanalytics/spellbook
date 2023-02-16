@@ -15,7 +15,7 @@
 }}
 
 select
-    'arbitrum' as blockchain,
+    'goerli' as blockchain,
     et.from as address,
     case 
         when et.to = '0x8942595a2dc5181df0465af0d7be08c8f23c93af' then '0.1.0'
