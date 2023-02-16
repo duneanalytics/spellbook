@@ -20,21 +20,23 @@ WITH wizards_curated_collections AS (
   FROM {{ref('tokens_ethereum_nft_wizards_curated')}}
   )
 
+-- Is there an 'append' incremental_strategy that might be more efficient?
+-- If yes then we can uncomment the comments below and switch to that incremental strategy
+--SELECT *
+--FROM (
 SELECT *
-FROM (
-  SELECT *
-  FROM wizards_curated_collections
+FROM wizards_curated_collections
 
-  UNION ALL
+UNION ALL
 
-  SELECT c.contract AS contract_address
-  , MIN(c.name) AS name
-  , NULL AS symbol
-  , MIN(t.token_standard) AS standard
-  , NULL AS category
-  FROM {{source('reservoir','collections')}} c
-  INNER JOIN {{ref('nft_ethereum_transfers')}} t ON c.contract=t.contract_address
-  LEFT ANTI JOIN wizards_curated_collections w ON w.contract_address=c.contract_address
-  GROUP BY c.contract, c.name
-  ) r
-LEFT ANTI JOIN {{this}} f ON f.contract_address=r.contract_address
+SELECT c.contract AS contract_address
+, MIN(c.name) AS name
+, NULL AS symbol
+, MIN(t.token_standard) AS standard
+, NULL AS category
+FROM {{source('reservoir','collections')}} c
+INNER JOIN {{ref('nft_ethereum_transfers')}} t ON c.contract=t.contract_address
+LEFT ANTI JOIN wizards_curated_collections w ON w.contract_address=c.contract_address
+GROUP BY c.contract, c.name
+--  ) r
+--LEFT ANTI JOIN {{this}} f ON f.contract_address=r.contract_address
