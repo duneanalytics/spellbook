@@ -29,7 +29,7 @@ models:
         description: "Date/time of safe creation"
       - &tx_hash
         name: tx_hash
-  
+
   - name: safe_ethereum_eth_transfers
     meta:
       blockchain: ethereum
@@ -42,7 +42,7 @@ models:
       tags: ['safe', 'transfers', 'ethereum']
     description: "Eth transfers for safes"
     columns:
-      - *address        
+      - *address
       - *block_date
       - &block_time
         name: block_time
@@ -53,3 +53,21 @@ models:
       - *tx_hash
       - &trace_address
         name: trace_address
+
+  - name: safe_ethereum_singletons
+    meta:
+      blockchain: ethereum
+      project: safe
+      contributors: tschubotz
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'singletons', 'ethereum']
+    description: "Singletons addresses used with Safes"
+    columns:
+      - name: address
+        description: "Safe contract address"
+        tests:
+          - unique
+          - not_null
