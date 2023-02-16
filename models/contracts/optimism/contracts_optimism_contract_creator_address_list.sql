@@ -390,7 +390,7 @@ FROM (
       ,('0x745748bcfd8f9c2de519a71d789be8a63dd7d66c', 'Curve')
       ,('0xe0774a09b55febaf93049af328901f7a5b09827b', 'WooFi')
       ,('0x413a8ba5175efd5f770e372d0ae91cf04a9473e3', 'WooFi')
-      ,('0x7D0831e0469e8b48e0F280459bC2CC44f23Ca7E4', 'WooFi')
+      ,('0x7D0831e0469e8b48e0F280459bC2CC44f23Ca7E4', '1Inch')
       ,('0xCb77b30841e1dEafFd88bA08B9654C667F80b80A', 'Quadrat')
       ,('0x001530e763FE9De4DCfe31BBd8548BCb579Ebf3A', 'Defiedge')
       ,('0xD8fA8F87129c654a6Dd7F34EEDAf58379E176eb1', 'Uniswap V3')
@@ -403,6 +403,9 @@ FROM (
       ,('0xe2e2d9e31d7e1cc1178fe0d1c5950f6c809816a3', 'Wormhole')
       ,('0x44cBfc3Ce762fC0Fee9Ddd6372804b7B660176bC', 'MUX')
       ,('0x7f4537349A0a40cd20ba5Af0D11fdC46dCFCBB3f', 'Zonic')
+      ,('0xDcdE7a069dEEe7b73A795A76F97Eb9dca7f812d4', 'Connext')
+      ,('0x42004661285881D4B0F245B1eD3774d8166CF314', 'Optimism Governor')
+      ,('0xF285E70Ca2002b796A575E473285282BBf39D790', 'Omnisea')
   ) as temp_table (creator_address, contract_project)
 
 ) f
