@@ -406,6 +406,7 @@ FROM (
       ,('0xDcdE7a069dEEe7b73A795A76F97Eb9dca7f812d4', 'Connext')
       ,('0x42004661285881D4B0F245B1eD3774d8166CF314', 'Optimism Governor')
       ,('0xF285E70Ca2002b796A575E473285282BBf39D790', 'Omnisea')
+      ,('0xFbe304258DCf193b9a320541985e2078ddB34287', 'Decent')
   ) as temp_table (creator_address, contract_project)
 
 ) f
