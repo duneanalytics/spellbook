@@ -52,7 +52,7 @@ WITH sales as
         AND blockchain = 'ethereum'
         AND currency_symbol IN ('ETH', 'WETH')
         AND amount_original IS NOT NULL 
-        AND amount_original >= (SELECT MIN(price) FROM {{this}})
+        -- AND amount_original >= (SELECT MIN(price) FROM {{this}})
         AND number_of_items = 1
     {% endif %}
 )
