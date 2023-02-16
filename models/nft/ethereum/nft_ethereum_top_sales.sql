@@ -11,10 +11,9 @@
      )
  }}
 
-WITH 
-
-sales as (
- {% if not is_incremental() %}
+WITH sales as 
+(
+    {% if not is_incremental() %}
     SELECT 
         nft_contract_address, 
         token_id as nft_token_id, 
@@ -22,17 +21,21 @@ sales as (
         amount_original as price, 
         tx_hash
     FROM 
-    {{ ref('nft_trades') }}
-    WHERE blockchain = 'ethereum'
-    AND currency_symbol IN ('ETH', 'WETH')
-    AND amount_original IS NOT NULL 
-    AND number_of_items = 1
-{% endif %}
-{% if is_incremental() %}
+        {{ ref('nft_trades') }}
+    WHERE 
+        blockchain = 'ethereum'
+        AND currency_symbol IN ('ETH', 'WETH')
+        AND amount_original IS NOT NULL 
+        AND number_of_items = 1
+    {% else %}
     SELECT 
-        nft_contract_address, nft_token_id, seller, price, tx_hash
+        nft_contract_address, 
+        nft_token_id, 
+        seller, 
+        price, 
+        tx_hash
     FROM 
-    {{this}}
+        {{this}}
 
     UNION 
 
@@ -43,14 +46,15 @@ sales as (
         amount_original as price, 
         tx_hash
     FROM 
-    {{ ref('nft_trades') }}
-    WHERE block_time >= date_trunc("day", now() - interval '1 week')
-    AND blockchain = 'ethereum'
-    AND currency_symbol IN ('ETH', 'WETH')
-    AND amount_original IS NOT NULL 
-    AND amount_original >= (SELECT MIN(price) FROM {{this}}) -- optimize query
-    AND number_of_items = 1
-{% endif %}
+        {{ ref('nft_trades') }}
+    WHERE 
+        block_time >= date_trunc("day", now() - interval '1 week')
+        AND blockchain = 'ethereum'
+        AND currency_symbol IN ('ETH', 'WETH')
+        AND amount_original IS NOT NULL 
+        AND amount_original >= (SELECT MIN(price) FROM {{this}})
+        AND number_of_items = 1
+    {% endif %}
 )
 SELECT 
     nft_contract_address, 
@@ -60,5 +64,6 @@ SELECT
     tx_hash, 
     ROW_NUMBER() OVER (PARTITION BY nft_contract_address ORDER BY price DESC) as rn 
 FROM 
-sales 
-QUALIFY rn <= 50
+    sales 
+QUALIFY 
+    rn <= 50
