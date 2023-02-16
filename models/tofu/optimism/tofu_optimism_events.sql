@@ -125,23 +125,23 @@ join tff
 inner join {{ source('optimism', 'transactions') }} as tx 
     on tx.block_time = tfe.evt_block_time
     and tx.hash = tfe.evt_tx_hash
+    {% if not is_incremental() %}
+    and tx.block_time >= '{{project_start_date}}'
+    {% else %}
+    and tx.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 left join {{ ref('tokens_nft') }} as nft 
     on nft.contract_address = tff.token
     and nft.blockchain = 'optimism'
 left join {{ source('prices', 'usd') }} as pu 
-  on pu.blockchain = 'optimism'
-  and pu.minute = date_trunc('minute', tfe.evt_block_time)
-  and pu.contract_address = tfe.currency
+    on pu.blockchain = 'optimism'
+    and pu.minute = date_trunc('minute', tfe.evt_block_time)
+    and pu.contract_address = tfe.currency
+    {% if not is_incremental() %}
+    and pu.minute >= '{{project_start_date}}'
+    {% else %}
+    and pu.minute >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 left join {{ ref('nft_aggregators') }} as agg
     on agg.contract_address = tx.to 
     and agg.blockchain = 'optimism'
-where 
-    true
-    {% if is_incremental() %}
-    and tx.block_time >= date_trunc("day", now() - interval '1 week')
-    and pu.minute >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-    {% if not is_incremental() %}
-    and tx.block_time >= '{{project_start_date}}'
-    and pu.minute >= '{{project_start_date}}'
-    {% endif %}
