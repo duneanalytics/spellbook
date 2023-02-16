@@ -25,7 +25,8 @@ with
     hour,
     lead(hour, 1, now()) OVER (PARTITION BY wallet_address, token_address, tokenId ORDER BY hour) AS next_hour
     FROM {{ ref('transfers_ethereum_erc721_rolling_hour') }}
-    WHERE amount = 1)
+    -- WHERE amount = 1  this isn't needed
+    )
 
 SELECT 
     'ethereum' as blockchain,

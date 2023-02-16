@@ -19,6 +19,6 @@ AND nft_tokens.blockchain = 'ethereum'
 LEFT JOIN {{ ref('balances_ethereum_erc721_noncompliant') }}  as nc
     ON b.token_address = nc.token_address
 WHERE recency_index = 1
-AND amount = 1
+-- AND amount = 1 -- this isn't needed
 AND nc.token_address IS NULL 
 ;
