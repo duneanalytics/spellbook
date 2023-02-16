@@ -42,7 +42,7 @@ where et.success = true
         '0xa97ab18a', -- setup method v1.0.0
         '0xb63e800d' -- setup method v1.1.0, v1.1.1, v1.2.0, v1.3.0, v1.3.0L2
     )
-    and et.gas_used > 0  -- to ensure the setup call was successful
+    and et.gas_used > 10000  -- to ensure the setup call was successful. excludes e.g. setup calls with missing params that fallback
     {% if not is_incremental() %}
     and et.block_time > '2018-11-24' -- for initial query optimisation    
     {% endif %}
