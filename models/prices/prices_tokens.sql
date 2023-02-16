@@ -1784,6 +1784,7 @@ VALUES
     ("sphere-sphere-finance", "polygon", "SPHERE", "0x62f594339830b90ae4c084ae7d223ffafd9658a7", 18),
     ("luna-luna-wormhole", "polygon", "LUNA", "0x9cd6746665d9557e1b9a775819625711d0693439", 6),
     ("ust-terrausd", "polygon", "USTC", "0x692597b009d13c4049a947cab2239b7d6517875f", 18),
+    ("maticx-liquid-staking-matic-pos","polygon","MATICX","0xfa68fb4628dff1028cfec22b4162fccd0d45efb6",18),
 
     ("aury-aurory", "solana", "AURY", "AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP", 9),
     ("btc-bitcoin", "solana", "BTC", "9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E", 6),
