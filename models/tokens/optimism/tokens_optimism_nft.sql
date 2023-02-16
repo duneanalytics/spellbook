@@ -259,5 +259,7 @@ FROM
 ,('0x707648dfbF9dF6b0898F78EdF191B85e327e0e05', 'veIB', 'erc721')
 ,('0xb8C6145f958F141dB0D506a4c1F6C0546aDe78ab', 'The Honey Jar 101', 'erc721')
 ,('0xd7ccc7b8ec095644db35a1ac2dc58104294927c3', 'Bonga Bera 101', 'erc721')
+,('0x9374e7813CC6b4d64224a7Dd039f52543bF12D07', 'LiYu', 'erc721')
+,('0x4e3a6e6534097a42b505c280ba5cd7d203be9501', 'Galxe Stargate Warrior', 'erc721')
 
 ) as temp_table (contract_address, name, standard)
