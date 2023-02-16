@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: labels_dao
+  - name: labels_dex
     meta:
-      blockchain: ethereum, polygon, gnosis
+      blockchain: ethereum
       sector: labels
-      category: dao
+      category: dex
       contributors: ilemi
     config:
-      tags: ['labels', 'dao']
-    description: "all dao labels"
+      tags: ['labels', 'dex']
+    description: "all dex labels"
     columns:
       - &blockchain
         name: blockchain
@@ -25,7 +25,7 @@ models:
         description: "Label category"
         tests:
           - accepted_values:
-              values: ['dao']
+              values: ['dex']
       - &contributor
         name: contributor
         description: "Wizard(s) contributing to labels"

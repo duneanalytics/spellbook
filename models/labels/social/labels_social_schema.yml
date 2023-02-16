@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: labels_dao
+  - name: labels_social
     meta:
-      blockchain: ethereum, polygon, gnosis
+      blockchain: ethereum
       sector: labels
-      category: dao
+      category: social
       contributors: ilemi
     config:
-      tags: ['labels', 'dao']
-    description: "all dao labels"
+      tags: ['labels', 'social','ens']
+    description: "all social labels"
     columns:
       - &blockchain
         name: blockchain
@@ -25,7 +25,7 @@ models:
         description: "Label category"
         tests:
           - accepted_values:
-              values: ['dao']
+              values: ['social']
       - &contributor
         name: contributor
         description: "Wizard(s) contributing to labels"

@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'dao',
+    alias = 'infrastructure',
     materialized = 'table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -8,17 +8,22 @@
                                 \'["ilemi"]\') }}')
 }}
 
-{% set dao_models = [
- ref('labels_dao_multisig_ethereum')
- ,ref('labels_dao_framework')
+{% set infrastructure_models = [
+ ref('labels_eth_stakers')
+ , ref('labels_miners')
+ , ref('labels_system_addresses')
+ , ref('labels_validators')
+
+ , ref('labels_flashbots_ethereum')
+ , ref('labels_mev_ethereum')
 ] %}
 
 SELECT *
 FROM (
-    {% for dao_model in dao_models %}
+    {% for infrastructure_model in infrastructure_models %}
     SELECT
         *
-    FROM {{ dao_model }}
+    FROM {{ infrastructure_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
