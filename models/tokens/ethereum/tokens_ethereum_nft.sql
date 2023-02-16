@@ -37,6 +37,6 @@ SELECT c.contract AS contract_address
 FROM {{source('reservoir','collections')}} c
 INNER JOIN {{ref('nft_ethereum_transfers')}} t ON c.contract=t.contract_address
 LEFT ANTI JOIN wizards_curated_collections w ON w.contract_address=c.contract
-GROUP BY c.contract, c.name
+GROUP BY c.contract
 --  ) r
 --LEFT ANTI JOIN {{this}} f ON f.contract_address=r.contract_address
