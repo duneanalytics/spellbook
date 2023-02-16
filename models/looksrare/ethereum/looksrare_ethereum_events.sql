@@ -32,7 +32,7 @@ WITH looksrare_trades AS (
         , ta.strategy
         FROM {{ source('looksrare_ethereum','LooksRareExchange_evt_TakerAsk') }} ta
         {% if is_incremental() %}
-        AND ta.evt_block_time >= date_trunc("day", '{{NOW()}}' - interval '1 week')
+        AND ta.evt_block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
     
         UNION ALL
@@ -53,7 +53,7 @@ WITH looksrare_trades AS (
         , tb.strategy
         FROM {{ source('looksrare_ethereum','LooksRareExchange_evt_TakerBid') }} tb
         {% if is_incremental() %}
-        AND tb.evt_block_time >= date_trunc("day", '{{NOW()}}' - interval '1 week')
+        AND tb.evt_block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
         )
     )
@@ -69,7 +69,7 @@ WITH looksrare_trades AS (
     , ROW_NUMBER() OVER (PARTITION BY evt_tx_hash, collection, tokenId ORDER BY evt_index ASC) AS id
     FROM {{ source('looksrare_ethereum','LooksRareExchange_evt_RoyaltyPayment') }}
     {% if is_incremental() %}
-    AND evt_block_time >= date_trunc("day", '{{NOW()}}' - interval '1 week')
+    AND evt_block_time >= date_trunc("day", NOW() - interval '1 week')
     {% endif %}
     )
 
@@ -140,12 +140,12 @@ LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain='ethereum'
     AND (pu.contract_address=lr.currency_contract
         OR (pu.contract_address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AND lr.currency_contract='0x0000000000000000000000000000000000000000'))
     {% if is_incremental() %}
-    AND pu.minute >= date_trunc("day", '{{NOW()}}' - interval '1 week')
+    AND pu.minute >= date_trunc("day", NOW() - interval '1 week')
     {% endif %}
 INNER JOIN {{ source('ethereum','transactions') }} et ON lr.block_time=et.block_time
     AND lr.tx_hash=et.hash
     {% if is_incremental() %}
-    AND et.block_time >= date_trunc("day", '{{NOW()}}' - interval '1 week')
+    AND et.block_time >= date_trunc("day", NOW() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ ref('nft_ethereum_aggregators') }} agg ON et.to=agg.contract_address
 LEFT JOIN {{ ref('tokens_ethereum_nft') }} tok ON lr.nft_contract_address=tok.contract_address
@@ -161,7 +161,7 @@ LEFT JOIN {{ ref('nft_ethereum_transfers') }} buyer_fix ON lr.block_time=buyer_f
     AND lr.buyer=agg.contract_address
     AND lr.buyer=buyer_fix.from
     {% if is_incremental() %}
-    AND buyer_fix.block_time >= date_trunc("day", '{{NOW()}}' - interval '1 week')
+    AND buyer_fix.block_time >= date_trunc("day", NOW() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ ref('nft_ethereum_transfers') }} seller_fix ON lr.block_time=seller_fix.block_time
     AND lr.tx_hash=seller_fix.tx_hash
@@ -170,7 +170,7 @@ LEFT JOIN {{ ref('nft_ethereum_transfers') }} seller_fix ON lr.block_time=seller
     AND lr.seller=agg.contract_address
     AND lr.seller=seller_fix.to
     {% if is_incremental() %}
-    AND seller_fix.block_time >= date_trunc("day", '{{NOW()}}' - interval '1 week')
+    AND seller_fix.block_time >= date_trunc("day", NOW() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} standard ON lr.block_time=standard.evt_block_time
     AND lr.tx_hash=standard.evt_tx_hash
@@ -178,7 +178,7 @@ LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} standard ON lr.block_ti
     AND lr.token_id=standard.tokenId
     AND COALESCE(seller_fix.from, lr.seller)=standard.from
     {% if is_incremental() %}
-    AND standard.evt_block_time >= date_trunc("day", '{{NOW()}}' - interval '1 week')
+    AND standard.evt_block_time >= date_trunc("day", NOW() - interval '1 week')
     {% endif %}
 LEFT JOIN platform_fees pf ON pf.contract_address=lr.strategy
 LEFT JOIN {{ ref('nft_ethereum_aggregators_markers') }} agg_m
