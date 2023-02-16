@@ -1,31 +1,30 @@
 version: 2
 
 models:
-  - name: labels_dao
+  - name: labels_trader_frequencies
     meta:
-      blockchain: ethereum, polygon, gnosis
+      blockchain: ethereum, fantom, bnb, avalanche_c, arbitrum, polygon, gnosis, optimism
       sector: labels
-      category: dao
-      contributors: ilemi
+      category: trader_frequencies
+      contributors: gentrexha, Henrystats
     config:
-      tags: ['labels', 'dao']
-    description: "all dao labels"
+      tags: ['labels', 'ethereum', 'fantom', 'bnb', 'avalanche_c', 'arbitrum', 'polygon', 'gnosis', 'optimism', 'trader_frequencies', 'dex', 'dex_aggregator']
+    description: "Trader frequencies (daily, weekly, monthly) for traders who use dex and dex aggregators"
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain"   
       - &address
         name: address
-        description: "Label address"
+        description: "Address of trader"
+        test:
+          - unique
       - &name
         name: name
         description: "Label name"
       - &category
         name: category
         description: "Label category"
-        tests:
-          - accepted_values:
-              values: ['dao']
       - &contributor
         name: contributor
         description: "Wizard(s) contributing to labels"

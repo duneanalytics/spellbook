@@ -1,37 +1,38 @@
 version: 2
 
 models:
-  - name: labels_dao
+  - name: labels_airdrop
     meta:
-      blockchain: ethereum, polygon, gnosis
+      blockchain: optimism
       sector: labels
-      category: dao
-      contributors: ilemi
+      category: airdrop
+      project: ['optimism']
+      contributors: soispoke
     config:
-      tags: ['labels', 'dao']
-    description: "all dao labels"
+      tags: ['labels', 'airdrop', 'optimism']
+    description: "Airdrop labels"   
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain"   
+        description: "Blockchain"    
       - &address
         name: address
-        description: "Label address"
+        description: "Address of NFT traders"
       - &name
         name: name
-        description: "Label name"
+        description: "Label name NFT trader (Top 1, 5, 10% or simply NFT Trader when an address has traded NFTs but is not in top top 10 or above)"
       - &category
         name: category
-        description: "Label category"
+        description: "Label category (NFT here)"
         tests:
           - accepted_values:
-              values: ['dao']
+              values: ['airdrop']
       - &contributor
         name: contributor
         description: "Wizard(s) contributing to labels"
       - &source
         name: source
-        description: "How were labels generated (query)"
+        description: "How were labels generated (could be static or query)"
       - &created_at
         name: created_at
         description: "When were labels created"
