@@ -56,13 +56,13 @@ FROM
 INNER JOIN
     incremental_subset --reduce number of rows to process on incremental run(s)
     ON src.nft_contract_address = incremental_subset.nft_contract_address
-    AND src.nft_token_id = incremental_subset.nft_token_id
+    AND src.token_id = incremental_subset.nft_token_id
     AND src.tx_hash = incremental_subset.tx_hash
 WHERE 
-    blockchain = 'ethereum'
-    AND currency_symbol IN ('ETH', 'WETH')
-    AND amount_original IS NOT NULL 
-    AND number_of_items = 1
+    src.blockchain = 'ethereum'
+    AND src.currency_symbol IN ('ETH', 'WETH')
+    AND src.amount_original IS NOT NULL 
+    AND src.number_of_items = 1
 QUALIFY 
     rn <= 50
 {% endif %}
