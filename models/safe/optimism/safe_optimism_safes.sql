@@ -10,14 +10,14 @@
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "safe",
-                                    \'["frank_maseo"]\') }}'
+                                    \'["frank_maseo", "tschubotz"]\') }}'
     ) 
 }}
 
 select 
     'optimism' as blockchain,
     contract_address as address,
-    '1.3.0' as creation_version, 
+    '1.3.0L2' as creation_version, 
     try_cast(date_trunc('day', evt_block_time) as date) as block_date,
     evt_block_time as creation_time,
     evt_tx_hash as tx_hash

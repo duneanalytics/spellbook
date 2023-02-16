@@ -335,6 +335,8 @@ VALUES
     ("fb-fbbank", "bnb", "FB", "0x770F030FDBf63EBF1C939De8BCFf8943C2C2d454", 2),
     ("mdb-mdb", "bnb", "MDB+", "0x9f8bb16f49393eea4331a39b69071759e54e16ea", 18),
     ("mdb-milliondollarbaby", "bnb", "MDB", "0x0557a288a93ed0df218785f2787dac1cd077f8f3", 18),
+    ("walv-alvey-chain", "bnb", "wALV", "0x256d1fce1b1221e8398f65f9b36033ce50b2d497", 18),
+    ("loop-loopnetwork", "bnb", "LOOP", "0xce186ad6430e2fe494a22c9edbd4c68794a28b35", 18),
 
     ("0xbtc-0xbitcoin", "ethereum", "0xBTC", "0xb6ed7644c69416d67b522e20bc294a9a9b405b31", 8),
     ("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
@@ -1861,5 +1863,5 @@ VALUES
     ("ust-terrausd", "fantom", "USTC", "0xe2d27f06f63d98b8e11b38b5b08a75d0c8dd62b9", 6),
     ("luna-terra", "fantom", "LUNC", "0x95dd59343a893637be1c3228060ee6afbf6f0730", 6),
     ("2shares-2share", "fantom", "2SHARES", "0xc54A1684fD1bef1f077a336E6be4Bd9a3096a6Ca", 18), 
-    ("3share-3share", "fantom", "3SHARES", "0x6437ADAC543583C4b31Bf0323A0870430F5CC2e7", 18)
+    ("3share-3share", "fantom", "3SHARE", "0x6437adac543583c4b31bf0323a0870430f5cc2e7", 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
