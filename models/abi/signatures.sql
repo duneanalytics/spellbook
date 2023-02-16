@@ -19,8 +19,12 @@ WITH
         {% for chain in chains %}
 
             SELECT
-                *
-                , concat(id, signature, type) as unique_signature_id
+                abi,
+                created_at,
+                id,
+                signature,
+                type,
+                concat(id, signature, type) as unique_signature_id
             FROM {{ source(chain, 'signatures') }}
             
             {% if is_incremental() %}
