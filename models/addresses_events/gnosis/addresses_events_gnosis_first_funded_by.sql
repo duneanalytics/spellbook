@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'addresses_events_ethereum'
+    schema = 'addresses_events_gnosis'
     , alias = 'first_funded_by'
     , materialized = 'incremental'
     , file_format = 'delta'
@@ -8,13 +8,13 @@
     )
 }}
 
-SELECT 'ethereum' AS blockchain
+SELECT 'gnosis' AS blockchain
 , et.to AS address
 , MIN_BY(et.from, et.block_number) AS first_funded_by
 , MIN(et.block_time) AS block_time
 , MIN(et.block_number) AS block_number
 , MIN_BY(et.tx_hash, et.block_number) AS tx_hash
-FROM {{ source('ethereum', 'traces') }} et
+FROM {{ source('gnosis', 'traces') }} et
 {% if is_incremental() %}
 LEFT ANTI JOIN {{this}} ffb ON et.to = ffb.address
 {% endif %}
