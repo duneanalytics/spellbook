@@ -1,12 +1,21 @@
-{{ config( alias='fungible',
-        tags=['static'],
-        post_hook='{{ expose_spells(\'["solana"]\',
-                                    "sector",
-                                    "tokens",
-                                    \'["ilemi"]\') }}')}}
-SELECT token_mint_address, symbol, decimals
-  FROM (VALUES
+{{ config
+(
+  alias='fungible',
+  tags=['static'],
+  post_hook='{{ expose_spells(\'["solana"]\',
+                                  "sector",
+                                  "tokens",
+                                  \'["ilemi"]\') }}'
+)
+}}
 
+SELECT 
+  trim(token_mint_address) as token_mint_address
+  , trim(symbol) as symbol
+  , decimals
+FROM 
+(
+  VALUES
 (
   'G5V7t3ZHTUGi6xGfk5nc42P1iRkNN3JhaFwFXkvyDmz5',
   'tuBTC',
