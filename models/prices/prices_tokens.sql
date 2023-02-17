@@ -767,7 +767,7 @@ VALUES
     ("id-everest", "ethereum", "ID", "0xebd9d99a3982d547c5bb4db7e3b1f9f14b67eb83", 18),
     ("sdl-saddle-finance", "ethereum", "SDL", "0xf1dc500fde233a4055e25e5bbf516372bc4f6871", 18),
     ("myc-mycelium", "ethereum", "MYC", "0x4b13006980acb09645131b91d259eaa111eaf5ba", 18),
-    ("cbeth-coinbase-wrapped-staked-eth", "ethereum", "CBETH", "0xbe9895146f7af43049ca1c1ae358b0541ea49704", 18),
+    ("cbeth-coinbase-wrapped-staked-eth", "ethereum", "cbETH", "0xbe9895146f7af43049ca1c1ae358b0541ea49704", 18),
     ("eul-euler", "ethereum", "EUL", "0xd9fcd98c322942075a5c3860693e9f4f03aae07b", 18),
     ("ducker-duckereum", "ethereum", "DUCKER", "0xa52bffad02b1fe3f86a543a4e81962d3b3bb01a7", 18),
     ("xft-offshift", "ethereum", "XFT", "0xabe580e7ee158da464b51ee1a83ac0289622e6be", 18),
