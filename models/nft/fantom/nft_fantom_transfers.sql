@@ -113,4 +113,4 @@ INNER JOIN {{ source('fantom', 'transactions') }} ft
     AND ft.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 WHERE ids_and_count.values > 0
-GROUP BY blockchain, evt_block_time, evt_block_number, evt_tx_hash, contract_address, from, to, evt_index, token_id, amount
+GROUP BY blockchain, t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t.from, t.to, t.evt_index, token_id, amount
