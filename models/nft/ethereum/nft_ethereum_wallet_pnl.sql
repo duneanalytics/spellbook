@@ -34,7 +34,7 @@ weekly_unique_wallet_address as
 
     SELECT DISTINCT
         nft_contract_address,
-        buyer as wallet 
+        seller as wallet 
     FROM 
         {{ ref('nft_trades') }}
     WHERE 
