@@ -352,6 +352,10 @@ models:
         +schema: tokens_fantom
         +materialized: table
         +file_format: delta
+      solana:
+        +schema: tokens_solana
+        +materialized: table
+        +file_format: delta
 
     trader_joe:
       +schema: trader_joe
