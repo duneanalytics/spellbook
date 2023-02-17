@@ -352,6 +352,10 @@ models:
         +schema: tokens_fantom
         +materialized: table
         +file_format: delta
+      solana:
+        +schema: tokens_solana
+        +materialized: table
+        +file_format: delta
 
     trader_joe:
       +schema: trader_joe
@@ -736,8 +740,11 @@ models:
       +schema: zipswap
       optimism:
         +schema: zipswap_optimism
-    
-    
+        
+    sharky:
+      +schema: sharky
+      solana:
+        +schema: sharky_solana
 
     arbswap:
       +schema: arbswap
@@ -808,6 +815,15 @@ seeds:
             block_time: timestamp
             tx_hash: string
             amount: string
+
+    sharky:
+      solana:
+        sharky_solana_loans_solscan:
+          +column_types:
+            block_time: timestamp
+            tx_hash: string
+            amount: double
+
     ens:
     dex:
       trades:
