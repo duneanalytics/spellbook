@@ -19,16 +19,24 @@ SELECT 'fantom'                                 AS blockchain
      , 1                                        AS amount
      , t.from
      , t.to
+     , ft.from as executed_by
      , t.evt_tx_hash                            AS tx_hash
      , 'fantom' || t.evt_tx_hash || '-erc721-' || t.contract_address || '-' || t.tokenId || '-' || t.from || '-' ||
        t.to || '-' || '1' || '-' || t.evt_index AS unique_transfer_id
 FROM {{ source('erc721_fantom', 'evt_transfer') }} t
-{% if is_incremental() %}
-    ANTI JOIN {{this}} anti_table
-        N t.evt_tx_hash = anti_table.tx_hash
-        AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        AND anti_table.block_time >= date_trunc("day", now() - interval '1 week')
-{% endif %}
+ANTI JOIN {{this}} anti_table
+    ON t.evt_tx_hash = anti_table.tx_hash
+    {% if is_incremental() %}
+    AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    AND anti_table.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+INNER JOIN {{ source('fantom', 'transactions') }} ft 
+    ON ft.block_number = t.evt_block_number
+    AND ft.hash = t.evt_tx_hash
+    {% if is_incremental() %}
+    AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    AND ft.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
 UNION ALL
 
@@ -44,34 +52,43 @@ SELECT 'fantom'                             AS blockchain
      , t.value                              AS amount
      , t.from
      , t.to
+     , ft.from as executed_by
      , t.evt_tx_hash                        AS tx_hash
      , 'fantom' || t.evt_tx_hash || '-erc721-' || t.contract_address || '-' || t.id || '-' || t.from || '-' || t.to ||
        '-' || t.value || '-' || t.evt_index AS unique_transfer_id
 FROM {{ source('erc1155_fantom', 'evt_transfersingle') }} t
-{% if is_incremental() %}
-    ANTI JOIN {{this}} anti_table
-        ON t.evt_tx_hash = anti_table.tx_hash
-        AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        AND anti_table.block_time >= date_trunc("day", now() - interval '1 week')
-{% endif %}
+ANTI JOIN {{this}} anti_table
+    ON t.evt_tx_hash = anti_table.tx_hash
+    {% if is_incremental() %}
+    AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    AND anti_table.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+INNER JOIN {{ source('fantom', 'transactions') }} ft 
+    ON ft.block_number = t.evt_block_number
+    AND ft.hash = t.evt_tx_hash
+    {% if is_incremental() %}
+    AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    AND ft.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
 UNION ALL
 
 SELECT 'fantom'                          AS blockchain
-     , evt_block_time                    AS block_time
-     , date_trunc('day', evt_block_time) AS block_date
-     , evt_block_number                  AS block_number
+     , t.evt_block_time                    AS block_time
+     , date_trunc('day', t.evt_block_time) AS block_date
+     , t.evt_block_number                  AS block_number
      , 'erc1155'                         AS token_standard
      , 'batch'                           AS transfer_type
-     , evt_index
-     , contract_address
-     , ids_and_count.ids                 AS token_id
-     , ids_and_count.values              AS amount
-     , from
-     , to
-     , evt_tx_hash AS tx_hash
-     , 'fantom' || evt_tx_hash || '-erc1155-' || contract_address || '-' || ids_and_count.ids || '-' || from || '-' ||
-        to || '-' || ids_and_count.values || '-' || evt_index AS unique_transfer_id
+     , t.evt_index
+     , t.contract_address
+     , t.ids_and_count.ids                 AS token_id
+     , t.ids_and_count.values              AS amount
+     , t.from
+     , t.to
+     , ft.from as executed_by,
+     , t.evt_tx_hash AS tx_hash
+     , 'fantom' || t.evt_tx_hash || '-erc1155-' || t.contract_address || '-' || t.ids_and_count.ids || '-' || t.from || '-' ||
+        t.to || '-' || t.ids_and_count.values || '-' || t.evt_index AS unique_transfer_id
 FROM (SELECT t.evt_block_time
            , t.evt_block_number
            , t.evt_tx_hash
@@ -88,6 +105,12 @@ FROM (SELECT t.evt_block_time
                 AND anti_table.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
       GROUP BY t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t.from, t.to, t.evt_index, t.values, t.ids
-      )
+      ) t 
+INNER JOIN {{ source('fantom', 'transactions') }} ft 
+    ON ft.block_number = t.evt_block_number
+    AND ft.hash = t.evt_tx_hash
+    {% if is_incremental() %}
+    AND ft.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 WHERE ids_and_count.values > 0
 GROUP BY blockchain, evt_block_time, evt_block_number, evt_tx_hash, contract_address, from, to, evt_index, token_id, amount
