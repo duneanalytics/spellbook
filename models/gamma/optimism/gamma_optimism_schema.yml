@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: gamma_optimism_pools
+    meta:
+      blockchain: optimism
+      project: gamma
+      contributors: msilb7
+    config:
+      tags: ['optimism','uniswap','gamma','pools']
+    description: >
+        A canonical table containing Uniswap mappings for known Gamma pools created on Optimism. 
+    columns:
+      - &lp_name
+        name: lp_name
+        description: 'Gamma LP Token name'
+      - &contract_address
+        name: contract_address
+        description: 'Gamma LP Token contract address'
+      - &pool
+        name: pool
+        description: "Uniswap liquidity pool contract address"
+        tests:
+          - unique
+      - &token0
+        name: token0
+        description:  "Token0 contract address"
+      - &token1
+        name: token1
+        description:  "Token1 contract address"
+      - &fee
+        name: fee
+        description:  "Swap fee of a Uniswap liquidity pool. Divide by 1e6 or power(10,6) to get the fee percentage"
