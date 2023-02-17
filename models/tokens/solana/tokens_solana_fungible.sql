@@ -8,7 +8,7 @@
                                   \'["ilemi"]\') }}'
 )
 }}
-
+--test comment, will remove
 SELECT 
   trim(token_mint_address) as token_mint_address
   , trim(symbol) as symbol
