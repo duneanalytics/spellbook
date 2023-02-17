@@ -1,6 +1,6 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["ethereum","solana","bnb", "optimism"]\',
+        post_hook='{{ expose_spells(\'["ethereum","solana","bnb", "optimism","arbitrum"]\',
                                     "sector",
                                     "nft",
                                     \'["soispoke", "0xRob"]\') }}')
@@ -21,10 +21,9 @@
 ,ref('x2y2_ethereum_trades')
 ,ref('zora_ethereum_trades')
 ,ref('pancakeswap_bnb_nft_trades')
-,ref('tofu_bnb_trades')
+,ref('tofu_trades')
 ,ref('quix_optimism_trades')
 ,ref('nftrade_bnb_trades')
-,ref('tofu_optimism_trades')
 ] %}
 
 SELECT *

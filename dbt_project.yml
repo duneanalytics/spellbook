@@ -715,6 +715,8 @@ models:
       +schema: tofu
       bnb:
         +schema: tofu_bnb
+      arbitrum:
+        +schema: tofu_arbitrum
       optimism:
         +schema: tofu_optimism
 
@@ -1212,6 +1214,18 @@ seeds:
             buyer: string
             tx_hash: string
             amount_original: double
+
+    tofu:
+      arbitrum:
+        +enabled: true
+        +schema: test_data
+        tofu_arbitrum_nft_trades_samples:
+            block_number: int
+            token_id: string
+            seller: string
+            buyer: string
+            tx_hash: string
+            amount_original: double  
 
     foundation:
       ethereum:
