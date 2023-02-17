@@ -11,29 +11,51 @@
     )
 }}
 
-WITH src_data as
+{% if is_incremental() %}
+WITH weekly_unique_minter_nft_address AS
 (
-    SELECT 
-        src.nft_contract_address,
-        src.buyer as minter,
-        SUM(src.amount_original) as eth_spent,
-        COUNT(1) as no_minted,
-        MAX(src.block_time) as last_updated
-    FROM
-        {{ ref('nft_mints') }} src
-    WHERE
-        1 = 1
-        {% if is_incremental() %}
-        AND block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
+    SELECT DISTINCT
+        nft_contract_address,
+        buyer
+    FROM 
+        {{ ref('nft_mints') }}
+    WHERE 
+        block_time >= date_trunc("day", now() - interval '1 week')
         AND blockchain = 'ethereum'
         AND currency_symbol IN ('WETH', 'ETH')
         AND amount_original IS NOT NULL
-    GROUP BY 1, 2
 )
-
 SELECT 
-    * 
+    src.nft_contract_address,
+    src.buyer as minter, 
+    SUM(src.amount_original) as eth_spent, 
+    COUNT(*) as no_minted,
+    MAX(src.block_time) as last_updated
 FROM 
-    src_data
-;
+    {{ ref('nft_mints') }} src
+INNER JOIN
+    weekly_unique_minter_nft_address
+    ON src.nft_contract_address = weekly_unique_minter_nft_address.nft_contract_address
+    AND src.buyer = weekly_unique_minter_nft_address.buyer
+WHERE
+    src.blockchain = 'ethereum'
+    AND src.currency_symbol IN ('WETH', 'ETH')
+    AND src.amount_original IS NOT NULL
+GROUP BY 
+    1, 2
+{% else %}
+SELECT 
+    nft_contract_address,
+    buyer as minter, 
+    SUM(amount_original) as eth_spent, 
+    COUNT(*) as no_minted,
+    MAX(block_time) as last_updated
+FROM 
+    {{ ref('nft_mints') }}
+WHERE
+    blockchain = 'ethereum'
+    AND currency_symbol IN ('WETH', 'ETH')
+    AND amount_original IS NOT NULL
+GROUP BY 
+    1, 2
+{% endif %}
