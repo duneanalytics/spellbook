@@ -405,6 +405,10 @@ models:
       arbitrum: 
         +schema: safe_arbitrum
 
+    nftb:
+      +schema: nftb
+      bnb:
+        +schema: nftb_bnb
     nftrade:
       +schema: nftrade
       bnb:
