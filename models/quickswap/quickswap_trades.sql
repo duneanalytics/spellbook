@@ -8,7 +8,7 @@
 }}
 
 {% set quickswap_models = [
-,'quickswap_polygon_trades'
+'quickswap_polygon_trades'
 ] %}
 
 
