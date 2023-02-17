@@ -23,6 +23,7 @@
 ,ref('tofu_bnb_events')
 ,ref('quix_optimism_events')
 ,ref('nftrade_bnb_events')
+,ref('zonic_optimism_events')
 ] %}
 
 SELECT *
