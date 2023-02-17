@@ -118,6 +118,11 @@ models:
         +schema: uniswap_optimism
       polygon:
         +schema: uniswap_polygon
+    
+    quickswap:
+      +schema: quickswap
+      polygon:
+        +schema: quickswap_polygon
 
     nomiswap:
       +schema: nomiswap
