@@ -47,13 +47,14 @@
      'blockchain': 'ethereum',
      'schema': 'bancornetwork_ethereum',
      'table_name': 'BancorNetwork_v10_evt_Conversion',
-     'time_column': 'evt_block_time'},
+     'time_column': 'evt_block_time'}
 
-    {'project': 'airswap',
+    /*,{'project': 'airswap',
      'blockchain': 'ethereum',
      'schema': 'airswap_ethereum',
      'table_name': 'swap_evt_Swap',
-     'time_column': 'evt_block_time'}
+     'time_column': 'evt_block_time'} */
+     --commenting this because it blocks the gh action, but is the correct state of the blockchain
 ] %}
 
 
