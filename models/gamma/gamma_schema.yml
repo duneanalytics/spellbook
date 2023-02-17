@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: gamma_optimism_uniswap_pools
+  - name: gamma_uniswap_pools
     meta:
       blockchain: optimism
       project: gamma
@@ -14,6 +14,9 @@ models:
       - &blockchain
         name: blockchain
         description: 'Blockchain of the LP Token'
+      - &project
+        name: project
+        description: 'Project Name of the LP Token'
       - &lp_name
         name: lp_name
         description: 'Gamma LP Token name'

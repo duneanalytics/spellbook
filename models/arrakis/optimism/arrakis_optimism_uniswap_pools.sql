@@ -1,8 +1,8 @@
 
  {{
   config(
-        schema='arrakis_finance_optimism',
-        alias='pools',
+        schema='arrakis_optimism',
+        alias='uniswap_pools',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -15,6 +15,8 @@
 }}
 
 SELECT 
+    'optimism' AS blockchain,
+
     CONCAT(COALESCE(e0.symbol,token0)
             , '/'
             ,COALESCE(e1.symbol,token1)
@@ -25,6 +27,7 @@ SELECT
             ,CAST( ROW_NUMBER() OVER (PARTITION BY uniPool ORDER BY pc.evt_block_time ASC) AS VARCHAR)
             )
     AS lp_name,
+    
     pc.pool AS contract_address, uniPool as pool, fee, token0, token1
 FROM {{ source('arrakis_optimism', 'ArrakisFactoryV1_evt_PoolCreated') }} pc 
     INNER JOIN {{ ref('uniswap_optimism_pools') }} up 

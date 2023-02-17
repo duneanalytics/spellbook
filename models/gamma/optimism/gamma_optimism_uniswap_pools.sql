@@ -1,15 +1,11 @@
  {{
   config(
         schema='gamma_optimism',
-        alias='pools',
+        alias='uniswap_pools',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['lp_name', 'contract_address', 'pool'],
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "project",
-                                    "gamma",
-                                    \'["msilb7"]\') }}'
+        unique_key = ['lp_name', 'contract_address', 'pool']
   )
 }}
 
@@ -40,6 +36,7 @@ SELECT lp_name, LOWER(addr) AS contract_address
 
 
 SELECT 
+    'optimism' AS blockchain,
     lp_name, n.contract_address, pool, fee, token0, token1
     FROM namings n
     INNER JOIN {{ source('optimism', 'creation_traces') }} ct 

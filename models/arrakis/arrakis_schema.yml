@@ -1,25 +1,28 @@
 version: 2
 
 models:
-  - name: gamma_optimism_uniswap_pools
+  - name: arrakis_uniswap_pools
     meta:
       blockchain: optimism
-      project: gamma
+      project: arrakis
       contributors: msilb7
     config:
-      tags: ['optimism','uniswap','gamma','pools']
+      tags: ['optimism','uniswap','arrakis','pools']
     description: >
-        A canonical table containing Uniswap mappings for known Gamma pools created on Optimism. 
+        A canonical table containing Uniswap mappings for known Arrakis pools created on Optimism. 
     columns:
       - &blockchain
         name: blockchain
         description: 'Blockchain of the LP Token'
+      - &project
+        name: project
+        description: 'Project Name of the LP Token'
       - &lp_name
         name: lp_name
-        description: 'Gamma LP Token name'
+        description: 'Arrakis LP Token name'
       - &contract_address
         name: contract_address
-        description: 'Gamma LP Token contract address'
+        description: 'Arrakis LP Token contract address'
       - &pool
         name: pool
         description: "Uniswap liquidity pool contract address"

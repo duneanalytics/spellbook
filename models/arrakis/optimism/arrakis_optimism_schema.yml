@@ -1,16 +1,19 @@
 version: 2
 
 models:
-  - name: arrakis_finance_optimism_pools
+  - name: arrakis_optimism_uniswap_pools
     meta:
       blockchain: optimism
-      project: arrakis_finance
+      project: arrakis
       contributors: msilb7
     config:
-      tags: ['optimism','uniswap','arrakis_finance','pools']
+      tags: ['optimism','uniswap','arrakis','pools']
     description: >
         A canonical table containing Uniswap mappings for known Arrakis pools created on Optimism. 
     columns:
+      - &blockchain
+        name: blockchain
+        description: 'Blockchain of the LP Token'
       - &lp_name
         name: lp_name
         description: 'Arrakis LP Token name'
@@ -20,8 +23,6 @@ models:
       - &pool
         name: pool
         description: "Uniswap liquidity pool contract address"
-        tests:
-          - unique
       - &token0
         name: token0
         description:  "Token0 contract address"
@@ -30,4 +31,4 @@ models:
         description:  "Token1 contract address"
       - &fee
         name: fee
-        description:  "Swap fee of a Uniswap liquidity pool. Divide by 1e6 or power(10,6) to get the fee percentage"
+        description:  "Swap fee of a Uniswap liquidity pool. Divide by 1e4 or power(10,4) to get the fee percentage"

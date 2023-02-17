@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: arrakise_optimism
+  - name: arrakis_optimism
     description: "Optimism decoded tables related to Arrakis Finance contracts"
     freshness:
       warn_after: { count: 12, period: hour }

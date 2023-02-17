@@ -8,10 +8,8 @@
 }}
 
 {% set uniswap_models = [
-'uniswap_ethereum_trades'
-,'uniswap_optimism_trades'
-,'uniswap_arbitrum_trades'
-,'uniswap_polygon_trades'
+     'gamma_uniswap_pools'
+    ,'arrakis_uniswap_pools'
 ] %}
 
 
@@ -19,9 +17,15 @@ SELECT *
 FROM (
     {% for lp_lm_model in uniswap_models %}
     SELECT
+      blockchain
+    , project
+    , contract_address, 
+    , pool, 
+    , fee, 
+    , token0, 
+    . token1
         
-        
-    FROM {{ ref(dex_model) }}
+    FROM {{ ref(lp_lm_model) }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

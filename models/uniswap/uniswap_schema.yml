@@ -81,3 +81,38 @@ models:
       - &evt_index
         name: evt_index
         description: "the position of this event log within this transaction"
+
+  - name: uniswap_liquidity_manager_pools
+    meta:
+      blockchain: optimism
+      project: uniswap
+      contributors: msilb7
+    config:
+      tags: ['optimism','uniswap','pools','liquidity managers']
+    description: >
+        A table containing Uniswap mappings for known liquidity manager pools created.
+    columns:
+      - &blockchain_lm
+        name: blockchain
+        description: 'Blockchain of the LP Token'
+      - &project_lm
+        name: project
+        description: 'Project Name of the LP Token'
+      - &lp_name
+        name: lp_name
+        description: 'Arrakis LP Token name'
+      - &contract_address_lm
+        name: contract_address
+        description: 'Arrakis LP Token contract address'
+      - &pool
+        name: pool
+        description: "Uniswap liquidity pool contract address"
+      - &token0
+        name: token0
+        description:  "Token0 contract address"
+      - &token1
+        name: token1
+        description:  "Token1 contract address"
+      - &fee
+        name: fee
+        description:  "Swap fee of a Uniswap liquidity pool. Divide by 1e4 or power(10,4) to get the fee percentage"
