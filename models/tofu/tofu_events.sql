@@ -1,33 +1,21 @@
 {{ config(
-    alias ='events',
-    post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism","arbitrum"]\',
-                    "sector",
-                    "nft",
-                    \'["soispoke","0xRob"]\') }}')
+        alias ='events',
+        post_hook='{{ expose_spells(\'["arbitrum","bnb"]\',
+                                    "project",
+                                    "tofu",
+                                    \'["Henrystats", "theachenyj", "chuxin"]\') }}')
 }}
 
-{% set nft_models = [
- ref('archipelago_ethereum_events')
-,ref('blur_ethereum_events')
-,ref('cryptopunks_ethereum_events')
-,ref('element_events')
-,ref('foundation_ethereum_events')
-,ref('looksrare_ethereum_events')
-,ref('magiceden_events')
-,ref('opensea_events')
-,ref('sudoswap_ethereum_events')
-,ref('superrare_ethereum_events')
-,ref('x2y2_ethereum_events')
-,ref('zora_ethereum_events')
-,ref('pancakeswap_bnb_nft_events')
-,ref('tofu_events')
-,ref('quix_optimism_events')
-,ref('nftrade_bnb_events')
+
+{% set tofu_models = [
+ ref('tofu_bnb_events')
+,ref('tofu_arbitrum_events')
+,ref('tofu_optimism_events')
 ] %}
 
 SELECT *
 FROM (
-    {% for nft_model in nft_models %}
+    {% for nft_model in tofu_models %}
     SELECT
         blockchain,
         project,
