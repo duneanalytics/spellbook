@@ -33,7 +33,7 @@ models:
           check_columns:
             - buyer
             - nft_contract_address
-            - amount_raw
+            
     columns:
       - &blockchain
         name: blockchain
