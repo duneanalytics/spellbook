@@ -58,6 +58,7 @@ list of models using old generic test, due to multiple versions in one model:
 ,ref('arbswap_trades')
 ,ref('balancer_trades')
 ,ref('spiritswap_fantom_trades')
+,ref('quickswap_trades')
 ] %}
 
 
