@@ -3,7 +3,7 @@
         post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                 "project",
                                 "trader_joe",
-                                \'["jeff-dude","mtitus6"]\') }}'
+                                \'["jeff-dude","mtitus6","Henrystats"]\') }}'
         )
 }}
 
