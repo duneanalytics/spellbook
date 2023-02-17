@@ -35,6 +35,7 @@ SELECT
     blockchain, 
     hour,
     wallet_address, 
+    token_address,
     tokenId, 
     collection
 FROM 
