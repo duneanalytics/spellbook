@@ -13,6 +13,7 @@
 ,ref('cryptopunks_ethereum_trades')
 ,ref('element_trades')
 ,ref('foundation_ethereum_trades')
+,ref('liquidifty_trades')
 ,ref('looksrare_ethereum_trades')
 ,ref('magiceden_trades')
 ,ref('opensea_trades')
