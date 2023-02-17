@@ -21,7 +21,7 @@ WITH dexs AS
         t.evt_block_time AS block_time
         ,t.recipient AS taker
         ,'' AS maker
-        ,amountOut END AS token_bought_amount_raw
+        ,amountOut AS token_bought_amount_raw
         ,amountIn AS token_sold_amount_raw
         ,cast(NULL as double)  AS amount_usd
         ,CASE WHEN swapForY = true THEN f.tokenY ELSE f.tokenX END AS token_bought_address -- when swapForY is true it means that tokenY is the token being bought else it's tokenX

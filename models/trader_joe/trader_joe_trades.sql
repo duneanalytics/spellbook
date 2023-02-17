@@ -8,7 +8,7 @@
 }}
 
 {% set trader_joe_models = [
-'trader_joe_avalanche_c_trades'
+ref('trader_joe_avalanche_c_trades')
 ] %}
 
 
@@ -39,7 +39,7 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ ref(dex_model) }}
+    FROM {{ dex_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
