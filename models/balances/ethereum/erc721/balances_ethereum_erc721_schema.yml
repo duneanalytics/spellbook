@@ -66,13 +66,13 @@ models:
         Depends on erc721_ethereum_transfers.
     columns:
       - *blockchain
-      - &last_updated
-        name: last_updated
-        description: "UTC timestamp when data was last updated"
       - *wallet_address
       - *token_address
       - *tokenId
       - *collection
+      - &updated_at
+        name: updated_at
+        description: "UTC timestamp when data was last updated"
 
   - name: balances_ethereum_erc721_noncompliant
     meta:
