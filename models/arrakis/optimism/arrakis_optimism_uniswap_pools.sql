@@ -38,3 +38,7 @@ FROM {{ source('arrakis_optimism', 'ArrakisFactoryV1_evt_PoolCreated') }} pc
     LEFT JOIN {{ ref('tokens_erc20') }} e1
         ON e1.contract_address = up.token1
         AND e1.blockchain = 'optimism'
+
+{% if is_incremental() %}
+WHERE pc.evt_block_time >= date_trunc('day', now() - interval '1 month')
+{% endif %}
