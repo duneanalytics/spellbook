@@ -23,12 +23,11 @@ SELECT 'fantom'                                 AS blockchain
      , 'fantom' || t.evt_tx_hash || '-erc721-' || t.contract_address || '-' || t.tokenId || '-' || t.from || '-' ||
        t.to || '-' || '1' || '-' || t.evt_index AS unique_transfer_id
 FROM {{ source('erc721_fantom', 'evt_transfer') }} t
-    {% if is_incremental() %}
-    ANTI JOIN {{this}} anti_table
-    ON t.evt_tx_hash = anti_table.tx_hash
-    {% endif %}
 {% if is_incremental() %}
-WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    ANTI JOIN {{this}} anti_table
+        N t.evt_tx_hash = anti_table.tx_hash
+        AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND anti_table.block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
 
 UNION ALL
@@ -49,12 +48,11 @@ SELECT 'fantom'                             AS blockchain
      , 'fantom' || t.evt_tx_hash || '-erc721-' || t.contract_address || '-' || t.id || '-' || t.from || '-' || t.to ||
        '-' || t.value || '-' || t.evt_index AS unique_transfer_id
 FROM {{ source('erc1155_fantom', 'evt_transfersingle') }} t
-    {% if is_incremental() %}
-    ANTI JOIN {{this}} anti_table
-    ON t.evt_tx_hash = anti_table.tx_hash
-    {% endif %}
 {% if is_incremental() %}
-WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    ANTI JOIN {{this}} anti_table
+        ON t.evt_tx_hash = anti_table.tx_hash
+        AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND anti_table.block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
 
 UNION ALL
@@ -83,13 +81,12 @@ FROM (SELECT t.evt_block_time
            , t.evt_index
            , explode(arrays_zip(t.values, t.ids)) AS ids_and_count
       FROM {{ source('erc1155_fantom', 'evt_transferbatch') }} t
-          {% if is_incremental() %}
-          ANTI JOIN {{this}} anti_table
-          ON t.evt_tx_hash = anti_table.tx_hash
-          {% endif %}
-      {% if is_incremental() %}
-      WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
-      {% endif %}
+        {% if is_incremental() %}
+            ANTI JOIN {{this}} anti_table
+                ON t.evt_tx_hash = anti_table.tx_hash
+                AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+                AND anti_table.block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
       GROUP BY t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t.from, t.to, t.evt_index, t.values, t.ids
       )
 WHERE ids_and_count.values > 0
