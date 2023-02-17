@@ -8,7 +8,7 @@
 }}
 
 {% set quickswap_models = [
-'quickswap_polygon_trades'
+ref ('quickswap_polygon_trades')
 ] %}
 
 
@@ -39,7 +39,7 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ ref(dex_model) }}
+    FROM {{ dex_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
