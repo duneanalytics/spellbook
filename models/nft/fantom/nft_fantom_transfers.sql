@@ -85,7 +85,7 @@ SELECT 'fantom'                          AS blockchain
      , t.ids_and_count.values              AS amount
      , t.from
      , t.to
-     , ft.from as executed_by,
+     , ft.from as executed_by
      , t.evt_tx_hash AS tx_hash
      , 'fantom' || t.evt_tx_hash || '-erc1155-' || t.contract_address || '-' || t.ids_and_count.ids || '-' || t.from || '-' ||
         t.to || '-' || t.ids_and_count.values || '-' || t.evt_index AS unique_transfer_id
