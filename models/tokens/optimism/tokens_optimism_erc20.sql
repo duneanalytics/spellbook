@@ -290,6 +290,8 @@ WITH raw_token_list AS (
     ,('0x6806411765Af15Bddd26f8f544A34cC40cb9838B', 'frxETH', 18, 'underlying')
     ,('0x484c2D6e3cDd945a8B2DF735e079178C1036578c', 'sfrxETH', 18, 'underlying')
     ,('0x340fE1D898ECCAad394e2ba0fC1F93d27c7b717A', 'wUSDR', 9, 'underlying')
+    ,('0x5d47baba0d66083c52009271faf3f50dcc01023c', 'UNIDX', 18, 'underlying')
+    
 
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )
