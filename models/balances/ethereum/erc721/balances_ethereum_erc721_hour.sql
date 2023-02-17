@@ -19,26 +19,38 @@ with
 
 , hourly_balances as
  (SELECT
-    wallet_address,
-    token_address,
-    tokenId,
-    hour,
-    lead(hour, 1, now()) OVER (PARTITION BY wallet_address, token_address, tokenId ORDER BY hour) AS next_hour
-    FROM {{ ref('transfers_ethereum_erc721_rolling_hour') }}
-    -- WHERE amount = 1  this isn't needed
-    )
+    b.wallet_address,
+    b.token_address,
+    b.tokenId,
+    b.hour,
+    b.amount, 
+    lead(b.hour, 1, now()) OVER (PARTITION BY b.wallet_address, b.token_address, b.tokenId ORDER BY hour) AS next_hour
+FROM {{ ref('transfers_ethereum_erc721_rolling_hour') }} b
+LEFT JOIN {{ ref('balances_ethereum_erc721_noncompliant') }}  as nc
+    ON b.token_address = nc.token_address
+WHERE nc.token_address IS NULL 
+)
 
+SELECT 
+    blockchain, 
+    hour,
+    wallet_address, 
+    tokenId, 
+    collection
+FROM 
+(
 SELECT 
     'ethereum' as blockchain,
     d.hour,
     b.wallet_address,
     b.token_address,
     b.tokenId,
+    SUM(amount) as amount, 
     nft_tokens.name as collection
 FROM hourly_balances b
 INNER JOIN hours d ON b.hour <= d.hour AND d.hour < b.next_hour
 LEFT JOIN {{ ref('tokens_nft') }} nft_tokens ON nft_tokens.contract_address = b.token_address
 AND nft_tokens.blockchain = 'ethereum'
-LEFT JOIN {{ ref('balances_ethereum_erc721_noncompliant') }}  as nc
-    ON b.token_address = nc.token_address
-WHERE nc.token_address IS NULL 
+GROUP BY 1, 2, 3, 4, 5, 7
+HAVING SUM(amount) = 1 
+) x
