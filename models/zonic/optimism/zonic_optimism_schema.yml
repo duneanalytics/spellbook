@@ -18,21 +18,22 @@ models:
             - token_id
             - seller
             - evt_index
-      # - check_seed:
-      #     seed_file: ref('quix_events_seed')
-      #     filter:
-      #       blockchain: optimism
-      #       project: quix
-      #       version: v2
-      #     match_columns:
-      #       - block_date
-      #       - tx_hash
-      #       - token_id
-      #       - seller
-      #       - evt_index
-      #     check_columns:
-      #       - buyer
-      #       - nft_contract_address
+      - check_seed:
+          seed_file: ref('zonic_events_seed')
+          filter:
+            blockchain: optimism
+            project: zonic
+            version: v1
+          match_columns:
+            - block_date
+            - tx_hash
+            - token_id
+            - seller
+            - evt_index
+          check_columns:
+            - buyer
+            - nft_contract_address
+            - amount_raw
     columns:
       - &blockchain
         name: blockchain
