@@ -10,10 +10,25 @@
                                 \'["hildobby"]\') }}')
 }}
 
+WITH contracts AS (
+    SELECT lower(trim(address)) as address, trim(entity) as entity, trim(category) as category
+    FROM
+    (VALUES
+    ('0xdcd51fc5cd918e0461b9b7fb75967fdfd10dae2f', 'RocketPool (Minipool)', 'Staking Pools')
+    , ('0x1cc9cf5586522c6f483e84a19c3c2b0b6d027bf0', 'RocketPool (Minipool)', 'Staking Pools')
+    , ('0x9b8c989ff27e948f55b53bb19b3cc1947852e394', 'Kiln', 'Staking Pools')
+    , ('0x2421a0af8badfae12e1c1700e369747d3db47b09', 'SenseiNode', 'Staking Pools')
+    , ('0x10e02a656b5f9de2c44c687787c36a2c4801cc40', 'Tranchess', 'Liquid Staking')
+    , ('0x447c3ee829a3B506ad0a66Ff1089F30181c42637', 'KingHash', 'Liquid Staking')
+    , ('0xa8f50a6c41d67685b820b4fe6bed7e549e54a949', 'Eth2Stake', 'Staking Pools')
+        ) 
+        x (address, entity, category)
+    )
+
 SELECT lower(trim(address)) as address, trim(entity) as entity, trim(entity_unique_name) as entity_unique_name, trim(category) as category
 FROM
-  (VALUES
-  ('0xae7ab96520de3a18e5e111b5eaab095312d7fe84', 'Lido', 'Lido', 'Liquid Staking')
+(VALUES
+('0xae7ab96520de3a18e5e111b5eaab095312d7fe84', 'Lido', 'Lido', 'Liquid Staking')
     , ('0x39dc6a99209b5e6b81dc8540c86ff10981ebda29', 'Staked.us', 'Staked.us', 'Staking Pools')
     , ('0x0194512e77d798e4871973d9cb9d7ddfc0ffd801', 'stakefish', 'stakefish 1', 'Staking Pools')
     , ('0xd4039ecc40aeda0582036437cf3ec02845da4c13', 'Kraken', 'Kraken 1', 'CEX')
@@ -26,6 +41,7 @@ FROM
     , ('0xc2288b408dc872a1546f13e6ebfa9c94998316a2', 'Bitcoin Suisse', 'Bitcoin Suisse 6', 'Staking Pools')
     , ('0xf2be95116845252a28bd43661651917dc183dab1', 'Figment', 'Figment 1', 'Staking Pools')
     , ('0x37ab162ab59e106d6072eb7a7bd4c4c2973455a7', 'Figment', 'Figment 2', 'Staking Pools')
+    , ('0xb4e2e925d75793c33f5f94cd652f6c464665c76b', 'Figment', 'Figment 3', 'Staking Pools')
     , ('0xc874b064f465bdd6411d45734b56fac750cda29a', 'Stakewise', 'Stakewise', 'Liquid Staking')
     , ('0x84db6ee82b7cf3b47e8f19270abde5718b936670', 'Stkr (Ankr)', 'Stkr (Ankr)', 'Liquid Staking')
     , ('0x194bd70b59491ce1310ea0bceabdb6c23ac9d5b2', 'Huobi', 'Huobi 1', 'CEX')
@@ -50,8 +66,8 @@ FROM
     , ('0xa54be2edaa143e969a63fc744bbd2d511b50cbc3', 'neukind.com', 'neukind.com 2', 'Staking Pools')
     , ('0xac29ef7a7f4325ffa564de9abf67e5ace46c88f8', 'neukind.com', 'neukind.com 3', 'Staking Pools')
     , ('0xc3003f8b89f35a7bf3cb3a6ec3d8e4c3c8ce7cce', 'neukind.com', 'neukind.com 4', 'Staking Pools')
-    , ('0x8e1d8b147cc4c939a597dc501c47cc8b4ab26bd5', 'Tetranode', 'Tetranode', 'Whales')
-    , ('0x1db3439a222c519ab44bb1144fc28167b4fa6ee6', 'Vitalik Buterin', 'Vitalik Buterin', 'Whales')
+    --, ('0x8e1d8b147cc4c939a597dc501c47cc8b4ab26bd5', 'Tetranode', 'Tetranode', 'Individuals')
+    --, ('0x1db3439a222c519ab44bb1144fc28167b4fa6ee6', 'Vitalik Buterin', 'Vitalik Buterin', 'Individuals')
     , ('0x49df3cca2670eb0d591146b16359fe336e476f29', 'stereum.net', 'stereum.net 1', 'Others')
     , ('0x62dfeb55fcbdcb921446168eecfd1406379a1ee1', 'stereum.net', 'stereum.net 2', 'Others')
     , ('0x2be0282532ad9fa7cc4c45aeaa1707d2e93357c2', 'Blockdaemon.com', 'Blockdaemon.com', 'Others')
@@ -78,6 +94,13 @@ FROM
     , ('0xd3b16f647ad234f8b5bb2bdbe8e919daa5268681', 'FOAM Signal', 'FOAM Signal', 'Others')
     , ('0x3187a42658417a4d60866163a4534ce00d40c0c8', 'ssv.network', 'ssv.network', 'Liquid Staking')
     , ('0xea6b7151b138c274ed8d4d61328352545ef2d4b7', 'Harbour', 'Harbour', 'Liquid Staking')
+    , ('0x588e859cb38fecf2d56925c0512471ab47aa9ff1', 'StaFi', 'StaFi SuperNode', 'Liquid Staking')
+    , ('0x1c906685384df71e3fafa6f3b21bd884e9d44f4b', 'StaFi', 'StaFi LightNode', 'Liquid Staking')
+    , ('0xa8582b5a0f615bc21d7780618557042be60b32ed', 'Bitpie', 'Bitpie', 'Staking Pools')
+    , ('0xec1d6163e05b3f5d0fb8f354881f6c8b793ad612', 'Bifrost', 'Bifrost', 'Liquid Staking')
+    , ('0xf79caa45612fb183c4e258ed449bfa632d7400b9', 'Everstake Pool', 'Everstake', 'Staking Pools')
+    , ('0xcf07df57a6b338a20d50114a79fee09d28b13d72', 'cryptostake.com', 'cryptostake.com', 'Staking Pools')
+    , ('0x2915f91dcff0be7b60df411f164827d517caca67', 'TokenPocket', 'TokenPocket', 'Others')   
     ) 
     x (address, entity, entity_unique_name, category)
 
@@ -147,27 +170,33 @@ FROM
     GROUP BY binance.address
 
     UNION ALL
-
-    SELECT traces.from AS address
-    , 'RocketPool (Minipool)' AS name
-    , 'RocketPool (Minipool) ' || ROW_NUMBER() OVER (ORDER BY MIN(txs.block_time)) AS entity_unique_name
-    , 'Liquid Staking' AS category
-    FROM {{ source('ethereum', 'transactions') }} txs
-    INNER JOIN {{ source('ethereum', 'traces') }} traces
-        ON txs.hash=traces.tx_hash 
-        AND traces.to='0x00000000219ab540356cbb839cbe05303d7705fa'
-        {% if not is_incremental() %}
-        AND traces.block_time >= '2020-10-14'
-        {% endif %}
-        {% if is_incremental() %}
-        AND traces.block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-    WHERE txs.to IN ('0xdcd51fc5cd918e0461b9b7fb75967fdfd10dae2f', '0x1cc9cf5586522c6f483e84a19c3c2b0b6d027bf0')
-        {% if not is_incremental() %}
-        AND txs.block_time >= '2020-10-14'
-        {% endif %}
-        {% if is_incremental() %}
-        AND txs.block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-    GROUP BY traces.from
-    ;
+    
+    SELECT address
+    , entity AS name
+    , entity || ' ' || ROW_NUMBER() OVER (PARTITION BY entity ORDER BY first_used) AS entity_unique_name
+    , category AS category
+    FROM (
+        SELECT traces.from AS address
+        , c.entity
+        , c.category
+        , MIN(txs.block_time) AS first_used
+        FROM {{ source('ethereum', 'transactions') }} txs
+        INNER JOIN {{ source('ethereum', 'traces') }} traces
+            ON txs.hash=traces.tx_hash 
+            AND traces.to='0x00000000219ab540356cbb839cbe05303d7705fa'
+            {% if not is_incremental() %}
+            AND traces.block_time >= '2020-10-14'
+            {% endif %}
+            {% if is_incremental() %}
+            AND traces.block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
+        INNER JOIN contracts c ON c.address=txs.to
+        WHERE txs.to IN (SELECT address FROM contracts)
+            {% if not is_incremental() %}
+            AND txs.block_time >= '2020-10-14'
+            {% endif %}
+            {% if is_incremental() %}
+            AND txs.block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
+        GROUP BY 1, 2, 3
+        )
