@@ -171,6 +171,29 @@ models:
       - name: hash_marker_size
         description: "Number of characters the hash_marker is made of, can be useful on joins"
 
+  - name: nft_ethereum_top_sales
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: Henrystats
+    config:
+      tags: ['nft', 'ethereum', 'top sales']
+    description: >
+        Top 50 NFT sales
+    columns:
+      - name: nft_contract_address
+        description: "nft contract address"
+      - name: nft_token_id
+        description: "nft token id"
+      - name: seller
+        description: "seller address"
+      - name: price
+        description: "value of trade in eth"
+      - name: tx_hash
+        description: "Unique trade blockchain tx_hash"
+      - name: rn
+        description: "row number"
+
   - name: nft_ethereum_top_minters
     meta:
       blockchain: ethereum
@@ -196,7 +219,6 @@ models:
         description: "Number of nft's minted"
       - name: last_updated
         description: "Last time spell was updated"
-
 
   - name: nft_ethereum_wallet_pnl
     meta:
