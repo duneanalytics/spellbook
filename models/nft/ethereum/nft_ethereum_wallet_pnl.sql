@@ -11,11 +11,8 @@
     )
 }}
 
-WITH 
-
 {% if is_incremental() %}
-
-weekly_unique_wallet_address as 
+WITH weekly_unique_wallet_address as 
 (
     SELECT DISTINCT
         nft_contract_address,
@@ -44,9 +41,8 @@ weekly_unique_wallet_address as
         AND amount_original IS NOT NULL
         AND number_of_items = 1
         AND buyer != seller 
-), 
-
-trades as
+)
+, trades as
 (
     --sells
     SELECT
@@ -59,10 +55,9 @@ trades as
     FROM 
         {{ ref('nft_trades') }} src 
     INNER JOIN 
-    weekly_unique_wallet_address
+        weekly_unique_wallet_address
         ON src.nft_contract_address = weekly_unique_wallet_address.nft_contract_address
         AND src.seller = weekly_unique_wallet_address.wallet
-
     WHERE
         src.currency_symbol IN ('ETH', 'WETH')
         AND src.blockchain = 'ethereum'
@@ -85,10 +80,9 @@ trades as
     FROM 
         {{ ref('nft_trades') }} src
     INNER JOIN 
-    weekly_unique_wallet_address
+        weekly_unique_wallet_address
         ON src.nft_contract_address = weekly_unique_wallet_address.nft_contract_address
         AND src.buyer = weekly_unique_wallet_address.wallet
-
     WHERE
         src.currency_symbol IN ('ETH', 'WETH')
         AND src.blockchain = 'ethereum'
@@ -97,44 +91,43 @@ trades as
         AND src.amount_original IS NOT NULL 
     GROUP BY
         1, 2, 3
-) 
-
-    SELECT
-        wallet, 
-        nft_contract_address, 
-        MAX(last_updated) as last_updated,
-        COALESCE
+)
+SELECT
+    wallet, 
+    nft_contract_address, 
+    MAX(last_updated) as last_updated,
+    COALESCE
+    (
+        SUM
         (
-            SUM
-            (
-                CASE 
-                    WHEN trade_type = 'Buys'
-                    THEN ABS(eth_amount) 
-                    ELSE 0 
-                END
-            )
-        , 0
-        ) as eth_spent, 
-        COALESCE
+            CASE 
+                WHEN trade_type = 'Buys'
+                THEN ABS(eth_amount) 
+                ELSE 0 
+            END
+        )
+    , 0
+    ) as eth_spent, 
+    COALESCE
+    (
+        SUM
         (
-            SUM
-            (
-                CASE 
-                    WHEN trade_type = 'Sells'
-                    THEN eth_amount
-                    ELSE 0 
-                END
-            )
-        , 0
-        ) as eth_received, 
-        SUM(eth_amount) as pnl, 
-        SUM(trades) as trades 
-    FROM 
-        trades 
-    GROUP BY
-        1, 2
+            CASE 
+                WHEN trade_type = 'Sells'
+                THEN eth_amount
+                ELSE 0 
+            END
+        )
+    , 0
+    ) as eth_received, 
+    SUM(eth_amount) as pnl, 
+    SUM(trades) as trades 
+FROM 
+    trades 
+GROUP BY
+    1, 2
 {% else %}
-trades as
+WITH trades as
 (
     --sells
     SELECT
@@ -175,40 +168,39 @@ trades as
         AND src.amount_original IS NOT NULL 
     GROUP BY
         1, 2, 3
-) 
-
-    SELECT
-        wallet, 
-        nft_contract_address, 
-        MAX(last_updated) as last_updated,
-        COALESCE
+)
+SELECT
+    wallet, 
+    nft_contract_address, 
+    MAX(last_updated) as last_updated,
+    COALESCE
+    (
+        SUM
         (
-            SUM
-            (
-                CASE 
-                    WHEN trade_type = 'Buys'
-                    THEN ABS(eth_amount) 
-                    ELSE 0 
-                END
-            )
-        , 0
-        ) as eth_spent, 
-        COALESCE
+            CASE 
+                WHEN trade_type = 'Buys'
+                THEN ABS(eth_amount) 
+                ELSE 0 
+            END
+        )
+    , 0
+    ) as eth_spent, 
+    COALESCE
+    (
+        SUM
         (
-            SUM
-            (
-                CASE 
-                    WHEN trade_type = 'Sells'
-                    THEN eth_amount
-                    ELSE 0 
-                END
-            )
-        , 0
-        ) as eth_received, 
-        SUM(eth_amount) as pnl, 
-        SUM(trades) as trades 
-    FROM 
-        trades 
-    GROUP BY
-        1, 2
+            CASE 
+                WHEN trade_type = 'Sells'
+                THEN eth_amount
+                ELSE 0 
+            END
+        )
+    , 0
+    ) as eth_received, 
+    SUM(eth_amount) as pnl, 
+    SUM(trades) as trades 
+FROM 
+    trades 
+GROUP BY
+    1, 2
 {% endif %}
