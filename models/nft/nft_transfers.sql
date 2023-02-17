@@ -34,6 +34,7 @@ FROM (
         , amount
         , `from`
         , to
+        , executed_by
         , tx_hash
         , unique_transfer_id
     FROM {{ nft_model }}
