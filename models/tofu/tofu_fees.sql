@@ -1,34 +1,21 @@
 {{ config(
         alias ='fees',
-        post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism","arbitrum"]\',
-                                    "sector",
-                                    "nft",
-                                    \'["soispoke","0xRob"]\') }}')
+        post_hook='{{ expose_spells(\'["arbitrum","bnb"]\',
+                                    "project",
+                                    "tofu",
+                                    \'["Henrystats", "theachenyj", "chuxin"]\') }}')
 }}
 
 
-{% set nft_models = [
- ref('archipelago_ethereum_fees')
-,ref('blur_ethereum_fees')
-,ref('element_fees')
-,ref('foundation_ethereum_fees')
-,ref('looksrare_ethereum_fees')
-,ref('magiceden_fees')
-,ref('opensea_fees')
-,ref('sudoswap_ethereum_fees')
-,ref('superrare_ethereum_fees')
-,ref('x2y2_ethereum_fees')
-,ref('zora_ethereum_fees')
-,ref('pancakeswap_bnb_nft_fees')
-,ref('quix_optimism_fees')
-,ref('nftrade_bnb_fees')
-,ref('tofu_fees')
+{% set tofu_models = [
+ ref('tofu_bnb_fees')
+,ref('tofu_arbitrum_fees')
+,ref('tofu_optimism_fees')
 ] %}
-
 
 SELECT *
 FROM (
-    {% for nft_model in nft_models %}
+    {% for nft_model in tofu_models %}
     SELECT
         blockchain,
         project,
