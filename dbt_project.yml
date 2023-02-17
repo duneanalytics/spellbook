@@ -715,6 +715,8 @@ models:
       +schema: tofu
       bnb:
         +schema: tofu_bnb
+      optimism:
+        +schema: tofu_optimism
 
     maker:
       +schema: maker
