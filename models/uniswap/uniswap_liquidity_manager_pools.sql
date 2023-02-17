@@ -19,11 +19,11 @@ FROM (
     SELECT
       blockchain
     , project
-    , contract_address, 
-    , pool, 
-    , fee, 
-    , token0, 
-    . token1
+    , contract_address
+    , pool
+    , fee
+    , token0
+    , token1
         
     FROM {{ ref(lp_lm_model) }}
     {% if not loop.last %}

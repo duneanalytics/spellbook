@@ -14,7 +14,7 @@
 }}
 
 {% set uniswap_models = [
-'arrakis_optimism_pools'
+  'arrakis_optimism_uniswap_pools'
 ] %}
 
 

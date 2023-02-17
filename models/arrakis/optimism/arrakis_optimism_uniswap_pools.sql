@@ -7,10 +7,6 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['lp_name', 'contract_address', 'pool'],
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "project",
-                                    "arrakis_finance",
-                                    \'["msilb7"]\') }}'
   )
 }}
 

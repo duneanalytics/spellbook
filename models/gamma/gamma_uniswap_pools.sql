@@ -14,7 +14,7 @@
 }}
 
 {% set uniswap_models = [
-'gamma_optimism_uniswap_pools'
+  'gamma_optimism_uniswap_pools'
 ] %}
 
 
