@@ -29,5 +29,8 @@ jobs:
     - name: dbt compile to create prod manifest from main
       run: "dbt compile --target-path ."
 
+    - name: copy old manifest to new file
+      run: "aws s3 cp s3://manifest-spellbook/manifest.json s3://manifest-spellbook/previous_manifest.json"
+
     - name: upload manifest
       run: "aws s3 cp manifest.json s3://manifest-spellbook/manifest.json"
