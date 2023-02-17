@@ -23,6 +23,7 @@
 ,ref('quix_optimism_fees')
 ,ref('nftrade_bnb_fees')
 ,ref('nftb_bnb_fees')
+,ref('tofu_optimism_fees')
 ] %}
 
 

@@ -19,6 +19,9 @@ WITH dexs AS
         , p.version as version
         , '0x' || substring(l.topic2, 27,40) as taker
         , '' as maker
+        , case when l.topic1 = "0xd013ca23e77a65003c2c659c5442c00c805371b7fc1ebd4c206c41d1536bd90b" AND cast(substring(l.data, 131, 64) as int) = 0 then 'underlying_exchange_base'
+               else 'normal_exchange'
+            end as swap_type
         , bytea2numeric(substring(l.data, 195, 64)) as token_bought_amount_raw
         , bytea2numeric(substring(l.data, 67, 64)) as token_sold_amount_raw
         , NULL AS amount_usd
@@ -60,6 +63,7 @@ WITH dexs AS
         , p.version as version
         , '0x' || substring(l.topic2, 27,40) as taker
         , '' as maker
+        , 'normal_exchange' as swap_type
         , bytea2numeric(substring(l.data, 195, 64)) as token_bought_amount_raw
         , bytea2numeric(substring(l.data, 67, 64)) as token_sold_amount_raw
         , NULL AS amount_usd
@@ -95,13 +99,13 @@ SELECT
         else concat(erc20a.symbol, '-', erc20b.symbol)
     end as token_pair
     ,dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount
-    ,dexs.token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount
+    ,dexs.token_sold_amount_raw / power(10, case when swap_type = 'underlying_exchange_base' then 18 else erc20b.decimals end) AS token_sold_amount
     ,CAST(dexs.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw
     ,CAST(dexs.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
     ,coalesce(
         dexs.amount_usd
         ,(dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
-        ,(dexs.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
+        ,(dexs.token_sold_amount_raw / power(10, case when swap_type = 'underlying_exchange_base' then 18 else p_sold.decimals end)) * p_sold.price
     ) AS amount_usd
     ,dexs.token_bought_address
     ,dexs.token_sold_address
