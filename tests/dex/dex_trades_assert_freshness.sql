@@ -47,8 +47,13 @@
      'blockchain': 'ethereum',
      'schema': 'bancornetwork_ethereum',
      'table_name': 'BancorNetwork_v10_evt_Conversion',
-     'time_column': 'evt_block_time'}
+     'time_column': 'evt_block_time'},
 
+    {'project': 'airswap',
+     'blockchain': 'ethereum',
+     'schema': 'airswap_ethereum',
+     'table_name': 'swap_evt_Swap',
+     'time_column': 'evt_block_time'}
 ] %}
 
 
@@ -84,11 +89,4 @@ select
 from delays d
 left join sources s
 on d.project = s.project and d.blockchain = s.blockchain
-where coalesce(s.age_of_last_record_hours, 0) - d.age_of_last_record_hours > 24
-
-/*,{'project': 'airswap',
-     'blockchain': 'ethereum',
-     'schema': 'airswap_ethereum',
-     'table_name': 'swap_evt_Swap',
-     'time_column': 'evt_block_time'} */
-     --commenting this because it blocks the gh action, but is the correct state of the blockchain
+where coalesce(s.age_of_last_record_hours, 0) - d.age_of_last_record_hours > 200
