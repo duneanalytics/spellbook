@@ -405,10 +405,18 @@ models:
       arbitrum: 
         +schema: safe_arbitrum
 
+    liquidifty:
+      +schema: liquidifty
+      bnb:
+        +schema: liquidifty_bnb
+      ethereum:
+        +schema: liquidifty_ethereum
+
     nftb:
       +schema: nftb
       bnb:
         +schema: nftb_bnb
+    
     nftrade:
       +schema: nftrade
       bnb:
@@ -1207,6 +1215,31 @@ seeds:
             tx_hash: string
             block_number: int
             amount_original: double
+    
+    liquidifty:
+      bnb:
+        +enabled: true
+        +schema: test_data
+        liquidifty_bnb_nft_trades_samples:
+            block_number: int
+            version: string
+            token_id: string
+            seller: string
+            buyer: string
+            tx_hash: string
+            amount_original: double
+      ethereum:
+        +enabled: true
+        +schema: test_data
+        liquidifty_ethereum_nft_trades_samples:
+            block_number: int
+            version: string
+            token_id: string
+            seller: string
+            buyer: string
+            tx_hash: string
+            amount_original: double
+
     nftrade:
       bnb:
         +enabled: true
