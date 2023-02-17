@@ -290,7 +290,10 @@ SELECT
             ELSE taker
         END AS taker, -- fix the user masked by ProxyContract issue
         taker_token,
+        ts.symbol AS taker_symbol,
         maker_token,
+        ms.symbol AS maker_symbol,
+        CASE WHEN lower(ts.symbol) > lower(ms.symbol) THEN concat(ms.symbol, '-', ts.symbol) ELSE concat(ts.symbol, '-', ms.symbol) END AS token_pair,
         taker_token_amount_raw / pow(10, tp.decimals) AS taker_token_amount,
         taker_token_amount_raw,
         maker_token_amount_raw / pow(10, mp.decimals) AS maker_token_amount,
@@ -304,7 +307,9 @@ SELECT
              WHEN taker_token IN('0x82af49447d8a07e3bd95bd0d56f35241523fbab1','0xff970a61a04b1ca14834a43f5de4533ebddb5cc8','0xda10009cbd5d07dd0cecc66161fc93d7c9000da1','0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a','0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9', '0xd74f5255d557944cf7dd0e45ff521520002d5748')   
              THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
-             END AS volume_usd, tx.to, tx.from 
+             END AS volume_usd,
+        tx.from AS tx_from,
+        tx.to AS tx_to
 FROM all_tx
 INNER JOIN {{ source('arbitrum', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
     AND all_tx.block_number = tx.block_number
@@ -342,3 +347,6 @@ AND mp.minute >= date_trunc('day', now() - interval '1 week')
 {% if not is_incremental() %}
 AND mp.minute >= '{{zeroex_v3_start_date}}'
 {% endif %}
+
+LEFT OUTER JOIN {{ ref('tokens_erc20') }} ts ON ts.contract_address = taker_token and ts.blockchain = 'arbitrum'
+LEFT OUTER JOIN {{ ref('tokens_erc20') }} ms ON ms.contract_address = maker_token and ms.blockchain = 'arbitrum'
