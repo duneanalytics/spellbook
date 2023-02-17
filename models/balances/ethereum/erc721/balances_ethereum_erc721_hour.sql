@@ -56,3 +56,4 @@ where b.amount = 1
 --GROUP BY 1, 2, 3, 4, 5, 7
 
 ) x
+; 
