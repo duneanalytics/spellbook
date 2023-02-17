@@ -114,3 +114,4 @@ INNER JOIN {{ source('fantom', 'transactions') }} ft
     {% endif %}
 WHERE ids_and_count.values > 0
 GROUP BY blockchain, t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t.from, t.to, t.evt_index, token_id, amount
+;
