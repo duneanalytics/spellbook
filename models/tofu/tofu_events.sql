@@ -3,13 +3,14 @@
         post_hook='{{ expose_spells(\'["arbitrum","bnb"]\',
                                     "project",
                                     "tofu",
-                                    \'["Henrystats", "theachenyj"]\') }}')
+                                    \'["Henrystats", "theachenyj", "chuxin"]\') }}')
 }}
 
 
 {% set tofu_models = [
  ref('tofu_bnb_events')
 ,ref('tofu_arbitrum_events')
+,ref('tofu_optimism_events')
 ] %}
 
 SELECT *

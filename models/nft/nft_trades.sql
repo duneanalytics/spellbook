@@ -24,7 +24,6 @@
 ,ref('tofu_trades')
 ,ref('quix_optimism_trades')
 ,ref('nftrade_bnb_trades')
-,ref('tofu_optimism_trades')
 ] %}
 
 SELECT *

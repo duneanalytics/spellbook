@@ -1,15 +1,16 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["arbitrum","bnb"]\',
+        post_hook='{{ expose_spells(\'["arbitrum","bnb", "optimism"]\',
                                     "project",
                                     "tofu",
-                                    \'["Henrystats", "theachenyj"]\') }}')
+                                    \'["Henrystats", "theachenyj", "chuxin"]\') }}')
 }}
 
 
 {% set tofu_models = [
  ref('tofu_bnb_trades')
 ,ref('tofu_arbitrum_trades')
+,ref('tofu_optimism_trades')
 ] %}
 
 SELECT *
