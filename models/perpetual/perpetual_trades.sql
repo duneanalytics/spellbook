@@ -1,6 +1,6 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["optimism","avalanche_c","arbitrum"]\',
+        post_hook='{{ expose_spells_hide_trino(\'["optimism","avalanche_c","arbitrum"]\',
                                 "sector",
                                 "perpetual",
                                 \'["msilb7", "drethereum", "rplust","Henrystats"]\') }}'
