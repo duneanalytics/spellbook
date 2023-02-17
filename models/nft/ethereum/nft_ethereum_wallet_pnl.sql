@@ -54,7 +54,7 @@ trades as
         src.nft_contract_address, 
         'Sells' as trade_type,
         SUM(src.amount_original) as eth_amount, 
-        COUNT(src.*) as trades, 
+        COUNT(*) as trades, 
         MAX(src.block_time) as last_updated
     FROM 
         {{ ref('nft_trades') }} src 
@@ -80,7 +80,7 @@ trades as
         src.nft_contract_address, 
         'Buys' as trade_type,
         -1 * SUM(src.amount_original) as eth_amount,
-        COUNT(src.*) as trades, 
+        COUNT(*) as trades, 
         MAX(src.block_time) as last_updated
     FROM 
         {{ ref('nft_trades') }} src
@@ -142,7 +142,7 @@ trades as
         src.nft_contract_address, 
         'Sells' as trade_type,
         SUM(src.amount_original) as eth_amount, 
-        COUNT(src.*) as trades, 
+        COUNT(*) as trades, 
         MAX(src.block_time) as last_updated
     FROM 
         {{ ref('nft_trades') }} src 
@@ -163,7 +163,7 @@ trades as
         src.nft_contract_address, 
         'Buys' as trade_type,
         -1 * SUM(src.amount_original) as eth_amount,
-        COUNT(src.*) as trades, 
+        COUNT(*) as trades, 
         MAX(src.block_time) as last_updated
     FROM 
         {{ ref('nft_trades') }} src
