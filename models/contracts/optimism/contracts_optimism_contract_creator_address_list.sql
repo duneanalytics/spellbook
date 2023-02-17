@@ -408,6 +408,7 @@ FROM (
       ,('0xF285E70Ca2002b796A575E473285282BBf39D790', 'Omnisea')
       ,('0xFbe304258DCf193b9a320541985e2078ddB34287', 'Decent')
       ,('0x93798ef7e3a621d7c4eff22eda50b931fe57a3cf', 'QiDao')
+      ,('0xcD0b087E113152324FCA962488B4d9BeB6f4CaF6', 'NFTEarth')
 
   ) as temp_table (creator_address, contract_project)
 
