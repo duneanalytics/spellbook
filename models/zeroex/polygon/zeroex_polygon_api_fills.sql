@@ -376,10 +376,11 @@ SELECT
              THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
              END AS volume_usd,
-        all_tx.to as to, all_tx.from as from 
+        tx.from AS tx_from,
+        tx.to AS tx_to
 FROM all_tx
 
-/*
+
 INNER JOIN {{ source('polygon', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
 
 {% if is_incremental() %}
@@ -388,7 +389,7 @@ AND tx.block_time >= date_trunc('day', now() - interval '1 week')
 {% if not is_incremental() %}
 AND tx.block_time >= '{{zeroex_v3_start_date}}'
 {% endif %}
-*/
+
 
 LEFT JOIN {{ source('prices', 'usd') }} tp ON date_trunc('minute', all_tx.block_time) = tp.minute
 AND CASE
