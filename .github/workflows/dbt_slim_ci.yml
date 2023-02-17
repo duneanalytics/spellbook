@@ -10,9 +10,6 @@ on:
       - 'Pipfile'
       - '.gitignore'
       - '.github/**'
-  push:
-    branches:
-      - 'main'
 
 concurrency:
   group:  ${{ github.workflow }}-${{ github.ref }}

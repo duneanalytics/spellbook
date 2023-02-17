@@ -262,4 +262,5 @@ FROM
 ,('0x9374e7813CC6b4d64224a7Dd039f52543bF12D07', 'LiYu', 'erc721')
 ,('0x4e3a6e6534097a42b505c280ba5cd7d203be9501', 'Galxe Stargate Warrior', 'erc721')
 
+
 ) as temp_table (contract_address, name, standard)

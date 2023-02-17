@@ -1,11 +1,7 @@
 {{
     config(
+        schema="balancer_ethereum",
         alias='vebal_balances_day',
-        partition_by = ['day'],
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['day', 'wallet_address'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "balancer",
@@ -18,18 +14,12 @@ WITH base_locks AS (
         FROM {{ source('balancer_ethereum', 'veBAL_call_create_lock') }} l  
         JOIN {{ source('balancer_ethereum', 'veBAL_evt_Deposit') }} d
         ON d.evt_tx_hash = l.call_tx_hash
-        {% if is_incremental() %}
-        WHERE evt_block_time >= DATE_TRUNC('day', NOW() - interval '1 week')
-        {% endif %}
         
         UNION ALL
         
         SELECT provider, cast(null as numeric(38)) AS locked_at, locktime AS unlocked_at, ts AS updated_at
         FROM {{ source('balancer_ethereum', 'veBAL_evt_Deposit') }}
         WHERE value = 0
-        {% if is_incremental() %}
-        AND evt_block_time >= DATE_TRUNC('day', NOW() - interval '1 week')
-        {% endif %}
     ),
     
     decorated_locks AS (
@@ -54,9 +44,6 @@ WITH base_locks AS (
             date_trunc('day', evt_block_time) AS day,
             SUM(value/1e18) AS delta_bpt
         FROM {{ source('balancer_ethereum', 'veBAL_evt_Deposit') }}
-        {% if is_incremental() %}
-        WHERE evt_block_time >= DATE_TRUNC('day', NOW() - interval '1 week')
-        {% endif %}
         GROUP BY provider, day
     ),
     
@@ -66,9 +53,6 @@ WITH base_locks AS (
             date_trunc('day', evt_block_time) AS day,
             -SUM(value/1e18) AS delta_bpt
         FROM {{ source('balancer_ethereum', 'veBAL_evt_Withdraw') }}
-        {% if is_incremental() %}
-        WHERE evt_block_time >= DATE_TRUNC('day', NOW() - interval '1 week')
-        {% endif %}
         GROUP BY provider, day
     ),
     
@@ -158,6 +142,3 @@ INNER JOIN max_updated_at b
 ON a.day = b.day
 AND a.wallet_address = b.wallet_address
 AND a.updated_at = b.updated_at
-{% if is_incremental() %}
-AND a.day >= DATE_TRUNC('day', NOW() - interval '1 week')
-{% endif %}
