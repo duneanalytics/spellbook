@@ -1,6 +1,6 @@
  {{
   config(
-        schema='gamma_optimism',
+        schema='gamma',
         alias='uniswap_pools',
         materialized = 'incremental',
         file_format = 'delta',
@@ -30,7 +30,7 @@ FROM (
     , token0, 
     . token1
         
-    FROM {{ ref(dex_model) }}
+    FROM {{ ref(lp_lm_model) }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
