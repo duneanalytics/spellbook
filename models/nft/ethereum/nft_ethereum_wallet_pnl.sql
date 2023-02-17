@@ -78,7 +78,7 @@ trades as
     SELECT 
         src.buyer as wallet, 
         src.nft_contract_address, 
-        src.'Buys' as trade_type,
+        'Buys' as trade_type,
         -1 * SUM(src.amount_original) as eth_amount,
         COUNT(src.*) as trades, 
         MAX(src.block_time) as last_updated
@@ -161,7 +161,7 @@ trades as
     SELECT 
         src.buyer as wallet, 
         src.nft_contract_address, 
-        src.'Buys' as trade_type,
+        'Buys' as trade_type,
         -1 * SUM(src.amount_original) as eth_amount,
         COUNT(src.*) as trades, 
         MAX(src.block_time) as last_updated
