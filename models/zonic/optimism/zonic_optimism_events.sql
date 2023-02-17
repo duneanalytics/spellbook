@@ -22,7 +22,7 @@ with source_optimism_transactions as (
     select *
     from {{ source('optimism','transactions') }}
     {% if not is_incremental() %}
-    where block_number >= '{{min_block_number}}'  -- zonic first txn
+    where block_number >= {{min_block_number}}  -- zonic first txn
     {% endif %}
     {% if is_incremental() %}
     where block_time >= date_trunc("day", now() - interval '1 week')
@@ -104,7 +104,7 @@ with source_optimism_transactions as (
       )
       {% if not is_incremental() %}
       -- smallest block number for source tables above
-      and tr.tx_block_number >= '{{min_block_number}}'
+      and tr.tx_block_number >= {{min_block_number}}
       {% endif %}
       {% if is_incremental() %}
       and tr.tx_block_time >= date_trunc("day", now() - interval '1 week')
@@ -134,7 +134,7 @@ with source_optimism_transactions as (
       )
       {% if not is_incremental() %}
       -- smallest block number for source tables above
-      and erc20.evt_block_number >= '{{min_block_number}}'
+      and erc20.evt_block_number >= {{min_block_number}}
       {% endif %}
       {% if is_incremental() %}
       and erc20.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -158,12 +158,12 @@ with source_optimism_transactions as (
 )
 select 
     'optimism' as blockchain
+    ,'zonic' as project
     ,'v1' as version
     ,try_cast(date_trunc('day', er.block_time) as date) as block_date
     ,er.block_time
     ,er.token_id
     ,n.name as collection 
-    ,er.amount
     ,er.amount_raw / power(10, t1.decimals) * p1.price as amount_usd
     ,case 
         when erct2.evt_tx_hash is not null then 'erc721'
@@ -181,7 +181,7 @@ select
     ,er.amount_raw / power(10, t1.decimals) as amount_original
     ,er.amount_raw
     ,t1.symbol as currency_symbol
-    ,erc20.contract_address as currency_contract
+    ,er.currency_contract
     ,er.nft_contract_address
     ,er.project_contract_address
     ,agg.name as aggregator_name
@@ -198,10 +198,10 @@ select
     ,er.royalty_fee_amount_raw
     ,er.royalty_fee_amount_raw / power(10, t1.decimals) as royalty_fee_amount
     ,er.royalty_fee_amount_raw / power(10, t1.decimals) * p1.price as royalty_fee_amount_usd
-    ,er.royalty_fee_amount / er.amount_original * 100 as royalty_fee_percentage
+    ,er.royalty_fee_amount_raw / er.amount_raw * 100 as royalty_fee_percentage
     ,case when tr.value is not null then tr.to end as royalty_fee_receive_address
     ,t1.symbol as royalty_fee_currency_symbol
-    ,concat(try_cast(date_trunc('day', er.block_time) as date), tx_hash, token_id, seller, evt_index, er.unique_trade_id) as unique_trade_id
+    ,concat(try_cast(date_trunc('day', er.block_time) as date), er.tx_hash, er.token_id, er.seller, er.evt_index, er.unique_trade_id) as unique_trade_id
 from events_raw as er 
 join source_optimism_transactions as tx 
     on er.tx_hash = tx.hash 
@@ -224,7 +224,7 @@ left join {{ source('erc721_optimism','evt_transfer') }} as erct2
     and erct2.to=er.buyer
     {% if not is_incremental() %}
     -- smallest block number for source tables above
-    and erct2.evt_block_number >= '{{min_block_number}}'
+    and erct2.evt_block_number >= {{min_block_number}}
     {% endif %}
     {% if is_incremental() %}
     and erct2.evt_block_time >= date_trunc("day", now() - interval '1 week')
