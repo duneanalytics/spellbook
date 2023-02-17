@@ -1,9 +1,6 @@
 {{ config(
         alias ='nft'
-        , materialized = 'incremental'
-        , file_format = 'delta'
-        , incremental_strategy = 'merge'
-        , unique_key = ['contract_address']
+        , materialized = 'table'
         , post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",
                                 "tokens",
@@ -11,24 +8,13 @@
         )
 }}
 
-WITH wizards_curated_collections AS (
-    SELECT contract_address
+SELECT contract_address
   , name
   , symbol
   , standard
   , category
   FROM {{ref('tokens_ethereum_nft_wizards_curated')}}
-  )
-
--- Is there an 'append' incremental_strategy that might be more efficient?
--- If yes then we can uncomment the comments below and switch to that incremental strategy
---SELECT *
---FROM (
-SELECT *
-FROM wizards_curated_collections
-
-UNION ALL
-
+UNION
 SELECT c.contract AS contract_address
 , MIN(c.name) AS name
 , NULL AS symbol
@@ -36,7 +22,5 @@ SELECT c.contract AS contract_address
 , NULL AS category
 FROM {{source('reservoir','collections')}} c
 INNER JOIN {{ref('nft_ethereum_transfers')}} t ON c.contract=t.contract_address
-LEFT ANTI JOIN wizards_curated_collections w ON w.contract_address=c.contract
+LEFT ANTI JOIN {{ref('tokens_ethereum_nft_wizards_curated')}} w ON w.contract_address=c.contract
 GROUP BY c.contract
---  ) r
---LEFT ANTI JOIN {{this}} f ON f.contract_address=r.contract_address
