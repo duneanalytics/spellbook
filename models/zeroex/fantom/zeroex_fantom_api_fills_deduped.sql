@@ -67,7 +67,6 @@ AS
 )
 SELECT  'fantom' AS blockchain
       , '0x API' AS project 
-      , '' AS version
       , a.block_date
       , a.block_time
       , COALESCE(b.taker_symbol,b.taker_token) AS taker_symbol
@@ -86,7 +85,6 @@ SELECT  'fantom' AS blockchain
       , a.tx_hash
       , a.tx_from
       , a.tx_to
-      , '' AS trace_address
       , b.evt_index
 FROM fills_with_tx_fill_number a
 INNER JOIN deduped_bridge_fills b
