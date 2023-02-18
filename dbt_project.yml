@@ -267,6 +267,11 @@ models:
         +schema: dodo_polygon
       arbitrum:
         +schema: dodo_arbitrum
+        
+    spookyswap:
+      +schema: spookyswap
+      fantom:
+        +schema: spookyswap_fantom
 
     labels:
       +schema: labels
@@ -285,10 +290,26 @@ models:
 
     addresses_events:
       +schema: addresses_events
-      +materialized: table
+      arbitrum:
+        +schema: addresses_events_arbitrum
+      avalanche_c:
+        +schema: addresses_events_avalanche_c
+      bnb:
+        +schema: addresses_events_bnb
       ethereum:
         +schema: addresses_events_ethereum
-        +materialized: table
+      fantom:
+        +schema: addresses_events_fantom
+      gnosis:
+        +schema: addresses_events_gnosis
+      optimism:
+        +schema: addresses_events_optimism
+      polygon:
+        +schema: addresses_events_polygon
+    addresses_events_testnets:
+      +schema: addresses_events_testnets
+      goerli:
+        +schema: addresses_events_testnets_goerli
 
     aztec:
       +schema: aztec
@@ -331,11 +352,20 @@ models:
         +schema: tokens_fantom
         +materialized: table
         +file_format: delta
+      solana:
+        +schema: tokens_solana
+        +materialized: table
+        +file_format: delta
 
     trader_joe:
       +schema: trader_joe
       avalanche_c:
         +schema: trader_joe_avalanche_c
+
+    odos:
+      +schema: odos
+      avalanche_c:
+        +schema: odos_avalanche_c
 
     transfers:
       +schema: transfers
@@ -362,11 +392,40 @@ models:
         +schema: safe_ethereum
       optimism:
         +schema: safe_optimism
+      gnosis: 
+        +schema: safe_gnosis
+      polygon: 
+        +schema: safe_polygon
+      bnb: 
+        +schema: safe_bnb
+      avalanche_c: 
+        +schema: safe_avalanche_c
+      fantom: 
+        +schema: safe_fantom
+      arbitrum: 
+        +schema: safe_arbitrum
 
+    liquidifty:
+      +schema: liquidifty
+      bnb:
+        +schema: liquidifty_bnb
+      ethereum:
+        +schema: liquidifty_ethereum
+
+    nftb:
+      +schema: nftb
+      bnb:
+        +schema: nftb_bnb
+    
     nftrade:
       +schema: nftrade
       bnb:
         +schema: nftrade_bnb
+
+    spiritswap:
+      +schema: spiritswap
+      fantom:
+        +schema: spiritswap_fantom
 
     jarvis_network:
       +schema: jarvis_network
@@ -377,6 +436,11 @@ models:
       +schema: cryptopunks
       ethereum:
         +schema: cryptopunks_ethereum
+
+    spartacus_exchange:
+      +schema: spartacus_exchange
+      fantom:
+        +schema: spartacus_exchange_fantom
 
     tornado_cash:
       +schema: tornado_cash
@@ -501,6 +565,11 @@ models:
       +schema: dfx
       ethereum:
         +schema: dfx_ethereum
+
+    yield_yak:
+      +schema: yield_yak
+      avalanche_c:
+        +schema: yield_yak_avalanche_c
 
     shibaswap:
       +schema: shibaswap
@@ -658,6 +727,10 @@ models:
       +schema: tofu
       bnb:
         +schema: tofu_bnb
+      arbitrum:
+        +schema: tofu_arbitrum
+      optimism:
+        +schema: tofu_optimism
 
     maker:
       +schema: maker
@@ -683,8 +756,11 @@ models:
       +schema: zipswap
       optimism:
         +schema: zipswap_optimism
-    
-    
+        
+    sharky:
+      +schema: sharky
+      solana:
+        +schema: sharky_solana
 
     arbswap:
       +schema: arbswap
@@ -755,6 +831,15 @@ seeds:
             block_time: timestamp
             tx_hash: string
             amount: string
+
+    sharky:
+      solana:
+        sharky_solana_loans_solscan:
+          +column_types:
+            block_time: timestamp
+            tx_hash: string
+            amount: double
+
     ens:
     dex:
       trades:
@@ -769,6 +854,18 @@ seeds:
           token_bought_amount: float
           token_sold_address: string
           token_sold_amount: float
+      aggregator:
+        +column_types:
+          blockchain: string
+          project: string
+          version: string
+          block_date: date
+          tx_hash: string
+          evt_index: int
+          token_bought_address: string
+          token_bought_amount: float
+          token_sold_address: string
+          token_sold_amount: float  
       pools:
         +column_types:
           blockchain: string
@@ -1118,6 +1215,31 @@ seeds:
             tx_hash: string
             block_number: int
             amount_original: double
+    
+    liquidifty:
+      bnb:
+        +enabled: true
+        +schema: test_data
+        liquidifty_bnb_nft_trades_samples:
+            block_number: int
+            version: string
+            token_id: string
+            seller: string
+            buyer: string
+            tx_hash: string
+            amount_original: double
+      ethereum:
+        +enabled: true
+        +schema: test_data
+        liquidifty_ethereum_nft_trades_samples:
+            block_number: int
+            version: string
+            token_id: string
+            seller: string
+            buyer: string
+            tx_hash: string
+            amount_original: double
+
     nftrade:
       bnb:
         +enabled: true
@@ -1129,6 +1251,18 @@ seeds:
             buyer: string
             tx_hash: string
             amount_original: double
+
+    tofu:
+      arbitrum:
+        +enabled: true
+        +schema: test_data
+        tofu_arbitrum_nft_trades_samples:
+            block_number: int
+            token_id: string
+            seller: string
+            buyer: string
+            tx_hash: string
+            amount_original: double  
 
     foundation:
       ethereum:

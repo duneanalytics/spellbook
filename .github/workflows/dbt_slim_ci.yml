@@ -9,9 +9,7 @@ on:
       - 'scripts/**'
       - 'Pipfile'
       - '.gitignore'
-  push:
-    branches:
-      - 'main'
+      - '.github/**'
 
 concurrency:
   group:  ${{ github.workflow }}-${{ github.ref }}
