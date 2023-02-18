@@ -7,10 +7,6 @@
         )
 }}
 
-/*
-list of models using old generic test, due to multiple versions in one model:
-    - mstable_ethereum_trades
-*/
 
 {% set dex_trade_models = [
  ref('uniswap_trades')
