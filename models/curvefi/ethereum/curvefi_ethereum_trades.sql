@@ -24,7 +24,7 @@ WITH dexs AS
             end as swap_type
         , bytea2numeric(substring(l.data, 195, 64)) as token_bought_amount_raw
         , bytea2numeric(substring(l.data, 67, 64)) as token_sold_amount_raw
-        , NULL AS amount_usd
+        , cast(NULL as double) AS amount_usd
         , case
             when l.topic1 = "0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140"
                 then p.coins[cast(substring(l.data, 131, 64) as int)] 
@@ -66,7 +66,7 @@ WITH dexs AS
         , 'normal_exchange' as swap_type
         , bytea2numeric(substring(l.data, 195, 64)) as token_bought_amount_raw
         , bytea2numeric(substring(l.data, 67, 64)) as token_sold_amount_raw
-        , NULL AS amount_usd
+        , cast(NULL as double) AS amount_usd
         , p.coins[cast(substring(l.data, 131, 64) as int)] as token_bought_address
         , p.coins[cast(substring(l.data, 3, 64) as int)] as token_sold_address
         , l.contract_address as project_contract_address --pool address
