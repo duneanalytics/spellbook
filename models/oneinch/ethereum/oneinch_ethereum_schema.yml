@@ -287,7 +287,7 @@ models:
       - *trace_address
       - *evt_index
 
-  - name: onesplit_ethereum_trades
+  - name: oneinch_onesplit_ethereum_trades
     meta:
       blockchain: ethereum
       project: oneinch
@@ -335,7 +335,7 @@ models:
       - *trace_address
       - *evt_index
 
-  - name: oneproto_ethereum_trades
+  - name: oneinch_oneproto_ethereum_trades
     meta:
       blockchain: ethereum
       project: oneinch

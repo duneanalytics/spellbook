@@ -1,5 +1,5 @@
 {{  config(
-        schema='oneproto_ethereum',
+        schema='oneinch_oneproto_ethereum',
         alias='trades',
         partition_by = ['block_date'],
         on_schema_change='sync_all_columns',
