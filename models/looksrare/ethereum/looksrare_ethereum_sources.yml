@@ -5,11 +5,11 @@ sources:
     freshness:
       warn_after: { count: 12, period: hour }
     tables:
-      - name: looksrareexchange_evt_takerask
+      - name: LooksRareExchange_evt_TakerAsk
         loaded_at_field: evt_block_time
-      - name: looksrareexchange_evt_takerbid
+      - name: LooksRareExchange_evt_TakerBid
         loaded_at_field: evt_block_time
-      - name: looksrareexchange_evt_royaltypayment
+      - name: LooksRareExchange_evt_RoyaltyPayment
         loaded_at_field: evt_block_time
       - name: StrategyStandardSaleForFixedPrice_call_viewProtocolFee
         loaded_at_field: call_block_time
