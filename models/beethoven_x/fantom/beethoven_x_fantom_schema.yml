@@ -23,7 +23,7 @@ models:
       - check_dex_seed:
           blockchain: fantom
           project: beethoven_x
-          version: 2
+          version: 1
     columns:
       - &blockchain
         name: blockchain
