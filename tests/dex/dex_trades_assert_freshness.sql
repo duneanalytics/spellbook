@@ -89,4 +89,4 @@ select
 from delays d
 left join sources s
 on d.project = s.project and d.blockchain = s.blockchain
-where coalesce(s.age_of_last_record_hours, 0) - d.age_of_last_record_hours > 200
+where coalesce(s.age_of_last_record_hours, 0) - d.age_of_last_record_hours > 24
