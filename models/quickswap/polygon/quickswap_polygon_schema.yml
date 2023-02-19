@@ -120,8 +120,7 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount_raw
       - *amount_usd
-      - name: token_bought_address # since object is a view, avoid test repeat with dbt '*' usage
-        description: "Contract address of the token bought"
+      - *token_bought_address
       - *token_sold_address
       - *taker
       - *maker
