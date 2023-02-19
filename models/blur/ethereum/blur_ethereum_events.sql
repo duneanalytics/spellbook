@@ -14,7 +14,7 @@
 {% set project_start_date = '2022-10-18' %}
 {% set seaport_usage_start_date = '2023-01-25' %}
 
-SELECT
+SELECT distinct
     CAST('ethereum' AS string) AS blockchain
     , CAST('blur' AS string) AS project
     , CAST('v1' AS string) AS version
@@ -139,7 +139,7 @@ WHERE bm.evt_block_time >= date_trunc("day", now() - interval '1 week')
 UNION ALL
 
 SELECT distinct
-    'ethereum' AS blockchain
+    CAST('ethereum' AS string) AS blockchain
     , CAST('blur' AS string) AS project
     , CAST('v1' AS string) AS version
     , CAST(date_trunc('day', s.evt_block_time) AS timestamp) AS block_date
