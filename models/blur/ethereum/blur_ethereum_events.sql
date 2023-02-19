@@ -139,7 +139,7 @@ WHERE bm.evt_block_time >= date_trunc("day", now() - interval '1 week')
 UNION ALL
 
 SELECT distinct
-    CAST('ethereum' AS string) AS blockchain
+    'ethereum' AS blockchain
     , CAST('blur' AS string) AS project
     , CAST('v1' AS string) AS version
     , CAST(date_trunc('day', s.evt_block_time) AS timestamp) AS block_date
