@@ -38,7 +38,7 @@ WITH filter_1 AS (
         AND filter_baf.nft_contract_address=nftt.nft_contract_address
         AND filter_baf.token_id=nftt.token_id
         {% if is_incremental() %}
-        AND filter_baf.block_time >= date_trunc("day", NOW() - interval '1 week')
+        AND filter_baf.block_time >= date_trunc('day', NOW() - interval '1 week')
         {% endif %}
     WHERE nftt.blockchain='ethereum'
         AND nftt.unique_trade_id IS NOT NULL
