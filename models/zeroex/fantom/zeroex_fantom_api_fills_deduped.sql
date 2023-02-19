@@ -83,11 +83,10 @@ SELECT  'fantom' AS blockchain
       , a.maker
       , a.affiliate_address
       , a.tx_hash
-      , a.tx_from
-      , a.tx_to
+      , a.from AS tx_from
+      , a.to tx_to
       , b.evt_index
 FROM fills_with_tx_fill_number a
 INNER JOIN deduped_bridge_fills b
     ON (a.tx_hash = b.tx_hash AND a.evt_index = b.evt_index)
 ;
--- zeroex_arbitrum_api_fills_deduped.sql
