@@ -115,9 +115,9 @@ models:
       - &taker_symbol
         name: taker_symbol
         description: "Symbol of the token taker sells"
-      - &maker_token
-        name: maker_token
-        description: "Contract address of the token taker buys"
+      - &maker_symbol
+        name: maker_symbol
+        description: "Symbol of the token taker buys"
       - &token_pair
         name: token_pair
         description: "Token pair traded"    
@@ -125,9 +125,7 @@ models:
       - *maker_token_amount
       - *taker_token_amount_raw
       - *maker_token_amount_raw
-      - &volume_usd
-        name: volume_usd
-        description: "Trading volume measured in USD value"
+      - *volume_usd
       - *taker_token
       - *maker_token
       - *taker
