@@ -10,6 +10,10 @@ models:
       tags: ['bnb','spaceid','name','registrations']
     description: >
        SpaceID V3, V4, V5, V6, V7, V8 & V9 Name Registered on BNB
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - name
     columns:
       - &version
         name: version
