@@ -1,3 +1,6 @@
+version: 2
+
+models:  
   - name: nftearth_optimism_base_pairs
     meta:
       blockchain: optimism
