@@ -10,7 +10,7 @@
                                     "project",
                                     "balancer_v1",
                                     \'["metacrypto", "jacektrocinski"]\') }}'
-    ) 
+    )
 }}
 
 {% set bind_start_date = '2020-02-28' %}
