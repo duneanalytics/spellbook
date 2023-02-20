@@ -77,7 +77,7 @@ FROM (
         r.evt_tx_hash AS tx_hash,
 
         r.evt_index,
-        '' AS trace_address,
+        cast(null as array<bigint>) AS trace_address,
 
         r.evt_tx_hash || '-' || CAST(evt_index AS VARCHAR(100))  as unique_transfer_id
 
@@ -140,7 +140,7 @@ FROM (
         r.tx_hash AS tx_hash,
 
         r.evt_index,
-        '' AS trace_address,
+        cast(null as array<bigint>) AS trace_address,
 
         r.unique_transfer_id
 
