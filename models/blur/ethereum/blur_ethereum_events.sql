@@ -14,7 +14,7 @@
 {% set project_start_date = '2022-10-18' %}
 {% set seaport_usage_start_date = '2023-01-25' %}
 
-SELECT
+SELECT distinct
     CAST('ethereum' AS string) AS blockchain
     , CAST('blur' AS string) AS project
     , CAST('v1' AS string) AS version
