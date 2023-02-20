@@ -11,12 +11,12 @@
 }}
 
 {% set create_lbp_contracts = [
-                                source('balancer_v2_ethereum', 'LiquidityBootstrappingPoolFactory_call_create'),
-                                source('balancer_v2_ethereum', 'NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create')
+                                source('balancer_v2_polygon', 'LiquidityBootstrappingPoolFactory_call_create'),
+                                source('balancer_v2_polygon', 'NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create')
                                 ] %}
 {% set lbp_weight_upgrade_contracts = [
-                                source('balancer_v2_ethereum', 'LiquidityBootstrappingPool_evt_GradualWeightUpdateScheduled'),
-                                source('balancer_v2_ethereum', 'NoProtocolFeeLiquidityBootstrappingPool_evt_GradualWeightUpdateScheduled')
+                                source('balancer_v2_polygon', 'LiquidityBootstrappingPool_evt_GradualWeightUpdateScheduled'),
+                                source('balancer_v2_polygon', 'NoProtocolFeeLiquidityBootstrappingPool_evt_GradualWeightUpdateScheduled')
                                 ] %}
 {% set non_lbp_tokens = ('0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
                         '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
