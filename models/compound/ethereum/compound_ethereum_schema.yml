@@ -98,3 +98,116 @@ models:
       - &description
         name: description
         description: "Description of the proposal"
+
+  - name: compound_v2_ethereum_ctokens
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: compound_v2
+      contributors: bizzyvinci
+    config:
+      tags: ['ethereum', 'compound', 'compound_v2', 'cToken', 'cEther', 'cErc20']
+    description: "All compound v2 cTokens"
+    columns:
+      - name: asset_symbol
+        description: "Underlying asset symbol"
+      - name: ctoken_address
+        description: "cToken address"
+      - name: asset_address
+        description: "Underlying asset address"
+      - name: decimals_mantissa
+        description: "10 raise to power decimals of underlying asset"
+
+  - name: compound_v2_ethereum_supply
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: compound_v2
+      contributors: [bizzyvinci, hosuke]
+    config:
+      tags: ['ethereum', 'compound', 'compound_v2', 'supply', 'lending']
+    description: "All compound v2 transactions involving supply transactions on ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - evt_block_number
+            - evt_index
+    columns:
+      - &version
+        name: version
+        description: "Compound version"
+      - &transaction_type
+        name: transaction_type
+        description: "The transaction type"
+      - &symbol
+        name: symbol
+        description: "Symbol of the underlying asset"
+      - &token_address_lending
+        name: token_address
+        description: "Contract address of underlying asset"
+      - &depositor
+        name: depositor
+        description: "Depositor wallet address"
+      - &withdrawn_to
+        name: withdrawn_to
+        description: "The wallet address where the tokens are withdrawn to"
+      - &liquidator
+        name: liquidator
+        description: "Liquidator wallet address"
+      - &amount
+        name: amount
+        description: "Token amount present in the transaction. Note: withdraw amounts may be more than deposited amounts due to interest"
+      - &usd_amount
+        name: usd_amount
+        description: "Token amount in USD"
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: "Transaction hash of the event"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+      - &evt_block_time
+        name: evt_block_time
+        description: "Timestamp for block event time in UTC"
+      - &evt_block_number
+        name: evt_block_number
+        description: "Event block number"
+      - &block_date
+        name: block_date
+        description: "UTC event block date"
+
+  - name: compound_v2_ethereum_borrow
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: compound_v2
+      contributors: [bizzyvinci, hosuke]
+    config:
+      tags: ['ethereum', 'compound', 'compound_v2', 'borrow', 'lending']
+    description: "All compound v2 transactions involving borrow transactions on ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - evt_block_number
+            - evt_index
+    columns:
+      - *version
+      - *transaction_type
+      - *symbol
+      - *token_address_lending
+      - &borrower
+        name: borrower
+        description: "Borrower wallet address"
+      - &repayer
+        name: repayer
+        description: "Repayer wallet address"
+      - *liquidator
+      - *amount
+      - *usd_amount
+      - *evt_tx_hash
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
+      - *block_date
