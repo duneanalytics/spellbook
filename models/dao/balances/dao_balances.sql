@@ -8,9 +8,10 @@
                                 \'["Henrystats"]\') }}')
 }}
 
-WITH
 
-balances as (
+{% set project_start_date = '2018-10-27' %}
+
+WITH balances as (
     SELECT block_date as day,
            SUM(value) as value,
            dao,
@@ -57,7 +58,7 @@ balances_all as (
 days as (
         select explode(
                        sequence(
-                               to_date('2018-10-27'), date_trunc('day', now()), interval 1 day
+                               to_date('{{project_start_date}}'), date_trunc('day', now()), interval 1 day
                            )
                    ) as day
 ),
