@@ -55,40 +55,6 @@ WITH unoswap AS
         {% else %}
         AND call_block_time >= '{{project_start_date}}'
         {% endif %}
-
-    -- SELECT
-    --     call_block_number,
-    --     output_returnAmount,
-    --     amount,
-    --     srcToken,
-    --     pools,
-    --     call_tx_hash,
-    --     call_trace_address,
-    --     call_block_time,
-    --     contract_address
-    -- FROM
-    --     oneinch_v4_ethereum.AggregationRouterV4_call_unoswap
-    -- WHERE
-    --     call_success
-    --     and call_block_time >= '{{start_date}}'
-
-    -- UNION ALL
-
-    -- SELECT
-    --     call_block_number,
-    --     output_returnAmount,
-    --     amount,
-    --     srcToken,
-    --     pools,
-    --     call_tx_hash,
-    --     call_trace_address,
-    --     call_block_time,
-    --     contract_address
-    -- FROM
-    --     oneinch_v4_ethereum.AggregationRouterV4_call_unoswapWithPermit
-    -- WHERE
-    --     call_success
-    --     and call_block_time >= '{{start_date}}'
 )
 , oneinch as
 (
