@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: cow_protocol_tx_hash_labels_stable_to_stable
+    meta:
+      blockchain: ethereum
+      sector: tx_hash_labels
+      category: stable_to_stable
+      contributors: gentrexha
+    config:
+      tags: ['labels', 'tx_hash', 'ethereum', 'stable_to_stable', 'dex']
+    description: "Trades that traded from one stable coin to another"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"   
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash of stable to stable trade"
+      - &name
+        name: name
+        description: "Label name"
+      - &category
+        name: category
+        description: "Label category"
+      - &contributor
+        name: contributor
+        description: "Wizard(s) contributing to labels"
+      - &source
+        name: source
+        description: "How were labels generated (query)"
+      - &created_at
+        name: created_at
+        description: "When were labels created"
+      - &updated_at
+        name: updated_at
+        description: "When were labels updated for the last time"
+
+  - name: cow_protocol_tx_hash_labels_stable_to_stable_ethereum
+    meta:
+      blockchain: ethereum
+      sector: labels
+      category: stable_to_stable
+      contributors: gentrexha
+    config:
+      tags: ['labels', 'tx_hash', 'ethereum', 'stable_to_stable', 'dex']
+    description:  "Trades that traded from one stable coin to another"
+    columns:
+      - *blockchain
+      - *tx_hash
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at

@@ -1,0 +1,246 @@
+version: 2
+
+models:
+  - name: tigris_polygon_events_asset_added
+    meta:
+      blockchain: polygon
+      project: tigris
+      contributors: Henrystats
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      pairs added for trading on tigris on polygon  
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_tx_hash 
+            - asset_id 
+            - pair 
+    columns:
+      - &evt_tx_hash
+        name: evt_tx_hash 
+        description: "blockchain transaction id "
+      - &asset_id
+        name: asset_id 
+        description: "unqiue asset id "
+      - &pair 
+        name: pair 
+        description: "name of asset added"
+
+  - name: tigris_polygon_events_open_position
+    meta:
+      blockchain: polygon
+      project: tigris
+      contributors: Henrystats
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      open position events for tigris events 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - evt_tx_hash
+            - position_id 
+            - evt_index
+    columns:
+      - &day
+        name: day 
+        description: "date_trunc of block time of position opening"
+      - &evt_block_time
+        name: evt_block_time
+        description: "blocktime of transaction"
+      - &evt_index
+        name: evt_index
+        description: "event index of transaction"
+      - *evt_tx_hash
+      - &position_id
+        name: position_id
+        description: "unique nft id for position"
+      - &price
+        name: price 
+        description: "entry price of trade"
+      - &margin
+        name: margin
+        description: "margin added to trade"
+      - &leverage
+        name: leverage 
+        description: "leverage used for trade"
+      - &volume_usd 
+        name: volume_usd
+        description: "margin * leverage (usd)"
+      - &margin_asset
+        name: margin_asset
+        description: "margin asset used for trade"
+      - *pair
+      - &direction
+        name: direction
+        description: "trade direction (long or short)"
+      - &referral
+        name: referral
+        description: "user referring trader"
+      - &trader
+        name: trader
+        description: "trader intiating transaction"
+      - &version
+        name: version
+        description: "trading contract version"
+
+  - name: tigris_polygon_events_add_margin
+    meta:
+      blockchain: polygon
+      project: tigris
+      contributors: Henrystats
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      add margin events for tigris events 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - evt_tx_hash
+            - position_id 
+            - trader
+            - margin
+            - evt_index
+    columns:
+      - *day
+      - *evt_block_time
+      - *evt_index
+      - *evt_tx_hash
+      - *position_id
+      - *price
+      - &margin_change
+        name: margin_change
+        description: "margin change"
+      - *margin
+      - *trader
+      - *version
+
+  - name: tigris_polygon_events_modify_margin
+    meta:
+      blockchain: polygon
+      project: tigris
+      contributors: Henrystats
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      modify margin events for tigris events 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - evt_tx_hash
+            - position_id 
+            - trader
+            - margin
+            - leverage
+            - evt_index
+    columns:
+      - *day
+      - *evt_block_time
+      - *evt_index
+      - *evt_tx_hash
+      - *position_id
+      - *leverage
+      - &modify_type
+        name: modify_type
+        description: "margin change type (add or remove magrin)"
+      - *margin_change
+      - *margin
+      - *trader
+      - *version
+
+  - name: tigris_polygon_events_close_position
+    meta:
+      blockchain: polygon
+      project: tigris
+      contributors: Henrystats
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      close position events for tigris events 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - evt_tx_hash
+            - position_id 
+            - trader
+            - price
+            - payout
+            - perc_closed
+            - evt_index
+    columns:
+      - *day
+      - *evt_block_time
+      - *evt_index
+      - *evt_tx_hash
+      - *position_id
+      - &payout
+        name: payout
+        description: "amount received after closing trade"
+      - &perc_closed
+        name: perc_closed
+        description: "% of trade closed"
+      - *trader
+      - *version
+
+  - name: tigris_polygon_events_liquidate_position
+    meta:
+      blockchain: polygon
+      project: tigris
+      contributors: Henrystats
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      liquidate position event for tigris events 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - evt_tx_hash
+            - position_id 
+            - trader
+            - evt_index
+    columns:
+      - *day
+      - *evt_block_time
+      - *evt_index
+      - *evt_tx_hash
+      - *position_id
+      - *trader
+      - *version
+
+  - name: tigris_polygon_events_limit_order
+    meta:
+      blockchain: polygon
+      project: tigris
+      contributors: Henrystats 
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      limit order events on polygon
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - evt_tx_hash
+            - position_id 
+    columns:
+      - *day
+      - *evt_block_time
+      - *evt_index
+      - *evt_tx_hash
+      - *position_id
+      - *price
+      - *margin
+      - *leverage
+      - *volume_usd 
+      - *margin_asset
+      - *pair
+      - *direction
+      - *referral
+      - *trader
+      - *version

@@ -5,7 +5,7 @@
     post_hook='{{ expose_spells(\'["optimism"]\',
                               "sector",
                               "contracts",
-                              \'["msilb7", "chuxinh"]\') }}'
+                              \'["msilb7", "chuxin"]\') }}'
     )  
 }}
 
@@ -51,7 +51,7 @@ from (
     ,('Xtoken', 'xToken')
     ,('Instadapp', 'InstaDapp')
     ,('Lifi', 'LiFi')
-    ,('Optimistic Exporer', 'Optimistic Explorer - Get Started NFT')
+    ,('Optimistic Explorer', 'Optimistic Explorer - Get Started NFT')
     ,('ironbank', 'Iron Bank')
     ,('iron_bank', 'Iron Bank')
     ,('bluesweep', 'BlueSweep')
@@ -59,4 +59,18 @@ from (
     ,('quixotic', 'Quix')
     ,('project galaxy', 'Galxe')
     ,('project_galaxy', 'Galxe')
+    ,('Masoud_ecc', 'ECC Domains')
+    ,('opx_finance', 'OPX Finance')
+    ,('pooltogether_v3', 'PoolTogether')
+    ,('beethovenx', 'Beethoven X')
+    ,('openxswap', 'OpenXSwap')
+    ,('eccdomains', 'ECC Domains')
+    ,('2pi_network','2Pi Network')
+    ,('twopi_network','2Pi Network')
+    ,('acryptos', 'AcryptoS')
+    ,('woofi', 'WooFi')
+    ,('powerbomb_finance','Powerbomb Finance')
+    ,('powerbomb','Powerbomb Finance')
+    ,('lemma_finance','Lemma Finance')
+    ,('lemma','Lemma Finance')
     ) as temp_table (dune_name, mapped_name)

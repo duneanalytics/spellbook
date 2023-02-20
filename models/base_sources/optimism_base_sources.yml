@@ -1,19 +1,19 @@
 version: 2
 
 sources:
-# Base Tables
+  # Base Tables
   - name: optimism
     description: "Optimism raw tables including transactions, traces and logs."
     freshness:
       warn_after: { count: 12, period: hour }
     tables:
       - name: transactions
-        tests:
-          - unique:
-              column_name: "(hash || '-' || block_number)"
         loaded_at_field: block_time
         description: "An Optimism transaction refers to an action initiated by an externally-owned account (i.e., an account managed by a human, not a contract)."
         columns:
+          - &block_date
+            name: block_date
+            description: "Block event date in UTC"
           - &block_time
             name: block_time
             description: "Timestamp for block event time in UTC"
@@ -61,6 +61,7 @@ sources:
             description: "Transaction type"
           - name: access_list
             description: "Specifies a list of addresses and storage keys"
+            description: "Specifies a list of addresses and storage keys"
           - name: l1_block_number
             description: "Block number on L1"
           - name: l1_fee
@@ -78,8 +79,9 @@ sources:
 
       - name: traces
         loaded_at_field: block_time
-        description: "An Optimism trace is a small atomic action that modify the internal state of the Optimism Virtual Machine (OVM)."
+        description: "An Optimism trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide."
         columns:
+          - *block_date
           - *block_time
           - *block_number
           - *value
@@ -93,12 +95,12 @@ sources:
           - &tx_index
             name: tx_index
             description: "Transaction index"
-          - name: sub_traces
+          - name: subtraces
             description: "Number of subtraces (i.e, number of calls at a particular level within a transaction)"
           - name: error
             description: "Error log"
           - name: tx_success
-            description: "Whether the transaction was completed successfully"    
+            description: "Whether the transaction was completed sucessfully"
           - &tx_hash
             name: tx_hash
             description: "Primary key of the transaction"
@@ -127,24 +129,25 @@ sources:
         loaded_at_field: block_time
         description: "An Optimism log can be used to describe an event within a smart contract, like a token transfer or a change of ownership."
         columns:
+          - *block_date
           - *block_time
           - *block_number
           - *block_hash
           - name: contract_address
-            description: "Address of the Optimism smart contract generating the log"
+            description: "Address of the optimism smart contract generating the log"
           - name: topic1
             description: "Topics are 32-byte (256 bit) “words” that are used to describe what’s going on in an event. The first topic usually consists of the signature of the name of the event that occurred, including the types (uint256, string, etc.) of its parameters."
           - name: topic2
-            description: "Second topic"    
+            description: "Second topic"
           - name: topic3
-            description: "Third topic"   
+            description: "Third topic"
           - name: topic4
-            description: "Fourth topic"   
+            description: "Fourth topic"
           - name: data
-            description: "Additional data for the log. Data is not searchable (while topics are), but is a lot cheaper and can include large or complicated data like arrays or strings." 
+            description: "Additional data for the log. Data is not searchable (while topics are), but is a lot cheaper and can include large or complicated data like arrays or strings."
           - *tx_hash
           - name: index
-            description: "Log index" 
+            description: "Log index"
           - *tx_index
 
       - name: blocks
@@ -168,7 +171,8 @@ sources:
 
       - name: contracts
         freshness:
-          warn_after: { count: 7, period: day }
+          warn_after: { count: 1, period: day }
+          error_after: { count: 3, period: day }
         loaded_at_field: created_at
         description: "A view keeping track of what contracts are decoded on Dune on Optimism; contains information associated with the decoded contract such as namespace, name, address, ABI."
         columns:
@@ -196,33 +200,94 @@ sources:
               - accepted_values:
                   values: ["factory", "base", "dynamic"]
           - name: created_at
+            description: "Timestamp for contract creation"
 
-# ERC Transfer Tables
+  # ERC Transfer Tables
   - name: erc20_optimism
     description: "Transfers events for ERC20 tokens on Optimism."
     tables:
       - name: evt_transfer
         loaded_at_field: evt_block_time
-        description: "Transfers events for ERC20 tokens."
+        description: "Transfers events for ERC20 tokens on Optimism."
         freshness:
           warn_after: { count: 12, period: hour }
           error_after: { count: 24, period: hour }
         columns:
-        - name: contract_address
-          description: "ERC20 token contract address"       
-        - &evt_tx_hash
-          name: evt_tx_hash
-          description: "Transaction hash of the event"
-        - &evt_index
-          name: evt_index
-          description: "Event index"   
-        - &evt_block_time
-          name: evt_block_time
-          description: "Timestamp for block event time in UTC"
-        - &evt_block_number
-          name: evt_block_number
-          description: "Event block number"  
-        - *from
-        - *to
-        - name: value
-          description: "Amount of ERC20 token transferred" 
+          - name: contract_address
+            description: "ERC20 token contract address"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Transaction hash of the event"
+          - &evt_index
+            name: evt_index
+            description: "Event index"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Event block number"
+          - *from
+          - *to
+          - name: value
+            description: "Amount of ERC20 token transferred"
+
+  - name: erc1155_optimism
+    description: "Transfers events for ERC1155 tokens on Optimism."
+    tables:
+      - name: evt_transfersingle
+        loaded_at_field: evt_block_time
+        description: "Single transfers events for ERC1155 tokens on Optimism."
+        columns:
+          - name: contract_address
+            description: "ERC1155 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: operator
+            description: "Addresses authorized (or approved) by a NFT owner to spend all of his token Ids."
+          - *from
+          - *to
+          - name: id
+            description: "ERC1155 token ID"
+          - name: value
+            description: "Amount of ERC1155 token transferred"
+
+      - name: evt_transferbatch
+        loaded_at_field: evt_block_time
+        description: "Batch transfers events for ERC1155 tokens on Optimism."
+        columns:
+          - name: contract_address
+            description: "ERC1155 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: operator
+            description: "Addresses authorized (or approved) by a NFT owner to spend all of his token Ids."
+          - *from
+          - *to
+          - name: ids
+            description: "ERC1155 token IDs"
+          - name: values
+            description: "Amounts of ERC1155 token transferred"
+
+  - name: erc721_optimism
+    description: "Transfers events for ERC721 tokens on Optimism."
+    tables:
+      - name: evt_transfer
+        loaded_at_field: evt_block_time
+        description: "Transfers events for ERC721 tokens on Optimism."
+        columns:
+          - &contract_address
+            name: contract_address
+            description: "ERC721 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *from
+          - *to
+          - name: tokenId
+            description: "ERC721 token ID."

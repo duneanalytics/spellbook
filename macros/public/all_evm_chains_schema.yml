@@ -1,0 +1,5 @@
+version: 2
+
+macros:
+  - name: all_evm_chains
+    description: "gets array list of all EVM chains"

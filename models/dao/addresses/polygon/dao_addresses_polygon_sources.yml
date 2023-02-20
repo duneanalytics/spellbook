@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: aragon_polygon
+    description: "aragon dao deployed decoded event"
+    tables:
+      - name: dao_factory_evt_DeployDAO
+        loaded_at_field: evt_block_time
+
+  - name: syndicate_v2_polygon
+    description: "syndicate club created event"
+    tables:
+      - name: ERC20ClubFactory_evt_ERC20ClubCreated
+        loaded_at_field: evt_block_time
+      - name: PolygonClubFactoryMATIC_evt_ERC20ClubCreated
+        loaded_at_field: evt_block_time
+      - name: PolygonERC20ClubFactory_evt_ERC20ClubCreated
+        loaded_at_field: evt_block_time

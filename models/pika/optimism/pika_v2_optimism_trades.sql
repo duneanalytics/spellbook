@@ -9,7 +9,7 @@
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "pika",
-                                \'["MSilb7", "drethereum", "rplust"]\') }}'
+                                \'["msilb7", "drethereum", "rplust"]\') }}'
 	)
 }}
 
@@ -20,7 +20,7 @@ WITH positions AS (
 		positionId
 		,user AS user
 		,productId
-		,CAST(isLong AS STRING) AS isLong
+		,CAST(isLong AS VARCHAR(5)) AS isLong
 		,price
 		,oraclePrice
 		,margin

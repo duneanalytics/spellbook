@@ -1,9 +1,14 @@
-<img width="799" alt="Screen Shot 2022-05-28 at 7 54 26 AM" src="https://user-images.githubusercontent.com/9472574/170824402-9ab683b5-b04e-434f-b19e-6fb626d2d64f.png">
+![spellbook-logo@10x](https://user-images.githubusercontent.com/2520869/200791687-76f1bc4f-05d0-4384-a753-e3b5da0e7a4a.png#gh-light-mode-only)
+![spellbook-logo-negative_10x](https://user-images.githubusercontent.com/2520869/200865128-426354af-8059-494d-83f7-46947aae271c.png#gh-dark-mode-only)
 
 Welcome to your [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation to tame the blockchain.
 
-#### Heads up
+📖 Documention of models can be found [here](https://spellbook-docs.dune.com/#!/overview), with a full example contribution walkthrough [here](https://dune.com/docs/spellbook/getting-started/)
+
+### Heads up
 Working on something new? Open a draft PR to let other wizards know you're working on it to help minimize duplicated work. 
+
+Looking for abstractions from the V1 engine? We moved them to [dune-v1-abstractions](https://github.com/duneanalytics/dune-v1-abstractions).
 
 ## Intro
 
@@ -11,7 +16,7 @@ Write SQL to transform blockchain data into curated datasets on [dune.com](https
 
 First-time visitor? Check out how to [get started](#getting-started) below and visit the [Spellbook Getting Started Guide](https://dune.com/docs/spellbook/getting-started/). More tk.
 
-Been here before? An archive of intermediate datasets that were contributed to Dune v1 can be consulted [here](deprecated-dune-v1-abstractions).
+Been here before? An archive of intermediate datasets that were contributed to Dune v1 can be consulted [here](https://github.com/duneanalytics/dune-v1-abstractions).
 
 ## Getting Started
 

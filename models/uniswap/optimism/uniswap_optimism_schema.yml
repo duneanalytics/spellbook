@@ -5,11 +5,11 @@ models:
     meta:
       blockchain: optimism
       project: uniswap
-      contributors: MSilb7, chuxinh
+      contributors: msilb7, chuxin
     config:
       tags: ['optimism','uniswap','pools']
     description: >
-        A canonical table containing all Uniswap pools created on Optimism.
+        A canonical table containing all Uniswap pools created on Optimism. Pools from OVM1 will be missing from factory_evt_poolcreated, so we use this table to get pool information.
     columns:
       - &pool
         name: pool
@@ -18,19 +18,44 @@ models:
           - unique
       - &token0
         name: token0
-        description:  "Token0 contract address"  
+        description:  "Token0 contract address"
       - &token1
         name: token1
-        description:  "Token1 contract address" 
+        description:  "Token1 contract address"
       - &fee
         name: fee
         description:  "Swap fee of a Uniswap liquidity pool. Divide by 1e6 or power(10,6) to get the fee percentage"
+
+  - name: uniswap_optimism_ovm1_pool_mapping
+    meta:
+      blockchain: optimism
+      project: uniswap
+      contributors: msilb7, chuxin
+    config:
+      tags: ['optimism','uniswap','pools']
+    description: >
+        A canonical table containing all Uniswap pool address changes between OVM1 and the EVM Equivalence regenesis release.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - oldAddress
+              - newAddress
+    columns:
+      - &oldAddress
+        name: oldAddress
+        description: "Uniswap liquidity pool contract address in OVM1"
+      - &newAddress
+        name: newAddress
+        description: "Uniswap liquidity pool contract address in the EVM Equivalence regenesis release."
+      - *token0
+      - *token1
+      - *fee
 
   - name: uniswap_v3_optimism_trades
     meta:
       blockchain: optimism
       project: uniswap
-      contributors: 0xboxer, jeff-dude
+      contributors: 0xBoxer, jeff-dude
     config:
       tags: ['optimism','uniswap','dex']
     description: >
@@ -45,13 +70,17 @@ models:
               - tx_hash
               - evt_index
               - trace_address
+      - check_dex_seed:
+          blockchain: optimism
+          project: uniswap
+          version: 3
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project 
+      - &project
         name: project
-        description: "Project name of the DEX"  
+        description: "Project name of the DEX"
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
@@ -88,9 +117,6 @@ models:
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of the token bought"
-        tests:
-          - dex_trades_token_bought:
-              dex_trades_seed: ref('dex_trades_seed')
       - &token_sold_address
         name: token_sold_address
         description: "Contract address of the token sold"
@@ -122,7 +148,7 @@ models:
     meta:
       blockchain: optimism
       project: uniswap
-      contributors: 0xboxer, jeff-dude
+      contributors: 0xBoxer, jeff-dude
     config:
       tags: ['optimism','uniswap','dex.trades']
     description: >
@@ -130,7 +156,7 @@ models:
     columns:
       - *blockchain
       - *project
-      - *version  
+      - *version
       - *block_date
       - *block_time
       - *token_bought_symbol

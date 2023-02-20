@@ -6,7 +6,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc20
-      contibutors: soispoke, dot2dotseurat
+      contributors: soispoke, dot2dotseurat
     config:
       tags: ['transfers', 'ethereum', 'erc20', 'soispoke', 'dot2dotseurat']
     description: "ERC20 Token Transfers on Ethereum. This table is updated every 30 minutes."
@@ -34,7 +34,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc20
-      contibutors: soispoke, dot2dotseurat
+      contributors: soispoke, dot2dotseurat
     config:
       tags: ['transfers', 'ethereum', 'erc20', 'agg_hour', 'soispoke', 'dot2dotseurat']
     columns:
@@ -59,7 +59,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc20
-      contibutors: soispoke, dot2dotseurat
+      contributors: soispoke, dot2dotseurat
     config:
       tags: ['transfers', 'ethereum', 'erc20', 'rolling_hour', 'soispoke', 'dot2dotseurat']
     columns:
@@ -82,7 +82,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc20
-      contibutors: soispoke, dot2dotseurat
+      contributors: soispoke, dot2dotseurat
     config:
       tags: ['transfers', 'ethereum', 'erc20', 'agg_day', 'soispoke', 'dot2dotseurat']
     columns:
@@ -107,7 +107,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc20
-      contibutors: soispoke, dot2dotseurat
+      contributors: soispoke, dot2dotseurat
     config:
       tags: ['transfers', 'ethereum', 'erc20', 'rolling_day', 'soispoke', 'dot2dotseurat']
     columns:
@@ -130,7 +130,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc721
-      contibutors: soispoke, dot2dotseurat, hildobby, 0xRob
+      contributors: soispoke, dot2dotseurat, hildobby, 0xRob
     config:
       tags: ['transfers', 'ethereum', 'erc721', 'soispoke', 'dot2dotseurat', 'hildobby']
     description: "ERC721 Token Transfers on Ethereum. This table is updated every 30 minutes."
@@ -157,7 +157,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc721
-      contibutors: soispoke, dot2dotseurat, hildobby, 0xRob
+      contributors: soispoke, dot2dotseurat, hildobby, 0xRob
     config:
       tags: ['transfers', 'ethereum', 'erc721', 'agg_hour', 'soispoke', 'dot2dotseurat', 'hildobby']
     columns:
@@ -176,7 +176,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc721
-      contibutors: soispoke, dot2dotseurat, hildobby, 0xRob
+      contributors: soispoke, dot2dotseurat, hildobby, 0xRob
     config:
       tags: ['transfers', 'ethereum', 'erc721', 'rolling_hour', 'soispoke', 'dot2dotseurat', 'hildobby']
     columns:
@@ -195,7 +195,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc721
-      contibutors: soispoke, dot2dotseurat, hildobby, 0xRob
+      contributors: soispoke, dot2dotseurat, hildobby, 0xRob
     config:
       tags: ['transfers', 'ethereum', 'erc721', 'agg_hour', 'soispoke', 'dot2dotseurat', 'hildobby']
     columns:
@@ -214,9 +214,11 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc721
-      contibutors: soispoke, dot2dotseurat, hildobby, 0xRob
+      contributors: soispoke, dot2dotseurat, hildobby, 0xRob
     config:
       tags: ['transfers', 'ethereum', 'erc721', 'rolling_day', 'soispoke', 'dot2dotseurat', 'hildobby']
+    description: >
+      "ERC721 Token Transfers on Ethereum per day."
     columns:
       - *blockchain
       - *day
@@ -233,7 +235,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc1155
-      contibutors: soispoke
+      contributors: soispoke
     config:
       tags: ['transfers', 'ethereum', 'erc1155', 'soispoke']
     description: "ERC1155 Token Transfers on Ethereum. This table is updated every 30 minutes."
@@ -259,7 +261,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc1155
-      contibutors: soispoke
+      contributors: soispoke
     config:
       tags: ['transfers', 'ethereum', 'erc1155', 'agg_hour', 'soispoke']
     columns:
@@ -275,9 +277,10 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc1155
-      contibutors: soispoke
+      contributors: soispoke
     config:
       tags: ['transfers', 'ethereum', 'erc1155', 'rolling_hour', 'soispoke']
+    description: "ERC1155 Token Transfers on Ethereum per hour."
     columns:
       - *blockchain
       - *hour
@@ -295,7 +298,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc1155
-      contibutors: soispoke, dot2dotseurat, hildobby
+      contributors: soispoke, dot2dotseurat, hildobby
     config:
       tags: ['transfers', 'ethereum', 'erc1155', 'agg_hour', 'soispoke']
     columns:
@@ -312,7 +315,7 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc1155
-      contibutors: soispoke, dot2dotseurat, hildobby
+      contributors: soispoke, dot2dotseurat, hildobby
     config:
       tags: ['transfers', 'ethereum', 'erc1155', 'rolling_day', 'soispoke']
     columns:
@@ -326,3 +329,55 @@ models:
         description: "UTC timestamp when table was last updated"
       - name: recency_index
         description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
+  
+  - name: transfers_ethereum_eth
+    meta:
+      blockchain: ethereum
+      sector: transfers
+      project: eth
+      contributors: msilb7, chuxin
+    config:
+      tags: ["transfers", "ethereum", "eth"]
+    description: "Events of native ETH transfers on Ethereum."
+    columns:
+      - &from
+        name: from
+        description: "Wallet address that initiated the transaction"
+      - &to
+        name: to
+        description: "Wallet address that received the transaction"
+      - name: contract_address
+        description: "Using the ETH deposit placeholder address to match with prices tables"
+      - &value
+        name: value
+        description: "Amount of ETH transferred from sender to recipient"
+      - &value_decimal
+        name: value_decimal
+        description: "Amount of ETH transferred in decimals from sender to recipient"
+      - &tx_hash
+        name: tx_hash
+        description: "Primary key of the transaction"
+        tests:
+          - not_null
+      - name: trace_address
+        description: "All returned traces, gives the exact location in the call trace"
+      - &tx_block_time
+        name: tx_block_time
+        description: "Timestamp for block event time in UTC"
+      - &tx_block_number
+        name: tx_block_number
+        description: "Block number"
+      - &tx_method_id
+        name: tx_method_id
+        description: "Function calls specified by the first four bytes of data sent with a transaction"
+      - name: unique_transfer_id
+        description: "Unique transfer ID (used for testing for duplicates), made up with tx_hash and trace_address"
+        tests:
+          - not_null
+          - unique
+      - &tx_to
+        name: tx_to
+        description: "To Address for the Transaction"
+      - &tx_from
+          name: tx_from
+          description: "From Address for the Transaction"
