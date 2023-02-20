@@ -1,23 +1,27 @@
-{{config(alias='impossible_finance_pools',
+{{
+    config(
+        alias='impossible_finance_pools',
         post_hook='{{ expose_spells(\'["bnb"]\',
                                     "project",
                                     "impossible_finance",
-                                    \'["kartod"]\') }}')}}
+                                    \'["kartod"]\') }}'
+    )
+}}
 
-SELECT 
-    blockchain, 
-    lower(address) as pool_address, 
-    launchpad,
-    project_name, 
-    sale_type, 
-    launch_order, 
-    purchase_date, 
-    start_staking_period, 
-    end_staking_period,
-    CASE
-        WHEN sale_type IN ('Unlimited IDIA sale') THEN lower('0x0b15Ddf19D47E6a86A56148fb4aFFFc6929BcB89')
-        ELSE lower('0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56')
-    END AS accepted_currency
+SELECT blockchain,
+       lower(address) AS pool_address,
+       launchpad,
+       project_name,
+       sale_type,
+       launch_order,
+       purchase_date,
+       start_staking_period,
+       end_staking_period,
+       CASE
+            WHEN sale_type IN ('Unlimited IDIA sale')
+            THEN lower('0x0b15Ddf19D47E6a86A56148fb4aFFFc6929BcB89')
+            ELSE lower('0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56')
+        END           AS accepted_currency
 FROM (VALUES
     (array('bnb'),'0x69b9737aff26bc528ffee4cc3257407be6a13252', 'Openswap', 'Openswap', 'Standard Sale', 1, timestamp('2021-08-30'), timestamp('2021-08-26'), timestamp('2021-08-26')),
     (array('bnb'),'0x0246F87125973ACAb0293BB851dac34f7644344A', 'Openswap', 'Openswap', 'Unlimited Sale', 1, timestamp('2021-08-30'), timestamp('2021-08-26'), timestamp('2021-08-26')),
