@@ -29,3 +29,20 @@ models:
         description: "Date/time of safe creation"
       - &tx_hash
         name: tx_hash
+  - name: safe_optimism_singletons
+    meta:
+      blockchain: optimism
+      project: safe
+      contributors: tschubotz
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'singletons', 'optimism']
+    description: "Singletons addresses used with Safes"
+    columns:
+      - name: address
+        description: "Safe contract address"
+        tests:
+          - unique
+          - not_null
