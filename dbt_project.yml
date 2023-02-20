@@ -267,7 +267,7 @@ models:
         +schema: dodo_polygon
       arbitrum:
         +schema: dodo_arbitrum
-        
+
     spookyswap:
       +schema: spookyswap
       fantom:
@@ -392,17 +392,17 @@ models:
         +schema: safe_ethereum
       optimism:
         +schema: safe_optimism
-      gnosis: 
+      gnosis:
         +schema: safe_gnosis
-      polygon: 
+      polygon:
         +schema: safe_polygon
-      bnb: 
+      bnb:
         +schema: safe_bnb
-      avalanche_c: 
+      avalanche_c:
         +schema: safe_avalanche_c
-      fantom: 
+      fantom:
         +schema: safe_fantom
-      arbitrum: 
+      arbitrum:
         +schema: safe_arbitrum
 
     liquidifty:
@@ -416,7 +416,7 @@ models:
       +schema: nftb
       bnb:
         +schema: nftb_bnb
-    
+
     nftrade:
       +schema: nftrade
       bnb:
@@ -673,18 +673,18 @@ models:
         +schema: zeroex_ethereum
       optimism:
         +schema: zeroex_optimism
-        
+
       polygon:
         +schema: zeroex_polygon
-        
+
       avalanche_c:
         +schema: zeroex_avalanche_c
       fantom:
         +schema: zeroex_fantom
-        
+
       arbitrum:
         +schema: zeroex_arbitrum
-      
+
 
     wombat:
       +schema: wombat
@@ -749,22 +749,22 @@ models:
       +schema: ovm
       optimism:
         +schema: ovm_optimism
-    
+
     rubicon:
       +schema: rubicon
       optimism:
         +schema: rubicon_optimism
-    
+
     beethoven_x:
       +schema: beethoven_x
       optimism:
         +schema: beethoven_x_optimism
-    
+
     zipswap:
       +schema: zipswap
       optimism:
         +schema: zipswap_optimism
-        
+
     sharky:
       +schema: sharky
       solana:
@@ -873,7 +873,7 @@ seeds:
           token_bought_address: string
           token_bought_amount: float
           token_sold_address: string
-          token_sold_amount: float  
+          token_sold_amount: float
       pools:
         +column_types:
           blockchain: string
@@ -1222,7 +1222,7 @@ seeds:
             tx_hash: string
             block_number: int
             amount_original: double
-    
+
     liquidifty:
       bnb:
         liquidifty_bnb_nft_trades_samples:
@@ -1255,7 +1255,7 @@ seeds:
             buyer: string
             tx_hash: string
             amount_original: double
-            
+
     tofu:
       arbitrum:
         tofu_arbitrum_nft_trades_samples:
@@ -1265,6 +1265,7 @@ seeds:
               seller: string
               buyer: string
               tx_hash: string
+              amount_original: double
 
     trove:
       arbitrum:
@@ -1285,7 +1286,6 @@ seeds:
               buyer: string
               tx_hash: string
               amount_original: double
-              amount_original: double  
 
     foundation:
       ethereum:
