@@ -184,9 +184,7 @@ models:
       - &collection
         name: collection
         description: "NFT collection name"
-      - &token_id
-        name: token_id
-        description: "NFT Token ID"
+      - *token_id
       - &number_of_items
         name: number_of_items
         description:  "Number of items traded"
