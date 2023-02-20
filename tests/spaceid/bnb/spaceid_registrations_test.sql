@@ -1,6 +1,6 @@
 WITH unit_tests AS (
     SELECT COUNT(*) as count_spell
-    FROM {{ ref('spaceid_bnb_view_registrations') }} AS s
+    FROM {{ ref('spaceid_bnb_registrations') }} AS s
     WHERE version = 'v7'
 ),
 

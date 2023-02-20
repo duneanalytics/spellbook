@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: spaceid_bnb_view_registrations
+  - name: spaceid_bnb_registrations
     meta:
       blockchain: bnb
       project: spaceid
