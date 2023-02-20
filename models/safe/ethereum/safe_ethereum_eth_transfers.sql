@@ -10,7 +10,7 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "safe",
-                                    \'["sche"]\') }}'
+                                    \'["sche", "tschubotz"]\') }}'
     ) 
 }}
 
@@ -18,7 +18,7 @@ select
     s.address,
     try_cast(date_trunc('day', et.block_time) as date) as block_date,
     et.block_time,
-    -value as amount_raw,
+    -et.value as amount_raw,
     et.tx_hash,
     array_join(et.trace_address, ',') as trace_address
 from {{ source('ethereum', 'traces') }} et
@@ -26,7 +26,7 @@ join {{ ref('safe_ethereum_safes') }} s on et.from = s.address
     and et.from != et.to -- exclude calls to self to guarantee unique key property
     and et.success = true
     and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
-    and et.value > 0 -- exclue 0 value traces
+    and cast(et.value as decimal(38,0)) > 0 -- value is of type string. exclude 0 value traces
 {% if not is_incremental() %}
 where et.block_time > '2018-11-24' -- for initial query optimisation    
 {% endif %}
@@ -41,7 +41,7 @@ select
     s.address, 
     try_cast(date_trunc('day', et.block_time) as date) as block_date,
     et.block_time,
-    value as amount_raw,
+    et.value as amount_raw,
     et.tx_hash,
     array_join(et.trace_address, ',') as trace_address
 from {{ source('ethereum', 'traces') }} et
@@ -49,7 +49,7 @@ join {{ ref('safe_ethereum_safes') }} s on et.to = s.address
     and et.from != et.to -- exclude calls to self to guarantee unique key property
     and et.success = true
     and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
-    and et.value > 0 -- exclue 0 value traces
+    and cast(et.value as decimal(38,0)) > 0 -- value is of type string. exclude 0 value traces
 {% if not is_incremental() %}
 where et.block_time > '2018-11-24' -- for initial query optimisation    
 {% endif %}

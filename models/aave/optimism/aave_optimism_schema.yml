@@ -6,7 +6,7 @@ models:
      blockchain: optimism
      sector: lending
      project: aave_v3
-     contibutors: batwayne, chuxinh
+     contributors: batwayne, chuxin
 
    config:
      tags: ['optimism', 'aave_v3', 'interest', 'aave', 'lending']
@@ -36,7 +36,7 @@ models:
      blockchain: optimism
      sector: lending
      project: aave
-     contibutors: batwayne, chuxinh
+     contributors: batwayne, chuxin
    config:
      tags: ['optimism', 'aave_v3', 'interest', 'aave', 'lending']
    description: "Hourly aave interest rates on optimism"
@@ -53,7 +53,7 @@ models:
      blockchain: optimism
      sector: lending
      project: aave_v3
-     contibutors: batwayne, chuxinh
+     contributors: batwayne, chuxin
    config:
      tags: ['ethereum', 'aave_v3', 'supply', 'aave', 'lending']
    description: "All aave v3 transactions involving supply transactions on optimism"
@@ -101,7 +101,7 @@ models:
      blockchain: optimism
      sector: lending
      project: aave_v3
-     contibutors: batwayne, chuxinh
+     contributors: batwayne, chuxin
    config:
      tags: ['ethereum', 'aave_v3', 'borrow', 'aave', 'lending']
    description: "All aave v3 transactions involving borrow transactions on optimism"
@@ -129,7 +129,7 @@ models:
      blockchain: optimism
      sector: lending
      project: aave
-     contibutors: batwayne, chuxinh
+     contributors: batwayne, chuxin
    config:
      tags: ['optimism', 'aave', 'supply', 'aave', 'lending']
    description: "All aave transactions involving supply transactions on optimism"
@@ -153,7 +153,7 @@ models:
      blockchain: optimism
      sector: lending
      project: aave
-     contibutors: batwayne, chuxinh
+     contributors: batwayne, chuxin
    config:
      tags: ['optimism', 'aave', 'borrow', 'aave', 'lending']
    description: "All aave v1 transactions involving borrow transactions on optimism"

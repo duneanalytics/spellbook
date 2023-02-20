@@ -70,6 +70,7 @@ models:
       - &index
         name: index
         description: ""
+      - *contract_address
       - &borrower
         name: borrower
         description: "The account which borrowed the asset"
@@ -96,6 +97,7 @@ models:
       - *block_time
       - *tx_hash
       - *index
+      - *contract_address
       - &minter
         name: minter
         description: "The account which minted the asset"
@@ -122,6 +124,7 @@ models:
       - *block_time
       - *tx_hash
       - *index
+      - *contract_address
       - *borrower
       - *symbol
       - *underlying_symbol
@@ -146,6 +149,7 @@ models:
       - *block_time
       - *tx_hash
       - *index
+      - *contract_address
       - &redeemer
         name: redeemer
         description: "The account which redeemed the asset"
@@ -172,6 +176,7 @@ models:
       - *block_time
       - *tx_hash
       - *index
+      - *contract_address
       - *borrower
       - *symbol
       - *underlying_symbol

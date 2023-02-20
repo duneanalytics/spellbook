@@ -1,51 +1,32 @@
 version: 2
 
 models:
-  - name: opensea_v1_ethereum_excluded_txns
-    meta:
-      blockchain: ethereum
-      project: opensea
-      contributors: soispoke
-    config:
-      tags: ['ethereum','opensea','v1','view']
-    description: Excluded OpenSea transactions on Ethereum
-    columns:
-      - name: call_tx_hash
-        description: "Transactions hash of excluded OpenSea transactions"
-
-  - name: opensea_v1_ethereum_fees
-    meta:
-      blockchain: ethereum
-      project: opensea
-      contributors: soispoke
-    config:
-      tags: ['ethereum','opensea','v1','fees']
-    description: OpenSea v1 fees on Ethereum
-    columns:
-      - name: block_time
-        description: "Block time of transaction"
-      - name: trace_address
-        description: "Trace address for fees"
-      - name: tx_hash
-        description: "Transaction hash"
-      - name: fees
-        description: "Amount of fees in original currency"
-      - name: from
-        description: "Wallet address that sent fees"
-      - name: to
-        description: "Wallet address that received fees"
-      - name: fee_currency_symbol
-        description: "Currency symbol in which fees were paid"
-
   - name: opensea_v1_ethereum_events
     meta:
       blockchain: ethereum
       project: opensea
-      contributors: soispoke, umer_h_adil, hildobby
+      contributors: soispoke, umer_h_adil, hildobby, 0xRob
     config:
-      tags: ['ethereum','opensea','v1','events']
+      tags: ['ethereum','opensea','v1','events', 'static']
     description: >
         OpenSea v1 trades on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_trade_id
+      - check_seed:
+          seed_file: ref('opensea_wyvern_trades_samples')
+          match_columns:
+            - block_time
+            - tx_hash
+            - token_id
+          check_columns:
+            - amount_original
+            - buyer
+            - seller
+            - platform_fee_amount
+            - royalty_fee_amount
     columns:
       - &blockchain
         name: blockchain
@@ -207,6 +188,87 @@ models:
         description:  "Unique trade ID"
         tests:
           - unique
+
+  - name: opensea_v3_ethereum_trades
+    meta:
+      blockchain: ethereum
+      project: opensea
+      contributors: sohwak
+    config:
+      tags: ['ethereum','opensea','v3','trades']
+    description: >
+        OpenSea V3 trades on Ethereum
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - name: block_date
+        description:  "block date"
+      - *block_time
+      - *seller
+      - *buyer
+      - *trade_type
+      - *trade_category
+      - *evt_type
+      - *nft_contract_address
+      - *collection
+      - *token_id
+      - *number_of_items
+      - *token_standard
+      - *amount_raw
+      - *amount_original
+      - *amount_usd
+      - *currency_symbol
+      - *currency_contract
+      - name:  original_currency_contract
+        description: "original currency"
+      - name:  currency_decimal
+        description:  "Token Decimal"
+      - *project_contract_address
+      - name: platform_fee_receive_address
+        description:  "Platform fee receive address"
+      - *platform_fee_amount_raw
+      - *platform_fee_amount
+      - *platform_fee_amount_usd
+      - name: royalty_fee_receive_address
+        description:  "Wallet addresses receiving fees from the transaction"
+      - *royalty_fee_amount_raw
+      - *royalty_fee_amount
+      - *royalty_fee_amount_usd
+      - name: royalty_fee_receive_address_1
+        description:  "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_receive_address_2
+        description:  "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_receive_address_3
+        description:  "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_receive_address_4
+        description:  "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_amount_raw_1
+        description:  "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_amount_raw_2
+        description:  "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_amount_raw_3
+        description:  "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_amount_raw_4
+        description:  "Wallet addresses receiving fees from the transaction"
+      - *aggregator_name
+      - *aggregator_address
+      - *block_number
+      - *tx_hash
+      - name: evt_index
+        description: "Event index of transaction event"
+      - *tx_from
+      - *tx_to
+      - name: right_hash
+        description: "right 8 character of data column on Transaction"
+      - name: zone_address
+        description: "zone address of Seaport transaction"
+      - name: estimated_price
+        description: "True if it is bundle trade and dividened price"
+      - name: is_private
+        description: "True if it is private sale"
+      - name : unique_trade_id
+        description:  "Unique trade ID"
 
   - name: opensea_ethereum_events
     meta:

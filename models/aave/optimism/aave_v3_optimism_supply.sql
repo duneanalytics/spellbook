@@ -4,7 +4,7 @@
     , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
                                   "aave_v3",
-                                  \'["batwayne", "chuxinh"]\') }}'
+                                  \'["batwayne", "chuxin"]\') }}'
   )
 }}
 
@@ -16,8 +16,8 @@ SELECT
       depositor,
       withdrawn_to,
       liquidator,
-      amount / concat('1e',erc20.decimals) AS amount,
-      (amount / concat('1e',p.decimals)) * price AS usd_amount,
+      amount / CAST(CONCAT('1e',CAST(erc20.decimals AS VARCHAR(100))) AS DOUBLE) AS amount,
+      (amount / CAST(CONCAT('1e',CAST(p.decimals AS VARCHAR(100))) AS DOUBLE)) * price AS usd_amount,
       evt_tx_hash,
       evt_index,
       evt_block_time,
@@ -28,9 +28,9 @@ SELECT
     'deposit' AS transaction_type,
     reserve AS token,
     user AS depositor, 
-    NULL::string as withdrawn_to,
-    NULL::string AS liquidator,
-    amount, 
+    CAST(NULL AS VARCHAR(5)) as withdrawn_to,
+    CAST(NULL AS VARCHAR(5)) AS liquidator,
+    CAST(amount AS DECIMAL(38,0)) AS amount,
     evt_tx_hash,
     evt_index,
     evt_block_time,
@@ -43,8 +43,8 @@ SELECT
     reserve AS token,
     user AS depositor,
     to AS withdrawn_to,
-    NULL::string AS liquidator,
-    - amount AS amount,
+    CAST(NULL AS VARCHAR(5)) AS liquidator,
+    - CAST(amount AS DECIMAL(38,0)) AS amount,
     evt_tx_hash,
     evt_index,
     evt_block_time,
@@ -58,7 +58,7 @@ SELECT
     user AS depositor,
     liquidator AS withdrawn_to,
     liquidator AS liquidator,
-    - liquidatedCollateralAmount AS amount,
+    - CAST(liquidatedCollateralAmount AS DECIMAL(38,0)) AS amount,
     evt_tx_hash,
     evt_index,
     evt_block_time,

@@ -6,6 +6,10 @@ on:
   pull_request:
     paths-ignore:
       - 'deprecated-dune-v1-abstractions/**'
+      - 'scripts/**'
+      - 'Pipfile'
+      - '.gitignore'
+      - '.github/**'
   push:
     branches:
       - 'main'
@@ -28,6 +32,7 @@ jobs:
         with:
           format: space-delimited
           token: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
       - name: Set modfied and added files as arg
         run: |
           echo "FILES=$(echo ${{ steps.abc.outputs.added_modified }})" >> $GITHUB_ENV

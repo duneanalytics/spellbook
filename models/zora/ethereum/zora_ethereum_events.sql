@@ -35,7 +35,7 @@ WITH zora_trades AS (
         {% if is_incremental() %}
         AND z3_o1_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    UNION
+    UNION ALL
     SELECT 'v3' AS version
     , z3_a0_ee.evt_block_time AS block_time
     , z3_a0_ee.evt_block_number AS block_number
@@ -58,7 +58,7 @@ WITH zora_trades AS (
         {% if is_incremental() %}
         AND z3_a0_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    UNION
+    UNION ALL
     SELECT 'v3' AS version
     , z3_a1_ee.evt_block_time AS block_time
     , z3_a1_ee.evt_block_number AS block_number
@@ -81,7 +81,7 @@ WITH zora_trades AS (
         {% if is_incremental() %}
         AND z3_a1_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    UNION
+    UNION ALL
     SELECT 'v3' AS version
     , z3_rafe_ae.evt_block_time AS block_time
     , z3_rafe_ae.evt_block_number AS block_number
@@ -104,12 +104,12 @@ WITH zora_trades AS (
         {% if is_incremental() %}
         AND z3_rafe_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    UNION
+    UNION ALL
     SELECT 'v3' AS version
     , z3_ape_af.evt_block_time AS block_time
     , z3_ape_af.evt_block_number AS block_number
     , z3_ape_af.tokenId AS token_id
-    , 'Private Buy' AS trade_category
+    , 'Private Sale' AS trade_category
     , get_json_object(z3_ape_af.ask, '$.seller') AS seller
     , get_json_object(z3_ape_af.ask, '$.buyer') AS buyer
     , get_json_object(z3_ape_af.ask, '$.price') AS amount_raw
@@ -127,7 +127,7 @@ WITH zora_trades AS (
         {% if is_incremental() %}
         AND z3_ape_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    UNION
+    UNION ALL
     SELECT 'v3' AS version
     , z3_ace_af.evt_block_time AS block_time
     , z3_ace_af.evt_block_number AS block_number
@@ -150,7 +150,7 @@ WITH zora_trades AS (
         {% if is_incremental() %}
         AND z3_ace_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    UNION
+    UNION ALL
     SELECT 'v3' AS version
     , z3_race_ae.evt_block_time AS block_time
     , z3_race_ae.evt_block_number AS block_number
@@ -173,7 +173,7 @@ WITH zora_trades AS (
         {% if is_incremental() %}
         AND z3_race_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    UNION
+    UNION ALL
     SELECT 'v3' AS version
     , z3_racerc_ae.evt_block_time AS block_time
     , z3_racerc_ae.evt_block_number AS block_number
@@ -196,7 +196,7 @@ WITH zora_trades AS (
         {% if is_incremental() %}
         AND z3_racerc_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    UNION
+    UNION ALL
     SELECT 'v3' AS version
     , z3_raferc_ae.evt_block_time AS block_time
     , z3_raferc_ae.evt_block_number AS block_number
@@ -219,7 +219,7 @@ WITH zora_trades AS (
         {% if is_incremental() %}
         AND z3_raferc_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    UNION
+    UNION ALL
     SELECT 'v3' AS version
     , z3_rale_ae.evt_block_time AS block_time
     , z3_rale_ae.evt_block_number AS block_number
@@ -242,7 +242,7 @@ WITH zora_trades AS (
         {% if is_incremental() %}
         AND z3_rale_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    UNION
+    UNION ALL
     SELECT 'v3' AS version
     , z3_rale_ae.evt_block_time AS block_time
     , z3_rale_ae.evt_block_number AS block_number
@@ -265,7 +265,7 @@ WITH zora_trades AS (
         {% if is_incremental() %}
         AND z3_rale_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    UNION
+    UNION ALL
     SELECT 'v2' AS version
     , z2_ae.evt_block_time AS block_time
     , z2_ae.evt_block_number AS block_number
@@ -284,7 +284,7 @@ WITH zora_trades AS (
     {% if is_incremental() %}
     WHERE z2_ae.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-    UNION
+    UNION ALL
     SELECT 'v1' AS version
     , z1_bf.evt_block_time AS block_time
     , z1_bf.evt_block_number AS block_number
@@ -321,14 +321,14 @@ SELECT distinct 'ethereum' AS blockchain
         ELSE zt.amount_raw/POWER(10, pu.decimals)*pu.price END AS amount_usd
     , CASE WHEN erc721.evt_index IS NOT NULL THEN 'erc721' ELSE 'erc1155' END AS token_standard
     , CASE WHEN agg.name IS NOT NULL THEN 'Bundle Trade' ELSE 'Single Item Trade' END AS trade_type
-    , 1 AS number_of_items
+    , CAST(1 AS DECIMAL(38,0)) AS number_of_items
     , zt.trade_category
     , 'Trade' AS evt_type
     , zt.seller
     , zt.buyer
     , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN zt.amount_raw/POWER(10, 18)
         ELSE zt.amount_raw/POWER(10, pu.decimals) END AS amount_original
-    , zt.amount_raw
+    , CAST(zt.amount_raw AS DECIMAL(38,0)) AS amount_raw
     , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN 'ETH'
         ELSE pu.symbol END AS currency_symbol
     , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
@@ -340,20 +340,20 @@ SELECT distinct 'ethereum' AS blockchain
     , zt.tx_hash
     , et.from AS tx_from
     , et.to AS tx_to
-    , 0 AS platform_fee_amount_raw
-    , 0 AS platform_fee_amount
-    , 0 AS platform_fee_amount_usd
-    , 0 AS platform_fee_percentage
-    , SUM(zt.royalty_fee_amount_raw) AS royalty_fee_amount_raw
+    , CAST(0 AS DOUBLE) AS platform_fee_amount_raw
+    , CAST(0 AS DOUBLE) AS platform_fee_amount
+    , CAST(0 AS DOUBLE) AS platform_fee_amount_usd
+    , CAST(0 AS DOUBLE) AS platform_fee_percentage
+    , CAST(SUM(zt.royalty_fee_amount_raw) AS DOUBLE) AS royalty_fee_amount_raw
     , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN COALESCE(SUM(zt.royalty_fee_amount_raw)/POWER(10, 18), 0)
         ELSE COALESCE(SUM(zt.royalty_fee_amount_raw)/POWER(10, pu.decimals), 0) END AS royalty_fee_amount
     , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN COALESCE(SUM(zt.royalty_fee_amount_raw)/POWER(10, 18)*pu.price, 0)
         ELSE COALESCE(SUM(zt.royalty_fee_amount_raw)/POWER(10, pu.decimals)*pu.price, 0) END AS royalty_fee_amount_usd
-    , COALESCE(100.0*SUM(zt.royalty_fee_amount_raw)/zt.amount_raw, 0) AS royalty_fee_percentage
+    , CAST(COALESCE(100.0*SUM(zt.royalty_fee_amount_raw)/zt.amount_raw, 0) AS DOUBLE) AS royalty_fee_percentage
     , FIRST(zt.royalty_fee_receive_address) AS royalty_fee_receive_address
     , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN 'ETH'
         ELSE pu.symbol END AS royalty_fee_currency_symbol
-    , 'ethereumzora' || version || zt.tx_hash || zt.nft_contract_address || zt.token_id || zt.buyer || zt.seller AS unique_trade_id
+    , 'ethereumzora' || COALESCE(version, '-1') || COALESCE(zt.tx_hash, '-1') || COALESCE(zt.nft_contract_address, '-1') || COALESCE(zt.token_id, '-1') || COALESCE(zt.buyer, '-1') || COALESCE(zt.seller, '-1') AS unique_trade_id
 FROM zora_trades zt
 LEFT JOIN {{ source('ethereum','transactions') }} et ON et.block_time=zt.block_time
     AND et.hash=zt.tx_hash
