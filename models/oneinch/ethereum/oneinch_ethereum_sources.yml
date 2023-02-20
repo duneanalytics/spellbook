@@ -25,6 +25,10 @@ sources:
         loaded_at_field: call_block_time
       - name: AggregationRouterV5_call_swap
         loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_unoswap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_unoswapToWithPermit
+        loaded_at_field: call_block_time
   
   - name: oneinch_v2_ethereum
     description: "decoded events and function calls for 1inch v2 on ethereum"
