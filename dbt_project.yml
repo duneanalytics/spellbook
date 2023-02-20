@@ -405,6 +405,18 @@ models:
       arbitrum: 
         +schema: safe_arbitrum
 
+    liquidifty:
+      +schema: liquidifty
+      bnb:
+        +schema: liquidifty_bnb
+      ethereum:
+        +schema: liquidifty_ethereum
+
+    nftb:
+      +schema: nftb
+      bnb:
+        +schema: nftb_bnb
+    
     nftrade:
       +schema: nftrade
       bnb:
@@ -723,6 +735,10 @@ models:
       +schema: tofu
       bnb:
         +schema: tofu_bnb
+      arbitrum:
+        +schema: tofu_arbitrum
+      optimism:
+        +schema: tofu_optimism
 
     maker:
       +schema: maker
@@ -1197,9 +1213,8 @@ seeds:
             token_id: string
     pancakeswap:
       bnb:
-        +enabled: true
-        +schema: test_data
         pancakeswap_nft_trades_samples:
+          column_types:
             block_time: timestamp
             token_id: int
             seller: string
@@ -1207,39 +1222,70 @@ seeds:
             tx_hash: string
             block_number: int
             amount_original: double
-    nftrade:
+    
+    liquidifty:
       bnb:
-        +enabled: true
-        +schema: test_data
-        nftrade_nft_trades_samples:
+        liquidifty_bnb_nft_trades_samples:
+          column_types:
             block_number: int
-            token_id: string
-            seller: string
-            buyer: string
-            tx_hash: string
-            amount_original: double
-
-    trove:
-      arbitrum:
-        +enabled: true
-        +schema: test_data
-        trove_arbitrum_nft_trades_samples:
-            block_number: int
+            version: string
             token_id: string
             seller: string
             buyer: string
             tx_hash: string
             amount_original: double
       ethereum:
-        +enabled: true
-        +schema: test_data
-        trove_ethereum_nft_trades_samples:
+        liquidifty_ethereum_nft_trades_samples:
+          column_types:
+            block_number: int
+            version: string
+            token_id: string
+            seller: string
+            buyer: string
+            tx_hash: string
+            amount_original: double
+
+    nftrade:
+      bnb:
+        nftrade_nft_trades_samples:
+           column_types:
             block_number: int
             token_id: string
             seller: string
             buyer: string
             tx_hash: string
             amount_original: double
+            
+    tofu:
+      arbitrum:
+        tofu_arbitrum_nft_trades_samples:
+            column_types:
+              block_number: int
+              token_id: string
+              seller: string
+              buyer: string
+              tx_hash: string
+
+    trove:
+      arbitrum:
+        trove_arbitrum_nft_trades_samples:
+            column_types:
+              block_number: int
+              token_id: string
+              seller: string
+              buyer: string
+              tx_hash: string
+              amount_original: double
+      ethereum:
+        trove_ethereum_nft_trades_samples:
+            column_types:
+              block_number: int
+              token_id: string
+              seller: string
+              buyer: string
+              tx_hash: string
+              amount_original: double
+              amount_original: double  
 
     foundation:
       ethereum:
