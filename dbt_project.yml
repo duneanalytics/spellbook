@@ -770,6 +770,9 @@ models:
       polygon:
         +schema: rocifi_polygon
 
+    impossible_finance:
+      +schema: impossible_finance
+
 seeds:
   spellbook:
     +schema: test_data

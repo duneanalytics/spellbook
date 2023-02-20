@@ -1,6 +1,6 @@
 {{
     config(
-        alias='impossible_finance_pools',
+        alias='IDO_pools',
         post_hook='{{ expose_spells(\'["bnb"]\',
                                     "project",
                                     "impossible_finance",
