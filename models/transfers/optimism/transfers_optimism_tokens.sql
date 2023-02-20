@@ -50,7 +50,7 @@ SELECT transfer_from_address,
         tx_block_number,
         tx_hash,
         substring(t.data, 1, 10) AS tx_method_id,
-        t.`from` AS tx_from_address,
+        t.from AS tx_from_address,
         t.to AS tx_to_address,
         evt_index,
         trace_address,
@@ -62,13 +62,13 @@ FROM (
         -----------
         SELECT
 
-        r.`from` AS transfer_from_address,
+        r.from AS transfer_from_address,
         r.to AS transfer_to_address,
         r.contract_address AS contract_address,
         'erc20' AS token_standard,
         'fungible' AS token_type,
-        NULL AS token_id, -- used by NFTs
-        NULL AS transfer_type, -- used by NFTs
+        '' AS token_id, -- used by NFTs
+        '' AS transfer_type, -- used by NFTs
         -- is the transaction an erc20 transfer, or did this happen in an internal transaction?
         
         r.value,
@@ -77,7 +77,7 @@ FROM (
         r.evt_tx_hash AS tx_hash,
 
         r.evt_index,
-        NULL AS trace_address,
+        '' AS trace_address,
 
         r.evt_tx_hash || '-' || CAST(evt_index AS VARCHAR(100))  as unique_transfer_id
 
@@ -96,20 +96,20 @@ FROM (
 
         SELECT
 
-        r.`from` AS transfer_from_address,
+        r.from AS transfer_from_address,
         r.to AS transfer_to_address,
         r.contract_address AS contract_address,
         'eth' AS token_standard,
         'fungible' AS token_type,
-        NULL AS token_id, -- used by NFTs
-        NULL AS transfer_type, -- used by NFTs
+        '' AS token_id, -- used by NFTs
+        '' AS transfer_type, -- used by NFTs
         -- is the transaction an eth transfer, or did this happen in an internal transaction?
         r.value,
         tx_block_time,
         tx_block_number,
         tx_hash,
 
-        NULL AS evt_index,
+        cast(NULL as int) AS evt_index,
         r.trace_address,
 
         r.unique_transfer_id
@@ -140,7 +140,7 @@ FROM (
         r.tx_hash AS tx_hash,
 
         r.evt_index,
-        NULL AS trace_address,
+        '' AS trace_address,
 
         r.unique_transfer_id
 
