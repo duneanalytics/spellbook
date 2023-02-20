@@ -2,7 +2,7 @@
     config(
         schema='balancer_v2_optimism',
         alias='liquidity',
-        post_hook='{{ expose_spells(\'["optimism"]\',
+        post_hook='{{ expose_spells_hide_trino(\'["optimism"]\',
                                     "project",
                                     "balancer_v2",
                                     \'["stefenon"]\') }}'
