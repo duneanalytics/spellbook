@@ -262,7 +262,19 @@ with source_optimism_transactions as (
 )
 ,erc1155_transfer as (
   select *
-  from {{ source('erc721_optimism','evt_transfer') }}
+  from {{ source('erc1155_optimism','evt_TransferSingle') }}
+  where
+    (from = '{{non_buyer_address}}'
+    or to = '{{non_buyer_address}}')
+    {% if not is_incremental() %}
+    and evt_block_time >= '{{c_seaport_first_date}}'  -- seaport first txn
+    {% endif %}
+    {% if is_incremental() %}
+    and evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+
+  select *
+  from {{ source('erc1155_optimism','evt_TransferBatch') }}
   where
     (from = '{{non_buyer_address}}'
     or to = '{{non_buyer_address}}')
