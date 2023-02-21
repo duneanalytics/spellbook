@@ -1,7 +1,7 @@
 {{ config(
     schema = 'liquidifty',
     alias = 'trades',
-    post_hook = '{{ expose_spells(\'["bnb", ethereum]\',
+    post_hook = '{{ expose_spells(\'["bnb", "ethereum"]\',
                                     "project",
                                     "liquidifty",
                                     \'["bizzyvinci"]\') }}'
