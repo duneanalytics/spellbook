@@ -13,8 +13,9 @@
 }}
 
 {% set c_seaport_first_date = "2023-01-31" %}
+{% set weth_address = "0x4200000000000000000000000000000000000006" %}
 
-with iv_offer_consideration as (
+with iv_offer_consideration_raw as (
     select evt_block_time as block_time
             ,evt_block_number as block_number
             ,evt_tx_hash as tx_hash
@@ -137,6 +138,27 @@ with iv_offer_consideration as (
         {% endif %}
     )
 )
+,iv_offer_consideration as (
+    select a.*
+        ,case when item_type in ('native','erc20') then sum(1) over (partition by tx_hash, evt_index, sub_type order by sub_idx) end as eth_erc_idx
+        ,sum(case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and item_type in ('erc721','erc1155') then 1
+                    when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc721','erc1155') then 1
+            end) over (partition by tx_hash, evt_index) as nft_cnt
+        ,sum(case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and item_type in ('erc721') then 1
+                    when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc721') then 1
+            end) over (partition by tx_hash, evt_index) as erc721_cnt
+        ,sum(case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and item_type in ('erc1155') then 1
+                    when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc1155') then 1
+            end) over (partition by tx_hash, evt_index) as erc1155_cnt
+    from iv_offer_consideration_raw a
+)
+,adjustment as (
+  select
+    tx_hash
+    ,max(eth_erc_idx) as max_eth_erc_idx
+  from iv_offer_consideration
+  group by 1
+)
 ,iv_base_pairs as (
     select a.*
             ,try_cast(date_trunc('day', a.block_time) as date) as block_date
@@ -152,12 +174,29 @@ with iv_offer_consideration as (
                 when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and eth_erc_idx = 1 then true
                 else false
             end is_netprice
-            ,case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and eth_erc_idx = 1 then true
-                when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and eth_erc_idx = 2 then true
+            ,case 
+                when offer_first_item_type = 'erc20' and sub_type = 'consideration' 
+                    and token_contract_address != '{{weth_address}}' and eth_erc_idx = 1 then true
+                when offer_first_item_type = 'erc20' and sub_type = 'consideration' 
+                    and aj.max_eth_erc_idx >=3 
+                    and token_contract_address = '{{weth_address}}' and eth_erc_idx > 2 then true
+               when offer_first_item_type = 'erc20' and sub_type = 'consideration' 
+                    and aj.max_eth_erc_idx < 3  
+                    and token_contract_address = '{{weth_address}}' and eth_erc_idx = 2 then true
+                when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' 
+                    and aj.max_eth_erc_idx >=3 and eth_erc_idx > 2 then true
+                when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' 
+                    and aj.max_eth_erc_idx < 3 and eth_erc_idx = 2 then true
                 else false
             end is_platform_fee
-            ,case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and eth_erc_idx > 1 then true
-                when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and eth_erc_idx > 2 then true
+            ,case 
+                when offer_first_item_type = 'erc20' and sub_type = 'consideration' 
+                    and token_contract_address != '{{weth_address}}' and eth_erc_idx > 1 then true
+                when offer_first_item_type = 'erc20' and sub_type = 'consideration' 
+                    and aj.max_eth_erc_idx >=3 
+                    and token_contract_address = '{{weth_address}}' and eth_erc_idx = 2 then true
+                when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' 
+                    and aj.max_eth_erc_idx >=3 and eth_erc_idx = 2 then true
                 else false
             end is_creator_fee
             ,case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and eth_erc_idx > 1 then eth_erc_idx - 1
@@ -170,21 +209,9 @@ with iv_offer_consideration as (
             ,case when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and item_type in ('erc721','erc1155') then true
                 else false
             end is_moved_nft
-    from
-    (
-        select a.*
-            ,case when item_type in ('native','erc20') then sum(case when item_type in ('native','erc20') then 1 end) over (partition by tx_hash, evt_index, sub_type order by sub_idx) end as eth_erc_idx
-            ,sum(case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and item_type in ('erc721','erc1155') then 1
-                        when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc721','erc1155') then 1
-                end) over (partition by tx_hash, evt_index) as nft_cnt
-            ,sum(case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and item_type in ('erc721') then 1
-                        when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc721') then 1
-                end) over (partition by tx_hash, evt_index) as erc721_cnt
-            ,sum(case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and item_type in ('erc1155') then 1
-                        when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc1155') then 1
-                end) over (partition by tx_hash, evt_index) as erc1155_cnt
-        from iv_offer_consideration a
-    ) a
+    from iv_offer_consideration as a 
+    left join adjustment as aj 
+      on a.tx_hash = aj.tx_hash
 )
 select *
 from iv_base_pairs

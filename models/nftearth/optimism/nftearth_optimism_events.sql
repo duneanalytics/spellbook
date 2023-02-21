@@ -252,6 +252,7 @@ with source_optimism_transactions as (
   from {{ source('erc721_optimism','evt_transfer') }}
   where
     from = '{{non_buyer_address}}'
+    or to = '{{non_buyer_address}}'
     {% if not is_incremental() %}
     and evt_block_time >= '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
@@ -272,7 +273,7 @@ with source_optimism_transactions as (
     -- order info
     ,t.block_date
     ,t.block_time
-    ,t.seller
+    ,case when t.seller = '{{non_buyer_address}}' then erc.from else t.seller end as seller
     ,case when t.buyer = '{{non_buyer_address}}' then erc.to else t.buyer end as buyer
     ,initcap(t.trade_type) as trade_type
     ,initcap(t.order_type) as trade_category -- Buy / Offer Accepted
@@ -343,6 +344,12 @@ with source_optimism_transactions as (
     and t.nft_token_id = erc.tokenId
     and t.nft_contract_address = erc.contract_address
     and t.buyer = erc.from
+  left join erc721_transfer as erc2
+    on t.tx_hash = erc2.evt_tx_hash
+    and t.block_number = erc.evt_block_number
+    and t.nft_token_id = erc.tokenId
+    and t.nft_contract_address = erc.contract_address
+    and t.seller = erc2.to
 )
 select
   *
