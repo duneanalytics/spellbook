@@ -262,7 +262,7 @@ with source_optimism_transactions as (
 )
 ,erc1155_transfer as (
   select *
-  from {{ source('erc1155_optimism','evt_TransferSingle') }}
+  from {{ source('erc1155_optimism','evt_transfersingle') }}
   where
     (from = '{{non_buyer_address}}'
     or to = '{{non_buyer_address}}')
@@ -274,7 +274,7 @@ with source_optimism_transactions as (
     {% endif %}
 
   select *
-  from {{ source('erc1155_optimism','evt_TransferBatch') }}
+  from {{ source('erc1155_optimism','evt_transferbatch') }}
   where
     (from = '{{non_buyer_address}}'
     or to = '{{non_buyer_address}}')
