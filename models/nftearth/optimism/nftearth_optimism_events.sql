@@ -248,7 +248,14 @@ with source_optimism_transactions as (
   left join ref_nft_aggregators agg on agg.contract_address = t.to
 )
 ,erc721_transfer as (
-  select *
+  select 
+    evt_tx_hash
+    ,evt_block_time
+    ,evt_block_number
+    ,tokenId
+    ,contract_address
+    ,from
+    ,to
   from {{ source('erc721_optimism','evt_transfer') }}
   where
     (from = '{{non_buyer_address}}'
@@ -261,20 +268,15 @@ with source_optimism_transactions as (
     {% endif %}
 )
 ,erc1155_transfer as (
-  select *
+  select 
+    evt_tx_hash
+    ,evt_block_time
+    ,evt_block_number
+    ,id as tokenId
+    ,contract_address
+    ,from
+    ,to
   from {{ source('erc1155_optimism','evt_transfersingle') }}
-  where
-    (from = '{{non_buyer_address}}'
-    or to = '{{non_buyer_address}}')
-    {% if not is_incremental() %}
-    and evt_block_time >= '{{c_seaport_first_date}}'  -- seaport first txn
-    {% endif %}
-    {% if is_incremental() %}
-    and evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-
-  select *
-  from {{ source('erc1155_optimism','evt_transferbatch') }}
   where
     (from = '{{non_buyer_address}}'
     or to = '{{non_buyer_address}}')
