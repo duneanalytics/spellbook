@@ -15,6 +15,11 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
+      - &dex_project_name
+        name: dex_project
+        description: "DEX Project Name - This will be used for overall DEX LM incentives models"
+      - &dex_project_version
+        name: "DEX Project Version - This will be used for overall DEX LM incentives models"
       - &project 
         name: project
         description: "Project name of the DEX"  
