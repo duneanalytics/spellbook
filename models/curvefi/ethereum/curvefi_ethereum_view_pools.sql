@@ -237,10 +237,10 @@ pools AS (
 ),
 
 contract_name AS (
-    SELECT first(name, true) as name,
-           first(namespace, true) as namespace,
-           address
-    FROM {{ source('ethereum', 'contracts') }}
+    SELECT first(c.name, true) as name,
+           first(c.namespace, true) as namespace,
+           c.address
+    FROM {{ source('ethereum', 'contracts') }} c
     INNER JOIN pools ON address = pool_address
     GROUP BY address
 )
