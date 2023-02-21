@@ -325,7 +325,7 @@ models:
   - name: nftearth_optimism_fees
     meta:
       blockchain: optimism
-      project: opensea
+      project: nftearth
       contributors: chuxin
     config:
       tags: ['optimism','nft','fees','nftearth','chuxin']
