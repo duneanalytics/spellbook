@@ -260,6 +260,28 @@ with source_optimism_transactions as (
     and evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
+,erc1155_transfer as (
+  select *
+  from {{ source('erc721_optimism','evt_transfer') }}
+  where
+    (from = '{{non_buyer_address}}'
+    or to = '{{non_buyer_address}}')
+    {% if not is_incremental() %}
+    and evt_block_time >= '{{c_seaport_first_date}}'  -- seaport first txn
+    {% endif %}
+    {% if is_incremental() %}
+    and evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+)
+,all_transfers as (
+  select *
+  from erc721_transfer
+
+  union all 
+
+  select *
+  from erc1155_transfer 
+)
 ,iv_columns as (
   -- Rename column to align other *.trades tables
   -- But the columns ordering is according to convenience.
@@ -338,13 +360,13 @@ with source_optimism_transactions as (
     ,t.sub_idx
     ,t.sub_type
   from iv_trades as t
-  left join erc721_transfer as erc
+  left join all_transfers as erc
     on t.tx_hash = erc.evt_tx_hash
     and t.block_number = erc.evt_block_number
     and t.nft_token_id = erc.tokenId
     and t.nft_contract_address = erc.contract_address
     and t.buyer = erc.from
-  left join erc721_transfer as erc2
+  left join all_transfers as erc2
     on t.tx_hash = erc2.evt_tx_hash
     and t.block_number = erc2.evt_block_number
     and t.nft_token_id = erc2.tokenId
