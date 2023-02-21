@@ -199,8 +199,14 @@ with iv_offer_consideration_raw as (
                     and aj.max_eth_erc_idx >=3 and eth_erc_idx = 2 then true
                 else false
             end is_creator_fee
-            ,case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and eth_erc_idx > 1 then eth_erc_idx - 1
-                when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and eth_erc_idx > 2 then eth_erc_idx - 2
+            ,case 
+                when offer_first_item_type = 'erc20' and sub_type = 'consideration' 
+                    and token_contract_address != '{{weth_address}}' and eth_erc_idx > 1 then eth_erc_idx - 1
+                when offer_first_item_type = 'erc20' and sub_type = 'consideration' 
+                    and aj.max_eth_erc_idx >=3 
+                    and token_contract_address = '{{weth_address}}' and eth_erc_idx = 2 then eth_erc_idx - 1
+                when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' 
+                    and aj.max_eth_erc_idx >=3 and eth_erc_idx = 2 then eth_erc_idx - 1
             end creator_fee_idx
             ,case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and item_type in ('erc721','erc1155') then true
                 when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc721','erc1155') then true

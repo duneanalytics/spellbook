@@ -346,9 +346,9 @@ with source_optimism_transactions as (
     and t.buyer = erc.from
   left join erc721_transfer as erc2
     on t.tx_hash = erc2.evt_tx_hash
-    and t.block_number = erc.evt_block_number
-    and t.nft_token_id = erc.tokenId
-    and t.nft_contract_address = erc.contract_address
+    and t.block_number = erc2.evt_block_number
+    and t.nft_token_id = erc2.tokenId
+    and t.nft_contract_address = erc2.contract_address
     and t.seller = erc2.to
 )
 select
