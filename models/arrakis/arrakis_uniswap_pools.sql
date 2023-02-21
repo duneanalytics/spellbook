@@ -14,7 +14,7 @@
 }}
 
 {% set lp_models = [
-  'arrakis_optimism_uniswap_pools'
+  ref('arrakis_optimism_uniswap_pools')
 ] %}
 
 
@@ -30,7 +30,7 @@ FROM (
     , token0, 
     . token1
         
-    FROM {{ ref(a_lp_lm_model) }}
+    FROM {{ a_lp_lm_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

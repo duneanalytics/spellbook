@@ -8,8 +8,8 @@
 }}
 
 {% set uniswap_models = [
-     'gamma_uniswap_pools'
-    ,'arrakis_uniswap_pools'
+     ref('gamma_uniswap_pools')
+    ,ref('arrakis_uniswap_pools')
 ] %}
 
 
@@ -27,7 +27,7 @@ FROM (
     , token0
     , token1
         
-    FROM {{ ref(lp_lm_model) }}
+    FROM {{ lp_lm_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

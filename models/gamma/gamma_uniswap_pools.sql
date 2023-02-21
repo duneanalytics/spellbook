@@ -14,7 +14,7 @@
 }}
 
 {% set lp_models = [
-  'gamma_optimism_uniswap_pools'
+  ref('gamma_optimism_uniswap_pools')
 ] %}
 
 
@@ -30,7 +30,7 @@ FROM (
     , token0, 
     . token1
         
-    FROM {{ ref(g_lp_lm_model) }}
+    FROM {{ g_lp_lm_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
