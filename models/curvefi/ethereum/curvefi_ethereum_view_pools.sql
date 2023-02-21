@@ -238,6 +238,7 @@ pools AS (
 
 contract_name AS (
     SELECT first(name, true) as name,
+           first(namespace, true) as namespace,
            address
     FROM {{ source('ethereum', 'contracts') }}
     GROUP BY address
