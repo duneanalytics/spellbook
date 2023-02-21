@@ -352,6 +352,10 @@ models:
         +schema: tokens_fantom
         +materialized: table
         +file_format: delta
+      solana:
+        +schema: tokens_solana
+        +materialized: table
+        +file_format: delta
 
     trader_joe:
       +schema: trader_joe
@@ -401,6 +405,18 @@ models:
       arbitrum: 
         +schema: safe_arbitrum
 
+    liquidifty:
+      +schema: liquidifty
+      bnb:
+        +schema: liquidifty_bnb
+      ethereum:
+        +schema: liquidifty_ethereum
+
+    nftb:
+      +schema: nftb
+      bnb:
+        +schema: nftb_bnb
+    
     nftrade:
       +schema: nftrade
       bnb:
@@ -713,6 +729,10 @@ models:
       +schema: tofu
       bnb:
         +schema: tofu_bnb
+      arbitrum:
+        +schema: tofu_arbitrum
+      optimism:
+        +schema: tofu_optimism
 
     maker:
       +schema: maker
@@ -1197,6 +1217,31 @@ seeds:
             tx_hash: string
             block_number: int
             amount_original: double
+    
+    liquidifty:
+      bnb:
+        +enabled: true
+        +schema: test_data
+        liquidifty_bnb_nft_trades_samples:
+            block_number: int
+            version: string
+            token_id: string
+            seller: string
+            buyer: string
+            tx_hash: string
+            amount_original: double
+      ethereum:
+        +enabled: true
+        +schema: test_data
+        liquidifty_ethereum_nft_trades_samples:
+            block_number: int
+            version: string
+            token_id: string
+            seller: string
+            buyer: string
+            tx_hash: string
+            amount_original: double
+
     nftrade:
       bnb:
         +enabled: true
@@ -1208,6 +1253,18 @@ seeds:
             buyer: string
             tx_hash: string
             amount_original: double
+
+    tofu:
+      arbitrum:
+        +enabled: true
+        +schema: test_data
+        tofu_arbitrum_nft_trades_samples:
+            block_number: int
+            token_id: string
+            seller: string
+            buyer: string
+            tx_hash: string
+            amount_original: double  
 
     foundation:
       ethereum:
