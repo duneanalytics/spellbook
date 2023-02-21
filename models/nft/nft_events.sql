@@ -24,6 +24,7 @@
 ,ref('quix_optimism_events')
 ,ref('nftrade_bnb_events')
 ,ref('nftb_bnb_events')
+,ref('nftearth_optimism_events')
 ] %}
 
 SELECT *
