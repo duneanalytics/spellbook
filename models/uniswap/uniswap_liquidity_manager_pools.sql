@@ -18,6 +18,8 @@ FROM (
     {% for lp_lm_model in uniswap_models %}
     SELECT
       blockchain
+    , 'uniswap' as dex_project_name
+    , '3' as dex_project_version
     , project
     , contract_address
     , pool

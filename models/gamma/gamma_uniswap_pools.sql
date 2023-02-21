@@ -13,14 +13,14 @@
   )
 }}
 
-{% set uniswap_models = [
+{% set lp_models = [
   'gamma_optimism_uniswap_pools'
 ] %}
 
 
 SELECT *
 FROM (
-    {% for lp_lm_model in uniswap_models %}
+    {% for g_lp_lm_model in lp_models %}
     SELECT
       blockchain
     , 'gamma' AS project
@@ -30,7 +30,7 @@ FROM (
     , token0, 
     . token1
         
-    FROM {{ ref(lp_lm_model) }}
+    FROM {{ ref(g_lp_lm_model) }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
