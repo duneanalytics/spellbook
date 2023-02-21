@@ -257,6 +257,12 @@ models:
         description: "Wallet addresses receiving fees from the transaction"
       - name: royalty_fee_amount_raw_4
         description: "Wallet addresses receiving fees from the transaction"
+      - &royalty_fee_percentage
+        name: royalty_fee_percentage
+        description:  "Royalty fee in % of the amount paid for a given trade"
+      - &royalty_fee_currency_symbol
+        name: royalty_fee_currency_symbol
+        description: "Symbol of the token in which fees are paid out"
       - &aggregator_name
         name: aggregator_name
         description:  "If the trade was performed via an aggregator, displays aggregator name"
