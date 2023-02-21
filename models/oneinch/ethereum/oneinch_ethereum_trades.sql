@@ -15,6 +15,7 @@ ref('oneinch_v1_ethereum_trades')
 ,ref('oneinch_unoswap_v3_ethereum_trades')
 ,ref('oneinch_unoswap_v4_ethereum_trades')
 ,ref('oneinch_unoswap_v5_ethereum_trades')
+,ref('oneinch_uniswap_v3_ethereum_trades')
 ] %}
 
 
