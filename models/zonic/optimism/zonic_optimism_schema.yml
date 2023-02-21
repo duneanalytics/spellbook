@@ -15,8 +15,6 @@ models:
           combination_of_columns:
             - block_date
             - tx_hash
-            - token_id
-            - seller
             - evt_index
       - check_seed:
           seed_file: ref('zonic_events_seed')
@@ -27,13 +25,16 @@ models:
           match_columns:
             - block_date
             - tx_hash
-            - token_id
-            - seller
             - evt_index
           check_columns:
+            - seller
             - buyer
             - nft_contract_address
-            
+            - token_id
+            - amount_original
+            - royalty_fee_amount
+            - platform_fee_amount
+
     columns:
       - &blockchain
         name: blockchain
