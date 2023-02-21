@@ -241,6 +241,7 @@ contract_name AS (
            first(namespace, true) as namespace,
            address
     FROM {{ source('ethereum', 'contracts') }}
+    INNER JOIN pools ON address = pool_address
     GROUP BY address
 )
 
