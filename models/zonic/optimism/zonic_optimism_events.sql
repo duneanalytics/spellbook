@@ -201,7 +201,7 @@ select
     ,er.royalty_fee_amount_raw / er.amount_raw * 100 as royalty_fee_percentage
     ,case when tr.value is not null then tr.to end as royalty_fee_receive_address
     ,t1.symbol as royalty_fee_currency_symbol
-    ,concat(block_number,'-',er.tx_hash,'-',er.evt_index,'-', er.sale_id) as unique_trade_id
+    ,concat(er.block_number,'-',er.tx_hash,'-',er.evt_index,'-', er.sale_id) as unique_trade_id
 from events_raw as er
 join source_optimism_transactions as tx
     on er.tx_hash = tx.hash
