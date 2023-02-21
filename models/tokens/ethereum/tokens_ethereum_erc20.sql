@@ -20814,5 +20814,19 @@ FROM (VALUES
         ('0xd0b9ed2c21849e830d6f6a9a7ba6c1e952847569', 'NEOAI', 18),
         ('0xdadb4ae5b5d3099dd1f586f990b845f2404a1c4c', '( ͡° ͜ʖ ͡°)', 18),
         ('0xddc6625feca10438857dd8660c021cd1088806fb', 'RAD', 18),
-        ('0xe2db97b7dd3d3d6d669043af80ed06e1f9a83286', 'MNPLY', 18)
+        ('0xe2db97b7dd3d3d6d669043af80ed06e1f9a83286', 'MNPLY', 18),
+        ('0x1170c095fd603f0022761db8da0b5f3dfa77cf03', 'CHICKS', 18),
+        ('0x15467905b8c34fbae237e5ab475c9bc963a7d2df', 'BBLUR', 18),
+        ('0x207e14389183a94343942de7afbc607f57460618', 'THOL', 18),
+        ('0x445ec96caa6895d8e5b3918c8cf90e98e7ce3e90', 'FLUT', 9),
+        ('0x5271045f7b73c17825a7a7aee6917ee46b0b7520', 'OHMFRAXBP-f', 18),
+        ('0x5283d291dbcf85356a21ba090e6db59121208b44', 'BLUR', 18),
+        ('0x6390ee51738652b4f22c20f0fd02275cbd5ff685', 'Vitalik', 9),
+        ('0x66eff5221ca926636224650fd3b9c497ff828f7d', 'multiBTC', 8),
+        ('0x6a5ead5433a50472642cd268e584dafa5a394490', '50WSTETH-50LDO', 18),
+        ('0x77dc2d2f88eacb2efd09a079588f47d888af4e5e', 'TTG', 18),
+        ('0xab7d402e3b73aca56b79abe59fb65e5e475afa2e', 'BONESHI', 9),
+        ('0xbffd7f4ce3a9bc76d4e3217507aab8a5ae10f2cd', 'SHIT', 18),
+        ('0xf17a3fe536f8f7847f1385ec1bc967b2ca9cae8d', 'AMKT', 18),
+        ('0xf95aaa7ebb1620e46221b73588502960ef63dba0', 'TBTCSBTC23CRV-f', 18)
      ) AS temp_table (contract_address, symbol, decimals)
