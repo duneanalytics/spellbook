@@ -19,8 +19,11 @@ WITH dexs AS
         , p.version as version
         , '0x' || substring(l.topic2, 27,40) as taker
         , '' as maker
-        , case when l.topic1 = "0xd013ca23e77a65003c2c659c5442c00c805371b7fc1ebd4c206c41d1536bd90b" AND cast(substring(l.data, 131, 64) as int) = 0 then 'underlying_exchange_base'
-               else 'normal_exchange'
+        , case
+            when l.topic1 = "0xd013ca23e77a65003c2c659c5442c00c805371b7fc1ebd4c206c41d1536bd90b"
+                        AND cast(substring(l.data, 131, 64) as int) = 0
+                then 'underlying_exchange_base'
+                else 'normal_exchange'
             end as swap_type
         , bytea2numeric(substring(l.data, 195, 64)) as token_bought_amount_raw
         , bytea2numeric(substring(l.data, 67, 64)) as token_sold_amount_raw

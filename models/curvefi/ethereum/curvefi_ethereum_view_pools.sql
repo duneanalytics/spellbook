@@ -234,11 +234,18 @@ pools AS (
         ) }}
         g2
         ON pd2.pool_address = g2.token
+),
+
+contract_name AS (
+    SELECT first(name, true) as name,
+           address
+    FROM {{ source('ethereum', 'contracts') }}
+    GROUP BY address
 )
 
 SELECT
     version,
-    p.`name`,
+    p.name,
     symbol,
     pool_address,
     CASE
@@ -246,7 +253,7 @@ SELECT
         ELSE 'yes'
     END AS decoded,
     namespace AS dune_namespace,
-    C.`name` AS dune_table_name,
+    C.name AS dune_table_name,
     A AS amplification_param,
     mid_fee,
     out_fee,
@@ -265,10 +272,7 @@ SELECT
     gauge_contract
 FROM
     pools p
-    LEFT JOIN {{ source(
-        'ethereum',
-        'contracts'
-    ) }} C
+LEFT JOIN contract_name C
     ON C.address = pool_address
 ORDER BY
     dune_table_name DESC
