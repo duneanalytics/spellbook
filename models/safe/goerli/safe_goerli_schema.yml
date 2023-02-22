@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: safe_bnb_singletons
+  - name: safe_goerli_singletons
     meta:
-      blockchain: bnb
+      blockchain: goerli
       project: safe
       contributors: tschubotz
     freshness:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
     config:
-      tags: ['safe', 'singletons', 'bnb']
+      tags: ['safe', 'singletons', 'goerli']
     description: "Singletons addresses used with Safes"
     columns:
       - &address
@@ -20,16 +20,16 @@ models:
           - unique
           - not_null
 
-  - name: safe_bnb_safes
+  - name: safe_goerli_safes
     meta:
-      blockchain: bnb
+      blockchain: goerli
       project: safe
       contributors: tschubotz
     freshness:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
     config:
-      tags: ['safe', 'bnb']
+      tags: ['safe', 'goerli']
     description: "Safe addresses"
     columns:
       - &blockchain
