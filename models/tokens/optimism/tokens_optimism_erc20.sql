@@ -232,6 +232,7 @@ WITH raw_token_list AS (
     ,('0xd52f94df742a6f4b4c8b033369fe13a41782bf44', 'L2DAO', 18, 'underlying')
     ,('0x85f6583762bc76d775eab9a7456db344f12409f7', 'renBTC', 8, 'underlying')
     ,('0xde48b1b5853cc63b1d05e507414d3e02831722f8', 'stkLYRA', 18, 'receipt')
+    ,('0x0f5d45a7023612e9e244fe84fac5fcf3740d1492', 'stkLYRA', 18, 'receipt')
     ,('0x9e5aac1ba1a2e6aed6b32689dfcf62a509ca96f3', 'DF', 18, 'underlying')
     ,('0x9485aca5bbbe1667ad97c7fe7c4531a624c8b1ed', 'agEUR', 18, 'underlying')
     ,('0xAe31207aC34423C41576Ff59BFB4E036150f9cF7', 'SDL', 18, 'underlying')
