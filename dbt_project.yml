@@ -770,6 +770,11 @@ models:
       polygon:
         +schema: rocifi_polygon
 
+    zonic:
+      +schema: zonic
+      optimism:
+        +schema: zonic_optimism
+
 seeds:
   spellbook:
     +schema: test_data
