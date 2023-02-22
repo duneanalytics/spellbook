@@ -24,16 +24,20 @@ SELECT
 FROM (
         SELECT
         cg._pool AS pool_contract
-        , ceb.output_0 AS incentives_contract
+        , COALESCE(ccb.output_0, ceb.output_0) AS incentives_contract
         , 'external bribe' as incentives_type
         , ceb.allowedRewards AS allowed_rewards
-        , ceb.call_block_time AS evt_block_time
-        , ceb.call_block_number AS evt_block_number
-        , ceb.contract_address
-        , ceb.call_tx_hash AS evt_tx_hash
+        ,  COALESCE(ccb.call_block_time,ceb.call_block_time) AS evt_block_time
+        ,  COALESCE(ccb.call_block_number,ceb.call_block_number) AS evt_block_number
+        ,  COALESCE(ccb.contract_address,ceb.contract_address) AS contract_address
+        ,  COALESCE(ccb.call_tx_hash,ceb.call_tx_hash) AS evt_tx_hash
         , 1 AS evt_index
 
-        FROM {{ source('velodrome_optimism','BribeFactory_call_createExternalBribe') }} ceb
+        
+
+        FROM {{ source('velodrome_optimism','WrappedExternalBribeFactory_call_createBribe') }} ceb
+        INNER JOIN {{ source('velodrome_optimism','BribeFactory_call_createExternalBribe') }} ccb
+                ON ceb.output_0 = ccb.existing_bribe
         INNER JOIN {{ source('velodrome_optimism', 'GaugeFactory_call_createGauge') }} cg
                 ON cg._external_bribe = ceb.output_0
 
