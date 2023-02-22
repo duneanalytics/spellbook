@@ -24,7 +24,7 @@ SELECT
 FROM (
         SELECT
         cg._pool AS pool_contract
-        , ceb..output_0 AS incentives_contract
+        , ceb.output_0 AS incentives_contract
         , 'external bribe' as incentives_type
         , ceb..allowedRewards AS allowed_rewards
         , ceb..call_block_time AS evt_block_time
