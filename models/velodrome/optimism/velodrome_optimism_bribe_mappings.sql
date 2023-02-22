@@ -35,7 +35,7 @@ FROM (
 
         FROM {{ source('velodrome_optimism','BribeFactory_call_createExternalBribe') }} ceb
         INNER JOIN {{ source('velodrome_optimism', 'GaugeFactory_call_createGauge') }} cg
-                ON cg._external_bribe = ceb.existing_bribe
+                ON cg._external_bribe = ceb.output_0
 
         WHERE ceb.call_success = true
 
