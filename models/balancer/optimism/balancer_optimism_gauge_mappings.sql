@@ -31,6 +31,6 @@ SELECT pool, gauge, evt_block_time, evt_block_number, contract_address, evt_tx_h
 WHERE evt_block_time >= NOW() - interval '1 week'
 {% endif %}
 ) a
-LEFT JOIN {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered' }} tw
+LEFT JOIN {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} tw
     ON a.pool = tw.poolAddress
 

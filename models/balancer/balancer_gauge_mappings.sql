@@ -9,7 +9,7 @@
 }}
 
 {% set balancer_models = [
-    ref('balancer_optimism_gauge_mappings'),
+    ref('balancer_optimism_gauge_mappings')
 ] %}
 
 
