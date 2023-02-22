@@ -18,7 +18,7 @@ SELECT
   'optimism' as blockchain
 , 'velodrome' AS project
 , '1' as version
-, pool_contract, incentives_contract, incentives_type, 
+, pool_contract, incentives_contract, incentives_type
 , evt_block_time, evt_block_number, contract_address, evt_tx_hash, evt_index
 
 FROM (
