@@ -261,6 +261,7 @@ FROM
 ,('0xd7ccc7b8ec095644db35a1ac2dc58104294927c3', 'Bonga Bera 101', 'erc721')
 ,('0x9374e7813CC6b4d64224a7Dd039f52543bF12D07', 'LiYu', 'erc721')
 ,('0x4e3a6e6534097a42b505c280ba5cd7d203be9501', 'Galxe Stargate Warrior', 'erc721')
+,('0x656B02f01500E0D7c072330E324F3e026dF91F55', 'ZONIC Gift Box', 'erc721')
 
 
 ) as temp_table (contract_address, name, standard)
