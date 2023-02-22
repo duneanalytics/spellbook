@@ -1,4 +1,4 @@
-{{ config(alias='trades_slippage',
+{{ config(alias='trade_slippage',
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                     "project",
                                     "cow_protocol",
@@ -8,7 +8,7 @@
 with 
 raw_data as (
     select
-    order_uid
+    order_uid,
     block_number,
     block_time,
     case when (flags % 2) = 0 then 'SELL' else 'BUY' end  as order_type,
