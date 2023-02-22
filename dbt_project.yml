@@ -427,6 +427,11 @@ models:
       bnb:
         +schema: nftrade_bnb
 
+    lifi:
+      +schema: lifi
+      fantom:
+        +schema: lifi_fantom
+
     spiritswap:
       +schema: spiritswap
       fantom:
