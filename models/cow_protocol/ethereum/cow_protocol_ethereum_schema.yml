@@ -274,13 +274,13 @@ models:
     columns:
       - *trader
       - *referrer
-  - name: cow_protocol_ethereum_trade_slippage
+  - name: cow_protocol_ethereum_trades_slippage
     meta:
       blockchain: ethereum
       project: cow_protocol
       contributors: bh2smith, gentrexha, josojo
     config:
-      tags: [ 'ethereum','cow_protocol','trade_slippage' ]
+      tags: [ 'ethereum','cow_protocol','trades_slippage' ]
     description: >
       The query contains several measurements between the quoted price on cowswap and 
       the executed price. The price difference between the quote and the actual price 
@@ -295,7 +295,8 @@ models:
         name: sell_quote
       - &slippage_tolerance_bips
         name: slippage_tolerance_bips
-      - *usd_value
+      - &trade_usd_value
+        name: trade_usd_value
       - &slippage_atoms
         name: slippage_atoms
       - &slippage_percentage
