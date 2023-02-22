@@ -17,10 +17,10 @@ SELECT
             , '/'
             ,COALESCE(e1.symbol,token1)
             ,'-'
-            , TRIM(CAST(CAST(ROUND(fee / 1e4, 2) AS DECIMAL(20, 2)) AS VARCHAR))
+            , TRIM(CAST(CAST(ROUND(fee / 1e4, 2) AS DECIMAL(20, 2)) AS VARCHAR(10) ))
             ,'%'
             ,'-'
-            ,CAST( ROW_NUMBER() OVER (PARTITION BY uniPool ORDER BY pc.evt_block_time ASC) AS VARCHAR)
+            ,CAST( ROW_NUMBER() OVER (PARTITION BY uniPool ORDER BY pc.evt_block_time ASC) AS VARCHAR(10) )
             )
     AS lp_name,
     
