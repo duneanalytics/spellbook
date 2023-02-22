@@ -227,5 +227,7 @@ valued_trades as (
 )
 
 select *,
+  -- Depending on the order kind (buy vs sell), the limit amount will always be equal to either the amount bought or sold.
+  -- We can therefore sum up the surplus relative to total buy and sell amount and extrapolate given the total trade's usd value.
   ((limit_sell_amount - atoms_sold) / atoms_sold  * usd_value) + ((atoms_bought - limit_buy_amount) / atoms_bought * usd_value) as surplus_usd
 from valued_trades
