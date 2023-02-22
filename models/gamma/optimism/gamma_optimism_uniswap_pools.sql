@@ -12,7 +12,7 @@
 -- Gamma pools don't come from a factory contract, so we manually map them
 with manual_mapping as (
 SELECT lp_name, LOWER(addr) AS contract_address
-        FROM (
+        FROM (values
                 ('wsteth.eth.05.p','0xa8524abc230725da48e61b677504fb5e8a409e38')
                 ,('usdc.dai.01.s','0xaED05fdd471a4EecEe48B34d38c59CC76681A6C8')
                 ,('eth.dai.05.w','0xC79265161eE0766802c576Cc0154B03CF2Cb72FF')
