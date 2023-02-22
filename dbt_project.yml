@@ -756,6 +756,8 @@ models:
       +schema: beethoven_x
       optimism:
         +schema: beethoven_x_optimism
+      fantom:
+        +schema: beethoven_x_fantom
     
     zipswap:
       +schema: zipswap
@@ -774,6 +776,11 @@ models:
       +schema: rocifi
       polygon:
         +schema: rocifi_polygon
+
+    zonic:
+      +schema: zonic
+      optimism:
+        +schema: zonic_optimism
 
 seeds:
   spellbook:

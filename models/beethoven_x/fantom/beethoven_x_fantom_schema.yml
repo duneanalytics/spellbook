@@ -1,37 +1,36 @@
 version: 2
 
 models:
-  - name: bancor_ethereum_trades
+  - name: beethoven_x_fantom_trades
     meta:
-      blockchain: ethereum
-      sector: dex
-      project: bancor
-      contributors: tian7
+      blockchain: fantom
+      project: beethoven_x
+      contributors: msilb7
     config:
-      tags: ['ethereum','dex','trades', 'Bancor Network', 'tian7']
+      tags: ['fantom','beethoven_x','dex']
     description: >
-        Bancor Network trades on Ethereum across all contracts and versions. This table will load dex trades downstream.
+        A table containing all trades of beethoven x on fantom
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+              - trace_address
       - check_dex_seed:
-          blockchain: ethereum
-          project: Bancor Network
+          blockchain: fantom
+          project: beethoven_x
           version: 1
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project 
+      - &project
         name: project
-        description: "Project name of the DEX"  
+        description: "Project name of the DEX"
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
