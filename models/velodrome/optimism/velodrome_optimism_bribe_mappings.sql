@@ -26,7 +26,7 @@ FROM (
         cg._pool AS pool_contract
         , ccb.output_0 AS incentives_contract
         , 'external bribe' as incentives_type
-        , cg.allowedRewards AS allowed_rewards
+        , ccb.allowedRewards AS allowed_rewards
         , ccb.call_block_time AS evt_block_time
         , ccb.call_block_number AS evt_block_number
         , ccb.contract_address
@@ -45,7 +45,7 @@ FROM (
         cg._pool AS pool_contract
         , cib.output_0 AS incentives_contract
         , 'internal bribe' as incentives_type
-        , cg.allowedRewards AS allowed_rewards
+        , cib.allowedRewards AS allowed_rewards
         , cib.call_block_time AS evt_block_time
         , cib.call_block_number AS evt_block_number
         , cib.contract_address
