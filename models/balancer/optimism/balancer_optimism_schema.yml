@@ -315,8 +315,8 @@ models:
             - gauge
     columns:
       - *blockchain
-      - &pool
-        name: pool
+      - &pool_contract
+        name: pool_contract
         description: "Address of the liquidity pool contract"
       - *pool_id
       - &incentives_contract

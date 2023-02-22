@@ -20,7 +20,7 @@ FROM (
         blockchain
         , 'balancer' as project
         , '2' as version
-        , pool
+        , pool_contract
         , pool_id
         , incentives_contract
         , incentives_type

@@ -127,8 +127,8 @@ models:
       - *blockchain
       - *project
       - *version
-      - &pool
-        name: pool
+      - &pool_contract
+        name: pool_contract
         description: "Address of the liquidity pool contract"
       - &incentives_contract
         name: incentives_contract
@@ -146,6 +146,4 @@ models:
       - &evt_tx_hash
         name: evt_tx_hash
         description: 'Tx Hash'
-      - &evt_index
-        name: evt_index
-        description: "Event Index"
+      - *evt_index

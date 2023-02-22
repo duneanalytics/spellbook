@@ -22,7 +22,7 @@ FROM (
         blockchain,
         project,
         version,
-        pool,
+        pool_contract,
         incentives_contract,
         incentives_type,
         evt_block_time,

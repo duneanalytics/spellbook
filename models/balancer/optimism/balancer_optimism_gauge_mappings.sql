@@ -13,16 +13,9 @@
     ) 
 }}
 
-WITH registered_pools AS (
-    SELECT DISTINCT
-        `poolAddress` AS pool_address
-    FROM
-        {{ source ('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }}
-)
-
 SELECT distinct 
         'optimism' as blockchain
-        , a.pool, tw.poolId AS pool_id, a.gauge AS incentives_contract, 'rewards gauge' AS incentives_type
+        , a.pool AS pool_contract, tw.poolId AS pool_id, a.gauge AS incentives_contract, 'rewards gauge' AS incentives_type
         , a.evt_block_time, a.evt_block_number, a.contract_address, a.evt_tx_hash, a.evt_index
 
 FROM (

@@ -94,8 +94,8 @@ models:
       - *blockchain
       - *project
       - *version
-      - &pool
-        name: pool
+      - &pool_contract
+        name: pool_contract
         description: "Address of the liquidity pool contract"
       - &pool_id
         name: pool_id
