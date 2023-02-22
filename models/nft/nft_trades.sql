@@ -25,6 +25,7 @@
 ,ref('tofu_trades')
 ,ref('quix_optimism_trades')
 ,ref('nftrade_bnb_trades')
+,ref('zonic_optimism_trades')
 ,ref('nftb_bnb_trades')
 ] %}
 
