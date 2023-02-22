@@ -10,7 +10,7 @@
 
 -- https://dune.com/queries/511739 h/t hildobby
 {% set airdrop_start_date = '2022-03-16' %}
-{% set airdrop_end_date = '2022-03-19' %}
+{% set airdrop_end_date = '2023-03-16' %}
 
 SELECT
 'ethereum' AS blockchain,
