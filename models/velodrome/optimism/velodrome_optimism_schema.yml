@@ -94,3 +94,52 @@ models:
       - &evt_index
         name: evt_index
         description: ""
+  
+  - name: velodrome_optimism_bribe_mappings
+    meta:
+      blockchain: optimism
+      project: velodrome
+      contributors: msilb7
+    config:
+      tags: ['optimism','velodrome','velo','dex', 'incentives']
+    description: >
+      Gauge to Pool mappings for balancer on all chains
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - &pool_contract
+        name: pool_contract
+        description: "Address of the liquidity pool contract"
+      - &pool_id
+        name: pool_id
+        description: 'Unique encoded identifier that refers to each pool'
+      - &incentives_contract
+        name: incentives_contract
+        description: "Address of the contract where incentives are stored and emitted."
+      - &incentives_type
+        name: incentives_type
+        description: "Description of the incentives address type."
+      - &evt_block_time
+        name: evt_block_time
+        description: 'Block time in UTC'
+      - &evt_block_number
+        name: evt_block_number
+        description: 'Block Number'
+      - &contract_address
+        name: contract_address
+        description: 'Gauge Creator Contract Address'
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: 'Tx Hash'
+      - *evt_index
+  
+  SELECT
+ cg._pool AS pool_contract
+, ccb.output_0 AS incentives_contract
+, 'external bribe' as incentives_type
+, evt_block_time
+, evt_block_number
+, contract_address,
+, evt_tx_hash
+, evt_index
