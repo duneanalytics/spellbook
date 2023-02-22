@@ -26,11 +26,11 @@ FROM (
         cg._pool AS pool_contract
         , ccb.output_0 AS incentives_contract
         , 'external bribe' as incentives_type
-        , evt_block_time
-        , evt_block_number
-        , contract_address
-        , evt_tx_hash
-        , evt_index
+        , call_block_time AS evt_block_time
+        , call_block_number AS evt_block_number
+        , ccb.contract_address
+        , call_tx_hash AS evt_tx_hash
+        , 1 AS evt_index
 
         FROM {{ source('velodrome_optimism','WrappedExternalBribeFactory_call_createBribe') }} ccb
         INNER JOIN {{ source('velodrome_optimism', 'GaugeFactory_call_createGauge') }} cg
@@ -44,14 +44,14 @@ FROM (
         cg._pool AS pool_contract
         , cib.existing_bribe AS incentives_contract
         , 'internal bribe' as incentives_type
-        , evt_block_time
-        , evt_block_number
-        , contract_address
-        , evt_tx_hash
-        , evt_index
+        , call_block_time AS evt_block_time
+        , call_block_number AS evt_block_number
+        , ccb.contract_address
+        , call_tx_hash AS evt_tx_hash
+        , 1 AS evt_index
 
         FROM {{ source('velodrome_optimism','BribeFactory_call_createInternalBribe') }} cib
-        LEFT JOIN {{ source('velodrome_optimism', 'GaugeFactory_call_createGauge') }} cg
+        INNER JOIN {{ source('velodrome_optimism', 'GaugeFactory_call_createGauge') }} cg
                 ON cg._internal_bribe = cib.existing_bribe
 
         WHERE ccb.call_success = true
