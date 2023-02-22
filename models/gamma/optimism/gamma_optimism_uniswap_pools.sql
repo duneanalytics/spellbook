@@ -40,13 +40,13 @@ SELECT
     lp_name, mm.contract_address, pool AS pool_contract, fee, token0, token1
     FROM manual_mapping mm
     INNER JOIN {{ source('optimism', 'creation_traces') }} ct 
-        ON ct.address = n.contract_address
+        ON ct.address = mm.contract_address
         -- only pull new contract creations
         {% if is_incremental() %}
         AND ct.block_time >= date_trunc('day', now() - interval '1 month')
         {% endif %}
     INNER JOIN {{ source('optimism', 'transactions') }} t 
-        ON t.to = n.contract_address
+        ON t.to = mm.contract_address
         AND t.block_time >= ct.block_time
         AND t.block_time < ct.block_time + interval '1 month'
         AND substring(t.data,1,10) IN ('0x85919c5d','0xa8559872') --on rebalances & withdrawals, we can pull the uniswap pool
