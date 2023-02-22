@@ -35,7 +35,7 @@ SELECT lp_name, LOWER(addr) AS contract_address
 )
 
 
-SELECT 
+SELECT distinct
     'optimism' AS blockchain,
     lp_name, mm.contract_address, pool AS pool_contract, fee, token0, token1
     FROM manual_mapping mm
@@ -58,4 +58,3 @@ SELECT
         AND l.block_time < ct.block_time + interval '1 month'
     INNER JOIN {{ ref('uniswap_optimism_pools') }} up
         ON up.pool = l.contract_address
-    GROUP BY 1,2,3,4,5,6
