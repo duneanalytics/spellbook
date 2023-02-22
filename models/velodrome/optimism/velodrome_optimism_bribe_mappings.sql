@@ -33,7 +33,7 @@ FROM (
         , ceb.call_tx_hash AS evt_tx_hash
         , 1 AS evt_index
 
-        FROM {{ source('velodrome_optimism','BribeFactory_call_createExternalBribe') }} ceb.
+        FROM {{ source('velodrome_optimism','BribeFactory_call_createExternalBribe') }} ceb
         INNER JOIN {{ source('velodrome_optimism', 'GaugeFactory_call_createGauge') }} cg
                 ON cg._external_bribe = ceb.existing_bribe
 
