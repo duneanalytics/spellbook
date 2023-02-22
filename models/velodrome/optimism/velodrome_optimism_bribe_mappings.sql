@@ -56,5 +56,5 @@ FROM (
         INNER JOIN {{ source('velodrome_optimism', 'GaugeFactory_call_createGauge') }} cg
                 ON cg._internal_bribe = cib.output_0
 
-        WHERE ccb.call_success = true
+        WHERE cib.call_success = true
 ) a
