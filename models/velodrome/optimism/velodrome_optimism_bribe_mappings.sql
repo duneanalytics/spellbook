@@ -26,10 +26,10 @@ FROM (
         cg._pool AS pool_contract
         , ccb.output_0 AS incentives_contract
         , 'external bribe' as incentives_type
-        , call_block_time AS evt_block_time
-        , call_block_number AS evt_block_number
+        , ccb.call_block_time AS evt_block_time
+        , ccb.call_block_number AS evt_block_number
         , ccb.contract_address
-        , call_tx_hash AS evt_tx_hash
+        , ccb.call_tx_hash AS evt_tx_hash
         , 1 AS evt_index
 
         FROM {{ source('velodrome_optimism','WrappedExternalBribeFactory_call_createBribe') }} ccb
@@ -44,10 +44,10 @@ FROM (
         cg._pool AS pool_contract
         , cib.existing_bribe AS incentives_contract
         , 'internal bribe' as incentives_type
-        , call_block_time AS evt_block_time
-        , call_block_number AS evt_block_number
-        , ccb.contract_address
-        , call_tx_hash AS evt_tx_hash
+        , cib.call_block_time AS evt_block_time
+        , cib.call_block_number AS evt_block_number
+        , cib.contract_address
+        , cib.call_tx_hash AS evt_tx_hash
         , 1 AS evt_index
 
         FROM {{ source('velodrome_optimism','BribeFactory_call_createInternalBribe') }} cib
