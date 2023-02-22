@@ -2,7 +2,7 @@
 
 with test_data as (
     select count(*) as total
-    from {{ ref('safe_arbitrum_transactions') }}
+    from {{ ref('safe_avalanche_c_transactions') }}
     where block_time > '2023-01-01'
         and block_time < '2023-02-01'
 ),
