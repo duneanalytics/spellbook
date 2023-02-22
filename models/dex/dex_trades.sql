@@ -7,14 +7,6 @@
         )
 }}
 
-/*
-list of models using old generic test, due to multiple versions in one model:
-    - curvefi_trades
-    - airswap_ethereum_trades
-    - dodo_ethereum_trades
-    - bancor_ethereum_trades
-    - mstable_ethereum_trades
-*/
 
 {% set dex_trade_models = [
  ref('uniswap_trades')
@@ -58,6 +50,7 @@ list of models using old generic test, due to multiple versions in one model:
 ,ref('arbswap_trades')
 ,ref('balancer_trades')
 ,ref('spiritswap_fantom_trades')
+,ref('quickswap_trades')
 ] %}
 
 
