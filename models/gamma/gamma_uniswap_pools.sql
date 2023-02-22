@@ -25,7 +25,7 @@ FROM (
       blockchain
     , 'gamma' AS project
     , contract_address, 
-    , pool, 
+    , pool_contract, 
     , fee, 
     , token0, 
     . token1

@@ -37,8 +37,8 @@ SELECT lp_name, LOWER(addr) AS contract_address
 
 SELECT 
     'optimism' AS blockchain,
-    lp_name, n.contract_address, pool, fee, token0, token1
-    FROM namings n
+    lp_name, mm.contract_address, pool AS pool_contract, fee, token0, token1
+    FROM manual_mapping mm
     INNER JOIN {{ source('optimism', 'creation_traces') }} ct 
         ON ct.address = n.contract_address
         -- only pull new contract creations

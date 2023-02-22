@@ -22,7 +22,7 @@ FROM (
     , '3' as dex_project_version
     , project
     , contract_address
-    , pool
+    , pool_contract
     , fee
     , token0
     , token1

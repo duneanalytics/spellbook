@@ -20,8 +20,8 @@ models:
       - &contract_address
         name: contract_address
         description: 'Gamma LP Token contract address'
-      - &pool
-        name: pool
+      - &pool_contract
+        name: pool_contract
         description: "Uniswap liquidity pool contract address"
       - &token0
         name: token0
