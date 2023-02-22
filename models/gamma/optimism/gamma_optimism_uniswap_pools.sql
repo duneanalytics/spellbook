@@ -49,7 +49,7 @@ SELECT
         ON t.to = n.contract_address
         AND t.block_time >= ct.block_time
         AND t.block_time < ct.block_time + interval '1 month'
-        AND bytearray_substring(t.data,1,4) IN ('0x85919c5d','0xa8559872') --on rebalances & withdrawals, we can pull the uniswap pool
+        AND substring(t.data,1,10) IN ('0x85919c5d','0xa8559872') --on rebalances & withdrawals, we can pull the uniswap pool
     INNER JOIN {{ source('optimism', 'logs') }} l 
         ON t.hash = l.tx_hash
         AND t.block_number = l.block_number
