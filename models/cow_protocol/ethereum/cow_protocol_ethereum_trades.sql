@@ -226,4 +226,6 @@ valued_trades as (
         ON trades.order_uid = efs.order_uid
 )
 
-select * from valued_trades
+select *,
+  ((limit_sell_amount - atoms_sold) / atoms_sold  * usd_value) + ((atoms_bought - limit_buy_amount) / atoms_bought * usd_value) as surplus_usd
+from valued_trades
