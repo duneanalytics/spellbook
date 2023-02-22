@@ -26,18 +26,18 @@ FROM (
         cg._pool AS pool_contract
         , ceb.output_0 AS incentives_contract
         , 'external bribe' as incentives_type
-        , ceb..allowedRewards AS allowed_rewards
-        , ceb..call_block_time AS evt_block_time
-        , ceb..call_block_number AS evt_block_number
-        , ceb..contract_address
-        , ceb..call_tx_hash AS evt_tx_hash
+        , ceb.allowedRewards AS allowed_rewards
+        , ceb.call_block_time AS evt_block_time
+        , ceb.call_block_number AS evt_block_number
+        , ceb.contract_address
+        , ceb.call_tx_hash AS evt_tx_hash
         , 1 AS evt_index
 
         FROM {{ source('velodrome_optimism','BribeFactory_call_createExternalBribe') }} ceb.
         INNER JOIN {{ source('velodrome_optimism', 'GaugeFactory_call_createGauge') }} cg
-                ON cg._external_bribe = ceb..existing_bribe
+                ON cg._external_bribe = ceb.existing_bribe
 
-        WHERE ceb..call_success = true
+        WHERE ceb.call_success = true
 
         UNION ALL
 
