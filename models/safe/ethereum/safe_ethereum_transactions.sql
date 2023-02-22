@@ -20,7 +20,7 @@ select
     tr.block_time,
     tr.block_number,
     tr.tx_hash,
-    s.address,
+    s.address as safe_address,
     tr.to,
     tr.value,
     tr.gas,
