@@ -409,6 +409,7 @@ FROM (
       ,('0xFbe304258DCf193b9a320541985e2078ddB34287', 'Decent')
       ,('0x93798ef7e3a621d7c4eff22eda50b931fe57a3cf', 'QiDao')
       ,('0xcD0b087E113152324FCA962488B4d9BeB6f4CaF6', 'NFTEarth')
+      ,('0x607291C9B3b03D8C2DC1F5f7F8db2B6A06C91183', 'Tide Protocol')
 
   ) as temp_table (creator_address, contract_project)
 
