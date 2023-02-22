@@ -1,4 +1,4 @@
-{{ config(alias='price_improvement',
+{{ config(alias='trade_slippage',
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                     "project",
                                     "cow_protocol",
@@ -24,7 +24,7 @@ raw_data as (
     sell_price,
     B.decimals as sell_decimals,
     usd_value,
-    slippage_bips,
+    slippage_bips as slippage_tolerance_bips,
     (1.0 - (slippage_bips / 10000.0)) as buy_tolerance,
     (1.0 + (slippage_bips / 10000.0)) as sell_tolerance,
     order_uid
@@ -36,21 +36,21 @@ where slippage_bips is not null
 ),
 
 results as (
-    select order_uid, block_number, block_time, buy_quote, sell_quote, slippage_bips, usd_value,
+    select order_uid, block_number, block_time, buy_quote, sell_quote, slippage_tolerance_bips, usd_value,
         CASE
-            WHEN order_type = 'SELL' THEN (atoms_bought - (limit_buy_amount / buy_tolerance))
-            ELSE ((limit_sell_amount / sell_tolerance) - atoms_sold)
-        END AS surplus_atoms,
+            WHEN order_type = 'SELL' THEN (atoms_bought - buy_quote)
+            ELSE (sell_quote - atoms_sold)
+        END AS slippage_atoms,
     100.0 * (CASE
         WHEN order_type = 'SELL'
-            THEN (((atoms_bought - (limit_buy_amount / buy_tolerance)) / (limit_buy_amount / buy_tolerance)))
-            ELSE (((limit_sell_amount / sell_tolerance) - (atoms_sold)) / (limit_sell_amount / sell_tolerance))
-    END) AS surplus_percentage,
+            THEN (((atoms_bought - buy_quote) / buy_quote))
+            ELSE ((sell_quote - atoms_sold) / sell_quote)
+    END) AS slippage_percentage,
     CASE
         WHEN order_type = 'SELL'
-        THEN (atoms_bought - buy_quote) / POWER(10, buy_decimals) * (usd_value / units_bought)
-        ELSE ((limit_sell_amount / sell_tolerance) - (atoms_sold)) * (usd_value / (limit_sell_amount / sell_tolerance))
-      END AS surplus_usd
+        THEN (atoms_bought - buy_quote) * (usd_value / atoms_bought)
+        ELSE (sell_quote - atoms_sold) * (usd_value / atoms_sold)
+      END AS slippage_usd
     from raw_data
 )
 select * from results

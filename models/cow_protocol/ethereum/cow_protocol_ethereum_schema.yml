@@ -274,15 +274,15 @@ models:
     columns:
       - *trader
       - *referrer
-  - name: cow_protocol_ethereum_price_improvement
+  - name: cow_protocol_ethereum_trade_slippage
     meta:
       blockchain: ethereum
       project: cow_protocol
       contributors: bh2smith, gentrexha, josojo
     config:
-      tags: [ 'ethereum','cow_protocol','price improvement' ]
+      tags: [ 'ethereum','cow_protocol','trade_slippage' ]
     description: >
-      The query contains several measurments between the quoted price on cowswap and 
+      The query contains several measurements between the quoted price on cowswap and 
       the executed price. The price difference between the quote and the actual price 
       is called price improvement and is measured as percentage or in absolute dollars.
     columns:
@@ -293,12 +293,13 @@ models:
         name: buy_quote
       - &sell_quote
         name: sell_quote
-      - *slippage_bips
+      - &slippage_tolerance_bips
+        name: slippage_tolerance_bips
       - *usd_value
-      - &surplus_atoms
-        name: surplus_atoms
-      - &surplus_percentage
-        name: surplus_percentage
-      - &surplus_usd
-        name: surplus_usd
+      - &slippage_atoms
+        name: slippage_atoms
+      - &slippage_percentage
+        name: slippage_percentage
+      - &slippage_usd
+        name: slippage_usd
 
