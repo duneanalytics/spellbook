@@ -23,7 +23,7 @@ list of models using old generic test, due to multiple versions in one model:
 ,ref('fraxswap_trades')
 ,ref('curvefi_trades')
 ,ref('airswap_ethereum_trades')
-,ref('clipper_ethereum_trades')
+,ref('clipper_trades')
 ,ref('shibaswap_ethereum_trades')
 ,ref('swapr_ethereum_trades')
 ,ref('defiswap_ethereum_trades')
