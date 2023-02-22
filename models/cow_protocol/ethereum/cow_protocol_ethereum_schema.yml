@@ -293,14 +293,14 @@ models:
         name: buy_quote
       - &sell_quote
         name: sell_quote
-      - &slippage_tolerance_bips
-        name: slippage_tolerance_bips
+      - &tolerance_bips
+        name: tolerance_bips
       - &trade_usd_value
         name: trade_usd_value
-      - &slippage_atoms
-        name: slippage_atoms
-      - &slippage_percentage
-        name: slippage_percentage
-      - &slippage_usd
-        name: slippage_usd
+      - &amount_atoms
+        name: amount_atoms
+      - &amount_percentage
+        name: amount_percentage
+      - &amount_usd
+        name: amount_usd
 
