@@ -24,10 +24,10 @@ FROM (
     SELECT
       blockchain
     , 'arrakis' AS project
-    , contract_address, 
-    , pool_contract, 
-    , fee, 
-    , token0, 
+    , contract_address
+    , pool_contract
+    , fee
+    , token0
     . token1
         
     FROM {{ a_lp_lm_model }}
