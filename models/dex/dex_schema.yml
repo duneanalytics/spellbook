@@ -124,15 +124,9 @@ models:
     description: >
       Mappings for DEX incentives contracts (i.e. gauges, bribes) to liquidity pools on all chains across all contracts and versions
     columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain which the DEX is deployed"
-      - &project
-        name: project
-        description: "Project name of the DEX"
-      - &version
-        name: version
-        description: "Version of the contract built and deployed by the DEX project"
+      - *blockchain
+      - *project
+      - *version
       - &pool
         name: pool
         description: "Address of the liquidity pool contract"
@@ -148,9 +142,7 @@ models:
       - &evt_block_number
         name: evt_block_number
         description: 'Block Number'
-      - &contract_address
-        name: contract_address
-        description: 'Incentives Creator Contract Address'
+      - *contract_address
       - &evt_tx_hash
         name: evt_tx_hash
         description: 'Tx Hash'

@@ -118,6 +118,4 @@ models:
       - &evt_tx_hash
         name: evt_tx_hash
         description: 'Tx Hash'
-      - &evt_index
-        name: evt_index
-        description: "Event Index"
+      - *evt_index
