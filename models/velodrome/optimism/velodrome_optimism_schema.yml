@@ -120,6 +120,9 @@ models:
       - &incentives_type
         name: incentives_type
         description: "Description of the incentives address type."
+      - &allowed_rewards
+        name: allowed_rewards
+        description: "Array of tokens eligible for bribes"
       - &evt_block_time
         name: evt_block_time
         description: 'Block time in UTC'

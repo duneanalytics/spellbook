@@ -5,7 +5,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['pool', 'gauge'],
+        unique_key = ['pool_contract', 'incentives_contract'],
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "balancer",
