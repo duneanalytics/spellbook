@@ -68,8 +68,7 @@ models:
         name: block_number
         description: "Number of block"
       - *tx_hash
-      - &safe_address
-        name: safe_address
+      - name: address
         description: "Safe contract address"
       - &to
         name: to
