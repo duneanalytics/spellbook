@@ -28,11 +28,11 @@ SELECT
     '2' AS version,
     'borrow' AS transaction_type,
     CASE 
-        WHEN borrowRateMode = '1' THEN 'stable'
-        WHEN borrowRateMode = '2' THEN 'variable'
+        WHEN CAST(borrowRateMode AS VARCHAR(100)) = '1' THEN 'stable'
+        WHEN CAST(borrowRateMode AS VARCHAR(100)) = '2' THEN 'variable'
     END AS loan_type,
-    reserve AS token,
-    user AS borrower, 
+    CAST(reserve AS VARCHAR(100)) AS token,
+    CAST(user AS VARCHAR(100)) AS borrower, 
     CAST(NULL AS VARCHAR(5)) AS repayer,
     CAST(NULL AS VARCHAR(5)) AS liquidator,
     CAST(amount AS DECIMAL(38,0)) AS amount,
@@ -46,9 +46,9 @@ SELECT
     '2' AS version,
     'repay' AS transaction_type,
     NULL AS loan_type,
-    reserve AS token,
-    user AS borrower,
-    repayer AS repayer,
+    CAST(reserve AS VARCHAR(100)) AS token,
+    CAST(user AS VARCHAR(100)) AS borrower,
+    CAST(repayer AS VARCHAR(100)) AS repayer,
     CAST(NULL AS VARCHAR(5)) AS liquidator,
     - CAST(amount AS DECIMAL(38,0)) AS amount,
     evt_tx_hash,
@@ -61,9 +61,9 @@ SELECT
     '2' AS version,
     'borrow_liquidation' AS transaction_type,
     NULL AS loan_type,
-    debtAsset AS token,
-    user AS borrower,
-    liquidator AS repayer,
+    CAST(debtAsset AS VARCHAR(100)) AS token,
+    CAST(user AS VARCHAR(100)) AS borrower,
+    CAST(liquidator AS VARCHAR(100)) AS repayer,
     liquidator AS liquidator,
     - CAST(debtToCover AS DECIMAL(38, 0)) AS amount,
     evt_tx_hash,

@@ -7,15 +7,15 @@
         on_schema_change='fail',
         file_format ='delta',
         incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["optimism"]\',
+        post_hook='{{ expose_spells(\'["fantom"]\',
                                     "project",
                                     "safe",
-                                    \'["frank_maseo", "tschubotz"]\') }}'
+                                    \'["tschubotz"]\') }}'
     ) 
 }}
 
 select
-    'optimism' as blockchain,
+    'fantom' as blockchain,
     et.from as address,
     case 
         when et.to = '0x8942595a2dc5181df0465af0d7be08c8f23c93af' then '0.1.0'
@@ -32,8 +32,8 @@ select
     try_cast(date_trunc('day', et.block_time) as date) as block_date,
     et.block_time as creation_time,
     et.tx_hash
-from {{ source('optimism', 'traces') }} et 
-join {{ ref('safe_optimism_singletons') }} s
+from {{ source('fantom', 'traces') }} et 
+join {{ ref('safe_fantom_singletons') }} s
     on et.to = s.address
 where et.success = true
     and et.call_type = 'delegatecall' -- delegatecall to singleton is Safe (proxy) address
@@ -44,7 +44,7 @@ where et.success = true
     )
     and et.gas_used > 10000  -- to ensure the setup call was successful. excludes e.g. setup calls with missing params that fallback
     {% if not is_incremental() %}
-    and et.block_time > '2021-11-17' -- for initial query optimisation    
+    and et.block_time > '2021-11-25' -- for initial query optimisation    
     {% endif %}
     {% if is_incremental() %}
     and et.block_time > date_trunc("day", now() - interval '1 week')
