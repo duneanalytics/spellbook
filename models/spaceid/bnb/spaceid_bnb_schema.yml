@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: spaceid_bnb_registrations
+    meta:
+      blockchain: bnb
+      project: spaceid
+      contributors: [springzh]
+    config:
+      tags: ['bnb','spaceid','name','registrations']
+    description: >
+       SpaceID V3, V4, V5, V6, V7, V8 & V9 Name Registered on BNB
+    columns:
+      - &version
+        name: version
+        description: "Contract version"
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+      - &name
+        name: name
+        description: "Name of the space ID"
+        tests:
+          - unique
+      - &label
+        name: label
+        description: "Label of the space ID"
+      - &owner
+        name: owner
+        description:  "Owner of the space ID"
+      - &cost
+        name: cost
+        description:  "Cost spent to register the space id"
+      - &expires
+        name: expires
+        description:  "Name expires date and time in unix timestamp format"
+      - &contract_address
+        name: contract_address
+        description:  "Contract address that called to register the space id"
+      - &tx_hash
+        name: tx_hash
+        description:  "Transaction hash"
+      - &block_number
+        name: block_number
+        description: "Block number in which the transaction was executed"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
