@@ -149,6 +149,13 @@ models:
       fantom:
         +schema: sushiswap_fantom
 
+    openocean:
+      +schema: openocean
+      fantom:
+        +schema: openocean_fantom
+      avalanche_c:
+        +schema: openocean_avalanche_c
+
     babyswap:
       +schema: babyswap
       bnb:

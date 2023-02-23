@@ -10,6 +10,7 @@
 
 {% set dex_aggregator_models = [
  ref('cow_protocol_trades')
+ ,ref('openocean_trades')
  ,ref('paraswap_trades')
  ,ref('lifi_trades')
  ,ref('odos_trades')
