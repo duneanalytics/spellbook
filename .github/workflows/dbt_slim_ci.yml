@@ -5,13 +5,10 @@ on:
   workflow_dispatch:
   pull_request:
     paths-ignore:
-      - 'deprecated-dune-v1-abstractions/**'
       - 'scripts/**'
       - 'Pipfile'
       - '.gitignore'
-  push:
-    branches:
-      - 'main'
+      - '.github/**'
 
 concurrency:
   group:  ${{ github.workflow }}-${{ github.ref }}
@@ -34,9 +31,7 @@ jobs:
         run: "/runner/change_schema.sh git_$GIT_SHA"
 
       - name: Get latest manifest
-        env:
-          JOB_ID: "123193"
-        run: "/runner/fetch_latest_manifest.py --dbt_job_id $JOB_ID"
+        run: "aws s3 cp s3://manifest-spellbook/manifest.json manifest.json"
 
       - name: dbt dependencies
         run: "dbt deps"
