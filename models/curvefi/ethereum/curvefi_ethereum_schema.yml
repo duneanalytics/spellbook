@@ -127,6 +127,22 @@ models:
             - tx_hash
             - evt_index
             - trace_address
+      - check_dex_seed:
+          blockchain: ethereum
+          project: Curve
+          version: Regular
+      - check_dex_seed:
+          blockchain: ethereum
+          project: Curve
+          version: Factory V1 Meta
+      - check_dex_seed:
+          blockchain: ethereum
+          project: Curve
+          version: Factory V1 Plain
+      - check_dex_seed:
+          blockchain: ethereum
+          project: Curve
+          version: Factory V2
     columns:
       - &blockchain
         name: blockchain
