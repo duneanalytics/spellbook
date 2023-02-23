@@ -124,6 +124,13 @@ models:
       polygon:
         +schema: quickswap_polygon
 
+    paraswap:
+      +schema: paraswap
+      avalanche_c:
+        +schema: paraswap_avalanche_c
+      fantom:
+        +schema: paraswap_fantom
+
     nomiswap:
       +schema: nomiswap
       bnb:
