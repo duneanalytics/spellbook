@@ -519,3 +519,26 @@ models:
         description: "Address of the wallet which voted for the gauge"
       - name: vote
         description: "Weight of the vote performed by the provider for the gauge"
+
+  - name: balancer_v2_ethereum_lbps
+    meta:
+      blockchain: ethereum
+      project: balancer_v2
+      contributors: stefenon
+    config:
+      tags: ['ethereum', 'balancer', 'lbp']
+    description: >
+      Record of the Liquidity Boostrapping Pools (LBP) of Balancer, an automated portfolio manager and trading platform, on Ethereum.
+    columns:
+      - name: name
+        description: 'Name of the LBP'
+      - name: pool_id
+        description: 'ID of the LBP'
+      - name: token_sold
+        description: 'Contract address of the token sold by the LBP'
+      - name: token_symbol
+        description: 'Symbol of the token sold by the LBP'
+      - name: start_time
+        description: 'LBP start time'
+      - name: end_time
+        description: 'LBP end time'
