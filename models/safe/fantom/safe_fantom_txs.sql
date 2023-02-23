@@ -1,7 +1,7 @@
 {{ 
     config(
         materialized='incremental',
-        alias='safe_transactions_fantom',
+        alias='safe_txs_fantom',
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'trace_address'], 
         on_schema_change='fail',

@@ -47,7 +47,7 @@ models:
       - &tx_hash
         name: tx_hash
 
-  - name: safe_fantom_transactions
+  - name: safe_fantom_txs
     meta:
       blockchain: fantom
       project: safe
