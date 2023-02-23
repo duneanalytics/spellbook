@@ -1,5 +1,9 @@
 {{ config(
   schema = 'aave_v3_optimism'
+  , materialized = 'incremental'
+  , file_format = 'delta'
+  , incremental_strategy = 'merge'
+  , unique_key = ['reserve', 'symbol', 'hour']
   , alias='interest'
   , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
@@ -18,4 +22,7 @@ select
 from {{ source('aave_v3_optimism', 'Pool_evt_ReserveDataUpdated') }} a
 left join {{ ref('tokens_optimism_erc20') }} t
 on a.reserve=t.contract_address
+{% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
+{% endif %}
 group by 1,2,3
