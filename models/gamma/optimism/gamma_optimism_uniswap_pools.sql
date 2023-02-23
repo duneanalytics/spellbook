@@ -5,7 +5,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['lp_name', 'contract_address', 'pool_contract']
+        unique_key = ['contract_address', 'pool_contract']
   )
 }}
 
