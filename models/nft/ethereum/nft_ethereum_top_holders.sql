@@ -1,5 +1,6 @@
 {{ config(
       alias = 'top_holders',
+      materialized='table',
       post_hook='{{ expose_spells(\'["ethereum"]\',
                                   "sector",
                                   "nft",
