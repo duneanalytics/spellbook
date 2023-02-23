@@ -9,7 +9,7 @@ models:
       contributors: gentrexha
     config:
       tags: ['labels', 'tx_hash', 'ethereum', 'offramp', 'dex']
-    description: "Trades that traded from a stable coin to any other token"
+    description: "Trades that traded from any token to a stable token"
     columns:
       - &blockchain
         name: blockchain
@@ -50,7 +50,7 @@ models:
       contributors: gentrexha
     config:
       tags: ['labels', 'tx_hash', 'ethereum', 'offramp', 'dex']
-    description:  "Trades that traded from a stable coin to any other token"
+    description:  "Trades that traded from any token to a stable token"
     columns:
       - *blockchain
       - *tx_hash
