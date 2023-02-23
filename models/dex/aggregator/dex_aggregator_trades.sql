@@ -1,3 +1,4 @@
+
 {{ config(
         alias ='trades',
         post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "fantom"]\',
@@ -10,6 +11,8 @@
 {% set dex_aggregator_models = [
  ref('cow_protocol_trades')
  ,ref('openocean_trades')
+ ,ref('paraswap_trades')
+ ,ref('lifi_trades')
  ,ref('odos_trades')
  ,ref('yield_yak_avalanche_c_trades')
 ] %}
