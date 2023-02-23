@@ -40,7 +40,7 @@ src_evt_inventory as (
     ,taker
     ,maker
     ,get_json_object(inv.item, '$.data') as data
-    ,substring(get_json_object(inv.item, '$.data'), 195,64) as token_id_bytes
+    ,bytea2numeric_v3(substring(get_json_object(inv.item, '$.data'), 195,64)) as token_id
     ,'0x' || substring(get_json_object(inv.item, '$.data'), 155, 40) as nft_contract_address
     ,get_json_object(inv.detail, '$.executionDelegate') as execution_delegate
     ,get_json_object(inv.item, '$.price') as price
@@ -106,7 +106,7 @@ SELECT distinct 'ethereum' AS blockchain
 , prof.evt_block_time AS block_time
 , date_trunc('day', prof.evt_block_time) AS block_date
 , prof.evt_block_number AS block_number
-, CAST(COALESCE(bytea2numeric_v2(token_id_bytes)::BIGINT, bytea2numeric_v2(token_id_bytes)) AS VARCHAR(100)) AS token_id
+, inv.token_id as token_id
 , nft_token.name AS collection
 , CAST(inv.price AS DECIMAL(38,0)) AS amount_raw
 , inv.price/POWER(10, currency_token.decimals) AS amount_original
@@ -187,13 +187,13 @@ LEFT JOIN src_nft_transfers buyer_fix ON prof.evt_block_time=buyer_fix.block_tim
     AND inv.nft_contract_address=buyer_fix.contract_address
     AND buyer_fix.from=agg.contract_address
     AND buyer_fix.from=inv.taker
-    AND SUBSTRING('0000000000000000000000000000000000000000000000000000000000000000', 1, 64-LEN(CONV(buyer_fix.token_id, 10, 16))) || CONV(buyer_fix.token_id, 10, 16)=inv.token_id_bytes
+    AND buyer_fix.token_id=inv.token_id
 LEFT JOIN src_nft_transfers seller_fix ON prof.evt_block_time=seller_fix.block_time
     AND prof.evt_tx_hash=seller_fix.tx_hash
     AND inv.nft_contract_address=seller_fix.contract_address
     AND seller_fix.to=agg.contract_address
     AND seller_fix.to=inv.maker
-    AND SUBSTRING('0000000000000000000000000000000000000000000000000000000000000000', 1, 64-LEN(CONV(seller_fix.token_id, 10, 16))) || CONV(seller_fix.token_id, 10, 16)=inv.token_id_bytes
+    AND seller_fix.token_id=inv.token_id
 LEFT JOIN {{ ref('nft_ethereum_aggregators_markers') }} agg_m
         ON RIGHT(et.data, agg_m.hash_marker_size) = agg_m.hash_marker
 
