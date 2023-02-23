@@ -5,7 +5,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain','lp_name', 'contract_address', 'pool'],
+        unique_key = ['blockchain','contract_address', 'pool_contract'],
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "gamma",
@@ -24,6 +24,7 @@ FROM (
     SELECT
       blockchain
     , 'gamma' AS project
+    , lp_name
     , contract_address
     , pool_contract
     , fee
