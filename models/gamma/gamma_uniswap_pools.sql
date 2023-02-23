@@ -28,7 +28,7 @@ FROM (
     , pool_contract
     , fee
     , token0
-    . token1
+    , token1
         
     FROM {{ g_lp_lm_model }}
     {% if not loop.last %}
