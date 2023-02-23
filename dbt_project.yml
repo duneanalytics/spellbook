@@ -124,6 +124,13 @@ models:
       polygon:
         +schema: quickswap_polygon
 
+    paraswap:
+      +schema: paraswap
+      avalanche_c:
+        +schema: paraswap_avalanche_c
+      fantom:
+        +schema: paraswap_fantom
+
     nomiswap:
       +schema: nomiswap
       bnb:
@@ -141,6 +148,13 @@ models:
         +schema: sushiswap_arbitrum
       fantom:
         +schema: sushiswap_fantom
+
+    openocean:
+      +schema: openocean
+      fantom:
+        +schema: openocean_fantom
+      avalanche_c:
+        +schema: openocean_avalanche_c
 
     babyswap:
       +schema: babyswap
