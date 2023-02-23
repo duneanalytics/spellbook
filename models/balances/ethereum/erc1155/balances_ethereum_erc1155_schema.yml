@@ -78,17 +78,3 @@ models:
       - &updated_at
         name: updated_at
         description: "UTC timestamp when data was last updated"
-
-  - name: balances_ethereum_erc1155_noncompliant
-    meta:
-      blockchain: ethereum
-      sector: balances
-      project: erc1155
-      contributors: Henrystats, 0xBoxer
-    config:
-      tags: ['balances', 'ethereum', 'erc1155', 'noncompliant', 'Henrystats']
-    description: >
-        erc1155 NFT contract addresses that allow multiple minting(from 0x000..000) of the same tokenId.
-        Depends on erc1155_ethereum_transfers.
-    columns:
-      - *token_address

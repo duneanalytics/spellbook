@@ -26,9 +26,6 @@ with
     b.amount, 
     lead(b.hour, 1, now()) OVER (PARTITION BY b.wallet_address, b.token_address, b.tokenId ORDER BY hour) AS next_hour
 FROM {{ ref('transfers_ethereum_erc1155_rolling_hour') }} b
-LEFT JOIN {{ ref('balances_ethereum_erc1155_noncompliant') }}  as nc
-    ON b.token_address = nc.token_address
-WHERE nc.token_address IS NULL 
 )
 
 SELECT 
