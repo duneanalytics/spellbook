@@ -411,6 +411,7 @@ FROM (
       ,('0xcD0b087E113152324FCA962488B4d9BeB6f4CaF6', 'NFTEarth')
       ,('0x607291C9B3b03D8C2DC1F5f7F8db2B6A06C91183', 'Tide Protocol')
       ,('0xEe312dDc7aCE9F08728241BF2693B67D3428271B', 'Aloe II')
+      ,('0x33d73cc0E060939476A10E47b86A4568c7DcF261', 'Coinvise')
 
   ) as temp_table (creator_address, contract_project)
 
