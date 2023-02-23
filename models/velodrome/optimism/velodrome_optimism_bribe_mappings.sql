@@ -35,8 +35,8 @@ FROM (
 
         
 
-        FROM {{ source('velodrome_optimism','WrappedExternalBribeFactory_call_createBribe') }} ceb
-        INNER JOIN {{ source('velodrome_optimism','BribeFactory_call_createExternalBribe') }} ccb
+        FROM {{ source('velodrome_optimism','WrappedExternalBribeFactory_call_createBribe') }} ccb
+        INNER JOIN {{ source('velodrome_optimism','BribeFactory_call_createExternalBribe') }} ceb
                 ON ceb.output_0 = ccb.existing_bribe
         INNER JOIN {{ source('velodrome_optimism', 'GaugeFactory_call_createGauge') }} cg
                 ON cg._external_bribe = ceb.output_0
