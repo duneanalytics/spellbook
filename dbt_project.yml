@@ -118,6 +118,18 @@ models:
         +schema: uniswap_optimism
       polygon:
         +schema: uniswap_polygon
+    
+    quickswap:
+      +schema: quickswap
+      polygon:
+        +schema: quickswap_polygon
+
+    paraswap:
+      +schema: paraswap
+      avalanche_c:
+        +schema: paraswap_avalanche_c
+      fantom:
+        +schema: paraswap_fantom
 
     nomiswap:
       +schema: nomiswap
@@ -136,6 +148,13 @@ models:
         +schema: sushiswap_arbitrum
       fantom:
         +schema: sushiswap_fantom
+
+    openocean:
+      +schema: openocean
+      fantom:
+        +schema: openocean_fantom
+      avalanche_c:
+        +schema: openocean_avalanche_c
 
     babyswap:
       +schema: babyswap
@@ -429,6 +448,11 @@ models:
         +schema: trove_arbitrum
       ethereum:
         +schema: trove_ethereum
+        
+    lifi:
+      +schema: lifi
+      fantom:
+        +schema: lifi_fantom
 
     spiritswap:
       +schema: spiritswap
@@ -444,6 +468,11 @@ models:
       +schema: cryptopunks
       ethereum:
         +schema: cryptopunks_ethereum
+
+    spaceid:
+      +schema: spaceid
+      bnb:
+        +schema: spaceid_bnb
 
     spartacus_exchange:
       +schema: spartacus_exchange
@@ -759,7 +788,9 @@ models:
       +schema: beethoven_x
       optimism:
         +schema: beethoven_x_optimism
-
+      fantom:
+        +schema: beethoven_x_fantom
+    
     zipswap:
       +schema: zipswap
       optimism:
@@ -777,6 +808,11 @@ models:
       +schema: rocifi
       polygon:
         +schema: rocifi_polygon
+
+    zonic:
+      +schema: zonic
+      optimism:
+        +schema: zonic_optimism
 
 seeds:
   spellbook:
