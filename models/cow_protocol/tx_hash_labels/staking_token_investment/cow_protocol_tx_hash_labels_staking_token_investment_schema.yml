@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: cow_protocol_tx_hash_labels_early_investment
+  - name: cow_protocol_tx_hash_labels_staking_token_investment
     meta:
       blockchain: ethereum
       sector: tx_hash_labels
-      category: early_investment
+      category: staking_token_investment
       contributors: gentrexha
     config:
-      tags: ['labels', 'tx_hash', 'ethereum', 'early_investment', 'dex']
-    description: "Trades that sold a harvest yield token"
+      tags: ['labels', 'tx_hash', 'ethereum', 'staking_token_investment', 'dex']
+    description: "Trades that bought a staking token"
     columns:
       - &blockchain
         name: blockchain
@@ -42,15 +42,15 @@ models:
         name: label_type
         description: "Type of label (see labels overall readme)"
 
-  - name: cow_protocol_tx_hash_labels_early_investment_ethereum
+  - name: cow_protocol_tx_hash_labels_staking_token_investment_ethereum
     meta:
       blockchain: ethereum
       sector: labels
-      category: early_investment
+      category: staking_token_investment
       contributors: gentrexha
     config:
-      tags: ['labels', 'tx_hash', 'ethereum', 'early_investment', 'dex']
-    description:  "Trades that sold a harvest yield token"
+      tags: ['labels', 'tx_hash', 'ethereum', 'staking_token_investment', 'dex']
+    description:  "Trades that bought a staking token"
     columns:
       - *blockchain
       - *tx_hash
