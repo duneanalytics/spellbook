@@ -26,7 +26,7 @@ with
 select
   "ethereum" as blockchain,
   tx_hash,
-  "Offramp to stable" AS name,
+  "Onramp from stable" AS name,
   "tx_hash" AS category,
   "gentrexha" AS contributor,
   "query" AS source,
