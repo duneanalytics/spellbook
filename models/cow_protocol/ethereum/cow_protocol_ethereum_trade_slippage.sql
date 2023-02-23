@@ -38,8 +38,8 @@ results as (
     END) AS amount_percentage,
     CASE
         WHEN order_type = 'SELL'
-        THEN (atoms_bought - buy_quote) * (usd_value / atoms_bought)
-        ELSE (sell_quote - atoms_sold) * (usd_value / atoms_sold)
+        THEN (atoms_bought - buy_quote) * (trade_usd_value / atoms_bought)
+        ELSE (sell_quote - atoms_sold) * (trade_usd_value / atoms_sold)
       END AS amount_usd
     from raw_data
 )
