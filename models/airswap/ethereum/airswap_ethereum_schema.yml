@@ -28,6 +28,10 @@ models:
       - check_dex_seed:
           blockchain: ethereum
           project: airswap
+          version: light_v0
+      - check_dex_seed:
+          blockchain: ethereum
+          project: airswap
           version: swap
       - check_dex_seed:
           blockchain: ethereum
