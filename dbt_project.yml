@@ -461,6 +461,11 @@ models:
       ethereum:
         +schema: cryptopunks_ethereum
 
+    spaceid:
+      +schema: spaceid
+      bnb:
+        +schema: spaceid_bnb
+
     spartacus_exchange:
       +schema: spartacus_exchange
       fantom:
