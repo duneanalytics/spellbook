@@ -63,12 +63,14 @@ select
     project_contract_address,
     cast(null as varchar(5)) as aggregator_name,
     cast(null as varchar(5)) as aggregator_address,
-    tx_hash,
+    mp.tx_hash,
     mp.block_number,
-    tx.from as tx_from,
+    tx.`from`  as tx_from,
     tx.to as tx_to,
     cast(null as varchar(5)) as unique_trade_id
 from marketplace mp
+inner join {{ source('ethereum', 'transactions') }} tx
+    on tx.hash = mp.tx_hash
 left join {{ ref('tokens_ethereum_erc20') }} erc20
     on erc20.contract_address = mp.currency_contract
 left join {{ ref('tokens_ethereum_nft') }} nft_tokens
@@ -77,5 +79,4 @@ left join {{ source('prices', 'usd') }} as prices
     on prices.minute = date_trunc('minute', mp.block_time)
     and prices.contract_address = mp.currency_contract
     and prices.blockchain = 'ethereum'
-inner join {{ source('ethereum', 'transactions') }} tx
-    on tx.hash = mp.tx_hash
+
