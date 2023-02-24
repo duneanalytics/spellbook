@@ -227,7 +227,7 @@ valued_trades as (
 )
 
 select *,
-  -- Depending on the order kind (buy vs sell), the limit amount will always be equal to either the amount bought or sold.
-  -- We can therefore sum up the surplus relative to total buy and sell amount and extrapolate given the total trade's usd value.
-  ((limit_sell_amount - atoms_sold) / atoms_sold  * usd_value) + ((atoms_bought - limit_buy_amount) / atoms_bought * usd_value) as surplus_usd
+  -- Relative surplus (in %) is the difference between limit price and executed price as a ratio of the limit price.
+  -- Absolute surplus (in USD) is relative surplus ormer multiplied with the value of the trade
+  usd_value * (((limit_sell_amount / limit_buy_amount) - (atoms_sold/atoms_bought)) / (limit_sell_amount / limit_buy_amount)) as surplus_usd
 from valued_trades
