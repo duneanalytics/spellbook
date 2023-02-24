@@ -3,12 +3,12 @@ version: 2
 models:
   - name: beethoven_x_trades
     meta:
-      blockchain: optimism,
+      blockchain: fantom
       sector: dex
       project: beethoven_x
       contributors: msilb7
     config:
-      tags: ['optimism', 'beethoven_x','trades', 'dex']
+      tags: ['fantom', 'beethoven_x','trades', 'dex']
     description: >
         beethoven_x trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
