@@ -294,7 +294,7 @@ WITH raw_token_list AS (
     ,('0x5d47baba0d66083c52009271faf3f50dcc01023c', 'UNIDX', 18, 'underlying')
     ,('0x46f21fda29f1339e0ab543763ff683d399e393ec', 'opxveVELO', 18, 'receipt')
     ,('0x79af5dd14e855823fa3e9ecacdf001d99647d043', 'jEUR', 18, 'underlying')
-
+    ,('0x8B21e9b7dAF2c4325bf3D18c1BeB79A347fE902A', 'COLLAB', 18, 'underlying')
     
 
     ) AS temp_table (contract_address, symbol, decimals, token_type)
