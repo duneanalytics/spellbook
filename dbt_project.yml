@@ -286,6 +286,9 @@ models:
         +schema: dodo_polygon
       arbitrum:
         +schema: dodo_arbitrum
+      optimism:
+        +schema: dodo_optimism
+        
 
     spookyswap:
       +schema: spookyswap
