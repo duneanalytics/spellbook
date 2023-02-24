@@ -40,3 +40,4 @@ tx_from,
 tx_to,
 unique_trade_id
 FROM {{ ref('aavegotchi_polygon_events') }}
+WHERE evt_type = 'Trade' -- There is no platform_fee_amount_raw for Mint type rows

@@ -10,3 +10,9 @@ sources:
         loaded_at_field: evt_block_time
       - name: aavegotchi_diamond_evt_ERC1155ExecutedListing
         loaded_at_field: evt_block_time
+      - name: aavegotchi_diamond_evt_Transfer
+        loaded_at_field: evt_block_time
+      - name: aavegotchi_diamond_evt_TransferSingle
+        loaded_at_field: evt_block_time
+      - name: aavegotchi_diamond_evt_TransferBatch
+        loaded_at_field: evt_block_time
