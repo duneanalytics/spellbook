@@ -5,7 +5,7 @@
 
 
         select
-            'ethereum' as blockchain,
+            'ethereum-test' as blockchain,
             day,
             wallet_address,
             token_address,
