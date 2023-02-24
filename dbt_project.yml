@@ -809,6 +809,11 @@ models:
       polygon:
         +schema: rocifi_polygon
 
+    nftearth:
+      +schema: nftearth
+      optimism:
+        +schema: nftearth_optimism
+
     zonic:
       +schema: zonic
       optimism:
