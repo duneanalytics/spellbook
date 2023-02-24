@@ -64,7 +64,7 @@ SELECT
     CAST(debtAsset AS VARCHAR(100)) AS token,
     CAST(user AS VARCHAR(100)) AS borrower,
     CAST(liquidator AS VARCHAR(100)) AS repayer,
-    liquidator AS liquidator,
+    CAST(liquidator AS VARCHAR(100))  AS liquidator,
     - CAST(debtToCover AS DECIMAL(38, 0)) AS amount,
     evt_tx_hash,
     evt_index,
@@ -76,6 +76,6 @@ LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20
     ON borrow.token = erc20.contract_address
 LEFT JOIN {{ source('prices','usd') }} p 
     ON p.minute = date_trunc('minute', borrow.evt_block_time) 
-    AND p.contract_address = borrow.token
+    AND CAST(p.contract_address AS VARCHAR(100)) = borrow.token
     AND p.blockchain = 'ethereum'
 ;

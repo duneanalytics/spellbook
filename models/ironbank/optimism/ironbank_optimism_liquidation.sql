@@ -25,4 +25,4 @@ LEFT JOIN (SELECT contract_address,underlying_token_address
 LEFT JOIN (SELECT contract_address,underlying_token_address
             FROM {{ ref('ironbank_optimism_itokens') }} ) i_asset ON CAST(l.contract_address AS VARCHAR(100)) = i_asset.contract_address
 LEFT JOIN {{ ref('ironbank_optimism_itokens') }} i ON CAST(l.contract_address AS VARCHAR(100)) = i.contract_address
-LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', l.evt_block_time) AND p.contract_address = i.underlying_token_address AND p.blockchain = 'optimism'
+LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', l.evt_block_time) AND CAST(p.contract_address AS VARCHAR(100)) = i.underlying_token_address AND p.blockchain = 'optimism'
