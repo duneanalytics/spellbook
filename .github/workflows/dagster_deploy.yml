@@ -16,6 +16,9 @@ jobs:
     - name: Add git_sha to schema
       run: "/runner/change_schema.sh wizard"
 
+    - name: copy old manifest to new file
+      run: "aws s3 cp s3://manifest-spellbook/manifest.json s3://manifest-spellbook/previous_manifest.json"
+
     - name: dbt dependencies
       run: "dbt deps"
 
