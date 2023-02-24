@@ -3,14 +3,31 @@ on:
     branches:
       - "main"
 
-concurrency:
-  group:  ${{ github.workflow }}
-  cancel-in-progress: true
-
 jobs:
   dispatch:
     runs-on: [ self-hosted, linux, spellbook ]
     steps:
+    - uses: actions/setup-python@v3
+    - name: Checkout main branch
+      uses: actions/checkout@v2
+      with:
+        ref: main
+
+    - name: Add git_sha to schema
+      run: "/runner/change_schema.sh wizard"
+
+    - name: copy old manifest to new file
+      run: "aws s3 cp s3://manifest-spellbook/manifest.json s3://manifest-spellbook/previous_manifest.json"
+
+    - name: dbt dependencies
+      run: "dbt deps"
+
+    - name: dbt compile to create prod manifest from main
+      run: "dbt compile --target-path ."
+
+    - name: upload manifest
+      run: "aws s3 cp manifest.json s3://manifest-spellbook/manifest.json"
+
     - name: Set pat token
       id: set-pat-token
       run: |
