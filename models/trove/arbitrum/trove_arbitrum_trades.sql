@@ -81,7 +81,7 @@ select
     cast(null as varchar(5)) as aggregator_address,
     mp.tx_hash,
     mp.block_number,
-    tx.from as tx_from,
+    tx.`from` as tx_from,
     tx.to as tx_to,
     cast(null as varchar(5)) as unique_trade_id
 from marketplace mp
