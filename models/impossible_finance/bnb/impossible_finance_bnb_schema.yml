@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: impossible_finance_IDO_pools
+  - name: impossible_finance_bnb_ido_pools
     meta:
       blockchain: bnb
       project: impossible_finance

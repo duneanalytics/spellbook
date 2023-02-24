@@ -1,6 +1,6 @@
 {{
     config(
-        alias='IDO_pools',
+        alias='ido_pools',
         tags=['static'],
         post_hook='{{ expose_spells(\'["bnb"]\',
                                     "project",

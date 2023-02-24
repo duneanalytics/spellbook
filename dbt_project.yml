@@ -811,6 +811,8 @@ models:
 
     impossible_finance:
       +schema: impossible_finance
+      bnb:
+        +schema: impossible_finance_bnb
 
     zonic:
       +schema: zonic
