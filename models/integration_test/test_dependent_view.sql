@@ -3,6 +3,7 @@
         )
 }}
 
+
         select
             'ethereum' as blockchain,
             day,
