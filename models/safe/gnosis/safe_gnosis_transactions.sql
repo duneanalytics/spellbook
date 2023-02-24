@@ -1,7 +1,7 @@
 {{ 
     config(
         materialized='incremental',
-        alias='safe_gnosis_transactions',
+        alias='transactions',
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'trace_address'], 
         file_format ='delta',
