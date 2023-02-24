@@ -22,6 +22,7 @@
 ,ref('pancakeswap_bnb_nft_fees')
 ,ref('quix_optimism_fees')
 ,ref('nftrade_bnb_fees')
+,ref('zonic_optimism_fees')
 ,ref('nftb_bnb_fees')
 ,ref('tofu_fees')
 ] %}
