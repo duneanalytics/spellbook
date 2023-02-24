@@ -31,6 +31,7 @@ jobs:
 
   dispatch:
     runs-on: [ self-hosted, linux, spellbook ]
+    needs: commit_manifest
     steps:
     - name: Set pat token
       id: set-pat-token
