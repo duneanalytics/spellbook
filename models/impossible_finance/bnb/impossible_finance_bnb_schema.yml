@@ -17,6 +17,8 @@ models:
       - &pool_address
         name: pool_address
         description: "Address of IDO pool"
+        test:
+          - unique
 
       - &launchpad
         name: launchpad
