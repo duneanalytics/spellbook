@@ -14,9 +14,8 @@ SELECT
     , decimals
 FROM
 (
-    VALUES    
-    ("op-optimism", "optimism", "OP", "0x4200000000000000000000000000000000000042", 18),
-
+    VALUES
+    
     --tokens not yet supported or are not active on coinpaprika are commented out
     ("eth-ethereum", "optimism", "ETH", "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", 18),
     ("eth-ethereum", "optimism","ETH", "0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000",18),
