@@ -2,7 +2,7 @@
 
 with test_data as (
     select count(*) as total
-    from {{ ref('safe_safes') }}
+    from {{ ref('safe_safes_all') }}
     where creation_time > '2023-01-01'
         and creation_time < '2023-02-01'
 ),

@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: safe_safes
+  - name: safe_safes_all
     meta:
       blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, goerli, optimism, polygon
       project: safe
