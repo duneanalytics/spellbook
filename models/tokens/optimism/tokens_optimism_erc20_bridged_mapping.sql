@@ -36,7 +36,7 @@ FROM (
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}   
-        GROUP BY 1,2
+        GROUP BY 1,2,3,4
 
         UNION ALL SELECT '0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f' AS l1_token, '0x8700daec35af8ff88c16bdf0418774cb3d7599b4' AS l2_token -- SNX
         UNION ALL SELECT '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' AS l1_token,'0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000' AS l2_token -- ETH
