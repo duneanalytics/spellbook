@@ -27,14 +27,30 @@ with marketplace as (
         evt_tx_hash as tx_hash,
         evt_block_number as block_number
     from (
-        select evt_block_time, tokenId, quantity, seller, pricePerItem,
-            paymentToken, nftAddress, evt_tx_hash, evt_block_number,
-            contract_address, bidder as buyer
+        select evt_block_time,
+               tokenId,
+               quantity,
+               seller,
+               pricePerItem,
+               paymentToken,
+               nftAddress,
+               evt_tx_hash,
+               evt_block_number,
+               contract_address,
+               bidder as buyer
         from {{ source('treasure_trove_arbitrum', 'TreasureMarketplace_evt_BidAccepted') }}
         union all
-        select evt_block_time, tokenId, quantity, seller, pricePerItem,
-            paymentToken, nftAddress, evt_tx_hash, evt_block_number,
-            contract_address, buyer
+        select evt_block_time,
+               tokenId,
+               quantity,
+               seller,
+               pricePerItem,
+               paymentToken,
+               nftAddress,
+               evt_tx_hash,
+               evt_block_number,
+               contract_address,
+               buyer
         from {{ source('treasure_trove_arbitrum', 'TreasureMarketplace_evt_ItemSold') }}
     )
 )
@@ -63,12 +79,14 @@ select
     project_contract_address,
     cast(null as varchar(5)) as aggregator_name,
     cast(null as varchar(5)) as aggregator_address,
-    tx_hash,
+    mp.tx_hash,
     mp.block_number,
     tx.from as tx_from,
     tx.to as tx_to,
     cast(null as varchar(5)) as unique_trade_id
 from marketplace mp
+inner join {{ source('arbitrum', 'transactions') }} tx
+    on tx.hash = mp.tx_hash
 left join {{ ref('tokens_arbitrum_erc20') }} erc20
     on erc20.contract_address = mp.currency_contract
 left join {{ ref('tokens_arbitrum_nft') }} nft_tokens
@@ -77,5 +95,3 @@ left join {{ source('prices', 'usd') }} as prices
     on prices.minute = date_trunc('minute', mp.block_time)
     and prices.contract_address = mp.currency_contract
     and prices.blockchain = 'arbitrum'
-inner join {{ source('arbitrum', 'transactions') }} tx
-    on tx.hash = mp.tx_hash
