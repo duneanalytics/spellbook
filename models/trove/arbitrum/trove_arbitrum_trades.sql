@@ -1,6 +1,9 @@
 {{ config(
     schema = 'trove_arbitrum',
     alias = 'trades',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
     post_hook = '{{ expose_spells(\'["arbitrum"]\',
                                     "project",
                                     "trove",
