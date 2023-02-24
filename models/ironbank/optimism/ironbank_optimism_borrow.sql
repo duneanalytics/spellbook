@@ -20,4 +20,4 @@ CAST(b.borrowAmount AS DOUBLE) / power(10,i.underlying_decimals) AS borrow_amoun
 CAST(b.borrowAmount AS DOUBLE) / power(10,i.underlying_decimals)*p.price AS borrow_usd
 FROM {{ source('ironbank_optimism', 'CErc20Delegator_evt_Borrow') }} b
 LEFT JOIN {{ ref('ironbank_optimism_itokens') }} i ON CAST(b.contract_address AS VARCHAR(100)) = i.contract_address
-LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', b.evt_block_time) AND p.contract_address = i.underlying_token_address AND p.blockchain = 'optimism'
+LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', b.evt_block_time) AND CAST(p.contract_address AS VARCHAR(100)) = i.underlying_token_address AND p.blockchain = 'optimism'
