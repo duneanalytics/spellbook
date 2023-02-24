@@ -8,7 +8,7 @@
 }}
 
 {% set clipper_models = [
-'clipper_v1_arbitrum_trades'
+ref('clipper_v1_arbitrum_trades')
 ] %}
 
 
@@ -39,7 +39,7 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ ref(dex_model) }}
+    FROM {{ dex_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
