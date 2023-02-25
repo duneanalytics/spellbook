@@ -33,6 +33,7 @@ models:
       contributors: aalan3, jeff-dude
     config:
       tags: ['prices', 'tokens', 'usd']
+    description: "Price tokens for native tokens for all chains"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
