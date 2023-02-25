@@ -13,11 +13,7 @@ SELECT blockchain, address, name, category, contributor, source, created_at, upd
 UNION ALL
 SELECT * FROM {{ ref('labels_balancer_v2_pools') }}
 UNION ALL
-SELECT * FROM {{ ref('labels_cex') }}
-UNION ALL
 SELECT * FROM {{ ref('labels_contracts') }}
-UNION ALL
-SELECT * FROM {{ ref('labels_funds') }}
 UNION ALL
 SELECT * FROM {{ ref('labels_hackers_ethereum') }}
 UNION ALL
@@ -44,3 +40,5 @@ UNION ALL
 SELECT * FROM {{ ref('labels_dao') }}
 UNION ALL
 SELECT * FROM {{ ref('labels_infrastructure') }}
+UNION ALL
+SELECT * FROM {{ ref('labels_institution') }}
