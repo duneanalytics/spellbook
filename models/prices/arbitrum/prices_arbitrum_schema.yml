@@ -18,6 +18,9 @@ models:
         description: "Id of the token at coinpaprika. This id is required to pull the price feed data. NOTE: Not all tokens are listed at coinpaprika - consider using price data from DEX sources in this case or submit a listing request at coinpaprika."
       - name: blockchain
         description: "Native blockchain of the token, if any"
+        tests:
+          - accepted_values:
+              values: [ "arbitrum" ]
       - name: contract_address
         description: "Contract address of the token, if any"
       - name: symbol
