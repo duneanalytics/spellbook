@@ -293,7 +293,6 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - nft_contract_address
-            - wallet_address
             - rn
     columns:
       - name: nft_contract_address
