@@ -8,6 +8,7 @@ models:
       contributors: aalan3, jeff-dude
     config:
       tags: ['prices', 'tokens', 'usd', 'avalanche_c']
+    description: "Price tokens on avalanche_c chain"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
