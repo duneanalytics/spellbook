@@ -64,7 +64,7 @@ SELECT
 FROM 
 erc721_ranked
 
-UNION ALL 
+UNION
 
 SELECT 
     wallet_address,
