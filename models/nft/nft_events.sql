@@ -25,6 +25,7 @@
 ,ref('nftrade_bnb_events')
 ,ref('zonic_optimism_events')
 ,ref('nftb_bnb_events')
+,ref('nftearth_optimism_events')
 ] %}
 
 SELECT *

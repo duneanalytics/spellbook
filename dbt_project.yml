@@ -286,6 +286,9 @@ models:
         +schema: dodo_polygon
       arbitrum:
         +schema: dodo_arbitrum
+      optimism:
+        +schema: dodo_optimism
+        
 
     spookyswap:
       +schema: spookyswap
@@ -808,6 +811,11 @@ models:
       +schema: rocifi
       polygon:
         +schema: rocifi_polygon
+
+    nftearth:
+      +schema: nftearth
+      optimism:
+        +schema: nftearth_optimism
 
     zonic:
       +schema: zonic

@@ -28,6 +28,7 @@
 ,ref('nftrade_bnb_trades')
 ,ref('zonic_optimism_trades')
 ,ref('nftb_bnb_trades')
+,ref('nftearth_optimism_trades')
 ] %}
 
 SELECT *
