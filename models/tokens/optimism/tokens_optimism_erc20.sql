@@ -232,6 +232,7 @@ WITH raw_token_list AS (
     ,('0xd52f94df742a6f4b4c8b033369fe13a41782bf44', 'L2DAO', 18, 'underlying')
     ,('0x85f6583762bc76d775eab9a7456db344f12409f7', 'renBTC', 8, 'underlying')
     ,('0xde48b1b5853cc63b1d05e507414d3e02831722f8', 'stkLYRA', 18, 'receipt')
+    ,('0x0f5d45a7023612e9e244fe84fac5fcf3740d1492', 'stkLYRA', 18, 'receipt')
     ,('0x9e5aac1ba1a2e6aed6b32689dfcf62a509ca96f3', 'DF', 18, 'underlying')
     ,('0x9485aca5bbbe1667ad97c7fe7c4531a624c8b1ed', 'agEUR', 18, 'underlying')
     ,('0xAe31207aC34423C41576Ff59BFB4E036150f9cF7', 'SDL', 18, 'underlying')
@@ -287,6 +288,15 @@ WITH raw_token_list AS (
     ,('0x9C9e5fD8bbc25984B178FdCE6117Defa39d2db39', 'BUSD', 18, 'underlying')
     ,('0xb12a1be740b99d845af98098965af761be6bd7fe', 'CUSDCLP', 18, 'receipt')
     ,('0x3c12765d3cfac132de161bc6083c886b2cd94934', 'CWETHLP', 18, 'receipt') 
+    ,('0x6806411765Af15Bddd26f8f544A34cC40cb9838B', 'frxETH', 18, 'underlying')
+    ,('0x484c2D6e3cDd945a8B2DF735e079178C1036578c', 'sfrxETH', 18, 'receipt')
+    ,('0x340fE1D898ECCAad394e2ba0fC1F93d27c7b717A', 'wUSDR', 9, 'underlying')
+    ,('0x5d47baba0d66083c52009271faf3f50dcc01023c', 'UNIDX', 18, 'underlying')
+    ,('0x46f21fda29f1339e0ab543763ff683d399e393ec', 'opxveVELO', 18, 'receipt')
+    ,('0x79af5dd14e855823fa3e9ecacdf001d99647d043', 'jEUR', 18, 'underlying')
+    ,('0x8B21e9b7dAF2c4325bf3D18c1BeB79A347fE902A', 'COLLAB', 18, 'underlying')
+    
+
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )
 

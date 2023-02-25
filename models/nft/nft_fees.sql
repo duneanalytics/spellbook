@@ -25,6 +25,7 @@
 ,ref('zonic_optimism_fees')
 ,ref('nftb_bnb_fees')
 ,ref('tofu_fees')
+,ref('nftearth_optimism_fees')
 ] %}
 
 
