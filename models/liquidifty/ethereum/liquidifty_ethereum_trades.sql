@@ -20,7 +20,7 @@ with v2 as (
         token as token_id,
         'erc721' as token_standard,
         'Single Item Trade' as trade_type,
-        amount as number_of_items,
+        CAST(amount as decimal(38,0)) as number_of_items,
         'Buy' as trade_category,
         owner as seller,
         buyer,
@@ -51,7 +51,7 @@ stack as (
         cast(null as varchar(5)) as token_id,
         'erc721' as token_standard,
         'Bundle Item Trade' as trade_type,
-        amount as number_of_items,
+        CAST(amount as decimal(38,0)) as number_of_items,
         'Buy' as trade_category,
         owner as seller,
         buyer,
@@ -90,7 +90,7 @@ v3 as (
             when cardinality(orders) > 1 then 'Bundle Trade'
             else 'Single Item Trade'
         end as trade_type,
-        get_json_object(nft, '$.amount') as number_of_items,
+        CAST(get_json_object(nft, '$.amount') as decimal(38,0)) as number_of_items,
         case
             when orderType = '0' then 'Swap'
             when orderType = '1' then 'Buy'

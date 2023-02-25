@@ -49,8 +49,17 @@ with
     SELECT 
       distinct t1.taker as address
     FROM
-      {{ref('dex_trades')}} t1
-      INNER JOIN {{ref('dex_trades')}} t2 ON t1.tx_hash = t2.tx_hash
+      (
+        SELECT * FROM {{ref('dex_trades')}}
+        UNION ALL
+        SELECT * FROM {{ref('dex_aggregator_trades')}}
+      ) t1
+      INNER JOIN
+      (
+        SELECT * FROM {{ref('dex_trades')}}
+        UNION ALL
+        SELECT * FROM {{ref('dex_aggregator_trades')}}
+      ) t2 ON t1.tx_hash = t2.tx_hash
     WHERE
       t1.blockchain = 'ethereum'
       AND t2.blockchain = 'ethereum'
@@ -63,6 +72,7 @@ with
       AND t1.taker not in (
         select address from err_contracts
       )
+      AND t1.taker = t2.taker
   )
 select
   "ethereum" as blockchain,

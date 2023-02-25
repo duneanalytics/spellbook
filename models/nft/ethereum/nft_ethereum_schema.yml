@@ -235,8 +235,6 @@ models:
             - wallet
             - nft_contract_address
     columns:
-      - name: index
-        description: "Rank"
       - name: wallet
         description: "Trader wallet address"
       - name: nft_contract_address
