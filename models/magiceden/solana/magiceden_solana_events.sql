@@ -28,7 +28,11 @@ SELECT
        WHEN (array_contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb')) THEN 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb'
        END as project_contract_address,
   CASE WHEN (array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
-       AND array_contains(log_messages, 'Program log: Instruction: ExecuteSale')
+       AND (
+               array_contains(log_messages, 'Program log: Instruction: ExecuteSaleV2') 
+               OR array_contains(log_messages, 'Program log: Instruction: ExecuteSale')
+               OR array_contains(log_messages, 'Program log: Instruction: Mip1ExecuteSaleV2')
+          )
        AND array_contains(log_messages, 'Program log: Instruction: Buy') THEN 'Trade'
   WHEN (array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
        AND array_contains(log_messages, 'Program log: Instruction: Sell') THEN 'List'
@@ -42,7 +46,11 @@ SELECT
        AND array_contains(log_messages, 'Program log: Instruction: SetAuthority') THEN 'Mint'
   ELSE 'Other' END as evt_type,
   CASE WHEN (array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
-         AND array_contains(log_messages, 'Program log: Instruction: ExecuteSale')
+         AND (
+               array_contains(log_messages, 'Program log: Instruction: ExecuteSaleV2') 
+               OR array_contains(log_messages, 'Program log: Instruction: ExecuteSale')
+               OR array_contains(log_messages, 'Program log: Instruction: Mip1ExecuteSaleV2')
+          )
          AND array_contains(log_messages, 'Program log: Instruction: Buy') THEN instructions[1].account_arguments[2]::string
        WHEN (array_contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb'))
          AND array_contains(log_messages, 'Program log: Instruction: SetAuthority') THEN COALESCE(instructions[6].account_arguments[9], instructions[5].account_arguments[9],
@@ -50,14 +58,22 @@ SELECT
        END AS token_id,
   NULL::string as collection,
   CASE WHEN (array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
-         AND array_contains(log_messages, 'Program log: Instruction: ExecuteSale')
+         AND (
+               array_contains(log_messages, 'Program log: Instruction: ExecuteSaleV2') 
+               OR array_contains(log_messages, 'Program log: Instruction: ExecuteSale')
+               OR array_contains(log_messages, 'Program log: Instruction: Mip1ExecuteSaleV2')
+          )
          AND array_contains(log_messages, 'Program log: Instruction: Buy') THEN 'Single Item Trade' ELSE NULL::string
          END as trade_type,
   CAST(1 AS DECIMAL(38,0)) as number_of_items,
   NULL::string as trade_category,
   signer as buyer,
   CASE WHEN (array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
-         AND array_contains(log_messages, 'Program log: Instruction: ExecuteSale')
+         AND (
+               array_contains(log_messages, 'Program log: Instruction: ExecuteSaleV2') 
+               OR array_contains(log_messages, 'Program log: Instruction: ExecuteSale')
+               OR array_contains(log_messages, 'Program log: Instruction: Mip1ExecuteSaleV2')
+          )
          AND array_contains(log_messages, 'Program log: Instruction: Buy') THEN instructions[2].account_arguments[1]::string
        WHEN (array_contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb')) THEN '' END as seller,
   NULL::string as nft_contract_address,
@@ -85,8 +101,12 @@ SELECT
   +abs(post_balances[15] / 1e9 - pre_balances[15] / 1e9)) / ((abs(post_balances[0] / 1e9 - pre_balances[0] / 1e9)-0.00204928)) * 100),2) as royalty_fee_percentage,
   NULL::double as royalty_fee_receive_address,
   CASE WHEN (array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
-         AND array_contains(log_messages, 'Program log: Instruction: ExecuteSale')
-         AND array_contains(log_messages, 'Program log: Instruction: Buy') THEN 'SOL'
+         AND (
+               array_contains(log_messages, 'Program log: Instruction: ExecuteSaleV2') 
+               OR array_contains(log_messages, 'Program log: Instruction: ExecuteSale')
+               OR array_contains(log_messages, 'Program log: Instruction: Mip1ExecuteSaleV2')
+          )         
+          AND array_contains(log_messages, 'Program log: Instruction: Buy') THEN 'SOL'
          ELSE NULL::string END as royalty_fee_currency_symbol,
   signatures[0] || '-' || id || '-' || instructions[0]::string as unique_trade_id,
   instructions,
