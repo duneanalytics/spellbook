@@ -3,12 +3,12 @@ version: 2
 models:
   - name: labels_trader_age
     meta:
-      blockchain: ethereum
+      blockchain: ethereum, fantom, bnb, avalanche_c, arbitrum, polygon, gnosis, optimism
       sector: labels
       category: dex
-      contributors: gentrexha
+      contributors: gentrexha, Henrystats
     config:
-      tags: ['labels', 'ethereum', 'trader_age', 'dex', 'dex_aggregator']
+      tags: ['labels', 'cross-chain', 'trader_age', 'dex', 'dex_aggregator']
     description: "Trader age (days between first and last trade) for addresses who use dex and dex aggregators"
     columns:
       - &blockchain
@@ -41,24 +41,3 @@ models:
       - &label_type
         name: label_type
         description: "Type of label (see labels overall readme)"
-
-  - name: labels_trader_age_ethereum
-    meta:
-      blockchain: ethereum
-      sector: labels
-      category: trader_age
-      contributors: gentrexha
-    config:
-      tags: ['labels', 'ethereum', 'trader_age', 'dex', 'dex_aggregator']
-    description:  "Trader age (days between first and last trade) for addresses who use dex and dex aggregators"
-    columns:
-      - *blockchain
-      - *address
-      - *name
-      - *category
-      - *contributor
-      - *source
-      - *created_at
-      - *updated_at
-      - *model_name
-      - *label_type
