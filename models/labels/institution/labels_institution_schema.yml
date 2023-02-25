@@ -9,7 +9,7 @@ models:
       project: ['labels']
       contributors: soispoke
     config:
-      tags: ['labels', 'institutions', 'cex', 'funds']
+      tags: ['labels', 'institution', 'cex', 'funds']
     description: "instituional labels"   
     columns:
       - &blockchain
