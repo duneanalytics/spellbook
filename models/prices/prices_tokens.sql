@@ -661,7 +661,7 @@ VALUES
     ("storj-storj", "ethereum", "STORJ", "0xb64ef51c888972c908cfacf59b47c1afbc0ab8ac", 8),
     ("stpt-stpt", "ethereum", "STPT", "0xde7d85157d9714eadf595045cc12ca4a5f3e2adb", 18),
     ("strong-strong", "ethereum", "STRONG", "0x990f341946a3fdb507ae7e52d17851b87168017c", 18),
-    ("stg-stargatetoken","ethereum","STG","0xaf5191b0de278c7286d6c7cc6ab6bb8a73ba2cd6",18),
+--    ("stg-stargatetoken","ethereum","STG","0xaf5191b0de278c7286d6c7cc6ab6bb8a73ba2cd6",18),
     ("super-superfarm", "ethereum", "SUPER", "0xe53ec727dbdeb9e2d5456c3be40cff031ab40a55", 18),
     ("sushi-sushi", "ethereum", "SUSHI", "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2", 18),
     ("swise-stakewise", "ethereum", "SWISE", "0x48c3399719b582dd63eb5aadf12a40b4c3f52fa2", 18),
