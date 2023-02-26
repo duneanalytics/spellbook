@@ -204,7 +204,7 @@ WITH
                 CASE WHEN (tr.to = sb.protocolfee_recipient) THEN value
                 ELSE 0 END
                  ) as protocol_fee_amount -- what the buyer paid
-            , ARRAY_AGG(distinct CASE WHEN substring(input,1,10)='0x42842e0e' THEN bytea2numeric_v2(substring(input,139,64))::int ELSE null::int END)
+            , ARRAY_AGG(distinct CASE WHEN substring(input,1,10)='0x42842e0e' THEN bytea2numeric_v3(substring(input,139,64)) END)
                 as token_id
             , sb.call_tx_hash
             , sb.trade_recipient
@@ -333,7 +333,7 @@ WITH
             , block_date
             , block_time
             , block_number
-            , explode(token_id) as raw_token_id --nft.trades prefers each token id be its own row
+            , explode(token_id) as token_id --nft.trades prefers each token id be its own row
             , token_standard
             , CAST(number_of_items/number_of_items AS DECIMAL(38,0)) as number_of_items
             , trade_type
@@ -380,7 +380,7 @@ SELECT
     , block_date
     , block_time
     , block_number
-    , CAST(raw_token_id AS VARCHAR(100)) AS token_id
+    , token_id
     , token_standard
     , number_of_items
     , trade_type
@@ -415,6 +415,6 @@ SELECT
     , royalty_fee_percentage
     , royalty_fee_currency_symbol
     , royalty_fee_receive_address
-    , 'sudoswap-' || tx_hash || '-' || nft_contract_address || raw_token_id::string || '-' || seller || '-' || amount_original::string || 'Trade' AS unique_trade_id
+    , 'sudoswap-' || tx_hash || '-' || nft_contract_address ||'-'|| token_id || '-' || seller || 'Trade' AS unique_trade_id
 FROM swaps_exploded
 ;

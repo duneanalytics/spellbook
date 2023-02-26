@@ -15,6 +15,7 @@
 ,ref('opensea_burns')
 ,ref('x2y2_ethereum_burns')
 ,ref('zora_ethereum_burns')
+,ref('nftb_bnb_burns')
 ] %}
 
 
