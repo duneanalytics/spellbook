@@ -1,138 +1,100 @@
-CREATE OR REPLACE VIEW pooltogether_v4.tvl(
+CREATE OR REPLACE VIEW pooltogether_v4_ethereum.prize_structure(
 
-    -- total USDC in PoolTogether V4 on Optimism
-with
-    time_series as (
-        select explode(sequence(to_date('{{Initial Date}}'), current_date(), interval 1 day))
-        as days_ts
-    ),
-    OP_deposits as (
-        select date_trunc('day', evt_block_time) AS day,
-            SUM(value) / power(10, 6) AS deposit
-        from erc20_optimism.evt_Transfer
-        where contract_address = lower('0x625E7708f30cA75bfd92586e17077590C60eb4cD') --AAVE Optimism USDC
-        and to = lower('0x4ecB5300D9ec6BCA09d66bfd8Dcb532e3192dDA1') --AaveV3YieldSource
-        GROUP BY 1
-        ORDER BY 1
-    ),
-    OP_withdrawals as (
-        select date_trunc('day', evt_block_time) AS day,
-            SUM(value) / power(10, 6) AS withdrawal
-        from erc20_optimism.evt_Transfer
-        where contract_address = lower('0x625E7708f30cA75bfd92586e17077590C60eb4cD') --AAVE Optimism USDC
-        and from = lower('0x4ecB5300D9ec6BCA09d66bfd8Dcb532e3192dDA1') --AaveV3YieldSource
-        GROUP BY 1
-        ORDER BY 1
-    ),
-    OP_combo1 as (
-        SELECT time_series.days_ts as days_ts, COALESCE(OP_deposits.deposit, 0) as deposit, COALESCE(OP_withdrawals.withdrawal, 0) as withdrawal
-        FROM time_series
-        left JOIN OP_deposits ON OP_deposits.day = time_series.days_ts
-        left JOIN OP_withdrawals ON OP_withdrawals.day = time_series.days_ts
-    ),
-    OP_combo2 as (
-    SELECT days_ts, SUM((deposit) - (withdrawal)) OVER (ORDER BY OP_combo1.days_ts) as sum1
-    FROM OP_combo1
-    )
-    
--- total USDC in PoolTogether V4 on Ethereum
-    ,ETH_deposits as (
-        select date_trunc('day', evt_block_time) AS day,
-            SUM(value) / power(10, 6) AS deposit
-        from erc20_ethereum.evt_Transfer
-        where contract_address = lower('0x32e8D4c9d1B711BC958d0Ce8D14b41F77Bb03a64') --ETH ATokenYieldSource
-        and to = lower('0xd89a09084555a7D0ABe7B111b1f78DFEdDd638Be') --ETH YieldSourcePrizePool
-        and from != lower ('0x42cd8312d2bce04277dd5161832460e95b24262e') -- Governance Contract
-        GROUP BY 1
-        ORDER BY 1
-    ),
-    ETH_withdrawals as (
-        select date_trunc('day', evt_block_time) AS day,
-            SUM(value) / power(10, 6) AS withdrawal
-        from erc20_ethereum.evt_Transfer
-        where contract_address = lower('0x32e8D4c9d1B711BC958d0Ce8D14b41F77Bb03a64') --ETH ATokenYieldSource
-        and from = lower('0xd89a09084555a7D0ABe7B111b1f78DFEdDd638Be') --ETH YieldSourcePrizePool
-        and to != lower ('0x42cd8312d2bce04277dd5161832460e95b24262e') -- Governance Contract
-        GROUP BY 1
-        ORDER BY 1
-    ),
-    ETH_combo1 as (
-        SELECT time_series.days_ts as days_ts, COALESCE(ETH_deposits.deposit, 0) as deposit, COALESCE(ETH_withdrawals.withdrawal, 0) as withdrawal
-        FROM time_series
-        left JOIN ETH_deposits ON ETH_deposits.day = time_series.days_ts
-        left JOIN ETH_withdrawals ON ETH_withdrawals.day = time_series.days_ts
-    ),
-    ETH_combo2 as (
-    SELECT days_ts, SUM((deposit) - (withdrawal)) OVER (ORDER BY ETH_combo1.days_ts) as sum1
-    FROM ETH_combo1
-    )
-    
--- total USDC in PoolTogether V4 on Avalanche
-    ,AVAX_deposits as (
-        select date_trunc('day', evt_block_time) AS day,
-            SUM(value) / power(10, 6) AS deposit
-        from erc20_avalanche_c.evt_Transfer
-        where contract_address = lower('0x7437db21A0dEB844Fa64223e2d6Db569De9648Ff') --AVAX ATokenYieldSource
-        and to = lower('0xF830F5Cb2422d555EC34178E27094a816c8F95EC') --AVAX YieldSourcePrizePool
-        GROUP BY 1
-        ORDER BY 1
-    ),
-    AVAX_withdrawals as (
-        select date_trunc('day', evt_block_time) AS day,
-            SUM(value) / power(10, 6) AS withdrawal
-        from erc20_avalanche_c.evt_Transfer
-        where contract_address = lower('0x7437db21A0dEB844Fa64223e2d6Db569De9648Ff') --AVAX ATokenYieldSource
-        and from = lower('0xF830F5Cb2422d555EC34178E27094a816c8F95EC') --AVAX YieldSourcePrizePool
-        GROUP BY 1
-        ORDER BY 1
-    ),
-    AVAX_combo1 as (
-        SELECT time_series.days_ts as days_ts, COALESCE(AVAX_deposits.deposit, 0) as deposit, COALESCE(AVAX_withdrawals.withdrawal, 0) as withdrawal
-        FROM time_series
-        left JOIN AVAX_deposits ON AVAX_deposits.day = time_series.days_ts
-        left JOIN AVAX_withdrawals ON AVAX_withdrawals.day = time_series.days_ts
-    ),
-    AVAX_combo2 as (
-    SELECT days_ts, SUM((deposit) - (withdrawal)) OVER (ORDER BY AVAX_combo1.days_ts) as sum1
-    FROM AVAX_combo1
-    )
- 
--- total USDC in PoolTogether V4 on Polygon
-,
-    POLY_deposits as (
-        select date_trunc('day', evt_block_time) AS day,
-            SUM(value) / power(10, 6) AS deposit
-        from erc20_polygon.evt_Transfer
-        where contract_address = lower('0xD4F6d570133401079D213EcF4A14FA0B4bfB5b9C') and --POLY ATokenYieldSource
-        to = lower('0x19de635fb3678d8b8154e37d8c9cdf182fe84e60') --POLY YieldSourcePrizePool
-        GROUP BY 1
-        ORDER BY 1
-    ),
-    POLY_withdrawals as (
-        select date_trunc('day', evt_block_time) AS day,
-            SUM(value) / power(10, 6) AS withdrawal
-        from erc20_polygon.evt_Transfer
-        where contract_address = lower('0xD4F6d570133401079D213EcF4A14FA0B4bfB5b9C') and --POLY ATokenYieldSource
-        from = lower('0x19de635fb3678d8b8154e37d8c9cdf182fe84e60') --POLY YieldSourcePrizePool
-        GROUP BY 1
-        ORDER BY 1
-    ),
-    POLY_combo1 as (
-        SELECT time_series.days_ts as days_ts, COALESCE(POLY_deposits.deposit, 0) as deposit, COALESCE(POLY_withdrawals.withdrawal, 0) as withdrawal
-        FROM time_series
-        left JOIN POLY_deposits ON POLY_deposits.day = time_series.days_ts
-        left JOIN POLY_withdrawals ON POLY_withdrawals.day = time_series.days_ts
-    ),
-    POLY_combo2 as (
-    SELECT days_ts, SUM((deposit) - (withdrawal)) OVER (ORDER BY POLY_combo1.days_ts) as sum1
-    FROM POLY_combo1
-    )
-
-SELECT ETH.days_ts, ETH.sum1 AS ETH_balance, OP.sum1 AS OP_balance, AVAX.sum1 AS AVAX_balance , POLY.sum1 AS POLY_balance
-FROM ETH_combo2 ETH
-LEFT OUTER JOIN OP_combo2 OP ON ETH.days_ts = OP.days_ts
-LEFT OUTER JOIN AVAX_combo2 AVAX ON ETH.days_ts = AVAX.days_ts
-LEFT OUTER JOIN POLY_combo2 POLY ON ETH.days_ts = POLY.days_ts
-WHERE ETH.days_TS IS NOT NULL
-ORDER BY 1
+   WITH
+  --Calculate proze structure for Ethereum network per drawID
+  prizeDistribution AS (
+    --ETHEREUM POST DPR
+    SELECT
+      call_tx_hash AS tx_hash,
+      call_block_time AS block_time,
+      'Ethereum' AS network,
+      drawId,
+      json_query(output_0, 'lax $.bitRangeSize') AS bitRange,
+      substr(
+        json_query(output_0, 'lax $.tiers'),
+        2,
+        length(json_query(output_0, 'lax $.tiers')) -2
+      ) AS tiers,
+      CAST(json_query(output_0, 'lax $.dpr') AS int) / power(10, 6) AS dpr,
+      CAST(json_query(output_0, 'lax $.prize') AS double) / power(10, 6) AS prize
+    FROM
+      pooltogether_v4_ethereum.PrizeTierHistoryV2_call_getPrizeTier
+    WHERE
+      call_success = true
+      --ETHEREUM PRE DPR
+    UNION ALL
+    SELECT
+      evt_tx_hash AS tx_hash,
+      evt_block_time,
+      'Ethereum' AS network,
+      drawId,
+      json_query(prizeDistribution, 'lax $.bitRangeSize') AS bitRange,
+      substr(
+        json_query(prizeDistribution, 'lax $.tiers'),
+        2,
+        length(json_query(prizeDistribution, 'lax $.tiers')) -2
+      ) AS tiers,
+      0 AS dpr,
+      CAST(
+        json_query(prizeDistribution, 'lax $.prize') AS double
+      ) / power(10, 6) AS prize
+    FROM
+      pooltogether_v4_ethereum.PrizeDistributionBuffer_evt_PrizeDistributionSet
+    WHERE
+      drawID < 447 --DPR On Ethereum started on draw 447
+  ),
+  detailedPrizeDistribution AS (
+    SELECT
+      tx_hash,
+      block_time,
+      network,
+      drawId,
+      CAST(bitRange AS int) AS bitRange,
+      split_part(tiers, ',', 1) AS tiers1,
+      split_part(tiers, ',', 2) AS tiers2,
+      split_part(tiers, ',', 3) AS tiers3,
+      split_part(tiers, ',', 4) AS tiers4,
+      split_part(tiers, ',', 5) AS tiers5,
+      split_part(tiers, ',', 6) AS tiers6,
+      split_part(tiers, ',', 7) AS tiers7,
+      split_part(tiers, ',', 8) AS tiers8,
+      split_part(tiers, ',', 9) AS tiers9,
+      split_part(tiers, ',', 10) AS tiers10,
+      split_part(tiers, ',', 11) AS tiers11,
+      split_part(tiers, ',', 12) AS tiers12,
+      split_part(tiers, ',', 13) AS tiers13,
+      split_part(tiers, ',', 14) AS tiers14,
+      split_part(tiers, ',', 15) AS tiers15,
+      split_part(tiers, ',', 16) AS tiers16,
+      dpr,
+      prize
+    FROM
+      prizeDistribution
+  )
+select
+  tx_hash,
+      block_time,
+      network,
+      drawId,
+      bitRange,
+      tiers1,
+      tiers2,
+      tiers3,
+      tiers4,
+      tiers5,
+      tiers6,
+      tiers7,
+      tiers8,
+      tiers9,
+      tiers10,
+      tiers11,
+      tiers12,
+      tiers13,
+      tiers14,
+      tiers15,
+      tiers16,
+      dpr,
+      priz
+from
+  detailedPrizeDistribution
 )
