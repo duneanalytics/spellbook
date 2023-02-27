@@ -28,10 +28,7 @@ source_inventory as (
         makerAssetAmount as maker_asset_amount_raw,
         makerAssetAmount/POW(10, 18) as maker_asset_amount,
         CONCAT('0x', SUBSTRING(makerAssetData, 35, 40)) as maker_asset_address,
-        coalesce(
-            CAST(bytea2numeric_v2(SUBSTRING(makerAssetData, 77, 64)) as decimal(38))
-            ,bytea2numeric_v2(SUBSTRING(makerAssetData, 77, 64)))
-            as maker_id,
+        CAST(bytea2numeric_v3(SUBSTRING(makerAssetData, 77, 64)) as decimal(38)) as maker_id,
         marketplaceIdentifier as marketplace_identifier,
         protocolFeePaid * 1 as protocol_fees_raw,
         protocolFeePaid/POW(10, 18) as protocol_fees,
@@ -43,10 +40,7 @@ source_inventory as (
         takerAssetAmount as taker_asset_amount_raw,
         takerAssetAmount/POW(10, 18) as taker_asset_amount,
         CONCAT('0x', SUBSTRING(takerAssetData, 35, 40)) as taker_asset_address,
-        coalesce(
-            CAST(bytea2numeric_v2(SUBSTRING(takerAssetData, 77, 64)) as decimal(38))
-             ,bytea2numeric_v2(SUBSTRING(takerAssetData, 77, 64)))
-             as taker_id
+        CAST(bytea2numeric_v3(SUBSTRING(takerAssetData, 77, 64)) as decimal(38)) as taker_id
     FROM
     {{ source('nftrade_bnb', 'NiftyProtocol_evt_Fill') }}
     WHERE evt_block_time >= '{{project_start_date}}'
