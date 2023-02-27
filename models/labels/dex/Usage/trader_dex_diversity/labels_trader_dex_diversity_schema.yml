@@ -3,12 +3,12 @@ version: 2
 models:
   - name: labels_trader_dex_diversity
     meta:
-      blockchain: ethereum
+      blockchain: ethereum, fantom, bnb, avalanche_c, arbitrum, polygon, gnosis, optimism
       sector: labels
       category: dex
-      contributors: gentrexha
+      contributors: gentrexha, Henrystats
     config:
-      tags: ['labels', 'ethereum', 'trader_dex_diversity', 'dex', 'dex_aggregator']
+      tags: ['labels', 'cross-chain', 'trader_dex_diversity', 'dex', 'dex_aggregator']
     description: "Number of different dex-es used by addresses who use dex and dex aggregators"
     columns:
       - &blockchain
