@@ -44,11 +44,11 @@ mints as (
     FROM {{ ref('nft_polygon_transfers') }}
     WHERE contract_address IN ( SELECT nft_contract_address FROM contract_list )
         AND `from` = '0x0000000000000000000000000000000000000000'   -- mint
-        {% if is_incremental() %}
-        AND block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
         {% if not is_incremental() %}
         AND block_time >= '{{nft_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+        AND block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
@@ -72,11 +72,11 @@ trades AS (
         `time` AS executed_time
     FROM {{ source ('aavegotchi_polygon', 'aavegotchi_diamond_evt_ERC721ExecutedListing') }}
     WHERE 1 = 1
-        {% if is_incremental() %}
-        AND evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
         {% if not is_incremental() %}
         AND evt_block_time >= '{{nft_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+        AND evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
     UNION ALL
@@ -100,11 +100,11 @@ trades AS (
         `time` AS executed_time
     FROM {{ source ('aavegotchi_polygon', 'aavegotchi_diamond_evt_ERC1155ExecutedListing') }}
     WHERE 1 = 1
-        {% if is_incremental() %}
-        AND evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
         {% if not is_incremental() %}
         AND evt_block_time >= '{{nft_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+        AND evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
@@ -123,7 +123,12 @@ price_list AS (
      FROM {{ source('prices', 'usd') }} p
      WHERE blockchain = 'polygon'
         AND contract_address IN ( SELECT DISTINCT currency_contract FROM all_events ) 
+        {% if not is_incremental() %}
         AND minute >= '{{nft_start_date}}' 
+        {% endif %}
+        {% if is_incremental() %}
+        AND minute >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 ),
 
 -- There is no price data for GHST token before 2022-10-27, so we use the first record value for missing data.
@@ -182,9 +187,12 @@ SELECT
 FROM all_events AS a
 INNER JOIN {{ source('polygon','transactions') }} t ON a.evt_block_number = t.block_number
     AND a.evt_tx_hash = t.hash
+    {% if not is_incremental() %}
     AND t.block_time >= '{{nft_start_date}}'
+    {% endif %}
+    {% if is_incremental() %}
+    AND t.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 INNER JOIN ghst_initial_price gp ON true
 LEFT JOIN price_list p ON p.contract_address = a.currency_contract AND p.minute = date_trunc('minute', a.evt_block_time)
 LEFT JOIN {{ ref('nft_aggregators') }} agg ON agg.blockchain = 'polygon' AND agg.contract_address = t.`to`
-WHERE 1 = 1
-    AND a.evt_block_time >= '{{nft_start_date}}'
