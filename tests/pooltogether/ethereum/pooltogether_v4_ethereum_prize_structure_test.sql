@@ -7,7 +7,7 @@ with unit_test as (
         case when test.dpr = actual.dpr then true else false end as dpr_test
         case when test.prize = actual.prize then true else false end as prize_test
     from {{ref('pooltogether_v4_ethereum_prize_structure')}} as actual
-    inner join {{ref('pooltogether_v4_ethereum_prize_structure_test')}} as test
+    inner join {{ref('pooltogether_v4_ethereum_prize_structure_seed')}} as test
         on actual.tx_hash = test.tx_hash
 )
 select * from unit_test
