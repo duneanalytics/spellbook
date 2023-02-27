@@ -36,6 +36,7 @@ with
         where blockchain = 'ethereum'
     ) t join project_starts p on t.token_bought_address = p.token_bought_address
     where
+        -- <=30 days deemed to be considered an early investment.
         date_diff(t.block_date, p.project_start) <= 30
  )
 
