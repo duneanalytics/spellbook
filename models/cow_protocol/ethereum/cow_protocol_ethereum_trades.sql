@@ -184,9 +184,9 @@ valued_trades as (
                  else concat(buy_token, '-', sell_token)
                end as token_pair,
            units_sold,
-           atoms_sold,
+           CAST(atoms_sold AS DECIMAL(38,0)) AS atoms_sold,
            units_bought,
-           atoms_bought,
+           CAST(atoms_bought AS DECIMAL(38,0)) AS atoms_bought,
            (CASE
                 WHEN sell_price IS NOT NULL THEN
                     -- Choose the larger of two prices when both not null.
