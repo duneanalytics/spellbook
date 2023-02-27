@@ -53,7 +53,7 @@ with marketplace as (
         {% endif %}
         union all
         select evt_block_time,
-               evt_index
+               evt_index,
                tokenId,
                quantity,
                seller,
