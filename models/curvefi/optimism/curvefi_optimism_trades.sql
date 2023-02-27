@@ -143,8 +143,8 @@ SELECT DISTINCT
     --On Buy: Metapools seem to always use the curve pool token's decimals (18) if bought_id = 0
     dexs.token_bought_amount_raw / POWER(10 , (CASE WHEN pool_type = 'meta' AND bought_id = 0 THEN 18 ELSE COALESCE(erc20a.decimals,p_bought.decimals) END) ) AS token_bought_amount,
     dexs.token_sold_amount_raw / POWER(10 , (CASE WHEN pool_type = 'meta' AND bought_id = 0 THEN COALESCE(erc20a.decimals,p_bought.decimals) ELSE COALESCE(erc20b.decimals,p_sold.decimals) END) )  AS token_sold_amount,
-    dexs.token_bought_amount_raw,
-    dexs.token_sold_amount_raw,
+    CAST(dexs.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw,
+    CAST(dexs.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw,
     coalesce(
 	    --On Sell: Metapools seem to always use the added coin's decimals if it's the one that's bought - even if the other token has less decimals (i.e. USDC)
 	    --On Buy: Metapools seem to always use the curve pool token's decimals (18) if bought_id = 0
