@@ -8,7 +8,7 @@ sources:
       error_after: { count: 24, period: hour }
     tables:
       - name: PrizeTierHistoryV2_call_getPrizeTier
-        loaded_at_field: evt_block_time
+        loaded_at_field: call_block_time
         description: "Decoded function table that contains the prize structure for each drawId after DPR upgrade"
         columns:
           - &call_block_number

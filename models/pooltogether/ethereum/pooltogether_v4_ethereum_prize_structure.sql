@@ -1,4 +1,11 @@
-CREATE OR REPLACE VIEW pooltogether_v4_ethereum.prize_structure(
+{{ config(
+        alias ='trades'
+        )
+}}
+
+{% set uniswap_models = [
+'pooltogether_v4_ethereum_prize_structure'
+] %}
 
    WITH
   --Calculate proze structure for Ethereum network per drawID
@@ -18,7 +25,7 @@ CREATE OR REPLACE VIEW pooltogether_v4_ethereum.prize_structure(
       CAST(json_query(output_0, 'lax $.dpr') AS int) / power(10, 6) AS dpr,
       CAST(json_query(output_0, 'lax $.prize') AS double) / power(10, 6) AS prize
     FROM
-      pooltogether_v4_ethereum.PrizeTierHistoryV2_call_getPrizeTier
+      {{ source('pooltogether_v4_ethereum', 'PrizeTierHistoryV2_call_getPrizeTier')}}
     WHERE
       call_success = true
       --ETHEREUM PRE DPR
@@ -39,7 +46,7 @@ CREATE OR REPLACE VIEW pooltogether_v4_ethereum.prize_structure(
         json_query(prizeDistribution, 'lax $.prize') AS double
       ) / power(10, 6) AS prize
     FROM
-      pooltogether_v4_ethereum.PrizeDistributionBuffer_evt_PrizeDistributionSet
+      {{ source('pooltogether_v4_ethereum', 'PrizeDistributionBuffer_evt_PrizeDistributionSet')}}
     WHERE
       drawID < 447 --DPR On Ethereum started on draw 447
   ),
@@ -50,22 +57,22 @@ CREATE OR REPLACE VIEW pooltogether_v4_ethereum.prize_structure(
       network,
       drawId,
       CAST(bitRange AS int) AS bitRange,
-      split_part(tiers, ',', 1) AS tiers1,
-      split_part(tiers, ',', 2) AS tiers2,
-      split_part(tiers, ',', 3) AS tiers3,
-      split_part(tiers, ',', 4) AS tiers4,
-      split_part(tiers, ',', 5) AS tiers5,
-      split_part(tiers, ',', 6) AS tiers6,
-      split_part(tiers, ',', 7) AS tiers7,
-      split_part(tiers, ',', 8) AS tiers8,
-      split_part(tiers, ',', 9) AS tiers9,
-      split_part(tiers, ',', 10) AS tiers10,
-      split_part(tiers, ',', 11) AS tiers11,
-      split_part(tiers, ',', 12) AS tiers12,
-      split_part(tiers, ',', 13) AS tiers13,
-      split_part(tiers, ',', 14) AS tiers14,
-      split_part(tiers, ',', 15) AS tiers15,
-      split_part(tiers, ',', 16) AS tiers16,
+      CAST(split_part(tiers, ',', 1) AS int) AS tiers1,
+      CAST(split_part(tiers, ',', 2) AS int) AS tiers2,
+      CAST(split_part(tiers, ',', 3) AS int) AS tiers3,
+      CAST(split_part(tiers, ',', 4) AS int) AS tiers4,
+      CAST(split_part(tiers, ',', 5) AS int) AS tiers5,
+      CAST(split_part(tiers, ',', 6) AS int) AS tiers6,
+      CAST(split_part(tiers, ',', 7) AS int) AS tiers7,
+      CAST(split_part(tiers, ',', 8) AS int) AS tiers8,
+      CAST(split_part(tiers, ',', 9) AS int) AS tiers9,
+      CAST(split_part(tiers, ',', 10) AS int) AS tiers10,
+      CAST(split_part(tiers, ',', 11) AS int) AS tiers11,
+      CAST(split_part(tiers, ',', 12) AS int) AS tiers12,
+      CAST(split_part(tiers, ',', 13) AS int) AS tiers13,
+      CAST(split_part(tiers, ',', 14) AS int) AS tiers14,
+      CAST(split_part(tiers, ',', 15) AS int) AS tiers15,
+      CAST(split_part(tiers, ',', 16) AS int) AS tiers16,
       dpr,
       prize
     FROM
@@ -94,7 +101,6 @@ select
       tiers15,
       tiers16,
       dpr,
-      priz
+      prize
 from
   detailedPrizeDistribution
-)
