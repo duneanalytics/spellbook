@@ -2,13 +2,6 @@ version: 2
 
 models:
   - name: cow_protocol_tx_hash_labels_all
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - name
-            - category
-            - blockchain
     meta:
       blockchain: ethereum
       sector: labels
