@@ -1,6 +1,5 @@
 -- Check if all fractal events make it into the processed events table
-
-listing_detail AS (
+with listing_detail AS (
     SELECT assetContract AS nft_contract_address,
         contract_address,
         evt_block_number,
