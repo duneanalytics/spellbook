@@ -21,7 +21,7 @@ with source_polygon_transactions as (
     select block_time, block_number, "from", "to", hash, data
     from {{ source('polygon','transactions') }}
     {% if not is_incremental() %}
-    where block_time >= date '{{c_oneplanet_first_date}}'  -- oneplanet first txn
+    where block_time >= date '{{c_oneplanet_first_date}}'
     {% endif %}
     {% if is_incremental() %}
     where block_time >= date_trunc("day", now() - interval '1 week')
@@ -55,7 +55,7 @@ with source_polygon_transactions as (
     from {{ source('prices', 'usd') }}
     where blockchain = 'polygon'
     {% if not is_incremental() %}
-      and minute >= date '{{c_oneplanet_first_date}}'  -- oneplanet first txn
+      and minute >= date '{{c_oneplanet_first_date}}'
     {% endif %}
     {% if is_incremental() %}
       and minute >= date_trunc("day", now() - interval '1 week')
@@ -249,77 +249,75 @@ with source_polygon_transactions as (
 )
 ,iv_columns as (
   select
-    -- basic info
     'polygon' as blockchain
     ,'oneplanet' as project
-    ,'v1' as version
-
-    -- order info
-    ,block_date
     ,block_time
-    ,seller
-    ,buyer
+    ,'v1' as version
+    ,nft_token_id as token_id
+    ,nft_token_name as collection
+    ,price_amount_usd as amount_usd
+    ,nft_token_standard as token_standard
     ,initcap(trade_type) as trade_type
+    ,nft_token_amount as number_of_items
     ,initcap(order_type) as trade_category -- Buy / Offer Accepted
     ,'Trade' as evt_type
-
-    -- nft token info
-    ,nft_contract_address
-    ,nft_token_name as collection
-    ,nft_token_id as token_id
-    ,nft_token_amount as number_of_items
-    ,nft_token_standard as token_standard
-
-    -- price info
+    ,seller
+    ,buyer
     ,price_amount as amount_original
     ,price_amount_raw as amount_raw
-    ,price_amount_usd as amount_usd
     ,token_symbol as currency_symbol
     ,token_alternative_symbol as currency_contract
-    ,token_contract_address as original_currency_contract
-    ,price_token_decimals as currency_decimals   -- in case calculating royalty1~4
-
-    -- project info (platform or exchange)
+    ,nft_contract_address
     ,platform_contract_address as project_contract_address
-    ,platform_fee_receiver as platform_fee_receive_address
-    ,platform_fee_amount_raw
-    ,platform_fee_amount
-    ,platform_fee_amount_usd
-
-    -- royalty info
-    ,creator_fee_receiver_1 as royalty_fee_receive_address
-    ,creator_fee_amount_raw as royalty_fee_amount_raw
-    ,creator_fee_amount as royalty_fee_amount
-    ,creator_fee_amount_usd as royalty_fee_amount_usd
-    ,creator_fee_receiver_1 as royalty_fee_receive_address_1
-    ,creator_fee_receiver_2 as royalty_fee_receive_address_2
-    ,creator_fee_receiver_3 as royalty_fee_receive_address_3
-    ,creator_fee_receiver_4 as royalty_fee_receive_address_4
-    ,creator_fee_amount_raw_1 as royalty_fee_amount_raw_1
-    ,creator_fee_amount_raw_2 as royalty_fee_amount_raw_2
-    ,creator_fee_amount_raw_3 as royalty_fee_amount_raw_3
-    ,creator_fee_amount_raw_4 as royalty_fee_amount_raw_4
-
-    -- aggregator
     ,aggregator_name
     ,aggregator_address
-
-    -- tx
     ,block_number
     ,tx_hash
-    ,evt_index
     ,tx_from
     ,tx_to
-    ,right_hash
-
-    -- seaport etc
-    ,zone as zone_address
-    ,estimated_price
-    ,is_private
-    ,sub_idx
-    ,sub_type
+    ,tx_hash || '-' || cast(evt_index as VARCHAR(10)) || '-' || nft_contract_address || '-' || cast(token_id as VARCHAR(10)) || '-' || cast(sub_idx as VARCHAR(10)) as unique_trade_id
   from iv_trades
 )
 select *
 from iv_columns
+;
+
+
+SELECT 
+      blockchain,
+      project,
+      version,
+      block_date,
+      block_time,
+      token_id,
+
+      collection,
+      amount_usd,
+      token_standard,
+      trade_type,
+
+      number_of_items,
+      trade_category,
+      evt_type,
+
+      seller,
+      buyer,
+
+      amount_original,
+      amount_raw,
+
+      currency_symbol,
+      currency_contract,
+
+      nft_contract_address,
+      project_contract_address,
+      aggregator_name,
+      aggregator_address,
+      block_number,
+      tx_hash,
+      tx_from,
+      tx_to,
+      unique_trade_id
+FROM {{ ref('aavegotchi_polygon_events') }}
+WHERE evt_type = 'Trade'
 ;
