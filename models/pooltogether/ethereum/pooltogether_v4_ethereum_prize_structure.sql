@@ -1,14 +1,10 @@
 {{ config(
-  alias ='prize_structure'
+  alias ='prize_structure',
   post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "pooltogether_v4",
                                 \'["bronder"]\') }}'
 )}}
-
-{% set uniswap_models = [
-'pooltogether_v4_ethereum_prize_structure'
-] %}
 
    WITH
   --Calculate proze structure for Ethereum network per drawID
