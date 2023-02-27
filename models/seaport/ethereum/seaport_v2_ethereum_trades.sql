@@ -79,7 +79,7 @@ with source_ethereum_transactions as (
     select a.*
           ,b.om_evt_index
           ,b.om_order_id
-      from iv_base_pairs a
+      from ref_seaport_ethereum_base_pairs a
            left join iv_orders_matched b on b.om_order_hash = a.order_hash
 )
 ,iv_volume as (
