@@ -85,8 +85,7 @@ WITH unit_test AS (
             ELSE FALSE
         END AS tx_to_test,
 
-    FROM
-        {{ ref('clipper_arbitrum_trades') }} AS actual
+    FROM {{ ref('clipper_arbitrum_trades') }} AS actual
         INNER JOIN {{ ref('clipper_arbitrum_trades_test_data') }} AS test
         ON LOWER(
             actual.tx_hash
