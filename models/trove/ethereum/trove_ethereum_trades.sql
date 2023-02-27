@@ -1,12 +1,17 @@
 {{ config(
-    schema = 'trove_ethereum',
     alias = 'trades',
+    partition_by = ['block_date'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'unique_trade_id'],
     post_hook = '{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "trove",
                                     \'["bizzyvinci"]\') }}'
 )}}
 
+{% set project_start_date = '2022-08-16' %}
 
 with marketplace as (
     select
@@ -31,11 +36,21 @@ with marketplace as (
             paymentToken, nftAddress, evt_tx_hash, evt_block_number,
             contract_address, bidder as buyer
         from {{ source('treasure_trove_ethereum', 'TreasureMarketplace_evt_BidAccepted') }}
+        {% if is_incremental() %}
+        where evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% else %}
+        where evt_block_time >= '{{project_start_date}}'
+        {% endif %}
         union all
         select evt_block_time, tokenId, quantity, seller, pricePerItem,
             paymentToken, nftAddress, evt_tx_hash, evt_block_number,
             contract_address, buyer
         from {{ source('treasure_trove_ethereum', 'TreasureMarketplace_evt_ItemSold') }}
+        {% if is_incremental() %}
+        where evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% else %}
+        where evt_block_time >= '{{project_start_date}}'
+        {% endif %}
     )
 )
 
@@ -70,7 +85,13 @@ select
     cast(null as varchar(5)) as unique_trade_id
 from marketplace mp
 inner join {{ source('ethereum', 'transactions') }} tx
-    on tx.hash = mp.tx_hash
+    on tx.block_number = mp.block_number
+    and tx.hash = mp.tx_hash
+    {% if is_incremental() %}
+    and tx.block_time >= date_trunc("day", now() - interval '1 week')
+    {% else %}
+    and tx.block_time >= '{{project_start_date}}'
+    {% endif %}
 left join {{ ref('tokens_ethereum_erc20') }} erc20
     on erc20.contract_address = mp.currency_contract
 left join {{ ref('tokens_ethereum_nft') }} nft_tokens
@@ -79,4 +100,9 @@ left join {{ source('prices', 'usd') }} as prices
     on prices.minute = date_trunc('minute', mp.block_time)
     and prices.contract_address = mp.currency_contract
     and prices.blockchain = 'ethereum'
+    {% if is_incremental() %}
+    and prices.minute >= date_trunc("day", now() - interval '1 week')
+    {% else %}
+    and prices.minute >= '{{project_start_date}}'
+    {% endif %}
 
