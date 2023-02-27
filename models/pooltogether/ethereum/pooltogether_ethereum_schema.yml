@@ -12,7 +12,7 @@ models:
     description: >
         Pooltogether V4 contract prize structures on Ethereum
     columns:
-       &tx_hash
+      - &tx_hash
         name: tx_hash
         description: "Primary key of the transaction"
         tests:
