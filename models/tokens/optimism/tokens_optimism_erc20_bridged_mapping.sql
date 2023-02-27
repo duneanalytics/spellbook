@@ -2,13 +2,13 @@
   config(
     alias='erc20_bridged_mapping'
     , materialized = 'incremental'
-        , file_format = 'delta'
-        , incremental_strategy = 'merge'
-        , unique_key = ['l1_token', 'l2_token']
-        , post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "sector",
-                                    "tokens",
-                                    \'["msilb7"]\') }}'
+    , file_format = 'delta'
+    , incremental_strategy = 'merge'
+    , unique_key = ['l1_token', 'l2_token']
+    , post_hook='{{ expose_spells(\'["optimism"]\',
+                                "sector",
+                                "tokens",
+                                \'["msilb7"]\') }}'
   )
 }}
 
@@ -53,7 +53,7 @@ FROM (
 
     ) map
 
-LEFT JOIN tokens_ethereum.erc20 et
+LEFT JOIN {{ ref('tokens_ethereum_erc20') }} et
     ON et.contract_address = map.l1_token
 ) fin 
 WHERE rnk =1
