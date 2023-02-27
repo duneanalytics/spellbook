@@ -18,6 +18,7 @@ ref('oneinch_v1_ethereum_trades')
 ,ref('oneinch_uniswap_v3_ethereum_trades')
 ,ref('oneinch_clipper_ethereum_trades')
 ,ref('oneinch_limit_order_protocol_v1_ethereum_trades')
+,ref('oneinch_limit_order_protocol_v2_ethereum_trades')
 ] %}
 
 
