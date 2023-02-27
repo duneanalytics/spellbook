@@ -1,22 +1,22 @@
 version: 2
 
 models:
-  - name: cow_protocol_tx_hash_labels_stable_to_stable
+  - name: cow_protocol_tx_hash_labels_bluechip_investment
     meta:
       blockchain: ethereum
       sector: tx_hash_labels
-      category: stable_to_stable
+      category: bluechip_investment
       contributors: gentrexha
     config:
-      tags: ['labels', 'tx_hash', 'ethereum', 'stable_to_stable', 'dex']
-    description: "Trades that traded from one stable coin to another"
+      tags: ['labels', 'tx_hash', 'ethereum', 'bluechip_investment', 'dex']
+    description: "Trades that bought a blue chip type of token (wBTC, ETH, and WETH)"
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain"   
       - &tx_hash
         name: tx_hash
-        description: "Transaction hash of stable to stable trade"
+        description: "Transaction hash of blue chip investment trade"
       - &name
         name: name
         description: "Label name"
@@ -42,15 +42,15 @@ models:
         name: label_type
         description: "Type of label (see labels overall readme)"
 
-  - name: cow_protocol_tx_hash_labels_stable_to_stable_ethereum
+  - name: cow_protocol_tx_hash_labels_bluechip_investment_ethereum
     meta:
       blockchain: ethereum
       sector: labels
-      category: stable_to_stable
+      category: bluechip_investment
       contributors: gentrexha
     config:
-      tags: ['labels', 'tx_hash', 'ethereum', 'stable_to_stable', 'dex']
-    description:  "Trades that traded from one stable coin to another stable coin"
+      tags: ['labels', 'tx_hash', 'ethereum', 'bluechip_investment', 'dex']
+    description:  "Trades that bought a blue chip type of token (wBTC, ETH, and WETH)"
     columns:
       - *blockchain
       - *tx_hash

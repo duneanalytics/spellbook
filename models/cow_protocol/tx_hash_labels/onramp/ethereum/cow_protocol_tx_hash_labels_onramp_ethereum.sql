@@ -1,24 +1,24 @@
 {{
     config(
-        alias='tx_hash_labels_stable_to_stable_ethereum',
+        alias='tx_hash_labels_onramp_ethereum',
     )
 }}
 
 with
- stable_to_stable_trades as (
+ onramp_trades as (
     select
         tx_hash
     from (
         select tx_hash
         from {{ ref('dex_aggregator_trades') }}
         where blockchain = 'ethereum'
-        and token_bought_address in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})
+        and token_bought_address not in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})
         and token_sold_address in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})
         UNION ALL
         select tx_hash
         from {{ ref('dex_trades') }}
         where blockchain = 'ethereum'
-        and token_bought_address in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})
+        and token_bought_address not in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})
         and token_sold_address in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})
     )
  )
@@ -26,13 +26,13 @@ with
 select
   "ethereum" as blockchain,
   tx_hash,
-  "Stable to stable" AS name,
+  "Onramp from stable" AS name,
   "tx_hash" AS category,
   "gentrexha" AS contributor,
   "query" AS source,
-  timestamp('2022-11-16') as created_at,
+  timestamp('2023-02-23') as created_at,
   now() as updated_at,
-  "stable_to_stable" as model_name,
+  "onramp" as model_name,
   "usage" as label_type
 from
-  stable_to_stable_trades
+  onramp_trades

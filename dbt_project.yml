@@ -630,6 +630,9 @@ models:
       +schema: pancakeswap
       bnb:
         +schema: pancakeswap_bnb
+      ethereum:
+        +schema: pancakeswap_ethereum
+
     bancor:
       +schema: bancor
       ethereum:
