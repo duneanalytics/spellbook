@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'unique_trade_id'],
+    unique_key = ['unique_trade_id'],
     post_hook = '{{ expose_spells(\'["arbitrum"]\',
                                     "project",
                                     "trove",
@@ -30,9 +30,11 @@ with marketplace as (
         nftAddress as nft_contract_address,
         contract_address as project_contract_address,
         evt_tx_hash as tx_hash,
-        evt_block_number as block_number
+        evt_block_number as block_number,
+        evt_index
     from (
         select evt_block_time,
+               evt_index,
                tokenId,
                quantity,
                seller,
@@ -51,6 +53,7 @@ with marketplace as (
         {% endif %}
         union all
         select evt_block_time,
+               evt_index
                tokenId,
                quantity,
                seller,
@@ -75,6 +78,7 @@ select
     'arbitrum' as blockchain,
     'trove' as project,
     cast(null as varchar(5)) as version,
+    date_trunc('day',mp.block_time) as block_date,
     mp.block_time,
     token_id,
     nft_tokens.name as collection,
@@ -98,7 +102,7 @@ select
     mp.block_number,
     tx.`from` as tx_from,
     tx.to as tx_to,
-    cast(null as varchar(5)) as unique_trade_id
+    mp.block_number || '-' || mp.tx_hash || '-' || mp.evt_index as unique_trade_id
 from marketplace mp
 inner join {{ source('arbitrum', 'transactions') }} tx
     on tx.block_number = mp.block_number
