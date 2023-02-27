@@ -145,7 +145,6 @@ models:
       - &version
         name: version
         description: "Project version"
-      - *block_date
       - *block_time
       - &seller
         name: seller
@@ -190,55 +189,9 @@ models:
       - &currency_contract
         name: currency_contract
         description: "Contract address of original token used for payment, with ETH contract address swapped for WETH"
-      - &original_currency_contract
-        name: original_currency_contract
-        description: "original currency"
-      - &currency_decimal
-        name: currency_decimal
-        description: "Token Decimal"
       - &project_contract_address
         name: project_contract_address
         description: "Contract address used by the project, in this case wyvern contract"
-      - &platform_fee_receive_address
-        name: platform_fee_receive_address
-        description: "Platform fee receive address"
-      - &platform_fee_amount_raw
-        name: platform_fee_amount_raw
-        description:  "Raw numerical amount for platform fees"
-      - &platform_fee_amount
-        name: platform_fee_amount
-        description:  "Platform fee amount in original token currency (properly formatted in decimals)"
-      - &platform_fee_amount_usd
-        name: platform_fee_amount_usd
-        description:  "Platform fee amount in USD"
-      - &royalty_fee_receive_address
-        name: royalty_fee_receive_address
-        description: "Wallet addresses receiving fees from the transaction"
-      - &royalty_fee_amount_raw
-        name: royalty_fee_amount_raw
-        description:  "Raw numerical amount for royalty fees"
-      - &royalty_fee_amount
-        name: royalty_fee_amount
-        description:  "Royalty fee amount in original token currency (properly formatted in decimals)"
-      - &royalty_fee_amount_usd
-        name: royalty_fee_amount_usd
-        description:  "Royalty fee amount in USD"
-      - name: royalty_fee_receive_address_1
-        description: "Wallet addresses receiving fees from the transaction"
-      - name: royalty_fee_receive_address_2
-        description: "Wallet addresses receiving fees from the transaction"
-      - name: royalty_fee_receive_address_3
-        description: "Wallet addresses receiving fees from the transaction"
-      - name: royalty_fee_receive_address_4
-        description: "Wallet addresses receiving fees from the transaction"
-      - name: royalty_fee_amount_raw_1
-        description: "Wallet addresses receiving fees from the transaction"
-      - name: royalty_fee_amount_raw_2
-        description: "Wallet addresses receiving fees from the transaction"
-      - name: royalty_fee_amount_raw_3
-        description: "Wallet addresses receiving fees from the transaction"
-      - name: royalty_fee_amount_raw_4
-        description: "Wallet addresses receiving fees from the transaction"
       - &aggregator_name
         name: aggregator_name
         description:  "If the trade was performed via an aggregator, displays aggregator name"
@@ -248,21 +201,113 @@ models:
       - *block_number
       - *tx_hash
       - *evt_index
-      - *sub_idx
-      - *sub_type
       - &tx_from
         name: tx_from
         description:  "Address that initiated the transaction"
       - &tx_to
         name: tx_to
         description:  "Address that received the transaction"
-      - &right_hash
-        name: right_hash
-        description: "right 8 character of data column on Transaction"
-      - &zone_address
-        name: zone_address
-        description: "zone address of OnePlanet transaction"
-      - &estimated_price
-        name: estimated_price
-        description: "True if it is bundle trade and dividened price"
-      - *is_private
+      - &unique_trade_id
+        name: unique_trade_id
+        description:  "Unique trade ID"
+
+  - name: oneplanet_polygon_mints
+    meta:
+      blockchain: polygon
+      project: oneplanet
+      contributors: [springzh]
+    config:
+      tags: ['polygon','oneplanet','mints']
+    description: >
+        OnePlanet mints on Polygon
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *token_id
+      - *collection
+      - *amount_usd
+      - *token_standard
+      - *trade_type
+      - *number_of_items
+      - *trade_category
+      - *evt_type
+      - *seller
+      - *buyer
+      - *amount_original
+      - *amount_raw
+      - *currency_symbol
+      - *currency_contract
+      - *nft_contract_address
+      - *project_contract_address
+      - *aggregator_name
+      - *aggregator_address
+      - *tx_hash
+      - *block_number
+      - *tx_from
+      - *tx_to
+      - *unique_trade_id
+
+  - name: oneplanet_polygon_fees
+    meta:
+      blockchain: polygon
+      project: oneplanet
+      contributors: [springzh]
+    config:
+      tags: ['polygon','oneplanet','fees']
+    description: >
+        OnePlanet fees on Polygon
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *token_id
+      - *collection
+      - &platform_fee_amount_raw
+        name: platform_fee_amount_raw
+        description:  "Raw numerical amount for platform fees"
+      - &platform_fee_amount
+        name: platform_fee_amount
+        description:  "Platform fee amount in original token currency (properly formatted in decimals)"
+      - &platform_fee_amount_usd
+        name: platform_fee_amount_usd
+        description:  "Platform fee amount in USD"
+      - &platform_fee_percentage
+        name: platform_fee_percentage
+        description:  "Platform fee in % of the amount paid for a given trade"
+      - &royalty_fee_amount_raw
+        name: royalty_fee_amount_raw
+        description:  "Raw numerical amount for royalty fees"
+      - &royalty_fee_amount
+        name: royalty_fee_amount
+        description:  "Royalty fee amount in original token currency (properly formatted in decimals)"
+      - &royalty_fee_amount_usd
+        name: royalty_fee_amount_usd
+        description:  "Royalty fee amount in USD"
+      - &royalty_fee_percentage
+        name: royalty_fee_percentage
+        description:  "Royalty fee in % of the amount paid for a given trade"
+      - &royalty_fee_receive_address
+        name: royalty_fee_receive_address
+        description:  "Wallet addresses receiving fees from the transaction"
+      - &royalty_fee_currency_symbol
+        name: royalty_fee_currency_symbol
+        description: "Symbol of the token in which fees are paid out"
+      - *token_standard
+      - *trade_type
+      - *number_of_items
+      - *trade_category
+      - *evt_type
+      - *seller
+      - *buyer
+      - *nft_contract_address
+      - *project_contract_address
+      - *aggregator_name
+      - *aggregator_address
+      - *tx_hash
+      - *block_number
+      - *tx_from
+      - *tx_to
+      - *unique_trade_id

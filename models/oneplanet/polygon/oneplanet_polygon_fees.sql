@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'trades',
+    alias = 'fees',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -27,12 +27,12 @@ with source_polygon_transactions as (
     {% endif %}
 )
 ,ref_oneplanet_polygon_base_pairs as (
-      select *
-      from {{ ref('oneplanet_polygon_base_pairs') }}
-      where 1=1
-      {% if is_incremental() %}
-            and block_time >= date_trunc("day", now() - interval '1 week')
-      {% endif %}
+    select *
+    from {{ ref('oneplanet_polygon_base_pairs') }}
+    where 1=1
+    {% if is_incremental() %}
+        and block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 )
 ,ref_tokens_nft as (
     select *
@@ -188,17 +188,7 @@ with source_polygon_transactions as (
         ,a.platform_contract_address
         ,b.token_contract_address
         ,round(price_amount_raw / nft_cnt) as price_amount_raw
-        ,round(platform_fee_amount_raw / nft_cnt) as platform_fee_amount_raw
-        ,platform_fee_receiver
-        ,round(creator_fee_amount_raw / nft_cnt) as creator_fee_amount_raw
-        ,creator_fee_amount_raw_1 / nft_cnt as creator_fee_amount_raw_1
-        ,creator_fee_amount_raw_2 / nft_cnt as creator_fee_amount_raw_2
-        ,creator_fee_amount_raw_3 / nft_cnt as creator_fee_amount_raw_3
-        ,creator_fee_amount_raw_4 / nft_cnt as creator_fee_amount_raw_4
-        ,creator_fee_receiver_1
-        ,creator_fee_receiver_2
-        ,creator_fee_receiver_3
-        ,creator_fee_receiver_4
+
         ,case when nft_cnt > 1 then true
               else false
           end as estimated_price
@@ -229,8 +219,9 @@ with source_polygon_transactions as (
           ,a.price_amount_raw / power(10, e.decimals) * p.price as price_amount_usd
           ,a.platform_fee_amount_raw / power(10, e.decimals) as platform_fee_amount
           ,a.platform_fee_amount_raw / power(10, e.decimals) * p.price as platform_fee_amount_usd
-          ,a.creator_fee_amount_raw / power(10, e.decimals) as creator_fee_amount
-          ,a.creator_fee_amount_raw / power(10, e.decimals) * p.price as creator_fee_amount_usd
+          ,a.creator_fee_amount_raw as royalty_fee_amount_raw
+          ,a.creator_fee_amount_raw / power(10, e.decimals) as royalty_fee_amount
+          ,a.creator_fee_amount_raw / power(10, e.decimals) * p.price as royalty_fee_amount_usd
           ,agg.name as aggregator_name
           ,agg.contract_address AS aggregator_address
           ,sub_idx
@@ -254,18 +245,23 @@ with source_polygon_transactions as (
     ,block_time
     ,nft_token_id as token_id
     ,nft_token_name as collection
-    ,price_amount_usd as amount_usd
+    ,CAST(platform_fee_amount_raw AS double) AS platform_fee_amount_raw
+    ,platform_fee_amount
+    ,platform_fee_amount_usd
+    ,CAST(NULL AS double) AS platform_fee_percentage
+    ,CAST(royalty_fee_amount_raw AS double) AS royalty_fee_amount_raw
+    ,royalty_fee_amount
+    ,royalty_fee_amount_usd
+    ,CAST(NULL AS double) AS royalty_fee_percentage
+    ,creator_fee_receiver_1 AS royalty_fee_receive_address
+    ,token_symbol AS royalty_fee_currency_symbol
     ,nft_token_standard as token_standard
     ,initcap(trade_type) as trade_type
     ,nft_token_amount as number_of_items
-    ,initcap(order_type) as trade_category -- Buy / Offer Accepted
+    ,initcap(order_type) as trade_category
     ,'Trade' as evt_type
     ,seller
     ,buyer
-    ,price_amount as amount_original
-    ,price_amount_raw as amount_raw
-    ,token_symbol as currency_symbol
-    ,token_alternative_symbol as currency_contract
     ,nft_contract_address
     ,platform_contract_address as project_contract_address
     ,aggregator_name
@@ -274,7 +270,7 @@ with source_polygon_transactions as (
     ,tx_hash
     ,tx_from
     ,tx_to
-    ,tx_hash || '-' || cast(evt_index as VARCHAR(10)) || '-' || nft_contract_address || '-' || cast(token_id as VARCHAR(10)) || '-' || cast(sub_idx as VARCHAR(10)) as unique_trade_id
+    ,tx_hash || '-' || evt_type || '-' || cast(evt_index as VARCHAR(10)) || '-' || cast(token_id as VARCHAR(10)) as unique_trade_id
   from iv_trades
 )
 select *
