@@ -1,16 +1,16 @@
-{{ config(schema='opensea_v3_ethereum'
+{{ config(schema='opensea_v4_ethereum'
          ,alias='trades')
 }}
 
 -- opensea.trades has the same columns as seaport.trades
 -- only some specified zone_address are recognized as opensea's
--- project/version : opensea/v3
--- contract_address : 0x00000000006c3852cbef3e08e8df289169ede581 (Seaport v1.1)
+-- project/version : opensea/v4
+-- contract_address : 0x00000000000001ad428e4906ae43d8f9852d0dd6 (Seaport v1.4)
 -- materialize : view
 
 select blockchain
       ,'opensea' as project
-      ,'v3' as version
+      ,'v4' as version
       ,block_date
       ,block_time
       ,seller
@@ -60,9 +60,4 @@ select blockchain
       ,is_private
       ,'seaport-' || tx_hash || '-' || cast(evt_index as VARCHAR(10)) || '-' || nft_contract_address || '-' || cast(token_id as VARCHAR(10)) || '-' || cast(sub_idx as VARCHAR(10)) as unique_trade_id
   from {{ ref('seaport_ethereum_trades') }}
- where zone_address in ('0xf397619df7bfd4d1657ea9bdd9df7ff888731a11'
-                       ,'0x9b814233894cd227f561b78cc65891aa55c62ad2'
-                       ,'0x004c00500000ad104d7dbd00e3ae0a5c00560c00'
-                       ,'0x110b2b128a9ed1be5ef3232d8e4e41640df5c2cd'
-                       )
-   and version = 'v1'                       
+ where version = 'v2'                       
