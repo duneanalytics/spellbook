@@ -33,10 +33,11 @@ WITH dexs AS
         t.evt_index
     FROM
         {{ source('pancakeswap_v2_ethereum', 'PancakePair_evt_Swap') }} t
-        INNER JOIN {{ source('pancakeswap_v2_ethereum', 'PancakeFactory_evt_PairCreated') }} f
-    ON t.contract_address = f.pair
+    INNER JOIN
+        {{ source('pancakeswap_v2_ethereum', 'PancakeFactory_evt_PairCreated') }} f
+        ON t.contract_address = f.pair
     {% if is_incremental() %}
-    AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
 
