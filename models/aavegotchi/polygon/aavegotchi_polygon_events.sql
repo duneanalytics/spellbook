@@ -17,10 +17,10 @@
 
 WITH contract_list as (
     SELECT distinct erc721TokenAddress as nft_contract_address
-    FROM aavegotchi_polygon.aavegotchi_diamond_evt_ERC721ExecutedListing
+    FROM {{ source ('aavegotchi_polygon', 'aavegotchi_diamond_evt_ERC721ExecutedListing') }}
     UNION ALL
     SELECT distinct erc1155TokenAddress as nft_contract_address
-    FROM aavegotchi_polygon.aavegotchi_diamond_evt_ERC1155ExecutedListing
+    FROM {{ source ('aavegotchi_polygon', 'aavegotchi_diamond_evt_ERC1155ExecutedListing') }}
 ),
 
 mints as (
