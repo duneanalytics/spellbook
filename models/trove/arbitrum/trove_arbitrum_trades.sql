@@ -13,7 +13,7 @@ with marketplace as (
         evt_block_time as block_time,
         tokenId as token_id,
         case
-            when quantity='1' then 'Single Item Trade'
+            when CAST(quantity AS VARCHAR(100)) = '1' then 'Single Item Trade'
             else 'Bulk Purchase'
         end as trade_type,
         cast(quantity as decimal(38, 0)) as number_of_items,
@@ -21,8 +21,8 @@ with marketplace as (
         seller,
         buyer,
         cast(pricePerItem as decimal(38, 0)) * cast(quantity as decimal(38, 0)) as amount_raw,
-        paymentToken as currency_contract,
-        nftAddress as nft_contract_address,
+        CAST(paymentToken AS VARCHAR(100)) as currency_contract,
+        CAST(nftAddress AS VARCHAR(100)) as nft_contract_address,
         contract_address as project_contract_address,
         evt_tx_hash as tx_hash,
         evt_block_number as block_number
@@ -93,5 +93,5 @@ left join {{ ref('tokens_arbitrum_nft') }} nft_tokens
     on nft_tokens.contract_address = mp.nft_contract_address
 left join {{ source('prices', 'usd') }} as prices
     on prices.minute = date_trunc('minute', mp.block_time)
-    and prices.contract_address = mp.currency_contract
+    and CAST(prices.contract_address AS VARCHAR(100)) = mp.currency_contract
     and prices.blockchain = 'arbitrum'
