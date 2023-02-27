@@ -12,20 +12,27 @@
   )
 }}
 
-SELECT l1_token, l2_token
-    , COALESCE(map.symbol, et.symbol) AS l1_symbol --select token factory, else eth
-    , COALESCE(et.decimals, map.decimals) AS l1_decimals --select eth mapping, else token factory
+SELECT l1_token, l2_token, l1_symbol, l1_decimals
 
 FROM (
 
-        SELECT _l1Token AS l1_token, _l2Token AS l2_token, NULL AS symbol, NULL AS decimals FROM optimism_ethereum.L1StandardBridge_evt_ERC20DepositInitiated 
+SELECT l1_token, l2_token
+    , COALESCE(map.symbol, et.symbol) AS l1_symbol --select token factory, else eth
+    , COALESCE(et.decimals, map.decimals) AS l1_decimals --select eth mapping, else token factory
+    , ROW_NUMBER() OVER (PARTITION BY l1_token, l2_token
+        ORDER BY COALESCE(et.decimals, map.decimals) ASC, COALESCE(map.symbol, et.symbol) DESC NULLS LAST) AS rnk
+FROM (
+
+        SELECT _l1Token AS l1_token, _l2Token AS l2_token, NULL AS symbol, NULL AS decimals
+            FROM {{source( 'optimism_ethereum', 'L1StandardBridge_evt_ERC20DepositInitiated' ) }}
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}   
         GROUP BY 1,2
         
         UNION ALL
-        SELECT _l1Token, _l2Token, NULL AS symbol, NULL AS decimals FROM optimism_ethereum.OVM_L1StandardBridge_evt_ERC20DepositInitiated 
+        SELECT _l1Token, _l2Token, NULL AS symbol, NULL AS decimals
+            FROM {{source( 'optimism_ethereum', 'OVM_L1StandardBridge_evt_ERC20DepositInitiated' ) }}
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}   
@@ -48,4 +55,5 @@ FROM (
 
 LEFT JOIN tokens_ethereum.erc20 et
     ON et.contract_address = map.l1_token
-GROUP BY 1,2,3,4 --distinct
+) fin 
+WHERE rnk =1
