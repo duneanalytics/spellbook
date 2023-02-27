@@ -134,7 +134,7 @@ SELECT
     p.contract_address AS currency_contract,
     token_id,
     token_standard,
-    a.contract_address AS project_contract_address,
+    coalesce(a.contract_address, t.`to`) AS project_contract_address,
     evt_type,
     CAST(NULL AS string) AS collection,
     CASE WHEN number_of_items = 1 THEN 'Single Item Trade' ELSE 'Bundle Trade' END AS trade_type,
