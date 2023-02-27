@@ -13,7 +13,6 @@
     )
 }}
 
--- Initial date of ListingAdded
 {% set nft_start_date = "2022-12-30" %}
 
 WITH contract_list as (
@@ -36,17 +35,15 @@ mints as (
         amount AS number_of_items,
         token_standard,
         '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270' AS currency_contract, -- All sale are in MATIC
-        CAST(0 as DECIMAL(38,0)) AS amount_raw, -- It's hard to get the mint price. So handle it similar as in nftb_bnb_events
-        CAST(NULL AS string) AS category,
-        CAST(NULL AS string) AS executed_time
+        CAST(0 as DECIMAL(38,0)) AS amount_raw -- It's hard to get the mint price. So handle it similar as in nftb_bnb_events
     FROM {{ ref('nft_polygon_transfers') }}
     WHERE contract_address IN ( SELECT nft_contract_address FROM contract_list )
         AND `from` = '0x0000000000000000000000000000000000000000'   -- mint
-        {% if is_incremental() %}
-        AND block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
         {% if not is_incremental() %}
         AND block_time >= '{{nft_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+        AND block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
@@ -79,19 +76,24 @@ trades AS (
         s.evt_tx_hash,
         s.contract_address,
         s.evt_index,
+        'Trade' AS evt_type,
         s.buyer,
         s.lister AS seller,
         s.assetContract AS nft_contract_address,
-        CAST(NULL AS string) AS collection,
         l.tokenId AS token_id,
         s.quantityBought AS number_of_items,
-        'erc721' AS token_standard, -- 0x73ad2146: erc721; 0x973bb640: erc1155
+        'erc721' AS token_standard, -- All of erc721 type
         '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270' AS currency_contract, -- All sale are in MATIC
         s.totalPricePaid AS amount_raw
     FROM {{ source ('fractal_polygon', 'Marketplace_evt_NewSale') }} s
     INNER JOIN listing_detail l ON s.listingId = l.listingId
     WHERE 1 = 1
+        {% if not is_incremental() %}
         AND s.evt_block_time >= '{{nft_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+        AND s.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 ),
 
 all_events as (
@@ -108,8 +110,13 @@ price_list AS (
         symbol
      FROM {{ source('prices', 'usd') }} p
      WHERE blockchain = 'polygon'
-        AND contract_address IN ( SELECT DISTINCT currency_contract FROM nft_order) 
+        AND contract_address IN ( SELECT DISTINCT currency_contract FROM all_events) 
+        {% if not is_incremental() %}
         AND minute >= '{{nft_start_date}}' 
+        {% endif %}
+        {% if is_incremental() %}
+        AND minute >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 ) 
 
 SELECT
@@ -128,7 +135,7 @@ SELECT
     token_id,
     token_standard,
     a.contract_address AS project_contract_address,
-    'Trade' AS evt_type,
+    evt_type,
     CAST(NULL AS string) AS collection,
     CASE WHEN number_of_items = 1 THEN 'Single Item Trade' ELSE 'Bundle Trade' END AS trade_type,
     number_of_items,
@@ -144,17 +151,21 @@ SELECT
     2 * amount_raw / power(10, p.decimals) / 100 AS platform_fee_amount,
     2 * amount_raw / power(10, p.decimals) * p.price / 100 AS platform_fee_amount_usd,
     CAST(2 AS DOUBLE) AS platform_fee_percentage,
+    0 AS royalty_fee_amount_raw,
     0 royalty_fee_amount,
     0 AS royalty_fee_amount_usd,
     0 AS royalty_fee_percentage,
     CAST(NULL AS double) AS royalty_fee_receive_address,
     CAST(NULL AS string) AS royalty_fee_currency_symbol,
-    evt_tx_hash || '-' || evt_index || '-' || token_id  AS unique_trade_id
+    evt_tx_hash || '-' || evt_type || '-' || evt_index || '-' || token_id  AS unique_trade_id
 FROM all_events a
 INNER JOIN {{ source('polygon','transactions') }} t ON a.evt_block_number = t.block_number
     AND a.evt_tx_hash = t.hash
+    {% if not is_incremental() %}
     AND t.block_time >= '{{nft_start_date}}'
+    {% endif %}
+    {% if is_incremental() %}
+    AND t.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 LEFT JOIN price_list p ON p.contract_address = a.currency_contract AND p.minute = date_trunc('minute', a.evt_block_time)
 LEFT JOIN {{ ref('nft_aggregators') }} agg ON agg.blockchain = 'polygon' AND agg.contract_address = t.`to`
-WHERE 1 = 1
-    AND a.evt_block_time >= '{{nft_start_date}}'
