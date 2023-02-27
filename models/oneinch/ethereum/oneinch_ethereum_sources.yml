@@ -41,6 +41,12 @@ sources:
         loaded_at_field: call_block_time
       - name: AggregationRouterV5_call_clipperSwapToWithPermit
         loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrder
+        loaded_at_field: call_block_time
   
   - name: oneinch_v2_ethereum
     description: "decoded events and function calls for 1inch v2 on ethereum"
