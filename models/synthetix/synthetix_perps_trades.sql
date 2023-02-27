@@ -30,5 +30,5 @@ FROM
 		,tx_from
 		,tx_to
 		,evt_index
-	FROM {{ ref('synthetix_optimism_trades') }}
+	FROM {{ ref('synthetix_optimism_perps_trades') }}
 )

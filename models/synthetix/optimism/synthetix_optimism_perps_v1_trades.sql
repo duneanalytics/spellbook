@@ -1,5 +1,6 @@
 {{ config(
-	alias ='trades',
+	schema = 'synthetix_optimism',
+	alias ='perps_v1_trades',
 	partition_by = ['block_date'],
 	materialized = 'incremental',
 	file_format = 'delta',

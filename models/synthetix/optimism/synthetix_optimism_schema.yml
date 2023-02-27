@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: synthetix_optimism_trades
+  - name: synthetix_optimism_perps_v1_trades
     meta:
       blockchain: optimism
       sector: perpetual
@@ -10,7 +10,7 @@ models:
     config:
       tags: ['optimism', 'synthetix', 'kwenta', 'perpetuals', 'perps']
     description: >
-      Kwenta/Synthetix perpetuals trades/swaps on Optimism
+      Synthetix perpetuals trades/swaps on Optimism via Kwenta and Decentrex
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -80,6 +80,82 @@ models:
       - &evt_index
         name: evt_index
         description: "Event index number"
+  
+  - name: synthetix_optimism_perps_v2_trades
+    meta:
+      blockchain: optimism
+      sector: perpetual
+      project: synthetix
+      contributors: rplust
+    config:
+      tags: ['optimism', 'synthetix', 'kwenta', 'decentrex', 'perpetuals', 'perps']
+    description: >
+      Synthetix perpetuals trades/swaps on Optimism via Kwenta and Decentrex
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - project
+            - version
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *block_time
+      - *virtual_asset
+      - *underlying_asset
+      - *market
+      - *market_address
+      - *volume_usd
+      - *fee_usd
+      - *margin_usd
+      - *trade
+      - *project
+      - *version
+      - *trader
+      - *volume_raw
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+
+  - name: synthetix_optimism_perps_trades
+    meta:
+      blockchain: optimism
+      sector: perpetual
+      project: synthetix
+      contributors: msilb7, drethereum, rplust
+    config:
+      tags: ['optimism', 'synthetix', 'kwenta', 'decentrex', 'perpetuals', 'perps']
+    description: >
+      Synthetix perpetuals trades/swaps on Optimism via Kwenta and Decentrex
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - project
+            - version
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *block_time
+      - *virtual_asset
+      - *underlying_asset
+      - *market
+      - *market_address
+      - *volume_usd
+      - *fee_usd
+      - *margin_usd
+      - *trade
+      - *project
+      - *version
+      - *trader
+      - *volume_raw
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
   
   - name: synthetix_optimism_spot_trades
     meta:
