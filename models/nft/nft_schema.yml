@@ -140,11 +140,11 @@ models:
 
   - name: nft_trades
     meta:
-      blockchain: ethereum, solana
+      blockchain: ethereum, solana, polygon
       sector: nft
       contributors: soispoke, hildobby, ilemi, cat
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'trades','superrare']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'trades','superrare', 'polygon', 'oneplanet']
     description: >
         NFT trades
     columns:
@@ -178,11 +178,11 @@ models:
 
   - name: nft_mints
     meta:
-      blockchain: ethereum, solana
+      blockchain: ethereum, solana, polygon
       sector: nft
       contributors: soispoke, hildobby, umer_h_adil
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'mints']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'mints', 'polygon', 'oneplanet']
     description: >
         NFT mints
     columns:
@@ -254,11 +254,11 @@ models:
 
   - name: nft_fees
     meta:
-      blockchain: ethereum, solana
+      blockchain: ethereum, solana, polygon
       sector: nft
       contributors: soispoke, hildobby, ilemi, cat
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'fees','superrare']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'fees','superrare', 'polygon', 'oneplanet']
     description: >
         NFT fees
     columns:

@@ -161,6 +161,11 @@ models:
       bnb:
         +schema: babyswap_bnb
 
+    oneplanet:
+      +schema: oneplanet
+      polygon:
+        +schema: oneplanet_polygon
+
     opensea:
       +schema: opensea
       ethereum:

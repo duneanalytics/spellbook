@@ -3,7 +3,7 @@
         post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism","arbitrum"]\',
                                     "sector",
                                     "nft",
-                                    \'["soispoke","0xRob"]\') }}')
+                                    \'["soispoke","0xRob","springzh"]\') }}')
 }}
 
 
@@ -14,6 +14,7 @@
 ,ref('foundation_ethereum_fees')
 ,ref('looksrare_ethereum_fees')
 ,ref('magiceden_fees')
+,ref('oneplanet_polygon_fees')
 ,ref('opensea_fees')
 ,ref('sudoswap_ethereum_fees')
 ,ref('superrare_ethereum_fees')
