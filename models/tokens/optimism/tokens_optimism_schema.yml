@@ -49,7 +49,7 @@ models:
       sector: nft
       contributors: chuxin
     config:
-      tags: ['tokens', 'optimism', 'nft', 'erc721']
+      tags: ['tokens', 'optimism', 'nft', 'erc721','bridge']
     description: >
         Selection of NFT token addresses bridged from Ethereum to Optimism.
     tests:
@@ -70,3 +70,27 @@ models:
         description: "NFT Project symbol"
       - name: contract_address_l1
         description: "Bridged project contract address on L1"
+
+  - name: tokens_optimism_erc20_bridged_mapping
+    meta:
+      blockchain: optimism
+      sector: erc20
+      contributors: msilb7
+    config:
+      tags: ['tokens', 'optimism', 'bridge', 'erc20']
+    description: >
+        Selection of ERC20 token addresses bridged from Ethereum to Optimism.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - l1_token
+            - l2_token
+    columns:
+      - name: l1_token
+        description: "Token Address on L1"
+      - name: l2_token
+        description: "Token Address on L2"
+      - name: l1_symbol
+        description: "Token Symbol on L1, if it's in the ethereum erc20 tokens table"
+      - name: l1_decimals
+        description: "Token Decimals on L1, if it's in the ethereum erc20 tokens table"
