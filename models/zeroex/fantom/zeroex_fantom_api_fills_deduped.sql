@@ -83,8 +83,8 @@ SELECT  'fantom' AS blockchain
       , a.maker
       , a.affiliate_address
       , a.tx_hash
-      , a.from AS tx_from
-      , a.to tx_to
+      , a.tx_from AS tx_from
+      , a.tx_to tx_to
       , b.evt_index
 FROM fills_with_tx_fill_number a
 INNER JOIN deduped_bridge_fills b
