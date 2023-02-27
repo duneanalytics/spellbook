@@ -17,11 +17,8 @@
 {% set nft_start_date = "2022-12-30" %}
 
 WITH contract_list as (
-    SELECT distinct erc721TokenAddress as nft_contract_address
-    FROM aavegotchi_polygon.aavegotchi_diamond_evt_ERC721ExecutedListing
-    UNION ALL
-    SELECT distinct erc1155TokenAddress as nft_contract_address
-    FROM aavegotchi_polygon.aavegotchi_diamond_evt_ERC1155ExecutedListing
+    SELECT distinct assetContract as nft_contract_address
+    FROM {{ source ('fractal_polygon', 'Marketplace_evt_ListingAdded') }}
 ),
 
 mints as (
@@ -38,7 +35,7 @@ mints as (
         token_id,
         amount AS number_of_items,
         token_standard,
-        '0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7' AS currency_contract, -- All sale are in GHST
+        '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270' AS currency_contract, -- All sale are in MATIC
         CAST(0 as DECIMAL(38,0)) AS amount_raw, -- It's hard to get the mint price. So handle it similar as in nftb_bnb_events
         CAST(NULL AS string) AS category,
         CAST(NULL AS string) AS executed_time
