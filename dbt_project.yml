@@ -1344,6 +1344,11 @@ seeds:
             platform_fee_amount: double
             royalty_fee_amount: double
 
+    fractal:
+      +schema: fractal
+      polygon:
+        +schema: fractal_polygon
+
     balancer:
       balancer_transfers_bpt_seed:
         +column_types:

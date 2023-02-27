@@ -3,7 +3,7 @@
         post_hook='{{ expose_spells(\'["ethereum","solana","bnb", "optimism","arbitrum"]\',
                                     "sector",
                                     "nft",
-                                    \'["soispoke", "0xRob"]\') }}')
+                                    \'["soispoke", "0xRob","springzh"]\') }}')
 }}
 
 
@@ -13,6 +13,7 @@
 ,ref('cryptopunks_ethereum_trades')
 ,ref('element_trades')
 ,ref('foundation_ethereum_trades')
+,ref('fractal_polygon_trades')
 ,ref('liquidifty_trades')
 ,ref('looksrare_ethereum_trades')
 ,ref('magiceden_trades')
