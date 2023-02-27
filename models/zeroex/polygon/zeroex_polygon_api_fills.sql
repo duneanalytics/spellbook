@@ -377,8 +377,7 @@ SELECT
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
              END AS volume_usd,
         tx.from AS tx_from,
-        tx.to AS tx_to,
-        'polygon' AS blockchain
+        tx.to AS tx_to
 FROM all_tx
 
 
