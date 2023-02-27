@@ -118,3 +118,12 @@ sources:
     tables:
       - name: OneSplitAudit_evt_Swapped
         loaded_at_field: evt_block_time
+
+  - name: oneinch_lop_ethereum
+    description: "decoded events and function calls for limit order protocol v1 on ethereum"
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: LimitOrderProtocol_call_fillOrder
+        loaded_at_field: call_block_time
