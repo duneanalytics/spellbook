@@ -298,7 +298,9 @@ SELECT
              WHEN taker_token IN ('0x04068da6c83afcfa0e13ba15a6696662335d5b75','0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83','0x74b23882a30290451a17c44f4f05243b6b58c76d','0x049d68029688eabf473097a2fc38ef61633a3c7a','0x82f0b8b456c1a451378467398982d4834b6829c1', '0x321162cd933e2be498cd2267a90534a804051b11')     
              THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
-             END AS volume_usd, tx.to, tx.from 
+             END AS volume_usd, 
+        tx.from AS tx_from,
+        tx.to AS tx_to
 FROM all_tx
 INNER JOIN {{ source('fantom', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
 
