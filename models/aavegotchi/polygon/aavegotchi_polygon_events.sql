@@ -28,19 +28,19 @@ mints as (
         block_time AS evt_block_time,
         block_number AS evt_block_number,
         tx_hash AS evt_tx_hash,
-        NULL AS contract_address, -- We eave it NULL here and will get its value below by join from transactions table
+        CAST(NULL AS string) AS contract_address, -- We leave it NULL here and will get its value below by join from transactions table
         evt_index,
         'Mint' AS evt_type,
         `to` AS buyer,
-        NULL AS seller,
+        CAST(NULL AS string) AS seller,
         contract_address AS nft_contract_address,
         token_id,
         amount AS number_of_items,
         token_standard,
         '0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7' AS currency_contract, -- All sale are in GHST
         CAST(0 as DECIMAL(38,0)) AS amount_raw, -- It's hard to get the mint price. So handle it similar as in nftb_bnb_events
-        NULL AS category,
-        NULL AS executed_time
+        CAST(NULL AS string) AS category,
+        CAST(NULL AS string) AS executed_time
     FROM {{ ref('nft_polygon_transfers') }}
     WHERE contract_address IN ( SELECT nft_contract_address FROM contract_list )
         AND `from` = '0x0000000000000000000000000000000000000000'   -- mint
@@ -157,7 +157,7 @@ SELECT
     token_standard,
     coalesce(a.contract_address, t.`to`) AS project_contract_address,
     evt_type,
-    NULL::string AS collection,
+    CAST(NULL AS string) AS collection,
     CASE WHEN number_of_items = 1 THEN 'Single Item Trade' ELSE 'Bundle Trade' END AS trade_type,
     number_of_items,
     a.trade_category,
@@ -176,8 +176,8 @@ SELECT
     0 AS royalty_fee_amount,
     0 AS royalty_fee_amount_usd,
     0 AS royalty_fee_percentage,
-    NULL::double AS royalty_fee_receive_address,
-    NULL::string AS royalty_fee_currency_symbol,
+    CAST(NULL AS double) AS royalty_fee_receive_address,
+    CAST(NULL AS string) AS royalty_fee_currency_symbol,
     evt_tx_hash || '-' || evt_type || '-' || evt_index || '-' || token_id  AS unique_trade_id
 FROM all_events AS a
 INNER JOIN {{ source('polygon','transactions') }} t ON a.evt_block_number = t.block_number
