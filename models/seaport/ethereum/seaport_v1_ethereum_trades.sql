@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'seaport_v1_ethereum',
     alias = 'trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -7,7 +8,7 @@
     unique_key = ['block_date', 'tx_hash', 'evt_index', 'nft_contract_address', 'token_id', 'sub_type', 'sub_idx'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                             "project",
-                            "seaport",
+                            "seaport_v1",
                             \'["sohwak"]\') }}'
     )
 }}
