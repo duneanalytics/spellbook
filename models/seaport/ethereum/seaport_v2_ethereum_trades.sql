@@ -81,6 +81,7 @@ with source_ethereum_transactions as (
           ,b.om_order_id
       from ref_seaport_ethereum_base_pairs a
            left join iv_orders_matched b on b.om_order_hash = a.order_hash
+     where a.platform_contract_address = '{{c_seaport_contract_address}}'
 )
 ,iv_volume as (
   select block_date

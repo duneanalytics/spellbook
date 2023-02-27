@@ -104,7 +104,7 @@ with source_ethereum_transactions as (
         ,a.is_moved_nft
   from ref_seaport_ethereum_base_pairs a
   where 1=1
-    and a.contract_address = '{{c_seaport_contract_address}}'
+    and a.platform_contract_address = '{{c_seaport_contract_address}}'
     and not a.is_private
   union all
   select a.block_date
@@ -150,7 +150,7 @@ with source_ethereum_transactions as (
     and b.original_amount = a.original_amount
     and b.is_moved_nft
   where 1=1
-    and a.contract_address = '{{c_seaport_contract_address}}'
+    and a.platform_contract_address = '{{c_seaport_contract_address}}'
     and a.is_private
     and not a.is_moved_nft
     and a.consideration_cnt > 0
