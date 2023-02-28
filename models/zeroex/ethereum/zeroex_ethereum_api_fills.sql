@@ -474,7 +474,7 @@ SELECT
              END AS volume_usd,
         tx.from AS tx_from,
         tx.to AS tx_to,
-         'ethereum' AS blockchain
+        'ethereum' AS blockchain
 FROM all_tx
 INNER JOIN {{ source('ethereum', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
 
