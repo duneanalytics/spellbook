@@ -1,4 +1,4 @@
-{{ config(schema='opensea_v3_ethereum'
+{{ config(schema='opensea_v4_ethereum'
          ,alias='events') 
 }}
 
@@ -8,7 +8,7 @@
 
 select blockchain    
       ,'opensea' as project
-      ,'v3' as version
+      ,'v4' as version
       ,block_date
       ,block_time
       ,seller
@@ -57,4 +57,4 @@ select blockchain
       ,estimated_price
       ,is_private
       ,unique_trade_id
-  from {{ ref('opensea_v3_ethereum_trades') }}
+  from {{ ref('opensea_v4_ethereum_trades') }}
