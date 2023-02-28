@@ -16,7 +16,7 @@
 with intermediate_wallets AS (
 SELECT address, 'Project' AS label, project, description
 FROM (
-SELECT LOWER(address) AS address, proposal_name, address_descriptor, project, 
+SELECT LOWER(address) AS address, proposal_name, address_descriptor, project 
         , ROW_NUMBER() OVER (PARTITION BY address ORDER BY description) AS rnk
 FROM (values
      --suspected internal transfer addresses
