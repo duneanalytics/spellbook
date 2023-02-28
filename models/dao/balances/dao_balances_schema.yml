@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: dao_balances
+    meta:
+      blockchain: ethereum, gnosis, polygon 
+      sector: dao
+      contributors: Henrystats 
+    config:
+      tags: [ 'ethereum','gnosis', 'polygon', 'dao', 'dao creator tools', 'henrystats' ]
+    description: >
+      DAO wallet balances
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &dao_creator_tool
+        name: dao_creator_tool
+        description: "Name of creator tool used to create DAO"
+      - &dao
+        name: dao
+        description: "address of the dao deployed"
+      - &dao_wallet_address
+        name: dao_wallet_address
+        desciption: "wallet address used by DAO to receive & transfer funds"
+      - &day
+        name: day
+        description: "day"
+      - &asset_contract_address
+        name: asset
+        description: "contract address of token/asset"
+      - &asset
+        name: asset
+        description: "token or asset symbol"
+      - &balance
+        name: balance
+        description: "asset balance"
+      - &usd_value
+        name: usd_value
+        description: "asset value in USD"

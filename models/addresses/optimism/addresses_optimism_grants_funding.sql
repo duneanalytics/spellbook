@@ -37,7 +37,6 @@ FROM (VALUES
 ,('Project',	'0x392ac17a9028515a3bfa6cce51f8b70306c6bd43',	'Stargate Finance',	'Phase 0')
 ,('Project',	'0xb6dacae4ef97b4817d54df8e005269f509f803f9',	'Lyra',	'Phase 0')
 ,('Project',	'0xdcf664d0f76e99eaa2dbd569474d0e75dc899fcd',	'Perpetual Protocol',	'Phase 0')
-
 ,('Project',	'0x69c1a51711b061e5935c648beb16e349898b17df',	'dForce',	'Season 1')
 ,('Project',	'0x308810881807189cae91950888b2cb73a1cc5920',	'Mean Finance',	'Season 1')
 ,('Project',	'0x2a185c8a3c63d7bfe63ad5d950244ffe9d0a4b60',	'Beethoven X',	'Season 1')
