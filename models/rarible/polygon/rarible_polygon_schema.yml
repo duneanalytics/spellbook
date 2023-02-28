@@ -64,7 +64,7 @@ models:
         description:  "Symbol of original currency used for payment"
       - &currency_contract
         name: currency_contract
-        description:  "Contract address of original token used for payment, with ETH contract address swapped for WETH"
+        description:  "Contract address of original token used for payment, with MATIC contract address swapped for WMATIC"
       - &nft_contract_address
         name: nft_contract_address
         description:  "NFT contract address, only if 1 nft was transacted"
@@ -99,7 +99,7 @@ models:
         name: platform_fee_amount_usd
         description:  "Platform fee amount in USD"
       - &platform_fee_percentage
-        name: platform_fee_amount_usd
+        name: platform_fee_percentage
         description:  "Platform fee in % of the amount paid for a given trade"
       - &royalty_fee_amount_raw
         name: royalty_fee_amount_raw
@@ -149,6 +149,90 @@ models:
       - *buyer
       - *amount_original
       - *amount_raw
+      - *currency_symbol
+      - *currency_contract
+      - *nft_contract_address
+      - *project_contract_address
+      - *aggregator_name
+      - *aggregator_address
+      - *tx_hash
+      - *block_number
+      - *tx_from
+      - *tx_to
+      - *unique_trade_id
+
+
+  - name: rarible_polygon_mints
+    meta:
+      blockchain: polygon
+      project: rarible
+      contributors: [springzh]
+    config:
+      tags: ['polygon','rarible','mints']
+    description: >
+        Rarible mints on Polygon
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *token_id
+      - *collection
+      - *amount_usd
+      - *token_standard
+      - *trade_type
+      - *number_of_items
+      - *trade_category
+      - *evt_type
+      - *seller
+      - *buyer
+      - *amount_original
+      - *amount_raw
+      - *currency_symbol
+      - *currency_contract
+      - *nft_contract_address
+      - *project_contract_address
+      - *aggregator_name
+      - *aggregator_address
+      - *tx_hash
+      - *block_number
+      - *tx_from
+      - *tx_to
+      - *unique_trade_id
+
+  - name: rarible_polygon_fees
+    meta:
+      blockchain: polygon
+      project: rarible
+      contributors: [springzh]
+    config:
+      tags: ['polygon','rarible','fees']
+    description: >
+        Rarible fees on Polygon
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *token_id
+      - *collection
+      - *platform_fee_amount_raw
+      - *platform_fee_amount
+      - *platform_fee_amount_usd
+      - *platform_fee_percentage
+      - *royalty_fee_amount_raw
+      - *royalty_fee_amount
+      - *royalty_fee_amount_usd
+      - *royalty_fee_percentage
+      - *royalty_fee_receive_address
+      - *royalty_fee_currency_symbol
+      - *token_standard
+      - *trade_type
+      - *number_of_items
+      - *trade_category
+      - *evt_type
+      - *seller
+      - *buyer
       - *currency_symbol
       - *currency_contract
       - *nft_contract_address

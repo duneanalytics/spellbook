@@ -1,9 +1,9 @@
 {{ config(
         alias ='mints',
-        post_hook='{{ expose_spells(\'["ethereum","solana","bnb"]\',
+        post_hook='{{ expose_spells(\'["ethereum","solana","bnb","polygon"]\',
                     "sector",
                     "nft",
-                    \'["soispoke","umer_h_adil","hildobby","0xRob"]\') }}')
+                    \'["soispoke","umer_h_adil","hildobby","0xRob","springzh"]\') }}')
 }}
 
 {% set nft_models = [
@@ -16,6 +16,7 @@
 ,ref('blur_ethereum_mints')
 ,ref('zora_ethereum_mints')
 ,ref('nftb_bnb_mints')
+,ref('rarible_polygon_mints')
 ] %}
 
 WITH project_mints as (

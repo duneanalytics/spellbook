@@ -884,6 +884,11 @@ seeds:
             tx_hash: string
             amount: string
 
+    rarible:
+      +schema: rarible
+      polygon:
+        +schema: rarible_polygon
+
     sharky:
       solana:
         sharky_solana_loans_solscan:
