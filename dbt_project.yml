@@ -97,6 +97,8 @@ models:
         +schema: nft_optimism
       polygon:
         +schema: nft_polygon
+      fantom:
+        +schema: nft_fantom
 
     compound:
       +schema: compound
