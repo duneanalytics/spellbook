@@ -16,7 +16,7 @@
 {% set c_native_token_address = "0x0000000000000000000000000000000000000000" %}
 {% set c_alternative_token_address = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" %}
 {% set c_native_symbol = "ETH" %}
-{% set c_seaport_first_date = "2022-06-01" %}
+{% set c_seaport_first_date = "2023-02-01" %} --"2022-06-01" for testing, using a recent date
 {% set c_seaport_contract_address = "0x00000000006c3852cbef3e08e8df289169ede581" %} -- v1 = Seaport v1.1
 
 with source_ethereum_transactions as (

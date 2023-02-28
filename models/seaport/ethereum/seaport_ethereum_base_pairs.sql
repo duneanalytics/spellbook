@@ -12,7 +12,7 @@
      )
 }}
 
-{% set c_seaport_first_date = "2022-06-01" %}
+{% set c_seaport_first_date = "2023-02-01" %} --"2022-06-01" for testing, using a recent date
 
 with iv_offer_consideration as (
     select evt_block_time as block_time
