@@ -4,7 +4,7 @@
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
-        unique_key='unique_transfer_id',
+        unique_key= ['evt_tx_hash', 'evt_index', 'trace_address'],
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "transfers",
@@ -53,8 +53,7 @@ SELECT transfer_from_address,
         t.from AS tx_from_address,
         t.to AS tx_to_address,
         evt_index,
-        trace_address,
-        unique_transfer_id
+        trace_address
 
 FROM (
         -----------
@@ -77,9 +76,7 @@ FROM (
         r.evt_tx_hash AS tx_hash,
 
         r.evt_index,
-        cast(null as array<bigint>) AS trace_address,
-
-        r.evt_tx_hash || '-' || CAST(evt_index AS VARCHAR(100))  as unique_transfer_id
+        cast(null as array<bigint>) AS trace_address
 
         FROM {{ source('erc20_optimism', 'evt_transfer') }} r
 
@@ -110,9 +107,7 @@ FROM (
         tx_hash,
 
         cast(NULL as int) AS evt_index,
-        r.trace_address,
-
-        r.unique_transfer_id
+        r.trace_address
 
         FROM {{ ref('transfers_optimism_eth') }} r
 
@@ -140,9 +135,7 @@ FROM (
         r.tx_hash AS tx_hash,
 
         r.evt_index,
-        cast(null as array<bigint>) AS trace_address,
-
-        r.unique_transfer_id
+        cast(null as array<bigint>) AS trace_address
 
         FROM {{ ref('nft_optimism_transfers') }} r
 

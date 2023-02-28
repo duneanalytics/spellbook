@@ -71,7 +71,6 @@ models:
       - *tx_hash
       - *tx_method_id
       - *trace_address
-      - *unique_transfer_id
       - &transfer_from_address
         name: transfer_from_address
         description: "Wallet address that the token is transferred from"
