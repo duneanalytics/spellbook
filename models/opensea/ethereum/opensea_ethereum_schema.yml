@@ -233,11 +233,7 @@ models:
       - *royalty_fee_amount_usd
       - *royalty_fee_receive_address
       - *royalty_fee_currency_symbol
-      - &unique_trade_id
-        name: unique_trade_id
-        description:  "Unique trade ID"
-        tests:
-          - unique
+      - *unique_trade_id
 
   - name: opensea_v3_ethereum_trades
     meta:
