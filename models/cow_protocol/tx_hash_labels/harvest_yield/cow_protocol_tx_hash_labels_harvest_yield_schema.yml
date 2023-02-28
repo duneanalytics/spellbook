@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: cow_protocol_tx_hash_labels_stable_to_stable
+  - name: cow_protocol_tx_hash_labels_harvest_yield
     meta:
       blockchain: ethereum
       sector: tx_hash_labels
-      category: stable_to_stable
+      category: harvest_yield
       contributors: gentrexha
     config:
-      tags: ['labels', 'tx_hash', 'ethereum', 'stable_to_stable', 'dex']
-    description: "Trades that traded from one stable coin to another"
+      tags: ['labels', 'tx_hash', 'ethereum', 'harvest_yield', 'dex']
+    description: "Trades that sold a harvest yield token"
     columns:
       - &blockchain
         name: blockchain
@@ -42,15 +42,15 @@ models:
         name: label_type
         description: "Type of label (see labels overall readme)"
 
-  - name: cow_protocol_tx_hash_labels_stable_to_stable_ethereum
+  - name: cow_protocol_tx_hash_labels_harvest_yield_ethereum
     meta:
       blockchain: ethereum
       sector: labels
-      category: stable_to_stable
+      category: harvest_yield
       contributors: gentrexha
     config:
-      tags: ['labels', 'tx_hash', 'ethereum', 'stable_to_stable', 'dex']
-    description:  "Trades that traded from one stable coin to another stable coin"
+      tags: ['labels', 'tx_hash', 'ethereum', 'harvest_yield', 'dex']
+    description:  "Trades that sold a harvest yield token"
     columns:
       - *blockchain
       - *tx_hash
