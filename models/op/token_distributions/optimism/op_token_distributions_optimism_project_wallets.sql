@@ -1,3 +1,12 @@
+{{ config(
+    schema = 'op_token_optimism',
+    alias = 'project_wallets',
+    post_hook='{{ expose_spells(\'["optimism"]\',
+                                "project",
+                                "op_token",
+                                \'["msilb7"]\') }}'
+    )
+}}
 -- Derived from: https://dune.com/queries/1857798
 
 
@@ -35,6 +44,7 @@ FROM (values
     ,('0xf508311867EFdC50cf36B06EC95E0EEdb2212599', 'Candide Wallet','intermediate')
     ,('0x8636600a864797aa7ac8807a065c5d8bd9ba3ccb', 'Arrakis Finaince', 'Uni Grants')
     ,('0xA7EEb1b719ef7b40F79D2056900ee3Ca904F28F9', 'DefiEdge', 'Uni Grants')
+    ,('0xfda462548ce04282f4b6d6619823a7c64fdc0185', 'Angle', 'Deplopyer')
     --suspected grants multisigs
     ,('0x5a06d52f38965904cf15c3f55286263ab9a237d7','Perpetual Protocol','intermediate/grants?') --guessing
     ,('0xC69a2d7e3De31542aB9ba1e80F9F5d68e49f78e6','Lyra','Lyra Grants DAO')
@@ -134,6 +144,8 @@ FROM (values
     ,('0xC792980F2F3016F60bEd35926d21A43E140b99cC', 'dHedge', 'Velo Pool')
     ,('0x827ecD158b76f63010e8F129b19fE64A85E97e95', 'dHedge', 'Velo Pool')
     ,('0xfCC293db3b7396a1c2477C9F24F5F948431EF6eC', 'Pika Protocol', 'distributor')
+    ,('0x8b50d942bb4effe0db32393a141ea083db0c4e7f', 'Alchemix', 'Velo Pool')
+    ,('0x4ea2e39626de031a011c3ca7360878202454ce75', 'Angle', 'Velo Pool')
     
     --quix - should come from CB?
     ,('0x5Ad4A019F77e82940f6Dd15A5215362AF061A742','Quix','distributor')

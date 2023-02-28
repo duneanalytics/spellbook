@@ -1,4 +1,9 @@
 -- Map governance proposal names to Dune project names
+{{ config(
+    schema = 'op_token_optimism',
+    alias = 'project_name_mapping'
+    )
+}}
 
 SELECT
         proposal_name, project_name
