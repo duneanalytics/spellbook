@@ -20,4 +20,4 @@ CAST(m.mintAmount AS DOUBLE) / power(10,i.underlying_decimals) AS mint_amount,
 CAST(m.mintAmount AS DOUBLE) / power(10,i.underlying_decimals)*p.price AS mint_usd
 FROM {{ source('ironbank_ethereum', 'CErc20Delegator_evt_Mint') }} m
 LEFT JOIN {{ ref('ironbank_ethereum_itokens') }} i ON CAST(m.contract_address AS VARCHAR(100)) = i.contract_address
-LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', m.evt_block_time) AND p.contract_address = i.underlying_token_address AND p.blockchain = 'ethereum'
+LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', m.evt_block_time) AND CAST(p.contract_address AS VARCHAR(100)) = i.underlying_token_address AND p.blockchain = 'ethereum'

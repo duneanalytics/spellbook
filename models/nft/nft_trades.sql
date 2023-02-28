@@ -19,6 +19,7 @@
 ,ref('opensea_trades')
 ,ref('sudoswap_ethereum_trades')
 ,ref('superrare_ethereum_trades')
+,ref('trove_trades')
 ,ref('x2y2_ethereum_trades')
 ,ref('zora_ethereum_trades')
 ,ref('pancakeswap_bnb_nft_trades')
@@ -27,6 +28,7 @@
 ,ref('nftrade_bnb_trades')
 ,ref('zonic_optimism_trades')
 ,ref('nftb_bnb_trades')
+,ref('nftearth_optimism_trades')
 ] %}
 
 SELECT *
