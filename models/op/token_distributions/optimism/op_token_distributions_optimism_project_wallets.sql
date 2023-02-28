@@ -14,7 +14,7 @@
 
 --wallets we identified as internal transfers within a project (i.e. not going to users)
 with intermediate_wallets AS (
-SELECT address, 'Project' AS label, description
+SELECT address, proposal_name, address_descriptor
 FROM (
 SELECT LOWER(address) AS address, proposal_name, address_descriptor
         , ROW_NUMBER() OVER (PARTITION BY address ORDER BY description) AS rnk
@@ -62,7 +62,7 @@ FROM (values
 
 -- wallets where we consider tokens deployed, but unclaimed
 , distributor_wallets AS (
-SELECT address, 'Deployed' AS label, proposal_name, address_descriptor
+SELECT address, proposal_name, address_descriptor
 FROM (
 SELECT LOWER(address) AS address, proposal_name, address_descriptor, ROW_NUMBER() OVER (PARTITION BY address ORDER BY description) AS rnk
 FROM (values
@@ -176,12 +176,12 @@ FROM (
 
                 UNION ALL
 
-                SELECT address, label, proposal_name, address_descriptor, 2 as rnk
+                SELECT address, 'Project' AS label, proposal_name, address_descriptor, 2 as rnk
                 FROM intermediate_wallets
 
                 UNION ALL
 
-                SELECT address, label, proposal_name, address_descriptor, 3 as rnk
+                SELECT address, 'Deployed' AS label, proposal_name, address_descriptor, 3 as rnk
                 FROM distributor_wallets
                 ) do_choice_rank
         ) fin
