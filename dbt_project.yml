@@ -30,6 +30,15 @@ tests:
   spellbook:
     +store_failures: true  # store failures for all tests
 
+# Configureing seeds
+# Full documentation: https://docs.getdbt.com/reference/seed-configs
+# For configuring individual seeds (e.g. overriding column types) we recommend a yml file nested in the same folder as the seed
+# example: seeds/cryptopunks/schema.yml
+seeds:
+  spellbook:
+    +schema: test_data
+
+
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
@@ -824,7 +833,3 @@ models:
       +schema: zonic
       optimism:
         +schema: zonic_optimism
-
-seeds:
-  spellbook:
-    +schema: test_data
