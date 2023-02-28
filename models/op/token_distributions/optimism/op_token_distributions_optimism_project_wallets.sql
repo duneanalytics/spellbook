@@ -17,7 +17,7 @@ with intermediate_wallets AS (
 SELECT address, proposal_name, address_descriptor
 FROM (
 SELECT LOWER(address) AS address, proposal_name, address_descriptor
-        , ROW_NUMBER() OVER (PARTITION BY address ORDER BY description) AS rnk
+        , ROW_NUMBER() OVER (PARTITION BY address ORDER BY address_descriptor) AS rnk
 FROM (values
      --suspected internal transfer addresses
      ('0xd4c00fe7657791c2a43025de483f05e49a5f76a6','Lyra','intermediate') --holds velo venft
@@ -64,7 +64,7 @@ FROM (values
 , distributor_wallets AS (
 SELECT address, proposal_name, address_descriptor
 FROM (
-SELECT LOWER(address) AS address, proposal_name, address_descriptor, ROW_NUMBER() OVER (PARTITION BY address ORDER BY description) AS rnk
+SELECT LOWER(address) AS address, proposal_name, address_descriptor, ROW_NUMBER() OVER (PARTITION BY address ORDER BY address_descriptor) AS rnk
 FROM (values
      ('0xeA1e11E3D448F31C565d685115899A11Fd98E40E','1inch','distributor')
     ,('0xc9e53bb96a8923051326b189bbf93ee9ed87888b','WePiggy','claims address')
