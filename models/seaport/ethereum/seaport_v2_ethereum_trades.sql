@@ -67,6 +67,7 @@ with source_ethereum_transactions as (
       and minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
+
 ,iv_orders_matched AS (
     select evt_block_time as om_block_time
           ,evt_tx_hash as om_tx_hash
