@@ -169,7 +169,7 @@ SELECT
 
 FROM (
         SELECT address, label, proposal_name, address_descriptor, ROW_NUMBER() OVER(PARTITION BY address ORDER BY rnk ASC) AS choice_rank 
-                (
+                FROM (
                 -- Pull known project wallets
                 SELECT address, category AS label, proposal_name, proposal_source AS address_descriptor, 1 as rnk
                 FROM {{ref('addresses_optimism_grants_funding')}}
