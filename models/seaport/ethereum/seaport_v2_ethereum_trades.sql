@@ -87,6 +87,8 @@ with source_ethereum_transactions as (
           ,a.sub_idx
           ,a.offer_first_item_type
           ,a.consideration_first_item_type
+          ,a.offerer
+          ,a.recipient
           ,a.sender
           ,a.receiver
           ,a.zone
@@ -110,6 +112,7 @@ with source_ethereum_transactions as (
           ,a.creator_fee_idx
           ,a.is_traded_nft
           ,a.is_moved_nft
+          ,a.order_hash
           ,b.om_evt_index
           ,b.om_order_id
       from ref_seaport_ethereum_base_pairs a
