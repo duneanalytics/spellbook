@@ -12,7 +12,7 @@
 
 WITH
   --Calculate proze structure for Ethereum network per drawID
-prizeDistribution AS (
+prize_distribution AS (
     --ETHEREUM POST DPR
     SELECT call_tx_hash                                                        AS tx_hash,
            call_block_time                                                     AS block_time,
@@ -56,7 +56,7 @@ prizeDistribution AS (
     {% endif %}
 ),
 
-detailedPrizeDistribution AS (
+detailed_prize_distribution AS (
     SELECT tx_hash,
            block_time,
            network,
@@ -80,7 +80,7 @@ detailedPrizeDistribution AS (
            CAST(split_part(tiers, ',', 16) AS int) AS tiers16,
            dpr,
            prize
-    FROM prizeDistribution
+    FROM prize_distribution
 )
 
 SELECT tx_hash,
@@ -106,4 +106,4 @@ SELECT tx_hash,
        tiers16,
        dpr,
        prize
-FROM detailedPrizeDistribution
+FROM detailed_prize_distribution
