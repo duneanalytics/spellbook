@@ -1,9 +1,9 @@
 {{ config(
     alias ='events',
-    post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism","arbitrum"]\',
+    post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism","arbitrum","polygon"]\',
                     "sector",
                     "nft",
-                    \'["soispoke","0xRob"]\') }}')
+                    \'["soispoke","0xRob","springzh"]\') }}')
 }}
 
 {% set nft_models = [
@@ -26,6 +26,7 @@
 ,ref('zonic_optimism_events')
 ,ref('nftb_bnb_events')
 ,ref('nftearth_optimism_events')
+,ref('rarible_polygon_events')
 ] %}
 
 SELECT *
