@@ -76,7 +76,7 @@ FROM (
             ,ROW_NUMBER() OVER (PARTITION BY r.evt_tx_hash, r.evt_index ORDER BY tf.evt_index ASC) AS claim_rank_asc
         
         FROM {{ source('aave_v3_optimism','RewardsController_evt_RewardsClaimed') }} r
-            inner JOIN {{ source('erc20_optimism','evt_Transfer') }} tf
+            inner JOIN {{ source('erc20_optimism', 'evt_transfer') }} tf
                 ON tf.evt_tx_hash = r.evt_tx_hash
                 AND tf.evt_block_number = r.evt_block_number
                 AND tf.contract_address = r.reward
@@ -181,7 +181,7 @@ GROUP BY 1,2,3,4
                         
                         bytearray_substring(tx.data, 1, 4) AS method
                         
-                        FROM {{source('erc20_optimism','evt_Transfer') }} tf
+                        FROM {{source('erc20_optimism','evt_transfer') }} tf
                         -- OLD: we want the sender to always be either the foundation or a project or a CEX
                         -- NEW: We want either the send or receiver to be the foundation or a project
                         INNER JOIN all_labels lbl_from
