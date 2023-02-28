@@ -97,9 +97,6 @@ models:
         description: "ID of transfered token(s)"
       - &transfer_type
         name: transfer_type
-        tests:
-          - accepted_values:
-              values: ['single', 'batch']
         description: "single or batch transfer of tokens"
       - &transfer_action
         name: transfer_action
