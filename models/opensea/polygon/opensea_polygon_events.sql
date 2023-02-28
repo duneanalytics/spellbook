@@ -1,9 +1,15 @@
 {{ config(
     schema = 'opensea_polygon',
     alias = 'events',
-    materialized = 'table',
+    partition_by = ['block_date'],
+    materialized = 'incremental',
     file_format = 'delta',
-    partition_by = ['block_date']
+    incremental_strategy = 'merge',
+    unique_key = ['block_time', 'unique_trade_id'],
+    post_hook='{{ expose_spells(\'["polygon"]\'
+                              "project",
+                              "opensea",
+                              \'["springzh"]\') }}'
     )
 }}
 
@@ -57,7 +63,7 @@ SELECT
   t.tx_hash,
   t.nft_contract_address,
   t.token_standard,
-  '' AS collection, -- Currently there is no data for Polygon
+  CAST(NULL AS string) AS collection, -- Currently there is no data for Polygon
   t.token_id,
   t.amount_raw,
   t.amount_raw / power(10,erc20.decimals) as amount_original,
@@ -70,10 +76,10 @@ SELECT
   t.evt_type,
   erc20.symbol AS currency_symbol,
   t.currency_contract,
---  agg.name as aggregator_name,
---  agg.contract_address as aggregator_address,
---  tx.from as tx_from,
---  tx.to as tx_to,
+  agg.name as aggregator_name,
+  agg.contract_address as aggregator_address,
+  tx.from as tx_from,
+  tx.to as tx_to,
   CAST(NULL AS VARCHAR(5)) as aggregator_name,
   CAST(NULL AS VARCHAR(5)) as aggregator_address,
   CAST(NULL AS VARCHAR(5)) as tx_from,
@@ -90,10 +96,9 @@ SELECT
   erc20.symbol AS royalty_fee_currency_symbol,
   'wyvern-opensea' || '-' || t.tx_hash || '-' || token_id as unique_trade_id
 FROM wyvern_call_data t
--- When join transactions table, compiled query timed out. So ignore them
--- INNER JOIN {{ source('polygon','transactions') }} tx ON t.block_number = tx.block_number AND t.tx_hash = tx.hash
---     AND tx.block_time >= '{{START_DATE}}' AND tx.block_time <= '{{END_DATE}}'
--- LEFT JOIN {{ ref('nft_aggregators') }} agg ON agg.contract_address = tx.to AND agg.blockchain = 'polygon'
+INNER JOIN {{ source('polygon','transactions') }} tx ON t.block_number = tx.block_number AND t.tx_hash = tx.hash
+    AND tx.block_time >= '{{START_DATE}}' AND tx.block_time <= '{{END_DATE}}'
+LEFT JOIN {{ ref('nft_aggregators') }} agg ON agg.contract_address = tx.to AND agg.blockchain = 'polygon'
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', t.block_time)
     AND p.contract_address = t.currency_contract
     AND p.blockchain ='polygon'
