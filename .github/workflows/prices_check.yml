@@ -6,11 +6,6 @@ on:
   pull_request:
     paths:
       - 'models/prices/prices_tokens.sql'
-  push:
-    paths:
-      - 'models/prices/prices_tokens.sql'
-    branches:
-      - 'main'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
