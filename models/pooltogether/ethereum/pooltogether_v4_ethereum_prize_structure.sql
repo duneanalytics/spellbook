@@ -15,14 +15,14 @@
       call_block_time AS block_time,
       'Ethereum' AS network,
       drawId,
-      json_query(output_0, 'lax $.bitRangeSize') AS bitRange,
+      get_json_object(output_0, '$.bitRangeSize') AS bitRange,
       substr(
-        json_query(output_0, 'lax $.tiers'),
+        get_json_object(output_0, '$.tiers'),
         2,
-        length(json_query(output_0, 'lax $.tiers')) -2
+        length(get_json_object(output_0, '$.tiers')) -2
       ) AS tiers,
-      CAST(json_query(output_0, 'lax $.dpr') AS int) / power(10, 6) AS dpr,
-      CAST(json_query(output_0, 'lax $.prize') AS double) / power(10, 6) AS prize
+      CAST(get_json_object(output_0, '$.dpr') AS int) / power(10, 6) AS dpr,
+      CAST(get_json_object(output_0, '$.prize') AS double) / power(10, 6) AS prize
     FROM
       {{ source('pooltogether_v4_ethereum', 'PrizeTierHistoryV2_call_getPrizeTier')}}
     WHERE
@@ -34,15 +34,15 @@
       evt_block_time,
       'Ethereum' AS network,
       drawId,
-      json_query(prizeDistribution, 'lax $.bitRangeSize') AS bitRange,
+      get_json_object(prizeDistribution, '$.bitRangeSize') AS bitRange,
       substr(
-        json_query(prizeDistribution, 'lax $.tiers'),
+        get_json_object(prizeDistribution, '$.tiers'),
         2,
-        length(json_query(prizeDistribution, 'lax $.tiers')) -2
+        length(get_json_object(prizeDistribution, '$.tiers')) -2
       ) AS tiers,
       0 AS dpr,
       CAST(
-        json_query(prizeDistribution, 'lax $.prize') AS double
+        get_json_object(prizeDistribution, '$.prize') AS double
       ) / power(10, 6) AS prize
     FROM
       {{ source('pooltogether_v4_ethereum', 'PrizeDistributionBuffer_evt_PrizeDistributionSet')}}
