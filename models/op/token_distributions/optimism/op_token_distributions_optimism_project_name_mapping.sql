@@ -19,4 +19,4 @@ FROM (values
         ,('Safe', 'Gnosis Safe')
         ,('Okex', 'OKX')
         ,('Overtime Markets', 'Thales')
-)
+) a (proposal_name, project_name)

@@ -146,6 +146,7 @@ FROM (values
     ,('0xfCC293db3b7396a1c2477C9F24F5F948431EF6eC', 'Pika Protocol', 'distributor')
     ,('0x8b50d942bb4effe0db32393a141ea083db0c4e7f', 'Alchemix', 'Velo Pool')
     ,('0x4ea2e39626de031a011c3ca7360878202454ce75', 'Angle', 'Velo Pool')
+    ,('0x6333000289bc27a090b3d51e734c2f13e3edc4fd', 'Hundred Finance', 'Token Treasury')
     
     --quix - should come from CB?
     ,('0x5Ad4A019F77e82940f6Dd15A5215362AF061A742','Quix','distributor')
