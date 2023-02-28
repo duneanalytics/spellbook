@@ -26,14 +26,10 @@ with
         else false
       end as prize_test
     from
-      {
-        {ref ('pooltogether_v4_ethereum_prize_structure')}
-      } as actual
+      {{ ref('pooltogether_v4_ethereum_prize_structure') }} as actual
       inner join
-      {
-        {ref ('pooltogether_v4_ethereum_prize_structure_seed')}
-      } as test
-        on lower(actual.tx_hash) = lower(test.tx_hash)
+      {{ ref('pooltogether_v4_ethereum_prize_structure_seed') }} as test
+      on lower(actual.tx_hash) = lower(test.tx_hash)
   )
 select
   *
