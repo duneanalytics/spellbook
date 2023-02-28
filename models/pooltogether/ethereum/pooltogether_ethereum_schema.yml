@@ -20,8 +20,6 @@ models:
       - &block_time
         name: evt_block_time
         description: "Timestamp for block event time in UTC"
-        tests:
-          - not_null
       - &network
         name: network
         description: "Blockchain which the protocol is deployed"
@@ -35,8 +33,6 @@ models:
       - &bitRange
         name: bitRange
         description: "BitRange of the prize structure"
-        tests:
-          - not_null
       - &tiers1
         name: tiers1
         description: "Portion of total prize dedicated to the tier 1"
