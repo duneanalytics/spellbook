@@ -6,13 +6,13 @@ with
         else false
       end as network_test,
       case
-        when test.drawId = actual.drawId then true
+        when test.draw_id = actual.draw_id then true
         else false
-      end as drawId_test,
+      end as draw_id_test,
       case
-        when test.bitRange = actual.bitRange then true
+        when test.bit_range = actual.bit_range then true
         else false
-      end as bitRange_test,
+      end as bit_range_test,
       case
         when test.tiers1 = actual.tiers1 then true
         else false
@@ -27,9 +27,9 @@ with
       end as prize_test
     from
       {{ ref('pooltogether_v4_ethereum_prize_structure') }} as actual
-      inner join
+    inner join
       {{ ref('pooltogether_v4_ethereum_prize_structure_seed') }} as test
-      on lower(actual.tx_hash) = lower(test.tx_hash)
+    on lower(actual.tx_hash) = lower(test.tx_hash)
   )
 select
   *
@@ -37,8 +37,8 @@ from
   unit_test
 where
   network_test = false
-  or drawId_test = false
-  or bitRange_test = false
+  or draw_id_test = false
+  or bit_range_test = false
   or tiers1_test = false
   or dpr_test = false
   or prize_test = false

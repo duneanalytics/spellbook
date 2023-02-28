@@ -30,13 +30,13 @@ models:
         description: "Blockchain which the protocol is deployed"
         tests:
           - not_null
-      - &drawId
-        name: drawId
+      - &draw_id
+        name: draw_id
         description: "Identifier of the drawID for which the prize structure is being pushed"
         tests:
           - not_null
-      - &bitRange
-        name: bitRange
+      - &bit_range
+        name: bit_range
         description: "BitRange of the prize structure"
       - &tiers1
         name: tiers1
