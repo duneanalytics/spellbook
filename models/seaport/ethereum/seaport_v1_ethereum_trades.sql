@@ -239,7 +239,7 @@ with source_ethereum_transactions as (
           ,a.nft_token_standard
           ,a.zone
           ,a.platform_contract_address
-          ,b.token_contract_address
+          ,a.token_contract_address
           ,a.price_amount_raw
           ,a.platform_fee_amount_raw
           ,a.platform_fee_receiver
