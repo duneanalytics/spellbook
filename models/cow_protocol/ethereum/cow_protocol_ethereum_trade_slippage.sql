@@ -26,21 +26,27 @@ where slippage_bips is not null
 ),
 
 results as (
-    select order_uid, block_number, block_time, buy_quote, sell_quote, tolerance_bips, trade_usd_value,
-        CASE
-            WHEN order_type = 'SELL' THEN (atoms_bought - buy_quote)
-            ELSE (sell_quote - atoms_sold)
-        END AS amount_atoms,
-    100.0 * (CASE
-        WHEN order_type = 'SELL'
-            THEN ((atoms_bought - buy_quote) / buy_quote)
-            ELSE ((sell_quote - atoms_sold) / sell_quote)
-    END) AS amount_percentage,
-    CASE
-        WHEN order_type = 'SELL'
-        THEN (atoms_bought - buy_quote) * (trade_usd_value / atoms_bought)
-        ELSE (sell_quote - atoms_sold) * (trade_usd_value / atoms_sold)
-      END AS amount_usd
+    select order_uid,
+           block_number,
+           block_time,
+           buy_quote,
+           sell_quote,
+           tolerance_bips,
+           trade_usd_value,
+           CASE
+               WHEN order_type = 'SELL' THEN (atoms_bought - buy_quote)
+               ELSE (sell_quote - atoms_sold)
+               END  AS amount_atoms,
+           100.0 * (CASE
+                        WHEN order_type = 'SELL'
+                            THEN ((atoms_bought - buy_quote) / buy_quote)
+                        ELSE ((sell_quote - atoms_sold) / sell_quote)
+               END) AS amount_percentage,
+           CASE
+               WHEN order_type = 'SELL'
+                   THEN (atoms_bought - buy_quote) * (trade_usd_value / atoms_bought)
+               ELSE (sell_quote - atoms_sold) * (trade_usd_value / atoms_sold)
+               END  AS amount_usd
     from raw_data
 )
 select * from results
