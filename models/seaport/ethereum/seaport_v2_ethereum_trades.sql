@@ -19,6 +19,7 @@
 {% set c_seaport_first_date = "2023-02-01" %}
 {% set c_seaport_contract_address = "0x00000000000001ad428e4906ae43d8f9852d0dd6" %} -- v2 = Seaport v1.4
 
+
 with source_ethereum_transactions as (
     select *
     from {{ source('ethereum','transactions') }}
