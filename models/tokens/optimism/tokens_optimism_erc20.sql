@@ -307,9 +307,10 @@ SELECT contract_address, symbol, MIN(decimals) AS decimals, token_type, token_ma
 FROM (
 
     SELECT
-    LOWER(l2_token) AS contract_address, symbol AS symbol, decimals as decimals
-    , 'underlying' as token_type, 'l2 token factory' AS token_mapping_source
-    FROM {{ ref('ovm_optimism_l2_token_factory') }}
+    LOWER(l2_token) AS contract_address, l1_symbol AS symbol, l1_decimals as decimals
+    , 'underlying' as token_type, 'l2 bridge mapping' AS token_mapping_source
+    FROM {{ ref('tokens_optimism_erc20_bridged_mapping') }}
+    WHERE l1_symbol IS NOT NULL
 /*
     -- UNION ALL
 
