@@ -14,9 +14,9 @@
 
 --wallets we identified as internal transfers within a project (i.e. not going to users)
 with intermediate_wallets AS (
-SELECT address, 'Project' AS label, project, description
+SELECT address, 'Project' AS label, description
 FROM (
-SELECT LOWER(address) AS address, proposal_name, address_descriptor, project 
+SELECT LOWER(address) AS address, proposal_name, address_descriptor
         , ROW_NUMBER() OVER (PARTITION BY address ORDER BY description) AS rnk
 FROM (values
      --suspected internal transfer addresses
@@ -62,9 +62,9 @@ FROM (values
 
 -- wallets where we consider tokens deployed, but unclaimed
 , distributor_wallets AS (
-SELECT address, 'Deployed' AS label, project, description
+SELECT address, 'Deployed' AS label, proposal_name, address_descriptor
 FROM (
-SELECT LOWER(address) AS address, project, description, ROW_NUMBER() OVER (PARTITION BY address ORDER BY description) AS rnk
+SELECT LOWER(address) AS address, proposal_name, address_descriptor, ROW_NUMBER() OVER (PARTITION BY address ORDER BY description) AS rnk
 FROM (values
      ('0xeA1e11E3D448F31C565d685115899A11Fd98E40E','1inch','distributor')
     ,('0xc9e53bb96a8923051326b189bbf93ee9ed87888b','WePiggy','claims address')
@@ -157,7 +157,7 @@ FROM (values
     ,('0x6a1e22c82be29eb96850158011b40fafbce1340c','Synthetix','SNXAmbassadors delegation')
     
     
-    ) a (address, project, description)
+    ) a (address, proposal_name, address_descriptor)
     ) b
     WHERE rnk = 1 --check to prvent duplicates
     AND address NOT IN (SELECT address FROM addresses_optimism.cex) --make sure we don't accidently catch a CEX
@@ -176,12 +176,12 @@ FROM (
 
                 UNION ALL
 
-                SELECT address, label, project AS proposal_name, description AS address_descriptor, 2 as rnk
+                SELECT address, label, proposal_name, address_descriptor, 2 as rnk
                 FROM intermediate_wallets
 
                 UNION ALL
 
-                SELECT address, label, project AS proposal_name, description AS address_descriptor, 3 as rnk
+                SELECT address, label, proposal_name, address_descriptor, 3 as rnk
                 FROM distributor_wallets
                 ) do_choice_rank
         ) fin
