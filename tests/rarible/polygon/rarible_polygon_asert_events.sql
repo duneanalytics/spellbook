@@ -8,6 +8,17 @@ WITH raw_events AS (
     WHERE rightAsset:assetClass in ('0xaaaebeba', '0x8ae85d84')
         AND evt_block_time >= '2022-04-01'
         AND evt_block_time < '2022-05-01'
+
+    UNION ALL
+
+    select evt_block_time as raw_block_time,
+        evt_tx_hash as raw_tx_hash,
+        CAST(bytea2numeric_v3(substr(rightAsset:data, 3 + 64, 64)) AS string) AS token_id,
+        evt_tx_hash || '-Trade-' || evt_index || '-' || CAST(bytea2numeric_v3(substr(rightAsset:data, 3 + 64, 64)) AS string)  AS raw_unique_trade_id
+    FROM {{ source ('rarible_polygon', 'Exchange_evt_Match') }}
+    WHERE leftAsset:assetClass in ('0xaaaebeba', '0x8ae85d84')
+        AND evt_block_time >= '2022-04-01'
+        AND evt_block_time < '2022-05-01'
 ),
 
 processed_events AS (
