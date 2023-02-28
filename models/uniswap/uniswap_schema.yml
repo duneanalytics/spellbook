@@ -15,11 +15,6 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &dex_project_name
-        name: dex_project
-        description: "DEX Project Name - This will be used for overall DEX LM incentives models"
-      - &dex_project_version
-        name: "DEX Project Version - This will be used for overall DEX LM incentives models"
       - &project 
         name: project
         description: "Project name of the DEX"  
@@ -100,24 +95,27 @@ models:
       - &blockchain_lm
         name: blockchain
         description: 'Blockchain of the LP Token'
+      - &dex_project_name
+        name: dex_project_name
+        description: "DEX Project Name - This will be used for overall DEX LM incentives models"
+      - &dex_project_version
+        name: dex_project_version
+        description: "DEX Project Version - This will be used for overall DEX LM incentives models"
       - &project_lm
         name: project
         description: 'Project Name of the LP Token'
-      - &lp_name
-        name: lp_name
-        description: 'Arrakis LP Token name'
       - &contract_address_lm
         name: contract_address
-        description: 'Arrakis LP Token contract address'
-      - &pool
-        name: pool
+        description: 'Manager LP Token contract address'
+      - &pool_contract
+        name: pool_contract
         description: "Uniswap liquidity pool contract address"
+      - &fee
+        name: fee
+        description:  "Swap fee of a Uniswap liquidity pool. Divide by 1e4 or power(10,4) to get the fee percentage"
       - &token0
         name: token0
         description:  "Token0 contract address"
       - &token1
         name: token1
         description:  "Token1 contract address"
-      - &fee
-        name: fee
-        description:  "Swap fee of a Uniswap liquidity pool. Divide by 1e4 or power(10,4) to get the fee percentage"

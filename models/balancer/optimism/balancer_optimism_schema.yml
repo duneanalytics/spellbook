@@ -315,6 +315,7 @@ models:
             - incentives_contract
     columns:
       - *blockchain
+      - *version
       - &pool_contract
         name: pool_contract
         description: "Address of the liquidity pool contract"

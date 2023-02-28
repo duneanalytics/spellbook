@@ -19,7 +19,7 @@ FROM (
     SELECT
         blockchain
         , 'balancer' as project
-        , '2' as version
+        , version
         , pool_contract
         , pool_id
         , incentives_contract
